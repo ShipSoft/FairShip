@@ -21,9 +21,19 @@ To use this software you need:
   
   build>make 
   
-  > if compiled successfully you can go to ship/macro directory and run macro (i.e:  "root run_sim.C -l")
+  call you favourite config  (config.sh or config.csh) depending on what shell you use
   
-  > After that you can also see what is done by running the eventdisplay.C macro  (i.e: "root  event display.C -l")
+  build>. ./config.sh
+  
+  Now you can go to  ship/macro directory and run macro (i.e:  "root run_sim.C ")
+  
+  > cd ship/macro
+  
+  macro> root run_sim.C 
+   
+  After that you can also see what is done by running the eventdisplay.C macro  (i.e: "root  event display.C ")
+  
+  macro>root  event display.C 
   
   
   
