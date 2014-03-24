@@ -20,6 +20,7 @@ This is a very basic implementation of a software framework for the SHIP experim
     ```bash
     # Set the shell variable SIMPATH to the installation directory
     export SIMPATH=~/ShipSoft/FairSoftInst
+    [setenv SIMPATH ~/ShipSoft/FairSoftInst]
 
     cd ~/ShipSoft
     git clone -b dev https://github.com/FairRootGroup/FairRoot.git
@@ -44,6 +45,7 @@ This is a very basic implementation of a software framework for the SHIP experim
     ```bash
     # Set the shell variable FAIRROOTPATH to the FairRoot installation directory
     export FAIRROOTPATH=~/ShipSoft/FairRootInst
+    [setenv FAIRROOTPATH ~/ShipSoft/FairRootInst]
 
     cd ~/ShipSoft
     git clone https://github.com/ShipSoft/FairShip.git
