@@ -59,7 +59,11 @@ This is a very basic implementation of a software framework for the SHIP experim
     Now you can for example simulate some events and run the event display:
 
     ```bash
-    root ../FairShip/macro/run_sim.C
+    root -q ../FairShip/macro/run_sim.C
     root ../FairShip/macro/eventDisplay.C
+    // Click on "FairEventManager" (in the top-left pane)
+    // Click on the "Info" tab (on top of the bottom-left pane)
+    // Increase the "Current Event" to >0 to see the events
+    root [1] .q
     ```
 
