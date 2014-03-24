@@ -9,10 +9,10 @@ This is a very basic implementation of a software framework for the SHIP experim
     git clone -b dev https://github.com/FairRootGroup/FairSoft.git
     cd FairSoft
     ./configure.sh
-    # clang (on OSX), gcc (on Linux)
-    # install G4 files
-    # not-optimized
-    # ~/ShipSoft/FairSoftInst
+    # 1) gcc (on Linux) 5) Clang (on OSX)
+    # 1) No Debug Info
+    # 2) Internet (install G4 files from internet)
+    # path: ~/ShipSoft/FairSoftInst
     ```
 
 2. Install [FairRoot](http://fairroot.gsi.de/?q=node/82)
