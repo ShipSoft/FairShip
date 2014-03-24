@@ -1,6 +1,6 @@
 #include "ShipMagnet.h"
 
-#include "TGeoMAnager.h"
+#include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 //#include "FairGeoMedia.h"
