@@ -7,10 +7,10 @@
 /mcVerbose/composedPhysicsList 1
 #/mcVerbose/trackManager 2
 
-/control/cout/ignoreThreadsExcept 0
+#/control/cout/ignoreThreadsExcept 0
 
-/run/particle/applyCuts
-/mcTracking/saveSecondariesInStep true
+#/run/particle/applyCuts
+#/mcTracking/saveSecondariesInStep true
 
 #/tracking/verbose 1
 #/control/cout/ignoreThreadsExcept 0
