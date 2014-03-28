@@ -11,10 +11,10 @@ using namespace Pythia8;
 // -----   Default constructor   -------------------------------------------
 Pythia8Generator::Pythia8Generator() 
 {
-  fPar_it = 0;
-  fMom = 15.;
   fUseRandom1 = kFALSE; 
   fUseRandom3 = kTRUE;
+  fId         = 2212; // proton
+  fMom        = 400;  // proton
 }
 // -------------------------------------------------------------------------
 
@@ -26,13 +26,8 @@ Bool_t Pythia8Generator::Init()
   
   fPythia.setRndmEnginePtr(fRandomEngine);
   
-  // Set Parameters
-  for(Int_t jj=0;jj<fPar_it;jj++){
-    fPythia.readString(fParams[jj]);
-    cout<<"fPythia.readString(\""<<fParams[jj]<<"\")"<<endl;
-  }
   cout<<"Beam Momentum "<<fMom<<endl;
-  fPythia.init(-2212, 2212, 0., 0., fMom, 0., 0., 0.);
+  fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
   return kTRUE;
 }
 // -------------------------------------------------------------------------
@@ -73,8 +68,9 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 // -------------------------------------------------------------------------
 void Pythia8Generator::SetParameters(char* par)
 {
-  fParams[fPar_it] = par;
-  fPar_it++;
+  // Set Parameters
+    fPythia.readString(par);
+    cout<<"fPythia.readString(\""<<par<<"\")"<<endl;
 }
 
 // -------------------------------------------------------------------------
