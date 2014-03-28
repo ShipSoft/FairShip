@@ -37,6 +37,9 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   cave->SetGeometryFileName("cave.geo");
   run->AddModule(cave);
 
+  FairModule* TargetStation = new ShipTargetStation("TargetStation");
+  run->AddModule(TargetStation);
+
   FairModule* magnet = new ShipMagnet("Magnet");
   run->AddModule(magnet);
  
@@ -69,8 +72,8 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   P8gen->SetParameters("PhaseSpace:pTHatMinDiverge = 1.0000e-05");
   P8gen->SetParameters("PhaseSpace:minWidthBreitWigners = 0.00001");
   P8gen->SetParameters("HardQCD:all = on");
-  P8gen->SetParameters("SoftQCD:all = off");
-  P8gen->SetMom(100);  // pbar momentum
+  P8gen->SetParameters("SoftQCD:all = on");
+  P8gen->SetMom(400);  // p momentum
   primGen->AddGenerator(P8gen);
    
   

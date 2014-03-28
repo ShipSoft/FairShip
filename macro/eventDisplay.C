@@ -1,7 +1,7 @@
 eventDisplay()
 {
   //-----User Settings:-----------------------------------------------
-  TString  SimEngine     ="TGeant3"; 
+  TString  SimEngine     ="TGeant4"; 
   TString  InputFile     ="ship.test.root";
   TString  ParFile       ="ship.params.root";
   TString  OutFile	 ="tst.root";
