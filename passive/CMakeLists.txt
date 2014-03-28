@@ -24,6 +24,7 @@ ShipCave.cxx
 ShipGeoCave.cxx        
 ShipMagnet.cxx         
 ShipChamber.cxx
+ShipTargetStation.cxx
 ShipPassiveContFact.cxx
 )
 
