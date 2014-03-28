@@ -59,7 +59,6 @@ If(NOT CMAKE_BUILD_TYPE)
 EndIf(NOT CMAKE_BUILD_TYPE)
 Check_Compiler()
 
-SetBasicVariables()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
@@ -120,6 +119,35 @@ find_package(GEANT4DATA)
 find_package(GEANT4VMC)
 find_package(HEPMC)
 
+ Set(Boost_NO_SYSTEM_PATHS TRUE)
+  Set(Boost_NO_BOOST_CMAKE TRUE)
+#  set(Boost_DEBUG TRUE)
+  If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+    set(BOOST_ROOT ${SIMPATH})
+    set(GSL_DIR ${SIMPATH})
+  Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+    set(BOOST_ROOT ${SIMPATH}/basics/boost)
+    set(GSL_DIR ${SIMPATH}/basics/gsl)
+  EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  Message("-- Looking for Boost ...")
+  # If an older version of boost is found both of the variables below are
+  # cached and in a second cmake run, a good boost version is found even 
+  # if the version is to old. 
+  # To overcome this problem both variables are cleared before checking
+  # for boost.
+  Unset(Boost_INCLUDE_DIR CACHE)
+  Unset(Boost_LIBRARY_DIRS CACHE)
+  find_package(Boost 1.41)
+  If (Boost_FOUND)
+    Set(Boost_Avail 1)
+  Else (Boost_FOUND)
+    Set(Boost_Avail 0)
+  EndIf (Boost_FOUND)
+
+
+# set a variable which should be used in all CMakeLists.txt
+# Defines all basic include directories from fairbase
+SetBasicVariables()
 
 
 # Set the library version in the main CMakeLists.txt
@@ -190,7 +218,7 @@ add_subdirectory (ecal)
 add_subdirectory (veto)
 add_subdirectory (muon)
 add_subdirectory (shipgen)
-
+add_subdirectory (field)
 
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
   ${SIMPATH}/tools/root/include
