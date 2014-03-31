@@ -3,11 +3,19 @@ This is a very basic implementation of a software framework for the SHIP experim
 1. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
 
     ```bash
+    # First do this (only once) on SLC6 where the github cert is missing
+    mkdir ~/certs
+    curl http://curl.haxx.se/ca/cacert.pem -o ~/certs/cacert.pem
+    git config --global http.sslcainfo ~/certs/cacert.pem
+    ```
+
+    ```bash
     mkdir ~/ShipSoft
     cd ~/ShipSoft
     #git clone https://github.com/FairRootGroup/FairSoft.git
     git clone -b dev https://github.com/FairRootGroup/FairSoft.git
     cd FairSoft
+    # On SLC6 do: export FC=gfortran
     ./configure.sh
     # 1) gcc (on Linux) 5) Clang (on OSX)
     # 1) No Debug Info

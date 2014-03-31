@@ -25,10 +25,10 @@ eventDisplay()
   
   //----------------------Traks and points -------------------------------------
   FairMCTracks    *Track     = new FairMCTracks("Monte-Carlo Tracks");
-  FairMCPointDraw *TorinoDetectorPoints = new FairMCPointDraw("FairTestDetectorPoint", kRed, kFullSquare);
+//  FairMCPointDraw *TorinoDetectorPoints = new FairMCPointDraw("FairTestDetectorPoint", kRed, kFullSquare);
  
   fMan->AddTask(Track);
-  fMan->AddTask(TorinoDetectorPoints);
+//  fMan->AddTask(TorinoDetectorPoints);
   
   
   fMan->Init();                     

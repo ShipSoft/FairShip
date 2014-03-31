@@ -7,7 +7,6 @@
 /mcVerbose/composedPhysicsList 1
 #/mcVerbose/trackManager 2
 
-/control/cout/ignoreThreadsExcept 0
 
 /run/particle/applyCuts
 #/mcTracking/saveSecondariesInStep true
