@@ -1,4 +1,4 @@
-void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
+void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
 {
    gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
    basiclibs();
