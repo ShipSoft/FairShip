@@ -60,6 +60,18 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
 
  // ------------------------------------------------------------------------
 
+
+    // -----   Magnetic field   -------------------------------------------
+    // Constant Field
+    ShipConstField  *fMagField = new ShipConstField();
+    fMagField->SetField(0., 2. ,0. ); // values are in kG
+    fMagField->SetFieldRegion(-160, 160,-160, 160, 1940, 125); // values are in cm
+                          //  (xmin,xmax,ymin,ymax,zmin,zmax)
+    run->SetField(fMagField);
+    // --------------------------------------------------------------------
+
+    
+    
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
   
