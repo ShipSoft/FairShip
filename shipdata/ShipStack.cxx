@@ -118,7 +118,10 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   ntr = trackId;
 
   // --> Push particle on the stack if toBeDone is set
-  if (toBeDone == 1) { fStack.push(particle); }
+  if (toBeDone == 1) {
+      particle->SetBit(kDoneBit);
+      fStack.push(particle);
+  }
 
 }
 // -------------------------------------------------------------------------
@@ -174,8 +177,8 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
     fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack:: Not a primary track! %i ",iPrim);
     Fatal("ShipStack::PopPrimaryForTracking", "Not a primary track");
   }
-
-  return part;
+  if(!part->TestBit(kDoneBit)) return NULL;
+  else return part;
 
 }
 // -------------------------------------------------------------------------
