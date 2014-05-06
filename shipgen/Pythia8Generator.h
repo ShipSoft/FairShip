@@ -55,6 +55,7 @@ class Pythia8Generator : public FairGenerator
   virtual Bool_t Init(); //!
   
   void SetMom(Double_t mom) { fMom = mom; };
+  void SetId(Double_t id) { fId = id; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   
@@ -62,12 +63,11 @@ class Pythia8Generator : public FairGenerator
   
   Pythia fPythia;             //!
   RndmEngine* fRandomEngine;  //!
-  char* fParams[100];         //!
   
  protected:
   
-  Double_t fMom;       // pbar momentum
-  Int_t fPar_it;       // number of parameter lines
+  Double_t fMom;       // proton momentum
+  Int_t    fId;       // target type
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
 
