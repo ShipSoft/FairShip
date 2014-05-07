@@ -73,7 +73,7 @@ void muon::Initialize()
 Bool_t  muon::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
-
+  cout<<"Muon process hits"<<endl;
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
     fELoss  = 0.;
@@ -155,21 +155,30 @@ void muon::ConstructGeometry()
         Al     = new TGeoMedium("Al", 2, matAl);
     }
     
+    TGeoBBox *detbox1 = new TGeoBBox("detbox1", 250, 250, 10);
+    TGeoBBox *detbox2 = new TGeoBBox("detbox2", 245, 245, 10);
     
+    TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");    
 
-    TGeoVolume *det1=gGeoManager->GetVolume("det1");
+    TGeoVolume *detmu1 = new TGeoVolume("MuX", detcomp1, Al);
     TGeoVolume *muonfilter = gGeoManager->MakeBox("muonfilter", Al, 250, 250, 20);
+    AddSensitiveVolume(muonfilter);
+    AddSensitiveVolume(detmu1);
     muonfilter->SetLineColor(kGreen);
     top->AddNode(muonfilter, 1, new TGeoTranslation(0, 0, 2500));
     
-    top->AddNode(det1, 10, new TGeoTranslation(0, 0, 2570));
+    AddSensitiveVolume(detmu1);
+    top->AddNode(detmu1, 10, new TGeoTranslation(0, 0, 2570));
+    detmu1->SetLineColor(kViolet+10);    
     TGeoRotation r5;
     r5.SetAngles(15,0,0);
     TGeoTranslation t5(0, 0, 2590);
     TGeoCombiTrans c5(t5, r5);
     TGeoHMatrix *h5 = new TGeoHMatrix(c5);
-    top->AddNode(det1, 10, h5);
-    
+    TGeoVolume *detmu2 = new TGeoVolume("MuS", detcomp1, Al);
+    detmu2->SetLineColor(kViolet+4);
+    AddSensitiveVolume(detmu2);
+    top->AddNode(detmu2, 10, h5);
     
     
 }
@@ -181,6 +190,7 @@ muonPoint* muon::AddHit(Int_t trackID, Int_t detID,
 {
   TClonesArray& clref = *fmuonPointCollection;
   Int_t size = clref.GetEntriesFast();
+  // cout << "muon hit called"<< pos.z()<<endl;
   return new(clref[size]) muonPoint(trackID, detID, pos, mom,
          time, length, eLoss);
 }
