@@ -73,7 +73,6 @@ void muon::Initialize()
 Bool_t  muon::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
-  cout<<"Muon process hits"<<endl;
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
     fELoss  = 0.;
