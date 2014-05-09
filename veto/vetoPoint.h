@@ -35,7 +35,7 @@ class vetoPoint : public FairMCPoint
     virtual ~vetoPoint();
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+    virtual void Print() const;
 
   private:
     /** Copy constructor **/
