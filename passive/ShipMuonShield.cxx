@@ -40,17 +40,17 @@ void ShipMuonShield::ConstructGeometry()
     TGeoMedium *tungsten  =gGeoManager->GetMedium("tungsten");
     if (tungsten==0){
         TGeoMaterial *matTungsten     = new TGeoMaterial("tungsten", 183.84, 74, 19.3);
-        tungsten = new TGeoMedium("tungsten", 74, matTungsten); 
+        tungsten = new TGeoMedium("tungsten", 974, matTungsten); 
     }
     TGeoMedium *iron  =gGeoManager->GetMedium("iron");
     if (iron==0){
         TGeoMaterial *matFe     = new TGeoMaterial("iron", 55.847, 26, 7.87);
-        iron = new TGeoMedium("iron", 26, matFe);
+        iron = new TGeoMedium("iron", 926, matFe);
     }
     TGeoMedium *lead  =gGeoManager->GetMedium("Pb");
     if (lead==0){
         TGeoMaterial *matPb     = new TGeoMaterial("Pb", 207.2, 82, 11.342);
-        lead = new TGeoMedium("Pb", 26, matPb);
+        lead = new TGeoMedium("Pb", 982, matPb);
     }
     
     if (fDesign==1){
