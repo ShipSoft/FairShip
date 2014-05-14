@@ -1,8 +1,8 @@
 // -------------------------------------------------------------------------
-// -----                    ShipConstField source file                  -----
+// -----                    ShipBellField source file                  -----
 // -------------------------------------------------------------------------
-#include "ShipConstField.h"
-
+#include "ShipBellField.h"
+#include "math.h"
 #include "ShipFieldPar.h"
 
 #include <iomanip>
@@ -15,13 +15,10 @@ using std::setw;
 
 
 // -----   Default constructor   -------------------------------------------
-ShipConstField::ShipConstField() 
+ShipBellField::ShipBellField() 
   : FairField(),
     fPeak(0.),
-    fMiddle(0.),
-    fBx(0.),
-    fBy(0.),
-    fBz(0.)
+    fMiddle(0.)
 {
   fType = 1;
 }
@@ -30,10 +27,10 @@ ShipConstField::ShipConstField()
 
 
 // -----   Standard constructor   ------------------------------------------
-ShipConstField::ShipConstField(const char* name, Double_t fPeak,Double_t fMiddle )
+ShipBellField::ShipBellField(const char* name, Double_t Peak,Double_t Middle )
   : FairField(name),
-    fPeak(fPeak),
-    fMiddle(fMiddle)
+    fPeak(Peak),
+    fMiddle(Middle)
 {
   fType=1;
 }
@@ -41,14 +38,11 @@ ShipConstField::ShipConstField(const char* name, Double_t fPeak,Double_t fMiddle
 
 
 
-// --------   Constructor from CbmFieldPar   -------------------------------
-ShipConstField::ShipConstField(ShipFieldPar* fieldPar)
+// --------   Bellructor from CbmFieldPar   -------------------------------
+ShipBellField::ShipBellField(ShipFieldPar* fieldPar)
   : FairField(),
     fPeak(0.),
-    fMiddle(0.),
-    fBx(0.),
-    fBy(0.),
-    fBz(0.)
+    fMiddle(0.)
 {
   if ( ! fieldPar ) {
     cerr << "-W- ShipBellField::ShipBellField: empty parameter container!"
@@ -66,12 +60,12 @@ ShipConstField::ShipConstField(ShipFieldPar* fieldPar)
 
 
 // -----   Destructor   ----------------------------------------------------
-ShipConstField::~ShipConstField() { }
+ShipBellField::~ShipBellField() { }
 // -------------------------------------------------------------------------
 
 
 // -----   Get x component of field   --------------------------------------
-Double_t ShipConstField::GetBx(Double_t x, Double_t y, Double_t z) {
+Double_t ShipBellField::GetBx(Double_t x, Double_t y, Double_t z) {
   
   return 0.;
 }
@@ -79,15 +73,18 @@ Double_t ShipConstField::GetBx(Double_t x, Double_t y, Double_t z) {
 
 
 // -----   Get y component of field   --------------------------------------
-Double_t ShipConstField::GetBy(Double_t x, Double_t y, Double_t z) {
-  return 0.;
+Double_t ShipBellField::GetBy(Double_t x, Double_t y, Double_t z) {
+  Double_t zlocal=(z-1950.)/100.;
+  Double_t by= 1.14/(1.+pow(fabs(zlocal)/2.1,6.));
+  return by;
+
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Get z component of field   --------------------------------------
-Double_t ShipConstField::GetBz(Double_t x, Double_t y, Double_t z) {
+Double_t ShipBellField::GetBz(Double_t x, Double_t y, Double_t z) {
   return 0.;
 }
 // -------------------------------------------------------------------------
@@ -95,26 +92,19 @@ Double_t ShipConstField::GetBz(Double_t x, Double_t y, Double_t z) {
 
 
 // -----   Screen output   -------------------------------------------------
-void ShipConstField::Print() {
+void ShipBellField::Print() {
   cout << "======================================================" << endl;
   cout << "----  " << fTitle << " : " << fName << endl;
   cout << "----" << endl;
   cout << "----  Field type    : constant" << endl;
   cout << "----" << endl;
   cout << "----  Field regions : " << endl;
-  cout << "----        x = " << setw(4) << fXmin << " to " << setw(4) 
-       << fXmax << " cm" << endl;
-  cout << "----        y = " << setw(4) << fYmin << " to " << setw(4) 
-       << fYmax << " cm" << endl;
-  cout << "----        z = " << setw(4) << fZmin << " to " << setw(4)
-       << fZmax << " cm" << endl;
   cout.precision(4);
-  cout << "----  B = ( " << fBx << ", " << fBy << ", " << fBz << " ) kG"
-       << endl;
   cout << "======================================================" << endl;
 }
 // -------------------------------------------------------------------------
 
 
 
-ClassImp(ShipConstField)
+ClassImp(ShipBellField)
+

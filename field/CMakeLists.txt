@@ -22,6 +22,7 @@ set(SRCS
 ShipConstField.cxx   
 ShipFieldCreator.cxx 
 ShipFieldPar.cxx
+ShipBellField.cxx
 )
 
 set(LINKDEF FieldLinkDef.h)
