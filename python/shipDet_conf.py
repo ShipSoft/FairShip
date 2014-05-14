@@ -41,4 +41,4 @@ def configure(run):
  #fMagField.SetFieldRegion(-250*u.cm, 250*u.cm,-250*u.cm, 250*u.cm, ShipGeo.Bfield.z-100*u.cm, ShipGeo.Bfield.z+100*u.cm)    
  #run.SetField(fMagField)
  fMagField = ROOT.ShipBellField("wilfried", ShipGeo.Bfield.max ,ShipGeo.Bfield.z )  
-
+ run.SetField(fMagField)

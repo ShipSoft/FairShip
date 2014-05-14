@@ -56,8 +56,3 @@ def exMCHits(dump=False):
    for i in range(nHits):
     ahit = TrackingHits.At(i)
     print ahit.GetZ()/u.m, ahit.GetDetectorID(),ahit.GetLength(),ahit.GetEnergyLoss() 
-
-  
- 
-
-
