@@ -13,27 +13,30 @@ def readHists(h,fname):
   f = TFile(fname)
   for akey in f.GetListOfKeys():
     name  =  akey.GetName()
+    try:     hname = int(name)
+    except:  hname = name
     cln = f.FindObjectAny(name).Class().GetName()
     if cln.find('TH')<0: continue
-    if h.has_key(name): h[name].Add(f.FindObjectAny(name))
-    else: h[name] =  f.FindObjectAny(name).Clone()
-    h[name].SetDirectory(gROOT)
-    h[name].Sumw2() 
+    if h.has_key(hname): h[hname].Add(f.FindObjectAny(name))
+    else: h[hname] =  f.FindObjectAny(name).Clone()
+    h[hname].SetDirectory(gROOT)
+    h[hname].Sumw2() 
     if cln == 'TH2D' or cln == 'TH2F':
          for p in [ '_projx','_projy']:
-           if p.find('x')>-1: h[name+p] = h[name].ProjectionX()  
-           else             : h[name+p] = h[name].ProjectionY()  
-           h[name+p].SetName(name+p)
-           h[name+p].SetDirectory(gROOT)
+           if p.find('x')>-1: h[hname+p] = h[hname].ProjectionX()  
+           else             : h[hname+p] = h[hname].ProjectionY()  
+           h[hname+p].SetName(name+p)
+           h[hname+p].SetDirectory(gROOT)
   return
 def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1,nbinsz=0,zmin=0,zmax=1):
   if key==None : 
     print 'missing key'
     return
+  rkey = str(key) # in case somebody wants to use integers, or floats as keys 
   if h.has_key(key):    h[key].Reset()  
-  elif nbinsz >0:       h[key] = TH3F(key,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax) 
-  elif nbinsy >0:       h[key] = TH2F(key,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
-  else:                 h[key] = TH1F(key,title,nbinsx,xmin,xmax)
+  elif nbinsz >0:       h[key] = TH3F(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax) 
+  elif nbinsy >0:       h[key] = TH2F(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
+  else:                 h[key] = TH1F(rkey,title,nbinsx,xmin,xmax)
   h[key].SetDirectory(gROOT)
 
 def writeHists(h,fname):
