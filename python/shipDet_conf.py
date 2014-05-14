@@ -1,7 +1,7 @@
-import ROOT
+import ROOT,ShipGeo
 import shipunit as u
 
-def configure(run,muShieldLength,targetHadronAbsorber,decayVolumeLength):
+def configure(run):
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -11,7 +11,8 @@ def configure(run,muShieldLength,targetHadronAbsorber,decayVolumeLength):
  cave.SetGeometryFileName("cave.geo")
  run.AddModule(cave)
 
- TargetStation = ROOT.ShipTargetStation("TargetStation",muShieldLength)
+ TargetStation = ROOT.ShipTargetStation("TargetStation",ShipGeo.target.length,ShipGeo.hadronAbsorber.length,
+                                                        ShipGeo.target.z,ShipGeo.hadronAbsorber.z)
  run.AddModule(TargetStation)
  MuonShield = ROOT.ShipMuonShield("MuonShield",1)
  run.AddModule(MuonShield)
@@ -19,10 +20,12 @@ def configure(run,muShieldLength,targetHadronAbsorber,decayVolumeLength):
  magnet = ROOT.ShipMagnet("Magnet")
  run.AddModule(magnet)
  
- Chamber = ROOT.ShipChamber("Chamber")
+ Chamber = ROOT.ShipChamber("Chamber")  # vacuum tank
  run.AddModule(Chamber)
+ 
+ Veto = ROOT.veto("Veto", ROOT.kTRUE)   # for the moment, contains all tracking stations / planes
+ Veto.SetZpositions(ShipGeo.vetoStation.z, ShipGeo.TrackStation1.z, ShipGeo.TrackStation2.z, ShipGeo.TrackStation3.z, ShipGeo.TrackStation4.z)
 
- Veto = ROOT.veto("Veto", ROOT.kTRUE)
  run.AddModule(Veto)
  
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE)
@@ -34,7 +37,7 @@ def configure(run,muShieldLength,targetHadronAbsorber,decayVolumeLength):
 #-----   Magnetic field   -------------------------------------------
     # Constant Field
  fMagField = ROOT.ShipConstField()
- fMagField.SetField(0., 2. ,0. ) # values are in kG
- fMagField.SetFieldRegion(-160*u.cm, 160*u.cm,-160*u.cm, 160*u.cm, 1940*u.cm, 125*u.cm); # values are in cm  (xmin,xmax,ymin,ymax,zmin,zmax)
+ fMagField.SetField(0., ShipGeo.Bfield.max ,0. )  
+ fMagField.SetFieldRegion(-250*u.cm, 250*u.cm,-250*u.cm, 250*u.cm, ShipGeo.Bfield.z-100*u.cm, ShipGeo.Bfield.z+100*u.cm)    
  run.SetField(fMagField)
 

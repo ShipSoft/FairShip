@@ -6,12 +6,7 @@ inclusive = False  # True = all processes if False only ccbar -> HNL
 
 #
 import shipunit as u
-muShieldLength       =   70*u.m
-targetHadronAbsorber = 3.50*u.m
-decayVolumeLength    =   50*u.m
-
-
-import shipRoot_conf
+import ShipGeo,shipRoot_conf
 shipRoot_conf.configure()
 
 # Output file name
@@ -36,11 +31,10 @@ run.SetOutputFile(outFile) # Output file
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
-shipDet_conf.configure(run,muShieldLength,targetHadronAbsorber,decayVolumeLength)
+shipDet_conf.configure(run)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-pointZero =  -decayVolumeLength/2. - targetHadronAbsorber - muShieldLength - 25.*u.cm
-primGen.SetTarget(pointZero, 0.) # in cm  
+primGen.SetTarget(ShipGeo.target.z0, 0.) 
 # -----Pythia8--------------------------------------
 P8gen = ROOT.Pythia8Generator()
 import pythia8_conf

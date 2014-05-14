@@ -27,10 +27,13 @@ ShipTargetStation::ShipTargetStation()
 {
 }
 
-ShipTargetStation::ShipTargetStation(const char* name, const Double_t MuonShield,const char* Title )
+ShipTargetStation::ShipTargetStation(const char* name, const Double_t tl,const Double_t al,const Double_t tz,const Double_t az,const char* Title )
   : FairModule(name ,Title)
 {
- fMuonShieldLength = MuonShield;
+  fTargetLength    = tl;        
+  fAbsorberLength  = al;       
+  fAbsorberZ       = az; 
+  fTargetZ         = tz;
 }
 
 void ShipTargetStation::ConstructGeometry()
@@ -40,27 +43,27 @@ void ShipTargetStation::ConstructGeometry()
     TGeoMedium *tungsten  =gGeoManager->GetMedium("tungsten");
     if (tungsten==0){
         TGeoMaterial *matTungsten     = new TGeoMaterial("tungsten", 183.84, 74, 19.3);
-        tungsten = new TGeoMedium("tungsten", 74, matTungsten); 
+        tungsten = new TGeoMedium("tungsten", 974, matTungsten); 
     }
-    TGeoMedium *iron  =gGeoManager->GetMedium("iron");
+    TGeoMedium *iron  = gGeoManager->GetMedium("iron");
     if (iron==0){
         TGeoMaterial *matFe     = new TGeoMaterial("iron", 55.847, 26, 7.87);
-        iron = new TGeoMedium("iron", 26, matFe);
+        iron = new TGeoMedium("iron", 926, matFe);
     }
     
     
     // target made of tungsten
-    TGeoVolume *target = gGeoManager->MakeTube("Target", tungsten, 0, 25, 50./2.);
+    TGeoVolume *target = gGeoManager->MakeTube("Target", tungsten, 0, 25, fTargetLength/2.);
     target->SetLineColor(38);  // silver/blue
-    top->AddNode(target, 1, new TGeoTranslation(0, 0, -fMuonShieldLength-2500+25));
+    top->AddNode(target, 1, new TGeoTranslation(0, 0, fTargetZ));
     
     
     // Absorber made of iron
-    TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 100, 150.);  // 1890
+    TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 100, fAbsorberLength/2.);  // 1890
     absorber->SetLineColor(42); // brown / light red
-    top->AddNode(absorber, 1, new TGeoTranslation(0, 0, -fMuonShieldLength-2500+2*25.+150.));
+    top->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ));
 
-    cout << "target and absorber postioned at " << (-fMuonShieldLength-2500)/100. << "m"<< endl;
+    cout << "target and absorber postioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
     
 }
 
