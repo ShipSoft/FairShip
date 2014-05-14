@@ -27,7 +27,7 @@ vetoPoint::~vetoPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void vetoPoint::Print(const Option_t* opt) const
+void vetoPoint::Print() const
 {
   cout << "-I- vetoPoint: veto point for track " << fTrackID
        << " in detector " << fDetectorID << endl;

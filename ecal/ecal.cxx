@@ -151,6 +151,8 @@ void ecal::ConstructGeometry()
     
     // ecal
     TGeoVolume *ecal = gGeoManager->MakeBox("ecal", Al, 250, 250, 40);
+    AddSensitiveVolume(ecal);
+
     ecal->SetLineColor(6); // purple
     top->AddNode(ecal, 1, new TGeoTranslation(0, 0, 2440));
     

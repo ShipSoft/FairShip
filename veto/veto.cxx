@@ -51,6 +51,11 @@ veto::veto(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
+    fT0z(-2390.),              //!  z-position of veto station
+    fT1z(1510.),               //!  z-position of tracking station 1
+    fT2z(1710.),               //!  z-position of tracking station 2
+    fT3z(2150.),               //!  z-position of tracking station 3
+    fT4z(2370.),               //!  z-position of tracking station 4
     fvetoPointCollection(new TClonesArray("vetoPoint"))
 {
 }
@@ -139,6 +144,14 @@ void veto::Reset()
 {
   fvetoPointCollection->Clear();
 }
+void veto::SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4)
+{
+     fT0z = z0;                //!  z-position of veto station
+     fT1z = z1;               //!  z-position of tracking station 1
+     fT2z = z2;              //!  z-position of tracking station 2
+     fT3z = z3;             //!  z-position of tracking station 3
+     fT4z = z4;            //!  z-position of tracking station 4
+}
 
 void veto::ConstructGeometry()
 {
@@ -148,64 +161,129 @@ void veto::ConstructGeometry()
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
     TGeoMedium *Al =gGeoManager->GetMedium("Al");
+    TGeoMedium *Se =gGeoManager->GetMedium("ShipSens");
     
     if(Al==0){
         TGeoMaterial *matAl     = new TGeoMaterial("Al", 26.98, 13, 2.7);
         Al     = new TGeoMedium("Al", 2, matAl);
     }
+    if(Se==0){
+    // powder of Al to simulate sensitive material with 900cm of radiation length
+        TGeoMaterial *matSe     = new TGeoMaterial("Se", 26.98, 13, 2.7/100.);
+        Se     = new TGeoMedium("ShipSens", 902, matSe);
+    }
 
     TGeoBBox *detbox1 = new TGeoBBox("detbox1", 250, 250, 10);
     TGeoBBox *detbox2 = new TGeoBBox("detbox2", 245, 245, 10);
+
+    TGeoBBox *detSens = new TGeoBBox("detSens", 244, 244, 1);
     
     TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
-    TGeoVolume *det1 = new TGeoVolume("det1", detcomp1, Al);
+    TGeoVolume *det1 = new TGeoVolume("vetoX", detcomp1, Al);
     det1->SetLineColor(kRed);
-    top->AddNode(det1, 1, new TGeoTranslation(0, 0, -2390));
+    top->AddNode(det1, 1, new TGeoTranslation(0, 0, fT0z));
+    
+    for (Int_t i=0; i<4; i++) {
+     TString nm = "Sveto_"; nm += i;
+     TGeoVolume *Sdet = new TGeoVolume(nm, detSens, Se);
+     top->AddNode(Sdet, 1, new TGeoTranslation(0, 0, fT0z-4+i*2.));
+     AddSensitiveVolume(Sdet);
+    }
+
     TGeoRotation r0;
     r0.SetAngles(15,0,0);
-    TGeoTranslation t0(0, 0, -2370);
+    TGeoTranslation t0(0, 0, fT0z+20);
     TGeoCombiTrans c0(t0, r0);
     TGeoHMatrix *h0 = new TGeoHMatrix(c0);
-    top->AddNode(det1, 11, h0);
+    TGeoVolume *det2 = new TGeoVolume("vetoS", detcomp1, Al);
+    det2->SetLineColor(kRed);
+    top->AddNode(det2, 11, h0);
 
     // tracking station 1
-    top->AddNode(det1, 2, new TGeoTranslation(0, 0, 1510));
+    TGeoVolume *det3 = new TGeoVolume("Tr1X", detcomp1, Al);
+    det3->SetLineColor(kRed-7);
+    AddSensitiveVolume(det3);
+    top->AddNode(det3, 2, new TGeoTranslation(0, 0, fT1z));
     TGeoRotation r1;
     r1.SetAngles(15,0,0);
-    TGeoTranslation t1(0, 0, 1530);
+    TGeoTranslation t1(0, 0, fT1z+20);
     TGeoCombiTrans c1(t1, r1);
     TGeoHMatrix *h1 = new TGeoHMatrix(c1);
-    top->AddNode(det1, 3, h1);
+    TGeoVolume *det4 = new TGeoVolume("Tr1S", detcomp1, Al);
+    det4->SetLineColor(kRed+2);
+    top->AddNode(det4, 3, h1);
+
+    for (Int_t i=0; i<4; i++) {
+     TString nm = "STr1_"; nm += i;
+     TGeoVolume *Sdet = new TGeoVolume(nm, detSens, Se);
+     top->AddNode(Sdet, 1, new TGeoTranslation(0, 0, fT1z-4+i*2));
+     AddSensitiveVolume(Sdet);
+    }
+
     
     // tracking station 2
-    top->AddNode(det1, 4, new TGeoTranslation(0, 0, 1710));
+    TGeoVolume *det5 = new TGeoVolume("Tr2X", detcomp1, Al);
+    det5->SetLineColor(kRed-7);
+    AddSensitiveVolume(det5);
+    top->AddNode(det5, 4, new TGeoTranslation(0, 0, fT2z));
     TGeoRotation r2;
     r2.SetAngles(15,0,0);
-    TGeoTranslation t2(0, 0, 1730);
+    TGeoTranslation t2(0, 0, fT2z+20);
     TGeoCombiTrans c2(t2, r2);
     TGeoHMatrix *h2 = new TGeoHMatrix(c2);
-    top->AddNode(det1, 5, h2);
+    TGeoVolume *det6 = new TGeoVolume("Tr2S", detcomp1, Al);
+    det4->SetLineColor(kRed+2);
+    top->AddNode(det6, 5, h2);
+
+    for (Int_t i=0; i<4; i++) {
+     TString nm = "STr2_"; nm += i;
+     TGeoVolume *Sdet = new TGeoVolume(nm, detSens, Se);
+     top->AddNode(Sdet, 1, new TGeoTranslation(0, 0, fT2z-4+i*2));
+     AddSensitiveVolume(Sdet);
+    }
     
     // tracking station 3
-    top->AddNode(det1, 6, new TGeoTranslation(0, 0, 2150));
+    TGeoVolume *det7 = new TGeoVolume("Tr3X", detcomp1, Al);
+    det7->SetLineColor(kOrange+10);
+    AddSensitiveVolume(det7);
+    top->AddNode(det7, 6, new TGeoTranslation(0, 0, fT3z));
     TGeoRotation r3;
     r3.SetAngles(15,0,0);
-    TGeoTranslation t3(0, 0, 2170);
+    TGeoTranslation t3(0, 0, fT3z+20);
     TGeoCombiTrans c3(t3, r3);
     TGeoHMatrix *h3 = new TGeoHMatrix(c3);
-    top->AddNode(det1, 7, h3);
+    TGeoVolume *det8 = new TGeoVolume("Tr3S", detcomp1, Al);
+    det8->SetLineColor(kOrange+4);
+    top->AddNode(det8, 7, h3);
+
+    for (Int_t i=0; i<4; i++) {
+     TString nm = "STr3_"; nm += i;
+     TGeoVolume *Sdet = new TGeoVolume(nm, detSens, Se);
+     top->AddNode(Sdet, 1, new TGeoTranslation(0, 0, fT3z-4+i*2));
+     AddSensitiveVolume(Sdet);
+    }
     
     // tracking station 4
-    top->AddNode(det1, 8, new TGeoTranslation(0, 0, 2370));
+    TGeoVolume *det9 = new TGeoVolume("Tr4X", detcomp1, Al);
+    det9->SetLineColor(kOrange+10);
+    AddSensitiveVolume(det9);
+    top->AddNode(det9, 8, new TGeoTranslation(0, 0, fT3z));
     TGeoRotation r4;
     r4.SetAngles(15,0,0);
-    TGeoTranslation t4(0, 0, 2390);
+    TGeoTranslation t4(0, 0, fT4z+20);
     TGeoCombiTrans c4(t4, r4);
     TGeoHMatrix *h4 = new TGeoHMatrix(c4);
-    top->AddNode(det1, 9, h4);
-    
-    
-    
+    TGeoVolume *det10 = new TGeoVolume("Tr4S", detcomp1, Al);
+    det10->SetLineColor(kOrange+4);
+    top->AddNode(det10, 9, h4);
+
+    for (Int_t i=0; i<4; i++) {
+     TString nm = "STr4_"; nm += i;
+     TGeoVolume *Sdet = new TGeoVolume(nm, detSens, Se);
+     top->AddNode(Sdet, 1, new TGeoTranslation(0, 0, fT3z-4+i*2));
+     AddSensitiveVolume(Sdet);
+    }
+        
 }
 
 vetoPoint* veto::AddHit(Int_t trackID, Int_t detID,
@@ -215,6 +293,7 @@ vetoPoint* veto::AddHit(Int_t trackID, Int_t detID,
 {
   TClonesArray& clref = *fvetoPointCollection;
   Int_t size = clref.GetEntriesFast();
+  // cout << "veto hit called "<< pos.z()<<endl;
   return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
          time, length, eLoss);
 }

@@ -41,6 +41,8 @@ class TParticle;
 class TRefArray;
 class FairLogger;
 
+enum {kDoneBit=1};
+
 class ShipStack : public FairGenericStack
 {
 

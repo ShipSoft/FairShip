@@ -44,6 +44,8 @@ class veto: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
+    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4);
+
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
@@ -85,6 +87,11 @@ class veto: public FairDetector
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
+    Double32_t     fT0z;               //!  z-position of veto station
+    Double32_t     fT1z;               //!  z-position of tracking station 1
+    Double32_t     fT2z;               //!  z-position of tracking station 2
+    Double32_t     fT3z;               //!  z-position of tracking station 3
+    Double32_t     fT4z;               //!  z-position of tracking station 4
 
     /** container for data points */
 

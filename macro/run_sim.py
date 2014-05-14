@@ -36,8 +36,10 @@ def run_sim(nEvents = 10, mcEngine = "TGeant4"):
   cave.SetGeometryFileName("cave.geo")
   run.AddModule(cave)
 
-  TargetStation = ROOT.ShipTargetStation("TargetStation",700)
+  TargetStation = ROOT.ShipTargetStation("TargetStation",7000)
   run.AddModule(TargetStation)
+  MuonShield = ROOT.ShipMuonShield("MuonShield",1)
+  run.AddModule(MuonShield)
 
   magnet = ROOT.ShipMagnet("Magnet")
   run.AddModule(magnet)
@@ -57,7 +59,12 @@ def run_sim(nEvents = 10, mcEngine = "TGeant4"):
   Muon = ROOT.muon("Muon", ROOT.kTRUE)
   run.AddModule(Muon)
 
-  # ------------------------------------------------------------------------
+#-----   Magnetic field   -------------------------------------------
+    # Constant Field
+  fMagField = ROOT.ShipConstField()
+  fMagField.SetField(0., 2. ,0. ) # values are in kG
+  fMagField.SetFieldRegion(-160, 160,-160, 160, 1940, 125); # values are in cm  (xmin,xmax,ymin,ymax,zmin,zmax)
+  run.SetField(fMagField)
 
   # -----   Create PrimaryGenerator   --------------------------------------
   primGen = ROOT.FairPrimaryGenerator()
@@ -109,6 +116,9 @@ def run_sim(nEvents = 10, mcEngine = "TGeant4"):
   print "Output file is ",  outFile 
   print "Parameter file is ",parFile
   print "Real time ",rtime, " s, CPU time ",ctime,"s"
+  f = run.GetOutputFile()
+  f.Write()
+  del run
   # ------------------------------------------------------------------------
 
 if __name__ == '__main__' : run_sim()

@@ -3,12 +3,13 @@
 # (called from Root macro Config.C)
 
 /mcVerbose/all 0
-/mcVerbose/runAction 1
-/mcVerbose/composedPhysicsList 1
+/mcTracking/loopVerbose 0    # suggested by Ivana Hrivnacova to switch off *** Particle reached max step number ....
+#/mcVerbose/composedPhysicsList 1
 #/mcVerbose/trackManager 2
 
+#/mcVerbose/regionsManager 3  
 
-/run/particle/applyCuts
+#/run/particle/applyCuts
 #/mcTracking/saveSecondariesInStep true
 
 #/tracking/verbose 1

@@ -39,6 +39,8 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
 
   FairModule* TargetStation = new ShipTargetStation("TargetStation");
   run->AddModule(TargetStation);
+  FairModule* MuonShield =  new ShipMuonShield("MuonShield",1);
+  run->AddModule(MuonShield);
 
   FairModule* magnet = new ShipMagnet("Magnet");
   run->AddModule(magnet);
@@ -65,7 +67,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
     // Constant Field
     ShipConstField  *fMagField = new ShipConstField();
     fMagField->SetField(0., 2. ,0. ); // values are in kG
-    fMagField->SetFieldRegion(-160, 160,-160, 160, 1940, 125); // values are in cm
+    fMagField->SetFieldRegion(-160, 160,-160, 160, 1940, 2125); // values are in cm
                           //  (xmin,xmax,ymin,ymax,zmin,zmax)
     run->SetField(fMagField);
     // --------------------------------------------------------------------

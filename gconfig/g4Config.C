@@ -37,9 +37,8 @@ void Config()
    stack->StoreSecondaries(kTRUE);
    stack->SetMinPoints(0);
    geant4->SetStack(stack);
-
    if(FairRunSim::Instance()->IsExtDecayer()){
-      TVirtualMCDecayer* decayer = TPythia6Decayer::Instance();
+      TVirtualMCDecayer* decayer = TPythia8Decayer::Instance();
       geant4->SetExternalDecayer(decayer);
    }
   
@@ -49,7 +48,6 @@ void Config()
    TString configm(gSystem->Getenv("VMCWORKDIR"));
    configm1 = configm + "/gconfig/g4config.in";
    cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
-
    //set geant4 specific stuff
   geant4->SetMaxNStep(10000);  // default is 30000
   geant4->ProcessGeantMacro(configm1.Data());
