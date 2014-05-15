@@ -53,6 +53,9 @@ run.SetStoreTraj(ROOT.kTRUE)
  
 # -----Initialize simulation run------------------------------------
 run.Init()
+fStack = ROOT.gMC.GetStack()
+fStack.SetEnergyCut(100.*u.MeV)
+
 # ------------------------------------------------------------------------
 
 # -----Runtime database---------------------------------------------

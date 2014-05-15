@@ -96,7 +96,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
     };
     if (fHNL != 0 && fPythia.event[ii].id() == fHNL){
          Int_t im = (Int_t)fPythia.event[ii].mother1();
-         Int_t fake = 11; // fPythia.event[ii].id()  just to make FairRoot happy for a moment
          Double_t z  = fPythia.event[ii].zProd();
          Double_t x  = fPythia.event[ii].xProd();  
          Double_t y  = fPythia.event[ii].yProd();  
@@ -104,8 +103,8 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          Double_t px = fPythia.event[ii].px();  
          Double_t py = fPythia.event[ii].py();  
 	 cpg->AddTrack((Int_t)fPythia.event[im].id(),px,py,pz,x,y,z,0,false);   
-	 cpg->AddTrack(fake,px,py,pz,x,y,z, im,false);            
-         // cout<<"debug p8->geant4 "<< 0 << " "<< ii <<  " " << fPythia.event[ii].id()<< " "<< fPythia.event[ii].mother1()<<endl;
+	 cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z, im,false);            
+         //cout<<"debug p8->geant4 "<< 0 << " "<< ii <<  " " << fake<< " "<< fPythia.event[ii].mother1()<<endl;
       };
   }
 

@@ -76,3 +76,12 @@ def setAttributes(pyl,leaves,printout=False):
 class PyListOfLeaves(dict) : 
     pass  
 
+
+def container_sizes(f):
+ f = TFile(f)
+ t = f.FindObjectAny('cbmsim')
+ print "name      ZipBytes    TotBytes    TotalSize"
+ for b in t.GetListOfBranches():
+  print b.GetName(),b.GetZipBytes(),b.GetTotBytes(),b.GetTotalSize()
+
+

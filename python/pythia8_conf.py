@@ -18,7 +18,7 @@ def configure(P8gen,inclusive):
   P8gen.SetParameters("9900014:mayDecay = on")
   P8gen.SetHNLId(9900014)
 # also add to PDG
-  pdg = ROOT.TDatabasePDG()
+  pdg = ROOT.TDatabasePDG.Instance()
   pdg.AddParticle('N2','HNL', 1.0, False, 0., 0., 'XXX', 9900014)
 # 12 14 16 neutrinos replace with N2
 #overwrite /\c decays

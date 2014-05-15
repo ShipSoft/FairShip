@@ -162,11 +162,9 @@ void muon::ConstructGeometry()
     TGeoVolume *detmu1 = new TGeoVolume("MuX", detcomp1, Al);
     TGeoVolume *muonfilter = gGeoManager->MakeBox("muonfilter", Al, 250, 250, 20);
     AddSensitiveVolume(muonfilter);
-    AddSensitiveVolume(detmu1);
     muonfilter->SetLineColor(kGreen);
     top->AddNode(muonfilter, 1, new TGeoTranslation(0, 0, 2500));
     
-    AddSensitiveVolume(detmu1);
     top->AddNode(detmu1, 10, new TGeoTranslation(0, 0, 2570));
     detmu1->SetLineColor(kViolet+10);    
     TGeoRotation r5;
@@ -176,7 +174,6 @@ void muon::ConstructGeometry()
     TGeoHMatrix *h5 = new TGeoHMatrix(c5);
     TGeoVolume *detmu2 = new TGeoVolume("MuS", detcomp1, Al);
     detmu2->SetLineColor(kViolet+4);
-    AddSensitiveVolume(detmu2);
     top->AddNode(detmu2, 10, h5);
     
     

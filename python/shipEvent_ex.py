@@ -15,12 +15,14 @@ def exMCTracks():
  ut.bookHist(h,'pz','pz',100,0.,100.)
  ut.bookHist(h,'oz','oz',100,-10000.,10000.)
  ut.bookHist(h,'ex','ex to det',100,-2.5,2.5,100,-2.5,2.5)
+ ut.bookHist(h,'N','N tracks',300,0.5,299.5)
 # 
  sTree.SetBranchAddress("MCTrack", MCTracks)
  detPos = (3.5*u.m+70*u.m+40*u.m-100*u.m)
  for n in range(nEvents):
   rc = sTree.GetEvent(n) 
   nMCTracks = MCTracks.GetEntriesFast() 
+  rc = h['N'].Fill( nMCTracks )
   for i in range(nMCTracks):
    atrack = MCTracks.At(i)
    pdgCode = atrack.GetPdgCode()
@@ -33,7 +35,7 @@ def exMCTracks():
     xdet = (atrack.GetStartX()+lam*mom.Px() )/u.m
     ydet = (atrack.GetStartY()+lam*mom.Py() )/u.m
     rc = h['ex'].Fill(xdet,ydet ) 
- h['ex'].Draw('box')
+ h['N'].Draw('box')
 
 def exMCHits(dump=False):
  ut.bookHist(h,'tz','tracking hits z',100,-100.,100.)
