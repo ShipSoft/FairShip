@@ -12,7 +12,7 @@ TrackStation4 = ShipGeo(2370.*u.cm)
 
 z = TrackStation2.z + 0.5 * (TrackStation3.z - TrackStation2.z)
 Bfield = ShipGeo(z)
-Bfield.max = 20*u.kilogauss
+Bfield.max = 1.15*u.kilogauss
 
 # target absorber muon shield setup
 decayVolume          =  ShipGeo(0*u.cm)

@@ -49,7 +49,8 @@ if inclusive:
  
 #---Store the visualiztion info of the tracks, this make the output file very large!!
 #--- Use it only to display but not for production!
-run.SetStoreTraj(ROOT.kTRUE)
+ # run.SetStoreTraj(ROOT.kTRUE)
+run.SetStoreTraj(ROOT.kFALSE)
  
 # -----Initialize simulation run------------------------------------
 run.Init()
