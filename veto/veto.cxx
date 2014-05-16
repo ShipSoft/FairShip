@@ -267,7 +267,7 @@ void veto::ConstructGeometry()
     TGeoVolume *det9 = new TGeoVolume("Tr4X", detcomp1, Al);
     det9->SetLineColor(kOrange+10);
     AddSensitiveVolume(det9);
-    top->AddNode(det9, 8, new TGeoTranslation(0, 0, fT3z));
+    top->AddNode(det9, 8, new TGeoTranslation(0, 0, fT4z));
     TGeoRotation r4;
     r4.SetAngles(15,0,0);
     TGeoTranslation t4(0, 0, fT4z+20);
@@ -280,7 +280,7 @@ void veto::ConstructGeometry()
     for (Int_t i=0; i<4; i++) {
      TString nm = "STr4_"; nm += i;
      TGeoVolume *Sdet = new TGeoVolume(nm, detSens, Se);
-     top->AddNode(Sdet, 1, new TGeoTranslation(0, 0, fT3z-4+i*2));
+     top->AddNode(Sdet, 1, new TGeoTranslation(0, 0, fT4z-4+i*2));
      AddSensitiveVolume(Sdet);
     }
         
