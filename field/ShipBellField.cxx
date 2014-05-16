@@ -74,8 +74,10 @@ Double_t ShipBellField::GetBx(Double_t x, Double_t y, Double_t z) {
 
 // -----   Get y component of field   --------------------------------------
 Double_t ShipBellField::GetBy(Double_t x, Double_t y, Double_t z) {
-  Double_t zlocal=(z-1950.)/100.;
-  Double_t by= 1.14/(1.+pow(fabs(zlocal)/2.1,6.));
+  
+  Double_t zlocal=(z-fMiddle)/100.;
+  Double_t by= fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
+  //cout << "Bell GetBY " << z << ", By= " << by << endl;
   return by;
 
 }
@@ -107,4 +109,5 @@ void ShipBellField::Print() {
 
 
 ClassImp(ShipBellField)
+
 
