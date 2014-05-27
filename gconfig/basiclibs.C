@@ -4,18 +4,8 @@
 
 void basiclibs()
 {
- /* gSystem->Load("libGeom");
-  gSystem->Load("libGeomPainter");
-  
- 
-  gSystem->Load("libPhysics");
-  gSystem->Load("libEG"); 
-  gSystem->Load("libVMC");
-  gSystem->Load("libEGPythia6");
-  gSystem->Load("libPythia6");  
+ /*
   gSystem->Load("libPluto");  
-  gSystem->Load("libMinuit");
-  gSystem->Load("libTree"); 
   */
   gSystem->Load("libRIO");
   gSystem->Load("libGeom");
@@ -30,6 +20,4 @@ void basiclibs()
   gSystem->Load("libMinuit");
   gSystem->Load("libMathMore");
   gSystem->Load("libpythia8");
- 
-
 }  
