@@ -2,7 +2,10 @@ import ROOT
 import rootUtils as ut
 import shipunit  as u
 
-f = ROOT.TFile('ship.Pythia8-TGeant4.root')
+# fn = 'ship.Pythia8-TGeant4.root'
+fn = 'ship.Genie-TGeant4.root'
+
+f = ROOT.TFile(fn)
 sTree   = f.FindObjectAny('cbmsim')
 nEvents = sTree.GetEntries()
 sFol  = f.FindObjectAny('cbmroot')
