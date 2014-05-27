@@ -1,25 +1,16 @@
+import ROOT,os
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
-nEvents = 5
+simEngine = "Genie"
 
-import ROOT,os
-import shipunit as u
-
-ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
-ROOT.basiclibs()
-
-#-----prepare python exit-----------------------------------------------
-def pyExit():
- global run 
- del run
-import atexit
-atexit.register(pyExit)
-
+nEvents = 5000
+inclusive = False  # True = all processes if False only ccbar -> HNL
 
 #
-muShieldLength       = 70*u.m
-targetHadronAbsorber = 3.5*u.m
-decayVolumeLength    = 50*u.m
+import shipunit as u
+import ShipGeo,shipRoot_conf
+shipRoot_conf.configure()
+
 # Output file name
 tag = simEngine+"-"+mcEngine
 outFile ="ship."+tag+".root"  
@@ -40,89 +31,65 @@ run = ROOT.FairRunSim()
 run.SetName(mcEngine)# Transport engine
 run.SetOutputFile(outFile) # Output file
 rtdb = run.GetRuntimeDb() 
-# ------------------------------------------------------------------------
-
-# -----Create media-------------------------------------------------
-run.SetMaterials("media.geo")  # Materials
-# ------------------------------------------------------------------------
-  
 # -----Create geometry----------------------------------------------
-
-cave= ROOT.ShipCave("CAVE")
-cave.SetGeometryFileName("cave.geo")
-run.AddModule(cave)
-
-TargetStation = ROOT.ShipTargetStation("TargetStation",muShieldLength)
-run.AddModule(TargetStation)
-MuonShield = ROOT.ShipMuonShield("MuonShield",1)
-run.AddModule(MuonShield)
-
-magnet = ROOT.ShipMagnet("Magnet")
-run.AddModule(magnet)
- 
-Chamber = ROOT.ShipChamber("Chamber")
-run.AddModule(Chamber)
-
-Veto = ROOT.veto("Veto", ROOT.kTRUE)
-run.AddModule(Veto)
- 
-ecal = ROOT.ecal("Ecal", ROOT.kTRUE)
-run.AddModule(ecal)
-
-Muon = ROOT.muon("Muon", ROOT.kTRUE)
-run.AddModule(Muon)
-
-#-----   Magnetic field   -------------------------------------------
-    # Constant Field
-#fMagField = ROOT.ShipConstField()
-#fMagField.SetField(0., 2. ,0. ) # values are in kG
-#fMagField.SetFieldRegion(-160, 160,-160, 160, 1940, 125); # values are in cm  (xmin,xmax,ymin,ymax,zmin,zmax)
-#run.SetField(fMagField)
-
+import shipDet_conf
+shipDet_conf.configure(run)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-pointZero =  -decayVolumeLength/2. - targetHadronAbsorber - muShieldLength
-primGen.SetTarget(pointZero, 0.)
 
- # Pythia8
-P8gen = ROOT.Pythia8Generator()
-P8gen.UseRandom3() # TRandom1 or TRandom3 ?
-P8gen.SetParameters("SoftQCD:inelastic = on")
-P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
-P8gen.SetParameters("PromptPhoton:all = on")
-P8gen.SetParameters("WeakBosonExchange:all = on")
-P8gen.SetMom(400)  # beam momentum in GeV 
-primGen.AddGenerator(P8gen)
-
+if simEngine == "Pythia8":
+ primGen.SetTarget(ShipGeo.target.z0, 0.) 
+# -----Pythia8--------------------------------------
+ P8gen = ROOT.Pythia8Generator()
+ import pythia8_conf
+ pythia8_conf.configure(P8gen,inclusive)
+ primGen.AddGenerator(P8gen)
+ if inclusive: 
+  # check presence of HNL
+  P8gen.GetPythiaInstance(9900014)
+if simEngine == "Genie":
+# Genie
+ pointZero =  -ShipGeo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield
+ # pointZero =   0.  # for testing
+ primGen.SetTarget(pointZero, 0.)
+ Geniegen = ROOT.GenieGenerator()
+ Geniegen.Init('Genie-mu-_anti_nu_mu-gntp.113.gst.root') 
+ primGen.AddGenerator(Geniegen)
+ nEvents = min(nEvents,Geniegen.GetNevents())
+ print 'Generate ',nEvents,' with Genie input'
+#  add tungsten to PDG
+ pdg = ROOT.TDatabasePDG.Instance()
+ pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
+#
+ run.SetPythiaDecayer('DecayConfigPy8.C') # this does not work !! It insists of using DecayConfig.C 
+ # this requires writing a C macro, would have been easier to do directly in python! 
+ # for i in [431,421,411,-431,-421,-411]:
+ # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer	
 run.SetGenerator(primGen)
+
 # ------------------------------------------------------------------------
  
 #---Store the visualiztion info of the tracks, this make the output file very large!!
 #--- Use it only to display but not for production!
-run.SetStoreTraj(ROOT.kTRUE)
- 
+# run.SetStoreTraj(ROOT.kTRUE)
+run.SetStoreTraj(ROOT.kFALSE)
 # -----Initialize simulation run------------------------------------
 run.Init()
+fStack = ROOT.gMC.GetStack()
+fStack.SetEnergyCut(100.*u.MeV)
 # ------------------------------------------------------------------------
-
+if simEngine != "Genie" :  
 # -----Runtime database---------------------------------------------
-
-kParameterMerged = ROOT.kTRUE
-parOut = ROOT.FairParRootFileIo(kParameterMerged)
-parOut.open(parFile)
-rtdb.setOutput(parOut)
-rtdb.saveOutput()
-#rtdb.print() does not work in python ??
-rtdb.printParamContexts()
-# ------------------------------------------------------------------------
-if mcEngine == "TGeant5" : 
- from Geant4 import *
- geo = ROOT.gGeoManager
+ kParameterMerged = ROOT.kTRUE
+ parOut = ROOT.FairParRootFileIo(kParameterMerged)
+ parOut.open(parFile)
+ rtdb.setOutput(parOut)
+ rtdb.saveOutput()   # for the moment, it blocks when using Genie, no idea why
+ rtdb.printParamContexts()
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
-run.CreateGeometryFile("geofile_full."+tag+".root")
 # ------------------------------------------------------------------------
-  
+run.CreateGeometryFile("geofile_full."+tag+".root")  
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
@@ -134,34 +101,3 @@ print "Parameter file is ",parFile
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
 # ------------------------------------------------------------------------
-
-def someDebug():
- g = ROOT.gROOT 
- lm = run.GetListOfModules()
- for x in lm: print x.GetName()
- fGeo = ROOT.gGeoManager
- cave = fGeo.GetTopVolume()
- cave.Draw('ogl')
-#
- tf = g.FindObjectAny('cbmroot')
- for l in tf.GetListOfFolders(): print l.GetName()
- l   = tf.FindObject('MCGeoTrack')
- trs = l.FindObject('GeoTracks')
- for x in trs: print x
- l = tf.FindObject('Stack')
- trs = l.FindObject('MCTrack')
- for x in trs: print x
-#
- gMC = ROOT.gMC # <ROOT.TVirtualMC* object ("TGeant4") at 0x2a5d3e8>
- fStack = gMC.GetStack()
- gMC.ProcessRun(1) # 1 event
-#
- gMC.GetMC() # <ROOT.TGeant4 object ("TGeant4") 
- g4.NofVolumes()
- g4.StartGeantUI()
-#
- gPrim = run.GetPrimaryGenerator()
- mch   = gPrim.GetEvent() # <ROOT.FairMCEventHeader object ("MCEventHeader.")
- print mch.GetEventID(),mch.GetZ()
- gPy8 = gPrim.GetListOfGenerators()[0]
-
