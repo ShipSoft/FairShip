@@ -1,4 +1,4 @@
-import ROOT
+import ROOT,os,sys,getopt
 
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -11,6 +11,23 @@ atexit.register(pyExit)
 #-----User Settings:-----------------------------------------------
 mcEngine      ="TGeant4"
 simEngine = "Pythia8"
+# simEngine = "Genie"
+#
+try:
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie"])
+except getopt.GetoptError:
+        # print help information and exit:
+        print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
+        sys.exit()
+for o, a in opts:
+        if o in ("--Pythia6"):
+            simEngine = "Pythia6"
+        if o in ("--Pythia8"):
+            simEngine = "Pythia8"
+        if o in ("--Genie"):
+            simEngine = "Genie"
+print "FairShip setup for",simEngine
+
 tag = simEngine+"-"+mcEngine
 InputFile     ="ship."+tag+".root"
 ParFile       ="ship.params."+tag+".root"
@@ -33,7 +50,7 @@ rtdb.setFirstInput(parInput1)
 fMan= ROOT.FairEventManager()
 fMan.SetMaxEnergy(400.) # default is 25 GeV only !
 fMan.SetMinEnergy(0.1) #  100 MeV
-fMan.SetEvtMaxEnergy(400.) # this was onyl 10. what is the difference between EvtMaxEnergy and MaxEnergy ?
+fMan.SetEvtMaxEnergy(400.) # what is the difference between EvtMaxEnergy and MaxEnergy ?
 fMan.SetPriOnly(False)  # display everything
 
 #----------------------Tracks and points -------------------------------------

@@ -1,10 +1,28 @@
-import ROOT,os
+import ROOT,os,sys,getopt
+
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
-simEngine = "Genie"
-
-nEvents = 5000
+nEvents   = 5000
+#simEngine = "Genie"
 inclusive = False  # True = all processes if False only ccbar -> HNL
+
+try:
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","nEvents="])
+except getopt.GetoptError:
+        # print help information and exit:
+        print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
+        sys.exit()
+for o, a in opts:
+        if o in ("--Pythia6"):
+            simEngine = "Pythia6"
+        if o in ("--Pythia8"):
+            simEngine = "Pythia8"
+        if o in ("--Genie"):
+            simEngine = "Genie"
+        if o in ("-n", "--nEvents="):
+            nEvents = int(a)
+
+print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 
 #
 import shipunit as u
