@@ -9,6 +9,7 @@ setenv PYTHONPATH ${PYTHONPATH}:${SIMPATH}/lib/root
 setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/opt/rh/python27/root/usr/lib64
 
 setenv PYTHONPATH ${PYTHONPATH}:${mySHIPSOFT}/FairShip/python
+setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${SHIPSOFT}/FairShip/genfit-build/lib
 
 # wants to look for /afs/cern.ch/ship/sw/ShipSoft/withPython/FairSoftInst/lib64 
 # too stupid, the libraries are in /afs/cern.ch/ship/sw/ShipSoft/withPython/FairSoftInst/lib
