@@ -1,4 +1,5 @@
 import shipunit as u
+import ROOT
 
 class ShipGeo(): 
  def __init__(self,z=0):
@@ -33,4 +34,10 @@ target.z             =  hadronAbsorber.z - hadronAbsorber.length/2. - target.len
 # interaction point, start of target
 target.z0  =  target.z - target.length/2.
 
+# straws of tracking stations
+straw = ShipGeo(0*u.cm)
+straw.length = 250.*u.cm
+straw.resol  = 0.01*u.cm
+straw.pitch  = 1.*u.cm
+straw.stereoAngle = 5./180.*ROOT.TMath.Pi()
 
