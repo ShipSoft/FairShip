@@ -28,7 +28,7 @@ for o, a in opts:
             simEngine = "Genie"
 print "FairShip setup for",simEngine
 
-tag = simEngine+"-"+mcEngine
+tag = simEngine+"-"+mcEngine+'_D'
 InputFile     ="ship."+tag+".root"
 ParFile       ="ship.params."+tag+".root"
 OutFile	      ="tst."+tag+".root"
