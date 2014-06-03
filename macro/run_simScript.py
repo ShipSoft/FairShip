@@ -2,17 +2,20 @@ import ROOT,os,sys,getopt
 
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
-nEvents   = 5000
+nEvents   = 100
 #simEngine = "Genie"
 inclusive = False  # True = all processes if False only ccbar -> HNL
+eventDisplay = False
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","nEvents="])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","nEvents=", "display"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
         sys.exit()
 for o, a in opts:
+        if o in ("--display"):
+            eventDisplay = True
         if o in ("--Pythia6"):
             simEngine = "Pythia6"
         if o in ("--Pythia8"):
@@ -31,6 +34,7 @@ shipRoot_conf.configure()
 
 # Output file name
 tag = simEngine+"-"+mcEngine
+if eventDisplay: tag = tag+'_D'
 outFile ="ship."+tag+".root"  
 os.system("rm *."+tag+".root")
 # Parameter file name
@@ -89,8 +93,8 @@ run.SetGenerator(primGen)
  
 #---Store the visualiztion info of the tracks, this make the output file very large!!
 #--- Use it only to display but not for production!
-# run.SetStoreTraj(ROOT.kTRUE)
-run.SetStoreTraj(ROOT.kFALSE)
+if eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
+else:            run.SetStoreTraj(ROOT.kFALSE)
 # -----Initialize simulation run------------------------------------
 run.Init()
 fStack = ROOT.gMC.GetStack()
