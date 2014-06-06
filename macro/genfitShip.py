@@ -1,16 +1,13 @@
 # setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
+inputFile = 'ship.Pythia8-TGeant4.root'
 debug = False
-withNoAmbiguities = None  #  True   for debugging purposes
-inputFile    = 'ship.Pythia8-TGeant4_HNL.root'
-eventDisplay = False
-nEvents      = 10000
-withHists    = True
-withOutput   = False
+withNoAmbiguities = None # True   for debugging purposes
+nEvents = 10000
 
 import ROOT,os,sys,getopt
+
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:x:f:hqv:sl:A",["inputFile=","nEvents=",
-                                                 "ambiguities","hists","display","store"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["inputFile=","nEvents=","ambiguities"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --nEvents= number of events to process, ambiguities wire ambiguities default none' 
@@ -19,25 +16,20 @@ except getopt.GetoptError:
 for o, a in opts:
         if o in ("ambiguities"):
             withNoAmbiguities = True
-        if o in ("hists"):
-            withHists = True
         if o in ("-f", "--inputFile"):
             inputFile = a
-        if o in ("-f", "--store"):
-            withOutput = True
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
-        if o in ("--display"):
-            eventDisplay = True
-outFile = inputFile
-if withOutput:
- outFile = inputFile.replace('.root','_rec.root') 
- os.system('cp '+inputFile+' '+outFile)
+
+print 'configured to process ',nEvents,' events from ' ,inputFile
+outFile = inputFile.replace('.root','_rec.root') 
+os.system('cp '+inputFile+' '+outFile)
 
 #-----prepare python exit-----------------------------------------------
 def pyExit():
  global fitter
  del fitter
+ print "finishing pyExit" 
 import atexit
 atexit.register(pyExit)
 
@@ -46,72 +38,15 @@ import shipunit as u
 import rootUtils as ut
 import ShipGeo
 
-
-def makePlots():
-   ut.bookCanvas(h,key='fitresults',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
-   cv = h['fitresults'].cd(1)
-   h['delPOverP'].Draw('box')
-   cv = h['fitresults'].cd(2)
-   cv.SetLogy(1)
-   h['chi2'].Draw()
-   cv = h['fitresults'].cd(3)
-   h['delPOverP_proj'] = h['delPOverP'].ProjectionY()
-   ROOT.gStyle.SetOptFit(11111)
-   h['delPOverP_proj'].Draw()
-   h['delPOverP_proj'].Fit('gaus')
-   cv = h['fitresults'].cd(4)
-   h['delPOverP2_proj'] = h['delPOverP2'].ProjectionY()
-   h['delPOverP2_proj'].Draw()
-   h['delPOverP2_proj'].Fit('gaus')  
-   h['fitresults'].Print('fitresults.gif')
-   ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
-   cv = h['fitresults2'].cd(1)
-   h['Doca'].Draw()
-   cv = h['fitresults2'].cd(2)
-   h['IP0'].Draw()
-   cv = h['fitresults2'].cd(3)
-   h['HNL'].Draw()
-   h['HNL'].Fit('gaus') 
-   cv = h['fitresults2'].cd(4)
-   h['IP0/mass'].Draw('box')
-   h['fitresults2'].Print('fitresults2.gif')
-
 ROOT.gSystem.Load("libgenfit2.so")
+fout = ROOT.TFile(outFile,'update')
 
-if withHists:
- h={}
- ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.2,0.2)
- ut.bookHist(h,'delPOverP2','delP / P chi2<25',100,0.,50.,100,-0.2,0.2)
- ut.bookHist(h,'chi2','chi2 after trackfit',100,0.,1000.)
- ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
- ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
- ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
- ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
- ut.bookHist(h,'HNL','reconstructed Mass',100,0.,2.)
-
-# did not worked, unfortunately, had to write C++ code for BellField in genfit
-class ShipBfield(ROOT.genfit.AbsBField):
- sB = ROOT.ShipBellField("ShipB", ShipGeo.Bfield.max, 40.*u.m )
- def get(self, x,y=None,z=None,Bx=None,By=None,Bz=None):
-   print "my field called ",y
-   if not y: 
-     Bx = self.sB.GetBx(x.x(),x.y(),x.z())
-     By = self.sB.GetBy(x.x(),x.y(),x.z())
-     Bz = self.sB.GetBz(x.x(),x.y(),x.z())
-     Bvec = ROOT.TVector3(Bx,By,Bz)
-     return Bvec
-   else:
-    Bx = self.sB.GetBx(x,y,z)
-    By = self.sB.GetBy(x,y,z)
-    Bz = self.sB.GetBz(x,y,z)
 
 class makeHitList:
  " convert FairSHiP MC hits to measurements"
- def __init__(self,fn='ship.Pythia8-TGeant4.root'):
-  if withOutput: self.f = ROOT.TFile(fn,'update')
-  else:          self.f = ROOT.TFile(fn)
-  self.sTree     = self.f.cbmsim
-  self.nEvents   =  min(self.sTree.GetEntries(),nEvents)
+ def __init__(self,fn):
+  self.sTree     = fn.cbmsim
+  self.nEvents   = min(self.sTree.GetEntries(),nEvents)
   self.MCTracks       = ROOT.TClonesArray("FairMCTrack")
   self.TrackingHits   = ROOT.TClonesArray("vetoPoint")
 # read Ship Geant4 root file with entry/exit points:
@@ -120,10 +55,27 @@ class makeHitList:
   fGeo = ROOT.gGeoManager  
   self.vols = fGeo.GetListOfVolumes()
   self.layerType = {}  # xuvx , uv=+-5 degrees
+# prepare for output
+  self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
+  self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
+  self.fitTrack2MC  = ROOT.std.vector('int')()
+  self.SmearedHits  = ROOT.TClonesArray("TVectorD") 
 
+  if self.sTree.GetBranch("FitTracks"):
+   self.sTree.SetBranchAddress("FitTracks", self.fGenFitArray)
+   self.sTree.SetBranchAddress("SmearedHits",self.SmearedHits)
+   self.fitTracks   = self.sTree.GetBranch("FitTracks")  
+   self.SHbranch    = self.sTree.GetBranch("SmearedHits")
+   self.mcLink      = self.sTree.GetBranch("fitTrack2MC")
+   print "branch already exists !"
+  else :
+   self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
+   self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
+   self.mcLink      = self.sTree.Branch( "fitTrack2MC",self.fitTrack2MC,32000,-1)  
+#
   for v in self.vols: 
    nm = v.GetName()
-   if nm.find('STr')<0: continue
+   if nm.find('STr')<0 and nm.find('Sv')<0: continue
    if not nm.find('_0')<0 : self.layerType[nm] = 'x0'
    if not nm.find('_3')<0 : self.layerType[nm] = 'x3' 
    if not nm.find('_1')<0 : self.layerType[nm] = 'u' 
@@ -170,18 +122,31 @@ class makeHitList:
   rc    = self.sTree.GetEvent(n) 
   nHits = self.TrackingHits.GetEntriesFast() 
   hitPosLists = {}
+  self.SmearedHits.Clear()
+  self.fGenFitArray.Clear()
+  self.fitTrack2MC.clear()
   for i in range(nHits):
     ahit = self.TrackingHits.At(i)
     detname = self.vols[ahit.GetDetectorID()-1].GetName()
     # print 'execute',detname,ahit.GetDetectorID()-1
-    if detname.find('STr')<0: continue  # not a sensitive detector
+    if detname.find('STr')<0 and detname.find('Sv')<0: 
+        print 'unknown sensitive detector',detname 
+        continue  # not a sensitive detector
     sm   = self.hit2wire(ahit,withNoAmbiguities)
+    m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
+    measurement = ROOT.TVectorD(7,m)
+# copy to branch
+    nHits = SHiP.SmearedHits.GetEntries()
+    if nHits != i: print 'SmearedHits, counter wrong',i,nHits 
+    self.SmearedHits[nHits]=measurement 
+    if  detname.find('STr')<0: continue
+    # do not use hits in Veto station for track reco  
     trID = ahit.GetTrackID()
     if not hitPosLists.has_key(trID):   
       hitPosLists[trID] = ROOT.std.vector('TVectorD')()
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     measurement = ROOT.TVectorD(7,m)
-    hitPosLists[trID].push_back(measurement)
+    hitPosLists[trID].push_back(measurement) 
   return hitPosLists
 
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
@@ -196,14 +161,13 @@ fM.init(bfield)
  
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
-# init event display
-if eventDisplay: display = ROOT.genfit.EventDisplay.getInstance()
 
 # init fitter
-fitter = ROOT.genfit.KalmanFitterRefTrack()
+fitter          = ROOT.genfit.KalmanFitterRefTrack()
 WireMeasurement = ROOT.genfit.WireMeasurement
 # access ShipTree
-SHiP = makeHitList(outFile)
+SHiP = makeHitList(fout)
+
 # main loop
 for iEvent in range(0, SHiP.nEvents):
  hitPosLists = SHiP.execute(iEvent)
@@ -215,8 +179,6 @@ for iEvent in range(0, SHiP.nEvents):
   meas = hitPosLists[atrack]
   nM = meas.size()
   if debug: print iEvent,nM,atrack,SHiP.MCTracks[atrack].GetP()
-
-  if nM < 8 : continue
   pdg    = SHiP.MCTracks[atrack].GetPdgCode()
   charge = PDG.GetParticle(pdg).Charge()/(3.)
   posM = ROOT.TVector3(0, 0, 0)
@@ -236,6 +198,7 @@ for iEvent in range(0, SHiP.nEvents):
   seedCov   = ROOT.TMatrixDSym(6)
   rep.get6DStateCov(stateSmeared, seedState, seedCov)
   fitTrack[atrack] = ROOT.genfit.Track(rep, seedState, seedCov)
+  ROOT.SetOwnership(fitTrack[atrack], False)
   for m in meas:
       hitCov = ROOT.TMatrixDSym(7)
       hitCov[6][6] = 0.01*0.01
@@ -245,88 +208,35 @@ for iEvent in range(0, SHiP.nEvents):
 #check
   if not fitTrack[atrack].checkConsistency():
    print 'Problem with track before fit, not consistent',fitTrack
+
+  if nM > 8 : 
 # do the fit
-  try:    fitter.processTrack(fitTrack[atrack])
-  except: continue   
+   try:    fitter.processTrack(fitTrack[atrack])
+   except: continue   
 #check
-  if not fitTrack[atrack].checkConsistency():
-   print 'Problem with track after fit, not consistent',fitTrack
-   continue
-  if not withHists: continue
+   if not fitTrack[atrack].checkConsistency():
+    print 'Problem with track after fit, not consistent',fitTrack
+    continue
   # monitoring
   fitStatus   = fitTrack[atrack].getFitStatus()
-  chi2 = fitStatus.getChi2()
-  h['chi2'].Fill(chi2)
-  if chi2>1000 or chi2<0: 
-   rc = fitTrack.pop(atrack)
-   continue
-  try:     fittedState = fitTrack[atrack].getFittedState()
-  except:  
-   rc = fitTrack.pop(atrack)
-   continue  
-  P = fittedState.getMomMag()
-  Ptruth = SHiP.MCTracks[atrack].GetP()
-  delPOverP = (Ptruth - P)/Ptruth
-  h['delPOverP'].Fill(Ptruth,delPOverP)
-  if chi2<25: h['delPOverP2'].Fill(Ptruth,delPOverP)
-# try measure impact parameter
-  trackDir = fittedState.getDir()
-  trackPos = fittedState.getPos()
-  vx = ROOT.TVector3()
-  SHiP.MCTracks[atrack].GetStartVertex(vx)
-  t = 0
-  for i in range(3):   t += trackDir(i)*(vx(i)-trackPos(i)) 
-  dist = 0
-  for i in range(3):   dist += (vx(i)-trackPos(i)-t*trackDir(i))**2
-  dist = ROOT.TMath.Sqrt(dist)
-  h['IP'].Fill(dist)  
-  if (eventDisplay and iEvent < 100):
-# add track to event display
-   display.addEvent(fitTrack[atrack])
- if not withHists: continue
- if len(fitTrack)==2:
-    LV  = {}
-    PosDir = {} 
-    for atrack in fitTrack:
-     xx  = fitTrack[atrack].getFittedState()
-     mom = xx.getMom()   
-     PosDir[atrack] = [xx.getPos(),xx.getDir()]
-     LV[atrack] = ROOT.TLorentzVector()
-     pgdCode = SHiP.MCTracks[atrack].GetPdgCode()
-     mass = PDG.GetParticle(pgdCode).Mass()
-     E = ROOT.TMath.Sqrt(mom.Mag2()+mass**2) 
-     LV[atrack].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
-    keys = fitTrack.keys()
-    t1,t2 = keys[0],keys[1] 
-    HNL = LV[t1]+LV[t2]
-    h['HNL'].Fill(HNL.M())
-# closest distance between two tracks
-    V=0
-    for i in range(3):   V += PosDir[t1][1](i)*PosDir[t2][1](i)
-    S1=0
-    for i in range(3):   S1 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t1][1](i)
-    S2=0
-    for i in range(3):   S2 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t2][1](i)
-    l = (S2-S1*V)/(1-V*V)
-    x2 = PosDir[t2][0](0)+l*PosDir[t2][1](0)
-    y2 = PosDir[t2][0](1)+l*PosDir[t2][1](1)
-    z2 = PosDir[t2][0](2)+l*PosDir[t2][1](2)
-    x1 = PosDir[t1][0](0)+l*PosDir[t1][1](0)
-    y1 = PosDir[t1][0](1)+l*PosDir[t1][1](1)
-    z1 = PosDir[t1][0](2)+l*PosDir[t1][1](2)
-    dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
-    h['Doca'].Fill(dist)  
-    HNLPos = ROOT.TVector3( (x2+x1)/2.,(y2+y1)/2.,(z2+z1)/2.)
-    tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
-    t = 0
-    for i in range(3):   t += HNL(i)/HNL.P()*(tr(i)-HNLPos(i)) 
-    dist = 0
-    for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNL(i)/HNL.P())**2
-    dist = ROOT.TMath.Sqrt(dist)
-    h['IP0'].Fill(dist)  
-    h['IP0/mass'].Fill(HNL.M(),dist)
+  chi2        = fitStatus.getChi2()
+# make track persistent
+  nTrack   = SHiP.fGenFitArray.GetEntries()
+  theTrack = ROOT.genfit.Track(fitTrack[atrack])
+  SHiP.fGenFitArray[nTrack] = theTrack
+  SHiP.fitTrack2MC.push_back(atrack)
+  if debug: print 'save track',theTrack,chi2
+# make tracks persistent
+ if debug: print 'call Fill', len(SHiP.fGenFitArray),nTrack,SHiP.fGenFitArray.GetEntries()
+ SHiP.fitTracks.Fill()
+ SHiP.mcLink.Fill()
+ SHiP.SHbranch.Fill()
+ if debug: print 'end of event after Fill'
+ 
 # end loop over events
-makePlots()
-# open event display
-if eventDisplay: display.open() 
+xx = fout.FindObjectAny("cbmsim;1")
+xx.Delete()
+print 'finished writing tree'
+SHiP.sTree.Write()
+
 

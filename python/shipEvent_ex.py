@@ -2,8 +2,8 @@ import ROOT
 import rootUtils as ut
 import shipunit  as u
 
-# fn = 'ship.Pythia8-TGeant4.root'
-fn = 'ship.Genie-TGeant4.root'
+fn = 'ship.Pythia8-TGeant4.root'
+# fn = 'ship.Genie-TGeant4.root'
 
 f = ROOT.TFile(fn)
 sTree   = f.FindObjectAny('cbmsim')
@@ -42,7 +42,7 @@ def exMCTracks():
 
 def exMCHits(dump=False):
  ut.bookHist(h,'tz','tracking hits z',100,-100.,100.)
- ut.bookHist(h,'tztx','tracking hits x vs z',100,-100.,100.,100,-2.5,2.5)
+ ut.bookHist(h,'tztx','tracking hits x vs z',1000,-40.,40.,100,-2.5,2.5)
  ut.bookHist(h,'txty','tracking hits y vs x',100,-2.5,2.5,100,-2.5,2.5)
  sTree.SetBranchAddress("vetoPoint", TrackingHits)
  for n in range(nEvents):
