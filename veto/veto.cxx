@@ -202,7 +202,6 @@ void veto::ConstructGeometry()
     // tracking station 1
     TGeoVolume *det3 = new TGeoVolume("Tr1X", detcomp1, Al);
     det3->SetLineColor(kRed-7);
-    AddSensitiveVolume(det3);
     top->AddNode(det3, 2, new TGeoTranslation(0, 0, fT1z));
     TGeoRotation r1;
     r1.SetAngles(15,0,0);
@@ -224,7 +223,6 @@ void veto::ConstructGeometry()
     // tracking station 2
     TGeoVolume *det5 = new TGeoVolume("Tr2X", detcomp1, Al);
     det5->SetLineColor(kRed-7);
-    AddSensitiveVolume(det5);
     top->AddNode(det5, 4, new TGeoTranslation(0, 0, fT2z));
     TGeoRotation r2;
     r2.SetAngles(15,0,0);
@@ -245,7 +243,6 @@ void veto::ConstructGeometry()
     // tracking station 3
     TGeoVolume *det7 = new TGeoVolume("Tr3X", detcomp1, Al);
     det7->SetLineColor(kOrange+10);
-    AddSensitiveVolume(det7);
     top->AddNode(det7, 6, new TGeoTranslation(0, 0, fT3z));
     TGeoRotation r3;
     r3.SetAngles(15,0,0);
@@ -266,7 +263,6 @@ void veto::ConstructGeometry()
     // tracking station 4
     TGeoVolume *det9 = new TGeoVolume("Tr4X", detcomp1, Al);
     det9->SetLineColor(kOrange+10);
-    AddSensitiveVolume(det9);
     top->AddNode(det9, 8, new TGeoTranslation(0, 0, fT4z));
     TGeoRotation r4;
     r4.SetAngles(15,0,0);
