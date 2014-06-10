@@ -1,4 +1,4 @@
-# Create a library called "libBase" which includes the source files given in
+# Create a library called "libShipData" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
@@ -13,7 +13,6 @@ include_directories( ${INCLUDE_DIRECTORIES})
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
-${CMAKE_SOURCE_DIR}/base
 ${CMAKE_SOURCE_DIR}/shipdata
 
 )
