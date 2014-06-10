@@ -48,4 +48,5 @@ FairParSet* vetoContFact::createContainer(FairContainer* c)
   }
   return p;
 */
+   return 0;
   }

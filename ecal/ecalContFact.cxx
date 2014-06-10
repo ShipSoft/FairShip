@@ -51,4 +51,5 @@ FairParSet* ecalContFact::createContainer(FairContainer* c)
   }
   return p;
      */
+   return 0;
 }
