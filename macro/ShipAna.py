@@ -1,18 +1,36 @@
 # example for accessing smeared hits and fitted tracks
-import ROOT 
+import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
 import ShipGeo
 
 ROOT.gSystem.Load("libgenfit2.so")
 PDG = ROOT.TDatabasePDG.Instance()
+inputFile = 'ship.Pythia8-TGeant4_rec.root'
+
+try:
+        opts, args = getopt.getopt(sys.argv[1:], "f:A",[])
+except getopt.GetoptError:
+        # print help information and exit:
+        print ' enter file name'  
+        sys.exit()
+for o, a in opts:
+        print o,a
+        if o in ("-f"):
+            inputFile = a
+f     = ROOT.TFile(inputFile)
+sTree = f.cbmsim
+
+geoMat =  ROOT.genfit.TGeoMaterialInterface()
+# init geometry and mag. field
+tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
+tgeom.Import("geofile_full.Pythia8-TGeant4.root")
+geoMat =  ROOT.genfit.TGeoMaterialInterface()
+ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
 bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z )
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
-
-f     = ROOT.TFile('ship.Pythia8-TGeant4_rec.root')
-sTree = f.cbmsim
 
 ev     = ut.PyListOfLeaves()                           
 leaves = sTree.GetListOfLeaves()
@@ -23,13 +41,17 @@ TrackingHits   = ROOT.TClonesArray("vetoPoint")
 fitTrack2MC    = ROOT.std.vector('int')()
 sTree.SetBranchAddress("vetoPoint", TrackingHits)
 sTree.SetBranchAddress("MCTrack", MCTracks)
-sTree.SetBranchAddress("fitTrack2MC", fitTrack2MC)
+for x in sTree.GetListOfBranches():
+ if x.GetName()== "fitTrack2MC": sTree.SetBranchAddress("fitTrack2MC", fitTrack2MC)
 
 h={}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.2,0.2)
 ut.bookHist(h,'delPOverP2','delP / P chi2<25',100,0.,50.,100,-0.2,0.2)
 ut.bookHist(h,'chi2','chi2 after trackfit',100,0.,1000.)
 ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
+ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
+ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
+ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
 ut.bookHist(h,'HNL','reconstructed Mass',100,0.,2.)
 
 def makePlots():
@@ -51,15 +73,38 @@ def makePlots():
    h['fitresults'].Print('fitresults.gif')
    ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    cv = h['fitresults2'].cd(1)
-   h['IP'].Draw()
+   h['Doca'].Draw()
    cv = h['fitresults2'].cd(2)
+   h['IP0'].Draw()
+   cv = h['fitresults2'].cd(3)
    h['HNL'].Draw()
    h['HNL'].Fit('gaus') 
+   cv = h['fitresults2'].cd(4)
+   h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
 
+def myVertex(t1,t2,PosDir):
+ # closest distance between two tracks
+   V=0
+   for i in range(3):   V += PosDir[t1][1](i)*PosDir[t2][1](i)
+   S1=0
+   for i in range(3):   S1 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t1][1](i)
+   S2=0
+   for i in range(3):   S2 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t2][1](i)
+   l = (S2-S1*V)/(1-V*V)
+   x2 = PosDir[t2][0](0)+l*PosDir[t2][1](0)
+   y2 = PosDir[t2][0](1)+l*PosDir[t2][1](1)
+   z2 = PosDir[t2][0](2)+l*PosDir[t2][1](2)
+   x1 = PosDir[t1][0](0)+l*PosDir[t1][1](0)
+   y1 = PosDir[t1][0](1)+l*PosDir[t1][1](1)
+   z1 = PosDir[t1][0](2)+l*PosDir[t1][1](2)
+   dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
+   return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
+
 # start event loop
-nEvents = sTree.GetEntries()
-for n in range(nEvents):
+def myEventLoop():
+ nEvents = sTree.GetEntries()
+ for n in range(nEvents):
   rc = sTree.GetEntry(n)
   key = 0
   fittedTracks = {}
@@ -93,22 +138,46 @@ for n in range(nEvents):
 # ---
 # go for 2-track combinations
   if len(fittedTracks) == 2:
-    LV = {}
-    key = 0
-    for tr in fittedTracks: 
-     LV[key] = ROOT.TLorentzVector()
-     mom = fittedTracks[tr].getFittedState().getMom()
-     mcPartKey = fitTrack2MC[key] 
-     mcPart    = MCTracks[mcPartKey]
-     pgdCode   = mcPart.GetPdgCode()
-     mass      = PDG.GetParticle(pgdCode).Mass()
-     E = ROOT.TMath.Sqrt(mom.Mag2()+mass**2) 
-     LV[key].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
-     key+= 1  
-    HNL = LV[0]+LV[1]
-    h['HNL'].Fill(HNL.M())
-
-makePlots()
+     LV  = {}
+     PosDir = {} 
+     for tr in fittedTracks:
+      xx  = fittedTracks[tr].getFittedState()
+      PosDir[tr] = [xx.getPos(),xx.getDir()]
+     keys = fittedTracks.keys()
+     t1,t2 = keys[0],keys[1] 
+     xv,yv,zv,doca = myVertex(t1,t2,PosDir)
+     h['Doca'].Fill(dist)  
+     HNLPos = ROOT.TVector3(xv,yv,zv)
+     for tr in fittedTracks:
+      xx  = fittedTracks[tr].getFittedState()
+      # make a new rep
+      rep = ROOT.genfit.RKTrackRep(xx.getPDG())
+      pos = xx.getPos()
+      mom = xx.getMom()
+      state = ROOT.genfit.StateOnPlane(rep)
+      rep.setPosMom(state, pos, mom)
+      origPlane = state.getPlane()
+      origState = ROOT.genfit.StateOnPlane(state)
+      point = ROOT.TVector3(1.,5.,3.)
+      try:
+       rep.extrapolateToPoint(state, HNLPos, False)
+      except:
+        print 'extrap did not worked'
+      LV[tr] = ROOT.TLorentzVector()
+      mass = PDG.GetParticle(xx.getPDG()).Mass()
+      mom = rep.getMom(state)  
+      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
+      LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
+     HNL = LV[t1]+LV[t2]
+     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
+     t = 0
+     for i in range(3):   t += HNL(i)/HNL.P()*(tr(i)-HNLPos(i)) 
+     dist = 0
+     for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNL(i)/HNL.P())**2
+     dist = ROOT.TMath.Sqrt(dist)
+     h['IP0'].Fill(dist)  
+     h['IP0/mass'].Fill(HNL.M(),dist)
+     h['HNL'].Fill(HNL.M())
 
 
 def access2SmearedHits():
@@ -120,5 +189,9 @@ def access2SmearedHits():
    mctrack =  MCTracks[mchit.GetTrackID()]
    print mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode()
    key+=1
+
+myEventLoop()
+makePlots()
+
 
 
