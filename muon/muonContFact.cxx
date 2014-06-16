@@ -48,4 +48,5 @@ FairParSet* muonContFact::createContainer(FairContainer* c)
   }
   return p;
 */
-  }
+   return 0;
+}

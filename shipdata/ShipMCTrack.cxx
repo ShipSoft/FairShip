@@ -149,6 +149,7 @@ Int_t ShipMCTrack::GetNPoints(DetectorId detId) const
     return 0;
   }
 */
+   return 0;
 }
 // -------------------------------------------------------------------------
 
