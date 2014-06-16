@@ -14,7 +14,7 @@ simEngine = "Pythia8"
 # simEngine = "Genie"
 #
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
@@ -26,11 +26,13 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
+        if o in ("--Ntuple"):
+            simEngine = "Ntuple"
 print "FairShip setup for",simEngine
 
 tag = simEngine+"-"+mcEngine+'_D'
 InputFile     ="ship."+tag+".root"
-ParFile       ="ship.params."+tag+".root"
+ParFile       ="ship.params.Pythia8-TGeant4_D.root"   # "ship.params."+tag+".root"
 OutFile	      ="tst."+tag+".root"
     
 #----Load the default libraries------

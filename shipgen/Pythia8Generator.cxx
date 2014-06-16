@@ -87,23 +87,30 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
           Double_t pz = fPythia.event[ii].pz();
           Double_t px = fPythia.event[ii].px();  
           Double_t py = fPythia.event[ii].py();  
-	  cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z, 
-		      (Int_t)fPythia.event[ii].mother1(),wanttracking);
-          // cout<<"debug p8->geant4 "<< wanttracking << " "<< ii <<  " " << fPythia.event[ii].id()<< " "<< fPythia.event[ii].mother1()<<" "<<x<<" "<< y<<" "<< z <<endl;
+          Int_t    im = fPythia.event[ii].mother1();  // mother in pythia event
+          if (fHNL != 0){im=1;}  
+	  cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z,im,wanttracking);
+          //cout<<"debug p8->geant4 "<< wanttracking << " "<< ii <<  " " << fPythia.event[ii].id()<< " "<< im <<" "<<x<<" "<< y<<" "<< z <<endl;
         }
 //    virtual void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
 //                          Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1,Bool_t wanttracking=true,Double_t e=-9e9);
     };
     if (fHNL != 0 && fPythia.event[ii].id() == fHNL){
          Int_t im = (Int_t)fPythia.event[ii].mother1();
-         Double_t z  = fPythia.event[ii].zProd();
-         Double_t x  = fPythia.event[ii].xProd();  
-         Double_t y  = fPythia.event[ii].yProd();  
-         Double_t pz = fPythia.event[ii].pz();
-         Double_t px = fPythia.event[ii].px();  
-         Double_t py = fPythia.event[ii].py();  
-	 cpg->AddTrack((Int_t)fPythia.event[im].id(),px,py,pz,x,y,z,0,false);   
-	 cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z, im,false);            
+         Double_t z  = fPythia.event[im].zProd();
+         Double_t x  = fPythia.event[im].xProd();  
+         Double_t y  = fPythia.event[im].yProd();  
+         Double_t pz = fPythia.event[im].pz();
+         Double_t px = fPythia.event[im].px();  
+         Double_t py = fPythia.event[im].py();  
+	 cpg->AddTrack((Int_t)fPythia.event[im].id(),px,py,pz,x,y,z,-1,false);   
+         z  = fPythia.event[ii].zProd();
+         x  = fPythia.event[ii].xProd();  
+         y  = fPythia.event[ii].yProd();  
+         pz = fPythia.event[ii].pz();
+         px = fPythia.event[ii].px();  
+         py = fPythia.event[ii].py();  
+	 cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z, 0,false);            
          //cout<<"debug p8->geant4 "<< 0 << " "<< ii <<  " " << fake<< " "<< fPythia.event[ii].mother1()<<endl;
       };
   }

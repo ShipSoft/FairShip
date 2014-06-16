@@ -1,14 +1,13 @@
 import ROOT,os,sys,getopt
 
-mcEngine  = "TGeant4"
-simEngine = "Pythia8"
-nEvents   = 100
-#simEngine = "Genie"
-inclusive = False  # True = all processes if False only ccbar -> HNL
+mcEngine     = "TGeant4"
+simEngine    = "Pythia8" # "Genie" # Ntuple
+nEvents      = 100
+inclusive    = False  # True = all processes if False only ccbar -> HNL
 eventDisplay = False
-
+inputFile    = None
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","nEvents=", "display"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","nEvents=", "display"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
@@ -22,10 +21,17 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
+            if not inputFile:   inputFile  = 'Genie-mu-_anti_nu_mu-gntp.113.gst.root'
+        if o in ("--Ntuple"):
+            simEngine = "Ntuple"
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
+        if o in ("-f"):
+            inputFile = a
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
+if simEngine == "Ntuple" and not inputFile :
+  print 'input file required if simEngine = Ntuple'
 
 #
 import shipunit as u
@@ -36,6 +42,8 @@ shipRoot_conf.configure()
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
 outFile ="ship."+tag+".root"  
+
+# rm older files !!! 
 os.system("rm *."+tag+".root")
 # Parameter file name
 parFile="ship.params."+tag+".root"
@@ -75,7 +83,7 @@ if simEngine == "Genie":
  # pointZero =   0.  # for testing
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
- Geniegen.Init('Genie-mu-_anti_nu_mu-gntp.113.gst.root') 
+ Geniegen.Init(inputFile) 
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input'
@@ -86,7 +94,16 @@ if simEngine == "Genie":
  run.SetPythiaDecayer('DecayConfigPy8.C') # this does not work !! It insists of using DecayConfig.C 
  # this requires writing a C macro, would have been easier to do directly in python! 
  # for i in [431,421,411,-431,-421,-411]:
- # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer	
+ # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
+if simEngine == "Ntuple":
+# reading previously processed muon events 
+ primGen.SetTarget(ShipGeo.target.z0, 0.)
+ Ntuplegen = ROOT.NtupleGenerator()
+ Ntuplegen.Init(inputFile) 
+ primGen.AddGenerator(Ntuplegen)
+ nEvents = min(nEvents,Ntuplegen.GetNevents())
+ print 'Process ',nEvents,' from input file'
+#
 run.SetGenerator(primGen)
 
 # ------------------------------------------------------------------------
@@ -100,7 +117,7 @@ run.Init()
 fStack = ROOT.gMC.GetStack()
 fStack.SetEnergyCut(100.*u.MeV)
 # ------------------------------------------------------------------------
-if simEngine != "Genie" :  
+if simEngine != "Genie" and simEngine != "Ntuple":  
 # -----Runtime database---------------------------------------------
  kParameterMerged = ROOT.kTRUE
  parOut = ROOT.FairParRootFileIo(kParameterMerged)

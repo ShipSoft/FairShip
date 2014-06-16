@@ -26,6 +26,7 @@ set(SRCS
 Pythia6Generator.cxx
 Pythia8Generator.cxx
 GenieGenerator.cxx
+NtupleGenerator.cxx
 )
 
 set(LINKDEF  GenLinkDef.h)
