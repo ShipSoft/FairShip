@@ -1,7 +1,10 @@
 import ROOT,os,sys,getopt
+import shipunit as u
+import shipRoot_conf
+import ShipGeoConfig
 
 mcEngine     = "TGeant4"
-simEngine    = "Pythia8" # "Genie" # Ntuple
+simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100
 inclusive    = False  # True = all processes if False only ccbar -> HNL
 eventDisplay = False
@@ -21,7 +24,7 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-            if not inputFile:   inputFile  = 'Genie-mu-_anti_nu_mu-gntp.113.gst.root'
+            if not inputFile:   inputFile = 'Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
         if o in ("-n", "--nEvents="):
@@ -33,10 +36,8 @@ print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if simEngine == "Ntuple" and not inputFile :
   print 'input file required if simEngine = Ntuple'
 
-#
-import shipunit as u
-import ShipGeo,shipRoot_conf
 shipRoot_conf.configure()
+ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
 
 # Output file name
 tag = simEngine+"-"+mcEngine
@@ -47,7 +48,7 @@ outFile ="ship."+tag+".root"
 os.system("rm *."+tag+".root")
 # Parameter file name
 parFile="ship.params."+tag+".root"
- 
+
 # In general, the following parts need not be touched
 # ========================================================================
 
@@ -58,8 +59,8 @@ timer.Start()
 
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
-run.SetName(mcEngine)# Transport engine
-run.SetOutputFile(outFile) # Output file
+run.SetName(mcEngine)  # Transport engine
+run.SetOutputFile(outFile)  # Output file
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
@@ -68,7 +69,7 @@ shipDet_conf.configure(run)
 primGen = ROOT.FairPrimaryGenerator()
 
 if simEngine == "Pythia8":
- primGen.SetTarget(ShipGeo.target.z0, 0.) 
+ primGen.SetTarget(ship_geo.target.z0, 0.) 
 # -----Pythia8--------------------------------------
  P8gen = ROOT.Pythia8Generator()
  import pythia8_conf
@@ -79,7 +80,7 @@ if simEngine == "Pythia8":
   P8gen.GetPythiaInstance(9900014)
 if simEngine == "Genie":
 # Genie
- pointZero =  -ShipGeo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield
+ pointZero =  -ship_geo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield
  # pointZero =   0.  # for testing
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
@@ -91,13 +92,13 @@ if simEngine == "Genie":
  pdg = ROOT.TDatabasePDG.Instance()
  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
 #
- run.SetPythiaDecayer('DecayConfigPy8.C') # this does not work !! It insists of using DecayConfig.C 
+ run.SetPythiaDecayer('DecayConfigPy8.C')  # this does not work !! It insists of using DecayConfig.C 
  # this requires writing a C macro, would have been easier to do directly in python! 
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
 # reading previously processed muon events 
- primGen.SetTarget(ShipGeo.target.z0, 0.)
+ primGen.SetTarget(ship_geo.target.z0, 0.)
  Ntuplegen = ROOT.NtupleGenerator()
  Ntuplegen.Init(inputFile) 
  primGen.AddGenerator(Ntuplegen)
@@ -107,7 +108,7 @@ if simEngine == "Ntuple":
 run.SetGenerator(primGen)
 
 # ------------------------------------------------------------------------
- 
+
 #---Store the visualiztion info of the tracks, this make the output file very large!!
 #--- Use it only to display but not for production!
 if eventDisplay: run.SetStoreTraj(ROOT.kTRUE)

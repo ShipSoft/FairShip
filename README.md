@@ -53,7 +53,13 @@ This is a very basic implementation of a software framework for the SHIP experim
     ```bash
     # Set the shell variable FAIRROOTPATH to the FairRoot installation directory
     export FAIRROOTPATH=~/ShipSoft/FairRootInst
+    export FAIRSHIP=~/ShipSoft/FairShip
+    export PYTHONPATH+=:$FAIRSHIP/python
     [setenv FAIRROOTPATH ~/ShipSoft/FairRootInst]
+    [setenv FAIRSHIP ~/ShipSoft/FairShip]
+    [setenv PYTHONPATH ${PYTHONPATH}:${FAIRSHIP}/python]
+    
+    (put variables above into your .rc file) 
 
     cd ~/ShipSoft
     git clone https://github.com/ShipSoft/FairShip.git

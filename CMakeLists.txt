@@ -226,6 +226,12 @@ ENDIF(NOT FAIRROOT_FOUND)
 
 EndIf(TEvePath)
 
+add_custom_target(
+    geometry.link ALL
+    COMMAND ln -sf ${CMAKE_SOURCE_DIR}/geometry ${CMAKE_BINARY_DIR}
+    COMMAND ln -sf ${CMAKE_SOURCE_DIR}/macro ${CMAKE_BINARY_DIR}
+)
+
 WRITE_CONFIG_FILE(config.sh)
 WRITE_CONFIG_FILE(config.csh)
  

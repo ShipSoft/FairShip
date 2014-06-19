@@ -2,20 +2,21 @@
 import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
-import ShipGeo
+# import ShipGeo
+import ShigGeoConfig
 
 ROOT.gSystem.Load("libgenfit2.so")
 PDG = ROOT.TDatabasePDG.Instance()
 inputFile = 'ship.Pythia8-TGeant4_rec.root'
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "f:A",[])
+        opts, args = getopt.getopt(sys.argv[1:], "f:A", [])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter file name'  
+        print ' enter file name'
         sys.exit()
 for o, a in opts:
-        print o,a
+        print o, a
         if o in ("-f"):
             inputFile = a
 f     = ROOT.TFile(inputFile)
@@ -28,13 +29,13 @@ tgeom.Import("geofile_full.Pythia8-TGeant4.root")
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
-bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z )
+bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z)
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 
-ev     = ut.PyListOfLeaves()                           
+ev     = ut.PyListOfLeaves()
 leaves = sTree.GetListOfLeaves()
-names  = ut.setAttributes(ev,leaves)
+names  = ut.setAttributes(ev, leaves)
 
 MCTracks       = ROOT.TClonesArray("FairMCTrack")
 TrackingHits   = ROOT.TClonesArray("vetoPoint")
@@ -42,9 +43,10 @@ fitTrack2MC    = ROOT.std.vector('int')()
 sTree.SetBranchAddress("vetoPoint", TrackingHits)
 sTree.SetBranchAddress("MCTrack", MCTracks)
 for x in sTree.GetListOfBranches():
- if x.GetName()== "fitTrack2MC": sTree.SetBranchAddress("fitTrack2MC", fitTrack2MC)
+ if x.GetName() == "fitTrack2MC":
+  sTree.SetBranchAddress("fitTrack2MC", fitTrack2MC)
 
-h={}
+h = {}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.2,0.2)
 ut.bookHist(h,'delPOverP2','delP / P chi2<25',100,0.,50.,100,-0.2,0.2)
 ut.bookHist(h,'chi2','chi2 after trackfit',100,0.,1000.)
@@ -53,6 +55,7 @@ ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
 ut.bookHist(h,'HNL','reconstructed Mass',100,0.,2.)
+
 
 def makePlots():
    ut.bookCanvas(h,key='fitresults',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
@@ -69,7 +72,7 @@ def makePlots():
    cv = h['fitresults'].cd(4)
    h['delPOverP2_proj'] = h['delPOverP2'].ProjectionY()
    h['delPOverP2_proj'].Draw()
-   h['delPOverP2_proj'].Fit('gaus')  
+   h['delPOverP2_proj'].Fit('gaus')
    h['fitresults'].Print('fitresults.gif')
    ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    cv = h['fitresults2'].cd(1)
@@ -78,10 +81,11 @@ def makePlots():
    h['IP0'].Draw()
    cv = h['fitresults2'].cd(3)
    h['HNL'].Draw()
-   h['HNL'].Fit('gaus') 
+   h['HNL'].Fit('gaus')
    cv = h['fitresults2'].cd(4)
    h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
+
 
 def myVertex(t1,t2,PosDir):
  # closest distance between two tracks
@@ -101,6 +105,7 @@ def myVertex(t1,t2,PosDir):
    dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
    return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
 
+
 # start event loop
 def myEventLoop():
  nEvents = sTree.GetEntries()
@@ -108,7 +113,7 @@ def myEventLoop():
   rc = sTree.GetEntry(n)
   key = 0
   fittedTracks = {}
-  for atrack in ev.FitTracks.GetObject(): 
+  for atrack in ev.FitTracks.GetObject():
    fitStatus   = atrack.getFitStatus()
    if not fitStatus.isFitConverged() : continue
    fittedTracks[key] = atrack
@@ -192,6 +197,3 @@ def access2SmearedHits():
 
 myEventLoop()
 makePlots()
-
-
-
