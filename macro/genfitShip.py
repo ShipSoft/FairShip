@@ -208,7 +208,6 @@ for iEvent in range(0, SHiP.nEvents):
 #check
   if not fitTrack[atrack].checkConsistency():
    print 'Problem with track before fit, not consistent',fitTrack
-
   if nM > 8 : 
 # do the fit
    try:    fitter.processTrack(fitTrack[atrack])
