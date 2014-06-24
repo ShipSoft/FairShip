@@ -26,9 +26,7 @@ Else (FAIRBASE)
      MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
   ENDIF(NOT DEFINED ENV{FAIRROOTPATH})
   SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
-
 EndIf (FAIRBASE)
-
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ 
 # is checked
@@ -45,7 +43,6 @@ if(FAIRROOTPATH)
   find_package(FairRoot)
 endif(FAIRROOTPATH)
 
-
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
@@ -59,13 +56,12 @@ If(NOT CMAKE_BUILD_TYPE)
 EndIf(NOT CMAKE_BUILD_TYPE)
 Check_Compiler()
 
-
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
 Set(VMCWORKDIR ${ShipRoot_SOURCE_DIR})
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
-used."OFF)
+used." OFF)
 If(USE_PATH_INFO)
   Set(PATH "$PATH")
   If (APPLE)
@@ -76,7 +72,6 @@ If(USE_PATH_INFO)
 Else(USE_PATH_INFO)
   STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
 EndIf(USE_PATH_INFO)
-
 
 # Check if the user wants to build the project in the source
 # directory
@@ -144,11 +139,9 @@ find_package(HEPMC)
     Set(Boost_Avail 0)
   EndIf (Boost_FOUND)
 
-
 # set a variable which should be used in all CMakeLists.txt
 # Defines all basic include directories from fairbase
 SetBasicVariables()
-
 
 # Set the library version in the main CMakeLists.txt
 SET(FAIRROOT_MAJOR_VERSION 0)
@@ -166,7 +159,6 @@ Generate_Version_Info()
 SET(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
 SET(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
 
-
 #IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 #  SET(CMAKE_INSTALL_PREFIX "./install" CACHE PATH "FOO install prefix" FORCE)
 #  Message("Set default install path ...")
@@ -175,7 +167,6 @@ SET(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
 install(DIRECTORY geometry DESTINATION pnd_install 
           PATTERN ".svn" EXCLUDE
           )
-
 
 # Check if the compiler support specific C++11 features
 # Up to now this is only a check since the code does not use
@@ -193,14 +184,11 @@ IF(HAS_CXX11_SHAREDPOINTER)
   Add_Definitions(-DHAS_SHAREDPOINTER)
 ENDIF(HAS_CXX11_SHAREDPOINTER)
 
-
-
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
 
 IF(NOT FAIRROOT_FOUND)
-
 add_subdirectory (fairtools)
 add_subdirectory (base)
 add_subdirectory (geobase)
@@ -219,6 +207,7 @@ add_subdirectory (veto)
 add_subdirectory (muon)
 add_subdirectory (shipgen)
 add_subdirectory (field)
+add_subdirectory (genfit)
 
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
   ${SIMPATH}/tools/root/include
@@ -237,12 +226,9 @@ ENDIF(NOT FAIRROOT_FOUND)
 
 EndIf(TEvePath)
 
-
 WRITE_CONFIG_FILE(config.sh)
 WRITE_CONFIG_FILE(config.csh)
  
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
-
-
