@@ -93,6 +93,7 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t polz, TMCProcess proc, Int_t& ntr,
                           Double_t weight, Int_t is, Int_t secondparentID)
 {
+  //cout << "ShipStack:  " << pz << " " << parentId << " " << secondparentID << endl;
 
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
