@@ -21,10 +21,9 @@ for o, a in opts:
 f     = ROOT.TFile(inputFile)
 sTree = f.cbmsim
 
-geoMat =  ROOT.genfit.TGeoMaterialInterface()
 # init geometry and mag. field
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-tgeom.Import("geofile_full.Pythia8-TGeant4.root")
+gMan  = tgeom.Import("geofile_full.Pythia8-TGeant4.root")
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
@@ -53,6 +52,7 @@ ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
 ut.bookHist(h,'HNL','reconstructed Mass',100,0.,2.)
+ut.bookHist(h,'meas','number of measurements',25,-0.5,24.5)
 
 def makePlots():
    ut.bookCanvas(h,key='fitresults',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
@@ -72,6 +72,7 @@ def makePlots():
    h['delPOverP2_proj'].Fit('gaus')  
    h['fitresults'].Print('fitresults.gif')
    ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
+   print 'finished with first canvas'
    cv = h['fitresults2'].cd(1)
    h['Doca'].Draw()
    cv = h['fitresults2'].cd(2)
@@ -82,6 +83,7 @@ def makePlots():
    cv = h['fitresults2'].cd(4)
    h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
+   print 'finished making plots'
 
 def myVertex(t1,t2,PosDir):
  # closest distance between two tracks
@@ -110,6 +112,7 @@ def myEventLoop():
   fittedTracks = {}
   for atrack in ev.FitTracks.GetObject(): 
    fitStatus   = atrack.getFitStatus()
+   h['meas'].Fill(atrack.getNumPoints())
    if not fitStatus.isFitConverged() : continue
    fittedTracks[key] = atrack
 # needs different study why fit has not converged, continue with fitted tracks
