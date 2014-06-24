@@ -1,4 +1,4 @@
-import ROOT,os,sys,getopt
+import ROOT,os,sys,getopt,time
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8" # "Genie" # Ntuple
@@ -6,8 +6,10 @@ nEvents      = 100
 inclusive    = False  # True = all processes if False only ccbar -> HNL
 eventDisplay = False
 inputFile    = None
+theSeed      = int(10000*time.time()%10000000)
+
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","nEvents=", "display"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","nEvents=", "display", "seed="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
@@ -26,13 +28,16 @@ for o, a in opts:
             simEngine = "Ntuple"
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
+        if o in ("-s", "--seed="):
+            theSeed = int(a)
         if o in ("-f"):
             inputFile = a
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if simEngine == "Ntuple" and not inputFile :
   print 'input file required if simEngine = Ntuple'
-
+#
+ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 #
 import shipunit as u
 import ShipGeo,shipRoot_conf
@@ -96,8 +101,8 @@ if simEngine == "Genie":
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
-# reading previously processed muon events 
- primGen.SetTarget(ShipGeo.target.z0, 0.)
+# reading previously processed muon events, [-50m - 50m]
+ primGen.SetTarget(50*u.m+ShipGeo.target.z0, 0.)
  Ntuplegen = ROOT.NtupleGenerator()
  Ntuplegen.Init(inputFile) 
  primGen.AddGenerator(Ntuplegen)
