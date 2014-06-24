@@ -102,7 +102,7 @@ if simEngine == "Genie":
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
 # reading previously processed muon events, [-50m - 50m]
- primGen.SetTarget(50*u.m+ShipGeo.target.z0, 0.)
+ primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
  Ntuplegen = ROOT.NtupleGenerator()
  Ntuplegen.Init(inputFile) 
  primGen.AddGenerator(Ntuplegen)
