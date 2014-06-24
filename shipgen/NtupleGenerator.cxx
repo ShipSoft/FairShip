@@ -3,6 +3,9 @@
 #include "TFile.h"
 #include "FairPrimaryGenerator.h"
 #include "NtupleGenerator.h"
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TMath.h"                      // for Sqrt
+
 using std::cout;
 using std::endl;
 // read events from ntuples produced 
@@ -23,7 +26,8 @@ Bool_t NtupleGenerator::Init(const char* fileName) {
   fNevents = fTree->GetEntries();
   fn = 0;
   fTree->SetBranchAddress("id",&id);                // particle id
-  // fTree->SetBranchAddress("parentid",&parentid);    // parent id   
+  if (fTree->FindBranch("parentid") ){ fTree->SetBranchAddress("parentid",&parentid);}    // parent id   
+  if (fTree->FindBranch("tof")      ){ fTree->SetBranchAddress("parentid",&tof);}    // time of flight 
   fTree->SetBranchAddress("Nmeas",&Nmeas);          // number of Geant4 points  
   fTree->SetBranchAddress("Ezero",&Ezero);          // incoming muon energy      
   fTree->SetBranchAddress("w",&w);                  // weight of event    
@@ -53,24 +57,35 @@ NtupleGenerator::~NtupleGenerator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t NtupleGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
-    //cout<<"debug ntuple->geant4 "<< fn << " "<< Nmeas <<  " " << procid[Nmeas-1]<< " "<<endl;
-    while (fn<fNevents){
-     if (fn==fNevents) {fLogger->Fatal(MESSAGE_ORIGIN, "No more input events");}
-     fTree->GetEntry(fn);
-     fn++;
+  while (fn<fNevents) {
+   fTree->GetEntry(fn);
+   fn++;
+   if (fn %10000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
 // test if muon survives:
-     if (procid[Nmeas-1]==2) {break;}
-    } 
    Int_t i = Nmeas-3;
+   Float_t r2 = (vx[i]*vx[i]+vy[i]*vy[i]);
+   if (procid[Nmeas-1]==2&&r2<9) {break;}
+  } 
+  if (fn==fNevents) {
+     fLogger->Info(MESSAGE_ORIGIN, "No more input events");
+     return kFALSE; }
+  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  Double_t mass = pdgBase->GetParticle(id)->Mass();
+  Double_t    e = TMath::Sqrt( px[0]*px[0]+py[0]*py[0]+pz[0]*pz[0]+ mass*mass );
+  tof = 0; 
 // first, original muon
-    parentid = -1;
-    cpg->AddTrack(id,px[0],py[0],pz[0],vx[0]*100.,vy[0]*100.,vz[0]*100.,parentid,false);   
-    //cout<<"debug ntuple->geant4 "<< vz[0] << " "<< vz[i] << " "<<endl;
-// second, surviving muon
-    cpg->AddTrack(id,px[i],py[i],pz[i],vx[i]*100.,vy[i]*100.,vz[i]*100.,0,true);   
-
+  cpg->AddTrack(id,px[0],py[0],pz[0],vx[0]*100.,vy[0]*100.,vz[0]*100.,-1.,false,e,tof,w);   
+  Int_t i = Nmeas-1;
+// second, surviving muon, extrapolate back to end of muon shield, z=20m
+  Double_t zscor = 20.;
+  Double_t lam = (zscor-vz[i])/pz[i];
+  Double_t xscor = vx[i]+lam*px[i];
+  Double_t yscor = vy[i]+lam*py[i];
+  e = TMath::Sqrt( px[i]*px[i]+py[i]*py[i]+pz[i]*pz[i]+ mass*mass );
+  cpg->AddTrack(id,px[i],py[i],pz[i],xscor*100.,yscor*100.,zscor*100.,0,true,e,tof,w);   
   return kTRUE;
 }
+
 // -------------------------------------------------------------------------
 Int_t NtupleGenerator::GetNevents()
 {

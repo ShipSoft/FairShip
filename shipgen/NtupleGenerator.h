@@ -26,7 +26,7 @@ class NtupleGenerator : public FairGenerator
   
  protected:
   Int_t id,Nmeas,volid[500],procid[500],parentid;
-  Float_t Ezero;
+  Float_t Ezero,tof;
   Double_t w;
   Float_t px[500], py[500], pz[500],vx[500], vy[500], vz[500];
   FairLogger*  fLogger;
