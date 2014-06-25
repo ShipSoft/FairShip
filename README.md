@@ -20,6 +20,7 @@ This is a very basic implementation of a software framework for the SHIP experim
     # 1) gcc (on Linux) 5) Clang (on OSX)
     # 1) No Debug Info
     # 2) Internet (install G4 files from internet)
+    # 1) Yes (install python bindings)
     # path: ~/ShipSoft/FairSoftInst
     ```
 
