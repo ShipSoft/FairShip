@@ -1,0 +1,1 @@
+vagrant up --provider=docker

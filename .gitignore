@@ -34,3 +34,6 @@ install_manifest.txt
 
 # build directory & data directory
 build/
+
+# VM stuff
+.vagrant/
