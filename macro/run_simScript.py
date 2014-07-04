@@ -7,6 +7,7 @@ mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100
 inclusive    = False  # True = all processes if False only ccbar -> HNL
+deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
 inputFile    = None
 theSeed      = int(10000*time.time()%10000000)
@@ -35,6 +36,10 @@ for o, a in opts:
             theSeed = int(a)
         if o in ("-f"):
             inputFile = a
+        if o in ("-A"):
+            inclusive = True
+        if o in ("-F"):
+            deepCopy = True
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if simEngine == "Ntuple" and not inputFile :
@@ -77,7 +82,7 @@ if simEngine == "Pythia8":
 # -----Pythia8--------------------------------------
  P8gen = ROOT.Pythia8Generator()
  import pythia8_conf
- pythia8_conf.configure(P8gen,inclusive)
+ pythia8_conf.configure(P8gen,inclusive,deepCopy)
  primGen.AddGenerator(P8gen)
  if inclusive: 
   # check presence of HNL

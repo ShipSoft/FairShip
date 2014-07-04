@@ -16,6 +16,7 @@ Pythia8Generator::Pythia8Generator()
   fId         = 2212; // proton
   fMom        = 400;  // proton
   fHNL        = 0;    // HNL  if set to !=0, for example 9900014, only track 
+  fDeepCopy   = false;  // copy complete pythia event
 }
 // -------------------------------------------------------------------------
 
@@ -59,7 +60,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
                  Double_t z = fPythia.event[i].zProd();
                  Double_t x = abs(fPythia.event[i].xProd());  
                  Double_t y = abs(fPythia.event[i].yProd());  
-                 // cout<<"debug HNL decay pos "<<x<<" "<< y<<" "<< z <<endl;
                  if ( z < 11000. && z > 7000. && x<250. && y<250.) {
                    npart++;
                  }
@@ -71,14 +71,34 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 // happens if a charm particle being produced which does decay without producing a HNL. Try another event.  
 //       if (npart == 0){ fPythia.event.list();}
     };
-// cout<<"debug p8 event 0 " << fPythia.event[0].id()<< " "<< fPythia.event[1].id()<< " "<< fPythia.event[2].id()<< " "<< npart <<endl;
+
+// copy blind complete pythia event
+  if (fDeepCopy){
+   for(Int_t ii=0; ii<fPythia.event.size(); ii++){
+    Bool_t wanttracking=false;
+    if(fPythia.event[ii].isFinal()){ wanttracking=true;}
+    Double_t z  = fPythia.event[ii].zProd();
+    Double_t x  = fPythia.event[ii].xProd();  
+    Double_t y  = fPythia.event[ii].yProd();  
+    Double_t pz = fPythia.event[ii].pz();
+    Double_t px = fPythia.event[ii].px();  
+    Double_t py = fPythia.event[ii].py();  
+    Int_t    im = fPythia.event[ii].mother1(); 
+    // cout<<"debug p8->geant4 full copy "<< wanttracking << " "<< ii <<  " " << fPythia.event[ii].id()<< " "<< im <<" "<<x<<" "<< y<<" "<< z <<endl;
+    cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z,im,wanttracking);
+   } 
+  }
+  else {
+
+// only add stable particles, except for parents of HNL decay products
   for(Int_t ii=0; ii<fPythia.event.size(); ii++){
     if(fPythia.event[ii].isFinal())
       {
         Bool_t wanttracking=true;
         if (fHNL != 0){
            Int_t im = fPythia.event[ii].mother1();
-           if (fPythia.event[im].id() != fHNL) {wanttracking=false;}
+           // take only one HNL / event, by construction, all charm decay to HNL
+           if ( fPythia.event[im].id() != fHNL) {wanttracking=false;}
         }           
         if (  wanttracking ) {
           Double_t z  = fPythia.event[ii].zProd();
@@ -87,10 +107,11 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
           Double_t pz = fPythia.event[ii].pz();
           Double_t px = fPythia.event[ii].px();  
           Double_t py = fPythia.event[ii].py();  
-          Int_t    im = fPythia.event[ii].mother1();  // mother in pythia event
+         // does not work  Int_t    im = fPythia.event[fPythia.event[ii].mother1()].id();  // mother in pythia event, not put on stack, store at least ID
+          Int_t    im =  -1;
+          // cout<<"debug p8->geant4 "<< wanttracking << " "<< ii <<  " " << fPythia.event[ii].id()<< " "<< im <<" "<<x<<" "<< y<<" "<< z <<endl;
           if (fHNL != 0){im=1;}  
 	  cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z,im,wanttracking);
-          //cout<<"debug p8->geant4 "<< wanttracking << " "<< ii <<  " " << fPythia.event[ii].id()<< " "<< im <<" "<<x<<" "<< y<<" "<< z <<endl;
         }
 //    virtual void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
 //                          Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1,Bool_t wanttracking=true,Double_t e=-9e9);
@@ -111,14 +132,11 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          px = fPythia.event[ii].px();  
          py = fPythia.event[ii].py();  
 	 cpg->AddTrack((Int_t)fPythia.event[ii].id(),px,py,pz,x,y,z, 0,false);            
-         //cout<<"debug p8->geant4 "<< 0 << " "<< ii <<  " " << fake<< " "<< fPythia.event[ii].mother1()<<endl;
       };
   }
-
+ }
 // make separate container ??
   //    FairRootManager *ioman =FairRootManager::Instance();
-
-
   return kTRUE;
 }
 // -------------------------------------------------------------------------

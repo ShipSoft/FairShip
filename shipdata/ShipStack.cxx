@@ -104,13 +104,16 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
   TParticle* particle =
-    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,
-        nPoints, daughter1Id,
-        daughter2Id, px, py, pz, e,
-        vx, vy, vz, time);
+    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,nPoints, 
+        daughter1Id, daughter2Id, px, py, pz, e, vx, vy, vz, time);
+// from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definetely 
+// TParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2, 
+//   Int_t daughter1, Int_t daughter2, Double_t px, Double_t py, Double_t pz, Double_t etot, Double_t vx, Double_t vy, Double_t vz, Double_t time)
   particle->SetPolarisation(polx, poly, polz);
   particle->SetWeight(weight);
   particle->SetUniqueID(proc);
+  particle->SetFirstMother(secondparentID);  // TR July 2014
+  particle->SetLastMother(secondparentID);  // TR July 2014
 
   // --> Increment counter
   if (parentId < 0) { fNPrimaries++; }
@@ -174,10 +177,11 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
   // Return the iPrim-th TParticle from the fParticle array. This should be
   // a primary.
   TParticle* part = (TParticle*)fParticles->At(iPrim);
-  if ( ! (part->GetMother(0) < 0) ) {
+  /* do not understand the logic behind this !!! TR July 2014
+    if ( ! (part->GetMother(0) < 0) ) {
     fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack:: Not a primary track! %i ",iPrim);
     Fatal("ShipStack::PopPrimaryForTracking", "Not a primary track");
-  }
+  }*/
   if(!part->TestBit(kDoneBit)) return NULL;
   else return part;
 
@@ -458,19 +462,23 @@ void ShipStack::SelectTracks()
 
     // --> Set storage flag
     fStoreMap[i] = store;
-
-
   }
 
   // --> If flag is set, flag recursively mothers of selected tracks
   if (fStoreMothers) {
     for (Int_t i=0; i<fNParticles; i++) {
       if (fStoreMap[i]) {
-        Int_t iMother = GetParticle(i)->GetMother(0);
-        while(iMother >= 0) {
+        Int_t iMother  = GetParticle(i)->GetMother(0);
+        Int_t iMother2 = GetParticle(i)->GetMother(1);
+      // special case for Ship generators, want to keep all original particles with their mother daughter relationship
+      // independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles.
+        if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
+        else{
+         while(iMother >= 0) {
           fStoreMap[iMother] = kTRUE;
           iMother = GetParticle(iMother)->GetMother(0);
-        }
+         }
+       }
       }
     }
   }

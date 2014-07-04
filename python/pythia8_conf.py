@@ -1,8 +1,13 @@
 import ROOT
-def configure(P8gen,inclusive):
+def configure(P8gen,inclusive,deepCopy=False):
 # configure pythia8 for Ship usage
  P8gen.UseRandom3() # TRandom1 or TRandom3 ?
  P8gen.SetMom(400)  # beam momentum in GeV 
+ if deepCopy: P8gen.UseDeepCopy()
+ pdg = ROOT.TDatabasePDG.Instance()
+# pythia stuff not known to ROOT
+ pdg.AddParticle('system','system', 0., False, 0., 0., 'XXX', 90)
+ pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'XXX', 9902210)
  if inclusive:
   P8gen.SetParameters("SoftQCD:inelastic = on")
   P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
@@ -18,7 +23,6 @@ def configure(P8gen,inclusive):
   P8gen.SetParameters("9900014:mayDecay = on")
   P8gen.SetHNLId(9900014)
 # also add to PDG
-  pdg = ROOT.TDatabasePDG.Instance()
   pdg.AddParticle('N2','HNL', 1.0, False, 0., 0., 'XXX', 9900014)
 # 12 14 16 neutrinos replace with N2
 #overwrite /\c decays

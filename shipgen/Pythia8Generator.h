@@ -57,6 +57,7 @@ class Pythia8Generator : public FairGenerator
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId  = id; };
   void SetHNLId(Int_t id) { fHNL = id; };
+  void UseDeepCopy(){ fDeepCopy   = kTRUE; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void GetPythiaInstance(int);
@@ -73,7 +74,7 @@ class Pythia8Generator : public FairGenerator
   Int_t    fId;       // target type
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
-
+  Bool_t fDeepCopy;    // copy complete pythia event 
   ClassDef(Pythia8Generator,1);
 };
 
