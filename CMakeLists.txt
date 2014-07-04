@@ -226,10 +226,10 @@ ENDIF(NOT FAIRROOT_FOUND)
 
 EndIf(TEvePath)
 
-add_custom_target(
+add_custom_target(  # make relative links to folders
     geometry.link ALL
-    COMMAND ln -sf ${CMAKE_SOURCE_DIR}/geometry ${CMAKE_BINARY_DIR}
-    COMMAND ln -sf ${CMAKE_SOURCE_DIR}/macro ${CMAKE_BINARY_DIR}
+    COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}'), 'geometry'), 'geometry')\"
+    COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}'), 'macro'), 'macro')\"
 )
 
 WRITE_CONFIG_FILE(config.sh)

@@ -13,13 +13,14 @@ This is a very basic implementation of a software framework for the SHIP experim
     mkdir ~/ShipSoft
     cd ~/ShipSoft
     #git clone https://github.com/FairRootGroup/FairSoft.git
-    git clone -b dev https://github.com/FairRootGroup/FairSoft.git
+    git clone -b dev https://github.com/ShipSoft/FairSoft.git
     cd FairSoft
     # On SLC6 do: export FC=gfortran
     ./configure.sh
     # 1) gcc (on Linux) 5) Clang (on OSX)
     # 1) No Debug Info
     # 2) Internet (install G4 files from internet)
+    # 1) Yes (install python bindings)
     # path: ~/ShipSoft/FairSoftInst
     ```
 
@@ -31,7 +32,7 @@ This is a very basic implementation of a software framework for the SHIP experim
     [setenv SIMPATH ~/ShipSoft/FairSoftInst]
 
     cd ~/ShipSoft
-    git clone -b dev https://github.com/FairRootGroup/FairRoot.git
+    git clone -b dev https://github.com/ShipSoft/FairRoot.git
     cd FairRoot
     mkdir build
     cd build
