@@ -24,7 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     proxy.vm.provision "docker"
     proxy.vm.network "private_network", ip: "192.168.33.10"
     proxy.vm.synced_folder ".", "/vagrant", type: "nfs"
-    proxy.vm.network :forwarded_port, guest: 5900, host: 5900
+    proxy.vm.network :forwarded_port, guest: 5900, host: 6900
   end
 end
 
