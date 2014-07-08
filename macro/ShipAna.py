@@ -2,10 +2,9 @@
 import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
-# import ShipGeo
-import ShigGeoConfig
+import ShipGeo
+import ShipGeoConfig
 
-ROOT.gSystem.Load("libgenfit2.so")
 PDG = ROOT.TDatabasePDG.Instance()
 inputFile = 'ship.Pythia8-TGeant4_rec.root'
 

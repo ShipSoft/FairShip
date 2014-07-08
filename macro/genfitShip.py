@@ -38,9 +38,7 @@ import shipunit as u
 import rootUtils as ut
 import ShipGeo
 
-ROOT.gSystem.Load("libgenfit2.so")
 fout = ROOT.TFile(outFile,'update')
-
 
 class makeHitList:
  " convert FairSHiP MC hits to measurements"

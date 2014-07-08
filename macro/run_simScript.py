@@ -44,6 +44,8 @@ for o, a in opts:
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if simEngine == "Ntuple" and not inputFile :
   print 'input file required if simEngine = Ntuple'
+if simEngine == "Pythia6" and not inputFile :
+  print 'pythia6 requires inputfile'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
@@ -87,6 +89,11 @@ if simEngine == "Pythia8":
  if inclusive: 
   # check presence of HNL
   P8gen.GetPythiaInstance(9900014)
+if simEngine == "Pythia6":
+ primGen.SetTarget(ship_geo.target.z0, 0.) 
+# -----Pythia6-------------------------
+ P6gen = ROOT.Pythia6Generator(inputFile)
+ primGen.AddGenerator(P6gen)
 if simEngine == "Genie":
 # Genie
  pointZero =  -ship_geo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield

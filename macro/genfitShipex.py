@@ -76,8 +76,6 @@ def makePlots():
    h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
 
-ROOT.gSystem.Load("libgenfit2.so")
-
 if withHists:
  h={}
  ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.2,0.2)
