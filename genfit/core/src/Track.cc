@@ -168,7 +168,7 @@ void Track::swap(Track& other) {
 }
 
 Track::~Track() {
-  this->Clear();
+ // causes problem for python, is it needed ? TR 2014  this->Clear();
 }
 
 void Track::Clear(Option_t*)
@@ -252,7 +252,7 @@ int Track::getIdForRep(const AbsTrackRep* rep) const
     if (trackReps_[i] == rep)
       return i;
 
-  std::cout << "track debug " << trackReps_.size() <<" "<< trackReps_[0] << " " << rep <<"\n";
+  // std::cout << "track debug " << trackReps_.size() <<" "<< trackReps_[0] << " " << rep <<"\n";
 
   //assert(0 == 1);  // Cannot happen.
   return 0;  //RDM
@@ -1485,10 +1485,24 @@ void Track::Streamer(TBuffer &R__b)
             return;
           }
           std::map<const AbsTrackRep*,FitStatus*>::iterator R__k;
+/* this piece does not work for me TR July 2014
           for (R__k = R__stl.begin(); R__k != R__stl.end(); ++R__k) {
             int id = this->getIdForRep((*R__k).first);
             R__b << id;
             R__b << ((*R__k).second);
+          }
+ use instead  */
+          int n=0;
+          for (R__k = R__stl.begin(); n < 1; ++R__k){
+            #ifdef DEBUG    
+            std::cout << "i am here " << (*R__k).first << " "<<n<< " "<<(*R__k).second <<  std::endl;
+            #endif
+            n+=1; 
+            if (n<100){
+             int id = this->getIdForRep((*R__k).first);
+             R__b << id;
+             R__b << ((*R__k).second);
+            }
           }
         }
       }
