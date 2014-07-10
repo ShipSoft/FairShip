@@ -1,3 +1,4 @@
+#!/usr/bin/env python 
 import ROOT,os,sys,getopt,time
 import shipunit as u
 import shipRoot_conf
@@ -10,7 +11,7 @@ inclusive    = False  # True = all processes if False only ccbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
 inputFile    = None
-theSeed      = int(10000*time.time()%10000000)
+theSeed      = int(10000 * time.time() % 10000000)
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","nEvents=", "display", "seed="])

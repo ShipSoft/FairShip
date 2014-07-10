@@ -1,7 +1,9 @@
-import ROOT,os,sys,getopt
+#!/usr/bin/env python -i
+import ROOT,sys,getopt
 
 fMan = None
 fRun = None
+
 
 #-----prepare python exit-----------------------------------------------
 def pyExit():
