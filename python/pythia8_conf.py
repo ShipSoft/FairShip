@@ -18,8 +18,8 @@ def configure(P8gen,inclusive,deepCopy=False):
 # add HNL
   P8gen.SetParameters("9900014:new = N2 N2 2 0 0 1.0 0.0 0.0 0.0 5.4E+03  0   1   0   1   0")  # for tests use 5.4E+03  # nominal ctau = 54 km    5.4E+07 
   P8gen.SetParameters("9900014:isResonance = false")
-  P8gen.SetParameters("9900014:addChannel =  1   0.1  0 -13  211")
-  P8gen.SetParameters("9900014:addChannel =  1   0.1  0  13  -211")
+  P8gen.SetParameters("9900014:addChannel =  1   0.1  0 -13  -211")
+  P8gen.SetParameters("9900014:addChannel =  1   0.1  0  13   211")
   P8gen.SetParameters("9900014:mayDecay = on")
   P8gen.SetHNLId(9900014)
 # also add to PDG
