@@ -6,6 +6,9 @@ if [ $? -eq 0 ] ; then
   dclient=$sys_dclient
 else
   dclient=`dirname $0`/docker
+fi
+
+if [ -z "$DOCKER_HOST" ] ; then
   export DOCKER_HOST=tcp://:2375
 fi
 
