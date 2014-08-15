@@ -70,6 +70,10 @@ aluminium          1  26.98 13. 2.7
 Aluminum           1  26.98 13. 2.7
                    0  1  20.  .001
                    0
+ShipSens           1  26.98 13. 0.027
+                   0  1  20.  .001
+                   0
+//  powder of Al to simulate sensitive material with 900cm of radiation length
 HYPaluminium       1  26.98 13. 2.7
                    1  1  20.  .001
                    0
