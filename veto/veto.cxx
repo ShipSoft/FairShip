@@ -9,6 +9,8 @@
 #include "FairRootManager.h"
 #include "FairGeoLoader.h"
 #include "FairGeoInterface.h"
+#include "FairGeoMedia.h"
+#include "FairGeoBuilder.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
 #include "ShipDetectorList.h"
@@ -74,6 +76,26 @@ void veto::Initialize()
 //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
 //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
 }
+
+// -----   Private method InitMedium 
+Int_t veto::InitMedium(const char* name) 
+{
+   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
+   static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
+   static FairGeoMedia *media=geoFace->getMedia();
+   static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
+
+   FairGeoMedium *ShipMedium=media->getMedium(name);
+
+   if (!ShipMedium)
+   {
+     Fatal("InitMedium","Material %s not defined in media file.", name);
+     return -1111;
+   }
+   return geoBuild->createMedium(ShipMedium);
+}
+// -------------------------------------------------------------------------
+
 
 Bool_t  veto::ProcessHits(FairVolume* vol)
 {
@@ -160,18 +182,10 @@ void veto::ConstructGeometry()
       implement here you own way of constructing the geometry. */
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
-    TGeoMedium *Al =gGeoManager->GetMedium("Al");
+    InitMedium("Aluminum");
+    TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
+    InitMedium("ShipSens");
     TGeoMedium *Se =gGeoManager->GetMedium("ShipSens");
-    
-    if(Al==0){
-        TGeoMaterial *matAl     = new TGeoMaterial("Al", 26.98, 13, 2.7);
-        Al     = new TGeoMedium("Al", 2, matAl);
-    }
-    if(Se==0){
-    // powder of Al to simulate sensitive material with 900cm of radiation length
-        TGeoMaterial *matSe     = new TGeoMaterial("Se", 26.98, 13, 2.7/100.);
-        Se     = new TGeoMedium("ShipSens", 902, matSe);
-    }
 
     TGeoBBox *detbox1 = new TGeoBBox("detbox1", 250, 250, 10);
     TGeoBBox *detbox2 = new TGeoBBox("detbox2", 245, 245, 10);

@@ -99,7 +99,7 @@ class veto: public FairDetector
 
     veto(const veto&);
     veto& operator=(const veto&);
-
+    Int_t InitMedium(const char* name);
     ClassDef(veto,1)
 };
 
