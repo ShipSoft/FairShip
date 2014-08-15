@@ -1,18 +1,41 @@
 This is a very basic implementation of a software framework for the SHIP experiment which is based on FairRoot. To use this software you need:
 
-1. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
+1. In case you use SLC6 where the GitHub cert is missing, first do (only once):
 
     ```bash
-    # First do this (only once) on SLC6 where the github cert is missing
     mkdir ~/certs
     curl http://curl.haxx.se/ca/cacert.pem -o ~/certs/cacert.pem
     git config --global http.sslcainfo ~/certs/cacert.pem
     ```
 
+2. Set several required shell variables, needed during the installation and running of the
+   different software packages. Put these in your shell's rc file (~/.bashrc or ~/.cshrc).
+   For bash:
+
     ```bash
-    mkdir ~/ShipSoft
-    cd ~/ShipSoft
-    #git clone https://github.com/FairRootGroup/FairSoft.git
+    export SHIPSOFT=~/ShipSoft
+    export SIMPATH=$SHIPSOFT/FairSoftInst
+    export FAIRROOTPATH=$SHIPSOFT/FairRootInst
+    export FAIRSHIP=$SHIPSOFT/FairShip
+    export PYTHONPATH=$FAIRSHIP/python:$PYTHONPATH
+    ```
+
+    or for the csh:
+
+    ```bash
+    setenv SHIPSOFT ~/ShipSoft
+    setenv SIMPATH $SHIPSOFT/FairSoftInst
+    setenv FAIRROOTPATH $SHIPSOFT/FairRootInst
+    setenv FAIRSHIP $SHIPSOFT/FairShip
+    setenv PYTHONPATH $FAIRSHIP/python:$PYTHONPATH
+    ```
+
+3. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
+
+
+    ```bash
+    mkdir $SHIPSOFT
+    cd $SHIPSOFT
     git clone -b dev https://github.com/ShipSoft/FairSoft.git
     cd FairSoft
     # On SLC6 do: export FC=gfortran
@@ -21,22 +44,18 @@ This is a very basic implementation of a software framework for the SHIP experim
     # 1) No Debug Info
     # 2) Internet (install G4 files from internet)
     # 1) Yes (install python bindings)
-    # path: ~/ShipSoft/FairSoftInst
+    # path: $SIMPATH
     ```
 
-2. Install [FairRoot](http://fairroot.gsi.de/?q=node/82)
+4. Install [FairRoot](http://fairroot.gsi.de/?q=node/82)
 
     ```bash
-    # Set the shell variable SIMPATH to the installation directory
-    export SIMPATH=~/ShipSoft/FairSoftInst
-    [setenv SIMPATH ~/ShipSoft/FairSoftInst]
-
-    cd ~/ShipSoft
+    cd $SHIPSOFT
     git clone -b dev https://github.com/ShipSoft/FairRoot.git
     cd FairRoot
     mkdir build
     cd build
-    cmake -DCMAKE_INSTALL_PREFIX="~/ShipSoft/FairRootInst" ..
+    cmake -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH ..
     make
     make install
     ```
@@ -44,25 +63,14 @@ This is a very basic implementation of a software framework for the SHIP experim
     To run the tests do:
 
     ```bash
-    # To run test: make new shell, do not define SIMPATH
-    cd ~/ShipSoft/FairRoot/build
+    cd $SHIPSOFT/FairRoot/build
     make test
     ```
 
-3. Install the [SHIP](https://github.com/ShipSoft/FairShip.git) software:
+5. Install the [SHIP](https://github.com/ShipSoft/FairShip.git) software:
 
     ```bash
-    # Set the shell variable FAIRROOTPATH to the FairRoot installation directory
-    export FAIRROOTPATH=~/ShipSoft/FairRootInst
-    export FAIRSHIP=~/ShipSoft/FairShip
-    export PYTHONPATH+=:$FAIRSHIP/python
-    [setenv FAIRROOTPATH ~/ShipSoft/FairRootInst]
-    [setenv FAIRSHIP ~/ShipSoft/FairShip]
-    [setenv PYTHONPATH ${PYTHONPATH}:${FAIRSHIP}/python]
-    
-    (put variables above into your .rc file) 
-
-    cd ~/ShipSoft
+    cd $SHIPSOFT
     git clone https://github.com/ShipSoft/FairShip.git
     mkdir FairShipRun
     cd FairShipRun
@@ -71,7 +79,7 @@ This is a very basic implementation of a software framework for the SHIP experim
     . config.sh    [or source config.csh]
     ```
 
-    Now you can for example simulate some events and run the event display:
+6. Now you can for example simulate some events and run the event display:
 
     ```bash
     root -q ../FairShip/macro/run_sim.C
