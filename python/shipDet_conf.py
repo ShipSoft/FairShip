@@ -1,7 +1,7 @@
 import ROOT,ShipGeo
 import shipunit as u
 
-def configure(run):
+def configure(run,muShieldDesign):
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -11,11 +11,16 @@ def configure(run):
  cave.SetGeometryFileName("cave.geo")
  run.AddModule(cave)
 
- TargetStation = ROOT.ShipTargetStation("TargetStation",ShipGeo.target.length,ShipGeo.hadronAbsorber.length,
-                                                        ShipGeo.target.z,ShipGeo.hadronAbsorber.z)
- run.AddModule(TargetStation)
- MuonShield = ROOT.ShipMuonShield("MuonShield",1)
+ MuonShield = ROOT.ShipMuonShield("MuonShield",muShieldDesign)
  run.AddModule(MuonShield)
+ zS = MuonShield.GetStartZ()
+
+# overwrite z positions with new muon shield position:
+ hadronAbsorberZ     =  zS  - ShipGeo.hadronAbsorber.length/2.
+ targetZ             =  hadronAbsorberZ  - ShipGeo.hadronAbsorber.length/2. -  ShipGeo.target.length/2. 
+ TargetStation = ROOT.ShipTargetStation("TargetStation",ShipGeo.target.length,ShipGeo.hadronAbsorber.length,
+                                                        targetZ,hadronAbsorberZ)
+ run.AddModule(TargetStation)
 
  magnet = ROOT.ShipMagnet("Magnet")
  run.AddModule(magnet)

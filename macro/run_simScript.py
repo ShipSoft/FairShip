@@ -12,6 +12,7 @@ deepCopy     = False  # False = copy only stable particles to stack, except for 
 eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
+muonShield   = 1 # 1=passive, 2=active
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","nEvents=", "display", "seed="])
@@ -47,7 +48,7 @@ print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if simEngine == "Ntuple" and not inputFile :
   print 'input file required if simEngine = Ntuple'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
-shipRoot_conf.configure()
+shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
 
 # Output file name
@@ -76,7 +77,7 @@ run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
-shipDet_conf.configure(run)
+shipDet_conf.configure(run,muonShield)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 

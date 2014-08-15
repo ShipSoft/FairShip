@@ -14,10 +14,15 @@ class ShipMuonShield : public FairModule
     ShipMuonShield();
     virtual ~ShipMuonShield();
     void ConstructGeometry();
+    Double_t GetStartZ();
     ClassDef(ShipMuonShield,1)
  protected:
   
   Int_t  fDesign;       // design of muon shield, 1=passive, active = ...
+  Double_t  fstartZ;   
+  Double_t  decayVolumeLength;  
+  Double_t  fMuonShieldLength ;
+  Double_t  dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,zEndOfAbsorb;
 
 };
 
