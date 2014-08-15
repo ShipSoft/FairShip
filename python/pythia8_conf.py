@@ -9,9 +9,13 @@ def configure(P8gen,inclusive,deepCopy=False):
  pdg.AddParticle('system','system', 0., False, 0., 0., 'XXX', 90)
  pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'XXX', 9902210)
 # let strange particle decay in Geant4
- P8gen.SetParameters("ParticleDecays:limitTau0 = on")
- P8gen.SetParameters("ParticleDecays:tau0Max = 1")
-
+ # the following does not work because need to have N2 decaying
+ #P8gen.SetParameters("ParticleDecays:limitTau0 = on")
+ #P8gen.SetParameters("ParticleDecays:tau0Max = 1")
+ # explicitly make KS and KL stable
+ P8gen.SetParameters("130:mayDecay  = off")
+ P8gen.SetParameters("310:mayDecay  = off")
+ P8gen.SetParameters("3122:mayDecay = off")
  if inclusive:
   P8gen.SetParameters("SoftQCD:inelastic = on")
   P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
