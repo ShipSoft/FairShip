@@ -17,7 +17,8 @@ try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","nEvents=", "display", "seed="])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
+        print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
+                or --Pythia6 for muon nucleon scattering'  
         sys.exit()
 for o, a in opts:
         if o in ("--display"):
@@ -45,8 +46,6 @@ for o, a in opts:
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if simEngine == "Ntuple" and not inputFile :
   print 'input file required if simEngine = Ntuple'
-if simEngine == "Pythia6" and not inputFile :
-  print 'pythia6 requires inputfile'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
@@ -73,6 +72,7 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetOutputFile(outFile)  # Output file
+run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C 
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
@@ -91,9 +91,12 @@ if simEngine == "Pythia8":
   # check presence of HNL
   P8gen.GetPythiaInstance(9900014)
 if simEngine == "Pythia6":
- primGen.SetTarget(ship_geo.target.z0, 0.) 
+# set muon interaction close to decay volume
+ primGen.SetTarget(ship_geo.target.z0+70*u.m, 0.) 
 # -----Pythia6-------------------------
- P6gen = ROOT.Pythia6Generator(inputFile)
+ P6gen = ROOT.tPythia6Generator()
+ P6gen.SetMom(50.*u.GeV)
+ P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
 if simEngine == "Genie":
 # Genie
@@ -133,9 +136,11 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 # -----Initialize simulation run------------------------------------
 run.Init()
 fStack = ROOT.gMC.GetStack()
-fStack.SetEnergyCut(100.*u.MeV)
+if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
+# -----Start run----------------------------------------------------
+run.Run(nEvents)
 # ------------------------------------------------------------------------
-if simEngine != "Genie" and simEngine != "Ntuple":  
+if simEngine != "Ntuple" and simEngine != "Genie":  
 # -----Runtime database---------------------------------------------
  kParameterMerged = ROOT.kTRUE
  parOut = ROOT.FairParRootFileIo(kParameterMerged)
@@ -143,8 +148,6 @@ if simEngine != "Genie" and simEngine != "Ntuple":
  rtdb.setOutput(parOut)
  rtdb.saveOutput()   # for the moment, it blocks when using Genie, no idea why
  rtdb.printParamContexts()
-# -----Start run----------------------------------------------------
-run.Run(nEvents)
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("geofile_full."+tag+".root")  
 # -----Finish-------------------------------------------------------
