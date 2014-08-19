@@ -20,5 +20,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     proxy.vm.network :forwarded_port, guest: 5900, host: 6900
     proxy.vm.provision "shell", inline:
 	"sudo ntpclient -s -h time.nist.gov"
+#    config.vm.provider "virtualbox" do |vb|
+#      vb.customize ["modifyvm", :id, "--memory", "1024"]
+#    end
   end
 end

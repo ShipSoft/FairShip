@@ -73,8 +73,16 @@ class Config(AttrDict):
                 continue
             m = re.search("^\s*([^\s]+)\s*=\s*(.*)", s)
             if m is None or len(m.groups()) != 2:
-                self.log("skipping line: " + s, logging.DEBUG)
-                pass
+                m = re.search("^\s*if\s+([^:]+):\s*([^\s]+)\s*=\s*(.*)", s)
+                if m is None or len(m.groups()) != 3:
+                    self.log("skipping line: " + s, logging.DEBUG)
+                    pass
+                else:
+                    self.log("IF " + s, logging.DEBUG)
+                    if eval(m.groups()[0]):
+                        s = "%s = %s" % (m.groups()[1], m.groups()[2])
+                        self.log(s, logging.DEBUG)
+                        exec(s)
             else:
                 if m.groups()[0].startswith('self'):
                     self.log(s, logging.DEBUG)
