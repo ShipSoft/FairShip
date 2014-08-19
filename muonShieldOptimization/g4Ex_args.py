@@ -44,6 +44,7 @@ def init():
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
   ap.add_argument('-t', '--tau-only', action='store_true', dest='tauOnly')
+  ap.add_argument('-o', '--output', type=str, help="output directory", dest='work_dir', default=None)
   args = ap.parse_args()
   if args.debug:
       logger.setLevel(logging.DEBUG)
@@ -51,9 +52,11 @@ def init():
   nev = args.nev
   ecut = args.ecut
   tauOnly = args.tauOnly
-  work_dir = get_work_dir(runnr)
-  logger.debug("command line arguments: %s", args)
+  if args.work_dir is None:
+    args.work_dir = get_work_dir(runnr)
+  work_dir = args.work_dir
   logger.debug("work_dir: %s" % work_dir)
+  logger.debug("command line arguments: %s", args)
   if os.path.exists(work_dir) and args.force:
     shutil.rmtree(work_dir)
   elif os.path.exists(work_dir) and not args.force:
