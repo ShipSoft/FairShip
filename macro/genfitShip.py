@@ -81,7 +81,7 @@ class makeHitList:
    if not nm.find('_2')<0 : self.layerType[nm] = 'v' 
    # print 'debug nm',nm,self.layerType[nm]
 
-  stereoAngle = {'x0':0,'x3':0,'u':ShipGeo.straw.stereoAngle,'v':-ShipGeo.straw.stereoAngle}
+  stereoAngle = {'x0':0,'x3':0,'u':ShipGeo.straw.stereoAngle*ROOT.TMath.Pi(),'v':-ShipGeo.straw.stereoAngle*ROOT.TMath.Pi()}
   delta       = {'x0':0,'x3':0.5,'u':0.33,'v':0.66}
   self.detinfo     = {}
   for i in ['x0','u','v','x3']:

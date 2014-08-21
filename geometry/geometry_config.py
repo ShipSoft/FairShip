@@ -49,4 +49,4 @@ straw = AttrDict(z=0*u.cm)
 self.straw.length = 250.*u.cm
 self.straw.resol  = 0.01*u.cm
 self.straw.pitch  = 1.*u.cm
-# self.straw.stereoAngle = 5./180.*ROOT.TMath.Pi()
+self.straw.stereoAngle = 5./180. #degrees
