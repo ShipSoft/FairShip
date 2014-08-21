@@ -6,8 +6,9 @@ inclusive = False  # True = all processes if False only ccbar -> HNL
 
 #
 import shipunit as u
-import ShipGeo,shipRoot_conf
+import ShipGeoConfig,shipRoot_conf
 shipRoot_conf.configure()
+ShipGeo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
 
 # Output file name
 tag = simEngine+"-"+mcEngine
@@ -31,7 +32,7 @@ run.SetOutputFile(outFile) # Output file
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
-shipDet_conf.configure(run)
+shipDet_conf.configure(run,ShipGeo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 primGen.SetTarget(ShipGeo.target.z0, 0.) 
