@@ -1,5 +1,5 @@
-#ifndef PNDntGENERATOR_H
-#define PNDntGENERATOR_H 1
+#ifndef PNDmuGENERATOR_H
+#define PNDmuGENERATOR_H 1
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -8,33 +8,31 @@
 
 class FairPrimaryGenerator;
 
-class NtupleGenerator : public FairGenerator
+class MuonBackGenerator : public FairGenerator
 {
  public:
   
   /** default constructor **/
-  NtupleGenerator();
+  MuonBackGenerator();
   
   /** destructor **/
-  virtual ~NtupleGenerator();
+  virtual ~MuonBackGenerator();
   
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);  
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
+  void CloseFile();
  private:
   
  protected:
-  Int_t id,Nmeas,volid[500],procid[500],parentid;
-  Float_t Ezero,tof;
-  Double_t w;
-  Float_t px[500], py[500], pz[500],vx[500], vy[500], vz[500];
+  Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz;
   TFile* fInputFile;
-  TTree* fTree;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
+  TTree* fTree;
   int fNevents;
   int fn;
-  ClassDef(NtupleGenerator,1);
+  ClassDef(MuonBackGenerator,1);
 };
 
-#endif /* !PNDntGENERATOR_H */
+#endif /* !PNDmuGENERATOR_H */

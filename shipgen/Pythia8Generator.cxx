@@ -27,7 +27,6 @@ Bool_t Pythia8Generator::Init()
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   
   fPythia.setRndmEnginePtr(fRandomEngine);
-  
   cout<<"Beam Momentum "<<fMom<<endl;
   fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
   return kTRUE;

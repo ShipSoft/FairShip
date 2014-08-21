@@ -18,7 +18,7 @@ GenieGenerator::GenieGenerator() {}
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) {
   fLogger = FairLogger::GetLogger();
-  cout << "Info GenieGenerator: Opening input file " << fileName << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);
   if (fInputFile->IsZombie()) {
     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");
@@ -53,7 +53,6 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Destructor   ----------------------------------------------------
 GenieGenerator::~GenieGenerator() 
 {
- // cout << "destroy Genie" << endl;
  fInputFile->Close(); 
  fInputFile->Delete(); 
  delete fInputFile;

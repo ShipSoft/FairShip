@@ -30,7 +30,7 @@ class GenieGenerator : public FairGenerator
   Double_t pxf[500], pyf[500], pzf[500];
   Int_t pdgf[500];
   Int_t nf,neu;
-  FairLogger*  fLogger;
+  FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
   int fNevents;

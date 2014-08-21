@@ -68,13 +68,14 @@ class Pythia8Generator : public FairGenerator
   RndmEngine* fRandomEngine;  //!
   
  protected:
-  
+
   Double_t fMom;       // proton momentum
   Int_t    fHNL;       // HNL ID
   Int_t    fId;       // target type
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Bool_t fDeepCopy;    // copy complete pythia event 
+
   ClassDef(Pythia8Generator,1);
 };
 
