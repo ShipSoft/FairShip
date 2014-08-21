@@ -2,7 +2,6 @@
 import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
-import ShipGeo
 import ShipGeoConfig
 
 PDG = ROOT.TDatabasePDG.Instance()
@@ -22,6 +21,7 @@ f     = ROOT.TFile(inputFile)
 sTree = f.cbmsim
 
 # init geometry and mag. field
+ShipGeo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
 gMan  = tgeom.Import("geofile_full.Pythia8-TGeant4.root")
 geoMat =  ROOT.genfit.TGeoMaterialInterface()

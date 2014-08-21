@@ -44,7 +44,8 @@ atexit.register(pyExit)
 from array import array
 import shipunit as u
 import rootUtils as ut
-import ShipGeo
+import ShipGeoConfig
+ShipGeo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
 
 
 def makePlots():
