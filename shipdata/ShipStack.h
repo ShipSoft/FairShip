@@ -197,7 +197,7 @@ class ShipStack : public FairGenericStack
 
   private:
     /** FairLogger for debugging and info */
-    FairLogger* fLogger;
+    FairLogger* fLogger; //!   don't make it persistent, magic ROOT command
 
     /** STL stack (FILO) used to handle the TParticles for tracking **/
     std::stack<TParticle*>  fStack;           //!

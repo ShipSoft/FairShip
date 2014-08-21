@@ -93,7 +93,7 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t polz, TMCProcess proc, Int_t& ntr,
                           Double_t weight, Int_t is, Int_t secondparentID)
 {
-  //cout << "ShipStack:  " << pz << " " << parentId << " " << secondparentID << endl;
+  // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId << " " << secondparentID << endl;
 
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
@@ -112,9 +112,15 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   particle->SetPolarisation(polx, poly, polz);
   particle->SetWeight(weight);
   particle->SetUniqueID(proc);
-  particle->SetFirstMother(secondparentID);  // TR July 2014
-  particle->SetLastMother(secondparentID);  // TR July 2014
-
+// TR August 2014, still trying to understand the logic of FairRoot, due to misuse of secondparentID, all is a big mess
+  if (parentId < 0){ 
+     particle->SetFirstMother(secondparentID);
+     particle->SetLastMother(secondparentID);
+  }
+  else {            
+      particle->SetFirstMother(parentId);  
+      particle->SetLastMother(parentId);  
+  }
   // --> Increment counter
   if (parentId < 0) { fNPrimaries++; }
 
