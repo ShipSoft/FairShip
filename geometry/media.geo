@@ -70,10 +70,14 @@ aluminium          1  26.98 13. 2.7
 Aluminum           1  26.98 13. 2.7
                    0  1  20.  .001
                    0
+//  powder of Al to simulate sensitive material with 900cm of radiation length
 ShipSens           1  26.98 13. 0.027
                    0  1  20.  .001
                    0
-//  powder of Al to simulate sensitive material with 900cm of radiation length
+//  concrete
+Concrete           6 1.00794  15.999 26.9812 40.078 28.085 55.845 1. 8. 13. 20. 14. 26. 2.3 0.09972 0.60541 0.014245 0.04986 0.227915 0.00285 
+                   0	1	20.	.001
+                   0
 HYPaluminium       1  26.98 13. 2.7
                    1  1  20.  .001
                    0

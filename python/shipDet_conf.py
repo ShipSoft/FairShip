@@ -1,7 +1,9 @@
-import ROOT,ShipGeo
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
+import ROOT
 import shipunit as u
 
-def configure(run,muShieldDesign):
+def configure(run,ship_geo):
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -11,15 +13,15 @@ def configure(run,muShieldDesign):
  cave.SetGeometryFileName("cave.geo")
  run.AddModule(cave)
 
- MuonShield = ROOT.ShipMuonShield("MuonShield",muShieldDesign)
+ if ship_geo.muShieldDesign==1:
+  MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.length) 
+ elif ship_geo.muShieldDesign==2:
+  MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ1,\
+               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE) 
  run.AddModule(MuonShield)
- zS = MuonShield.GetStartZ()
 
-# overwrite z positions with new muon shield position:
- hadronAbsorberZ     =  zS  - ShipGeo.hadronAbsorber.length/2.
- targetZ             =  hadronAbsorberZ  - ShipGeo.hadronAbsorber.length/2. -  ShipGeo.target.length/2. 
- TargetStation = ROOT.ShipTargetStation("TargetStation",ShipGeo.target.length,ShipGeo.hadronAbsorber.length,
-                                                        targetZ,hadronAbsorberZ)
+ TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
+                                                        ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
  run.AddModule(TargetStation)
 
  magnet = ROOT.ShipMagnet("Magnet")
@@ -29,7 +31,7 @@ def configure(run,muShieldDesign):
  run.AddModule(Chamber)
  
  Veto = ROOT.veto("Veto", ROOT.kTRUE)   # for the moment, contains all tracking stations / planes
- Veto.SetZpositions(ShipGeo.vetoStation.z, ShipGeo.TrackStation1.z, ShipGeo.TrackStation2.z, ShipGeo.TrackStation3.z, ShipGeo.TrackStation4.z)
+ Veto.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
 
  run.AddModule(Veto)
  
@@ -42,8 +44,8 @@ def configure(run,muShieldDesign):
 #-----   Magnetic field   -------------------------------------------
     # Constant Field
  #fMagField = ROOT.ShipConstField()
- #fMagField.SetField(0., ShipGeo.Bfield.max ,0. )  
- #fMagField.SetFieldRegion(-250*u.cm, 250*u.cm,-250*u.cm, 250*u.cm, ShipGeo.Bfield.z-100*u.cm, ShipGeo.Bfield.z+100*u.cm)    
+ #fMagField.SetField(0., ship_geo.Bfield.max ,0. )  
+ #fMagField.SetFieldRegion(-250*u.cm, 250*u.cm,-250*u.cm, 250*u.cm, ship_geo.Bfield.z-100*u.cm, ship_geo.Bfield.z+100*u.cm)    
  #run.SetField(fMagField)
- fMagField = ROOT.ShipBellField("wilfried", ShipGeo.Bfield.max ,ShipGeo.Bfield.z )  
+ fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z )  
  run.SetField(fMagField)

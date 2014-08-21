@@ -10,7 +10,8 @@
 class ShipTargetStation : public FairModule
 {
   public:
-    ShipTargetStation(const char* name,const Double_t tl,const Double_t al,const Double_t tz,const Double_t az, const char* Title="ShipTargetStation");
+    ShipTargetStation(const char* name,const Double_t tl,const Double_t al,const Double_t tz,const Double_t az, 
+                      const int nS, const Double_t sl, const char* Title="ShipTargetStation");
     ShipTargetStation();
     virtual ~ShipTargetStation();
     void ConstructGeometry();
@@ -21,9 +22,8 @@ class ShipTargetStation : public FairModule
   Double_t fAbsorberLength;       //
   Double_t fAbsorberZ;       //
   Double_t fTargetZ;       //
-
-
+  Int_t InitMedium(const char* name);
+  Int_t fnS;
+  Double_t fsl;        
 };
-
 #endif //TargetStation_H
-

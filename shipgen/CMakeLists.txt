@@ -24,9 +24,11 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 Pythia6Generator.cxx
+tPythia6Generator.cxx
 Pythia8Generator.cxx
 GenieGenerator.cxx
 NtupleGenerator.cxx
+MuonBackGenerator.cxx
 )
 
 set(LINKDEF  GenLinkDef.h)

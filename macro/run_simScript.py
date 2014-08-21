@@ -4,18 +4,22 @@ import shipunit as u
 import shipRoot_conf
 import ShipGeoConfig
 
+# the following two options are for the moment hard coded in geometry/geometry_config.py
+# - muShieldDesign = 2  # 1=passive 2=active
+# - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
+#
+
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
-nEvents      = 100
+nEvents      = 100 
 inclusive    = False  # True = all processes if False only ccbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
-muonShield   = 1 # 1=passive, 2=active
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","nEvents=", "display", "seed="])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","nEvents=", "display", "seed="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -33,6 +37,8 @@ for o, a in opts:
             if not inputFile:   inputFile = 'Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
+        if o in ("--MuonBack"):
+            simEngine = "MuonBack"
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
         if o in ("-s", "--seed="):
@@ -45,8 +51,8 @@ for o, a in opts:
             deepCopy = True
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
-if simEngine == "Ntuple" and not inputFile :
-  print 'input file required if simEngine = Ntuple'
+if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
+  print 'input file required if simEngine = Ntuple or MuonBack'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
@@ -77,7 +83,7 @@ run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
-shipDet_conf.configure(run,muonShield)
+shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 
@@ -88,12 +94,9 @@ if simEngine == "Pythia8":
  import pythia8_conf
  pythia8_conf.configure(P8gen,inclusive,deepCopy)
  primGen.AddGenerator(P8gen)
- if inclusive: 
-  # check presence of HNL
-  P8gen.GetPythiaInstance(9900014)
 if simEngine == "Pythia6":
 # set muon interaction close to decay volume
- primGen.SetTarget(ship_geo.target.z0+70*u.m, 0.) 
+ primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.) 
 # -----Pythia6-------------------------
  P6gen = ROOT.tPythia6Generator()
  P6gen.SetMom(50.*u.GeV)
@@ -126,6 +129,15 @@ if simEngine == "Ntuple":
  nEvents = min(nEvents,Ntuplegen.GetNevents())
  print 'Process ',nEvents,' from input file'
 #
+if simEngine == "MuonBack":
+# reading muon tracks from previous Pythia8/Geant4 simulation, [-50m - 50m]
+ primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
+ MuonBackgen = ROOT.MuonBackGenerator()
+ MuonBackgen.Init(inputFile) 
+ primGen.AddGenerator(MuonBackgen)
+ nEvents = min(nEvents,MuonBackgen.GetNevents())
+ print 'Process ',nEvents,' from input file'
+#
 run.SetGenerator(primGen)
 
 # ------------------------------------------------------------------------
@@ -138,17 +150,24 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 run.Init()
 fStack = ROOT.gMC.GetStack()
 if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
+if eventDisplay:
+ # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
+  trajFilter = ROOT.FairTrajFilter.Instance()
+  trajFilter.SetStepSizeCut(10*u.cm);  
+  trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 100.*u.m)
+  trajFilter.SetMomentumCutP(10*u.MeV)
+  trajFilter.SetEnergyCut(0., 400.*u.GeV)
+  trajFilter.SetStorePrimaries(ROOT.kTRUE)
+  trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
-# ------------------------------------------------------------------------
-if simEngine != "Ntuple" and simEngine != "Genie":  
 # -----Runtime database---------------------------------------------
- kParameterMerged = ROOT.kTRUE
- parOut = ROOT.FairParRootFileIo(kParameterMerged)
- parOut.open(parFile)
- rtdb.setOutput(parOut)
- rtdb.saveOutput()   # for the moment, it blocks when using Genie, no idea why
- rtdb.printParamContexts()
+kParameterMerged = ROOT.kTRUE
+parOut = ROOT.FairParRootFileIo(kParameterMerged)
+parOut.open(parFile)
+rtdb.setOutput(parOut)
+rtdb.saveOutput()   # for the moment, it blocks when using Genie, no idea why
+rtdb.printParamContexts()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("geofile_full."+tag+".root")  
 # -----Finish-------------------------------------------------------

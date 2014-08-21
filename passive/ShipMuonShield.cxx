@@ -13,6 +13,9 @@
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
+#include "FairGeoInterface.h"
+#include "FairGeoMedia.h"
+#include "FairGeoBuilder.h"
 #include "TGeoUniformMagField.h"
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
@@ -34,54 +37,59 @@ ShipMuonShield::ShipMuonShield()
 {
 }
 
-ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title )
+ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title, 
+                               Double_t Z, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6, Double_t LE)
   : FairModule(name ,Title)
 {
  fDesign = Design;
- decayVolumeLength = 50*m;  
  if (fDesign==1){
     // passive design with tungsten and lead
-     fMuonShieldLength = 70*m;   
-     fstartZ = -fMuonShieldLength - decayVolumeLength/2. ;
+     fMuonShieldLength = L1;   
     }
  if (fDesign==2){
-     dZ1 = 2.5*m;
-     dZ2 = 3.5*m;
-     dZ3 = 3.0*m;
-     dZ4 = 3.0*m;
-     dZ5 = 2.5*m;
-     dZ6 = 2.5*m;
-     fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6) + 5*m ; //leave some space for nu-tau detector   
-     zEndOfAbsorb = -fMuonShieldLength - decayVolumeLength/2.;
-     fstartZ = zEndOfAbsorb;
+     dZ1 = L1;
+     dZ2 = L2;
+     dZ3 = L3;
+     dZ4 = L4;
+     dZ5 = L5;
+     dZ6 = L6;
+     fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6) + LE ; //leave some space for nu-tau detector   
     }
+ zEndOfAbsorb = Z - fMuonShieldLength/2.;
 
 }
 
-Double_t ShipMuonShield::GetStartZ()
+
+// -----   Private method InitMedium 
+Int_t ShipMuonShield::InitMedium(const char* name) 
 {
-    return  fstartZ;
+   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
+   static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
+   static FairGeoMedia *media=geoFace->getMedia();
+   static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
+
+   FairGeoMedium *ShipMedium=media->getMedium(name);
+
+   if (!ShipMedium)
+   {
+     Fatal("InitMedium","Material %s not defined in media file.", name);
+     return -1111;
+   }
+   return geoBuild->createMedium(ShipMedium);
 }
 
 void ShipMuonShield::ConstructGeometry()
 {
 
     TGeoVolume *top=gGeoManager->GetTopVolume();
-    TGeoMedium *tungsten  =gGeoManager->GetMedium("tungsten");
-    if (tungsten==0){
-        TGeoMaterial *matTungsten     = new TGeoMaterial("tungsten", 183.84, 74, 19.3);
-        tungsten = new TGeoMedium("tungsten", 974, matTungsten); 
-    }
+    InitMedium("tungsten");
+    TGeoMedium *tungsten =gGeoManager->GetMedium("tungsten");
+    InitMedium("iron");
     TGeoMedium *iron  =gGeoManager->GetMedium("iron");
-    if (iron==0){
-        TGeoMaterial *matFe     = new TGeoMaterial("iron", 55.847, 26, 7.87);
-        iron = new TGeoMedium("iron", 926, matFe);
-    }
-    TGeoMedium *lead  =gGeoManager->GetMedium("Pb");
-    if (lead==0){
-        TGeoMaterial *matPb     = new TGeoMaterial("Pb", 207.2, 82, 11.342);
-        lead = new TGeoMedium("Pb", 982, matPb);
-    }
+    InitMedium("lead");
+    TGeoMedium *lead  =gGeoManager->GetMedium("lead");
+    InitMedium("Concrete");
+    TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     
     if (fDesign==1){
     // passive design with tungsten and lead
@@ -94,14 +102,14 @@ void ShipMuonShield::ConstructGeometry()
      Double_t rW   = 0.*m; 
      TGeoVolume *core = gGeoManager->MakeCone("Core", tungsten, Lz/2., 0.,r1, 0.,r2);
      core->SetLineColor(31);  // silver/green
-     Double_t zpos =  -fMuonShieldLength - decayVolumeLength/2. + Lz/2.;
+     Double_t zpos = zEndOfAbsorb + Lz/2.;
      top->AddNode(core, 1, new TGeoTranslation(0, 0, zpos ));
      TGeoVolume *Pbshield1 = gGeoManager->MakeCone("Pbshield1", lead, Lz/2., r1+0.01,Pbr1,r2+0.01,Pbr2);
      Pbshield1->SetLineColor(23);  // silver/grey
      top->AddNode(Pbshield1, 1, new TGeoTranslation(0, 0, zpos ));
      TGeoVolume *Pbshield2 = gGeoManager->MakeCone("Pbshield2", lead, (fMuonShieldLength-Lz)/2., rW,Pbr2,rW,Pbr3);
      Pbshield2->SetLineColor(23);  // silver/grey
-     zpos = -fMuonShieldLength - decayVolumeLength/2. + Lz + (fMuonShieldLength-Lz)/2. ;
+     zpos = zEndOfAbsorb  + Lz + (fMuonShieldLength-Lz)/2. ;
      top->AddNode(Pbshield2, 1, new TGeoTranslation(0, 0, zpos));
     
      cout << "passive muon shield postioned at " << (-fMuonShieldLength/2.-2500)/100. << "m"<< endl;
@@ -136,6 +144,8 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     Double_t ironField = 1.85*tesla;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
+    TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
+    TGeoUniformMagField *ConLField    = new TGeoUniformMagField(ironField,0.,0.);
  
 // z<5m: just boxes, arguments are full length for python, half lengths for C++ 
     Double_t dX1 = 0.7*m; 
@@ -152,6 +162,26 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     magRetA->SetField(RetField);
     top->AddNode(magRetA, 1, new TGeoTranslation(-X2, 0, Z1 ));
     top->AddNode(magRetA, 1, new TGeoTranslation( X2, 0, Z1 ));
+
+//  connection between field and return field, make it 1m thick :
+    Double_t dYH1 = 0.5*m; 
+    Double_t dXH1 = 0.5*(X2+dX1/2.);
+    TGeoVolume  *magConALLT = gGeoManager->MakeBox("MagConALLT", iron,dXH1, dYH1, dZ1);
+    magConALLT->SetLineColor(38);  
+    magConALLT->SetField(ConLField);
+    top->AddNode(magConALLT, 1, new TGeoTranslation(dXH1,dY+dYH1,Z1));
+    TGeoVolume  *magConARRT = gGeoManager->MakeBox("MagConARRT", iron,dXH1, dYH1, dZ1);
+    magConARRT->SetLineColor(30);  
+    magConARRT->SetField(ConRField);
+    top->AddNode(magConARRT, 1, new TGeoTranslation(-dXH1,dY+dYH1,Z1));
+    TGeoVolume  *magConARLB = gGeoManager->MakeBox("MagConARLB", iron,dXH1, dYH1, dZ1);
+    magConARLB->SetLineColor(30);  
+    magConARLB->SetField(ConRField);
+    top->AddNode(magConARLB, 1, new TGeoTranslation(dXH1,-(dY+dYH1),Z1));
+    TGeoVolume  *magConALRB = gGeoManager->MakeBox("MagConALRB", iron,dXH1, dYH1, dZ1);
+    magConALRB->SetLineColor(38);  
+    magConALRB->SetField(ConLField);
+    top->AddNode(magConALRB, 1, new TGeoTranslation(-dXH1,-(dY+dYH1),Z1));
 // 5<z<12 m: trapezoid   
     Double_t dX2 = 0.3*m;
     Double_t dX3 = 0.16*m;
@@ -251,34 +281,25 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     magC4->SetField(magFieldIron);
     magC4->SetLineColor(45);  // red-brown
     top->AddNode(magC4, 1, new TGeoTranslation(0, 0, Z6));
-/*    tarlen = 40*m  
-// set field
-    for ret in [magRetAPhysL,magRetAPhysR,magRetBPhysL,magRetBPhysR,magRetC1Phys,magRetC2Phys,magRetC3Phys,magRetC4Phys]:
-     magLog  = ret.GetLogicalVolume()
-     magLog.SetFieldManager(RetFieldMgr,True)   
-    for cen in [magAPhys,magBPhys,magC1Phys,magC2Phys,magC3Phys,magC4Phys]:
-     magLog  = cen.GetLogicalVolume()
-     magLog.SetFieldManager(FieldIronMgr,True) 
-    if withConcrete :
-    // around first magnets
-     dZ = dZ1 + dZ2
-     box1 = G4EzVolume("box1")
-     box1.CreateBoxVolume(concrete, 4*m,   4*m, dZ)
-     box2 = G4EzVolume("box2")
-     box2.CreateBoxVolume(concrete, 20*m, 14*m, dZ)
-     rockS = G4EzVolume("Rockshield")
-     rockS.Subtract(concrete,box2,box1)
-     rockSPhys = rockS.PlaceIt(G4ThreeVector(0.,0.,zEndOfAbsorb + dZ/2.),1,snoopy)
-    // around decay tunnel
-     dZD =  100*m + 30*m
-     box3 = G4EzVolume("box1")
-     box3.CreateBoxVolume(concrete, 30*m, 24.5*m, dZD)
-     box4 = G4EzVolume("box2")
-     box4.CreateBoxVolume(concrete, 20*m, 14.5*m, dZD)
-     rockD = G4EzVolume("RockDecayTunnel")
-     rockD.Subtract(concrete,box3,box4)
-     rockDPhys = rockD.PlaceIt(G4ThreeVector(0.,0.,zEndOfAbsorb + dZ + dZD/2.),1,snoopy)
-*/  
+// Concrete around first magnets
+
+    Double_t dZ = dZ1 + dZ2;
+    TGeoBBox *box1    = new TGeoBBox("box1",  2*m,2*m,dZ/2.);    
+    TGeoBBox *box2    = new TGeoBBox("box2", 10*m,7*m,dZ/2.);    
+    TGeoCompositeShape *compRockS = new TGeoCompositeShape("compRockS", "box2-box1");
+    TGeoVolume *rockS   = new TGeoVolume("rockS", compRockS, concrete);
+    rockS->SetLineColor(11);  // grey
+    rockS->SetTransparency(50);
+    top->AddNode(rockS, 1, new TGeoTranslation(0, 0, Z1 ));
+// around decay tunnel
+    Double_t dZD =  100*m + 30*m;
+    TGeoBBox *box3    = new TGeoBBox("box3", 15*m,12.25*m,dZD/2.);    
+    TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 7.25*m,dZD/2.);    
+    TGeoCompositeShape *compRockD = new TGeoCompositeShape("compRockD", "box3-box4");
+    TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
+    rockD->SetLineColor(11);  // grey
+    rockD->SetTransparency(50);
+    top->AddNode(rockD, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + dZ + dZD/2.));
     }
     else {
      cout << "design does not match implemented designs" << endl;
