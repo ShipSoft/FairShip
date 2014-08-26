@@ -1,6 +1,6 @@
 import shipunit as u
 import ROOT
-
+fDesign = 2
 class ShipGeo(): 
  def __init__(self,z=0):
   self.z = z
@@ -20,11 +20,21 @@ decayVolume          =  ShipGeo(0*u.cm)
 decayVolume.length   =   50*u.m
 
 muShield             =  ShipGeo(0*u.cm)
-muShield.length      =  70*u.m
-muShield.z           =  -decayVolume.length/2.-muShield.length/2.
+muShield.dZ1 = 2.5*u.m
+muShield.dZ2 = 3.5*u.m
+muShield.dZ3 = 3.0*u.m
+muShield.dZ4 = 3.0*u.m
+muShield.dZ5 = 2.5*u.m
+muShield.dZ6 = 2.5*u.m
+muShield.LE  = 5*u.m
+# for passive design, fDesign==1
+if fDesign == 1:  muShield.length =  70*u.m
+# for active design, fDesign==2
+if fDesign == 2:  muShield.length =  2*(muShield.dZ1+muShield.dZ2+muShield.dZ3+muShield.dZ4+muShield.dZ5+muShield.dZ6) + muShield.LE # leave some space for nu-tau detector   
+muShield.z  =  -decayVolume.length/2.-muShield.length/2.
 
 hadronAbsorber       =  ShipGeo(0*u.cm)
-hadronAbsorber.length=  3.50*u.m
+hadronAbsorber.length=  3.0*u.m
 hadronAbsorber.z     =  muShield.z - muShield.length/2. - hadronAbsorber.length/2.
 
 target               =  ShipGeo(0*u.cm)

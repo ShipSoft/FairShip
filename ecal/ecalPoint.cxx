@@ -16,8 +16,8 @@ ecalPoint::ecalPoint()
 ecalPoint::ecalPoint(Int_t trackID, Int_t detID,
                                    TVector3 pos, TVector3 mom,
                                    Double_t tof, Double_t length,
-                                   Double_t eLoss)
-  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
+                                   Double_t eLoss, Int_t pdgcode)
+  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss), fPdgCode(pdgcode)
 {
 }
 // -------------------------------------------------------------------------
@@ -30,7 +30,7 @@ ecalPoint::~ecalPoint() { }
 void ecalPoint::Print(const Option_t* opt) const
 {
   cout << "-I- ecalPoint: ecal point for track " << fTrackID
-       << " in detector " << fDetectorID << endl;
+       << "(PDG=" << fPdgCode << ") in detector " << fDetectorID << endl;
   cout << "    Position (" << fX << ", " << fY << ", " << fZ
        << ") cm" << endl;
   cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz

@@ -25,6 +25,14 @@ set(SRCS
 ecal.cxx
 ecalContFact.cxx
 ecalPoint.cxx
+ecalLightMap.cxx
+ecalCell.cxx
+ecalCellMC.cxx
+ecalModule.cxx
+ecalInf.cxx
+ecalStructure.cxx
+ecalStructureFiller.cxx
+ecalAnalysisSimple.cxx
 )
 
 Set(LINKDEF ecalLinkDef.h)

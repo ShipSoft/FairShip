@@ -32,10 +32,9 @@ def configure(run,ship_geo):
  
  Veto = ROOT.veto("Veto", ROOT.kTRUE)   # for the moment, contains all tracking stations / planes
  Veto.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
-
  run.AddModule(Veto)
  
- ecal = ROOT.ecal("Ecal", ROOT.kTRUE)
+ ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
  run.AddModule(ecal)
 
  Muon = ROOT.muon("Muon", ROOT.kTRUE)

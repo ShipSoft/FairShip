@@ -4,6 +4,7 @@ import ROOT,sys,getopt
 fMan = None
 fRun = None
 pdg  = ROOT.TDatabasePDG()
+g    = ROOT.gROOT 
 
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -14,7 +15,7 @@ import atexit
 atexit.register(pyExit)
 
 #-----User Settings:-----------------------------------------------
-mcEngine      ="TGeant4"
+mcEngine  = "TGeant4"
 simEngine = "Pythia8"
 # simEngine = "Genie"
 #
@@ -64,13 +65,16 @@ fMan.SetPriOnly(False)  # display everything
 
 #----------------------Tracks and points -------------------------------------
 verbose = 0  # 3 lot of output
-Track                = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
-TorinoDetectorPoints = ROOT.FairMCPointDraw("FairTestDetectorPoint", ROOT.kRed, ROOT.kFullSquare)
+Track          = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
+DetectorPoints = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
+EcalPoints = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
  
 fMan.AddTask(Track)
-fMan.AddTask(TorinoDetectorPoints)
+fMan.AddTask(DetectorPoints)
+fMan.AddTask(EcalPoints)
 fMan.Init()     
-
+fGeo = g.FindObjectAny("FAIRGeom")
+fGeo.SetVisLevel(-1)
 
 def search(lvdict,tag):
   for x in lvdict: 
@@ -84,55 +88,29 @@ def rename(name='ship.TGeant4.root'):
  t.Write()
  f.Close() 
 
-
 def mydebug():               
- g = ROOT.gROOT 
- f = g.GetFile("ship.TGeant4.root")
- t = f.Get('cbmsim')
+ t = g.FindObjectAny('cbmsim')
  nev = t.GetEntriesFast()
-# organization
- leaves = t.GetListOfLeaves()
- lvdict = {}
- key = 0
- for l in leaves:
-  lvdict[l.GetName()] = key
-  key+=1 
  t.GetEntry(0)
- search(lvdict,'cbmroot.Event.MCEventHeader.')
- leaves.At(lvdict['cbmroot.Event.MCEventHeader..fZ']).GetValue()
- search(lvdict,'cbmroot.Stack.MCTrack')
- leaves.At(lvdict['cbmroot.Stack.MCTrack_']).GetValue()
- 
 # Loop over Geo tracks  
- fT = ROOT.TClonesArray("TGeoTrack")
- t.SetBranchAddress("GeoTracks",fT)
- for i in range( nev ) :
+ for i in range( min(5,nev) ) :
    t.GetEntry(i)
-   for gTr in fT: 
+   for gTr in t.GeoTracks: 
     gTr.Print()
     part = gTr.GetParticle()
-    print 'xyz',gTr.GetPoint(0)[0] ,gTr.GetPoint(0)[1] ,gTr.GetPoint(0)[2] 
     lorv = ROOT.TLorentzVector()
-    print lorv.E(),lorv.Px(),lorv.Py(),lorv.Pz()
+    print 'xyz E pxpypz',gTr.GetPoint(0)[0],gTr.GetPoint(0)[1] ,gTr.GetPoint(0)[2],lorv.E(),lorv.Px(),lorv.Py(),lorv.Pz()
 # Loop over MC tracks  
- fMCT = ROOT.TClonesArray("FairMCTrack")
- t.SetBranchAddress("MCTrack",fMCT)
- for i in range( nev ) :
+ for i in range( min(5,nev) ) :
    t.GetEntry(i)
-   for gMCTr in fMCT: 
+   for gMCTr in t.MCTrack: 
     gMCTr.Print()
-    part = gTr.GetParticle()
-    print 'xyz',gTr.GetPoint(0)[0] ,gTr.GetPoint(0)[1] ,gTr.GetPoint(0)[2] 
-    lorv = ROOT.TLorentzVector()
-    print lorv.E(),lorv.Px(),lorv.Py(),lorv.Pz()
+    print  gMCTr.GetPdgCode(),gMCTr.GetMass(),gMCTr.GetP()
 # MC event header  
- fMCH = ROOT.TClonesArray("FairMCEventHeader")
- t.SetBranchAddress("MCEventHeader_",fMCH)
  for i in range( nev ) :
    t.GetEntry(i)
-
+   print t.MCEventHeader.GetEventID(),t.MCEventHeader.GetRunID(),t.MCEventHeader.GetZ()
 # geometrie
- gf   = ROOT.TFile('geofile_full.TGeant4.root')
- fGeo = gf.Get("FAIRGeom")
+ fGeo = g.FindObjectAny("FAIRGeom")
  cave = fGeo.GetTopVolume()
  cave.Draw('ogl')
