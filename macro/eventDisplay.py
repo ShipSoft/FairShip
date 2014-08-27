@@ -42,7 +42,16 @@ tag = simEngine+"-"+mcEngine+'_D'
 InputFile     ="ship."+tag+".root"
 ParFile       ="ship.params."+tag+".root"  
 OutFile	      ="tst."+tag+".root"
-    
+
+# draw Ecal yellow instead of black
+def ecalYellow():
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ ecal = fGeo.GetVolume("EcalModule3")
+ ecal.SetLineColor(ROOT.kYellow) 
+ evmgr.ElementChanged(geoscene,True,True)
 #----Load the default libraries------
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
@@ -72,9 +81,8 @@ EcalPoints = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
 fMan.AddTask(Track)
 fMan.AddTask(DetectorPoints)
 fMan.AddTask(EcalPoints)
-fMan.Init()     
-fGeo = g.FindObjectAny("FAIRGeom")
-fGeo.SetVisLevel(-1)
+fMan.Init(1,4,1000) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+ecalYellow()
 
 def search(lvdict,tag):
   for x in lvdict: 
@@ -114,3 +122,11 @@ def mydebug():
  fGeo = g.FindObjectAny("FAIRGeom")
  cave = fGeo.GetTopVolume()
  cave.Draw('ogl')
+# eve
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ topnode  = geoscene.FindChild('cave_1')
+ topnode.SetVisLevel(4)
+ evmgr.ElementChanged(geoscene,True,True)
+
