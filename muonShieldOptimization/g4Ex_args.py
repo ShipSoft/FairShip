@@ -55,6 +55,7 @@ def init():
   if args.work_dir is None:
     args.work_dir = get_work_dir(runnr)
   work_dir = args.work_dir
+  logger.info("params: %s" % args)
   logger.debug("work_dir: %s" % work_dir)
   logger.debug("command line arguments: %s", args)
   if os.path.exists(work_dir) and args.force:

@@ -1,7 +1,7 @@
 import os
 import re
 import cPickle
-import logging
+from contextlib import contextmanager
 
 
 def expand_env(string):
@@ -20,30 +20,112 @@ def expand_env(string):
     return string
 
 
+class _SingletonDict(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(_SingletonDict, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+    def __getitem__(cls, key):
+        return cls._instances[cls][key]
+
+    def delitem(cls, key):
+        del(cls._instances[cls][key])
+
+
+class ConfigRegistry(dict):
+    """
+    Singleton registry of all Configurations
+    """
+    __metaclass__ = _SingletonDict
+    recent_config_name = None
+
+    @staticmethod
+    def loadpy(filename, **kwargs):
+        with open(expand_env(filename)) as fh:
+            return ConfigRegistry.loadpys(fh.read(), **kwargs)
+
+    @staticmethod
+    def loadpys(config_string, **kwargs):
+        exec(config_string, kwargs)
+        return ConfigRegistry.get_latest_config()
+
+    @staticmethod
+    def get_latest_config():
+        return ConfigRegistry[ConfigRegistry.recent_config_name]
+
+    def __init__(self):
+        self.__dict__ = self
+
+    @staticmethod
+    @contextmanager
+    def register_config(name=None, base=None):
+        registry = ConfigRegistry()
+        if base is not None:
+            assert base in registry, "no base configuration (%s) found in the registry" % base
+            config = registry[base].clone()
+        else:
+            config = Config()
+        yield config
+        if name is not None:
+            registry[name] = config
+            ConfigRegistry.recent_config_name = name
+
+    @staticmethod
+    def keys():
+        registry = ConfigRegistry()
+        return [k for k, v in registry.iteritems()] 
+
+    @staticmethod
+    def get(name):
+        return ConfigRegistry[name]
+
+    @staticmethod
+    def clean():
+        for k in ConfigRegistry.keys():
+            ConfigRegistry.delitem(k)
+
+
 class AttrDict(dict):
+    """ 
+    dict class that can address its keys as fields, e.g.
+    d['key'] = 1
+    assert d.key == 1
+    """
     def __init__(self, *args, **kwargs):
         super(AttrDict, self).__init__(*args, **kwargs)
         self.__dict__ = self
+
+    def clone(self):
+        result = AttrDict()
+        for k, v in self.iteritems():
+            if isinstance(v, AttrDict):
+                result[k] = v.clone()
+            else:
+                result[k] = v
+        return result
 
 
 class Config(AttrDict):
     def __init__(self, *args, **kwargs):
         super(Config, self).__init__(*args, **kwargs)
-        self._logger = None
-
-    def set_logger(self, logger):
-        self._logger = logger
-        return self
-
-    def log(self, s, level=logging.INFO):
-        if self._logger is not None:
-            self._logger.log(level, s)
 
     def loads(self, buff):
         rv = cPickle.loads(buff)
         self.clear()
         self.update(rv)
         return self
+
+    def clone(self):
+        result = Config()
+        for k, v in self.iteritems():
+            if isinstance(v, AttrDict):
+                result[k] = v.clone()
+            else:
+                result[k] = v
+        return result
 
     def dumps(self):
         return cPickle.dumps(self)
@@ -56,41 +138,6 @@ class Config(AttrDict):
     def dump(self, filename):
         with open(expand_env(filename), "w") as fh:
             return fh.write(self.dumps())
-
-    def loadpy(self, filename):
-        with open(expand_env(filename)) as fh:
-            self.loadpys(fh.read())
-        return self
-
-    def loadpys(self, config_string):
-        for s in config_string.splitlines():
-            if re.match("\s*#", s) or re.match("^\s*$", s):
-                continue
-            # TODO add parse for "import ROOT as r" or "from A import b"
-            if re.search("import .*", s):
-                self.log(s, logging.DEBUG)
-                exec(s)
-                continue
-            m = re.search("^\s*([^\s]+)\s*=\s*(.*)", s)
-            if m is None or len(m.groups()) != 2:
-                m = re.search("^\s*if\s+([^:]+):\s*([^\s]+)\s*=\s*(.*)", s)
-                if m is None or len(m.groups()) != 3:
-                    self.log("skipping line: " + s, logging.DEBUG)
-                    pass
-                else:
-                    self.log("IF " + s, logging.DEBUG)
-                    if eval(m.groups()[0]):
-                        s = "%s = %s" % (m.groups()[1], m.groups()[2])
-                        self.log(s, logging.DEBUG)
-                        exec(s)
-            else:
-                if m.groups()[0].startswith('self'):
-                    self.log(s, logging.DEBUG)
-                    exec(s)  # TODO: add some input verification
-                else:
-                    self.log("'%s' = %s" % m.groups(), logging.DEBUG)
-                    self.__setitem__(m.groups()[0], eval(m.groups()[1]))
-        return self
 
     def __str__(self):
         return "ShipGeoConfig:\n  " + "\n  ".join(["%s: %s" % (k, self[k].__str__()) for k in sorted(self.keys()) if not k.startswith("_")])
