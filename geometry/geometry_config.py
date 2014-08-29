@@ -5,7 +5,13 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # muShieldDesign = 2  # 1=passive 2=active
 # targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
 
+if "muShieldDesign" not in globals():
+    muShieldDesign = 2
+if "targetOpt" not in globals():
+    targetOpt = 5
+
 with ConfigRegistry.register_config("basic") as c:
+    # global muShieldDesign, targetOpt
     c.vetoStation = AttrDict(z=-2390.*u.cm)
     c.TrackStation1 = AttrDict(z=1510.*u.cm)
     c.TrackStation2 = AttrDict(z=1710.*u.cm)
@@ -30,9 +36,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.dZ6 = 2.5*u.m
     c.muShield.LE  = 5*u.m
     # for passive design, fDesign==1
-    if muShieldDesign == 1:  c.muShield.length =  70*u.m
+    if muShieldDesign == 1: 
+        c.muShield.length =  70*u.m
     # for active design, fDesign==2
-    if muShieldDesign == 2:  c.muShield.length =  2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE # leave some space for nu-tau detector   
+    if muShieldDesign == 2:  
+        c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE  # leave some space for nu-tau detector   
+
     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
