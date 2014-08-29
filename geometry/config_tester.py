@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import json
 from ShipGeoConfig import ConfigRegistry
 import logging
 import argparse
@@ -13,6 +14,9 @@ def parse_arguments():
     ap = argparse.ArgumentParser(
         description='test configuration file')
     ap.add_argument('-d', '--debug', action='store_true')
+    ap.add_argument('-p', '--params', type=json.loads, 
+                    help="""config parameters in json form '{"a": 1, "b": 2}' """, default=None)
+
     ap.add_argument('config_file', help='config file to test')
     args = ap.parse_args()
     if args.debug:
@@ -22,8 +26,11 @@ def parse_arguments():
 
 
 def main(arguments):
-    logger.info(arguments.config_file)
-    ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
+    logger.info("file: %s" % arguments.config_file)
+    if arguments.params is not None:
+        logger.info("paramters: %s" % arguments.params)
+    ConfigRegistry.loadpy(arguments.config_file, **arguments.params)
+    # ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
     for k, v in ConfigRegistry().iteritems():
         print "%s: %s" % (k, v)
 
