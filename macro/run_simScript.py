@@ -2,12 +2,7 @@
 import ROOT,os,sys,getopt,time
 import shipunit as u
 import shipRoot_conf
-import ShipGeoConfig
-
-# the following two options are for the moment hard coded in geometry/geometry_config.py
-# - muShieldDesign = 2  # 1=passive 2=active
-# - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
-#
+from ShipGeoConfig import ConfigRegistry
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
@@ -55,7 +50,10 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
+# - muShieldDesign = 2  # 1=passive 2=active
+# - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
+#
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",muShieldDesign=2,targetOpt=5)
 
 # Output file name
 tag = simEngine+"-"+mcEngine
