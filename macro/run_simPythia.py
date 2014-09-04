@@ -6,9 +6,13 @@ inclusive = False  # True = all processes if False only ccbar -> HNL
 
 #
 import shipunit as u
-import ShipGeoConfig,shipRoot_conf
+import shipRoot_conf
+from ShipGeoConfig import ConfigRegistry
 shipRoot_conf.configure()
-ShipGeo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
+# - muShieldDesign = 2  # 1=passive 2=active
+# - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
+#
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",muShieldDesign=2,targetOpt=5)
 
 # Output file name
 tag = simEngine+"-"+mcEngine

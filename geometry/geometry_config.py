@@ -35,6 +35,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.dZ5 = 2.5*u.m
     c.muShield.dZ6 = 2.5*u.m
     c.muShield.LE  = 5*u.m
+    c.muShieldDesign = muShieldDesign
     # for passive design, fDesign==1
     if muShieldDesign == 1: 
         c.muShield.length =  70*u.m
@@ -52,7 +53,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.sl            =  1*u.cm  # air slit total length
     c.target.length        =  50*u.cm + c.target.sl * (targetOpt-1) 
     c.target.z             =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
-
+    c.targetOpt            =  targetOpt 
     # interaction point, start of target
     c.target.z0  =  c.target.z - c.target.length/2.
 

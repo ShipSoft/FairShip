@@ -95,13 +95,13 @@ void ShipTargetStation::ConstructGeometry()
     }
     
     // Absorber made of iron
-    TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 100, fAbsorberLength/2.);  // 1890
+    TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
     absorber->SetLineColor(42); // brown / light red
     top->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ));
 
     // put iron shielding around target
-    TGeoVolume *moreShielding = gGeoManager->MakeTube("MoreShielding", iron, 30, 100, fTargetLength/2.);  
-    absorber->SetLineColor(42); // brown / light red
+    TGeoVolume *moreShielding = gGeoManager->MakeTube("MoreShielding", iron, 30, 400, fTargetLength/2.);  
+    absorber->SetLineColor(43); //  
     top->AddNode(moreShielding, 1, new TGeoTranslation(0, 0, fTargetZ));
 
     cout << "target and absorber postioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
