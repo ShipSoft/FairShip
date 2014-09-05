@@ -13,16 +13,16 @@ MuonBackGenerator::MuonBackGenerator() {}
 // -------------------------------------------------------------------------
 
 // -----   Default constructor   -------------------------------------------
-Bool_t MuonBackGenerator::Init(const char* fileName) {
+Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent = 0) {
   fLogger = FairLogger::GetLogger();  
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);
   if (fInputFile->IsZombie()) {
     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");  
   }
+  fn = firstEvent; 
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
   fNevents = fTree->GetEntries();
-  fn = 0;
   fTree->SetBranchAddress("id",&id);                // particle id
   fTree->SetBranchAddress("parentid",&parentid);    // parent id, could be different   
   fTree->SetBranchAddress("pythiaid",&pythiaid);    // pythiaid original particle

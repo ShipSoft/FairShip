@@ -16,7 +16,7 @@ GenieGenerator::GenieGenerator() {}
 // -------------------------------------------------------------------------
 
 // -----   Default constructor   -------------------------------------------
-Bool_t GenieGenerator::Init(const char* fileName) {
+Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent = 0) {
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);
@@ -25,7 +25,7 @@ Bool_t GenieGenerator::Init(const char* fileName) {
   }
   fTree = (TTree *)fInputFile->Get("gst");
   fNevents = fTree->GetEntries();
-  fn = 0;
+  fn = firstEvent; 
   fTree->SetBranchAddress("Ev",&pxl);    // incoming neutrino energy
   fTree->SetBranchAddress("pxv",&pxv);     
   fTree->SetBranchAddress("pyv",&pyv);     

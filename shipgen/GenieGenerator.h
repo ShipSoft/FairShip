@@ -21,7 +21,7 @@ class GenieGenerator : public FairGenerator
   
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);  
-  virtual Bool_t Init(const char*); //!
+  virtual Bool_t Init(const char*, int); //!
   Int_t GetNevents();
  private:
   

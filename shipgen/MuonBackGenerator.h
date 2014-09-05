@@ -20,16 +20,16 @@ class MuonBackGenerator : public FairGenerator
   
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);  
-  virtual Bool_t Init(const char*); //!
-  Int_t GetNevents();
-  void CloseFile();
+  virtual Bool_t Init(const char*, int); //!
+  Int_t GetNevents();//!
+  void CloseFile();//!
  private:
   
  protected:
   Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz;
-  TFile* fInputFile;
+  TFile* fInputFile;    //! 
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
-  TTree* fTree;
+  TTree* fTree;         //! 
   int fNevents;
   int fn;
   ClassDef(MuonBackGenerator,1);
