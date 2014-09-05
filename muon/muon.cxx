@@ -9,6 +9,8 @@
 #include "FairRootManager.h"
 #include "FairGeoLoader.h"
 #include "FairGeoInterface.h"
+#include "FairGeoMedia.h"
+#include "FairGeoBuilder.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
 #include "ShipDetectorList.h"
@@ -69,7 +71,23 @@ void muon::Initialize()
 //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
 //  muonGeoPar* par=(muonGeoPar*)(rtdb->getContainer("muonGeoPar"));
 }
+// -----   Private method InitMedium 
+Int_t muon::InitMedium(const char* name) 
+{
+   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
+   static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
+   static FairGeoMedia *media=geoFace->getMedia();
+   static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
 
+   FairGeoMedium *ShipMedium=media->getMedium(name);
+
+   if (!ShipMedium)
+   {
+     Fatal("InitMedium","Material %s not defined in media file.", name);
+     return -1111;
+   }
+   return geoBuild->createMedium(ShipMedium);
+}
 Bool_t  muon::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
@@ -146,13 +164,8 @@ void muon::ConstructGeometry()
       implement here you own way of constructing the geometry. */
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
-    TGeoMedium *Al =gGeoManager->GetMedium("Al");
-    
-    
-    if(Al==0){
-        TGeoMaterial *matAl     = new TGeoMaterial("Al", 26.98, 13, 2.7);
-        Al     = new TGeoMedium("Al", 2, matAl);
-    }
+    InitMedium("Aluminum");
+    TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
     
     TGeoBBox *detbox1 = new TGeoBBox("detbox1", 250, 250, 10);
     TGeoBBox *detbox2 = new TGeoBBox("detbox2", 245, 245, 10);

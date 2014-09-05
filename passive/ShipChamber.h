@@ -15,6 +15,7 @@ class ShipChamber : public FairModule
     virtual ~ShipChamber();
     void ConstructGeometry();
     ClassDef(ShipChamber,1)
+    Int_t InitMedium(const char* name);
 
 };
 

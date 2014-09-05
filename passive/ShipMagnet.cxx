@@ -59,12 +59,7 @@ void ShipMagnet::ConstructGeometry()
   */
    
     TGeoVolume *top=gGeoManager->GetTopVolume();
-    
-    // define some materials
-    TGeoMaterial *matFe     = new TGeoMaterial("Fe", 55.84, 26, 7.9);
-
-    // define some media
-    TGeoMedium *Fe     = new TGeoMedium("Fe", 3, matFe);
+    TGeoMedium *Fe  = gGeoManager->GetMedium("iron");
     
 
     // magnet yoke

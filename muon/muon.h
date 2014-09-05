@@ -92,6 +92,7 @@ class muon: public FairDetector
 
     muon(const muon&);
     muon& operator=(const muon&);
+    Int_t InitMedium(const char* name);
 
     ClassDef(muon,1)
 };

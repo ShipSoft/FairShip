@@ -9,6 +9,8 @@
 #include "TString.h"                    // for TString
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
+#include "FairGeoMedia.h"
+#include "FairGeoBuilder.h"
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
@@ -29,18 +31,29 @@ ShipChamber::ShipChamber(const char* name, const char* Title)
   : FairModule(name ,Title)
 {
 }
+// -----   Private method InitMedium 
+Int_t ShipChamber::InitMedium(const char* name) 
+{
+   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
+   static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
+   static FairGeoMedia *media=geoFace->getMedia();
+   static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
 
+   FairGeoMedium *ShipMedium=media->getMedium(name);
+
+   if (!ShipMedium)
+   {
+     Fatal("InitMedium","Material %s not defined in media file.", name);
+     return -1111;
+   }
+   return geoBuild->createMedium(ShipMedium);
+}
 void ShipChamber::ConstructGeometry()
 {
 
     TGeoVolume *top=gGeoManager->GetTopVolume();
-    TGeoMedium *Al =gGeoManager->GetMedium("Al");
-    if (Al==0){
-        TGeoMaterial *matAl     = new TGeoMaterial("Al", 26.98, 13, 2.7);
-        Al= new TGeoMedium("Al", 2, matAl);
-    }
-    
-    
+    InitMedium("Aluminum");
+    TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
     // first part of vacuum chamber up to veto station
     TGeoVolume *tub1 = gGeoManager->MakeTube("tub1", Al, 245, 250, 50);
     tub1->SetLineColor(18);  // silver/gray
