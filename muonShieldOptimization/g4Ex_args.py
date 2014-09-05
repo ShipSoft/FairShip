@@ -58,12 +58,19 @@ def init():
   logger.info("params: %s" % args)
   logger.debug("work_dir: %s" % work_dir)
   logger.debug("command line arguments: %s", args)
-  if os.path.exists(work_dir) and args.force:
-    shutil.rmtree(work_dir)
-  elif os.path.exists(work_dir) and not args.force:
-    logger.error("output directory '%s' already exists. use '-f' to overwrite" % work_dir)
-    exit(1)
-  os.mkdir(work_dir)
+  if os.path.exists(work_dir):
+    logger.warn("output directory '%s' already exists." % work_dir)
+    if args.force:
+      logger.warn("...cleaning")
+      for root, dirs, files in os.walk(work_dir):
+        for f in files:
+          os.unlink(os.path.join(root, f))
+        for d in dirs:
+          shutil.rmtree(os.path.join(root, d))
+    else:
+      logger.warn("...use '-f' option to overwrite it")
+  else:
+    os.makedirs(work_dir)
 
 init()
 os.chdir(work_dir)
