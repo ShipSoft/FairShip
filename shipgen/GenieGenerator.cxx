@@ -14,9 +14,12 @@ using std::endl;
 // -----   Default constructor   -------------------------------------------
 GenieGenerator::GenieGenerator() {}
 // -------------------------------------------------------------------------
-
 // -----   Default constructor   -------------------------------------------
-Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent = 0) {
+Bool_t GenieGenerator::Init(const char* fileName) {
+ Init(fileName, 0); 
+}
+// -----   Default constructor   -------------------------------------------
+Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);

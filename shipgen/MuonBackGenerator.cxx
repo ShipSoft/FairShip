@@ -11,9 +11,12 @@
 // -----   Default constructor   -------------------------------------------
 MuonBackGenerator::MuonBackGenerator() {}
 // -------------------------------------------------------------------------
-
 // -----   Default constructor   -------------------------------------------
-Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent = 0) {
+Bool_t MuonBackGenerator::Init(const char* fileName) {
+ Init(fileName, 0); 
+}
+// -----   Default constructor   -------------------------------------------
+Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
   fLogger = FairLogger::GetLogger();  
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);
@@ -23,6 +26,8 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent = 0) {
   fn = firstEvent; 
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
   fNevents = fTree->GetEntries();
+  // count only events with muons
+  // fMuons  = fTree->Draw("id","abs(id)==13","goff");
   fTree->SetBranchAddress("id",&id);                // particle id
   fTree->SetBranchAddress("parentid",&parentid);    // parent id, could be different   
   fTree->SetBranchAddress("pythiaid",&pythiaid);    // pythiaid original particle

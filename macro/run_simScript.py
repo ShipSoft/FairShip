@@ -7,6 +7,7 @@ from ShipGeoConfig import ConfigRegistry
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100 
+firstEvent   = 0
 inclusive    = False  # True = all processes if False only ccbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
@@ -14,7 +15,7 @@ inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","nEvents=", "display", "seed="])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","nEvents=", "display", "seed=", "firstEvent="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -36,6 +37,8 @@ for o, a in opts:
             simEngine = "MuonBack"
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
+        if o in ("-i", "--firstEvent="):
+            firstEvent = int(a)
         if o in ("-s", "--seed="):
             theSeed = int(a)
         if o in ("-f"):
@@ -106,7 +109,7 @@ if simEngine == "Genie":
  # pointZero =   0.  # for testing
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
- Geniegen.Init(inputFile) 
+ Geniegen.Init(inputFile,firstEvent) 
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input'
@@ -122,7 +125,7 @@ if simEngine == "Ntuple":
 # reading previously processed muon events, [-50m - 50m]
  primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
  Ntuplegen = ROOT.NtupleGenerator()
- Ntuplegen.Init(inputFile) 
+ Ntuplegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Ntuplegen)
  nEvents = min(nEvents,Ntuplegen.GetNevents())
  print 'Process ',nEvents,' from input file'
@@ -131,7 +134,7 @@ if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation, [-50m - 50m]
  primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
  MuonBackgen = ROOT.MuonBackGenerator()
- MuonBackgen.Init(inputFile) 
+ MuonBackgen.Init(inputFile,firstEvent)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file'
@@ -153,10 +156,15 @@ if eventDisplay:
   trajFilter = ROOT.FairTrajFilter.Instance()
   trajFilter.SetStepSizeCut(10*u.cm);  
   trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 100.*u.m)
-  trajFilter.SetMomentumCutP(10*u.MeV)
+  trajFilter.SetMomentumCutP(0.5*u.GeV)
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
+# manipulate G4 geometry to enable magnetic field in active shielding, VMC can't do it.
+if ship_geo.muShieldDesign == 2:
+ import geomGeant4
+ geomGeant4.setMagnetField()
+
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # -----Runtime database---------------------------------------------

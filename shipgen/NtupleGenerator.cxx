@@ -13,9 +13,12 @@ using std::endl;
 // -----   Default constructor   -------------------------------------------
 NtupleGenerator::NtupleGenerator() {}
 // -------------------------------------------------------------------------
-
 // -----   Default constructor   -------------------------------------------
-Bool_t NtupleGenerator::Init(const char* fileName, const int firstEvent = 0) {
+Bool_t NtupleGenerator::Init(const char* fileName) {
+ Init(fileName, 0); 
+}
+// -----   Default constructor   -------------------------------------------
+Bool_t NtupleGenerator::Init(const char* fileName, const int firstEvent) {
   cout << "Info NtupleGenerator: Opening input file " << fileName << endl;
   fInputFile  = new TFile(fileName);
   if (fInputFile->IsZombie()) {
