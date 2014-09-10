@@ -35,7 +35,7 @@ class ShipMCTrack : public TObject
     /**  Standard constructor  **/
     ShipMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
                 Double_t pz, Double_t x, Double_t y, Double_t z,
-                Double_t t, Int_t nPoints);
+                Double_t t, Int_t nPoints, Double_t w);
 
     /**  Copy constructor  **/
     ShipMCTrack(const ShipMCTrack& track);
@@ -68,6 +68,7 @@ class ShipMCTrack : public TObject
     Double_t GetPt()       const { return TMath::Sqrt(fPx*fPx+fPy*fPy); }
     Double_t GetP() const { return TMath::Sqrt(fPx*fPx+fPy*fPy+fPz*fPz); }
     Double_t GetRapidity() const;
+    Double_t GetWeight()   const;
     void GetMomentum(TVector3& momentum);
     void Get4Momentum(TLorentzVector& momentum);
     void GetStartVertex(TVector3& vertex);
@@ -97,6 +98,9 @@ class ShipMCTrack : public TObject
     /** Coordinates of start vertex [cm, ns]  **/
     Double32_t fStartX, fStartY, fStartZ, fStartT;
 
+    /** weight **/
+    Double32_t fW;
+
     /**  Bitvector representing the number of MCPoints for this track in
      **  each subdetector. The detectors are represented by
      **  REF:         Bit  0      (1 bit,  max. value  1)
@@ -115,7 +119,7 @@ class ShipMCTrack : public TObject
     Int_t fNPoints;
 
 
-    ClassDef(ShipMCTrack,2);
+    ClassDef(ShipMCTrack,3);
 
 };
 

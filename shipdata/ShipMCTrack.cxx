@@ -21,7 +21,8 @@ ShipMCTrack::ShipMCTrack()
     fStartY(0.),
     fStartZ(0.),
     fStartT(0.),
-    fNPoints(0)
+    fNPoints(0),
+    fW(1.)
 {
 }
 // -------------------------------------------------------------------------
@@ -31,7 +32,7 @@ ShipMCTrack::ShipMCTrack()
 // -----   Standard constructor   ------------------------------------------
 ShipMCTrack::ShipMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
                          Double_t py, Double_t pz, Double_t x, Double_t y,
-                         Double_t z, Double_t t, Int_t nPoints = 0)
+                         Double_t z, Double_t t, Int_t nPoints, Double_t w)
   : TObject(),
     fPdgCode(pdgCode),
     fMotherId(motherId),
@@ -42,7 +43,8 @@ ShipMCTrack::ShipMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
     fStartY(y),
     fStartZ(z),
     fStartT(t),
-    fNPoints(nPoints)
+    fNPoints(nPoints),
+    fW(w)
 {
 }
 // -------------------------------------------------------------------------
@@ -61,7 +63,8 @@ ShipMCTrack::ShipMCTrack(const ShipMCTrack& track)
     fStartY(track.fStartY),
     fStartZ(track.fStartZ),
     fStartT(track.fStartT),
-    fNPoints(track.fNPoints)
+    fNPoints(track.fNPoints),
+    fW(track.GetWeight())
 {
 }
 // -------------------------------------------------------------------------
@@ -80,7 +83,8 @@ ShipMCTrack::ShipMCTrack(TParticle* part)
     fStartY(part->Vy()),
     fStartZ(part->Vz()),
     fStartT(part->T()*1e09),
-    fNPoints(0)
+    fNPoints(0),
+    fW(part->GetWeight())
 {
 }
 // -------------------------------------------------------------------------
@@ -122,6 +126,12 @@ Double_t ShipMCTrack::GetMass() const
 // -------------------------------------------------------------------------
 
 
+// -----   Public method GetWeight   -------------------------------------
+Double_t ShipMCTrack::GetWeight() const
+{
+  return fW;
+}
+// -------------------------------------------------------------------------
 
 
 // -----   Public method GetRapidity   -------------------------------------
