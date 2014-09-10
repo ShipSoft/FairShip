@@ -92,7 +92,11 @@ Int_t veto::InitMedium(const char* name)
      Fatal("InitMedium","Material %s not defined in media file.", name);
      return -1111;
    }
-   return geoBuild->createMedium(ShipMedium);
+   TGeoMedium* medium=gGeoManager->GetMedium(name);
+  if (medium!=NULL)
+    return ShipMedium->getMediumIndex();
+
+  return geoBuild->createMedium(ShipMedium);
 }
 // -------------------------------------------------------------------------
 

@@ -46,6 +46,9 @@ Int_t ShipChamber::InitMedium(const char* name)
      Fatal("InitMedium","Material %s not defined in media file.", name);
      return -1111;
    }
+   TGeoMedium* medium=gGeoManager->GetMedium(name);
+   if (medium!=NULL)
+     return ShipMedium->getMediumIndex();
    return geoBuild->createMedium(ShipMedium);
 }
 void ShipChamber::ConstructGeometry()
