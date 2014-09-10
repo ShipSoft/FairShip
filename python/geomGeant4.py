@@ -39,6 +39,11 @@ def setMagnetField():
           lvl.SetFieldManager(ConRFieldMgr,True) 
     g4Run = G4RunManager.GetRunManager()
     g4Run.GeometryHasBeenModified(True)
+def getRunManager():
+ return G4RunManager.GetRunManager()
+def startUI():
+ import G4interface
+ G4interface.StartUISession() 
 def debug():
   gt = gTransportationManager
   gn = gt.GetNavigatorForTracking()
