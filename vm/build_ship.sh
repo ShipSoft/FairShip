@@ -2,7 +2,7 @@
 
 vrun=`dirname $0`/run.sh
 
-BUILD_DIR="/opt/ship/build"
+BUILD_DIR="/opt/ship/FairShip/build"
 
 if [ "$1" = "-r" ] ; then
 	$vrun "rm -rf $BUILD_DIR"

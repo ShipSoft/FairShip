@@ -18,5 +18,6 @@ else
 	export VAGRANT_CWD=$BASEDIR
 	export VAGRANT_DOTFILE_PATH=$BASEDIR
 	vagrant up --provider=docker
+	echo "hint: export DOCKER_HOST=tcp://:2375"
 fi
 
