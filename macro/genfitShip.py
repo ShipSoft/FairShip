@@ -46,11 +46,6 @@ class makeHitList:
  def __init__(self,fn):
   self.sTree     = fn.cbmsim
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
-  self.MCTracks       = ROOT.TClonesArray("FairMCTrack")
-  self.TrackingHits   = ROOT.TClonesArray("vetoPoint")
-# read Ship Geant4 root file with entry/exit points:
-  self.sTree.SetBranchAddress("vetoPoint", self.TrackingHits)
-  self.sTree.SetBranchAddress("MCTrack", self.MCTracks)
   fGeo = ROOT.gGeoManager  
   self.vols = fGeo.GetListOfVolumes()
   self.layerType = {}  # xuvx , uv=+-5 degrees
@@ -119,13 +114,13 @@ class makeHitList:
  def execute(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
-  nHits = self.TrackingHits.GetEntriesFast() 
+  nHits = self.sTree.vetoPoint.GetEntriesFast() 
   hitPosLists = {}
   self.SmearedHits.Clear()
   self.fGenFitArray.Clear()
   self.fitTrack2MC.clear()
   for i in range(nHits):
-    ahit = self.TrackingHits.At(i)
+    ahit = self.sTree.vetoPoint.At(i)
     detname = self.vols[ahit.GetDetectorID()-1].GetName()
     # print 'execute',detname,ahit.GetDetectorID()-1
     if detname.find('STr')<0 and detname.find('Sv')<0: 
@@ -178,8 +173,8 @@ for iEvent in range(0, SHiP.nEvents):
   if atrack < 0: continue # these are hits not assigned to MC track because low E cut
   meas = hitPosLists[atrack]
   nM = meas.size()
-  if debug: print iEvent,nM,atrack,SHiP.MCTracks[atrack].GetP()
-  pdg    = SHiP.MCTracks[atrack].GetPdgCode()
+  if debug: print iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP()
+  pdg    = SHiP.sTree.MCTrack[atrack].GetPdgCode()
   charge = PDG.GetParticle(pdg).Charge()/(3.)
   posM = ROOT.TVector3(0, 0, 0)
   momM = ROOT.TVector3(0,0,10.*u.GeV)
@@ -224,7 +219,7 @@ for iEvent in range(0, SHiP.nEvents):
   theTrack = ROOT.genfit.Track(fitTrack[atrack])
   SHiP.fGenFitArray[nTrack] = theTrack
   SHiP.fitTrack2MC.push_back(atrack)
-  if debug: print 'save track',theTrack,chi2
+  if debug:print 'save track',theTrack,chi2
 # make tracks persistent
  if debug: print 'call Fill', len(SHiP.fGenFitArray),nTrack,SHiP.fGenFitArray.GetEntries()
  SHiP.fitTracks.Fill()

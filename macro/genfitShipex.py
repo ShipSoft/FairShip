@@ -44,8 +44,8 @@ atexit.register(pyExit)
 from array import array
 import shipunit as u
 import rootUtils as ut
-import ShipGeoConfig
-ShipGeo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
+from ShipGeoConfig import ConfigRegistry
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",muShieldDesign=2,targetOpt=5)
 
 
 def makePlots():
@@ -111,11 +111,6 @@ class makeHitList:
   else:          self.f = ROOT.TFile(fn)
   self.sTree     = self.f.cbmsim
   self.nEvents   =  min(self.sTree.GetEntries(),nEvents)
-  self.MCTracks       = ROOT.TClonesArray("FairMCTrack")
-  self.TrackingHits   = ROOT.TClonesArray("vetoPoint")
-# read Ship Geant4 root file with entry/exit points:
-  self.sTree.SetBranchAddress("vetoPoint", self.TrackingHits)
-  self.sTree.SetBranchAddress("MCTrack", self.MCTracks)
   fGeo = ROOT.gGeoManager  
   self.vols = fGeo.GetListOfVolumes()
   self.layerType = {}  # xuvx , uv=+-5 degrees
@@ -167,10 +162,10 @@ class makeHitList:
  def execute(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
-  nHits = self.TrackingHits.GetEntriesFast() 
+  nHits = self.sTree.vetoPoint.GetEntriesFast() 
   hitPosLists = {}
   for i in range(nHits):
-    ahit = self.TrackingHits.At(i)
+    ahit = self.sTree.vetoPoint.At(i)
     detname = self.vols[ahit.GetDetectorID()-1].GetName()
     # print 'execute',detname,ahit.GetDetectorID()-1
     if detname.find('STr')<0: continue  # not a sensitive detector
@@ -213,10 +208,9 @@ for iEvent in range(0, SHiP.nEvents):
   if atrack < 0: continue # these are hits not assigned to MC track because low E cut
   meas = hitPosLists[atrack]
   nM = meas.size()
-  if debug: print iEvent,nM,atrack,SHiP.MCTracks[atrack].GetP()
-
+  if debug: print iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP()
   if nM < 8 : continue
-  pdg    = SHiP.MCTracks[atrack].GetPdgCode()
+  pdg    = SHiP.sTree.MCTrack[atrack].GetPdgCode()
   charge = PDG.GetParticle(pdg).Charge()/(3.)
   posM = ROOT.TVector3(0, 0, 0)
   momM = ROOT.TVector3(0,0,10.*u.GeV)
@@ -245,13 +239,14 @@ for iEvent in range(0, SHiP.nEvents):
   if not fitTrack[atrack].checkConsistency():
    print 'Problem with track before fit, not consistent',fitTrack
 # do the fit
-  try:    fitter.processTrack(fitTrack[atrack])
-  except: continue   
+  if nM > 8 : 
+   try:    fitter.processTrack(fitTrack[atrack])
+   except: continue   
 #check
-  if not fitTrack[atrack].checkConsistency():
-   print 'Problem with track after fit, not consistent',fitTrack
-   continue
-  if not withHists: continue
+   if not fitTrack[atrack].checkConsistency():
+    print 'Problem with track after fit, not consistent',fitTrack
+    continue
+   if not withHists: continue
   # monitoring
   fitStatus   = fitTrack[atrack].getFitStatus()
   chi2 = fitStatus.getChi2()
@@ -264,7 +259,7 @@ for iEvent in range(0, SHiP.nEvents):
    rc = fitTrack.pop(atrack)
    continue  
   P = fittedState.getMomMag()
-  Ptruth = SHiP.MCTracks[atrack].GetP()
+  Ptruth = SHiP.sTree.MCTrack[atrack].GetP()
   delPOverP = (Ptruth - P)/Ptruth
   h['delPOverP'].Fill(Ptruth,delPOverP)
   if chi2<25: h['delPOverP2'].Fill(Ptruth,delPOverP)
@@ -272,7 +267,7 @@ for iEvent in range(0, SHiP.nEvents):
   trackDir = fittedState.getDir()
   trackPos = fittedState.getPos()
   vx = ROOT.TVector3()
-  SHiP.MCTracks[atrack].GetStartVertex(vx)
+  SHiP.sTree.MCTrack[atrack].GetStartVertex(vx)
   t = 0
   for i in range(3):   t += trackDir(i)*(vx(i)-trackPos(i)) 
   dist = 0
@@ -291,7 +286,7 @@ for iEvent in range(0, SHiP.nEvents):
      mom = xx.getMom()   
      PosDir[atrack] = [xx.getPos(),xx.getDir()]
      LV[atrack] = ROOT.TLorentzVector()
-     pgdCode = SHiP.MCTracks[atrack].GetPdgCode()
+     pgdCode = SHiP.sTree.MCTrack[atrack].GetPdgCode()
      mass = PDG.GetParticle(pgdCode).Mass()
      E = ROOT.TMath.Sqrt(mom.Mag2()+mass**2) 
      LV[atrack].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)

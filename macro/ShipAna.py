@@ -24,7 +24,8 @@ sTree = f.cbmsim
 ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
 
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-gMan  = tgeom.Import("geofile_full.Pythia8-TGeant4.root")
+geofile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
+gMan  = tgeom.Import(geofile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
@@ -35,15 +36,6 @@ fM.init(bfield)
 ev     = ut.PyListOfLeaves()
 leaves = sTree.GetListOfLeaves()
 names  = ut.setAttributes(ev, leaves)
-
-MCTracks       = ROOT.TClonesArray("FairMCTrack")
-TrackingHits   = ROOT.TClonesArray("vetoPoint")
-fitTrack2MC    = ROOT.std.vector('int')()
-sTree.SetBranchAddress("vetoPoint", TrackingHits)
-sTree.SetBranchAddress("MCTrack", MCTracks)
-for x in sTree.GetListOfBranches():
- if x.GetName() == "fitTrack2MC":
-  sTree.SetBranchAddress("fitTrack2MC", fitTrack2MC)
 
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.2,0.2)
@@ -125,8 +117,8 @@ def myEventLoop():
    fittedState = atrack.getFittedState()
    h['chi2'].Fill(chi2)
    P = fittedState.getMomMag()
-   mcPartKey = fitTrack2MC[key] 
-   mcPart    = MCTracks[mcPartKey]
+   mcPartKey = sTree.fitTrack2MC[key] 
+   mcPart    = sTree.MCTrack[mcPartKey]
    Ptruth    = mcPart.GetP()
    delPOverP = (Ptruth - P)/Ptruth
    h['delPOverP'].Fill(Ptruth,delPOverP)
