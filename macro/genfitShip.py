@@ -36,8 +36,8 @@ atexit.register(pyExit)
 from array import array
 import shipunit as u
 import rootUtils as ut
-import ShipGeoConfig
-ShipGeo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
+from ShipGeoConfig import ConfigRegistry
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",muShieldDesign=2,targetOpt=5)
 
 fout = ROOT.TFile(outFile,'update')
 
@@ -152,7 +152,8 @@ geoMat =  ROOT.genfit.TGeoMaterialInterface()
 PDG = ROOT.TDatabasePDG.Instance()
 # init geometry and mag. field
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-tgeom.Import("geofile_full.Pythia8-TGeant4.root")
+geofile = inputFile.replace('ship.','geofile_full.')
+tgeom.Import(geofile)
 #
 bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z )
 fM = ROOT.genfit.FieldManager.getInstance()
