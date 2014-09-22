@@ -29,4 +29,4 @@ LOCAL_SHIP=/vagrant
 [ -d $LOCAL_SHIP ] && LOCAL_SHIP=$( readlink -f `dirname $0`/".." )
 
 $dclient ps > /dev/null 2>&1 || halt "cannot connect to docker. is it running?"
-$dclient run -ti -v $LOCAL_SHIP:/opt/ship -p 5900:5900 $DNS_OPTS -w /opt/ship --rm $IMAGE "$*"
+$dclient run -ti -v $LOCAL_SHIP:/opt/ship/FairShip -p 5900:5900 $DNS_OPTS -w /opt/ship/FairShip --rm $IMAGE "$*"
