@@ -9,6 +9,7 @@ gTransportationManager = G4TransportationManager.GetTransportationManager()
 
 
 def setMagnetField():
+    print 'setMagnetField() called'
     ironField = G4Unit.tesla * 1.85
     magFieldIron = G4UniformMagField(G4ThreeVector(0.,ironField,0.))
     FieldIronMgr = G4FieldManager(magFieldIron)
@@ -28,14 +29,15 @@ def setMagnetField():
     for da in range(world.GetNoDaughters()):
         vl = world.GetDaughter(da)
         vln = vl.GetName().__str__()
+        print 'volumes = ',  vln
         lvl = vl.GetLogicalVolume()
         if vln in ['MagRetA','MagRetB','MagRetC1','MagRetC2','MagRetC3','MagRetC4']:
           lvl.SetFieldManager(RetFieldMgr,True)   
         if vln in ['MagA','MagB','MagC1','MagC2','MagC3','MagC4']:        
           lvl.SetFieldManager(FieldIronMgr,True) 
-        if vln in ['MagConAL']: 
+        if vln in ['MagConALLT','MagConALRB']: 
           lvl.SetFieldManager(ConLFieldMgr,True) 
-        if vln in ['MagConAR']: 
+        if vln in ['MagConARRT','MagConARLB']: 
           lvl.SetFieldManager(ConRFieldMgr,True) 
     g4Run = G4RunManager.GetRunManager()
     g4Run.GeometryHasBeenModified(True)
