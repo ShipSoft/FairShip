@@ -23,7 +23,7 @@ Let get started:
     export SIMPATH=$SHIPSOFT/FairSoftInst
     export FAIRROOTPATH=$SHIPSOFT/FairRootInst
     export FAIRSHIP=$SHIPSOFT/FairShip
-    export PYTHONPATH=$FAIRSHIP/python:$SIMPATH/lib:$SIMPATH/lib/root:$PYTHONPATH
+    export PYTHONPATH=$FAIRSHIP/python:$SIMPATH/lib:$SIMPATH/lib/root:$SIMPATH/lib/Geant4:$SIMPATH/lib/g4py:$PYTHONPATH
     ```
 
     or for the csh:
@@ -34,7 +34,7 @@ Let get started:
     setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
     setenv FAIRSHIP ${SHIPSOFT}/FairShip
     # assuming PYTHONPATH is already defined
-    setenv PYTHONPATH ${FAIRSHIP}/python:${SIMPATH}/lib:${SIMPATH}/lib/root:${PYTHONPATH}
+    setenv PYTHONPATH ${FAIRSHIP}/python:${SIMPATH}/lib:${SIMPATH}/lib/root:${SIMPATH}/lib/Geant4:${SIMPATH}/lib/g4py:${PYTHONPATH}
     ```
 
 3. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
@@ -91,7 +91,7 @@ Let get started:
 6. Now you can for example simulate some events and run the event display:
 
     ```bash
-    python $FAIRSHIP/macro/run_simPythia.py
+    python $FAIRSHIP/macro/run_simScript.py --display
     python -i $FAIRSHIP/macro/eventDisplay.py
     // Click on "FairEventManager" (in the top-left pane)
     // Click on the "Info" tab (on top of the bottom-left pane)
