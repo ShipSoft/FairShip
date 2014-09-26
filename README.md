@@ -23,7 +23,7 @@ Let get started:
     export SIMPATH=$SHIPSOFT/FairSoftInst
     export FAIRROOTPATH=$SHIPSOFT/FairRootInst
     export FAIRSHIP=$SHIPSOFT/FairShip
-    export PYTHONPATH=$FAIRSHIP/python:$PYTHONPATH
+    export PYTHONPATH=$FAIRSHIP/python:$SIMPATH/lib:$SIMPATH/lib/root:$PYTHONPATH
     ```
 
     or for the csh:
@@ -33,7 +33,8 @@ Let get started:
     setenv SIMPATH ${SHIPSOFT}/FairSoftInst
     setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
     setenv FAIRSHIP ${SHIPSOFT}/FairShip
-    setenv PYTHONPATH ${FAIRSHIP}/python:${PYTHONPATH} (assuming PYTHONPATH is already defined)
+    # assuming PYTHONPATH is already defined
+    setenv PYTHONPATH ${FAIRSHIP}/python:${SIMPATH}/lib:${SIMPATH}/lib/root:${PYTHONPATH}
     ```
 
 3. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
@@ -87,23 +88,7 @@ Let get started:
     (there is an issue with check_system.csh, does return wrong answer, should be removed from config.csh, otherwise setup stops)
     ```
 
-6. Set environment variables for PYTHON.
-
-    For bash:
-
-    ```bash
-    export PYTHONPATH=${PYTHONPATH}:$FAIRSHIP/tools/root/bindings/pyroot:$SIMPATH/lib:$SIMPATH/lib/root
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$FAIRSHIP/genfit-build/lib
-    ```
-
-    For the csh:
-
-    ```bash
-    setenv PYTHONPATH ${PYTHONPATH}:${FAIRSHIP}/tools/root/bindings/pyroot:${SIMPATH}/lib:${SIMPATH}/lib/root
-    setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${FAIRSHIP}/genfit-build/lib
-    ```
-
-7. Now you can for example simulate some events and run the event display:
+6. Now you can for example simulate some events and run the event display:
 
     ```bash
     python $FAIRSHIP/macro/run_simPythia.py
