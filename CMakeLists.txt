@@ -228,8 +228,8 @@ EndIf(TEvePath)
 
 add_custom_target(  # make relative links to folders
     geometry.link ALL
-    COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}'), 'geometry'), 'geometry')\"
-    COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}'), 'macro'), 'macro')\"
+    COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
+    COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'macro') , 'macro') \"
 )
 
 WRITE_CONFIG_FILE(config.sh)
