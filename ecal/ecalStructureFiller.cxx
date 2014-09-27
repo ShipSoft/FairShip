@@ -103,22 +103,24 @@ void ecalStructureFiller::LoopForMCPoints()
   {
     pt=(ecalPoint*)fListECALpts->At(j);
     cell=fStr->GetCell(pt->GetDetectorID(), ten, isPS);
-    if (ten==0)
+    if (ten==0) {
       if (isPS)
-	; // cell->AddPSEnergy(pt->GetEnergyLoss()); preshower removed
+        ; // cell->AddPSEnergy(pt->GetEnergyLoss()); preshower removed
       else
-	cell->AddEnergy(pt->GetEnergyLoss());
+        cell->AddEnergy(pt->GetEnergyLoss());
+    }
   }
   if (fStoreTrackInfo)
   for(UInt_t j=0; j<n; j++)
   {
     pt=(ecalPoint*)fListECALpts->At(j);
     ecalCellMC* cellmc=(ecalCellMC*)fStr->GetCell(pt->GetDetectorID(), ten, isPS);
-    if (ten==0)
+    if (ten==0) {
       if (isPS)
-	; // cell->AddTrackPSEnergy(pt->GetTrackID(),pt->GetEnergyLoss()); //preshower removed
+        ; // cell->AddTrackPSEnergy(pt->GetTrackID(),pt->GetEnergyLoss()); //preshower removed
       else
-	cellmc->AddTrackEnergy(pt->GetTrackID(),pt->GetEnergyLoss(), pt->GetTime());
+        cellmc->AddTrackEnergy(pt->GetTrackID(),pt->GetEnergyLoss(), pt->GetTime());
+    }
   }
 }
 

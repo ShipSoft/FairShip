@@ -6,7 +6,7 @@
 using std::cout;
 using std::endl;
 // read events from ntuples produced with GENIE
-// http://genie.hepforge.org/manuals/GENIE_PhysicsAndUserManual_20130615.pdf 
+// http://genie.hepforge.org/manuals/GENIE_PhysicsAndUserManual_20130615.pdf
 // Genie momentum GeV
 // Vertex in SI units, assume this means m
 // important to read back number of events to give to FairRoot
@@ -16,7 +16,7 @@ GenieGenerator::GenieGenerator() {}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) {
- Init(fileName, 0); 
+  return Init(fileName, 0);
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
@@ -28,18 +28,18 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   }
   fTree = (TTree *)fInputFile->Get("gst");
   fNevents = fTree->GetEntries();
-  fn = firstEvent; 
+  fn = firstEvent;
   fTree->SetBranchAddress("Ev",&pxl);    // incoming neutrino energy
-  fTree->SetBranchAddress("pxv",&pxv);     
-  fTree->SetBranchAddress("pyv",&pyv);     
-  fTree->SetBranchAddress("pzv",&pzv);     
+  fTree->SetBranchAddress("pxv",&pxv);
+  fTree->SetBranchAddress("pyv",&pyv);
+  fTree->SetBranchAddress("pzv",&pzv);
   fTree->SetBranchAddress("neu",&neu);    // incoming neutrino PDG code
-  fTree->SetBranchAddress("vtxx",&vtxx);  // vertex  in SI units   
-  fTree->SetBranchAddress("vtxy",&vtxy);    
-  fTree->SetBranchAddress("vtxz",&vtxz);   
-  fTree->SetBranchAddress("vtxt",&vtxt);   
+  fTree->SetBranchAddress("vtxx",&vtxx);  // vertex  in SI units
+  fTree->SetBranchAddress("vtxy",&vtxy);
+  fTree->SetBranchAddress("vtxz",&vtxz);
+  fTree->SetBranchAddress("vtxt",&vtxt);
   fTree->SetBranchAddress("El",&El);      // outgoing lepton momentum
-  fTree->SetBranchAddress("pxl",&pxl);    
+  fTree->SetBranchAddress("pxl",&pxl);
   fTree->SetBranchAddress("pyl",&pyl);
   fTree->SetBranchAddress("pzl",&pzl);
   fTree->SetBranchAddress("pxf",&pxf);   // outgoing hadronic momenta
@@ -54,10 +54,10 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
 
 
 // -----   Destructor   ----------------------------------------------------
-GenieGenerator::~GenieGenerator() 
+GenieGenerator::~GenieGenerator()
 {
- fInputFile->Close(); 
- fInputFile->Delete(); 
+ fInputFile->Close();
+ fInputFile->Delete();
  delete fInputFile;
 }
 // -------------------------------------------------------------------------
@@ -69,15 +69,15 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     fTree->GetEntry(fn);
     fn++;
 // first, incoming neutrino
-    cpg->AddTrack(neu,pxv,pyv,pzv,vtxx,vtxy,vtxz,-1,false);   
+    cpg->AddTrack(neu,pxv,pyv,pzv,vtxx,vtxy,vtxz,-1,false);
     //cout << "Info GenieGenerator: neutrino " << neu << " "<<  pzv << " nf "<< nf << endl;
 
 // second, outgoing lepton
-    cpg->AddTrack(copysign(fabs(neu)-1,neu),pxl,pyl,pzl,vtxx*100.,vtxy*100.,vtxz*100.,0,true); 
+    cpg->AddTrack(copysign(fabs(neu)-1,neu),pxl,pyl,pzl,vtxx*100.,vtxy*100.,vtxz*100.,0,true);
 // last, all others
     for(int i=0; i<nf; i++)
 	{
-         cpg->AddTrack(pdgf[i],pxf[i],pyf[i],pzf[i],vtxx*100.,vtxy*100.,vtxz*100.,0,true);    
+         cpg->AddTrack(pdgf[i],pxf[i],pyf[i],pzf[i],vtxx*100.,vtxy*100.,vtxz*100.,0,true);
          // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
        }
 
