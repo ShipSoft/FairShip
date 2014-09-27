@@ -23,7 +23,6 @@ Let get started:
     export SIMPATH=$SHIPSOFT/FairSoftInst
     export FAIRROOTPATH=$SHIPSOFT/FairRootInst
     export FAIRSHIP=$SHIPSOFT/FairShip
-    export PYTHONPATH=$FAIRSHIP/python:$SIMPATH/lib:$SIMPATH/lib/root:$SIMPATH/lib/Geant4:$SIMPATH/lib/g4py:$PYTHONPATH
     ```
 
     or for the csh:
@@ -33,8 +32,6 @@ Let get started:
     setenv SIMPATH ${SHIPSOFT}/FairSoftInst
     setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
     setenv FAIRSHIP ${SHIPSOFT}/FairShip
-    # assuming PYTHONPATH is already defined
-    setenv PYTHONPATH ${FAIRSHIP}/python:${SIMPATH}/lib:${SIMPATH}/lib/root:${SIMPATH}/lib/Geant4:${SIMPATH}/lib/g4py:${PYTHONPATH}
     ```
 
 3. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
@@ -85,7 +82,6 @@ Let get started:
     cmake ../FairShip
     make
     . config.sh    [or source config.csh]
-    (there is an issue with check_system.csh, does return wrong answer, should be removed from config.csh, otherwise setup stops)
     ```
 
 6. Now you can for example simulate some events and run the event display:
