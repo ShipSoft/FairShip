@@ -1,2 +1,1 @@
-my text contents ... for testing pull request contributions with github 
-wed 1 oct 10:56
+This is test content
