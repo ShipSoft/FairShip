@@ -49,7 +49,7 @@ Let get started:
     # 1) Yes (install Simulation)
     # 2) Internet (install G4 files from internet)
     # 1) Yes (install python bindings)
-    # path: $SIMPATH
+    # path: $SHIPSOFT/FairSoftInst [$SIMPATH is set in script]
     ```
 
 4. Install [FairRoot](http://fairroot.gsi.de/?q=node/82)
