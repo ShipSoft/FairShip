@@ -1,19 +1,19 @@
-#ifndef VETOCONTFACT_H
-#define VETOCONTFACT_H
+#ifndef STRAWTUBESCONTFACT_H
+#define STRAWTUBESCONTFACT_H
 
 #include "FairContFact.h"
 
 class FairContainer;
 
-class vetoContFact : public FairContFact
+class strawtubesContFact : public FairContFact
 {
   private:
     void setAllContainers();
   public:
-    vetoContFact();
-    ~vetoContFact() {}
+    strawtubesContFact();
+    ~strawtubesContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef( vetoContFact,0) // Factory for all veto parameter containers
+    ClassDef( strawtubesContFact,0) // Factory for all strawtubes parameter containers
 };
 
 #endif
