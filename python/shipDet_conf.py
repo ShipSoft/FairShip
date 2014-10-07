@@ -42,6 +42,8 @@ def configure(run,ship_geo):
  Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer.z);
  Strawtubes.SetStereoAngle(ship_geo.strawtubes.ViewAngle.z);  
  Strawtubes.SetWireThickness(ship_geo.strawtubes.WireThickness.z);  
+
+ run.AddModule(Strawtubes)
  
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
  run.AddModule(ecal)
