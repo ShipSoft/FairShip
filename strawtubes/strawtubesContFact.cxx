@@ -1,31 +1,31 @@
-#include "vetoContFact.h"
+#include "strawtubesContFact.h"
 #include "FairRuntimeDb.h"
 
 #include <iostream>
 
-ClassImp(vetoContFact)
+ClassImp(strawtubesContFact)
 
-static vetoContFact gvetoContFact;
+static strawtubesContFact gstrawtubesContFact;
 
-vetoContFact::vetoContFact()
+strawtubesContFact::strawtubesContFact()
   : FairContFact()
 {
   /** Constructor (called when the library is loaded) */
-  fName="vetoContFact";
-  fTitle="Factory for parameter containers in libveto";
+  fName="strawtubesContFact";
+  fTitle="Factory for parameter containers in libstrawtubes";
   setAllContainers();
   FairRuntimeDb::instance()->addContFactory(this);
 }
 
-void vetoContFact::setAllContainers()
+void strawtubesContFact::setAllContainers()
 {
   /** Creates the Container objects with all accepted
       contexts and adds them to
-      the list of containers for the veto library.
+      the list of containers for the strawtubes library.
   */
 /*
-  FairContainer* p= new FairContainer("vetoGeoPar",
-                                      "veto Geometry Parameters",
+  FairContainer* p= new FairContainer("strawtubesGeoPar",
+                                      "strawtubes Geometry Parameters",
                                       "TestDefaultContext");
   p->addContext("TestNonDefaultContext");
 
@@ -33,7 +33,7 @@ void vetoContFact::setAllContainers()
 */
  }
 
-FairParSet* vetoContFact::createContainer(FairContainer* c)
+FairParSet* strawtubesContFact::createContainer(FairContainer* c)
 {
   /** Calls the constructor of the corresponding parameter container.
       For an actual context, which is not an empty string and not
@@ -42,11 +42,10 @@ FairParSet* vetoContFact::createContainer(FairContainer* c)
   */
  /* const char* name=c->GetName();
   FairParSet* p=NULL;
-  if (strcmp(name,"vetoGeoPar")==0) {
-    p=new vetoGeoPar(c->getConcatName().Data(),
+  if (strcmp(name,"strawtubesGeoPar")==0) {
+    p=new strawtubesGeoPar(c->getConcatName().Data(),
                             c->GetTitle(),c->getContext());
   }
   return p;
 */
-   return 0;
   }

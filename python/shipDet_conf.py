@@ -30,9 +30,20 @@ def configure(run,ship_geo):
  Chamber = ROOT.ShipChamber("Chamber")  # vacuum tank
  run.AddModule(Chamber)
  
- Veto = ROOT.veto("Veto", ROOT.kTRUE)   # for the moment, contains all tracking stations / planes
- Veto.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
- run.AddModule(Veto)
+ Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)   # for the moment, contains all tracking stations / planes
+ Strawtubes.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
+ Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView.z);
+ Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength.z);
+ Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter.z);
+ Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter.z);
+ Strawtubes.SetStrawPitch(ship_geo.strawtubes.StrawPitch.z);
+ Strawtubes.SetDeltazLayer(ship_geo.strawtubes.DeltazLayer.z);
+ Strawtubes.SetDeltazPlane(ship_geo.strawtubes.DeltazPlane.z);
+ Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer.z);
+ Strawtubes.SetStereoAngle(ship_geo.strawtubes.ViewAngle.z);  
+ Strawtubes.SetWireThickness(ship_geo.strawtubes.WireThickness.z);  
+
+ run.AddModule(Strawtubes)
  
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
  run.AddModule(ecal)

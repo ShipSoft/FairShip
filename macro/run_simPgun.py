@@ -60,8 +60,8 @@ run.AddModule(magnet)
 Chamber = ROOT.ShipChamber("Chamber")
 run.AddModule(Chamber)
 
-Veto = ROOT.veto("Veto", ROOT.kTRUE)
-run.AddModule(Veto)
+Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)
+run.AddModule(Strawtubes)
  
 ecal = ROOT.ecal("Ecal", ROOT.kTRUE)
 run.AddModule(ecal)

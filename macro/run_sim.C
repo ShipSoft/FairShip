@@ -49,8 +49,8 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
   FairModule* Chamber = new ShipChamber("Chamber");
   run->AddModule(Chamber);
    
-  FairDetector* Veto = new veto("Veto", kTRUE);
-  run->AddModule(Veto);
+  FairDetector* Strawtubes = new strawtubes("Strawtubes", kTRUE);
+  run->AddModule(Strawtubes);
     
   
   FairDetector* ecal = new ecal("Ecal", kTRUE);

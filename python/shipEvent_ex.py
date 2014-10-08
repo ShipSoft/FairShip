@@ -10,7 +10,7 @@ sTree   = f.FindObjectAny('cbmsim')
 nEvents = sTree.GetEntries()
 sFol  = f.FindObjectAny('cbmroot')
 MCTracks   = ROOT.TClonesArray("FairMCTrack")
-TrackingHits   = ROOT.TClonesArray("vetoPoint")
+TrackingHits   = ROOT.TClonesArray("strawtubesPoint")
 
 h={}
 
@@ -44,7 +44,7 @@ def exMCHits(dump=False):
  ut.bookHist(h,'tz','tracking hits z',100,-100.,100.)
  ut.bookHist(h,'tztx','tracking hits x vs z',1000,-40.,40.,100,-2.5,2.5)
  ut.bookHist(h,'txty','tracking hits y vs x',100,-2.5,2.5,100,-2.5,2.5)
- sTree.SetBranchAddress("vetoPoint", TrackingHits)
+ sTree.SetBranchAddress("strawtubesPoint", TrackingHits)
  for n in range(nEvents):
   rc = sTree.GetEvent(n) 
   nHits = TrackingHits.GetEntriesFast() 

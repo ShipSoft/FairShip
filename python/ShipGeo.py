@@ -7,9 +7,21 @@ class ShipGeo():
   
 vetoStation   = ShipGeo(-2390.*u.cm)
 TrackStation1 = ShipGeo(1510.*u.cm)
-TrackStation2 = ShipGeo(1710.*u.cm)
-TrackStation3 = ShipGeo(2150.*u.cm)
-TrackStation4 = ShipGeo(2370.*u.cm)
+TrackStation2 = ShipGeo(1709.*u.cm)
+TrackStation3 = ShipGeo(2191.*u.cm)
+TrackStation4 = ShipGeo(2349.*u.cm)
+
+strawtubes                    = ShipGeo(0*u.cm)
+strawtubes.StrawLength        = 250.*u.cm
+strawtubes.InnerStrawDiameter = 0.94*u.cm
+strawtubes.OuterStrawDiameter = 0.98*u.cm
+strawtubes.StrawPitch         = 1.76*u.cm
+strawtubes.DeltazLayer        = 1.1*u.cm
+strawtubes.DeltazPlane        = 2.6*u.cm
+strawtubes.StrawsPerLayer     = 284
+strawtubes.ViewAngle          = 5
+strawtubes.WireThickness      = 0.003*u.cm
+strawtubes.DeltazView         = 10.*u.cm
 
 z = TrackStation2.z + 0.5 * (TrackStation3.z - TrackStation2.z)
 Bfield = ShipGeo(z)
@@ -44,10 +56,5 @@ target.z             =  hadronAbsorber.z - hadronAbsorber.length/2. - target.len
 # interaction point, start of target
 target.z0  =  target.z - target.length/2.
 
-# straws of tracking stations
-straw = ShipGeo(0*u.cm)
-straw.length = 250.*u.cm
-straw.resol  = 0.01*u.cm
-straw.pitch  = 1.*u.cm
-straw.stereoAngle = 5./180.*ROOT.TMath.Pi()
+
 

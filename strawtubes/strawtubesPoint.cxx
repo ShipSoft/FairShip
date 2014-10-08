@@ -1,4 +1,4 @@
-#include "vetoPoint.h"
+#include "strawtubesPoint.h"
 
 #include <iostream>
 using std::cout;
@@ -6,14 +6,14 @@ using std::endl;
 
 
 // -----   Default constructor   -------------------------------------------
-vetoPoint::vetoPoint()
+strawtubesPoint::strawtubesPoint()
   : FairMCPoint()
 {
 }
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
-vetoPoint::vetoPoint(Int_t trackID, Int_t detID,
+strawtubesPoint::strawtubesPoint(Int_t trackID, Int_t detID,
                                    TVector3 pos, TVector3 mom,
                                    Double_t tof, Double_t length,
                                    Double_t eLoss)
@@ -23,13 +23,13 @@ vetoPoint::vetoPoint(Int_t trackID, Int_t detID,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-vetoPoint::~vetoPoint() { }
+strawtubesPoint::~strawtubesPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void vetoPoint::Print() const
+void strawtubesPoint::Print() const
 {
-  cout << "-I- vetoPoint: veto point for track " << fTrackID
+  cout << "-I- strawtubesPoint: strawtubes point for track " << fTrackID
        << " in detector " << fDetectorID << endl;
   cout << "    Position (" << fX << ", " << fY << ", " << fZ
        << ") cm" << endl;
@@ -40,5 +40,5 @@ void vetoPoint::Print() const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(vetoPoint)
+ClassImp(strawtubesPoint)
 

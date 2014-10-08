@@ -14,11 +14,23 @@ with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt
     c.vetoStation = AttrDict(z=-2390.*u.cm)
     c.TrackStation1 = AttrDict(z=1510.*u.cm)
-    c.TrackStation2 = AttrDict(z=1710.*u.cm)
-    c.TrackStation3 = AttrDict(z=2150.*u.cm)
-    c.TrackStation4 = AttrDict(z=2370.*u.cm)
+    c.TrackStation2 = AttrDict(z=1709.*u.cm)
+    c.TrackStation3 = AttrDict(z=2191.*u.cm)
+    c.TrackStation4 = AttrDict(z=2364.*u.cm)
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
+
+    c.strawtubes = AttrDict(z=0*u.cm)
+    c.strawtubes.StrawLength        = AttrDict(z=250.*u.cm)
+    c.strawtubes.InnerStrawDiameter = AttrDict(z=0.94*u.cm)
+    c.strawtubes.OuterStrawDiameter = AttrDict(z=0.98*u.cm)
+    c.strawtubes.StrawPitch         = AttrDict(z=1.76*u.cm)
+    c.strawtubes.DeltazLayer        = AttrDict(z=1.1*u.cm)
+    c.strawtubes.DeltazPlane        = AttrDict(z=2.6*u.cm)
+    c.strawtubes.StrawsPerLayer     = AttrDict(z=284)
+    c.strawtubes.ViewAngle          = AttrDict(z=5)
+    c.strawtubes.WireThickness      = AttrDict(z=0.003*u.cm)
+    c.strawtubes.DeltazView         = AttrDict(z=10.*u.cm)
 
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 1.5*u.kilogauss  # was 1.15 in EOI
@@ -57,9 +69,3 @@ with ConfigRegistry.register_config("basic") as c:
     # interaction point, start of target
     c.target.z0  =  c.target.z - c.target.length/2.
 
-    # straws of tracking stations
-    c.straw = AttrDict(z=0*u.cm)
-    c.straw.length = 250.*u.cm
-    c.straw.resol  = 0.01*u.cm
-    c.straw.pitch  = 1.*u.cm
-    c.straw.stereoAngle = 5./180.  # degrees
