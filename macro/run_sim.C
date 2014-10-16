@@ -4,13 +4,13 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
    basiclibs();
 
    gSystem->Load("libGen.so");
-    
+
   // Output file name
   TString outFile ="ship.test.root";
-    
+
   // Parameter file name
   TString parFile="ship.params.root";
-    
+
   // In general, the following parts need not be touched
   // ========================================================================
 
@@ -26,11 +26,11 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
   run->SetOutputFile(outFile);          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
-  
+
   // -----   Create media   -------------------------------------------------
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
-  
+
   // -----   Create geometry   ----------------------------------------------
 
   FairModule* cave= new ShipCave("CAVE");
@@ -44,19 +44,19 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
 
   FairModule* magnet = new ShipMagnet("Magnet");
   run->AddModule(magnet);
- 
-    
+
+
   FairModule* Chamber = new ShipChamber("Chamber");
   run->AddModule(Chamber);
-   
+
   FairDetector* Strawtubes = new strawtubes("Strawtubes", kTRUE);
   run->AddModule(Strawtubes);
-    
-  
+
+
   FairDetector* ecal = new ecal("Ecal", kTRUE);
   run->AddModule(ecal);
-    
-    
+
+
   FairDetector* Muon = new muon("Muon", kTRUE);
   run->AddModule(Muon);
 
@@ -72,11 +72,11 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
     run->SetField(fMagField);
     // --------------------------------------------------------------------
 
-    
-    
+
+
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-  
+
 
     // Pythia8
   Pythia8Generator* P8gen = new Pythia8Generator();
@@ -89,17 +89,17 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
   P8gen->SetParameters("SoftQCD:all = on");
   P8gen->SetMom(400);  // p momentum
   primGen->AddGenerator(P8gen);
-   
-  
+
+
   run->SetGenerator(primGen);
   // ------------------------------------------------------------------------
- 
+
   //---Store the visualiztion info of the tracks, this make the output file very large!!
   //--- Use it only to display but not for production!
   run->SetStoreTraj(kTRUE);
 
-    
-    
+
+
   // -----   Initialize simulation run   ------------------------------------
   run->Init();
   // ------------------------------------------------------------------------
@@ -113,12 +113,12 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
   rtdb->saveOutput();
   rtdb->print();
   // ------------------------------------------------------------------------
-   
+
   // -----   Start run   ----------------------------------------------------
    run->Run(nEvents);
   run->CreateGeometryFile("geofile_full.root");
   // ------------------------------------------------------------------------
-  
+
   // -----   Finish   -------------------------------------------------------
   timer.Stop();
   Double_t rtime = timer.RealTime();
@@ -127,9 +127,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
   cout << "Macro finished succesfully." << endl;
   cout << "Output file is "    << outFile << endl;
   cout << "Parameter file is " << parFile << endl;
-  cout << "Real time " << rtime << " s, CPU time " << ctime 
+  cout << "Real time " << rtime << " s, CPU time " << ctime
        << "s" << endl << endl;
   // ------------------------------------------------------------------------
 }
-
-
