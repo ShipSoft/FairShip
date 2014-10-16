@@ -114,13 +114,13 @@ class makeHitList:
  def execute(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
-  nHits = self.sTree.vetoPoint.GetEntriesFast() 
+  nHits = self.sTree.TrackingHits.GetEntriesFast() 
   hitPosLists = {}
   self.SmearedHits.Clear()
   self.fGenFitArray.Clear()
   self.fitTrack2MC.clear()
   for i in range(nHits):
-    ahit = self.sTree.vetoPoint.At(i)
+    ahit = self.sTree.TrackingHits.At(i)
     detname = self.vols[ahit.GetDetectorID()-1].GetName()
     # print 'execute',detname,ahit.GetDetectorID()-1
     if detname.find('STr')<0 and detname.find('Sv')<0: 

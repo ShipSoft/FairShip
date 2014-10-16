@@ -75,7 +75,7 @@ fMan.SetPriOnly(False)  # display everything
 #----------------------Tracks and points -------------------------------------
 verbose = 0  # 3 lot of output
 Track          = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
-DetectorPoints = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
+DetectorPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kBlue, ROOT.kFullSquare)
 EcalPoints = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
  
 fMan.AddTask(Track)
