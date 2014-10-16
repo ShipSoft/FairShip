@@ -364,7 +364,7 @@ void strawtubes::ConstructGeometry()
 	 planebox->SetVisibility(kFALSE);
          //planebox->VisibleDaughters(kTRUE);
 
-    /*     TGeoRotation r5l;	
+         TGeoRotation r5l;	
 	 TGeoTranslation t5l; 	
          for (Int_t lnb=0; lnb<2; lnb++) {
            TString nmlayer = nmplane+"_layer_"; nmlayer += lnb;
@@ -425,7 +425,7 @@ void strawtubes::ConstructGeometry()
 	     //end of straw loop
            }
 	   //end of layer loop
-        }*/
+        }
         //end of plane loop	 	
       }
       //end of view loop
