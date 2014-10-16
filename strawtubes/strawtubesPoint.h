@@ -1,5 +1,5 @@
-#ifndef VETOPOINT_H
-#define VETOPOINT_H 1
+#ifndef STRAWTUBESPOINT_H
+#define STRAWTUBESPOINT_H 1
 
 
 #include "FairMCPoint.h"
@@ -7,13 +7,13 @@
 #include "TObject.h"
 #include "TVector3.h"
 
-class vetoPoint : public FairMCPoint
+class strawtubesPoint : public FairMCPoint
 {
 
   public:
 
     /** Default constructor **/
-    vetoPoint();
+    strawtubesPoint();
 
 
     /** Constructor with arguments
@@ -25,24 +25,24 @@ class vetoPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    vetoPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+    strawtubesPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss);
 
 
 
 
     /** Destructor **/
-    virtual ~vetoPoint();
+    virtual ~strawtubesPoint();
 
     /** Output to screen **/
     virtual void Print() const;
 
   private:
     /** Copy constructor **/
-    vetoPoint(const vetoPoint& point);
-    vetoPoint operator=(const vetoPoint& point);
+    strawtubesPoint(const strawtubesPoint& point);
+    strawtubesPoint operator=(const strawtubesPoint& point);
 
-    ClassDef(vetoPoint,1)
+    ClassDef(strawtubesPoint,1)
 
 };
 

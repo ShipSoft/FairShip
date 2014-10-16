@@ -48,8 +48,8 @@ def run_sim(nEvents = 10, mcEngine = "TGeant4"):
   Chamber = ROOT.ShipChamber("Chamber")
   run.AddModule(Chamber)
 
-  Veto = ROOT.veto("Veto", ROOT.kTRUE)
-  run.AddModule(Veto)
+  Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)
+  run.AddModule(Strawtubes)
 
 
   ecal = ROOT.ecal("Ecal", ROOT.kTRUE)

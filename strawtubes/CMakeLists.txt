@@ -1,4 +1,4 @@
-# Create a library called "libveto" which includes the source files given in
+# Create a library called "libstrawtubes" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
@@ -8,7 +8,7 @@ ${BASE_INCLUDE_DIRECTORIES}
 
 #put here all directories where header files are located
 ${CMAKE_SOURCE_DIR}/shipdata
-${CMAKE_SOURCE_DIR}/veto
+${CMAKE_SOURCE_DIR}/strawtubes
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -22,13 +22,13 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 #Put here your sourcefiles
-veto.cxx
-vetoContFact.cxx
-vetoPoint.cxx
+strawtubes.cxx
+strawtubesContFact.cxx
+strawtubesPoint.cxx
 )
 
-Set(LINKDEF vetoLinkDef.h)
-Set(LIBRARY_NAME veto)
+Set(LINKDEF strawtubesLinkDef.h)
+Set(LIBRARY_NAME strawtubes)
 Set(DEPENDENCIES
     Base ShipData
 )
