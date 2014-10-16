@@ -53,9 +53,11 @@ class strawtubes: public FairDetector
     void SetDeltazPlane(Double32_t deltazplane);
     void SetStrawsPerLayer(Int_t strawsperlayer);
     void SetStereoAngle(Int_t stereoangle);
-    void SetWireThickness(Double32_t wirethickness);    
-    void SetDeltazView(Double32_t deltazview);     
-    
+    void SetWireThickness(Double32_t wirethickness);
+    void SetDeltazView(Double32_t deltazview);
+    void SetVacBox_x(Double32_t vacbox_x);
+    void SetVacBox_y(Double32_t vacbox_y);
+
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
@@ -114,6 +116,8 @@ class strawtubes: public FairDetector
     Double32_t     fView_angle;             //!  Stereo angle of layers in a view
     Double32_t     fWire_thickness;         //!  Thickness of the wire
     Double32_t     fDeltaz_view;            //!  Distance (z) between views
+    Double32_t     fVacBox_x;               //!  x size of station vacuumbox
+    Double32_t     fVacBox_y;               //!  y size of station vacuumbox
     /** container for data points */
 
     TClonesArray*  fstrawtubesPointCollection;
