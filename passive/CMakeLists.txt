@@ -27,6 +27,7 @@ ShipChamber.cxx
 ShipTargetStation.cxx
 ShipMuonShield.cxx
 ShipPassiveContFact.cxx
+ShipMagneticSpectrometer.cxx
 )
 
 Set(HEADERS )

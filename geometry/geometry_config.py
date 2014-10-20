@@ -45,6 +45,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
 
+
+#
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
