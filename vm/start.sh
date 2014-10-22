@@ -3,7 +3,15 @@ export BASEDIR=$(echo $(cd $(dirname "$0")/.. && pwd -P))
 
 if [ "$1" = "diag" ] ; then
 	echo "=== DIAGNOSTIC ==="
+	uname -a
+	top -l 1 | head
+	sw_vers -productVersion 
+	which vagrant
+	vagrant --version
+	which docker
+	docker --version
 	cat /etc/resolv.conf
+	df -h
 	netstat -nr
 	ifconfig -a
 	nslookup cdn-registry-1.docker.io
