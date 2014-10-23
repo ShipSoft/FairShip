@@ -26,7 +26,13 @@ def configure(run,ship_geo):
 
  magnet = ROOT.ShipMagnet("Magnet")
  run.AddModule(magnet)
- 
+
+ magneticspectrometer = ROOT.ShipMagneticSpectrometer("MagneticSpectrometer")
+ run.AddModule(magneticspectrometer)
+
+ goliath = ROOT.ShipGoliath("Goliath")
+ run.AddModule(goliath)
+
  Chamber = ROOT.ShipChamber("Chamber")  # vacuum tank
  run.AddModule(Chamber)
  

@@ -22,12 +22,13 @@ link_directories( ${LINK_DIRECTORIES})
 set(SRCS
 ShipCave.cxx            
 ShipGeoCave.cxx        
-ShipMagnet.cxx         
+ShipMagnet.cxx
+ShipGoliath.cxx
+ShipMagneticSpectrometer.cxx         
 ShipChamber.cxx
 ShipTargetStation.cxx
 ShipMuonShield.cxx
 ShipPassiveContFact.cxx
-ShipMagneticSpectrometer.cxx
 )
 
 Set(HEADERS )

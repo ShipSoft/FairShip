@@ -6,7 +6,7 @@ from ShipGeoConfig import ConfigRegistry
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
-nEvents      = 100 
+nEvents      = 1
 firstEvent   = 0
 inclusive    = False  # True = all processes if False only ccbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events

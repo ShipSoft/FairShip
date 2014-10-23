@@ -1,5 +1,5 @@
-#ifndef MAGNET_H
-#define MAGNET_H
+#ifndef GOLIATH_H
+#define GOLIATH_H
 
 #include "FairModule.h"                 // for FairModule
 
@@ -7,16 +7,16 @@
 
 #include <string>                       // for string
 
-class ShipMagnet : public FairModule
+class ShipGoliath : public FairModule
 {
   public:
-    ShipMagnet(const char* name, const char* Title="PND Magnet");
-    ShipMagnet();
-    virtual ~ShipMagnet();
+    ShipGoliath(const char* name, const char* Title="Goliath");
+    ShipGoliath();
+    virtual ~ShipGoliath();
     void ConstructGeometry();
-    ClassDef(ShipMagnet,1)
+    ClassDef(ShipGoliath,1)
 
 };
 
-#endif //MAGNET_H
+#endif //GOLIATH_H
 

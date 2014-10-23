@@ -4,7 +4,7 @@ ROOT.basiclibs()
 ROOT.gSystem.Load("libBase.so")
 ROOT.gSystem.Load("libGen.so")
 
-def run_sim(nEvents = 10, mcEngine = "TGeant4"):
+def run_sim(nEvents = 1, mcEngine = "TGeant4"):
 # Output file name
   outFile ="ship.test.root"
 # Parameter file name
@@ -41,9 +41,16 @@ def run_sim(nEvents = 10, mcEngine = "TGeant4"):
   MuonShield = ROOT.ShipMuonShield("MuonShield",1)
   run.AddModule(MuonShield)
 
+
+magneticspectrometer = ROOT.ShipMagneticSpectrometer("MagneticSpectrometer")
+    run.AddModule(magneticspectrometer)
+
+
   magnet = ROOT.ShipMagnet("Magnet")
   run.AddModule(magnet)
 
+  goliath = ROOT.ShipMagnet("Goliath")
+  run.AddModule(goliath)
 
   Chamber = ROOT.ShipChamber("Chamber")
   run.AddModule(Chamber)
