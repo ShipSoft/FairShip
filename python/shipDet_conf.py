@@ -46,12 +46,13 @@ def configure(run,ship_geo):
  Veto.SetVminVmax(ship_geo.scintillator.Rmin.z,ship_geo.scintillator.Rmax.z);
  run.AddModule(Veto)
 
- taumagneticspectrometer = ROOT.ShipTAUMagneticSpectrometer("TAUMagneticSpectrometer", ship_geo.tauMS.zLS, ship_geo.tauMS.FeL, ship_geo.tauMS.AirL,
+ if ship_geo.strawDesign > 1 :
+  taumagneticspectrometer = ROOT.ShipTAUMagneticSpectrometer("TAUMagneticSpectrometer", ship_geo.tauMS.zLS, ship_geo.tauMS.FeL, ship_geo.tauMS.AirL,
                                                             ship_geo.tauMS.SpectroL,ship_geo.tauMS.GapV, ship_geo.tauMS.DGap, ship_geo.tauMS.MGap)
- run.AddModule(taumagneticspectrometer)
+  run.AddModule(taumagneticspectrometer)
 
- goliath = ROOT.ShipGoliath("Goliath", ship_geo.Goliath.zC, ship_geo.Goliath.LS, ship_geo.Goliath.TS, ship_geo.Goliath.GapTS)
- run.AddModule(goliath)
+  goliath = ROOT.ShipGoliath("Goliath", ship_geo.Goliath.zC, ship_geo.Goliath.LS, ship_geo.Goliath.TS, ship_geo.Goliath.GapTS)
+  run.AddModule(goliath)
 
 
  if ship_geo.strawDesign > 1 :
