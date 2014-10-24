@@ -24,14 +24,17 @@ def configure(P8gen,inclusive,deepCopy=False):
  else:
   P8gen.SetParameters("HardQCD::hardccbar  = on")
 # add HNL
-  P8gen.SetParameters("9900014:new = N2 N2 2 0 0 1.0 0.0 0.0 0.0 5.4E+03  0   1   0   1   0")  # for tests use 5.4E+03  # nominal ctau = 54 km    5.4E+07 
+  ctau = "5.4E+07" # for tests use 5.4E+03  # nominal ctau = 54 km    5.4E+07 
+  mass = "1.0" # GeV
+  P8gen.SetParameters("9900014:new = N2 N2 2 0 0 "+mass+" 0.0 0.0 0.0 "+ctau+"  0   1   0   1   0")  
   P8gen.SetParameters("9900014:isResonance = false")
   P8gen.SetParameters("9900014:addChannel =  1   0.1  0 -13  -211")
   P8gen.SetParameters("9900014:addChannel =  1   0.1  0  13   211")
   P8gen.SetParameters("9900014:mayDecay = on")
   P8gen.SetHNLId(9900014)
 # also add to PDG
-  pdg.AddParticle('N2','HNL', 1.0, False, 0., 0., 'XXX', 9900014)
+  gamma = 6.58211889e-27/float(ctau)
+  pdg.AddParticle('N2','HNL', float(mass), False, gamma, 0., 'N2', 9900014)
 # 12 14 16 neutrinos replace with N2
 #overwrite /\c decays
   P8gen.SetParameters("4122:new  Lambda_c+   Lambda_cbar-   2   3   0    2.28646    0.00000    0.00000    0.00000  5.99000e-02   0   1   0   1   0")
