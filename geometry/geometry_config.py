@@ -4,44 +4,115 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # muShieldDesign = 2  # 1=passive 2=active
 # targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
+# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
 
 if "muShieldDesign" not in globals():
     muShieldDesign = 2
 if "targetOpt" not in globals():
     targetOpt = 5
-
+if "strawDesign" not in globals():
+    strawDesign = 1
 with ConfigRegistry.register_config("basic") as c:
-    # global muShieldDesign, targetOpt
-    c.vetoStation = AttrDict(z=-2390.*u.cm)
-    c.TrackStation1 = AttrDict(z=1510.*u.cm)
-    c.TrackStation2 = AttrDict(z=1710.*u.cm)
-    c.TrackStation3 = AttrDict(z=2150.*u.cm)
-    c.TrackStation4 = AttrDict(z=2370.*u.cm)
+    # global muShieldDesign, targetOpt, strawDesign
+    c.strawDesign = strawDesign
+    # positions and lenghts of vacuum tube segments
+    c.Chamber1 = AttrDict(z=-22.28*u.m)
+    c.Chamber2 = AttrDict(z=-1.9*u.m)
+    c.Chamber3 = AttrDict(z=16.98*u.m)
+    c.Chamber4 = AttrDict(z=20.18*u.m)
+    c.Chamber5 = AttrDict(z=23.38*u.m)
+    c.Chamber6 = AttrDict(z=24.68*u.m)
+
+    c.chambers = AttrDict(z=0*u.cm)
+    # these are half lengths
+# magnet z= 20.18  veto -22.28*u.m + 5.+0.1 = -17.18 ?
+
+    c.chambers.Tub1length = AttrDict(z=2.5*u.m)
+    c.chambers.Tub2length = AttrDict(z=17.68*u.m)
+    c.chambers.Tub3length = AttrDict(z=0.8*u.m)
+    c.chambers.Tub4length = AttrDict(z=2.*u.m)
+    c.chambers.Tub5length = AttrDict(z=0.8*u.m)
+    c.chambers.Tub6length = AttrDict(z=0.1*u.cm)
+    c.chambers.Rmin = AttrDict(z=245.*u.cm)
+    c.chambers.Rmax = AttrDict(z=250.*u.cm)
+
+    c.scintillator = AttrDict(z=0*u.cm)
+    c.scintillator.Rmin = AttrDict(z=251.*u.cm)
+    c.scintillator.Rmax = AttrDict(z=260.*u.cm)
+
+    c.vetoStation = AttrDict(z=-1958.*u.cm)
+    c.TrackStation1 = AttrDict(z=1598.*u.cm)
+    c.TrackStation2 = AttrDict(z=1798.*u.cm)
+    c.TrackStation3 = AttrDict(z=2238.*u.cm)
+    c.TrackStation4 = AttrDict(z=2438.*u.cm)
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
 
+    c.strawtubes = AttrDict(z=0*u.cm)
+    c.strawtubes.StrawLength        = AttrDict(z=250.*u.cm)
+    c.strawtubes.InnerStrawDiameter = AttrDict(z=0.94*u.cm)
+    c.strawtubes.OuterStrawDiameter = AttrDict(z=0.98*u.cm)
+    c.strawtubes.StrawPitch         = AttrDict(z=1.76*u.cm)
+    c.strawtubes.DeltazLayer        = AttrDict(z=1.1*u.cm)
+    c.strawtubes.DeltazPlane        = AttrDict(z=2.6*u.cm)
+    c.strawtubes.StrawsPerLayer     = AttrDict(z=284)
+    c.strawtubes.ViewAngle          = AttrDict(z=5)
+    c.strawtubes.WireThickness      = AttrDict(z=0.003*u.cm)
+    c.strawtubes.DeltazView         = AttrDict(z=10.*u.cm)
+    c.strawtubes.VacBox_x           = AttrDict(z=300.*u.cm)
+    c.strawtubes.VacBox_y           = AttrDict(z=300.*u.cm)
     c.Bfield = AttrDict(z=c.z)
+
     c.Bfield.max = 1.5*u.kilogauss  # was 1.15 in EOI
 
     # target absorber muon shield setup
-    c.decayVolume                 =  AttrDict(z=0*u.cm)
+    c.decayVolume            =  AttrDict(z=0*u.cm)
     c.decayVolume.length     =   50*u.m
 
     c.muShield             =  AttrDict(z=0*u.cm)
-    c.muShield.dZ1 = 2.5*u.m
-    c.muShield.dZ2 = 3.5*u.m
-    c.muShield.dZ3 = 3.0*u.m
-    c.muShield.dZ4 = 3.0*u.m
-    c.muShield.dZ5 = 2.5*u.m
-    c.muShield.dZ6 = 2.5*u.m
-    c.muShield.LE  = 5*u.m
     c.muShieldDesign = muShieldDesign
+    # design 4
+    c.muShield.LE  = 10*u.m     #- 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
+    c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
+    c.muShield.dZ1 = 3.5*u.m
+    c.muShield.dZ2 = 6.*u.m
+    c.muShield.dZ3 = 2.5*u.m
+    c.muShield.dZ4 = 1.4*u.m
+    c.muShield.dZ5 = 1.6*u.m
+    c.muShield.dZ6 = 3.*u.m
+    c.muShield.dZ7 = 3.*u.m
+    c.muShield.dZ8 = 3.*u.m
+    c.muShield.dXgap = 0.2*u.m
+
+    if muShieldDesign == 3: 
+     c.muShield.LE  = 10*u.m     #- 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
+     c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
+     c.muShield.dZ1 = 3.5*u.m
+     c.muShield.dZ2 = 5.*u.m
+     c.muShield.dZ3 = 3.5*u.m
+     c.muShield.dZ4 = 2.0*u.m
+     c.muShield.dZ5 = 1.*u.m
+     c.muShield.dZ6 = 3.*u.m
+     c.muShield.dZ7 = 3.*u.m
+     c.muShield.dZ8 = 3.*u.m
+     c.muShield.dXgap = 0.2*u.m
+
+    if muShieldDesign == 2: 
+     c.muShield.dZ0 = 0*u.m      #  extra hadron absorber
+     c.muShield.dZ1 = 2.5*u.m
+     c.muShield.dZ2 = 3.5*u.m
+     c.muShield.dZ3 = 3.0*u.m
+     c.muShield.dZ4 = 3.0*u.m
+     c.muShield.dZ5 = 2.5*u.m
+     c.muShield.dZ6 = 2.5*u.m
+     c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+
+                         c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE  # leave some space for nu-tau detector   
     # for passive design, fDesign==1
     if muShieldDesign == 1: 
         c.muShield.length =  70*u.m
-    # for active design, fDesign==2
-    if muShieldDesign == 2:  
-        c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE  # leave some space for nu-tau detector   
+    if muShieldDesign == 3 or muShieldDesign == 4 : 
+     c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
+                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
 
     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
 
@@ -63,3 +134,21 @@ with ConfigRegistry.register_config("basic") as c:
     c.straw.resol  = 0.01*u.cm
     c.straw.pitch  = 1.*u.cm
     c.straw.stereoAngle = 5./180.  # degrees
+
+    #Parameters for tau magnetic Spectrometer
+    c.tauMS = AttrDict(z=0*u.cm)
+    c.tauMS.FeL = 5.*u.cm
+    c.tauMS.AirL = 2.*u.cm
+    c.tauMS.SpectroL = 4.7*u.m
+    c.tauMS.GapV = 27.*u.cm
+    c.tauMS.DGap = 95.*u.cm
+    c.tauMS.MGap = 120*u.cm
+    c.tauMS.zLS = -25*u.m - c.tauMS.GapV - c.tauMS.DGap - c.tauMS.FeL/2
+    
+    #Parameters for Goliath
+    c.Goliath = AttrDict(z=0*u.cm)
+    c.Goliath.LS = 4.5*u.m
+    c.Goliath.TS = 3.6*u.m
+    c.Goliath.GapTS = 25*u.cm
+    c.Goliath.zC = - 25.*u.m - c.tauMS.GapV - c.tauMS.SpectroL - c.Goliath.GapTS - c.Goliath.LS/2
+

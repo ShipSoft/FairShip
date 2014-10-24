@@ -11,7 +11,8 @@ class ShipMuonShield : public FairModule
 {
   public:
     ShipMuonShield(const char* name, const Int_t Design=1,  const char* Title="ShipMuonShield",
-                               Double_t Z=0, Double_t L1=0, Double_t L2=0, Double_t L3=0, Double_t L4=0, Double_t L5=0, Double_t L6=0, Double_t LE=0);
+                               Double_t Z=0, Double_t L0=0, Double_t L1=0, Double_t L2=0, Double_t L3=0, Double_t L4=0, Double_t L5=0, Double_t L6=0, 
+                               Double_t L7=0, Double_t L8=0,Double_t gap=0,Double_t LE=0);
     ShipMuonShield();
     virtual ~ShipMuonShield();
     void ConstructGeometry();
@@ -20,7 +21,7 @@ class ShipMuonShield : public FairModule
   
   Int_t  fDesign;       // design of muon shield, 1=passive, active = ...
   Double_t  fMuonShieldLength ;
-  Double_t  dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,zEndOfAbsorb;
+  Double_t  dZ0,dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,dZ7,dZ8,dXgap,zEndOfAbsorb;
   Int_t InitMedium(const char* name);
 
 };
