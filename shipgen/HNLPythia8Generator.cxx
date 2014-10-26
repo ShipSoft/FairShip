@@ -36,7 +36,7 @@ Bool_t HNLPythia8Generator::Init()
   //TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   //fctau = pdgBase->GetParticle(fHNL)->Lifetime(); 
   fctau = fPythia.particleData.tau0(fHNL)*100; //* 3.3333e-12
-  cout<<"ctau pythia "<<fctau<<endl;
+  cout<<"ctau of HNL seen by Pythia "<<fctau<<endl;
   
   return kTRUE;
 }

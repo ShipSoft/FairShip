@@ -52,6 +52,7 @@ def ecalYellow():
  ecal = fGeo.GetVolume("EcalModule3")
  ecal.SetLineColor(ROOT.kYellow) 
  evmgr.ElementChanged(geoscene,True,True)
+
 #----Load the default libraries------
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
@@ -75,15 +76,19 @@ fMan.SetPriOnly(False)  # display everything
 #----------------------Tracks and points -------------------------------------
 verbose = 0  # 3 lot of output
 Track          = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
-DetectorPoints = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
+VetoPoints     = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
+StrawPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullSquare)
 EcalPoints = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
  
 fMan.AddTask(Track)
-fMan.AddTask(DetectorPoints)
+fMan.AddTask(VetoPoints)
 fMan.AddTask(EcalPoints)
+fMan.AddTask(StrawPoints)
 fMan.Init(1,4,1000) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 ecalYellow()
 
+fGeo  = ROOT.gGeoManager  
+sTree = g.FindObjectAny('cbmsim')
 def search(lvdict,tag):
   for x in lvdict: 
    if not x.find(tag)<0: print x
@@ -129,4 +134,24 @@ def mydebug():
  topnode  = geoscene.FindChild('cave_1')
  topnode.SetVisLevel(4)
  evmgr.ElementChanged(geoscene,True,True)
+def debugStraw(n):
+ fGeo = ROOT.gGeoManager  
+ vols = fGeo.GetListOfVolumes()
+ sTree = g.FindObjectAny('cbmsim')
+ sTree.GetEntry(n)
+ for s in sTree.strawtubesPoint:
+  print vols[s.GetDetectorID()-1].GetName()
+def access2Branches():
+ MCTracks = ROOT.TClonesArray("ShipMCTrack")
+ sTree = g.FindObjectAny('cbmsim')
+ sTree.SetBranchAddress("MCTrack", MCTracks)
+ TrackingHits   = ROOT.TClonesArray("vetoPoint")
+ sTree.SetBranchAddress("vetoPoint", TrackingHits)
+ Ecals = ROOT.TClonesArray("ecalPoint")
+ sTree.SetBranchAddress("EcalPoint", Ecals)
+ sTree.MCTrack   = MCTracks
+ sTree.vetoPoint = TrackingHits
+ sTree.EcalPoint = Ecals
+ sTree.GetEntry(1)
+ return sTree 
 

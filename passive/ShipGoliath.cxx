@@ -46,6 +46,7 @@ void ShipGoliath::ConstructGeometry()
     Double_t side1 = TransversalSize, side2 = LongitudinalSize;  //side1 = short side, side2 = long side of the top part
     Double_t base1 = 135, base2 = 78; //basis of the trapezoid
     Double_t side3 = 33, side4 = 90, side5 = 125; //Sides of the columns
+    Double_t height = 180; //Distane between the lower and upper surface
     
     cout << zCenter << endl;
 
@@ -59,7 +60,7 @@ void ShipGoliath::ConstructGeometry()
     TGeoBBox *TopS = new TGeoBBox(180,57/2,225);
     TGeoVolume *volTopS = new TGeoVolume("volTopS",TopS,Fe);
     volTopS->SetLineColor(kRed);
-   // volTopS->SetTransparency(7);
+    //volTopS->SetTransparency(7);
     
     top->AddNode(volTopS,1,new TGeoTranslation(0, 126, zCenter)); //upper part
     top->AddNode(volTopS,2,new TGeoTranslation(0, -111, zCenter)); //lower part
@@ -76,7 +77,7 @@ void ShipGoliath::ConstructGeometry()
     TGeoCombiTrans t(0, 75, zCenter,r1);
     t.Print();
     TGeoHMatrix *m = new TGeoHMatrix(t);
-    //m->Print();
+   
     
     
     TGeoTube *magnetUp = new TGeoTube(side4,160,22.5);
@@ -112,14 +113,14 @@ void ShipGoliath::ConstructGeometry()
     //TRAPEZOID
     
     TGeoArb8 *LateralS2 = new TGeoArb8("LateralS2",45/2);
-    LateralS2->SetVertex(0, side3, 0);
-    LateralS2->SetVertex(1, side4, 0);
-    LateralS2->SetVertex(2, side4, base2);
-    LateralS2->SetVertex(3, side3, base1);
-    LateralS2->SetVertex(4, side3, 0);
-    LateralS2->SetVertex(5, side4, 0);
-    LateralS2->SetVertex(6, side4, base2);
-    LateralS2->SetVertex(7, side3, base1);
+    LateralS2->SetVertex(0, side4, 0);
+    LateralS2->SetVertex(1, side3, 0);
+    LateralS2->SetVertex(2, side3, base1);
+    LateralS2->SetVertex(3, side4, base2);
+    LateralS2->SetVertex(4, side4, 0);
+    LateralS2->SetVertex(5, side3, 0);
+    LateralS2->SetVertex(6, side3, base1);
+    LateralS2->SetVertex(7, side4, base2);
 
     TGeoVolume *volLateralS2 = new TGeoVolume("volLateralS2",LateralS2,Fe);
     volLateralS2->SetLineColor(kRed);
@@ -163,14 +164,14 @@ void ShipGoliath::ConstructGeometry()
     
     //TRAPEZOID
     TGeoArb8 *LateralS2_b = new TGeoArb8("LateralS2_b",45/2);
-    LateralS2_b ->SetVertex(0, side3, 0);
-    LateralS2_b ->SetVertex(1, side4, 0);
-    LateralS2_b ->SetVertex(2, side4, base2);
-    LateralS2_b ->SetVertex(3, side3, base1);
-    LateralS2_b ->SetVertex(4, side3, 0);
-    LateralS2_b ->SetVertex(5, side4, 0);
-    LateralS2_b ->SetVertex(6, side4, base2);
-    LateralS2_b ->SetVertex(7, side3, base1);
+    LateralS2_b ->SetVertex(0, side4, 0);
+    LateralS2_b ->SetVertex(1, side3, 0);
+    LateralS2_b ->SetVertex(2, side3, base1);
+    LateralS2_b ->SetVertex(3, side4, base2);
+    LateralS2_b ->SetVertex(4, side4, 0);
+    LateralS2_b ->SetVertex(5, side3, 0);
+    LateralS2_b ->SetVertex(6, side3, base1);
+    LateralS2_b ->SetVertex(7, side4, base2);
     
     TGeoVolume *volLateralS2_b = new TGeoVolume("volLateralS2_b",LateralS2_b,Fe);
     volLateralS2_b->SetLineColor(kRed);
@@ -207,8 +208,8 @@ void ShipGoliath::ConstructGeometry()
     //UPPER LATERAL SURFACE = LOWER ONE
     
     //LONGER RECTANGLE
-    
-    TGeoBBox *LateralS1_d = new TGeoBBox("LateralS1_d",16.5,225/2,67.5);
+  
+    TGeoBBox *LateralS1_d = new TGeoBBox("LateralS1_d",16.5,height/2,67.5);
     TGeoTranslation *tr1_d = new TGeoTranslation(side1/2 - side3/2, 7.5, zCenter- side2/2 +base1/2);
     TGeoVolume *volLateralS1_d = new TGeoVolume("volLateralS1_d",LateralS1_d,Fe);
     volLateralS1_d->SetLineColor(kRed);
@@ -216,16 +217,17 @@ void ShipGoliath::ConstructGeometry()
     
     //TRAPEZOID
     
-    TGeoArb8 *LateralS2_d = new TGeoArb8("LateralS2_d",225/2);
-    LateralS2_d ->SetVertex(0, side3, 0);
-    LateralS2_d ->SetVertex(1, side4, 0);
-    LateralS2_d ->SetVertex(2, side4, base2);
-    LateralS2_d ->SetVertex(3, side3, base1);
-    LateralS2_d ->SetVertex(4, side3, 0);
-    LateralS2_d ->SetVertex(5, side4, 0);
-    LateralS2_d ->SetVertex(6, side4, base2);
-    LateralS2_d ->SetVertex(7, side3, base1);
+    TGeoArb8 *LateralS2_d = new TGeoArb8("LateralS2_d",height/2);
+    LateralS2_d->SetVertex(0, side4, 0);
+    LateralS2_d->SetVertex(1, side3, 0);
+    LateralS2_d->SetVertex(2, side3, base1);
+    LateralS2_d->SetVertex(3, side4, base2);
+    LateralS2_d->SetVertex(4, side4, 0);
+    LateralS2_d->SetVertex(5, side3, 0);
+    LateralS2_d->SetVertex(6, side3, base1);
+    LateralS2_d->SetVertex(7, side4, base2);
     
+
     TGeoVolume *volLateralS2_d = new TGeoVolume("volLateralS2_d",LateralS2_d,Fe);
     volLateralS2_d->SetLineColor(kRed);
     
@@ -244,7 +246,7 @@ void ShipGoliath::ConstructGeometry()
     
     //LONGER RECTANGLE
     
-    TGeoBBox *LateralS1_c = new TGeoBBox("LateralS1_c",16.5,225/2,67.5);
+    TGeoBBox *LateralS1_c = new TGeoBBox("LateralS1_c",16.5,height/2,67.5);
     TGeoTranslation *tr1_c = new TGeoTranslation(side1/2 - side3/2, 7.5, zCenter+ side2/2 -base1/2);
     TGeoVolume *volLateralS1_c = new TGeoVolume("volLateralS1_c",LateralS1_c,Fe);
     volLateralS1_c->SetLineColor(kRed);
@@ -253,15 +255,15 @@ void ShipGoliath::ConstructGeometry()
     
     //TRAPEZOID
     
-    TGeoArb8 *LateralS2_c = new TGeoArb8("LateralS2_d",225/2);
-    LateralS2_c ->SetVertex(0, side3, 0);
-    LateralS2_c ->SetVertex(1, side4, 0);
-    LateralS2_c ->SetVertex(2, side4, base2);
-    LateralS2_c ->SetVertex(3, side3, base1);
-    LateralS2_c ->SetVertex(4, side3, 0);
-    LateralS2_c ->SetVertex(5, side4, 0);
-    LateralS2_c ->SetVertex(6, side4, base2);
-    LateralS2_c ->SetVertex(7, side3, base1);
+    TGeoArb8 *LateralS2_c = new TGeoArb8("LateralS2_c",height/2);
+    LateralS2_c ->SetVertex(0, side4, 0);
+    LateralS2_c ->SetVertex(1, side3, 0);
+    LateralS2_c ->SetVertex(2, side3, base1);
+    LateralS2_c ->SetVertex(3, side4, base2);
+    LateralS2_c ->SetVertex(4, side4, 0);
+    LateralS2_c ->SetVertex(5, side3, 0);
+    LateralS2_c ->SetVertex(6, side3, base1);
+    LateralS2_c ->SetVertex(7, side4, base2);
     
     TGeoVolume *volLateralS2_c = new TGeoVolume("volLateralS2_c",LateralS2_c,Fe);
     volLateralS2_c->SetLineColor(kRed);

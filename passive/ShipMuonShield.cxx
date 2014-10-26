@@ -57,7 +57,7 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      dZ6 = L6;
      fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6) + LE ; //leave some space for nu-tau detector   
     }
- if (fDesign==3||fDesign==4){
+ if (fDesign==3||fDesign==4||fDesign==5){
      dZ0 = L0;
      dZ1 = L1;
      dZ2 = L2;
@@ -781,7 +781,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     top->AddNode(rockD, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*dZ + dZD/2.));
 
     }
-    else if (fDesign==4){
+    else if (fDesign==4||fDesign==5){
 // Slightly improved from fDesign==3, longer/thicker MagB first magnets to 
 // make sure more muons end up on the right polarity side.
 // add here the additional 2m hadron shield, decided 17 october 2014
@@ -1192,34 +1192,33 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     magBotRight42t48->SetField(ConLField);
     top->AddNode(magBotRight42t48, 1, new TGeoTranslation(0, 0, Z8 ));
 
-
+    Double_t ZGmid=Z8+dZ8+2.25*m+0.2*m;
+    if (fDesign==4){
 //Add the Goliath magnet.
 //4 Pillars
-    TGeoVolume *pillarG = gGeoManager->MakeBox("PillarG", iron, 0.45*m,0.75*m,0.675*m);
-    magA->SetLineColor(45);  // red-brown
+     TGeoVolume *pillarG = gGeoManager->MakeBox("PillarG", iron, 0.45*m,0.75*m,0.675*m);
+     magA->SetLineColor(45);  // red-brown
     /// put the 4 pillars in place:
-    Double_t ZGpillar1=Z8+dZ8+0.675*m+0.2*m;
-    Double_t ZGpillar2=ZGpillar1+3.15*m;
-    top->AddNode(pillarG, 1, new TGeoTranslation(-1.35*m, 0, ZGpillar1));
-    top->AddNode(pillarG, 1, new TGeoTranslation(1.35*m, 0, ZGpillar1));
-    top->AddNode(pillarG, 1, new TGeoTranslation(-1.35*m, 0, ZGpillar2));
-    top->AddNode(pillarG, 1, new TGeoTranslation(1.35*m, 0, ZGpillar2));
+     Double_t ZGpillar1=Z8+dZ8+0.675*m+0.2*m;
+     Double_t ZGpillar2=ZGpillar1+3.15*m;
+     top->AddNode(pillarG, 1, new TGeoTranslation(-1.35*m, 0, ZGpillar1));
+     top->AddNode(pillarG, 1, new TGeoTranslation(1.35*m, 0, ZGpillar1));
+     top->AddNode(pillarG, 1, new TGeoTranslation(-1.35*m, 0, ZGpillar2));
+     top->AddNode(pillarG, 1, new TGeoTranslation(1.35*m, 0, ZGpillar2));
 //Top/bottom plates
-    TGeoVolume *plateG = gGeoManager->MakeBox("PlateG", iron, 1.8*m,0.5*m,2.25*m);
-    magA->SetLineColor(45);  // red-brown
+     TGeoVolume *plateG = gGeoManager->MakeBox("PlateG", iron, 1.8*m,0.5*m,2.25*m);
+     magA->SetLineColor(45);  // red-brown
     /// put the 4 pillars in place:
-    Double_t ZGmid=Z8+dZ8+2.25*m+0.2*m;
-    top->AddNode(plateG, 1, new TGeoTranslation(0., 1.25*m, ZGmid));
-    top->AddNode(plateG, 1, new TGeoTranslation(0., -1.25*m, ZGmid));
-
-
-//Add  rough nu-tau Mu-Spec...
+     top->AddNode(plateG, 1, new TGeoTranslation(0., 1.25*m, ZGmid));
+     top->AddNode(plateG, 1, new TGeoTranslation(0., -1.25*m, ZGmid));
+//Add  rough nu-tau Mu-Spec...  for the moment keep it until Annarita has a replacement
     Double_t sz = ZGmid+2.25*m+0.2*m+2.45*m;
     Double_t dIronOpera= 0.3*m;
     TGeoVolume *muNuTau = gGeoManager->MakeBox("MuNuTau", iron, 2.3*m, 4.*m, dIronOpera);
     muNuTau->SetLineColor(5);
     top->AddNode(muNuTau, 1, new TGeoTranslation(0, 0, sz-0.91*m));
     top->AddNode(muNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m));
+    }
 
 
 // Concrete around first magnets

@@ -15,38 +15,61 @@ if "strawDesign" not in globals():
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign
     c.strawDesign = strawDesign
-    # positions and lenghts of vacuum tube segments
-    c.Chamber1 = AttrDict(z=-22.28*u.m)
-    c.Chamber2 = AttrDict(z=-1.9*u.m)
-    c.Chamber3 = AttrDict(z=16.98*u.m)
-    c.Chamber4 = AttrDict(z=20.18*u.m)
-    c.Chamber5 = AttrDict(z=23.38*u.m)
-    c.Chamber6 = AttrDict(z=24.68*u.m)
-
     c.chambers = AttrDict(z=0*u.cm)
+    if strawDesign == 1:
+     c.Chamber1 = AttrDict(z=-2450.*u.cm)
+     c.Chamber2 = AttrDict(z=-440.*u.cm)
+     c.Chamber3 = AttrDict(z=1620.*u.cm)
+     c.Chamber4 = AttrDict(z=1940.*u.cm)
+     c.Chamber5 = AttrDict(z=2270.*u.cm)
+     c.Chamber6 = AttrDict(z=2540.*u.cm)
+
+     c.chambers.Tub1length = AttrDict(z=50.*u.cm)
+     c.chambers.Tub2length = AttrDict(z=1940.*u.cm)
+     c.chambers.Tub3length = AttrDict(z=70.*u.cm) # -10
+     c.chambers.Tub4length = AttrDict(z=190.*u.cm) # -10
+     c.chambers.Tub5length = AttrDict(z=80.*u.cm) # -10
+     c.chambers.Tub6length = AttrDict(z=20.*u.cm)
+     c.chambers.Rmin = AttrDict(z=245.*u.cm)
+     c.chambers.Rmax = AttrDict(z=250.*u.cm)
+
+     c.vetoStation = AttrDict(z=-2390.*u.cm)
+     c.TrackStation1 = AttrDict(z=1520.*u.cm)
+     c.TrackStation2 = AttrDict(z=1715.*u.cm) # -5
+     c.TrackStation3 = AttrDict(z=2160.*u.cm)
+     c.TrackStation4 = AttrDict(z=2380.*u.cm)
+
+    else:
+    # positions and lenghts of vacuum tube segments
+     c.Chamber1 = AttrDict(z=-22.28*u.m)
+     c.Chamber2 = AttrDict(z=-1.9*u.m)
+     c.Chamber3 = AttrDict(z=16.98*u.m)
+     c.Chamber4 = AttrDict(z=20.18*u.m)
+     c.Chamber5 = AttrDict(z=23.38*u.m)
+     c.Chamber6 = AttrDict(z=24.68*u.m)
+
     # these are half lengths
 # magnet z= 20.18  veto -22.28*u.m + 5.+0.1 = -17.18 ?
 
-    c.chambers.Tub1length = AttrDict(z=2.5*u.m)
-    c.chambers.Tub2length = AttrDict(z=17.68*u.m)
-    c.chambers.Tub3length = AttrDict(z=0.8*u.m)
-    c.chambers.Tub4length = AttrDict(z=2.*u.m)
-    c.chambers.Tub5length = AttrDict(z=0.8*u.m)
-    c.chambers.Tub6length = AttrDict(z=0.1*u.cm)
-    c.chambers.Rmin = AttrDict(z=245.*u.cm)
-    c.chambers.Rmax = AttrDict(z=250.*u.cm)
+     c.chambers.Tub1length = AttrDict(z=2.5*u.m)
+     c.chambers.Tub2length = AttrDict(z=17.68*u.m)
+     c.chambers.Tub3length = AttrDict(z=0.8*u.m)
+     c.chambers.Tub4length = AttrDict(z=2.*u.m)
+     c.chambers.Tub5length = AttrDict(z=0.8*u.m)
+     c.chambers.Tub6length = AttrDict(z=0.1*u.cm)
+     c.chambers.Rmin = AttrDict(z=245.*u.cm)
+     c.chambers.Rmax = AttrDict(z=250.*u.cm)
 
+     c.vetoStation = AttrDict(z=-1958.*u.cm)
+     c.TrackStation1 = AttrDict(z=1598.*u.cm)
+     c.TrackStation2 = AttrDict(z=1798.*u.cm)
+     c.TrackStation3 = AttrDict(z=2238.*u.cm)
+     c.TrackStation4 = AttrDict(z=2438.*u.cm)
+
+    c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
     c.scintillator.Rmin = AttrDict(z=251.*u.cm)
     c.scintillator.Rmax = AttrDict(z=260.*u.cm)
-
-    c.vetoStation = AttrDict(z=-1958.*u.cm)
-    c.TrackStation1 = AttrDict(z=1598.*u.cm)
-    c.TrackStation2 = AttrDict(z=1798.*u.cm)
-    c.TrackStation3 = AttrDict(z=2238.*u.cm)
-    c.TrackStation4 = AttrDict(z=2438.*u.cm)
-
-    c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
 
     c.strawtubes = AttrDict(z=0*u.cm)
     c.strawtubes.StrawLength        = AttrDict(z=250.*u.cm)
@@ -110,7 +133,7 @@ with ConfigRegistry.register_config("basic") as c:
     # for passive design, fDesign==1
     if muShieldDesign == 1: 
         c.muShield.length =  70*u.m
-    if muShieldDesign == 3 or muShieldDesign == 4 : 
+    if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5 : 
      c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                          +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
 
@@ -143,12 +166,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauMS.GapV = 27.*u.cm
     c.tauMS.DGap = 95.*u.cm
     c.tauMS.MGap = 120*u.cm
-    c.tauMS.zLS = -25*u.m - c.tauMS.GapV - c.tauMS.DGap - c.tauMS.FeL/2
+    c.tauMS.zLS = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.DGap - c.tauMS.FeL/2
     
     #Parameters for Goliath
     c.Goliath = AttrDict(z=0*u.cm)
     c.Goliath.LS = 4.5*u.m
     c.Goliath.TS = 3.6*u.m
     c.Goliath.GapTS = 25*u.cm
-    c.Goliath.zC = - 25.*u.m - c.tauMS.GapV - c.tauMS.SpectroL - c.Goliath.GapTS - c.Goliath.LS/2
+    c.Goliath.zC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.SpectroL - c.Goliath.GapTS - c.Goliath.LS/2
 
