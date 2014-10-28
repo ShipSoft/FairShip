@@ -33,10 +33,10 @@ Bool_t HNLPythia8Generator::Init()
 
   cout<<"Beam Momentum "<<fMom<<endl;
   fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
-  //TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  //fctau = pdgBase->GetParticle(fHNL)->Lifetime(); 
-  fctau = fPythia.particleData.tau0(fHNL)*100; //* 3.3333e-12
-  cout<<"ctau of HNL seen by Pythia "<<fctau<<endl;
+  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  cout<<"tau root "<<fctau<< "[s] ctau root = " << fctau*3e10 << "[cm]"<<endl;
+  fctau = fPythia.particleData.tau0(fHNL); //* 3.3333e-12
+  cout<<"ctau pythia "<<fctau<<"[mm]"<<endl;
   
   return kTRUE;
 }

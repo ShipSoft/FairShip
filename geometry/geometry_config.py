@@ -14,9 +14,11 @@ if "strawDesign" not in globals():
     strawDesign = 1
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign
+    extraVesselLength=10*u.m
     c.strawDesign = strawDesign
     c.chambers = AttrDict(z=0*u.cm)
     if strawDesign == 1:
+     extraVesselLength=0*u.m
      c.Chamber1 = AttrDict(z=-2450.*u.cm)
      c.Chamber2 = AttrDict(z=-440.*u.cm)
      c.Chamber3 = AttrDict(z=1620.*u.cm)
@@ -38,33 +40,28 @@ with ConfigRegistry.register_config("basic") as c:
      c.TrackStation2 = AttrDict(z=1715.*u.cm) # -5
      c.TrackStation3 = AttrDict(z=2160.*u.cm)
      c.TrackStation4 = AttrDict(z=2380.*u.cm)
-
     else:
-    # positions and lenghts of vacuum tube segments
-     c.Chamber1 = AttrDict(z=-22.28*u.m)
-     c.Chamber2 = AttrDict(z=-1.9*u.m)
-     c.Chamber3 = AttrDict(z=16.98*u.m)
-     c.Chamber4 = AttrDict(z=20.18*u.m)
-     c.Chamber5 = AttrDict(z=23.38*u.m)
-     c.Chamber6 = AttrDict(z=24.68*u.m)
-
-    # these are half lengths
-# magnet z= 20.18  veto -22.28*u.m + 5.+0.1 = -17.18 ?
-
      c.chambers.Tub1length = AttrDict(z=2.5*u.m)
-     c.chambers.Tub2length = AttrDict(z=17.68*u.m)
+     c.chambers.Tub2length = AttrDict(z=17.68*u.m+extraVesselLength/2.)
      c.chambers.Tub3length = AttrDict(z=0.8*u.m)
      c.chambers.Tub4length = AttrDict(z=2.*u.m)
      c.chambers.Tub5length = AttrDict(z=0.8*u.m)
-     c.chambers.Tub6length = AttrDict(z=0.1*u.cm)
+     c.chambers.Tub6length = AttrDict(z=0.1*u.m)
      c.chambers.Rmin = AttrDict(z=245.*u.cm)
      c.chambers.Rmax = AttrDict(z=250.*u.cm)
-
-     c.vetoStation = AttrDict(z=-1958.*u.cm)
-     c.TrackStation1 = AttrDict(z=1598.*u.cm)
-     c.TrackStation2 = AttrDict(z=1798.*u.cm)
-     c.TrackStation3 = AttrDict(z=2238.*u.cm)
-     c.TrackStation4 = AttrDict(z=2438.*u.cm)
+     # positions and lenghts of vacuum tube segments
+     c.Chamber1 = AttrDict(z=-22.28*u.m)
+     c.Chamber2 = AttrDict(z=-1.9*u.m+extraVesselLength/2.)
+     c.Chamber3 = AttrDict(z=16.98*u.m+extraVesselLength)
+     c.Chamber4 = AttrDict(z=20.18*u.m+extraVesselLength)
+     c.Chamber5 = AttrDict(z=23.38*u.m+extraVesselLength)
+     c.Chamber6 = AttrDict(z=24.68*u.m+extraVesselLength)
+      # magnet z= 20.18  +extraVesselLength
+     c.vetoStation = AttrDict(z=-1968.*u.cm)
+     c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)
+     c.TrackStation2 = AttrDict(z=1798.*u.cm+extraVesselLength)
+     c.TrackStation3 = AttrDict(z=2238.*u.cm+extraVesselLength)
+     c.TrackStation4 = AttrDict(z=2438.*u.cm+extraVesselLength)
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
@@ -83,10 +80,26 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.WireThickness      = AttrDict(z=0.003*u.cm)
     c.strawtubes.DeltazView         = AttrDict(z=10.*u.cm)
     c.strawtubes.VacBox_x           = AttrDict(z=300.*u.cm)
-    c.strawtubes.VacBox_y           = AttrDict(z=300.*u.cm)
-    c.Bfield = AttrDict(z=c.z)
+    c.strawtubes.VacBox_y           = AttrDict(z=600.*u.cm)
 
+    c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 1.5*u.kilogauss  # was 1.15 in EOI
+
+    c.MuonStation0 = AttrDict(z=2600.*u.cm+extraVesselLength)
+    c.MuonStation1 = AttrDict(z=2700.*u.cm+extraVesselLength)
+    c.MuonStation2 = AttrDict(z=2800.*u.cm+extraVesselLength)
+    c.MuonStation3 = AttrDict(z=2900.*u.cm+extraVesselLength)
+    
+    c.MuonFilter0 = AttrDict(z=2650.*u.cm+extraVesselLength)
+    c.MuonFilter1 = AttrDict(z=2750.*u.cm+extraVesselLength)
+    c.MuonFilter2 = AttrDict(z=2850.*u.cm+extraVesselLength)
+
+    c.MuonXMax    =  AttrDict(x=300.*u.cm)
+    c.MuonYMax    =  AttrDict(y=600.*u.cm)
+
+    c.ActiveThickness = AttrDict(z=0.5*u.cm)
+    c.FilterThickness = AttrDict(z=30.*u.cm)
+
 
     # target absorber muon shield setup
     c.decayVolume            =  AttrDict(z=0*u.cm)
@@ -94,14 +107,14 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.muShield             =  AttrDict(z=0*u.cm)
     c.muShieldDesign = muShieldDesign
-    # design 4
+    # design 4 and 5
     c.muShield.LE  = 10*u.m     #- 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
     c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
     c.muShield.dZ1 = 3.5*u.m
     c.muShield.dZ2 = 6.*u.m
     c.muShield.dZ3 = 2.5*u.m
-    c.muShield.dZ4 = 1.4*u.m
-    c.muShield.dZ5 = 1.6*u.m
+    c.muShield.dZ4 = 3.*u.m
+    c.muShield.dZ5 = 0.*u.m     # 28Oct #5 removed
     c.muShield.dZ6 = 3.*u.m
     c.muShield.dZ7 = 3.*u.m
     c.muShield.dZ8 = 3.*u.m

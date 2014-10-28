@@ -65,111 +65,33 @@ void strawtubesPoint::Print(Int_t detID) const
 }
 // -------------------------------------------------------------------------
 
-// -----   Public method StrawX    -------------------------------------------
-// -----   returns X coordinate of straw -----------------------------------
-Double_t strawtubesPoint::StrawX(Int_t detID)
+// -----   Public method StrawY    -------------------------------------------
+// -----   returns Y coordinate of straw -----------------------------------
+Double_t strawtubesPoint::StrawY(Int_t detID)
 {
-  Double_t eps=0.0001;
+  Double_t eps=0.1;
   Int_t statnb = detID/10000000;
   Int_t vnb = (detID - statnb*10000000)/1000000;
   Int_t pnb = (detID - statnb*10000000 - vnb*1000000)/100000;
   Int_t lnb = (detID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
   Int_t snb = detID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 1000;
   //cout << "DetID" << detID << " statnb "<<statnb<<" vnb " << vnb << " pnb " << pnb <<" lnb "<< lnb << " snb " << snb << endl;
-  Double_t xpos = fStraw_length-fStraw_pitch*snb-8*eps+fStraw_pitch*pnb/4+lnb*fStraw_pitch/2;
-  return xpos;
+  Double_t ypos = 2*fStraw_length-fStraw_pitch*snb-8*eps-fStraw_pitch*pnb/4+lnb*fStraw_pitch/2;
+  return ypos;
 }
 // -------------------------------------------------------------------------
 
 // -----   Public method StrawXTop    -------------------------------------------
-// -----   returns X Top coordinate of straw -----------------------------------
+// -----   returns  X Top coordinate of straw -----------------------------------
 Double_t strawtubesPoint::StrawXTop(Int_t detID)
 {
-  Double_t eps=0.0001;
-  fStraw_length=250.;             //!  Length (y) of a straw
-  fStraw_pitch=1.76;              //!  Distance (x) between straws in one layer
+  Double_t eps=0.1;
+  fStraw_length=250.;             //!  Length (x) of a straw
+  fStraw_pitch=1.76;              //!  Distance (y) between straws in one layer
   fView_angle=5;                     //!  Stereo angle of layers in a view
   Int_t angle;
   Int_t statnb = detID/10000000;
   Int_t vnb = (detID - statnb*10000000)/1000000;
-  switch (vnb) {
-     case 0:
-       angle=0; 
-       break;
-     case 1:
-       angle=fView_angle; 
-       break;     
-     case 2:
-       angle=fView_angle; 
-       break; 
-     case 3:
-       angle=0; 
-       break; 
-     default:
-       angle=0;   
-   }   
-  Double_t pi =  4*atan(1);     
-  Double_t sinphi=sin(pi*angle/180.);
-
-  Int_t pnb = (detID - statnb*10000000 - vnb*1000000)/100000;
-  Int_t lnb = (detID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
-  Int_t snb = detID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 1000;
-  //cout << "DetID" << detID << " statnb "<<statnb<<" vnb " << vnb << " pnb " << pnb <<" lnb "<< lnb << " snb " << snb << endl;
-  Double_t xtop = fStraw_length-fStraw_pitch*snb-8*eps+fStraw_pitch*pnb/4+lnb*fStraw_pitch/2;
-  xtop = xtop + fStraw_length*sinphi;
-  return xtop;
-}
-// -------------------------------------------------------------------------
-// -----   Public method StrawXBot    -------------------------------------------
-// -----   returns X Bot coordinate of straw -----------------------------------
-Double_t strawtubesPoint::StrawXBot(Int_t detID)
-{
-  Double_t eps=0.0001;
-  Int_t angle;
-  fStraw_length=250.;             //!  Length (y) of a straw
-  fStraw_pitch=1.76;              //!  Distance (x) between straws in one layer
-  fView_angle=5;                     //!  Stereo angle of layers in a view
-  Int_t statnb = detID/10000000;
-  Int_t vnb = (detID - statnb*10000000)/1000000;
-  switch (vnb) {
-     case 0:
-       angle=0; 
-       break;
-     case 1:
-       angle=fView_angle; 
-       break;     
-     case 2:
-       angle=fView_angle; 
-       break; 
-     case 3:
-       angle=0; 
-       break; 
-     default:
-       angle=0;   
-   }   
-  Double_t pi =  4*atan(1);     
-  Double_t sinphi=sin(pi*angle/180.);
-
-  Int_t pnb = (detID - statnb*10000000 - vnb*1000000)/100000;
-  Int_t lnb = (detID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
-  Int_t snb = detID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 1000;
-  //cout << "DetID " << detID << " statnb "<<statnb<<" vnb " << vnb << " pnb " << pnb <<" lnb "<< lnb << " snb " << snb << endl;
-  Double_t xbot = fStraw_length-fStraw_pitch*snb-8*eps+fStraw_pitch*pnb/4+lnb*fStraw_pitch/2;
-  xbot = xbot - fStraw_length*sinphi;
-  return xbot;
-}
-// -------------------------------------------------------------------------
-
-// -----   Public method StrawYTop    -------------------------------------------
-// -----   returns Top Y coordinate of straw -----------------------------------
-Double_t strawtubesPoint::StrawYTop(Int_t detID)
-{
-  Double_t eps=0.0001;
-  fStraw_length=250.;             //!  Length (y) of a straw
-  fView_angle=5;                     //!  Stereo angle of layers in a view
-  Int_t statnb = detID/10000000;
-  Int_t vnb = (detID - statnb*10000000)/1000000;
-  Int_t angle;
   switch (vnb) {
      case 0:
        angle=0; 
@@ -188,8 +110,54 @@ Double_t strawtubesPoint::StrawYTop(Int_t detID)
    }   
   Double_t pi =  4*atan(1);     
   Double_t cosphi=cos(pi*angle/180.);
-  Double_t ypos = fStraw_length*cosphi;
-  return ypos;
+  Double_t sinphi=sin(pi*angle/180.);
+
+  Int_t pnb = (detID - statnb*10000000 - vnb*1000000)/100000;
+  Int_t lnb = (detID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
+  Int_t snb = detID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 1000;
+  //cout << "DetID" << detID << " statnb "<<statnb<<" vnb " << vnb << " pnb " << pnb <<" lnb "<< lnb << " snb " << snb << endl;
+  Double_t xtop = fStraw_length*cosphi-StrawY(detID)*sinphi;
+  return xtop;
+}
+// -------------------------------------------------------------------------
+// -----   Public method StrawXBot    -------------------------------------------
+// -----   returns X Bot coordinate of straw -----------------------------------
+Double_t strawtubesPoint::StrawXBot(Int_t detID)
+{
+  return -StrawXTop(detID);
+}
+// -------------------------------------------------------------------------
+
+// -----   Public method StrawYTop    -------------------------------------------
+// -----   returns Top Y coordinate of straw -----------------------------------
+Double_t strawtubesPoint::StrawYTop(Int_t detID)
+{
+  Double_t eps=0.1;
+  fStraw_length=250.;             //!  Length (y) of a straw
+  fView_angle=5;                     //!  Stereo angle of layers in a view
+  Int_t statnb = detID/10000000;
+  Int_t vnb = (detID - statnb*10000000)/1000000;
+  Int_t angle;
+  switch (vnb) {
+     case 0:
+       angle=0; 
+       break;
+     case 1:
+       angle=fView_angle; 
+       break;     
+     case 2:
+       angle=fView_angle; 
+       break; 
+     case 3:
+       angle=0; 
+       break; 
+     default:
+       angle=0;   
+   }   
+  Double_t pi =  4*atan(1);     
+  Double_t sinphi=sin(pi*angle/180.);
+  Double_t ytop = StrawY(detID)+fStraw_length*sinphi;
+  return ytop;
 }
 // -------------------------------------------------------------------------
 
@@ -197,7 +165,32 @@ Double_t strawtubesPoint::StrawYTop(Int_t detID)
 // -----   returns Bottom Y coordinate of straw -----------------------------------
 Double_t strawtubesPoint::StrawYBot(Int_t detID)
 {
-  return -StrawYTop(detID);
+  Double_t eps=0.1;
+  fStraw_length=250.;             //!  Length (y) of a straw
+  fView_angle=5;                     //!  Stereo angle of layers in a view
+  Int_t statnb = detID/10000000;
+  Int_t vnb = (detID - statnb*10000000)/1000000;
+  Int_t angle;
+  switch (vnb) {
+     case 0:
+       angle=0; 
+       break;
+     case 1:
+       angle=fView_angle; 
+       break;     
+     case 2:
+       angle=fView_angle; 
+       break; 
+     case 3:
+       angle=0; 
+       break; 
+     default:
+       angle=0;   
+   }   
+  Double_t pi =  4*atan(1);     
+  Double_t sinphi=sin(pi*angle/180.);
+  Double_t ybot = StrawY(detID)-fStraw_length*sinphi;
+  return ybot;
 }
 // -------------------------------------------------------------------------
 
@@ -205,7 +198,7 @@ Double_t strawtubesPoint::StrawYBot(Int_t detID)
 // -----   returns Z coordinate of straw -----------------------------------
 Double_t strawtubesPoint::StrawZ(Int_t detID)
 {
-  Double_t eps=0.0001;
+  Double_t eps=0.1;
   fT1z=1520.;                     //!  z-position of tracking station 1
   fT2z=1720.;                     //!  z-position of tracking station 2
   fT3z=2160.;                     //!  z-position of tracking station 3 (avoid overlap with magnet)

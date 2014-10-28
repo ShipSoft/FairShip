@@ -29,7 +29,9 @@ def configure(run,ship_geo):
                                                         ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
  run.AddModule(TargetStation)
 
- magnet = ROOT.ShipMagnet("Magnet")
+ 
+ if ship_geo.strawDesign > 1 : magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, 2)
+ else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  run.AddModule(magnet)
  
  # this is now included in veto.cxx
@@ -72,11 +74,17 @@ def configure(run,ship_geo):
   Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y.z)
   run.AddModule(Strawtubes) 
 
- if ship_geo.strawDesign == 4: ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal_ellipse5x10m.geo")
+ if ship_geo.strawDesign == 4: ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal_ellipse6x12m2.geo")
  else:                         ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
  run.AddModule(ecal)
 
  Muon = ROOT.muon("Muon", ROOT.kTRUE)
+ Muon.SetZStationPositions(ship_geo.MuonStation0.z, ship_geo.MuonStation1.z,ship_geo.MuonStation2.z,ship_geo.MuonStation3.z)
+ Muon.SetZFilterPositions(ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z,ship_geo.MuonFilter2.z)
+ Muon.SetXMax(ship_geo.MuonXMax.x)
+ Muon.SetYMax(ship_geo.MuonYMax.y)
+ Muon.SetActiveThickness(ship_geo.ActiveThickness.z)
+ Muon.SetFilterThickness(ship_geo.FilterThickness.z)
  run.AddModule(Muon)
 
 #-----   Magnetic field   -------------------------------------------
@@ -85,5 +93,6 @@ def configure(run,ship_geo):
  #fMagField.SetField(0., ship_geo.Bfield.max ,0. )  
  #fMagField.SetFieldRegion(-250*u.cm, 250*u.cm,-250*u.cm, 250*u.cm, ship_geo.Bfield.z-100*u.cm, ship_geo.Bfield.z+100*u.cm)    
  #run.SetField(fMagField)
- fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z )  
+ if ship_geo.strawDesign == 4: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2 )  
+ else :                        fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1 )  
  run.SetField(fMagField)

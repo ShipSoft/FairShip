@@ -38,7 +38,7 @@ class ShipBellField : public FairField
    ** @param Bpeak        x region of field (global coordinates)
    ** @param Zmiddle      y region of field (global coordinates)
    **/
-  ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle);
+  ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle,Int_t fOrient=1);
 
 
   /** Constructor from ShipFieldPar **/
@@ -67,7 +67,7 @@ class ShipBellField : public FairField
   /** Field parameters **/
   Double_t fPeak;
   Double_t fMiddle;
-  
+  Int_t fOrient;
   
   ClassDef(ShipBellField, 1);
 

@@ -27,12 +27,13 @@ ShipBellField::ShipBellField()
 
 
 // -----   Standard constructor   ------------------------------------------
-ShipBellField::ShipBellField(const char* name, Double_t Peak,Double_t Middle )
+ShipBellField::ShipBellField(const char* name, Double_t Peak,Double_t Middle,Int_t orientation )
   : FairField(name),
     fPeak(Peak),
     fMiddle(Middle)
 {
   fType=1;
+  fOrient = orientation;
 }
 // -------------------------------------------------------------------------
 
@@ -66,19 +67,27 @@ ShipBellField::~ShipBellField() { }
 
 // -----   Get x component of field   --------------------------------------
 Double_t ShipBellField::GetBx(Double_t x, Double_t y, Double_t z) {
-  
-  return 0.;
+  if (fOrient==1){ return 0.;}
+  else {
+   Double_t zlocal=(z-fMiddle)/100.;
+   Double_t bx= fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
+   //cout << "Bell GetBX " << z << ", Bx= " << bx << endl;
+   return bx;
+  }
 }
+
 // -------------------------------------------------------------------------
 
 
 // -----   Get y component of field   --------------------------------------
 Double_t ShipBellField::GetBy(Double_t x, Double_t y, Double_t z) {
-  
-  Double_t zlocal=(z-fMiddle)/100.;
-  Double_t by= fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
-  //cout << "Bell GetBY " << z << ", By= " << by << endl;
-  return by;
+  if (fOrient==1){
+   Double_t zlocal=(z-fMiddle)/100.;
+   Double_t by= fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
+   //cout << "Bell GetBY " << z << ", By= " << by << endl;
+   return by;
+  }
+  else{ return 0.;}
 
 }
 // -------------------------------------------------------------------------

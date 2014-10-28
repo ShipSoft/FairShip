@@ -31,7 +31,7 @@ class strawtubesPoint : public FairMCPoint
 
     /** Output to screen **/
     virtual void Print(Int_t detID) const;
-    Double_t StrawX(Int_t detID);
+    Double_t StrawY(Int_t detID);
     Double_t StrawXTop(Int_t detID);
     Double_t StrawXBot(Int_t detID);
     Double_t StrawYTop(Int_t detID);

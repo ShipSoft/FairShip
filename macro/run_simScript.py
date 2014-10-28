@@ -56,8 +56,8 @@ ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 a
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - muShieldDesign = 2  # 1=passive 2=active
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
-# - strawDesign       = 1  # simplistic tracker design,  3=sophisticated straw tube design
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=1,muShieldDesign=5,targetOpt=5)
+# - strawDesign       = 1  # simplistic tracker design,  3=sophisticated straw tube design, horizontal wires
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=4,muShieldDesign=5,targetOpt=5)
 # Output file name
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -191,8 +191,8 @@ rtdb.printParamContexts()
 run.CreateGeometryFile("geofile_full."+tag+".root") 
 #
 # checking for overlaps
-#ROOT.gGeoManager.CheckOverlaps()
-#ROOT.gGeoManager.PrintOverlaps()
+ROOT.gGeoManager.CheckOverlaps()
+ROOT.gGeoManager.PrintOverlaps()
 
 # -----Finish-------------------------------------------------------
 timer.Stop()

@@ -20,6 +20,8 @@
 #include "TVirtualMC.h"
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
+#include "TGeoEltu.h"
+#include "TGeoBoolNode.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
@@ -91,13 +93,15 @@ void veto::GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t
    a,b are inner ellipse radii, dz is the half-length
    will be put at z, with colour and material*/
        TGeoVolume *top = gGeoManager->GetTopVolume();
-       TGeoVolume *T2  = gGeoManager->MakeEltu("T2",material,a+thick,b+thick,dz);
-       TGeoVolume *T1  = gGeoManager->MakeEltu("T1",material,a,b,dz+0.1*mm);
-       TGeoCompositeShape *Tc = new TGeoCompositeShape(name, "T2-T1");
+       TGeoEltu *T2  = new TGeoEltu("T2",a+thick,b+thick,dz);
+       TGeoEltu *T1  = new TGeoEltu("T1",a,b,dz+0.1);
+       TGeoSubtraction *subtraction = new TGeoSubtraction(T2,T1);
+       TGeoCompositeShape *Tc = new TGeoCompositeShape(name, subtraction);
        TGeoVolume *T = new TGeoVolume(name, Tc, material);
+
        T->SetLineColor(colour);
        top->AddNode(T, 1, new TGeoTranslation(0, 0, z));
-           //and make the volunes sensitive..
+       //and make the volunes sensitive..
        if (sens) {AddSensitiveVolume(T);}
 }
 
@@ -252,6 +256,7 @@ void veto::ConstructGeometry()
     TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
     InitMedium("ShipSens");
     TGeoMedium *Se =gGeoManager->GetMedium("ShipSens");
+    gGeoManager->SetNsegments(100);
     if (fDesign !=2 && fDesign<4)
     { 
     // entrance window
@@ -305,7 +310,7 @@ void veto::ConstructGeometry()
      top->AddNode(tub2, 1,  tv2);
      top->AddNode(vtub2, 1, tv2);
      AddSensitiveVolume(tub2);
-    }
+
     // third part of vacuum chamber up to second tracking station
     TGeoVolume *tub3  = gGeoManager->MakeTube("tub3", St,  fRmin, fRmax, fTub3length);
     TGeoVolume *vtub3 = gGeoManager->MakeTube("vtub3", vac, 0, fRmin, fTub3length);
@@ -342,7 +347,7 @@ void veto::ConstructGeometry()
     TGeoTranslation* tv6 = new TGeoTranslation(0, 0, fTub6z);
     top->AddNode(tub6, 1, tv6);
     top->AddNode(vtub6, 1,tv6);
-  // 
+    }  // 
   // here the standard tracking stations 
     if (fDesign==1){
  // with conical shape of decay tube, previous veto station does not make so much sense anymore
@@ -451,6 +456,7 @@ void veto::ConstructGeometry()
      }
     }   
     if (fDesign==4){
+
     // design 4: elliptical double walled tube with LiSci in between
       Double_t walli=0.01*m;	
       Double_t wallo=0.01*m;	
@@ -463,7 +469,7 @@ void veto::ConstructGeometry()
       lidT1I->SetLineColor(18);  // silver/gray
       top->AddNode(lidT1I, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli/2.));
       //lisci lid on tube 1
-      TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
+      TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube+walli+liscitube,btube+walli+liscitube,liscilid/2.);
       lidT1lisci->SetLineColor(kMagenta-10);
       top->AddNode(lidT1lisci, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli-liscilid/2.));
       AddSensitiveVolume(lidT1lisci);
@@ -482,12 +488,12 @@ void veto::ConstructGeometry()
       // All outer tubes, first calculate inner radii of this tube
       Double_t aO=atube+walli+liscitube;
       Double_t bO=btube+walli+liscitube;
-      GeoEllipticalTube("T1O",wallo,aO,bO,fTub1length,fTub1z,18,St);
+      GeoEllipticalTube("T1O",wallo,aO,bO,fTub1length+liscilid/2,fTub1z-liscilid/2,18,St);
       GeoEllipticalTube("T2O",wallo,aO,bO,fTub2length,fTub2z,18,St);
       GeoEllipticalTube("T3O",wallo,aO,bO,fTub3length,fTub3z,18,St);
       GeoEllipticalTube("T4O",wallo,aO,bO,fTub4length,fTub4z,18,St);
       GeoEllipticalTube("T5O",wallo,aO,bO,fTub5length,fTub5z,18,St);
-      GeoEllipticalTube("T6O",wallo,aO,bO,fTub6length,fTub6z,18,St);
+      GeoEllipticalTube("T6O",wallo,aO,bO,fTub6length+liscilid/2.,fTub6z+liscilid/2.,18,St);
       // And liquid scintillator inbetween, first calculate inner radii of this
       Double_t als=atube+walli;
       Double_t bls=btube+walli;
@@ -501,16 +507,39 @@ void veto::ConstructGeometry()
       //closing lid on tube 6
       TGeoVolume *lidT6I = gGeoManager->MakeEltu("lidT6I",St,atube+walli,btube+walli,walli/2.);
       lidT6I->SetLineColor(18);  // silver/gray
-      top->AddNode(lidT1I, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli/2.));
+      top->AddNode(lidT6I, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli/2.));
       //lisci lid on tube 6
-      TGeoVolume *lidT6lisci = gGeoManager->MakeEltu("lidT6lisci",Se,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
+      TGeoVolume *lidT6lisci = gGeoManager->MakeEltu("lidT6lisci",Se,atube+walli+liscitube,btube+walli+liscitube,liscilid/2.);
       lidT6lisci->SetLineColor(kMagenta-10);
-      top->AddNode(lidT6lisci, 1, new TGeoTranslation(0, 0, fTub6z+fTub1length+walli+liscilid/2.));
+      top->AddNode(lidT6lisci, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid/2.));
       AddSensitiveVolume(lidT6lisci);
       //outer lid on tube 1
       TGeoVolume *lidT6O = gGeoManager->MakeEltu("lidT6O",St,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,wallo/2.);
       lidT6O->SetLineColor(18);  // silver/gray
       top->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid+wallo/2.));
+
+      //Add one more sensitive plane after vacuum tube for timing
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Se,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
+      TimeDet->SetLineColor(kMagenta-10);
+      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid*1.5+wallo+5.*cm));
+      AddSensitiveVolume(TimeDet);
+
+      //Add  rough nu-tau Mu-Spec...
+      Double_t ZGmid=fTub1z-fTub1length-walli-liscilid-wallo-7.4*m;
+      Double_t sz = ZGmid+2.25*m+0.2*m+2.45*m;
+      Double_t dIronOpera= 0.3*m;
+
+      //Add one sensitive plane in middle of Goliath
+      TGeoVolume *Emulsion = gGeoManager->MakeBox("Emulsion", Se, 0.5*m, 0.5*m, 5.*cm);
+      Emulsion->SetLineColor(kMagenta-10);
+      top->AddNode(Emulsion, 1, new TGeoTranslation(0, 0, ZGmid));
+      AddSensitiveVolume(Emulsion);
+
+      //Add one sensitive plane after nu-tau mu-shield
+      TGeoVolume *DetMuNuTau = gGeoManager->MakeBox("DetMuNuTau", Se, 2.5*m, 5.*m, 5.*cm);
+      DetMuNuTau->SetLineColor(kMagenta-10);
+      top->AddNode(DetMuNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m+dIronOpera+50.*cm));       
+      AddSensitiveVolume(DetMuNuTau);
      }
 }
 
