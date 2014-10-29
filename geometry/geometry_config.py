@@ -75,7 +75,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.StrawPitch         = AttrDict(z=1.76*u.cm)
     c.strawtubes.DeltazLayer        = AttrDict(z=1.1*u.cm)
     c.strawtubes.DeltazPlane        = AttrDict(z=2.6*u.cm)
-    c.strawtubes.StrawsPerLayer     = AttrDict(z=284)
+    c.strawtubes.StrawsPerLayer     = AttrDict(z=568)
     c.strawtubes.ViewAngle          = AttrDict(z=5)
     c.strawtubes.WireThickness      = AttrDict(z=0.003*u.cm)
     c.strawtubes.DeltazView         = AttrDict(z=10.*u.cm)
