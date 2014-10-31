@@ -112,7 +112,10 @@ Bool_t  muon::ProcessHits(FairVolume* vol)
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    fVolumeID = vol->getMCid();
+    //fVolumeID = vol->getMCid();
+    //cout << "muon proc "<< fVolumeID<<" "<<vol->GetName()<<" "<<vol->getVolumeId() <<endl;
+    //cout << " "<< gGeoManager->FindVolumeFast(vol->GetName())->GetNumber()<<endl;
+    fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
     if (fELoss == 0. ) { return kFALSE; }
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
@@ -120,7 +123,7 @@ Bool_t  muon::ProcessHits(FairVolume* vol)
 
     // Increment number of muon det points in TParticle
     ShipStack* stack = (ShipStack*) gMC->GetStack();
-    stack->AddPoint(kVETO);
+    stack->AddPoint(kMuon);
   }
 
   return kTRUE;
