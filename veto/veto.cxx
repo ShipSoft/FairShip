@@ -182,7 +182,7 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    fVolumeID = vol->getMCid();
+    fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
     if (fELoss == 0. ) { return kFALSE; }
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
