@@ -50,7 +50,7 @@ Double_t tesla     = 10*kilogauss;
 
 
 ShipRpc::ShipRpc()
-  : FairModule("ShipRpc", "",kTRUE),
+  : FairDetector("ShipRpc", "",kTRUE),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -63,7 +63,7 @@ ShipRpc::ShipRpc()
 }
 
 ShipRpc::ShipRpc(const char* name, const Double_t zRpcL, const Double_t zDriftL, const Double_t DriftL,const Double_t IronL, const Double_t ScintL, const Double_t MiddleG, Bool_t Active,const char* Title)
-  : FairModule(name,Title,kTRUE),
+  : FairDetector(name, true, ktauRpc),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -253,7 +253,6 @@ void ShipRpc::Register()
     
     FairRootManager::Instance()->Register("ShipRpcPoint", "ShipRpc",
                                           fShipRpcPointCollection, kTRUE);
-    
 }
 
 TClonesArray* ShipRpc::GetCollection(Int_t iColl) const

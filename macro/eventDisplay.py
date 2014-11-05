@@ -75,17 +75,19 @@ fMan.SetPriOnly(False)  # display everything
 
 #----------------------Tracks and points -------------------------------------
 verbose = 0  # 3 lot of output
-Track          = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
-VetoPoints     = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
+Track       = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
+VetoPoints  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
 StrawPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullSquare)
-EcalPoints = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
-MuonPoints = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
+EcalPoints  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
+MuonPoints  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
+RpcPoints   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
  
 fMan.AddTask(Track)
 fMan.AddTask(VetoPoints)
 fMan.AddTask(MuonPoints)
 fMan.AddTask(EcalPoints)
 fMan.AddTask(StrawPoints)
+fMan.AddTask(RpcPoints)
 fMan.Init(1,4,1000) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 ecalYellow()
 

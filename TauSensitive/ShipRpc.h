@@ -15,7 +15,7 @@ class ShipRpcPoint;
 class FairVolume;
 class TClonesArray;
 
-class ShipRpc : public FairModule
+class ShipRpc : public FairDetector
 {
   public:
     ShipRpc(const char* name, const Double_t zRpcL, const Double_t zDriftL, const Double_t DriftL, const Double_t IronL, const Double_t ScintL, const Double_t MiddleG, Bool_t Active, const char* Title = "Rpc");
