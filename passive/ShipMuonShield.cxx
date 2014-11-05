@@ -795,8 +795,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     absorberCore->SetLineColor(38);  
     top->AddNode(absorberCore, 1, new TGeoTranslation(0, 0, zEndOfAbsorb - dZ0));
 
-    //Double_t ironField = 1.8*tesla;
-    Double_t ironField = 1.0*tesla;
+    Double_t ironField = 1.8*tesla;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
