@@ -56,6 +56,9 @@ def configure(run,ship_geo):
   goliath = ROOT.ShipGoliath("Goliath", ship_geo.Goliath.zC, ship_geo.Goliath.LS, ship_geo.Goliath.TS, ship_geo.Goliath.GapTS)
   run.AddModule(goliath)
 
+ #for now Rpc are scintillator planes
+  Rpc = ROOT.ShipRpc("Rpc",ship_geo.Rpc.zRpcL, ship_geo.Rpc.zDriftL, ship_geo.Rpc.DriftL, ship_geo.Rpc.IronL, ship_geo.Rpc.ScintL, ship_geo.Rpc.MiddleG, ROOT.kTRUE)
+  run.AddModule(Rpc)
 
  if ship_geo.strawDesign > 1 :
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    

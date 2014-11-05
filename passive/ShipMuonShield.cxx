@@ -795,7 +795,8 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     absorberCore->SetLineColor(38);  
     top->AddNode(absorberCore, 1, new TGeoTranslation(0, 0, zEndOfAbsorb - dZ0));
 
-    Double_t ironField = 1.8*tesla;
+    //Double_t ironField = 1.8*tesla;
+    Double_t ironField = 1.0*tesla;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
@@ -1161,12 +1162,12 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
      top->AddNode(plateG, 1, new TGeoTranslation(0., 1.25*m, ZGmid));
      top->AddNode(plateG, 1, new TGeoTranslation(0., -1.25*m, ZGmid));
 //Add  rough nu-tau Mu-Spec...  for the moment keep it until Annarita has a replacement
-    Double_t sz = ZGmid+2.25*m+0.2*m+2.45*m;
-    Double_t dIronOpera= 0.3*m;
-    TGeoVolume *muNuTau = gGeoManager->MakeBox("MuNuTau", iron, 2.3*m, 4.*m, dIronOpera);
-    muNuTau->SetLineColor(5);
-    top->AddNode(muNuTau, 1, new TGeoTranslation(0, 0, sz-0.91*m));
-    top->AddNode(muNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m));
+     Double_t sz = ZGmid+2.25*m+0.2*m+2.45*m;
+     Double_t dIronOpera= 0.3*m;
+     TGeoVolume *muNuTau = gGeoManager->MakeBox("MuNuTau", iron, 2.3*m, 4.*m, dIronOpera);
+     muNuTau->SetLineColor(5);
+     top->AddNode(muNuTau, 1, new TGeoTranslation(0, 0, sz-0.91*m));
+     top->AddNode(muNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m));
     }
 
 

@@ -188,3 +188,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.Goliath.GapTS = 25*u.cm
     c.Goliath.zC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.SpectroL - c.Goliath.GapTS - c.Goliath.LS/2
 
+    #Parameters for the RPC in tau magnetic Spectrometer
+    c.Rpc = AttrDict(z=0*u.cm)
+    c.Rpc.DriftL = 15*u.cm
+    c.Rpc.IronL = 5.*u.cm
+    c.Rpc.ScintL = 2.*u.cm
+    c.Rpc.MiddleG = 120*u.cm
+    c.Rpc.zRpcL = -c.decayVolume.length/2. - c.tauMS.GapV -c.tauMS.DGap + c.Rpc.ScintL/2
+    c.Rpc.zDriftL = -c.decayVolume.length/2. - c.tauMS.GapV - c.Rpc.DriftL/2
