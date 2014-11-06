@@ -10,7 +10,6 @@ import hepunit as G4Unit
 import ROOT
 gTransportationManager = G4TransportationManager.GetTransportationManager()
 
-
 def setMagnetField():
     print 'setMagnetField() called'
     fGeo = ROOT.gGeoManager  
@@ -20,9 +19,9 @@ def setMagnetField():
     for v in vols:
      field =  v.GetField()
      if not field: continue
-     bx = field.GetFieldValue()[0]
-     by = field.GetFieldValue()[1]
-     bz = field.GetFieldValue()[2]
+     bx = field.GetFieldValue()[0]/u.tesla*G4Unit.tesla
+     by = field.GetFieldValue()[1]/u.tesla*G4Unit.tesla
+     bz = field.GetFieldValue()[2]/u.tesla*G4Unit.tesla
      magFieldIron = G4UniformMagField(G4ThreeVector(bx,by,bz))
      FieldIronMgr = G4FieldManager(magFieldIron)
      FieldIronMgr.CreateChordFinder(magFieldIron)
@@ -57,7 +56,7 @@ def printWeightsandFields():
        fm = lvl.GetFieldManager() 
        if fm:  
          fi = fm.GetDetectorField()
-         print 'Magnetic field:',vln,fi.GetConstantFieldValue()
+         print 'Magnetic field:',vln,fi.GetConstantFieldValue()/G4Unit.tesla
    print 'total magnet mass',magnetMass/1000.,'t'
    return
 def getRunManager():
@@ -75,7 +74,7 @@ def debug():
    vmap[vl.GetName().__str__()] = vl
    print da, vl.GetName()
   lvl = vmap['MagB'].GetLogicalVolume() 
-  print lvl.GetMass()/kg,lvl.GetMaterial().GetName()
+  print lvl.GetMass()/G4Unit.kg,lvl.GetMaterial().GetName()
   print lvl.GetFieldManager()
 #
   for da in range(world.GetNoDaughters()):
