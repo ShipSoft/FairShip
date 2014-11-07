@@ -11,5 +11,6 @@
 #pragma link C++ class  GenieGenerator+;
 #pragma link C++ class  NtupleGenerator+;
 #pragma link C++ class  MuonBackGenerator+;
+#pragma link C++ class  CosmicsGenerator+;
 
 #endif
