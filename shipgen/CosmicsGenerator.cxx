@@ -42,7 +42,7 @@ Float_t CosmicsGenerator::getPweight(Float_t P){
 // -----   Passing the event   ---------------------------------------------
 Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 
-	Bool_t hit = 0;
+   Bool_t hit = 0;
    y = 2000; //20m over beam axis
       
    do{
@@ -67,8 +67,8 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 			py = TMath::Cos(theta)*P;
 			
 			// start position, area 1120 m^2
-					x = fRandomEngine->Uniform(-700,700);
-					z = fRandomEngine->Uniform(z0 + zmiddle - 4000, z0 + zmiddle + 4000);
+			x = fRandomEngine->Uniform(-700,700);
+			z = fRandomEngine->Uniform(z0 + zmiddle - 4000, z0 + zmiddle + 4000);
 			
 			// claim for flight close to the actual detector
 			if((TMath::Abs(x-(y+550)*px/py) < 300 && TMath::Abs(z-z0 -zmiddle -(y+550)*pz/py) < 3000) || (TMath::Abs(x-(y-550)*px/py) < 300 &&

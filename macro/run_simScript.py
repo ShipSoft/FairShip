@@ -16,7 +16,7 @@ theSeed      = int(10000 * time.time() % 10000000)
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","nEvents=", "display", "seed=", "firstEvent="])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","Cosmics","nEvents=", "display", "seed=", "firstEvent="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -36,6 +36,8 @@ for o, a in opts:
             simEngine = "Ntuple"
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
+        if o in ("--Cosmics"):
+            simEngine = "Cosmics"
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
         if o in ("-i", "--firstEvent="):
@@ -138,6 +140,15 @@ if simEngine == "MuonBack":
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file'
+####################################################3
+if simEngine == "Cosmics":
+# 
+ targetz = 0;
+ primGen.SetTarget(targetz, 0.)
+ Cosmicsgen = ROOT.CosmicsGenerator()
+ Cosmicsgen.Init(targetz)
+ primGen.AddGenerator(Cosmicsgen)
+ print 'Process ',nEvents,' Cosmic events'
 #
 run.SetGenerator(primGen)
 

@@ -20,7 +20,7 @@ simEngine = "Pythia8"
 # simEngine = "Genie"
 #
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","Cosmics"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
@@ -36,6 +36,8 @@ for o, a in opts:
             simEngine = "Ntuple"
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
+	if o in ("--Cosmics"):
+            simEngine = "Cosmics"
 print "FairShip setup for",simEngine
 
 tag = simEngine+"-"+mcEngine+'_D'
