@@ -805,7 +805,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
  
 // z<7m: just boxes, arguments are full length for python, half lengths for C++ 
     Double_t dX1 = 0.7*m; 
-    Double_t dY  = 1.0*m;
+    Double_t dY  = 4.0*m;
     Double_t X2  = 1.25*m;   
     Double_t Z1  = zEndOfAbsorb + dZ1;
     TGeoVolume *magA = gGeoManager->MakeBox("MagA", iron, dX1, dY,dZ1);
