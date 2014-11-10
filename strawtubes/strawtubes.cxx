@@ -27,8 +27,10 @@
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
-
-
+#include "TMath.h" 
+#include "TParticle.h" 
+#include "TVector3.h"
+ 
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -128,7 +130,6 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
     gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
   }
-
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
 
@@ -136,27 +137,43 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
+    if (fELoss == 0. ) { return kFALSE; }
+    TParticle* p=gMC->GetStack()->GetCurrentTrack();
+    Int_t pdgCode = p->GetPdgCode();
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    fVolumeID = vol->getMCid();
-    FairGeoNode* nod = vol->getGeoNode();
     Int_t straw_uniqueId;
     Int_t VoIid = gMC->CurrentVolID(straw_uniqueId);
-    //std::cout <<"volname "<< vol->GetName()<<std::endl;
-    //std::cout <<"volid / modid / copy# "<< fVolumeID<<" "<<vol->getVolumeId()<<" "<<vol->getModId()<<" "<<straw_uniqueId<<" "<<fELoss<<std::endl;
-    //if (nod){
-    //std::cout <<"node    id "<< nod->getMCid()<<" "<<nod->getCopyNo()<<std::endl;
-    //}
-    //only keep hits on the straws
-    if (straw_uniqueId/10000000 < 1) {return kFALSE;}   
-    // change this by looking at the detectorid
-    if (fELoss == 0. ) { return kFALSE; }
-    //AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-    AddHit(fTrackID, straw_uniqueId, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-           fELoss);
+    if (fVolumeID == straw_uniqueId) {
+        //std::cout << pdgCode<< " same volume again ? "<< straw_uniqueId << " exit:" << gMC->IsTrackExiting() << " stop:" << gMC->IsTrackStop() << " disappeared:" << gMC->IsTrackDisappeared()<< std::endl;
+         return kFALSE; }
+    fVolumeID = straw_uniqueId;
+     // # d = |pq . u x v|/|u x v|
+    TVector3 bot,top;
+    StrawEndPoints(straw_uniqueId,bot,top);
+    TLorentzVector Pos; 
+    gMC->TrackPosition(Pos); 
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+    TVector3 pq = TVector3(top.x()-xmean,top.y()-ymean,top.z()-zmean );
+    TVector3 u  = TVector3(bot.x()-top.x(),bot.y()-top.y(),bot.z()-top.z() ); 
+    TVector3 v  = TVector3(fMom.Px(),fMom.Py(), fMom.Pz() );
+    TVector3 uCrossv = u.Cross(v);
+    Double_t dist2Wire  = fabs(pq.Dot(uCrossv))/(uCrossv.Mag()+1E-8);
+    Double_t deltaTrackLength = gMC->TrackLength() - fLength; 
+    AddHit(fTrackID, straw_uniqueId, TVector3(xmean, ymean,  zmean),
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, deltaTrackLength,
+           fELoss,pdgCode,dist2Wire);
+    if (dist2Wire==0){
+     std::cout << "addhit " << dist2Wire<< " pdgcode" << pdgCode<< " dot prod " << pq.Dot(uCrossv)<< std::endl;
+     std::cout << " exit:" << gMC->IsTrackExiting() << " stop:" << gMC->IsTrackStop() << " disappeared:" << gMC->IsTrackDisappeared()<< std::endl;
+     pq.Print();
+     u.Print();
+     v.Print();
+     uCrossv.Print();
+    }
     // Increment number of strawtubes det points in TParticle
     ShipStack* stack = (ShipStack*) gMC->GetStack();
-    //std::cout << "+add straw point"<<std::endl;
     stack->AddPoint(kStraw);
   }
   return kTRUE;
@@ -246,6 +263,8 @@ void strawtubes::SetStrawsPerLayer(Int_t strawsperlayer)
 void strawtubes::SetStereoAngle(Int_t stereoangle)
 {
      fView_angle = stereoangle;                                  //! Stereo angle of planes in a view
+     fcosphi=cos(TMath::Pi()*fView_angle/180.);
+     fsinphi=sin(TMath::Pi()*fView_angle/180.);
 }
 
 void strawtubes::SetWireThickness(Double32_t wirethickness)
@@ -324,8 +343,6 @@ void strawtubes::ConstructGeometry()
     TGeoTube *straw_tube = new TGeoTube("straw",rmin,rmax,fStraw_length-4.*eps);
     TGeoVolume *straw = new TGeoVolume("straw",straw_tube, mylar);
     straw->SetLineColor(4);
-    //only the straws are sensitive
-    AddSensitiveVolume(straw);
 
     straw->SetVisibility(kTRUE);
 	       	
@@ -334,7 +351,8 @@ void strawtubes::ConstructGeometry()
     rmax = fInner_Straw_diameter/2.-eps;
     TGeoTube *gas_tube = new TGeoTube("gas",rmin,rmax,fStraw_length-6.*eps);
     TGeoVolume *gas = new TGeoVolume("gas",gas_tube, sttmix9010_2bar);
-    gas->SetLineColor(5);
+    gas->SetLineColor(5);    //only the gas is sensitive
+    AddSensitiveVolume(gas);
 
     // Volume: wire
     rmin=0.;
@@ -348,7 +366,6 @@ void strawtubes::ConstructGeometry()
     TGeoVolume *vetovac = new TGeoVolume("Veto", vetovacbox, med);
 
     top->AddNode(vetovac, statnb, new TGeoTranslation(0,0,fT0z));
-    AddSensitiveVolume(vetovac);
     //vetovac->SetVisDaughters(kTRUE);
     //vetovac->SetTransparency(80);
 
@@ -414,6 +431,7 @@ void strawtubes::ConstructGeometry()
 	   //layer loop
 	   TGeoRotation r6v;	
 	   TGeoTranslation t6v;
+           Int_t nr = statnb*10000000+vnb*1000000+pnb*100000+lnb*10000;
              for (Int_t snb=1; snb<fStraws_per_layer; snb++) {
                //straw loop
 	       t6v.SetTranslation(0,2*fStraw_length-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12,0); 	
@@ -421,9 +439,9 @@ void strawtubes::ConstructGeometry()
 	       TGeoCombiTrans c6v(t6v, r6v);
                TGeoHMatrix *h6v = new TGeoHMatrix(c6v);
 
-	       layerbox->AddNode(straw,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+1000+snb,h6v);
-	       layerbox->AddNode(gas,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+2000+snb,h6v);
-               layerbox->AddNode(wire,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+3000+snb,h6v);
+	       layerbox->AddNode(straw,nr+1000+snb,h6v);
+	       layerbox->AddNode(gas,  nr+2000+snb,h6v);
+               layerbox->AddNode(wire, nr+3000+snb,h6v);
 	     //end of straw loop
            }
 	   //end of layer loop
@@ -462,7 +480,6 @@ void strawtubes::ConstructGeometry()
        
        TGeoVolume *vac = new TGeoVolume(nmstation, vacbox, med);
        top->AddNode(vac, statnb, new TGeoTranslation(0,0,TStationz));
-       AddSensitiveVolume(vac);
        
        for (Int_t vnb=0; vnb<4; vnb++) {
         //view loop
@@ -549,17 +566,86 @@ void strawtubes::ConstructGeometry()
      //end of station
      }
 }
+// -----   Public method StrawDecode    -------------------------------------------
+// -----   returns station layer ... numbers -----------------------------------
+void strawtubes::StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb)
+{
+  statnb = detID/10000000;
+  vnb =  (detID - statnb*10000000)/1000000;
+  pnb =  (detID - statnb*10000000 - vnb*1000000)/100000;
+  lnb =  (detID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
+  snb =   detID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 2000;
+}
+// -----   Public method StrawEndPoints    -------------------------------------------
+// -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
+void strawtubes::StrawEndPoints(Int_t detID, TVector3 &bot, TVector3 &top)
+{
+  Double_t eps=0.1;
+  Double_t sinangle,cosangle;
+  Int_t statnb,vnb,pnb,lnb,snb;
+  StrawDecode(detID,statnb,vnb,pnb,lnb,snb);
+  switch (vnb) {
+     case 0:
+       sinangle=0.; 
+       cosangle=1.; 
+       break;
+     case 1:
+       sinangle=fsinphi; 
+       cosangle=fcosphi; 
+       break;     
+     case 2:
+       sinangle=-fsinphi; 
+       cosangle=fcosphi; 
+       break; 
+     case 3:
+       sinangle=0.; 
+       cosangle=1.; 
+       break; 
+     default:
+       sinangle=0.; 
+       cosangle=1.; 
+   }   
 
+  //cout << "DetID" << detID << " statnb "<<statnb<<" vnb " << vnb << " pnb " << pnb <<" lnb "<< lnb << " snb " << snb << endl;
+  // from ConstructGeometry above
+  Double_t ypos = 2*fStraw_length-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12; 	
+  Double_t xtop = -fStraw_length*cosangle - ypos*sinangle;
+  Double_t ytop = -fStraw_length*sinangle + ypos*cosangle;
+  Double_t xbot =  fStraw_length*cosangle - ypos*sinangle;;
+  Double_t ybot =  fStraw_length*sinangle + ypos*cosangle;
+  Double_t TStationz;
+  switch (statnb) {
+     case 1:
+       TStationz = fT1z; 
+       break;
+     case 2:
+       TStationz = fT2z; 
+       break;
+     case 3:
+       TStationz = fT3z; 
+       break;
+     case 4:
+       TStationz = fT4z; 
+       break;
+     default:
+       TStationz = fT0z;  
+   }                           
+  Double_t zpos = TStationz+(vnb-3./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12;
+  top = TVector3(xtop,ytop,zpos);
+  bot = TVector3(xbot,ybot,zpos);
+  //cout << "dets="<< xtop << " "<< xbot << " "<<  ytop << " "<< ybot<< " "<< ypos<< " "<< fStraw_length<< " "<<detID<<endl;
+  //cout << "top/bot="<< snb << " "<< vnb << " "<<  pnb << " "<< lnb << " "<< ypos<< " "<< fOffset_layer12<< " "<<fOffset_plane12<<endl;
+}
 strawtubesPoint* strawtubes::AddHit(Int_t trackID, Int_t detID,
                                       TVector3 pos, TVector3 mom,
                                       Double_t time, Double_t length,
-                                      Double_t eLoss)
+                                      Double_t eLoss, Int_t pdgCode, Double_t dist2Wire)
 {
   TClonesArray& clref = *fstrawtubesPointCollection;
   Int_t size = clref.GetEntriesFast();
   //cout << "strawtubes hit called pos.z="<< pos.z()<< " detID= "<<detID<<endl;
   return new(clref[size]) strawtubesPoint(trackID, detID, pos, mom,
-         time, length, eLoss);
+         time, length, eLoss, pdgCode, dist2Wire);
 }
 
 ClassImp(strawtubes)

@@ -57,7 +57,8 @@ class strawtubes: public FairDetector
     void SetDeltazView(Double32_t deltazview);
     void SetVacBox_x(Double32_t vacbox_x);
     void SetVacBox_y(Double32_t vacbox_y);
-
+    void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
+    void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
@@ -70,7 +71,7 @@ class strawtubes: public FairDetector
     strawtubesPoint* AddHit(Int_t trackID, Int_t detID,
                              TVector3 pos, TVector3 mom,
                              Double_t time, Double_t length,
-                             Double_t eLoss);
+                             Double_t eLoss, Int_t pdgCode, Double_t dist2Wire);
 
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
@@ -114,6 +115,8 @@ class strawtubes: public FairDetector
     Double32_t     fOffset_plane12;         //!  Offset (x) between straws of plane1&2
     Int_t          fStraws_per_layer;       //!  Number of straws in one layer
     Double32_t     fView_angle;             //!  Stereo angle of layers in a view
+    Double32_t     fcosphi;
+    Double32_t     fsinphi;
     Double32_t     fWire_thickness;         //!  Thickness of the wire
     Double32_t     fDeltaz_view;            //!  Distance (z) between views
     Double32_t     fVacBox_x;               //!  x size of station vacuumbox
