@@ -117,35 +117,44 @@ Int_t ShipRpc::InitMedium(const char* name)
 
 void ShipRpc::ConstructGeometry()
 {
+
     
     Double_t trSize = 4.5*m; //Transversal size of the scintillator plane in m
     Int_t NScintPlanes = 12; //Number of Scintillator Planes
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
-    InitMedium("Scintillator");
-    TGeoMedium *Scint =gGeoManager->GetMedium("Scintillator");
+    InitMedium("RPCgas");
+    TGeoMedium *RPCmat =gGeoManager->GetMedium("RPCgas");
+   
+    InitMedium("HPTgas");
+    TGeoMedium *HPTmat =gGeoManager->GetMedium("HPTgas");
+    
+    Double_t Field = 1.57*tesla;
+    TGeoUniformMagField *magField = new TGeoUniformMagField(0.,-Field,0.);
+    TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,Field,0.);
+
     
     Double_t d = 0;
     
     TGeoBBox *ScintLayer = new TGeoBBox("detScint", trSize/2, trSize/2, ScintLenght/2);
-    TGeoVolume *volScintLayer = new TGeoVolume("volScintLayer",ScintLayer,Scint);
+    TGeoVolume *volScintLayer = new TGeoVolume("volScintLayer",ScintLayer,RPCmat);
     volScintLayer->SetLineColor(kMagenta-10);
+    volScintLayer->SetField(magField);
     for(Int_t i = 0; i< NScintPlanes; i++)
     {
         d = zRpcLayer - i*(IronLenght+ScintLenght);
         top->AddNode(volScintLayer,i,new TGeoTranslation(0, 0, d));
         AddSensitiveVolume(volScintLayer);
     }
-    
-    
-   
+
     
     Double_t d1 = d- (MiddleGap + IronLenght+ScintLenght/2); //z coord of the center of the last layer of the first spectrometer
     //  cout << d1 << endl;
     Double_t d2 = 0;
     
-    TGeoVolume *volScintLayer2 = new TGeoVolume("volScintLayer2",ScintLayer,Scint);
+    TGeoVolume *volScintLayer2 = new TGeoVolume("volScintLayer2",ScintLayer,RPCmat);
     volScintLayer2->SetLineColor(kMagenta-10);
+    volScintLayer2->SetField(RetField);
     for(Int_t i = 0; i< NScintPlanes; i++)
     {
         d2 = d1-i*(IronLenght+ScintLenght);
@@ -158,14 +167,14 @@ void ShipRpc::ConstructGeometry()
     //
     
     TGeoBBox *DriftLayer = new TGeoBBox("detDrift", trSize/2, trSize/2, DriftLenght/2);
-    TGeoVolume *volDriftLayer = new TGeoVolume("volDriftLayer",DriftLayer,Scint);
+    TGeoVolume *volDriftLayer = new TGeoVolume("volDriftLayer",DriftLayer,HPTmat);
     volDriftLayer->SetLineColor(kBlue-5);
     top->AddNode(volDriftLayer,1,new TGeoTranslation(0,0,zDriftLayer));
     AddSensitiveVolume(volDriftLayer);
     
     
     //NB: 55 cm is the distance between the borders of the last 2 drift tubes
-    TGeoVolume *volDriftLayer1 = new TGeoVolume("volDriftLayer1",DriftLayer,Scint);
+    TGeoVolume *volDriftLayer1 = new TGeoVolume("volDriftLayer1",DriftLayer,HPTmat);
     volDriftLayer1->SetLineColor(kBlue-5);
     Double_t d3 = zDriftLayer - DriftLenght - 55*cm;
     top->AddNode(volDriftLayer1,1,new TGeoTranslation(0,0,d3));
@@ -173,7 +182,7 @@ void ShipRpc::ConstructGeometry()
     
     //Central Drift tubes
     
-     TGeoVolume *volDriftLayer2 = new TGeoVolume("volDriftLayer2",DriftLayer,Scint);
+     TGeoVolume *volDriftLayer2 = new TGeoVolume("volDriftLayer2",DriftLayer,HPTmat);
     volDriftLayer2->SetLineColor(kBlue-5);
     Double_t d4 = d - ScintLenght/2 - IronLenght - 4*cm- DriftLenght/2;
     top->AddNode(volDriftLayer2,1,new TGeoTranslation(0,0,d4));
@@ -181,7 +190,7 @@ void ShipRpc::ConstructGeometry()
     
     //NB: 75cm is the distance between the borders of the central drift tubes
     
-     TGeoVolume *volDriftLayer3 = new TGeoVolume("volDriftLayer3",DriftLayer,Scint);
+     TGeoVolume *volDriftLayer3 = new TGeoVolume("volDriftLayer3",DriftLayer,HPTmat);
     volDriftLayer3->SetLineColor(kBlue-5);
     Double_t d5 = d4 - DriftLenght - 75*cm;
     top->AddNode(volDriftLayer3,1,new TGeoTranslation(0,0,d5));
@@ -189,13 +198,13 @@ void ShipRpc::ConstructGeometry()
     
     //Pre-spectro Drift Tubes
     
-     TGeoVolume *volDriftLayer4 = new TGeoVolume("volDriftLayer4",DriftLayer,Scint);
+     TGeoVolume *volDriftLayer4 = new TGeoVolume("volDriftLayer4",DriftLayer,HPTmat);
     volDriftLayer4->SetLineColor(kBlue-5);
     Double_t d6 = d2 - ScintLenght/2 - IronLenght - 4*cm- DriftLenght/2;
     top->AddNode(volDriftLayer4,1,new TGeoTranslation(0,0,d6));
      AddSensitiveVolume(volDriftLayer4);
     
-     TGeoVolume *volDriftLayer5 = new TGeoVolume("volDriftLayer5",DriftLayer,Scint);
+     TGeoVolume *volDriftLayer5 = new TGeoVolume("volDriftLayer5",DriftLayer,HPTmat);
     volDriftLayer5->SetLineColor(kBlue-5);
     Double_t d7 = d6 - DriftLenght - 55*cm;
     top->AddNode(volDriftLayer5,1,new TGeoTranslation(0,0,d7));

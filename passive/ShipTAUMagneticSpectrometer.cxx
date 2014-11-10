@@ -31,7 +31,7 @@ ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer()
 {
 }
 
-ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer(const char* name,const Double_t zLS,const Double_t FeL, const Double_t AirL, const Double_t SpectroL, const Double_t GapV, const Double_t DGap, const Double_t MGap, const char* Title)
+ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer(const char* name,const Double_t zLS,const Double_t FeL, const Double_t AirL, const Double_t SpectroL, const Double_t GapV, const Double_t DGap, const Double_t MGap, const Double_t mf, const char* Title)
   : FairModule(name ,Title)
 {
     zLastSlab = zLS;
@@ -41,6 +41,7 @@ ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer(const char* name,const 
     GapFromVacuum = GapV;
     DriftGap = DGap;
     MiddleGap = MGap;
+    MagneticField = mf;
 }
 
 void ShipTAUMagneticSpectrometer::ConstructGeometry()
@@ -51,9 +52,8 @@ void ShipTAUMagneticSpectrometer::ConstructGeometry()
     
     Int_t d = 0;
     
-    Double_t Field = 1.57;
-    TGeoUniformMagField *magField = new TGeoUniformMagField(0.,-Field,0.);
-    TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,Field,0.);
+    TGeoUniformMagField *magField = new TGeoUniformMagField(0.,-MagneticField,0.);
+    TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,MagneticField,0.);
     
     TGeoBBox *Layer = new TGeoBBox(225,225,IronLenght/2);
     TGeoVolume *volLayer = new TGeoVolume("volLayer",Layer,Fe);

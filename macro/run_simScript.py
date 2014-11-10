@@ -14,6 +14,7 @@ eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
+checking4overlaps = True
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","Cosmics","nEvents=", "display", "seed=", "firstEvent="])
@@ -176,7 +177,6 @@ if ship_geo.muShieldDesign != 1:
  import geomGeant4
  geomGeant4.setMagnetField()
  geomGeant4.printWeightsandFields()
-
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
@@ -202,9 +202,9 @@ rtdb.printParamContexts()
 run.CreateGeometryFile("geofile_full."+tag+".root") 
 #
 # checking for overlaps
-ROOT.gGeoManager.CheckOverlaps()
-ROOT.gGeoManager.PrintOverlaps()
-
+if checking4overlaps:
+ ROOT.gGeoManager.CheckOverlaps()
+ ROOT.gGeoManager.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
@@ -216,3 +216,11 @@ print "Parameter file is ",parFile
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
 # ------------------------------------------------------------------------
+
+def checkOverlapsWithGeant4():
+ # after /run/initialize, but prints warning messages, problems with TGeo volume
+ mygMC = ROOT.TGeant4.GetMC()
+ mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
+ mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
+ mygMC.ProcessGeantCommand("/geometry/test/run")
+

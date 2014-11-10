@@ -21,7 +21,11 @@ f     = ROOT.TFile(inputFile)
 sTree = f.cbmsim
 
 # init geometry and mag. field
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=4,muShieldDesign=5,targetOpt=5)
+# -----Create geometry----------------------------------------------
+import shipDet_conf
+run = ROOT.FairRunSim()
+modules = shipDet_conf.configure(run,ShipGeo)
 
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
 geofile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
@@ -29,7 +33,7 @@ gMan  = tgeom.Import(geofile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
-bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z)
+bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z,2)
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 
@@ -47,9 +51,16 @@ ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
 ut.bookHist(h,'HNL','reconstructed Mass',100,0.,2.)
 ut.bookHist(h,'meas','number of measurements',25,-0.5,24.5)
-
+ut.bookHist(h,'distu','distance to wire',100,0.,1.)
+ut.bookHist(h,'distv','distance to wire',100,0.,1.)
+ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 
 def makePlots():
+   ut.bookCanvas(h,key='strawanalysis',title='Distance to wire',nx=800,ny=600,cx=1,cy=1)
+   cv = h['strawanalysis'].cd(1)
+   h['disty'].Draw()
+   h['distu'].Draw('same')
+   h['distv'].Draw('same')
    ut.bookCanvas(h,key='fitresults',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    cv = h['fitresults'].cd(1)
    h['delPOverP'].Draw('box')
@@ -105,6 +116,18 @@ def myEventLoop():
  nEvents = sTree.GetEntries()
  for n in range(nEvents):
   rc = sTree.GetEntry(n)
+# make some straw hit analysis
+  for ahit in sTree.strawtubesPoint:
+     detID = ahit.GetDetectorID()
+     top = ROOT.TVector3()
+     bot = ROOT.TVector3()
+     modules["Strawtubes"].StrawEndPoints(detID,bot,top)
+   #distance to wire, and smear it.
+     dw  = ahit.dist2Wire()
+     if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
+     if abs(top.y())>abs(bot.y()): h['distu'].Fill(dw)
+     if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
+#
   key = 0
   fittedTracks = {}
   for atrack in ev.FitTracks.GetObject():
@@ -117,12 +140,14 @@ def myEventLoop():
    fittedState = atrack.getFittedState()
    h['chi2'].Fill(chi2)
    P = fittedState.getMomMag()
-   mcPartKey = sTree.fitTrack2MC[key] 
+   mcPartKey = sTree.fitTrack2MC[key]
    mcPart    = sTree.MCTrack[mcPartKey]
+   if not mcPart : continue
    Ptruth    = mcPart.GetP()
    delPOverP = (Ptruth - P)/Ptruth
    h['delPOverP'].Fill(Ptruth,delPOverP)
-   if chi2<25: h['delPOverP2'].Fill(Ptruth,delPOverP)
+   if chi2>30: continue
+   h['delPOverP2'].Fill(Ptruth,delPOverP)
 # try measure impact parameter
    trackDir = fittedState.getDir()
    trackPos = fittedState.getPos()
