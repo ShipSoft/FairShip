@@ -2,10 +2,11 @@
 inputFile = 'ship.Pythia8-TGeant4.root'
 debug = False
 withNoAmbiguities = None # True   for debugging purposes
-nEvents = 10000
+nEvents   = 10000
+withHists = True
 
 import ROOT,os,sys,getopt
-
+import rootUtils as ut
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["inputFile=","nEvents=","ambiguities"])
 except getopt.GetoptError:
@@ -25,6 +26,12 @@ print 'configured to process ',nEvents,' events from ' ,inputFile
 outFile = inputFile.replace('.root','_rec.root') 
 os.system('cp '+inputFile+' '+outFile)
 
+if withHists:
+ h={}
+ ut.bookHist(h,'distu','distance to wire',100,0.,5.)
+ ut.bookHist(h,'distv','distance to wire',100,0.,5.)
+ ut.bookHist(h,'disty','distance to wire',100,0.,5.)
+ ut.bookHist(h,'nmeas','nr measuerements',100,0.,50.)
 #-----prepare python exit-----------------------------------------------
 def pyExit():
  global fitter
@@ -37,7 +44,11 @@ from array import array
 import shipunit as u
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",muShieldDesign=2,targetOpt=5)
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=4,muShieldDesign=5,targetOpt=5)
+# -----Create geometry----------------------------------------------
+import shipDet_conf
+run = ROOT.FairRunSim()
+modules = shipDet_conf.configure(run,ShipGeo)
 
 fout = ROOT.TFile(outFile,'update')
 
@@ -48,7 +59,6 @@ class makeHitList:
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
   fGeo = ROOT.gGeoManager  
   self.vols = fGeo.GetListOfVolumes()
-  self.layerType = {}  # xuvx , uv=+-5 degrees
 # prepare for output
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -66,75 +76,47 @@ class makeHitList:
    self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
    self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
    self.mcLink      = self.sTree.Branch( "fitTrack2MC",self.fitTrack2MC,32000,-1)  
-#
-  for v in self.vols: 
-   nm = v.GetName()
-   if nm.find('STr')<0 and nm.find('Sv')<0: continue
-   if not nm.find('_0')<0 : self.layerType[nm] = 'x0'
-   if not nm.find('_3')<0 : self.layerType[nm] = 'x3' 
-   if not nm.find('_1')<0 : self.layerType[nm] = 'u' 
-   if not nm.find('_2')<0 : self.layerType[nm] = 'v' 
-   # print 'debug nm',nm,self.layerType[nm]
-
-  stereoAngle = {'x0':0,'x3':0,'u':ShipGeo.straw.stereoAngle*ROOT.TMath.Pi(),'v':-ShipGeo.straw.stereoAngle*ROOT.TMath.Pi()}
-  delta       = {'x0':0,'x3':0.5,'u':0.33,'v':0.66}
-  self.detinfo     = {}
-  for i in ['x0','u','v','x3']:
-   self.detinfo[i] = {'pitch':ShipGeo.straw.pitch,
-                      'firstWire':(-ShipGeo.straw.length-delta[i])*u.cm,'stereoAngle':stereoAngle[i],'resol':ShipGeo.straw.resol}
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
-
- def dorot(self,x,y,xc,yc,alpha):
-     #rotate x,y around xc,yc over alpha
-     ca   = ROOT.TMath.Cos(alpha)
-     sa   = ROOT.TMath.Sin(alpha)
-     xout = ca*(x-xc)-sa*(y-yc)+xc
-     yout = sa*(x-xc)+ca*(y-yc)+yc
-     return xout,yout
+#
  def hit2wire(self,ahit,no_amb=None):
-     wl = ShipGeo.straw.length
-     detname = self.vols[ahit.GetDetectorID()-1].GetName()   # don't know why -1 is needed, should not, but ... TR 31.5.2014
-     nd = self.layerType[detname]
-     if no_amb:
-      xwire  = self.random.Gaus( ahit.GetX(),self.detinfo[nd]['resol'])
-     else:
-      nrwire = int( (ahit.GetX()-self.detinfo[nd]['firstWire'])/self.detinfo[nd]['pitch']+0.5)
-      xwire  = nrwire*self.detinfo[nd]['pitch'] + self.detinfo[nd]['firstWire']
-   #rotate top/bot of wire in xy plane around true hit over angle..
-     xt,yt = self.dorot(xwire,wl, ahit.GetX(),ahit.GetY(),self.detinfo[nd]['stereoAngle'])
-     xb,yb = self.dorot(xwire,-wl,ahit.GetX(),ahit.GetY(),self.detinfo[nd]['stereoAngle'])
+     detID = ahit.GetDetectorID()
+     top = ROOT.TVector3()
+     bot = ROOT.TVector3()
+     modules["Strawtubes"].StrawEndPoints(detID,bot,top)
+     ex = ahit.GetX()
+     ey = ahit.GetY()
+     ez = ahit.GetZ()
    #distance to wire, and smear it.
-     dw    = ROOT.fabs(ahit.GetX()-xwire)
+     dw  = ahit.dist2Wire()
      smear = 0
-     if not no_amb: smear = ROOT.fabs(self.random.Gaus(dw,self.detinfo[nd]['resol']))
-     smearedHit = {'mcHit':ahit,'xtop':xt,'ytop':yt,'z':ahit.GetZ(),'xbot':xb,'ybot':yb,'z':ahit.GetZ(),'dist':smear}
+     if not no_amb: smear = ROOT.fabs(self.random.Gaus(dw,ShipGeo.straw.resol))
+     smearedHit = {'mcHit':ahit,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'z':bot.z(),'dist':smear}
+     # print 'smeared hit:',top.x(),top.y(),top.z(),bot.x(),bot.y(),bot.z(),"dist",smear,ex,ey,ez,ox,oy,oz
+     if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
+     if abs(top.y())>abs(bot.y()): h['distu'].Fill(dw)
+     if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
      return smearedHit
   
  def execute(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
-  nHits = self.sTree.vetoPoint.GetEntriesFast() 
+  nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists = {}
   self.SmearedHits.Clear()
   self.fGenFitArray.Clear()
   self.fitTrack2MC.clear()
-  for i in range(nHits):
-    ahit = self.sTree.vetoPoint.At(i)
-    detname = self.vols[ahit.GetDetectorID()-1].GetName()
-    # print 'execute',detname,ahit.GetDetectorID()-1
-    if detname.find('STr')<0 and detname.find('Sv')<0: 
-        print 'unknown sensitive detector',detname 
-        continue  # not a sensitive detector
+  for i in range(nShits):
+    ahit = self.sTree.strawtubesPoint.At(i)
     sm   = self.hit2wire(ahit,withNoAmbiguities)
-    m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
-    measurement = ROOT.TVectorD(7,m)
+    m = array('d',[i,sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
+    measurement = ROOT.TVectorD(8,m)
 # copy to branch
     nHits = SHiP.SmearedHits.GetEntries()
-    if nHits != i: print 'SmearedHits, counter wrong',i,nHits 
+    if SHiP.SmearedHits.GetSize() == nHits: SHiP.SmearedHits.Expand(nHits+1000)
     self.SmearedHits[nHits]=measurement 
-    if  detname.find('STr')<0: continue
-    # do not use hits in Veto station for track reco  
+    if ahit.GetDetectorID() > 5*10000000 : continue
+    # do not use hits in Veto station for track reco   
     trID = ahit.GetTrackID()
     if not hitPosLists.has_key(trID):   
       hitPosLists[trID] = ROOT.std.vector('TVectorD')()
@@ -150,7 +132,7 @@ tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
 geofile = inputFile.replace('ship.','geofile_full.')
 tgeom.Import(geofile)
 #
-bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z )
+bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2)
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
  
@@ -171,16 +153,17 @@ for iEvent in range(0, SHiP.nEvents):
  fitTrack = {}
  for atrack in hitPosLists:
   if atrack < 0: continue # these are hits not assigned to MC track because low E cut
+  pdg    = SHiP.sTree.MCTrack[atrack].GetPdgCode()
+  if not PDG.GetParticle(pdg): continue # unknown particle
   meas = hitPosLists[atrack]
   nM = meas.size()
   if debug: print iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP()
-  pdg    = SHiP.sTree.MCTrack[atrack].GetPdgCode()
   charge = PDG.GetParticle(pdg).Charge()/(3.)
   posM = ROOT.TVector3(0, 0, 0)
-  momM = ROOT.TVector3(0,0,10.*u.GeV)
+  momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance
   covM = ROOT.TMatrixDSym(6)
-  resolution = 0.01
+  resolution = 0.02 #0.01
   for  i in range(3):   covM[i][i] = resolution*resolution
   for  i in range(3,6): covM[i][i] = ROOT.TMath.pow(resolution / nM / ROOT.TMath.sqrt(3), 2)
 # trackrep
@@ -196,13 +179,14 @@ for iEvent in range(0, SHiP.nEvents):
   ROOT.SetOwnership(fitTrack[atrack], False)
   for m in meas:
       hitCov = ROOT.TMatrixDSym(7)
-      hitCov[6][6] = 0.01*0.01
+      hitCov[6][6] = resolution*resolution
       tp = ROOT.genfit.TrackPoint() 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp)
       fitTrack[atrack].insertPoint(ROOT.genfit.TrackPoint(measurement,fitTrack[atrack]))
 #check
   if not fitTrack[atrack].checkConsistency():
    print 'Problem with track before fit, not consistent',fitTrack
+  h['nmeas'].Fill(nM)
   if nM > 8 : 
 # do the fit
    try:    fitter.processTrack(fitTrack[atrack])
