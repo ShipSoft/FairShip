@@ -180,7 +180,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauMS.DGap = 95.*u.cm
     c.tauMS.MGap = 120*u.cm
     c.tauMS.zLS = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.DGap - c.tauMS.FeL/2
-    
+    c.tauMS.mf = 1.5 * u.tesla
+
     #Parameters for Goliath
     c.Goliath = AttrDict(z=0*u.cm)
     c.Goliath.LS = 4.5*u.m

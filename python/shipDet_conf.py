@@ -50,7 +50,7 @@ def configure(run,ship_geo):
 
  if ship_geo.muShieldDesign==5:
   taumagneticspectrometer = ROOT.ShipTAUMagneticSpectrometer("TAUMagneticSpectrometer", ship_geo.tauMS.zLS, ship_geo.tauMS.FeL, ship_geo.tauMS.AirL,
-                                                            ship_geo.tauMS.SpectroL,ship_geo.tauMS.GapV, ship_geo.tauMS.DGap, ship_geo.tauMS.MGap)
+                                                            ship_geo.tauMS.SpectroL,ship_geo.tauMS.GapV, ship_geo.tauMS.DGap, ship_geo.tauMS.MGap, ship_geo.tauMS.mf)
   run.AddModule(taumagneticspectrometer)
 
   goliath = ROOT.ShipGoliath("Goliath", ship_geo.Goliath.zC, ship_geo.Goliath.LS, ship_geo.Goliath.TS, ship_geo.Goliath.GapTS)
@@ -99,3 +99,8 @@ def configure(run,ship_geo):
  if ship_geo.strawDesign == 4: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2 )  
  else :                        fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1 )  
  run.SetField(fMagField)
+
+# return list of detector elements
+ detElements = {}
+ for x in run.GetListOfModules(): detElements[x.GetName()]=x
+ return detElements
