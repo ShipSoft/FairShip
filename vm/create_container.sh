@@ -2,6 +2,7 @@
 REPO="anaderi/ship-dev"
 TAG="0.0.9"
 BLD_DIR="build"
+VMPATH=/opt/ship/FairShip/build
 
 [ -d "$1" ] && BLD_DIR=$1
 [ -n "$2" ] && TAG=$2
@@ -24,7 +25,7 @@ cat > $path/Dockerfile << EOF
 FROM busybox
 MAINTAINER Andrey Ustyuzhanin andrey.ustyuzhanin@cern.ch
 
-ADD . $path
+ADD . $VMPATH
 
 EOF
 docker build --rm -t $REPO:$TAG $path
