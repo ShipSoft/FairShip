@@ -54,13 +54,16 @@ ut.bookHist(h,'meas','number of measurements',25,-0.5,24.5)
 ut.bookHist(h,'distu','distance to wire',100,0.,1.)
 ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
+ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
 
 def makePlots():
-   ut.bookCanvas(h,key='strawanalysis',title='Distance to wire',nx=800,ny=600,cx=1,cy=1)
+   ut.bookCanvas(h,key='strawanalysis',title='Distance to wire and mean nr of hits',nx=1200,ny=600,cx=2,cy=1)
    cv = h['strawanalysis'].cd(1)
    h['disty'].Draw()
    h['distu'].Draw('same')
    h['distv'].Draw('same')
+   cv = h['strawanalysis'].cd(2)
+   h['meanhits'].Draw()
    ut.bookCanvas(h,key='fitresults',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    cv = h['fitresults'].cd(1)
    h['delPOverP'].Draw('box')
@@ -117,17 +120,22 @@ def myEventLoop():
  for n in range(nEvents):
   rc = sTree.GetEntry(n)
 # make some straw hit analysis
+  hitlist = {}
   for ahit in sTree.strawtubesPoint:
      detID = ahit.GetDetectorID()
      top = ROOT.TVector3()
      bot = ROOT.TVector3()
      modules["Strawtubes"].StrawEndPoints(detID,bot,top)
-   #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
      if abs(top.y())>abs(bot.y()): h['distu'].Fill(dw)
      if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
 #
+     trID = ahit.GetTrackID()
+     if not trID < 0 :
+      if hitlist.has_key(trID):  hitlist[trID]+=1
+      else:  hitlist[trID]=1
+  for tr in hitlist:  h['meanhits'].Fill(hitlist[tr])
   key = 0
   fittedTracks = {}
   for atrack in ev.FitTracks.GetObject():

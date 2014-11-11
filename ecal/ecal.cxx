@@ -1278,5 +1278,21 @@ Bool_t ecal::GetCellCoord(Int_t fVolID, Float_t &x, Float_t &y, Int_t& tenergy)
 {
   return GetCellCoordInf(fVolID, x, y, tenergy);
 }
-
+Bool_t ecal::GetCellCoordForPy(Int_t fVolID, TVector3 &all)
+{
+  Float_t x,y;
+  Int_t tenergy;
+  Bool_t rc = GetCellCoordInf(fVolID, x, y, tenergy);
+  static ecalInf* inf=NULL;
+  if (inf==NULL)
+  {
+    inf=ecalInf::GetInstance(NULL);
+    if (inf==NULL)
+    {
+      cerr << "ecal::GetCellCoordInf(): Can't get geometry information." << endl;
+      return kFALSE;
+    }
+  }
+  all=TVector3(x,y,inf->GetZPos());
+}
 
