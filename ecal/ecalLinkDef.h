@@ -14,6 +14,8 @@
 #pragma link C++ class ecalInf+;
 #pragma link C++ class ecalStructure;
 #pragma link C++ class ecalStructureFiller;
+#pragma link C++ class ecalDigi;
+#pragma link C++ class ecalPrepare;
 #pragma link C++ class ecalAnalysisSimple;
 
 #endif

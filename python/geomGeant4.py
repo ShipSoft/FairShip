@@ -4,43 +4,61 @@ import shipunit as u
 from G4global import *
 from G4run import *
 from G4geometry import *
+from G4digits_hits import *
+from G4track import *
 import hepunit as G4Unit
+import ROOT
 gTransportationManager = G4TransportationManager.GetTransportationManager()
-
 
 def setMagnetField():
     print 'setMagnetField() called'
-    ironField = G4Unit.tesla * 1.85
-    magFieldIron = G4UniformMagField(G4ThreeVector(0.,ironField,0.))
-    FieldIronMgr = G4FieldManager(magFieldIron)
-    FieldIronMgr.CreateChordFinder(magFieldIron)
-    RetField    = G4UniformMagField(G4ThreeVector(0.,-ironField,0.))
-    RetFieldMgr = G4FieldManager(RetField)
-    RetFieldMgr.CreateChordFinder(RetField)    
-    ConLField    = G4UniformMagField(G4ThreeVector(ironField,0.,0.))
-    ConLFieldMgr = G4FieldManager(ConLField)
-    ConLFieldMgr.CreateChordFinder(ConLField)    
-    ConRField    = G4UniformMagField(G4ThreeVector( -ironField,0.,0.))
-    ConRFieldMgr = G4FieldManager(ConRField)
-    ConRFieldMgr.CreateChordFinder(ConRField)    
+    fGeo = ROOT.gGeoManager  
+    vols = fGeo.GetListOfVolumes()
+    #copy field by hand to geant4
+    listOfFields={}
+    for v in vols:
+     field =  v.GetField()
+     if not field: continue
+     bx = field.GetFieldValue()[0]/u.tesla*G4Unit.tesla
+     by = field.GetFieldValue()[1]/u.tesla*G4Unit.tesla
+     bz = field.GetFieldValue()[2]/u.tesla*G4Unit.tesla
+     magFieldIron = G4UniformMagField(G4ThreeVector(bx,by,bz))
+     FieldIronMgr = G4FieldManager(magFieldIron)
+     FieldIronMgr.CreateChordFinder(magFieldIron)
+     listOfFields[v.GetName()]=FieldIronMgr  
     gt = gTransportationManager
     gn = gt.GetNavigatorForTracking()
     world = gn.GetWorldVolume().GetLogicalVolume()
     for da in range(world.GetNoDaughters()):
         vl = world.GetDaughter(da)
         vln = vl.GetName().__str__()
-        print 'volumes = ',  vln
         lvl = vl.GetLogicalVolume()
-        if vln in ['MagRetA','MagRetB','MagRetC1','MagRetC2','MagRetC3','MagRetC4']:
-          lvl.SetFieldManager(RetFieldMgr,True)   
-        if vln in ['MagA','MagB','MagC1','MagC2','MagC3','MagC4']:        
-          lvl.SetFieldManager(FieldIronMgr,True) 
-        if vln in ['MagConALLT','MagConALRB']: 
-          lvl.SetFieldManager(ConLFieldMgr,True) 
-        if vln in ['MagConARRT','MagConARLB']: 
-          lvl.SetFieldManager(ConRFieldMgr,True) 
+        if listOfFields.has_key(vln) :
+          lvl.SetFieldManager(listOfFields[vln],True)  
+          # print 'set field for ',vln, listOfFields[vln].GetDetectorField().GetConstantFieldValue()
     g4Run = G4RunManager.GetRunManager()
     g4Run.GeometryHasBeenModified(True)
+
+def printWeightsandFields():
+   gt = gTransportationManager
+   gn = gt.GetNavigatorForTracking()
+   world = gn.GetWorldVolume().GetLogicalVolume()
+   magnetMass = 0
+   for da in range(world.GetNoDaughters()):
+       vl   = world.GetDaughter(da)
+       vln  = vl.GetName().__str__()
+       lvl  = vl.GetLogicalVolume()
+       cvol = lvl.GetSolid().GetCubicVolume()/G4Unit.m3
+       M    = lvl.GetMass()/G4Unit.kg
+       if M  < 5000.:   print '%10s volume = %5.2Fm3  mass = %5.2F kg'%(vln,cvol,M)
+       else:            print '%10s volume = %5.2Fm3  mass = %5.2F t'%(vln,cvol,M/1000.)
+       if not vln.find('Mag')<0 : magnetMass+=M
+       fm = lvl.GetFieldManager() 
+       if fm:  
+         fi = fm.GetDetectorField()
+         print 'Magnetic field:',vln,fi.GetConstantFieldValue()/G4Unit.tesla
+   print 'total magnet mass',magnetMass/1000.,'t'
+   return
 def getRunManager():
  return G4RunManager.GetRunManager()
 def startUI():
@@ -56,8 +74,17 @@ def debug():
    vmap[vl.GetName().__str__()] = vl
    print da, vl.GetName()
   lvl = vmap['MagB'].GetLogicalVolume() 
-  print lvl.GetMass()/kg,lvl.GetMaterial().GetName()
+  print lvl.GetMass()/G4Unit.kg,lvl.GetMaterial().GetName()
   print lvl.GetFieldManager()
+#
+  for da in range(world.GetNoDaughters()):
+   vl = world.GetDaughter(da)
+   vln = vl.GetName().__str__()
+   lvl = vl.GetLogicalVolume()
+   fm = lvl.GetFieldManager() 
+   if fm : 
+    v = fm.GetDetectorField().GetConstantFieldValue()
+    print vln,fm,v.getX(),v.getY()
 # FairROOT view
   fgeom = ROOT.gGeoManager
   magB = fgeom.GetVolume('MagB')

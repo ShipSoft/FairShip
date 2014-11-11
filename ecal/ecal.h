@@ -87,6 +87,8 @@ public:
   /** Get cell coordinates according
    ** to current ecalInf **/
   static Bool_t GetCellCoordInf(Int_t fVolumeID, Float_t &x, Float_t &y, Int_t& tenergy);
+  // Get cell for python
+  static Bool_t GetCellCoordForPy(Int_t fVolID, TVector3 &all);
 protected:
   ecalPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos,
                        TVector3 mom, Double_t time, Double_t length,

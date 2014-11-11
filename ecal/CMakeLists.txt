@@ -32,6 +32,8 @@ ecalModule.cxx
 ecalInf.cxx
 ecalStructure.cxx
 ecalStructureFiller.cxx
+ecalDigi.cxx
+ecalPrepare.cxx
 ecalAnalysisSimple.cxx
 )
 

@@ -1,5 +1,5 @@
-#ifndef VETOPOINT_H
-#define VETOPOINT_H 1
+#ifndef MUONPOINT_H
+#define MUONPOINT_H 1
 
 
 #include "FairMCPoint.h"

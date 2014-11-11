@@ -20,6 +20,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     proxy.vm.synced_folder ".", "/vagrant", type: "nfs"
     proxy.vm.network :forwarded_port, guest: 5900, host: 6900
     proxy.vm.provision "shell", inline:
-      "cat /etc/resolv.conf; netstat -nr; ifconfig -a; nslookup cdn-registry-1.docker.io; traceroute -q 2 -m 20 cdn-registry-1.docker.io; ping -c 3 cdn-registry-1.docker.io; curl https://cdn-registry-1.docker.io/"
+      "cat /etc/resolv.conf; netstat -nr; ifconfig -a; nslookup cdn-registry-1.docker.io; traceroute -q 2 -m 20 cdn-registry-1.docker.io; ping -c 3 cdn-registry-1.docker.io; curl https://cdn-registry-1.docker.io/; ls -l /vagrant"
   end
 end

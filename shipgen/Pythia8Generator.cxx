@@ -29,6 +29,7 @@ Bool_t Pythia8Generator::Init()
   fPythia.setRndmEnginePtr(fRandomEngine);
   cout<<"Beam Momentum "<<fMom<<endl;
   fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
+  if (fHNL>0){ cout<<"Switch to HNLPythia8Generator for HNL production, not anymore supported with Pythia8Generstor"<<endl;}
   return kTRUE;
 }
 // -------------------------------------------------------------------------

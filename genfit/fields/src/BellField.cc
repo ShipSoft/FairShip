@@ -26,9 +26,9 @@ namespace genfit {
     : AbsBField(),
       fMiddle(0),fPeak(0)
   { ; }
-  BellField::BellField(double Peak, double Middle)
+  BellField::BellField(double Peak, double Middle,int orientation)
     : AbsBField(),
-      fMiddle(Middle),fPeak(Peak)
+      fMiddle(Middle),fPeak(Peak),fOrient(orientation)
   { ; }
 
 TVector3 BellField::get(const TVector3& pos) const {
@@ -38,10 +38,16 @@ TVector3 BellField::get(const TVector3& pos) const {
 }
 
 void BellField::get(const double& x, const double& y, const double& z, double& Bx, double& By, double& Bz) const {
-  Bx = 0.;
   Double_t zlocal=(z-fMiddle)/100.;
-  By = fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
   Bz = 0.;
+  By = 0.;
+  Bx = 0.;
+  if (fOrient==1){
+  By = fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
+  }
+  if (fOrient==2){
+  Bx = fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
+  }
 }
 
 } /* End of namespace genfit */

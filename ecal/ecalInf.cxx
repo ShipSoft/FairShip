@@ -43,14 +43,11 @@ ecalInf* ecalInf::GetInstance(const char* filename)
 	TString newname=gSystem->Getenv("VMCWORKDIR");
 	newname+="/geometry/";
 	newname+=filename;
-	if (fInf!=NULL)
-		if (fInf->fFileName==newname)
-		{
+	if (fInf!=NULL) {
+		if (fInf->fFileName==newname) {
 			fRefCount++;
 			return fInf;
-		}
-		else
-		{
+		} else {
 		  cerr << "ecalInf: Trying create ";
 		  cerr << "instance of ecalInf with";
 		  cerr << " name " << filename;
@@ -58,6 +55,7 @@ ecalInf* ecalInf::GetInstance(const char* filename)
 		  cerr << fInf->fFileName << "." << endl;
 		  return NULL;
 		}
+    }
 	fInf=new ecalInf(newname);
 	//Is something wrong?
 	if (fInf->fSuccess==0)
@@ -87,8 +85,7 @@ Double_t ecalInf::GetVariableStrict(const char* key)
   if (value==NULL)
   {
     cerr << "Can't find variable named \"" << key << "\"";
-    cerr << ". Exiting..." << endl;
-    Fatal("","");
+    Fatal("GetVariableStrict","Exiting...");
   }
   Double_t val;
   char* err=NULL;
@@ -98,8 +95,7 @@ Double_t ecalInf::GetVariableStrict(const char* key)
     cerr << "Can't convert variable named \"" << key ;
     cerr << "\" to floating point. Value is \"";
     cerr << value->GetString() << "\"." << endl;
-    cerr << "Exiting..." << endl;
-    Fatal("","");
+    Fatal("GetVariableStrict","Exiting...");
   }
   return val;
 }

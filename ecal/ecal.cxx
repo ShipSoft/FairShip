@@ -385,18 +385,18 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
   fTime    = gMC->TrackTime()*1.0e09;
   fLength  = gMC->TrackLength();
 
-  if (vol->getVolumeId()==fStructureId)
-    if (gMC->IsTrackEntering())
-    {
+  if (vol->getVolumeId()==fStructureId) {
+    if (gMC->IsTrackEntering()) {
       FillWallPoint();
       ((ShipStack*)gMC->GetStack())->AddPoint(kecal, fTrackID);
   
       ResetParameters();
 
       return kTRUE;
-    }
-    else
+    } else {
       return kFALSE;
+    }
+  }
 
   if (fELoss<=0) return kFALSE;
 
@@ -719,12 +719,14 @@ void ecal::ConstructGeometry()
   AddSensitiveVolume(volume);
   fStructureId=volume->GetNumber();
 
-  for(i=1;i<cMaxModuleType;i++)
-    if (fModulesWithType[i]>0)
+  for(i=1;i<cMaxModuleType;i++) {
+    if (fModulesWithType[i]>0) {
       if (fSimpleGeo==0)
-	ConstructModule(i);
+          ConstructModule(i);
       else
-	ConstructModuleSimple(i);
+          ConstructModuleSimple(i);
+    }
+  }
  
   TGeoVolume* vol=new TGeoVolumeAssembly("EcalStructure");
 //To suppress warring
@@ -1153,8 +1155,8 @@ void ecal::ConstructTile(Int_t type, Int_t material)
      
     edgingv=new TGeoVolume(nm+"_edging", edging, gGeoManager->GetMedium("ECALTileEdging"));
     edgingv->AddNode(tilev, 1);
-    fScTiles[cMaxModuleType]=tilev;
-    fTileEdging[cMaxModuleType]=edgingv;
+    fScTiles[cMaxModuleType-1]=tilev;
+    fTileEdging[cMaxModuleType-1]=edgingv;
   }
   else
   {
@@ -1222,8 +1224,8 @@ void ecal::ConstructTileSimple(Int_t type, Int_t material)
   if (material==0)
   {
     AddSensitiveVolume(tilev);
-    fScTiles[cMaxModuleType]=tilev;
-    fTileEdging[cMaxModuleType]=tilev;
+    fScTiles[cMaxModuleType-1]=tilev;
+    fTileEdging[cMaxModuleType-1]=tilev;
   }
   else
   {
@@ -1276,5 +1278,21 @@ Bool_t ecal::GetCellCoord(Int_t fVolID, Float_t &x, Float_t &y, Int_t& tenergy)
 {
   return GetCellCoordInf(fVolID, x, y, tenergy);
 }
-
+Bool_t ecal::GetCellCoordForPy(Int_t fVolID, TVector3 &all)
+{
+  Float_t x,y;
+  Int_t tenergy;
+  Bool_t rc = GetCellCoordInf(fVolID, x, y, tenergy);
+  static ecalInf* inf=NULL;
+  if (inf==NULL)
+  {
+    inf=ecalInf::GetInstance(NULL);
+    if (inf==NULL)
+    {
+      cerr << "ecal::GetCellCoordInf(): Can't get geometry information." << endl;
+      return kFALSE;
+    }
+  }
+  all=TVector3(x,y,inf->GetZPos());
+}
 

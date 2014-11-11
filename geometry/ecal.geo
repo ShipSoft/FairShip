@@ -10,7 +10,7 @@
 # By //Dr.Sys 2012.06.17
 XPos=0		#Position of ECal center	[cm]
 YPos=0		#Position of ECal center	[cm]
-ZPos=2420	#Position of ECal start		[cm]
+ZPos=2500	#Position of ECal start		[cm]
 NLayers=140	#Number of layers		
 ModuleSize=12.0	#Module size			[cm]
 Lead=.1		#Absorber thickness in layer	[cm]

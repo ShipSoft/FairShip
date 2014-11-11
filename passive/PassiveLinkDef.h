@@ -11,9 +11,11 @@
 #pragma link C++ class  ShipChamber+;
 #pragma link C++ class  ShipTargetStation+;
 #pragma link C++ class  ShipMuonShield+;
+#pragma link C++ class  ShipGeoCave;
+#pragma link C++ class  ShipPassiveContFact;
+#pragma link C++ class  ShipTAUMagneticSpectrometer+;
+#pragma link C++ class  ShipGoliath+;
 
-#pragma link C++ class ShipGeoCave;
-#pragma link C++ class ShipPassiveContFact;
 
 #endif
 

@@ -2,6 +2,7 @@
 #define VETO_H
 
 #include "FairDetector.h"
+#include "TGeoMedium.h"
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
@@ -44,12 +45,15 @@ class veto: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4);
+    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Int_t c);
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
-
+    void SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Double32_t z5, Double32_t z6);
+    void SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t l4, Double32_t l5, Double32_t l6);
+    void SetRminRmax(Double32_t rmin,Double32_t rmax);
+    void SetVminVmax(Double32_t rmin,Double32_t rmax);
 
     /**      This method is an example of how to add your own point
      *       of type vetoPoint to the clones array
@@ -92,6 +96,25 @@ class veto: public FairDetector
     Double32_t     fT2z;               //!  z-position of tracking station 2
     Double32_t     fT3z;               //!  z-position of tracking station 3
     Double32_t     fT4z;               //!  z-position of tracking station 4
+    Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers, 
+                                       //   2: conical with basic tracking chambers, but no trscking chamber at entrance 
+                                       //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
+    Double32_t fTub1z;
+    Double32_t fTub2z;
+    Double32_t fTub3z;
+    Double32_t fTub4z;
+    Double32_t fTub5z;
+    Double32_t fTub6z;
+    Double32_t fTub1length;
+    Double32_t fTub2length;
+    Double32_t fTub3length;
+    Double32_t fTub4length;
+    Double32_t fTub5length;
+    Double32_t fTub6length;
+    Double32_t fRmin;
+    Double32_t fRmax;
+    Double32_t fVRmin;
+    Double32_t fVRmax;
 
     /** container for data points */
 
@@ -100,6 +123,7 @@ class veto: public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
+    void GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,Bool_t sense);
     ClassDef(veto,1)
 };
 

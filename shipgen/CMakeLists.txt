@@ -26,6 +26,7 @@ set(SRCS
 Pythia6Generator.cxx
 tPythia6Generator.cxx
 Pythia8Generator.cxx
+HNLPythia8Generator.cxx
 GenieGenerator.cxx
 NtupleGenerator.cxx
 MuonBackGenerator.cxx

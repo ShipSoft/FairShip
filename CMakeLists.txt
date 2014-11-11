@@ -202,8 +202,10 @@ ENDIF (NOT FAIRROOT_FOUND)
 
 add_subdirectory (shipdata)
 add_subdirectory (passive)
+add_subdirectory (TauSensitive)
 add_subdirectory (ecal)
 add_subdirectory (veto)
+add_subdirectory (strawtubes)
 add_subdirectory (muon)
 add_subdirectory (shipgen)
 add_subdirectory (field)
@@ -228,8 +230,8 @@ EndIf(TEvePath)
 
 add_custom_target(  # make relative links to folders
     geometry.link ALL
-    COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}'), 'geometry'), 'geometry')\"
-    COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}'), 'macro'), 'macro')\"
+    COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
+    COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'macro') , 'macro') \"
 )
 
 WRITE_CONFIG_FILE(config.sh)

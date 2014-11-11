@@ -13,6 +13,8 @@ deepCopy     = False  # False = copy only stable particles to stack, except for 
 eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
+inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
+checking4overlaps = True
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","nEvents=", "display", "seed=", "firstEvent="])
@@ -55,9 +57,8 @@ ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 a
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - muShieldDesign = 2  # 1=passive 2=active
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
-#
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",muShieldDesign=2,targetOpt=5)
-
+# - strawDesign       = 1  # simplistic tracker design,  3=sophisticated straw tube design, horizontal wires
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=4,muShieldDesign=5,targetOpt=5)
 # Output file name
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -91,7 +92,7 @@ primGen = ROOT.FairPrimaryGenerator()
 if simEngine == "Pythia8":
  primGen.SetTarget(ship_geo.target.z0, 0.) 
 # -----Pythia8--------------------------------------
- P8gen = ROOT.Pythia8Generator()
+ P8gen = ROOT.HNLPythia8Generator()
  import pythia8_conf
  pythia8_conf.configure(P8gen,inclusive,deepCopy)
  primGen.AddGenerator(P8gen)
@@ -156,14 +157,26 @@ if eventDisplay:
   trajFilter = ROOT.FairTrajFilter.Instance()
   trajFilter.SetStepSizeCut(10*u.cm);  
   trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 100.*u.m)
-  trajFilter.SetMomentumCutP(0.5*u.GeV)
+  trajFilter.SetMomentumCutP(0.1*u.GeV)
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 # manipulate G4 geometry to enable magnetic field in active shielding, VMC can't do it.
-if ship_geo.muShieldDesign == 2:
+if ship_geo.muShieldDesign != 1:
  import geomGeant4
  geomGeant4.setMagnetField()
+ geomGeant4.printWeightsandFields()
+if inactivateMuonProcesses : 
+ mygMC = ROOT.TGeant4.GetMC()
+ mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
+ mygMC.ProcessGeantCommand("/process/inactivate muBrems")
+ mygMC.ProcessGeantCommand("/process/inactivate muIoni")
+ mygMC.ProcessGeantCommand("/particle/select mu+")
+ mygMC.ProcessGeantCommand("/particle/process/dump")
+ import G4processes
+ gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
+ procmu = gProcessTable.FindProcess('muIoni','mu+')
+ procmu.SetVerboseLevel(2)     
 
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
@@ -172,10 +185,15 @@ kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
 parOut.open(parFile)
 rtdb.setOutput(parOut)
-rtdb.saveOutput()   # for the moment, it blocks when using Genie, no idea why
+rtdb.saveOutput()
 rtdb.printParamContexts()
 # ------------------------------------------------------------------------
-run.CreateGeometryFile("geofile_full."+tag+".root")  
+run.CreateGeometryFile("geofile_full."+tag+".root") 
+#
+# checking for overlaps
+if checking4overlaps:
+ ROOT.gGeoManager.CheckOverlaps()
+ ROOT.gGeoManager.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
@@ -187,3 +205,11 @@ print "Parameter file is ",parFile
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
 # ------------------------------------------------------------------------
+
+def checkOverlapsWithGeant4():
+ # after /run/initialize, but prints warning messages, problems with TGeo volume
+ mygMC = ROOT.TGeant4.GetMC()
+ mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
+ mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
+ mygMC.ProcessGeantCommand("/geometry/test/run")
+
