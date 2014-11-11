@@ -909,6 +909,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     TGeoCompositeShape *compmagC1 = new TGeoCompositeShape("compMagC1", "MagC1T-MagRetC1T");
     TGeoVolume *magC1   = new TGeoVolume("MagC1", compmagC1, iron);
     magC1->SetLineColor(45);  // red-brown
+    magC1->SetField(magFieldIron);
     top->AddNode(magC1, 1, new TGeoTranslation(0, 0, Z3));
 //Top/Bot return magnets for 17-24 m
     Double_t corners8[16] = {0.,dY, 0.,dY+dX17, 2*dX17,dY+dX17, 2*dX17,dY, 
