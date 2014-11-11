@@ -24,11 +24,11 @@ Bool_t CosmicsGenerator::Init(Float_t targetZ){
    TDatabasePDG* pdgBase = TDatabasePDG::Instance();
    mass = pdgBase->GetParticle(13)->Mass(); // muons!
    nTry =0;  nInside = 0;  nEvent = 0; nTest = 0; weighttest = 0;
-   weight1 = weight1 = 194880.0/100000; // expected muons/nEvents: 2*pi/3*spectrum_integral*A = 194880/100000
+   weight1 = weight1 = 194880.0/500000; // expected muons/nEvents: 2*pi/3*spectrum_integral*A = 194880/500000
 	Float_t weight2 = 1.0/0.0590640; // mean momentum weight 0.059064085 +- 0.000002794
-	Float_t weight3 = 4.177401; // MC average of nTry/nEvents 4.177401067 +- 0.000030013
+	Float_t weight3 = 4.0595; // MC average of nTry/nEvents 4.059523910 +- 0.000151934
 	weight = weight1 * weight2 / weight3;
-	cout<< "TARGETZ = "<<targetZ<<endl;
+	//cout<< "TARGETZ = "<<targetZ<<endl;
 	z0 = -targetZ; // dependend on target position
 	zmiddle = 1000;
 	return kTRUE;
@@ -71,8 +71,7 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 			z = fRandomEngine->Uniform(z0 + zmiddle - 4000, z0 + zmiddle + 4000);
 			
 			// claim for flight close to the actual detector
-			if((TMath::Abs(x-(y+550)*px/py) < 300 && TMath::Abs(z-z0 -zmiddle -(y+550)*pz/py) < 3000) || (TMath::Abs(x-(y-550)*px/py) < 300 &&
-			TMath::Abs(z-z0 -zmiddle -(y-550)*pz/py) <  3000)){
+			if((TMath::Abs(x-(y+600)*px/py) < 300 && TMath::Abs(z-z0 -zmiddle -(y+600)*pz/py) < 3050) || (TMath::Abs(x-(y-600)*px/py) < 300 && TMath::Abs(z-z0 -zmiddle -(y-600)*pz/py) <  3050)|| abs(y - (x+300)*py/px)<600 && abs(z-z0-zmiddle-(x+300)*pz/px)<3050 || abs(y - (x-300)*py/px)<600 && abs(z-z0-zmiddle-(x-300)*pz/px)<3050){
 				//muon or anti-muon
 				if (fRandomEngine->Uniform(0,1) < 1.0/2.278){id = 13;}
 				else{id = -13;} 
