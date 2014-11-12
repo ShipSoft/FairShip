@@ -26,23 +26,22 @@ class vetoPoint : public FairMCPoint
      *@param eLoss    Energy deposit [GeV]
      **/
     vetoPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss);
-
-
-
+                     Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
     /** Destructor **/
     virtual ~vetoPoint();
 
     /** Output to screen **/
     virtual void Print() const;
+    Int_t PdgCode() const {return fPdgCode;}
 
   private:
     /** Copy constructor **/
+    Int_t fPdgCode;
     vetoPoint(const vetoPoint& point);
     vetoPoint operator=(const vetoPoint& point);
 
-    ClassDef(vetoPoint,1)
+    ClassDef(vetoPoint,2)
 
 };
 
