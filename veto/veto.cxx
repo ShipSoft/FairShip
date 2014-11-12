@@ -466,23 +466,24 @@ void veto::ConstructGeometry()
       Double_t liscitube=0.1*m;	
       Double_t liscilid=0.2*m;	
       Double_t atube=2.5*m;	
-      Double_t btube=5.*m;	
+      Double_t btube=5.*m;
+      Double_t atube1=2.4*m-walli-wallo-liscitube;	
       //inner lid on tube 1
-      TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I",St,atube+walli,btube+walli,walli/2.);
+      TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I",St,atube1+walli,btube+walli,walli/2.);
       lidT1I->SetLineColor(18);  // silver/gray
       top->AddNode(lidT1I, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli/2.));
       //lisci lid on tube 1
-      TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube+walli+liscitube,btube+walli+liscitube,liscilid/2.);
+      TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube1+walli+liscitube,btube+walli+liscitube,liscilid/2.);
       lidT1lisci->SetLineColor(kMagenta-10);
       top->AddNode(lidT1lisci, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli-liscilid/2.));
       AddSensitiveVolume(lidT1lisci);
       //outer lid on tube 1
-      TGeoVolume *lidT1O = gGeoManager->MakeEltu("lidT1O",St,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,wallo/2.);
+      TGeoVolume *lidT1O = gGeoManager->MakeEltu("lidT1O",St,atube1+walli+wallo+liscitube,btube+walli+wallo+liscitube,wallo/2.);
       lidT1O->SetLineColor(18);  // silver/gray
       top->AddNode(lidT1O, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli-liscilid-wallo/2.));
 
       // All inner tubes...
-      GeoEllipticalTube("T1I",walli,atube,btube,fTub1length,fTub1z,18,St);
+      GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,fTub1z,18,St);
       GeoEllipticalTube("T2I",walli,atube,btube,fTub2length,fTub2z,18,St);
       GeoEllipticalTube("T3I",walli,atube,btube,fTub3length,fTub3z,18,St);
       GeoEllipticalTube("T4I",walli,atube,btube,fTub4length,fTub4z,18,St);
@@ -490,8 +491,9 @@ void veto::ConstructGeometry()
       GeoEllipticalTube("T6I",walli,atube,btube,fTub6length,fTub6z,18,St);
       // All outer tubes, first calculate inner radii of this tube
       Double_t aO=atube+walli+liscitube;
+      Double_t aO1=atube1+walli+liscitube;
       Double_t bO=btube+walli+liscitube;
-      GeoEllipticalTube("T1O",wallo,aO,bO,fTub1length+liscilid/2,fTub1z-liscilid/2,18,St);
+      GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length+liscilid/2,fTub1z-liscilid/2,18,St);
       GeoEllipticalTube("T2O",wallo,aO,bO,fTub2length,fTub2z,18,St);
       GeoEllipticalTube("T3O",wallo,aO,bO,fTub3length,fTub3z,18,St);
       GeoEllipticalTube("T4O",wallo,aO,bO,fTub4length,fTub4z,18,St);
@@ -499,8 +501,9 @@ void veto::ConstructGeometry()
       GeoEllipticalTube("T6O",wallo,aO,bO,fTub6length+liscilid/2.,fTub6z+liscilid/2.,18,St);
       // And liquid scintillator inbetween, first calculate inner radii of this
       Double_t als=atube+walli;
+      Double_t als1=atube1+walli;
       Double_t bls=btube+walli;
-      GeoEllipticalTube("T1LS",liscitube,als,bls,fTub1length,fTub1z,kMagenta-10,Se,true);
+      GeoEllipticalTube("T1LS",liscitube,als1,bls,fTub1length,fTub1z,kMagenta-10,Se,true);
       GeoEllipticalTube("T2LS",liscitube,als,bls,fTub2length,fTub2z,kMagenta-10,Se,true);
       GeoEllipticalTube("T3LS",liscitube,als,bls,fTub3length,fTub3z,kMagenta-10,Se,true);
       GeoEllipticalTube("T4LS",liscitube,als,bls,fTub4length,fTub4z,kMagenta-10,Se,true);
@@ -548,7 +551,7 @@ void veto::ConstructGeometry()
       //Add one sensitive plane counting rate in second detector downstream
       TGeoVolume *Det2 = gGeoManager->MakeBox("Det2", Se, 2.5*m, 5.*m, 5.*cm);
       Det2->SetLineColor(kGreen+3);
-      top->AddNode(Det2, 1, new TGeoTranslation(0, 0, fTub6z + 70.*m));       
+      top->AddNode(Det2, 1, new TGeoTranslation(0, 0, fTub6z + 50.*m));       
       AddSensitiveVolume(Det2);
      }
 }
