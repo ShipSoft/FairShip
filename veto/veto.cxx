@@ -467,7 +467,7 @@ void veto::ConstructGeometry()
       Double_t liscilid=0.2*m;	
       Double_t atube=2.5*m;	
       Double_t btube=5.*m;
-      Double_t atube1=2.4*m-walli-wallo-liscitube;	
+      Double_t atube1=2.2*m-walli-wallo-liscitube;	
       //inner lid on tube 1
       TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I",St,atube1+walli,btube+walli,walli/2.);
       lidT1I->SetLineColor(18);  // silver/gray
