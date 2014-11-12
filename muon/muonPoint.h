@@ -26,8 +26,7 @@ class muonPoint : public FairMCPoint
      *@param eLoss    Energy deposit [GeV]
      **/
     muonPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss);
-
+                     Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
 
 
@@ -36,13 +35,15 @@ class muonPoint : public FairMCPoint
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
+    Int_t PdgCode() const {return fPdgCode;}
 
   private:
     /** Copy constructor **/
+    Int_t fPdgCode;
     muonPoint(const muonPoint& point);
     muonPoint operator=(const muonPoint& point);
 
-    ClassDef(muonPoint,1)
+    ClassDef(muonPoint,2)
 
 };
 

@@ -68,7 +68,7 @@ class muon: public FairDetector
     muonPoint* AddHit(Int_t trackID, Int_t detID,
                              TVector3 pos, TVector3 mom,
                              Double_t time, Double_t length,
-                             Double_t eLoss);
+                             Double_t eLoss,Int_t pdgcode);
 
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.

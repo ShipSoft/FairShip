@@ -24,6 +24,7 @@
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
+#include "TParticle.h"
 
 
 
@@ -117,9 +118,11 @@ Bool_t  muon::ProcessHits(FairVolume* vol)
     //cout << " "<< gGeoManager->FindVolumeFast(vol->GetName())->GetNumber()<<endl;
     fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
     if (fELoss == 0. ) { return kFALSE; }
+    TParticle* p=gMC->GetStack()->GetCurrentTrack();
+    Int_t pdgCode = p->GetPdgCode();
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-           fELoss);
+           fELoss,pdgCode);
 
     // Increment number of muon det points in TParticle
     ShipStack* stack = (ShipStack*) gMC->GetStack();
@@ -259,13 +262,13 @@ void muon::ConstructGeometry()
 muonPoint* muon::AddHit(Int_t trackID, Int_t detID,
                                       TVector3 pos, TVector3 mom,
                                       Double_t time, Double_t length,
-                                      Double_t eLoss)
+                                      Double_t eLoss, Int_t pdgCode)
 {
   TClonesArray& clref = *fmuonPointCollection;
   Int_t size = clref.GetEntriesFast();
   // cout << "muon hit called"<< pos.z()<<endl;
   return new(clref[size]) muonPoint(trackID, detID, pos, mom,
-         time, length, eLoss);
+         time, length, eLoss, pdgCode);
 }
 
 ClassImp(muon)
