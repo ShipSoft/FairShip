@@ -2,7 +2,7 @@
 // -----       CosmicsGenerator source file for SHiP             -----
 // -----       Version by 11/13/14  by Martin Franke             -----
 // -------------------------------------------------------------------
-#include <math.h>
+
 #include "TROOT.h"
 #include "FairPrimaryGenerator.h"
 #include "CosmicsGenerator.h"
