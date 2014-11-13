@@ -19,18 +19,16 @@ using namespace std;
 //   return kTRUE;
 //}
 
-Bool_t CosmicsGenerator::Init(Float_t targetZ){
+Bool_t CosmicsGenerator::Init(Float_t zmiddle){
 	fRandomEngine = new Co3Rng();
    TDatabasePDG* pdgBase = TDatabasePDG::Instance();
    mass = pdgBase->GetParticle(13)->Mass(); // muons!
    nTry =0;  nInside = 0;  nEvent = 0; nTest = 0; weighttest = 0;
-   weight1 = weight1 = 194880.0/500000; // expected muons/nEvents: 2*pi/3*spectrum_integral*A = 194880/500000
-	Float_t weight2 = 1.0/0.0590640; // mean momentum weight 0.059064085 +- 0.000002794
-	Float_t weight3 = 4.0595; // MC average of nTry/nEvents 4.059523910 +- 0.000151934
+   Float_t weight1 = 194880.0/500000; // expected #muons per spill/ #simulated events per spill 174*14*80/500000
+   Float_t weight2 = 1.0/0.0830872; // 1/(mean momentum weight), P_max-P_min/(3*174/2pi)
+	Float_t weight3 = 3.99363; // MC average of nTry/nEvents 3.993634059 +- 0.000027617
 	weight = weight1 * weight2 / weight3;
-	//cout<< "TARGETZ = "<<targetZ<<endl;
-	z0 = -targetZ; // dependend on target position
-	zmiddle = 1000;
+	z0 = zmiddle; // (2*Z_muonstation-Z_vessel)/2
 	return kTRUE;
 }
 
@@ -68,18 +66,16 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 			
 			// start position, area 1120 m^2
 			x = fRandomEngine->Uniform(-700,700);
-			z = fRandomEngine->Uniform(z0 + zmiddle - 4000, z0 + zmiddle + 4000);
+			z = fRandomEngine->Uniform(z0 - 4000, z0 + 4000);
 			
 			// claim for flight close to the actual detector
-			if((TMath::Abs(x-(y+600)*px/py) < 300 && TMath::Abs(z-z0 -zmiddle -(y+600)*pz/py) < 3050) || (TMath::Abs(x-(y-600)*px/py) < 300 && TMath::Abs(z-z0 -zmiddle -(y-600)*pz/py) <  3050)|| abs(y - (x+300)*py/px)<600 && abs(z-z0-zmiddle-(x+300)*pz/px)<3050 || abs(y - (x-300)*py/px)<600 && abs(z-z0-zmiddle-(x-300)*pz/px)<3050){
+			if((TMath::Abs(x-(y+600)*px/py) < 300 && TMath::Abs(z-z0-(y+600)*pz/py) < 3050) || (TMath::Abs(x-(y-600)*px/py) < 300 && TMath::Abs(z-z0-(y-600)*pz/py) <  3050)|| abs(y-(x+300)*py/px)<600 && abs(z-z0-(x+300)*pz/px)<3050 || abs(y-(x-300)*py/px)<600 && abs(z-z0-(x-300)*pz/px)<3050){
 				//muon or anti-muon
 				if (fRandomEngine->Uniform(0,1) < 1.0/2.278){id = 13;}
 				else{id = -13;} 
-				
-				Float_t e = TMath::Sqrt(P*P+mass*mass); // energy
-				
+								
 				// transfer to Geant4
-				cpg->AddTrack(id,px,py,pz,x,y,z,-1,true,e,0,w);  // -1 = Mother ID, true = tracking
+				cpg->AddTrack(id,px,py,pz,x,y,z,-1,true,TMath::Sqrt(P*P+mass*mass),0,w);  // -1 = Mother ID, true = tracking, SQQRT(x) = Energy, 0 = t
 				hit = 1; nInside++; 
 		   }
 		   nTry++;
@@ -88,7 +84,7 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 		nTest++;
 	}while(!hit);
 	nEvent++;
-   if (nEvent%1000 == 0){cout<<nEvent/1000<<"k events have been simulated"<<endl;}
+   //if (nEvent%1000 == 0){cout<<nEvent/10000<<"10k events have been simulated"<<endl;}
   
    return kTRUE;
 }
