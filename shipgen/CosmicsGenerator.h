@@ -1,7 +1,8 @@
-// -------------------------------------------------------------------------
-// -----       CosmicsGenerator source file for SHiP                   -----
-// -----         Created 09/12/14  by Martin Franke                    -----
-// -------------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -----       CosmicsGenerator source file for SHiP             -----
+// -----       Version by 11/13/14  by Martin Franke             -----
+// -----       mailto: mfranke(at)physik.hu-berlin.de            -----
+// -------------------------------------------------------------------
 
 #ifndef PNDCoGENERATOR_H
 #define PNDCoGENERATOR_H 1

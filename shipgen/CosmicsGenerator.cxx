@@ -1,6 +1,7 @@
 // -------------------------------------------------------------------
 // -----       CosmicsGenerator source file for SHiP             -----
 // -----       Version by 11/13/14  by Martin Franke             -----
+// -----       mailto: mfranke(at)physik.hu-berlin.de            -----
 // -------------------------------------------------------------------
 
 #include "TROOT.h"
