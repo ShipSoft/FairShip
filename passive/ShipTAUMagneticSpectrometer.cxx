@@ -47,6 +47,7 @@ ShipTAUMagneticSpectrometer::ShipTAUMagneticSpectrometer(const char* name,const 
 void ShipTAUMagneticSpectrometer::ConstructGeometry()
 {
     Int_t NIronSlabs = 12;
+    
     TGeoVolume *top=gGeoManager->GetTopVolume();
     TGeoMedium *Fe  = gGeoManager->GetMedium("iron");
     
@@ -55,7 +56,7 @@ void ShipTAUMagneticSpectrometer::ConstructGeometry()
     TGeoUniformMagField *magField = new TGeoUniformMagField(0.,-MagneticField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,MagneticField,0.);
     
-    TGeoBBox *Layer = new TGeoBBox(225,225,IronLenght/2);
+    TGeoBBox *Layer = new TGeoBBox(225,400,IronLenght/2);
     TGeoVolume *volLayer = new TGeoVolume("volLayer",Layer,Fe);
     for(Int_t i = 0; i< NIronSlabs; i++)
     {

@@ -119,7 +119,8 @@ void ShipRpc::ConstructGeometry()
 {
 
     
-    Double_t trSize = 4.5*m; //Transversal size of the scintillator plane in m
+    Double_t XtrSize = 4.5*m; //Transversal size of the scintillator plane in m
+    Double_t YtrSize = 8*m;
     Int_t NScintPlanes = 12; //Number of Scintillator Planes
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
@@ -136,7 +137,7 @@ void ShipRpc::ConstructGeometry()
     
     Double_t d = 0;
     
-    TGeoBBox *ScintLayer = new TGeoBBox("detScint", trSize/2, trSize/2, ScintLenght/2);
+    TGeoBBox *ScintLayer = new TGeoBBox("detScint", XtrSize/2, YtrSize/2, ScintLenght/2);
     TGeoVolume *volScintLayer = new TGeoVolume("volScintLayer",ScintLayer,RPCmat);
     volScintLayer->SetLineColor(kMagenta-10);
     volScintLayer->SetField(magField);
@@ -166,7 +167,7 @@ void ShipRpc::ConstructGeometry()
     //Drift tubes behind, within and after the spectro arms (always scintillator planes for now)
     //
     
-    TGeoBBox *DriftLayer = new TGeoBBox("detDrift", trSize/2, trSize/2, DriftLenght/2);
+    TGeoBBox *DriftLayer = new TGeoBBox("detDrift", XtrSize/2, YtrSize/2, DriftLenght/2);
     TGeoVolume *volDriftLayer = new TGeoVolume("volDriftLayer",DriftLayer,HPTmat);
     volDriftLayer->SetLineColor(kBlue-5);
     top->AddNode(volDriftLayer,1,new TGeoTranslation(0,0,zDriftLayer));
