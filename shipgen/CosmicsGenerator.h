@@ -46,14 +46,14 @@ class Co3Rng{
 	};
 	virtual ~Co3Rng() {delete rng; delete fTheta; delete fMultipl;};
   
-	Float_t randomTheta() {return fTheta->GetRandom();};
-	Float_t Uniform(Float_t min, Float_t max){return rng->Uniform(min,max);};
-	Int_t randomMultiplicity(){return (Int_t)fMultipl->GetRandom();};
+	Float_t randomTheta() {return fTheta->GetRandom();};//!
+	Float_t Uniform(Float_t min, Float_t max){return rng->Uniform(min,max);};//!
+	Int_t randomMultiplicity(){return (Int_t)fMultipl->GetRandom();};//!
   
  private:
 	TRandom3 *rng; //!
-	TF1 *fTheta;
-	TH1I *fMultipl;
+	TF1 *fTheta;//!
+	TH1I *fMultipl;//!
 };
 
 class CosmicsGenerator : public FairGenerator{
@@ -69,17 +69,17 @@ class CosmicsGenerator : public FairGenerator{
 	};
   
 	/** public method ReadEvent **/
-	Bool_t ReadEvent(FairPrimaryGenerator*);  
+	Bool_t ReadEvent(FairPrimaryGenerator*);  //!
 	//  virtual Bool_t Init(); //!
 	virtual Bool_t Init(Float_t zmiddle); //!
   
  private:
-	Co3Rng *fRandomEngine;
-	Float_t getPweight(Float_t P);
+	Co3Rng *fRandomEngine;//!
+	Float_t getPweight(Float_t P);//!
   
  protected:
 	Float_t px,py,pz,x,y,z,w, weighttest, weight, z0, mass;
-	Int_t id,nTry,nInside,nEvent,multiplicity,nTest;
+	Int_t id,nTry,nInside,nEvent,multiplicity,nTest;//!
 	
 	ClassDef(CosmicsGenerator,1);
 };
