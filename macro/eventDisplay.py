@@ -20,10 +20,11 @@ simEngine = "Pythia8"
 # simEngine = "Genie"
 #
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","Cosmics"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
+        print '       --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
         sys.exit()
 for o, a in opts:
         if o in ("--Pythia6"):
@@ -36,6 +37,9 @@ for o, a in opts:
             simEngine = "Ntuple"
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
+        if o in ("--Cosmics"):
+            simEngine = "Cosmics"
+
 print "FairShip setup for",simEngine
 
 tag = simEngine+"-"+mcEngine+'_D'
@@ -76,6 +80,7 @@ fMan.SetPriOnly(False)  # display everything
 #----------------------Tracks and points -------------------------------------
 verbose = 0  # 3 lot of output
 Track       = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
+GTrack      = ROOT.FairMCTracks("GeoTracks",verbose)
 VetoPoints  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
 StrawPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullSquare)
 EcalPoints  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
@@ -83,6 +88,7 @@ MuonPoints  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
 RpcPoints   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
  
 fMan.AddTask(Track)
+fMan.AddTask(GTrack)
 fMan.AddTask(VetoPoints)
 fMan.AddTask(MuonPoints)
 fMan.AddTask(EcalPoints)

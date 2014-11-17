@@ -30,6 +30,7 @@ HNLPythia8Generator.cxx
 GenieGenerator.cxx
 NtupleGenerator.cxx
 MuonBackGenerator.cxx
+CosmicsGenerator.cxx
 )
 
 set(LINKDEF  GenLinkDef.h)
