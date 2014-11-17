@@ -14,14 +14,16 @@ eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-checking4overlaps = True
+checking4overlaps = False
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","nEvents=", "display", "seed=", "firstEvent="])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
+                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
                 or --Pythia6 for muon nucleon scattering'  
+        print '    --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
         sys.exit()
 for o, a in opts:
         if o in ("--display"):
@@ -37,6 +39,8 @@ for o, a in opts:
             simEngine = "Ntuple"
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
+        if o in ("--Cosmics"):
+            simEngine = "Cosmics"
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
         if o in ("-i", "--firstEvent="):
@@ -58,7 +62,7 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - muShieldDesign = 2  # 1=passive 2=active
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
 # - strawDesign       = 1  # simplistic tracker design,  3=sophisticated straw tube design, horizontal wires
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=4,muShieldDesign=5,targetOpt=5)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",HcalOption = 0,strawDesign=4,muShieldDesign=5,targetOpt=5)
 # Output file name
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -85,7 +89,7 @@ run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
-shipDet_conf.configure(run,ship_geo)
+modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 
@@ -140,8 +144,15 @@ if simEngine == "MuonBack":
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file'
 #
+if simEngine == "Cosmics":
+ targetz = 0;
+ primGen.SetTarget(targetz, 0.)
+ Cosmicsgen = ROOT.CosmicsGenerator()
+ Cosmicsgen.Init(targetz)
+ primGen.AddGenerator(Cosmicsgen)
+print 'Process ',nEvents,' Cosmic events'
+#
 run.SetGenerator(primGen)
-
 # ------------------------------------------------------------------------
 
 #---Store the visualiztion info of the tracks, this make the output file very large!!
@@ -156,7 +167,7 @@ if eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
   trajFilter = ROOT.FairTrajFilter.Instance()
   trajFilter.SetStepSizeCut(10*u.cm);  
-  trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 100.*u.m)
+  trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 200.*u.m)
   trajFilter.SetMomentumCutP(0.1*u.GeV)
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
@@ -177,7 +188,6 @@ if inactivateMuonProcesses :
  gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess('muIoni','mu+')
  procmu.SetVerboseLevel(2)     
-
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # -----Runtime database---------------------------------------------

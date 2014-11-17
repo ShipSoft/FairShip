@@ -1,7 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
-import ROOT
+import ROOT,os
 import shipunit as u
+def posHcal(z):
+ f =  open(os.environ["FAIRSHIP"]+"/geometry/hcal.geo",'r')
+ fn = open(os.environ["FAIRSHIP"]+"/geometry/hcalz.geo",'w')
+ for l in f.readlines():
+   if not l.find("ZPos")<0:
+      l ="ZPos="+str(z)+ "	#Position of Hcal start		[cm]\n"
+   fn.write(l)
+ f.close()
+ fn.close()  
 
 def configure(run,ship_geo):
 # -----Create media-------------------------------------------------
@@ -89,6 +98,10 @@ def configure(run,ship_geo):
  Muon.SetActiveThickness(ship_geo.ActiveThickness.z)
  Muon.SetFilterThickness(ship_geo.FilterThickness.z)
  run.AddModule(Muon)
+ if ship_geo.HcalOption == 0:
+  posHcal(ship_geo.hcal.z)
+  hcal=ROOT.hcal("Hcal", ROOT.kTRUE, "hcalz.geo")
+  run.AddModule(hcal)
 
 #-----   Magnetic field   -------------------------------------------
     # Constant Field

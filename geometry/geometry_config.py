@@ -12,6 +12,8 @@ if "targetOpt" not in globals():
     targetOpt = 5
 if "strawDesign" not in globals():
     strawDesign = 1
+if "HcalOption" not in globals():
+    HcalOption = 0
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign
     extraVesselLength=10*u.m
@@ -155,6 +157,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
+
+    c.hcal  =  AttrDict(z=40*u.m)
+    c.HcalOption  =  HcalOption
 
     c.target               =  AttrDict(z=0*u.cm)
     c.target.sl            =  1*u.cm  # air slit total length
