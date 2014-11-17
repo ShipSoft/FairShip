@@ -19,6 +19,8 @@
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
+#include "TParticle.h"
+#include "TVector3.h"
 
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
@@ -32,6 +34,7 @@
 #include "FairRuntimeDb.h"
 
 #include "ShipDetectorList.h"
+#include "ShipUnit.h"
 #include "ShipStack.h"
 
 #include "TGeoUniformMagField.h"
@@ -40,17 +43,10 @@
 
 using std::cout;
 using std::endl;
-
-Double_t cm  = 1;       // cm
-Double_t m   = 100*cm;  //  m
-Double_t mm  = 0.1*cm;  //  mm
-Double_t kilogauss = 1.;
-Double_t tesla     = 10*kilogauss;
-
-
+using namespace ShipUnit;
 
 ShipRpc::ShipRpc()
-  : FairDetector("ShipRpc", "",kTRUE),
+  : FairDetector("ShipRpc",kTRUE, ktauRpc),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -63,7 +59,7 @@ ShipRpc::ShipRpc()
 }
 
 ShipRpc::ShipRpc(const char* name, const Double_t zRpcL, const Double_t zDriftL, const Double_t DriftL,const Double_t IronL, const Double_t ScintL, const Double_t MiddleG, Bool_t Active,const char* Title)
-  : FairDetector(name, true, ktauRpc),
+  : FairDetector(name, Active, ktauRpc),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -91,7 +87,7 @@ ShipRpc::~ShipRpc()
 
 void ShipRpc::Initialize()
 {
-    //FairModule::Initialize();
+    FairDetector::Initialize();
 }
 
 // -----   Private method InitMedium 
@@ -234,9 +230,12 @@ Bool_t  ShipRpc::ProcessHits(FairVolume* vol)
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
         fVolumeID = vol->getMCid();
         if (fELoss == 0. ) { return kFALSE; }
+        TParticle* p=gMC->GetStack()->GetCurrentTrack();
+        Int_t pdgCode = p->GetPdgCode();
+        //cout << pdgCode << endl;
         AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-               fELoss);
+               fELoss, pdgCode);
         
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
@@ -280,13 +279,13 @@ void ShipRpc::Reset()
 ShipRpcPoint* ShipRpc::AddHit(Int_t trackID, Int_t detID,
                         TVector3 pos, TVector3 mom,
                         Double_t time, Double_t length,
-                        Double_t eLoss)
+                        Double_t eLoss, Int_t pdgCode)
 {
     TClonesArray& clref = *fShipRpcPointCollection;
     Int_t size = clref.GetEntriesFast();
-    // cout << "muon hit called"<< pos.z()<<endl;
+    //cout << "ShipRpctau hit called"<< pos.z()<<endl;
     return new(clref[size]) ShipRpcPoint(trackID, detID, pos, mom,
-                                      time, length, eLoss);
+                                      time, length, eLoss, pdgCode);
 }
 
 

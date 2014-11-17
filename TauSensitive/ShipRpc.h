@@ -46,7 +46,7 @@ class ShipRpc : public FairDetector
     ShipRpcPoint* AddHit(Int_t trackID, Int_t detID,
                       TVector3 pos, TVector3 mom,
                       Double_t time, Double_t length,
-                      Double_t eLoss);
+                      Double_t eLoss, Int_t pdgCode);
     
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
@@ -63,11 +63,8 @@ class ShipRpc : public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
+   
     
-    ShipRpc(const ShipRpc&);
-    ShipRpc& operator=(const ShipRpc&);
-    
-    ClassDef(ShipRpc,1)
     
 private:
     
@@ -95,6 +92,11 @@ protected:
     Double_t     ScintLenght;   //dimension along z axis of scintillator layer
     Double_t     MiddleGap;     //distance between the last plane of the 1st spectro and the 1st plane of the 2nd spectro
   Int_t InitMedium(const char* name);
+    
+    ShipRpc(const ShipRpc&);
+    ShipRpc& operator=(const ShipRpc&);
+    
+    ClassDef(ShipRpc,1)
 
 };
 
