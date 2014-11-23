@@ -105,6 +105,23 @@ void veto::GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t
        //and make the volunes sensitive..
        if (sens) {AddSensitiveVolume(T);}
 }
+// private method create plate with ellips hole in the center
+void veto::GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material)
+{
+  /*make plate with elliptical hole.
+   plate has half width/height: a(b)+thick
+   a,b are ellipse radii of hole, dz is the half-thickness of the plate
+   will be put at z, with colour and material*/
+       TGeoVolume *top = gGeoManager->GetTopVolume();
+       TGeoBBox *T2  = new TGeoBBox("T2", a+thick,b+thick,dz);
+       TGeoEltu *T1  = new TGeoEltu("T1",a,b,dz+0.1);
+       TGeoSubtraction *subtraction = new TGeoSubtraction(T2,T1);
+       TGeoCompositeShape *Tc = new TGeoCompositeShape(name, subtraction);
+       TGeoVolume *T = new TGeoVolume(name, Tc, material);
+
+       T->SetLineColor(colour);
+       top->AddNode(T, 1, new TGeoTranslation(0, 0, z));
+}
 
 
 // -----   Private method InitMedium 
@@ -463,6 +480,8 @@ void veto::ConstructGeometry()
     // design 4: elliptical double walled tube with LiSci in between
       Double_t walli=0.01*m;	
       Double_t wallo=0.01*m;	
+      Double_t ws=0.5*m; //Straw screen plates sticking out of the outer tube.
+      //Note: is just 2 cm for veto chamber, to avoid muon hits :-).
       Double_t liscitube=0.1*m;	
       Double_t liscilid=0.2*m;	
       Double_t atube=2.5*m;	
@@ -494,11 +513,21 @@ void veto::ConstructGeometry()
       Double_t aO1=atube1+walli+liscitube;
       Double_t bO=btube+walli+liscitube;
       GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length+liscilid/2,fTub1z-liscilid/2,18,St);
+      GeoPlateEllipse("T1Endplate",0.02*m+(atube-atube1),aO1+wallo,bO+wallo,wallo/2.,fTub1z+fTub1length-wallo/2.,18,St);
       GeoEllipticalTube("T2O",wallo,aO,bO,fTub2length,fTub2z,18,St);
+      GeoPlateEllipse("T2Startplate",0.02*m,aO+wallo,bO+wallo,wallo/2.,fTub2z-fTub2length+wallo/2.,18,St);
+      GeoPlateEllipse("T2Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub2z+fTub2length-wallo/2.,18,St);
       GeoEllipticalTube("T3O",wallo,aO,bO,fTub3length,fTub3z,18,St);
+      GeoPlateEllipse("T3Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub3z-fTub3length+wallo/2.,18,St);
+      GeoPlateEllipse("T3Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub3z+fTub3length-wallo/2.,18,St);
       GeoEllipticalTube("T4O",wallo,aO,bO,fTub4length,fTub4z,18,St);
+      GeoPlateEllipse("T4Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub4z-fTub4length+wallo/2.,18,St);
+      GeoPlateEllipse("T4Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub4z+fTub4length-wallo/2.,18,St);
       GeoEllipticalTube("T5O",wallo,aO,bO,fTub5length,fTub5z,18,St);
+      GeoPlateEllipse("T5Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub5z-fTub5length+wallo/2.,18,St);
+      GeoPlateEllipse("T5Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub5z+fTub5length-wallo/2.,18,St);
       GeoEllipticalTube("T6O",wallo,aO,bO,fTub6length+liscilid/2.,fTub6z+liscilid/2.,18,St);
+      GeoPlateEllipse("T6Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub6z-fTub6length+wallo/2.,18,St);
       // And liquid scintillator inbetween, first calculate inner radii of this
       Double_t als=atube+walli;
       Double_t als1=atube1+walli;
