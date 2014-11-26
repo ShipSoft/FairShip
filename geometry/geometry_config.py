@@ -5,52 +5,36 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # muShieldDesign = 2  # 1=passive 2=active
 # targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
-
 if "muShieldDesign" not in globals():
-    muShieldDesign = 2
+    muShieldDesign = 5
 if "targetOpt" not in globals():
     targetOpt = 5
 if "strawDesign" not in globals():
-    strawDesign = 1
+    strawDesign = 4
 if "HcalOption" not in globals():
-    HcalOption = 0
+    HcalOption = -1
+if "Yheight" not in globals():
+    Yheight = 10.
+
 with ConfigRegistry.register_config("basic") as c:
-    # global muShieldDesign, targetOpt, strawDesign
-    extraVesselLength=10*u.m
+    # global muShieldDesign, targetOpt, strawDesign, Yheight
+    c.Yheight = Yheight*u.m
+    totalLength       = 5*c.Yheight + 10*u.m
+    extraVesselLength = totalLength - 50*u.m
     c.strawDesign = strawDesign
     c.chambers = AttrDict(z=0*u.cm)
-    if strawDesign == 1:
-     extraVesselLength=0*u.m
-     c.Chamber1 = AttrDict(z=-2450.*u.cm)
-     c.Chamber2 = AttrDict(z=-440.*u.cm)
-     c.Chamber3 = AttrDict(z=1620.*u.cm)
-     c.Chamber4 = AttrDict(z=1940.*u.cm)
-     c.Chamber5 = AttrDict(z=2270.*u.cm)
-     c.Chamber6 = AttrDict(z=2540.*u.cm)
-
-     c.chambers.Tub1length = AttrDict(z=50.*u.cm)
-     c.chambers.Tub2length = AttrDict(z=1940.*u.cm)
-     c.chambers.Tub3length = AttrDict(z=70.*u.cm) # -10
-     c.chambers.Tub4length = AttrDict(z=190.*u.cm) # -10
-     c.chambers.Tub5length = AttrDict(z=80.*u.cm) # -10
-     c.chambers.Tub6length = AttrDict(z=20.*u.cm)
-     c.chambers.Rmin = AttrDict(z=245.*u.cm)
-     c.chambers.Rmax = AttrDict(z=250.*u.cm)
-
-     c.vetoStation = AttrDict(z=-2390.*u.cm)
-     c.TrackStation1 = AttrDict(z=1520.*u.cm)
-     c.TrackStation2 = AttrDict(z=1715.*u.cm) # -5
-     c.TrackStation3 = AttrDict(z=2160.*u.cm)
-     c.TrackStation4 = AttrDict(z=2380.*u.cm)
+    if strawDesign != 4:
+     print "this design is not supported, use strawDesign = 4"
+     1/0 
     else:
-     c.chambers.Tub1length = AttrDict(z=2.5*u.m)
-     c.chambers.Tub2length = AttrDict(z=17.68*u.m+extraVesselLength/2.)
-     c.chambers.Tub3length = AttrDict(z=0.8*u.m)
-     c.chambers.Tub4length = AttrDict(z=2.*u.m)
-     c.chambers.Tub5length = AttrDict(z=0.8*u.m)
-     c.chambers.Tub6length = AttrDict(z=0.1*u.m)
-     c.chambers.Rmin = AttrDict(z=245.*u.cm)
-     c.chambers.Rmax = AttrDict(z=250.*u.cm)
+     c.chambers.Tub1length = 2.5*u.m
+     c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
+     c.chambers.Tub3length = 0.8*u.m
+     c.chambers.Tub4length = 2.*u.m
+     c.chambers.Tub5length = 0.8*u.m
+     c.chambers.Tub6length = 0.1*u.m
+     c.chambers.Rmin = 245.*u.cm
+     c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
      c.Chamber1 = AttrDict(z=-22.28*u.m)
      c.Chamber2 = AttrDict(z=-1.9*u.m+extraVesselLength/2.)
@@ -58,7 +42,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber4 = AttrDict(z=20.18*u.m+extraVesselLength)
      c.Chamber5 = AttrDict(z=23.38*u.m+extraVesselLength)
      c.Chamber6 = AttrDict(z=24.68*u.m+extraVesselLength)
-      # magnet z= 20.18  +extraVesselLength
+     # 
      c.vetoStation = AttrDict(z=-1968.*u.cm)
      c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)
      c.TrackStation2 = AttrDict(z=1798.*u.cm+extraVesselLength)
@@ -67,25 +51,27 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
-    c.scintillator.Rmin = AttrDict(z=251.*u.cm)
-    c.scintillator.Rmax = AttrDict(z=260.*u.cm)
+    c.scintillator.Rmin = 251.*u.cm
+    c.scintillator.Rmax = 260.*u.cm
 
     c.strawtubes = AttrDict(z=0*u.cm)
-    c.strawtubes.StrawLength        = AttrDict(z=250.*u.cm)
-    c.strawtubes.InnerStrawDiameter = AttrDict(z=0.94*u.cm)
-    c.strawtubes.OuterStrawDiameter = AttrDict(z=0.98*u.cm)
-    c.strawtubes.StrawPitch         = AttrDict(z=1.76*u.cm)
-    c.strawtubes.DeltazLayer        = AttrDict(z=1.1*u.cm)
-    c.strawtubes.DeltazPlane        = AttrDict(z=2.6*u.cm)
-    c.strawtubes.StrawsPerLayer     = AttrDict(z=568)
-    c.strawtubes.ViewAngle          = AttrDict(z=5)
-    c.strawtubes.WireThickness      = AttrDict(z=0.003*u.cm)
-    c.strawtubes.DeltazView         = AttrDict(z=10.*u.cm)
-    c.strawtubes.VacBox_x           = AttrDict(z=300.*u.cm)
-    c.strawtubes.VacBox_y           = AttrDict(z=600.*u.cm)
+    c.strawtubes.StrawLength        = 250.*u.cm
+    c.strawtubes.InnerStrawDiameter = 0.94*u.cm
+    c.strawtubes.OuterStrawDiameter = 0.98*u.cm
+    c.strawtubes.StrawPitch         = 1.76*u.cm
+    c.strawtubes.DeltazLayer        = 1.1*u.cm
+    c.strawtubes.DeltazPlane        = 2.6*u.cm
+    
+    c.strawtubes.StrawsPerLayer     = int(c.Yheight/c.strawtubes.StrawPitch)
+    c.strawtubes.ViewAngle          = 5
+    c.strawtubes.WireThickness      = 0.003*u.cm
+    c.strawtubes.DeltazView         = 10.*u.cm
+    c.strawtubes.VacBox_x           = 300.*u.cm
+    c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
 
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 1.5*u.kilogauss  # was 1.15 in EOI
+    c.Bfield.y   = c.Yheight
 
     c.MuonStation0 = AttrDict(z=2600.*u.cm+extraVesselLength)
     c.MuonStation1 = AttrDict(z=2700.*u.cm+extraVesselLength)
@@ -95,15 +81,15 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonFilter0 = AttrDict(z=2650.*u.cm+extraVesselLength)
     c.MuonFilter1 = AttrDict(z=2750.*u.cm+extraVesselLength)
     c.MuonFilter2 = AttrDict(z=2850.*u.cm+extraVesselLength)
+     
+    c.Muon = AttrDict(z=0)
+    c.Muon.XMax    =  300.*u.cm
+    c.Muon.YMax    =  600.*u.cm * c.Yheight / (10.*u.m)
 
-    c.MuonXMax    =  AttrDict(x=300.*u.cm)
-    c.MuonYMax    =  AttrDict(y=600.*u.cm)
+    c.Muon.ActiveThickness = 0.5*u.cm
+    c.Muon.FilterThickness = 30.*u.cm
 
-    c.ActiveThickness = AttrDict(z=0.5*u.cm)
-    c.FilterThickness = AttrDict(z=30.*u.cm)
-
-
-    # target absorber muon shield setup
+    # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
     c.decayVolume            =  AttrDict(z=0*u.cm)
     c.decayVolume.length     =   50*u.m
 
@@ -158,7 +144,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
 
-    c.hcal  =  AttrDict(z=40*u.m)
+    c.ecal  =  AttrDict(z=3540*u.cm + totalLength - 60*u.m)
+    c.hcal  =  AttrDict(z=40*u.m + totalLength - 60*u.m)
     c.HcalOption  =  HcalOption
 
     c.target               =  AttrDict(z=0*u.cm)

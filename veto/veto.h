@@ -52,9 +52,16 @@ class veto: public FairDetector
 
     void SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Double32_t z5, Double32_t z6);
     void SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t l4, Double32_t l5, Double32_t l6);
-    void SetRminRmax(Double32_t rmin,Double32_t rmax);
-    void SetVminVmax(Double32_t rmin,Double32_t rmax);
-
+    void SetB(Double32_t b) {fBtube=b;}
+    void SetRminRmax(Double32_t rmin,Double32_t rmax){
+     fRmin = rmin;                                                //!  minimum diameter of vacuum chamber
+     fRmax = rmax;                                                //!  maximum diameter of vacuum chamber
+     }
+    void SetVminVmax(Double32_t rmin,Double32_t rmax)
+    {
+     fVRmin = rmin;                                                //!  minimum diameter liquid scintillator layer
+     fVRmax = rmax;                                                //!  maximum diameter liquid scintillator layer
+    }
     /**      This method is an example of how to add your own point
      *       of type vetoPoint to the clones array
     */
@@ -115,7 +122,7 @@ class veto: public FairDetector
     Double32_t fRmax;
     Double32_t fVRmin;
     Double32_t fVRmax;
-
+    Double32_t fBtube;
     /** container for data points */
 
     TClonesArray*  fvetoPointCollection;
@@ -125,7 +132,7 @@ class veto: public FairDetector
     Int_t InitMedium(const char* name);
     void GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,Bool_t sense);
     void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material);
-    ClassDef(veto,1)
+    ClassDef(veto,2)
 };
 
 #endif //VETO_H

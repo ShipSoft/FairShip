@@ -13,11 +13,12 @@ deepCopy     = False  # False = copy only stable particles to stack, except for 
 eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
+dy           = 10
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-checking4overlaps = False
+checking4overlaps = True
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:i:f:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
                                    "Cosmics","nEvents=", "display", "seed=", "firstEvent="])
 except getopt.GetoptError:
         # print help information and exit:
@@ -26,7 +27,7 @@ except getopt.GetoptError:
         print '    --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
         sys.exit()
 for o, a in opts:
-        if o in ("--display"):
+        if o in ("-D","--display"):
             eventDisplay = True
         if o in ("--Pythia6"):
             simEngine = "Pythia6"
@@ -51,6 +52,8 @@ for o, a in opts:
             inputFile = a
         if o in ("-A"):
             inclusive = True
+        if o in ("-Y"): 
+            dy = float(a)
         if o in ("-F"):
             deepCopy = True
 
@@ -59,13 +62,15 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-# - muShieldDesign = 2  # 1=passive 2=active
-# - targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
-# - strawDesign       = 1  # simplistic tracker design,  3=sophisticated straw tube design, horizontal wires
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",HcalOption = 0,strawDesign=4,muShieldDesign=5,targetOpt=5)
-# Output file name
+# - muShieldDesign    = 2  # 1=passive 2=active (default)
+# - targetOpt         = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits (default)
+# - strawDesign       = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
+# - HcalOption        = -1 # no hcal,  0=hcal after muon
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 0, Yheight = dy )
+# Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
+if dy: tag = str(dy)+'.'+tag 
 outFile ="ship."+tag+".root"  
 
 # rm older files !!! 

@@ -166,17 +166,6 @@ void veto::SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t
      fTub6length = l6;                                                 //!  half length of tub6
 }
 
-void veto::SetRminRmax(Double32_t rmin,Double32_t rmax)
-{
-     fRmin = rmin;                                                //!  minimum diameter of vacuum chamber
-     fRmax = rmax;                                                //!  maximum diameter of vacuum chamber
-}
-void veto::SetVminVmax(Double32_t rmin,Double32_t rmax)
-{
-     fVRmin = rmin;                                                //!  minimum diameter liquid scintillator layer
-     fVRmax = rmax;                                                //!  maximum diameter liquid scintillator layer
-}
-
 // -------------------------------------------------------------------------
 
 Bool_t  veto::ProcessHits(FairVolume* vol)
@@ -485,7 +474,7 @@ void veto::ConstructGeometry()
       Double_t liscitube=0.1*m;	
       Double_t liscilid=0.2*m;	
       Double_t atube=2.5*m;	
-      Double_t btube=5.*m;
+      Double_t btube = fBtube;
       Double_t atube1=2.2*m-walli-wallo-liscitube;	
       //inner lid on tube 1
       TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I",St,atube1+walli,btube+walli,walli/2.);

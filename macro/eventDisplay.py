@@ -17,10 +17,11 @@ atexit.register(pyExit)
 #-----User Settings:-----------------------------------------------
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
+dy = ""
 # simEngine = "Genie"
 #
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","Cosmics"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:x:c:hqv:sl:A:Y:i",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","Cosmics"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
@@ -39,11 +40,14 @@ for o, a in opts:
             simEngine = "MuonBack"
         if o in ("--Cosmics"):
             simEngine = "Cosmics"
+        if o in ("-Y"): 
+            dy = float(a)
 
 print "FairShip setup for",simEngine
 
 tag = simEngine+"-"+mcEngine+'_D'
-InputFile     ="ship."+tag+".root"
+if dy: tag = str(dy)+'.'+tag 
+InputFile     ="ship."+tag+".root"  
 ParFile       ="ship.params."+tag+".root"  
 OutFile	      ="tst."+tag+".root"
 
@@ -55,6 +59,8 @@ def ecalYellow():
  fGeo = g.FindObjectAny("FAIRGeom")
  ecal = fGeo.GetVolume("EcalModule3")
  ecal.SetLineColor(ROOT.kYellow) 
+ hcal = fGeo.GetVolume("HcalModule")
+ hcal.SetLineColor(ROOT.kOrange+3) 
  evmgr.ElementChanged(geoscene,True,True)
 
 #----Load the default libraries------

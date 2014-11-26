@@ -33,12 +33,12 @@ ShipMagnet::ShipMagnet()
 {
 }
 
-ShipMagnet::ShipMagnet(const char* name, const char* Title, Double_t z, Int_t c)
+ShipMagnet::ShipMagnet(const char* name, const char* Title, Double_t z, Int_t c, Double_t dy)
   : FairModule(name ,Title)
 {
  fDesign = c;
  fSpecMagz = z; 
-
+ fDy = dy;
 }
 
 // -----   Private method InitMedium 
@@ -110,12 +110,13 @@ void ShipMagnet::ConstructGeometry()
      top->AddNode(magnet1, 2, m6);
     }
    else {  // fDesign==2 
+    Double_t cm  = 1;       
+    Double_t m   = 100*cm;  
+    Double_t Yokel = 1.25*m; 
     // magnet yoke
-    Double_t cm  = 1;       // cm
-    Double_t m   = 100*cm;  //  m
-    Double_t Yokel = 1.25*m;//
-    TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", 3.7*m, 6.2*m, Yokel);
-    TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 2.70*m, 5.2*m, Yokel+0.1*cm);
+    Double_t bradius = fDy/2.;
+    TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", 3.7*m, bradius+1.2*m, Yokel);
+    TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 2.70*m,bradius+0.2*m, Yokel+0.1*cm);
     
     TGeoCompositeShape *magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
     TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
@@ -123,17 +124,16 @@ void ShipMagnet::ConstructGeometry()
     top->AddNode(magyoke, 1, new TGeoTranslation(0, 0, fSpecMagz));
 
     //Attempt to make Al coils...
-    TGeoEltu *C2  = new TGeoEltu("C2",3.*m,5.5*m,Yokel+0.6*m);
-    TGeoEltu *C1  = new TGeoEltu("C1",2.6*m,5.1*m,Yokel+0.601*m);
-    TGeoBBox *Box1 = new TGeoBBox("Box1", 1.*m, 5.51*m, Yokel+0.61*m);
-    TGeoBBox *Box2 = new TGeoBBox("Box2", 3.01*m, 4.*m, Yokel+0.01*m);
+    TGeoEltu *C2  = new TGeoEltu("C2",3.*m,bradius+0.5*m,Yokel+0.6*m);
+    TGeoEltu *C1  = new TGeoEltu("C1",2.6*m,bradius+0.1*m,Yokel+0.601*m);
+    TGeoBBox *Box1 = new TGeoBBox("Box1", 1.*m, bradius+0.51*m, Yokel+0.61*m);
+    TGeoBBox *Box2 = new TGeoBBox("Box2", 3.01*m, bradius-0.5*m, Yokel+0.01*m);
     TGeoCompositeShape *MCoilc = new TGeoCompositeShape("MCoilc", "C2-C1-magyokec-Box1-Box2");
     TGeoVolume *MCoil = new TGeoVolume("MCoil", MCoilc, Al);
     MCoil->SetLineColor(kYellow);
 
     top->AddNode(MCoil, 1, new TGeoTranslation(0, 0, fSpecMagz));
     }
-    
 }
 
 

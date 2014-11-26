@@ -4,11 +4,12 @@ debug = False
 withNoAmbiguities = None # True   for debugging purposes
 nEvents   = 10000
 withHists = True
+dy = None
 
 import ROOT,os,sys,getopt
 import rootUtils as ut
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A",["inputFile=","nEvents=","ambiguities"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A:Y:i",["inputFile=","nEvents=","ambiguities"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --nEvents= number of events to process, ambiguities wire ambiguities default none' 
@@ -21,7 +22,17 @@ for o, a in opts:
             inputFile = a
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
+        if o in ("-Y"): 
+            dy = float(a)
 
+# need to figure out which geometry was used
+if not dy:
+  # try to extract from input file name
+  tmp = fn.split('.')
+  try:
+    dy = float( tmp[1]+'.'+tmp[2] )
+  except:
+    dy = None
 print 'configured to process ',nEvents,' events from ' ,inputFile
 outFile = inputFile.replace('.root','_rec.root') 
 os.system('cp '+inputFile+' '+outFile)
@@ -44,7 +55,10 @@ from array import array
 import shipunit as u
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=4,muShieldDesign=5,targetOpt=5)
+if dy: 
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy )
+else:
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
