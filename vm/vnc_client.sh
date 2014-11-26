@@ -1,6 +1,7 @@
 #!/bin/bash
 
 VERBOSE=0
+DRYRUN=0
 [[ $OSTYPE != darwin* ]] && echo "this script is for Mac only" && exit 1
 [ "$1" = "-n" ] && DRYRUN=1
 

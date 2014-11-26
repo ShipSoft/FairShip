@@ -16,6 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     proxy.vm.box = "yungsang/boot2docker"
     proxy.vm.provision "docker"
     proxy.vm.network "private_network", ip: "192.168.33.10"
+#    proxy.vm.network "private_network", type: "dhcp"
     proxy.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
 #    proxy.vm.synced_folder ".", "/vagrant", type: "nfs"
 #    proxy.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__auto: true

@@ -1,11 +1,14 @@
 #!/bin/bash
-REPO="anaderi/ship-dev"
+DOCKER_USER=$USER
 TAG="0.0.9"
 BLD_DIR="build"
 VMPATH=/opt/ship/FairShip/build
 
-[ -d "$1" ] && BLD_DIR=$1
-[ -n "$2" ] && TAG=$2
+[ -n "$1" ] && TAG=$1 && shift
+[ -n "$1" ] && DOCKER_USER=$1 && shift
+[ -d "$1" ] && BLD_DIR=$1 && shift
+
+REPO="$DOCKER_USER/ship-dev"
 
 docker images | grep $REPO | grep $TAG -q
 if [ $? -eq 0 ] ; then
