@@ -28,7 +28,7 @@ for o, a in opts:
 # need to figure out which geometry was used
 if not dy:
   # try to extract from input file name
-  tmp = fn.split('.')
+  tmp = inputFile.split('.')
   try:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:

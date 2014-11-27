@@ -5,10 +5,11 @@ import shipunit as u
 from ShipGeoConfig import ConfigRegistry
 
 PDG = ROOT.TDatabasePDG.Instance()
-inputFile = 'ship.Pythia8-TGeant4_rec.root'
+inputFile = None
+dy = None
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "f:A", [])
+        opts, args = getopt.getopt(sys.argv[1:], "f:A:Y:i", [])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter file name'
@@ -17,11 +18,24 @@ for o, a in opts:
         print o, a
         if o in ("-f"):
             inputFile = a
+        if o in ("-Y"): 
+            dy = float(a)
+
+if not dy:
+  # try to extract from input file name
+  tmp = inputFile.split('.')
+  try:
+    dy = float( tmp[1]+'.'+tmp[2] )
+  except:
+    dy = None
+else:
+ inputFile = 'ship.'+str(dy)+'Pythia8-TGeant4_rec.root'
+  
 f     = ROOT.TFile(inputFile)
 sTree = f.cbmsim
 
 # init geometry and mag. field
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",strawDesign=4,muShieldDesign=5,targetOpt=5)
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy )
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
@@ -42,19 +56,42 @@ leaves = sTree.GetListOfLeaves()
 names  = ut.setAttributes(ev, leaves)
 
 h = {}
-ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.2,0.2)
-ut.bookHist(h,'delPOverP2','delP / P chi2<25',100,0.,50.,100,-0.2,0.2)
-ut.bookHist(h,'chi2','chi2 after trackfit',100,0.,1000.)
+ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<25',100,0.,50.,100,-0.5,0.5)
+ut.bookHist(h,'chi2','chi2/nmeas after trackfit',100,0.,100.)
 ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
 ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
 ut.bookHist(h,'HNL','reconstructed Mass',100,0.,2.)
-ut.bookHist(h,'meas','number of measurements',25,-0.5,24.5)
+ut.bookHist(h,'meas','number of measurements',40,-0.5,39.5)
+ut.bookHist(h,'measVSchi2','number of measurements vs chi2/meas',40,-0.5,39.5,100,0.,100.)
 ut.bookHist(h,'distu','distance to wire',100,0.,1.)
 ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
+
+def fitSingleGauss(x,ba=None,be=None):
+    name    = 'myGauss_'+x 
+    myGauss = h[x].GetListOfFunctions().FindObject(name)
+    if not myGauss:
+       if not ba : ba = h[x].GetBinCenter(1) 
+       if not be : be = h[x].GetBinCenter(h[x].GetNbinsX()) 
+       bw    = h[x].GetBinWidth(1) 
+       mean  = h[x].GetMean()
+       sigma = h[x].GetRMS()
+       norm  = h[x].GetEntries()*0.3
+       myGauss = ROOT.TF1(name,'[0]*'+str(bw)+'/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]',4)
+       myGauss.SetParameter(0,norm)
+       myGauss.SetParameter(1,mean)
+       myGauss.SetParameter(2,sigma)
+       myGauss.SetParameter(3,1.)
+       myGauss.SetParName(0,'Signal')
+       myGauss.SetParName(1,'Mean')
+       myGauss.SetParName(2,'Sigma')
+       myGauss.SetParName(3,'bckgr')
+    h[x].Fit(myGauss,'','',ba,be) 
+
 
 def makePlots():
    ut.bookCanvas(h,key='strawanalysis',title='Distance to wire and mean nr of hits',nx=1200,ny=600,cx=2,cy=1)
@@ -78,7 +115,7 @@ def makePlots():
    cv = h['fitresults'].cd(4)
    h['delPOverP2_proj'] = h['delPOverP2'].ProjectionY()
    h['delPOverP2_proj'].Draw()
-   h['delPOverP2_proj'].Fit('gaus')
+   fitSingleGauss('delPOverP2_proj')
    h['fitresults'].Print('fitresults.gif')
    ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    print 'finished with first canvas'
@@ -88,7 +125,7 @@ def makePlots():
    h['IP0'].Draw()
    cv = h['fitresults2'].cd(3)
    h['HNL'].Draw()
-   h['HNL'].Fit('gaus')
+   fitSingleGauss('HNL')
    cv = h['fitresults2'].cd(4)
    h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
@@ -140,13 +177,15 @@ def myEventLoop():
   fittedTracks = {}
   for atrack in ev.FitTracks.GetObject():
    fitStatus   = atrack.getFitStatus()
-   h['meas'].Fill(atrack.getNumPoints())
+   nmeas = atrack.getNumPoints()
+   h['meas'].Fill(nmeas)
    if not fitStatus.isFitConverged() : continue
    fittedTracks[key] = atrack
 # needs different study why fit has not converged, continue with fitted tracks
-   chi2        = fitStatus.getChi2()
+   chi2        = fitStatus.getChi2()/nmeas
    fittedState = atrack.getFittedState()
    h['chi2'].Fill(chi2)
+   h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
    P = fittedState.getMomMag()
    mcPartKey = sTree.fitTrack2MC[key]
    mcPart    = sTree.MCTrack[mcPartKey]
@@ -154,7 +193,7 @@ def myEventLoop():
    Ptruth    = mcPart.GetP()
    delPOverP = (Ptruth - P)/Ptruth
    h['delPOverP'].Fill(Ptruth,delPOverP)
-   if chi2>30: continue
+   if chi2>25: continue
    h['delPOverP2'].Fill(Ptruth,delPOverP)
 # try measure impact parameter
    trackDir = fittedState.getDir()
@@ -225,3 +264,5 @@ def access2SmearedHits():
 
 myEventLoop()
 makePlots()
+
+
