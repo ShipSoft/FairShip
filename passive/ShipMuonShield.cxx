@@ -794,8 +794,8 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     TGeoVolume *absorber = gGeoManager->MakeTube("AbsorberAdd", iron, 15, 400, dZ0);   
     absorber->SetLineColor(43);  
     top->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb - dZ0));
-    TGeoVolume *absorberCore = gGeoManager->MakeTube("AbsorberAddCore", tungsten, 0, 15, dZ0);   
-    //TGeoVolume *absorberCore = gGeoManager->MakeTube("AbsorberAddCore", iron, 0, 15, dZ0);   
+    //TGeoVolume *absorberCore = gGeoManager->MakeTube("AbsorberAddCore", tungsten, 0, 15, dZ0);   
+    TGeoVolume *absorberCore = gGeoManager->MakeTube("AbsorberAddCore", iron, 0, 15, dZ0);   
     absorberCore->SetLineColor(38);  
     top->AddNode(absorberCore, 1, new TGeoTranslation(0, 0, zEndOfAbsorb - dZ0));
 
