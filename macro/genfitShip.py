@@ -24,6 +24,7 @@ for o, a in opts:
             nEvents = int(a)
         if o in ("-Y"): 
             dy = float(a)
+            inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4.root'
 
 # need to figure out which geometry was used
 if not dy:
