@@ -314,6 +314,7 @@ void strawtubes::ConstructGeometry()
     
     //epsilon to avoid overlapping volumes
     Double_t eps=0.1;
+    Double_t epsS=0.001;
     //width of frame
     Double_t framewidth = 40.;
     //width of view
@@ -348,8 +349,8 @@ void strawtubes::ConstructGeometry()
     straw->SetVisibility(kTRUE);
 	       	
     // Volume: gas
-    rmin = fWire_thickness/2.+eps;
-    rmax = fInner_Straw_diameter/2.-eps;
+    rmin = fWire_thickness/2.+epsS;
+    rmax = fInner_Straw_diameter/2.-epsS;
     TGeoTube *gas_tube = new TGeoTube("gas",rmin,rmax,fStraw_length-6.*eps);
     TGeoVolume *gas = new TGeoVolume("gas",gas_tube, sttmix9010_2bar);
     gas->SetLineColor(5);    //only the gas is sensitive
