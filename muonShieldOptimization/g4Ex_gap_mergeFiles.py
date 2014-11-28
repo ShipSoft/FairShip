@@ -10,10 +10,14 @@ Mmu  = mu.Mass()
 Mmu2 = Mmu * Mmu 
 
 
-stats = {5.:1E9,0.5:1E8}
-files  = {5.:'result_1Bn_ecut_5.root',0.5:'result_0.1Bn_ecut_0.5.root'}
+stats =  {5.:[1E9,1E9],0.5:[1E8]}
+files  = {5.:['result_1Bn_ecut_5.root','result_1Bn_ecut_5-v02.root'],0.5:['result_0.1Bn_ecut_0.5.root']}
 
 fnew  = 'pythia8_Geant4_total_Yandex.root'
+ntot = {}
+for ecut in stats:
+ ntot[ecut] = 0 
+ for s in stats[ecut]: ntot[ecut]+=s
 
 h={}
 def makeFinalNtuples(norm=5.E13,opt=''):
@@ -22,7 +26,8 @@ def makeFinalNtuples(norm=5.E13,opt=''):
   tuples = ''
   fn     = 1
   for ecut in stats:
-    h[fn] = ROOT.TFile(files[ecut])
+   for i in range(len(stats[ecut])):
+    h[fn] = ROOT.TFile(files[ecut][i])
     t = h[fn].FindObjectAny("pythia8-Geant4")
     fn+=1 
     if first: 
@@ -46,7 +51,12 @@ def makeFinalNtuples(norm=5.E13,opt=''):
      vlist = []
      for x in range(leaves.GetEntries()):
       vlist.append( leaves.At(x).GetValue() )
-     weight = norm/stats[ecut]
+     # get kinetic energy "id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid")
+     Psq = vlist[1]**2+vlist[2]**2+vlist[3]**2
+     if abs(vlist[0])==13: Ekin = ROOT.TMath.Sqrt(Mmu2+Psq)-Mmu  
+     else: Ekin = ROOT.TMath.Sqrt(Psq)
+     if Ekin > 5. :     weight = norm/(ntot[5.] + ntot[0.5])
+     else         :     weight = norm/(ntot[0.5])
      vlist.append(weight)
      vlist.append( float(ecut) )
      # print vlist
