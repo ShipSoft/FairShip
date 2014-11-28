@@ -264,7 +264,8 @@ void veto::ConstructGeometry()
     InitMedium("Aluminum");
     TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
     InitMedium("ShipSens");
-    TGeoMedium *Se =gGeoManager->GetMedium("ShipSens");
+    InitMedium("Scintillator");
+    TGeoMedium *Se =gGeoManager->GetMedium("Scintillator");
     gGeoManager->SetNsegments(100);
     if (fDesign !=2 && fDesign<4)
     { 
@@ -467,8 +468,9 @@ void veto::ConstructGeometry()
     if (fDesign==4){
 
     // design 4: elliptical double walled tube with LiSci in between
-      Double_t walli=0.01*m;	
-      Double_t wallo=0.01*m;	
+    // Interpolate wall thicknesses based on the vertical size fBtube.
+      Double_t walli=(fBtube-6.*m)*(8.-5.)*mm/(4.*m)+3.*mm;	
+      Double_t wallo=(fBtube-6.*m)*(3.-2.)*cm/(4.*m)+2.*cm;	
       Double_t ws=0.5*m; //Straw screen plates sticking out of the outer tube.
       //Note: is just 2 cm for veto chamber, to avoid muon hits :-).
       Double_t liscitube=0.1*m;	
@@ -477,8 +479,8 @@ void veto::ConstructGeometry()
       Double_t btube = fBtube;
       Double_t atube1=2.2*m-walli-wallo-liscitube;	
       //inner lid on tube 1
-      TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I",St,atube1+walli,btube+walli,walli/2.);
-      lidT1I->SetLineColor(18);  // silver/gray
+      TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I",Al,atube1+walli,btube+walli,walli/2.);
+      lidT1I->SetLineColor(kRed);  // silver/gray
       top->AddNode(lidT1I, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli/2.));
       //lisci lid on tube 1
       TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube1+walli+liscitube,btube+walli+liscitube,liscilid/2.);
@@ -491,12 +493,12 @@ void veto::ConstructGeometry()
       top->AddNode(lidT1O, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli-liscilid-wallo/2.));
 
       // All inner tubes...
-      GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,fTub1z,18,St);
-      GeoEllipticalTube("T2I",walli,atube,btube,fTub2length,fTub2z,18,St);
-      GeoEllipticalTube("T3I",walli,atube,btube,fTub3length,fTub3z,18,St);
-      GeoEllipticalTube("T4I",walli,atube,btube,fTub4length,fTub4z,18,St);
-      GeoEllipticalTube("T5I",walli,atube,btube,fTub5length,fTub5z,18,St);
-      GeoEllipticalTube("T6I",walli,atube,btube,fTub6length,fTub6z,18,St);
+      GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,fTub1z,kRed,Al);
+      GeoEllipticalTube("T2I",walli,atube,btube,fTub2length,fTub2z,kRed,Al);
+      GeoEllipticalTube("T3I",walli,atube,btube,fTub3length,fTub3z,kRed,Al);
+      GeoEllipticalTube("T4I",walli,atube,btube,fTub4length,fTub4z,kRed,Al);
+      GeoEllipticalTube("T5I",walli,atube,btube,fTub5length,fTub5z,kRed,Al);
+      GeoEllipticalTube("T6I",walli,atube,btube,fTub6length,fTub6z,kRed,Al);
       // All outer tubes, first calculate inner radii of this tube
       Double_t aO=atube+walli+liscitube;
       Double_t aO1=atube1+walli+liscitube;
@@ -529,8 +531,8 @@ void veto::ConstructGeometry()
       GeoEllipticalTube("T6LS",liscitube,als,bls,fTub6length,fTub6z,kMagenta-10,Se,true);
 
       //closing lid on tube 6
-      TGeoVolume *lidT6I = gGeoManager->MakeEltu("lidT6I",St,atube+walli,btube+walli,walli/2.);
-      lidT6I->SetLineColor(18);  // silver/gray
+      TGeoVolume *lidT6I = gGeoManager->MakeEltu("lidT6I",Al,atube+walli,btube+walli,walli/2.);
+      lidT6I->SetLineColor(kRed);  // silver/gray
       top->AddNode(lidT6I, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli/2.));
       //lisci lid on tube 6
       TGeoVolume *lidT6lisci = gGeoManager->MakeEltu("lidT6lisci",Se,atube+walli+liscitube,btube+walli+liscitube,liscilid/2.);
