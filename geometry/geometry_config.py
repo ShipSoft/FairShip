@@ -19,7 +19,8 @@ if "Yheight" not in globals():
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
-    totalLength       = 5*c.Yheight + 10*u.m
+    # best guess for the moment:  55m @ 6m and 67m @ 10m 
+    totalLength       = 3*c.Yheight + 37*u.m
     extraVesselLength = totalLength - 50*u.m
     c.strawDesign = strawDesign
     c.chambers = AttrDict(z=0*u.cm)
