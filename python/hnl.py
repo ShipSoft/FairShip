@@ -11,24 +11,41 @@
 # ==================================================================
 """
 
+import math
 import ROOT
 import shipunit as u
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()
 
+def PDGname(particle):
+    """
+    Trim particle name for use with the PDG database
+    """
+    if not (('-' in particle) or ('+' in particle)):
+        particle += '+'
+    return particle
+
 def mass(particle):
-    """ Read particle mass from PDG database """
+    """
+    Read particle mass from PDG database
+    """
+    particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
     return tPart.Mass()
 
 def lifetime(particle):
-    """ Read particle lifetime from PDG database """
+    """
+    Read particle lifetime from PDG database
+    """
+    particle = PDGname(particle)
     tPart = pdg.GetParticle(particle)
     return tPart.Lifetime()
 
 class CKMmatrix():
-    """ CKM matrix, from http://pdg.lbl.gov/2013/reviews/rpp2013-rev-ckm-matrix.pdf """
+    """
+    CKM matrix, from http://pdg.lbl.gov/2013/reviews/rpp2013-rev-ckm-matrix.pdf
+    """
     def __init__(self):
         self.Vud = 0.9742
         self.Vus = 0.2252
@@ -40,12 +57,35 @@ class CKMmatrix():
         self.Vts = 4.3e-02
         self.Vtb = 0.89
 
+class constants():
+    """
+    Store some constants useful for HNL physics
+    """
+    def __init__(self):
+        self.decayConstant = {'pi':0.1307*u.GeV,
+                            'pi0':0.130*u.GeV,
+                            'rho':0.102*u.GeV,
+                            'eta':1.2*0.130*u.GeV,
+                            'eta\'':-0.45*0.130*u.GeV} #GeV^2 ? check units!!
+
+# Load some useful constants
+c = constants()
+
 class HNLbranchings():
-    """ Lifetime and total and partial decay widths of an HNL """
+    """
+    Lifetime and total and partial decay widths of an HNL
+    """
     def __init__(self, mass, couplings):
+        """
+        Initialize with mass and couplings of the HNL
+
+        Inputs:
+        mass (GeV)
+        couplings (list of [U2e, U2mu, U2tau])
+        """
         self.U2 = couplings
         self.U = [math.sqrt(ui) for ui in self.U2]
-        self.MN = mass
+        self.MN = mass*u.GeV
         self.CKM = CKMmatrix()
         self.CKMelemSq = {'pi':self.CKM.Vud**2.,
                         'rho':self.CKM.Vud**2.,
@@ -64,13 +104,19 @@ class HNLbranchings():
                         (5,1):self.CKM.Vtd**2., (1,5):self.CKM.Vtd**2.,
                         (5,2):self.CKM.Vts**2., (2,5):self.CKM.Vts**2.,
                         (5,4):self.CKM.Vtb**2., (4,5):self.CKM.Vtb**2.}
-
 ### Next code needs to be reviewed and properly integrated into FairShip classes
 
     def Width_H0_nu(self, H, alpha):
-        if self.MN < (self.masses[H]):
+        """
+        Returns the HNL decay width into neutral meson and neutrino
+
+        Inputs:
+        - H is a string (name of the meson)
+        - alpha is the lepton flavour of the nu (1, 2 or 3)
+        """
+        if self.MN < (mass(H)):
             return 0.
-        width = (math.fabs(self.U2[alpha-1])/(32.*math.pi))*(self.GF**2.)*(self.decayConstant[H]**2.)
+        width = (math.fabs(self.U2[alpha-1])/(32.*u.pi))*(self.GF**2.)*(c.decayConstant[H]**2.)
         par = (self.MN**3.)*((1 - ((self.masses[H]**2.)/(self.MN**2.)))**2.)
         if H == 'rho':
             par = par*2./(self.masses[H]**2.)
