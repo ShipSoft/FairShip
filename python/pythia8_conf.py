@@ -1,7 +1,12 @@
 import ROOT
 import shipunit as u
-def configure(P8gen,inclusive,deepCopy=False):
+import hnl
+
+def configure(P8gen,mass,couplings,inclusive,deepCopy=False):
 # configure pythia8 for Ship usage
+# now takes the HNL mass and a list
+# of couplings [U2e, U2mu, U2tau]
+# as parameters
  P8gen.UseRandom3() # TRandom1 or TRandom3 ?
  P8gen.SetMom(400)  # beam momentum in GeV 
  if deepCopy: P8gen.UseDeepCopy()
