@@ -581,7 +581,6 @@ void strawtubes::StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb,
 // -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
 void strawtubes::StrawEndPoints(Int_t detID, TVector3 &bot, TVector3 &top)
 {
-  Double_t eps=0.1;
   Double_t sinangle,cosangle;
   Int_t statnb,vnb,pnb,lnb,snb;
   StrawDecode(detID,statnb,vnb,pnb,lnb,snb);

@@ -13,7 +13,7 @@ deepCopy     = False  # False = copy only stable particles to stack, except for 
 eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
-dy           = 10
+dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = True
 

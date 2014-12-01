@@ -15,7 +15,6 @@ except getopt.GetoptError:
         print ' enter file name'
         sys.exit()
 for o, a in opts:
-        print o, a
         if o in ("-f"):
             inputFile = a
         if o in ("-Y"): 
@@ -29,7 +28,7 @@ if not dy:
   except:
     dy = None
 else:
- inputFile = 'ship.'+str(dy)+'Pythia8-TGeant4_rec.root'
+ inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4_rec.root'
   
 f     = ROOT.TFile(inputFile)
 sTree = f.cbmsim
@@ -175,7 +174,7 @@ def myEventLoop():
   for tr in hitlist:  h['meanhits'].Fill(hitlist[tr])
   key = 0
   fittedTracks = {}
-  for atrack in ev.FitTracks.GetObject():
+  for atrack in sTree.FitTracks:
    fitStatus   = atrack.getFitStatus()
    nmeas = atrack.getNumPoints()
    h['meas'].Fill(nmeas)

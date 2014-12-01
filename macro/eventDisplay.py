@@ -17,7 +17,7 @@ atexit.register(pyExit)
 #-----User Settings:-----------------------------------------------
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
-dy = ""
+dy = str(10)
 # simEngine = "Genie"
 #
 try:
