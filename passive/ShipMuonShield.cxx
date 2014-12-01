@@ -922,6 +922,9 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
 // 19<z<24 m: (again kept the "old" name)
     Double_t dX17 =  0.075*m;
     Double_t dX24 =  0.25*m;
+    Double_t Clgap=0.2*m;
+    Double_t dX17O = dX17+Clgap;
+    Double_t dX24O = dX24+Clgap;
     Double_t Z3  = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + dZ3;
     dY1=dY2;
     dY2 = 2*dZ3*(dYEnd-dY1)/(ZEnd-Z3+dZ3)+dY1;
@@ -932,45 +935,83 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     magRetC1->SetField(RetField);
     top->AddNode(magRetC1, 1, new TGeoTranslation(0, 0, Z3 ));
     //right magnet 
-    Double_t cornersCR[16] = {-2*dX17,-dY1, -2*dX17,dY1, -dX17,dY1, -dX17,-dY1,
-                              -2*dX24,-dY2, -2*dX24,dY2, -dX24,dY2, -dX24,-dY2};
+    Double_t cornersCR[16] = {-2*dX17,-dX17, -2*dX17,dX17, -dX17,dX17, -dX17,-dX17,
+                              -2*dX24,-dX24, -2*dX24,dX24, -dX24,dX24, -dX24,-dX24};
+
     TGeoVolume *magCR = gGeoManager->MakeArb8("MagCR", iron, dZ3, cornersCR);
     magCR->SetLineColor(45);  // red-brown
     magCR->SetField(magFieldIron);
     top->AddNode(magCR, 1, new TGeoTranslation(0, 0, Z3));
     //left magnet 
-    Double_t cornersCL[16] = {dX17,-dY1, dX17,dY1, 2*dX17,dY1, 2*dX17,-dY1,
-                              dX24,-dY2, dX24,dY2, 2*dX24,dY2, 2*dX24,-dY2};
+    Double_t cornersCL[16] = {dX17,-dX17, dX17,dX17, 2*dX17,dX17, 2*dX17,-dX17,
+                              dX24,-dX24, dX24,dX24, 2*dX24,dX24, 2*dX24,-dX24};
     TGeoVolume *magCL = gGeoManager->MakeArb8("MagCL", iron, dZ3, cornersCL);
     magCL->SetLineColor(45);  // red-brown
     magCL->SetField(magFieldIron);
     top->AddNode(magCL, 1, new TGeoTranslation(0, 0, Z3));
 
+    //add 4 pieces for the fields.
+    //left top field magnet 
+    Double_t cornersCLT[16] = {dX17,dX17, dX17O,dY1, dX17O+dX17,dY1, 2*dX17,dX17,
+                               dX24,dX24, dX24O,dY2, dX24O+dX24,dY2, 2*dX24,dX24};
+
+    TGeoVolume *magCLT = gGeoManager->MakeArb8("MagCLT", iron, dZ3, cornersCLT);
+    magCLT->SetLineColor(45);  // red-brown
+    magCLT->SetField(magFieldIron);
+    top->AddNode(magCLT, 1, new TGeoTranslation(0, 0, Z3));
+
+    //left bot field magnet 
+    Double_t cornersCLB[16] = {dX17O,-dY1, dX17,-dX17, 2*dX17,-dX17, dX17+dX17O,-dY1,
+                               dX24O,-dY2, dX24,-dX24, 2*dX24,-dX24, dX24+dX24O,-dY2};
+    TGeoVolume *magCLB = gGeoManager->MakeArb8("MagCLB", iron, dZ3, cornersCLB);
+    magCLB->SetLineColor(45);  // red-brown
+    magCLB->SetField(magFieldIron);
+    top->AddNode(magCLB, 1, new TGeoTranslation(0, 0, Z3));
+
+    //right top field magnet 
+    Double_t cornersCRT[16] = {-dX17,dX17, -2*dX17,dX17, -dX17O-dX17,dY1, -dX17O,dY1,
+                               -dX24,dX24, -2*dX24,dX24, -dX24O-dX24,dY2, -dX24O,dY2};
+
+    TGeoVolume *magCRT = gGeoManager->MakeArb8("MagCRT", iron, dZ3, cornersCRT);
+    magCRT->SetLineColor(45);  // red-brown
+    magCRT->SetField(magFieldIron);
+    top->AddNode(magCRT, 1, new TGeoTranslation(0, 0, Z3));
+
+    //right bot field magnet 
+    Double_t cornersCRB[16] = {-dX17O,-dY1, -dX17O-dX17,-dY1, -2*dX17,-dX17, -dX17,-dX17,
+                               -dX24O,-dY2, -dX24O-dX24,-dY2, -2*dX24,-dX24, -dX24,-dX24};
+                               
+
+    TGeoVolume *magCRB = gGeoManager->MakeArb8("MagCRB", iron, dZ3, cornersCRB);
+    magCRB->SetLineColor(45);  // red-brown
+    magCRB->SetField(magFieldIron);
+    top->AddNode(magCRB, 1, new TGeoTranslation(0, 0, Z3));
+
 //Top/Bot return magnets for 17-24 m
-    Double_t corners8[16] = {0.,dY1, 0.,dY1+dX17, 2*dX17,dY1+dX17, 2*dX17,dY1, 
-                             0.,dY2, 0.,dY2+dX24, 2*dX24,dY2+dX24, 2*dX24,dY2}; 
-    TGeoVolume *magTopLeft17t24 = gGeoManager->MakeArb8("MagTopLeft17t24", iron, dZ3, corners8) ;
+    Double_t corners8[16] = {eps,dY1, eps,dY1+dX17, dX17O+dX17,dY1+dX17, dX17O+dX17,dY1, 
+                             eps,dY2, eps,dY2+dX24, dX24O+dX24,dY2+dX24, dX24O+dX24,dY2}; 
+    TGeoVolume *magTopLeft17t24 = gGeoManager->MakeArb8("MagTopLeft17t24", iron, dZ3-eps, corners8) ;
     magTopLeft17t24->SetLineColor(38);  
     magTopLeft17t24->SetField(ConLField);
     top->AddNode(magTopLeft17t24, 1, new TGeoTranslation(0, 0, Z3 ));
 
-    Double_t corners9[16] = {-2*dX17,dY1, -2*dX17,dY1+dX17, 0., dY1+dX17, 0.,dY1,
-                             -2*dX24,dY2, -2*dX24,dY2+dX24, 0., dY2+dX24, 0.,dY2};
-    TGeoVolume *magTopRight17t24 = gGeoManager->MakeArb8("MagTopRight17t24", iron, dZ3, corners9) ;
+    Double_t corners9[16] = {-dX17-dX17O,dY1, -dX17-dX17O,dY1+dX17, -eps, dY1+dX17, -eps,dY1,
+                             -dX24-dX24O,dY2, -dX24-dX24O,dY2+dX24, -eps, dY2+dX24, -eps,dY2};
+    TGeoVolume *magTopRight17t24 = gGeoManager->MakeArb8("MagTopRight17t24", iron, dZ3-eps, corners9) ;
     magTopRight17t24->SetLineColor(30); 
     magTopRight17t24->SetField(ConRField);
     top->AddNode(magTopRight17t24, 1, new TGeoTranslation(0, 0, Z3 ));
 //Bot return magnets 
-    Double_t corners10[16] = {eps,-dY1-dX17, eps,-dY1-eps, 2*dX17,-dY1-eps, 2*dX17,-dY1-dX17, 
-                              eps,-dY2-dX24, eps,-dY2-eps, 2*dX24,-dY2-eps, 2*dX24,-dY2-dX24};
-    TGeoVolume *magBotLeft17t24 = gGeoManager->MakeArb8("MagBotLeft17t24", iron, dZ3, corners10) ;
+    Double_t corners10[16] = {eps,-dY1-dX17, eps,-dY1-eps, dX17O+dX17,-dY1-eps, dX17O+dX17,-dY1-dX17, 
+                              eps,-dY2-dX24, eps,-dY2-eps, dX24O+dX24,-dY2-eps, dX24O+dX24,-dY2-dX24};
+    TGeoVolume *magBotLeft17t24 = gGeoManager->MakeArb8("MagBotLeft17t24", iron, dZ3-eps, corners10) ;
     magBotLeft17t24->SetLineColor(30);  
     magBotLeft17t24->SetField(ConRField);
     top->AddNode(magBotLeft17t24, 1, new TGeoTranslation(0, 0, Z3 ));
 
-    Double_t corners11[16] = {-2*dX17,-dY1-dX17, -2*dX17,-dY1, 0.,-dY1, 0.,-dY1-dX17, 
-                              -2*dX24,-dY2-dX24, -2*dX24,-dY2, 0.,-dY2, 0.,-dY2-dX24};
-    TGeoVolume *magBotRight17t24 = gGeoManager->MakeArb8("MagBotRight17t24", iron, dZ3, corners11) ;
+    Double_t corners11[16] = {-dX17-dX17O,-dY1-dX17, -dX17-dX17O,-dY1, -eps,-dY1, -eps,-dY1-dX17, 
+                              -dX24-dX24O,-dY2-dX24, -dX24-dX24O,-dY2, -eps,-dY2, -eps,-dY2-dX24};
+    TGeoVolume *magBotRight17t24 = gGeoManager->MakeArb8("MagBotRight17t24", iron, dZ3-eps, corners11) ;
     magBotRight17t24->SetLineColor(38); 
     magBotRight17t24->SetField(ConLField);
     top->AddNode(magBotRight17t24, 1, new TGeoTranslation(0, 0, Z3 ));
@@ -987,43 +1028,74 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     magRetC4->SetLineColor(31);  // green-brown
     magRetC4->SetField(RetField);
     top->AddNode(magRetC4, 1, new TGeoTranslation(0, 0, Z4 ));
-    //left magnet
-    Double_t cornersC4L[16] = {dX24,-dY1, dX24,dY1, 2*dX24,dY1, 2*dX24,-dY1,
-                               dX30I,-dY2, dX30I,dY2, dX30I+W30,dY2, dX30I+W30,-dY2};
+
+    //left magnet, split in three, like for previous magnet
+    Double_t cornersC4L[16] = {dX24,-dX24, dX24,dX24, 2*dX24,dX24, 2*dX24,-dX24,
+                               dX30I,-W30, dX30I,W30, dX30I+W30,W30, dX30I+W30,-W30};
     TGeoVolume *magC4L = gGeoManager->MakeArb8("MagC4L", iron, dZ4, cornersC4L);
     magC4L->SetField(magFieldIron);
     magC4L->SetLineColor(45);  // red-brown
     top->AddNode(magC4L, 1, new TGeoTranslation(0, 0, Z4));
-    //right magnet
-    Double_t cornersC4R[16] = {-2*dX24,-dY1, -2*dX24,dY1, -dX24,dY1, -dX24,-dY1,
-                               -dX30I-W30,-dY2, -dX30I-W30,dY2, -dX30I,dY2, -dX30I,-dY2};
+
+    Double_t cornersC4LB[16] = {dX24,-dX24, 2*dX24,-dX24, 2*dX24+Clgap,-dY1, dX24+Clgap,-dY1,
+                                dX30I,-W30, dX30I+W30,-W30, dX30I+W30,-dY2, dX30I,-dY2};
+    TGeoVolume *magC4LB = gGeoManager->MakeArb8("MagC4LB", iron, dZ4, cornersC4LB);
+    magC4LB->SetField(magFieldIron);
+    magC4LB->SetLineColor(45);  // red-brown
+    top->AddNode(magC4LB, 1, new TGeoTranslation(0, 0, Z4));
+
+    Double_t cornersC4LT[16] = {2*dX24,dX24, dX24,dX24, dX24+Clgap,dY1, 2*dX24+Clgap,dY1,
+                                dX30I+W30,W30, dX30I,W30, dX30I,dY2, dX30I+W30,dY2};
+    TGeoVolume *magC4LT = gGeoManager->MakeArb8("MagC4LT", iron, dZ4, cornersC4LT);
+    magC4LT->SetField(magFieldIron);
+    magC4LT->SetLineColor(45);  // red-brown
+    top->AddNode(magC4LT, 1, new TGeoTranslation(0, 0, Z4));
+
+    //right magnet, also split in 3..
+    Double_t cornersC4R[16] = {-2*dX24,-dX24, -2*dX24,dX24, -dX24,dX24, -dX24,-dX24,
+                               -dX30I-W30,-W30, -dX30I-W30,W30, -dX30I,W30, -dX30I,-W30};
     TGeoVolume *magC4R = gGeoManager->MakeArb8("MagC4R", iron, dZ4, cornersC4R);
     magC4R->SetField(magFieldIron);
     magC4R->SetLineColor(45);  // red-brown
     top->AddNode(magC4R, 1, new TGeoTranslation(0, 0, Z4));
+
+    Double_t cornersC4RB[16] = {-2*dX24-Clgap,-dY1, -2*dX24,-dX24, -dX24,-dX24, -Clgap-dX24,-dY1,
+                               -dX30I-W30,-dY2, -dX30I-W30,-W30, -dX30I,-W30, -dX30I,-dY2};
+    TGeoVolume *magC4RB = gGeoManager->MakeArb8("MagC4RB", iron, dZ4, cornersC4RB);
+    magC4RB->SetField(magFieldIron);
+    magC4RB->SetLineColor(45);  // red-brown
+    top->AddNode(magC4RB, 1, new TGeoTranslation(0, 0, Z4));
+
+    Double_t cornersC4RT[16] = {-2*dX24,dX24, -2*dX24-Clgap,dY1, -dX24-Clgap,dY1, -dX24,dX24,
+                               -dX30I-W30,W30, -dX30I-W30,dY2, -dX30I,dY2, -dX30I,W30};
+    TGeoVolume *magC4RT = gGeoManager->MakeArb8("MagC4RB", iron, dZ4, cornersC4RT);
+    magC4RT->SetField(magFieldIron);
+    magC4RT->SetLineColor(45);  // red-brown
+    top->AddNode(magC4RT, 1, new TGeoTranslation(0, 0, Z4));
+
 //Top/Bot return magnets for 24-28 m
-    Double_t corners12[16] = {0.,dY1, 0.,dY1+dX24, 2*dX24,dY1+dX24, 2*dX24,dY1, 
+    Double_t corners12[16] = {0.,dY1, 0.,dY1+dX24, 2*dX24+Clgap,dY1+dX24, 2*dX24+Clgap,dY1, 
                               0.,dY2, 0.,dY2+W30, W30+dX30I,dY2+W30, W30+dX30I,dY2}; 
     TGeoVolume *magTopLeft24t28 = gGeoManager->MakeArb8("MagTopLeft24t28", iron, dZ4, corners12) ;
     magTopLeft24t28->SetLineColor(38);  
     magTopLeft24t28->SetField(ConLField);
     top->AddNode(magTopLeft24t28, 1, new TGeoTranslation(0, 0, Z4 ));
 
-    Double_t corners13[16] = {-2*dX24,dY1, -2*dX24,dY1+dX24, 0., dY1+dX24, 0.,dY1,
+    Double_t corners13[16] = {-2*dX24-Clgap,dY1, -2*dX24-Clgap,dY1+dX24, 0., dY1+dX24, 0.,dY1,
                               -W30-dX30I,dY2,-W30-dX30I,dY2+W30, 0.,dY2+W30, 0.,dY2}; 
     TGeoVolume *magTopRight24t28 = gGeoManager->MakeArb8("MagTopRight24t28", iron, dZ4, corners13) ;
     magTopRight24t28->SetLineColor(30); 
     magTopRight24t28->SetField(ConRField);
     top->AddNode(magTopRight24t28, 1, new TGeoTranslation(0, 0, Z4 ));
 //Bot return magnets 
-    Double_t corners14[16] = {eps,-dY1-dX24, eps,-dY1-eps, 2*dX24,-dY1-eps, 2*dX24,-dY1-dX24, 
+    Double_t corners14[16] = {eps,-dY1-dX24, eps,-dY1-eps, 2*dX24+Clgap,-dY1-eps, 2*dX24+Clgap,-dY1-dX24, 
                               eps,-dY2-W30, eps,-dY2-eps, W30+dX30I,-dY2-eps, W30+dX30I,-dY2-W30};
     TGeoVolume *magBotLeft24t28 = gGeoManager->MakeArb8("MagBotLeft24t28", iron, dZ4, corners14) ;
     magBotLeft24t28->SetLineColor(30);  
     magBotLeft24t28->SetField(ConRField);
     top->AddNode(magBotLeft24t28, 1, new TGeoTranslation(0, 0, Z4 ));
 
-    Double_t corners15[16] = {-2*dX24,-dY1-dX24, -2*dX24,-dY1, 0.,-dY1, 0.,-dY1-dX24, 
+    Double_t corners15[16] = {-2*dX24-Clgap,-dY1-dX24, -2*dX24-Clgap,-dY1, 0.,-dY1, 0.,-dY1-dX24, 
                               -W30-dX30I,-dY2-W30,  -W30-dX30I,-dY2, 0.,-dY2, 0.,-dY2-W30};
     TGeoVolume *magBotRight24t28 = gGeoManager->MakeArb8("MagBotRight24t28", iron, dZ4, corners15) ;
     magBotRight24t28->SetLineColor(38); 

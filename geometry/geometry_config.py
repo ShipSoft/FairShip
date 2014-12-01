@@ -146,7 +146,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
 
     c.ecal  =  AttrDict(z=3540*u.cm + totalLength - 60*u.m)
-    c.hcal  =  AttrDict(z=40*u.m + totalLength - 60*u.m)
+    c.hcal  =  AttrDict(z=45*u.m + totalLength - 60*u.m)
     c.HcalOption  =  HcalOption
 
     c.target               =  AttrDict(z=0*u.cm)
