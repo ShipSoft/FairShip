@@ -684,7 +684,7 @@ void hcal::ConstructGeometry()
   par[1]=fKeepR;
   par[2]=fHcalSize[2]/2.0;
   volume=gGeoManager->Volume("Hcal", "TUBE",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
-  gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal+par[2]/2.0, 0, kTRUE, buf, 0);
+  gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
   AddSensitiveVolume(volume);
   fStructureId=volume->GetNumber();
 

@@ -3,7 +3,7 @@
 # length about 2 m (8.5 \lambda). 
 XPos=0		#Position of Hcal center	[cm]
 YPos=0		#Position of Hcal center	[cm]
-ZPos=4000	#Position of Hcal start		[cm]
+ZPos=4500	#Position of Hcal center	[cm]
 NLayers=90	#Total number of layers		
 N1Layers=36	#Number of layers in first section		
 ModuleSize=24.0	#Module size			[cm]
@@ -24,7 +24,6 @@ HcalZSize=300.0	#Z size of HCAL container	[cm]
 ECut=100e-6	#Geant cuts CUTGAM CUTELE BCUTE BCUTM DCUTE [GeV]
 HCut=300e-6	#Geant cuts CUTNEU CUTHAD CUTMUO DCUTM PPCUTM [GeV]
 FastMC=0	#0 for full MC (with showers in HCAL), 1 for fast MC (only hits at sensitive plane before HCAL)
-absorber=EcalSteel   #Material of the absorber
 structure
 #Zero for no module here. 
 #         1         2     

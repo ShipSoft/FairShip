@@ -7,7 +7,7 @@ def posHcal(z):
  fn = open(os.environ["FAIRSHIP"]+"/geometry/hcalz.geo",'w')
  for l in f.readlines():
    if not l.find("ZPos")<0:
-      l ="ZPos="+str(z)+ "	#Position of Hcal start		[cm]\n"
+      l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
    fn.write(l)
  f.close()
  fn.close()  
