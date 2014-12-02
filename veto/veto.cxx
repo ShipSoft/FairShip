@@ -570,7 +570,7 @@ void veto::ConstructGeometry()
 
       //Add one sensitive plane counting rate in second detector downstream
       // with shielding around, 
-      Double_t thickness = 2*cm /2.;
+      Double_t thickness = 10.*cm /2.;
       TGeoBBox *shield2Out = new TGeoBBox("shield2Out",2.5*m+thickness, 3*m+thickness, 20.*cm+thickness);
       TGeoBBox *shield2In  = new TGeoBBox("shield2In", 2.5*m+0.1*cm, 3*m+0.1*cm, 20.*cm+0.1*cm);
       TGeoCompositeShape *shieldDet2 = new TGeoCompositeShape("shieldDet2", "shield2Out-shield2In");

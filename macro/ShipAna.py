@@ -7,9 +7,10 @@ from ShipGeoConfig import ConfigRegistry
 PDG = ROOT.TDatabasePDG.Instance()
 inputFile = None
 dy = None
+nEvents   = 99999
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "f:A:Y:i", [])
+        opts, args = getopt.getopt(sys.argv[1:], "n:f:A:Y:i", ["nEvents="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter file name'
@@ -19,6 +20,8 @@ for o, a in opts:
             inputFile = a
         if o in ("-Y"): 
             dy = float(a)
+        if o in ("-n", "--nEvents="):
+            nEvents = int(a)
 
 if not dy:
   # try to extract from input file name
@@ -151,9 +154,9 @@ def myVertex(t1,t2,PosDir):
 
 
 # start event loop
-def myEventLoop():
- nEvents = sTree.GetEntries()
- for n in range(nEvents):
+def myEventLoop(N):
+ nEvents = min(sTree.GetEntries(),N)
+ for n in range(nEvents): 
   rc = sTree.GetEntry(n)
 # make some straw hit analysis
   hitlist = {}
@@ -261,7 +264,7 @@ def access2SmearedHits():
    print mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode()
    key+=1
 
-myEventLoop()
+myEventLoop(nEvents)
 makePlots()
 
 

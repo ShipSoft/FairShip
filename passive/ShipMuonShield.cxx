@@ -1068,7 +1068,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
 
     Double_t cornersC4RT[16] = {-2*dX24,dX24, -2*dX24-Clgap,dY1, -dX24-Clgap,dY1, -dX24,dX24,
                                -dX30I-W30,W30, -dX30I-W30,dY2, -dX30I,dY2, -dX30I,W30};
-    TGeoVolume *magC4RT = gGeoManager->MakeArb8("MagC4RB", iron, dZ4, cornersC4RT);
+    TGeoVolume *magC4RT = gGeoManager->MakeArb8("MagC4RT", iron, dZ4, cornersC4RT);
     magC4RT->SetField(magFieldIron);
     magC4RT->SetLineColor(45);  // red-brown
     top->AddNode(magC4RT, 1, new TGeoTranslation(0, 0, Z4));

@@ -2,7 +2,7 @@
 inputFile = 'ship.Pythia8-TGeant4.root'
 debug = False
 withNoAmbiguities = None # True   for debugging purposes
-nEvents   = 10000
+nEvents   = 99999
 withHists = True
 dy = None
 
@@ -72,8 +72,6 @@ class makeHitList:
  def __init__(self,fn):
   self.sTree     = fn.cbmsim
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
-  fGeo = ROOT.gGeoManager  
-  self.vols = fGeo.GetListOfVolumes()
 # prepare for output
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -91,6 +89,10 @@ class makeHitList:
    self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
    self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
    self.mcLink      = self.sTree.Branch( "fitTrack2MC",self.fitTrack2MC,32000,-1)  
+   bl = fn.FindObjectAny('BranchList')
+   bl.Add(ROOT.TObjString('SmearedHits'))
+   bl.Add(ROOT.TObjString('FitTracks'))
+   bl.Add(ROOT.TObjString('fitTrack2MC'))
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
 #
@@ -159,7 +161,7 @@ if debug: # init event display
 
 # init fitter
 fitter          = ROOT.genfit.KalmanFitterRefTrack()
-# if debug: fitter.setDebugLvl(3)
+if debug: fitter.setDebugLvl(1) # produces lot of printout
 WireMeasurement = ROOT.genfit.WireMeasurement
 # access ShipTree
 SHiP = makeHitList(fout)
@@ -236,8 +238,7 @@ for iEvent in range(0, SHiP.nEvents):
  if debug: print 'end of event after Fill'
  
 # end loop over events
-xx = fout.FindObjectAny("cbmsim;1")
-xx.Delete()
+
 print 'finished writing tree'
 SHiP.sTree.Write()
 

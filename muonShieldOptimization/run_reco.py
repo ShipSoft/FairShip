@@ -1,8 +1,9 @@
 import os, subprocess
 prefix = 'muon58'
-if len(os.sys.argv)>1 : prefix = os.sys.argv[1]
-if prefix.find('muon')<0:prefix='muon'+prefix
-print prefix
+if len(os.sys.argv)>1 : 
+ prefix = os.sys.argv[1]
+ if prefix.find('muon')<0:prefix='muon'+prefix
+ print prefix
 
 cmd  = os.environ["FAIRSHIP"]+"/macro/genfitShip.py"  
 def execute( ncpu = 4 ):
@@ -32,9 +33,37 @@ def execute( ncpu = 4 ):
           os.chdir('../')
           break
   return cpus,log
+
+def executeSimple(prefixes):
+ for p in prefixes:
+  prefix = str(p) 
+  if prefix.find('muon')<0:prefix='muon'+prefix
+  jobs = []
+  for x in os.listdir('.'):
+    if not x.find(prefix)<0: 
+       if os.path.isdir(x) : 
+         jobs.append(x)
+  for x in jobs:
+      print "change to directory ",x   
+      os.chdir('./'+x) 
+      for f in os.listdir('.'):
+        if  not f.find("geofile_full")<0:
+          inputfile = f.replace("geofile_full","ship")
+          log  = open("logRec",'w')
+          print 'launch',x
+          process = subprocess.Popen(["python",cmd,"-f "+inputfile], stdout=log)
+          process.wait()
+          print 'finished ',process.returncode
+          log.close() 
+          os.chdir('../')
+          break
+
 # 581-584 test with replacing tungsten core with iron, 10m height
 # 591-599 test with replacing tungsten core with iron, 6m height, display
 # 601-609 replacing tungsten core with iron, 6m height, Yandex data, display
 # 610-619 replacing tungsten core with iron, 10m height, display
 # 620-629 replacing tungsten core with iron, 10m height, Yandex data, display
-cpus,log = execute()
+
+# cpus,log = execute()
+if not len(os.sys.argv)>1: executeSimple([58,59,60,61,62])
+
