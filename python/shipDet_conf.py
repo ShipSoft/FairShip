@@ -3,28 +3,32 @@
 import ROOT,os
 import shipunit as u
 def posHcal(z): 
- sz = str(z)
- f =  open(os.environ["FAIRSHIP"]+"/geometry/hcal.geo",'r')
- fn = open(os.environ["FAIRSHIP"]+"/geometry/hcalz"+sz+".geo",'w')
- for l in f.readlines():
+ sz = "hcalz"+str(z)+".geo"
+ floc = os.environ["FAIRSHIP"]+"/geometry"
+ if not sz in os.listdir(floc):
+  f =  open(floc+"/hcal.geo",'r')
+  fn = open(floc+"/"+sz,'w')
+  for l in f.readlines():
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
    fn.write(l)
- f.close()
- fn.close()  
- hcal=ROOT.hcal("Hcal", ROOT.kTRUE, "hcalz"+sz+".geo")
+  f.close()
+  fn.close()  
+ hcal=ROOT.hcal("Hcal", ROOT.kTRUE, sz)
  return hcal
 def posEcal(z):
- sz = str(z)
- f =  open(os.environ["FAIRSHIP"]+"/geometry/ecal_ellipse6x12m2.geo",'r')
- fn = open(os.environ["FAIRSHIP"]+"/geometry/ecal_ellipse6x12m2z"+sz+".geo",'w')
- for l in f.readlines():
+ sz = "ecal_ellipse6x12m2z"+str(z)+".geo"
+ floc = os.environ["FAIRSHIP"]+"/geometry"
+ if not sz in os.listdir(floc):
+  f =  open(floc+"/ecal_ellipse6x12m2.geo",'r')
+  fn = open(floc+"/"+sz,'w')
+  for l in f.readlines():
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Ecal start		[cm]\n"
    fn.write(l)
- f.close()
- fn.close()  
- ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal_ellipse6x12m2z"+sz+".geo")
+  f.close()
+  fn.close()  
+ ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
  return ecal
 
 def configure(run,ship_geo):
