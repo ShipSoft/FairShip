@@ -17,6 +17,7 @@ atexit.register(pyExit)
 #-----User Settings:-----------------------------------------------
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
+InputFile = None 
 dy = str(10.)
 # simEngine = "Genie"
 #
@@ -42,13 +43,23 @@ for o, a in opts:
             simEngine = "Cosmics"
         if o in ("-Y"): 
             dy = float(a)
+        if o in ("-f"):
+            InputFile = a
+        # try to extract from input file name
+            tmp = InputFile.split('.')
+            try:
+             dy = float( tmp[1]+'.'+tmp[2] )
+             tag = str(dy)+'.'+tmp[3]
+            except:
+             tmp = None
 
 print "FairShip setup for",simEngine
 
-tag = simEngine+"-"+mcEngine+'_D'
-if dy: tag = str(dy)+'.'+tag 
-InputFile     ="ship."+tag+".root"  
-ParFile       ="ship.params."+tag+".root"  
+if not InputFile:
+ tag = simEngine+"-"+mcEngine+'_D'
+ if dy: tag = str(dy)+'.'+tag 
+ InputFile     ="ship."+tag+".root"  
+ParFile       ="ship.params."+tag.replace('_rec','')+".root"  
 OutFile	      ="tst."+tag+".root"
 
 # draw Ecal yellow instead of black

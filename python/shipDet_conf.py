@@ -2,24 +2,30 @@
 # -*- coding: latin-1 -*-
 import ROOT,os
 import shipunit as u
-def posHcal(z):
+def posHcal(z): 
+ sz = str(z)
  f =  open(os.environ["FAIRSHIP"]+"/geometry/hcal.geo",'r')
- fn = open(os.environ["FAIRSHIP"]+"/geometry/hcalz.geo",'w')
+ fn = open(os.environ["FAIRSHIP"]+"/geometry/hcalz"+sz+".geo",'w')
  for l in f.readlines():
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
    fn.write(l)
  f.close()
  fn.close()  
+ hcal=ROOT.hcal("Hcal", ROOT.kTRUE, "hcalz"+sz+".geo")
+ return hcal
 def posEcal(z):
+ sz = str(z)
  f =  open(os.environ["FAIRSHIP"]+"/geometry/ecal_ellipse6x12m2.geo",'r')
- fn = open(os.environ["FAIRSHIP"]+"/geometry/ecal_ellipse6x12m2z.geo",'w')
+ fn = open(os.environ["FAIRSHIP"]+"/geometry/ecal_ellipse6x12m2z"+sz+".geo",'w')
  for l in f.readlines():
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Ecal start		[cm]\n"
    fn.write(l)
  f.close()
  fn.close()  
+ ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal_ellipse6x12m2z"+sz+".geo")
+ return ecal
 
 def configure(run,ship_geo):
 # -----Create media-------------------------------------------------
@@ -93,8 +99,7 @@ def configure(run,ship_geo):
   run.AddModule(Strawtubes) 
 
  if ship_geo.strawDesign == 4: 
-  posEcal(ship_geo.ecal.z)
-  ecal        = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal_ellipse6x12m2z.geo")
+  ecal = posEcal(ship_geo.ecal.z)
  else:   ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
  run.AddModule(ecal)
 
@@ -107,8 +112,7 @@ def configure(run,ship_geo):
  Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
  run.AddModule(Muon)
  if ship_geo.HcalOption == 0:
-  posHcal(ship_geo.hcal.z)
-  hcal=ROOT.hcal("Hcal", ROOT.kTRUE, "hcalz.geo")
+  hcal = posHcal(ship_geo.hcal.z)
   run.AddModule(hcal)
 
 #-----   Magnetic field   -------------------------------------------
