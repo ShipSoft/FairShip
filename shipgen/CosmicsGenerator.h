@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 // -----       CosmicsGenerator source file for SHiP             -----
-// -----       Version by 11/13/14  by Martin Franke             -----
+// -----       Version by 11/28/14  by Martin Franke             -----
 // -----       mailto: mfranke(at)physik.hu-berlin.de            -----
 // -------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ class CosmicsGenerator : public FairGenerator{
 		delete fRandomEngine; 
 		cout<<nEvent<<" events with a mean multiplicity of " <<1.0*nTry/nTest<<" muons per event have been generated."<<endl;
 		cout<<"There is a total of "<<nInside<<" muons that passed close enough to the detector."<<endl;
-		cout<<"Including the given weight this corresponds to "<<weighttest/194880<<" spills (1 spill = 194880 real cosmic muons = 500000 simulated events)."<<endl;
+		cout<<"Including the given weight this corresponds to "<<weighttest/xdist/zdist*10000/174<<" spills (1 spill = 469800 real cosmic muons = 500000 simulated events)."<<endl;
 	};
   
 	/** public method ReadEvent **/
@@ -78,10 +78,10 @@ class CosmicsGenerator : public FairGenerator{
 	Float_t getPweight(Float_t P);//!
   
  protected:
-	Float_t px,py,pz,x,y,z,w, weighttest, weight, z0, mass;
+	Float_t px,py,pz,x,y,z,w, weighttest, weight, z0, mass, yTop, xdist, zdist;
 	Int_t id,nTry,nInside,nEvent,multiplicity,nTest;//!
 	
-	ClassDef(CosmicsGenerator,1);
+	ClassDef(CosmicsGenerator,2);
 };
 
 #endif /* !PNDCoGENERATOR_H */

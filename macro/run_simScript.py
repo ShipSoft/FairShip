@@ -151,12 +151,15 @@ if simEngine == "MuonBack":
  print 'Process ',nEvents,' from input file'
 #
 if simEngine == "Cosmics":
- targetz = 0;
- primGen.SetTarget(targetz, 0.)
+ primGen.SetTarget(0., 0.)
+ Z1 = ship_geo.MuonStation3.z # 3900
+ Z2 = ship_geo.vetoStation.z # -1968
+ Z3 = ship_geo.chambers.Tub1length # 250
+ zmiddle = (Z1 + (Z2-2*Z3))/2 # 716
  Cosmicsgen = ROOT.CosmicsGenerator()
- Cosmicsgen.Init(targetz)
+ Cosmicsgen.Init(zmiddle)
  primGen.AddGenerator(Cosmicsgen)
-print 'Process ',nEvents,' Cosmic events'
+ print 'Process ',nEvents,' Cosmic events'
 #
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------

@@ -158,7 +158,7 @@ def myEventLoop(N):
  nEvents = min(sTree.GetEntries(),N)
  for n in range(nEvents): 
   rc = sTree.GetEntry(n)
-  w = sTree.MCTrack[0].GetWeight()
+  wg = sTree.MCTrack[0].GetWeight()
 # make some straw hit analysis
   hitlist = {}
   for ahit in sTree.strawtubesPoint:

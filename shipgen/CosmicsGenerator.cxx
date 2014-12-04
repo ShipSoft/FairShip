@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------
 // -----       CosmicsGenerator source file for SHiP             -----
-// -----       Version by 11/13/14  by Martin Franke             -----
+// -----       Version by 01.12.14  by Martin Franke             -----
 // -----       mailto: mfranke(at)physik.hu-berlin.de            -----
 // -------------------------------------------------------------------
 
@@ -12,35 +12,41 @@
 
 using namespace std; 
 
-//Bool_t CosmicsGenerator::Init(){
-//   Init(0.0);
-//   return kTRUE;
-//}
-
 Bool_t CosmicsGenerator::Init(Float_t zmiddle){
+	//general 
 	fRandomEngine = new Co3Rng();
 	TDatabasePDG* pdgBase = TDatabasePDG::Instance();
 	mass = pdgBase->GetParticle(13)->Mass(); // muons!
-	nTry =0;  nInside = 0;  nEvent = 0; nTest = 0; weighttest = 0;
-	Float_t weight1 = 194880.0/500000; // expected #muons per spill/ #simulated events per spill 174*14*80/500000
+	
+	// coordinate system
+	xdist = 3000; // production area size [cm]
+	zdist = 9000; // production area size [cm]
+	yTop = 600; // box top layer [cm]-> also change weight3 accordingly when varying 
+	z0 = zmiddle; // relative coordinate system [cm] (Z_muonstation + (Z_veto - 2 * Z_Tub1))/2,... Z_veto <0 ! ->z0 = 716
+	cout<<"!!!!!!!!!!!!!!!!!! z0: "<<z0<<endl;
+	
+	// weights
+	Float_t weight1 = 174*xdist*zdist/10000/500000; // expected #muons per spill/ #simulated events per spill 174*30*90/500000
 	Float_t weight2 = 1.0/0.0830872; // 1/(mean momentum weight), P_max-P_min/(3*174/2pi)
-	Float_t weight3 = 3.99363; // MC average of nTry/nEvents 3.993634059 +- 0.000027617
+	Float_t weight3 = 5.174808; // MC average of nTry/nEvents 5.174808003 +- 0.000024766
 	weight = weight1 * weight2 / weight3;
-	z0 = zmiddle; // (2*Z_muonstation-Z_vessel)/2
+	
+	// running
+	y = 2000; //all muons start 20m over beam axis
+	nTry =0;  nInside = 0;  nEvent = 0; nTest = 0; weighttest = 0; // book keeping
 	return kTRUE;
 }
 
 Float_t CosmicsGenerator::getPweight(Float_t P){
+	// implementation of the cosmic muon spectrum at sea evel
 	if (P<100){return 22*TMath::Power(P,-0.6 -0.285*TMath::Log(P));}
 	else{return 1400*TMath::Power(P,-2.7)*(1/(1+P/115)+0.054/(1+P/850));} 	
 }
 
 // -----   Passing the event   ---------------------------------------------
 Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
-
 	Bool_t hit = 0;
-	y = 2000; //20m over beam axis
-      
+	
 	do{
 		// shower characteristics
 		multiplicity = fRandomEngine->randomMultiplicity();
@@ -48,9 +54,8 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 		Float_t showerTheta = fRandomEngine->randomTheta();
 	
 		for(Int_t m = 0;m < multiplicity; m++){	
-			// muon momentum
+			// muon momentum and spectrum weight
 			Float_t P = fRandomEngine->Uniform(0.1,1000);
-			// spectrum weight for momentum P
 			w = getPweight(P) * weight;	
     			
 			// shower direction with small variations for individual muons
@@ -63,17 +68,16 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 			py = TMath::Cos(theta)*P;
 			
 			// start position, area 1120 m^2
-			x = fRandomEngine->Uniform(-700,700);
-			z = fRandomEngine->Uniform(z0 - 4000, z0 + 4000);
+			x = fRandomEngine->Uniform(-xdist/2,xdist/2);
+			z = fRandomEngine->Uniform(z0 - zdist/2, z0 + zdist/2);
 			
-			// claim for flight close to the actual detector
-			if((TMath::Abs(x-(y+600)*px/py) < 300 && TMath::Abs(z-z0-(y+600)*pz/py) < 3050) || (TMath::Abs(x-(y-600)*px/py) < 300 && TMath::Abs(z-z0-(y-600)*pz/py) <  3050)|| abs(y-(x+300)*py/px)<600 && abs(z-z0-(x+300)*pz/px)<3050 || abs(y-(x-300)*py/px)<600 && abs(z-z0-(x-300)*pz/px)<3050){
+			// claim for flight through a box surrounding the detector
+			if((TMath::Abs(x-(y+yTop)*px/py) < 300 && TMath::Abs(z-z0-(y+yTop)*pz/py) < 3650) || (TMath::Abs(x-(y-yTop)*px/py) < 300 && TMath::Abs(z-z0-(y-yTop)*pz/py) <  3650)|| abs(y-(x+300)*py/px)<yTop && abs(z-z0-(x+300)*pz/px)<3650 || abs(y-(x-300)*py/px)<yTop && abs(z-z0-(x-300)*pz/px)<3650){
 				//muon or anti-muon
 				if (fRandomEngine->Uniform(0,1) < 1.0/2.278){id = 13;}
 				else{id = -13;} 
-								
 				// transfer to Geant4
-				cpg->AddTrack(id,px,py,pz,x,y,z,-1,true,TMath::Sqrt(P*P+mass*mass),0,w);  // -1 = Mother ID, true = tracking, SQQRT(x) = Energy, 0 = t
+				cpg->AddTrack(id,px,py,pz,x,y,z,-1,true,TMath::Sqrt(P*P+mass*mass),0,w);  // -1 = Mother ID, true = tracking, SQRT(x) = Energy, 0 = t
 				hit = 1; nInside++; 
 			}
 			nTry++; weighttest += w;
@@ -81,8 +85,7 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 		nTest++;
 	}while(!hit);
 	nEvent++;
-	//if (nEvent%1000 == 0){cout<<nEvent/10000<<"10k events have been simulated"<<endl;}
-  
+	if (!nEvent%10000){cout<<nEvent/10000<<"10k events have been simulated"<<endl;}
 	return kTRUE;
 }
 
