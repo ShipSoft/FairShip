@@ -158,6 +158,7 @@ def myEventLoop(N):
  nEvents = min(sTree.GetEntries(),N)
  for n in range(nEvents): 
   rc = sTree.GetEntry(n)
+  w = sTree.MCTrack[0].GetWeight()
 # make some straw hit analysis
   hitlist = {}
   for ahit in sTree.strawtubesPoint:
@@ -180,13 +181,13 @@ def myEventLoop(N):
   for atrack in sTree.FitTracks:
    fitStatus   = atrack.getFitStatus()
    nmeas = atrack.getNumPoints()
-   h['meas'].Fill(nmeas)
+   h['meas'].Fill(nmeas,wg)
    if not fitStatus.isFitConverged() : continue
    fittedTracks[key] = atrack
 # needs different study why fit has not converged, continue with fitted tracks
    chi2        = fitStatus.getChi2()/nmeas
    fittedState = atrack.getFittedState()
-   h['chi2'].Fill(chi2)
+   h['chi2'].Fill(chi2,wg)
    h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
    P = fittedState.getMomMag()
    mcPartKey = sTree.fitTrack2MC[key]
@@ -266,5 +267,7 @@ def access2SmearedHits():
 
 myEventLoop(nEvents)
 makePlots()
+# output histograms
+ut.writeHists(h,"ShipAna.root")
 
 

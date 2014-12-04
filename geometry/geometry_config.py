@@ -28,6 +28,7 @@ with ConfigRegistry.register_config("basic") as c:
      print "this design is not supported, use strawDesign = 4"
      1/0 
     else:
+     c.chambers.Length = totalLength
      c.chambers.Tub1length = 2.5*u.m
      c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
      c.chambers.Tub3length = 0.8*u.m

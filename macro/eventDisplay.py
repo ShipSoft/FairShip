@@ -73,6 +73,33 @@ def ecalYellow():
  hcal = fGeo.GetVolume("HcalModule")
  hcal.SetLineColor(ROOT.kOrange+3) 
  evmgr.ElementChanged(geoscene,True,True)
+# switch of drawing of rock
+def switchOfRock():
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.lower().find('rock')<0:
+     v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True)
+def switchOfAll(exc):
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname in exc: v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True) 
+def select(pattern):
+ exc = []
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.find(pattern) < 0 : exc.append(vname)
+ return exc
 
 #----Load the default libraries------
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")

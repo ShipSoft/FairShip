@@ -118,6 +118,7 @@ class makeHitList:
  def execute(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
+  if n%1000==0: print "==> event ",n
   nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists = {}
   self.SmearedHits.Clear()

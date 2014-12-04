@@ -35,7 +35,7 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-            if not inputFile:   inputFile = 'Genie-mu-_anti_nu_mu-gntp.113.gst.root'
+            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
         if o in ("--MuonBack"):
@@ -115,11 +115,12 @@ if simEngine == "Pythia6":
  primGen.AddGenerator(P6gen)
 if simEngine == "Genie":
 # Genie
- pointZero =  -ship_geo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield
- # pointZero =   0.  # for testing
+ # pointZero =  -ship_geo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield
+ pointZero =   0.  # for testing
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
+ Geniegen.SetPositions(dy,ship_geo.chambers.Length, ship_geo.target.z0, ship_geo.Chamber1.z-ship_geo.chambers.Tub1length,250.)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input'
