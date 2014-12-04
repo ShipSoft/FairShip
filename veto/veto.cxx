@@ -562,10 +562,11 @@ void veto::ConstructGeometry()
       AddSensitiveVolume(Emulsion);
 
       //Add one sensitive plane after nu-tau mu-shield
-      TGeoVolume *DetMuNuTau = gGeoManager->MakeBox("DetMuNuTau", Se, 2.5*m, 5.*m, 5.*cm);
-      DetMuNuTau->SetLineColor(kMagenta-10);
-      top->AddNode(DetMuNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m+dIronOpera+50.*cm));       
-      AddSensitiveVolume(DetMuNuTau);
+      // now taken care by volDriftLayer and volDriftLayer1-5
+      //TGeoVolume *DetMuNuTau = gGeoManager->MakeBox("DetMuNuTau", Se, 2.5*m, 5.*m, 5.*cm);
+      //DetMuNuTau->SetLineColor(kMagenta-10);
+      //top->AddNode(DetMuNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m+dIronOpera+50.*cm));       
+      //AddSensitiveVolume(DetMuNuTau);
 
 
       //Add one sensitive plane counting rate in second detector downstream
