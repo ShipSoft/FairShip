@@ -123,7 +123,7 @@ if simEngine == "Genie":
  Geniegen.SetPositions(dy,ship_geo.chambers.Length, ship_geo.target.z0, ship_geo.Chamber1.z-ship_geo.chambers.Tub1length,250.)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
- print 'Generate ',nEvents,' with Genie input'
+ print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
 #  add tungsten to PDG
  pdg = ROOT.TDatabasePDG.Instance()
  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
