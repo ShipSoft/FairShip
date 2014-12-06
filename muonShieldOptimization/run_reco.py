@@ -24,12 +24,6 @@ def fitSingleGauss(x,ba=None,be=None):
        myGauss.SetParName(3,'bckgr')
     h[x].Fit(myGauss,'','',ba,be) 
 
-prefix = 'muon58'
-if len(os.sys.argv)>1 : 
- prefix = os.sys.argv[1]
- if prefix.find('muon')<0:prefix='muon'+prefix
- print prefix
-
 cmd     = os.environ["FAIRSHIP"]+"/macro/genfitShip.py"  
 cmdAna  = os.environ["FAIRSHIP"]+"/macro/ShipAna.py"  
 def execute( ncpu = 4 ):
@@ -61,9 +55,7 @@ def execute( ncpu = 4 ):
   return cpus,log
 
 def executeSimple(prefixes):
- for p in prefixes:
-  prefix = str(p) 
-  if prefix.find('muon')<0:prefix='muon'+prefix
+ for prefix in prefixes:
   jobs = []
   for x in os.listdir('.'):
     if not x.find(prefix)<0: 
@@ -89,11 +81,6 @@ def executeSimple(prefixes):
           os.chdir('../')
           break
 
-# 591-599 test with replacing tungsten core with iron, 6m height, display
-# 601-609 replacing tungsten core with iron, 6m height, Yandex data, display
-# 610-619 replacing tungsten core with iron, 10m height, display
-# 620-629 replacing tungsten core with iron, 10m height, Yandex data, display
-
 h={} 
 def mergeHistosMakePlots(p):
  if not type(p)==type([]): pl=[p]
@@ -101,7 +88,6 @@ def mergeHistosMakePlots(p):
  hlist = ''
  for p in pl:
    prefix = str(p) 
-   if prefix.find('muon')<0:prefix='muon'+prefix
    for x in os.listdir('.'):
     if not x.find(prefix)<0: 
        if os.path.isdir(x) : 
@@ -145,20 +131,23 @@ def mergeHistosMakePlots(p):
    h['IP0'].Draw()
    cv = h['fitresults2'].cd(3)
    h['HNL'].Draw()
-   fitSingleGauss('HNL')
+   fitSingleGauss('HNL',0.,2.)
    cv = h['fitresults2'].cd(4)
    h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
    h['strawanalysis'].Print('strawanalysis.gif')
    print 'finished making plots'
 
-
-
-
 # cpus,log = execute()
-if not len(os.sys.argv)>1: executeSimple([59,60,61,62])
+if not len(os.sys.argv)>1: 
+  if not os.path.abspath('.').find('neutrino')<0:
+    executeSimple(['neutrino66'])
+  else:  
+    executeSimple(['muon59','muon60','muon61','muon62'])
 else : 
  pl=[]
  for p in os.sys.argv[1].split(','):
-   pl.append(p) 
+   pref = 'muon'
+   if not os.path.abspath('.').find('neutrino')<0: pref='neutrino'
+   pl.append(pref+p) 
  mergeHistosMakePlots(pl)
