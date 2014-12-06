@@ -159,6 +159,7 @@ def myEventLoop(N):
  for n in range(nEvents): 
   rc = sTree.GetEntry(n)
   wg = sTree.MCTrack[0].GetWeight()
+  if not wg>0.: wg=1.
 # make some straw hit analysis
   hitlist = {}
   for ahit in sTree.strawtubesPoint:
@@ -181,7 +182,7 @@ def myEventLoop(N):
   for atrack in sTree.FitTracks:
    fitStatus   = atrack.getFitStatus()
    nmeas = atrack.getNumPoints()
-   h['meas'].Fill(nmeas,wg)
+   h['meas'].Fill(nmeas)
    if not fitStatus.isFitConverged() : continue
    fittedTracks[key] = atrack
 # needs different study why fit has not converged, continue with fitted tracks
