@@ -469,8 +469,9 @@ void veto::ConstructGeometry()
 
     // design 4: elliptical double walled tube with LiSci in between
     // Interpolate wall thicknesses based on the vertical size fBtube.
-      Double_t walli=(fBtube-6.*m)*(8.-5.)*mm/(4.*m)+3.*mm;	
-      Double_t wallo=(fBtube-6.*m)*(3.-2.)*cm/(4.*m)+2.*cm;	
+      Double_t walli=(2*fBtube-6.*m)*(8.-5.)*mm/(4.*m)+3.*mm;	
+      Double_t wallo=(2*fBtube-6.*m)*(3.-2.)*cm/(4.*m)+2.*cm;	
+      
       Double_t ws=0.5*m; //Straw screen plates sticking out of the outer tube.
       //Note: is just 2 cm for veto chamber, to avoid muon hits :-).
       Double_t liscitube=0.1*m;	
