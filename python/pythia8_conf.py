@@ -1,5 +1,9 @@
 import ROOT
 import shipunit as u
+def addHNLtoROOT(pid=9900014 ,m = 1.0, g=3.654203020370371E-21):
+ pdg = ROOT.TDatabasePDG.Instance()
+ pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid)
+#
 def configure(P8gen,inclusive,deepCopy=False):
 # configure pythia8 for Ship usage
  P8gen.UseRandom3() # TRandom1 or TRandom3 ?
@@ -7,8 +11,8 @@ def configure(P8gen,inclusive,deepCopy=False):
  if deepCopy: P8gen.UseDeepCopy()
  pdg = ROOT.TDatabasePDG.Instance()
 # pythia stuff not known to ROOT
- pdg.AddParticle('system','system', 0., False, 0., 0., 'XXX', 90)
- pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'XXX', 9902210)
+ pdg.AddParticle('system','system', 0., False, 0., 0., 'sys', 90)
+ pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'p_diffr', 9902210)
 # let strange particle decay in Geant4
  # the following does not work because need to have N2 decaying
  #P8gen.SetParameters("ParticleDecays:limitTau0 = on")
@@ -35,7 +39,7 @@ def configure(P8gen,inclusive,deepCopy=False):
   P8gen.SetHNLId(9900014)
 # also add to PDG
   gamma = 197.3269631e-16 / float(ctau)
-  pdg.AddParticle('N2','HNL', float(mass), False, gamma, 0., 'N2', 9900014)
+  addHNLtoROOT(pid=9900014,m=float(mass),g=gamma)
 # 12 14 16 neutrinos replace with N2
 #overwrite /\c decays
   P8gen.SetParameters("4122:new  Lambda_c+   Lambda_cbar-   2   3   0    2.28646    0.00000    0.00000    0.00000  5.99000e-02   0   1   0   1   0")

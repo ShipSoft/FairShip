@@ -24,7 +24,7 @@ def fitSingleGauss(x,ba=None,be=None):
        myGauss.SetParName(3,'bckgr')
     h[x].Fit(myGauss,'','',ba,be) 
 
-cmd     = os.environ["FAIRSHIP"]+"/macro/genfitShip.py"  
+cmd     = os.environ["FAIRSHIP"]+"/macro/ShipReco.py"  
 cmdAna  = os.environ["FAIRSHIP"]+"/macro/ShipAna.py"  
 def execute( ncpu = 4 ):
   cpus = {}

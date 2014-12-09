@@ -53,6 +53,10 @@ bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z,2)
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 
+ev     = ut.PyListOfLeaves()
+leaves = sTree.GetListOfLeaves()
+names  = ut.setAttributes(ev, leaves)
+
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<25',100,0.,50.,100,-0.5,0.5)
@@ -68,24 +72,6 @@ ut.bookHist(h,'distu','distance to wire',100,0.,1.)
 ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
-
-def myVertex(t1,t2,PosDir):
- # closest distance between two tracks
-   V=0
-   for i in range(3):   V += PosDir[t1][1](i)*PosDir[t2][1](i)
-   S1=0
-   for i in range(3):   S1 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t1][1](i)
-   S2=0
-   for i in range(3):   S2 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t2][1](i)
-   l = (S2-S1*V)/(1-V*V)
-   x2 = PosDir[t2][0](0)+l*PosDir[t2][1](0)
-   y2 = PosDir[t2][0](1)+l*PosDir[t2][1](1)
-   z2 = PosDir[t2][0](2)+l*PosDir[t2][1](2)
-   x1 = PosDir[t1][0](0)+l*PosDir[t1][1](0)
-   y1 = PosDir[t1][0](1)+l*PosDir[t1][1](1)
-   z1 = PosDir[t1][0](2)+l*PosDir[t1][1](2)
-   dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
-   return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
 
 def fitSingleGauss(x,ba=None,be=None):
     name    = 'myGauss_'+x 
@@ -147,6 +133,25 @@ def makePlots():
    h['fitresults2'].Print('fitresults2.gif')
    print 'finished making plots'
 
+
+def myVertex(t1,t2,PosDir):
+ # closest distance between two tracks
+   V=0
+   for i in range(3):   V += PosDir[t1][1](i)*PosDir[t2][1](i)
+   S1=0
+   for i in range(3):   S1 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t1][1](i)
+   S2=0
+   for i in range(3):   S2 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t2][1](i)
+   l = (S2-S1*V)/(1-V*V)
+   x2 = PosDir[t2][0](0)+l*PosDir[t2][1](0)
+   y2 = PosDir[t2][0](1)+l*PosDir[t2][1](1)
+   z2 = PosDir[t2][0](2)+l*PosDir[t2][1](2)
+   x1 = PosDir[t1][0](0)+l*PosDir[t1][1](0)
+   y1 = PosDir[t1][0](1)+l*PosDir[t1][1](1)
+   z1 = PosDir[t1][0](2)+l*PosDir[t1][1](2)
+   dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
+   return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
+
 # start event loop
 def myEventLoop(N):
  nEvents = min(sTree.GetEntries(),N)
@@ -204,29 +209,53 @@ def myEventLoop(N):
    for i in range(3):   dist += (vx(i)-trackPos(i)-t*trackDir(i))**2
    dist = ROOT.TMath.Sqrt(dist)
    h['IP'].Fill(dist) 
+   key+= 1  
 # ---
-# loop over particles, 2-track combinations
-  for HNL in sTree.Particles:
-     t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
+# go for 2-track combinations
+  if len(fittedTracks) == 2:
+     LV  = {}
      PosDir = {} 
-     for tr in [t1,t2]:
-      xx  = sTree.FitTracks[tr].getFittedState()
+     for tr in fittedTracks:
+      xx  = fittedTracks[tr].getFittedState()
       PosDir[tr] = [xx.getPos(),xx.getDir()]
+     keys = fittedTracks.keys()
+     t1,t2 = keys[0],keys[1] 
      xv,yv,zv,doca = myVertex(t1,t2,PosDir)
      h['Doca'].Fill(dist)  
-     HNLPos = ROOT.TLorentzVector()
-     HNL.ProductionVertex(HNLPos)
-     HNLMom = ROOT.TLorentzVector()
-     HNL.Momentum(HNLMom)
+     print 'hnlvertex',n,xv,yv,zv,doca
+     HNLPos = ROOT.TVector3(xv,yv,zv)
+     for tr in fittedTracks:
+      xx  = fittedTracks[tr].getFittedState()
+      # make a new rep
+      rep = ROOT.genfit.RKTrackRep(xx.getPDG())
+      pos = xx.getPos()
+      mom = xx.getMom()
+      state = ROOT.genfit.StateOnPlane(rep)
+      rep.setPosMom(state, pos, mom)
+      origPlane = state.getPlane()
+      origState = ROOT.genfit.StateOnPlane(state)
+      try:
+       rep.extrapolateToPoint(state, HNLPos, False)
+      except:
+        print 'extrap did not worked'
+      LV[tr] = ROOT.TLorentzVector()
+      mass = PDG.GetParticle(xx.getPDG()).Mass()
+      mom = rep.getMom(state)  
+      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
+      LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
+     HNL = LV[t1]+LV[t2]
      tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
      t = 0
-     for i in range(3):   t += HNLMom(i)/HNLMom.P()*(tr(i)-HNLPos(i)) 
+     for i in range(3):   t += HNL(i)/HNL.P()*(tr(i)-HNLPos(i)) 
      dist = 0
-     for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNLMom(i)/HNLMom.P())**2
+     for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNL(i)/HNL.P())**2
      dist = ROOT.TMath.Sqrt(dist)
      h['IP0'].Fill(dist)  
-     h['IP0/mass'].Fill(HNLMom.M(),dist)
-     h['HNL'].Fill(HNLMom.M())
+     h['IP0/mass'].Fill(HNL.M(),dist)
+     h['HNL'].Fill(HNL.M())
+# try to make it persistent
+     vx = ROOT.TLorentzVector(HNLPos,0.)  # time not set
+     particle = ROOT.TParticle(9900014,0,-1,-1,t1,t2,HNL,vx)
 
 def access2SmearedHits():
  key = 0
