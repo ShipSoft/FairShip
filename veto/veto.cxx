@@ -264,6 +264,7 @@ void veto::ConstructGeometry()
     InitMedium("Aluminum");
     TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
     InitMedium("ShipSens");
+    TGeoMedium *Sens =gGeoManager->GetMedium("ShipSens");
     InitMedium("Scintillator");
     TGeoMedium *Se =gGeoManager->GetMedium("Scintillator");
     gGeoManager->SetNsegments(100);
@@ -546,7 +547,7 @@ void veto::ConstructGeometry()
       top->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid+wallo/2.));
 
       //Add one more sensitive plane after vacuum tube for timing
-      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Se,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
       TimeDet->SetLineColor(kMagenta-10);
       top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid*1.5+wallo+5.*cm));
       AddSensitiveVolume(TimeDet);
@@ -557,7 +558,7 @@ void veto::ConstructGeometry()
       Double_t dIronOpera= 0.3*m;
 
       //Add one sensitive plane in middle of Goliath
-      TGeoVolume *Emulsion = gGeoManager->MakeBox("Emulsion", Se, 0.5*m, 0.5*m, 5.*cm);
+      TGeoVolume *Emulsion = gGeoManager->MakeBox("Emulsion", Sens, 0.5*m, 0.5*m, 5.*cm);
       Emulsion->SetLineColor(kMagenta-10);
       top->AddNode(Emulsion, 1, new TGeoTranslation(0, 0, ZGmid));
       AddSensitiveVolume(Emulsion);
@@ -579,7 +580,7 @@ void veto::ConstructGeometry()
       TGeoVolume *sdet2 = new TGeoVolume("shieldDet2", shieldDet2, St);
       sdet2->SetLineColor(kWhite-5);
       top->AddNode(sdet2, 1, new TGeoTranslation(0, 0, fTub6z + 50.*m));
-      TGeoVolume *Det2 = gGeoManager->MakeBox("Det2", Se, 2.5*m, 3.*m, 5.*cm);
+      TGeoVolume *Det2 = gGeoManager->MakeBox("Det2", Sens, 2.5*m, 3.*m, 5.*cm);
       Det2->SetLineColor(kGreen+3);
       top->AddNode(Det2, 1, new TGeoTranslation(0, 0, fTub6z + 50.*m));       
       AddSensitiveVolume(Det2);
