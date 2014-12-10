@@ -213,7 +213,8 @@ def myEventLoop(N):
       xx  = sTree.FitTracks[tr].getFittedState()
       PosDir[tr] = [xx.getPos(),xx.getDir()]
      xv,yv,zv,doca = myVertex(t1,t2,PosDir)
-     h['Doca'].Fill(dist)  
+     h['Doca'].Fill(dist) 
+     if  dist>5 : continue
      HNLPos = ROOT.TLorentzVector()
      HNL.ProductionVertex(HNLPos)
      HNLMom = ROOT.TLorentzVector()
