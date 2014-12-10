@@ -132,8 +132,8 @@ void ShipMuonShield::ConstructGeometry()
      top->AddNode(Pbshield2, 1, new TGeoTranslation(0, 0, zpos));
 // Concrete around shielding
      Double_t dZ = fMuonShieldLength;
-     TGeoBBox *box1    = new TGeoBBox("box1",  2*m,2*m,dZ/2.);    
-     TGeoBBox *box2    = new TGeoBBox("box2", 10*m,7*m,dZ/2.);    
+     TGeoBBox *box1    = new TGeoBBox("box1",  6*m,6*m,dZ/2.);    
+     TGeoBBox *box2    = new TGeoBBox("box2", 10*m,10*m,dZ/2.);    
      TGeoCompositeShape *compRockS = new TGeoCompositeShape("compRockS", "box2-box1");
      TGeoVolume *rockS   = new TGeoVolume("rockS", compRockS, concrete);
      rockS->SetLineColor(11);  // grey

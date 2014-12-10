@@ -135,12 +135,12 @@ with ConfigRegistry.register_config("basic") as c:
                          c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE  # leave some space for nu-tau detector   
     # for passive design, fDesign==1
     if muShieldDesign == 1: 
-        c.muShield.length =  70*u.m
+        c.muShield.length =  70*u.m 
+        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2. - c.muShield.LE  # leave some space for nu-tau 
     if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5 : 
      c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                          +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-
-    c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
+     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =  3.00*u.m

@@ -67,12 +67,13 @@ def executeSimple(prefixes):
       for f in os.listdir('.'):
         if  not f.find("geofile_full")<0:
           inputfile = f.replace("geofile_full","ship")
-          log  = open("logRec",'w')
-          print 'launch',x
-          process = subprocess.Popen(["python",cmd,"-f "+inputfile], stdout=log)
-          process.wait()
-          print 'finished ',process.returncode
-          log.close() 
+          if not "logRec" in os.listdir('.'):
+           log  = open("logRec",'w')
+           print 'launch',x
+           process = subprocess.Popen(["python",cmd,"-f "+inputfile], stdout=log)
+           process.wait()
+           print 'finished ',process.returncode
+           log.close() 
           log  = open("logAna",'w')
           process = subprocess.Popen(["python",cmdAna,"-f "+inputfile.replace('.root','_rec.root')], stdout=log)
           process.wait()          
