@@ -16,10 +16,11 @@ theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = True
+phiRandom = False  # only relevant for muon background generator
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
-                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent="])
+                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -40,6 +41,8 @@ for o, a in opts:
             simEngine = "Ntuple"
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
+        if o in ("--phiRandom"):
+            phiRandom = True
         if o in ("--Cosmics"):
             simEngine = "Cosmics"
         if o in ("-n", "--nEvents="):
@@ -66,7 +69,7 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - targetOpt         = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits (default)
 # - strawDesign       = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption        = -1 # no hcal,  0=hcal after muon
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 0, Yheight = dy )
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 0, Yheight = dy)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -93,6 +96,7 @@ run.SetOutputFile(outFile)  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C 
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
+# import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 import shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
@@ -145,10 +149,10 @@ if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation, [-50m - 50m]
  primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
  MuonBackgen = ROOT.MuonBackGenerator()
- MuonBackgen.Init(inputFile,firstEvent)
+ MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
- print 'Process ',nEvents,' from input file'
+ print 'Process ',nEvents,' from input file, with Phi random=',phiRandom 
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)

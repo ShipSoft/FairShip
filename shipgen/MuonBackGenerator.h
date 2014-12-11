@@ -20,10 +20,11 @@ class MuonBackGenerator : public FairGenerator
   
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);  
-  virtual Bool_t Init(const char*, int); //!
+  virtual Bool_t Init(const char*, int, const Bool_t fl=false); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();//!
   void CloseFile();//!
+  void SetPhiRandom(Bool_t fl) { fPhiRandomize = fl; };
  private:
   
  protected:
@@ -33,6 +34,7 @@ class MuonBackGenerator : public FairGenerator
   TTree* fTree;         //! 
   int fNevents;
   int fn;
+  Bool_t fPhiRandomize;
   ClassDef(MuonBackGenerator,1);
 };
 

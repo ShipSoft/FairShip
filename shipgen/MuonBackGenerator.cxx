@@ -1,5 +1,6 @@
 #include <math.h>
 #include "TROOT.h"
+#include "TRandom.h"
 #include "TFile.h"
 #include "FairPrimaryGenerator.h"
 #include "MuonBackGenerator.h"
@@ -13,10 +14,10 @@ MuonBackGenerator::MuonBackGenerator() {}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName) {
- Init(fileName, 0); 
+ Init(fileName, 0, false); 
 }
 // -----   Default constructor   -------------------------------------------
-Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
+Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const Bool_t fl ) {
   fLogger = FairLogger::GetLogger();  
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);
@@ -24,6 +25,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");  
   }
   fn = firstEvent; 
+  fPhiRandomize = fl;
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
   fNevents = fTree->GetEntries();
   // count only events with muons
@@ -57,6 +59,12 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 // test if we have a muon, don't look at neutrinos:
    if (abs(int(id))==13) {break;}
   } 
+  if (fPhiRandomize){
+      Double_t pt  = TMath::Sqrt( px*px+py*py );
+      Double_t phi = gRandom->Uniform(0.,2.) * TMath::Pi();
+      px = pt*TMath::Sin(phi);
+      py = pt*TMath::Cos(phi);
+  }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t mass = pdgBase->GetParticle(id)->Mass();
   Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
