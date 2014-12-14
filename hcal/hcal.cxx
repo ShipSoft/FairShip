@@ -857,7 +857,7 @@ void hcal::ConstructModule()
 // -----   Private method ConstructModuleSimple-----------------------------    
 void hcal::ConstructModuleSimple()
 {
-  if (fModule=NULL) return;
+  if (fModule==NULL) return;
 
   ConstructTileSimple(0);
   ConstructTileSimple(1);
@@ -1130,7 +1130,6 @@ void hcal::ConstructTileSimple(Int_t material)
     default: Error("ConstructTile", "Can't construct a tile of type %d.", material);
   }
 
-  nm;
   tile=new TGeoBBox(fModuleSize/2.0, fModuleSize/2.0, thickness);
   tilev=new TGeoVolume(nm, tile, gGeoManager->GetMedium(medium));
   /** Adding edging to scintillator **/

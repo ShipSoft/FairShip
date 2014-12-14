@@ -1278,6 +1278,7 @@ Bool_t ecal::GetCellCoord(Int_t fVolID, Float_t &x, Float_t &y, Int_t& tenergy)
 {
   return GetCellCoordInf(fVolID, x, y, tenergy);
 }
+
 Bool_t ecal::GetCellCoordForPy(Int_t fVolID, TVector3 &all)
 {
   Float_t x,y;
@@ -1294,5 +1295,6 @@ Bool_t ecal::GetCellCoordForPy(Int_t fVolID, TVector3 &all)
     }
   }
   all=TVector3(x,y,inf->GetZPos());
+  return kTRUE;
 }
 

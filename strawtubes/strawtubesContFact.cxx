@@ -48,4 +48,5 @@ FairParSet* strawtubesContFact::createContainer(FairContainer* c)
   }
   return p;
 */
+  return 0;
   }
