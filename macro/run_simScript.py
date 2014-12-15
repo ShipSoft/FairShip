@@ -68,8 +68,8 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - muShieldDesign    = 2  # 1=passive 2=active (default)
 # - targetOpt         = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits (default)
 # - strawDesign       = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
-# - HcalOption        = -1 # no hcal,  0=hcal after muon
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 0, Yheight = dy)
+# - HcalOption        = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 1, Yheight = dy)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -188,7 +188,7 @@ if eventDisplay:
 # manipulate G4 geometry to enable magnetic field in active shielding, VMC can't do it.
 if ship_geo.muShieldDesign != 1:
  import geomGeant4
- geomGeant4.setMagnetField()
+ geomGeant4.setMagnetField() # ('dump') for printout of mag fields
  geomGeant4.printWeightsandFields()
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()

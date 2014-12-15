@@ -17,7 +17,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName) {
   return Init(fileName, 0, false);
 }
 // -----   Default constructor   -------------------------------------------
-Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const Bool_t fl ) {
+Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const Bool_t fl = false ) {
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);
@@ -26,6 +26,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   }
   fn = firstEvent;
   fPhiRandomize = fl;
+  fsmearBeam = 0; // default no beam smearing, use SetSmearBeam(sb) if different, sb [cm]
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
   fNevents = fTree->GetEntries();
   // count only events with muons
@@ -62,13 +63,25 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   if (fPhiRandomize){
       Double_t pt  = TMath::Sqrt( px*px+py*py );
       Double_t phi = gRandom->Uniform(0.,2.) * TMath::Pi();
-      px = pt*TMath::Sin(phi);
-      py = pt*TMath::Cos(phi);
+      px = pt*TMath::Cos(phi);
+      py = pt*TMath::Sin(phi);
   }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t mass = pdgBase->GetParticle(id)->Mass();
   Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
   Double_t tof = 0;
+  if (fsmearBeam>0){
+    Double_t test = fsmearBeam*fsmearBeam;
+    Double_t Rsq  = test + 1.;
+    Double_t dx,dy;
+    while(Rsq>test){
+     dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
+     dy = gRandom->Uniform(-1.,1.) * fsmearBeam;
+     Rsq = dx*dx+dy*dy;
+    }
+    vx = vx + dx/100.; 
+    vy = vy + dy/100.; 
+  }
   cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   return kTRUE;
 }

@@ -73,6 +73,27 @@ def ecalYellow():
  hcal = fGeo.GetVolume("HcalModule")
  if hcal : hcal.SetLineColor(ROOT.kOrange+3) 
  if ecal or hcal: evmgr.ElementChanged(geoscene,True,True)
+def switchOf(tag):
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.lower().find(tag)<0:
+     v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True)
+def switchOn(tag):
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.lower().find(tag)<0:
+     v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True)
+
 # switch of drawing of rock
 def switchOfRock():
  evmgr = ROOT.gEve

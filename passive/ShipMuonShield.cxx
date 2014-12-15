@@ -39,10 +39,11 @@ ShipMuonShield::ShipMuonShield()
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title, 
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
-                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t y)
+                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t y, Double_t fl)
   : FairModule(name ,Title)
 {
  fDesign = Design;
+ fField  = fl;
  if (fDesign==1){
     // passive design with tungsten and lead
      fMuonShieldLength = L1;   
@@ -179,7 +180,7 @@ void ShipMuonShield::ConstructGeometry()
 z<12 m: inside tunnel, and I fill the gap between tunnel and magnet (max-x at 1.6 m), with concrete too.
 z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
 */
-    Double_t ironField = 1.85*tesla;
+    Double_t ironField = fField*tesla;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
@@ -356,7 +357,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     absorberCore->SetLineColor(38);  
     top->AddNode(absorberCore, 1, new TGeoTranslation(0, 0, zEndOfAbsorb - dZ0));
 
-    Double_t ironField = 1.8*tesla;
+    Double_t ironField = fField*tesla;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
@@ -799,7 +800,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     absorberCore->SetLineColor(38);  
     top->AddNode(absorberCore, 1, new TGeoTranslation(0, 0, zEndOfAbsorb - dZ0));
 
-    Double_t ironField = 1.8*tesla;
+    Double_t ironField = fField*tesla;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);

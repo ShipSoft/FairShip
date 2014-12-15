@@ -10,7 +10,7 @@ import hepunit as G4Unit
 import ROOT
 gTransportationManager = G4TransportationManager.GetTransportationManager()
 
-def setMagnetField():
+def setMagnetField(flag=None):
     print 'setMagnetField() called'
     fGeo = ROOT.gGeoManager  
     vols = fGeo.GetListOfVolumes()
@@ -35,7 +35,9 @@ def setMagnetField():
         lvl = vl.GetLogicalVolume()
         if listOfFields.has_key(vln) :
           lvl.SetFieldManager(listOfFields[vln],True)  
-          # print 'set field for ',vln, listOfFields[vln].GetDetectorField().GetConstantFieldValue()
+          if flag=='dump': 
+              constField = listOfFields[vln].GetDetectorField().GetConstantFieldValue()
+              print 'set field for ',vln, constField
     g4Run = G4RunManager.GetRunManager()
     g4Run.GeometryHasBeenModified(True)
 

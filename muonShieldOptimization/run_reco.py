@@ -144,7 +144,11 @@ if not len(os.sys.argv)>1:
   if not os.path.abspath('.').find('neutrino')<0:
     executeSimple(['neutrino66'])
   else:  
-    executeSimple(['muon59','muon60','muon61','muon62'])
+    # executeSimple(['muon59','muon60','muon61','muon62'])
+    # executeSimple(['muon611','muon621','muon612',muon622','muon613','muon623','muon614','muon624'])
+    # executeSimple(['muon615','muon625','muon616','muon626'])
+    # executeSimple(['muon617','muon627','muon618','muon628'])
+    executeSimple(['muon618','muon628','muon619','muon629'])
 else : 
  pl=[]
  for p in os.sys.argv[1].split(','):
@@ -152,3 +156,4 @@ else :
    if not os.path.abspath('.').find('neutrino')<0: pref='neutrino'
    pl.append(pref+p) 
  mergeHistosMakePlots(pl)
+#61,611,612,613,614,615,616,62,621,622,623,624,625,626

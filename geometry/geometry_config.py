@@ -75,14 +75,24 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.max = 1.5*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
 
-    c.MuonStation0 = AttrDict(z=2600.*u.cm+extraVesselLength)
-    c.MuonStation1 = AttrDict(z=2700.*u.cm+extraVesselLength)
-    c.MuonStation2 = AttrDict(z=2800.*u.cm+extraVesselLength)
-    c.MuonStation3 = AttrDict(z=2900.*u.cm+extraVesselLength)
+    c.ecal  =  AttrDict(z=3540*u.cm + totalLength - 60*u.m)
+    c.HcalOption  =  HcalOption
+    hcalSpace = 0
+    hcalThickness = 300*u.cm
+    if not HcalOption < 0:
+     if HcalOption == 0 : 
+          c.hcal  =  AttrDict(z=45*u.cm + totalLength - 60.*m ) 
+     else:                
+          c.hcal  =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm )
+          hcalSpace = 20.*u.cm + hcalThickness + 5*u.cm 
+    c.MuonStation0 = AttrDict(z=2600.*u.cm+extraVesselLength+hcalSpace)
+    c.MuonStation1 = AttrDict(z=2700.*u.cm+extraVesselLength+hcalSpace)
+    c.MuonStation2 = AttrDict(z=2800.*u.cm+extraVesselLength+hcalSpace)
+    c.MuonStation3 = AttrDict(z=2900.*u.cm+extraVesselLength+hcalSpace)
     
-    c.MuonFilter0 = AttrDict(z=2650.*u.cm+extraVesselLength)
-    c.MuonFilter1 = AttrDict(z=2750.*u.cm+extraVesselLength)
-    c.MuonFilter2 = AttrDict(z=2850.*u.cm+extraVesselLength)
+    c.MuonFilter0 = AttrDict(z=2650.*u.cm+extraVesselLength+hcalSpace)
+    c.MuonFilter1 = AttrDict(z=2750.*u.cm+extraVesselLength+hcalSpace)
+    c.MuonFilter2 = AttrDict(z=2850.*u.cm+extraVesselLength+hcalSpace)
      
     c.Muon = AttrDict(z=0)
     c.Muon.XMax    =  300.*u.cm
@@ -145,10 +155,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
-
-    c.ecal  =  AttrDict(z=3540*u.cm + totalLength - 60*u.m)
-    c.hcal  =  AttrDict(z=45*u.m    + totalLength - 60*u.m)
-    c.HcalOption  =  HcalOption
 
     c.target               =  AttrDict(z=0*u.cm)
     c.target.sl            =  1*u.cm  # air slit total length
