@@ -4,7 +4,6 @@ local = False
 if not os.uname()[1].find('ubuntu')<0: local = True
 
 debug = False
-if local: debug = True
 
 withStepping = False
 # if debug: withStepping = True
@@ -22,7 +21,8 @@ mytrack   = 1
 scoreLog  = 1
 inclusive = True # write out all particles crossing scoring plane !
 myTimer   = {'total':0,'pythia':0,'geant4_conv':0}
-tauOnly   = False
+tauOnly    = False
+JpsiMainly = False
 work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
                  # pythia = geant4 conversion = 0.4/100 
@@ -48,7 +48,7 @@ def get_work_dir(run_number):
 
 
 def init():
-  global runnr, nev, ecut, tauOnly, work_dir
+  global runnr, nev, ecut, tauOnly,JpsiMainly, work_dir
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2014")
 
   ap = argparse.ArgumentParser(
@@ -58,7 +58,8 @@ def init():
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
-  ap.add_argument('-t', '--tau-only', action='store_true', dest='tauOnly')
+  ap.add_argument('-t', '--tau-only', action='store_true', dest='tauOnly',default=False)
+  ap.add_argument('-J', '--Jpsi-mainly', action='store_true', dest='JpsiMainly',default=False)
   ap.add_argument('-o', '--output', type=str, help="output directory", dest='work_dir', default=None)
   args = ap.parse_args()
   if args.debug:
@@ -124,6 +125,9 @@ myPythia.ReadString("WeakBosonExchange:all = on")
 if tauOnly :
   myPythia.ReadString("431:new  D_s+  D_s-  1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0")
   myPythia.ReadString("431:addChannel = 1   0.0640000    0      -15       16")
+if JpsiMainly :
+  myPythia.ReadString("443:new  J/psi  J/psi  4   0   0    3.09692    0.00009    3.09602    3.09782  0.   1   1   0   1   0")
+  myPythia.ReadString("443:addChannel = 1   0.1    0      -13       13")
 # make pions/kaons/lambda stable
 for s in [211,321,130,310,3122]:
   myPythia.ReadString(str(s)+':mayDecay = false')
@@ -199,6 +203,9 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        if p.GetStatusCode()!=1 : continue
        pid = p.GetPdgCode()
        if tauOnly and abs(pid) != 16: continue
+       mkey   =  p.GetMother(0)+1  
+       mother =  myPythia.GetParticle(mkey)
+       if JpsiMainly and abs(pid) != 13 and mother.GetPdgCode() != 443 : continue
        qed = pid in qedlist  # use cut only for photons, leptons/neutrinos, protons and neutrons
        p.Momentum(v)
        Ekin = (v.E()-v.M())
@@ -206,8 +213,6 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        G4particle = G4PrimaryParticle( pid )
        G4particle.Set4Momentum( v.Px()*GeV,v.Py()*GeV,v.Pz()*GeV,v.E()*GeV )
 # store mother ID
-       mkey   =  p.GetMother(0)+1  
-       mother =  myPythia.GetParticle(mkey)
        curPid =  p.GetPdgCode()      + 10000  # make it positive
        moPid  =  mother.GetPdgCode() + 10000
        w      =  curPid + moPid * 100000
