@@ -16,7 +16,7 @@ class ShipMuonShield : public FairModule
     ShipMuonShield();
     virtual ~ShipMuonShield();
     void ConstructGeometry();
-    ClassDef(ShipMuonShield,1)
+    ClassDef(ShipMuonShield,2)
  protected:
   
   Int_t  fDesign;       // design of muon shield, 1=passive, active = ...
