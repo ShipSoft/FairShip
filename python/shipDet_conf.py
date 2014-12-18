@@ -116,7 +116,7 @@ def configure(run,ship_geo):
  Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)
  Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
  run.AddModule(Muon)
- if ship_geo.HcalOption == 0:
+ if not ship_geo.HcalOption < 0:
   hcal = posHcal(ship_geo.hcal.z)
   run.AddModule(hcal)
 
