@@ -60,6 +60,10 @@ for o, a in opts:
         if o in ("-F"):
             deepCopy = True
 
+class MyTrackingAction(ROOT.FairMCApplication):
+ def PreTrack(self,atrack):
+   print 'xes'
+
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
@@ -124,7 +128,7 @@ if simEngine == "Genie":
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(dy,ship_geo.chambers.Length, ship_geo.target.z0, ship_geo.Chamber1.z-ship_geo.chambers.Tub1length,250.)
+ Geniegen.SetPositions(dy,ship_geo.Chamber1.z-ship_geo.chambers.Tub1length,ship_geo.chambers.Length,ship_geo.target.z0, 250.)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
@@ -200,7 +204,10 @@ if inactivateMuonProcesses :
  import G4processes
  gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess('muIoni','mu+')
- procmu.SetVerboseLevel(2)     
+ procmu.SetVerboseLevel(2) 
+
+## myTA = MyTrackingAction()
+
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # -----Runtime database---------------------------------------------
