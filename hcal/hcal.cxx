@@ -857,7 +857,7 @@ void hcal::ConstructModule()
 // -----   Private method ConstructModuleSimple-----------------------------    
 void hcal::ConstructModuleSimple()
 {
-  if (fModule==NULL) return;
+  if (fModule=NULL) return;
 
   ConstructTileSimple(0);
   ConstructTileSimple(1);
