@@ -2,24 +2,34 @@
 # -*- coding: latin-1 -*-
 import ROOT,os
 import shipunit as u
-def posHcal(z):
- f =  open(os.environ["FAIRSHIP"]+"/geometry/hcal.geo",'r')
- fn = open(os.environ["FAIRSHIP"]+"/geometry/hcalz.geo",'w')
- for l in f.readlines():
+def posHcal(z): 
+ sz = "hcalz"+str(z)+".geo"
+ floc = os.environ["FAIRSHIP"]+"/geometry"
+ if not sz in os.listdir(floc):
+  f =  open(floc+"/hcal.geo",'r')
+  fn = open(floc+"/"+sz,'w')
+  for l in f.readlines():
    if not l.find("ZPos")<0:
-      l ="ZPos="+str(z)+ "	#Position of Hcal start		[cm]\n"
+      l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
    fn.write(l)
- f.close()
- fn.close()  
+  f.close()
+  fn.close()  
+ hcal=ROOT.hcal("Hcal", ROOT.kTRUE, sz)
+ return hcal
 def posEcal(z):
- f =  open(os.environ["FAIRSHIP"]+"/geometry/ecal_ellipse6x12m2.geo",'r')
- fn = open(os.environ["FAIRSHIP"]+"/geometry/ecal_ellipse6x12m2z.geo",'w')
- for l in f.readlines():
+ sz = "ecal_ellipse6x12m2z"+str(z)+".geo"
+ floc = os.environ["FAIRSHIP"]+"/geometry"
+ if not sz in os.listdir(floc):
+  f =  open(floc+"/ecal_ellipse6x12m2.geo",'r')
+  fn = open(floc+"/"+sz,'w')
+  for l in f.readlines():
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Ecal start		[cm]\n"
    fn.write(l)
- f.close()
- fn.close()  
+  f.close()
+  fn.close()  
+ ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
+ return ecal
 
 def configure(run,ship_geo):
 # -----Create media-------------------------------------------------
@@ -32,7 +42,8 @@ def configure(run,ship_geo):
  run.AddModule(cave)
 
  if ship_geo.muShieldDesign==1:
-  MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.length) 
+  MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.length,\
+                                   ship_geo.muShield.LE) 
  elif ship_geo.muShieldDesign==2:
   MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE) 
@@ -63,7 +74,7 @@ def configure(run,ship_geo):
  Veto.SetB(ship_geo.Yheight/2.)
  run.AddModule(Veto)
 
- if ship_geo.muShieldDesign==5:
+ if ship_geo.muShieldDesign==5 or ship_geo.muShieldDesign==1:
   taumagneticspectrometer = ROOT.ShipTAUMagneticSpectrometer("TAUMagneticSpectrometer", ship_geo.tauMS.zLS, ship_geo.tauMS.FeL, ship_geo.tauMS.AirL,
                                                             ship_geo.tauMS.SpectroL,ship_geo.tauMS.GapV, ship_geo.tauMS.DGap, ship_geo.tauMS.MGap, ship_geo.tauMS.mf)
   run.AddModule(taumagneticspectrometer)
@@ -93,8 +104,7 @@ def configure(run,ship_geo):
   run.AddModule(Strawtubes) 
 
  if ship_geo.strawDesign == 4: 
-  posEcal(ship_geo.ecal.z)
-  ecal        = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal_ellipse6x12m2z.geo")
+  ecal = posEcal(ship_geo.ecal.z)
  else:   ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
  run.AddModule(ecal)
 
@@ -106,9 +116,8 @@ def configure(run,ship_geo):
  Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)
  Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
  run.AddModule(Muon)
- if ship_geo.HcalOption == 0:
-  posHcal(ship_geo.hcal.z)
-  hcal=ROOT.hcal("Hcal", ROOT.kTRUE, "hcalz.geo")
+ if not ship_geo.HcalOption < 0:
+  hcal = posHcal(ship_geo.hcal.z)
   run.AddModule(hcal)
 
 #-----   Magnetic field   -------------------------------------------

@@ -2,7 +2,7 @@
 inputFile = 'ship.Pythia8-TGeant4.root'
 debug = False
 withNoAmbiguities = None # True   for debugging purposes
-nEvents   = 10000
+nEvents   = 99999
 withHists = True
 dy = None
 
@@ -34,7 +34,7 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
-print 'configured to process ',nEvents,' events from ' ,inputFile
+print 'configured to process ',nEvents,' events from ' ,inputFile, ' with option Yheight = ',dy
 outFile = inputFile.replace('.root','_rec.root') 
 os.system('cp '+inputFile+' '+outFile)
 
@@ -72,8 +72,6 @@ class makeHitList:
  def __init__(self,fn):
   self.sTree     = fn.cbmsim
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
-  fGeo = ROOT.gGeoManager  
-  self.vols = fGeo.GetListOfVolumes()
 # prepare for output
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -91,6 +89,10 @@ class makeHitList:
    self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
    self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
    self.mcLink      = self.sTree.Branch( "fitTrack2MC",self.fitTrack2MC,32000,-1)  
+   bl = fn.FindObjectAny('BranchList')
+   bl.Add(ROOT.TObjString('SmearedHits'))
+   bl.Add(ROOT.TObjString('FitTracks'))
+   bl.Add(ROOT.TObjString('fitTrack2MC'))
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
 #
@@ -116,6 +118,7 @@ class makeHitList:
  def execute(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
+  if n%1000==0: print "==> event ",n
   nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists = {}
   self.SmearedHits.Clear()
@@ -153,9 +156,13 @@ fM.init(bfield)
  
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+if debug: # init event display
+ display = ROOT.genfit.EventDisplay.getInstance()
+
 
 # init fitter
 fitter          = ROOT.genfit.KalmanFitterRefTrack()
+if debug: fitter.setDebugLvl(1) # produces lot of printout
 WireMeasurement = ROOT.genfit.WireMeasurement
 # access ShipTree
 SHiP = makeHitList(fout)
@@ -166,13 +173,14 @@ for iEvent in range(0, SHiP.nEvents):
  if hitPosLists == None : break # end of events
 # check if there are enough measurements:
  fitTrack = {}
+ nTrack = -1
  for atrack in hitPosLists:
   if atrack < 0: continue # these are hits not assigned to MC track because low E cut
   pdg    = SHiP.sTree.MCTrack[atrack].GetPdgCode()
   if not PDG.GetParticle(pdg): continue # unknown particle
   meas = hitPosLists[atrack]
   nM = meas.size()
-  if debug: print iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP()
+  if debug: print "start ",iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP()
   charge = PDG.GetParticle(pdg).Charge()/(3.)
   posM = ROOT.TVector3(0, 0, 0)
   momM = ROOT.TVector3(0,0,3.*u.GeV)
@@ -195,14 +203,15 @@ for iEvent in range(0, SHiP.nEvents):
   for m in meas:
       hitCov = ROOT.TMatrixDSym(7)
       hitCov[6][6] = resolution*resolution
-      tp = ROOT.genfit.TrackPoint() 
-      measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp)
-      fitTrack[atrack].insertPoint(ROOT.genfit.TrackPoint(measurement,fitTrack[atrack]))
+      tp = ROOT.genfit.TrackPoint(fitTrack[atrack]) # note how the point is told which track it belongs to 
+      measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
+      tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
+      fitTrack[atrack].insertPoint(tp)  # add point to Track
 #check
   if not fitTrack[atrack].checkConsistency():
    print 'Problem with track before fit, not consistent',fitTrack
   h['nmeas'].Fill(nM)
-  if nM > 8 : 
+  if nM > 28 : 
 # do the fit
    try:    fitter.processTrack(fitTrack[atrack])
    except: continue   
@@ -218,7 +227,10 @@ for iEvent in range(0, SHiP.nEvents):
   theTrack = ROOT.genfit.Track(fitTrack[atrack])
   SHiP.fGenFitArray[nTrack] = theTrack
   SHiP.fitTrack2MC.push_back(atrack)
-  if debug:print 'save track',theTrack,chi2
+  if debug: 
+   print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
+   if nM > 28:  
+    display.addEvent(fitTrack[atrack])
 # make tracks persistent
  if debug: print 'call Fill', len(SHiP.fGenFitArray),nTrack,SHiP.fGenFitArray.GetEntries()
  SHiP.fitTracks.Fill()
@@ -227,9 +239,13 @@ for iEvent in range(0, SHiP.nEvents):
  if debug: print 'end of event after Fill'
  
 # end loop over events
-xx = fout.FindObjectAny("cbmsim;1")
-xx.Delete()
+
 print 'finished writing tree'
 SHiP.sTree.Write()
+
+if debug:
+# open event display
+ display.open() 
+
 
 

@@ -16,10 +16,12 @@ if [ $? -eq 0 ] ; then
   exit 1
 fi
 
+RESTORE_LINKS=""
 for d in geometry python macro muonShieldOptimization ; do
   echo "copy $d -> $BLD_DIR"
   [ -d $BLD_DIR/$d ] && rm -rf $BLD_DIR/$d
   cp -r $d $BLD_DIR
+  RESTORE_LINKS+=" $d"
 done
 
 path=$(readlink -f $BLD_DIR)
@@ -32,4 +34,7 @@ ADD . $VMPATH
 
 EOF
 docker build --rm -t $REPO:$TAG $path
+pushd $BLD_DIR
+for d in $RESTORE_LINKS ; do rm -rf $d ; ln -s ../$d . ;  done
+popd
 echo "to check: docker run -ti --rm $REPO:$TAG sh"

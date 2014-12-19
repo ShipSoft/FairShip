@@ -17,7 +17,8 @@ atexit.register(pyExit)
 #-----User Settings:-----------------------------------------------
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
-dy = ""
+InputFile = None 
+dy = str(10.)
 # simEngine = "Genie"
 #
 try:
@@ -42,13 +43,23 @@ for o, a in opts:
             simEngine = "Cosmics"
         if o in ("-Y"): 
             dy = float(a)
+        if o in ("-f"):
+            InputFile = a
+        # try to extract from input file name
+            tmp = InputFile.split('.')
+            try:
+             dy = float( tmp[1]+'.'+tmp[2] )
+             tag = str(dy)+'.'+tmp[3]
+            except:
+             tmp = None
 
 print "FairShip setup for",simEngine
 
-tag = simEngine+"-"+mcEngine+'_D'
-if dy: tag = str(dy)+'.'+tag 
-InputFile     ="ship."+tag+".root"  
-ParFile       ="ship.params."+tag+".root"  
+if not InputFile:
+ tag = simEngine+"-"+mcEngine+'_D'
+ if dy: tag = str(dy)+'.'+tag 
+ InputFile     ="ship."+tag+".root"  
+ParFile       ="ship.params."+tag.replace('_rec','')+".root"  
 OutFile	      ="tst."+tag+".root"
 
 # draw Ecal yellow instead of black
@@ -58,10 +69,68 @@ def ecalYellow():
  geoscene = sc.FindChild('Geometry scene')
  fGeo = g.FindObjectAny("FAIRGeom")
  ecal = fGeo.GetVolume("EcalModule3")
- ecal.SetLineColor(ROOT.kYellow) 
+ if ecal : ecal.SetLineColor(ROOT.kYellow) 
  hcal = fGeo.GetVolume("HcalModule")
- hcal.SetLineColor(ROOT.kOrange+3) 
+ if hcal : hcal.SetLineColor(ROOT.kOrange+3) 
+ if ecal or hcal: evmgr.ElementChanged(geoscene,True,True)
+def switchOf(tag):
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.lower().find(tag)<0:
+     v.SetVisibility(0)
  evmgr.ElementChanged(geoscene,True,True)
+def switchOn(tag):
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.lower().find(tag)<0:
+     v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True)
+
+# switch of drawing of rock
+def switchOfRock():
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.lower().find('rock')<0:
+     v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True)
+def switchOfAll(exc):
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname in exc: v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True) 
+def switchOnAll(exc):
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname in exc: v.SetVisibility(1)
+ evmgr.ElementChanged(geoscene,True,True) 
+
+def select(pattern):
+ exc = []
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.find(pattern) < 0 : exc.append(vname)
+ return exc
 
 #----Load the default libraries------
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")

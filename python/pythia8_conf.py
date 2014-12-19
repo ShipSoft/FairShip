@@ -1,12 +1,7 @@
 import ROOT
 import shipunit as u
-import hnl
-
-def configure(P8gen,mass,couplings,inclusive,deepCopy=False):
+def configure(P8gen,inclusive,deepCopy=False):
 # configure pythia8 for Ship usage
-# now takes the HNL mass and a list
-# of couplings [U2e, U2mu, U2tau]
-# as parameters
  P8gen.UseRandom3() # TRandom1 or TRandom3 ?
  P8gen.SetMom(400)  # beam momentum in GeV 
  if deepCopy: P8gen.UseDeepCopy()
@@ -40,7 +35,8 @@ def configure(P8gen,mass,couplings,inclusive,deepCopy=False):
   P8gen.SetHNLId(9900014)
 # also add to PDG
   gamma = 197.3269631e-16 / float(ctau)
-  pdg.AddParticle('N2','HNL', float(mass), False, gamma, 0., 'N2', 9900014)
+  #pdg.AddParticle('N2','HNL', float(mass), False, gamma, 0., 'N2', 9900014)
+  addHNLtoROOT(pid=9900014,m=float(mass),g=gamma)
 # 12 14 16 neutrinos replace with N2
 #overwrite /\c decays
   P8gen.SetParameters("4122:new  Lambda_c+   Lambda_cbar-   2   3   0    2.28646    0.00000    0.00000    0.00000  5.99000e-02   0   1   0   1   0")

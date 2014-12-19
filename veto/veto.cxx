@@ -264,6 +264,7 @@ void veto::ConstructGeometry()
     InitMedium("Aluminum");
     TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
     InitMedium("ShipSens");
+    TGeoMedium *Sens =gGeoManager->GetMedium("ShipSens");
     InitMedium("Scintillator");
     TGeoMedium *Se =gGeoManager->GetMedium("Scintillator");
     gGeoManager->SetNsegments(100);
@@ -469,8 +470,9 @@ void veto::ConstructGeometry()
 
     // design 4: elliptical double walled tube with LiSci in between
     // Interpolate wall thicknesses based on the vertical size fBtube.
-      Double_t walli=(fBtube-6.*m)*(8.-5.)*mm/(4.*m)+3.*mm;	
-      Double_t wallo=(fBtube-6.*m)*(3.-2.)*cm/(4.*m)+2.*cm;	
+      Double_t walli=(2*fBtube-6.*m)*(8.-5.)*mm/(4.*m)+5.*mm;	
+      Double_t wallo=(2*fBtube-6.*m)*(3.-2.)*cm/(4.*m)+2.*cm;	
+      
       Double_t ws=0.5*m; //Straw screen plates sticking out of the outer tube.
       //Note: is just 2 cm for veto chamber, to avoid muon hits :-).
       Double_t liscitube=0.1*m;	
@@ -545,7 +547,7 @@ void veto::ConstructGeometry()
       top->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid+wallo/2.));
 
       //Add one more sensitive plane after vacuum tube for timing
-      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Se,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
       TimeDet->SetLineColor(kMagenta-10);
       top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid*1.5+wallo+5.*cm));
       AddSensitiveVolume(TimeDet);
@@ -556,20 +558,29 @@ void veto::ConstructGeometry()
       Double_t dIronOpera= 0.3*m;
 
       //Add one sensitive plane in middle of Goliath
-      TGeoVolume *Emulsion = gGeoManager->MakeBox("Emulsion", Se, 0.5*m, 0.5*m, 5.*cm);
+      TGeoVolume *Emulsion = gGeoManager->MakeBox("Emulsion", Sens, 0.5*m, 0.5*m, 5.*cm);
       Emulsion->SetLineColor(kMagenta-10);
       top->AddNode(Emulsion, 1, new TGeoTranslation(0, 0, ZGmid));
       AddSensitiveVolume(Emulsion);
 
       //Add one sensitive plane after nu-tau mu-shield
-      TGeoVolume *DetMuNuTau = gGeoManager->MakeBox("DetMuNuTau", Se, 2.5*m, 5.*m, 5.*cm);
-      DetMuNuTau->SetLineColor(kMagenta-10);
-      top->AddNode(DetMuNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m+dIronOpera+50.*cm));       
-      AddSensitiveVolume(DetMuNuTau);
+      // now taken care by volDriftLayer and volDriftLayer1-5
+      //TGeoVolume *DetMuNuTau = gGeoManager->MakeBox("DetMuNuTau", Se, 2.5*m, 5.*m, 5.*cm);
+      //DetMuNuTau->SetLineColor(kMagenta-10);
+      //top->AddNode(DetMuNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m+dIronOpera+50.*cm));       
+      //AddSensitiveVolume(DetMuNuTau);
 
 
       //Add one sensitive plane counting rate in second detector downstream
-      TGeoVolume *Det2 = gGeoManager->MakeBox("Det2", Se, 2.5*m, 5.*m, 5.*cm);
+      // with shielding around, 
+      Double_t thickness = 10.*cm /2.;
+      TGeoBBox *shield2Out = new TGeoBBox("shield2Out",2.5*m+thickness, 3*m+thickness, 20.*cm+thickness);
+      TGeoBBox *shield2In  = new TGeoBBox("shield2In", 2.5*m+0.1*cm, 3*m+0.1*cm, 20.*cm+0.1*cm);
+      TGeoCompositeShape *shieldDet2 = new TGeoCompositeShape("shieldDet2", "shield2Out-shield2In");
+      TGeoVolume *sdet2 = new TGeoVolume("shieldDet2", shieldDet2, St);
+      sdet2->SetLineColor(kWhite-5);
+      top->AddNode(sdet2, 1, new TGeoTranslation(0, 0, fTub6z + 50.*m));
+      TGeoVolume *Det2 = gGeoManager->MakeBox("Det2", Sens, 2.5*m, 3.*m, 5.*cm);
       Det2->SetLineColor(kGreen+3);
       top->AddNode(Det2, 1, new TGeoTranslation(0, 0, fTub6z + 50.*m));       
       AddSensitiveVolume(Det2);

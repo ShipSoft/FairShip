@@ -51,7 +51,7 @@ void ShipTAUMagneticSpectrometer::ConstructGeometry()
     TGeoVolume *top=gGeoManager->GetTopVolume();
     TGeoMedium *Fe  = gGeoManager->GetMedium("iron");
     
-    Int_t d = 0;
+    Double_t d = 0;
     
     TGeoUniformMagField *magField = new TGeoUniformMagField(0.,-MagneticField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,MagneticField,0.);
@@ -70,13 +70,13 @@ void ShipTAUMagneticSpectrometer::ConstructGeometry()
     cout << " NIronSlabs = " << NIronSlabs << endl;
     cout << " zLastSlab = "<< zLastSlab << endl;
     cout << d << endl;
-    Int_t d1 = d- (MiddleGap + IronLenght); //z coord of the center of the last layer of the first spectrometer
+    Double_t d1 = d- (MiddleGap + IronLenght); //z coord of the center of the last layer of the first spectrometer
     cout << d1 << endl;
     
     TGeoVolume *volLayer2 = new TGeoVolume("volLayer2",Layer,Fe);
     for(Int_t i = 0; i< NIronSlabs; i++)
     {
-        Int_t d2 = d1-i*(IronLenght+AirLenght);
+        Double_t d2 = d1-i*(IronLenght+AirLenght);
         top->AddNode(volLayer2,i,new TGeoTranslation(0, 0, d2));
     }
     volLayer2->SetField(RetField);

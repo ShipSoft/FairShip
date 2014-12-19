@@ -10,7 +10,7 @@
 
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
-
+const Bool_t debug = false;
 using namespace Pythia8;
 
 // -----   Default constructor   -------------------------------------------
@@ -31,13 +31,13 @@ Bool_t HNLPythia8Generator::Init()
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   fPythia.setRndmEnginePtr(fRandomEngine);
 
-  cout<<"Beam Momentum "<<fMom<<endl;
+  if ( debug ){cout<<"Beam Momentum "<<fMom<<endl;}
   fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fHNL)->Lifetime();
-  cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<endl;
+  if ( debug ){cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<endl;}
   fctau = fPythia.particleData.tau0(fHNL); //* 3.3333e-12
-  cout<<"ctau pythia "<<fctau<<"[mm]"<<endl;
+  if ( debug ){cout<<"ctau pythia "<<fctau<<"[mm]"<<endl;}
   
   return kTRUE;
 }
@@ -164,7 +164,7 @@ void HNLPythia8Generator::SetParameters(char* par)
 {
   // Set Parameters
     fPythia.readString(par);
-    cout<<"fPythia.readString(\""<<par<<"\")"<<endl;
+    if ( debug ){cout<<"fPythia.readString(\""<<par<<"\")"<<endl;}
 } 
 
 // -------------------------------------------------------------------------

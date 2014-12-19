@@ -17,13 +17,13 @@ deepCopy     = False  # False = copy only stable particles to stack, except for 
 eventDisplay = False
 inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
-dy           = 10
+dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = True
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i:m:c",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
-                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "mass=", "couplings=", "coupling="])
+                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -41,11 +41,13 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-            if not inputFile:   inputFile = 'Genie-mu-_anti_nu_mu-gntp.113.gst.root'
+            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
+        if o in ("--phiRandom"):
+            phiRandom = True
         if o in ("--Cosmics"):
             simEngine = "Cosmics"
         if o in ("-n", "--nEvents="):
@@ -67,6 +69,10 @@ for o, a in opts:
         if o in ("-c", "--couplings", "--coupling"):
             theHNLcouplings = [float(c) for c in a.split(",")]
 
+class MyTrackingAction(ROOT.FairMCApplication):
+ def PreTrack(self,atrack):
+   print 'xes'
+
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
@@ -75,8 +81,8 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - muShieldDesign    = 2  # 1=passive 2=active (default)
 # - targetOpt         = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits (default)
 # - strawDesign       = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
-# - HcalOption        = -1 # no hcal,  0=hcal after muon
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 0, Yheight = dy )
+# - HcalOption        = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 1, Yheight = dy)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -103,6 +109,7 @@ run.SetOutputFile(outFile)  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C 
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
+# import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 import shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
@@ -125,14 +132,15 @@ if simEngine == "Pythia6":
  primGen.AddGenerator(P6gen)
 if simEngine == "Genie":
 # Genie
- pointZero =  -ship_geo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield
- # pointZero =   0.  # for testing
+ # pointZero =  -ship_geo.decayVolume.length/2. - 1.*u.cm  # nu interaction in last 10% of interactionLength of mushield
+ pointZero =   0.  # for testing
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
+ Geniegen.SetPositions(dy,ship_geo.Chamber1.z-ship_geo.chambers.Tub1length,ship_geo.chambers.Length,ship_geo.target.z0, 250.)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
- print 'Generate ',nEvents,' with Genie input'
+ print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
 #  add tungsten to PDG
  pdg = ROOT.TDatabasePDG.Instance()
  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
@@ -154,18 +162,22 @@ if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation, [-50m - 50m]
  primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
  MuonBackgen = ROOT.MuonBackGenerator()
- MuonBackgen.Init(inputFile,firstEvent)
+ MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
- print 'Process ',nEvents,' from input file'
+ print 'Process ',nEvents,' from input file, with Phi random=',phiRandom 
 #
 if simEngine == "Cosmics":
- targetz = 0;
- primGen.SetTarget(targetz, 0.)
+ primGen.SetTarget(0., 0.)
+ targetz = 0
+ Z1 = ship_geo.MuonStation3.z # 3900
+ Z2 = ship_geo.vetoStation.z # -1968
+ Z3 = ship_geo.chambers.Tub1length # 250
+ zmiddle = (Z1 + (Z2-2*Z3))/2 # 716
  Cosmicsgen = ROOT.CosmicsGenerator()
- Cosmicsgen.Init(targetz)
+ Cosmicsgen.Init(zmiddle)
  primGen.AddGenerator(Cosmicsgen)
-print 'Process ',nEvents,' Cosmic events'
+ print 'Process ',nEvents,' Cosmic events'
 #
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------
@@ -190,7 +202,7 @@ if eventDisplay:
 # manipulate G4 geometry to enable magnetic field in active shielding, VMC can't do it.
 if ship_geo.muShieldDesign != 1:
  import geomGeant4
- geomGeant4.setMagnetField()
+ geomGeant4.setMagnetField() # ('dump') for printout of mag fields
  geomGeant4.printWeightsandFields()
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
@@ -202,7 +214,10 @@ if inactivateMuonProcesses :
  import G4processes
  gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess('muIoni','mu+')
- procmu.SetVerboseLevel(2)     
+ procmu.SetVerboseLevel(2) 
+
+## myTA = MyTrackingAction()
+
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # -----Runtime database---------------------------------------------
