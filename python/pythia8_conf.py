@@ -1,5 +1,9 @@
 import ROOT
 import shipunit as u
+def addHNLtoROOT(pid=9900014 ,m = 1.0, g=3.654203020370371E-21):
+ pdg = ROOT.TDatabasePDG.Instance()
+ pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid)
+#
 def configure(P8gen,inclusive,deepCopy=False):
 # configure pythia8 for Ship usage
  P8gen.UseRandom3() # TRandom1 or TRandom3 ?
