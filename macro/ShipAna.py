@@ -56,6 +56,8 @@ fM.init(bfield)
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<25',100,0.,50.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverPz','delPz / Pz',100,0.,50.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<25',100,0.,50.,100,-0.5,0.5)
 ut.bookHist(h,'chi2','chi2/nmeas after trackfit',100,0.,100.)
 ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
 ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
@@ -119,19 +121,19 @@ def makePlots():
    h['meanhits'].Draw()
    ut.bookCanvas(h,key='fitresults',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    cv = h['fitresults'].cd(1)
-   h['delPOverP'].Draw('box')
+   h['delPOverPz'].Draw('box')
    cv = h['fitresults'].cd(2)
    cv.SetLogy(1)
    h['chi2'].Draw()
    cv = h['fitresults'].cd(3)
-   h['delPOverP_proj'] = h['delPOverP'].ProjectionY()
+   h['delPOverPz_proj'] = h['delPOverPz'].ProjectionY()
    ROOT.gStyle.SetOptFit(11111)
-   h['delPOverP_proj'].Draw()
-   h['delPOverP_proj'].Fit('gaus')
+   h['delPOverPz_proj'].Draw()
+   h['delPOverPz_proj'].Fit('gaus')
    cv = h['fitresults'].cd(4)
-   h['delPOverP2_proj'] = h['delPOverP2'].ProjectionY()
-   h['delPOverP2_proj'].Draw()
-   fitSingleGauss('delPOverP2_proj')
+   h['delPOverP2z_proj'] = h['delPOverP2z'].ProjectionY()
+   h['delPOverP2z_proj'].Draw()
+   fitSingleGauss('delPOverP2z_proj')
    h['fitresults'].Print('fitresults.gif')
    ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    print 'finished with first canvas'
@@ -185,14 +187,19 @@ def myEventLoop(N):
    h['chi2'].Fill(chi2,wg)
    h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
    P = fittedState.getMomMag()
+   Pz = fittedState.getMom().z()
    mcPartKey = sTree.fitTrack2MC[key]
    mcPart    = sTree.MCTrack[mcPartKey]
    if not mcPart : continue
    Ptruth    = mcPart.GetP()
+   Ptruthz    = mcPart.GetPz()
    delPOverP = (Ptruth - P)/Ptruth
    h['delPOverP'].Fill(Ptruth,delPOverP)
+   delPOverPz = (1./Ptruthz - 1./Pz) * Ptruthz
+   h['delPOverPz'].Fill(Ptruthz,delPOverPz)
    if chi2>25: continue
    h['delPOverP2'].Fill(Ptruth,delPOverP)
+   h['delPOverP2z'].Fill(Ptruth,delPOverPz)
 # try measure impact parameter
    trackDir = fittedState.getDir()
    trackPos = fittedState.getPos()
