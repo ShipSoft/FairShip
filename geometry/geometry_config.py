@@ -81,7 +81,7 @@ with ConfigRegistry.register_config("basic") as c:
     hcalThickness = 300*u.cm
     if not HcalOption < 0:
      if HcalOption == 0 : 
-          c.hcal  =  AttrDict(z=45*u.cm + totalLength - 60.*m ) 
+          c.hcal  =  AttrDict(z=45*u.cm + totalLength - 60.*u.m ) 
      else:                
           c.hcal  =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm )
           hcalSpace = 20.*u.cm + hcalThickness + 5*u.cm 

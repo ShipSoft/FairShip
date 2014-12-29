@@ -95,6 +95,7 @@ class ShipReco:
  " convert FairSHiP MC hits to measurements"
  def __init__(self,fn):
   self.sTree     = fn.cbmsim
+  if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
 # prepare for output
   self.fPartArray   = ROOT.TClonesArray("TParticle") 

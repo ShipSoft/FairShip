@@ -1,6 +1,8 @@
 import os, subprocess,ROOT
 import rootUtils as ut
 
+# support for eos, assume: eosmount $HOME/eos
+
 h = {}
 
 def fitSingleGauss(x,ba=None,be=None):
@@ -25,7 +27,7 @@ def fitSingleGauss(x,ba=None,be=None):
     h[x].Fit(myGauss,'','',ba,be) 
 
 cmd     = os.environ["FAIRSHIP"]+"/macro/ShipReco.py"  
-cmdAna  = os.environ["FAIRSHIP"]+"/macro/ShipAna.py"  
+cmdAna  = os.environ["FAIRSHIP"]+"/macro/ShipAna.py"
 def execute( ncpu = 4 ):
   cpus = {}
   log  = {}
@@ -48,13 +50,13 @@ def execute( ncpu = 4 ):
         if  not f.find("geofile_full")<0:
           inputfile = f.replace("geofile_full","ship")
           log[k]  = open("logRec",'w')
-          cpus[k] = subprocess.Popen(["python",cmd,"-f "+inputfile], stdout=log[k],)
+          cpus[k] = subprocess.Popen(["python",cmd,"-n 9999999 -f "+inputfile], stdout=log[k],)
           k+=1
           os.chdir('../')
           break
   return cpus,log
 
-def executeSimple(prefixes):
+def executeSimple(prefixes,reset=False):
  for prefix in prefixes:
   jobs = []
   for x in os.listdir('.'):
@@ -67,15 +69,15 @@ def executeSimple(prefixes):
       for f in os.listdir('.'):
         if  not f.find("geofile_full")<0:
           inputfile = f.replace("geofile_full","ship")
-          if not "logRec" in os.listdir('.'):
+          if not "logRec" in os.listdir('.') or reset:
            log  = open("logRec",'w')
            print 'launch',x
-           process = subprocess.Popen(["python",cmd,"-f "+inputfile], stdout=log)
+           process = subprocess.Popen(["python",cmd,"-n 9999999", "-f "+inputfile], stdout=log)
            process.wait()
            print 'finished ',process.returncode
            log.close() 
           log  = open("logAna",'w')
-          process = subprocess.Popen(["python",cmdAna,"-f "+inputfile.replace('.root','_rec.root')], stdout=log)
+          process = subprocess.Popen(["python",cmdAna,"-n 9999999", "-f "+inputfile.replace('.root','_rec.root')], stdout=log)
           process.wait()          
           print 'finished ',process.returncode
           log.close() 
@@ -144,11 +146,11 @@ if not len(os.sys.argv)>1:
   if not os.path.abspath('.').find('neutrino')<0:
     executeSimple(['neutrino66'])
   else:  
-    # executeSimple(['muon59','muon60','muon61','muon62'])
-    # executeSimple(['muon611','muon621','muon612',muon622','muon613','muon623','muon614','muon624'])
-    # executeSimple(['muon615','muon625','muon616','muon626'])
-    # executeSimple(['muon617','muon627','muon618','muon628'])
-    executeSimple(['muon618','muon628','muon619','muon629'])
+    fullList = [] # ['muon59','muon60','muon61','muon62']
+    for x in range(9,10): 
+     fullList.append('muon61'+str(x))
+     fullList.append('muon62'+str(x))
+    executeSimple(fullList,reset=True)
 else : 
  pl=[]
  for p in os.sys.argv[1].split(','):

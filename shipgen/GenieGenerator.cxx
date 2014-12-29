@@ -92,7 +92,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     if (fn==fNevents) {fLogger->Fatal(MESSAGE_ORIGIN, "No more input events");}
     fTree->GetEntry(fn);
     fn++;
-    if (fn%100==0) {
+    if (fn%1000==0) {
       cout << "Info GenieGenerator: neutrino " << " event-nr "<< fn << endl;
       }
 // generate a random point on the vessel, take veto z, and calculate outer lid position
