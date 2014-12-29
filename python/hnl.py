@@ -8,6 +8,20 @@
 #
 #   Created: 30/11/2014 Elena Graverini (elena.graverini@cern.ch)
 #
+#   Sample usage:
+#     ipython -i hnl.py
+#     In [1]: b = HNL(1.,[1.e-8, 2.e-8, 1.e-9],True)
+#     HNLbranchings instance initialized with couplings:
+#          U2e   = 1e-08
+#	   U2mu  = 2e-08
+#	   U2tau = 1e-09
+#     and mass:
+#	   m = 1.0 GeV
+#     In [2]: b.computeNLifetime()
+#     Out[2]: 4.777721453160521e-05
+#     In [3]: b.findBranchingRatio('N -> pi mu')
+#     Out[3]: 0.11826749348890987
+#
 # ==================================================================
 """
 
@@ -22,7 +36,18 @@ def PDGname(particle):
     """
     Trim particle name for use with the PDG database
     """
-    if not (('-' in particle) or ('+' in particle)):
+    if 'down' in particle: return 'd'
+    if 'up' in particle: return 'u'
+    if 'strange' in particle: return 's'
+    if 'charm' in particle: return 'c'
+    if 'bottom' in particle: return 'b'
+    if 'beauty' in particle: return 'b'
+    if 'top' in particle: return 't'
+    if '1' in particle:
+        particle = particle.replace('1',"'")
+    if (not (('-' in particle) or ('+' in particle) or ('0' in particle)
+             or ('nu_' in particle) or ('eta' in particle))
+        and (particle not in ['d','u','s','c','b','t'])):
         particle += '+'
     return particle
 
@@ -66,7 +91,11 @@ class constants():
                             'pi0':0.130*u.GeV,
                             'rho':0.102*u.GeV,
                             'eta':1.2*0.130*u.GeV,
-                            'eta\'':-0.45*0.130*u.GeV} #GeV^2 ? check units!!
+                            'eta1':-0.45*0.130*u.GeV} #GeV^2 ? check units!!
+        self.GF = 1.166379e-05/(u.GeV*u.GeV) # Fermi's constant (GeV^-2)
+        self.s2thetaw = 0.23126 # square sine of the Weinberg angle
+        self.heV = 6.58211928*pow(10.,-16) # no units or it messes up!!
+        self.hGeV = self.heV * pow(10.,-9) # no units or it messes up!!
 
 # Load some useful constants
 c = constants()
@@ -75,7 +104,7 @@ class HNLbranchings():
     """
     Lifetime and total and partial decay widths of an HNL
     """
-    def __init__(self, mass, couplings):
+    def __init__(self, mass, couplings, debug=False):
         """
         Initialize with mass and couplings of the HNL
 
@@ -104,7 +133,13 @@ class HNLbranchings():
                         (5,1):self.CKM.Vtd**2., (1,5):self.CKM.Vtd**2.,
                         (5,2):self.CKM.Vts**2., (2,5):self.CKM.Vts**2.,
                         (5,4):self.CKM.Vtb**2., (4,5):self.CKM.Vtb**2.}
-### Next code needs to be reviewed and properly integrated into FairShip classes
+        if debug:
+            print "HNLbranchings instance initialized with couplings:"
+            print "\tU2e   = %s"%self.U2[0]
+            print "\tU2mu  = %s"%self.U2[1]
+            print "\tU2tau = %s"%self.U2[2]
+            print "and mass:"
+            print "\tm = %s GeV"%(self.MN)
 
     def Width_H0_nu(self, H, alpha):
         """
@@ -116,82 +151,101 @@ class HNLbranchings():
         """
         if self.MN < (mass(H)):
             return 0.
-        width = (math.fabs(self.U2[alpha-1])/(32.*u.pi))*(self.GF**2.)*(c.decayConstant[H]**2.)
-        par = (self.MN**3.)*((1 - ((self.masses[H]**2.)/(self.MN**2.)))**2.)
-        if H == 'rho':
-            par = par*2./(self.masses[H]**2.)
-            par = par*(1 + 2.*((self.masses[H]**2.)/(self.MN**2.)))
+        width = (math.fabs(self.U2[alpha-1])/(32.*u.pi))*(c.GF**2.)*(c.decayConstant[H]**2.)
+        par = (self.MN**3.)*((1 - ((mass(H)**2.)/(self.MN**2.)))**2.)
+        if 'rho' in H:
+            par = par*2./(mass(H)**2.)
+            par = par*(1 + 2.*((mass(H)**2.)/(self.MN**2.)))
         width = width*par
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
+
     def Width_H_l(self, H, alpha):
+        """
+        Returns the HNL decay width into charged meson and lepton
+
+        Inputs:
+        - H is a string (name of the meson)
+        - alpha is the lepton flavour (1, 2 or 3)
+        """
         l = [None,'e','mu','tau']
-        if self.MN < (self.masses[H] + self.masses[l[alpha]]):
+        if self.MN < (mass(H) + mass(l[alpha])):
             return 0.
-        width = (math.fabs(self.U2[alpha-1])/(16.*math.pi))*(self.GF**2.)*(self.decayConstant[H]**2.)
+        width = (math.fabs(self.U2[alpha-1])/(16.*u.pi))*(c.GF**2.)*(c.decayConstant[H]**2.)
         width = width*(self.MN**3.)*self.CKMelemSq[H]
-        par = ( ((1 - ((self.masses[l[alpha]]**2.)/(self.MN**2.)))**2.) 
-                - ( (self.masses[H]**2.)/(self.MN**2.)
-                * (1 + ((self.masses[l[alpha]]**2.)/(self.MN**2.))) ) )
-        if H == 'rho':
-            par = ( ((1 - ((self.masses[l[alpha]]**2.)/(self.MN**2.)))**2.) 
-                    + ( (self.masses[H]**2.)/(self.MN**2.)
-                    * (1 + (((self.masses[l[alpha]]**2. - 2.*self.masses[H]**2.))/(self.MN**2.))) ) )
-            par = par*2./(self.masses[H]**2.)
+        par = ( ((1 - ((mass(l[alpha])**2.)/(self.MN**2.)))**2.) 
+                - ( (mass(H)**2.)/(self.MN**2.)
+                * (1 + ((mass(l[alpha])**2.)/(self.MN**2.))) ) )
+        if 'rho' in H:
+            par = ( ((1 - ((mass(l[alpha])**2.)/(self.MN**2.)))**2.) 
+                    + ( (mass(H)**2.)/(self.MN**2.)
+                    * (1 + (((mass(l[alpha])**2. - 2.*mass(H)**2.))/(self.MN**2.))) ) )
+            par = par*2./(mass(H)**2.)
             
         width = width*par
-        rad = math.sqrt( ( 1-((self.masses[H]-self.masses[l[alpha]])**2.)/(self.MN**2.) )
-                * ( ( 1-((self.masses[H]+self.masses[l[alpha]])**2.)/(self.MN**2.) ) ) )
+        rad = math.sqrt( ( 1-((mass(H)-mass(l[alpha]))**2.)/(self.MN**2.) )
+                * ( ( 1-((mass(H)+mass(l[alpha]))**2.)/(self.MN**2.) ) ) )
         width = width*rad
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
+
     def Width_3nu(self):
-        width = (self.GF**2.)*(self.MN**5.)*sum(self.U2)/(192.*(math.pi**3.))
+        """
+        Returns the HNL decay width into three neutrinos
+        """
+        width = (c.GF**2.)*(self.MN**5.)*sum(self.U2)/(192.*(u.pi**3.))
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    def Width_l1_l2_nu(self, alpha, beta, gamma): # alpha, beta for the two leptons, gamma for the neutrino
-        l = [None,'e','mu','tau','up','down','strange','charm','bottom','top']
-        if self.MN < (self.masses[l[alpha]] + self.masses[l[beta]]):
-            return 0.
 
+    def Width_l1_l2_nu(self, alpha, beta, gamma): # alpha, beta for the two leptons, gamma for the neutrino
+        """
+        Returns the HNL decay width into two charged fermions and a neutrino or one lepton and a qqbar pair (through W)
+
+        Inputs:
+        - alpha is the flavour of the first lepton (1, 2 or 3) or quark (4, 5, 6, 7, 8, 9)
+        - beta is the flavour of the second lepton (1, 2 or 3) or quark (4, 5, 6, 7, 8, 9)
+        -   (choose from: e, mu, tau, up, down, strange, charm, beauty, top)
+        - gamma is the flavour of the neutrino (or of the lepton in the N->lW case) (1, 2 or 3)
+        """
+        l = [None,'e','mu','tau','up','down','strange','charm','bottom','top']
+        if self.MN < (mass(l[alpha]) + mass(l[beta])):
+            return 0.
         if (alpha > 3) and (beta == alpha): # N -> nu qq or N -> nu ll (mainly Z0)
-            width = (self.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(math.pi**3.))
+            width = (c.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(u.pi**3.))
 
         elif ((alpha in [4, 7, 9]) and (beta in [5, 6, 8])) or ((alpha in [5, 6, 8]) and (beta in [4, 7, 9])): # N -> l W, W -> u dbar, index gamma stands for massive lepton
             if gamma == 3: # tau too massive for this parametrisation
                 return 0.
-            if self.MN < (self.masses[l[alpha]] + self.masses[l[beta]] + self.masses[l[gamma]]):
+            if self.MN < (mass(l[alpha]) + mass(l[beta]) + mass(l[gamma])):
                 return 0.
-            width = (self.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(math.pi**3.))*self.CKMelemSq[(alpha-4, beta-4)]
-
+            width = (c.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(u.pi**3.))*self.CKMelemSq[(alpha-4, beta-4)]
         elif (alpha <= 3) and (beta <= 3):
-            width = (self.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))
-
+            width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(u.pi**3.))
         else:
             return 0.
-
         if alpha != beta:
-            xl = max([self.masses[l[alpha]] , self.masses[l[beta]]])/self.MN
+            xl = max([mass(l[alpha]) , mass(l[beta])])/self.MN
             width = width*(1. - 8.*xl**2. + 8.*xl**6. - (12.*xl**4.)*math.log(xl**2.))
         else:
-            xl = self.masses[l[alpha]] / self.MN
+            xl = mass(l[alpha]) / self.MN
             lo = 0.
             logContent = (1. - 3.*xl**2. - (1.-xl**2.)*math.sqrt(1. - 4.*xl**2.) ) / ( (xl**2.)*(1 + math.sqrt(1. - 4.*xl**2.)) )
             if logContent > 0:
                 lo = math.log( logContent )
-            c1 = 0.25*(1. - 4.*self.s2thetaw + 8.*self.s2thetaw**2.)
-            c2 = 0.5*self.s2thetaw*(2.*self.s2thetaw -1.)
-            c3 = 0.25*(1. + 4.*self.s2thetaw + 8.*self.s2thetaw**2.)
-            c4 = 0.5*self.s2thetaw*(2.*self.s2thetaw +1.)
+            c1 = 0.25*(1. - 4.*c.s2thetaw + 8.*c.s2thetaw**2.)
+            c2 = 0.5*c.s2thetaw*(2.*c.s2thetaw -1.)
+            c3 = 0.25*(1. + 4.*c.s2thetaw + 8.*c.s2thetaw**2.)
+            c4 = 0.5*c.s2thetaw*(2.*c.s2thetaw +1.)
             d = (alpha == gamma)
             width = width*( (c1*(1-d)+c3*d)*( (1.-14.*xl**2. -2.*xl**4. -12.*xl**6.)*math.sqrt(1-4.*xl**2) +12.*xl**4. *(-1.+xl**4.)*lo )
                             + 4.*(c2*(1-d)+c4*d)*( xl**2. *(2.+10.*xl**2. -12.*xl**4.) * math.sqrt(1.-4.*xl**2) + 6.*xl**4. *(1.-2.*xl**2+2.*xl**4)*lo ) )
-        #if alpha>3 and beta>3: # N -> q q nu
-        #    width = width*self.CKMelemSq[(alpha-4, beta-4)]
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
 
     def NDecayWidth(self):
+        """
+        Returns the total HNL decay width
+        """
         if self.MN < 1.:
             totalWidth = ( self.Width_3nu()
                     + sum([self.Width_H_l('pi',l) + self.Width_H_l('rho',l) + self.Width_H0_nu('pi0',l) + self.Width_H0_nu('rho',l) + self.Width_H0_nu('eta',l) + self.Width_H0_nu('eta1',l) for l in [1,2,3]])
@@ -211,4 +265,92 @@ class HNLbranchings():
             totalWidth = w1 + (self.MN - m1)*(w2 - w1)/(m2 - m1)
         return totalWidth
 
-################################################################################
+    def findBranchingRatio(self, decayString):
+        """
+        Returns the branching ration of the given HNL decay channel
+
+        Inputs:
+        - decayString is a string describing the decay, in the form 'N -> stuff1 ... stuffN'
+        """
+        br = 0.
+        totalWidth = self.NDecayWidth()
+        if decayString == 'N -> pi e':
+            br = self.Width_H_l('pi',1) / totalWidth
+        elif decayString == 'N -> pi0 nu' or decayString == 'N -> pi nu':
+            br = sum([self.Width_H0_nu('pi0',l) for l in [1,2,3]]) / totalWidth
+        elif decayString == 'N -> pi mu':
+            br = self.Width_H_l('pi',2) / totalWidth
+        elif decayString == 'N -> rho nu' or decayString == 'N -> rho0 nu':
+            br = sum([self.Width_H0_nu('rho',l) for l in [1,2,3]]) / totalWidth
+        elif decayString == 'N -> rho e':
+            br = self.Width_H_l('rho',1) / totalWidth
+        elif decayString == 'N -> rho mu':
+            br = self.Width_H_l('rho',2) / totalWidth
+        elif decayString == 'N -> e e nu':
+            br = sum([self.Width_l1_l2_nu(1,1,l) for l in [1,2,3]]) / totalWidth
+        elif decayString == 'N -> mu mu nu':
+            br = sum([self.Width_l1_l2_nu(2,2,l) for l in [1,2,3]]) / totalWidth
+        elif decayString == 'N -> tau tau nu':
+            br = sum([self.Width_l1_l2_nu(3,3,l) for l in [1,2,3]]) / totalWidth
+        elif decayString == 'N -> e mu nu':
+            br = (sum([self.Width_l1_l2_nu(1,2,l) for l in [1,2,3]]) + sum([self.Width_l1_l2_nu(2,1,l) for l in [1,2,3]])) / totalWidth
+        elif decayString == 'N -> e tau nu':
+            br = (sum([self.Width_l1_l2_nu(1,3,l) for l in [1,2,3]]) + sum([self.Width_l1_l2_nu(3,1,l) for l in [1,2,3]])) / totalWidth
+        elif decayString == 'N -> mu tau nu':
+            br = (sum([self.Width_l1_l2_nu(2,3,l) for l in [1,2,3]]) + sum([self.Width_l1_l2_nu(3,2,l) for l in [1,2,3]])) / totalWidth
+        elif decayString == 'N -> pi tau':
+            br = self.Width_H_l('pi',3) / totalWidth
+        elif decayString == 'N -> rho tau':
+            br = self.Width_H_l('rho',3) / totalWidth
+        elif decayString == 'N -> nu nu nu' or decayString == 'N -> 3nu':
+            br = self.Width_3nu() / totalWidth
+        elif decayString == 'N -> hadrons':
+            if self.MN < 1.:
+                br = sum([self.Width_H_l('pi',l) + self.Width_H_l('rho',l) + self.Width_H0_nu('pi0',l) + self.Width_H0_nu('rho',l) + self.Width_H0_nu('eta',l) + self.Width_H0_nu('eta1',l) for l in [1,2,3]])/totalWidth
+            elif self.MN > 2.:
+                br = sum([self.Width_l1_l2_nu(a,b,g) for a in range(4,10) for b in range(4,10) for g in [1,2,3]])/totalWidth
+            else:
+                m1, m2 = 1., 2.
+                tempMass = self.MN
+                self.MN = m1
+                br1 = sum([self.Width_H_l('pi',l) + self.Width_H_l('rho',l) + self.Width_H0_nu('pi0',l) + self.Width_H0_nu('rho',l) + self.Width_H0_nu('eta',l) + self.Width_H0_nu('eta1',l) for l in [1,2,3]])/totalWidth
+                self.MN = m2
+                br2 = sum([self.Width_l1_l2_nu(a,b,g) for a in range(4,10) for b in range(4,10) for g in [1,2,3]])/totalWidth
+                self.MN = tempMass
+                br = br1 + (self.MN - m1)*(br2 - br1)/(m2 - m1)
+        elif decayString == 'N -> charged hadrons':
+            if self.MN < 1.:
+                br = sum([self.Width_H_l('pi',l) + self.Width_H_l('rho',l) for l in [1,2,3]])/totalWidth
+            elif self.MN > 2.:
+                br = sum([self.Width_l1_l2_nu(a,b,g) for a in range(4,10) for b in range(4,10) for g in [1,2,3]])/totalWidth
+            else:
+                m1, m2 = 1., 2.
+                tempMass = self.MN
+                self.MN = m1
+                br1 = sum([self.Width_H_l('pi',l) + self.Width_H_l('rho',l) for l in [1,2,3]])/totalWidth
+                self.MN = m2
+                br2 = sum([self.Width_l1_l2_nu(a,b,g) for a in range(4,10) for b in range(4,10) for g in [1,2,3]])/totalWidth
+                self.MN = tempMass
+                br = br1 + (self.MN - m1)*(br2 - br1)/(m2 - m1)
+        else:
+            print 'findBranchingRatio ERROR: unknown decay %s'%decayString
+            quit()
+        return br
+
+
+class HNL(HNLbranchings):
+    """
+    HNL physics according to the nuMSM
+    """
+    def __init__(self, mass, couplings, debug=False):
+        """
+        Initialize with mass and couplings of the HNL
+
+        Inputs:
+        mass (GeV)
+        couplings (list of [U2e, U2mu, U2tau])
+        """
+        HNLbranchings.__init__(self, mass, couplings, debug)
+    def computeNLifetime(self):
+        self.NLifetime = c.hGeV / self.NDecayWidth()
+        return self.NLifetime
