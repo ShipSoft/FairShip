@@ -190,9 +190,9 @@ def id_withSomebody(somebody,id_withKs,name="id_with", title="id particles produ
 
 debug = True
 if debug:
-    fileName = "../data/neutrino661/ship.10.0.Genie-TGeant4_D.root"
+    fileName = "../data/neutrino661/ship.10.0.Genie-TGeant4.root"
 else:
-    fileName = "../data/all/ship.10.0.Genie-TGeant4-370k.root"
+    fileName = "../data/neutrino661/ship.10.0.Genie-TGeant4.root"#"../data/all/ship.10.0.Genie-TGeant4-370k.root"
 
 f = TFile(fileName)
 t = f.Get("cbmsim")
@@ -237,10 +237,12 @@ nuKid_z = []
 rpcFlag_list = []
 for entry in xrange(entries):
     #entry = 5429
-    #if not (entry%1000):
-    #if (entry%1000):
-    #    continue
-    #print "%s / %s"%(entry,entries)
+    if not (entry%1000):
+        print "%s / %s"%(entry,entries)
+        
+    if debug:
+        if (entry%1000):
+            continue
         #res = {}
     t.GetEntry(entry)
     particles = t.MCTrack
@@ -284,20 +286,20 @@ for entry in xrange(entries):
                     part2Z = part2.GetStartZ()
                     nuKid_z.append(part2Z)
                     if part2Z>lastPassive[0] and part2Z<lastPassive[1]:
-                        print "Situation"
-                        for (ii,pp) in enumerate(particles):
-                            print ii,pdg.GetParticle(pp.GetPdgCode()).GetName(),pp.GetMotherId() 
-                        print 
+                        #print "Situation"
+                        #for (ii,pp) in enumerate(particles):
+                        #    print ii,pdg.GetParticle(pp.GetPdgCode()).GetName(),pp.GetMotherId() 
+                        #print 
                         RpcPassiveFlag = True
-                        print entry, "----> ", part2Z, part2Id
-                        print pdg.GetParticle(part2Id).GetName(),pdg.GetParticle(part2Id).Charge()
-                        print lastPassive[1]
-                        print 
+                        #print entry, "----> ", part2Z, part2Id
+                        #print pdg.GetParticle(part2Id).GetName(),pdg.GetParticle(part2Id).Charge()
+                        #print lastPassive[1]
+                        #print 
                         for rpcEl in rpc:
                             #print rpcEl.GetZ()
                             if rpcEl.GetZ()>lastPassive[1]:
                                 rpcFlag=True
-                                print "######",rpcEl.GetZ(), (rpcEl.GetZ()<=-2527 and rpcEl.GetZ()>=-2542) or (rpcEl.GetZ()<=-2597 and rpcEl.GetZ()>=-2612) 
+                                #print "######",rpcEl.GetZ(), (rpcEl.GetZ()<=-2527 and rpcEl.GetZ()>=-2542) or (rpcEl.GetZ()<=-2597 and rpcEl.GetZ()>=-2612) 
                                 
                     ## How many are charged particles? 
                     if not(fabs(pdg.GetParticle(part2Id).Charge())==fabs(0)):
@@ -375,7 +377,7 @@ for entry in xrange(entries):
                                         histoDict_chargedWithKs[part3Id]['nFound']=1
                                 
 
-                        n_chargedWithKs.append(chargedWithKL_counter)
+                        n_chargedWithKs.append(chargedWithKs_counter)
                     ## Knowing how many particles comes from the interaction of this neutrino
                     fromThisNu[-1]+=1
                         
@@ -390,7 +392,6 @@ for entry in xrange(entries):
             ## Filled the list only if the neutrino that had interacted did it in the piece I want to analyse
             if RpcPassiveFlag:
                 rpcFlag_list.append(rpcFlag)
-                assert(False)
         else:
             partId = part.GetPdgCode()
             # we already have considered the one from neutrinos
@@ -497,7 +498,6 @@ if len(id_withKL_notFromNu)>0:
     res_originKL_notFromNu = id_withSomebody("KL_notFromNu",originKL_notFromNu,"origin_of","origin of")
 '''
 
-'''    
 ### This function will make the plot with the ID of all the particles produced from the nu interactions
 res_id_fromNu = id_fromNu(histoDict,tot_nu,primary_nu)
 res_nFromThisNu = nFromThisNu(fromThisNu)
@@ -520,7 +520,7 @@ print nKL_notFromNu
 print nKs_notFromNu
 print originKL_notFromNu
 print originKs_notFromNu
-'''
+
 c = TCanvas("c_nu_z","c_nu_z")
 h_nu_z = TH1F("nu_z","nu_z",500,-3000,5000)
 h_nu_z.GetXaxis().SetTitle("neutrino startZ")
@@ -535,4 +535,7 @@ for z in nuKid_z:
     h_nuKid_z.Fill(z)
 h_nuKid_z.Draw()
 
-print rpcFlag_list
+if False in rpcFlag_list:
+    print "There is at least one case in which the RPC are not enough for detecting the charge particle from the neutrino in the last passive part of the neutrino-system"
+    assert(False)
+    
