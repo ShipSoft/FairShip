@@ -133,6 +133,19 @@ class HNLbranchings():
                         (5,1):self.CKM.Vtd**2., (1,5):self.CKM.Vtd**2.,
                         (5,2):self.CKM.Vts**2., (2,5):self.CKM.Vts**2.,
                         (5,4):self.CKM.Vtb**2., (4,5):self.CKM.Vtb**2.}
+        self.decays = [ 'N -> nu nu nu',
+                        'N -> e e nu_e', 'N -> e e nu_mu', 'N -> e e nu_tau',
+                        'N -> e mu nu_e', 'N -> e mu nu_mu',
+                        'N -> mu mu nu_e', 'N -> mu mu nu_tau', 'N -> mu mu nu_tau',
+                        'N -> tau tau nu_e', 'N -> tau tau nu_mu', 'N -> tau tau nu_tau', 
+                        'N -> e tau nu_e', 'N -> e tau nu_tau', 
+                        'N -> mu tau nu_mu', 'N -> mu tau nu_tau', 
+                        'N -> pi0 nu_e', 'N -> pi0 nu_mu', 'N -> pi0 nu_tau', 
+                        'N -> pi e',
+                        'N -> pi mu',
+                        'N -> rho0 nu_e', 'N -> rho0 nu_mu', 'N -> rho0 nu_tau', 
+                        'N -> rho e',
+                        'N -> rho mu' ]
         if debug:
             print "HNLbranchings instance initialized with couplings:"
             print "\tU2e   = %s"%self.U2[0]
@@ -267,43 +280,42 @@ class HNLbranchings():
 
     def findBranchingRatio(self, decayString):
         """
-        Returns the branching ration of the given HNL decay channel
+        Returns the branching ratio of the selected HNL decay channel
 
         Inputs:
         - decayString is a string describing the decay, in the form 'N -> stuff1 ... stuffN'
         """
         br = 0.
         totalWidth = self.NDecayWidth()
-        if decayString == 'N -> pi e':
-            br = self.Width_H_l('pi',1) / totalWidth
-        elif decayString == 'N -> pi0 nu' or decayString == 'N -> pi nu':
-            br = sum([self.Width_H0_nu('pi0',l) for l in [1,2,3]]) / totalWidth
-        elif decayString == 'N -> pi mu':
-            br = self.Width_H_l('pi',2) / totalWidth
-        elif decayString == 'N -> rho nu' or decayString == 'N -> rho0 nu':
-            br = sum([self.Width_H0_nu('rho',l) for l in [1,2,3]]) / totalWidth
-        elif decayString == 'N -> rho e':
-            br = self.Width_H_l('rho',1) / totalWidth
-        elif decayString == 'N -> rho mu':
-            br = self.Width_H_l('rho',2) / totalWidth
-        elif decayString == 'N -> e e nu':
-            br = sum([self.Width_l1_l2_nu(1,1,l) for l in [1,2,3]]) / totalWidth
-        elif decayString == 'N -> mu mu nu':
-            br = sum([self.Width_l1_l2_nu(2,2,l) for l in [1,2,3]]) / totalWidth
-        elif decayString == 'N -> tau tau nu':
-            br = sum([self.Width_l1_l2_nu(3,3,l) for l in [1,2,3]]) / totalWidth
-        elif decayString == 'N -> e mu nu':
-            br = (sum([self.Width_l1_l2_nu(1,2,l) for l in [1,2,3]]) + sum([self.Width_l1_l2_nu(2,1,l) for l in [1,2,3]])) / totalWidth
-        elif decayString == 'N -> e tau nu':
-            br = (sum([self.Width_l1_l2_nu(1,3,l) for l in [1,2,3]]) + sum([self.Width_l1_l2_nu(3,1,l) for l in [1,2,3]])) / totalWidth
-        elif decayString == 'N -> mu tau nu':
-            br = (sum([self.Width_l1_l2_nu(2,3,l) for l in [1,2,3]]) + sum([self.Width_l1_l2_nu(3,2,l) for l in [1,2,3]])) / totalWidth
-        elif decayString == 'N -> pi tau':
-            br = self.Width_H_l('pi',3) / totalWidth
-        elif decayString == 'N -> rho tau':
-            br = self.Width_H_l('rho',3) / totalWidth
+        if decayString == 'N -> pi e': br = self.Width_H_l('pi',1) / totalWidth
+        elif decayString == 'N -> pi0 nu_e': br = self.Width_H0_nu('pi0',1) / totalWidth
+        elif decayString == 'N -> pi0 nu_mu': br = self.Width_H0_nu('pi0',2) / totalWidth
+        elif decayString == 'N -> pi0 nu_tau': br = self.Width_H0_nu('pi0',3) / totalWidth
+        elif decayString == 'N -> pi mu': br = self.Width_H_l('pi',2) / totalWidth
+        elif decayString == 'N -> rho0 nu_e': br = self.Width_H0_nu('rho0',1) / totalWidth
+        elif decayString == 'N -> rho0 nu_mu': br = self.Width_H0_nu('rho0',2) / totalWidth
+        elif decayString == 'N -> rho0 nu_tau': br = self.Width_H0_nu('rho0',3) / totalWidth
+        elif decayString == 'N -> rho e': br = self.Width_H_l('rho',1) / totalWidth
+        elif decayString == 'N -> rho mu': br = self.Width_H_l('rho',2) / totalWidth
+        elif decayString == 'N -> e e nu_e': br = self.Width_l1_l2_nu(1,1,1) / totalWidth
+        elif decayString == 'N -> e e nu_mu': br = self.Width_l1_l2_nu(1,1,2) / totalWidth
+        elif decayString == 'N -> e e nu_tau': br = self.Width_l1_l2_nu(1,1,3) / totalWidth
+        elif decayString == 'N -> mu mu nu_e': br = self.Width_l1_l2_nu(2,2,1) / totalWidth
+        elif decayString == 'N -> mu mu nu_mu': br = self.Width_l1_l2_nu(2,2,2) / totalWidth
+        elif decayString == 'N -> mu mu nu_tau': br = self.Width_l1_l2_nu(2,2,3) / totalWidth
+        elif decayString == 'N -> tau tau nu_e': br = self.Width_l1_l2_nu(3,3,1) / totalWidth
+        elif decayString == 'N -> tau tau nu_mu': br = self.Width_l1_l2_nu(3,3,2) / totalWidth
+        elif decayString == 'N -> tau tau nu_tau': br = self.Width_l1_l2_nu(3,3,3) / totalWidth
+        elif decayString == 'N -> e mu nu_e': br = self.Width_l1_l2_nu(2,1,1) / totalWidth
+        elif decayString == 'N -> e mu nu_mu': br = self.Width_l1_l2_nu(1,2,2) / totalWidth
+        elif decayString == 'N -> e tau nu_e': br = self.Width_l1_l2_nu(3,1,1) / totalWidth
+        elif decayString == 'N -> e tau nu_tau': br = self.Width_l1_l2_nu(1,3,3) / totalWidth
+        elif decayString == 'N -> mu tau nu_mu': br = self.Width_l1_l2_nu(3,2,2) / totalWidth
+        elif decayString == 'N -> mu tau nu_tau': br = self.Width_l1_l2_nu(2,3,3) / totalWidth
+        elif decayString == 'N -> pi tau': br = self.Width_H_l('pi',3) / totalWidth
+        elif decayString == 'N -> rho tau': br = self.Width_H_l('rho',3) / totalWidth
         elif decayString == 'N -> nu nu nu' or decayString == 'N -> 3nu':
-            br = self.Width_3nu() / totalWidth
+            br = self.Width_3nu() / totalWidth # inclusive
         elif decayString == 'N -> hadrons':
             if self.MN < 1.:
                 br = sum([self.Width_H_l('pi',l) + self.Width_H_l('rho',l) + self.Width_H0_nu('pi0',l) + self.Width_H0_nu('rho',l) + self.Width_H0_nu('eta',l) + self.Width_H0_nu('eta1',l) for l in [1,2,3]])/totalWidth
@@ -337,6 +349,59 @@ class HNLbranchings():
             quit()
         return br
 
+    def allowedChannels(self):
+        """
+        Returns a dictionary of kinematically allowed decay channels
+
+        Inputs:
+        - decayString is a string describing the decay, in the form 'N -> stuff1 ... stuffN'
+        """
+        m = self.MN
+        allowedDecays = {'N -> nu nu nu':'yes'}
+        if m > 2.*mass('e'):
+            allowedDecays.update({'N -> e e nu_e':'yes'})
+            allowedDecays.update({'N -> e e nu_mu':'yes'})
+            allowedDecays.update({'N -> e e nu_tau':'yes'})
+            if m > mass('e') + mass('mu'):
+                allowedDecays.update({'N -> e mu nu_e':'yes'})
+                allowedDecays.update({'N -> e mu nu_mu':'yes'})
+            if m > mass('pi0'):
+                allowedDecays.update({'N -> pi0 nu_e':'yes'})
+                allowedDecays.update({'N -> pi0 nu_mu':'yes'})
+                allowedDecays.update({'N -> pi0 nu_tau':'yes'})
+            if m > mass('pi') + mass('e'):
+                allowedDecays.update({'N -> pi e':'yes'})
+                if m > 2.*mass('mu'):
+                    allowedDecays.update({'N -> mu mu nu_e':'yes'})
+                    allowedDecays.update({'N -> mu mu nu_mu':'yes'})
+                    allowedDecays.update({'N -> mu mu nu_tau':'yes'})
+                    if m > mass('pi') + mass('mu'):
+                        allowedDecays.update({'N -> pi mu':'yes'})
+                        if m > mass('rho0'):
+                            allowedDecays.update({'N -> rho0 nu_e':'yes'})
+                            allowedDecays.update({'N -> rho0 nu_mu':'yes'})
+                            allowedDecays.update({'N -> rho0 nu_tau':'yes'})
+                        if m > mass('rho') + mass('e'):
+                            allowedDecays.update({'N -> rho e':'yes'})
+                            if m > mass('rho') + mass('mu'):
+                                allowedDecays.update({'N -> rho mu':'yes'})
+                                if m > mass('e') + mass('tau'):
+                                    allowedDecays.update({'N -> e tau nu_e':'yes'})
+                                    allowedDecays.update({'N -> e tau nu_tau':'yes'})
+                                    if m > mass('mu') + mass('tau'):
+                                        allowedDecays.update({'N -> mu tau nu_mu':'yes'})
+                                        allowedDecays.update({'N -> mu tau nu_tau':'yes'})
+                                        if m > 2.*mass('tau'):
+                                            allowedDecays.update({'N -> tau tau nu_e':'yes'})
+                                            allowedDecays.update({'N -> tau tau nu_mu':'yes'})
+                                            allowedDecays.update({'N -> tau tau nu_tau':'yes'})
+        for decay in self.decays:
+            if decay not in allowedDecays:
+                allowedDecays.update({decay:'no'})
+        return allowedDecays
+
+
+
 
 class HNL(HNLbranchings):
     """
@@ -362,6 +427,3 @@ class HNL(HNLbranchings):
 	if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
 
-
-def addHNLdecayChannels(P8Gen, conffile='DecaySelection.conf'):
-    pass
