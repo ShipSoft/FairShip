@@ -351,6 +351,17 @@ class HNL(HNLbranchings):
         couplings (list of [U2e, U2mu, U2tau])
         """
         HNLbranchings.__init__(self, mass, couplings, debug)
-    def computeNLifetime(self):
+    def computeNLifetime(self,system="SI"):
+        """
+        Compute the HNL lifetime
+
+        Inputs:
+        - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)
+        """
         self.NLifetime = c.hGeV / self.NDecayWidth()
+	if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
+
+
+def addHNLdecayChannels(P8Gen, conffile='DecaySelection.conf'):
+    pass
