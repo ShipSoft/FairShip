@@ -6,7 +6,8 @@ from ShipGeoConfig import ConfigRegistry
 
 # Default HNL parameters
 theHNLmass = 1.*u.GeV
-theHNLcouplings = [1.e-8, 1.e-8, 1.e-8] # may not correspond to ctau=54km
+#theHNLcouplings = [1.e-8, 1.e-8, 1.e-8] # may not correspond to ctau=54km
+theHNLcouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
