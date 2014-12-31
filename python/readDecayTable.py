@@ -10,7 +10,7 @@
 #
 # ==================================================================
 """
-import csv
+import ROOT, os, csv
 from hnl import PDGname
 
 pdg = ROOT.TDatabasePDG.Instance()
@@ -24,7 +24,7 @@ def PDGcode(particle):
     return int(tPart.PdgCode())
 
 
-def load(conffile = 'DecaySelection.conf', verbose=True):
+def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
     f = open(conffile,'r')
     reader = csv.reader(f, delimiter=':')
     configuredDecays = {}
@@ -40,7 +40,7 @@ def load(conffile = 'DecaySelection.conf', verbose=True):
                 print channel        
     return configuredDecays
 
-def addHNLdecayChannels(P8Gen, hnl, conffile='DecaySelection.conf', verbose=True):
+def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
     """
     Configures the HNL decay table in Pythia8
 

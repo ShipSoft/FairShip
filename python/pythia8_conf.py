@@ -1,6 +1,7 @@
-import ROOT
+import ROOT, os
 import shipunit as u
 import hnl
+import readDecayTable
 
 def addHNLtoROOT(pid=9900014 ,m = 1.0, g=3.654203020370371E-21):
     pdg = ROOT.TDatabasePDG.Instance()
@@ -38,7 +39,7 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         P8gen.SetParameters("9900014:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0")  
         P8gen.SetParameters("9900014:isResonance = false")
         # Configuring decay modes...
-        readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile='DecaySelection.conf', verbose=True)
+        readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True)
         # Finish HNL setup...
         P8gen.SetParameters("9900014:mayDecay = on")
         P8gen.SetHNLId(9900014)
