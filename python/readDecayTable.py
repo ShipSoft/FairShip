@@ -29,15 +29,17 @@ def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), 
     reader = csv.reader(f, delimiter=':')
     configuredDecays = {}
     for row in reader:
+        if not row: continue # skip empty lines
+	if str(row[0]).strip().startswith('#'):
+            continue # skip comment / header lines
         channel = str(row[0]).strip()
-        flag = str(row[-1]).strip()
+        flag = str(row[-1]).partition('#')[0].strip() # skip line comments
         configuredDecays[channel] = flag
-        #print channel, '\t', flag
     if verbose:
-        print 'Activated decay channels: '
+        print 'Activated decay channels (plus charge conjugates): '
         for channel in configuredDecays.keys():
             if configuredDecays[channel] == 'yes':
-                print channel        
+                print '\t'+channel        
     return configuredDecays
 
 def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
