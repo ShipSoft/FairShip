@@ -4,6 +4,11 @@ import shipunit as u
 import shipRoot_conf
 from ShipGeoConfig import ConfigRegistry
 
+# Default HNL parameters
+theHNLmass = 1.*u.GeV
+#theHNLcouplings = [1.e-8, 1.e-8, 1.e-8] # may not correspond to ctau=54km
+theHNLcouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km
+
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100 
@@ -19,13 +24,15 @@ checking4overlaps = True
 phiRandom = False  # only relevant for muon background generator
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
-                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom"])
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i:m:c",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
+                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
                 or --Pythia6 for muon nucleon scattering'  
         print '    --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
+        print '    --mass or -m to set HNL mass'
+        print '    --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
         sys.exit()
 for o, a in opts:
         if o in ("-D","--display"):
@@ -59,10 +66,10 @@ for o, a in opts:
             dy = float(a)
         if o in ("-F"):
             deepCopy = True
-
-class MyTrackingAction(ROOT.FairMCApplication):
- def PreTrack(self,atrack):
-   print 'xes'
+        if o in ("-m", "--mass"):
+            theHNLmass = float(a)
+        if o in ("-c", "--couplings", "--coupling"):
+            theHNLcouplings = [float(c) for c in a.split(",")]
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
@@ -111,7 +118,7 @@ if simEngine == "Pythia8":
 # -----Pythia8--------------------------------------
  P8gen = ROOT.HNLPythia8Generator()
  import pythia8_conf
- pythia8_conf.configure(P8gen,inclusive,deepCopy)
+ pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
  primGen.AddGenerator(P8gen)
 if simEngine == "Pythia6":
 # set muon interaction close to decay volume
