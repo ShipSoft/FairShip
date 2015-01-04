@@ -1,9 +1,16 @@
 #include <math.h>
 #include "TROOT.h"
+#include "TMath.h"
 #include "TFile.h"
 #include "TRandom.h"
 #include "FairPrimaryGenerator.h"
 #include "GenieGenerator.h"
+#include "TGeoVolume.h"
+#include "TGeoNode.h"
+#include "TGeoManager.h"
+#include "TGeoEltu.h"
+#include "TGeoCompositeShape.h"
+
 using std::cout;
 using std::endl;
 // read events from ntuples produced with GENIE
@@ -48,7 +55,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pzf",&pzf);
   fTree->SetBranchAddress("nf",&nf);     // nr of outgoing hadrons
   fTree->SetBranchAddress("pdgf",&pdgf);     // pdg code of hadron
-
+  fFirst=kTRUE;
   return kTRUE;
 }
 // -------------------------------------------------------------------------
@@ -89,16 +96,49 @@ GenieGenerator::~GenieGenerator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
+    if (fFirst){
+     TGeoVolume *top=gGeoManager->GetTopVolume();
+     TGeoNode *linner = top->FindNode("lidT1I_1");
+     TGeoNode *scint  = top->FindNode("lidT1lisci_1");
+     TGeoNode *louter = top->FindNode("lidT1O_1");
+     TGeoEltu *temp = dynamic_cast<TGeoEltu*>(linner->GetVolume()->GetShape());  
+     fEntrDz_inner = temp->GetDZ();
+     temp = dynamic_cast<TGeoEltu*>(louter->GetVolume()->GetShape());  
+     fEntrDz_outer = temp->GetDZ();
+     fEntrA = temp->GetA(); 
+     fEntrB = temp->GetB(); 
+     fEntrZ_inner  = linner->GetMatrix()->GetTranslation()[2];
+     fEntrZ_outer  = louter->GetMatrix()->GetTranslation()[2];
+     TGeoNode *lidT6I = top->FindNode("lidT6I_1");
+     Lvessel = lidT6I->GetMatrix()->GetTranslation()[2] - fEntrZ_inner - fEntrDz_inner;
+     TGeoNode *t2I  = top->FindNode("T2I_1");
+     TGeoCompositeShape *tempC = dynamic_cast<TGeoCompositeShape*>(t2I->GetVolume()->GetShape());  
+     Xvessel = tempC->GetDX() - 2*fEntrDz_inner ;
+     Yvessel = tempC->GetDY() - 2*fEntrDz_inner ;
+     TGeoNode *t1I  = top->FindNode("T1I_1");
+     tempC = dynamic_cast<TGeoCompositeShape*>(t1I->GetVolume()->GetShape()); 
+     fL1z = tempC->GetDZ()*2;  
+     temp = dynamic_cast<TGeoEltu*>(scint->GetVolume()->GetShape());  
+     fScintDz = temp->GetDZ()*2;
+     cout << "Info GenieGenerator: geo inner " << fEntrDz_inner << " "<< fEntrZ_inner << endl;
+     cout << "Info GenieGenerator: geo outer " << fEntrDz_outer << " "<< fEntrZ_outer << endl;
+     cout << "Info GenieGenerator: A and B " << fEntrA << " "<< fEntrB << endl;
+     cout << "Info GenieGenerator: vessel length height width " << Lvessel << " "<<Yvessel<< " "<< Xvessel << endl;
+     cout << "Info GenieGenerator: scint thickness " << fScintDz << endl;
+     cout << "Info GenieGenerator: rextra " << fScintDz/2.+2*fEntrDz_inner << " "<< 2*fEntrDz_outer << " "<<2*fEntrDz_inner << endl;
+     // if ( gRandom->Uniform(0.,1.)>0.5) {rextra=rextra+11.;}  //outer wall.
+
+     fFirst = kFALSE;
+    }
     if (fn==fNevents) {fLogger->Fatal(MESSAGE_ORIGIN, "No more input events");}
     fTree->GetEntry(fn);
     fn++;
     if (fn%1000==0) {
-      cout << "Info GenieGenerator: neutrino " << " event-nr "<< fn << endl;
+      cout << "Info GenieGenerator: neutrino event-nr "<< fn << endl;
       }
 // generate a random point on the vessel, take veto z, and calculate outer lid position
     //Double_t Yvessel=500.;
     //Double_t Lvessel=5.*Yvessel+3500.;
-    //Double_t zentrance=-2500.; //start of the outer wall of the vacuumvessel.
     //Double_t ztarget=zentrance-6350.;
     //Double_t ea=250.; //inside inner wall vessel
     Double_t eb=Yvessel; //inside inner wall vessel
@@ -110,29 +150,38 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       // point on entrance lid
       Double_t ellip=2.;
       while (ellip>1.){
-         x = gRandom->Uniform(-ea,ea);
-         y = gRandom->Uniform(-eb,eb);
-         ellip=(x*x)/(ea*ea)+(y*y)/(eb*eb); 
+         x = gRandom->Uniform(-fEntrA,fEntrA);
+         y = gRandom->Uniform(-fEntrB,fEntrB);
+         ellip=(x*x)/(fEntrA*fEntrA)+(y*y)/(fEntrB*fEntrB); 
       }
       if (gRandom->Uniform(0.,1.)<0.5){
-        z=zentrance+gRandom->Uniform(21.,22.);
+        z=fEntrZ_inner + gRandom->Uniform(-fEntrDz_inner,fEntrDz_inner);
       }else{
-        z=zentrance+gRandom->Uniform(0.,1.);
+        z=fEntrZ_outer + gRandom->Uniform(-fEntrDz_outer,fEntrDz_outer);
       }
     }else if (where<0.64){
       //point on tube, place over 1 cm radius at 2 radii, separated by 10. cm
-      Double_t theta = gRandom->Uniform(0.,3.141592654);
-      Double_t rextra= gRandom->Uniform(0.,1.);
-      if ( gRandom->Uniform(0.,1.)>0.5) {rextra=rextra+11.;}  //outer wall.
+      // first vessel has smaller size
+      Double_t ea = Xvessel;
+      if (gRandom->Uniform(0,1) < fL1z/Lvessel){ ea = fEntrA; }
+      Double_t theta = gRandom->Uniform(0.,TMath::Pi());
+      Double_t rextra; 
+      if ( gRandom->Uniform(0.,1.)>0.5) {
+      // outer vessel
+        rextra = fScintDz/2.+2*fEntrDz_inner + gRandom->Uniform(0,2*fEntrDz_outer);
+      }else{
+      // inner vessel
+        rextra = gRandom->Uniform(0.,2*fEntrDz_inner);
+      }    
       x = (ea+rextra)*cos(theta);
       y = sqrt(1.-(x*x)/((ea+rextra)*(ea+rextra)))*(eb+rextra);
       if (gRandom->Uniform(-1.,1.)>0.) y=-y;
-      z=zentrance+gRandom->Uniform(0.,Lvessel);
+      z = fEntrZ_outer+fEntrDz_outer + gRandom->Uniform(0.,Lvessel);
     }else{
       //point in nu-tau muon shield
       x=gRandom->Uniform(-225.,225.);
       y=gRandom->Uniform(-400.,400.);
-      z=zentrance-205.+gRandom->Uniform(0.,80.);
+      z=fEntrZ_outer-205.+gRandom->Uniform(0.,80.);
     }
 // first, incoming neutrino
     //rotate the particle 

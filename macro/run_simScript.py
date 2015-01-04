@@ -128,7 +128,7 @@ if simEngine == "Genie":
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(dy,ship_geo.Chamber1.z-ship_geo.chambers.Tub1length,ship_geo.chambers.Length,ship_geo.target.z0, 250.)
+ Geniegen.SetPositions(ship_geo.target.z0)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent

@@ -26,18 +26,12 @@ class GenieGenerator : public FairGenerator
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
-  void SetPositions(Double32_t yH,Double32_t zE,Double32_t vL,Double32_t zT,Double32_t R){
-    Yvessel     = yH;
-    Lvessel     = vL;
-    zentrance   = zE; //start of the outer wall of the vacuumvessel.
-    ztarget     = zT;
-    ea          = R; //inside inner wall vessel
-  }
+  void SetPositions(Double32_t zT){ ztarget     = zT;}
 
  private:
   
  protected:
-  Double_t Yvessel,Lvessel,zentrance,ztarget,ea;
+  Double_t Yvessel,Xvessel,Lvessel,ztarget;
   Double_t Ev,pxv,pyv,pzv, El,pxl, pyl, pzl,vtxx,vtxy,vtxz,vtxt;
   Double_t pxf[500], pyf[500], pzf[500];
   Int_t pdgf[500];
@@ -47,6 +41,8 @@ class GenieGenerator : public FairGenerator
   TTree* fTree;
   int fNevents;
   int fn;
+  bool fFirst;
+  Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
   ClassDef(GenieGenerator,1);
 };
 
