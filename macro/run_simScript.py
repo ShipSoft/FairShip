@@ -161,6 +161,7 @@ if simEngine == "MuonBack":
  primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
+ MuonBackgen.SetSmearBeam(3*u.cm)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file, with Phi random=',phiRandom 
