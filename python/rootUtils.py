@@ -39,12 +39,12 @@ def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1
   else:                 h[key] = TH1F(rkey,title,nbinsx,xmin,xmax)
   h[key].SetDirectory(gROOT)
 
-def writeHists(h,fname):
+def writeHists(h,fname,plusCanvas=False):
   f = TFile(fname,'RECREATE')
   for akey in h:
     cln = h[akey].Class().GetName()
-    if cln.find('TH')<0: continue
-    h[akey].Write()
+    if not cln.find('TH')<0:   h[akey].Write()
+    if plusCanvas and not cln.find('TC')<0:   h[akey].Write()
   f.Close()  
 def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):
   if key==None : 
