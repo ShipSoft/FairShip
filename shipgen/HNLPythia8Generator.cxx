@@ -95,7 +95,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          Double_t beta = p/e; 
          tS = tp + LS/beta; // units ? [mm/c] + [mm/beta] (beta is dimensionless speed, and c=1 here)
                             // if one would use [s], then tS = tp/(cm*c_light) + (LS/cm)/(beta*c_light) = tS/(cm*c_light) i.e. units look consisent
-         w = TMath::Exp(-LS/(beta*gam*fctau))*( TMath::Exp(-fLmin/(beta*gam*fctau)) - TMath::Exp(-fLmax/(beta*gam*fctau)) );
+         w = TMath::Exp(-LS/(beta*gam*fctau))*( (fLmax-fLmin)/(beta*gam*fctau) );
          im  = (Int_t)fPythia.event[i].mother1();
          zm  = fPythia.event[im].zProd();
          xm  = fPythia.event[im].xProd();  
