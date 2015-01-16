@@ -233,7 +233,10 @@ class HNLbranchings():
                 return 0.
             width = (c.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(u.pi**3.))*self.CKMelemSq[(alpha-4, beta-4)]
         elif (alpha <= 3) and (beta <= 3):
-            width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(u.pi**3.))
+            #width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(u.pi**3.))
+            if (alpha != beta) and (gamma not in [alpha, beta]):
+                return 0.
+            width = (self.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(math.pi**3.))
         else:
             return 0.
         if alpha != beta:
