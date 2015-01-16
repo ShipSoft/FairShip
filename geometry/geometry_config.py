@@ -3,7 +3,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # muShieldDesign = 2  # 1=passive 2=active
-# targetOpt      = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits
+# targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
 if "muShieldDesign" not in globals():
     muShieldDesign = 5
@@ -81,7 +81,7 @@ with ConfigRegistry.register_config("basic") as c:
     hcalThickness = 300*u.cm
     if not HcalOption < 0:
      if HcalOption == 0 : 
-          c.hcal  =  AttrDict(z=45*u.cm + totalLength - 60.*m ) 
+          c.hcal  =  AttrDict(z=45*u.cm + totalLength - 60.*u.m ) 
      else:                
           c.hcal  =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm )
           hcalSpace = 20.*u.cm + hcalThickness + 5*u.cm 
@@ -157,11 +157,51 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
 
     c.target               =  AttrDict(z=0*u.cm)
-    c.target.sl            =  1*u.cm  # air slit total length
-    c.target.length        =  50*u.cm + c.target.sl * (targetOpt-1) 
-    c.target.z             =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
     c.targetOpt            =  targetOpt 
+    if targetOpt < 10:
+     c.target.sl            =  1*u.cm  # air slit total length
+     c.target.length        =  50*u.cm + c.target.sl * (targetOpt-1) 
+    else:
+   #          material,length  
+     c.target.M1 = "molybdenum"
+     c.target.L1 = 8.*u.cm
+     c.target.M2 = "molybdenum"
+     c.target.L2 = 2.5*u.cm
+     c.target.M3 = "molybdenum"
+     c.target.L3 = 2.5*u.cm
+     c.target.M4 = "molybdenum"
+     c.target.L4 = 2.5*u.cm
+     c.target.M5 = "molybdenum"
+     c.target.L5 = 2.5*u.cm
+     c.target.M6 = "molybdenum"
+     c.target.L6 = 2.5*u.cm
+     c.target.M7 = "molybdenum"
+     c.target.L7 = 2.5*u.cm
+     c.target.M8 = "molybdenum"
+     c.target.L8 = 2.5*u.cm
+     c.target.M9 = "molybdenum"
+     c.target.L9 = 5.0*u.cm
+     c.target.M10 = "molybdenum"
+     c.target.L10 = 5.0*u.cm
+     c.target.M11 = "molybdenum"
+     c.target.L11 = 6.5*u.cm
+     c.target.M12 = "molybdenum"
+     c.target.L12 = 8.*u.cm
+     c.target.M13 = "molybdenum"
+     c.target.L13 = 8.*u.cm
+     c.target.M14 = "tungsten"
+     c.target.L14 = 8.*u.cm
+     c.target.M15 = "tungsten"
+     c.target.L15 = 8.*u.cm
+     c.target.M16 = "tungsten"
+     c.target.L16 = 10.*u.cm
+     c.target.M17 = "tungsten"
+     c.target.L17 = 35.*u.cm
+     c.target.sl  =  0.5*u.cm  # H20 slit *16 times
+     c.target.xy  = 30.*u.cm   # full length in x and y
+     c.target.length = 16*c.target.sl + c.target.L1 + 7*c.target.L2 + 2*c.target.L9 + c.target.L11 + 4*c.target.L12 + c.target.L16 + c.target.L17
     # interaction point, start of target
+    c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
     c.target.z0  =  c.target.z - c.target.length/2.
 
     # straws of tracking stations

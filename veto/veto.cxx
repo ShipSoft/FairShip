@@ -475,62 +475,62 @@ void veto::ConstructGeometry()
       
       Double_t ws=0.5*m; //Straw screen plates sticking out of the outer tube.
       //Note: is just 2 cm for veto chamber, to avoid muon hits :-).
-      Double_t liscitube=0.1*m;	
-      Double_t liscilid=0.2*m;	
-      Double_t atube=2.5*m;	
-      Double_t btube = fBtube;
-      Double_t atube1=2.2*m-walli-wallo-liscitube;	
+      Double_t liscitube= 0.1*m;	
+      Double_t liscilid = 0.2*m;	
+      Double_t atube    = 2.5*m;	
+      Double_t btube    = fBtube;
+      Double_t atube1   = 2.2*m-walli-wallo-liscitube;	
       //inner lid on tube 1
-      TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I",Al,atube1+walli,btube+walli,walli/2.);
+      TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I"        ,Al,atube1+walli+wallo+liscitube,btube,walli/2.);
       lidT1I->SetLineColor(kRed);  // silver/gray
-      top->AddNode(lidT1I, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli/2.));
+      top->AddNode(lidT1I, 1, new TGeoTranslation(0, 0,     fTub1z-fTub1length-walli/2.));
       //lisci lid on tube 1
-      TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube1+walli+liscitube,btube+walli+liscitube,liscilid/2.);
+      TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube1+walli+wallo+liscitube,btube,liscilid/2.);
       lidT1lisci->SetLineColor(kMagenta-10);
       top->AddNode(lidT1lisci, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli-liscilid/2.));
       AddSensitiveVolume(lidT1lisci);
       //outer lid on tube 1
-      TGeoVolume *lidT1O = gGeoManager->MakeEltu("lidT1O",St,atube1+walli+wallo+liscitube,btube+walli+wallo+liscitube,wallo/2.);
+      TGeoVolume *lidT1O = gGeoManager->MakeEltu("lidT1O"        ,St,atube1+walli+wallo+liscitube,btube,wallo/2.);
       lidT1O->SetLineColor(18);  // silver/gray
-      top->AddNode(lidT1O, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli-liscilid-wallo/2.));
+      top->AddNode(lidT1O, 1, new TGeoTranslation(0, 0,     fTub1z-fTub1length-walli-liscilid-wallo/2.));
 
       // All inner tubes...
       GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,fTub1z,kRed,Al);
-      GeoEllipticalTube("T2I",walli,atube,btube,fTub2length,fTub2z,kRed,Al);
-      GeoEllipticalTube("T3I",walli,atube,btube,fTub3length,fTub3z,kRed,Al);
-      GeoEllipticalTube("T4I",walli,atube,btube,fTub4length,fTub4z,kRed,Al);
-      GeoEllipticalTube("T5I",walli,atube,btube,fTub5length,fTub5z,kRed,Al);
-      GeoEllipticalTube("T6I",walli,atube,btube,fTub6length,fTub6z,kRed,Al);
+      GeoEllipticalTube("T2I",walli,atube, btube,fTub2length,fTub2z,kRed,Al);
+      GeoEllipticalTube("T3I",walli,atube, btube,fTub3length,fTub3z,kRed,Al);
+      GeoEllipticalTube("T4I",walli,atube, btube,fTub4length,fTub4z,kRed,Al);
+      GeoEllipticalTube("T5I",walli,atube, btube,fTub5length,fTub5z,kRed,Al);
+      GeoEllipticalTube("T6I",walli,atube, btube,fTub6length,fTub6z,kRed,Al);
       // All outer tubes, first calculate inner radii of this tube
-      Double_t aO=atube+walli+liscitube;
+      Double_t aO =atube+walli+liscitube;
       Double_t aO1=atube1+walli+liscitube;
-      Double_t bO=btube+walli+liscitube;
-      GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length+liscilid/2,fTub1z-liscilid/2,18,St);
-      GeoPlateEllipse("T1Endplate",0.02*m+(atube-atube1),aO1+wallo,bO+wallo,wallo/2.,fTub1z+fTub1length-wallo/2.,18,St);
-      GeoEllipticalTube("T2O",wallo,aO,bO,fTub2length,fTub2z,18,St);
-      GeoPlateEllipse("T2Startplate",0.02*m,aO+wallo,bO+wallo,wallo/2.,fTub2z-fTub2length+wallo/2.,18,St);
-      GeoPlateEllipse("T2Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub2z+fTub2length-wallo/2.,18,St);
-      GeoEllipticalTube("T3O",wallo,aO,bO,fTub3length,fTub3z,18,St);
-      GeoPlateEllipse("T3Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub3z-fTub3length+wallo/2.,18,St);
-      GeoPlateEllipse("T3Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub3z+fTub3length-wallo/2.,18,St);
-      GeoEllipticalTube("T4O",wallo,aO,bO,fTub4length,fTub4z,18,St);
-      GeoPlateEllipse("T4Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub4z-fTub4length+wallo/2.,18,St);
-      GeoPlateEllipse("T4Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub4z+fTub4length-wallo/2.,18,St);
-      GeoEllipticalTube("T5O",wallo,aO,bO,fTub5length,fTub5z,18,St);
-      GeoPlateEllipse("T5Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub5z-fTub5length+wallo/2.,18,St);
-      GeoPlateEllipse("T5Endplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub5z+fTub5length-wallo/2.,18,St);
-      GeoEllipticalTube("T6O",wallo,aO,bO,fTub6length+liscilid/2.,fTub6z+liscilid/2.,18,St);
-      GeoPlateEllipse("T6Startplate",ws,aO+wallo,bO+wallo,wallo/2.,fTub6z-fTub6length+wallo/2.,18,St);
+      Double_t bO =btube+walli+liscitube;
+      GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length,fTub1z,18,St);
+      GeoEllipticalTube("T2O",wallo,aO, bO,fTub2length,fTub2z,18,St);
+      GeoEllipticalTube("T3O",wallo,aO, bO,fTub3length,fTub3z,18,St);
+      GeoEllipticalTube("T4O",wallo,aO, bO,fTub4length,fTub4z,18,St);
+      GeoEllipticalTube("T5O",wallo,aO, bO,fTub5length,fTub5z,18,St);
+      GeoEllipticalTube("T6O",wallo,aO, bO,fTub6length+liscilid/2.,fTub6z+liscilid/2.,18,St);
+      GeoPlateEllipse("T1Endplate",  0.02*m+(atube-atube1),aO1+wallo,bO+wallo,wallo/2.,fTub1z+fTub1length-wallo/2.,18,St);
+      GeoPlateEllipse("T2Startplate",0.02*m               ,aO +wallo,bO+wallo,wallo/2.,fTub2z-fTub2length+wallo/2.,18,St);
+      GeoPlateEllipse("T2Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub2z+fTub2length-wallo/2.,18,St);
+      GeoPlateEllipse("T3Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub3z-fTub3length+wallo/2.,18,St);
+      GeoPlateEllipse("T3Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub3z+fTub3length-wallo/2.,18,St);
+      GeoPlateEllipse("T4Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub4z-fTub4length+wallo/2.,18,St);
+      GeoPlateEllipse("T4Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub4z+fTub4length-wallo/2.,18,St);
+      GeoPlateEllipse("T5Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub5z-fTub5length+wallo/2.,18,St);
+      GeoPlateEllipse("T5Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub5z+fTub5length-wallo/2.,18,St);
+      GeoPlateEllipse("T6Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub6z-fTub6length+wallo/2.,18,St);
       // And liquid scintillator inbetween, first calculate inner radii of this
-      Double_t als=atube+walli;
+      Double_t als =atube+walli;
       Double_t als1=atube1+walli;
-      Double_t bls=btube+walli;
+      Double_t bls =btube+walli;
       GeoEllipticalTube("T1LS",liscitube,als1,bls,fTub1length,fTub1z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T2LS",liscitube,als,bls,fTub2length,fTub2z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T3LS",liscitube,als,bls,fTub3length,fTub3z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T4LS",liscitube,als,bls,fTub4length,fTub4z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T5LS",liscitube,als,bls,fTub5length,fTub5z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T6LS",liscitube,als,bls,fTub6length,fTub6z,kMagenta-10,Se,true);
+      GeoEllipticalTube("T2LS",liscitube,als ,bls,fTub2length,fTub2z,kMagenta-10,Se,true);
+      GeoEllipticalTube("T3LS",liscitube,als ,bls,fTub3length,fTub3z,kMagenta-10,Se,true);
+      GeoEllipticalTube("T4LS",liscitube,als ,bls,fTub4length,fTub4z,kMagenta-10,Se,true);
+      GeoEllipticalTube("T5LS",liscitube,als ,bls,fTub5length,fTub5z,kMagenta-10,Se,true);
+      GeoEllipticalTube("T6LS",liscitube,als ,bls,fTub6length,fTub6z,kMagenta-10,Se,true);
 
       //closing lid on tube 6
       TGeoVolume *lidT6I = gGeoManager->MakeEltu("lidT6I",Al,atube+walli,btube+walli,walli/2.);
