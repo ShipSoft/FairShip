@@ -236,7 +236,7 @@ class HNLbranchings():
             #width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(u.pi**3.))
             if (alpha != beta) and (gamma not in [alpha, beta]):
                 return 0.
-            width = (self.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(math.pi**3.))
+            width = (c.GF**2.)*(self.MN**5.)*self.U2[gamma-1]/(192.*(math.pi**3.))
         else:
             return 0.
         if alpha != beta:
