@@ -117,7 +117,7 @@ void ShipRpc::ConstructGeometry()
     
     Double_t XtrSize = 4.5*m; //Transversal size of the scintillator plane in m
     Double_t YtrSize = 8*m;
-    Int_t NScintPlanes = 12; //Number of Scintillator Planes
+    Int_t NScintPlanes = 11; //Number of Scintillator Planes
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
     InitMedium("RPCgas");

@@ -101,6 +101,11 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      TGeoNode *linner = top->FindNode("lidT1I_1");
      TGeoNode *scint  = top->FindNode("lidT1lisci_1");
      TGeoNode *louter = top->FindNode("lidT1O_1");
+     TGeoNode *lidT6I = top->FindNode("lidT6I_1");
+     TGeoNode *t2I  = top->FindNode("T2I_1");
+     TGeoNode *t1I  = top->FindNode("T1I_1");
+     TGeoNode *lnu0   = top->FindNode("volLayer_0");
+     TGeoNode *lnu11  = top->FindNode("volLayer_11");
      TGeoEltu *temp = dynamic_cast<TGeoEltu*>(linner->GetVolume()->GetShape());  
      fEntrDz_inner = temp->GetDZ();
      temp = dynamic_cast<TGeoEltu*>(louter->GetVolume()->GetShape());  
@@ -109,23 +114,27 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      fEntrB = temp->GetB(); 
      fEntrZ_inner  = linner->GetMatrix()->GetTranslation()[2];
      fEntrZ_outer  = louter->GetMatrix()->GetTranslation()[2];
-     TGeoNode *lidT6I = top->FindNode("lidT6I_1");
      Lvessel = lidT6I->GetMatrix()->GetTranslation()[2] - fEntrZ_inner - fEntrDz_inner;
-     TGeoNode *t2I  = top->FindNode("T2I_1");
      TGeoCompositeShape *tempC = dynamic_cast<TGeoCompositeShape*>(t2I->GetVolume()->GetShape());  
      Xvessel = tempC->GetDX() - 2*fEntrDz_inner ;
      Yvessel = tempC->GetDY() - 2*fEntrDz_inner ;
-     TGeoNode *t1I  = top->FindNode("T1I_1");
      tempC = dynamic_cast<TGeoCompositeShape*>(t1I->GetVolume()->GetShape()); 
      fL1z = tempC->GetDZ()*2;  
      temp = dynamic_cast<TGeoEltu*>(scint->GetVolume()->GetShape());  
      fScintDz = temp->GetDZ()*2;
+     TGeoBBox *tempn = dynamic_cast<TGeoBBox*>(lnu0->GetVolume()->GetShape()); 
+     fznu0 = lnu0->GetMatrix()->GetTranslation()[2]+tempn->GetDZ();  
+     tempn = dynamic_cast<TGeoBBox*>(lnu11->GetVolume()->GetShape()); 
+     fznu11 = lnu11->GetMatrix()->GetTranslation()[2]-tempn->GetDZ();  
+     fXnu11 = tempC->GetDX();  
+     fYnu11 = tempC->GetDY();  
      cout << "Info GenieGenerator: geo inner " << fEntrDz_inner << " "<< fEntrZ_inner << endl;
      cout << "Info GenieGenerator: geo outer " << fEntrDz_outer << " "<< fEntrZ_outer << endl;
      cout << "Info GenieGenerator: A and B " << fEntrA << " "<< fEntrB << endl;
-     cout << "Info GenieGenerator: vessel length height width " << Lvessel << " "<<Yvessel<< " "<< Xvessel << endl;
+     cout << "Info GenieGenerator: vessel length heig<ht width " << Lvessel << " "<<Yvessel<< " "<< Xvessel << endl;
      cout << "Info GenieGenerator: scint thickness " << fScintDz << endl;
      cout << "Info GenieGenerator: rextra " << fScintDz/2.+2*fEntrDz_inner << " "<< 2*fEntrDz_outer << " "<<2*fEntrDz_inner << endl;
+     cout << "Info GenieGenerator: nuMu " << fznu11 << " - "<< fznu0 << " "<< fXnu11 << " / " << fYnu11 << endl;
      // if ( gRandom->Uniform(0.,1.)>0.5) {rextra=rextra+11.;}  //outer wall.
 
      fFirst = kFALSE;
@@ -179,9 +188,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       z = fEntrZ_outer+fEntrDz_outer + gRandom->Uniform(0.,Lvessel);
     }else{
       //point in nu-tau muon shield
-      x=gRandom->Uniform(-225.,225.);
-      y=gRandom->Uniform(-400.,400.);
-      z=fEntrZ_outer-205.+gRandom->Uniform(0.,80.);
+      x=gRandom->Uniform(-fXnu11,fXnu11);
+      y=gRandom->Uniform(-fYnu11,fYnu11);
+      z=gRandom->Uniform(fznu11,fznu0);
     }
 // first, incoming neutrino
     //rotate the particle 

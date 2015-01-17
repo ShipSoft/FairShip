@@ -42,6 +42,7 @@ class GenieGenerator : public FairGenerator
   int fNevents;
   int fn;
   bool fFirst;
+  Double_t fznu0,fznu11,fXnu11,fYnu11;
   Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
   ClassDef(GenieGenerator,1);
 };
