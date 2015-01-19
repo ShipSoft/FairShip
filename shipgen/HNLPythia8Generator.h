@@ -24,7 +24,8 @@ class HNLPythia8Generator : public FairGenerator
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   void SetParameters(char*);
-  void Print(); //!
+  void Print(){fPythia.settings.listAll(); };  //!
+  void List(int id){fPythia.particleData.list(id);}; //!
   
   virtual Bool_t Init(); //!
   
@@ -36,11 +37,12 @@ class HNLPythia8Generator : public FairGenerator
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
-
+  void getPythiaInstance(){cout<<"fPythia"<<&fPythia<<endl;};
  private:
   
   Pythia fPythia;             //!
   RndmEngine* fRandomEngine;  //!
+  // doesnot work Pythia8::Pythia getPythiaInstance(){return fPythia;}  //!
   
  protected:
 
