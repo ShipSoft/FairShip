@@ -39,6 +39,18 @@ def searchForNodes2(inputFile):
     for (i,n) in enumerate(nodes):
         print i,n.GetName(),findPositionElement(n)['z'],findDimentionBoxElement(n)['z']
 
+def searchForNodes2_xyz(inputFile):
+    r = loadGeometry(inputFile)
+    fGeo = r['fGeo']
+    ## Get the top volume
+    #fGeo = ROOT.gGeoManager
+    tv = fGeo.GetTopVolume()
+    nodes = tv.GetNodes()
+    for (i,n) in enumerate(nodes):
+        print i,n.GetName()
+        print "            x: ", findPositionElement(n)['x'],findDimentionBoxElement(n)['x']
+        print "            y: ", findPositionElement(n)['y'],findDimentionBoxElement(n)['y']
+        print "            z: ", findPositionElement(n)['z'],findDimentionBoxElement(n)['z']
         
 # basic function to be called to load the geometry from a file        
 def loadGeometry(inputFile):
@@ -52,9 +64,10 @@ def loadGeometry(inputFile):
 
     tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
     geofile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
+    print geofile
     gMan  = tgeom.Import(geofile)
     fGeo = ROOT.gGeoManager
-    return {'fGeo':fGeo,'gMan':gMan}
+    return {'fGeo':fGeo,'gMan':gMan, 'ShipGeo':ShipGeo}
 
 def getNode(nodeName,fGeo=None):
     if fGeo is None:
@@ -117,3 +130,4 @@ def findPositionGeoElement(inputFile, myNodes_name):
 
 ##print myGeoEl["volLayer2_0"]['z'],myGeoEl["volLayer2_11"]['z']
 ##print myGeoEl["volLayer2_11"]['z']-myGeoEl["volLayer2_0"]['z']
+
