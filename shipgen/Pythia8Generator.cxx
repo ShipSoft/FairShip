@@ -15,7 +15,7 @@ Pythia8Generator::Pythia8Generator()
   fUseRandom3 = kTRUE;
   fId         = 2212; // proton
   fMom        = 400;  // proton
-  fHNL        = 0;    // HNL  if set to !=0, for example 9900014, only track 
+  fHNL        = 0;    // HNL  if set to !=0, for example 9900015, only track 
   fDeepCopy   = false;  // copy complete pythia event
 }
 // -------------------------------------------------------------------------

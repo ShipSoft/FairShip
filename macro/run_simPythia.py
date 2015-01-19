@@ -49,7 +49,7 @@ run.SetGenerator(primGen)
 
 if inclusive:
   # check presence of HNL
-  P8gen.GetPythiaInstance(9900014)
+  P8gen.GetPythiaInstance(9900015)
 # ------------------------------------------------------------------------
 
 #---Store the visualiztion info of the tracks, this make the output file very large!!

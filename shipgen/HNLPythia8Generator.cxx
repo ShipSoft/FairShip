@@ -18,7 +18,7 @@ HNLPythia8Generator::HNLPythia8Generator()
 {
   fId         = 2212; // proton
   fMom        = 400;  // proton
-  fHNL        = 9900014;    // HNL  pdg code
+  fHNL        = 9900015;    // HNL  pdg code
   fLmin       = 5000.*cm;    // mm minimum  decay position z  ROOT units !
   fLmax       = 12000.*cm;   // mm maximum decay position z
 }
@@ -27,6 +27,7 @@ HNLPythia8Generator::HNLPythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t HNLPythia8Generator::Init() 
 {
+  if ( debug ){List(9900015);}
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   fPythia.setRndmEnginePtr(fRandomEngine);
@@ -38,6 +39,7 @@ Bool_t HNLPythia8Generator::Init()
   if ( debug ){cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<endl;}
   fctau = fPythia.particleData.tau0(fHNL); //* 3.3333e-12
   if ( debug ){cout<<"ctau pythia "<<fctau<<"[mm]"<<endl;}
+  if ( debug ){List(9900015);}
   
   return kTRUE;
 }
@@ -167,10 +169,6 @@ void HNLPythia8Generator::SetParameters(char* par)
     if ( debug ){cout<<"fPythia.readString(\""<<par<<"\")"<<endl;}
 } 
 
-// -------------------------------------------------------------------------
-void HNLPythia8Generator::Print(){
-  fPythia.settings.listAll();
-}
 // -------------------------------------------------------------------------
 
 ClassImp(HNLPythia8Generator)

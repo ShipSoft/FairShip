@@ -287,7 +287,7 @@ class ShipReco:
      HNL = LV1+LV2
 # try to make it persistent
      vx = ROOT.TLorentzVector(HNLPos,0.)  # time not set
-     particle = ROOT.TParticle(9900014,0,-1,-1,t1,t2,HNL,vx)
+     particle = ROOT.TParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
      nParts   = self.fPartArray.GetEntries()
      self.fPartArray[nParts] = particle 
      #
