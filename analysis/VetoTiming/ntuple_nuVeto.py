@@ -1,7 +1,7 @@
 from ROOT import *
 from array import array
 
-gROOT.ProcessLine(".x lhcbstyle.C")
+gROOT.ProcessLine(".x mystyle.C")
 pdg = TDatabasePDG.Instance()
 
 ### Add what is missed:
