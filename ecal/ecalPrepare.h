@@ -21,6 +21,7 @@ public:
   virtual ~ecalPrepare();
   /** Initialization of the task **/  
   virtual InitStatus Init();
+  void InitPython(ecalStructure* structure);
   /** Executed task **/ 
   virtual void Exec(Option_t* option);
   /** Finish task **/ 

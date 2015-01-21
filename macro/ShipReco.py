@@ -294,6 +294,41 @@ class ShipReco:
      HNLMom = ROOT.TLorentzVector()
      particle.Momentum(HNLMom)
 
+# -----Calorimeter part --------------------------------------------
+# Creates. exports and fills calorimeter structure
+dflag = 0
+if debug: dflag = 10
+caloTasks = []  
+ecalGeo = "ecal_ellipse6x12m2z"+str(ShipGeo.ecal.z)+".geo"
+ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
+ecalFiller.SetUseMCPoints(ROOT.kTRUE)
+ecalFiller.StoreTrackInformation()
+caloTasks.append(ecalFiller)
+#GeV -> ADC conversion
+ecalDigi=ROOT.ecalDigi("ecalDigi",0)
+caloTasks.append(ecalDigi)
+#ADC -> GeV conversion
+ecalPrepare=ROOT.ecalPrepare("ecalPrepare",0)
+caloTasks.append(ecalPrepare)
+# Maximums locator
+ecalMaximumFind=ROOT.ecalMaximumLocator("maximumFinder",dflag)
+caloTasks.append(ecalMaximumFind)
+# Cluster calibration
+ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0) 
+ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))") 
+ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03,-1.16383e-04)
+ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS) 
+ecalCl3Ph=ROOT.TFormula("ecalCl3Ph","[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
+ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561) 
+ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
+caloTasks.append(ecalClusterCalib)
+# Cluster finder
+ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
+caloTasks.append(ecalClusterFind)
+# ecal drawer
+# ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
+# run.AddTask(ecalDrawer)
+
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 PDG = ROOT.TDatabasePDG.Instance()
 # init geometry and mag. field
@@ -314,9 +349,18 @@ if debug: # init event display
 fitter          = ROOT.genfit.KalmanFitterRefTrack()
 if debug: fitter.setDebugLvl(1) # produces lot of printout
 WireMeasurement = ROOT.genfit.WireMeasurement
+
 # access ShipTree
 SHiP = ShipReco(fout)
+SHiP.sTree.GetEvent(0)
+ecalStructure=ecalFiller.InitPython(SHiP.sTree.EcalPointLite)
+ecalDigi.InitPython(ecalStructure)
+ecalPrepare.InitPython(ecalStructure)
+ecalMaximums=ecalMaximumFind.InitPython(ecalStructure)
+ecalCalib=ecalClusterCalib.InitPython()
+ecalClusters=ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
 
+#for x in caloTasks: x.Init()
 # main loop
 for iEvent in range(0, SHiP.nEvents):
  ntracks = SHiP.execute(iEvent)
@@ -329,6 +373,7 @@ for iEvent in range(0, SHiP.nEvents):
  SHiP.fitTracks.Fill()
  SHiP.mcLink.Fill()
  SHiP.SHbranch.Fill()
+ for x in caloTasks: x.Exec('start')
 
  if debug: print 'end of event after Fill'
  

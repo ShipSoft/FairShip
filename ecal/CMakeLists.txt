@@ -35,6 +35,13 @@ ecalStructureFiller.cxx
 ecalDigi.cxx
 ecalPrepare.cxx
 ecalAnalysisSimple.cxx
+ecalAnalysisMaterial.cxx
+ecalMaximum.cxx
+ecalMaximumLocator.cxx
+ecalCluster.cxx
+ecalClusterFinder.cxx
+ecalClusterCalibration.cxx
+ecalDrawer.cxx
 )
 
 Set(LINKDEF ecalLinkDef.h)

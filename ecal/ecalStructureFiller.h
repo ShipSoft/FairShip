@@ -36,6 +36,8 @@ public:
   /** Initialization of the task **/  
   virtual InitStatus Init();
 
+  ecalStructure* InitPython(TClonesArray* litePoints);
+
   /** Executed task **/ 
   virtual void Exec(Option_t* option);
 

@@ -83,6 +83,20 @@ InitStatus ecalStructureFiller::Init()
 }
 // -------------------------------------------------------------------------
 
+
+ecalStructure* ecalStructureFiller::InitPython(TClonesArray* litePoints)
+{
+  fListECALpts=litePoints;
+
+  //fInf->CheckVariables();
+  fStr=new ecalStructure(fInf);
+  if (fStoreTrackInfo) fStr->SetUseMC(1);
+  fStr->Construct();
+
+  return fStr;
+}
+
+
 /** Loop over MCPoints hits and add them to cells **/
 void ecalStructureFiller::LoopForMCPoints()
 {

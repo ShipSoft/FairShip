@@ -82,6 +82,11 @@ InitStatus ecalDigi::Init()
   return kSUCCESS;
 }
 
+void ecalDigi::InitPython(ecalStructure* structure)
+{
+  fStr=structure;
+}
+
 /** --- Executed task --------------------------------------------------------- **/ 
 void ecalDigi::Exec(Option_t* option)
 {

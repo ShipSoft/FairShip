@@ -79,6 +79,11 @@ InitStatus ecalPrepare::Init()
   return kSUCCESS;
 }
 
+void ecalPrepare::InitPython(ecalStructure* structure)
+{
+  fStr=structure;
+}
+
 /** --- Executed task --------------------------------------------------------- **/ 
 void ecalPrepare::Exec(Option_t* option)
 {
