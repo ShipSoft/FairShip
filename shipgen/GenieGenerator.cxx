@@ -172,7 +172,11 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       //point on tube, place over 1 cm radius at 2 radii, separated by 10. cm
       // first vessel has smaller size
       Double_t ea = Xvessel;
-      if (gRandom->Uniform(0,1) < fL1z/Lvessel){ ea = fEntrA; }
+      Double_t zrand =  gRandom->Uniform(0,Lvessel);
+      if (zrand < fL1z){ 
+        ea = fEntrA; 
+      }
+      z = fEntrZ_outer-fEntrDz_outer + zrand;
       Double_t theta = gRandom->Uniform(0.,TMath::Pi());
       Double_t rextra; 
       if ( gRandom->Uniform(0.,1.)>0.5) {
@@ -185,7 +189,6 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       x = (ea+rextra)*cos(theta);
       y = sqrt(1.-(x*x)/((ea+rextra)*(ea+rextra)))*(eb+rextra);
       if (gRandom->Uniform(-1.,1.)>0.) y=-y;
-      z = fEntrZ_outer+fEntrDz_outer + gRandom->Uniform(0.,Lvessel);
     }else{
       //point in nu-tau muon shield
       x=gRandom->Uniform(-fXnu11,fXnu11);
