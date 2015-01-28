@@ -32,6 +32,7 @@ EndIf (FAIRBASE)
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
 
 IF(FAIRROOTPATH)
   Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
