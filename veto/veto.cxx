@@ -510,7 +510,7 @@ void veto::ConstructGeometry()
       GeoEllipticalTube("T3O",wallo,aO, bO,fTub3length,fTub3z,18,St);
       GeoEllipticalTube("T4O",wallo,aO, bO,fTub4length,fTub4z,18,St);
       GeoEllipticalTube("T5O",wallo,aO, bO,fTub5length,fTub5z,18,St);
-      GeoEllipticalTube("T6O",wallo,aO, bO,fTub6length+liscilid/2.,fTub6z+liscilid/2.,18,St);
+      GeoEllipticalTube("T6O",wallo,aO, bO,fTub6length,fTub6z,18,St);
       GeoPlateEllipse("T1Endplate",  0.02*m+(atube-atube1),aO1+wallo,bO+wallo,wallo/2.,fTub1z+fTub1length-wallo/2.,18,St);
       GeoPlateEllipse("T2Startplate",0.02*m               ,aO +wallo,bO+wallo,wallo/2.,fTub2z-fTub2length+wallo/2.,18,St);
       GeoPlateEllipse("T2Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub2z+fTub2length-wallo/2.,18,St);
@@ -527,29 +527,20 @@ void veto::ConstructGeometry()
       Double_t bls =btube+walli;
       GeoEllipticalTube("T1LS",liscitube,als1,bls,fTub1length,fTub1z,kMagenta-10,Se,true);
       GeoEllipticalTube("T2LS",liscitube,als ,bls,fTub2length,fTub2z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T3LS",liscitube,als ,bls,fTub3length,fTub3z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T4LS",liscitube,als ,bls,fTub4length,fTub4z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T5LS",liscitube,als ,bls,fTub5length,fTub5z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T6LS",liscitube,als ,bls,fTub6length,fTub6z,kMagenta-10,Se,true);
 
       //closing lid on tube 6
       TGeoVolume *lidT6I = gGeoManager->MakeEltu("lidT6I",Al,atube+walli,btube+walli,walli/2.);
       lidT6I->SetLineColor(kRed);  // silver/gray
       top->AddNode(lidT6I, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli/2.));
-      //lisci lid on tube 6
-      TGeoVolume *lidT6lisci = gGeoManager->MakeEltu("lidT6lisci",Se,atube+walli+liscitube,btube+walli+liscitube,liscilid/2.);
-      lidT6lisci->SetLineColor(kMagenta-10);
-      top->AddNode(lidT6lisci, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid/2.));
-      AddSensitiveVolume(lidT6lisci);
       //outer lid on tube 1
-      TGeoVolume *lidT6O = gGeoManager->MakeEltu("lidT6O",St,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,wallo/2.);
+      TGeoVolume *lidT6O = gGeoManager->MakeEltu("lidT6O",St,atube+walli+wallo,btube+walli+wallo,wallo/2.);
       lidT6O->SetLineColor(18);  // silver/gray
-      top->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid+wallo/2.));
+      top->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+wallo/2.));
 
       //Add one more sensitive plane after vacuum tube for timing
       TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
       TimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid*1.5+wallo+5.*cm));
+      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid/2.+wallo+5.*cm));
       AddSensitiveVolume(TimeDet);
 
       //Add  rough nu-tau Mu-Spec...

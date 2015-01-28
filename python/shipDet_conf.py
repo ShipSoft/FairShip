@@ -3,6 +3,7 @@
 import ROOT,os
 import shipunit as u
 def posHcal(z): 
+ HcalZSize = 0
  sz = "hcalz"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
  if not sz in os.listdir(floc):
@@ -12,11 +13,14 @@ def posHcal(z):
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
    fn.write(l)
+   if not l.find("HcalZSize")<0:
+     HcalZSize = float(l[len('HcalZSize')+1:].split('#')[0]) 
   f.close()
   fn.close()  
  hcal=ROOT.hcal("Hcal", ROOT.kTRUE, sz)
- return hcal
+ return hcal,HcalZSize
 def posEcal(z):
+ EcalZSize = 0
  sz = "ecal_ellipse6x12m2z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
  if not sz in os.listdir(floc):
@@ -26,10 +30,12 @@ def posEcal(z):
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Ecal start		[cm]\n"
    fn.write(l)
+   if not l.find("EcalZSize")<0:
+     EcalZSize = float(l[len('EcalZSize')+1:].split('#')[0]) 
   f.close()
   fn.close()  
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
- return ecal
+ return ecal,EcalZSize
 
 def configure(run,ship_geo):
 # -----Create media-------------------------------------------------
@@ -111,10 +117,15 @@ def configure(run,ship_geo):
   run.AddModule(Strawtubes) 
 
  if ship_geo.strawDesign == 4: 
-  ecal = posEcal(ship_geo.ecal.z)
+  ecal,EcalZSize = posEcal(ship_geo.ecal.z)
  else:   ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
  run.AddModule(ecal)
 
+ if not ship_geo.HcalOption < 0:
+  hcal,HcalZSize = posHcal(ship_geo.hcal.z)
+  if abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 1*u.cm:
+    print 'mismatch between hcalsize in geo file and python configuration'
+  run.AddModule(hcal)
  Muon = ROOT.muon("Muon", ROOT.kTRUE)
  Muon.SetZStationPositions(ship_geo.MuonStation0.z, ship_geo.MuonStation1.z,ship_geo.MuonStation2.z,ship_geo.MuonStation3.z)
  Muon.SetZFilterPositions(ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z,ship_geo.MuonFilter2.z)
@@ -123,9 +134,6 @@ def configure(run,ship_geo):
  Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)
  Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
  run.AddModule(Muon)
- if not ship_geo.HcalOption < 0:
-  hcal = posHcal(ship_geo.hcal.z)
-  run.AddModule(hcal)
 
 #-----   Magnetic field   -------------------------------------------
     # Constant Field
