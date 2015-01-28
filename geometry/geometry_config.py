@@ -12,7 +12,7 @@ if "targetOpt" not in globals():
 if "strawDesign" not in globals():
     strawDesign = 4
 if "HcalOption" not in globals():
-    HcalOption = -1
+    HcalOption = 1
 if "Yheight" not in globals():
     Yheight = 10.
 

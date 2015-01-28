@@ -123,8 +123,9 @@ def configure(run,ship_geo):
 
  if not ship_geo.HcalOption < 0:
   hcal,HcalZSize = posHcal(ship_geo.hcal.z)
-  if abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 1*u.cm:
+  if abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 10*u.cm:
     print 'mismatch between hcalsize in geo file and python configuration'
+    print ship_geo.hcal.hcalSpace -  HcalZSize, ship_geo.hcal.hcalSpace , HcalZSize
   run.AddModule(hcal)
  Muon = ROOT.muon("Muon", ROOT.kTRUE)
  Muon.SetZStationPositions(ship_geo.MuonStation0.z, ship_geo.MuonStation1.z,ship_geo.MuonStation2.z,ship_geo.MuonStation3.z)
