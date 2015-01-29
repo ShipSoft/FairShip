@@ -86,7 +86,7 @@ with ConfigRegistry.register_config("basic") as c:
      else:                
           c.hcal    =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm  )
           hcalSpace = hcalThickness + 5.5*u.cm 
-    c.hcal.hcalSpace = hcalSpace
+          c.hcal.hcalSpace = hcalSpace
     c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace)
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
