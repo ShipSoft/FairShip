@@ -173,9 +173,10 @@ def myEventLoop(N):
       if hitlist.has_key(trID):  hitlist[trID]+=1
       else:  hitlist[trID]=1
   for tr in hitlist:  h['meanhits'].Fill(hitlist[tr])
-  key = 0
+  key = -1
   fittedTracks = {}
   for atrack in sTree.FitTracks:
+   key+=1
    fitStatus   = atrack.getFitStatus()
    nmeas = atrack.getNumPoints()
    h['meas'].Fill(nmeas)
@@ -235,7 +236,27 @@ def myEventLoop(N):
      h['IP0'].Fill(dist)  
      h['IP0/mass'].Fill(HNLMom.M(),dist)
      h['HNL'].Fill(HNLMom.M())
-
+#
+def HNLKinematics():
+ ut.bookHist(h,'HNLmomNoW','momentum unweighted',100,0.,300.)
+ ut.bookHist(h,'HNLmom','momentum',100,0.,300.)
+ ut.bookHist(h,'HNLmom_recTracks','momentum',100,0.,300.)
+ ut.bookHist(h,'HNLmomNoW_recTracks','momentum unweighted',100,0.,300.)
+ for n in range(sTree.GetEntries()): 
+  rc = sTree.GetEntry(n)
+  wg = sTree.MCTrack[1].GetWeight()
+  if not wg>0.: wg=1.
+  P = sTree.MCTrack[1].GetP()
+  h['HNLmom'].Fill(P,wg) 
+  h['HNLmomNoW'].Fill(P) 
+  for HNL in sTree.Particles:
+     t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
+     for tr in [t1,t2]:
+      xx  = sTree.FitTracks[tr].getFittedState()
+      Prec = xx.getMom().Mag()
+      h['HNLmom_recTracks'].Fill(Prec,wg) 
+      h['HNLmomNoW_recTracks'].Fill(Prec) 
+#
 def access2SmearedHits():
  key = 0
  for ahit in ev.SmearedHits.GetObject():
