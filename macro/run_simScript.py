@@ -21,7 +21,6 @@ theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = True
-phiRandom = False  # only relevant for muon background generator
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i:m:c",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
@@ -70,6 +69,10 @@ for o, a in opts:
             theHNLmass = float(a)
         if o in ("-c", "--couplings", "--coupling"):
             theHNLcouplings = [float(c) for c in a.split(",")]
+
+class MyTrackingAction(ROOT.FairMCApplication):
+ def PreTrack(self,atrack):
+   print 'xes'
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
@@ -135,7 +138,7 @@ if simEngine == "Genie":
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(ship_geo.target.z0)
+ Geniegen.SetPositions(dy,ship_geo.Chamber1.z-ship_geo.chambers.Tub1length,ship_geo.chambers.Length,ship_geo.target.z0, 250.)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
@@ -161,13 +164,13 @@ if simEngine == "MuonBack":
  primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
- MuonBackgen.SetSmearBeam(3*u.cm)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file, with Phi random=',phiRandom 
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)
+ targetz = 0
  Z1 = ship_geo.MuonStation3.z # 3900
  Z2 = ship_geo.vetoStation.z # -1968
  Z3 = ship_geo.chambers.Tub1length # 250
