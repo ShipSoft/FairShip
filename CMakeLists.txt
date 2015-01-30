@@ -32,6 +32,7 @@ EndIf (FAIRBASE)
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
 
 IF(FAIRROOTPATH)
   Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
@@ -48,6 +49,7 @@ include(FairMacros)
 include(WriteConfigFile)
 include(CTest)
 include(CheckCompiler)
+
 
 #Check the compiler and set the compile and link flags
 If(NOT CMAKE_BUILD_TYPE)
@@ -142,6 +144,17 @@ find_package(HEPMC)
 # set a variable which should be used in all CMakeLists.txt
 # Defines all basic include directories from fairbase
 SetBasicVariables()
+
+# Add the FairRoot include directories to the list of libraries which are
+# external to the Ship project. For include directories in this list the
+# compiler will not generate any warnings. This is usefull since one is only
+# interested about warnings from the own project. SYSTEM_INCLUDE_DIRECTORIES
+# is defined in FairMacros.cmake. In the moment the defined directories are
+# the root and boost include directories. 
+Set(SYSTEM_INCLUDE_DIRECTORIES 
+  ${SYSTEM_INCLUDE_DIRECTORIES}
+  ${BASE_INCLUDE_DIRECTORIES}
+)
 
 # Set the library version in the main CMakeLists.txt
 SET(FAIRROOT_MAJOR_VERSION 0)
