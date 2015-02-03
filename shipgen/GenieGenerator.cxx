@@ -42,6 +42,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pyv",&pyv);
   fTree->SetBranchAddress("pzv",&pzv);
   fTree->SetBranchAddress("neu",&neu);    // incoming neutrino PDG code
+  fTree->SetBranchAddress("cc",&cc);      // Is it a CC event?
   fTree->SetBranchAddress("vtxx",&vtxx);  // vertex  in SI units
   fTree->SetBranchAddress("vtxy",&vtxy);
   fTree->SetBranchAddress("vtxz",&vtxz);
@@ -92,7 +93,12 @@ GenieGenerator::~GenieGenerator()
  delete fInputFile;
 }
 // -------------------------------------------------------------------------
-
+void GenieGenerator::AddBox(TVector3 dVec, TVector3 box)
+{
+  dVecs.push_back(dVec);
+  boxs.push_back(box);
+  cout << "Debug GenieGenerator: "<< dVec.X() << " "<<box.Z() << endl;
+}
 // -----   Passing the event   ---------------------------------------------
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
@@ -104,8 +110,6 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      TGeoNode *lidT6I = top->FindNode("lidT6I_1");
      TGeoNode *t2I  = top->FindNode("T2I_1");
      TGeoNode *t1I  = top->FindNode("T1I_1");
-     TGeoNode *lnu0   = top->FindNode("volLayer_0");
-     TGeoNode *lnu11  = top->FindNode("volLayer_11");
      TGeoEltu *temp = dynamic_cast<TGeoEltu*>(linner->GetVolume()->GetShape());  
      fEntrDz_inner = temp->GetDZ();
      temp = dynamic_cast<TGeoEltu*>(louter->GetVolume()->GetShape());  
@@ -122,21 +126,17 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      fL1z = tempC->GetDZ()*2;  
      temp = dynamic_cast<TGeoEltu*>(scint->GetVolume()->GetShape());  
      fScintDz = temp->GetDZ()*2;
-     TGeoBBox *tempn = dynamic_cast<TGeoBBox*>(lnu0->GetVolume()->GetShape()); 
-     fznu0 = lnu0->GetMatrix()->GetTranslation()[2]+tempn->GetDZ();  
-     tempn = dynamic_cast<TGeoBBox*>(lnu11->GetVolume()->GetShape()); 
-     fznu11 = lnu11->GetMatrix()->GetTranslation()[2]-tempn->GetDZ();  
-     fXnu11 = tempC->GetDX();  
-     fYnu11 = tempC->GetDY();  
      cout << "Info GenieGenerator: geo inner " << fEntrDz_inner << " "<< fEntrZ_inner << endl;
      cout << "Info GenieGenerator: geo outer " << fEntrDz_outer << " "<< fEntrZ_outer << endl;
      cout << "Info GenieGenerator: A and B " << fEntrA << " "<< fEntrB << endl;
      cout << "Info GenieGenerator: vessel length heig<ht width " << Lvessel << " "<<Yvessel<< " "<< Xvessel << endl;
      cout << "Info GenieGenerator: scint thickness " << fScintDz << endl;
      cout << "Info GenieGenerator: rextra " << fScintDz/2.+2*fEntrDz_inner << " "<< 2*fEntrDz_outer << " "<<2*fEntrDz_inner << endl;
-     cout << "Info GenieGenerator: nuMu " << fznu11 << " - "<< fznu0 << " "<< fXnu11 << " / " << fYnu11 << endl;
-     // if ( gRandom->Uniform(0.,1.)>0.5) {rextra=rextra+11.;}  //outer wall.
-
+     for(int j=0; j<boxs.size(); j++) {
+      cout << "Info GenieGenerator: nuMu X" << j << " - "<< -boxs[j].X()+dVecs[j].X() << " "<< boxs[j].X()+dVecs[j].X() << endl;
+      cout << "Info GenieGenerator: nuMu Y" << j << " - "<< -boxs[j].Y()+dVecs[j].Y() << " "<< boxs[j].Y()+dVecs[j].Y() << endl;
+      cout << "Info GenieGenerator: nuMu Z" << j << " - "<< -boxs[j].Z()+dVecs[j].Z() << " "<< boxs[j].Z()+dVecs[j].Z() << endl;
+     }
      fFirst = kFALSE;
     }
     if (fn==fNevents) {fLogger->Fatal(MESSAGE_ORIGIN, "No more input events");}
@@ -190,10 +190,11 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       y = sqrt(1.-(x*x)/((ea+rextra)*(ea+rextra)))*(eb+rextra);
       if (gRandom->Uniform(-1.,1.)>0.) y=-y;
     }else{
-      //point in nu-tau muon shield
-      x=gRandom->Uniform(-fXnu11,fXnu11);
-      y=gRandom->Uniform(-fYnu11,fYnu11);
-      z=gRandom->Uniform(fznu11,fznu0);
+      //point in nu-tau detector area
+      int j =  int(gRandom->Uniform(0.,boxs.size()+0.5));
+      x=gRandom->Uniform(-boxs[j].X()+dVecs[j].X(),boxs[j].X()+dVecs[j].X());
+      y=gRandom->Uniform(-boxs[j].Y()+dVecs[j].Y(),boxs[j].Y()+dVecs[j].Y());
+      z=gRandom->Uniform(-boxs[j].Z()+dVecs[j].Z(),boxs[j].Z()+dVecs[j].Z());
     }
 // first, incoming neutrino
     //rotate the particle 
@@ -208,7 +209,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
 // second, outgoing lepton
     pout = Rotate(x,y,zrelative,pxl,pyl,pzl);
-    cpg->AddTrack(copysign(fabs(neu)-1,neu),pout[0],pout[1],pout[2],x,y,z,0,true);
+    Int_t oLPdgCode = neu;
+    if (cc){copysign(fabs(neu)-1,neu);}
+    cpg->AddTrack(oLPdgCode,pout[0],pout[1],pout[2],x,y,z,0,true);
 // last, all others
     for(int i=0; i<nf; i++)
 	{

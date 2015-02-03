@@ -33,7 +33,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Tub1length = 2.5*u.m
      c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
      c.chambers.Tub3length = 0.8*u.m
-     c.chambers.Tub4length = 2.*u.m+magnetIncrease
+     c.chambers.Tub4length = 2.*u.m+magnetIncrease/2.
      c.chambers.Tub5length = 0.8*u.m
      c.chambers.Tub6length = 0.1*u.m
      c.chambers.Rmin = 245.*u.cm
@@ -42,7 +42,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber1 = AttrDict(z=-22.28*u.m)
      c.Chamber2 = AttrDict(z=-1.9*u.m+extraVesselLength/2.)
      c.Chamber3 = AttrDict(z=16.98*u.m+extraVesselLength)
-     c.Chamber4 = AttrDict(z=20.18*u.m+magnetIncrease+extraVesselLength)
+     c.Chamber4 = AttrDict(z=20.18*u.m+magnetIncrease/2.+extraVesselLength)
      c.Chamber5 = AttrDict(z=23.38*u.m+magnetIncrease+extraVesselLength)
      c.Chamber6 = AttrDict(z=24.68*u.m+magnetIncrease+extraVesselLength)
      # 
@@ -73,7 +73,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
 
     c.Bfield = AttrDict(z=c.z)
-    c.Bfield.max = 1.5*u.kilogauss  # was 1.15 in EOI
+    c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
 
     c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m)
@@ -215,27 +215,58 @@ with ConfigRegistry.register_config("basic") as c:
 
     #Parameters for tau magnetic Spectrometer
     c.tauMS = AttrDict(z=0*u.cm)
-    c.tauMS.FeL = 5.*u.cm
-    c.tauMS.AirL = 2.*u.cm
-    c.tauMS.SpectroL = 4.7*u.m
+    c.tauMS.zSize = 4.76*u.m
+    c.tauMS.FeSlab = 5. *u.cm
+    c.tauMS.RpcW = 2.*u.cm
+    c.tauMS.ArmW = 12*c.tauMS.FeSlab + 11*c.tauMS.RpcW
     c.tauMS.GapV = 27.*u.cm
-    c.tauMS.DGap = 95.*u.cm
-    c.tauMS.MGap = 120*u.cm
-    c.tauMS.zLS = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.DGap - c.tauMS.FeL/2
-    c.tauMS.mf = 1.5 * u.tesla
+    c.tauMS.MGap = 122*u.cm
+    c.tauMS.HPTW = 15*u.cm
+    c.tauMS.RetYokeH = 90*u.cm
+    c.tauMS.CoilH = 10*u.cm
+    c.tauMS.CoilW = 2*u.cm
+    c.tauMS.CoilG = 2*u.cm
+    c.tauMS.N =20
+    c.tauMS.zMSC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.zSize/2
+    c.tauMS.Mfield = 1.5 * u.tesla
 
     #Parameters for Goliath
-    c.Goliath = AttrDict(z=0*u.cm)
-    c.Goliath.LS = 4.5*u.m
-    c.Goliath.TS = 3.6*u.m
-    c.Goliath.GapTS = 25*u.cm
-    c.Goliath.zC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.SpectroL - c.Goliath.GapTS - c.Goliath.LS/2
+    c.NuTauTarget = AttrDict(z=0*u.cm)
+    c.NuTauTarget.LS = 4.5*u.m
+    c.NuTauTarget.TS = 3.6*u.m
+    c.NuTauTarget.GapTS = 25*u.cm
+    c.NuTauTarget.CoilR = 1*u.m
+    c.NuTauTarget.UpCoilH = 45*u.cm
+    c.NuTauTarget.LowCoilH = 30*u.cm
+    c.NuTauTarget.CoilD = 105*u.cm
+    c.NuTauTarget.BasisH = 57*u.cm
+    c.NuTauTarget.H = 2*c.NuTauTarget.BasisH + c.NuTauTarget.CoilD + c.NuTauTarget.UpCoilH + c.NuTauTarget.LowCoilH
+    c.NuTauTarget.zC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.zSize - c.NuTauTarget.GapTS - c.NuTauTarget.LS/2
 
-    #Parameters for the RPC in tau magnetic Spectrometer
-    c.Rpc = AttrDict(z=0*u.cm)
-    c.Rpc.DriftL = 15*u.cm
-    c.Rpc.IronL = 5.*u.cm
-    c.Rpc.ScintL = 2.*u.cm
-    c.Rpc.MiddleG = 120*u.cm
-    c.Rpc.zRpcL = -c.decayVolume.length/2. - c.tauMS.GapV -c.tauMS.DGap + c.Rpc.ScintL/2
-    c.Rpc.zDriftL = -c.decayVolume.length/2. - c.tauMS.GapV - c.Rpc.DriftL/2
+    c.NuTauTarget.TTX = 2.0*u.m
+    c.NuTauTarget.TTY = 0.9*u.m
+    c.NuTauTarget.TTZ= 6.0*u.cm
+   
+
+    #tau Bricks
+    c.NuTauTarget.xdim = 2.0 * u.m
+    c.NuTauTarget.ydim = 1.0 * u.m
+    
+    c.NuTauTarget.EmTh = 0.0045 * u.cm
+    c.NuTauTarget.EmX = 12.5 * u.cm
+    c.NuTauTarget.EmY = 9.9 * u.cm
+    c.NuTauTarget.PBTh = 0.0205 * u.cm
+    c.NuTauTarget.LeadTh = 0.1 * u.cm
+    c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
+    c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
+    c.NuTauTarget.BrX = 12.9 *u.cm
+    c.NuTauTarget.BrY = 10.5 *u.cm
+    c.NuTauTarget.BrZ = 8.3*u.cm
+    c.NuTauTarget.RohG = 1.5 * u.cm
+    c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW;
+    c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW
+    c.NuTauTarget.CellW = c.NuTauTarget.BrZ + c.NuTauTarget.CESW
+    
+    c.NuTauTarget.zdim = 11* c.NuTauTarget.CellW + 12*c.NuTauTarget.TTZ
+
+

@@ -215,7 +215,7 @@ ENDIF (NOT FAIRROOT_FOUND)
 
 add_subdirectory (shipdata)
 add_subdirectory (passive)
-add_subdirectory (TauSensitive)
+add_subdirectory (nutaudet)
 add_subdirectory (ecal)
 add_subdirectory (hcal)
 add_subdirectory (veto)
