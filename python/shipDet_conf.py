@@ -6,34 +6,32 @@ def posHcal(z):
  HcalZSize = 0
  sz = "hcalz"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
- if not sz in os.listdir(floc):
-  f =  open(floc+"/hcal.geo",'r')
-  fn = open(floc+"/"+sz,'w')
-  for l in f.readlines():
+ f =  open(floc+"/hcal.geo",'r')
+ fn = open(floc+"/"+sz,'w')
+ for l in f.readlines():
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
    fn.write(l)
    if not l.find("HcalZSize")<0:
      HcalZSize = float(l[len('HcalZSize')+1:].split('#')[0]) 
-  f.close()
-  fn.close()  
+ f.close()
+ fn.close()  
  hcal=ROOT.hcal("Hcal", ROOT.kTRUE, sz)
  return hcal,HcalZSize
 def posEcal(z):
  EcalZSize = 0
  sz = "ecal_ellipse6x12m2z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
- if not sz in os.listdir(floc):
-  f =  open(floc+"/ecal_ellipse6x12m2.geo",'r')
-  fn = open(floc+"/"+sz,'w')
-  for l in f.readlines():
+ f =  open(floc+"/ecal_ellipse6x12m2.geo",'r')
+ fn = open(floc+"/"+sz,'w')
+ for l in f.readlines():
    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Ecal start		[cm]\n"
    fn.write(l)
    if not l.find("EcalZSize")<0:
      EcalZSize = float(l[len('EcalZSize')+1:].split('#')[0]) 
-  f.close()
-  fn.close()  
+ f.close()
+ fn.close()  
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
  return ecal,EcalZSize
 
@@ -85,19 +83,29 @@ def configure(run,ship_geo):
  Veto.SetRminRmax(ship_geo.chambers.Rmin,ship_geo.chambers.Rmax);
  Veto.SetVminVmax(ship_geo.scintillator.Rmin,ship_geo.scintillator.Rmax);
  Veto.SetB(ship_geo.Yheight/2.)
+ zConc = 2*ship_geo.muShield.dZ0+ship_geo.hadronAbsorber.length/2. + ship_geo.hadronAbsorber.z + 2*(ship_geo.muShield.dZ1+ship_geo.muShield.dZ2)
+ Veto.SetConcreateWall(zConc,ship_geo.muShield.length)
  run.AddModule(Veto)
 
  if ship_geo.muShieldDesign==5 or ship_geo.muShieldDesign==1:
-  taumagneticspectrometer = ROOT.ShipTAUMagneticSpectrometer("TAUMagneticSpectrometer", ship_geo.tauMS.zLS, ship_geo.tauMS.FeL, ship_geo.tauMS.AirL,
-                                                            ship_geo.tauMS.SpectroL,ship_geo.tauMS.GapV, ship_geo.tauMS.DGap, ship_geo.tauMS.MGap, ship_geo.tauMS.mf)
+  taumagneticspectrometer = ROOT.MagneticSpectrometer("MagneticSpectrometer", ship_geo.tauMS.zMSC, ship_geo.tauMS.zSize, ship_geo.tauMS.FeSlab, ship_geo.tauMS.RpcW,ship_geo.tauMS.ArmW, ship_geo.tauMS.GapV, ship_geo.tauMS.MGap, ship_geo.tauMS.Mfield, ship_geo.tauMS.HPTW, ship_geo.tauMS.RetYokeH, ROOT.kTRUE)
+  taumagneticspectrometer.SetCoilParameters(ship_geo.tauMS.CoilH, ship_geo.tauMS.CoilW, ship_geo.tauMS.N, ship_geo.tauMS.CoilG);
   run.AddModule(taumagneticspectrometer)
-
-  goliath = ROOT.ShipGoliath("Goliath", ship_geo.Goliath.zC, ship_geo.Goliath.LS, ship_geo.Goliath.TS, ship_geo.Goliath.GapTS)
-  run.AddModule(goliath)
-
- #for now Rpc are scintillator planes
-  Rpc = ROOT.ShipRpc("Rpc",ship_geo.Rpc.zRpcL, ship_geo.Rpc.zDriftL, ship_geo.Rpc.DriftL, ship_geo.Rpc.IronL, ship_geo.Rpc.ScintL, ship_geo.Rpc.MiddleG, ROOT.kTRUE)
-  run.AddModule(Rpc)
+  
+  NuTauTarget = ROOT.Target("NuTauTarget",ship_geo.NuTauTarget.zC, ship_geo.NuTauTarget.GapTS, ROOT.kTRUE)
+ 
+  NuTauTarget.SetGoliathSizes(ship_geo.NuTauTarget.H, ship_geo.NuTauTarget.TS, ship_geo.NuTauTarget.LS, ship_geo.NuTauTarget.BasisH);
+  NuTauTarget.SetCoilParameters(ship_geo.NuTauTarget.CoilR, ship_geo.NuTauTarget.UpCoilH, ship_geo.NuTauTarget.LowCoilH, ship_geo.NuTauTarget.CoilD);
+ 
+  NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim);
+  NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW);
+  NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ);
+  NuTauTarget.SetCESParam(ship_geo.NuTauTarget.RohG, ship_geo.NuTauTarget.LayerCESW, ship_geo.NuTauTarget.CESW);
+  NuTauTarget.SetCellParam(ship_geo.NuTauTarget.CellW);
+  
+  NuTauTarget.SetTargetTrackerParam(ship_geo.NuTauTarget.TTX, ship_geo.NuTauTarget.TTY, ship_geo.NuTauTarget.TTZ);
+  
+  run.AddModule(NuTauTarget)
 
  if ship_geo.strawDesign > 1 :
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    
