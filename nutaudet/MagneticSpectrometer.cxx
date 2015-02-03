@@ -177,7 +177,7 @@ void MagneticSpectrometer::ConstructGeometry()
     TGeoVolume *volFeYoke = new TGeoVolume("volFeYoke",FeYoke,Iron);
     volFeYoke->SetLineColor(kGray+1);
   
-    TGeoBBox *FeYoke1 = new TGeoBBox("FeYoke1",XtrSize/2, (ReturnYokeH - 15*cm)/2, MiddleGap/2);
+    TGeoBBox *FeYoke1 = new TGeoBBox("FeYoke1",XtrSize/2, (ReturnYokeH - 30*cm)/2, MiddleGap/2);
     TGeoVolume *volFeYoke1 = new TGeoVolume("volFeYoke1",FeYoke1,Iron);
     volFeYoke1->SetLineColor(kGray+1);
     
