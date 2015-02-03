@@ -50,11 +50,11 @@ include(WriteConfigFile)
 include(CTest)
 include(CheckCompiler)
 
-
 #Check the compiler and set the compile and link flags
+# change from DEBUG to RELEASE, don't want to waste CPU time
 If(NOT CMAKE_BUILD_TYPE)
-  Message("Set BuildType DEBUG")
-  set(CMAKE_BUILD_TYPE Debug)
+  Message("Set BuildType RELEASE")
+  set(CMAKE_BUILD_TYPE Release)
 EndIf(NOT CMAKE_BUILD_TYPE)
 Check_Compiler()
 
