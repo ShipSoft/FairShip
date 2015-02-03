@@ -116,3 +116,25 @@ Let get started:
     // Increase the "Current Event" to >0 to see the events
     Use quit() or Ctrl-D (i.e. EOF) to exit
     ```
+7. Retrieving tagged versions:
+
+    ```bash
+    mkdir $SHIPSOFT/v1
+    cd $SHIPSOFT/v1
+    git clone -b dev https://github.com/ShipSoft/FairSoft.git
+    cd $SHIPSOFT/v1/FairSoft
+    git checkout -b v1-00 v1-00
+    // installation procedure as above
+    cd $SHIPSOFT/v1
+    git clone -b dev https://github.com/ShipSoft/FairRoot.git
+    cd $SHIPSOFT/v1/FairRoot
+    git checkout -b v1-00 v1-00
+    // installation procedure as above
+    cd $SHIPSOFT/v1
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    git checkout -b v1-00 v1-00
+    // installation procedure as above
+    ```
+
+
