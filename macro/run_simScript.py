@@ -213,6 +213,9 @@ if inactivateMuonProcesses :
  gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess('muIoni','mu+')
  procmu.SetVerboseLevel(2) 
+if simEngine == "Genie": 
+ import configGenieGenerator
+ configGenieGenerator.config(Geniegen)
 
 ## myTA = MyTrackingAction()
 

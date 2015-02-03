@@ -126,7 +126,7 @@ void ShipMagnet::ConstructGeometry()
 
     //Attempt to make Al coils...
     TGeoEltu *C2  = new TGeoEltu("C2",3.*m,bradius+0.5*m,Yokel+0.6*m+magnetIncrease/2.);
-    TGeoEltu *C1  = new TGeoEltu("C1",2.6*m,bradius+0.1*m,Yokel+0.601*m+magnetIncrease/2.);
+    TGeoEltu *C1  = new TGeoEltu("C1",2.7*m,bradius+0.2*m,Yokel+0.601*m+magnetIncrease/2.);
     TGeoBBox *Box1 = new TGeoBBox("Box1", 1.*m, bradius+0.51*m, Yokel+0.61*m+magnetIncrease/2.);
     TGeoBBox *Box2 = new TGeoBBox("Box2", 3.01*m, bradius-0.5*m, Yokel+0.01*m+magnetIncrease/2.);
     TGeoCompositeShape *MCoilc = new TGeoCompositeShape("MCoilc", "C2-C1-magyokec-Box1-Box2");
