@@ -503,6 +503,41 @@ def AnaEventLoop():
     Ptruth    = mcPart.GetP()
     fout.write( 'Ptruth %i %8.2F \n'%(mcPart.GetPdgCode(),Ptruth/u.GeV) ) 
 #
+def analyzeConcrete():
+ ut.bookHist(h,'conc_hitz','concrete hit z',100,-100.,200.)
+ ut.bookHist(h,'conc_hity','concrete hit y',100,-10.,10.)
+ ut.bookHist(h,'conc_p','concrete hit p',100,0.,300.)
+ ut.bookHist(h,'conc_pmu','concrete hit p muons',100,0.,300.)
+ for fn in fchain:
+  f = ROOT.TFile(fn)
+  if not f.FindObjectAny('cbmsim'): 
+   print 'skip file ',f.GetName() 
+   continue
+  sTree = f.cbmsim
+  nEvents = sTree.GetEntries()
+  for n in range(nEvents):
+   sTree.GetEntry(n)
+   wg = sTree.MCTrack[0].GetWeight()   
+   for ahit in sTree.vetoPoint:
+     detID = ahit.GetDetectorID()
+     if logVols[detID] != 'rockD': continue         
+     h['conc_hitz'].Fill(ahit.GetZ()/u.m,wg)
+     h['conc_hity'].Fill(ahit.GetY()/u.m,wg)
+     P = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)
+     h['conc_p'].Fill(P/u.GeV,wg)
+     if abs(ahit.PdgCode()) == 13: h['conc_pmu'].Fill(P/u.GeV,wg)
+ ut.bookCanvas(h,key='ResultsC',title='muons hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
+ tc = h['ResultsC'].cd(1)
+ h['conc_hity'].Draw()
+ tc = h['ResultsC'].cd(2)
+ h['conc_hitz'].Draw()
+ tc = h['ResultsC'].cd(3)
+ tc.SetLogy(1)
+ h['conc_p'].Draw()
+ tc = h['ResultsC'].cd(4)
+ tc.SetLogy(1)
+ h['conc_pmu'].Draw()
+
 def rareEventEmulsion(fname = 'rareEmulsion.txt'):
  ntot = 0
  fout = open(fname,'w')

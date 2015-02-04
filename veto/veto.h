@@ -45,11 +45,12 @@ class veto: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Int_t c);
+    void SetFastMuon() {fFastMuon=true;}  // kill all tracks except of muons
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
+    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Int_t c);
     void SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Double32_t z5, Double32_t z6);
     void SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t l4, Double32_t l5, Double32_t l6);
     void SetB(Double32_t b) {fBtube=b;}
@@ -86,7 +87,7 @@ class veto: public FairDetector
     virtual void   FinishRun() {;}
     virtual void   BeginPrimary() {;}
     virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
+    virtual void   PreTrack();
     virtual void   BeginEvent() {;}
 
 
@@ -110,6 +111,7 @@ class veto: public FairDetector
     Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers, 
                                        //   2: conical with basic tracking chambers, but no trscking chamber at entrance 
                                        //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
+    Bool_t     fFastMuon;
     Double32_t fTub1z;
     Double32_t fTub2z;
     Double32_t fTub3z;

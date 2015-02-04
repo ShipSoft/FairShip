@@ -59,6 +59,7 @@ veto::veto(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
+    fFastMuon(false),
     fT0z(-2390.),              //!  z-position of veto station
     fT1z(1510.),               //!  z-position of tracking station 1
     fT2z(1710.),               //!  z-position of tracking station 2
@@ -171,7 +172,6 @@ void veto::SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t
 Bool_t  veto::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
-
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
     fELoss  = 0.;
@@ -180,10 +180,9 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
     gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
   }
-
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
-
+  
   // Create vetoPoint at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
@@ -212,8 +211,12 @@ void veto::EndOfEvent()
 
 }
 
-
-
+void veto::PreTrack(){
+    if (!fFastMuon){return;} 
+    if (fabs(gMC->TrackPid())!=13){
+        gMC->StopTrack(); 
+    }
+}
 void veto::Register()
 {
 

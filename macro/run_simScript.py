@@ -21,10 +21,11 @@ theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = True
-phiRandom = False  # only relevant for muon background generator
+phiRandom   = False  # only relevant for muon background generator
+followMuon  = False   # only transport muons for a fast muon only background estimate
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i:m:c",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i:m:c",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","followMuon",\
                                    "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling="])
 except getopt.GetoptError:
         # print help information and exit:
@@ -46,6 +47,8 @@ for o, a in opts:
             if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
+        if o in ("--followMuon"):
+            followMuon = True
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
         if o in ("--phiRandom"):
@@ -164,7 +167,9 @@ if simEngine == "MuonBack":
  MuonBackgen.SetSmearBeam(3*u.cm)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
- print 'Process ',nEvents,' from input file, with Phi random=',phiRandom 
+ print 'Process ',nEvents,' from input file, with Phi random=',phiRandom
+ if followMuon :  modules['Veto'].SetFastMuon()
+
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)
@@ -216,8 +221,6 @@ if inactivateMuonProcesses :
 if simEngine == "Genie": 
  import configGenieGenerator
  configGenieGenerator.config(Geniegen)
-
-## myTA = MyTrackingAction()
 
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
