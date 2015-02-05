@@ -516,16 +516,16 @@ void veto::ConstructGeometry()
       Double_t bO =btube+walli+liscitube;
       GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length,fTub1z,14,Al);
       GeoEllipticalTube("T2O",wallo,aO, bO,fTub2length,fTub2z,14,Al);
-      GeoPlateEllipse("T1Endplate",  0.02*m+(atube-atube1),aO1+wallo,bO+wallo,wallo/2.,fTub1z+fTub1length-wallo/2.,18,St);
-      GeoPlateEllipse("T2Startplate",0.02*m               ,aO +wallo,bO+wallo,wallo/2.,fTub2z-fTub2length+wallo/2.,18,St);
-      GeoPlateEllipse("T2Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub2z+fTub2length-wallo/2.,18,St);
-      GeoPlateEllipse("T3Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub3z-fTub3length+wallo/2.,18,St);
-      GeoPlateEllipse("T3Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub3z+fTub3length-wallo/2.,18,St);
-      GeoPlateEllipse("T4Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub4z-fTub4length+wallo/2.,18,St);
-      GeoPlateEllipse("T4Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub4z+fTub4length-wallo/2.,18,St);
-      GeoPlateEllipse("T5Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub5z-fTub5length+wallo/2.,18,St);
-      GeoPlateEllipse("T5Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub5z+fTub5length-wallo/2.,18,St);
-      GeoPlateEllipse("T6Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub6z-fTub6length+wallo/2.,18,St);
+      GeoPlateEllipse("T1Endplate",  0.02*m+(atube-atube1),aO1+wallo,bO+wallo,walli/2.,fTub1z+fTub1length-walli/2.,18,St);
+      GeoPlateEllipse("T2Startplate",0.02*m+(atube-atube1),aO +wallo,bO+wallo,walli/2.,fTub2z-fTub2length+walli/2.,18,St);
+      GeoPlateEllipse("T2Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub2z+fTub2length-walli/2.,18,St);
+      GeoPlateEllipse("T3Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub3z-fTub3length+walli/2.,18,St);
+      GeoPlateEllipse("T3Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub3z+fTub3length-walli/2.,18,St);
+      GeoPlateEllipse("T4Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub4z-fTub4length+walli/2.,18,St);
+      GeoPlateEllipse("T4Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub4z+fTub4length-walli/2.,18,St);
+      GeoPlateEllipse("T5Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub5z-fTub5length+walli/2.,18,St);
+      GeoPlateEllipse("T5Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub5z+fTub5length-walli/2.,18,St);
+      GeoPlateEllipse("T6Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub6z-fTub6length+walli/2.,18,St);
       // And liquid scintillator inbetween, first calculate inner radii of this
       Double_t als =atube+walli;
       Double_t als1=atube1+walli;
@@ -651,7 +651,8 @@ void veto::ConstructGeometry()
       rockD->SetLineColor(11);  // grey
       rockD->SetTransparency(50);
       top->AddNode(rockD, 1, new TGeoTranslation(0, 0, fzOffset + dZD/2.));
-      AddSensitiveVolume(rockD);
+// only for fastMuon simulation, otherwise output becomes too big    
+      if (fFastMuon){ AddSensitiveVolume(rockD);}
 
       //Add one sensitive plane counting rate in second detector downstream
       // with shielding around, 
