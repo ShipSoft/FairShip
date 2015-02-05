@@ -55,7 +55,7 @@ void BellField::get(const double& x, const double& y, const double& z, double& B
     }else if (zlocal<11.9) {
       Bx=0.19532-0.61512E-01*zlocal+0.68447E-02*pow(zlocal,2.)-0.25672E-03*pow(zlocal,3.);
     }
-    Bx=fPeak/0.14361*Bx*tesla;
+    Bx=(fPeak/tesla/0.14361*Bx)*tesla;
   }
 }
 

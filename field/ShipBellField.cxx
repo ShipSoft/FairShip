@@ -83,7 +83,7 @@ Double_t ShipBellField::GetBx(Double_t x, Double_t y, Double_t z) {
     }else if (zlocal<11.9) {
       bx=0.19532-0.61512E-01*zlocal+0.68447E-02*pow(zlocal,2.)-0.25672E-03*pow(zlocal,3.);
     }
-    bx=(fPeak/0.14361)*bx*tesla;
+    bx=((fPeak/tesla)/0.14361)*bx*tesla;
    //cout << "Bell GetBX " << z << ", Bx= " << bx << endl;
    return bx;
   }
