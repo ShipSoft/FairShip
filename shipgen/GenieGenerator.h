@@ -22,6 +22,7 @@ class GenieGenerator : public FairGenerator
   virtual ~GenieGenerator();
   
   /** public method ReadEvent **/
+  Bool_t OldReadEvent(FairPrimaryGenerator*);  
   Bool_t ReadEvent(FairPrimaryGenerator*);  
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
@@ -30,6 +31,9 @@ class GenieGenerator : public FairGenerator
   void AddBox(TVector3 dVec, TVector3 box);
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
+  Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
+
+ private:
   
  protected:
   Double_t Yvessel,Xvessel,Lvessel,ztarget;
