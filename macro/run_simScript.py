@@ -44,7 +44,7 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root'
+            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu+mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
         if o in ("--followMuon"):
@@ -79,11 +79,11 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-# - muShieldDesign    = 2  # 1=passive 2=active (default)
-# - targetOpt         = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits (default)
-# - strawDesign       = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
-# - HcalOption        = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 1, Yheight = dy)
+# - muShieldDesign = 2  # 1=passive 2=active (default)
+# - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
+# - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
+# - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -221,7 +221,6 @@ if inactivateMuonProcesses :
 if simEngine == "Genie": 
  import configGenieGenerator
  configGenieGenerator.config(Geniegen)
-
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # -----Runtime database---------------------------------------------
