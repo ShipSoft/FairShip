@@ -44,7 +44,7 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu+mu-gntp.113.gst.root'
+            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
         if o in ("--followMuon"):
@@ -235,8 +235,11 @@ run.CreateGeometryFile("geofile_full."+tag+".root")
 #
 # checking for overlaps
 if checking4overlaps:
- ROOT.gGeoManager.CheckOverlaps()
- ROOT.gGeoManager.PrintOverlaps()
+ fGeo = ROOT.gGeoManager
+ fGeo.SetNmeshPoints(10000)
+ # fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
+ fGeo.CheckOverlaps()
+ fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
