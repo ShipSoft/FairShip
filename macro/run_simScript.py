@@ -20,7 +20,7 @@ inputFile    = None
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-checking4overlaps = True
+checking4overlaps = False
 phiRandom   = False  # only relevant for muon background generator
 followMuon  = False   # only transport muons for a fast muon only background estimate
 
@@ -44,7 +44,6 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
         if o in ("--followMuon"):
@@ -73,6 +72,9 @@ for o, a in opts:
             theHNLmass = float(a)
         if o in ("-c", "--couplings", "--coupling"):
             theHNLcouplings = [float(c) for c in a.split(",")]
+
+if simEngine == "Genie" and not inputFile: inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root' # anti_nu_mu
+# nu_mu: inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu+_nu_mu-gntp.113.gst.root'
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
@@ -111,6 +113,7 @@ run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
+# import shipTarget_only as shipDet_conf
 import shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
@@ -237,8 +240,7 @@ run.CreateGeometryFile("geofile_full."+tag+".root")
 if checking4overlaps:
  fGeo = ROOT.gGeoManager
  fGeo.SetNmeshPoints(10000)
- # fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
- fGeo.CheckOverlaps()
+ fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
  fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
