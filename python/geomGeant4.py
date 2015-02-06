@@ -54,7 +54,7 @@ def printWeightsandFields():
        M    = lvl.GetMass()/G4Unit.kg
        if M  < 5000.:   print '%10s volume = %5.2Fm3  mass = %5.2F kg'%(vln,cvol,M)
        else:            print '%10s volume = %5.2Fm3  mass = %5.2F t'%(vln,cvol,M/1000.)
-       if not vln.find('Mag')<0 : magnetMass+=M
+       if not vln[0:3]=='Mag' < 0 : magnetMass+=M # only count volumes starting with Mag
        fm = lvl.GetFieldManager() 
        if fm:  
          fi = fm.GetDetectorField()
