@@ -109,7 +109,7 @@ Let get started:
     >> finished making plots
     ```
 
-    Run the event display
+    Run the event display:
 
     ```bash
     python -i $FAIRSHIP/macro/eventDisplay.py
