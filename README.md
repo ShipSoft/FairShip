@@ -43,6 +43,8 @@ Let get started:
     cd $SHIPSOFT
     git clone -b dev https://github.com/ShipSoft/FairSoft.git
     cd FairSoft
+    cat DEPENDENCIES
+    # Make sure all the required dependencies are installed
     # On SLC6 do: export FC=gfortran
     ./configure.sh
     # 1) gcc (on Linux) 5) Clang (on OSX)
