@@ -78,20 +78,25 @@ def switchOf(tag):
  sc    = evmgr.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  fGeo = g.FindObjectAny("FAIRGeom")
- for v in fGeo.GetListOfVolumes():
+ top=fGeo.GetTopVolume()
+ for v in top.GetNodes():
    vname = v.GetName()
-   if not vname.lower().find(tag)<0:
+   if not vname.find(tag)<0:
      v.SetVisibility(0)
+     v.SetVisDaughters(0)
  evmgr.ElementChanged(geoscene,True,True)
 def switchOn(tag):
  evmgr = ROOT.gEve
  sc    = evmgr.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  fGeo = g.FindObjectAny("FAIRGeom")
- for v in fGeo.GetListOfVolumes():
+ top  = fGeo.GetTopVolume()
+ for v in top.GetNodes():
    vname = v.GetName()
-   if not vname.lower().find(tag)<0:
-     v.SetVisibility(0)
+   if not vname.find(tag)<0:
+     print 'switch on ',vname
+     v.SetVisibility(1)
+     v.SetVisDaughters(1)
  evmgr.ElementChanged(geoscene,True,True)
 
 # switch of drawing of rock
@@ -110,18 +115,31 @@ def switchOfAll(exc):
  sc    = evmgr.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  fGeo = g.FindObjectAny("FAIRGeom")
- for v in fGeo.GetListOfVolumes():
+ top=fGeo.GetTopVolume()
+ for v in top.GetNodes():
    vname = v.GetName()
-   if not vname in exc: v.SetVisibility(0)
+   if not vname.find('cave')< 0 : continue
+   todo = True
+   for tag in exc: 
+    if not tag.find(vname)<0: todo = False 
+   if todo:
+    v.SetVisibility(0)
+    v.SetVisDaughters(0)
  evmgr.ElementChanged(geoscene,True,True) 
 def switchOnAll(exc):
  evmgr = ROOT.gEve
  sc    = evmgr.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  fGeo = g.FindObjectAny("FAIRGeom")
- for v in fGeo.GetListOfVolumes():
+ for v in top.GetNodes():
    vname = v.GetName()
-   if not vname in exc: v.SetVisibility(1)
+   if not vname.find('cave')< 0 : continue
+   todo = True
+   for tag in exc: 
+    if not tag.find(vname)<0: todo = False 
+   if todo:
+    v.SetVisibility(1)
+    v.SetVisDaughters(1)
  evmgr.ElementChanged(geoscene,True,True) 
 
 def select(pattern):
@@ -169,7 +187,7 @@ fMan.AddTask(MuonPoints)
 fMan.AddTask(EcalPoints)
 fMan.AddTask(StrawPoints)
 fMan.AddTask(RpcPoints)
-fMan.Init(1,4,1000) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+fMan.Init(1,5,10000) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 ecalYellow()
 
 fGeo  = ROOT.gGeoManager  
