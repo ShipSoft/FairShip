@@ -62,12 +62,12 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
 // -------------------------------------------------------------------------
 Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam)
 {
-  // 
-  // Calculate mean material budget and material properties between 
+  //
+  // Calculate mean material budget and material properties between
   //    the points "start" and "end".
   //
   // "mparam" - parameters used for the energy and multiple scattering
-  //  corrections: 
+  //  corrections:
   //
   // mparam[0] - mean density: sum(x_i*rho_i)/sum(x_i) [g/cm3]
   // mparam[1] - equivalent rad length fraction: sum(x_i/X0_i) [adimensional]
@@ -207,7 +207,7 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   return bparam[0]/step;
 }
 
-std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz) 
+std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz)
 {
   //rotate vector px,py,pz to point at x,y,z at origin.
   Double_t theta=atan(sqrt(x*x+y*y)/z);
@@ -223,9 +223,9 @@ std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z, D
   Double_t pxr=c*px1-s*py;
   Double_t pyr=s*px1+c*py;
   std::vector<double> pout;
-  pout.push_back(pxr);  
-  pout.push_back(pyr);  
-  pout.push_back(pzr); 
+  pout.push_back(pxr);
+  pout.push_back(pyr);
+  pout.push_back(pzr);
   //cout << "Info GenieGenerator: rotated" << pout[0] << " " << pout[1] << " " << pout[2] << " " << x << " " << y << " " << z <<endl;
   return pout;
 }
@@ -256,21 +256,21 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      TGeoNode *lidT6I = top->FindNode("lidT6I_1");
      TGeoNode *t2I  = top->FindNode("T2I_1");
      TGeoNode *t1I  = top->FindNode("T1I_1");
-     TGeoEltu *temp = dynamic_cast<TGeoEltu*>(linner->GetVolume()->GetShape());  
+     TGeoEltu *temp = dynamic_cast<TGeoEltu*>(linner->GetVolume()->GetShape());
      fEntrDz_inner = temp->GetDZ();
-     temp = dynamic_cast<TGeoEltu*>(louter->GetVolume()->GetShape());  
+     temp = dynamic_cast<TGeoEltu*>(louter->GetVolume()->GetShape());
      fEntrDz_outer = temp->GetDZ();
-     fEntrA = temp->GetA();  
-     fEntrB = temp->GetB(); 
+     fEntrA = temp->GetA();
+     fEntrB = temp->GetB();
      fEntrZ_inner  = linner->GetMatrix()->GetTranslation()[2];
      fEntrZ_outer  = louter->GetMatrix()->GetTranslation()[2];
      Lvessel = lidT6I->GetMatrix()->GetTranslation()[2] - fEntrZ_inner - fEntrDz_inner;
-     TGeoCompositeShape *tempC = dynamic_cast<TGeoCompositeShape*>(t2I->GetVolume()->GetShape());  
+     TGeoCompositeShape *tempC = dynamic_cast<TGeoCompositeShape*>(t2I->GetVolume()->GetShape());
      Xvessel = tempC->GetDX() - 2*fEntrDz_inner ;
      Yvessel = tempC->GetDY() - 2*fEntrDz_inner ;
-     tempC = dynamic_cast<TGeoCompositeShape*>(t1I->GetVolume()->GetShape()); 
-     fL1z = tempC->GetDZ()*2;  
-     temp = dynamic_cast<TGeoEltu*>(scint->GetVolume()->GetShape());  
+     tempC = dynamic_cast<TGeoCompositeShape*>(t1I->GetVolume()->GetShape());
+     fL1z = tempC->GetDZ()*2;
+     temp = dynamic_cast<TGeoEltu*>(scint->GetVolume()->GetShape());
      fScintDz = temp->GetDZ()*2;
      cout << "Info GenieGenerator: geo inner " << fEntrDz_inner << " "<< fEntrZ_inner << endl;
      cout << "Info GenieGenerator: geo outer " << fEntrDz_outer << " "<< fEntrZ_outer << endl;
@@ -299,7 +299,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
     Double_t eb=Yvessel; //inside inner wall vessel
     Double_t x;
     Double_t y;
-    Double_t z;    
+    Double_t z;
     Double_t where=gRandom->Uniform(0.,1.);
     if (where<0.03) {
       // point on entrance lid
@@ -307,7 +307,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
       while (ellip>1.){
          x = gRandom->Uniform(-fEntrA,fEntrA);
          y = gRandom->Uniform(-fEntrB,fEntrB);
-         ellip=(x*x)/(fEntrA*fEntrA)+(y*y)/(fEntrB*fEntrB); 
+         ellip=(x*x)/(fEntrA*fEntrA)+(y*y)/(fEntrB*fEntrB);
       }
       if (gRandom->Uniform(0.,1.)<0.5){
         z=fEntrZ_inner + gRandom->Uniform(-fEntrDz_inner,fEntrDz_inner);
@@ -319,19 +319,19 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
       // first vessel has smaller size
       Double_t ea = Xvessel;
       Double_t zrand =  gRandom->Uniform(0,Lvessel);
-      if (zrand < fL1z){ 
-        ea = fEntrA; 
+      if (zrand < fL1z){
+        ea = fEntrA;
       }
       z = fEntrZ_outer-fEntrDz_outer + zrand;
       Double_t theta = gRandom->Uniform(0.,TMath::Pi());
-      Double_t rextra; 
+      Double_t rextra;
       if ( gRandom->Uniform(0.,1.)>0.5) {
       // outer vessel
         rextra = fScintDz/2.+2*fEntrDz_inner + gRandom->Uniform(0,2*fEntrDz_outer);
       }else{
       // inner vessel
         rextra = gRandom->Uniform(0.,2*fEntrDz_inner);
-      }    
+      }
       x = (ea+rextra)*cos(theta);
       y = sqrt(1.-(x*x)/((ea+rextra)*(ea+rextra)))*(eb+rextra);
       if (gRandom->Uniform(-1.,1.)>0.) y=-y;
@@ -343,7 +343,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
       z=gRandom->Uniform(-boxs[j].Z()+dVecs[j].Z(),boxs[j].Z()+dVecs[j].Z());
     }
 // first, incoming neutrino
-    //rotate the particle 
+    //rotate the particle
     Double_t zrelative=z-ztarget;
     //cout << "Info GenieGenerator: x,y,z " << x <<" " << y << " " << zrelative << endl;
     //cout << "Info GenieGenerator: neutrino " << neu << "p-in "<< pxv << pyv << pzv << " nf "<< nf << endl;
@@ -351,12 +351,12 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
     //cpg->AddTrack(neu,pxv,pyv,pzv,vtxx,vtxy,vtxz,-1,false);
     //cout << "Info GenieGenerator: neutrino " << neu << "p-rot "<< pout[0] << " fn "<< fn << endl;
     cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false);
-    
+
 
 // second, outgoing lepton
     pout = Rotate(x,y,zrelative,pxl,pyl,pzl);
     Int_t oLPdgCode = neu;
-    if (cc){copysign(fabs(neu)-1,neu);}
+    if (cc){oLPdgCode = copysign(fabs(neu)-1,neu);}
     cpg->AddTrack(oLPdgCode,pout[0],pout[1],pout[2],x,y,z,0,true);
 // last, all others
     for(int i=0; i<nf; i++)
@@ -373,7 +373,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
 Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     fFirst = kFALSE;
-    //some start/end positions in z (emulsion to Tracker 1) 
+    //some start/end positions in z (emulsion to Tracker 1)
     Double_t start[3]={0.,0.,-3400.};
     Double_t end[3]={0.,0.,2650.};
     if (fFirst){
@@ -461,15 +461,15 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       //count+=1;
     }
     //cout << "Info GenieGenerator: prob2int " << prob2int << ", " << count << endl;
-        
+
     Double_t zrelative=z-ztarget;
     Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
     cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false,TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1]+pout[2]*pout[2]),tof,mparam[0]*mparam[4]);
-    
+
 // second, outgoing lepton
     std::vector<double> pp = Rotate(x,y,zrelative,pxl,pyl,pzl);
     Int_t oLPdgCode = neu;
-    if (cc){copysign(fabs(neu)-1,neu);}
+    if (cc){oLPdgCode = copysign(fabs(neu)-1,neu);}
     cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,true,TMath::Sqrt(pp[0]*pp[0]+pp[1]*pp[1]+pp[2]*pp[2]),tof,mparam[0]*mparam[4]);
 // last, all others
     for(int i=0; i<nf; i++)
