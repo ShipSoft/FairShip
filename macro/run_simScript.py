@@ -17,6 +17,7 @@ inclusive    = False  # True = all processes if False only ccbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
 inputFile    = None
+outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
@@ -25,8 +26,9 @@ phiRandom   = False  # only relevant for muon background generator
 followMuon  = False   # only transport muons for a fast muon only background estimate
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i:m:c",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","followMuon",\
-                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling="])
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","followMuon",\
+                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", 
+                                   "output="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -55,14 +57,16 @@ for o, a in opts:
             phiRandom = True
         if o in ("--Cosmics"):
             simEngine = "Cosmics"
-        if o in ("-n", "--nEvents="):
+        if o in ("-n", "--nEvents"):
             nEvents = int(a)
-        if o in ("-i", "--firstEvent="):
+        if o in ("-i", "--firstEvent"):
             firstEvent = int(a)
-        if o in ("-s", "--seed="):
+        if o in ("-s", "--seed"):
             theSeed = int(a)
         if o in ("-f"):
             inputFile = a
+        if o in ("-o", "--output"):
+            outputDir = a
         if o in ("-A"):
             inclusive = True
         if o in ("-Y"): 
@@ -88,12 +92,15 @@ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheigh
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
 if dy: tag = str(dy)+'.'+tag 
-outFile ="ship."+tag+".root"  
+if not os.path.exists(outputDir):
+  os.makedirs(outputDir)
+outFile = "%s/ship.%s.root" % (outputDir, tag)
+
 
 # rm older files !!! 
-os.system("rm *."+tag+".root")
+os.system("rm %s/*.%s.root" % (outputDir, tag))
 # Parameter file name
-parFile="ship.params."+tag+".root"
+parFile="%s/ship.params.%s.root" % (outputDir, tag)
 
 # In general, the following parts need not be touched
 # ========================================================================
@@ -231,7 +238,7 @@ rtdb.setOutput(parOut)
 rtdb.saveOutput()
 rtdb.printParamContexts()
 # ------------------------------------------------------------------------
-run.CreateGeometryFile("geofile_full."+tag+".root") 
+run.CreateGeometryFile("%s/geofile_full.%s.root" % (outputDir, tag))
 #
 # checking for overlaps
 if checking4overlaps:
