@@ -8,11 +8,11 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 if "muShieldDesign" not in globals():
     muShieldDesign = 5
 if "targetOpt" not in globals():
-    targetOpt = 5
+    targetOpt = 17
 if "strawDesign" not in globals():
     strawDesign = 4
 if "HcalOption" not in globals():
-    HcalOption = -1
+    HcalOption = 1
 if "Yheight" not in globals():
     Yheight = 10.
 
@@ -29,10 +29,11 @@ with ConfigRegistry.register_config("basic") as c:
      1/0 
     else:
      c.chambers.Length = totalLength
+     magnetIncrease    = 100.*u.cm
      c.chambers.Tub1length = 2.5*u.m
      c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
      c.chambers.Tub3length = 0.8*u.m
-     c.chambers.Tub4length = 2.*u.m
+     c.chambers.Tub4length = 2.*u.m+magnetIncrease/2.
      c.chambers.Tub5length = 0.8*u.m
      c.chambers.Tub6length = 0.1*u.m
      c.chambers.Rmin = 245.*u.cm
@@ -41,15 +42,15 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber1 = AttrDict(z=-22.28*u.m)
      c.Chamber2 = AttrDict(z=-1.9*u.m+extraVesselLength/2.)
      c.Chamber3 = AttrDict(z=16.98*u.m+extraVesselLength)
-     c.Chamber4 = AttrDict(z=20.18*u.m+extraVesselLength)
-     c.Chamber5 = AttrDict(z=23.38*u.m+extraVesselLength)
-     c.Chamber6 = AttrDict(z=24.68*u.m+extraVesselLength)
+     c.Chamber4 = AttrDict(z=20.18*u.m+magnetIncrease/2.+extraVesselLength)
+     c.Chamber5 = AttrDict(z=23.38*u.m+magnetIncrease+extraVesselLength)
+     c.Chamber6 = AttrDict(z=24.68*u.m+magnetIncrease+extraVesselLength)
      # 
      c.vetoStation = AttrDict(z=-1968.*u.cm)
      c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)
      c.TrackStation2 = AttrDict(z=1798.*u.cm+extraVesselLength)
-     c.TrackStation3 = AttrDict(z=2238.*u.cm+extraVesselLength)
-     c.TrackStation4 = AttrDict(z=2438.*u.cm+extraVesselLength)
+     c.TrackStation3 = AttrDict(z=2238.*u.cm+magnetIncrease+extraVesselLength)
+     c.TrackStation4 = AttrDict(z=2438.*u.cm+magnetIncrease+extraVesselLength)
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
@@ -72,27 +73,28 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
 
     c.Bfield = AttrDict(z=c.z)
-    c.Bfield.max = 1.5*u.kilogauss  # was 1.15 in EOI
+    c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
 
-    c.ecal  =  AttrDict(z=3540*u.cm + totalLength - 60*u.m)
+    c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m)
     c.HcalOption  =  HcalOption
     hcalSpace = 0
-    hcalThickness = 300*u.cm
+    hcalThickness = 232*u.cm
     if not HcalOption < 0:
      if HcalOption == 0 : 
           c.hcal  =  AttrDict(z=45*u.cm + totalLength - 60.*u.m ) 
      else:                
-          c.hcal  =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm )
-          hcalSpace = 20.*u.cm + hcalThickness + 5*u.cm 
-    c.MuonStation0 = AttrDict(z=2600.*u.cm+extraVesselLength+hcalSpace)
-    c.MuonStation1 = AttrDict(z=2700.*u.cm+extraVesselLength+hcalSpace)
-    c.MuonStation2 = AttrDict(z=2800.*u.cm+extraVesselLength+hcalSpace)
-    c.MuonStation3 = AttrDict(z=2900.*u.cm+extraVesselLength+hcalSpace)
+          c.hcal    =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm  )
+          hcalSpace = hcalThickness + 5.5*u.cm 
+          c.hcal.hcalSpace = hcalSpace
+    c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace)
+    c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
+    c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
+    c.MuonStation3 = AttrDict(z=c.MuonStation0.z+3*u.m)
     
-    c.MuonFilter0 = AttrDict(z=2650.*u.cm+extraVesselLength+hcalSpace)
-    c.MuonFilter1 = AttrDict(z=2750.*u.cm+extraVesselLength+hcalSpace)
-    c.MuonFilter2 = AttrDict(z=2850.*u.cm+extraVesselLength+hcalSpace)
+    c.MuonFilter0 = AttrDict(z=c.MuonStation0.z+50.*u.cm)
+    c.MuonFilter1 = AttrDict(z=c.MuonStation0.z+150.*u.cm)
+    c.MuonFilter2 = AttrDict(z=c.MuonStation0.z+250.*u.cm)
      
     c.Muon = AttrDict(z=0)
     c.Muon.XMax    =  300.*u.cm
@@ -213,27 +215,58 @@ with ConfigRegistry.register_config("basic") as c:
 
     #Parameters for tau magnetic Spectrometer
     c.tauMS = AttrDict(z=0*u.cm)
-    c.tauMS.FeL = 5.*u.cm
-    c.tauMS.AirL = 2.*u.cm
-    c.tauMS.SpectroL = 4.7*u.m
+    c.tauMS.zSize = 4.76*u.m
+    c.tauMS.FeSlab = 5. *u.cm
+    c.tauMS.RpcW = 2.*u.cm
+    c.tauMS.ArmW = 12*c.tauMS.FeSlab + 11*c.tauMS.RpcW
     c.tauMS.GapV = 27.*u.cm
-    c.tauMS.DGap = 95.*u.cm
-    c.tauMS.MGap = 120*u.cm
-    c.tauMS.zLS = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.DGap - c.tauMS.FeL/2
-    c.tauMS.mf = 1.5 * u.tesla
+    c.tauMS.MGap = 122*u.cm
+    c.tauMS.HPTW = 15*u.cm
+    c.tauMS.RetYokeH = 90*u.cm
+    c.tauMS.CoilH = 10*u.cm
+    c.tauMS.CoilW = 2*u.cm
+    c.tauMS.CoilG = 2*u.cm
+    c.tauMS.N =20
+    c.tauMS.zMSC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.zSize/2
+    c.tauMS.Mfield = 1.5 * u.tesla
 
     #Parameters for Goliath
-    c.Goliath = AttrDict(z=0*u.cm)
-    c.Goliath.LS = 4.5*u.m
-    c.Goliath.TS = 3.6*u.m
-    c.Goliath.GapTS = 25*u.cm
-    c.Goliath.zC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.SpectroL - c.Goliath.GapTS - c.Goliath.LS/2
+    c.NuTauTarget = AttrDict(z=0*u.cm)
+    c.NuTauTarget.LS = 4.5*u.m
+    c.NuTauTarget.TS = 3.6*u.m
+    c.NuTauTarget.GapTS = 25*u.cm
+    c.NuTauTarget.CoilR = 1*u.m
+    c.NuTauTarget.UpCoilH = 45*u.cm
+    c.NuTauTarget.LowCoilH = 30*u.cm
+    c.NuTauTarget.CoilD = 105*u.cm
+    c.NuTauTarget.BasisH = 57*u.cm
+    c.NuTauTarget.H = 2*c.NuTauTarget.BasisH + c.NuTauTarget.CoilD + c.NuTauTarget.UpCoilH + c.NuTauTarget.LowCoilH
+    c.NuTauTarget.zC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.zSize - c.NuTauTarget.GapTS - c.NuTauTarget.LS/2
 
-    #Parameters for the RPC in tau magnetic Spectrometer
-    c.Rpc = AttrDict(z=0*u.cm)
-    c.Rpc.DriftL = 15*u.cm
-    c.Rpc.IronL = 5.*u.cm
-    c.Rpc.ScintL = 2.*u.cm
-    c.Rpc.MiddleG = 120*u.cm
-    c.Rpc.zRpcL = -c.decayVolume.length/2. - c.tauMS.GapV -c.tauMS.DGap + c.Rpc.ScintL/2
-    c.Rpc.zDriftL = -c.decayVolume.length/2. - c.tauMS.GapV - c.Rpc.DriftL/2
+    c.NuTauTarget.TTX = 2.0*u.m
+    c.NuTauTarget.TTY = 0.9*u.m
+    c.NuTauTarget.TTZ= 6.0*u.cm
+   
+
+    #tau Bricks
+    c.NuTauTarget.xdim = 2.0 * u.m
+    c.NuTauTarget.ydim = 1.0 * u.m
+    
+    c.NuTauTarget.EmTh = 0.0045 * u.cm
+    c.NuTauTarget.EmX = 12.5 * u.cm
+    c.NuTauTarget.EmY = 9.9 * u.cm
+    c.NuTauTarget.PBTh = 0.0205 * u.cm
+    c.NuTauTarget.LeadTh = 0.1 * u.cm
+    c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
+    c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
+    c.NuTauTarget.BrX = 12.9 *u.cm
+    c.NuTauTarget.BrY = 10.5 *u.cm
+    c.NuTauTarget.BrZ = 8.3*u.cm
+    c.NuTauTarget.RohG = 1.5 * u.cm
+    c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW;
+    c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW
+    c.NuTauTarget.CellW = c.NuTauTarget.BrZ + c.NuTauTarget.CESW
+    
+    c.NuTauTarget.zdim = 11* c.NuTauTarget.CellW + 12*c.NuTauTarget.TTZ
+
+

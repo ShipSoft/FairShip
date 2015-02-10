@@ -23,6 +23,7 @@ Let get started:
     export SIMPATH=$SHIPSOFT/FairSoftInst
     export FAIRROOTPATH=$SHIPSOFT/FairRootInst
     export FAIRSHIP=$SHIPSOFT/FairShip
+    export FAIRSHIPRUN=$SHIPSOFT/FairShipRun
     ```
 
     or for the csh:
@@ -32,6 +33,7 @@ Let get started:
     setenv SIMPATH ${SHIPSOFT}/FairSoftInst
     setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
     setenv FAIRSHIP ${SHIPSOFT}/FairShip
+    setenv FAIRSHIPRUN ${SHIPSOFT}/FairShipRun
     ```
 
 3. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
@@ -41,9 +43,10 @@ Let get started:
     cd $SHIPSOFT
     git clone -b dev https://github.com/ShipSoft/FairSoft.git
     cd FairSoft
+    cat DEPENDENCIES
+    # Make sure all the required dependencies are installed
     # On SLC6 do: export FC=gfortran
     ./configure.sh
-    # 1) custom installation ...
     # 1) gcc (on Linux) 5) Clang (on OSX)
     # 3) Optimization
     # 1) Yes (install Simulation)
@@ -60,7 +63,11 @@ Let get started:
     cd FairRoot
     mkdir build
     cd build
-    cmake -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH ..
+    cmake .. -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH -DCMAKE_BUILD_TYPE=RELEASE
+    ( 
+     on some platforms eventually use: 
+     cmake .. -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH -DCMAKE_BUILD_TYPE=RELEASE -DUSE_DIFFERENT_COMPILER=TRUE
+    )
     make
     make install
     ```
@@ -80,17 +87,56 @@ Let get started:
     mkdir FairShipRun
     cd FairShipRun
     cmake ../FairShip
+    ( 
+     on some platforms eventually use: 
+     cmake ../FairShip -DUSE_DIFFERENT_COMPILER=TRUE
+    )
     make
     . config.sh    [or source config.csh]
     ```
 
-6. Now you can for example simulate some events and run the event display:
+6. Now you can for example simulate some events, run reconstruction and analysis:
 
     ```bash
     python $FAIRSHIP/macro/run_simScript.py --display
+    >> Macro finished succesfully.
+    >> Output file is  ship.10.0.Pythia8-TGeant4_D.root
+
+    python $FAIRSHIP/macro/ShipReco.py -f ship.10.0.Pythia8-TGeant4_D.root 
+    >> finishing pyExit
+
+    python $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_D_rec.root
+    >> finished making plots
+    ```
+
+    Run the event display:
+
+    ```bash
     python -i $FAIRSHIP/macro/eventDisplay.py
     // Click on "FairEventManager" (in the top-left pane)
     // Click on the "Info" tab (on top of the bottom-left pane)
     // Increase the "Current Event" to >0 to see the events
     Use quit() or Ctrl-D (i.e. EOF) to exit
     ```
+7. Retrieving tagged versions:
+
+    ```bash
+    mkdir $SHIPSOFT/v1
+    cd $SHIPSOFT/v1
+    git clone -b dev https://github.com/ShipSoft/FairSoft.git
+    cd $SHIPSOFT/v1/FairSoft
+    git checkout -b v1-00 v1-00
+    // installation procedure as above
+    cd $SHIPSOFT/v1
+    git clone -b dev https://github.com/ShipSoft/FairRoot.git
+    cd $SHIPSOFT/v1/FairRoot
+    git checkout -b v1-00 v1-00
+    // installation procedure as above
+    cd $SHIPSOFT/v1
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    git checkout -b v1-00 v1-00
+    // installation procedure as above
+    ```
+
+

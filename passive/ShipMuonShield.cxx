@@ -17,6 +17,7 @@
 #include "FairGeoBuilder.h"
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -135,15 +136,14 @@ void ShipMuonShield::CreateArb8(const char* arbName, TGeoMedium* medium,Double_t
   top->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation, z_translation ));
 }
 
-void ShipMuonShield::Initialize (Double_t& dX1,std::vector<Double_t>& cornersA1,Double_t& Z1,std::vector<Double_t>& cornersAR,Double_t& X2, std::vector<Double_t>& cornersAT,Double_t& dXH1,std::vector<Double_t>& cornersAB,Double_t& Z2,
-		std::vector<Double_t>& corners1,std::vector<Double_t>& corners2,std::vector<Double_t>& corners3,std::vector<Double_t>& corners4,std::vector<Double_t>& corners5,std::vector<Double_t>& corners6,std::vector<Double_t>& corners7,
-		 Double_t& Z3, std::vector<Double_t>& cornersC,std::vector<Double_t>& cornersCR,std::vector<Double_t>& cornersCL,std::vector<Double_t>& cornersCLT,std::vector<Double_t>& cornersCLB,std::vector<Double_t>& cornersCRT,std::vector<Double_t>& cornersCRB,
-		 std::vector<Double_t>& corners8,std::vector<Double_t>& corners9,std::vector<Double_t>& corners10,std::vector<Double_t>& corners11,Double_t& Z4,std::vector<Double_t>& cornersC4,std::vector<Double_t>& cornersC4L,std::vector<Double_t>& cornersC4LB,std::vector<Double_t>& cornersC4LT,
-		 std::vector<Double_t>& cornersC4R,std::vector<Double_t>& cornersC4RB,std::vector<Double_t>& cornersC4RT,std::vector<Double_t>& corners12,std::vector<Double_t>& corners13,std::vector<Double_t>& corners14,std::vector<Double_t>& corners15,Double_t& Z6,std::vector<Double_t>& cornersC6RL,
-		 std::vector<Double_t>& cornersC6RR,std::vector<Double_t>& cornersC6L,std::vector<Double_t>& cornersC6R,std::vector<Double_t>& corners20,std::vector<Double_t>& corners21,std::vector<Double_t>& corners22,std::vector<Double_t>& corners23,Double_t& Z7,std::vector<Double_t>& cornersC7RL,
-		 std::vector<Double_t>& cornersC7RR,std::vector<Double_t>& cornersC7L,std::vector<Double_t>& cornersC7R,std::vector<Double_t>& corners24,std::vector<Double_t>& corners25,std::vector<Double_t>& corners26,std::vector<Double_t>& corners27,Double_t& Z8,std::vector<Double_t>& cornersC8RL,
-		 std::vector<Double_t>& cornersC8RR,std::vector<Double_t>& cornersC8L,std::vector<Double_t>& cornersC8R,std::vector<Double_t>& corners28,std::vector<Double_t>& corners29,std::vector<Double_t>& corners30,std::vector<Double_t>& corners31,Double_t& ZGmid,Double_t& dY)
-{
+void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t> >& corners,Double_t& Z1, Double_t& X2,Double_t& dXH1,Double_t& Z2,
+		 Double_t& Z3,Double_t& Z4,Double_t& Z6,Double_t& Z7,Double_t& Z8,Double_t& ZGmid,Double_t& dY)
+{	
+     std::vector<Double_t> cornersA1,cornersAR,cornersAT,cornersAB,corners1,corners2,corners3,corners4,corners5,corners6,corners7,cornersC,cornersCR,cornersCL,cornersCLT,
+			  cornersCLB,cornersCRT,cornersCRB,corners8,corners9,corners10,corners11,cornersC4,cornersC4L,cornersC4LB,cornersC4LT,cornersC4R,cornersC4RB,cornersC4RT,
+			  corners12,corners13,corners14,corners15,cornersC6RL,cornersC6RR,cornersC6L,cornersC6R,corners20,corners21,corners22,corners23,cornersC7RL,cornersC7RR,
+			  cornersC7L,cornersC7R,corners24,corners25,corners26,corners27,cornersC8RL,cornersC8RR,cornersC8L,cornersC8R,corners28,corners29,corners30,corners31;
+   
     Double_t eps = 1.*mm;
     dX1 = 0.7*m; 
     //is calculated according to z.
@@ -418,9 +418,65 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<Double_t>& cornersA1,
       corners29.push_back(corners29A[i]);
       corners30.push_back(corners30A[i]);
       corners31.push_back(corners31A[i]);
-      
     }
-  
+    corners.push_back(cornersA1);
+    corners.push_back(cornersAR);
+    corners.push_back(cornersAT);
+    corners.push_back(cornersAB);
+    corners.push_back(corners1);
+    corners.push_back(corners2);
+    corners.push_back(corners3);
+    corners.push_back(corners4);
+    corners.push_back(corners5);
+    corners.push_back(corners6);
+    corners.push_back(corners7);
+    corners.push_back(cornersC);
+    corners.push_back(cornersCR);
+    corners.push_back(cornersCL);
+    corners.push_back(cornersCLT);
+    corners.push_back(cornersCLB);
+    corners.push_back(cornersCRT);
+    corners.push_back(cornersCRB);
+    corners.push_back(corners8);
+    corners.push_back(corners9);
+    corners.push_back(corners10);
+    corners.push_back(corners11);
+    corners.push_back(cornersC4);
+    corners.push_back(cornersC4L);      
+    corners.push_back(cornersC4LB);
+    corners.push_back(cornersC4LT);
+    corners.push_back(cornersC4R);
+    corners.push_back(cornersC4RB);
+    corners.push_back(cornersC4RT);
+    corners.push_back(corners12);
+    corners.push_back(corners13);
+    corners.push_back(corners14);
+    corners.push_back(corners15);
+    corners.push_back(cornersC6RL);
+    corners.push_back(cornersC6RR);
+    corners.push_back(cornersC6L);
+    corners.push_back(cornersC6R);
+    corners.push_back(corners20);
+    corners.push_back(corners21);
+    corners.push_back(corners22);
+    corners.push_back(corners23);
+    corners.push_back(cornersC7RL);
+    corners.push_back(cornersC7RR);
+    corners.push_back(cornersC7L);
+    corners.push_back(cornersC7R);
+    corners.push_back(corners24);
+    corners.push_back(corners25);
+    corners.push_back(corners26);
+    corners.push_back(corners27);
+    corners.push_back(cornersC8RL);
+    corners.push_back(cornersC8RR);
+    corners.push_back(cornersC8L);
+    corners.push_back(cornersC8R);
+    corners.push_back(corners28);
+    corners.push_back(corners29);
+    corners.push_back(corners30);
+    corners.push_back(corners31);
+
 }
 
 void ShipMuonShield::ConstructGeometry()
@@ -1058,109 +1114,112 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
     TGeoUniformMagField *ConLField    = new TGeoUniformMagField(ironField,0.,0.);
     Double_t eps = 1.*mm;  //create small gaps between some elements to avoid Geant to get stuck.
-    std::vector<Double_t> cornersA1,cornersAR,cornersAT,cornersAB,corners1,corners2,corners3,corners4,corners5,corners6,corners7,cornersC,cornersCR,cornersCL,cornersCLT,
+    /*
+    #define nCorners 5 */
+    std::vector<std::vector<Double_t> > corners;
+   /* std::vector<Double_t> cornersA1,cornersAR,cornersAT,cornersAB,corners1,corners2,corners3,corners4,corners5,corners6,corners7,cornersC,cornersCR,cornersCL,cornersCLT,
 			  cornersCLB,cornersCRT,cornersCRB,corners8,corners9,corners10,corners11,cornersC4,cornersC4L,cornersC4LB,cornersC4LT,cornersC4R,cornersC4RB,cornersC4RT,
 			  corners12,corners13,corners14,corners15,cornersC6RL,cornersC6RR,cornersC6L,cornersC6R,corners20,corners21,corners22,corners23,cornersC7RL,cornersC7RR,
 			  cornersC7L,cornersC7R,corners24,corners25,corners26,corners27,cornersC8RL,cornersC8RR,cornersC8L,cornersC8R,corners28,corners29,corners30,corners31;
-    Double_t dX1,Z1,X2,dXH1,Z2,Z3,Z4,Z6,Z7,Z8,ZGmid,dY;
+   */ Double_t dX1,Z1,X2,dXH1,Z2,Z3,Z4,Z6,Z7,Z8,ZGmid,dY;
     
-    Initialize (dX1,cornersA1,Z1,cornersAR,X2,cornersAT,dXH1,cornersAB,Z2,corners1,corners2,corners3,corners4,corners5,corners6,corners7,Z3,cornersC,cornersCR,cornersCL,cornersCLT,
-		cornersCLB,cornersCRT,cornersCRB,corners8,corners9,corners10,corners11,Z4,cornersC4,cornersC4L,cornersC4LB,cornersC4LT,cornersC4R,cornersC4RB,cornersC4RT,corners12,
-		corners13,corners14,corners15,Z6,cornersC6RL,cornersC6RR,cornersC6L,cornersC6R,corners20,corners21,corners22,corners23,Z7,cornersC7RL,cornersC7RR,cornersC7L,cornersC7R,
-		corners24,corners25,corners26,corners27,Z8,cornersC8RL,cornersC8RR,cornersC8L,cornersC8R,corners28,corners29,corners30,corners31,ZGmid,dY);
+    Initialize (dX1,corners,Z1,X2,dXH1,Z2,Z3,Z4,Z6,Z7,Z8,ZGmid,dY);
     
-  /*string nameOfpart[2] = {"MagA","MagRetA","MagConALLT","MagConARRT","MagConARLB","MagConALRB","MagB","MagBRL",
-      "MagBRR","MagTopLeft7t17","MagTopRight7t17","MagBotLeft7t17","MagBotRight7t17","MagRetC1","MagCR","MagCL",
-      "MagCLT","MagCLB","MagCRT","MagCRB","MagTopLeft17t24","MagTopRight17t24","MagBotLeft17t24","MagBotRight17t24",
-      "MagRetC4","MagC4L","MagC4LB","MagC4LT","MagC4R","MagC4RB","MagC4RT","MagTopLeft24t28","MagTopRight24t28",
-      "MagBotLeft24t28","MagBotRight24t28","MagRetC6L","MagRetC6R","MagC6L","MagC6R","MagTopLeft30t36","MagTopRight30t36",
-      "MagBotLeft30t36","MagBotRight30t36","MagRetC7L","MagRetC7R","MagC7L","MagC7R","MagTopLeft36t42","MagTopRight36t42",
-      "MagBotLeft36t42","MagBotRight36t42","MagRetC8L","MagRetC8R","MagC8L","MagC8R","MagTopLeft42t48","MagTopRight42t48",
-      "MagBotLeft42t48","MagBotRight42t48"};
-    */
-    CreateArb8("MagA", iron, dZ1,cornersA1,45,magFieldIron,top,1,0, 0, Z1 );
-    CreateArb8("MagRetA", iron, dZ1, cornersAR,31,RetField,top,1,-X2, 0, Z1);
-    CreateArb8("MagRetA", iron, dZ1, cornersAR,31,RetField,top,1, X2, 0, Z1);
-    CreateArb8("MagConALLT", iron,dZ1,cornersAT,38,ConLField,top,1,dXH1,0.,Z1);
-    CreateArb8("MagConARRT", iron,dZ1,cornersAT,30,ConRField,top,1,-dXH1,0.,Z1);
-    CreateArb8("MagConARLB", iron,dZ1,cornersAB,30,ConRField,top,1,dXH1,0.,Z1);
-    CreateArb8("MagConALRB", iron,dZ1,cornersAB,38,ConLField,top,1,-dXH1,0.,Z1);
-    CreateArb8("MagB", iron, dZ2, corners1,45,magFieldIron,top,1,0, 0, Z2);
-    CreateArb8("MagBRL", iron, dZ2, corners2,31,RetField,top,1,0, 0, Z2);
-    CreateArb8("MagBRR", iron, dZ2, corners3,31,RetField,top,1,0, 0, Z2);
-    CreateArb8("MagTopLeft7t17", iron, dZ2, corners4,38,ConLField,top,1,0, 0, Z2);
-    CreateArb8("MagTopRight7t17", iron, dZ2, corners5,30,ConRField,top,1,0, 0, Z2);
-    CreateArb8("MagBotLeft7t17", iron, dZ2, corners6,30,ConRField,top,1,0, 0, Z2);
-    CreateArb8("MagBotRight7t17", iron, dZ2, corners7,38,ConLField,top,1,0, 0, Z2);
-    CreateArb8("MagRetC1", iron, dZ3, cornersC,31,RetField,top,1,0, 0, Z3);
-    CreateArb8("MagCR", iron, dZ3, cornersCR,45,magFieldIron,top,1,0, 0, Z3);
-    CreateArb8("MagCL", iron, dZ3, cornersCL,45,magFieldIron,top,1,0, 0, Z3);
+//       std::string nameOfpart[57] = {"MagA","MagRetA","MagConALLT","MagConARRT","MagConARLB","MagConALRB","MagB","MagBRL",
+//       "MagBRR","MagTopLeft7t17","MagTopRight7t17","MagBotLeft7t17","MagBotRight7t17","MagRetC1","MagCR","MagCL",
+//       "MagCLT","MagCLB","MagCRT","MagCRB","MagTopLeft17t24","MagTopRight17t24","MagBotLeft17t24","MagBotRight17t24",
+//       "MagRetC4","MagC4L","MagC4LB","MagC4LT","MagC4R","MagC4RB","MagC4RT","MagTopLeft24t28","MagTopRight24t28",
+//       "MagBotLeft24t28","MagBotRight24t28","MagRetC6L","MagRetC6R","MagC6L","MagC6R","MagTopLeft30t36","MagTopRight30t36",
+//       "MagBotLeft30t36","MagBotRight30t36","MagRetC7L","MagRetC7R","MagC7L","MagC7R","MagTopLeft36t42","MagTopRight36t42",
+//       "MagBotLeft36t42","MagBotRight36t42","MagRetC8L","MagRetC8R","MagC8L","MagC8R","MagTopLeft42t48","MagTopRight42t48",
+//       "MagBotLeft42t48","MagBotRight42t48"};
+//     Double_t ddZ[57] = {dZ1,dZ1,dZ1,dZ1,dZ1,dZ1,dZ1,dZ2,dZ2,dZ2,dZ2,dZ2,dZ2,dZ2,dZ3,dZ3,dZ3,dZ3,dZ3,dZ3,dZ3,dZ3-eps,dZ3-eps,dZ3-eps,dZ3-eps,
+// 		      dZ4,dZ4,dZ4,dZ4,dZ4,dZ4,dZ4,dZ4,dZ4,dZ4,dZ4,dZ6,dZ6,dZ6,dZ6,dZ6,dZ6,dZ6,dZ6,dZ7,dZ7,dZ7,dZ7,dZ7,dZ7,dZ7,dZ7,
+// 		      dZ7,dZ7,dZ7,dZ7,dZ7,dZ7,dZ7,dZ7};
+//    
+    CreateArb8("MagA", iron, dZ1,corners[0],45,magFieldIron,top,1,0, 0, Z1 );
+    CreateArb8("MagRetA", iron, dZ1, corners[1],31,RetField,top,1,-X2, 0, Z1);
+    CreateArb8("MagRetA", iron, dZ1, corners[1],31,RetField,top,1, X2, 0, Z1);
+    CreateArb8("MagConALLT", iron,dZ1,corners[2],38,ConLField,top,1,dXH1,0.,Z1);
+    CreateArb8("MagConARRT", iron,dZ1,corners[2],30,ConRField,top,1,-dXH1,0.,Z1);
+    CreateArb8("MagConARLB", iron,dZ1,corners[3],30,ConRField,top,1,dXH1,0.,Z1);
+    CreateArb8("MagConALRB", iron,dZ1,corners[3],38,ConLField,top,1,-dXH1,0.,Z1);
+    CreateArb8("MagB", iron, dZ2, corners[4],45,magFieldIron,top,1,0, 0, Z2);
+    CreateArb8("MagBRL", iron, dZ2, corners[5],31,RetField,top,1,0, 0, Z2);
+    CreateArb8("MagBRR", iron, dZ2, corners[6],31,RetField,top,1,0, 0, Z2);
+    CreateArb8("MagTopLeft7t17", iron, dZ2, corners[7],38,ConLField,top,1,0, 0, Z2);
+    CreateArb8("MagTopRight7t17", iron, dZ2, corners[8],30,ConRField,top,1,0, 0, Z2);
+    CreateArb8("MagBotLeft7t17", iron, dZ2, corners[9],30,ConRField,top,1,0, 0, Z2);
+    CreateArb8("MagBotRight7t17", iron, dZ2, corners[10],38,ConLField,top,1,0, 0, Z2);
+    CreateArb8("MagRetC1", iron, dZ3, corners[11],31,RetField,top,1,0, 0, Z3);
+    CreateArb8("MagCR", iron, dZ3, corners[12],45,magFieldIron,top,1,0, 0, Z3);
+    CreateArb8("MagCL", iron, dZ3, corners[13],45,magFieldIron,top,1,0, 0, Z3);
    //add 4 pieces for the fields.
     //left top field magnet 
-    CreateArb8("MagCLT", iron, dZ3, cornersCLT,45,magFieldIron,top,1,0, 0, Z3);
-    CreateArb8("MagCLB", iron, dZ3, cornersCLB,45,magFieldIron,top,1,0, 0, Z3);
-    CreateArb8("MagCRT", iron, dZ3, cornersCRT,45,magFieldIron,top,1,0, 0, Z3);
-    CreateArb8("MagCRB", iron, dZ3, cornersCRB,45,magFieldIron,top,1,0, 0, Z3);                           
+    CreateArb8("MagCLT", iron, dZ3, corners[14],45,magFieldIron,top,1,0, 0, Z3);
+    CreateArb8("MagCLB", iron, dZ3, corners[15],45,magFieldIron,top,1,0, 0, Z3);
+    CreateArb8("MagCRT", iron, dZ3, corners[16],45,magFieldIron,top,1,0, 0, Z3);
+    CreateArb8("MagCRB", iron, dZ3, corners[17],45,magFieldIron,top,1,0, 0, Z3);                           
 //Top/Bot return magnets for 17-24 m
-    CreateArb8("MagTopLeft17t24", iron, dZ3-eps, corners8,38,ConLField,top,1,0, 0, Z3);
-    CreateArb8("MagTopRight17t24", iron, dZ3-eps, corners9,30,ConRField,top,1,0, 0, Z3);
+    CreateArb8("MagTopLeft17t24", iron, dZ3-eps, corners[18],38,ConLField,top,1,0, 0, Z3);
+    CreateArb8("MagTopRight17t24", iron, dZ3-eps, corners[19],30,ConRField,top,1,0, 0, Z3);
 //Bot return magnets 
-    CreateArb8("MagBotLeft17t24", iron, dZ3-eps, corners10,30,ConRField,top,1,0, 0, Z3);
-    CreateArb8("MagBotRight17t24", iron, dZ3-eps, corners11,38,ConLField,top,1,0, 0, Z3);
+    CreateArb8("MagBotLeft17t24", iron, dZ3-eps, corners[20],30,ConRField,top,1,0, 0, Z3);
+    CreateArb8("MagBotRight17t24", iron, dZ3-eps, corners[21],38,ConLField,top,1,0, 0, Z3);
 // 24<z<30. m, gap between field and return field      
-    CreateArb8("MagRetC4", iron, dZ4, cornersC4,31,RetField,top,1,0, 0, Z4);
+    CreateArb8("MagRetC4", iron, dZ4, corners[22],31,RetField,top,1,0, 0, Z4);
    //left magnet, split in three, like for previous magnet
-    CreateArb8("MagC4L", iron, dZ4, cornersC4L,45,magFieldIron,top,1,0, 0, Z4);
-    CreateArb8("MagC4LB", iron, dZ4, cornersC4LB,45,magFieldIron,top,1,0, 0, Z4);
-    CreateArb8("MagC4LT", iron, dZ4, cornersC4LT,45,magFieldIron,top,1,0, 0, Z4);
-    CreateArb8("MagC4R", iron, dZ4, cornersC4R,45,magFieldIron,top,1,0, 0, Z4);
-    CreateArb8("MagC4RB", iron, dZ4, cornersC4RB,45,magFieldIron,top,1,0, 0, Z4);
-    CreateArb8("MagC4RT", iron, dZ4, cornersC4RT,45,magFieldIron,top,1,0, 0, Z4);
+    CreateArb8("MagC4L", iron, dZ4, corners[23],45,magFieldIron,top,1,0, 0, Z4);
+    CreateArb8("MagC4LB", iron, dZ4, corners[24],45,magFieldIron,top,1,0, 0, Z4);
+    CreateArb8("MagC4LT", iron, dZ4, corners[25],45,magFieldIron,top,1,0, 0, Z4);
+    CreateArb8("MagC4R", iron, dZ4, corners[26],45,magFieldIron,top,1,0, 0, Z4);
+    CreateArb8("MagC4RB", iron, dZ4, corners[27],45,magFieldIron,top,1,0, 0, Z4);
+    CreateArb8("MagC4RT", iron, dZ4, corners[28],45,magFieldIron,top,1,0, 0, Z4);
 // //Top/Bot return magnets for 24-28 m
-    CreateArb8("MagTopLeft24t28", iron, dZ4, corners12,38,ConLField,top,1,0, 0, Z4);
-    CreateArb8("MagTopRight24t28", iron, dZ4, corners13,30,ConRField,top,1,0, 0, Z4);
+    CreateArb8("MagTopLeft24t28", iron, dZ4, corners[29],38,ConLField,top,1,0, 0, Z4);
+    CreateArb8("MagTopRight24t28", iron, dZ4, corners[30],30,ConRField,top,1,0, 0, Z4);
 // //Bot return magnets 
-    CreateArb8("MagBotLeft24t28", iron, dZ4, corners14,30,ConRField,top,1,0, 0, Z4);
-    CreateArb8("MagBotRight24t28", iron, dZ4, corners15,38,ConLField,top,1,0, 0, Z4);
+    CreateArb8("MagBotLeft24t28", iron, dZ4, corners[31],30,ConRField,top,1,0, 0, Z4);
+    CreateArb8("MagBotRight24t28", iron, dZ4, corners[32],38,ConLField,top,1,0, 0, Z4);
 // // 30<z<36 m: Note: here also return field splits!
 //     //return fields
-    CreateArb8("MagRetC6L", iron, dZ6, cornersC6RL,31,RetField,top,1,0, 0, Z6);
-    CreateArb8("MagRetC6R", iron, dZ6, cornersC6RR,31,RetField,top,1,0, 0, Z6);
+    CreateArb8("MagRetC6L", iron, dZ6, corners[33],31,RetField,top,1,0, 0, Z6);
+    CreateArb8("MagRetC6R", iron, dZ6, corners[34],31,RetField,top,1,0, 0, Z6);
  //bending fields
-    CreateArb8("MagC6L", iron, dZ6, cornersC6L,45,magFieldIron,top,1,0, 0, Z6);
-    CreateArb8("MagC6R", iron, dZ6, cornersC6R,45,magFieldIron,top,1,0, 0, Z6);
+    CreateArb8("MagC6L", iron, dZ6, corners[35],45,magFieldIron,top,1,0, 0, Z6);
+    CreateArb8("MagC6R", iron, dZ6, corners[36],45,magFieldIron,top,1,0, 0, Z6);
 //Top/Bot return magnets for 30-36 m, note inner return magnet splits too :-)
-    CreateArb8("MagTopLeft30t36", iron, dZ6, corners20,38,ConLField,top,1,0, 0, Z6);
-    CreateArb8("MagTopRight30t36", iron, dZ6, corners21,30,ConRField,top,1,0, 0, Z6);
+    CreateArb8("MagTopLeft30t36", iron, dZ6, corners[37],38,ConLField,top,1,0, 0, Z6);
+    CreateArb8("MagTopRight30t36", iron, dZ6, corners[38],30,ConRField,top,1,0, 0, Z6);
 // //Bot return magnets 
-    CreateArb8("MagBotLeft30t36", iron, dZ6, corners22,30,ConRField,top,1,0, 0, Z6);
-    CreateArb8("MagBotRight30t36", iron, dZ6, corners23,38,ConLField,top,1,0, 0, Z6);
+    CreateArb8("MagBotLeft30t36", iron, dZ6, corners[39],30,ConRField,top,1,0, 0, Z6);
+    CreateArb8("MagBotRight30t36", iron, dZ6, corners[40],38,ConLField,top,1,0, 0, Z6);
 // // 36<z<42 m: Note: here also return field splits!
 //     //return fields
-    CreateArb8("MagRetC7L", iron, dZ7, cornersC7RL,31,RetField,top,1,0, 0, Z7);
-    CreateArb8("MagRetC7R", iron, dZ7, cornersC7RR,31,RetField,top,1,0, 0, Z7);
+    CreateArb8("MagRetC7L", iron, dZ7, corners[41],31,RetField,top,1,0, 0, Z7);
+    CreateArb8("MagRetC7R", iron, dZ7, corners[42],31,RetField,top,1,0, 0, Z7);
    //bending fields
-    CreateArb8("MagC7L", iron, dZ7, cornersC7L,45,magFieldIron,top,1,0, 0, Z7);
-    CreateArb8("MagC7R", iron, dZ7, cornersC7R,45,magFieldIron,top,1,0, 0, Z7);
+    CreateArb8("MagC7L", iron, dZ7, corners[43],45,magFieldIron,top,1,0, 0, Z7);
+    CreateArb8("MagC7R", iron, dZ7, corners[44],45,magFieldIron,top,1,0, 0, Z7);
 //Top/Bot return magnets for 36-42 m, note inner return magnet splits too :-)
-    CreateArb8("MagTopLeft36t42", iron, dZ7, corners24,38,ConLField,top,1,0, 0, Z7);
-    CreateArb8("MagTopRight36t42", iron, dZ7, corners25,30,ConRField,top,1,0, 0, Z7);
+    CreateArb8("MagTopLeft36t42", iron, dZ7, corners[45],38,ConLField,top,1,0, 0, Z7);
+    CreateArb8("MagTopRight36t42", iron, dZ7, corners[46],30,ConRField,top,1,0, 0, Z7);
 //Bot return magnets 
-    CreateArb8("MagBotLeft36t42", iron, dZ7, corners26,30,ConRField,top,1,0, 0, Z7);
-    CreateArb8("MagBotRight36t42", iron, dZ7, corners27,38,ConLField,top,1,0, 0, Z7);
+    CreateArb8("MagBotLeft36t42", iron, dZ7, corners[47],30,ConRField,top,1,0, 0, Z7);
+    CreateArb8("MagBotRight36t42", iron, dZ7, corners[48],38,ConLField,top,1,0, 0, Z7);
 // 42<z<48 m: Note: here also return field splits!
      //return fields
-    CreateArb8("MagRetC8L", iron, dZ8, cornersC8RL,31,RetField,top,1,0, 0, Z8);
-    CreateArb8("MagRetC8R", iron, dZ8, cornersC8RR,31,RetField,top,1,0, 0, Z8);
+    CreateArb8("MagRetC8L", iron, dZ8, corners[49],31,RetField,top,1,0, 0, Z8);
+    CreateArb8("MagRetC8R", iron, dZ8, corners[50],31,RetField,top,1,0, 0, Z8);
     //bending fields
-    CreateArb8("MagC8L", iron, dZ8, cornersC8L,45,magFieldIron,top,1,0, 0, Z8);
-    CreateArb8("MagC8R", iron, dZ8, cornersC8R,45,magFieldIron,top,1,0, 0, Z8);
+    CreateArb8("MagC8L", iron, dZ8, corners[51],45,magFieldIron,top,1,0, 0, Z8);
+    CreateArb8("MagC8R", iron, dZ8, corners[52],45,magFieldIron,top,1,0, 0, Z8);
 //Top/Bot return magnets for 42-48 m, note inner return magnet splits too :-)
-    CreateArb8("MagTopLeft42t48", iron, dZ8, corners28,38,ConLField,top,1,0, 0, Z8);
-    CreateArb8("MagTopRight42t48", iron, dZ8, corners29,30,ConRField,top,1,0, 0, Z8);
+    CreateArb8("MagTopLeft42t48", iron, dZ8, corners[53],38,ConLField,top,1,0, 0, Z8);
+    CreateArb8("MagTopRight42t48", iron, dZ8, corners[54],30,ConRField,top,1,0, 0, Z8);
 //Bot return magnets 
-    CreateArb8("MagBotLeft42t48", iron, dZ8, corners30,30,ConRField,top,1,0, 0, Z8);
-    CreateArb8("MagBotRight42t48", iron, dZ8, corners31,38,ConLField,top,1,0, 0, Z8);
+    CreateArb8("MagBotLeft42t48", iron, dZ8, corners[55],30,ConRField,top,1,0, 0, Z8);
+    CreateArb8("MagBotRight42t48", iron, dZ8, corners[56],38,ConLField,top,1,0, 0, Z8);
 
 
     if (fDesign==4){
@@ -1200,17 +1259,6 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     rockS->SetLineColor(11);  // grey
     rockS->SetTransparency(50);
     top->AddNode(rockS, 1, new TGeoTranslation(0, 0, ZT ));
-
-// around decay tunnel
-    Double_t dZD =  100*m + fMuonShieldLength;
-    TGeoBBox *box3    = new TGeoBBox("box3", 15*m,12.25*m,dZD/2.);
-    TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
-    TGeoCompositeShape *compRockD = new TGeoCompositeShape("compRockD", "box3-box4");
-    TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
-    rockD->SetLineColor(11);  // grey
-    rockD->SetTransparency(50);
-    top->AddNode(rockD, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*dZ + dZD/2.));
-
 
 //
     } else {

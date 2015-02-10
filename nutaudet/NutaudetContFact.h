@@ -1,5 +1,5 @@
-#ifndef TAUSENSCONTFACT_H
-#define TAUSENSCONTFACT_H
+#ifndef NUTAUDETCONTFACT_H
+#define NUTAUDETCONTFACT_H
 
 #include "FairContFact.h"               // for FairContFact, etc
 
@@ -7,15 +7,15 @@
 
 class FairParSet;
 
-class ShipTauSensitiveContFact : public FairContFact
+class NutaudetContFact : public FairContFact
 {
   private:
     void setAllContainers();
   public:
-    ShipTauSensitiveContFact();
-    ~ShipTauSensitiveContFact() {}
+    NutaudetContFact();
+    ~NutaudetContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef( ShipTauSensitiveContFact,0) // Factory for all Passive parameter containers
+    ClassDef(NutaudetContFact,0) // Factory for all Passive parameter containers
 };
 
 #endif  /* !PNDPASSIVECONTFACT_H */

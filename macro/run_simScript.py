@@ -17,15 +17,18 @@ inclusive    = False  # True = all processes if False only ccbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
 inputFile    = None
+outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-checking4overlaps = True
-phiRandom = False  # only relevant for muon background generator
+checking4overlaps = False
+phiRandom   = False  # only relevant for muon background generator
+followMuon  = False   # only transport muons for a fast muon only background estimate
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:sl:A:Y:i:m:c",["Pythia6","Pythia8","Genie","Ntuple","MuonBack",\
-                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling="])
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","followMuon",\
+                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", 
+                                   "output="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -43,23 +46,26 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-            if not inputFile:   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root'
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
+        if o in ("--followMuon"):
+            followMuon = True
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
         if o in ("--phiRandom"):
             phiRandom = True
         if o in ("--Cosmics"):
             simEngine = "Cosmics"
-        if o in ("-n", "--nEvents="):
+        if o in ("-n", "--nEvents"):
             nEvents = int(a)
-        if o in ("-i", "--firstEvent="):
+        if o in ("-i", "--firstEvent"):
             firstEvent = int(a)
-        if o in ("-s", "--seed="):
+        if o in ("-s", "--seed"):
             theSeed = int(a)
         if o in ("-f"):
             inputFile = a
+        if o in ("-o", "--output"):
+            outputDir = a
         if o in ("-A"):
             inclusive = True
         if o in ("-Y"): 
@@ -71,26 +77,32 @@ for o, a in opts:
         if o in ("-c", "--couplings", "--coupling"):
             theHNLcouplings = [float(c) for c in a.split(",")]
 
+if simEngine == "Genie" and not inputFile: inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root' # anti_nu_mu
+# nu_mu: inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu+_nu_mu-gntp.113.gst.root'
+
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-# - muShieldDesign    = 2  # 1=passive 2=active (default)
-# - targetOpt         = 5  # 0=solid   >0 sliced, 5 pieces of tungsten, 4 air slits (default)
-# - strawDesign       = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
-# - HcalOption        = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", HcalOption = 1, Yheight = dy)
+# - muShieldDesign = 2  # 1=passive 2=active (default)
+# - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
+# - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
+# - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
 if dy: tag = str(dy)+'.'+tag 
-outFile ="ship."+tag+".root"  
+if not os.path.exists(outputDir):
+  os.makedirs(outputDir)
+outFile = "%s/ship.%s.root" % (outputDir, tag)
+
 
 # rm older files !!! 
-os.system("rm *."+tag+".root")
+os.system("rm %s/*.%s.root" % (outputDir, tag))
 # Parameter file name
-parFile="ship.params."+tag+".root"
+parFile="%s/ship.params.%s.root" % (outputDir, tag)
 
 # In general, the following parts need not be touched
 # ========================================================================
@@ -108,6 +120,7 @@ run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
+# import shipTarget_only as shipDet_conf
 import shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
@@ -164,7 +177,9 @@ if simEngine == "MuonBack":
  MuonBackgen.SetSmearBeam(3*u.cm)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
- print 'Process ',nEvents,' from input file, with Phi random=',phiRandom 
+ print 'Process ',nEvents,' from input file, with Phi random=',phiRandom
+ if followMuon :  modules['Veto'].SetFastMuon()
+
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)
@@ -213,9 +228,9 @@ if inactivateMuonProcesses :
  gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess('muIoni','mu+')
  procmu.SetVerboseLevel(2) 
-
-## myTA = MyTrackingAction()
-
+if simEngine == "Genie": 
+ import configGenieGenerator
+ configGenieGenerator.config(Geniegen)
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # -----Runtime database---------------------------------------------
@@ -226,12 +241,14 @@ rtdb.setOutput(parOut)
 rtdb.saveOutput()
 rtdb.printParamContexts()
 # ------------------------------------------------------------------------
-run.CreateGeometryFile("geofile_full."+tag+".root") 
+run.CreateGeometryFile("%s/geofile_full.%s.root" % (outputDir, tag))
 #
 # checking for overlaps
 if checking4overlaps:
- ROOT.gGeoManager.CheckOverlaps()
- ROOT.gGeoManager.PrintOverlaps()
+ fGeo = ROOT.gGeoManager
+ fGeo.SetNmeshPoints(10000)
+ fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
+ fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()

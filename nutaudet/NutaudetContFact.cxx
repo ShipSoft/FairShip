@@ -3,12 +3,12 @@
 
 /////////////////////////////////////////////////////////////
 //
-//  ShipTauSensitiveContFact
+//  NutaudetContFact
 //
-//  Factory for the parameter containers in libTauSensitive
+//  Factory for the parameter containers in libnutaudet
 //
 /////////////////////////////////////////////////////////////
-#include "ShipTauSensitiveContFact.h"
+#include "NutaudetContFact.h"
 
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
@@ -21,21 +21,21 @@ class FairParSet;
 
 using namespace std;
 
-ClassImp(ShipTauSensitiveContFact)
+ClassImp(NutaudetContFact)
 
-static ShipTauSensitiveContFact gShipTauSensitiveContFact;
+static NutaudetContFact gNutaudetContFact;
 
-ShipTauSensitiveContFact::ShipTauSensitiveContFact()
+NutaudetContFact::NutaudetContFact()
   : FairContFact()
 {
   // Constructor (called when the library is loaded)
-  fName="ShipTauSensitiveContFact";
+  fName="NutaudetContFact";
   fTitle="Factory for parameter containers in libTauSensitive";
   setAllContainers();
   FairRuntimeDb::instance()->addContFactory(this);
 }
 
-void ShipTauSensitiveContFact::setAllContainers()
+void NutaudetContFact::setAllContainers()
 {
   /** Creates the Container objects with all accepted contexts and adds them to
    *  the list of containers for the STS library.*/
@@ -48,7 +48,7 @@ void ShipTauSensitiveContFact::setAllContainers()
   containers->Add(p);
 }
 
-FairParSet* ShipTauSensitiveContFact::createContainer(FairContainer* c)
+FairParSet* NutaudetContFact::createContainer(FairContainer* c)
 {
   /** Calls the constructor of the corresponding parameter container.
    * For an actual context, which is not an empty string and not the default context

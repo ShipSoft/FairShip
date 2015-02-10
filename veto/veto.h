@@ -45,14 +45,19 @@ class veto: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Int_t c);
+    void SetFastMuon() {fFastMuon=true;}  // kill all tracks except of muons
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
+    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Int_t c);
     void SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Double32_t z5, Double32_t z6);
     void SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t l4, Double32_t l5, Double32_t l6);
     void SetB(Double32_t b) {fBtube=b;}
+    void SetConcreateWall(Double32_t a,Double32_t b) {
+      // zEndOfAbsorb + 2*dZ , dZ = dZ1 + dZ2;
+      fzOffset=a;
+      fMuonShieldLength=b;}
     void SetRminRmax(Double32_t rmin,Double32_t rmax){
      fRmin = rmin;                                                //!  minimum diameter of vacuum chamber
      fRmax = rmax;                                                //!  maximum diameter of vacuum chamber
@@ -82,7 +87,7 @@ class veto: public FairDetector
     virtual void   FinishRun() {;}
     virtual void   BeginPrimary() {;}
     virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
+    virtual void   PreTrack();
     virtual void   BeginEvent() {;}
 
 
@@ -106,6 +111,7 @@ class veto: public FairDetector
     Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers, 
                                        //   2: conical with basic tracking chambers, but no trscking chamber at entrance 
                                        //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
+    Bool_t     fFastMuon;
     Double32_t fTub1z;
     Double32_t fTub2z;
     Double32_t fTub3z;
@@ -123,6 +129,7 @@ class veto: public FairDetector
     Double32_t fVRmin;
     Double32_t fVRmax;
     Double32_t fBtube;
+    Double32_t fMuonShieldLength, fzOffset;
     /** container for data points */
 
     TClonesArray*  fvetoPointCollection;

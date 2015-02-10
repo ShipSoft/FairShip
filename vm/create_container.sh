@@ -17,7 +17,7 @@ if [ $? -eq 0 ] ; then
 fi
 
 RESTORE_LINKS=""
-for d in geometry python macro muonShieldOptimization ; do
+for d in gconfig geometry python macro muonShieldOptimization ; do
   echo "copy $d -> $BLD_DIR"
   [ -d $BLD_DIR/$d ] && rm -rf $BLD_DIR/$d
   cp -r $d $BLD_DIR
@@ -29,6 +29,7 @@ path=$(readlink -f $BLD_DIR)
 cat > $path/Dockerfile << EOF
 FROM busybox
 MAINTAINER Andrey Ustyuzhanin andrey.ustyuzhanin@cern.ch
+WORKDIR $VMPATH
 
 ADD . $VMPATH
 
@@ -37,4 +38,8 @@ docker build --rm -t $REPO:$TAG $path
 pushd $BLD_DIR
 for d in $RESTORE_LINKS ; do rm -rf $d ; ln -s ../$d . ;  done
 popd
-echo "to check: docker run -ti --rm $REPO:$TAG sh"
+echo "You have just created container: " $REPO:$TAG
+echo "to check  it:"
+echo "  docker run -ti --rm $REPO:$TAG ls -l ."
+echo "to push it to docker registry:"
+echo "  docker push $REPO:$TAG"

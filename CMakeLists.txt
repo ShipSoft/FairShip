@@ -51,9 +51,10 @@ include(CTest)
 include(CheckCompiler)
 
 #Check the compiler and set the compile and link flags
+# change from DEBUG to RELEASE, don't want to waste CPU time
 If(NOT CMAKE_BUILD_TYPE)
-  Message("Set BuildType DEBUG")
-  set(CMAKE_BUILD_TYPE Debug)
+  Message("Set BuildType RELEASE")
+  set(CMAKE_BUILD_TYPE Release)
 EndIf(NOT CMAKE_BUILD_TYPE)
 Check_Compiler()
 
@@ -144,6 +145,17 @@ find_package(HEPMC)
 # Defines all basic include directories from fairbase
 SetBasicVariables()
 
+# Add the FairRoot include directories to the list of libraries which are
+# external to the Ship project. For include directories in this list the
+# compiler will not generate any warnings. This is usefull since one is only
+# interested about warnings from the own project. SYSTEM_INCLUDE_DIRECTORIES
+# is defined in FairMacros.cmake. In the moment the defined directories are
+# the root and boost include directories. 
+Set(SYSTEM_INCLUDE_DIRECTORIES 
+  ${SYSTEM_INCLUDE_DIRECTORIES}
+  ${BASE_INCLUDE_DIRECTORIES}
+)
+
 # Set the library version in the main CMakeLists.txt
 SET(FAIRROOT_MAJOR_VERSION 0)
 SET(FAIRROOT_MINOR_VERSION 0)
@@ -203,7 +215,7 @@ ENDIF (NOT FAIRROOT_FOUND)
 
 add_subdirectory (shipdata)
 add_subdirectory (passive)
-add_subdirectory (TauSensitive)
+add_subdirectory (nutaudet)
 add_subdirectory (ecal)
 add_subdirectory (hcal)
 add_subdirectory (veto)

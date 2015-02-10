@@ -59,6 +59,7 @@ veto::veto(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
+    fFastMuon(false),
     fT0z(-2390.),              //!  z-position of veto station
     fT1z(1510.),               //!  z-position of tracking station 1
     fT2z(1710.),               //!  z-position of tracking station 2
@@ -171,7 +172,6 @@ void veto::SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t
 Bool_t  veto::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
-
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
     fELoss  = 0.;
@@ -180,10 +180,9 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
     gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
   }
-
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
-
+  
   // Create vetoPoint at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
@@ -212,8 +211,12 @@ void veto::EndOfEvent()
 
 }
 
-
-
+void veto::PreTrack(){
+    if (!fFastMuon){return;} 
+    if (fabs(gMC->TrackPid())!=13){
+        gMC->StopTrack(); 
+    }
+}
 void veto::Register()
 {
 
@@ -257,6 +260,8 @@ void veto::ConstructGeometry()
  */
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
+    InitMedium("Concrete");
+    TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     InitMedium("steel");
     TGeoMedium *St =gGeoManager->GetMedium("steel");
     InitMedium("vacuums");
@@ -470,8 +475,12 @@ void veto::ConstructGeometry()
 
     // design 4: elliptical double walled tube with LiSci in between
     // Interpolate wall thicknesses based on the vertical size fBtube.
-      Double_t walli=(2*fBtube-6.*m)*(8.-5.)*mm/(4.*m)+5.*mm;	
-      Double_t wallo=(2*fBtube-6.*m)*(3.-2.)*cm/(4.*m)+2.*cm;	
+      // for Y=10m: 
+      Double_t walli=3.*cm; 
+      Double_t wallo=8.*mm;
+      // ignore variations with height
+      //Double_t wallo=(2*fBtube-6.*m)*(8.-5.)*mm/(4.*m)+5.*mm;	
+      //Double_t walli=(2*fBtube-6.*m)*(3.-2.)*cm/(4.*m)+2.*cm;	
       
       Double_t ws=0.5*m; //Straw screen plates sticking out of the outer tube.
       //Note: is just 2 cm for veto chamber, to avoid muon hits :-).
@@ -482,7 +491,7 @@ void veto::ConstructGeometry()
       Double_t atube1   = 2.2*m-walli-wallo-liscitube;	
       //inner lid on tube 1
       TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I"        ,Al,atube1+walli+wallo+liscitube,btube,walli/2.);
-      lidT1I->SetLineColor(kRed);  // silver/gray
+      lidT1I->SetLineColor(18);  // silver/gray
       top->AddNode(lidT1I, 1, new TGeoTranslation(0, 0,     fTub1z-fTub1length-walli/2.));
       //lisci lid on tube 1
       TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube1+walli+wallo+liscitube,btube,liscilid/2.);
@@ -491,85 +500,159 @@ void veto::ConstructGeometry()
       AddSensitiveVolume(lidT1lisci);
       //outer lid on tube 1
       TGeoVolume *lidT1O = gGeoManager->MakeEltu("lidT1O"        ,St,atube1+walli+wallo+liscitube,btube,wallo/2.);
-      lidT1O->SetLineColor(18);  // silver/gray
+      lidT1O->SetLineColor(14);  // silver/gray
       top->AddNode(lidT1O, 1, new TGeoTranslation(0, 0,     fTub1z-fTub1length-walli-liscilid-wallo/2.));
 
       // All inner tubes...
-      GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,fTub1z,kRed,Al);
-      GeoEllipticalTube("T2I",walli,atube, btube,fTub2length,fTub2z,kRed,Al);
-      GeoEllipticalTube("T3I",walli,atube, btube,fTub3length,fTub3z,kRed,Al);
-      GeoEllipticalTube("T4I",walli,atube, btube,fTub4length,fTub4z,kRed,Al);
-      GeoEllipticalTube("T5I",walli,atube, btube,fTub5length,fTub5z,kRed,Al);
-      GeoEllipticalTube("T6I",walli,atube, btube,fTub6length,fTub6z,kRed,Al);
+      GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,fTub1z,18,St);
+      GeoEllipticalTube("T2I",walli,atube, btube,fTub2length,fTub2z,18,St);
+      GeoEllipticalTube("T3I",walli,atube, btube,fTub3length,fTub3z,18,St);
+      GeoEllipticalTube("T4I",walli,atube, btube,fTub4length,fTub4z,18,St);
+      GeoEllipticalTube("T5I",walli,atube, btube,fTub5length,fTub5z,18,St);
+      GeoEllipticalTube("T6I",walli,atube, btube,fTub6length,fTub6z,18,St);
       // All outer tubes, first calculate inner radii of this tube
       Double_t aO =atube+walli+liscitube;
       Double_t aO1=atube1+walli+liscitube;
       Double_t bO =btube+walli+liscitube;
-      GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length,fTub1z,18,St);
-      GeoEllipticalTube("T2O",wallo,aO, bO,fTub2length,fTub2z,18,St);
-      GeoEllipticalTube("T3O",wallo,aO, bO,fTub3length,fTub3z,18,St);
-      GeoEllipticalTube("T4O",wallo,aO, bO,fTub4length,fTub4z,18,St);
-      GeoEllipticalTube("T5O",wallo,aO, bO,fTub5length,fTub5z,18,St);
-      GeoEllipticalTube("T6O",wallo,aO, bO,fTub6length+liscilid/2.,fTub6z+liscilid/2.,18,St);
-      GeoPlateEllipse("T1Endplate",  0.02*m+(atube-atube1),aO1+wallo,bO+wallo,wallo/2.,fTub1z+fTub1length-wallo/2.,18,St);
-      GeoPlateEllipse("T2Startplate",0.02*m               ,aO +wallo,bO+wallo,wallo/2.,fTub2z-fTub2length+wallo/2.,18,St);
-      GeoPlateEllipse("T2Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub2z+fTub2length-wallo/2.,18,St);
-      GeoPlateEllipse("T3Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub3z-fTub3length+wallo/2.,18,St);
-      GeoPlateEllipse("T3Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub3z+fTub3length-wallo/2.,18,St);
-      GeoPlateEllipse("T4Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub4z-fTub4length+wallo/2.,18,St);
-      GeoPlateEllipse("T4Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub4z+fTub4length-wallo/2.,18,St);
-      GeoPlateEllipse("T5Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub5z-fTub5length+wallo/2.,18,St);
-      GeoPlateEllipse("T5Endplate"  ,ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub5z+fTub5length-wallo/2.,18,St);
-      GeoPlateEllipse("T6Startplate",ws                   ,aO +wallo,bO+wallo,wallo/2.,fTub6z-fTub6length+wallo/2.,18,St);
+      GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length,fTub1z,14,Al);
+      GeoEllipticalTube("T2O",wallo,aO, bO,fTub2length,fTub2z,14,Al);
+      GeoPlateEllipse("T1Endplate",  0.02*m+(atube-atube1),aO1+wallo,bO+wallo,walli/2.,fTub1z+fTub1length-walli/2.,18,St);
+      GeoPlateEllipse("T2Startplate",0.02*m+(atube-atube1),aO +wallo,bO+wallo,walli/2.,fTub2z-fTub2length+walli/2.,18,St);
+      GeoPlateEllipse("T2Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub2z+fTub2length-walli/2.,18,St);
+      GeoPlateEllipse("T3Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub3z-fTub3length+walli/2.,18,St);
+      GeoPlateEllipse("T3Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub3z+fTub3length-walli/2.,18,St);
+      GeoPlateEllipse("T4Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub4z-fTub4length+walli/2.,18,St);
+      GeoPlateEllipse("T4Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub4z+fTub4length-walli/2.,18,St);
+      GeoPlateEllipse("T5Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub5z-fTub5length+walli/2.,18,St);
+      GeoPlateEllipse("T5Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub5z+fTub5length-walli/2.,18,St);
+      GeoPlateEllipse("T6Startplate",ws                   ,aO +wallo,bO+wallo,walli/2.,fTub6z-fTub6length+walli/2.,18,St);
       // And liquid scintillator inbetween, first calculate inner radii of this
       Double_t als =atube+walli;
       Double_t als1=atube1+walli;
       Double_t bls =btube+walli;
-      GeoEllipticalTube("T1LS",liscitube,als1,bls,fTub1length,fTub1z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T2LS",liscitube,als ,bls,fTub2length,fTub2z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T3LS",liscitube,als ,bls,fTub3length,fTub3z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T4LS",liscitube,als ,bls,fTub4length,fTub4z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T5LS",liscitube,als ,bls,fTub5length,fTub5z,kMagenta-10,Se,true);
-      GeoEllipticalTube("T6LS",liscitube,als ,bls,fTub6length,fTub6z,kMagenta-10,Se,true);
+
+      //Assume ~1 m between ribs, calculate number of ribs
+
+      //For Tube nr 1:
+      Int_t nribs = fTub1length*2./(1.*m) ;
+      Double_t ribspacing = fTub1length*2./(nribs+1);
+      //now place ribs
+      for (Int_t nr=1; nr<nribs+1; nr++) {
+        TString namerib = "T1Rib_"; namerib+=nr;
+        Double_t zrib= fTub1z-fTub1length+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als1,bls,walli/2.,zrib,18,St);
+      }
+      //now place LiSc
+      for (Int_t nr=1; nr<nribs+2; nr++) {
+        TString namerib = "T1LiSc_"; namerib+=nr;
+        Double_t zlisc= fTub1z-fTub1length+nr*ribspacing;
+        Double_t zlength=ribspacing-walli;
+        if (nr==1){
+          zlength=ribspacing-walli/2.;
+	  zlisc=fTub1z-fTub1length+zlength;
+        }
+        if (nr==nribs+1){
+          zlength=ribspacing-walli/2.;
+	  zlisc=fTub1z+fTub1length-zlength;
+        }
+        GeoEllipticalTube(namerib,liscitube,als1,bls,zlength,zlisc,kMagenta-10,Se,true);
+      }
+
+      //For Tube nr 2:
+      nribs = fTub2length*2./(1.*m) ;
+      ribspacing = fTub2length*2./(nribs+1);
+      //now place ribs
+      for (Int_t nr=1; nr<nribs+1; nr++) {
+        TString namerib = "T2Rib_"; namerib+=nr;
+        Double_t zrib= fTub2z-fTub2length+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib,18,St);
+      }
+      //now place LiSc
+      for (Int_t nr=1; nr<nribs+2; nr++) {
+        TString namerib = "T2LiSc_"; namerib+=nr;
+        Double_t zlisc= fTub2z-fTub2length+nr*ribspacing;
+        Double_t zlength=ribspacing-walli;
+        if (nr==1){
+          zlength=ribspacing-walli/2.;
+	  zlisc=fTub2z-fTub2length+zlength;
+        }
+        if (nr==nribs+1){
+          zlength=ribspacing-walli/2.;
+	  zlisc=fTub2z+fTub2length-zlength;
+        }
+        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc,kMagenta-10,Se,true);
+      }
+
+      //code for more ribs: 
+      if (1==1) {
+      //For Tube nr 3:
+      nribs = fTub3length*2./(1.*m) ;
+      ribspacing = fTub3length*2./(nribs+1);
+      //now place ribs
+      for (Int_t nr=1; nr<nribs+1; nr++) {
+        TString namerib = "T3Rib_"; namerib+=nr;
+        Double_t zrib= fTub3z-fTub3length+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib,18,St);
+      }
+
+      //For Tube nr 4:
+      nribs = fTub4length*2./(1.*m) ;
+      ribspacing = fTub4length*2./(nribs+1);
+      //now place ribs
+      for (Int_t nr=1; nr<nribs+1; nr++) {
+        TString namerib = "T4Rib_"; namerib+=nr;
+        Double_t zrib= fTub4z-fTub4length+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib,18,St);
+      }
+
+      //For Tube nr 5:
+      nribs = fTub5length*2./(1.*m) ;
+      ribspacing = fTub5length*2./(nribs+1);
+      //now place ribs
+      for (Int_t nr=1; nr<nribs+1; nr++) {
+        TString namerib = "T5Rib_"; namerib+=nr;
+        Double_t zrib= fTub5z-fTub5length+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib,18,St);
+      }
+
+
+      //For Tube nr 6:
+      nribs = fTub6length*2./(1.*m) ;
+      ribspacing = fTub6length*2./(nribs+1);
+      //now place ribs
+      for (Int_t nr=1; nr<nribs+1; nr++) {
+        TString namerib = "T6Rib_"; namerib+=nr;
+        Double_t zrib= fTub6z-fTub6length+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib,18,St);
+      }
+      }
 
       //closing lid on tube 6
       TGeoVolume *lidT6I = gGeoManager->MakeEltu("lidT6I",Al,atube+walli,btube+walli,walli/2.);
-      lidT6I->SetLineColor(kRed);  // silver/gray
+      lidT6I->SetLineColor(18);  
       top->AddNode(lidT6I, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli/2.));
-      //lisci lid on tube 6
-      TGeoVolume *lidT6lisci = gGeoManager->MakeEltu("lidT6lisci",Se,atube+walli+liscitube,btube+walli+liscitube,liscilid/2.);
-      lidT6lisci->SetLineColor(kMagenta-10);
-      top->AddNode(lidT6lisci, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid/2.));
-      AddSensitiveVolume(lidT6lisci);
       //outer lid on tube 1
-      TGeoVolume *lidT6O = gGeoManager->MakeEltu("lidT6O",St,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,wallo/2.);
-      lidT6O->SetLineColor(18);  // silver/gray
-      top->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid+wallo/2.));
+      TGeoVolume *lidT6O = gGeoManager->MakeEltu("lidT6O",St,atube+walli+wallo,btube+walli+wallo,wallo/2.);
+      lidT6O->SetLineColor(14);  
+      top->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+wallo/2.));
 
       //Add one more sensitive plane after vacuum tube for timing
-      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/2.);
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,atube+walli+wallo+liscitube,btube+walli+wallo+liscitube,liscilid/4.);
       TimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid*1.5+wallo+5.*cm));
+      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+liscilid/2.+wallo+5.*cm));
       AddSensitiveVolume(TimeDet);
 
-      //Add  rough nu-tau Mu-Spec...
-      Double_t ZGmid=fTub1z-fTub1length-walli-liscilid-wallo-7.4*m;
-      Double_t sz = ZGmid+2.25*m+0.2*m+2.45*m;
-      Double_t dIronOpera= 0.3*m;
-
-      //Add one sensitive plane in middle of Goliath
-      TGeoVolume *Emulsion = gGeoManager->MakeBox("Emulsion", Sens, 0.5*m, 0.5*m, 5.*cm);
-      Emulsion->SetLineColor(kMagenta-10);
-      top->AddNode(Emulsion, 1, new TGeoTranslation(0, 0, ZGmid));
-      AddSensitiveVolume(Emulsion);
-
-      //Add one sensitive plane after nu-tau mu-shield
-      // now taken care by volDriftLayer and volDriftLayer1-5
-      //TGeoVolume *DetMuNuTau = gGeoManager->MakeBox("DetMuNuTau", Se, 2.5*m, 5.*m, 5.*cm);
-      //DetMuNuTau->SetLineColor(kMagenta-10);
-      //top->AddNode(DetMuNuTau, 1, new TGeoTranslation(0, 0, sz+0.91*m+dIronOpera+50.*cm));       
-      //AddSensitiveVolume(DetMuNuTau);
-
+// Concrete around decay tunnel
+      Double_t dZD      =  100*m + fMuonShieldLength;
+      TGeoBBox *box3    = new TGeoBBox("box3", 15*m,12.25*m,dZD/2.);
+      TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
+      TGeoCompositeShape *compRockD = new TGeoCompositeShape("compRockD", "box3-box4");
+      TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
+      rockD->SetLineColor(11);  // grey
+      rockD->SetTransparency(50);
+      top->AddNode(rockD, 1, new TGeoTranslation(0, 0, fzOffset + dZD/2.));
+// only for fastMuon simulation, otherwise output becomes too big    
+      if (fFastMuon){ AddSensitiveVolume(rockD);}
 
       //Add one sensitive plane counting rate in second detector downstream
       // with shielding around, 
