@@ -241,6 +241,7 @@ if checking4overlaps:
  fGeo = ROOT.gGeoManager
  fGeo.SetNmeshPoints(10000)
  fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
+ # fGeo.CheckOverlaps()
  fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
