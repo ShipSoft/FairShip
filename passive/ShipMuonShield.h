@@ -8,6 +8,7 @@
 #include <string>                       // for string
 #include "TGeoUniformMagField.h"
 #include "TGeoMedium.h"
+#include "TGeoShapeAssembly.h"
 #include <vector>
 
 

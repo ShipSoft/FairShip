@@ -313,8 +313,9 @@ void strawtubes::ConstructGeometry()
     gGeoManager->SetTopVisible();
     
     //epsilon to avoid overlapping volumes
-    Double_t eps=0.1;
-    Double_t epsS=0.001;
+    //Double_t eps=0.1;
+    Double_t eps=0.0001;
+    Double_t epsS=0.0001;
     //width of frame
     Double_t framewidth = 40.;
     //width of view

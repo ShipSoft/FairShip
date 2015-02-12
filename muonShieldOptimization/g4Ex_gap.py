@@ -3,7 +3,7 @@ import os
 local = False
 if not os.uname()[1].find('ubuntu')<0: local = True
 
-debug = True
+debug = False
 particleGun = False
 
 withStepping = False
