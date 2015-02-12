@@ -146,7 +146,7 @@ myPythia.ReadString("Random:seed = "+str(R))
 # Initialize proton (400GeV) on proton at rest
 myPythia.Initialize(2212,2212,400.,0.) # required to hack TPythia8 in root !
 # W = 74 protons and 184-74= 110 neutrons
-if tauOnly:  myPythia.plist(431) 
+if tauOnly:  myPythia.Plist(431) 
 
 # if there is no energy cut, there are no particles to apply it to.
 if ecut == 0: qedlist = []
