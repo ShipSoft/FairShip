@@ -43,6 +43,8 @@ Let get started:
     cd $SHIPSOFT
     git clone -b dev https://github.com/ShipSoft/FairSoft.git
     cd FairSoft
+    cat DEPENDENCIES
+    # Make sure all the required dependencies are installed
     # On SLC6 do: export FC=gfortran
     ./configure.sh
     # 1) gcc (on Linux) 5) Clang (on OSX)
@@ -98,18 +100,18 @@ Let get started:
     ```bash
     python $FAIRSHIP/macro/run_simScript.py --display
     >> Macro finished succesfully.
-    >> Output file is  ship.10.0.Pythia8-TGeant4.root
+    >> Output file is  ship.10.0.Pythia8-TGeant4_D.root
 
-    python $FAIRSHIP/macro/ShipReco.py -f ship.10.0.Pythia8-TGeant4.root 
+    python $FAIRSHIP/macro/ShipReco.py -f ship.10.0.Pythia8-TGeant4_D.root 
     >> finishing pyExit
 
-    python $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_rec.root
+    python $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_D_rec.root
     >> finished making plots
     ```
 
-    ```bash
-    run the event display
+    Run the event display:
 
+    ```bash
     python -i $FAIRSHIP/macro/eventDisplay.py
     // Click on "FairEventManager" (in the top-left pane)
     // Click on the "Info" tab (on top of the bottom-left pane)
