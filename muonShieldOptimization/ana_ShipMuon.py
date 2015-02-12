@@ -504,10 +504,15 @@ def AnaEventLoop():
     fout.write( 'Ptruth %i %8.2F \n'%(mcPart.GetPdgCode(),Ptruth/u.GeV) ) 
 #
 def analyzeConcrete():
- ut.bookHist(h,'conc_hitz','concrete hit z',100,-100.,200.)
- ut.bookHist(h,'conc_hity','concrete hit y',100,-10.,10.)
- ut.bookHist(h,'conc_p','concrete hit p',100,0.,300.)
- ut.bookHist(h,'conc_pmu','concrete hit p muons',100,0.,300.)
+ for m in ['','mu']:
+  ut.bookHist(h,'conc_hitz'+m,'concrete hit z '+m,100,-100.,100.)
+  ut.bookHist(h,'conc_hity'+m,'concrete hit y '+m,100,-15.,15.)
+  ut.bookHist(h,'conc_p'+m,'concrete hit p '+m,100,0.,300.)
+  ut.bookHist(h,'conc_pt'+m,'concrete hit pt '+m,100,0.,10.)
+  ut.bookHist(h,'conc_hitzy'+m,'concrete hit zy '+m,100,-100.,100.,100,-15.,15.)
+ top = fGeo.GetTopVolume()
+ magn = top.GetNode("magyoke_1")
+ z0 = magn.GetMatrix().GetTranslation()[2]/u.m
  for fn in fchain:
   f = ROOT.TFile(fn)
   if not f.FindObjectAny('cbmsim'): 
@@ -520,23 +525,29 @@ def analyzeConcrete():
    wg = sTree.MCTrack[0].GetWeight()   
    for ahit in sTree.vetoPoint:
      detID = ahit.GetDetectorID()
-     if logVols[detID] != 'rockD': continue         
-     h['conc_hitz'].Fill(ahit.GetZ()/u.m,wg)
-     h['conc_hity'].Fill(ahit.GetY()/u.m,wg)
+     if logVols[detID] != 'rockD': continue  
+     m=''       
+     if abs(ahit.PdgCode()) == 13: m='mu'
+     h['conc_hitz'+m].Fill(ahit.GetZ()/u.m-z0,wg)
+     h['conc_hity'+m].Fill(ahit.GetY()/u.m,wg)
      P = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)
-     h['conc_p'].Fill(P/u.GeV,wg)
-     if abs(ahit.PdgCode()) == 13: h['conc_pmu'].Fill(P/u.GeV,wg)
- ut.bookCanvas(h,key='ResultsC',title='muons hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
- tc = h['ResultsC'].cd(1)
- h['conc_hity'].Draw()
- tc = h['ResultsC'].cd(2)
- h['conc_hitz'].Draw()
- tc = h['ResultsC'].cd(3)
- tc.SetLogy(1)
- h['conc_p'].Draw()
- tc = h['ResultsC'].cd(4)
- tc.SetLogy(1)
- h['conc_pmu'].Draw()
+     h['conc_p'+m].Fill(P/u.GeV,wg)
+     Pt = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2)
+     h['conc_pt'+m].Fill(Pt/u.GeV,wg)
+     h['conc_hitzy'+m].Fill(ahit.GetZ()/u.m-z0,ahit.GetY()/u.m,wg)
+ ut.bookCanvas(h,key='Resultsmu',title='muons hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
+ ut.bookCanvas(h,key='Results',title='hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
+ for m in ['','mu']:
+  tc = h['Results'+m].cd(1)
+  h['conc_hity'+m].Draw()
+  tc = h['Results'+m].cd(2)
+  h['conc_hitz'+m].Draw()
+  tc = h['Results'+m].cd(3)
+  tc.SetLogy(1)
+  h['conc_pt'+m].Draw()
+  tc = h['Results'+m].cd(4)
+  tc.SetLogy(1)
+  h['conc_p'+m].Draw()
 
 def rareEventEmulsion(fname = 'rareEmulsion.txt'):
  ntot = 0

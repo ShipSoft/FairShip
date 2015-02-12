@@ -3,7 +3,8 @@ import os
 local = False
 if not os.uname()[1].find('ubuntu')<0: local = True
 
-debug = False
+debug = True
+particleGun = False
 
 withStepping = False
 # if debug: withStepping = True
@@ -23,6 +24,8 @@ inclusive = True # write out all particles crossing scoring plane !
 myTimer   = {'total':0,'pythia':0,'geant4_conv':0}
 tauOnly    = False
 JpsiMainly = False
+fullTungsten = False
+
 work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
                  # pythia = geant4 conversion = 0.4/100 
@@ -48,7 +51,7 @@ def get_work_dir(run_number):
 
 
 def init():
-  global runnr, nev, ecut, tauOnly,JpsiMainly, work_dir
+  global runnr, nev, ecut, tauOnly,JpsiMainly,fullTungsten, work_dir
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2014")
 
   ap = argparse.ArgumentParser(
@@ -58,16 +61,19 @@ def init():
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
-  ap.add_argument('-t', '--tau-only', action='store_true', dest='tauOnly',default=False)
-  ap.add_argument('-J', '--Jpsi-mainly', action='store_true', dest='JpsiMainly',default=False)
+  ap.add_argument('-t', '--tau-only',     action='store_true', dest='tauOnly',default=False)
+  ap.add_argument('-J', '--Jpsi-mainly',  action='store_true', dest='JpsiMainly',default=False)
+  ap.add_argument('-W', '--FullTungsten', action='store_true',dest='fullTungsten',default=False)
   ap.add_argument('-o', '--output', type=str, help="output directory", dest='work_dir', default=None)
   args = ap.parse_args()
   if args.debug:
       logger.setLevel(logging.DEBUG)
-  runnr = args.runnr
-  nev = args.nev
-  ecut = args.ecut
-  tauOnly = args.tauOnly
+  runnr        = args.runnr
+  nev          = args.nev
+  ecut         = args.ecut
+  tauOnly      = args.tauOnly
+  JpsiMainly   = args.JpsiMainly
+  fullTungsten = args.fullTungsten
   if args.work_dir is None:
     args.work_dir = get_work_dir(runnr)
   work_dir = args.work_dir
@@ -117,6 +123,7 @@ ROOT.gSystem.Load("libpythia8")
 ROOT.gSystem.Load("libEGPythia8")
 myPythia = ROOT.TPythia8()
 rnr      = ROOT.TRandom()
+myPythia.ReadString("Next:numberCount = 100000")
 myPythia.ReadString("SoftQCD:inelastic = on")
 myPythia.ReadString("PhotonCollision:gmgm2mumu = on")
 myPythia.ReadString("PromptPhoton:all = on")
@@ -173,7 +180,7 @@ world_r   = 200.*m
 if local:
  gVisManager.SetVerboseLevel(2)
  gVisManager.Initialize()
- gApplyUICommand('/vis/open OIX 1200x400-0+0')
+ gApplyUICommand('/vis/open OGLIX 1200x400-0+0')
  gApplyUICommand('/vis/viewer/set/viewpointThetaPhi -90. 90.')
 
 # ------------------------------------------------------------------
@@ -182,9 +189,21 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
  pos    = G4ThreeVector(0*cm, 0*cm,   -world_r/2.)
 
  def GeneratePrimaries(self,anEvent):
-   global debug,nevTot
-   t_0 = time.time()
-   npart = 0
+  global debug,nevTot,particleGun,fullTungsten
+  t_0 = time.time()
+  npart = 0
+  if particleGun:
+# to evaluate interaction position
+   ztarget   = G4ThreeVector(0*cm, 0*cm,  -50.*m)
+   vertex    = G4PrimaryVertex(ztarget,0.)
+   G4particle = G4PrimaryParticle( 2212 )
+   G4particle.Set4Momentum( 0,0,400*GeV,400.0011*GeV )
+# store mother ID
+   w      =  2212 + 0 * 100000
+   G4particle.SetWeight(w)
+   vertex.SetPrimary( G4particle )
+   npart += 1
+  else:
    while npart == 0:
     myPythia.GenerateEvent()   
     nevTot+=1
@@ -195,7 +214,8 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
     # leave this smearing for later
   # create new primaries and set them to the vertex
     particles = myPythia.GetListOfParticles()
-    z = rnr.Exp(10*cm) -50.*m # tungsten interaction length
+    if fullTungsten: z = rnr.Exp(10*cm) -50.*m # tungsten interaction length
+    else: z = rnr.Exp(16*cm) -50.*m # Mo/H20/W average interaction length
     ztarget   = G4ThreeVector(0*cm, 0*cm,   z)
     vertex    = G4PrimaryVertex(ztarget,0.)
     v = TLorentzVector()
@@ -205,7 +225,7 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        if tauOnly and abs(pid) != 16: continue
        mkey   =  p.GetMother(0)+1  
        mother =  myPythia.GetParticle(mkey)
-       if JpsiMainly and abs(pid) != 13 and mother.GetPdgCode() != 443 : continue
+       if JpsiMainly and (abs(pid) != 13 or mother.GetPdgCode() != 443) : continue
        qed = pid in qedlist  # use cut only for photons, leptons/neutrinos, protons and neutrons
        p.Momentum(v)
        Ekin = (v.E()-v.M())
@@ -220,9 +240,9 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        vertex.SetPrimary( G4particle )
        npart += 1
    # if debug: myPythia.EventListing()
-   anEvent.AddPrimaryVertex( vertex )
-   if debug: print 'new event at ',ztarget.z/m
-   myTimer['geant4_conv']+=time.time()-t_0
+  anEvent.AddPrimaryVertex( vertex )
+  if debug and not particleGun: print 'new event at ',ztarget.z/m
+  myTimer['geant4_conv']+=time.time()-t_0
 class MyRunAction(G4UserRunAction):
   "My Run Action"
 
@@ -238,7 +258,7 @@ class MyEventAction(G4UserEventAction):
   "My Event Action"
   def EndOfEventAction(self, event):
     global myEventnr
-    if debug : print 'end of event',myEventnr
+    if debug and not particleGun: print 'end of event',myEventnr
     myEventnr += 1 
     # self.myPrintout(event)
   def StartOfEventAction(self, event):
@@ -276,7 +296,22 @@ class MyTrackingAction(G4UserTrackingAction):
 # ------------------------------------------------------------------
 class MyTrackingActionD(G4UserTrackingAction):
  def PostUserTrackingAction(self,atrack):
-    pass  
+   if particleGun and atrack.GetTrackID() == 1:
+     # record dead of 400GeV proton
+     if atrack.GetTrackStatus() != atrack.GetTrackStatus().fAlive :
+      part         = atrack.GetDynamicParticle()
+      pid          = part.GetPDGcode()
+      vx           = atrack.GetVertexPosition()
+      mom  = atrack.GetMomentum()
+      ekin = atrack.GetKineticEnergy()/GeV
+      pos  = atrack.GetPosition()
+      w = atrack.GetWeight()
+      parentid = int(w)/100000-10000
+      pythiaid = int(w)%100000-10000
+      h['ntuple'].Fill(float(pid), float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
+                   float(pos.x/m),float(pos.y/m),float(pos.z/m),\
+                   float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
+       
  def PreUserTrackingAction(self,atrack):
    global trackHistory
 # need to be careful with energy cut, anti-protons and neutrons can always produce pions and kaons
@@ -293,7 +328,7 @@ class MyTrackingActionD(G4UserTrackingAction):
    if pdg.GetParticle(pid): tid = pdg.GetParticle(pid).GetName()
    mom = atrack.GetMomentum()
    p = ROOT.TMath.Sqrt(mom.x*mom.x+mom.y*mom.y+mom.z*mom.z)
-   if debug: print 'track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV
+   if debug and abs(pid)==13: print 'track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV
    if pid==12:
       if trackHistory.has_key(moid): 
         gmoid = trackHistory[moid][1]
@@ -373,43 +408,91 @@ def ConstructGeom():
   tungsten = G4Material.GetMaterial("G4_W")
   lead     = G4Material.GetMaterial("G4_Pb")
   alum     = G4Material.GetMaterial("G4_Al")
-  target   = G4EzVolume("Target")
-  slit     = G4EzVolume("Slit")
-  slitDZ   =      0.5*cm
-  targetDZ =       5.*cm
+  elementMo  = G4Element("Molybdenum","Mo",42.,   95.94*g/mole)
+  molybdenum = G4Material("molybdenum", 10.22*g/cm3, 1)
+  molybdenum.AddElement(elementMo, 1.00)
+# 
+  if fullTungsten:
+   target   = G4EzVolume("Target")
+   slit     = G4EzVolume("Slit")
+   slitDZ   =      0.5*cm
+   targetDZ =       5.*cm
 # target is sliced, 4 slits of 1cm, 10cm tungsten blocks
-  target.CreateTubeVolume(tungsten, 0., 25.*cm,targetDZ)
-  target.SetColor(G4Color(0.0,0.5,0.5,1.0))
-  target.SetVisibility(True)
+   target.CreateTubeVolume(tungsten, 0., 25.*cm,targetDZ)
+   target.SetColor(G4Color(0.0,0.5,0.5,1.0))
+   target.SetVisibility(True)
 # additional 5 interaction lengths 
   #targetOpt = G4EzVolume("TargetOpt")
   #targetOpt.CreateTubeVolume(tungsten, 0., 25.*cm,     25.*cm)
   #targetOpt.SetColor(G4Color(0.0,0.5,0.5,1.0))
   #targetOpt.SetVisibility(True)
-#
-  slit.CreateTubeVolume(water, 0., 25.*cm, slitDZ) 
-  slit.SetVisibility(False)
-  targetPhys = []
-  slitPhys = []
-  targetL = 0*cm
-  z0Pos   = -50.*m
-  for i in range(4):
+   slit.CreateTubeVolume(water, 0., 25.*cm, slitDZ) 
+   slit.SetVisibility(False)
+   targetPhys = []
+   slitPhys = []
+   targetL = 0*cm
+   z0Pos   = -50.*m
+   for i in range(4):
     targetPhys.append(target.PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL + targetDZ)           ,1,snoopy))
     slitPhys.append(slit.PlaceIt(G4ThreeVector(0.,0.,    z0Pos + targetL + 2*targetDZ + slitDZ),1,snoopy))
     targetL+= 2*(slitDZ+targetDZ)
-  targetPhys.append(target.PlaceIt(G4ThreeVector(0.,0., z0Pos + targetL + targetDZ),1,snoopy))
-  targetL+= 2*(targetDZ)
+   targetPhys.append(target.PlaceIt(G4ThreeVector(0.,0., z0Pos + targetL + targetDZ),1,snoopy))
+   targetL+= 2*(targetDZ)
   # put iron around
-  moreShielding = G4EzVolume("moreShielding")
-  moreShielding.CreateTubeVolume(iron, 30.*cm, 400.*cm,  targetL/2.)
-  moreShieldingPhys = moreShielding.PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL/2.),1,snoopy)
+   moreShielding = G4EzVolume("moreShielding")
+   moreShielding.CreateTubeVolume(iron, 30.*cm, 400.*cm,  targetL/2.)
+   moreShieldingPhys = moreShielding.PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL/2.),1,snoopy)
+#
+  else:  # new design with mixture Molybdaen and Tungsten
+   slitDZ   = 0.5*cm
+   diameter = 30.*cm
+   spaceTopBot = 10.*cm
+   spaceSide   = 5.*cm
+   slit     = G4EzVolume("Slit")
+   slit.CreateBoxVolume(water, diameter,diameter,slitDZ) 
+   slit.SetVisibility(False)
+   targetPhys = []
+   targetVol  = []
+   slitPhys   = []
+   targetL = 0*cm
+   z0Pos   = -50.*m
+   #          material,length  
+   layout = {1:[molybdenum,8.*cm],\
+             2:[molybdenum,2.5*cm],3:[molybdenum,2.5*cm],4:[molybdenum,2.5*cm],5:[molybdenum,2.5*cm],\
+             6:[molybdenum,2.5*cm],7:[molybdenum,2.5*cm],8:[molybdenum,2.5*cm],\
+             9:[molybdenum,5.0*cm],10:[molybdenum,5.0*cm],\
+            11:[molybdenum,6.5*cm],\
+            12:[molybdenum,8.0*cm],13:[molybdenum,8.0*cm],\
+            14:[tungsten,5.*cm],15:[tungsten,8.*cm],16:[tungsten,10.*cm],17:[tungsten,35.*cm] }
+   for i in range(1,18): 
+     targetVol.append(G4EzVolume("Target_Layer_"+str(i)))
+     targetVol[i-1].CreateBoxVolume(layout[i][0], diameter,diameter,layout[i][1])
+     if layout[i][0]==tungsten:     targetVol[i-1].SetColor(G4Color(0.0,0.5,0.5,1.0))
+     else:                          targetVol[i-1].SetColor(G4Color(0.3,0.2,0.5,1.0))
+     targetVol[i-1].SetVisibility(True)
+     targetPhys.append(targetVol[i-1].PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL + layout[i][1]/2.),1,snoopy))
+     if i<17:
+      slitPhys.append(slit.PlaceIt(            G4ThreeVector(0.,0.,z0Pos + targetL + layout[i][1] + slitDZ/2.),1,snoopy))
+      targetL+= slitDZ+layout[i][1]
+     else: targetL+= layout[i][1]
+  # put iron around
+   xTot = 400.*cm
+   yTot = 400.*cm
+   moreShieldingTopBot = G4EzVolume("moreShieldingTopBot")
+   moreShieldingTopBot.CreateBoxVolume(iron, xTot, yTot/2., targetL)
+   moreShieldingTopPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,diameter/2. +spaceTopBot+yTot/4.,z0Pos + targetL/2.),1,snoopy)
+   moreShieldingBotPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,-diameter/2.-spaceTopBot-yTot/4.,z0Pos + targetL/2.),1,snoopy)
+   moreShieldingSide = G4EzVolume("moreShieldingSide")
+   moreShieldingSide.CreateBoxVolume(iron, xTot/2., diameter+1.9*spaceTopBot, targetL)
+   moreShieldingLeftPhys  = moreShieldingSide.PlaceIt(G4ThreeVector(diameter/2. +spaceSide+xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
+   moreShieldingRightPhys = moreShieldingSide.PlaceIt(G4ThreeVector(-diameter/2.-spaceSide-xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
   # = 0.1m3 = 2t
   # a hadron absorber is placed
   absorberL = 2*150.*cm
   absorber = G4EzVolume("Absorber")
   #                             inner radius outer radius length    
   absorber.CreateTubeVolume(iron, 0.,         400.*cm,     absorberL/2.)
-  absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,z0Pos+targetL+absorberL/2.),1,snoopy)
+  absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,z0Pos+targetL+absorberL/2.+5.*cm),1,snoopy)
   absorber.SetColor(G4Color(0.898,0.902,0.91,1.0))
   absorber.SetVisibility(True)
   xx = G4VisAttributes()
@@ -417,10 +500,10 @@ def ConstructGeom():
   absorberlog = absorberPhys.GetLogicalVolume()
   absorberlog.SetVisAttributes(xx)
 # scoring plane
-  afterHadronZ = z0Pos+targetL+absorberL+1*mm  
+  afterHadronZ = z0Pos+targetL+absorberL+5.1*cm  
   scorez = afterHadronZ
   score  = G4EzVolume("Score")
-  score.CreateTubeVolume(vac, 0.,          50.*m,     1.*mm)
+  score.CreateTubeVolume(vac, 0.,          20.*m,     1.*mm)
   scorePhys = score.PlaceIt(G4ThreeVector(0.,0.,scorez),1,snoopy)
   scoreLog = scorePhys.GetLogicalVolume()
   g4py.ezgeom.Construct()
@@ -458,11 +541,10 @@ gRunManager.Initialize()
 sens = ScoreSD('Score')
 scoreLog.SetSensitiveDetector(sens)  
 
-if local:
+if local and not particleGun:
  gApplyUICommand('/vis/drawVolume')
  gApplyUICommand('/vis/scene/add/trajectories')
  gApplyUICommand('/vis/viewer/zoom 1.5')
-
 
 t0 = time.time()
 gRunManager.BeamOn(nev)
@@ -472,3 +554,15 @@ for x in myTimer:
   print x,myTimer[x]
 
 logger.info("output directory: %s" % work_dir)
+
+if local:
+ wrld = snoopyPhys.GetMotherLogical()
+ parser = G4GDMLParser()
+ os.system('rm g4Geom.gdml')
+ parser.Write('g4Geom.gdml',wrld)
+ geomgr = ROOT.gGeoManager
+ geomgr.Import('g4Geom.gdml','world','new')
+ ROOT.gGeoManager.CheckOverlaps()
+ ROOT.gGeoManager.PrintOverlaps()
+ geomgr.GetTopVolume().Draw('ogl')
+
