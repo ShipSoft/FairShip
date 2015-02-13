@@ -88,7 +88,8 @@ def configure(run,ship_geo):
  run.AddModule(Veto)
 
  if ship_geo.muShieldDesign==5 or ship_geo.muShieldDesign==1:
-  taumagneticspectrometer = ROOT.MagneticSpectrometer("MagneticSpectrometer", ship_geo.tauMS.zMSC, ship_geo.tauMS.zSize, ship_geo.tauMS.FeSlab, ship_geo.tauMS.RpcW,ship_geo.tauMS.ArmW, ship_geo.tauMS.GapV, ship_geo.tauMS.MGap, ship_geo.tauMS.Mfield, ship_geo.tauMS.HPTW, ship_geo.tauMS.RetYokeH, ROOT.kTRUE)
+  taumagneticspectrometer = ROOT.MagneticSpectrometer("MagneticSpectrometer", ship_geo.tauMS.zMSC, ship_geo.tauMS.zSize, ship_geo.tauMS.FeSlab, \
+  ship_geo.tauMS.RpcW,ship_geo.tauMS.ArmW, ship_geo.tauMS.GapV, ship_geo.tauMS.MGap, ship_geo.tauMS.Mfield, ship_geo.tauMS.HPTW, ship_geo.tauMS.RetYokeH, ROOT.kTRUE)
   taumagneticspectrometer.SetCoilParameters(ship_geo.tauMS.CoilH, ship_geo.tauMS.CoilW, ship_geo.tauMS.N, ship_geo.tauMS.CoilG);
   run.AddModule(taumagneticspectrometer)
   
@@ -150,8 +151,8 @@ def configure(run,ship_geo):
  #fMagField.SetField(0., ship_geo.Bfield.max ,0. )  
  #fMagField.SetFieldRegion(-250*u.cm, 250*u.cm,-250*u.cm, 250*u.cm, ship_geo.Bfield.z-100*u.cm, ship_geo.Bfield.z+100*u.cm)    
  #run.SetField(fMagField)
- if ship_geo.strawDesign == 4: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2 )  
- else :                        fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1 )  
+ if ship_geo.strawDesign == 4: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
+ else :                        fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
  run.SetField(fMagField)
 
 # return list of detector elements

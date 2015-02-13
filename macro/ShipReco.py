@@ -1,5 +1,6 @@
 # setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
 inputFile = 'ship.Pythia8-TGeant4.root'
+geoFile   = None
 debug = False
 withNoAmbiguities = None # True   for debugging purposes
 nEvents   = 99999
@@ -11,7 +12,7 @@ import ROOT,os,sys,getopt
 from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A:Y:i",["inputFile=","nEvents=","ambiguities","noVertexing"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i",["inputFile=","geoFile=","nEvents=","ambiguities","noVertexing"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --nEvents= number of events to process, ambiguities wire ambiguities default none' 
@@ -24,6 +25,8 @@ for o, a in opts:
             withNoAmbiguities = True
         if o in ("-f", "--inputFile"):
             inputFile = a
+        if o in ("-g", "--geoFile"):
+            geoFile = a
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
         if o in ("-Y"): 
@@ -222,6 +225,7 @@ class ShipReco:
 # make track persistent
    nTrack   = SHiP.fGenFitArray.GetEntries()
    theTrack = ROOT.genfit.Track(fitTrack[atrack])
+   if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
    self.fGenFitArray[nTrack] = theTrack
    self.fitTrack2MC.push_back(atrack)
    if debug: 
@@ -237,7 +241,7 @@ class ShipReco:
   for tr in range(fittedTracks.GetEntries()):
    fitStatus = fittedTracks[tr].getFitStatus()
    if not fitStatus.isFitConverged(): continue
-   nmeas = fittedTracks[tr].getNumPoints()
+   nmeas = fitStatus.getNdf()
    chi2  = fitStatus.getChi2()/nmeas
    if chi2<50 and not chi2<0: 
       xx  = fittedTracks[tr].getFittedState()
@@ -333,10 +337,11 @@ geoMat =  ROOT.genfit.TGeoMaterialInterface()
 PDG = ROOT.TDatabasePDG.Instance()
 # init geometry and mag. field
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-geofile = inputFile.replace('ship.','geofile_full.')
-tgeom.Import(geofile)
+if not geoFile:
+ geoFile = inputFile.replace('ship.','geofile_full.')
+tgeom.Import(geoFile)
 #
-bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2)
+bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
  

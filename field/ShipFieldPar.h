@@ -54,7 +54,7 @@ class ShipFieldPar : public FairParGenericSet
   Double_t GetScale()     const { return fScale; }
   Double_t GetPeak()      const { return fPeak; }
   Double_t GetMiddle()    const { return fMiddle; }
-    
+  Double_t GetBtube()     const { return fBtube; }
 
 
  private:
@@ -93,6 +93,7 @@ class ShipFieldPar : public FairParGenericSet
   /** field parameters**/
   Double_t fPeak;
   Double_t fMiddle;
+  Double_t fBtube;
 
  
   ShipFieldPar(const ShipFieldPar&);

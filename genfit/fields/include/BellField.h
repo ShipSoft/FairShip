@@ -39,7 +39,7 @@ class BellField : public AbsBField {
   BellField();
 
   /** Standard constructor **/
-  BellField(double Peak, double Middle,int orientation);
+  BellField(double Peak, double Middle,int orientation, double Btube);
 
 
   //! return value at position
@@ -50,6 +50,8 @@ class BellField : public AbsBField {
   double fMiddle;
   double fPeak;
   int fOrient;
+  double fBtube;
+
 };
 
 } /* End of namespace genfit */

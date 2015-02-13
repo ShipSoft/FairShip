@@ -148,7 +148,7 @@ if simEngine == "Genie":
  primGen.SetTarget(pointZero, 0.)
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(ship_geo.target.z0)
+ Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC+ship_geo.tauMS.zSize/4., ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
@@ -227,10 +227,7 @@ if inactivateMuonProcesses :
  import G4processes
  gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess('muIoni','mu+')
- procmu.SetVerboseLevel(2) 
-if simEngine == "Genie": 
- import configGenieGenerator
- configGenieGenerator.config(Geniegen)
+ procmu.SetVerboseLevel(2)
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # -----Runtime database---------------------------------------------

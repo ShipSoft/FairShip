@@ -18,8 +18,14 @@
 */
 #include "BellField.h"
 #include "math.h"
+#include <iostream>
+using std::cout;
+using std::endl;
 Double_t kilogauss = 1.;
 Double_t tesla     = 10*kilogauss;
+Double_t cm  = 1;       // cm
+Double_t m   = 100*cm;  //  m
+Double_t mm  = 0.1*cm;  //  mm
 
 // implementation of Bellshape field for Ship
 namespace genfit {
@@ -28,9 +34,9 @@ namespace genfit {
     : AbsBField(),
       fMiddle(0),fPeak(0)
   { ; }
-  BellField::BellField(double Peak, double Middle,int orientation)
+  BellField::BellField(double Peak, double Middle,int orientation, double Btube )
     : AbsBField(),
-      fMiddle(Middle),fPeak(Peak),fOrient(orientation)
+      fMiddle(Middle),fPeak(Peak),fOrient(orientation),fBtube(Btube)
   { ; }
 
 TVector3 BellField::get(const TVector3& pos) const {
@@ -44,19 +50,20 @@ void BellField::get(const double& x, const double& y, const double& z, double& B
   Bz = 0.;
   By = 0.;
   Bx = 0.;
-  if (fOrient==1){
-  By = fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
-  }
+  if (fOrient==1){ By = fPeak/(1.+pow(fabs(zlocal)/2.1,6.));}
   if (fOrient==2){
    //new field based on simulation of Davide Tommasini (22/1/2015)
-    Bx = 0;
-    if (zlocal<3.8) {
-      Bx=0.14361*exp( -0.5 * pow((zlocal-0.45479E-01)/2.5046,2.));
-    }else if (zlocal<11.9) {
-      Bx=0.19532-0.61512E-01*zlocal+0.68447E-02*pow(zlocal,2.)-0.25672E-03*pow(zlocal,3.);
+
+    //field in box 20 cm larger than inner tube.
+    if ( (fabs(x)<2.7*m) && (fabs(y)<fBtube+0.2*m) )  {
+      if (zlocal<3.8) {
+        Bx=0.14361*exp( -0.5 * pow((zlocal-0.45479E-01)/2.5046,2.));
+      }else if (zlocal<11.9) {
+        Bx=0.19532-0.61512E-01*zlocal+0.68447E-02*pow(zlocal,2.)-0.25672E-03*pow(zlocal,3.);
+      }
+      Bx=((fPeak/tesla)/0.14361)*Bx*tesla;
     }
-    Bx=(fPeak/tesla/0.14361*Bx)*tesla;
+  // cout << "genfit Bell " << x << ", " << y << ", " << z << ", Bx= " << Bx << endl;
   }
 }
-
 } /* End of namespace genfit */

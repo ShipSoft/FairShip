@@ -6,11 +6,12 @@ from ShipGeoConfig import ConfigRegistry
 
 PDG = ROOT.TDatabasePDG.Instance()
 inputFile = None
-dy = None
+geoFile   = None
+dy        = None
 nEvents   = 99999
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:f:A:Y:i", ["nEvents="])
+        opts, args = getopt.getopt(sys.argv[1:], "n:f:g:A:Y:i", ["nEvents=","geoFile="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter file name'
@@ -18,6 +19,8 @@ except getopt.GetoptError:
 for o, a in opts:
         if o in ("-f"):
             inputFile = a
+        if o in ("-g", "--geoFile"):
+            geoFile = a
         if o in ("-Y"): 
             dy = float(a)
         if o in ("-n", "--nEvents="):
@@ -44,12 +47,13 @@ run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run,ShipGeo)
 
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-geofile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
-gMan  = tgeom.Import(geofile)
+if not geoFile:
+ geoFile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
+gMan  = tgeom.Import(geoFile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
-bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max, ShipGeo.Bfield.z,2)
+bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.)
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 
@@ -178,7 +182,7 @@ def myEventLoop(N):
   for atrack in sTree.FitTracks:
    key+=1
    fitStatus   = atrack.getFitStatus()
-   nmeas = atrack.getNumPoints()
+   nmeas = fitStatus.getNdf()
    h['meas'].Fill(nmeas)
    if not fitStatus.isFitConverged() : continue
    fittedTracks[key] = atrack

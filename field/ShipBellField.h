@@ -35,10 +35,11 @@ class ShipBellField : public FairField
 
   /** Standard constructor 
    ** @param name   Object name
-   ** @param Bpeak        x region of field (global coordinates)
-   ** @param Zmiddle      y region of field (global coordinates)
+   ** @param Bpeak       peak field..
+   ** @param Zmiddle     middle of the magnet (global coordinates)
+   ** @param Btube      largest radius of the tube ellips (inside)
    **/
-  ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle,Int_t fOrient=1);
+  ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle,Int_t fOrient=1, Double_t Btube=500. );
 
 
   /** Constructor from ShipFieldPar **/
@@ -67,6 +68,7 @@ class ShipBellField : public FairField
   /** Field parameters **/
   Double_t fPeak;
   Double_t fMiddle;
+  Double_t fBtube;
   Int_t fOrient;
   
   ClassDef(ShipBellField, 1);
