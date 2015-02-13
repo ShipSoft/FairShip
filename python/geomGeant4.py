@@ -29,15 +29,22 @@ def setMagnetField(flag=None):
     gt = gTransportationManager
     gn = gt.GetNavigatorForTracking()
     world = gn.GetWorldVolume().GetLogicalVolume()
+    setField = {}
     for da in range(world.GetNoDaughters()):
-        vl = world.GetDaughter(da)
-        vln = vl.GetName().__str__()
-        lvl = vl.GetLogicalVolume()
-        if listOfFields.has_key(vln) :
-          lvl.SetFieldManager(listOfFields[vln],True)  
-          if flag=='dump': 
-              constField = listOfFields[vln].GetDetectorField().GetConstantFieldValue()
-              print 'set field for ',vln, constField
+        vl0  = world.GetDaughter(da)
+        vln  = vl0.GetName().__str__()
+        lvl0 = vl0.GetLogicalVolume()
+        if listOfFields.has_key(vln) :  setField[lvl0]=vln
+        for dda in range(lvl0.GetNoDaughters()): 
+         vl  = lvl0.GetDaughter(dda)
+         vln = vl.GetName().__str__()
+         lvl = vl.GetLogicalVolume()
+         if listOfFields.has_key(vln) :  setField[lvl]=vln
+    for lvl in setField:
+       lvl.SetFieldManager(listOfFields[setField[lvl]],True)  
+       if flag=='dump': 
+            constField = listOfFields[setField[lvl]].GetDetectorField().GetConstantFieldValue()
+            print 'set field for ',setField[lvl], constField
     g4Run = G4RunManager.GetRunManager()
     g4Run.GeometryHasBeenModified(True)
 
