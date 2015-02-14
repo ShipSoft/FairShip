@@ -1,5 +1,5 @@
-#!/bin/bash -x
-BASEDIR=$(echo $(cd $(dirname "$0")/.. && pwd -P))
+#!/bin/bash
+BASEDIR=$(echo $(cd $(dirname "$BASH_SOURCE")/.. && pwd -P))
 IMAGE="anaderi/ocean:latest"
 source $BASEDIR/vm/_functions.sh
 
