@@ -99,6 +99,17 @@ def switchOn(tag):
      v.SetVisDaughters(1)
  evmgr.ElementChanged(geoscene,True,True)
 
+def switchOffVacuumPlanes():
+ evmgr = ROOT.gEve
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ fGeo = g.FindObjectAny("FAIRGeom")
+ for v in fGeo.GetListOfVolumes():
+   vname = v.GetName()
+   if not vname.find("volPlane")<0:
+     v.SetVisibility(0)
+ evmgr.ElementChanged(geoscene,True,True)
+
 # switch of drawing of rock
 def switchOfRock():
  evmgr = ROOT.gEve

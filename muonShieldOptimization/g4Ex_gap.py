@@ -222,10 +222,15 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
     for p in particles:
        if p.GetStatusCode()!=1 : continue
        pid = p.GetPdgCode()
-       if tauOnly and abs(pid) != 16: continue
        mkey   =  p.GetMother(0)+1  
        mother =  myPythia.GetParticle(mkey)
-       if JpsiMainly and (abs(pid) != 13 or mother.GetPdgCode() != 443) : continue
+       if JpsiMainly and abs(pid) != 13  : continue
+       if tauOnly    and abs(pid) != 16 : continue
+       if JpsiMainly and mother.GetPdgCode() != 443 : continue
+       if tauOnly  : 
+         mmkey   =  mother.GetMother(0)+1  
+         mmother =  myPythia.GetParticle(mmkey)
+         if abs(mother.GetPdgCode()) != 431 and abs(mmother.GetPdgCode()) != 431 : continue
        qed = pid in qedlist  # use cut only for photons, leptons/neutrinos, protons and neutrons
        p.Momentum(v)
        Ekin = (v.E()-v.M())

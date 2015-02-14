@@ -535,6 +535,11 @@ def analyzeConcrete():
      Pt = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2)
      h['conc_pt'+m].Fill(Pt/u.GeV,wg)
      h['conc_hitzy'+m].Fill(ahit.GetZ()/u.m-z0,ahit.GetY()/u.m,wg)
+ #
+     start = [ahit.GetX()/u.m,ahit.GetY()/u.m,ahit.GetZ()/u.m]
+     direc = [-ahit.GetPx()/P,-ahit.GetPy()/P,-ahit.GetPz()/P]
+     t = - start[0]/direc[0]
+     
  ut.bookCanvas(h,key='Resultsmu',title='muons hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
  ut.bookCanvas(h,key='Results',title='hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
  for m in ['','mu']:

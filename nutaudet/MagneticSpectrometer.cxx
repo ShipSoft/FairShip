@@ -306,11 +306,11 @@ void MagneticSpectrometer::ConstructGeometry()
     //********
     //Sensitive Volume for Barbara studies placed in top volume. It is at 1 cm from HPT number 6
     //
-    TGeoBBox *Plane = new TGeoBBox("Plane", XtrSize/2, 11*m/2, 0.1*cm/2);
-    TGeoVolume *volPlane = new TGeoVolume("volPlane",Plane,vacuum);
-    volPlane->SetLineColor(kRed-5);
-    AddSensitiveVolume(volPlane);
-    top->AddNode(volPlane, 1, new TGeoTranslation(0,0,zMSCenter + zSizeMS/2+ 1*cm + 0.1*cm/2));
+    //TGeoBBox *Plane = new TGeoBBox("Plane", XtrSize/2, 11*m/2, 0.1*cm/2);
+    //TGeoVolume *volPlane = new TGeoVolume("volPlane",Plane,vacuum);
+    //volPlane->SetLineColor(kRed-5);
+    //AddSensitiveVolume(volPlane);
+    //top->AddNode(volPlane, 1, new TGeoTranslation(0,0,zMSCenter + zSizeMS/2+ 1*cm + 0.1*cm/2));
     
     //10 cm of Concrete on which the whole Magnetic Spectrometer volume will be placed
     TGeoBBox *Base = new TGeoBBox("Base", XtrSize/2, 10*cm/2, ArmWidth+MiddleGap/2);
