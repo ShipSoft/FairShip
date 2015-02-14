@@ -1,24 +1,11 @@
 #!/bin/bash
-IMAGE=anaderi/ocean:latest
-PATH_TO_VM_FOLDER=`dirname "$0"`
+IMAGE="anaderi/ocean:latest"
 DNS_OPTS=
-sys_dclient=`which docker 2>&1` 
-if [ $? -eq 0 ] ; then 
-  dclient=$sys_dclient
-else
-  dclient=`dirname $0`/docker
-fi
+CMD="bash"
+VM_DIR=`dirname "$0"`
+source $VM_DIR/_functions.sh
 
-if [ -z "$DOCKER_HOST" ] ; then
-  export DOCKER_HOST=tcp://:2375
-fi
-
-halt() {
-  echo $*
-  exit 1
-}
-
-[ -z "$dclient" ] && echo "no docker client found" && exit 1
+check_docker_connect
 
 if [ "$1" = "-d" ] ; then
   DNS=`cat /etc/resolv.conf | grep nameserver|head -1 | awk '{print $2}'`
@@ -27,7 +14,6 @@ if [ "$1" = "-d" ] ; then
 fi
 
 LOCAL_SHIP=/vagrant
-[ ! -d $LOCAL_SHIP ] && LOCAL_SHIP=`cd "${PATH_TO_VM_FOLDER}/.." && pwd -P`
-
-$dclient ps > /dev/null 2>&1 || halt "cannot connect to docker. is it running?"
-$dclient run -ti -v $LOCAL_SHIP:/opt/ship/FairShip -p 5900:5900 $DNS_OPTS -w /opt/ship/FairShip --rm $IMAGE "$*"
+[ ! -d $LOCAL_SHIP ] && LOCAL_SHIP=`cd "${VM_DIR}/.." && pwd -P`
+[ -n "$*" ] && CMD="$*"
+$DOCKER run -ti -v $LOCAL_SHIP:/opt/ship/FairShip -p 5900:5900 $DNS_OPTS -w /opt/ship/FairShip --rm $IMAGE "$CMD"
