@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import unittest
 import shipunit as u
+import os
 from ShipGeoConfig import AttrDict, ConfigRegistry
 
 
@@ -49,7 +50,7 @@ class TestInheritance(unittest.TestCase):
 
     def test_latest(self):
         c = ConfigRegistry.get_latest_config()
-        self.assertIsNotNone(c)
+        self.assertTrue(c is not None)
         self.assertEqual(c.height, 30)
 
     def tearDown(self):
@@ -87,7 +88,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.dZ5 = 2.5*u.m
     c.muShield.dZ6 = 2.5*u.m
     c.muShield.LE  = 5*u.m
-        """
+"""
         ConfigRegistry.loadpys(config)
 
     def test_len(self):
@@ -135,11 +136,11 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ5 = 2.5*u.m
         c.muShield.dZ6 = 2.5*u.m
         c.muShield.LE  = 5*u.m
-        """
+"""
 
     def test_true(self):
         c = ConfigRegistry.loadpys(self.config, MU_SHIELD_ENABLED=True)
-        self.assertIn("muShield", c)
+        self.assertTrue("muShield" in c)
         assert len(ConfigRegistry.keys()) == 1, ConfigRegistry.keys()
         assert self.key in ConfigRegistry.keys()
         assert ConfigRegistry[self.key].Bfield.max  == 1.5*u.kilogauss
@@ -150,11 +151,35 @@ with ConfigRegistry.register_config("basic") as c:
         assert len(ConfigRegistry.keys()) == 1, ConfigRegistry.keys()
         assert self.key in ConfigRegistry.keys()
         assert ConfigRegistry[self.key].Bfield.max  == 1.5*u.kilogauss
-        self.assertNotIn("muShield", ConfigRegistry[self.key])
+        self.assertTrue("muShield" not in ConfigRegistry[self.key])
 
     def tearDown(self):
         ConfigRegistry.clean()
 
+
+class TestStringNewLine(unittest.TestCase):
+    def setUp(self):
+        self.key = "basic"
+        self.config = """import shipunit as u\r\nfrom ShipGeoConfig import AttrDict, ConfigRegistry\r\nwith ConfigRegistry.register_config("basic") as c:\r
+    c.vetoStation = AttrDict(z=-2390.*u.cm)\r\n"""
+        self.filename = "x.py"
+        fh = open(self.filename, "w")
+        fh.write(self.config)
+        fh.close()
+
+    def test_true(self):
+        c = ConfigRegistry.loadpys(self.config)
+        self.assertTrue("vetoStation" in c)
+        assert ConfigRegistry[self.key].vetoStation.z == -2390*u.cm
+
+    def test_readDOS(self):
+        c = ConfigRegistry.loadpy(self.filename, Yheight = 1)
+        self.assertTrue("vetoStation" in c)
+        assert ConfigRegistry[self.key].vetoStation.z == -2390*u.cm
+
+    def tearDown(self):
+        ConfigRegistry.clean()
+        os.remove(self.filename)
 
 if __name__ == '__main__':
     unittest.main()

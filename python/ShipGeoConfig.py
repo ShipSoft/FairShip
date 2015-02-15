@@ -49,7 +49,8 @@ class ConfigRegistry(dict):
 
     @staticmethod
     def loadpys(config_string, **kwargs):
-        exec(config_string, kwargs)
+        string_unixlf = config_string.replace('\r', '')
+        exec(string_unixlf, kwargs)
         return ConfigRegistry.get_latest_config()
 
     @staticmethod
