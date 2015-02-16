@@ -22,6 +22,7 @@ with ConfigRegistry.register_config("basic") as c:
     # decision by the SP 
     totalLength       = 2.5*c.Yheight + 35*u.m
     extraVesselLength = totalLength - 50*u.m
+    windowBulge = 1*u.m
     c.strawDesign = strawDesign
     c.chambers = AttrDict(z=0*u.cm)
     if strawDesign != 4:
@@ -35,7 +36,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Tub3length = 0.8*u.m
      c.chambers.Tub4length = 2.*u.m+magnetIncrease/2.
      c.chambers.Tub5length = 0.8*u.m
-     c.chambers.Tub6length = 0.1*u.m
+     c.chambers.Tub6length = 0.1*u.m+windowBulge/2.
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
@@ -44,7 +45,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber3 = AttrDict(z=16.98*u.m+extraVesselLength)
      c.Chamber4 = AttrDict(z=20.18*u.m+magnetIncrease/2.+extraVesselLength)
      c.Chamber5 = AttrDict(z=23.38*u.m+magnetIncrease+extraVesselLength)
-     c.Chamber6 = AttrDict(z=24.68*u.m+magnetIncrease+extraVesselLength)
+     c.Chamber6 = AttrDict(z=24.68*u.m+magnetIncrease+extraVesselLength+windowBulge/2.)
      # 
      c.vetoStation = AttrDict(z=-1968.*u.cm)
      c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)
@@ -76,7 +77,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
 
-    c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m)
+    c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m+ windowBulge )
     c.HcalOption  =  HcalOption
     hcalSpace = 0
     hcalThickness = 232*u.cm
@@ -87,7 +88,7 @@ with ConfigRegistry.register_config("basic") as c:
           c.hcal    =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm  )
           hcalSpace = hcalThickness + 5.5*u.cm 
           c.hcal.hcalSpace = hcalSpace
-    c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace)
+    c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace+windowBulge)
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
     c.MuonStation3 = AttrDict(z=c.MuonStation0.z+3*u.m)
