@@ -329,9 +329,10 @@ caloTasks.append(ecalClusterCalib)
 # Cluster finder
 ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
 caloTasks.append(ecalClusterFind)
-# ecal drawer
+# ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
 # ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
-# run.AddTask(ecalDrawer)
+# ROOT.gSystem.Load("libASImage");
+# caloTasks.append(ecalDrawer)
 
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 PDG = ROOT.TDatabasePDG.Instance()
@@ -364,8 +365,7 @@ ecalPrepare.InitPython(ecalStructure)
 ecalMaximums=ecalMaximumFind.InitPython(ecalStructure)
 ecalCalib=ecalClusterCalib.InitPython()
 ecalClusters=ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
-
-#for x in caloTasks: x.Init()
+SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
 # main loop
 for iEvent in range(0, SHiP.nEvents):
  ntracks = SHiP.execute(iEvent)
@@ -379,6 +379,7 @@ for iEvent in range(0, SHiP.nEvents):
  SHiP.mcLink.Fill()
  SHiP.SHbranch.Fill()
  for x in caloTasks: x.Exec('start')
+ SHiP.EcalClusters.Fill()
 
  if debug: print 'end of event after Fill'
  

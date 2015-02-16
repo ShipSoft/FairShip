@@ -72,7 +72,7 @@ ecalCluster::ecalCluster(Int_t num, const std::list<ecalCell*>& cluster, const s
     e=(*p)->GetEnergy();
     x=(*p)->GetCenterX();
     y=(*p)->GetCenterY();
-    fX+=x*e; fY*=y*e;
+    fX+=x*e; fY+=y*e;
     fEnergy+=e;
     fType+=(*p)->GetType();
   }

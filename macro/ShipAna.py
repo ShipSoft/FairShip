@@ -74,6 +74,7 @@ ut.bookHist(h,'distu','distance to wire',100,0.,1.)
 ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
+ut.bookHist(h,'ecalClusters','x/y and energy',50,-3.,3.,50,-6.,6.)
 
 def myVertex(t1,t2,PosDir):
  # closest distance between two tracks
@@ -116,6 +117,9 @@ def fitSingleGauss(x,ba=None,be=None):
 
 
 def makePlots():
+   ut.bookCanvas(h,key='ecalanalysis',title='cluster map',nx=800,ny=600,cx=1,cy=1)
+   cv = h['ecalanalysis'].cd(1)
+   h['ecalClusters'].Draw('colz')
    ut.bookCanvas(h,key='strawanalysis',title='Distance to wire and mean nr of hits',nx=1200,ny=600,cx=2,cy=1)
    cv = h['strawanalysis'].cd(1)
    h['disty'].Draw()
@@ -160,6 +164,9 @@ def myEventLoop(N):
   rc = sTree.GetEntry(n)
   wg = sTree.MCTrack[0].GetWeight()
   if not wg>0.: wg=1.
+# make some ecal cluster analysis
+  for aClus in sTree.EcalClusters:
+     h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
 # make some straw hit analysis
   hitlist = {}
   for ahit in sTree.strawtubesPoint:

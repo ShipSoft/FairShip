@@ -534,6 +534,35 @@ InitStatus ecalDrawer::Init()
   return kSUCCESS;
 }
 
+Int_t ecalDrawer::InitPython(TClonesArray* mctracks, TClonesArray* ecalPoints, ecalStructure* structure, TClonesArray* clusters)
+{
+  fMCTracks=mctracks;
+  if (fMCTracks==NULL) return -1111;
+  fPoints=ecalPoints;
+  if (fPoints==NULL) return -1111;
+  fStr=structure;
+  if (fStr==NULL) return -1111;
+  fClusters=clusters;
+  if (fClusters==NULL) return -1111;
+
+  fInf=fStr->GetEcalInf();
+  fCX=fInf->GetXSize(); fCY=fInf->GetYSize();
+  fCX*=fCellSize*4+4; fCX+=1;
+  fCY*=fCellSize*4+4; fCY+=1;
+  fC=new TASImage(fCX, fCY);
+
+  list<ecalCell*> cells;
+  list<ecalCell*>::const_iterator p;
+  fStr->GetCells(cells);
+  for(p=cells.begin();p!=cells.end();++p)
+    fCells.push_back(new ecalDrawerItem((*p), 0.0, 0.0, 0.0));
+  fTxt->SetTextFont(43);
+  fTxt->SetTextSizePixels(8);
+  fTxt->SetTextAlign(21);
+
+  return 0;
+}
+
 void ecalDrawer::Finish()
 {
   ;

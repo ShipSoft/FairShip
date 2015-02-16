@@ -42,6 +42,7 @@ public:
   inline void SetNamePrefix(const char* prefix) {fNamePrefix=prefix;}
   inline void SetCellSize(Int_t size) {fCellSize=size;}
 
+  Int_t InitPython(TClonesArray* mctracks, TClonesArray* ecalPoints, ecalStructure* structure, TClonesArray* clusters);
   /** Init **/
   virtual InitStatus Init();
   virtual void Exec(Option_t* option);
