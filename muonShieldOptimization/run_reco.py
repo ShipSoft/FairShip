@@ -56,13 +56,17 @@ def execute( ncpu = 4 ):
           break
   return cpus,log
 
-def executeSimple(prefixes,reset=False):
+def getJobs(prefixes):
  for prefix in prefixes:
   jobs = []
   for x in os.listdir('.'):
     if not x.find(prefix)<0: 
        if os.path.isdir(x) : 
          jobs.append(x)
+ return jobs 
+def executeSimple(prefixes,reset=False):
+ for prefix in prefixes:
+  jobs = getJobs(prefixes)
   for x in jobs:
       print "change to directory ",x   
       os.chdir('./'+x) 
@@ -141,21 +145,36 @@ def mergeHistosMakePlots(p):
    h['strawanalysis'].Print('strawanalysis.gif')
    print 'finished making plots'
 
-# cpus,log = execute()
-if not len(os.sys.argv)>1: 
-  if not os.path.abspath('.').find('neutrino')<0:
-    executeSimple(['neutrino66'])
-  else:  
-    fullList = [] # ['muon59','muon60','muon61','muon62']
-    for x in range(9,10): 
-     fullList.append('muon61'+str(x))
-     fullList.append('muon62'+str(x))
-    executeSimple(fullList,reset=True)
-else : 
- pl=[]
- for p in os.sys.argv[1].split(','):
+def mergeNtuples(prefixes):
+  jobs = getJobs(prefixes)
+  haddCommand = ''
+  for x in jobs:
+      for f in os.listdir(x):
+        if  not f.find("geofile_full")<0:
+          inputfile = (f.replace("geofile_full","ship")).replace('.root','_rec.root')
+          haddCommand+= ' '+ x + '/' + inputfile    
+          break
+  cmd = 'hadd -f '+inputfile.replace('.root','_'+prefix+'.root') + haddCommand  
+  os.system(cmd)
+def execute():
+ executeSimple(pl,reset=True)
+ mergeHistosMakePlots(pl)
+ mergeNtuples(pl)
+def removeIntermediateFiles(prefixes):
+  for x in jobs:
+      for f in os.listdir(x):
+        if  not f.find("geofile_full")<0:
+          inputfile = (f.replace("geofile_full","ship")).replace('.root','_rec.root')
+          os.system('rm '+x+'/' + inputfile  
+
+pl=[]
+for p in os.sys.argv[1].split(','):
    pref = 'muon'
    if not os.path.abspath('.').find('neutrino')<0: pref='neutrino'
    pl.append(pref+p) 
- mergeHistosMakePlots(pl)
+
+print " execute()  input comma separated production nr "
+print " executeSimple(pl,reset=True) "
+print " mergeNtuples(pl) "
+print " removeIntermediateFiles(pl) only _rec "
 #61,611,612,613,614,615,616,62,621,622,623,624,625,626
