@@ -21,6 +21,7 @@
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
+#include "TGeoShapeAssembly.h"
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
@@ -203,6 +204,8 @@ void muon::ConstructGeometry()
       implement here you own way of constructing the geometry. */
     
     TGeoVolume *top=gGeoManager->GetTopVolume();
+    TGeoVolume *tMuon = new TGeoVolumeAssembly("MuonDetector");
+
     InitMedium("iron");
     InitMedium("Scintillator");
     
@@ -235,28 +238,18 @@ void muon::ConstructGeometry()
     muonfilter0->SetLineColor(kBlue);
     muonfilter1->SetLineColor(kBlue);
     muonfilter2->SetLineColor(kBlue);
-
-    top->AddNode(muondet0, 1, new TGeoTranslation(0, 0, fM0z));
-    top->AddNode(muonfilter0, 1, new TGeoTranslation(0, 0, fF0z));
-    top->AddNode(muondet1, 1, new TGeoTranslation(0, 0, fM1z));
-    top->AddNode(muonfilter1, 1, new TGeoTranslation(0, 0, fF1z));
-    top->AddNode(muondet2, 1, new TGeoTranslation(0, 0, fM2z));
-    top->AddNode(muonfilter2, 1, new TGeoTranslation(0, 0, fF2z));
-    top->AddNode(muondet3, 1, new TGeoTranslation(0, 0, fM3z));
-    
-
-//    top->AddNode(detmu1, 10, new TGeoTranslation(0, 0, 2570));
-//    detmu1->SetLineColor(kViolet+10);    
-//    TGeoRotation r5;
-//    r5.SetAngles(15,0,0);
-//    TGeoTranslation t5(0, 0, 2590);
-//    TGeoCombiTrans c5(t5, r5);
-//    TGeoHMatrix *h5 = new TGeoHMatrix(c5);
-//    TGeoVolume *detmu2 = new TGeoVolume("MuS", detcomp1, Al);
-//    detmu2->SetLineColor(kViolet+4);
-//    top->AddNode(detmu2, 10, h5);
-    
-    
+    Double_t zStartMuon = fM0z;
+    tMuon->AddNode(muondet0, 1, new TGeoTranslation(0, 0, fM0z-zStartMuon));
+    tMuon->AddNode(muonfilter0, 1, new TGeoTranslation(0, 0, fF0z-zStartMuon));
+    tMuon->AddNode(muondet1, 1, new TGeoTranslation(0, 0, fM1z-zStartMuon));
+    tMuon->AddNode(muonfilter1, 1, new TGeoTranslation(0, 0, fF1z-zStartMuon));
+    tMuon->AddNode(muondet2, 1, new TGeoTranslation(0, 0, fM2z-zStartMuon));
+    tMuon->AddNode(muonfilter2, 1, new TGeoTranslation(0, 0, fF2z-zStartMuon));
+    tMuon->AddNode(muondet3, 1, new TGeoTranslation(0, 0, fM3z-zStartMuon));
+          //finish assembly and position
+    TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tMuon->GetShape());
+    Double_t totLength = asmb->GetDZ();
+    top->AddNode(tMuon, 1, new TGeoTranslation(0, 0,zStartMuon+totLength));  
 }
 
 muonPoint* muon::AddHit(Int_t trackID, Int_t detID,
