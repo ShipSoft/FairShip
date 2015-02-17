@@ -192,7 +192,12 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
-    AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
+    TLorentzVector Pos; 
+    gMC->TrackPosition(Pos); 
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+    AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            fELoss,pdgCode);
 
@@ -294,22 +299,8 @@ void veto::ConstructGeometry()
       Double_t atube    = 2.5*m;	
       Double_t btube    = fBtube;
       Double_t atube1   = 2.2*m-walli-wallo-liscitube;	
-      //replace lids with thin spherical lid without LiSc
-      //inner lid on tube 1
-      //TGeoVolume *lidT1I = gGeoManager->MakeEltu("lidT1I"        ,Al,atube1+walli+wallo+liscitube,btube,walli/2.);
-      //lidT1I->SetLineColor(18);  // silver/gray
       Double_t zStartDecayVol = fTub1z-fTub1length-walli;
       Double_t zStartMagVol = fTub3z+fTub3length-walli;
-      //tDecayVol->AddNode(lidT1I, 1, new TGeoTranslation(0, 0,     fTub1z-fTub1length-walli/2. - zStartDecayVol));
-      //lisci lid on tube 1
-      //TGeoVolume *lidT1lisci = gGeoManager->MakeEltu("lidT1lisci",Se,atube1+walli+wallo+liscitube,btube,liscilid/2.);
-      //lidT1lisci->SetLineColor(kMagenta-10);
-      //tDecayVol->AddNode(lidT1lisci, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-walli-liscilid/2. - zStartDecayVol));
-      //AddSensitiveVolume(lidT1lisci);
-      //outer lid on tube 1
-      //TGeoVolume *lidT1O = gGeoManager->MakeEltu("lidT1O"        ,St,atube1+walli+wallo+liscitube,btube,wallo/2.);
-      //lidT1O->SetLineColor(14);  // silver/gray
-      //tDecayVol->AddNode(lidT1O, 1, new TGeoTranslation(0, 0,     fTub1z-fTub1length-walli-liscilid-wallo/2. - zStartDecayVol));
       
       //Entrance lid: first create Sphere
       Double_t lidradius = btube*2*1.3;
@@ -319,7 +310,7 @@ void veto::ConstructGeometry()
       TGeoCompositeShape *LidT1 = new TGeoCompositeShape("LidT1", "lidT1I-(Ttmp1-Ttmp2)");
       TGeoVolume *T1Lid = new TGeoVolume("T1Lid", LidT1, Al );
       T1Lid->SetLineColor(14);
-      top->AddNode(T1Lid, 1, new TGeoTranslation(0, 0,fTub1z -fTub1length -lidradius+1.*m ));
+      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0,fTub1z -fTub1length -lidradius+1.*m - zStartDecayVol));
 
 
       // All inner tubes...
@@ -480,15 +471,6 @@ void veto::ConstructGeometry()
       }
       }
 
-      //closing lid on tube 6
-      //TGeoVolume *lidT6I = gGeoManager->MakeEltu("lidT6I",Al,atube+walli,btube+walli,walli/2.);
-      //lidT6I->SetLineColor(18);  
-      //tMaGVol->AddNode(lidT6I, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli/2. - zStartMagVol));
-      //outer lid on tube 1
-      //TGeoVolume *lidT6O = gGeoManager->MakeEltu("lidT6O",St,atube+walli+wallo,btube+walli+wallo,wallo/2.);
-      //lidT6O->SetLineColor(14);  
-      //tMaGVol->AddNode(lidT6O, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+walli+wallo/2. - zStartMagVol));
-
       //Exit lid: first create Sphere
       TGeoSphere *lidT6I = new TGeoSphere("lidT6I",lidradius,lidradius+wallo,90.,180.,0.,360.);
       TGeoEltu *T6tmp1  = new TGeoEltu("T6tmp1",atube+lidradius,btube+lidradius,lidradius+1.*m);
@@ -496,7 +478,7 @@ void veto::ConstructGeometry()
       TGeoCompositeShape *LidT6 = new TGeoCompositeShape("LidT6", "lidT6I-(T6tmp1-T6tmp2)");
       TGeoVolume *T6Lid = new TGeoVolume("T6Lid", LidT6, Al );
       T6Lid->SetLineColor(14);
-      top->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+lidradius-1.*m ));
+      tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+lidradius-1.*m - zStartMagVol));
 
       //finish assembly and position
       TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tDecayVol->GetShape());

@@ -345,7 +345,12 @@ Bool_t  MagneticSpectrometer::ProcessHits(FairVolume* vol)
        // Int_t MotherID =p->GetFirstMother();
         //cout <<mp->GetPdgCode();
         //cout << endl;
-        AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
+        TLorentzVector Pos; 
+        gMC->TrackPosition(Pos); 
+        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
+        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
+        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
                fELoss, pdgCode);
         

@@ -625,8 +625,12 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
         if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
-        
-        AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
+        TLorentzVector Pos; 
+        gMC->TrackPosition(Pos); 
+        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
+        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
+        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
                fELoss, pdgCode);
         
