@@ -28,6 +28,7 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
+  fNuOnly = false;
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   fInputFile  = new TFile(fileName);
@@ -288,8 +289,8 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      }
      fFirst = kFALSE;
     }
-    if (fn==fNevents) {fLogger->Fatal(MESSAGE_ORIGIN, "No more input events");}
-    fTree->GetEntry(fn);
+    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+    fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%1000==0) {
       cout << "Info GenieGenerator: neutrino event-nr "<< fn << endl;
@@ -397,8 +398,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       fFirst = kFALSE;
     }
 
-    if (fn==fNevents) {fLogger->Fatal(MESSAGE_ORIGIN, "No more input events");}
-    fTree->GetEntry(fn);
+    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+    fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {
       cout << "Info GenieGenerator: neutrino event-nr "<< fn << endl;
@@ -470,7 +471,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t zrelative=z-ztarget;
     Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
     cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false,TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1]+pout[2]*pout[2]),tof,mparam[0]*mparam[4]);
-
+    if (not fNuOnly){ 
 // second, outgoing lepton
     std::vector<double> pp = Rotate(x,y,zrelative,pxl,pyl,pzl);
     Int_t oLPdgCode = neu;
@@ -484,7 +485,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
          // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
        }
     //cout << "Info GenieGenerator Return from GenieGenerator" << endl;
-
+    }
   return kTRUE;
 }
 // -------------------------------------------------------------------------

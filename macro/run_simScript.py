@@ -29,7 +29,7 @@ nuRadiography = False # misuse GenieGenerator for neutrino radiography and geome
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","FollowMuon",\
                                    "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", 
-                                   "output=","nuRadio"])
+                                   "output=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
@@ -47,7 +47,7 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--Genie"):
             simEngine = "Genie"
-        if o in ("--nuRadio"):
+        if o in ("--NuRadio"):
             simEngine = "nuRadiography"
         if o in ("--Ntuple"):
             simEngine = "Ntuple"
@@ -129,7 +129,6 @@ import shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-
 if simEngine == "Pythia8":
  primGen.SetTarget(ship_geo.target.z0, 0.) 
 # -----Pythia8--------------------------------------
@@ -151,7 +150,7 @@ if simEngine == "Genie":
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC+ship_geo.tauMS.zSize/4., ship_geo.TrackStation2.z)
+ Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC, ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent

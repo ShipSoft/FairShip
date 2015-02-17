@@ -27,6 +27,7 @@ class GenieGenerator : public FairGenerator
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
+  void NuOnly(){fNuOnly = true;}
   void SetPositions(Double_t zTa, Double_t zS=-3400., Double_t zE=2650.){ 
     ztarget     = zTa;
     startZ      = zS;
@@ -53,7 +54,7 @@ class GenieGenerator : public FairGenerator
   TTree* fTree;
   int fNevents;
   int fn;
-  bool fFirst;
+  bool fFirst,fNuOnly;
   Double_t fznu0,fznu11,fXnu11,fYnu11;
   Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
   ClassDef(GenieGenerator,1);

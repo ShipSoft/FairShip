@@ -1,6 +1,7 @@
-import os, subprocess,ROOT
+import os, subprocess,ROOT,time,getpass,multiprocessing
 import rootUtils as ut
-
+ncores = multiprocessing.cpu_count()
+user   = getpass.getuser()
 # support for eos, assume: eosmount $HOME/eos
 
 h = {}
@@ -56,17 +57,31 @@ def execute( ncpu = 4 ):
           break
   return cpus,log
 
-def getJobs(prefixes):
- for prefix in prefixes:
-  jobs = []
-  for x in os.listdir('.'):
+def getJobs(prefix):
+ jobs = []
+ for x in os.listdir('.'):
     if not x.find(prefix)<0: 
        if os.path.isdir(x) : 
          jobs.append(x)
  return jobs 
+def checkRunningProcesses():
+ processoutput = os.popen("ps -u "+user).read()
+ nproc = 0
+ for x in  processoutput.split('\n'):
+    if not x.find('python')<0 and x.find('defunct')<0 : 
+      nproc+=1
+ return nproc
+def killAll():
+ processoutput = os.popen("ps -u "+user).read()
+ for x in  processoutput.split('\n'):
+    if not x.find('python')<0:
+       pid = int(xx[1][:5])
+       os.system('kill '+str(pid))
 def executeSimple(prefixes,reset=False):
+ cpus = {}
+ log  = {} 
  for prefix in prefixes:
-  jobs = getJobs(prefixes)
+  jobs = getJobs(prefix)
   for x in jobs:
       print "change to directory ",x   
       os.chdir('./'+x) 
@@ -74,19 +89,47 @@ def executeSimple(prefixes,reset=False):
         if  not f.find("geofile_full")<0:
           inputfile = f.replace("geofile_full","ship")
           if not "logRec" in os.listdir('.') or reset:
-           log  = open("logRec",'w')
-           print 'launch',x
-           process = subprocess.Popen(["python",cmd,"-n 9999999", "-f "+inputfile], stdout=log)
-           process.wait()
-           print 'finished ',process.returncode
-           log.close() 
-          log  = open("logAna",'w')
-          process = subprocess.Popen(["python",cmdAna,"-n 9999999", "-f "+inputfile.replace('.root','_rec.root')], stdout=log)
-          process.wait()          
-          print 'finished ',process.returncode
-          log.close() 
-          os.chdir('../')
-          break
+           nproc = 100
+           while nproc > ncores : 
+            nproc = checkRunningProcesses()
+            if nproc > ncores: 
+               print 'wait a minute'
+               time.sleep(60)
+           log[x]  = open("logRec",'w')
+           print 'launch reco',x
+           cpus[x+'rec'] = subprocess.Popen(["python",cmd,"-n 9999999", "-f "+inputfile], stdout=log[x])
+           os.chdir('../')
+ for p in cpus: 
+    os.chdir('./'+p) 
+    process = cpus[p]
+    process.wait()
+    print 'finished ',process.returncode
+    log[p].close() 
+    log[p] = open("logAna",'w')
+    process = subprocess.Popen(["python",cmdAna,"-n 9999999", "-f "+inputfile.replace('.root','_rec.root')], stdout=log[x])
+    process.wait()          
+    print 'finished ',process.returncode
+    log[p].close() 
+    os.chdir('../')
+ 
+def executeAna(prefixes):
+ cpus = {}
+ log  = {} 
+ for prefix in prefixes:
+  jobs = getJobs(prefix)
+  for x in jobs:
+    print "change to directory ",x   
+    os.chdir('./'+x) 
+    for f in os.listdir('.'):
+      if  not f.find("geofile_full")<0:
+        inputfile = f.replace("geofile_full","ship")
+        log[x] = open("logAna",'w')
+        process = subprocess.Popen(["python",cmdAna,"-n 9999999", "-f "+inputfile.replace('.root','_rec.root')], stdout=log[x])
+        process.wait()          
+        print 'finished ',process.returncode
+        log[x].close() 
+        os.chdir('../')
+        break
 
 h={} 
 def mergeHistosMakePlots(p):
@@ -146,7 +189,8 @@ def mergeHistosMakePlots(p):
    print 'finished making plots'
 
 def mergeNtuples(prefixes):
-  jobs = getJobs(prefixes)
+ for prefix in prefixes:
+  jobs = getJobs(prefix)
   haddCommand = ''
   for x in jobs:
       for f in os.listdir(x):
@@ -161,11 +205,13 @@ def execute():
  mergeHistosMakePlots(pl)
  mergeNtuples(pl)
 def removeIntermediateFiles(prefixes):
+ for prefix in prefixes:
+  jobs = getJobs(prefix)
   for x in jobs:
       for f in os.listdir(x):
         if  not f.find("geofile_full")<0:
           inputfile = (f.replace("geofile_full","ship")).replace('.root','_rec.root')
-          os.system('rm '+x+'/' + inputfile  
+          os.system('rm '+x+'/' + inputfile ) 
 
 pl=[]
 for p in os.sys.argv[1].split(','):
@@ -175,6 +221,7 @@ for p in os.sys.argv[1].split(','):
 
 print " execute()  input comma separated production nr "
 print " executeSimple(pl,reset=True) "
+print " executeAna(pl) "
 print " mergeNtuples(pl) "
 print " removeIntermediateFiles(pl) only _rec "
 #61,611,612,613,614,615,616,62,621,622,623,624,625,626
