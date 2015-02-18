@@ -136,7 +136,7 @@ if JpsiMainly :
   myPythia.ReadString("443:new  J/psi  J/psi  4   0   0    3.09692    0.00009    3.09602    3.09782  0.   1   1   0   1   0")
   myPythia.ReadString("443:addChannel = 1   0.1    0      -13       13")
 # make pions/kaons/lambda stable
-for s in [211,321,130,310,3122]:
+for s in [211,321,130,310,3122,3112,3312]:   # last two added 18Feb2015
   myPythia.ReadString(str(s)+':mayDecay = false')
 
 # set random number seed
