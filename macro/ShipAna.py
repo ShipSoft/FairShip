@@ -52,6 +52,11 @@ if not geoFile:
 gMan  = tgeom.Import(geoFile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+volDict = {}
+i=0
+for x in ROOT.gGeoManager.GetListOfVolumes():
+ volDict[i]=x.GetName()
+ i+=1
 
 bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.)
 fM = ROOT.genfit.FieldManager.getInstance()
