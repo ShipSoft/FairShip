@@ -60,8 +60,10 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.strawtubes = AttrDict(z=0*u.cm)
     c.strawtubes.StrawLength        = 250.*u.cm
-    c.strawtubes.InnerStrawDiameter = 0.94*u.cm
-    c.strawtubes.OuterStrawDiameter = 0.98*u.cm
+    c.strawtubes.InnerStrawDiameter = 0.975*u.cm
+    c.strawtubes.WallThickness      = 0.0039*u.cm
+    c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
+
     c.strawtubes.StrawPitch         = 1.76*u.cm
     c.strawtubes.DeltazLayer        = 1.1*u.cm
     c.strawtubes.DeltazPlane        = 2.6*u.cm
