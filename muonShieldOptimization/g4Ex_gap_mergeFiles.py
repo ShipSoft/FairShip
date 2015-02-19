@@ -46,7 +46,7 @@ if Tau:
  BR = 0.0554
  stats =  {0.:[]}
  files  = {0.:[]}
- jobs = {'b63edb1b12_g4Ex_gap_':['12']}
+ jobs = {'b63edb1b12_g4Ex_gap_':['13']}
  nevts = 0
  ntot  = 0
  tag   = '#events='
@@ -147,11 +147,7 @@ def makeFinalNtuples(norm=5.E13,opt=''):
       if Ekin > 5. :     weight = norm/(ntot[5.] + ntot[0.5])
       else         :     weight = norm/(ntot[0.5])
      if JPsi       :     weight = norm/(ntot[10.])
-     if Tau        :  
-        if abs(vlist[11]) != 431 :  # no Ds, then no correction for BR 
-           weight = norm/(ntot[0.])*BR
-        else:
-           weight = norm/(ntot[0.])
+     if Tau        :     weight = norm/(ntot[0.])
      if MoTarget:
       if Ekin < ecut : continue
       if Ekin > 10. :     weight = norm/(ntot[0.5] + ntot[10.])
