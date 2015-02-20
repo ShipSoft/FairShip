@@ -6,32 +6,46 @@ def posHcal(z):
  HcalZSize = 0
  sz = "hcalz"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
- f =  open(floc+"/hcal.geo",'r')
- fn = open(floc+"/"+sz,'w')
+ f_hcal  = floc+"/hcal.geo"
+ f_hcalz = floc+"/"+sz
+ f = open(f_hcal) 
+ rewrite = False
+ if sz in os.listdir(floc):
+  test = os.popen("diff "+ f_hcal+ " "+ f_hcalz).read()
+  if len(test)>5: rewrite = True # more things are different than z position
+ if rewrite: fn = open(f_hcalz,'w')
  for l in f.readlines():
-   if not l.find("ZPos")<0:
+   if rewrite:
+    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
-   fn.write(l)
+    fn.write(l)
    if not l.find("HcalZSize")<0:
      HcalZSize = float(l[len('HcalZSize')+1:].split('#')[0]) 
  f.close()
- fn.close()  
- hcal=ROOT.hcal("Hcal", ROOT.kTRUE, sz)
+ if rewrite: fn.close()  
+ hcal = ROOT.hcal("Hcal", ROOT.kTRUE, sz)
  return hcal,HcalZSize
 def posEcal(z):
  EcalZSize = 0
  sz = "ecal_ellipse6x12m2z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
- f =  open(floc+"/ecal_ellipse6x12m2.geo",'r')
- fn = open(floc+"/"+sz,'w')
+ f_ecal  = floc+"/ecal_ellipse6x12m2.geo"
+ f_ecalz = floc+"/"+sz
+ f = open(f_ecal) 
+ rewrite = False
+ if sz in os.listdir(floc):
+  test = os.popen("diff "+ f_ecal+ " "+ f_ecalz).read()
+  if len(test)>5: rewrite = True # more things are different than z position
+ if rewrite: fn = open(f_ecalz,'w')
  for l in f.readlines():
-   if not l.find("ZPos")<0:
+   if rewrite:
+    if not l.find("ZPos")<0:
       l ="ZPos="+str(z)+ "	#Position of Ecal start		[cm]\n"
-   fn.write(l)
+    fn.write(l)
    if not l.find("EcalZSize")<0:
      EcalZSize = float(l[len('EcalZSize')+1:].split('#')[0]) 
  f.close()
- fn.close()  
+ if rewrite: fn.close()  
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
  return ecal,EcalZSize
 
