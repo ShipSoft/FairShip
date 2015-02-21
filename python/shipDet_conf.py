@@ -9,10 +9,10 @@ def posHcal(z):
  f_hcal  = floc+"/hcal.geo"
  f_hcalz = floc+"/"+sz
  f = open(f_hcal) 
- rewrite = False
+ rewrite = True
  if sz in os.listdir(floc):
   test = os.popen("diff "+ f_hcal+ " "+ f_hcalz).read()
-  if len(test)>5: rewrite = True # more things are different than z position
+  if len(test)<6: rewrite = False # only different is z position
  if rewrite: fn = open(f_hcalz,'w')
  for l in f.readlines():
    if rewrite:
@@ -32,10 +32,10 @@ def posEcal(z):
  f_ecal  = floc+"/ecal_ellipse6x12m2.geo"
  f_ecalz = floc+"/"+sz
  f = open(f_ecal) 
- rewrite = False
+ rewrite = True
  if sz in os.listdir(floc):
   test = os.popen("diff "+ f_ecal+ " "+ f_ecalz).read()
-  if len(test)>5: rewrite = True # more things are different than z position
+  if len(test)<6: rewrite = False # only different is z position
  if rewrite: fn = open(f_ecalz,'w')
  for l in f.readlines():
    if rewrite:
