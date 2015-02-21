@@ -33,6 +33,7 @@ GenieGenerator.cxx
 NtupleGenerator.cxx
 MuonBackGenerator.cxx
 CosmicsGenerator.cxx
+MuDISGenerator.cxx
 )
 
 set(LINKDEF  GenLinkDef.h)
