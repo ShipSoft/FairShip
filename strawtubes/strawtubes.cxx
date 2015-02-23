@@ -142,10 +142,10 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
     Int_t pdgCode = p->GetPdgCode();
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     Int_t straw_uniqueId;
-    Int_t VoIid = gMC->CurrentVolID(straw_uniqueId);
+    gMC->CurrentVolID(straw_uniqueId);
     if (fVolumeID == straw_uniqueId) {
         //std::cout << pdgCode<< " same volume again ? "<< straw_uniqueId << " exit:" << gMC->IsTrackExiting() << " stop:" << gMC->IsTrackStop() << " disappeared:" << gMC->IsTrackDisappeared()<< std::endl;
-         return kFALSE; }
+         return kTRUE; }
     fVolumeID = straw_uniqueId;
      // # d = |pq . u x v|/|u x v|
     TVector3 bot,top;
@@ -157,16 +157,21 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
     Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
     TVector3 pq = TVector3(top.x()-xmean,top.y()-ymean,top.z()-zmean );
     TVector3 u  = TVector3(bot.x()-top.x(),bot.y()-top.y(),bot.z()-top.z() ); 
-    TVector3 v  = TVector3(fMom.Px(),fMom.Py(), fMom.Pz() );
+    TVector3 v  = TVector3(fPos.X()-Pos.X(),fPos.Y()-Pos.Y(),fPos.Z()-Pos.Z());
     TVector3 uCrossv = u.Cross(v);
     Double_t dist2Wire  = fabs(pq.Dot(uCrossv))/(uCrossv.Mag()+1E-8);
     Double_t deltaTrackLength = gMC->TrackLength() - fLength; 
     AddHit(fTrackID, straw_uniqueId, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, deltaTrackLength,
            fELoss,pdgCode,dist2Wire);
-    if (dist2Wire==0){
-     std::cout << "addhit " << dist2Wire<< " pdgcode" << pdgCode<< " dot prod " << pq.Dot(uCrossv)<< std::endl;
+    if (dist2Wire>0.6){
+     std::cout << "addhit " << dist2Wire<< " straw id " << straw_uniqueId << " pdgcode " << pdgCode<< " dot prod " << pq.Dot(uCrossv)<< std::endl;
      std::cout << " exit:" << gMC->IsTrackExiting() << " stop:" << gMC->IsTrackStop() << " disappeared:" << gMC->IsTrackDisappeared()<< std::endl;
+     std::cout << " entry:" << fPos.X()<< " " << fPos.Y()<< " " << fPos.Z() << std::endl;
+     std::cout << " exit:" << Pos.X()<< " " << Pos.Y()<< " " << Pos.Z() << std::endl;
+     std::cout << " mean:" << xmean<< " " << ymean << " " << zmean << std::endl;
+     std::cout << " bot:" << bot.x()<< " " << bot.y() << " " << bot.z() << std::endl;
+     std::cout << " top:" << top.x()<< " " << top.y() << " " << top.z() << std::endl;
      pq.Print();
      u.Print();
      v.Print();
@@ -631,8 +636,13 @@ void strawtubes::StrawEndPoints(Int_t detID, TVector3 &bot, TVector3 &top)
        break;
      default:
        TStationz = fT0z;  
-   }                           
-  Double_t zpos = TStationz+(vnb-3./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12;
+   }   
+  Double_t zpos;
+  if (statnb < 5){                        
+    zpos = TStationz+(vnb-3./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12;
+  }else{                        
+    zpos = TStationz+(vnb-1./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12;
+  }
   top = TVector3(xtop,ytop,zpos);
   bot = TVector3(xbot,ybot,zpos);
   //cout << "dets="<< xtop << " "<< xbot << " "<<  ytop << " "<< ybot<< " "<< ypos<< " "<< fStraw_length<< " "<<detID<<endl;
