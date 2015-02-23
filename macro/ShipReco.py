@@ -2,6 +2,7 @@
 inputFile = 'ship.Pythia8-TGeant4.root'
 geoFile   = None
 debug = False
+EcalDebugDraw = False
 withNoAmbiguities = None # True   for debugging purposes
 nEvents   = 99999
 withHists = True
@@ -12,7 +13,8 @@ import ROOT,os,sys,getopt
 from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i",["inputFile=","geoFile=","nEvents=","ambiguities","noVertexing"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i",\
+           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","ambiguities","noVertexing"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --nEvents= number of events to process, ambiguities wire ambiguities default none' 
@@ -32,6 +34,9 @@ for o, a in opts:
         if o in ("-Y"): 
             dy = float(a)
             inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4.root'
+        if o in ("--ecalDebugDraw"):
+            EcalDebugDraw = True
+if EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
 # need to figure out which geometry was used
 if not dy:
@@ -134,7 +139,7 @@ class ShipReco:
      ez = ahit.GetZ()
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
-     smear = 0
+     smear = dw
      if not no_amb: smear = ROOT.fabs(self.random.Gaus(dw,ShipGeo.straw.resol))
      smearedHit = {'mcHit':ahit,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'z':bot.z(),'dist':smear}
      # print 'smeared hit:',top.x(),top.y(),top.z(),bot.x(),bot.y(),bot.z(),"dist",smear,ex,ey,ez,ox,oy,oz
@@ -328,11 +333,11 @@ ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
 caloTasks.append(ecalClusterCalib)
 # Cluster finder
 ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
-caloTasks.append(ecalClusterFind)
-# ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
-# ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
-# ROOT.gSystem.Load("libASImage");
-# caloTasks.append(ecalDrawer)
+caloTasks.append(ecalClusterFind)#
+if EcalDebugDraw:
+ # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
+ ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
+ caloTasks.append(ecalDrawer)
 
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 PDG = ROOT.TDatabasePDG.Instance()
@@ -366,6 +371,8 @@ ecalMaximums=ecalMaximumFind.InitPython(ecalStructure)
 ecalCalib=ecalClusterCalib.InitPython()
 ecalClusters=ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
 SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
+if EcalDebugDraw: ecalDrawer.InitPython(SHiP.sTree.MCTrack, SHiP.sTree.EcalPoint, ecalStructure, ecalClusters)
+
 # main loop
 for iEvent in range(0, SHiP.nEvents):
  ntracks = SHiP.execute(iEvent)
