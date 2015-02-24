@@ -230,7 +230,9 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        if tauOnly  : 
          mmkey   =  mother.GetMother(0)+1  
          mmother =  myPythia.GetParticle(mmkey)
-         if abs(mother.GetPdgCode()) != 431 and abs(mmother.GetPdgCode()) != 431 : continue
+         if abs(mother.GetPdgCode()) != 431 and abs(mmother.GetPdgCode()) != 431 : 
+          myPythia.EventListing()
+          continue
        qed = pid in qedlist  # use cut only for photons, leptons/neutrinos, protons and neutrons
        p.Momentum(v)
        Ekin = (v.E()-v.M())
@@ -293,8 +295,9 @@ class MyTrackingAction(G4UserTrackingAction):
 # need to be careful with energy cut, anti-protons and anti-neutrons can always produce pions and kaons
    part         = atrack.GetDynamicParticle()
    pid          = part.GetPDGcode()
+   muCut = JpsiMainly and abs(pid)!=13
    qed          = pid in qedlist  # use cut only for photons, electrons, protons and neutrons
-   if atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart): 
+   if (atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart) ) or muCut : 
       G4TrackingManager().SetStoreTrajectory(False) 
       atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)
 
