@@ -74,6 +74,17 @@ RKTrackRep::RKTrackRep(int pdgCode, char propDir) :
 RKTrackRep::~RKTrackRep() {
   ;
 }
+double RKTrackRep::extrapolateToPlane(StateOnPlane& state,
+    const TVector3 & point,const TVector3 & dir,
+    bool stopAtBoundary,
+    bool calcJacobianNoise) const {
+    // std::cout << "test "<<point.X()<<std::endl;
+    SharedPlanePtr shared = SharedPlanePtr(new DetPlane(point, dir));
+    return extrapolateToPlane(state,
+    shared,
+    stopAtBoundary,
+    calcJacobianNoise);
+}
 
 
 double RKTrackRep::extrapolateToPlane(StateOnPlane& state,
