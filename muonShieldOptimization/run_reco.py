@@ -1,6 +1,6 @@
 import os, subprocess,ROOT,time,getpass,multiprocessing
 import rootUtils as ut
-ncores = multiprocessing.cpu_count()
+ncores = min(multiprocessing.cpu_count(),9)
 user   = getpass.getuser()
 # support for eos, assume: eosmount $HOME/eos
 
@@ -75,43 +75,64 @@ def killAll():
  processoutput = os.popen("ps -u "+user).read()
  for x in  processoutput.split('\n'):
     if not x.find('python')<0:
-       pid = int(xx[1][:5])
+       pid = int(x[:5])
+       print 'kill '+str(pid)
        os.system('kill '+str(pid))
 def executeSimple(prefixes,reset=False):
- cpus = {}
- log  = {} 
+ proc = {}
  for prefix in prefixes:
   jobs = getJobs(prefix)
   for x in jobs:
       print "change to directory ",x   
       os.chdir('./'+x) 
+      geofile = None
       for f in os.listdir('.'):
-        if  not f.find("geofile_full")<0:
-          inputfile = f.replace("geofile_full","ship")
-          if not "logRec" in os.listdir('.') or reset:
-           nproc = 100
-           while nproc > ncores : 
+        if not f.find("geofile_full")<0:
+          geofile = f
+          break
+      if not geofile:
+         print "ERROR: no geofile found"
+         continue
+      else:  
+          inputfile = geofile.replace("geofile_full","ship")
+          nproc = 100
+          while nproc > ncores : 
             nproc = checkRunningProcesses()
             if nproc > ncores: 
                print 'wait a minute'
-               time.sleep(60)
-           log[x]  = open("logRec",'w')
-           print 'launch reco',x
-           cpus[x+'rec'] = subprocess.Popen(["python",cmd,"-n 9999999", "-f "+inputfile], stdout=log[x])
-           os.chdir('../')
- for p in cpus: 
+               time.sleep(100)
+          print 'launch reco',x
+          proc[x] = 1
+          os.system("python "+cmd+" -n 9999999 -f "+inputfile + " >> logRec &")
+          os.chdir('../')
+ nJobs = len(proc)
+ while nJobs > 0:
+  procAna = proc.keys()
+  nJobs = len(proc)
+  procAna.sort()
+  print 'debug ',nJobs
+  for p in procAna: 
     os.chdir('./'+p) 
-    process = cpus[p]
-    process.wait()
-    print 'finished ',process.returncode
-    log[p].close() 
-    log[p] = open("logAna",'w')
-    process = subprocess.Popen(["python",cmdAna,"-n 9999999", "-f "+inputfile.replace('.root','_rec.root')], stdout=log[x])
-    process.wait()          
-    print 'finished ',process.returncode
-    log[p].close() 
+    nproc = 100
+    while nproc > ncores : 
+      nproc = checkRunningProcesses()
+      if nproc > ncores: 
+       print 'wait a minute'
+       time.sleep(100)
+    log = open('logRec')
+    completed = False
+    rl = log.readlines()
+    log.close()       
+    if "finishing" in rl[len(rl)-1] : completed = True
+    if completed:
+     print 'analyze ',p,nproc
+     os.system("python "+cmdAna+" -n 9999999 -f "+inputfile.replace('.root','_rec.root')+ " >> logAna &")
+     rc = proc.pop(p) 
+    else:
+     print 'Rec job not finished yet',p
+     time.sleep(100)
     os.chdir('../')
- 
+     
 def executeAna(prefixes):
  cpus = {}
  log  = {} 
@@ -200,6 +221,45 @@ def mergeNtuples(prefixes):
           break
   cmd = 'hadd -f '+inputfile.replace('.root','_'+prefix+'.root') + haddCommand  
   os.system(cmd)
+def checkProd(prefixes):
+ for prefix in prefixes:
+  jobs = getJobs(prefix)
+  for x in jobs:
+    try:    log = open( x+'/log')
+    except: 
+      print 'no log file for ',x 
+      continue
+    rl = log.readlines()
+    log.close()       
+    if "Real time" in rl[len(rl)-1] : 
+      print 'simulation step OK ',x
+    else:  
+      print "simulation failed ",x 
+      continue
+    try:    log = open( x+'/logRec')
+    except: 
+      print 'no logRec file for ',x 
+      continue
+    rl = log.readlines()
+    log.close()       
+    if "finishing" in rl[len(rl)-1] : 
+      print 'reconstruction step OK ',x
+    else:  
+      print "reconstruction failed ",x 
+      continue
+    try:    log = open( x+'/logAna')
+    except: 
+      print 'no logAna file for ',x 
+      continue
+    rl = log.readlines()
+    log.close()       
+    if "finished" in rl[len(rl)-1] : 
+      print 'analysis step OK ',x
+    else:  
+      print "analysis failed ",x 
+      continue    
+     
+
 def execute():
  executeSimple(pl,reset=True)
  mergeHistosMakePlots(pl)
@@ -217,10 +277,11 @@ pl=[]
 for p in os.sys.argv[1].split(','):
    pref = 'muon'
    if not os.path.abspath('.').find('neutrino')<0: pref='neutrino'
+   if not os.path.abspath('.').find('dis')<0: pref='dis'
    pl.append(pref+p) 
-
-print " execute()  input comma separated production nr "
+print " execute()  input comma separated production nr, performs Simple/mergeHistos/mergeNtuples "
 print " executeSimple(pl,reset=True) "
+print " checkProd(pl)"
 print " executeAna(pl) "
 print " mergeNtuples(pl) "
 print " removeIntermediateFiles(pl) only _rec "

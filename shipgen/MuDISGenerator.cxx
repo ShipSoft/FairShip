@@ -66,11 +66,14 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     int nf = dPart->GetEntries();
     // cout << "muon DIS Generator debug " << iMuon->GetEntries()<< " "<< iMuon->AddrAt(0) << " nf "<< nf << endl; 
 
-// incoming muon  array('d',[pid,px,py,pz,x,y,z,w])
+// incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w])
     TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
     // cout << "muon DIS Generator in muon " << int(mu[0][0])<< endl; 
-    cpg->AddTrack(int(mu[0][0]),mu[0][1],mu[0][2],mu[0][3],
-        mu[0][5],mu[0][6],mu[0][7],-1,false,mu[0][4],0.,mu[0][8]);
+    Double_t x = mu[0][5]*100.; // come in m -> cm
+    Double_t y = mu[0][6]*100.; // come in m -> cm
+    Double_t z = mu[0][7]*100.; // come in m -> cm
+    Double_t w = mu[0][8];
+    cpg->AddTrack(int(mu[0][0]),mu[0][1],mu[0][2],mu[0][3],x,y,z,-1,false,mu[0][4],0.,w);
 // outgoing particles, [did,dpx,dpy,dpz,E]
     for(int i=0; i<nf; i++)
     	{
@@ -79,7 +82,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
          //cout << "muon DIS Generator out part mom " << Part[0][1]<<" " << Part[0][2] <<" " << Part[0][3] << " " << Part[0][4] << endl; 
          //cout << "muon DIS Generator out part pos " << mu[0][5]<<" " << mu[0][6] <<" " << mu[0][7] << endl; 
          //cout << "muon DIS Generator out part w " << mu[0][8] << endl; 
-         cpg->AddTrack(int(Part[0][0]),Part[0][1],Part[0][2],Part[0][3],mu[0][5],mu[0][6],mu[0][7],0,true,Part[0][4],0.,mu[0][8]);
+         cpg->AddTrack(int(Part[0][0]),Part[0][1],Part[0][2],Part[0][3],x,y,z,0,true,Part[0][4],0.,w);
          //cout << "muon DIS part added "<<endl;
        }
   return kTRUE;

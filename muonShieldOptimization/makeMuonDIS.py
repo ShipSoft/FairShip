@@ -1,4 +1,7 @@
-import ROOT,time
+import ROOT,time,os,sys
+nJob = 2
+if len(sys.argv)>1: nJob = int(sys.argv[1])
+#
 from array import array
 PDG = ROOT.TDatabasePDG.Instance()
 myPythia = ROOT.TPythia6()
@@ -24,7 +27,7 @@ nMult = 10 # number of events / muon
 # DIS event
 # incoming muon,      id:px:py:pz:x:y:z:w
 # outgoing particles, id:px:py:pz
-fout  = ROOT.TFile('muonDis.root','recreate')
+fout  = ROOT.TFile('muonDis_'+str(nJob)+'.root','recreate')
 dTree = ROOT.TTree('DIS','muon DIS')
 iMuon       = ROOT.TClonesArray("TVectorD") 
 iMuonBranch = dTree.Branch("InMuon",iMuon,32000,-1)
@@ -44,8 +47,10 @@ def rotate(ctheta,stheta,cphi,sphi,px,py,pz):
   pyr=sphi*px1+cphi*py
   return pxr,pyr,pzr
 
+nPerJob = 20000
 nTOT = sTree.GetEntries()
-for k in range(0,nTOT): 
+nStart = max(0, nTOT-20000*(nJob+1) )
+for k in range(nStart,nTOT-20000*nJob): 
   rc = sTree.GetEvent(k)
   # make n events / muon
   px,py,pz = sTree.px,sTree.py,sTree.pz
@@ -83,6 +88,7 @@ for k in range(0,nTOT):
      dTree.Fill()
 fout.cd()  
 dTree.Write()
+print "created ",nStart,' - ',nTOT-20000*nJob," events"
 
 
 
