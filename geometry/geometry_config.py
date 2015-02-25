@@ -212,7 +212,7 @@ with ConfigRegistry.register_config("basic") as c:
     # straws of tracking stations
     c.straw = AttrDict(z=0*u.cm)
     c.straw.length = 250.*u.cm
-    c.straw.resol  = 0.01*u.cm
+    c.straw.resol  = 0.012*u.cm # according to Massi's TP section
     c.straw.pitch  = 1.*u.cm
     c.straw.stereoAngle = 5./180.  # degrees
 

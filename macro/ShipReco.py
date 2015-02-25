@@ -98,7 +98,7 @@ def myVertex(t1,t2,PosDir):
    z1 = PosDir[t1]['position'](2)+l*PosDir[t1]['direction'](2)
    dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
    return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
-
+ 
 class ShipReco:
  " convert FairSHiP MC hits to measurements"
  def __init__(self,fn):
@@ -191,7 +191,7 @@ class ShipReco:
    momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance
    covM = ROOT.TMatrixDSym(6)
-   resolution = 0.02 #0.01
+   resolution = ShipGeo.straw.resol
    for  i in range(3):   covM[i][i] = resolution*resolution
    for  i in range(3,6): covM[i][i] = ROOT.TMath.pow(resolution / nM / ROOT.TMath.sqrt(3), 2)
 # trackrep
@@ -210,6 +210,9 @@ class ShipReco:
       hitCov[6][6] = resolution*resolution
       tp = ROOT.genfit.TrackPoint(fitTrack[atrack]) # note how the point is told which track it belongs to 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
+      # print measurement.getMaxDistance()
+      measurement.setMaxDistance(0.5*u.cm)
+      # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
       fitTrack[atrack].insertPoint(tp)  # add point to Track
 #check
@@ -217,7 +220,7 @@ class ShipReco:
     print 'Problem with track before fit, not consistent',self.fitTrack[atrack]
     continue
 # do the fit
-   try:    fitter.processTrack(fitTrack[atrack])
+   try:    fitter.processTrackWithRep(fitTrack[atrack],rep,True) # fitter.processTrack(fitTrack[atrack])
    except: 
        print "genfit failed to fit track"
        continue
@@ -357,7 +360,9 @@ if debug: # init event display
  display = ROOT.genfit.EventDisplay.getInstance()
 
 # init fitter
-fitter          = ROOT.genfit.KalmanFitterRefTrack()
+#fitter          = ROOT.genfit.KalmanFitter()
+#fitter          = ROOT.genfit.KalmanFitterRefTrack()
+fitter          = ROOT.genfit.DAF()
 if debug: fitter.setDebugLvl(1) # produces lot of printout
 WireMeasurement = ROOT.genfit.WireMeasurement
 
