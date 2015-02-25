@@ -81,7 +81,7 @@ for o, a in opts:
         if o in ("-c", "--couplings", "--coupling"):
             theHNLcouplings = [float(c) for c in a.split(",")]
 
-if simEngine == "Genie" or simEngine == "nuRadiography" and not inputFile: 
+if (simEngine == "Genie" or simEngine == "nuRadiography") and not inputFile: 
   inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root' # anti_nu_mu
 # nu_mu: inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu+_nu_mu-gntp.113.gst.root'
 if simEngine == "muonDIS" and not inputFile:
