@@ -3,13 +3,14 @@ import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
-
+chi2CutOff  = 4.
 PDG = ROOT.TDatabasePDG.Instance()
-inputFile = None
-geoFile   = None
-dy        = None
-nEvents   = 99999
-
+inputFile  = None
+geoFile    = None
+dy         = None
+nEvents    = 99999
+fiducialCut = False
+measCut = 25
 try:
         opts, args = getopt.getopt(sys.argv[1:], "n:f:g:A:Y:i", ["nEvents=","geoFile="])
 except getopt.GetoptError:
@@ -64,40 +65,88 @@ fM.init(bfield)
 
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.5,0.5)
-ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<25',100,0.,50.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<'+str(chi2CutOff),100,0.,50.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverPz','delPz / Pz',100,0.,50.,100,-0.5,0.5)
-ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<25',100,0.,50.,100,-0.5,0.5)
-ut.bookHist(h,'chi2','chi2/nmeas after trackfit',100,0.,100.)
+ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<'+str(chi2CutOff),100,0.,50.,100,-0.5,0.5)
+ut.bookHist(h,'chi2','chi2/nmeas after trackfit',100,0.,10.)
+ut.bookHist(h,'prob','prob(chi2)',100,0.,1.)
 ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
-ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
+ut.bookHist(h,'Doca','Doca between two tracks',100,0.,50.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
-ut.bookHist(h,'HNL','reconstructed Mass',100,0.,2.)
+ut.bookHist(h,'HNL','reconstructed Mass',500,0.,2.)
 ut.bookHist(h,'meas','number of measurements',40,-0.5,39.5)
-ut.bookHist(h,'measVSchi2','number of measurements vs chi2/meas',40,-0.5,39.5,100,0.,100.)
+ut.bookHist(h,'meas2','number of measurements, fitted track',40,-0.5,39.5)
+ut.bookHist(h,'measVSchi2','number of measurements vs chi2/meas',40,-0.5,39.5,100,0.,10.)
 ut.bookHist(h,'distu','distance to wire',100,0.,1.)
 ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
 ut.bookHist(h,'ecalClusters','x/y and energy',50,-3.,3.,50,-6.,6.)
 
+def checkHNLorigin(sTree):
+ flag = True 
+ if not fiducialCut: return flag
+ theHNLVx = sTree.MCTrack[2]
+ if theHNLVx.GetStartZ() < ShipGeo.vetoStation.z+100.*u.cm : flag = False
+ if theHNLVx.GetStartZ() > ShipGeo.TrackStation1.z : flag = False
+ X,Y =  theHNLVx.GetStartX(),theHNLVx.GetStartY()
+ Rsq = (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
+ if Rsq>1: flag = False
+ return flag 
+def checkFiducialVolume(sTree,tkey,dy):
+# to be replaced later with using track extrapolator,
+# for now use MC truth
+   inside = True
+   if not fiducialCut: return inside 
+   mcPartKey = sTree.fitTrack2MC[tkey]
+   for ahit in sTree.strawtubesPoint:
+     if ahit.GetTrackID() == mcPartKey:
+        X,Y = ahit.GetX(),ahit.GetY()
+        Rsq = (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
+        if Rsq > 1:
+         inside = False    
+         break
+   return inside
+def getPtruthFirst(sTree,mcPartKey):
+   Ptruth,Ptruthz = -1.,-1.
+   for ahit in sTree.strawtubesPoint:
+     if ahit.GetTrackID() == mcPartKey:
+        Ptruthz = ahit.GetPz()
+        Ptruth  = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+Ptruthz**2)
+        break
+   return Ptruth,Ptruthz
+
+def access2SmearedHits():
+ key = 0
+ for ahit in ev.SmearedHits.GetObject():
+   print ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6]
+   # follow link to true MCHit
+   mchit   = TrackingHits[key]
+   mctrack =  MCTracks[mchit.GetTrackID()]
+   print mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode()
+   key+=1
+
+
 def myVertex(t1,t2,PosDir):
  # closest distance between two tracks
-   V=0
-   for i in range(3):   V += PosDir[t1][1](i)*PosDir[t2][1](i)
-   S1=0
-   for i in range(3):   S1 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t1][1](i)
-   S2=0
-   for i in range(3):   S2 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t2][1](i)
-   l = (S2-S1*V)/(1-V*V)
-   x2 = PosDir[t2][0](0)+l*PosDir[t2][1](0)
-   y2 = PosDir[t2][0](1)+l*PosDir[t2][1](1)
-   z2 = PosDir[t2][0](2)+l*PosDir[t2][1](2)
-   x1 = PosDir[t1][0](0)+l*PosDir[t1][1](0)
-   y1 = PosDir[t1][0](1)+l*PosDir[t1][1](1)
-   z1 = PosDir[t1][0](2)+l*PosDir[t1][1](2)
-   dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
-   return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
+    # d = |pq . u x v|/|u x v|
+   a = ROOT.TVector3(PosDir[t1][0](0) ,PosDir[t1][0](1), PosDir[t1][0](2))
+   u = ROOT.TVector3(PosDir[t1][1](0),PosDir[t1][1](1),PosDir[t1][1](2))
+   c = ROOT.TVector3(PosDir[t2][0](0) ,PosDir[t2][0](1), PosDir[t2][0](2))
+   v = ROOT.TVector3(PosDir[t2][1](0),PosDir[t2][1](1),PosDir[t2][1](2))
+   pq = a-c
+   uCrossv = u.Cross(v)
+   dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
+   # H = dist*n+a-c
+   Hx = -dist/(uCrossv.Mag()+1E-8) * uCrossv.x()+pq.x()
+   Hy = -dist/(uCrossv.Mag()+1E-8) * uCrossv.y()+pq.y()
+   r = u.y()/u.x()
+   t = (Hy-Hx*r )/(v.y()-r*v.x())
+   X = c.x()+v.x()*t
+   Y = c.y()+v.y()*t
+   Z = c.z()+v.z()*t
+   return X,Y,Z,abs(dist)
 
 def fitSingleGauss(x,ba=None,be=None):
     name    = 'myGauss_'+x 
@@ -125,19 +174,21 @@ def makePlots():
    ut.bookCanvas(h,key='ecalanalysis',title='cluster map',nx=800,ny=600,cx=1,cy=1)
    cv = h['ecalanalysis'].cd(1)
    h['ecalClusters'].Draw('colz')
-   ut.bookCanvas(h,key='strawanalysis',title='Distance to wire and mean nr of hits',nx=1200,ny=600,cx=2,cy=1)
+   ut.bookCanvas(h,key='strawanalysis',title='Distance to wire and mean nr of hits',nx=1200,ny=600,cx=3,cy=1)
    cv = h['strawanalysis'].cd(1)
    h['disty'].Draw()
    h['distu'].Draw('same')
    h['distv'].Draw('same')
    cv = h['strawanalysis'].cd(2)
    h['meanhits'].Draw()
+   cv = h['strawanalysis'].cd(3)
+   h['meas2'].Draw()
    ut.bookCanvas(h,key='fitresults',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    cv = h['fitresults'].cd(1)
    h['delPOverPz'].Draw('box')
    cv = h['fitresults'].cd(2)
    cv.SetLogy(1)
-   h['chi2'].Draw()
+   h['prob'].Draw()
    cv = h['fitresults'].cd(3)
    h['delPOverPz_proj'] = h['delPOverPz'].ProjectionY()
    ROOT.gStyle.SetOptFit(11111)
@@ -156,7 +207,7 @@ def makePlots():
    h['IP0'].Draw()
    cv = h['fitresults2'].cd(3)
    h['HNL'].Draw()
-   fitSingleGauss('HNL')
+   fitSingleGauss('HNL',0.9,1.1)
    cv = h['fitresults2'].cd(4)
    h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
@@ -167,7 +218,8 @@ def myEventLoop(N):
  nEvents = min(sTree.GetEntries(),N)
  for n in range(nEvents): 
   rc = sTree.GetEntry(n)
-  wg = sTree.MCTrack[0].GetWeight()
+  if not checkHNLorigin(sTree): continue
+  wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
 # make some ecal cluster analysis
   for aClus in sTree.EcalClusters:
@@ -180,9 +232,10 @@ def myEventLoop(N):
      bot = ROOT.TVector3()
      modules["Strawtubes"].StrawEndPoints(detID,bot,top)
      dw  = ahit.dist2Wire()
-     if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
-     if abs(top.y())>abs(bot.y()): h['distu'].Fill(dw)
-     if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
+     if detID < 50000000 : 
+      if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
+      if abs(top.y())>abs(bot.y()): h['distu'].Fill(dw)
+      if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
 #
      trID = ahit.GetTrackID()
      if not trID < 0 :
@@ -193,13 +246,20 @@ def myEventLoop(N):
   fittedTracks = {}
   for atrack in sTree.FitTracks:
    key+=1
+# kill tracks outside fiducial volume
+   if not checkFiducialVolume(sTree,key,dy): continue
    fitStatus   = atrack.getFitStatus()
    nmeas = fitStatus.getNdf()
    h['meas'].Fill(nmeas)
    if not fitStatus.isFitConverged() : continue
+   h['meas2'].Fill(nmeas)
+   if nmeas < measCut: continue
    fittedTracks[key] = atrack
 # needs different study why fit has not converged, continue with fitted tracks
-   chi2        = fitStatus.getChi2()/nmeas
+   rchi2 = fitStatus.getChi2()
+   prob = ROOT.TMath.Prob(rchi2,int(nmeas))
+   h['prob'].Fill(prob)
+   chi2 = rchi2/nmeas
    fittedState = atrack.getFittedState()
    h['chi2'].Fill(chi2,wg)
    h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
@@ -208,13 +268,15 @@ def myEventLoop(N):
    mcPartKey = sTree.fitTrack2MC[key]
    mcPart    = sTree.MCTrack[mcPartKey]
    if not mcPart : continue
-   Ptruth    = mcPart.GetP()
-   Ptruthz    = mcPart.GetPz()
+   Ptruth_start     = mcPart.GetP()
+   Ptruthz_start    = mcPart.GetPz()
+   # get p truth from first strawpoint
+   Ptruth,Ptruthz = getPtruthFirst(sTree,mcPartKey)
    delPOverP = (Ptruth - P)/Ptruth
    h['delPOverP'].Fill(Ptruth,delPOverP)
    delPOverPz = (1./Ptruthz - 1./Pz) * Ptruthz
    h['delPOverPz'].Fill(Ptruthz,delPOverPz)
-   if chi2>25: continue
+   if chi2>chi2CutOff: continue
    h['delPOverP2'].Fill(Ptruth,delPOverP)
    h['delPOverP2z'].Fill(Ptruth,delPOverPz)
 # try measure impact parameter
@@ -233,12 +295,23 @@ def myEventLoop(N):
   for HNL in sTree.Particles:
      t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
      PosDir = {} 
+# kill tracks outside fiducial volume, if enabled
+     if not checkFiducialVolume(sTree,t2,dy) or not checkFiducialVolume(sTree,t2,dy) : continue
+     checkMeasurements = True
      for tr in [t1,t2]:
       xx  = sTree.FitTracks[tr].getFittedState()
       PosDir[tr] = [xx.getPos(),xx.getDir()]
+      fitStatus  = sTree.FitTracks[tr].getFitStatus()
+      nmeas = fitStatus.getNdf()
+      if nmeas < measCut: checkMeasurements = False
+     if not checkMeasurements: continue
      xv,yv,zv,doca = myVertex(t1,t2,PosDir)
+     # check if decay inside decay volume
+     Rsq = (xv/(2.45*u.m) )**2 + (yv/((dy/2.-0.05)*u.m) )**2
+     if Rsq>1 : continue
+     if zv < ShipGeo['vetoStation'].z : continue  
      h['Doca'].Fill(doca) 
-     if  doca>5 : continue
+     if  doca>25 : continue
      HNLPos = ROOT.TLorentzVector()
      HNL.ProductionVertex(HNLPos)
      HNLMom = ROOT.TLorentzVector()
@@ -273,15 +346,6 @@ def HNLKinematics():
       h['HNLmom_recTracks'].Fill(Prec,wg) 
       h['HNLmomNoW_recTracks'].Fill(Prec) 
 #
-def access2SmearedHits():
- key = 0
- for ahit in ev.SmearedHits.GetObject():
-   print ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6]
-   # follow link to true MCHit
-   mchit   = TrackingHits[key]
-   mctrack =  MCTracks[mchit.GetTrackID()]
-   print mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode()
-   key+=1
 
 myEventLoop(nEvents)
 makePlots()

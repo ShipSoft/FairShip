@@ -83,22 +83,26 @@ fout = ROOT.TFile(outFile,'update')
 
 def myVertex(t1,t2,PosDir):
  # closest distance between two tracks
-   V=0
-   for i in range(3):   V += PosDir[t1]['direction'](i)*PosDir[t2]['direction'](i)
-   S1=0
-   for i in range(3):   S1 += (PosDir[t1]['position'](i)-PosDir[t2]['position'](i))*PosDir[t1]['direction'](i)
-   S2=0
-   for i in range(3):   S2 += (PosDir[t1]['position'](i)-PosDir[t2]['position'](i))*PosDir[t2]['direction'](i)
-   l = (S2-S1*V)/(1-V*V)
-   x2 = PosDir[t2]['position'](0)+l*PosDir[t2]['direction'](0)
-   y2 = PosDir[t2]['position'](1)+l*PosDir[t2]['direction'](1)
-   z2 = PosDir[t2]['position'](2)+l*PosDir[t2]['direction'](2)
-   x1 = PosDir[t1]['position'](0)+l*PosDir[t1]['direction'](0)
-   y1 = PosDir[t1]['position'](1)+l*PosDir[t1]['direction'](1)
-   z1 = PosDir[t1]['position'](2)+l*PosDir[t1]['direction'](2)
-   dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
-   return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
- 
+    # d = |pq . u x v|/|u x v|
+   a = ROOT.TVector3(PosDir[t1]['position'](0) ,PosDir[t1]['position'](1), PosDir[t1]['position'](2))
+   u = ROOT.TVector3(PosDir[t1]['direction'](0),PosDir[t1]['direction'](1),PosDir[t1]['direction'](2))
+   c = ROOT.TVector3(PosDir[t2]['position'](0) ,PosDir[t2]['position'](1), PosDir[t2]['position'](2))
+   v = ROOT.TVector3(PosDir[t2]['direction'](0),PosDir[t2]['direction'](1),PosDir[t2]['direction'](2))
+   pq = a-c
+   uCrossv = u.Cross(v)
+   dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
+   # H = dist*n+a-c
+   Hx = -dist/(uCrossv.Mag()+1E-8) * uCrossv.x()+pq.x()
+   Hy = -dist/(uCrossv.Mag()+1E-8) * uCrossv.y()+pq.y()
+   r = u.y()/u.x()
+   t = (Hy-Hx*r )/(v.y()-r*v.x())
+   X = c.x()+v.x()*t
+   Y = c.y()+v.y()*t
+   Z = c.z()+v.z()*t
+   #print 'test2 ',X,Y,Z,dist
+   #print 'truth',sTree.MCTrack[2].GetStartX(),sTree.MCTrack[2].GetStartY(),sTree.MCTrack[2].GetStartZ()
+   return X,Y,Z,abs(dist)
+
 class ShipReco:
  " convert FairSHiP MC hits to measurements"
  def __init__(self,fn):
@@ -193,6 +197,7 @@ class ShipReco:
    covM = ROOT.TMatrixDSym(6)
    resolution = ShipGeo.straw.resol
    for  i in range(3):   covM[i][i] = resolution*resolution
+   covM[0][0]=resolution*resolution*100.
    for  i in range(3,6): covM[i][i] = ROOT.TMath.pow(resolution / nM / ROOT.TMath.sqrt(3), 2)
 # trackrep
    rep = ROOT.genfit.RKTrackRep(pdg)
@@ -264,7 +269,7 @@ class ShipReco:
      if not t2>t1: continue
      if PosDirCharge[t2]['charge'] == c1 : continue
      LV2 = ROOT.TLorentzVector()
-     xv,yv,zv,doca = myVertex(t1,t2,PosDirCharge)
+     xv,yv,zv,doca = myVertex(t1,t2,PosDirCharge,self.sTree)
      HNLPos = ROOT.TVector3(xv,yv,zv)
      # make a new rep for track 1
      rep = ROOT.genfit.RKTrackRep(PosDirCharge[t1]['pdgCode'])
