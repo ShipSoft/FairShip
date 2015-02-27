@@ -91,14 +91,17 @@ def myVertex(t1,t2,PosDir):
    pq = a-c
    uCrossv = u.Cross(v)
    dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
-   # H = dist*n+a-c
-   Hx = -dist/(uCrossv.Mag()+1E-8) * uCrossv.x()+pq.x()
-   Hy = -dist/(uCrossv.Mag()+1E-8) * uCrossv.y()+pq.y()
-   r = u.y()/u.x()
-   t = (Hy-Hx*r )/(v.y()-r*v.x())
+   # u.a - u.c + s*|u|**2 - u.v*t    = 0
+   # v.a - v.c + s*v.u    - t*|v|**2 = 0
+   E = u.Dot(a) - u.Dot(c) 
+   F = v.Dot(a) - v.Dot(c) 
+   A,B = u.Mag2(), -u.Dot(v) 
+   C,D = u.Dot(v), -v.Mag2()
+   t = -(C*E-A*F)/(B*C-A*D)
    X = c.x()+v.x()*t
    Y = c.y()+v.y()*t
    Z = c.z()+v.z()*t
+   # sT = ROOT.gROOT.FindAnything('cbmsim')
    #print 'test2 ',X,Y,Z,dist
    #print 'truth',sTree.MCTrack[2].GetStartX(),sTree.MCTrack[2].GetStartY(),sTree.MCTrack[2].GetStartZ()
    return X,Y,Z,abs(dist)
@@ -224,11 +227,14 @@ class ShipReco:
    if not fitTrack[atrack].checkConsistency():
     print 'Problem with track before fit, not consistent',self.fitTrack[atrack]
     continue
-# do the fit
-   try:    fitter.processTrackWithRep(fitTrack[atrack],rep,True) # fitter.processTrack(fitTrack[atrack])
+# do the fit, stop message about matrix not positive definit
+   orglevel = ROOT.gErrorIgnoreLevel
+   ROOT.gErrorIgnoreLevel = ROOT.kError
+   try:  fitter.processTrack(fitTrack[atrack]) # processTrackWithRep(fitTrack[atrack],rep,True)
    except: 
        print "genfit failed to fit track"
        continue
+   ROOT.gErrorIgnoreLevel = orglevel
 #check
    if not fitTrack[atrack].checkConsistency():
     print 'Problem with track after fit, not consistent',self.fitTrack[atrack]
