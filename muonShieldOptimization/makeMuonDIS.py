@@ -50,6 +50,9 @@ def rotate(ctheta,stheta,cphi,sphi,px,py,pz):
 nPerJob = 20000
 nTOT = sTree.GetEntries()
 nStart = max(0, nTOT-20000*(nJob+1) )
+
+# stop pythia printout during loop
+myPythia.SetMSTU(11, 11)
 for k in range(nStart,nTOT-20000*nJob): 
   rc = sTree.GetEvent(k)
   # make n events / muon
@@ -88,6 +91,7 @@ for k in range(nStart,nTOT-20000*nJob):
      dTree.Fill()
 fout.cd()  
 dTree.Write()
+myPythia.SetMSTU(11, 6)
 print "created ",nStart,' - ',nTOT-20000*nJob," events"
 
 
