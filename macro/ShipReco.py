@@ -269,7 +269,7 @@ class ShipReco:
      if not t2>t1: continue
      if PosDirCharge[t2]['charge'] == c1 : continue
      LV2 = ROOT.TLorentzVector()
-     xv,yv,zv,doca = myVertex(t1,t2,PosDirCharge,self.sTree)
+     xv,yv,zv,doca = myVertex(t1,t2,PosDirCharge)
      HNLPos = ROOT.TVector3(xv,yv,zv)
      # make a new rep for track 1
      rep = ROOT.genfit.RKTrackRep(PosDirCharge[t1]['pdgCode'])
