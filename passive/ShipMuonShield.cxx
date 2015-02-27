@@ -200,7 +200,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
     Double_t dX24O = dX24+Clgap;
     Z3  = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + dZ3;
     dY1=dY2-eps;
-    dY2 = 2*dZ3*(dYEnd-dY1)/(ZEnd-Z3+dZ3)+dY1-eps;
+    dY2 = 2*dZ3*(dYEnd-dY1)/(ZEnd-Z3+dZ3)+dY1-eps-35;
     Double_t cornersCA[16] = {-dX17,-dY1, -dX17,dY1, dX17,dY1, dX17,-dY1,
                              -dX24,-dY2, -dX24,dY2, dX24,dY2, dX24,-dY2};
      //right magnet 
@@ -239,7 +239,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
     Double_t W30 = 0.3*m;
     Z4 = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + 2*dZ3 + dZ4;
     dY1=dY2;
-    dY2 = 2*dZ4*(dYEnd-dY1)/(ZEnd-Z4+dZ4)+dY1;
+    dY2 = 2*dZ4*(dYEnd-dY1)/(ZEnd-Z4+dZ4)+dY1-76.5;
     Double_t cornersC4A[16] = {-dX24,-dY1, -dX24,dY1, dX24,dY1, dX24,-dY1,
                                -W30,-dY2, -W30,dY2, W30,dY2, W30,-dY2};
        //left magnet, split in three, like for previous magnet
@@ -278,7 +278,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
 
     Z6 = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + 2*dZ3 + 2*dZ4+2*dZ5+dZ6;
     dY1=dY2;
-    dY2 = 2*dZ6*(dYEnd-dY1)/(ZEnd-Z6+dZ6)+dY1;
+    dY2 = 2*dZ6*(dYEnd-dY1)/(ZEnd-Z6+dZ6)+dY1+69;
     //return fields
     Double_t cornersC6RLA[16] = {dXr30I,-dY1, dXr30I,dY1, dXr30O,dY1, dXr30O,-dY1,
                                 dXr36I,-dY2, dXr36I,dY2, dXr36O,dY2, dXr36O,-dY2};
@@ -1112,6 +1112,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateTube("AbsorberAddCore", iron, 0, 15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
 
     Double_t ironField = fField*tesla;
+    // cout<<"fField  "<<fField<<endl;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
@@ -1164,11 +1165,11 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateArb8("MagCRT", iron, dZ3, corners[16],45,magFieldIron,tShield,1,0, 0, Z3);
     CreateArb8("MagCRB", iron, dZ3, corners[17],45,magFieldIron,tShield,1,0, 0, Z3);                           
 //Top/Bot return magnets for 17-24 m
-    CreateArb8("MagTopLeft17t24", iron, dZ3-eps, corners[18],38,ConLField,tShield,1,0, 0, Z3);
-    CreateArb8("MagTopRight17t24", iron, dZ3-eps, corners[19],30,ConRField,tShield,1,0, 0, Z3);
+    CreateArb8("MagTopLeft17t24", iron, dZ3-eps, corners[18],30,ConRField,tShield,1,0, 0, Z3);
+    CreateArb8("MagTopRight17t24", iron, dZ3-eps, corners[19],38,ConLField,tShield,1,0, 0, Z3);
 //Bot return magnets 
-    CreateArb8("MagBotLeft17t24", iron, dZ3-eps, corners[20],30,ConRField,tShield,1,0, 0, Z3);
-    CreateArb8("MagBotRight17t24", iron, dZ3-eps, corners[21],38,ConLField,tShield,1,0, 0, Z3);
+    CreateArb8("MagBotLeft17t24", iron, dZ3-eps, corners[20],38,ConLField,tShield,1,0, 0, Z3);
+    CreateArb8("MagBotRight17t24", iron, dZ3-eps, corners[21],30,ConRField,tShield,1,0, 0, Z3);
 // 24<z<30. m, gap between field and return field      
     CreateArb8("MagRetC4", iron, dZ4, corners[22],31,RetField,tShield,1,0, 0, Z4);
    //left magnet, split in three, like for previous magnet
@@ -1179,11 +1180,11 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateArb8("MagC4RB", iron, dZ4, corners[27],45,magFieldIron,tShield,1,0, 0, Z4);
     CreateArb8("MagC4RT", iron, dZ4, corners[28],45,magFieldIron,tShield,1,0, 0, Z4);
 // //Top/Bot return magnets for 24-28 m
-    CreateArb8("MagTopLeft24t28", iron, dZ4, corners[29],38,ConLField,tShield,1,0, 0, Z4);
-    CreateArb8("MagTopRight24t28", iron, dZ4, corners[30],30,ConRField,tShield,1,0, 0, Z4);
+    CreateArb8("MagTopLeft24t28", iron, dZ4, corners[29],30,ConRField,tShield,1,0, 0, Z4);
+    CreateArb8("MagTopRight24t28", iron, dZ4, corners[30],38,ConLField,tShield,1,0, 0, Z4);
 // //Bot return magnets 
-    CreateArb8("MagBotLeft24t28", iron, dZ4, corners[31],30,ConRField,tShield,1,0, 0, Z4);
-    CreateArb8("MagBotRight24t28", iron, dZ4, corners[32],38,ConLField,tShield,1,0, 0, Z4);
+    CreateArb8("MagBotLeft24t28", iron, dZ4, corners[31],38,ConLField,tShield,1,0, 0, Z4);
+    CreateArb8("MagBotRight24t28", iron, dZ4, corners[32],30,ConRField,tShield,1,0, 0, Z4);
 // // 30<z<36 m: Note: here also return field splits!
 //     //return fields
     CreateArb8("MagRetC6L", iron, dZ6, corners[33],31,RetField,tShield,1,0, 0, Z6);
@@ -1192,11 +1193,11 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateArb8("MagC6L", iron, dZ6, corners[35],45,magFieldIron,tShield,1,0, 0, Z6);
     CreateArb8("MagC6R", iron, dZ6, corners[36],45,magFieldIron,tShield,1,0, 0, Z6);
 //Top/Bot return magnets for 30-36 m, note inner return magnet splits too :-)
-    CreateArb8("MagTopLeft30t36", iron, dZ6, corners[37],38,ConLField,tShield,1,0, 0, Z6);
-    CreateArb8("MagTopRight30t36", iron, dZ6, corners[38],30,ConRField,tShield,1,0, 0, Z6);
+    CreateArb8("MagTopLeft30t36", iron, dZ6, corners[37],30,ConRField,tShield,1,0, 0, Z6);
+    CreateArb8("MagTopRight30t36", iron, dZ6, corners[38],38,ConLField,tShield,1,0, 0, Z6);
 // //Bot return magnets 
-    CreateArb8("MagBotLeft30t36", iron, dZ6, corners[39],30,ConRField,tShield,1,0, 0, Z6);
-    CreateArb8("MagBotRight30t36", iron, dZ6, corners[40],38,ConLField,tShield,1,0, 0, Z6);
+    CreateArb8("MagBotLeft30t36", iron, dZ6, corners[39],38,ConLField,tShield,1,0, 0, Z6);
+    CreateArb8("MagBotRight30t36", iron, dZ6, corners[40],30,ConRField,tShield,1,0, 0, Z6);
 // // 36<z<42 m: Note: here also return field splits!
 //     //return fields
     CreateArb8("MagRetC7L", iron, dZ7, corners[41],31,RetField,tShield,1,0, 0, Z7);
@@ -1205,11 +1206,11 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateArb8("MagC7L", iron, dZ7, corners[43],45,magFieldIron,tShield,1,0, 0, Z7);
     CreateArb8("MagC7R", iron, dZ7, corners[44],45,magFieldIron,tShield,1,0, 0, Z7);
 //Top/Bot return magnets for 36-42 m, note inner return magnet splits too :-)
-    CreateArb8("MagTopLeft36t42", iron, dZ7, corners[45],38,ConLField,tShield,1,0, 0, Z7);
-    CreateArb8("MagTopRight36t42", iron, dZ7, corners[46],30,ConRField,tShield,1,0, 0, Z7);
+    CreateArb8("MagTopLeft36t42", iron, dZ7, corners[45],30,ConRField,tShield,1,0, 0, Z7);
+    CreateArb8("MagTopRight36t42", iron, dZ7, corners[46],38,ConLField,tShield,1,0, 0, Z7);
 //Bot return magnets 
-    CreateArb8("MagBotLeft36t42", iron, dZ7, corners[47],30,ConRField,tShield,1,0, 0, Z7);
-    CreateArb8("MagBotRight36t42", iron, dZ7, corners[48],38,ConLField,tShield,1,0, 0, Z7);
+    CreateArb8("MagBotLeft36t42", iron, dZ7, corners[47],38,ConLField,tShield,1,0, 0, Z7);
+    CreateArb8("MagBotRight36t42", iron, dZ7, corners[48],30,ConRField,tShield,1,0, 0, Z7);
 // 42<z<48 m: Note: here also return field splits!
      //return fields
     CreateArb8("MagRetC8L", iron, dZ8, corners[49],31,RetField,tShield,1,0, 0, Z8);
@@ -1218,11 +1219,11 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateArb8("MagC8L", iron, dZ8, corners[51],45,magFieldIron,tShield,1,0, 0, Z8);
     CreateArb8("MagC8R", iron, dZ8, corners[52],45,magFieldIron,tShield,1,0, 0, Z8);
 //Top/Bot return magnets for 42-48 m, note inner return magnet splits too :-)
-    CreateArb8("MagTopLeft42t48", iron, dZ8, corners[53],38,ConLField,tShield,1,0, 0, Z8);
-    CreateArb8("MagTopRight42t48", iron, dZ8, corners[54],30,ConRField,tShield,1,0, 0, Z8);
+    CreateArb8("MagTopLeft42t48", iron, dZ8, corners[53],30,ConRField,tShield,1,0, 0, Z8);
+    CreateArb8("MagTopRight42t48", iron, dZ8, corners[54],38,ConLField,tShield,1,0, 0, Z8);
 //Bot return magnets 
-    CreateArb8("MagBotLeft42t48", iron, dZ8, corners[55],30,ConRField,tShield,1,0, 0, Z8);
-    CreateArb8("MagBotRight42t48", iron, dZ8, corners[56],38,ConLField,tShield,1,0, 0, Z8);
+    CreateArb8("MagBotLeft42t48", iron, dZ8, corners[55],38,ConLField,tShield,1,0, 0, Z8);
+    CreateArb8("MagBotRight42t48", iron, dZ8, corners[56],30,ConRField,tShield,1,0, 0, Z8);
     
     TGeoShapeAssembly* asmbShield = dynamic_cast<TGeoShapeAssembly*>(tShield->GetShape());
     Double_t totLength = asmbShield->GetDZ();
