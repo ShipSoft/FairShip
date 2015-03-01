@@ -4,7 +4,8 @@ geoFile   = None
 debug = False
 EcalDebugDraw = False
 withNoAmbiguities = None # True   for debugging purposes
-nEvents   = 99999
+nEvents    = 99999
+firstEvent = 0
 withHists = True
 vertexing = True
 dy = None
@@ -13,11 +14,12 @@ import ROOT,os,sys,getopt
 from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i",\
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
            ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","ambiguities","noVertexing"])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --inputFile=  --nEvents= number of events to process, ambiguities wire ambiguities default none' 
+        print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,' 
+        print ' ambiguities: wire ambiguities default none' 
         print ' outputfile will have same name with _rec added'   
         sys.exit()
 for o, a in opts:
@@ -46,7 +48,8 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
-print 'configured to process ',nEvents,' events from ' ,inputFile, ' with option Yheight = ',dy,' with vertexing',vertexing
+print 'configured to process ',nEvents,' events from ' ,inputFile, \
+      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing
 outFile = inputFile.replace('.root','_rec.root') 
 os.system('cp '+inputFile+' '+outFile)
 
@@ -161,6 +164,7 @@ class ShipReco:
   if n%1000==0: print "==> event ",n
   nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists = {}
+  stationCrossed = {}
   self.SmearedHits.Clear()
   self.fPartArray.Clear()
   self.fGenFitArray.Clear()
@@ -174,14 +178,18 @@ class ShipReco:
     nHits = self.SmearedHits.GetEntries()
     if self.SmearedHits.GetSize() == nHits: self.SmearedHits.Expand(nHits+1000)
     self.SmearedHits[nHits]=measurement 
-    if ahit.GetDetectorID() > 5*10000000 : continue
+    station = int(ahit.GetDetectorID()/10000000)
+    if station > 4 : continue
     # do not use hits in Veto station for track reco   
     trID = ahit.GetTrackID()
     if not hitPosLists.has_key(trID):   
-      hitPosLists[trID] = ROOT.std.vector('TVectorD')()
+      hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
+      stationCrossed[trID]  = {}
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     measurement = ROOT.TVectorD(7,m)
-    hitPosLists[trID].push_back(measurement) 
+    hitPosLists[trID].push_back(measurement)
+    if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
+    stationCrossed[trID][station]+=1  
   fitTrack = {}
   nTrack = -1
   for atrack in hitPosLists:
@@ -190,7 +198,8 @@ class ShipReco:
    if not PDG.GetParticle(pdg): continue # unknown particle
    meas = hitPosLists[atrack]
    nM = meas.size()
-   if nM < 25 : continue # not enough hits to make a good trackfit 
+   if nM < 25 : continue                          # not enough hits to make a good trackfit 
+   if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
    if debug: 
        mctrack = self.sTree.MCTrack[atrack]
    charge = PDG.GetParticle(pdg).Charge()/(3.)
@@ -223,18 +232,16 @@ class ShipReco:
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
       fitTrack[atrack].insertPoint(tp)  # add point to Track
+   # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
 #check
    if not fitTrack[atrack].checkConsistency():
     print 'Problem with track before fit, not consistent',self.fitTrack[atrack]
     continue
-# do the fit, stop message about matrix not positive definit
-   orglevel = ROOT.gErrorIgnoreLevel
-   ROOT.gErrorIgnoreLevel = ROOT.kError
+# do the fit
    try:  fitter.processTrack(fitTrack[atrack]) # processTrackWithRep(fitTrack[atrack],rep,True)
    except: 
        print "genfit failed to fit track"
        continue
-   ROOT.gErrorIgnoreLevel = orglevel
 #check
    if not fitTrack[atrack].checkConsistency():
     print 'Problem with track after fit, not consistent',self.fitTrack[atrack]
@@ -286,7 +293,7 @@ class ShipReco:
      try:
        rep.extrapolateToPoint(state, HNLPos, False)
      except:
-       print 'extrap did not worked'
+       print 'SHiPReco: extrapolation did not worked'
        continue 
      mass = PDG.GetParticle(PosDirCharge[t1]['pdgCode']).Mass()
      mom  = rep.getMom(state)  
@@ -301,7 +308,7 @@ class ShipReco:
      try:
        rep.extrapolateToPoint(state, HNLPos, False)
      except:
-       print 'extrap did not worked'
+       print 'SHiPReco: extrapolation did not worked'
        continue 
      mass = PDG.GetParticle(PosDirCharge[t2]['pdgCode']).Mass()
      mom  = rep.getMom(state)  
@@ -390,7 +397,8 @@ SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
 if EcalDebugDraw: ecalDrawer.InitPython(SHiP.sTree.MCTrack, SHiP.sTree.EcalPoint, ecalStructure, ecalClusters)
 
 # main loop
-for iEvent in range(0, SHiP.nEvents):
+for iEvent in range(firstEvent, SHiP.nEvents):
+ if debug: print 'event ',iEvent
  ntracks = SHiP.execute(iEvent)
  if vertexing:
 # now go for 2-track combinations
