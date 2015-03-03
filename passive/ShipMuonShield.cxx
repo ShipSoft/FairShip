@@ -200,7 +200,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
     Double_t dX24O = dX24+Clgap;
     Z3  = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + dZ3;
     dY1=dY2-eps;
-    dY2 = 2*dZ3*(dYEnd-dY1)/(ZEnd-Z3+dZ3)+dY1-eps-35;
+    dY2 = 2*dZ3*(dYEnd-dY1)/(ZEnd-Z3+dZ3)+dY1-eps;
     Double_t cornersCA[16] = {-dX17,-dY1, -dX17,dY1, dX17,dY1, dX17,-dY1,
                              -dX24,-dY2, -dX24,dY2, dX24,dY2, dX24,-dY2};
      //right magnet 
@@ -239,7 +239,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
     Double_t W30 = 0.3*m;
     Z4 = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + 2*dZ3 + dZ4;
     dY1=dY2;
-    dY2 = 2*dZ4*(dYEnd-dY1)/(ZEnd-Z4+dZ4)+dY1-76.5;
+    dY2 = 2*dZ4*(dYEnd-dY1)/(ZEnd-Z4+dZ4)+dY1;
     Double_t cornersC4A[16] = {-dX24,-dY1, -dX24,dY1, dX24,dY1, dX24,-dY1,
                                -W30,-dY2, -W30,dY2, W30,dY2, W30,-dY2};
        //left magnet, split in three, like for previous magnet
@@ -278,7 +278,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
 
     Z6 = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + 2*dZ3 + 2*dZ4+2*dZ5+dZ6;
     dY1=dY2;
-    dY2 = 2*dZ6*(dYEnd-dY1)/(ZEnd-Z6+dZ6)+dY1+69;
+    dY2 = 2*dZ6*(dYEnd-dY1)/(ZEnd-Z6+dZ6)+dY1;
     //return fields
     Double_t cornersC6RLA[16] = {dXr30I,-dY1, dXr30I,dY1, dXr30O,dY1, dXr30O,-dY1,
                                 dXr36I,-dY2, dXr36I,dY2, dXr36O,dY2, dXr36O,-dY2};
@@ -1112,7 +1112,7 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateTube("AbsorberAddCore", iron, 0, 15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
 
     Double_t ironField = fField*tesla;
-    // cout<<"fField  "<<fField<<endl;
+    cout<<"fField  "<<fField<<endl;
     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
