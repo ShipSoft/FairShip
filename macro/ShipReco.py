@@ -8,14 +8,15 @@ nEvents    = 99999
 firstEvent = 0
 withHists = True
 vertexing = True
-dy = None
+dy  = None
+saveDisk = False # remove input file
 
 import ROOT,os,sys,getopt
 from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
-           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","ambiguities","noVertexing"])
+           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","ambiguities","noVertexing","saveDisk"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,' 
@@ -38,6 +39,8 @@ for o, a in opts:
             inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4.root'
         if o in ("--ecalDebugDraw"):
             EcalDebugDraw = True
+        if o in ("--saveDisk"):
+            saveDisk = True
 if EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
 # need to figure out which geometry was used
@@ -51,7 +54,8 @@ if not dy:
 print 'configured to process ',nEvents,' events from ' ,inputFile, \
       ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing
 outFile = inputFile.replace('.root','_rec.root') 
-os.system('cp '+inputFile+' '+outFile)
+if saveDisk: os.system('mv '+inputFile+' '+outFile)
+else :       os.system('cp '+inputFile+' '+outFile)
 
 if withHists:
  h={}
