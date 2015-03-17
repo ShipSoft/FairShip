@@ -39,8 +39,6 @@ public:
   inline Double_t Energy() const {return fEnergy;}
   /** Calibrated energy of the cluster with assumption of normal incident angle **/
   inline Double_t PreCalibrated() const {return fPreCalibrated;}
-  /** Average type of cells in cluster **/
-  inline Double_t Type() const {return fType;}
   /** Second moment **/
   inline Double_t Moment() const {return fMoment;}
   /** Moment over X axis **/
@@ -52,6 +50,9 @@ public:
   inline Double_t Y() const {return fY;}
   /** \chi^2 of cluster after fitting **/
   inline Double_t Chi2() const {return fChi2;}
+  /** Status of the cluster: -1 --- rejected, 0 --- new, 1 --- reconstructed **/
+  inline Short_t Status() const {return fStatus;}
+  inline void SetStatus(Short_t st) {fStatus=st;}
 
   /** Getters for cells and peaks **/
   inline Int_t CellNum(Int_t i) const {return fCellNums[i];}
@@ -72,8 +73,6 @@ private:
   Double_t fEnergy;
   /** Calibrated energy of the cluster with assumption of normal incident angle **/
   Double_t fPreCalibrated;
-  /** Type is an average of type of cells in cluster **/
-  Double_t fType;
   /** Second moment **/
   Double_t fMoment;
   /** Moment over X axis **/
@@ -85,6 +84,8 @@ private:
   Double_t fY;
   /** \chi^2 after fitting **/
   Double_t fChi2;
+  /** Status of the cluster: -1 --- rejected, 0 --- new, 1 --- reconstructed **/
+  Short_t fStatus;
   
   /** Serial numbers of cells in cluster **/
   TArrayI fCellNums;

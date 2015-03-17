@@ -18,7 +18,7 @@ class ecalCell : public TObject
 public:
   ecalCell(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0) 
     : TObject(), fNumber(cellnumber), fX1(x1), fY1(y1), fX2(x2),
-    fY2(y2), fType(type), fEnergy(energy), fADC(-1111), fNeighbors(), fTime(-1111)
+    fY2(y2), fType(type), fEnergy(energy), fADC(-1111), fNeighbors(), f5x5Cluster(),fTime(-1111)
   {};
 
   inline Bool_t IsInside(Float_t x, Float_t y) {return x>GetX1()&&x<GetX2()&&y>GetY1()&&y<GetY2();}
@@ -42,7 +42,9 @@ public:
   inline Float_t GetEnergy() const {return fEnergy;}
   Float_t GetTime() const {return fTime;}
   void SetTime(Float_t time) {fTime=time;}
-	
+
+  // Neighbours stuff
+  // Get list of 8 neighbors
   inline void GetNeighborsList(std::list<ecalCell*> &neib) const
   {
     neib=fNeighbors;
@@ -51,6 +53,14 @@ public:
   {
     fNeighbors=neib;
   }
+
+  // 5x5 cluster stuff
+  inline void Get5x5Cluster(std::list<ecalCell*>& cls)
+  {
+    if (f5x5Cluster.size()==0) Create5x5Cluster();
+    cls=f5x5Cluster;
+  }
+
   inline void SetEnergy(Float_t energy) {fEnergy=energy;}
   inline void SetADC(Short_t adc) {fADC=adc;}
   /** Reset all energies in cell **/
@@ -86,6 +96,9 @@ private:
 
   /** list of neighbor cells **/
   std::list<ecalCell*> fNeighbors;
+  /** 5x5 cluster **/
+  std::list<ecalCell*> f5x5Cluster;
+  void Create5x5Cluster();
 
   /** Time of cell to fire **/
   Double_t fTime;

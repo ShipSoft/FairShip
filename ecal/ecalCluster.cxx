@@ -18,13 +18,13 @@ ecalCluster::ecalCluster()
     fMaxs(0),
     fEnergy(0.),
     fPreCalibrated(-1111.),
-    fType(0.),
     fMoment(0.),
     fMomentX(0.),
     fMomentY(0.),
     fX(0.),
     fY(0.),
     fChi2(0.),
+    fStatus(0),
     fCellNums(),
     fPeakNums(),
     fPreEnergy(),
@@ -40,13 +40,13 @@ ecalCluster::ecalCluster(Int_t num, const std::list<ecalCell*>& cluster, const s
     fMaxs(0),
     fEnergy(0.),
     fPreCalibrated(-1111.),
-    fType(0.),
     fMoment(0.),
     fMomentX(0.),
     fMomentY(0.),
     fX(0.),
     fY(0.),
     fChi2(0.),
+    fStatus(0),
     fCellNums(),
     fPeakNums(),
     fPreEnergy(),
@@ -63,7 +63,6 @@ ecalCluster::ecalCluster(Int_t num, const std::list<ecalCell*>& cluster, const s
 
   fMaxs=maximums.size();
   fEnergy=0;
-  fType=0;
   fX=0;
   fY=0;
   for(;p!=cluster.end();++p)
@@ -74,13 +73,11 @@ ecalCluster::ecalCluster(Int_t num, const std::list<ecalCell*>& cluster, const s
     y=(*p)->GetCenterY();
     fX+=x*e; fY+=y*e;
     fEnergy+=e;
-    fType+=(*p)->GetType();
   }
   fSize=cls.size();
 
   cls.sort(ecalClusterSortProcess());
   cls.reverse();
-  fType/=fSize;
   fX/=fEnergy;
   fY/=fEnergy;
   fChi2=-1111.0;
