@@ -1,5 +1,6 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root 
 import os,ROOT
+if not os.uname()[1].lower().find('ubuntu')< 0: local = True
 
 # 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN
 # 51-59 passive shielding
@@ -96,7 +97,9 @@ else:
  prefixes = ['']
 
 testdir = '.'
-if prefixes[0]!='': testdir = prefixes[0]+'1'
+path = ''
+if local: path = "/media/Data/HNL/muonBackground/"
+if prefixes[0]!='': testdir = path+prefixes[0]+'1'
 # figure out which setup
 for f in os.listdir(testdir):
   if not f.find("geofile_full")<0:
@@ -157,20 +160,26 @@ ztarget = -100.
 fchain = []
 fchainRec = []
 # first time trying to read a chain of Fairship files, doesn't seem to work out of the box, try some tricks.
+testdir = '.'
+if path != '': testdir = path
 if withChain>0:
  for prefix in prefixes:
   for i in range(1,10):
-   if not prefix+str(i) in os.listdir('.'): continue
-   q1 = inputFile1 in os.listdir(prefix+str(i))
-   q2 = inputFile2 in os.listdir(prefix+str(i))
-   if q1 : inputFile  = inputFile1
-   elif q2: inputFile = inputFile2
+   if not prefix+str(i) in os.listdir(testdir): continue
+   q1 = inputFile1 in os.listdir(path+prefix+str(i))
+   q2 = inputFile2 in os.listdir(path+prefix+str(i))
+   recFile1 = inputFile1.replace('.root','_rec.root')
+   recFile2 = inputFile2.replace('.root','_rec.root')
+   r1 = recFile1 in os.listdir(path+prefix+str(i))
+   r2 = recFile2 in os.listdir(path+prefix+str(i))
+   if q1 or r1 : inputFile  = inputFile1
+   elif q2 or r2: inputFile = inputFile2
    else: continue
-   fname = prefix+str(i)+'/'+inputFile 
+   fname = path+prefix+str(i)+'/'+inputFile 
    fchain.append(fname)
    recFile = inputFile.replace('.root','_rec.root')
-   if not recFile in os.listdir(prefix+str(i)): continue
-   fname = prefix+str(i)+'/'+recFile
+   if not recFile in os.listdir(path+prefix+str(i)): continue
+   fname = path+prefix+str(i)+'/'+recFile
    fchainRec.append(fname)
 else:
  fchain.append(inputFile)
@@ -276,8 +285,19 @@ ut.bookHist(h,'dummy','',10,0.,1.)
 ut.bookHist(h,'dE','',100,0.,10.,100,0.,10.)
 h['dummy'].SetMaximum(10.)
 
-histlistAll = {1:'strawstation_5',2:'strawstation_1',3:'strawstation_4',4:'Ecal',5:'muon',
-               6:'lidT1lisci',7:'T1LS',8:'T2LS',9:'T4LS',10:'volDriftLayer5',11:'volDriftLayer',12:'Emulsion',13:'Det2','TimeDet':14}
+histlistAll = {1:'strawstation_5',2:'strawstation_1',3:'strawstation_4',4:'Ecal',5:'muondet',
+               6:'VetoTimeDet',7:'T1LS',8:'T2LS',9:'T3LS',10:'T5LS',11:'volRpc',12:'volHPT',13:'TimeDet',14:'Det2'}
+hLiSc = {1:{}}
+for i in range(1,7):  hLiSc[1][i] = "T1LiSc_"+str(i)
+hLiSc[2] = {}
+for i in range(1,48): hLiSc[2][i] = "T2LiSc_"+str(i)
+hLiSc[3] = {}
+for i in range(1,3): hLiSc[3][i] = "T3LiSc_"+str(i)
+hLiSc[5] = {}
+for i in range(1,3): hLiSc[5][i] = "T5LiSc_"+str(i)
+hMuon = {}
+for i in range(0,4): hMuon[i] = "muondet"+str(i)
+
 
 # start event loop
 mom = ROOT.TVector3()
@@ -297,8 +317,11 @@ def BigEventLoop():
   hitContainers = [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPointLite,sTree.strawtubesPoint,sTree.ShipRpcPoint]
   for n in range(nEvents):
    rc = sTree.GetEntry(n)
-   theMuon = sTree.MCTrack[0] # also works for neutrinos
-   w = theMuon.GetWeight()
+   theMuon = sTree.MCTrack[0]
+   if sTree.MCTrack.GetEntries() > 1: 
+    w = sTree.MCTrack[1].GetWeight() # also works for neutrinos
+   else: 
+    w = sTree.MCTrack[0].GetWeight() # also works for neutrinos
    if w==0 : w = 1.
    rc = h['weight'].Fill(w)
    rc = h['muonP'].Fill(theMuon.GetP()/u.GeV,w)
@@ -343,12 +366,16 @@ def BigEventLoop():
      pdgID = -2
      if 'PdgCode' in dir(ahit):   pdgID = ahit.PdgCode()
      trackID = ahit.GetTrackID()
+     phit = -100.
      if not trackID < 0: 
        aTrack = sTree.MCTrack[trackID]
        pdgID  = aTrack.GetPdgCode()
+       mom    = aTrack.GetMomentum() # ! this is not momentum of particle at Calorimater place
+       phit   = mom.Mag()/u.GeV
      if abs(pdgID)==13: mu='_mu'
-     rc = ahit.Momentum(mom)
-     phit = mom.Mag()/u.GeV
+     if ahit.GetName().find('ecal')<0:
+      rc = ahit.Momentum(mom)
+      phit = mom.Mag()/u.GeV
      if phit>3 and abs(pdgID)==13: mu='_muV0'
      detName = detName + mu
      if detName.find('LS')<0: rc = h[detName].Fill(x/u.m,y/u.m,w)
@@ -393,6 +420,34 @@ def BigEventLoop():
  makePlots(nstations)
 #
 def makePlots(nstations):
+# compactify liquid scintillator
+ for mu in ['','_mu','_muV0']:
+  for x in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
+    for k in [1,2,3,5]: 
+     first = True
+     for j in hLiSc[k]:
+      detName=hLiSc[k][j]
+      tag  = detName+mu+x
+      newh = detName[0:2]+'LS'+mu+x
+      if not h.has_key(tag): continue 
+      if first: 
+         h[newh] = h[tag].Clone(newh)
+         h[newh].SetTitle( h[tag].GetTitle().split('_')[0])
+         first = False
+      else:  rc = h[newh].Add(h[tag])
+# compactify muon stations
+ for mu in ['','_mu','_muV0']:
+   for x in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
+    first = True
+    for j in hMuon: 
+     detName=hMuon[j]
+     tag  = detName+mu+x
+     newh = 'muondet'+mu+x
+     if first: 
+       h[newh] = h[tag].Clone(newh)
+       h[newh].SetTitle( h[tag].GetTitle().split(' ')[0]+' '+newh)
+       first = False
+     else:  rc = h[newh].Add(h[tag]) 
  cxcy = {1:[2,1],2:[3,1],3:[2,2],4:[3,2],5:[3,2],6:[3,2],7:[3,3],8:[3,3],9:[3,3],10:[4,3],11:[4,3],12:[4,3],13:[5,3],14:[5,3]}
  ut.bookCanvas(h,key='ResultsI',title='hit occupancies',  nx=1100,ny=600*cxcy[nstations][1],cx=cxcy[nstations][0],cy=cxcy[nstations][1])
  ut.bookCanvas(h,key='ResultsImu',title='hit occupancies',nx=1100,ny=600*cxcy[nstations][1],cx=cxcy[nstations][0],cy=cxcy[nstations][1])
@@ -409,9 +464,9 @@ def makePlots(nstations):
   hn = histlist[i] 
   if not h.has_key(hn): continue 
   h[hn].SetStats(0)
-  h[hn].Draw('colz')
   txt[i] = '%5.2G'%(h[hn].GetSumOfWeights()/nSpills)
   l[i] = ROOT.TLatex().DrawLatexNDC(0.15,0.85,txt[i])
+  h[hn].Draw('colz')
 #
   hn = histlist[i]+'_mu' 
   tc = h['ResultsImu'].cd(i)
@@ -480,7 +535,10 @@ def AnaEventLoop():
   for n in range(nEvents):
    sTree.GetEntry(n)
    if n==0 : print 'now at event ',n,f.GetName()
-   wg = sTree.MCTrack[0].GetWeight()   
+   if sTree.MCTrack.GetEntries() > 1: 
+    wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
+   else: 
+    wg = sTree.MCTrack[0].GetWeight() # also works for neutrinos
    i = -1
    for atrack in sTree.FitTracks:
     i+=1
@@ -522,7 +580,10 @@ def analyzeConcrete():
   nEvents = sTree.GetEntries()
   for n in range(nEvents):
    sTree.GetEntry(n)
-   wg = sTree.MCTrack[0].GetWeight()   
+   if sTree.MCTrack.GetEntries() > 1: 
+    wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
+   else: 
+    wg = sTree.MCTrack[0].GetWeight() # also works for neutrinos
    for ahit in sTree.vetoPoint:
      detID = ahit.GetDetectorID()
      if logVols[detID] != 'rockD': continue  
@@ -575,7 +636,10 @@ def rareEventEmulsion(fname = 'rareEmulsion.txt'):
      x = ahit.GetX()
      y = ahit.GetY()
      z = ahit.GetZ()
-     wg = sTree.MCTrack[0].GetWeight()   
+     if sTree.MCTrack.GetEntries() > 1: 
+      wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
+     else: 
+      wg = sTree.MCTrack[0].GetWeight() # also works for neutrinos
      fout.write( 'rare emulsion hit %i, %s, %8.3F, %i \n'%(n,f.GetName(),wg,ahit.PdgCode() ))
      if ahit.GetPz()/u.GeV > 1. :
       fout.write( 'V,P when making hit %8.3F,%8.3F,%8.3F %8.3F,%8.3F,%8.3F (GeV) \n'%(\
