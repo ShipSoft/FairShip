@@ -99,7 +99,7 @@ private:
   ecalCluster(const ecalCluster&);
   ecalCluster& operator=(const ecalCluster&);
 
-  ClassDef(ecalCluster, 1)
+  ClassDef(ecalCluster, 2)
 };
 
 #endif
