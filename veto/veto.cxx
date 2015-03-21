@@ -346,129 +346,92 @@ void veto::ConstructGeometry()
       //Assume ~1 m between ribs, calculate number of ribs
 
       //For Tube nr 1:
-      Int_t nribs = fTub1length*2./(1.*m) ;
-      Double_t ribspacing = fTub1length*2./(nribs+1);
+      Int_t nribs = 2+fTub1length*2./(1.*m) ;
+      Double_t ribspacing = (fTub1length*2.-nribs*walli)/(nribs-1)+walli;
       //now place ribs
-      for (Int_t nr=0; nr<nribs+1; nr++) {
+      for (Int_t nr=0; nr<nribs; nr++) {
         TString namerib = "T1Rib_"; namerib+=nr;
-        Double_t zrib= fTub1z-fTub1length+nr*ribspacing;
-        if (nr==0) zrib-=walli/2.;
+        Double_t zrib= fTub1z-fTub1length+walli/2.+nr*ribspacing;
         GeoEllipticalTube(namerib,liscitube,als1,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
       }
       //now place LiSc
-      for (Int_t nr=1; nr<nribs+2; nr++) {
+      for (Int_t nr=1; nr<nribs; nr++) {
         TString namerib = "T1LiSc_"; namerib+=nr;
-        Double_t zlisc= fTub1z-fTub1length+nr*ribspacing;
-        Double_t zlength=ribspacing-walli;
-        if (nr==1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub1z-fTub1length+zlength;
-        }
-        if (nr==nribs+1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub1z+fTub1length-zlength;
-        }
+        Double_t zlength=(ribspacing-walli)/2.;
+        Double_t zlisc= fTub1z-fTub1length+walli+zlength+(nr-1)*ribspacing;
         GeoEllipticalTube(namerib,liscitube,als1,bls,zlength,zlisc- zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
       }
 
       //For Tube nr 2:
-      nribs = fTub2length*2./(1.*m) ;
-      ribspacing = fTub2length*2./(nribs+1);
+      nribs = 2+fTub2length*2./(1.*m) ;
+      ribspacing = (fTub2length*2.-nribs*walli)/(nribs-1)+walli;
       //now place ribs
-      for (Int_t nr=1; nr<nribs+1; nr++) {
+      for (Int_t nr=0; nr<nribs; nr++) {
         TString namerib = "T2Rib_"; namerib+=nr;
-        Double_t zrib= fTub2z-fTub2length+nr*ribspacing;
+        Double_t zrib= fTub2z-fTub2length+walli/2.+nr*ribspacing;
         GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
       }
       //now place LiSc
-      for (Int_t nr=1; nr<nribs+2; nr++) {
+      for (Int_t nr=1; nr<nribs; nr++) {
         TString namerib = "T2LiSc_"; namerib+=nr;
-        Double_t zlisc= fTub2z-fTub2length+nr*ribspacing;
-        Double_t zlength=ribspacing-walli;
-        if (nr==1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub2z-fTub2length+zlength;
-        }
-        if (nr==nribs+1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub2z+fTub2length-zlength;
-        }
-        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc- zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
+        Double_t zlength=(ribspacing-walli)/2.;
+        Double_t zlisc=fTub2z-fTub2length+walli+zlength+(nr-1)*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc-zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
       }
 
-      //code for more ribs: 
-      if (1==1) {
       //For Tube nr 3:
-      nribs = fTub3length*2./(1.*m) ;
-      ribspacing = fTub3length*2./(nribs+1);
+      nribs = 2+fTub3length*2./(1.*m) ;
+      ribspacing = (fTub3length*2.-nribs*walli)/(nribs-1)+walli;
       //now place ribs
-      for (Int_t nr=1; nr<nribs+1; nr++) {
+      for (Int_t nr=0; nr<nribs; nr++) {
         TString namerib = "T3Rib_"; namerib+=nr;
-        Double_t zrib= fTub3z-fTub3length+nr*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib - zStartMagVol,18,St,tMaGVol);
+        Double_t zrib= fTub3z-fTub3length+walli/2.+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
       }
       //now place LiSc
-      for (Int_t nr=1; nr<nribs+2; nr++) {
+      for (Int_t nr=1; nr<nribs; nr++) {
         TString namerib = "T3LiSc_"; namerib+=nr;
-        Double_t zlisc= fTub3z-fTub3length+nr*ribspacing;
-        Double_t zlength=ribspacing-walli;
-        if (nr==1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub3z-fTub3length+zlength;
-        }
-        if (nr==nribs+1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub3z+fTub3length-zlength;
-        }
-        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc- zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
+        Double_t zlength=(ribspacing-walli)/2.;
+        Double_t zlisc=fTub3z-fTub3length+walli+zlength+(nr-1)*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc-zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
       }
+
       //For Tube nr 4:
-      nribs = fTub4length*2./(1.*m) ;
-      ribspacing = fTub4length*2./(nribs+1);
+      nribs = 2+fTub4length*2./(1.*m) ;
+      ribspacing = (fTub4length*2.-nribs*walli)/(nribs-1)+walli;
       //now place ribs
-      for (Int_t nr=1; nr<nribs+1; nr++) {
+      for (Int_t nr=0; nr<nribs; nr++) {
         TString namerib = "T4Rib_"; namerib+=nr;
-        Double_t zrib= fTub4z-fTub4length+nr*ribspacing;
+        Double_t zrib= fTub4z-fTub4length+walli/2.+nr*ribspacing;
         //Here use ribs only 10 cm high!
         GeoEllipticalTube(namerib,liscitube/3.,als,bls,walli/2.,zrib - zStartMagVol,18,St,tMaGVol);
       }
 
       //For Tube nr 5:
-      nribs = fTub5length*2./(1.*m) ;
-      ribspacing = fTub5length*2./(nribs+1);
+      nribs = 2+fTub5length*2./(1.*m) ;
+      ribspacing = (fTub5length*2.-nribs*walli)/(nribs-1)+walli;
       //now place ribs
-      for (Int_t nr=1; nr<nribs+1; nr++) {
+      for (Int_t nr=0; nr<nribs; nr++) {
         TString namerib = "T5Rib_"; namerib+=nr;
-        Double_t zrib= fTub5z-fTub5length+nr*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib - zStartMagVol,18,St,tMaGVol);
+        Double_t zrib= fTub5z-fTub5length+walli/2.+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
       }
       //now place LiSc
-      for (Int_t nr=1; nr<nribs+2; nr++) {
+      for (Int_t nr=1; nr<nribs; nr++) {
         TString namerib = "T5LiSc_"; namerib+=nr;
-        Double_t zlisc= fTub5z-fTub5length+nr*ribspacing;
-        Double_t zlength=ribspacing-walli;
-        if (nr==1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub5z-fTub5length+zlength;
-        }
-        if (nr==nribs+1){
-          zlength=ribspacing-walli/2.;
-	  zlisc=fTub5z+fTub5length-zlength;
-        }
-        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc- zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
+        Double_t zlength=(ribspacing-walli)/2.;
+        Double_t zlisc=fTub5z-fTub5length+walli+zlength+(nr-1)*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc-zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
       }
-
 
       //For Tube nr 6:
-      nribs = fTub6length*2./(1.*m) ;
-      ribspacing = fTub6length*2./(nribs+1);
+      nribs = 2+fTub6length*2./(1.*m) ;
+      ribspacing = (fTub6length*2.-nribs*walli)/(nribs-1)+walli;
       //now place ribs
-      for (Int_t nr=1; nr<nribs+2; nr++) {
+      for (Int_t nr=0; nr<nribs; nr++) {
         TString namerib = "T6Rib_"; namerib+=nr;
-        Double_t zrib= fTub6z-fTub6length+nr*ribspacing;
-        if (nr==nribs+1) zrib+=walli/2.;
-        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib - zStartMagVol,18,St,tMaGVol);
-      }
+        Double_t zrib= fTub6z-fTub6length+walli/2.+nr*ribspacing;
+        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
       }
 
       //Exit lid: first create Sphere

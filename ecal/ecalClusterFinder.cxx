@@ -70,6 +70,7 @@ TClonesArray* ecalClusterFinder::InitPython(ecalStructure* structure, TClonesArr
   fClusters=new TClonesArray("ecalCluster", 2000);
   return fClusters;
 }
+
 /** Finish a task **/
 void ecalClusterFinder::Finish()
 {
@@ -117,6 +118,7 @@ void ecalClusterFinder::FormPreClusters()
 //    cout << ecls << endl;
     /** Remove low energy maximums **/
     if (ecls<fMinMaxE) continue;
+/*
     cell->GetNeighborsList(all);
     cls.clear();
     for(p=all.begin();p!=all.end();++p)
@@ -125,6 +127,8 @@ void ecalClusterFinder::FormPreClusters()
       for(p2=cls2.begin();p2!=cls2.end();++p2)
         if (find(cls.begin(), cls.end(), *p2)==cls.end()) cls.push_back(*p2);
     }
+*/
+    cell->Get5x5Cluster(cls);
     ecls=0.0;
     for(p=cls.begin();p!=cls.end();++p)
       ecls+=(*p)->GetEnergy();

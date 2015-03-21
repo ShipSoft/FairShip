@@ -66,10 +66,9 @@ def speedUp():
  for x in ["wire","gas"]:  
    xvol = fGeo.GetVolume(x)
    xvol.SetVisibility(0) 
- ecal = top.GetNode("Ecal_1")
- ecal.SetVisDaughters(0)
- hcal = top.GetNode("Hcal_1")
- hcal.SetVisDaughters(0)
+ for x in ["Ecal","Hcal"]:
+  xvol = fGeo.GetVolume(x)
+  xvol.SetVisDaughters(0)
  
 def toolBar():
  topNodes={}

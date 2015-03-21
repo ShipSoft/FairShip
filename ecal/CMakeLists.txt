@@ -41,6 +41,9 @@ ecalCluster.cxx
 ecalClusterFinder.cxx
 ecalClusterCalibration.cxx
 ecalDrawer.cxx
+ecalReconstructed.cxx
+ecalReco.cxx
+ecalMatch.cxx
 )
 
 Set(LINKDEF ecalLinkDef.h)

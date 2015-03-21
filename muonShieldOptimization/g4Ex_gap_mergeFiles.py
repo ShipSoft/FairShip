@@ -2,8 +2,8 @@
 # result_0.1Bn_ecut_0.5.root         	1E8 with Ecut > 0.5 GeV
 Yandex   = False  # False
 JPsi     = False # True
-MoTarget = False
-Tau      = True
+MoTarget = True
+Tau      = False
 
 import ROOT,os
 from ROOT import TDatabasePDG,TMath,gDirectory
@@ -15,7 +15,7 @@ Mmu2 = Mmu * Mmu
 
 if Yandex:
  stats =  {5.:[1E9,1E9],0.5:[1E8]}
- files  = {5.:['result_1Bn_ecut_5.root','result_1Bn_ecut_5-v02.root'],0.5:['result_0.1Bn_ecut_0.5.root']}
+ files  = {5.:['$SHIPSOFT/data/result_1Bn_ecut_5.root','$SHIPSOFT/data/result_1Bn_ecut_5-v02.root'],0.5:['$SHIPSOFT/data/result_0.1Bn_ecut_0.5.root']}
  fnew  = 'pythia8_Geant4_total_Yandex.root'
 if JPsi:
  BR = 0.05961 
@@ -71,7 +71,9 @@ if Tau:
 if MoTarget:
  stats =  {}
  files  = {}
- jobs = {'b64a4b817c.cern.ch_g4Ex_gap_':['60','61','62','65','66'],'b63edb1b12_g4Ex_gap_':['63']}
+ jobs = {'b64a4b817c.cern.ch_g4Ex_gap_':['60','61','62','65','66'],'b63edb1b12_g4Ex_gap_':['63','75','77','78','81','83','85','87','90','93','95'],\
+         'b65dfad864_g4Ex_gap_':['70'],'b6276c506a_g4Ex_gap_':['71'],'b6e72959f6_g4Ex_gap_':['72'],\
+         'b6429e4f38.cern.ch_g4Ex_gap_':['73','74','76','79','80','82','84','86','88','89','91','94','96']          }
  nevts = 0
  ntot  = 0
  tag   = '#events='
@@ -150,8 +152,10 @@ def makeFinalNtuples(norm=5.E13,opt=''):
      if Tau        :     weight = norm/(ntot[0.])
      if MoTarget:
       if Ekin < ecut : continue
-      if Ekin > 10. :     weight = norm/(ntot[0.5] + ntot[10.])
-      else          :     weight = norm/(ntot[0.5])
+      if Ekin > 50.   :     weight = norm/(ntot[0.5] + ntot[10.] + ntot[20.]+ ntot[50.])
+      elif Ekin > 20.   :   weight = norm/(ntot[0.5] + ntot[10.] + ntot[20.])
+      elif Ekin > 10. :     weight = norm/(ntot[0.5] + ntot[10.])
+      else            :     weight = norm/(ntot[0.5])
      vlist.append(weight)
      vlist.append( float(ecut) )
      # print vlist
