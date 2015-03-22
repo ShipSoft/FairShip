@@ -9,6 +9,10 @@ TAG="0.0.9"
 BLD_DIR="build"
 VMPATH=/opt/ship/FairShip/build
 
+bold() {
+  echo -e "\033[1m$*\033[0m"
+}
+
 [ -n "$1" ] && TAG=$1 && shift
 [ -n "$1" ] && DOCKER_USER=$1 && shift
 [ -d "$1" ] && BLD_DIR=$1 && shift
@@ -44,8 +48,9 @@ docker build --rm -t $REPO:$TAG $FULL_BLD_DIR
 pushd $BLD_DIR
 for d in $RESTORE_LINKS ; do rm -rf $d ; ln -s ../$d . ;  done
 popd
-echo "You have just created container: " $REPO:$TAG
-echo "to check  it:"
-echo "  docker run -ti --rm $REPO:$TAG ls -l ."
-echo "to push it to docker registry:"
-echo "  docker push $REPO:$TAG"
+REPO_NAME_B=`bold "$REPO:$TAG"`
+echo -e "You have just created container: " $REPO_NAME_B
+echo -e "to check  it:"
+echo -e "  docker run -ti --rm $REPO_NAME_B ls -l ."
+echo -e "to push it to docker registry:"
+echo -e "  docker push $REPO_NAME_B"
