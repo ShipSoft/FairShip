@@ -464,9 +464,9 @@ def makePlots(nstations):
   hn = histlist[i] 
   if not h.has_key(hn): continue 
   h[hn].SetStats(0)
+  h[hn].Draw('colz')
   txt[i] = '%5.2G'%(h[hn].GetSumOfWeights()/nSpills)
   l[i] = ROOT.TLatex().DrawLatexNDC(0.15,0.85,txt[i])
-  h[hn].Draw('colz')
 #
   hn = histlist[i]+'_mu' 
   tc = h['ResultsImu'].cd(i)
@@ -561,9 +561,36 @@ def AnaEventLoop():
     Ptruth    = mcPart.GetP()
     fout.write( 'Ptruth %i %8.2F \n'%(mcPart.GetPdgCode(),Ptruth/u.GeV) ) 
 #
+def muDISntuple(fn):
+# take as input the rare events
+  fout = ROOT.TFile('muDISVetoCounter.root','recreate')
+  h['ntuple'] = ROOT.TNtuple("muons","muon flux VetoCounter","id:px:py:pz:x:y:z:w")
+  f = ROOT.TFile(fn)
+  sTree = f.cbmsim
+  nEvents = sTree.GetEntries()
+  for n in range(nEvents):
+   sTree.GetEntry(n)
+   if sTree.MCTrack.GetEntries() > 1: 
+      wg = sTree.MCTrack[1].GetWeight()
+   else: 
+      wg = sTree.MCTrack[0].GetWeight()
+   for ahit in sTree.vetoPoint:
+     detID = ahit.GetDetectorID()
+     if logVols[detID] != 'VetoTimeDet': continue
+     pid = ahit.PdgCode()    
+     if abs(pid) != 13: continue
+     P = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)
+     if P>3/u.GeV:
+       h['ntuple'].Fill(float(pid), float(ahit.GetPx()/u.GeV),float(ahit.GetPy()/u.GeV),float(ahit.GetPz()/u.GeV),\
+                   float(ahit.GetX()/u.m),float(ahit.GetY()/u.m),float(ahit.GetZ()/u.m),float(wg) )
+  fout.cd()
+  h['ntuple'].Write()
 def analyzeConcrete():
- for m in ['','mu']:
+ fout = ROOT.TFile('muConcrete.root','recreate')
+ h['ntuple'] = ROOT.TNtuple("muons","muon flux concrete","id:px:py:pz:x:y:z:w")
+ for m in ['','mu','V0']:
   ut.bookHist(h,'conc_hitz'+m,'concrete hit z '+m,100,-100.,100.)
+  ut.bookHist(h,'conc_hitzP'+m,'concrete hit z vs P'+m,100,-100.,100.,100,0.,25.)
   ut.bookHist(h,'conc_hity'+m,'concrete hit y '+m,100,-15.,15.)
   ut.bookHist(h,'conc_p'+m,'concrete hit p '+m,100,0.,300.)
   ut.bookHist(h,'conc_pt'+m,'concrete hit pt '+m,100,0.,10.)
@@ -581,25 +608,31 @@ def analyzeConcrete():
   for n in range(nEvents):
    sTree.GetEntry(n)
    if sTree.MCTrack.GetEntries() > 1: 
-    wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
+      wg = sTree.MCTrack[1].GetWeight() 
    else: 
-    wg = sTree.MCTrack[0].GetWeight() # also works for neutrinos
+      wg = sTree.MCTrack[0].GetWeight() 
    for ahit in sTree.vetoPoint:
      detID = ahit.GetDetectorID()
      if logVols[detID] != 'rockD': continue  
-     m=''       
-     if abs(ahit.PdgCode()) == 13: m='mu'
+     m=''    
+     pid = ahit.PdgCode()    
+     if abs(pid) == 13: m='mu'
+     P = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)
+     if abs(pid) == 13 and P>3/u.GeV: 
+       m='V0'
+       h['ntuple'].Fill(float(pid), float(ahit.GetPx()/u.GeV),float(ahit.GetPy()/u.GeV),float(ahit.GetPz()/u.GeV),\
+                   float(ahit.GetX()/u.m),float(ahit.GetY()/u.m),float(ahit.GetZ()/u.m),float(wg) )
      h['conc_hitz'+m].Fill(ahit.GetZ()/u.m-z0,wg)
      h['conc_hity'+m].Fill(ahit.GetY()/u.m,wg)
-     P = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)
      h['conc_p'+m].Fill(P/u.GeV,wg)
+     h['conc_hitzP'+m].Fill(ahit.GetZ()/u.m,P/u.GeV,wg)
      Pt = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2)
      h['conc_pt'+m].Fill(Pt/u.GeV,wg)
      h['conc_hitzy'+m].Fill(ahit.GetZ()/u.m-z0,ahit.GetY()/u.m,wg)
  #
-     start = [ahit.GetX()/u.m,ahit.GetY()/u.m,ahit.GetZ()/u.m]
-     direc = [-ahit.GetPx()/P,-ahit.GetPy()/P,-ahit.GetPz()/P]
-     t = - start[0]/direc[0]
+     #start = [ahit.GetX()/u.m,ahit.GetY()/u.m,ahit.GetZ()/u.m]
+     #direc = [-ahit.GetPx()/P,-ahit.GetPy()/P,-ahit.GetPz()/P]
+     #t = - start[0]/direc[0]
      
  ut.bookCanvas(h,key='Resultsmu',title='muons hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
  ut.bookCanvas(h,key='Results',title='hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
@@ -614,6 +647,8 @@ def analyzeConcrete():
   tc = h['Results'+m].cd(4)
   tc.SetLogy(1)
   h['conc_p'+m].Draw()
+  fout.cd()
+  h['ntuple'].Write()
 
 def rareEventEmulsion(fname = 'rareEmulsion.txt'):
  ntot = 0
