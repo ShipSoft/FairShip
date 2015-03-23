@@ -89,7 +89,8 @@ for k in range(nStart,nEnd):
      for itrk in range(1,myPythia.GetN()+1):
       did = abs(myPythia.GetK(itrk,2))
       dpx,dpy,dpz = rotate(ctheta,stheta,cphi,sphi,myPythia.GetP(itrk,1),myPythia.GetP(itrk,2),myPythia.GetP(itrk,3))
-      E = ROOT.TMath.Sqrt(getMasssq(did)+p*p)
+      psq =   dpx**2+dpy**2+dpz**2
+      E = ROOT.TMath.Sqrt(getMasssq(did)+psq)
       m = array('d',[did,dpx,dpy,dpz,E])
       part = ROOT.TVectorD(5,m)
 # copy to branch
