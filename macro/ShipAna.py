@@ -127,7 +127,6 @@ def access2SmearedHits():
    print mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode()
    key+=1
 
-
 def myVertex(t1,t2,PosDir):
  # closest distance between two tracks
     # d = |pq . u x v|/|u x v|
@@ -138,11 +137,13 @@ def myVertex(t1,t2,PosDir):
    pq = a-c
    uCrossv = u.Cross(v)
    dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
-   # H = dist*n+a-c
-   Hx = -dist/(uCrossv.Mag()+1E-8) * uCrossv.x()+pq.x()
-   Hy = -dist/(uCrossv.Mag()+1E-8) * uCrossv.y()+pq.y()
-   r = u.y()/u.x()
-   t = (Hy-Hx*r )/(v.y()-r*v.x())
+   # u.a - u.c + s*|u|**2 - u.v*t    = 0
+   # v.a - v.c + s*v.u    - t*|v|**2 = 0
+   E = u.Dot(a) - u.Dot(c) 
+   F = v.Dot(a) - v.Dot(c) 
+   A,B = u.Mag2(), -u.Dot(v) 
+   C,D = u.Dot(v), -v.Mag2()
+   t = -(C*E-A*F)/(B*C-A*D)
    X = c.x()+v.x()*t
    Y = c.y()+v.y()*t
    Z = c.z()+v.z()*t
@@ -322,9 +323,10 @@ def myEventLoop(N):
      dist = 0
      for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNLMom(i)/HNLMom.P())**2
      dist = ROOT.TMath.Sqrt(dist)
+     mass = HNLMom.M()
      h['IP0'].Fill(dist)  
-     h['IP0/mass'].Fill(HNLMom.M(),dist)
-     h['HNL'].Fill(HNLMom.M())
+     h['IP0/mass'].Fill(mass,dist)
+     h['HNL'].Fill(mass)
 #
 def HNLKinematics():
  ut.bookHist(h,'HNLmomNoW','momentum unweighted',100,0.,300.)
