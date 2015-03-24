@@ -71,7 +71,7 @@ ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<'+str(chi2CutOff),100,0.,50.,
 ut.bookHist(h,'chi2','chi2/nmeas after trackfit',100,0.,10.)
 ut.bookHist(h,'prob','prob(chi2)',100,0.,1.)
 ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
-ut.bookHist(h,'Doca','Doca between two tracks',100,0.,50.)
+ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
 ut.bookHist(h,'HNL','reconstructed Mass',500,0.,2.)
@@ -307,6 +307,36 @@ def myEventLoop(N):
       if nmeas < measCut: checkMeasurements = False
      if not checkMeasurements: continue
      xv,yv,zv,doca = myVertex(t1,t2,PosDir)
+# as we have learned, need iterative procedure
+     dz = 99999.
+     reps,states,newPosDir = {},{},{}
+     parallelToZ = ROOT.TVector3(0., 0., 1.)
+     rc = True 
+     step = 0
+     while dz > 0.1:
+      zBefore = zv
+      newPos = ROOT.TVector3(xv,yv,zv)
+     # make a new rep for track 1,2
+      for tr in [t1,t2]:     
+       xx = sTree.FitTracks[tr].getFittedState()
+       reps[tr]   = ROOT.genfit.RKTrackRep(xx.getPDG())
+       states[tr] = ROOT.genfit.StateOnPlane(reps[tr])
+       reps[tr].setPosMom(states[tr],xx.getPos(),xx.getMom())
+       try:
+        reps[tr].extrapolateToPoint(states[tr], newPos, False)
+       except:
+        print 'SHiPAna: extrapolation did not worked'
+        rc = False  
+        break
+       newPosDir[tr] = [reps[tr].getPos(states[tr]),reps[tr].getDir(states[tr])]
+      xv,yv,zv,doca = myVertex(t1,t2,newPosDir)
+      dz = abs(zBefore-zv)
+      step+=1
+      if step > 10:  
+         print 'ShipAna: abort iteration',xv,yv,zv,doca,zBefore,dz
+         break 
+#  
+     if not rc: continue # extrapolation failed, makes no sense to continue
      # check if decay inside decay volume
      Rsq = (xv/(2.45*u.m) )**2 + (yv/((dy/2.-0.05)*u.m) )**2
      if Rsq>1 : continue
