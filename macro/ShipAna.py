@@ -333,7 +333,8 @@ def myEventLoop(N):
       dz = abs(zBefore-zv)
       step+=1
       if step > 10:  
-         print 'ShipAna: abort iteration',xv,yv,zv,doca,zBefore,dz
+         print 'abort iteration, too many steps, pos=',xv,yv,zv,' doca=',doca,'z before and dz',zBefore,dz
+         rc = False
          break 
 #  
      if not rc: continue # extrapolation failed, makes no sense to continue
