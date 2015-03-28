@@ -27,9 +27,18 @@ class MuDISGenerator : public FairGenerator
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
+
+  void SetPositions(Double_t zTa, Double_t zS=-3400., Double_t zE=2650.){ 
+    startZ      = zS;
+    endZ        = zE; 
+  }
+
  private:
+  Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
+
   
  protected:
+  Double_t startZ,endZ;
   TClonesArray* iMuon ;
   TClonesArray* dPart ; 
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
