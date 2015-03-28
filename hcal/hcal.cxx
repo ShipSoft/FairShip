@@ -685,6 +685,9 @@ void hcal::ConstructGeometry()
   par[2]=fHcalSize[2]/2.0;
   volume=gGeoManager->Volume("Hcal", "TUBE",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
+  volume->SetVisLeaves(kTRUE);
+  volume->SetVisContainers(kFALSE);
+  volume->SetVisibility(kFALSE);
   AddSensitiveVolume(volume);
   fStructureId=volume->GetNumber();
 
@@ -831,7 +834,7 @@ void hcal::ConstructModule()
 
 //  TGeoVolume* modulev=new TGeoVolumeAssembly(nm);
   TGeoVolume* modulev=gGeoManager->Volume(nm.Data(), "BOX",  gGeoManager->GetMedium("ECALAir")->GetId(), par, 3);
-
+  modulev->SetLineColor(kOrange+3);
   for(i=0;i<fNLayers;i++)
   {
     gGeoManager->Node(scin.Data(), i+1, nm.Data(), 0.0, 0.0, -thickness*fNLayers/2.0+fThicknessScin/2.0+i*thickness, 0, kTRUE, buf, 0);
@@ -882,7 +885,7 @@ void hcal::ConstructModuleSimple()
 
 //  TGeoVolume* modulev=new TGeoVolumeAssembly(nm);
   TGeoVolume* modulev=gGeoManager->Volume(nm.Data(), "BOX",  gGeoManager->GetMedium("ECALAir")->GetId(), par, 3);
-
+  modulev->SetLineColor(kOrange+3);
   for(i=0;i<fNLayers;i++)
   {
     gGeoManager->Node(scin.Data(), i+1, nm.Data(), 0.0, 0.0, -thickness*fNLayers/2.0+fThicknessScin/2.0+i*thickness, 0, kTRUE, buf, 0);

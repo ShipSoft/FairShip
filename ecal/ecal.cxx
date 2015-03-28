@@ -716,6 +716,9 @@ void ecal::ConstructGeometry()
   par[2]=moduleth/2.0+0.1;
   volume=gGeoManager->Volume("Ecal", "TUBE",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Ecal", 1, top->GetName(), 0.0,0.0, fZEcal+par[2]-0.05, 0, kTRUE, buf, 0);
+  volume->SetVisLeaves(kTRUE);
+  volume->SetVisContainers(kFALSE);
+  volume->SetVisibility(kFALSE);
   AddSensitiveVolume(volume);
   fStructureId=volume->GetNumber();
 
@@ -860,6 +863,7 @@ void ecal::ConstructModule(Int_t type)
 
 //  TGeoVolume* modulev=new TGeoVolumeAssembly(nm);
   TGeoVolume* modulev=gGeoManager->Volume(nm.Data(), "BOX",  gGeoManager->GetMedium("ECALAir")->GetId(), par, 3);
+  modulev->SetLineColor(kYellow);
 
   //Adding cells into module
   for(i=0;i<type;i++)
@@ -901,6 +905,7 @@ void ecal::ConstructModuleSimple(Int_t type)
 
 //  TGeoVolume* modulev=new TGeoVolumeAssembly(nm);
   TGeoVolume* modulev=gGeoManager->Volume(nm.Data(), "BOX",  gGeoManager->GetMedium("ECALAir")->GetId(), par, 3);
+  modulev->SetLineColor(kYellow);
 
   //Adding cells into module
   for(i=0;i<type;i++)
