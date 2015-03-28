@@ -297,7 +297,7 @@ def myEventLoop(N):
      t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
      PosDir = {} 
 # kill tracks outside fiducial volume, if enabled
-     if not checkFiducialVolume(sTree,t2,dy) or not checkFiducialVolume(sTree,t2,dy) : continue
+     if not checkFiducialVolume(sTree,t1,dy) or not checkFiducialVolume(sTree,t2,dy) : continue
      checkMeasurements = True
      for tr in [t1,t2]:
       xx  = sTree.FitTracks[tr].getFittedState()
@@ -329,6 +329,7 @@ def myEventLoop(N):
         rc = False  
         break
        newPosDir[tr] = [reps[tr].getPos(states[tr]),reps[tr].getDir(states[tr])]
+      if not rc: break
       xv,yv,zv,doca = myVertex(t1,t2,newPosDir)
       dz = abs(zBefore-zv)
       step+=1
