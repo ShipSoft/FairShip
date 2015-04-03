@@ -160,11 +160,6 @@ def configure(run,ship_geo):
  run.AddModule(Muon)
 
 #-----   Magnetic field   -------------------------------------------
-    # Constant Field
- #fMagField = ROOT.ShipConstField()
- #fMagField.SetField(0., ship_geo.Bfield.max ,0. )  
- #fMagField.SetFieldRegion(-250*u.cm, 250*u.cm,-250*u.cm, 250*u.cm, ship_geo.Bfield.z-100*u.cm, ship_geo.Bfield.z+100*u.cm)    
- #run.SetField(fMagField)
  if ship_geo.strawDesign == 4: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
  else :                        fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
  run.SetField(fMagField)
