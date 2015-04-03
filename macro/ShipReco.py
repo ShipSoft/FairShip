@@ -4,12 +4,13 @@ geoFile   = None
 debug = False
 EcalDebugDraw = False
 withNoAmbiguities = None # True   for debugging purposes
-nEvents    = 99999
+nEvents    = 999999
 firstEvent = 0
 withHists = True
 vertexing = True
 dy  = None
-saveDisk = False # remove input file
+saveDisk  = False # remove input file
+pidProton = False # if true, take truth, if False fake with pion mass
 
 import ROOT,os,sys,getopt
 from pythia8_conf import addHNLtoROOT
@@ -53,9 +54,13 @@ if not dy:
     dy = None
 print 'configured to process ',nEvents,' events from ' ,inputFile, \
       ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing
-outFile = inputFile.replace('.root','_rec.root') 
-if saveDisk: os.system('mv '+inputFile+' '+outFile)
-else :       os.system('cp '+inputFile+' '+outFile)
+if not inputFile.find('_rec.root') < 0: 
+  outFile   = inputFile
+  inputFile = outFile.replace('_rec.root','.root') 
+else:
+  outFile = inputFile.replace('.root','_rec.root') 
+  if saveDisk: os.system('mv '+inputFile+' '+outFile)
+  else :       os.system('cp '+inputFile+' '+outFile)
 
 if withHists:
  h={}
@@ -86,8 +91,6 @@ modules = shipDet_conf.configure(run,ShipGeo)
 
 addHNLtoROOT()
 
-fout = ROOT.TFile(outFile,'update')
-
 def myVertex(t1,t2,PosDir):
  # closest distance between two tracks
     # d = |pq . u x v|/|u x v|
@@ -115,8 +118,34 @@ def myVertex(t1,t2,PosDir):
 
 class ShipReco:
  " convert FairSHiP MC hits to measurements"
- def __init__(self,fn):
-  self.sTree     = fn.cbmsim
+ def __init__(self,fout):
+  self.fn = ROOT.TFile(fout,'update')
+  self.sTree     = self.fn.cbmsim
+  if self.sTree.GetBranch("FitTracks"):
+   print "remove RECO branches and rerun reconstruction"
+   self.fn.Close()    
+   # make a new file without reco branches
+   f = ROOT.TFile(fout)
+   sTree = f.cbmsim
+   sTree.SetBranchStatus("FitTracks",0)
+   sTree.SetBranchStatus("SmearedHits",0)
+   sTree.SetBranchStatus("Particles",0)
+   sTree.SetBranchStatus("fitTrack2MC",0)
+   sTree.SetBranchStatus("EcalClusters",0)
+   rawFile = fout.replace("_rec.root","_raw.root")
+   recf = ROOT.TFile(rawFile,"recreate")
+   newTree = sTree.CloneTree(0)
+   for n in range(sTree.GetEntries()):
+    sTree.GetEntry(n)
+    rc = newTree.Fill()
+   sTree.Clear()
+   newTree.AutoSave()
+   f.Close() 
+   recf.Close() 
+   os.system('cp '+rawFile +' '+fout)
+   self.fn = ROOT.TFile(fout,'update')
+   self.sTree     = self.fn.cbmsim
+#   
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
 # prepare for output
@@ -125,21 +154,15 @@ class ShipReco:
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
   self.SmearedHits  = ROOT.TClonesArray("TVectorD") 
-
-  if self.sTree.GetBranch("FitTracks"):
-   self.sTree.SetBranchAddress("FitTracks", self.fGenFitArray)
-   self.sTree.SetBranchAddress("Particles",self.fPartArray)
-   self.sTree.SetBranchAddress("SmearedHits",self.SmearedHits)
-   self.Particles   = self.sTree.GetBranch("Particles")  
-   self.fitTracks   = self.sTree.GetBranch("FitTracks")  
-   self.SHbranch    = self.sTree.GetBranch("SmearedHits")
-   self.mcLink      = self.sTree.GetBranch("fitTrack2MC")
-   print "branch already exists !"
-  else :
-   self.Particles   = self.sTree.Branch("Particles",self.fPartArray,32000,-1)
-   self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
-   self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
-   self.mcLink      = self.sTree.Branch( "fitTrack2MC",self.fitTrack2MC,32000,-1)  
+#  
+  self.Particles   = self.sTree.Branch("Particles",self.fPartArray,32000,-1)
+  self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
+  self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
+  self.mcLink      = self.sTree.Branch( "fitTrack2MC",self.fitTrack2MC,32000,-1)  
+#
+  self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
+  self.reps,self.states,self.newPosDir = {},{},{}
+#
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
 #
@@ -167,11 +190,11 @@ class ShipReco:
   rc    = self.sTree.GetEvent(n) 
   if n%1000==0: print "==> event ",n
   nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
-  hitPosLists = {}
+  hitPosLists    = {}
   stationCrossed = {}
-  self.SmearedHits.Clear()
-  self.fPartArray.Clear()
-  self.fGenFitArray.Clear()
+  self.SmearedHits.Delete()
+  self.fPartArray.Delete()
+  self.fGenFitArray.Delete()
   self.fitTrack2MC.clear()
   for i in range(nShits):
     ahit = self.sTree.strawtubesPoint.At(i)
@@ -181,7 +204,7 @@ class ShipReco:
 # copy to branch
     nHits = self.SmearedHits.GetEntries()
     if self.SmearedHits.GetSize() == nHits: self.SmearedHits.Expand(nHits+1000)
-    self.SmearedHits[nHits]=measurement 
+    self.SmearedHits[nHits] = measurement
     station = int(ahit.GetDetectorID()/10000000)
     if station > 4 : continue
     # do not use hits in Veto station for track reco   
@@ -190,11 +213,9 @@ class ShipReco:
       hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
       stationCrossed[trID]  = {}
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
-    measurement = ROOT.TVectorD(7,m)
-    hitPosLists[trID].push_back(measurement)
+    hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
     if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
     stationCrossed[trID][station]+=1  
-  fitTrack = {}
   nTrack = -1
   for atrack in hitPosLists:
    if atrack < 0: continue # these are hits not assigned to MC track because low E cut
@@ -224,49 +245,45 @@ class ShipReco:
    seedState = ROOT.TVectorD(6)
    seedCov   = ROOT.TMatrixDSym(6)
    rep.get6DStateCov(stateSmeared, seedState, seedCov)
-   fitTrack[atrack] = ROOT.genfit.Track(rep, seedState, seedCov)
-   ROOT.SetOwnership(fitTrack[atrack], False)
+   theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
+   hitCov = ROOT.TMatrixDSym(7)
+   hitCov[6][6] = resolution*resolution
    for m in meas:
-      hitCov = ROOT.TMatrixDSym(7)
-      hitCov[6][6] = resolution*resolution
-      tp = ROOT.genfit.TrackPoint(fitTrack[atrack]) # note how the point is told which track it belongs to 
+      tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
       measurement.setMaxDistance(0.5*u.cm)
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
-      fitTrack[atrack].insertPoint(tp)  # add point to Track
+      theTrack.insertPoint(tp)  # add point to Track
    # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
 #check
-   if not fitTrack[atrack].checkConsistency():
-    print 'Problem with track before fit, not consistent',self.fitTrack[atrack]
+   if not theTrack.checkConsistency():
+    print 'Problem with track before fit, not consistent',atrack,theTrack
     continue
 # do the fit
-   try:  fitter.processTrack(fitTrack[atrack]) # processTrackWithRep(fitTrack[atrack],rep,True)
+   try:  fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
    except: 
        print "genfit failed to fit track"
        continue
 #check
-   if not fitTrack[atrack].checkConsistency():
-    print 'Problem with track after fit, not consistent',self.fitTrack[atrack]
+   if not theTrack.checkConsistency():
+    print 'Problem with track after fit, not consistent',atrack,theTrack
     continue
-   fitStatus   = fitTrack[atrack].getFitStatus()
+   fitStatus   = theTrack.getFitStatus()
    chi2        = fitStatus.getChi2()
 # make track persistent
    nTrack   = SHiP.fGenFitArray.GetEntries()
-   theTrack = ROOT.genfit.Track(fitTrack[atrack])
    if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
    self.fGenFitArray[nTrack] = theTrack
    self.fitTrack2MC.push_back(atrack)
    if debug: 
     print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
-    if nM > 28:  
-     display.addEvent(fitTrack[atrack])
+    if nM > 28: display.addEvent(theTrack)
   return nTrack+1
 #
  def find2TrackVertex(self):
   fittedTracks = self.fGenFitArray
-  LV     = {}
   PosDirCharge = {} 
   for tr in range(fittedTracks.GetEntries()):
    fitStatus = fittedTracks[tr].getFitStatus()
@@ -275,58 +292,70 @@ class ShipReco:
    chi2  = fitStatus.getChi2()/nmeas
    if chi2<50 and not chi2<0: 
       xx  = fittedTracks[tr].getFittedState()
-      PosDirCharge[tr] = {'position':xx.getPos(),'direction':xx.getDir(),'momentum':xx.getMom(),'charge':xx.getCharge(),'pdgCode':xx.getPDG()}
+      pid   = xx.getPDG()
+      if not pidProton and abs(pid) == 2212:
+        pid = ROOT.TMath.Sign(211,pid)
+      rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
+      state = ROOT.genfit.StateOnPlane(rep)
+      rep.setPosMom(state,xx.getPos(),xx.getMom())
+      PosDirCharge[tr] = {'position':xx.getPos(),'direction':xx.getDir(),\
+                          'momentum':xx.getMom(),'charge':xx.getCharge(),'pdgCode':pid,'state':xx,'rep':rep,'newstate':state}
 #
   if len(PosDirCharge) < 2: return
+  if len(PosDirCharge) > 4: return # abort too busy events
   (PosDirCharge.keys()).sort()
   for t1 in PosDirCharge:
    c1  = PosDirCharge[t1]['charge'] 
-   LV1 = ROOT.TLorentzVector()
    for t2 in PosDirCharge:
      if not t2>t1: continue
      if PosDirCharge[t2]['charge'] == c1 : continue
-     LV2 = ROOT.TLorentzVector()
      xv,yv,zv,doca = myVertex(t1,t2,PosDirCharge)
+# as we have learned, need iterative procedure
+     dz = 99999.
+     rc = True 
+     step = 0
+     while dz > 0.1:
+      zBefore = zv
+      newPos = ROOT.TVector3(xv,yv,zv)
+     # make a new rep for track 1,2
+      for tr in [t1,t2]:     
+       try:
+        PosDirCharge[tr]['rep'].extrapolateToPoint(PosDirCharge[tr]['newstate'], newPos, False)
+       except:
+        print 'SHiPReco: extrapolation did not worked'
+        rc = False  
+        break
+       self.newPosDir[tr] = {'position':PosDirCharge[tr]['rep'].getPos(PosDirCharge[tr]['newstate']),\
+                                   'direction':PosDirCharge[tr]['rep'].getDir(PosDirCharge[tr]['newstate']),\
+                                   'momentum':PosDirCharge[tr]['rep'].getMom(PosDirCharge[tr]['newstate'])}
+      if not rc: break
+      xv,yv,zv,doca = myVertex(t1,t2,self.newPosDir)
+      dz = abs(zBefore-zv)
+      step+=1
+      if step > 10:  
+         print 'abort iteration, too many steps, pos=',xv,yv,zv,' doca=',doca,'z before and dz',zBefore,dz
+         rc = False
+         break 
+#       
+     if not rc: continue # extrapolation failed, makes no sense to continue
      HNLPos = ROOT.TVector3(xv,yv,zv)
-     # make a new rep for track 1
-     rep = ROOT.genfit.RKTrackRep(PosDirCharge[t1]['pdgCode'])
-     state = ROOT.genfit.StateOnPlane(rep)
-     rep.setPosMom(state, PosDirCharge[t1]['position'],PosDirCharge[t1]['momentum'])
-     origPlane = state.getPlane()
-     origState = ROOT.genfit.StateOnPlane(state)
-     try:
-       rep.extrapolateToPoint(state, HNLPos, False)
-     except:
-       print 'SHiPReco: extrapolation did not worked'
-       continue 
-     mass = PDG.GetParticle(PosDirCharge[t1]['pdgCode']).Mass()
-     mom  = rep.getMom(state)  
+     pid = PosDirCharge[t1]['pdgCode']
+     mass = PDG.GetParticle(pid).Mass()
+     mom  = self.newPosDir[t1]['momentum']
      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
-     LV1.SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
-     # make a new rep for track 2
-     rep = ROOT.genfit.RKTrackRep(PosDirCharge[t2]['pdgCode'])
-     state = ROOT.genfit.StateOnPlane(rep)
-     rep.setPosMom(state, PosDirCharge[t2]['position'],PosDirCharge[t2]['momentum'])
-     origPlane = state.getPlane()
-     origState = ROOT.genfit.StateOnPlane(state)
-     try:
-       rep.extrapolateToPoint(state, HNLPos, False)
-     except:
-       print 'SHiPReco: extrapolation did not worked'
-       continue 
-     mass = PDG.GetParticle(PosDirCharge[t2]['pdgCode']).Mass()
-     mom  = rep.getMom(state)  
+     self.LV[1].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
+     pid = PosDirCharge[t2]['pdgCode']
+     mass = PDG.GetParticle(pid).Mass()
+     mom  = self.newPosDir[t2]['momentum']
      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
-     LV2.SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
-     HNL = LV1+LV2
+     self.LV[2].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
+     HNL = self.LV[1]+self.LV[2]
 # try to make it persistent
-     vx = ROOT.TLorentzVector(HNLPos,0.)  # time not set
+     vx = ROOT.TLorentzVector(HNLPos,doca)  # misuse time as DOCA  
      particle = ROOT.TParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
+     particle.SetMother(1,99) # as marker to remember doca is set
      nParts   = self.fPartArray.GetEntries()
-     self.fPartArray[nParts] = particle 
-     #
-     HNLMom = ROOT.TLorentzVector()
-     particle.Momentum(HNLMom)
+     self.fPartArray[nParts] = particle
 
 # -----Calorimeter part --------------------------------------------
 # Creates. exports and fills calorimeter structure
@@ -348,13 +377,21 @@ caloTasks.append(ecalPrepare)
 ecalMaximumFind=ROOT.ecalMaximumLocator("maximumFinder",dflag)
 caloTasks.append(ecalMaximumFind)
 # Cluster calibration
-ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0) 
-ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))") 
-ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03,-1.16383e-04)
-ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS) 
-ecalCl3Ph=ROOT.TFormula("ecalCl3Ph","[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
-ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561) 
+ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
+#4x4 cm cells
+ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))")
+ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03, -1.16383e-04)
+ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS)
+ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
+ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
 ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
+#6x6 cm cells
+ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
+ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
+ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
+ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
+ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
+ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
 caloTasks.append(ecalClusterCalib)
 # Cluster finder
 ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
@@ -369,7 +406,8 @@ PDG = ROOT.TDatabasePDG.Instance()
 # init geometry and mag. field
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
 if not geoFile:
- geoFile = inputFile.replace('ship.','geofile_full.')
+ tmp = inputFile.replace('ship.','geofile_full.')
+ geoFile = tmp.replace('_rec','')
 tgeom.Import(geoFile)
 #
 bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
@@ -389,7 +427,7 @@ if debug: fitter.setDebugLvl(1) # produces lot of printout
 WireMeasurement = ROOT.genfit.WireMeasurement
 
 # access ShipTree
-SHiP = ShipReco(fout)
+SHiP = ShipReco(outFile)
 SHiP.sTree.GetEvent(0)
 ecalStructure=ecalFiller.InitPython(SHiP.sTree.EcalPointLite)
 ecalDigi.InitPython(ecalStructure)
@@ -413,7 +451,7 @@ for iEvent in range(firstEvent, SHiP.nEvents):
  SHiP.fitTracks.Fill()
  SHiP.mcLink.Fill()
  SHiP.SHbranch.Fill()
- for x in caloTasks: x.Exec('start')
+ #for x in caloTasks: x.Exec('start')
  SHiP.EcalClusters.Fill()
 
  if debug: print 'end of event after Fill'

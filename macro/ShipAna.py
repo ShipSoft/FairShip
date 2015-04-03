@@ -11,6 +11,7 @@ dy         = None
 nEvents    = 99999
 fiducialCut = False
 measCut = 25
+docaCut = 2.
 try:
         opts, args = getopt.getopt(sys.argv[1:], "n:f:g:A:Y:i", ["nEvents=","geoFile="])
 except getopt.GetoptError:
@@ -222,8 +223,9 @@ def myEventLoop(N):
   if not checkHNLorigin(sTree): continue
   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
-# make some ecal cluster analysis
-  for aClus in sTree.EcalClusters:
+# make some ecal cluster analysis if exist
+  if sTree.FindBranch("EcalClusters"):
+   for aClus in sTree.EcalClusters:
      h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
 # make some straw hit analysis
   hitlist = {}
@@ -294,18 +296,29 @@ def myEventLoop(N):
 # ---
 # loop over particles, 2-track combinations
   for HNL in sTree.Particles:
-     t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
-     PosDir = {} 
+    t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
 # kill tracks outside fiducial volume, if enabled
-     if not checkFiducialVolume(sTree,t1,dy) or not checkFiducialVolume(sTree,t2,dy) : continue
-     checkMeasurements = True
-     for tr in [t1,t2]:
-      xx  = sTree.FitTracks[tr].getFittedState()
-      PosDir[tr] = [xx.getPos(),xx.getDir()]
+    if not checkFiducialVolume(sTree,t1,dy) or not checkFiducialVolume(sTree,t2,dy) : continue
+    checkMeasurements = True
+# cut on nDOF
+    for tr in [t1,t2]:
       fitStatus  = sTree.FitTracks[tr].getFitStatus()
       nmeas = fitStatus.getNdf()
       if nmeas < measCut: checkMeasurements = False
-     if not checkMeasurements: continue
+    if not checkMeasurements: continue
+    HNLPos = ROOT.TLorentzVector()
+    HNL.ProductionVertex(HNLPos)
+    HNLMom = ROOT.TLorentzVector()
+    HNL.Momentum(HNLMom)
+# check if DOCA info exist
+    if HNL.GetMother(1)==99 :
+      xv,yv,zv,doca  =  HNLPos.X(),HNLPos.Y(),HNLPos.Z(),HNLPos.T()
+    else:
+# redo doca calculation
+     PosDir = {} 
+     for tr in [t1,t2]:
+      xx  = sTree.FitTracks[tr].getFittedState()
+      PosDir[tr] = [xx.getPos(),xx.getDir()]
      xv,yv,zv,doca = myVertex(t1,t2,PosDir)
 # as we have learned, need iterative procedure
      dz = 99999.
@@ -337,28 +350,32 @@ def myEventLoop(N):
          print 'abort iteration, too many steps, pos=',xv,yv,zv,' doca=',doca,'z before and dz',zBefore,dz
          rc = False
          break 
-#  
      if not rc: continue # extrapolation failed, makes no sense to continue
-     # check if decay inside decay volume
-     Rsq = (xv/(2.45*u.m) )**2 + (yv/((dy/2.-0.05)*u.m) )**2
-     if Rsq>1 : continue
-     if zv < ShipGeo['vetoStation'].z : continue  
-     h['Doca'].Fill(doca) 
-     if  doca>25 : continue
-     HNLPos = ROOT.TLorentzVector()
-     HNL.ProductionVertex(HNLPos)
-     HNLMom = ROOT.TLorentzVector()
-     HNL.Momentum(HNLMom)
-     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
-     t = 0
-     for i in range(3):   t += HNLMom(i)/HNLMom.P()*(tr(i)-HNLPos(i)) 
-     dist = 0
-     for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNLMom(i)/HNLMom.P())**2
-     dist = ROOT.TMath.Sqrt(dist)
-     mass = HNLMom.M()
-     h['IP0'].Fill(dist)  
-     h['IP0/mass'].Fill(mass,dist)
-     h['HNL'].Fill(mass)
+     LV={}
+     for tr in [t1,t2]:       
+      mom = reps[tr].getMom(states[tr])
+      pid = abs(states[tr].getPDG()) 
+      if pid == 2212: pid = 211
+      mass = PDG.GetParticle(pid).Mass()
+      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
+      LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
+     HNLMom = LV[t1]+LV[t2]
+ # check if decay inside decay volume
+    Rsq = (xv/(2.45*u.m) )**2 + (yv/((dy/2.-0.05)*u.m) )**2
+    if Rsq > 1 : continue
+    if zv < ShipGeo['vetoStation'].z : continue  
+    h['Doca'].Fill(doca) 
+    if  doca > docaCut : continue
+    tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
+    t = 0
+    for i in range(3):   t += HNLMom(i)/HNLMom.P()*(tr(i)-HNLPos(i)) 
+    dist = 0
+    for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNLMom(i)/HNLMom.P())**2
+    dist = ROOT.TMath.Sqrt(dist)
+    mass = HNLMom.M()
+    h['IP0'].Fill(dist)  
+    h['IP0/mass'].Fill(mass,dist)
+    h['HNL'].Fill(mass)
 #
 def HNLKinematics():
  ut.bookHist(h,'HNLmomNoW','momentum unweighted',100,0.,300.)
@@ -384,6 +401,7 @@ def HNLKinematics():
 myEventLoop(nEvents)
 makePlots()
 # output histograms
-ut.writeHists(h,"ShipAna.root")
+hfile = inputFile.replace('_rec.','_ana.')
+ut.writeHists(h,hfile)
 
 
