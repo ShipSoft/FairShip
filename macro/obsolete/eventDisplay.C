@@ -2,8 +2,8 @@ eventDisplay()
 {
   //-----User Settings:-----------------------------------------------
   TString  SimEngine     ="TGeant4"; 
-  TString  InputFile     ="ship.test.root";
-  TString  ParFile       ="ship.params.root";
+  TString  InputFile     ="ship.10.0.Pythia8-TGeant4_D.root";
+  TString  ParFile       ="ship.params.10.0.Pythia8-TGeant4_D.root";
   TString  OutFile	 ="tst.root";
     
   //----Load the default libraries------
@@ -23,14 +23,21 @@ eventDisplay()
    
   FairEventManager *fMan= new FairEventManager();
   
-  //----------------------Traks and points -------------------------------------
-  FairMCTracks    *Track     = new FairMCTracks("Monte-Carlo Tracks");
-//  FairMCPointDraw *TorinoDetectorPoints = new FairMCPointDraw("FairTestDetectorPoint", kRed, kFullSquare);
- 
-  fMan->AddTask(Track);
-//  fMan->AddTask(TorinoDetectorPoints);
-  
-  
-  fMan->Init();                     
+  //----------------------Tracks and points -------------------------------------
+ FairMCTracks    *Track     =   new FairMCTracks("Monte-Carlo Tracks");
+ FairMCPointDraw *VetoPoints  = new FairMCPointDraw("vetoPoint", kBlue, kFullDiamond);
+ FairMCPointDraw *StrawPoints = new FairMCPointDraw("strawtubesPoint", kGreen, kFullCircle);
+ FairMCPointDraw *EcalPoints  = new FairMCPointDraw("EcalPoint", kRed, kFullSquare);
+ FairMCPointDraw *HcalPoints  = new FairMCPointDraw("HcalPoint", kMagenta, kFullSquare);
+ FairMCPointDraw *MuonPoints  = new FairMCPointDraw("muonPoint", kYellow, kFullSquare);
+ FairMCPointDraw *RpcPoints   = new FairMCPointDraw("ShipRpcPoint", kOrange, kFullSquare);
+ fMan->AddTask(Track);
+ fMan->AddTask(VetoPoints);
+ fMan->AddTask(StrawPoints);
+ fMan->AddTask(EcalPoints);
+ fMan->AddTask(HcalPoints);
+ fMan->AddTask(MuonPoints);
+ fMan->AddTask(RpcPoints);
+ fMan->Init(1,2,10000);             
 
 }
