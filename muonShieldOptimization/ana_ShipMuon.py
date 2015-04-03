@@ -1,5 +1,6 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root 
 import os,ROOT
+local = False
 if not os.uname()[1].lower().find('ubuntu')< 0: local = True
 
 # 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN
@@ -87,10 +88,15 @@ if not os.uname()[1].lower().find('ubuntu')< 0: local = True
 #makeProd("muon732",10,'Jpsi',True)   
 prefixes  = []
 withChain = 0
+pref = 'muon'
+if not os.path.abspath('.').find('neutrino')<0: pref='neutrino'
+if not os.path.abspath('.').lower().find('vdis')<0: pref='disV'
+elif not os.path.abspath('.').lower().find('dis')<0:  pref='dis'
+
 if len(os.sys.argv)>1 : 
  for i in range(1,len(os.sys.argv)):
    for prefix in os.sys.argv[i].split(','):
-    if prefix.find('muon')<0:prefix='muon'+prefix
+    if prefix.find(pref)<0:prefix=pref+prefix
     prefixes.append(prefix) 
     withChain+=1
 else: 
@@ -176,11 +182,13 @@ if withChain>0:
    elif q2 or r2: inputFile = inputFile2
    else: continue
    fname = path+prefix+str(i)+'/'+inputFile 
-   fchain.append(fname)
    recFile = inputFile.replace('.root','_rec.root')
-   if not recFile in os.listdir(path+prefix+str(i)): continue
+   if not recFile in os.listdir(path+prefix+str(i)): 
+     fchain.append(fname)
+     continue
    fname = path+prefix+str(i)+'/'+recFile
    fchainRec.append(fname)
+   fchain.append(fname)  # take rec file if exist
 else:
  fchain.append(inputFile)
  prefix = ''
@@ -321,6 +329,7 @@ def BigEventLoop():
    if sTree.MCTrack.GetEntries() > 1: 
     w = sTree.MCTrack[1].GetWeight() # also works for neutrinos
    else: 
+    print 'should not happen with new files',n,fn
     w = sTree.MCTrack[0].GetWeight() # also works for neutrinos
    if w==0 : w = 1.
    rc = h['weight'].Fill(w)
@@ -367,10 +376,11 @@ def BigEventLoop():
      if 'PdgCode' in dir(ahit):   pdgID = ahit.PdgCode()
      trackID = ahit.GetTrackID()
      phit = -100.
+     mom = ROOT.TVector3()
      if not trackID < 0: 
        aTrack = sTree.MCTrack[trackID]
        pdgID  = aTrack.GetPdgCode()
-       mom    = aTrack.GetMomentum() # ! this is not momentum of particle at Calorimater place
+       aTrack.GetMomentum(mom) # ! this is not momentum of particle at Calorimater place
        phit   = mom.Mag()/u.GeV
      if abs(pdgID)==13: mu='_mu'
      if ahit.GetName().find('ecal')<0:
@@ -405,21 +415,7 @@ def BigEventLoop():
     for tr in hitmult[detName]:
       rc = h[detName+'_mul'].Fill(hitmult[detName][tr],w) 
   f.Close()
-# make list of hists with entries
- k = 1
- for x in histlistAll:
-  if h.has_key(histlistAll[x]): 
-   histlist[k]=histlistAll[x]
-# add muons and make total
-   rc = h[histlist[k]+'_mu'+'_P'].Add(h[histlist[k]+'_muV0'+'_P'],1.)
-   rc = h[histlist[k]+'_mu'+'_OP'].Add(h[histlist[k]+'_muV0'+'_OP'],1.)
-   rc = h[histlist[k]+'_mu'].Add(h[histlist[k]+'_muV0'],1.)
-   rc = h[histlist[k]].Add(h[histlist[k]+'_mu'],1.)
-   k+=1
- nstations = len(histlist)
- makePlots(nstations)
 #
-def makePlots(nstations):
 # compactify liquid scintillator
  for mu in ['','_mu','_muV0']:
   for x in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
@@ -448,6 +444,21 @@ def makePlots(nstations):
        h[newh].SetTitle( h[tag].GetTitle().split(' ')[0]+' '+newh)
        first = False
      else:  rc = h[newh].Add(h[tag]) 
+# make list of hists with entries
+ k = 1
+ for x in histlistAll:
+  if h.has_key(histlistAll[x]): 
+   histlist[k]=histlistAll[x]
+# add muons and make total
+   rc = h[histlist[k]+'_mu'+'_P'].Add(h[histlist[k]+'_muV0'+'_P'],1.)
+   rc = h[histlist[k]+'_mu'+'_OP'].Add(h[histlist[k]+'_muV0'+'_OP'],1.)
+   rc = h[histlist[k]+'_mu'].Add(h[histlist[k]+'_muV0'],1.)
+   rc = h[histlist[k]].Add(h[histlist[k]+'_mu'],1.)
+   k+=1
+ nstations = len(histlist)
+ makePlots(nstations)
+#
+def makePlots(nstations):
  cxcy = {1:[2,1],2:[3,1],3:[2,2],4:[3,2],5:[3,2],6:[3,2],7:[3,3],8:[3,3],9:[3,3],10:[4,3],11:[4,3],12:[4,3],13:[5,3],14:[5,3]}
  ut.bookCanvas(h,key='ResultsI',title='hit occupancies',  nx=1100,ny=600*cxcy[nstations][1],cx=cxcy[nstations][0],cy=cxcy[nstations][1])
  ut.bookCanvas(h,key='ResultsImu',title='hit occupancies',nx=1100,ny=600*cxcy[nstations][1],cx=cxcy[nstations][0],cy=cxcy[nstations][1])
@@ -785,7 +796,7 @@ def eventsWithEntryPoints(i):
    np = 0
    for vp in sTree.vetoPoint:   
     detName = logVols[vp. GetDetectorID()]
-    if detName== "lidT1lisci": np+=0 #??
+    if detName== "VetoTimeDet": np+=0 #??
     vp.Momentum(mom)
     print i,detName,vp.PdgCode()
     mom.Print()
@@ -883,7 +894,8 @@ def makeNicePrintout(x=['rareEvents_61-62.txt','rareEvents_71-72.txt']):
   print '%4i %8s %8s %4s %8s %8s %8s %8s %8s '%( i,tr['origin'],tr['pytiaid'],tr['id_hit'],tr['o-mom'],tr['p_hit'],tr['chi2'],tr['w'],tr['file'])
  return tmp
 
-# files without spiral p-beam
-# python -i $HNL/ana_ShipMuon.py 61 611 612 613 614 615 616 617 618 619 62 621 622 623 624 625 626 627 628 629
-# with
-# python -i $HNL/ana_ShipMuon.py 710 711 712 713 714 715 716 717 718 719 720 721 722 723 724 725 726 727 728 729
+# python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 820 821 822 823 824 825 826 827 828 829
+# python -i $HNL/ana_ShipMuon.py 910 911 912 913 914 915 916 917 918 919 920 921 922 923 924 925 926 927 928 929
+# make muonDIS ntuple: muDISntuple("/media/Data/HNL/muonBackground/rareEvents_81-102.root") -> 'muDISVetoCounter.root'
+#                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root
+#                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root

@@ -103,7 +103,7 @@ for k in range(nStart,nEnd):
 fout.cd()  
 dTree.Write()
 myPythia.SetMSTU(11, 6)
-print "created ",nStart,' - ',nTOT-20000*nJob," events"
+print "created ",nStart,' - ',nTOT-nPerJob*nJob," events"
 
 
 
