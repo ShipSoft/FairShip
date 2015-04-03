@@ -18,6 +18,7 @@ atexit.register(pyExit)
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
 InputFile = None 
+withGeo   = False
 dy = str(10.)
 # simEngine = "Genie"
 #
@@ -61,11 +62,13 @@ if not InputFile:
  InputFile     ="ship."+tag+".root"  
 ParFile       ="ship.params."+tag.replace('_rec','')+".root"  
 OutFile	      ="tst."+tag+".root"
+if InputFile.find('_D')>0: withGeo = True
 #
 def speedUp():
  for x in ["wire","gas"]:  
    xvol = fGeo.GetVolume(x)
    xvol.SetVisibility(0) 
+# although this displays a fat ecal and hcal, only way to have some kind of performance, response of screen
  for x in ["Ecal","Hcal"]:
   xvol = fGeo.GetVolume(x)
   xvol.SetVisDaughters(0)
@@ -213,22 +216,30 @@ fMan.SetPriOnly(False)  # display everything
 
 #----------------------Tracks and points -------------------------------------
 verbose = 0  # 3 lot of output
-Track       = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
-GTrack      = ROOT.FairMCTracks("GeoTracks",verbose)
-VetoPoints  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullSquare)
-StrawPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullSquare)
+if withGeo: 
+  Track       = ROOT.FairMCTracks("Monte-Carlo Tracks",verbose)
+  GTrack      = ROOT.FairMCTracks("GeoTracks",verbose)
+  fMan.AddTask(GTrack)
+  fMan.AddTask(Track)
+VetoPoints  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
+StrawPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
 EcalPoints  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
+HcalPoints  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
 MuonPoints  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
 RpcPoints   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
  
-fMan.AddTask(Track)
-fMan.AddTask(GTrack)
 fMan.AddTask(VetoPoints)
 fMan.AddTask(MuonPoints)
 fMan.AddTask(EcalPoints)
+fMan.AddTask(HcalPoints)
 fMan.AddTask(StrawPoints)
 fMan.AddTask(RpcPoints)
-fMan.Init(1,5,10000) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+#visopt, set drawing mode :
+# option=0 (default) all nodes drawn down to vislevel
+# option=1           leaves and nodes at vislevel drawn
+# option=2           path is drawn
+# vislvl
 #
 fGeo  = ROOT.gGeoManager 
 top   = fGeo.GetTopVolume()
@@ -239,6 +250,7 @@ speedUp()
 ecalYellow()
 # create toolbar
 bar = toolBar()
+switchOfAll('RockD')
 
 def search(lvdict,tag):
   for x in lvdict: 

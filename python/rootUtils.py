@@ -15,10 +15,11 @@ def readHists(h,fname):
     name  =  akey.GetName()
     try:     hname = int(name)
     except:  hname = name
-    cln = f.FindObjectAny(name).Class().GetName()
+    obj = akey.ReadObj()
+    cln = obj.Class().GetName()
     if cln.find('TH')<0: continue
-    if h.has_key(hname): h[hname].Add(f.FindObjectAny(name))
-    else: h[hname] =  f.FindObjectAny(name).Clone()
+    if h.has_key(hname): h[hname].Add(obj)
+    else: h[hname] =  obj.Clone()
     h[hname].SetDirectory(gROOT)
     h[hname].Sumw2() 
     if cln == 'TH2D' or cln == 'TH2F':

@@ -14,7 +14,7 @@ def printMCTrack(n,MCTrack):
 def dump(i,pcut):
  tree = ROOT.gROOT.FindObjectAny('cbmsim')
  tree.GetEntry(i)
- print '   #         pid   px    py    pz   vx    vy     vz     mid'
+ print '   #         pid   px    py      pz     vx      vy       vz      mid'
  n=-1
  for mcp in tree.MCTrack: 
    n+=1
