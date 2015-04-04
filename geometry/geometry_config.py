@@ -15,6 +15,8 @@ if "HcalOption" not in globals():
     HcalOption = 1
 if "Yheight" not in globals():
     Yheight = 10.
+if "EcalGeoFile" not in globals():
+    EcalGeoFile = "ecal_ellipse5x10m2.geo" 
 
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign, Yheight
@@ -80,6 +82,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.y   = c.Yheight
 
     c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m+ windowBulge )
+    c.ecal.File = EcalGeoFile
     c.HcalOption  =  HcalOption
     hcalSpace = 0
     hcalThickness = 232*u.cm

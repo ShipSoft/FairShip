@@ -62,6 +62,18 @@ else:
   if saveDisk: os.system('mv '+inputFile+' '+outFile)
   else :       os.system('cp '+inputFile+' '+outFile)
 
+if not geoFile:
+ tmp = inputFile.replace('ship.','geofile_full.')
+ geoFile = tmp.replace('_rec','')
+# try to figure out which ecal geo to load
+fgeo = ROOT.TFile(geoFile)
+sGeo = fgeo.FAIRGeom
+if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+fgeo.Close()
+ROOT.gGeoManager.Delete()
+print 'found ecal geo for ',ecalGeoFile
+
 if withHists:
  h={}
  ut.bookHist(h,'distu','distance to wire',100,0.,5.)
@@ -81,9 +93,9 @@ import shipunit as u
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 if dy: 
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy )
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
 else:
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile )
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
@@ -362,7 +374,7 @@ class ShipReco:
 dflag = 0
 if debug: dflag = 10
 caloTasks = []  
-ecalGeo = "ecal_ellipse6x12m2z"+str(ShipGeo.ecal.z)+".geo"
+ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
 ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
 ecalFiller.SetUseMCPoints(ROOT.kTRUE)
 ecalFiller.StoreTrackInformation()
@@ -405,9 +417,6 @@ geoMat =  ROOT.genfit.TGeoMaterialInterface()
 PDG = ROOT.TDatabasePDG.Instance()
 # init geometry and mag. field
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-if not geoFile:
- tmp = inputFile.replace('ship.','geofile_full.')
- geoFile = tmp.replace('_rec','')
 tgeom.Import(geoFile)
 #
 bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
@@ -451,7 +460,7 @@ for iEvent in range(firstEvent, SHiP.nEvents):
  SHiP.fitTracks.Fill()
  SHiP.mcLink.Fill()
  SHiP.SHbranch.Fill()
- #for x in caloTasks: x.Exec('start')
+ for x in caloTasks: x.Exec('start')
  SHiP.EcalClusters.Fill()
 
  if debug: print 'end of event after Fill'

@@ -151,6 +151,8 @@ if simEngine == "Pythia6":
 if simEngine == "muonDIS":
  primGen.SetTarget(0., 0.) 
  DISgen = ROOT.MuDISGenerator()
+ print 'MuDIS position info input=',ship_geo.tauMS.zMSC, ship_geo.TrackStation2.z
+ DISgen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC, ship_geo.TrackStation2.z)
  DISgen.Init(inputFile,firstEvent) 
  primGen.AddGenerator(DISgen)
  nEvents = min(nEvents,DISgen.GetNevents())

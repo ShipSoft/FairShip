@@ -41,16 +41,25 @@ else:
 f     = ROOT.TFile(inputFile)
 sTree = f.cbmsim
 
+# try to figure out which ecal geo to load
+if not geoFile:
+ geoFile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
+fgeo = ROOT.TFile(geoFile)
+sGeo = fgeo.FAIRGeom
+if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+fgeo.Close()
+ROOT.gGeoManager.Delete()
+print 'found ecal geo for ',ecalGeoFile
+
 # init geometry and mag. field
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy )
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run,ShipGeo)
 
 tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-if not geoFile:
- geoFile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
 gMan  = tgeom.Import(geoFile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)

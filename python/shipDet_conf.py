@@ -25,11 +25,11 @@ def posHcal(z):
  if rewrite: fn.close()  
  hcal = ROOT.hcal("Hcal", ROOT.kTRUE, sz)
  return hcal,HcalZSize
-def posEcal(z):
+def posEcal(z,efile):
  EcalZSize = 0
- sz = "ecal_ellipse6x12m2z"+str(z)+".geo"
+ sz = efile+"z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
- f_ecal  = floc+"/ecal_ellipse6x12m2.geo"
+ f_ecal  = floc+"/"+efile
  f_ecalz = floc+"/"+sz
  f = open(f_ecal) 
  rewrite = True
@@ -139,9 +139,7 @@ def configure(run,ship_geo):
   Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
   run.AddModule(Strawtubes) 
 
- if ship_geo.strawDesign == 4: 
-  ecal,EcalZSize = posEcal(ship_geo.ecal.z)
- else:   ecal = ROOT.ecal("Ecal", ROOT.kTRUE, "ecal.geo")
+ ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
  run.AddModule(ecal)
 
  if not ship_geo.HcalOption < 0:
