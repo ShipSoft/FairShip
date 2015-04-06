@@ -150,8 +150,9 @@ private:
   Float_t fModuleSize;			//!
   /** Z-position of HCAL from the target [cm] **/
   Float_t fZHcal;			//!
-  /** Radius of keeping volume for hcal **/
-  Float_t fKeepR;
+  /** Semiaxises of keeping volume for ecal **/
+  Float_t fSemiX;
+  Float_t fSemiY;
   /** Name of absorber material/media **/
   TString fAbsorber;			//!
   /** thickness of one lead layer [cm] **/

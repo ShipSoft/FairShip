@@ -1,13 +1,10 @@
-# Distance from calorimeter to target is 12.
-# Total thickness of absorber is 22 X_0. (No preshower)
-# 124 layers of lead and scintillator.
-# Thickness of lead and scintillator tiles is 1 mm.
-# Only modules with 4 and 16 channel are used.
-# Total number of modules: 3072. Channels: 17808
-# 	4 channel modules (type 2 ): 2616 (10448 channels).
-# 	16 channel modules (type 4):  460 ( 7360 channels).
-# CbmEcalDetailed class is preferable for transport.
-# By //Dr.Sys 2012.06.17
+# Total thickness of absorber is 25 X_0. (No preshower)
+# 140 layers of lead and scintillator.
+# Thickness of lead tiles: 1 mm
+# Thickness of scintillator tiles: 2 mm.
+# Modules with 4 readout channels are used.
+# Total number of modules: 2876. Channels: 11504
+# By //Dr.Sys 2015.04.04
 XPos=0		#Position of ECal center	[cm]
 YPos=0		#Position of ECal center	[cm]
 ZPos=3540	#Position of ECal start		[cm]
@@ -20,7 +17,8 @@ HoleRadius=.075 #Radius of hole in the calorimeter		[cm]
 FiberRadius=.06 #Radius of fiber				[cm]
 Steel=0.01	#Thickness of steel tapes			[cm]
 TileEdging=0.01	#Thickness of white coating near tiles edges 	[cm]
-ContR=603	#Radius of keeping volume	[cm]
+XSemiAxis=265	#X semiaxis of keeping volume	[cm]
+YSemiAxis=530	#Y semiaxis of keeping volume	[cm]
 CF[1]=1		#Is there clear fiber in cell type 1
 CF[2]=1		#Is there clear fiber in cell type 2
 CF[3]=1		#Is there clear fiber in cell type 3

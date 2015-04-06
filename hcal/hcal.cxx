@@ -65,7 +65,8 @@ hcal::hcal()
     fDY(0.),
     fModuleSize(0.),
     fZHcal(0.),
-    fKeepR(0.),
+    fSemiX(0.),
+    fSemiY(0.),
     fAbsorber("Lead"),
     fThicknessAbsorber(0.),
     fThicknessScin(0.),
@@ -134,7 +135,8 @@ hcal::hcal(const char* name, Bool_t active, const char* fileGeo)
     fDY(0.),
     fModuleSize(0.),
     fZHcal(0.),
-    fKeepR(0.),
+    fSemiX(0.),
+    fSemiY(0.),
     fAbsorber("Lead"),
     fThicknessAbsorber(0.),
     fThicknessScin(0.),
@@ -203,7 +205,8 @@ hcal::hcal(const char* name, Bool_t active, const char* fileGeo)
   fPosIndex=0;
   fDebug="";
 
-  fKeepR=fInf->GetVariableStrict("contr");
+  fSemiX=fInf->GetVariableStrict("xsemiaxis");
+  fSemiY=fInf->GetVariableStrict("ysemiaxis");
   fHoleRad=fInf->GetVariableStrict("holeradius");
   fFiberRad=fInf->GetVariableStrict("fiberradius");
   fThicknessSteel=fInf->GetVariableStrict("steel");
@@ -680,10 +683,10 @@ void hcal::ConstructGeometry()
 
   /** Initialize all media **/
   InitMedia();
-  par[0]=0;
-  par[1]=fKeepR;
+  par[0]=fSemiX;
+  par[1]=fSemiY;
   par[2]=fHcalSize[2]/2.0;
-  volume=gGeoManager->Volume("Hcal", "TUBE",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
+  volume=gGeoManager->Volume("Hcal", "ELTU",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
   volume->SetVisLeaves(kTRUE);
   volume->SetVisContainers(kFALSE);

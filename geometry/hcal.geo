@@ -1,5 +1,6 @@
 # By //Dr.Sys 2014.11.14
-# Hcal with 1056 modules (2012 channels). Module size is 24x24 cm
+# Hcal with 756 modules readout from both sides (1512 channels).
+# Module size is 24x24 cm
 # length about 2 m (8.5 \lambda). 
 XPos=0		#Position of Hcal center	[cm]
 YPos=0		#Position of Hcal center	[cm]
@@ -15,7 +16,8 @@ HoleRadius=.075 #Radius of hole in the calorimeter		[cm]
 FiberRadius=.06 #Radius of fiber				[cm]
 Steel=0.01	#Thickness of steel tapes			[cm]
 TileEdging=0.01	#Thickness of white coating near tiles edges 	[cm]
-ContR=610	#Radius of keeping volume	[cm]
+XSemiAxis=315	#X semiaxis of keeping volume	[cm]
+YSemiAxis=630	#Y semiaxis of keeping volume	[cm]
 CF=1		#Is there clear fiber in cell type 1
 NH=12		#Number of holes for cell type 1
 LightMap=none	#Light collection

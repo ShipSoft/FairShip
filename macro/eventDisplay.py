@@ -68,10 +68,14 @@ def speedUp():
  for x in ["wire","gas"]:  
    xvol = fGeo.GetVolume(x)
    xvol.SetVisibility(0) 
-# although this displays a fat ecal and hcal, only way to have some kind of performance, response of screen
+# 
  for x in ["Ecal","Hcal"]:
   xvol = fGeo.GetVolume(x)
   xvol.SetVisDaughters(0)
+  xvol.SetVisibility(1)
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ evmgr.ElementChanged(geoscene,True,True)
  
 def toolBar():
  topNodes={}
@@ -247,10 +251,9 @@ evmgr = ROOT.gEve
 sTree = g.FindObjectAny('cbmsim')
 #
 speedUp()
-ecalYellow()
 # create toolbar
 bar = toolBar()
-switchOfAll('RockD')
+# switchOfAll('RockD')
 
 def search(lvdict,tag):
   for x in lvdict: 

@@ -23,7 +23,7 @@ public:
  ecalInf() : TObject(), fVariables(NULL), fEcalStr(), fXPos(0.), fYPos(0.),
     fZPos(0.), fNLayers(0), fXSize(0), fYSize(0), fModuleSize(0.), fLead(0.),
     fScin(0.), fTyveec(0.), fThicknessLayer(0.), fCellSize(0.), fEcalSize(),
-    fECut(0.), fHCut(0.), fContainerRadius(0.0), fFastMC(-1), 
+    fECut(0.), fHCut(0.), fSemiX(0.0), fSemiY(0.0), fFastMC(-1), 
     fSuccess(-1), fFileName("") 
     {};
 
@@ -44,7 +44,8 @@ public:
   /** Size of ECAL in super modules **/
   inline Int_t GetXSize() const {return fXSize;}
   inline Int_t GetYSize() const {return fYSize;}
-  inline Double_t GetContainerRadius() const {return fContainerRadius;}
+  inline Double_t GetContainerXSemiAxiss() const {return fSemiX;}
+  inline Double_t GetContainerYSemiAxiss() const {return fSemiY;}
 
   /** Geant cuts information **/
   inline Double_t GetElectronCut() const {return fECut;}
@@ -133,8 +134,9 @@ private:
   Double_t fECut;
   /**Hadron cut for ECAL **/
   Double_t fHCut;
-  /**Radius of keeping volume **/
-  Double_t fContainerRadius;
+  /**Semiaxises keeping volume **/
+  Double_t fSemiX;
+  Double_t fSemiY;
 
   /**Flag to run Fast (1) or Full (0) MC code **/
   Int_t fFastMC;

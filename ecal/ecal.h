@@ -151,8 +151,9 @@ private:
   Float_t fModuleSize;			//!
   /** Z-position of ECAL from the target [cm] **/
   Float_t fZEcal;			//!
-  /** Radius of keeping volume for ecal **/
-  Float_t fKeepR;
+  /** Semiaxises of keeping volume for ecal **/
+  Float_t fSemiX;
+  Float_t fSemiY;
   /** thickness of one lead layer [cm] **/
   Float_t fThicknessLead;		//!
   /** thickness of one scintillator layer [cm] **/

@@ -31,6 +31,7 @@
 #include "TGeoBBox.h"
 #include "TGeoPgon.h"
 #include "TGeoTube.h"
+#include "TGeoEltu.h"
 #include "TGeoMatrix.h"
 #include "TList.h"
 
@@ -64,7 +65,8 @@ ecal::ecal()
     fDY(0.),
     fModuleSize(0.),
     fZEcal(0.),
-    fKeepR(0.),
+    fSemiX(0.),
+    fSemiY(0.),
     fThicknessLead(0.),
     fThicknessScin(0.),
     fThicknessTyvk(0.),
@@ -139,7 +141,8 @@ ecal::ecal(const char* name, Bool_t active, const char* fileGeo)
     fDY(0.),
     fModuleSize(0.),
     fZEcal(0.),
-    fKeepR(0.),
+    fSemiX(0.),
+    fSemiY(0.),
     fThicknessLead(0.),
     fThicknessScin(0.),
     fThicknessTyvk(0.),
@@ -216,7 +219,8 @@ ecal::ecal(const char* name, Bool_t active, const char* fileGeo)
   fPosIndex=0;
   fDebug="";
 
-  fKeepR=fInf->GetVariableStrict("contr");
+  fSemiX=fInf->GetVariableStrict("xsemiaxis");
+  fSemiY=fInf->GetVariableStrict("ysemiaxis");
   fHoleRad=fInf->GetVariableStrict("holeradius");
   fFiberRad=fInf->GetVariableStrict("fiberradius");
   fThicknessSteel=fInf->GetVariableStrict("steel");
@@ -711,10 +715,10 @@ void ecal::ConstructGeometry()
 
   /** Initialize all media **/
   InitMedia();
-  par[0]=0;
-  par[1]=fKeepR;
+  par[0]=fSemiX;
+  par[1]=fSemiY;
   par[2]=moduleth/2.0+0.1;
-  volume=gGeoManager->Volume("Ecal", "TUBE",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
+  volume=gGeoManager->Volume("Ecal", "ELTU",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Ecal", 1, top->GetName(), 0.0,0.0, fZEcal+par[2]-0.05, 0, kTRUE, buf, 0);
   volume->SetVisLeaves(kTRUE);
   volume->SetVisContainers(kFALSE);

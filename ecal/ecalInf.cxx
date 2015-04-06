@@ -155,7 +155,8 @@ ecalInf::ecalInf(const char* filename)
     fEcalSize(), 
     fECut(0.), 
     fHCut(0.), 
-    fContainerRadius(0.),
+    fSemiX(0.),
+    fSemiY(0.),
     fFastMC(-1),
     fSuccess(1), 
     fFileName(filename) 
@@ -337,7 +338,8 @@ void ecalInf::InitVariables()
   fECut=GetVariableStrict("ecut");
   fHCut=GetVariableStrict("hcut");
   fFastMC=(Int_t)GetVariableStrict("fastmc");
-  fContainerRadius=GetVariableStrict("contr");
+  fSemiX=GetVariableStrict("xsemiaxis");
+  fSemiY=GetVariableStrict("ysemiaxis");
 
   stri=""; stri+=str->GetString().Length();
   AddVariable("xsize", stri);
