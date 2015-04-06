@@ -213,14 +213,22 @@ def makePlots():
    ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
    print 'finished with first canvas'
    cv = h['fitresults2'].cd(1)
+   h['Doca'].SetXTitle('closest distance between 2 tracks   [cm]')
+   h['Doca'].SetYTitle('N/1mm')
    h['Doca'].Draw()
    cv = h['fitresults2'].cd(2)
+   h['IP0'].SetXTitle('impact parameter to p-target   [cm]')
+   h['IP0'].SetYTitle('N/1cm')
    h['IP0'].Draw()
    cv = h['fitresults2'].cd(3)
+   h['HNL'].SetXTitle('inv. mass  [GeV/c2]')
+   h['HNL'].SetYTitle('N/4MeV/c2')
    h['HNL'].Draw()
    fitSingleGauss('HNL',0.9,1.1)
    cv = h['fitresults2'].cd(4)
-   h['IP0/mass'].Draw('box')
+   h['IP0/mass'].SetXTitle('inv. mass  [GeV/c2]')
+   h['IP0/mass'].SetYTitle('IP [cm]')
+   h['IP0/mass'].Draw('colz')
    h['fitresults2'].Print('fitresults2.gif')
    print 'finished making plots'
 
@@ -410,7 +418,8 @@ def HNLKinematics():
 myEventLoop(nEvents)
 makePlots()
 # output histograms
-hfile = inputFile.replace('_rec.','_ana.')
+hfile = inputFile.replace('_rec','_ana')
+ROOT.gROOT.cd()
 ut.writeHists(h,hfile)
 
 
