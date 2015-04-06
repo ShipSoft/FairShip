@@ -65,7 +65,7 @@ OutFile	      ="tst."+tag+".root"
 if InputFile.find('_D')>0: withGeo = True
 #
 def speedUp():
- for x in ["wire","gas"]:  
+ for x in ["wire","gas","rockD","rockS"]:  
    xvol = fGeo.GetVolume(x)
    xvol.SetVisibility(0) 
 # 
@@ -73,10 +73,12 @@ def speedUp():
   xvol = fGeo.GetVolume(x)
   xvol.SetVisDaughters(0)
   xvol.SetVisibility(1)
+  if x=="Ecal": xvol.SetLineColor(ROOT.kYellow) 
+  else:        xvol.SetLineColor(ROOT.kOrange+3) 
  sc    = evmgr.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  evmgr.ElementChanged(geoscene,True,True)
- 
+
 def toolBar():
  topNodes={}
  for x in top.GetNodes():
