@@ -233,9 +233,7 @@ def makePlots():
    print 'finished making plots'
 
 # start event loop
-def myEventLoop(N):
- nEvents = min(sTree.GetEntries(),N)
- for n in range(nEvents): 
+def myEventLoop(n):
   rc = sTree.GetEntry(n)
   if not checkHNLorigin(sTree): continue
   wg = sTree.MCTrack[1].GetWeight()
@@ -414,8 +412,11 @@ def HNLKinematics():
       h['HNLmom_recTracks'].Fill(Prec,wg) 
       h['HNLmomNoW_recTracks'].Fill(Prec) 
 #
-
-myEventLoop(nEvents)
+ 
+nEvents = min(sTree.GetEntries(),N)
+for n in range(nEvents): 
+ myEventLoop(n)
+ sTree.FitTracks.Delete()
 makePlots()
 # output histograms
 hfile = inputFile.replace('_rec','_ana')
