@@ -49,18 +49,20 @@ def setMagnetField(flag=None):
     g4Run.GeometryHasBeenModified(True)
 
 def printWF(vl):
-    vln  = vl.GetName().__str__()
+    vln  = vl.GetName().__str__()+' '+str(vl.GetCopyNo())
+    mvl  = vl.GetMotherLogical().GetName()
+    if mvl !='cave': vln = mvl+'/'+vln   
     lvl  = vl.GetLogicalVolume()
     cvol = lvl.GetSolid().GetCubicVolume()/G4Unit.m3
     M    = lvl.GetMass()/G4Unit.kg
-    if M  < 5000.:   print '%-20s volume = %5.2Fm3  mass = %5.2F kg'%(vln,cvol,M)
-    else:            print '%-20s volume = %5.2Fm3  mass = %5.2F t'%(vln,cvol,M/1000.)
+    if M  < 5000.:   print '%-35s volume = %5.2Fm3  mass = %5.2F kg'%(vln,cvol,M)
+    else:            print '%-35s volume = %5.2Fm3  mass = %5.2F t'%(vln,cvol,M/1000.)
     fm = lvl.GetFieldManager() 
     if fm:  
        fi = fm.GetDetectorField()
        print '   Magnetic field:',fi.GetConstantFieldValue()/G4Unit.tesla
     magnetMass = 0
-    if vln[0:3]=='Mag': magnetMass =  M # only count volumes starting with Mag
+    if vl.GetName().__str__()[0:3]=='Mag': magnetMass =  M # only count volumes starting with Mag
     return magnetMass 
 def printWeightsandFields():
    gt = gTransportationManager

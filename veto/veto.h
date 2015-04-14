@@ -3,6 +3,7 @@
 
 #include "FairDetector.h"
 #include "TGeoMedium.h"
+#include "FairGeoVolume.h"
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
@@ -137,7 +138,7 @@ class veto: public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
-    void GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top,Bool_t sense);
+    TGeoVolume* GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sense);
     void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
     ClassDef(veto,2)
 };

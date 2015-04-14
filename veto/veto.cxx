@@ -90,22 +90,22 @@ void veto::Initialize()
 //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
 }
 // private method create ellipsoids
-void veto::GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top,Bool_t sens=false)
+TGeoVolume* veto::GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sens=false)
 {
   /*make elliptical tube by subtraction
    tick is wall thickness
    a,b are inner ellipse radii, dz is the half-length
    will be put at z, with colour and material*/
-        TGeoEltu *T2  = new TGeoEltu("T2",a+thick,b+thick,dz);
+       TGeoEltu *T2  = new TGeoEltu("T2",a+thick,b+thick,dz);
        TGeoEltu *T1  = new TGeoEltu("T1",a,b,dz+0.1);
        TGeoSubtraction *subtraction = new TGeoSubtraction(T2,T1);
        TGeoCompositeShape *Tc = new TGeoCompositeShape(name, subtraction);
        TGeoVolume *T = new TGeoVolume(name, Tc, material);
 
        T->SetLineColor(colour);
-       top->AddNode(T, 1, new TGeoTranslation(0, 0, z));
        //and make the volunes sensitive..
        if (sens) {AddSensitiveVolume(T);}
+       return T;
 }
 // private method create plate with ellips hole in the center
 void veto::GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top)
@@ -314,20 +314,30 @@ void veto::ConstructGeometry()
 
 
       // All inner tubes...
-      GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,fTub1z - zStartDecayVol,18,St,tDecayVol);
-      GeoEllipticalTube("T2I",walli,atube, btube,fTub2length,fTub2z - zStartDecayVol,18,St,tDecayVol);
-      GeoEllipticalTube("T3I",walli,atube, btube,fTub3length,fTub3z - zStartMagVol,18,St,tMaGVol);
-      GeoEllipticalTube("T4I",walli,atube, btube,fTub4length,fTub4z - zStartMagVol,18,St,tMaGVol);
-      GeoEllipticalTube("T5I",walli,atube, btube,fTub5length,fTub5z - zStartMagVol,18,St,tMaGVol);
-      GeoEllipticalTube("T6I",walli,atube, btube,fTub6length,fTub6z - zStartMagVol,18,St,tMaGVol);
+      TGeoVolume *T = GeoEllipticalTube("T1I",walli,atube1,btube,fTub1length,18,St);
+      tDecayVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub1z - zStartDecayVol));
+      T = GeoEllipticalTube("T2I",walli,atube, btube,fTub2length,18,St);
+      tDecayVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub2z - zStartDecayVol));
+      T = GeoEllipticalTube("T3I",walli,atube, btube,fTub3length,18,St);
+      tMaGVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
+      T = GeoEllipticalTube("T4I",walli,atube, btube,fTub4length,18,St);
+      tMaGVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
+      T = GeoEllipticalTube("T5I",walli,atube, btube,fTub5length,18,St);
+      tMaGVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
+      T = GeoEllipticalTube("T6I",walli,atube, btube,fTub6length,18,St);
+      tMaGVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
       // All outer tubes, first calculate inner radii of this tube
       Double_t aO =atube+walli+liscitube;
       Double_t aO1=atube1+walli+liscitube;
       Double_t bO =btube+walli+liscitube;
-      GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length,fTub1z - zStartDecayVol,14,Al,tDecayVol);
-      GeoEllipticalTube("T2O",wallo,aO, bO,fTub2length,fTub2z - zStartDecayVol,14,Al,tDecayVol);
-      GeoEllipticalTube("T3O",wallo,aO, bO,fTub3length,fTub3z - zStartDecayVol,14,Al,tDecayVol);
-      GeoEllipticalTube("T5O",wallo,aO, bO,fTub5length,fTub5z - zStartDecayVol,14,Al,tDecayVol);
+      T = GeoEllipticalTube("T1O",wallo,aO1,bO,fTub1length,14,Al);
+      tDecayVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub1z - zStartDecayVol));
+      T = GeoEllipticalTube("T2O",wallo,aO, bO,fTub2length,14,Al);
+      tDecayVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub2z - zStartDecayVol));
+      T = GeoEllipticalTube("T3O",wallo,aO, bO,fTub3length,14,Al);
+      tDecayVol->AddNode(T, 1, new TGeoTranslation(0, 0, fTub3z - zStartDecayVol));
+      T = GeoEllipticalTube("T5O",wallo,aO, bO,fTub5length,14,Al);
+      tDecayVol->AddNode(T, 1, new TGeoTranslation(0, 0,fTub5z - zStartDecayVol));
       GeoPlateEllipse("T1Endplate",  0.02*m+(atube-atube1),aO1+wallo,bO+wallo,walli/2.,fTub1z+fTub1length-walli/2. - zStartDecayVol,18,St,tDecayVol);
       GeoPlateEllipse("T2Startplate",0.02*m+(atube-atube1),aO +wallo,bO+wallo,walli/2.,fTub2z-fTub2length+walli/2. - zStartDecayVol,18,St,tDecayVol);
       GeoPlateEllipse("T2Endplate"  ,ws                   ,aO +wallo,bO+wallo,walli/2.,fTub2z+fTub2length-walli/2. - zStartDecayVol,18,St,tDecayVol);
@@ -344,94 +354,96 @@ void veto::ConstructGeometry()
       Double_t bls =btube+walli;
 
       //Assume ~1 m between ribs, calculate number of ribs
-
+      Double_t dist =  1.*m; 
       //For Tube nr 1:
-      Int_t nribs = 2+fTub1length*2./(1.*m) ;
+      Int_t nribs = 2+fTub1length*2./dist  ;
       Double_t ribspacing = (fTub1length*2.-nribs*walli)/(nribs-1)+walli;
       //now place ribs
+      T = GeoEllipticalTube("T1Rib",liscitube,als1,bls,walli/2.,18,St);
       for (Int_t nr=0; nr<nribs; nr++) {
-        TString namerib = "T1Rib_"; namerib+=nr;
         Double_t zrib= fTub1z-fTub1length+walli/2.+nr*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als1,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib - zStartDecayVol));
       }
       //now place LiSc
+      Double_t zlength=(ribspacing-walli)/2.;
+      T = GeoEllipticalTube("T1LiSc",liscitube,als1,bls,zlength,kMagenta-10,Se,true);
       for (Int_t nr=1; nr<nribs; nr++) {
-        TString namerib = "T1LiSc_"; namerib+=nr;
-        Double_t zlength=(ribspacing-walli)/2.;
         Double_t zlisc= fTub1z-fTub1length+walli+zlength+(nr-1)*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als1,bls,zlength,zlisc- zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc - zStartDecayVol));
       }
 
       //For Tube nr 2:
-      nribs = 2+fTub2length*2./(1.*m) ;
+      nribs = 2+fTub2length*2./dist  ;
       ribspacing = (fTub2length*2.-nribs*walli)/(nribs-1)+walli;
+      zlength=(ribspacing-walli)/2.;
+      T = GeoEllipticalTube("T2Rib",liscitube,als,bls,walli/2.,18,St);
       //now place ribs
       for (Int_t nr=0; nr<nribs; nr++) {
-        TString namerib = "T2Rib_"; namerib+=nr;
         Double_t zrib= fTub2z-fTub2length+walli/2.+nr*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib - zStartDecayVol));
       }
       //now place LiSc
+      T = GeoEllipticalTube("T2LiSc",liscitube,als,bls,zlength,kMagenta-10,Se,true);
       for (Int_t nr=1; nr<nribs; nr++) {
-        TString namerib = "T2LiSc_"; namerib+=nr;
-        Double_t zlength=(ribspacing-walli)/2.;
         Double_t zlisc=fTub2z-fTub2length+walli+zlength+(nr-1)*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc-zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc - zStartDecayVol));
       }
 
       //For Tube nr 3:
-      nribs = 2+fTub3length*2./(1.*m) ;
+      nribs = 2+fTub3length*2./dist  ;
       ribspacing = (fTub3length*2.-nribs*walli)/(nribs-1)+walli;
+      zlength=(ribspacing-walli)/2.;
+      T = GeoEllipticalTube("T3Rib",liscitube,als,bls,walli/2.,18,St);
       //now place ribs
       for (Int_t nr=0; nr<nribs; nr++) {
-        TString namerib = "T3Rib_"; namerib+=nr;
         Double_t zrib= fTub3z-fTub3length+walli/2.+nr*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib - zStartDecayVol));
       }
       //now place LiSc
+      T = GeoEllipticalTube("T3LiSc",liscitube,als,bls,zlength,kMagenta-10,Se,true);
       for (Int_t nr=1; nr<nribs; nr++) {
-        TString namerib = "T3LiSc_"; namerib+=nr;
-        Double_t zlength=(ribspacing-walli)/2.;
         Double_t zlisc=fTub3z-fTub3length+walli+zlength+(nr-1)*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc-zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc - zStartDecayVol));
       }
 
       //For Tube nr 4:
-      nribs = 2+fTub4length*2./(1.*m) ;
+      nribs = 2+fTub4length*2./dist  ;
       ribspacing = (fTub4length*2.-nribs*walli)/(nribs-1)+walli;
+      zlength=(ribspacing-walli)/2.;
+      //Here use ribs only 10 cm high!
+      T = GeoEllipticalTube("T4Rib",liscitube/3.,als,bls,walli/2.,18,St);
       //now place ribs
       for (Int_t nr=0; nr<nribs; nr++) {
-        TString namerib = "T4Rib_"; namerib+=nr;
         Double_t zrib= fTub4z-fTub4length+walli/2.+nr*ribspacing;
-        //Here use ribs only 10 cm high!
-        GeoEllipticalTube(namerib,liscitube/3.,als,bls,walli/2.,zrib - zStartMagVol,18,St,tMaGVol);
+        tMaGVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib - zStartMagVol));
       }
 
       //For Tube nr 5:
-      nribs = 2+fTub5length*2./(1.*m) ;
+      nribs = 2+fTub5length*2./dist  ;
       ribspacing = (fTub5length*2.-nribs*walli)/(nribs-1)+walli;
+      zlength=(ribspacing-walli)/2.;
+      T = GeoEllipticalTube("T5Rib",liscitube,als,bls,walli/2.,18,St);
       //now place ribs
       for (Int_t nr=0; nr<nribs; nr++) {
-        TString namerib = "T5Rib_"; namerib+=nr;
         Double_t zrib= fTub5z-fTub5length+walli/2.+nr*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
-      }
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib - zStartDecayVol));
+     }
       //now place LiSc
+      T = GeoEllipticalTube("T5LiSc",liscitube,als,bls,zlength,kMagenta-10,Se,true);
       for (Int_t nr=1; nr<nribs; nr++) {
-        TString namerib = "T5LiSc_"; namerib+=nr;
-        Double_t zlength=(ribspacing-walli)/2.;
         Double_t zlisc=fTub5z-fTub5length+walli+zlength+(nr-1)*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,zlength,zlisc-zStartDecayVol,kMagenta-10,Se,tDecayVol,true);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc - zStartDecayVol));
       }
 
       //For Tube nr 6:
-      nribs = 2+fTub6length*2./(1.*m) ;
+      nribs = 2+fTub6length*2./dist  ;
       ribspacing = (fTub6length*2.-nribs*walli)/(nribs-1)+walli;
+      zlength=(ribspacing-walli)/2.;
+      T = GeoEllipticalTube("T6Rib",liscitube,als,bls,walli/2.,18,St);
       //now place ribs
       for (Int_t nr=0; nr<nribs; nr++) {
-        TString namerib = "T6Rib_"; namerib+=nr;
         Double_t zrib= fTub6z-fTub6length+walli/2.+nr*ribspacing;
-        GeoEllipticalTube(namerib,liscitube,als,bls,walli/2.,zrib- zStartDecayVol,18,St,tDecayVol);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib - zStartDecayVol));
       }
 
       //Exit lid: first create Sphere
@@ -442,7 +454,7 @@ void veto::ConstructGeometry()
       TGeoVolume *T6Lid = new TGeoVolume("T6Lid", LidT6, Al );
       T6Lid->SetLineColor(14);
       tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+lidradius-1.*m - zStartMagVol));
-
+     
       //finish assembly and position
       TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tDecayVol->GetShape());
       Double_t totLength = asmb->GetDZ();
