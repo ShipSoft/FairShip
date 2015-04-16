@@ -1,0 +1,16 @@
+# Macro for loading basic libraries used with both Geant3 and Geant4
+from ROOT import gSystem
+#gSystem.Load("libEventDisplay.so")
+#gSystem.Load("libRIO.so")
+#gSystem.Load("libGeom.so")
+#gSystem.Load("libGeomPainter.so")
+#gSystem.Load("libVMC.so")
+#gSystem.Load("libEG.so")
+gSystem.Load("libEGPythia6.so")
+gSystem.Load("libPythia6.so")  
+#gSystem.Load("libPhysics.so")
+#gSystem.Load("libNet.so")  
+#gSystem.Load("libTree.so") 
+#gSystem.Load("libMinuit.so")
+#gSystem.Load("libMathMore.so")
+gSystem.Load("libpythia8.so")  

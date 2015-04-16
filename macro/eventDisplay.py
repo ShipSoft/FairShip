@@ -157,9 +157,12 @@ class DrawTracks(ROOT.FairTask):
    n+=1
   print "draw ",ntot," MC tracks"
  def DrawFittedTracks(self,option=''):
-  print "draw ",sTree.FitTracks.GetEntries()," fitted tracks"
-  n = 0
+  n,ntot = 0,0
   for fT in sTree.FitTracks:
+   n+=1
+   fst = fT.getFitStatus()
+   if not fst.isFitConverged(): continue
+   if fst.getNdf() < 20: continue
    DTrack = ROOT.TEveLine()
    fstate = fT.getFittedState(0) 
    fPos = fstate.getPos()
@@ -200,7 +203,8 @@ class DrawTracks(ROOT.FairTask):
    DTrack.SetMainColor(c)
    DTrack.SetLineWidth(3)
    self.comp.AddElement(DTrack)
-   n+=1
+   ntot+=1
+  print "draw ",ntot," fitted tracks"
 #
 class IO():
     def __init__(self):
