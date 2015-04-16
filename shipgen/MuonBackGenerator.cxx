@@ -34,7 +34,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fTree->SetBranchAddress("id",&id);                // particle id
   fTree->SetBranchAddress("parentid",&parentid);    // parent id, could be different
   fTree->SetBranchAddress("pythiaid",&pythiaid);    // pythiaid original particle
-  fTree->SetBranchAddress("ecut",&pythiaid);    // energy cut used in simulation
+  fTree->SetBranchAddress("ecut",&ecut);    // energy cut used in simulation
   fTree->SetBranchAddress("w",&w);                  // weight of event
   fTree->SetBranchAddress("x",&vx);   // position
   fTree->SetBranchAddress("y",&vy);
@@ -82,6 +82,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     vx = vx + dx/100.; 
     vy = vy + dy/100.; 
   }
+  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
   cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   return kTRUE;
 }

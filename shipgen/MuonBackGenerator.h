@@ -29,7 +29,7 @@ class MuonBackGenerator : public FairGenerator
  private:
   
  protected:
-  Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz;
+  Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz,ecut;
   TFile* fInputFile;    //! 
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TTree* fTree;         //! 
