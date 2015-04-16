@@ -712,7 +712,14 @@ def extractRareEvents(single = None):
   for n in range(nEvents):
    sTree.GetEntry(n)
    if n==0 : print 'now at event ',n,f.GetName()
-   if sTree.FitTracks.GetEntries()>0: 
+# count fitted tracks which have converged and nDF>20:
+  n = 0
+  for fT in sTree.FitTracks:
+   fst = fT.getFitStatus()
+   if not fst.isFitConverged(): continue
+   if fst.getNdf() < 20: continue
+   n+=1
+  if n > 0:
     rc = newTree.Fill()
     print 'filled newTree',rc
    sTree.Clear()
@@ -720,6 +727,39 @@ def extractRareEvents(single = None):
   print '   --> events saved:',newTree.GetEntries()
   f.Close() 
   raref.Close() 
+#
+def extractMuCloseByEvents(single = None):
+ mom = ROOT.TVector3()
+ for fn in fchainRec:
+  if single :
+    if fn.find(str(single)) < 0 : continue
+  f = ROOT.TFile(fn)
+  if not f.FindObjectAny('cbmsim'): 
+   print 'skip file ',f.GetName() 
+   continue
+  sTree = f.cbmsim
+  nEvents = sTree.GetEntries()
+  raref = ROOT.TFile(fn.replace(".root","_clby.root"),"recreate")
+  newTree = sTree.CloneTree(0)
+  for n in range(nEvents):
+   sTree.GetEntry(n)
+   if n==0 : print 'now at event ',n,f.GetName()
+# look for muons p>3 hitting something
+  n = 0
+  for c in [sTree.vetoPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:
+   for ahit in c:
+    abs(ahit.PdgCode())!=13: continue
+    ahit.Momentum(mom)
+    if mom.Mag()<3. : continue
+    n+=1
+  if n > 0:
+    rc = newTree.Fill()
+    print 'filled newTree',rc
+   sTree.Clear()
+  newTree.AutoSave()
+  print '   --> events saved:',newTree.GetEntries()
+  f.Close() 
+  raref.Close()
 #
 def MergeRareEvents(runs=['61','62']):
  for prefix in runs:
