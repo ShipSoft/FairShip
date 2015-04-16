@@ -3,7 +3,8 @@ import ROOT,os,sys,getopt,time
 import shipunit as u
 import shipRoot_conf
 from ShipGeoConfig import ConfigRegistry
-
+debug = 0  # 1 print weights and field
+           # 2 make overlap check
 # Default HNL parameters
 theHNLmass = 1.*u.GeV
 #theHNLcouplings = [1.e-8, 1.e-8, 1.e-8] # may not correspond to ctau=54km
@@ -22,6 +23,7 @@ theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
+if debug>1 : checking4overlaps = True
 phiRandom   = False  # only relevant for muon background generator
 followMuon  = False   # only transport muons for a fast muon only background estimate
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
@@ -230,7 +232,7 @@ if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
 if eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
   trajFilter = ROOT.FairTrajFilter.Instance()
-  trajFilter.SetStepSizeCut(10*u.cm);  
+  trajFilter.SetStepSizeCut(1*u.mm);  
   trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 200.*u.m)
   trajFilter.SetMomentumCutP(0.1*u.GeV)
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
@@ -240,7 +242,7 @@ if eventDisplay:
 if ship_geo.muShieldDesign != 1:
  import geomGeant4
  geomGeant4.setMagnetField() # ('dump') for printout of mag fields
- geomGeant4.printWeightsandFields()
+ if debug > 0: geomGeant4.printWeightsandFields()
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")

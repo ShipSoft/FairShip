@@ -38,6 +38,16 @@ eventDisplay()
  fMan->AddTask(HcalPoints);
  fMan->AddTask(MuonPoints);
  fMan->AddTask(RpcPoints);
- fMan->Init(1,2,10000);             
+ fMan->Init(1,4,10000);   
 
+ gGeoManager->GetVolume("rockD")->SetVisibility(0); 
+ gGeoManager->GetVolume("rockS")->SetVisibility(0); 
+ gGeoManager->GetVolume("wire")->SetVisibility(0); 
+ gGeoManager->GetVolume("gas")->SetVisibility(0); 
+ gGeoManager->GetVolume("Ecal")->SetVisibility(1); 
+ gGeoManager->GetVolume("Hcal")->SetVisibility(1); 
+ gGeoManager->GetVolume("Ecal")->SetLineColor(kYellow); 
+ gGeoManager->GetVolume("Hcal")->SetLineColor(kOrange+3); 
+ TEveElement* geoscene = gEve->GetScenes()->FindChild("Geometry scene");  
+ gEve->ElementChanged(geoscene,true,true);   
 }

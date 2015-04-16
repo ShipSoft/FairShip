@@ -167,10 +167,10 @@ class ShipReco:
   self.fitTrack2MC  = ROOT.std.vector('int')()
   self.SmearedHits  = ROOT.TClonesArray("TVectorD") 
 #  
-  self.Particles   = self.sTree.Branch("Particles",self.fPartArray,32000,-1)
-  self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
-  self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
-  self.mcLink      = self.sTree.Branch( "fitTrack2MC",self.fitTrack2MC,32000,-1)  
+  self.Particles   = self.sTree.Branch("Particles",  self.fPartArray,32000,-1)
+  self.SHbranch    = self.sTree.Branch("SmearedHits",self.SmearedHits,32000,-1)
+  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
+  self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
 #
   self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
   self.reps,self.states,self.newPosDir = {},{},{}
