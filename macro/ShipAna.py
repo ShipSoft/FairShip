@@ -235,7 +235,7 @@ def makePlots():
 # start event loop
 def myEventLoop(n):
   rc = sTree.GetEntry(n)
-  if not checkHNLorigin(sTree): continue
+  if not checkHNLorigin(sTree): return
   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
 # make some ecal cluster analysis if exist
@@ -413,7 +413,7 @@ def HNLKinematics():
       h['HNLmomNoW_recTracks'].Fill(Prec) 
 #
  
-nEvents = min(sTree.GetEntries(),N)
+nEvents = min(sTree.GetEntries(),nEvents)
 for n in range(nEvents): 
  myEventLoop(n)
  sTree.FitTracks.Delete()
