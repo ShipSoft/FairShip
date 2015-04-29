@@ -1,9 +1,8 @@
 #!/bin/bash
-IMAGE="anaderi/ocean:latest"
 DNS_OPTS=
 CMD="bash"
 VM_DIR=`dirname "$0"`
-source $VM_DIR/_functions.sh
+source $VM_DIR/_common.sh
 
 check_docker_connect
 
