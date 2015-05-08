@@ -3,7 +3,7 @@ inputFile = 'ship.Pythia8-TGeant4.root'
 geoFile   = None
 debug = False
 EcalDebugDraw = False
-withNoAmbiguities = None # True   for debugging purposes
+withNoStrawSmearing = None # True   for debugging purposes
 nEvents    = 999999
 firstEvent = 0
 withHists = True
@@ -17,18 +17,18 @@ from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
-           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","ambiguities","noVertexing","saveDisk"])
+           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,' 
-        print ' ambiguities: wire ambiguities default none' 
+        print ' noStrawSmearing: no smearing of distance to wire, default on' 
         print ' outputfile will have same name with _rec added'   
         sys.exit()
 for o, a in opts:
         if o in ("noVertexing"):
             vertexing = False
-        if o in ("ambiguities"):
-            withNoAmbiguities = True
+        if o in ("noStrawSmearing"):
+            withNoStrawSmearing = True
         if o in ("-f", "--inputFile"):
             inputFile = a
         if o in ("-g", "--geoFile"):
@@ -37,7 +37,6 @@ for o, a in opts:
             nEvents = int(a)
         if o in ("-Y"): 
             dy = float(a)
-            inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4.root'
         if o in ("--ecalDebugDraw"):
             EcalDebugDraw = True
         if o in ("--saveDisk"):
@@ -210,7 +209,7 @@ class ShipReco:
   self.fitTrack2MC.clear()
   for i in range(nShits):
     ahit = self.sTree.strawtubesPoint.At(i)
-    sm   = self.hit2wire(ahit,withNoAmbiguities)
+    sm   = self.hit2wire(ahit,withNoStrawSmearing)
     m = array('d',[i,sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     measurement = ROOT.TVectorD(8,m)
 # copy to branch
