@@ -485,9 +485,26 @@ void veto::ConstructGeometry()
       rockD->SetTransparency(50);
       top->AddNode(rockD, 1, new TGeoTranslation(0, 0, fzOffset + dZD/2.));
 // only for fastMuon simulation, otherwise output becomes too big    
-      if (fFastMuon){ AddSensitiveVolume(rockD);}
-
-      //Add one sensitive plane counting rate in second detector downstream
+      if (fFastMuon){ 
+        const char* Vol = "TGeoVolume";
+        const char* Mag = "Mag";
+        TObjArray* volumelist = gGeoManager->GetListOfVolumes();
+        int lastvolume = volumelist->GetLast();
+        int volumeiterator=0;
+        while ( volumeiterator<=lastvolume ) {
+         const char* volumename = volumelist->At(volumeiterator)->GetName();
+         const char* classname  = volumelist->At(volumeiterator)->ClassName();
+         if (strstr(classname,Vol)){
+          if (strstr(volumename,Mag)){ 
+            AddSensitiveVolume(gGeoManager->GetVolume(volumename));
+            cout << "veto added "<< volumename <<endl;
+          }
+         }  
+         volumeiterator++;
+        }
+       AddSensitiveVolume(rockD);
+      }
+//Add one sensitive plane counting rate in second detector downstream
       // with shielding around, 
       TGeoVolume *tDet2 = new TGeoVolumeAssembly("Detector2");
       Double_t zStartDet2 = fTub6z + 50.*m;
