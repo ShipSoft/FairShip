@@ -123,8 +123,9 @@ class DrawTracks(ROOT.FairTask):
  def ExecuteTask(self,option=''):
   self.comp.DestroyElements()
   self.comp.OpenCompound()
-  if sTree.FitTracks.GetEntries() > 0: 
-    self.DrawFittedTracks()
+  if sTree.FindBranch('FitTracks'):
+   if sTree.FitTracks.GetEntries() > 0: 
+     self.DrawFittedTracks()
   if not sTree.FindBranch("GeoTracks") and sTree.MCTrack.GetEntries() > 0: 
     if globals()['withMCTracks']: self.DrawMCTracks()
   self.comp.CloseCompound()
