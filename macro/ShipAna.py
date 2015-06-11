@@ -73,6 +73,10 @@ bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Y
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 
+# prepare veto decisions
+import shipVeto
+veto = shipVeto.Task()
+
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<'+str(chi2CutOff),100,0.,50.,100,-0.5,0.5)
@@ -238,6 +242,17 @@ def myEventLoop(n):
   if not checkHNLorigin(sTree): return
   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
+# 
+  flag,w = veto.SBT_decision(sTree)
+  print "veto decision for SBT",flag,w
+  wg = wg*w
+  flag,w = veto.SVT_decision(sTree)
+  print "veto decision for SVT",flag,w
+  wg = wg*w
+  flag,w = veto.UVT_decision(sTree)
+  print "veto decision for UVT",flag,w
+  wg = wg*w
+#
 # make some ecal cluster analysis if exist
   if sTree.FindBranch("EcalClusters"):
    for aClus in sTree.EcalClusters:
