@@ -194,12 +194,14 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
     Int_t pdgCode = p->GetPdgCode();
     TLorentzVector Pos; 
     gMC->TrackPosition(Pos); 
+    TLorentzVector Mom; 
+    gMC->TrackMomentum(Mom);
     Double_t xmean = (fPos.X()+Pos.X())/2. ;      
     Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
     Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
     AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-           fELoss,pdgCode);
+           fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
     // Increment number of veto det points in TParticle
     ShipStack* stack = (ShipStack*) gMC->GetStack();
@@ -475,19 +477,11 @@ void veto::ConstructGeometry()
       top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-5.*cm));
       AddSensitiveVolume(VetoTimeDet);
 
-// Concrete around decay tunnel
-      Double_t dZD      =  100*m + fMuonShieldLength;
-      TGeoBBox *box3    = new TGeoBBox("box3", 15*m,12.25*m,dZD/2.);
-      TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
-      TGeoCompositeShape *compRockD = new TGeoCompositeShape("compRockD", "box3-box4");
-      TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
-      rockD->SetLineColor(11);  // grey
-      rockD->SetTransparency(50);
-      top->AddNode(rockD, 1, new TGeoTranslation(0, 0, fzOffset + dZD/2.));
 // only for fastMuon simulation, otherwise output becomes too big    
       if (fFastMuon){ 
-        const char* Vol = "TGeoVolume";
-        const char* Mag = "Mag";
+        const char* Vol  = "TGeoVolume";
+        const char* Mag  = "Mag";
+        const char* Rock = "rock";
         TObjArray* volumelist = gGeoManager->GetListOfVolumes();
         int lastvolume = volumelist->GetLast();
         int volumeiterator=0;
@@ -495,14 +489,13 @@ void veto::ConstructGeometry()
          const char* volumename = volumelist->At(volumeiterator)->GetName();
          const char* classname  = volumelist->At(volumeiterator)->ClassName();
          if (strstr(classname,Vol)){
-          if (strstr(volumename,Mag)){ 
+          if (strstr(volumename,Mag) || strstr(volumename,Rock)){ 
             AddSensitiveVolume(gGeoManager->GetVolume(volumename));
             cout << "veto added "<< volumename <<endl;
           }
          }  
          volumeiterator++;
         }
-       AddSensitiveVolume(rockD);
       }
 //Add one sensitive plane counting rate in second detector downstream
       // with shielding around, 
@@ -528,13 +521,13 @@ void veto::ConstructGeometry()
 vetoPoint* veto::AddHit(Int_t trackID, Int_t detID,
                                       TVector3 pos, TVector3 mom,
                                       Double_t time, Double_t length,
-                                      Double_t eLoss, Int_t pdgCode)
+                                      Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom)
 {
   TClonesArray& clref = *fvetoPointCollection;
   Int_t size = clref.GetEntriesFast();
   // cout << "veto hit called "<< pos.z()<<endl;
   return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
-         time, length, eLoss, pdgCode);
+         time, length, eLoss, pdgCode,Lpos,Lmom);
 }
 
 ClassImp(veto)

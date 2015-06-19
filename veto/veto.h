@@ -55,10 +55,6 @@ class veto: public FairDetector
     void SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Double32_t z5, Double32_t z6);
     void SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t l4, Double32_t l5, Double32_t l6);
     void SetB(Double32_t b) {fBtube=b;}
-    void SetConcreateWall(Double32_t a,Double32_t b) {
-      // zEndOfAbsorb + 2*dZ , dZ = dZ1 + dZ2;
-      fzOffset=a;
-      fMuonShieldLength=b;}
     void SetRminRmax(Double32_t rmin,Double32_t rmax){
      fRmin = rmin;                                                //!  minimum diameter of vacuum chamber
      fRmax = rmax;                                                //!  maximum diameter of vacuum chamber
@@ -74,7 +70,7 @@ class veto: public FairDetector
     vetoPoint* AddHit(Int_t trackID, Int_t detID,
                              TVector3 pos, TVector3 mom,
                              Double_t time, Double_t length,
-                             Double_t eLoss,Int_t pdgcode);
+                             Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
 
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
@@ -130,7 +126,6 @@ class veto: public FairDetector
     Double32_t fVRmin;
     Double32_t fVRmax;
     Double32_t fBtube;
-    Double32_t fMuonShieldLength, fzOffset;
     /** container for data points */
 
     TClonesArray*  fvetoPointCollection;
