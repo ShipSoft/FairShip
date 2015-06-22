@@ -75,7 +75,7 @@ if not ParFile:
   tmp = InputFile.split('.')
   tag = str(dy)+'.'+tmp[3]
   ParFile       ="ship.params."+tag.replace('_rec','')+".root"  
-OutFile	      = "tst."+InputFile
+OutFile	      = "tst."+InputFile.split('/')[-1]
 if InputFile.find('_D')>0: withGeo = True
 #
 def printMCTrack(n,MCTrack):
@@ -143,7 +143,12 @@ class DrawTracks(ROOT.FairTask):
    for c in [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPoint,sTree.HcalPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:
     for p in c:
       if p.GetTrackID()==n:
-       hitlist[p.GetZ()] = [p.GetX(),p.GetY()]
+       if hasattr(p, "LastPoint"): 
+        lp = p.LastPoint()
+        hitlist[lp.z()] = [lp.x(),lp.y()] 
+        hitlist[2.*p.GetZ()-lp.z()] = [2.*p.GetX()-lp.x(),2.*p.GetY()-lp.y()] 
+       else:
+        hitlist[p.GetZ()] = [p.GetX(),p.GetY()]
 # sort in z
    lz = hitlist.keys()
    if len(lz)>1:
@@ -308,9 +313,9 @@ class EventLoop(ROOT.FairTask):
    print 'Event %i ready'%(self.n)
 #
 def speedUp():
- for x in ["wire","gas","rockD","rockS"]:  
+ for x in ["wire","gas","rockD","rockS","rockSFe"]:  
    xvol = fGeo.GetVolume(x)
-   xvol.SetVisibility(0) 
+   if xvol: xvol.SetVisibility(0) 
 # 
  for x in ["Ecal","Hcal"]:
   xvol = fGeo.GetVolume(x)
