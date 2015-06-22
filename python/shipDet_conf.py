@@ -97,8 +97,6 @@ def configure(run,ship_geo):
  Veto.SetRminRmax(ship_geo.chambers.Rmin,ship_geo.chambers.Rmax);
  Veto.SetVminVmax(ship_geo.scintillator.Rmin,ship_geo.scintillator.Rmax);
  Veto.SetB(ship_geo.Yheight/2.)
- zConc = 2*ship_geo.muShield.dZ0+ship_geo.hadronAbsorber.length/2. + ship_geo.hadronAbsorber.z + 2*(ship_geo.muShield.dZ1+ship_geo.muShield.dZ2)
- Veto.SetConcreateWall(zConc,ship_geo.muShield.length)
  run.AddModule(Veto)
 
  if ship_geo.muShieldDesign==5 or ship_geo.muShieldDesign==1:
