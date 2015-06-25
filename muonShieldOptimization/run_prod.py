@@ -6,7 +6,7 @@ def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
     f = shipsoft+'/data/pythia8_Geant4_onlyMuons.root'
     cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
   elif y=='Jpsi': 
-    f = shipsoft+'/data/pythia8_Geant4_Jpsi_onlyMuons_E50.root'
+    f = shipsoft+'/data/pythia8_Geant4_Jpsi_onlyMuons.root'
     cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
   else:       
     f = shipsoft+'/data/pythia8_Geant4_Yandex_onlyMuons.root'
@@ -138,12 +138,78 @@ def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
 #makeProd("muon718",10,False,True) # start production with beam smeared on r=3cm disk
 #makeProd("muon728",10,True,True)   
 #makeProd("muon719",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon729",10,True,True)   
-#makeProd("muon730",10,'Jpsi',False)   
-#makeProd("muon731",10,'Jpsi',True)   
-#makeProd("muon732",10,'Jpsi',True)   
+#makeProd("muon729",10,True,True)     #
+#makeProd("muon730",10,'Jpsi',False)  # made with E50
+#makeProd("muon731",10,'Jpsi',True)   # made with E50
+#makeProd("muon732",10,'Jpsi',True)   # made with E50 
 #makeProd("muon733",10,'Jpsi',True)   # back to pencil beam
-makeProd("muon630",10,False,True) # test with new muonShield code, 3cm smearing
+#makeProd("muon630",10,False,True) # test with new muonShield code, 3cm smearing
+#makeProd("muon631",10,False,True) # run with concrete wall enabled as sensitive
+#makeProd("muon632",10,False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed
+                                   # but wrong geometry
+#makeProd("muon810",10,False,False) # start production with latest geometry
+#makeProd("muon820",10,True,False)   
+#makeProd("muon811",10,False,True) # 
+#makeProd("muon821",10,True,True)   
+##makeProd("muon812",10,False,True) # --< 831  copied back, done 16.3.2015
+#makeProd("muon822",10,True,True)   
+#makeProd("muon821",10,True,True)   
+#makeProd("muon822",10,True,True)   
+#
+#makeProd("muon813",10,False,True) # 
+#makeProd("muon823",10,True,True)   
+
+#makeProd("muon814",10,False,True) # 
+#makeProd("muon824",10,True,True)   
+#makeProd("muon815",10,False,True)
+#makeProd("muon825",10,True,True)
+#makeProd("muon816",10,False,True)
+#makeProd("muon826",10,True,True)
+#makeProd("muon817",10,False,True)
+#makeProd("muon827",10,True,True)
+#makeProd("muon818",10,False,True)
+#makeProd("muon828",10,True,True)
+#makeProd("muon819",10,False,True)
+#makeProd("muon829",10,True,True)
+#makeProd("muon910",10,False,True)
+#makeProd("muon920",10,True,True)
+#makeProd("muon911",10,False,True)
+#makeProd("muon921",10,True,True)
+
+#makeProd("muon912",10,False,True)
+#makeProd("muon922",10,True,True)
+
+#makeProd("muon913",10,False,True)
+#makeProd("muon923",10,True,True)
+#makeProd("muon914",10,False,True)
+#makeProd("muon924",10,True,True)
+#makeProd("muon915",10,False,True)
+#makeProd("muon925",10,True,True)
+#makeProd("muon916",10,False,True)
+#makeProd("muon926",10,True,True)
+#makeProd("muon917",10,False,True)
+#makeProd("muon927",10,True,True)
+#makeProd("muon927",10,True,True,8)
+#makeProd("muon918",10,False,True)
+#makeProd("muon928",10,True,True)
+#makeProd("muon919",10,False,True)
+#makeProd("muon929",10,True,True)
+#makeProd("muon1019",10,False,True)
+#makeProd("muon1029",10,True,True)
+#makeProd("muon1018",10,False,True)
+#makeProd("muon1028",10,True,True)
+#makeProd("muon1017",10,False,True)
+#makeProd("muon1027",10,True,True)
+#makeProd("muon1016",10,False,True)
+#makeProd("muon1026",10,True,True)
+#makeProd("muon1015",10,False,True)
+#makeProd("muon1025",10,True,True)
+#makeProd("muon1014",10,False,True)
+#makeProd("muon1024",10,True,True)
+#makeProd("muon1013",10,False,True)
+#makeProd("muon1023",10,True,True)
+#makeProd("muon1012",10,False,True)
+#makeProd("muon1022",10,True,True)
 
 def copy2EOS():
  import os

@@ -86,12 +86,83 @@ if not os.uname()[1].lower().find('ubuntu')< 0: local = True
 #makeProd("muon730",10,'Jpsi',False)   
 #makeProd("muon731",10,'Jpsi',True)   
 #makeProd("muon732",10,'Jpsi',True)   
+#makeProd("muon733",10,'Jpsi',True)   # back to pencil beam
+#makeProd("muon630",10,False,True) # test with new muonShield code, 3cm smearing
+#makeProd("muon631",10,False,True) # run with concrete wall enabled as sensitive
+#makeProd("muon632",10,False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed
+                                   # but wrong geometry
+#makeProd("muon810",10,False,False) # start production with latest geometry
+#makeProd("muon820",10,True,False)   
+#makeProd("muon811",10,False,True) # 
+#makeProd("muon821",10,True,True)   
+##makeProd("muon812",10,False,True) # --< 831  copied back, done 16.3.2015
+#makeProd("muon822",10,True,True)   
+#makeProd("muon821",10,True,True)   
+#makeProd("muon822",10,True,True)   
+#
+#makeProd("muon813",10,False,True) # 
+#makeProd("muon823",10,True,True)   
+
+#makeProd("muon814",10,False,True) # 
+#makeProd("muon824",10,True,True)   
+#makeProd("muon815",10,False,True)
+#makeProd("muon825",10,True,True)
+#makeProd("muon816",10,False,True)
+#makeProd("muon826",10,True,True)
+#makeProd("muon817",10,False,True)
+#makeProd("muon827",10,True,True)
+#makeProd("muon818",10,False,True)
+#makeProd("muon828",10,True,True)
+#makeProd("muon819",10,False,True)
+#makeProd("muon829",10,True,True)
+#makeProd("muon910",10,False,True)
+#makeProd("muon920",10,True,True)
+#makeProd("muon911",10,False,True)
+#makeProd("muon921",10,True,True)
+
+#makeProd("muon912",10,False,True)
+#makeProd("muon922",10,True,True)
+
+#makeProd("muon913",10,False,True)
+#makeProd("muon923",10,True,True)
+#makeProd("muon914",10,False,True)
+#makeProd("muon924",10,True,True)
+#makeProd("muon915",10,False,True)
+#makeProd("muon925",10,True,True)
+#makeProd("muon916",10,False,True)
+#makeProd("muon926",10,True,True)
+#makeProd("muon917",10,False,True)
+#makeProd("muon927",10,True,True)
+#makeProd("muon927",10,True,True,8)
+#makeProd("muon918",10,False,True)
+#makeProd("muon928",10,True,True)
+#makeProd("muon919",10,False,True)
+#makeProd("muon929",10,True,True)
+#makeProd("muon1019",10,False,True)
+#makeProd("muon1029",10,True,True)
+#makeProd("muon1018",10,False,True)
+#makeProd("muon1028",10,True,True)
+#makeProd("muon1017",10,False,True)
+#makeProd("muon1027",10,True,True)
+#makeProd("muon1016",10,False,True)
+#makeProd("muon1026",10,True,True)
+#makeProd("muon1015",10,False,True)
+#makeProd("muon1025",10,True,True)
+#makeProd("muon1014",10,False,True)
+#makeProd("muon1024",10,True,True)
+#makeProd("muon1013",10,False,True)
+#makeProd("muon1023",10,True,True)
+#makeProd("muon1012",10,False,True)
+#makeProd("muon1022",10,True,True)
+
 prefixes  = []
 withChain = 0
 pref = 'muon'
-if not os.path.abspath('.').find('neutrino')<0: pref='neutrino'
-if not os.path.abspath('.').lower().find('vdis')<0: pref='disV'
-elif not os.path.abspath('.').lower().find('dis')<0:  pref='dis'
+xx = os.path.abspath('.').lower()
+if not xx.find('neutrino')<0: pref='neutrino'
+if not xx.find('vdis')<0: pref='disV'
+elif not xx.find('clby')<0:  pref='disCLBY'
+elif not xx.find('dis')<0:  pref='dis'
 
 if len(os.sys.argv)>1 : 
  for i in range(1,len(os.sys.argv)):
@@ -104,7 +175,7 @@ else:
 
 testdir = '.'
 path = ''
-if local: path = "/media/Data/HNL/muonBackground/"
+# if local: path = "/media/Data/HNL/muonBackground/"
 if prefixes[0]!='': testdir = path+prefixes[0]+'1'
 # figure out which setup
 for f in os.listdir(testdir):
@@ -129,12 +200,17 @@ else :
  inputFile2 = inputFile.replace('.root','_D.root')
 
 from array import array # gymnastic required by Ecal 
+# even more gymnastics
+# try to figure out which ecal geo to load
+if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+
 import rootUtils as ut
 import shipunit as u
 PDG = ROOT.TDatabasePDG.Instance()
 from ShipGeoConfig import ConfigRegistry
 # init geometry and mag. field
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy )
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
@@ -160,7 +236,12 @@ def origin(sTree,it):
 otherPhysList = False
 noField       = False
 passive       = False
-totl = 30.
+#
+top  = fGeo.GetTopVolume()
+muon = top.GetNode("MuonDetector_1")
+mvol = muon.GetVolume()
+zmuon = muon.GetMatrix().GetTranslation()[2]
+totl  = (zmuon + mvol.GetShape().GetDZ() ) / u.m 
 ztarget = -100.
 
 fchain = []
@@ -294,7 +375,8 @@ ut.bookHist(h,'dE','',100,0.,10.,100,0.,10.)
 h['dummy'].SetMaximum(10.)
 
 histlistAll = {1:'strawstation_5',2:'strawstation_1',3:'strawstation_4',4:'Ecal',5:'muondet',
-               6:'VetoTimeDet',7:'T1LS',8:'T2LS',9:'T3LS',10:'T5LS',11:'volRpc',12:'volHPT',13:'TimeDet',14:'Det2'}
+               6:'VetoTimeDet',7:'T1LiSc',8:'T2LiSc',9:'T3LiSc',10:'T5LiSc',
+              11:'volRpc',12:'volHPT',13:'TargetTracker',14:'TimeDet',15:'Det2'}
 hLiSc = {1:{}}
 for i in range(1,7):  hLiSc[1][i] = "T1LiSc_"+str(i)
 hLiSc[2] = {}
@@ -322,7 +404,7 @@ def BigEventLoop():
   nEvents = sTree.GetEntries()
   if sTree.GetBranch("GeoTracks"): sTree.SetBranchStatus("GeoTracks",0)
   sTree.GetEntry(0)
-  hitContainers = [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPointLite,sTree.strawtubesPoint,sTree.ShipRpcPoint]
+  hitContainers = [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPointLite,sTree.strawtubesPoint,sTree.ShipRpcPoint,sTree.TargetPoint]
   for n in range(nEvents):
    rc = sTree.GetEntry(n)
    theMuon = sTree.MCTrack[0]
@@ -360,7 +442,7 @@ def BigEventLoop():
      elif ahit.GetName() == 'ecalPoint':
       # not needed for lite collection: if abs(ahit.GetPdgCode())==12 or abs(ahit.GetPdgCode())==14  : continue
       detName = 'Ecal' 
-      ecal.GetCellCoordForPy(detID,pos)     
+      ecal.GetCellCoordForPy(detID,pos)   
       x = pos.X()
       y = pos.Y()
       E = ahit.GetEnergyLoss()
@@ -380,12 +462,17 @@ def BigEventLoop():
      if not trackID < 0: 
        aTrack = sTree.MCTrack[trackID]
        pdgID  = aTrack.GetPdgCode()
-       aTrack.GetMomentum(mom) # ! this is not momentum of particle at Calorimater place
+       aTrack.GetMomentum(mom) # ! this is not momentum of particle at Calorimeter place
        phit   = mom.Mag()/u.GeV
      if abs(pdgID)==13: mu='_mu'
      if ahit.GetName().find('ecal')<0:
       rc = ahit.Momentum(mom)
       phit = mom.Mag()/u.GeV
+     else:
+      for ahit in sTree.EcalPoint:
+        if ahit.GetTrackID() == trackID:
+         rc   = ahit.Momentum(mom)
+         phit = mom.Mag()/u.GeV          
      if phit>3 and abs(pdgID)==13: mu='_muV0'
      detName = detName + mu
      if detName.find('LS')<0: rc = h[detName].Fill(x/u.m,y/u.m,w)
@@ -424,7 +511,7 @@ def BigEventLoop():
      for j in hLiSc[k]:
       detName=hLiSc[k][j]
       tag  = detName+mu+x
-      newh = detName[0:2]+'LS'+mu+x
+      newh = detName[0:2]+'LiSc'+mu+x
       if not h.has_key(tag): continue 
       if first: 
          h[newh] = h[tag].Clone(newh)
@@ -447,19 +534,21 @@ def BigEventLoop():
 # make list of hists with entries
  k = 1
  for x in histlistAll:
-  if h.has_key(histlistAll[x]): 
-   histlist[k]=histlistAll[x]
-# add muons and make total
-   rc = h[histlist[k]+'_mu'+'_P'].Add(h[histlist[k]+'_muV0'+'_P'],1.)
-   rc = h[histlist[k]+'_mu'+'_OP'].Add(h[histlist[k]+'_muV0'+'_OP'],1.)
-   rc = h[histlist[k]+'_mu'].Add(h[histlist[k]+'_muV0'],1.)
-   rc = h[histlist[k]].Add(h[histlist[k]+'_mu'],1.)
+  if h.has_key(histlistAll[x]):
+   histlist[k]=histlistAll[x]    
+# make cumulative histograms
+   for c in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
+    h[histlist[k]+'_mu'+c].Add(  h[histlist[k]+'_muV0'+c] )
+    h[histlist[k]+c].Add(  h[histlist[k]+'_mu'+c] )
+    h[histlist[k]+c].SetMinimum(0.) 
+    h[histlist[k]+'_mu'+c].SetMinimum(0.) 
+    h[histlist[k]+'_muV0'+c] .SetMinimum(0.) 
    k+=1
  nstations = len(histlist)
  makePlots(nstations)
 #
 def makePlots(nstations):
- cxcy = {1:[2,1],2:[3,1],3:[2,2],4:[3,2],5:[3,2],6:[3,2],7:[3,3],8:[3,3],9:[3,3],10:[4,3],11:[4,3],12:[4,3],13:[5,3],14:[5,3]}
+ cxcy = {1:[2,1],2:[3,1],3:[2,2],4:[3,2],5:[3,2],6:[3,2],7:[3,3],8:[3,3],9:[3,3],10:[4,3],11:[4,3],12:[4,3],13:[5,3],14:[5,3],15:[5,3]}
  ut.bookCanvas(h,key='ResultsI',title='hit occupancies',  nx=1100,ny=600*cxcy[nstations][1],cx=cxcy[nstations][0],cy=cxcy[nstations][1])
  ut.bookCanvas(h,key='ResultsImu',title='hit occupancies',nx=1100,ny=600*cxcy[nstations][1],cx=cxcy[nstations][0],cy=cxcy[nstations][1])
  ut.bookCanvas(h,key='ResultsImuV0',title='hit occupancies',nx=1100,ny=600*cxcy[nstations][1],cx=cxcy[nstations][0],cy=cxcy[nstations][1])
@@ -597,14 +686,14 @@ def muDISntuple(fn):
   fout.cd()
   h['ntuple'].Write()
 def analyzeConcrete():
- fout = ROOT.TFile('muConcrete.root','recreate')
+ h['fout'] = ROOT.TFile('muConcrete.root','recreate')
  h['ntuple'] = ROOT.TNtuple("muons","muon flux concrete","id:px:py:pz:x:y:z:w")
  for m in ['','mu','V0']:
   ut.bookHist(h,'conc_hitz'+m,'concrete hit z '+m,100,-100.,100.)
   ut.bookHist(h,'conc_hitzP'+m,'concrete hit z vs P'+m,100,-100.,100.,100,0.,25.)
   ut.bookHist(h,'conc_hity'+m,'concrete hit y '+m,100,-15.,15.)
-  ut.bookHist(h,'conc_p'+m,'concrete hit p '+m,100,0.,300.)
-  ut.bookHist(h,'conc_pt'+m,'concrete hit pt '+m,100,0.,10.)
+  ut.bookHist(h,'conc_p'+m,'concrete hit p '+m,1000,0.,400.)
+  ut.bookHist(h,'conc_pt'+m,'concrete hit pt '+m,100,0.,20.)
   ut.bookHist(h,'conc_hitzy'+m,'concrete hit zy '+m,100,-100.,100.,100,-15.,15.)
  top = fGeo.GetTopVolume()
  magn = top.GetNode("magyoke_1")
@@ -616,8 +705,9 @@ def analyzeConcrete():
    continue
   sTree = f.cbmsim
   nEvents = sTree.GetEntries()
+  ROOT.gROOT.cd()
   for n in range(nEvents):
-   sTree.GetEntry(n)
+   rc=sTree.GetEntry(n)
    if sTree.MCTrack.GetEntries() > 1: 
       wg = sTree.MCTrack[1].GetWeight() 
    else: 
@@ -645,9 +735,10 @@ def analyzeConcrete():
      #direc = [-ahit.GetPx()/P,-ahit.GetPy()/P,-ahit.GetPz()/P]
      #t = - start[0]/direc[0]
      
+ ut.bookCanvas(h,key='ResultsV0',title='muons hitting concrete, p>3GeV',nx=1000,ny=600,cx=2,cy=2)  
  ut.bookCanvas(h,key='Resultsmu',title='muons hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
  ut.bookCanvas(h,key='Results',title='hitting concrete',nx=1000,ny=600,cx=2,cy=2)  
- for m in ['','mu']:
+ for m in ['','mu','V0']:
   tc = h['Results'+m].cd(1)
   h['conc_hity'+m].Draw()
   tc = h['Results'+m].cd(2)
@@ -658,7 +749,7 @@ def analyzeConcrete():
   tc = h['Results'+m].cd(4)
   tc.SetLogy(1)
   h['conc_p'+m].Draw()
-  fout.cd()
+  h['fout'].cd()
   h['ntuple'].Write()
 
 def rareEventEmulsion(fname = 'rareEmulsion.txt'):
@@ -713,13 +804,13 @@ def extractRareEvents(single = None):
    sTree.GetEntry(n)
    if n==0 : print 'now at event ',n,f.GetName()
 # count fitted tracks which have converged and nDF>20:
-  n = 0
-  for fT in sTree.FitTracks:
-   fst = fT.getFitStatus()
-   if not fst.isFitConverged(): continue
-   if fst.getNdf() < 20: continue
-   n+=1
-  if n > 0:
+   n = 0
+   for fT in sTree.FitTracks:
+    fst = fT.getFitStatus()
+    if not fst.isFitConverged(): continue
+    if fst.getNdf() < 20: continue
+    n+=1
+   if n > 0:
     rc = newTree.Fill()
     print 'filled newTree',rc
    sTree.Clear()
@@ -730,6 +821,9 @@ def extractRareEvents(single = None):
 #
 def extractMuCloseByEvents(single = None):
  mom = ROOT.TVector3()
+ pos = ROOT.TVector3()
+ golmx = top.GetNode("volGoliath_1").GetMatrix()
+ zGol = golmx.GetTranslation()[2]
  for fn in fchainRec:
   if single :
     if fn.find(str(single)) < 0 : continue
@@ -745,16 +839,18 @@ def extractMuCloseByEvents(single = None):
    sTree.GetEntry(n)
    if n==0 : print 'now at event ',n,f.GetName()
 # look for muons p>3 hitting something
-  n = 0
-  for c in [sTree.vetoPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:
-   for ahit in c:
-    abs(ahit.PdgCode())!=13: continue
-    ahit.Momentum(mom)
-    if mom.Mag()<3. : continue
-    n+=1
-  if n > 0:
+   n = 0
+   for c in [sTree.vetoPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:
+    for ahit in c:
+     if abs(ahit.PdgCode())!=13: continue
+     ahit.Momentum(mom)
+     if mom.Mag()<3. : continue
+     ahit.Position(pos)
+     if pos.z()<zGol : continue
+     n+=1
+   if n > 0:
     rc = newTree.Fill()
-    print 'filled newTree',rc
+    # print 'filled newTree',rc
    sTree.Clear()
   newTree.AutoSave()
   print '   --> events saved:',newTree.GetEntries()
@@ -897,9 +993,11 @@ def pers():
 from operator import itemgetter
 def makeNicePrintout(x=['rareEvents_61-62.txt','rareEvents_71-72.txt']):
  result = []
+ cor = 1.
  for fn in x:
   f = open(fn)
   recTrack = None
+  if fn=="rareEvents_81-102.txt" : cor = 30.
   for lx in f.readlines():
    l = lx.replace('\n','')
    if not l.find('rare event')<0:
@@ -926,16 +1024,48 @@ def makeNicePrintout(x=['rareEvents_61-62.txt','rareEvents_71-72.txt']):
       tmp = l.split(' ')
       recTrack['id_hit'] = tmp[1].replace(' ','')
  # print a table
- print '%4s %8s %8s %4s %8s %8s %8s %8s %8s '%('nr','origin','pythiaID','ID','p_orig','p_hit','chi2','weight','file') 
+ print '%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s '%('nr','origin','pythiaID','ID','p_orig','p_hit','chi2','weight','file','cor w') 
 # sort according to p_hit
  tmp = sorted(result, key=itemgetter('fp_hit'))
+ muonrate1 = 0
+ muonrate2 = 0
+ muonrate3 = 0
  for i in range(len(tmp)):
   tr = tmp[i]
-  print '%4i %8s %8s %4s %8s %8s %8s %8s %8s '%( i,tr['origin'],tr['pytiaid'],tr['id_hit'],tr['o-mom'],tr['p_hit'],tr['chi2'],tr['w'],tr['file'])
+  corw = float(tr['w'])/cor
+  if float(tr['p_hit'])>1:muonrate1+=corw
+  if float(tr['p_hit'])>2:muonrate2+=corw
+  if float(tr['p_hit'])>3:muonrate3+=corw
+  print '%4i %8s %8s %4s %8s %8s %8s %8s %8s  %8s '%( i,tr['origin'],tr['pytiaid'],tr['id_hit'],tr['o-mom'],tr['p_hit'],tr['chi2'],tr['w'],tr['file'],corw)
+ print "guestimate for muonrate above 1GeV = ",muonrate1
+ print "guestimate for muonrate above 2GeV = ",muonrate2
+ print "guestimate for muonrate above 3GeV = ",muonrate3
+#guestimate for muonrate above 1GeV =  56025.4793333
+#guestimate for muonrate above 2GeV =  25584.9546667
+#guestimate for muonrate above 3GeV =  14792.8113333
  return tmp
+#
+def readAndMergeHistos():
+ readHists(h,'muon829.root')
+ readHists(h,'muon929.root')
+ readHists(h,'muon1029.root')
+# make list of hists with entries
+ k = 1
+ for x in histlistAll:
+  if h.has_key(histlistAll[x]): 
+   histlist[k]=histlistAll[x]
+   k+=1
+ nstations = len(histlist)
+ makePlots(nstations)
+
 
 # python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 820 821 822 823 824 825 826 827 828 829
 # python -i $HNL/ana_ShipMuon.py 910 911 912 913 914 915 916 917 918 919 920 921 922 923 924 925 926 927 928 929
+# python -i $HNL/ana_ShipMuon.py 1012 1013 1014 1015 1016 1017 1018 1019 1022 1023 1024 1025 1026 1027 1028 1029
+# python -i $HNL/ana_ShipMuon.py 634 635 636 637 638 639 640 641 642 643   
+# combine all cern-cracow
+# python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 910 911 912 913 914 915 916 917 918 919 1012 1013 1014 1015 1016 1017 1018 1019
+# python -i $HNL/ana_ShipMuon.py 820 821 822 823 824 825 826 827 828 829 920 921 922 923 924 925 926 927 928 929 1022 1023 1024 1025 1026 1027 1028 1029
 # make muonDIS ntuple: muDISntuple("/media/Data/HNL/muonBackground/rareEvents_81-102.root") -> 'muDISVetoCounter.root'
 #                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root
 #                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root

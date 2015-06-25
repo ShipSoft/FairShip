@@ -142,107 +142,134 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
      std::vector<Double_t> cornersA1,cornersAR,cornersAT,cornersAB,corners1,corners2,corners3,corners4,corners5,corners6,corners7,cornersC,cornersCR,cornersCL,cornersCLT,
 			  cornersCLB,cornersCRT,cornersCRB,corners8,corners9,corners10,corners11,cornersC4,cornersC4L,cornersC4LB,cornersC4LT,cornersC4R,cornersC4RB,cornersC4RT,
 			  corners12,corners13,corners14,corners15,cornersC6RL,cornersC6RR,cornersC6L,cornersC6R,corners20,corners21,corners22,corners23,cornersC7RL,cornersC7RR,
-			  cornersC7L,cornersC7R,corners24,corners25,corners26,corners27,cornersC8RL,cornersC8RR,cornersC8L,cornersC8R,corners28,corners29,corners30,corners31;
+       cornersC7L,cornersC7R,corners24,corners25,corners26,corners27,cornersC8RL,cornersC8RR,cornersC8L,cornersC8R,corners28,corners29,corners30,corners31,
+                          corners1AN,corners2AN,corners3AN,corners4AN,corners5AN,corners6AN,corners7AN;
    
-    Double_t eps = 1.*mm;
-    dX1 = 0.7*m; 
+    Double_t eps = 1.0*mm;
+    dX1 = 0.25*m; 
     //is calculated according to z.
-    Double_t dYStart = 1.*m; //Y at  zEndOfAbsorb
+    Double_t dYStart = 0.5*m; //Y at  zEndOfAbsorb
     Double_t dYMiddle = 0.5*m; //middle is where we swap field/return-field in x
     Double_t dYEnd = fY; // 4.*m;
-    X2  = 1.25*m;   
+    X2  = 0.38*m;   
     Z1  = zEndOfAbsorb + dZ1; //юзается
     //calculate the ZMiddle and End
     Double_t ZMiddle=zEndOfAbsorb + 2*dZ1 + 2*dZ2;
     Double_t ZEnd=zEndOfAbsorb + 2*dZ1 + 2*dZ2 + 2*dZ3 + 2*dZ4+2*dZ5+2*dZ6+2*dZ7+2*dZ8;
     Double_t dY1 = dYStart;
-    Double_t dY2 = (Z1+dZ1-zEndOfAbsorb)*(dYMiddle-dYStart)/(ZMiddle-zEndOfAbsorb)+dY1;
+    //Double_t dY2 = (Z1+dZ1-zEndOfAbsorb)*(dYMiddle-dYStart)/(ZMiddle-zEndOfAbsorb)+dY1;
+    Double_t dY2 = dY1;
     Double_t cornersA1A[16] = {-dX1,-dY1, -dX1,dY1, dX1,dY1, dX1,-dY1,
                               -dX1,-dY2, -dX1,dY2, dX1,dY2, dX1,-dY2};
     Double_t cornersARA[16] = {-dX1/2.,-dY1, -dX1/2.,dY1, dX1/2.,dY1, dX1/2.,-dY1,
                               -dX1/2.,-dY2, -dX1/2.,dY2, dX1/2.,dY2, dX1/2.,-dY2};
-    Double_t dYH1 = dX1/2.; 
+    Double_t dYH1 = dX1; 
     dXH1 = 0.5*(X2+dX1/2.);
     Double_t cornersATA[16] = {-dXH1,dY1, -dXH1,dY1+dYH1, dXH1,dY1+dYH1, dXH1,dY1,
                               -dXH1,dY2, -dXH1,dY2+dYH1, dXH1,dY2+dYH1, dXH1,dY2};
     Double_t cornersABA[16] = {-dXH1,-dY1-dYH1, -dXH1,-dY1, dXH1,-dY1, dXH1,-dY1-dYH1,
                               -dXH1,-dY2-dYH1, -dXH1,-dY2, dXH1,-dY2, dXH1,-dY2-dYH1};
+
     // 7<z<19 m: (Kept the same names at fDesign==3, i.e. 7t17 :-)
-    Double_t dX2 = 0.36*m;
-    Double_t dX3 = 0.19*m;
+    //But now split in two magnets...
+    Double_t dX2 = 0.35*m;
+    Double_t dX3 = 0.35*m;
     Z2 = zEndOfAbsorb + 2*dZ1 + dZ2;
-    dY1 = dY2-eps;
-    dY2 = dYMiddle-eps;
+    dY1 = 0.25*m-eps;
+    //dY2 = dYMiddle-eps;
+    dY2=dY1;
+// 7-13 m
+    Double_t xtmax=1.1*m;  // max x of return field
+    Double_t corners1AA[16] = {-dX2,-dY1, -dX2,dY1, dX2,dY1, dX2,-dY1,
+                             -dX3,-dY2, -dX3,dY2, dX3,dY2, dX3,-dY2};
+    Double_t corners2AA[16] = {xtmax-dX2,-dY1, xtmax-dX2,dY1, xtmax,dY1, xtmax,-dY1, 
+                             xtmax-dX3,-dY2, xtmax-dX3,dY2, xtmax,dY2, xtmax,-dY2};
+    Double_t corners3AA[16] = {-xtmax,-dY1, -xtmax,dY1, -xtmax+dX2,dY1, -xtmax+dX2,-dY1, 
+                             -xtmax,-dY2, -xtmax,dY2, -xtmax+dX3,dY2, -xtmax+dX3,-dY2};
+// 13-19 m
+    xtmax=1.6*m;
     Double_t corners1A[16] = {-dX2,-dY1, -dX2,dY1, dX2,dY1, dX2,-dY1,
                              -dX3,-dY2, -dX3,dY2, dX3,dY2, dX3,-dY2};
-    Double_t corners2A[16] = {1.6*m-dX2,-dY1, 1.6*m-dX2,dY1, 1.6*m,dY1, 1.6*m,-dY1, 
-                             1.6*m-dX3,-dY2, 1.6*m-dX3,dY2, 1.6*m,dY2, 1.6*m,-dY2};
-    Double_t corners3A[16] = {-1.6*m,-dY1, -1.6*m,dY1, -1.6*m+dX2,dY1, -1.6*m+dX2,-dY1, 
-                             -1.6*m,-dY2, -1.6*m,dY2, -1.6*m+dX3,dY2, -1.6*m+dX3,-dY2};
+    Double_t corners2A[16] = {xtmax-dX2,-dY1, xtmax-dX2,dY1, xtmax,dY1, xtmax,-dY1, 
+                             xtmax-dX3,-dY2, xtmax-dX3,dY2, xtmax,dY2, xtmax,-dY2};
+    Double_t corners3A[16] = {-xtmax,-dY1, -xtmax,dY1, -xtmax+dX2,dY1, -xtmax+dX2,-dY1, 
+                             -xtmax,-dY2, -xtmax,dY2, -xtmax+dX3,dY2, -xtmax+dX3,-dY2};
     dY1 = dY1+eps;
     dY2 = dY2+eps;
-//Top/Bot return magnets for 7-17 m
 //corners "first clockwise lower z, them clockwise upper z
-    Double_t corners4A[16] = {0.,dY1, 0.,dY1+dX2, 1.6*m,dY1+dX2, 1.6*m,dY1, 
-                             0.,dY2, 0.,dY2+dX3, 1.6*m,dY2+dX3, 1.6*m,dY2};
-    Double_t corners5A[16] = {-1.6*m,dY1, -1.6*m,dY1+dX2, 0.,dY1+dX2, 0.,dY1, 
-                             -1.6*m,dY2, -1.6*m,dY2+dX3, 0.,dY2+dX3, 0.,dY2};
-     //Bot return magnets for 7-17 m
-    Double_t corners6A[16] = {0.,-dY1-dX2, 0.,-dY1, 1.6*m,-dY1, 1.6*m,-dY1-dX2, 
-                             0.,-dY2-dX3, 0.,-dY2, 1.6*m,-dY2, 1.6*m,-dY2-dX3};
-    Double_t corners7A[16] = {-1.6*m,-dY1-dX2, -1.6*m,-dY1, 0.,-dY1, 0.,-dY1-dX2, 
-                             -1.6*m,-dY2-dX3, -1.6*m,-dY2, 0.,-dY2, 0.,-dY2-dX3};
-    // 19<z<24 m: (again kept the "old" name)
-    Double_t dX17 =  0.075*m;
-    Double_t dX24 =  0.25*m;
-    Double_t Clgap=0.2*m;
-    Double_t dX17O = dX17+Clgap;
-    Double_t dX24O = dX24+Clgap;
-    Z3  = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + dZ3;
-    dY1=dY2-eps;
-    dY2 = 2*dZ3*(dYEnd-dY1)/(ZEnd-Z3+dZ3)+dY1-eps;
-    Double_t cornersCA[16] = {-dX17,-dY1, -dX17,dY1, dX17,dY1, dX17,-dY1,
-                             -dX24,-dY2, -dX24,dY2, dX24,dY2, dX24,-dY2};
-     //right magnet 
-    Double_t cornersCRA[16] = {-2*dX17,-dX17, -2*dX17,dX17, -dX17,dX17, -dX17,-dX17,
-                              -2*dX24,-dX24, -2*dX24,dX24, -dX24,dX24, -dX24,-dX24};
-    //left magnet 
-    Double_t cornersCLA[16] = {dX17,-dX17, dX17,dX17, 2*dX17,dX17, 2*dX17,-dX17,
-                              dX24,-dX24, dX24,dX24, 2*dX24,dX24, 2*dX24,-dX24};
-   //add 4 pieces for the fields.
-    //left top field magnet 
-    Double_t cornersCLTA[16] = {dX17,dX17, dX17O,dY1, dX17O+dX17,dY1, 2*dX17,dX17,
-                               dX24,dX24, dX24O,dY2, dX24O+dX24,dY2, 2*dX24,dX24};
-    //left bot field magnet 
-    Double_t cornersCLBA[16] = {dX17O,-dY1, dX17,-dX17, 2*dX17,-dX17, dX17+dX17O,-dY1,
-                               dX24O,-dY2, dX24,-dX24, 2*dX24,-dX24, dX24+dX24O,-dY2};
-    //right top field magnet 
-    Double_t cornersCRTA[16] = {-dX17,dX17, -2*dX17,dX17, -dX17O-dX17,dY1, -dX17O,dY1,
-                               -dX24,dX24, -2*dX24,dX24, -dX24O-dX24,dY2, -dX24O,dY2};
-    //right bot field magnet 
-    Double_t cornersCRBA[16] = {-dX17O,-dY1, -dX17O-dX17,-dY1, -2*dX17,-dX17, -dX17,-dX17,
-                               -dX24O,-dY2, -dX24O-dX24,-dY2, -2*dX24,-dX24, -dX24,-dX24};
-    //Top/Bot return magnets for 17-24 m
-    dY1 = dY1+eps;
-    dY2 = dY2+eps;
-    Double_t corners8A[16] = {eps,dY1, eps,dY1+dX17, dX17O+dX17,dY1+dX17, dX17O+dX17,dY1, 
-                             eps,dY2, eps,dY2+dX24, dX24O+dX24,dY2+dX24, dX24O+dX24,dY2}; 
-    Double_t corners9A[16] = {-dX17-dX17O,dY1, -dX17-dX17O,dY1+dX17, -eps, dY1+dX17, -eps,dY1,
-                             -dX24-dX24O,dY2, -dX24-dX24O,dY2+dX24, -eps, dY2+dX24, -eps,dY2};
-  //Bot return magnets 
-    Double_t corners10A[16] = {eps,-dY1-dX17, eps,-dY1-eps, dX17O+dX17,-dY1-eps, dX17O+dX17,-dY1-dX17, 
-                              eps,-dY2-dX24, eps,-dY2-eps, dX24O+dX24,-dY2-eps, dX24O+dX24,-dY2-dX24};
-    Double_t corners11A[16] = {-dX17-dX17O,-dY1-dX17, -dX17-dX17O,-dY1, -eps,-dY1, -eps,-dY1-dX17, 
-                              -dX24-dX24O,-dY2-dX24, -dX24-dX24O,-dY2, -eps,-dY2, -eps,-dY2-dX24};
-    // 24<z<30. m, gap between field and return field      
-    Double_t dX30I = 0.55*m;
+// 7-13 m
+    xtmax=1.1*m;
+    Double_t corners4AA[16] = {0.,dY1, 0.,dY1+dX2, xtmax,dY1+dX2, xtmax,dY1, 
+                             0.,dY2, 0.,dY2+dX3, xtmax,dY2+dX3, xtmax,dY2};
+    Double_t corners5AA[16] = {-xtmax,dY1, -xtmax,dY1+dX2, 0.,dY1+dX2, 0.,dY1, 
+                             -xtmax,dY2, -xtmax,dY2+dX3, 0.,dY2+dX3, 0.,dY2};
+    //Bot return magnets for 7-17 m
+    Double_t corners6AA[16] = {0.,-dY1-dX2, 0.,-dY1, xtmax,-dY1, xtmax,-dY1-dX2, 
+                             0.,-dY2-dX3, 0.,-dY2, xtmax,-dY2, xtmax,-dY2-dX3};
+    Double_t corners7AA[16] = {-xtmax,-dY1-dX2, -xtmax,-dY1, 0.,-dY1, 0.,-dY1-dX2, 
+                             -xtmax,-dY2-dX3, -xtmax,-dY2, 0.,-dY2, 0.,-dY2-dX3};
+
+// 13-19 m
+    xtmax=1.6*m;
+    Double_t corners4A[16] = {0.,dY1, 0.,dY1+dX2, xtmax,dY1+dX2, xtmax,dY1, 
+                             0.,dY2, 0.,dY2+dX3, xtmax,dY2+dX3, xtmax,dY2};
+    Double_t corners5A[16] = {-xtmax,dY1, -xtmax,dY1+dX2, 0.,dY1+dX2, 0.,dY1, 
+                             -xtmax,dY2, -xtmax,dY2+dX3, 0.,dY2+dX3, 0.,dY2};
+    //Bot return magnets for 7-17 m
+    Double_t corners6A[16] = {0.,-dY1-dX2, 0.,-dY1, xtmax,-dY1, xtmax,-dY1-dX2, 
+                             0.,-dY2-dX3, 0.,-dY2, xtmax,-dY2, xtmax,-dY2-dX3};
+    Double_t corners7A[16] = {-xtmax,-dY1-dX2, -xtmax,-dY1, 0.,-dY1, 0.,-dY1-dX2, 
+                             -xtmax,-dY2-dX3, -xtmax,-dY2, 0.,-dY2, 0.,-dY2-dX3};
+
+
+    // 19<z<24. m, re-use 24-30 stuff...
+    
+    Double_t dX24=0.175*m;    
+    Double_t dX30I = 1.3*m;
     Double_t W30 = 0.3*m;
+    Double_t Clgap=0.2*m;
+    Z3 = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + dZ3;
+    dY1=0.3*m;
+    dY2 =0.8*m;
+    Double_t cornersCA[16] = {-dX24,-dY1, -dX24,dY1, dX24,dY1, dX24,-dY1,
+                               -W30,-dY2, -W30,dY2, W30,dY2, W30,-dY2};
+    //left magnet, split in three, like for previous magnet
+    Double_t cornersCLA[16] = {dX24,-dX24, dX24,dX24, 2*dX24,dX24, 2*dX24,-dX24,
+                               dX30I,-W30, dX30I,W30, dX30I+W30,W30, dX30I+W30,-W30};
+    Double_t cornersCLBA[16] = {dX24,-dX24, 2*dX24,-dX24, 2*dX24+Clgap,-dY1, dX24+Clgap,-dY1,
+                                dX30I,-W30, dX30I+W30,-W30, dX30I+W30,-dY2, dX30I,-dY2};
+    Double_t cornersCLTA[16] = {2*dX24,dX24, dX24,dX24, dX24+Clgap,dY1, 2*dX24+Clgap,dY1,
+                                dX30I+W30,W30, dX30I,W30, dX30I,dY2, dX30I+W30,dY2};
+    //right magnet, also split in 3..
+    Double_t cornersCRA[16] = {-2*dX24,-dX24, -2*dX24,dX24, -dX24,dX24, -dX24,-dX24,
+                               -dX30I-W30,-W30, -dX30I-W30,W30, -dX30I,W30, -dX30I,-W30};
+    Double_t cornersCRBA[16] = {-2*dX24-Clgap,-dY1, -2*dX24,-dX24, -dX24,-dX24, -Clgap-dX24,-dY1,
+                               -dX30I-W30,-dY2, -dX30I-W30,-W30, -dX30I,-W30, -dX30I,-dY2};
+    Double_t cornersCRTA[16] = {-2*dX24,dX24, -2*dX24-Clgap,dY1, -dX24-Clgap,dY1, -dX24,dX24,
+                               -dX30I-W30,W30, -dX30I-W30,dY2, -dX30I,dY2, -dX30I,W30};
+    //Top/Bot return magnets for 24-28 m
+    dY1=dY1+eps;
+    dY2=dY2+eps;
+    Double_t corners8A[16] = {0.,dY1, 0.,dY1+dX24, 2*dX24+Clgap,dY1+dX24, 2*dX24+Clgap,dY1, 
+                              0.,dY2, 0.,dY2+W30, W30+dX30I,dY2+W30, W30+dX30I,dY2}; 
+    Double_t corners9A[16] = {-2*dX24-Clgap,dY1, -2*dX24-Clgap,dY1+dX24, 0., dY1+dX24, 0.,dY1,
+                              -W30-dX30I,dY2,-W30-dX30I,dY2+W30, 0.,dY2+W30, 0.,dY2}; 
+    //Bot return magnets 
+    Double_t corners10A[16] = {eps,-dY1-dX24, eps,-dY1-eps, 2*dX24+Clgap,-dY1-eps, 2*dX24+Clgap,-dY1-dX24, 
+                              eps,-dY2-W30, eps,-dY2-eps, W30+dX30I,-dY2-eps, W30+dX30I,-dY2-W30};
+    Double_t corners11A[16] = {-2*dX24-Clgap,-dY1-dX24, -2*dX24-Clgap,-dY1, 0.,-dY1, 0.,-dY1-dX24, 
+                              -W30-dX30I,-dY2-W30,  -W30-dX30I,-dY2, 0.,-dY2, 0.,-dY2-W30};
+
+    // 24<z<30. m, gap between field and return field      
+    dX24=0.3*m;    
+    dX30I = 0.6*m;
+    W30 = 0.3*m;
     Z4 = zEndOfAbsorb + 2*dZ1 + 2*dZ2 + 2*dZ3 + dZ4;
-    dY1=dY2;
+    dY1=1.*m;
     dY2 = 2*dZ4*(dYEnd-dY1)/(ZEnd-Z4+dZ4)+dY1;
     Double_t cornersC4A[16] = {-dX24,-dY1, -dX24,dY1, dX24,dY1, dX24,-dY1,
                                -W30,-dY2, -W30,dY2, W30,dY2, W30,-dY2};
-       //left magnet, split in three, like for previous magnet
+    //left magnet, split in three, like for previous magnet
     Double_t cornersC4LA[16] = {dX24,-dX24, dX24,dX24, 2*dX24,dX24, 2*dX24,-dX24,
                                dX30I,-W30, dX30I,W30, dX30I+W30,W30, dX30I+W30,-W30};
     Double_t cornersC4LBA[16] = {dX24,-dX24, 2*dX24,-dX24, 2*dX24+Clgap,-dY1, dX24+Clgap,-dY1,
@@ -261,7 +288,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
                               0.,dY2, 0.,dY2+W30, W30+dX30I,dY2+W30, W30+dX30I,dY2}; 
     Double_t corners13A[16] = {-2*dX24-Clgap,dY1, -2*dX24-Clgap,dY1+dX24, 0., dY1+dX24, 0.,dY1,
                               -W30-dX30I,dY2,-W30-dX30I,dY2+W30, 0.,dY2+W30, 0.,dY2}; 
- //Bot return magnets 
+    //Bot return magnets 
     Double_t corners14A[16] = {eps,-dY1-dX24, eps,-dY1-eps, 2*dX24+Clgap,-dY1-eps, 2*dX24+Clgap,-dY1-dX24, 
                               eps,-dY2-W30, eps,-dY2-eps, W30+dX30I,-dY2-eps, W30+dX30I,-dY2-W30};
     Double_t corners15A[16] = {-2*dX24-Clgap,-dY1-dX24, -2*dX24-Clgap,-dY1, 0.,-dY1, 0.,-dY1-dX24, 
@@ -270,8 +297,8 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
     Double_t dX30O = dX30I+W30;
     Double_t dXr30O = dX30I-dXgap;
     Double_t dXr30I = dXr30O-W30;
-    Double_t W36 = 0.4*m;
-    Double_t dX36I = 0.85*m;
+    Double_t W36 = 0.3*m;
+    Double_t dX36I = 0.95*m;
     Double_t dX36O = dX36I+W36;
     Double_t dXr36O = dX36I-dXgap;
     Double_t dXr36I = dXr36O-W36;
@@ -301,7 +328,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
                               -dX36O,-dY2-W36, -dX36O,-dY2, -dXr36I,-dY2, -dXr36I,-dY2-W36};  
 // 36<z<42 m: Note: here also return field splits!
     Double_t W42 = 0.4*m;
-    Double_t dX42I = 1.25*m;
+    Double_t dX42I = 1.35*m;
     Double_t dX42O = dX42I+W42;
     Double_t dXr42O = dX42I-dXgap;
     Double_t dXr42I = dXr42O-W42;    
@@ -330,8 +357,8 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
     Double_t corners27A[16] = {-dX36O,-dY1-W36, -dX36O,-dY1, -dXr36I,-dY1, -dXr36I,-dY1-W36, 
                               -dX42O,-dY2-W42, -dX42O,-dY2, -dXr42I,-dY2, -dXr42I,-dY2-W42};
 // 42<z<48 m: Note: here also return field splits!
-    Double_t W48 = 0.75*m;
-    Double_t dX48I = 1.7*m;
+    Double_t W48 = 0.4*m;
+    Double_t dX48I = 2.1*m;
     Double_t dX48O = dX48I+W48;
     Double_t dXr48O = dX48I-dXgap;
     Double_t dXr48I = dXr48O-W48;
@@ -367,6 +394,7 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
       cornersAR.push_back(cornersARA[i]);
       cornersAT.push_back(cornersATA[i]);
       cornersAB.push_back(cornersABA[i]);
+
       corners1.push_back(corners1A[i]);
       corners2.push_back(corners2A[i]);
       corners3.push_back(corners3A[i]);   
@@ -374,6 +402,15 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
       corners5.push_back(corners5A[i]);
       corners6.push_back(corners6A[i]);
       corners7.push_back(corners7A[i]);
+
+      corners1AN.push_back(corners1AA[i]);
+      corners2AN.push_back(corners2AA[i]);
+      corners3AN.push_back(corners3AA[i]);   
+      corners4AN.push_back(corners4AA[i]);    
+      corners5AN.push_back(corners5AA[i]);
+      corners6AN.push_back(corners6AA[i]);
+      corners7AN.push_back(corners7AA[i]);
+
       cornersC.push_back(cornersCA[i]);
       cornersCR.push_back(cornersCRA[i]);
       cornersCL.push_back(cornersCLA[i]);
@@ -478,6 +515,13 @@ void ShipMuonShield::Initialize (Double_t& dX1,std::vector<std::vector<Double_t>
     corners.push_back(corners29);
     corners.push_back(corners30);
     corners.push_back(corners31);
+    corners.push_back(corners1AN);
+    corners.push_back(corners2AN);
+    corners.push_back(corners3AN);
+    corners.push_back(corners4AN);
+    corners.push_back(corners5AN);
+    corners.push_back(corners6AN);
+    corners.push_back(corners7AN);
 
 }
 
@@ -1148,6 +1192,20 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateArb8("MagConARRT", iron,dZ1,corners[2],30,ConRField,tShield,1,-dXH1,0.,Z1);
     CreateArb8("MagConARLB", iron,dZ1,corners[3],30,ConRField,tShield,1,dXH1,0.,Z1);
     CreateArb8("MagConALRB", iron,dZ1,corners[3],38,ConLField,tShield,1,-dXH1,0.,Z1);
+    //magnet 7-13:
+    Double_t ZZ2=Z2;
+    Double_t dZZ2=dZ2;
+    dZ2=dZ2/2.;
+    Z2=Z2-dZ2;
+    CreateArb8("Mag7t13", iron, dZ2, corners[57],45,magFieldIron,tShield,1,0, 0, Z2);
+    CreateArb8("MagR7t13", iron, dZ2, corners[58],31,RetField,tShield,1,0, 0, Z2);
+    CreateArb8("MagLt713", iron, dZ2, corners[59],31,RetField,tShield,1,0, 0, Z2);
+    CreateArb8("MagTopLeft7t13", iron, dZ2, corners[60],38,ConLField,tShield,1,0, 0, Z2);
+    CreateArb8("MagTopRight7t13", iron, dZ2, corners[61],30,ConRField,tShield,1,0, 0, Z2);
+    CreateArb8("MagBotLeft7t13", iron, dZ2, corners[62],30,ConRField,tShield,1,0, 0, Z2);
+    CreateArb8("MagBotRight7t13", iron, dZ2, corners[63],38,ConLField,tShield,1,0, 0, Z2);
+    //magnet 13-19:
+    Z2=Z2+2*dZ2;
     CreateArb8("MagB", iron, dZ2, corners[4],45,magFieldIron,tShield,1,0, 0, Z2);
     CreateArb8("MagBRL", iron, dZ2, corners[5],31,RetField,tShield,1,0, 0, Z2);
     CreateArb8("MagBRR", iron, dZ2, corners[6],31,RetField,tShield,1,0, 0, Z2);
@@ -1155,6 +1213,9 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     CreateArb8("MagTopRight7t17", iron, dZ2, corners[8],30,ConRField,tShield,1,0, 0, Z2);
     CreateArb8("MagBotLeft7t17", iron, dZ2, corners[9],30,ConRField,tShield,1,0, 0, Z2);
     CreateArb8("MagBotRight7t17", iron, dZ2, corners[10],38,ConLField,tShield,1,0, 0, Z2);
+    Z2=ZZ2;
+    dZ2=dZZ2;
+
     CreateArb8("MagRetC1", iron, dZ3, corners[11],31,RetField,tShield,1,0, 0, Z3);
     CreateArb8("MagCR", iron, dZ3, corners[12],45,magFieldIron,tShield,1,0, 0, Z3);
     CreateArb8("MagCL", iron, dZ3, corners[13],45,magFieldIron,tShield,1,0, 0, Z3);
@@ -1260,13 +1321,22 @@ z>12 m: in the experimental hall. I put its walls at 10 m from the beam-line.
     Double_t dZ = dZ1 + dZ2;
     Double_t dYT = dY+dX1;
     Double_t ZT  = zEndOfAbsorb + dZ;
-    TGeoBBox *box1    = new TGeoBBox("box1",  1.6*m,dYT,dZ);
-    TGeoBBox *box2    = new TGeoBBox("box2", 10*m,10*m,dZ);
+    TGeoBBox *box1    = new TGeoBBox("box1",  10*m,10*m,dZ);
+    TGeoBBox *box2    = new TGeoBBox("box2", 20*m,20*m,dZ);
     TGeoCompositeShape *compRockS = new TGeoCompositeShape("compRockS", "box2-box1");
     TGeoVolume *rockS   = new TGeoVolume("rockS", compRockS, concrete);
     rockS->SetLineColor(11);  // grey
     rockS->SetTransparency(50);
     top->AddNode(rockS, 1, new TGeoTranslation(0, 0, ZT ));
+// Concrete around decay tunnel
+    Double_t dZD =  100*m + fMuonShieldLength;
+    TGeoBBox *box3    = new TGeoBBox("box3", 15*m,12.25*m,dZD/2.);
+    TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
+    TGeoCompositeShape *compRockD = new TGeoCompositeShape("compRockD", "box3-box4");
+    TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
+    rockD->SetLineColor(11);  // grey
+    rockD->SetTransparency(50);
+    top->AddNode(rockD, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*dZ + dZD/2.));
 
 //
     } else {

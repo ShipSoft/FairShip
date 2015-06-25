@@ -319,7 +319,8 @@ for p in os.sys.argv[1].split(','):
    xx = os.path.abspath('.').lower()
    if not xx.find('neutrino')<0: pref='neutrino'
    if not xx.find('vdis')<0 or not xx.find('vetodis')<0: pref='disV'
-   elif not os.path.abspath('.').lower().find('dis')<0:  pref='dis'
+   elif not xx.find('clby')<0:  pref='disCLBY'
+   elif not xx.find('dis')<0:  pref='dis'
    pl.append(pref+p) 
 print " execute()  input comma separated production nr, performs Simple/mergeHistos/mergeNtuples "
 print " executeSimple(pl,reset=True) "
