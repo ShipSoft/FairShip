@@ -77,7 +77,7 @@ if not ParFile:
   ParFile       ="ship.params."+tag.replace('_rec','')+".root"  
 OutFile	      = "tst."+InputFile.split('/')[-1]
 if InputFile.find('_D')>0: withGeo = True
-#
+
 def printMCTrack(n,MCTrack):
    mcp = MCTrack[n]
    print ' %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i '%(n,mcp.GetPdgCode(),mcp.GetPx()/u.GeV,mcp.GetPy()/u.GeV,mcp.GetPz()/u.GeV, \
@@ -89,14 +89,88 @@ def dump(pcut=0):
    n+=1
    if mcp.GetP()/u.GeV < pcut :  continue
    printMCTrack(n,sTree.MCTrack)
+def printFittedTracks():
+  print '  # converged Ndf chi2/Ndf    P      Pt      MCid'
+  n=-1
+  for ft in sTree.FitTracks:
+   n+=1
+   fitStatus = ft.getFitStatus()
+   fitState  = ft.getFittedState()
+   mom = fitState.getMom()
+   print '%3i %6i   %4i %6.3F   %6.3F %6.3F %6i '%(n,fitStatus.isFitConverged(),\
+            fitStatus.getNdf(),fitStatus.getChi2()/fitStatus.getNdf(),\
+            mom.Mag()/u.GeV,mom.Pt()/u.GeV,sTree.fitTrack2MC[n] )
+def printParticles():
+  print '  #    P    Pt[GeV/c]   DOCA[mm]    Rsq    Vz[m]    d1    d2'
+  n=-1
+  for aP in sTree.Particles:
+   n+=1
+   doca = -1.
+   if aP.GetMother(1)==99: # DOCA is set
+      doca = aP.T()
+   Rsq = (aP.Vx()/(2.45*u.m) )**2 + (aP.Vy()/((10./2.-0.05)*u.m) )**2
+   print '%3i %6.3F  %6.3F  %9.3F    %6.3F   %6.3F %4i  %4i '%(n,aP.P()/u.GeV,aP.Pt()/u.GeV,\
+            doca/u.mm,Rsq,aP.Vz()/u.m,aP.GetDaughter(0),aP.GetDaughter(1) )
+class DrawEcalCluster(ROOT.FairTask):
+ " My Fair Task"
+ def InitTask(self,ecalStructure):
+# prepare ecal structure
+  self.comp  = ROOT.TEveCompound('Ecal Clusters')
+  evmgr.AddElement(self.comp)
+  sc    = evmgr.GetScenes()
+  self.evscene = sc.FindChild('Event scene')
+  mE = top.GetNode('Ecal_1').GetMatrix()
+  self.z_ecal = mE.GetTranslation()[2]
+  self.ecalStructure = ecalStructure
+ def FinishEvent(self):
+  pass
+ def ExecuteTask(self,option=''):
+   self.comp.DestroyElements()
+   self.comp.OpenCompound()
+   cl=-1
+   for aClus in sTree.EcalClusters:
+# ecal cell dx=dy=2cm, dz=21.84cm
+     cl+=1 
+     for i in range( aClus.Size() ):
+      mccell = self.ecalStructure.GetHitCell(aClus.CellNum(i))  # Get i'th cell of the cluster.
+      x1,y1,x2,y2,dz = mccell.X1(),mccell.Y1(),mccell.X2(),mccell.Y2(),mccell.GetEnergy()/u.GeV*0.5*u.m
+      if mccell.GetEnergy()/u.MeV < 1. : continue
+      DClus = ROOT.TEveBox()
+      DClus.SetName('EcalCluster_'+str(cl)+'_'+str(i)) 
+      DClus.SetMainColor(ROOT.kRed-4)
+      DClus.SetMainTransparency(0.5)
+      DClus.SetVertex(0,x1,y1,self.z_ecal)
+      DClus.SetVertex(1,x1,y1,self.z_ecal+dz)
+      DClus.SetVertex(2,x2,y1,self.z_ecal+dz)
+      DClus.SetVertex(3,x2,y1,self.z_ecal)
+      DClus.SetVertex(4,x1,y2,self.z_ecal)
+      DClus.SetVertex(5,x1,y2,self.z_ecal+dz)
+      DClus.SetVertex(6,x2,y2,self.z_ecal+dz)
+      DClus.SetVertex(7,x2,y2,self.z_ecal)
+      self.comp.AddElement(DClus)
+   self.comp.CloseCompound()
+   evmgr.ElementChanged(self.evscene,True,True)
+ def DrawParticle(self,n):
+  self.comp.OpenCompound()
+  DTrack = ROOT.TEveLine()
+  DTrack.SetMainColor(ROOT.kCyan)
+  DTrack.SetLineWidth(4)
+  aP=sTree.Particles[n]
+  DTrack.SetName('Prtcle_'+str(n))
+  DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
+  lam = (self.Targetz - aP.Vz())/aP.Pz()
+  DTrack.SetNextPoint(aP.Vx()+lam*aP.Px(),aP.Vy()+lam*aP.Py(),self.Targetz)
+  self.comp.AddElement(DTrack)
+  self.comp.CloseCompound()
+  evmgr.ElementChanged(self.evscene,True,True)
+#
 class DrawTracks(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
 # prepare container for fitted tracks
-  self.comp  = ROOT.TEveCompound('Fitted tracks')
+  self.comp  = ROOT.TEveCompound('Tracks')
   evmgr.AddElement(self.comp)
   self.trackColors = {13:ROOT.kGreen,211:ROOT.kRed,11:ROOT.kOrange,321:ROOT.kMagenta}
-  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = int(float(dy)))
   self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
@@ -117,7 +191,7 @@ class DrawTracks(ROOT.FairTask):
   self.parallelToZ = ROOT.TVector3(0., 0., 1.) 
   sc    = evmgr.GetScenes()
   self.evscene = sc.FindChild('Event scene')
-
+  self.Targetz = top.GetNode("TargetArea_1").GetMatrix().GetTranslation()[2]
  def FinishEvent(self):
   pass
  def ExecuteTask(self,option=''):
@@ -130,40 +204,114 @@ class DrawTracks(ROOT.FairTask):
     if globals()['withMCTracks']: self.DrawMCTracks()
   self.comp.CloseCompound()
   evmgr.ElementChanged(self.evscene,True,True)
+ def DrawParticle(self,n):
+  self.comp.OpenCompound()
+  DTrack = ROOT.TEveLine()
+  DTrack.SetMainColor(ROOT.kCyan)
+  DTrack.SetLineWidth(4)
+  aP=sTree.Particles[n]
+  DTrack.SetName('Prtcle_'+str(n))
+  DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
+  lam = (self.Targetz - aP.Vz())/aP.Pz()
+  DTrack.SetNextPoint(aP.Vx()+lam*aP.Px(),aP.Vy()+lam*aP.Py(),self.Targetz)
+  self.comp.AddElement(DTrack)
+ def DrawMCTrack(self,n):
+  self.comp.OpenCompound()
+  fT = sTree.MCTrack[n]
+  DTrack = ROOT.TEveLine()
+  p = pdg.GetParticle(fT.GetPdgCode()) 
+  if p : pName = p.GetName()
+  else:  pName =  str(fT.GetPdgCode())
+  DTrack.SetName('MCTrck_'+str(n)+'_'+pName)
+  fPos = ROOT.TVector3()
+  fMom = ROOT.TVector3()
+  fT.GetStartVertex(fPos)
+  fT.GetMomentum(fMom)
+# check for end vertex
+  evVx = False
+  for da in sTree.MCTrack:
+    if da.GetMotherId()==n: 
+       evVx = True
+       break
+  DTrack.SetNextPoint(fPos.X(),fPos.Y(),fPos.Z())
+  if evVx : 
+    DTrack.SetNextPoint(da.GetStartX(),da.GetStartY(),da.GetStartZ())
+  else :
+    zEx = 10*u.m
+    lam = (zEx+fPos.Z())/fMom.Z()
+    DTrack.SetNextPoint(fPos.X()+lam*fMom.X(),fPos.Y()+lam*fMom.Y(),zEx+fPos.Z())
+  c = ROOT.kYellow
+  DTrack.SetMainColor(c)
+  DTrack.SetLineWidth(3)
+  self.comp.AddElement(DTrack)
+  self.comp.CloseCompound()
+  evmgr.ElementChanged(self.evscene,True,True)
  def DrawMCTracks(self,option=''):
-  n = 0
+  n = -1
   ntot = 0
   fPos = ROOT.TVector3()
+  fMom = ROOT.TVector3()
   for fT in sTree.MCTrack:
+   n+=1
    DTrack = ROOT.TEveLine()
    fT.GetStartVertex(fPos)
    hitlist = {}
    hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
+  # look for HNL 
+   if abs(fT.GetPdgCode()) == 9900015:
+    for da in sTree.MCTrack:
+     if da.GetMotherId()==n: break
+  # end vertex of HNL
+    da.GetStartVertex(fPos)
+    hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
   # loop over all sensitive volumes to find hits
-   for c in [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPoint,sTree.HcalPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:
+   for c in [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPoint,sTree.HcalPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint,sTree.TargetPoint]:
     for p in c:
       if p.GetTrackID()==n:
        if hasattr(p, "LastPoint"): 
         lp = p.LastPoint()
-        hitlist[lp.z()] = [lp.x(),lp.y()] 
-        hitlist[2.*p.GetZ()-lp.z()] = [2.*p.GetX()-lp.x(),2.*p.GetY()-lp.y()] 
+        if lp.x()==lp.y() and lp.x()==lp.z() and lp.x()==0: 
+# must be old data, don't expect hit at 0,0,0  
+         hitlist[p.GetZ()] = [p.GetX(),p.GetY()]
+        else:   
+         hitlist[lp.z()] = [lp.x(),lp.y()] 
+         hitlist[2.*p.GetZ()-lp.z()] = [2.*p.GetX()-lp.x(),2.*p.GetY()-lp.y()] 
        else:
         hitlist[p.GetZ()] = [p.GetX(),p.GetY()]
+   if len(hitlist)==1:
+    if fT.GetMotherId()<0: continue
+    if abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode()) == 9900015:
+     # still would like to draw track stumb
+     # check for end vertex
+     evVx = False
+     for da in sTree.MCTrack:
+       if da.GetMotherId()==n: 
+          evVx = True
+          break
+     if evVx : hitlist[da.GetStartZ()] = [da.GetStartX(),da.GetStartY()]
+     else    : 
+      zEx = 10*u.m
+      fT.GetMomentum(fMom)
+      lam = (zEx+fPos.Z())/fMom.Z()
+      hitlist[zEx+fPos.Z()] = [fPos.X()+lam*fMom.X(),fPos.Y()+lam*fMom.Y()]
 # sort in z
    lz = hitlist.keys()
    if len(lz)>1:
     lz.sort()
     for z in lz:  DTrack.SetNextPoint(hitlist[z][0],hitlist[z][1],z)
-    DTrack.SetName('MCTrack_'+str(n))
+    p = pdg.GetParticle(fT.GetPdgCode()) 
+    if p : pName = p.GetName()
+    else:  pName =  str(fT.GetPdgCode())
+    DTrack.SetName('MCTrack_'+str(n)+'_'+pName)
     c = ROOT.kYellow
+    if abs(fT.GetPdgCode()) == 9900015:c = ROOT.kMagenta
     DTrack.SetMainColor(c)
     DTrack.SetLineWidth(3)
     self.comp.AddElement(DTrack)
     ntot+=1
-   n+=1
   print "draw ",ntot," MC tracks"
  def DrawFittedTracks(self,option=''):
-  n,ntot = 0,0
+  n,ntot = -1,0
   for fT in sTree.FitTracks:
    n+=1
    fst = fT.getFitStatus()
@@ -211,12 +359,34 @@ class DrawTracks(ROOT.FairTask):
    self.comp.AddElement(DTrack)
    ntot+=1
   print "draw ",ntot," fitted tracks"
+  n=-1
+  for aP in sTree.Particles:
+   n+=1
+# check fitted tracks
+   tracksOK = True
+   if aP.GetMother(1)==99: # DOCA is set
+     if aP.T()>3*u.cm : continue
+   for k in range(aP.GetNDaughters()):
+    if k>1: break # we don't have more than 2tracks/vertex yet, no idea why ROOT sometimes comes up with 4!
+    fT = sTree.FitTracks[aP.GetDaughter(k)]
+    fst = fT.getFitStatus()
+    if not fst.isFitConverged(): tracksOK=False
+    if fst.getNdf() < 20: tracksOK=False
+   if not tracksOK: continue
+   DTrack = ROOT.TEveLine()
+   DTrack.SetMainColor(ROOT.kCyan)
+   DTrack.SetLineWidth(4)
+   DTrack.SetName('Particle_'+str(n))
+   DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
+   lam = (self.Targetz - aP.Vz())/aP.Pz()
+   DTrack.SetNextPoint(aP.Vx()+lam*aP.Px(),aP.Vy()+lam*aP.Py(),self.Targetz)
+   self.comp.AddElement(DTrack)
 #
 class IO():
     def __init__(self):
         self.master = Tkinter.Tk()
         self.master.title('SHiP Event Display GUI')
-        self.master.geometry(u'320x530+165+820')  
+        self.master.geometry(u'320x580+165+820')  
         self.fram1 = Tkinter.Frame(self.master)
         b = Tkinter.Button(self.fram1, text="Next Event",command=self.nextEvent)
         b.pack(fill=Tkinter.BOTH, expand=1) 
@@ -300,16 +470,28 @@ class EventLoop(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
    self.n = 0
+ # initialize ecalStructure
+   ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+   self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
+   self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
+   self.ecalFiller.StoreTrackInformation()
+   rc = sTree.GetEvent(0)
+   self.ecalStructure = self.ecalFiller.InitPython(sTree.EcalPointLite)
    speedUp()
-   self.drawer = DrawTracks()
-   self.drawer.InitTask()
+   self.tracks = DrawTracks()
+   self.tracks.InitTask()
+   self.calos  = DrawEcalCluster()
+   self.calos.InitTask(self.ecalStructure)
 # create SHiP GUI
    self.ioBar = IO()
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
    else  : self.n=i
    fRun.Run(self.n) # go for first event
-   self.drawer.ExecuteTask()
+   self.tracks.ExecuteTask()
+   if sTree.FindBranch("EcalClusters"):
+     self.ecalFiller.Exec('start')
+     self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
 #
 def speedUp():
@@ -451,19 +633,6 @@ def debugStraw(n):
  sTree.GetEntry(n)
  for s in sTree.strawtubesPoint:
   print vols[s.GetDetectorID()-1].GetName()
-def access2Branches():
- MCTracks = ROOT.TClonesArray("ShipMCTrack")
- sTree = g.FindObjectAny('cbmsim')
- sTree.SetBranchAddress("MCTrack", MCTracks)
- TrackingHits   = ROOT.TClonesArray("vetoPoint")
- sTree.SetBranchAddress("vetoPoint", TrackingHits)
- Ecals = ROOT.TClonesArray("ecalPoint")
- sTree.SetBranchAddress("EcalPoint", Ecals)
- sTree.MCTrack   = MCTracks
- sTree.vetoPoint = TrackingHits
- sTree.EcalPoint = Ecals
- sTree.GetEntry(1)
- return sTree 
 
 #----Load the default libraries------
 from basiclibs import *  
@@ -497,6 +666,7 @@ EcalPoints  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
 HcalPoints  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
 MuonPoints  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
 RpcPoints   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
+TargetPoints   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
 
 fMan.AddTask(VetoPoints)
 fMan.AddTask(MuonPoints)
@@ -504,6 +674,7 @@ fMan.AddTask(EcalPoints)
 fMan.AddTask(HcalPoints)
 fMan.AddTask(StrawPoints)
 fMan.AddTask(RpcPoints)
+fMan.AddTask(TargetPoints)
 
 fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 #visopt, set drawing mode :
@@ -518,6 +689,10 @@ fGeo  = ROOT.gGeoManager
 top   = fGeo.GetTopVolume()
 evmgr = ROOT.gEve
 # switchOfAll('RockD')
+# try to figure out which ecal geo to load
+if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile )
 
 SHiPDisplay = EventLoop()
 SHiPDisplay.InitTask()

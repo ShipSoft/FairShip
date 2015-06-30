@@ -55,5 +55,27 @@ Float_t ecalCellMC::GetTrackClusterEnergy(Int_t num)
   return energy;
 }
 
+// Don't use slow methods except in emergency!!! 
+//-----------------------------------------------------------------------------
+void ecalCellMC::GetTrackEnergySlow(Int_t n, Int_t& trackid, Double_t& energy_dep)
+{
+  map<Int_t, Float_t>::const_iterator p=fTrackEnergy.begin();
+  if (n>=fTrackEnergy.size()) {trackid=-1111; energy_dep=-1111; return; }
+  Int_t i=0;
+  for(i=0;i<n;i++) (++p);
+  trackid=p->first; energy_dep=p->second;
+}
+
+// Don't use slow methods except in emergency!!! 
+//-----------------------------------------------------------------------------
+void ecalCellMC::GetTrackTimeSlow(Int_t n, Int_t& trackid, Float_t& time)
+{
+  map<Int_t, Float_t>::const_iterator p=fTrackTime.begin();
+  if (n>=fTrackTime.size()) {trackid=-1111; time=-1111; return; }
+  Int_t i=0;
+  for(i=0;i<n;i++) (++p);
+  trackid=p->first; time=p->second;
+}
+
 ClassImp(ecalCellMC)
 

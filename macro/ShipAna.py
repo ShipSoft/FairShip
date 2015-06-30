@@ -3,13 +3,14 @@ import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
+debug = False
 chi2CutOff  = 4.
 PDG = ROOT.TDatabasePDG.Instance()
 inputFile  = None
 geoFile    = None
 dy         = None
 nEvents    = 99999
-fiducialCut = False
+fiducialCut = True
 measCut = 25
 docaCut = 2.
 try:
@@ -76,6 +77,12 @@ fM.init(bfield)
 # prepare veto decisions
 import shipVeto
 veto = shipVeto.Task()
+
+# fiducial cuts
+vetoStation = ROOT.gGeoManager.GetTopVolume().GetNode('Veto_5')
+vetoStation_zDown = vetoStation.GetMatrix().GetTranslation()[2]+vetoStation.GetVolume().GetShape().GetDZ()
+T1Station = ROOT.gGeoManager.GetTopVolume().GetNode('Tr1_1')
+T1Station_zUp = T1Station.GetMatrix().GetTranslation()[2]-T1Station.GetVolume().GetShape().GetDZ()
 
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.5,0.5)
@@ -184,6 +191,37 @@ def fitSingleGauss(x,ba=None,be=None):
        myGauss.SetParName(3,'bckgr')
     h[x].Fit(myGauss,'','',ba,be) 
 
+def match2HNL(p):
+    t1,t2 = p.GetDaughter(0),p.GetDaughter(1) 
+    matched = False
+    if not sTree.fitTrack2MC[t1]<0 and not sTree.fitTrack2MC[t2]<0:
+      mc1 = sTree.MCTrack[sTree.fitTrack2MC[t1]].GetMotherId()
+      mc2 = sTree.MCTrack[sTree.fitTrack2MC[t2]].GetMotherId()
+      if mc1==mc2:
+       mo = sTree.MCTrack[mc1]
+# check for HNL:  
+       if abs(mo.GetPdgCode()) == 9900015: matched = True
+    return matched
+def ecalCluster2MC(aClus):
+ # return MC track most contributing, and its fraction of energy
+  trackid    = ROOT.Long()
+  energy_dep = ROOT.Double()
+  mcLink = {}
+  for i in range( aClus.Size() ):
+    mccell = ecalStructure.GetHitCell(aClus.CellNum(i))  # Get i'th cell of the cluster.
+    for n in range( mccell.TrackEnergySize()):
+      mccell.GetTrackEnergySlow(n, trackid, energy_dep)
+      if not abs(trackid)<sTree.MCTrack.GetEntries(): tid = -1
+      else: tid = int(trackid)
+      if not mcLink.has_key(tid): mcLink[tid]=0
+      mcLink[tid]+=energy_dep
+# find trackid most contributing
+  eMax,mMax = 0,-1
+  for m in mcLink:
+     if mcLink[m]>eMax:
+        eMax = mcLink[m]
+        mMax = m
+  return mMax,eMax/aClus.Energy()
 
 def makePlots():
    ut.bookCanvas(h,key='ecalanalysis',title='cluster map',nx=800,ny=600,cx=1,cy=1)
@@ -244,19 +282,29 @@ def myEventLoop(n):
   if not wg>0.: wg=1.
 # 
   flag,w = veto.SBT_decision(sTree)
-  print "veto decision for SBT",flag,w
+  if debug: print "veto decision for SBT",flag,w
   wg = wg*w
   flag,w = veto.SVT_decision(sTree)
-  print "veto decision for SVT",flag,w
+  if debug: print "veto decision for SVT",flag,w
   wg = wg*w
   flag,w = veto.UVT_decision(sTree)
-  print "veto decision for UVT",flag,w
+  if debug: print "veto decision for UVT",flag,w
   wg = wg*w
 #
 # make some ecal cluster analysis if exist
   if sTree.FindBranch("EcalClusters"):
+   ecalFiller.Exec('start')
    for aClus in sTree.EcalClusters:
-     h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
+     rc = h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
+     mMax,frac = ecalCluster2MC(aClus)
+ # return MC track most contributing, and its fraction of energy
+     if mMax>0:    
+      aP = sTree.MCTrack[mMax]   
+      pName = 'ecalClusters_'+PDG.GetParticle(aP.GetPdgCode()).GetName()
+     else:
+      pName = 'ecalClusters_unknown' 
+     if not h.has_key(pName): ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
+     rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
 # make some straw hit analysis
   hitlist = {}
   for ahit in sTree.strawtubesPoint:
@@ -298,6 +346,7 @@ def myEventLoop(n):
    h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
    P = fittedState.getMomMag()
    Pz = fittedState.getMom().z()
+   if len(sTree.fitTrack2MC)-1<key: continue
    mcPartKey = sTree.fitTrack2MC[key]
    mcPart    = sTree.MCTrack[mcPartKey]
    if not mcPart : continue
@@ -336,6 +385,8 @@ def myEventLoop(n):
       nmeas = fitStatus.getNdf()
       if nmeas < measCut: checkMeasurements = False
     if not checkMeasurements: continue
+# check mc matching 
+    if not match2HNL(HNL): continue
     HNLPos = ROOT.TLorentzVector()
     HNL.ProductionVertex(HNLPos)
     HNLMom = ROOT.TLorentzVector()
@@ -393,7 +444,8 @@ def myEventLoop(n):
  # check if decay inside decay volume
     Rsq = (xv/(2.45*u.m) )**2 + (yv/((dy/2.-0.05)*u.m) )**2
     if Rsq > 1 : continue
-    if zv < ShipGeo['vetoStation'].z : continue  
+    if zv < vetoStation_zDown  : continue  
+    if zv > T1Station_zUp      : continue  
     h['Doca'].Fill(doca) 
     if  doca > docaCut : continue
     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
@@ -427,6 +479,13 @@ def HNLKinematics():
       h['HNLmom_recTracks'].Fill(Prec,wg) 
       h['HNLmomNoW_recTracks'].Fill(Prec) 
 #
+# initialize ecalStructure
+sTree.GetEvent(0)
+ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
+ecalFiller.SetUseMCPoints(ROOT.kTRUE)
+ecalFiller.StoreTrackInformation()
+ecalStructure = ecalFiller.InitPython(sTree.EcalPointLite)
  
 nEvents = min(sTree.GetEntries(),nEvents)
 for n in range(nEvents): 

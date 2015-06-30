@@ -40,6 +40,13 @@ public:
   // same for tracks
   Float_t GetTrackClusterEnergy(Int_t num);
 
+  // For python users 
+  Int_t TrackEnergySize() const {return fTrackEnergy.size();}
+  Int_t TrackTimeSize() const {return fTrackEnergy.size();}
+  // Don't use slow methods except in emergency!!!
+  void GetTrackEnergySlow(Int_t n, Int_t& trackid, Double_t& energy_dep);
+  void GetTrackTimeSlow(Int_t n, Int_t& trackid, Float_t& time);
+
   inline std::map<Int_t, Float_t>::const_iterator GetTrackEnergyBegin() const
 	 {return fTrackEnergy.begin();}
   inline std::map<Int_t, Float_t>::const_iterator GetTrackEnergyEnd() const
