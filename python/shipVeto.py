@@ -23,10 +23,14 @@ class Task:
    nm = v.GetName()
    i  = fGeo.FindVolumeFast(nm).GetNumber()
    detList[i] = nm
-  T2Shape = fGeo.GetVolume('T2LiSc').GetShape()
+  t2LiSc = fGeo.GetVolume('T2LiSc')
+  if not t2LiSc: t2LiSc = fGeo.GetVolume('T2LiSc_1')
+  T2Shape = t2LiSc.GetShape()
   self.a = T2Shape.GetDX() - 15 # 15cm = half size of liquid, was not able to figure out how to retrieve from geometry
   self.b = T2Shape.GetDY() - 15
-  T1Shape = fGeo.GetVolume('T1LiSc').GetShape()
+  t1LiSc = fGeo.GetVolume('T1LiSc')
+  if not t1LiSc: t1LiSc = fGeo.GetVolume('T1LiSc_1')
+  T1Shape = t1LiSc.GetShape()
   self.asmall = T1Shape.GetDX() - 15
   return detList 
 
