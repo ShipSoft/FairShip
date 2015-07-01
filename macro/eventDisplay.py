@@ -133,8 +133,10 @@ class DrawEcalCluster(ROOT.FairTask):
      cl+=1 
      for i in range( aClus.Size() ):
       mccell = self.ecalStructure.GetHitCell(aClus.CellNum(i))  # Get i'th cell of the cluster.
+      if not mccell: continue 
       x1,y1,x2,y2,dz = mccell.X1(),mccell.Y1(),mccell.X2(),mccell.Y2(),mccell.GetEnergy()/u.GeV*0.5*u.m
-      if mccell.GetEnergy()/u.MeV < 1. : continue
+      if mccell.GetEnergy()/u.MeV < 4. : continue
+# ADC noise simulated Guassian with \sigma=1 MeV
       DClus = ROOT.TEveBox()
       DClus.SetName('EcalCluster_'+str(cl)+'_'+str(i)) 
       DClus.SetMainColor(ROOT.kRed-4)
@@ -473,7 +475,10 @@ class EventLoop(ROOT.FairTask):
  # initialize ecalStructure
    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
    self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
-   self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
+   if ecalGeoFile.find("5x10")<0:   
+          self.ecalFiller.SetUseMCPoints(ROOT.kFALSE)
+          print "ecal cluster display disabled, seems only to work with 5x10m ecal geofile"
+   else:  self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
    self.ecalFiller.StoreTrackInformation()
    rc = sTree.GetEvent(0)
    self.ecalStructure = self.ecalFiller.InitPython(sTree.EcalPointLite)
