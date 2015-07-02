@@ -93,29 +93,37 @@ Let get started:
     )
     make
     . config.sh    [or source config.csh]
+    
+    If you work on lxplus, after logon, you always have to do:
+    setenv xxx ${HOME}
+    setenv SHIPSOFT /afs/cern.ch/ship/sw/ShipSoft
+    setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
+    setenv SIMPATH      ${SHIPSOFT}/FairSoftInst
+    setenv FAIRSHIP ${xxx}/FairShip
+    source ${xxx}/FairShipRun/config.csh
     ```
 
 6. Now you can for example simulate some events, run reconstruction and analysis:
 
     ```bash
-    python $FAIRSHIP/macro/run_simScript.py --display
+    python $FAIRSHIP/macro/run_simScript.py 
     >> Macro finished succesfully.
-    >> Output file is  ship.10.0.Pythia8-TGeant4_D.root
+    >> Output file is  ship.10.0.Pythia8-TGeant4.root
 
-    python $FAIRSHIP/macro/ShipReco.py -f ship.10.0.Pythia8-TGeant4_D.root 
+    python $FAIRSHIP/macro/ShipReco.py -f ship.10.0.Pythia8-TGeant4.root -g geofile_full.10.0.Pythia8-TGeant4.root
     >> finishing pyExit
 
-    python $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_D_rec.root
+    python $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_rec.root -g geofile_full.10.0.Pythia8-TGeant4.root
     >> finished making plots
     ```
 
     Run the event display:
 
     ```bash
-    python -i $FAIRSHIP/macro/eventDisplay.py
-    // Click on "FairEventManager" (in the top-left pane)
-    // Click on the "Info" tab (on top of the bottom-left pane)
-    // Increase the "Current Event" to >0 to see the events
+    python -i $FAIRSHIP/macro/eventDisplay.py -f ship.10.0.Pythia8-TGeant4.root -g geofile_full.10.0.Pythia8-TGeant4.root -p ship.params.10.0.Pythia8-TGeant4.root
+    // use SHiP Event Display GUI 
+    // to switch on / off detectors (little trick to make it faster, main window, tick off Scenes/Geometry scene, then switch on / off detectors in SHiP Event Display GUI, then tick on again Scenes/Geometry scene)
+    // hit next event, or enter event number and hit return
     Use quit() or Ctrl-D (i.e. EOF) to exit
     ```
 7. Retrieving tagged versions:
