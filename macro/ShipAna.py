@@ -277,6 +277,11 @@ def makePlots():
 # start event loop
 def myEventLoop(n):
   rc = sTree.GetEntry(n)
+# check if tracks are made from real pattern recognition
+  if sTree.GetBranch("FitTracks_PR"): 
+    sTree.FitTracks = sTree.FitTracks_PR
+    sTree.fitTrack2MC = sTree.fitTrack2MC_PR
+    sTree.Particles = sTree.Particles_PR
   if not checkHNLorigin(sTree): return
   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.

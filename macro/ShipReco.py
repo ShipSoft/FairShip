@@ -11,13 +11,20 @@ vertexing = True
 dy  = None
 saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
+realPR = ''
 
 import ROOT,os,sys,getopt
 from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
+
+import shipPatRec 
+#set to True if "real" pattern recognition is required also
+
+if debug == True: shipPatRec.debug = 1
+
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
-           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk"])
+           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,' 
@@ -41,6 +48,8 @@ for o, a in opts:
             EcalDebugDraw = True
         if o in ("--saveDisk"):
             saveDisk = True
+	if o in ("--realPR"):
+            realPR = "_PR"
 if EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
 # need to figure out which geometry was used
@@ -52,7 +61,7 @@ if not dy:
   except:
     dy = None
 print 'configured to process ',nEvents,' events from ' ,inputFile, \
-      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing
+      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco',realPR=="_PR"
 if not inputFile.find('_rec.root') < 0: 
   outFile   = inputFile
   inputFile = outFile.replace('_rec.root','.root') 
@@ -79,6 +88,7 @@ if withHists:
  ut.bookHist(h,'distv','distance to wire',100,0.,5.)
  ut.bookHist(h,'disty','distance to wire',100,0.,5.)
  ut.bookHist(h,'nmeas','nr measuerements',100,0.,50.)
+ ut.bookHist(h,'chi2','Chi2/DOF',100,0.,20.)
 #-----prepare python exit-----------------------------------------------
 def pyExit():
  global fitter
@@ -130,32 +140,37 @@ def myVertex(t1,t2,PosDir):
 class ShipReco:
  " convert FairSHiP MC hits to measurements"
  def __init__(self,fout):
-  self.fn = ROOT.TFile(fout,'update')
+  tmp = fout.split('/')
+  InCurDir = tmp[len(tmp)-1]
+  self.fn = ROOT.TFile(InCurDir,'update')
   self.sTree     = self.fn.cbmsim
-  if self.sTree.GetBranch("FitTracks"):
-   print "remove RECO branches and rerun reconstruction"
-   self.fn.Close()    
-   # make a new file without reco branches
-   f = ROOT.TFile(fout)
-   sTree = f.cbmsim
-   sTree.SetBranchStatus("FitTracks",0)
-   sTree.SetBranchStatus("SmearedHits",0)
-   sTree.SetBranchStatus("Particles",0)
-   sTree.SetBranchStatus("fitTrack2MC",0)
-   sTree.SetBranchStatus("EcalClusters",0)
-   rawFile = fout.replace("_rec.root","_raw.root")
-   recf = ROOT.TFile(rawFile,"recreate")
-   newTree = sTree.CloneTree(0)
-   for n in range(sTree.GetEntries()):
-    sTree.GetEntry(n)
-    rc = newTree.Fill()
-   sTree.Clear()
-   newTree.AutoSave()
-   f.Close() 
-   recf.Close() 
-   os.system('cp '+rawFile +' '+fout)
-   self.fn = ROOT.TFile(fout,'update')
-   self.sTree     = self.fn.cbmsim
+  if self.sTree.GetBranch("SmearedHits"):
+    print "remove RECO branches and rerun reconstruction"
+    self.fn.Close()    
+    # make a new file without reco branches
+    f = ROOT.TFile(fout)
+    sTree = f.cbmsim
+    sTree.SetBranchStatus("SmearedHits",0)
+    if self.sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
+    if self.sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
+    if self.sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
+    if self.sTree.GetBranch("FitTracks_PR"): sTree.SetBranchStatus("FitTracks_PR",0)
+    if self.sTree.GetBranch("Particles_PR"): sTree.SetBranchStatus("Particles_PR",0)
+    if self.sTree.GetBranch("fitTrack2MC_PR"): sTree.SetBranchStatus("fitTrack2MC_PR",0)
+    if self.sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)     
+    rawFile = fout.replace("_rec.root","_raw.root")
+    recf = ROOT.TFile(rawFile,"recreate")
+    newTree = sTree.CloneTree(0)
+    for n in range(sTree.GetEntries()):
+      sTree.GetEntry(n)
+      rc = newTree.Fill()
+    sTree.Clear()
+    newTree.AutoSave()
+    f.Close() 
+    recf.Close() 
+    os.system('cp '+rawFile +' '+fout)
+    self.fn = ROOT.TFile(fout,'update')
+    self.sTree     = self.fn.cbmsim     
 #   
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
@@ -164,19 +179,19 @@ class ShipReco:
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
-  self.SmearedHits  = ROOT.TClonesArray("TVectorD") 
-#  
-  self.Particles   = self.sTree.Branch("Particles",  self.fPartArray,32000,-1)
-  self.SHbranch    = self.sTree.Branch("SmearedHits",self.SmearedHits,32000,-1)
-  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
-  self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
+  self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
+  self.fitTracks   = self.sTree.Branch("FitTracks"+realPR,  self.fGenFitArray,32000,-1)
+  self.Particles   = self.sTree.Branch("Particles"+realPR,  self.fPartArray,32000,-1)
+#
+  self.SmearedHits     = ROOT.TClonesArray("TVectorD") 
+  self.SHbranch       = self.sTree.Branch("SmearedHits",self.SmearedHits,32000,-1)
 #
   self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
   self.reps,self.states,self.newPosDir = {},{},{}
 #
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
-#
+
  def hit2wire(self,ahit,no_amb=None):
      detID = ahit.GetDetectorID()
      top = ROOT.TVector3()
@@ -203,15 +218,17 @@ class ShipReco:
   nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists    = {}
   stationCrossed = {}
+  fittedtrackids=[]
   self.SmearedHits.Delete()
   self.fPartArray.Delete()
   self.fGenFitArray.Delete()
   self.fitTrack2MC.clear()
+#   
   for i in range(nShits):
     ahit = self.sTree.strawtubesPoint.At(i)
     sm   = self.hit2wire(ahit,withNoStrawSmearing)
-    m = array('d',[i,sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
-    measurement = ROOT.TVectorD(8,m)
+    m = array('d',[i,sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist'],ahit.GetDetectorID()])
+    measurement = ROOT.TVectorD(9,m)
 # copy to branch
     nHits = self.SmearedHits.GetEntries()
     if self.SmearedHits.GetSize() == nHits: self.SmearedHits.Expand(nHits+1000)
@@ -226,40 +243,52 @@ class ShipReco:
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
     if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
-    stationCrossed[trID][station]+=1  
+    stationCrossed[trID][station]+=1   
   nTrack = -1
-  for atrack in hitPosLists:
-   if atrack < 0: continue # these are hits not assigned to MC track because low E cut
-   pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
-   if not PDG.GetParticle(pdg): continue # unknown particle
-   meas = hitPosLists[atrack]
-   nM = meas.size()
-   if nM < 25 : continue                          # not enough hits to make a good trackfit 
-   if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
-   if debug: 
+  if realPR:
+     fittedtrackids=shipPatRec.execute(n,self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
+     if fittedtrackids:
+       tracknbr=0
+       for ids in fittedtrackids:
+	 nTrack   = SHiP.fGenFitArray.GetEntries()
+         theTrack = shipPatRec.theTracks[tracknbr]
+         if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
+         self.fGenFitArray[nTrack] = theTrack
+         self.fitTrack2MC.push_back(ids) 
+	 tracknbr+=1
+  else: # do fake pattern reco	 
+   for atrack in hitPosLists:
+    if atrack < 0: continue # these are hits not assigned to MC track because low E cut
+    pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
+    if not PDG.GetParticle(pdg): continue # unknown particle
+    meas = hitPosLists[atrack]
+    nM = meas.size()
+    if nM < 25 : continue                          # not enough hits to make a good trackfit 
+    if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
+    if debug: 
        mctrack = self.sTree.MCTrack[atrack]
-   charge = PDG.GetParticle(pdg).Charge()/(3.)
-   posM = ROOT.TVector3(0, 0, 0)
-   momM = ROOT.TVector3(0,0,3.*u.GeV)
+    charge = PDG.GetParticle(pdg).Charge()/(3.)
+    posM = ROOT.TVector3(0, 0, 0)
+    momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance
-   covM = ROOT.TMatrixDSym(6)
-   resolution = ShipGeo.straw.resol
-   for  i in range(3):   covM[i][i] = resolution*resolution
-   covM[0][0]=resolution*resolution*100.
-   for  i in range(3,6): covM[i][i] = ROOT.TMath.pow(resolution / nM / ROOT.TMath.sqrt(3), 2)
+    covM = ROOT.TMatrixDSym(6)
+    resolution = ShipGeo.straw.resol
+    for  i in range(3):   covM[i][i] = resolution*resolution
+    covM[0][0]=resolution*resolution*100.
+    for  i in range(3,6): covM[i][i] = ROOT.TMath.pow(resolution / nM / ROOT.TMath.sqrt(3), 2)
 # trackrep
-   rep = ROOT.genfit.RKTrackRep(pdg)
+    rep = ROOT.genfit.RKTrackRep(pdg)
 # smeared start state
-   stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
-   rep.setPosMomCov(stateSmeared, posM, momM, covM)
+    stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
+    rep.setPosMomCov(stateSmeared, posM, momM, covM)
 # create track
-   seedState = ROOT.TVectorD(6)
-   seedCov   = ROOT.TMatrixDSym(6)
-   rep.get6DStateCov(stateSmeared, seedState, seedCov)
-   theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
-   hitCov = ROOT.TMatrixDSym(7)
-   hitCov[6][6] = resolution*resolution
-   for m in meas:
+    seedState = ROOT.TVectorD(6)
+    seedCov   = ROOT.TMatrixDSym(6)
+    rep.get6DStateCov(stateSmeared, seedState, seedCov)
+    theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
+    hitCov = ROOT.TMatrixDSym(7)
+    hitCov[6][6] = resolution*resolution
+    for m in meas:
       tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
@@ -269,33 +298,36 @@ class ShipReco:
       theTrack.insertPoint(tp)  # add point to Track
    # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
 #check
-   if not theTrack.checkConsistency():
-    print 'Problem with track before fit, not consistent',atrack,theTrack
-    continue
+    if not theTrack.checkConsistency():
+     print 'Problem with track before fit, not consistent',atrack,theTrack
+     continue
 # do the fit
-   try:  fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
-   except: 
+    try:  fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
+    except: 
        print "genfit failed to fit track"
        continue
 #check
-   if not theTrack.checkConsistency():
-    print 'Problem with track after fit, not consistent',atrack,theTrack
-    continue
-   fitStatus   = theTrack.getFitStatus()
-   chi2        = fitStatus.getChi2()
+    if not theTrack.checkConsistency():
+     print 'Problem with track after fit, not consistent',atrack,theTrack
+     continue
+    fitStatus   = theTrack.getFitStatus()
+    nmeas = fitStatus.getNdf()   
+    chi2        = fitStatus.getChi2()/nmeas   
+    h['chi2'].Fill(chi2)
 # make track persistent
-   nTrack   = SHiP.fGenFitArray.GetEntries()
-   if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
-   self.fGenFitArray[nTrack] = theTrack
-   self.fitTrack2MC.push_back(atrack)
-   if debug: 
-    print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
-    if nM > 28: display.addEvent(theTrack)
+    nTrack   = SHiP.fGenFitArray.GetEntries()
+    if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
+    self.fGenFitArray[nTrack] = theTrack
+    self.fitTrack2MC.push_back(atrack)
+    if debug: 
+     print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
+     if nM > 28: display.addEvent(theTrack)
   return nTrack+1
 #
  def find2TrackVertex(self):
   fittedTracks = self.fGenFitArray
-  PosDirCharge = {} 
+  particles    = self.fPartArray
+  PosDirCharge = {}
   for tr in range(fittedTracks.GetEntries()):
    fitStatus = fittedTracks[tr].getFitStatus()
    if not fitStatus.isFitConverged(): continue
@@ -365,8 +397,8 @@ class ShipReco:
      vx = ROOT.TLorentzVector(HNLPos,doca)  # misuse time as DOCA  
      particle = ROOT.TParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
      particle.SetMother(1,99) # as marker to remember doca is set
-     nParts   = self.fPartArray.GetEntries()
-     self.fPartArray[nParts] = particle
+     nParts   = particles.GetEntries()
+     particles[nParts] = particle
 
 # -----Calorimeter part --------------------------------------------
 # Creates. exports and fills calorimeter structure
@@ -446,6 +478,9 @@ ecalClusters=ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
 SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
 if EcalDebugDraw: ecalDrawer.InitPython(SHiP.sTree.MCTrack, SHiP.sTree.EcalPoint, ecalStructure, ecalClusters)
 
+# for 'real' PatRec
+shipPatRec.initialize(fgeo)
+
 # main loop
 for iEvent in range(firstEvent, SHiP.nEvents):
  if debug: print 'event ',iEvent
@@ -454,7 +489,6 @@ for iEvent in range(firstEvent, SHiP.nEvents):
 # now go for 2-track combinations
    if ntracks > 1: SHiP.find2TrackVertex()
 # make tracks and particles persistent
- if debug: print 'call Fill', len(SHiP.fGenFitArray),ntracks,SHiP.fGenFitArray.GetEntries()
  SHiP.Particles.Fill()
  SHiP.fitTracks.Fill()
  SHiP.mcLink.Fill()
@@ -473,5 +507,6 @@ if debug:
 # open event display
  display.open() 
 
-
+ut.writeHists(h,"recohists.root")
+ut.writeHists(shipPatRec.h,"recohists_patrec.root")
 

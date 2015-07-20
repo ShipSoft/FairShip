@@ -497,6 +497,10 @@ class EventLoop(ROOT.FairTask):
    if sTree.FindBranch("EcalClusters"):
      self.ecalFiller.Exec('start')
      self.calos.ExecuteTask()
+# check if tracks are made from real pattern recognition
+   if sTree.GetBranch("FitTracks_PR"):    sTree.FitTracks = sTree.FitTracks_PR
+   if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
+   if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
    print 'Event %i ready'%(self.n)
 #
 def speedUp():
