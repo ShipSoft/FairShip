@@ -199,7 +199,7 @@ class DrawTracks(ROOT.FairTask):
  def ExecuteTask(self,option=''):
   self.comp.DestroyElements()
   self.comp.OpenCompound()
-  if sTree.FindBranch('FitTracks'):
+  if sTree.FindBranch('FitTracks') or sTree.FindBranch('FitTracks_PR'):
    if sTree.FitTracks.GetEntries() > 0: 
      self.DrawFittedTracks()
   if not sTree.FindBranch("GeoTracks") and sTree.MCTrack.GetEntries() > 0: 
@@ -493,14 +493,14 @@ class EventLoop(ROOT.FairTask):
    if i<0: self.n+=1
    else  : self.n=i
    fRun.Run(self.n) # go for first event
-   self.tracks.ExecuteTask()
-   if sTree.FindBranch("EcalClusters"):
-     self.ecalFiller.Exec('start')
-     self.calos.ExecuteTask()
 # check if tracks are made from real pattern recognition
    if sTree.GetBranch("FitTracks_PR"):    sTree.FitTracks = sTree.FitTracks_PR
    if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
    if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
+   self.tracks.ExecuteTask()
+   if sTree.FindBranch("EcalClusters"):
+     self.ecalFiller.Exec('start')
+     self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
 #
 def speedUp():
