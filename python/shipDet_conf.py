@@ -12,7 +12,7 @@ def posHcal(z):
  rewrite = True
  if sz in os.listdir(floc):
   test = os.popen("diff "+ f_hcal+ " "+ f_hcalz).read()
-  if len(test)<6: rewrite = False # only different is z position
+  if str.count(test,'---')==1 and not test.find('Position')<0: rewrite = False # only different is z position
  if rewrite: fn = open(f_hcalz,'w')
  for l in f.readlines():
    if rewrite:
@@ -35,7 +35,7 @@ def posEcal(z,efile):
  rewrite = True
  if sz in os.listdir(floc):
   test = os.popen("diff "+ f_ecal+ " "+ f_ecalz).read()
-  if len(test)<6: rewrite = False # only different is z position
+  if str.count(test,'---')==1 and not test.find('Position')<0: rewrite = False # only different is z position
  if rewrite: fn = open(f_ecalz,'w')
  for l in f.readlines():
    if rewrite:
