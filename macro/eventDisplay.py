@@ -236,10 +236,11 @@ class DrawTracks(ROOT.FairTask):
        evVx = True
        break
   DTrack.SetNextPoint(fPos.X(),fPos.Y(),fPos.Z())
-  if evVx : 
+  if evVx and abs( da.GetStartZ()-fPos.Z() )>1*u.cm : 
     DTrack.SetNextPoint(da.GetStartX(),da.GetStartY(),da.GetStartZ())
-  else :
+  else:
     zEx = 10*u.m
+    if evVx : zEx = -10*u.m
     lam = (zEx+fPos.Z())/fMom.Z()
     DTrack.SetNextPoint(fPos.X()+lam*fMom.X(),fPos.Y()+lam*fMom.Y(),zEx+fPos.Z())
   c = ROOT.kYellow
