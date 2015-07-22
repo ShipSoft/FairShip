@@ -11,7 +11,8 @@ geoFile    = None
 dy         = None
 nEvents    = 99999
 fiducialCut = True
-measCut = 25
+measCutFK = 25
+measCutPR = 22
 docaCut = 2.
 try:
         opts, args = getopt.getopt(sys.argv[1:], "n:f:g:A:Y:i", ["nEvents=","geoFile="])
@@ -85,10 +86,10 @@ T1Station = ROOT.gGeoManager.GetTopVolume().GetNode('Tr1_1')
 T1Station_zUp = T1Station.GetMatrix().GetTranslation()[2]-T1Station.GetVolume().GetShape().GetDZ()
 
 h = {}
-ut.bookHist(h,'delPOverP','delP / P',100,0.,50.,100,-0.5,0.5)
-ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<'+str(chi2CutOff),100,0.,50.,100,-0.5,0.5)
-ut.bookHist(h,'delPOverPz','delPz / Pz',100,0.,50.,100,-0.5,0.5)
-ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<'+str(chi2CutOff),100,0.,50.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverP','delP / P',400,0.,200.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<'+str(chi2CutOff),400,0.,200.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverPz','delPz / Pz',400,0.,200.,100,-0.5,0.5)
+ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<'+str(chi2CutOff),400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'chi2','chi2/nmeas after trackfit',100,0.,10.)
 ut.bookHist(h,'prob','prob(chi2)',100,0.,1.)
 ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
@@ -105,15 +106,20 @@ ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
 ut.bookHist(h,'ecalClusters','x/y and energy',50,-3.,3.,50,-6.,6.)
 
+def Rsq(X,Y,dy):
+  return (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
+
 def checkHNLorigin(sTree):
- flag = True 
+ flag = True
  if not fiducialCut: return flag
+# only makes sense for signal == HNL
+ if  sTree.MCTrack.GetEntries()<3: return
  theHNLVx = sTree.MCTrack[2]
+ if not abs(theHNLVx.GetPdgCode()) == 9900015: return flag
  if theHNLVx.GetStartZ() < ShipGeo.vetoStation.z+100.*u.cm : flag = False
  if theHNLVx.GetStartZ() > ShipGeo.TrackStation1.z : flag = False
  X,Y =  theHNLVx.GetStartX(),theHNLVx.GetStartY()
- Rsq = (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
- if Rsq>1: flag = False
+ if Rsq(X,Y,dy)>1: flag = False
  return flag 
 def checkFiducialVolume(sTree,tkey,dy):
 # to be replaced later with using track extrapolator,
@@ -124,8 +130,7 @@ def checkFiducialVolume(sTree,tkey,dy):
    for ahit in sTree.strawtubesPoint:
      if ahit.GetTrackID() == mcPartKey:
         X,Y = ahit.GetX(),ahit.GetY()
-        Rsq = (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
-        if Rsq > 1:
+        if Rsq(X,Y,dy)>1:
          inside = False    
          break
    return inside
@@ -278,10 +283,12 @@ def makePlots():
 def myEventLoop(n):
   rc = sTree.GetEntry(n)
 # check if tracks are made from real pattern recognition
-  if sTree.GetBranch("FitTracks_PR"): 
+  measCut = measCutFK
+  if sTree.GetBranch("FitTracks_PR"):    
     sTree.FitTracks = sTree.FitTracks_PR
-    sTree.fitTrack2MC = sTree.fitTrack2MC_PR
-    sTree.Particles = sTree.Particles_PR
+    measCut = measCutPR
+  if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
+  if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
   if not checkHNLorigin(sTree): return
   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
@@ -447,8 +454,7 @@ def myEventLoop(n):
       LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
      HNLMom = LV[t1]+LV[t2]
  # check if decay inside decay volume
-    Rsq = (xv/(2.45*u.m) )**2 + (yv/((dy/2.-0.05)*u.m) )**2
-    if Rsq > 1 : continue
+    if Rsq(xv,yv,dy) > 1 : continue
     if zv < vetoStation_zDown  : continue  
     if zv > T1Station_zUp      : continue  
     h['Doca'].Fill(doca) 
