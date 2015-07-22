@@ -6,7 +6,6 @@
 import ROOT, os
 import shipunit  as u
 import math
-import ShipGeoConfig
 import copy
 from collections import OrderedDict
 from ROOT import TVector3
@@ -50,12 +49,6 @@ random = ROOT.TRandom()
 ROOT.gRandom.SetSeed(13)
 
 PDG=ROOT.TDatabasePDG.Instance()  
-
-fitter = globals()['fitter']
-debug  = globals()['debug']
-ship_geo = globals()['ShipGeo']
-
-if debug==1: fitter.setDebugLvl(1)
 
 h={} #dictionary of histograms
 ut.bookHist(h,'pinvvstruepinv','1/p vs 1/p-true',100,-2.,2.,100,-2.,2.)
@@ -1243,6 +1236,7 @@ def PatRec(firsttwo,eventnb,zlayer,zlayerv2,StrawRaw,StrawRawLink,Reconstructibl
 
 def TrackFit(hitPosList,theTrack,charge,pinv):  
    global theTracks
+   if debug==1: fitter.setDebugLvl(1)
    resolution = ship_geo.straw.resol    
    hitCov = ROOT.TMatrixDSym(7)
    hitCov[6][6] = resolution*resolution

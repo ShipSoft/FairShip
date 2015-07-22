@@ -14,9 +14,14 @@ pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
 
 import ROOT,os,sys,getopt
+import __builtin__ as builtin
 from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
 
+# init fitter, to be done before importing shipPatRec
+#fitter          = ROOT.genfit.KalmanFitter()
+#fitter          = ROOT.genfit.KalmanFitterRefTrack()
+fitter           = ROOT.genfit.DAF()
 import shipPatRec 
 #set to True if "real" pattern recognition is required also
 
@@ -67,6 +72,9 @@ if not inputFile.find('_rec.root') < 0:
   inputFile = outFile.replace('_rec.root','.root') 
 else:
   outFile = inputFile.replace('.root','_rec.root') 
+# outfile should be in local directory
+  tmp = outFile.split('/')
+  outFile = tmp[len(tmp)-1]
   if saveDisk: os.system('mv '+inputFile+' '+outFile)
   else :       os.system('cp '+inputFile+' '+outFile)
 
@@ -109,7 +117,9 @@ else:
 import shipDet_conf
 run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run,ShipGeo)
-
+builtin.debug    = debug
+builtin.fitter   = fitter
+builtin.ship_geo = ShipGeo # for shipPatRec
 addHNLtoROOT()
 
 def myVertex(t1,t2,PosDir):
@@ -140,9 +150,7 @@ def myVertex(t1,t2,PosDir):
 class ShipReco:
  " convert FairSHiP MC hits to measurements"
  def __init__(self,fout):
-  tmp = fout.split('/')
-  InCurDir = tmp[len(tmp)-1]
-  self.fn = ROOT.TFile(InCurDir,'update')
+  self.fn = ROOT.TFile(fout,'update')
   self.sTree     = self.fn.cbmsim
   if self.sTree.GetBranch("SmearedHits"):
     print "remove RECO branches and rerun reconstruction"
@@ -459,10 +467,6 @@ ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 if debug: # init event display
  display = ROOT.genfit.EventDisplay.getInstance()
 
-# init fitter
-#fitter          = ROOT.genfit.KalmanFitter()
-#fitter          = ROOT.genfit.KalmanFitterRefTrack()
-fitter          = ROOT.genfit.DAF()
 if debug: fitter.setDebugLvl(1) # produces lot of printout
 WireMeasurement = ROOT.genfit.WireMeasurement
 
