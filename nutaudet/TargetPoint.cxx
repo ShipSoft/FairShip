@@ -13,15 +13,19 @@ TargetPoint::TargetPoint()
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
-TargetPoint::TargetPoint(Int_t trackID, Int_t detID,
-                                   TVector3 pos, TVector3 mom,
-                                   Double_t tof, Double_t length,
-                                   Double_t eLoss, Int_t pdgcode)
-  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss), fPdgCode(pdgcode)
-{
-}
+TargetPoint::TargetPoint(Int_t trackID, Int_t detID,TVector3 pos, TVector3 mom,
+                         Double_t tof, Double_t length,
+			 Double_t eLoss, Int_t pdgcode,
+			 Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt,
+			 Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall)
+  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),fPdgCode(pdgcode),
+    fEmTop(emTop), fEmBot(emBot), fEmCESTop(emCESTop), fEmCESBot(emCESBot),fTT(tt),
+    fNPlate(nPlate),fNColumn(nColumn), fNRow(nRow),fNWall(nWall)
+{  }
+
 // -------------------------------------------------------------------------
 
+//,  EmTop, EmBot, EmCESTop,EmCESBot,TT,NPlate,NColumn,NRow,NWall
 // -----   Destructor   ----------------------------------------------------
 TargetPoint::~TargetPoint() { }
 // -------------------------------------------------------------------------

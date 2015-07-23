@@ -25,10 +25,12 @@ class ShipRpcPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
+    /*ShipRpcPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+                     Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode, Int_t nArm, Int_t nRpc, Int_t nHpt);
+*/
+
     ShipRpcPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode);
-
-
 
 
     /** Destructor **/
@@ -37,14 +39,25 @@ class ShipRpcPoint : public FairMCPoint
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
     Int_t PdgCode() const {return fPdgCode;}
-    
+/*   
+    Int_t NArm() const {return fNArm;}
+    Int_t NRpc() const {return fNRpc;}
+    Int_t NHpt() const {return fNHpt;}
+    */
+
   private:
     /** Copy constructor **/
     Int_t fPdgCode;
+    /*
+    Int_t fNArm; //in which Arm is the Rpc (1 or 2)
+    Int_t fNRpc; //in which Rpc is the hit (<=11)
+    Int_t fNHpt; //in which HPT is the hit (<=6)
+*/
+
     ShipRpcPoint(const ShipRpcPoint& point);
     ShipRpcPoint operator=(const ShipRpcPoint& point);
 
-    ClassDef(ShipRpcPoint,1)
+    ClassDef(ShipRpcPoint,2)
 
 };
 

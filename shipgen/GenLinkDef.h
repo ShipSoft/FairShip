@@ -13,6 +13,7 @@
 #pragma link C++ class  MuonBackGenerator+;
 #pragma link C++ class  CosmicsGenerator+;
 #pragma link C++ class  MuDISGenerator+;
+#pragma link C++ class  NuageGenerator+;
 
 #pragma link C++ class Pythia8::ParticleData+;
 #pragma link C++ class Pythia8::ParticleDataEntry+;

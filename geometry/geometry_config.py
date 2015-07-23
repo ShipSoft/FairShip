@@ -267,10 +267,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
     c.NuTauTarget.BrX = 12.9 *u.cm
     c.NuTauTarget.BrY = 10.5 *u.cm
-    c.NuTauTarget.BrZ = 8.3*u.cm
+    c.NuTauTarget.BrPack = 1 * u.cm 
+    c.NuTauTarget.BrZ = 56 * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW +c.NuTauTarget.BrPack
     c.NuTauTarget.RohG = 1.5 * u.cm
-    c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW;
-    c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW
+    c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW
+    c.NuTauTarget.CESPack = 0.1 * u.cm
+    c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW + c.NuTauTarget.CESPack
     c.NuTauTarget.CellW = c.NuTauTarget.BrZ + c.NuTauTarget.CESW
     
     c.NuTauTarget.zdim = 11* c.NuTauTarget.CellW + 12*c.NuTauTarget.TTZ

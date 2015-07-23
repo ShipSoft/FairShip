@@ -13,13 +13,23 @@ ShipRpcPoint::ShipRpcPoint()
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
+/*ShipRpcPoint::ShipRpcPoint(Int_t trackID, Int_t detID,
+                                   TVector3 pos, TVector3 mom,
+                                   Double_t tof, Double_t length,
+			   Double_t eLoss, Int_t pdgcode, Int_t nArm, Int_t nRpc, Int_t nHpt)
+  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss), fPdgCode(pdgcode), 
+    fNArm(nArm), fNRpc(nRpc), fNHpt(nHpt)
+{
+}
+*/
 ShipRpcPoint::ShipRpcPoint(Int_t trackID, Int_t detID,
                                    TVector3 pos, TVector3 mom,
                                    Double_t tof, Double_t length,
-                                   Double_t eLoss, Int_t pdgcode)
+			   Double_t eLoss, Int_t pdgcode)
   : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss), fPdgCode(pdgcode)
 {
 }
+
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------

@@ -46,11 +46,17 @@ class MagneticSpectrometer:public FairDetector
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
+    /*ShipRpcPoint* AddHit(Int_t trackID, Int_t detID,
+                         TVector3 pos, TVector3 mom,
+                         Double_t time, Double_t length,
+                         Double_t eLoss, Int_t pdgCode,Int_t nArm, Int_t nRpc, Int_t nHpt);
+    */
+
     ShipRpcPoint* AddHit(Int_t trackID, Int_t detID,
                          TVector3 pos, TVector3 mom,
                          Double_t time, Double_t length,
                          Double_t eLoss, Int_t pdgCode);
-    
+
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
      */
@@ -66,6 +72,7 @@ class MagneticSpectrometer:public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
+    void DecodeVolumeID(Int_t detID,int &nHPT,int &nARM,int &nRPC);
     
 private:
     

@@ -190,10 +190,13 @@ namespace ShipUnit
     //
     // Magnetic Field [T][E][Q^-1][L^-2]
     //
-    static const Double_t tesla     = volt*second/meter2;// tesla =0.001*megavolt*ns/mm2
-    
-    static const Double_t gauss     = 1.e-4*tesla;
-    static const Double_t kilogauss = 1.e-1*tesla;
+    //static const Double_t tesla     = volt*second/meter2;// tesla =0.001*megavolt*ns/mm2
+    //static const Double_t gauss     = 1.e-4*tesla;
+    //static const Double_t kilogauss = 1.e-1*tesla;
+
+	static const Double_t kilogauss = 1.;
+	static const Double_t tesla     = 10*kilogauss;
+	static const Double_t gauss     = 1.e-4*tesla;
     
     //
     // Inductance [T^2][E][Q^-2]

@@ -28,8 +28,9 @@ phiRandom   = False  # only relevant for muon background generator
 followMuon  = False   # only transport muons for a fast muon only background estimate
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",["Pythia6","Pythia8","Genie","MuDIS","Ntuple","MuonBack","FollowMuon",\
-                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", 
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
+                                   "Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
+                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
                                    "output=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
@@ -56,6 +57,8 @@ for o, a in opts:
             followMuon = True
         if o in ("--MuonBack"):
             simEngine = "MuonBack"
+        if o in ("--Nuage"):
+            simEngine = "Nuage"
         if o in ("--phiRandom"):
             phiRandom = True
         if o in ("--Cosmics"):
@@ -88,6 +91,8 @@ if (simEngine == "Genie" or simEngine == "nuRadiography") and not inputFile:
 # nu_mu: inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu+_nu_mu-gntp.113.gst.root'
 if simEngine == "muonDIS" and not inputFile:
  inputFile = os.environ['SHIPSOFT']+'/data/muonDis.root' 
+if simEngine == "Nuage" and not inputFile:
+ inputFile = 'Numucc.root'
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
@@ -159,13 +164,29 @@ if simEngine == "muonDIS":
  primGen.AddGenerator(DISgen)
  nEvents = min(nEvents,DISgen.GetNevents())
  print 'Generate ',nEvents,' with DIS input', ' first event',firstEvent
+# -----neutrino interactions from nuage------------------------
+if simEngine == "Nuage":
+ primGen.SetTarget(0., 0.)
+ Nuagegen = ROOT.NuageGenerator()
+ print 'Nuage position info input=',ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim
+ #--------------------------------
+ #to Generate neutrino interactions in the whole neutrino target
+ #Nuagegen.SetPositions(ship_geo.NuTauTarget.zC, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2);
+ #--------------------------------
+ #to Generate neutrino interactions ONLY in one brick
+ Nuagegen.SetPositions(ship_geo.NuTauTarget.zC, ship_geo.NuTauTarget.zC-5.6943, ship_geo.NuTauTarget.zC+2.6057, -9.7, 3.2,-18., -7.3)
+ #--------------------------------
+ Nuagegen.Init(inputFile,firstEvent)
+ primGen.AddGenerator(Nuagegen)
+ nEvents = min(nEvents,Nuagegen.GetNevents())
+ print 'Generate ',nEvents,' with Nuage input', ' first event',firstEvent
 # -----Neutrino Background------------------------
 if simEngine == "Genie":
 # Genie
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC, ship_geo.TrackStation2.z)
+ Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC-5*u.m, ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
@@ -198,6 +219,8 @@ if simEngine == "Ntuple":
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation, [-50m - 50m]
  primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
+ # their might be good reason to use the following, but I forgot, need to check
+ # primGen.SetTarget(50*u.m-3.5*u.m+ship_geo.hadronAbsorber.z+ship_geo.hadronAbsorber.length/2, 0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  MuonBackgen.SetSmearBeam(3*u.cm)
@@ -205,7 +228,6 @@ if simEngine == "MuonBack":
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file, with Phi random=',phiRandom
  if followMuon :  modules['Veto'].SetFastMuon()
-
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)
@@ -229,6 +251,7 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 run.Init()
 fStack = ROOT.gMC.GetStack()
 if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
+
 if eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
   trajFilter = ROOT.FairTrajFilter.Instance()

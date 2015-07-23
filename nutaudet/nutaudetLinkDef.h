@@ -9,7 +9,7 @@
 //#pragma link C++ class Goliath+;
 #pragma link C++ class MagneticSpectrometer+;
 #pragma link C++ class ShipRpcPoint+;
-#pragma link C++ class NutaudetContFact+;
+#pragma link C++ class NutaudetContFact;
 #pragma link C++ class Target+;
 #pragma link C++ class TargetPoint+;
 
