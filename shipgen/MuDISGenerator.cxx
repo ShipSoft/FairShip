@@ -269,6 +269,10 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     //cout << "MuDIS: put position " << xmu << ", " << ymu << ", " << zmu << endl;
     //modify weight, by multiplying with average densiy along track??
     cpg->AddTrack(int(mu[0][0]),mu[0][1],mu[0][2],mu[0][3],xmu,ymu,zmu,-1,false,mu[0][4],0.,w);
+    // in order to have a simulation of possible veto detector hits, let Geant4 follow the muon backward
+    // due to dE/dx, as soon as the muon travers thick material, this approximation will become bad. 
+    // a proper implementation however would be to have this better integrated in Geant4, follow the muon, call DIS event, continue
+    cpg->AddTrack(int(mu[0][0]),-mu[0][1],-mu[0][2],-mu[0][3],xmu,ymu,zmu,0,true,mu[0][4],0.,w);
 // outgoing particles, [did,dpx,dpy,dpz,E], put density along trajectory as weight, g/cm^2
     w=mparam[0]*mparam[4];
     for(int i=0; i<nf; i++)
