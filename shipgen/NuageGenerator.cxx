@@ -13,6 +13,7 @@
 
 using std::cout;
 using std::endl;
+using namespace TMath;
 // read events from ntuples produced with Nuage
 // Nuage momentum GeV
 // Vertex in SI units, assume this means m
@@ -247,153 +248,17 @@ NuageGenerator::~NuageGenerator()
 }
 // -------------------------------------------------------------------------
 
-// -----   Passing the event   ---------------------------------------------
-Bool_t NuageGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
-{
-    if (fFirst){
-        TGeoVolume *top=gGeoManager->GetTopVolume();
-        TGeoNode *linner = top->FindNode("lidT1I_1");
-        TGeoNode *scint  = top->FindNode("lidT1lisci_1");
-        TGeoNode *louter = top->FindNode("lidT1O_1");
-        TGeoNode *lidT6I = top->FindNode("lidT6I_1");
-        TGeoNode *t2I  = top->FindNode("T2I_1");
-        TGeoNode *t1I  = top->FindNode("T1I_1");
-        TGeoVolume *volGoliath = gGeoManager->GetVolume("volGoliath");
-        TGeoNode *volTarget = volGoliath->FindNode("volTarget");
-        //TGeoNode *lnu0   = top->FindNode("volLayer_0");
-        //TGeoNode *lnu11  = top->FindNode("volLayer_11");
-        TGeoEltu *temp = dynamic_cast<TGeoEltu*>(linner->GetVolume()->GetShape());
-        fEntrDz_inner = temp->GetDZ();
-        temp = dynamic_cast<TGeoEltu*>(louter->GetVolume()->GetShape());
-        fEntrDz_outer = temp->GetDZ();
-        fEntrA = temp->GetA();
-        fEntrB = temp->GetB();
-        fEntrZ_inner  = linner->GetMatrix()->GetTranslation()[2];
-        fEntrZ_outer  = louter->GetMatrix()->GetTranslation()[2];
-        Lvessel = lidT6I->GetMatrix()->GetTranslation()[2] - fEntrZ_inner - fEntrDz_inner;
-        TGeoCompositeShape *tempC = dynamic_cast<TGeoCompositeShape*>(t2I->GetVolume()->GetShape());
-        Xvessel = tempC->GetDX() - 2*fEntrDz_inner ;
-        Yvessel = tempC->GetDY() - 2*fEntrDz_inner ;
-        tempC = dynamic_cast<TGeoCompositeShape*>(t1I->GetVolume()->GetShape());
-        fL1z = tempC->GetDZ()*2;
-        temp = dynamic_cast<TGeoEltu*>(scint->GetVolume()->GetShape());
-        fScintDz = temp->GetDZ()*2;
-        
-        TGeoBBox *tempn = dynamic_cast<TGeoBBox*>(volTarget->GetVolume()->GetShape());
-        fznu = volTarget->GetMatrix()->GetTranslation()[2]+tempn->GetDZ();
-        fXnu = tempC->GetDX();
-        fYnu = tempC->GetDY();
-        
-        /*
-        TGeoBBox *tempn = dynamic_cast<TGeoBBox*>(lnu0->GetVolume()->GetShape());
-        fznu0 = lnu0->GetMatrix()->GetTranslation()[2]+tempn->GetDZ();
-        tempn = dynamic_cast<TGeoBBox*>(lnu11->GetVolume()->GetShape());
-        fznu11 = lnu11->GetMatrix()->GetTranslation()[2]-tempn->GetDZ();
-        fXnu11 = tempC->GetDX();
-        fYnu11 = tempC->GetDY();
-        */
-        
-        cout << "Info NuageGenerator: geo inner " << fEntrDz_inner << " "<< fEntrZ_inner << endl;
-        cout << "Info NuageGenerator: geo outer " << fEntrDz_outer << " "<< fEntrZ_outer << endl;
-        cout << "Info NuageGenerator: A and B " << fEntrA << " "<< fEntrB << endl;
-        cout << "Info NuageGenerator: vessel length heig<ht width " << Lvessel << " "<<Yvessel<< " "<< Xvessel << endl;
-        cout << "Info NuageGenerator: scint thickness " << fScintDz << endl;
-        cout << "Info NuageGenerator: rextra " << fScintDz/2.+2*fEntrDz_inner << " "<< 2*fEntrDz_outer << " "<<2*fEntrDz_inner << endl;
-        cout << "Info NuageGenerator: nuMu " << fznu << " "<< fXnu << " / " << fYnu << endl;
-
-        //cout << "Info NuageGenerator: nuMu " << fznu11 << " - "<< fznu0 << " "<< fXnu11 << " / " << fYnu11 << endl;
-        // if ( gRandom->Uniform(0.,1.)>0.5) {rextra=rextra+11.;}  //outer wall.
-        
-        fFirst = kFALSE;
-    }
-    if (fn==fNevents) {fLogger->Fatal(MESSAGE_ORIGIN, "No more input events");}
-    fTree->GetEntry(fn);
-    fn++;
-    if (fn%1000==0) {
-        cout << "Info NuageGenerator: neutrino event-nr "<< fn << endl;
-    }
-    // generate a random point on the vessel, take veto z, and calculate outer lid position
-    //Double_t Yvessel=500.;
-    //Double_t Lvessel=5.*Yvessel+3500.;
-    //Double_t ztarget=zentrance-6350.;
-    //Double_t ea=250.; //inside inner wall vessel
-    Double_t eb=Yvessel; //inside inner wall vessel
-    Double_t x;
-    Double_t y;
-    Double_t z;
-    Double_t where=gRandom->Uniform(0.,1.);
-    if (where<0.03) {
-        // point on entrance lid
-        Double_t ellip=2.;
-        while (ellip>1.){
-            x = gRandom->Uniform(-fEntrA,fEntrA);
-            y = gRandom->Uniform(-fEntrB,fEntrB);
-            ellip=(x*x)/(fEntrA*fEntrA)+(y*y)/(fEntrB*fEntrB);
-        }
-        if (gRandom->Uniform(0.,1.)<0.5){
-            z=fEntrZ_inner + gRandom->Uniform(-fEntrDz_inner,fEntrDz_inner);
-        }else{
-            z=fEntrZ_outer + gRandom->Uniform(-fEntrDz_outer,fEntrDz_outer);
-        }
-    }else if (where<0.64){
-        //point on tube, place over 1 cm radius at 2 radii, separated by 10. cm
-        // first vessel has smaller size
-        Double_t ea = Xvessel;
-        Double_t zrand =  gRandom->Uniform(0,Lvessel);
-        if (zrand < fL1z){
-            ea = fEntrA;
-        }
-        z = fEntrZ_outer-fEntrDz_outer + zrand;
-        Double_t theta = gRandom->Uniform(0.,TMath::Pi());
-        Double_t rextra;
-        if ( gRandom->Uniform(0.,1.)>0.5) {
-            // outer vessel
-            rextra = fScintDz/2.+2*fEntrDz_inner + gRandom->Uniform(0,2*fEntrDz_outer);
-        }else{
-            // inner vessel
-            rextra = gRandom->Uniform(0.,2*fEntrDz_inner);
-        }
-        x = (ea+rextra)*cos(theta);
-        y = sqrt(1.-(x*x)/((ea+rextra)*(ea+rextra)))*(eb+rextra);
-        if (gRandom->Uniform(-1.,1.)>0.) y=-y;
-    }else{
-        //point in nu-tau muon shield
-        x=gRandom->Uniform(-fXnu,fXnu);
-        y=gRandom->Uniform(-fYnu,fYnu);
-        z=gRandom->Uniform(fznu-1,fznu+1);
-    }
-    // first, incoming neutrino
-    //rotate the particle
-    Double_t zrelative=z-ztarget;
-    //cout << "Info NuageGenerator: x,y,z " << x <<" " << y << " " << zrelative << endl;
-    //cout << "Info NuageGenerator: neutrino " << neu << "p-in "<< pxv << pyv << pzv << " nf "<< nf << endl;
-    std::vector<double> pout = Rotate(x,y,zrelative,pxv,pyv,pzv);
-    //cpg->AddTrack(neu,pxv,pyv,pzv,vtxx,vtxy,vtxz,-1,false);
-    //cout << "Info NuageGenerator: neutrino " << neu << "p-rot "<< pout[0] << " fn "<< fn << endl;
-    cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false);
-    
-    
-    // second, outgoing lepton
-    pout = Rotate(x,y,zrelative,pxl,pyl,pzl);
-    cpg->AddTrack(copysign(fabs(neu)-1,neu),pout[0],pout[1],pout[2],x,y,z,0,true);
-    // last, all others
-    for(int i=0; i<nf; i++)
-    {
-        pout = Rotate(x,y,zrelative,pxf[i],pyf[i],pzf[i]);
-        cpg->AddTrack(pdgf[i],pout[0],pout[1],pout[2],x,y,z,0,true);
-        // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
-    }
-    
-    return kTRUE;
-}
 
 // -----   Passing the event   ---------------------------------------------
 Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
-    fFirst = kFALSE;
+  fFirst = kFALSE;
     //some start/end positions in z (emulsion to Tracker 1)
     Double_t start[3]={startX,startY,startZ};
-    Double_t end[3]={endY,endY,endZ};
+    //cout << "startX = " << startX << "    Y = " << startY << "   Z = " << startZ << endl;
+    //cout << "endX = " << endX << "    Y = " << endY << "    Z = " << endZ << endl;
+    
+    Double_t end[3]={endX,endY,endZ};
     if (fFirst){
         Double_t bparam=0.;
         Double_t mparam[7];
@@ -411,6 +276,8 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         
         fFirst = kFALSE;
     }
+    //cout << endl;
+    //cout << "*****************************************************************" << endl;
     
     if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
     fTree->GetEntry(fn%fNevents);
@@ -418,9 +285,19 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     if (fn%100==0) {
         cout << "Info GenieGenerator: neutrino event-nr "<< fn << endl;
     }
+
+    //Mean distance between start[2] and end[2]
+    Double_t zMean = (start[2]+end[2])/2;
+    //Distance from the target (Beam Dump (0,0));
+    Double_t zBD = zMean - ztarget;
     
-    //only accept neutrinos below ThetaMax
-    Double_t ThetaMax=0.1;
+    //only accept neutrinos with a ThetaX in the ThetaXMin/Max range and same for ThetaY
+    Double_t ThetaXMax = startX/zBD;
+    Double_t ThetaXMin = endX/zBD;
+    Double_t ThetaYMax = startY/zBD;
+    Double_t ThetaYMin = endY/zBD;
+    // cout << "ThetaXMax = " << ThetaXMax << "   ThetaXMin = " << ThetaXMin << endl;
+    //cout << "ThetaYMax = " << ThetaYMax << "   ThetaYMin = " << ThetaYMin << endl;
     
     // Incoming neutrino, get a random px,py
     //cout << "Info GenieGenerator: neutrino " << neu << "p-in "<< pxv << pyv << pzv << " nf "<< nf << endl;
@@ -432,31 +309,36 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t tynu=0;
     //Does this neutrino fly through material? Otherwise draw another pt..
     //cout << "Info GenieGenerator Start bparam while loop" << endl;
-    while (bparam<1.e-10){
+    while (bparam<1.e-10)
+      {
         //generate pt of ~0.3 GeV
-        pout[0] = gRandom->Exp(0.2);
-        pout[1] = gRandom->Exp(0.2);
-        pout[2] = pzv*pzv-pout[0]*pout[0]-pout[1]*pout[1];
-        if (pout[2]>0.) {
+	txnu = gRandom->Uniform(ThetaXMax,ThetaXMin);
+	tynu = gRandom->Uniform(ThetaYMax,ThetaYMin);
+	
+	pout[2] = pzv*pzv/(1+txnu*txnu+tynu*tynu);
+	  
+        if (pout[2]>0.)
+	  {
             pout[2]=TMath::Sqrt(pout[2]);
-            if(TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1])/pout[2]<ThetaMax){
-                if (gRandom->Uniform(-1.,1.)<0.) pout[0]=-pout[0];
-                if (gRandom->Uniform(-1.,1.)<0.) pout[1]=-pout[1];
-                //cout << "Info GenieGenerator: neutrino pxyz " << pout[0] << ", " << pout[1] << ", " << pout[2] << endl;
-                // xyz at start and end
-                start[0]=(pout[0]/pout[2])*(start[2]-ztarget);
-                start[1]=(pout[1]/pout[2])*(start[2]-ztarget);
-                //cout << "Info GenieGenerator: neutrino xyz-start " << start[0] << "-" << start[1] << "-" << start[2] << endl;
-                txnu=pout[0]/pout[2];
-                tynu=pout[1]/pout[2];
-                end[0]=txnu*(end[2]-ztarget);
-                end[1]=tynu*(end[2]-ztarget);
-                //cout << "Info GenieGenerator: neutrino xyz-end " << end[0] << "-" << end[1] << "-" << end[2] << endl;
+	    pout[0] = pout[2]*txnu;
+	    pout[1] = pout[2]*tynu;
+	    //cout << "txnu = " << txnu << "     tynu = " << tynu << endl;
+	    
+	    //cout << "Info GenieGenerator: neutrino pxyz " << pout[0] << ", " << pout[1] << ", " << pout[2] << endl;
+
+	    start[0]=txnu*(start[2]-ztarget);
+	    start[1]=tynu*(start[2]-ztarget);		
+	    //cout << "Info GenieGenerator: neutrino xyz-start " << start[0] << "  -  " << start[1] << "  -   " << start[2] << endl;
+		
+	    end[0]=txnu*(end[2]-ztarget);
+	    end[1]=tynu*(end[2]-ztarget);  
+	    //cout << "Info GenieGenerator: neutrino xyz-end " << end[0] << "  -   " << end[1] << "   -  " << end[2] << endl;
+	    
                 //get material density between these two points
-                bparam=MeanMaterialBudget(start, end, mparam);
-            }
-        }
-    }
+	    bparam=MeanMaterialBudget(start, end, mparam);
+            
+	  }
+      }
     
     //loop over trajectory between start and end to pick an interaction point
     Double_t prob2int = 0.;
@@ -468,8 +350,11 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     //cout << "Info GenieGenerator What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7]*1.e8 <<endl;
     while (prob2int<gRandom->Uniform(0.,1.)) {
         z=gRandom->Uniform(start[2],end[2]);
-        x=txnu*(z-ztarget);
-        y=tynu*(z-ztarget);
+	// x=gRandom->Uniform(start[0],end[0]);
+        //y=gRandom->Uniform(start[1],end[1]);
+	x= txnu*(z-ztarget);
+        y= tynu*(z-ztarget);
+	//cout << "x = " << x << "  y = " << y << "   z " << z << endl;
         //get local material at this point
         TGeoNode *node = gGeoManager->FindNode(x,y,z);
         TGeoMaterial *mat = 0;
@@ -481,6 +366,8 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         //count+=1;
     }
     //cout << "Info GenieGenerator: prob2int " << prob2int << ", " << count << endl;
+
+    //cout <<" Neutrino pdg = " <<  neu << endl;
     
     Double_t zrelative=z-ztarget;
     Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
@@ -504,6 +391,10 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     }
     return kTRUE;
 }
+
+
+
+
 
 
 

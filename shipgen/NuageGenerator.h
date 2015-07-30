@@ -22,7 +22,6 @@ public:
     virtual ~NuageGenerator();
     
     /** public method ReadEvent **/
-    Bool_t OldReadEvent(FairPrimaryGenerator*);
     Bool_t ReadEvent(FairPrimaryGenerator*);
     virtual Bool_t Init(const char*, int); //!
     virtual Bool_t Init(const char*); //!

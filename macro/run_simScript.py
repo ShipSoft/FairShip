@@ -171,10 +171,20 @@ if simEngine == "Nuage":
  print 'Nuage position info input=',ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim
  #--------------------------------
  #to Generate neutrino interactions in the whole neutrino target
- #Nuagegen.SetPositions(ship_geo.NuTauTarget.zC, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2);
+ #Nuagegen.SetPositions(ship_geo.NuTauTarget.z0, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2);
  #--------------------------------
- #to Generate neutrino interactions ONLY in one brick
- Nuagegen.SetPositions(ship_geo.NuTauTarget.zC, ship_geo.NuTauTarget.zC-5.6943, ship_geo.NuTauTarget.zC+2.6057, -9.7, 3.2,-18., -7.3)
+ #to Generate neutrino interactions ONLY in ONE brick
+ ntt = 6
+ nXcells = 7
+ nYcells = 3
+ nZcells = ntt -1
+ startx = -ship_geo.NuTauTarget.xdim/2 + nXcells*ship_geo.NuTauTarget.BrX
+ endx = -ship_geo.NuTauTarget.xdim/2 + (nXcells+1)*ship_geo.NuTauTarget.BrX
+ starty = -ship_geo.NuTauTarget.ydim/2 + nYcells*ship_geo.NuTauTarget.BrY 
+ endy = - ship_geo.NuTauTarget.ydim/2 + (nYcells+1)*ship_geo.NuTauTarget.BrY
+ startz = ship_geo.NuTauTarget.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTarget.TTZ + nZcells * ship_geo.NuTauTarget.CellW
+ endz = ship_geo.NuTauTarget.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTarget.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
+ Nuagegen.SetPositions(ship_geo.target.z0, startz, endz, startx, endx, starty, endy)
  #--------------------------------
  Nuagegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Nuagegen)
