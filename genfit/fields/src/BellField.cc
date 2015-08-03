@@ -40,8 +40,9 @@ namespace genfit {
   { ; }
 
 TVector3 BellField::get(const TVector3& pos) const {
-  Double_t zlocal=(pos.z()-fMiddle)/100.;
-  TVector3 field_(0.,fPeak/(1.+pow(fabs(zlocal)/2.1,6.)),0.);
+  Double_t bx,by,bz; 
+  get(pos.X(),pos.Y(),pos.Z(),bx,by,bz);
+  TVector3 field_(bx,by,bz);
   return field_;
 }
 
