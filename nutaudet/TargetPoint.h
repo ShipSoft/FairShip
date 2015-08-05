@@ -25,10 +25,14 @@ class TargetPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-	TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+
+    /*TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode,
 		Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt, 
-		Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);
+		Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
+    
+    TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+		Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
     /** Destructor **/
     virtual ~TargetPoint();
@@ -38,7 +42,8 @@ class TargetPoint : public FairMCPoint
     
 
     Int_t PdgCode() const {return fPdgCode;}
-    Bool_t IsTop() const {return fEmTop;}
+
+    /*Bool_t IsTop() const {return fEmTop;}
     Bool_t IsBot() const {return fEmBot;}
     Bool_t IsCESTop() const {return fEmCESTop;}
     Bool_t IsCESBot() const {return fEmCESBot;}
@@ -46,11 +51,12 @@ class TargetPoint : public FairMCPoint
     Int_t NPlate() const {return fNPlate;}
     Int_t NColumn() const {return fNColumn;}
     Int_t NRow() const {return fNRow;}
-    Int_t NWall() const {return fNWall;}
+    Int_t NWall() const {return fNWall;}*/
 
   private:
     /** Copy constructor **/
     Int_t fPdgCode;
+    /*
     Bool_t fEmTop; //is emulsion top
     Bool_t fEmBot;//is emulsion bottom
     Bool_t fEmCESTop; //is emulsion from CES top
@@ -60,11 +66,11 @@ class TargetPoint : public FairMCPoint
     Int_t fNColumn; //in which column is the brick (<15)
     Int_t fNRow; //in which row is the brick (<7)
     Int_t fNWall; //in which wall is the brick (<11)
-
+    */
     TargetPoint(const TargetPoint& point);
     TargetPoint operator=(const TargetPoint& point);
 
-    ClassDef(TargetPoint,2)
+    ClassDef(TargetPoint,3)
 
 };
 

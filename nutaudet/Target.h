@@ -43,6 +43,10 @@ public:
     void SetCellParam(Double_t CellW);
     
     void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ);
+
+    //void DecodeVolumeID(Int_t detID, int &NWall, int &NRow, int &NColumn, bool &BrickorCES, int &NPlate, bool &TopBot ,bool &TT);
+    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot, Bool_t &TT);
+    
     
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -64,22 +68,20 @@ public:
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
-    /*
-	TargetPoint* AddHit(Int_t tr, Int_t detID,
-                       TVector3 pos, TVector3 mom,
-                       Double_t time, Double_t length,
-                       Double_t eLoss, Int_t pdgCode,
-		       Int_t EmTop, Int_t EmBot, Int_t EmCESTop, Int_t EmCESBot, Int_t TT, 
-		       Int_t NPlate, Int_t NColumn, Int_t NRow, Int_t NWall, Int_t fMotherID, Int_t ftrackID);
-*/
 
-	TargetPoint* AddHit(Int_t trackID, Int_t detID,
-                       TVector3 pos, TVector3 mom,
-                       Double_t time, Double_t length,
-                       Double_t eLoss, Int_t pdgCode,
-		       Int_t EmTop, Int_t EmBot, Int_t EmCESTop, Int_t EmCESBot, Int_t TT, 
-		       Int_t NPlate, Int_t NColumn, Int_t NRow, Int_t NWall);
-
+    TargetPoint* AddHit(Int_t trackID, Int_t detID,
+			TVector3 pos, TVector3 mom,
+			Double_t time, Double_t length,
+			Double_t eLoss, Int_t pdgCode);
+    
+    /* 
+       TargetPoint* AddHit(Int_t trackID, Int_t detID,
+			TVector3 pos, TVector3 mom,
+			Double_t time, Double_t length,
+			Double_t eLoss, Int_t pdgCode,
+			Int_t EmTop, Int_t EmBot, Int_t EmCESTop, Int_t EmCESBot, Int_t TT, 
+			Int_t NPlate, Int_t NColumn, Int_t NRow, Int_t NWall);
+    */
     
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
@@ -96,7 +98,7 @@ public:
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
     
-    
+       
     Target(const Target&);
     Target& operator=(const Target&);
     

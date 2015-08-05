@@ -610,6 +610,8 @@ void Target::ConstructGeometry()
 }
 
 
+
+
 Bool_t  Target::ProcessHits(FairVolume* vol)
 {
     /** This method is called from the MC stepping */
@@ -708,7 +710,21 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
 	//cout << "NAME = " << name << endl;
 	//cout <<" NPlate = " << NPlate << ";  NColumn = " << NColumn << ";  NRow = " << NRow << "; NWall = " << NWall << endl;
-	
+
+	Bool_t BrickorCES = 0;   //Brick = 1 / CES = 0;
+	if(EmTop == 1 || EmBot ==1)
+	  BrickorCES = 1;
+	Bool_t TopBot = 0; //Top = 1 / Bot = 0;
+	if(EmTop == 1 || EmCESTop == 1)
+	  TopBot = 1;
+
+	//cout << "EmTop = " << EmTop << ";   EmBot = " << EmBot << ";   EmCESTop = " << EmCESTop << ";   EmCESBot = " << EmCESBot << endl;
+	//cout << "BrickorCES = " << BrickorCES << ";    TopBot = " << TopBot << endl;
+
+	detID = TT*1E9 + (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + TopBot*1 ;
+
+
+	fVolumeID = detID;
 	
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
@@ -723,15 +739,15 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
         Double_t xmean = (fPos.X()+Pos.X())/2. ;      
         Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
         Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
-        /*AddHit(ftr,fVolumeID, TVector3(xmean, ymean,  zmean),
-               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-               fELoss, pdgCode, EmTop, EmBot, EmCESTop,EmCESBot,TT,
-	       NPlate,NColumn,NRow,NWall,fMotherID, fTrackID);
-	*/
-	AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
+        
+	/*AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
                fELoss, pdgCode, EmTop, EmBot, EmCESTop,EmCESBot,TT,
 	       NPlate,NColumn,NRow,NWall);
+	*/
+	AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
+               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+               fELoss, pdgCode);
 	
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
@@ -740,6 +756,59 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     
     return kTRUE;
 }
+
+
+void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot, Bool_t &TT)
+{
+  Bool_t BrickorCES = 0, TopBot = 0;
+  
+  //cout << "det ID = " << detID << endl;
+  Double_t a = detID*1./1E9;
+  
+    if(a<1) //no hit in TT
+    {
+    TT =0;
+    NWall = detID/1E7;
+    NRow = (detID - NWall*1E7)/1E6;
+    NColumn = (detID - NWall*1E7 -NRow*1E6)/1E4;
+    Double_t b = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4)/1.E3;
+    if(b < 1)
+      {
+	BrickorCES = 0;
+	NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+      }
+    if(b >= 1)
+      {
+	BrickorCES = 1;
+	NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+      }
+    TopBot = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4- BrickorCES*1E3- NPlate*1E1)/1E0;
+    if(BrickorCES == 0)
+      {
+	if(TopBot == 1) {EmCESTop = 1; EmCESBot =0;}
+	if(TopBot == 0) {EmCESTop = 0; EmCESBot = 1;}
+      }
+    if(BrickorCES == 1)
+      {
+	if(TopBot == 1) {EmTop = 1; EmBot =0;}
+	if(TopBot == 0) {EmTop = 0; EmBot = 1;}
+      }
+    }
+  else
+    {
+      TT = 1;
+      NWall = (detID - TT*1E9)/1E7;
+      NRow = 0; NColumn = 0; BrickorCES = 0; NPlate = 0; TopBot = 0;
+    }
+
+    // cout << "TT = " << TT << endl;
+    // cout << "NPlate = " << NPlate << ";  NColumn = " << NColumn << ";  NRow = " << NRow << "; NWall = " << NWall << endl;
+    // cout << "BrickorCES = " << BrickorCES << ";    TopBot = " << TopBot << endl;
+    // cout << "EmCESTop = " << EmCESTop << ";    EmCESBot = " << EmCESBot << endl;
+    // cout << "EmTop = " << EmTop << ";    EmBot = " << EmBot << endl;
+    // cout << endl;
+}
+
 
 void Target::EndOfEvent()
 {
@@ -772,21 +841,18 @@ void Target::Reset()
 }
 
 
-/*
-TargetPoint* Target::AddHit(Int_t ftr,Int_t detID,
+TargetPoint* Target::AddHit(Int_t trackID,Int_t detID,
                            TVector3 pos, TVector3 mom,
                            Double_t time, Double_t length,
-			    Double_t eLoss, Int_t pdgCode, 
-			    Int_t EmTop, Int_t EmBot,Int_t EmCESTop, Int_t EmCESBot, Int_t TT, 
-			    Int_t NPlate, Int_t NColumn, Int_t NRow, Int_t NWall, Int_t fMotherID, Int_t fTrackID)
+			    Double_t eLoss, Int_t pdgCode)
 {
     TClonesArray& clref = *fTargetPointCollection;
     Int_t size = clref.GetEntriesFast();
     //cout << "brick hit called"<< pos.z()<<endl;
-    return new(clref[size]) TargetPoint(ftr,detID, pos, mom,
-					time, length, eLoss, pdgCode, EmTop, EmBot, EmCESTop,EmCESBot,TT,NPlate,NColumn,NRow,NWall, fMotherID, fTrackID);
+    return new(clref[size]) TargetPoint(trackID,detID, pos, mom,
+					time, length, eLoss, pdgCode);
 }
-*/
+/*
 TargetPoint* Target::AddHit(Int_t trackID,Int_t detID,
                            TVector3 pos, TVector3 mom,
                            Double_t time, Double_t length,
@@ -800,7 +866,7 @@ TargetPoint* Target::AddHit(Int_t trackID,Int_t detID,
     return new(clref[size]) TargetPoint(trackID,detID, pos, mom,
 					time, length, eLoss, pdgCode, EmTop, EmBot, EmCESTop,EmCESBot,TT,NPlate,NColumn,NRow,NWall);
 }
-
+*/
 ClassImp(Target)
 
 
