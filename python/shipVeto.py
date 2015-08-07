@@ -34,12 +34,17 @@ class Task:
   self.asmall = T1Shape.GetDX() - 15
   return detList 
 
- def SBT_decision(self,sTree):
+ def SBT_decision(self,sTree,mcParticle=None):
+  # if mcParticle >0, only count hits from this particle
+  # if mcParticle <0, do not count hits from this particle
   ELOSS = {} 
   for i in self.detList: 
     if not self.detList[i].find('LiSc')<0: 
        ELOSS[self.detList[i]] = [0]*self.N 
   for ahit in sTree.vetoPoint:
+     if mcParticle: 
+        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
+        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
      detID   = ahit.GetDetectorID()
      detName = self.detList[detID]
      if not detName in ELOSS: continue
@@ -55,26 +60,65 @@ class Task:
       if ELOSS[detName][seg] > 0.045: hitSegments += 1 #threshold of 45 MeV per segment
   w = (1-self.SBTefficiency)**hitSegments  
   veto = self.random.Rndm() > w
-  return veto, w 
- def UVT_decision(self,sTree):
+  #print 'SBT :',hitSegments
+  return veto, w, hitSegments
+ def UVT_decision(self,sTree,mcParticle=None):
   nHits = 0
   for ahit in sTree.vetoPoint:
+     if mcParticle: 
+        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
+        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
      detID   = ahit.GetDetectorID()
      detName = self.detList[detID]
      if not detName == "VetoTimeDet": continue
      nHits+=1
   w = (1-self.UVTefficiency)**nHits
   veto = self.random.Rndm() > w
-  return veto, w
- def SVT_decision(self,sTree):
+  #print 'UVT :',nHits
+  return veto, w,nHits
+ def SVT_decision(self,sTree,mcParticle=None):
   nHits = 0
   for ahit in sTree.strawtubesPoint:
+     if mcParticle: 
+        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
+        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
      detID   = ahit.GetDetectorID()
      if detID<50000000: continue  # StrawVeto station = 5
      nHits+=1
   w = (1-self.SVTefficiency)**nHits
   veto = self.random.Rndm() > w
-  return veto,w
+  # print 'SVT :',nHits
+  return veto,w,nHits
+ def RPC_decision(self,sTree,mcParticle=None):
+  nHits = 0
+  mom = ROOT.TVector3()
+  for ahit in sTree.ShipRpcPoint:
+   if mcParticle: 
+        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
+        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
+   ahit.Momentum(mom)
+   if mom.Mag() > 0.1: nHits+=1
+  w = 1
+  veto = nHits > 0 # 10  change to >0 since neutrino background ntuple not possible otherwise
+  if veto: w = 0.
+  #print 'RPC :',nHits
+  return veto,w,nHits
+ def Track_decision(self,sTree,mcParticle=None):
+  nMultCon = 0
+  k = -1
+  for aTrack in sTree.FitTracks:
+     k+=1 
+     if mcParticle: 
+        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
+        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
+     fstatus =  aTrack.getFitStatus()
+     if not fstatus.isFitConverged() : continue
+     if fstatus.getNdf() < 25: continue
+     nMultCon+=1
+  w = 1
+  veto = nMultCon > 2
+  if veto: w = 0.
+  return veto,w,nMultCon
 
 #usage
 # import shipVeto
