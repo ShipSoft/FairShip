@@ -39,19 +39,25 @@ if not dy:
     dy = None
 else:
  inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4_rec.root'
-  
-f     = ROOT.TFile(inputFile)
+
+if inputFile[0:4] == "/eos":
+  eospath = "root://eoslhcb/"+inputFile
+  f = ROOT.TFile.Open(eospath)
+else:  
+  f = ROOT.TFile(inputFile)
 sTree = f.cbmsim
 
 # try to figure out which ecal geo to load
 if not geoFile:
  geoFile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
-fgeo = ROOT.TFile(geoFile)
+if geoFile[0:4] == "/eos":
+  eospath = "root://eoslhcb/"+geoFile
+  fgeo = ROOT.TFile.Open(eospath)
+else:  
+  fgeo = ROOT.TFile(geoFile)
 sGeo = fgeo.FAIRGeom
 if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
 else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
-fgeo.Close()
-ROOT.gGeoManager.Delete()
 print 'found ecal geo for ',ecalGeoFile
 
 # init geometry and mag. field
@@ -61,8 +67,7 @@ import shipDet_conf
 run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run,ShipGeo)
 
-tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-gMan  = tgeom.Import(geoFile)
+gMan  = ROOT.gGeoManager
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 volDict = {}
@@ -78,6 +83,7 @@ fM.init(bfield)
 # prepare veto decisions
 import shipVeto
 veto = shipVeto.Task()
+vetoDets={}
 
 # fiducial cuts
 vetoStation = ROOT.gGeoManager.GetTopVolume().GetNode('Veto_5')
@@ -87,12 +93,16 @@ T1Station_zUp = T1Station.GetMatrix().GetTranslation()[2]-T1Station.GetVolume().
 
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',400,0.,200.,100,-0.5,0.5)
+ut.bookHist(h,'pullPOverP','delP / sigma',400,0.,200.,100,-3.,3.)
 ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<'+str(chi2CutOff),400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverPz','delPz / Pz',400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<'+str(chi2CutOff),400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'chi2','chi2/nmeas after trackfit',100,0.,10.)
 ut.bookHist(h,'prob','prob(chi2)',100,0.,1.)
 ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
+ut.bookHist(h,'Vzresol','Vz reco - true [cm]',100,-50.,50.)
+ut.bookHist(h,'Vxresol','Vx reco - true [cm]',100,-10.,10.)
+ut.bookHist(h,'Vyresol','Vy reco - true [cm]',100,-10.,10.)
 ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
@@ -105,10 +115,27 @@ ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
 ut.bookHist(h,'ecalClusters','x/y and energy',50,-3.,3.,50,-6.,6.)
+ut.bookHist(h,'oa','cos opening angle',100,0.999,1.)
+# potential Veto detectors
+ut.bookHist(h,'nrtracks','nr of tracks in signal selected',10,-0.5,9.5)
+ut.bookHist(h,'nrSVT','nr of hits in SVT',10,-0.5,9.5)
+ut.bookHist(h,'nrUVT','nr of hits in UVT',100,-0.5,99.5)
+ut.bookHist(h,'nrSBT','nr of hits in SBT',100,-0.5,99.5)
+ut.bookHist(h,'nrRPC','nr of hits in RPC',100,-0.5,99.5)
 
 def Rsq(X,Y,dy):
   return (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
-
+#
+def ImpactParameter(point,tPos,tMom):
+  t = 0
+  if hasattr(tMom,'P'): P = tMom.P()
+  else:                 P = tMom.Mag()
+  for i in range(3):   t += tMom(i)/P*(point(i)-tPos(i)) 
+  dist = 0
+  for i in range(3):   dist += (point(i)-tPos(i)-t*tMom(i)/P)**2
+  dist = ROOT.TMath.Sqrt(dist)
+  return dist
+#
 def checkHNLorigin(sTree):
  flag = True
  if not fiducialCut: return flag
@@ -174,7 +201,53 @@ def myVertex(t1,t2,PosDir):
    Y = c.y()+v.y()*t
    Z = c.z()+v.z()*t
    return X,Y,Z,abs(dist)
-
+def  RedoVertexing(t1,t2):    
+     PosDir = {} 
+     for tr in [t1,t2]:
+      xx  = sTree.FitTracks[tr].getFittedState()
+      PosDir[tr] = [xx.getPos(),xx.getDir()]
+     xv,yv,zv,doca = myVertex(t1,t2,PosDir)
+# as we have learned, need iterative procedure
+     dz = 99999.
+     reps,states,newPosDir = {},{},{}
+     parallelToZ = ROOT.TVector3(0., 0., 1.)
+     rc = True 
+     step = 0
+     while dz > 0.1:
+      zBefore = zv
+      newPos = ROOT.TVector3(xv,yv,zv)
+     # make a new rep for track 1,2
+      for tr in [t1,t2]:     
+       xx = sTree.FitTracks[tr].getFittedState()
+       reps[tr]   = ROOT.genfit.RKTrackRep(xx.getPDG())
+       states[tr] = ROOT.genfit.StateOnPlane(reps[tr])
+       reps[tr].setPosMom(states[tr],xx.getPos(),xx.getMom())
+       try:
+        reps[tr].extrapolateToPoint(states[tr], newPos, False)
+       except:
+        print 'SHiPAna: extrapolation did not worked'
+        rc = False  
+        break
+       newPosDir[tr] = [reps[tr].getPos(states[tr]),reps[tr].getDir(states[tr])]
+      if not rc: break
+      xv,yv,zv,doca = myVertex(t1,t2,newPosDir)
+      dz = abs(zBefore-zv)
+      step+=1
+      if step > 10:  
+         print 'abort iteration, too many steps, pos=',xv,yv,zv,' doca=',doca,'z before and dz',zBefore,dz
+         rc = False
+         break 
+     if not rc: return xv,yv,zv,doca,-1 # extrapolation failed, makes no sense to continue
+     LV={}
+     for tr in [t1,t2]:       
+      mom = reps[tr].getMom(states[tr])
+      pid = abs(states[tr].getPDG()) 
+      if pid == 2212: pid = 211
+      mass = PDG.GetParticle(pid).Mass()
+      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
+      LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
+     HNLMom = LV[t1]+LV[t2]
+     return xv,yv,zv,doca,HNLMom
 def fitSingleGauss(x,ba=None,be=None):
     name    = 'myGauss_'+x 
     myGauss = h[x].GetListOfFunctions().FindObject(name)
@@ -277,6 +350,23 @@ def makePlots():
    h['IP0/mass'].SetYTitle('IP [cm]')
    h['IP0/mass'].Draw('colz')
    h['fitresults2'].Print('fitresults2.gif')
+   ut.bookCanvas(h,key='vetodecisions',title='Veto Detectors',nx=1600,ny=600,cx=5,cy=1)
+   cv = h['vetodecisions'].cd(1)
+   cv.SetLogy(1)
+   h['nrtracks'].Draw()
+   cv = h['vetodecisions'].cd(2)
+   cv.SetLogy(1)
+   h['nrSVT'].Draw()
+   cv = h['vetodecisions'].cd(3)
+   cv.SetLogy(1)
+   h['nrUVT'].Draw()
+   cv = h['vetodecisions'].cd(4)
+   cv.SetLogy(1)
+   h['nrSBT'].Draw()
+   cv = h['vetodecisions'].cd(5)
+   cv.SetLogy(1)
+   h['nrRPC'].Draw()
+#
    print 'finished making plots'
 
 # start event loop
@@ -293,18 +383,8 @@ def myEventLoop(n):
   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
 # 
-  flag,w = veto.SBT_decision(sTree)
-  if debug: print "veto decision for SBT",flag,w
-  wg = wg*w
-  flag,w = veto.SVT_decision(sTree)
-  if debug: print "veto decision for SVT",flag,w
-  wg = wg*w
-  flag,w = veto.UVT_decision(sTree)
-  if debug: print "veto decision for UVT",flag,w
-  wg = wg*w
-#
 # make some ecal cluster analysis if exist
-  if sTree.FindBranch("EcalClusters"):
+  if sTree.FindBranch("EcalClusters") and 0>1:
    ecalFiller.Exec('start')
    for aClus in sTree.EcalClusters:
      rc = h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
@@ -358,6 +438,7 @@ def myEventLoop(n):
    h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
    P = fittedState.getMomMag()
    Pz = fittedState.getMom().z()
+   cov = fittedState.get6DCov()
    if len(sTree.fitTrack2MC)-1<key: continue
    mcPartKey = sTree.fitTrack2MC[key]
    mcPart    = sTree.MCTrack[mcPartKey]
@@ -369,6 +450,7 @@ def myEventLoop(n):
    delPOverP = (Ptruth - P)/Ptruth
    h['delPOverP'].Fill(Ptruth,delPOverP)
    delPOverPz = (1./Ptruthz - 1./Pz) * Ptruthz
+   h['pullPOverP'].Fill( Ptruth,delPOverP/ROOT.TMath.Sqrt(cov[5][5]) )   
    h['delPOverPz'].Fill(Ptruthz,delPOverPz)
    if chi2>chi2CutOff: continue
    h['delPOverP2'].Fill(Ptruth,delPOverP)
@@ -408,51 +490,8 @@ def myEventLoop(n):
       xv,yv,zv,doca  =  HNLPos.X(),HNLPos.Y(),HNLPos.Z(),HNLPos.T()
     else:
 # redo doca calculation
-     PosDir = {} 
-     for tr in [t1,t2]:
-      xx  = sTree.FitTracks[tr].getFittedState()
-      PosDir[tr] = [xx.getPos(),xx.getDir()]
-     xv,yv,zv,doca = myVertex(t1,t2,PosDir)
-# as we have learned, need iterative procedure
-     dz = 99999.
-     reps,states,newPosDir = {},{},{}
-     parallelToZ = ROOT.TVector3(0., 0., 1.)
-     rc = True 
-     step = 0
-     while dz > 0.1:
-      zBefore = zv
-      newPos = ROOT.TVector3(xv,yv,zv)
-     # make a new rep for track 1,2
-      for tr in [t1,t2]:     
-       xx = sTree.FitTracks[tr].getFittedState()
-       reps[tr]   = ROOT.genfit.RKTrackRep(xx.getPDG())
-       states[tr] = ROOT.genfit.StateOnPlane(reps[tr])
-       reps[tr].setPosMom(states[tr],xx.getPos(),xx.getMom())
-       try:
-        reps[tr].extrapolateToPoint(states[tr], newPos, False)
-       except:
-        print 'SHiPAna: extrapolation did not worked'
-        rc = False  
-        break
-       newPosDir[tr] = [reps[tr].getPos(states[tr]),reps[tr].getDir(states[tr])]
-      if not rc: break
-      xv,yv,zv,doca = myVertex(t1,t2,newPosDir)
-      dz = abs(zBefore-zv)
-      step+=1
-      if step > 10:  
-         print 'abort iteration, too many steps, pos=',xv,yv,zv,' doca=',doca,'z before and dz',zBefore,dz
-         rc = False
-         break 
-     if not rc: continue # extrapolation failed, makes no sense to continue
-     LV={}
-     for tr in [t1,t2]:       
-      mom = reps[tr].getMom(states[tr])
-      pid = abs(states[tr].getPDG()) 
-      if pid == 2212: pid = 211
-      mass = PDG.GetParticle(pid).Mass()
-      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
-      LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
-     HNLMom = LV[t1]+LV[t2]
+     xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)
+     if HNLMom == -1: continue
  # check if decay inside decay volume
     if Rsq(xv,yv,dy) > 1 : continue
     if zv < vetoStation_zDown  : continue  
@@ -460,15 +499,42 @@ def myEventLoop(n):
     h['Doca'].Fill(doca) 
     if  doca > docaCut : continue
     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
-    t = 0
-    for i in range(3):   t += HNLMom(i)/HNLMom.P()*(tr(i)-HNLPos(i)) 
-    dist = 0
-    for i in range(3):   dist += (tr(i)-HNLPos(i)-t*HNLMom(i)/HNLMom.P())**2
-    dist = ROOT.TMath.Sqrt(dist)
+    dist = ImpactParameter(tr,HNLPos,HNLMom)
     mass = HNLMom.M()
     h['IP0'].Fill(dist)  
     h['IP0/mass'].Fill(mass,dist)
     h['HNL'].Fill(mass)
+#
+    vetoDets['SBT'] = veto.SBT_decision(sTree)
+    vetoDets['SVT'] = veto.SVT_decision(sTree)
+    vetoDets['UVT'] = veto.UVT_decision(sTree)
+    vetoDets['RPC'] = veto.RPC_decision(sTree)
+    vetoDets['TRA'] = veto.Track_decision(sTree)
+    h['nrtracks'].Fill(vetoDets['TRA'][2])
+    h['nrSVT'].Fill(vetoDets['SVT'][2])
+    h['nrUVT'].Fill(vetoDets['UVT'][2])
+    h['nrSBT'].Fill(vetoDets['SBT'][2])
+    h['nrRPC'].Fill(vetoDets['RPC'][2])
+#   HNL true
+    mctrack = sTree.MCTrack[sTree.fitTrack2MC[t1]]
+    h['Vzresol'].Fill( (mctrack.GetStartZ()-zv)/u.cm )
+    h['Vxresol'].Fill( (mctrack.GetStartX()-xv)/u.cm )
+    h['Vyresol'].Fill( (mctrack.GetStartY()-yv)/u.cm )
+# opening angle at vertex
+    newPos = ROOT.TVector3(xv,yv,zv)
+    st1,st2 = sTree.FitTracks[t1].getFittedState(),sTree.FitTracks[t2].getFittedState()
+    rep1,rep2 = ROOT.genfit.RKTrackRep(st1.getPDG()),ROOT.genfit.RKTrackRep(st2.getPDG())  
+    state1,state2 = ROOT.genfit.StateOnPlane(rep1),ROOT.genfit.StateOnPlane(rep2)
+    rep1.setPosMom(state1,st1.getPos(),st1.getMom())
+    rep2.setPosMom(state2,st2.getPos(),st2.getMom())
+    try:
+     rep1.extrapolateToPoint(state1, newPos, False)
+     rep2.extrapolateToPoint(state2, newPos, False)
+     mom1,mom2 = rep1.getMom(state1),rep2.getMom(state2)
+    except:
+     mom1,mom2 = st1.getMom(),st2.getMom()
+    oa = mom1.Dot(mom2)/(mom1.Mag()*mom2.Mag()) 
+    h['oa'].Fill(oa)
 #
 def HNLKinematics():
  ut.bookHist(h,'HNLmomNoW','momentum unweighted',100,0.,300.)
@@ -505,6 +571,10 @@ for n in range(nEvents):
 makePlots()
 # output histograms
 hfile = inputFile.replace('_rec','_ana')
+if hfile[0:4] == "/eos":
+# do not write to eos, write to local directory 
+  tmp = hfile.split('/')
+  hfile = tmp[len(tmp)-1] 
 ROOT.gROOT.cd()
 ut.writeHists(h,hfile)
 
