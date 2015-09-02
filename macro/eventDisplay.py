@@ -28,25 +28,12 @@ withMCTracks = True
 # simEngine = "Genie"
 #
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:Y:i",["Pythia6","Pythia8","Genie","Ntuple","MuonBack","Cosmics","paramFile=","geoFile="])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:Y:i",["paramFile=","geoFile="])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --Pythia8/6 to generate events with Pythia8/6 or --Genie for reading and processing neutrino interactions'  
-        print '       --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
+        print ' enter -f filename -g geofile (-p param file  not needed if geofile present)'  
         sys.exit()
 for o, a in opts:
-        if o in ("--Pythia6"):
-            simEngine = "Pythia6"
-        if o in ("--Pythia8"):
-            simEngine = "Pythia8"
-        if o in ("--Genie"):
-            simEngine = "Genie"
-        if o in ("--Ntuple"):
-            simEngine = "Ntuple"
-        if o in ("--MuonBack"):
-            simEngine = "MuonBack"
-        if o in ("--Cosmics"):
-            simEngine = "Cosmics"
         if o in ("-Y"): 
             dy = float(a)
         if o in ("-p", "--paramFile"):
@@ -71,10 +58,6 @@ if not dy:
  except:
    tmp = None
 
-if not ParFile: 
-  tmp = InputFile.split('.')
-  tag = str(dy)+'.'+tmp[3]
-  ParFile       ="ship.params."+tag.replace('_rec','')+".root"  
 OutFile	      = "tst."+InputFile.split('/')[-1]
 if InputFile.find('_D')>0: withGeo = True
 
@@ -268,7 +251,9 @@ class DrawTracks(ROOT.FairTask):
     da.GetStartVertex(fPos)
     hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
   # loop over all sensitive volumes to find hits
-   for c in [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPoint,sTree.HcalPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint,sTree.TargetPoint]:
+   for P in ["vetoPoint","muonPoint","EcalPoint","HcalPoint","HcalPoint","strawtubesPoint","ShipRpcPoint","TargetPoints"]:
+    if not sTree.GetBranch(P): continue
+    c=eval("sTree."+P)
     for p in c:
       if p.GetTrackID()==n:
        if hasattr(p, "LastPoint"): 
@@ -652,10 +637,11 @@ if geoFile: fRun.SetGeomFile(geoFile)
 fRun.SetInputFile(InputFile)
 fRun.SetOutputFile(OutFile)
 
-rtdb      = fRun.GetRuntimeDb()
-parInput1 = ROOT.FairParRootFileIo()
-parInput1.open(ParFile)
-rtdb.setFirstInput(parInput1)
+if ParFile:
+ rtdb      = fRun.GetRuntimeDb()
+ parInput1 = ROOT.FairParRootFileIo()
+ parInput1.open(ParFile)
+ rtdb.setFirstInput(parInput1)
    
 fMan= ROOT.FairEventManager()
 fMan.SetMaxEnergy(400.) # default is 25 GeV only !
