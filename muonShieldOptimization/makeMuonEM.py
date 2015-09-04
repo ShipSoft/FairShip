@@ -15,17 +15,12 @@ def getMasssq(pid):
   return masssq[apid]
 
 # prepare muon input for FairShip/Geant4 processing
-# incoming muon,      id:px:py:pz:x:y:z:w
-# == outgoing muon (to be followed by Geant4), id:px:py:pz
+# incoming muon,      id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w
 
 # just duplicate muon n times, rather stupid job
 
 fout  = ROOT.TFile('muonEm_'+str(nJob)+'.root','recreate')
-dTree = ROOT.TTree('DIS','muon EM')
-iMuon       = ROOT.TClonesArray("TVectorD") 
-iMuonBranch = dTree.Branch("InMuon",iMuon,32000,-1)
-dPart       = ROOT.TClonesArray("TVectorD") 
-dPartBranch = dTree.Branch("Particles",dPart,32000,-1)
+dTree = ROOT.TNtuple("pythia8-Geant4","muons for EM studies","id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w")
 
 # read file with muons hitting concrete wall
 fin = ROOT.TFile(muonIn) # id:px:py:pz:x:y:z:w
@@ -50,8 +45,6 @@ for k in range(sTree.GetEntries()):
 # copy to branch
      nPart = dPart.GetEntries()
      dPart[nPart] = part
-     dPartBranch.Fill()
-     iMuonBranch.Fill()
      dTree.Fill()
 fout.cd()  
 dTree.Write()

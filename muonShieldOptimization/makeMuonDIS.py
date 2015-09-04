@@ -7,6 +7,7 @@ nPerJob = 20000
 if len(sys.argv)>1: nJob = int(sys.argv[1])
 if len(sys.argv)>2: nMult = int(sys.argv[2])
 if len(sys.argv)>3: muonIn = sys.argv[3]
+if len(sys.argv)>4: nPerJob = int(sys.argv[4])
 
 #
 from array import array
@@ -55,14 +56,16 @@ def rotate(ctheta,stheta,cphi,sphi,px,py,pz):
 
 nTOT = sTree.GetEntries()
 
-nStart = max(0, nTOT-nPerJob*(nJob+1) )
-nEnd   = nTOT-nPerJob*nJob
+nStart = nPerJob*nJob
+nEnd   = min(nTOT,nStart + nPerJob)
 if muonIn.find('Concrete')<0: 
  nStart = 0
  nEnd   = nTOT
 
 # stop pythia printout during loop
 myPythia.SetMSTU(11, 11)
+print "start production ",nStart,nEnd
+nMade = 0
 for k in range(nStart,nEnd): 
   rc = sTree.GetEvent(k)
   # make n events / muon
@@ -97,13 +100,10 @@ for k in range(nStart,nEnd):
       nPart = dPart.GetEntries()
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
       dPart[nPart] = part
-     dPartBranch.Fill()
-     iMuonBranch.Fill()
+     nMade+=1
+     if nMade%10000==0: print 'made so far ',nMade
      dTree.Fill()
 fout.cd()  
 dTree.Write()
 myPythia.SetMSTU(11, 6)
-print "created ",nStart,' - ',nTOT-nPerJob*nJob," events"
-
-
-
+print "created nJob ",nJob,':',nStart,' - ',nEnd," events"
