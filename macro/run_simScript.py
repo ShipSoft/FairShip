@@ -14,7 +14,7 @@ mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100 
 firstEvent   = 0
-inclusive    = False  # True = all processes if False only ccbar -> HNL
+inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
 inputFile    = None
@@ -34,11 +34,12 @@ try:
                                    "output=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --Pythia8 to generate events with Pythia8 (signal/inclusive) or --Genie for reading and processing neutrino interactions \
-                or --Pythia6 for muon nucleon scattering'  
-        print '    --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
-        print '    --mass or -m to set HNL mass'
-        print '    --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
+        print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
+        print ' or    --Genie for reading and processing neutrino interactions \
+                or    --Pythia6 for muon nucleon scattering'  
+        print '       --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
+        print '       --mass or -m to set HNL mass'
+        print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
         sys.exit()
 for o, a in opts:
         if o in ("-D","--display"):
@@ -47,6 +48,9 @@ for o, a in opts:
             simEngine = "Pythia6"
         if o in ("--Pythia8"):
             simEngine = "Pythia8"
+        if o in ("-A"):
+            inclusive = a
+            if a not in ['b','c']: inclusive = True
         if o in ("--Genie"):
             simEngine = "Genie"
         if o in ("--NuRadio"):
@@ -75,8 +79,6 @@ for o, a in opts:
             inputFile = a
         if o in ("-o", "--output"):
             outputDir = a
-        if o in ("-A"):
-            inclusive = True
         if o in ("-Y"): 
             dy = float(a)
         if o in ("-F"):
@@ -158,8 +160,13 @@ if simEngine == "Pythia6":
 if simEngine == "muonDIS":
  primGen.SetTarget(0., 0.) 
  DISgen = ROOT.MuDISGenerator()
- print 'MuDIS position info input=',ship_geo.tauMS.zMSC, ship_geo.TrackStation2.z
- DISgen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC, ship_geo.TrackStation2.z)
+ # from nu_tau detector to tracking station 2
+ # mu_start, mu_end =  ship_geo.tauMS.zMSC,ship_geo.TrackStation2.z
+ #
+ # in front of UVT up to tracking station 1
+ mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
+ print 'MuDIS position info input=',mu_start, mu_end
+ DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)
  DISgen.Init(inputFile,firstEvent) 
  primGen.AddGenerator(DISgen)
  nEvents = min(nEvents,DISgen.GetNevents())
