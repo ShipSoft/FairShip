@@ -1,6 +1,7 @@
 #!/bin/bash
 SCRIPT_NAME=$0
-[ -z "SCRIPT_NAME" ] && SCRIPT_NAME=$BASH_SOURCE
+echo $BASH_SOURCE
+[[ -z "SCRIPT_NAME" || "$SCRIPT_NAME" == "bash" ]] && SCRIPT_NAME=$BASH_SOURCE
 BASEDIR=$(echo $(cd $(dirname "$SCRIPT_NAME")/.. && pwd -P))
 source $BASEDIR/vm/_common.sh
 

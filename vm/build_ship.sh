@@ -26,4 +26,4 @@ if [ "$1" = "-r" ] ; then
 	shift
 fi
 
-echo $vrun "mkdir -p $BUILD_DIR; cd $BUILD_DIR; cmake -j $NP ..; make -j $NP"
+$vrun "mkdir -p $BUILD_DIR; cd $BUILD_DIR; cmake -j $NP ..; make -j $NP"
