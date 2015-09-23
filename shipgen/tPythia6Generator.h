@@ -5,6 +5,7 @@
 #include "FairGenerator.h"
 #include "TPythia6.h"
 #include "TString.h"
+#include "TPythia6Calls.h"
 
 class FairPrimaryGenerator;
 
@@ -26,6 +27,9 @@ class tPythia6Generator : public FairGenerator
   void SetMom(Double_t mom) { fMom = mom; };
   void SetTarget(TString Type, TString Target) { fType = Type; fTarget=Target;};
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
+  double getPyint5_XSEC(int i, int j){return  fPythia->GetPyint5()->XSEC[i][j];};  
+  double getPyint5_NGEN(int i, int j){return  fPythia->GetPyint5()->NGEN[i][j];};  
+  int    getPyint5_NGENPD( ){return  fPythia->GetPyint5()->NGENPD;};  
  private:
   
   TPythia6* fPythia;           //

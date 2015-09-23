@@ -14,7 +14,7 @@
 #pragma link C++ class  CosmicsGenerator+;
 #pragma link C++ class  MuDISGenerator+;
 #pragma link C++ class  NuageGenerator+;
-
+/*
 #pragma link C++ class Pythia8::ParticleData+;
 #pragma link C++ class Pythia8::ParticleDataEntry+;
 #pragma link C++ class Pythia8::Event+;
@@ -52,11 +52,12 @@
 #pragma link C++ class Pythia8::ResonanceHchgchgRight+;
 #pragma link C++ class Pythia8::ResonanceWidths+;
 #pragma link C++ class Pythia8::SigmaProcess+;
-#pragma link C++ class std::vector<ResonanceWidths>+;
-#pragma link C++ class std::pair<int,ParticleDataEntry>+;
+#pragma link C++ class std::vector<Pythia8::ResonanceWidths>+;
+#pragma link C++ class std::pair<int,Pythia8::ParticleDataEntry>+;
 #pragma link C++  class Pythia8::Couplings+;
 #pragma link C++  class Pythia8::SLHAinterface+;
 #pragma link C++  class Pythia8::PartonSystems+;
 #pragma link C++  class Pythia8::Merging+;
 #pragma link C++  class Pythia8::MergingHooks+;
+for some unknown reason, causes problems of undefined symbols in libShipGen */
 #endif

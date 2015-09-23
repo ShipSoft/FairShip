@@ -11,7 +11,7 @@ tPythia6Generator::tPythia6Generator()
 {
   fMom        = 400;  // muon
   fDeepCopy   = kFALSE;  // copy complete pythia event
-  fPythia     = new TPythia6;
+  fPythia     = TPythia6::Instance();
   fPionKaonDecay = kFALSE;
   fType       = "gamma/mu-";   // muon proton scattering 
   fTarget     = "p+";
