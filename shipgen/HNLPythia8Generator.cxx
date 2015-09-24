@@ -21,6 +21,8 @@ HNLPythia8Generator::HNLPythia8Generator()
   fHNL        = 9900015;    // HNL  pdg code
   fLmin       = 5000.*cm;    // mm minimum  decay position z  ROOT units !
   fLmax       = 12000.*cm;   // mm maximum decay position z
+  fextFile    = "";
+  fInputFile  = NULL;
 }
 // -------------------------------------------------------------------------
 
@@ -28,12 +30,37 @@ HNLPythia8Generator::HNLPythia8Generator()
 Bool_t HNLPythia8Generator::Init() 
 {
   if ( debug ){List(9900015);}
+  fLogger = FairLogger::GetLogger();
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   fPythia.setRndmEnginePtr(fRandomEngine);
-
-  if ( debug ){cout<<"Beam Momentum "<<fMom<<endl;}
-  fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
+  fn = 0;
+  if (fextFile != ""){
+     fInputFile = new TFile(fextFile);
+     fLogger->Info(MESSAGE_ORIGIN,"Opening input file of heavy flavour events %s",fextFile);
+     if (fInputFile->IsZombie()) {
+        fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the charm/beauty input file");
+     }
+     fTree = (TTree *)fInputFile->Get("pythia6");
+     fNevents = fTree->GetEntries();
+     fn = firstEvent;
+     fTree->SetBranchAddress("id",&hid);                // particle id
+     fTree->SetBranchAddress("px",&hpx);   // momentum
+     fTree->SetBranchAddress("py",&hpy);
+     fTree->SetBranchAddress("pz",&hpz);
+     fTree->SetBranchAddress("E",&hE);     
+     fTree->SetBranchAddress("M",&hM);     
+     fTree->SetBranchAddress("mid",&mid);   // mother
+     fTree->SetBranchAddress("mpx",&mpx);   // momentum
+     fTree->SetBranchAddress("mpy",&mpy);
+     fTree->SetBranchAddress("mpz",&mpz);
+     fTree->SetBranchAddress("mE",&mE);
+     if ( debug ){cout<<"Open external file with charm or beauty hadrons: "<<fextFile<<endl;}
+     fPythia.init();
+  }else{ 
+   if ( debug ){cout<<"Beam Momentum "<<fMom<<endl;}
+   fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
+  }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fHNL)->Lifetime();
   if ( debug ){cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<endl;}
@@ -64,12 +91,33 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 
    int iHNL = 0; // index of the chosen HNL (the 1st one), also ensures that at least 1 HNL is produced
    std::vector<int> dec_chain; // pythia indices of the particles to be stored on the stack
+   std::vector<int> hnls; // pythia indices of HNL particles
    do {
-
+   
+   if (fextFile != ""){
+// take charm or beauty hadron from external file
+    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+    fTree->GetEntry(fn%fNevents);
+    fPythia.event.reset();
+    fPythia.event.append( (Int_t)hid[0], 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
+   }
+   fn++;
+   if (fn%100==0) {
+      fLogger->Info(MESSAGE_ORIGIN,"event-nr %i",fn);
+    }
    fPythia.next();
    for(int i=0; i<fPythia.event.size(); i++){
 // find first HNL
       if (abs(fPythia.event[i].id())==fHNL){
+          hnls.push_back( i );
+      }
+   }
+   iHNL = hnls.size();
+   if ( iHNL == 0 ){
+      fPythia.event.list();
+   }else{
+   int r =  int( gRandom->Uniform(0,iHNL) );
+   int i =  hnls[r];
          // production vertex
          zp = fPythia.event[i].zProd();
          xp = fPythia.event[i].xProd();  
@@ -107,18 +155,22 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          pmy = fPythia.event[im].py();  
          em  = fPythia.event[im].e();  
          tm  = fPythia.event[im].tProd();  
-	 cpg->AddTrack((Int_t)fPythia.event[im].id(),pmx,pmy,pmz,xm/cm,ym/cm,zm/cm,-1,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-	 cpg->AddTrack(fHNL, px, py, pz, xp/cm,yp/cm,zp/cm, 0,false,e,tp/cm/c_light,w); 
+         if (fextFile != ""){
+// take grand mother particle from input file, to know if primary or secondary production
+          cpg->AddTrack((Int_t)mid[0],mpx[0],mpy[0],mpz[0],xm/cm,ym/cm,zm/cm,-1,false,mE[0],0.,1.);
+	  cpg->AddTrack((Int_t)fPythia.event[im].id(),pmx,pmy,pmz,xm/cm,ym/cm,zm/cm,0,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
+	  cpg->AddTrack(fHNL, px, py, pz, xp/cm,yp/cm,zp/cm, 1,false,e,tp/cm/c_light,w); 
+         }else{
+	  cpg->AddTrack((Int_t)fPythia.event[im].id(),pmx,pmy,pmz,xm/cm,ym/cm,zm/cm,-1,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
+	  cpg->AddTrack(fHNL, px, py, pz, xp/cm,yp/cm,zp/cm, 0,false,e,tp/cm/c_light,w); 
+         }
          // bookkeep the indices of stored particles
          dec_chain.push_back( im );
          dec_chain.push_back(  i );
          //cout << endl << " insert mother pdg=" << fPythia.event[im].id() << " pmz = " << pmz << " [GeV],  zm = " << zm << " [mm] tm = " << tm << " [mm/c]" << endl;
          //cout << " ----> insert HNL =" << fHNL << " pz = " << pz << " [GeV] zp = " << zp << " [mm] tp = " << tp << " [mm/c]" << endl;
-         iHNL = i;
-         break;
+         iHNL = i; 
     }
-   } 
-
    } while ( iHNL == 0 ); // ----------- avoid rare empty events w/o any HNL's produced
 
 
@@ -152,13 +204,10 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      px = fPythia.event[k].px();  
      py = fPythia.event[k].py();  
      e  = fPythia.event[k].e();  
-     zp = fPythia.event[k].zProd() + (zS-zd);
-     xp = fPythia.event[k].xProd() + (xS-xd);  
-     yp = fPythia.event[k].yProd() + (yS-yd);  
-     tp = fPythia.event[k].tProd() + (tS-td);  
+     if (fextFile != ""){im+=1;};
      cpg->AddTrack((Int_t)fPythia.event[k].id(),px,py,pz,xS/cm,yS/cm,zS/cm,im,wanttracking,e,tp/cm/c_light,w);
-     //cout << "insert pdg =" << fPythia.event[k].id() << " pz = " << pz << " [GeV] zS = " << zS << " [mm] tp = " << tp << "[mm/c]" <<  endl;
-   }
+     // cout <<k<< " insert pdg =" << fPythia.event[k].id() << " pz = " << pz << " [GeV] zS = " << zS << " [mm] tp = " << tp << "[mm/c]" <<  endl;
+  }
   return kTRUE;
 }
 // -------------------------------------------------------------------------
