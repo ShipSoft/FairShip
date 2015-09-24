@@ -52,6 +52,7 @@ for runtype in inclusive:
    elif runtype=='b':
       f.write('    if inclusive==\"b\":\n') 
       f.write('        P8gen.SetParameters("HardQCD::hardbbbar  = on")\n')
+      f.write('        # P8gen.SetParameters("PDF:hardLHAPDFset = cteq5l.LHgrid")\n')
       f.write('        # add HNL\n')
       f.write('        #ctau = 5.4E+06 # for tests use 5.4E+03  # nominal ctau = 54 km = 5.4E+06 cm = 5.4E+07 mm\n')
       f.write('        #mass = 1.0 # GeV\n')
@@ -64,9 +65,11 @@ for runtype in inclusive:
       f.write('        # Finish HNL setup...\n')
       f.write('        P8gen.SetParameters("9900015:mayDecay = on")\n')
       f.write('        P8gen.SetHNLId(9900015)\n')
+      f.write('        P8gen.SetHNLId(-9900015)\n')
       f.write('        # also add to PDG\n')
       f.write('        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm\n')
       f.write('        addHNLtoROOT(pid=9900015,m=mass,g=gamma)\n')
+      f.write('        addHNLtoROOT(pid=-9900015,m=mass,g=gamma)\n')
       f.write('        # 12 14 16 neutrinos replace with N2\n')   
       mesons={5122:"Lambda_b0        Lambda_bbar0",511:"B0  Bbar0",521:"B+               B-",531:"B_s0             B_sbar0",541:"B_c+             B_c-"}
    else:  
@@ -88,7 +91,7 @@ for runtype in inclusive:
       f.write('        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm\n')
       f.write('        addHNLtoROOT(pid=9900015,m=mass,g=gamma)\n')
       f.write('        # 12 14 16 neutrinos replace with N2\n')  
-      mesons={4122:"Lambda_c+   Lambda_cbar-",431:"D_s+  D_s-",411:"D+ D-",421:"D0  Dbar0",15:"tau-  tau+"}
+      mesons={4122:"Lambda_c+   Lambda_cbar-",4132:"Xi_c0            Xi_cbar0",431:"D_s+  D_s-",411:"D+ D-",421:"D0  Dbar0",15:"tau-  tau+"}
 
    for key in mesons:
       commandstring='python '+os.environ["FAIRSHIP"]+'/python/PythiaList.py '+str(key)
