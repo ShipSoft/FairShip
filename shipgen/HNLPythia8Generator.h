@@ -1,5 +1,10 @@
 #ifndef PNDH8GENERATOR_H
 #define PNDH8GENERATOR_H 1
+// Avoid the inclusion of dlfcn.h by Pyhtia.h that CINT is not able to process
+#ifdef __CINT__
+#define _DLFCN_H_
+#define _DLFCN_H
+#endif
 
 #include "TROOT.h"
 #include "TString.h"
@@ -28,8 +33,8 @@ class HNLPythia8Generator : public FairGenerator
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   void SetParameters(char*);
-  void Print(){fPythia.settings.listAll(); };  //!
-  void List(int id){fPythia.particleData.list(id);}; //!
+  void Print(){fPythia->settings.listAll(); };  //!
+  void List(int id){fPythia->particleData.list(id);}; //!
   
   virtual Bool_t Init(); //!
   
@@ -42,10 +47,10 @@ class HNLPythia8Generator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
-  void getPythiaInstance(){cout<<"fPythia"<<&fPythia<<endl;};
+  Pythia* getPythiaInstance(){return fPythia;};
+  Pythia* fPythia;             //!
  private:
   
-  Pythia fPythia;             //!
   RndmEngine* fRandomEngine;  //!
   // doesnot work Pythia8::Pythia getPythiaInstance(){return fPythia;}  //!
   

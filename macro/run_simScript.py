@@ -147,6 +147,13 @@ if simEngine == "Pythia8":
  P8gen = ROOT.HNLPythia8Generator()
  import pythia8_conf
  pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
+ if inputFile: 
+# read from external file
+  P8gen.SetParameters("ProcessLevel:all = off")
+  P8gen.UseExternalFile(inputFile, 0)
+ # pion on proton 500GeV
+ # P8gen.SetMom(500.*u.GeV)
+ # P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
 if simEngine == "Pythia6":
 # set muon interaction close to decay volume
@@ -303,6 +310,7 @@ parOut.open(parFile)
 rtdb.setOutput(parOut)
 rtdb.saveOutput()
 rtdb.printParamContexts()
+getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("%s/geofile_full.%s.root" % (outputDir, tag))
 #
