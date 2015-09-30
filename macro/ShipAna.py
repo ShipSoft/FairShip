@@ -93,7 +93,9 @@ T1Station_zUp = T1Station.GetMatrix().GetTranslation()[2]-T1Station.GetVolume().
 
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',400,0.,200.,100,-0.5,0.5)
-ut.bookHist(h,'pullPOverP','delP / sigma',400,0.,200.,100,-3.,3.)
+ut.bookHist(h,'pullPOverPx','delPx / sigma',400,0.,200.,100,-3.,3.)
+ut.bookHist(h,'pullPOverPy','delPy / sigma',400,0.,200.,100,-3.,3.)
+ut.bookHist(h,'pullPOverPz','delPz / sigma',400,0.,200.,100,-3.,3.)
 ut.bookHist(h,'delPOverP2','delP / P chi2/nmeas<'+str(chi2CutOff),400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverPz','delPz / Pz',400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'delPOverP2z','delPz / Pz chi2/nmeas<'+str(chi2CutOff),400,0.,200.,100,-0.5,0.5)
@@ -103,10 +105,14 @@ ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
 ut.bookHist(h,'Vzresol','Vz reco - true [cm]',100,-50.,50.)
 ut.bookHist(h,'Vxresol','Vx reco - true [cm]',100,-10.,10.)
 ut.bookHist(h,'Vyresol','Vy reco - true [cm]',100,-10.,10.)
+ut.bookHist(h,'Vzpull','Vz pull',100,-3.,3.)
+ut.bookHist(h,'Vxpull','Vx pull',100,-3.,3.)
+ut.bookHist(h,'Vypull','Vy pull',100,-3.,3.)
 ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
 ut.bookHist(h,'HNL','reconstructed Mass',500,0.,2.)
+ut.bookHist(h,'HNLw','reconstructed Mass with weights',500,0.,2.)
 ut.bookHist(h,'meas','number of measurements',40,-0.5,39.5)
 ut.bookHist(h,'meas2','number of measurements, fitted track',40,-0.5,39.5)
 ut.bookHist(h,'measVSchi2','number of measurements vs chi2/meas',40,-0.5,39.5,100,0.,10.)
@@ -122,6 +128,66 @@ ut.bookHist(h,'nrSVT','nr of hits in SVT',10,-0.5,9.5)
 ut.bookHist(h,'nrUVT','nr of hits in UVT',100,-0.5,99.5)
 ut.bookHist(h,'nrSBT','nr of hits in SBT',100,-0.5,99.5)
 ut.bookHist(h,'nrRPC','nr of hits in RPC',100,-0.5,99.5)
+
+def VertexError(t1,t2,PosDir,CovMat,scalFac):
+# with improved Vx x,y resolution
+   a,u = PosDir[t1]['position'],PosDir[t1]['direction']
+   c,v = PosDir[t2]['position'],PosDir[t2]['direction']
+   Vsq = v.Dot(v)
+   Usq = u.Dot(u)
+   UV  = u.Dot(v)
+   ca  = c-a
+   denom = Usq*Vsq-UV**2
+   tmp2 = Vsq*u-UV*v
+   Va = ca.Dot(tmp2)/denom
+   tmp2 = UV*u-Usq*v
+   Vb = ca.Dot(tmp2)/denom
+   X = (a+c+Va*u+Vb*v) * 0.5
+   l1 = a - X + u*Va  # l2 = c - X + v*Vb
+   dist = 2. * ROOT.TMath.Sqrt( l1.Dot(l1) )
+   T = ROOT.TMatrixD(3,12)
+   for i in range(3):
+     for k in range(4):
+       for j in range(3): 
+        KD = 0
+        if i==j: KD = 1
+        if k==0 or k==2:
+       # cova and covc
+         temp  = ( u[j]*Vsq - v[j]*UV )*u[i] + (u[j]*UV-v[j]*Usq)*v[i]
+         sign = -1
+         if k==2 : sign = +1
+         T[i][3*k+j] = 0.5*( KD + sign*temp/denom )
+        elif k==1:
+       # covu
+         aNAZ = denom*( ca[j]*Vsq-v.Dot(ca)*v[j] )
+         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( u[j]*Vsq-v[j]*UV )
+         bNAZ = denom*( ca[j]*UV+(u.Dot(ca)*v[j]) - 2*ca.Dot(v)*u[j] )
+         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( u[j]*Vsq-v[j]*UV )
+         T[i][3*k+j] = 0.5*( Va*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )
+        elif k==3:
+       # covv
+         aNAZ = denom*( 2*ca.Dot(u)*v[j] - ca.Dot(v)*u[j] - ca[j]*UV )
+         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( v[j]*Usq-u[j]*UV )
+         bNAZ = denom*( ca.Dot(u)*u[j]-ca[j]*Usq ) 
+         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( v[j]*Usq-u[j]*UV )
+         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) ) 
+   transT = ROOT.TMatrixD(12,3)
+   transT.Transpose(T)
+   CovTracks = ROOT.TMatrixD(12,12)
+   tlist = [t1,t2]
+   for k in range(2):
+     for i in range(6):
+       for j in range(6): 
+        xfac = 1.
+        if i>2: xfac = scalFac[tlist[k]]  
+        if j>2: xfac = xfac * scalFac[tlist[k]]
+        CovTracks[i+k*6][j+k*6] = CovMat[tlist[k]][i][j] * xfac
+        # if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction
+   tmp   = ROOT.TMatrixD(3,12)
+   tmp.Mult(T,CovTracks)
+   covX  = ROOT.TMatrixD(3,3)
+   covX.Mult(tmp,transT)
+   return X,covX,dist
 
 def Rsq(X,Y,dy):
   return (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
@@ -141,12 +207,15 @@ def checkHNLorigin(sTree):
  if not fiducialCut: return flag
 # only makes sense for signal == HNL
  if  sTree.MCTrack.GetEntries()<3: return
- theHNLVx = sTree.MCTrack[2]
- if not abs(theHNLVx.GetPdgCode()) == 9900015: return flag
- if theHNLVx.GetStartZ() < ShipGeo.vetoStation.z+100.*u.cm : flag = False
- if theHNLVx.GetStartZ() > ShipGeo.TrackStation1.z : flag = False
- X,Y =  theHNLVx.GetStartX(),theHNLVx.GetStartY()
- if Rsq(X,Y,dy)>1: flag = False
+ # hnlkey = 2 # pythia8 cascade events
+ # hnlkey = 1 # pythia8 primary events
+ for hnlkey in [1,2]: 
+  if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015:
+   theHNLVx = sTree.MCTrack[hnlkey+1]
+   if theHNLVx.GetStartZ() < ShipGeo.vetoStation.z+100.*u.cm : flag = False
+   if theHNLVx.GetStartZ() > ShipGeo.TrackStation1.z : flag = False
+   X,Y =  theHNLVx.GetStartX(),theHNLVx.GetStartY()
+   if Rsq(X,Y,dy)>1: flag = False
  return flag 
 def checkFiducialVolume(sTree,tkey,dy):
 # to be replaced later with using track extrapolator,
@@ -162,13 +231,13 @@ def checkFiducialVolume(sTree,tkey,dy):
          break
    return inside
 def getPtruthFirst(sTree,mcPartKey):
-   Ptruth,Ptruthz = -1.,-1.
+   Ptruth,Ptruthx,Ptruthy,Ptruthz = -1.,-1.,-1.,-1.
    for ahit in sTree.strawtubesPoint:
      if ahit.GetTrackID() == mcPartKey:
-        Ptruthz = ahit.GetPz()
-        Ptruth  = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+Ptruthz**2)
+        Ptruthx,Ptruthy,Ptruthz = ahit.GetPx(),ahit.GetPy(),ahit.GetPz()
+        Ptruth  = ROOT.TMath.Sqrt(Ptruthx**2+Ptruthy**2+Ptruthz**2)
         break
-   return Ptruth,Ptruthz
+   return Ptruth,Ptruthx,Ptruthy,Ptruthz
 
 def access2SmearedHits():
  key = 0
@@ -270,15 +339,18 @@ def fitSingleGauss(x,ba=None,be=None):
     h[x].Fit(myGauss,'','',ba,be) 
 
 def match2HNL(p):
-    t1,t2 = p.GetDaughter(0),p.GetDaughter(1) 
     matched = False
-    if not sTree.fitTrack2MC[t1]<0 and not sTree.fitTrack2MC[t2]<0:
-      mc1 = sTree.MCTrack[sTree.fitTrack2MC[t1]].GetMotherId()
-      mc2 = sTree.MCTrack[sTree.fitTrack2MC[t2]].GetMotherId()
-      if mc1==mc2:
-       mo = sTree.MCTrack[mc1]
-# check for HNL:  
-       if abs(mo.GetPdgCode()) == 9900015: matched = True
+    hnlKey  = []
+    for t in [p.GetDaughter(0),p.GetDaughter(1)]: 
+      mcp = sTree.fitTrack2MC[t]
+      while mcp > -0.5:
+        mo = sTree.MCTrack[mcp]
+        if abs(mo.GetPdgCode()) == 9900015:
+           hnlKey.append(mcp)
+           break  
+        mcp = mo.GetMotherId()
+    if len(hnlKey) == 2: 
+       if hnlKey[0]==hnlKey[1]: matched = True
     return matched
 def ecalCluster2MC(aClus):
  # return MC track most contributing, and its fraction of energy
@@ -350,6 +422,29 @@ def makePlots():
    h['IP0/mass'].SetYTitle('IP [cm]')
    h['IP0/mass'].Draw('colz')
    h['fitresults2'].Print('fitresults2.gif')
+   ut.bookCanvas(h,key='vxpulls',title='Vertex resol and pulls',nx=1600,ny=1200,cx=3,cy=2)
+   cv = h['vxpulls'].cd(4)
+   h['Vxpull'].Draw()
+   cv = h['vxpulls'].cd(5)
+   h['Vypull'].Draw()
+   cv = h['vxpulls'].cd(6)
+   h['Vzpull'].Draw()
+   cv = h['vxpulls'].cd(1)
+   h['Vxresol'].Draw()
+   cv = h['vxpulls'].cd(2)
+   h['Vyresol'].Draw()
+   cv = h['vxpulls'].cd(3)
+   h['Vzresol'].Draw()
+   ut.bookCanvas(h,key='trpulls',title='momentum pulls',nx=1600,ny=600,cx=3,cy=1)
+   cv = h['trpulls'].cd(1)
+   h['pullPOverPx_proj']=h['pullPOverPx'].ProjectionY()
+   h['pullPOverPx_proj'].Draw()
+   cv = h['trpulls'].cd(2)
+   h['pullPOverPy_proj']=h['pullPOverPy'].ProjectionY()
+   h['pullPOverPy_proj'].Draw()
+   cv = h['trpulls'].cd(3)
+   h['pullPOverPz_proj']=h['pullPOverPz'].ProjectionY()
+   h['pullPOverPz_proj'].Draw()
    ut.bookCanvas(h,key='vetodecisions',title='Veto Detectors',nx=1600,ny=600,cx=5,cy=1)
    cv = h['vetodecisions'].cd(1)
    cv.SetLogy(1)
@@ -437,7 +532,7 @@ def myEventLoop(n):
    h['chi2'].Fill(chi2,wg)
    h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
    P = fittedState.getMomMag()
-   Pz = fittedState.getMom().z()
+   Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
    cov = fittedState.get6DCov()
    if len(sTree.fitTrack2MC)-1<key: continue
    mcPartKey = sTree.fitTrack2MC[key]
@@ -446,11 +541,13 @@ def myEventLoop(n):
    Ptruth_start     = mcPart.GetP()
    Ptruthz_start    = mcPart.GetPz()
    # get p truth from first strawpoint
-   Ptruth,Ptruthz = getPtruthFirst(sTree,mcPartKey)
+   Ptruth,Ptruthx,Ptruthy,Ptruthz = getPtruthFirst(sTree,mcPartKey)
    delPOverP = (Ptruth - P)/Ptruth
    h['delPOverP'].Fill(Ptruth,delPOverP)
    delPOverPz = (1./Ptruthz - 1./Pz) * Ptruthz
-   h['pullPOverP'].Fill( Ptruth,delPOverP/ROOT.TMath.Sqrt(cov[5][5]) )   
+   h['pullPOverPx'].Fill( Ptruth,(Ptruthx-Px)/ROOT.TMath.Sqrt(cov[3][3]) )   
+   h['pullPOverPy'].Fill( Ptruth,(Ptruthy-Py)/ROOT.TMath.Sqrt(cov[4][4]) )   
+   h['pullPOverPz'].Fill( Ptruth,(Ptruthz-Pz)/ROOT.TMath.Sqrt(cov[5][5]) )   
    h['delPOverPz'].Fill(Ptruthz,delPOverPz)
    if chi2>chi2CutOff: continue
    h['delPOverP2'].Fill(Ptruth,delPOverP)
@@ -497,13 +594,14 @@ def myEventLoop(n):
     if zv < vetoStation_zDown  : continue  
     if zv > T1Station_zUp      : continue  
     h['Doca'].Fill(doca) 
-    if  doca > docaCut : continue
+    # if  doca > docaCut : continue
     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
     dist = ImpactParameter(tr,HNLPos,HNLMom)
     mass = HNLMom.M()
     h['IP0'].Fill(dist)  
     h['IP0/mass'].Fill(mass,dist)
     h['HNL'].Fill(mass)
+    h['HNLw'].Fill(mass,wg)
 #
     vetoDets['SBT'] = veto.SBT_decision(sTree)
     vetoDets['SVT'] = veto.SVT_decision(sTree)
@@ -520,9 +618,14 @@ def myEventLoop(n):
     h['Vzresol'].Fill( (mctrack.GetStartZ()-zv)/u.cm )
     h['Vxresol'].Fill( (mctrack.GetStartX()-xv)/u.cm )
     h['Vyresol'].Fill( (mctrack.GetStartY()-yv)/u.cm )
+    PosDir,newPosDir,CovMat,scalFac = {},{},{},{}
 # opening angle at vertex
     newPos = ROOT.TVector3(xv,yv,zv)
     st1,st2 = sTree.FitTracks[t1].getFittedState(),sTree.FitTracks[t2].getFittedState()
+    PosDir[t1] = {'position':st1.getPos(),'direction':st1.getDir(),'momentum':st1.getMom()}
+    PosDir[t2] = {'position':st2.getPos(),'direction':st2.getDir(),'momentum':st2.getMom()}
+    CovMat[t1] = st1.get6DCov() 
+    CovMat[t2] = st2.get6DCov() 
     rep1,rep2 = ROOT.genfit.RKTrackRep(st1.getPDG()),ROOT.genfit.RKTrackRep(st2.getPDG())  
     state1,state2 = ROOT.genfit.StateOnPlane(rep1),ROOT.genfit.StateOnPlane(rep2)
     rep1.setPosMom(state1,st1.getPos(),st1.getMom())
@@ -533,8 +636,17 @@ def myEventLoop(n):
      mom1,mom2 = rep1.getMom(state1),rep2.getMom(state2)
     except:
      mom1,mom2 = st1.getMom(),st2.getMom()
+    newPosDir[t1] = {'position':rep1.getPos(state1),'direction':rep1.getDir(state1),'momentum':mom1}
+    newPosDir[t2] = {'position':rep2.getPos(state2),'direction':rep2.getDir(state2),'momentum':mom2}
     oa = mom1.Dot(mom2)/(mom1.Mag()*mom2.Mag()) 
     h['oa'].Fill(oa)
+# error on vertex
+    scalFac[t1] = (zv-PosDir[t1]['position'][2])/PosDir[t1]['direction'][2]/PosDir[t1]['momentum'].Mag()
+    scalFac[t2] = (zv-PosDir[t2]['position'][2])/PosDir[t2]['direction'][2]/PosDir[t2]['momentum'].Mag()
+    XPos,covX,dist = VertexError(t1,t2,newPosDir,CovMat,scalFac)
+    h['Vzpull'].Fill( (mctrack.GetStartZ()-XPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
+    h['Vxpull'].Fill( (mctrack.GetStartX()-XPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
+    h['Vypull'].Fill( (mctrack.GetStartY()-XPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
 #
 def HNLKinematics():
  ut.bookHist(h,'HNLmomNoW','momentum unweighted',100,0.,300.)
@@ -543,12 +655,15 @@ def HNLKinematics():
  ut.bookHist(h,'HNLmomNoW_recTracks','momentum unweighted',100,0.,300.)
  for n in range(sTree.GetEntries()): 
   rc = sTree.GetEntry(n)
-  wg = sTree.MCTrack[1].GetWeight()
-  if not wg>0.: wg=1.
-  P = sTree.MCTrack[1].GetP()
-  h['HNLmom'].Fill(P,wg) 
-  h['HNLmomNoW'].Fill(P) 
-  for HNL in sTree.Particles:
+  for hnlkey in [1,2]: 
+   if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015: 
+    theHNL = sTree.MCTrack[hnlkey]
+    wg = theHNL.GetWeight()
+    if not wg>0.: wg=1.
+    P = theHNL.GetP()
+    h['HNLmom'].Fill(P,wg) 
+    h['HNLmomNoW'].Fill(P) 
+    for HNL in sTree.Particles:
      t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
      for tr in [t1,t2]:
       xx  = sTree.FitTracks[tr].getFittedState()
@@ -565,6 +680,7 @@ ecalFiller.StoreTrackInformation()
 ecalStructure = ecalFiller.InitPython(sTree.EcalPointLite)
  
 nEvents = min(sTree.GetEntries(),nEvents)
+
 for n in range(nEvents): 
  myEventLoop(n)
  sTree.FitTracks.Delete()
