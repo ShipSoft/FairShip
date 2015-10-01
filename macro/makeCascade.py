@@ -1,6 +1,7 @@
 import ROOT,time,os,sys,random
 import rootUtils as ut
-import time
+ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
+ROOT.basiclibs()
 
 #generate ccbar (msel=4) or bbbar(msel=5)
 mselcb=4
