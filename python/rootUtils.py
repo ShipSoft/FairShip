@@ -8,9 +8,14 @@ except:
 
 
 from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas
+import os
 
 def readHists(h,fname):
-  f = TFile(fname)
+  if fname[0:4] == "/eos":
+    eospath = "root://eoslhcb/"+fname
+    f = ROOT.TFile.Open(eospath)
+  else:  
+    f = TFile(fname)
   for akey in f.GetListOfKeys():
     name  =  akey.GetName()
     try:     hname = int(name)
@@ -18,10 +23,13 @@ def readHists(h,fname):
     obj = akey.ReadObj()
     cln = obj.Class().GetName()
     if cln.find('TH')<0: continue
-    if h.has_key(hname): h[hname].Add(obj)
-    else: h[hname] =  obj.Clone()
+    if h.has_key(hname): 
+       rc = h[hname].Add(obj)
+       if not rc: print "Error when adding histogram ",hname 
+    else: 
+      h[hname] =  obj.Clone()
+      h[hname].Sumw2() 
     h[hname].SetDirectory(gROOT)
-    h[hname].Sumw2() 
     if cln == 'TH2D' or cln == 'TH2F':
          for p in [ '_projx','_projy']:
            if p.find('x')>-1: h[hname+p] = h[hname].ProjectionX()  
@@ -77,12 +85,61 @@ def setAttributes(pyl,leaves,printout=False):
 class PyListOfLeaves(dict) : 
     pass  
 
+def container_sizes(sTree):
+ if type(sTree) == type('s'):
+   f=TFile(sTree)
+   sTree = f.cbmsim 
+ counter = {}
+ print "name      ZipBytes[MB]    TotBytes[MB]    TotalSize[MB]"
+ for l in sTree.GetListOfLeaves():
+  b = l.GetBranch()
+  nm = b.GetName()
+  print "%30s :%8.3F   %8.3F    %8.3F "%(nm,b.GetZipBytes()/1.E6,b.GetTotBytes()/1.E6,b.GetTotalSize()/1.E6)
+  bnm = nm.split('.')[0] 
+  if not counter.has_key(bnm): counter[bnm]=[0,0,0]
+  counter[bnm][0]+=b.GetZipBytes()/1.E6
+  counter[bnm][1]+=b.GetTotBytes()/1.E6
+  counter[bnm][2]+=b.GetTotalSize()/1.E6
+ print "---> SUMMARY <---------------"
+ print "                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]"
+ for x in counter:
+  print "%30s :%8.3F   %8.3F    %8.3F  MB"%(x,counter[x][0],counter[x][1],counter[x][2])
 
-def container_sizes(f):
- f = TFile(f)
- t = f.FindObjectAny('cbmsim')
- print "name      ZipBytes    TotBytes    TotalSize"
- for b in t.GetListOfBranches():
-  print b.GetName(),b.GetZipBytes(),b.GetTotBytes(),b.GetTotalSize()
-
-
+def stripOffBranches(fout):
+    f = TFile(fout)
+    sTree = f.cbmsim
+    nEvents = sTree.GetEntries() 
+    strip = False
+    oldTargetClass = False
+    if sTree.GetBranch("SmearedHits"): 
+         sTree.SetBranchStatus("SmearedHits",0)
+         strip = True
+    if sTree.GetBranch("TargetPoint"): 
+         if sTree.GetLeaf("cbmroot.Target.TargetPoint.fEmTop"): oldTargetClass = True # old class
+         else: 
+           for x in sTree.GetListOfLeaves():
+              if not x.GetName().find("TargetPoint")<0: 
+               b = x.GetBranch().GetName()
+               sTree.SetBranchStatus(b,0)
+         strip = True
+    if not strip: return 
+    sFile = fout.replace("_rec.root","_recs.root")
+    recf = TFile(sFile,"recreate")
+    if not oldTargetClass: newTree = sTree.CloneTree(-1,'fast')
+    else:
+     newTree = sTree.CloneTree(0)
+     for n in range(nEvents):
+      sTree.GetEntry(n)
+      if oldTargetClass: sTree.TargetPoint.Clear()
+      rc = newTree.Fill()
+      sTree.FitTracks.Delete() # stupid ROOT or whoever, otherwise huge memory leak, does not help
+    sTree.Clear()
+    newTree.AutoSave()
+    f.Close() 
+    recf.Close() 
+    # should do some sanity checks before deleting old file
+    f = TFile(sFile)
+    sTree = f.cbmsim
+    if nEvents == sTree.GetEntries(): print "looks ok, could be deleted",os.path.abspath('.')
+    else:  print "stripping failed, keep old file",os.path.abspath('.')
+    # os.system('mv '+sFile +' '+fout)
