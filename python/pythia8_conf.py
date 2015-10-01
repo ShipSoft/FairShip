@@ -78,7 +78,9 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         P8gen.SetParameters("15:addChannel      1   0.1076825 1521       9900015     -211")
         P8gen.SetParameters("15:addChannel      1   0.0069601 1521       9900015     -321")
         P8gen.SetParameters("15:addChannel      1   0.1772832 1531       9900015       11      -12")
+        P8gen.SetParameters("15:addChannel    0.1772832 1531       9900015       11      -12")
         P8gen.SetParameters("15:addChannel      1   0.1731072 1531       9900015       13      -14")
+        P8gen.SetParameters("15:addChannel    0.1731072 1531       9900015       13      -14")
         P8gen.SetParameters("15:addChannel      1   0.2537447 1532       9900015      111     -211")
         P8gen.SetParameters("15:addChannel      1   0.0015809 1532       9900015      311     -321")
         P8gen.SetParameters("15:addChannel      1   0.0001511 1532       9900015      221     -321")
@@ -173,6 +175,7 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
     if inclusive=="b":
         P8gen.SetParameters("HardQCD::hardbbbar  = on")
         # P8gen.SetParameters("PDF:hardLHAPDFset = cteq5l.LHgrid")
+        # P8gen.SetParameters("BeamRemnants:primordialKThard = 1.0")
         # add HNL
         #ctau = 5.4E+06 # for tests use 5.4E+03  # nominal ctau = 54 km = 5.4E+06 cm = 5.4E+07 mm
         #mass = 1.0 # GeV
@@ -185,12 +188,21 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         # Finish HNL setup...
         P8gen.SetParameters("9900015:mayDecay = on")
         P8gen.SetHNLId(9900015)
-        P8gen.SetHNLId(-9900015)
         # also add to PDG
         gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
         addHNLtoROOT(pid=9900015,m=mass,g=gamma)
-        addHNLtoROOT(pid=-9900015,m=mass,g=gamma)
         # 12 14 16 neutrinos replace with N2
+        #overwrite Lambda_b0 decays
+        P8gen.SetParameters("5122:new  Lambda_b0        Lambda_bbar0    2   0   0    5.61940    0.00000    0.00000    0.00000  3.69000e-01   0   1   0   1   0")
+        P8gen.SetParameters("5122:addChannel      1   0.0546000   22      9900015       11     4122")
+        P8gen.SetParameters("5122:addChannel      1   0.0096000   22      9900015       11     4124")
+        P8gen.SetParameters("5122:addChannel      1   0.0128000   22      9900015       11    14122")
+        P8gen.SetParameters("5122:addChannel      1   0.0546000   22      9900015       13     4122")
+        P8gen.SetParameters("5122:addChannel      1   0.0096000   22      9900015       13     4124")
+        P8gen.SetParameters("5122:addChannel      1   0.0128000   22      9900015       13    14122")
+        P8gen.SetParameters("5122:addChannel      1   0.0172000   22      9900015       15     4122")
+        P8gen.SetParameters("5122:addChannel      1   0.0032000   22      9900015       15     4124")
+        P8gen.SetParameters("5122:addChannel      1   0.0043000   22      9900015       15    14122")
         #overwrite B+ decays
         P8gen.SetParameters("521:new  B+               B-    1   3   0    5.27925    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0")
         P8gen.SetParameters("521:addChannel      1   0.0000930    0       9900015      -15")
@@ -250,8 +262,22 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         P8gen.SetParameters("521:addChannel      2   0.0019480   22       9900015      -13        2       -2")
         P8gen.SetParameters("521:addChannel      3   0.0019480   22       9900015      -11       -2        2")
         P8gen.SetParameters("521:addChannel      3   0.0019480   22       9900015      -13       -2        2")
-        #overwrite Lambda_b0 decays
-        P8gen.SetParameters("5122:new  Lambda_b0        Lambda_bbar0    2   0   0    5.61940    0.00000    0.00000    0.00000  3.69000e-01   0   1   0   1   0")
+        #overwrite Xi_b- decays
+        P8gen.SetParameters("5132:new  Xi_b- Xi_b+    2   -3   0    5.79110    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0")
+        P8gen.SetParameters("5132:addChannel      1   0.1080010   22      9900015       11        4     3101")
+        P8gen.SetParameters("5132:addChannel      1   0.0020000   22      9900015       11        2     3101")
+        P8gen.SetParameters("5132:addChannel      1   0.1080000   22      9900015       13        4     3101")
+        P8gen.SetParameters("5132:addChannel      1   0.0020000   22      9900015       13        2     3101")
+        P8gen.SetParameters("5132:addChannel      1   0.0250000   22      9900015       15        4     3101")
+        P8gen.SetParameters("5132:addChannel      1   0.0010000   22      9900015       15        4     3101")
+        #overwrite Xi_b0 decays
+        P8gen.SetParameters("5232:new  Xi_b0  Xi_b0_bar    2   0   0    5.78800    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0")
+        P8gen.SetParameters("5232:addChannel      1   0.1080010   22      9900015       11        4     3201")
+        P8gen.SetParameters("5232:addChannel      1   0.0020000   22      9900015       11        2     3201")
+        P8gen.SetParameters("5232:addChannel      1   0.1080000   22      9900015       13        4     3201")
+        P8gen.SetParameters("5232:addChannel      1   0.0020000   22      9900015       13        2     3201")
+        P8gen.SetParameters("5232:addChannel      1   0.0250000   22      9900015       15        4     3201")
+        P8gen.SetParameters("5232:addChannel      1   0.0010000   22      9900015       15        4     3201")
         #overwrite B_s0 decays
         P8gen.SetParameters("531:new  B_s0             B_sbar0    1   0   0    5.36677    0.00000    0.00000    0.00000  4.39000e-01   0   1   0   1   0")
         P8gen.SetParameters("531:addChannel      1   0.0002000   22       9900015      -11     -321")

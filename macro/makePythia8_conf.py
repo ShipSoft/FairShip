@@ -53,6 +53,7 @@ for runtype in inclusive:
       f.write('    if inclusive==\"b\":\n') 
       f.write('        P8gen.SetParameters("HardQCD::hardbbbar  = on")\n')
       f.write('        # P8gen.SetParameters("PDF:hardLHAPDFset = cteq5l.LHgrid")\n')
+      f.write('        # P8gen.SetParameters("BeamRemnants:primordialKThard = 1.0")\n')
       f.write('        # add HNL\n')
       f.write('        #ctau = 5.4E+06 # for tests use 5.4E+03  # nominal ctau = 54 km = 5.4E+06 cm = 5.4E+07 mm\n')
       f.write('        #mass = 1.0 # GeV\n')
@@ -65,13 +66,12 @@ for runtype in inclusive:
       f.write('        # Finish HNL setup...\n')
       f.write('        P8gen.SetParameters("9900015:mayDecay = on")\n')
       f.write('        P8gen.SetHNLId(9900015)\n')
-      f.write('        P8gen.SetHNLId(-9900015)\n')
       f.write('        # also add to PDG\n')
       f.write('        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm\n')
       f.write('        addHNLtoROOT(pid=9900015,m=mass,g=gamma)\n')
-      f.write('        addHNLtoROOT(pid=-9900015,m=mass,g=gamma)\n')
       f.write('        # 12 14 16 neutrinos replace with N2\n')   
-      mesons={5122:"Lambda_b0        Lambda_bbar0",511:"B0  Bbar0",521:"B+               B-",531:"B_s0             B_sbar0",541:"B_c+             B_c-"}
+      mesons={5122:"Lambda_b0        Lambda_bbar0",511:"B0  Bbar0",521:"B+               B-",531:"B_s0             B_sbar0",\
+               541:"B_c+             B_c-"        ,5232:"Xi_b0  Xi_b0_bar",5132:"Xi_b- Xi_b+"}
    else:  
       f.write('    if inclusive==\"c\":\n')  
       f.write('        P8gen.SetParameters("HardQCD::hardccbar  = on")\n')
@@ -110,8 +110,7 @@ for runtype in inclusive:
                ctau = line.split()[10]
 
                f.write('        P8gen.SetParameters(\"'+str(key)+':new  '+mesons[key]+'    '+spinType+'   '+chargeType+'   '+colType+'    '+mass+'    0.00000    0.00000    0.00000  '+ctau+'   0   1   0   1   0\")\n')            
-            if len(item)==2:
-                 if item in neutrinos and i!=2 and i!=0 and i!=3: 
+            if item in neutrinos and i!=2 and i!=0 and i!=3: 
                     line=line.replace(' '+item+' ',' 9900015 ')
                     line=line.rstrip()
                     line=line.lstrip()
