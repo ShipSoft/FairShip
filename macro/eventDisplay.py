@@ -165,18 +165,23 @@ class DrawTracks(ROOT.FairTask):
   ns = dv.GetNodes()
   T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
   self.z_start = T1Lid.GetTranslation()[2]
-  mv = top.GetNode('MuonDetector_1').GetMatrix()
-  self.z_end = mv.GetTranslation()[2]
-  mM = top.GetNode('MCoil_1').GetMatrix()
-  self.z_mag = mM.GetTranslation()[2]
-  mE = top.GetNode('Ecal_1').GetMatrix()
-  self.z_ecal = mE.GetTranslation()[2]
+  muonDet = top.GetNode('MuonDetector_1')
+  if muonDet: self.z_end = muonDet.GetMatrix().GetTranslation()[2]
+  else:       self.z_end = ShipGeo['MuonStation1'].z
+  magNode = top.GetNode('MCoil_1')
+  if magNode: self.z_mag = magNode.GetMatrix().GetTranslation()[2]
+  else:       self.z_mag = ShipGeo['Bfield'].z
+  ecalDet = top.GetNode('Ecal_1')
+  if ecalDet: self.z_ecal = ecalDet.GetMatrix().GetTranslation()[2]
+  else:       self.z_ecal = ShipGeo['ecal'].z
   self.niter = 100
   self.dz = (self.z_end - self.z_start) / float(self.niter)
   self.parallelToZ = ROOT.TVector3(0., 0., 1.) 
   sc    = evmgr.GetScenes()
   self.evscene = sc.FindChild('Event scene')
-  self.Targetz = top.GetNode("TargetArea_1").GetMatrix().GetTranslation()[2]
+  targetNode = top.GetNode("TargetArea_1")
+  if targetNode:  self.Targetz = targetNode.GetMatrix().GetTranslation()[2]
+  else:           self.Targetz = ShipGeo['target'].z
  def FinishEvent(self):
   pass
  def ExecuteTask(self,option=''):
@@ -458,21 +463,22 @@ class EventLoop(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
    self.n = 0
+   if fGeo.GetVolume('Ecal'):
  # initialize ecalStructure
-   ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
-   self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
-   if ecalGeoFile.find("5x10")<0:   
+    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+    self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
+    if ecalGeoFile.find("5x10")<0:   
           self.ecalFiller.SetUseMCPoints(ROOT.kFALSE)
           print "ecal cluster display disabled, seems only to work with 5x10m ecal geofile"
-   else:  self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
-   self.ecalFiller.StoreTrackInformation()
-   rc = sTree.GetEvent(0)
-   self.ecalStructure = self.ecalFiller.InitPython(sTree.EcalPointLite)
-   speedUp()
+    else:  self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
+    self.ecalFiller.StoreTrackInformation()
+    rc = sTree.GetEvent(0)
+    self.ecalStructure = self.ecalFiller.InitPython(sTree.EcalPointLite)
+    speedUp()
+    self.calos  = DrawEcalCluster()
+    self.calos.InitTask(self.ecalStructure)
    self.tracks = DrawTracks()
    self.tracks.InitTask()
-   self.calos  = DrawEcalCluster()
-   self.calos.InitTask(self.ecalStructure)
 # create SHiP GUI
    self.ioBar = IO()
  def NextEvent(self,i=-1):
@@ -485,8 +491,9 @@ class EventLoop(ROOT.FairTask):
    if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
    self.tracks.ExecuteTask()
    if sTree.FindBranch("EcalClusters"):
-     self.ecalFiller.Exec('start')
-     self.calos.ExecuteTask()
+     if sTree.EcalClusters.GetEntries()>0:
+      self.ecalFiller.Exec('start')
+      self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
 #
 def speedUp():
@@ -496,6 +503,7 @@ def speedUp():
 # 
  for x in ["Ecal","Hcal"]:
   xvol = fGeo.GetVolume(x)
+  if not xvol: continue
   xvol.SetVisDaughters(0)
   xvol.SetVisibility(1)
   if x=="Ecal": xvol.SetLineColor(ROOT.kYellow) 
