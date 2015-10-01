@@ -1,6 +1,5 @@
 #include <math.h>
 #include "TROOT.h"
-#include "Pythia.h"
 #include "FairPrimaryGenerator.h"
 //#include "FairGenerator.h"
 
@@ -28,7 +27,13 @@ Bool_t Pythia8Generator::Init()
   
   fPythia.setRndmEnginePtr(fRandomEngine);
   cout<<"Beam Momentum "<<fMom<<endl;
-  fPythia.init(fId, 2212, 0., 0., fMom, 0., 0., 0.);
+  fPythia->settings.mode("Beams:idA",  fId);
+  fPythia->settings.mode("Beams:idB",  2212);
+  fPythia->settings.mode("Beams:frameType",  2);
+  fPythia->settings.parm("Beams:eA",fMom);
+  fPythia->settings.parm("Beams:eB",0.);
+  fPythia.init();
+
   if (fHNL>0){ cout<<"Switch to HNLPythia8Generator for HNL production, not anymore supported with Pythia8Generstor"<<endl;}
   return kTRUE;
 }
