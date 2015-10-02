@@ -27,10 +27,11 @@ if debug>1 : checking4overlaps = True
 phiRandom   = False  # only relevant for muon background generator
 followMuon  = False   # only transport muons for a fast muon only background estimate
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
+Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
                                    "Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
-                                   "Cosmics","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
+                                   "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
                                    "output=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
@@ -67,6 +68,8 @@ for o, a in opts:
             phiRandom = True
         if o in ("--Cosmics"):
             simEngine = "Cosmics"
+            Opt_high = 0
+            if a!=str(0): Opt_high = int(a)
         if o in ("--MuDIS"):
             simEngine = "muonDIS"
         if o in ("-n", "--nEvents"):
@@ -255,12 +258,12 @@ if simEngine == "MuonBack":
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)
- Z1 = ship_geo.MuonStation3.z # 3900
- Z2 = ship_geo.vetoStation.z # -1968
- Z3 = ship_geo.chambers.Tub1length # 250
- zmiddle = (Z1 + (Z2-2*Z3))/2 # 716
  Cosmicsgen = ROOT.CosmicsGenerator()
- Cosmicsgen.Init(zmiddle)
+ import CMBG_conf
+ CMBG_conf.configure(Cosmicsgen, ship_geo)
+ if not Cosmicsgen.Init(Opt_high): 
+      print "initialization of cosmic background generator failed ",Opt_high
+      sys.exit(0)
  primGen.AddGenerator(Cosmicsgen)
  print 'Process ',nEvents,' Cosmic events'
 #
