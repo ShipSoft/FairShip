@@ -464,10 +464,11 @@ class ShipReco:
      #print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
      #print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 #   HNL true
-     mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]
-     h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
-     h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
-     h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
+     if  self.sTree.GetBranch("fitTrack2MC"):
+      mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]
+      h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
+      h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
+      h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
 #
      pid = PosDirCharge[t1]['pdgCode']
      mass = PDG.GetParticle(pid).Mass()
