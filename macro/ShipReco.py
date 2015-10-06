@@ -98,7 +98,6 @@ if withHists:
  ut.bookHist(h,'Vzpull','Vz pull',100,-3.,3.)
  ut.bookHist(h,'Vxpull','Vx pull',100,-3.,3.)
  ut.bookHist(h,'Vypull','Vy pull',100,-3.,3.)
-
 #-----prepare python exit-----------------------------------------------
 def pyExit():
  global fitter
@@ -144,8 +143,8 @@ def myVertex(t1,t2,PosDir):
    Z = c.z()+v.z()*t
    # sT = ROOT.gROOT.FindAnything('cbmsim')
    #print 'test2 ',X,Y,Z,dist
+   #print 'truth',sTree.MCTrack[2].GetStartX(),sTree.MCTrack[2].GetStartY(),sTree.MCTrack[2].GetStartZ()
    return X,Y,Z,abs(dist)
-
 def myVertexError(t1,t2,PosDir,CovMat=None,scalFac=None):
    a,u = PosDir[t1]['position'],PosDir[t1]['direction']
    c,v = PosDir[t2]['position'],PosDir[t2]['direction']
@@ -243,11 +242,12 @@ class ShipReco:
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
                   "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint"}
   for x in branch_class:
-    if not self.sTree.GetBranch(x):
+    if not self.sTree.GetBranch(x) and 1<0:
      self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
      self.dummyContainers[x] = self.sTree.Branch(x,self.dummyContainers[x+"_array"],32000,-1) 
      setattr(self.sTree,x,self.dummyContainers[x+"_array"])
      self.dummyContainers[x].Fill()
+#   
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
 # prepare for output
@@ -430,6 +430,7 @@ class ShipReco:
      if PosDirCharge[t2]['charge'] == c1 : continue
      newPos,doca    = myVertexError(t1,t2,PosDirCharge)
 # as we have learned, need iterative procedure
+# as we have learned, need iterative procedure
      dz = 99999.
      rc = True 
      step = 0
@@ -488,17 +489,13 @@ class ShipReco:
      nParts   = particles.GetEntries()
      particles[nParts] = particle
 
-# -----Calorimeter part --------------------------------------------
-# Creates. exports and fills calorimeter structure
-dflag = 0
-if debug: dflag = 10
-
-# access ShipTree
 SHiP = ShipReco(outFile)
-SHiP.sTree.GetEvent(0)
-
 caloTasks = []  
 if SHiP.sTree.GetBranch("EcalPoint"):
+# -----Calorimeter part --------------------------------------------
+# Creates. exports and fills calorimeter structure
+ dflag = 0
+ if debug: dflag = 10
  ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
  ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
  ecalFiller.SetUseMCPoints(ROOT.kTRUE)
@@ -522,7 +519,7 @@ if SHiP.sTree.GetBranch("EcalPoint"):
  ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
  ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
  ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
- #6x6 cm cells
+#6x6 cm cells
  ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
  ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
  ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
@@ -530,24 +527,13 @@ if SHiP.sTree.GetBranch("EcalPoint"):
  ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
  ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
  caloTasks.append(ecalClusterCalib)
- # Cluster finder
+# Cluster finder
  ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
  caloTasks.append(ecalClusterFind)#
  if EcalDebugDraw:
-  # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
+ # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
   ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
   caloTasks.append(ecalDrawer)
- ecalStructure=ecalFiller.InitPython(SHiP.sTree.EcalPointLite)
- ecalDigi.InitPython(ecalStructure)
- ecalPrepare.InitPython(ecalStructure)
- ecalMaximums=ecalMaximumFind.InitPython(ecalStructure)
- ecalCalib=ecalClusterCalib.InitPython()
- ecalClusters=ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
- SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
- if EcalDebugDraw: ecalDrawer.InitPython(SHiP.sTree.MCTrack, SHiP.sTree.EcalPoint, ecalStructure, ecalClusters)
-else:
- ecalClusters = ROOT.TClonesArray("ecalCluster") 
-SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
 
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 PDG = ROOT.TDatabasePDG.Instance()
@@ -564,6 +550,19 @@ ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 if debug: fitter.setDebugLvl(1) # produces lot of printout
 WireMeasurement = ROOT.genfit.WireMeasurement
 
+# access ShipTree
+SHiP.sTree.GetEvent(0)
+if len(caloTasks)>0:
+ ecalStructure=ecalFiller.InitPython(SHiP.sTree.EcalPointLite)
+ ecalDigi.InitPython(ecalStructure)
+ ecalPrepare.InitPython(ecalStructure)
+ ecalMaximums=ecalMaximumFind.InitPython(ecalStructure)
+ ecalCalib=ecalClusterCalib.InitPython()
+ ecalClusters=ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
+ if EcalDebugDraw: ecalDrawer.InitPython(SHiP.sTree.MCTrack, SHiP.sTree.EcalPoint, ecalStructure, ecalClusters)
+else:
+  ecalClusters = ROOT.TClonesArray("ecalCluster") 
+SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
 # for 'real' PatRec
 shipPatRec.initialize(fgeo)
 
@@ -591,5 +590,4 @@ SHiP.sTree.Write()
 
 ut.writeHists(h,"recohists.root")
 if realPR: ut.writeHists(shipPatRec.h,"recohists_patrec.root")
-
 
