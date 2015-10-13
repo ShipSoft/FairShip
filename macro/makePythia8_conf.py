@@ -116,6 +116,6 @@ for runtype in inclusive:
                     line=line.lstrip()
                     line=line.split(" ",1)[1]
                     f.write('        P8gen.SetParameters(\"'+str(key)+':addChannel  '+line+'\")\n')
-
+                    break
    f.write("        P8gen.List(9900015)\n")
 f.close()                 
