@@ -79,7 +79,7 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 
 include(CheckCXXCompilerFlag)
 # ROOT 6 requires c++11 support, enforced via headers
-If (ROOT_FOUND_VERSION LESS 59999)
+If (ROOT_FOUND_VERSION LESS 59999 OR NOT ROOT_FOUND_VERSION)
  check_cxx_compiler_flag(-std=c++03 HAS_STD_FLAG)
  check_cxx_compiler_flag(--std=c++03 HAS_STD_FLAG_ALTERNATIVE)
  if (HAS_STD_FLAG)
@@ -90,6 +90,7 @@ If (ROOT_FOUND_VERSION LESS 59999)
   message("Neither --std=c++03 nor -std=c++03 seem to work.  Moving on.")
  endif()
 else() 
+   message("setup for ROOT6 ${ROOT_FOUND_VERSION}")
    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 EndIf()
 

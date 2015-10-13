@@ -13,6 +13,7 @@
 #pragma link C++ class  MuDISGenerator+;
 #pragma link C++ class  NuageGenerator+;
 
+/*
 #pragma link C++ class Pythia8::Pythia+;
 #pragma link C++ class Pythia8::Event+;
 #pragma link C++ class Pythia8::Info+;
@@ -34,7 +35,6 @@
 #pragma link C++ class Pythia8::LHArwgt+;
 #pragma link C++ class Pythia8::SusyLesHouches+;
 //#pragma link C++ class Pythia8::CoupSUSY+; // does not compile
-/*
 #pragma link C++ class Pythia8::Junction+;
 #pragma link C++ class Pythia8::Vec4+;
 #pragma link C++ class Pythia8::InBeam+;
