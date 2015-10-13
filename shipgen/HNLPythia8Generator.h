@@ -19,6 +19,31 @@
 class FairPrimaryGenerator;
 using namespace Pythia8;
 
+class PyTr1Rng : public RndmEngine
+{
+ public:
+  PyTr1Rng() {  rng = new TRandom1(gRandom->GetSeed()); };
+  virtual ~PyTr1Rng() {};
+  
+  Double_t flat() { return rng->Rndm(); };
+  
+ private:
+  TRandom1 *rng; //!
+};
+
+class PyTr3Rng : public RndmEngine
+{
+ public:
+  PyTr3Rng() {  rng = new TRandom3(gRandom->GetSeed()); };
+  virtual ~PyTr3Rng() {};
+  
+  Double_t flat() { return rng->Rndm(); };
+  
+ private:
+  TRandom3 *rng; //!
+};
+
+
 
 class HNLPythia8Generator : public FairGenerator
 {
@@ -52,7 +77,6 @@ class HNLPythia8Generator : public FairGenerator
  private:
   
   RndmEngine* fRandomEngine;  //!
-  // doesnot work Pythia8::Pythia getPythiaInstance(){return fPythia;}  //!
   
  protected:
 

@@ -1,5 +1,5 @@
-#ifndef VETO_H
-#define VETO_H
+#ifndef MUON_H
+#define MUON_H
 
 #include "FairDetector.h"
 
@@ -121,4 +121,4 @@ class muon: public FairDetector
     ClassDef(muon,1)
 };
 
-#endif //VETO_H
+#endif //MUON_H

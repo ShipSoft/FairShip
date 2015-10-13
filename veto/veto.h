@@ -2,9 +2,6 @@
 #define VETO_H
 
 #include "FairDetector.h"
-#include "TGeoMedium.h"
-#include "FairGeoVolume.h"
-
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
@@ -51,15 +48,15 @@ class veto: public FairDetector
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
-    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Int_t c);
-    void SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Double32_t z5, Double32_t z6);
-    void SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t l4, Double32_t l5, Double32_t l6);
-    void SetB(Double32_t b) {fBtube=b;}
-    void SetRminRmax(Double32_t rmin,Double32_t rmax){
+    void SetZpositions(Float_t z0, Float_t z1, Float_t z2, Float_t z3, Float_t z4, Int_t c);
+    void SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Float_t z5, Float_t z6);
+    void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l4, Float_t l5, Float_t l6);
+    void SetB(Float_t b) {fBtube=b;}
+    void SetRminRmax(Float_t rmin,Float_t rmax){
      fRmin = rmin;                                                //!  minimum diameter of vacuum chamber
      fRmax = rmax;                                                //!  maximum diameter of vacuum chamber
      }
-    void SetVminVmax(Double32_t rmin,Double32_t rmax)
+    void SetVminVmax(Float_t rmin,Float_t rmax)
     {
      fVRmin = rmin;                                                //!  minimum diameter liquid scintillator layer
      fVRmax = rmax;                                                //!  maximum diameter liquid scintillator layer
@@ -97,35 +94,35 @@ class veto: public FairDetector
     Int_t          fVolumeID;          //!  volume id
     TLorentzVector fPos;               //!  position at entrance
     TLorentzVector fMom;               //!  momentum at entrance
-    Double32_t     fTime;              //!  time
-    Double32_t     fLength;            //!  length
-    Double32_t     fELoss;             //!  energy loss
-    Double32_t     fT0z;               //!  z-position of veto station
-    Double32_t     fT1z;               //!  z-position of tracking station 1
-    Double32_t     fT2z;               //!  z-position of tracking station 2
-    Double32_t     fT3z;               //!  z-position of tracking station 3
-    Double32_t     fT4z;               //!  z-position of tracking station 4
+    Float_t     fTime;              //!  time
+    Float_t     fLength;            //!  length
+    Float_t     fELoss;             //!  energy loss
+    Float_t     fT0z;               //!  z-position of veto station
+    Float_t     fT1z;               //!  z-position of tracking station 1
+    Float_t     fT2z;               //!  z-position of tracking station 2
+    Float_t     fT3z;               //!  z-position of tracking station 3
+    Float_t     fT4z;               //!  z-position of tracking station 4
     Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers, 
                                        //   2: conical with basic tracking chambers, but no trscking chamber at entrance 
                                        //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
     Bool_t     fFastMuon;
-    Double32_t fTub1z;
-    Double32_t fTub2z;
-    Double32_t fTub3z;
-    Double32_t fTub4z;
-    Double32_t fTub5z;
-    Double32_t fTub6z;
-    Double32_t fTub1length;
-    Double32_t fTub2length;
-    Double32_t fTub3length;
-    Double32_t fTub4length;
-    Double32_t fTub5length;
-    Double32_t fTub6length;
-    Double32_t fRmin;
-    Double32_t fRmax;
-    Double32_t fVRmin;
-    Double32_t fVRmax;
-    Double32_t fBtube;
+    Float_t fTub1z;
+    Float_t fTub2z;
+    Float_t fTub3z;
+    Float_t fTub4z;
+    Float_t fTub5z;
+    Float_t fTub6z;
+    Float_t fTub1length;
+    Float_t fTub2length;
+    Float_t fTub3length;
+    Float_t fTub4length;
+    Float_t fTub5length;
+    Float_t fTub6length;
+    Float_t fRmin;
+    Float_t fRmax;
+    Float_t fVRmin;
+    Float_t fVRmax;
+    Float_t fBtube;
     /** container for data points */
 
     TClonesArray*  fvetoPointCollection;

@@ -23,7 +23,7 @@ public:
   inline Int_t CellNum() const {return fCellNum;}
   inline Int_t ClusterNum() const {return fClusterNum;}
   inline Int_t MCTrack() const {return fMCTrack;}
-  inline Int_t SetMCTrack(Int_t mctrack) {fMCTrack=mctrack;}
+  inline void SetMCTrack(Int_t mctrack) {fMCTrack=mctrack;}
 
 private:
   /** Uncalibrated energy **/

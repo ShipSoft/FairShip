@@ -7,7 +7,7 @@ EndIf (Boost_Avail)
 
 # Set the build type. Possibilities are None, Debug, Release,
 # RelWithDebInfo and MinSizeRel
-#SET(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_BUILD_TYPE Release)
 
 # either, the environment variable RAVEPATH has to be specified, and RAVE's pkgConfig will be used to determine everything we need
 # or, RAVE_LDFLAGS, RAVE_INCLUDE_DIRS and RAVE_CFLAGS have to be set via the command-line
@@ -23,7 +23,7 @@ IF(DEFINED ENV{RAVEPATH})
 ELSEIF(DEFINED RAVE_LDFLAGS)
 	IF(DEFINED RAVE_INCLUDE_DIRS)
 		IF(DEFINED RAVE_CFLAGS)
-			MESSAGE("RAVE_LDFLAGS, RAVE_INCLUDE_DIRS and RAVE_CFLAGS are set. Try to build GFRave.")
+			MESSAGE("RAVE_LDFLAGS, RAVE_INCLUDE_DIRS and RAVE_CFLAGS are set. Try to build GFRave. ${RAVE_LDFLAGS}")
 			SET(RAVE True)
 		ENDIF()
 	ENDIF()
@@ -78,15 +78,20 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 #SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --coverage")
 
 include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag(-std=c++03 HAS_STD_FLAG)
-check_cxx_compiler_flag(--std=c++03 HAS_STD_FLAG_ALTERNATIVE)
-if (HAS_STD_FLAG)
+# ROOT 6 requires c++11 support, enforced via headers
+If (ROOT_FOUND_VERSION LESS 59999)
+ check_cxx_compiler_flag(-std=c++03 HAS_STD_FLAG)
+ check_cxx_compiler_flag(--std=c++03 HAS_STD_FLAG_ALTERNATIVE)
+ if (HAS_STD_FLAG)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
-elseif (HAS_STD_FLAG_ALTERNATIVE)
+ elseif (HAS_STD_FLAG_ALTERNATIVE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++03")
-else()
+ else()
   message("Neither --std=c++03 nor -std=c++03 seem to work.  Moving on.")
-endif()
+ endif()
+else() 
+   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+EndIf()
 
 # require proper c++, standard is C++03, flag reads: c++98
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wno-long-long -Wshadow -Werror=overloaded-virtual"   )
@@ -282,7 +287,7 @@ link_directories( ${LINK_DIRECTORIES})
 Set(SRCS ${library_sources})
 Set(HEADERS)
 Set(LIBRARY_NAME genfit)
-Set(DEPENDENCIES Cint Core Geom Matrix Eve Gui Physics MathCore EG)
+Set(DEPENDENCIES Core Geom Matrix Eve Gui Physics MathCore EG)
 
 Set(LINKDEF
 ${CMAKE_CURRENT_SOURCE_DIR}/core/src/coreLinkDef.h
@@ -297,13 +302,14 @@ ${CMAKE_CURRENT_SOURCE_DIR}/utilities/src/utilitiesLinkDef.h
 if(DEFINED RAVE)
   Set(LINKDEF ${LINKDEF} ${CMAKE_CURRENT_SOURCE_DIR}/GFRave/src/GFRaveLinkDef.h)
 endif()
-ROOT_GENERATE_ROOTMAP()
+If (ROOT_FOUND_VERSION LESS 59999)
+    ROOT_GENERATE_ROOTMAP()
+EndIf()
 
 # to not call again ROOT_GENERATE_ROOTMAP
 Set(LINKDEF)
 
 GENERATE_LIBRARY()
-
 
 # the examples, build with "make tests"
 ADD_CUSTOM_TARGET( tests )

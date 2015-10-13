@@ -32,6 +32,6 @@ TargetPoint.cxx
 Set(HEADERS )
 Set(LINKDEF nutaudetLinkDef.h)
 Set(LIBRARY_NAME nutaudet)
-Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Cint Core)
+Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core)
 
 GENERATE_LIBRARY()

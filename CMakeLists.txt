@@ -106,8 +106,8 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-find_package(ROOT 5.32.00 REQUIRED)
-find_package(PLUTO REQUIRED)
+find_package(ROOT 5.34.00 REQUIRED)
+# find_package(PLUTO REQUIRED)
 find_package(Pythia8 REQUIRED)
 find_package(GENERATORS REQUIRED)
 find_package(GEANT3 REQUIRED)

@@ -276,7 +276,8 @@ if eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
 else:            run.SetStoreTraj(ROOT.kFALSE)
 # -----Initialize simulation run------------------------------------
 run.Init()
-fStack = ROOT.gMC.GetStack()
+gMC = ROOT.TVirtualMC.GetMC()
+fStack = gMC.GetStack()
 if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
 
 if eventDisplay:

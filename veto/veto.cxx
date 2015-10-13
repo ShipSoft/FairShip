@@ -147,7 +147,7 @@ Int_t veto::InitMedium(const char* name)
   return geoBuild->createMedium(ShipMedium);
 }
 // -------------------------------------------------------------------------
-void veto::SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Double32_t z5, Double32_t z6)
+void veto::SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Float_t z5, Float_t z6)
 {
      fTub1z = z1;                                                 //!  z-position of tub1
      fTub2z = z2;                                                 //!  z-position of tub2
@@ -157,7 +157,7 @@ void veto::SetTubZpositions(Double32_t z1, Double32_t z2, Double32_t z3, Double3
      fTub6z = z6;                                                 //!  z-position of tub6
 }
 
-void veto::SetTublengths(Double32_t l1, Double32_t l2, Double32_t l3, Double32_t l4, Double32_t l5, Double32_t l6)
+void veto::SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l4, Float_t l5, Float_t l6)
 {
      fTub1length = l1;                                                 //!  half length of tub1
      fTub2length = l2;                                                 //!  half length of tub2
@@ -249,7 +249,7 @@ void veto::Reset()
 {
   fvetoPointCollection->Clear();
 }
-void veto::SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4, Int_t c)
+void veto::SetZpositions(Float_t z0, Float_t z1, Float_t z2, Float_t z3, Float_t z4, Int_t c)
 {
      fT0z = z0;            //!  z-position of veto station
      fT1z = z1;            //!  z-position of tracking station 1

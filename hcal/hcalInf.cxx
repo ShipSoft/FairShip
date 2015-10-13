@@ -173,7 +173,7 @@ hcalInf::hcalInf(const char* filename)
     rtdb->getContainer("CbmGeoHcalPar");
   }
   */
-  ifstream file(filename);
+  std::ifstream file(filename);
   Int_t linenum;
   Double_t val;
   string buffer;
