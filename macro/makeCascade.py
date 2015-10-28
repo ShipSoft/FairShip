@@ -166,6 +166,7 @@ myPythia.SetMSTU(11, 11)
 
 #start with different random number for each run...
 if R == '': R = int(time.time()*100000000%900000000)
+print 'Setting random number seed =',R
 myPythia.SetMRPY(1,R)
 
 #histogram helper
