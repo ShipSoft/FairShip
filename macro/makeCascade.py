@@ -18,22 +18,24 @@ try:
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter -n: number of events to produce, default 20000'
-        print '       -msel 4 (5): charm (beauty) production, default charm' 
-        print '       -E: energy of beam, default 400 GeV' 
-        print '       -fn: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root'
-        print '       -fh: name of histogram output file, default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-hists.root'
-        print '       -seed: random number seed, integer, if not given, current time will be used.'
+        print '       -m --msel=4 (5): charm (beauty) production, default charm' 
+        print '       -E --beam=: energy of beam, default 400 GeV' 
+        print '       -t: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root'
+        print '       -h: name of histogram output file, default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-hists.root'
+        print '       -s --seed: random number seed, integer, if not given, current time will be used.'
         sys.exit()
 for o, a in opts:
-        if o == "-n ":
+        if o in ("-n"):
             nevgen = int(a)
-        if o in ("-E"):
+        if o in ("-E","--beam"):
             pbeamh = float(a)
-        if o == "-fh ":
+        if o in ("-m","--msel"):
+             mselcb = int(a)
+        if o in ("-h"):
             Fhists = a
-        if o == "-fn ":
+        if o in ("-t"):
             Fntuple = a
-        if o == "-seed ":
+        if o in ("-s","--seed"):
             R = int(a)
 
 print 'Generate ',nevgen,' p.o.t. with msel=',mselcb,' proton beam ',pbeamh,'GeV'
