@@ -2,14 +2,14 @@ import ROOT,time,os,sys,random,getopt
 import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
-
+R = ''
 #generate ccbar (msel=4) or bbbar(msel=5)
 mselcb=4
 pbeamh=400.
 
-nevgen=20000
-Fntuple='Cascade20k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-ntuple.root'
-Fhists='Cascade20k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-hists.root'
+nevgen=100000
+Fntuple='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-ntuple.root'
+Fhists='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-hists.root'
 
 print "usage: python $FAIRSHIP/macro/makeCascade.py -n (20000) -msel (4) -E (400)"
 
@@ -19,19 +19,22 @@ except getopt.GetoptError:
         # print help information and exit:
         print ' enter -n: number of events to produce, default 20000'
         print '       -msel 4 (5): charm (beauty) production, default charm' 
-        print '       E: energy of beam, default 400 GeV' 
-        print '       fn: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root'
-        print '       fh: name of histogram output file, default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-hists.root'
+        print '       -E: energy of beam, default 400 GeV' 
+        print '       -fn: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root'
+        print '       -fh: name of histogram output file, default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-hists.root'
+        print '       -seed: random number seed, integer, if not given, current time will be used.'
         sys.exit()
 for o, a in opts:
-        if o in ("-n"):
+        if o == "-n ":
             nevgen = int(a)
         if o in ("-E"):
             pbeamh = float(a)
-        if o in ("-fh"):
+        if o == "-fh ":
             Fhists = a
-        if o in ("-fn"):
+        if o == "-fn ":
             Fntuple = a
+        if o == "-seed ":
+            R = int(a)
 
 print 'Generate ',nevgen,' p.o.t. with msel=',mselcb,' proton beam ',pbeamh,'GeV'
 print 'Output ntuples written to: ',Fntuple
@@ -162,7 +165,7 @@ PoorE791_tune(myPythia)
 myPythia.SetMSTU(11, 11)
 
 #start with different random number for each run...
-R = int(time.time()%900000000)
+if R == '': R = int(time.time()*100000000%900000000)
 myPythia.SetMRPY(1,R)
 
 #histogram helper
