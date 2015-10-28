@@ -341,8 +341,6 @@ for iev in range(nevgen):
 
 print 'Now at Ntup.Write()'
 Ntup.Write()
+for akey in h: h[akey].Write()
 ftup.Close()
-#
-ut.writeHists(h,Fhists)
-
 
