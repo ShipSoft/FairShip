@@ -14,14 +14,15 @@ Fhists='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-hists.root'
 print "usage: python $FAIRSHIP/macro/makeCascade.py -n (20000) -msel (4) -E (400)"
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "fn:fh:n:E:msel:",[])
+        opts, args = getopt.getopt(sys.argv[1:], "t:H:n:E:m:",[\
+                                   "msel=","beam="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter -n: number of events to produce, default 20000'
         print '       -m --msel=4 (5): charm (beauty) production, default charm' 
         print '       -E --beam=: energy of beam, default 400 GeV' 
         print '       -t: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root'
-        print '       -h: name of histogram output file, default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-hists.root'
+        print '       -H: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-hists.root'
         print '       -s --seed: random number seed, integer, if not given, current time will be used.'
         sys.exit()
 for o, a in opts:
@@ -31,7 +32,7 @@ for o, a in opts:
             pbeamh = float(a)
         if o in ("-m","--msel"):
              mselcb = int(a)
-        if o in ("-h"):
+        if o in ("-H"):
             Fhists = a
         if o in ("-t"):
             Fntuple = a
