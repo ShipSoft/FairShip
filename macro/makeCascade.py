@@ -9,7 +9,6 @@ pbeamh=400.
 
 nevgen=100000
 Fntuple='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-ntuple.root'
-Fhists='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-hists.root'
 
 print "usage: python $FAIRSHIP/macro/makeCascade.py -n (20000) -msel (4) -E (400)"
 
@@ -22,7 +21,6 @@ except getopt.GetoptError:
         print '       -m --msel=4 (5): charm (beauty) production, default charm' 
         print '       -E --beam=: energy of beam, default 400 GeV' 
         print '       -t: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root'
-        print '       -H: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-hists.root'
         print '       -s --seed: random number seed, integer, if not given, current time will be used.'
         sys.exit()
 for o, a in opts:
@@ -32,8 +30,6 @@ for o, a in opts:
             pbeamh = float(a)
         if o in ("-m","--msel"):
              mselcb = int(a)
-        if o in ("-H"):
-            Fhists = a
         if o in ("-t"):
             Fntuple = a
         if o in ("-s","--seed"):
@@ -41,7 +37,6 @@ for o, a in opts:
 
 print 'Generate ',nevgen,' p.o.t. with msel=',mselcb,' proton beam ',pbeamh,'GeV'
 print 'Output ntuples written to: ',Fntuple
-print 'Output checking hists written to: ',Fhists
 
 
 #some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum

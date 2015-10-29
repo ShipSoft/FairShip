@@ -1,6 +1,6 @@
 #Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
 #Output is an ntuple with muon/neutrinos 
-import ROOT,time,os,sys,random
+import ROOT,time,os,sys,random,getopt
 import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
@@ -40,7 +40,12 @@ nEvents = sTree.GetEntries()
 #Calculate weights, for the whole file.
 #get histogram with number of pot to normalise
 hc={}
-hc['2']=fin.Get("2")
+if fin.GetKey("2") : 
+ hc['2']=fin.Get("2")
+else: 
+ fhin = ROOT.TFile(FIN.replace('ntuple','hists'))
+ hc['2']=fhin.Get("2")
+
 #pot are counted double, i.e. for each signal, i.e. pot/2.
 nrcpot=hc['2'].GetBinContent(1)/2.
 print 'Input file: ',FIN,' with ',nEvents,' entries, corresponding to nr-pot=',nrcpot
