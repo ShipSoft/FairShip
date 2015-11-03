@@ -2,19 +2,13 @@
 import ROOT,sys,getopt,os,Tkinter
 from ShipGeoConfig import ConfigRegistry
 import shipunit as u
+import shipRoot_conf
+shipRoot_conf.configure()
 
 fMan = None
 fRun = None
 pdg  = ROOT.TDatabasePDG()
 g    = ROOT.gROOT 
-
-#-----prepare python exit-----------------------------------------------
-def pyExit():
- global fMan,fRun
- del fMan
- del fRun
-import atexit
-atexit.register(pyExit)
 
 ParFile    = None
 geoFile    = None
@@ -123,7 +117,7 @@ class DrawEcalCluster(ROOT.FairTask):
       DClus = ROOT.TEveBox()
       DClus.SetName('EcalCluster_'+str(cl)+'_'+str(i)) 
       DClus.SetMainColor(ROOT.kRed-4)
-      DClus.SetMainTransparency(0.5)
+      DClus.SetMainTransparency("\x10")
       DClus.SetVertex(0,x1,y1,self.z_ecal)
       DClus.SetVertex(1,x1,y1,self.z_ecal+dz)
       DClus.SetVertex(2,x2,y1,self.z_ecal+dz)
@@ -642,7 +636,11 @@ from basiclibs import *
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
 if geoFile: fRun.SetGeomFile(geoFile)
-fRun.SetInputFile(InputFile)
+if hasattr(fRun,'SetSource'):
+ inFile = ROOT.FairFileSource(InputFile)
+ fRun.SetSource(inFile)
+else:
+ fRun.SetInputFile(InputFile)
 fRun.SetOutputFile(OutFile)
 
 if ParFile:

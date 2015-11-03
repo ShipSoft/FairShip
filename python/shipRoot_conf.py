@@ -1,10 +1,12 @@
 import ROOT, atexit, sys
 #-----prepare python exit-----------------------------------------------
 
-
+ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 def pyExit():
  x = sys.modules['__main__']
- del x.run
+ if hasattr(x,'run'): del x.run
+ if hasattr(x,'fMan'): del x.fMan
+ if hasattr(x,'fRun'): del x.fRun
  pass
 
 
