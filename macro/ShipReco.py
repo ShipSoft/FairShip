@@ -1,4 +1,3 @@
-# setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
 inputFile = 'ship.Pythia8-TGeant4.root'
 geoFile   = None
 debug = False
@@ -13,11 +12,16 @@ saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
 
+
+from array import array
 import ROOT,os,sys,getopt
 import __builtin__ as builtin
 from pythia8_conf import addHNLtoROOT
 import rootUtils as ut
+import shipunit as u
+import shipRoot_conf
 
+shipRoot_conf.configure()
 # init fitter, to be done before importing shipPatRec
 #fitter          = ROOT.genfit.KalmanFitter()
 #fitter          = ROOT.genfit.KalmanFitterRefTrack()
@@ -88,16 +92,14 @@ if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
 else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
 print 'found ecal geo for ',ecalGeoFile
 
+h={}
 if withHists:
- h={}
  ut.bookHist(h,'distu','distance to wire',100,0.,5.)
  ut.bookHist(h,'distv','distance to wire',100,0.,5.)
  ut.bookHist(h,'disty','distance to wire',100,0.,5.)
  ut.bookHist(h,'nmeas','nr measuerements',100,0.,50.)
  ut.bookHist(h,'chi2','Chi2/DOF',100,0.,20.)
- ut.bookHist(h,'Vzpull','Vz pull',100,-3.,3.)
- ut.bookHist(h,'Vxpull','Vx pull',100,-3.,3.)
- ut.bookHist(h,'Vypull','Vy pull',100,-3.,3.)
+
 #-----prepare python exit-----------------------------------------------
 def pyExit():
  global fitter
@@ -106,9 +108,6 @@ def pyExit():
 import atexit
 atexit.register(pyExit)
 
-from array import array
-import shipunit as u
-import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 if dy: 
  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
@@ -121,89 +120,11 @@ modules = shipDet_conf.configure(run,ShipGeo)
 builtin.debug    = debug
 builtin.fitter   = fitter
 builtin.ship_geo = ShipGeo # for shipPatRec
-addHNLtoROOT()
+builtin.pidProton = pidProton
 
-def myVertex(t1,t2,PosDir):
- # closest distance between two tracks
-    # d = |pq . u x v|/|u x v|
-   a,u = PosDir[t1]['position'],PosDir[t1]['direction']
-   c,v = PosDir[t2]['position'],PosDir[t2]['direction']
-   pq = a-c
-   uCrossv = u.Cross(v)
-   dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
-   # u.a - u.c + s*|u|**2 - u.v*t    = 0
-   # v.a - v.c + s*v.u    - t*|v|**2 = 0
-   E = u.Dot(a) - u.Dot(c) 
-   F = v.Dot(a) - v.Dot(c) 
-   A,B = u.Mag2(), -u.Dot(v) 
-   C,D = u.Dot(v), -v.Mag2()
-   t = -(C*E-A*F)/(B*C-A*D)
-   X = c.x()+v.x()*t
-   Y = c.y()+v.y()*t
-   Z = c.z()+v.z()*t
-   # sT = ROOT.gROOT.FindAnything('cbmsim')
-   #print 'test2 ',X,Y,Z,dist
-   #print 'truth',sTree.MCTrack[2].GetStartX(),sTree.MCTrack[2].GetStartY(),sTree.MCTrack[2].GetStartZ()
-   return X,Y,Z,abs(dist)
-def myVertexError(t1,t2,PosDir,CovMat=None,scalFac=None):
-   a,u = PosDir[t1]['position'],PosDir[t1]['direction']
-   c,v = PosDir[t2]['position'],PosDir[t2]['direction']
-   denom = u.Dot(u)*v.Dot(v)-(u.Dot(v))**2
-   tmp1 = c-a
-   tmp2 = v.Dot(v)*u-u.Dot(v)*v
-   Va = tmp1.Dot(tmp2)/denom
-   tmp2 = u.Dot(v)*u-u.Dot(u)*v
-   Vb = tmp1.Dot(tmp2)/denom
-   X = (a+Va*u+c+Vb*v) * 0.5
-   l1 = a - X + u*Va # l2 = c - X + v*Vb
-   dist = 2.*ROOT.TMath.Sqrt( l1.Dot(l1) )
-   check=c+Vb*v
-   if not CovMat: return X,dist
-   T = ROOT.TMatrixD(3,12)
-   for i in range(3):
-     for k in range(4):
-       for j in range(3): 
-        KD = 0
-        if i==j: KD = 1
-        if k==0 or k==2:
-       # cova and covc
-         temp  = ( u[j]*v.Dot(v) - v[j]*u.Dot(v) )*u[i]+(u[j]*u.Dot(v)-v[j]*u.Dot(u))*v[i]
-         sign = -1
-         if k==2 : sign = +1
-         T[i][3*k+j] = 0.5*( KD + sign*temp )/denom
-        elif k==1:
-       # covu
-         ca= c-a
-         T[i][3*k+j] = 0.5*(Va*KD + u[i]/denom**2*(denom*( ca[j]*v.Dot(v)-(v.Dot(ca)*v[j]) - \
-                         (ca.Dot(u)*v.Dot(v)-ca.Dot(v)*u.Dot(v))*2*u[j]*v.Dot(v)-v[j]*u.Dot(v) ))+ \
-                          v[i]/denom**2*(denom*( ca[j]*u.Dot(v)-(u.Dot(ca)*v[j]) - \
-                         2*ca.Dot(v)*u[j]-(ca.Dot(u)*u.Dot(v)- ca.Dot(v)*u.Dot(u))*2*(u[j]*v.Dot(v)-v[j]*u.Dot(v)) )) )
-        elif k==3:
-       # covv
-         ca= c-a
-         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(denom*( 2*ca.Dot(u)*v[j] - ca.Dot(v)*u[j]- \
-                         ca[j]*u.Dot(v) ) - (ca.Dot(u)*v.Dot(v)-ca.Dot(v)*u.Dot(v))*2*(v[j]*u.Dot(u)-u[j]*u.Dot(v) )) + \
-                          v[i]/denom**2*(denom*( ca.Dot(u)*u[j]-ca[j]*u.Dot(u) ) - \
-                         (ca.Dot(u)*u.Dot(v)-ca.Dot(v)*u.Dot(u))*2*(v[j]*u.Dot(u)-u[j]*u.Dot(v)) ))   
-        #print "jacob",i,3*k+j, T[i][3*k+j]
-   transT = ROOT.TMatrixD(12,3)
-   transT.Transpose(T)
-   CovTracks = ROOT.TMatrixD(12,12)
-   tlist = [t1,t2]
-   for k in range(2):
-     for i in range(6):
-       for j in range(6): 
-        xfac = 1.
-        if i>2: xfac = scalFac[tlist[k]]  
-        if j>2: xfac = xfac * scalFac[tlist[k]]
-        CovTracks[i+k*6][j+k*6] = CovMat[tlist[k]][i][j] * xfac
-        #print "cov track",i+k*6,6*k+j,  CovTracks[i+k*6][j+k*6]
-   tmp   = ROOT.TMatrixD(3,12)
-   tmp.Mult(T,CovTracks)
-   covX  = ROOT.TMatrixD(3,3)
-   covX.Mult(tmp,transT)
-   return X,covX,dist
-#
+import shipVertex
+PDG = ROOT.TDatabasePDG.Instance()
+addHNLtoROOT()
 
 class ShipReco:
  " convert FairSHiP MC hits to measurements"
@@ -242,7 +163,7 @@ class ShipReco:
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
                   "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint"}
   for x in branch_class:
-    if not self.sTree.GetBranch(x) and 1<0:
+    if not self.sTree.GetBranch(x):
      self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
      self.dummyContainers[x] = self.sTree.Branch(x,self.dummyContainers[x+"_array"],32000,-1) 
      setattr(self.sTree,x,self.dummyContainers[x+"_array"])
@@ -251,22 +172,19 @@ class ShipReco:
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
   self.nEvents   = min(self.sTree.GetEntries(),nEvents)
 # prepare for output
-  self.fPartArray   = ROOT.TClonesArray("TParticle") 
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
   self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
   self.fitTracks   = self.sTree.Branch("FitTracks"+realPR,  self.fGenFitArray,32000,-1)
-  self.Particles   = self.sTree.Branch("Particles"+realPR,  self.fPartArray,32000,-1)
 #
   self.SmearedHits     = ROOT.TClonesArray("TVectorD") 
   self.SHbranch       = self.sTree.Branch("SmearedHits",self.SmearedHits,32000,-1)
 #
-  self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
-  self.reps,self.states,self.newPosDir = {},{},{}
-#
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
+#
+  self.Vertexing = shipVertex.Task(h,self)
 
  def hit2wire(self,ahit,no_amb=None):
      detID = ahit.GetDetectorID()
@@ -279,7 +197,7 @@ class ShipReco:
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = dw
-     if not no_amb: smear = ROOT.fabs(self.random.Gaus(dw,ShipGeo.straw.resol))
+     if not no_amb: smear = abs(self.random.Gaus(dw,ShipGeo.straw.resol))
      smearedHit = {'mcHit':ahit,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'z':bot.z(),'dist':smear}
      # print 'smeared hit:',top.x(),top.y(),top.z(),bot.x(),bot.y(),bot.z(),"dist",smear,ex,ey,ez,ox,oy,oz
      if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
@@ -287,7 +205,7 @@ class ShipReco:
      if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
      return smearedHit
   
- def execute(self,n):
+ def findTracks(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
   if n%1000==0: print "==> event ",n
@@ -296,7 +214,6 @@ class ShipReco:
   stationCrossed = {}
   fittedtrackids=[]
   self.SmearedHits.Delete()
-  self.fPartArray.Delete()
   self.fGenFitArray.Delete()
   self.fitTrack2MC.clear()
 #   
@@ -351,7 +268,7 @@ class ShipReco:
     resolution = ShipGeo.straw.resol
     for  i in range(3):   covM[i][i] = resolution*resolution
     covM[0][0]=resolution*resolution*100.
-    for  i in range(3,6): covM[i][i] = ROOT.TMath.pow(resolution / nM / ROOT.TMath.sqrt(3), 2)
+    for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
 # trackrep
     rep = ROOT.genfit.RKTrackRep(pdg)
 # smeared start state
@@ -397,98 +314,11 @@ class ShipReco:
     self.fitTrack2MC.push_back(atrack)
     if debug: 
      print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
+  self.fitTracks.Fill()
+  self.mcLink.Fill()
+  self.SHbranch.Fill()
   return nTrack+1
 #
- def find2TrackVertex(self):
-  fittedTracks = self.fGenFitArray
-  particles    = self.fPartArray
-  PosDirCharge,CovMat,scalFac = {},{},{}
-  for tr in range(fittedTracks.GetEntries()):
-   fitStatus = fittedTracks[tr].getFitStatus()
-   if not fitStatus.isFitConverged(): continue
-   nmeas = fitStatus.getNdf()
-   chi2  = fitStatus.getChi2()/nmeas
-   if chi2<50 and not chi2<0: 
-      xx  = fittedTracks[tr].getFittedState()
-      pid   = xx.getPDG()
-      if not pidProton and abs(pid) == 2212:
-        pid = ROOT.TMath.Sign(211,pid)
-      rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
-      state = ROOT.genfit.StateOnPlane(rep)
-      rep.setPosMom(state,xx.getPos(),xx.getMom())
-      PosDirCharge[tr] = {'position':xx.getPos(),'direction':xx.getDir(),\
-                          'momentum':xx.getMom(),'charge':xx.getCharge(),'pdgCode':pid,'state':xx,'rep':rep,'newstate':state}
-      CovMat[tr] = xx.get6DCov() 
-#
-  if len(PosDirCharge) < 2: return
-  if len(PosDirCharge) > 4: return # abort too busy events
-  for t1 in PosDirCharge:
-   c1  = PosDirCharge[t1]['charge'] 
-   for t2 in PosDirCharge:
-     if not t2>t1: continue
-     # ignore this for background studies 
-     if PosDirCharge[t2]['charge'] == c1 : continue
-     newPos,doca    = myVertexError(t1,t2,PosDirCharge)
-# as we have learned, need iterative procedure
-# as we have learned, need iterative procedure
-     dz = 99999.
-     rc = True 
-     step = 0
-     while dz > 0.01:
-      zBefore = newPos[2]
-     # make a new rep for track 1,2
-      for tr in [t1,t2]:     
-       try:
-        PosDirCharge[tr]['rep'].extrapolateToPoint(PosDirCharge[tr]['newstate'], newPos, False)
-       except:
-        print 'SHiPReco: extrapolation did not worked'
-        rc = False  
-        break
-       self.newPosDir[tr] = {'position':PosDirCharge[tr]['rep'].getPos(PosDirCharge[tr]['newstate']),\
-                             'direction':PosDirCharge[tr]['rep'].getDir(PosDirCharge[tr]['newstate']),\
-                             'momentum':PosDirCharge[tr]['rep'].getMom(PosDirCharge[tr]['newstate'])}
-      if not rc: break
-      newPos,doca = myVertexError(t1,t2,self.newPosDir)
-      dz = abs(zBefore-newPos[2])
-      step+=1
-      if step > 10:  
-         print 'abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz
-         rc = False
-         break 
-#       
-     if not rc: continue # extrapolation failed, makes no sense to continue
-# now go for the last step and vertex error
-     scalFac[t1] = (PosDirCharge[t1]['position'][2]-newPos[2])/PosDirCharge[t1]['direction'][2]/PosDirCharge[t1]['momentum'].Mag()
-     scalFac[t2] = (PosDirCharge[t2]['position'][2]-newPos[2])/PosDirCharge[t2]['direction'][2]/PosDirCharge[t2]['momentum'].Mag()
-     HNLPos,covX,dist = myVertexError(t1,t2,self.newPosDir,CovMat,scalFac)
-# monitor Vx resolution and pulls
-     #print "DEBUG",HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]
-     #print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
-#   HNL true
-     if  self.sTree.GetBranch("fitTrack2MC"):
-      mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]
-      h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
-      h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
-      h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
-#
-     pid = PosDirCharge[t1]['pdgCode']
-     mass = PDG.GetParticle(pid).Mass()
-     mom  = self.newPosDir[t1]['momentum']
-     E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
-     self.LV[1].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
-     pid = PosDirCharge[t2]['pdgCode']
-     mass = PDG.GetParticle(pid).Mass()
-     mom  = self.newPosDir[t2]['momentum']
-     E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
-     self.LV[2].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
-     HNL = self.LV[1]+self.LV[2]
-# try to make it persistent
-     vx = ROOT.TLorentzVector(HNLPos,doca)  # misuse time as DOCA  
-     particle = ROOT.TParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
-     particle.SetMother(1,99) # as marker to remember doca is set
-     nParts   = particles.GetEntries()
-     particles[nParts] = particle
-
 SHiP = ShipReco(outFile)
 caloTasks = []  
 if SHiP.sTree.GetBranch("EcalPoint"):
@@ -536,7 +366,6 @@ if SHiP.sTree.GetBranch("EcalPoint"):
   caloTasks.append(ecalDrawer)
 
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
-PDG = ROOT.TDatabasePDG.Instance()
 # init geometry and mag. field
 gMan  = ROOT.gGeoManager
 #
@@ -569,15 +398,10 @@ shipPatRec.initialize(fgeo)
 # main loop
 for iEvent in range(firstEvent, SHiP.nEvents):
  if debug: print 'event ',iEvent
- ntracks = SHiP.execute(iEvent)
+ ntracks = SHiP.findTracks(iEvent)
  if vertexing:
 # now go for 2-track combinations
-   if ntracks > 1: SHiP.find2TrackVertex()
-# make tracks and particles persistent
- SHiP.Particles.Fill()
- SHiP.fitTracks.Fill()
- SHiP.mcLink.Fill()
- SHiP.SHbranch.Fill()
+   SHiP.Vertexing.execute()
  for x in caloTasks: x.Exec('start')
  SHiP.EcalClusters.Fill()
 

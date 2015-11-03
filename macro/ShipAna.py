@@ -3,6 +3,9 @@ import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
+import shipRoot_conf
+shipRoot_conf.configure()
+
 debug = False
 chi2CutOff  = 4.
 PDG = ROOT.TDatabasePDG.Instance()
