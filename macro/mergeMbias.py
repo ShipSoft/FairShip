@@ -52,7 +52,9 @@ def TplotP(sTree):
     if q=='mu+': h[hn].SetLineColor(3) 
     if q=='mu-': h[hn].SetLineColor(4) 
 # integrated rates
-  for p in [ 'mu','mu-','mu+','nu','nue','nuebar','numu','numubar','nutau','nutaubar']:
+  for q in [ 'mu','mu-','mu+','nu','nue','nuebar','numu','numubar','nutau','nutaubar']:
+   for x in ['','charm']:
+    p = q+x
     hi =  'Tp'+p+'_>E'
     h[hi]=h['Tp'+p].Clone(hi)
     h[hi].Reset()
@@ -292,30 +294,35 @@ def mergeWithCharm(splitOnly=False):
      N.Close()
     print " progress: splitted "+opt
 def test(fname):
- h['f'] = ROOT.TFile(fname)
+ h['f'] = ROOT.TFile.Open(fname)
  sTree = h['f'].FindObjectAny('pythia8-Geant4')
  TplotP(sTree)
 def compare():
- test('$SHIPDATA/pythia8_Geant4_onlyMuons.root')
+ test(eospath+'pythia8_Geant4_onlyMuons.root')
  for x in ['','_>E']:
-  for ahist in ['pmu-','pmu+','pmu']:
+  for ahist in ['pmu-','pmu+','pmu','pmu-charm','pmu+charm','pmucharm']:
    h['TP'+ahist+x]=h['T'+ahist+x].Clone('CT'+ahist+x)
- test('$SHIPDATA/pythia8_Geant4_onlyNeutrinos.root')
+ test(eospath+'pythia8_Geant4_Yandex_onlyNeutrinos.root')
  for x in ['','_>E']:
   for ahist in ['pnumu','pnumubar','pnue','pnuebar']:
    h['TP'+ahist+x]=h['T'+ahist+x].Clone('CT'+ahist+x)
- test('pythia8_Geant4-withCharm.root')
+ test(eospath+'Mbias/pythia8_Geant4-withCharm-ram.root')
  for x in ['','_>E']:
   t = 'P'
   if x != '' : t='>P' 
   h[t].cd(1)
   h['Tpmu'+x].Draw()
+  h['Tpmucharm'+x].Draw('same')
   h['TPpmu'+x].Draw('same')
   h['TPpmu'+x].SetLineColor(6)
+  h['TPpmu'+x].Draw('same')
+  h['TPpmucharm'+x].SetLineColor(6)
   h['Tpmu'+x].SetLineColor(4)
   h['Lmu'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
   h['Lmu'+x].AddEntry(h['Tpmu'+x],'muon new with charm, cascade, k-fac','PL')
+  h['Lmu'+x].AddEntry(h['Tpmu'+x],'muon from charm new with charm, cascade, k-fac','PL')
   h['Lmu'+x].AddEntry(h['TPpmu'+x],'muon old CERN-Cracow prod','PL')
+  h['Lmu'+x].AddEntry(h['TPpmu'+x],'muon from charm old CERN-Cracow prod','PL')
   h['Lmu'+x].Draw()
   h[t].cd(2)
   h['Tpnumu'+x].Draw()
@@ -324,7 +331,7 @@ def compare():
   h['Tpnumu'+x].SetLineColor(4)
   h['Lnu'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
   h['Lnu'+x].AddEntry(h['Tpnumu'+x],'nu_mu new with charm, cascade, k-fac','PL')
-  h['Lnu'+x].AddEntry(h['TPpnumu'+x],'nu_mu old CERN-Cracow prod','PL')
+  h['Lnu'+x].AddEntry(h['TPpnumu'+x],'nu_mu old Yandex prod','PL')
   h['Lnu'+x].Draw()
   t3 = h[t].cd(3)
   t3.SetLogy(1)
@@ -338,9 +345,9 @@ def compare():
   h['Tpnue'+x].SetLineColor(3)
   h['Lnue'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
   h['Lnue'+x].AddEntry(h['Tpnuebar'+x],'anti nu_e new with charm, cascade, k-fac','PL')
-  h['Lnue'+x].AddEntry(h['TPpnuebar'+x],'anti nu_e old CERN-Cracow prod','PL')
+  h['Lnue'+x].AddEntry(h['TPpnuebar'+x],'anti nu_e old Yandex prod','PL')
   h['Lnue'+x].AddEntry(h['Tpnue'+x],'nu_e new with charm, cascade, k-fac','PL')
-  h['Lnue'+x].AddEntry(h['TPpnue'+x],'nu_e old CERN-Cracow prod','PL')
+  h['Lnue'+x].AddEntry(h['TPpnue'+x],'nu_e old Yandex prod','PL')
   h['Lnue'+x].Draw() 
   t4 = h[t].cd(4)
   t4.SetLogy(1)
@@ -350,10 +357,10 @@ def compare():
   h['Tpnumubar'+x].SetLineColor(4)
   h['Lnubar'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
   h['Lnubar'+x].AddEntry(h['Tpnumubar'+x],'anti nu_mu new with charm, cascade, k-fac','PL')
-  h['Lnubar'+x].AddEntry(h['TPpnumubar'+x],'anti nu_mu old CERN-Cracow prod','PL')
+  h['Lnubar'+x].AddEntry(h['TPpnumubar'+x],'anti nu_mu old Yandex prod','PL')
   h['Lnubar'+x].Draw() 
 #
-  h[t].Print('comparison'+x+'.png')
+  h[t].Print('comparison'+x.replace('_>','')+'.png')
 print "+ to start the full production: runProduction()"
 print "+ merging with charm events:   mergeWithCharm()"
 print "+ testing output: test('pythia8_Geant4-noOpenCharm.root')"
