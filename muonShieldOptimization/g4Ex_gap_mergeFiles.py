@@ -1,8 +1,9 @@
 # result_1Bn_ecut_5.root  		1E9 with Ecut > 5 GeV
 # result_0.1Bn_ecut_0.5.root         	1E8 with Ecut > 0.5 GeV
 Yandex   = False  # False
+Yandex2   = True  # summer 2015 production, 10B, Ecut>10GeV, Mo/W/ target
 JPsi     = False # True
-MoTarget = True
+MoTarget = False 
 Tau      = False
 
 import ROOT,os
@@ -17,6 +18,10 @@ if Yandex:
  stats =  {5.:[1E9,1E9],0.5:[1E8]}
  files  = {5.:['$SHIPSOFT/data/result_1Bn_ecut_5.root','$SHIPSOFT/data/result_1Bn_ecut_5-v02.root'],0.5:['$SHIPSOFT/data/result_0.1Bn_ecut_0.5.root']}
  fnew  = 'pythia8_Geant4_total_Yandex.root'
+if Yandex2:
+ stats =  {10.:[1E10]}
+ files  = {10.:['$SHIPSOFT/data/result_10Bn_ecut_10.root']}
+ fnew  = 'pythia8_Geant4_total_Yandex2.root'
 if JPsi:
  BR = 0.05961 
  stats =  {10.:[]}
@@ -148,6 +153,9 @@ def makeFinalNtuples(norm=5.E13,opt=''):
       if Ekin < ecut : continue
       if Ekin > 5. :     weight = norm/(ntot[5.] + ntot[0.5])
       else         :     weight = norm/(ntot[0.5])
+     if Yandex2:
+      if Ekin < ecut : continue
+      weight = norm/(ntot[10.])
      if JPsi       :     weight = norm/(ntot[10.])
      if Tau        :     weight = norm/(ntot[0.])
      if MoTarget:
