@@ -5,6 +5,8 @@
 #include "FairGenerator.h"
 #include "TTree.h"                      // for TTree
 #include "TF1.h"                        // for TF1
+#include "TH1.h"                        // for TH1
+#include "TH2.h"                        // for TH2
 #include "TVector3.h"                        
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "vector"
@@ -57,6 +59,9 @@ class GenieGenerator : public FairGenerator
   bool fFirst,fNuOnly;
   Double_t fznu0,fznu11,fXnu11,fYnu11;
   Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
+  TH1D* pxhist[3000];//!
+  TH1D* pyslice[3000][100];//!
+
   ClassDef(GenieGenerator,1);
 };
 
