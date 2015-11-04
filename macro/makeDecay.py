@@ -8,6 +8,8 @@ ROOT.basiclibs()
 fname='Cascade50k-parp16-MSTP82-1-MSEL4'
 nrpotspill=5.e13  #number of pot/spill
 chicc=1.7e-3      #prob to produce primary ccbar pair/pot
+chibb=1.6e-7      #prob to produce primary bbbar pair/pot
+setByHand = False
 
 print "usage: python $FAIRSHIP/macro/makeDecay.py -f "
 
@@ -27,12 +29,11 @@ for o, a in opts:
             nrpotspill = float(a)
         if o in ("-c","--chicc"):
             chicc = float(a)
-
-print 'weights: ',nrpotspill,' p.o.t. per spill'
-print 'cc cross section / mbias ',chicc
+            setByHand = True
 
 FIN =fname+'.root'
-FOUT='Decay-'+fname+'.root'
+tmp = os.path.abspath(FIN).split('/')
+FOUT='Decay-'+tmp[len(tmp)-1]+'.root'
 fin = ROOT.TFile(FIN)
 sTree = fin.FindObjectAny("pythia6")
 nEvents = sTree.GetEntries()
@@ -49,14 +50,14 @@ else:
 #pot are counted double, i.e. for each signal, i.e. pot/2.
 nrcpot=hc['2'].GetBinContent(1)/2.
 print 'Input file: ',FIN,' with ',nEvents,' entries, corresponding to nr-pot=',nrcpot
-#convert pot to weight corresponding to one spill of 5e13 pot
-wspill=nrpotspill*chicc/nrcpot
 #nEvents=100
 print 'Output ntuples written to: ',FOUT
 
 P8gen = ROOT.TPythia8()
 P8=P8gen.Pythia8()
 P8.readString("ProcessLevel:all = off")
+for s in [211,321,130,310,3122,3112,3312]:
+  P8.readString(str(s)+':mayDecay = false')
 P8.init()
 
 
@@ -87,6 +88,19 @@ nDsprim=0
 ntotprim=0
 
 for n in range(nEvents):
+  rc = sTree.GetEvent(n)
+# check if we deal with charm or beauty:
+  if n == 0: 
+   if not setByHand and sTree.M>5: 
+     chicc = chibb
+     print "automatic detection of beauty, configured for beauty"
+     print 'bb cross section / mbias ',chicc
+   else:
+     print 'cc cross section / mbias ',chicc
+   #convert pot to weight corresponding to one spill of 5e13 pot
+   print 'weights: ',nrpotspill,' p.o.t. per spill'
+   print '    '
+   wspill=nrpotspill*chicc/nrcpot
   #sanity check, count number of p.o.t. on input file.
   pt=ROOT.TMath.Sqrt(sTree.mpx**2+sTree.mpy**2)
   #every event appears twice, i.e.
@@ -95,7 +109,6 @@ for n in range(nEvents):
     ntotprim+=1
     idabs=int(abs(sTree.id))
     if idabs==431: nDsprim+=1
-  rc = sTree.GetEvent(n)
   P8.event.reset()
   P8.event.append(int(sTree.id),1,0,0,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M,0.,9.)
   P8.next()
