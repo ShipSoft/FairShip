@@ -33,7 +33,7 @@ for o, a in opts:
 
 FIN =fname+'.root'
 tmp = os.path.abspath(FIN).split('/')
-FOUT='Decay-'+tmp[len(tmp)-1]+'.root'
+FOUT='Decay-'+tmp[len(tmp)-1]
 fin = ROOT.TFile(FIN)
 sTree = fin.FindObjectAny("pythia6")
 nEvents = sTree.GetEntries()
