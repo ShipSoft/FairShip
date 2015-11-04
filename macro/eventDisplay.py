@@ -160,8 +160,8 @@ class DrawTracks(ROOT.FairTask):
   T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
   self.z_start = T1Lid.GetTranslation()[2]
   muonDet = top.GetNode('MuonDetector_1')
-  if muonDet: self.z_end = muonDet.GetMatrix().GetTranslation()[2]
-  else:       self.z_end = ShipGeo['MuonStation1'].z
+  if muonDet: self.z_end = muonDet.GetMatrix().GetTranslation()[2]+muonDet.GetVolume().GetShape().GetDZ()
+  else:       self.z_end = ShipGeo['MuonStation3'].z
   magNode = top.GetNode('MCoil_1')
   if magNode: self.z_mag = magNode.GetMatrix().GetTranslation()[2]
   else:       self.z_mag = ShipGeo['Bfield'].z
@@ -322,6 +322,7 @@ class DrawTracks(ROOT.FairTask):
        fMom = fstate.getMom() 
     rc = True     
     if zs < self.z_ecal:  
+    # extrapolation through ecal fails, maybe problem with material?
      rep    = ROOT.genfit.RKTrackRep(pid) 
      state  = ROOT.genfit.StateOnPlane(rep) 
      rep.setPosMom(state,fPos,fMom) 
