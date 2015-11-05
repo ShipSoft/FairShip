@@ -250,6 +250,10 @@ add_custom_target(  # make relative links to folders
 
 WRITE_CONFIG_FILE(config.sh)
 WRITE_CONFIG_FILE(config.csh)
+# for lxplus, need to change LD_LIBRARY_PATH
+if(EXISTS "/opt/rh/python27/root/usr/lib64")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LD_LIBRARY_PATH ""$""{LD_LIBRARY_PATH}:/opt/rh/python27/root/usr/lib64")
+endif()
  
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
