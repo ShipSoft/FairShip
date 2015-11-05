@@ -253,7 +253,7 @@ WRITE_CONFIG_FILE(config.csh)
 # for lxplus, need to change LD_LIBRARY_PATH
 if(EXISTS "/opt/rh/python27/root/usr/lib64")
  file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LD_LIBRARY_PATH ""$""{LD_LIBRARY_PATH}:/opt/rh/python27/root/usr/lib64")
- file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LD_LIBRARY_PATH=\""$""{LD_LIBRARY_PATH}:/opt/rh/python27/root/usr/lib64")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LD_LIBRARY_PATH=""$""{LD_LIBRARY_PATH}:/opt/rh/python27/root/usr/lib64")
 endif()
  
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
