@@ -46,9 +46,14 @@ else:
 if inputFile[0:4] == "/eos":
   eospath = "root://eoslhcb/"+inputFile
   f = ROOT.TFile.Open(eospath)
-else:  
+  sTree = f.cbmsim
+elif not inputFile.find(',')<0 :  
+  sTree = ROOT.TChain("cbmsim")
+  for x in inputFile.split(','):
+   sTree.AddFile(x)
+else:
   f = ROOT.TFile(inputFile)
-sTree = f.cbmsim
+  sTree = f.cbmsim
 
 # try to figure out which ecal geo to load
 if not geoFile:
@@ -482,8 +487,22 @@ def myEventLoop(n):
   if not wg>0.: wg=1.
 # 
 # make some ecal cluster analysis if exist
-  if sTree.FindBranch("EcalClusters") and 0>1:
-   ecalFiller.Exec('start')
+  if sTree.FindBranch("EcalClusters"):
+   ecalReconstructed.Delete()
+   for x in caloTasks: 
+    if x.GetName() == 'ecalFiller': x.Exec('start',sTree.EcalPointLite)
+    elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed,sTree.MCTrack)
+    else : x.Exec('start')
+   for aClus in ecalReconstructed:
+    mMax = aClus.MCTrack()
+    if mMax>0:    
+      aP = sTree.MCTrack[mMax]   
+      pName = 'ecalReconstructed_'+PDG.GetParticle(aP.GetPdgCode()).GetName()
+    else:
+      pName = 'ecalReconstructed_unknown' 
+    if not h.has_key(pName): ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
+    rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.RecoE()/u.GeV)
+# compare with old method
    for aClus in sTree.EcalClusters:
      rc = h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
      mMax,frac = ecalCluster2MC(aClus)
@@ -495,6 +514,7 @@ def myEventLoop(n):
       pName = 'ecalClusters_unknown' 
      if not h.has_key(pName): ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
      rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
+     
 # make some straw hit analysis
   hitlist = {}
   for ahit in sTree.strawtubesPoint:
@@ -675,13 +695,42 @@ def HNLKinematics():
       h['HNLmomNoW_recTracks'].Fill(Prec) 
 #
 # initialize ecalStructure
+caloTasks = []
 sTree.GetEvent(0)
 ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
 ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
 ecalFiller.SetUseMCPoints(ROOT.kTRUE)
 ecalFiller.StoreTrackInformation()
 ecalStructure = ecalFiller.InitPython(sTree.EcalPointLite)
- 
+caloTasks.append(ecalFiller)
+if not sTree.GetBranch("EcalReconstructed"):
+ print "setup calo reconstruction of ecalReconstructed objects"
+# Calorimeter reconstruction
+ # Cluster calibration
+ ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
+ #4x4 cm cells
+ ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))")
+ ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03, -1.16383e-04)
+ ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS)
+ ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
+ ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
+ ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
+#6x6 cm cells
+ ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
+ ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
+ ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
+ ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
+ ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
+ ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
+ ecalReco=ROOT.ecalReco('ecalReco',0)
+ caloTasks.append(ecalReco)
+# Match reco to MC
+ ecalMatch=ROOT.ecalMatch('ecalMatch',0)
+ caloTasks.append(ecalMatch)
+ ecalCalib         = ecalClusterCalib.InitPython()
+ ecalReconstructed = ecalReco.InitPython(sTree.EcalClusters, ecalStructure, ecalCalib)
+ ecalMatch.InitPython(ecalStructure, ecalReconstructed, sTree.MCTrack)
+
 nEvents = min(sTree.GetEntries(),nEvents)
 
 for n in range(nEvents): 
@@ -689,8 +738,8 @@ for n in range(nEvents):
  sTree.FitTracks.Delete()
 makePlots()
 # output histograms
-hfile = inputFile.replace('_rec','_ana')
-if hfile[0:4] == "/eos":
+hfile = inputFile.split(',')[0].replace('_rec','_ana')
+if hfile[0:4] == "/eos" or not inputFile.find(',')<0:
 # do not write to eos, write to local directory 
   tmp = hfile.split('/')
   hfile = tmp[len(tmp)-1] 

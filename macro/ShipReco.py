@@ -359,7 +359,13 @@ if SHiP.sTree.GetBranch("EcalPoint"):
  caloTasks.append(ecalClusterCalib)
 # Cluster finder
  ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
- caloTasks.append(ecalClusterFind)#
+ caloTasks.append(ecalClusterFind)
+# Calorimeter reconstruction
+ ecalReco=ROOT.ecalReco('ecalReco',0)
+ caloTasks.append(ecalReco)
+# Match reco to MC
+ ecalMatch=ROOT.ecalMatch('ecalMatch',0)
+ caloTasks.append(ecalMatch)
  if EcalDebugDraw:
  # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
   ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
@@ -382,16 +388,23 @@ WireMeasurement = ROOT.genfit.WireMeasurement
 # access ShipTree
 SHiP.sTree.GetEvent(0)
 if len(caloTasks)>0:
- ecalStructure=ecalFiller.InitPython(SHiP.sTree.EcalPointLite)
+ print "** initialize Calo reconstruction **" 
+ ecalStructure     = ecalFiller.InitPython(SHiP.sTree.EcalPointLite)
  ecalDigi.InitPython(ecalStructure)
  ecalPrepare.InitPython(ecalStructure)
- ecalMaximums=ecalMaximumFind.InitPython(ecalStructure)
- ecalCalib=ecalClusterCalib.InitPython()
- ecalClusters=ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
+ ecalMaximums      = ecalMaximumFind.InitPython(ecalStructure)
+ ecalCalib         = ecalClusterCalib.InitPython()
+ ecalClusters      = ecalClusterFind.InitPython(ecalStructure, ecalMaximums, ecalCalib)
+ SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
+ ecalReconstructed = ecalReco.InitPython(SHiP.sTree.EcalClusters, ecalStructure, ecalCalib)
+ SHiP.EcalReconstructed = SHiP.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
+ ecalMatch.InitPython(ecalStructure, ecalReconstructed, SHiP.sTree.MCTrack)
  if EcalDebugDraw: ecalDrawer.InitPython(SHiP.sTree.MCTrack, SHiP.sTree.EcalPoint, ecalStructure, ecalClusters)
 else:
-  ecalClusters = ROOT.TClonesArray("ecalCluster") 
-SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
+  ecalClusters      = ROOT.TClonesArray("ecalCluster") 
+  ecalReconstructed = ROOT.TClonesArray("ecalReconstructed") 
+  SHiP.EcalClusters = SHiP.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
+  SHiP.EcalReconstructed = SHiP.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
 # for 'real' PatRec
 shipPatRec.initialize(fgeo)
 
@@ -402,8 +415,11 @@ for iEvent in range(firstEvent, SHiP.nEvents):
  if vertexing:
 # now go for 2-track combinations
    SHiP.Vertexing.execute()
- for x in caloTasks: x.Exec('start')
+ for x in caloTasks: 
+   if x.GetName() == 'ecalFiller': x.Exec('start',SHiP.sTree.EcalPointLite)
+   else : x.Exec('start')
  SHiP.EcalClusters.Fill()
+ SHiP.EcalReconstructed.Fill()
 
  if debug: print 'end of event after Fill'
  

@@ -23,7 +23,7 @@ public:
   /** Finish a task **/
   virtual void Finish();
   /** Exec a task **/
-  virtual void Exec(Option_t* option);
+  virtual void Exec(Option_t* option, TClonesArray* reconstructed, TClonesArray* mctracks);
   /** Initialization **/
   virtual InitStatus Init();
   void InitPython(ecalStructure* str, TClonesArray* reconstructed, TClonesArray* mctracks);
