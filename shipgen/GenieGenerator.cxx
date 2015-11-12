@@ -461,7 +461,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       if (nbx<1) nbx=1;
       if (nbx>nbinmx) nbx=nbinmx;
       Double_t ptlog10=pyslice[idhnu][nbx]->GetRandom();
-      Double_t pt=pow(10.,ptlog10);
+//hist was filled with: log10(pt+0.01)
+      Double_t pt=pow(10.,ptlog10)-0.01;
       //rotate pt in phi:
       Double_t phi=gRandom->Uniform(0.,2*TMath::Pi());
       pout[0] = cos(phi)*pt;
