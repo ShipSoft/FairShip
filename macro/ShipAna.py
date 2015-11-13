@@ -706,6 +706,14 @@ caloTasks.append(ecalFiller)
 if not sTree.GetBranch("EcalReconstructed"):
  print "setup calo reconstruction of ecalReconstructed objects"
 # Calorimeter reconstruction
+ #GeV -> ADC conversion
+ ecalDigi=ROOT.ecalDigi("ecalDigi",0)
+ ecalPrepare=ROOT.ecalPrepare("ecalPrepare",0)
+ ecalStructure     = ecalFiller.InitPython(sTree.EcalPointLite)
+ ecalDigi.InitPython(ecalStructure)
+ caloTasks.append(ecalDigi)
+ ecalPrepare.InitPython(ecalStructure)
+ caloTasks.append(ecalPrepare)
  # Cluster calibration
  ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
  #4x4 cm cells
@@ -722,6 +730,7 @@ if not sTree.GetBranch("EcalReconstructed"):
  ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
  ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
  ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
+ caloTasks.append(ecalClusterCalib)
  ecalReco=ROOT.ecalReco('ecalReco',0)
  caloTasks.append(ecalReco)
 # Match reco to MC
