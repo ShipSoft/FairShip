@@ -488,7 +488,8 @@ def myEventLoop(n):
 # 
 # make some ecal cluster analysis if exist
   if sTree.FindBranch("EcalClusters"):
-   ecalReconstructed.Delete()
+   if calReco:  ecalReconstructed.Delete()
+   else:        ecalReconstructed = sTree.EcalReconstructed
    for x in caloTasks: 
     if x.GetName() == 'ecalFiller': x.Exec('start',sTree.EcalPointLite)
     elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed,sTree.MCTrack)
@@ -703,7 +704,12 @@ ecalFiller.SetUseMCPoints(ROOT.kTRUE)
 ecalFiller.StoreTrackInformation()
 ecalStructure = ecalFiller.InitPython(sTree.EcalPointLite)
 caloTasks.append(ecalFiller)
-if not sTree.GetBranch("EcalReconstructed"):
+if sTree.GetBranch("EcalReconstructed"):
+ calReco = False
+ sTree.GetEvent(0)
+ ecalReconstructed = sTree.EcalReconstructed
+else:
+ calReco = True
  print "setup calo reconstruction of ecalReconstructed objects"
 # Calorimeter reconstruction
  #GeV -> ADC conversion
