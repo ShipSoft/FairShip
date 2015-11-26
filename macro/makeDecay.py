@@ -63,7 +63,7 @@ P8.init()
 
 #output ntuple:
 ftup = ROOT.TFile.Open(FOUT, 'RECREATE')
-Ntup = ROOT.TNtuple("Decay","pythia8 heavy flavour decays","id:px:py:pz:E:M:weight:mid:mpx:mpy:mpz:mE:pot")
+Ntup = ROOT.TNtuple("Decay","pythia8 heavy flavour decays","id:px:py:pz:E:M:weight:mid:mpx:mpy:mpz:mE:pot:ptGM:pzGM")
 
 h={}
 #book hists for Genie neutrino momentum distrubition, just as check
@@ -120,7 +120,8 @@ for n in range(nEvents):
       idabs=int(abs(P8.event[n].id()))
       if idabs>11 and idabs<17:
        par= P8.event[n]
-       Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M)
+       ptGM = ROOT.TMath.Sqrt(sTree.mpx*sTree.mpx+sTree.mpy*sTree.mpy)
+       Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M,ptGM,sTree.mpz)
        #count total muons from charm/spill, and within some angluar range..
        if idabs==16 or idabs==14 or idabs==12:
          idhnu=idabs+1000
