@@ -9,6 +9,8 @@ Mmu2 = Mmu * Mmu
 rnr  = ROOT.TRandom()
 
 eospath = "root://eoslhcb//eos/ship/data/"
+# eospath = "/media/Data/HNL/ShipSoft/data/"
+
 
 def fillPart(t):
  particles = {}
@@ -34,57 +36,65 @@ def fillWeights():
  return weights
 
 def TplotP(sTree):
-  ut.bookCanvas(h,key='P',title='momentum',nx=1600,ny=1200,cx=2,cy=2)
-  ut.bookCanvas(h,key='>P',title='N >P',   nx=1600,ny=1200,cx=2,cy=2)
+  ut.bookCanvas(h,key='P',title='momentum',nx=1800,ny=1200,cx=3,cy=2)
+  ut.bookCanvas(h,key='>P',title='N >P',   nx=1800,ny=1200,cx=3,cy=2)
+  ut.bookCanvas(h,key='PT',title='Pt',nx=1800,ny=1200,cx=3,cy=2)
+  ut.bookCanvas(h,key='>PT',title='N >Pt',   nx=1800,ny=1200,cx=3,cy=2)
   cuts = {'mu':'abs(id)==13','nu':'abs(id)!=13','mu-':'id==13','mu+':'id==-13',
           'nutau':'id==16','nutaubar':'id==-16','numu':'id==14','numubar':'id==-14',
-          'nue':'id==12','nuebar':'id==-12'}
+          'nue':'id==12','nuebar':'id==-12','nuesum':'abs(id)==12','numusum':'abs(id)==14','nutausum':'abs(id)==16'}
   OpenCharm = {'':'','charm':"&(pythiaid==id & (abs(parentid) == 15 ||  abs(parentid) == 4112 || abs(parentid) == 4122  || abs(parentid) == 4132  \
                          ||  abs(parentid) == 431 || abs(parentid) == 421  || abs(parentid) == 411) )"}
   ROOT.gROOT.cd('')
   for x in ['','charm']:
    for q in cuts:
     p = q+x
-    hn = 'Tp'+p
-    ut.bookHist(h,hn, p +' ;p [GeV] ;N',400,0.0,400.0)
-    h[hn].Sumw2()
+    hn  = 'Tp'+p
+    hnt = 'Tpt'+p
+    ut.bookHist(h,hn,  p +' ;p [GeV] ;N',400,0.0,400.0)
+    ut.bookHist(h,hnt, p +' ;pt [GeV] ;N',40,0.0,4.0)
     sTree.Draw('sqrt(px**2+py**2+pz**2)>>'+hn,'w*('+cuts[q]+OpenCharm[x]+')','goff')
+    sTree.Draw('sqrt(px**2+py**2)>>'+hnt,'w*('+cuts[q]+OpenCharm[x]+')','goff')
     if q=='mu+': h[hn].SetLineColor(3) 
     if q=='mu-': h[hn].SetLineColor(4) 
 # integrated rates
-  for q in [ 'mu','mu-','mu+','nu','nue','nuebar','numu','numubar','nutau','nutaubar']:
+  for q in [ 'mu','mu-','mu+','nu','nue','nuesum','nuebar','numusum','numu','numubar','nutau','nutaubar']:
    for x in ['','charm']:
-    p = q+x
-    hi =  'Tp'+p+'_>E'
-    h[hi]=h['Tp'+p].Clone(hi)
-    h[hi].Reset()
-    nsum = 0 
-    for i in range(h[hi].GetNbinsX()+1,1,-1):
-     nsum+=h['Tp'+p].GetBinContent(i)
-     h[hi].SetBinContent(i,nsum) 
-  k = 1
-  for p in [ 'mu','nu']:
-   cv = h['P'].cd(k)
-   cv.SetLogy(1)
-   h['Tp'+p].Draw()
-   if h['Tp'+p].GetEntries()<1: continue
-   if p=='mu': 
-     h['Tpmu+'].Draw('same')
-     h['Tpmu-'].Draw('same')
-   cv = h['>P'].cd(k)
-   cv.SetLogy(1)
-   h[hi].Draw()
-   k+=1
+    for z in ['p','pt']:
+     p = z+q+x
+     hi =  'T'+p+'_>E'
+     h[hi]=h['T'+p].Clone(hi)
+     h[hi].Reset()
+     nsum = 0 
+     for i in range(h[hi].GetNbinsX()+1,1,-1):
+      nsum+=h['T'+p].GetBinContent(i)
+      h[hi].SetBinContent(i,nsum) 
+  for z in ['p','pt']: 
+   k = 1
+   for x in [ 'mu','nu']:
+    t=z.upper()
+    p=z+x 
+    cv = h[t].cd(k)
+    cv.SetLogy(1)
+    h['T'+p].Draw()
+    if h['T'+p].GetEntries()<1: continue
+    if not p.find('mu')<0: 
+     h['T'+p+'+'].Draw('same')
+     h['T'+p+'-'].Draw('same')
+    cv = h['>'+t].cd(k)
+    cv.SetLogy(1)
+    h[hi].Draw()
+    k+=1
 # plot different nu species:
-  k = 3
-  cv = h['P'].cd(k)
-  cv.SetLogy(1)
-  first = True
-  i = 2
-  h['tlnu'+str(k)] = ROOT.TLegend(0.49,0.13,0.88,0.36)
-  for p in ['numu','numubar','nue','nuebar','nutau','nutaubar']:
-    hn = 'Tp'+p 
-    h['tlnu'+str(k)].AddEntry(h['Tp'+p],p,'PL')
+   k = 3
+   cv = h[t].cd(k)
+   cv.SetLogy(1)
+   first = True
+   i = 2
+   h['tlnu'+z+str(k)] = ROOT.TLegend(0.49,0.13,0.88,0.36)
+   for p in ['numu','numubar','nue','nuebar','nutau','nutaubar']:
+    hn = 'T'+z+p 
+    h['tlnu'+z+str(k)].AddEntry(h[hn],z+' '+p,'PL')
     h[hn].SetLineColor(i)
     h[hn+'8']=h[hn].Clone()
     h[hn+'8'].SetName(hn+'8')
@@ -94,51 +104,72 @@ def TplotP(sTree):
       h[hn+'8'].Draw() 
       first = False
     h[hn+'8'].Draw('same')  
-  h['tlnu'+str(k)].Draw()
-  k+=1
+   h['tlnu'+z+str(k)].Draw()
+   k+=1
 #
 
 productions = {}
 productions["CERN-Cracow"] = {"stats":{1.:[1.1E8],10.:[1.22E9],100:[1.27E10]},
                                "file":"pythia8_Geant4_total.root" }
+# checked, 10 variables, parentid = 8
 productions["Yandex"]      = {"stats":{5.:[2.1E9,1E9],0.5:[1E8]},
                                "file":"pythia8_Geant4_total_Yandex.root" }
+# checked, 13 variables, parentid = 11
 productions["Yandex2"]     = {"stats":{10.:[1E10]},
                                "file":"pythia8_Geant4_total_Yandex2.root" }
+# checked, 13 variables, parentid = 11
 fnew = "pythia8_Geant4-noOpenCharm.root"
 
 h={}
 
 def mergeMinBias(pot,norm=5.E13,opt=''):
+ storeCharm=False
  noOpCharm = "!(pythiaid==id & (abs(parentid) == 15 ||  abs(parentid) == 4112 || abs(parentid) == 4122  || abs(parentid) == 4132  \
                          ||  abs(parentid) == 431 || abs(parentid) == 421  || abs(parentid) == 411) )"
+ OpCharm = "(pythiaid==id & (abs(parentid) == 15 ||  abs(parentid) == 4112 || abs(parentid) == 4122  || abs(parentid) == 4132  \
+                         ||  abs(parentid) == 431 || abs(parentid) == 421  || abs(parentid) == 411) )"
  cuts = {'':'abs(id)>0','_onlyMuons':'abs(id)==13','_onlyNeutrinos':'abs(id)==12||abs(id)==14||abs(id)==16'}
+ if opt != '': 
+    storeCharm=True
+    opt=''
  first = True
  for p in productions:
   f = ROOT.TFile.Open(eospath+productions[p]["file"])
   t = f.FindObjectAny("pythia8-Geant4")
   if first:
+    first = False
     tuples = ''
     for l in t.GetListOfLeaves(): 
       if tuples == '': tuples += l.GetName()
       else:            tuples += ":"+l.GetName()
     fxx = fnew.replace('.root',opt+'.root')
+    if storeCharm: fxx = fnew.replace('.root','old-charm.root')
     h['N']      = ROOT.TFile(fxx, 'RECREATE')
     print 'new file created',fxx
     h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","min bias flux after 3m hadron absorber "+opt,tuples)
   ROOT.gROOT.cd()
   t.SetEventList(0) 
-  t.Draw(">>temp",cuts[opt]+"&"+noOpCharm)
+  if storeCharm: t.Draw(">>temp",cuts[opt]+"&"+OpCharm)
+  else: t.Draw(">>temp",cuts[opt]+"&"+noOpCharm)
   temp = ROOT.gROOT.FindObjectAny('temp')
   t.SetEventList(temp) 
   nev = temp.GetN()
+  leaves = t.GetListOfLeaves()
+  nL = leaves.GetEntries()
   for iev in range(nev) :
      rc = t.GetEntry(temp.GetEntry(iev))
-     leaves = t.GetListOfLeaves()
      vlist = []
-     for x in range(leaves.GetEntries()):
+     k=-1
+     for x in range(nL):
+      k+=1
+      if nL > 11 and (k==7 or k==8 or k==9): continue
       vlist.append( leaves.At(x).GetValue() )
+     if len(vlist) != 11 : 
+         print "this should never happen, big error",len(vlist),k,p,iev,nev
+         1/0
      # "id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut"
+     # yandex productions have
+     # "id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:w:ecut"       
      Psq = vlist[1]**2+vlist[2]**2+vlist[3]**2
      if abs(vlist[0])==13: Ekin = ROOT.TMath.Sqrt(Mmu2+Psq)-Mmu  
      else: Ekin = ROOT.TMath.Sqrt(Psq)
@@ -170,8 +201,9 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
                      vlist[7],vlist[8],vlist[9],vlist[10])
   h['N'].cd()
   h['ntuple'].Write()
+ h['N'].Close()
 
-def runProduction():
+def runProduction(opts=''):
  we = fillWeights()
  pot = {}
  norm = 5.E13
@@ -181,9 +213,9 @@ def runProduction():
     pot[p][we[p][w][0]] = 5.E13/w
  print "pots:",pot
  #
- mergeMinBias(pot,norm=5.E13,opt='')
+ mergeMinBias(pot,norm=5.E13,opt=opts)
 
-def mergeWithCharm(splitOnly=False):
+def mergeWithCharm(splitOnly=False,ramOnly=False):
   # Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M)
   # i.e. the par. is for the neutrino, and the sTree. is for its mother.
   # wspill is the weight for this file normalised/5e13.
@@ -202,8 +234,8 @@ def mergeWithCharm(splitOnly=False):
   fcascade.Close()
   os.system("hadd -f pythia8_Geant4-withCharm.root pythia8_Geant4-noOpenCharm.root pythia8_Charm.root")
   print " progress: minbias and charm merged"
-  f = ROOT.TFile("pythia8_Geant4-withCharm.root")
-  t = f.FindObjectAny('pythia8-Geant4')
+  ramOnly = True
+ if ramOnly:  
 # put all events in memory, otherwise will take years to finish
   event = ROOT.std.vector("float")
   f = ROOT.TFile("pythia8_Geant4-withCharm.root")
@@ -214,7 +246,7 @@ def mergeWithCharm(splitOnly=False):
   allEvents = []
   for n in range(t.GetEntries()):
    rc = t.GetEvent(n)
-   if m%1000000==0 : print 'status ',m
+   if m%1000000==0 : print 'status read',m
    m+=1
    a = event()
    for l in range(L): a.push_back(leaves.At(l).GetValue())
@@ -233,12 +265,14 @@ def mergeWithCharm(splitOnly=False):
   m=0
   for n in evList:
    a = allEvents[n]
-   if m%1000000==0 : print 'status ',m
+   if m%1000000==0 : print 'status write',m
    m+=1
    randomTuple.Fill(a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10])
   newFile.cd()
   randomTuple.Write()
   newFile.Close()
+  f.Close()
+  allEvents = []
   print " progress: order of events randomized"
  if 1>0:
 # split in muons and neutrinos
@@ -253,8 +287,8 @@ def mergeWithCharm(splitOnly=False):
    idhnu=1000+idnu
    if idnu < 0: idhnu=2000+abs(idnu)
    ut.bookHist(h,str(idhnu),name+' momentum (GeV)',400,0.,400.)
-   ut.bookHist(h,str(idhnu+100),name+' log10-p vs log10-pt',100,-0.3,1.7,100,-2.,0.5)
-   ut.bookHist(h,str(idhnu+200),name+' log10-p vs log10-pt',25,-0.3,1.7,100,-2.,0.5)
+   ut.bookHist(h,str(idhnu+100),name+' log10(ptot) vs log10(pt+0.01)',100,-0.3,1.7,100,-2.,1.)
+   ut.bookHist(h,str(idhnu+200),name+' log10(ptot) vs log10(pt+0.01)',25,-0.3,1.7,100,-2.,1.)
   leaves = t.GetListOfLeaves()
   for l in leaves: 
     if tuples == '': tuples += l.GetName()
@@ -277,7 +311,7 @@ def mergeWithCharm(splitOnly=False):
         pt2=t.px**2+t.py**2
         ptot=ROOT.TMath.Sqrt(pt2+t.pz**2)
         l10ptot=min(max(ROOT.TMath.log10(ptot),-0.3),1.69999)
-        l10pt=min(max(ROOT.TMath.log10(ROOT.TMath.Sqrt(pt2)),-2.),0.4999)
+        l10pt=min(ROOT.TMath.log10(ROOT.TMath.Sqrt(pt2)+0.01),0.9999)
         idnu = int(t.id)
         idhnu=1000+idnu
         if idnu < 0: idhnu=2000+abs(idnu)
@@ -300,67 +334,158 @@ def test(fname):
 def compare():
  test(eospath+'pythia8_Geant4_onlyMuons.root')
  for x in ['','_>E']:
-  for ahist in ['pmu-','pmu+','pmu','pmu-charm','pmu+charm','pmucharm']:
-   h['TP'+ahist+x]=h['T'+ahist+x].Clone('CT'+ahist+x)
+  for z in ['p','pt']:
+   for ahist in ['mu-','mu+','mu','mu-charm','mu+charm','mucharm']:
+    h['TP'+z+ahist+x]=h['T'+z+ahist+x].Clone('CT'+ahist+x)
  test(eospath+'pythia8_Geant4_Yandex_onlyNeutrinos.root')
  for x in ['','_>E']:
-  for ahist in ['pnumu','pnumubar','pnue','pnuebar']:
-   h['TP'+ahist+x]=h['T'+ahist+x].Clone('CT'+ahist+x)
+  for z in ['p','pt']:
+   for ahist in ['numusum','nuesum','numusumcharm','nuesumcharm','numu','numubar','nue','nuebar','numucharm','numubarcharm','nuecharm','nuebarcharm']:
+    h['TP'+z+ahist+x]=h['T'+z+ahist+x].Clone('CT'+ahist+x)
  test(eospath+'Mbias/pythia8_Geant4-withCharm-ram.root')
  for x in ['','_>E']:
-  t = 'P'
-  if x != '' : t='>P' 
-  h[t].cd(1)
-  h['Tpmu'+x].Draw()
-  h['Tpmucharm'+x].Draw('same')
-  h['TPpmu'+x].Draw('same')
-  h['TPpmu'+x].SetLineColor(6)
-  h['TPpmu'+x].Draw('same')
-  h['TPpmucharm'+x].SetLineColor(6)
-  h['Tpmu'+x].SetLineColor(4)
-  h['Lmu'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
-  h['Lmu'+x].AddEntry(h['Tpmu'+x],'muon new with charm, cascade, k-fac','PL')
-  h['Lmu'+x].AddEntry(h['Tpmu'+x],'muon from charm new with charm, cascade, k-fac','PL')
-  h['Lmu'+x].AddEntry(h['TPpmu'+x],'muon old CERN-Cracow prod','PL')
-  h['Lmu'+x].AddEntry(h['TPpmu'+x],'muon from charm old CERN-Cracow prod','PL')
-  h['Lmu'+x].Draw()
-  h[t].cd(2)
-  h['Tpnumu'+x].Draw()
-  h['TPpnumu'+x].Draw('same')
-  h['TPpnumu'+x].SetLineColor(6)
-  h['Tpnumu'+x].SetLineColor(4)
-  h['Lnu'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
-  h['Lnu'+x].AddEntry(h['Tpnumu'+x],'nu_mu new with charm, cascade, k-fac','PL')
-  h['Lnu'+x].AddEntry(h['TPpnumu'+x],'nu_mu old Yandex prod','PL')
-  h['Lnu'+x].Draw()
-  t3 = h[t].cd(3)
-  t3.SetLogy(1)
-  h['Tpnuebar'+x].Draw()
-  h['TPpnuebar'+x].Draw('same')
-  h['TPpnuebar'+x].SetLineColor(6)
-  h['Tpnuebar'+x].SetLineColor(4)
-  h['Tpnue'+x].Draw('same')
-  h['TPpnue'+x].Draw('same')
-  h['TPpnue'+x].SetLineColor(5)
-  h['Tpnue'+x].SetLineColor(3)
-  h['Lnue'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
-  h['Lnue'+x].AddEntry(h['Tpnuebar'+x],'anti nu_e new with charm, cascade, k-fac','PL')
-  h['Lnue'+x].AddEntry(h['TPpnuebar'+x],'anti nu_e old Yandex prod','PL')
-  h['Lnue'+x].AddEntry(h['Tpnue'+x],'nu_e new with charm, cascade, k-fac','PL')
-  h['Lnue'+x].AddEntry(h['TPpnue'+x],'nu_e old Yandex prod','PL')
-  h['Lnue'+x].Draw() 
-  t4 = h[t].cd(4)
-  t4.SetLogy(1)
-  h['Tpnumubar'+x].Draw()
-  h['TPpnumubar'+x].Draw('same')
-  h['TPpnumubar'+x].SetLineColor(6)
-  h['Tpnumubar'+x].SetLineColor(4)
-  h['Lnubar'+x] = ROOT.TLegend(0.32,0.62,0.71,0.85)
-  h['Lnubar'+x].AddEntry(h['Tpnumubar'+x],'anti nu_mu new with charm, cascade, k-fac','PL')
-  h['Lnubar'+x].AddEntry(h['TPpnumubar'+x],'anti nu_mu old Yandex prod','PL')
-  h['Lnubar'+x].Draw() 
+  for z in ['p','pt']:
+   t = z.upper()
+   if x != '' : t='>'+t 
+   t1=h[t].cd(1)
+   p = z+'mu'
+   h['T'+p+x].SetTitle('musum')
+   h['T'+p+x].Draw()
+   h['T'+p+'charm'+x].Draw('same')
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(6)
+   h['TP'+p+'charm'+x].Draw('same')
+   h['TP'+p+'charm'+x].SetLineColor(3)
+   h['T'+p+'charm'+x].SetLineColor(2)
+   h['T'+p+x].SetLineColor(4)
+   h['L'+p+x] = ROOT.TLegend(0.33,0.69,0.99,0.94)
+   h['L'+p+x].AddEntry(h['T'+p+x],'muon new with charm, cascade, k-fac','PL')
+   h['L'+p+x].AddEntry(h['T'+p+'charm'+x],'muon from charm new with charm, cascade, k-fac','PL')
+   h['L'+p+x].AddEntry(h['TP'+p+x],'muon old CERN-Cracow prod','PL')
+   h['L'+p+x].AddEntry(h['TP'+p+'charm'+x],'muon from charm old CERN-Cracow prod','PL')
+   h['L'+p+x].Draw()
+   h[t].cd(2)
+   p = z+'numusum'
+   h['T'+p+x].Draw()
+   h['T'+p+'charm'+x].Draw('same')
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(6)
+   h['TP'+p+'charm'+x].Draw('same')
+   h['TP'+p+'charm'+x].SetLineColor(3)
+   h['T'+p+'charm'+x].SetLineColor(2)
+   h['T'+p+x].SetLineColor(4)
+   h['L'+p+x] = ROOT.TLegend(0.33,0.69,0.99,0.94)
+   h['L'+p+x].AddEntry(h['T'+p+x],'nu_mu new with charm, cascade, k-fac','PL')
+   h['L'+p+x].AddEntry(h['T'+p+'charm'+x],'nu_mu from charm new with charm, cascade, k-fac','PL')
+   h['L'+p+x].AddEntry(h['TP'+p+x],'nu_mu old CERN-Cracow prod','PL')
+   h['L'+p+x].AddEntry(h['TP'+p+'charm'+x],'nu_mu from charm old CERN-Cracow prod','PL')
+   h['L'+p+x].Draw()
+   t3=h[t].cd(3)
+   t3.SetLogy(1)
+   p = z+'nuesum'
+   h['T'+p+x].Draw()
+   h['T'+p+'charm'+x].Draw('same')
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(6)
+   h['TP'+p+'charm'+x].Draw('same')
+   h['TP'+p+'charm'+x].SetLineColor(3)
+   h['T'+p+'charm'+x].SetLineColor(2)
+   h['T'+p+x].SetLineColor(4)
+   h['L'+p+x] = ROOT.TLegend(0.33,0.69,0.99,0.94)
+   h['L'+p+x].AddEntry(h['T'+p+x],'nu_e new with charm, cascade, k-fac','PL')
+   h['L'+p+x].AddEntry(h['T'+p+'charm'+x],'nu_e from charm new with charm, cascade, k-fac','PL')
+   h['L'+p+x].AddEntry(h['TP'+p+x],'nu_e old CERN-Cracow prod','PL')
+   h['L'+p+x].AddEntry(h['TP'+p+'charm'+x],'nu_e from charm old CERN-Cracow prod','PL')
+   h['L'+p+x].Draw()
 #
-  h[t].Print('comparison'+x.replace('_>','')+'.png')
+   t4 = h[t].cd(4)
+   t4.SetLogy(1)
+   h['Lmuc'+z+x] = ROOT.TLegend(0.33,0.73,0.99,0.94)
+   p = z+'mu-'
+   h['T'+p+x].SetTitle('mu-/mu+')
+   h['T'+p+x].Draw()
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(6)
+   h['T'+p+x].SetLineColor(4)
+   h['Lmuc'+z+x].AddEntry(h['T'+p+x],'mu- new with charm, cascade, k-fac','PL')
+   h['Lmuc'+z+x].AddEntry(h['TP'+p+x],'mu- old Yandex prod','PL')
+   p = z+'mu+'
+   h['T'+p+x].Draw('same')
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(3)
+   h['T'+p+x].SetLineColor(2)
+   h['Lmuc'+z+x].AddEntry(h['T'+p+x],'mu+ new with charm, cascade, k-fac','PL')
+   h['Lmuc'+z+x].AddEntry(h['TP'+p+x],'mu+ old Yandex prod','PL')
+   h['Lmuc'+z+x].Draw() 
+#
+   t5 = h[t].cd(5)
+   t5.SetLogy(1)
+   h['Lnumu'+z+x] = ROOT.TLegend(0.33,0.73,0.99,0.94)
+   p = z+'numu'
+   h['T'+p+x].SetTitle('numu/numubar')
+   h['T'+p+x].Draw()
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(6)
+   h['T'+p+x].SetLineColor(4)
+   h['Lnumu'+z+x].AddEntry(h['T'+p+x],'nu_mu new with charm, cascade, k-fac','PL')
+   h['Lnumu'+z+x].AddEntry(h['TP'+p+x],'nu_mu old Yandex prod','PL')
+   p = z+'numubar'
+   h['T'+p+x].Draw('same')
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(3)
+   h['T'+p+x].SetLineColor(2)
+   h['Lnumu'+z+x].AddEntry(h['T'+p+x],'anti nu_mu new with charm, cascade, k-fac','PL')
+   h['Lnumu'+z+x].AddEntry(h['TP'+p+x],'anti nu_mu old Yandex prod','PL')
+   h['Lnumu'+z+x].Draw() 
+   t6 = h[t].cd(6)
+   t6.SetLogy(1)
+   p = z+'nue'
+   h['Lnue'+z+x] = ROOT.TLegend(0.33,0.73,0.99,0.94)
+   h['T'+p+x].SetTitle('nue/nuebar')
+   h['T'+p+x].Draw()
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(6)
+   h['T'+p+x].SetLineColor(4)
+   h['Lnue'+z+x].AddEntry(h['T'+p+x],'nu_e new with charm, cascade, k-fac','PL')
+   h['Lnue'+z+x].AddEntry(h['TP'+p+x],'nu_e old Yandex prod','PL')
+   p = z+'nuebar'
+   h['T'+p+x].Draw('same')
+   h['TP'+p+x].Draw('same')
+   h['TP'+p+x].SetLineColor(3)
+   h['T'+p+x].SetLineColor(2)
+   h['Lnue'+z+x].AddEntry(h['T'+p+x],'anti nu_e new with charm, cascade, k-fac','PL')
+   h['Lnue'+z+x].AddEntry(h['TP'+p+x],'anti nu_e old Yandex prod','PL')
+   h['Lnue'+z+x].Draw() 
+#
+   h[t].Print('comparison'+z+x.replace('_>','')+'.png')
+# make ratio plots
+ x = '_>E'
+ for z in ['p','pt']:
+   h[z+'muRatio'+x]=h['T'+z+'mu'+x].Clone(z+'muRatio'+x)
+   h[z+'muRatio'+x].Divide(h['TP'+z+'mu'+x])
+   h[z+'numuRatio'+x]=h['T'+z+'numusum'+x].Clone(z+'numuRatio'+x)
+   h[z+'numuRatio'+x].Divide(h['TP'+z+'numusum'+x])
+   h[z+'nueRatio'+x]=h['T'+z+'nuesum'+x].Clone(z+'nueRatio'+x)
+   h[z+'nueRatio'+x].Divide(h['TP'+z+'nuesum'+x])
+ ut.bookCanvas(h,key='ratios',title='ratios',nx=1800,ny=600,cx=2,cy=1)
+ n = 1
+ for z in ['p','pt']:
+   h['Lratio'+z+x] = ROOT.TLegend(0.21,0.74,0.71,0.85)
+   tc = h['ratios'].cd(n)
+   n+=1
+   h[z+'muRatio'+x].SetLineColor(2)
+   h[z+'muRatio'+x].SetMaximum(max(h[z+'muRatio'+x].GetMaximum(),h[z+'numuRatio'+x].GetMaximum(),h[z+'nueRatio'+x].GetMaximum()))
+   h[z+'muRatio'+x].Draw()
+   h[z+'numuRatio'+x].SetLineColor(3)
+   h[z+'numuRatio'+x].Draw('same')
+   #h[z+'nueRatio'+x].SetLineColor(4)
+   #h[z+'nueRatio'+x].Draw('same')
+   h['Lratio'+z+x].AddEntry(h[z+'muRatio'+x],'muon flux new / old ','PL')
+   h['Lratio'+z+x].AddEntry(h[z+'numuRatio'+x],'nu_mu flux new / old ','PL')
+   #h['Lratio'+z+x].AddEntry(h[z+'nueRatio'+x],'nu_e flux new / old ','PL')
+   h['Lratio'+z+x].Draw()
+ h['ratios'].Print('comparisonRatios.png')
+
 print "+ to start the full production: runProduction()"
 print "+ merging with charm events:   mergeWithCharm()"
 print "+ testing output: test('pythia8_Geant4-noOpenCharm.root')"
