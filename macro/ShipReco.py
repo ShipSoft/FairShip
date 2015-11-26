@@ -417,6 +417,7 @@ for iEvent in range(firstEvent, SHiP.nEvents):
    SHiP.Vertexing.execute()
  for x in caloTasks: 
    if x.GetName() == 'ecalFiller': x.Exec('start',SHiP.sTree.EcalPointLite)
+   elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed, SHiP.sTree.MCTrack)
    else : x.Exec('start')
  SHiP.EcalClusters.Fill()
  SHiP.EcalReconstructed.Fill()
