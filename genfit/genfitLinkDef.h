@@ -65,6 +65,8 @@
 #pragma link C++ class genfit::ThinScatterer-; // sharedPlanePtr
 #pragma link C++ class genfit::Track-;
 #pragma link C++ class genfit::TrackPoint-; // track_, fixup the map
+#pragma link C++ class std::vector<genfit::Track*>-;
+#pragma link C++ class std::vector<genfit::MeasuredStateOnPlane*>-;
 // Classes that needed manually written streamers:
 #pragma link C++ class genfit::KalmanFitter-;
 #pragma link C++ class genfit::KalmanFitterInfo-;
