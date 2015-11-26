@@ -20,7 +20,6 @@ HNLPythia8Generator::HNLPythia8Generator()
   fLmax       = 12000.*cm;   // mm maximum decay position z
   fextFile    = "";
   fInputFile  = NULL;
-  cout << " try to make pythia8" << endl; 
   fPythia =  new Pythia8::Pythia();
 }
 // -------------------------------------------------------------------------
@@ -35,10 +34,15 @@ Bool_t HNLPythia8Generator::Init()
   fPythia->setRndmEnginePtr(fRandomEngine);
   fn = 0;
   if (fextFile != ""){
-     fInputFile = new TFile(fextFile);
-     fLogger->Info(MESSAGE_ORIGIN,"Opening input file of heavy flavour events %s",fextFile);
-     if (fInputFile->IsZombie()) {
-        fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the charm/beauty input file");
+   if (0 == strncmp("/eos",fextFile,4) ) {
+     char stupidCpp[100];
+     strcpy(stupidCpp,"root://eoslhcb/");
+     strcat(stupidCpp,fextFile);
+     fInputFile  = TFile::Open(stupidCpp); 
+     fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",stupidCpp);
+     }else{
+      fInputFile  = new TFile(fextFile);
+      fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons: %s",fextFile);
      }
      fTree = (TTree *)fInputFile->Get("pythia6");
      fNevents = fTree->GetEntries();
@@ -54,7 +58,6 @@ Bool_t HNLPythia8Generator::Init()
      fTree->SetBranchAddress("mpy",&mpy);
      fTree->SetBranchAddress("mpz",&mpz);
      fTree->SetBranchAddress("mE",&mE);
-     if ( debug ){cout<<"Open external file with charm or beauty hadrons: "<<fextFile<<endl;}
   }else{ 
      if ( debug ){cout<<"Beam Momentum "<<fMom<<endl;}
      fPythia->settings.mode("Beams:idA",  fId);

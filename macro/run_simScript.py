@@ -17,7 +17,7 @@ firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
-inputFile    = None
+inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root"
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
@@ -79,7 +79,8 @@ for o, a in opts:
         if o in ("-s", "--seed"):
             theSeed = int(a)
         if o in ("-f"):
-            inputFile = a
+            if a.lower() == "none": inputFile = None
+            else: inputFile = a
         if o in ("-o", "--output"):
             outputDir = a
         if o in ("-Y"): 
@@ -117,9 +118,9 @@ if not os.path.exists(outputDir):
   os.makedirs(outputDir)
 outFile = "%s/ship.%s.root" % (outputDir, tag)
 
-
 # rm older files !!! 
-os.system("rm %s/*.%s.root" % (outputDir, tag))
+for x in os.listdir(outputDir):
+  if not x.find(tag)<0: os.system("rm %s/%s" % (outputDir, x) )
 # Parameter file name
 parFile="%s/ship.params.%s.root" % (outputDir, tag)
 
