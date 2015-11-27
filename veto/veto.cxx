@@ -482,6 +482,8 @@ void veto::ConstructGeometry()
         const char* Vol  = "TGeoVolume";
         const char* Mag  = "Mag";
         const char* Rock = "rock";
+        const char* Ain  = "AbsorberAdd";
+        const char* Aout = "AbsorberAddCore";
         TObjArray* volumelist = gGeoManager->GetListOfVolumes();
         int lastvolume = volumelist->GetLast();
         int volumeiterator=0;
@@ -489,7 +491,7 @@ void veto::ConstructGeometry()
          const char* volumename = volumelist->At(volumeiterator)->GetName();
          const char* classname  = volumelist->At(volumeiterator)->ClassName();
          if (strstr(classname,Vol)){
-          if (strstr(volumename,Mag) || strstr(volumename,Rock)){ 
+          if (strstr(volumename,Mag) || strstr(volumename,Rock)|| strstr(volumename,Ain) || strstr(volumename,Aout)){ 
             AddSensitiveVolume(gGeoManager->GetVolume(volumename));
             cout << "veto added "<< volumename <<endl;
           }

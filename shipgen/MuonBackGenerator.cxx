@@ -20,7 +20,14 @@ Bool_t MuonBackGenerator::Init(const char* fileName) {
 Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const Bool_t fl = false ) {
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
+  if (0 == strncmp("/eos",fileName,4) ) {
+     char stupidCpp[100];
+     strcpy(stupidCpp,"root://eoslhcb/");
+     strcat(stupidCpp,fileName);
+     fInputFile  = TFile::Open(stupidCpp); 
+  }else{
   fInputFile  = new TFile(fileName);
+  }
   if (fInputFile->IsZombie()) {
     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");
   }
