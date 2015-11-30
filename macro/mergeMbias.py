@@ -318,8 +318,8 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
      if "Neutrinos" in opt: 
         pt2=t.px**2+t.py**2
         ptot=ROOT.TMath.Sqrt(pt2+t.pz**2)
-        l10ptot=min(max(ROOT.TMath.log10(ptot),-0.3),1.69999)
-        l10pt=min(ROOT.TMath.log10(ROOT.TMath.Sqrt(pt2)+0.01),0.9999)
+        l10ptot=min(max(ROOT.TMath.Log10(ptot),-0.3),1.69999)
+        l10pt=min(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2)+0.01),0.9999)
         idnu = int(t.id)
         idhnu=1000+idnu
         if idnu < 0: idhnu=2000+abs(idnu)
