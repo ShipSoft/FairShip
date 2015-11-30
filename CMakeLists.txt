@@ -12,6 +12,10 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0 FATAL_ERROR)
 # after check of cmake version since this is a new feature                  
 project(ShipRoot)
 
+If($ENV{HOSTNAME} MATCHES "cern")
+ MESSAGE("discovered lxplus: take gcc4.9 from lcg")
+ execute_process(COMMAND source /afs/cern.ch/sw/lcg/external/gcc/4.9/x86_64-slc6/setup.sh)
+EndIf()
 FIND_PATH(FAIRBASE NAMES FairRun.h  PATHS
   ${CMAKE_SOURCE_DIR}/base/steer
   NO_DEFAULT_PATH
@@ -64,6 +68,8 @@ set(INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
 Set(VMCWORKDIR ${ShipRoot_SOURCE_DIR})
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
 used." OFF)
+
+Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
 If(USE_PATH_INFO)
   Set(PATH "$PATH")
   If (APPLE)
@@ -107,10 +113,9 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # mandatory
 
 find_package(ROOT 5.34.00 REQUIRED)
-# find_package(PLUTO REQUIRED)
 find_package(Pythia8 REQUIRED)
 find_package(GENERATORS REQUIRED)
-find_package(GEANT3 REQUIRED)
+find_package(GEANT3)
 find_package(GEANT4)
 find_package(GEANT4DATA)
 find_package(GEANT4VMC)
@@ -250,12 +255,65 @@ add_custom_target(  # make relative links to folders
 
 WRITE_CONFIG_FILE(config.sh)
 WRITE_CONFIG_FILE(config.csh)
+
+# manipulate the config file:
+
+# add environment for use of GENIE
+MESSAGE(STATUS "Looking for GENIE ...")
+# genie in general
+FIND_PATH(GENIE  NAMES genie PATHS
+  ${SIMPATH}/../FairSoft/generators
+  NO_DEFAULT_PATH
+)
+
+If(NOT GENIE)
+  Message(STATUS "Could not find Genie source directory")
+Else()
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv GENIE ${GENIE}/genie\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export GENIE=${GENIE}/genie\n")
+EndIf()
+
+# location of cross section files
+FIND_PATH(GENPATH  NAMES genie PATHS
+  ${SIMPATH}/share/
+  NO_DEFAULT_PATH
+)
+
+If(NOT GENPATH)
+  Message(STATUS "Could not find Genie data files")
+Else()
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv GENPATH ${GENPATH}\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export GENPATH=${GENPATH}\n")
+EndIf()
+
+# location of pdf file
+FIND_PATH(LHAPATH NAMES PDFsets PATHS
+  ${SIMPATH}/share/lhapdf
+  NO_DEFAULT_PATH
+)
+
+If(NOT LHAPATH)
+  Message(STATUS "Could not find LHA data files")
+Else()
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LHAPATH ${LHAPATH}/data\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LHAPATH=${LHAPATH}/data\n")
+EndIf()
+
 # for lxplus, need to change LD_LIBRARY_PATH
-if(EXISTS "/opt/rh/python27/root/usr/lib64")
- file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LD_LIBRARY_PATH " "$" "{LD_LIBRARY_PATH}:/opt/rh/python27/root/usr/lib64")
- file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LD_LIBRARY_PATH=" "$" "{LD_LIBRARY_PATH}:/opt/rh/python27/root/usr/lib64")
-endif()
- 
+execute_process(COMMAND lsb_release -is OUTPUT_VARIABLE distribution)
+
+If($distribution MATCHES "ScientificCERNSLC")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "source scl_source enable devtoolset-3\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "source scl_source enable devtoolset-3\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "source scl_source enable python27\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "source scl_source enable python27\n")
+EndIf()
+# add some other useful environment variables:
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIPRUN "${CMAKE_CURRENT_BINARY_DIR}\n)
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIPRUN="${CMAKE_CURRENT_BINARY_DIR}\n)
+
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIP "${CMAKE_CURRENT_SOURCE_DIR}\n)
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIP="${CMAKE_CURRENT_SOURCE_DIR}\n) 
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )

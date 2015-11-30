@@ -12,7 +12,7 @@
 #pragma link C++ class  CosmicsGenerator+;
 #pragma link C++ class  MuDISGenerator+;
 #pragma link C++ class  NuageGenerator+;
-
+/*
 #pragma link C++ class Pythia8::Pythia+;
 #pragma link C++ class Pythia8::Event+;
 #pragma link C++ class Pythia8::Info+;
@@ -28,7 +28,7 @@
 #pragma link C++ class Pythia8::MergingHooks+;
 #pragma link C++ class Pythia8::Rndm+;
 #pragma link C++ class Pythia8::CoupSM+;
-/*
+
 #pragma link C++ class Pythia8::LHAinitrwgt+;
 #pragma link C++ class Pythia8::LHAscales+;
 #pragma link C++ class Pythia8::LHAweights+;
