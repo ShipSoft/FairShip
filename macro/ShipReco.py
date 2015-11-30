@@ -93,6 +93,7 @@ else: ecalGeoFile = "ecal_ellipse5x10m2.geo"
 print 'found ecal geo for ',ecalGeoFile
 
 h={}
+log={}
 if withHists:
  ut.bookHist(h,'distu','distance to wire',100,0.,5.)
  ut.bookHist(h,'distv','distance to wire',100,0.,5.)
@@ -431,4 +432,6 @@ SHiP.sTree.Write()
 
 ut.writeHists(h,"recohists.root")
 if realPR: ut.writeHists(shipPatRec.h,"recohists_patrec.root")
+
+ut.errorSummary()
 

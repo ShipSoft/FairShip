@@ -3,6 +3,7 @@ import ROOT
 import shipunit as u
 import rootUtils as ut
 
+
 class Task:
  "initialize"
  def __init__(self,hp,main):
@@ -67,7 +68,8 @@ class Task:
        try:
         PosDirCharge[tr]['rep'].extrapolateToPoint(PosDirCharge[tr]['newstate'], newPos, False)
        except:
-        print 'SHiPReco: extrapolation did not worked'
+        # print 'SHiPReco: extrapolation did not worked'
+        ut.reportError('SHiPReco: extrapolation did not worked')
         rc = False  
         break
        self.newPosDir[tr] = {'position':PosDirCharge[tr]['rep'].getPos(PosDirCharge[tr]['newstate']),\
