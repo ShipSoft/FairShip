@@ -220,14 +220,14 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   # i.e. the par. is for the neutrino, and the sTree. is for its mother.
   # wspill is the weight for this file normalised/5e13.
  if not splitOnly:
-  fcascade = ROOT.TFile("Decay-Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root")
+  fcascade = ROOT.TFile.Open(eospath+"/Charm/Decay-Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root")
   t = fcascade.Decay
   newFile = ROOT.TFile("pythia8_Charm.root", 'RECREATE')
   nt = ROOT.TNtuple("pythia8-Geant4","mu/nu flux from charm","id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut")
   for n in range(t.GetEntries()):
       rc = t.GetEntry(n)
       ztarget = rnr.Exp(16*10.) - 50.*1000. # Mo/H20/W average interaction length, need to work with Pythia8 units, mm = 1 !
-      rc = nt.Fill(t.id,t.px,t.py,t.pz,0.,0.,ztarget,t.id,t.mid,t.weight,0.)
+      rc = nt.Fill(t.id,t.px,t.py,t.pz,0.,0.,ztarget/1000.,t.id,t.mid,t.weight,0.)
   newFile.cd()
   nt.Write()
   newFile.Close()
