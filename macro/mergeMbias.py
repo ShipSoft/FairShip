@@ -1,6 +1,8 @@
 import ROOT,os,random
 import shipunit as u
 import rootUtils as ut
+from ShipGeoConfig import ConfigRegistry
+
 from array import array
 pdg  = ROOT.TDatabasePDG()
 mu   = pdg.GetParticle(13)
@@ -8,9 +10,11 @@ Mmu  = mu.Mass()
 Mmu2 = Mmu * Mmu 
 rnr  = ROOT.TRandom()
 
-eospath = "root://eoslhcb//eos/ship/data/"
-# eospath = "/media/Data/HNL/ShipSoft/data/"
-
+#eospath = "root://eoslhcb//eos/ship/data/"
+eospath = "/media/Data/HNL/ShipSoft/data/"
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = 10.)
+endOfHadronAbsorber = ship_geo['hadronAbsorber'].z + ship_geo['hadronAbsorber'].length/2.
+startOfTarget       = ship_geo['target'].z0
 
 def fillPart(t):
  particles = {}
@@ -197,6 +201,10 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
        vlist[9] = norm/( pot["Yandex"][0.5]  )
      else   :  
        print "this should not happen, except some rounding errors",p,Ekin,vlist[9]
+# scoring plane, g4Ex_gap:   afterHadronZ = z0Pos+targetL+absorberL+5.1*cm  
+#                                    z0Pos   = -50.*m    absorberL = 2*150.*cm
+# target length increased for Yandex2 production, ignore this, but all muons at current end of hadronabsorber
+     vlist[6] = endOfHadronAbsorber
      h['ntuple'].Fill(vlist[0],vlist[1],vlist[2],vlist[3],vlist[4],vlist[5],vlist[6],
                      vlist[7],vlist[8],vlist[9],vlist[10])
   h['N'].cd()
@@ -226,8 +234,8 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   nt = ROOT.TNtuple("pythia8-Geant4","mu/nu flux from charm","id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut")
   for n in range(t.GetEntries()):
       rc = t.GetEntry(n)
-      ztarget = rnr.Exp(16*10.) - 50.*1000. # Mo/H20/W average interaction length, need to work with Pythia8 units, mm = 1 !
-      rc = nt.Fill(t.id,t.px,t.py,t.pz,0.,0.,ztarget/1000.,t.id,t.mid,t.weight,0.)
+      ztarget = rnr.Exp(0.16) + startOfTarget # FairShip expects m !
+      rc = nt.Fill(t.id,t.px,t.py,t.pz,0.,0.,ztarget,t.id,t.mid,t.weight,0.)
   newFile.cd()
   nt.Write()
   newFile.Close()

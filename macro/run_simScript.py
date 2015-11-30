@@ -245,10 +245,9 @@ if simEngine == "Ntuple":
  print 'Process ',nEvents,' from input file'
 #
 if simEngine == "MuonBack":
-# reading muon tracks from previous Pythia8/Geant4 simulation, [-50m - 50m]
- primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
- # their might be good reason to use the following, but I forgot, need to check
- # primGen.SetTarget(50*u.m-3.5*u.m+ship_geo.hadronAbsorber.z+ship_geo.hadronAbsorber.length/2, 0.)
+# reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
+# position of particles set to end of current first 3m of hadron absorber in mergeMbias
+ primGen.SetTarget(0.,0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  MuonBackgen.SetSmearBeam(3*u.cm)
