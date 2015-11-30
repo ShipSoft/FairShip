@@ -32,17 +32,21 @@ version=$(lsb_release -rs | cut -f1 -d.)
 if [ "$distribution$version" = "ScientificCERNSLC6" ]; then
  # operating system of last century
  xx=$($SIMPATH/bin/fairsoft-config --cxx)
- if [[$xx == *"devtoolset"* ]]; then
+ if [[ "$xx" =~ "devtoolset" ]]; then
  # check that FairSoft is compiled with devtoolset
   source scl_source enable python27
   source scl_source enable devtoolset-3
  fi
 fi
 
-if [ ! -d FairShipRun ]; then
+if [ ! -d ../FairShipRun ]; then
  mkdir ../FairShipRun
  cd ../FairShipRun
- cmake ../FairShip
+ if [ "$distribution$version" = "ScientificCERNSLC6" ]; then
+  cmake ../FairShip  -DCMAKE_CXX_COMPILER=$xx
+ else 
+  cmake ../FairShip 
+ fi
 else
  cd FairShipRun
 fi
