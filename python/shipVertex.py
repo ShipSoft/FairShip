@@ -1,5 +1,5 @@
 # simple vertex reconstruction with errors
-import ROOT
+import ROOT,sys
 import shipunit as u
 import rootUtils as ut
 
@@ -17,6 +17,8 @@ class Task:
   self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
   self.h = hp
   self.PDG = ROOT.TDatabasePDG.Instance()
+  if sys.modules['__main__'].realPR != "":     self.fitTrackLoc = "FitTracks_PR"
+  else:                                        self.fitTrackLoc = "FitTracks"
   ut.bookHist(self.h,'Vzpull','Vz pull',100,-3.,3.)
   ut.bookHist(self.h,'Vxpull','Vx pull',100,-3.,3.)
   ut.bookHist(self.h,'Vypull','Vy pull',100,-3.,3.)
@@ -26,7 +28,7 @@ class Task:
   self.Particles.Fill()
  def TwoTrackVertex(self):
   self.fPartArray.Delete()
-  fittedTracks = self.sTree.FitTracks
+  fittedTracks = getattr(self.sTree,self.fitTrackLoc)
   if fittedTracks.GetEntries() < 2: return 
   particles    = self.fPartArray
   PosDirCharge,CovMat,scalFac = {},{},{}

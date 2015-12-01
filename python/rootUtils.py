@@ -8,7 +8,7 @@ except:
 
 
 from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas
-import os
+import os,sys
 
 def readHists(h,fname):
   if fname[0:4] == "/eos":
@@ -62,7 +62,15 @@ def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):
   if not h.has_key(key):
     h[key]=TCanvas(key,title,nx,ny) 
     h[key].Divide(cx,cy)
-
+def reportError(s):
+ l = sys.modules['__main__'].log
+ if not l.has_key(s): l[s]=0
+ l[s]+=1  
+def errorSummary():
+ l = sys.modules['__main__'].log
+ if len(l) > 0: "Summary of recorded incidents:"
+ for e in l:
+    print e,':',l[e]
 def printout(atc,name,Work):
   atc.Update()
   for x in ['.gif','.eps','.jpg'] :  

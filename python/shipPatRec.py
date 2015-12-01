@@ -1789,7 +1789,7 @@ def execute(n,SmearedHits,sTree,ReconstructibleMCTracks):
                resolution = ship_geo.straw.resol 
                for  i in range(3):   covM[i][i] = resolution*resolution
                covM[0][0]=resolution*resolution*100.
-               for  i in range(3,6): covM[i][i] = ROOT.TMath.pow(resolution / nM / ROOT.TMath.sqrt(3), 2)
+               for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
                # smeared start state  
                stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
                rep.setPosMomCov(stateSmeared, posM, momM, covM)

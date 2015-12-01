@@ -195,7 +195,7 @@ Old procedure, still valid for FairSoft and FairRoot master branches:
     Run the event display:
 
     ```bash
-    python -i $FAIRSHIP/macro/eventDisplay.py -f ship.10.0.Pythia8-TGeant4.root -g geofile_full.10.0.Pythia8-TGeant4.root -p ship.params.10.0.Pythia8-TGeant4.root
+    python -i $FAIRSHIP/macro/eventDisplay.py -f ship.10.0.Pythia8-TGeant4.root -g geofile_full.10.0.Pythia8-TGeant4.root
     // use SHiP Event Display GUI 
     // to switch on / off detectors (little trick to make it faster, main window, tick off Scenes/Geometry scene, then switch on / off detectors in SHiP Event Display GUI, then tick on again Scenes/Geometry scene)
     // hit next event, or enter event number and hit return

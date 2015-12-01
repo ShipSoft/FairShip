@@ -169,6 +169,7 @@ if simEngine == "Pythia6":
 # set muon interaction close to decay volume
  primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.) 
 # -----Pythia6-------------------------
+ test = ROOT.TPythia6() # don't know any other way of forcing to load lib
  P6gen = ROOT.tPythia6Generator()
  P6gen.SetMom(50.*u.GeV)
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"

@@ -11,6 +11,8 @@ def pyExit():
 
 
 def configure():
- ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
- ROOT.basiclibs()
+ #ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
+ #ROOT.basiclibs()
+ ROOT.gSystem.Load("libPythia6")
+ ROOT.gSystem.Load("libpythia8")
  atexit.register(pyExit)
