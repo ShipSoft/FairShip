@@ -6,6 +6,81 @@ read [the Git tutorial for SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-T
 
 Let get started:
 
+1 December 2015: new DEV branches for FairSoft and FairRoot are put in place with simplified configurations scripts
+
+1. In case you use SLC6 where the GitHub cert is missing, first do (only once):
+
+    ```bash
+    mkdir ~/certs
+    curl http://curl.haxx.se/ca/cacert.pem -o ~/certs/cacert.pem
+    git config --global http.sslcainfo ~/certs/cacert.pem
+    ```
+
+2. Set several required shell variables, needed during the installation and running of the
+   different software packages. Put these in your shell's rc file (~/.bashrc or ~/.cshrc).
+   For bash:
+
+    ```bash
+    export SHIPSOFT=~/ShipSoft
+    export SIMPATH=$SHIPSOFT/FairSoftInst
+    export FAIRROOTPATH=$SHIPSOFT/FairRootInst
+    ```
+
+    or for the csh:
+
+    ```bash
+    setenv SHIPSOFT ~/ShipSoft
+    setenv SIMPATH ${SHIPSOFT}/FairSoftInst
+    setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
+    ```
+
+3. Install [FairSoft]
+
+    ```bash
+    mkdir $SHIPSOFT
+    cd $SHIPSOFT
+    git clone -b dev https://github.com/ShipSoft/FairSoft.git
+    cd FairSoft
+    cat DEPENDENCIES
+    # Make sure all the required dependencies are installed
+    ./configure.sh
+    # accept ShipSoft default
+    # no, for experts
+    ```
+
+4. Install [FairRoot]
+
+    ```bash
+    cd $SHIPSOFT
+    git clone -b dev https://github.com/ShipSoft/FairRoot.git
+    cd FairRoot
+    mkdir build
+    ./configure.sh
+    ```
+
+5. Install the [SHIP](https://github.com/ShipSoft/FairShip.git) software:
+
+    ```bash
+    cd $SHIPSOFT (or at any other place XXX
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    ./configure.sh
+    
+    for only compiling
+    cd FairShipRun
+    make
+    
+    If you work on lxplus, after logon, you always have to do:
+    setenv xxx ${HOME}
+    setenv SHIPSOFT /afs/cern.ch/ship/sw/ShipSoft/dev
+    setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
+    setenv SIMPATH      ${SHIPSOFT}/FairSoftInst
+    setenv FAIRSHIP ${xxx}/FairShip
+    source ${xxx}/FairShipRun/config.(c)sh
+    ```
+
+Old procedure, still valid for FairSoft and FairRoot master branches:
+
 1. In case you use SLC6 where the GitHub cert is missing, first do (only once):
 
     ```bash
@@ -41,7 +116,7 @@ Let get started:
     ```bash
     mkdir $SHIPSOFT
     cd $SHIPSOFT
-    git clone -b dev https://github.com/ShipSoft/FairSoft.git
+    git clone -b master https://github.com/ShipSoft/FairSoft.git
     cd FairSoft
     cat DEPENDENCIES
     # Make sure all the required dependencies are installed
@@ -59,7 +134,7 @@ Let get started:
 
     ```bash
     cd $SHIPSOFT
-    git clone -b dev https://github.com/ShipSoft/FairRoot.git
+    git clone -b master https://github.com/ShipSoft/FairRoot.git
     cd FairRoot
     mkdir build
     cd build

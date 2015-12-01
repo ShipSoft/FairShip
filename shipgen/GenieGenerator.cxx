@@ -40,9 +40,9 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
    fInputFile  = new TFile(fileName);
    fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   }
-  if (fInputFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");
-  }
+  if (fInputFile->IsZombie() or !fInputFile) {
+     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+     return kFALSE; }
   fTree = (TTree *)fInputFile->Get("gst");
   fNevents = fTree->GetEntries();
   fn = firstEvent;

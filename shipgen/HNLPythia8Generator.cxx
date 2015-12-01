@@ -34,16 +34,19 @@ Bool_t HNLPythia8Generator::Init()
   fPythia->setRndmEnginePtr(fRandomEngine);
   fn = 0;
   if (fextFile != ""){
-   if (0 == strncmp("/eos",fextFile,4) ) {
+    if (0 == strncmp("/eos",fextFile,4) ) {
      char stupidCpp[100];
      strcpy(stupidCpp,"root://eoslhcb/");
      strcat(stupidCpp,fextFile);
      fInputFile  = TFile::Open(stupidCpp); 
      fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",stupidCpp);
-     }else{
+    }else{
       fInputFile  = new TFile(fextFile);
       fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons: %s",fextFile);
      }
+    if (fInputFile->IsZombie() or !fInputFile) {
+     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+     return kFALSE; }
      fTree = (TTree *)fInputFile->Get("pythia6");
      fNevents = fTree->GetEntries();
      fn = firstEvent;

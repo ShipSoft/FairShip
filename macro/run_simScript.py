@@ -18,6 +18,7 @@ inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" on
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
 inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root"
+defaultInputFile = True
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
@@ -38,7 +39,7 @@ except getopt.GetoptError:
         print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
         print ' or    --Genie for reading and processing neutrino interactions \
                 or    --Pythia6 for muon nucleon scattering'  
-        print '       --MuonBack to generate events from muon background file, --Cosmics for cosmic generator data'  
+        print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --mass or -m to set HNL mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
         sys.exit()
@@ -81,6 +82,7 @@ for o, a in opts:
         if o in ("-f"):
             if a.lower() == "none": inputFile = None
             else: inputFile = a
+            defaultInputFile = False
         if o in ("-o", "--output"):
             outputDir = a
         if o in ("-Y"): 
@@ -92,17 +94,21 @@ for o, a in opts:
         if o in ("-c", "--couplings", "--coupling"):
             theHNLcouplings = [float(c) for c in a.split(",")]
 
-if (simEngine == "Genie" or simEngine == "nuRadiography") and not inputFile: 
-  inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu-_anti_nu_mu-gntp.113.gst.root' # anti_nu_mu
-# nu_mu: inputFile = os.environ['SHIPSOFT']+'/data/Genie-mu+_nu_mu-gntp.113.gst.root'
-if simEngine == "muonDIS" and not inputFile:
- inputFile = os.environ['SHIPSOFT']+'/data/muonDis.root' 
+if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
+  inputFile = "/eos/ship/data/GenieEvents/genie-nu_mu.root"
+            # "/eos/ship/data/GenieEvents/genie-nu_mu_bar.root"
+if simEngine == "muonDIS" and defaultInputFile:
+  print 'input file required if simEngine = muonDIS'
+  print " for example -f  /eos/ship/data/Mbias/muonDIS/muonDis_1.root"
+  sys.exit()
 if simEngine == "Nuage" and not inputFile:
  inputFile = 'Numucc.root'
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
-if (simEngine == "Ntuple" or simEngine == "MuonBack") and not inputFile :
+if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
+  print " for example -f /eos/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons.root"
+  sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - muShieldDesign = 2  # 1=passive 2=active (default)
@@ -246,7 +252,6 @@ if simEngine == "Ntuple":
 #
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
-# position of particles set to end of current first 3m of hadron absorber in mergeMbias
  primGen.SetTarget(0.,0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)

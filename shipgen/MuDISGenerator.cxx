@@ -34,10 +34,18 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
 
   iMuon = 0;
   dPart = 0; 
-  fInputFile  = new TFile(fileName);
-  if (fInputFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");
+  if (0 == strncmp("/eos",fileName,4) ) {
+    char stupidCpp[100];
+    strcpy(stupidCpp,"root://eoslhcb/");
+    strcat(stupidCpp,fileName);
+    fInputFile  = TFile::Open(stupidCpp); 
+    fLogger->Info(MESSAGE_ORIGIN,"Open external file on eos: %s",stupidCpp);
+  }else{
+    fInputFile  = new TFile(fileName);
   }
+  if (fInputFile->IsZombie() or !fInputFile) {
+     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+     return kFALSE; }
   fTree = (TTree *)fInputFile->Get("DIS");
   fNevents = fTree->GetEntries();
   fn = firstEvent;
