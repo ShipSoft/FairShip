@@ -44,17 +44,17 @@ class muon: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZStationPositions(Double32_t z0, Double32_t z1,Double32_t z2,Double32_t z3);
+    void SetZStationPositions(Double_t z0, Double_t z1,Double_t z2,Double_t z3);
 
-    void SetZFilterPositions(Double32_t z0, Double32_t z1,Double32_t z2);
+    void SetZFilterPositions(Double_t z0, Double_t z1,Double_t z2);
 
-    void SetActiveThickness(Double32_t activeThickness);
+    void SetActiveThickness(Double_t activeThickness);
 
-    void SetFilterThickness(Double32_t filterThickness);
+    void SetFilterThickness(Double_t filterThickness);
 
-    void SetXMax(Double32_t xMax);
+    void SetXMax(Double_t xMax);
 
-    void SetYMax(Double32_t yMax);
+    void SetYMax(Double_t yMax);
 
 
     /**      Create the detector geometry        */
@@ -95,21 +95,21 @@ class muon: public FairDetector
     Int_t          fVolumeID;          //!  volume id
     TLorentzVector fPos;               //!  position at entrance
     TLorentzVector fMom;               //!  momentum at entrance
-    Double32_t     fTime;              //!  time
-    Double32_t     fLength;            //!  length
-    Double32_t     fELoss;             //!  energy loss
-    Double32_t     fM0z;               //!  z-position of veto station
-    Double32_t     fM1z;               //!  z-position of tracking station 1
-    Double32_t     fM2z;               //!  z-position of tracking station 2
-    Double32_t     fM3z;               //!  z-position of tracking station 3
-    Double32_t     fF0z;               //!  z-position of veto station
-    Double32_t     fF1z;               //!  z-position of tracking station 1
-    Double32_t     fF2z;               //!  z-position of tracking station 2
+    Double_t     fTime;              //!  time
+    Double_t     fLength;            //!  length
+    Double_t     fELoss;             //!  energy loss
+    Double_t     fM0z;               //!  z-position of veto station
+    Double_t     fM1z;               //!  z-position of tracking station 1
+    Double_t     fM2z;               //!  z-position of tracking station 2
+    Double_t     fM3z;               //!  z-position of tracking station 3
+    Double_t     fF0z;               //!  z-position of veto station
+    Double_t     fF1z;               //!  z-position of tracking station 1
+    Double_t     fF2z;               //!  z-position of tracking station 2
  
-    Double32_t fFilterThickness;
-    Double32_t fActiveThickness;
-    Double32_t fXMax;
-    Double32_t fYMax;
+    Double_t fFilterThickness;
+    Double_t fActiveThickness;
+    Double_t fXMax;
+    Double_t fYMax;
     /** container for data points */
 
     TClonesArray*  fmuonPointCollection;

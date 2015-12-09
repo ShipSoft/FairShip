@@ -218,7 +218,7 @@ void strawtubes::Reset()
 {
   fstrawtubesPointCollection->Clear();
 }
-void strawtubes::SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4)
+void strawtubes::SetZpositions(Double_t z0, Double_t z1, Double_t z2, Double_t z3, Double_t z4)
 {
      fT0z = z0;                                                 //!  z-position of veto station
      fT1z = z1;                                                 //!  z-position of tracking station 1
@@ -227,35 +227,35 @@ void strawtubes::SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Doub
      fT4z = z4;                                                 //!  z-position of tracking station 4
 }
 
-void strawtubes::SetStrawLength(Double32_t strawlength)
+void strawtubes::SetStrawLength(Double_t strawlength)
 {
      fStraw_length = strawlength;                               //!  Length (y) of a straw
 }
 
-void strawtubes::SetInnerStrawDiameter(Double32_t innerstrawdiameter)
+void strawtubes::SetInnerStrawDiameter(Double_t innerstrawdiameter)
 {
      fInner_Straw_diameter = innerstrawdiameter;                //!  Inner Straw diameter
 }
 
-void strawtubes::SetOuterStrawDiameter(Double32_t outerstrawdiameter)
+void strawtubes::SetOuterStrawDiameter(Double_t outerstrawdiameter)
 {
      fOuter_Straw_diameter = outerstrawdiameter;                //!  Outer Straw diameter
 }
 
 
-void strawtubes::SetStrawPitch(Double32_t strawpitch)
+void strawtubes::SetStrawPitch(Double_t strawpitch)
 {
      fStraw_pitch = strawpitch;                                 //!  Distance (x) between straws in one layer
      fOffset_layer12 = strawpitch/2;
      fOffset_plane12 = strawpitch/4;
 }
 
-void strawtubes::SetDeltazLayer(Double32_t deltazlayer)
+void strawtubes::SetDeltazLayer(Double_t deltazlayer)
 {
      fDeltaz_layer12 = deltazlayer;                              //! Distance (z) between layer 1&2
 }
 
-void strawtubes::SetDeltazPlane(Double32_t deltazplane)
+void strawtubes::SetDeltazPlane(Double_t deltazplane)
 {
      fDeltaz_plane12 = deltazplane;                              //! Distance (z) between plane 1&2
 }
@@ -272,22 +272,22 @@ void strawtubes::SetStereoAngle(Int_t stereoangle)
      fsinphi=sin(TMath::Pi()*fView_angle/180.);
 }
 
-void strawtubes::SetWireThickness(Double32_t wirethickness)
+void strawtubes::SetWireThickness(Double_t wirethickness)
 {
      fWire_thickness = wirethickness;                            //! Thickness of the wire
 }
 
-void strawtubes::SetDeltazView(Double32_t deltazview)
+void strawtubes::SetDeltazView(Double_t deltazview)
 {
      fDeltaz_view = deltazview;                            //! Distance (z) between views
 }
 
-void strawtubes::SetVacBox_x(Double32_t vacbox_x)
+void strawtubes::SetVacBox_x(Double_t vacbox_x)
 {
      fVacBox_x = vacbox_x;                               //! x size of station vacuum box
 }
 
-void strawtubes::SetVacBox_y(Double32_t vacbox_y)
+void strawtubes::SetVacBox_y(Double_t vacbox_y)
 {
      fVacBox_y = vacbox_y;                               //! y size of station vacuum box
 }

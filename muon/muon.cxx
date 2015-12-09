@@ -168,32 +168,32 @@ void muon::Reset()
   fmuonPointCollection->Clear();
 }
 
-void muon::SetZStationPositions(Double32_t z0, Double32_t z1,Double32_t z2,Double32_t z3)
+void muon::SetZStationPositions(Double_t z0, Double_t z1,Double_t z2,Double_t z3)
 {
   fM0z=z0;
  fM1z=z1;
  fM2z=z2;
  fM3z=z3;
 }
-void muon::SetZFilterPositions(Double32_t z0, Double32_t z1,Double32_t z2)
+void muon::SetZFilterPositions(Double_t z0, Double_t z1,Double_t z2)
 {
   fF0z=z0;
  fF1z=z1;
  fF2z=z2;
 }
-void muon::SetActiveThickness(Double32_t activeThickness)
+void muon::SetActiveThickness(Double_t activeThickness)
 {
   fActiveThickness=activeThickness;
 }
-void muon::SetFilterThickness(Double32_t filterThickness)
+void muon::SetFilterThickness(Double_t filterThickness)
 {
   fFilterThickness=filterThickness;
 }
-void muon::SetXMax(Double32_t xMax)
+void muon::SetXMax(Double_t xMax)
 {
   fXMax=xMax;
 }
-void muon::SetYMax(Double32_t yMax)
+void muon::SetYMax(Double_t yMax)
 {
   fYMax=yMax;
 }
