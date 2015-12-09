@@ -22,20 +22,24 @@ def readHists(h,fname):
     except:  hname = name
     obj = akey.ReadObj()
     cln = obj.Class().GetName()
+    if not cln.find('TCanv')<0: 
+       h[hname] =  obj.Clone()
     if cln.find('TH')<0: continue
     if h.has_key(hname): 
        rc = h[hname].Add(obj)
        if not rc: print "Error when adding histogram ",hname 
     else: 
       h[hname] =  obj.Clone()
-      h[hname].Sumw2() 
+      if h[hname].GetSumw2N()==0 : h[hname].Sumw2() 
     h[hname].SetDirectory(gROOT)
     if cln == 'TH2D' or cln == 'TH2F':
          for p in [ '_projx','_projy']:
-           if p.find('x')>-1: h[hname+p] = h[hname].ProjectionX()  
-           else             : h[hname+p] = h[hname].ProjectionY()  
-           h[hname+p].SetName(name+p)
-           h[hname+p].SetDirectory(gROOT)
+           if type(hname) == type('s'): projname = hname+p
+           else: projname = str(hname)+p
+           if p.find('x')>-1: h[projname] = h[hname].ProjectionX()  
+           else             : h[projname] = h[hname].ProjectionY()  
+           h[projname].SetName(name+p)
+           h[projname].SetDirectory(gROOT)
   return
 def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1,nbinsz=0,zmin=0,zmax=1):
   if key==None : 
