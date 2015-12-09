@@ -303,10 +303,8 @@ EndIf()
 execute_process(COMMAND lsb_release -is OUTPUT_VARIABLE distribution)
 
 If($distribution MATCHES "ScientificCERNSLC")
- file(APPEND ${CMAKE_BINARY_DIR}/config.csh "source scl_source enable devtoolset-3\n")
- file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "source scl_source enable devtoolset-3\n")
- file(APPEND ${CMAKE_BINARY_DIR}/config.csh "source scl_source enable python27\n")
- file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "source scl_source enable python27\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval `/afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_82 x86_64-slc6-gcc49-opt Python\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval `/afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_82 x86_64-slc6-gcc49-opt Python\n")
 EndIf()
 # add some other useful environment variables:
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIPRUN "${CMAKE_CURRENT_BINARY_DIR}\n)
