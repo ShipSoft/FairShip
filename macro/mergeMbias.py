@@ -13,8 +13,12 @@ rnr  = ROOT.TRandom()
 #eospath = "root://eoslhcb//eos/ship/data/"
 eospath = "/media/Data/HNL/ShipSoft/data/"
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = 10.)
-endOfHadronAbsorber = ship_geo['hadronAbsorber'].z + ship_geo['hadronAbsorber'].length/2.
-startOfTarget       = ship_geo['target'].z0
+endOfHadronAbsorber = (ship_geo['hadronAbsorber'].z + ship_geo['hadronAbsorber'].length/2.) /100.
+startOfTarget       = ship_geo['target'].z0 /100.
+## this is in ROOT units, cm == 1
+## need to divide by 100 to make MuonBackGenerator happy, expects m to convert to cm: vx*100.,vy*100.,vz*100.
+## checking: pythia8_Geant4_total.root, z position, -46.49800109863
+##           Decay-Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root has no positions
 
 def fillPart(t):
  particles = {}
@@ -70,7 +74,7 @@ def TplotP(sTree):
      h[hi]=h['T'+p].Clone(hi)
      h[hi].Reset()
      nsum = 0 
-     for i in range(h[hi].GetNbinsX()+1,1,-1):
+     for i in range(h[hi].GetNbinsX()+1,0,-1):
       nsum+=h['T'+p].GetBinContent(i)
       h[hi].SetBinContent(i,nsum) 
   for z in ['p','pt']: 
@@ -234,7 +238,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   nt = ROOT.TNtuple("pythia8-Geant4","mu/nu flux from charm","id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut")
   for n in range(t.GetEntries()):
       rc = t.GetEntry(n)
-      ztarget = rnr.Exp(0.16) + startOfTarget # FairShip expects m !
+      ztarget = rnr.Exp(0.16) + startOfTarget
       rc = nt.Fill(t.id,t.px,t.py,t.pz,0.,0.,ztarget,t.id,t.mid,t.weight,0.)
   newFile.cd()
   nt.Write()
@@ -466,6 +470,7 @@ def compare():
    h['Lnue'+z+x].Draw() 
 #
    h[t].Print('comparison'+z+x.replace('_>','')+'.png')
+   h[t].Print('comparison'+z+x.replace('_>','')+'.pdf')
 # make ratio plots
  x = '_>E'
  for z in ['p','pt']:
@@ -482,9 +487,12 @@ def compare():
    tc = h['ratios'].cd(n)
    n+=1
    h[z+'muRatio'+x].SetLineColor(2)
-   h[z+'muRatio'+x].SetMaximum(max(h[z+'muRatio'+x].GetMaximum(),h[z+'numuRatio'+x].GetMaximum(),h[z+'nueRatio'+x].GetMaximum()))
+   h[z+'muRatio'+x].SetMaximum(max(h[z+'muRatio'+x].GetMaximum(),h[z+'numuRatio'+x].GetMaximum()))
+   h[z+'muRatio'+x].SetMinimum(0)
+   h[z+'muRatio'+x].SetStats(0)
    h[z+'muRatio'+x].Draw()
    h[z+'numuRatio'+x].SetLineColor(3)
+   h[z+'numuRatio'+x].SetStats(0)
    h[z+'numuRatio'+x].Draw('same')
    #h[z+'nueRatio'+x].SetLineColor(4)
    #h[z+'nueRatio'+x].Draw('same')
@@ -493,6 +501,7 @@ def compare():
    #h['Lratio'+z+x].AddEntry(h[z+'nueRatio'+x],'nu_e flux new / old ','PL')
    h['Lratio'+z+x].Draw()
  h['ratios'].Print('comparisonRatios.png')
+ h['ratios'].Print('comparisonRatios.pdf')
 
 print "+ to start the full production: runProduction()"
 print "+ merging with charm events:   mergeWithCharm()"
