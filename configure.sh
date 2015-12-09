@@ -49,7 +49,7 @@ if [ ! -d ../FairShipRun ]; then
   cmake ../FairShip 
  fi
 else
- cd FairShipRun
+ cd ../FairShipRun
 fi
 
 make
