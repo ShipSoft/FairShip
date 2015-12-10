@@ -515,13 +515,17 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         //get local material at this point, to calculate probability that interaction is at this point.
         TGeoNode *node = gGeoManager->FindNode(x,y,z);
         TGeoMaterial *mat = 0;
-        if (node && !gGeoManager->IsOutside()) mat = node->GetVolume()->GetMaterial();
-        //cout << "Info GenieGenerator: mat " <<  count << ", " << mat->GetName() << ", " << mat->GetDensity() << endl;
-        //density relative to Prob largest density along this trajectory, i.e. use rho(Pt)
-        prob2int= mat->GetDensity()/mparam[7];
-        if (prob2int>1.) cout << "***WARNING*** GenieGenerator: prob2int > Maximum density????" << prob2int << " maxrho:" << mparam[7] << " material: " <<  mat->GetName() << endl;
-        count+=1;
-      }
+        if (node && !gGeoManager->IsOutside()) {
+          mat = node->GetVolume()->GetMaterial();
+         //cout << "Info GenieGenerator: mat " <<  count << ", " << mat->GetName() << ", " << mat->GetDensity() << endl;
+         //density relative to Prob largest density along this trajectory, i.e. use rho(Pt)
+         prob2int= mat->GetDensity()/mparam[7];
+         if (prob2int>1.) cout << "***WARNING*** GenieGenerator: prob2int > Maximum density????" << prob2int << " maxrho:" << mparam[7] << " material: " <<  mat->GetName() << endl;
+         count+=1;
+        }else{
+          prob2int=0.;
+        }
+     } 
     }
     //cout << "Info GenieGenerator: prob2int " << prob2int << ", " << count << endl;
 
