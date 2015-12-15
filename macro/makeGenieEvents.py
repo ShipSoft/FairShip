@@ -30,20 +30,22 @@ def makeSplines():
 
 def makeEvents(nevents = 100):
  run = 11
+ splines   = os.path.abspath('.')+'/xsec_splines-iron-nu_e-nu_mu.xml'
+ neutrinos = os.path.abspath('.')+'/'+hfile
  for p in pDict:
   if p<0: print "scale number of "+sDict[p]+" events with %5.2F"%(1./nuOverNubar[abs(p)])
   if not sDict[p] in os.listdir('.'): os.system('mkdir '+sDict[p])
   os.chdir('./'+sDict[p])
-  os.system('rm '+hfile)
-  os.system('rm '+xsec)
-  os.system('ln -s  ../'+hfile+' '+hfile)
-  os.system('ln -s  ../'+xsec+' '+xsec)
+  #os.system('rm '+hfile)
+  #os.system('rm '+xsec)
+  #os.system('ln -s  ../'+hfile+' '+hfile)
+  #os.system('ln -s  ../'+xsec+' '+xsec)
   # stop at 350 GeV, otherwise strange warning about "Lower energy neutrinos have a higher probability of 
   # interacting than those at higher energy. pmaxLow(E=386.715)=2.157e-13 and  pmaxHigh(E=388.044)=2.15623e-13"
   N = nevents
   if p<0: N = int(nevents / nuOverNubar[abs(p)])
-  cmd = "gevgen -n "+str(N)+"  -p "+str(p)+" -t 1000260560 -e  0.5,350  --run "+str(run)+" -f "+hfile+","+pDict[p]+ \
-            " --cross-sections xsec_splines-iron-nu_e-nu_mu.xml --message-thresholds $GENIE/config/Messenger_laconic.xml"
+  cmd = "gevgen -n "+str(N)+"  -p "+str(p)+" -t 1000260560 -e  0.5,350  --run "+str(run)+" -f "+neutrinos+","+pDict[p]+ \
+            " --cross-sections "+splines+" --message-thresholds $GENIE/config/Messenger_laconic.xml"
   print "start genie ",cmd
   os.system(cmd+" > log"+sDict[p]+" &")
   run +=1

@@ -38,14 +38,20 @@ Bool_t HNLPythia8Generator::Init()
      char stupidCpp[100];
      strcpy(stupidCpp,"root://eoslhcb/");
      strcat(stupidCpp,fextFile);
-     fInputFile  = TFile::Open(stupidCpp); 
      fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",stupidCpp);
+     fInputFile  = TFile::Open(stupidCpp); 
+     if (!fInputFile) {
+      fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch");
+      return kFALSE; }
     }else{
-      fInputFile  = new TFile(fextFile);
       fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons: %s",fextFile);
-     }
-    if (fInputFile->IsZombie() or !fInputFile) {
-     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+      fInputFile  = new TFile(fextFile);
+      if (!fInputFile) {
+       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+     return kFALSE; }
+    }
+    if (fInputFile->IsZombie()) {
+     fLogger->Fatal(MESSAGE_ORIGIN, "File is corrupted");
      return kFALSE; }
      fTree = (TTree *)fInputFile->Get("pythia6");
      fNevents = fTree->GetEntries();

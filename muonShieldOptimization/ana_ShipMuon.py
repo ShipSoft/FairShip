@@ -1,5 +1,6 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root 
 import os,ROOT
+ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 local = False
 if not os.uname()[1].lower().find('ubuntu')< 0: local = True
 
@@ -154,6 +155,145 @@ if not os.uname()[1].lower().find('ubuntu')< 0: local = True
 #makeProd("muon1023",10,True,True)
 #makeProd("muon1012",10,False,True)
 #makeProd("muon1022",10,True,True)
+#makeProd("muon633",10,'concrete',False) # run with concrete wall enabled as sensitive
+#makeProd("muon1111",10,'False',False) # try iron for first shield
+#makeProd("muon1121",10,'True',False)  # try iron for first shield
+#makeProd("muon1112",10,'False',True) # try iron for first shield
+#makeProd("muon1122",10,'True',True)  # try iron for first shield
+# restart with also rockS sensitive and &&->||
+#makeProd("muon634",10,'concrete',False) # run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon635",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon636",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon637",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon638",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon639",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon640",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon641",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon642",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon643",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon650",10,'concrete',False) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon651",10,'concrete',False) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon652",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon653",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon654",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon655",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon656",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon657",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon658",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon659",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon660",10,'concrete',False) # liter magnet
+#makeProd("muon661",10,'concrete',True) # liter magnet
+#makeProd("muon662",10,'concrete',True) # liter magnet
+#makeProd("muon663",10,'concrete',True) # liter magnet
+#makeProd("muon664",10,'concrete',True) # liter magnet
+#makeProd("muon665",10,'concrete',True) # liter magnet
+#makeProd("muon666",10,'concrete',True) # liter magnet
+#makeProd("muon667",10,'concrete',True) # liter magnet
+#makeProd("muon668",10,'concrete',True) # liter magnet
+#makeProd("muon669",10,'concrete',True) # liter magnet
+#makeProd("muon670",10,'concrete',False) # even liter magnet
+#makeProd("muon671",10,'concrete',True) # even liter magnet
+#makeProd("muon672",10,'concrete',True) # even liter magnet
+#makeProd("muon673",10,'concrete',True) # even liter magnet
+#makeProd("muon674",10,'concrete',True) # even liter magnet
+#makeProd("muon675",10,'concrete',True) # even liter magnet
+#makeProd("muon676",10,'concrete',True) # even liter magnet
+#makeProd("muon677",10,'concrete',True) # even liter magnet
+#makeProd("muon678",10,'concrete',True) # even liter magnet
+#makeProd("muon679",10,'concrete',True) # even liter magnet
+# new attempt, previous did not worked out
+#makeProd("muon680",10,'concrete',False) # even liter magnet
+#makeProd("muon681",10,'concrete',True) # even liter magnet
+#makeProd("muon682",10,'concrete',True) # even liter magnet
+#makeProd("muon683",10,'concrete',True) # even liter magnet
+#makeProd("muon684",10,'concrete',True) # even liter magnet
+#makeProd("muon685",10,'concrete',True) # even liter magnet
+#makeProd("muon686",10,'concrete',True) # even liter magnet
+#makeProd("muon687",10,'concrete',True) # even liter magnet
+#makeProd("muon688",10,'concrete',True) # even liter magnet
+#makeProd("muon689",10,'concrete',True) # even liter magnet
+# new attempt, increase height of first magnet, previous did not worked out either
+#makeProd("muon690",10,'concrete',False) # even liter magnet
+#makeProd("muon691",10,'concrete',True) # even liter magnet
+#makeProd("muon692",10,'concrete',True) # even liter magnet
+#makeProd("muon693",10,'concrete',True) # even liter magnet
+#makeProd("muon694",10,'concrete',True) # even liter magnet
+#makeProd("muon695",10,'concrete',True) # even liter magnet
+#makeProd("muon696",10,'concrete',True) # even liter magnet
+#makeProd("muon697",10,'concrete',True) # even liter magnet
+#makeProd("muon698",10,'concrete',True) # even liter magnet
+#makeProd("muon699",10,'concrete',True) # even liter magnet
+# testing height 4m->2m
+#makeProd("muon700",10,'concrete',False) # even liter magnet
+#makeProd("muon701",10,'concrete',True) # even liter magnet
+#makeProd("muon702",10,'concrete',True) # even liter magnet
+#makeProd("muon703",10,'concrete',True) # even liter magnet
+#makeProd("muon704",10,'concrete',True) # even liter magnet
+#makeProd("muon705",10,'concrete',True) # even liter magnet
+#makeProd("muon706",10,'concrete',True) # even liter magnet
+#makeProd("muon707",10,'concrete',True) # even liter magnet
+#makeProd("muon708",10,'concrete',True) # even liter magnet
+#makeProd("muon709",10,'concrete',True) # even liter magnet
+# testing height 4m->2m + new magnets
+#makeProd("muon800",10,'concrete',False) # even liter magnet
+#makeProd("muon801",10,'concrete',True) # even liter magnet
+#makeProd("muon802",10,'concrete',True) # even liter magnet
+#makeProd("muon803",10,'concrete',True) # even liter magnet
+#makeProd("muon804",10,'concrete',True) # even liter magnet
+#makeProd("muon805",10,'concrete',True) # even liter magnet
+#makeProd("muon806",10,'concrete',True) # even liter magnet
+#makeProd("muon807",10,'concrete',True) # even liter magnet
+#makeProd("muon808",10,'concrete',True) # even liter magnet
+#makeProd("muon809",10,'concrete',True) # even liter magnet
+# new iteration, and ship_geo.Yheight*1./10.   
+#makeProd("muon710",10,'concrete',False) # even liter magnet
+#makeProd("muon711",10,'concrete',True) # even liter magnet
+#makeProd("muon712",10,'concrete',True) # even liter magnet
+#makeProd("muon713",10,'concrete',True) # even liter magnet
+#makeProd("muon714",10,'concrete',True) # even liter magnet
+#makeProd("muon715",10,'concrete',True) # even liter magnet
+#makeProd("muon716",10,'concrete',True) # even liter magnet
+#makeProd("muon717",10,'concrete',True) # even liter magnet
+#makeProd("muon718",10,'concrete',True) # even liter magnet
+#makeProd("muon719",10,'concrete',True) # even liter magnet
+# new iteration, and back to ship_geo.Yheight*2./10.   
+#makeProd("muon720",10,'concrete',False) # even liter magnet
+#makeProd("muon721",10,'concrete',True) # even liter magnet
+#makeProd("muon722",10,'concrete',True) # even liter magnet
+#makeProd("muon723",10,'concrete',True) # even liter magnet
+#makeProd("muon724",10,'concrete',True) # even liter magnet
+#makeProd("muon725",10,'concrete',True) # even liter magnet
+#makeProd("muon726",10,'concrete',True) # even liter magnet
+#makeProd("muon727",10,'concrete',True) # even liter magnet
+#makeProd("muon728",10,'concrete',True) # even liter magnet
+#makeProd("muon729",10,'concrete',True) # even liter magnet
+# new iteration, and back to ship_geo.Yheight*2./10. but with more info in vetoPoint  
+#makeProd("muon730",10,'concrete',False) # even liter magnet
+#makeProd("muon740",10,'concrete',False) # even liter magnet
+# new iteration,  ship_geo.Yheight*1./10.   
+#makeProd("muon750",10,'concrete',False) # 
+# new iteration,  ship_geo.Yheight*1.5/10.   
+#makeProd("muon760",10,'concrete',False) #
+#makeProd("muon761",10,'concrete',True) #
+# as before but now with full simulation
+#makeProd("muon1710",10,False,False)
+#makeProd("muon1720",10,True,False)
+#makeProd("muon1711",10,False,True)
+#makeProd("muon1721",10,True,True)
+#makeProd("muon1712",10,False,True)
+#makeProd("muon1722",10,True,True)
+#makeProd("muon1713",10,False,True)
+#makeProd("muon1723",10,True,True)
+#makeProd("muon1714",10,False,True)
+#makeProd("muon1724",10,True,True)
+#makeProd("muon1715",10,False,True)
+#makeProd("muon1725",10,True,True)
+#makeProd("muon1716",10,False,True)
+#makeProd("muon1726",10,True,True)
+# another one, hopefully better
+#makeProd("muon1717",10,'concrete',False) #
+# another one, increasing height to 3m
+#makeProd("muon1718",10,'concrete',False) #
 
 prefixes  = []
 withChain = 0
@@ -210,7 +350,7 @@ import shipunit as u
 PDG = ROOT.TDatabasePDG.Instance()
 from ShipGeoConfig import ConfigRegistry
 # init geometry and mag. field
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
@@ -354,8 +494,8 @@ def bookHist(detName):
   ut.bookHist(h,tag+'_LP','particle mom GeV '+detName,100,0.,1.)
   ut.bookHist(h,tag+'_OP','original particle mom GeV '+detName,400,0.,400.)
   ut.bookHist(h,tag+'_id','particle id '+detName,5001,-2499.5,2499.5)
-  ut.bookHist(h,tag+'_mul','multiplicity of hits/tracks '+detName,10,-0.5,9.5)
-  ut.bookHist(h,tag+'_evmul','multiplicity of hits/event '+detName,10,-0.5,9.5)
+  ut.bookHist(h,tag+'_mul','multiplicity of hits/tracks '+detName,100,-0.5,99.5)
+  ut.bookHist(h,tag+'_evmul','multiplicity of hits/event '+detName,100,-0.5,9999.5)
   ut.bookHist(h,tag+'_origin','r vs z',100,  ztarget,totl,100,0.,12.)
   ut.bookHist(h,tag+'_originmu','r vs z',100,ztarget,totl,100,0.,12.)
  
@@ -1069,3 +1209,5 @@ def readAndMergeHistos():
 # make muonDIS ntuple: muDISntuple("/media/Data/HNL/muonBackground/rareEvents_81-102.root") -> 'muDISVetoCounter.root'
 #                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root
 #                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root
+# for concrete
+# analyzeConcrete() -> muConcrete.root
