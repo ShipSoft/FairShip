@@ -1,5 +1,5 @@
-#ifndef TARGETPOINT_H
-#define TARGETPOINT_H 1
+#ifndef TTPOINT_H
+#define TTPOINT_H 1
 
 
 #include "FairMCPoint.h"
@@ -7,13 +7,13 @@
 #include "TObject.h"
 #include "TVector3.h"
 
-class TargetPoint : public FairMCPoint
+class TTPoint : public FairMCPoint
 {
 
   public:
 
     /** Default constructor **/
-    TargetPoint();
+    TTPoint();
 
 
     /** Constructor with arguments
@@ -31,11 +31,11 @@ class TargetPoint : public FairMCPoint
 		Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt, 
 		Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
     
-    TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+    TTPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
 		Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
     /** Destructor **/
-    virtual ~TargetPoint();
+    virtual ~TTPoint();
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
@@ -52,10 +52,10 @@ class TargetPoint : public FairMCPoint
     
     /** Copy constructor **/
     
-    TargetPoint(const TargetPoint& point);
-    TargetPoint operator=(const TargetPoint& point);
+    TTPoint(const TTPoint& point);
+    TTPoint operator=(const TTPoint& point);
 
-    ClassDef(TargetPoint,2)
+    ClassDef(TTPoint,2)
 };
 
 #endif

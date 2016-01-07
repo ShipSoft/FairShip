@@ -75,7 +75,7 @@ fTargetPointCollection(new TClonesArray("TargetPoint"))
 {
 }
 
-Target::Target(const char* name, const Double_t zC, const Double_t GapTS, Bool_t Active,const char* Title)
+Target::Target(const char* name, const Double_t zC, const Double_t GapTS, const Double_t Ydist, Bool_t Active,const char* Title)
 : FairDetector(name, true, ktauTarget),
   fTrackID(-1),
 fVolumeID(-1),
@@ -87,6 +87,7 @@ fELoss(-1),
 fTargetPointCollection(new TClonesArray("TargetPoint"))
 {
     zCenter = zC;
+    Ydistance = Ydist;
     GapFromTSpectro = GapTS;
 }
 
@@ -124,6 +125,12 @@ Int_t Target::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
+void Target::SetDetectorDesign(Int_t Design)
+{
+  fDesign = Design;
+  Info("SetDetectorDesign"," to %i", fDesign);
+}
+
 void Target::SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH)
 {
     LongitudinalSize = LS;
@@ -158,9 +165,12 @@ void Target::SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_
     AllPlateWidth = AllPW;
 }
 
-void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPack)
+
+void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ)
 {
-  BrickPackageZ = BrPack;
+  BrickPackageX = BrPackX;
+  BrickPackageY = BrPackY;
+  BrickPackageZ = BrPackZ;
   BrickX = BrX;
   BrickY = BrY;
   BrickZ = BrZ;
@@ -179,16 +189,15 @@ void Target::SetCellParam(Double_t CellW)
     CellWidth = CellW;
 }
 
-void Target::SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ)
+void Target::SetTTzdimension(Double_t TTZ)
 {
-    TTrackerX = TTX;
-    TTrackerY = TTY;
     TTrackerZ = TTZ;
 }
 
 
 void Target::ConstructGeometry()
 {
+  // cout << "Design = " << fDesign << endl;
     TGeoVolume *top=gGeoManager->GetTopVolume();
     
     InitMedium("vacuum");
@@ -214,9 +223,6 @@ void Target::ConstructGeometry()
     
     InitMedium("rohacell");
     TGeoMedium *rohacell = gGeoManager->GetMedium("rohacell");
-    
-    InitMedium("TTmedium");
-    TGeoMedium *medium =gGeoManager->GetMedium("TTmedium");
 
 
     gGeoManager->SetVisLevel(6);
@@ -473,98 +479,101 @@ void Target::ConstructGeometry()
     TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox,vacuum);
     volTarget->SetField(magField2);
     volGoliath->AddNode(volTarget,1,new TGeoTranslation(0,-60 + YDimension/2,0));
+
     
     //
     //Volumes definition
     //
-    
-    //Cell = brick + CES
-    TGeoBBox *Cell = new TGeoBBox("cell", BrickX/2, BrickY/2, CellWidth/2);
-    TGeoVolume *volCell = new TGeoVolume("Cell",Cell,vacuum);
-    
-    //Brick
-    TGeoBBox *Brick = new TGeoBBox("brick", BrickX/2, BrickY/2, BrickZ/2);
-    TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,vacuum);
-    volBrick->SetLineColor(kCyan);
-    volBrick->SetTransparency(1);
-    
-    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
-    TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,NEmu); //TOP
-    TGeoVolume *volEmulsionFilm2 = new TGeoVolume("Emulsion2",EmulsionFilm,NEmu); //BOTTOM
-    volEmulsionFilm->SetLineColor(kBlue);
-    volEmulsionFilm2->SetLineColor(kBlue);
-    AddSensitiveVolume(volEmulsionFilm);
-    AddSensitiveVolume(volEmulsionFilm2);
-    
-    TGeoBBox *PlBase = new TGeoBBox("PlBase", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
-    TGeoVolume *volPlBase = new TGeoVolume("PlasticBase",PlBase,PBase);
-    volPlBase->SetLineColor(kYellow-4);
-    
-    TGeoBBox *Lead = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
-    TGeoVolume *volLead = new TGeoVolume("Lead",Lead,lead);
-    volLead->SetTransparency(1);
-    volLead->SetLineColor(kGray);
-    //volLead->SetField(magField2);
 
-   
+    if(fDesign == 1)
+      {    
     
-    for(Int_t n=0; n<NPlates+1; n++)
-      {
-	volBrick->AddNode(volEmulsionFilm2, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmulsionThickness/2 + n*AllPlateWidth)); //BOTTOM
-	volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*AllPlateWidth)); //TOP
-	volBrick->AddNode(volPlBase, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*AllPlateWidth)); //PLASTIC BASE
-      }
-    for(Int_t n=0; n<NPlates; n++)
-      {
-	volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
-      }
-    
-    volBrick->SetVisibility(kTRUE);
-    
-    //CES
-    
-    TGeoBBox *CES = new TGeoBBox("ces", EmulsionX/2, EmulsionY/2, CESWidth/2);
-    TGeoVolume *volCES = new TGeoVolume("CES", CES, vacuum);
-    volCES->SetTransparency(5);
-    volCES->SetLineColor(kYellow-10);
-    volCES->SetVisibility(kTRUE);
+	//Cell = brick + CES
+	TGeoBBox *Cell = new TGeoBBox("cell", BrickX/2, BrickY/2, CellWidth/2);
+	TGeoVolume *volCell = new TGeoVolume("Cell",Cell,vacuum);
+
+	//Brick
+	TGeoBBox *Brick = new TGeoBBox("brick", BrickX/2, BrickY/2, BrickZ/2);
+	TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,vacuum);
+	volBrick->SetLineColor(kCyan);
+	volBrick->SetTransparency(1);
+	
+	TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+	TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,NEmu); //TOP
+	TGeoVolume *volEmulsionFilm2 = new TGeoVolume("Emulsion2",EmulsionFilm,NEmu); //BOTTOM
+	volEmulsionFilm->SetLineColor(kBlue);
+	volEmulsionFilm2->SetLineColor(kBlue);
+	AddSensitiveVolume(volEmulsionFilm);
+	AddSensitiveVolume(volEmulsionFilm2);
+	
+	TGeoBBox *PlBase = new TGeoBBox("PlBase", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
+	TGeoVolume *volPlBase = new TGeoVolume("PlasticBase",PlBase,PBase);
+	volPlBase->SetLineColor(kYellow-4);
+	
+	TGeoBBox *Lead = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
+	TGeoVolume *volLead = new TGeoVolume("Lead",Lead,lead);
+	volLead->SetTransparency(1);
+	volLead->SetLineColor(kGray);
+	//volLead->SetField(magField2);
+	
+	
+	
+	for(Int_t n=0; n<NPlates+1; n++)
+	  {
+	    volBrick->AddNode(volEmulsionFilm2, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmulsionThickness/2 + n*AllPlateWidth)); //BOTTOM
+	    volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*AllPlateWidth)); //TOP
+	    volBrick->AddNode(volPlBase, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*AllPlateWidth)); //PLASTIC BASE
+	  }
+	for(Int_t n=0; n<NPlates; n++)
+	  {
+	    volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
+	  }
+	
+	volBrick->SetVisibility(kTRUE);
+	
+	//CES
+	
+	TGeoBBox *CES = new TGeoBBox("ces", EmulsionX/2, EmulsionY/2, CESWidth/2);
+	TGeoVolume *volCES = new TGeoVolume("CES", CES, vacuum);
+	volCES->SetTransparency(5);
+	volCES->SetLineColor(kYellow-10);
+	volCES->SetVisibility(kTRUE);
         
-    TGeoBBox *RohGap = new TGeoBBox("RohGap", EmulsionX/2, EmulsionY/2, RohacellGap/2);
-    TGeoVolume *volRohGap = new TGeoVolume("RohacellGap",RohGap,rohacell);
-    volRohGap->SetTransparency(1);
-    volRohGap->SetLineColor(kYellow);
+	TGeoBBox *RohGap = new TGeoBBox("RohGap", EmulsionX/2, EmulsionY/2, RohacellGap/2);
+	TGeoVolume *volRohGap = new TGeoVolume("RohacellGap",RohGap,rohacell);
+	volRohGap->SetTransparency(1);
+	volRohGap->SetLineColor(kYellow);
+	
+	
+	TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+	TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,NEmu); //TOP
+	TGeoVolume *volEmulsionFilm2CES = new TGeoVolume("Emulsion2CES",EmulsionFilmCES,NEmu); //BOTTOM
+	volEmulsionFilmCES->SetLineColor(kBlue);
+	volEmulsionFilm2CES->SetLineColor(kBlue);
+	AddSensitiveVolume(volEmulsionFilmCES);
+	AddSensitiveVolume(volEmulsionFilm2CES);
+	
+	TGeoBBox *PlBaseCES = new TGeoBBox("PlBaseCES", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
+	TGeoVolume *volPlBaseCES = new TGeoVolume("PlasticBaseCES",PlBaseCES,PBase);
+	volPlBaseCES->SetLineColor(kYellow);
+	
+	for(Int_t n=0; n<NRohacellGap+1;n++)
+	  {
+	    volCES->AddNode(volEmulsionFilm2CES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness/2+n*LayerCESWidth)); //BOTTOM
+	    volCES->AddNode(volEmulsionFilmCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth)); //TOP
+	    volCES->AddNode(volPlBaseCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*LayerCESWidth)); //PLASTIC BASE
+	    //	if(n == 2)
+	    // cout << "-CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth = " << -CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth << endl;
+	  }
+	for(Int_t n=0; n<NRohacellGap; n++)
+	  {
+	    volCES->AddNode(volRohGap, n, new TGeoTranslation(0,0,-CESWidth/2 +CESPackageZ/2+  EmPlateWidth + RohacellGap/2 + n*LayerCESWidth)); //ROHACELL
+	  }
 
+	volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
+	volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
     
-    TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
-    TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,NEmu); //TOP
-    TGeoVolume *volEmulsionFilm2CES = new TGeoVolume("Emulsion2CES",EmulsionFilmCES,NEmu); //BOTTOM
-    volEmulsionFilmCES->SetLineColor(kBlue);
-    volEmulsionFilm2CES->SetLineColor(kBlue);
-    AddSensitiveVolume(volEmulsionFilmCES);
-    AddSensitiveVolume(volEmulsionFilm2CES);
-    
-    TGeoBBox *PlBaseCES = new TGeoBBox("PlBaseCES", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
-    TGeoVolume *volPlBaseCES = new TGeoVolume("PlasticBaseCES",PlBaseCES,PBase);
-    volPlBaseCES->SetLineColor(kYellow);
-    
-    for(Int_t n=0; n<NRohacellGap+1;n++)
-      {
-	volCES->AddNode(volEmulsionFilm2CES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness/2+n*LayerCESWidth)); //BOTTOM
-	volCES->AddNode(volEmulsionFilmCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth)); //TOP
-	volCES->AddNode(volPlBaseCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*LayerCESWidth)); //PLASTIC BASE
-	//	if(n == 2)
-	// cout << "-CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth = " << -CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth << endl;
-      }
-    for(Int_t n=0; n<NRohacellGap; n++)
-      {
-	volCES->AddNode(volRohGap, n, new TGeoTranslation(0,0,-CESWidth/2 +CESPackageZ/2+  EmPlateWidth + RohacellGap/2 + n*LayerCESWidth)); //ROHACELL
-      }
-    
-    
-    volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
-    volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
-    
-    TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
+TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
     TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
     volRow->SetLineColor(20);
     
@@ -584,16 +593,11 @@ void Target::ConstructGeometry()
         volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
         
         // 2mm is the distance for the structure that holds the brick
-        d_cl_y += BrickY +2*mm;
+        d_cl_y += BrickY + Ydistance;
     }
     
-    //TargetTrackers + Columns
-    
-    TGeoBBox *TTBox = new TGeoBBox("TTBox",TTrackerX/2, -60+TTrackerY/2, TTrackerZ/2);
-    TGeoVolume *volTT = new TGeoVolume("TargetTracker",TTBox,medium);
-    volTT->SetLineColor(kBlue - 1);
-    AddSensitiveVolume(volTT);
-    
+    //Columns
+       
     Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
     Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
 
@@ -604,13 +608,66 @@ void Target::ConstructGeometry()
         //6 cm is the distance between 2 columns of consecutive Target for TT placement
         d_cl_z += CellWidth + TTrackerZ;
     }
-    
-    for(int l = 0; l < NWall+1; l++)
-        volTarget->AddNode(volTT,l,new TGeoTranslation(0,0, d_tt + l*(TTrackerZ +CellWidth)));
+      }
+
+    if(fDesign == 2)
+      {
+    	//Cell = brick + CES
+	TGeoBBox *Cell = new TGeoBBox("cell", BrickX/2, BrickY/2, CellWidth/2);
+	TGeoVolume *volCell = new TGeoVolume("Cell",Cell,vacuum);
+
+	TGeoBBox *Brick = new TGeoBBox("brick", BrickX/2, BrickY/2, BrickZ/2);
+	TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,lead);
+	volBrick->SetLineColor(kCyan);
+	volBrick->SetTransparency(1);
+	volBrick->SetVisibility(kTRUE);
+
+	TGeoBBox *CES = new TGeoBBox("ces", EmulsionX/2, EmulsionY/2, CESWidth/2);
+	TGeoVolume *volCES = new TGeoVolume("CES", CES, rohacell);
+	volCES->SetTransparency(5);
+	volCES->SetLineColor(kYellow-10);
+	volCES->SetVisibility(kTRUE);
+
+	volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
+	volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
+
+	TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
+	TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
+	volRow->SetLineColor(20);
+	
+	Double_t d_cl_x = -XDimension/2;
+	for(int j= 0; j < NCol; j++)
+	  {
+	    volRow->AddNode(volCell,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
+	    d_cl_x += BrickX;
+	  }
+	
+	TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, CellWidth/2);
+	TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
+	
+	Double_t d_cl_y = -YDimension/2;
+	for(int k= 0; k< NRow; k++)
+	  {
+	    volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
+	    
+	    // 2mm is the distance for the structure that holds the brick
+	    d_cl_y += BrickY + Ydistance;
+	  }
+	
+	//Columns
+	
+	Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
+	Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
+	
+	for(int l = 0; l < NWall; l++)
+	  {
+	    volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +CellWidth/2));
+	    
+	    //6 cm is the distance between 2 columns of consecutive Target for TT placement
+	    d_cl_z += CellWidth + TTrackerZ;
+	  }
+      }    
 }
-
-
-
 
 Bool_t  Target::ProcessHits(FairVolume* vol)
 {
@@ -650,7 +707,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	
 
 	Int_t motherV[MaxL];
-	Bool_t EmTop = 0, EmBot = 0, EmCESTop = 0, EmCESBot = 0, TT = 0;
+	Bool_t EmTop = 0, EmBot = 0, EmCESTop = 0, EmCESBot = 0;
 	Int_t NPlate =0;
 	const char *name;
 	
@@ -680,37 +737,26 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	
 	Int_t  NWall = 0, NColumn =0, NRow =0;
 
-	if (strcmp(name,"TargetTracker")==0)
+	for(Int_t i = 0; i < MaxL;i++)
 	  {
-	    TT = 1;
-	    NWall = detID; //ranges from 0 to 11;
-	  }
-	else
-	  {
-	    for(Int_t i = 0; i < MaxL;i++)
+	    motherV[i] = gGeoManager->GetMother(i)->GetNumber();
+	    const char *mumname = gMC->CurrentVolOffName(i);
+	    if(motherV[0]==1 && motherV[0]!=detID)
 	      {
-		motherV[i] = gGeoManager->GetMother(i)->GetNumber();
-		const char *mumname = gMC->CurrentVolOffName(i);
-		if(motherV[0]==1 && motherV[0]!=detID)
-		  {
-		    if(strcmp(mumname, "Brick") == 0 ||strcmp(mumname, "CES") == 0) NColumn = motherV[i];
-		    if(strcmp(mumname, "Cell") == 0) NRow = motherV[i];
-		    if(strcmp(mumname, "Row") == 0) NWall = motherV[i];
-		  }
-		else
-		  {
-		    
-		    if(strcmp(mumname, "Cell") == 0) NColumn = motherV[i];
-		    if(strcmp(mumname, "Row") == 0) NRow = motherV[i];
-		    if(strcmp(mumname, "Wall") == 0) NWall = motherV[i];
-		  }
-		//cout << i << "   " << motherV[i] << "    name = " << mumname << endl;
+		if(strcmp(mumname, "Brick") == 0 ||strcmp(mumname, "CES") == 0) NColumn = motherV[i];
+		if(strcmp(mumname, "Cell") == 0) NRow = motherV[i];
+		if(strcmp(mumname, "Row") == 0) NWall = motherV[i];
 	      }
-	  }//selection of volumes different from TT
-
-	//cout << "NAME = " << name << endl;
-	//cout <<" NPlate = " << NPlate << ";  NColumn = " << NColumn << ";  NRow = " << NRow << "; NWall = " << NWall << endl;
-
+	    else
+	      {
+		
+		if(strcmp(mumname, "Cell") == 0) NColumn = motherV[i];
+		if(strcmp(mumname, "Row") == 0) NRow = motherV[i];
+		if(strcmp(mumname, "Wall") == 0) NWall = motherV[i];
+	      }
+	    //cout << i << "   " << motherV[i] << "    name = " << mumname << endl;
+	  }
+    
 	Bool_t BrickorCES = 0;   //Brick = 1 / CES = 0;
 	if(EmTop == 1 || EmBot ==1)
 	  BrickorCES = 1;
@@ -718,10 +764,10 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	if(EmTop == 1 || EmCESTop == 1)
 	  TopBot = 1;
 
-	//cout << "EmTop = " << EmTop << ";   EmBot = " << EmBot << ";   EmCESTop = " << EmCESTop << ";   EmCESBot = " << EmCESBot << endl;
-	//cout << "BrickorCES = " << BrickorCES << ";    TopBot = " << TopBot << endl;
+	Double_t zEnd = 0, zStart =0;
+	
 
-	detID = TT*1E9 + (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + TopBot*1 ;
+	detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + TopBot*1 ;
 
 
 	fVolumeID = detID;
@@ -758,55 +804,41 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 }
 
 
-void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot, Bool_t &TT)
+void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot)
 {
   Bool_t BrickorCES = 0, TopBot = 0;
   
-  //cout << "det ID = " << detID << endl;
-  Double_t a = detID*1./1E9;
+  NWall = detID/1E7;
+  NRow = (detID - NWall*1E7)/1E6;
+  NColumn = (detID - NWall*1E7 -NRow*1E6)/1E4;
+  Double_t b = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4)/1.E3;
+  if(b < 1)
+    {
+      BrickorCES = 0;
+      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+    }
+  if(b >= 1)
+    {
+      BrickorCES = 1;
+      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+    }
+  TopBot = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4- BrickorCES*1E3- NPlate*1E1)/1E0;
+  if(BrickorCES == 0)
+    {
+      if(TopBot == 1) {EmCESTop = 1; EmCESBot =0;}
+      if(TopBot == 0) {EmCESTop = 0; EmCESBot = 1;}
+    }
+  if(BrickorCES == 1)
+    {
+      if(TopBot == 1) {EmTop = 1; EmBot =0;}
+      if(TopBot == 0) {EmTop = 0; EmBot = 1;}
+    }
   
-    if(a<1) //no hit in TT
-    {
-    TT =0;
-    NWall = detID/1E7;
-    NRow = (detID - NWall*1E7)/1E6;
-    NColumn = (detID - NWall*1E7 -NRow*1E6)/1E4;
-    Double_t b = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4)/1.E3;
-    if(b < 1)
-      {
-	BrickorCES = 0;
-	NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
-      }
-    if(b >= 1)
-      {
-	BrickorCES = 1;
-	NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
-      }
-    TopBot = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4- BrickorCES*1E3- NPlate*1E1)/1E0;
-    if(BrickorCES == 0)
-      {
-	if(TopBot == 1) {EmCESTop = 1; EmCESBot =0;}
-	if(TopBot == 0) {EmCESTop = 0; EmCESBot = 1;}
-      }
-    if(BrickorCES == 1)
-      {
-	if(TopBot == 1) {EmTop = 1; EmBot =0;}
-	if(TopBot == 0) {EmTop = 0; EmBot = 1;}
-      }
-    }
-  else
-    {
-      TT = 1;
-      NWall = (detID - TT*1E9)/1E7;
-      NRow = 0; NColumn = 0; BrickorCES = 0; NPlate = 0; TopBot = 0;
-    }
-
-    // cout << "TT = " << TT << endl;
-    // cout << "NPlate = " << NPlate << ";  NColumn = " << NColumn << ";  NRow = " << NRow << "; NWall = " << NWall << endl;
-    // cout << "BrickorCES = " << BrickorCES << ";    TopBot = " << TopBot << endl;
-    // cout << "EmCESTop = " << EmCESTop << ";    EmCESBot = " << EmCESBot << endl;
-    // cout << "EmTop = " << EmTop << ";    EmBot = " << EmBot << endl;
-    // cout << endl;
+  // cout << "NPlate = " << NPlate << ";  NColumn = " << NColumn << ";  NRow = " << NRow << "; NWall = " << NWall << endl;
+  // cout << "BrickorCES = " << BrickorCES << ";    TopBot = " << TopBot << endl;
+  // cout << "EmCESTop = " << EmCESTop << ";    EmCESBot = " << EmCESBot << endl;
+  // cout << "EmTop = " << EmTop << ";    EmBot = " << EmBot << endl;
+  // cout << endl;
 }
 
 
@@ -852,27 +884,5 @@ TargetPoint* Target::AddHit(Int_t trackID,Int_t detID,
     return new(clref[size]) TargetPoint(trackID,detID, pos, mom,
 					time, length, eLoss, pdgCode);
 }
-/*
-TargetPoint* Target::AddHit(Int_t trackID,Int_t detID,
-                           TVector3 pos, TVector3 mom,
-                           Double_t time, Double_t length,
-			    Double_t eLoss, Int_t pdgCode, 
-			    Int_t EmTop, Int_t EmBot,Int_t EmCESTop, Int_t EmCESBot, Int_t TT, 
-			    Int_t NPlate, Int_t NColumn, Int_t NRow, Int_t NWall)
-{
-    TClonesArray& clref = *fTargetPointCollection;
-    Int_t size = clref.GetEntriesFast();
-    //cout << "brick hit called"<< pos.z()<<endl;
-    return new(clref[size]) TargetPoint(trackID,detID, pos, mom,
-					time, length, eLoss, pdgCode, EmTop, EmBot, EmCESTop,EmCESBot,TT,NPlate,NColumn,NRow,NWall);
-}
-*/
+
 ClassImp(Target)
-
-
-
-
-
-
-
-

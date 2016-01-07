@@ -1,8 +1,16 @@
-#ifndef MAGNETICSPECTROMETER_H
-#define MAGNETICSPECTROMETER_H
+//
+//  TargetTracker.h
+//  
+//
+//  Created by Annarita Buonaura on 17/01/15.
+//
+//
+
+#ifndef TargetTracker_H
+#define TargetTracker_H
 
 #include "FairModule.h"                 // for FairModule
-#include "FairDetector.h"                  // for FairDetector
+#include "FairDetector.h"
 
 #include "Rtypes.h"                     // for ShipMuonShield::Class, Bool_t, etc
 
@@ -11,21 +19,25 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
-class ShipRpcPoint;
+class TTPoint;
 class FairVolume;
 class TClonesArray;
 
-class MagneticSpectrometer:public FairDetector
+class TargetTracker : public FairDetector
 {
-  public:
-    MagneticSpectrometer(const char* name, const Double_t zMSC, const Double_t zSize, const Double_t FeSlab, const Double_t RpcW, const Double_t ArmW, const Double_t GapV, const Double_t MGap, const Double_t Mfield,  Double_t RetYokeH, Bool_t Active, const char* Title="MagneticSpectrometer");
-    MagneticSpectrometer();
-    virtual ~MagneticSpectrometer();
+public:
+  TargetTracker(const char* name, Bool_t Active, const char* Title = "TargetTrackers");
+    TargetTracker();
+    virtual ~TargetTracker();
     
-    void SetCoilParameters(Double_t CoilH, Double_t CoilW, Int_t N, Double_t CoilG);
-
+    /**      Create the detector geometry        */
     void ConstructGeometry();
     
+    void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ);
+    void SetBrickParam(Double_t CellW);
+    void SetTotZDimension(Double_t Zdim);
+    void DecodeTTID(Int_t detID, Int_t &NTT);
+
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -46,12 +58,12 @@ class MagneticSpectrometer:public FairDetector
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
-   
-    ShipRpcPoint* AddHit(Int_t trackID, Int_t detID,
-                         TVector3 pos, TVector3 mom,
-                         Double_t time, Double_t length,
-                         Double_t eLoss, Int_t pdgCode);
 
+    TTPoint* AddHit(Int_t trackID, Int_t detID,
+			TVector3 pos, TVector3 mom,
+			Double_t time, Double_t length,
+			Double_t eLoss, Int_t pdgCode);
+    
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
      */
@@ -66,16 +78,19 @@ class MagneticSpectrometer:public FairDetector
     virtual void   PostTrack() {;}
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
-
-    void DecodeVolumeID(Int_t detID,int &nARM,int &nRPC);
     
-private:
+       
+    TargetTracker(const TargetTracker&);
+    TargetTracker& operator=(const TargetTracker&);
+    
+    ClassDef(TargetTracker,1);
+    
+ private:
     
     /** Track information to be stored until the track leaves the
      active volume.
      */
     Int_t          fTrackID;           //!  track index
-    Int_t          fPdgCode;           //!  pdg code
     Int_t          fVolumeID;          //!  volume id
     TLorentzVector fPos;               //!  position at entrance
     TLorentzVector fMom;               //!  momentum at entrance
@@ -84,37 +99,19 @@ private:
     Double32_t     fELoss;             //!  energy loss
     
     /** container for data points */
-    TClonesArray*  fShipRpcPointCollection;
-    
-    Int_t InitMedium(const char* name);
-    
-    
+    TClonesArray*  fTTPointCollection;
     
 protected:
     
-    Double_t zMSCenter; //z distance of the center of the spectrometer in cm from the center of the vacuum tube
-    Double_t zSizeMS; //Dimension of the whole magnetic spectrometr (1st + 2nd arm + HPTs) alogn beam axis
-    Double_t IronSlabWidth; // Width of the Iron Slabs
-    Double_t RpcWidth; // Width of the Rpc planes
-    Double_t ArmWidth; // Width of the Spectrometer Arms
-    Double_t GapFromVessel; //distance between the end of the second arm of the spectrometer and the decay vessel
-    Double_t MiddleGap; // distance between the two arms of the spectrometer
-    Double_t MagneticField;
-    Double_t ReturnYokeH;
-    
-    Double_t CoilGap;
-    Double_t CoilHeight;
-    Double_t CoilWidth;
-    Int_t NCoils;
-    
-    
-    MagneticSpectrometer(const MagneticSpectrometer&);
-    MagneticSpectrometer& operator=(const MagneticSpectrometer&);
-    ClassDef(MagneticSpectrometer,1)
+    Double_t TTrackerX;
+    Double_t TTrackerY;
+    Double_t TTrackerZ;
 
+    Double_t CellWidth; //dimension of the cell containing brick and CES
+    Double_t ZDimension; //Dimension of the TTs+bricks total volume
+    
+    Int_t InitMedium(const char* name);
+    
 };
 
-
-
-#endif //TAUMAGNETICSPECTROMETER_H
-
+#endif

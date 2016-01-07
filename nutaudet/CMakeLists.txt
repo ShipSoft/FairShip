@@ -24,9 +24,13 @@ link_directories( ${LINK_DIRECTORIES})
 set(SRCS
 MagneticSpectrometer.cxx
 ShipRpcPoint.cxx
+HPT.cxx
+HptPoint.cxx
 NutaudetContFact.cxx
 Target.cxx
 TargetPoint.cxx
+TargetTracker.cxx
+TTPoint.cxx
 )
 
 Set(HEADERS )

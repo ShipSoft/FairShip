@@ -101,25 +101,38 @@ def configure(run,ship_geo):
 
  if ship_geo.muShieldDesign==5 or ship_geo.muShieldDesign==1:
   taumagneticspectrometer = ROOT.MagneticSpectrometer("MagneticSpectrometer", ship_geo.tauMS.zMSC, ship_geo.tauMS.zSize, ship_geo.tauMS.FeSlab, \
-  ship_geo.tauMS.RpcW,ship_geo.tauMS.ArmW, ship_geo.tauMS.GapV, ship_geo.tauMS.MGap, ship_geo.tauMS.Mfield, ship_geo.tauMS.HPTW, ship_geo.tauMS.RetYokeH, ROOT.kTRUE)
+  ship_geo.tauMS.RpcW,ship_geo.tauMS.ArmW, ship_geo.tauMS.GapV, ship_geo.tauMS.MGap, ship_geo.tauMS.Mfield, ship_geo.tauMS.RetYokeH, ROOT.kTRUE)
   taumagneticspectrometer.SetCoilParameters(ship_geo.tauMS.CoilH, ship_geo.tauMS.CoilW, ship_geo.tauMS.N, ship_geo.tauMS.CoilG);
   run.AddModule(taumagneticspectrometer)
-  
-  NuTauTarget = ROOT.Target("NuTauTarget",ship_geo.NuTauTarget.zC, ship_geo.NuTauTarget.GapTS, ROOT.kTRUE)
+
+  tauHpt = ROOT.Hpt("HighPrecisionTrackers",ship_geo.tauHPT.DX, ship_geo.tauHPT.DY, ship_geo.tauHPT.DZ, ROOT.kTRUE)
+  tauHpt.SetZsize(ship_geo.tauMS.zSize)
+  run.AddModule(tauHpt)
+
+  NuTauTarget = ROOT.Target("NuTauTarget",ship_geo.NuTauTarget.zC, ship_geo.NuTauTarget.GapTS, ship_geo.NuTauTarget.Ydist,ROOT.kTRUE)
  
+  NuTauTarget.SetDetectorDesign(ship_geo.NuTauTarget.nuTargetDesign)
   NuTauTarget.SetGoliathSizes(ship_geo.NuTauTarget.H, ship_geo.NuTauTarget.TS, ship_geo.NuTauTarget.LS, ship_geo.NuTauTarget.BasisH);
   NuTauTarget.SetCoilParameters(ship_geo.NuTauTarget.CoilR, ship_geo.NuTauTarget.UpCoilH, ship_geo.NuTauTarget.LowCoilH, ship_geo.NuTauTarget.CoilD);
  
   NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim);
   NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW);
-  NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPack);
+ 
+  NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ);
   NuTauTarget.SetCESParam(ship_geo.NuTauTarget.RohG, ship_geo.NuTauTarget.LayerCESW, ship_geo.NuTauTarget.CESW, ship_geo.NuTauTarget.CESPack);
-
   NuTauTarget.SetCellParam(ship_geo.NuTauTarget.CellW);
   
-  NuTauTarget.SetTargetTrackerParam(ship_geo.NuTauTarget.TTX, ship_geo.NuTauTarget.TTY, ship_geo.NuTauTarget.TTZ);
-  
+  NuTauTT = ROOT.TargetTracker("TargetTrackers",ROOT.kTRUE)
+  NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ)
+  NuTauTT.SetBrickParam(ship_geo.NuTauTarget.CellW);
+  NuTauTT.SetTotZDimension(ship_geo.NuTauTarget.zdim);
+
+  #method of nutau target that must be called after TT parameter definition
+  NuTauTarget.SetTTzdimension(ship_geo.NuTauTT.TTZ)
+ 
   run.AddModule(NuTauTarget)
+  run.AddModule(NuTauTT)
+
 
  if ship_geo.strawDesign > 1 :
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    

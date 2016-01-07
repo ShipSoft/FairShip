@@ -8,7 +8,11 @@
 
 #pragma link C++ class MagneticSpectrometer+;
 #pragma link C++ class ShipRpcPoint+;
+#pragma link C++ class Hpt+;
+#pragma link C++ class HptPoint+;
 #pragma link C++ class NutaudetContFact;
+#pragma link C++ class TargetTracker+;
+#pragma link C++ class TTPoint+;
 #pragma link C++ class Target+;
 #pragma link C++ class TargetPoint+;
 

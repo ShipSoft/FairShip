@@ -3,10 +3,13 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # muShieldDesign = 2  # 1=passive 2=active
+# nuTargetDesign = 2  #1 = with active layers, 2 = only passive
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
 if "muShieldDesign" not in globals():
     muShieldDesign = 5
+if "nuTargetDesign" not in globals():
+    nuTargetDesign = 1
 if "targetOpt" not in globals():
     targetOpt = 17
 if "strawDesign" not in globals():
@@ -227,7 +230,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauMS.ArmW = 12*c.tauMS.FeSlab + 11*c.tauMS.RpcW
     c.tauMS.GapV = 27.*u.cm
     c.tauMS.MGap = 122*u.cm
-    c.tauMS.HPTW = 15*u.cm
     c.tauMS.RetYokeH = 90*u.cm
     c.tauMS.CoilH = 10*u.cm
     c.tauMS.CoilW = 2*u.cm
@@ -236,8 +238,14 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauMS.zMSC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.zSize/2
     c.tauMS.Mfield = 1.5 * u.tesla
 
+    c.tauHPT = AttrDict(z=0*u.cm)
+    c.tauHPT.DX = 4*u.m
+    c.tauHPT.DY = 8*u.m
+    c.tauHPT.DZ = 15*u.cm
+
     #Parameters for Goliath
     c.NuTauTarget = AttrDict(z=0*u.cm)
+    c.NuTauTarget.nuTargetDesign = nuTargetDesign
     c.NuTauTarget.LS = 4.5*u.m
     c.NuTauTarget.TS = 3.6*u.m
     c.NuTauTarget.GapTS = 25*u.cm
@@ -249,14 +257,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.H = 2*c.NuTauTarget.BasisH + c.NuTauTarget.CoilD + c.NuTauTarget.UpCoilH + c.NuTauTarget.LowCoilH
     c.NuTauTarget.zC = -c.decayVolume.length/2. - c.tauMS.GapV - c.tauMS.zSize - c.NuTauTarget.GapTS - c.NuTauTarget.LS/2
 
-    c.NuTauTarget.TTX = 2.0*u.m
-    c.NuTauTarget.TTY = 0.9*u.m
-    c.NuTauTarget.TTZ= 6.0*u.cm
-   
-
     #tau Bricks
     c.NuTauTarget.xdim = 2.0 * u.m
     c.NuTauTarget.ydim = 1.0 * u.m
+    
+    c.NuTauTarget.Ydist = 0.2*u.cm
     
     c.NuTauTarget.EmTh = 0.0045 * u.cm
     c.NuTauTarget.EmX = 12.5 * u.cm
@@ -267,14 +272,24 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
     c.NuTauTarget.BrX = 12.9 *u.cm
     c.NuTauTarget.BrY = 10.5 *u.cm
-    c.NuTauTarget.BrPack = 1 * u.cm 
-    c.NuTauTarget.BrZ = 56 * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW +c.NuTauTarget.BrPack
+    c.NuTauTarget.BrPackZ = 0.1 * u.cm
+    c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
+    c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
+    c.NuTauTarget.BrZ = 56 * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW +c.NuTauTarget.BrPackZ
     c.NuTauTarget.RohG = 1.5 * u.cm
     c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW
     c.NuTauTarget.CESPack = 0.1 * u.cm
     c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW + c.NuTauTarget.CESPack
     c.NuTauTarget.CellW = c.NuTauTarget.BrZ + c.NuTauTarget.CESW
-    
-    c.NuTauTarget.zdim = 11* c.NuTauTarget.CellW + 12*c.NuTauTarget.TTZ
 
+    #TargetTrackers!
+    c.NuTauTT = AttrDict(z=0*u.cm)
+    c.NuTauTT.TTX = 2.0*u.m
+    c.NuTauTT.TTY = 0.9*u.m
+    c.NuTauTT.TTZ= 6.0*u.cm
+     
+    c.NuTauTarget.zdim = 11* c.NuTauTarget.CellW + 12*c.NuTauTT.TTZ
+
+
+    
 

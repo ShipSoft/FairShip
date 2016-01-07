@@ -26,28 +26,29 @@ class TClonesArray;
 class Target : public FairDetector
 {
 public:
-    Target(const char* name, const Double_t zC, const Double_t GapTS, Bool_t Active, const char* Title = "NuTauTarget");
+  Target(const char* name, const Double_t zC, const Double_t GapTS, const Double_t Ydist, Bool_t Active, const char* Title = "NuTauTarget");
     Target();
     virtual ~Target();
     
     /**      Create the detector geometry        */
     void ConstructGeometry();
-    
+
+    void SetDetectorDesign(Int_t Design);    
     void SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH);
     void SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t LowCoilH, Double_t CoilD);
     
     void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
     void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t LeadTh, Double_t AllPW);
-    void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPack);
+    void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ);
+
     void SetCESParam(Double_t RohG, Double_t LayerCESW, Double_t CESW, Double_t CESPack);
     void SetCellParam(Double_t CellW);
     
-    void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ);
+    void SetTTzdimension(Double_t TTZ);
 
     //void DecodeVolumeID(Int_t detID, int &NWall, int &NRow, int &NColumn, bool &BrickorCES, int &NPlate, bool &TopBot ,bool &TT);
-    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot, Bool_t &TT);
-    
-    
+    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot);
+
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -119,8 +120,13 @@ private:
     
     /** container for data points */
     TClonesArray*  fTargetPointCollection;
+
+    //switch for building the detector with active layers or with passive material only
+
     
 protected:
+
+    Int_t fDesign; //1 = with Emulsion, 2 = only lead + rohacell
     
     //Goliath
     
@@ -150,8 +156,13 @@ protected:
     Double_t EmPlateWidth; // Z dimension of the emulsion plates = 2*EmulsionThickness+PlasticBaseThickness
     Double_t AllPlateWidth; //PlateZ + LeadThickness
 
+
+    Double_t BrickPackageX; //dimension of the brick package along X
+    Double_t BrickPackageY; //dimension of the brick package along Y
     Double_t BrickPackageZ; //dimension of the brick package along Z
     Double_t CESPackageZ; //dimension of the CES package along Z
+
+    Double_t Ydistance; //distance in Y between 2 bricks
     
     Double_t BrickZ; //dimension of the brick + package along the Z axis
     Double_t BrickY;
@@ -164,8 +175,6 @@ protected:
     Double_t CellWidth; //dimension of Brick + CES along Z axis
     
     //TargetTrackers
-    Double_t TTrackerX;
-    Double_t TTrackerY;
     Double_t TTrackerZ;
 
     
