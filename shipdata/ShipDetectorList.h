@@ -9,6 +9,6 @@
 #define ShipDetectorList_H 1
 
 // kSTOPHERE is needed for iteration over the enum. All detectors have to be put before.
-enum DetectorId {kVETO, ktauRpc, ktauHpt, ktauTT, ktauTarget, kStraw, kecal, khcal, kMuon ,kTRSTATION};
+enum DetectorId {kVETO, ktauRpc, ktauHpt, ktauTT, ktauTarget, kStraw, kecal, khcal, kMuon ,kPreshower,kTRSTATION};
 
 #endif

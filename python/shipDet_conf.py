@@ -151,6 +151,16 @@ def configure(run,ship_geo):
   Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
   run.AddModule(Strawtubes) 
 
+ if ship_geo.preshowerOption > 0:
+  Preshower = ROOT.preshower("Preshower", ROOT.kTRUE)
+  Preshower.SetZStationPosition2(ship_geo.PreshowerStation0.z,ship_geo.PreshowerStation1.z)
+  Preshower.SetZFilterPosition2(ship_geo.PreshowerFilter0.z,ship_geo.PreshowerFilter1.z)
+  Preshower.SetXMax(ship_geo.Preshower.XMax)
+  Preshower.SetYMax(ship_geo.Preshower.YMax)
+  Preshower.SetActiveThickness(ship_geo.Preshower.ActiveThickness)
+  Preshower.SetFilterThickness2(ship_geo.Preshower.FilterThickness0,ship_geo.Preshower.FilterThickness1)
+  run.AddModule(Preshower)
+
  ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
  run.AddModule(ecal)
 

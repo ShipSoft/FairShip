@@ -128,6 +128,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    }
    iHNL = hnls.size();
    if ( iHNL == 0 ){
+     fLogger->Info(MESSAGE_ORIGIN,"Event without HNL. Retry.");
      fPythia->event.list();
    }else{
    int r =  int( gRandom->Uniform(0,iHNL) );

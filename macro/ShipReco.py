@@ -91,6 +91,8 @@ sGeo = fgeo.FAIRGeom
 if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
 else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
 print 'found ecal geo for ',ecalGeoFile
+ps = 0
+if sGeo.GetVolume('PreshowerDetector'):ps = 1
 
 h={}
 log={}
@@ -111,9 +113,9 @@ atexit.register(pyExit)
 
 from ShipGeoConfig import ConfigRegistry
 if dy: 
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile, preshowerOption = ps )
 else:
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile )
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile, preshowerOption = ps )
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()

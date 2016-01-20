@@ -31,14 +31,15 @@ nuRadiography = False # misuse GenieGenerator for neutrino radiography and geome
 Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
-                                   "Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
+                                   "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
                                    "output=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
-        print ' or    --Genie for reading and processing neutrino interactions \
-                or    --Pythia6 for muon nucleon scattering'  
+        print ' or    --Genie for reading and processing neutrino interactions '
+        print ' or    --Pythia6 for muon nucleon scattering'  
+        print ' or    --PG for particle gun'  
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --mass or -m to set HNL mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
@@ -50,6 +51,8 @@ for o, a in opts:
             simEngine = "Pythia6"
         if o in ("--Pythia8"):
             simEngine = "Pythia8"
+        if o in ("--PG"):
+            simEngine = "PG"
         if o in ("-A"):
             inclusive = a
             if a not in ['b','c']: inclusive = True
@@ -99,7 +102,7 @@ if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile:
             # "/eos/ship/data/GenieEvents/genie-nu_mu_bar.root"
 if simEngine == "muonDIS" and defaultInputFile:
   print 'input file required if simEngine = muonDIS'
-  print " for example -f  /eos/ship/data/Mbias/muonDIS/muonDis_1.root"
+  print " for example -f  /eos/ship/data/muonDIS/muonDis_1.root"
   sys.exit()
 if simEngine == "Nuage" and not inputFile:
  inputFile = 'Numucc.root'
@@ -115,6 +118,7 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
+# - preshowerOption = 0 # no preshower, default. 1= simple preshower 
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
@@ -174,6 +178,15 @@ if simEngine == "Pythia6":
  P6gen.SetMom(50.*u.GeV)
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
+# -----Particle Gun-----------------------
+if simEngine == "PG": 
+  myPgun = ROOT.FairBoxGenerator(22,1)
+  myPgun.SetPRange(10,10.2)
+  myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
+  myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
+  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
+  primGen.AddGenerator(myPgun)
+  run.SetGenerator(primGen)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  primGen.SetTarget(0., 0.) 

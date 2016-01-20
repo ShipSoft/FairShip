@@ -6,6 +6,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # nuTargetDesign = 2  #1 = with active layers, 2 = only passive
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
+# preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
 if "muShieldDesign" not in globals():
     muShieldDesign = 5
 if "nuTargetDesign" not in globals():
@@ -20,6 +21,8 @@ if "Yheight" not in globals():
     Yheight = 10.
 if "EcalGeoFile" not in globals():
     EcalGeoFile = "ecal_ellipse5x10m2.geo" 
+if "preshowerOption" not in globals():
+    preshowerOption = 0
 
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign, Yheight
@@ -84,7 +87,28 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
 
-    c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m+ windowBulge )
+    presShowerDeltaZ = 0. 
+    c.preshowerOption = preshowerOption
+    if preshowerOption >0:
+     PreshowerStart = 3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m+ windowBulge
+     c.PreshowerFilter0  = AttrDict(z= PreshowerStart )
+     c.PreshowerStation0 = AttrDict(z= c.PreshowerFilter0.z + 10*u.cm )
+
+     c.Preshower = AttrDict(z=0)
+     c.Preshower.XMax    =  300.*u.cm
+     c.Preshower.YMax    =  600.*u.cm * c.Yheight / (10.*u.m)
+     c.Preshower.ActiveThickness = 0.5*u.cm
+     c.Preshower.FilterThickness0 = 1.4*u.cm
+
+     PreshowerLeverArm=1*u.m
+
+     c.PreshowerFilter1  = AttrDict(z= c.PreshowerStation0.z +PreshowerLeverArm )
+     c.PreshowerStation1 = AttrDict(z= c.PreshowerFilter1.z + 10*u.cm )
+     c.Preshower.FilterThickness1 = 2.*u.cm
+
+     presShowerDeltaZ = PreshowerLeverArm + 2*10*u.cm + 2*2.*u.cm
+
+    c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m+ windowBulge+ presShowerDeltaZ)
     c.ecal.File = EcalGeoFile
     c.HcalOption  =  HcalOption
     hcalSpace = 0
@@ -96,7 +120,7 @@ with ConfigRegistry.register_config("basic") as c:
           c.hcal    =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm  )
           hcalSpace = hcalThickness + 5.5*u.cm 
           c.hcal.hcalSpace = hcalSpace
-    c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace+windowBulge)
+    c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace+windowBulge+ presShowerDeltaZ)
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
     c.MuonStation3 = AttrDict(z=c.MuonStation0.z+3*u.m)
