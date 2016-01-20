@@ -20,6 +20,7 @@ HNLPythia8Generator::HNLPythia8Generator()
   fLmax       = 12000.*cm;   // mm maximum decay position z
   fextFile    = "";
   fInputFile  = NULL;
+  fnRetries   = 0;
   fPythia =  new Pythia8::Pythia();
 }
 // -------------------------------------------------------------------------
@@ -128,8 +129,9 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    }
    iHNL = hnls.size();
    if ( iHNL == 0 ){
-     fLogger->Info(MESSAGE_ORIGIN,"Event without HNL. Retry.");
-     fPythia->event.list();
+     //fLogger->Info(MESSAGE_ORIGIN,"Event without HNL. Retry.");
+     //fPythia->event.list();
+     fnRetries+=1; // can happen if phasespace does not allow charm hadron to decay to HNL
    }else{
    int r =  int( gRandom->Uniform(0,iHNL) );
    // cout << " ----> debug 2 " << r  <<  endl;

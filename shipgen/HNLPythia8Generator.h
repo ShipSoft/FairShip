@@ -72,6 +72,7 @@ class HNLPythia8Generator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
+  Int_t nrOfRetries(){ return fnRetries; };
   Pythia* getPythiaInstance(){return fPythia;};
   Pythia* fPythia;             //!
  private:
@@ -87,6 +88,7 @@ class HNLPythia8Generator : public FairGenerator
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
+  Int_t fnRetries;     // number of events without any HNL 
   Double_t fctau ;     // hnl lifetime 
   const char* fextFile; // read charm and beauty hadrons from external file, decay with Pythia
   TFile* fInputFile;   //! pointer to a file
@@ -96,7 +98,7 @@ class HNLPythia8Generator : public FairGenerator
   Bool_t fDeepCopy;    // not used
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
 
-  ClassDef(HNLPythia8Generator,1);
+  ClassDef(HNLPythia8Generator,2);
 };
 
 #endif /* !PNDH8GENERATOR_H */
