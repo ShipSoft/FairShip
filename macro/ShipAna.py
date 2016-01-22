@@ -129,6 +129,7 @@ ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
 ut.bookHist(h,'ecalClusters','x/y and energy',50,-3.,3.,50,-6.,6.)
+
 ut.bookHist(h,'oa','cos opening angle',100,0.999,1.)
 # potential Veto detectors
 ut.bookHist(h,'nrtracks','nr of tracks in signal selected',10,-0.5,9.5)
@@ -136,6 +137,8 @@ ut.bookHist(h,'nrSVT','nr of hits in SVT',10,-0.5,9.5)
 ut.bookHist(h,'nrUVT','nr of hits in UVT',100,-0.5,99.5)
 ut.bookHist(h,'nrSBT','nr of hits in SBT',100,-0.5,99.5)
 ut.bookHist(h,'nrRPC','nr of hits in RPC',100,-0.5,99.5)
+
+import TrackExtrapolateTool
 
 def VertexError(t1,t2,PosDir,CovMat,scalFac):
 # with improved Vx x,y resolution
@@ -385,6 +388,28 @@ def makePlots():
    ut.bookCanvas(h,key='ecalanalysis',title='cluster map',nx=800,ny=600,cx=1,cy=1)
    cv = h['ecalanalysis'].cd(1)
    h['ecalClusters'].Draw('colz')
+   ut.bookCanvas(h,key='ecalCluster2Track',title='Ecal cluster distances to track impact',nx=1600,ny=800,cx=4,cy=2)
+   if h.has_key("ecalReconstructed_dist_mu+"):
+    cv = h['ecalCluster2Track'].cd(1)
+    h['ecalReconstructed_distx_mu+'].Draw()
+    cv = h['ecalCluster2Track'].cd(2)
+    h['ecalReconstructed_disty_mu+'].Draw()
+   if h.has_key("ecalReconstructed_dist_pi+"):
+    cv = h['ecalCluster2Track'].cd(3)
+    h['ecalReconstructed_distx_pi+'].Draw()
+    cv = h['ecalCluster2Track'].cd(4)
+    h['ecalReconstructed_disty_pi+'].Draw()
+   if h.has_key("ecalReconstructed_dist_mu-"):
+    cv = h['ecalCluster2Track'].cd(5)
+    h['ecalReconstructed_distx_mu-'].Draw()
+    cv = h['ecalCluster2Track'].cd(6)
+    h['ecalReconstructed_disty_mu-'].Draw()
+   if h.has_key("ecalReconstructed_dist_pi-"):
+    cv = h['ecalCluster2Track'].cd(7)
+    h['ecalReconstructed_distx_pi-'].Draw()
+    cv = h['ecalCluster2Track'].cd(8)
+    h['ecalReconstructed_disty_pi-'].Draw()
+
    ut.bookCanvas(h,key='strawanalysis',title='Distance to wire and mean nr of hits',nx=1200,ny=600,cx=3,cy=1)
    cv = h['strawanalysis'].cd(1)
    h['disty'].Draw()
@@ -471,6 +496,12 @@ def makePlots():
    h['nrRPC'].Draw()
 #
    print 'finished making plots'
+# calculate z front face of ecal, needed later
+top = ROOT.gGeoManager.GetTopVolume()
+z_ecal      = top.GetNode('Ecal_1').GetMatrix().GetTranslation()[2]
+z_ecalFront = z_ecal + top.GetNode('Ecal_1').GetVolume().GetShape().GetDZ()
+z_ecalBack  = z_ecal + top.GetNode('Ecal_1').GetVolume().GetShape().GetDZ()
+
 
 # start event loop
 def myEventLoop(n):
@@ -498,19 +529,41 @@ def myEventLoop(n):
     mMax = aClus.MCTrack()
     if mMax>0:    
       aP = sTree.MCTrack[mMax]   
-      pName = 'ecalReconstructed_'+PDG.GetParticle(aP.GetPdgCode()).GetName()
+      tmp = PDG.GetParticle(aP.GetPdgCode())
+      if tmp: pName = 'ecalReconstructed_'+tmp.GetName()
+      else: pName = 'ecalReconstructed_'+str(aP.GetPdgCode())
     else:
       pName = 'ecalReconstructed_unknown' 
-    if not h.has_key(pName): ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
+    if not h.has_key(pName): 
+      ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
     rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.RecoE()/u.GeV)
+# look at distance to tracks 
+    for fT in sTree.FitTracks:
+     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
+     if rc>0:
+      pdgcode = fT.getFittedState().getPDG()
+      tmp = PDG.GetParticle(pdgcode)
+      if tmp: tName = 'ecalReconstructed_dist_'+tmp.GetName()
+      else: tName = 'ecalReconstructed_dist_'+str(aP.GetPdgCode())
+      if not h.has_key(tName): 
+       p = tName.split('dist_')[1]
+       ut.bookHist(h,tName,'Ecal cluster distance t0 '+p,100,0.,100.*u.cm)
+       ut.bookHist(h,tName.replace('dist','distx'),'Ecal cluster distance to '+p+' in X ',100,-50.*u.cm,50.*u.cm)
+       ut.bookHist(h,tName.replace('dist','disty'),'Ecal cluster distance to '+p+' in Y ',100,-50.*u.cm,50.*u.cm)
+      dist = ROOT.TMath.Sqrt( (aClus.X()-pos.X())**2+(aClus.Y()-pos.Y())**2 )
+      rc = h[tName].Fill(dist)
+      rc = h[tName.replace('dist','distx')].Fill( aClus.X()-pos.X() )
+      rc = h[tName.replace('dist','disty')].Fill( aClus.Y()-pos.Y() )
 # compare with old method
    for aClus in sTree.EcalClusters:
      rc = h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
      mMax,frac = ecalCluster2MC(aClus)
- # return MC track most contributing, and its fraction of energy
+# return MC track most contributing, and its fraction of energy
      if mMax>0:    
       aP = sTree.MCTrack[mMax]   
-      pName = 'ecalClusters_'+PDG.GetParticle(aP.GetPdgCode()).GetName()
+      tmp = PDG.GetParticle(aP.GetPdgCode())
+      if tmp: pName = 'ecalClusters_'+tmp.GetName()
+      else: pName = 'ecalClusters_'+str(aP.GetPdgCode())
      else:
       pName = 'ecalClusters_unknown' 
      if not h.has_key(pName): ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
