@@ -336,12 +336,10 @@ rtdb.printParamContexts()
 getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("%s/geofile_full.%s.root" % (outputDir, tag))
-# add ShipGeo dictionary
-from rootpyPickler import Pickler
-fg = ROOT.TFile.Open("%s/geofile_full.%s.root" % (outputDir, tag),'update')
-pkl=Pickler(fg)
-pkl.dump(ship_geo,'ShipGeo')
-fg.Close()
+# save ShipGeo dictionary in geofile
+import saveBasicParameters
+saveBasicParameters.execute("%s/geofile_full.%s.root" % (outputDir, tag),ship_geo)
+
 # checking for overlaps
 if checking4overlaps:
  fGeo = ROOT.gGeoManager
