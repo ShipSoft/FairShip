@@ -1,6 +1,7 @@
 #!/usr/bin/env python -i
 import ROOT,sys,getopt,os,Tkinter
 from ShipGeoConfig import ConfigRegistry
+from rootpyPickler import Unpickler
 import shipunit as u
 import shipRoot_conf
 shipRoot_conf.configure()
@@ -670,7 +671,6 @@ HcalPoints  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
 MuonPoints  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
 RpcPoints   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
 TargetPoints   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
-preshowerPoints  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
 
 fMan.AddTask(VetoPoints)
 fMan.AddTask(MuonPoints)
@@ -679,7 +679,22 @@ fMan.AddTask(HcalPoints)
 fMan.AddTask(StrawPoints)
 fMan.AddTask(RpcPoints)
 fMan.AddTask(TargetPoints)
-fMan.AddTask(preshowerPoints)
+
+if not fRun.GetGeoFile().FindKey('ShipGeo'):
+ # old geofile, missing Shipgeo dictionary
+ # try to figure out which ecal geo to load
+  if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+  else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile)
+else: 
+ # new geofile, load Shipgeo dictionary written by run_simScript.py
+  upkl    = Unpickler( fRun.GetGeoFile() )
+  ShipGeo = upkl.load('ShipGeo')
+  ecalGeoFile = ShipGeo.ecal.File
+if hasattr(ShipGeo,'preshowerOption'): 
+ if ShipGeo.preshowerOption >0: 
+  preshowerPoints  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
+  fMan.AddTask(preshowerPoints)
 
 fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 #visopt, set drawing mode :
@@ -694,10 +709,6 @@ fGeo  = ROOT.gGeoManager
 top   = fGeo.GetTopVolume()
 evmgr = ROOT.gEve
 # switchOfAll('RockD')
-# try to figure out which ecal geo to load
-if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
-else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile )
 
 SHiPDisplay = EventLoop()
 SHiPDisplay.InitTask()
