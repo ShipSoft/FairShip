@@ -88,9 +88,25 @@ if not geoFile:
 # try to figure out which ecal geo to load
 fgeo = ROOT.TFile(geoFile)
 sGeo = fgeo.FAIRGeom
-if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
-else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
-print 'found ecal geo for ',ecalGeoFile
+
+from ShipGeoConfig import ConfigRegistry
+from rootpyPickler import Unpickler
+
+if not fgeo.FindKey('ShipGeo'):
+ # old geofile, missing Shipgeo dictionary
+ if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+ else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+ print 'found ecal geo for ',ecalGeoFile
+ if dy: 
+  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile)
+ else:
+  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile) 
+else: 
+ # new geofile, load Shipgeo dictionary
+  upkl    = Unpickler(fgeo)
+  ShipGeo = upkl.load('ShipGeo')
+  ecalGeoFile = ShipGeo.ecal.File
+
 ps = 0
 if sGeo.GetVolume('PreshowerDetector'):ps = 1
 
@@ -111,11 +127,6 @@ def pyExit():
 import atexit
 atexit.register(pyExit)
 
-from ShipGeoConfig import ConfigRegistry
-if dy: 
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile, preshowerOption = ps )
-else:
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile, preshowerOption = ps )
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()

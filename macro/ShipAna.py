@@ -3,6 +3,7 @@ import ROOT,os,sys,getopt
 import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
+from rootpyPickler import Unpickler
 import shipRoot_conf
 shipRoot_conf.configure()
 
@@ -64,12 +65,20 @@ if geoFile[0:4] == "/eos":
 else:  
   fgeo = ROOT.TFile(geoFile)
 sGeo = fgeo.FAIRGeom
-if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
-else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
-print 'found ecal geo for ',ecalGeoFile
 
-# init geometry and mag. field
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
+if not fgeo.FindKey('ShipGeo'):
+ # old geofile, missing Shipgeo dictionary
+ if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+ else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+ print 'found ecal geo for ',ecalGeoFile
+ # re-create geometry and mag. field
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
+else: 
+ # new geofile, load Shipgeo dictionary written by run_simScript.py
+  upkl    = Unpickler(fgeo)
+  ShipGeo = upkl.load('ShipGeo')
+  ecalGeoFile = ShipGeo.ecal.File
+
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()

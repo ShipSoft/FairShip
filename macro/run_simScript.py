@@ -336,13 +336,17 @@ rtdb.printParamContexts()
 getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("%s/geofile_full.%s.root" % (outputDir, tag))
-#
+# add ShipGeo dictionary
+from rootpyPickler import Pickler
+fg = ROOT.TFile.Open("%s/geofile_full.%s.root" % (outputDir, tag),'update')
+pkl=Pickler(fg)
+pkl.dump(ship_geo,'ShipGeo')
+fg.Close()
 # checking for overlaps
 if checking4overlaps:
  fGeo = ROOT.gGeoManager
  fGeo.SetNmeshPoints(10000)
  fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
- # fGeo.CheckOverlaps()
  fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
