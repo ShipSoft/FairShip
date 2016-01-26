@@ -123,12 +123,13 @@ void ShipTargetStation::ConstructGeometry()
     target->SetLineColor(38);  // silver/blue
     tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, fTargetZ));
     }
-    zPos =  fTargetZ - fTargetLength/2.;
+    if (fAbsorberLength>0){
+     zPos =  fTargetZ - fTargetLength/2.;
     // Absorber made of iron
-    TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
-    absorber->SetLineColor(42); // brown / light red
-    tTarget->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ-zPos));
-
+     TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
+     absorber->SetLineColor(42); // brown / light red
+     tTarget->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ-zPos));
+    } 
     // put iron shielding around target
     if (fnS > 10){
       Float_t xTot = 400./2.; // all in cm
@@ -145,7 +146,7 @@ void ShipTargetStation::ConstructGeometry()
       tTarget->AddNode(moreShieldingSide, 2, new TGeoTranslation(-fDiameter/2.-spaceSide-xTot/2.,0.,fTargetLength/2.));
     }else{
     TGeoVolume *moreShielding = gGeoManager->MakeTube("MoreShielding", iron, 30, 400, fTargetLength/2.);  
-    absorber->SetLineColor(43); //  
+    moreShielding->SetLineColor(43); //  
     tTarget->AddNode(moreShielding, 1, new TGeoTranslation(0, 0, fTargetLength/2.));
     }
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());

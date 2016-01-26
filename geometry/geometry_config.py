@@ -1,8 +1,7 @@
 import shipunit as u
 from ShipGeoConfig import AttrDict, ConfigRegistry
-
 # the following params should be passed through 'ConfigRegistry.loadpy' method
-# muShieldDesign = 2  # 1=passive 2=active
+# muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber
 # nuTargetDesign = 2  #1 = with active layers, 2 = only passive
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
@@ -140,11 +139,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.decayVolume            =  AttrDict(z=0*u.cm)
     c.decayVolume.length     =   50*u.m
 
-    c.muShield             =  AttrDict(z=0*u.cm)
+    c.muShield       =  AttrDict(z=0*u.cm)
     c.muShieldDesign = muShieldDesign
-    # design 4 and 5
+    # design 4,5,6
     c.muShield.LE  = 10*u.m     #- 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
-    c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
+    if muShieldDesign == 6: c.muShield.dZ0 = 2.5*u.m 
+    else:                   c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
     c.muShield.dZ1 = 3.5*u.m
     c.muShield.dZ2 = 6.*u.m
     c.muShield.dZ3 = 2.5*u.m
@@ -182,13 +182,18 @@ with ConfigRegistry.register_config("basic") as c:
     if muShieldDesign == 1: 
         c.muShield.length =  70*u.m 
         c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2. - c.muShield.LE  # leave some space for nu-tau 
-    if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5 : 
+    if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5 or muShieldDesign == 6 : 
      c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
+                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
+     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
+    if muShieldDesign == 6 : 
+     c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                          +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
      c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
-    c.hadronAbsorber.length =  3.00*u.m
+    if muShieldDesign == 6: c.hadronAbsorber.length =  5.00*u.m
+    else:                   c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
 
     c.target               =  AttrDict(z=0*u.cm)

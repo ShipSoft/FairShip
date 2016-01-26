@@ -50,7 +50,7 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
  if (fDesign==2 || fDesign==3 || fDesign==4 ){
      Fatal("ShipMuonShield","Design %i not anymore supported",fDesign);
     }
- if (fDesign==5){
+ if (fDesign==5 || fDesign==6){
      dZ0 = L0;
      dZ1 = L1;
      dZ2 = L2;
@@ -63,7 +63,7 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      dXgap= gap;
      fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7+dZ8) + LE ; //leave some space for nu-tau detector   
     }
- zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;
+ if (fDesign==6){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
 
 }
@@ -529,22 +529,59 @@ void ShipMuonShield::ConstructGeometry()
     
      cout << "passive muon shield postioned at " << (-fMuonShieldLength/2.-2500)/100. << "m"<< endl;
     }
-    else if (fDesign==4||fDesign==5){
+    else if (fDesign==4||fDesign==5||fDesign==6){
 // Slightly improved from fDesign==3, longer/thicker MagB first magnets to 
 // make sure more muons end up on the right polarity side.
 // add here the additional 2m hadron shield, decided 17 october 2014
-    // 2m more Absorber made of iron
-    CreateTube("AbsorberAdd", iron, 15, 400, dZ0,43,tShield,1,0, 0, zEndOfAbsorb - dZ0);
-    //TGeoVolume *absorberCore = gGeoManager->MakeTube("AbsorberAddCore", tungsten, 0, 15, dZ0);   
-    CreateTube("AbsorberAddCore", iron, 0, 15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
+     Double_t ironField = fField*tesla;
+     cout<<"fField  "<<fField<<endl;
+     TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
+     TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
+     TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
+     TGeoUniformMagField *ConLField    = new TGeoUniformMagField(ironField,0.,0.);
+     Double_t eps = 1.*mm;  //create small gaps between some elements to avoid Geant to get stuck.
 
-    Double_t ironField = fField*tesla;
-    cout<<"fField  "<<fField<<endl;
-    TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
-    TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
-    TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
-    TGeoUniformMagField *ConLField    = new TGeoUniformMagField(ironField,0.,0.);
-    Double_t eps = 1.*mm;  //create small gaps between some elements to avoid Geant to get stuck.
+// fDesign==6 with magnetized hadron absorber
+     if (fDesign==6){
+      // central block is 1 m high/wide B-up,
+      // all return fields top/bot/left/right are 0.5 m wide 
+      Double_t dA = 1*m;
+      TGeoVolume *AbsorberC = gGeoManager->MakeBox("AbsorberCentre", iron, dA/2., dA/2., dZ0);
+      AbsorberC->SetLineColor(43);
+      TGeoVolume *AbsorberL = gGeoManager->MakeBox("AbsorberLeft",   iron, dA/4., dA/2., dZ0);
+      AbsorberL->SetLineColor(43);
+      TGeoVolume *AbsorberR = gGeoManager->MakeBox("AbsorberRight",  iron, dA/4., dA/2., dZ0);
+      AbsorberR->SetLineColor(43);
+      TGeoVolume *AbsorberTL = gGeoManager->MakeBox("AbsorberTopLeft", iron,     dA/2., dA/4., dZ0);
+      AbsorberTL->SetLineColor(43);
+      TGeoVolume *AbsorberTR = gGeoManager->MakeBox("AbsorberTopRight", iron,    dA/2., dA/4., dZ0);
+      AbsorberTR->SetLineColor(43);
+      TGeoVolume *AbsorberBL = gGeoManager->MakeBox("AbsorberBottomLeft", iron,  dA/2., dA/4., dZ0);
+      AbsorberBL->SetLineColor(43);
+      TGeoVolume *AbsorberBR = gGeoManager->MakeBox("AbsorberBottomRight", iron, dA/2., dA/4., dZ0);
+      AbsorberBR->SetLineColor(43);
+ 
+      AbsorberC->SetField(magFieldIron);
+      tShield->AddNode(AbsorberC, 1, new TGeoTranslation(0., 0.,zEndOfAbsorb - dZ0));
+      AbsorberL->SetField(RetField);
+      tShield->AddNode(AbsorberL, 1, new TGeoTranslation(-3*dA/4.,0.,zEndOfAbsorb - dZ0));
+      AbsorberR->SetField(RetField);
+      tShield->AddNode(AbsorberR, 1, new TGeoTranslation(3*dA/4.,0.,zEndOfAbsorb - dZ0));
+      AbsorberTL->SetField(ConRField);
+      tShield->AddNode(AbsorberTL, 1, new TGeoTranslation(-dA/2.,3*dA/4.,zEndOfAbsorb - dZ0));
+      AbsorberTR->SetField(ConLField);
+      tShield->AddNode(AbsorberTR, 1, new TGeoTranslation(dA/2.,3*dA/4.,zEndOfAbsorb - dZ0));
+      AbsorberBL->SetField(ConLField);
+      tShield->AddNode(AbsorberBL, 1, new TGeoTranslation(-dA/2.,-3*dA/4.,zEndOfAbsorb - dZ0));
+      AbsorberBR->SetField(ConRField);
+      tShield->AddNode(AbsorberBR, 1, new TGeoTranslation(dA/2.,-3*dA/4.,zEndOfAbsorb - dZ0));
+
+    }else{
+     // 2m more Absorber made of iron
+     CreateTube("AbsorberAdd", iron, 15, 400, dZ0,43,tShield,1,0, 0, zEndOfAbsorb - dZ0);
+     //TGeoVolume *absorberCore = gGeoManager->MakeTube("AbsorberAddCore", tungsten, 0, 15, dZ0);   
+     CreateTube("AbsorberAddCore", iron, 0, 15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
+    }
     /*
     #define nCorners 5 */
     std::vector<std::vector<Double_t> > corners;
