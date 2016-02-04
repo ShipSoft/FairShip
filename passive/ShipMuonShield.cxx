@@ -66,7 +66,6 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;
  if (fDesign==6){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
-
 }
 
 
