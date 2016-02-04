@@ -63,6 +63,7 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      dXgap= gap;
      fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7+dZ8) + LE ; //leave some space for nu-tau detector   
     }
+ zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;
  if (fDesign==6){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
 
