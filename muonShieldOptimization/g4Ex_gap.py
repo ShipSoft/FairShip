@@ -157,7 +157,7 @@ if allPart: qedlist = []
 h = {}
 if withNtuple:
  f  = ROOT.TFile.Open('pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root', 'RECREATE')
- h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","muon/nu flux","id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid")
+ h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","muon/nu flux","id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid")
 
 # ==================================================================
 #                         Geant4 PART                              #
@@ -379,6 +379,10 @@ class ScoreSD(G4VSensitiveDetector):
     part         = track.GetDynamicParticle()
     pid          = part.GetPDGcode()
     vx           = track.GetVertexPosition()
+    pvx          = track.GetVertexMomentumDirection()  
+    ekinvx       = track.GetVertexKineticEnergy()
+    M            = part.GetMass()
+    Pvx          = ROOT.TMath.Sqrt( ekinvx*(ekinvx+2*M) )
     mom  = track.GetMomentum()
     ekin = track.GetKineticEnergy()/GeV
     pos = track.GetPosition()
@@ -389,10 +393,12 @@ class ScoreSD(G4VSensitiveDetector):
     pythiaid = int(w)%100000-10000
     h['ntuple'].Fill(float(pid), float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
                    float(pos.x/m),float(pos.y/m),float(pos.z/m),\
+                   float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
                    float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
     if debug: 
         print 'xxx',pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
                    float(pos.x/m),float(pos.y/m),float(pos.z/m),\
+                   float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
                    float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid
 
 def ConstructGeom():
