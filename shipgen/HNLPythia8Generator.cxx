@@ -18,9 +18,11 @@ HNLPythia8Generator::HNLPythia8Generator()
   fHNL        = 9900015;    // HNL  pdg code
   fLmin       = 5000.*cm;    // mm minimum  decay position z  ROOT units !
   fLmax       = 12000.*cm;   // mm maximum decay position z
+  fFDs        = 7.7/10.4;    // correction for Pythia6 to match measured Ds production
   fextFile    = "";
   fInputFile  = NULL;
   fnRetries   = 0;
+  fShipEventNr = 0;
   fPythia =  new Pythia8::Pythia();
 }
 // -------------------------------------------------------------------------
@@ -111,15 +113,22 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    
    if (fextFile != ""){
 // take charm or beauty hadron from external file
-    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
-    fTree->GetEntry(fn%fNevents);
+// correct for too much Ds produced by pythia6
+    bool x = true; 
+    while(x){ 
+     if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+     fTree->GetEntry(fn%fNevents);
+     if ( int(fabs(hid[0]) ) != 431){ x = false; }
+     else {
+       Double_t rnr = gRandom->Uniform(0,1);
+       if( rnr<fFDs ) { x = false; };
+       //cout<<"what is x "<<x<<" id "<<int(fabs(hid[0]))<<" rnr " << rnr <<" "<< fFDs <<endl ;
+     }
+    }          
    fPythia->event.reset();
    fPythia->event.append( (Int_t)hid[0], 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
    }
    fn++;
-   if (fn%100==0) {
-      fLogger->Info(MESSAGE_ORIGIN,"pythia event-nr %i",fn);
-    }
   fPythia->next();
    for(int i=0; i<fPythia->event.size(); i++){
 // find first HNL
@@ -191,7 +200,10 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
     }
    } while ( iHNL == 0 ); // ----------- avoid rare empty events w/o any HNL's produced
 
-
+   if (fShipEventNr%100==0) {
+      fLogger->Info(MESSAGE_ORIGIN,"ship event %i / pythia event-nr %i",fShipEventNr,fn);
+    }
+   fShipEventNr += 1;
    // fill a container with pythia indices of the HNL decay chain
    for(int k=0; k<fPythia->event.size(); k++){
      // if daughter of HNL, copy

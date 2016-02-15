@@ -68,6 +68,7 @@ class HNLPythia8Generator : public FairGenerator
   void SetHNLId(Int_t id) { fHNL = id; };
   void SetLmin(Int_t z) { fLmin = z; };
   void SetLmax(Int_t z) { fLmax = z; };
+  void SetfFDs(Double_t z) { fFDs = z; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
@@ -89,16 +90,17 @@ class HNLPythia8Generator : public FairGenerator
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
   Int_t fnRetries;     // number of events without any HNL 
-  Double_t fctau ;     // hnl lifetime 
+  Double_t fctau;      // hnl lifetime 
+  Double_t fFDs;       // correction for Pythia6 to match measured Ds production
   const char* fextFile; // read charm and beauty hadrons from external file, decay with Pythia
   TFile* fInputFile;   //! pointer to a file
   TTree* fTree;        //! 
-  Int_t  fNevents,fn,firstEvent;
+  Int_t  fNevents,fn,firstEvent,fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1],hM[1],mpx[1], mpy[1], mpz[1], mE[1],hid[1], mid[1];
   Bool_t fDeepCopy;    // not used
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
 
-  ClassDef(HNLPythia8Generator,2);
+  ClassDef(HNLPythia8Generator,3);
 };
 
 #endif /* !PNDH8GENERATOR_H */
