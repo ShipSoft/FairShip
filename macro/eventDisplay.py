@@ -638,6 +638,10 @@ from basiclibs import *
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
 if geoFile: fRun.SetGeomFile(geoFile)
+if os.path.islink(InputFile): 
+  rfn = os.path.realpath(InputFile).split('eos')[1]
+  InputFile  = 'root://eoslhcb//eos/'+rfn
+
 if hasattr(fRun,'SetSource'):
  inFile = ROOT.FairFileSource(InputFile)
  fRun.SetSource(inFile)
@@ -680,6 +684,18 @@ fMan.AddTask(StrawPoints)
 fMan.AddTask(RpcPoints)
 fMan.AddTask(TargetPoints)
 
+fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+#visopt, set drawing mode :
+# option=0 (default) all nodes drawn down to vislevel
+# option=1           leaves and nodes at vislevel drawn
+# option=2           path is drawn
+# vislvl
+#
+fRman = ROOT.FairRootManager.Instance()
+sTree = fRman.GetInChain()
+fGeo  = ROOT.gGeoManager 
+top   = fGeo.GetTopVolume()
+evmgr = ROOT.gEve
 if not fRun.GetGeoFile().FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # try to figure out which ecal geo to load
@@ -696,18 +712,7 @@ if hasattr(ShipGeo,'preshowerOption'):
   preshowerPoints  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
   fMan.AddTask(preshowerPoints)
 
-fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
-#visopt, set drawing mode :
-# option=0 (default) all nodes drawn down to vislevel
-# option=1           leaves and nodes at vislevel drawn
-# option=2           path is drawn
-# vislvl
-#
-fRman = ROOT.FairRootManager.Instance()
-sTree = fRman.GetInChain()
-fGeo  = ROOT.gGeoManager 
-top   = fGeo.GetTopVolume()
-evmgr = ROOT.gEve
+
 # switchOfAll('RockD')
 
 SHiPDisplay = EventLoop()
