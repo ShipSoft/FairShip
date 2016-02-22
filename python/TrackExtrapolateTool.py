@@ -11,23 +11,26 @@ def extrapolateToPlane(fT,z):
   rc,pos,mom = False,None,None
   fst = fT.getFitStatus()
   if fst.isFitConverged() and fst.getNdf() > minNdf:
-   fstate0,fstate1 = fT.getFittedState(0),fT.getFittedState(1) 
-   fPos0,fPos1     = fstate0.getPos(),fstate1.getPos()
-   if abs(z-fPos0.z()) <  abs(z-fPos1.z()): fstate = fstate0
-   else:                                    fstate = fstate1
-   zs = min(z,z_ecal)
-   NewPosition = ROOT.TVector3(0., 0., zs) 
-   rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) ) 
-   state  = ROOT.genfit.StateOnPlane(rep) 
-   pos,mom = fstate.getPos(),fstate.getMom()
-   rep.setPosMom(state,pos,mom) 
-   try:    
-     rep.extrapolateToPlane(state, NewPosition, parallelToZ )
-     pos,mom = state.getPos(),state.getMom()
-     rc = True 
-   except: 
-     print 'error with extrapolation: z=',z/u.m,'m'
-   if not rc or z>z_ecal:
+# test for fit status for each point
+   if fT.getPoint(0).getFitterInfo() and fT.getPoint(1).getFitterInfo():
+    fstate0,fstate1 = fT.getFittedState(0),fT.getFittedState(1) 
+    fPos0,fPos1     = fstate0.getPos(),fstate1.getPos()
+    if abs(z-fPos0.z()) <  abs(z-fPos1.z()): fstate = fstate0
+    else:                                    fstate = fstate1
+    zs = min(z,z_ecal)
+    NewPosition = ROOT.TVector3(0., 0., zs) 
+    rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) ) 
+    state  = ROOT.genfit.StateOnPlane(rep) 
+    pos,mom = fstate.getPos(),fstate.getMom()
+    rep.setPosMom(state,pos,mom) 
+    if mom.Z()>1000000000.:
+     try:    
+      rep.extrapolateToPlane(state, NewPosition, parallelToZ )
+      pos,mom = state.getPos(),state.getMom()
+      rc = True 
+     except: 
+      print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
+    if not rc or z>z_ecal:
      # use linear extrapolation
      px,py,pz  = mom.X(),mom.Y(),mom.Z()
      lam = (z-pos.Z())/pz
