@@ -735,8 +735,11 @@ def myEventLoop(n):
     h['Vypull'].Fill( (mctrack.GetStartY()-XPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
 #
 def HNLKinematics():
+ HNLorigin={}
  ut.bookHist(h,'HNLmomNoW','momentum unweighted',100,0.,300.)
  ut.bookHist(h,'HNLmom','momentum',100,0.,300.)
+ ut.bookHist(h,'HNLPtNoW','Pt unweighted',100,0.,10.)
+ ut.bookHist(h,'HNLPt','Pt',100,0.,10.)
  ut.bookHist(h,'HNLmom_recTracks','momentum',100,0.,300.)
  ut.bookHist(h,'HNLmomNoW_recTracks','momentum unweighted',100,0.,300.)
  for n in range(sTree.GetEntries()): 
@@ -746,16 +749,25 @@ def HNLKinematics():
     theHNL = sTree.MCTrack[hnlkey]
     wg = theHNL.GetWeight()
     if not wg>0.: wg=1.
+    idMother = abs(sTree.MCTrack[hnlkey-1].GetPdgCode())
+    if not HNLorigin.has_key(idMother): HNLorigin[idMother]=0
+    HNLorigin[idMother]+=wg
     P = theHNL.GetP()
+    Pt = theHNL.GetPt()
     h['HNLmom'].Fill(P,wg) 
     h['HNLmomNoW'].Fill(P) 
+    h['HNLPt'].Fill(Pt,wg) 
+    h['HNLPtNoW'].Fill(Pt) 
     for HNL in sTree.Particles:
      t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
      for tr in [t1,t2]:
       xx  = sTree.FitTracks[tr].getFittedState()
       Prec = xx.getMom().Mag()
       h['HNLmom_recTracks'].Fill(Prec,wg) 
-      h['HNLmomNoW_recTracks'].Fill(Prec) 
+      h['HNLmomNoW_recTracks'].Fill(Prec)
+ theSum = 0
+ for x in HNLorigin: theSum+=HNLorigin[x]   
+ for x in HNLorigin: print "%4i : %5.4F relative fraction: %5.4F "%(x,HNLorigin[x],HNLorigin[x]/theSum)
 #
 # initialize ecalStructure
 caloTasks = []
