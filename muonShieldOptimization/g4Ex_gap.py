@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import os
+import saveBasicParameters
+
 local = False
 if not os.uname()[1].find('ubuntu')<0: local = True
 
@@ -92,8 +94,10 @@ def init():
       logger.warn("...use '-f' option to overwrite it")
   else:
     os.makedirs(work_dir)
+  return args
 
-init()
+args = init()
+
 os.chdir(work_dir)
 # -------------------------------------------------------------------
 
@@ -102,7 +106,6 @@ os.chdir(work_dir)
 #                         ROOT IMPORT                               #
 # ==================================================================
 import ROOT,time
-from ROOT import TLorentzVector
 # ==================================================================
 #                         GEANT4 IMPORT                             #
 # ==================================================================
@@ -158,7 +161,7 @@ h = {}
 if withNtuple:
  f  = ROOT.TFile.Open('pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root', 'RECREATE')
  h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","muon/nu flux","id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid")
-
+ 
 # ==================================================================
 #                         Geant4 PART                              #
 # ==================================================================
@@ -218,7 +221,7 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
     else: z = rnr.Exp(16*cm) -50.*m # Mo/H20/W average interaction length
     ztarget   = G4ThreeVector(0*cm, 0*cm,   z)
     vertex    = G4PrimaryVertex(ztarget,0.)
-    v = TLorentzVector()
+    v = ROOT.TLorentzVector()
     for p in particles:
        if p.GetStatusCode()!=1 : continue
        pid = p.GetPdgCode()
@@ -568,12 +571,17 @@ for x in myTimer:
   print x,myTimer[x]
 
 logger.info("output directory: %s" % work_dir)
+# save arguments and GIT tags
+import saveBasicParameters
+saveBasicParameters.execute(f,args,'SHiP-Params')
 
 if local:
  wrld = snoopyPhys.GetMotherLogical()
  parser = G4GDMLParser()
- os.system('rm g4Geom.gdml')
+ geofile = work_dir+'/g4Geom.gdml' 
+ if os.path.isfile(geofile): os.system('rm '+geofile)
  parser.Write('g4Geom.gdml',wrld)
+ ROOT.TGeoManager()
  geomgr = ROOT.gGeoManager
  geomgr.Import('g4Geom.gdml','world','new')
  ROOT.gGeoManager.CheckOverlaps()

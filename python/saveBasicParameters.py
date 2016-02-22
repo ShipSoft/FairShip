@@ -1,8 +1,9 @@
 # save python objects as pickle object in ROOT file
 from rootpyPickler import Pickler
 from ShipGeoConfig import AttrDict
+from ShipGeoConfig import ConfigRegistry
 import ROOT,os,subprocess
-def execute(f,o):
+def retrieveGitTags(o):
     # record some basic information about version of software:
     tmp = os.environ['FAIRSHIP']+'/.git/refs/remotes/origin/master'
     if os.path.isfile(tmp):
@@ -28,8 +29,14 @@ def execute(f,o):
     if os.path.isfile(tmp):
       x = subprocess.check_output(['more',tmp]).replace('\n','')
       o.FairRoot = AttrDict(master=x)
-    fg = ROOT.TFile.Open(f,'update')
-    pkl=Pickler(fg)
-    pkl.dump(o,'ShipGeo')
-    fg.Close()
+    return o 
+def execute(f,ox,name='ShipGeo'):
+    if type(ox) == type(''): ox = ConfigRegistry.register_config("basic")
+    o = retrieveGitTags(ox)
+    if type(f)==type("s"): fg = ROOT.TFile.Open(f,'update')
+    else:                  fg = f 
+    pkl = Pickler(fg)
+    pkl.dump(o,name)    
+    if type(f)==type("s"): fg.Close()
+
   
