@@ -136,6 +136,8 @@ builtin.fitter   = fitter
 builtin.ship_geo = ShipGeo # for shipPatRec
 builtin.pidProton = pidProton
 
+# import reco tasks
+import shipPid
 import shipVertex
 PDG = ROOT.TDatabasePDG.Instance()
 addHNLtoROOT()
@@ -199,6 +201,7 @@ class ShipReco:
   ROOT.gRandom.SetSeed(13)
 #
   self.Vertexing = shipVertex.Task(h,self)
+  self.Pid       = shipPid.Task(h,self)
 
  def hit2wire(self,ahit,no_amb=None):
      detID = ahit.GetDetectorID()
@@ -426,6 +429,7 @@ shipPatRec.initialize(fgeo)
 for iEvent in range(firstEvent, SHiP.nEvents):
  if debug: print 'event ',iEvent
  ntracks = SHiP.findTracks(iEvent)
+ SHiP.Pid.execute()
  if vertexing:
 # now go for 2-track combinations
    SHiP.Vertexing.execute()
