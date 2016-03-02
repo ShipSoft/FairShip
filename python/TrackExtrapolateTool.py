@@ -23,12 +23,11 @@ def extrapolateToPlane(fT,z):
     state  = ROOT.genfit.StateOnPlane(rep) 
     pos,mom = fstate.getPos(),fstate.getMom()
     rep.setPosMom(state,pos,mom) 
-    if mom.Z()>1000000000.:
-     try:    
+    try:    
       rep.extrapolateToPlane(state, NewPosition, parallelToZ )
       pos,mom = state.getPos(),state.getMom()
       rc = True 
-     except: 
+    except: 
       print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
     if not rc or z>z_ecal:
      # use linear extrapolation
