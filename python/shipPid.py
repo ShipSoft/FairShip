@@ -3,6 +3,7 @@ import ROOT, sys
 import shipunit as u
 import rootUtils as ut
 import math as m
+import TrackExtrapolateTool
 
 class Task:
  "initialize"
@@ -46,7 +47,6 @@ class Task:
    if muonDet: self.zpositions['muon'+str(i)] = muonDet.GetMatrix().GetTranslation()[2]
    else: self.zpositions['muon'+str(i)] = ShipGeo['MuonStation'+str(i)].z
 
-  self.list = []
   self.pad_size_x = 5 #cm
   self.pad_size_y = 5 #cm
   self.dimensions_x = 300 #cm half witdth
@@ -162,64 +162,35 @@ class Task:
   ppid    = self.fpidArray
 
   i=-1
-  for tr in range(fittedTracks.GetEntries()):
-   self.El,self.Hl,self.OverHit=False,False,False
-   self.pid00,self.pid01,self.pid02,self.pid03,self.pid10,self.pid11,self.pid12,self.pid13=False,False,False,False,False,False,False,False
-   self.pid20,self.pid21,self.pid22,self.pid30,self.pid31=False,False,False,False,False
-   i+=1
-   rc,pos,mom = False,None,None
-   fst = fittedTracks[tr].getFitStatus()
-   if fst.isFitConverged() and fst.getNdf() > 20:
-    fstate0,fstate1 = fittedTracks[tr].getFittedState(0),fittedTracks[tr].getFittedState(1)
-    fPos0,fPos1     = fstate0.getPos(),fstate1.getPos()
-    #print fPos0.z(), fPos1.z()
-    if abs(self.zpositions['ecal']-fPos0.z()) <  abs(self.zpositions['ecal']-fPos1.z()): fstate = fstate0
-    else:                                    fstate = fstate1
-    pos,mom = fstate.getPos(),fstate.getMom()
-    pid=fstate.getPDG() 
+  for fT in self.sTree.FitTracks:
+    self.El,self.Hl,self.OverHit=False,False,False
+    self.pid00,self.pid01,self.pid02,self.pid03,self.pid10,self.pid11,self.pid12,self.pid13=False,False,False,False,False,False,False,False
+    self.pid20,self.pid21,self.pid22,self.pid30,self.pid31=False,False,False,False,False
+    i+=1
     self.extrapStates = {}
-    #print "old = ", pos.X(),pos.Y(),pos.Z(), mom.Z(), pid, i
     for self.det in self.zpositions:
-     zs = min(self.zpositions[self.det],self.zpositions['ecal'])
-     NewPosition = ROOT.TVector3(0., 0., zs)
-     rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) )
-     state  = ROOT.genfit.StateOnPlane(rep)
-     pos,mom = fstate.getPos(),fstate.getMom()   
-     rep.setPosMom(state,pos,mom)
-# ------------------------------------------------------
-     try:
-      rep.extrapolateToPlane(state, NewPosition, self.parallelToZ )
-      pos,mom = state.getPos(),state.getMom()
-      rc = True
-     except:
-      if rc == True: print 'error with extrapolation: z=',self.zpositions[self.det]/u.m,'m'
-     px,py,pz  = mom.X(),mom.Y(),mom.Z()
-     self.P = m.sqrt(m.pow(px,2)+m.pow(py,2)+m.pow(pz,2))
-     self.extrapStates[self.det] = [pos.X(),pos.Y(),self.zpositions[self.det]]
-#     if self.det == 'ecal': print self.det, "new = ", self.extrapStates[self.det][0],self.extrapStates[self.det][1],self.extrapStates[self.det][2], self.P
-     if not rc or self.zpositions[self.det]>self.zpositions['ecal']:
-      # use linear extrapolation
+     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,self.zpositions[self.det])
+#     print rc
+     if rc>0:
       px,py,pz  = mom.X(),mom.Y(),mom.Z()
-      P = m.sqrt(m.pow(px,2)+m.pow(py,2)+m.pow(pz,2))
-      lam = (self.zpositions[self.det]-pos.Z())/pz
-      self.extrapStates[self.det] = [pos.X()+lam*px,pos.Y()+lam*py,self.zpositions[self.det]]
+      self.P = m.sqrt(m.pow(px,2)+m.pow(py,2)+m.pow(pz,2))
+      self.extrapStates[self.det] = [pos.X(),pos.Y(),self.zpositions[self.det]]
 #      print self.det, "new = ", self.extrapStates[self.det][0],self.extrapStates[self.det][1],self.extrapStates[self.det][2], self.P
-# ------------------------------------------------------
-     self.muon_ID()
-     self.elec_ID()
+      self.muon_ID()
+      self.elec_ID()
     pidObject=ROOT.pid()
     pidObject.SetTrackID(i)
     if self.pid10==True or self.pid20==True or self.pid21==True or self.pid30==True: 
       pidObject.SetMuonID(1)
       self.Hl=False
-      #print '**** Is Muon'
+#      print '**** Is Muon'
     if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False:
       if self.El==True:
         pidObject.SetElectronID(1)
-        #print '==== Is Electron'
+#        print '==== Is Electron'
       if self.Hl==True:
         pidObject.SetHadronID(1)
-        #print '$$$$ Is Hadron'
+#        print '$$$$ Is Hadron'
     nPID=ppid.GetEntries()
     ppid[nPID]=pidObject
     #print "---------------- "
@@ -234,8 +205,8 @@ class Task:
       Y_pos0=extrap_Y_mu0+self.dimensions_y
       pos_pad_x0=m.floor(X_pos0/self.pad_size_x)+1
       pos_pad_y0=m.floor(Y_pos0/self.pad_size_y)+1
-      for i in range(len(self.list1)):
-        X,Y, e, Mull = self.list1[i][0], self.list1[i][1], self.list1[i][2], self.list1[i][3]
+      for i in range(len(self.list2)):
+        X,Y, e, Mull = self.list2[i][0], self.list2[i][1], self.list2[i][2], self.list2[i][3]
         if Mull==0:
             delta_x0 = X-pos_pad_x0
             delta_y0 = Y-pos_pad_y0
@@ -261,8 +232,8 @@ class Task:
       Y_pos1=extrap_Y_mu1+self.dimensions_y
       pos_pad_x1=m.floor(X_pos1/self.pad_size_x)+1
       pos_pad_y1=m.floor(Y_pos1/self.pad_size_y)+1
-      for i in range(len(self.list1)):
-        X,Y, e, Mull = self.list1[i][0], self.list1[i][1], self.list1[i][2], self.list1[i][3]
+      for i in range(len(self.list2)):
+        X,Y, e, Mull = self.list2[i][0], self.list2[i][1], self.list2[i][2], self.list2[i][3]
         if Mull==1:
             delta_x1 = X-pos_pad_x1
             delta_y1 = Y-pos_pad_y1   
@@ -285,8 +256,8 @@ class Task:
       Y_pos2=extrap_Y_mu2+self.dimensions_y
       pos_pad_x2=m.floor(X_pos2/self.pad_size_x)+1
       pos_pad_y2=m.floor(Y_pos2/self.pad_size_y)+1
-      for i in range(len(self.list1)):
-        X,Y, e, Mull = self.list1[i][0], self.list1[i][1], self.list1[i][2], self.list1[i][3]
+      for i in range(len(self.list2)):
+        X,Y, e, Mull = self.list2[i][0], self.list2[i][1], self.list2[i][2], self.list2[i][3]
         if Mull==2:
             delta_x2 = X-pos_pad_x2
             delta_y2 = Y-pos_pad_y2
@@ -307,8 +278,8 @@ class Task:
       Y_pos3=extrap_Y_mu3+self.dimensions_y
       pos_pad_x3=m.floor(X_pos3/self.pad_size_x)+1
       pos_pad_y3=m.floor(Y_pos3/self.pad_size_y)+1
-      for i in range(len(self.list1)):
-        X,Y, e, Mull = self.list1[i][0], self.list1[i][1], self.list1[i][2], self.list1[i][3]
+      for i in range(len(self.list2)):
+        X,Y, e, Mull = self.list2[i][0], self.list2[i][1], self.list2[i][2], self.list2[i][3]
         if Mull==3:
             delta_x3 = X-pos_pad_x3 
             delta_y3 = Y-pos_pad_y3
@@ -326,7 +297,6 @@ class Task:
      self.h['extrap_X_ecal'].Fill(extrap_X_ecal)   
      self.h['extrap_Y_ecal'].Fill(extrap_Y_ecal)
      self.h['extrap_Z_ecal'].Fill(extrap_Z_ecal)
-     self.list.append([extrap_X_ecal, extrap_Y_ecal,self.P])
 #     print self.det, "new = ", self.extrapStates[self.det][0],self.extrapStates[self.det][1],self.extrapStates[self.det][2], self.P
      ecalRec = self.sTree.EcalReconstructed
      for aClus in range(ecalRec.GetEntries()): 

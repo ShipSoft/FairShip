@@ -12,6 +12,17 @@ saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
 
+import resource
+def mem_monitor():
+ # Getting virtual memory size 
+    pid = os.getpid()
+    with open(os.path.join("/proc", str(pid), "status")) as f:
+        lines = f.readlines()
+    _vmsize = [l for l in lines if l.startswith("VmSize")][0]
+    vmsize = int(_vmsize.split()[1])
+    #Getting physical memory size  
+    pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    print "memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3)
 
 from array import array
 import ROOT,os,sys,getopt
@@ -429,6 +440,8 @@ shipPatRec.initialize(fgeo)
 for iEvent in range(firstEvent, SHiP.nEvents):
  if debug: print 'event ',iEvent
  ntracks = SHiP.findTracks(iEvent)
+ SHiP.EcalClusters.Fill()
+ SHiP.EcalReconstructed.Fill()
  SHiP.Pid.execute()
  if vertexing:
 # now go for 2-track combinations
@@ -437,11 +450,11 @@ for iEvent in range(firstEvent, SHiP.nEvents):
    if x.GetName() == 'ecalFiller': x.Exec('start',SHiP.sTree.EcalPointLite)
    elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed, SHiP.sTree.MCTrack)
    else : x.Exec('start')
- SHiP.EcalClusters.Fill()
- SHiP.EcalReconstructed.Fill()
 
  if debug: print 'end of event after Fill'
- 
+ # memory monitoring
+ # mem_monitor() 
+
 # end loop over events
 
 print 'finished writing tree'
