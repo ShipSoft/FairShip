@@ -549,7 +549,7 @@ def BigEventLoop():
  for fn in fchain: 
   if os.path.islink(fn): 
     rfn = os.path.realpath(fn).split('eos')[1]
-    fn  = 'root://eoslhcb//eos/'+rfn
+    fn  = 'root://eoslhcb.cern.ch//eos/'+rfn
   elif not os.path.isfile(fn): 
     print "Don't know what to do with",fn
     1/0 

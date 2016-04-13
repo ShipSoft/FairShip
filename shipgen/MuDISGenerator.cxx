@@ -36,7 +36,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
   dPart = 0; 
   if (0 == strncmp("/eos",fileName,4) ) {
     char stupidCpp[100];
-    strcpy(stupidCpp,"root://eoslhcb/");
+    strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
     strcat(stupidCpp,fileName);
     fInputFile  = TFile::Open(stupidCpp); 
     fLogger->Info(MESSAGE_ORIGIN,"Open external file on eos: %s",stupidCpp);
