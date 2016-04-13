@@ -640,7 +640,7 @@ fRun = ROOT.FairRunAna()
 if geoFile: fRun.SetGeomFile(geoFile)
 if os.path.islink(InputFile): 
   rfn = os.path.realpath(InputFile).split('eos')[1]
-  InputFile  = 'root://eoslhcb//eos/'+rfn
+  InputFile  = 'root://eoslhcb.cern.ch//eos/'+rfn
 
 if hasattr(fRun,'SetSource'):
  inFile = ROOT.FairFileSource(InputFile)

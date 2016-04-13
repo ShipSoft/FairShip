@@ -22,7 +22,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   if (0 == strncmp("/eos",fileName,4) ) {
      char stupidCpp[100];
-     strcpy(stupidCpp,"root://eoslhcb/");
+     strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
      strcat(stupidCpp,fileName);
      fInputFile  = TFile::Open(stupidCpp); 
   }else{

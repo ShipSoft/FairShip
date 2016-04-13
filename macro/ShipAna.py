@@ -45,7 +45,7 @@ else:
  inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4_rec.root'
 
 if inputFile[0:4] == "/eos":
-  eospath = "root://eoslhcb/"+inputFile
+  eospath = "root://eoslhcb.cern.ch/"+inputFile
   f = ROOT.TFile.Open(eospath)
   sTree = f.cbmsim
 elif not inputFile.find(',')<0 :  
@@ -60,7 +60,7 @@ else:
 if not geoFile:
  geoFile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
 if geoFile[0:4] == "/eos":
-  eospath = "root://eoslhcb/"+geoFile
+  eospath = "root://eoslhcb.cern.ch/"+geoFile
   fgeo = ROOT.TFile.Open(eospath)
 else:  
   fgeo = ROOT.TFile(geoFile)

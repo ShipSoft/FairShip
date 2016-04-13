@@ -39,7 +39,7 @@ Bool_t HNLPythia8Generator::Init()
   if (fextFile != ""){
     if (0 == strncmp("/eos",fextFile,4) ) {
      char stupidCpp[100];
-     strcpy(stupidCpp,"root://eoslhcb/");
+     strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
      strcat(stupidCpp,fextFile);
      fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",stupidCpp);
      fInputFile  = TFile::Open(stupidCpp); 

@@ -12,7 +12,7 @@ import os,sys
 
 def readHists(h,fname):
   if fname[0:4] == "/eos":
-    eospath = "root://eoslhcb/"+fname
+    eospath = "root://eoslhcb.cern.ch/"+fname
     f = ROOT.TFile.Open(eospath)
   else:  
     f = TFile(fname)

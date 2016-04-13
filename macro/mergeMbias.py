@@ -10,7 +10,7 @@ Mmu  = mu.Mass()
 Mmu2 = Mmu * Mmu 
 rnr  = ROOT.TRandom()
 
-#eospath = "root://eoslhcb//eos/ship/data/"
+#eospath = "root://eoslhcb.cern.ch//eos/ship/data/"
 eospath = "/media/Data/HNL/ShipSoft/data/"
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = 10.)
 endOfHadronAbsorber = (ship_geo['hadronAbsorber'].z + ship_geo['hadronAbsorber'].length/2.) /100.
