@@ -13,7 +13,7 @@ PDG = ROOT.TDatabasePDG.Instance()
 inputFile  = None
 geoFile    = None
 dy         = None
-nEvents    = 99999
+nEvents    = 9999999
 fiducialCut = True
 measCutFK = 25
 measCutPR = 22
@@ -514,6 +514,7 @@ z_ecalBack  = z_ecal + top.GetNode('Ecal_1').GetVolume().GetShape().GetDZ()
 
 # start event loop
 def myEventLoop(n):
+  global ecalReconstructed
   rc = sTree.GetEntry(n)
 # check if tracks are made from real pattern recognition
   measCut = measCutFK
