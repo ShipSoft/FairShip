@@ -219,15 +219,11 @@ class ShipReco:
      top = ROOT.TVector3()
      bot = ROOT.TVector3()
      modules["Strawtubes"].StrawEndPoints(detID,bot,top)
-     ex = ahit.GetX()
-     ey = ahit.GetY()
-     ez = ahit.GetZ()
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = dw
      if not no_amb: smear = abs(self.random.Gaus(dw,ShipGeo.straw.resol))
      smearedHit = {'mcHit':ahit,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'z':bot.z(),'dist':smear}
-     # print 'smeared hit:',top.x(),top.y(),top.z(),bot.x(),bot.y(),bot.z(),"dist",smear,ex,ey,ez,ox,oy,oz
      if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
      if abs(top.y())>abs(bot.y()): h['distu'].Fill(dw)
      if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
