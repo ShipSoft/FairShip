@@ -5,7 +5,9 @@ import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
 
-fname='Cascade50k-parp16-MSTP82-1-MSEL4'
+# latest production May 2016,76 M pot which produce a charm event equivalent,roughly 150 M charm hadrons
+fname='/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1'
+
 nrpotspill=5.e13  #number of pot/spill
 chicc=1.7e-3      #prob to produce primary ccbar pair/pot
 chibb=1.6e-7      #prob to produce primary bbbar pair/pot
@@ -34,7 +36,8 @@ for o, a in opts:
 FIN =fname+'.root'
 tmp = os.path.abspath(FIN).split('/')
 FOUT='Decay-'+tmp[len(tmp)-1]
-fin = ROOT.TFile(FIN)
+if FIN.find('eos')<0: fin = ROOT.TFile(FIN)
+else:                 fin = ROOT.TFile.Open('root://eoslhcb.cern.ch/'+FIN)
 sTree = fin.FindObjectAny("pythia6")
 nEvents = sTree.GetEntries()
 
@@ -128,8 +131,8 @@ for n in range(nEvents):
          if par.id()<0: idhnu+=1000
          pt2=par.px()**2+par.py()**2
          ptot=ROOT.TMath.Sqrt(pt2+par.pz()**2)
-         l10ptot=min(max(ROOT.TMath.log10(ptot),-0.3),1.69999)
-         l10pt=min(max(ROOT.TMath.log10(ROOT.TMath.Sqrt(pt2)),-2.),0.4999)
+         l10ptot=min(max(ROOT.TMath.Log10(ptot),-0.3),1.69999)
+         l10pt=min(max(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2)),-2.),0.4999)
          h[str(idhnu)].Fill(ptot,wspill)                     
          h[str(idhnu+100)].Fill(l10ptot,l10pt,wspill)
          h[str(idhnu+200)].Fill(l10ptot,l10pt,wspill)
