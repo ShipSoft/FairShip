@@ -21,19 +21,19 @@ class ShipMuonShield : public FairModule
    ShipMuonShield();
    virtual ~ShipMuonShield();
    void ConstructGeometry();
-   ClassDef(ShipMuonShield,2)
+   ClassDef(ShipMuonShield,3)
     
  protected:
   
   Int_t  fDesign;       // design of muon shield, 1=passive, active = ...
   Double_t  fMuonShieldLength,fY,fField ;
-  Double_t  dZ0,dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,dZ7,dZ8,dXgap,zEndOfAbsorb;
+  Double_t  dZ0,dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,dZ7,dZ8,dXgap,zEndOfAbsorb,mag4Gap,midGapOut7,midGapOut8;
   Int_t InitMedium(const char* name);
   
-  void CreateBox(const char* boxName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,
+ /* void CreateBox(const char* boxName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,
 					Int_t color,TGeoUniformMagField *magField,TGeoVolume *top,Int_t numberOfItems, Double_t x_translation,Double_t y_translation,
 					Double_t z_translation);
-  
+  */
   void CreateArb8(const char* arbName, TGeoMedium* medium,Double_t dZ,Double_t corners[16],Int_t color,
 				     TGeoUniformMagField *magField,TGeoVolume *top,Int_t numberOfItems,Double_t x_translation,Double_t y_translation,
 					Double_t z_translation);
@@ -45,8 +45,17 @@ class ShipMuonShield : public FairModule
  
   void CreateTube(const char* tubeName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,Int_t color,TGeoVolume *top,Int_t numberOfItems, Double_t x_translation,Double_t y_translation,
 					Double_t z_translation);
-  void Initialize(Double_t& dX1,std::vector<std::vector<Double_t> >& corners,Double_t& Z1, Double_t& X2,Double_t& dXH1,Double_t& Z2,
-		 Double_t& Z3,Double_t& Z4,Double_t& Z6,Double_t& Z7,Double_t& Z8,Double_t& ZGmid,Double_t& dY);
+  void Initialize(const char* (&magnetName)[8],const char* (&fieldDirection)[8],
+				    Double_t (&dXIn)[8], Double_t (&dYIn)[8], Double_t (&dXOut)[8], Double_t (&dYOut)[8], Double_t (&dZ)[8],
+				  Double_t (&midGapIn)[8],Double_t (&midGapOut)[8],
+				  Double_t (&HmainSideMagIn)[8], Double_t (&HmainSideMagOut)[8],
+				  Double_t (&gapIn)[8],Double_t (&gapOut)[8], Double_t (&Z)[8]);
+
+  void CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],const char* fieldDirection,
+				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t dZ,
+				  Double_t middleGap,Double_t middleGap2,
+				  Double_t HmainSideMag, Double_t HmainSideMag2,
+				  Double_t gap,Double_t gap2, Double_t Z,Bool_t NotMagnet);
 };
 
 #endif //MuonSield_H
