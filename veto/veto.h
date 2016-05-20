@@ -4,6 +4,7 @@
 #include "FairDetector.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
+#include "TGeoVolume.h"
 
 class vetoPoint;
 class FairVolume;
@@ -52,15 +53,7 @@ class veto: public FairDetector
     void SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Float_t z5, Float_t z6);
     void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l4, Float_t l5, Float_t l6);
     void SetB(Float_t b) {fBtube=b;}
-    void SetRminRmax(Float_t rmin,Float_t rmax){
-     fRmin = rmin;                                                //!  minimum diameter of vacuum chamber
-     fRmax = rmax;                                                //!  maximum diameter of vacuum chamber
-     }
-    void SetVminVmax(Float_t rmin,Float_t rmax)
-    {
-     fVRmin = rmin;                                                //!  minimum diameter liquid scintillator layer
-     fVRmax = rmax;                                                //!  maximum diameter liquid scintillator layer
-    }
+    void SetXstart(Float_t b, Float_t f) {fXstart=b; zFocus=f;}
     /**      This method is an example of how to add your own point
      *       of type vetoPoint to the clones array
     */
@@ -105,6 +98,8 @@ class veto: public FairDetector
     Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers, 
                                        //   2: conical with basic tracking chambers, but no trscking chamber at entrance 
                                        //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
+                                       //   4: design used for TP, smaller upstream part in x
+                                       //   5: optimized design, changed to trapezoidal shape
     Bool_t     fFastMuon;
     Float_t fTub1z;
     Float_t fTub2z;
@@ -118,11 +113,17 @@ class veto: public FairDetector
     Float_t fTub4length;
     Float_t fTub5length;
     Float_t fTub6length;
-    Float_t fRmin;
-    Float_t fRmax;
-    Float_t fVRmin;
-    Float_t fVRmax;
+    Float_t f_InnerSupportThickness;
+    Float_t f_OuterSupportThickness;
+    Float_t f_VetoThickness;
     Float_t fBtube;
+    Float_t zFocus;
+    Float_t ws;
+    TGeoMedium *decayVolumeMed; //! medium of decay volume, vacuum/air/helium
+    TGeoMedium *supportMedIn; //! medium of support structure, iron, balloon
+    TGeoMedium *supportMedOut; //! medium of support structure, aluminium, balloon
+    TGeoMedium *vetoMed; //! medium of veto counter, liquid or plastic scintillator
+    Float_t fXstart; // horizontal width at start of tank
     /** container for data points */
 
     TClonesArray*  fvetoPointCollection;
@@ -132,7 +133,10 @@ class veto: public FairDetector
     Int_t InitMedium(const char* name);
     TGeoVolume* GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sense);
     void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
-    ClassDef(veto,2)
+    TGeoVolume* GeoTrapezoid(const char* name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slope,Int_t colour,TGeoMedium *material,Bool_t sens);
+
+    TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slope);
+    ClassDef(veto,3)
 };
 
 #endif //VETO_H

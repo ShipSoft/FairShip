@@ -88,20 +88,24 @@ def configure(run,ship_geo):
   ship_geo.target.L15,ship_geo.target.M15,ship_geo.target.L16,ship_geo.target.M16,ship_geo.target.L17,ship_geo.target.M17)
  run.AddModule(TargetStation)
 
- 
- if ship_geo.strawDesign > 1 : magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, 2, ship_geo.Bfield.y)
+ magnet_design = 2
+ if ship_geo.tankDesign == 5: magnet_design = 3
+ if ship_geo.strawDesign > 1 : magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.y)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  run.AddModule(magnet)
   
  Veto = ROOT.veto("Veto", ROOT.kTRUE)   # vacuum tank, liquid scintillator, simplistic tracking stations
  Veto.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, \
-                    ship_geo.TrackStation3.z, ship_geo.TrackStation4.z,ship_geo.strawDesign)
+                    ship_geo.TrackStation3.z, ship_geo.TrackStation4.z,ship_geo.tankDesign)
  Veto.SetTubZpositions(ship_geo.Chamber1.z,ship_geo.Chamber2.z,ship_geo.Chamber3.z,ship_geo.Chamber4.z,ship_geo.Chamber5.z,ship_geo.Chamber6.z);
  Veto.SetTublengths(ship_geo.chambers.Tub1length,ship_geo.chambers.Tub2length,ship_geo.chambers.Tub3length, \
                     ship_geo.chambers.Tub4length,ship_geo.chambers.Tub5length,ship_geo.chambers.Tub6length);
- Veto.SetRminRmax(ship_geo.chambers.Rmin,ship_geo.chambers.Rmax);
- Veto.SetVminVmax(ship_geo.scintillator.Rmin,ship_geo.scintillator.Rmax);
  Veto.SetB(ship_geo.Yheight/2.)
+ if ship_geo.tankDesign == 5: 
+    dz =  ship_geo.zFocus+ship_geo.target.z0    
+    x1 = ship_geo.xMax/(ship_geo.Chamber1.z -ship_geo.chambers.Tub1length-dz)*(ship_geo.TrackStation4.z-dz)
+    Veto.SetXstart(x1,dz)
+
  run.AddModule(Veto)
 
  if ship_geo.muShieldDesign not in [2,3,4]:

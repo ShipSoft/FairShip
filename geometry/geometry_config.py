@@ -6,6 +6,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
 # preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
+# tankDesign = 5 #  4=TP, elliptical shape, 5=rectangular, conical
 if "muShieldDesign" not in globals():
     muShieldDesign = 5
 if "nuTargetDesign" not in globals():
@@ -14,6 +15,8 @@ if "targetOpt" not in globals():
     targetOpt = 17
 if "strawDesign" not in globals():
     strawDesign = 4
+if "tankDesign" not in globals():
+    tankDesign = 4
 if "HcalOption" not in globals():
     HcalOption = 1
 if "Yheight" not in globals():
@@ -31,6 +34,7 @@ with ConfigRegistry.register_config("basic") as c:
     extraVesselLength = totalLength - 50*u.m
     windowBulge = 1*u.m
     c.strawDesign = strawDesign
+    c.tankDesign = tankDesign
     c.chambers = AttrDict(z=0*u.cm)
     if strawDesign != 4:
      print "this design is not supported, use strawDesign = 4"
@@ -53,6 +57,11 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber4 = AttrDict(z=20.18*u.m+magnetIncrease/2.+extraVesselLength)
      c.Chamber5 = AttrDict(z=23.38*u.m+magnetIncrease+extraVesselLength)
      c.Chamber6 = AttrDict(z=24.68*u.m+magnetIncrease+extraVesselLength+windowBulge/2.)
+     # horizontal width at start and focus point, for conical/rectangular size
+     # Hans proposal: envelope (46,1.2), end at T4: (100.,2.7)  
+     # 
+     c.zFocus = +2.8*u.m # downstream from target, will have neutrinos going from outside to inside, not so good for vacuum option.
+     c.xMax = +2.7*u.m # max horizontal width at T4
      # 
      c.vetoStation = AttrDict(z=-1968.*u.cm)
      c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)

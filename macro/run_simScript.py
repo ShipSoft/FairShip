@@ -22,8 +22,9 @@ defaultInputFile = True
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
+dv           = 4 # TP elliptical tank design, 5 = optimized conical rectangular design
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-checking4overlaps = False
+checking4overlaps = True
 if debug>1 : checking4overlaps = True
 phiRandom   = False  # only relevant for muon background generator
 followMuon  = False   # only transport muons for a fast muon only background estimate
@@ -33,7 +34,7 @@ try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
-                                   "output=","NuRadio"])
+                                   "output=","tankDesign=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
@@ -90,6 +91,8 @@ for o, a in opts:
             outputDir = a
         if o in ("-Y"): 
             dy = float(a)
+        if o in ("--tankDesign"): 
+            dv = int(a)
         if o in ("-F"):
             deepCopy = True
         if o in ("-m", "--mass"):
@@ -119,7 +122,7 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
 # - preshowerOption = 0 # no preshower, default. 1= simple preshower 
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'

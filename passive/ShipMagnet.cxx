@@ -109,7 +109,7 @@ void ShipMagnet::ConstructGeometry()
      TGeoHMatrix *m6 = new TGeoHMatrix(m5);
      top->AddNode(magnet1, 2, m6);
     }
-   else {  // fDesign==2 
+   else if(fDesign==2 || fDesign==3) {  // fDesign==2 TP version, fDesign==3, rectangular version 
     Double_t cm  = 1;       
     Double_t m   = 100*cm;  
     Double_t Yokel = 1.25*m; 
@@ -117,7 +117,7 @@ void ShipMagnet::ConstructGeometry()
     // magnet yoke
     Double_t bradius = fDy/2.;
     TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", 3.7*m, bradius+1.2*m, Yokel);
-    TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 2.70*m,bradius+0.2*m, Yokel+0.1*cm);
+    TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 2.70*m,bradius+0.2*m, Yokel+0.01*cm);
     
     TGeoCompositeShape *magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
     TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
@@ -125,14 +125,21 @@ void ShipMagnet::ConstructGeometry()
     top->AddNode(magyoke, 1, new TGeoTranslation(0, 0, fSpecMagz));
 
     //Attempt to make Al coils...
-    TGeoEltu *C2  = new TGeoEltu("C2",3.*m,bradius+0.5*m,Yokel+0.6*m+magnetIncrease/2.);
-    TGeoEltu *C1  = new TGeoEltu("C1",2.7*m,bradius+0.2*m,Yokel+0.601*m+magnetIncrease/2.);
-    TGeoBBox *Box1 = new TGeoBBox("Box1", 1.*m, bradius+0.51*m, Yokel+0.61*m+magnetIncrease/2.);
-    TGeoBBox *Box2 = new TGeoBBox("Box2", 3.01*m, bradius-0.5*m, Yokel+0.01*m+magnetIncrease/2.);
-    TGeoCompositeShape *MCoilc = new TGeoCompositeShape("MCoilc", "C2-C1-magyokec-Box1-Box2");
+    TGeoCompositeShape *MCoilc;
+    if(fDesign==2){
+     TGeoEltu *C2  = new TGeoEltu("C2",3.*m,bradius+0.5*m,Yokel+0.6*m+magnetIncrease/2.);
+     TGeoEltu *C1  = new TGeoEltu("C1",2.7*m,bradius+0.2*m,Yokel+0.601*m+magnetIncrease/2.);
+     TGeoBBox *Box1 = new TGeoBBox("Box1", 1.*m, bradius+0.51*m, Yokel+0.61*m+magnetIncrease/2.);
+     TGeoBBox *Box2 = new TGeoBBox("Box2", 3.01*m, bradius-0.5*m, Yokel+0.01*m+magnetIncrease/2.);
+     MCoilc = new TGeoCompositeShape("MCoilc", "C2-C1-magyokec-Box1-Box2");
+    }else{
+     TGeoBBox *C2   = new TGeoBBox("C2",   3.*m,   bradius+0.5*m,  Yokel+0.6*m+magnetIncrease/2.);
+     TGeoBBox *C1   = new TGeoBBox("C1",   2.7*m,  bradius+0.2*m,  Yokel+0.601*m+magnetIncrease/2.);
+     MCoilc = new TGeoCompositeShape("MCoilc", "C2-C1-magyokec");
+    }
     TGeoVolume *MCoil = new TGeoVolume("MCoil", MCoilc, Al);
     MCoil->SetLineColor(kYellow);
-
+   
     top->AddNode(MCoil, 1, new TGeoTranslation(0, 0, fSpecMagz));
     }
 }
