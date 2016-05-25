@@ -13,8 +13,8 @@ Fntuple='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-ntuple.root'
 print "usage: python $FAIRSHIP/macro/makeCascade.py -n (20000) -msel (4) -E (400)"
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "t:H:n:E:m:",[\
-                                   "msel=","beam="])
+        opts, args = getopt.getopt(sys.argv[1:], "s:t:H:n:E:m:",[\
+                                   "msel=","seed=","beam="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter -n: number of events to produce, default 20000'
