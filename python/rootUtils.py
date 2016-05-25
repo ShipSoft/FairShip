@@ -97,12 +97,11 @@ def setAttributes(pyl,leaves,printout=False):
 class PyListOfLeaves(dict) : 
     pass  
 
-def container_sizes(sTree):
- if type(sTree) == type('s'):
-   f=TFile(sTree)
-   sTree = f.cbmsim 
+import operator
+def container_sizes(sTree,perEvent=False):
  counter = {}
  print "name      ZipBytes[MB]    TotBytes[MB]    TotalSize[MB]"
+ counter['total']=[0,0,0]
  for l in sTree.GetListOfLeaves():
   b = l.GetBranch()
   nm = b.GetName()
@@ -112,10 +111,23 @@ def container_sizes(sTree):
   counter[bnm][0]+=b.GetZipBytes()/1.E6
   counter[bnm][1]+=b.GetTotBytes()/1.E6
   counter[bnm][2]+=b.GetTotalSize()/1.E6
+  counter['total'][0]+=b.GetZipBytes()/1.E6
+  counter['total'][1]+=b.GetTotBytes()/1.E6
+  counter['total'][2]+=b.GetTotalSize()/1.E6
  print "---> SUMMARY <---------------"
- print "                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]"
- for x in counter:
-  print "%30s :%8.3F   %8.3F    %8.3F  MB"%(x,counter[x][0],counter[x][1],counter[x][2])
+ N = sTree.GetEntries()/1000.
+ if perEvent:
+  print "                     name     ZipBytes[kB]/ev  TotBytes[kB]/ev  TotalSize[kB]/ev" 
+ else:
+  print "                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]" 
+ sorted_c = sorted(counter.items(), key=operator.itemgetter(1))
+ sorted_c.reverse()
+ for i in range(len(sorted_c)):
+  x = sorted_c[i][0]
+  if perEvent:
+   print "%30s :%8.3F      %8.3F       %8.3F"%(x,counter[x][0]/N,counter[x][1]/N,counter[x][2]/N)
+  else:
+   print "%30s :%8.3F   %8.3F    %8.3F"%(x,counter[x][0],counter[x][1],counter[x][2])
 
 def stripOffBranches(fout):
     f = TFile(fout)
