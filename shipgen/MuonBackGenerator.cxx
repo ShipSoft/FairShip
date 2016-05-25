@@ -43,12 +43,22 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fTree->SetBranchAddress("pythiaid",&pythiaid);    // pythiaid original particle
   fTree->SetBranchAddress("ecut",&ecut);    // energy cut used in simulation
   fTree->SetBranchAddress("w",&w);                  // weight of event
-  fTree->SetBranchAddress("x",&vx);   // position
-  fTree->SetBranchAddress("y",&vy);
-  fTree->SetBranchAddress("z",&vz);
-  fTree->SetBranchAddress("px",&px);   // momentum
-  fTree->SetBranchAddress("py",&py);
-  fTree->SetBranchAddress("pz",&pz);
+//  check if ntuple has information of momentum at origin
+  if (fTree->GetListOfLeaves()->GetSize() < 17){  
+   fTree->SetBranchAddress("x",&vx);   // position
+   fTree->SetBranchAddress("y",&vy);
+   fTree->SetBranchAddress("z",&vz);
+   fTree->SetBranchAddress("px",&px);   // momentum
+   fTree->SetBranchAddress("py",&py);
+   fTree->SetBranchAddress("pz",&pz);
+  }else{
+   fTree->SetBranchAddress("ox",&vx);   // position
+   fTree->SetBranchAddress("oy",&vy);
+   fTree->SetBranchAddress("oz",&vz);
+   fTree->SetBranchAddress("opx",&px);   // momentum
+   fTree->SetBranchAddress("opy",&py);
+   fTree->SetBranchAddress("opz",&pz);
+  } 
   return kTRUE;
 }
 // -----   Destructor   ----------------------------------------------------
