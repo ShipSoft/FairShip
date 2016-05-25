@@ -10,8 +10,7 @@ Mmu  = mu.Mass()
 Mmu2 = Mmu * Mmu 
 rnr  = ROOT.TRandom()
 
-#eospath = "root://eoslhcb.cern.ch//eos/ship/data/"
-eospath = "/media/Data/HNL/ShipSoft/data/"
+eospath = "root://eoslhcb.cern.ch//eos/ship/data/"
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = 10.)
 endOfHadronAbsorber = (ship_geo['hadronAbsorber'].z + ship_geo['hadronAbsorber'].length/2.) /100.
 startOfTarget       = ship_geo['target'].z0 /100.
@@ -117,26 +116,32 @@ def TplotP(sTree):
 #
 
 productions = {}
-productions["CERN-Cracow"] = {"stats":{1.:[1.1E8],10.:[1.22E9],100:[1.27E10]},
+allProds = False
+if allProds:
+ productions["CERN-Cracow"] = {"stats":{1.:[1.1E8],10.:[1.22E9],100:[1.27E10]},
                                "file":"pythia8_Geant4_total.root" }
 # checked, 10 variables, parentid = 8
-productions["Yandex"]      = {"stats":{5.:[2.1E9,1E9],0.5:[1E8]},
+ productions["Yandex"]      = {"stats":{5.:[2.1E9,1E9],0.5:[1E8]},
                                "file":"pythia8_Geant4_total_Yandex.root" }
 # checked, 13 variables, parentid = 11
-productions["Yandex2"]     = {"stats":{10.:[1E10]},
+ productions["Yandex2"]     = {"stats":{10.:[1E10]},
                                "file":"pythia8_Geant4_total_Yandex2.root" }
+# now with mu momentum at prodcution, NOT after hadron absorber
+productions["Yandex3"]     = {"stats":{10.:[1E10]},
+                               "file":"pythia8_Geant4_total_Yandex3.root" }
 # checked, 13 variables, parentid = 11
+
 fnew = "pythia8_Geant4-noOpenCharm.root"
+noOpCharm = "!(pythiaid==id & (abs(parentid) == 15 ||  abs(parentid) == 4112 || abs(parentid) == 4122  || abs(parentid) == 4132  \
+                         ||  abs(parentid) == 431 || abs(parentid) == 421  || abs(parentid) == 411) )"
+OpCharm = "(pythiaid==id & (abs(parentid) == 15 ||  abs(parentid) == 4112 || abs(parentid) == 4122  || abs(parentid) == 4132  \
+                         ||  abs(parentid) == 431 || abs(parentid) == 421  || abs(parentid) == 411) )"
+cuts = {'':'abs(id)>0','_onlyMuons':'abs(id)==13','_onlyNeutrinos':'abs(id)==12||abs(id)==14||abs(id)==16'}
 
 h={}
 
 def mergeMinBias(pot,norm=5.E13,opt=''):
  storeCharm=False
- noOpCharm = "!(pythiaid==id & (abs(parentid) == 15 ||  abs(parentid) == 4112 || abs(parentid) == 4122  || abs(parentid) == 4132  \
-                         ||  abs(parentid) == 431 || abs(parentid) == 421  || abs(parentid) == 411) )"
- OpCharm = "(pythiaid==id & (abs(parentid) == 15 ||  abs(parentid) == 4112 || abs(parentid) == 4122  || abs(parentid) == 4132  \
-                         ||  abs(parentid) == 431 || abs(parentid) == 421  || abs(parentid) == 411) )"
- cuts = {'':'abs(id)>0','_onlyMuons':'abs(id)==13','_onlyNeutrinos':'abs(id)==12||abs(id)==14||abs(id)==16'}
  if opt != '': 
     storeCharm=True
     opt=''
@@ -207,7 +212,7 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
        print "this should not happen, except some rounding errors",p,Ekin,vlist[9]
 # scoring plane, g4Ex_gap:   afterHadronZ = z0Pos+targetL+absorberL+5.1*cm  
 #                                    z0Pos   = -50.*m    absorberL = 2*150.*cm
-# target length increased for Yandex2 production, ignore this, but all muons at current end of hadronabsorber
+# target length increased for Yandex2 production, ignore this, put all muons at current end of hadronabsorber
      vlist[6] = endOfHadronAbsorber
      h['ntuple'].Fill(vlist[0],vlist[1],vlist[2],vlist[3],vlist[4],vlist[5],vlist[6],
                      vlist[7],vlist[8],vlist[9],vlist[10])
@@ -227,19 +232,53 @@ def runProduction(opts=''):
  #
  mergeMinBias(pot,norm=5.E13,opt=opts)
 
+def removeCharm(p):
+  f = ROOT.TFile.Open(productions[p]["file"])
+  t = f.FindObjectAny("pythia8-Geant4")
+  first = True
+  if first:
+    first = False
+    tuples = ''
+    for l in t.GetListOfLeaves(): 
+      if tuples == '': tuples += l.GetName()
+      else:            tuples += ":"+l.GetName()
+    h['N']      = ROOT.TFile(fnew, 'RECREATE')
+    print 'new file created',fnew
+    h['ntuple'] = ROOT.TNtuple("pythia8-Geant4",t.GetTitle()+" no charm",tuples)
+  ROOT.gROOT.cd()
+  t.SetEventList(0) 
+  t.Draw(">>temp",noOpCharm)
+  temp = ROOT.gROOT.FindObjectAny('temp')
+  t.SetEventList(temp) 
+  nev = temp.GetN()
+  leaves = t.GetListOfLeaves()
+  nL = leaves.GetEntries()
+  for iev in range(nev):
+     rc = t.GetEntry(temp.GetEntry(iev))
+     vlist = array('f')
+     for x in range(leaves.GetEntries()):
+      vlist.append( leaves.At(x).GetValue() )
+     h['ntuple'].Fill(vlist)
+  h['N'].cd()
+  h['ntuple'].Write()
+  h['N'].Close()
+
 def mergeWithCharm(splitOnly=False,ramOnly=False):
   # Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M)
   # i.e. the par. is for the neutrino, and the sTree. is for its mother.
   # wspill is the weight for this file normalised/5e13.
  if not splitOnly:
-  fcascade = ROOT.TFile.Open(eospath+"/Charm/Decay-Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root")
+  fcascade = ROOT.TFile.Open(eospath+"/Charm/Decay-Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root")
   t = fcascade.Decay
   newFile = ROOT.TFile("pythia8_Charm.root", 'RECREATE')
-  nt = ROOT.TNtuple("pythia8-Geant4","mu/nu flux from charm","id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut")
+  nt = ROOT.TNtuple("pythia8-Geant4","mu/nu flux from charm","id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid:w:ecut")
   for n in range(t.GetEntries()):
       rc = t.GetEntry(n)
       ztarget = rnr.Exp(0.16) + startOfTarget
-      rc = nt.Fill(t.id,t.px,t.py,t.pz,0.,0.,ztarget,t.id,t.mid,t.weight,0.)
+      vlist = array('f')
+      x = t.id,t.px,t.py,t.pz,0.,0.,ztarget,t.px,t.py,t.pz,0.,0.,ztarget,t.id,t.mid,t.weight,0.
+      for ax in x:      vlist.append(ax)
+      rc = nt.Fill(vlist)
   newFile.cd()
   nt.Write()
   newFile.Close()
@@ -279,7 +318,9 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
    a = allEvents[n]
    if m%1000000==0 : print 'status write',m
    m+=1
-   randomTuple.Fill(a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8],a[9],a[10])
+   vlist = array('f')
+   for x in a: vlist.append(x)
+   randomTuple.Fill(vlist)
   newFile.cd()
   randomTuple.Write()
   newFile.Close()
@@ -313,12 +354,13 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
     t.SetEventList(0) 
     t.Draw(">>temp",cuts[opt])
     temp = ROOT.gROOT.FindObjectAny('temp')
-    t.SetEventList(temp) 
+    t.SetEventList(temp)
     for iev in range(temp.GetN()) :
      rc = t.GetEntry(temp.GetEntry(iev))
-     ntuple.Fill(leaves.At(0).GetValue(),leaves.At(1).GetValue(),leaves.At(2).GetValue(),leaves.At(3).GetValue(),\
-                     leaves.At(4).GetValue(),leaves.At(5).GetValue(),leaves.At(6).GetValue(),leaves.At(7).GetValue(),\
-                     leaves.At(8).GetValue(),leaves.At(9).GetValue(),leaves.At(10).GetValue())
+     vlist = array('f')
+     for n in range(leaves.GetSize()):
+      vlist.append(leaves.At(n).GetValue())
+     ntuple.Fill(vlist)
      if "Neutrinos" in opt: 
         pt2=t.px**2+t.py**2
         ptot=ROOT.TMath.Sqrt(pt2+t.pz**2)
@@ -503,7 +545,8 @@ def compare():
  h['ratios'].Print('comparisonRatios.png')
  h['ratios'].Print('comparisonRatios.pdf')
 
-print "+ to start the full production: runProduction()"
-print "+ merging with charm events:   mergeWithCharm()"
+print "+ merging with charm events using existing charmless Mbias file:   mergeWithCharm()"
+print "+ removeCharm(p) from mbias file made with g4Ex_gap_mergeFiles.py"
 print "+ testing output: test('pythia8_Geant4-noOpenCharm.root')"
+print "+ not used anymore: to start the full production, including merging of Mbias files: runProduction()"
 
