@@ -22,9 +22,10 @@ defaultInputFile = True
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
-dv           = 4 # TP elliptical tank design, 5 = optimized conical rectangular design
+dv           = 4 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
+ds           = 5 # 5=TP muon shield, 6=magnetized hadron 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-checking4overlaps = True
+checking4overlaps = False
 if debug>1 : checking4overlaps = True
 phiRandom   = False  # only relevant for muon background generator
 followMuon  = False   # only transport muons for a fast muon only background estimate
@@ -34,7 +35,7 @@ try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
-                                   "output=","tankDesign=","NuRadio"])
+                                   "output=","tankDesign=","muShieldDesign=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
@@ -93,6 +94,8 @@ for o, a in opts:
             dy = float(a)
         if o in ("--tankDesign"): 
             dv = int(a)
+        if o in ("--muShieldDesign"): 
+            ds = int(a)
         if o in ("-F"):
             deepCopy = True
         if o in ("-m", "--mass"):
@@ -117,12 +120,12 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-# - muShieldDesign = 2  # 1=passive 2=active (default)
+# - muShieldDesign = 2  # 1=passive 5=active (default) 6=magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
 # - preshowerOption = 0 # no preshower, default. 1= simple preshower 
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if eventDisplay: tag = tag+'_D'
@@ -361,11 +364,12 @@ print "Parameter file is ",parFile
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
 # ------------------------------------------------------------------------
-
+import checkMagFields
+def visualizeMagFields():
+ checkMagFields.run()
 def checkOverlapsWithGeant4():
  # after /run/initialize, but prints warning messages, problems with TGeo volume
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
-

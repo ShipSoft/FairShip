@@ -123,7 +123,7 @@ void ShipTargetStation::ConstructGeometry()
     target->SetLineColor(38);  // silver/blue
     tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, fTargetZ));
     }
-    if (fAbsorberLength>0){
+    if (fAbsorberLength>0){  // otherwise, magnetized hadron absorber defined in ShipMuonShield.cxx
      zPos =  fTargetZ - fTargetLength/2.;
     // Absorber made of iron
      TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
