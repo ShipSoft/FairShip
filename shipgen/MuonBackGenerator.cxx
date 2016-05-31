@@ -45,19 +45,21 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fTree->SetBranchAddress("w",&w);                  // weight of event
 //  check if ntuple has information of momentum at origin
   if (fTree->GetListOfLeaves()->GetSize() < 17){  
-   fTree->SetBranchAddress("x",&vx);   // position
+   fTree->SetBranchAddress("x",&vx);   // position with respect to startOfTarget at -89.27m
    fTree->SetBranchAddress("y",&vy);
    fTree->SetBranchAddress("z",&vz);
    fTree->SetBranchAddress("px",&px);   // momentum
    fTree->SetBranchAddress("py",&py);
    fTree->SetBranchAddress("pz",&pz);
+   f_zOffset = -50. + 89.27  // make it compatible with new files
   }else{
-   fTree->SetBranchAddress("ox",&vx);   // position
+   fTree->SetBranchAddress("ox",&vx);   // position with respect to startOfTarget at -50m
    fTree->SetBranchAddress("oy",&vy);
    fTree->SetBranchAddress("oz",&vz);
    fTree->SetBranchAddress("opx",&px);   // momentum
    fTree->SetBranchAddress("opy",&py);
    fTree->SetBranchAddress("opz",&pz);
+   f_zOffset = 0;
   } 
   return kTRUE;
 }
@@ -99,8 +101,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     vx = vx + dx/100.; 
     vy = vy + dy/100.; 
   }
-  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
-  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
+  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,(vz+f_zOffset)*100.,-1.,false,e,pythiaid,parentid);
+  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,(vz*100.+f_zOffset)*100.,-1.,true,e,tof,w);
   return kTRUE;
 }
 

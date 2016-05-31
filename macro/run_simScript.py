@@ -116,7 +116,7 @@ if simEngine == "Nuage" and not inputFile:
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
-  print " for example -f /eos/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons.root"
+  print " for example -f /eos/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root"
   sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
@@ -263,7 +263,7 @@ if simEngine == "nuRadiography":
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
 # reading previously processed muon events, [-50m - 50m]
- primGen.SetTarget(50*u.m+ship_geo.target.z0, 0.)
+ primGen.SetTarget(ship_geo.target.z0-50*u.m,0.)
  Ntuplegen = ROOT.NtupleGenerator()
  Ntuplegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Ntuplegen)
@@ -272,7 +272,7 @@ if simEngine == "Ntuple":
 #
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
- primGen.SetTarget(0.,0.)
+ primGen.SetTarget(ship_geo.target.z0-50*u.m,0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  MuonBackgen.SetSmearBeam(3*u.cm)

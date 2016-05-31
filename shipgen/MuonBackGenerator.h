@@ -34,10 +34,11 @@ class MuonBackGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TTree* fTree;         //! 
   int fNevents;
+  float f_zOffset;      //!
   int fn;
   Bool_t fPhiRandomize;
   Double_t fsmearBeam ;
-  ClassDef(MuonBackGenerator,1);
+  ClassDef(MuonBackGenerator,2);
 };
 
 #endif /* !PNDmuGENERATOR_H */

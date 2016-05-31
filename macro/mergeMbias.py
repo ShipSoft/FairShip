@@ -13,11 +13,7 @@ rnr  = ROOT.TRandom()
 eospath = "root://eoslhcb.cern.ch//eos/ship/data/"
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = 10.)
 endOfHadronAbsorber = (ship_geo['hadronAbsorber'].z + ship_geo['hadronAbsorber'].length/2.) /100.
-startOfTarget       = ship_geo['target'].z0 /100.
-## this is in ROOT units, cm == 1
-## need to divide by 100 to make MuonBackGenerator happy, expects m to convert to cm: vx*100.,vy*100.,vz*100.
-## checking: pythia8_Geant4_total.root, z position, -46.49800109863
-##           Decay-Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root has no positions
+startOfTarget       = -50. # value used for Geant4 production
 
 def fillPart(t):
  particles = {}
@@ -119,16 +115,16 @@ productions = {}
 allProds = False
 if allProds:
  productions["CERN-Cracow"] = {"stats":{1.:[1.1E8],10.:[1.22E9],100:[1.27E10]},
-                               "file":"pythia8_Geant4_total.root" }
+                               "file":"Mbias/pythia8_Geant4_total.root" }
 # checked, 10 variables, parentid = 8
  productions["Yandex"]      = {"stats":{5.:[2.1E9,1E9],0.5:[1E8]},
-                               "file":"pythia8_Geant4_total_Yandex.root" }
+                               "file":"Mbias/pythia8_Geant4_total_Yandex.root" }
 # checked, 13 variables, parentid = 11
  productions["Yandex2"]     = {"stats":{10.:[1E10]},
-                               "file":"pythia8_Geant4_total_Yandex2.root" }
+                               "file":"Mbias/pythia8_Geant4_total_Yandex2.root" }
 # now with mu momentum at prodcution, NOT after hadron absorber
 productions["Yandex3"]     = {"stats":{10.:[1E10]},
-                               "file":"pythia8_Geant4_total_Yandex3.root" }
+                               "file":"Mbias/pythia8_Geant4_total_Yandex3.root" }
 # checked, 13 variables, parentid = 11
 
 fnew = "pythia8_Geant4-noOpenCharm.root"
@@ -233,7 +229,7 @@ def runProduction(opts=''):
  mergeMinBias(pot,norm=5.E13,opt=opts)
 
 def removeCharm(p):
-  f = ROOT.TFile.Open(productions[p]["file"])
+  f = ROOT.TFile.Open(eospath+productions[p]["file"])
   t = f.FindObjectAny("pythia8-Geant4")
   first = True
   if first:
