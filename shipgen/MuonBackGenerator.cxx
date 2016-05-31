@@ -51,7 +51,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
    fTree->SetBranchAddress("px",&px);   // momentum
    fTree->SetBranchAddress("py",&py);
    fTree->SetBranchAddress("pz",&pz);
-   f_zOffset = -50. + 89.27  // make it compatible with new files
+   f_zOffset = -50. + 89.27;  // make it compatible with new files
   }else{
    fTree->SetBranchAddress("ox",&vx);   // position with respect to startOfTarget at -50m
    fTree->SetBranchAddress("oy",&vy);
