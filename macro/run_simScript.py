@@ -167,6 +167,7 @@ if simEngine == "Pythia8":
  P8gen = ROOT.HNLPythia8Generator()
  import pythia8_conf
  pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
+ P8gen.SetSmearBeam(1*u.cm) # finite beam size
  if inputFile: 
 # read from external file
   P8gen.SetParameters("ProcessLevel:all = off")
@@ -275,7 +276,7 @@ if simEngine == "MuonBack":
  primGen.SetTarget(ship_geo.target.z0-50*u.m,0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
- MuonBackgen.SetSmearBeam(3*u.cm)
+ MuonBackgen.SetSmearBeam(3*u.cm) # beam size mimicking spiral
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file, with Phi random=',phiRandom
