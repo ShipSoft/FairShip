@@ -537,8 +537,8 @@ def myEventLoop(n):
     else : x.Exec('start')
    for aClus in ecalReconstructed:
     mMax = aClus.MCTrack()
-    if mMax>0:    
-      aP = sTree.MCTrack[mMax]   
+    aP = sTree.MCTrack[mMax]
+    if aP:    
       tmp = PDG.GetParticle(aP.GetPdgCode())
       if tmp: pName = 'ecalReconstructed_'+tmp.GetName()
       else: pName = 'ecalReconstructed_'+str(aP.GetPdgCode())
