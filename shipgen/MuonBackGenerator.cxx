@@ -51,7 +51,6 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
    fTree->SetBranchAddress("px",&px);   // momentum
    fTree->SetBranchAddress("py",&py);
    fTree->SetBranchAddress("pz",&pz);
-   f_zOffset = -50. + 89.27;  // make it compatible with new files
   }else{
    fTree->SetBranchAddress("ox",&vx);   // position with respect to startOfTarget at -50m
    fTree->SetBranchAddress("oy",&vy);
@@ -59,7 +58,6 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
    fTree->SetBranchAddress("opx",&px);   // momentum
    fTree->SetBranchAddress("opy",&py);
    fTree->SetBranchAddress("opz",&pz);
-   f_zOffset = 0;
   } 
   return kTRUE;
 }
@@ -91,7 +89,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t tof = 0;
   if (fsmearBeam>0){
     Double_t test = fsmearBeam*fsmearBeam;
-    Double_t Rsq  = test + 1.;
+    Double_t Rsq  = test;
     Double_t dx,dy;
     while(Rsq>test){
      dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
@@ -101,8 +99,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     vx = vx + dx/100.; 
     vy = vy + dy/100.; 
   }
-  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,(vz+f_zOffset)*100.,-1.,false,e,pythiaid,parentid);
-  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,(vz*100.+f_zOffset)*100.,-1.,true,e,tof,w);
+  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
+  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   return kTRUE;
 }
 

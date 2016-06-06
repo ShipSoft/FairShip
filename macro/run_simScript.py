@@ -264,7 +264,7 @@ if simEngine == "nuRadiography":
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
 # reading previously processed muon events, [-50m - 50m]
- primGen.SetTarget(ship_geo.target.z0-50*u.m,0.)
+ primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
  Ntuplegen = ROOT.NtupleGenerator()
  Ntuplegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Ntuplegen)
@@ -273,7 +273,7 @@ if simEngine == "Ntuple":
 #
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
- primGen.SetTarget(ship_geo.target.z0-50*u.m,0.)
+ primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  MuonBackgen.SetSmearBeam(3*u.cm) # beam size mimicking spiral
