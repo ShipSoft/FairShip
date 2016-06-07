@@ -187,7 +187,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          Double_t dy=0;
          if (fsmearBeam>0){
             Double_t test = fsmearBeam*fsmearBeam;
-            Double_t Rsq  = test;
+            Double_t Rsq  = test+1.;
             while(Rsq>test){
                dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
                dy = gRandom->Uniform(-1.,1.) * fsmearBeam;
