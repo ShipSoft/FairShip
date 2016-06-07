@@ -62,6 +62,7 @@ with ConfigRegistry.register_config("basic") as c:
      # 
      c.zFocus = +2.8*u.m # downstream from target, will have neutrinos going from outside to inside, not so good for vacuum option.
      c.xMax = +2.7*u.m # max horizontal width at T4
+     #   x = xMax/(zT4-zFocus) x (z-zFocus)
      # 
      c.vetoStation = AttrDict(z=-1968.*u.cm)
      c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)

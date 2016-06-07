@@ -17,7 +17,7 @@ firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 eventDisplay = False
-inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-ntuple_prod_18M.root"
+inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 defaultInputFile = True
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)

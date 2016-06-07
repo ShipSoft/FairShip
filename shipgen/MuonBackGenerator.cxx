@@ -89,7 +89,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t tof = 0;
   if (fsmearBeam>0){
     Double_t test = fsmearBeam*fsmearBeam;
-    Double_t Rsq  = test;
+    Double_t Rsq  = test + 1.;
     Double_t dx,dy;
     while(Rsq>test){
      dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
