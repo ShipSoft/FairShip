@@ -90,6 +90,7 @@ def configure(run,ship_geo):
 
 
  magnet_design = 2
+ if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 4
  if ship_geo.tankDesign == 5: magnet_design = 3
  if ship_geo.strawDesign > 1 : magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.y)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)

@@ -334,6 +334,7 @@ def  RedoVertexing(t1,t2):
       if pid == 2212: pid = 211
       mass = PDG.GetParticle(pid).Mass()
       E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
+      LV[tr] = ROOT.TLorentzVector()
       LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
      HNLMom = LV[t1]+LV[t2]
      return xv,yv,zv,doca,HNLMom
@@ -537,7 +538,9 @@ def myEventLoop(n):
     else : x.Exec('start')
    for aClus in ecalReconstructed:
     mMax = aClus.MCTrack()
-    aP = sTree.MCTrack[mMax]
+    if mMax <0 or mMax > sTree.MCTrack.GetEntries(): 
+     aP = None # this should never happen, otherwise the ECAL MC matching has a bug
+    else: aP = sTree.MCTrack[mMax]
     if aP:    
       tmp = PDG.GetParticle(aP.GetPdgCode())
       if tmp: pName = 'ecalReconstructed_'+tmp.GetName()
