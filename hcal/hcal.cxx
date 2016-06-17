@@ -686,7 +686,7 @@ void hcal::ConstructGeometry()
   par[0]=fSemiX;
   par[1]=fSemiY;
   par[2]=fHcalSize[2]/2.0;
-  volume=gGeoManager->Volume("Hcal", "ELTU",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
+  volume=gGeoManager->Volume("Hcal", "BOX",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
   volume->SetVisLeaves(kTRUE);
   volume->SetVisContainers(kFALSE);

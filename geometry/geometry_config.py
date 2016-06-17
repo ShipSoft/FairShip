@@ -22,7 +22,15 @@ if "HcalOption" not in globals():
 if "Yheight" not in globals():
     Yheight = 10.
 if "EcalGeoFile" not in globals():
-    EcalGeoFile = "ecal_ellipse5x10m2.geo" 
+    if tankDesign == 5:
+        EcalGeoFile = "ecal_rect5x10m2.geo"
+    else:
+        EcalGeoFile = "ecal_ellipse5x10m2.geo"
+if "HcalGeoFile" not in globals():
+    if tankDesign == 5:
+        HcalGeoFile = "hcal_rect.geo"
+    else:
+        HcalGeoFile = "hcal.geo"
 if "preshowerOption" not in globals():
     preshowerOption = 0
 
@@ -62,7 +70,6 @@ with ConfigRegistry.register_config("basic") as c:
      # 
      c.zFocus = +2.8*u.m # downstream from target, will have neutrinos going from outside to inside, not so good for vacuum option.
      c.xMax = +2.7*u.m # max horizontal width at T4
-     #   x = xMax/(zT4-zFocus) x (z-zFocus)
      # 
      c.vetoStation = AttrDict(z=-1968.*u.cm)
      c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)
@@ -129,6 +136,7 @@ with ConfigRegistry.register_config("basic") as c:
           c.hcal    =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm  )
           hcalSpace = hcalThickness + 5.5*u.cm 
           c.hcal.hcalSpace = hcalSpace
+     c.hcal.File  =  HcalGeoFile
     c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace+windowBulge+ presShowerDeltaZ)
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
@@ -192,7 +200,7 @@ with ConfigRegistry.register_config("basic") as c:
     if muShieldDesign == 1: 
         c.muShield.length =  70*u.m 
         c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2. - c.muShield.LE  # leave some space for nu-tau 
-    if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5 or muShieldDesign == 6 : 
+    if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5 : 
      c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                          +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
      c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.

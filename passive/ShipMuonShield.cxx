@@ -296,14 +296,14 @@ void ShipMuonShield::ConstructGeometry()
 	Double_t dA = 3*m;
 	CreateMagnet("AbsorberStop-1",iron,tShield,fields,"up",
 		  dA/6.,dA/6.,dA/6.,dA/6.,dZ0/3.,0,0,dA/12.,dA/12.,0,0,zEndOfAbsorb - 5.*dZ0/3.,0);
-        TGeoVolume* fullAbsorber = gGeoManager->MakeBox("fullAbsorber", iron, dA, dA, dZ0/3.);
-        TGeoVolume* cutOut = gGeoManager->MakeBox("cutout", iron, dA/3.+20*cm, dA/3.+20*cm, dZ0/3.+0.1*mm); //no idea why to add 20cm
+	CreateMagnet("AbsorberStop-2",iron,tShield,fields,"up",
+		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0);
+        TGeoBBox* fullAbsorber = new TGeoBBox("fullAbsorber", dA, dA, dZ0/3.);
+        TGeoBBox* cutOut = new TGeoBBox("cutout", dA/3.+20*cm, dA/3.+20*cm, dZ0/3.+0.1*mm); //no idea why to add 20cm
         TGeoSubtraction *subtraction = new TGeoSubtraction("fullAbsorber","cutout");
         TGeoCompositeShape *Tc = new TGeoCompositeShape("passiveAbsorberStopSubtr", subtraction);
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
-	CreateMagnet("AbsorberStop-2",iron,tShield,fields,"up",
-		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0);
       }else{
 	CreateTube("AbsorberAdd",     iron, 15, 400, dZ0,43,tShield,1,0, 0, zEndOfAbsorb - dZ0);
 	CreateTube("AbsorberAddCore", iron,  0,  15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);

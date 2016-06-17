@@ -2,11 +2,11 @@
 # -*- coding: latin-1 -*-
 import ROOT,os
 import shipunit as u
-def posHcal(z): 
+def posHcal(z,hfile): 
  HcalZSize = 0
- sz = "hcalz"+str(z)+".geo"
+ sz = hfile+"z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
- f_hcal  = floc+"/hcal.geo"
+ f_hcal  = floc+"/"+hfile
  f_hcalz = floc+"/"+sz
  f = open(f_hcal) 
  rewrite = True
@@ -50,6 +50,11 @@ def posEcal(z,efile):
  return ecal,EcalZSize
 
 def configure(run,ship_geo):
+# ---- for backward compatibility ----
+ if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 4
+ if not hasattr(ship_geo.hcal,"File"): ship_geo.hcal.File = "hcal.geo"
+
+
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -90,7 +95,6 @@ def configure(run,ship_geo):
 
 
  magnet_design = 2
- if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 4
  if ship_geo.tankDesign == 5: magnet_design = 3
  if ship_geo.strawDesign > 1 : magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.y)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
@@ -176,7 +180,7 @@ def configure(run,ship_geo):
  run.AddModule(ecal)
 
  if not ship_geo.HcalOption < 0:
-  hcal,HcalZSize = posHcal(ship_geo.hcal.z)
+  hcal,HcalZSize = posHcal(ship_geo.hcal.z,ship_geo.hcal.File)
   if abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 10*u.cm:
     print 'mismatch between hcalsize in geo file and python configuration'
     print ship_geo.hcal.hcalSpace -  HcalZSize, ship_geo.hcal.hcalSpace , HcalZSize
