@@ -16,6 +16,8 @@ nEvents      = 100
 firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
+charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
+HNL          = True
 eventDisplay = False
 inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 defaultInputFile = True
@@ -57,6 +59,9 @@ for o, a in opts:
             simEngine = "PG"
         if o in ("-A"):
             inclusive = a
+            if a.lower() == 'charmonly': 
+               charmonly = True
+               HNL = False  
             if a not in ['b','c']: inclusive = True
         if o in ("--Genie"):
             simEngine = "Genie"
@@ -128,6 +133,7 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds)
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
+if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if eventDisplay: tag = tag+'_D'
 if dy: tag = str(dy)+'.'+tag 
 if not os.path.exists(outputDir):
@@ -164,17 +170,21 @@ primGen = ROOT.FairPrimaryGenerator()
 if simEngine == "Pythia8":
  primGen.SetTarget(ship_geo.target.z0, 0.) 
 # -----Pythia8--------------------------------------
- P8gen = ROOT.HNLPythia8Generator()
- import pythia8_conf
- pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
- P8gen.SetSmearBeam(1*u.cm) # finite beam size
- if inputFile: 
-# read from external file
+ if HNL:
+  P8gen = ROOT.HNLPythia8Generator()
+  import pythia8_conf
+  pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
+  P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
-  P8gen.UseExternalFile(inputFile, 0)
- # pion on proton 500GeV
- # P8gen.SetMom(500.*u.GeV)
- # P8gen.SetId(-211)
+  if inputFile: 
+# read from external file
+   P8gen.UseExternalFile(inputFile, firstEvent)
+ if charmonly: 
+  P8gen = ROOT.Pythia8Generator()
+  P8gen.UseExternalFile(inputFile, firstEvent)
+# pion on proton 500GeV
+# P8gen.SetMom(500.*u.GeV)
+# P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
 if simEngine == "Pythia6":
 # set muon interaction close to decay volume
