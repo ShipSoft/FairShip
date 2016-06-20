@@ -118,6 +118,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
     while(x){ 
      if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
      fTree->GetEntry(fn%fNevents);
+     fn++;
      if ( int(fabs(hid[0]) ) != 431){ x = false; }
      else {
        Double_t rnr = gRandom->Uniform(0,1);
@@ -128,7 +129,6 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    fPythia->event.reset();
    fPythia->event.append( (Int_t)hid[0], 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
    }
-   fn++;
   fPythia->next();
    for(int i=0; i<fPythia->event.size(); i++){
 // find first HNL
