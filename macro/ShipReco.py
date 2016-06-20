@@ -435,18 +435,18 @@ shipPatRec.initialize(fgeo)
 
 # main loop
 for iEvent in range(firstEvent, SHiP.nEvents):
- if debug: print 'event ',iEvent
+ if iEvent%1000 == 0 or debug: print 'event ',iEvent
  ntracks = SHiP.findTracks(iEvent)
+ for x in caloTasks: 
+   if x.GetName() == 'ecalFiller': x.Exec('start',SHiP.sTree.EcalPointLite)
+   elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed, SHiP.sTree.MCTrack)
+   else : x.Exec('start')
  SHiP.EcalClusters.Fill()
  SHiP.EcalReconstructed.Fill()
  SHiP.Pid.execute()
  if vertexing:
 # now go for 2-track combinations
    SHiP.Vertexing.execute()
- for x in caloTasks: 
-   if x.GetName() == 'ecalFiller': x.Exec('start',SHiP.sTree.EcalPointLite)
-   elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed, SHiP.sTree.MCTrack)
-   else : x.Exec('start')
 
  if debug: print 'end of event after Fill'
  # memory monitoring
