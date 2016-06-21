@@ -38,6 +38,7 @@ class Pythia8Generator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
   void SetfFDs(Double_t z) { fFDs = z; };
+  Int_t nrOfRetries(){ return fnRetries; };
 
  private:
   
@@ -57,7 +58,7 @@ class Pythia8Generator : public FairGenerator
   TTree* fTree;        //! 
   Pythia* fPythia;             //!
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
-
+  Int_t fnRetries;     // 
   ClassDef(Pythia8Generator,1);
 };
 
