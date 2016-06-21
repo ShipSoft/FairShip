@@ -96,6 +96,7 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
     if debug: cf.write('P8gen.SetParameters("310:mayDecay  = off")\n')
     P8gen.SetParameters("3122:mayDecay = off")
     if debug: cf.write('P8gen.SetParameters("3122:mayDecay = off")\n')
+    P8gen.SetParameters("3222:mayDecay = off")
     if inclusive=="True":
         P8gen.SetParameters("SoftQCD:inelastic = on")
         P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
