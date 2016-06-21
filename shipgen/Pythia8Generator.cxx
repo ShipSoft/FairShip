@@ -6,7 +6,7 @@
 #include "Pythia8Generator.h"
 #include "HNLPythia8Generator.h"
 const Double_t cm = 10.; // pythia units are mm
-
+int counter = 0;
 using namespace Pythia8;
 
 // -----   Default constructor   -------------------------------------------
@@ -70,7 +70,6 @@ Bool_t Pythia8Generator::Init()
      fPythia->readString("3222:mayDecay = off");
   } else {  
    fPythia->setRndmEnginePtr(fRandomEngine);
-   cout<<"Beam Momentum "<<fMom<<endl;
    fPythia->settings.mode("Beams:idA",  fId);
    fPythia->settings.mode("Beams:idB",  2212);
    fPythia->settings.mode("Beams:frameType",  2);
@@ -94,11 +93,10 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 {
   Double_t x,y,z,px,py,pz,dl;
   Int_t im,id,key;
-  if (fextFile != ""){
 // take charm or beauty hadron from external file
 // correct for too much Ds produced by pythia6
-    bool l = true; 
-    while(l){ 
+   bool l = true; 
+   while(l){ 
      if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
      fTree->GetEntry(fn%fNevents);
      fn++;
@@ -109,15 +107,16 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        Double_t rnr = gRandom->Uniform(0,1);
        if( rnr<fFDs ) { l = false; };
      }
-    }          
-    fPythia->event.reset();
-    id = (Int_t)hid[0];
-    fPythia->event.append( id, 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
-// simulate displaced vertex, Pythia8 will not do it
-    Double_t tau0 = fPythia->particleData.tau0(id); // ctau in mm
-    dl = gRandom->Exp(tau0) / hM[0]; // mm/GeV    
-  } 
+   }          
+   fPythia->event.reset();
+   id = (Int_t)hid[0];
+   fPythia->event.append( id, 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
+//simulate displaced vertex, Pythia8 will not do it
+   Double_t tau0 = fPythia->particleData.tau0(id); // ctau in mm
+   dl = gRandom->Exp(tau0) / hM[0]; // mm/GeV    
+   
   fPythia->next();
+  counter+=1; 
 // copy complete pythia6 and pythia8 event  
   px=mpx[0];
   py=mpy[0];
@@ -131,7 +130,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
   bool first = true;
   while(lx){      
     fTree->GetEntry(fn%fNevents);
-    if (mid[0]< 0){
+    if (mE[0] == 0){
      fn++;
      if (first){
       first = false; 
@@ -154,7 +153,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
     id = fPythia->event[ii].id(); 
     if (id==90){continue;}
     Bool_t wanttracking=false;
-    if(fPythia->event[ii].isFinal()){ wanttracking=true;}
+    if(fPythia->event[ii].isFinal()){ wanttracking=true; }
     if (ii>1){
      z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz();
      x  = fPythia->event[ii].xProd()+dl*fPythia->event[1].px();
@@ -169,7 +168,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
     py = fPythia->event[ii].py();  
     im = fPythia->event[ii].mother1()+key;
     if (ii==0){im = key;}
-    // cout<<"debug p8->geant4 full copy "<< wanttracking << " "<< ii <<  " " << fPythia->event[ii].id()<< " "<< im <<" "<<x<<" "<< y<<" "<< z <<endl;
     cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking);
   } 
 
