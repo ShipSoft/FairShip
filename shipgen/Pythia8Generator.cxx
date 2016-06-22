@@ -6,6 +6,7 @@
 #include "Pythia8Generator.h"
 #include "HNLPythia8Generator.h"
 const Double_t cm = 10.; // pythia units are mm
+const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
 int counter = 0;
 using namespace Pythia8;
 
@@ -91,8 +92,9 @@ Pythia8Generator::~Pythia8Generator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 {
-  Double_t x,y,z,px,py,pz,dl;
+  Double_t x,y,z,px,py,pz,dl,e,tof;
   Int_t im,id,key;
+  fnRetries =0;
 // take charm or beauty hadron from external file
 // correct for too much Ds produced by pythia6
    bool l = true; 
@@ -149,26 +151,28 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
   } 
   cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,-1,false);
 
-  for(Int_t ii=0; ii<fPythia->event.size(); ii++){
+  for(Int_t ii=1; ii<fPythia->event.size(); ii++){
     id = fPythia->event[ii].id(); 
-    if (id==90){continue;}
     Bool_t wanttracking=false;
     if(fPythia->event[ii].isFinal()){ wanttracking=true; }
     if (ii>1){
      z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz();
      x  = fPythia->event[ii].xProd()+dl*fPythia->event[1].px();
      y  = fPythia->event[ii].yProd()+dl*fPythia->event[1].py();
+     tof = fPythia->event[ii].tProd()+dl*fPythia->event[1].e()/cm/c_light;
     }else{
      z  = fPythia->event[ii].zProd();
      x  = fPythia->event[ii].xProd();
      y  = fPythia->event[ii].yProd();
+     tof = fPythia->event[ii].tProd();
     }
     pz = fPythia->event[ii].pz();
     px = fPythia->event[ii].px();  
     py = fPythia->event[ii].py();  
+    e  = fPythia->event[ii].e();
     im = fPythia->event[ii].mother1()+key;
     if (ii==0){im = key;}
-    cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking);
+    cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,1.);
   } 
 
   return kTRUE;
