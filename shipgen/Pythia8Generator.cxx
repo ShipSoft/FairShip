@@ -103,7 +103,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      fTree->GetEntry(fn%fNevents);
      fn++;
 // check that entry is charm, otherwise continue reading
-     if (mid[0]< 0){ l = false; }   
+     if (int(mE[0])== 0){ l = true; }   
      else if ( int(fabs(hid[0]) ) != 431){ l = false; }
      else {
        Double_t rnr = gRandom->Uniform(0,1);
