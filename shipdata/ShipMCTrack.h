@@ -93,7 +93,7 @@ class ShipMCTrack : public TObject
     Int_t  fMotherId;
 
     /** Momentum components at start vertex [GeV]  **/
-    Double32_t fPx, fPy, fPz, fE;
+    Double32_t fPx, fPy, fPz, fM;
 
     /** Coordinates of start vertex [cm, ns]  **/
     Double32_t fStartX, fStartY, fStartZ, fStartT;
