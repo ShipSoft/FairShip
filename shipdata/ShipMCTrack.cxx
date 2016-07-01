@@ -17,6 +17,7 @@ ShipMCTrack::ShipMCTrack()
     fPx(0.),
     fPy(0.),
     fPz(0.),
+    fE(0.),
     fStartX(0.),
     fStartY(0.),
     fStartZ(0.),
@@ -31,7 +32,7 @@ ShipMCTrack::ShipMCTrack()
 
 // -----   Standard constructor   ------------------------------------------
 ShipMCTrack::ShipMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
-                         Double_t py, Double_t pz, Double_t x, Double_t y,
+                         Double_t py, Double_t pz, Double_t E, Double_t x, Double_t y,
                          Double_t z, Double_t t, Int_t nPoints, Double_t w)
   : TObject(),
     fPdgCode(pdgCode),
@@ -39,6 +40,7 @@ ShipMCTrack::ShipMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
     fPx(px),
     fPy(py),
     fPz(pz),
+    fE(E),
     fStartX(x),
     fStartY(y),
     fStartZ(z),
@@ -59,6 +61,7 @@ ShipMCTrack::ShipMCTrack(const ShipMCTrack& track)
     fPx(track.fPx),
     fPy(track.fPy),
     fPz(track.fPz),
+    fE(track.fE),
     fStartX(track.fStartX),
     fStartY(track.fStartY),
     fStartZ(track.fStartZ),
@@ -79,6 +82,7 @@ ShipMCTrack::ShipMCTrack(TParticle* part)
     fPx(part->Px()),
     fPy(part->Py()),
     fPz(part->Pz()),
+    fE(part->Energy()),
     fStartX(part->Vx()),
     fStartY(part->Vy()),
     fStartZ(part->Vz()),
@@ -110,9 +114,18 @@ void ShipMCTrack::Print(Int_t trackId) const
 */
 }
 // -------------------------------------------------------------------------
+// -----   Public method GetEnergy   -----------------------------------------
 
-
-
+Double_t ShipMCTrack::GetEnergy() const
+{
+  if (fE==0){
+// probably older data, energy not made persistent
+   Double_t mass = GetMass();
+   return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
+  }else{
+   return fE;
+  }
+}
 // -----   Public method GetMass   -----------------------------------------
 Double_t ShipMCTrack::GetMass() const
 {

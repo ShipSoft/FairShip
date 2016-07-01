@@ -34,7 +34,7 @@ class ShipMCTrack : public TObject
 
     /**  Standard constructor  **/
     ShipMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
-                Double_t pz, Double_t x, Double_t y, Double_t z,
+                Double_t pz, Double_t E, Double_t x, Double_t y, Double_t z,
                 Double_t t, Int_t nPoints, Double_t w);
 
     /**  Copy constructor  **/
@@ -93,7 +93,7 @@ class ShipMCTrack : public TObject
     Int_t  fMotherId;
 
     /** Momentum components at start vertex [GeV]  **/
-    Double32_t fPx, fPy, fPz;
+    Double32_t fPx, fPy, fPz, fE;
 
     /** Coordinates of start vertex [cm, ns]  **/
     Double32_t fStartX, fStartY, fStartZ, fStartT;
@@ -119,19 +119,13 @@ class ShipMCTrack : public TObject
     Int_t fNPoints;
 
 
-    ClassDef(ShipMCTrack,3);
+    ClassDef(ShipMCTrack,4);
 
 };
 
 
 
 // ==========   Inline functions   ========================================
-
-inline Double_t ShipMCTrack::GetEnergy() const
-{
-  Double_t mass = GetMass();
-  return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
-}
 
 
 inline void ShipMCTrack::GetMomentum(TVector3& momentum)

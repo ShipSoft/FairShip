@@ -41,3 +41,9 @@ ROOT.genfit.Track.__repr__ = FitTrackPrintOut
 ROOT.TClonesArray.Dump = Dump
 ROOT.TVector3.__repr__ = TVector3PrintOut
 
+def zPositions():
+ main = sys.modules['__main__']
+ if hasattr(main,'ShipGeo'):
+  for x in ShipGeo:
+   if hasattr(eval('ShipGeo.'+x),'z'): print x,'z=',eval('ShipGeo.'+x+'.z')
+   
