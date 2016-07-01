@@ -488,7 +488,7 @@ class EventLoop(ROOT.FairTask):
    self.tracks.ExecuteTask()
    if sTree.FindBranch("EcalClusters"):
      if sTree.EcalClusters.GetEntries()>0:
-      self.ecalFiller.Exec('start')
+      self.ecalFiller.Exec('start',sTree.EcalPointLite)
       self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
 #

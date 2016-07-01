@@ -44,12 +44,15 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawDesign = strawDesign
     c.tankDesign = tankDesign
     c.chambers = AttrDict(z=0*u.cm)
+    magnetIncrease    = 100.*u.cm
+    # make z coordinates for the decay volume and tracking stations relative to T4z
+    # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
+    z4=2438.*u.cm+magnetIncrease+extraVesselLength
     if strawDesign != 4:
      print "this design is not supported, use strawDesign = 4"
      1/0 
     else:
      c.chambers.Length = totalLength
-     magnetIncrease    = 100.*u.cm
      c.chambers.Tub1length = 2.5*u.m
      c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
      c.chambers.Tub3length = 0.8*u.m
@@ -59,23 +62,33 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
-     c.Chamber1 = AttrDict(z=-22.28*u.m)
-     c.Chamber2 = AttrDict(z=-1.9*u.m+extraVesselLength/2.)
-     c.Chamber3 = AttrDict(z=16.98*u.m+extraVesselLength)
-     c.Chamber4 = AttrDict(z=20.18*u.m+magnetIncrease/2.+extraVesselLength)
-     c.Chamber5 = AttrDict(z=23.38*u.m+magnetIncrease+extraVesselLength)
-     c.Chamber6 = AttrDict(z=24.68*u.m+magnetIncrease+extraVesselLength+windowBulge/2.)
+     zset=z4-4666.*u.cm-magnetIncrease-extraVesselLength
+     c.Chamber1 = AttrDict(z=zset)
+     zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
+     c.Chamber2 = AttrDict(z=zset)
+     zset=z4-740.*u.cm-magnetIncrease
+     c.Chamber3 = AttrDict(z=zset)  
+     zset=z4-420.*u.cm-magnetIncrease/2.  
+     c.Chamber4 = AttrDict(z=zset)
+     zset=z4-100.*u.cm
+     c.Chamber5 = AttrDict(z=zset)
+     zset=z4+30.*u.cm+windowBulge/2.
+     c.Chamber6 = AttrDict(z=zset)
      # horizontal width at start and focus point, for conical/rectangular size
      # Hans proposal: envelope (46,1.2), end at T4: (100.,2.7)  
      # 
      c.zFocus = +2.8*u.m # downstream from target, will have neutrinos going from outside to inside, not so good for vacuum option.
      c.xMax = +2.7*u.m # max horizontal width at T4
      # 
-     c.vetoStation = AttrDict(z=-1968.*u.cm)
-     c.TrackStation1 = AttrDict(z=1598.*u.cm+extraVesselLength)
-     c.TrackStation2 = AttrDict(z=1798.*u.cm+extraVesselLength)
-     c.TrackStation3 = AttrDict(z=2238.*u.cm+magnetIncrease+extraVesselLength)
-     c.TrackStation4 = AttrDict(z=2438.*u.cm+magnetIncrease+extraVesselLength)
+     c.TrackStation4 = AttrDict(z=z4)
+     zset=z4-200.*u.cm
+     c.TrackStation3 = AttrDict(z=zset)
+     zset=z4-640.*u.cm-magnetIncrease
+     c.TrackStation2 = AttrDict(z=zset)
+     zset=z4-840.*u.cm-magnetIncrease
+     c.TrackStation1 = AttrDict(z=zset)
+     zset=z4-4406.*u.cm-magnetIncrease-extraVesselLength
+     c.vetoStation   = AttrDict(z=zset)
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
@@ -83,7 +96,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.scintillator.Rmax = 260.*u.cm
 
     c.strawtubes = AttrDict(z=0*u.cm)
-    c.strawtubes.StrawLength        = 250.*u.cm
+    
+    if tankDesign == 5:
+       c.strawtubes.StrawLength        = c.xMax
+    else:
+       c.strawtubes.StrawLength        = 250.*u.cm
     c.strawtubes.InnerStrawDiameter = 0.975*u.cm
     c.strawtubes.WallThickness      = 0.0039*u.cm
     c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
@@ -98,7 +115,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.DeltazView         = 10.*u.cm
     c.strawtubes.VacBox_x           = 300.*u.cm
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
-
+    if tankDesign == 5:
+       c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1['z']-2*c.strawtubes.DeltazView-c.zFocus)/(z4-c.zFocus)
+       c.strawtubes.StrawLengthVeto = abs(c.xMax*(c.vetoStation['z']-c.strawtubes.DeltazView-c.zFocus)/(z4-c.zFocus))    
+    else:
+       c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
+       c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength  
+       
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
@@ -106,7 +129,7 @@ with ConfigRegistry.register_config("basic") as c:
     presShowerDeltaZ = 0. 
     c.preshowerOption = preshowerOption
     if preshowerOption >0:
-     PreshowerStart = 3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m+ windowBulge
+     PreshowerStart = c.Chamber6.z + windowBulge + 2*u.cm   
      c.PreshowerFilter0  = AttrDict(z= PreshowerStart )
      c.PreshowerStation0 = AttrDict(z= c.PreshowerFilter0.z + 10*u.cm )
 
@@ -124,20 +147,17 @@ with ConfigRegistry.register_config("basic") as c:
 
      presShowerDeltaZ = PreshowerLeverArm + 2*10*u.cm + 2*2.*u.cm
 
-    c.ecal  =  AttrDict(z=3540*u.cm + magnetIncrease-20*u.cm + totalLength - 60*u.m+ windowBulge+ presShowerDeltaZ)
+    c.ecal  =  AttrDict(z = c.Chamber6.z + windowBulge + 2*u.cm + presShowerDeltaZ)
     c.ecal.File = EcalGeoFile
     c.HcalOption  =  HcalOption
-    hcalSpace = 0
     hcalThickness = 232*u.cm
     if not HcalOption < 0:
-     if HcalOption == 0 : 
-          c.hcal  =  AttrDict(z=45*u.cm + totalLength - 60.*u.m ) 
-     else:                
-          c.hcal    =  AttrDict(z=c.ecal.z + 50*u.cm/2. + hcalThickness/2. + 20.*u.cm  )
-          hcalSpace = hcalThickness + 5.5*u.cm 
-          c.hcal.hcalSpace = hcalSpace
+     c.hcal =  AttrDict(z=c.ecal.z + hcalThickness/2. + 45.*u.cm  )
+     c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
      c.hcal.File  =  HcalGeoFile
-    c.MuonStation0 = AttrDict(z=2600.*u.cm+magnetIncrease-20*u.cm+extraVesselLength+hcalSpace+windowBulge+ presShowerDeltaZ)
+    else:
+     c.hcal  =  AttrDict(z=c.ecal.z)     
+    c.MuonStation0 = AttrDict(z=c.hcal.z+hcalThickness/2.+20.5*u.cm)
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
     c.MuonStation3 = AttrDict(z=c.MuonStation0.z+3*u.m)
