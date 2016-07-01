@@ -309,11 +309,11 @@ If($distribution MATCHES "ScientificCERNSLC")
  file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval `/afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_82 x86_64-slc6-gcc49-opt Python\n")
 EndIf()
 # add some other useful environment variables:
-file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIPRUN "${CMAKE_CURRENT_BINARY_DIR}\n)
-file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIPRUN="${CMAKE_CURRENT_BINARY_DIR}\n)
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIPRUN " ${CMAKE_CURRENT_BINARY_DIR}\n)
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIPRUN=" ${CMAKE_CURRENT_BINARY_DIR}\n)
 
-file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIP "${CMAKE_CURRENT_SOURCE_DIR}\n)
-file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIP="${CMAKE_CURRENT_SOURCE_DIR}\n) 
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIP " ${CMAKE_CURRENT_SOURCE_DIR}\n)
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIP=" ${CMAKE_CURRENT_SOURCE_DIR}\n) 
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
