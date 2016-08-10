@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 inputFile = 'ship.Pythia8-TGeant4.root'
 geoFile   = None
 debug = False
@@ -148,7 +149,6 @@ builtin.ship_geo = ShipGeo # for shipPatRec
 builtin.pidProton = pidProton
 
 # import reco tasks
-import shipPid
 import shipVertex
 PDG = ROOT.TDatabasePDG.Instance()
 addHNLtoROOT()
@@ -212,7 +212,6 @@ class ShipReco:
   ROOT.gRandom.SetSeed(13)
 #
   self.Vertexing = shipVertex.Task(h,self)
-  self.Pid       = shipPid.Task(h,self)
 
  def hit2wire(self,ahit,no_amb=None):
      detID = ahit.GetDetectorID()
@@ -395,6 +394,9 @@ if SHiP.sTree.GetBranch("EcalPoint"):
  # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
   ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
   caloTasks.append(ecalDrawer)
+ # add pid reco
+ import shipPid
+ caloTasks.append(shipPid.Task(h,SHiP))
 
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 # init geometry and mag. field
@@ -404,7 +406,6 @@ bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Y
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
  
-geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
 if debug: fitter.setDebugLvl(1) # produces lot of printout
@@ -438,12 +439,12 @@ for iEvent in range(firstEvent, SHiP.nEvents):
  if iEvent%1000 == 0 or debug: print 'event ',iEvent
  ntracks = SHiP.findTracks(iEvent)
  for x in caloTasks: 
-   if x.GetName() == 'ecalFiller': x.Exec('start',SHiP.sTree.EcalPointLite)
+   if hasattr(x,'execute'): x.execute()
+   elif x.GetName() == 'ecalFiller': x.Exec('start',SHiP.sTree.EcalPointLite)
    elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed, SHiP.sTree.MCTrack)
    else : x.Exec('start')
  SHiP.EcalClusters.Fill()
  SHiP.EcalReconstructed.Fill()
- SHiP.Pid.execute()
  if vertexing:
 # now go for 2-track combinations
    SHiP.Vertexing.execute()
