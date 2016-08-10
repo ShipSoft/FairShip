@@ -45,8 +45,8 @@ AUX_SOURCE_DIRECTORY( ${CMAKE_SOURCE_DIR}/genfit/measurements/src  library_sourc
 AUX_SOURCE_DIRECTORY( ${CMAKE_SOURCE_DIR}/genfit/trackReps/src     library_sources )
 AUX_SOURCE_DIRECTORY( ${CMAKE_SOURCE_DIR}/genfit/utilities/src     library_sources )
 
-string(REGEX REPLACE "/src/" "/include/"  HEADERS "${library_sources}")
-string(REGEX REPLACE ".cc" ".h"  HEADERS "${HEADERS}")
+string(REPLACE "/src/" "/include/"  HEADERS "${library_sources}")
+string(REPLACE ".cc" ".h"  HEADERS "${HEADERS}")
 set(HEADERS "${HEADERS}"
   ${CMAKE_SOURCE_DIR}/genfit/utilities/include/mySpacepointDetectorHit.h
   ${CMAKE_SOURCE_DIR}/genfit/utilities/include/mySpacepointMeasurement.h
