@@ -13,7 +13,7 @@ def MCTrackPrintOut(x):
   n=''
   if p: n = p.GetName()
   m = x.GetMotherId()
-  txt = '("ShipMCTrack") pdgCode: %5i(%10s) P=%5.3F GeV/c mother=%i'%(c,n,x.GetP(),m)
+  txt = '("ShipMCTrack") pdgCode: %7i(%10s) P=%6.3F GeV/c mother=%i'%(c,n,x.GetP(),m)
   return txt
 def FitTrackPrintOut(x):
   st = x.getFitStatus()
@@ -24,7 +24,11 @@ def FitTrackPrintOut(x):
    txt = '("FitTrack") chi2/dof:%3.1F  P:%5.2FGeV/c pdg:%i'%(chi2DoF,P,sta.getPDG())
   else:
    txt = '("FitTrack") fit not converged'
-  return txt 
+  return txt
+def TParticlePrintOut(x):
+  txt = '("TParticle") %s  P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.P(),x.Vz()/100.)
+  return txt
+
 def Dump(x):
   k=0
   for obj in x: 
@@ -40,10 +44,5 @@ ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut
 ROOT.genfit.Track.__repr__ = FitTrackPrintOut
 ROOT.TClonesArray.Dump = Dump
 ROOT.TVector3.__repr__ = TVector3PrintOut
+ROOT.TParticle.__repr__ = TParticlePrintOut
 
-def zPositions():
- main = sys.modules['__main__']
- if hasattr(main,'ShipGeo'):
-  for x in ShipGeo:
-   if hasattr(eval('ShipGeo.'+x),'z'): print x,'z=',eval('ShipGeo.'+x+'.z')
-   
