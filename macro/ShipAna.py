@@ -4,6 +4,7 @@ import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
+from decorators import *
 import shipRoot_conf
 shipRoot_conf.configure()
 

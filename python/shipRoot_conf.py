@@ -1,4 +1,5 @@
 import ROOT, atexit, sys
+from pythia8_conf import addHNLtoROOT
 #-----prepare python exit-----------------------------------------------
 
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
@@ -20,4 +21,5 @@ def configure():
  pdg.AddParticle('system','system', 0., False, 0., 0., 'XXX', 90)
  pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'XXX', 9902210)
  pdg.AddParticle('f0(980)','f0(980)', 0., False, 0.07, 0., 'f0(980)', 9010221)
+ addHNLtoROOT()
  atexit.register(pyExit)

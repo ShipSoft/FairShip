@@ -158,11 +158,17 @@ class Task:
  ## extrapolation and pid check ##
   self.muonDigitHit()
   self.fpidArray.Delete()
-  fittedTracks = self.sTree.FitTracks
+  if self.sTree.GetBranch("FitTracks"):
+   fittedTracks = self.sTree.FitTracks
+  elif self.sTree.GetBranch("FitTracks_PR"):
+   fittedTracks = self.sTree.FitTracks_PR
+  else:
+   print "no fitted track container in Tree, return"
+   return 
   ppid    = self.fpidArray
 
   i=-1
-  for fT in self.sTree.FitTracks:
+  for fT in fittedTracks:
     self.El,self.Hl,self.OverHit=False,False,False
     self.pid00,self.pid01,self.pid02,self.pid03,self.pid10,self.pid11,self.pid12,self.pid13=False,False,False,False,False,False,False,False
     self.pid20,self.pid21,self.pid22,self.pid30,self.pid31=False,False,False,False,False
