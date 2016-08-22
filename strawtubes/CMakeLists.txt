@@ -22,6 +22,7 @@ set(SRCS
 strawtubes.cxx
 strawtubesContFact.cxx
 strawtubesPoint.cxx
+strawtubesHit.cxx
 )
 
 Set(LINKDEF strawtubesLinkDef.h)

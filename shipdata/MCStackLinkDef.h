@@ -6,6 +6,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class ShipStack+;
+#pragma link C++ class ShipHit+;
 #pragma link C++ class ShipMCTrack+;
 
 #endif

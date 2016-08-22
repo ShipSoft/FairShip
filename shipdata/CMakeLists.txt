@@ -19,6 +19,7 @@ ${CMAKE_SOURCE_DIR}/shipdata
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
+ShipHit.cxx 
 ShipStack.cxx 
 ShipMCTrack.cxx
 )
