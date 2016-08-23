@@ -26,7 +26,7 @@ strawtubesHit::~strawtubesHit() { }
 void strawtubesHit::Print(Int_t detID) const
 {
   cout << "-I- strawtubesHit: strawtubes hit " << " in detector " << fDetectorID << endl;
-  cout << "  TDC " << ftdc << " ns" << endl;
+  cout << "  TDC " << fdigi << " ns" << endl;
 }
 // -------------------------------------------------------------------------
 

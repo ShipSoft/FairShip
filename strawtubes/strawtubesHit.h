@@ -23,14 +23,13 @@ class strawtubesHit : public ShipHit
 
     /** Output to screen **/
     virtual void Print(Int_t detID) const;
-    Float_t tdc() const {return ftdc;}
+    Float_t tdc() const {return fdigi;}
 
   private:
     /** Copy constructor **/
     strawtubesHit(const strawtubesHit& point);
     strawtubesHit operator=(const strawtubesHit& point);
 
-    Float_t ftdc;
     ClassDef(strawtubesHit,1);
     
 
