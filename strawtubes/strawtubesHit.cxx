@@ -17,11 +17,13 @@ Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
 strawtubesHit::strawtubesHit()
   : ShipHit()
 {
+ flag = true;
 }
 // -----   Standard constructor   ------------------------------------------
 strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
   : ShipHit(detID,tdc)
 {
+ flag = true;
 }
 // -----   constructor from strawtubesPoint   ------------------------------------------
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
@@ -36,6 +38,7 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
      module->StrawEndPoints(fDetectorID,start,stop);
      Double_t t_drift = fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift;
      fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
+     flag = true;
 }
 // -------------------------------------------------------------------------
 

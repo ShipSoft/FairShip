@@ -11,13 +11,12 @@ class ShipDigiReco:
  def __init__(self,fout,fgeo):
   self.fn = ROOT.TFile(fout,'update')
   self.sTree     = self.fn.cbmsim
-  if self.sTree.GetBranch("SmearedHits"):
+  if self.sTree.GetBranch("FitTracks"):
     print "remove RECO branches and rerun reconstruction"
     self.fn.Close()    
     # make a new file without reco branches
     f = ROOT.TFile(fout)
     sTree = f.cbmsim
-    sTree.SetBranchStatus("SmearedHits",0)
     if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
     if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
     if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
@@ -60,8 +59,6 @@ class ShipDigiReco:
   self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
   self.fitTracks   = self.sTree.Branch("FitTracks"+realPR,  self.fGenFitArray,32000,-1)
 #
-  self.SmearedHits  = ROOT.TClonesArray("TVectorD") 
-  self.SHbranch     = self.sTree.Branch("SmearedHits",self.SmearedHits,32000,-1)
   self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
 # for the digitizing step
@@ -190,13 +187,54 @@ class ShipDigiReco:
  def digitizeStrawTubes(self):
  # digitize FairSHiP MC hits  
    index = 0
+   hitsPerDetId = {}
    for aMCPoint in self.sTree.strawtubesPoint:
      aHit = ROOT.strawtubesHit(aMCPoint,self.sTree.t0)
      if self.digiStraw.GetSize() == index: self.digiStraw.Expand(index+1000)
      self.digiStraw[index]=aHit
+     detID = aHit.GetDetectorID() 
+     if hitsPerDetId.has_key(detID):
+       if self.digiStraw[hitsPerDetId[detID]].tdc() > aHit.tdc():
+ # second hit with smaller tdc
+        self.digiStraw[hitsPerDetId[detID]].setInvalid()
+        hitsPerDetId[detID] = index
+     else:
+       hitsPerDetId[detID] = index         
      index+=1
 
- def hit2wire(self,ahit,no_amb=None):
+ def withT0Estimate(self):
+ # loop over all straw tdcs and make average, correct for ToF
+  n = 0
+  t0 = 0.
+  key = -1
+  SmearedHits = []
+  v_drift = modules["Strawtubes"].StrawVdrift()
+  modules["Strawtubes"].StrawEndPoints(10000001,start,stop)
+  z1 = stop.z()
+  for aDigi in self.digiStraw:
+    key+=1
+    if not aDigi.isValid: continue
+    detID = aDigi.GetDetectorID()
+# don't use hits from straw veto
+    station = int(detID/10000000)
+    if station > 4 : continue
+    modules["Strawtubes"].StrawEndPoints(detID,start,stop)
+    delt1 = (start[2]-z1)/u.speedOfLight
+    t0+=aDigi.GetDigi()-delt1
+    SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi()} )
+    n+=1  
+  if n>0: t0 = t0/n - 73.2*u.ns
+  for s in SmearedHits:
+    delt1 = (s['z']-z1)/u.speedOfLight
+    s['dist'] = (s['dist'] -delt1 -t0)*v_drift 
+  return SmearedHits
+
+ def smearHits(self,no_amb=None):
+ # smear strawtube points
+  SmearedHits = []
+  key = -1
+  for ahit in self.sTree.strawtubesPoint:
+     key+=1
      detID = ahit.GetDetectorID()
      top = ROOT.TVector3()
      bot = ROOT.TVector3()
@@ -205,42 +243,25 @@ class ShipDigiReco:
      dw  = ahit.dist2Wire()
      smear = dw
      if not no_amb: smear = abs(self.random.Gaus(dw,ShipGeo.straw.resol))
-     smearedHit = {'mcHit':ahit,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'dist':smear}
+     SmearedHits.append( {'digiHit':key,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'dist':smear} )
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
      if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
      if abs(top.y())>abs(bot.y()): h['distu'].Fill(dw)
      if abs(top.y())<abs(bot.y()): h['distv'].Fill(dw)
-     return smearedHit
+
+  return SmearedHits
   
  def findTracks(self):
-  nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists    = {}
   stationCrossed = {}
   fittedtrackids=[]
-  self.SmearedHits.Delete()
   self.fGenFitArray.Delete()
   self.fitTrack2MC.clear()
 #   
-  for i in range(nShits):
-    ahit = self.sTree.strawtubesPoint.At(i)
-    sm   = self.hit2wire(ahit,withNoStrawSmearing)
-    m = array('d',[i,sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist'],ahit.GetDetectorID()])
-    measurement = ROOT.TVectorD(9,m)
-# copy to branch
-    nHits = self.SmearedHits.GetEntries()
-    if self.SmearedHits.GetSize() == nHits: self.SmearedHits.Expand(nHits+1000)
-    self.SmearedHits[nHits] = measurement
-    station = int(ahit.GetDetectorID()/10000000)
-    if station > 4 : continue
-    # do not use hits in Veto station for track reco   
-    trID = ahit.GetTrackID()
-    if not hitPosLists.has_key(trID):   
-      hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
-      stationCrossed[trID]  = {}
-    m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
-    hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
-    if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
-    stationCrossed[trID][station]+=1   
+  if withT0:  self.SmearedHits = self.withT0Estimate()
+  # old procedure, not including estimation of t0 
+  else:       self.SmearedHits = self.smearHits(withNoStrawSmearing)
+
   nTrack = -1
   trackCandidates = []
   if realPR:
@@ -251,6 +272,17 @@ class ShipDigiReco:
          trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
 	 tracknbr+=1
   else: # do fake pattern reco	 
+   for sm in self.SmearedHits:
+    detID = self.digiStraw[sm['digiHit']].GetDetectorID()
+    station = int(detID/10000000)
+    trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
+    if not hitPosLists.has_key(trID):   
+      hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
+      stationCrossed[trID]  = {}
+    m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
+    hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
+    if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
+    stationCrossed[trID][station]+=1   
    for atrack in hitPosLists:
     if atrack < 0: continue # these are hits not assigned to MC track because low E cut
     pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
@@ -267,6 +299,7 @@ class ShipDigiReco:
 # approximate covariance
     covM = ROOT.TMatrixDSym(6)
     resolution = ShipGeo.straw.resol
+    if withT0: resolution = resolution*1.4 # worse resolution due to t0 estimate
     for  i in range(3):   covM[i][i] = resolution*resolution
     covM[0][0]=resolution*resolution*100.
     for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
@@ -321,7 +354,6 @@ class ShipDigiReco:
      print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
   self.fitTracks.Fill()
   self.mcLink.Fill()
-  self.SHbranch.Fill()
   return nTrack+1
  def finish(self):
   del self.fitter

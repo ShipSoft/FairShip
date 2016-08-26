@@ -15,7 +15,8 @@ class strawtubesHit : public ShipHit
 
     /** Constructor with arguments
      *@param detID    Detector ID
-     *@param tdc      digitized/measured TDC 
+     *@param digi      digitized/measured TDC 
+     *@param flag      True/False, false if there is another hit with smaller tdc 
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
     strawtubesHit(strawtubesPoint* p, Double_t t0);
@@ -26,11 +27,15 @@ class strawtubesHit : public ShipHit
     /** Output to screen **/
     virtual void Print(Int_t detID) const;
     Float_t tdc() const {return fdigi;}
+    void setInvalid() {flag = false;}
+    bool isValid() const {return flag;}
 
   private:
     /** Copy constructor **/
     strawtubesHit(const strawtubesHit& point);
     strawtubesHit operator=(const strawtubesHit& point);
+
+    Float_t flag;   ///< flag
 
     ClassDef(strawtubesHit,1);
     

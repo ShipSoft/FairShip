@@ -12,6 +12,7 @@ dy  = None
 saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
+withT0 = False
 
 import resource
 def mem_monitor():
@@ -35,7 +36,7 @@ shipRoot_conf.configure()
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
-           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR"])
+           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR","withT0"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,' 
@@ -47,6 +48,8 @@ for o, a in opts:
             vertexing = False
         if o in ("noStrawSmearing"):
             withNoStrawSmearing = True
+        if o in ("--withT0"):
+            withT0 = True
         if o in ("-f", "--inputFile"):
             inputFile = a
         if o in ("-g", "--geoFile"):
@@ -129,6 +132,7 @@ modules = shipDet_conf.configure(run,ShipGeo)
 # make global variables
 builtin.debug    = debug
 builtin.pidProton = pidProton
+builtin.withT0 = withT0
 builtin.realPR = realPR
 builtin.vertexing = vertexing
 builtin.ecalGeoFile = ecalGeoFile
