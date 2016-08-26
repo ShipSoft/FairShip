@@ -2,8 +2,23 @@
 # -*- coding: latin-1 -*-
 import ROOT,os
 import shipunit as u
+from ShipGeoConfig import ConfigRegistry
 detectorList = []
 
+def getParameter(x,ship_geo,latestShipGeo):
+  lv = x.split('.')
+  last = lv[len(lv)-1]
+  top = ''
+  for l in range(len(lv)-1): 
+    top += lv[l]
+    if l<len(lv)-2: top +='.' 
+  a = getattr(ship_geo,top)
+  if hasattr(a,last): return getattr(a,last)
+# not in the list of recorded parameteres. probably added after
+# creation of file. Check newest geometry_config:
+  a = getattr(latestShipGeo,top)
+  return getattr(a,last)
+    
 def posHcal(z,hfile): 
  HcalZSize = 0
  sz = hfile+"z"+str(z)+".geo"
@@ -55,8 +70,7 @@ def configure(run,ship_geo):
 # ---- for backward compatibility ----
  if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 4
  if not hasattr(ship_geo.hcal,"File"): ship_geo.hcal.File = "hcal.geo"
-
-
+ latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -172,8 +186,9 @@ def configure(run,ship_geo):
   else:
    Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLength) 
    Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength) 
-   
-  detectorList.append(Strawtubes) 
+  # for the digitizing step
+  Strawtubes.SetStrawResolution(getParameter("strawtubes.v_drift",ship_geo,latestShipGeo),getParameter("strawtubes.sigma_spatial",ship_geo,latestShipGeo) )
+  detectorList.append(Strawtubes)
 
  if ship_geo.preshowerOption > 0:
   Preshower = ROOT.preshower("Preshower", ROOT.kTRUE)
