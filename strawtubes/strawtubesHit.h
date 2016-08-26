@@ -3,6 +3,7 @@
 
 
 #include "ShipHit.h"
+#include "strawtubesPoint.h"
 #include "TObject.h"
 
 class strawtubesHit : public ShipHit
@@ -17,6 +18,7 @@ class strawtubesHit : public ShipHit
      *@param tdc      digitized/measured TDC 
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
+    strawtubesHit(strawtubesPoint* p, Double_t t0);
 
     /** Destructor **/
     virtual ~strawtubesHit();

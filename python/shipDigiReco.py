@@ -65,8 +65,9 @@ class ShipDigiReco:
   self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
 # for the digitizing step
-  self.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
-  self.sigma_spatial = 120*u.micrometer
+  self.v_drift = modules["Strawtubes"].StrawVdrift()
+  self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
+
 # setup ecal reconstruction
   self.caloTasks = []  
   if self.sTree.GetBranch("EcalPoint"):
@@ -190,11 +191,7 @@ class ShipDigiReco:
  # digitize FairSHiP MC hits  
    index = 0
    for aMCPoint in self.sTree.strawtubesPoint:
-     detID = aMCPoint.GetDetectorID()
-     modules["Strawtubes"].StrawEndPoints(detID,start,stop)
-     t_drift = abs(self.random.Gaus(aMCPoint.dist2Wire()/self.v_drift, self.sigma_spatial/self.v_drift ) )
-     tdc = self.sTree.t0 + aMCPoint.GetTime() + t_drift + ( abs(stop[0]-start[0])-abs(aMCPoint.GetX() ) )/ u.speedOfLight
-     aHit = ROOT.strawtubesHit(detID, tdc)
+     aHit = ROOT.strawtubesHit(aMCPoint,self.sTree.t0)
      if self.digiStraw.GetSize() == index: self.digiStraw.Expand(index+1000)
      self.digiStraw[index]=aHit
      index+=1

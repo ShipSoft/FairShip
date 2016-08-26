@@ -61,6 +61,10 @@ class strawtubes: public FairDetector
     void SetVacBox_y(Double_t vacbox_y);
     void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
+// for the digitizing step
+    void SetStrawResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
+    Double_t StrawVdrift() {return v_drift;}
+    Double_t StrawSigmaSpatial() {return sigma_spatial;}
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
@@ -125,6 +129,8 @@ class strawtubes: public FairDetector
     Double_t     fDeltaz_view;            //!  Distance (z) between views
     Double_t     fVacBox_x;               //!  x size of station vacuumbox
     Double_t     fVacBox_y;               //!  y size of station vacuumbox
+    Double_t     v_drift;                 //! drift velocity  
+    Double_t     sigma_spatial;           //! spatial resolution 
     /** container for data points */
 
     TClonesArray*  fstrawtubesPointCollection;
@@ -132,7 +138,7 @@ class strawtubes: public FairDetector
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
     Int_t InitMedium(const char* name);
-    ClassDef(strawtubes,2)
+    ClassDef(strawtubes,3)
 };
 
 #endif //STRAWTUBES_H
