@@ -311,4 +311,7 @@ kGasThreshold   = 10.*mg/cm3
 
 #
 universe_mean_density = 1.e-25*g/cm3
+#
+speedOfLight = 299792458*m/s
+
 

@@ -3,6 +3,7 @@ import ROOT,sys,getopt,os,Tkinter
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 import shipunit as u
+from decorators import *
 import shipRoot_conf
 shipRoot_conf.configure()
 

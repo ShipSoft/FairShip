@@ -4,6 +4,12 @@ fDesign = 2
 class ShipGeo(): 
  def __init__(self,z=0):
   self.z = z
+
+def zPositions():
+ main = sys.modules['__main__']
+ if hasattr(main,'ShipGeo'):
+  for x in ShipGeo:
+   if hasattr(eval('ShipGeo.'+x),'z'): print x,'z=',eval('ShipGeo.'+x+'.z')
   
 vetoStation   = ShipGeo(-2390.*u.cm)
 TrackStation1 = ShipGeo(1510.*u.cm)

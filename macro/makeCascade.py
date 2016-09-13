@@ -289,7 +289,7 @@ for iev in range(nevgen):
          myPythia.Initialize('3MOM',PDG.GetParticle(stack[nstack][0]).GetName(),target[idpn],0.)
          myPythia.GenerateEvent()
 #  look for the signal particles
-         charmFound = False    
+         charmFound = -1   
          for itrk in range(1,myPythia.GetN()+1):
             idabs = ROOT.TMath.Abs(myPythia.GetK(itrk,2))
             for isig in range(len(idsig)):
@@ -298,7 +298,7 @@ for iev in range(nevgen):
                   Ntup.Fill(float(myPythia.GetK(itrk,2)),float(myPythia.GetP(itrk,1)),float(myPythia.GetP(itrk,2)),float(myPythia.GetP(itrk,3)),\
                             float(myPythia.GetP(itrk,4)),float(myPythia.GetP(itrk,5)),float(myPythia.GetK(1,2)),float(myPythia.GetP(1,1)),\
                             float(myPythia.GetP(1,2)),float(myPythia.GetP(1,3)),float(myPythia.GetP(1,4)),float(myPythia.GetP(1,5)))
-                  charmFound = True    
+                  charmFound = itrk    
                   h['1'].Fill(myPythia.GetP(itrk,4))
                   h['2'].Fill(stack[nstack][4])
                   if idabs==421 and stack[nstack][4]==1 :
@@ -314,16 +314,16 @@ for iev in range(nevgen):
                      pDcm=-gamma*beta*myPythia.GetP(itrk,4)+gamma*myPythia.GetP(itrk,3)
                      xf=pDcm/pbcm
                      h['6'].Fill(xf)
-         if charmFound and storePrimaries:
+         if not charmFound<0 and storePrimaries:
             for itP in range(1,myPythia.GetN()+1):
-             if itP == itrk: continue
+             if itP == charmFound: continue
              if myPythia.GetK(itP,1)==1:
 #  store only undecayed particle
               Ntup.Fill(float(myPythia.GetK(itP,2)),float(myPythia.GetP(itP,1)),float(myPythia.GetP(itP,2)),float(myPythia.GetP(itP,3)),\
                             float(myPythia.GetP(itP,4)),float(myPythia.GetP(itP,5)),-1,\
-                            float(myPythia.GetV(itP,1)-myPythia.GetV(itrk,1)),\
-                            float(myPythia.GetV(itP,2)-myPythia.GetV(itrk,2)),\
-                            float(myPythia.GetV(itP,3)-myPythia.GetV(itrk,3)),0,0)                        
+                            float(myPythia.GetV(itP,1)-myPythia.GetV(charmFound,1)),\
+                            float(myPythia.GetV(itP,2)-myPythia.GetV(charmFound,2)),\
+                            float(myPythia.GetV(itP,3)-myPythia.GetV(charmFound,3)),0,0)                        
 
 #  now generate msel=2 to add new cascade particles to the stack
       for k in range(1,4):  

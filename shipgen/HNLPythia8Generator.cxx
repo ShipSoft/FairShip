@@ -247,8 +247,8 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      py =fPythia->event[k].py();  
      e  =fPythia->event[k].e();  
      if (fextFile != ""){im+=1;};
-     cpg->AddTrack((Int_t)fPythia->event[k].id(),px,py,pz,xS/cm,yS/cm,zS/cm,im,wanttracking,e,tp/cm/c_light,w);
-     // cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " << pz << " [GeV] zS = " << zS << " [mm] tp = " << tp << "[mm/c]" <<  endl;
+     cpg->AddTrack((Int_t)fPythia->event[k].id(),px,py,pz,xS/cm,yS/cm,zS/cm,im,wanttracking,e,tS/cm/c_light,w);
+     // cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " << pz << " [GeV] zS = " << zS << " [mm] tS = " << tS << "[mm/c]" <<  endl;
   }
   return kTRUE;
 }

@@ -42,7 +42,6 @@ totalafterpatrec=0
 ReconstructibleMCTracks=[]
 MatchedReconstructibleMCTracks=[]
 fittedtrackids=[]  
-#theTrack=ROOT.genfit.Track() 
 theTracks=[]
 
 random = ROOT.TRandom()
@@ -130,9 +129,9 @@ def initialize(fGeo):
    #4 stations, 4 views (Y,u,v,Y); each view has 2 planes and each plane has 2 layers
 
    for i in range(i1,i2+1):
-     TStationz = ship_geo.TrackStation1.z
+     TStationz = ShipGeo.TrackStation1.z
      if (i>8) : 
-        TStationz = ship_geo.TrackStation2.z  
+        TStationz = ShipGeo.TrackStation2.z  
      # Y: vnb=0 or 3   
      vnb=0.
      if (i>4): vnb=3.
@@ -144,15 +143,15 @@ def initialize(fGeo):
      if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
 
      #z positions of Y view of stations   
-     Zpos = TStationz+(vnb-3./2.)*ship_geo.strawtubes.DeltazView+(float(pnb)-1./2.)*ship_geo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ship_geo.strawtubes.DeltazLayer 
+     Zpos = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
      zlayer[i]=[Zpos]
 
    #z-positions for stereo views
 
    for i in range(i1,i2+1):
-     TStationz = ship_geo.TrackStation1.z
+     TStationz = ShipGeo.TrackStation1.z
      if (i>8) : 
-        TStationz = ship_geo.TrackStation2.z   
+        TStationz = ShipGeo.TrackStation2.z   
      #stereo views: vnb=1 or 2  
      vnb=1.
      if (i>4): vnb=2.
@@ -164,14 +163,14 @@ def initialize(fGeo):
      if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
 
      #z positions of u,v view of stations   
-     Zpos_u = TStationz+(vnb-3./2.)*ship_geo.strawtubes.DeltazView+(float(pnb)-1./2.)*ship_geo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ship_geo.strawtubes.DeltazLayer 
+     Zpos_u = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
      zlayerv2[i]=[Zpos_u]
 
 
    for i in range(i1,i2+1):
-     TStationz = ship_geo.TrackStation3.z
+     TStationz = ShipGeo.TrackStation3.z
      if (i>8) : 
-        TStationz = ship_geo.TrackStation4.z  
+        TStationz = ShipGeo.TrackStation4.z  
      # Y: vnb=0 or 3   
      vnb=0.
      if (i>4): vnb=3.
@@ -183,15 +182,15 @@ def initialize(fGeo):
      if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
   
      #z positions of x1 view of stations   
-     Zpos = TStationz+(vnb-3./2.)*ship_geo.strawtubes.DeltazView+(float(pnb)-1./2.)*ship_geo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ship_geo.strawtubes.DeltazLayer 
+     Zpos = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
      z34layer[i]=[Zpos]
 
 
    for i in range(i1,i2+1):
      #zlayerv2[i]=[i*100.+50.]
-     TStationz = ship_geo.TrackStation3.z
+     TStationz = ShipGeo.TrackStation3.z
      if (i>8) : 
-        TStationz = ship_geo.TrackStation4.z   
+        TStationz = ShipGeo.TrackStation4.z   
      #stereo views: vnb=1 or 2  
      vnb=1.
      if (i>4): vnb=2.
@@ -203,39 +202,39 @@ def initialize(fGeo):
      if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
 
      #z positions of u,v view of stations   
-     Zpos_u = TStationz+(vnb-3./2.)*ship_geo.strawtubes.DeltazView+(float(pnb)-1./2.)*ship_geo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ship_geo.strawtubes.DeltazLayer 
+     Zpos_u = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
      z34layerv2[i]=[Zpos_u]
 
-   VetoStationZ = ship_geo.vetoStation.z
+   VetoStationZ = ShipGeo.vetoStation.z
    if debug==1: print "VetoStation midpoint z=",VetoStationZ
-   VetoStationEndZ=VetoStationZ+(ship_geo.strawtubes.DeltazView+ship_geo.strawtubes.OuterStrawDiameter)/2
+   VetoStationEndZ=VetoStationZ+(ShipGeo.strawtubes.DeltazView+ShipGeo.strawtubes.OuterStrawDiameter)/2
    for i in range(1,5):   
-     if i==1: TStationz = ship_geo.TrackStation1.z
-     if i==2: TStationz = ship_geo.TrackStation2.z  
-     if i==3: TStationz = ship_geo.TrackStation3.z  
-     if i==4: TStationz = ship_geo.TrackStation4.z 
+     if i==1: TStationz = ShipGeo.TrackStation1.z
+     if i==2: TStationz = ShipGeo.TrackStation2.z  
+     if i==3: TStationz = ShipGeo.TrackStation3.z  
+     if i==4: TStationz = ShipGeo.TrackStation4.z 
      if debug==1:
        print "TrackStation",i," midpoint z=",TStationz 
        for vnb in range(0,4):
          for pnb in range (0,2):
            for lnb in range (0,2):
-              Zpos = TStationz+(vnb-3./2.)*ship_geo.strawtubes.DeltazView+(float(pnb)-1./2.)*ship_geo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ship_geo.strawtubes.DeltazLayer 
+              Zpos = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
               print "TStation=",i,"view=",vnb,"plane=",pnb,"layer=",lnb,"z=",Zpos
 
-   TStation1StartZ=zlayer[1][0]-ship_geo.strawtubes.OuterStrawDiameter/2
-   TStation4EndZ=z34layer[16][0]+ship_geo.strawtubes.OuterStrawDiameter/2
+   TStation1StartZ=zlayer[1][0]-ShipGeo.strawtubes.OuterStrawDiameter/2
+   TStation4EndZ=z34layer[16][0]+ShipGeo.strawtubes.OuterStrawDiameter/2
 
    return 
              
-def getReconstructibleTracks(eventnb,sTree,sGeo):
+def getReconstructibleTracks(iEvent,sTree,sGeo):
 
   #returns a list of reconstructible tracks for this event
   #call this routine once for each event before smearing
   MCTrackIDs=[]
-  rc = sTree.GetEvent(eventnb) 
+  rc = sTree.GetEvent(iEvent) 
   nMCTracks = sTree.MCTrack.GetEntriesFast()   
 
-  if debug==1: print "event nbr",eventnb,"has",nMCTracks,"tracks"
+  if debug==1: print "event nbr",iEvent,"has",nMCTracks,"tracks"
   #1. MCTrackIDs: list of tracks decaying after the last tstation and originating before the first
   for i in reversed(range(nMCTracks)):
      atrack = sTree.MCTrack.At(i) 
@@ -472,7 +471,7 @@ def getReconstructibleTracks(eventnb,sTree,sGeo):
   if debug==1: print "Tracks with required HNL decay particles",MCTrackIDs 	     
   return MCTrackIDs
 
-def SmearHits(eventnb,sTree,modules,SmearedHits,ReconstructibleMCTracks):
+def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
   #smears hits (when not cheated) 
   #apply cuts for >500 hits, duplicate straw hits and acceptance
   #call this routine once for each event, before the digitization
@@ -482,7 +481,7 @@ def SmearHits(eventnb,sTree,modules,SmearedHits,ReconstructibleMCTracks):
   random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   
-  rc = sTree.GetEvent(eventnb) 
+  rc = sTree.GetEvent(iEvent) 
   nHits = sTree.strawtubesPoint.GetEntriesFast()
   withNoStrawSmearing=None
   hitstraws={}
@@ -506,7 +505,7 @@ def SmearHits(eventnb,sTree,modules,SmearedHits,ReconstructibleMCTracks):
           
   #the following code prints some histograms related to the MC hits  
   strawname=''
-  if debug==1: print "nbr of hits=",nHits,"in event",eventnb
+  if debug==1: print "nbr of hits=",nHits,"in event",iEvent
   station1hits={}
   station12xhits={}
   station12yhits={}
@@ -542,8 +541,8 @@ def SmearHits(eventnb,sTree,modules,SmearedHits,ReconstructibleMCTracks):
 
    
     angle=0.    
-    if (str(ahit.GetDetectorID())[1:2]=="1"): angle=ship_geo.strawtubes.ViewAngle
-    if (str(ahit.GetDetectorID())[1:2]=="2"): angle=ship_geo.strawtubes.ViewAngle*-1.
+    if (str(ahit.GetDetectorID())[1:2]=="1"): angle=ShipGeo.strawtubes.ViewAngle
+    if (str(ahit.GetDetectorID())[1:2]=="2"): angle=ShipGeo.strawtubes.ViewAngle*-1.
     if (str(ahit.GetDetectorID())[:1]=="1") :  
        if station1hits.has_key(ahit.GetTrackID()):
           station1hits[ahit.GetTrackID()]+=1
@@ -668,7 +667,7 @@ def Digitization(sTree,SmearedHits):
   if debug==1: print "Nbr of digitized hits",j  
   return StrawRaw,StrawRawLink
          
-def PatRec(firsttwo,eventnb,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks): 
+def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks): 
   global reconstructiblehorizontalidsfound12,reconstructiblestereoidsfound12,reconstructiblehorizontalidsfound34,reconstructiblestereoidsfound34
   global reconstructibleidsfound12,reconstructibleidsfound34,rawhits,totalaftermatching
 
@@ -688,7 +687,7 @@ def PatRec(firsttwo,eventnb,zlayer,zlayerv2,StrawRaw,StrawRawLink,Reconstructibl
   trackid={}
   duplicates=[]
   j=0
-  resolution=ship_geo.straw.resol
+  resolution=ShipGeo.straw.resol
 
   for item in StrawRaw:  
      #y hits for horizontal straws
@@ -817,14 +816,14 @@ def PatRec(firsttwo,eventnb,zlayer,zlayerv2,StrawRaw,StrawRawLink,Reconstructibl
           else : 
              if debug==1: 
 	       print "!!!!!!!!!!!!!!!! Difference between Y-view tracks found and reconstructible tracks (station 1&2). Quitting patrec."
-               debugevent(eventnb,False,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundhorizontaltrackids)	  
+               debugevent(iEvent,False,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundhorizontaltrackids)	  
 	     return 0,[],[],[],[],[],[],{},{},{},{},{}
         else: 
           if len(foundhorizontaltrackids)>=len(ReconstructibleMCTracks) : reconstructiblehorizontalidsfound34+=1
           else : 
              if debug==1: 
 	       print "!!!!!!!!!!!!!!!! Difference between Y-view tracks found and reconstructible tracks (station 3&4). Quitting patrec."
-	       debugevent(eventnb,False,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundhorizontaltrackids)
+	       debugevent(iEvent,False,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundhorizontaltrackids)
 	     return 0,[],[],[],[],[],[],{},{},{},{},{}
 
      if len(foundhorizontaltrackids) != reconstructiblerequired :
@@ -1213,7 +1212,7 @@ def PatRec(firsttwo,eventnb,zlayer,zlayerv2,StrawRaw,StrawRawLink,Reconstructibl
       else: reconstructiblestereoidsfound34+=1    
     else:     
       if debug==1:
-         debugevent(eventnb,True,v2y2,v2y3,v2ymin2,v2yother,v2z2,v2z3,v2zmin2,v2zother,foundstereotrackids)
+         debugevent(iEvent,True,v2y2,v2y3,v2ymin2,v2yother,v2z2,v2z3,v2zmin2,v2zother,foundstereotrackids)
          print "Nbr of reconstructible tracks after stereo",len(foundstereotrackids)," but ",len(ReconstructibleMCTracks)," reconstructible tracks in this event. Quitting."
       return 0,[],[],[],[],[],[],{},{},{},{},{}
      
@@ -1222,7 +1221,7 @@ def PatRec(firsttwo,eventnb,zlayer,zlayerv2,StrawRaw,StrawRawLink,Reconstructibl
       else: reconstructibleidsfound34+=1  
     else: 
       if debug==1: 
-         debugevent(eventnb,True,v2y2,v2y3,v2ymin2,v2yother,v2z2,v2z3,v2zmin2,v2zother,foundstereotrackids)
+         debugevent(iEvent,True,v2y2,v2y3,v2ymin2,v2yother,v2z2,v2z3,v2zmin2,v2zother,foundstereotrackids)
          print "Nbr of reconstructed tracks ",len(foundtrackids)," but",len(ReconstructibleMCTracks)," reconstructible tracks in this event. Quitting."
       return 0,[],[],[],[],[],[],{},{},{},{},{}
   else:
@@ -1237,7 +1236,7 @@ def PatRec(firsttwo,eventnb,zlayer,zlayerv2,StrawRaw,StrawRawLink,Reconstructibl
 def TrackFit(hitPosList,theTrack,charge,pinv):  
    global theTracks
    if debug==1: fitter.setDebugLvl(1)
-   resolution = ship_geo.straw.resol    
+   resolution = ShipGeo.straw.resol    
    hitCov = ROOT.TMatrixDSym(7)
    hitCov[6][6] = resolution*resolution
    for item in hitPosList:
@@ -1247,7 +1246,9 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
      measurement = ROOT.genfit.WireMeasurement(ms,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
      measurement.setMaxDistance(0.5*u.cm)     
      tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
-     theTrack.insertPoint(tp)  # add point to Track	      
+     theTrack.insertPoint(tp)  # add point to Track
+   theTracks.append(theTrack)
+   if not debug == 1: return # leave track fitting shipDigiReco
 #check
    if not theTrack.checkConsistency():
      if debug==1: print 'Problem with track before fit, not consistent',theTrack
@@ -1264,7 +1265,6 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
        
    fitStatus   = theTrack.getFitStatus()
    theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
-   theTracks.append(theTrack)
 
    nmeas = fitStatus.getNdf()
    pval = fitStatus.getPVal()
@@ -1522,17 +1522,17 @@ def hit2wire(ahit,bot,top,no_amb=None):
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = dw
-     if not no_amb: smear = ROOT.fabs(random.Gaus(dw,ship_geo.straw.resol))
+     if not no_amb: smear = ROOT.fabs(random.Gaus(dw,ShipGeo.straw.resol))
      smearedHit = {'mcHit':ahit,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'z':bot.z(),'dist':smear}
      return smearedHit
 
-def debugevent(eventnb,stereo,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundtrackids):   
+def debugevent(stereo,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundtrackids):   
      c = ROOT.TCanvas("c","c",600, 400)
      if stereo==False:
         coord="y"
      else:
         coord="projected x"	
-     mg=ROOT.TMultiGraph(coord+"-hit coord vs z",coord+"-hit coord vs z; evtnb="+str(eventnb))
+     mg=ROOT.TMultiGraph(coord+"-hit coord vs z",coord+"-hit coord vs z; evtnb="+str(iEvent))
      y3vector=ROOT.TVector(len(y3))
      z3vector=ROOT.TVector(len(z3))
      for i in range(len(z3)):
@@ -1590,7 +1590,7 @@ def debugevent(eventnb,stereo,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundtrackid
      c.Write()
      return
    
-def execute(n,SmearedHits,sTree,ReconstructibleMCTracks):
+def execute(SmearedHits,sTree,ReconstructibleMCTracks):
  global totalaftermatching,morethan500,falsepositive,falsenegative,totalafterpatrec
  global reconstructibleevents,morethan100tracks,theTracks
  
@@ -1609,7 +1609,7 @@ def execute(n,SmearedHits,sTree,ReconstructibleMCTracks):
    
      StrawRaw,StrawRawLink=Digitization(sTree,SmearedHits)
      reconstructibleevents+=1  
-     nr12tracks,tracks12,hitids12,xtan12,xcst12,stereotan12,stereocst12,px12,py12,pz12,fraction12,trackid12=PatRec(True,n,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)
+     nr12tracks,tracks12,hitids12,xtan12,xcst12,stereotan12,stereocst12,px12,py12,pz12,fraction12,trackid12=PatRec(True,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)
      tracksfound=[]
      if monitor==True:
        for item in ReconstructibleMCTracks:
@@ -1623,7 +1623,7 @@ def execute(n,SmearedHits,sTree,ReconstructibleMCTracks):
          if debug==1: print "No tracks found in event after stations 1&2. Rejecting event."
          return
     
-     nr34tracks,tracks34,hitids34,xtan34,xcst34,stereotan34,stereocst34,px34,py34,pz34,fraction34,trackid34=PatRec(False,n,z34layer,z34layerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)
+     nr34tracks,tracks34,hitids34,xtan34,xcst34,stereotan34,stereocst34,px34,py34,pz34,fraction34,trackid34=PatRec(False,z34layer,z34layerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)
      
      tracksfound=[]      
      if monitor==True:
@@ -1659,7 +1659,7 @@ def execute(n,SmearedHits,sTree,ReconstructibleMCTracks):
 
      if monitor==False: totalafterpatrec+=1    
          
-     zmagnet=ship_geo.Bfield.z
+     zmagnet=ShipGeo.Bfield.z
      tracksfound=[]
      matches=0
 
@@ -1786,7 +1786,7 @@ def execute(n,SmearedHits,sTree,ReconstructibleMCTracks):
                if math.fabs(pinv) > 0.0 : momM = ROOT.TVector3(0,0,int(charge)/pinv)
                else: momM = ROOT.TVector3(0,0,999)   
                covM = ROOT.TMatrixDSym(6)
-               resolution = ship_geo.straw.resol 
+               resolution = ShipGeo.straw.resol 
                for  i in range(3):   covM[i][i] = resolution*resolution
                covM[0][0]=resolution*resolution*100.
                for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)

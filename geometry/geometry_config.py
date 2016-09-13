@@ -121,6 +121,9 @@ with ConfigRegistry.register_config("basic") as c:
     else:
        c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
        c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength  
+# for the digitizing step
+    c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
+    c.strawtubes.sigma_spatial = 120*u.micrometer
        
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI

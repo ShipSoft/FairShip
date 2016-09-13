@@ -604,28 +604,6 @@ void veto::ConstructGeometry()
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
 
-// only for fastMuon simulation, otherwise output becomes too big    
-      if (fFastMuon){ 
-        const char* Vol  = "TGeoVolume";
-        const char* Mag  = "Mag";
-        const char* Rock = "rock";
-        const char* Ain  = "AbsorberAdd";
-        const char* Aout = "AbsorberAddCore";
-        TObjArray* volumelist = gGeoManager->GetListOfVolumes();
-        int lastvolume = volumelist->GetLast();
-        int volumeiterator=0;
-        while ( volumeiterator<=lastvolume ) {
-         const char* volumename = volumelist->At(volumeiterator)->GetName();
-         const char* classname  = volumelist->At(volumeiterator)->ClassName();
-         if (strstr(classname,Vol)){
-          if (strstr(volumename,Mag) || strstr(volumename,Rock)|| strstr(volumename,Ain) || strstr(volumename,Aout)){ 
-            AddSensitiveVolume(gGeoManager->GetVolume(volumename));
-            cout << "veto added "<< volumename <<endl;
-          }
-         }  
-         volumeiterator++;
-        }
-      }
       //Add one more sensitive plane after vacuum tube for timing
       TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,3.*m,6.*m,15.*mm);
       TimeDet->SetLineColor(kMagenta-10);
@@ -657,6 +635,30 @@ void veto::ConstructGeometry()
       totLength = asmb->GetDZ();
       top->AddNode(tDet2, 1, new TGeoTranslation(0, 0,zStartDet2+totLength));
      }
+
+// only for fastMuon simulation, otherwise output becomes too big    
+     if (fFastMuon){ 
+        const char* Vol  = "TGeoVolume";
+        const char* Mag  = "Mag";
+        const char* Rock = "rock";
+        const char* Ain  = "AbsorberAdd";
+        const char* Aout = "AbsorberAddCore";
+        TObjArray* volumelist = gGeoManager->GetListOfVolumes();
+        int lastvolume = volumelist->GetLast();
+        int volumeiterator=0;
+        while ( volumeiterator<=lastvolume ) {
+         const char* volumename = volumelist->At(volumeiterator)->GetName();
+         const char* classname  = volumelist->At(volumeiterator)->ClassName();
+         if (strstr(classname,Vol)){
+          if (strstr(volumename,Mag) || strstr(volumename,Rock)|| strstr(volumename,Ain) || strstr(volumename,Aout)){ 
+            AddSensitiveVolume(gGeoManager->GetVolume(volumename));
+            cout << "veto added "<< volumename <<endl;
+          }
+         }  
+         volumeiterator++;
+        }
+     }
+
 }
 
 vetoPoint* veto::AddHit(Int_t trackID, Int_t detID,
