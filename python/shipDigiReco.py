@@ -53,6 +53,10 @@ class ShipDigiReco:
 #   
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
 # prepare for output
+# event header
+  self.header  = ROOT.FairEventHeader()
+  self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+# fitted tracks
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
@@ -117,7 +121,7 @@ class ShipDigiReco:
     self.caloTasks.append(ecalDrawer)
  # add pid reco
    import shipPid
-   self.caloTasks.append(shipPid.Task(h,self))
+   self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
   self.Vertexing = shipVertex.Task(h,self)
 # setup random number generator 
@@ -180,6 +184,10 @@ class ShipDigiReco:
 
  def digitize(self):
    self.sTree.t0 = self.random.Rndm()*1*u.microsecond
+   self.header.SetEventTime( self.sTree.t0 )
+   self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
+   self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
+   self.eventHeader.Fill()
    self.digiStraw.Delete()
    self.digitizeStrawTubes()
    self.digiStrawBranch.Fill()
