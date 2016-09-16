@@ -460,6 +460,7 @@ class EventLoop(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
    self.n = 0
+   if fGeo.GetVolume('volTarget'): DisplayNuDetector()
    if fGeo.GetVolume('Ecal'):
  # initialize ecalStructure
     ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
@@ -492,6 +493,27 @@ class EventLoop(ROOT.FairTask):
       self.ecalFiller.Exec('start',sTree.EcalPointLite)
       self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
+ def defaultView(self):
+  v   = ROOT.gEve.GetDefaultGLViewer()
+  cam  = v.CurrentCamera()
+  cam.Reset()
+  return cam,v
+ def topView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(ROOT.TMath.Pi()/2.,0.) # rotation around z axis
+  v.DoDraw()
+ def bottomView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(-ROOT.TMath.Pi()/2.,0.) # rotation around z axis
+  v.DoDraw()
+ def frontView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(0.,ROOT.TMath.Pi()) # rotation around y or x axis
+  v.DoDraw()
+ def sideView(self):
+  cam.v = self.defaultView()
+  cam.RotateRad(0.,-ROOT.TMath.Pi()) # rotation around y or x axis
+  v.DoDraw()
 #
 def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
@@ -505,6 +527,17 @@ def speedUp():
   xvol.SetVisibility(1)
   if x=="Ecal": xvol.SetLineColor(ROOT.kYellow) 
   else:        xvol.SetLineColor(ROOT.kOrange+3) 
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ evmgr.ElementChanged(geoscene,True,True)
+
+# set display properties for tau nu target
+def DisplayNuDetector():
+ for x in ["Wall"]:
+  xvol = fGeo.GetVolume(x)
+  if not xvol: continue
+  xvol.SetVisDaughters(0)
+  xvol.SetVisibility(1)
  sc    = evmgr.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  evmgr.ElementChanged(geoscene,True,True)
@@ -591,6 +624,124 @@ def rename(name='ship.TGeant4.root'):
   x.SetName(nm)
  t.Write()
  f.Close() 
+
+class Rulers(ROOT.FairTask):
+ " add Ruler"
+ def __init__(self):
+  self.ruler  = ROOT.TEveCompound('Rulers')
+  evmgr.AddElement(self.ruler)
+ def show(self,xy=0):
+  self.ruler.DestroyElements()
+  self.ruler.OpenCompound()
+  xpos,ypos = -500., 0.
+  zstart  = ShipGeo.target.z
+  zlength = ShipGeo.MuonStation3.z - zstart + 10*u.m
+  a1 = ROOT.TEveLine()
+  a1.SetNextPoint(xpos,ypos, zstart)
+  a1.SetNextPoint(xpos,ypos, zstart+zlength)
+  a1.SetMainColor(ROOT.kBlue)
+  a1.SetLineWidth(50)
+  self.ruler.AddElement(a1)
+  z=zstart
+  for i in range(int(zlength/100)):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos-0.5*u.m,ypos,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   a1.AddElement(m)
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z+0.5*u.m )
+   m.SetNextPoint(xpos-0.2*u.m,ypos,z+0.5*u.m )
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(2)
+   a1.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos-0.1*u.m,ypos+0.2*u.m,z)
+   a1.AddElement(t1)
+   z+=1*u.m
+  xpos,ypos = 0., 0.
+  if xy==0:  z = ShipGeo.MuonStation3.z+2*u.m
+  else: z=xy 
+  ylength = 7*u.m
+  a2 = ROOT.TEveLine()
+  a2.SetNextPoint(xpos,-ylength, z)
+  a2.SetNextPoint(xpos,ylength, z)
+  a2.SetMainColor(ROOT.kBlue)
+  a2.SetLineWidth(50)
+  self.ruler.AddElement(a2)
+  ypos=-ylength
+  for i in range(-int(ylength/100),int(ylength/100),1):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos+0.05*u.m,ypos,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   a2.AddElement(m)
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,         ypos+0.5*u.m, z )
+   m.SetNextPoint(xpos+0.02*u.m,ypos+0.5*u.m,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(1)
+   a2.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos-0.5*u.m,ypos,z)
+   a2.AddElement(t1)
+   ypos+=1*u.m
+  ty = ROOT.TEveText("y-axis")
+  ty.SetFontSize(20)
+  ty.RefMainTrans().SetPos(0.,ypos+1*u.m,z)
+  ty.SetMainColor(ROOT.kRed-2);
+  a2.AddElement(ty)
+  xpos,ypos = 0., 0.
+  xlength = 3*u.m
+  a3 = ROOT.TEveLine()
+  a3.SetNextPoint(-xlength,0, z)
+  a3.SetNextPoint(xlength,0, z)
+  a3.SetMainColor(ROOT.kBlue)
+  a3.SetLineWidth(50)
+  self.ruler.AddElement(a3)
+  xpos=-xlength
+  for i in range(-int(xlength/100),int(xlength/100),1):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos,ypos-0.05*u.m,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   a3.AddElement(m)
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos+0.5*u.m,ypos, z )
+   m.SetNextPoint(xpos+0.5*u.m,ypos-0.02*u.m,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(2)
+   a3.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos,ypos-0.1*u.m,z)
+   a3.AddElement(t1)
+   xpos+=1*u.m 
+  tx = ROOT.TEveText("x-axis")
+  tx.SetFontSize(20)
+  tx.RefMainTrans().SetPos(xpos+1*u.m,0.,z)
+  tx.SetMainColor(ROOT.kRed-2);
+  a3.AddElement(tx)
+
+  t1 = ROOT.TEveText("SHiP")
+  t1.SetFontSize(200)
+  t1.RefMainTrans().SetPos(0.,600.,ShipGeo.TrackStation1.z-10*u.m)
+  t1.PtrMainTrans().RotateLF(1, 3, ROOT.TMath.PiOver2());
+  t1.SetMainColor(ROOT.kOrange-2);
+  t1.SetFontMode(ROOT.TGLFont.kExtrude);
+  t1.SetLighting(ROOT.kTRUE);
+  a1.AddElement(t1)
+  self.ruler.CloseCompound()
+  sc    = ROOT.gEve.GetScenes()
+  geoscene = sc.FindChild('Geometry scene')
+  ROOT.gEve.ElementChanged(geoscene,True,True)
+ def remove(self):
+  self.ruler.DestroyElements()
 
 def mydebug():               
  t = g.FindObjectAny('cbmsim')
@@ -713,9 +864,10 @@ if hasattr(ShipGeo,'preshowerOption'):
   preshowerPoints  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
   fMan.AddTask(preshowerPoints)
 
-
 # switchOfAll('RockD')
-
+rulers = Rulers()
 SHiPDisplay = EventLoop()
 SHiPDisplay.InitTask()
 SHiPDisplay.NextEvent()
+
+
