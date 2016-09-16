@@ -97,7 +97,7 @@ protected:
     
     Hpt(const Hpt&);
     Hpt& operator=(const Hpt&);
-    ClassDef(Hpt,1)
+    ClassDef(Hpt,2)
 
 };
 #endif 

@@ -25,7 +25,7 @@ outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 dv           = 4 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
-ds           = 5 # 5=TP muon shield, 6=magnetized hadron 
+ds           = 5 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
 if debug>1 : checking4overlaps = True
@@ -125,7 +125,7 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-# - muShieldDesign = 2  # 1=passive 5=active (default) 6=magnetized hadron absorber
+# - muShieldDesign = 2  # 1=passive 5=active (default) 7=short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)

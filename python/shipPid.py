@@ -11,9 +11,9 @@ class Task:
  "initialize"
 
  def __init__(self,main):
-  print "****************************************"
-  print "*** You are using PID version 16.0.3 ***"
-  print "****************************************"
+  print "*******************************************"
+  print "*** You are using PID version 16.0.3 p1 ***"
+  print "*******************************************"
   self.sTree = main.sTree
   self.fpidArray  = ROOT.TClonesArray("pid")
   if not self.sTree.GetBranch("pid"):
@@ -187,6 +187,7 @@ class Task:
     for self.det in self.zpositions:
      rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,self.zpositions[self.det])
 #     print rc
+     extrapFailed = False
      if rc>0:
       px,py,pz  = mom.X(),mom.Y(),mom.Z()
       self.P = m.sqrt(m.pow(px,2)+m.pow(py,2)+m.pow(pz,2))
@@ -194,6 +195,8 @@ class Task:
       self.hcal_ID()
       self.muon_ID()
       self.elec_ID()
+     else: extrapFailed = True
+    if  extrapFailed: continue 
     self.run_hcal_ID()
     self.run_elec_ID()
     self.run_muon_ID()

@@ -18,10 +18,25 @@ class TClonesArray;
 class MagneticSpectrometer:public FairDetector
 {
   public:
-    MagneticSpectrometer(const char* name, const Double_t zMSC, const Double_t zSize, const Double_t FeSlab, const Double_t RpcW, const Double_t ArmW, const Double_t GapV, const Double_t MGap, const Double_t Mfield,  Double_t RetYokeH, Bool_t Active, const char* Title="MagneticSpectrometer");
+  MagneticSpectrometer(const char* name, const Double_t Zcenter, Bool_t Active, const char* Title="MagneticSpectrometer");
     MagneticSpectrometer();
     virtual ~MagneticSpectrometer();
     
+    void SetTotDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetFeDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetRpcDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetRpcStripDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetRpcGasDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetRpcElectrodeDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetRpcPETDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetNFeInArm(Int_t N);
+    void SetNRpcInArm(Int_t N);
+    void SetZDimensionArm(Double_t Z);
+    void SetGapDownstream(Double_t Gap);
+    void SetGapMiddle(Double_t Gap);
+    void SetMagneticField(Double_t B);
+    void SetReturnYokeDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetSmallerYokeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetCoilParameters(Double_t CoilH, Double_t CoilW, Int_t N, Double_t CoilG);
 
     void ConstructGeometry();
@@ -92,25 +107,53 @@ private:
     
 protected:
     
-    Double_t zMSCenter; //z distance of the center of the spectrometer in cm from the center of the vacuum tube
-    Double_t zSizeMS; //Dimension of the whole magnetic spectrometr (1st + 2nd arm + HPTs) alogn beam axis
-    Double_t IronSlabWidth; // Width of the Iron Slabs
-    Double_t RpcWidth; // Width of the Rpc planes
-    Double_t ArmWidth; // Width of the Spectrometer Arms
-    Double_t GapFromVessel; //distance between the end of the second arm of the spectrometer and the decay vessel
-    Double_t MiddleGap; // distance between the two arms of the spectrometer
-    Double_t MagneticField;
-    Double_t ReturnYokeH;
+    Double_t fZcenter; //z distance of the center of the spectrometer in cm from the center of the vacuum tube
+    Double_t fXtot;
+    Double_t fYtot;
+    Double_t fZtot; //Dimension of the whole magnetic spectrometr (1st + 2nd arm + HPTs) alogn beam axis
+    Int_t fNFe;
+    Int_t fNRpc;
+    Double_t fXFe;
+    Double_t fXRpc;
+    Double_t fYFe;
+    Double_t fYRpc;
+    Double_t fZFe; // Width of the Iron Slabs
+    Double_t fZRpc; // Width of the Rpc planes
+    Double_t fZArm; // Width of the Spectrometer Arms
+    Double_t fGapDown; //distance between the end of the second arm of the spectrometer and the decay vessel
+    Double_t fGapMiddle; // distance between the two arms of the spectrometer
+    Double_t fField;
+    Double_t fXRyoke;
+    Double_t fYRyoke;
+    Double_t fZRyoke;
     
-    Double_t CoilGap;
-    Double_t CoilHeight;
-    Double_t CoilWidth;
-    Int_t NCoils;
+    //Dimensions of the smaller part of the yoke
+    Double_t fXRyoke_s;
+    Double_t fYRyoke_s;
+    Double_t fZRyoke_s;
+
+    Double_t fCoilGap;
+    Double_t fCoilH;
+    Double_t fCoilW;
+    Int_t fNCoil;
     
-    
+    //Dimension for detailed RPC simulation:
+    Double_t fXStrip;
+    Double_t fYStrip;
+    Double_t fZStrip;
+    Double_t fXPet;
+    Double_t fYPet;
+    Double_t fZPet;
+    Double_t fXEle;
+    Double_t fYEle;
+    Double_t fZEle;
+    Double_t fXGas;
+    Double_t fYGas;
+    Double_t fZGas;
+
     MagneticSpectrometer(const MagneticSpectrometer&);
     MagneticSpectrometer& operator=(const MagneticSpectrometer&);
-    ClassDef(MagneticSpectrometer,1)
+    ClassDef(MagneticSpectrometer,2)
 
 };
 

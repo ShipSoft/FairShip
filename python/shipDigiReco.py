@@ -250,7 +250,7 @@ class ShipDigiReco:
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = dw
-     if not no_amb: smear = abs(self.random.Gaus(dw,ShipGeo.straw.resol))
+     if not no_amb: smear = abs(self.random.Gaus(dw,ShipGeo.strawtubes.sigma_spatial))
      SmearedHits.append( {'digiHit':key,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'dist':smear} )
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
      if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
@@ -306,7 +306,7 @@ class ShipDigiReco:
     momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance
     covM = ROOT.TMatrixDSym(6)
-    resolution = ShipGeo.straw.resol
+    resolution = ShipGeo.strawtubes.sigma_spatial
     if withT0: resolution = resolution*1.4 # worse resolution due to t0 estimate
     for  i in range(3):   covM[i][i] = resolution*resolution
     covM[0][0]=resolution*resolution*100.

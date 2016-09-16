@@ -2306,6 +2306,11 @@ CoilAluminium   1  26.98 13. 0.9
                 0  1  20.  .001
                 0
 
+Bakelite  -3 1.01 12.01 16.0 1.0 6.0 8.0 1.25 0.057 0.775 0.168
+	   0 1 50. .001
+	   0
+
+
 // ----- Caution with putting materials below that line -----
 // The next materials must specify additional parameters!
 

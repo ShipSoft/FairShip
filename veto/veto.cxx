@@ -386,17 +386,17 @@ void veto::ConstructGeometry()
     supportMedOut = Al;  // for vacuum option
     decayVolumeMed = vac;  // for vacuum option
     vetoMed = Se;  // for liquid scintillator
-
     if (fDesign==5){
     // design 5: simplified trapezoidal design for optimization study
     // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
-      Double_t dx1 = 1.5*m;
-      Double_t slope = dx1/(fTub1z -fTub1length -zFocus);
+      Double_t slope = 2.83*m/(fTub6z - zFocus);// size in TP design
       Double_t dy  = fBtube;
    // make the entrance window
+      Double_t zpos = fTub1z -fTub1length -f_InnerSupportThickness;
+      Double_t dx1 = slope*(zpos - zFocus);
       TGeoVolume *T1Lid = gGeoManager->MakeBox("T1Lid",supportMedIn,dx1,dy,f_InnerSupportThickness);
       T1Lid->SetLineColor(14);
-      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0,fTub1z -fTub1length -f_InnerSupportThickness -zStartDecayVol));
+      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0,zpos - zStartDecayVol));
       TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slope);
       tDecayVol->AddNode(seg1, 1, new TGeoTranslation(0, 0, fTub1z - zStartDecayVol));
       dx1 = slope*(fTub2z -fTub2length - zFocus);
@@ -427,6 +427,19 @@ void veto::ConstructGeometry()
       asmb = dynamic_cast<TGeoShapeAssembly*>(tMaGVol->GetShape());
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
+
+      //Add one more sensitive plane after vacuum tube for timing
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,3.*m,6.*m,15.*mm);
+      TimeDet->SetLineColor(kMagenta-10);
+      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
+      AddSensitiveVolume(TimeDet);
+
+      //Add veto-timing sensitive plane before vacuum tube, same size as entrance window
+      TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,slope*(zpos - zFocus),dy,10.*mm);
+      VetoTimeDet->SetLineColor(kMagenta-10);
+      top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-20.*cm));
+      AddSensitiveVolume(VetoTimeDet);
+
     }   
     else if (fDesign==4){
     // design 4: elliptical double walled tube with LiSci in between
