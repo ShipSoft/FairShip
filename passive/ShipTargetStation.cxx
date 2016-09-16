@@ -42,6 +42,18 @@ ShipTargetStation::ShipTargetStation(const char* name, const Double_t tl,const D
   fsl              = sl;        
 }
 
+ShipTargetStation::ShipTargetStation(const char* name, const Double_t tl,const Double_t tz,
+                                     const int nS, const Double_t sl, const char* Title )
+  : FairModule(name ,Title)
+{
+  fTargetLength    = tl;        
+  fAbsorberLength  = 0;       
+  fAbsorberZ       = 0; 
+  fTargetZ         = tz;
+  fnS              = nS;
+  fsl              = sl;        
+}
+
 // -----   Private method InitMedium 
 Int_t ShipTargetStation::InitMedium(const char* name) 
 {
@@ -152,8 +164,11 @@ void ShipTargetStation::ConstructGeometry()
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());
     Double_t totLength = asmb->GetDZ();
     top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength));
-    cout << "target and absorber postioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
-    
+    if (fAbsorberLength>0){
+     cout << "target and absorber postioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
+    }else{
+     cout << "target at " << fTargetZ <<"m "<< endl;
+    }
 }
 
 ClassImp(ShipTargetStation)
