@@ -51,8 +51,11 @@
 #include "ShipDetectorList.h"
 #include "ShipUnit.h"
 #include "ShipStack.h"
+#include "EmulsionMagnet.h"
 
 #include "TGeoUniformMagField.h"
+#include "TVector3.h"
+
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream,etc
 #include <string.h>
@@ -75,7 +78,7 @@ fTargetPointCollection(new TClonesArray("TargetPoint"))
 {
 }
 
-Target::Target(const char* name, const Double_t zC, const Double_t GapTS, const Double_t Ydist, Bool_t Active,const char* Title)
+Target::Target(const char* name, const Double_t Ydist, Bool_t Active,const char* Title)
 : FairDetector(name, true, ktauTarget),
   fTrackID(-1),
 fVolumeID(-1),
@@ -86,9 +89,7 @@ fLength(-1.),
 fELoss(-1),
 fTargetPointCollection(new TClonesArray("TargetPoint"))
 {
-    zCenter = zC;
     Ydistance = Ydist;
-    GapFromTSpectro = GapTS;
 }
 
 Target::~Target()
@@ -131,20 +132,11 @@ void Target::SetDetectorDesign(Int_t Design)
   Info("SetDetectorDesign"," to %i", fDesign);
 }
 
-void Target::SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH)
+void Target::SetNumberBricks(Double_t col, Double_t row, Double_t wall)
 {
-    LongitudinalSize = LS;
-    TransversalSize = TS;
-    Height = H;
-    BasisHeight = BasisH;
-}
-
-void Target::SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t LowCoilH, Double_t CoilD)
-{
-    CoilRadius = CoilR;
-    UpCoilHeight = UpCoilH;
-    LowCoilHeight = LowCoilH;
-    CoilDistance = CoilD;
+  fNCol = col;
+  fNRow = row;
+  fNWall = wall; 
 }
 
 void Target::SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim)
@@ -194,6 +186,40 @@ void Target::SetTTzdimension(Double_t TTZ)
     TTrackerZ = TTZ;
 }
 
+void Target::SetConfiguration(Int_t config)
+{
+  fMagnetConfig=config;
+}
+
+void Target::SetMagnetHeight(Double_t Y)
+{
+  fMagnetY=Y;
+}
+
+void Target::SetColumnHeight(Double_t Y)
+{
+  fColumnY=Y;
+}
+
+void Target::SetBaseHeight(Double_t Y)
+{
+  fBaseY=Y;
+}
+
+void Target::SetCoilUpHeight(Double_t H1)
+{
+  fCoilH1=H1;
+}
+
+void Target::SetCoilDownHeight(Double_t H2)
+{
+  fCoilH2=H2;
+}
+
+void Target::SetMagneticField(Double_t B)
+{
+  fField = B;
+}
 
 void Target::ConstructGeometry()
 {
@@ -224,245 +250,24 @@ void Target::ConstructGeometry()
     InitMedium("rohacell");
     TGeoMedium *rohacell = gGeoManager->GetMedium("rohacell");
 
-
-    gGeoManager->SetVisLevel(6);
+    TGeoVolume *MagnetVol;
+    // gGeoManager->SetVisLevel(6);
     
-    Double_t MagneticField = 1*tesla;
-    
-    TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-MagneticField,0.); //magnetic field in Goliath pillars
-    TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,MagneticField,0.); //magnetic field in target
-    
-    
-    //***********************************************************************************************
-    //*****************************************   GOLIATH   *****************************************
-    //***********************************************************************************************
-    
-    TGeoBBox *BoxGoliath = new TGeoBBox(TransversalSize/2,Height/2,LongitudinalSize/2);
-    TGeoVolume *volGoliath = new TGeoVolume("volGoliath",BoxGoliath,vacuum);
-    top->AddNode(volGoliath,1,new TGeoTranslation(0,0,zCenter));
-    
-    //
-    //******* UPPER AND LOWER BASE *******
-    //
-    
-    TGeoBBox *Base = new TGeoBBox(TransversalSize/2,BasisHeight/2,LongitudinalSize/2);
-    TGeoVolume *volBase = new TGeoVolume("volBase",Base,Fe);
-    volBase->SetLineColor(kRed);
-    //volBase->SetTransparency(7);
-    volGoliath->AddNode(volBase,1,new TGeoTranslation(0, Height/2 - BasisHeight/2, 0)); //upper part
-    volGoliath->AddNode(volBase,2,new TGeoTranslation(0, -Height/2 + BasisHeight/2, 0)); //lower part
-    
-    //
-    //**************************** MAGNETS ******************************
-    //
-    
-    TGeoRotation *r1 = new TGeoRotation();
-    r1->SetAngles(0,90,0);
-    TGeoCombiTrans t1(0, Height/2 - BasisHeight - UpCoilHeight/2, 0,r1);
-    //t1.Print();
-    TGeoHMatrix *m1 = new TGeoHMatrix(t1);
-    
-    TGeoTube *magnetUp = new TGeoTube(0,CoilRadius,UpCoilHeight/2);
-    TGeoVolume *volmagnetUp = new TGeoVolume("volmagnetUp",magnetUp,Cu);
-    volmagnetUp->SetLineColor(kGreen);
-    volGoliath->AddNode(volmagnetUp,1,m1); //upper part
-    
-    
-    TGeoCombiTrans t2(0, -Height/2 + BasisHeight + LowCoilHeight/2, 0,r1);
-    TGeoHMatrix *m_2 = new TGeoHMatrix(t2);
-    
-    
-    TGeoTube *magnetDown = new TGeoTube(0,CoilRadius,LowCoilHeight/2);
-    TGeoVolume *volmagnetDown = new TGeoVolume("volmagnetDown",magnetDown,Al);
-    volmagnetDown->SetLineColor(kGreen);
-    volGoliath->AddNode(volmagnetDown,1,m_2); //lower part
-    
-    //
-    //********************* LATERAL SURFACES ****************************
-    //
-    
-    Double_t base1 = 135, base2 = 78; //basis of the trapezoid
-    Double_t side1 = 33, side2 = 125, side3 = 57, side4 = 90; //Sides of the columns
-    
-    //***** SIDE Left Front ****
-    
-    //LONGER RECTANGLE
-    TGeoBBox *LateralS1 = new TGeoBBox("LateralS1",side1/2,UpCoilHeight/2,base1/2);
-    TGeoTranslation *tr1 = new TGeoTranslation(-TransversalSize/2 + side1/2, Height/2 - BasisHeight - UpCoilHeight/2, -LongitudinalSize/2 + base1/2);
-    TGeoVolume *volLateralS1 = new TGeoVolume("volLateralS1",LateralS1,Fe);
-    volLateralS1->SetLineColor(kRed);
-    volLateralS1->SetField(magField1);
-    volGoliath->AddNode(volLateralS1, 1, tr1);
-    
-    //TRAPEZOID
-    
-    TGeoArb8 *LateralS2 = new TGeoArb8("LateralS2", UpCoilHeight/2);
-    LateralS2->SetVertex(0, side4, 0);
-    LateralS2->SetVertex(1, side1, 0);
-    LateralS2->SetVertex(2, side1, base1);
-    LateralS2->SetVertex(3, side4, base2);
-    LateralS2->SetVertex(4, side4, 0);
-    LateralS2->SetVertex(5, side1, 0);
-    LateralS2->SetVertex(6, side1, base1);
-    LateralS2->SetVertex(7, side4, base2);
-    
-    TGeoVolume *volLateralS2 = new TGeoVolume("volLateralS2",LateralS2,Fe);
-    volLateralS2->SetLineColor(kRed);
-    volLateralS2->SetField(magField1);
-    
-    TGeoRotation *r2 = new TGeoRotation();
-    r2->SetAngles(0,90,0);
-    TGeoCombiTrans tr3(-TransversalSize/2, Height/2 - BasisHeight - UpCoilHeight/2, -LongitudinalSize/2,r2);
-    TGeoHMatrix *m3_a = new TGeoHMatrix(tr3);
-    volGoliath->AddNode(volLateralS2, 1, m3_a);
-    
-    
-    //LOWER LATERAL SURFACE
-    
-    //LONGER RECTANGLE
-    TGeoBBox *LateralSurface1low = new TGeoBBox("LateralSurface1low",side1/2,(CoilDistance + LowCoilHeight)/2,side2/2);
-    TGeoVolume *volLateralSurface1low = new TGeoVolume("volLateralSurface1low",LateralSurface1low,Fe);
-    volLateralSurface1low->SetLineColor(kRed);
-    volLateralSurface1low->SetField(magField1);
-    TGeoTranslation *tr1low = new TGeoTranslation(-TransversalSize/2 +side1/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, -LongitudinalSize/2 + side2/2);
-    volGoliath->AddNode(volLateralSurface1low, 1, tr1low);;
-    
-    
-    //SHORTER RECTANGLE
-    TGeoBBox *LateralSurface2low = new TGeoBBox("LateralSurface2low",side3/2,(CoilDistance + LowCoilHeight)/2,base2/2);
-    TGeoVolume *volLateralSurface2low = new TGeoVolume("volLateralSurface2low",LateralSurface2low,Fe);
-    volLateralSurface2low->SetLineColor(kRed);
-    TGeoTranslation *tr2low = new TGeoTranslation(-TransversalSize/2 +side1 + side3/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, -LongitudinalSize/2 + base2/2);
-    volGoliath->AddNode(volLateralSurface2low, 1, tr2low);
-    volLateralSurface2low->SetField(magField1);
-    
-    //***** SIDE Right Front ****
-    
-    //LONGER RECTANGLE
-    TGeoTranslation *tr1_b = new TGeoTranslation(-TransversalSize/2 + side1/2, Height/2 - BasisHeight - UpCoilHeight/2, LongitudinalSize/2 - base1/2);
-    TGeoVolume *volLateralS1_b = new TGeoVolume("volLateralS1_b",LateralS1,Fe);
-    volLateralS1_b->SetLineColor(kRed);
-    volLateralS1_b->SetField(magField1);
-    volGoliath->AddNode(volLateralS1_b, 1, tr1_b);
-    
-    //TRAPEZOID
-    TGeoArb8 *LateralS2_b = new TGeoArb8("LateralS2_b",UpCoilHeight/2);
-    LateralS2_b ->SetVertex(0, side4, 0);
-    LateralS2_b ->SetVertex(1, side1, 0);
-    LateralS2_b ->SetVertex(2, side1, base1);
-    LateralS2_b ->SetVertex(3, side4, base2);
-    LateralS2_b ->SetVertex(4, side4, 0);
-    LateralS2_b ->SetVertex(5, side1, 0);
-    LateralS2_b ->SetVertex(6, side1, base1);
-    LateralS2_b ->SetVertex(7, side4, base2);
-    
-    TGeoVolume *volLateralS2_b = new TGeoVolume("volLateralS2_b",LateralS2_b,Fe);
-    volLateralS2_b->SetLineColor(kRed);
-    volLateralS2_b->SetField(magField1);
-    
-    TGeoRotation *r2_b = new TGeoRotation();
-    r2_b->SetAngles(0,270,0);
-    TGeoCombiTrans tr2_b(-TransversalSize/2 , Height/2 - BasisHeight - UpCoilHeight/2, LongitudinalSize/2,r2_b);
-    TGeoHMatrix *m3_b = new TGeoHMatrix(tr2_b);
-    volGoliath->AddNode(volLateralS2_b, 1, m3_b);
-    
-    
-    //LOWER LATERAL SURFACE
-    
-    //LONGER RECTANGLE
-    TGeoVolume *volLateralSurface1blow = new TGeoVolume("volLateralSurface1blow",LateralSurface1low,Fe);
-    volLateralSurface1blow->SetLineColor(kRed);
-    volLateralSurface1blow->SetField(magField1);
-    TGeoTranslation *tr1blow = new TGeoTranslation(-TransversalSize/2 +side1/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, LongitudinalSize/2 - side2/2);
-    volGoliath->AddNode(volLateralSurface1blow, 1, tr1blow);;
-    
-    
-    //SHORTER RECTANGLE
-    TGeoVolume *volLateralSurface2blow = new TGeoVolume("volLateralSurface2blow",LateralSurface2low,Fe);
-    volLateralSurface2blow->SetLineColor(kRed);
-    volLateralSurface2blow->SetField(magField1);
-    TGeoTranslation *tr2blow = new TGeoTranslation(-TransversalSize/2 +side1 + side3/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, LongitudinalSize/2 - base2/2);
-    volGoliath->AddNode(volLateralSurface2blow, 1, tr2blow);
-    
-    
-    //***** SIDE left Back ****
-    
-    
-    //LONGER RECTANGLE
-    TGeoBBox *LateralS1_d = new TGeoBBox("LateralS1_d",side1/2,(UpCoilHeight + LowCoilHeight + CoilDistance)/2,base1/2);
-    TGeoTranslation *tr1_d = new TGeoTranslation(TransversalSize/2 - side1/2, Height/2 - BasisHeight - (UpCoilHeight + LowCoilHeight + CoilDistance)/2, -LongitudinalSize/2 + base1/2);
-    TGeoVolume *volLateralS1_d = new TGeoVolume("volLateralS1_d",LateralS1_d,Fe);
-    volLateralS1_d->SetLineColor(kRed);
-    volLateralS1_d->SetField(magField1);
-    volGoliath->AddNode(volLateralS1_d, 1, tr1_d);
-    
-    //TRAPEZOID
-    
-    TGeoArb8 *LateralS2_d = new TGeoArb8("LateralS2_d",(UpCoilHeight + LowCoilHeight + CoilDistance)/2);
-    LateralS2_d->SetVertex(0, side4, 0);
-    LateralS2_d->SetVertex(1, side1, 0);
-    LateralS2_d->SetVertex(2, side1, base1);
-    LateralS2_d->SetVertex(3, side4, base2);
-    LateralS2_d->SetVertex(4, side4, 0);
-    LateralS2_d->SetVertex(5, side1, 0);
-    LateralS2_d->SetVertex(6, side1, base1);
-    LateralS2_d->SetVertex(7, side4, base2);
-    
-    
-    TGeoVolume *volLateralS2_d = new TGeoVolume("volLateralS2_d",LateralS2_d,Fe);
-    volLateralS2_d->SetLineColor(kRed);
-    volLateralS2_d->SetField(magField1);
-    
-    TGeoRotation *r2_d = new TGeoRotation();
-    r2_d->SetAngles(0,270,180);
-    TGeoCombiTrans tr2_d(TransversalSize/2 , Height/2 - BasisHeight - (UpCoilHeight + LowCoilHeight + CoilDistance)/2, -LongitudinalSize/2,r2_d);
-    TGeoHMatrix *m3_d = new TGeoHMatrix(tr2_d);
-    volGoliath->AddNode(volLateralS2_d, 1, m3_d);
-    
-    
-    //***** SIDE right Back ****
-    
-    
-    //LONGER RECTANGLE
-    TGeoBBox *LateralS1_c = new TGeoBBox("LateralS1_c",side1/2,(UpCoilHeight + LowCoilHeight + CoilDistance)/2,base1/2);
-    TGeoTranslation *tr1_c = new TGeoTranslation(TransversalSize/2 - side1/2, Height/2 - BasisHeight - (UpCoilHeight + LowCoilHeight + CoilDistance)/2, LongitudinalSize/2 - base1/2);
-    TGeoVolume *volLateralS1_c = new TGeoVolume("volLateralS1_c",LateralS1_c,Fe);
-    volLateralS1_c->SetLineColor(kRed);
-        volLateralS1_c->SetField(magField1);
-    volGoliath->AddNode(volLateralS1_c, 1, tr1_c);
-    
-    //TRAPEZOID
-    
-    TGeoArb8 *LateralS2_c = new TGeoArb8("LateralS2_c",(UpCoilHeight + LowCoilHeight + CoilDistance)/2);
-    LateralS2_c ->SetVertex(0, side4, 0);
-    LateralS2_c ->SetVertex(1, side1, 0);
-    LateralS2_c ->SetVertex(2, side1, base1);
-    LateralS2_c ->SetVertex(3, side4, base2);
-    LateralS2_c ->SetVertex(4, side4, 0);
-    LateralS2_c ->SetVertex(5, side1, 0);
-    LateralS2_c ->SetVertex(6, side1, base1);
-    LateralS2_c ->SetVertex(7, side4, base2);
-    
-    TGeoVolume *volLateralS2_c = new TGeoVolume("volLateralS2_c",LateralS2_c,Fe);
-    volLateralS2_c->SetLineColor(kRed);
-    volLateralS2_c->SetField(magField1);
-    
-    TGeoRotation *r2_c = new TGeoRotation();
-    r2_c->SetAngles(0,90,180);
-    TGeoCombiTrans tr2_c(TransversalSize/2 , Height/2 - BasisHeight - (UpCoilHeight + LowCoilHeight + CoilDistance)/2, LongitudinalSize/2,r2_c);
-    TGeoHMatrix *m3_c = new TGeoHMatrix(tr2_c);
-    volGoliath->AddNode(volLateralS2_c, 1, m3_c);
-    
-
-    
-    //***********************************************************************************************
-    //****************************************   NU_TARGET   ****************************************
-    //***********************************************************************************************
-    
-    
-    Int_t NCol = 15;
-    Int_t NRow = 7;
-    Int_t NWall = 11;
+ 
+   
+    TGeoUniformMagField *magField2 = new TGeoUniformMagField(); //magnetic field in target
+    //cout << fMagnetConfig<<endl;
+    if(fMagnetConfig==0) //NEW
+      {
+	magField2->SetFieldValue(fField,0,0.);
+	MagnetVol=gGeoManager->GetVolume("Davide");
+      }
+    if(fMagnetConfig==1) //TP
+      {
+	MagnetVol=gGeoManager->GetVolume("Goliath");
+	magField2->SetFieldValue(0.,fField,0.);
+      }
+    //cout<< fNCol<<"  "<< fNRow<<"  " << fNWall<< endl;
     
     Int_t NPlates = 56; //Number of doublets emulsion + Pb
     Int_t NRohacellGap = 2;
@@ -474,11 +279,18 @@ void Target::ConstructGeometry()
     cout << "Cell Width = " << CellWidth << endl;
     cout << "*******************************************" << endl;
     */
+    
+   
 
     TGeoBBox *TargetBox = new TGeoBBox("TargetBox",XDimension/2, YDimension/2, ZDimension/2);
     TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox,vacuum);
     volTarget->SetField(magField2);
-    volGoliath->AddNode(volTarget,1,new TGeoTranslation(0,-60 + YDimension/2,0));
+    volTarget->SetVisibility(1);
+    volTarget->SetVisDaughters(1);
+    if(fMagnetConfig==1) //TP
+      MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+fCoilH2+YDimension/2,0));
+    if(fMagnetConfig==0) //NEW
+      MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
 
     
     //
@@ -487,7 +299,7 @@ void Target::ConstructGeometry()
 
     if(fDesign == 1)
       {    
-    
+       	//cout<<"Here"<<endl;
 	//Cell = brick + CES
 	TGeoBBox *Cell = new TGeoBBox("cell", BrickX/2, BrickY/2, CellWidth/2);
 	TGeoVolume *volCell = new TGeoVolume("Cell",Cell,vacuum);
@@ -578,7 +390,7 @@ TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
     volRow->SetLineColor(20);
     
     Double_t d_cl_x = -XDimension/2;
-    for(int j= 0; j < NCol; j++)
+    for(int j= 0; j < fNCol; j++)
     {
         volRow->AddNode(volCell,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
         d_cl_x += BrickX;
@@ -588,7 +400,7 @@ TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
     TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
     
     Double_t d_cl_y = -YDimension/2;
-    for(int k= 0; k< NRow; k++)
+    for(int k= 0; k< fNRow; k++)
     {
         volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
         
@@ -601,7 +413,7 @@ TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
     Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
     Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
 
-    for(int l = 0; l < NWall; l++)
+    for(int l = 0; l < fNWall; l++)
     {
         volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +CellWidth/2));
         
@@ -612,6 +424,8 @@ TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
 
     if(fDesign == 2)
       {
+	//cout<<"Here"<<endl;
+	
     	//Cell = brick + CES
 	TGeoBBox *Cell = new TGeoBBox("cell", BrickX/2, BrickY/2, CellWidth/2);
 	TGeoVolume *volCell = new TGeoVolume("Cell",Cell,vacuum);
@@ -636,7 +450,7 @@ TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
 	volRow->SetLineColor(20);
 	
 	Double_t d_cl_x = -XDimension/2;
-	for(int j= 0; j < NCol; j++)
+	for(int j= 0; j < fNCol; j++)
 	  {
 	    volRow->AddNode(volCell,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
 	    d_cl_x += BrickX;
@@ -644,9 +458,11 @@ TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
 	
 	TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, CellWidth/2);
 	TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
-	
+	volWall->SetLineColor(kGray);	
+	volWall->SetVisibility(1);
+	volWall->SetVisDaughters(1);
 	Double_t d_cl_y = -YDimension/2;
-	for(int k= 0; k< NRow; k++)
+	for(int k= 0; k< fNRow; k++)
 	  {
 	    volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
 	    
@@ -659,7 +475,7 @@ TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
 	Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
 	Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
 	
-	for(int l = 0; l < NWall; l++)
+	for(int l = 0; l < fNWall; l++)
 	  {
 	    volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +CellWidth/2));
 	    

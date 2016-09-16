@@ -26,7 +26,7 @@ class TClonesArray;
 class Target : public FairDetector
 {
 public:
-  Target(const char* name, const Double_t zC, const Double_t GapTS, const Double_t Ydist, Bool_t Active, const char* Title = "NuTauTarget");
+  Target(const char* name, const Double_t Ydist, Bool_t Active, const char* Title = "NuTauTarget");
     Target();
     virtual ~Target();
     
@@ -34,17 +34,22 @@ public:
     void ConstructGeometry();
 
     void SetDetectorDesign(Int_t Design);    
-    void SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH);
-    void SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t LowCoilH, Double_t CoilD);
-    
     void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
     void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t LeadTh, Double_t AllPW);
     void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ);
 
     void SetCESParam(Double_t RohG, Double_t LayerCESW, Double_t CESW, Double_t CESPack);
     void SetCellParam(Double_t CellW);
-    
+    void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
     void SetTTzdimension(Double_t TTZ);
+    //Functions to get parameters relative to the magnet in which the detector is placed
+    void SetConfiguration(Int_t config);//1=TP, 0=new
+    void SetMagnetHeight(Double_t Y);
+    void SetBaseHeight(Double_t Y);
+    void SetColumnHeight(Double_t Y);
+    void SetCoilUpHeight(Double_t H1);
+    void SetCoilDownHeight(Double_t H2);
+    void SetMagneticField(Double_t B);
 
     //void DecodeVolumeID(Int_t detID, int &NWall, int &NRow, int &NColumn, bool &BrickorCES, int &NPlate, bool &TopBot ,bool &TT);
     void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot);
@@ -103,7 +108,7 @@ public:
     Target(const Target&);
     Target& operator=(const Target&);
     
-    ClassDef(Target,1)
+    ClassDef(Target,2)
     
 private:
     
@@ -128,21 +133,21 @@ protected:
 
     Int_t fDesign; //1 = with Emulsion, 2 = only lead + rohacell
     
-    //Goliath
-    
-    Double_t Height;
-    Double_t zCenter;
-    Double_t LongitudinalSize;
-    Double_t TransversalSize;
-    Double_t GapFromTSpectro;
-    Double_t CoilRadius;
-    Double_t UpCoilHeight;
-    Double_t LowCoilHeight;
-    Double_t CoilDistance;
-    Double_t BasisHeight;
-    
+    //Some Magnet parameters necessary for target positioning
+    Double_t fMagnetY;
+    Double_t fColumnY;
+    Double_t fBaseY;
+    Double_t fCoilH1;
+    Double_t fCoilH2;
+    Int_t fMagnetConfig;
+
     //Bricks
-    
+    Double_t fField;
+
+    Int_t fNCol;
+    Int_t fNRow;
+    Int_t fNWall;
+
     Double_t XDimension; //dimension of the target box (= 2 x 2 x 1) m^3
     Double_t YDimension;
     Double_t ZDimension;
