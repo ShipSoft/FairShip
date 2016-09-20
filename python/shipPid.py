@@ -11,9 +11,9 @@ class Task:
  "initialize"
 
  def __init__(self,main):
-  print "*******************************************"
-  print "*** You are using PID version 16.0.3 p1 ***"
-  print "*******************************************"
+  print "****************************************"
+  print "*** You are using PID version 16.0.4 ***"
+  print "****************************************"
   self.sTree = main.sTree
   self.fpidArray  = ROOT.TClonesArray("pid")
   if not self.sTree.GetBranch("pid"):
@@ -59,6 +59,7 @@ class Task:
   self.Ecal_EP_threshold_max = 10
   self.Hit_number_threshold=3    #number of pad-hits around the extrapolated tracks in MuonDet
   self.hitlimit_x,self.hitlimit_y=5,5    #x-y area to check the number of pad-hits
+  self.cutNdf = 25
 
   self.P_min00,self.P_max00,self.dx00_min,self.dx00_max,self.dy00_min,self.dy00_max=-99,-99,-99,-99,-99,-99
   self.P_min01,self.P_max01,self.dx01_min,self.dx01_max,self.dy01_min,self.dy01_max=-99,-99,-99,-99,-99,-99
@@ -83,7 +84,7 @@ class Task:
   self.pID.Fill()
 
  def HcalHits(self):
- ## merging muonPoint hits inside each pad ##  
+ ## hcalPoint hits ##  
   self.hcal1 = []
   self.hcal2 = []
   self.new_hcal2 = []
@@ -182,26 +183,33 @@ class Task:
     self.vol_mu1,self.vol_ecal,self.vol_hcal=False,False,False
     self.pos_pad_x0,self.pos_pad_y0,self.pos_pad_x1,self.pos_pad_y1,self.pos_pad_x2,self.pos_pad_y2,self.pos_pad_x3,self.pos_pad_y3=0,0,0,0,0,0,0,0
     self.extrap_X_ecal,self.extrap_Y_ecal,self.extrap_X_hcal,self.extrap_Y_hcal=0.,0.,0.,0.
+    self.P=0.
     i+=1
+    fst = fT.getFitStatus()
+    if not fst.isFitConverged() or fst.getNdf() < self.cutNdf: continue
+    fittedState = fT.getFittedState()
+    self.P = fittedState.getMomMag()
     self.extrapStates = {}
     for self.det in self.zpositions:
      rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,self.zpositions[self.det])
 #     print rc
-     extrapFailed = False
      if rc>0:
-      px,py,pz  = mom.X(),mom.Y(),mom.Z()
-      self.P = m.sqrt(m.pow(px,2)+m.pow(py,2)+m.pow(pz,2))
       self.extrapStates[self.det] = [pos.X(),pos.Y(),self.zpositions[self.det]]
       self.hcal_ID()
       self.muon_ID()
       self.elec_ID()
-     else: extrapFailed = True
-    if  extrapFailed: continue 
+    pidObject=ROOT.pid()
+    pidObject.SetTrackID(i)
+    if not rc> 0:
+      pidObject.SetElectronID(-1)
+      pidObject.SetMuonID(-1)
+      pidObject.SetHadronID(-1)
+      nPID=ppid.GetEntries()
+      ppid[nPID]=pidObject
+      continue
     self.run_hcal_ID()
     self.run_elec_ID()
     self.run_muon_ID()
-    pidObject=ROOT.pid()
-    pidObject.SetTrackID(i)
     if self.El==True and self.vol_ecal==False:
       pidObject.SetElectronID(1)
 #      print '==== Is Electron'
