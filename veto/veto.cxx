@@ -429,7 +429,7 @@ void veto::ConstructGeometry()
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
 
       //Add one more sensitive plane after vacuum tube for timing
-      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,3.*m,6.*m,15.*mm);
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,dx2,dy,15.*mm);
       TimeDet->SetLineColor(kMagenta-10);
       top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
       AddSensitiveVolume(TimeDet);
