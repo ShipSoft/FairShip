@@ -9,7 +9,7 @@ shipRoot_conf.configure()
 
 fMan = None
 fRun = None
-pdg  = ROOT.TDatabasePDG()
+pdg  = ROOT.TDatabasePDG.Instance()
 g    = ROOT.gROOT 
 
 ParFile    = None
@@ -118,6 +118,8 @@ class DrawEcalCluster(ROOT.FairTask):
 # ADC noise simulated Guassian with \sigma=1 MeV
       DClus = ROOT.TEveBox()
       DClus.SetName('EcalCluster_'+str(cl)+'_'+str(i)) 
+      DClus.SetPickable(ROOT.kTRUE)
+      DClus.SetTitle(aClus.__repr__())
       DClus.SetMainColor(ROOT.kRed-4)
       DClus.SetMainTransparency("\x10")
       DClus.SetVertex(0,x1,y1,self.z_ecal)
@@ -134,9 +136,11 @@ class DrawEcalCluster(ROOT.FairTask):
  def DrawParticle(self,n):
   self.comp.OpenCompound()
   DTrack = ROOT.TEveLine()
+  DTrack.SetPickable(ROOT.kTRUE)
   DTrack.SetMainColor(ROOT.kCyan)
   DTrack.SetLineWidth(4)
   aP=sTree.Particles[n]
+  DTrack.SetTitle(aP.__repr__())
   DTrack.SetName('Prtcle_'+str(n))
   DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
   lam = (self.Targetz - aP.Vz())/aP.Pz()
@@ -193,9 +197,11 @@ class DrawTracks(ROOT.FairTask):
  def DrawParticle(self,n):
   self.comp.OpenCompound()
   DTrack = ROOT.TEveLine()
+  DTrack.SetPickable(ROOT.kTRUE)
   DTrack.SetMainColor(ROOT.kCyan)
   DTrack.SetLineWidth(4)
   aP=sTree.Particles[n]
+  DTrack.SetTitle(aP.__repr__())
   DTrack.SetName('Prtcle_'+str(n))
   DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
   lam = (self.Targetz - aP.Vz())/aP.Pz()
@@ -205,6 +211,8 @@ class DrawTracks(ROOT.FairTask):
   self.comp.OpenCompound()
   fT = sTree.MCTrack[n]
   DTrack = ROOT.TEveLine()
+  DTrack.SetPickable(ROOT.kTRUE)
+  DTrack.SetTitle(fT.__repr__())
   p = pdg.GetParticle(fT.GetPdgCode()) 
   if p : pName = p.GetName()
   else:  pName =  str(fT.GetPdgCode())
@@ -241,6 +249,8 @@ class DrawTracks(ROOT.FairTask):
   for fT in sTree.MCTrack:
    n+=1
    DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
+   DTrack.SetTitle(fT.__repr__())
    fT.GetStartVertex(fPos)
    hitlist = {}
    hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
@@ -307,6 +317,8 @@ class DrawTracks(ROOT.FairTask):
    if not fst.isFitConverged(): continue
    if fst.getNdf() < 20: continue
    DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
+   DTrack.SetTitle(fT.__repr__())
    fstate = fT.getFittedState(0) 
    fPos = fstate.getPos()
    fMom = fstate.getMom()
@@ -364,9 +376,11 @@ class DrawTracks(ROOT.FairTask):
     if fst.getNdf() < 20: tracksOK=False
    if not tracksOK: continue
    DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
    DTrack.SetMainColor(ROOT.kCyan)
    DTrack.SetLineWidth(4)
    DTrack.SetName('Particle_'+str(n))
+   DTrack.SetTitle(aP.__repr__())
    DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
    lam = (self.Targetz - aP.Vz())/aP.Pz()
    DTrack.SetNextPoint(aP.Vx()+lam*aP.Px(),aP.Vy()+lam*aP.Py(),self.Targetz)
@@ -482,7 +496,7 @@ class EventLoop(ROOT.FairTask):
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
    else  : self.n=i
-   fRun.Run(self.n) # go for first event
+   fRun.Run(self.n,self.n+1) # go for first event
 # check if tracks are made from real pattern recognition
    if sTree.GetBranch("FitTracks_PR"):    sTree.FitTracks = sTree.FitTracks_PR
    if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
@@ -508,11 +522,15 @@ class EventLoop(ROOT.FairTask):
   v.DoDraw()
  def frontView(self):
   cam,v = self.defaultView()
-  cam.RotateRad(0.,ROOT.TMath.Pi()) # rotation around y or x axis
+  cam.RotateRad(0.,ROOT.TMath.Pi()/2.) # rotation around y or x axis
+  v.DoDraw()
+ def backView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(0.,-ROOT.TMath.Pi()/2.) # rotation around y or x axis
   v.DoDraw()
  def sideView(self):
-  cam.v = self.defaultView()
-  cam.RotateRad(0.,-ROOT.TMath.Pi()) # rotation around y or x axis
+  cam,v = self.defaultView()
+  cam.RotateRad(0.,ROOT.TMath.Pi()) # rotation around y or x axis
   v.DoDraw()
 #
 def speedUp():
@@ -634,7 +652,7 @@ class Rulers(ROOT.FairTask):
   self.ruler.DestroyElements()
   self.ruler.OpenCompound()
   xpos,ypos = -500., 0.
-  zstart  = ShipGeo.target.z
+  zstart  = ShipGeo.target.z0
   zlength = ShipGeo.MuonStation3.z - zstart + 10*u.m
   a1 = ROOT.TEveLine()
   a1.SetNextPoint(xpos,ypos, zstart)
@@ -691,7 +709,7 @@ class Rulers(ROOT.FairTask):
    a2.AddElement(t1)
    ypos+=1*u.m
   ty = ROOT.TEveText("y-axis")
-  ty.SetFontSize(20)
+  ty.SetFontSize(10)
   ty.RefMainTrans().SetPos(0.,ypos+1*u.m,z)
   ty.SetMainColor(ROOT.kRed-2);
   a2.AddElement(ty)
@@ -723,7 +741,7 @@ class Rulers(ROOT.FairTask):
    a3.AddElement(t1)
    xpos+=1*u.m 
   tx = ROOT.TEveText("x-axis")
-  tx.SetFontSize(20)
+  tx.SetFontSize(10)
   tx.RefMainTrans().SetPos(xpos+1*u.m,0.,z)
   tx.SetMainColor(ROOT.kRed-2);
   a3.AddElement(tx)
@@ -789,11 +807,11 @@ def debugStraw(n):
 from basiclibs import *  
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
-if geoFile: fRun.SetGeomFile(geoFile)
-if os.path.islink(InputFile): 
-  rfn = os.path.realpath(InputFile).split('eos')[1]
-  InputFile  = 'root://eoslhcb.cern.ch//eos/'+rfn
+if geoFile: 
+ if geoFile[0:4] == "/eos": geoFile="root://eoslhcb.cern.ch/"+geoFile
+ fRun.SetGeomFile(geoFile)
 
+if InputFile[0:4] == "/eos": InputFile="root://eoslhcb.cern.ch/"+InputFile
 if hasattr(fRun,'SetSource'):
  inFile = ROOT.FairFileSource(InputFile)
  fRun.SetSource(inFile)
