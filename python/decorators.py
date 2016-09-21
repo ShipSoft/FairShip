@@ -26,9 +26,14 @@ def FitTrackPrintOut(x):
    txt = '("FitTrack") fit not converged'
   return txt
 def TParticlePrintOut(x):
-  txt = '("TParticle") %s  P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.P(),x.Vz()/100.)
+  txt = '("TParticle") %s  P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.P(),x.Vz()/u.m)
   return txt
-
+def ecalReconstructedPrintOut(cl):
+  txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.RecoE(),cl.X()/u.m,cl.Y()/u.m)
+  return txt
+def ecalClusterPrintOut(cl):
+  txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.Energy(),cl.X()/u.m,cl.Y()/u.m)
+  return txt
 def Dump(x):
   k=0
   for obj in x: 
@@ -45,4 +50,6 @@ ROOT.genfit.Track.__repr__ = FitTrackPrintOut
 ROOT.TClonesArray.Dump = Dump
 ROOT.TVector3.__repr__ = TVector3PrintOut
 ROOT.TParticle.__repr__ = TParticlePrintOut
+ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
+ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
 
