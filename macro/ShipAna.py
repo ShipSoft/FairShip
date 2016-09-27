@@ -780,6 +780,7 @@ def HNLKinematics():
 caloTasks = []
 sTree.GetEvent(0)
 ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
 ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
 ecalFiller.SetUseMCPoints(ROOT.kTRUE)
 ecalFiller.StoreTrackInformation()

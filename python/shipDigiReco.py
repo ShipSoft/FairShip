@@ -1,4 +1,4 @@
-import ROOT,shipVertex,shipPatRec 
+import os,ROOT,shipVertex,shipPatRec,shipDet_conf
 import shipunit as u
 import rootUtils as ut
 from array import array
@@ -76,6 +76,7 @@ class ShipDigiReco:
    dflag = 0
    if debug: dflag = 10
    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
    ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
    ecalFiller.SetUseMCPoints(ROOT.kTRUE)
    ecalFiller.StoreTrackInformation()

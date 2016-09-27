@@ -42,7 +42,7 @@ def posHcal(z,hfile):
  if rewrite: fn.close()  
  hcal = ROOT.hcal("Hcal", ROOT.kTRUE, sz)
  return hcal,HcalZSize
-def posEcal(z,efile):
+def makeEcalGeoFile(z,efile):
  EcalZSize = 0
  sz = efile+"z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
@@ -63,6 +63,9 @@ def posEcal(z,efile):
      EcalZSize = float(l[len('EcalZSize')+1:].split('#')[0]) 
  f.close()
  if rewrite: fn.close()  
+ return EcalZSize,sz
+def posEcal(z,efile):
+ EcalZSize,sz = makeEcalGeoFile(z,efile)
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
  return ecal,EcalZSize
 

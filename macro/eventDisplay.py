@@ -474,10 +474,12 @@ class EventLoop(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
    self.n = 0
+   self.first = True
    if fGeo.GetVolume('volTarget'): DisplayNuDetector()
    if fGeo.GetVolume('Ecal'):
  # initialize ecalStructure
-    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo" 
+    if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
     self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
     if ecalGeoFile.find("5x10")<0:   
           self.ecalFiller.SetUseMCPoints(ROOT.kFALSE)
@@ -507,6 +509,13 @@ class EventLoop(ROOT.FairTask):
       self.ecalFiller.Exec('start',sTree.EcalPointLite)
       self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
+   if self.first:
+# make pointsets pickable
+    for x in mcHits: 
+     p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())
+     p.SetPickable(ROOT.kTRUE)
+     p.SetTitle(p.__repr__())
+     self.first = False
  def defaultView(self):
   v   = ROOT.gEve.GetDefaultGLViewer()
   cam  = v.CurrentCamera()
@@ -838,21 +847,17 @@ if withGeo:
   GTrack      = ROOT.FairMCTracks("GeoTracks",verbose)
   fMan.AddTask(GTrack)
   fMan.AddTask(Track)
-VetoPoints  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
-StrawPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
-EcalPoints  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
-HcalPoints  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
-MuonPoints  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
-RpcPoints   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
-TargetPoints   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
 
-fMan.AddTask(VetoPoints)
-fMan.AddTask(MuonPoints)
-fMan.AddTask(EcalPoints)
-fMan.AddTask(HcalPoints)
-fMan.AddTask(StrawPoints)
-fMan.AddTask(RpcPoints)
-fMan.AddTask(TargetPoints)
+mcHits = {}
+mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
+mcHits['StrawPoints'] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
+mcHits['EcalPoints']  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
+mcHits['HcalPoints']  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
+mcHits['MuonPoints']  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
+mcHits['RpcPoints']   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
+mcHits['TargetPoints']   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
+
+for x in mcHits: fMan.AddTask(mcHits[x])
 
 fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 #visopt, set drawing mode :
@@ -866,6 +871,7 @@ sTree = fRman.GetInChain()
 fGeo  = ROOT.gGeoManager 
 top   = fGeo.GetTopVolume()
 evmgr = ROOT.gEve
+
 if not fRun.GetGeoFile().FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # try to figure out which ecal geo to load
@@ -881,7 +887,6 @@ if hasattr(ShipGeo,'preshowerOption'):
  if ShipGeo.preshowerOption >0: 
   preshowerPoints  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
   fMan.AddTask(preshowerPoints)
-
 # switchOfAll('RockD')
 rulers = Rulers()
 SHiPDisplay = EventLoop()
