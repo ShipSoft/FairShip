@@ -176,6 +176,9 @@ if simEngine == "Pythia8":
   pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
+  if ds==7: # short muon shield
+   P8gen.SetLmin(44*u.m)
+   P8gen.SetLmax(107*u.m)
   if inputFile: 
 # read from external file
    P8gen.UseExternalFile(inputFile, firstEvent)
