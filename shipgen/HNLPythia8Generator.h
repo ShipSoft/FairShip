@@ -1,17 +1,12 @@
 #ifndef PNDH8GENERATOR_H
 #define PNDH8GENERATOR_H 1
-// Avoid the inclusion of dlfcn.h by Pyhtia.h that CINT is not able to process
-#ifdef __CINT__
-#define _DLFCN_H_
-#define _DLFCN_H
-#endif
 
 #include "TROOT.h"
 #include "TString.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "FairGenerator.h"
-#include "Pythia.h"
+#include "Pythia8/Pythia.h"
 #include "TRandom1.h"
 #include "TRandom3.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN

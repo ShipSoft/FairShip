@@ -226,10 +226,11 @@ if simEngine == "muonDIS":
 if simEngine == "Nuage":
  primGen.SetTarget(0., 0.)
  Nuagegen = ROOT.NuageGenerator()
- print 'Nuage position info input=',ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim
+ Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
+ print 'Nuage position info input=',ship_geo.EmuMagnet.zC-ship_geo.NuTauTarget.zdim, ship_geo.EmuMagnet.zC+ship_geo.NuTauTarget.zdim
  #--------------------------------
  #to Generate neutrino interactions in the whole neutrino target
- #Nuagegen.SetPositions(ship_geo.NuTauTarget.z0, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2);
+# Nuagegen.SetPositions(ship_geo.EmuMagnet.zC, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2)
  #--------------------------------
  #to Generate neutrino interactions ONLY in ONE brick
  ntt = 6
@@ -240,13 +241,14 @@ if simEngine == "Nuage":
  endx = -ship_geo.NuTauTarget.xdim/2 + (nXcells+1)*ship_geo.NuTauTarget.BrX
  starty = -ship_geo.NuTauTarget.ydim/2 + nYcells*ship_geo.NuTauTarget.BrY 
  endy = - ship_geo.NuTauTarget.ydim/2 + (nYcells+1)*ship_geo.NuTauTarget.BrY
- startz = ship_geo.NuTauTarget.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTarget.TTZ + nZcells * ship_geo.NuTauTarget.CellW
- endz = ship_geo.NuTauTarget.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTarget.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
+ startz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
+ endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
  Nuagegen.SetPositions(ship_geo.target.z0, startz, endz, startx, endx, starty, endy)
  #--------------------------------
  Nuagegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Nuagegen)
  nEvents = min(nEvents,Nuagegen.GetNevents())
+ run.SetPythiaDecayer("DecayConfigNuAge.C")
  print 'Generate ',nEvents,' with Nuage input', ' first event',firstEvent
 # -----Neutrino Background------------------------
 if simEngine == "Genie":

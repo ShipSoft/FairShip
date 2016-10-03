@@ -262,7 +262,7 @@ class DrawTracks(ROOT.FairTask):
     da.GetStartVertex(fPos)
     hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
   # loop over all sensitive volumes to find hits
-   for P in ["vetoPoint","muonPoint","EcalPoint","HcalPoint","preshowerPoint","strawtubesPoint","ShipRpcPoint","TargetPoints"]:
+   for P in ["vetoPoint","muonPoint","EcalPoint","HcalPoint","preshowerPoint","strawtubesPoint","ShipRpcPoint","TargetPoint"]:
     if not sTree.GetBranch(P): continue
     c=eval("sTree."+P)
     for p in c:
@@ -885,8 +885,8 @@ else:
   ecalGeoFile = ShipGeo.ecal.File
 if hasattr(ShipGeo,'preshowerOption'): 
  if ShipGeo.preshowerOption >0: 
-  preshowerPoints  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
-  fMan.AddTask(preshowerPoints)
+  mcHits['preshowerPoints']  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
+  fMan.AddTask(mcHits['preshowerPoints'])
 # switchOfAll('RockD')
 rulers = Rulers()
 SHiPDisplay = EventLoop()
