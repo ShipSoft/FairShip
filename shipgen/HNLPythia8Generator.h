@@ -61,8 +61,8 @@ class HNLPythia8Generator : public FairGenerator
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId  = id; };
   void SetHNLId(Int_t id) { fHNL = id; };
-  void SetLmin(Int_t z) { fLmin = z; };
-  void SetLmax(Int_t z) { fLmax = z; };
+  void SetLmin(Double_t z) { fLmin = z*10; };
+  void SetLmax(Double_t z) { fLmax = z*10; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetfFDs(Double_t z) { fFDs = z; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
@@ -97,7 +97,7 @@ class HNLPythia8Generator : public FairGenerator
   Bool_t fDeepCopy;    // not used
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
 
-  ClassDef(HNLPythia8Generator,4);
+  ClassDef(HNLPythia8Generator,5);
 };
 
 #endif /* !PNDH8GENERATOR_H */
