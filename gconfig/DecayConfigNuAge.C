@@ -9,9 +9,9 @@ void DecayConfig() {
 	decayer->SetDebugLevel(1);
         TPythia8* tp8 = TPythia8::Instance();
         tp8->ReadString("ProcessLevel:all = off");
-        tp8->ReadString("15:new  tau-             tau+               2  -3   0    1.77682    0.00000    0.00000    0.00000  8.71100e-02   0   0   0   1   0");
-        tp8->ReadString("15:addChannel      1   1    0    16   13  ");       
-        tp8->ReadString("15:mayDecay = on");
+        // example how to overwrite decay table
+        // tp8->ReadString("15:new  tau-             tau+               2  -3   0    1.77682    0.00000    0.00000    0.00000  8.71100e-02   0   0   0   1   0");
+        // tp8->ReadString("15:addChannel      1   1    0    16   13  ");       
 	decayer->Init();
 	// Tell the concrete monte carlo to use the external decayer.  The
 	// external decayer will be used for:
@@ -25,12 +25,17 @@ void DecayConfig() {
 	gMC->SetExternalDecayer(decayer);
         gMC->SetUserDecay(411);
         gMC->SetUserDecay(-411);
+        tp8->ReadString("411:mayDecay = off");
         gMC->SetUserDecay(421);
         gMC->SetUserDecay(-421);
+        tp8->ReadString("421:mayDecay = off");
         gMC->SetUserDecay(4122);
         gMC->SetUserDecay(-4122);
+        tp8->ReadString("15:mayDecay = off"); 
         gMC->SetUserDecay(431);
         gMC->SetUserDecay(-431);
+        tp8->ReadString("431:mayDecay = off"); 
         gMC->SetUserDecay(15);
         gMC->SetUserDecay(-15);
+        tp8->ReadString("15:mayDecay = off");
 }
