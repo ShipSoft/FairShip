@@ -115,7 +115,9 @@ def configure(run,ship_geo):
 
  magnet_design = 2
  if ship_geo.tankDesign == 5: magnet_design = 3
- if ship_geo.strawDesign > 1 : magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y)
+ if ship_geo.strawDesign > 1 : 
+   if not hasattr(ship_geo.Bfield,'x') :  ship_geo.Bfield.x   = 3.*u.m
+   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  detectorList.append(magnet)
   
@@ -133,7 +135,7 @@ def configure(run,ship_geo):
 
  detectorList.append(Veto)
 
- if ship_geo.muShieldDesign not in [2,3,4]:
+ if ship_geo.muShieldDesign not in [2,3,4] and hasattr(ship_geo.tauMS,'Xtot'):
   taumagneticspectrometer = ROOT.MagneticSpectrometer("MagneticSpectrometer", ship_geo.tauMS.zMSC,  ROOT.kTRUE)
   taumagneticspectrometer.SetTotDimensions(ship_geo.tauMS.Xtot,ship_geo.tauMS.Ytot, ship_geo.tauMS.Ztot )
   taumagneticspectrometer.SetFeDimensions(ship_geo.tauMS.XFe,ship_geo.tauMS.YFe, ship_geo.tauMS.ZFe)
