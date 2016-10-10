@@ -147,8 +147,8 @@ class ShipDigiReco:
   else:
    ecalClusters      = ROOT.TClonesArray("ecalCluster") 
    ecalReconstructed = ROOT.TClonesArray("ecalReconstructed") 
-   self.EcalClusters = self.sTree.Branch("EcalClusters",self.ecalClusters,32000,-1)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed,32000,-1)
+   self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
+   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
 #
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
 # init geometry and mag. field
@@ -177,8 +177,9 @@ class ShipDigiReco:
     elif x.GetName() == 'ecalFiller': x.Exec('start',self.sTree.EcalPointLite)
     elif x.GetName() == 'ecalMatch':  x.Exec('start',self.ecalReconstructed, self.sTree.MCTrack)
     else : x.Exec('start')
-   self.EcalClusters.Fill()
-   self.EcalReconstructed.Fill()
+   if len(self.caloTasks)>0:
+    self.EcalClusters.Fill()
+    self.EcalReconstructed.Fill()
    if vertexing:
 # now go for 2-track combinations
     self.Vertexing.execute()
