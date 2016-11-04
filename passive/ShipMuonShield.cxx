@@ -141,15 +141,16 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
   {
     Double_t Clgap,Clgap2;
     int color[4];
-    
-    if (gap<20&&NotMagnet==0){
-      Clgap =20;
-      if(gap<2.){gap=2.;}
-    }else{Clgap=gap;}
-    if (gap2<20&&NotMagnet==0){
-      Clgap2 =20;
-      if(gap2<2.){gap2=2.;}
-    }else{Clgap2=gap2;}
+
+    if (NotMagnet) {
+      Clgap = gap;
+      Clgap2 = gap2;
+    } else {
+      Clgap = std::max(20., gap);
+      Clgap2 = std::max(20., gap2);
+      gap = std::max(2., gap);
+      gap2 = std::max(2., gap2);
+    }
 
     color[0] = 30; color[1] = 31; color[2] = 38; color[3] = 45;
 
