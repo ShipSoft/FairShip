@@ -140,7 +140,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
 				  Double_t gap,Double_t gap2, Double_t Z, Bool_t NotMagnet)
   {
     Double_t Clgap,Clgap2;
-    int color[4];
+    int color[4] = {30,31,38,45};
 
     if (NotMagnet) {
       Clgap = gap;
@@ -152,7 +152,6 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       gap2 = std::max(2., gap2);
     }
 
-    color[0] = 30; color[1] = 31; color[2] = 38; color[3] = 45;
 
     Int_t testGap = 0.1;   // gap between fields in the corners for mitred joints (Geant goes crazy when they touch each other)
 				 
