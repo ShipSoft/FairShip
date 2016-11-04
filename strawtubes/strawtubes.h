@@ -59,6 +59,9 @@ class strawtubes: public FairDetector
     void SetStrawLengthVeto(Double_t strawlengthveto); 
     void SetVacBox_x(Double_t vacbox_x);
     void SetVacBox_y(Double_t vacbox_y);
+    void SetVetoYDim(Double_t vetoydim);
+    void SetTr12YDim(Double_t tr12ydim); 
+    void SetTr34YDim(Double_t tr34ydim);      
     void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
@@ -129,6 +132,12 @@ class strawtubes: public FairDetector
     Double_t     fDeltaz_view;            //!  Distance (z) between views
     Double_t     fVacBox_x;               //!  x size of station vacuumbox
     Double_t     fVacBox_y;               //!  y size of station vacuumbox
+    Double_t     fvetoydim;               //!  y size of veto station
+    Double_t     ftr12ydim;               //!  y size of tr12 stations
+    Double_t     ftr34ydim;               //!  y size of tr34 stations
+    Int_t        fStraws_per_layer_veto;  //!  Number of straws in one veto layer
+    Int_t        fStraws_per_layer_tr12;  //!  Number of straws in one tr12 layer
+    Int_t        fStraws_per_layer_tr34;  //!  Number of straws in one tr34 layer
     Double_t     v_drift;                 //! drift velocity  
     Double_t     sigma_spatial;           //! spatial resolution 
     /** container for data points */

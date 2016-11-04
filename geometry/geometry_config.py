@@ -79,10 +79,21 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber5 = AttrDict(z=zset)
      zset=z4+30.*u.cm+windowBulge/2.
      c.Chamber6 = AttrDict(z=zset)
+     c.Veto = AttrDict(z=0*u.cm)
+     c.Veto.innerSupport = 3.*u.cm 
+     c.Veto.innerSupportMed = "steel"
+     c.Veto.outerSupport = 8.*u.mm
+     c.Veto.outerSupportMed = "Aluminum"
+     c.Veto.sensitiveThickness = 0.3*u.m
+     c.Veto.sensitiveMed = "Scintillator"
+     c.Veto.decayMed = "vacuums"
+     c.Veto.rib = 3.*u.cm
+     c.Veto.ribMed = "steel"
      # horizontal width at start and focus point, for conical/rectangular size
      # envelope (46,1.2) or (46,0.9) end at T4: (100.,2.5)  London slides, https://indico.cern.ch/event/508465/contributions/2166894/    
-     c.zFocus = -5*u.m # +15*u.m # (latest with charm) downstream from target, will have neutrinos going from outside to inside, not so good for vacuum option.
-     c.xMax = +2.5*u.m # max horizontal width at T4
+     c.zFocusX = -5*u.m # +15*u.m # (latest with charm) downstream from target, will have neutrinos going from outside to inside, not so good for vacuum option.
+     c.zFocusY = -5*u.m # for the moment, identical to X
+     c.xMax    = +2.5*u.m # max horizontal width at T4
      # 
      c.TrackStation4 = AttrDict(z=z4)
      zset=z4-200.*u.cm
@@ -101,10 +112,6 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.strawtubes = AttrDict(z=0*u.cm)
     
-    if tankDesign == 5:
-       c.strawtubes.StrawLength        = c.xMax
-    else:
-       c.strawtubes.StrawLength        = 250.*u.cm
     c.strawtubes.InnerStrawDiameter = 0.975*u.cm
     c.strawtubes.WallThickness      = 0.0039*u.cm
     c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
@@ -119,7 +126,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.DeltazView         = 10.*u.cm
     c.strawtubes.VacBox_x           = 300.*u.cm
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
-       
+           
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
@@ -300,13 +307,24 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
+    c.strawtubes.StrawLength     = c.xMax
     if tankDesign == 5:
-       zF = c.target.z0+c.zFocus
+       zF = c.target.z0+c.zFocusX
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
        c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)   
     else:
        c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
        c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength  
+# height of tracking stations
+    if tankDesign == 5:
+     zF = c.target.z0+c.zFocusY
+     c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
+     c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
+     c.strawtubes.tr34ydim           = int(c.Yheight/2.)  
+    else:
+     c.strawtubes.vetoydim           = int(c.Yheight/2.)
+     c.strawtubes.tr12ydim           = int(c.Yheight/2.)
+     c.strawtubes.tr34ydim           = int(c.Yheight/2.)  
 
 
     #Parameters for tau neutrino target Magnet

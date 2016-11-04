@@ -76,8 +76,12 @@ def printWeightsandFields():
      lvl0  = vl0.GetLogicalVolume()
      if lvl0.GetNoDaughters()==0: magnetMass+=printWF(vl0) 
      for da in range(lvl0.GetNoDaughters()):        
-       vl   = lvl0.GetDaughter(da)
-       magnetMass+=printWF(vl)
+       vl1   = lvl0.GetDaughter(da)
+       lvl1  = vl1.GetLogicalVolume()
+       if lvl1.GetNoDaughters()==0: magnetMass+=printWF(vl1) 
+       for da in range(lvl1.GetNoDaughters()):        
+         vl2   = lvl1.GetDaughter(da)
+         magnetMass+=printWF(vl2)
    print 'total magnet mass',magnetMass/1000.,'t'
    return
 def getRunManager():
