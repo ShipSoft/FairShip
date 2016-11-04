@@ -409,17 +409,33 @@ void ShipMuonShield::ConstructGeometry()
       mag1->RegisterYourself();
       mag2->RegisterYourself();
 
-      TGeoTube *abs = new TGeoTube("absorber",0,400,(dZ1+dZ2-15));
- // TODO: names should be picked up automatically - work in progress :D
-       TString holl = "MagnAbsorb1_MiddleMagL:mag1-MagnAbsorb1_MiddleMagR:mag1-MagnAbsorb1_MagRetL:mag1-MagnAbsorb1_MagRetR:mag1-MagnAbsorb1_MagCLB:mag1-MagnAbsorb1_MagCLT:mag1-MagnAbsorb1_MagCRT:mag1-MagnAbsorb1_MagCRB:mag1\
-   -MagnAbsorb1_MagTopLeft:mag1-MagnAbsorb1_MagTopRight:mag1-MagnAbsorb1_MagBotLeft:mag1-MagnAbsorb1_MagBotRight:mag1\
-   -MagnAbsorb2_MiddleMagL:mag2-MagnAbsorb2_MiddleMagR:mag2-MagnAbsorb2_MagRetL:mag2-MagnAbsorb2_MagRetR:mag2-MagnAbsorb2_MagCLB:mag2-MagnAbsorb2_MagCLT:mag2-MagnAbsorb2_MagCRT:mag2-MagnAbsorb2_MagCRB:mag2\
-   -MagnAbsorb2_MagTopLeft:mag2-MagnAbsorb2_MagTopRight:mag2-MagnAbsorb2_MagBotLeft:mag2-MagnAbsorb2_MagBotRight:mag2";
-   TGeoCompositeShape *absorberShape = new TGeoCompositeShape("Absorber","absorber-"+holl); // cutting out magnet parts from absorber 
-     TGeoVolume *absorber = new TGeoVolume("AbsorberVol",absorberShape,iron);
-    absorber->SetLineColor(42); // brown / light red
-    tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1+dZ2)));
-         
+      TGeoTube *abs = new TGeoTube("absorber", 0, 400, (dZ1 + dZ2 - 15));
+      const std::vector<TString> absorber_magnets = {"MagnAbsorb1",
+						     "MagnAbsorb2"};
+      const std::vector<TString> magnet_components = {
+	  "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
+	  "_MagCLB",     "_MagCLT",      "_MagCRT",     "_MagCRB",
+	  "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
+      };
+      TString absorber_magnet_components;
+      for (auto &&magnet_component : magnet_components) {
+	// format: "-<magnetName>_<magnet_component>:<translation>"
+	absorber_magnet_components +=
+	    ("-" + absorber_magnets[0] + magnet_component + ":" +
+	     mag1->GetName());
+	absorber_magnet_components +=
+	    ("-" + absorber_magnets[1] + magnet_component + ":" +
+	     mag2->GetName());
+      }
+      TGeoCompositeShape *absorberShape = new TGeoCompositeShape(
+	  "Absorber", "absorber" + absorber_magnet_components); // cutting out
+								// magnet parts
+								// from absorber
+      TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
+      absorber->SetLineColor(42); // brown / light red
+      tShield->AddNode(absorber, 1,
+		       new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1 + dZ2)));
+
       for(int nM=2;nM<7;nM++)
       {
 	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
