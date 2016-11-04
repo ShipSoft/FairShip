@@ -438,17 +438,59 @@ void ShipMuonShield::ConstructGeometry()
 
       for(int nM=2;nM<7;nM++)
       {
-	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
-		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
-		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
-		   gapIn[nM],gapOut[nM],Z[nM],0);
+	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
+		     dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
+		     midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
+		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], 0);
+
+	// TODO split out into function/method?
+	double dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
+	double dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
+	double floor = -5. * m; // TODO use same variable for floor definition
+	double slope =
+	    (dYIn[nM] + dXIn[nM] - dYOut[nM] - dXOut[nM]) / (2 * dZf[nM]);
+	double w1 = 2 * dXIn[nM] + std::max(20., gapIn[nM]);
+	double w2 = 2 * dXOut[nM] + std::max(20., gapOut[nM]);
+	double anti_overlap = 0.1;
+	double h1 = 0.5 * (floor + dYIn[nM] + dXIn[nM] - anti_overlap);
+	double h2 = 0.5 * (floor + dYOut[nM] + dXOut[nM] - anti_overlap);
+	std::vector<double> verticesIn = {
+	    -w1, -h1,
+	    +w1, -h1,
+	    +w1, +h1,
+	    -w1, +h1,
+	    -w1, -h1 + slope * m,
+	    +w1, -h1 + slope * m,
+	    +w1, +h1,
+	    -w1, +h1,
+	};
+	std::vector<double> verticesOut = {
+	    -w2, -h2 - slope * m,
+	    +w2, -h2 - slope * m,
+	    +w2, +h2,
+	    -w2, +h2,
+	    -w2, -h2,
+	    +w2, -h2,
+	    +w2, +h2,
+	    -w2, +h2,
+	};
+	TGeoVolume *pillar1 =
+	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM - 1),
+				  iron, 0.5 * m, verticesIn.data());
+	TGeoVolume *pillar2 =
+	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), iron,
+				  0.5 * m, verticesOut.data());
+	top->AddNode(pillar1, 1, new TGeoTranslation(
+				     0, -0.5 * (dYIn[nM] + dXIn[nM] - floor),
+				     Z[nM] - dZf[nM] + 0.5 * m));
+	top->AddNode(pillar2, 1, new TGeoTranslation(
+				     0, -0.5 * (dYOut[nM] + dXOut[nM] - floor),
+				     Z[nM] + dZf[nM] - 0.5 * m));
       }
           
       }else{
 	CreateTube("AbsorberAdd",     iron, 15, 400, dZ0,43,tShield,1,0, 0, zEndOfAbsorb - dZ0);
 	CreateTube("AbsorberAddCore", iron,  0,  15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
-          
-   
       
       for(int nM=0;nM<7;nM++)
       {
@@ -481,7 +523,13 @@ void ShipMuonShield::ConstructGeometry()
       Double_t dZD =  100*m + fMuonShieldLength;
       TGeoBBox *box3    = new TGeoBBox("box3", 15*m, 15*m,dZD/2.);
       TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
-      TGeoCompositeShape *compRockD = new TGeoCompositeShape("compRockD", "box3-box4");
+      TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, 2.5 * m,
+				    fMuonShieldLength / 2. - 5 * m);
+      TGeoTranslation *t1 = new TGeoTranslation(
+	  "t1", 0, -7.5 * m, -dZD / 2. + fMuonShieldLength / 2. - 5 * m);
+      t1->RegisterYourself();
+      TGeoCompositeShape *compRockD =
+	  new TGeoCompositeShape("compRockD", "(box3-box4)+shield_floor:t1");
       TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
       rockD->SetLineColor(11);  // grey
       rockD->SetTransparency(50);
@@ -490,5 +538,6 @@ void ShipMuonShield::ConstructGeometry()
     } else {
      Fatal("ShipMuonShield","Design %i does not match implemented designs",fDesign);
     }
+
 }
 ClassImp(ShipMuonShield)
