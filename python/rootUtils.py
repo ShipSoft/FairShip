@@ -7,7 +7,7 @@ except:
   pass
 
 
-from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas
+from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas,TProfile
 import os,sys
 
 def readHists(h,fname):
@@ -51,12 +51,20 @@ def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1
   elif nbinsy >0:       h[key] = TH2F(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
   else:                 h[key] = TH1F(rkey,title,nbinsx,xmin,xmax)
   h[key].SetDirectory(gROOT)
-
+def bookProf(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,ymin=None,ymax=None,option=""):
+  if key==None : 
+    print 'missing key'
+    return
+  rkey = str(key) # in case somebody wants to use integers, or floats as keys 
+  if h.has_key(key):    h[key].Reset()  
+  if ymin==None or ymax==None:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,option)
+  else:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,ymin,ymax,option)
+  h[key].SetDirectory(gROOT)
 def writeHists(h,fname,plusCanvas=False):
   f = TFile(fname,'RECREATE')
   for akey in h:
     cln = h[akey].Class().GetName()
-    if not cln.find('TH')<0:   h[akey].Write()
+    if not cln.find('TH')<0 or not cln.find('TP')<0:   h[akey].Write()
     if plusCanvas and not cln.find('TC')<0:   h[akey].Write()
   f.Close()  
 def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):
