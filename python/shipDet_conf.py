@@ -80,7 +80,8 @@ def configure(run,ship_geo):
   
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
- cave.SetGeometryFileName("cave.geo")
+ if ship_geo.tankDesign < 5: cave.SetGeometryFileName("cave.geo")
+ else: cave.SetGeometryFileName("caveWithAir.geo")
  detectorList.append(cave)
 
  if ship_geo.muShieldDesign==6 or ship_geo.muShieldDesign==7: # magnetized hadron absorber defined in ShipMuonShield 
