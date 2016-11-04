@@ -507,15 +507,14 @@ class EventLoop(ROOT.FairTask):
    if sTree.FindBranch("EcalClusters"):
      if sTree.EcalClusters.GetEntries()>0:
       self.ecalFiller.Exec('start',sTree.EcalPointLite)
-      self.calos.ExecuteTask()
+     self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
-   if self.first:
 # make pointsets pickable
-    for x in mcHits: 
+   for x in mcHits: 
      p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())
-     p.SetPickable(ROOT.kTRUE)
-     p.SetTitle(p.__repr__())
-     self.first = False
+     if p: 
+      p.SetPickable(ROOT.kTRUE)
+      p.SetTitle(p.__repr__())
  def defaultView(self):
   v   = ROOT.gEve.GetDefaultGLViewer()
   cam  = v.CurrentCamera()

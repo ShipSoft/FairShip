@@ -135,7 +135,8 @@ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheigh
 tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if eventDisplay: tag = tag+'_D'
-if dy: tag = str(dy)+'.'+tag 
+if dv == 5 : tag = 'conical.'+tag
+elif dy: tag = str(dy)+'.'+tag 
 if not os.path.exists(outputDir):
   os.makedirs(outputDir)
 outFile = "%s/ship.%s.root" % (outputDir, tag)
