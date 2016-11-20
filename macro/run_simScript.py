@@ -12,14 +12,16 @@ theHNLcouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
-nEvents      = 100 
+nEvents      = 1000
 firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
 HNL          = True
+RPVSUSY      = False
 eventDisplay = False
-inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+#inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+inputFile    = "/home/vagrant/ShipSoft/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 defaultInputFile = True
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
@@ -179,6 +181,18 @@ if simEngine == "Pythia8":
   if inputFile: 
 # read from external file
    P8gen.UseExternalFile(inputFile, firstEvent)
+
+
+ if RPVSUSY:
+  P8gen = ROOT.HNLPythia8Generator()
+  import pythia8_conf
+  pythia8_conf.configurerpvsusy(P8gen,1.0,[1e-3,1e-3],1e3,2,'c',deepCopy)
+  P8gen.SetSmearBeam(1*u.cm) # finite beam size
+  P8gen.SetParameters("ProcessLevel:all = off")
+  if inputFile: 
+# read from external file
+   P8gen.UseExternalFile(inputFile, firstEvent)
+ 
  if charmonly: 
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, firstEvent)

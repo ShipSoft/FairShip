@@ -34,6 +34,7 @@ for o, a in opts:
             dy = float(a)
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
+print dy,inputFile
 
 if not dy:
   # try to extract from input file name
@@ -42,8 +43,6 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
-else:
- inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4_rec.root'
 
 if inputFile[0:4] == "/eos":
   eospath = "root://eoslhcb.cern.ch/"+inputFile
