@@ -146,7 +146,7 @@ void TargetTracker::ConstructGeometry()
   TGeoMedium *medium =gGeoManager->GetMedium("TTmedium");
   TGeoVolume *volTarget=gGeoManager->GetVolume("volTarget");
 
-  TGeoBBox *TTBox = new TGeoBBox("TTBox",TTrackerX/2, -60+TTrackerY/2, TTrackerZ/2);
+  TGeoBBox *TTBox = new TGeoBBox("TTBox",TTrackerX/2, TTrackerY/2, TTrackerZ/2);
     TGeoVolume *volTT = new TGeoVolume("TargetTracker",TTBox,medium);
     volTT->SetLineColor(kBlue - 1);
     AddSensitiveVolume(volTT);

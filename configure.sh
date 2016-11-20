@@ -35,7 +35,7 @@ if [ "$distribution$version" = "ScientificCERNSLC6" ]; then
  if [[ "$xx" =~ "lcg" ]]; then
  # check that FairSoft is compiled with devtoolset
   echo "*** execute lcg setup"
-  /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_82 x86_64-slc6-gcc49-opt Python >> tmp.sh
+  /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_85 x86_64-slc6-gcc49-opt Python >> tmp.sh
   source tmp.sh
   rm tmp.sh
  fi

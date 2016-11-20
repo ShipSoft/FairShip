@@ -34,7 +34,6 @@ for o, a in opts:
             dy = float(a)
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
-print dy,inputFile
 
 if not dy:
   # try to extract from input file name
@@ -43,14 +42,16 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
+else:
+ inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4_rec.root'
 
 if inputFile[0:4] == "/eos":
   eospath = "root://eoslhcb.cern.ch/"+inputFile
   f = ROOT.TFile.Open(eospath)
   sTree = f.cbmsim
-elif not inputFile.find(',')<0 :  
+elif not inputFile.find(',')<0 :
   sTree = ROOT.TChain("cbmsim")
-  for x in inputFile.split(','):
+  for x in putFile.split(','):
    sTree.AddFile(x)
 else:
   f = ROOT.TFile(inputFile)
@@ -72,12 +73,20 @@ if not fgeo.FindKey('ShipGeo'):
  else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
  print 'found ecal geo for ',ecalGeoFile
  # re-create geometry and mag. field
+ if not dy:
+  # try to extract from input file name
+  tmp = inputFile.split('.')
+  try:
+    dy = float( tmp[1]+'.'+tmp[2] )
+  except:
+    dy = 10.
  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
 else: 
  # new geofile, load Shipgeo dictionary written by run_simScript.py
   upkl    = Unpickler(fgeo)
   ShipGeo = upkl.load('ShipGeo')
   ecalGeoFile = ShipGeo.ecal.File
+  dy = ShipGeo.Yheight/u.m
 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
@@ -209,8 +218,16 @@ def VertexError(t1,t2,PosDir,CovMat,scalFac):
    covX.Mult(tmp,transT)
    return X,covX,dist
 
-def Rsq(X,Y,dy):
-  return (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
+def Rsq(X,Y,Z,dy):
+  if ShipGeo.tankDesign < 5: 
+# TP
+   return (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
+  else:
+   flag = 2.
+   node = sGeo.FindNode(X,Y,Z)
+   mat = node.GetVolume().GetMaterial()
+   if mat.GetName() == ShipGeo.Veto['decayMed']: flag = 0.
+   return flag
 #
 def ImpactParameter(point,tPos,tMom):
   t = 0
@@ -234,21 +251,18 @@ def checkHNLorigin(sTree):
    theHNLVx = sTree.MCTrack[hnlkey+1]
    if theHNLVx.GetStartZ() < ShipGeo.vetoStation.z+100.*u.cm : flag = False
    if theHNLVx.GetStartZ() > ShipGeo.TrackStation1.z : flag = False
-   X,Y =  theHNLVx.GetStartX(),theHNLVx.GetStartY()
-   if Rsq(X,Y,dy)>1: flag = False
+   X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
+   if Rsq(X,Y,Z,dy)>1: flag = False
  return flag 
 def checkFiducialVolume(sTree,tkey,dy):
-# to be replaced later with using track extrapolator,
-# for now use MC truth
+# extrpolate track to middle of magnet and check if in decay volume
    inside = True
-   if not fiducialCut: return inside 
-   mcPartKey = sTree.fitTrack2MC[tkey]
-   for ahit in sTree.strawtubesPoint:
-     if ahit.GetTrackID() == mcPartKey:
-        X,Y = ahit.GetX(),ahit.GetY()
-        if Rsq(X,Y,dy)>1:
-         inside = False    
-         break
+   if not fiducialCut: return True
+   fT = sTree.FitTracks[tkey]
+   rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,ShipGeo.Bfield.z)
+   if not rc: return False
+   if Rsq(pos.X(),pos.Y(),pos.Z(),dy)>1:
+    return False
    return inside
 def getPtruthFirst(sTree,mcPartKey):
    Ptruth,Ptruthx,Ptruthy,Ptruthz = -1.,-1.,-1.,-1.
@@ -553,7 +567,7 @@ def myEventLoop(n):
 # look at distance to tracks 
     for fT in sTree.FitTracks:
      rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
-     if rc>0:
+     if rc:
       pdgcode = fT.getFittedState().getPDG()
       tmp = PDG.GetParticle(pdgcode)
       if tmp: tName = 'ecalReconstructed_dist_'+tmp.GetName()
@@ -680,7 +694,7 @@ def myEventLoop(n):
      xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)
      if HNLMom == -1: continue
  # check if decay inside decay volume
-    if Rsq(xv,yv,dy) > 1 : continue
+    if Rsq(xv,yv,zv,dy) > 1 : continue
     if zv < vetoStation_zDown  : continue  
     if zv > T1Station_zUp      : continue  
     h['Doca'].Fill(doca) 
@@ -777,6 +791,7 @@ def HNLKinematics():
 caloTasks = []
 sTree.GetEvent(0)
 ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
 ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
 ecalFiller.SetUseMCPoints(ROOT.kTRUE)
 ecalFiller.StoreTrackInformation()

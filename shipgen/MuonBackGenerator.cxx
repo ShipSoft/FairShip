@@ -99,7 +99,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     vx = vx + dx/100.; 
     vy = vy + dy/100.; 
   }
-  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
+  cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
   cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   return kTRUE;
 }

@@ -131,23 +131,23 @@ void Hpt::ConstructGeometry()
     AddSensitiveVolume(volHPT);
     
     //1 closer to Goliath
-    volMSBox->AddNode(volHPT,1,new TGeoTranslation(0,-10*cm,-zSizeMS/2 + DimZ/2));
+    volMSBox->AddNode(volHPT,1,new TGeoTranslation(0,0,-zSizeMS/2 + DimZ/2));
     
     //2 closer to Arm1
     //NB: 55 cm is the distance between the borders of the last 2 drift tubes
-    volMSBox->AddNode(volHPT,2,new TGeoTranslation(0,-10*cm,-zSizeMS/2 + 3*DimZ/2 +55*cm));
+    volMSBox->AddNode(volHPT,2,new TGeoTranslation(0,0,-zSizeMS/2 + 3*DimZ/2 +55*cm));
    
     //Central Drift tubes // 3 closer to Arm1, 4 closer to Arm2
-    volMSBox->AddNode(volHPT,3,new TGeoTranslation(0,-10*cm,-72*cm/2 - DimZ/2));
+    volMSBox->AddNode(volHPT,3,new TGeoTranslation(0,0,-72*cm/2 - DimZ/2));
 
     //NB: 72cm is the distance between the borders of the central drift tubes
-    volMSBox->AddNode(volHPT,4,new TGeoTranslation(0,-10*cm,72*cm/2 + DimZ/2));
+    volMSBox->AddNode(volHPT,4,new TGeoTranslation(0,0,72*cm/2 + DimZ/2));
    
     
     //After spectro Drift Tubes 5 closer to Arm, 6 closer to decay vessel
-    volMSBox->AddNode(volHPT,5,new TGeoTranslation(0,-10*cm,zSizeMS/2 - 3*DimZ/2 - 55*cm));
+    volMSBox->AddNode(volHPT,5,new TGeoTranslation(0,0,zSizeMS/2 - 3*DimZ/2 - 55*cm));
     
-    volMSBox->AddNode(volHPT,6,new TGeoTranslation(0,-10*cm,zSizeMS/2 - DimZ/2));
+    volMSBox->AddNode(volHPT,6,new TGeoTranslation(0,0,zSizeMS/2 - DimZ/2));
   
 }
 

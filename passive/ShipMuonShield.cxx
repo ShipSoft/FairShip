@@ -63,8 +63,20 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      dXgap= gap;
      fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7+dZ8) + LE ; //leave some space for nu-tau detector   
     }
+    
+ if (fDesign==7){
+     dZ1 = L1;
+     dZ2 = L2;
+     dZ3 = L3;
+     dZ4 = L4;
+     dZ5 = L5;
+     dZ6 = L6;
+     dZ7 = L7;
+     fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7) + LE ;
+   }
+    
  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
- if(fDesign==6){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
+ if(fDesign==6||fDesign==7){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
 }
 
@@ -129,12 +141,19 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
   {
     Double_t Clgap,Clgap2;
     int color[4];
-    if (gap<20&&NotMagnet==0){Clgap =20;} else{Clgap=gap;}
-    if (gap2<20&&NotMagnet==0){Clgap2 =20;} else{Clgap2=gap2;}
-    if(NotMagnet==0 || 1>0){color[0] = 30; color[1] = 31; color[2] = 38; color[3] = 45;}
-      else{color[0] = 1; color[1] = 2; color[2] = 3; color[3] = 4;}
+    
+    if (gap<20&&NotMagnet==0){
+      Clgap =20;
+      if(gap<2.){gap=2.;}
+    }else{Clgap=gap;}
+    if (gap2<20&&NotMagnet==0){
+      Clgap2 =20;
+      if(gap2<2.){gap2=2.;}
+    }else{Clgap2=gap2;}
 
-    Int_t testGap = 0.1;
+    color[0] = 30; color[1] = 31; color[2] = 38; color[3] = 45;
+
+    Int_t testGap = 0.1;   // gap between fields in the corners for mitred joints (Geant goes crazy when they touch each other)
 				 
     Double_t cornerMainL[16] = {-dX/2+middleGap+dX/2,-dY-dX+testGap , -dX/2+middleGap+dX/2,dY+dX-testGap , dX/2+middleGap+dX/2,dY-testGap , dX/2+middleGap+dX/2,-dY+testGap ,
                                -dX2/2+middleGap2+dX2/2,-dY2-dX2+testGap , -dX2/2+middleGap2+dX2/2,dY2+dX2-testGap , dX2/2+middleGap2+dX2/2,dY2-testGap , dX2/2+middleGap2+dX2/2,-dY2+testGap };
@@ -163,18 +182,18 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
 				 
 				 
     char magnetId[100];
-    const char* str1L ="-MiddleMagL";
-    const char* str1R ="-MiddleMagR";
-    const char* str2 ="-MagRetL";
-    const char* str3 ="-MagRetR";
-    const char* str4 ="-MagCLB";
-    const char* str5 ="-MagCLT";
-    const char* str6 ="-MagCRT";
-    const char* str7 ="-MagCRB";
-    const char* str8 ="-MagTopLeft";
-    const char* str9 ="-MagTopRight";
-    const char* str10 ="-MagBotLeft";
-    const char* str11 ="-MagBotRight";
+    const char* str1L ="_MiddleMagL";
+    const char* str1R ="_MiddleMagR";
+    const char* str2 ="_MagRetL";
+    const char* str3 ="_MagRetR";
+    const char* str4 ="_MagCLB";
+    const char* str5 ="_MagCLT";
+    const char* str6 ="_MagCRT";
+    const char* str7 ="_MagCRB";
+    const char* str8 ="_MagTopLeft";
+    const char* str9 ="_MagTopRight";
+    const char* str10 ="_MagBotLeft";
+    const char* str11 ="_MagBotRight";
     strcpy(magnetId,magnetName);
     if (fieldDirection == "up") {		    
       CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
@@ -211,10 +230,72 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[8],const char* (&fiel
 				  Double_t (&midGapIn)[8],Double_t (&midGapOut)[8],
 				  Double_t (&HmainSideMagIn)[8], Double_t (&HmainSideMagOut)[8],
 				  Double_t (&gapIn)[8],Double_t (&gapOut)[8], Double_t (&Z)[8])
-{	
-  Double_t zgap = 0;
+{
+  Double_t zgap;
+  if(fDesign>6){zgap = 10;}
+  else{zgap = 0;}               // fixed distance between magnets in Z-axis 
   Double_t dYEnd = fY;
- 
+  if(fDesign==7){
+      
+  magnetName[0] = "MagnAbsorb1";	fieldDirection[0] = "up";
+  dXIn[0]  = 0.4*m;			dYIn[0]	= 1.5*m;
+  dXOut[0] = 0.40*m;			dYOut[0]= 1.5*m;
+  midGapIn[0] = 0; 			midGapOut[0] = 0;
+  HmainSideMagIn[0] = dYIn[0]/2;  	HmainSideMagOut[0] = dYOut[0]/2;
+  gapIn[0] = 0.02*m;			gapOut[0] = 0.02*m;
+  dZ[0] = dZ1-zgap/2;			Z[0] = zEndOfAbsorb + dZ[0]+zgap;
+  
+  magnetName[1] = "MagnAbsorb2";	fieldDirection[1] = "up";
+  dXIn[1]  = 0.8*m;			dYIn[1]	= 1.5*m;
+  dXOut[1] = 0.8*m;			dYOut[1]= 1.5*m;
+  midGapIn[1] = 0; 			midGapOut[1] = 0;
+  HmainSideMagIn[1] = dYIn[1]/2;  	HmainSideMagOut[1] = dYOut[1]/2;
+  gapIn[1] = 0.02*m;				gapOut[1] = 0.02*m;
+  dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
+    
+  magnetName[2] = "Magn1";		fieldDirection[2] = "up";
+  dXIn[2]  = 0.87*m;			dYIn[2]	= 0.35*m;
+  dXOut[2] = 0.43*m;			dYOut[2]= 2.07*m;
+  midGapIn[2] = 0; 			midGapOut[2] = 0;
+  HmainSideMagIn[2] = dYIn[2]/2;  	HmainSideMagOut[2] = dYOut[2]/2;
+  gapIn[2] = 0.11*m;				gapOut[2] = 0.02*m;
+  dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;
+
+  magnetName[3] = "Magn2";		fieldDirection[3] = "up";
+  dXIn[3]  = 0.06*m;			dYIn[3]	= 0.32*m;
+  dXOut[3] = 0.33*m;			dYOut[3]= 0.13*m;
+  midGapIn[3] = 0; 			midGapOut[3] = 0;
+  HmainSideMagIn[3] = dYIn[3]/2;  	HmainSideMagOut[3] = dYOut[3]/2;
+  gapIn[3] = 0.7*m;			gapOut[3] = 0.11*m;
+  dZ[3] = dZ4-zgap/2;			Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;
+  
+  magnetName[4] = "Magn3";		fieldDirection[4] = "down";
+  dXIn[4]  = 0.05*m;			dYIn[4]	= 1.12*m;
+  dXOut[4] =0.16*m;			dYOut[4]= 0.05*m;
+  midGapIn[4] = 0; 			midGapOut[4] = 0;
+  HmainSideMagIn[4] = dYIn[4]/2;  	HmainSideMagOut[4] = dYOut[4]/2;
+  gapIn[4] = 0.04*m;			gapOut[4] = 0.02*m;
+  dZ[4] = dZ5-zgap/2;			Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;
+  
+  magnetName[5] = "Magn4";		fieldDirection[5] = "down";
+  dXIn[5]  = 0.15*m;			dYIn[5]	= 2.35*m;
+  dXOut[5] = 0.34*m;			dYOut[5]= 0.32*m;
+  midGapIn[5] = 0; 		        midGapOut[5] = 0;
+  HmainSideMagIn[5] = dYIn[5]/2;  	HmainSideMagOut[5] = dYOut[5]/2;
+  gapIn[5] = 0.05*m;			gapOut[5] = 0.08*m;
+  dZ[5] = dZ6-zgap/2;			Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;
+  
+  
+  magnetName[6] = "Magn5";		fieldDirection[6] = "down";
+  dXIn[6]  = 0.31*m;			dYIn[6]	= 1.86*m;
+  dXOut[6] = 0.9*m;			dYOut[6]= 3.1*m;
+  midGapIn[6] = 0; 		        midGapOut[6] = 0;
+  HmainSideMagIn[6] = dYIn[6]/2;  	HmainSideMagOut[6] = dYOut[6]/2;
+  gapIn[6] = 0.02*m;			gapOut[6] = 0.55*m;
+  dZ[6] = dZ7-zgap/2;			Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;
+      
+    }
+  else{
   magnetName[0] = "1";			fieldDirection[0] = "up";
   dXIn[0]  = 0.7*m;			dYIn[0]	= 1.*m; 
   dXOut[0] = 0.7*m;			dYOut[0]= 0.8158*m;
@@ -270,6 +351,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[8],const char* (&fiel
   HmainSideMagIn[6] = dXIn[6];  	HmainSideMagOut[6] = dXOut[6];
   gapIn[6] = 20;			gapOut[6] = 20;
   dZ[6] = dZ8-zgap/2;			Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;
+  }
 }
 void ShipMuonShield::ConstructGeometry()
 {
@@ -284,7 +366,7 @@ void ShipMuonShield::ConstructGeometry()
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     
-    if (fDesign==4||fDesign==5||fDesign==6){
+    if (fDesign==4||fDesign==5||fDesign==6||fDesign==7){
       Double_t ironField = fField*tesla;
       cout<<"fField  "<<fField<<endl;
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
@@ -292,6 +374,14 @@ void ShipMuonShield::ConstructGeometry()
       TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
       TGeoUniformMagField *ConLField    = new TGeoUniformMagField(ironField,0.,0.);
       TGeoUniformMagField *fields[4] = {magFieldIron,RetField,ConRField,ConLField};
+      if(fDesign==7){
+            TGeoUniformMagField *fieldsTarget[4] = {new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.)};
+      }
+      
+      const char* magnetName[8]; const char* fieldDirection[8];
+      Double_t dXIn[8],dYIn[8],dXOut[8],dYOut[8],dZf[8],midGapIn[8],midGapOut[8],HmainSideMagIn[8],HmainSideMagOut[8],gapIn[8],gapOut[8],Z[8];
+      Initialize (magnetName,fieldDirection,dXIn,dYIn,dXOut,dYOut,dZf,midGapIn,midGapOut,HmainSideMagIn,HmainSideMagOut,gapIn,gapOut,Z);
+      
       if (fDesign==6){
 	Double_t dA = 3*m;
 	CreateMagnet("AbsorberStop-1",iron,tShield,fields,"up",
@@ -304,13 +394,45 @@ void ShipMuonShield::ConstructGeometry()
         TGeoCompositeShape *Tc = new TGeoCompositeShape("passiveAbsorberStopSubtr", subtraction);
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
+      }else if(fDesign==7){
+      for(int nM=0;nM<2;nM++)
+      {
+	 CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
+		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
+		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
+		   gapIn[nM],gapOut[nM],Z[nM],1);
+      }
+
+      TGeoTranslation* mag1 = new TGeoTranslation("mag1",0,0,Z[0]-(zEndOfAbsorb + (dZ1+dZ2)));
+      TGeoTranslation* mag2 = new TGeoTranslation("mag2",0,0,Z[1]-(zEndOfAbsorb + (dZ1+dZ2)));
+            
+      mag1->RegisterYourself();
+      mag2->RegisterYourself();
+
+      TGeoTube *abs = new TGeoTube("absorber",0,400,(dZ1+dZ2-15));
+ // TODO: names should be picked up automatically - work in progress :D
+       TString holl = "MagnAbsorb1_MiddleMagL:mag1-MagnAbsorb1_MiddleMagR:mag1-MagnAbsorb1_MagRetL:mag1-MagnAbsorb1_MagRetR:mag1-MagnAbsorb1_MagCLB:mag1-MagnAbsorb1_MagCLT:mag1-MagnAbsorb1_MagCRT:mag1-MagnAbsorb1_MagCRB:mag1\
+   -MagnAbsorb1_MagTopLeft:mag1-MagnAbsorb1_MagTopRight:mag1-MagnAbsorb1_MagBotLeft:mag1-MagnAbsorb1_MagBotRight:mag1\
+   -MagnAbsorb2_MiddleMagL:mag2-MagnAbsorb2_MiddleMagR:mag2-MagnAbsorb2_MagRetL:mag2-MagnAbsorb2_MagRetR:mag2-MagnAbsorb2_MagCLB:mag2-MagnAbsorb2_MagCLT:mag2-MagnAbsorb2_MagCRT:mag2-MagnAbsorb2_MagCRB:mag2\
+   -MagnAbsorb2_MagTopLeft:mag2-MagnAbsorb2_MagTopRight:mag2-MagnAbsorb2_MagBotLeft:mag2-MagnAbsorb2_MagBotRight:mag2";
+   TGeoCompositeShape *absorberShape = new TGeoCompositeShape("Absorber","absorber-"+holl); // cutting out magnet parts from absorber 
+     TGeoVolume *absorber = new TGeoVolume("AbsorberVol",absorberShape,iron);
+    absorber->SetLineColor(42); // brown / light red
+    tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1+dZ2)));
+         
+      for(int nM=2;nM<7;nM++)
+      {
+	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
+		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
+		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
+		   gapIn[nM],gapOut[nM],Z[nM],0);
+      }
+          
       }else{
 	CreateTube("AbsorberAdd",     iron, 15, 400, dZ0,43,tShield,1,0, 0, zEndOfAbsorb - dZ0);
 	CreateTube("AbsorberAddCore", iron,  0,  15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
-      }    
-      const char* magnetName[8]; const char* fieldDirection[8];
-      Double_t dXIn[8],dYIn[8],dXOut[8],dYOut[8],dZf[8],midGapIn[8],midGapOut[8],HmainSideMagIn[8],HmainSideMagOut[8],gapIn[8],gapOut[8],Z[8];
-      Initialize (magnetName,fieldDirection,dXIn,dYIn,dXOut,dYOut,dZf,midGapIn,midGapOut,HmainSideMagIn,HmainSideMagOut,gapIn,gapOut,Z);   
+          
+   
       
       for(int nM=0;nM<7;nM++)
       {
@@ -319,7 +441,7 @@ void ShipMuonShield::ConstructGeometry()
 		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
 		   gapIn[nM],gapOut[nM],Z[nM],0);
       }
-    
+      }
       Double_t ZGmid=Z[7]+dZf[7]+2.25*m+0.2*m;
       Double_t dX1 = dXIn[0];
       Double_t dY = dYIn[0];

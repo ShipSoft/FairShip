@@ -62,7 +62,9 @@ def printWF(vl):
        fi = fm.GetDetectorField()
        print '   Magnetic field:',fi.GetConstantFieldValue()/G4Unit.tesla
     magnetMass = 0
-    if vl.GetName().__str__()[2:5]=='Mag': magnetMass =  M # only count volumes starting with Mag
+    #if vl.GetName().__str__()[0:3]=='Mag': magnetMass =  M # only count volumes starting with Mag
+    name = vl.GetName().__str__()
+    if "_" in name and "Mag" in name.split('_')[1]: magnetMass =  M # only count volumes starting with Mag
     return magnetMass 
 def printWeightsandFields():
    gt = gTransportationManager
@@ -74,8 +76,12 @@ def printWeightsandFields():
      lvl0  = vl0.GetLogicalVolume()
      if lvl0.GetNoDaughters()==0: magnetMass+=printWF(vl0) 
      for da in range(lvl0.GetNoDaughters()):        
-       vl   = lvl0.GetDaughter(da)
-       magnetMass+=printWF(vl)
+       vl1   = lvl0.GetDaughter(da)
+       lvl1  = vl1.GetLogicalVolume()
+       if lvl1.GetNoDaughters()==0: magnetMass+=printWF(vl1) 
+       for da in range(lvl1.GetNoDaughters()):        
+         vl2   = lvl1.GetDaughter(da)
+         magnetMass+=printWF(vl2)
    print 'total magnet mass',magnetMass/1000.,'t'
    return
 def getRunManager():

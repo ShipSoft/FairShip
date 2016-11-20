@@ -28,6 +28,7 @@ HPT.cxx
 HptPoint.cxx
 NutaudetContFact.cxx
 Target.cxx
+EmulsionMagnet.cxx
 TargetPoint.cxx
 TargetTracker.cxx
 TTPoint.cxx

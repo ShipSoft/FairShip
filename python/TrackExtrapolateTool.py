@@ -28,7 +28,8 @@ def extrapolateToPlane(fT,z):
       pos,mom = state.getPos(),state.getMom()
       rc = True 
     except: 
-      print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
+      # print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
+      pass
     if not rc or z>z_ecal:
      # use linear extrapolation
      px,py,pz  = mom.X(),mom.Y(),mom.Z()

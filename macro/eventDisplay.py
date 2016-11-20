@@ -3,12 +3,13 @@ import ROOT,sys,getopt,os,Tkinter
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 import shipunit as u
+from decorators import *
 import shipRoot_conf
 shipRoot_conf.configure()
 
 fMan = None
 fRun = None
-pdg  = ROOT.TDatabasePDG()
+pdg  = ROOT.TDatabasePDG.Instance()
 g    = ROOT.gROOT 
 
 ParFile    = None
@@ -117,6 +118,8 @@ class DrawEcalCluster(ROOT.FairTask):
 # ADC noise simulated Guassian with \sigma=1 MeV
       DClus = ROOT.TEveBox()
       DClus.SetName('EcalCluster_'+str(cl)+'_'+str(i)) 
+      DClus.SetPickable(ROOT.kTRUE)
+      DClus.SetTitle(aClus.__repr__())
       DClus.SetMainColor(ROOT.kRed-4)
       DClus.SetMainTransparency("\x10")
       DClus.SetVertex(0,x1,y1,self.z_ecal)
@@ -133,9 +136,11 @@ class DrawEcalCluster(ROOT.FairTask):
  def DrawParticle(self,n):
   self.comp.OpenCompound()
   DTrack = ROOT.TEveLine()
+  DTrack.SetPickable(ROOT.kTRUE)
   DTrack.SetMainColor(ROOT.kCyan)
   DTrack.SetLineWidth(4)
   aP=sTree.Particles[n]
+  DTrack.SetTitle(aP.__repr__())
   DTrack.SetName('Prtcle_'+str(n))
   DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
   lam = (self.Targetz - aP.Vz())/aP.Pz()
@@ -192,9 +197,11 @@ class DrawTracks(ROOT.FairTask):
  def DrawParticle(self,n):
   self.comp.OpenCompound()
   DTrack = ROOT.TEveLine()
+  DTrack.SetPickable(ROOT.kTRUE)
   DTrack.SetMainColor(ROOT.kCyan)
   DTrack.SetLineWidth(4)
   aP=sTree.Particles[n]
+  DTrack.SetTitle(aP.__repr__())
   DTrack.SetName('Prtcle_'+str(n))
   DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
   lam = (self.Targetz - aP.Vz())/aP.Pz()
@@ -204,6 +211,8 @@ class DrawTracks(ROOT.FairTask):
   self.comp.OpenCompound()
   fT = sTree.MCTrack[n]
   DTrack = ROOT.TEveLine()
+  DTrack.SetPickable(ROOT.kTRUE)
+  DTrack.SetTitle(fT.__repr__())
   p = pdg.GetParticle(fT.GetPdgCode()) 
   if p : pName = p.GetName()
   else:  pName =  str(fT.GetPdgCode())
@@ -240,6 +249,8 @@ class DrawTracks(ROOT.FairTask):
   for fT in sTree.MCTrack:
    n+=1
    DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
+   DTrack.SetTitle(fT.__repr__())
    fT.GetStartVertex(fPos)
    hitlist = {}
    hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
@@ -251,7 +262,7 @@ class DrawTracks(ROOT.FairTask):
     da.GetStartVertex(fPos)
     hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
   # loop over all sensitive volumes to find hits
-   for P in ["vetoPoint","muonPoint","EcalPoint","HcalPoint","preshowerPoint","strawtubesPoint","ShipRpcPoint","TargetPoints"]:
+   for P in ["vetoPoint","muonPoint","EcalPoint","HcalPoint","preshowerPoint","strawtubesPoint","ShipRpcPoint","TargetPoint"]:
     if not sTree.GetBranch(P): continue
     c=eval("sTree."+P)
     for p in c:
@@ -306,6 +317,8 @@ class DrawTracks(ROOT.FairTask):
    if not fst.isFitConverged(): continue
    if fst.getNdf() < 20: continue
    DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
+   DTrack.SetTitle(fT.__repr__())
    fstate = fT.getFittedState(0) 
    fPos = fstate.getPos()
    fMom = fstate.getMom()
@@ -363,9 +376,11 @@ class DrawTracks(ROOT.FairTask):
     if fst.getNdf() < 20: tracksOK=False
    if not tracksOK: continue
    DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
    DTrack.SetMainColor(ROOT.kCyan)
    DTrack.SetLineWidth(4)
    DTrack.SetName('Particle_'+str(n))
+   DTrack.SetTitle(aP.__repr__())
    DTrack.SetNextPoint(aP.Vx(),aP.Vy(),aP.Vz())
    lam = (self.Targetz - aP.Vz())/aP.Pz()
    DTrack.SetNextPoint(aP.Vx()+lam*aP.Px(),aP.Vy()+lam*aP.Py(),self.Targetz)
@@ -459,9 +474,12 @@ class EventLoop(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
    self.n = 0
+   self.first = True
+   if fGeo.GetVolume('volTarget'): DisplayNuDetector()
    if fGeo.GetVolume('Ecal'):
  # initialize ecalStructure
-    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo" 
+    if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
     self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
     if ecalGeoFile.find("5x10")<0:   
           self.ecalFiller.SetUseMCPoints(ROOT.kFALSE)
@@ -480,7 +498,7 @@ class EventLoop(ROOT.FairTask):
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
    else  : self.n=i
-   fRun.Run(self.n) # go for first event
+   fRun.Run(self.n,self.n+1) # go for first event
 # check if tracks are made from real pattern recognition
    if sTree.GetBranch("FitTracks_PR"):    sTree.FitTracks = sTree.FitTracks_PR
    if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
@@ -489,8 +507,39 @@ class EventLoop(ROOT.FairTask):
    if sTree.FindBranch("EcalClusters"):
      if sTree.EcalClusters.GetEntries()>0:
       self.ecalFiller.Exec('start',sTree.EcalPointLite)
-      self.calos.ExecuteTask()
+     self.calos.ExecuteTask()
    print 'Event %i ready'%(self.n)
+# make pointsets pickable
+   for x in mcHits: 
+     p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())
+     if p: 
+      p.SetPickable(ROOT.kTRUE)
+      p.SetTitle(p.__repr__())
+ def defaultView(self):
+  v   = ROOT.gEve.GetDefaultGLViewer()
+  cam  = v.CurrentCamera()
+  cam.Reset()
+  return cam,v
+ def topView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(ROOT.TMath.Pi()/2.,0.) # rotation around z axis
+  v.DoDraw()
+ def bottomView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(-ROOT.TMath.Pi()/2.,0.) # rotation around z axis
+  v.DoDraw()
+ def frontView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(0.,ROOT.TMath.Pi()/2.) # rotation around y or x axis
+  v.DoDraw()
+ def backView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(0.,-ROOT.TMath.Pi()/2.) # rotation around y or x axis
+  v.DoDraw()
+ def sideView(self):
+  cam,v = self.defaultView()
+  cam.RotateRad(0.,ROOT.TMath.Pi()) # rotation around y or x axis
+  v.DoDraw()
 #
 def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
@@ -504,6 +553,17 @@ def speedUp():
   xvol.SetVisibility(1)
   if x=="Ecal": xvol.SetLineColor(ROOT.kYellow) 
   else:        xvol.SetLineColor(ROOT.kOrange+3) 
+ sc    = evmgr.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ evmgr.ElementChanged(geoscene,True,True)
+
+# set display properties for tau nu target
+def DisplayNuDetector():
+ for x in ["Wall"]:
+  xvol = fGeo.GetVolume(x)
+  if not xvol: continue
+  xvol.SetVisDaughters(0)
+  xvol.SetVisibility(1)
  sc    = evmgr.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  evmgr.ElementChanged(geoscene,True,True)
@@ -591,6 +651,124 @@ def rename(name='ship.TGeant4.root'):
  t.Write()
  f.Close() 
 
+class Rulers(ROOT.FairTask):
+ " add Ruler"
+ def __init__(self):
+  self.ruler  = ROOT.TEveCompound('Rulers')
+  evmgr.AddElement(self.ruler)
+ def show(self,xy=0):
+  self.ruler.DestroyElements()
+  self.ruler.OpenCompound()
+  xpos,ypos = -500., 0.
+  zstart  = ShipGeo.target.z0
+  zlength = ShipGeo.MuonStation3.z - zstart + 10*u.m
+  a1 = ROOT.TEveLine()
+  a1.SetNextPoint(xpos,ypos, zstart)
+  a1.SetNextPoint(xpos,ypos, zstart+zlength)
+  a1.SetMainColor(ROOT.kBlue)
+  a1.SetLineWidth(50)
+  self.ruler.AddElement(a1)
+  z=zstart
+  for i in range(int(zlength/100)):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos-0.5*u.m,ypos,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   a1.AddElement(m)
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z+0.5*u.m )
+   m.SetNextPoint(xpos-0.2*u.m,ypos,z+0.5*u.m )
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(2)
+   a1.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos-0.1*u.m,ypos+0.2*u.m,z)
+   a1.AddElement(t1)
+   z+=1*u.m
+  xpos,ypos = 0., 0.
+  if xy==0:  z = ShipGeo.MuonStation3.z+2*u.m
+  else: z=xy 
+  ylength = 7*u.m
+  a2 = ROOT.TEveLine()
+  a2.SetNextPoint(xpos,-ylength, z)
+  a2.SetNextPoint(xpos,ylength, z)
+  a2.SetMainColor(ROOT.kBlue)
+  a2.SetLineWidth(50)
+  self.ruler.AddElement(a2)
+  ypos=-ylength
+  for i in range(-int(ylength/100),int(ylength/100),1):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos+0.05*u.m,ypos,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   a2.AddElement(m)
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,         ypos+0.5*u.m, z )
+   m.SetNextPoint(xpos+0.02*u.m,ypos+0.5*u.m,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(1)
+   a2.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos-0.5*u.m,ypos,z)
+   a2.AddElement(t1)
+   ypos+=1*u.m
+  ty = ROOT.TEveText("y-axis")
+  ty.SetFontSize(10)
+  ty.RefMainTrans().SetPos(0.,ypos+1*u.m,z)
+  ty.SetMainColor(ROOT.kRed-2);
+  a2.AddElement(ty)
+  xpos,ypos = 0., 0.
+  xlength = 3*u.m
+  a3 = ROOT.TEveLine()
+  a3.SetNextPoint(-xlength,0, z)
+  a3.SetNextPoint(xlength,0, z)
+  a3.SetMainColor(ROOT.kBlue)
+  a3.SetLineWidth(50)
+  self.ruler.AddElement(a3)
+  xpos=-xlength
+  for i in range(-int(xlength/100),int(xlength/100),1):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos,ypos-0.05*u.m,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   a3.AddElement(m)
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos+0.5*u.m,ypos, z )
+   m.SetNextPoint(xpos+0.5*u.m,ypos-0.02*u.m,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(2)
+   a3.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos,ypos-0.1*u.m,z)
+   a3.AddElement(t1)
+   xpos+=1*u.m 
+  tx = ROOT.TEveText("x-axis")
+  tx.SetFontSize(10)
+  tx.RefMainTrans().SetPos(xpos+1*u.m,0.,z)
+  tx.SetMainColor(ROOT.kRed-2);
+  a3.AddElement(tx)
+
+  t1 = ROOT.TEveText("SHiP")
+  t1.SetFontSize(200)
+  t1.RefMainTrans().SetPos(0.,600.,ShipGeo.TrackStation1.z-10*u.m)
+  t1.PtrMainTrans().RotateLF(1, 3, ROOT.TMath.PiOver2());
+  t1.SetMainColor(ROOT.kOrange-2);
+  t1.SetFontMode(ROOT.TGLFont.kExtrude);
+  t1.SetLighting(ROOT.kTRUE);
+  a1.AddElement(t1)
+  self.ruler.CloseCompound()
+  sc    = ROOT.gEve.GetScenes()
+  geoscene = sc.FindChild('Geometry scene')
+  ROOT.gEve.ElementChanged(geoscene,True,True)
+ def remove(self):
+  self.ruler.DestroyElements()
+
 def mydebug():               
  t = g.FindObjectAny('cbmsim')
  nev = t.GetEntriesFast()
@@ -637,11 +815,11 @@ def debugStraw(n):
 from basiclibs import *  
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
-if geoFile: fRun.SetGeomFile(geoFile)
-if os.path.islink(InputFile): 
-  rfn = os.path.realpath(InputFile).split('eos')[1]
-  InputFile  = 'root://eoslhcb.cern.ch//eos/'+rfn
+if geoFile: 
+ if geoFile[0:4] == "/eos": geoFile="root://eoslhcb.cern.ch/"+geoFile
+ fRun.SetGeomFile(geoFile)
 
+if InputFile[0:4] == "/eos": InputFile="root://eoslhcb.cern.ch/"+InputFile
 if hasattr(fRun,'SetSource'):
  inFile = ROOT.FairFileSource(InputFile)
  fRun.SetSource(inFile)
@@ -668,21 +846,17 @@ if withGeo:
   GTrack      = ROOT.FairMCTracks("GeoTracks",verbose)
   fMan.AddTask(GTrack)
   fMan.AddTask(Track)
-VetoPoints  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
-StrawPoints = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
-EcalPoints  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
-HcalPoints  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
-MuonPoints  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
-RpcPoints   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
-TargetPoints   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
 
-fMan.AddTask(VetoPoints)
-fMan.AddTask(MuonPoints)
-fMan.AddTask(EcalPoints)
-fMan.AddTask(HcalPoints)
-fMan.AddTask(StrawPoints)
-fMan.AddTask(RpcPoints)
-fMan.AddTask(TargetPoints)
+mcHits = {}
+mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
+mcHits['StrawPoints'] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
+mcHits['EcalPoints']  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
+mcHits['HcalPoints']  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
+mcHits['MuonPoints']  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
+mcHits['RpcPoints']   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
+mcHits['TargetPoints']   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
+
+for x in mcHits: fMan.AddTask(mcHits[x])
 
 fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 #visopt, set drawing mode :
@@ -696,6 +870,7 @@ sTree = fRman.GetInChain()
 fGeo  = ROOT.gGeoManager 
 top   = fGeo.GetTopVolume()
 evmgr = ROOT.gEve
+
 if not fRun.GetGeoFile().FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # try to figure out which ecal geo to load
@@ -709,12 +884,12 @@ else:
   ecalGeoFile = ShipGeo.ecal.File
 if hasattr(ShipGeo,'preshowerOption'): 
  if ShipGeo.preshowerOption >0: 
-  preshowerPoints  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
-  fMan.AddTask(preshowerPoints)
-
-
+  mcHits['preshowerPoints']  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
+  fMan.AddTask(mcHits['preshowerPoints'])
 # switchOfAll('RockD')
-
+rulers = Rulers()
 SHiPDisplay = EventLoop()
 SHiPDisplay.InitTask()
 SHiPDisplay.NextEvent()
+
+

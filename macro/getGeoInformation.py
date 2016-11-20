@@ -18,8 +18,8 @@ def doloop(node,level,currentlevel,translation):
      transs = key[0].GetMatrix()   
      vs = key[0].GetVolume().GetShape()
      newtranslation=snoz[key[0]]
-     print blanks+"%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm]"%(key[0].GetName(),newtranslation,\
-     vs.GetDZ(),min(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()),max(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()))
+     print blanks+"%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm] dx=%10.4Fcm dy=%10.4Fcm"%(key[0].GetName(),newtranslation,\
+     vs.GetDZ(),min(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()),max(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()),vs.GetDX(),vs.GetDY())
      if int(newcurrentlevel)<int(level) and key[0].GetNodes():
         doloop(key[0],level,newcurrentlevel,newtranslation)
 
@@ -43,8 +43,8 @@ for no in top.GetNodes():
 for key in sorted(noz.items(),key=operator.itemgetter(1)):
     trans = key[0].GetMatrix()
     v = key[0].GetVolume().GetShape()
-    print "%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm]"%(key[0].GetName(),trans.GetTranslation()[2],\
-    v.GetDZ(),min(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()),max(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()))
+    print "%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm] dx=%10.4Fcm dy=%10.4Fcm"%(key[0].GetName(),trans.GetTranslation()[2],\
+    v.GetDZ(),min(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()),max(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()),v.GetDX(),v.GetDY())
     if options.volume:
       if key[0].GetNodes() and int(options.level)>0 and options.volume==key[0].GetName():
          doloop(key[0],options.level,currentlevel,trans.GetTranslation()[2]) 

@@ -27,7 +27,7 @@ outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 dv           = 4 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
-ds           = 5 # 5=TP muon shield, 6=magnetized hadron 
+ds           = 5 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
 if debug>1 : checking4overlaps = True
@@ -127,7 +127,7 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-# - muShieldDesign = 2  # 1=passive 5=active (default) 6=magnetized hadron absorber
+# - muShieldDesign = 2  # 1=passive 5=active (default) 7=short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
@@ -137,7 +137,8 @@ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheigh
 tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if eventDisplay: tag = tag+'_D'
-if dy: tag = str(dy)+'.'+tag 
+if dv == 5 : tag = 'conical.'+tag
+elif dy: tag = str(dy)+'.'+tag 
 if not os.path.exists(outputDir):
   os.makedirs(outputDir)
 outFile = "%s/ship.%s.root" % (outputDir, tag)
@@ -178,6 +179,9 @@ if simEngine == "Pythia8":
   pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
+  if ds==7: # short muon shield
+   P8gen.SetLmin(44*u.m)
+   P8gen.SetLmax(107*u.m)
   if inputFile: 
 # read from external file
    P8gen.UseExternalFile(inputFile, firstEvent)
@@ -237,10 +241,11 @@ if simEngine == "muonDIS":
 if simEngine == "Nuage":
  primGen.SetTarget(0., 0.)
  Nuagegen = ROOT.NuageGenerator()
- print 'Nuage position info input=',ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim
+ Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
+ print 'Nuage position info input=',ship_geo.EmuMagnet.zC-ship_geo.NuTauTarget.zdim, ship_geo.EmuMagnet.zC+ship_geo.NuTauTarget.zdim
  #--------------------------------
  #to Generate neutrino interactions in the whole neutrino target
- #Nuagegen.SetPositions(ship_geo.NuTauTarget.z0, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2);
+# Nuagegen.SetPositions(ship_geo.EmuMagnet.zC, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2)
  #--------------------------------
  #to Generate neutrino interactions ONLY in ONE brick
  ntt = 6
@@ -251,13 +256,14 @@ if simEngine == "Nuage":
  endx = -ship_geo.NuTauTarget.xdim/2 + (nXcells+1)*ship_geo.NuTauTarget.BrX
  starty = -ship_geo.NuTauTarget.ydim/2 + nYcells*ship_geo.NuTauTarget.BrY 
  endy = - ship_geo.NuTauTarget.ydim/2 + (nYcells+1)*ship_geo.NuTauTarget.BrY
- startz = ship_geo.NuTauTarget.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTarget.TTZ + nZcells * ship_geo.NuTauTarget.CellW
- endz = ship_geo.NuTauTarget.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTarget.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
+ startz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
+ endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
  Nuagegen.SetPositions(ship_geo.target.z0, startz, endz, startx, endx, starty, endy)
  #--------------------------------
  Nuagegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Nuagegen)
  nEvents = min(nEvents,Nuagegen.GetNevents())
+ run.SetPythiaDecayer("DecayConfigNuAge.C")
  print 'Generate ',nEvents,' with Nuage input', ' first event',firstEvent
 # -----Neutrino Background------------------------
 if simEngine == "Genie":

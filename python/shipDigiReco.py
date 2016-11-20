@@ -1,4 +1,4 @@
-import ROOT,shipVertex,shipPatRec 
+import os,ROOT,shipVertex,shipPatRec,shipDet_conf
 import shipunit as u
 import rootUtils as ut
 from array import array
@@ -53,6 +53,10 @@ class ShipDigiReco:
 #   
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
 # prepare for output
+# event header
+  self.header  = ROOT.FairEventHeader()
+  self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+# fitted tracks
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
@@ -72,6 +76,7 @@ class ShipDigiReco:
    dflag = 0
    if debug: dflag = 10
    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
    ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
    ecalFiller.SetUseMCPoints(ROOT.kTRUE)
    ecalFiller.StoreTrackInformation()
@@ -117,7 +122,7 @@ class ShipDigiReco:
     self.caloTasks.append(ecalDrawer)
  # add pid reco
    import shipPid
-   self.caloTasks.append(shipPid.Task(h,self))
+   self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
   self.Vertexing = shipVertex.Task(h,self)
 # setup random number generator 
@@ -142,8 +147,8 @@ class ShipDigiReco:
   else:
    ecalClusters      = ROOT.TClonesArray("ecalCluster") 
    ecalReconstructed = ROOT.TClonesArray("ecalReconstructed") 
-   self.EcalClusters = self.sTree.Branch("EcalClusters",self.ecalClusters,32000,-1)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed,32000,-1)
+   self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
+   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
 #
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
 # init geometry and mag. field
@@ -172,14 +177,19 @@ class ShipDigiReco:
     elif x.GetName() == 'ecalFiller': x.Exec('start',self.sTree.EcalPointLite)
     elif x.GetName() == 'ecalMatch':  x.Exec('start',self.ecalReconstructed, self.sTree.MCTrack)
     else : x.Exec('start')
-   self.EcalClusters.Fill()
-   self.EcalReconstructed.Fill()
+   if len(self.caloTasks)>0:
+    self.EcalClusters.Fill()
+    self.EcalReconstructed.Fill()
    if vertexing:
 # now go for 2-track combinations
     self.Vertexing.execute()
 
  def digitize(self):
    self.sTree.t0 = self.random.Rndm()*1*u.microsecond
+   self.header.SetEventTime( self.sTree.t0 )
+   self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
+   self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
+   self.eventHeader.Fill()
    self.digiStraw.Delete()
    self.digitizeStrawTubes()
    self.digiStrawBranch.Fill()
@@ -242,7 +252,7 @@ class ShipDigiReco:
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = dw
-     if not no_amb: smear = abs(self.random.Gaus(dw,ShipGeo.straw.resol))
+     if not no_amb: smear = abs(self.random.Gaus(dw,self.sigma_spatial))
      SmearedHits.append( {'digiHit':key,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'dist':smear} )
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
      if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)
@@ -298,7 +308,7 @@ class ShipDigiReco:
     momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance
     covM = ROOT.TMatrixDSym(6)
-    resolution = ShipGeo.straw.resol
+    resolution = self.sigma_spatial
     if withT0: resolution = resolution*1.4 # worse resolution due to t0 estimate
     for  i in range(3):   covM[i][i] = resolution*resolution
     covM[0][0]=resolution*resolution*100.

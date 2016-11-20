@@ -83,7 +83,7 @@ public:
     TargetTracker(const TargetTracker&);
     TargetTracker& operator=(const TargetTracker&);
     
-    ClassDef(TargetTracker,1);
+    ClassDef(TargetTracker,2);
     
  private:
     

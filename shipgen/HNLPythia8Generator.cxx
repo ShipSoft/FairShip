@@ -4,7 +4,6 @@
 #include "FairPrimaryGenerator.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "HNLPythia8Generator.h"
-#include "Pythia8/Pythia.h"
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
 const Bool_t debug = false;

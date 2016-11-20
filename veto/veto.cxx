@@ -71,10 +71,18 @@ veto::veto(const char* name, Bool_t active)
     f_InnerSupportThickness(3.*cm),    //!  inner support thickness of decay volume
     f_OuterSupportThickness(8.*mm),    //!  outer support thickness of decay volume
     f_VetoThickness(0.3*m), 	//!  thickness of liquid or plastic scintillator
-    zFocus(-80*m),              //! point in front of target
+    zFocusX(-80*m),              //! focus point for x dimension, given by muon free envelope
+    zFocusY(-80*m),              //! focus point for Y dimension
     ws(0.5*m),                  //! Straw screen plates sticking out of the outer tube.
     fXstart(1.5*m),             //! horizontal width at start of decay volume
-    fvetoPointCollection(new TClonesArray("vetoPoint"))
+    fYstart(1.5*m),             //! vertical width at start of decay volume
+    fvetoPointCollection(new TClonesArray("vetoPoint")),
+    vetoMed_name("Scintillator"),   // for liquid scintillator
+    supportMedIn_name("steel"),        // for vacuum option
+    supportMedOut_name("Aluminum"),    // for vacuum option
+    ribMed_name("steel"),
+    f_RibThickness(3.*cm),
+    decayVolumeMed_name("vacuums")    // for vacuum option
 {
 }
 
@@ -93,33 +101,37 @@ void veto::Initialize()
 //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
 }
 // private method make trapezoids with hole
-TGeoVolume* veto::GeoTrapezoid(const char* name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slope,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
+TGeoVolume* veto::GeoTrapezoid(const char* name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
 {
+      Double_t dy1 = dy_start;
+      Double_t dy2 = dy_start;
+      if(slopeY>0){dy2 = dy1 + 2*slopeY*dz;}
       Double_t dx1 = dx_start;
-      Double_t dx2 = dx1 + 2*slope*dz;
+      Double_t dx2 = dx1 + 2*slopeX*dz;
       TGeoArb8 *T2 = new TGeoArb8(dz);
-      T2->SetVertex(0,-dx1,-dy);
-      T2->SetVertex(1,-dx1,dy);
-      T2->SetVertex(2,dx1,dy);
-      T2->SetVertex(3,dx1,-dy);
-      T2->SetVertex(4,-dx2,-dy);
-      T2->SetVertex(5,-dx2,dy);
-      T2->SetVertex(6,dx2,dy);
-      T2->SetVertex(7,dx2,-dy);
+      T2->SetVertex(0,-dx1,-dy1);
+      T2->SetVertex(1,-dx1,dy1);
+      T2->SetVertex(2,dx1,dy1);
+      T2->SetVertex(3,dx1,-dy1);
+      T2->SetVertex(4,-dx2,-dy2);
+      T2->SetVertex(5,-dx2,dy2);
+      T2->SetVertex(6,dx2,dy2);
+      T2->SetVertex(7,dx2,-dy2);
       TGeoVolume *T;
       if (thick>0){ 
        dx1 = dx1-thick;
        dx2 = dx2-thick;
-       dy = dy-thick;
+       dy1 = dy1-thick;
+       dy2 = dy2-thick;
        TGeoArb8 *T1 = new TGeoArb8(dz+1E-6);
-       T1->SetVertex(0,-dx1,-dy);
-       T1->SetVertex(1,-dx1,dy);
-       T1->SetVertex(2,dx1,dy);
-       T1->SetVertex(3,dx1,-dy);
-       T1->SetVertex(4,-dx2,-dy);
-       T1->SetVertex(5,-dx2,dy);
-       T1->SetVertex(6,dx2,dy);
-       T1->SetVertex(7,dx2,-dy);  
+       T1->SetVertex(0,-dx1,-dy1);
+       T1->SetVertex(1,-dx1,dy1);
+       T1->SetVertex(2,dx1,dy1);
+       T1->SetVertex(3,dx1,-dy1);
+       T1->SetVertex(4,-dx2,-dy2);
+       T1->SetVertex(5,-dx2,dy2);
+       T1->SetVertex(6,dx2,dy2);
+       T1->SetVertex(7,dx2,-dy2);
        TGeoSubtraction *subtraction = new TGeoSubtraction(T2,T1);
        TGeoCompositeShape *Tc = new TGeoCompositeShape(name, subtraction);
        T = new TGeoVolume(name, Tc, material);
@@ -133,18 +145,18 @@ TGeoVolume* veto::GeoTrapezoid(const char* name,Double_t thick,Double_t dz,Doubl
 }
 
 
-TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slope)
+TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY)
 {
     // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
       Double_t dx = dx_start - f_OuterSupportThickness - f_VetoThickness;
       Double_t dy = dy_start - f_OuterSupportThickness - f_VetoThickness;
       TString nm;
       nm = "innerSupport_"; nm += seg;
-      TGeoVolume* innerSupport = GeoTrapezoid(nm,f_InnerSupportThickness,dz,dx,dy,slope,18,supportMedIn);
+      TGeoVolume* innerSupport = GeoTrapezoid(nm,f_InnerSupportThickness,dz,dx,dy,slopeX,slopeY,18,supportMedIn);
       nm = "decayVol_"; nm += seg;
       dx = dx_start - f_OuterSupportThickness - f_VetoThickness - f_InnerSupportThickness;
       dy = dy_start - f_OuterSupportThickness - f_VetoThickness - f_InnerSupportThickness;
-      TGeoVolume* decayVol = GeoTrapezoid(nm,-1.,dz,dx,dy,slope,1,decayVolumeMed);
+      TGeoVolume* decayVol = GeoTrapezoid(nm,-1.,dz,dx,dy,slopeX,slopeY,1,decayVolumeMed);
       decayVol->SetVisibility(kFALSE);
       TGeoVolumeAssembly *tDecayVol = new TGeoVolumeAssembly(nm);
       tDecayVol->AddNode(innerSupport, 1, new TGeoTranslation(0,0,0));
@@ -157,18 +169,21 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       nm = "T"; nm += seg;
       nm+= "Rib";
       for (Int_t nr=0; nr<nribs; nr++) {
-        //T4 Here use ribs only 10 cm high!
-        Double_t zrib = -dz +f_InnerSupportThickness/2. +nr*ribspacing;
+        Double_t zrib = -dz +f_RibThickness/2. +nr*ribspacing;
         Double_t d = 1.;
+        //T4 Here use ribs only 10 cm high, 1/3 of VetoThickness!
         if (seg==4){d = 1./3.;}
-        dx = dx_start -(1.-d)*f_VetoThickness -f_OuterSupportThickness +slope*(zrib+dz-f_InnerSupportThickness);
+        dx = dx_start -(1.-d)*f_VetoThickness -f_OuterSupportThickness +slopeX*(zrib+dz-f_RibThickness);
         dy = dy_start -(1.-d)*f_VetoThickness -f_OuterSupportThickness;
-        TGeoVolume* T = GeoTrapezoid(nm,d*f_VetoThickness,f_InnerSupportThickness/2.,dx,dy,slope,18,supportMedIn);
+        if (slopeY>0) {dy+=slopeY*(zrib+dz-f_RibThickness);}
+        TString tmp = nm;
+        tmp+="-";tmp+=nr;
+        TGeoVolume* T = GeoTrapezoid(tmp,d*f_VetoThickness,f_InnerSupportThickness/2.,dx,dy,slopeX,slopeY,18,ribMed);
         tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib));
       }
       if (seg!=4 && seg!=6){
        nm = "outerSupport_"; nm += seg;
-       TGeoVolume* outerSupport = GeoTrapezoid(nm,f_OuterSupportThickness,dz,dx_start,dy,slope,18,supportMedOut);
+       TGeoVolume* outerSupport = GeoTrapezoid(nm,f_OuterSupportThickness,dz,dx_start,dy_start,slopeX,slopeY,18,supportMedOut);
        tDecayVol->AddNode(outerSupport, 1, new TGeoTranslation(0,0,0));
       //now place LiSc
        Double_t zlength=(ribspacing -f_InnerSupportThickness)/2.;
@@ -176,9 +191,10 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
        nm+= "LiSc";
        for (Int_t nr=1; nr<nribs; nr++) {
         Double_t zlisc= -dz +f_InnerSupportThickness+zlength+(nr-1)*ribspacing;
-        dx = dx_start -f_OuterSupportThickness  + slope*(zlisc+dz-zlength);
+        dx = dx_start -f_OuterSupportThickness  + slopeX*(zlisc+dz-zlength);
         dy = dy_start -f_OuterSupportThickness;
-        TGeoVolume* T = GeoTrapezoid(nm,f_VetoThickness,zlength,dx,dy,slope,kMagenta-10,vetoMed,kTRUE);
+        if (slopeY>0) {dy+= slopeY*(zlisc+dz-zlength);}
+        TGeoVolume* T = GeoTrapezoid(nm,f_VetoThickness,zlength,dx,dy,slopeX,slopeY,kMagenta-10,vetoMed,kTRUE);
         tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
       }
      }
@@ -375,45 +391,56 @@ void veto::ConstructGeometry()
     InitMedium("Scintillator");
     TGeoMedium *Se =gGeoManager->GetMedium("Scintillator");
     gGeoManager->SetNsegments(100);
-
+    vetoMed        = gGeoManager->GetMedium(vetoMed_name);      //! medium of veto counter, liquid or plastic scintillator
+    supportMedIn   = gGeoManager->GetMedium(supportMedIn_name); //! medium of support structure, iron, balloon
+    supportMedOut  = gGeoManager->GetMedium(supportMedOut_name); //! medium of support structure, aluminium, balloon
+    decayVolumeMed = gGeoManager->GetMedium(decayVolumeMed_name);  // decay volume, air/helium/vacuum
+    ribMed = gGeoManager->GetMedium(ribMed_name); //! medium of support structure
     if (fDesign<4||fDesign>5){ fLogger->Fatal(MESSAGE_ORIGIN, "Only Designs 4 and 5 are supported!");}
     // put everything in an assembly
     TGeoVolume *tDecayVol = new TGeoVolumeAssembly("DecayVolume");
     TGeoVolume *tMaGVol   = new TGeoVolumeAssembly("MagVolume");
     Double_t zStartDecayVol = fTub1z-fTub1length-f_InnerSupportThickness;
     Double_t zStartMagVol = fTub3z+fTub3length-f_InnerSupportThickness; //? is this needed, -f_InnerSupportThickness
-    supportMedIn  = St;  // for vacuum option
-    supportMedOut = Al;  // for vacuum option
-    decayVolumeMed = vac;  // for vacuum option
-    vetoMed = Se;  // for liquid scintillator
-
     if (fDesign==5){
     // design 5: simplified trapezoidal design for optimization study
     // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
-      Double_t dx1 = 1.5*m;
-      Double_t slope = dx1/(fTub1z -fTub1length -zFocus);
-      Double_t dy  = fBtube;
+      Double_t slopex = 2.83*m/(fTub6z - zFocusX);// size in TP design
+      Double_t slopey = fBtube/(fTub6z - zFocusY); 
+      Double_t zpos = fTub1z -fTub1length -f_InnerSupportThickness;
+   // Add veto-timing sensitive plane before vacuum tube, same size as entrance window
+      Double_t dx1 = slopex*(zpos - zFocusX);
+      Double_t dy  = slopey*(zpos - zFocusY);
+      TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,dx1,dy,10.*mm);
+      VetoTimeDet->SetLineColor(kMagenta-10);
+      top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-20.*cm));
+      AddSensitiveVolume(VetoTimeDet);
    // make the entrance window
       TGeoVolume *T1Lid = gGeoManager->MakeBox("T1Lid",supportMedIn,dx1,dy,f_InnerSupportThickness);
       T1Lid->SetLineColor(14);
-      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0,fTub1z -fTub1length -f_InnerSupportThickness -zStartDecayVol));
-      TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slope);
+      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0,zpos - zStartDecayVol));
+      TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slopex,slopey);
       tDecayVol->AddNode(seg1, 1, new TGeoTranslation(0, 0, fTub1z - zStartDecayVol));
-      dx1 = slope*(fTub2z -fTub2length - zFocus);
-      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slope);
+      dx1 = slopex*(fTub2z -fTub2length - zFocusX);
+      dy  = slopey*(fTub2z -fTub2length - zFocusY);
+      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey);
       tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z - zStartDecayVol));
-      dx1 = slope*(fTub3z -fTub3length - zFocus);
-      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,slope);
+      dx1 = slopex*(fTub3z -fTub3length - zFocusX);
+      dy = slopey*(fTub3z -fTub3length - zFocusY);
+      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,slopex,slopey);
       tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
-      dx1 = slope*(fTub4z -fTub4length - zFocus);
-      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slope);
+      dx1 = slopex*(fTub4z -fTub4length - zFocusX);
+      dy = fBtube;
+      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slopex,slopey);
       tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
-      dx1 = slope*(fTub5z -fTub5length - zFocus);
-      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,slope);
+      dx1 = slopex*(fTub5z -fTub5length - zFocusX);
+      dy = slopey*(fTub5z -fTub5length - zFocusY);
+      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,slopex,-1.);
       tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
-      dx1 = slope*(fTub6z -fTub6length - zFocus);
-      Double_t dx2 = slope*(fTub6z +fTub6length - zFocus);
-      TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,slope);
+      dx1 = slopex*(fTub6z -fTub6length - zFocusX);
+      dy = slopey*(fTub6z -fTub6length - zFocusY);
+      Double_t dx2 = slopex*(fTub6z +fTub6length - zFocusX);
+      TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,slopex,-1.);
       tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
    // make the exit window
       TGeoVolume *T6Lid = gGeoManager->MakeBox("T6Lid",supportMedIn,dx2,dy,f_InnerSupportThickness);
@@ -427,6 +454,12 @@ void veto::ConstructGeometry()
       asmb = dynamic_cast<TGeoShapeAssembly*>(tMaGVol->GetShape());
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
+
+      //Add one more sensitive plane after vacuum tube for timing
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,dx2,fBtube,15.*mm);
+      TimeDet->SetLineColor(kMagenta-10);
+      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
+      AddSensitiveVolume(TimeDet);
     }   
     else if (fDesign==4){
     // design 4: elliptical double walled tube with LiSci in between
@@ -604,28 +637,6 @@ void veto::ConstructGeometry()
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
 
-// only for fastMuon simulation, otherwise output becomes too big    
-      if (fFastMuon){ 
-        const char* Vol  = "TGeoVolume";
-        const char* Mag  = "Mag";
-        const char* Rock = "rock";
-        const char* Ain  = "AbsorberAdd";
-        const char* Aout = "AbsorberAddCore";
-        TObjArray* volumelist = gGeoManager->GetListOfVolumes();
-        int lastvolume = volumelist->GetLast();
-        int volumeiterator=0;
-        while ( volumeiterator<=lastvolume ) {
-         const char* volumename = volumelist->At(volumeiterator)->GetName();
-         const char* classname  = volumelist->At(volumeiterator)->ClassName();
-         if (strstr(classname,Vol)){
-          if (strstr(volumename,Mag) || strstr(volumename,Rock)|| strstr(volumename,Ain) || strstr(volumename,Aout)){ 
-            AddSensitiveVolume(gGeoManager->GetVolume(volumename));
-            cout << "veto added "<< volumename <<endl;
-          }
-         }  
-         volumeiterator++;
-        }
-      }
       //Add one more sensitive plane after vacuum tube for timing
       TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,3.*m,6.*m,15.*mm);
       TimeDet->SetLineColor(kMagenta-10);
@@ -657,6 +668,30 @@ void veto::ConstructGeometry()
       totLength = asmb->GetDZ();
       top->AddNode(tDet2, 1, new TGeoTranslation(0, 0,zStartDet2+totLength));
      }
+
+// only for fastMuon simulation, otherwise output becomes too big    
+     if (fFastMuon){
+        const char* Vol  = "TGeoVolume";
+        const char* Mag  = "Mag";
+        const char* Rock = "rock";
+        const char* Ain  = "AbsorberAdd";
+        const char* Aout = "AbsorberAddCore";
+        TObjArray* volumelist = gGeoManager->GetListOfVolumes();
+        int lastvolume = volumelist->GetLast();
+        int volumeiterator=0;
+        while ( volumeiterator<=lastvolume ) {
+         const char* volumename = volumelist->At(volumeiterator)->GetName();
+         const char* classname  = volumelist->At(volumeiterator)->ClassName();
+         if (strstr(classname,Vol)){
+          if (strstr(volumename,Mag) || strstr(volumename,Rock)|| strstr(volumename,Ain) || strstr(volumename,Aout)){ 
+            AddSensitiveVolume(gGeoManager->GetVolume(volumename));
+            cout << "veto added "<< volumename <<endl;
+          }
+         }  
+         volumeiterator++;
+        }
+     }
+
 }
 
 vetoPoint* veto::AddHit(Int_t trackID, Int_t detID,
