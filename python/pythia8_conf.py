@@ -1,77 +1,181 @@
 import ROOT, os, sys
 import shipunit as u
-import hnl
+import hnl,rpvsusy
+from pythia8_conf_utils import *
 import readDecayTable
 
-def addHNLtoROOT(pid=9900015 ,m = 1.0, g=3.654203020370371E-21):
+def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False):
+    # configure pythia8 for Ship usage
+    debug=True
+    if debug: cf=open('pythia8_conf.txt','w')
+    h=readFromAscii("branchingratiosrpvsusybench%d"%benchmark)
+    P8gen.UseRandom3() 
+    P8gen.SetMom(400)  # beam momentum in GeV 
+    if deepCopy: P8gen.UseDeepCopy()
     pdg = ROOT.TDatabasePDG.Instance()
-    pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid)
+    # let strange particle decay in Geant4
+    ## the following does not work because need to have N2 decaying
+    #P8gen.SetParameters("ParticleDecays:limitTau0 = on")
+    #P8gen.SetParameters("ParticleDecays:tau0Max = 1")
+    # explicitly make KS and KL stable
+    P8gen.SetParameters("130:mayDecay  = off")
+    if debug: cf.write('P8gen.SetParameters("130:mayDecay  = off")\n')
+    P8gen.SetParameters("310:mayDecay  = off")
+    if debug: cf.write('P8gen.SetParameters("310:mayDecay  = off")\n')
+    P8gen.SetParameters("3122:mayDecay = off")
+    if debug: cf.write('P8gen.SetParameters("3122:mayDecay = off")\n')
+    P8gen.SetParameters("3222:mayDecay = off")
+    if inclusive=="True":
+        P8gen.SetParameters("SoftQCD:inelastic = on")
+        P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
+        P8gen.SetParameters("PromptPhoton:all = on")
+        P8gen.SetParameters("WeakBosonExchange:all = on")
+        
+    # generate RPV neutralino from inclusive charm hadrons
+    if inclusive=="c":
+        P8gen.SetParameters("HardQCD::hardccbar  = on")
+	if debug: cf.write('P8gen.SetParameters("HardQCD::hardccbar  = on")\n')
+        # add RPVSUSY
+        rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
+        ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
+        print "RPVSUSY ctau ",ctau
+        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+        if debug: cf.write('P8gen.SetParameters("9900015:new = N2 N2 2 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
+        P8gen.SetParameters("9900015:isResonance = false")
+        if debug: cf.write('P8gen.SetParameters("9900015:isResonance = false")\n')
+	P8gen.SetParameters("Next:numberCount    =  0")
+        if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')
+        # Configuring decay modes...
+        rpvsusy_instance.AddChannelsToPythia(P8gen)
 
-def readFromAscii():
-    FairShip = os.environ['FAIRSHIP'] 
-    ascii = open(FairShip+'/shipgen/branchingratios.dat')
-    h={}
-    content = ascii.readlines()
-    n = 0
-    while n<len(content):
-       line = content[n] 
-       if not line.find('TH1F')<0:
-          keys = line.split('|')
-          n+=1
-          limits = content[n].split(',')
-          hname = keys[1]
-          if len(keys)<5: keys.append(',') 
-          h[ hname ] = ROOT.TH1F(hname,keys[2]+';'+keys[3]+';'+keys[4],int(limits[0]),float(limits[1]),float(limits[2]) )
-       else:
-          keys = line.split(',')
-          h[ hname ].SetBinContent(int(keys[0]),float(keys[1]) )
-       n+=1
-    return h
-def getbr(h,histoname,mass,coupling):
-    #0 MeV< mass < 3.200 GeV 
-    mass = int(mass*1000) 
-    br=h[histoname].GetBinContent(mass)
-    br=br*coupling
-    return br
+        # Finish HNL setup...
+        P8gen.SetParameters("9900015:mayDecay = on")
+	if debug: cf.write('P8gen.SetParameters("9900015:mayDecay = on")\n')
+        P8gen.SetHNLId(9900015)
+	if debug: cf.write('P8gen.SetHNLId(9900015)\n')
+        # also add to PDG
+        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
+        addHNLtoROOT(pid=9900015,m=mass,g=gamma)
+        # 12 14 16 neutrinos replace with N2
+        charmhistograms = ['d_mu','ds_mu']
+        # no tau decay here to consider
+        totaltauBR      = 0.0 
+        maxsumBR        = getmaxsumbrrpvsusy(h,charmhistograms,mass,couplings)
+        if maxsumBR==0.:
+           print "No phase space for RPV neutralino from c at this mass:",mass,". Quitting."
+           sys.exit()
+        totalBR         = gettotalbrrpvsusy(h,charmhistograms,mass,couplings)
+        
 
-def getmaxsumbr(h,histograms,mass,couplings,totaltaubr):
-    #0 MeV< mass < 3.200 GeV 
-    maxsumbr=0.0
-    sumbrs={}
-    brdstauadded=0
-    leptons=['e','mu','tau'] 
-    for histoname in histograms: 
-       item = histoname.split('_') 
-       lepton = item[len(item)-1]
-       meson = item[0]
-       try:
-          coupling=couplings[leptons.index(lepton)]
-       except:
-          coupling=couplings[2] 
-       if histoname[:3]=='tau': coupling=couplings[2] 
-       try:
-          sumbrs[meson]+=getbr(h,histoname,mass,coupling)
-       except:
-          sumbrs[meson]=getbr(h,histoname,mass,coupling)
-       if meson=="ds" and brdstauadded==0 and totaltaubr>0.:
-          sumbrs[meson]+=totaltaubr
-	  brdstauadded=1       	  
-    maxsumbr=max(sumbrs.values())
-    return maxsumbr
+        #overwrite D_s+ decays
+        P8gen.SetParameters("431:new  D_s+  D_s-    1   3   0    1.96849"\
+                            "    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0")
+	if debug: cf.write('P8gen.SetParameters("431:new  D_s+      D_s-        1 3 0 1.96849'\
+                           '    0.00000 0.00000 0.00000 1.49900e-01 0 1 0 1 0")\n')
+        sumBR=0.
+        if getbr(h,'ds_mu',mass,couplings[1])>0.:
+           P8gen.SetParameters("431:addChannel      1  "+str(getbr(h,'ds_mu',mass,couplings[1])/maxsumBR)+\
+                               "    0      -13       9900015")
+	   if debug: cf.write('P8gen.SetParameters("431:addChannel       1  '+\
+                              str(getbr(h,'ds_mu',mass,couplings[1])/maxsumBR)+'    0      -13       9900015")\n')
+           sumBR+=float(getbr(h,'ds_mu',mass,couplings[1])/maxsumBR) 
+        if sumBR<1. and sumBR>0.:
+            P8gen.SetParameters("431:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
+            if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+\
+                               str(1.-sumBR)+'    0       22      22")\n')
+        
+        #overwrite D+ decays
+        P8gen.SetParameters("411:new  D+ D-    1   3   0    1.86962"\
+                            "    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0")
+	if debug: cf.write('P8gen.SetParameters("411:new D+          D-        1 3 0 1.86962'\
+                           ' 0.00000 0.00000 0.00000 3.11800e-01 0 1 0 1 0")\n')
+        sumBR=0.
+        if getbr(h,'d_mu',mass,couplings[1])>0.:
+           P8gen.SetParameters("411:addChannel      1  "+str(getbr(h,'d_mu',mass,couplings[1])/maxsumBR)+\
+                               "    0      -13       9900015")
+	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+\
+                              str(getbr(h,'d_mu',mass,couplings[1])/maxsumBR)+\
+                              '    0      -13       9900015")\n')
+           sumBR+=float(getbr(h,'d_mu',mass,couplings[1])/maxsumBR) 
+        if sumBR<1. and sumBR>0.:
+           P8gen.SetParameters("411:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
+	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+\
+                              str(1.-sumBR)+'    0       22      22")\n')
+        
+        P8gen.List(9900015)
+	if debug: cf.write('P8gen.List(9900015)\n')
 
-def gettotalbr(h,histograms,mass,couplings,totaltaubr):
-    totalbr=0.0 
-    leptons=['e','mu','tau'] 
-    for histoname in histograms: 
-       item = histoname.split('_') 
-       lepton = item[len(item)-1]
-       try:
-          coupling=couplings[leptons.index(lepton)] 
-       except:
-          coupling=couplings[2] 
-       if histoname[:3]=='tau': coupling=couplings[2] 
-       totalbr+=getbr(h,histoname,mass,coupling)
-    return totalbr
+    if inclusive=="b":
+        P8gen.SetParameters("HardQCD::hardbbbar  = on")
+	if debug: cf.write('P8gen.SetParameters("HardQCD::hardbbbar  = on")\n')
+        # add RPVSUSY
+        rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
+        ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
+        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+	if debug: cf.write('P8gen.SetParameters("9900015:new = N2 N2 2 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0")\n')
+        P8gen.SetParameters("9900015:isResonance = false")
+	if debug: cf.write('P8gen.SetParameters("9900015:isResonance = false"\n')
+        # Configuring decay modes...
+        rpvsusy_instance.AddChannelsToPythia(P8gen)
+        # Finish HNL setup...
+        P8gen.SetParameters("9900015:mayDecay = on")
+	if debug: cf.write('P8gen.SetParameters("9900015:mayDecay = on")\n')
+        P8gen.SetHNLId(9900015)
+	if debug: cf.write('P8gen.SetHNLId(9900015)\n')
+        # also add to PDG
+        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
+        addHNLtoROOT(pid=9900015,m=mass,g=gamma)
+        # 12 14 16 neutrinos replace with N2
+        beautyhistograms = ['b_mu','b_tau','b0_nu_mu','b0_nu_tau']
+        maxsumBR=getmaxsumbrrpvsusy(h,beautyhistograms,mass,couplings)
+        if maxsumBR==0.:
+           print "No phase space for HNL from b at this mass:",mass,". Quitting."
+           sys.exit()
+        totalBR=gettotalbrrpvsusy(h,beautyhistograms,mass,couplings)
+
+        #overwrite B+ decays
+        P8gen.SetParameters("521:new  B+               B-    1   3   0    5.27925"\
+                            "0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0")
+	if debug: cf.write('P8gen.SetParameters("521:new  B+               B-    1   3   0'\
+                           '5.27925    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0")\n')
+        sumBR=0.
+        if getbr(h,'b_tau',mass,couplings[1])>0.:
+           P8gen.SetParameters("521:addChannel      1  "+\
+                               str(getbr(h,'b_tau',mass,couplings[1])/maxsumBR)+"    0       9900015      -15")
+	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+\
+                              str(getbr(h,'b_tau',mass,couplings[1])/maxsumBR)+'    0       9900015      -15")\n')
+           sumBR+=float(getbr(h,'b_tau',mass,couplings[1])/maxsumBR) 
+        if sumBR<1. and sumBR>0.:
+           P8gen.SetParameters("521:addChannel      1   "+\
+                               str(1.-sumBR)+"    0       22      22")
+	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1   '+\
+                              str(1.-sumBR)+'    0       22      22")\n')
+
+        #overwrite B0 decays
+        P8gen.SetParameters("511:new  B0  Bbar0    1   0   0    5.27958"\
+                            "    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0")
+	if debug: cf.write('P8gen.SetParameters("511:new  B0  Bbar0    1   0   0'\
+                           '    5.27958    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0")\n')
+        sumBR=0.
+        if getbr(h,'b0_nu_tau',mass,couplings[1])>0.:
+           P8gen.SetParameters("511:addChannel      1  "+\
+                               str(getbr(h,'b0_nu_tau',mass,couplings[1])/maxsumBR)+\
+                               "   22       9900015      16")
+        if sumBR<1. and sumBR>0.:
+           P8gen.SetParameters("511:addChannel      1   "+\
+                               str(1.-sumBR)+"    0       22      22")
+	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1   '+\
+                              str(1.-sumBR)+'    0       22      22")\n')
+        
+        P8gen.List(9900015)
+        if debug: cf.write('P8gen.List(9900015)\n')
+    
+    if debug: cf.close()
+    
+
+
+
+
 
 def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
     # configure pythia8 for Ship usage
@@ -107,6 +211,7 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         #mass = 1.0 # GeV
         hnl_instance = hnl.HNL(mass, couplings, debug=True)
         ctau = hnl_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
+        print "HNL ctau",ctau
         P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
         if debug: cf.write('P8gen.SetParameters("9900015:new = N2 N2 2 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
         P8gen.SetParameters("9900015:isResonance = false")
@@ -114,7 +219,7 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
 	P8gen.SetParameters("Next:numberCount    =  0")
         if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')
         # Configuring decay modes...
-        readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True)
+        readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=False)
         # Finish HNL setup...
         P8gen.SetParameters("9900015:mayDecay = on")
 	if debug: cf.write('P8gen.SetParameters("9900015:mayDecay = on")\n')
