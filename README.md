@@ -6,7 +6,7 @@ read [the Git tutorial for SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-T
 
 Let get started:
 
-1 December 2015: new DEV branches for FairSoft and FairRoot are put in place with simplified configurations scripts
+1 December 2015: FairSoft and FairRoot are put in place with simplified configurations scripts
 
 1. In case you use SLC6 where the GitHub cert is missing, first do (only once):
 
@@ -39,7 +39,7 @@ Let get started:
     ```bash
     mkdir $SHIPSOFT
     cd $SHIPSOFT
-    git clone -b dev https://github.com/ShipSoft/FairSoft.git
+    git clone https://github.com/ShipSoft/FairSoft.git
     cd FairSoft
     cat DEPENDENCIES
     # Make sure all the required dependencies are installed
@@ -52,7 +52,7 @@ Let get started:
 
     ```bash
     cd $SHIPSOFT
-    git clone -b dev https://github.com/ShipSoft/FairRoot.git
+    git clone  https://github.com/ShipSoft/FairRoot.git
     cd FairRoot
     mkdir build
     ./configure.sh
@@ -79,7 +79,7 @@ Let get started:
     source ${xxx}/FairShipRun/config.(c)sh
     ```
 
-Old procedure, still valid for FairSoft and FairRoot master branches:
+Old procedure:
 
 1. In case you use SLC6 where the GitHub cert is missing, first do (only once):
 
