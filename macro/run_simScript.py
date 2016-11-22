@@ -6,9 +6,9 @@ from ShipGeoConfig import ConfigRegistry
 debug = 0  # 1 print weights and field
            # 2 make overlap check
 # Default HNL parameters
-theHNLmass = 1.0*u.GeV
-#theHNLcouplings = [1.e-8, 1.e-8, 1.e-8] # may not correspond to ctau=54km
-theHNLcouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km
+theMass = 1.0*u.GeV
+#theCouplings = [1.e-8, 1.e-8, 1.e-8] # may not correspond to ctau=54km
+theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
@@ -19,6 +19,8 @@ deepCopy     = False  # False = copy only stable particles to stack, except for 
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
 HNL          = True
 RPVSUSY      = False
+RPVSUSYbench = 2
+
 eventDisplay = False
 #inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 inputFile    = "/home/vagrant/ShipSoft/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
@@ -38,8 +40,9 @@ Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
-                                   "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
-                                   "output=","tankDesign=","muShieldDesign=","NuRadio"])
+                                   "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=",\
+                                   "couplings=", "coupling=","output=","tankDesign=","muShieldDesign=","NuRadio",\
+                                   "RpvSusy","SusyBench="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
@@ -47,8 +50,11 @@ except getopt.GetoptError:
         print ' or    --Pythia6 for muon nucleon scattering'  
         print ' or    --PG for particle gun'  
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
-        print '       --mass or -m to set HNL mass'
+        print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
+        print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
+        print '       --mass or -m to set HNL or New Particle mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
+        print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
         sys.exit()
 for o, a in opts:
         if o in ("-D","--display"):
@@ -105,10 +111,16 @@ for o, a in opts:
             ds = int(a)
         if o in ("-F"):
             deepCopy = True
+        if o in ("--RpvSusy"):
+            HNL = False
+            RPVSUSY = True
+        if o in ("--SusyBench"):
+            RPVSUSYbench = int(a)
         if o in ("-m", "--mass"):
-            theHNLmass = float(a)
+            theMass = float(a)
         if o in ("-c", "--couplings", "--coupling"):
-            theHNLcouplings = [float(c) for c in a.split(",")]
+            theCouplings = [float(c) for c in a.split(",")]
+            
 
 if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
   inputFile = "/eos/ship/data/GenieEvents/genie-nu_mu.root"
@@ -176,7 +188,9 @@ if simEngine == "Pythia8":
  if HNL:
   P8gen = ROOT.HNLPythia8Generator()
   import pythia8_conf
-  pythia8_conf.configure(P8gen,theHNLmass,theHNLcouplings,inclusive,deepCopy)
+  print 'Generating HNL events of mass %.3f GeV\n'%theMass
+  print 'and with couplings=',theCouplings
+  pythia8_conf.configure(P8gen,theMass,theCouplings,inclusive,deepCopy)
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
   if ds==7: # short muon shield
@@ -190,9 +204,16 @@ if simEngine == "Pythia8":
  if RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
   import pythia8_conf
-  pythia8_conf.configurerpvsusy(P8gen,1.0,[1e-3,1e-3],1e3,2,'c',deepCopy)
+  print 'Generating RPVSUSY events of mass %.3f GeV\n'%theMass
+  print 'and with couplings=[%.3f,%.3f]\n'%(theCouplings[0],theCouplings[1])
+  print 'and with stop mass=\%.3f GeV\n',theCouplings[2]
+  pythia8_conf.configurerpvsusy(P8gen,theMass,[theCouplings[0],theCouplings[1]],
+                                theCouplings[2],RPVSUSYbench,'c',deepCopy)
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
+  if ds==7: # short muon shield
+   P8gen.SetLmin(44*u.m)
+   P8gen.SetLmax(107*u.m)
   if inputFile: 
 # read from external file
    P8gen.UseExternalFile(inputFile, firstEvent)
