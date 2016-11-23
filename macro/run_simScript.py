@@ -22,8 +22,8 @@ RPVSUSY      = False
 RPVSUSYbench = 2
 
 eventDisplay = False
-#inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
-inputFile    = "/home/vagrant/ShipSoft/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+
 defaultInputFile = True
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
