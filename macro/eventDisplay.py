@@ -21,7 +21,11 @@ InputFile = None
 withGeo   = False
 dy = str(10.)
 withMCTracks = True
-# simEngine = "Genie"
+#                        muon shield  strawtube                     decay vessel  
+transparentMaterials = {'iron':80,'aluminium':80,'mylar':60,'STTmix9010_2bar':95,'steel':80,'Aluminum':80,'Scintillator':80,
+#                        tau nu detector  
+                        'CoilCopper':70,'copper':90,'HPTgas':70,'Bakelite':70,'RPCgas':70,'TTmedium':70}
+
 #
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:Y:i",["paramFile=","geoFile="])
@@ -515,32 +519,75 @@ class EventLoop(ROOT.FairTask):
      if p: 
       p.SetPickable(ROOT.kTRUE)
       p.SetTitle(p.__repr__())
- def defaultView(self):
+ def rotateView(self,hor=0,ver=0):
   v   = ROOT.gEve.GetDefaultGLViewer()
   cam  = v.CurrentCamera()
   cam.Reset()
-  return cam,v
+  if hor!=0 or ver!=0:
+   cam.RotateRad(hor,ver)
+  v.DoDraw()
  def topView(self):
-  cam,v = self.defaultView()
-  cam.RotateRad(ROOT.TMath.Pi()/2.,0.) # rotation around z axis
-  v.DoDraw()
+  self.rotateView(ROOT.TMath.Pi()/2.,0.) # rotation around z axis
  def bottomView(self):
-  cam,v = self.defaultView()
-  cam.RotateRad(-ROOT.TMath.Pi()/2.,0.) # rotation around z axis
-  v.DoDraw()
+  self.rotateView(-ROOT.TMath.Pi()/2.,0.) # rotation around z axis
  def frontView(self):
-  cam,v = self.defaultView()
-  cam.RotateRad(0.,ROOT.TMath.Pi()/2.) # rotation around y or x axis
-  v.DoDraw()
+  self.rotateView(0.,ROOT.TMath.Pi()/2.) # rotation around y or x axis
  def backView(self):
-  cam,v = self.defaultView()
-  cam.RotateRad(0.,-ROOT.TMath.Pi()/2.) # rotation around y or x axis
-  v.DoDraw()
- def sideView(self):
-  cam,v = self.defaultView()
-  cam.RotateRad(0.,ROOT.TMath.Pi()) # rotation around y or x axis
-  v.DoDraw()
-#
+  self.rotateView(0.,-ROOT.TMath.Pi()/2.) # rotation around y or x axis
+ def leftView(self):
+  self.rotateView(0.,ROOT.TMath.Pi()) # rotation around y or x axis
+ def rightView(self):
+  self.rotateView(0.,ROOT.TMath.Pi()) # rotation around y or x axis
+ def transparentMode(self,mode='on'):
+   for m in transparentMaterials:
+     mat = ROOT.gGeoManager.GetMaterial(m)
+     if mode.lower()=='on' or mode==1:
+       mat.SetTransparency(transparentMaterials[m])
+     else: mat.SetTransparency("\x00")
+   sc    = evmgr.GetScenes()
+   geoscene = sc.FindChild('Geometry scene')
+   if geoscene:   evmgr.ElementChanged(geoscene,True,True)
+# add projections DOES NOT WORK YET AS FORESEEN, under investigation. 30.11.2016
+def projection():
+#if 1>0:
+   # camera
+   s = ROOT.gEve.SpawnNewScene("Projected Event")
+   ROOT.gEve.GetDefaultViewer().AddScene(s)
+   v = ROOT.gEve.GetDefaultGLViewer()
+   v.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoXOY)
+   cam = v.CurrentCamera()
+   cam.SetZoomMinMax(0.2, 20)
+   # projections
+   mng = ROOT.TEveProjectionManager(ROOT.TEveProjection.kPT_RPhi)
+   s.AddElement(mng)
+   axes = ROOT.TEveProjectionAxes(mng)
+   axes.SetTitle("TEveProjections demo")
+   s.AddElement(axes)
+   ROOT.gEve.AddToListTree(axes, ROOT.kTRUE)
+   ROOT.gEve.AddToListTree(mng, ROOT.kTRUE)
+
+def projection_prescale():
+#if 1>0:
+   v = evmgr.GetViewers()
+   vw = v.FindChild('Viewer 1')
+   if vw: vw.SetName('3d')
+   sev = ROOT.gEve.SpawnNewViewer("Scaled 2D")
+   smng = ROOT.TEveProjectionManager(ROOT.TEveProjection.kPP_Plane)
+   sp = smng.GetProjection()
+   sp.SetUsePreScale(ROOT.kTRUE)
+   sp.AddPreScaleEntry(2, 100000000.,  0.1)
+   ss = ROOT.gEve.SpawnNewScene("Scaled Geom")
+   sev.AddScene(ss)
+   ss.AddElement(smng)
+   N = fGeo.GetTopNode()
+   TNod=ROOT.TEveGeoTopNode(fGeo, N, 1, 3, 10)
+   ss.AddElement(TNod)
+   eventscene = ROOT.gEve.SpawnNewScene('Scaled event')
+   eventscene.AddElement(ROOT.FairEventManager.Instance())
+   sev.AddScene(eventscene)
+   eventscene.AddElement(smng)
+   ROOT.gEve.GetBrowser().GetTabRight().SetTab(1)
+   ROOT.gEve.FullRedraw3D(kTRUE)
 def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
    xvol = fGeo.GetVolume(x)
@@ -719,7 +766,7 @@ class Rulers(ROOT.FairTask):
   ty = ROOT.TEveText("y-axis")
   ty.SetFontSize(10)
   ty.RefMainTrans().SetPos(0.,ypos+1*u.m,z)
-  ty.SetMainColor(ROOT.kRed-2);
+  ty.SetMainColor(ROOT.kRed-2)
   a2.AddElement(ty)
   xpos,ypos = 0., 0.
   xlength = 3*u.m
@@ -751,16 +798,16 @@ class Rulers(ROOT.FairTask):
   tx = ROOT.TEveText("x-axis")
   tx.SetFontSize(10)
   tx.RefMainTrans().SetPos(xpos+1*u.m,0.,z)
-  tx.SetMainColor(ROOT.kRed-2);
+  tx.SetMainColor(ROOT.kRed-2)
   a3.AddElement(tx)
 
   t1 = ROOT.TEveText("SHiP")
   t1.SetFontSize(200)
   t1.RefMainTrans().SetPos(0.,600.,ShipGeo.TrackStation1.z-10*u.m)
-  t1.PtrMainTrans().RotateLF(1, 3, ROOT.TMath.PiOver2());
-  t1.SetMainColor(ROOT.kOrange-2);
-  t1.SetFontMode(ROOT.TGLFont.kExtrude);
-  t1.SetLighting(ROOT.kTRUE);
+  t1.PtrMainTrans().RotateLF(1, 3, ROOT.TMath.PiOver2())
+  t1.SetMainColor(ROOT.kOrange-2)
+  t1.SetFontMode(ROOT.TGLFont.kExtrude)
+  t1.SetLighting(ROOT.kTRUE)
   a1.AddElement(t1)
   self.ruler.CloseCompound()
   sc    = ROOT.gEve.GetScenes()
@@ -871,6 +918,10 @@ fGeo  = ROOT.gGeoManager
 top   = fGeo.GetTopVolume()
 evmgr = ROOT.gEve
 
+br = evmgr.GetBrowser()
+br.HideBottomTab() # make more space for graphics
+br.SetWindowName('SHiP Eve Window')
+
 if not fRun.GetGeoFile().FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # try to figure out which ecal geo to load
@@ -891,5 +942,19 @@ rulers = Rulers()
 SHiPDisplay = EventLoop()
 SHiPDisplay.InitTask()
 SHiPDisplay.NextEvent()
+
+print 'How to find Help? Until a better solution found, move with the mouse to the line which is just below Viewer 1'
+print '                  A hidden tab should appear. Click on File, unclick Hide Menus to have it permanent.' 
+print '                  Help can be found on the left. Und camera, you can switch to different views.'
+# short cuts
+# w go to wire frame
+# r smooth display
+# t technical display
+# e black<->white background
+# j zoom in 
+# k zoom out
+# d GL debug mode
+
+
 
 
