@@ -35,16 +35,24 @@ for o, a in opts:
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
 
-if not inputFile.find(',')<0 :  
-  sTree = ROOT.TChain("cbmsim")
-  for x in inputFile.split(','):
-   if x[0:4] == "/eos":
-    sTree.AddFile("root://eoslhcb.cern.ch/"+x)
-   else: sTree.AddFile(x)
-elif inputFile[0:4] == "/eos":
+if not dy:
+  # try to extract from input file name
+  tmp = inputFile.split('.')
+  try:
+    dy = float( tmp[1]+'.'+tmp[2] )
+  except:
+    dy = None
+else:
+ inputFile = 'ship.'+str(dy)+'.Pythia8-TGeant4_rec.root'
+
+if inputFile[0:4] == "/eos":
   eospath = "root://eoslhcb.cern.ch/"+inputFile
   f = ROOT.TFile.Open(eospath)
   sTree = f.cbmsim
+elif not inputFile.find(',')<0 :
+  sTree = ROOT.TChain("cbmsim")
+  for x in putFile.split(','):
+   sTree.AddFile(x)
 else:
   f = ROOT.TFile(inputFile)
   sTree = f.cbmsim
