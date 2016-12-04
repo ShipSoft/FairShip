@@ -7,7 +7,11 @@ if not gEve.GetViewers().FindChild('Bar Embedded Viewer'):
  pack1.SetElementName("Top/Side View")
  pack1.SetVertical()
 # Embedded viewer.
- for c in ['ZnOX','ZOY']:
+ cams = ['ZnOX','ZOY']
+ if not hasattr(ROOT.TGLViewer,'kCameraOrthoZnOX'):
+   cams = ['XOZ','ZOY']
+   print "You are not using the patched ROOT6, switch back to OrthoXOZ camera, with Z vertical"
+ for c in cams:
   slot = pack1.NewSlot()
   v = ROOT.TEveViewer("BarViewer"+c)
   v.SpawnGLEmbeddedViewer(gEve.GetEditor())
