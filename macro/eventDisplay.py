@@ -11,6 +11,8 @@ fMan = None
 fRun = None
 pdg  = ROOT.TDatabasePDG.Instance()
 g    = ROOT.gROOT 
+gEnv = ROOT.gEnv
+gEnv.SetValue('Eve.Viewer.HideMenus',0)
 
 ParFile    = None
 geoFile    = None
@@ -284,7 +286,7 @@ class DrawTracks(ROOT.FairTask):
    if len(hitlist)==1:
     if fT.GetMotherId()<0: continue
     if abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode()) == 9900015:
-     # still would like to draw track stumb
+     # still would like to draw track stub
      # check for end vertex
      evVx = False
      for da in sTree.MCTrack:
@@ -436,6 +438,45 @@ class IO():
          self.lbut[x]['command'] = lambda j=x: self.toogle(j)
          self.lbut[x].pack(side=Tkinter.BOTTOM)
         self.fram1.pack()
+# add ship actions to eve display
+        gEve = ROOT.gEve
+        slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabLeft())
+        slot.SetShowTitleBar(ROOT.kFALSE)
+        packs = slot.MakePack();
+        packs.SetShowTitleBar(ROOT.kFALSE);
+        packs.SetElementName("SHiP actions")
+        packs.SetHorizontal()
+        slot = packs.NewSlot()
+        frame = slot.MakeFrame()
+        frame.SetElementName("commands")
+        frame.SetShowTitleBar(ROOT.kFALSE)
+        cf = frame.GetGUICompositeFrame()
+        hf = ROOT.TGVerticalFrame(cf)
+        hf.SetCleanup(ROOT.kLocalCleanup)
+        hf.SetWidth(150)
+        cf.AddFrame(hf)
+        guiFrame = ROOT.TGVerticalFrame(hf)
+        hf.AddFrame(guiFrame, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+        guiFrame.SetCleanup(ROOT.kDeepCleanup)
+        b = ROOT.TGTextButton(guiFrame, "Add particle follower")
+        b.SetWidth(150)
+        b.SetToolTipText('start new window with top projection and energy loss')
+        b.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_addParticleFollower.py")')
+        guiFrame.AddFrame(b, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+        bn = ROOT.TGTextButton(guiFrame, "fill histogram")
+        bn.SetWidth(150)
+        bn.SetToolTipText('Fill histogram with energy along flight path')
+        bn.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_fillEnergy.py")')
+        guiFrame.AddFrame(bn, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+        bt = ROOT.TGTextButton(guiFrame, "switch transparent mode on/off")
+        bt.SetWidth(150)
+        bt.SetToolTipText('switch transparent mode on/off for better visibility of tracks')
+        bt.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_transparentMode.py")')
+        guiFrame.AddFrame(bt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+#
+        cf.MapSubwindows()
+        cf.Layout()
+        cf.MapWindow()
     def nextEvent(self,event=None):
         i = int(self.contents.get())
         if i==self.n: self.n+=1
@@ -499,6 +540,7 @@ class EventLoop(ROOT.FairTask):
    self.tracks.InitTask()
 # create SHiP GUI
    self.ioBar = IO()
+   self.TransparentMode = 0
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
    else  : self.n=i
@@ -543,7 +585,10 @@ class EventLoop(ROOT.FairTask):
      mat = ROOT.gGeoManager.GetMaterial(m)
      if mode.lower()=='on' or mode==1:
        mat.SetTransparency(transparentMaterials[m])
-     else: mat.SetTransparency("\x00")
+       self.TransparentMode = 1
+     else: 
+       mat.SetTransparency("\x00")
+       self.TransparentMode = 0  
    sc    = evmgr.GetScenes()
    geoscene = sc.FindChild('Geometry scene')
    if geoscene:   evmgr.ElementChanged(geoscene,True,True)
@@ -914,6 +959,8 @@ fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal disp
 #
 fRman = ROOT.FairRootManager.Instance()
 sTree = fRman.GetInChain()
+lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
+lsOfGlobals.Add(sTree) 
 fGeo  = ROOT.gGeoManager 
 top   = fGeo.GetTopVolume()
 evmgr = ROOT.gEve
@@ -940,6 +987,8 @@ if hasattr(ShipGeo,'preshowerOption'):
 # switchOfAll('RockD')
 rulers = Rulers()
 SHiPDisplay = EventLoop()
+SHiPDisplay.SetName('SHiP Displayer')
+lsOfGlobals.Add(SHiPDisplay) 
 SHiPDisplay.InitTask()
 SHiPDisplay.NextEvent()
 
