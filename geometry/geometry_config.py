@@ -186,9 +186,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield       =  AttrDict(z=0*u.cm)
     c.muShieldDesign = muShieldDesign
     # design 4,5,6
-    c.muShield.LE  = 10*u.m     #- 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
+    c.muShield.LE  = 10*u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
     if muShieldDesign == 6: c.muShield.dZ0 = 2.5*u.m 
-    else:                   c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
+    else:                   c.muShield.dZ0 = 1*u.m      # extra hadron absorber
     c.muShield.dZ1 = 3.5*u.m
     c.muShield.dZ2 = 6.*u.m
     c.muShield.dZ3 = 2.5*u.m
@@ -202,19 +202,18 @@ with ConfigRegistry.register_config("basic") as c:
     if muShieldDesign == 7:
         c.muShield.dZ1 = 0.7*u.m
         c.muShield.dZ2 = 1.7*u.m
-        c.muShield.dZ3 = 4.*u.m
-        c.muShield.dZ4 = 2.75*u.m
-        c.muShield.dZ5 = 2.4*u.m 
-        c.muShield.dZ6 = 3.*u.m
-        c.muShield.dZ7 = 2.35*u.m
+        c.muShield.dZ3 = 4.05*u.m
+        c.muShield.dZ4 = 2.80*u.m
+        c.muShield.dZ5 = 2.45*u.m
+        c.muShield.dZ6 = 3.05*u.m
+        c.muShield.dZ7 = 2.40*u.m
         c.muShield.dZ8 = 0.*u.m
         c.muShield.dXgap = 0.*u.m
         c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                          +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
         c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
 
-    if muShieldDesign == 3: 
-     c.muShield.LE  = 10*u.m     #- 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
+    if muShieldDesign == 3:
      c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
      c.muShield.dZ1 = 3.5*u.m
      c.muShield.dZ2 = 5.*u.m
@@ -226,7 +225,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.muShield.dZ8 = 3.*u.m
      c.muShield.dXgap = 0.2*u.m
 
-    if muShieldDesign == 2: 
+    if muShieldDesign == 2:
      c.muShield.dZ0 = 0*u.m      #  extra hadron absorber
      c.muShield.dZ1 = 2.5*u.m
      c.muShield.dZ2 = 3.5*u.m
@@ -237,7 +236,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+
                          c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE  # leave some space for nu-tau detector   
     # for passive design, fDesign==1
-    if muShieldDesign == 1: 
+    if muShieldDesign == 1:
         c.muShield.length =  70*u.m 
         c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2. - c.muShield.LE  # leave some space for nu-tau 
     if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5 : 
