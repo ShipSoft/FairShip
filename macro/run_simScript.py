@@ -25,6 +25,7 @@ inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root
 
 defaultInputFile = True
 outputDir    = "."
+sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 dv           = 4 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
@@ -41,7 +42,7 @@ try:
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=",\
                                    "couplings=", "coupling=","output=","tankDesign=","muShieldDesign=","NuRadio",\
-                                   "RpvSusy","SusyBench="])
+                                   "RpvSusy","SusyBench=","sameSeed="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
@@ -96,6 +97,8 @@ for o, a in opts:
             firstEvent = int(a)
         if o in ("-s", "--seed"):
             theSeed = int(a)
+        if o in ("-s", "--sameSeed"):
+            sameSeed = int(a)
         if o in ("-f"):
             if a.lower() == "none": inputFile = None
             else: inputFile = a
@@ -319,6 +322,7 @@ if simEngine == "MuonBack":
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  MuonBackgen.SetSmearBeam(3*u.cm) # beam size mimicking spiral
+ if sameSeed: MuonBackgen.SetSameSeed(sameSeed)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file, with Phi random=',phiRandom

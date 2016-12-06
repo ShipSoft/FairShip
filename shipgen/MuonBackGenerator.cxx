@@ -33,6 +33,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   }
   fn = firstEvent;
   fPhiRandomize = fl;
+  fSameSeed = -1;
   fsmearBeam = 0; // default no beam smearing, use SetSmearBeam(sb) if different, sb [cm]
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
   fNevents = fTree->GetEntries();
@@ -77,16 +78,20 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 // test if we have a muon, don't look at neutrinos:
    if (abs(int(id))==13) {break;}
   }
+  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  Double_t mass = pdgBase->GetParticle(id)->Mass();
+  Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
+  Double_t tof = 0;
+  if (!fSameSeed<0){
+   Int_t theSeed = fn + fSameSeed*fNevents;
+   gRandom->SetSeed(theSeed);
+  }
   if (fPhiRandomize){
       Double_t pt  = TMath::Sqrt( px*px+py*py );
       Double_t phi = gRandom->Uniform(0.,2.) * TMath::Pi();
       px = pt*TMath::Cos(phi);
       py = pt*TMath::Sin(phi);
   }
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  Double_t mass = pdgBase->GetParticle(id)->Mass();
-  Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
-  Double_t tof = 0;
   if (fsmearBeam>0){
     Double_t test = fsmearBeam*fsmearBeam;
     Double_t Rsq  = test + 1.;
