@@ -30,6 +30,8 @@ theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 dv           = 4 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
 ds           = 5 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
+charm        = 1 # !=0 create charm detector instead of SHiP
+
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
 if debug>1 : checking4overlaps = True
@@ -42,7 +44,7 @@ try:
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=",\
                                    "couplings=", "coupling=","output=","tankDesign=","muShieldDesign=","NuRadio",\
-                                   "RpvSusy","SusyBench=","sameSeed="])
+                                   "RpvSusy","SusyBench=","sameSeed=","charm="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default)  or -A inclusive)'
@@ -111,6 +113,8 @@ for o, a in opts:
             dv = int(a)
         if o in ("--muShieldDesign"): 
             ds = int(a)
+        if o in ("--charm"): 
+            charm = int(a)
         if o in ("-F"):
             deepCopy = True
         if o in ("--RpvSusy"):
@@ -149,7 +153,9 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
 # - preshowerOption = 0 # no preshower, default. 1= simple preshower 
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds)
+if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds)
+else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
+
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
@@ -183,7 +189,8 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
-import shipDet_conf
+if charm!=0: import charmDet_conf as shipDet_conf 
+else:        import shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -362,10 +369,11 @@ if eventDisplay:
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 # manipulate G4 geometry to enable magnetic field in active shielding, VMC can't do it.
-if ship_geo.muShieldDesign != 1:
- import geomGeant4
- geomGeant4.setMagnetField() # ('dump') for printout of mag fields
- if debug > 0: geomGeant4.printWeightsandFields()
+if hasattr(ship_geo,"muShieldDesign"):
+ if ship_geo.muShieldDesign != 1:
+  import geomGeant4
+  geomGeant4.setMagnetField() # ('dump') for printout of mag fields
+  if debug > 0: geomGeant4.printWeightsandFields()
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")

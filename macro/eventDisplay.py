@@ -162,24 +162,30 @@ class DrawTracks(ROOT.FairTask):
   self.comp  = ROOT.TEveCompound('Tracks')
   gEve.AddElement(self.comp)
   self.trackColors = {13:ROOT.kGreen,211:ROOT.kRed,11:ROOT.kOrange,321:ROOT.kMagenta}
-  self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
+  self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Bfield.y/2.*u.m)
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
   ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
   dv = top.GetNode('DecayVolume_1')
-  ns = dv.GetNodes()
-  T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
-  self.z_start = T1Lid.GetTranslation()[2]
+  if dv:
+   ns = dv.GetNodes()
+   T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
+   self.z_start = T1Lid.GetTranslation()[2]
+  else: self.z_start = 0
   muonDet = top.GetNode('MuonDetector_1')
   if muonDet: self.z_end = muonDet.GetMatrix().GetTranslation()[2]+muonDet.GetVolume().GetShape().GetDZ()
-  else:       self.z_end = ShipGeo['MuonStation3'].z
+  elif hasattr(ShipGeo,'MuonStation3'):   self.z_end = ShipGeo['MuonStation3'].z
+  elif top.GetNode("VMuonBox_1"): 
+     xx =  top.GetNode("VMuonBox_1")
+     self.z_end = xx.GetMatrix().GetTranslation()[2]+xx.GetVolume().GetShape().GetDZ()
   magNode = top.GetNode('MCoil_1')
   if magNode: self.z_mag = magNode.GetMatrix().GetTranslation()[2]
   else:       self.z_mag = ShipGeo['Bfield'].z
   ecalDet = top.GetNode('Ecal_1')
+  self.z_ecal = self.z_end
   if ecalDet: self.z_ecal = ecalDet.GetMatrix().GetTranslation()[2]
-  else:       self.z_ecal = ShipGeo['ecal'].z
+  elif hasattr(ShipGeo,'ecal'):  self.z_ecal = ShipGeo['ecal'].z
   self.niter = 100
   self.dz = (self.z_end - self.z_start) / float(self.niter)
   self.parallelToZ = ROOT.TVector3(0., 0., 1.) 
@@ -187,7 +193,8 @@ class DrawTracks(ROOT.FairTask):
   self.evscene = sc.FindChild('Event scene')
   targetNode = top.GetNode("TargetArea_1")
   if targetNode:  self.Targetz = targetNode.GetMatrix().GetTranslation()[2]
-  else:           self.Targetz = ShipGeo['target'].z
+  elif hasattr(ShipGeo,'target'): self.Targetz = ShipGeo['target'].z0
+  else:  self.Targetz=0
  def FinishEvent(self):
   pass
  def ExecuteTask(self,option=''):
@@ -560,7 +567,7 @@ class EventLoop(ROOT.FairTask):
    if sTree.GetBranch("FitTracks_PR"):    sTree.FitTracks = sTree.FitTracks_PR
    if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
    if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
-   self.tracks.ExecuteTask()
+   if hasattr(self,"tracks"): self.tracks.ExecuteTask()
    if sTree.FindBranch("EcalClusters"):
      if sTree.EcalClusters.GetEntries()>0:
       self.ecalFiller.Exec('start',sTree.EcalPointLite)
@@ -951,14 +958,35 @@ if withGeo:
   fMan.AddTask(GTrack)
   fMan.AddTask(Track)
 
+if not fRun.GetGeoFile().FindKey('ShipGeo'):
+ # old geofile, missing Shipgeo dictionary
+ # try to figure out which ecal geo to load
+  if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+  else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile)
+else: 
+ # new geofile, load Shipgeo dictionary written by run_simScript.py
+  upkl    = Unpickler( fRun.GetGeoFile() )
+  ShipGeo = upkl.load('ShipGeo')
+
 mcHits = {}
-mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
-mcHits['StrawPoints'] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
-mcHits['EcalPoints']  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
-mcHits['HcalPoints']  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
-mcHits['MuonPoints']  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
-mcHits['RpcPoints']   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
-mcHits['TargetPoints']   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
+if hasattr(ShipGeo,"MuonTagger"): 
+  mcHits['BoxPoints']  = ROOT.FairMCPointDraw("BoxPoint", ROOT.kBlue, ROOT.kFullDiamond)
+  mcHits['SpectrometerPoints']  = ROOT.FairMCPointDraw("SpectrometerPoint", ROOT.kRed, ROOT.kFullSquare)
+  mcHits['MuonTaggerPoints']  = ROOT.FairMCPointDraw("MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle)
+else:
+ mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
+ mcHits['StrawPoints'] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
+ mcHits['EcalPoints']  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
+ mcHits['HcalPoints']  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
+ mcHits['MuonPoints']  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
+ mcHits['RpcPoints']   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
+ mcHits['TargetPoints']   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
+ ecalGeoFile = ShipGeo.ecal.File
+
+ if hasattr(ShipGeo,'preshowerOption'): 
+  if ShipGeo.preshowerOption >0: 
+   mcHits['preshowerPoints']  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
 
 for x in mcHits: fMan.AddTask(mcHits[x])
 
@@ -981,21 +1009,6 @@ br = gEve.GetBrowser()
 br.HideBottomTab() # make more space for graphics
 br.SetWindowName('SHiP Eve Window')
 
-if not fRun.GetGeoFile().FindKey('ShipGeo'):
- # old geofile, missing Shipgeo dictionary
- # try to figure out which ecal geo to load
-  if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
-  else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
-  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile)
-else: 
- # new geofile, load Shipgeo dictionary written by run_simScript.py
-  upkl    = Unpickler( fRun.GetGeoFile() )
-  ShipGeo = upkl.load('ShipGeo')
-  ecalGeoFile = ShipGeo.ecal.File
-if hasattr(ShipGeo,'preshowerOption'): 
- if ShipGeo.preshowerOption >0: 
-  mcHits['preshowerPoints']  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
-  fMan.AddTask(mcHits['preshowerPoints'])
 # switchOfAll('RockD')
 rulers = Rulers()
 SHiPDisplay = EventLoop()
@@ -1015,6 +1028,11 @@ print 'With the camera button, you can switch to different views.'
 # k zoom out
 # d GL debug mode
 
+def DrawCharmTracks():
+  i = 0
+  for aTrack in sTree.MCTrack:
+    if aTrack.GetMotherId()==1:SHiPDisplay.tracks.DrawMCTrack(i)
+  i+=1
 
 
 
