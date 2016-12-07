@@ -12,7 +12,7 @@ fRun = None
 pdg  = ROOT.TDatabasePDG.Instance()
 g    = ROOT.gROOT 
 gEnv = ROOT.gEnv
-gEnv.SetValue('Eve.Viewer.HideMenus',0)
+gEnv.SetValue('Eve.Viewer.HideMenus','off')
 
 ParFile    = None
 geoFile    = None
@@ -101,8 +101,8 @@ class DrawEcalCluster(ROOT.FairTask):
  def InitTask(self,ecalStructure):
 # prepare ecal structure
   self.comp  = ROOT.TEveCompound('Ecal Clusters')
-  evmgr.AddElement(self.comp)
-  sc    = evmgr.GetScenes()
+  gEve.AddElement(self.comp)
+  sc    = gEve.GetScenes()
   self.evscene = sc.FindChild('Event scene')
   mE = top.GetNode('Ecal_1').GetMatrix()
   self.z_ecal = mE.GetTranslation()[2]
@@ -138,7 +138,7 @@ class DrawEcalCluster(ROOT.FairTask):
       DClus.SetVertex(7,x2,y2,self.z_ecal)
       self.comp.AddElement(DClus)
    self.comp.CloseCompound()
-   evmgr.ElementChanged(self.evscene,True,True)
+   gEve.ElementChanged(self.evscene,True,True)
  def DrawParticle(self,n):
   self.comp.OpenCompound()
   DTrack = ROOT.TEveLine()
@@ -153,14 +153,14 @@ class DrawEcalCluster(ROOT.FairTask):
   DTrack.SetNextPoint(aP.Vx()+lam*aP.Px(),aP.Vy()+lam*aP.Py(),self.Targetz)
   self.comp.AddElement(DTrack)
   self.comp.CloseCompound()
-  evmgr.ElementChanged(self.evscene,True,True)
+  gEve.ElementChanged(self.evscene,True,True)
 #
 class DrawTracks(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
 # prepare container for fitted tracks
   self.comp  = ROOT.TEveCompound('Tracks')
-  evmgr.AddElement(self.comp)
+  gEve.AddElement(self.comp)
   self.trackColors = {13:ROOT.kGreen,211:ROOT.kRed,11:ROOT.kOrange,321:ROOT.kMagenta}
   self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
   self.fM = ROOT.genfit.FieldManager.getInstance()
@@ -183,7 +183,7 @@ class DrawTracks(ROOT.FairTask):
   self.niter = 100
   self.dz = (self.z_end - self.z_start) / float(self.niter)
   self.parallelToZ = ROOT.TVector3(0., 0., 1.) 
-  sc    = evmgr.GetScenes()
+  sc    = gEve.GetScenes()
   self.evscene = sc.FindChild('Event scene')
   targetNode = top.GetNode("TargetArea_1")
   if targetNode:  self.Targetz = targetNode.GetMatrix().GetTranslation()[2]
@@ -199,7 +199,7 @@ class DrawTracks(ROOT.FairTask):
   if not sTree.FindBranch("GeoTracks") and sTree.MCTrack.GetEntries() > 0: 
     if globals()['withMCTracks']: self.DrawMCTracks()
   self.comp.CloseCompound()
-  evmgr.ElementChanged(self.evscene,True,True)
+  gEve.ElementChanged(self.evscene,True,True)
  def DrawParticle(self,n):
   self.comp.OpenCompound()
   DTrack = ROOT.TEveLine()
@@ -246,7 +246,7 @@ class DrawTracks(ROOT.FairTask):
   DTrack.SetLineWidth(3)
   self.comp.AddElement(DTrack)
   self.comp.CloseCompound()
-  evmgr.ElementChanged(self.evscene,True,True)
+  gEve.ElementChanged(self.evscene,True,True)
  def DrawMCTracks(self,option=''):
   n = -1
   ntot = 0
@@ -392,6 +392,7 @@ class DrawTracks(ROOT.FairTask):
    DTrack.SetNextPoint(aP.Vx()+lam*aP.Px(),aP.Vy()+lam*aP.Py(),self.Targetz)
    self.comp.AddElement(DTrack)
 #
+import evd_fillEnergy
 class IO():
     def __init__(self):
         self.master = Tkinter.Tk()
@@ -425,7 +426,7 @@ class IO():
         self.lbut[x].var = a
         self.lbut[x]['command'] = self.toogleMCTracks
         self.lbut[x].pack(side=Tkinter.TOP)
-        self.geoscene = evmgr.GetScenes().FindChild("Geometry scene")
+        self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
         for v in top.GetNodes():
          x=v.GetName()
          cmd = 'toogle("'+x+'")' 
@@ -473,6 +474,11 @@ class IO():
         bt.SetToolTipText('switch transparent mode on/off for better visibility of tracks')
         bt.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_transparentMode.py")')
         guiFrame.AddFrame(bt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+        bnx = ROOT.TGTextButton(guiFrame, "next event")
+        bnx.SetWidth(150)
+        bnx.SetToolTipText('click for next event')
+        bnx.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_nextEvent.py")')
+        guiFrame.AddFrame(bnx, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
 #
         cf.MapSubwindows()
         cf.Layout()
@@ -507,7 +513,7 @@ class IO():
           if assemb:  v.SetVisDaughters(1)
           else:       v.SetVisibility(1)
           self.lbut[x].var.set(1)
-        evmgr.ElementChanged(self.geoscene,True,True)
+        gEve.ElementChanged(self.geoscene,True,True)
         for v in top.GetNodes():
           x = v.GetName()
           if x in self.lbut:  
@@ -541,6 +547,11 @@ class EventLoop(ROOT.FairTask):
 # create SHiP GUI
    self.ioBar = IO()
    self.TransparentMode = 0
+   v1 = gEve.GetDefaultViewer()
+   v1.GetEveFrame().HideAllDecorations()
+   tr=gEve.GetBrowser().GetTabRight()
+   t0 = tr.GetTabTab(0)
+   t0.SetText(ROOT.TGString('3D'))
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
    else  : self.n=i
@@ -554,6 +565,7 @@ class EventLoop(ROOT.FairTask):
      if sTree.EcalClusters.GetEntries()>0:
       self.ecalFiller.Exec('start',sTree.EcalPointLite)
      self.calos.ExecuteTask()
+   if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'): evd_fillEnergy.execute()
    print 'Event %i ready'%(self.n)
 # make pointsets pickable
    for x in mcHits: 
@@ -589,9 +601,9 @@ class EventLoop(ROOT.FairTask):
      else: 
        mat.SetTransparency("\x00")
        self.TransparentMode = 0  
-   sc    = evmgr.GetScenes()
+   sc    = gEve.GetScenes()
    geoscene = sc.FindChild('Geometry scene')
-   if geoscene:   evmgr.ElementChanged(geoscene,True,True)
+   if geoscene:   gEve.ElementChanged(geoscene,True,True)
 # add projections DOES NOT WORK YET AS FORESEEN, under investigation. 30.11.2016
 def projection():
 #if 1>0:
@@ -613,7 +625,7 @@ def projection():
 
 def projection_prescale():
 #if 1>0:
-   v = evmgr.GetViewers()
+   v = gEve.GetViewers()
    vw = v.FindChild('Viewer 1')
    if vw: vw.SetName('3d')
    sev = ROOT.gEve.SpawnNewViewer("Scaled 2D")
@@ -645,9 +657,9 @@ def speedUp():
   xvol.SetVisibility(1)
   if x=="Ecal": xvol.SetLineColor(ROOT.kYellow) 
   else:        xvol.SetLineColor(ROOT.kOrange+3) 
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
- evmgr.ElementChanged(geoscene,True,True)
+ gEve.ElementChanged(geoscene,True,True)
 
 # set display properties for tau nu target
 def DisplayNuDetector():
@@ -656,13 +668,13 @@ def DisplayNuDetector():
   if not xvol: continue
   xvol.SetVisDaughters(0)
   xvol.SetVisibility(1)
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
- evmgr.ElementChanged(geoscene,True,True)
+ gEve.ElementChanged(geoscene,True,True)
 
 # draw Ecal yellow instead of black
 def ecalYellow():
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  ecal = top.GetNode("Ecal_1")
  if ecal : 
@@ -670,9 +682,9 @@ def ecalYellow():
  hcal = top.GetNode("Hcal_1")
  if hcal : 
    hcal.GetVolume().SetLineColor(ROOT.kOrange+3) 
- if ecal or hcal: evmgr.ElementChanged(geoscene,True,True)
+ if ecal or hcal: gEve.ElementChanged(geoscene,True,True)
 def switchOf(tag):
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for v in top.GetNodes():
    vname = v.GetName()
@@ -680,7 +692,7 @@ def switchOf(tag):
      v.SetVisibility(0)
      v.SetVisDaughters(0)
 def switchOn(tag):
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for v in top.GetNodes():
    vname = v.GetName()
@@ -688,18 +700,18 @@ def switchOn(tag):
      print 'switch on ',vname
      v.SetVisibility(1)
      v.SetVisDaughters(1)
- evmgr.ElementChanged(geoscene,True,True)
+ gEve.ElementChanged(geoscene,True,True)
 
 # switch of drawing of rock
 def switchOfRock():
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for x in [ 'rockD', 'rockS']:
   v = fGeo.FindVolumeFast(x)
   v.SetVisibility(0)
- evmgr.ElementChanged(geoscene,True,True)
+ gEve.ElementChanged(geoscene,True,True)
 def switchOfAll(exc):
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for v in top.GetNodes():
    vname = v.GetName()
@@ -710,9 +722,9 @@ def switchOfAll(exc):
    if todo:
     v.SetVisibility(0)
     v.SetVisDaughters(0)
- evmgr.ElementChanged(geoscene,True,True) 
+ gEve.ElementChanged(geoscene,True,True) 
 def switchOnAll(exc):
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for v in top.GetNodes():
    vname = v.GetName()
@@ -723,7 +735,7 @@ def switchOnAll(exc):
    if todo:
     v.SetVisibility(1)
     v.SetVisDaughters(1)
- evmgr.ElementChanged(geoscene,True,True) 
+ gEve.ElementChanged(geoscene,True,True) 
 
 def select(pattern):
  exc = []
@@ -747,7 +759,7 @@ class Rulers(ROOT.FairTask):
  " add Ruler"
  def __init__(self):
   self.ruler  = ROOT.TEveCompound('Rulers')
-  evmgr.AddElement(self.ruler)
+  gEve.AddElement(self.ruler)
  def show(self,xy=0):
   self.ruler.DestroyElements()
   self.ruler.OpenCompound()
@@ -888,13 +900,13 @@ def mydebug():
  cave = fGeo.GetTopVolume()
  cave.Draw('ogl')
 # eve
- evmgr = ROOT.gEve
+ gEve = ROOT.gEve
 #
- sc    = evmgr.GetScenes()
+ sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  topnode  = geoscene.FindChild('cave_1')
  topnode.SetVisLevel(4)
- evmgr.ElementChanged(geoscene,True,True)
+ gEve.ElementChanged(geoscene,True,True)
 def debugStraw(n):
  fGeo = ROOT.gGeoManager  
  vols = fGeo.GetListOfVolumes()
@@ -963,9 +975,9 @@ lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree) 
 fGeo  = ROOT.gGeoManager 
 top   = fGeo.GetTopVolume()
-evmgr = ROOT.gEve
+gEve  = ROOT.gEve
 
-br = evmgr.GetBrowser()
+br = gEve.GetBrowser()
 br.HideBottomTab() # make more space for graphics
 br.SetWindowName('SHiP Eve Window')
 
@@ -990,11 +1002,10 @@ SHiPDisplay = EventLoop()
 SHiPDisplay.SetName('SHiP Displayer')
 lsOfGlobals.Add(SHiPDisplay) 
 SHiPDisplay.InitTask()
-SHiPDisplay.NextEvent()
+SHiPDisplay.NextEvent(0)
 
-print 'How to find Help? Until a better solution found, move with the mouse to the line which is just below Viewer 1'
-print '                  A hidden tab should appear. Click on File, unclick Hide Menus to have it permanent.' 
-print '                  Help can be found on the left. Und camera, you can switch to different views.'
+print 'Help on GL viewer can be found by pressing Help button followed by help on GL viewer'
+print 'With the camera button, you can switch to different views.'
 # short cuts
 # w go to wire frame
 # r smooth display

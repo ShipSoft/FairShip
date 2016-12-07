@@ -1,6 +1,6 @@
-import ROOT
+import ROOT,evd_fillEnergy
 gEve=ROOT.gEve
-if not gEve.GetViewers().FindChild('Bar Embedded Viewer'):   
+if not gEve.GetViewers().FindChild('Bar Embedded Viewer ZOY'):   
  slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())
  pack1 = slot.MakePack()
  pack1.SetShowTitleBar(ROOT.kFALSE)
@@ -23,13 +23,17 @@ if not gEve.GetViewers().FindChild('Bar Embedded Viewer'):
   v.AddScene(gEve.GetScenes().FindChild('Geometry scene'))
   vw = v.GetGLViewer()
   vw.SetCurrentCamera(eval("ROOT.TGLViewer.kCameraOrtho"+c))
+  ed = v.GetEditorObject()
+  co = ed.GetCameraOverlay()
+  co.SetShowOrthographic(True)
+  co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAxis)
   cam = vw.CurrentCamera()
 # problems with light, Camera home
   cam.SetExternalCenter(ROOT.kTRUE)
   ls = vw.GetLightSet()
-  ls.SetFrontPower(0)
-  ls.SetSidePower(0.4)
-  ls.SetSpecularPower(0.2)
+  ls.SetFrontPower(0.2)
+  ls.SetSidePower(0.6)
+  ls.SetSpecularPower(0.4)
   m = cam.GetCamBase()
   s = ROOT.TGLVector3(1,1,0.1)
   m.Scale(s)
@@ -38,10 +42,11 @@ if not gEve.GetViewers().FindChild('Bar Embedded Viewer'):
 #
  slot = pack1.NewSlot()
  slot.StartEmbedding()
- can = ROOT.TCanvas("Root Canvas") # ROOT.gROOT.FindObject('Root Canvas')
+ can = ROOT.TCanvas("Root Canvas EnergyLoss") # ROOT.gROOT.FindObject('Root Canvas')
  can.ToggleEditor()
  slot.StopEmbedding()
  ls = ROOT.gROOT.GetListOfGlobals()
- ls.Add(can) 
- SHiPDisplay = lsOfGlobals.FindObject('SHiP Displayer')
- SHiPDisplay.transparentMode()
+ ls.Add(can)
+ SHiPDisplay = ls.FindObject('SHiP Displayer')
+ SHiPDisplay.transparentMode('on')
+ evd_fillEnergy.execute() 
