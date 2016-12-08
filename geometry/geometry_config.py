@@ -216,7 +216,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
 
     if muShieldDesign == 3:
-     c.muShield.dZ0 = 1*u.m      #  extra hadron absorber
      c.muShield.dZ1 = 3.5*u.m
      c.muShield.dZ2 = 5.*u.m
      c.muShield.dZ3 = 3.5*u.m
