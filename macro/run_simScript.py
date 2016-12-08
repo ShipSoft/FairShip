@@ -30,7 +30,7 @@ theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 dv           = 4 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
 ds           = 5 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
-charm        = 1 # !=0 create charm detector instead of SHiP
+charm        = 0 # !=0 create charm detector instead of SHiP
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
@@ -220,6 +220,7 @@ if simEngine == "Pythia8":
    P8gen.UseExternalFile(inputFile, firstEvent)
 # 
  if charmonly: 
+  primGen.SetTarget(-10.*u.cm, 0.) 
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, firstEvent)
 # pion on proton 500GeV
