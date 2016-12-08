@@ -1,11 +1,16 @@
 #!/usr/bin/env python -i
-import ROOT,sys,getopt,os,Tkinter
+import ROOT,sys,getopt,os,Tkinter,atexit
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 import shipunit as u
 from decorators import *
 import shipRoot_conf
 shipRoot_conf.configure()
+
+def evExit():
+ print "make suicide before framework makes seg fault" 
+ os.kill(os.getpid(),9)
+atexit.register(evExit)
 
 fMan = None
 fRun = None
@@ -26,8 +31,9 @@ withMCTracks = True
 #                        muon shield  strawtube                     decay vessel  
 transparentMaterials = {'iron':80,'aluminium':80,'mylar':60,'STTmix9010_2bar':95,'steel':80,'Aluminum':80,'Scintillator':80,
 #                        tau nu detector  
-                        'CoilCopper':70,'copper':90,'HPTgas':70,'Bakelite':70,'RPCgas':70,'TTmedium':70}
-
+                        'CoilCopper':70,'copper':90,'HPTgas':70,'Bakelite':70,'RPCgas':70,'TTmedium':70,
+#                        charm detector  
+                        'CoilAluminium':70,'molybdenum':80,'PlasticBase':70,'tantalum':70}
 #
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:Y:i",["paramFile=","geoFile="])
@@ -602,6 +608,7 @@ class EventLoop(ROOT.FairTask):
  def transparentMode(self,mode='on'):
    for m in transparentMaterials:
      mat = ROOT.gGeoManager.GetMaterial(m)
+     if not mat:continue
      if mode.lower()=='on' or mode==1:
        mat.SetTransparency(transparentMaterials[m])
        self.TransparentMode = 1
@@ -1029,10 +1036,14 @@ print 'With the camera button, you can switch to different views.'
 # d GL debug mode
 
 def DrawCharmTracks():
-  i = 0
+  i = -1
   for aTrack in sTree.MCTrack:
-    if aTrack.GetMotherId()==1:SHiPDisplay.tracks.DrawMCTrack(i)
-  i+=1
-
+    i+=1
+    if i<2: continue
+    if aTrack.GetMotherId()==1:
+      pa = pdg.GetParticle(sTree.MCTrack[i] .GetPdgCode())
+      if pa.Lifetime()>1.E-12: 
+       print  sTree.MCTrack[i]
+       SHiPDisplay.tracks.DrawMCTrack(i)
 
 
