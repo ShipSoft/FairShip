@@ -140,7 +140,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
 				  Double_t gap,Double_t gap2, Double_t Z, Bool_t NotMagnet)
   {
     Double_t Clgap,Clgap2;
-    int color[4] = {30,31,38,45};
+    Int_t color[4] = {30,31,38,45};
 
     if (NotMagnet) {
       Clgap = gap;
@@ -359,6 +359,8 @@ void ShipMuonShield::ConstructGeometry()
     TGeoVolume *tShield = new TGeoVolumeAssembly("MuonShieldArea");
     InitMedium("tungsten");
     TGeoMedium *tungsten =gGeoManager->GetMedium("tungsten");
+    InitMedium("steel");
+    TGeoMedium *steel =gGeoManager->GetMedium("steel");
     InitMedium("iron");
     TGeoMedium *iron  =gGeoManager->GetMedium("iron");
     InitMedium("lead");
@@ -395,7 +397,7 @@ void ShipMuonShield::ConstructGeometry()
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
       }else if(fDesign==7){
-      for(int nM=0;nM<2;nM++)
+      for(Int_t nM=0;nM<2;nM++)
       {
 	 CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
 		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
@@ -436,7 +438,7 @@ void ShipMuonShield::ConstructGeometry()
       tShield->AddNode(absorber, 1,
 		       new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1 + dZ2)));
 
-      for(int nM=2;nM<7;nM++)
+      for(Int_t nM=2;nM<7;nM++)
       {
 	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
 		     dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
@@ -444,16 +446,16 @@ void ShipMuonShield::ConstructGeometry()
 		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], 0);
 
 	// TODO split out into function/method?
-	double dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
-	double dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
-	double floor = -5. * m; // TODO use same variable for floor definition
-	double slope =
+	Double_t dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
+	Double_t dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
+	Double_t floor = -5. * m; // TODO use same variable for floor definition
+	Double_t slope =
 	    (dYIn[nM] + dXIn[nM] - dYOut[nM] - dXOut[nM]) / (2 * dZf[nM]);
-	double w1 = 2 * dXIn[nM] + std::max(20., gapIn[nM]);
-	double w2 = 2 * dXOut[nM] + std::max(20., gapOut[nM]);
-	double anti_overlap = 0.1;
-	double h1 = 0.5 * (floor + dYIn[nM] + dXIn[nM] - anti_overlap);
-	double h2 = 0.5 * (floor + dYOut[nM] + dXOut[nM] - anti_overlap);
+	Double_t w1 = 2 * dXIn[nM] + std::max(20., gapIn[nM]);
+	Double_t w2 = 2 * dXOut[nM] + std::max(20., gapOut[nM]);
+	Double_t anti_overlap = 0.1;
+	Double_t h1 = 0.5 * (floor + dYIn[nM] + dXIn[nM] - anti_overlap);
+	Double_t h2 = 0.5 * (floor + dYOut[nM] + dXOut[nM] - anti_overlap);
 	std::vector<double> verticesIn = {
 	    -w1, -h1,
 	    +w1, -h1,
@@ -476,9 +478,9 @@ void ShipMuonShield::ConstructGeometry()
 	};
 	TGeoVolume *pillar1 =
 	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM - 1),
-				  iron, 0.5 * m, verticesIn.data());
+				  steel, 0.5 * m, verticesIn.data());
 	TGeoVolume *pillar2 =
-	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), iron,
+	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), steel,
 				  0.5 * m, verticesOut.data());
 	top->AddNode(pillar1, 1, new TGeoTranslation(
 				     0, -0.5 * (dYIn[nM] + dXIn[nM] - floor),
@@ -492,7 +494,7 @@ void ShipMuonShield::ConstructGeometry()
 	CreateTube("AbsorberAdd",     iron, 15, 400, dZ0,43,tShield,1,0, 0, zEndOfAbsorb - dZ0);
 	CreateTube("AbsorberAddCore", iron,  0,  15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
       
-      for(int nM=0;nM<7;nM++)
+      for(Int_t nM=0;nM<7;nM++)
       {
 	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
 		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
