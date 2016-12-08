@@ -140,20 +140,20 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
 				  Double_t gap,Double_t gap2, Double_t Z, Bool_t NotMagnet)
   {
     Double_t Clgap,Clgap2;
-    int color[4];
-    
-    if (gap<20&&NotMagnet==0){
-      Clgap =20;
-      if(gap<2.){gap=2.;}
-    }else{Clgap=gap;}
-    if (gap2<20&&NotMagnet==0){
-      Clgap2 =20;
-      if(gap2<2.){gap2=2.;}
-    }else{Clgap2=gap2;}
+    int color[4] = {30,31,38,45};
 
-    color[0] = 30; color[1] = 31; color[2] = 38; color[3] = 45;
+    if (NotMagnet) {
+      Clgap = gap;
+      Clgap2 = gap2;
+    } else {
+      Clgap = std::max(20., gap);
+      Clgap2 = std::max(20., gap2);
+      gap = std::max(2., gap);
+      gap2 = std::max(2., gap2);
+    }
 
-    Int_t testGap = 0.1;   // gap between fields in the corners for mitred joints (Geant goes crazy when they touch each other)
+    Double_t testGap = 0.1;   // gap between fields in the corners for mitred joints (Geant goes crazy when they touch each other)
+
 				 
     Double_t cornerMainL[16] = {-dX/2+middleGap+dX/2,-dY-dX+testGap , -dX/2+middleGap+dX/2,dY+dX-testGap , dX/2+middleGap+dX/2,dY-testGap , dX/2+middleGap+dX/2,-dY+testGap ,
                                -dX2/2+middleGap2+dX2/2,-dY2-dX2+testGap , -dX2/2+middleGap2+dX2/2,dY2+dX2-testGap , dX2/2+middleGap2+dX2/2,dY2-testGap , dX2/2+middleGap2+dX2/2,-dY2+testGap };
@@ -409,30 +409,88 @@ void ShipMuonShield::ConstructGeometry()
       mag1->RegisterYourself();
       mag2->RegisterYourself();
 
-      TGeoTube *abs = new TGeoTube("absorber",0,400,(dZ1+dZ2-15));
- // TODO: names should be picked up automatically - work in progress :D
-       TString holl = "MagnAbsorb1_MiddleMagL:mag1-MagnAbsorb1_MiddleMagR:mag1-MagnAbsorb1_MagRetL:mag1-MagnAbsorb1_MagRetR:mag1-MagnAbsorb1_MagCLB:mag1-MagnAbsorb1_MagCLT:mag1-MagnAbsorb1_MagCRT:mag1-MagnAbsorb1_MagCRB:mag1\
-   -MagnAbsorb1_MagTopLeft:mag1-MagnAbsorb1_MagTopRight:mag1-MagnAbsorb1_MagBotLeft:mag1-MagnAbsorb1_MagBotRight:mag1\
-   -MagnAbsorb2_MiddleMagL:mag2-MagnAbsorb2_MiddleMagR:mag2-MagnAbsorb2_MagRetL:mag2-MagnAbsorb2_MagRetR:mag2-MagnAbsorb2_MagCLB:mag2-MagnAbsorb2_MagCLT:mag2-MagnAbsorb2_MagCRT:mag2-MagnAbsorb2_MagCRB:mag2\
-   -MagnAbsorb2_MagTopLeft:mag2-MagnAbsorb2_MagTopRight:mag2-MagnAbsorb2_MagBotLeft:mag2-MagnAbsorb2_MagBotRight:mag2";
-   TGeoCompositeShape *absorberShape = new TGeoCompositeShape("Absorber","absorber-"+holl); // cutting out magnet parts from absorber 
-     TGeoVolume *absorber = new TGeoVolume("AbsorberVol",absorberShape,iron);
-    absorber->SetLineColor(42); // brown / light red
-    tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1+dZ2)));
-         
+      TGeoTube *abs = new TGeoTube("absorber", 0, 400, (dZ1 + dZ2 - 15));
+      const std::vector<TString> absorber_magnets = {"MagnAbsorb1",
+						     "MagnAbsorb2"};
+      const std::vector<TString> magnet_components = {
+	  "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
+	  "_MagCLB",     "_MagCLT",      "_MagCRT",     "_MagCRB",
+	  "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
+      };
+      TString absorber_magnet_components;
+      for (auto &&magnet_component : magnet_components) {
+	// format: "-<magnetName>_<magnet_component>:<translation>"
+	absorber_magnet_components +=
+	    ("-" + absorber_magnets[0] + magnet_component + ":" +
+	     mag1->GetName());
+	absorber_magnet_components +=
+	    ("-" + absorber_magnets[1] + magnet_component + ":" +
+	     mag2->GetName());
+      }
+      TGeoCompositeShape *absorberShape = new TGeoCompositeShape(
+	  "Absorber", "absorber" + absorber_magnet_components); // cutting out
+								// magnet parts
+								// from absorber
+      TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
+      absorber->SetLineColor(42); // brown / light red
+      tShield->AddNode(absorber, 1,
+		       new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1 + dZ2)));
+
       for(int nM=2;nM<7;nM++)
       {
-	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
-		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
-		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
-		   gapIn[nM],gapOut[nM],Z[nM],0);
+	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
+		     dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
+		     midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
+		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], 0);
+
+	// TODO split out into function/method?
+	double dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
+	double dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
+	double floor = -5. * m; // TODO use same variable for floor definition
+	double slope =
+	    (dYIn[nM] + dXIn[nM] - dYOut[nM] - dXOut[nM]) / (2 * dZf[nM]);
+	double w1 = 2 * dXIn[nM] + std::max(20., gapIn[nM]);
+	double w2 = 2 * dXOut[nM] + std::max(20., gapOut[nM]);
+	double anti_overlap = 0.1;
+	double h1 = 0.5 * (floor + dYIn[nM] + dXIn[nM] - anti_overlap);
+	double h2 = 0.5 * (floor + dYOut[nM] + dXOut[nM] - anti_overlap);
+	std::vector<double> verticesIn = {
+	    -w1, -h1,
+	    +w1, -h1,
+	    +w1, +h1,
+	    -w1, +h1,
+	    -w1, -h1 + slope * m,
+	    +w1, -h1 + slope * m,
+	    +w1, +h1,
+	    -w1, +h1,
+	};
+	std::vector<double> verticesOut = {
+	    -w2, -h2 - slope * m,
+	    +w2, -h2 - slope * m,
+	    +w2, +h2,
+	    -w2, +h2,
+	    -w2, -h2,
+	    +w2, -h2,
+	    +w2, +h2,
+	    -w2, +h2,
+	};
+	TGeoVolume *pillar1 =
+	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM - 1),
+				  iron, 0.5 * m, verticesIn.data());
+	TGeoVolume *pillar2 =
+	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), iron,
+				  0.5 * m, verticesOut.data());
+	top->AddNode(pillar1, 1, new TGeoTranslation(
+				     0, -0.5 * (dYIn[nM] + dXIn[nM] - floor),
+				     Z[nM] - dZf[nM] + 0.5 * m));
+	top->AddNode(pillar2, 1, new TGeoTranslation(
+				     0, -0.5 * (dYOut[nM] + dXOut[nM] - floor),
+				     Z[nM] + dZf[nM] - 0.5 * m));
       }
           
       }else{
 	CreateTube("AbsorberAdd",     iron, 15, 400, dZ0,43,tShield,1,0, 0, zEndOfAbsorb - dZ0);
 	CreateTube("AbsorberAddCore", iron,  0,  15, dZ0,38,tShield,1,0, 0, zEndOfAbsorb - dZ0);
-          
-   
       
       for(int nM=0;nM<7;nM++)
       {
@@ -465,7 +523,13 @@ void ShipMuonShield::ConstructGeometry()
       Double_t dZD =  100*m + fMuonShieldLength;
       TGeoBBox *box3    = new TGeoBBox("box3", 15*m, 15*m,dZD/2.);
       TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
-      TGeoCompositeShape *compRockD = new TGeoCompositeShape("compRockD", "box3-box4");
+      TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, 2.5 * m,
+				    fMuonShieldLength / 2. - 5 * m);
+      TGeoTranslation *t1 = new TGeoTranslation(
+	  "t1", 0, -7.5 * m, -dZD / 2. + fMuonShieldLength / 2. - 5 * m);
+      t1->RegisterYourself();
+      TGeoCompositeShape *compRockD =
+	  new TGeoCompositeShape("compRockD", "(box3-box4)+shield_floor:t1");
       TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
       rockD->SetLineColor(11);  // grey
       rockD->SetTransparency(50);
@@ -474,5 +538,6 @@ void ShipMuonShield::ConstructGeometry()
     } else {
      Fatal("ShipMuonShield","Design %i does not match implemented designs",fDesign);
     }
+
 }
 ClassImp(ShipMuonShield)
