@@ -231,11 +231,11 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       } else {cout<<" Field direction has been set incorrect! Choose ""up"" or ""down"" direction "<<endl;}}
   }
 
-void ShipMuonShield::Initialize (const char* (&magnetName)[8],const char* (&fieldDirection)[8],
-				    Double_t (&dXIn)[8], Double_t (&dYIn)[8], Double_t (&dXOut)[8], Double_t (&dYOut)[8], Double_t (&dZ)[8],
-				  Double_t (&midGapIn)[8],Double_t (&midGapOut)[8],
-				  Double_t (&HmainSideMagIn)[8], Double_t (&HmainSideMagOut)[8],
-				  Double_t (&gapIn)[8],Double_t (&gapOut)[8], Double_t (&Z)[8])
+void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fieldDirection)[9],
+				    Double_t (&dXIn)[9], Double_t (&dYIn)[9], Double_t (&dXOut)[9], Double_t (&dYOut)[9], Double_t (&dZ)[9],
+				  Double_t (&midGapIn)[9],Double_t (&midGapOut)[9],
+				  Double_t (&HmainSideMagIn)[9], Double_t (&HmainSideMagOut)[9],
+				  Double_t (&gapIn)[9],Double_t (&gapOut)[9], Double_t (&Z)[9])
 {
   Double_t zgap = (fDesign > 6) ? 10 : 0;  // fixed distance between magnets in Z-axis
   Double_t dYEnd = fY;
@@ -297,13 +297,24 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[8],const char* (&fiel
   gapIn[6] = 0.05*m;			gapOut[6] = 0.08*m;
   dZ[6] = dZ7-zgap/2;			Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;
   
+  Double_t clip_width = 0.1*m; // clip field width by this width
   magnetName[7] = "Magn6";		fieldDirection[7] = "down";
   dXIn[7]  = 0.31*m;			dYIn[7]	= 1.86*m;
-  dXOut[7] = 0.9*m;			dYOut[7]= 3.1*m;
+  dXOut[7] = 0.9*m - clip_width;	dYOut[7]= 3.1*m;
   midGapIn[7] = 0; 		        midGapOut[7] = 0;
+  Double_t clip_len =
+       (dZ8-zgap/2) * (1 - (dXOut[7] - dXIn[7]) / (dXOut[7] + clip_width - dXIn[7]));
   HmainSideMagIn[7] = dYIn[7]/2;  	HmainSideMagOut[7] = dYOut[7]/2;
   gapIn[7] = 0.02*m;			gapOut[7] = 0.55*m;
-  dZ[7] = dZ8-zgap/2;			Z[7] = Z[6] + dZ[6] + dZ[7]+zgap;
+  dZ[7] = dZ8 - clip_len - zgap / 2;	Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;
+
+  magnetName[8] = "Magn7";		fieldDirection[8] = "down";
+  dXIn[8]  = dXOut[7];			dYIn[8]	= dYOut[7];
+  dXOut[8] = dXOut[7];			dYOut[8]= dYOut[7];
+  midGapIn[8] = 0; 		        midGapOut[8] = 0;
+  HmainSideMagIn[8] = dYIn[8]/2;  	HmainSideMagOut[8] = dYOut[8]/2;
+  gapIn[8] = 0.55*m;			gapOut[8] = 0.55*m;
+  dZ[8] = clip_len;			Z[8] = Z[7] + dZ[7] + dZ[8];
       
     }
   else{
@@ -394,11 +405,12 @@ void ShipMuonShield::ConstructGeometry()
 
       // need to use literal 8 here as initialisation function's signature requires it.
       // TODO use nMagnets, std::vector and TString!
-      const char *magnetName[8];
-      const char *fieldDirection[8];
-      Double_t dXIn[8], dYIn[8], dXOut[8], dYOut[8], dZf[8], midGapIn[8],
-	  midGapOut[8], HmainSideMagIn[8], HmainSideMagOut[8], gapIn[8],
-	  gapOut[8], Z[8];
+      const static int nMag = 9;
+      const char *magnetName[nMag];
+      const char *fieldDirection[nMag];
+      Double_t dXIn[nMag], dYIn[nMag], dXOut[nMag], dYOut[nMag], dZf[nMag], midGapIn[nMag],
+	  midGapOut[nMag], HmainSideMagIn[nMag], HmainSideMagOut[nMag], gapIn[nMag],
+	  gapOut[nMag], Z[nMag];
       Initialize (magnetName,fieldDirection,dXIn,dYIn,dXOut,dYOut,dZf,midGapIn,midGapOut,HmainSideMagIn,HmainSideMagOut,gapIn,gapOut,Z);
       
       if (fDesign==6){
@@ -455,12 +467,13 @@ void ShipMuonShield::ConstructGeometry()
       tShield->AddNode(absorber, 1,
 		       new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1 + dZ2)));
 
-      for (Int_t nM = 2; nM < (nMagnets - 1); nM++) {
+      for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
 	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
 		     dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
 		     midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
-		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], 0);
+		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8);
 
+	if (nM==8) continue;
 	// TODO split out into function/method?
 	Double_t dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
 	Double_t dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
