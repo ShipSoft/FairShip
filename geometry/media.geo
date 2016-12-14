@@ -2,8 +2,9 @@
 air                3  14.01  16.  39.95  7.  8.  18.  1.205e-3  .755  .231  .014
                    0  1  30.  .001
                    0
-// 0.01 mbar (default SHiP vacuum) i.e. 10^-5 * air.
-vacuums            3  14.01  16.  39.95  7.  8.  18.  1.205e-8  .755  .231  .014
+// old 0.01 mbar (default SHiP vacuum) i.e. 10^-5 * air.
+// new December 2016 1mbar is enough
+vacuums            3  14.01  16.  39.95  7.  8.  18.  1.205e-6  .755  .231  .014
                    0  1  30.  .001
                    0
 vacuum             1  1.e-16  1.e-16  1.e-16
