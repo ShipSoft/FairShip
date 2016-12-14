@@ -1,13 +1,19 @@
 #include <math.h>
 #include "TROOT.h"
 #include "FairPrimaryGenerator.h"
+#include "TGeoNode.h"
+#include "TGeoVolume.h"
+#include <TGeoManager.h>
+#include "TGeoBBox.h"
 #include "Pythia8/Pythia.h"
-
+#include "TMath.h"
 #include "Pythia8Generator.h"
 #include "HNLPythia8Generator.h"
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
 int counter = 0;
+Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
+
 using namespace Pythia8;
 
 // -----   Default constructor   -------------------------------------------
@@ -21,6 +27,8 @@ Pythia8Generator::Pythia8Generator()
   fextFile    = "";
   fInputFile  = NULL;
   fLogger = FairLogger::GetLogger();
+  targetName = ""; 
+  xOff=0; yOff=0;
   fPythia =  new Pythia8::Pythia();
 }
 // -------------------------------------------------------------------------
@@ -78,6 +86,24 @@ Bool_t Pythia8Generator::Init()
    fPythia->settings.parm("Beams:eB",0.);
   }
   fPythia->init();
+  if (targetName!=""){
+   fMaterialInvestigator = new GenieGenerator();
+   TGeoVolume* top = gGeoManager->GetTopVolume();
+   TGeoNode* target = top->FindNode(targetName);
+   Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
+   TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
+   startZ =  z_middle - sha->GetDZ();
+   endZ   =  z_middle + sha->GetDZ();
+   start[0]=xOff;
+   start[1]=yOff;
+   start[2]=startZ;
+   end[0]=xOff;
+   end[1]=yOff;
+   end[2]=endZ;
+//find maximum interaction length
+   bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
+   maxCrossSection =  mparam[9];
+  }
   return kTRUE;
 }
 // -------------------------------------------------------------------------
@@ -118,6 +144,35 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        }
      }
   }
+  Double_t zinter=0;
+  if (targetName!=""){
+// calculate primary proton interaction point:
+// loop over trajectory between start and end to pick an interaction point, copied from GenieGenerator and adapted to hadrons
+   Double_t prob2int = -1.;
+   Double_t rndm = 0.;
+   Double_t sigma;
+   Int_t count=0;
+   while (prob2int<rndm) {
+ //place x,y,z uniform along path
+      zinter = gRandom->Uniform(start[2],end[2]);
+      Double_t point[3]={xOff,yOff,zinter};
+      bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
+      Double_t interLength = mparam[8]; 
+      TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
+      TGeoMaterial *mat = 0;
+      if (node && !gGeoManager->IsOutside()) {
+         mat = node->GetVolume()->GetMaterial();
+         Double_t n = mat->GetDensity()/mat->GetA();
+         sigma = 1./(n*mat->GetIntLen())/mbarn;
+         prob2int = TMath::Exp(-interLength)*sigma/maxCrossSection;
+      }else{
+         prob2int=0.;
+      }
+      rndm = gRandom->Uniform(0.,1.); 
+      count+=1;
+   }
+  zinter = zinter*cm;
+  }
   for(Int_t c=0; c<2; c++){
     if(c>0){
       fTree->GetEntry(fn%fNevents);
@@ -138,7 +193,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      pz=mpz[0];
      x=0.;
      y=0.;
-     z=0.;
+     z=zinter;
      id=mid[0];
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,-1,false);
      addedParticles +=1;
@@ -148,12 +203,12 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      Bool_t wanttracking=false;
      if(fPythia->event[ii].isFinal()){ wanttracking=true; }
      if (ii>1){
-      z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz();
+      z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz()+zinter;
       x  = fPythia->event[ii].xProd()+dl*fPythia->event[1].px();
       y  = fPythia->event[ii].yProd()+dl*fPythia->event[1].py();
-      tof = fPythia->event[ii].tProd()+dl*fPythia->event[1].e()/cm/c_light;
+      tof = fPythia->event[ii].tProd()+(dl+zinter)*fPythia->event[1].e()/cm/c_light;
      }else{
-      z  = fPythia->event[ii].zProd();
+      z  = fPythia->event[ii].zProd()+zinter;
       x  = fPythia->event[ii].xProd();
       y  = fPythia->event[ii].yProd();
       tof = fPythia->event[ii].tProd();
@@ -163,6 +218,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      py = fPythia->event[ii].py();  
      e  = fPythia->event[ii].e();
      im = fPythia->event[ii].mother1()+key;
+
      if (ii==1){im = 0;}
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,1.);
      addedParticles+=1;
@@ -180,7 +236,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      fn++;
      cpg->AddTrack((Int_t)hid[0],hpx[0],hpy[0],hpz[0],(mpx[0]+fPythia->event[0].xProd())/cm,
                                                       (mpy[0]+fPythia->event[0].yProd())/cm,
-                                                      (mpz[0]+fPythia->event[0].zProd())/cm,-1,true);
+                                                      (mpz[0]+fPythia->event[0].zProd())/cm+zinter,-1,true);
      // mpx,mpy,mpz are the vertex coordinates with respect to charm hadron, first particle in Pythia is (system) 
    }
   } 

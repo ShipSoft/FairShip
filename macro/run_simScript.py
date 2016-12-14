@@ -220,9 +220,10 @@ if simEngine == "Pythia8":
    P8gen.UseExternalFile(inputFile, firstEvent)
 # 
  if charmonly: 
-  primGen.SetTarget(-10.*u.cm, 0.) 
+  primGen.SetTarget(0., 0.) # positioning done in Pythia8Generator
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, firstEvent)
+  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
