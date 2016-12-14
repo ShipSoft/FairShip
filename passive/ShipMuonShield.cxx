@@ -454,8 +454,8 @@ void ShipMuonShield::ConstructGeometry()
 	Double_t w1 = 2 * dXIn[nM] + std::max(20., gapIn[nM]);
 	Double_t w2 = 2 * dXOut[nM] + std::max(20., gapOut[nM]);
 	Double_t anti_overlap = 0.1;
-	Double_t h1 = 0.5 * (floor + dYIn[nM] + dXIn[nM] - anti_overlap);
-	Double_t h2 = 0.5 * (floor + dYOut[nM] + dXOut[nM] - anti_overlap);
+	Double_t h1 = 0.5 * (floor + dYIn[nM] + dXIn[nM] + anti_overlap);
+	Double_t h2 = 0.5 * (floor + dYOut[nM] + dXOut[nM] + anti_overlap);
 	std::vector<double> verticesIn = {
 	    -w1, -h1,
 	    +w1, -h1,
