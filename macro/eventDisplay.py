@@ -8,8 +8,9 @@ import shipRoot_conf
 shipRoot_conf.configure()
 
 def evExit():
- print "make suicide before framework makes seg fault" 
- os.kill(os.getpid(),9)
+ if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'):
+  print "make suicide before framework makes seg fault" 
+  os.kill(os.getpid(),9)
 atexit.register(evExit)
 
 fMan = None
@@ -565,6 +566,7 @@ class EventLoop(ROOT.FairTask):
    tr=gEve.GetBrowser().GetTabRight()
    t0 = tr.GetTabTab(0)
    t0.SetText(ROOT.TGString('3D'))
+   pillarColor()
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
    else  : self.n=i
@@ -685,7 +687,11 @@ def DisplayNuDetector():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  gEve.ElementChanged(geoscene,True,True)
-
+# color for pillars:
+def pillarColor(c=ROOT.kGreen-5):
+ for x in fGeo.GetListOfVolumes():
+  if 'pillar' in x.GetName(): 
+   x.SetLineColor(c)
 # draw Ecal yellow instead of black
 def ecalYellow():
  sc    = gEve.GetScenes()
@@ -997,7 +1003,7 @@ else:
 
 for x in mcHits: fMan.AddTask(mcHits[x])
 
-fMan.Init(1,5,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+fMan.Init(1,4,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 #visopt, set drawing mode :
 # option=0 (default) all nodes drawn down to vislevel
 # option=1           leaves and nodes at vislevel drawn
@@ -1016,7 +1022,7 @@ br = gEve.GetBrowser()
 br.HideBottomTab() # make more space for graphics
 br.SetWindowName('SHiP Eve Window')
 
-# switchOfAll('RockD')
+#switchOfAll('RockD')
 rulers = Rulers()
 SHiPDisplay = EventLoop()
 SHiPDisplay.SetName('SHiP Displayer')
@@ -1035,6 +1041,7 @@ print 'With the camera button, you can switch to different views.'
 # k zoom out
 # d GL debug mode
 
+# fGeo.SetNsegments(10) # can help a bit in case of performance problems
 def DrawCharmTracks():
   i = -1
   for aTrack in sTree.MCTrack:
