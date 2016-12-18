@@ -146,10 +146,12 @@ class veto: public FairDetector
     Int_t InitMedium(const char* name);
     TGeoVolume* GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sense);
     void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
-    TGeoVolume* GeoTrapezoid(const char* name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Int_t colour,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoTrapezoid(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoVesselSupport(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Double_t floorHeight);
 
-    TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey);
-    ClassDef(veto,5)
+    TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
+    TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
+    ClassDef(veto,6)
 };
 
 #endif //VETO_H

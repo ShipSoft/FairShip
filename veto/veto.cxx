@@ -1,5 +1,5 @@
 #include "veto.h"
-
+#include <math.h>
 #include "vetoPoint.h"
 
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
@@ -27,6 +27,7 @@
 #include "TGeoShapeAssembly.h"
 #include "TGeoTube.h"
 #include "TGeoArb8.h"
+#include "TGeoCone.h"
 #include "TGeoMaterial.h"
 #include "TParticle.h"
 
@@ -100,104 +101,432 @@ void veto::Initialize()
 //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
 //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
 }
-// private method make trapezoids with hole
-TGeoVolume* veto::GeoTrapezoid(const char* name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
+// private method make trapezoids with hole and rounded corners
+TGeoVolume* veto::GeoTrapezoid(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
 {
+
+      TString nm = xname.ReplaceAll("-","");  //otherwise it will try to subtract "-" in TGeoComposteShape
       Double_t dy1 = dy_start;
       Double_t dy2 = dy_start;
       if(slopeY>0){dy2 = dy1 + 2*slopeY*dz;}
       Double_t dx1 = dx_start;
-      Double_t dx2 = dx1 + 2*slopeX*dz;
-      TGeoArb8 *T2 = new TGeoArb8(dz);
-      T2->SetVertex(0,-dx1,-dy1);
-      T2->SetVertex(1,-dx1,dy1);
-      T2->SetVertex(2,dx1,dy1);
-      T2->SetVertex(3,dx1,-dy1);
-      T2->SetVertex(4,-dx2,-dy2);
-      T2->SetVertex(5,-dx2,dy2);
-      T2->SetVertex(6,dx2,dy2);
-      T2->SetVertex(7,dx2,-dy2);
+      Double_t dx2 = dx1;
+      if(slopeX>0){dx2=dx1+2*slopeX*dz;}
+      Double_t exr=(dy2-dy1)/2.+(dx2-dx1)/2.;
+      Double_t dc1=dcorner-exr/2.;
+      Double_t dc2=dcorner+exr/2.;
+      Double_t dxm=(dx1+dx2)/2.;
+      Double_t dym=(dy1+dy2)/2.;
+      
+      TGeoArb8 *T2 = new TGeoArb8("T2"+nm,dz);
+      Double_t tdx1 = dxm-exr/2.;
+      Double_t tdx2 = dxm+exr/2.;
+      Double_t tdy1 = dym-exr/2.;
+      Double_t tdy2 = dym+exr/2.;
+      T2->SetVertex(0,-tdx1,-tdy1);
+      T2->SetVertex(1,-tdx1,tdy1);
+      T2->SetVertex(2,tdx1,tdy1);
+      T2->SetVertex(3,tdx1,-tdy1);
+      T2->SetVertex(4,-tdx2,-tdy2);
+      T2->SetVertex(5,-tdx2,tdy2);
+      T2->SetVertex(6,tdx2,tdy2);
+      T2->SetVertex(7,tdx2,-tdy2);
       TGeoVolume *T;
       if (thick>0){ 
-       dx1 = dx1-thick;
-       dx2 = dx2-thick;
-       dy1 = dy1-thick;
-       dy2 = dy2-thick;
-       TGeoArb8 *T1 = new TGeoArb8(dz+1E-6);
-       T1->SetVertex(0,-dx1,-dy1);
-       T1->SetVertex(1,-dx1,dy1);
-       T1->SetVertex(2,dx1,dy1);
-       T1->SetVertex(3,dx1,-dy1);
-       T1->SetVertex(4,-dx2,-dy2);
-       T1->SetVertex(5,-dx2,dy2);
-       T1->SetVertex(6,dx2,dy2);
-       T1->SetVertex(7,dx2,-dy2);
-       TGeoSubtraction *subtraction = new TGeoSubtraction(T2,T1);
-       TGeoCompositeShape *Tc = new TGeoCompositeShape(name, subtraction);
-       T = new TGeoVolume(name, Tc, material);
+       //dcorner is the distance between the center of corner
+       //circle and the inner edge of the object.
+       tdx1 = dxm-exr/2.-thick;
+       tdx2 = dxm+exr/2.-thick;
+       tdy1 = dym-exr/2.-dc1+0.1*cm;
+       tdy2 = dym+exr/2.-dc2+0.1*cm;
+       TGeoArb8 *T1 = new TGeoArb8("T1"+nm,dz+1.E-6);
+       T1->SetVertex(0,-tdx1,-tdy1);
+       T1->SetVertex(1,-tdx1,tdy1);
+       T1->SetVertex(2,tdx1,tdy1);
+       T1->SetVertex(3,tdx1,-tdy1);
+       T1->SetVertex(4,-tdx2,-tdy2);
+       T1->SetVertex(5,-tdx2,tdy2);
+       T1->SetVertex(6,tdx2,tdy2);
+       T1->SetVertex(7,tdx2,-tdy2);
+
+       tdx1 = dxm-exr/2.-dc1+0.1*cm;
+       tdx2 = dxm+exr/2.-dc2+0.1*cm;
+       tdy1 = dym-thick-exr/2.;
+       tdy2 = dym-thick+exr/2.;
+       TGeoArb8 *T3 = new TGeoArb8("T3"+nm,dz+2.E-6);
+       T3->SetVertex(0,-tdx1,-tdy1);
+       T3->SetVertex(1,-tdx1,tdy1);
+       T3->SetVertex(2,tdx1,tdy1);
+       T3->SetVertex(3,tdx1,-tdy1);
+       T3->SetVertex(4,-tdx2,-tdy2);
+       T3->SetVertex(5,-tdx2,tdy2);
+       T3->SetVertex(6,tdx2,tdy2);
+       T3->SetVertex(7,tdx2,-tdy2);
+
+       //now subtract the corners using TGeoConeSeg
+       TGeoConeSeg *Ci1 = new TGeoConeSeg("Ci1"+nm,dz+3.e-1,0.,dc1,0.,dc2,-1.,91.);
+       TGeoTranslation *t1 = new TGeoTranslation("t1"+nm,dxm-dcorner-thick,dym-dcorner-thick,0.);
+       t1->RegisterYourself();
+       TGeoConeSeg *Co1 = new TGeoConeSeg("Co1"+nm,dz+3.e-1,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,-1.,91.);
+
+       TGeoConeSeg *Ci2 = new TGeoConeSeg("Ci2"+nm,dz+3.e-1,0.,dc1,0.,dc2,89.,181.);
+       TGeoTranslation *t2 = new TGeoTranslation("t2"+nm,-dxm+dcorner+thick,dym-dcorner-thick,0.);
+       t2->RegisterYourself();
+       TGeoConeSeg *Co2 = new TGeoConeSeg("Co2"+nm,dz+3.e-1,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,89.,181.);
+
+       TGeoConeSeg *Ci3 = new TGeoConeSeg("Ci3"+nm,dz+3.e-1,0.,dc1,0.,dc2,179.,271.);
+       TGeoTranslation *t3 = new TGeoTranslation("t3"+nm,-dxm+dcorner+thick,-dym+dcorner+thick,0.);
+       t3->RegisterYourself();
+       TGeoConeSeg *Co3 = new TGeoConeSeg("Co3"+nm,dz+3.e-1,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,179.,271.);
+
+       TGeoConeSeg *Ci4 = new TGeoConeSeg("Ci4"+nm,dz+3.e-1,0.,dc1,0.,dc2,269.,361.);
+       TGeoTranslation *t4 = new TGeoTranslation("t4"+nm,dxm-dcorner-thick,-dym+dcorner+thick,0.);
+       t4->RegisterYourself();
+       TGeoConeSeg *Co4 = new TGeoConeSeg("Co4"+nm,dz+3.e-1,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,269.,361.);
+
+       TGeoCompositeShape *T213 = new TGeoCompositeShape("T213"+nm,"T2"+nm+"-T1"+nm+"-T3"+nm+\
+                                                         "-Ci1"+nm+":t1"+nm+"-Co1"+nm+":t1"+nm+\
+                                                         "-Ci2"+nm+":t2"+nm+"-Co2"+nm+":t2"+nm+\
+                                                         "-Ci3"+nm+":t3"+nm+"-Co3"+nm+":t3"+nm+\
+                                                         "-Ci4"+nm+":t4"+nm+"-Co4"+nm+":t4"+nm);
+
+       T = new TGeoVolume(xname, T213, material);
+       
       } else {
-       T = new TGeoVolume(name, T2, material);
+       //only cut outer corners off
+       //now subtract the corners using TGeoConeSeg
+       TGeoTranslation *t1 = new TGeoTranslation("t1"+nm,dxm-dcorner-thick,dym-dcorner-thick,0.);
+       t1->RegisterYourself();
+       TGeoConeSeg *Co1 = new TGeoConeSeg("Co1"+nm,dz+1.*cm,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,-1.,91.);
+
+       TGeoTranslation *t2 = new TGeoTranslation("t2"+nm,-dxm+dcorner+thick,dym-dcorner-thick,0.);
+       t2->RegisterYourself();
+       TGeoConeSeg *Co2 = new TGeoConeSeg("Co2"+nm,dz+1.*cm,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,89.,181.);
+
+       TGeoTranslation *t3 = new TGeoTranslation("t3"+nm,-dxm+dcorner+thick,-dym+dcorner+thick,0.);
+       t3->RegisterYourself();
+       TGeoConeSeg *Co3 = new TGeoConeSeg("Co3"+nm,dz+1.*cm,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,179.,271.);
+
+       TGeoTranslation *t4 = new TGeoTranslation("t4"+nm,dxm-dcorner-thick,-dym+dcorner+thick,0.);
+       t4->RegisterYourself();
+       TGeoConeSeg *Co4 = new TGeoConeSeg("Co4"+nm,dz+1.*cm,dc1+thick,dc1+2.*m,dc2+thick,dc2+2.*m,269.,361.0);
+
+       TGeoCompositeShape *T213 = new TGeoCompositeShape("T213"+nm,"T2"+nm+"-Co1"+nm+":t1"+nm+\
+                                                         "-Co2"+nm+":t2"+nm+\
+                                                         "-Co3"+nm+":t3"+nm+\
+                                                         "-Co4"+nm+":t4"+nm);
+
+       T = new TGeoVolume(xname, T213, material);
       }   
       T->SetLineColor(colour);
-      //and make the volunes sensitive..
+      //and make the volumes sensitive..
       if (sens) {AddSensitiveVolume(T);}
+      return T;
+}
+// private method make support of vessel with rounded corners
+TGeoVolume* veto::GeoVesselSupport(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material, Double_t floorHeight)
+{
+
+      TString nm = xname.ReplaceAll("-","");  //otherwise it will try to subtract "-" in TGeoComposteShape
+      Double_t hhall=10.*m - floorHeight; //temporary vertical half-height of the hall
+      Double_t dy1 = dy_start;
+      Double_t dy2 = dy_start;
+      if(slopeY>0){dy2 = dy1 + 2*slopeY*dz;}
+      Double_t dx1 = dx_start;
+      Double_t dx2 = dx1 ;
+      if(slopeX>0){dx2 = dx1 + 2*slopeX*dz;}
+      Double_t slopeSupport=0.2;
+      Double_t dxl1=dx1+(hhall-dy1)*slopeSupport;
+      Double_t dxl2=dx2+(hhall-dy2)*slopeSupport;
+      Double_t exr=(dy2-dy1)/2.+(dx2-dx1)/2.;
+
+      Double_t dc1=dcorner-exr/2.;
+      Double_t dc2=dcorner+exr/2.;
+      Double_t dxm=(dx1+dx2)/2.;
+      Double_t dym=(dy1+dy2)/2.;
+      
+      TGeoArb8 *T2 = new TGeoArb8("T2"+nm,dz);
+      Double_t tdx1 = dxm-exr/2.;
+      Double_t tdx2 = dxm+exr/2.;
+      Double_t tdy1 = dym-exr/2.;
+      Double_t tdy2 = dym+exr/2.;
+
+      T2->SetVertex(0,-dxl1,-hhall);
+      T2->SetVertex(1,-tdx1,-tdy1+dcorner/2.);
+      T2->SetVertex(2,tdx1,-tdy1+dcorner/2.);
+      T2->SetVertex(3,dxl1,-hhall);
+      T2->SetVertex(4,-dxl2,-hhall);
+      T2->SetVertex(5,-tdx2,-tdy2+dcorner/2.);
+      T2->SetVertex(6,tdx2,-tdy2+dcorner/2.);
+      T2->SetVertex(7,dxl2,-hhall);
+
+      TGeoVolume *T;
+       //dcorner is the distance between the center of corner
+       //circle and the inner edge of the object.
+       tdx1 = dxm-exr/2.-dc1+0.1*cm;
+       tdx2 = dxm+exr/2.-dc2+0.1*cm;
+       tdy1 = dym-thick-exr/2.;
+       tdy2 = dym-thick+exr/2.;
+
+       TGeoArb8 *T3 = new TGeoArb8("T3"+nm,dz+2.E-6);
+       T3->SetVertex(0,-tdx1,-tdy1);
+       T3->SetVertex(1,-tdx1,tdy1);
+       T3->SetVertex(2,tdx1,tdy1);
+       T3->SetVertex(3,tdx1,-tdy1);
+       T3->SetVertex(4,-tdx2,-tdy2);
+       T3->SetVertex(5,-tdx2,tdy2);
+       T3->SetVertex(6,tdx2,tdy2);
+       T3->SetVertex(7,tdx2,-tdy2);
+
+       //now subtract the corners using TGeoConeSeg
+       TGeoConeSeg *Ci3 = new TGeoConeSeg("Ci3"+nm,dz+3.e-6,0.,dc1+thick,0.,dc2+thick,179.,271.);
+       TGeoTranslation *t3 = new TGeoTranslation("t3"+nm,-dxm+dcorner+thick,-dym+dcorner+thick,0.);
+       t3->RegisterYourself();
+
+       TGeoConeSeg *Ci4 = new TGeoConeSeg("Ci4"+nm,dz+3.e-6,0.,dc1+thick,0.,dc2+thick,269.,361.);
+       TGeoTranslation *t4 = new TGeoTranslation("t4"+nm,dxm-dcorner-thick,-dym+dcorner+thick,0.);
+       t4->RegisterYourself();
+
+       //try to make SHiP like logo in support
+       //what is the "center of the support:
+       Double_t ysc=-hhall+(-tdy1+hhall)/2.;
+       Double_t swidth=30.*cm;
+       TGeoTranslation *t5 = new TGeoTranslation("t5"+nm,0.,ysc,0.);
+       t5->RegisterYourself();
+       //6 cutouts...
+       Double_t rc=(dxl1+dx1)/2.-swidth/2.;
+       TGeoCompositeShape *T213 = new TGeoCompositeShape();
+       if (swidth<dz){
+        Double_t alpha1=atan((ysc+hhall)/dx1)*180./TMath::Pi();
+        Double_t alpha2=atan((ysc+hhall)/dxl1)*180./TMath::Pi();
+        TGeoTubeSeg *SHiP1 = new TGeoTubeSeg("SHiP1"+nm,swidth,rc,dz+3.e-6,5.,alpha1-5.);
+        TGeoTubeSeg *SHiP3 = new TGeoTubeSeg("SHiP3"+nm,swidth,rc,dz+3.e-6,180-alpha1+5.,175.);
+        TGeoTubeSeg *SHiP4 = new TGeoTubeSeg("SHiP4"+nm,swidth,rc,dz+3.e-6,185.,180.+alpha2-5.);
+        TGeoTubeSeg *SHiP6 = new TGeoTubeSeg("SHiP6"+nm,swidth,rc,dz+3.e-6,360.-alpha2+5.,355.);
+        rc=-dy2-ysc-swidth;
+        TGeoTubeSeg *SHiP2 = new TGeoTubeSeg("SHiP2"+nm,swidth,rc,dz+3.e-6,alpha1+5.,180-alpha1-5.);
+        rc=ysc+hhall-swidth;
+        TGeoTubeSeg *SHiP5 = new TGeoTubeSeg("SHiP5"+nm,swidth,rc,dz+3.e-6,180.+alpha2+5.,360.-alpha2-5.);
+       
+        T213 = new TGeoCompositeShape("T213"+nm,"T2"+nm+"-T3"+nm+\
+                                                         "-Ci3"+nm+":t3"+nm+"-Ci4"+nm+":t4"+nm+\
+                                                         "-SHiP1"+nm+":t5"+nm+"-SHiP2"+nm+":t5"+nm+\
+                                                         "-SHiP3"+nm+":t5"+nm+"-SHiP4"+nm+":t5"+nm+\
+                                                         "-SHiP5"+nm+":t5"+nm+"-SHiP6"+nm+":t5"+nm);
+        }else{
+        T213 = new TGeoCompositeShape("T213"+nm,"T2"+nm+"-T3"+nm+\
+                                                         "-Ci3"+nm+":t3"+nm+"-Ci4"+nm+":t4"+nm);
+        }
+       T = new TGeoVolume(xname, T213, material);
+       
+      T->SetLineColor(colour);
       return T;
 }
 
 
-TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY)
+TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t floorHeight)
 {
-    // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
-      Double_t dx = dx_start - f_OuterSupportThickness - f_VetoThickness;
-      Double_t dy = dy_start - f_OuterSupportThickness - f_VetoThickness;
+      // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
       TString nm;
-      nm = "innerSupport_"; nm += seg;
-      TGeoVolume* innerSupport = GeoTrapezoid(nm,f_InnerSupportThickness,dz,dx,dy,slopeX,slopeY,18,supportMedIn);
-      nm = "decayVol_"; nm += seg;
-      dx = dx_start - f_OuterSupportThickness - f_VetoThickness - f_InnerSupportThickness;
-      dy = dy_start - f_OuterSupportThickness - f_VetoThickness - f_InnerSupportThickness;
-      TGeoVolume* decayVol = GeoTrapezoid(nm,-1.,dz,dx,dy,slopeX,slopeY,1,decayVolumeMed);
-      decayVol->SetVisibility(kFALSE);
-      TGeoVolumeAssembly *tDecayVol = new TGeoVolumeAssembly(nm);
-      tDecayVol->AddNode(innerSupport, 1, new TGeoTranslation(0,0,0));
-      tDecayVol->AddNode(decayVol, 1, new TGeoTranslation(0,0,0));
+      nm = "T"; nm += seg;
+      TGeoVolumeAssembly *tTankVol = new TGeoVolumeAssembly(nm);
       //Assume ~1 m between ribs, calculate number of ribs
-      Double_t dist =  1.*m; 
+      Double_t dist =  0.8*m; //with Napoli design: 0.8 m 
       Int_t nribs = 2+dz*2./dist  ;
       Double_t ribspacing = (dz*2.-nribs*f_InnerSupportThickness)/(nribs-1)+f_InnerSupportThickness;
+
+      //with rounded corners, cannot make "long" volumes, hence place all volmues
+      // i.e. : inner wall, "vacuum", ribs, LiSc, out H-beam, and outter Al wall
+      // in short sectors.
+      //Another note: make H-profiles, hence add thickness of "f_InnerSupportThickness" twice!
+      //              The inner wall is a comination of H-bar and conencting shield of same thickness
+      //              Outer wall: is (Al) layer outside the H-bar covering everything.
+      //some "new" variables
+      Double_t hwidth=15.*cm; //half-width of a H-bar
+
+      //Place vacuum in decay volume, need small steps segments in z too, otherwise
+      //rounded corners approximation does not fit. 
+      Double_t dcorner = 80.*cm; // radius of inner circle at corners of vessel.
+      Double_t dx;
+      dx = dx_start - f_OuterSupportThickness - f_VetoThickness - 2*f_InnerSupportThickness ;
+      if (dcorner>0.95*dx) {dcorner=0.95*dx;}
+      Double_t dy;
+      nm+= "decayVol";
+      TGeoVolumeAssembly *tDecayVol = new TGeoVolumeAssembly(nm);
+      TGeoTranslation* Zero = new TGeoTranslation(0,0,0);
+      for (Int_t nr=1; nr<nribs; nr++) {
+        Double_t zlisc= -dz + (nr-0.5)*ribspacing;
+        dx = dx_start - f_OuterSupportThickness - f_VetoThickness - 2*f_InnerSupportThickness  + slopeX*(nr-1)*ribspacing;
+        dy = dy_start - f_OuterSupportThickness - f_VetoThickness - 2*f_InnerSupportThickness;
+        if (slopeY>0) {dy+= slopeY*(nr-1)*ribspacing;}
+        TString tmp = nm;
+        tmp+="-";tmp+=nr;
+        TGeoVolume* T = GeoTrapezoid(tmp,-1.,0.5*ribspacing-1.e-6,dx,dy,slopeX,slopeY,dcorner,1,decayVolumeMed);
+        T->SetVisibility(kFALSE);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
+      }
+      tTankVol->AddNode(tDecayVol,0, Zero);
+      //now place inner wall
+      dcorner+=f_InnerSupportThickness;
+      nm = "T"; nm += seg;
+      nm+= "Innerwall";
+      TGeoVolumeAssembly *tInnerWall = new TGeoVolumeAssembly(nm);
+      for (Int_t nr=1; nr<nribs; nr++) {
+        Double_t zlisc= -dz + (nr-0.5)*ribspacing;
+        dx = dx_start  - f_OuterSupportThickness - f_VetoThickness -f_InnerSupportThickness + slopeX*(nr-1)*ribspacing;
+        dy = dy_start - f_OuterSupportThickness - f_VetoThickness-f_InnerSupportThickness;
+        if (slopeY>0) {dy+= slopeY*(nr-1)*ribspacing;}
+        TString tmp = nm;
+        tmp+="-";tmp+=nr;
+        TGeoVolume* T = GeoTrapezoid(tmp,f_InnerSupportThickness,0.5*ribspacing-1.e-6,dx,dy,slopeX,slopeY,dcorner,15,supportMedIn);
+        tInnerWall->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
+      }
+      tTankVol->AddNode(tInnerWall,0, Zero);
       //now place ribs
       nm = "T"; nm += seg;
       nm+= "Rib";
+      TGeoVolumeAssembly *tRib = new TGeoVolumeAssembly(nm);
       for (Int_t nr=0; nr<nribs; nr++) {
         Double_t zrib = -dz +f_RibThickness/2. +nr*ribspacing;
         Double_t d = 1.;
-        //T4 Here use ribs only 10 cm high, 1/3 of VetoThickness!
-        if (seg==4){d = 1./3.;}
-        dx = dx_start -(1.-d)*f_VetoThickness -f_OuterSupportThickness +slopeX*(zrib+dz-f_RibThickness);
-        dy = dy_start -(1.-d)*f_VetoThickness -f_OuterSupportThickness;
+        //T4 Here use ribs only 10 cm high, 1/3 of VetoThickness! Need it for the pressure...
+        //if (seg==4){d = 1./3.;}
+        dx = dx_start -(1.-d)*f_VetoThickness -f_OuterSupportThickness -f_InnerSupportThickness+slopeX*(zrib+dz-f_RibThickness);
+        dy = dy_start -(1.-d)*f_VetoThickness -f_OuterSupportThickness-f_InnerSupportThickness;
         if (slopeY>0) {dy+=slopeY*(zrib+dz-f_RibThickness);}
         TString tmp = nm;
         tmp+="-";tmp+=nr;
-        TGeoVolume* T = GeoTrapezoid(tmp,d*f_VetoThickness,f_InnerSupportThickness/2.,dx,dy,slopeX,slopeY,18,ribMed);
-        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zrib));
+        TGeoVolume* T = GeoTrapezoid(tmp,d*f_VetoThickness,f_RibThickness/2.,dx,dy,slopeX,slopeY,dcorner,15,ribMed);
+        tRib->AddNode(T, nr, new TGeoTranslation(0, 0,zrib));
       }
-      if (seg!=4 && seg!=6){
-       nm = "outerSupport_"; nm += seg;
-       TGeoVolume* outerSupport = GeoTrapezoid(nm,f_OuterSupportThickness,dz,dx_start,dy_start,slopeX,slopeY,18,supportMedOut);
-       tDecayVol->AddNode(outerSupport, 1, new TGeoTranslation(0,0,0));
+      tTankVol->AddNode(tRib,0, Zero);
       //now place LiSc
+      //if (seg!=4 && seg!=6){
+      if (seg<3){
        Double_t zlength=(ribspacing -f_InnerSupportThickness)/2.;
        nm = "T"; nm += seg;
        nm+= "LiSc";
+       TGeoVolumeAssembly *tLiSc = new TGeoVolumeAssembly(nm);
        for (Int_t nr=1; nr<nribs; nr++) {
-        Double_t zlisc= -dz +f_InnerSupportThickness+zlength+(nr-1)*ribspacing;
-        dx = dx_start -f_OuterSupportThickness  + slopeX*(zlisc+dz-zlength);
-        dy = dy_start -f_OuterSupportThickness;
+        Double_t zlisc= -dz +f_RibThickness+zlength+(nr-1)*ribspacing;
+        dx = dx_start -f_OuterSupportThickness -f_InnerSupportThickness + slopeX*(zlisc+dz-zlength);
+        dy = dy_start -f_OuterSupportThickness-f_InnerSupportThickness;
         if (slopeY>0) {dy+= slopeY*(zlisc+dz-zlength);}
-        TGeoVolume* T = GeoTrapezoid(nm,f_VetoThickness,zlength,dx,dy,slopeX,slopeY,kMagenta-10,vetoMed,kTRUE);
-        tDecayVol->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
+        TString tmp = nm;
+        tmp+="-";tmp+=nr;
+        TGeoVolume* T = GeoTrapezoid(tmp,f_VetoThickness,zlength,dx,dy,slopeX,slopeY,dcorner,kMagenta-10,vetoMed,kTRUE);
+        tLiSc->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
+       }
+       tTankVol->AddNode(tLiSc,0, Zero);
+       //now close LiSc volumes with Al plates
+       dcorner+=f_InnerSupportThickness+f_VetoThickness;
+       nm = "T"; nm += seg;
+       nm+= "Outerwall";
+       TGeoVolumeAssembly *tOuterwall = new TGeoVolumeAssembly(nm);
+       for (Int_t nr=1; nr<nribs; nr++) {
+        Double_t zlisc= -dz +f_RibThickness+zlength+(nr-1)*ribspacing;
+        dx = dx_start + slopeX*(zlisc+dz-hwidth/2.);
+        dy = dy_start ;
+        if (slopeY>0) {dy+= slopeY*(zlisc+dz-hwidth/2.);}
+        TString tmp = nm;
+        tmp+="-";tmp+=nr;
+        TGeoVolume* T = GeoTrapezoid(tmp,f_OuterSupportThickness,0.5*ribspacing-1.e-6-hwidth/2.,dx,dy,slopeX,slopeY,dcorner,18,supportMedOut);
+        tOuterwall->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
+       }
+       tTankVol->AddNode(tOuterwall,0, Zero); 
+      }else{
+       dcorner+=f_InnerSupportThickness+f_VetoThickness;
       }
-     }
+      dcorner+=f_OuterSupportThickness;
+      //now place H-pieces of H-bars on the outside: make them 30.cm wide for the time being
+      nm = "T"; nm += seg;
+      nm+= "Hbar";
+      TGeoVolumeAssembly *tHbar = new TGeoVolumeAssembly(nm);
+      for (Int_t nr=0; nr<nribs; nr++) {
+        Double_t zrib = -dz +f_RibThickness/2. +nr*ribspacing;
+        Double_t hw=hwidth;
+        if (nr==0) {zrib=zrib+hwidth/2.; hw=hw/2.;}
+        if (nr==nribs-1) {zrib=zrib-hwidth/2.; hw=hw/2.;}
+        dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-hwidth);
+        dy = dy_start -f_OuterSupportThickness;
+        if (slopeY>0) {dy+=slopeY*(zrib+dz-hwidth);}
+        TString tmp = nm;
+        tmp+="-";tmp+=nr;
+        TGeoVolume* T = GeoTrapezoid(tmp,f_InnerSupportThickness/2.,hw,dx,dy,slopeX,slopeY,dcorner,15,ribMed);
+        tHbar->AddNode(T, nr, new TGeoTranslation(0, 0,zrib));
+      }
+      tTankVol->AddNode(tHbar,0, Zero); 
+      //Thomas his "empty" volume around it all, but cannot fit, because of support bars
+      //nm+= "decayVol";
+      //TGeoVolume* S = GeoTrapezoid(nm,1.*cm,dz,dx_start+0.1,dy_start+0.1,slopeX,slopeY,dcorner,18,decayVolumeMed);
+      //tDecayVol->AddNode(S, 1, new TGeoTranslation(0, 0, 0));
+      //now place support to floor, but not in the magnet
+      if (seg!=4){
+      nm = "T"; nm += seg;
+      nm+= "Vsup";
+      TGeoVolumeAssembly *tVsup = new TGeoVolumeAssembly(nm);
+      Int_t npp=3;
+      if (nribs==3) {npp=2;}
+      if (nribs==4) {npp=3;}
+      for (Int_t nr=0; nr<nribs; nr+=npp) {
+        Double_t zrib = -dz +f_RibThickness/2. +nr*ribspacing;
+        dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-f_RibThickness);
+        dy = dy_start -f_OuterSupportThickness;
+        if (slopeY>0) {dy+=slopeY*(zrib+dz-f_RibThickness);}
+        TString tmp = nm;
+        tmp+="-";tmp+=nr;
+        TGeoVolume* T = GeoVesselSupport(tmp,f_InnerSupportThickness,f_RibThickness/2.,dx,dy,slopeX,slopeY,dcorner,15,ribMed,floorHeight);
+        tVsup->AddNode(T, nr, new TGeoTranslation(0, 0,zrib));
+        //special support spacing for segment nr=1
+        if (seg==1){
+          if (nr==3) {npp=1;}
+          if (nr==4) {npp=3;}
+        }
+      }
+      tTankVol->AddNode(tVsup,0, Zero);         
+      }
+
+     return tTankVol;
+}
+TGeoVolume* veto::MakeLidSegments(Int_t seg,Double_t dx,Double_t dy)
+{
+      // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
+      TString nm;
+      nm = "T"; nm += seg;
+      nm+= "Lid";
+      TGeoVolumeAssembly *tDecayVol = new TGeoVolumeAssembly(nm);
+      //Assume ~1 m between ribs, calculate number of ribs
+      Double_t dist =  0.8*m; //with Napoli design: 0.8 m 
+      Int_t nribs = 2+dx*2./dist  ;
+      Double_t ribspacing = (dx*2.-nribs*f_InnerSupportThickness)/(nribs-1)+f_InnerSupportThickness;
+
+      Double_t hwidth=15.*cm; //half-width of a H-bar
+      Double_t ribwidth=f_VetoThickness; //( but should become it owns indepent dimension )
+
+      //place lid
+      TGeoVolume *T1Lid = gGeoManager->MakeBox("T1Lidbox",supportMedIn,dx+f_InnerSupportThickness/2,dy,f_InnerSupportThickness/2.);
+      T1Lid->SetLineColor(14);
+      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, 0));
+
+      //now place ribs
+      nm = "T"; nm += seg;
+      nm+= "LidRib";
+      for (Int_t nr=0; nr<nribs; nr++) {
+        Double_t xrib = -dx +f_RibThickness/2. +nr*ribspacing;
+        TGeoVolume* T = gGeoManager->MakeBox("T1Rib",supportMedIn,f_InnerSupportThickness/2.,dy,ribwidth/2.);
+        T->SetLineColor(14);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(xrib, 0,-ribwidth/2.-f_InnerSupportThickness/2.));
+      }
+
+      //add H-bars in the front
+      nm = "T"; nm += seg;
+      nm+= "LidH";
+      for (Int_t nr=0; nr<nribs; nr++) {
+        Double_t xrib = -dx +f_RibThickness/2. +nr*ribspacing;
+        TGeoVolume* T = gGeoManager->MakeBox("T1H",supportMedIn,hwidth,dy,f_InnerSupportThickness/2.);
+        T->SetLineColor(14);
+        tDecayVol->AddNode(T, nr, new TGeoTranslation(xrib, 0,-ribwidth-f_InnerSupportThickness));
+      }
      return tDecayVol;
 }
 // private method create ellipsoids
@@ -403,7 +732,7 @@ void veto::ConstructGeometry()
     Double_t zStartDecayVol = fTub1z-fTub1length-f_InnerSupportThickness;
     Double_t zStartMagVol = fTub3z+fTub3length-f_InnerSupportThickness; //? is this needed, -f_InnerSupportThickness
     if (fDesign==5){
-    // design 5: simplified trapezoidal design for optimization study
+    // designMakeSe 5: simplified trapezoidal design for optimization study
     // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
       Double_t slopex = 2.83*m/(fTub6z - zFocusX);// size in TP design
       Double_t slopey = fBtube/(fTub6z - zFocusY); 
@@ -413,41 +742,55 @@ void veto::ConstructGeometry()
       Double_t dy  = slopey*(zpos - zFocusY);
       TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,dx1,dy,10.*mm);
       VetoTimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-20.*cm));
+      top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-45.*cm));
       AddSensitiveVolume(VetoTimeDet);
    // make the entrance window
-      TGeoVolume *T1Lid = gGeoManager->MakeBox("T1Lid",supportMedIn,dx1,dy,f_InnerSupportThickness);
-      T1Lid->SetLineColor(14);
-      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0,zpos - zStartDecayVol));
-      TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slopex,slopey);
+      // add floor:
+      Double_t floorHeight = 4.5 * m;
+      Double_t Length = zStartMagVol - zStartDecayVol - 1.8*m; 
+      TGeoBBox *box = new TGeoBBox("box1",  10 * m, floorHeight/2., Length/2.);
+      TGeoVolume *floor = new TGeoVolume("floor1",box,concrete);
+      floor->SetLineColor(11);
+      tDecayVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeight/2.,Length/2.));
+      //new lid made out of H-bars
+      TGeoVolume* T1Lid = MakeLidSegments(1,dx1,dy);
+      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, zpos - zStartDecayVol+f_InnerSupportThickness/2.1));
+      TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slopex,slopey,floorHeight);
       tDecayVol->AddNode(seg1, 1, new TGeoTranslation(0, 0, fTub1z - zStartDecayVol));
       dx1 = slopex*(fTub2z -fTub2length - zFocusX);
       dy  = slopey*(fTub2z -fTub2length - zFocusY);
-      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey);
+      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeight);
       tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z - zStartDecayVol));
+      floorHeight = 2 * m;
+      Length = fTub6z+fTub6length-fTub2z-fTub2length; 
+      box = new TGeoBBox("box2",  10 * m, floorHeight/2., Length/2.);
+      floor = new TGeoVolume("floor2",box,concrete);
+      floor->SetLineColor(11);
+      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeight/2., Length/2.-2*fTub3length));
       dx1 = slopex*(fTub3z -fTub3length - zFocusX);
       dy = slopey*(fTub3z -fTub3length - zFocusY);
-      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,slopex,slopey);
+      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeight);
       tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
       dx1 = slopex*(fTub4z -fTub4length - zFocusX);
-      dy = fBtube;
-      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slopex,slopey);
+      //dy = fBtube;
+      dy = slopey*(fTub4z -fTub4length - zFocusY);
+      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slopex,slopey,floorHeight);
       tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
       dx1 = slopex*(fTub5z -fTub5length - zFocusX);
       dy = slopey*(fTub5z -fTub5length - zFocusY);
-      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,slopex,-1.);
+      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeight);
       tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
       dx1 = slopex*(fTub6z -fTub6length - zFocusX);
       dy = slopey*(fTub6z -fTub6length - zFocusY);
       Double_t dx2 = slopex*(fTub6z +fTub6length - zFocusX);
-      TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,slopex,-1.);
+      TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,slopex,slopey,floorHeight);
       tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
    // make the exit window
       TGeoVolume *T6Lid = gGeoManager->MakeBox("T6Lid",supportMedIn,dx2,dy,f_InnerSupportThickness);
       T6Lid->SetLineColor(14);
       tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+f_InnerSupportThickness - zStartMagVol));
 
-      //finish assembly and position
+      //finisMakeSeh assembly and position
       TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tDecayVol->GetShape());
       Double_t totLength = asmb->GetDZ();
       top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol+totLength));
@@ -528,7 +871,7 @@ void veto::ConstructGeometry()
       Double_t bls =btube+walli;
 
       //Assume ~1 m between ribs, calculate number of ribs
-      Double_t dist =  1.*m; 
+      Double_t dist = 1.*m; 
       //For Tube nr 1:
       Int_t nribs = 2+fTub1length*2./dist  ;
       Double_t ribspacing = (fTub1length*2.-nribs*walli)/(nribs-1)+walli;
