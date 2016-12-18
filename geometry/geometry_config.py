@@ -91,7 +91,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.Veto.ribMed = "steel"
      # horizontal width at start and focus point, for conical/rectangular size
      # envelope (46,1.2) or (46,0.9) end at T4: (100.,2.5)  London slides, https://indico.cern.ch/event/508465/contributions/2166894/    
-     c.zFocusX = -5*u.m # +15*u.m # (latest with charm) downstream from target, will have neutrinos going from outside to inside, not so good for vacuum option.
+     c.zFocusX = +10*u.m # Decision taken 15/12/2016, Physics and Detector meeting
      c.zFocusY = -5*u.m # for the moment, identical to X
      c.xMax    = +2.5*u.m # max horizontal width at T4
      # 
