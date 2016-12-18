@@ -525,13 +525,13 @@ void ShipMuonShield::ConstructGeometry()
       Double_t dZD =  100*m + fMuonShieldLength;
       TGeoBBox *box3    = new TGeoBBox("box3", 15*m, 15*m,dZD/2.);
       TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
-      TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, 2.5 * m,
-				    fMuonShieldLength / 2. - 5 * m);
-      TGeoTranslation *t1 = new TGeoTranslation(
-	  "t1", 0, -7.5 * m, -dZD / 2. + fMuonShieldLength / 2. - 5 * m);
-      t1->RegisterYourself();
+// cover also Tau nu area
+      TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, 2.5 * m,fMuonShieldLength/2.);
+      TGeoVolume *floor   = new TGeoVolume("floorM", box5, concrete); 
+      floor->SetLineColor(11);  // grey
+      top->AddNode(floor, 1, new TGeoTranslation(0, -7.5 * m, zEndOfAbsorb + fMuonShieldLength / 2. ));
       TGeoCompositeShape *compRockD =
-	  new TGeoCompositeShape("compRockD", "(box3-box4)+shield_floor:t1");
+	  new TGeoCompositeShape("compRockD", "(box3-box4)");
       TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
       rockD->SetLineColor(11);  // grey
       rockD->SetTransparency(50);
