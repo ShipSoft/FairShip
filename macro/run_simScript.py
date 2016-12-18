@@ -220,7 +220,8 @@ if simEngine == "Pythia8":
    P8gen.UseExternalFile(inputFile, firstEvent)
 # 
  if charmonly: 
-  primGen.SetTarget(0., 0.) # positioning done in Pythia8Generator
+  primGen.SetBeam(0.,0., ship_geo.Box.TX-2., ship_geo.Box.TY-2.) #Uniform distribution in x/y on the target (1 cm of margin at both sides)    
+  primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, firstEvent)
   P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
