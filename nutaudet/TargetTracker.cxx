@@ -185,7 +185,7 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
 	  return kTRUE; }
 	fVolumeID = detID;
 
-	gGeoManager->PrintOverlaps();
+	//gGeoManager->PrintOverlaps();
 	
 	//cout<< "detID = " << detID << endl;
 	Int_t MaxLevel = gGeoManager->GetLevel();

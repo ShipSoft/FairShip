@@ -214,7 +214,7 @@ Bool_t  MuonTagger::ProcessHits(FairVolume* vol)
 	  return kTRUE; }
 	fVolumeID = detID;
 
-	gGeoManager->PrintOverlaps();		
+	//gGeoManager->PrintOverlaps();		
 	
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
