@@ -566,7 +566,6 @@ class EventLoop(ROOT.FairTask):
    tr=gEve.GetBrowser().GetTabRight()
    t0 = tr.GetTabTab(0)
    t0.SetText(ROOT.TGString('3D'))
-   pillarColor()
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
    else  : self.n=i
@@ -692,9 +691,19 @@ def pillarColor(c=ROOT.kGreen-5):
  for x in fGeo.GetListOfVolumes():
   if 'pillar' in x.GetName(): 
    x.SetLineColor(c)
- sc    = gEve.GetScenes()
- geoscene = sc.FindChild('Geometry scene')
- gEve.ElementChanged(geoscene,True,True)
+def defineLayout():
+   pillarColor()
+   for k in range(1,7):
+    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Innerwall","T"+str(k)+"Rib","T"+str(k)+"LiSc","T"+str(k)+"Hbar"]:
+     va = fGeo.GetVolume(v)
+     if not va: continue
+     for n in va.GetNodes(): n.SetVisibility(False)
+   for k in range(1,7):
+    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Rib","T"+str(k)+"Hbar"]:
+     va = fGeo.GetVolume(v)
+     if not va: va = fGeo.GetVolume("T"+str(k)+"Innerwall")
+     for n in va.GetNodes(): n.SetVisibility(True)
+
 # draw Ecal yellow instead of black
 def ecalYellow():
  sc    = gEve.GetScenes()
@@ -1019,6 +1028,8 @@ lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree) 
 fGeo  = ROOT.gGeoManager 
 top   = fGeo.GetTopVolume()
+# manipulate colors and transparency before scene created
+defineLayout()
 gEve  = ROOT.gEve
 
 br = gEve.GetBrowser()
