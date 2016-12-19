@@ -686,13 +686,7 @@ def DisplayNuDetector():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  gEve.ElementChanged(geoscene,True,True)
-# color for pillars:
-def pillarColor(c=ROOT.kGreen-5):
- for x in fGeo.GetListOfVolumes():
-  if 'pillar' in x.GetName(): 
-   x.SetLineColor(c)
 def defineLayout():
-   pillarColor()
    for k in range(1,7):
     for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Innerwall","T"+str(k)+"Rib","T"+str(k)+"LiSc","T"+str(k)+"Hbar"]:
      va = fGeo.GetVolume(v)

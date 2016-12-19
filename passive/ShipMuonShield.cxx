@@ -482,10 +482,12 @@ void ShipMuonShield::ConstructGeometry()
 	TGeoVolume *pillar2 =
 	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), steel,
 				  0.5 * m, verticesOut.data());
-	top->AddNode(pillar1, 1, new TGeoTranslation(
+	pillar1->SetLineColor(kGreen-5);
+	pillar2->SetLineColor(kGreen-5);
+	tShield->AddNode(pillar1, 1, new TGeoTranslation(
 				     0, -0.5 * (dYIn[nM] + dXIn[nM] - floor),
 				     Z[nM] - dZf[nM] + 0.5 * m));
-	top->AddNode(pillar2, 1, new TGeoTranslation(
+	tShield->AddNode(pillar2, 1, new TGeoTranslation(
 				     0, -0.5 * (dYOut[nM] + dXOut[nM] - floor),
 				     Z[nM] + dZf[nM] - 0.5 * m));
       }
