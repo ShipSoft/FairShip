@@ -692,6 +692,9 @@ def pillarColor(c=ROOT.kGreen-5):
  for x in fGeo.GetListOfVolumes():
   if 'pillar' in x.GetName(): 
    x.SetLineColor(c)
+ sc    = gEve.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ gEve.ElementChanged(geoscene,True,True)
 # draw Ecal yellow instead of black
 def ecalYellow():
  sc    = gEve.GetScenes()

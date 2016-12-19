@@ -295,18 +295,20 @@ TGeoVolume* veto::GeoVesselSupport(TString xname,Double_t thick,Double_t dz,Doub
        t5->RegisterYourself();
        //6 cutouts...
        Double_t rc=(dxl1+dx1)/2.-swidth/2.;
+       Double_t rc2=-dy2-ysc-swidth;
+       Double_t rc5=rc=ysc+hhall-swidth;
        TGeoCompositeShape *T213 = new TGeoCompositeShape();
-       if (swidth<dz){
+         
+       if (swidth<rc && swidth<rc2 && swidth<rc5){
         Double_t alpha1=atan((ysc+hhall)/dx1)*180./TMath::Pi();
         Double_t alpha2=atan((ysc+hhall)/dxl1)*180./TMath::Pi();
         TGeoTubeSeg *SHiP1 = new TGeoTubeSeg("SHiP1"+nm,swidth,rc,dz+3.e-6,5.,alpha1-5.);
         TGeoTubeSeg *SHiP3 = new TGeoTubeSeg("SHiP3"+nm,swidth,rc,dz+3.e-6,180-alpha1+5.,175.);
         TGeoTubeSeg *SHiP4 = new TGeoTubeSeg("SHiP4"+nm,swidth,rc,dz+3.e-6,185.,180.+alpha2-5.);
         TGeoTubeSeg *SHiP6 = new TGeoTubeSeg("SHiP6"+nm,swidth,rc,dz+3.e-6,360.-alpha2+5.,355.);
-        rc=-dy2-ysc-swidth;
-        TGeoTubeSeg *SHiP2 = new TGeoTubeSeg("SHiP2"+nm,swidth,rc,dz+3.e-6,alpha1+5.,180-alpha1-5.);
+        TGeoTubeSeg *SHiP2 = new TGeoTubeSeg("SHiP2"+nm,swidth,rc2,dz+3.e-6,alpha1+5.,180-alpha1-5.);
         rc=ysc+hhall-swidth;
-        TGeoTubeSeg *SHiP5 = new TGeoTubeSeg("SHiP5"+nm,swidth,rc,dz+3.e-6,180.+alpha2+5.,360.-alpha2-5.);
+        TGeoTubeSeg *SHiP5 = new TGeoTubeSeg("SHiP5"+nm,swidth,rc5,dz+3.e-6,180.+alpha2+5.,360.-alpha2-5.);
        
         T213 = new TGeoCompositeShape("T213"+nm,"T2"+nm+"-T3"+nm+\
                                                          "-Ci3"+nm+":t3"+nm+"-Ci4"+nm+":t4"+nm+\
