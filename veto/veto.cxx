@@ -515,7 +515,7 @@ TGeoVolume* veto::MakeLidSegments(Int_t seg,Double_t dx,Double_t dy)
       nm+= "LidRib";
       for (Int_t nr=0; nr<nribs; nr++) {
         Double_t xrib = -dx +f_RibThickness/2. +nr*ribspacing;
-        TGeoVolume* T = gGeoManager->MakeBox("T1Rib",supportMedIn,f_InnerSupportThickness/2.,dy,ribwidth/2.);
+        TGeoVolume* T = gGeoManager->MakeBox(nm,supportMedIn,f_InnerSupportThickness/2.,dy,ribwidth/2.);
         T->SetLineColor(14);
         tDecayVol->AddNode(T, nr, new TGeoTranslation(xrib, 0,-ribwidth/2.-f_InnerSupportThickness/2.));
       }
@@ -525,7 +525,7 @@ TGeoVolume* veto::MakeLidSegments(Int_t seg,Double_t dx,Double_t dy)
       nm+= "LidH";
       for (Int_t nr=0; nr<nribs; nr++) {
         Double_t xrib = -dx +f_RibThickness/2. +nr*ribspacing;
-        TGeoVolume* T = gGeoManager->MakeBox("T1H",supportMedIn,hwidth,dy,f_InnerSupportThickness/2.);
+        TGeoVolume* T = gGeoManager->MakeBox(nm,supportMedIn,hwidth,dy,f_InnerSupportThickness/2.);
         T->SetLineColor(14);
         tDecayVol->AddNode(T, nr, new TGeoTranslation(xrib, 0,-ribwidth-f_InnerSupportThickness));
       }
