@@ -553,7 +553,6 @@ class EventLoop(ROOT.FairTask):
     self.ecalFiller.StoreTrackInformation()
     rc = sTree.GetEvent(0)
     self.ecalStructure = self.ecalFiller.InitPython(sTree.EcalPointLite)
-    speedUp()
     self.calos  = DrawEcalCluster()
     self.calos.InitTask(self.ecalStructure)
    self.tracks = DrawTracks()
@@ -664,6 +663,20 @@ def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
    xvol = fGeo.GetVolume(x)
    if xvol: xvol.SetVisibility(0) 
+ for k in range(1,7):
+    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Innerwall","T"+str(k)+"Rib","T"+str(k)+"LiSc","T"+str(k)+"Hbar"]:
+     va = fGeo.GetVolume(v)
+     if not va: continue
+     if not va.GetNodes():  va.SetVisibility(False)
+     else:
+      for n in va.GetNodes(): n.SetVisibility(False)
+ for k in range(1,7):
+    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Rib","T"+str(k)+"Hbar"]:
+     va = fGeo.GetVolume(v)
+     if not va: va = fGeo.GetVolume("T"+str(k)+"Innerwall")
+     if not va.GetNodes():  va.SetVisibility(False)
+     else:
+      for n in va.GetNodes(): n.SetVisibility(True)
 # 
  for x in ["Ecal","Hcal"]:
   xvol = fGeo.GetVolume(x)
@@ -672,9 +685,6 @@ def speedUp():
   xvol.SetVisibility(1)
   if x=="Ecal": xvol.SetLineColor(ROOT.kYellow) 
   else:        xvol.SetLineColor(ROOT.kOrange+3) 
- sc    = gEve.GetScenes()
- geoscene = sc.FindChild('Geometry scene')
- gEve.ElementChanged(geoscene,True,True)
 
 # set display properties for tau nu target
 def DisplayNuDetector():
@@ -686,18 +696,6 @@ def DisplayNuDetector():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  gEve.ElementChanged(geoscene,True,True)
-def defineLayout():
-   for k in range(1,7):
-    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Innerwall","T"+str(k)+"Rib","T"+str(k)+"LiSc","T"+str(k)+"Hbar"]:
-     va = fGeo.GetVolume(v)
-     if not va: continue
-     for n in va.GetNodes(): n.SetVisibility(False)
-   for k in range(1,7):
-    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Rib","T"+str(k)+"Hbar"]:
-     va = fGeo.GetVolume(v)
-     if not va: va = fGeo.GetVolume("T"+str(k)+"Innerwall")
-     for n in va.GetNodes(): n.SetVisibility(True)
-
 # draw Ecal yellow instead of black
 def ecalYellow():
  sc    = gEve.GetScenes()
@@ -1023,7 +1021,7 @@ lsOfGlobals.Add(sTree)
 fGeo  = ROOT.gGeoManager 
 top   = fGeo.GetTopVolume()
 # manipulate colors and transparency before scene created
-defineLayout()
+speedUp()
 gEve  = ROOT.gEve
 
 br = gEve.GetBrowser()
