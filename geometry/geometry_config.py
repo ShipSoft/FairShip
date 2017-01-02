@@ -48,6 +48,12 @@ with ConfigRegistry.register_config("basic") as c:
     windowBulge = 1*u.m
     c.strawDesign = strawDesign
     c.tankDesign = tankDesign
+# cave parameters
+    c.cave = AttrDict(z=0*u.cm)
+    c.cave.floorHeightMuonShield = 5*u.m
+    c.cave.floorHeightTankA = 4.5*u.m
+    c.cave.floorHeightTankB = 2*u.m
+#
     c.chambers = AttrDict(z=0*u.cm)
     magnetIncrease    = 100.*u.cm
     # make z coordinates for the decay volume and tracking stations relative to T4z

@@ -676,52 +676,50 @@ void veto::ConstructGeometry()
       AddSensitiveVolume(VetoTimeDet);
    // make the entrance window
       // add floor:
-      Double_t floorHeight = 4.5 * m;
       Double_t Length = zStartMagVol - zStartDecayVol - 1.8*m; 
-      TGeoBBox *box = new TGeoBBox("box1",  10 * m, floorHeight/2., Length/2.);
+      TGeoBBox *box = new TGeoBBox("box1",  10 * m, floorHeightA/2., Length/2.);
       TGeoVolume *floor = new TGeoVolume("floor1",box,concrete);
       floor->SetLineColor(11);
-      tDecayVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeight/2.,Length/2.));
+      tDecayVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightA/2.,Length/2.));
       //new lid made out of H-bars
       TGeoVolume* T1Lid = MakeLidSegments(1,dx1,dy);
       tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, zpos - zStartDecayVol+f_InnerSupportThickness/2.1));
 
-      TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slopex,slopey,floorHeight);
+      TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slopex,slopey,floorHeightA);
       tDecayVol->AddNode(seg1, 1, new TGeoTranslation(0, 0, fTub1z - zStartDecayVol));
 
       dx1 = slopex*(fTub2z -fTub2length - zFocusX);
       dy  = slopey*(fTub2z -fTub2length - zFocusY);
-      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeight);
+      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeightA);
       tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z - zStartDecayVol));
 
-      floorHeight = 2 * m;
       Length = fTub6z+fTub6length-fTub2z-fTub2length; 
-      box = new TGeoBBox("box2",  10 * m, floorHeight/2., Length/2.);
+      box = new TGeoBBox("box2",  10 * m, floorHeightB/2., Length/2.);
       floor = new TGeoVolume("floor2",box,concrete);
       floor->SetLineColor(11);
-      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeight/2., Length/2.-2*fTub3length));
+      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length));
 
       //Between T1 and T2: not conical, size of T2
       dx1 = slopex*(fTub3z - zFocusX);
       dy = slopey*(fTub3z - zFocusY);
-      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeight);
+      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeightB);
       tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
 
       dx1 = slopex*(fTub4z -fTub4length - zFocusX);
       dy = slopey*(fTub4z -fTub4length - zFocusY);
-      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slopex,slopey,floorHeight);
+      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slopex,slopey,floorHeightB);
       tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
 
       //Between T3 and T4: not conical, size of T4
       dx1 = slopex*(fTub5z - zFocusX);
       dy = slopey*(fTub5z - zFocusY);
-      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeight);
+      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeightB);
       tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
 
       dx1 = slopex*(fTub6z -fTub6length - zFocusX);
       dy = slopey*(fTub6z -fTub6length - zFocusY);
       Double_t dx2 = slopex*(fTub6z +fTub6length - zFocusX);
-      TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,slopex,slopey,floorHeight);
+      TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,slopex,slopey,floorHeightB);
       tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
 
    // make the exit window
