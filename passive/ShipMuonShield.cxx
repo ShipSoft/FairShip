@@ -129,8 +129,7 @@ void ShipMuonShield::CreateArb8(const char* arbName, TGeoMedium* medium,Double_t
 				     TGeoUniformMagField *magField,TGeoVolume *tShield,Int_t numberOfItems,Double_t x_translation,Double_t y_translation,
 					Double_t z_translation)
 {
-  Double_t* corner=&corners[0];
-  TGeoVolume* magF = gGeoManager->MakeArb8(arbName, medium, dZ, corner);
+  TGeoVolume* magF = gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
   magF->SetField(magField);
   tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation, z_translation ));
