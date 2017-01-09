@@ -16,26 +16,16 @@
 #include "FairGeoInterface.h"
 #include "FairGeoMedia.h"
 #include "FairGeoBuilder.h"
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
-#include <string>
 
-using std::cout;
-using std::endl;
-
-Double_t cm  = 1;       // cm
-Double_t m   = 100*cm;  //  m
-Double_t mm  = 0.1*cm;  //  mm
+Double_t cm = 1;
+Double_t m = 100 * cm;
+Double_t mm = 0.1 * cm;
 Double_t kilogauss = 1.;
-Double_t tesla     = 10*kilogauss;
+Double_t tesla = 10 * kilogauss;
 
-ShipMuonShield::~ShipMuonShield()
-{
-}
-ShipMuonShield::ShipMuonShield()
-  : FairModule("ShipMuonShield", "")
-{
-}
+ShipMuonShield::~ShipMuonShield() {}
+ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
@@ -390,7 +380,7 @@ void ShipMuonShield::ConstructGeometry()
     
     if (fDesign==4||fDesign==5||fDesign==6||fDesign==7){
       Double_t ironField = fField*tesla;
-      cout<<"fField  "<<fField<<endl;
+      std::cout << "fField  " << fField << std::endl;
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
       TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
       TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
@@ -574,6 +564,5 @@ void ShipMuonShield::ConstructGeometry()
     } else {
      Fatal("ShipMuonShield","Design %i does not match implemented designs",fDesign);
     }
-
 }
 ClassImp(ShipMuonShield)

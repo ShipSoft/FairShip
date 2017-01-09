@@ -6,7 +6,6 @@
 
 #include "Rtypes.h"                     // for ShipMuonShield::Class, Bool_t, etc
 
-#include <string>                       // for string
 #include "TGeoUniformMagField.h"
 #include "TGeoMedium.h"
 #include "TGeoShapeAssembly.h"
@@ -18,6 +17,7 @@ enum class FieldDirection { up, down };
 class ShipMuonShield : public FairModule
 {
   public:
+
    ShipMuonShield(const char* name, const Int_t Design=1,  const char* Title="ShipMuonShield",
                                Double_t Z=0, Double_t L0=0, Double_t L1=0, Double_t L2=0, Double_t L3=0, Double_t L4=0, Double_t L5=0, Double_t L6=0, 
                                Double_t L7=0, Double_t L8=0,Double_t gap=0,Double_t LE=0,Double_t y=400, Double_t floor=500, Double_t field=1.8);
