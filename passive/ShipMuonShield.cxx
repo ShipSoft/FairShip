@@ -101,18 +101,7 @@ void ShipMuonShield::CreateTube(const char* tubeName, TGeoMedium* medium, Double
   tShield->AddNode(absorber, numberOfItems, new TGeoTranslation(x_translation, y_translation, z_translation ));
 }
 
-
-void ShipMuonShield::CreateArb8(const char* arbName, TGeoMedium* medium,Double_t dZ,Double_t corners[16],Int_t color,
-				     TGeoUniformMagField *magField,TGeoVolume *tShield,Int_t numberOfItems,Double_t x_translation,Double_t y_translation,
-					Double_t z_translation)
-{
-  TGeoVolume* magF = gGeoManager->MakeArb8(arbName, medium, dZ, corners);
-  magF->SetLineColor(color);
-  magF->SetField(magField);
-  tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation, z_translation ));
-}
-
-void ShipMuonShield::CreateArb8(const char* arbName, TGeoMedium* medium,Double_t dZ,std::vector<Double_t> corners,Int_t color,
+void ShipMuonShield::CreateArb8(const char* arbName, TGeoMedium* medium,Double_t dZ,std::array<Double_t,16> corners, Int_t color,
 				     TGeoUniformMagField *magField,TGeoVolume *tShield,Int_t numberOfItems,Double_t x_translation,Double_t y_translation,
 					Double_t z_translation)
 {
@@ -146,31 +135,114 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
 						   // (Geant goes crazy when
 						   // they touch each other)
 
-    Double_t cornerMainL[16] = {-dX/2+middleGap+dX/2,-dY-dX+testGap , -dX/2+middleGap+dX/2,dY+dX-testGap , dX/2+middleGap+dX/2,dY-testGap , dX/2+middleGap+dX/2,-dY+testGap ,
-                               -dX2/2+middleGap2+dX2/2,-dY2-dX2+testGap , -dX2/2+middleGap2+dX2/2,dY2+dX2-testGap , dX2/2+middleGap2+dX2/2,dY2-testGap , dX2/2+middleGap2+dX2/2,-dY2+testGap };
-    Double_t cornerMainR[16] = {-dX/2-middleGap-dX/2,-dY+testGap , -dX/2-middleGap-dX/2,dY-testGap , dX/2-middleGap-dX/2,dY+dX-testGap , dX/2-middleGap-dX/2,-dY-dX+testGap ,
-                               -dX2/2-middleGap2-dX2/2,-dY2+testGap , -dX2/2-middleGap2-dX2/2,dY2-testGap , dX2/2-middleGap2-dX2/2,dY2+dX2-testGap , dX2/2-middleGap2-dX2/2,-dY2-dX2+testGap };
-    Double_t cornerMainSideL[16] = {dX+middleGap+gap,-HmainSideMag,dX+middleGap+gap,HmainSideMag, 2*dX+middleGap+gap,HmainSideMag, 2*dX+middleGap+gap,-HmainSideMag,
-				    dX2+middleGap2+gap2,-HmainSideMag2, dX2+middleGap2+gap2,HmainSideMag2, 2*dX2+middleGap2+gap2,HmainSideMag2, 2*dX2+middleGap2+gap2,-HmainSideMag2};
-    Double_t cornerMainSideR[16] = {-dX-middleGap-gap,-HmainSideMag, -2*dX-middleGap-gap,-HmainSideMag, -2*dX-middleGap-gap,HmainSideMag,  -dX-middleGap-gap,HmainSideMag,
-				    -dX2-middleGap2-gap2,-HmainSideMag2, -2*dX2-middleGap2-gap2,-HmainSideMag2, -2*dX2-middleGap2-gap2,HmainSideMag2,-dX2-middleGap2-gap2,HmainSideMag2};			       
-    Double_t cornersCLBA[16] = {dX+middleGap+gap,-HmainSideMag,2*dX+middleGap+gap,-HmainSideMag,2*dX+middleGap+Clgap,-dY-dX+testGap ,dX+middleGap+Clgap,-dY+testGap ,
-                                dX2+middleGap2+gap2,-HmainSideMag2,2*dX2+middleGap2+gap2,-HmainSideMag2,2*dX2+middleGap2+Clgap2,-dY2-dX2+testGap ,dX2+middleGap2+Clgap2,-dY2+testGap };
-    Double_t cornersCLTA[16] = {dX+middleGap+Clgap,dY-testGap ,2*dX+middleGap+Clgap,dY+dX-testGap ,2*dX+middleGap+gap,HmainSideMag,dX+middleGap+gap,HmainSideMag, 
-                                dX2+middleGap2+Clgap2,dY2-testGap ,2*dX2+middleGap2+Clgap2,dY2+dX2-testGap ,2*dX2+middleGap2+gap2,HmainSideMag2, dX2+middleGap2+gap2,HmainSideMag2};
-    Double_t cornersCRBA[16] = {-dX-middleGap-Clgap,-dY+testGap ,-2*dX-middleGap-Clgap,-dY-dX+testGap , -2*dX-middleGap-gap,-HmainSideMag,-dX-middleGap-gap,-HmainSideMag,
-                                -dX2-middleGap2-Clgap2,-dY2+testGap ,-2*dX2-middleGap2-Clgap2,-dY2-dX2+testGap ,-2*dX2-middleGap2-gap2,-HmainSideMag2,-dX2-middleGap2-gap2,-HmainSideMag2}; 
-    Double_t cornersCRTA[16] = {-dX-middleGap-gap,HmainSideMag, -2*dX-middleGap-gap,HmainSideMag, -2*dX-middleGap-Clgap,dY+dX-testGap , -dX-middleGap-Clgap,dY-testGap ,
-                                -dX2-middleGap2-gap2,HmainSideMag2,-2*dX2-middleGap2-gap2,HmainSideMag2,-2*dX2-middleGap2-Clgap2,dY2+dX2-testGap ,-dX2-middleGap2-Clgap2,dY2-testGap };
-    Double_t cornersTL[16] = {middleGap+dX,dY,middleGap,dY+dX, 2*dX+middleGap+Clgap,dY+dX, dX+middleGap+Clgap,dY, 
-                             middleGap2+dX2,dY2, middleGap2,dY2+dX2, 2*dX2+middleGap2+Clgap2,dY2+dX2, dX2+middleGap2+Clgap2,dY2}; 
-    Double_t cornersTR[16] = {-dX-middleGap-Clgap,dY,-2*dX-middleGap-Clgap,dY+dX,-middleGap,dY+dX,-middleGap-dX,dY, 
-                             -dX2-middleGap2-Clgap2,dY2,-2*dX2-middleGap2-Clgap2,dY2+dX2, -middleGap2,dY2+dX2, -middleGap2-dX2,dY2};
-    Double_t cornersBL[16] = {dX+middleGap+Clgap,-dY,2*dX+middleGap+Clgap,-dY-dX,middleGap,-dY-dX,middleGap+dX,-dY, 
-                               dX2+middleGap2+Clgap2,-dY2, 2*dX2+middleGap2+Clgap2,-dY2-dX2,middleGap2,-dY2-dX2, middleGap2+dX2,-dY2}; 
-    Double_t cornersBR[16] = {-middleGap-dX,-dY, -middleGap,-dY-dX, -2*dX-middleGap-Clgap,-dY-dX, -dX-middleGap-Clgap,-dY, 
-                              -middleGap2-dX2,-dY2, -middleGap2,-dY2-dX2, -2*dX2-middleGap2-Clgap2,-dY2-dX2, -dX2-middleGap2-Clgap2,-dY2};
-				 
+    std::array<Double_t,16> cornersMainL = {
+	middleGap,	-dY - dX + testGap,
+	middleGap,	dY + dX - testGap,
+	dX + middleGap,   dY - testGap,
+	dX + middleGap,   -dY + testGap,
+	middleGap2,       -dY2 - dX2 + testGap,
+	middleGap2,       dY2 + dX2 - testGap,
+	dX2 + middleGap2, dY2 - testGap,
+	dX2 + middleGap2, -dY2 + testGap};
+    std::array<Double_t,16> cornersMainR = {
+	-dX - middleGap,    -dY + testGap,
+	-dX - middleGap,    dY - testGap,
+	- middleGap,     dY + dX - testGap,
+	- middleGap,     -dY - dX + testGap,
+	-dX2 - middleGap2, -dY2 + testGap,
+	-dX2 - middleGap2, dY2 - testGap,
+	- middleGap2,  dY2 + dX2 - testGap,
+	- middleGap2,  -dY2 - dX2 + testGap};
+    std::array<Double_t,16> cornersMainSideL = {
+	dX + middleGap + gap,	-HmainSideMag,
+	dX + middleGap + gap,	HmainSideMag,
+	2 * dX + middleGap + gap,    HmainSideMag,
+	2 * dX + middleGap + gap,    -HmainSideMag,
+	dX2 + middleGap2 + gap2,     -HmainSideMag2,
+	dX2 + middleGap2 + gap2,     HmainSideMag2,
+	2 * dX2 + middleGap2 + gap2, HmainSideMag2,
+	2 * dX2 + middleGap2 + gap2, -HmainSideMag2};
+    std::array<Double_t,16> cornersMainSideR = {
+	-dX - middleGap - gap,	-HmainSideMag,
+	-2 * dX - middleGap - gap,    -HmainSideMag,
+	-2 * dX - middleGap - gap,    HmainSideMag,
+	-dX - middleGap - gap,	HmainSideMag,
+	-dX2 - middleGap2 - gap2,     -HmainSideMag2,
+	-2 * dX2 - middleGap2 - gap2, -HmainSideMag2,
+	-2 * dX2 - middleGap2 - gap2, HmainSideMag2,
+	-dX2 - middleGap2 - gap2,     HmainSideMag2};
+    std::array<Double_t,16> cornersCLBA = {
+	dX + middleGap + gap,	  -HmainSideMag,
+	2 * dX + middleGap + gap,      -HmainSideMag,
+	2 * dX + middleGap + Clgap,    -dY - dX + testGap,
+	dX + middleGap + Clgap,	-dY + testGap,
+	dX2 + middleGap2 + gap2,       -HmainSideMag2,
+	2 * dX2 + middleGap2 + gap2,   -HmainSideMag2,
+	2 * dX2 + middleGap2 + Clgap2, -dY2 - dX2 + testGap,
+	dX2 + middleGap2 + Clgap2,     -dY2 + testGap};
+    std::array<Double_t,16> cornersCLTA = {
+	dX + middleGap + Clgap,	dY - testGap,
+	2 * dX + middleGap + Clgap,    dY + dX - testGap,
+	2 * dX + middleGap + gap,      HmainSideMag,
+	dX + middleGap + gap,	  HmainSideMag,
+	dX2 + middleGap2 + Clgap2,     dY2 - testGap,
+	2 * dX2 + middleGap2 + Clgap2, dY2 + dX2 - testGap,
+	2 * dX2 + middleGap2 + gap2,   HmainSideMag2,
+	dX2 + middleGap2 + gap2,       HmainSideMag2};
+    std::array<Double_t,16> cornersCRBA = {
+	-dX - middleGap - Clgap,	-dY + testGap,
+	-2 * dX - middleGap - Clgap,    -dY - dX + testGap,
+	-2 * dX - middleGap - gap,      -HmainSideMag,
+	-dX - middleGap - gap,		-HmainSideMag,
+	-dX2 - middleGap2 - Clgap2,     -dY2 + testGap,
+	-2 * dX2 - middleGap2 - Clgap2, -dY2 - dX2 + testGap,
+	-2 * dX2 - middleGap2 - gap2,   -HmainSideMag2,
+	-dX2 - middleGap2 - gap2,       -HmainSideMag2};
+    std::array<Double_t,16> cornersCRTA = {
+	-dX - middleGap - gap,		HmainSideMag,
+	-2 * dX - middleGap - gap,      HmainSideMag,
+	-2 * dX - middleGap - Clgap,    dY + dX - testGap,
+	-dX - middleGap - Clgap,	dY - testGap,
+	-dX2 - middleGap2 - gap2,       HmainSideMag2,
+	-2 * dX2 - middleGap2 - gap2,   HmainSideMag2,
+	-2 * dX2 - middleGap2 - Clgap2, dY2 + dX2 - testGap,
+	-dX2 - middleGap2 - Clgap2,     dY2 - testGap};
+    std::array<Double_t,16> cornersTL = {
+	middleGap + dX, dY,
+	middleGap, dY + dX,
+	2 * dX + middleGap + Clgap, dY + dX,
+	dX + middleGap + Clgap, dY,
+	middleGap2 + dX2, dY2,
+	middleGap2, dY2 + dX2,
+	2 * dX2 + middleGap2 + Clgap2, dY2 + dX2,
+	dX2 + middleGap2 + Clgap2, dY2};
+    std::array<Double_t,16> cornersTR = {
+	-dX - middleGap - Clgap, dY,
+	-2 * dX - middleGap - Clgap, dY + dX,
+	-middleGap, dY + dX,
+	-middleGap - dX, dY,
+	-dX2 - middleGap2 - Clgap2, dY2,
+	-2 * dX2 - middleGap2 - Clgap2, dY2 + dX2,
+	-middleGap2, dY2 + dX2,
+	-middleGap2 - dX2, dY2};
+    std::array<Double_t,16> cornersBL = {
+	dX + middleGap + Clgap, -dY,
+	2 * dX + middleGap + Clgap, -dY - dX,
+	middleGap, -dY - dX,
+	middleGap + dX, -dY,
+	dX2 + middleGap2 + Clgap2, -dY2,
+	2 * dX2 + middleGap2 + Clgap2, -dY2 - dX2,
+	middleGap2, -dY2 - dX2,
+	middleGap2 + dX2, -dY2};
+    std::array<Double_t,16> cornersBR = {
+	-middleGap - dX, -dY,
+	-middleGap, -dY - dX,
+	-2 * dX - middleGap - Clgap, -dY - dX,
+	-dX - middleGap - Clgap, -dY,
+	-middleGap2 - dX2, -dY2,
+	-middleGap2, -dY2 - dX2,
+	-2 * dX2 - middleGap2 - Clgap2, -dY2 - dX2,
+	-dX2 - middleGap2 - Clgap2, -dY2};
 				 
     char magnetId[100];
     const char* str1L ="_MiddleMagL";
@@ -190,10 +262,10 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
     switch (fieldDirection){
 
     case FieldDirection::up: 
-      CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str3), medium, dZ, cornerMainSideR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
+      CreateArb8(strcat(magnetId,str1L), medium, dZ, cornersMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
+      CreateArb8(strcat(magnetId,str1R), medium, dZ, cornersMainR,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
+      CreateArb8(strcat(magnetId,str2), medium, dZ, cornersMainSideL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
+      CreateArb8(strcat(magnetId,str3), medium, dZ, cornersMainSideR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str4), medium, dZ, cornersCLBA,color[1],fields[1],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str5), medium, dZ, cornersCLTA,color[1],fields[1],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str6), medium, dZ, cornersCRTA,color[1],fields[1],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
@@ -204,10 +276,10 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[2],fields[3],tShield,1,0, 0, Z);
       break;
     case FieldDirection::down:
-	CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str3), medium, dZ, cornerMainSideR,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
+	CreateArb8(strcat(magnetId,str1L), medium, dZ, cornersMainL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
+	CreateArb8(strcat(magnetId,str1R), medium, dZ, cornersMainR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
+	CreateArb8(strcat(magnetId,str2), medium, dZ, cornersMainSideL,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
+	CreateArb8(strcat(magnetId,str3), medium, dZ, cornersMainSideR,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str4), medium, dZ, cornersCLBA,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str5), medium, dZ, cornersCLTA,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str6), medium, dZ, cornersCRTA,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
