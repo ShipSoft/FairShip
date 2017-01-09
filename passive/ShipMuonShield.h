@@ -10,6 +10,7 @@
 #include "TGeoUniformMagField.h"
 #include "TGeoMedium.h"
 #include "TGeoShapeAssembly.h"
+#include "TString.h"
 #include <vector>
 
 
@@ -37,7 +38,7 @@ class ShipMuonShield : public FairModule
   Double_t fFloor;
   Bool_t fSupport;
   Double_t  dZ0,dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,dZ7,dZ8,dXgap,zEndOfAbsorb,mag4Gap,midGapOut7,midGapOut8;
-  Int_t InitMedium(const char* name);
+  Int_t InitMedium(TString name);
   
  /* void CreateBox(const char* boxName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,
 					Int_t color,TGeoUniformMagField *magField,TGeoVolume *top,Int_t numberOfItems, Double_t x_translation,Double_t y_translation,
