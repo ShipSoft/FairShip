@@ -86,7 +86,7 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
 }
 
 // -----   Private method InitMedium 
-Int_t ShipMuonShield::InitMedium(const char* name) 
+Int_t ShipMuonShield::InitMedium(TString name) 
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
@@ -96,12 +96,9 @@ Int_t ShipMuonShield::InitMedium(const char* name)
    FairGeoMedium *ShipMedium=media->getMedium(name);
 
    if (!ShipMedium)
-   {
-     Fatal("InitMedium","Material %s not defined in media file.", name);
-     return -1111;
-   }
+     Fatal("InitMedium","Material %s not defined in media file.", name.Data());
    TGeoMedium* medium=gGeoManager->GetMedium(name);
-   if (medium!=NULL)
+   if (medium)
      return ShipMedium->getMediumIndex();
    return geoBuild->createMedium(ShipMedium);
 }
