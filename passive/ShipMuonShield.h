@@ -13,6 +13,7 @@
 #include "TString.h"
 #include <vector>
 
+enum class FieldDirection { up, down };
 
 class ShipMuonShield : public FairModule
 {
@@ -58,7 +59,7 @@ class ShipMuonShield : public FairModule
 
 
   void Initialize(const char *(&magnetName)[9],
-		  const char *(&fieldDirection)[9], Double_t (&dXIn)[9],
+		  FieldDirection (&fieldDirection)[9], Double_t (&dXIn)[9],
 		  Double_t (&dYIn)[9], Double_t (&dXOut)[9],
 		  Double_t (&dYOut)[9], Double_t (&dZ)[9],
 		  Double_t (&midGapIn)[9], Double_t (&midGapOut)[9],
@@ -66,11 +67,13 @@ class ShipMuonShield : public FairModule
 		  Double_t (&gapIn)[9], Double_t (&gapOut)[9],
 		  Double_t (&Z)[9]);
 
-  void CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],const char* fieldDirection,
-				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t dZ,
-				  Double_t middleGap,Double_t middleGap2,
-				  Double_t HmainSideMag, Double_t HmainSideMag2,
-				  Double_t gap,Double_t gap2, Double_t Z,Bool_t NotMagnet);
+  void CreateMagnet(const char* magnetName, TGeoMedium *medium, TGeoVolume *tShield,
+		    TGeoUniformMagField *fields[4],
+		    FieldDirection fieldDirection, Double_t dX, Double_t dY,
+		    Double_t dX2, Double_t dY2, Double_t dZ, Double_t middleGap,
+		    Double_t middleGap2, Double_t HmainSideMag,
+		    Double_t HmainSideMag2, Double_t gap, Double_t gap2,
+		    Double_t Z, Bool_t NotMagnet);
 };
 
 #endif //MuonSield_H
