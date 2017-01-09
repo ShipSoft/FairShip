@@ -132,8 +132,7 @@ void ShipMuonShield::CreateArb8(const char* arbName, TGeoMedium* medium,Double_t
   tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation, z_translation ));
 }
 
-
-void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],const char* fieldDirection,
+void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],FieldDirection fieldDirection,
 				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t dZ,
 				  Double_t middleGap,Double_t middleGap2,
 				  Double_t HmainSideMag, Double_t HmainSideMag2,
@@ -197,7 +196,10 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
     const char* str10 ="_MagBotLeft";
     const char* str11 ="_MagBotRight";
     strcpy(magnetId,magnetName);
-    if (!strncmp(fieldDirection, "up", 2)) {
+
+    switch (fieldDirection){
+
+    case FieldDirection::up: 
       CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
@@ -210,8 +212,8 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       CreateArb8(strcat(magnetId,str9), medium, dZ, cornersTR,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str10), medium, dZ, cornersBL,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[2],fields[3],tShield,1,0, 0, Z);
-    } else{
-      if (!strncmp(fieldDirection, "down", 4)) {
+      break;
+    case FieldDirection::down:
 	CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
@@ -224,10 +226,11 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
 	CreateArb8(strcat(magnetId,str9), medium, dZ, cornersTR,color[2],fields[3],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str10), medium, dZ, cornersBL,color[2],fields[3],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[0],fields[2],tShield,1,0, 0, Z);
-      } else {cout<<" Field direction has been set incorrect! Choose ""up"" or ""down"" direction "<<endl;}}
+      break;
+    }
   }
 
-void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fieldDirection)[9],
+void ShipMuonShield::Initialize (const char* (&magnetName)[9],FieldDirection (&fieldDirection)[9],
 				    Double_t (&dXIn)[9], Double_t (&dYIn)[9], Double_t (&dXOut)[9], Double_t (&dYOut)[9], Double_t (&dZ)[9],
 				  Double_t (&midGapIn)[9],Double_t (&midGapOut)[9],
 				  Double_t (&HmainSideMagIn)[9], Double_t (&HmainSideMagOut)[9],
@@ -237,7 +240,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   Double_t dYEnd = fY;
   if(fDesign==7){
       
-  magnetName[0] = "MagnAbsorb1";	fieldDirection[0] = "up";
+  magnetName[0] = "MagnAbsorb1";	fieldDirection[0] = FieldDirection::up;
   dXIn[0]  = 0.4*m;			dYIn[0]	= 1.5*m;
   dXOut[0] = 0.40*m;			dYOut[0]= 1.5*m;
   midGapIn[0] = 0; 			midGapOut[0] = 0;
@@ -245,7 +248,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[0] = 0.02*m;			gapOut[0] = 0.02*m;
   dZ[0] = dZ1-zgap/2;			Z[0] = zEndOfAbsorb + dZ[0]+zgap;
   
-  magnetName[1] = "MagnAbsorb2";	fieldDirection[1] = "up";
+  magnetName[1] = "MagnAbsorb2";	fieldDirection[1] = FieldDirection::up;
   dXIn[1]  = 0.8*m;			dYIn[1]	= 1.5*m;
   dXOut[1] = 0.8*m;			dYOut[1]= 1.5*m;
   midGapIn[1] = 0; 			midGapOut[1] = 0;
@@ -253,7 +256,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[1] = 0.02*m;				gapOut[1] = 0.02*m;
   dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
     
-  magnetName[2] = "Magn1";		fieldDirection[2] = "up";
+  magnetName[2] = "Magn1";		fieldDirection[2] = FieldDirection::up;
   dXIn[2]  = 0.87*m;			dYIn[2]	= 0.35*m;
   dXOut[2] = 0.65*m;			dYOut[2]= 1.21*m;
   midGapIn[2] = 0; 			midGapOut[2] = 0;
@@ -261,7 +264,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[2] = 0.11*m;				gapOut[2] = 0.02*m;
   dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;
 
-  magnetName[3] = "Magn2";		fieldDirection[3] = "up";
+  magnetName[3] = "Magn2";		fieldDirection[3] = FieldDirection::up;
   dXIn[3]  = 0.65*m;			dYIn[3]	= 1.21*m;
   dXOut[3] = 0.43*m;			dYOut[3]= 2.07*m;
   midGapIn[3] = 0; 			midGapOut[3] = 0;
@@ -269,7 +272,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[3] = 0.11*m;				gapOut[3] = 0.02*m;
   dZ[3] = dZ4-zgap/2;			Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;
 
-  magnetName[4] = "Magn3";		fieldDirection[4] = "up";
+  magnetName[4] = "Magn3";		fieldDirection[4] = FieldDirection::up;
   dXIn[4]  = 0.06*m;			dYIn[4]	= 0.32*m;
   dXOut[4] = 0.33*m;			dYOut[4]= 0.13*m;
   midGapIn[4] = 0; 			midGapOut[4] = 0;
@@ -277,7 +280,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[4] = 0.7*m;			gapOut[4] = 0.11*m;
   dZ[4] = dZ5-zgap/2;			Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;
   
-  magnetName[5] = "Magn4";		fieldDirection[5] = "down";
+  magnetName[5] = "Magn4";		fieldDirection[5] = FieldDirection::down;
   dXIn[5]  = 0.05*m;			dYIn[5]	= 1.12*m;
   dXOut[5] =0.16*m;			dYOut[5]= 0.05*m;
   midGapIn[5] = 0; 			midGapOut[5] = 0;
@@ -285,7 +288,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[5] = 0.04*m;			gapOut[5] = 0.02*m;
   dZ[5] = dZ6-zgap/2;			Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;
   
-  magnetName[6] = "Magn5";		fieldDirection[6] = "down";
+  magnetName[6] = "Magn5";		fieldDirection[6] = FieldDirection::down;
   dXIn[6]  = 0.15*m;			dYIn[6]	= 2.35*m;
   dXOut[6] = 0.34*m;			dYOut[6]= 0.32*m;
   midGapIn[6] = 0; 		        midGapOut[6] = 0;
@@ -294,7 +297,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   dZ[6] = dZ7-zgap/2;			Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;
   
   Double_t clip_width = 0.1*m; // clip field width by this width
-  magnetName[7] = "Magn6";		fieldDirection[7] = "down";
+  magnetName[7] = "Magn6";		fieldDirection[7] = FieldDirection::down;
   dXIn[7]  = 0.31*m;			dYIn[7]	= 1.86*m;
   dXOut[7] = 0.9*m - clip_width;	dYOut[7]= 3.1*m;
   midGapIn[7] = 0; 		        midGapOut[7] = 0;
@@ -304,7 +307,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[7] = 0.02*m;			gapOut[7] = 0.55*m;
   dZ[7] = dZ8 - clip_len - zgap / 2;	Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;
 
-  magnetName[8] = "Magn7";		fieldDirection[8] = "down";
+  magnetName[8] = "Magn7";		fieldDirection[8] = FieldDirection::down;
   dXIn[8]  = dXOut[7];			dYIn[8]	= dYOut[7];
   dXOut[8] = dXOut[7];			dYOut[8]= dYOut[7];
   midGapIn[8] = 0; 		        midGapOut[8] = 0;
@@ -312,9 +315,8 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[8] = 0.55*m;			gapOut[8] = 0.55*m;
   dZ[8] = clip_len;			Z[8] = Z[7] + dZ[7] + dZ[8];
       
-    }
-  else{
-  magnetName[0] = "1";			fieldDirection[0] = "up";
+  } else {
+  magnetName[0] = "1";			fieldDirection[0] = FieldDirection::up;
   dXIn[0]  = 0.7*m;			dYIn[0]	= 1.*m; 
   dXOut[0] = 0.7*m;			dYOut[0]= 0.8158*m;
   midGapIn[0] = 0; 			midGapOut[0] = 0;
@@ -322,7 +324,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[0] = 20;			gapOut[0] = 20;
   dZ[0] = dZ1-zgap;			Z[0] = zEndOfAbsorb + dZ[0]+zgap;
     
-  magnetName[1] = "2";			fieldDirection[1] = "up";
+  magnetName[1] = "2";			fieldDirection[1] = FieldDirection::up;
   dXIn[1]  = 0.36*m;			dYIn[1]	= 0.8158*m;
   dXOut[1] = 0.19*m;			dYOut[1]= 0.499*m;
   midGapIn[1] = 0; 			midGapOut[1] = 0;
@@ -330,7 +332,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[1] = 88;			gapOut[1] = 122;
   dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
   
-  magnetName[2] = "3";			fieldDirection[2] = "down";
+  magnetName[2] = "3";			fieldDirection[2] = FieldDirection::down;
   dXIn[2]  = 0.075*m;			dYIn[2]	= 0.499*m;
   dXOut[2] = 0.25*m;			dYOut[2]= 1.10162*m;
   midGapIn[2] = 0; 			midGapOut[2] = 0;
@@ -338,7 +340,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[2] = 0;				gapOut[2] = 0;
   dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;
     
-  magnetName[3] = "4";			fieldDirection[3] = "down";
+  magnetName[3] = "4";			fieldDirection[3] = FieldDirection::down;
   dXIn[3]  = 0.25*m;			dYIn[3]	= 1.10262*m;
   dXOut[3] = 0.3*m;			dYOut[3]= 1.82697*m;
   midGapIn[3] = 0; 			midGapOut[3] = 0;
@@ -346,7 +348,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[3] = 0;				gapOut[3] = 25;
   dZ[3] = dZ4-zgap/2;			Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;
 
-  magnetName[4] = "5";			fieldDirection[4] = "down";
+  magnetName[4] = "5";			fieldDirection[4] = FieldDirection::down;
   dXIn[4]  = 0.3*m;			dYIn[4]	= 1.82697*m;
   dXOut[4] = 0.4*m;			dYOut[4]= 2.55131*m;
   midGapIn[4] = 5; 			midGapOut[4] = 25;
@@ -354,7 +356,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[4] = 20;			gapOut[4] = 20;
   dZ[4] = dZ6-zgap/2;			Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;
   
-  magnetName[5] = "6";			fieldDirection[5] = "down";
+  magnetName[5] = "6";			fieldDirection[5] = FieldDirection::down;
   dXIn[5]  = 0.4*m;			dYIn[5]	= 2.55131*m;
   dXOut[5] =0.4*m;			dYOut[5]= 3.27566*m;
   midGapIn[5] = 25; 			midGapOut[5] = 65;
@@ -362,7 +364,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   gapIn[5] = 20;			gapOut[5] = 20;
   dZ[5] = dZ7-zgap/2;			Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;
   
-  magnetName[6] = "7";			fieldDirection[6] = "down";
+  magnetName[6] = "7";			fieldDirection[6] = FieldDirection::down;
   dXIn[6]  = 0.4*m;			dYIn[6]	= 3.27566*m;
   dXOut[6] = 0.75*m;			dYOut[6]= 4*m;
   midGapIn[6] = 65; 		        midGapOut[6] = 75;
@@ -403,7 +405,7 @@ void ShipMuonShield::ConstructGeometry()
       // TODO use nMagnets, std::vector and TString!
       const static int nMag = 9;
       const char *magnetName[nMag];
-      const char *fieldDirection[nMag];
+      FieldDirection fieldDirection[nMag];
       Double_t dXIn[nMag], dYIn[nMag], dXOut[nMag], dYOut[nMag], dZf[nMag], midGapIn[nMag],
 	  midGapOut[nMag], HmainSideMagIn[nMag], HmainSideMagOut[nMag], gapIn[nMag],
 	  gapOut[nMag], Z[nMag];
@@ -411,9 +413,9 @@ void ShipMuonShield::ConstructGeometry()
       
       if (fDesign==6){
 	Double_t dA = 3*m;
-	CreateMagnet("AbsorberStop-1",iron,tShield,fields,"up",
+	CreateMagnet("AbsorberStop-1",iron,tShield,fields,FieldDirection::up,
 		  dA/6.,dA/6.,dA/6.,dA/6.,dZ0/3.,0,0,dA/12.,dA/12.,0,0,zEndOfAbsorb - 5.*dZ0/3.,0);
-	CreateMagnet("AbsorberStop-2",iron,tShield,fields,"up",
+	CreateMagnet("AbsorberStop-2",iron,tShield,fields,FieldDirection::up,
 		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0);
         TGeoBBox* fullAbsorber = new TGeoBBox("fullAbsorber", dA, dA, dZ0/3.);
         TGeoBBox* cutOut = new TGeoBBox("cutout", dA/3.+20*cm, dA/3.+20*cm, dZ0/3.+0.1*mm); //no idea why to add 20cm
