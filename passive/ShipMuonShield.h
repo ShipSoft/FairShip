@@ -57,14 +57,16 @@ class ShipMuonShield : public FairModule
 		  Double_t x_translation, Double_t y_translation,
 		  Double_t z_translation);
 
-  void Initialize(TString (&magnetName)[9],
-		  FieldDirection (&fieldDirection)[9], Double_t (&dXIn)[9],
-		  Double_t (&dYIn)[9], Double_t (&dXOut)[9],
-		  Double_t (&dYOut)[9], Double_t (&dZ)[9],
-		  Double_t (&midGapIn)[9], Double_t (&midGapOut)[9],
-		  Double_t (&HmainSideMagIn)[9], Double_t (&HmainSideMagOut)[9],
-		  Double_t (&gapIn)[9], Double_t (&gapOut)[9],
-		  Double_t (&Z)[9]);
+  void Initialize(std::vector<TString> &magnetName,
+		  std::vector<FieldDirection> &fieldDirection,
+		  std::vector<Double_t> &dXIn, std::vector<Double_t> &dYIn,
+		  std::vector<Double_t> &dXOut, std::vector<Double_t> &dYOut,
+		  std::vector<Double_t> &dZ, std::vector<Double_t> &midGapIn,
+		  std::vector<Double_t> &midGapOut,
+		  std::vector<Double_t> &HmainSideMagIn,
+		  std::vector<Double_t> &HmainSideMagOut,
+		  std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
+		  std::vector<Double_t> &Z);
 
   void CreateMagnet(TString magnetName, TGeoMedium *medium, TGeoVolume *tShield,
 		    TGeoUniformMagField *fields[4],

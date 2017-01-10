@@ -298,13 +298,26 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
     }
   }
 
-void ShipMuonShield::Initialize (TString (&magnetName)[9],FieldDirection (&fieldDirection)[9],
-				 Double_t (&dXIn)[9], Double_t (&dYIn)[9], Double_t (&dXOut)[9],
-				 Double_t (&dYOut)[9], Double_t (&dZ)[9],
-				  Double_t (&midGapIn)[9],Double_t (&midGapOut)[9],
-				  Double_t (&HmainSideMagIn)[9], Double_t (&HmainSideMagOut)[9],
-				  Double_t (&gapIn)[9],Double_t (&gapOut)[9], Double_t (&Z)[9])
-{
+void ShipMuonShield::Initialize(std::vector<TString> &magnetName,
+				std::vector<FieldDirection> &fieldDirection,
+				std::vector<Double_t> &dXIn, std::vector<Double_t> &dYIn,
+				std::vector<Double_t> &dXOut, std::vector<Double_t> &dYOut,
+				std::vector<Double_t> &dZ, std::vector<Double_t> &midGapIn,
+				std::vector<Double_t> &midGapOut,
+				std::vector<Double_t> &HmainSideMagIn,
+				std::vector<Double_t> &HmainSideMagOut,
+				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
+				std::vector<Double_t> &Z) {
+
+  const Int_t nMagnets = (fDesign == 7) ? 9 : 8;
+  magnetName.reserve(nMagnets);
+  fieldDirection.reserve(nMagnets);
+  for (auto i :
+       {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &midGapIn, &midGapOut,
+	&HmainSideMagIn, &HmainSideMagOut, &gapIn, &gapOut, &Z}) {
+    i->reserve(nMagnets);
+  }
+
   Double_t zgap = (fDesign > 6) ? 10 : 0;  // fixed distance between magnets in Z-axis
   Double_t dYEnd = fY;
 
@@ -458,17 +471,16 @@ void ShipMuonShield::ConstructGeometry()
       if(fDesign==7){
             TGeoUniformMagField *fieldsTarget[4] = {new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.)};
       }
-      Int_t nMagnets = (fDesign == 7) ? 9 : 8;
 
-      // need to use literal 8 here as initialisation function's signature requires it.
-      // TODO use nMagnets, std::vector and TString!
       const static int nMag = 9;
-      TString magnetName[nMag];
-      FieldDirection fieldDirection[nMag];
-      Double_t dXIn[nMag], dYIn[nMag], dXOut[nMag], dYOut[nMag], dZf[nMag], midGapIn[nMag],
-	  midGapOut[nMag], HmainSideMagIn[nMag], HmainSideMagOut[nMag], gapIn[nMag],
-	  gapOut[nMag], Z[nMag];
-      Initialize (magnetName,fieldDirection,dXIn,dYIn,dXOut,dYOut,dZf,midGapIn,midGapOut,HmainSideMagIn,HmainSideMagOut,gapIn,gapOut,Z);
+      std::vector<TString> magnetName;
+      std::vector<FieldDirection> fieldDirection;
+      std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut,
+	  HmainSideMagIn, HmainSideMagOut, gapIn, gapOut, Z;
+      Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut, dZf,
+		 midGapIn, midGapOut, HmainSideMagIn, HmainSideMagOut, gapIn,
+		 gapOut, Z);
+      const Int_t nMagnets = magnetName.capacity();
       
       if (fDesign==6){
 	Double_t dA = 3*m;
