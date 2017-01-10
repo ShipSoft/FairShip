@@ -299,68 +299,56 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
   }
 
 void ShipMuonShield::Initialize (TString (&magnetName)[9],FieldDirection (&fieldDirection)[9],
-				    Double_t (&dXIn)[9], Double_t (&dYIn)[9], Double_t (&dXOut)[9], Double_t (&dYOut)[9], Double_t (&dZ)[9],
+				 Double_t (&dXIn)[9], Double_t (&dYIn)[9], Double_t (&dXOut)[9],
+				 Double_t (&dYOut)[9], Double_t (&dZ)[9],
 				  Double_t (&midGapIn)[9],Double_t (&midGapOut)[9],
 				  Double_t (&HmainSideMagIn)[9], Double_t (&HmainSideMagOut)[9],
 				  Double_t (&gapIn)[9],Double_t (&gapOut)[9], Double_t (&Z)[9])
 {
   Double_t zgap = (fDesign > 6) ? 10 : 0;  // fixed distance between magnets in Z-axis
   Double_t dYEnd = fY;
+
   if(fDesign==7){
       
   magnetName[0] = "MagnAbsorb1";	fieldDirection[0] = FieldDirection::up;
   dXIn[0]  = 0.4*m;			dYIn[0]	= 1.5*m;
   dXOut[0] = 0.40*m;			dYOut[0]= 1.5*m;
-  midGapIn[0] = 0; 			midGapOut[0] = 0;
-  HmainSideMagIn[0] = dYIn[0]/2;  	HmainSideMagOut[0] = dYOut[0]/2;
   gapIn[0] = 0.02*m;			gapOut[0] = 0.02*m;
   dZ[0] = dZ1-zgap/2;			Z[0] = zEndOfAbsorb + dZ[0]+zgap;
   
   magnetName[1] = "MagnAbsorb2";	fieldDirection[1] = FieldDirection::up;
   dXIn[1]  = 0.8*m;			dYIn[1]	= 1.5*m;
   dXOut[1] = 0.8*m;			dYOut[1]= 1.5*m;
-  midGapIn[1] = 0; 			midGapOut[1] = 0;
-  HmainSideMagIn[1] = dYIn[1]/2;  	HmainSideMagOut[1] = dYOut[1]/2;
   gapIn[1] = 0.02*m;				gapOut[1] = 0.02*m;
   dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
     
   magnetName[2] = "Magn1";		fieldDirection[2] = FieldDirection::up;
   dXIn[2]  = 0.87*m;			dYIn[2]	= 0.35*m;
   dXOut[2] = 0.65*m;			dYOut[2]= 1.21*m;
-  midGapIn[2] = 0; 			midGapOut[2] = 0;
-  HmainSideMagIn[2] = dYIn[2]/2;  	HmainSideMagOut[2] = dYOut[2]/2;
   gapIn[2] = 0.11*m;				gapOut[2] = 0.02*m;
   dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;
 
   magnetName[3] = "Magn2";		fieldDirection[3] = FieldDirection::up;
   dXIn[3]  = 0.65*m;			dYIn[3]	= 1.21*m;
   dXOut[3] = 0.43*m;			dYOut[3]= 2.07*m;
-  midGapIn[3] = 0; 			midGapOut[3] = 0;
-  HmainSideMagIn[3] = dYIn[3]/2;  	HmainSideMagOut[3] = dYOut[3]/2;
   gapIn[3] = 0.11*m;				gapOut[3] = 0.02*m;
   dZ[3] = dZ4-zgap/2;			Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;
 
   magnetName[4] = "Magn3";		fieldDirection[4] = FieldDirection::up;
   dXIn[4]  = 0.06*m;			dYIn[4]	= 0.32*m;
   dXOut[4] = 0.33*m;			dYOut[4]= 0.13*m;
-  midGapIn[4] = 0; 			midGapOut[4] = 0;
-  HmainSideMagIn[4] = dYIn[4]/2;  	HmainSideMagOut[4] = dYOut[4]/2;
   gapIn[4] = 0.7*m;			gapOut[4] = 0.11*m;
   dZ[4] = dZ5-zgap/2;			Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;
   
   magnetName[5] = "Magn4";		fieldDirection[5] = FieldDirection::down;
   dXIn[5]  = 0.05*m;			dYIn[5]	= 1.12*m;
   dXOut[5] =0.16*m;			dYOut[5]= 0.05*m;
-  midGapIn[5] = 0; 			midGapOut[5] = 0;
-  HmainSideMagIn[5] = dYIn[5]/2;  	HmainSideMagOut[5] = dYOut[5]/2;
   gapIn[5] = 0.04*m;			gapOut[5] = 0.02*m;
   dZ[5] = dZ6-zgap/2;			Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;
   
   magnetName[6] = "Magn5";		fieldDirection[6] = FieldDirection::down;
   dXIn[6]  = 0.15*m;			dYIn[6]	= 2.35*m;
   dXOut[6] = 0.34*m;			dYOut[6]= 0.32*m;
-  midGapIn[6] = 0; 		        midGapOut[6] = 0;
-  HmainSideMagIn[6] = dYIn[6]/2;  	HmainSideMagOut[6] = dYOut[6]/2;
   gapIn[6] = 0.05*m;			gapOut[6] = 0.08*m;
   dZ[6] = dZ7-zgap/2;			Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;
   
@@ -368,21 +356,24 @@ void ShipMuonShield::Initialize (TString (&magnetName)[9],FieldDirection (&field
   magnetName[7] = "Magn6";		fieldDirection[7] = FieldDirection::down;
   dXIn[7]  = 0.31*m;			dYIn[7]	= 1.86*m;
   dXOut[7] = 0.9*m - clip_width;	dYOut[7]= 3.1*m;
-  midGapIn[7] = 0; 		        midGapOut[7] = 0;
   Double_t clip_len =
        (dZ8-zgap/2) * (1 - (dXOut[7] - dXIn[7]) / (dXOut[7] + clip_width - dXIn[7]));
-  HmainSideMagIn[7] = dYIn[7]/2;  	HmainSideMagOut[7] = dYOut[7]/2;
   gapIn[7] = 0.02*m;			gapOut[7] = 0.55*m;
   dZ[7] = dZ8 - clip_len - zgap / 2;	Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;
 
   magnetName[8] = "Magn7";		fieldDirection[8] = FieldDirection::down;
   dXIn[8]  = dXOut[7];			dYIn[8]	= dYOut[7];
   dXOut[8] = dXOut[7];			dYOut[8]= dYOut[7];
-  midGapIn[8] = 0; 		        midGapOut[8] = 0;
-  HmainSideMagIn[8] = dYIn[8]/2;  	HmainSideMagOut[8] = dYOut[8]/2;
   gapIn[8] = 0.55*m;			gapOut[8] = 0.55*m;
   dZ[8] = clip_len;			Z[8] = Z[7] + dZ[7] + dZ[8];
       
+  for (int i = 0; i <= 8; ++i) {
+    midGapIn[i] = 0.;
+    midGapOut[i] = 0.;
+    HmainSideMagIn[i] = dYIn[i] / 2;
+    HmainSideMagOut[i] = dYOut[i] / 2;
+  }
+
   } else {
   magnetName[0] = "1";			fieldDirection[0] = FieldDirection::up;
   dXIn[0]  = 0.7*m;			dYIn[0]	= 1.*m; 
