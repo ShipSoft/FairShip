@@ -46,11 +46,18 @@ class ShipMuonShield : public FairModule
 				     TGeoUniformMagField *magField,TGeoVolume *top,Int_t numberOfItems,Double_t x_translation,Double_t y_translation,
 					Double_t z_translation);
 
-  void CreateTube(const char* tubeName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,Int_t color,TGeoVolume *top,Int_t numberOfItems, Double_t x_translation,Double_t y_translation,
-					Double_t z_translation);
+  void CreateArb8(TString arbName, TGeoMedium *medium, Double_t dZ,
+		  std::array<Double_t, 16> corners, Int_t color,
+		  TGeoUniformMagField *magField, TGeoVolume *top,
+		  Double_t x_translation, Double_t y_translation,
+		  Double_t z_translation);
 
+  void CreateTube(TString tubeName, TGeoMedium *medium, Double_t dX,
+		  Double_t dY, Double_t dZ, Int_t color, TGeoVolume *top,
+		  Double_t x_translation, Double_t y_translation,
+		  Double_t z_translation);
 
-  void Initialize(const char *(&magnetName)[9],
+  void Initialize(TString (&magnetName)[9],
 		  FieldDirection (&fieldDirection)[9], Double_t (&dXIn)[9],
 		  Double_t (&dYIn)[9], Double_t (&dXOut)[9],
 		  Double_t (&dYOut)[9], Double_t (&dZ)[9],
@@ -59,7 +66,7 @@ class ShipMuonShield : public FairModule
 		  Double_t (&gapIn)[9], Double_t (&gapOut)[9],
 		  Double_t (&Z)[9]);
 
-  void CreateMagnet(const char* magnetName, TGeoMedium *medium, TGeoVolume *tShield,
+  void CreateMagnet(TString magnetName, TGeoMedium *medium, TGeoVolume *tShield,
 		    TGeoUniformMagField *fields[4],
 		    FieldDirection fieldDirection, Double_t dX, Double_t dY,
 		    Double_t dX2, Double_t dY2, Double_t dZ, Double_t middleGap,
