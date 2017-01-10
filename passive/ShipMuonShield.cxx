@@ -93,25 +93,33 @@ Int_t ShipMuonShield::InitMedium(TString name)
    return geoBuild->createMedium(ShipMedium);
 }
 
-void ShipMuonShield::CreateTube(const char* tubeName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,Int_t color,TGeoVolume *tShield,Int_t numberOfItems, Double_t x_translation,Double_t y_translation,
-					Double_t z_translation)
-{
+void ShipMuonShield::CreateTube(TString tubeName, TGeoMedium *medium,
+				Double_t dX, Double_t dY, Double_t dZ,
+				Int_t color, TGeoVolume *tShield,
+				Double_t x_translation, Double_t y_translation,
+				Double_t z_translation) {
   TGeoVolume* absorber = gGeoManager->MakeTube(tubeName, medium, dX, dY,dZ);
   absorber->SetLineColor(color);  
-  tShield->AddNode(absorber, numberOfItems, new TGeoTranslation(x_translation, y_translation, z_translation ));
+  tShield->AddNode(
+      absorber, 1,
+      new TGeoTranslation(x_translation, y_translation, z_translation));
 }
 
-void ShipMuonShield::CreateArb8(const char* arbName, TGeoMedium* medium,Double_t dZ,std::array<Double_t,16> corners, Int_t color,
-				     TGeoUniformMagField *magField,TGeoVolume *tShield,Int_t numberOfItems,Double_t x_translation,Double_t y_translation,
-					Double_t z_translation)
-{
-  TGeoVolume* magF = gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
+void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
+				Double_t dZ, std::array<Double_t, 16> corners,
+				Int_t color, TGeoUniformMagField *magField,
+				TGeoVolume *tShield, Double_t x_translation,
+				Double_t y_translation,
+				Double_t z_translation) {
+  TGeoVolume *magF =
+      gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
   magF->SetField(magField);
-  tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation, z_translation ));
+  tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation,
+						z_translation));
 }
 
-void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],FieldDirection fieldDirection,
+void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],FieldDirection fieldDirection,
 				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t dZ,
 				  Double_t middleGap,Double_t middleGap2,
 				  Double_t HmainSideMag, Double_t HmainSideMag2,
@@ -244,55 +252,53 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
 	-2 * dX2 - middleGap2 - Clgap2, -dY2 - dX2,
 	-dX2 - middleGap2 - Clgap2, -dY2};
 				 
-    char magnetId[100];
-    const char* str1L ="_MiddleMagL";
-    const char* str1R ="_MiddleMagR";
-    const char* str2 ="_MagRetL";
-    const char* str3 ="_MagRetR";
-    const char* str4 ="_MagCLB";
-    const char* str5 ="_MagCLT";
-    const char* str6 ="_MagCRT";
-    const char* str7 ="_MagCRB";
-    const char* str8 ="_MagTopLeft";
-    const char* str9 ="_MagTopRight";
-    const char* str10 ="_MagBotLeft";
-    const char* str11 ="_MagBotRight";
-    strcpy(magnetId,magnetName);
+    TString str1L = "_MiddleMagL";
+    TString str1R = "_MiddleMagR";
+    TString str2 = "_MagRetL";
+    TString str3 = "_MagRetR";
+    TString str4 = "_MagCLB";
+    TString str5 = "_MagCLT";
+    TString str6 = "_MagCRT";
+    TString str7 = "_MagCRB";
+    TString str8 = "_MagTopLeft";
+    TString str9 = "_MagTopRight";
+    TString str10 = "_MagBotLeft";
+    TString str11 = "_MagBotRight";
 
     switch (fieldDirection){
 
     case FieldDirection::up: 
-      CreateArb8(strcat(magnetId,str1L), medium, dZ, cornersMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str1R), medium, dZ, cornersMainR,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str2), medium, dZ, cornersMainSideL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str3), medium, dZ, cornersMainSideR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str4), medium, dZ, cornersCLBA,color[1],fields[1],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str5), medium, dZ, cornersCLTA,color[1],fields[1],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str6), medium, dZ, cornersCRTA,color[1],fields[1],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str7), medium, dZ, cornersCRBA,color[1],fields[1],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str8), medium, dZ, cornersTL,color[2],fields[3],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str9), medium, dZ, cornersTR,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str10), medium, dZ, cornersBL,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-      CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[2],fields[3],tShield,1,0, 0, Z);
+      CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[2], fields[3], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[0], fields[2], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[0], fields[2], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str11, medium, dZ, cornersBR, color[2], fields[3], tShield,  0, 0, Z);
       break;
     case FieldDirection::down:
-	CreateArb8(strcat(magnetId,str1L), medium, dZ, cornersMainL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str1R), medium, dZ, cornersMainR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str2), medium, dZ, cornersMainSideL,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str3), medium, dZ, cornersMainSideR,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str4), medium, dZ, cornersCLBA,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str5), medium, dZ, cornersCLTA,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str6), medium, dZ, cornersCRTA,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str7), medium, dZ, cornersCRBA,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str8), medium, dZ, cornersTL,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str9), medium, dZ, cornersTR,color[2],fields[3],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str10), medium, dZ, cornersBL,color[2],fields[3],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
-	CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[0],fields[2],tShield,1,0, 0, Z);
+      CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[3], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[0], fields[2], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[2], fields[3], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[2], fields[3], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str11, medium, dZ, cornersBR, color[0], fields[2], tShield,  0, 0, Z);
       break;
     }
   }
 
-void ShipMuonShield::Initialize (const char* (&magnetName)[9],FieldDirection (&fieldDirection)[9],
+void ShipMuonShield::Initialize (TString (&magnetName)[9],FieldDirection (&fieldDirection)[9],
 				    Double_t (&dXIn)[9], Double_t (&dYIn)[9], Double_t (&dXOut)[9], Double_t (&dYOut)[9], Double_t (&dZ)[9],
 				  Double_t (&midGapIn)[9],Double_t (&midGapOut)[9],
 				  Double_t (&HmainSideMagIn)[9], Double_t (&HmainSideMagOut)[9],
@@ -466,7 +472,7 @@ void ShipMuonShield::ConstructGeometry()
       // need to use literal 8 here as initialisation function's signature requires it.
       // TODO use nMagnets, std::vector and TString!
       const static int nMag = 9;
-      const char *magnetName[nMag];
+      TString magnetName[nMag];
       FieldDirection fieldDirection[nMag];
       Double_t dXIn[nMag], dYIn[nMag], dXOut[nMag], dYOut[nMag], dZf[nMag], midGapIn[nMag],
 	  midGapOut[nMag], HmainSideMagIn[nMag], HmainSideMagOut[nMag], gapIn[nMag],
@@ -583,8 +589,8 @@ void ShipMuonShield::ConstructGeometry()
       }
           
       } else {
-	CreateTube("AbsorberAdd", iron, 15, 400, dZ0, 43, tShield, 1, 0, 0, zEndOfAbsorb - dZ0);
-	CreateTube("AbsorberAddCore", iron, 0, 15, dZ0, 38, tShield, 1, 0, 0, zEndOfAbsorb - dZ0);
+	CreateTube("AbsorberAdd", iron, 15, 400, dZ0, 43, tShield, 0, 0, zEndOfAbsorb - dZ0);
+	CreateTube("AbsorberAddCore", iron, 0, 15, dZ0, 38, tShield, 0, 0, zEndOfAbsorb - dZ0);
 
 	for (Int_t nM = 0; nM < (nMagnets - 1); nM++) {
 	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
