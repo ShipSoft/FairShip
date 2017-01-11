@@ -73,9 +73,10 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      dZ6 = L6;
      dZ7 = L7;
      fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7) + LE ;
-     fFloor = floor;
    }
     
+ fFloor = (fDesign == 7) ? floor : 0;
+
  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
  if(fDesign==6||fDesign==7){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
@@ -527,10 +528,16 @@ void ShipMuonShield::ConstructGeometry()
       TGeoBBox *box3    = new TGeoBBox("box3", 15*m, 15*m,dZD/2.);
       TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
 // cover also Tau nu area
-      TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2., fMuonShieldLength / 2.);
-      TGeoVolume *floor   = new TGeoVolume("floorM", box5, concrete); 
-      floor->SetLineColor(11);  // grey
-      top->AddNode(floor, 1, new TGeoTranslation(0, -10 * m + fFloor / 2., zEndOfAbsorb + fMuonShieldLength / 2. ));
+      if (fDesign == 7) {
+	// Only add floor for new shield
+	TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2.,
+				      fMuonShieldLength / 2.);
+	TGeoVolume *floor = new TGeoVolume("floorM", box5, concrete);
+	floor->SetLineColor(11); // grey
+	top->AddNode(floor, 1, new TGeoTranslation(0, -10 * m + fFloor / 2.,
+						   zEndOfAbsorb +
+						       fMuonShieldLength / 2.));
+      }
       TGeoCompositeShape *compRockD =
 	  new TGeoCompositeShape("compRockD", "(box3-box4)");
       TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
