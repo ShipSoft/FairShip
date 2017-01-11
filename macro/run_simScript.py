@@ -20,8 +20,8 @@ firstEvent   = 0
 inclusive    = "meson"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, TBD: proton brem, QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
-HNL          = False
-DarkPhoton   = True
+HNL          = True
+DarkPhoton   = False
 RPVSUSY      = False
 RPVSUSYbench = 2
 
