@@ -456,7 +456,7 @@ void ShipMuonShield::ConstructGeometry()
 	Double_t anti_overlap = 0.1;
 	Double_t h1 = 0.5 * (dYIn[nM] + dXIn[nM] + anti_overlap - fFloor);
 	Double_t h2 = 0.5 * (dYOut[nM] + dXOut[nM] + anti_overlap - fFloor);
-	std::vector<double> verticesIn = {
+	std::vector<Double_t> verticesIn = {
 	    -w1, -h1,
 	    +w1, -h1,
 	    +w1, +h1,
@@ -466,7 +466,7 @@ void ShipMuonShield::ConstructGeometry()
 	    +w1, +h1,
 	    -w1, +h1,
 	};
-	std::vector<double> verticesOut = {
+	std::vector<Double_t> verticesOut = {
 	    -w2, -h2 - slope * m,
 	    +w2, -h2 - slope * m,
 	    +w2, +h2,
@@ -530,7 +530,7 @@ void ShipMuonShield::ConstructGeometry()
       TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2., fMuonShieldLength / 2.);
       TGeoVolume *floor   = new TGeoVolume("floorM", box5, concrete); 
       floor->SetLineColor(11);  // grey
-      top->AddNode(floor, 1, new TGeoTranslation(0, -7.5 * m, zEndOfAbsorb + fMuonShieldLength / 2. ));
+      top->AddNode(floor, 1, new TGeoTranslation(0, -10 * m + fFloor / 2., zEndOfAbsorb + fMuonShieldLength / 2. ));
       TGeoCompositeShape *compRockD =
 	  new TGeoCompositeShape("compRockD", "(box3-box4)");
       TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
