@@ -152,9 +152,11 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       gap2 = std::max(2., gap2);
     }
 
-    Double_t testGap = 0.1;   // gap between fields in the corners for mitred joints (Geant goes crazy when they touch each other)
+    Double_t testGap = (fDesign == 5) ? 0.0 : 0.1; // gap between fields in the
+						   // corners for mitred joints
+						   // (Geant goes crazy when
+						   // they touch each other)
 
-				 
     Double_t cornerMainL[16] = {-dX/2+middleGap+dX/2,-dY-dX+testGap , -dX/2+middleGap+dX/2,dY+dX-testGap , dX/2+middleGap+dX/2,dY-testGap , dX/2+middleGap+dX/2,-dY+testGap ,
                                -dX2/2+middleGap2+dX2/2,-dY2-dX2+testGap , -dX2/2+middleGap2+dX2/2,dY2+dX2-testGap , dX2/2+middleGap2+dX2/2,dY2-testGap , dX2/2+middleGap2+dX2/2,-dY2+testGap };
     Double_t cornerMainR[16] = {-dX/2-middleGap-dX/2,-dY+testGap , -dX/2-middleGap-dX/2,dY-testGap , dX/2-middleGap-dX/2,dY+dX-testGap , dX/2-middleGap-dX/2,-dY-dX+testGap ,
