@@ -10,14 +10,19 @@ theHNLmass = 1.0*u.GeV
 #theHNLcouplings = [1.e-8, 1.e-8, 1.e-8] # may not correspond to ctau=54km
 theHNLcouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km
 
+# Default dark photon parameters
+theDPmass = 0.2*u.GeV
+theDPepsilon = 0.00000008
+
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100 
 firstEvent   = 0
-inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL
+inclusive    = "meson"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, TBD: proton brem, QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
-HNL          = True
+HNL          = False
+DarkPhoton   = True
 eventDisplay = False
 inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 defaultInputFile = True
@@ -36,7 +41,7 @@ Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
-                                   "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=",\
+                                   "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio"])
 except getopt.GetoptError:
         # print help information and exit:
@@ -47,6 +52,7 @@ except getopt.GetoptError:
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --mass or -m to set HNL mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
+	print '       --epsilon value or -e value to set mixing parameter epsilon' 
         sys.exit()
 for o, a in opts:
         if o in ("-D","--display"):
@@ -99,14 +105,17 @@ for o, a in opts:
             dy = float(a)
         if o in ("--tankDesign"): 
             dv = int(a)
-        if o in ("--muShieldDesign"): 
-            ds = int(a)
+	if o in ("--muShieldDesign"): 
+		ds = int(a)
         if o in ("-F"):
             deepCopy = True
         if o in ("-m", "--mass"):
-            theHNLmass = float(a)
+		if HNL: theHNLmass = float(a)
+		if DarkPhoton: theDPmass = float(a)
         if o in ("-c", "--couplings", "--coupling"):
             theHNLcouplings = [float(c) for c in a.split(",")]
+	if o in ("-e", "--epsilon"):
+		theDPepsilon = float(a)
 
 if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
   inputFile = "/eos/ship/data/GenieEvents/genie-nu_mu.root"
@@ -124,7 +133,7 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   print " for example -f /eos/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root"
   sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
-shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
+shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit for python
 # - muShieldDesign = 2  # 1=passive 5=active (default) 7=short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
@@ -183,6 +192,15 @@ if simEngine == "Pythia8":
   if inputFile: 
 # read from external file
    P8gen.UseExternalFile(inputFile, firstEvent)
+ if DarkPhoton:
+  P8gen = ROOT.DPPythia8Generator()
+  P8gen.SetDPId(9900015)
+  import pythia8darkphoton_conf
+  pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,deepCopy)
+  P8gen.SetSmearBeam(1*u.cm) # finite beam size
+  if ds==7: # short muon shield
+   P8gen.SetLmin(44*u.m)
+   P8gen.SetLmax(107*u.m)
  if charmonly: 
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, firstEvent)
@@ -375,7 +393,12 @@ rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print ' ' 
 print "Macro finished succesfully." 
-if "P8gen" in globals() : print "number of retries, events without HNL",P8gen.nrOfRetries()
+if "P8gen" in globals() : 
+	if (HNL): print "number of retries, events without HNL ",P8gen.nrOfRetries()
+	elif (DarkPhoton): 
+		print "number of retries, events without Dark Photons ",P8gen.nrOfRetries()
+		print "total number of dark photons (including multiple meson decays per single collision) ",P8gen.nrOfDP()
+
 print "Output file is ",  outFile 
 print "Parameter file is ",parFile
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
