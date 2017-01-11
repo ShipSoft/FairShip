@@ -47,11 +47,15 @@ class ShipMuonShield : public FairModule
  
   void CreateTube(const char* tubeName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,Int_t color,TGeoVolume *top,Int_t numberOfItems, Double_t x_translation,Double_t y_translation,
 					Double_t z_translation);
-  void Initialize(const char* (&magnetName)[8],const char* (&fieldDirection)[8],
-				    Double_t (&dXIn)[8], Double_t (&dYIn)[8], Double_t (&dXOut)[8], Double_t (&dYOut)[8], Double_t (&dZ)[8],
-				  Double_t (&midGapIn)[8],Double_t (&midGapOut)[8],
-				  Double_t (&HmainSideMagIn)[8], Double_t (&HmainSideMagOut)[8],
-				  Double_t (&gapIn)[8],Double_t (&gapOut)[8], Double_t (&Z)[8]);
+
+  void Initialize(const char *(&magnetName)[9],
+		  const char *(&fieldDirection)[9], Double_t (&dXIn)[9],
+		  Double_t (&dYIn)[9], Double_t (&dXOut)[9],
+		  Double_t (&dYOut)[9], Double_t (&dZ)[9],
+		  Double_t (&midGapIn)[9], Double_t (&midGapOut)[9],
+		  Double_t (&HmainSideMagIn)[9], Double_t (&HmainSideMagOut)[9],
+		  Double_t (&gapIn)[9], Double_t (&gapOut)[9],
+		  Double_t (&Z)[9]);
 
   void CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],const char* fieldDirection,
 				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t dZ,
