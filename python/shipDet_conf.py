@@ -2,7 +2,7 @@
 # -*- coding: latin-1 -*-
 import ROOT,os
 import shipunit as u
-from ShipGeoConfig import ConfigRegistry
+from ShipGeoConfig import AttrDict,ConfigRegistry
 detectorList = []
 
 def getParameter(x,ship_geo,latestShipGeo):
@@ -73,6 +73,12 @@ def configure(run,ship_geo):
 # ---- for backward compatibility ----
  if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 4
  if not hasattr(ship_geo.hcal,"File"): ship_geo.hcal.File = "hcal.geo"
+ if not hasattr(ship_geo.Bfield,'x') :  ship_geo.Bfield.x   = 3.*u.m
+ if not hasattr(ship_geo,'cave') :       
+   ship_geo.cave = AttrDict(z=0*u.cm)
+   ship_geo.cave.floorHeightMuonShield = 5*u.m
+   ship_geo.cave.floorHeightTankA   = 4.5*u.m
+   ship_geo.cave.floorHeightTankB   = 2.*u.m
  latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
@@ -109,7 +115,7 @@ def configure(run,ship_geo):
  elif ship_geo.muShieldDesign==3 or ship_geo.muShieldDesign==4 or ship_geo.muShieldDesign==5 or ship_geo.muShieldDesign==6 or ship_geo.muShieldDesign==7 :
   MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\
-               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.) 
+               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10., ship_geo.cave.floorHeightMuonShield) 
 
  detectorList.append(MuonShield)
 
@@ -117,8 +123,7 @@ def configure(run,ship_geo):
  magnet_design = 2
  if ship_geo.tankDesign == 5: magnet_design = 3
  if ship_geo.strawDesign > 1 : 
-   if not hasattr(ship_geo.Bfield,'x') :  ship_geo.Bfield.x   = 3.*u.m
-   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y)
+   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  detectorList.append(magnet)
   
@@ -129,6 +134,7 @@ def configure(run,ship_geo):
  Veto.SetTublengths(ship_geo.chambers.Tub1length,ship_geo.chambers.Tub2length,ship_geo.chambers.Tub3length, \
                     ship_geo.chambers.Tub4length,ship_geo.chambers.Tub5length,ship_geo.chambers.Tub6length);
  Veto.SetB(ship_geo.Yheight/2.)
+ Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA,ship_geo.cave.floorHeightTankB);
  if ship_geo.tankDesign == 5: 
     dzX = ship_geo.zFocusX+ship_geo.target.z0    
     x1  = ship_geo.xMax/(ship_geo.Chamber1.z -ship_geo.chambers.Tub1length-dzX)*(ship_geo.TrackStation4.z-dzX)
@@ -270,7 +276,7 @@ def configure(run,ship_geo):
 #
  exclusionList = []
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
- #                 "Veto","Magnet","MuonShield","TargetStation","MagneticSpectrometer"]
+ #                 "Veto","Magnet","MuonShield","TargetStation","MagneticSpectrometer","EmuMagnet"]
  for x in detectorList:
    if x.GetName() in exclusionList: continue
    run.AddModule(x)

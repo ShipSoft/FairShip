@@ -26,8 +26,8 @@ class MuonBackGenerator : public FairGenerator
   void CloseFile();//!
   void SetPhiRandom(Bool_t fl) { fPhiRandomize = fl; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
- private:
-  
+  void SetSameSeed(Double_t s) { fSameSeed = s; };
+ private:  
  protected:
   Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz,ecut;
   TFile* fInputFile;    //! 
@@ -37,8 +37,9 @@ class MuonBackGenerator : public FairGenerator
   float f_zOffset;      //!
   int fn;
   Bool_t fPhiRandomize;
+  Int_t fSameSeed;
   Double_t fsmearBeam ;
-  ClassDef(MuonBackGenerator,2);
+  ClassDef(MuonBackGenerator,3);
 };
 
 #endif /* !PNDmuGENERATOR_H */

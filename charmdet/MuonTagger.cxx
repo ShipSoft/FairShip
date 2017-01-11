@@ -1,14 +1,9 @@
-//
-//  TargetTracker.cxx
-//  
-//
-//  Created by Annarita Buonaura on 21/10/15.
-//
-//
+//MuonTagger.cxx
+//Muon Filter, sensitive layers interleaved with iron blocks
 
-#include "TargetTracker.h"
+#include "MuonTagger.h"
 
-#include "TTPoint.h"
+#include "MuonTaggerPoint.h"
 
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
@@ -22,13 +17,8 @@
 #include "TVirtualMC.h"
 
 #include "TGeoBBox.h"
-#include "TGeoTrd1.h"
-#include "TGeoCompositeShape.h"
-#include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
-#include "TGeoTrd1.h"
-#include "TGeoArb8.h"
 
 #include "TParticle.h"
 #include "TParticlePDG.h"
@@ -62,8 +52,8 @@ using std::endl;
 
 using namespace ShipUnit;
 
-TargetTracker::TargetTracker()
-: FairDetector("TargetTracker", "",kTRUE),
+MuonTagger::MuonTagger()
+: FairDetector("MuonTagger", "",kTRUE),
   fTrackID(-1),
 fVolumeID(-1),
 fPos(),
@@ -71,12 +61,12 @@ fMom(),
 fTime(-1.),
 fLength(-1.),
 fELoss(-1),
-fTTPointCollection(new TClonesArray("TTPoint"))
+fMuonTaggerPointCollection(new TClonesArray("MuonTaggerPoint"))
 {
 }
 
-TargetTracker::TargetTracker(const char* name, Bool_t Active,const char* Title)
-: FairDetector(name, true, ktauTT),
+MuonTagger::MuonTagger(const char* name, const Double_t BX, const Double_t BY, const Double_t BZ,const Double_t zBox, Bool_t Active,const char* Title)
+: FairDetector(name, true, kMuonTagger),
   fTrackID(-1),
 fVolumeID(-1),
 fPos(),
@@ -84,25 +74,43 @@ fMom(),
 fTime(-1.),
 fLength(-1.),
 fELoss(-1),
-fTTPointCollection(new TClonesArray("TTPoint"))
+fMuonTaggerPointCollection(new TClonesArray("MuonTaggerPoint"))
 {
+    BoxX = BX;
+    BoxY = BY;
+    BoxZ = BZ;
+    zBoxPosition = zBox;
 }
 
-TargetTracker::~TargetTracker()
+MuonTagger::~MuonTagger()
 {
-    if (fTTPointCollection) {
-        fTTPointCollection->Delete();
-        delete fTTPointCollection;
+    if (fMuonTaggerPointCollection) {
+        fMuonTaggerPointCollection->Delete();
+        delete fMuonTaggerPointCollection;
     }
 }
 
-void TargetTracker::Initialize()
+void MuonTagger::Initialize()
 {
     FairDetector::Initialize();
 }
 
+void MuonTagger::SetPassiveParameters(Double_t PX, Double_t PY, Double_t PTh)
+{
+  PasX = PX;
+  PasY = PY;
+  PasThickness = PTh;
+}//setting paramters of passive layers
+
+void MuonTagger::SetSensitiveParameters(Double_t SX, Double_t SY, Double_t STh)
+{
+  SensX = SX;
+  SensY = SY;
+  SensThickness = STh;
+}//setting parameters of sensitive layers
+
 // -----   Private method InitMedium
-Int_t TargetTracker::InitMedium(const char* name)
+Int_t MuonTagger::InitMedium(const char* name)
 {
     static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
     static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
@@ -122,42 +130,64 @@ Int_t TargetTracker::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
-void TargetTracker::SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ)
+
+
+void MuonTagger::ConstructGeometry()
 {
-    TTrackerX = TTX;
-    TTrackerY = TTY;
-    TTrackerZ = TTZ;
+  InitMedium("vacuum");
+  TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
+  
+  InitMedium("iron");
+  TGeoMedium *Iron = gGeoManager->GetMedium("iron");
+
+  InitMedium("RPCgas");
+  TGeoMedium *RPCmat = gGeoManager->GetMedium("RPCgas");
+  
+  TGeoVolume *top= gGeoManager->GetTopVolume(); 
+
+  TGeoBBox *MuonBox = new TGeoBBox(BoxX/2,BoxY/2,BoxZ/2);
+  TGeoVolume *VMuonBox = new TGeoVolume("VMuonBox", MuonBox,vacuum);
+  VMuonBox->SetTransparency(1);
+    
+  top->AddNode(VMuonBox, 1, new TGeoTranslation(0, 0, zBoxPosition));
+
+  const Double_t MagneticField = 1 * tesla;
+  TGeoUniformMagField * magfield = new TGeoUniformMagField(0,MagneticField,0);
+  //begin muon filter part
+  
+  TGeoBBox * Passive = new TGeoBBox(PasX/2, PasY/2, PasThickness/2);
+  TGeoVolume * VPassive = new TGeoVolume("VPassive", Passive, Iron);
+  VPassive->SetLineColor(kGreen+1);
+  VPassive->SetField(magfield);
+  
+  TGeoBBox * Sensitive = new TGeoBBox(SensX/2, SensY/2, SensThickness/2);
+  TGeoVolume * VSensitive = new TGeoVolume("VSensitive", Sensitive, RPCmat);
+  VSensitive->SetLineColor(kOrange-5);
+  AddSensitiveVolume(VSensitive);
+  VSensitive->SetField(magfield);
+  
+  const Int_t npassive = 5;
+  const Int_t nsensitive = 6;
+
+  Double_t zpassive;
+  Double_t zsensitive;
+  
+  for (int n = 0; n < npassive; n++){
+    // zpassive = n * (PasThickness + SensThickness);
+    zpassive = n * (PasThickness + SensThickness) + PasThickness/2 + SensThickness; //the first layer is sensitive
+    VMuonBox->AddNode(VPassive, n, new TGeoTranslation(0,0,-BoxZ/2 + zpassive));
 }
 
-void TargetTracker::SetBrickParam(Double_t CellW)
-{
-  CellWidth = CellW;
+  for (int n = 0; n < nsensitive; n++){
+    //zsensitive = n * (PasThickness + SensThickness) + PasThickness/2 + SensThickness/2;
+     zsensitive = n * (PasThickness + SensThickness) + SensThickness/2; 
+      VMuonBox->AddNode(VSensitive, n, new TGeoTranslation(0,0,-BoxZ/2 + zsensitive));
+  }
 }
 
-void TargetTracker::SetTotZDimension(Double_t Zdim)
-{
-  ZDimension = Zdim;
-}
 
-void TargetTracker::ConstructGeometry()
-{
-  Int_t NTT = 12;
-  InitMedium("TTmedium");
-  TGeoMedium *medium =gGeoManager->GetMedium("TTmedium");
-  TGeoVolume *volTarget=gGeoManager->GetVolume("volTarget");
 
-  TGeoBBox *TTBox = new TGeoBBox("TTBox",TTrackerX/2, TTrackerY/2, TTrackerZ/2);
-    TGeoVolume *volTT = new TGeoVolume("TargetTracker",TTBox,medium);
-    volTT->SetLineColor(kBlue - 1);
-    AddSensitiveVolume(volTT);
-
-    Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
-
-    for(int l = 0; l < NTT; l++)
-      volTarget->AddNode(volTT,l,new TGeoTranslation(0,0, d_tt + l*(TTrackerZ +CellWidth)));
-}
-
-Bool_t TargetTracker::ProcessHits(FairVolume* vol)
+Bool_t  MuonTagger::ProcessHits(FairVolume* vol)
 {
     /** This method is called from the MC stepping */
     //Set parameters at entrance of volume. Reset ELoss.
@@ -171,12 +201,11 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
     
-    // Create muonPoint at exit of active volume
+    // Create MuonTaggerPoint at exit of active volume
     if ( gMC->IsTrackExiting()    ||
         gMC->IsTrackStop()       ||
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        //Int_t fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
         fVolumeID = vol->getMCid();
 	Int_t detID=0;
 	gMC->CurrentVolID(detID);
@@ -185,58 +214,40 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
 	  return kTRUE; }
 	fVolumeID = detID;
 
-	//gGeoManager->PrintOverlaps();
-	
-	//cout<< "detID = " << detID << endl;
-	Int_t MaxLevel = gGeoManager->GetLevel();
-	const Int_t MaxL = MaxLevel;
-       	//cout << gMC->CurrentVolPath()<< endl;
-	
-
-	const char *name;
-	
-	Double_t zEnd = 0, zStart =0;
-
-	fVolumeID = detID;
+	//gGeoManager->PrintOverlaps();		
 	
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
-	Int_t fMotherID =p->GetFirstMother();
 	Int_t pdgCode = p->GetPdgCode();
-
+	
         TLorentzVector Pos; 
         gMC->TrackPosition(Pos); 
         Double_t xmean = (fPos.X()+Pos.X())/2. ;      
         Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
         Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
         
-
+	
 	AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
                fELoss, pdgCode);
 	
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
-        stack->AddPoint(ktauTT);
+        stack->AddPoint(kMuonTagger);
     }
     
     return kTRUE;
 }
 
 
-void TargetTracker::DecodeTTID(Int_t detID, Int_t &NTT)
+
+void MuonTagger::EndOfEvent()
 {
-  NTT = detID;
+    fMuonTaggerPointCollection->Clear();
 }
 
 
-void TargetTracker::EndOfEvent()
-{
-    fTTPointCollection->Clear();
-}
-
-
-void TargetTracker::Register()
+void MuonTagger::Register()
 {
     
     /** This will create a branch in the output tree called
@@ -245,33 +256,38 @@ void TargetTracker::Register()
      only during the simulation.
      */
     
-    FairRootManager::Instance()->Register("TTPoint", "TargetTracker",
-                                          fTTPointCollection, kTRUE);
+    FairRootManager::Instance()->Register("MuonTaggerPoint", "MuonTagger",
+                                          fMuonTaggerPointCollection, kTRUE);
 }
 
-TClonesArray* TargetTracker::GetCollection(Int_t iColl) const
+TClonesArray* MuonTagger::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) { return fTTPointCollection; }
+    if (iColl == 0) { return fMuonTaggerPointCollection; }
     else { return NULL; }
 }
 
-void TargetTracker::Reset()
+void MuonTagger::Reset()
 {
-    fTTPointCollection->Clear();
+    fMuonTaggerPointCollection->Clear();
 }
 
 
-TTPoint* TargetTracker::AddHit(Int_t trackID,Int_t detID,
+MuonTaggerPoint* MuonTagger::AddHit(Int_t trackID,Int_t detID,
                            TVector3 pos, TVector3 mom,
                            Double_t time, Double_t length,
 			    Double_t eLoss, Int_t pdgCode)
 {
-    TClonesArray& clref = *fTTPointCollection;
+    TClonesArray& clref = *fMuonTaggerPointCollection;
     Int_t size = clref.GetEntriesFast();
-    //cout << "brick hit called"<< pos.z()<<endl;
-    return new(clref[size]) TTPoint(trackID,detID, pos, mom,
+    return new(clref[size]) MuonTaggerPoint(trackID,detID, pos, mom,
 					time, length, eLoss, pdgCode);
 }
+ClassImp(MuonTagger)
 
-ClassImp(TargetTracker)
+
+
+
+
+
+
 

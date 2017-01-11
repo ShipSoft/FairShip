@@ -6,6 +6,7 @@
 #include "Pythia.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "TTree.h"
+#include "GenieGenerator.h"
 
 class FairPrimaryGenerator;
 using namespace Pythia8;
@@ -33,6 +34,7 @@ class Pythia8Generator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
   void SetfFDs(Double_t z) { fFDs = z; };
+  void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
   Int_t nrOfRetries(){ return fnRetries; };
 
  private:
@@ -54,7 +56,18 @@ class Pythia8Generator : public FairGenerator
   Pythia* fPythia;             //!
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
   Int_t fnRetries;     // 
-  ClassDef(Pythia8Generator,1);
+  GenieGenerator* fMaterialInvestigator;  //!
+  ClassDef(Pythia8Generator,2);
+  TString targetName;
+  Double_t xOff;
+  Double_t yOff;
+  Double_t start[3];
+  Double_t end[3];
+  Double_t bparam;
+  Double_t mparam[10];
+  Double_t startZ;
+  Double_t endZ;
+  Double_t maxCrossSection;
 };
 
 #endif /* !PNDP8GENERATOR_H */

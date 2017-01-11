@@ -86,21 +86,25 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   // mparam[5] - Z/A mean: sum(x_i*Z_i/A_i)/sum(x_i) [adimensional]
   // mparam[6] - number of boundary crosses
   // mparam[7] - maximum density encountered (g/cm^3)
+  // mparam[8] - equivalent interaction length fraction: sum(x_i/I0_i) [adimensional]
+  // mparam[9] - maximum cross section encountered (mbarn)
   //
   //  Origin:  Marian Ivanov, Marian.Ivanov@cern.ch
   //
   //  Corrections and improvements by
   //        Andrea Dainese, Andrea.Dainese@lnl.infn.it,
   //        Andrei Gheata,  Andrei.Gheata@cern.ch
+  //        Thomas Ruf,  Thomas.Ruf@cern.ch 
   //
 
-  mparam[0]=0; mparam[1]=1; mparam[2] =0; mparam[3] =0;
-  mparam[4]=0; mparam[5]=0; mparam[6]=0; mparam[7]=0;
+  mparam[0]=0; mparam[1]=1; mparam[2]=0; mparam[3]=0; mparam[4]=0; 
+  mparam[5]=0; mparam[6]=0; mparam[7]=0; mparam[8]=0; mparam[9]=0; 
   //
-  Double_t bparam[6]; // total parameters
-  Double_t lparam[6]; // local parameters
+  Double_t bparam[7]; // total parameters
+  Double_t lparam[7]; // local parameters
+  Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
 
-  for (Int_t i=0;i<6;i++) bparam[i]=0;
+  for (Int_t i=0;i<7;i++) bparam[i]=0;
 
   if (!gGeoManager) {
     //AliFatalClass("No TGeo\n");
@@ -135,6 +139,10 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   lparam[3]   = material->GetZ();
   lparam[4]   = length;
   lparam[5]   = lparam[3]/lparam[2];
+  lparam[6]   = material->GetIntLen();
+  Double_t  n = lparam[0]/lparam[2];
+  Double_t  sigma = 1./(n*lparam[6])/mbarn;
+  if (sigma > mparam[9]) mparam[9]=sigma;
   if (material->IsMixture()) {
     TGeoMixture * mixture = (TGeoMixture*)material;
     lparam[5] =0;
@@ -158,6 +166,7 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
     mparam[2] = lparam[2];
     mparam[3] = lparam[3];
     mparam[4] = lparam[4];
+    mparam[8] = lparam[4]/lparam[6];
     return lparam[0];
   }
   // Try to cross the boundary and see what is next
@@ -175,6 +184,7 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
       mparam[2] = bparam[2]/step;
       mparam[3] = bparam[3]/step;
       mparam[5] = bparam[5]/step;
+      mparam[8] = bparam[6];
       mparam[4] = step;
       mparam[0] = 0.;             // if crash of navigation take mean density 0
       mparam[1] = 1000000;        // and infinite rad length
@@ -186,6 +196,7 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
     bparam[2]    += snext*lparam[2];
     bparam[3]    += snext*lparam[3];
     bparam[5]    += snext*lparam[5];
+    bparam[6]    += snext/lparam[6];
     bparam[0]    += snext*lparam[0];
 
     if (snext>=length) break;
@@ -198,6 +209,10 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
     lparam[2]  = material->GetA();
     lparam[3]  = material->GetZ();
     lparam[5]   = lparam[3]/lparam[2];
+    lparam[6]   = material->GetIntLen();
+    n = lparam[0]/lparam[2];
+    sigma = 1./(n*lparam[6])/mbarn;
+    if (sigma > mparam[9]) mparam[9]=sigma;
     if (material->IsMixture()) {
       TGeoMixture * mixture = (TGeoMixture*)material;
       lparam[5]=0;
@@ -216,6 +231,7 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   mparam[2] = bparam[2]/step;
   mparam[3] = bparam[3]/step;
   mparam[5] = bparam[5]/step;
+  mparam[8] = bparam[6];
   return bparam[0]/step;
 }
 
@@ -393,7 +409,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Int_t idbase=1200;
     if (fFirst){
       Double_t bparam=0.;
-      Double_t mparam[7];
+      Double_t mparam[10];
       bparam=MeanMaterialBudget(start, end, mparam);
       cout << "Info GenieGenerator: MaterialBudget " << start[2] << " - "<< end[2] <<  endl;
       cout << "Info GenieGenerator: MaterialBudget " << bparam <<  endl;
@@ -445,7 +461,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     //cout << "Info GenieGenerator: neutrino " << neu << "p-in "<< pzv << " nf "<< nf << endl;
     //cout << "Info GenieGenerator: ztarget " << ztarget << endl;
     Double_t bparam=0.;
-    Double_t mparam[8];
+    Double_t mparam[10];
     Double_t pout[3];
     pout[2]=-1.;
     Double_t txnu=0;

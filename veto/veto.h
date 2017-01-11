@@ -53,6 +53,7 @@ class veto: public FairDetector
     void SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Float_t z5, Float_t z6);
     void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l4, Float_t l5, Float_t l6);
     void SetB(Float_t b) {fBtube=b;}
+    void SetFloorHeight(Float_t a,Float_t b) {floorHeightA=a;floorHeightB=b;}
     void SetXYstart(Float_t b, Float_t fx, Float_t c, Float_t fy) {fXstart=b; zFocusX=fx; fYstart=c; zFocusY=fy;}
     void SetVesselStructure(Float_t a,Float_t b,Float_t c,TString d,TString e,TString f,TString v,Float_t r, TString rm) {f_InnerSupportThickness=a;
      f_VetoThickness=b;f_OuterSupportThickness=c;supportMedIn_name=d;vetoMed_name=e;supportMedOut_name=f;decayVolumeMed_name=v;
@@ -137,6 +138,7 @@ class veto: public FairDetector
 
     Float_t fXstart,fYstart; // horizontal/vertical width at start of tank
     Float_t zFocusX,zFocusY; // focus points for conical design
+    Float_t floorHeightA,floorHeightB; // height of floor
     /** container for data points */
 
     TClonesArray*  fvetoPointCollection;
@@ -146,10 +148,12 @@ class veto: public FairDetector
     Int_t InitMedium(const char* name);
     TGeoVolume* GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sense);
     void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
-    TGeoVolume* GeoTrapezoid(const char* name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Int_t colour,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoTrapezoid(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoVesselSupport(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Double_t floorHeight);
 
-    TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey);
-    ClassDef(veto,5)
+    TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
+    TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
+    ClassDef(veto,6)
 };
 
 #endif //VETO_H
