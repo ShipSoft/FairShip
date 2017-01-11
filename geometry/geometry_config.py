@@ -210,12 +210,12 @@ with ConfigRegistry.register_config("basic") as c:
     if muShieldDesign == 7:
         c.muShield.dZ1 = 0.7*u.m
         c.muShield.dZ2 = 1.7*u.m
-        c.muShield.dZ3 = 4.0*u.m + zGap
-        c.muShield.dZ4 = 2.75*u.m + zGap
-        c.muShield.dZ5 = 2.4*u.m + zGap
-        c.muShield.dZ6 = 3.0*u.m + zGap
-        c.muShield.dZ7 = 2.35*u.m + zGap
-        c.muShield.dZ8 = 0.*u.m
+        c.muShield.dZ3 = 2.0*u.m + zGap
+        c.muShield.dZ4 = 2.0*u.m + zGap
+        c.muShield.dZ5 = 2.75*u.m + zGap
+        c.muShield.dZ6 = 2.4*u.m + zGap
+        c.muShield.dZ7 = 3.0*u.m + zGap
+        c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
         c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                          +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
