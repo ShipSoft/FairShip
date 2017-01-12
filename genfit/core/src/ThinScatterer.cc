@@ -20,6 +20,7 @@
 #include "ThinScatterer.h"
 
 #include <iostream>
+#include <TBuffer.h>
 
 
 namespace genfit {
