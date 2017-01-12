@@ -664,8 +664,10 @@ void veto::ConstructGeometry()
     if (fDesign==5){
     // designMakeSe 5: simplified trapezoidal design for optimization study
     // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
-      Double_t slopex = 2.83*m/(fTub6z - zFocusX);// size in TP design
-      Double_t slopey = fBtube/(fTub6z - zFocusY); 
+    // rib width = rib thickness, H bar therefore 2* 
+      Double_t d = f_VetoThickness+2*f_RibThickness+f_OuterSupportThickness;
+      Double_t slopex = (2.5*m + d)/(fTub6z-fTub6length - zFocusX);
+      Double_t slopey = (fBtube + d) /(fTub6z-fTub6length - zFocusY); 
       Double_t zpos = fTub1z -fTub1length -f_InnerSupportThickness;
    // Add veto-timing sensitive plane before vacuum tube, same size as entrance window
       Double_t dx1 = slopex*(zpos - zFocusX);
@@ -700,19 +702,19 @@ void veto::ConstructGeometry()
       tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length));
 
       //Between T1 and T2: not conical, size of T2
-      dx1 = slopex*(fTub3z - zFocusX);
-      dy = slopey*(fTub3z - zFocusY);
+      dx1 = slopex*(fTub4z -fTub4length - zFocusX);
+      dy =  slopey*(fTub4z -fTub4length - zFocusY);
       TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeightB);
       tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
 
       dx1 = slopex*(fTub4z -fTub4length - zFocusX);
-      dy = slopey*(fTub4z -fTub4length - zFocusY);
+      dy  = slopey*(fTub4z -fTub4length - zFocusY);
       TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slopex,slopey,floorHeightB);
       tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
 
       //Between T3 and T4: not conical, size of T4
-      dx1 = slopex*(fTub5z - zFocusX);
-      dy = slopey*(fTub5z - zFocusY);
+      dx1 = slopex*(fTub6z - fTub6length - zFocusX);
+      dy =  slopey*(fTub6z - fTub6length - zFocusY);
       TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeightB);
       tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
 
