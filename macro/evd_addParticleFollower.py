@@ -7,9 +7,10 @@ if not gEve.GetViewers().FindChild('Bar Embedded Viewer ZOY'):
  pack1.SetElementName("Top/Side View")
  pack1.SetVertical()
 # Embedded viewer.
- cams = ['ZnOX','ZOY']
+ sameZoom = None
+ cams = ['ZOY','ZnOX']
  if not hasattr(ROOT.TGLViewer,'kCameraOrthoZnOX'):
-   cams = ['XOZ','ZOY']
+   cams = ['ZOY','XOZ']
    print "You are not using the patched ROOT6, switch back to OrthoXOZ camera, with Z vertical"
  for c in cams:
   slot = pack1.NewSlot()
@@ -28,6 +29,8 @@ if not gEve.GetViewers().FindChild('Bar Embedded Viewer ZOY'):
   co.SetShowOrthographic(True)
   co.SetOrthographicMode(ROOT.TGLCameraOverlay.kAxis)
   cam = vw.CurrentCamera()
+  if not sameZoom: sameZoom=cam.GetZoom()
+  else: cam.SetZoom(sameZoom)
 # problems with light, Camera home
   cam.SetExternalCenter(ROOT.kTRUE)
   ls = vw.GetLightSet()

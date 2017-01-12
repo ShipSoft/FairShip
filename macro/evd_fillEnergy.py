@@ -16,6 +16,8 @@ def execute():
   fMom = ROOT.TVector3()
   nTrack=1
   fT   = sTree.MCTrack[nTrack]
+  if not abs(fT.GetPdgCode())==13:
+   fT   = sTree.MCTrack[2]
   fT.GetStartVertex(fPos)
   hitlist = {}
   hitlist[fPos.Z()] = [fPos.X(),fPos.Y(),fT.GetP()]
@@ -40,6 +42,8 @@ def execute():
       n+=1
   if len(hitlist)==1:
     zEx = 50*u.m
+    if abs(fT.GetPdgCode())==9900015:
+       zEx = sTree.MCTrack[3].GetStartZ()
     fT.GetMomentum(fMom)
     lam = (zEx+fPos.Z())/fMom.Z()
     hitlist[zEx+fPos.Z()] = [fPos.X()+lam*fMom.X(),fPos.Y()+lam*fMom.Y(),fMom.Mag()]

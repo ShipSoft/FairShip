@@ -674,6 +674,7 @@ def speedUp():
     for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Rib","T"+str(k)+"Hbar"]:
      va = fGeo.GetVolume(v)
      if not va: va = fGeo.GetVolume("T"+str(k)+"Innerwall")
+     if not va: continue
      if not va.GetNodes():  va.SetVisibility(False)
      else:
       for n in va.GetNodes(): n.SetVisibility(True)
