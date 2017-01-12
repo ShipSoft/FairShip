@@ -33,6 +33,7 @@ Pythia8Generator.cxx
 Pythia6Generator.cxx
 tPythia6Generator.cxx
 HNLPythia8Generator.cxx
+DPPythia8Generator.cxx
 GenieGenerator.cxx
 NuageGenerator.cxx
 NtupleGenerator.cxx
