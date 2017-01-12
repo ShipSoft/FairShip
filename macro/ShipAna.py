@@ -210,16 +210,36 @@ def VertexError(t1,t2,PosDir,CovMat,scalFac):
    covX.Mult(tmp,transT)
    return X,covX,dist
 
-def Rsq(X,Y,Z,dy):
-  if ShipGeo.tankDesign < 5: 
-# TP
-   return (X/(2.45*u.m) )**2 + (Y/((dy/2.-0.05)*u.m) )**2
+from array import array
+def dist2InnerWall(X,Y,Z):
+  dist = 0
+ # return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.
+  node = sGeo.FindNode(X,Y,Z)
+  if ShipGeo.tankDesign < 5:
+     if not 'cave' in node.GetName(): return dist  # TP 
   else:
-   flag = 2.
-   node = sGeo.FindNode(X,Y,Z)
-   mat = node.GetVolume().GetMaterial()
-   if mat.GetName() == ShipGeo.Veto['decayMed']: flag = 0.
-   return flag
+     if not 'decayVol' in node.GetName(): return dist
+  start = array('d',[X,Y,Z])
+  nsteps = 8
+  dalpha = 2*ROOT.TMath.Pi()/nsteps
+  rsq = X**2+Y**2
+  minDistance = 100 *u.m
+  for n in range(nsteps):
+    alpha = n * dalpha
+    sdir  = array('d',[ROOT.TMath.Sin(alpha),ROOT.TMath.Cos(alpha),0.])
+    node = sGeo.InitTrack(start, sdir)
+    nxt = sGeo.FindNextBoundary()
+    if ShipGeo.tankDesign < 5 and nxt.GetName().find('I')<0: return 0    
+    distance = sGeo.GetStep()
+    if distance < minDistance  : minDistance = distance
+  return minDistance
+
+def isInFiducial(X,Y,Z):
+   if Z > ShipGeo.TrackStation1.z : return False
+   if Z < ShipGeo.vetoStation.z+100.*u.cm : return False
+   # typical x,y Vx resolution for exclusive HNL decays 0.3cm,0.15cm (gaussian width)
+   if dist2InnerWall(X,Y,Z)<5*u.cm: return False
+   return True 
 #
 def ImpactParameter(point,tPos,tMom):
   t = 0
@@ -241,20 +261,17 @@ def checkHNLorigin(sTree):
  for hnlkey in [1,2]: 
   if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015:
    theHNLVx = sTree.MCTrack[hnlkey+1]
-   if theHNLVx.GetStartZ() < ShipGeo.vetoStation.z+100.*u.cm : flag = False
-   if theHNLVx.GetStartZ() > ShipGeo.TrackStation1.z : flag = False
    X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
-   if Rsq(X,Y,Z,dy)>1: flag = False
+   if not isInFiducial(X,Y,Z): flag = False
  return flag 
 def checkFiducialVolume(sTree,tkey,dy):
-# extrpolate track to middle of magnet and check if in decay volume
+# extrapolate track to middle of magnet and check if in decay volume
    inside = True
    if not fiducialCut: return True
    fT = sTree.FitTracks[tkey]
    rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,ShipGeo.Bfield.z)
    if not rc: return False
-   if Rsq(pos.X(),pos.Y(),pos.Z(),dy)>1:
-    return False
+   if not dist2InnerWall(pos.X(),pos.Y(),pos.Z())>0: return False
    return inside
 def getPtruthFirst(sTree,mcPartKey):
    Ptruth,Ptruthx,Ptruthy,Ptruthz = -1.,-1.,-1.,-1.
@@ -686,9 +703,7 @@ def myEventLoop(n):
      xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)
      if HNLMom == -1: continue
  # check if decay inside decay volume
-    if Rsq(xv,yv,zv,dy) > 1 : continue
-    if zv < vetoStation_zDown  : continue  
-    if zv > T1Station_zUp      : continue  
+    if not isInFiducial(xv,yv,zv): continue  
     h['Doca'].Fill(doca) 
     # if  doca > docaCut : continue
     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
