@@ -125,42 +125,42 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 				  Double_t HmainSideMag, Double_t HmainSideMag2,
 				  Double_t gap,Double_t gap2, Double_t Z, Bool_t NotMagnet)
   {
-    Double_t Clgap,Clgap2;
+    Double_t coil_gap,coil_gap2;
     Int_t color[4] = {45,31,30,38};
 
     if (NotMagnet) {
-      Clgap = gap;
-      Clgap2 = gap2;
+      coil_gap = gap;
+      coil_gap2 = gap2;
     } else {
-      Clgap = std::max(20., gap);
-      Clgap2 = std::max(20., gap2);
+      coil_gap = std::max(20., gap);
+      coil_gap2 = std::max(20., gap2);
       gap = std::max(2., gap);
       gap2 = std::max(2., gap2);
     }
 
-    Double_t testGap = (fDesign == 5) ? 0.0 : 0.1; // gap between fields in the
+    Double_t anti_overlap = (fDesign == 5) ? 0.0 : 0.1; // gap between fields in the
 						   // corners for mitred joints
 						   // (Geant goes crazy when
 						   // they touch each other)
 
     std::array<Double_t,16> cornersMainL = {
-	middleGap,	-dY - dX + testGap,
-	middleGap,	dY + dX - testGap,
-	dX + middleGap,   dY - testGap,
-	dX + middleGap,   -dY + testGap,
-	middleGap2,       -dY2 - dX2 + testGap,
-	middleGap2,       dY2 + dX2 - testGap,
-	dX2 + middleGap2, dY2 - testGap,
-	dX2 + middleGap2, -dY2 + testGap};
+	middleGap,	-dY - dX + anti_overlap,
+	middleGap,	dY + dX - anti_overlap,
+	dX + middleGap,   dY - anti_overlap,
+	dX + middleGap,   -dY + anti_overlap,
+	middleGap2,       -dY2 - dX2 + anti_overlap,
+	middleGap2,       dY2 + dX2 - anti_overlap,
+	dX2 + middleGap2, dY2 - anti_overlap,
+	dX2 + middleGap2, -dY2 + anti_overlap};
     std::array<Double_t,16> cornersMainR = {
-	-dX - middleGap,    -dY + testGap,
-	-dX - middleGap,    dY - testGap,
-	- middleGap,     dY + dX - testGap,
-	- middleGap,     -dY - dX + testGap,
-	-dX2 - middleGap2, -dY2 + testGap,
-	-dX2 - middleGap2, dY2 - testGap,
-	- middleGap2,  dY2 + dX2 - testGap,
-	- middleGap2,  -dY2 - dX2 + testGap};
+	-dX - middleGap,    -dY + anti_overlap,
+	-dX - middleGap,    dY - anti_overlap,
+	- middleGap,     dY + dX - anti_overlap,
+	- middleGap,     -dY - dX + anti_overlap,
+	-dX2 - middleGap2, -dY2 + anti_overlap,
+	-dX2 - middleGap2, dY2 - anti_overlap,
+	- middleGap2,  dY2 + dX2 - anti_overlap,
+	- middleGap2,  -dY2 - dX2 + anti_overlap};
     std::array<Double_t,16> cornersMainSideL = {
 	dX + middleGap + gap,	-HmainSideMag,
 	dX + middleGap + gap,	HmainSideMag,
@@ -182,75 +182,75 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
     std::array<Double_t,16> cornersCLBA = {
 	dX + middleGap + gap,	  -HmainSideMag,
 	2 * dX + middleGap + gap,      -HmainSideMag,
-	2 * dX + middleGap + Clgap,    -dY - dX + testGap,
-	dX + middleGap + Clgap,	-dY + testGap,
+	2 * dX + middleGap + coil_gap,    -dY - dX + anti_overlap,
+	dX + middleGap + coil_gap,	-dY + anti_overlap,
 	dX2 + middleGap2 + gap2,       -HmainSideMag2,
 	2 * dX2 + middleGap2 + gap2,   -HmainSideMag2,
-	2 * dX2 + middleGap2 + Clgap2, -dY2 - dX2 + testGap,
-	dX2 + middleGap2 + Clgap2,     -dY2 + testGap};
+	2 * dX2 + middleGap2 + coil_gap2, -dY2 - dX2 + anti_overlap,
+	dX2 + middleGap2 + coil_gap2,     -dY2 + anti_overlap};
     std::array<Double_t,16> cornersCLTA = {
-	dX + middleGap + Clgap,	dY - testGap,
-	2 * dX + middleGap + Clgap,    dY + dX - testGap,
+	dX + middleGap + coil_gap,	dY - anti_overlap,
+	2 * dX + middleGap + coil_gap,    dY + dX - anti_overlap,
 	2 * dX + middleGap + gap,      HmainSideMag,
 	dX + middleGap + gap,	  HmainSideMag,
-	dX2 + middleGap2 + Clgap2,     dY2 - testGap,
-	2 * dX2 + middleGap2 + Clgap2, dY2 + dX2 - testGap,
+	dX2 + middleGap2 + coil_gap2,     dY2 - anti_overlap,
+	2 * dX2 + middleGap2 + coil_gap2, dY2 + dX2 - anti_overlap,
 	2 * dX2 + middleGap2 + gap2,   HmainSideMag2,
 	dX2 + middleGap2 + gap2,       HmainSideMag2};
     std::array<Double_t,16> cornersCRBA = {
-	-dX - middleGap - Clgap,	-dY + testGap,
-	-2 * dX - middleGap - Clgap,    -dY - dX + testGap,
+	-dX - middleGap - coil_gap,	-dY + anti_overlap,
+	-2 * dX - middleGap - coil_gap,    -dY - dX + anti_overlap,
 	-2 * dX - middleGap - gap,      -HmainSideMag,
 	-dX - middleGap - gap,		-HmainSideMag,
-	-dX2 - middleGap2 - Clgap2,     -dY2 + testGap,
-	-2 * dX2 - middleGap2 - Clgap2, -dY2 - dX2 + testGap,
+	-dX2 - middleGap2 - coil_gap2,     -dY2 + anti_overlap,
+	-2 * dX2 - middleGap2 - coil_gap2, -dY2 - dX2 + anti_overlap,
 	-2 * dX2 - middleGap2 - gap2,   -HmainSideMag2,
 	-dX2 - middleGap2 - gap2,       -HmainSideMag2};
     std::array<Double_t,16> cornersCRTA = {
 	-dX - middleGap - gap,		HmainSideMag,
 	-2 * dX - middleGap - gap,      HmainSideMag,
-	-2 * dX - middleGap - Clgap,    dY + dX - testGap,
-	-dX - middleGap - Clgap,	dY - testGap,
+	-2 * dX - middleGap - coil_gap,    dY + dX - anti_overlap,
+	-dX - middleGap - coil_gap,	dY - anti_overlap,
 	-dX2 - middleGap2 - gap2,       HmainSideMag2,
 	-2 * dX2 - middleGap2 - gap2,   HmainSideMag2,
-	-2 * dX2 - middleGap2 - Clgap2, dY2 + dX2 - testGap,
-	-dX2 - middleGap2 - Clgap2,     dY2 - testGap};
+	-2 * dX2 - middleGap2 - coil_gap2, dY2 + dX2 - anti_overlap,
+	-dX2 - middleGap2 - coil_gap2,     dY2 - anti_overlap};
     std::array<Double_t,16> cornersTL = {
 	middleGap + dX, dY,
 	middleGap, dY + dX,
-	2 * dX + middleGap + Clgap, dY + dX,
-	dX + middleGap + Clgap, dY,
+	2 * dX + middleGap + coil_gap, dY + dX,
+	dX + middleGap + coil_gap, dY,
 	middleGap2 + dX2, dY2,
 	middleGap2, dY2 + dX2,
-	2 * dX2 + middleGap2 + Clgap2, dY2 + dX2,
-	dX2 + middleGap2 + Clgap2, dY2};
+	2 * dX2 + middleGap2 + coil_gap2, dY2 + dX2,
+	dX2 + middleGap2 + coil_gap2, dY2};
     std::array<Double_t,16> cornersTR = {
-	-dX - middleGap - Clgap, dY,
-	-2 * dX - middleGap - Clgap, dY + dX,
+	-dX - middleGap - coil_gap, dY,
+	-2 * dX - middleGap - coil_gap, dY + dX,
 	-middleGap, dY + dX,
 	-middleGap - dX, dY,
-	-dX2 - middleGap2 - Clgap2, dY2,
-	-2 * dX2 - middleGap2 - Clgap2, dY2 + dX2,
+	-dX2 - middleGap2 - coil_gap2, dY2,
+	-2 * dX2 - middleGap2 - coil_gap2, dY2 + dX2,
 	-middleGap2, dY2 + dX2,
 	-middleGap2 - dX2, dY2};
     std::array<Double_t,16> cornersBL = {
-	dX + middleGap + Clgap, -dY,
-	2 * dX + middleGap + Clgap, -dY - dX,
+	dX + middleGap + coil_gap, -dY,
+	2 * dX + middleGap + coil_gap, -dY - dX,
 	middleGap, -dY - dX,
 	middleGap + dX, -dY,
-	dX2 + middleGap2 + Clgap2, -dY2,
-	2 * dX2 + middleGap2 + Clgap2, -dY2 - dX2,
+	dX2 + middleGap2 + coil_gap2, -dY2,
+	2 * dX2 + middleGap2 + coil_gap2, -dY2 - dX2,
 	middleGap2, -dY2 - dX2,
 	middleGap2 + dX2, -dY2};
     std::array<Double_t,16> cornersBR = {
 	-middleGap - dX, -dY,
 	-middleGap, -dY - dX,
-	-2 * dX - middleGap - Clgap, -dY - dX,
-	-dX - middleGap - Clgap, -dY,
+	-2 * dX - middleGap - coil_gap, -dY - dX,
+	-dX - middleGap - coil_gap, -dY,
 	-middleGap2 - dX2, -dY2,
 	-middleGap2, -dY2 - dX2,
-	-2 * dX2 - middleGap2 - Clgap2, -dY2 - dX2,
-	-dX2 - middleGap2 - Clgap2, -dY2};
+	-2 * dX2 - middleGap2 - coil_gap2, -dY2 - dX2,
+	-dX2 - middleGap2 - coil_gap2, -dY2};
 				 
     TString str1L = "_MiddleMagL";
     TString str1R = "_MiddleMagR";
