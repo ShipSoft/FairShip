@@ -152,15 +152,6 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 	middleGap2,       dY2 + dX2 - anti_overlap,
 	dX2 + middleGap2, dY2 - anti_overlap,
 	dX2 + middleGap2, -dY2 + anti_overlap};
-    std::array<Double_t,16> cornersMainR = {
-	-dX - middleGap,    -dY + anti_overlap,
-	-dX - middleGap,    dY - anti_overlap,
-	- middleGap,     dY + dX - anti_overlap,
-	- middleGap,     -dY - dX + anti_overlap,
-	-dX2 - middleGap2, -dY2 + anti_overlap,
-	-dX2 - middleGap2, dY2 - anti_overlap,
-	- middleGap2,  dY2 + dX2 - anti_overlap,
-	- middleGap2,  -dY2 - dX2 + anti_overlap};
     std::array<Double_t,16> cornersMainSideL = {
 	dX + middleGap + gap,	-HmainSideMag,
 	dX + middleGap + gap,	HmainSideMag,
@@ -170,15 +161,6 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 	dX2 + middleGap2 + gap2,     HmainSideMag2,
 	2 * dX2 + middleGap2 + gap2, HmainSideMag2,
 	2 * dX2 + middleGap2 + gap2, -HmainSideMag2};
-    std::array<Double_t,16> cornersMainSideR = {
-	-dX - middleGap - gap,	-HmainSideMag,
-	-2 * dX - middleGap - gap,    -HmainSideMag,
-	-2 * dX - middleGap - gap,    HmainSideMag,
-	-dX - middleGap - gap,	HmainSideMag,
-	-dX2 - middleGap2 - gap2,     -HmainSideMag2,
-	-2 * dX2 - middleGap2 - gap2, -HmainSideMag2,
-	-2 * dX2 - middleGap2 - gap2, HmainSideMag2,
-	-dX2 - middleGap2 - gap2,     HmainSideMag2};
     std::array<Double_t,16> cornersCLBA = {
 	dX + middleGap + gap,	  -HmainSideMag,
 	2 * dX + middleGap + gap,      -HmainSideMag,
@@ -188,33 +170,6 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 	2 * dX2 + middleGap2 + gap2,   -HmainSideMag2,
 	2 * dX2 + middleGap2 + coil_gap2, -dY2 - dX2 + anti_overlap,
 	dX2 + middleGap2 + coil_gap2,     -dY2 + anti_overlap};
-    std::array<Double_t,16> cornersCLTA = {
-	dX + middleGap + coil_gap,	dY - anti_overlap,
-	2 * dX + middleGap + coil_gap,    dY + dX - anti_overlap,
-	2 * dX + middleGap + gap,      HmainSideMag,
-	dX + middleGap + gap,	  HmainSideMag,
-	dX2 + middleGap2 + coil_gap2,     dY2 - anti_overlap,
-	2 * dX2 + middleGap2 + coil_gap2, dY2 + dX2 - anti_overlap,
-	2 * dX2 + middleGap2 + gap2,   HmainSideMag2,
-	dX2 + middleGap2 + gap2,       HmainSideMag2};
-    std::array<Double_t,16> cornersCRBA = {
-	-dX - middleGap - coil_gap,	-dY + anti_overlap,
-	-2 * dX - middleGap - coil_gap,    -dY - dX + anti_overlap,
-	-2 * dX - middleGap - gap,      -HmainSideMag,
-	-dX - middleGap - gap,		-HmainSideMag,
-	-dX2 - middleGap2 - coil_gap2,     -dY2 + anti_overlap,
-	-2 * dX2 - middleGap2 - coil_gap2, -dY2 - dX2 + anti_overlap,
-	-2 * dX2 - middleGap2 - gap2,   -HmainSideMag2,
-	-dX2 - middleGap2 - gap2,       -HmainSideMag2};
-    std::array<Double_t,16> cornersCRTA = {
-	-dX - middleGap - gap,		HmainSideMag,
-	-2 * dX - middleGap - gap,      HmainSideMag,
-	-2 * dX - middleGap - coil_gap,    dY + dX - anti_overlap,
-	-dX - middleGap - coil_gap,	dY - anti_overlap,
-	-dX2 - middleGap2 - gap2,       HmainSideMag2,
-	-2 * dX2 - middleGap2 - gap2,   HmainSideMag2,
-	-2 * dX2 - middleGap2 - coil_gap2, dY2 + dX2 - anti_overlap,
-	-dX2 - middleGap2 - coil_gap2,     dY2 - anti_overlap};
     std::array<Double_t,16> cornersTL = {
 	middleGap + dX, dY,
 	middleGap, dY + dX,
@@ -224,33 +179,28 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 	middleGap2, dY2 + dX2,
 	2 * dX2 + middleGap2 + coil_gap2, dY2 + dX2,
 	dX2 + middleGap2 + coil_gap2, dY2};
-    std::array<Double_t,16> cornersTR = {
-	-dX - middleGap - coil_gap, dY,
-	-2 * dX - middleGap - coil_gap, dY + dX,
-	-middleGap, dY + dX,
-	-middleGap - dX, dY,
-	-dX2 - middleGap2 - coil_gap2, dY2,
-	-2 * dX2 - middleGap2 - coil_gap2, dY2 + dX2,
-	-middleGap2, dY2 + dX2,
-	-middleGap2 - dX2, dY2};
-    std::array<Double_t,16> cornersBL = {
-	dX + middleGap + coil_gap, -dY,
-	2 * dX + middleGap + coil_gap, -dY - dX,
-	middleGap, -dY - dX,
-	middleGap + dX, -dY,
-	dX2 + middleGap2 + coil_gap2, -dY2,
-	2 * dX2 + middleGap2 + coil_gap2, -dY2 - dX2,
-	middleGap2, -dY2 - dX2,
-	middleGap2 + dX2, -dY2};
-    std::array<Double_t,16> cornersBR = {
-	-middleGap - dX, -dY,
-	-middleGap, -dY - dX,
-	-2 * dX - middleGap - coil_gap, -dY - dX,
-	-dX - middleGap - coil_gap, -dY,
-	-middleGap2 - dX2, -dY2,
-	-middleGap2, -dY2 - dX2,
-	-2 * dX2 - middleGap2 - coil_gap2, -dY2 - dX2,
-	-dX2 - middleGap2 - coil_gap2, -dY2};
+
+    // Use symmetries to define remaining magnets
+    std::array<Double_t, 16> cornersMainR, cornersMainSideR, cornersCLTA,
+	cornersCRBA, cornersCRTA, cornersTR, cornersBL, cornersBR;
+    for (int i = 0; i < 16; ++i) {
+      cornersMainR[i] = -cornersMainL[i];
+      cornersMainSideR[i] = -cornersMainSideL[i];
+      cornersCRTA[i] = -cornersCLBA[i];
+      cornersBR[i] = -cornersTL[i];
+    }
+    // Need to change order as corners need to be defined clockwise
+    for (int i = 0, j = 4; i < 8; ++i) {
+      j = (11 - i) % 8;
+      cornersCLTA[2 * j] = cornersCLBA[2 * i];
+      cornersCLTA[2 * j + 1] = -cornersCLBA[2 * i + 1];
+      cornersTR[2 * j] = -cornersTL[2 * i];
+      cornersTR[2 * j + 1] = cornersTL[2 * i + 1];
+    }
+    for (int i = 0; i < 16; ++i) {
+      cornersCRBA[i] = -cornersCLTA[i];
+      cornersBL[i] = -cornersTR[i];
+    }
 				 
     TString str1L = "_MiddleMagL";
     TString str1R = "_MiddleMagR";
