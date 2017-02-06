@@ -57,7 +57,7 @@ class ShipMuonShield : public FairModule
 		  Double_t x_translation, Double_t y_translation,
 		  Double_t z_translation);
 
-  void Initialize(std::vector<TString> &magnetName,
+  Int_t Initialize(std::vector<TString> &magnetName,
 		  std::vector<FieldDirection> &fieldDirection,
 		  std::vector<Double_t> &dXIn, std::vector<Double_t> &dYIn,
 		  std::vector<Double_t> &dXOut, std::vector<Double_t> &dYOut,
