@@ -71,6 +71,7 @@ veto::veto(const char* name, Bool_t active)
     fT4z(2370.),               //!  z-position of tracking station 4
     f_InnerSupportThickness(3.*cm),    //!  inner support thickness of decay volume
     f_OuterSupportThickness(8.*mm),    //!  outer support thickness of decay volume
+    f_PhiRibsThickness(3.*mm),    //!  thickness ribs for phi segmentation
     f_VetoThickness(0.3*m), 	//!  thickness of liquid or plastic scintillator
     zFocusX(-80*m),              //! focus point for x dimension, given by muon free envelope
     zFocusY(-80*m),              //! focus point for Y dimension
@@ -101,6 +102,128 @@ void veto::Initialize()
 //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
 //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
 }
+
+
+TGeoVolume* veto::GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Double_t phi1, Double_t phi2,
+			       Double_t zStart, Double_t zlength, Double_t xc, Double_t yc, Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
+{
+      TString nm = xname.ReplaceAll("-","_");  //otherwise it will try to subtract "-" in TGeoComposteShape
+      
+      int cornerNr = 0;
+      if(phi1>=0&&phi2>0&&phi1<90&&(int)phi2<=90)cornerNr=1;
+      if(phi1>=90&&phi2>90&&phi1<180&&(int)phi2<=180)cornerNr=2;
+      if(phi1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
+      if(phi1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
+       
+  double xdeg=atan(slopeX)*180./TMath::Pi();
+  double ydeg=atan(slopeY)*180./TMath::Pi();
+    double xRad=atan(slopeX);
+  double yRad=atan(slopeY);
+  double tanXY = sqrt(slopeX*slopeX+slopeY*slopeY);
+  double alphaRad = asin(sqrt(sin(xRad)*sin(xRad)+sin(yRad)*sin(yRad)));
+  double R =  dcorner + thick*cos(alphaRad)/2;
+  double dRx = (1-cos(xRad))*R;
+  double dRy = (1-cos(yRad))*R;
+  
+  //xc-= 2*dRx;
+  //yc-= 2*dRy;
+   
+  TGeoTubeSeg *Ts = new TGeoTubeSeg("Ts"+nm,dcorner,dcorner+thick*cos(alphaRad),dz,phi1,phi2);
+  TGeoRotation *r = new TGeoRotation("r"+nm);
+  if(cornerNr==1){r->RotateX(-ydeg);r->RotateY(xdeg);}
+  if(cornerNr==2){r->RotateX(-ydeg);r->RotateY(-xdeg);xc=-xc;}
+  if(cornerNr==3){r->RotateX(ydeg);r->RotateY(-xdeg);xc=-xc;yc=-yc;}
+  if(cornerNr==4){r->RotateX(ydeg);r->RotateY(xdeg);yc=-yc;}
+  r->RegisterYourself();
+  TGeoCombiTrans *c = new TGeoCombiTrans("c"+nm,xc,yc,sin(alphaRad)*R,r);
+       //TGeoCombiTrans *c = new TGeoCombiTrans("c"+nm,0,0,0,new TGeoRotation("r"+nm,0,0,0));
+       //TGeoCombiTrans *c = new TGeoCombiTrans("c"+nm,0,0,0,new TGeoRotation("r"+nm,0,0,0));
+  c->RegisterYourself();
+  
+  TGeoBBox *box1 = new TGeoBBox("Box1"+nm, 4*dx_start, 4*dy_start, dz);
+  TGeoRotation *r1 = new TGeoRotation("r1"+nm);r1->RotateX(0);r1->RotateY(0);r1->RegisterYourself();
+  TGeoCombiTrans *c1 = new TGeoCombiTrans("c1"+nm,0,0,zStart-dz,r1);
+  c1->RegisterYourself();
+  
+  TGeoBBox *box2 = new TGeoBBox("Box2"+nm, 4*dx_start, 4*dy_start, dz);
+  TGeoRotation *r2 = new TGeoRotation("r2"+nm);r2->RotateX(0);r2->RotateY(0);r2->RegisterYourself();
+  TGeoCombiTrans *c2 = new TGeoCombiTrans("c2"+nm,0,0,zStart+zlength+dz,r2);
+  c2->RegisterYourself();
+
+  TGeoVolume *T;
+  TGeoCompositeShape *Tcomb = new TGeoCompositeShape("Tcomb"+nm,"Ts"+nm+":c"+nm+"-Box1"+nm+":c1"+nm+"-Box2"+nm+":c2"+nm);
+  T = new TGeoVolume(xname, Tcomb, material);   
+  T->SetLineColor(colour);
+  //and make the volunes sensitive..
+  if (sens) {AddSensitiveVolume(T);}
+  return T;
+}
+
+
+TGeoVolume* veto::GeoPolyhedron(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX1,Double_t slopeX2,Double_t slopeY1,Double_t slopeY2,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
+{
+      Double_t dx1 = dx_start;
+      Double_t dy1 = dy_start;
+      TGeoArb8 *T1 = new TGeoArb8(dz);
+      T1->SetVertex(0,-dx1,-dy1);
+      T1->SetVertex(1,-dx1,dy1);
+      T1->SetVertex(2,dx1,dy1); 
+      T1->SetVertex(3,dx1,-dy1);
+
+      Double_t x4=-dx1+ 2*slopeX1*dz;
+      Double_t x5=-dx1+ 2*slopeX1*dz;
+      Double_t x6=dx1+ 2*slopeX2*dz;
+      Double_t x7=dx1+ 2*slopeX2*dz;
+    
+      Double_t y4=-dy1+2*slopeY1*dz;
+      Double_t y5=dy1 +2*slopeY2*dz;
+      Double_t y6=dy1 +2*slopeY2*dz;
+      Double_t y7=-dy1+2*slopeY1*dz;
+
+      T1->SetVertex(4,x4,y4);
+      T1->SetVertex(5,x5,y5);
+      T1->SetVertex(6,x6,y6);
+      T1->SetVertex(7,x7,y7);
+      TGeoVolume *T;
+      T = new TGeoVolume(name, T1, material);
+      T->SetLineColor(colour);
+    //and make the volunes sensitive..
+      if (sens) {AddSensitiveVolume(T);}
+      return T;
+}
+
+TGeoVolume* veto::GeoParalepiped(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
+{
+      Double_t dx1 = dx_start;
+      Double_t dy1 = dy_start;
+      TGeoArb8 *T1 = new TGeoArb8(dz);
+      T1->SetVertex(0,-dx1,-dy1);
+      T1->SetVertex(1,-dx1,dy1);
+      T1->SetVertex(2,dx1,dy1);
+      T1->SetVertex(3,dx1,-dy1);
+
+      Double_t x4=-dx1+ 2*slopeX*dz;
+      Double_t x5=-dx1+ 2*slopeX*dz;
+      Double_t x6=dx1+ 2*slopeX*dz;
+      Double_t x7=dx1+ 2*slopeX*dz;
+      
+      Double_t y4=-dy1+ 2*slopeY*dz;
+      Double_t y5=dy1+ 2*slopeY*dz;
+      Double_t y6=dy1+ 2*slopeY*dz;
+      Double_t y7=-dy1+ 2*slopeY*dz;
+
+      T1->SetVertex(4,x4,y4);
+      T1->SetVertex(5,x5,y5);
+      T1->SetVertex(6,x6,y6);
+      T1->SetVertex(7,x7,y7);
+      TGeoVolume *T;
+      T = new TGeoVolume(name, T1, material);
+      T->SetLineColor(colour);
+      //and make the volunes sensitive..
+      if (sens) {AddSensitiveVolume(T);}
+      return T;
+}
+
 // private method make trapezoids with hole and rounded corners
 TGeoVolume* veto::GeoTrapezoid(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE)
 {
@@ -302,7 +425,7 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       tTankVol->AddNode(TV,0, Zero);
 
       //now place inner wall
-      dcorner+=f_InnerSupportThickness;
+      dcorner+=f_InnerSupportThickness;//????????
       nm = "T"; nm += seg;
       nm+= "Innerwall";
       dx = dx_start  - f_OuterSupportThickness - f_VetoThickness -f_InnerSupportThickness;
@@ -327,25 +450,284 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       }
       tTankVol->AddNode(tRib,0, Zero);
 
+      
       //now place LiSc
       //if (seg!=4 && seg!=6){  old, now only LiSc before T1, i.e. seg==3
       if (seg<3){
-       Double_t zlength=(ribspacing -f_InnerSupportThickness)/2.;
-       nm = "T"; nm += seg;
-       nm+= "LiSc";
-       TGeoVolumeAssembly *tLiSc = new TGeoVolumeAssembly(nm);
-       for (Int_t nr=1; nr<nribs; nr++) {
-        Double_t zlisc= -dz +f_RibThickness+zlength+(nr-1)*ribspacing;
-        dx = dx_start -f_OuterSupportThickness -f_InnerSupportThickness + slopeX*(zlisc+dz-zlength);
-        dy = dy_start -f_OuterSupportThickness-f_InnerSupportThickness;
-        if (slopeY>0) {dy+= slopeY*(zlisc+dz-zlength);}
-        TString tmp = nm;
-        tmp+="-";tmp+=nr;
-        TGeoVolume* T = GeoTrapezoid(tmp,f_VetoThickness,zlength,dx,dy,slopeX,slopeY,dcorner,kMagenta-10,vetoMed,kTRUE);
-        tLiSc->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
-       }
-       tTankVol->AddNode(tLiSc,0, Zero);
+	
+       dcorner+=f_InnerSupportThickness;
+       Double_t zlength=(ribspacing -f_InnerSupportThickness)/2.; 
+       Double_t wL = 0.5*m;//width of liqued scintilator
+       Double_t wLscale = 2*0.5;
+       Double_t wR = f_PhiRibsThickness;
+       int nRx = 1;
+       int nRy = 1;
+       int liScCounter = 1;
+       int ribPhiCounter = 1;
+       int liSc_C_Counter = 1;
+       int ribPhi_C_Counter = 1;
+       
+       TGeoVolume* phiRib_Y_slope = GeoParalepiped("phiRib_Y_slope",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,0,-slopeY,kBlue,ribMed);
+       TGeoVolume* phiRib_X_slope = GeoParalepiped("phiRib_X_slope",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,0,kBlue,ribMed);
+       
+       TGeoVolume* phiRib_YX_slopeL = GeoParalepiped("phiRib_YX_slopeL",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,-slopeY,kBlue,ribMed);
+       TGeoVolume* phiRib_XY_slopeL = GeoParalepiped("phiRib_XY_slopeL",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,-slopeY,kBlue,ribMed);
+       
+       TGeoVolume* phiRib_YX_slopeR = GeoParalepiped("phiRib_YX_slopeR",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,slopeX,-slopeY,kBlue,ribMed);
+       TGeoVolume* phiRib_XY_slopeR = GeoParalepiped("phiRib_XY_slopeR",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY,kBlue,ribMed);
+       
+       TGeoVolume* liScYslope = GeoParalepiped("liScYslope",zlength,wL/2,f_VetoThickness/2,0,-slopeY,kMagenta-10,vetoMed,kTRUE);
+       TGeoVolume* liScXslope = GeoParalepiped("liScXslope",zlength,f_VetoThickness/2,wL/2,-slopeX,0,kMagenta-10,vetoMed,kTRUE);
+       
 
+       
+       TGeoVolume* liSc_Corner[16];
+       TGeoVolume* phiRib_Corner[12];
+       
+       TString nmL = "T"; nmL += seg;
+       nmL+= "LiSc";
+       TGeoVolumeAssembly *tLiSc = new TGeoVolumeAssembly(nmL);
+       
+       TString nmR = "T"; nmR += seg;
+       nmR+= "RibPhi";    
+       TGeoVolumeAssembly *tRibPhi = new TGeoVolumeAssembly(nmR);
+       
+       TString nmLC = "T"; nmLC += seg;
+       nmLC+= "LiScC";
+       TGeoVolumeAssembly *tLiScC = new TGeoVolumeAssembly(nmLC);
+       
+       TString nmRC = "T"; nmRC += seg;
+       nmRC+= "RibPhiC";    
+       TGeoVolumeAssembly *tRibPhiC = new TGeoVolumeAssembly(nmRC);
+
+         double phiStep = 22.44;
+         double phiRibTh = 0.08;
+	 double phi1=0;
+	 double phi2=0;
+	for(int nrPhiC=1; nrPhiC<=16; nrPhiC++){ 
+	   phi2=phi1+phiStep;
+	   TString tmp = "liSc_Corner";tmp += nrPhiC;
+	   liSc_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx_start,dy_start,slopeX,slopeY,dcorner,phi1,phi2,-zlength, 2*zlength,0,0, kMagenta-10,vetoMed,kTRUE); 
+	   phi1+=phiStep;
+	   if(nrPhiC%4>0)phi1+=phiRibTh; 
+	 }
+       
+        phi1=0;phi2=0;
+	for(Int_t nrPhiC=1; nrPhiC<=12; nrPhiC++){
+	  if(nrPhiC%3==1)phi1+=phiStep;
+	  phi2=phi1+phiRibTh;
+	  TString  tmp = "phiRib_Corner";tmp+=nrPhiC;
+	  phiRib_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx_start,dy_start,slopeX,slopeY,dcorner,phi1,phi2,-zlength, 2*zlength,0,0, kMagenta-10,ribMed); 
+	  phi1+=phiStep;
+	  phi1+=phiRibTh;    
+	}
+            
+       Double_t x_step0 = (dx_start-f_OuterSupportThickness-f_InnerSupportThickness-f_VetoThickness-f_PhiRibsThickness/2-dcorner);
+       Double_t y_step0 = (dy_start-f_OuterSupportThickness-f_InnerSupportThickness-f_VetoThickness-f_PhiRibsThickness/2-dcorner);
+      
+      for (Int_t nr=1; nr<nribs; nr++) {
+	//if(nr!=1 && nr!=7 && nr!=57)continue;
+	TString nmLnr = nmL;nmLnr+="_";nmLnr += nr;
+	TString nmLCnr = nmLC;nmLCnr+="_";nmLCnr += nr;
+	TString nmRnr = nmR;nmRnr+="_";nmRnr += nr;
+	TString nmRCnr = nmRC;nmRCnr+="_";nmRCnr += nr;
+	TString tmp;
+	double tmpX=0;
+	double tmpY=0;
+	
+      Double_t zlisc= -dz +f_RibThickness+zlength+(nr-1)*ribspacing;
+      Double_t x = -x_step0-slopeX*(zlisc+dz-zlength);
+      Double_t y = -y_step0-slopeY*(zlisc+dz-zlength);
+      Double_t X = -dx_start+f_OuterSupportThickness+f_InnerSupportThickness+f_VetoThickness/2-slopeX*(zlisc+dz-zlength);
+      Double_t Y = -dy_start+f_OuterSupportThickness+f_InnerSupportThickness+f_VetoThickness/2-slopeY*(zlisc+dz-zlength);
+      Double_t lx=-2*x-f_PhiRibsThickness;
+      Double_t ly=-2*y-f_PhiRibsThickness;
+      
+      //place phi ribs
+      tmpX = x+wR/2;
+      tRibPhi->AddNode(phiRib_YX_slopeL, ribPhiCounter, new TGeoTranslation(tmpX,Y,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_YX_slopeL, ribPhiCounter, new TGeoCombiTrans(-tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_YX_slopeR, ribPhiCounter, new TGeoTranslation(-tmpX,Y,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_YX_slopeR, ribPhiCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      
+      tmpY = y+wR/2;
+      tRibPhi->AddNode(phiRib_XY_slopeL, ribPhiCounter, new TGeoTranslation(X,tmpY,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_XY_slopeL, ribPhiCounter, new TGeoCombiTrans(-X,-tmpY,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_XY_slopeR, ribPhiCounter, new TGeoTranslation(X,-tmpY,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_XY_slopeR, ribPhiCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      
+      //place phi-lics and phi ribs on X axis
+      while(lx>=wLscale*wL+(nRx+1)*wR+nRx*wL)nRx+=1;
+      if(lx<wLscale*wL+wR){
+	tmp = nmLnr;
+	tmp+="_";tmp+=liScCounter;
+	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,-x-f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(0,Y,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(0,-Y,zlisc,new TGeoRotation("r",0,0,180)));
+	liScCounter+=1;
+      }
+      else if(lx<wLscale*wL+(nRx+1)*wR+nRx*wL){
+	double wC = (lx-(nRx*wR+(nRx-1)*wL))/2;
+	tmp = nmLnr;
+	tmp+="_";tmp+=liScCounter;
+	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,wC/2,f_VetoThickness/2,-slopeX,0,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(x+wC/2+wR/2,Y,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-(x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
+	liScCounter+=1;
+	
+	tmp = nmLnr;
+	tmp+="_";tmp+=liScCounter;
+	liSc = GeoPolyhedron(tmp,zlength,wC/2,f_VetoThickness/2,0,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(-(x+wC/2+wR/2),Y,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans((x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
+	liScCounter+=1;
+	
+	for(int i=1;i<=nRx-1;i++){
+	  tmpX = x+wR+wC+(i-1)*(wR+wL)+wL/2;
+	  tLiSc->AddNode(liScYslope, liScCounter, new TGeoTranslation(tmpX,Y,zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liScYslope, liScCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
+	  liScCounter++;
+	}
+	//place phi-ribs
+	for(int i=1;i<=nRx;i++){
+	  tmpX = x+wC+(i-1)*(wR+wL)+wR/2;
+	  tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoTranslation(tmpX,Y,zlisc));
+	  ribPhiCounter++;
+          tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
+	  ribPhiCounter++;
+	}
+      }
+	
+	
+      //place phi-lics and phi ribs on Y axis
+      while(ly>=wLscale*wL+(nRy+1)*wR+nRy*wL)nRy+=1;
+      if(ly<wLscale*wL+wR){
+	tmp = nmLnr;
+	tmp+="_";tmp+=liScCounter;
+	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y-f_PhiRibsThickness/2,-slopeX,-slopeX,-slopeY,slopeY,kMagenta-10,vetoMed,kTRUE);
+	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,0,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,0,zlisc,new TGeoRotation("r",0,0,180)));
+	liScCounter+=1;
+      }
+      else if(ly<wLscale*wL+(nRy+1)*wR+nRy*wL){
+	double wC = (ly-(nRy*wR+(nRy-1)*wL))/2;
+	tmp = nmLnr;
+	tmp+="_";tmp+=liScCounter;
+	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2,-slopeX,-slopeX,-slopeY,0,kMagenta-10,vetoMed,kTRUE);
+	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,y+wC/2+wR/2,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,-(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
+	liScCounter+=1;
+	
+	tmp = nmLnr;
+	tmp+="_";tmp+=liScCounter;
+	liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2,-slopeX,-slopeX,0,slopeY,kMagenta-10,vetoMed,kTRUE);
+	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,-(y+wC/2+wR/2),zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
+	liScCounter+=1;
+	
+
+	for(int i=1;i<=nRy-1;i++){
+	  tmpY = y+wR+wC+(i-1)*(wR+wL)+wL/2;
+	  tLiSc->AddNode(liScXslope, liScCounter, new TGeoTranslation(X,tmpY,zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liScXslope, liScCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
+	  liScCounter++;
+	}
+	//place phi-ribs
+	for(int i=1;i<=nRy;i++){
+	  tmpY = y+wC+(i-1)*(wR+wL)+wR/2;
+	  tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoTranslation(X,tmpY,zlisc));
+	  ribPhiCounter++;
+          tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
+	  ribPhiCounter++;
+	}
+      }
+	
+	
+	   
+	 //place scintillator in corner
+	 
+	 double zStart = -dz +(nr-1)*ribspacing+f_RibThickness;
+	 double xRad=atan(slopeX);
+         double yRad=atan(slopeY);
+         double alphaRad = asin(sqrt(sin(xRad)*sin(xRad)+sin(yRad)*sin(yRad)));
+         double R =  dcorner + f_VetoThickness*cos(alphaRad)/2;
+         double dRx = (1-cos(xRad))*R;
+         double dRy = (1-cos(yRad))*R;
+	 double xc = dx_start - f_OuterSupportThickness - f_InnerSupportThickness/2. - f_VetoThickness - dcorner + slopeX*(zlisc+dz-zlength);
+         double yc = dy_start - f_OuterSupportThickness - f_InnerSupportThickness/2. - f_VetoThickness - dcorner + slopeY*(zlisc+dz-zlength);
+	 xc+= dRx;
+         yc+= dRy;
+	 
+	 phi1=0;phi2=0;
+	 for(Int_t nrPhiC=1; nrPhiC<=16; nrPhiC++){ 
+	   phi2=phi1+phiStep;
+  
+	   int cornerNr = 0;
+           if(phi1>=0&&phi2>0&&phi1<90&&(int)phi2<=90)cornerNr=1;
+           if(phi1>=90&&phi2>90&&phi1<180&&(int)phi2<=180)cornerNr=2;
+           if(phi1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
+           if(phi1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
+
+           if(cornerNr==1){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(xc, yc,zStart+zlength));}
+           if(cornerNr==2){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(-xc, yc,zStart+zlength));}
+           if(cornerNr==3){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(-xc, -yc,zStart+zlength));}
+           if(cornerNr==4){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(xc, -yc,zStart+zlength));}
+	   liSc_C_Counter++;
+	   phi1+=phiStep;
+	   if(nrPhiC%4>0)phi1+=phiRibTh;
+	     
+	 }
+	 
+	 //place phi-ribs in corner
+	 phi1=0;phi2=0;
+	 for(Int_t nrPhiC=1; nrPhiC<=12; nrPhiC++){
+	   if(nrPhiC%3==1)phi1+=phiStep;
+	   phi2=phi1+phiRibTh;
+	  
+	   int cornerNr = 0;
+           if(phi1>=0&&phi2>0&&phi1<90&&(int)phi2<=90)cornerNr=1;
+           if(phi1>=90&&phi2>90&&phi1<180&&(int)phi2<=180)cornerNr=2;
+           if(phi1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
+           if(phi1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
+	   
+	   if(cornerNr==1){tRibPhiC->AddNode(phiRib_Corner[nrPhiC-1], ribPhi_C_Counter , new TGeoTranslation(xc, yc,zStart+zlength));}
+           if(cornerNr==2){tRibPhiC->AddNode(phiRib_Corner[nrPhiC-1], ribPhi_C_Counter , new TGeoTranslation(-xc, yc,zStart+zlength));}
+           if(cornerNr==3){tRibPhiC->AddNode(phiRib_Corner[nrPhiC-1], ribPhi_C_Counter , new TGeoTranslation(-xc, -yc,zStart+zlength));}
+           if(cornerNr==4){tRibPhiC->AddNode(phiRib_Corner[nrPhiC-1], ribPhi_C_Counter , new TGeoTranslation(xc, -yc,zStart+zlength));}
+	   ribPhi_C_Counter++;
+	   
+	   phi1+=phiStep;
+	   phi1+=phiRibTh;
+	     
+	 }
+	   
+	   
+        } 
+        dcorner-=f_InnerSupportThickness;
+	
+	tTankVol->AddNode(tRibPhi,0, Zero);
+	tTankVol->AddNode(tLiSc,0, Zero);
+	tTankVol->AddNode(tRibPhiC,0, Zero);
+	tTankVol->AddNode(tLiScC,0, Zero);
+	
+	
+	
        //now close LiSc volumes with Al plates
        dcorner+=f_InnerSupportThickness+f_VetoThickness;
        nm = "T"; nm += seg;
@@ -361,6 +743,7 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
         TGeoVolume* T = GeoTrapezoid(tmp,f_OuterSupportThickness,0.5*ribspacing-1.e-6-hwidth/2.,dx,dy,slopeX,slopeY,dcorner,18,supportMedOut);
         tOuterwall->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
        }
+       ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
        tTankVol->AddNode(tOuterwall,0, Zero); 
       }else{
        dcorner+=f_InnerSupportThickness+f_VetoThickness;
@@ -376,9 +759,9 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
         Double_t hw=hwidth;
         if (nr==0) {zrib=zrib+hwidth/2.; hw=hw/2.;}
         if (nr==nribs-1) {zrib=zrib-hwidth/2.; hw=hw/2.;}
-        dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-hwidth);
+        dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-hw);
         dy = dy_start -f_OuterSupportThickness;
-        if (slopeY>0) {dy+=slopeY*(zrib+dz-hwidth);}
+        if (slopeY>0) {dy+=slopeY*(zrib+dz-hw);}
         TString tmp = nm;
         tmp+="-";tmp+=nr;
         TGeoVolume* T = GeoTrapezoid(tmp,f_InnerSupportThickness/2.,hw,dx,dy,slopeX,slopeY,dcorner,15,ribMed);
@@ -693,6 +1076,7 @@ void veto::ConstructGeometry()
       dx1 = slopex*(fTub2z -fTub2length - zFocusX);
       dy  = slopey*(fTub2z -fTub2length - zFocusY);
       TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeightA);
+      ///////////////////////////////////////////////////////////////////////////////
       tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z - zStartDecayVol));
 
       Length = fTub6z+fTub6length-fTub2z-fTub2length; 

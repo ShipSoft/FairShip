@@ -23,12 +23,14 @@ vetoHit::vetoHit()
 vetoHit::vetoHit(Int_t detID, Float_t adc)
   : ShipHit(detID,adc)
 {
+ 
  flag = true;
 }
 // -----   constructor from vetoPoint   ------------------------------------------
 vetoHit::vetoHit(vetoPoint* p, Double_t t0)
   : ShipHit()
 {
+  
     flag = true;
 }
 // -------------------------------------------------------------------------
@@ -39,10 +41,11 @@ vetoHit::~vetoHit() { }
 
 // -----   Public method Print   -------------------------------------------
 void vetoHit::Print(Int_t detID) const
-{
+{ 
   cout << "-I- vetoHit: veto hit " << " in detector " << fDetectorID << endl;
   cout << "  ADC " << fdigi << " ns" << endl;
 }
+
 // -------------------------------------------------------------------------
 
 ClassImp(vetoHit)

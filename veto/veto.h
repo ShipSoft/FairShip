@@ -119,6 +119,7 @@ class veto: public FairDetector
     Float_t fTub5length;
     Float_t fTub6length;
     Float_t f_InnerSupportThickness;
+    Float_t f_PhiRibsThickness;
     Float_t f_OuterSupportThickness;
     Float_t f_VetoThickness;
     Float_t f_RibThickness;
@@ -148,7 +149,12 @@ class veto: public FairDetector
     Int_t InitMedium(const char* name);
     TGeoVolume* GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sense);
     void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
+    TGeoVolume* GeoParalepiped(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Int_t colour,TGeoMedium *material,Bool_t sens);
     TGeoVolume* GeoTrapezoid(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoPolyhedron(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX1,Double_t slopeX2,Double_t slopeY1,Double_t slopeY2,Int_t colour,TGeoMedium *material,Bool_t sens);
+    //TGeoVolume* GeoCornerSeg(TString xname,Double_t  phi,Double_t dPhi,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE);
+    TGeoVolume* GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Double_t phi1, Double_t phi2,Double_t zStart, Double_t zlength, Double_t xc, Double_t yc,  Int_t colour,TGeoMedium *material,Bool_t sens);
+
     TGeoVolume* GeoVesselSupport(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Double_t floorHeight);
 
     TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
