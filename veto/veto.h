@@ -130,12 +130,14 @@ class veto: public FairDetector
     TString supportMedOut_name;   //! medium of support structure, aluminium, balloon
     TString decayVolumeMed_name;  //! medium of decay volume, vacuum/air/helium
     TString ribMed_name;          //! medium of rib support structure
+    TString phi_ribMed_name;      //! medium of phi_ribs structure separating  the LiSc segments in XY plane 
     TGeoMedium *vetoMed;    //! 
     TGeoMedium *supportMedIn; //! 
     TGeoMedium *supportMedOut; //! 
     TGeoMedium *decayVolumeMed; //! 
     TGeoMedium *ribVolumeMed; //! 
-    TGeoMedium *ribMed; //! 
+    TGeoMedium *ribMed; //!
+    TGeoMedium *phi_ribMed; //!
 
     Float_t fXstart,fYstart; // horizontal/vertical width at start of tank
     Float_t zFocusX,zFocusY; // focus points for conical design

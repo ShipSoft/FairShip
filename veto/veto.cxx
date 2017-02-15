@@ -82,7 +82,8 @@ veto::veto(const char* name, Bool_t active)
     vetoMed_name("Scintillator"),   // for liquid scintillator
     supportMedIn_name("steel"),        // for vacuum option
     supportMedOut_name("Aluminum"),    // for vacuum option
-    ribMed_name("steel"),
+    ribMed_name("steel"),             //material of the ribs(support structure)  
+    phi_ribMed_name("polypropylene"),//material of the phi_ribs (structure separating  the LiSc segments in XY plane)
     f_RibThickness(3.*cm),
     decayVolumeMed_name("vacuums")    // for vacuum option
 {
@@ -467,14 +468,14 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
        int liSc_C_Counter = 1;
        int ribPhi_C_Counter = 1;
        
-       TGeoVolume* phiRib_Y_slope = GeoParalepiped("phiRib_Y_slope",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,0,-slopeY,kBlue,ribMed);
-       TGeoVolume* phiRib_X_slope = GeoParalepiped("phiRib_X_slope",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,0,kBlue,ribMed);
+       TGeoVolume* phiRib_Y_slope = GeoParalepiped("phiRib_Y_slope",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,0,-slopeY,kBlue,phi_ribMed);
+       TGeoVolume* phiRib_X_slope = GeoParalepiped("phiRib_X_slope",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,0,kBlue,phi_ribMed);
        
-       TGeoVolume* phiRib_YX_slopeL = GeoParalepiped("phiRib_YX_slopeL",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,-slopeY,kBlue,ribMed);
-       TGeoVolume* phiRib_XY_slopeL = GeoParalepiped("phiRib_XY_slopeL",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,-slopeY,kBlue,ribMed);
+       TGeoVolume* phiRib_YX_slopeL = GeoParalepiped("phiRib_YX_slopeL",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,-slopeY,kBlue,phi_ribMed);
+       TGeoVolume* phiRib_XY_slopeL = GeoParalepiped("phiRib_XY_slopeL",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,-slopeY,kBlue,phi_ribMed);
        
-       TGeoVolume* phiRib_YX_slopeR = GeoParalepiped("phiRib_YX_slopeR",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,slopeX,-slopeY,kBlue,ribMed);
-       TGeoVolume* phiRib_XY_slopeR = GeoParalepiped("phiRib_XY_slopeR",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY,kBlue,ribMed);
+       TGeoVolume* phiRib_YX_slopeR = GeoParalepiped("phiRib_YX_slopeR",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,slopeX,-slopeY,kBlue,phi_ribMed);
+       TGeoVolume* phiRib_XY_slopeR = GeoParalepiped("phiRib_XY_slopeR",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY,kBlue,phi_ribMed);
        
        TGeoVolume* liScYslope = GeoParalepiped("liScYslope",zlength,wL/2,f_VetoThickness/2,0,-slopeY,kMagenta-10,vetoMed,kTRUE);
        TGeoVolume* liScXslope = GeoParalepiped("liScXslope",zlength,f_VetoThickness/2,wL/2,-slopeX,0,kMagenta-10,vetoMed,kTRUE);
@@ -517,7 +518,7 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
 	  if(nrPhiC%3==1)phi1+=phiStep;
 	  phi2=phi1+phiRibTh;
 	  TString  tmp = "phiRib_Corner";tmp+=nrPhiC;
-	  phiRib_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx_start,dy_start,slopeX,slopeY,dcorner,phi1,phi2,-zlength, 2*zlength,0,0, kMagenta-10,ribMed); 
+	  phiRib_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx_start,dy_start,slopeX,slopeY,dcorner,phi1,phi2,-zlength, 2*zlength,0,0, kMagenta-10,phi_ribMed); 
 	  phi1+=phiStep;
 	  phi1+=phiRibTh;    
 	}
@@ -1023,6 +1024,8 @@ void veto::ConstructGeometry()
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     InitMedium("steel");
+    TGeoMedium *polypropylene = gGeoManager->GetMedium("polypropylene");
+    InitMedium("polypropylene");
     TGeoMedium *St =gGeoManager->GetMedium("steel");
     InitMedium("vacuums");
     TGeoMedium *vac =gGeoManager->GetMedium("vacuums");
@@ -1038,6 +1041,7 @@ void veto::ConstructGeometry()
     supportMedOut  = gGeoManager->GetMedium(supportMedOut_name); //! medium of support structure, aluminium, balloon
     decayVolumeMed = gGeoManager->GetMedium(decayVolumeMed_name);  // decay volume, air/helium/vacuum
     ribMed = gGeoManager->GetMedium(ribMed_name); //! medium of support structure
+    phi_ribMed=gGeoManager->GetMedium(phi_ribMed_name); //medium of the  structure separating  the LiSc segments in XY plane
     if (fDesign<4||fDesign>5){ fLogger->Fatal(MESSAGE_ORIGIN, "Only Designs 4 and 5 are supported!");}
     // put everything in an assembly
     TGeoVolume *tDecayVol = new TGeoVolumeAssembly("DecayVolume");
