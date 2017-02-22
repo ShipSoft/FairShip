@@ -38,6 +38,7 @@ class MagneticSpectrometer:public FairDetector
     void SetReturnYokeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetSmallerYokeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetCoilParameters(Double_t CoilH, Double_t CoilW, Int_t N, Double_t CoilG);
+    void SetPillarDimensions(Double_t X, Double_t Y, Double_t Z);
 
     void ConstructGeometry();
     
@@ -151,9 +152,15 @@ protected:
     Double_t fYGas;
     Double_t fZGas;
 
+    //Dimension of the pillars
+    Double_t fPillarX;
+    Double_t fPillarY;
+    Double_t fPillarZ;
+
+
     MagneticSpectrometer(const MagneticSpectrometer&);
     MagneticSpectrometer& operator=(const MagneticSpectrometer&);
-    ClassDef(MagneticSpectrometer,2)
+    ClassDef(MagneticSpectrometer,3)
 
 };
 

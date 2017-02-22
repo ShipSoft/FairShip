@@ -354,6 +354,10 @@ with ConfigRegistry.register_config("basic") as c:
       c.EmuMagnet.BaseX = c.EmuMagnet.Height1
       c.EmuMagnet.BaseY = c.EmuMagnet.Y
       c.EmuMagnet.BaseZ = c.EmuMagnet.Z
+      c.EmuMagnet.PillarX = 0.5*u.m
+      c.EmuMagnet.PillarZ = 0.5*u.m
+      c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
+      #10m is the half-height of the cave
     if c.EmuMagnet.TPDesign == 1: #TP MagnetConfig
       c.EmuMagnet.X = 3.6*u.m
       c.EmuMagnet.Radius = 1*u.m
@@ -367,7 +371,9 @@ with ConfigRegistry.register_config("basic") as c:
       c.EmuMagnet.ColY = c.EmuMagnet.BaseY
       c.EmuMagnet.ColZ = 0*u.m
       c.EmuMagnet.Y = 2*c.EmuMagnet.BaseY+c.EmuMagnet.Height1+c.EmuMagnet.Height2+c.EmuMagnet.Distance
-    
+      c.EmuMagnet.PillarX = 0 *u.m
+      c.EmuMagnetPillarZ = 0*u.m
+      c.EmuMagnetPillarY = 0* u.m
 
     #Parameters for tau magnetic Spectrometer
     c.tauMS = AttrDict(z=0*u.cm)
@@ -377,6 +383,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMS.Xtot = 4.*u.m  
         c.tauMS.YFe = 8*u.m
         c.tauMS.Ytot = c.tauMS.YFe + 2*c.tauMS.YRyoke
+        c.tauMS.PillarX = 0*u.cm
+        c.tauMS.PillarZ = 0*u.cm
+        c.tauMS.PillarY=0 *u.cm
     if c.EmuMagnet.TPDesign==0:
         scaleMS=1.0
         c.tauMS.YRyoke = scale*40*u.cm
@@ -384,6 +393,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMS.Xtot = scaleMS*1.9*u.m 
         c.tauMS.Ytot = scaleMS*3.8*u.m
         c.tauMS.YFe = c.tauMS.Ytot - 2*c.tauMS.YRyoke
+        c.tauMS.PillarX = 40*u.cm
+        c.tauMS.PillarZ = 50*u.cm
+        c.tauMS.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMS.Ytot/2 -10*u.cm - 0.1*u.mm
     c.tauMS.XRyoke = c.tauMS.Xtot+20*u.cm
     c.tauMS.XRyoke_s = c.tauMS.Xtot
     c.tauMS.Ztot = 4.76*u.m
@@ -423,7 +435,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauHPT.DZ = 15*u.cm
     c.tauHPT.DX = c.tauMS.XFe
     c.tauHPT.DY = c.tauMS.YFe
-   
+    c.tauHPT.ConcreteX = c.tauHPT.DX
+    c.tauHPT.ConcreteY = c.tauMS.Ytot/2 - c.tauHPT.DY/2
+    c.tauHPT.ConcreteZ = c.tauHPT.DZ
 
     c.EmuMagnet.zC = -c.decayVolume.length/2. - c.tauMS.GapD - c.tauMS.Ztot - c.EmuMagnet.GapDown - c.EmuMagnet.Z/2    
 

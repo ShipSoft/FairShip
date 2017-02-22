@@ -93,6 +93,14 @@ void Hpt::SetZsize(const Double_t MSsize)
   zSizeMS = MSsize;
 }
 
+//Sets the dimension of the concrete base on which the external couples of HPTs are placed
+void Hpt::SetConcreteBaseDim(Double_t X, Double_t Y, Double_t Z)
+{
+  fConcreteX = X;
+  fConcreteY = Y;
+  fConcreteZ = Z;
+}
+
 
 // -----   Private method InitMedium 
 Int_t Hpt::InitMedium(const char* name)
@@ -123,6 +131,9 @@ void Hpt::ConstructGeometry()
     InitMedium("HPTgas");
     TGeoMedium *HPTmat =gGeoManager->GetMedium("HPTgas");
 
+    InitMedium("Concrete");
+    TGeoMedium *Conc =gGeoManager->GetMedium("Concrete");
+
     // cout << "zSizeMS = " << zSizeMS << endl;
     
     TGeoBBox *HPT = new TGeoBBox("HPT", DimX/2, DimY/2, DimZ/2);
@@ -130,12 +141,18 @@ void Hpt::ConstructGeometry()
     volHPT->SetLineColor(kBlue-5);
     AddSensitiveVolume(volHPT);
     
+    TGeoBBox *Cbase = new TGeoBBox("Cbase", fConcreteX/2, fConcreteY/2, fConcreteZ/2);
+    TGeoVolume *volCbase = new TGeoVolume("volCbase",Cbase,Conc);
+    volCbase->SetLineColor(kOrange-7);
+
     //1 closer to Goliath
     volMSBox->AddNode(volHPT,1,new TGeoTranslation(0,0,-zSizeMS/2 + DimZ/2));
-    
+    volMSBox->AddNode(volCbase,1,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMS/2 + DimZ/2));
+
     //2 closer to Arm1
     //NB: 55 cm is the distance between the borders of the last 2 drift tubes
     volMSBox->AddNode(volHPT,2,new TGeoTranslation(0,0,-zSizeMS/2 + 3*DimZ/2 +55*cm));
+    volMSBox->AddNode(volCbase,2,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMS/2 + 3*DimZ/2 +55*cm));
    
     //Central Drift tubes // 3 closer to Arm1, 4 closer to Arm2
     volMSBox->AddNode(volHPT,3,new TGeoTranslation(0,0,-72*cm/2 - DimZ/2));
@@ -146,9 +163,10 @@ void Hpt::ConstructGeometry()
     
     //After spectro Drift Tubes 5 closer to Arm, 6 closer to decay vessel
     volMSBox->AddNode(volHPT,5,new TGeoTranslation(0,0,zSizeMS/2 - 3*DimZ/2 - 55*cm));
-    
+    volMSBox->AddNode(volCbase,5,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMS/2 - 3*DimZ/2 - 55*cm));    
+
     volMSBox->AddNode(volHPT,6,new TGeoTranslation(0,0,zSizeMS/2 - DimZ/2));
-  
+    volMSBox->AddNode(volCbase,6,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMS/2 - DimZ/2));
 }
 
 Bool_t  Hpt::ProcessHits(FairVolume* vol)

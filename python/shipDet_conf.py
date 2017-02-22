@@ -163,10 +163,12 @@ def configure(run,ship_geo):
   taumagneticspectrometer.SetNRpcInArm(ship_geo.tauMS.NRpc)
   taumagneticspectrometer.SetMagneticField(ship_geo.tauMS.B)
   taumagneticspectrometer.SetCoilParameters(ship_geo.tauMS.CoilH, ship_geo.tauMS.CoilW, ship_geo.tauMS.N, ship_geo.tauMS.CoilG)
+  taumagneticspectrometer.SetPillarDimensions(ship_geo.tauMS.PillarX,ship_geo.tauMS.PillarY, ship_geo.tauMS.PillarZ)
   detectorList.append(taumagneticspectrometer)
 
   tauHpt = ROOT.Hpt("HighPrecisionTrackers",ship_geo.tauHPT.DX, ship_geo.tauHPT.DY, ship_geo.tauHPT.DZ, ROOT.kTRUE)
   tauHpt.SetZsize(ship_geo.tauMS.Ztot)
+  tauHpt.SetConcreteBaseDim(ship_geo.tauHPT.ConcreteX,ship_geo.tauHPT.ConcreteY,ship_geo.tauHPT.ConcreteZ)
   detectorList.append(tauHpt)
 
   EmuMagnet = ROOT.EmulsionMagnet("EmuMagnet",ship_geo.EmuMagnet.zC,"EmulsionMagnet")
@@ -178,6 +180,7 @@ def configure(run,ship_geo):
   EmuMagnet.SetMagnetColumn(ship_geo.EmuMagnet.ColX, ship_geo.EmuMagnet.ColY, ship_geo.EmuMagnet.ColZ)
   EmuMagnet.SetBaseDim(ship_geo.EmuMagnet.BaseX, ship_geo.EmuMagnet.BaseY, ship_geo.EmuMagnet.BaseZ)
   detectorList.append(EmuMagnet)
+  EmuMagnet.SetPillarDimensions(ship_geo.EmuMagnet.PillarX, ship_geo.EmuMagnet.PillarY, ship_geo.EmuMagnet.PillarZ)
 
   NuTauTarget = ROOT.Target("NuTauTarget",ship_geo.NuTauTarget.Ydist,ROOT.kTRUE)
   NuTauTarget.SetDetectorDesign(ship_geo.NuTauTarget.nuTargetDesign)

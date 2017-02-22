@@ -24,6 +24,7 @@ class Hpt:public FairDetector
       
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
+    void SetConcreteBaseDim(Double_t X, Double_t Y, Double_t Z);
     
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -90,14 +91,17 @@ private:
     
 protected:
     
-    Double_t DimX =0;
-    Double_t DimY =0;
-    Double_t DimZ = 0;
-    Double_t zSizeMS = 0; //dimension of the Magnetic Spectrometer volume
-    
+    Double_t DimX;
+    Double_t DimY;
+    Double_t DimZ;
+    Double_t zSizeMS; //dimension of the Magnetic Spectrometer volume
+    Double_t fConcreteX; //dimesion of Concrete Base on which the external HPTs lie
+    Double_t fConcreteY;
+    Double_t fConcreteZ;
+
     Hpt(const Hpt&);
     Hpt& operator=(const Hpt&);
-    ClassDef(Hpt,2)
+    ClassDef(Hpt,3)
 
 };
 #endif 

@@ -28,11 +28,13 @@ class EmulsionMagnet : public FairModule
   void SetCoilParameters(Double_t Radius, Double_t height1, Double_t height2, Double_t Distance);
   void SetTPDesign(Int_t Design);
   void SetMagneticField(Double_t B); 
-   
+  
+  void SetPillarDimensions(Double_t X, Double_t Y, Double_t Z);
+
   void ConstructGeometry();
   Int_t InitMedium(const char* name);
  
-  ClassDef(EmulsionMagnet,1);
+  ClassDef(EmulsionMagnet,2);
 
  protected:
 
@@ -54,7 +56,9 @@ class EmulsionMagnet : public FairModule
   Double_t fGapDownstream;
   Double_t fField;
   Int_t fDesign; //1= TP_config, 0=new_config
-  
+  Double_t fPillarX;
+  Double_t fPillarY;
+  Double_t fPillarZ;  
 };
 
 #endif

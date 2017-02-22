@@ -103,6 +103,13 @@ void EmulsionMagnet::SetMagneticField(Double_t B)
   fField=B;
 }
 
+void EmulsionMagnet::SetPillarDimensions(Double_t X, Double_t Y, Double_t Z)
+{
+  fPillarX=X;
+  fPillarY=Y;
+  fPillarZ=Z;
+}
+
 Int_t EmulsionMagnet::InitMedium(const char* name)
 {
   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -139,11 +146,13 @@ void EmulsionMagnet::ConstructGeometry()
   InitMedium("CoilCopper");
   TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
     
+  InitMedium("steel");
+  TGeoMedium *Steel = gGeoManager->GetMedium("steel");
+
   gGeoManager->SetVisLevel(10);
 
-
-
-  cout<< "fDesign: "<< fDesign<<endl;
+  TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
+  cout<< "Tau Nu Detector fDesign: "<< fDesign<<endl;
     
   if(fDesign==1)//OLD, TP
     {
@@ -152,7 +161,7 @@ void EmulsionMagnet::ConstructGeometry()
 
       TGeoBBox *MagnetBox = new TGeoBBox(fMagnetX/2, fMagnetY/2, fMagnetZ/2);
       TGeoVolume *MagnetVol = new TGeoVolume("Goliath",MagnetBox,vacuum);
-      top->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
+      tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
       
       //Iron basis on which the coils are placed
       TGeoBBox *Base = new TGeoBBox(fBaseX/2,fBaseY/2,fBaseZ/2);
@@ -363,7 +372,7 @@ void EmulsionMagnet::ConstructGeometry()
       
       TGeoBBox *MagnetBox = new TGeoBBox(fMagnetX/2, fMagnetY/2, fMagnetZ/2);
       TGeoVolume *MagnetVol = new TGeoVolume("Davide",MagnetBox,vacuum);
-      top->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
+      tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
     
       //The -0.01*mm is only for drawing reasons
       TGeoBBox *LateralBox = new TGeoBBox("LB",fBaseZ/2,fBaseY/2,(fBaseX-0.01*mm)/2);
@@ -409,6 +418,14 @@ void EmulsionMagnet::ConstructGeometry()
       TGeoVolume *BaseVol = new TGeoVolume("BaseVol",BaseBox,Fe);
       BaseVol->SetLineColor(kRed);
       MagnetVol->AddNode(BaseVol,1, new TGeoTranslation(0,-fMagnetY/2+fColumnY/2,0));
+
+      TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
+      TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
+      PillarVol->SetLineColor(kGreen+3);
+      tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-fMagnetX/2+fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ-fMagnetZ/2+fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ-fMagnetZ/2+fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-fMagnetX/2+fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
     }
 }
 
