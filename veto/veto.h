@@ -55,8 +55,8 @@ class veto: public FairDetector
     void SetB(Float_t b) {fBtube=b;}
     void SetFloorHeight(Float_t a,Float_t b) {floorHeightA=a;floorHeightB=b;}
     void SetXYstart(Float_t b, Float_t fx, Float_t c, Float_t fy) {fXstart=b; zFocusX=fx; fYstart=c; zFocusY=fy;}
-    void SetVesselStructure(Float_t a,Float_t b,Float_t c,TString d,TString e,TString f,TString v,Float_t r, TString rm) {f_InnerSupportThickness=a;
-     f_VetoThickness=b;f_OuterSupportThickness=c;supportMedIn_name=d;vetoMed_name=e;supportMedOut_name=f;decayVolumeMed_name=v;
+    void SetVesselStructure(Float_t a,Float_t b,Float_t c,TString d,Float_t l,TString e,TString f,TString v,Float_t r, TString rm) {f_InnerSupportThickness=a;
+      f_VetoThickness=b;f_OuterSupportThickness=c;supportMedIn_name=d;f_LidThickness=l;vetoMed_name=e;supportMedOut_name=f;decayVolumeMed_name=v;
      f_RibThickness=r;ribMed_name=rm;}
 
     /**      This method is an example of how to add your own point
@@ -121,6 +121,7 @@ class veto: public FairDetector
     Float_t f_InnerSupportThickness;
     Float_t f_PhiRibsThickness;
     Float_t f_OuterSupportThickness;
+    Float_t f_LidThickness;
     Float_t f_VetoThickness;
     Float_t f_RibThickness;
     Float_t fBtube;
@@ -154,14 +155,14 @@ class veto: public FairDetector
     TGeoVolume* GeoParalepiped(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Int_t colour,TGeoMedium *material,Bool_t sens);
     TGeoVolume* GeoTrapezoid(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens);
     TGeoVolume* GeoPolyhedron(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX1,Double_t slopeX2,Double_t slopeY1,Double_t slopeY2,Int_t colour,TGeoMedium *material,Bool_t sens);
-    //TGeoVolume* GeoCornerSeg(TString xname,Double_t  phi,Double_t dPhi,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens=kFALSE);
-    TGeoVolume* GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Double_t phi1, Double_t phi2,Double_t zStart, Double_t zlength, Double_t xc, Double_t yc,  Int_t colour,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Double_t phi1, Double_t phi2,Double_t zStart, 
+             Double_t zlength,  Int_t colour,TGeoMedium *material,Bool_t sens);
 
-    TGeoVolume* GeoVesselSupport(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Double_t floorHeight);
+    TGeoVolume* GeoVesselSupport(TString name,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Double_t floorHeight);
 
     TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
     TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
-    ClassDef(veto,6)
+    ClassDef(veto,7)
 };
 
 #endif //VETO_H
