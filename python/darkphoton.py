@@ -55,8 +55,6 @@ def interpolatePDGtable():
     fun.SetData(dataEcm,dataR);
     return fun
 
-PdgR = interpolatePDGtable()
-
 def Ree_interp(s): # s in GeV
     """ Using PDG values for sigma(e+e- -> hadrons) / sigma(e+e- -> mu+mu-) """
     # Da http://pdg.lbl.gov/2012/hadronic-xsections/hadron.html#miscplots

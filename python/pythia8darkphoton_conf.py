@@ -73,6 +73,7 @@ def manipulatePhysics(mass, P8gen, cf):
 
 
 def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
+    PdgR = DarkPhoton.interpolatePDGtable()
     # configure pythia8 for Ship usage
     debug=True
     if debug: cf=open('pythia8_darkphotonconf.txt','w')
