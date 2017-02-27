@@ -11,7 +11,8 @@ def evExit():
  if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'):
   print "make suicide before framework makes seg fault" 
   os.kill(os.getpid(),9)
-atexit.register(evExit)
+# apperantly problem disappeared in more recent root versions
+if float(ROOT.gROOT.GetVersion().split('/')[0])>6.07: atexit.register(evExit)
 
 fMan = None
 fRun = None
@@ -664,20 +665,15 @@ def speedUp():
    xvol = fGeo.GetVolume(x)
    if xvol: xvol.SetVisibility(0) 
  for k in range(1,7):
-    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Innerwall","T"+str(k)+"Rib","T"+str(k)+"LiSc","T"+str(k)+"Hbar"]:
-     va = fGeo.GetVolume(v)
+     va = fGeo.GetVolume("T"+str(k))
      if not va: continue
-     if not va.GetNodes():  va.SetVisibility(False)
-     else:
-      for n in va.GetNodes(): n.SetVisibility(False)
- for k in range(1,7):
-    for v in ["T"+str(k)+"Outerwall","T"+str(k)+"Rib","T"+str(k)+"Hbar"]:
-     va = fGeo.GetVolume(v)
-     if not va: va = fGeo.GetVolume("T"+str(k)+"Innerwall")
-     if not va: continue
-     if not va.GetNodes():  va.SetVisibility(False)
-     else:
-      for n in va.GetNodes(): n.SetVisibility(True)
+     for x in va.GetNodes():
+       nm = x.GetName()
+       if not nm.find("Inner")<0 and k < 3: 
+          x.SetVisDaughters(False)
+          x.SetVisibility(False)
+       if not nm.find("LiSc")<0: x.SetVisDaughters(False)
+       if not nm.find("RibPhi")<0: x.SetVisDaughters(False)
 # 
  for x in ["Ecal","Hcal"]:
   xvol = fGeo.GetVolume(x)
