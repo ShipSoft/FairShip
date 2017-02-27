@@ -33,8 +33,8 @@ outputDir    = "."
 sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
 theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
-dv           = 4 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
-ds           = 5 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
+dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
+ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
 charm        = 0 # !=0 create charm detector instead of SHiP
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
@@ -429,6 +429,10 @@ if checking4overlaps:
  fGeo.SetNmeshPoints(10000)
  fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
  fGeo.PrintOverlaps()
+ # check subsystems in more detail
+ for x in fGeo.GetTopNode().GetNodes(): 
+   x.CheckOverlaps(0.0001)
+   fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
