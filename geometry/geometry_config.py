@@ -92,6 +92,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.Veto.outerSupportMed = "Aluminum"
      c.Veto.sensitiveThickness = 0.3*u.m
      c.Veto.sensitiveMed = "Scintillator"
+     c.Veto.lidThickness = 80.*u.mm
      c.Veto.decayMed = "vacuums"
      c.Veto.rib = 3.*u.cm
      c.Veto.ribMed = "steel"

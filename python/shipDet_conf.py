@@ -141,8 +141,10 @@ def configure(run,ship_geo):
     y1  = ship_geo.Yheight/(ship_geo.Chamber1.z -ship_geo.chambers.Tub1length-dzY)*(ship_geo.TrackStation4.z-dzY)
     Veto.SetXYstart(x1,dzX,y1,dzY)
     Veto.SetVesselStructure(ship_geo.Veto.innerSupport,ship_geo.Veto.sensitiveThickness,ship_geo.Veto.outerSupport,\
-                            ship_geo.Veto.innerSupportMed,ship_geo.Veto.sensitiveMed,ship_geo.Veto.outerSupportMed,ship_geo.Veto.decayMed,\
+                            ship_geo.Veto.innerSupportMed,ship_geo.Veto.lidThickness,ship_geo.Veto.sensitiveMed,\
+                            ship_geo.Veto.outerSupportMed,ship_geo.Veto.decayMed,\
                             ship_geo.Veto.rib,ship_geo.Veto.ribMed)
+
  detectorList.append(Veto)
 
  if ship_geo.muShieldDesign not in [2,3,4] and hasattr(ship_geo.tauMS,'Xtot'):
