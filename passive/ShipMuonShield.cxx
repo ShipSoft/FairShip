@@ -39,11 +39,11 @@ ShipMuonShield::ShipMuonShield()
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title, 
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
-                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t y, Double_t fl)
+                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t y, Double_t floor, Double_t field)
   : FairModule(name ,Title)
 {
  fDesign = Design;
- fField  = fl;
+ fField  = field;
  if (fDesign==1){
      fMuonShieldLength = L1;   
     }
@@ -77,6 +77,8 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
 	 2 * (dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7 + dZ8) + LE;
    }
     
+ fFloor = (fDesign == 7) ? floor : 0;
+
  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
  if(fDesign==6||fDesign==7){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
@@ -475,14 +477,13 @@ void ShipMuonShield::ConstructGeometry()
 	// TODO split out into function/method?
 	Double_t dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
 	Double_t dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
-	Double_t floor = -5. * m; // TODO use same variable for floor definition
 	Double_t slope =
 	    (dYIn[nM] + dXIn[nM] - dYOut[nM] - dXOut[nM]) / (2 * dZf[nM]);
 	Double_t w1 = 2 * dXIn[nM] + std::max(20., gapIn[nM]);
 	Double_t w2 = 2 * dXOut[nM] + std::max(20., gapOut[nM]);
 	Double_t anti_overlap = 0.1;
-	Double_t h1 = 0.5 * (floor + dYIn[nM] + dXIn[nM] + anti_overlap);
-	Double_t h2 = 0.5 * (floor + dYOut[nM] + dXOut[nM] + anti_overlap);
+	Double_t h1 = 0.5 * (dYIn[nM] + dXIn[nM] + anti_overlap - fFloor);
+	Double_t h2 = 0.5 * (dYOut[nM] + dXOut[nM] + anti_overlap - fFloor);
 	std::vector<Double_t> verticesIn = {
 	    -w1, -h1,
 	    +w1, -h1,
@@ -512,10 +513,10 @@ void ShipMuonShield::ConstructGeometry()
 	pillar1->SetLineColor(kGreen-5);
 	pillar2->SetLineColor(kGreen-5);
 	tShield->AddNode(pillar1, 1, new TGeoTranslation(
-				     0, -0.5 * (dYIn[nM] + dXIn[nM] - floor),
+				     0, -0.5 * (dYIn[nM] + dXIn[nM] + fFloor),
 				     Z[nM] - dZf[nM] + 0.5 * m));
 	tShield->AddNode(pillar2, 1, new TGeoTranslation(
-				     0, -0.5 * (dYOut[nM] + dXOut[nM] - floor),
+				     0, -0.5 * (dYOut[nM] + dXOut[nM] + fFloor),
 				     Z[nM] + dZf[nM] - 0.5 * m));
       }
           
@@ -552,15 +553,16 @@ void ShipMuonShield::ConstructGeometry()
       Double_t dZD =  100*m + fMuonShieldLength;
       TGeoBBox *box3    = new TGeoBBox("box3", 15*m, 15*m,dZD/2.);
       TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
-// cover also Tau nu area
+
       if (fDesign == 7) {
-	TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, 2.5 * m,
+	// Only add floor for new shield
+	TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2.,
 				      fMuonShieldLength / 2.);
 	TGeoVolume *floor = new TGeoVolume("floorM", box5, concrete);
 	floor->SetLineColor(11); // grey
-	top->AddNode(floor, 1,
-		     new TGeoTranslation(
-			 0, -7.5 * m, zEndOfAbsorb + fMuonShieldLength / 2.));
+	top->AddNode(floor, 1, new TGeoTranslation(0, -10 * m + fFloor / 2.,
+						   zEndOfAbsorb +
+						       fMuonShieldLength / 2.));
       }
       TGeoCompositeShape *compRockD =
 	  new TGeoCompositeShape("compRockD", "(box3-box4)");
