@@ -373,8 +373,8 @@ with ConfigRegistry.register_config("basic") as c:
       c.EmuMagnet.ColZ = 0*u.m
       c.EmuMagnet.Y = 2*c.EmuMagnet.BaseY+c.EmuMagnet.Height1+c.EmuMagnet.Height2+c.EmuMagnet.Distance
       c.EmuMagnet.PillarX = 0 *u.m
-      c.EmuMagnetPillarZ = 0*u.m
-      c.EmuMagnetPillarY = 0* u.m
+      c.EmuMagnet.PillarZ = 0 * u.m
+      c.EmuMagnet.PillarY = 0 * u.m
 
     #Parameters for tau magnetic Spectrometer
     c.tauMS = AttrDict(z=0*u.cm)
