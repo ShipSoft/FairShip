@@ -320,7 +320,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 
     const int offset = 7;
 
-    for (Int_t i = 0; i < nMagnets; ++i) {
+    for (Int_t i = 0; i < nMagnets - 1; ++i) {
       dXIn[i] = params[offset + i * 6 + 1];
       dXOut[i] = params[offset + i * 6 + 2];
       dYIn[i] = params[offset + i * 6 + 3];
@@ -343,20 +343,17 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
     Z[5] = Z[4] + dZ[4] + dZ[5] + zgap;
     dZ[6] = dZ7 - zgap / 2;
     Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;
-
-    Double_t clip_width = 0.1 * m; // clip field width by this width
-    dXOut[7] -= clip_width;
-    Double_t clip_len =
-	(dZ8 - zgap / 2) *
-	(1 - (dXOut[7] - dXIn[7]) / (dXOut[7] + clip_width - dXIn[7]));
-    dZ[7] = dZ8 - clip_len - zgap / 2;
+    dZ[7] = dZ8 - zgap / 2;
     Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;
 
     dXIn[8] = dXOut[7];
     dYIn[8] = dYOut[7];
-    dXOut[8] = dXOut[7];
-    dYOut[8] = dYOut[7];
-    dZ[8] = clip_len;
+    dXOut[8] = dXIn[8];
+    dYOut[8] = dYIn[8];
+    gapIn[8] = gapOut[7];
+    gapOut[8] = gapIn[8];
+    dZ[8] = 0.1 * m;
+    // TODO better clipping?
     Z[8] = Z[7] + dZ[7] + dZ[8];
 
     for (int i = 0; i < nMagnets; ++i) {
@@ -596,19 +593,20 @@ void ShipMuonShield::ConstructGeometry()
 	Double_t anti_overlap = 0.1;
 	Double_t h1 = 0.5 * (dYIn[nM] + dXIn[nM] + anti_overlap - fFloor);
 	Double_t h2 = 0.5 * (dYOut[nM] + dXOut[nM] + anti_overlap - fFloor);
+	Double_t length = std::min(0.5 * m, std::abs(dZf[nM]/2. - 5 * cm));
 	std::array<Double_t, 16> verticesIn = {
 	    -w1, -h1,
 	    +w1, -h1,
 	    +w1, +h1,
 	    -w1, +h1,
-	    -w1, -h1 + slope * m,
-	    +w1, -h1 + slope * m,
+	    -w1, -h1 + slope * 2. * length,
+	    +w1, -h1 + slope * 2. * length,
 	    +w1, +h1,
 	    -w1, +h1,
 	};
 	std::array<Double_t, 16> verticesOut = {
-	    -w2, -h2 - slope * m,
-	    +w2, -h2 - slope * m,
+	    -w2, -h2 - slope * 2. * length,
+	    +w2, -h2 - slope * 2. * length,
 	    +w2, +h2,
 	    -w2, +h2,
 	    -w2, -h2,
@@ -618,18 +616,18 @@ void ShipMuonShield::ConstructGeometry()
 	};
 	TGeoVolume *pillar1 =
 	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM - 1),
-				  steel, 0.5 * m, verticesIn.data());
+				  steel, length, verticesIn.data());
 	TGeoVolume *pillar2 =
 	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), steel,
-				  0.5 * m, verticesOut.data());
+				  length, verticesOut.data());
 	pillar1->SetLineColor(kGreen-5);
 	pillar2->SetLineColor(kGreen-5);
 	tShield->AddNode(pillar1, 1, new TGeoTranslation(
 				     0, -0.5 * (dYIn[nM] + dXIn[nM] + fFloor),
-				     Z[nM] - dZf[nM] + 0.5 * m));
+				     Z[nM] - dZf[nM] + length));
 	tShield->AddNode(pillar2, 1, new TGeoTranslation(
 				     0, -0.5 * (dYOut[nM] + dXOut[nM] + fFloor),
-				     Z[nM] + dZf[nM] - 0.5 * m));
+				     Z[nM] + dZf[nM] - length));
       }
           
       } else {
