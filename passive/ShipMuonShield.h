@@ -13,7 +13,7 @@
 #include <vector>
 #include <array>
 
-enum class FieldDirection { up, down };
+enum class FieldDirection : bool { up, down };
 
 class ShipMuonShield : public FairModule
 {
@@ -23,6 +23,7 @@ class ShipMuonShield : public FairModule
                                Double_t Z=0, Double_t L0=0, Double_t L1=0, Double_t L2=0, Double_t L3=0, Double_t L4=0, Double_t L5=0, Double_t L6=0, 
                                Double_t L7=0, Double_t L8=0,Double_t gap=0,Double_t LE=0,Double_t y=400, Double_t floor=500, Double_t field=1.8);
 
+   explicit ShipMuonShield(TString geofile);
    ShipMuonShield();
    virtual ~ShipMuonShield();
    void ConstructGeometry();
@@ -36,6 +37,7 @@ class ShipMuonShield : public FairModule
  protected:
   
   Int_t  fDesign;       // design of muon shield, 1=passive, active = ...
+  TString fGeofile;
   Double_t  fMuonShieldLength,fY,fField;
   Double_t fFloor;
   Bool_t fSupport;
@@ -75,6 +77,8 @@ class ShipMuonShield : public FairModule
 		    Double_t middleGap2, Double_t HmainSideMag,
 		    Double_t HmainSideMag2, Double_t gap, Double_t gap2,
 		    Double_t Z, Bool_t NotMagnet);
+
+
 };
 
 #endif //MuonSield_H
