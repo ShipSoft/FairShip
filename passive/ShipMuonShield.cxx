@@ -1,9 +1,6 @@
 #include "ShipMuonShield.h"
 
 #include "TGeoManager.h"
-#include "FairRun.h"                    // for FairRun
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include <iosfwd>                    // for ostream
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
@@ -16,6 +13,9 @@
 #include "FairGeoInterface.h"
 #include "FairGeoMedia.h"
 #include "FairGeoBuilder.h"
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "TVectorT.h"
+#include "TFile.h"
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 Double_t cm = 1;
@@ -27,13 +27,40 @@ Double_t tesla = 10 * kilogauss;
 ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
+ShipMuonShield::ShipMuonShield(TString geofile)
+  : FairModule("MuonShield", "ShipMuonShield")
+{
+  fGeofile = geofile;
+  auto f = TFile::Open(geofile, "read");
+  TVectorT<Double_t> params;
+  params.Read("params");
+  Double_t Z, LE = 10.*m, floor = 5. *m;
+  fDesign = 8;
+  fField = 1.8;
+  dZ1 = params[0];
+  dZ2 = params[1];
+  dZ3 = params[2];
+  dZ4 = params[3];
+  dZ5 = params[4];
+  dZ6 = params[5];
+  dZ7 = params[6];
+  dZ8 = params[7];
+  fMuonShieldLength = 2 * (dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7 + dZ8) + LE;
+
+  fFloor = floor;
+  fSupport = true;
+
+  zEndOfAbsorb = Z - fMuonShieldLength / 2.;
+}
+
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
-                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t y, Double_t floor, Double_t field)
+                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t, Double_t floor, Double_t field)
   : FairModule(name ,Title)
 {
  fDesign = Design;
  fField  = field;
+ fGeofile = "";
  if (fDesign==1){
      fMuonShieldLength = L1;   
     }
@@ -71,7 +98,6 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
 
  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
  if(fDesign==6||fDesign==7){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
- fY = y;
  fSupport = true;
 }
 
@@ -98,8 +124,8 @@ void ShipMuonShield::CreateTube(TString tubeName, TGeoMedium *medium,
 				Int_t color, TGeoVolume *tShield,
 				Double_t x_translation, Double_t y_translation,
 				Double_t z_translation) {
-  TGeoVolume* absorber = gGeoManager->MakeTube(tubeName, medium, dX, dY,dZ);
-  absorber->SetLineColor(color);  
+  TGeoVolume *absorber = gGeoManager->MakeTube(tubeName, medium, dX, dY, dZ);
+  absorber->SetLineColor(color);
   tShield->AddNode(
       absorber, 1,
       new TGeoTranslation(x_translation, y_translation, z_translation));
@@ -143,35 +169,35 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 						   // (Geant goes crazy when
 						   // they touch each other)
 
-    std::array<Double_t,16> cornersMainL = {
+    std::array<Double_t, 16> cornersMainL = {
 	middleGap, -(dY + dX - anti_overlap),
-	middleGap,	dY + dX - anti_overlap,
-	dX + middleGap,   dY - anti_overlap,
+	middleGap, dY + dX - anti_overlap,
+	dX + middleGap, dY - anti_overlap,
 	dX + middleGap, -(dY - anti_overlap),
 	middleGap2, -(dY2 + dX2 - anti_overlap),
-	middleGap2,       dY2 + dX2 - anti_overlap,
+	middleGap2, dY2 + dX2 - anti_overlap,
 	dX2 + middleGap2, dY2 - anti_overlap,
 	dX2 + middleGap2, -(dY2 - anti_overlap)
     };
 
-    std::array<Double_t,16> cornersMainSideL = {
-	dX + middleGap + gap,	-HmainSideMag,
-	dX + middleGap + gap,	HmainSideMag,
-	2 * dX + middleGap + gap,    HmainSideMag,
-	2 * dX + middleGap + gap,    -HmainSideMag,
-	dX2 + middleGap2 + gap2,     -HmainSideMag2,
-	dX2 + middleGap2 + gap2,     HmainSideMag2,
+    std::array<Double_t, 16> cornersMainSideL = {
+	dX + middleGap + gap, -HmainSideMag,
+	dX + middleGap + gap, HmainSideMag,
+	2 * dX + middleGap + gap, HmainSideMag,
+	2 * dX + middleGap + gap, -HmainSideMag,
+	dX2 + middleGap2 + gap2, -HmainSideMag2,
+	dX2 + middleGap2 + gap2, HmainSideMag2,
 	2 * dX2 + middleGap2 + gap2, HmainSideMag2,
 	2 * dX2 + middleGap2 + gap2, -HmainSideMag2
     };
 
     std::array<Double_t,16> cornersCLBA = {
-	dX + middleGap + gap,	  -HmainSideMag,
-	2 * dX + middleGap + gap,      -HmainSideMag,
+	dX + middleGap + gap, -HmainSideMag,
+	2 * dX + middleGap + gap, -HmainSideMag,
 	2 * dX + middleGap + coil_gap, -(dY + dX - anti_overlap),
 	dX + middleGap + coil_gap, -(dY - anti_overlap),
-	dX2 + middleGap2 + gap2,       -HmainSideMag2,
-	2 * dX2 + middleGap2 + gap2,   -HmainSideMag2,
+	dX2 + middleGap2 + gap2, -HmainSideMag2,
+	2 * dX2 + middleGap2 + gap2, -HmainSideMag2,
 	2 * dX2 + middleGap2 + coil_gap2, -(dY2 + dX2 - anti_overlap),
 	dX2 + middleGap2 + coil_gap2, -(dY2 - anti_overlap)
     };
@@ -208,7 +234,7 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
       cornersCRBA[i] = -cornersCLTA[i];
       cornersBL[i] = -cornersTR[i];
     }
-				 
+
     TString str1L = "_MiddleMagL";
     TString str1R = "_MiddleMagR";
     TString str2 = "_MagRetL";
@@ -266,7 +292,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 				std::vector<Double_t> &Z) {
 
-  const Int_t nMagnets = (fDesign == 7) ? 9 : 8;
+  const Int_t nMagnets = (fDesign == 7 || fDesign == 8) ? 9 : 8;
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
   for (auto i :
@@ -276,12 +302,74 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   }
 
   Double_t zgap = (fDesign > 6) ? 10 : 0;  // fixed distance between magnets in Z-axis
-  Double_t dYEnd = fY;
 
-  if(fDesign==7){
+  if (fDesign == 8) {
+
+    magnetName = {"MagnAbsorb1", "MagnAbsorb2", "Magn1", "Magn2", "Magn3",
+		  "Magn4",       "Magn5",       "Magn6", "Magn7"};
+
+    fieldDirection = {
+	FieldDirection::up,   FieldDirection::up,   FieldDirection::up,
+	FieldDirection::up,   FieldDirection::up,   FieldDirection::down,
+	FieldDirection::down, FieldDirection::down, FieldDirection::down,
+    };
+
+    auto f = TFile::Open(fGeofile, "read");
+    TVectorT<Double_t> params;
+    params.Read("params");
+
+    const int offset = 7;
+
+    for (Int_t i = 0; i < nMagnets; ++i) {
+      dXIn[i] = params[offset + i * 6 + 1];
+      dXOut[i] = params[offset + i * 6 + 2];
+      dYIn[i] = params[offset + i * 6 + 3];
+      dYOut[i] = params[offset + i * 6 + 4];
+      gapIn[i] = params[offset + i * 6 + 5];
+      gapOut[i] = params[offset + i * 6 + 6];
+    }
+
+    dZ[0] = dZ1 - zgap / 2;
+    Z[0] = zEndOfAbsorb + dZ[0] + zgap;
+    dZ[1] = dZ2 - zgap / 2;
+    Z[1] = Z[0] + dZ[0] + dZ[1] + zgap;
+    dZ[2] = dZ3 - zgap / 2;
+    Z[2] = Z[1] + dZ[1] + dZ[2] + zgap;
+    dZ[3] = dZ4 - zgap / 2;
+    Z[3] = Z[2] + dZ[2] + dZ[3] + zgap;
+    dZ[4] = dZ5 - zgap / 2;
+    Z[4] = Z[3] + dZ[3] + dZ[4] + zgap;
+    dZ[5] = dZ6 - zgap / 2;
+    Z[5] = Z[4] + dZ[4] + dZ[5] + zgap;
+    dZ[6] = dZ7 - zgap / 2;
+    Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;
+
+    Double_t clip_width = 0.1 * m; // clip field width by this width
+    dXOut[7] -= clip_width;
+    Double_t clip_len =
+	(dZ8 - zgap / 2) *
+	(1 - (dXOut[7] - dXIn[7]) / (dXOut[7] + clip_width - dXIn[7]));
+    dZ[7] = dZ8 - clip_len - zgap / 2;
+    Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;
+
+    dXIn[8] = dXOut[7];
+    dYIn[8] = dYOut[7];
+    dXOut[8] = dXOut[7];
+    dYOut[8] = dYOut[7];
+    dZ[8] = clip_len;
+    Z[8] = Z[7] + dZ[7] + dZ[8];
+
+    for (int i = 0; i < nMagnets; ++i) {
+      midGapIn[i] = 0.;
+      midGapOut[i] = 0.;
+      HmainSideMagIn[i] = dYIn[i] / 2;
+      HmainSideMagOut[i] = dYOut[i] / 2;
+    }
+
+  } else if (fDesign == 7) {
   magnetName = {"MagnAbsorb1", "MagnAbsorb2", "Magn1", "Magn2", "Magn3",
                 "Magn4", "Magn5", "Magn6", "Magn7"};
-      
+
   fieldDirection[0] = FieldDirection::up;
   dXIn[0]  = 0.4*m;			dYIn[0]	= 1.5*m;
   dXOut[0] = 0.40*m;			dYOut[0]= 1.5*m;
@@ -291,19 +379,19 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   fieldDirection[1] = FieldDirection::up;
   dXIn[1]  = 0.8*m;			dYIn[1]	= 1.5*m;
   dXOut[1] = 0.8*m;			dYOut[1]= 1.5*m;
-  gapIn[1] = 0.02*m;				gapOut[1] = 0.02*m;
+  gapIn[1] = 0.02*m;			gapOut[1] = 0.02*m;
   dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
     
   fieldDirection[2] = FieldDirection::up;
   dXIn[2]  = 0.87*m;			dYIn[2]	= 0.35*m;
   dXOut[2] = 0.65*m;			dYOut[2]= 1.21*m;
-  gapIn[2] = 0.11*m;				gapOut[2] = 0.02*m;
+  gapIn[2] = 0.11*m;			gapOut[2] = 0.02*m;
   dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;
 
   fieldDirection[3] = FieldDirection::up;
   dXIn[3]  = 0.65*m;			dYIn[3]	= 1.21*m;
   dXOut[3] = 0.43*m;			dYOut[3]= 2.07*m;
-  gapIn[3] = 0.11*m;				gapOut[3] = 0.02*m;
+  gapIn[3] = 0.11*m;			gapOut[3] = 0.02*m;
   dZ[3] = dZ4-zgap/2;			Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;
 
   fieldDirection[4] = FieldDirection::up;
@@ -338,7 +426,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   dXOut[8] = dXOut[7];			dYOut[8]= dYOut[7];
   gapIn[8] = 0.55*m;			gapOut[8] = 0.55*m;
   dZ[8] = clip_len;			Z[8] = Z[7] + dZ[7] + dZ[8];
-      
+
   for (int i = 0; i < nMagnets; ++i) {
     midGapIn[i] = 0.;
     midGapOut[i] = 0.;
@@ -419,16 +507,13 @@ void ShipMuonShield::ConstructGeometry()
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     
-    if (fDesign==4||fDesign==5||fDesign==6||fDesign==7){
+    if (fDesign==5||fDesign==6||fDesign==7||fDesign==8) {
       Double_t ironField = fField*tesla;
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
       TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
       TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
       TGeoUniformMagField *ConLField    = new TGeoUniformMagField(ironField,0.,0.);
       TGeoUniformMagField *fields[4] = {magFieldIron,RetField,ConRField,ConLField};
-      if(fDesign==7){
-            TGeoUniformMagField *fieldsTarget[4] = {new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.),new TGeoUniformMagField(0.,0.,0.)};
-      }
 
       std::vector<TString> magnetName;
       std::vector<FieldDirection> fieldDirection;
@@ -438,7 +523,7 @@ void ShipMuonShield::ConstructGeometry()
 		 midGapIn, midGapOut, HmainSideMagIn, HmainSideMagOut, gapIn,
 		 gapOut, Z);
       
-      
+
       if (fDesign==6){
 	Double_t dA = 3*m;
 	CreateMagnet("AbsorberStop-1",iron,tShield,fields,FieldDirection::up,
@@ -451,14 +536,13 @@ void ShipMuonShield::ConstructGeometry()
         TGeoCompositeShape *Tc = new TGeoCompositeShape("passiveAbsorberStopSubtr", subtraction);
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
-      }else if(fDesign==7){
-      for(Int_t nM=0;nM<2;nM++)
-      {
-	 CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
-		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
-		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
-		   gapIn[nM],gapOut[nM],Z[nM],1);
-      }
+      } else if (fDesign==7||fDesign==8) {
+	for (Int_t nM = 0; nM < 2; nM++) {
+	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
+		    dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
+		    midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
+		    gapIn[nM],gapOut[nM],Z[nM],1);
+	}
 
       TGeoTranslation *mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
       TGeoTranslation *mag2 = new TGeoTranslation("mag2", 0, 0, +dZ1);
