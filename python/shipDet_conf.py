@@ -72,6 +72,7 @@ def posEcal(z,efile):
 def configure(run,ship_geo):
 # ---- for backward compatibility ----
  if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 5
+ if not hasattr(ship_geo,"muShieldGeo"): ship_geo.muShieldGeo = None
  if not hasattr(ship_geo.hcal,"File"):  ship_geo.hcal.File = "hcal.geo"
  if not hasattr(ship_geo.Bfield,'x') :  ship_geo.Bfield.x   = 3.*u.m
  if not hasattr(ship_geo,'cave') :       
