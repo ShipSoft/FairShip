@@ -223,7 +223,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,1.);
      addedParticles+=1;
     } 
-    key+=addedParticles;
+    key+=addedParticles-1; # pythia counts from 1
   } 
   counter+=1; 
 // now the underyling event
