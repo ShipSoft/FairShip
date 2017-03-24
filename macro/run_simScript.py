@@ -35,6 +35,7 @@ theSeed      = int(10000 * time.time() % 10000000)
 dy           = 10.
 dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
 ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
+nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 charm        = 0 # !=0 create charm detector instead of SHiP
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
@@ -49,7 +50,7 @@ try:
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio",\
-                                   "RpvSusy","SusyBench=","sameSeed=","charm="])
+                                   "RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -120,6 +121,8 @@ for o, a in opts:
             dv = int(a)
         if o in ("--muShieldDesign"): 
             ds = int(a)
+	if o=="--nuTauTargetDesign":
+            nud = int(a)
         if o in ("--charm"): 
             charm = int(a)
         if o in ("-F"):
@@ -164,7 +167,7 @@ shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit 
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 # - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
 # - preshowerOption = 0 # no preshower, default. 1= simple preshower 
-if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds)
+if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)
 else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
@@ -427,7 +430,7 @@ saveBasicParameters.execute("%s/geofile_full.%s.root" % (outputDir, tag),ship_ge
 if checking4overlaps:
  fGeo = ROOT.gGeoManager
  fGeo.SetNmeshPoints(10000)
- fGeo.CheckOverlaps(0.0001)  # 1 micron takes 5minutes
+ fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
  fGeo.PrintOverlaps()
  # check subsystems in more detail
  for x in fGeo.GetTopNode().GetNodes(): 

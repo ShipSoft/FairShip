@@ -56,7 +56,7 @@ EmulsionMagnet::EmulsionMagnet(const char* name, const Double_t zC,const char* T
   fCenterZ = zC; 
 }
 
-void EmulsionMagnet::SetTPDesign(Int_t Design)
+void EmulsionMagnet::SetDesign(Int_t Design)
 {
   fDesign = Design;
   Info("Chosen TP Design (0 no, 1 yes) "," %i", fDesign);
@@ -110,6 +110,7 @@ void EmulsionMagnet::SetPillarDimensions(Double_t X, Double_t Y, Double_t Z)
   fPillarZ=Z;
 }
 
+
 Int_t EmulsionMagnet::InitMedium(const char* name)
 {
   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -149,12 +150,13 @@ void EmulsionMagnet::ConstructGeometry()
   InitMedium("steel");
   TGeoMedium *Steel = gGeoManager->GetMedium("steel");
 
+
   gGeoManager->SetVisLevel(10);
 
   TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
   cout<< "Tau Nu Detector fDesign: "<< fDesign<<endl;
     
-  if(fDesign==1)//OLD, TP
+  if(fDesign==0)//OLD, TP
     {
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field in Magnet pillars
       TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field in target
@@ -365,7 +367,7 @@ void EmulsionMagnet::ConstructGeometry()
 
     }
 
-  if(fDesign==0) //NEW
+  if(fDesign==1) //NEW with magnet
     {
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(-fField,0.,0.); //magnetic field in Magnet pillars
       TGeoUniformMagField *magField2 = new TGeoUniformMagField(fField,0.,0.); //magnetic field in target
@@ -428,5 +430,6 @@ void EmulsionMagnet::ConstructGeometry()
       tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
     }
 }
+
 
 ClassImp(EmulsionMagnet)

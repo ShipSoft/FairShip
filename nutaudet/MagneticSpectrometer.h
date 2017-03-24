@@ -160,7 +160,7 @@ protected:
 
     MagneticSpectrometer(const MagneticSpectrometer&);
     MagneticSpectrometer& operator=(const MagneticSpectrometer&);
-    ClassDef(MagneticSpectrometer,3)
+    ClassDef(MagneticSpectrometer,4)
 
 };
 

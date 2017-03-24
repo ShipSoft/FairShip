@@ -79,7 +79,7 @@ def configure(run,ship_geo):
    ship_geo.cave.floorHeightMuonShield = 5*u.m
    ship_geo.cave.floorHeightTankA   = 4.5*u.m
    ship_geo.cave.floorHeightTankB   = 2.*u.m
- latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign)
+ latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -174,19 +174,24 @@ def configure(run,ship_geo):
   tauHpt.SetConcreteBaseDim(ship_geo.tauHPT.ConcreteX,ship_geo.tauHPT.ConcreteY,ship_geo.tauHPT.ConcreteZ)
   detectorList.append(tauHpt)
 
-  EmuMagnet = ROOT.EmulsionMagnet("EmuMagnet",ship_geo.EmuMagnet.zC,"EmulsionMagnet")
-  EmuMagnet.SetTPDesign(ship_geo.EmuMagnet.TPDesign)
-  EmuMagnet.SetGaps(ship_geo.EmuMagnet.GapUp, ship_geo.EmuMagnet.GapDown)
-  EmuMagnet.SetMagneticField(ship_geo.EmuMagnet.B)
-  EmuMagnet.SetMagnetSizes(ship_geo.EmuMagnet.X, ship_geo.EmuMagnet.Y, ship_geo.EmuMagnet.Z)
-  EmuMagnet.SetCoilParameters(ship_geo.EmuMagnet.Radius, ship_geo.EmuMagnet.Height1, ship_geo.EmuMagnet.Height2, ship_geo.EmuMagnet.Distance)
-  EmuMagnet.SetMagnetColumn(ship_geo.EmuMagnet.ColX, ship_geo.EmuMagnet.ColY, ship_geo.EmuMagnet.ColZ)
-  EmuMagnet.SetBaseDim(ship_geo.EmuMagnet.BaseX, ship_geo.EmuMagnet.BaseY, ship_geo.EmuMagnet.BaseZ)
-  detectorList.append(EmuMagnet)
-  EmuMagnet.SetPillarDimensions(ship_geo.EmuMagnet.PillarX, ship_geo.EmuMagnet.PillarY, ship_geo.EmuMagnet.PillarZ)
+  if ship_geo.nuTauTargetDesign==0 or ship_geo.nuTauTargetDesign==1:
+    EmuMagnet = ROOT.EmulsionMagnet("EmuMagnet",ship_geo.EmuMagnet.zC,"EmulsionMagnet")
+    EmuMagnet.SetDesign(ship_geo.EmuMagnet.Design)
+    EmuMagnet.SetGaps(ship_geo.EmuMagnet.GapUp, ship_geo.EmuMagnet.GapDown)
+    EmuMagnet.SetMagneticField(ship_geo.EmuMagnet.B)
+    EmuMagnet.SetMagnetSizes(ship_geo.EmuMagnet.X, ship_geo.EmuMagnet.Y, ship_geo.EmuMagnet.Z)
+    EmuMagnet.SetCoilParameters(ship_geo.EmuMagnet.Radius, ship_geo.EmuMagnet.Height1, ship_geo.EmuMagnet.Height2, ship_geo.EmuMagnet.Distance)
+    EmuMagnet.SetMagnetColumn(ship_geo.EmuMagnet.ColX, ship_geo.EmuMagnet.ColY, ship_geo.EmuMagnet.ColZ)
+    EmuMagnet.SetBaseDim(ship_geo.EmuMagnet.BaseX, ship_geo.EmuMagnet.BaseY, ship_geo.EmuMagnet.BaseZ)
+    EmuMagnet.SetPillarDimensions(ship_geo.EmuMagnet.PillarX, ship_geo.EmuMagnet.PillarY, ship_geo.EmuMagnet.PillarZ)
+    detectorList.append(EmuMagnet)
+  if ship_geo.nuTauTargetDesign==2:
+     EmuMagnet = ROOT.EmulsionMagnet()
 
   NuTauTarget = ROOT.Target("NuTauTarget",ship_geo.NuTauTarget.Ydist,ROOT.kTRUE)
-  NuTauTarget.SetDetectorDesign(ship_geo.NuTauTarget.nuTargetDesign)
+  NuTauTarget.MakeNuTargetPassive(ship_geo.NuTauTarget.nuTargetPassive)
+  NuTauTarget.SetDetectorDesign(ship_geo.NuTauTarget.Design)
+  NuTauTarget.SetCenterZ(ship_geo.NuTauTarget.zC)
   NuTauTarget.SetNumberBricks(ship_geo.NuTauTarget.col,ship_geo.NuTauTarget.row,ship_geo.NuTauTarget.wall) 
   NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim)
   NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW)
@@ -194,15 +199,19 @@ def configure(run,ship_geo):
   NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ)
   NuTauTarget.SetCESParam(ship_geo.NuTauTarget.RohG, ship_geo.NuTauTarget.LayerCESW, ship_geo.NuTauTarget.CESW, ship_geo.NuTauTarget.CESPack)
   NuTauTarget.SetCellParam(ship_geo.NuTauTarget.CellW)
-  NuTauTarget.SetConfiguration(ship_geo.EmuMagnet.TPDesign)
-  NuTauTarget.SetMagneticField(ship_geo.EmuMagnet.B)
-  NuTauTarget.SetMagnetHeight(ship_geo.EmuMagnet.Y)
-  NuTauTarget.SetColumnHeight(ship_geo.EmuMagnet.ColY)
-  NuTauTarget.SetBaseHeight(ship_geo.EmuMagnet.BaseY)
-  NuTauTarget.SetCoilUpHeight(ship_geo.EmuMagnet.Height1)
-  NuTauTarget.SetCoilDownHeight(ship_geo.EmuMagnet.Height2)
+  if ship_geo.nuTauTargetDesign==0 or ship_geo.nuTauTargetDesign==1:
+    NuTauTarget.SetMagneticField(ship_geo.EmuMagnet.B)
+    NuTauTarget.SetMagnetHeight(ship_geo.EmuMagnet.Y)
+    NuTauTarget.SetColumnHeight(ship_geo.EmuMagnet.ColY)
+    NuTauTarget.SetBaseHeight(ship_geo.EmuMagnet.BaseY)
+    NuTauTarget.SetCoilUpHeight(ship_geo.EmuMagnet.Height1)
+    NuTauTarget.SetCoilDownHeight(ship_geo.EmuMagnet.Height2)
+  if ship_geo.nuTauTargetDesign==2:
+    NuTauTarget.SetPillarDimension(ship_geo.NuTauTarget.PillarX,ship_geo.NuTauTarget.PillarY,ship_geo.NuTauTarget.PillarZ)
+    NuTauTarget.SetBaseDimension(ship_geo.NuTauTarget.BaseX, ship_geo.NuTauTarget.BaseY, ship_geo.NuTauTarget.BaseZ)
   
   NuTauTT = ROOT.TargetTracker("TargetTrackers",ROOT.kTRUE)
+  NuTauTT.SetNumberTT(ship_geo.NuTauTT.n)
   NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ)
   NuTauTT.SetBrickParam(ship_geo.NuTauTarget.CellW)
   NuTauTT.SetTotZDimension(ship_geo.NuTauTarget.zdim)

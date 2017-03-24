@@ -139,9 +139,14 @@ void TargetTracker::SetTotZDimension(Double_t Zdim)
   ZDimension = Zdim;
 }
 
+void TargetTracker::SetNumberTT(Int_t n)
+{
+  fNTT =n;
+}
+
 void TargetTracker::ConstructGeometry()
 {
-  Int_t NTT = 12;
+
   InitMedium("TTmedium");
   TGeoMedium *medium =gGeoManager->GetMedium("TTmedium");
   TGeoVolume *volTarget=gGeoManager->GetVolume("volTarget");
@@ -153,7 +158,7 @@ void TargetTracker::ConstructGeometry()
 
     Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
 
-    for(int l = 0; l < NTT; l++)
+    for(int l = 0; l < fNTT; l++)
       volTarget->AddNode(volTT,l,new TGeoTranslation(0,0, d_tt + l*(TTrackerZ +CellWidth)));
 }
 

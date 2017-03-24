@@ -37,6 +37,7 @@ public:
     void SetBrickParam(Double_t CellW);
     void SetTotZDimension(Double_t Zdim);
     void DecodeTTID(Int_t detID, Int_t &NTT);
+    void SetNumberTT(Int_t n);
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -110,6 +111,8 @@ protected:
     Double_t CellWidth; //dimension of the cell containing brick and CES
     Double_t ZDimension; //Dimension of the TTs+bricks total volume
     
+    Int_t fNTT; //number of TT
+
     Int_t InitMedium(const char* name);
     
 };
