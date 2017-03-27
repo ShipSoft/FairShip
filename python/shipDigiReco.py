@@ -232,7 +232,7 @@ class ShipDigiReco:
        if ElossPerDetId[seg]<0.045:    aHit.setInvalid()
        self.digiSBT[index] = aHit
        v = ROOT.std.vector('int')()
-       for x in listOfVetoPoints:
+       for x in listOfVetoPoints[seg]:
            v.push_back(x)
        self.digiSBT2MC.push_back(v)
        index=index+1
