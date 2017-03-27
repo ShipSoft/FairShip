@@ -464,9 +464,9 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
        Double_t wR = f_PhiRibsThickness;
        int nRx = 1;
        int nRy = 1;
-       int liScCounter = 1;
+       int liScCounter = 1 + 100000*seg;
        int ribPhiCounter = 1;
-       int liSc_C_Counter = 1;
+       int liSc_C_Counter = 1 + 100000*seg + 10000;
        int ribPhi_C_Counter = 1;
        
        TGeoVolume* phiRib_Y_slope = GeoParalepiped("phiRib_Y_slope",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,0,-slopeY,kBlue,phi_ribMed);
@@ -943,7 +943,8 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
+    Int_t veto_uniqueId;
+    gMC->CurrentVolID(veto_uniqueId);
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
@@ -954,7 +955,7 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
     Double_t xmean = (fPos.X()+Pos.X())/2. ;      
     Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
     Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
-    AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
+    AddHit(fTrackID, veto_uniqueId, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
