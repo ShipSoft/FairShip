@@ -27,7 +27,8 @@ class ShipDigiReco:
     if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)     
     if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)  
     if sTree.GetBranch("Digi_StrawtubesHits"): sTree.SetBranchStatus("Digi_StrawtubesHits",0)
-    if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)   
+    if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
+    if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
     if sTree.GetBranch("Digi_StrawtubesHits"): sTree.SetBranchStatus("Digi_StrawtubesHits",0)     
     rawFile = fout.replace("_rec.root","_raw.root")
     recf = ROOT.TFile(rawFile,"recreate")
@@ -69,6 +70,8 @@ class ShipDigiReco:
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
   self.digiSBT    = ROOT.TClonesArray("vetoHit")
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
+  self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
+  self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
 # for the digitizing step
   self.v_drift = modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
@@ -195,54 +198,44 @@ class ShipDigiReco:
    self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
    self.eventHeader.Fill()
    self.digiSBT.Delete()
+   self.digiSBT2MC.clear()
    self.digitizeSBT()
    self.digiSBTBranch.Fill()
+   self.mcLinkSBT.Fill()
    self.digiStraw.Delete()
    self.digitizeStrawTubes()
    self.digiStrawBranch.Fill()
  def digitizeSBT(self):
-
-     #ElossPerDetId={}
-     FiredDetID=[]
-     fGeo = ROOT.gGeoManager
-     nHits=self.sTree.vetoPoint.GetEntriesFast()
-     index=0
-     detIDMap=dict()
-     ElossPerDetId = dict()
-
+     ElossPerDetId    = {}
+     tOfFlight        = {}
+     listOfVetoPoints = {}
+     key=-1
      for aMCPoint in self.sTree.vetoPoint:
+       key+=1
        detID=aMCPoint.GetDetectorID()
-       x= aMCPoint.GetX()
-       y= aMCPoint.GetY()
-       z= aMCPoint.GetZ()
-       node = fGeo.FindNode(x,y,z)
-       name=node.GetName()
-       if  name.find('LiSc')>0:
-           Eloss=aMCPoint.GetEnergyLoss()
-           if not  detID  in FiredDetID:
-              detIDMap[detID]=3*[0]
-              xpos=(node.GetMatrix().GetTranslation())[0]
-              ypos=(fGeo.FindNode(x,y,z).GetMatrix().GetTranslation())[1]
-              zpos=(fGeo.FindNode(x,y,z).GetMatrix().GetTranslation())[2]
-              FiredDetID.append(detID)
-              detIDMap[detID][0]=xpos
-              detIDMap[detID][1]=ypos
-              detIDMap[detID][2]=zpos
-              ElossPerDetId[detID]=Eloss
-           else:
-              ElossPerDetId[detID] += Eloss
-       aHit = ROOT.vetoHit(aMCPoint,self.sTree.t0)
-       if self.digiSBT.GetSize() == index: self.digiSBT.Expand(index+1000)
-       index=0
-     for seg in FiredDetID:
-         if ElossPerDetId[seg]>0.045:
-            aHit.setIsValid()
-            aHit.SetEloss(ElossPerDetId[seg])
-            aHit.SetX(detIDMap[seg][0])
-            aHit.SetY(detIDMap[seg][1])
-            aHit.SetZ(detIDMap[seg][2])
-            self.digiSBT[index]=aHit
-            index=index+1
+       if not detID>100000: continue  # not a LiSc detector
+       Eloss=aMCPoint.GetEnergyLoss()
+       if not ElossPerDetId.has_key(detID): 
+        ElossPerDetId[detID]=0
+        listOfVetoPoints[detID]=[]
+        tOfFlight[detID]=[]
+       ElossPerDetId[detID] += Eloss
+       listOfVetoPoints[detID].append(key)
+       tOfFlight[detID].append(aMCPoint.GetTime())
+     index=0
+     for seg in ElossPerDetId:
+       aHit = ROOT.vetoHit(seg,ElossPerDetId[seg])
+       aHit.SetTDC(min( tOfFlight[seg] ) + self.sTree.t0 )
+       if self.digiSBT.GetSize() == index: 
+          self.digiSBT.Expand(index+1000)
+          self.mcLinkSBT.Expand(index+1000)
+       if ElossPerDetId[seg]<0.045:    aHit.setInvalid()
+       self.digiSBT[index] = aHit
+       v = ROOT.std.vector('int')()
+       for x in listOfVetoPoints:
+           v.push_back(x)
+       self.digiSBT2MC.push_back(v)
+       index=index+1
  def digitizeStrawTubes(self):
  # digitize FairSHiP MC hits  
    index = 0

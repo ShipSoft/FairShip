@@ -35,29 +35,22 @@ class Task:
   return detList 
 
  def SBT_decision(self,sTree,mcParticle=None):
-  # if mcParticle >0, only count hits from this particle
-  # if mcParticle <0, do not count hits from this particle
-  ELOSS = {} 
-  for i in self.detList: 
-    if not self.detList[i].find('LiSc')<0: 
-       ELOSS[self.detList[i]] = [0]*self.N 
-  for ahit in sTree.vetoPoint:
-     if mcParticle: 
-        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
-        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-     detID   = ahit.GetDetectorID()
-     detName = self.detList[detID]
-     if not detName in ELOSS: continue
-     x,y,z = (ahit.GetX(), ahit.GetY(), ahit.GetZ())
-     ELoss = ahit.GetEnergyLoss()
-     if not detName.find("T1")<0:   t = ROOT.TMath.ATan2(self.a*y,self.b*x)
-     else:                          t = ROOT.TMath.ATan2(self.asmall*y,self.b*x)
-     phisegment = ROOT.TMath.FloorNint((t+2*ROOT.TMath.Pi()+self.phistart)/self.dphi)%self.N
-     ELOSS[detName][phisegment] += ELoss
+  # if mcParticle >0, only count hits with this particle
+  # if mcParticle <0, do not count hits with this particle
   hitSegments = 0
-  for detName in ELOSS:
-    for seg in range(len(ELOSS[detName])):
-      if ELOSS[detName][seg] > 0.045: hitSegments += 1 #threshold of 45 MeV per segment
+  index = -1
+  for aDigi in sTree.Digi_SBTHits:
+     index+=1 
+     if mcParticle:
+        found = False
+        for mcParticle in sTree.digiSBT2MC[index]: 
+         if mcParticle>0 and mcParticle != ahit.GetTrackID() : found=True
+         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : found=True
+        if found: continue
+     detID    = aDigi.GetDetectorID()
+     position = aDigi.GetXYZ()
+     ELoss    = aDigi.GetEloss()
+     if aDigi.isValid(): hitSegments += 1 #threshold of 45 MeV per segment
   w = (1-self.SBTefficiency)**hitSegments  
   veto = self.random.Rndm() > w
   #print 'SBT :',hitSegments
@@ -65,10 +58,11 @@ class Task:
  def UVT_decision(self,sTree,mcParticle=None):
   nHits = 0
   for ahit in sTree.vetoPoint:
+     detID   = ahit.GetDetectorID()
+     if detID>100000: continue  # this is a LiSc detector
      if mcParticle: 
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-     detID   = ahit.GetDetectorID()
      detName = self.detList[detID]
      if not detName == "VetoTimeDet": continue
      nHits+=1
