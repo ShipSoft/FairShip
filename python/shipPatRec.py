@@ -642,15 +642,15 @@ def Digitization(sTree,SmearedHits):
   StrawRaw={} #raw hit dictionary: key=hit number, values=xtop,ytop,ztop,xbot,ybot,zbot,dist2Wire,strawname
   StrawRawLink={} #raw hit dictionary: key=hit number, value=the hit object
   j=0
-  for i in range(SmearedHits.GetEntries()):	 
-    xtop=SmearedHits[i][1]
-    xbot=SmearedHits[i][4]
-    ytop=SmearedHits[i][2]
-    ybot=SmearedHits[i][5]
-    ztop=SmearedHits[i][3] 
-    zbot=SmearedHits[i][6]
-    distance=SmearedHits[i][7]
-    strawname=SmearedHits[i][8]
+  for i in range(len(SmearedHits)):	 
+    xtop=SmearedHits[i]['xtop']
+    xbot=SmearedHits[i]['xbot']
+    ytop=SmearedHits[i]['ytop']
+    ybot=SmearedHits[i]['ybot']
+    ztop=SmearedHits[i]['z'] 
+    zbot=SmearedHits[i]['z']
+    distance=SmearedHits[i]['dist']
+    strawname=sTree.strawtubesPoint[i].GetDetectorID()
     a=[]   
     a.append(xtop)
     a.append(ytop)
@@ -687,7 +687,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
   trackid={}
   duplicates=[]
   j=0
-  resolution=ShipGeo.straw.resol
+  resolution=ShipGeo.strawtubes.sigma_spatial
 
   for item in StrawRaw:  
      #y hits for horizontal straws
@@ -1236,7 +1236,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 def TrackFit(hitPosList,theTrack,charge,pinv):  
    global theTracks
    if debug==1: fitter.setDebugLvl(1)
-   resolution = ShipGeo.straw.resol    
+   resolution = ShipGeo.strawtubes.sigma_spatial    
    hitCov = ROOT.TMatrixDSym(7)
    hitCov[6][6] = resolution*resolution
    for item in hitPosList:
@@ -1522,7 +1522,7 @@ def hit2wire(ahit,bot,top,no_amb=None):
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = dw
-     if not no_amb: smear = ROOT.fabs(random.Gaus(dw,ShipGeo.straw.resol))
+     if not no_amb: smear = ROOT.fabs(random.Gaus(dw,ShipGeo.strawtubes.sigma_spatial))
      smearedHit = {'mcHit':ahit,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'z':bot.z(),'dist':smear}
      return smearedHit
 
@@ -1786,7 +1786,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
                if math.fabs(pinv) > 0.0 : momM = ROOT.TVector3(0,0,int(charge)/pinv)
                else: momM = ROOT.TVector3(0,0,999)   
                covM = ROOT.TMatrixDSym(6)
-               resolution = ShipGeo.straw.resol 
+               resolution = ShipGeo.strawtubes.sigma_spatial  
                for  i in range(3):   covM[i][i] = resolution*resolution
                covM[0][0]=resolution*resolution*100.
                for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)

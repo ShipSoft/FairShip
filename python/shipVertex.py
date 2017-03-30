@@ -17,8 +17,7 @@ class Task:
   self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
   self.h = hp
   self.PDG = ROOT.TDatabasePDG.Instance()
-  if sys.modules['__main__'].realPR != "":     self.fitTrackLoc = "FitTracks_PR"
-  else:                                        self.fitTrackLoc = "FitTracks"
+  self.fitTrackLoc = "FitTracks"
   ut.bookHist(self.h,'Vzpull','Vz pull',100,-3.,3.)
   ut.bookHist(self.h,'Vxpull','Vx pull',100,-3.,3.)
   ut.bookHist(self.h,'Vypull','Vy pull',100,-3.,3.)

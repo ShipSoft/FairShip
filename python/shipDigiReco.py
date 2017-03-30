@@ -20,9 +20,6 @@ class ShipDigiReco:
     if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
     if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
     if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
-    if sTree.GetBranch("FitTracks_PR"): sTree.SetBranchStatus("FitTracks_PR",0)
-    if sTree.GetBranch("Particles_PR"): sTree.SetBranchStatus("Particles_PR",0)
-    if sTree.GetBranch("fitTrack2MC_PR"): sTree.SetBranchStatus("fitTrack2MC_PR",0)
     if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)     
     if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)     
     if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)  
@@ -63,8 +60,8 @@ class ShipDigiReco:
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
-  self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
-  self.fitTracks   = self.sTree.Branch("FitTracks"+realPR,  self.fGenFitArray,32000,-1)
+  self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
+  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
 #
   self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
@@ -403,7 +400,7 @@ class ShipDigiReco:
     self.fGenFitArray[nTrack] = theTrack
     self.fitTrack2MC.push_back(atrack)
     if debug: 
-     print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
+     print 'save track',theTrack,chi2,nmeas,fitStatus.isFitConverged()
   self.fitTracks.Fill()
   self.mcLink.Fill()
   return nTrack+1
