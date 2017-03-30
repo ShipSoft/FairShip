@@ -45,8 +45,17 @@ TVector3 vetoHit::GetXYZ()
     TGeoVolume* assembly = gGeoManager->FindVolumeFast(seq);
     TGeoNode* node = assembly->GetNode(key-1);
     TGeoMatrix* transl = node->GetMatrix();
+// this part should be more automatic, how to find the position of the node in the hierarchy 
+    seq="DecayVolume_1";
+    TGeoNode* decayVol =  gGeoManager->GetTopVolume()->FindNode(seq);
+    seq="T";seq+=iseq;seq+="_1";
+    TGeoNode* Tseg = decayVol->GetVolume()->FindNode(seq);
+    TGeoMatrix* translTop = decayVol->GetMatrix();
+    TGeoMatrix* translT  = Tseg->GetMatrix();
     TVector3 pos;
-    pos.SetXYZ(transl->GetTranslation()[0],transl->GetTranslation()[1],transl->GetTranslation()[2]);
+    pos.SetXYZ(transl->GetTranslation()[0]+translTop->GetTranslation()[0]+translT->GetTranslation()[0],
+               transl->GetTranslation()[1]+translTop->GetTranslation()[1]+translT->GetTranslation()[1],
+               transl->GetTranslation()[2]+translTop->GetTranslation()[2]+translT->GetTranslation()[2]);
     return pos;
 } 
 Double_t vetoHit::GetX()
