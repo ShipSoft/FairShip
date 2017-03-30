@@ -28,7 +28,7 @@ class vetoHit : public ShipHit
     Double_t GetY();
     Double_t GetZ();
     TVector3 GetXYZ();
-
+    TGeoNode* GetNode();
     /** Modifier **/
     void SetEloss(Double_t val){fdigi=val;}
     void SetTDC(Double_t val){ft=val;}     

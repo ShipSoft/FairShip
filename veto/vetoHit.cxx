@@ -61,6 +61,18 @@ Double_t vetoHit::GetZ()
 { TVector3 pos = GetXYZ();
   return pos.Z();
 }
+TGeoNode* vetoHit::GetNode()
+{
+    Int_t iseq   = fDetectorID/100000;
+    Int_t corner = (fDetectorID-100000*iseq)/10000;
+    Int_t key    = fDetectorID%10000;
+    TString seq="T";
+    if (corner==1){  seq+=iseq; seq+="LiScC";}
+    else          {  seq+=iseq; seq+="LiSc";}
+    TGeoVolume* assembly = gGeoManager->FindVolumeFast(seq);
+    TGeoNode* node = assembly->GetNode(key-1);
+    return node;
+} 
 
 // -----   Public method Print   -------------------------------------------
 void vetoHit::Print(Int_t detID) const
