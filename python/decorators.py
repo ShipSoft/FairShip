@@ -15,6 +15,9 @@ def MCTrackPrintOut(x):
   m = x.GetMotherId()
   txt = '("ShipMCTrack") pdgCode: %7i(%10s) P=%6.3F GeV/c mother=%i'%(c,n,x.GetP(),m)
   return txt
+def vetoHitPrintOut(x):
+  txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.adc(),x.tdc())
+  return txt
 def FitTrackPrintOut(x):
   st = x.getFitStatus()
   if st.isFitConverged():
@@ -63,4 +66,4 @@ ROOT.TParticle.__repr__ = TParticlePrintOut
 ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
 ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
 ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
-
+ROOT.vetoHit.__repr__ = vetoHitPrintOut
