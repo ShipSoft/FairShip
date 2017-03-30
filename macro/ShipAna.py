@@ -26,13 +26,13 @@ except getopt.GetoptError:
         print ' enter file name'
         sys.exit()
 for o, a in opts:
-        if o in ("-f"):
+        if o in ("-f",):
             inputFile = a
-        if o in ("-g", "--geoFile"):
+        if o in ("-g", "--geoFile",):
             geoFile = a
-        if o in ("-Y"): 
+        if o in ("-Y",):
             dy = float(a)
-        if o in ("-n", "--nEvents="):
+        if o in ("-n", "--nEvents=",):
             nEvents = int(a)
 
 if not inputFile.find(',')<0 :  

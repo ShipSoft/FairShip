@@ -69,75 +69,75 @@ except getopt.GetoptError:
 for o, a in opts:
         if o in ("-D","--display"):
             eventDisplay = True
-        if o in ("--Pythia6"):
+        if o in ("--Pythia6",):
             simEngine = "Pythia6"
-        if o in ("--Pythia8"):
+        if o in ("--Pythia8",):
             simEngine = "Pythia8"
-        if o in ("--PG"):
+        if o in ("--PG",):
             simEngine = "PG"
-        if o in ("-A"):
+        if o in ("-A",):
             inclusive = a
-            if a.lower() == 'charmonly': 
+            if a.lower() == 'charmonly':
                charmonly = True
-               HNL = False  
+               HNL = False 
             if a not in ['b','c']: inclusive = True
-        if o in ("--Genie"):
+        if o in ("--Genie",):
             simEngine = "Genie"
-        if o in ("--NuRadio"):
+        if o in ("--NuRadio",):
             simEngine = "nuRadiography"
-        if o in ("--Ntuple"):
+        if o in ("--Ntuple",):
             simEngine = "Ntuple"
-        if o in ("--FollowMuon"):
+        if o in ("--FollowMuon",):
             followMuon = True
-        if o in ("--MuonBack"):
+        if o in ("--MuonBack",):
             simEngine = "MuonBack"
-        if o in ("--Nuage"):
+        if o in ("--Nuage",):
             simEngine = "Nuage"
-        if o in ("--phiRandom"):
+        if o in ("--phiRandom",):
             phiRandom = True
-        if o in ("--Cosmics"):
+        if o in ("--Cosmics",):
             simEngine = "Cosmics"
             Opt_high = 0
             if a!=str(0): Opt_high = int(a)
-        if o in ("--MuDIS"):
+        if o in ("--MuDIS",):
             simEngine = "muonDIS"
-        if o in ("-n", "--nEvents"):
+        if o in ("-n", "--nEvents",):
             nEvents = int(a)
-        if o in ("-i", "--firstEvent"):
+        if o in ("-i", "--firstEvent",):
             firstEvent = int(a)
-        if o in ("-s", "--seed"):
+        if o in ("-s", "--seed",):
             theSeed = int(a)
-        if o in ("-s", "--sameSeed"):
+        if o in ("-s", "--sameSeed",):
             sameSeed = int(a)
-        if o in ("-f"):
+        if o in ("-f",):
             if a.lower() == "none": inputFile = None
             else: inputFile = a
             defaultInputFile = False
-        if o in ("-o", "--output"):
+        if o in ("-o", "--output",):
             outputDir = a
-        if o in ("-Y"): 
+        if o in ("-Y",): 
             dy = float(a)
-        if o in ("--tankDesign"): 
+        if o in ("--tankDesign",):
             dv = int(a)
-        if o in ("--muShieldDesign"): 
+        if o in ("--muShieldDesign",):
             ds = int(a)
-	if o=="--nuTauTargetDesign":
+	if o in ("--nuTauTargetDesign",):
             nud = int(a)
-        if o in ("--charm"): 
+        if o in ("--charm",):
             charm = int(a)
-        if o in ("-F"):
+        if o in ("-F",):
             deepCopy = True
-        if o in ("--RpvSusy"):
+        if o in ("--RpvSusy",):
             HNL = False
             RPVSUSY = True
-        if o in ("--SusyBench"):
+        if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
-        if o in ("-m", "--mass"):
+        if o in ("-m", "--mass",):
 		if HNL: theHNLmass = float(a)
 		if DarkPhoton: theDPmass = float(a)
-        if o in ("-c", "--couplings", "--coupling"):
+        if o in ("-c", "--couplings", "--coupling",):
             theCouplings = [float(c) for c in a.split(",")]
-	if o in ("-e", "--epsilon"):
+	if o in ("-e", "--epsilon",):
 		theDPepsilon = float(a)
 
 #sanity check
