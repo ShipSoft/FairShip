@@ -37,16 +37,10 @@ vetoHit::~vetoHit() { }
 TVector3 vetoHit::GetXYZ()
 {
     Int_t iseq   = fDetectorID/100000;
-    Int_t corner = (fDetectorID-100000*iseq)/10000;
-    Int_t key    = fDetectorID%10000;
-    TString seq="T";
-    if (corner==1){  seq+=iseq; seq+="LiScC";}
-    else          {  seq+=iseq; seq+="LiSc";}
-    TGeoVolume* assembly = gGeoManager->FindVolumeFast(seq);
-    TGeoNode* node = assembly->GetNode(key-1);
+    TGeoNode* node = GetNode();
     TGeoMatrix* transl = node->GetMatrix();
 // this part should be more automatic, how to find the position of the node in the hierarchy 
-    seq="DecayVolume_1";
+    TString seq="DecayVolume_1";
     TGeoNode* decayVol =  gGeoManager->GetTopVolume()->FindNode(seq);
     seq="T";seq+=iseq;seq+="_1";
     TGeoNode* Tseg = decayVol->GetVolume()->FindNode(seq);

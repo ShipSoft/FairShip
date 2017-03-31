@@ -128,12 +128,7 @@ class DrawVetoDigi(ROOT.FairTask):
     bx.SetPickable(ROOT.kTRUE)
     bx.SetTitle(digi.__repr__())
     bx.SetMainColor(ROOT.kMagenta+3)
-    if shape.GetName().find('Corner')<0: dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
-    else:
-     boolnode = shape.GetBoolNode()  
-     dz = boolnode.GetRightMatrix().GetTranslation()[2]-boolnode.GetRightShape().GetDZ()
-     dx,dy = 20,20 # since don't know yet how to make it better
-    print shape,dx,dy,dz
+    dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
     bx.SetVertex(0,centre.X()-dx+xoff,centre.Y()-dy+yoff,centre.Z()-dz+zoff )
     bx.SetVertex(1,centre.X()-dx+xoff,centre.Y()+dy+yoff,centre.Z()-dz+zoff )
     bx.SetVertex(2,centre.X()+dx+xoff,centre.Y()+dy+yoff,centre.Z()-dz+zoff )
