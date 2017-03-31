@@ -5,6 +5,7 @@
 #include "ShipHit.h"
 #include "strawtubesPoint.h"
 #include "TObject.h"
+#include "TVector3.h"
 
 class strawtubesHit : public ShipHit
 {
@@ -20,8 +21,8 @@ class strawtubesHit : public ShipHit
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
     strawtubesHit(strawtubesPoint* p, Double_t t0);
-
-    /** Destructor **/
+    void StrawEndPoints(TVector3 &vbot, TVector3 &vtop);  
+/** Destructor **/
     virtual ~strawtubesHit();
 
     /** Output to screen **/
@@ -37,7 +38,7 @@ class strawtubesHit : public ShipHit
 
     Float_t flag;   ///< flag
 
-    ClassDef(strawtubesHit,1);
+    ClassDef(strawtubesHit,2);
     
 
 };
