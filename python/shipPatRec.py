@@ -48,6 +48,7 @@ random = ROOT.TRandom()
 ROOT.gRandom.SetSeed(13)
 
 PDG=ROOT.TDatabasePDG.Instance()  
+fitter = ROOT.genfit.DAF()
 
 h={} #dictionary of histograms
 ut.bookHist(h,'pinvvstruepinv','1/p vs 1/p-true',100,-2.,2.,100,-2.,2.)
@@ -117,6 +118,7 @@ TStation1StartZ=0.
 TStation4EndZ=0.
 VetoStationZ=0.
 VetoStationEndZ=0.
+ 
  
 def initialize(fGeo):
    #creates a dictionary with z coordinates of layers
@@ -1262,7 +1264,8 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
    if not theTrack.checkConsistency():
      if debug==1: print 'Problem with track after fit, not consistent',theTrack
      return  
-       
+    
+      
    fitStatus   = theTrack.getFitStatus()
    theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
 
@@ -1277,8 +1280,7 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
 
    
    fittedState = theTrack.getFittedState()
-   fittedMom = fittedState.getMomMag()
-   
+   fittedMom = fittedState.getMomMag()  
    fittedMom = fittedMom*int(charge) 
    
    if math.fabs(pinv) > 0.0 : rc=h['pvspfitted'].Fill(1./pinv,fittedMom) 
@@ -1599,7 +1601,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
  reconstructibles34=0
  theTracks=[]
  
- if debug==1: print "************* START OF  EVENT",n,"**************"  
+ if debug==1: print "************* PatRect START **************"  
     
  nShits=sTree.strawtubesPoint.GetEntriesFast() 
  nMCTracks = sTree.MCTrack.GetEntriesFast() 
@@ -1815,3 +1817,6 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
     #return
  return fittedtrackids 
  
+ 
+def finalize(): 
+   if debug==1: ut.writeHists(h,"recohists_patrec.root")

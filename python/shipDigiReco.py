@@ -410,4 +410,4 @@ class ShipDigiReco:
   self.sTree.Write()
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")
-if realPR: ut.writeHists(shipPatRec.h,"recohists_patrec.root")
+  if realPR: shipPatRec.finalize()
