@@ -133,7 +133,8 @@ TGeoVolume* veto::GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t
   double xc = dxm-dcorner;
   double yc = dym-dcorner;
    
-  TGeoTubeSeg *Ts = new TGeoTubeSeg("Ts"+nm,dcorner,dcorner+thick,dz,phi1,phi2);
+  TGeoTubeSeg *Ts = new TGeoTubeSeg("Ts"+nm,dcorner,dcorner+thick,zlength*sqrt(1+slopeX*slopeX+slopeY*slopeY)/2 + 
+                                         thick*sqrt(slopeX*slopeX+slopeY*slopeY),phi1,phi2);
   TGeoRotation *r = new TGeoRotation("r"+nm);
   if(cornerNr==1){r->RotateX(-ydeg);r->RotateY(xdeg);}
   if(cornerNr==2){r->RotateX(-ydeg);r->RotateY(-xdeg);xc=-xc;}
