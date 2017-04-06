@@ -18,6 +18,7 @@ class ShipDigiReco:
     f = ROOT.TFile(fout)
     sTree = f.cbmsim
     if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
+    if sTree.GetBranch("GoodTracks"): sTree.SetBranchStatus("GoodTracks",0)
     if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
     if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
     if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)     
@@ -60,8 +61,10 @@ class ShipDigiReco:
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
+  self.goodTracksVect  = ROOT.std.vector('int')()
   self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
   self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
+  self.goodTracksBranch      = self.sTree.Branch("GoodTracks",self.goodTracksVect,32000,-1)
 #
   self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
@@ -176,6 +179,7 @@ class ShipDigiReco:
 
  def reconstruct(self):
    ntracks = self.findTracks()
+   nGoodTracks = self.findGoodTracks()
    for x in self.caloTasks: 
     if hasattr(x,'execute'): x.execute()
     elif x.GetName() == 'ecalFiller': x.Exec('start',self.sTree.EcalPointLite)
@@ -306,6 +310,7 @@ class ShipDigiReco:
   fittedtrackids=[]
   self.fGenFitArray.Delete()
   self.fitTrack2MC.clear()
+  self.goodTracksVect.clear()
 #   
   if withT0:  self.SmearedHits = self.withT0Estimate()
   # old procedure, not including estimation of t0 
@@ -404,6 +409,20 @@ class ShipDigiReco:
   self.fitTracks.Fill()
   self.mcLink.Fill()
   return nTrack+1
+
+ def findGoodTracks(self):
+   nGoodTracks = 0
+   for i,track in enumerate(self.fGenFitArray):
+    fitStatus = track.getFitStatus()
+    if not fitStatus.isFitConverged(): continue
+    nmeas = fitStatus.getNdf()
+    chi2  = fitStatus.getChi2()/nmeas
+    if chi2<50 and not chi2<0:
+      self.goodTracksVect.push_back(i)
+      nGoodTracks+=1
+   self.goodTracksBranch.Fill()
+   return nGoodTracks
+
  def finish(self):
   del self.fitter
   print 'finished writing tree'
