@@ -18,7 +18,7 @@ class Task:
   self.h = hp
   self.PDG = ROOT.TDatabasePDG.Instance()
   self.fitTrackLoc = "FitTracks"
-  self.goodTracksLoc = "GoodTracks"
+  self.goodTracksLoc = "goodTracks"
   ut.bookHist(self.h,'Vzpull','Vz pull',100,-3.,3.)
   ut.bookHist(self.h,'Vxpull','Vx pull',100,-3.,3.)
   ut.bookHist(self.h,'Vypull','Vy pull',100,-3.,3.)

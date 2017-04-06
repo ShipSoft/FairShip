@@ -23,6 +23,7 @@ veto.cxx
 vetoContFact.cxx
 vetoPoint.cxx
 vetoHit.cxx
+vetoHitOnTrack.cxx
 )
 
 Set(LINKDEF vetoLinkDef.h)
