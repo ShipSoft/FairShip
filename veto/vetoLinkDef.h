@@ -8,5 +8,6 @@
 #pragma link C++ class veto+;
 #pragma link C++ class vetoPoint+;
 #pragma link C++ class vetoHit+;
+#pragma link C++ class vetoHitOnTrack+;
 
 #endif
