@@ -18,7 +18,7 @@ if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
     nuTauTargetDesign = 0
-    if muShieldDesign == 7: 
+    if muShieldDesign >= 7: 
         nuTauTargetDesign=1
 if "targetOpt" not in globals():
     targetOpt = 18

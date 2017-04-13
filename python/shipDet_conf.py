@@ -127,7 +127,6 @@ def configure(run,ship_geo):
                ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.,\
                ship_geo.cave.floorHeightMuonShield,ship_geo.muShield.Field) 
  elif ship_geo.muShieldDesign == 8:
-  # TODO use new constructor
   MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo)
  
  detectorList.append(MuonShield)
