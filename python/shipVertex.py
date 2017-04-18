@@ -18,6 +18,7 @@ class Task:
   self.h = hp
   self.PDG = ROOT.TDatabasePDG.Instance()
   self.fitTrackLoc = "FitTracks"
+  self.goodTracksLoc = "goodTracks"
   ut.bookHist(self.h,'Vzpull','Vz pull',100,-3.,3.)
   ut.bookHist(self.h,'Vxpull','Vx pull',100,-3.,3.)
   ut.bookHist(self.h,'Vypull','Vy pull',100,-3.,3.)
@@ -28,25 +29,22 @@ class Task:
  def TwoTrackVertex(self):
   self.fPartArray.Delete()
   fittedTracks = getattr(self.sTree,self.fitTrackLoc)
-  if fittedTracks.GetEntries() < 2: return 
+  goodTracks = getattr(self.sTree,self.goodTracksLoc)
+  if goodTracks.size() < 2: return
   particles    = self.fPartArray
   PosDirCharge,CovMat,scalFac = {},{},{}
-  for tr in range(fittedTracks.GetEntries()):
+  for tr in goodTracks:
    fitStatus = fittedTracks[tr].getFitStatus()
-   if not fitStatus.isFitConverged(): continue
-   nmeas = fitStatus.getNdf()
-   chi2  = fitStatus.getChi2()/nmeas
-   if chi2<50 and not chi2<0: 
-      xx  = fittedTracks[tr].getFittedState()
-      pid   = xx.getPDG()
-      if not pidProton and abs(pid) == 2212:
-        pid = int(ROOT.TMath.Sign(211,pid))
-      rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
-      state = ROOT.genfit.StateOnPlane(rep)
-      rep.setPosMom(state,xx.getPos(),xx.getMom())
-      PosDirCharge[tr] = {'position':xx.getPos(),'direction':xx.getDir(),\
+   xx  = fittedTracks[tr].getFittedState()
+   pid   = xx.getPDG()
+   if not pidProton and abs(pid) == 2212:
+     pid = int(ROOT.TMath.Sign(211,pid))
+   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
+   state = ROOT.genfit.StateOnPlane(rep)
+   rep.setPosMom(state,xx.getPos(),xx.getMom())
+   PosDirCharge[tr] = {'position':xx.getPos(),'direction':xx.getDir(),\
                           'momentum':xx.getMom(),'charge':xx.getCharge(),'pdgCode':pid,'state':xx,'rep':rep,'newstate':state}
-      CovMat[tr] = xx.get6DCov() 
+   CovMat[tr] = xx.get6DCov() 
 #
   if len(PosDirCharge) < 2: return
   if len(PosDirCharge) > 4: return # abort too busy events

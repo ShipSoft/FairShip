@@ -18,6 +18,8 @@ class ShipDigiReco:
     f = ROOT.TFile(fout)
     sTree = f.cbmsim
     if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
+    if sTree.GetBranch("goodTracks"): sTree.SetBranchStatus("goodTracks",0)
+    if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
     if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
     if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
     if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)     
@@ -60,13 +62,17 @@ class ShipDigiReco:
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
+  self.goodTracksVect  = ROOT.std.vector('int')()
   self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
   self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
+  self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
 #
   self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
   self.digiSBT    = ROOT.TClonesArray("vetoHit")
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
+  self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
+  self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
   self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
   self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
 # for the digitizing step
@@ -176,6 +182,8 @@ class ShipDigiReco:
 
  def reconstruct(self):
    ntracks = self.findTracks()
+   nGoodTracks = self.findGoodTracks()
+   self.linkVetoOnTracks()
    for x in self.caloTasks: 
     if hasattr(x,'execute'): x.execute()
     elif x.GetName() == 'ecalFiller': x.Exec('start',self.sTree.EcalPointLite)
@@ -404,6 +412,52 @@ class ShipDigiReco:
   self.fitTracks.Fill()
   self.mcLink.Fill()
   return nTrack+1
+
+ def findGoodTracks(self):
+   self.goodTracksVect.clear()
+   nGoodTracks = 0
+   for i,track in enumerate(self.fGenFitArray):
+    fitStatus = track.getFitStatus()
+    if not fitStatus.isFitConverged(): continue
+    nmeas = fitStatus.getNdf()
+    chi2  = fitStatus.getChi2()/nmeas
+    if chi2<50 and not chi2<0:
+      self.goodTracksVect.push_back(i)
+      nGoodTracks+=1
+   self.goodTracksBranch.Fill()
+   return nGoodTracks
+
+ def findVetoHitOnTrack(self,track):
+   distMin = 99999.
+   vetoHitOnTrack = ROOT.vetoHitOnTrack()
+   xx  = track.getFittedState()
+   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())
+   state = ROOT.genfit.StateOnPlane(rep)
+   rep.setPosMom(state,xx.getPos(),xx.getMom())
+   for i,vetoHit in enumerate(self.digiSBT):
+     vetoHitPos = vetoHit.GetXYZ()
+     try:
+      rep.extrapolateToPoint(state,vetoHitPos,False)
+     except:
+      print "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      continue
+     dist = (rep.getPos(state) - vetoHitPos).Mag()
+     if dist < distMin:
+       distMin = dist
+       vetoHitOnTrack.SetDist(distMin)
+       vetoHitOnTrack.SetHitID(i)
+   return vetoHitOnTrack
+ 
+ def linkVetoOnTracks(self):
+   self.vetoHitOnTrackArray.Delete()
+   index = 0
+   for goodTrak in self.goodTracksVect:
+     track = self.fGenFitArray[goodTrak]
+     if self.vetoHitOnTrackArray.GetSize() == index: self.vetoHitOnTrackArray.Expand(index+1000)
+     self.vetoHitOnTrackArray[index] = self.findVetoHitOnTrack(track)
+     index+=1
+   self.vetoHitOnTrackBranch.Fill()
+
  def finish(self):
   del self.fitter
   print 'finished writing tree'
