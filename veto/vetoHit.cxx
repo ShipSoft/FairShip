@@ -7,6 +7,7 @@
 #include "TRandom1.h"
 #include "TRandom3.h"
 #include "TGeoManager.h"
+#include "TGeoArb8.h"
 
 #include <iostream>
 #include <math.h>
@@ -44,12 +45,15 @@ TVector3 vetoHit::GetXYZ()
     TGeoNode* decayVol =  gGeoManager->GetTopVolume()->FindNode(seq);
     seq="T";seq+=iseq;seq+="_1";
     TGeoNode* Tseg = decayVol->GetVolume()->FindNode(seq);
-    TGeoMatrix* translTop = decayVol->GetMatrix();
-    TGeoMatrix* translT  = Tseg->GetMatrix();
-    TVector3 pos;
-    pos.SetXYZ(transl->GetTranslation()[0]+translTop->GetTranslation()[0]+translT->GetTranslation()[0],
-               transl->GetTranslation()[1]+translTop->GetTranslation()[1]+translT->GetTranslation()[1],
-               transl->GetTranslation()[2]+translTop->GetTranslation()[2]+translT->GetTranslation()[2]);
+    TGeoArb8* shape =  dynamic_cast<TGeoArb8*>(node->GetVolume()->GetShape());
+    Double_t origin[3] = {shape->GetOrigin()[0],shape->GetOrigin()[1],shape->GetOrigin()[2]};
+    Double_t master[3] = {0,0,0};
+    node->LocalToMaster(origin,master);
+    std::copy(master, master+3, origin);
+    Tseg->LocalToMaster(origin,master);
+    std::copy(master, master+3, origin);
+    decayVol->LocalToMaster(origin,master);
+    TVector3 pos = TVector3(master[0],master[1],master[2]);
     return pos;
 } 
 Double_t vetoHit::GetX()
