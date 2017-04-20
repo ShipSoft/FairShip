@@ -26,7 +26,7 @@ class strawtubesHit : public ShipHit
     virtual ~strawtubesHit();
 
     /** Output to screen **/
-    virtual void Print(Int_t detID) const;
+    virtual void Print() const;
     Float_t tdc() const {return fdigi;}
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
@@ -38,7 +38,7 @@ class strawtubesHit : public ShipHit
 
     Float_t flag;   ///< flag
 
-    ClassDef(strawtubesHit,2);
+    ClassDef(strawtubesHit,3);
     
 
 };

@@ -2,6 +2,7 @@
 import ROOT,sys,getopt,os,Tkinter,atexit
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
+from array import array
 import shipunit as u
 from decorators import *
 import shipRoot_conf
@@ -120,23 +121,21 @@ class DrawVetoDigi(ROOT.FairTask):
     if digi.GetDetectorID()<100000: continue
     if not digi.isValid(): continue
     node = digi.GetNode()
-    # take into account offsets
     shape = node.GetVolume().GetShape()  
-    xoff,yoff,zoff = shape.GetOrigin()[0],shape.GetOrigin()[1],shape.GetOrigin()[2]
-    centre = digi.GetXYZ()
-    bx = ROOT.TEveBox('LiSc'+str(digi.GetDetectorID() ) )
+    bx = ROOT.TEveBox( node.GetName() )
     bx.SetPickable(ROOT.kTRUE)
     bx.SetTitle(digi.__repr__())
     bx.SetMainColor(ROOT.kMagenta+3)
     dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
-    bx.SetVertex(0,centre.X()-dx+xoff,centre.Y()-dy+yoff,centre.Z()-dz+zoff )
-    bx.SetVertex(1,centre.X()-dx+xoff,centre.Y()+dy+yoff,centre.Z()-dz+zoff )
-    bx.SetVertex(2,centre.X()+dx+xoff,centre.Y()+dy+yoff,centre.Z()-dz+zoff )
-    bx.SetVertex(3,centre.X()+dx+xoff,centre.Y()-dy+yoff,centre.Z()-dz+zoff )
-    bx.SetVertex(4,centre.X()-dx+xoff,centre.Y()-dy+yoff,centre.Z()+dz+zoff )
-    bx.SetVertex(5,centre.X()-dx+xoff,centre.Y()+dy+yoff,centre.Z()+dz+zoff )
-    bx.SetVertex(6,centre.X()+dx+xoff,centre.Y()+dy+yoff,centre.Z()+dz+zoff )
-    bx.SetVertex(7,centre.X()+dx+xoff,centre.Y()-dy+yoff,centre.Z()+dz+zoff )
+    o = shape.GetOrigin()
+    nav = ROOT.gGeoManager.GetCurrentNavigator()
+    master = array('d',[0,0,0])
+    n=0
+    for edge in [ [-dx,-dy,-dz],[-dx,+dy,-dz],[+dx,+dy,-dz],[+dx,-dy,-dz],[-dx,-dy, dz],[-dx,+dy, dz],[+dx,+dy, dz],[+dx,-dy, dz]]:
+     origin = array('d',[edge[0]+o[0],edge[1]+o[1],edge[2]+o[2]])
+     nav.LocalToMaster(origin,master)
+     bx.SetVertex(n,master[0],master[1],master[2])
+     n+=1
     self.comp.AddElement(bx)
    self.comp.CloseCompound()
    gEve.ElementChanged(self.evscene,True,True)

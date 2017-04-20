@@ -28,7 +28,7 @@ strawtubesPoint::~strawtubesPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void strawtubesPoint::Print(Int_t detID) const
+void strawtubesPoint::Print() const
 {
   cout << "-I- strawtubesPoint: strawtubes point for track " << fTrackID
        << " in detector " << fDetectorID << endl;

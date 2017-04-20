@@ -30,7 +30,7 @@ class strawtubesPoint : public FairMCPoint
     virtual ~strawtubesPoint();
 
     /** Output to screen **/
-    virtual void Print(Int_t detID) const;
+    virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
     Double_t dist2Wire() const {return fdist2Wire;}
 
@@ -41,7 +41,7 @@ class strawtubesPoint : public FairMCPoint
 
     Int_t fPdgCode;
     Double_t fdist2Wire;
-    ClassDef(strawtubesPoint,1);
+    ClassDef(strawtubesPoint,2);
     
 
 };

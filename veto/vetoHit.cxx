@@ -7,6 +7,7 @@
 #include "TRandom1.h"
 #include "TRandom3.h"
 #include "TGeoManager.h"
+#include "TGeoArb8.h"
 
 #include <iostream>
 #include <math.h>
@@ -36,20 +37,13 @@ vetoHit::~vetoHit() { }
 
 TVector3 vetoHit::GetXYZ()
 {
-    Int_t iseq   = fDetectorID/100000;
+    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TGeoNode* node = GetNode();
-    TGeoMatrix* transl = node->GetMatrix();
-// this part should be more automatic, how to find the position of the node in the hierarchy 
-    TString seq="DecayVolume_1";
-    TGeoNode* decayVol =  gGeoManager->GetTopVolume()->FindNode(seq);
-    seq="T";seq+=iseq;seq+="_1";
-    TGeoNode* Tseg = decayVol->GetVolume()->FindNode(seq);
-    TGeoMatrix* translTop = decayVol->GetMatrix();
-    TGeoMatrix* translT  = Tseg->GetMatrix();
-    TVector3 pos;
-    pos.SetXYZ(transl->GetTranslation()[0]+translTop->GetTranslation()[0]+translT->GetTranslation()[0],
-               transl->GetTranslation()[1]+translTop->GetTranslation()[1]+translT->GetTranslation()[1],
-               transl->GetTranslation()[2]+translTop->GetTranslation()[2]+translT->GetTranslation()[2]);
+    TGeoBBox* shape =  dynamic_cast<TGeoBBox*>(node->GetVolume()->GetShape());
+    Double_t origin[3] = {shape->GetOrigin()[0],shape->GetOrigin()[1],shape->GetOrigin()[2]};
+    Double_t master[3] = {0,0,0};
+    nav->LocalToMaster(origin,master);
+    TVector3 pos = TVector3(master[0],master[1],master[2]);
     return pos;
 } 
 Double_t vetoHit::GetX()
@@ -66,6 +60,7 @@ Double_t vetoHit::GetZ()
 }
 TGeoNode* vetoHit::GetNode()
 {
+    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     Int_t iseq   = fDetectorID/100000;
     Int_t corner = (fDetectorID-100000*iseq)/10000;
     Int_t key    = fDetectorID%10000;
@@ -74,6 +69,8 @@ TGeoNode* vetoHit::GetNode()
     else          {  seq+=iseq; seq+="LiSc";}
     TGeoVolume* assembly = gGeoManager->FindVolumeFast(seq);
     TGeoNode* node = assembly->GetNode(key-1);
+    TString path = "/DecayVolume_1/T";path+=iseq;path+="_1/";path+=seq;path+="_0/";path+=node->GetName();
+    nav->cd(path);
     return node;
 } 
 

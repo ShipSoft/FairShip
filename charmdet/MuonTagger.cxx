@@ -151,20 +151,16 @@ void MuonTagger::ConstructGeometry()
     
   top->AddNode(VMuonBox, 1, new TGeoTranslation(0, 0, zBoxPosition));
 
-  const Double_t MagneticField = 1 * tesla;
-  TGeoUniformMagField * magfield = new TGeoUniformMagField(0,MagneticField,0);
   //begin muon filter part
   
   TGeoBBox * Passive = new TGeoBBox(PasX/2, PasY/2, PasThickness/2);
   TGeoVolume * VPassive = new TGeoVolume("VPassive", Passive, Iron);
   VPassive->SetLineColor(kGreen+1);
-  VPassive->SetField(magfield);
   
   TGeoBBox * Sensitive = new TGeoBBox(SensX/2, SensY/2, SensThickness/2);
   TGeoVolume * VSensitive = new TGeoVolume("VSensitive", Sensitive, RPCmat);
   VSensitive->SetLineColor(kOrange-5);
   AddSensitiveVolume(VSensitive);
-  VSensitive->SetField(magfield);
   
   const Int_t npassive = 5;
   const Int_t nsensitive = 6;
