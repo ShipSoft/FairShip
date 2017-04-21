@@ -497,13 +497,13 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   fieldDirection[2] = FieldDirection::up;
   dXIn[2]  = 0.87*m;			dYIn[2]	= 0.35*m;
   dXOut[2] = 0.65*m;			dYOut[2]= 1.21*m;
-  gapIn[2] = 0.11*m;			gapOut[2] = 0.02*m;
+  gapIn[2] = 0.11 * m;  		gapOut[2] = 0.065 * m;
   dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2] + zgap;
 
   fieldDirection[3] = FieldDirection::up;
   dXIn[3]  = 0.65*m;			dYIn[3]	= 1.21*m;
   dXOut[3] = 0.43*m;			dYOut[3]= 2.07*m;
-  gapIn[3] = 0.11*m;			gapOut[3] = 0.02*m;
+  gapIn[3] = 0.065 * m; 		gapOut[3] = 0.02 * m;
   dZ[3] = dZ4-zgap/2;			Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;
 
   fieldDirection[4] = FieldDirection::up;
