@@ -34,8 +34,14 @@ if [ "$distribution$version" = "ScientificCERNSLC6" ]; then
  xx=$($SIMPATH/bin/fairsoft-config --cxx)
  if [[ "$xx" =~ "lcg" ]]; then
  # check that FairSoft is compiled with devtoolset
-  echo "*** execute lcg setup"
-  /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_85 x86_64-slc6-gcc49-opt Python >> tmp.sh
+  if test "${SIMPATH#*gcc62}" != "$SIMPATH"
+  then  
+   echo "*** execute lcg setup with gcc62"
+   /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_87 x86_64-slc6-gcc62-opt Python >> tmp.sh
+  else
+   echo "*** execute lcg setup with gcc49"
+   /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_85 x86_64-slc6-gcc49-opt Python >> tmp.sh
+  fi 
   source tmp.sh
   rm tmp.sh
  fi
