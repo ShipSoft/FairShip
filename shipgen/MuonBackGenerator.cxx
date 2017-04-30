@@ -120,15 +120,15 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     gRandom->SetSeed(theSeed);
   }
   if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}
-  if (fsmearBeam>0){
-    Double_t test = fsmearBeam*fsmearBeam;
-    Double_t Rsq  = test + 1.;
-    while(Rsq>test){
-     dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
-     dy = gRandom->Uniform(-1.,1.) * fsmearBeam;
-     Rsq = dx*dx+dy*dy;
-    }
-   }
+  if (fsmearBeam > 0) {
+     do {
+        dx = gRandom->Uniform(-1., 1.) * fsmearBeam;
+        dy = gRandom->Uniform(-1., 1.) * fsmearBeam;
+     } while ((dx * dx + dy * dy) > fsmearBeam * fsmearBeam);
+  } else {
+     dx = 0;
+     dy = 0;
+  }
   if (id==-1){
      std::vector<int> partList;
      for (int k = 0; k < vetoPoints->GetEntries(); k++) {
