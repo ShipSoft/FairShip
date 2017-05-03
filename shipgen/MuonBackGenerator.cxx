@@ -121,10 +121,10 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }
   if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}
   if (fsmearBeam > 0) {
-     do {
-        dx = gRandom->Uniform(-1., 1.) * fsmearBeam;
-        dy = gRandom->Uniform(-1., 1.) * fsmearBeam;
-     } while ((dx * dx + dy * dy) > fsmearBeam * fsmearBeam);
+     Double_t r = fsmearBeam + 0.8 * gRandom->Gaus();
+     phi = gRandom->Uniform(0., 2.) * TMath::Pi();
+     dx = r * TMath::Cos(phi);
+     dy = r * TMath::Sin(phi);
   } else {
      dx = 0;
      dy = 0;
@@ -172,8 +172,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,-1.,wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
      } 
   }else{
-    vx = vx + dx/100.;  
-    vy = vy + dy/100.; 
+    vx += dx/100.;
+    vy += dy/100.;
     if (fPhiRandomize){
      Double_t pt  = TMath::Sqrt( px*px+py*py );
      px = pt*TMath::Cos(phi);
