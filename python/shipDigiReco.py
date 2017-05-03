@@ -9,7 +9,7 @@ start = ROOT.TVector3()
 class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
  def __init__(self,fout,fgeo):
-  self.fn = ROOT.TFile(fout,'update')
+  self.fn = ROOT.TFile.Open(fout,'update')
   self.sTree     = self.fn.cbmsim
   if self.sTree.GetBranch("FitTracks"):
     print "remove RECO branches and rerun reconstruction"
