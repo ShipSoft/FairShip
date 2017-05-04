@@ -130,8 +130,8 @@ TGeoVolume* veto::GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t
   double xdeg=atan(slopeX)*180./TMath::Pi();
   double ydeg=atan(slopeY)*180./TMath::Pi();
   
-  double xc = dxm-dcorner;
-  double yc = dym-dcorner;
+  double xc = dxm-dcorner+0.02;
+  double yc = dym-dcorner+0.02;
    
   TGeoTubeSeg *Ts = new TGeoTubeSeg("Ts"+nm,dcorner,dcorner+thick,zlength*sqrt(1+slopeX*slopeX+slopeY*slopeY)/2 + 
                                          thick*sqrt(slopeX*slopeX+slopeY*slopeY),phi1,phi2);
