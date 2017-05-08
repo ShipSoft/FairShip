@@ -127,7 +127,10 @@ def configure(run,ship_geo):
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  detectorList.append(magnet)
   
- Veto = ROOT.veto("Veto", ROOT.kTRUE)   # vacuum tank, liquid scintillator, simplistic tracking stations
+ Veto = ROOT.veto("Veto", ROOT.kTRUE)   # vacuum tank
+ Veto.SetLiquidVeto(1)  # liquid scintillator
+ Veto.SetPlasticVeto(1) # plastic scintillator
+
  Veto.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, \
                     ship_geo.TrackStation3.z, ship_geo.TrackStation4.z,ship_geo.tankDesign)
  Veto.SetTubZpositions(ship_geo.Chamber1.z,ship_geo.Chamber2.z,ship_geo.Chamber3.z,ship_geo.Chamber4.z,ship_geo.Chamber5.z,ship_geo.Chamber6.z);

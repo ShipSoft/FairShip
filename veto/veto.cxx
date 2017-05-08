@@ -52,6 +52,9 @@ veto::veto()
     fELoss(-1),
     fvetoPointCollection(new TClonesArray("vetoPoint"))
 {
+  fUseSupport=1;
+  fPlasticVeto=0;
+  fLiquidVeto=1;
 }
 
 veto::veto(const char* name, Bool_t active)
@@ -88,6 +91,9 @@ veto::veto(const char* name, Bool_t active)
     f_RibThickness(3.*cm),
     decayVolumeMed_name("vacuums")    // for vacuum option
 {
+  fUseSupport=1;
+  fPlasticVeto=0;
+  fLiquidVeto=1;
 }
 
 veto::~veto()
@@ -308,10 +314,11 @@ TGeoVolume* veto::GeoTrapezoid(TString xname,Double_t thick,Double_t dz,Double_t
       if (sens) {AddSensitiveVolume(T);}
       return T;
 }
+
 // private method make support of vessel with rounded corners
 TGeoVolume* veto::GeoVesselSupport(TString xname,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material, Double_t floorHeight)
 {
-
+      if (fUseSupport==0) return NULL;
       TString nm = xname.ReplaceAll("-","");  //otherwise it will try to subtract "-" in TGeoComposteShape
       Double_t hhall=10.*m - floorHeight; //temporary vertical half-height of the hall
       Double_t dy1 = dy_start;
@@ -427,6 +434,12 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       if (dcorner>0.95*dx) {dcorner=0.95*dx;}
       TGeoVolume* TV = GeoTrapezoid(nm,0.,dz-0.1*cm,dx,dy,slopeX,slopeY,dcorner,1,decayVolumeMed);
       TV->SetVisibility(kFALSE);
+      if (seg==2) 
+      {
+	fDeltaCpy=1000000;
+	if (fPlasticVeto)
+	  InsertInnerVeto(nm, 1.0, dz-0.1, dx-1.0, dy-1.0, slopeX, slopeY, dcorner, 3, vetoMed, TV);
+      }
       tTankVol->AddNode(TV,0, Zero);
 
       //now place inner wall
@@ -479,8 +492,12 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
        TGeoVolume* phiRib_YX_slopeR = GeoParalepiped("phiRib_YX_slopeR",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,slopeX,-slopeY,kBlue,phi_ribMed);
        TGeoVolume* phiRib_XY_slopeR = GeoParalepiped("phiRib_XY_slopeR",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY,kBlue,phi_ribMed);
        
-       TGeoVolume* liScYslope = GeoParalepiped("liScYslope",zlength,wL/2,f_VetoThickness/2,0,-slopeY,kMagenta-10,vetoMed,kTRUE);
-       TGeoVolume* liScXslope = GeoParalepiped("liScXslope",zlength,f_VetoThickness/2,wL/2,-slopeX,0,kMagenta-10,vetoMed,kTRUE);
+       TGeoVolume* liScYslope=NULL;
+       if (fLiquidVeto==1)
+	 liScYslope = GeoParalepiped("liScYslope",zlength,wL/2,f_VetoThickness/2,0,-slopeY,kMagenta-10,vetoMed,kTRUE);
+       TGeoVolume* liScXslope=NULL;
+       if (fLiquidVeto==1)
+	 liScXslope = GeoParalepiped("liScXslope",zlength,f_VetoThickness/2,wL/2,-slopeX,0,kMagenta-10,vetoMed,kTRUE);
        
 
        
@@ -513,7 +530,9 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
 	   phi2=phi1+phiStep;
 	   TString tmp="T"; tmp += seg;
 	   tmp += "liSc_Corner";tmp += nrPhiC;
-	   liSc_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx,dy,slopeX,slopeY,dcorner-f_VetoThickness-gap,phi1,phi2,-zlength, 2*zlength, kMagenta-10,vetoMed,kTRUE); 
+	   liSc_Corner[nrPhiC-1]=NULL;
+	   if (fLiquidVeto==1)
+	     liSc_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx,dy,slopeX,slopeY,dcorner-f_VetoThickness-gap,phi1,phi2,-zlength, 2*zlength, kMagenta-10,vetoMed,kTRUE); 
 	   phi1+=phiStep;
 	   if(nrPhiC%4>0)phi1+=phiRibTh; 
 	 }
@@ -577,36 +596,44 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       if(lx<wLscale*wL+wR){
 	tmp = nmLnr;
 	tmp+="_";tmp+=liScCounter;
-	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,-x-f_PhiRibsThickness,f_VetoThickness/2,-slopeX,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
-	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(0,Y,zlisc));
-	liScCounter+=1;
-        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(0,-Y,zlisc,new TGeoRotation("r",0,0,180)));
-	liScCounter+=1;
+	TGeoVolume* liSc=NULL;
+	if (fLiquidVeto==1)
+	{
+	  liSc=GeoPolyhedron(tmp,zlength,-x-f_PhiRibsThickness,f_VetoThickness/2,-slopeX,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(0,Y,zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(0,-Y,zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
+	}
       }
       else if(lx<wLscale*wL+(nRx+1)*wR+nRx*wL){
 	double wC = (lx-(nRx*wR+(nRx-1)*wL))/2;
 	tmp = nmLnr;
 	tmp+="_";tmp+=liScCounter;
-	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,wC/2-f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,0,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
-	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(x+wC/2+wR/2,Y,zlisc));
-	liScCounter+=1;
-        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-(x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
-	liScCounter+=1;
-	
-	tmp = nmLnr;
-	tmp+="_";tmp+=liScCounter;
-	liSc = GeoPolyhedron(tmp,zlength,wC/2-f_PhiRibsThickness/2,f_VetoThickness/2,0,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
-	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(-(x+wC/2+wR/2),Y,zlisc));
-	liScCounter+=1;
-        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans((x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
-	liScCounter+=1;
-	
-	for(int i=1;i<=nRx-1;i++){
-	  tmpX = x+wR+wC+(i-1)*(wR+wL)+wL/2;
-	  tLiSc->AddNode(liScYslope, liScCounter, new TGeoTranslation(tmpX,Y,zlisc));
+	TGeoVolume* liSc=NULL;
+	if (fLiquidVeto==1)
+	{
+	  liSc=GeoPolyhedron(tmp,zlength,wC/2-f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,0,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(x+wC/2+wR/2,Y,zlisc));
 	  liScCounter+=1;
-          tLiSc->AddNode(liScYslope, liScCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
-	  liScCounter++;
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-(x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
+	
+	  tmp = nmLnr;
+	  tmp+="_";tmp+=liScCounter;
+	  liSc = GeoPolyhedron(tmp,zlength,wC/2-f_PhiRibsThickness/2,f_VetoThickness/2,0,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(-(x+wC/2+wR/2),Y,zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans((x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
+	
+	  for(int i=1;i<=nRx-1;i++){
+	    tmpX = x+wR+wC+(i-1)*(wR+wL)+wL/2;
+	    tLiSc->AddNode(liScYslope, liScCounter, new TGeoTranslation(tmpX,Y,zlisc));
+	    liScCounter+=1;
+            tLiSc->AddNode(liScYslope, liScCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
+	    liScCounter++;
+	  }
 	}
 	//place phi-ribs
 	for(int i=1;i<=nRx;i++){
@@ -624,37 +651,45 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       if(ly<wLscale*wL+wR){
 	tmp = nmLnr;
 	tmp+="_";tmp+=liScCounter;
-	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y-f_PhiRibsThickness,-slopeX,-slopeX,-slopeY,slopeY,kMagenta-10,vetoMed,kTRUE);
-	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,0,zlisc));
-	liScCounter+=1;
-        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,0,zlisc,new TGeoRotation("r",0,0,180)));
-	liScCounter+=1;
+	TGeoVolume* liSc=NULL;
+	if (fLiquidVeto==1)
+	{
+	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y-f_PhiRibsThickness,-slopeX,-slopeX,-slopeY,slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,0,zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,0,zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
+	}
       }
       else if(ly<wLscale*wL+(nRy+1)*wR+nRy*wL){
 	double wC = (ly-(nRy*wR+(nRy-1)*wL))/2;
 	tmp = nmLnr;
-	tmp+="_";tmp+=liScCounter;
-	TGeoVolume* liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2-f_PhiRibsThickness/2,-slopeX,-slopeX,-slopeY,0,kMagenta-10,vetoMed,kTRUE);
-	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,y+wC/2+wR/2,zlisc));
-	liScCounter+=1;
-        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,-(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
-	liScCounter+=1;
+	tmp+="_"; tmp+=liScCounter;
+	TGeoVolume* liSc=NULL;
+	if (fLiquidVeto==1)
+	{
+	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2-f_PhiRibsThickness/2,-slopeX,-slopeX,-slopeY,0,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,y+wC/2+wR/2,zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,-(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
 	
-	tmp = nmLnr;
-	tmp+="_";tmp+=liScCounter;
-	liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2-f_PhiRibsThickness/2,-slopeX,-slopeX,0,slopeY,kMagenta-10,vetoMed,kTRUE);
-	tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,-(y+wC/2+wR/2),zlisc));
-	liScCounter+=1;
-        tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
-	liScCounter+=1;
+	  tmp = nmLnr;
+	  tmp+="_";tmp+=liScCounter;
+	  liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2-f_PhiRibsThickness/2,-slopeX,-slopeX,0,slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,-(y+wC/2+wR/2),zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
 	
 
-	for(int i=1;i<=nRy-1;i++){
-	  tmpY = y+wR+wC+(i-1)*(wR+wL)+wL/2;
-	  tLiSc->AddNode(liScXslope, liScCounter, new TGeoTranslation(X,tmpY,zlisc));
-	  liScCounter+=1;
-          tLiSc->AddNode(liScXslope, liScCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
-	  liScCounter++;
+	  for(int i=1;i<=nRy-1;i++){
+	    tmpY = y+wR+wC+(i-1)*(wR+wL)+wL/2;
+	    tLiSc->AddNode(liScXslope, liScCounter, new TGeoTranslation(X,tmpY,zlisc));
+	    liScCounter+=1;
+            tLiSc->AddNode(liScXslope, liScCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
+	    liScCounter++;
+	  }
 	}
 	//place phi-ribs
 	for(int i=1;i<=nRy;i++){
@@ -683,11 +718,14 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
            if(phi1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
            if(phi1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
 
-           if(cornerNr==1){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(xc, yc,zStart+zlength));}
-           if(cornerNr==2){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(-xc, yc,zStart+zlength));}
-           if(cornerNr==3){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(-xc, -yc,zStart+zlength));}
-           if(cornerNr==4){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(xc, -yc,zStart+zlength));}
-	   liSc_C_Counter++;
+	   if (fLiquidVeto==1)
+	   {
+             if(cornerNr==1){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(xc, yc,zStart+zlength));}
+             if(cornerNr==2){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(-xc, yc,zStart+zlength));}
+             if(cornerNr==3){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(-xc, -yc,zStart+zlength));}
+             if(cornerNr==4){tLiScC->AddNode(liSc_Corner[nrPhiC-1], liSc_C_Counter , new TGeoTranslation(xc, -yc,zStart+zlength));}
+	     liSc_C_Counter++;
+	   }
 	   phi1+=phiStep;
 	   if(nrPhiC%4>0)phi1+=phiRibTh;
 	     
@@ -720,9 +758,9 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
         } 
 	
       tTankVol->AddNode(tRibPhi,0, Zero);
-      tTankVol->AddNode(tLiSc,0, Zero);
+      if (fLiquidVeto==1) tTankVol->AddNode(tLiSc,0, Zero);
       tTankVol->AddNode(tRibPhiC,0, Zero);
-      tTankVol->AddNode(tLiScC,0, Zero);
+      if (fLiquidVeto==1) tTankVol->AddNode(tLiScC,0, Zero);
       }
 
       //now place H-pieces of H-bars on the outside: make them 30.cm wide for the time being
@@ -758,11 +796,17 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
         TGeoVolume* T = GeoTrapezoid(tmp,f_OuterSupportThickness,0.5*ribspacing-1.e-6-hwidth/2.,dx,dy,slopeX,slopeY,dcorner,18,supportMedOut);
         tOuterwall->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
        }
+      if (seg==2) 
+      {
+	fDeltaCpy=2000000;
+	dx=dx_start;
+	dy=dy_start;
+	if (fPlasticVeto)
+	  InsertInnerVeto(nm, 1.0, dz-0.1, dx+5.0, dy+5.0, slopeX, slopeY, dcorner, 3, vetoMed, tTankVol,  4, 32);
+      }
        ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
        tTankVol->AddNode(tOuterwall,0, Zero); 
       }
-
-
 
       //Thomas his "empty" volume around it all, but cannot fit, because of support bars
       //nm+= "decayVol";
@@ -782,18 +826,23 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
         Double_t zrib = -dz +f_RibThickness/2. +nr*ribspacing;
         dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-f_RibThickness);
         dy = dy_start -f_OuterSupportThickness;
+	if (fPlasticVeto==1)
+	  dy+=10.0;
         if (slopeY>0) {dy+=slopeY*(zrib+dz-f_RibThickness);}
         TString tmp = nm;
         tmp+="-";tmp+=nr;
-        TGeoVolume* T = GeoVesselSupport(tmp,f_RibThickness/2.,dx,dy,slopeX,slopeY,dcorner,15,ribMed,floorHeight);
-        tVsup->AddNode(T, nr, new TGeoTranslation(0, 0,zrib));
+	if (fUseSupport==1)
+	{
+          TGeoVolume* T = GeoVesselSupport(tmp,f_RibThickness/2.,dx,dy,slopeX,slopeY,dcorner,15,ribMed,floorHeight);
+          tVsup->AddNode(T, nr, new TGeoTranslation(0, 0,zrib));
+	}
         //special support spacing for segment nr=1
         if (seg==1){
           if (nr==3) {npp=1;}
           if (nr==4) {npp=3;}
         }
       }
-      tTankVol->AddNode(tVsup,0, Zero);         
+      if (fUseSupport==1) tTankVol->AddNode(tVsup,0, Zero);         
       }
 
      return tTankVol;
@@ -943,10 +992,19 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
+    if (fELoss == 0. ) { return kFALSE; }
+
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+
     Int_t veto_uniqueId;
     gMC->CurrentVolID(veto_uniqueId);
-    if (fELoss == 0. ) { return kFALSE; }
+    if (veto_uniqueId>1000000) //Solid scintillator case
+    {
+      Int_t vcpy;
+      gMC->CurrentVolOffID(1, vcpy);
+      if (vcpy==5) veto_uniqueId+=4; //Copy of half 
+    }
+
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
     TLorentzVector Pos; 
@@ -955,8 +1013,9 @@ Bool_t  veto::ProcessHits(FairVolume* vol)
     gMC->TrackMomentum(Mom);
     Double_t xmean = (fPos.X()+Pos.X())/2. ;      
     Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
-    AddHit(fTrackID, veto_uniqueId, TVector3(xmean, ymean,  zmean),
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ; 
+//    cout << veto_uniqueId << " :(" << xmean << ", " << ymean << ", " << zmean << "): " << gMC->CurrentVolName() << endl;
+    AddHit(fTrackID, veto_uniqueId, TVector3(xmean, ymean,  zmean), 
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
@@ -1375,6 +1434,345 @@ vetoPoint* veto::AddHit(Int_t trackID, Int_t detID,
   // cout << "veto hit called "<< pos.z()<<endl;
   return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode,Lpos,Lmom);
+}
+
+void veto::InnerAddToMap(Int_t ncpy, Double_t x, Double_t y, Double_t z, Double_t dx, Double_t dy, Double_t dz)
+{
+  if (fCenters.find(ncpy)!=fCenters.end())
+  {
+    cout << ncpy << " is already in the map" << endl;
+    return;
+  }
+  fCenters[ncpy]=TVector3(x, y, z);
+}
+
+void veto::InsertInnerVeto(TString xname,Double_t th,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material, TGeoVolume* Inner, Int_t ix, Int_t iy)
+{
+  Double_t dys=dy_start-dcorner;
+  Double_t dy1=dys/iy;
+  Double_t dy2;
+  Double_t dz1=dy1/slopeY; // Halflen
+  Double_t ddx=dz1*slopeX*2;
+  Double_t ddx2;
+  Double_t tz;
+  Int_t iz1=dz/dz1;
+  Int_t i;
+  Int_t j;
+  Int_t nplank;
+  Int_t ncpy;
+
+  TGeoArb8* yrect1;
+  TGeoArb8* yuptr1;
+  TGeoArb8* ydwtr1;
+  TGeoVolume* vyrect1;
+  TGeoVolume* vyuptr1;
+  TGeoVolume* vydwtr1;
+  TGeoArb8* yrect2;
+  TGeoArb8* yuptr2;
+  TGeoArb8* ydwtr2;
+  TGeoVolume* vyrect2;
+  TGeoVolume* vyuptr2;
+  TGeoVolume* vydwtr2;
+  TGeoVolumeAssembly* vleft;
+
+  TGeoArb8* xrect1;
+  TGeoArb8* xuptr1;
+  TGeoArb8* xdwtr1;
+  TGeoVolume* vxrect1;
+  TGeoVolume* vxuptr1;
+  TGeoVolume* vxdwtr1;
+  TGeoArb8* xrect2;
+  TGeoArb8* xuptr2;
+  TGeoArb8* xdwtr2;
+  TGeoVolume* vxrect2;
+  TGeoVolume* vxuptr2;
+  TGeoVolume* vxdwtr2;
+
+  Double_t dxs=dx_start-dcorner;
+  Double_t dx1=dxs/ix;
+  Double_t dx2;
+  Double_t ddy;
+  Double_t ddy2;
+
+  Double_t r;
+  Double_t tr;
+  Double_t alpha;
+  Int_t na;
+  Int_t iz2;
+  Double_t dz2;
+  Double_t xdeg=TMath::ATan(slopeX)*TMath::RadToDeg(); //TGeo needs it in degrees...
+  Double_t ydeg=TMath::ATan(slopeY)*TMath::RadToDeg();
+  TGeoBBox* bbox;
+  TGeoTubeSeg* t1[30];
+  TGeoCompositeShape* ft1[30];
+  TGeoVolume* vt1[30];
+  TGeoTubeSeg* t2[30];
+  TGeoCompositeShape* ft2[30];
+  TGeoVolume* vt2[30];
+  TGeoRotation* r1;
+  TGeoRotation* r2;
+  TString nm;
+
+  vleft=new TGeoVolumeAssembly("vleft");
+  
+/* ---------------------------------------------------------------------- */
+
+  dz1=dx1/slopeX;
+  ddy=dz1*slopeY*2;
+  iz1=dz/dz1;
+
+//  cout << "DX1=" << (dx_start-dcorner)*2 << ", DX2=" << (dx_start+dz*slopeX-dcorner)*2 << endl;
+//  cout << "DY1=" << (dy_start-dcorner)*2 << ", DY2=" << (dy_start+dz*slopeY-dcorner)*2 << endl;
+//  cout << "X: DZ=" << dz1*2 << ", DX:=" << dx1*2 << endl;
+
+  xrect1=new TGeoArb8(xname+"VetoXRectSh1", dz1);
+  xrect1->SetVertex(0, -dx1,    -th); xrect1->SetVertex(1, -dx1, 0.0); xrect1->SetVertex(2, dx1, 0.0); xrect1->SetVertex(3, dx1,    -th);
+  xrect1->SetVertex(4, -dx1, ddy-th); xrect1->SetVertex(5, -dx1, ddy); xrect1->SetVertex(6, dx1, ddy); xrect1->SetVertex(7, dx1, ddy-th);
+ 
+  xuptr1=new TGeoArb8(xname+"VetoXUpTriSh1", dz1);
+  xuptr1->SetVertex(0,  dx1,    -th); xuptr1->SetVertex(1,  dx1, 0.0); xuptr1->SetVertex(2, dx1, 0.0); xuptr1->SetVertex(3, dx1,    -th);
+  xuptr1->SetVertex(4, -dx1, ddy-th); xuptr1->SetVertex(5, -dx1, ddy); xuptr1->SetVertex(6, dx1, ddy); xuptr1->SetVertex(7, dx1, ddy-th);
+ 
+  xdwtr1=new TGeoArb8(xname+"VetoXDwTriSh1", dz1);
+  xdwtr1->SetVertex(0, -dx1,    -th); xdwtr1->SetVertex(1, -dx1, 0.0); xdwtr1->SetVertex(2,-dx1, 0.0); xdwtr1->SetVertex(3,-dx1,    -th);
+  xdwtr1->SetVertex(4, -dx1, ddy-th); xdwtr1->SetVertex(5, -dx1, ddy); xdwtr1->SetVertex(6, dx1, ddy); xdwtr1->SetVertex(7, dx1, ddy-th);
+  
+  vxrect1=new TGeoVolume(xname+"VetoXRect1", xrect1, material);
+  vxrect1->SetLineColor(colour);
+  AddSensitiveVolume(vxrect1);
+  vxuptr1=new TGeoVolume(xname+"VetoXUpTr1", xuptr1, material);
+  vxuptr1->SetLineColor(colour);
+  AddSensitiveVolume(vxuptr1);
+  vxdwtr1=new TGeoVolume(xname+"VetoXDwTr1", xdwtr1, material);
+  vxdwtr1->SetLineColor(colour);
+  AddSensitiveVolume(vxdwtr1);
+
+  tz=(dz-iz1*dz1);
+  ddy2=ddy*tz/dz1;
+  dx2=-dx1+2*dx1*tz/dz1;
+
+  xrect2=new TGeoArb8(xname+"VetoXRectSh2", tz);
+  xrect2->SetVertex(0, -dx1,     -th); xrect2->SetVertex(1, -dx1,  0.0); xrect2->SetVertex(2, dx1,  0.0); xrect2->SetVertex(3, dx1,     -th);
+  xrect2->SetVertex(4, -dx1, ddy2-th); xrect2->SetVertex(5, -dx1, ddy2); xrect2->SetVertex(6, dx1, ddy2); xrect2->SetVertex(7, dx1, ddy2-th);
+
+  xuptr2=new TGeoArb8(xname+"VetoXUpTriSh2", tz);
+  xuptr2->SetVertex(0,  dx1,     -th); xuptr2->SetVertex(1,  dx1,  0.0); xuptr2->SetVertex(2, dx1,  0.0); xuptr2->SetVertex(3, dx1,    -th);
+  xuptr2->SetVertex(4, -dx2, ddy2-th); xuptr2->SetVertex(5, -dx2, ddy2); xuptr2->SetVertex(6, dx1, ddy2); xuptr2->SetVertex(7, dx1, ddy2-th);
+ 
+  xdwtr2=new TGeoArb8(xname+"VetoXDwTriSh2", tz);
+  xdwtr2->SetVertex(0, -dx1,     -th); xdwtr2->SetVertex(1, -dx1,  0.0); xdwtr2->SetVertex(2,-dx1,  0.0); xdwtr2->SetVertex(3,-dx1,     -th);
+  xdwtr2->SetVertex(4, -dx1, ddy2-th); xdwtr2->SetVertex(5, -dx1, ddy2); xdwtr2->SetVertex(6, dx2, ddy2); xdwtr2->SetVertex(7, dx2, ddy2-th);
+
+  vxrect2=new TGeoVolume(xname+"VetoXRect2", xrect2, material);
+  vxrect2->SetLineColor(colour);
+  AddSensitiveVolume(vxrect2);
+  vxuptr2=new TGeoVolume(xname+"VetoXUpTr2", xuptr2, material);
+  vxuptr2->SetLineColor(colour);
+  AddSensitiveVolume(vxuptr2);
+  vxdwtr2=new TGeoVolume(xname+"VetoXDwTr2", xdwtr2, material);
+  vxdwtr2->SetLineColor(colour);
+  AddSensitiveVolume(vxdwtr2);
+
+/* ---------------------------------------------------------------------- */
+
+  for(i=0;i<iz1;i++)
+  {
+    nplank=0;
+
+    ncpy=GetCopyNumber(i, nplank++, 3);
+    InnerAddToMap(ncpy, -dxs-dx1*(-1.0-i*2-ix*2), dy_start+ddy*i, dz1*2*(i+0.5)-dz);
+    vleft->AddNode(vxdwtr1, ncpy,     new TGeoTranslation(-dxs-dx1*(-1.0-i*2-ix*2), dy_start+ddy*i, dz1*2*(i+0.5)-dz));
+
+    ncpy=GetCopyNumber(i, nplank++, 3);
+    InnerAddToMap(ncpy, -dxs-dx1*( 1.0+i*2),      dy_start+ddy*i, dz1*2*(i+0.5)-dz);
+    vleft->AddNode(vxuptr1, ncpy,     new TGeoTranslation(-dxs-dx1*( 1.0+i*2),      dy_start+ddy*i, dz1*2*(i+0.5)-dz));
+
+    for(j=ix+i*2-1;j>=0;j--) 
+    {
+      ncpy=GetCopyNumber(i, nplank++, 3);
+      InnerAddToMap(ncpy, -dxs-dx1*(-1.0-j*2+i*2),  dy_start+ddy*i, dz1*2*(i+0.5)-dz);
+      vleft->AddNode(vxrect1, ncpy, new TGeoTranslation(-dxs-dx1*(-1.0-j*2+i*2),  dy_start+ddy*i, dz1*2*(i+0.5)-dz));
+    }
+  }
+
+  nplank=0;
+
+  ncpy=GetCopyNumber(99, nplank++, 3);
+  InnerAddToMap(ncpy, -dxs-dx1*(-1.0-i*2-ix*2), dy_start+ddy*i,    dz1*2*i-dz+tz);
+  vleft->AddNode(vxdwtr2, ncpy,  new TGeoTranslation(-dxs-dx1*(-1.0-i*2-ix*2), dy_start+ddy*i,    dz1*2*i-dz+tz));
+
+  ncpy=GetCopyNumber(99, nplank++, 3);
+  InnerAddToMap(ncpy, -dxs-dx1*( 1.0+i*2), dy_start+ddy*i,      dz1*2*i-dz+tz);
+  vleft->AddNode(vxuptr2, ncpy,     new TGeoTranslation(-dxs-dx1*( 1.0+i*2), dy_start+ddy*i,      dz1*2*i-dz+tz));
+
+  for(j=ix+i*2-1;j>=0;j--) 
+  {
+    ncpy=GetCopyNumber(99, nplank++, 3);
+    InnerAddToMap(ncpy, -dxs-dx1*(-1.0-j*2+i*2), dy_start+ddy*i,  dz1*2*i-dz+tz);
+    vleft->AddNode(vxrect2, ncpy, new TGeoTranslation(-dxs-dx1*(-1.0-j*2+i*2), dy_start+ddy*i,  dz1*2*i-dz+tz));
+  }
+
+/* ---------------------------------------------------------------------- */
+
+  dz1=dy1/slopeY;
+  ddx=dz1*slopeX*2;
+  iz1=dz/dz1;
+
+//  cout << "Y: DZ=" << dz1*2 << ", DY:=" << dy1*2 << endl;
+
+  yrect1=new TGeoArb8(xname+"VetoYRectSh1", dz1);
+  yrect1->SetVertex(0,    -th, -dy1); yrect1->SetVertex(1,    -th,dy1); yrect1->SetVertex(2, 0.0, dy1); yrect1->SetVertex(3, 0.0, -dy1);
+  yrect1->SetVertex(4, ddx-th, -dy1); yrect1->SetVertex(5, ddx-th,dy1); yrect1->SetVertex(6, ddx, dy1); yrect1->SetVertex(7, ddx, -dy1);
+ 
+  yuptr1=new TGeoArb8(xname+"VetoYUpTriSh1", dz1);
+  yuptr1->SetVertex(0,    -th,  dy1); yuptr1->SetVertex(1,    -th, dy1); yuptr1->SetVertex(2, 0.0, dy1); yuptr1->SetVertex(3, 0.0,  dy1);
+  yuptr1->SetVertex(4, ddx-th, -dy1); yuptr1->SetVertex(5, ddx-th, dy1); yuptr1->SetVertex(6, ddx, dy1); yuptr1->SetVertex(7, ddx, -dy1);
+ 
+  ydwtr1=new TGeoArb8(xname+"VetoYDwTriSh1", dz1);
+  ydwtr1->SetVertex(0,    -th, -dy1); ydwtr1->SetVertex(1,    -th,-dy1); ydwtr1->SetVertex(2, 0.0,-dy1); ydwtr1->SetVertex(3, 0.0, -dy1);
+  ydwtr1->SetVertex(4, ddx-th, -dy1); ydwtr1->SetVertex(5, ddx-th, dy1); ydwtr1->SetVertex(6, ddx, dy1); ydwtr1->SetVertex(7, ddx, -dy1);
+
+  vyrect1=new TGeoVolume(xname+"VetoYRect1", yrect1, material);
+  vyrect1->SetLineColor(colour);
+  AddSensitiveVolume(vyrect1);
+  vyuptr1=new TGeoVolume(xname+"VetoYUpTr1", yuptr1, material);
+  vyuptr1->SetLineColor(colour);
+  AddSensitiveVolume(vyuptr1);
+  vydwtr1=new TGeoVolume(xname+"VetoYDwTr1", ydwtr1, material);
+  vydwtr1->SetLineColor(colour);
+  AddSensitiveVolume(vydwtr1);
+
+  tz=(dz-iz1*dz1);
+  ddx2=ddx*tz/dz1;
+  dy2=-dy1+2*dy1*tz/dz1;
+ 
+  yrect2=new TGeoArb8(xname+"VetoYRectSh2", tz);
+  yrect2->SetVertex(0,     -th, -dy1); yrect2->SetVertex(1,     -th,dy1); yrect2->SetVertex(2,  0.0, dy1); yrect2->SetVertex(3, 0.0,  -dy1);
+  yrect2->SetVertex(4, ddx2-th, -dy1); yrect2->SetVertex(5, ddx2-th,dy1); yrect2->SetVertex(6, ddx2, dy1); yrect2->SetVertex(7, ddx2, -dy1);
+ 
+  yuptr2=new TGeoArb8(xname+"VetoYUpTriSh2", tz);
+  yuptr2->SetVertex(0,     -th,  dy1); yuptr2->SetVertex(1,     -th, dy1); yuptr2->SetVertex(2,  0.0, dy1);  yuptr2->SetVertex(3,  0.0,  dy1);
+  yuptr2->SetVertex(4, ddx2-th, -dy2); yuptr2->SetVertex(5, ddx2-th, dy1); yuptr2->SetVertex(6, ddx2, dy1);  yuptr2->SetVertex(7, ddx2, -dy2);
+ 
+  ydwtr2=new TGeoArb8(xname+"VetoYDwTriSh2", tz);
+  ydwtr2->SetVertex(0,     -th, -dy1); ydwtr2->SetVertex(1,     -th,-dy1); ydwtr2->SetVertex(2,  0.0,-dy1); ydwtr2->SetVertex(3,  0.0, -dy1);
+  ydwtr2->SetVertex(4, ddx2-th, -dy1); ydwtr2->SetVertex(5, ddx2-th, dy2); ydwtr2->SetVertex(6, ddx2, dy2); ydwtr2->SetVertex(7, ddx2, -dy1);
+
+  vyrect2=new TGeoVolume(xname+"VetoYRect2", yrect2, material);
+  vyrect2->SetLineColor(colour);
+  AddSensitiveVolume(vyrect2);
+  vyuptr2=new TGeoVolume(xname+"VetoYUpTr2", yuptr2, material);
+  vyuptr2->SetLineColor(colour);
+  AddSensitiveVolume(vyuptr2);
+  vydwtr2=new TGeoVolume(xname+"VetoYDwTr2", ydwtr2, material);
+  vydwtr2->SetLineColor(colour);
+  AddSensitiveVolume(vydwtr2);
+
+/* ---------------------------------------------------------------------- */
+
+  iz2=dz/100; iz2++; // Strip length less than 2 m
+//  iz2=2;
+  dz2=dz/iz2;
+  bbox=new TGeoBBox(xname+"VetoBBox", dcorner*1.5, dcorner*1.5, dz2);
+
+  r1=new TGeoRotation(xname+"VetoR1"); r1->RotateX(-ydeg); r1->RotateY( xdeg);r1->RegisterYourself();
+  r2=new TGeoRotation(xname+"VetoR2"); r2->RotateX( ydeg); r2->RotateY( xdeg);r2->RegisterYourself();
+  r=dcorner-1.1*th;
+  na=r/2.0*TMath::Pi()*(100.0/90.0)/(20.0); na-=2;
+  alpha=90.0/na;
+//  cout << na << " " << alpha << endl;
+  
+  for(i=0;i<na;i++)
+  {
+    nm=xname+"VetoT1_"; nm+=i;
+    t1[i]=new TGeoTubeSeg(nm, dcorner-th*3, dcorner-th*2, dz2, i*alpha, (i+1)*alpha);
+    tr=(dcorner-th*2.5);
+    tr*=TMath::Cos(xdeg*TMath::DegToRad())*TMath::Cos(ydeg*TMath::DegToRad());
+    ft1[i]=new TGeoCompositeShape(nm+"f", nm+":"+xname+"VetoR1*"+xname+"VetoBBox");
+    vt1[i]=new TGeoVolume(nm+"V", ft1[i], material);
+    vt1[i]->SetLineColor(colour+1);
+    AddSensitiveVolume(vt1[i]);
+
+    for(j=0;j<iz2;j++)
+    {
+      ncpy=GetCopyNumber(j, i, 2);
+      InnerAddToMap(ncpy, (dxs+slopeX*dz2*2*(j+0.5))+tr*TMath::Cos((i+0.5)*alpha*TMath::DegToRad())   , (dys+slopeY*dz2*2*(j+0.5))+tr*TMath::Sin((i+0.5)*alpha*TMath::DegToRad()), -dz+dz2*2*(j+0.5));
+      vleft->AddNode(vt1[i], ncpy, new TGeoTranslation( (dxs+slopeX*dz2*2*(j+0.5)), (dys+slopeY*dz2*2*(j+0.5)), -dz+dz2*2*(j+0.5)));
+    }
+
+  }
+
+  for(i=0;i<na;i++)
+  {
+    nm=xname+"VetoT2_"; nm+=i;
+    t2[i]=new TGeoTubeSeg(nm, dcorner-th*3, dcorner-th*2, dz2, i*alpha-90, (i+1)*alpha-90);
+    ft2[i]=new TGeoCompositeShape(nm+"f", nm+":"+xname+"VetoR2*"+xname+"VetoBBox");
+    vt2[i]=new TGeoVolume(nm+"V", ft2[i], material);
+    vt2[i]->SetLineColor(colour+1);
+    AddSensitiveVolume(vt2[i]);
+
+    for(j=0;j<iz2;j++)
+    {
+      ncpy=GetCopyNumber(j, i, 0);
+      InnerAddToMap(ncpy, (dxs+slopeX*dz2*2*(j+0.5))+tr*TMath::Cos((i+0.5)*alpha*TMath::DegToRad())   ,-(dys+slopeY*dz2*2*(j+0.5))+tr*TMath::Sin((i+0.5)*alpha*TMath::DegToRad()), -dz+dz2*2*(j+0.5));
+      vleft->AddNode(vt2[i], ncpy, new TGeoTranslation( (dxs+slopeX*dz2*2*(j+0.5)),-(dys+slopeY*dz2*2*(j+0.5)), -dz+dz2*2*(j+0.5)));
+    }
+  }
+
+
+/* ---------------------------------------------------------------------- */
+
+  for(i=0;i<iz1;i++)
+  {
+    nplank=0;
+
+    ncpy=GetCopyNumber(i, nplank++, 1);
+    InnerAddToMap(ncpy, dx_start+ddx*i, -dys-dy1*(-1.0-i*2-iy*2),dz1*2*(i+0.5)-dz);
+    vleft->AddNode(vydwtr1, ncpy,  new TGeoTranslation(dx_start+ddx*i, -dys-dy1*(-1.0-i*2-iy*2),dz1*2*(i+0.5)-dz));
+
+    ncpy=GetCopyNumber(i, nplank++, 1);
+    InnerAddToMap(ncpy, dx_start+ddx*i, -dys-dy1*( 1.0+i*2),     dz1*2*(i+0.5)-dz);
+    vleft->AddNode(vyuptr1, ncpy,     new TGeoTranslation(dx_start+ddx*i, -dys-dy1*( 1.0+i*2),     dz1*2*(i+0.5)-dz));
+    
+    for(j=iy+i*2-1;j>=0;j--) 
+    {
+      ncpy=GetCopyNumber(i, nplank++, 1);
+      InnerAddToMap(ncpy, dx_start+ddx*i, -dys-dy1*(-1.0-j*2+i*2), dz1*2*(i+0.5)-dz);
+      vleft->AddNode(vyrect1, ncpy, new TGeoTranslation(dx_start+ddx*i, -dys-dy1*(-1.0-j*2+i*2), dz1*2*(i+0.5)-dz));
+    }
+  }
+
+  nplank=0;
+
+  ncpy=GetCopyNumber(99, nplank++, 1);
+  InnerAddToMap(ncpy, dx_start+ddx*i, -dys-dy1*(-1.0-i*2-iy*2),dz1*2*i-dz+tz);
+  vleft->AddNode(vydwtr2, ncpy,  new TGeoTranslation(dx_start+ddx*i, -dys-dy1*(-1.0-i*2-iy*2),dz1*2*i-dz+tz));
+
+  ncpy=GetCopyNumber(99, nplank++, 1);
+  InnerAddToMap(ncpy, dx_start+ddx*i, -dys-dy1*( 1.0+i*2),     dz1*2*i-dz+tz);
+  vleft->AddNode(vyuptr2, ncpy,     new TGeoTranslation(dx_start+ddx*i, -dys-dy1*( 1.0+i*2),     dz1*2*i-dz+tz));
+
+  for(j=iy+i*2-1;j>=0;j--) 
+  {
+    ncpy=GetCopyNumber(99, nplank++, 1);
+    InnerAddToMap(ncpy, dx_start+ddx*i, -dys-dy1*(-1.0-j*2+i*2), dz1*2*i-dz+tz);
+    vleft->AddNode(vyrect2, ncpy, new TGeoTranslation(dx_start+ddx*i, -dys-dy1*(-1.0-j*2+i*2), dz1*2*i-dz+tz));
+  }
+
+/* ---------------------------------------------------------------------- */
+
+
+  Inner->AddNode(vleft, 1);
+  Inner->AddNode(vleft, 5, new TGeoRotation("lrot", 180, 0, 0));
+
+
+/*
+    Inner->AddNode(vyuptr2, i*100,     new TGeoTranslation(-dx_start-ddx*i, -dys-dy1*(0.5+i*2),     dz1*2*(i+0.5)-dz));
+    for(j=1;j<iy+i*2;j++)
+      Inner->AddNode(vyrect2, i*100+j, new TGeoTranslation(-dx_start-ddx*i, -dys-dy1*(0.5-j*2+i*2), dz1*2*(i+0.5)-dz));
+    Inner->AddNode(vydwtr2, i*100+99,  new TGeoTranslation(-dx_start-ddx*i, -dys-dy1*(0.5-i*2-iy*2),dz1*2*(i+0.5)-dz));
+  }
+ */
 }
 
 ClassImp(veto)

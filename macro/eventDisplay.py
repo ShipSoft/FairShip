@@ -117,6 +117,7 @@ class DrawVetoDigi(ROOT.FairTask):
  def ExecuteTask(self,option=''):
    self.comp.DestroyElements()
    self.comp.OpenCompound()
+   nav = ROOT.gGeoManager.GetCurrentNavigator()
    for digi in sTree.Digi_SBTHits:
     if digi.GetDetectorID()<100000: continue
     if not digi.isValid(): continue
@@ -128,7 +129,6 @@ class DrawVetoDigi(ROOT.FairTask):
     bx.SetMainColor(ROOT.kMagenta+3)
     dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
     o = shape.GetOrigin()
-    nav = ROOT.gGeoManager.GetCurrentNavigator()
     master = array('d',[0,0,0])
     n=0
     for edge in [ [-dx,-dy,-dz],[-dx,+dy,-dz],[+dx,+dy,-dz],[+dx,-dy,-dz],[-dx,-dy, dz],[-dx,+dy, dz],[+dx,+dy, dz],[+dx,-dy, dz]]:
