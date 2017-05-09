@@ -129,7 +129,7 @@ def configure(run,ship_geo):
   
  Veto = ROOT.veto("Veto", ROOT.kTRUE)   # vacuum tank
  Veto.SetLiquidVeto(1)  # liquid scintillator
- Veto.SetPlasticVeto(1) # plastic scintillator
+ Veto.SetPlasticVeto(0) # plastic scintillator
 
  Veto.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, \
                     ship_geo.TrackStation3.z, ship_geo.TrackStation4.z,ship_geo.tankDesign)
