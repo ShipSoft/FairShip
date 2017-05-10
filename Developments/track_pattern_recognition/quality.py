@@ -188,32 +188,32 @@ def init_book_hist():
 
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
-    ut.bookProf(h, 'n_hits_total', 'Number of hits per track, total', 20)
-    h['n_hits_total'].GetXaxis().SetTitle('1/Momentum')
+    ut.bookProf(h, 'n_hits_total', 'Number of hits per track, total', 20, 0, 5)
+    h['n_hits_total'].GetXaxis().SetTitle('Momentum')
     h['n_hits_total'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y12', 'Number of hits per track, Y view station 1&2', 20)
-    h['n_hits_y12'].GetXaxis().SetTitle('1/Momentum')
+    ut.bookProf(h, 'n_hits_y12', 'Number of hits per track, Y view station 1&2', 20, 0, 5)
+    h['n_hits_y12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo12', 'Number of hits per track, Stereo view station 1&2', 20)
-    h['n_hits_stereo12'].GetXaxis().SetTitle('1/Momentum')
+    ut.bookProf(h, 'n_hits_stereo12', 'Number of hits per track, Stereo view station 1&2', 20, 0, 5)
+    h['n_hits_stereo12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_12', 'Number of hits per track, station 1&2', 20)
-    h['n_hits_12'].GetXaxis().SetTitle('1/Momentum')
+    ut.bookProf(h, 'n_hits_12', 'Number of hits per track, station 1&2', 20, 0, 5)
+    h['n_hits_12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y34', 'Number of hits per track, Y view station 3&4', 20)
-    h['n_hits_y34'].GetXaxis().SetTitle('1/Momentum')
+    ut.bookProf(h, 'n_hits_y34', 'Number of hits per track, Y view station 3&4', 20, 0, 5)
+    h['n_hits_y34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo34', 'Number of hits per track, Stereo view station 3&4', 20)
-    h['n_hits_stereo34'].GetXaxis().SetTitle('1/Momentum')
+    ut.bookProf(h, 'n_hits_stereo34', 'Number of hits per track, Stereo view station 3&4', 20, 0, 5)
+    h['n_hits_stereo34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_34', 'Number of hits per track, station 3&4', 20)
-    h['n_hits_34'].GetXaxis().SetTitle('1/Momentum')
+    ut.bookProf(h, 'n_hits_34', 'Number of hits per track, station 3&4', 20, 0, 5)
+    h['n_hits_34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_34'].GetYaxis().SetTitle('N')
 
     return h
@@ -466,33 +466,34 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, h):
             continue
 
         pinv_true = pinvs[y == tmax][0]
+        p = 1. / pinv_true
 
         n_hits_total = len(atrack)
-        h['n_hits_total'].Fill(pinv_true, n_hits_total)
+        h['n_hits_total'].Fill(p, n_hits_total)
 
         mask_y12 = (is_before * is_y)[atrack]
         n_hits_y12 = len(atrack[mask_y12])
-        h['n_hits_y12'].Fill(pinv_true, n_hits_y12)
+        h['n_hits_y12'].Fill(p, n_hits_y12)
 
         mask_stereo12 = (is_before * is_stereo)[atrack]
         n_hits_stereo12 = len(atrack[mask_stereo12])
-        h['n_hits_stereo12'].Fill(pinv_true, n_hits_stereo12)
+        h['n_hits_stereo12'].Fill(p, n_hits_stereo12)
 
         mask_12 = (is_before)[atrack]
         n_hits_12 = len(atrack[mask_12])
-        h['n_hits_12'].Fill(pinv_true, n_hits_12)
+        h['n_hits_12'].Fill(p, n_hits_12)
 
         mask_y34 = (is_after * is_y)[atrack]
         n_hits_y34 = len(atrack[mask_y34])
-        h['n_hits_y34'].Fill(pinv_true, n_hits_y34)
+        h['n_hits_y34'].Fill(p, n_hits_y34)
 
         mask_stereo34 = (is_after * is_stereo)[atrack]
         n_hits_stereo34 = len(atrack[mask_stereo34])
-        h['n_hits_stereo34'].Fill(pinv_true, n_hits_stereo34)
+        h['n_hits_stereo34'].Fill(p, n_hits_stereo34)
 
         mask_34 = (is_after)[atrack]
         n_hits_34 = len(atrack[mask_34])
-        h['n_hits_34'].Fill(pinv_true, n_hits_34)
+        h['n_hits_34'].Fill(p, n_hits_34)
 
 
 
