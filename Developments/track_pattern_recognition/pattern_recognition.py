@@ -72,6 +72,8 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
         reco_tracks[track_id] = {'hits': atrack,
                                  'hitPosList': X[atrack, :-1],
                                  'charge': comb.charges_[track_id],
-                                 'pinv':comb.inv_momentums_[track_id]}
+                                 'pinv':comb.inv_momentums_[track_id],
+                                 'params12': tracks_params12[acomb[0]],
+                                 'params34': tracks_params34[acomb[1]]}
 
     return reco_tracks
