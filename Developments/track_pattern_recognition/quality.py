@@ -188,37 +188,66 @@ def init_book_hist():
 
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
-    ut.bookProf(h, 'n_hits_total', 'Number of hits per track, total', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_total', 'Number of recognized hits per track, total', 30, 0, 150)
     h['n_hits_total'].GetXaxis().SetTitle('Momentum')
     h['n_hits_total'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y12', 'Number of hits per track, Y view station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_y12', 'Number of recognized hits per track, Y view station 1&2', 30, 0, 150)
     h['n_hits_y12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo12', 'Number of hits per track, Stereo view station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_stereo12', 'Number of recognized hits per track, Stereo view station 1&2', 30, 0, 150)
     h['n_hits_stereo12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_12', 'Number of hits per track, station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_12', 'Number of recognized hits per track, station 1&2', 30, 0, 150)
     h['n_hits_12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y34', 'Number of hits per track, Y view station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_y34', 'Number of recognized hits per track, Y view station 3&4', 30, 0, 150)
     h['n_hits_y34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo34', 'Number of hits per track, Stereo view station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_stereo34', 'Number of recognized hits per track, Stereo view station 3&4', 30, 0, 150)
     h['n_hits_stereo34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_34', 'Number of hits per track, station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_34', 'Number of recognized hits per track, station 3&4', 30, 0, 150)
     h['n_hits_34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_34'].GetYaxis().SetTitle('N')
 
     ut.bookProf(h,'perr','|(p - p-true)/p|',30, 0, 150)
     h['perr'].GetXaxis().SetTitle('Momentum')
     h['perr'].GetYaxis().SetTitle('|(p - p-true)/p|')
+
+
+    ut.bookProf(h, 'frac_total', 'Fraction of hits the same as MC hits, total', 30, 0, 150)
+    h['frac_total'].GetXaxis().SetTitle('Momentum')
+    h['frac_total'].GetYaxis().SetTitle('Fraction')
+
+    ut.bookProf(h, 'frac_y12', 'Fraction of hits the same as MC hits, Y view station 1&2', 30, 0, 150)
+    h['frac_y12'].GetXaxis().SetTitle('Momentum')
+    h['frac_y12'].GetYaxis().SetTitle('Fraction')
+
+    ut.bookProf(h, 'frac_stereo12', 'Fraction of hits the same as MC hits, Stereo view station 1&2', 30, 0, 150)
+    h['frac_stereo12'].GetXaxis().SetTitle('Momentum')
+    h['frac_stereo12'].GetYaxis().SetTitle('Fraction')
+
+    ut.bookProf(h, 'frac_12', 'Fraction of hits the same as MC hits, station 1&2', 30, 0, 150)
+    h['frac_12'].GetXaxis().SetTitle('Momentum')
+    h['frac_12'].GetYaxis().SetTitle('Fraction')
+
+    ut.bookProf(h, 'frac_y34', 'Fraction of hits the same as MC hits, Y view station 3&4', 30, 0, 150)
+    h['frac_y34'].GetXaxis().SetTitle('Momentum')
+    h['frac_y34'].GetYaxis().SetTitle('Fraction')
+
+    ut.bookProf(h, 'frac_stereo34', 'Fraction of hits the same as MC hits, Stereo view station 3&4', 30, 0, 150)
+    h['frac_stereo34'].GetXaxis().SetTitle('Momentum')
+    h['frac_stereo34'].GetYaxis().SetTitle('Fraction')
+
+    ut.bookProf(h, 'frac_34', 'Fraction of hits the same as MC hits, station 3&4', 30, 0, 150)
+    h['frac_34'].GetXaxis().SetTitle('Momentum')
+    h['frac_34'].GetYaxis().SetTitle('Fraction')
 
     return h
 
@@ -478,31 +507,45 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, h):
         p = 1. / pinv_true
 
         n_hits_total = len(atrack)
+        frac_total, tmax_total = fracMCsame(y[atrack])
         h['n_hits_total'].Fill(p, n_hits_total)
+        h['frac_total'].Fill(p, frac_total)
 
         mask_y12 = (is_before * is_y)[atrack]
         n_hits_y12 = len(atrack[mask_y12])
+        frac_y12, tmax_y12 = fracMCsame(y[atrack[mask_y12]])
         h['n_hits_y12'].Fill(p, n_hits_y12)
+        h['frac_y12'].Fill(p, frac_y12)
 
         mask_stereo12 = (is_before * is_stereo)[atrack]
         n_hits_stereo12 = len(atrack[mask_stereo12])
+        frac_stereo12, tmax_stereo12 = fracMCsame(y[atrack[mask_stereo12]])
         h['n_hits_stereo12'].Fill(p, n_hits_stereo12)
+        h['frac_stereo12'].Fill(p, frac_stereo12)
 
         mask_12 = (is_before)[atrack]
         n_hits_12 = len(atrack[mask_12])
+        frac_12, tmax_12 = fracMCsame(y[atrack[mask_12]])
         h['n_hits_12'].Fill(p, n_hits_12)
+        h['frac_12'].Fill(p, frac_12)
 
         mask_y34 = (is_after * is_y)[atrack]
         n_hits_y34 = len(atrack[mask_y34])
+        frac_y34, tmax_y34 = fracMCsame(y[atrack[mask_y34]])
         h['n_hits_y34'].Fill(p, n_hits_y34)
+        h['frac_y34'].Fill(p, frac_y34)
 
         mask_stereo34 = (is_after * is_stereo)[atrack]
         n_hits_stereo34 = len(atrack[mask_stereo34])
+        frac_stereo34, tmax_stereo34 = fracMCsame(y[atrack[mask_stereo34]])
         h['n_hits_stereo34'].Fill(p, n_hits_stereo34)
+        h['frac_stereo34'].Fill(p, frac_stereo34)
 
         mask_34 = (is_after)[atrack]
         n_hits_34 = len(atrack[mask_34])
+        frac_34, tmax_34 = fracMCsame(y[atrack[mask_34]])
         h['n_hits_34'].Fill(p, n_hits_34)
+        h['frac_34'].Fill(p, frac_34)
 
 
 
