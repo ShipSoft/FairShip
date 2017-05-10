@@ -216,9 +216,9 @@ def init_book_hist():
     h['n_hits_34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h,'perr','(p - p-true)/p',30, 0, 150)
+    ut.bookProf(h,'perr','|(p - p-true)/p|',30, 0, 150)
     h['perr'].GetXaxis().SetTitle('Momentum')
-    h['perr'].GetYaxis().SetTitle('(p - p-true)/p')
+    h['perr'].GetYaxis().SetTitle('|(p - p-true)/p|')
 
     return h
 
@@ -459,9 +459,9 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, h):
         charge = reco_tracks[i]['charge']
 
         err = 1 - charge * pinv / pinv_true
-        
+
         h['ptrue-p/ptrue'].Fill(err)
-        h['perr'].Fill(1./pinv_true, err)
+        h['perr'].Fill(1./pinv_true, abs(err))
 
 
     # Momentum dependencies
