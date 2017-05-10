@@ -4,6 +4,7 @@ __author__ = 'Mikhail Hushchyn'
 import ROOT
 import numpy
 import rootUtils as ut
+import math
 
 from utils import fracMCsame
 from digitization import Digitization
@@ -188,6 +189,7 @@ def init_book_hist():
 
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
+    # Momentum dependences
     ut.bookProf(h, 'n_hits_total', 'Number of recognized hits per track, total', 30, 0, 150)
     h['n_hits_total'].GetXaxis().SetTitle('Momentum')
     h['n_hits_total'].GetYaxis().SetTitle('N')
@@ -249,6 +251,18 @@ def init_book_hist():
     h['frac_34'].GetXaxis().SetTitle('Momentum')
     h['frac_34'].GetYaxis().SetTitle('Fraction')
 
+
+    # Fitted values
+    ut.bookHist(h,'chi2fittedtracks','Chi^2 per NDOF for fitted tracks',210,-0.05,20.05)
+    ut.bookHist(h,'pvalfittedtracks','pval for fitted tracks',110,-0.05,1.05)
+    ut.bookHist(h,'momentumfittedtracks','momentum for fitted tracks',251,-0.05,250.05)
+    ut.bookHist(h,'xdirectionfittedtracks','x-direction for fitted tracks',91,-0.5,90.5)
+    ut.bookHist(h,'ydirectionfittedtracks','y-direction for fitted tracks',91,-0.5,90.5)
+    ut.bookHist(h,'zdirectionfittedtracks','z-direction for fitted tracks',91,-0.5,90.5)
+    ut.bookHist(h,'massfittedtracks','mass fitted tracks',210,-0.005,0.205)
+    ut.bookHist(h,'pvspfitted','p-patrec vs p-fitted',401,-200.5,200.5,401,-200.5,200.5)
+
+
     return h
 
 def decodeDetectorID(detID):
@@ -261,7 +275,7 @@ def decodeDetectorID(detID):
 
     return statnb, vnb, pnb, lnb, snb
 
-def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, h):
+def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks, h):
 
     X = Digitization(stree,smeared_hits)
     y = get_track_ids(stree, smeared_hits)
@@ -478,14 +492,14 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, h):
 
     for i in reco_tracks.keys():
 
-        if tmax not in reco_mc_tracks:
-            continue
-
         atrack = reco_tracks[i]['hits']
         frac, tmax = fracMCsame(y[atrack])
         pinv_true = pinvs[y == tmax][0]
         pinv = reco_tracks[i]['pinv']
         charge = reco_tracks[i]['charge']
+
+        if tmax not in reco_mc_tracks:
+            continue
 
         err = 1 - charge * pinv / pinv_true
 
@@ -546,6 +560,42 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, h):
         frac_34, tmax_34 = fracMCsame(y[atrack[mask_34]])
         h['n_hits_34'].Fill(p, n_hits_34)
         h['frac_34'].Fill(p, frac_34)
+
+
+    for i, thetrack in enumerate(theTracks):
+
+        atrack = reco_tracks[i]['hits']
+        frac, tmax = fracMCsame(y[atrack])
+
+        if tmax not in reco_mc_tracks:
+            continue
+
+        fitStatus   = thetrack.getFitStatus()
+        thetrack.prune("CFL") # http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
+
+        nmeas = fitStatus.getNdf()
+        pval = fitStatus.getPVal()
+        chi2 = fitStatus.getChi2() / nmeas
+
+        h['chi2fittedtracks'].Fill(chi2)
+        h['pvalfittedtracks'].Fill(pval)
+
+        fittedState = thetrack.getFittedState()
+        fittedMom = fittedState.getMomMag()
+        fittedMom = fittedMom*int(charge)
+
+        if math.fabs(pinv) > 0.0 :
+            h['pvspfitted'].Fill(1./pinv,fittedMom)
+        fittedtrackDir = fittedState.getDir()
+        fittedx=math.degrees(math.acos(fittedtrackDir[0]))
+        fittedy=math.degrees(math.acos(fittedtrackDir[1]))
+        fittedz=math.degrees(math.acos(fittedtrackDir[2]))
+        fittedmass = fittedState.getMass()
+        h['momentumfittedtracks'].Fill(fittedMom)
+        h['xdirectionfittedtracks'].Fill(fittedx)
+        h['ydirectionfittedtracks'].Fill(fittedy)
+        h['zdirectionfittedtracks'].Fill(fittedz)
+        h['massfittedtracks'].Fill(fittedmass)
 
 
 
