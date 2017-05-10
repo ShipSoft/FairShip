@@ -188,31 +188,31 @@ def init_book_hist():
 
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
-    ut.bookProf(h, 'n_hits_total', 'Number of hits per track, total', 20, 0, 5)
+    ut.bookProf(h, 'n_hits_total', 'Number of hits per track, total', 30, 0, 150)
     h['n_hits_total'].GetXaxis().SetTitle('Momentum')
     h['n_hits_total'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y12', 'Number of hits per track, Y view station 1&2', 20, 0, 5)
+    ut.bookProf(h, 'n_hits_y12', 'Number of hits per track, Y view station 1&2', 30, 0, 150)
     h['n_hits_y12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo12', 'Number of hits per track, Stereo view station 1&2', 20, 0, 5)
+    ut.bookProf(h, 'n_hits_stereo12', 'Number of hits per track, Stereo view station 1&2', 30, 0, 150)
     h['n_hits_stereo12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_12', 'Number of hits per track, station 1&2', 20, 0, 5)
+    ut.bookProf(h, 'n_hits_12', 'Number of hits per track, station 1&2', 30, 0, 150)
     h['n_hits_12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y34', 'Number of hits per track, Y view station 3&4', 20, 0, 5)
+    ut.bookProf(h, 'n_hits_y34', 'Number of hits per track, Y view station 3&4', 30, 0, 150)
     h['n_hits_y34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo34', 'Number of hits per track, Stereo view station 3&4', 20, 0, 5)
+    ut.bookProf(h, 'n_hits_stereo34', 'Number of hits per track, Stereo view station 3&4', 30, 0, 150)
     h['n_hits_stereo34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_34', 'Number of hits per track, station 3&4', 20, 0, 5)
+    ut.bookProf(h, 'n_hits_34', 'Number of hits per track, station 3&4', 30, 0, 150)
     h['n_hits_34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_34'].GetYaxis().SetTitle('N')
 
