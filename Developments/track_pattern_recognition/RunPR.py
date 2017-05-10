@@ -129,7 +129,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
 
         ########################################### Measure quality metrics ############################################
 
-        quality_metrics(smeared_hits, sTree, reco_mc_tracks, reco_tracks, h)
+        quality_metrics(smeared_hits, sTree, reco_mc_tracks, reco_tracks, theTracks, h)
 
 
     ############################################### Save results #######################################################
