@@ -775,6 +775,10 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
         atrack = reco_tracks[i]['hits']
         frac, tmax = fracMCsame(y[atrack])
+
+        if tmax not in reco_mc_tracks:
+            continue
+
         pinv_true = pinvs[y == tmax][0]
 
         true_charge = charges[y == tmax][0]
