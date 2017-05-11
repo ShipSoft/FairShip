@@ -431,6 +431,10 @@ def init_book_hist():
     h['TracksPassed'].GetXaxis().SetBinLabel(8,"Combined stations 1&2/3&4")
     h['TracksPassed'].GetXaxis().SetBinLabel(9,"Matched")
 
+    ut.bookProf(h, 'TracksPassed_p', 'Tracks passing the pattern recognition from momentum', 30, 0, 150)
+    h['TracksPassed_p'].GetXaxis().SetTitle('Momentum')
+    h['TracksPassed_p'].GetYaxis().SetTitle('N')
+
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
     # Momentum dependences
@@ -776,13 +780,19 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         true_charge = charges[y == tmax][0]
         reco_charge = reco_tracks[i]['charge']
 
-        tmax_y12 = track_ids_y12[i]
-        tmax_stereo12 = track_ids_stereo12[i]
-        tmax_12 = track_ids_12[i]
+        reco = 0
 
-        tmax_y34 = track_ids_y34[i]
-        tmax_stereo34 = track_ids_stereo34[i]
-        tmax_34 = track_ids_34[i]
+        try:
+            tmax_y12 = track_ids_y12[i]
+            tmax_stereo12 = track_ids_stereo12[i]
+            tmax_12 = track_ids_12[i]
+
+            tmax_y34 = track_ids_y34[i]
+            tmax_stereo34 = track_ids_stereo34[i]
+            tmax_34 = track_ids_34[i]
+        except:
+            h['TracksPassed_p'].Fill(1. / pinv_true, reco)
+            continue
 
         if tmax_y12 in reco_mc_tracks:
             h['TracksPassed'].Fill("Y view station 1&2", 1)
@@ -807,9 +817,9 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
                                     if true_charge == reco_charge:
                                         h['TracksPassed'].Fill("Matched", 1)
+                                        reco = 1
 
-                                        pass
-
+        h['TracksPassed_p'].Fill(1. / pinv_true, reco)
 
 
     # Pinv
