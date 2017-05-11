@@ -500,11 +500,11 @@ def init_book_hist():
     ut.bookHist(h,'pvspfitted','p-patrec vs p-fitted',401,-200.5,200.5,401,-200.5,200.5)
 
     # left_right_ambiguity
-    ut.bookHist(h,'left_right_ambiguity_y12','Left Right Ambiguity Resolution Efficiency, Y view station 1&2',20,0.,1.01)
-    ut.bookHist(h,'left_right_ambiguity_stereo12','Left Right Ambiguity Resolution Efficiency, Stereo view station 1&2',20,0.,1.01)
-    ut.bookHist(h,'left_right_ambiguity_y34','Left Right Ambiguity Resolution Efficiency, Y view station 3&4',20,0.,1.01)
-    ut.bookHist(h,'left_right_ambiguity_stereo34','Left Right Ambiguity Resolution Efficiency, Stereo view station 3&4',20,0.,1.01)
-    ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity Resolution Efficiency, Total',20,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_y12','Left Right Ambiguity Resolution Efficiency, Y view station 1&2',10,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_stereo12','Left Right Ambiguity Resolution Efficiency, Stereo view station 1&2',10,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_y34','Left Right Ambiguity Resolution Efficiency, Y view station 3&4',10,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_stereo34','Left Right Ambiguity Resolution Efficiency, Stereo view station 3&4',10,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity Resolution Efficiency, Total',10,0.,1.01)
 
     ut.bookProf(h, 'n_hits_y12_direction', 'Number of recognized hits per track, Y view station 1&2', 40, -10.01, 10.01)
     h['n_hits_y12_direction'].GetXaxis().SetTitle('Degree')
