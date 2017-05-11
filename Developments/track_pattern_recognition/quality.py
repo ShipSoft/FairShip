@@ -763,6 +763,9 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
     pinvs = get_pinvs(stree, smeared_hits)
     charges = get_charges(stree, smeared_hits)
 
+    if len(reco_mc_tracks) == 2:
+            h['TracksPassed'].Fill("Reconstructible tracks", 2)
+
     for i in reco_tracks.keys():
 
         atrack = reco_tracks[i]['hits']
@@ -780,34 +783,31 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         tmax_stereo34 = track_ids_stereo34[i]
         tmax_34 = track_ids_34[i]
 
-        if len(reco_mc_tracks) == 2:
-            h['TracksPassed'].Fill("Reconstructible tracks", 1)
+        if tmax_y12 in reco_mc_tracks:
+            h['TracksPassed'].Fill("Y view station 1&2", 1)
 
-            if tmax_y12 in reco_mc_tracks:
-                h['TracksPassed'].Fill("Y view station 1&2", 1)
+            if tmax_stereo12 in reco_mc_tracks and tmax_stereo12 == tmax_y12:
+                h['TracksPassed'].Fill("Stereo station 1&2", 1)
 
-                if tmax_stereo12 in reco_mc_tracks and tmax_stereo12 == tmax_y12:
-                    h['TracksPassed'].Fill("Stereo station 1&2", 1)
+                if tmax_12 in reco_mc_tracks and tmax_12 == tmax_stereo12:
+                    h['TracksPassed'].Fill("station 1&2", 1)
 
-                    if tmax_12 in reco_mc_tracks and tmax_12 == tmax_stereo12:
-                        h['TracksPassed'].Fill("station 1&2", 1)
+                    if tmax_y34 in reco_mc_tracks:
+                        h['TracksPassed'].Fill("Y view station 3&4", 1)
 
-                        if tmax_y34 in reco_mc_tracks:
-                            h['TracksPassed'].Fill("Y view station 3&4", 1)
+                        if tmax_stereo34 in reco_mc_tracks and tmax_stereo34 == tmax_y34:
+                            h['TracksPassed'].Fill("Stereo station 3&4", 1)
 
-                            if tmax_stereo34 in reco_mc_tracks and tmax_stereo34 == tmax_y34:
-                                h['TracksPassed'].Fill("Stereo station 3&4", 1)
+                            if tmax_34 in reco_mc_tracks and tmax_34 == tmax_stereo34:
+                                h['TracksPassed'].Fill("station 3&4", 1)
 
-                                if tmax_34 in reco_mc_tracks and tmax_34 == tmax_stereo34:
-                                    h['TracksPassed'].Fill("station 3&4", 1)
+                                if tmax_34 == tmax_12:
+                                    h['TracksPassed'].Fill("Combined stations 1&2/3&4", 1)
 
-                                    if tmax_34 == tmax_12:
-                                        h['TracksPassed'].Fill("Combined stations 1&2/3&4", 1)
+                                    if true_charge == reco_charge:
+                                        h['TracksPassed'].Fill("Matched", 1)
 
-                                        if true_charge == reco_charge:
-                                            h['TracksPassed'].Fill("Matched", 1)
-
-                                            pass
+                                        pass
 
 
 
