@@ -133,6 +133,239 @@ def get_pinvs(stree, smeared_hits):
 
     return numpy.array(pinvs)
 
+def get_true_coords(stree, smeared_hits):
+
+    X, Y, Z = [], [], []
+
+    for i in range(len(smeared_hits)):
+
+        x = stree.strawtubesPoint[i].GetX()
+        y = stree.strawtubesPoint[i].GetY()
+        z = stree.strawtubesPoint[i].GetZ()
+
+        X.append(x)
+        Y.append(y)
+        Z.append(z)
+
+    X = numpy.array(X).reshape(-1, 1)
+    Y = numpy.array(Y).reshape(-1, 1)
+    Z = numpy.array(Z).reshape(-1, 1)
+
+    XYZ = numpy.concatenate((X, Y, Z), axis=1)
+
+    return XYZ
+
+def get_tube_coords(smeared_hits):
+
+    X, Y, Z = [], [], []
+
+    for i in range(len(smeared_hits)):
+
+        x = smeared_hits[i]['xtop']
+        y = smeared_hits[i]['xtop']
+        z = smeared_hits[i]['z']
+
+        X.append(x)
+        Y.append(y)
+        Z.append(z)
+
+    X = numpy.array(X).reshape(-1, 1)
+    Y = numpy.array(Y).reshape(-1, 1)
+    Z = numpy.array(Z).reshape(-1, 1)
+
+    XYZ = numpy.concatenate((X, Y, Z), axis=1)
+
+    return XYZ
+
+
+def score(Z_tube, Y_tube, Z_hit, Y_hit, k, b):
+
+    diff1 = Y_tube - Y_hit
+    diff2 = Y_tube - (b + k * Z_tube)
+
+    tot_len = 1. * len(diff1)
+    reco_len = (((diff1 > 0) == (diff2 > 0)) * 1.).sum()
+
+    ratio = reco_len / tot_len
+
+    return tot_len, reco_len, ratio
+
+
+
+def left_right_ambiguity(stree, X, track, deg=5):
+
+    results = {}
+
+    XYZ_hit = get_true_coords(stree, X)
+    XYZ_tube = X[:, [0, 2, 4]]
+
+    statnb, vnb, pnb, lnb, snb = decodeDetectorID(X[:, -1])
+
+
+    track_inds = track['hits']
+
+    params12 = track['params12']
+    params34 = track['params34']
+
+    [[ky12, by12], [kx12, bx12]] = params12
+    [[ky34, by34], [kx34, bx34]] = params12
+
+    r12 = numpy.matrix([[bx12],
+                        [by12],
+                        [0]])
+    a12 = numpy.matrix([[kx12],
+                        [ky12],
+                        [1]])
+
+    r34 = numpy.matrix([[bx34],
+                        [by34],
+                        [0]])
+    a34 = numpy.matrix([[kx34],
+                        [ky34],
+                        [1]])
+
+    Mplus = numpy.matrix([[numpy.cos(numpy.deg2rad(deg)), -numpy.sin(numpy.deg2rad(deg)), 0],
+                          [ numpy.sin(numpy.deg2rad(deg)),  numpy.cos(numpy.deg2rad(deg)), 0],
+                          [                           0,                            0, 1]]) # View 2
+
+    Mminus = numpy.matrix([[numpy.cos(numpy.deg2rad(-deg)), -numpy.sin(numpy.deg2rad(-deg)), 0],
+                          [ numpy.sin(numpy.deg2rad(-deg)),  numpy.cos(numpy.deg2rad(-deg)), 0],
+                          [                           0,                            0, 1]]) # View 1
+
+
+    is_v1 = ((vnb == 1))
+    is_v2 = ((vnb == 2))
+    is_y = ((vnb == 0) + (vnb == 3))
+    is_before = ((statnb == 1) + (statnb == 2))
+    is_after = ((statnb == 3) + (statnb == 4))
+
+    track_inds_y12 = select_track_hits([track_inds], is_before * is_y)[0]
+    track_inds_v1_12 = select_track_hits([track_inds], is_before * is_v1)[0]
+    track_inds_v2_12 = select_track_hits([track_inds], is_before * is_v2)[0]
+
+    track_inds_y34 = select_track_hits([track_inds], is_after * is_y)[0]
+    track_inds_v1_34 = select_track_hits([track_inds], is_after * is_v1)[0]
+    track_inds_v2_34 = select_track_hits([track_inds], is_after * is_v2)[0]
+
+
+    #### Station 1&2
+
+    ## Y views
+
+    XYZ_hit_y12 = XYZ_hit[track_inds_y12]
+    XYZ_tube_y12 = XYZ_tube[track_inds_y12]
+
+    tot_len, reco_len, ratio = score(XYZ_tube_y12[: 2],
+                                     XYZ_tube_y12[: 1],
+                                     XYZ_hit_y12[:, 2],
+                                     XYZ_hit_y12[:, 1],
+                                     a12[1, 0],
+                                     r12[1, 0])
+
+    results['y12'] = [tot_len, reco_len, ratio]
+
+    ## View 1
+
+    XYZ_hit_v1_12 = XYZ_hit[track_inds_v1_12]
+    XYZ_tube_v1_12 = XYZ_tube[track_inds_v1_12]
+
+    XYZ_hit_v1_12 = numpy.array(Mminus * XYZ_hit_v1_12.T).T
+    XYZ_tube_v1_12 = numpy.array(Mminus * XYZ_tube_v1_12.T).T
+
+    aa12 = Mminus * a12
+    rr12 = Mminus * r12
+
+    tot_len, reco_len, ratio = score(XYZ_tube_v1_12[: 2],
+                                     XYZ_tube_v1_12[: 1],
+                                     XYZ_hit_v1_12[:, 2],
+                                     XYZ_hit_v1_12[:, 1],
+                                     aa12[1, 0],
+                                     rr12[1, 0])
+
+    results['v1_12'] = [tot_len, reco_len, ratio]
+
+    ## View 2
+
+    XYZ_hit_v2_12 = XYZ_hit[track_inds_v2_12]
+    XYZ_tube_v2_12 = XYZ_tube[track_inds_v2_12]
+
+    XYZ_hit_v2_12 = numpy.array(Mplus * XYZ_hit_v2_12.T).T
+    XYZ_tube_v2_12 = numpy.array(Mplus * XYZ_tube_v2_12.T).T
+
+    aa12 = Mplus * a12
+    rr12 = Mplus * r12
+
+    tot_len, reco_len, ratio = score(XYZ_tube_v2_12[: 2],
+                                     XYZ_tube_v2_12[: 1],
+                                     XYZ_hit_v2_12[:, 2],
+                                     XYZ_hit_v2_12[:, 1],
+                                     aa12[1, 0],
+                                     rr12[1, 0])
+
+    results['v2_12'] = [tot_len, reco_len, ratio]
+
+
+    #### Station 3&4
+
+    ## Y views
+
+    XYZ_hit_y34 = XYZ_hit[track_inds_y34]
+    XYZ_tube_y34 = XYZ_tube[track_inds_y34]
+
+    tot_len, reco_len, ratio = score(XYZ_tube_y34[: 2],
+                                     XYZ_tube_y34[: 1],
+                                     XYZ_hit_y34[:, 2],
+                                     XYZ_hit_y34[:, 1],
+                                     a34[1, 0],
+                                     r34[1, 0])
+
+    results['y34'] = [tot_len, reco_len, ratio]
+
+    ## View 1
+
+    XYZ_hit_v1_34 = XYZ_hit[track_inds_v1_34]
+    XYZ_tube_v1_34 = XYZ_tube[track_inds_v1_34]
+
+    XYZ_hit_v1_34 = numpy.array(Mminus * XYZ_hit_v1_34.T).T
+    XYZ_tube_v1_34 = numpy.array(Mminus * XYZ_tube_v1_34.T).T
+
+    aa34 = Mminus * a34
+    rr34 = Mminus * r34
+
+    tot_len, reco_len, ratio = score(XYZ_tube_v1_34[: 2],
+                                     XYZ_tube_v1_34[: 1],
+                                     XYZ_hit_v1_34[:, 2],
+                                     XYZ_hit_v1_34[:, 1],
+                                     aa34[1, 0],
+                                     rr34[1, 0])
+
+    results['v1_34'] = [tot_len, reco_len, ratio]
+
+    ## View 2
+
+    XYZ_hit_v2_34 = XYZ_hit[track_inds_v2_34]
+    XYZ_tube_v2_34 = XYZ_tube[track_inds_v2_34]
+
+    XYZ_hit_v2_34 = numpy.array(Mplus * XYZ_hit_v2_34.T).T
+    XYZ_tube_v2_34 = numpy.array(Mplus * XYZ_tube_v2_34.T).T
+
+    aa34 = Mplus * a34
+    rr34 = Mplus * r34
+
+    tot_len, reco_len, ratio = score(XYZ_tube_v2_34[: 2],
+                                     XYZ_tube_v2_34[: 1],
+                                     XYZ_hit_v2_34[:, 2],
+                                     XYZ_hit_v2_34[:, 1],
+                                     aa34[1, 0],
+                                     rr34[1, 0])
+
+    results['v2_34'] = [tot_len, reco_len, ratio]
+
+
+    return results
+
+
+
 
 ########################################## Main functions ##############################################################
 
@@ -261,6 +494,9 @@ def init_book_hist():
     ut.bookHist(h,'zdirectionfittedtracks','z-direction for fitted tracks',91,-0.5,90.5)
     ut.bookHist(h,'massfittedtracks','mass fitted tracks',210,-0.005,0.205)
     ut.bookHist(h,'pvspfitted','p-patrec vs p-fitted',401,-200.5,200.5,401,-200.5,200.5)
+
+    # left_right_ambiguity
+    ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity, Y view station 1&2',20,0.,1.01)
 
 
     return h
@@ -596,6 +832,23 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['ydirectionfittedtracks'].Fill(fittedy)
         h['zdirectionfittedtracks'].Fill(fittedz)
         h['massfittedtracks'].Fill(fittedmass)
+
+
+    # left-right ambiguity
+
+    for i in reco_tracks.keys():
+
+        atrack = reco_tracks[i]['hits']
+        frac, tmax = fracMCsame(y[atrack])
+
+        if tmax not in reco_mc_tracks:
+            continue
+
+        res = left_right_ambiguity(stree, X, atrack, deg=5)
+
+        h['left_right_ambiguity'].Fill(res['y12'][2])
+
+
 
 
 
