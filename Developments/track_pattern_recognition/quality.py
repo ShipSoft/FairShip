@@ -255,8 +255,8 @@ def left_right_ambiguity(stree, X, track, deg=5):
     XYZ_hit_y12 = XYZ_hit[track_inds_y12]
     XYZ_tube_y12 = XYZ_tube[track_inds_y12]
 
-    tot_len, reco_len, ratio = score(XYZ_tube_y12[: 2],
-                                     XYZ_tube_y12[: 1],
+    tot_len, reco_len, ratio = score(XYZ_tube_y12[:, 2],
+                                     XYZ_tube_y12[:, 1],
                                      XYZ_hit_y12[:, 2],
                                      XYZ_hit_y12[:, 1],
                                      a12[1, 0],
@@ -275,8 +275,8 @@ def left_right_ambiguity(stree, X, track, deg=5):
     aa12 = Mminus * a12
     rr12 = Mminus * r12
 
-    tot_len, reco_len, ratio = score(XYZ_tube_v1_12[: 2],
-                                     XYZ_tube_v1_12[: 1],
+    tot_len, reco_len, ratio = score(XYZ_tube_v1_12[:, 2],
+                                     XYZ_tube_v1_12[:, 1],
                                      XYZ_hit_v1_12[:, 2],
                                      XYZ_hit_v1_12[:, 1],
                                      aa12[1, 0],
@@ -295,8 +295,8 @@ def left_right_ambiguity(stree, X, track, deg=5):
     aa12 = Mplus * a12
     rr12 = Mplus * r12
 
-    tot_len, reco_len, ratio = score(XYZ_tube_v2_12[: 2],
-                                     XYZ_tube_v2_12[: 1],
+    tot_len, reco_len, ratio = score(XYZ_tube_v2_12[:, 2],
+                                     XYZ_tube_v2_12[:, 1],
                                      XYZ_hit_v2_12[:, 2],
                                      XYZ_hit_v2_12[:, 1],
                                      aa12[1, 0],
@@ -312,8 +312,8 @@ def left_right_ambiguity(stree, X, track, deg=5):
     XYZ_hit_y34 = XYZ_hit[track_inds_y34]
     XYZ_tube_y34 = XYZ_tube[track_inds_y34]
 
-    tot_len, reco_len, ratio = score(XYZ_tube_y34[: 2],
-                                     XYZ_tube_y34[: 1],
+    tot_len, reco_len, ratio = score(XYZ_tube_y34[:, 2],
+                                     XYZ_tube_y34[:, 1],
                                      XYZ_hit_y34[:, 2],
                                      XYZ_hit_y34[:, 1],
                                      a34[1, 0],
@@ -332,8 +332,8 @@ def left_right_ambiguity(stree, X, track, deg=5):
     aa34 = Mminus * a34
     rr34 = Mminus * r34
 
-    tot_len, reco_len, ratio = score(XYZ_tube_v1_34[: 2],
-                                     XYZ_tube_v1_34[: 1],
+    tot_len, reco_len, ratio = score(XYZ_tube_v1_34[:, 2],
+                                     XYZ_tube_v1_34[:, 1],
                                      XYZ_hit_v1_34[:, 2],
                                      XYZ_hit_v1_34[:, 1],
                                      aa34[1, 0],
@@ -352,8 +352,8 @@ def left_right_ambiguity(stree, X, track, deg=5):
     aa34 = Mplus * a34
     rr34 = Mplus * r34
 
-    tot_len, reco_len, ratio = score(XYZ_tube_v2_34[: 2],
-                                     XYZ_tube_v2_34[: 1],
+    tot_len, reco_len, ratio = score(XYZ_tube_v2_34[:, 2],
+                                     XYZ_tube_v2_34[:, 1],
                                      XYZ_hit_v2_34[:, 2],
                                      XYZ_hit_v2_34[:, 1],
                                      aa34[1, 0],
