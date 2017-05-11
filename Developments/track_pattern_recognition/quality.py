@@ -502,19 +502,19 @@ def init_book_hist():
     ut.bookHist(h,'left_right_ambiguity_stereo34','Left Right Ambiguity Resolution Efficiency, Stereo view station 3&4',20,0.,1.01)
     ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity Resolution Efficiency, Total',20,0.,1.01)
 
-    ut.bookProf(h, 'n_hits_y12_direction', 'Number of recognized hits per track, Y view station 1&2', 200, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_y12_direction', 'Number of recognized hits per track, Y view station 1&2', 100, -10.01, 10.01)
     h['n_hits_y12_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_y12_direction'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo12_direction', 'Number of recognized hits per track, Stereo view station 1&2', 200, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_stereo12_direction', 'Number of recognized hits per track, Stereo view station 1&2', 100, -10.01, 10.01)
     h['n_hits_stereo12_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_stereo12_direction'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y34_direction', 'Number of recognized hits per track, Y view station 3&4', 200, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_y34_direction', 'Number of recognized hits per track, Y view station 3&4', 100, -10.01, 10.01)
     h['n_hits_y34_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_y34_direction'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo34_direction', 'Number of recognized hits per track, Stereo view station 3&4', 200, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_stereo34_direction', 'Number of recognized hits per track, Stereo view station 3&4', 100, -10.01, 10.01)
     h['n_hits_stereo34_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_stereo34_direction'].GetYaxis().SetTitle('N')
 
