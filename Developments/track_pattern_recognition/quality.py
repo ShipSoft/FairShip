@@ -853,14 +853,14 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         tot_len_y12, reco_len_y12, ratio_y12 = res['y12']
         tot_len_v1_12, reco_len_v1_12, ratio_v1_12 = res['v1_12']
         tot_len_v2_12, reco_len_v2_12, ratio_v2_12 = res['v2_12']
-        ratio_stereo12 = 1. (reco_len_v1_12 + reco_len_v2_12) / (tot_len_v1_12 + tot_len_v2_12)
+        ratio_stereo12 = 1. * (reco_len_v1_12 + reco_len_v2_12) / (tot_len_v1_12 + tot_len_v2_12)
 
         tot_len_y34, reco_len_y34, ratio_y34 = res['y34']
         tot_len_v1_34, reco_len_v1_34, ratio_v1_34 = res['v1_34']
         tot_len_v2_34, reco_len_v2_34, ratio_v2_34 = res['v2_34']
-        ratio_stereo34 = 1. (reco_len_v1_34 + reco_len_v2_34) / (tot_len_v1_34 + tot_len_v2_34)
+        ratio_stereo34 = 1. * (reco_len_v1_34 + reco_len_v2_34) / (tot_len_v1_34 + tot_len_v2_34)
 
-        ratio_total = 1. (reco_len_y12 + reco_len_v1_12 + reco_len_v2_12 +
+        ratio_total = 1. * (reco_len_y12 + reco_len_v1_12 + reco_len_v2_12 +
                           reco_len_y34 + reco_len_v1_34 + reco_len_v2_34) / \
                       (tot_len_y12 + tot_len_v1_12 + tot_len_v2_12 +
                        tot_len_y34 + tot_len_v1_34 + tot_len_v2_34)
