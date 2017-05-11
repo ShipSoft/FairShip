@@ -455,6 +455,10 @@ def init_book_hist():
     h['perr'].GetXaxis().SetTitle('Momentum')
     h['perr'].GetYaxis().SetTitle('|(p - p-true)/p|')
 
+    ut.bookProf(h,'perr_direction','|(p - p-true)/p| from track direction in YZ plane',100, -10.01, 10.01)
+    h['perr_direction'].GetXaxis().SetTitle('Degree')
+    h['perr_direction'].GetYaxis().SetTitle('|(p - p-true)/p|')
+
 
     ut.bookProf(h, 'frac_total', 'Fraction of hits the same as MC hits, total', 30, 0, 150)
     h['frac_total'].GetXaxis().SetTitle('Momentum')
@@ -762,6 +766,15 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
         h['ptrue-p/ptrue'].Fill(err)
         h['perr'].Fill(1./pinv_true, abs(err))
+
+        params12 = reco_tracks[i]['params12']
+        params34 = reco_tracks[i]['params34']
+
+        [[ky12, by12], [kx12, bx12]] = params12
+        [[ky34, by34], [kx34, bx34]] = params12
+
+        deg = numpy.rad2deg(numpy.arctan(ky12))
+        h['perr_direction'].Fill(deg, abs(err))
 
 
     # Momentum dependencies
