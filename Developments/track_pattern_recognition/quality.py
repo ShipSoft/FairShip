@@ -844,7 +844,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         if tmax not in reco_mc_tracks:
             continue
 
-        res = left_right_ambiguity(stree, X, atrack, deg=5)
+        res = left_right_ambiguity(stree, X, reco_tracks[i], deg=5)
 
         h['left_right_ambiguity'].Fill(res['y12'][2])
 
