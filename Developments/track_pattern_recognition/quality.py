@@ -764,7 +764,8 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
     charges = get_charges(stree, smeared_hits)
 
     if len(reco_mc_tracks) == 2:
-            h['TracksPassed'].Fill("Reconstructible tracks", 2)
+        h['TracksPassed'].Fill("Reconstructible tracks", 1)
+        h['TracksPassed'].Fill("Reconstructible tracks", 1)
 
     for i in reco_tracks.keys():
 
