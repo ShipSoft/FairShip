@@ -420,6 +420,17 @@ def init_book_hist():
     h['EventsPassed'].GetXaxis().SetBinLabel(8,"Combined stations 1&2/3&4")
     h['EventsPassed'].GetXaxis().SetBinLabel(9,"Matched")
 
+    ut.bookHist(h,'TracksPassed','Tracks passing the pattern recognition',9,-0.5,8.5)
+    h['TracksPassed'].GetXaxis().SetBinLabel(1,"Reconstructible tracks")
+    h['TracksPassed'].GetXaxis().SetBinLabel(2,"Y view station 1&2")
+    h['TracksPassed'].GetXaxis().SetBinLabel(3,"Stereo station 1&2")
+    h['TracksPassed'].GetXaxis().SetBinLabel(4,"station 1&2")
+    h['TracksPassed'].GetXaxis().SetBinLabel(5,"Y view station 3&4")
+    h['TracksPassed'].GetXaxis().SetBinLabel(6,"Stereo station 3&4")
+    h['TracksPassed'].GetXaxis().SetBinLabel(7,"station 3&4")
+    h['TracksPassed'].GetXaxis().SetBinLabel(8,"Combined stations 1&2/3&4")
+    h['TracksPassed'].GetXaxis().SetBinLabel(9,"Matched")
+
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
     # Momentum dependences
@@ -747,6 +758,58 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
                                     if is_matched.sum() == len(reco_mc_tracks):
                                         h['EventsPassed'].Fill("Matched", 1)
+
+    # Reco Tracks
+    pinvs = get_pinvs(stree, smeared_hits)
+    charges = get_charges(stree, smeared_hits)
+
+    for i in reco_tracks.keys():
+
+        atrack = reco_tracks[i]['hits']
+        frac, tmax = fracMCsame(y[atrack])
+        pinv_true = pinvs[y == tmax][0]
+
+        true_charge = charges[y == tmax][0]
+        reco_charge = reco_tracks[i]['charge']
+
+        tmax_y12 = track_ids_y12[i]
+        tmax_stereo12 = track_ids_stereo12[i]
+        tmax_12 = track_ids_12[i]
+
+        tmax_y34 = track_ids_y34[i]
+        tmax_stereo34 = track_ids_stereo34[i]
+        tmax_34 = track_ids_34[i]
+
+        if len(reco_mc_tracks) == 2:
+            h['EventsPassed'].Fill("Reconstructible tracks", 1)
+
+            if tmax_y12 in reco_mc_tracks:
+                h['EventsPassed'].Fill("Y view station 1&2", 1)
+
+                if tmax_stereo12 in reco_mc_tracks and tmax_stereo12 == tmax_y12:
+                    h['EventsPassed'].Fill("Stereo station 1&2", 1)
+
+                    if tmax_12 in reco_mc_tracks and tmax_12 == tmax_stereo12:
+                        h['EventsPassed'].Fill("station 1&2", 1)
+
+                        if tmax_y34 in reco_mc_tracks:
+                            h['EventsPassed'].Fill("Y view station 3&4", 1)
+
+                            if tmax_stereo34 in reco_mc_tracks and tmax_stereo34 == tmax_y34:
+                                h['EventsPassed'].Fill("Stereo station 3&4", 1)
+
+                                if tmax_34 in reco_mc_tracks and tmax_34 == tmax_stereo34:
+                                    h['EventsPassed'].Fill("station 3&4", 1)
+
+                                    if tmax_34 == tmax_12:
+                                        h['EventsPassed'].Fill("Combined stations 1&2/3&4", 1)
+
+                                        if true_charge == reco_charge:
+                                            h['EventsPassed'].Fill("Matched", 1)
+
+                                            pass
+
+
 
     # Pinv
     pinvs = get_pinvs(stree, smeared_hits)
