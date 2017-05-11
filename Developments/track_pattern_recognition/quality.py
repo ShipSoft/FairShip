@@ -502,6 +502,23 @@ def init_book_hist():
     ut.bookHist(h,'left_right_ambiguity_stereo34','Left Right Ambiguity Resolution Efficiency, Stereo view station 3&4',20,0.,1.01)
     ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity Resolution Efficiency, Total',20,0.,1.01)
 
+    ut.bookProf(h, 'n_hits_y12_direction', 'Number of recognized hits per track, Y view station 1&2', 20, -10.01, 10.01)
+    h['n_hits_y12'].GetXaxis().SetTitle('Degree')
+    h['n_hits_y12'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h, 'n_hits_stereo12_direction', 'Number of recognized hits per track, Stereo view station 1&2', 20, -10.01, 10.01)
+    h['n_hits_stereo12'].GetXaxis().SetTitle('Degree')
+    h['n_hits_stereo12'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h, 'n_hits_y34_direction', 'Number of recognized hits per track, Y view station 3&4', 20, -10.01, 10.01)
+    h['n_hits_y34'].GetXaxis().SetTitle('Degree')
+    h['n_hits_y34'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h, 'n_hits_stereo34_direction', 'Number of recognized hits per track, Stereo view station 3&4', 20, -10.01, 10.01)
+    h['n_hits_stereo34'].GetXaxis().SetTitle('Degree')
+    h['n_hits_stereo34'].GetYaxis().SetTitle('N')
+
+
 
     return h
 
@@ -760,6 +777,12 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         pinv_true = pinvs[y == tmax][0]
         p = 1. / pinv_true
 
+        params12 = reco_tracks[i]['params12']
+        params34 = reco_tracks[i]['params34']
+
+        [[ky12, by12], [kx12, bx12]] = params12
+        [[ky34, by34], [kx34, bx34]] = params12
+
         n_hits_total = len(atrack)
         frac_total, tmax_total = fracMCsame(y[atrack])
         h['n_hits_total'].Fill(p, n_hits_total)
@@ -770,12 +793,14 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         frac_y12, tmax_y12 = fracMCsame(y[atrack[mask_y12]])
         h['n_hits_y12'].Fill(p, n_hits_y12)
         h['frac_y12'].Fill(p, frac_y12)
+        h['n_hits_y12_direction'].Fill(numpy.rad2deg(numpy.arctan(ky12)), n_hits_y12)
 
         mask_stereo12 = (is_before * is_stereo)[atrack]
         n_hits_stereo12 = len(atrack[mask_stereo12])
         frac_stereo12, tmax_stereo12 = fracMCsame(y[atrack[mask_stereo12]])
         h['n_hits_stereo12'].Fill(p, n_hits_stereo12)
         h['frac_stereo12'].Fill(p, frac_stereo12)
+        h['n_hits_stereo12_direction'].Fill(numpy.rad2deg(numpy.arctan(kx12)), n_hits_stereo12)
 
         mask_12 = (is_before)[atrack]
         n_hits_12 = len(atrack[mask_12])
@@ -788,12 +813,14 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         frac_y34, tmax_y34 = fracMCsame(y[atrack[mask_y34]])
         h['n_hits_y34'].Fill(p, n_hits_y34)
         h['frac_y34'].Fill(p, frac_y34)
+        h['n_hits_y34_direction'].Fill(numpy.rad2deg(numpy.arctan(ky34)), n_hits_y34)
 
         mask_stereo34 = (is_after * is_stereo)[atrack]
         n_hits_stereo34 = len(atrack[mask_stereo34])
         frac_stereo34, tmax_stereo34 = fracMCsame(y[atrack[mask_stereo34]])
         h['n_hits_stereo34'].Fill(p, n_hits_stereo34)
         h['frac_stereo34'].Fill(p, frac_stereo34)
+        h['n_hits_stereo34_direction'].Fill(numpy.rad2deg(numpy.arctan(kx34)), n_hits_stereo34)
 
         mask_34 = (is_after)[atrack]
         n_hits_34 = len(atrack[mask_34])
@@ -871,6 +898,13 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['left_right_ambiguity_y34'].Fill(ratio_y34)
         h['left_right_ambiguity_stereo34'].Fill(ratio_stereo34)
         h['left_right_ambiguity'].Fill(ratio_total)
+
+
+        params12 = reco_tracks[i]['params12']
+        params34 = reco_tracks[i]['params34']
+
+        [[ky12, by12], [kx12, bx12]] = params12
+        [[ky34, by34], [kx34, bx34]] = params12
 
 
 
