@@ -93,7 +93,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
 
     for iEvent in range(nEvents):
 
-        if iEvent%10 == 0:
+        if iEvent%100 == 0:
             print 'Event ', iEvent
 
         ########################################### Select one event ###################################################
