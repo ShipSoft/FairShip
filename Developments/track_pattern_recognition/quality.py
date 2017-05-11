@@ -496,7 +496,11 @@ def init_book_hist():
     ut.bookHist(h,'pvspfitted','p-patrec vs p-fitted',401,-200.5,200.5,401,-200.5,200.5)
 
     # left_right_ambiguity
-    ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity, Y view station 1&2',20,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_y12','Left Right Ambiguity Resolution Efficiency, Y view station 1&2',20,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_stereo12','Left Right Ambiguity Resolution Efficiency, Stereo view station 1&2',20,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_y34','Left Right Ambiguity Resolution Efficiency, Y view station 3&4',20,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity_stereo34','Left Right Ambiguity Resolution Efficiency, Stereo view station 3&4',20,0.,1.01)
+    ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity Resolution Efficiency, Total',20,0.,1.01)
 
 
     return h
@@ -846,7 +850,27 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
         res = left_right_ambiguity(stree, X, reco_tracks[i], deg=5)
 
-        h['left_right_ambiguity'].Fill(res['y12'][2])
+        tot_len_y12, reco_len_y12, ratio_y12 = res['y12']
+        tot_len_v1_12, reco_len_v1_12, ratio_v1_12 = res['v1_12']
+        tot_len_v2_12, reco_len_v2_12, ratio_v2_12 = res['v2_12']
+        ratio_stereo12 = 1. (reco_len_v1_12 + reco_len_v2_12) / (tot_len_v1_12 + tot_len_v2_12)
+
+        tot_len_y34, reco_len_y34, ratio_y34 = res['y34']
+        tot_len_v1_34, reco_len_v1_34, ratio_v1_34 = res['v1_34']
+        tot_len_v2_34, reco_len_v2_34, ratio_v2_34 = res['v2_34']
+        ratio_stereo34 = 1. (reco_len_v1_34 + reco_len_v2_34) / (tot_len_v1_34 + tot_len_v2_34)
+
+        ratio_total = 1. (reco_len_y12 + reco_len_v1_12 + reco_len_v2_12 +
+                          reco_len_y34 + reco_len_v1_34 + reco_len_v2_34) / \
+                      (tot_len_y12 + tot_len_v1_12 + tot_len_v2_12 +
+                       tot_len_y34 + tot_len_v1_34 + tot_len_v2_34)
+
+
+        h['left_right_ambiguity_y12'].Fill(ratio_y12)
+        h['left_right_ambiguity_stereo12'].Fill(ratio_stereo12)
+        h['left_right_ambiguity_y34'].Fill(ratio_y34)
+        h['left_right_ambiguity_stereo34'].Fill(ratio_stereo34)
+        h['left_right_ambiguity'].Fill(ratio_total)
 
 
 
