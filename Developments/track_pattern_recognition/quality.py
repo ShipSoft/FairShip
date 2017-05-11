@@ -410,7 +410,7 @@ def init_book_hist():
     ut.bookHist(h,'CloneRate_34', 'Clone Rate, station 3&4',20,0.,1.01)
 
     ut.bookHist(h,'EventsPassed','Events passing the pattern recognition',9,-0.5,8.5)
-    h['EventsPassed'].GetXaxis().SetBinLabel(1,"Reconstructible tracks")
+    h['EventsPassed'].GetXaxis().SetBinLabel(1,"Reconstructible events")
     h['EventsPassed'].GetXaxis().SetBinLabel(2,"Y view station 1&2")
     h['EventsPassed'].GetXaxis().SetBinLabel(3,"Stereo station 1&2")
     h['EventsPassed'].GetXaxis().SetBinLabel(4,"station 1&2")
@@ -733,7 +733,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
     # Events Passed
     if len(reco_mc_tracks) == 2:
-        h['EventsPassed'].Fill("Reconstructible tracks", 1)
+        h['EventsPassed'].Fill("Reconstructible events", 1)
 
         if len(numpy.intersect1d(track_ids_y12, reco_mc_tracks)) == len(reco_mc_tracks):
             h['EventsPassed'].Fill("Y view station 1&2", 1)
@@ -781,31 +781,31 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         tmax_34 = track_ids_34[i]
 
         if len(reco_mc_tracks) == 2:
-            h['EventsPassed'].Fill("Reconstructible tracks", 1)
+            h['TracksPassed'].Fill("Reconstructible tracks", 1)
 
             if tmax_y12 in reco_mc_tracks:
-                h['EventsPassed'].Fill("Y view station 1&2", 1)
+                h['TracksPassed'].Fill("Y view station 1&2", 1)
 
                 if tmax_stereo12 in reco_mc_tracks and tmax_stereo12 == tmax_y12:
-                    h['EventsPassed'].Fill("Stereo station 1&2", 1)
+                    h['TracksPassed'].Fill("Stereo station 1&2", 1)
 
                     if tmax_12 in reco_mc_tracks and tmax_12 == tmax_stereo12:
-                        h['EventsPassed'].Fill("station 1&2", 1)
+                        h['TracksPassed'].Fill("station 1&2", 1)
 
                         if tmax_y34 in reco_mc_tracks:
-                            h['EventsPassed'].Fill("Y view station 3&4", 1)
+                            h['TracksPassed'].Fill("Y view station 3&4", 1)
 
                             if tmax_stereo34 in reco_mc_tracks and tmax_stereo34 == tmax_y34:
-                                h['EventsPassed'].Fill("Stereo station 3&4", 1)
+                                h['TracksPassed'].Fill("Stereo station 3&4", 1)
 
                                 if tmax_34 in reco_mc_tracks and tmax_34 == tmax_stereo34:
-                                    h['EventsPassed'].Fill("station 3&4", 1)
+                                    h['TracksPassed'].Fill("station 3&4", 1)
 
                                     if tmax_34 == tmax_12:
-                                        h['EventsPassed'].Fill("Combined stations 1&2/3&4", 1)
+                                        h['TracksPassed'].Fill("Combined stations 1&2/3&4", 1)
 
                                         if true_charge == reco_charge:
-                                            h['EventsPassed'].Fill("Matched", 1)
+                                            h['TracksPassed'].Fill("Matched", 1)
 
                                             pass
 
