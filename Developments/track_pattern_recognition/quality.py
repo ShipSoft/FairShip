@@ -437,6 +437,14 @@ def init_book_hist():
 
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
+    ut.bookHist(h,'n_hits_mc','Number of hits per track, total',65,0.,64.01)
+    ut.bookHist(h,'n_hits_mc_12','Number of hits per track, station 1&2',33,0.,32.01)
+    ut.bookHist(h,'n_hits_mc_y12','Number of hits per track, Y view station 1&2',17,0.,16.01)
+    ut.bookHist(h,'n_hits_mc_stereo12','Number of hits per track, Stereo view station 1&2',17,0.,16.01)
+    ut.bookHist(h,'n_hits_mc_34','Number of hits per track, station 3&4',33,0.,32.01)
+    ut.bookHist(h,'n_hits_mc_y34','Number of hits per track, Y view station 3&4',17,0.,16.01)
+    ut.bookHist(h,'n_hits_mc_stereo34','Number of hits per track, Stereo view station 3&4',17,0.,16.01)
+
     # Momentum dependences
     ut.bookProf(h, 'n_hits_total', 'Number of recognized hits per track, total', 15, 0, 150)
     h['n_hits_total'].GetXaxis().SetTitle('Momentum')
@@ -580,6 +588,29 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
     track_inds_y34 = select_track_hits(track_inds, is_after * is_y)
     track_inds_stereo34 = select_track_hits(track_inds, is_after * is_stereo)
     track_inds_34 = select_track_hits(track_inds, is_after)
+
+    # N hits
+    for t in reco_mc_tracks:
+
+        n_y12 = len(y[(y == t) * is_before * is_y])
+        n_stereo12 = len(y[(y == t) * is_before * is_stereo])
+        n_12 = len(y[(y == t) * is_before])
+
+        n_y34 = len(y[(y == t) * is_after * is_y])
+        n_stereo34 = len(y[(y == t) * is_after * is_stereo])
+        n_34 = len(y[(y == t) * is_after])
+
+        n_tot = len(y[(y == t)])
+
+        h['n_hits_mc'].Fill(n_tot)
+
+        h['n_hits_mc_12'].Fill(n_12)
+        h['n_hits_mc_y12'].Fill(n_y12)
+        h['n_hits_mc_stereo12'].Fill(n_stereo12)
+
+        h['n_hits_mc_34'].Fill(n_34)
+        h['n_hits_mc_y34'].Fill(n_y34)
+        h['n_hits_mc_stereo34'].Fill(n_stereo34)
 
 
     # Y view station 1&2
