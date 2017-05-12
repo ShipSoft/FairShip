@@ -35,24 +35,24 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
 
     if method=='FastHough':
 
-        clustering=Clusterer(x_depth=2, y_depth=4, n_min=2)
+        #clustering=Clusterer(x_depth=6, y_depth=6, n_min=2)
 
         stm_y = FastHough(n_tracks=2,
                           min_hits=3,
-                          k_size=0.7/4000,
-                          b_size=1700./4000,
-                          k_limits=(-0.35, 0.35),
-                          b_limits=(-850, 850),
-                          clustering=clustering,
+                          k_size=0.7/10000,
+                          b_size=1700./10000,
+                          k_limits=(-0.5, 0.5),
+                          b_limits=(-1150, 1150),
+                          clustering=None,
                           unique_hit_labels=True)
 
         stm_stereo = FastHough(n_tracks=1,
                                min_hits=3,
-                               k_size=0.6/160,
-                               b_size=1000./160,
+                               k_size=0.6/300,
+                               b_size=1000./300,
                                k_limits=(-0.3, 0.3),
                                b_limits=(-500, 500),
-                               clustering=clustering,
+                               clustering=None,
                                unique_hit_labels=True)
 
     ################################## Recognize track before and after the magnet #####################################

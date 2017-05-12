@@ -553,6 +553,9 @@ def decodeDetectorID(detID):
 
 def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks, h):
 
+    if len(reco_mc_tracks) < 2:
+        return
+
     X = Digitization(stree,smeared_hits)
     y = get_track_ids(stree, smeared_hits)
 
