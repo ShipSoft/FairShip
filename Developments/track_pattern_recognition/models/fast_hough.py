@@ -127,7 +127,7 @@ class FastHough(object):
                 if k >= self.k_limits[0] and k <= self.k_limits[1] and b >= self.b_limits[0] and b <= self.b_limits[1]:
 
                     one_track_inds1 = self.hits_in_bin(x, y, k, b)
-                    one_track_inds = self.ne_hit_per_layer(one_track_inds1,
+                    one_track_inds = self.one_hit_per_layer(one_track_inds1,
                                                            x[one_track_inds],
                                                            y[one_track_inds],
                                                            x[one_track_inds],
