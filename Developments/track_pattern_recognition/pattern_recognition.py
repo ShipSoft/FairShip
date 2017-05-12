@@ -18,6 +18,19 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
     if len(X) == 0:
         return {}
 
+    ############################################# Process Input Data ###################################################
+
+    X1 = X.copy()
+    X1[:, 1] += X1[:, 6] * numpy.cos(numpy.deg2rad(5))
+    X1[:, 4] += X1[:, 6] * numpy.cos(numpy.deg2rad(5))
+
+    X2 = X.copy()
+    X2[:, 1] += - X2[:, 6] * numpy.cos(numpy.deg2rad(5))
+    X2[:, 4] += - X2[:, 6] * numpy.cos(numpy.deg2rad(5))
+
+    XX = numpy.concatenate((X1, X2), axis=0)
+    XX_inds = numpy.concatenate((range(len(X)), range(len(X))))
+
     ################################## Select models to search tracks in 2D planes #####################################
 
     if method=='FastHough':
@@ -45,7 +58,7 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
     ################################## Recognize track before and after the magnet #####################################
 
     tr2d = TracksRecognition2D(model_y=stm_y, model_stereo=stm_stereo, unique_hit_labels=True)
-    tr2d.predict(X, None)
+    tr2d.predict(XX, None)
 
     track_inds12, tracks_params12 = tr2d.track_inds12_, tr2d.tracks_params12_
     track_inds34, tracks_params34 = tr2d.track_inds34_, tr2d.tracks_params34_
@@ -68,6 +81,7 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
         track_after = numpy.concatenate((track_after_y, track_after_stereo))
 
         atrack = numpy.concatenate((track_before, track_after))
+        atrack = numpy.unique(XX_inds[atrack])
 
         reco_tracks[track_id] = {'hits': atrack,
                                  'hitPosList': X[atrack, :-1],
