@@ -48,8 +48,8 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
 
         stm_stereo = FastHough(n_tracks=1,
                                min_hits=3,
-                               k_size=0.6/300,
-                               b_size=1000./300,
+                               k_size=0.6/200,
+                               b_size=1000./200,
                                k_limits=(-0.3, 0.3),
                                b_limits=(-500, 500),
                                clustering=None,
