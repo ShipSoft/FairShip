@@ -143,7 +143,7 @@ class FastHough(object):
 
         new_track_inds = []
 
-        diff = y - (b + k * x)
+        diff = numpy.abs(y - (b + k * x))
         sorted_inds = numpy.argsort(diff)
         used = []
 
