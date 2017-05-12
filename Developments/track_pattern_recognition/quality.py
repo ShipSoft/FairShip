@@ -445,6 +445,15 @@ def init_book_hist():
     ut.bookHist(h,'n_hits_mc_y34','Number of hits per track, Y view station 3&4',16,0.,16.01)
     ut.bookHist(h,'n_hits_mc_stereo34','Number of hits per track, Stereo view station 3&4',16,0.,16.01)
 
+
+    ut.bookHist(h,'n_hits_reco','Number of recognized hits per track, total',64,0.,64.01)
+    ut.bookHist(h,'n_hits_reco_12','Number of recognized hits per track, station 1&2',32,0.,32.01)
+    ut.bookHist(h,'n_hits_reco_y12','Number of recognized hits per track, Y view station 1&2',32,0.,32.01)
+    ut.bookHist(h,'n_hits_reco_stereo12','Number of recognized hits per track, Stereo view station 1&2',32,0.,32.01)
+    ut.bookHist(h,'n_hits_reco_34','Number of recognized hits per track, station 3&4',32,0.,32.01)
+    ut.bookHist(h,'n_hits_reco_y34','Number of recognized hits per track, Y view station 3&4',32,0.,32.01)
+    ut.bookHist(h,'n_hits_reco_stereo34','Number of recognized hits per track, Stereo view station 3&4',32,0.,32.01)
+
     # Momentum dependences
     ut.bookProf(h, 'n_hits_total', 'Number of recognized hits per track, total', 15, 0, 150)
     h['n_hits_total'].GetXaxis().SetTitle('Momentum')
@@ -611,6 +620,28 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['n_hits_mc_34'].Fill(n_34)
         h['n_hits_mc_y34'].Fill(n_y34)
         h['n_hits_mc_stereo34'].Fill(n_stereo34)
+
+    for i in range(len(track_inds)):
+
+        n_y12 = len(track_inds_y12[i])
+        n_stereo12 = len(track_inds_stereo12[i])
+        n_12 = len(track_inds_12[i])
+
+        n_y34 = len(track_inds_y34[i])
+        n_stereo34 = len(track_inds_stereo34[i])
+        n_34 = len(track_inds_34[i])
+
+        n_tot = len(track_inds[i])
+
+        h['n_hits_reco'].Fill(n_tot)
+
+        h['n_hits_reco_12'].Fill(n_12)
+        h['n_hits_reco_y12'].Fill(n_y12)
+        h['n_hits_reco_stereo12'].Fill(n_stereo12)
+
+        h['n_hits_reco_34'].Fill(n_34)
+        h['n_hits_reco_y34'].Fill(n_y34)
+        h['n_hits_reco_stereo34'].Fill(n_stereo34)
 
 
     # Y view station 1&2
