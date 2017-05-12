@@ -437,13 +437,13 @@ def init_book_hist():
 
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
-    ut.bookHist(h,'n_hits_mc','Number of hits per track, total',65,0.,64.01)
-    ut.bookHist(h,'n_hits_mc_12','Number of hits per track, station 1&2',33,0.,32.01)
-    ut.bookHist(h,'n_hits_mc_y12','Number of hits per track, Y view station 1&2',17,0.,16.01)
-    ut.bookHist(h,'n_hits_mc_stereo12','Number of hits per track, Stereo view station 1&2',17,0.,16.01)
-    ut.bookHist(h,'n_hits_mc_34','Number of hits per track, station 3&4',33,0.,32.01)
-    ut.bookHist(h,'n_hits_mc_y34','Number of hits per track, Y view station 3&4',17,0.,16.01)
-    ut.bookHist(h,'n_hits_mc_stereo34','Number of hits per track, Stereo view station 3&4',17,0.,16.01)
+    ut.bookHist(h,'n_hits_mc','Number of hits per track, total',64,0.,64.01)
+    ut.bookHist(h,'n_hits_mc_12','Number of hits per track, station 1&2',32,0.,32.01)
+    ut.bookHist(h,'n_hits_mc_y12','Number of hits per track, Y view station 1&2',16,0.,16.01)
+    ut.bookHist(h,'n_hits_mc_stereo12','Number of hits per track, Stereo view station 1&2',16,0.,16.01)
+    ut.bookHist(h,'n_hits_mc_34','Number of hits per track, station 3&4',32,0.,32.01)
+    ut.bookHist(h,'n_hits_mc_y34','Number of hits per track, Y view station 3&4',16,0.,16.01)
+    ut.bookHist(h,'n_hits_mc_stereo34','Number of hits per track, Stereo view station 3&4',16,0.,16.01)
 
     # Momentum dependences
     ut.bookProf(h, 'n_hits_total', 'Number of recognized hits per track, total', 15, 0, 150)
