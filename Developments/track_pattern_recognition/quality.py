@@ -438,68 +438,68 @@ def init_book_hist():
     ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
 
     # Momentum dependences
-    ut.bookProf(h, 'n_hits_total', 'Number of recognized hits per track, total', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_total', 'Number of recognized hits per track, total', 15, 0, 150)
     h['n_hits_total'].GetXaxis().SetTitle('Momentum')
     h['n_hits_total'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y12', 'Number of recognized hits per track, Y view station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_y12', 'Number of recognized hits per track, Y view station 1&2', 15, 0, 150)
     h['n_hits_y12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo12', 'Number of recognized hits per track, Stereo view station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_stereo12', 'Number of recognized hits per track, Stereo view station 1&2', 15, 0, 150)
     h['n_hits_stereo12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_12', 'Number of recognized hits per track, station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_12', 'Number of recognized hits per track, station 1&2', 15, 0, 150)
     h['n_hits_12'].GetXaxis().SetTitle('Momentum')
     h['n_hits_12'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y34', 'Number of recognized hits per track, Y view station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_y34', 'Number of recognized hits per track, Y view station 3&4', 15, 0, 150)
     h['n_hits_y34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_y34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo34', 'Number of recognized hits per track, Stereo view station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_stereo34', 'Number of recognized hits per track, Stereo view station 3&4', 15, 0, 150)
     h['n_hits_stereo34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_stereo34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_34', 'Number of recognized hits per track, station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'n_hits_34', 'Number of recognized hits per track, station 3&4', 15, 0, 150)
     h['n_hits_34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h,'perr','|(p - p-true)/p|',30, 0, 150)
+    ut.bookProf(h,'perr','|(p - p-true)/p|',15, 0, 150)
     h['perr'].GetXaxis().SetTitle('Momentum')
     h['perr'].GetYaxis().SetTitle('|(p - p-true)/p|')
 
-    ut.bookProf(h,'perr_direction','|(p - p-true)/p| from track direction in YZ plane',40, -10.01, 10.01)
+    ut.bookProf(h,'perr_direction','|(p - p-true)/p| from track direction in YZ plane',20, -10.01, 10.01)
     h['perr_direction'].GetXaxis().SetTitle('Degree')
     h['perr_direction'].GetYaxis().SetTitle('|(p - p-true)/p|')
 
 
-    ut.bookProf(h, 'frac_total', 'Fraction of hits the same as MC hits, total', 30, 0, 150)
+    ut.bookProf(h, 'frac_total', 'Fraction of hits the same as MC hits, total', 15, 0, 150)
     h['frac_total'].GetXaxis().SetTitle('Momentum')
     h['frac_total'].GetYaxis().SetTitle('Fraction')
 
-    ut.bookProf(h, 'frac_y12', 'Fraction of hits the same as MC hits, Y view station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'frac_y12', 'Fraction of hits the same as MC hits, Y view station 1&2', 15, 0, 150)
     h['frac_y12'].GetXaxis().SetTitle('Momentum')
     h['frac_y12'].GetYaxis().SetTitle('Fraction')
 
-    ut.bookProf(h, 'frac_stereo12', 'Fraction of hits the same as MC hits, Stereo view station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'frac_stereo12', 'Fraction of hits the same as MC hits, Stereo view station 1&2', 15, 0, 150)
     h['frac_stereo12'].GetXaxis().SetTitle('Momentum')
     h['frac_stereo12'].GetYaxis().SetTitle('Fraction')
 
-    ut.bookProf(h, 'frac_12', 'Fraction of hits the same as MC hits, station 1&2', 30, 0, 150)
+    ut.bookProf(h, 'frac_12', 'Fraction of hits the same as MC hits, station 1&2', 15, 0, 150)
     h['frac_12'].GetXaxis().SetTitle('Momentum')
     h['frac_12'].GetYaxis().SetTitle('Fraction')
 
-    ut.bookProf(h, 'frac_y34', 'Fraction of hits the same as MC hits, Y view station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'frac_y34', 'Fraction of hits the same as MC hits, Y view station 3&4', 15, 0, 150)
     h['frac_y34'].GetXaxis().SetTitle('Momentum')
     h['frac_y34'].GetYaxis().SetTitle('Fraction')
 
-    ut.bookProf(h, 'frac_stereo34', 'Fraction of hits the same as MC hits, Stereo view station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'frac_stereo34', 'Fraction of hits the same as MC hits, Stereo view station 3&4', 15, 0, 150)
     h['frac_stereo34'].GetXaxis().SetTitle('Momentum')
     h['frac_stereo34'].GetYaxis().SetTitle('Fraction')
 
-    ut.bookProf(h, 'frac_34', 'Fraction of hits the same as MC hits, station 3&4', 30, 0, 150)
+    ut.bookProf(h, 'frac_34', 'Fraction of hits the same as MC hits, station 3&4', 15, 0, 150)
     h['frac_34'].GetXaxis().SetTitle('Momentum')
     h['frac_34'].GetYaxis().SetTitle('Fraction')
 
@@ -521,19 +521,19 @@ def init_book_hist():
     ut.bookHist(h,'left_right_ambiguity_stereo34','Left Right Ambiguity Resolution Efficiency, Stereo view station 3&4',10,0.,1.01)
     ut.bookHist(h,'left_right_ambiguity','Left Right Ambiguity Resolution Efficiency, Total',10,0.,1.01)
 
-    ut.bookProf(h, 'n_hits_y12_direction', 'Number of recognized hits per track, Y view station 1&2', 40, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_y12_direction', 'Number of recognized hits per track, Y view station 1&2', 20, -10.01, 10.01)
     h['n_hits_y12_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_y12_direction'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo12_direction', 'Number of recognized hits per track, Stereo view station 1&2', 40, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_stereo12_direction', 'Number of recognized hits per track, Stereo view station 1&2', 20, -10.01, 10.01)
     h['n_hits_stereo12_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_stereo12_direction'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_y34_direction', 'Number of recognized hits per track, Y view station 3&4', 40, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_y34_direction', 'Number of recognized hits per track, Y view station 3&4', 20, -10.01, 10.01)
     h['n_hits_y34_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_y34_direction'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h, 'n_hits_stereo34_direction', 'Number of recognized hits per track, Stereo view station 3&4', 40, -10.01, 10.01)
+    ut.bookProf(h, 'n_hits_stereo34_direction', 'Number of recognized hits per track, Stereo view station 3&4', 20, -10.01, 10.01)
     h['n_hits_stereo34_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_stereo34_direction'].GetYaxis().SetTitle('N')
 
