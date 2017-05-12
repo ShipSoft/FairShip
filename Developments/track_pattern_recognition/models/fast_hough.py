@@ -151,6 +151,7 @@ class FastHough(object):
 
             if layer[i] not in used:
                 new_track_inds.append(track_inds[i])
+                used.append(layer[i])
 
         return numpy.array(new_track_inds)
 
