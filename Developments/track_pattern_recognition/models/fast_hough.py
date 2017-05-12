@@ -126,12 +126,33 @@ class FastHough(object):
 
                 if k >= self.k_limits[0] and k <= self.k_limits[1] and b >= self.b_limits[0] and b <= self.b_limits[1]:
 
-                    one_track_inds = self.hits_in_bin(x, y, k, b)
+                    one_track_inds1 = self.hits_in_bin(x, y, k, b)
+                    one_track_inds = self.ne_hit_per_layer(one_track_inds1,
+                                                           x[one_track_inds],
+                                                           y[one_track_inds],
+                                                           x[one_track_inds],
+                                                           k,
+                                                           b)
 
                     if len(one_track_inds) >= self.min_hits:
                         track_inds.append(one_track_inds)
 
         return numpy.array(track_inds)
+
+    def one_hit_per_layer(self, track_inds, x, y, layer, k, b):
+
+        new_track_inds = []
+
+        diff = y - (b + k * x)
+        sorted_inds = numpy.argsort(diff)
+        used = []
+
+        for i in sorted_inds:
+
+            if layer[i] not in used:
+                new_track_inds.append(track_inds[i])
+
+        return numpy.array(new_track_inds)
 
 
     def hits_in_bin(self, x, y, k_bin, b_bin):
