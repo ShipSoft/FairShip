@@ -208,7 +208,7 @@ def left_right_ambiguity(stree, X, track, deg=5):
     params34 = track['params34']
 
     [[ky12, by12], [kx12, bx12]] = params12
-    [[ky34, by34], [kx34, bx34]] = params12
+    [[ky34, by34], [kx34, bx34]] = params34
 
     r12 = numpy.matrix([[bx12],
                         [by12],
