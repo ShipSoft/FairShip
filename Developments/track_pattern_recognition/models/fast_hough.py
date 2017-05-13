@@ -3,18 +3,47 @@ __author__ = 'Mikhail Hushchyn'
 from sklearn.linear_model import LinearRegression
 import numpy
 
+############################################## Secondary class #########################################################
 
 class Clusterer(object):
 
     def __init__(self, x_depth, y_depth, n_min):
+        """
+        This class divide 2D coordinate space into grid and calculate mass center of hits in the each grid cell.
+        This class is used to speed up FastHough track pattern recognition method.
+
+        Parameters
+        ----------
+        x_depth : int
+            Max number of divisions along X-axis. 2^x_depth is number of the grid cells on X-axis.
+        y_depth : int
+            Max number of divisions along Y-axis. 2^y_depth is number of the grid cells on Y-axis.
+        n_min : int
+            Min number of hits per one grid cell.
+        """
 
         self.x_depth = x_depth
         self.y_depth = y_depth
         self.n_min = n_min
-        pass
 
     @staticmethod
     def clustering(x, indeces, clusters, depth, n_min):
+        """
+        This function recursively divides 1D array into clusters by dividing each sub-array into 2 parts (tree).
+
+        Parameters
+        ----------
+        x : array-like
+            Array to divide: [x1, x2, ...]
+        indeces : array-like
+            Indeces of elements of x-array in origin array.
+        clusters : array-like
+            List of indeces of hits in the clusters.
+        depth : int
+            Max number of divisions. 2^depth is number of the clusters.
+        n_min : int
+            Min number of hits per cluster.
+        """
 
         if len(indeces) <= 1 or depth == 0:
             clusters.append(indeces)
@@ -40,6 +69,21 @@ class Clusterer(object):
 
 
     def get_labels(self, clusters, n):
+        """
+        Estimates cluster_id for each hit.
+
+        Parameters
+        ----------
+        clusters : array-like
+            List of hit indeces in each cluster: [[ind1, ind2, ...], [...], ...]
+        n : int
+            NUmber of hits.
+
+        Return
+        ------
+        labels : array-like
+            List of cluster_ids.
+        """
 
         labels = -1 * numpy.ones(n)
         cluster_i = 0
@@ -54,6 +98,21 @@ class Clusterer(object):
         return labels
 
     def get_cluster_coord(self, x, clusters):
+        """
+        Estimates coordinates of mass center of a cluster.
+
+        Parameters
+        ----------
+        clusters : array-like
+            List of hit indeces in each cluster: [[ind1, ind2, ...], [...], ...]
+        n : int
+            NUmber of hits.
+
+        Return
+        ------
+        coord : array-like
+            List of cluster mass center coordinates.
+        """
 
         coord = []
 
@@ -63,6 +122,23 @@ class Clusterer(object):
         return numpy.array(coord)
 
     def fit(self, x, y):
+        """
+        Divide 2D coordinate space into clusters.
+
+        Parameters
+        ----------
+        x : array-like
+            Hit x coordinates: [x1, x2, x3, ...]
+        y : array-like
+            Hit y coordinates: [y1, y2, y3, ...]
+
+        Use the following attributes as outputs:
+            labels_        - list of cluster_ids for the hits
+            cluster_x_     - list of x-coordinated of the cluster mass centers
+            cluster_y_     - list of y-coordinated of the cluster mass centers
+            clusters_      - list of clusters. A cluster is list of hit indeces.
+            cluster_x_ids_
+        """
 
         x_clusters = []
         self.clustering(x, numpy.arange(len(x)), x_clusters, self.x_depth, self.n_min)
@@ -82,9 +158,43 @@ class Clusterer(object):
         self.cluster_x_ids_ = cluster_x_ids
 
 
+
+################################################## Main class ##########################################################
+
+
 class FastHough(object):
 
-    def __init__(self, n_tracks=None, min_hits=4, k_size=0.1, b_size=10, k_limits=(-0.3, 0.3), b_limits=(-800, 800), clustering=None, unique_hit_labels=True):
+    def __init__(self,
+                 n_tracks=None,
+                 min_hits=4,
+                 k_size=0.1,
+                 b_size=10,
+                 k_limits=(-0.3, 0.3),
+                 b_limits=(-800, 800),
+                 clustering=None,
+                 unique_hit_labels=True):
+        """
+        Track pattern recognition method based on Hough Transform.
+
+        Parameters
+        ----------
+        n_tracks : int
+            Number of tracks to recognize.
+        min_hits : int
+            Min hits per track to be considered as recognized.
+        k_size : int
+            Size of k-bin in track parameter space (k, b). Track parametrization: y = k * x + b.
+        b_size : int
+            Size of b-bin in track parameter space (k, b). Track parametrization: y = k * x + b.
+        k_limits : tuple
+            Tuple (min, max) of min and max allowable k-values.
+        b_limits : tuple
+            Tuple (min, max) of min and max allowable b-values.
+        clustering : object
+            Clustering class object to speed up the track recognition.
+        unique_hit_labels : boolean
+            Is it allowable to take a hit for several tracks of not.
+        """
 
 
         self.n_tracks = n_tracks
@@ -100,6 +210,22 @@ class FastHough(object):
         self.unique_hit_labels = unique_hit_labels
 
     def transform(self, x, y):
+        """
+        This function performs fast Hough Transform.
+
+        Parameters
+        ----------
+        x : array-like
+            Array of x coordinates of hits.
+        y : array-like
+            Array of x coordinates of hits.
+
+        Return
+        ------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
+        """
 
         if self.clustering == None:
             x_clusters = x
@@ -146,6 +272,31 @@ class FastHough(object):
         return numpy.array(track_inds)
 
     def one_hit_per_layer(self, track_inds, x, y, layer, k, b):
+        """
+        Drop hits from the same layer. In results, only one hit per layer remains.
+
+        Parameters
+        ----------
+        track_inds : array-like
+            Hit indexes of a track: [ind1, ind2, ...]
+        x : array-like
+            Array of x coordinates of hits.
+        y : array-like
+            Array of x coordinates of hits.
+        layer : array-like
+            Array of layer ids of hits.
+        k : float
+            Track parameter: y = k * x + b
+        b : float
+            Track parameter: y = k * x + b
+
+        Return
+        ------
+        track_inds1 : array-like
+            Hit indexes of a track: [ind1, ind2, ...]
+        track_inds2 : array-like
+            Hit indexes of a track: [ind1, ind2, ...]
+        """
 
         new_track_inds1 = []
         new_track_inds2 = []
@@ -168,6 +319,25 @@ class FastHough(object):
 
 
     def hits_in_bin(self, x, y, k_bin, b_bin):
+        """
+        Counts hits in a bin of track parameter space (b, k).
+
+        Parameters
+        ---------
+        x : array-like
+            Array of x coordinates of hits.
+        y : array-like
+            Array of x coordinates of hits.
+        k_bin : float
+            Track parameter: y = k_bin * x + b_bin
+        b_bin : float
+            Track parameter: y = k_bin * x + b_bin
+
+        Return
+        ------
+        track_inds : array-like
+            Hit indexes of a track: [ind1, ind2, ...]
+        """
 
 
         b_left = y - (k_bin - 0.5 * self.k_size) * x
@@ -185,6 +355,23 @@ class FastHough(object):
 
 
     def get_unique_hit_labels(self, track_inds, n_hits):
+        """
+        Selects the best track candidates. It supposed that a hit can belong to just one track.
+
+        Parameters
+        ----------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
+        n_hits : int
+            Number of hits in an event.
+
+        Return
+        ------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
+        """
 
         new_track_inds = []
         used = numpy.zeros(n_hits)
@@ -216,6 +403,21 @@ class FastHough(object):
         return numpy.array(new_track_inds)
 
     def remove_duplicates(self, track_inds):
+        """
+        Removes track duplicates.
+
+        Parameters
+        ----------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
+
+        Return
+        ------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
+        """
 
         new_track_inds = []
 
@@ -243,6 +445,25 @@ class FastHough(object):
         return numpy.array(new_track_inds)
 
     def get_tracks_params(self, x, y, track_inds, sample_weight=None):
+        """
+        Estimates track parameters y = k * x + b for the recognized tracks.
+
+        Parameters
+        ----------
+        x : array-like
+            Array of x coordinates of hits.
+        y : array-like
+            Array of x coordinates of hits.
+        track_inds : array-like
+            Hit indexes of a track: [ind1, ind2, ...]
+        sample_weight : array-like
+            Hit weights used during the track fit.
+
+        Return
+        ------
+        tracks_params : array-like
+            Track parameters [k, b].
+        """
 
         tracks_params = []
 
@@ -269,6 +490,18 @@ class FastHough(object):
 
 
     def fit(self, x, y, sample_weight=None):
+        """
+        Runs track pattern recognition. Track parametrization: y = k * x + b.
+
+        Parameters
+        ----------
+        x : array-like
+            Array of x coordinates of hits.
+        y : array-like
+            Array of x coordinates of hits.
+        sample_weight : array-like
+            Hit weights used during the track fit.
+        """
 
         track_inds = self.transform(x, y)
 
