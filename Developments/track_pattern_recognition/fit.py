@@ -1,11 +1,31 @@
 __author__ = 'Mikhail Hushchyn'
 
+# This code is taken from the FairShip/python/shipPatRec.py and modified.
+
 import ROOT
 import numpy
 from array import array
 import shipunit  as u
 
 def prepare_theTrack(ShipGeo, hitPosList, charge, pinv):
+    """
+    Does fit preparations.
+
+    Parameters
+    ----------
+    ShipGeo : object
+        Contains SHiP detector geometry.
+    hitPosList : ndarray-like
+        Information about active straw tubes for a recognized track: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire], [...], ...]
+    charge : int
+        Charge of a particle.
+    pinv : float
+        Inverse momentum value of a particle.
+
+    Returns
+    -------
+    theTrack : object
+    """
 
     nM = len(hitPosList)
 
@@ -36,6 +56,21 @@ def prepare_theTrack(ShipGeo, hitPosList, charge, pinv):
 
 
 def TrackFit(ShipGeo, fitter, hitPosList, theTrack, theTracks):
+    """
+    Fits track.
+
+    Parameters
+    ----------
+    ShipGeo : object
+        Contains SHiP detector geometry.
+    fitter : object
+        Track fitter.
+    hitPosList : ndarray-like
+        Information about active straw tubes for a recognized track: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire], [...], ...]
+    theTrack : object
+    theTracks : array-like
+        List of fitted tracks.
+    """
     debug=1
     #if debug==1: fitter.setDebugLvl(1)
     resolution = ShipGeo.strawtubes.sigma_spatial
@@ -74,6 +109,28 @@ def TrackFit(ShipGeo, fitter, hitPosList, theTrack, theTracks):
     return
 
 def track_fit(ShipGeo, reco_tracks):
+    """
+    Fits all recognized tracks.
+
+    Parameters
+    ----------
+    ShipGeo : object
+        Contains SHiP detector geometry.
+    reco_tracks : dict
+        Dictionary of recognized tracks: {track_id: reco_track}.
+        Reco_track is a dictionary:
+        {'hits': [ind1, ind2, ind3, ...],
+         'hitPosList': X[atrack, :-1],
+         'charge': charge,
+         'pinv': pinv,
+         'params12': [[k_yz, b_yz], [k_xz, b_xz]],
+         'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
+
+    Returns
+    -------
+    theTracks : array-like
+        List of fitted tracks.
+    """
 
     ########################################### Select a track fitter ##################################################
 
