@@ -1,9 +1,40 @@
 __author__ = 'Mikhail Hushchyn'
 
+# This code is taken from the FairShip/python/shipPatRec.py and modified.
+
 import ROOT
 import numpy
 
 def initialize(fGeo, ShipGeo):
+    """
+    Estimates SHiP Spectrometer Tracker geometry parameters.
+
+    Parameters
+    ----------
+    fGeo : object
+        Contains SHiP detector geometry.
+    ShipGeo : object
+        Contains SHiP detector geometry.
+
+    Returns
+    -------
+    zlayer : dict
+        Dictionary of z-coordinates of Y-views station 1&2 layers.
+    zlayerv2 : dict
+        Dictionary of z-coordinates of Stereo views station 1&2 layers.
+    z34layer: dict
+        Dictionary of z-coordinates of Y-views station 3&4 layers.
+    z34layerv2 : dict
+        Dictionary of z-coordinates of Stereo views station 1&2 layers.
+    TStation1StartZ : float
+        Z-coordinate where station 1 begins.
+    TStation4EndZ : float
+        Z-coordinate where station 4 ends.
+    VetoStationZ : float
+        Z-coordinate where veto station begins.
+    VetoStationEndZ: float
+        Z-coordinate where veto station ends.
+    """
 
     debug = 0
     #creates a dictionary with z coordinates of layers
