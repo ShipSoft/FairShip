@@ -14,6 +14,30 @@ from fast_hough import Clusterer, FastHough
 from combination import Combinator
 
 def track_pattern_recognition(X, z_magnet, method='FastHough'):
+    """
+    Does track pattern recognition.
+
+    Parameters
+    ----------
+    X : ndarray-like
+        Information about active straw tubes: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire, detID], [...], ...]
+    z_magnet : float
+        Z-coordinate of the magnet center.
+    method : string
+        Name of the track pattern recognition method.
+
+    Retunrs
+    -------
+    reco_tracks : dict
+        Dictionary of recognized tracks: {track_id: reco_track}.
+        Reco_track is a dictionary:
+        {'hits': [ind1, ind2, ind3, ...],
+         'hitPosList': X[atrack, :-1],
+         'charge': charge,
+         'pinv': pinv,
+         'params12': [[k_yz, b_yz], [k_xz, b_xz]],
+         'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
+    """
 
     if len(X) == 0:
         return {}
