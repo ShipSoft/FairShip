@@ -121,8 +121,8 @@ class FastHough(object):
                 if layer1 == layer2:
                    continue
 
-                if numpy.abs(x1 - x2) <= 100.:
-                    continue
+                #if numpy.abs(x1 - x2) <= 100.:
+                #    continue
 
                 k = 1. * (y2 - y1) / (x2 - x1)
                 b = y1 - k * x1
