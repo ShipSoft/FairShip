@@ -10,6 +10,34 @@ from fit import track_fit
 
 
 def execute(smeared_hits, stree, ShipGeo):
+    """
+    Does real track pattern recognition and track fit.
+
+    Parameters
+    ----------
+    smeared_hits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+    stree : root file
+        Events in raw format.
+    ShipGeo : object
+        Contains SHiP detector geometry.
+
+    Returns
+    -------
+    reco_tracks : dict
+        Dictionary of recognized tracks: {track_id: reco_track}.
+        Reco_track is a dictionary:
+        {'hits': [ind1, ind2, ind3, ...],
+         'hitPosList': X[atrack, :-1],
+         'charge': charge,
+         'pinv': pinv,
+         'params12': [[k_yz, b_yz], [k_xz, b_xz]],
+         'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
+
+    theTracks : list
+        List of fitted track objects.
+    """
 
     ######################################## Hits digitization #########################################################
 
