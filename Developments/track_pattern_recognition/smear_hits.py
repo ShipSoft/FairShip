@@ -6,6 +6,26 @@ import numpy
 
 
 def smearHits(sTree, ShipGeo, modules, no_amb=None):
+    """
+    Smears hits.
+
+    Parameters
+    ----------
+    sTree : root file
+        Events in raw format.
+    ShipGeo : object
+        Contains SHiP detector geometry.
+    modules : object
+        Contains SHiP detector geometry.
+    no_amb : boolean
+        If False - no hit smearing.
+
+    Returns
+    -------
+    SmearedHits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+    """
 
     random = ROOT.TRandom()
     ROOT.gRandom.SetSeed(13)
