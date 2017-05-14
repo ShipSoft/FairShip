@@ -1,7 +1,6 @@
 __author__ = 'Mikhail Hushchyn'
 
 import numpy
-import pandas
 
 
 class Combinator(object):
