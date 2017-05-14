@@ -10,7 +10,7 @@ utils_path = os.path.join(DIR_PATH, 'models/')
 sys.path.insert(0, utils_path)
 
 from recognition import TracksRecognition2D
-from fast_hough import Clusterer, FastHough
+from fast_hough import FastHough
 from combination import Combinator
 
 def track_pattern_recognition(X, z_magnet, method='FastHough'):
@@ -59,7 +59,6 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
 
     if method=='FastHough':
 
-        #clustering=Clusterer(x_depth=6, y_depth=6, n_min=2)
 
         stm_y = FastHough(n_tracks=2,
                           min_hits=3,
@@ -67,7 +66,6 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
                           b_size=1700./10000,
                           k_limits=(-0.5, 0.5),
                           b_limits=(-1150, 1150),
-                          clustering=None,
                           unique_hit_labels=True)
 
         stm_stereo = FastHough(n_tracks=1,
@@ -76,7 +74,6 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
                                b_size=1000./200,
                                k_limits=(-0.3, 0.3),
                                b_limits=(-500, 500),
-                               clustering=None,
                                unique_hit_labels=True)
 
     ################################## Recognize track before and after the magnet #####################################

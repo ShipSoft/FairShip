@@ -3,160 +3,6 @@ __author__ = 'Mikhail Hushchyn'
 from sklearn.linear_model import LinearRegression
 import numpy
 
-############################################## Secondary class #########################################################
-
-class Clusterer(object):
-
-    def __init__(self, x_depth, y_depth, n_min):
-        """
-        This class divide 2D coordinate space into grid and calculate mass center of hits in the each grid cell.
-        This class is used to speed up FastHough track pattern recognition method.
-
-        Parameters
-        ----------
-        x_depth : int
-            Max number of divisions along X-axis. 2^x_depth is number of the grid cells on X-axis.
-        y_depth : int
-            Max number of divisions along Y-axis. 2^y_depth is number of the grid cells on Y-axis.
-        n_min : int
-            Min number of hits per one grid cell.
-        """
-
-        self.x_depth = x_depth
-        self.y_depth = y_depth
-        self.n_min = n_min
-
-    @staticmethod
-    def clustering(x, indeces, clusters, depth, n_min):
-        """
-        This function recursively divides 1D array into clusters by dividing each sub-array into 2 parts (tree).
-
-        Parameters
-        ----------
-        x : array-like
-            Array to divide: [x1, x2, ...]
-        indeces : array-like
-            Indeces of elements of x-array in origin array.
-        clusters : array-like
-            List of indeces of hits in the clusters.
-        depth : int
-            Max number of divisions. 2^depth is number of the clusters.
-        n_min : int
-            Min number of hits per cluster.
-        """
-
-        if len(indeces) <= 1 or depth == 0:
-            clusters.append(indeces)
-            return
-
-        this_x = x[indeces]
-        min_x, max_x = this_x.min(), this_x.max()
-
-        if min_x == max_x:
-            clusters.append(indeces)
-            return
-
-        cut = 0.5 * (min_x + max_x)
-        left_inds = indeces[this_x < cut]
-        right_inds = indeces[this_x >= cut]
-
-        if len(left_inds) < n_min or len(right_inds) < n_min:
-            clusters.append(indeces)
-            return
-        else:
-            Clusterer.clustering(x, left_inds, clusters, depth-1, n_min)
-            Clusterer.clustering(x, right_inds, clusters, depth-1, n_min)
-
-
-    def get_labels(self, clusters, n):
-        """
-        Estimates cluster_id for each hit.
-
-        Parameters
-        ----------
-        clusters : array-like
-            List of hit indeces in each cluster: [[ind1, ind2, ...], [...], ...]
-        n : int
-            NUmber of hits.
-
-        Return
-        ------
-        labels : array-like
-            List of cluster_ids.
-        """
-
-        labels = -1 * numpy.ones(n)
-        cluster_i = 0
-
-        if n == 0 or len(clusters) == 0:
-            return labels
-
-        for cl in clusters:
-            labels[cl] = cluster_i
-            cluster_i += 1
-
-        return labels
-
-    def get_cluster_coord(self, x, clusters):
-        """
-        Estimates coordinates of mass center of a cluster.
-
-        Parameters
-        ----------
-        clusters : array-like
-            List of hit indeces in each cluster: [[ind1, ind2, ...], [...], ...]
-        n : int
-            NUmber of hits.
-
-        Return
-        ------
-        coord : array-like
-            List of cluster mass center coordinates.
-        """
-
-        coord = []
-
-        for cl in clusters:
-            coord.append(x[cl].mean())
-
-        return numpy.array(coord)
-
-    def fit(self, x, y):
-        """
-        Divide 2D coordinate space into clusters.
-
-        Parameters
-        ----------
-        x : array-like
-            Hit x coordinates: [x1, x2, x3, ...]
-        y : array-like
-            Hit y coordinates: [y1, y2, y3, ...]
-
-        Use the following attributes as outputs:
-            labels_        - list of cluster_ids for the hits
-            cluster_x_     - list of x-coordinated of the cluster mass centers
-            cluster_y_     - list of y-coordinated of the cluster mass centers
-            clusters_      - list of clusters. A cluster is list of hit indeces.
-            cluster_x_ids_
-        """
-
-        x_clusters = []
-        self.clustering(x, numpy.arange(len(x)), x_clusters, self.x_depth, self.n_min)
-
-        clusters = []
-        cluster_x_ids = []
-        for x_num, x_cluster in enumerate(x_clusters):
-            y_clusters = []
-            self.clustering(y, x_cluster, y_clusters, self.y_depth, self.n_min)
-            clusters += list(y_clusters)
-            cluster_x_ids += [x_num] * len(y_clusters)
-
-        self.labels_ = self.get_labels(clusters, len(x))
-        self.cluster_x_ = self.get_cluster_coord(x, clusters)
-        self.cluster_y_ = self.get_cluster_coord(y, clusters)
-        self.clusters_ = clusters
-        self.cluster_x_ids_ = cluster_x_ids
-
 
 
 ################################################## Main class ##########################################################
@@ -171,7 +17,6 @@ class FastHough(object):
                  b_size=10,
                  k_limits=(-0.3, 0.3),
                  b_limits=(-800, 800),
-                 clustering=None,
                  unique_hit_labels=True):
         """
         Track pattern recognition method based on Hough Transform.
@@ -190,8 +35,6 @@ class FastHough(object):
             Tuple (min, max) of min and max allowable k-values.
         b_limits : tuple
             Tuple (min, max) of min and max allowable b-values.
-        clustering : object
-            Clustering class object to speed up the track recognition.
         unique_hit_labels : boolean
             Is it allowable to take a hit for several tracks of not.
         """
@@ -206,7 +49,6 @@ class FastHough(object):
         self.k_limits = k_limits
         self.b_limits = b_limits
 
-        self.clustering = clustering
         self.unique_hit_labels = unique_hit_labels
 
     def transform(self, x, y):
@@ -227,22 +69,13 @@ class FastHough(object):
             Example: [[ind1, ind2, ind3, ...], [...], ...]
         """
 
-        if self.clustering == None:
-            x_clusters = x
-            y_clusters = y
-            cluster_x_ids = x
-        else:
-            self.clustering.fit(x, y)
-            x_clusters, y_clusters = self.clustering.cluster_x_, self.clustering.cluster_y_
-            cluster_x_ids = self.clustering.cluster_x_ids_
-
         track_inds = []
 
-        for first in range(0, len(x_clusters)-1):
-            for second in range(first+1, len(x_clusters)):
+        for first in range(0, len(x)-1):
+            for second in range(first+1, len(x)):
 
-                x1, y1, layer1 = x_clusters[first], y_clusters[first], cluster_x_ids[first]
-                x2, y2, layer2 = x_clusters[second], y_clusters[second], cluster_x_ids[second]
+                x1, y1, layer1 = x[first], y[first], x[first]
+                x2, y2, layer2 = x[second], y[second], x[second]
 
                 if layer1 == layer2:
                    continue
