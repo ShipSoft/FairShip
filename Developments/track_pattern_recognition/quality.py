@@ -13,11 +13,17 @@ from mctruth import get_track_ids
 ################################################ Helping functions #####################################################
 
 class HitsMatchingEfficiency(object):
+
     def __init__(self, eff_threshold=0.5, n_tracks=None):
         """
         This class calculates tracks efficiencies, reconstruction efficiency, ghost rate and clone rate for one event using hits matching.
-        :param eff_threshold: float, threshold value of a track efficiency to consider a track reconstructed.
-        :return:
+
+        Prameters
+        ---------
+        eff_threshold : float
+            Threshold value of a track efficiency to consider a track reconstructed.
+        n_tracks : int
+            Number of tracks in an event.
         """
 
         self.eff_threshold = eff_threshold
@@ -26,9 +32,14 @@ class HitsMatchingEfficiency(object):
     def fit(self, true_labels, track_inds):
         """
         The method calculates all metrics.
-        :param true_labels: numpy.array, true labels of the hits.
-        :param track_inds: numpy.array, hits of recognized tracks.
-        :return:
+
+        Parameters
+        ----------
+        true_labels : array-like
+            True labels of the hits.
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
         """
 
         # Calculate efficiencies
@@ -91,6 +102,23 @@ class HitsMatchingEfficiency(object):
 
 
 def select_track_hits(track_inds, selection):
+    """
+    Selects track hits that satisfy selection.
+
+    Parameters
+    ----------
+    track_inds : array-like
+        List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+        Example: [[ind1, ind2, ind3, ...], [...], ...]
+    selection : array-like
+        Selection: [True, False, False, ...]. Shape = (hit number of an event, )
+
+    Returns
+    -------
+    new_track_inds : array-like
+        List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+        Example: [[ind1, ind2, ind3, ...], [...], ...]
+    """
 
     new_track_inds = []
 
@@ -103,6 +131,22 @@ def select_track_hits(track_inds, selection):
     return numpy.array(new_track_inds)
 
 def get_charges(stree, smeared_hits):
+    """
+    Estimates hit true particle charges.
+
+    Parameters
+    ----------
+    stree : root file
+        Events in raw format.
+    smeared_hits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+
+    Returns
+    -------
+    charges : array-like
+        True charges of hits: [q1, q2, ...]
+    """
 
     PDG=ROOT.TDatabasePDG.Instance()
 
@@ -120,6 +164,22 @@ def get_charges(stree, smeared_hits):
     return numpy.array(charges)
 
 def get_pinvs(stree, smeared_hits):
+    """
+    Estimates hit true particle inverse momentum.
+
+    Parameters
+    ----------
+    stree : root file
+        Events in raw format.
+    smeared_hits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+
+    Returns
+    -------
+    pinvs : array-like
+        True inverse momentum values of hits: [pinv1, pinv2, ...]
+    """
 
     pinvs = []
 
@@ -134,6 +194,22 @@ def get_pinvs(stree, smeared_hits):
     return numpy.array(pinvs)
 
 def get_true_coords(stree, smeared_hits):
+    """
+    Estimates hit true coordinates.
+
+    Parameters
+    ----------
+    stree : root file
+        Events in raw format.
+    smeared_hits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+
+    Returns
+    -------
+    XYZ : ndarray-like
+        True coordinates of hits: [[x1, y1, z1], [x2, y2, z2], ...]
+    """
 
     X, Y, Z = [], [], []
 
@@ -156,6 +232,20 @@ def get_true_coords(stree, smeared_hits):
     return XYZ
 
 def get_tube_coords(smeared_hits):
+    """
+    Estimates straw tube coordinates.
+
+    Parameters
+    ----------
+    smeared_hits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+
+    Returns
+    -------
+    XYZ : ndarray-like
+        Straw tube coordinates: [[x1, y1, z1], [x2, y2, z2], ...]
+    """
 
     X, Y, Z = [], [], []
 
@@ -179,6 +269,33 @@ def get_tube_coords(smeared_hits):
 
 
 def score(Z_tube, Y_tube, Z_hit, Y_hit, k, b):
+    """
+    Estimates efficiency of left-right ambiguity resolution for a track.
+
+    Parameters
+    ----------
+    Z_tube : array-like
+        Z-coordinates of straw tubes for a track.
+    Y_tube : array-like
+        Y-coordinates of straw tubes for a track.
+    Z_hit : array-like
+        Z-coordinates of hits for a track.
+    Y_hit : array-like
+        Y-coordinates of hits for a track.
+    k : float
+        Track parameter in z-y plane. Track parametrization: y = k * x + b.
+    b : float
+        Track parameter in z-y plane. Track parametrization: y = k * x + b.
+
+    Returns
+    -------
+    tot_len : int
+        Number of hits of a recognized track.
+    reco_len : int
+        Number of correctly resolved hits of a recognized track.
+    ratio : float
+        Efficiency of left-right ambiguity resolution for a track.
+    """
 
     diff1 = Y_tube - Y_hit
     diff2 = Y_tube - (b + k * Z_tube)
@@ -193,6 +310,26 @@ def score(Z_tube, Y_tube, Z_hit, Y_hit, k, b):
 
 
 def left_right_ambiguity(stree, X, track, deg=5):
+    """
+    Calculates efficiency of left-right ambiguity resolution for a track for all stations and views.
+
+    Parameters
+    ----------
+    stree : root file
+        Events in raw format.
+    X : ndarray-like
+        Information about active straw tubes: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire, detID], [...], ...]
+    track : array-like
+        Hit indexes of a recognized track.
+    deg : float
+        Rotation degree of stereo views. Default 5 degree.
+
+    Returns
+    -------
+    results : dict
+        Dictionary with efficiency of left-right ambiguity resolution.
+        Example: {'y12':[tot_len, reco_len, ratio], 'v1_12':[tot_len, reco_len, ratio], ...}
+    """
 
     results = {}
 
@@ -370,9 +507,27 @@ def left_right_ambiguity(stree, X, track, deg=5):
 ########################################## Main functions ##############################################################
 
 def save_hists(h, path):
+    """
+    Save book of plots.
+
+    Parameters
+    ----------
+    h : dict
+        Dictionary of plots.
+    path : string
+        Path where the plots will be saved.
+    """
     ut.writeHists(h, path)
 
 def init_book_hist():
+    """
+    Creates empty plots.
+
+    Returns
+    -------
+    h : dict
+        Dictionary of plots.
+    """
 
     h={} #dictionary of histograms
 
@@ -559,6 +714,27 @@ def init_book_hist():
     return h
 
 def decodeDetectorID(detID):
+    """
+    Decodes detector ID.
+
+    Parameters
+    ----------
+    detID : int or array-like
+        Detector ID values.
+
+    Returns
+    -------
+    statnb : int or array-like
+        Station numbers.
+    vnb : int or array-like
+        View numbers.
+    pnb : int or array-like
+        Plane numbers.
+    lnb : int or array-like
+        Layer numbers.
+    snb : int or array-like
+        Straw tube numbers.
+    """
 
     statnb = detID // 10000000
     vnb = (detID - statnb * 10000000) // 1000000
@@ -568,8 +744,38 @@ def decodeDetectorID(detID):
 
     return statnb, vnb, pnb, lnb, snb
 
-def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks, h):
 
+def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks, h):
+    """
+    Fill plots with values.
+
+    Parameters
+    ----------
+    smeared_hits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+    stree : root file
+        Events in raw format.
+    reco_mc_tracks : array-like
+        List of reconstructible track ids.
+    reco_tracks : dict
+        Dictionary of recognized tracks: {track_id: reco_track}.
+        Reco_track is a dictionary:
+        {'hits': [ind1, ind2, ind3, ...],
+         'hitPosList': X[atrack, :-1],
+         'charge': charge,
+         'pinv': pinv,
+         'params12': [[k_yz, b_yz], [k_xz, b_xz]],
+         'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
+    theTracks : array-like
+        List of fitted tracks.
+    h : dict
+        Dictionary of plots.
+    """
+
+    ############################################## Init preparation ####################################################
+
+    # Only for reconstructible events.
     if len(reco_mc_tracks) < 2:
         return
 
@@ -585,6 +791,8 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
     n_reco_tracks = len(track_inds)
     h['NRecoTracks'].Fill(n_reco_tracks)
 
+    ######################################## Split hits on stations and views ##########################################
+
     is_stereo = ((vnb == 1) + (vnb == 2))
     is_y = ((vnb == 0) + (vnb == 3))
     is_before = ((statnb == 1) + (statnb == 2))
@@ -597,6 +805,9 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
     track_inds_y34 = select_track_hits(track_inds, is_after * is_y)
     track_inds_stereo34 = select_track_hits(track_inds, is_after * is_stereo)
     track_inds_34 = select_track_hits(track_inds, is_after)
+
+
+    ######################## RecoEff, Clone and Ghost rates, TrackEff for stations and views ###########################
 
     # N hits
     for t in reco_mc_tracks:
@@ -765,6 +976,9 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         frac, tmax = fracMCsame(y[atrack])
         track_ids_34.append(tmax)
 
+
+################################################# Events Passed ########################################################
+
     # Track combinations
     combinations = []
     for track_id in range(len(track_inds)):
@@ -827,6 +1041,9 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
                                     if is_matched.sum() == len(reco_mc_tracks):
                                         h['EventsPassed'].Fill("Matched", 1)
+
+
+    ################################################ Tracks Passed #####################################################
 
     # Reco Tracks
     pinvs = get_pinvs(stree, smeared_hits)
@@ -891,6 +1108,8 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['TracksPassed_p'].Fill(1. / pinv_true, reco)
 
 
+    ########################################### Momentum reconstruction ################################################
+
     # Pinv
     pinvs = get_pinvs(stree, smeared_hits)
 
@@ -920,7 +1139,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['perr_direction'].Fill(deg, abs(err))
 
 
-    # Momentum dependencies
+    ########################################### Momentum dependencies  #################################################
 
     for i in reco_tracks.keys():
 
@@ -985,6 +1204,8 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['frac_34'].Fill(p, frac_34)
 
 
+    ################################################# Track fit ########################################################
+
     for i, thetrack in enumerate(theTracks):
 
         atrack = reco_tracks[i]['hits']
@@ -1021,7 +1242,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['massfittedtracks'].Fill(fittedmass)
 
 
-    # left-right ambiguity
+    ############################################ left-right ambiguity ##################################################
 
     for i in reco_tracks.keys():
 
