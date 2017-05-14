@@ -642,7 +642,7 @@ def init_book_hist():
     h['perr'].GetXaxis().SetTitle('Momentum')
     h['perr'].GetYaxis().SetTitle('|(p - p-true)/p|')
 
-    ut.bookProf(h,'perr_direction','|(p - p-true)/p| from track direction in YZ plane',20, -10.01, 10.01)
+    ut.bookProf(h,'perr_direction','|(p - p-true)/p| from track direction in YZ plane',40, -10.01, 10.01)
     h['perr_direction'].GetXaxis().SetTitle('Degree')
     h['perr_direction'].GetYaxis().SetTitle('|(p - p-true)/p|')
 
