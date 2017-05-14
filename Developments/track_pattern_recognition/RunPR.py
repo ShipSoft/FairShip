@@ -25,6 +25,21 @@ from quality import init_book_hist, quality_metrics, save_hists
 
 
 def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong):
+    """
+    Runs all steps of track pattern recognition.
+
+    Parameters
+    ----------
+    input_file : string
+        Path to an input .root file with events.
+    geo_file : string
+        Path to a file with SHiP geometry.
+    dy : float
+    reconstructiblerequired : int
+        Number of reconstructible tracks in an event.
+    threeprong : int
+        If 1 - HNL decay into 3 particles is considered.
+    """
 
 
     ############################################# Load SHiP geometry ###################################################
