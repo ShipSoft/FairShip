@@ -3,7 +3,7 @@ __author__ = 'Mikhail Hushchyn'
 from copy import copy
 import numpy
 
-from fast_hough import Clusterer, FastHough
+from fast_hough import FastHough
 from combination import Combinator
 
 
