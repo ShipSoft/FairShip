@@ -3,7 +3,7 @@ __author__ = 'Mikhail Hushchyn'
 from copy import copy
 import numpy
 
-from fast_hough import Clusterer, FastHough
+from fast_hough import FastHough
 from combination import Combinator
 
 
@@ -13,9 +13,13 @@ class TracksRecognition2D(object):
     def __init__(self, model_y, model_stereo, unique_hit_labels=True):
         """
         This is realization of the reconstruction scheme which uses two 2D projections to reconstruct a 3D track.
-        :param model_y: model for the tracks reconstruction in y-z plane.
-        :param model_stereo: model for the tracks reconstruction in x-z plane.
-        :return:
+
+        Parameters
+        ----------
+        model_y : object
+            Model for the tracks reconstruction in y-z plane.
+        model_stereo : object
+            Model for the tracks reconstruction in x-z plane.
         """
 
         self.model_y = copy(model_y)
@@ -26,6 +30,27 @@ class TracksRecognition2D(object):
         self.tracks_params_ = None
 
     def decodeDetectorID(self, detID):
+        """
+        Decodes detector ID.
+
+        Parameters
+        ----------
+        detID : int or array-like
+            Detector ID values.
+
+        Returns
+        -------
+        statnb : int or array-like
+            Station numbers.
+        vnb : int or array-like
+            View numbers.
+        pnb : int or array-like
+            Plane numbers.
+        lnb : int or array-like
+            Layer numbers.
+        snb : int or array-like
+            Straw tube numbers.
+        """
 
         statnb = detID // 10000000
         vnb = (detID - statnb * 10000000) // 1000000
@@ -37,12 +62,24 @@ class TracksRecognition2D(object):
 
     def get_xz(self, plane_k, plane_b, X):
         """
-        This method returns (z, x) coordinated of the intersections of the straw tubes in stereo-views and
+        This method returns (z, x) coordinated of intersections of straw tubes in stereo-views and
         a plane corresponding to a founded track in y-view.
-        :param plane_k: float, slope of the track in y-view.
-        :param plane_b: float, intercept of the track in y-view.
-        :param event: pandas.DataFrame, event which contains information about active straw tubes.
-        :return: z, x coordinates of the intersections.
+
+        Parameters
+        ----------
+        plane_k : float
+            Slope of the track in y-view.
+        plane_b : float
+            Intercept of the track in y-view.
+        X : ndarray-like
+            Information about active straw tubes: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire, detID], [...], ...]
+
+        Returns
+        -------
+        z : array-like
+            Z coordinates of the intersections.
+        x : array-like
+            X coordinates of the intersections.
         """
 
         Wz1 = X[:, 2]
@@ -57,6 +94,26 @@ class TracksRecognition2D(object):
         return Wz1, x
 
     def y_track_recognition(self, X, is_stereo, sample_weight=None):
+        """
+        Does track pattern recognition in y-z plane.
+
+        Parameters
+        ----------
+        X : ndarray-like
+            Information about active straw tubes: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire, detID], [...], ...]
+        is_stereo : array-like
+            Whether a hit is from Y-views or stereo: [0, 1, 1, 1, 0, 0, ...]
+        sample_weight : array-like
+            Hit weights used during the track fit.
+
+        Returns
+        -------
+        track_inds_y : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes correspond to one bin in track parameters space.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
+        tracks_params_y : array-like
+            List of parameters of the recognized tracks. Example: [[k1, b1], [k2, b2], ...]
+        """
 
         indeces = numpy.arange(len(X))
 
@@ -84,6 +141,31 @@ class TracksRecognition2D(object):
         return track_inds_y, tracks_params_y
 
     def stereo_track_recognition(self, X, is_stereo, track_inds_y, track_params_y, sample_weight=None):
+        """
+        Does track pattern recognition in x-z plane.
+
+        Parameters
+        ----------
+        X : ndarray-like
+            Information about active straw tubes: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire, detID], [...], ...]
+        is_stereo : array-like
+            Whether a hit is from Y-views or stereo: [0, 1, 1, 1, 0, 0, ...]
+        track_inds_y : array-like
+            List of recognized tracks in y-z plane. Recognized track is a list of hit indexes.
+            Example: [[ind1, ind2, ind3, ...], [...], ...]
+        tracks_params_y : array-like
+            List of parameters of the recognized tracks in y-z plane. Example: [[k1, b1], [k2, b2], ...]
+        sample_weight : array-like
+            Hit weights used during the track fit.
+
+        Returns
+        -------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes.
+            Example: [[track_inds_yz, track_inds_xz], [...], ...]
+        tracks_params_y : array-like
+            List of parameters of the recognized tracks. Example: [[[k_yz, b_yz], [k_xz, b_xz]], ...]
+        """
 
         track_inds = []
         tracks_params = []
@@ -143,6 +225,23 @@ class TracksRecognition2D(object):
         return track_inds, tracks_params
 
     def global_indeces(self, track_inds, indeces):
+        """
+        Recover global indexes of hits.
+
+        Parameters
+        ----------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit indexes.
+            Example: [[track_inds_yz, track_inds_xz], [...], ...]
+        indeces : array-like
+            Global hit indexes.
+
+        Returns
+        -------
+        track_inds : array-like
+            List of recognized tracks. Recognized track is a list of hit global indexes.
+            Example: [[track_inds_yz, track_inds_xz], [...], ...]
+        """
 
         for track_id in range(len(track_inds)):
 
@@ -155,10 +254,11 @@ class TracksRecognition2D(object):
 
     def predict(self, X, sample_weight=None):
         """
-        Fit of the models.
-        :param event: pandas.DataFrame, event which contains information about active straw tubes.
-        :param sample_weight: numpy.array shape=[n_hits], weight of each hits.
-        :return:
+        Does track pattern recognition.
+        X : ndarray-like
+            Information about active straw tubes: [[xtop, ytop, ztop, xbot, ybot, zboy, dist2wire, detID], [...], ...]
+        sample_weight : array-like
+            Hit weights used during the track fit.
         """
 
         statnb, vnb, pnb, lnb, snb = self.decodeDetectorID(X[:, -1])

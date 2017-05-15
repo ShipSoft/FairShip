@@ -4,6 +4,18 @@ import ROOT
 import numpy
 
 def fracMCsame(trackids):
+    """
+    Estimates max fraction of true hit labels for a recognized track.
+    trackids : array_like
+        hit indexes of a recognized track
+
+    Retunrs
+    -------
+    frac : float
+        Max fraction of true hit labels.
+    tmax : int
+        True hit label with max fraction in a recognized track.
+    """
 
     track={}
     nh=len(trackids)
@@ -20,4 +32,5 @@ def fracMCsame(trackids):
 
     frac=0.
     if nh>0: frac=float(track[tmax])/float(nh)
+
     return frac,tmax

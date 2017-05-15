@@ -1,7 +1,6 @@
 __author__ = 'Mikhail Hushchyn'
 
 import numpy
-import pandas
 
 
 class Combinator(object):
@@ -9,12 +8,18 @@ class Combinator(object):
     def __init__(self, z_magnet=3070., magnetic_field=-0.75, dy_max=2., dx_max=20.):
         """
         This class combines tracks before and after the magnet,
-        estimates a particles charge and momentim based on its deflection in the magnetic field.
-        :param z_magnet: floaf, z-coordinate of the center of the magnet.
-        :param magnetic_field: float, inductivity of the magnetic field.
-        :param dy_max: float, max distance on y between the tracks before and after the magnet in center of the magnet.
-        :param dx_max: float, max distance on x between the tracks before and after the magnet in center of the magnet.
-        :return:
+        estimates a particles charge and momentum based on its deflection in the magnetic field.
+
+        Parameters
+        ----------
+        z_magnet : float,
+            Z-coordinate of the center of the magnet.
+        magnetic_field : float,
+            Inductivity of the magnetic field.
+        dy_max : float,
+            Max distance on y between the tracks before and after the magnet in center of the magnet.
+        dx_max : float,
+            Max distance on x between the tracks before and after the magnet in center of the magnet.
         """
 
         self.z_magnet = z_magnet
@@ -28,10 +33,20 @@ class Combinator(object):
 
     def get_tracks_combination(self, tracks_before, tracks_after):
         """
-        This function combines the two tracks.
-        :param tracks_before: list of [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track before the magnet. y = kx + b.
-        :param tracks_after: list, [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track after the magnet. y = kx + b.
-        :return: list of [track_id_before, track_id_after]
+        This function finds combinations of two tracks befor and after the magnet.
+
+        Parameters
+        ----------
+        tracks_before : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track before the magnet.
+            Track parametrization is y = kx + b.
+        tracks_after : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track after the magnet.
+            Track parametrization is y = kx + b.
+
+        Return
+        ------
+        List of [track_id_before, track_id_after] for the track combinations.
         """
 
         z_magnet = self.z_magnet
@@ -61,8 +76,6 @@ class Combinator(object):
                 dx = numpy.abs(x_after - x_before)
                 dr = numpy.sqrt(dy**2 + dx**2)
 
-                #print dy, dx
-
 
                 if dy <= dy_max and dx <= dx_max:
 
@@ -76,11 +89,22 @@ class Combinator(object):
 
     def get_charges(self, tracks_before, tracks_after, tracks_combinations):
         """
-        This function estimates the charges of the particles.
-        :param tracks_before: list, [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track before the magnet. y = kx + b.
-        :param tracks_after: list, [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track after the magnet. y = kx + b.
-        :param tracks_combinations: list of [track_id_before, track_id_after], indexes of the tracks.
-        :return: list if estimated charges
+        This function estimates charges of particles.
+
+        Parameters
+        ----------
+        tracks_before : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track before the magnet.
+            Track parametrization is y = kx + b.
+        tracks_after : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track after the magnet.
+            Track parametrization is y = kx + b.
+        tracks_combinations : array-like,
+            List of [track_id_before, track_id_after], indexes of the tracks in the combinations.
+
+        Return
+        ------
+        List of estimated charges for the track combinations: [q1, q2, ...]
         """
 
         charges = []
@@ -112,11 +136,22 @@ class Combinator(object):
 
     def get_inv_momentums(self, tracks_before, tracks_after, tracks_combinations):
         """
-        This function estimates the momentums of the particles.
-        :param tracks_before: list, [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track before the magnet. y = kx + b.
-        :param tracks_after: list, [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track after the magnet. y = kx + b.
-        :param tracks_combinations: list of [track_id_before, track_id_after], indexes of the tracks.
-        :return: list if estimated inverse momentums.
+        This function estimates momentum values of particles.
+
+        Parameters
+        ----------
+        tracks_before : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track before the magnet.
+            Track parametrization is y = kx + b.
+        tracks_after : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track after the magnet.
+            Track parametrization is y = kx + b.
+        tracks_combinations : array-like,
+            List of [track_id_before, track_id_after], indexes of the tracks in the combinations.
+
+        Return
+        ------
+        List of estimated inverse momentum values for the track combinations: [pinv1, pinv2, ...]
         """
 
         Bm = self.magnetic_field
@@ -145,9 +180,20 @@ class Combinator(object):
     def combine(self, tracks_before, tracks_after):
         """
         Run the combinator.
-        :param tracks_before: list, [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track before the magnet. y = kx + b.
-        :param tracks_after: list, [[k_yz, b_yz], [k_xz, b_xz]], parameters of the track after the magnet. y = kx + b.
-        :return:
+
+        Parameters
+        ----------
+        tracks_before : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track before the magnet.
+            Track parametrization is y = kx + b.
+        tracks_after : array-like,
+            List of [[k_yz, b_yz], [k_xz, b_xz]], parameters of a track after the magnet.
+            Track parametrization is y = kx + b.
+
+        Use the following attributes as outputs:
+            tracks_combinations_
+            charges_
+            inv_momentums_
         """
 
         tracks_combinations = self.get_tracks_combination(tracks_before, tracks_after)
@@ -155,6 +201,7 @@ class Combinator(object):
         inv_momentums = self.get_inv_momentums(tracks_before, tracks_after, tracks_combinations)
 
 
+        # Use these attributes as outputs
         self.tracks_combinations_ = tracks_combinations
         self.charges_ = charges
         self.inv_momentums_ = inv_momentums
