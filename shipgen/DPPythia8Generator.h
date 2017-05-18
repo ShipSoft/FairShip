@@ -10,6 +10,7 @@
 #include "TString.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "TH2F.h"
 #include "FairGenerator.h"
 #include "Pythia.h"
 #include "TRandom1.h"
@@ -44,15 +45,20 @@ class DPPythia8Generator : public FairGenerator
   virtual Bool_t Init(); //!
   
   void SetMom(Double_t mom) { fMom = mom; };
+  Double_t GetMom() { return fMom; };
   void SetId(Double_t id) { fId  = id; };
   void SetDPId(Int_t id) { fDP = id; };
-  void SetLmin(Int_t z) { fLmin = z; };
-  void SetLmax(Int_t z) { fLmax = z; };
+  void SetLmin(Double_t z) { fLmin = z*10; };
+  void SetLmax(Double_t z) { fLmax = z*10; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetfFDs(Double_t z) { fFDs = z; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
+  void SetPbrem(TH2F *pdf) {
+    fpbrem = kTRUE;
+    fpbremPDF = pdf;
+  };
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
   Int_t nrOfRetries(){ return fnRetries; };
   Int_t nrOfDP(){ return fnDPtot; };
@@ -66,11 +72,13 @@ class DPPythia8Generator : public FairGenerator
  protected:
 
   //Bool_t fHadDecay;    //select hadronic decay
-  Double_t fMom;       // proton momentum
+  Double_t fMom;       // proton energy
   Int_t    fDP;       // DP ID
   Int_t    fId;        // target type
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
+  Bool_t fpbrem;       //flag to do proton bremstrahlung production (default is false)
+  TH2F *fpbremPDF;     // pointer to TH2 containing PDF(p,theta) to have a dark photon with momentum p and angle theta to be produced by pbrem.
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
   Int_t fnRetries;     // number of events without any DP 

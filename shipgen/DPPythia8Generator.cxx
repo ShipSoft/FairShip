@@ -1,3 +1,9 @@
+//The plan: take input file with DP kinematics and PDF
+//throw random number according to pdf and choose DP ???
+//use Pythia to decay the DP ???
+
+
+
 #include <math.h>
 #include "TROOT.h"
 #include "TMath.h"
@@ -20,6 +26,8 @@ DPPythia8Generator::DPPythia8Generator()
   fLmin       = 5000.*cm;    // mm minimum  decay position z  ROOT units !
   fLmax       = 12000.*cm;   // mm maximum decay position z
   fFDs        = 7.7/10.4;    // correction for Pythia6 to match measured Ds production
+  fpbrem = kFALSE;
+  fpbremPDF = 0;
   fextFile    = "";
   fInputFile  = NULL;
   fnRetries   = 0;
@@ -76,13 +84,19 @@ Bool_t DPPythia8Generator::Init()
      fTree->SetBranchAddress("mE",&mE);
     */ 
   }
-  else{ 
+  else if (!fpbrem){ 
     if ( debug ){cout<<"Beam Momentum "<<fMom<<endl;}
     fPythia->settings.mode("Beams:idA",  fId);
     fPythia->settings.mode("Beams:idB",  2212);
     fPythia->settings.mode("Beams:frameType",  2);
     fPythia->settings.parm("Beams:eA",fMom);
     fPythia->settings.parm("Beams:eB",0.);
+  }
+  else {
+    if (!fpbremPDF) {
+      std::cout << " Failed in retrieving dark photon PDF for production by proton bremstrahlung! Exiting..." << std::endl;
+      return kFALSE;
+    }
   }
   /*if (fHadDecay) {
     std::cout << " ******************************** " << std::endl
@@ -154,7 +168,26 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 	 fPythia->event.append( (Int_t)hid[0], 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
        */
      }
+     //bit for proton brem
+     if (fpbrem){
+       fPythia->event.reset();
+       double dpmom = 0;
+       double thetain = 0;
+       fpbremPDF->GetRandom2(dpmom, thetain);
+       double dpm = fPythia->particleData.m0(fDP);
+       double dpe = sqrt(dpmom*dpmom+dpm*dpm);
+       double phiin = 2. * M_PI * gRandom->Rndm();
+       
+       std::cout << " Adding DP gun with p " 
+		 << dpmom 
+		 << " m " << dpm
+		 << " e " << dpe
+		 << " theta,phi " << thetain << "," << phiin << std::endl << std::flush;
+       fPythia->event.append( fDP, 1, 0, 0, dpmom * sin(thetain) * cos(phiin), dpmom * sin(thetain) * sin(phiin), dpmom * cos(thetain), dpe, dpm); 
+     }
+
      fPythia->next();
+     fPythia->event.list();
      for(int i=0; i<fPythia->event.size(); i++){
        // find first DP
        if (abs(fPythia->event[i].id())==fDP){

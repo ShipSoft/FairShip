@@ -17,7 +17,7 @@ mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100
 firstEvent   = 0
-inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, TBD: proton brem, QCD prod.
+inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, to do: QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
 HNL          = True
@@ -50,7 +50,7 @@ try:
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio",\
-                                   "RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign="])
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -60,6 +60,8 @@ except getopt.GetoptError:
         print ' or    --PG for particle gun'  
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
+	print '       --DarkPhoton to generate events with dark photons (default HNL)'
+	print ' for darkphoton generation, use -A meson or -A pbrem'
         print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
         print '       --mass or -m to set HNL or New Particle mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
@@ -80,7 +82,7 @@ for o, a in opts:
             if a.lower() == 'charmonly':
                charmonly = True
                HNL = False 
-            if a not in ['b','c']: inclusive = True
+            if a not in ['b','c','meson','pbrem']: inclusive = True
         if o in ("--Genie",):
             simEngine = "Genie"
         if o in ("--NuRadio",):
@@ -130,6 +132,9 @@ for o, a in opts:
         if o in ("--RpvSusy",):
             HNL = False
             RPVSUSY = True
+        if o in ("--DarkPhoton",):
+            HNL = False
+            DarkPhoton = True
         if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
         if o in ("-m", "--mass",):
