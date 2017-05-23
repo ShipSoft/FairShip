@@ -434,12 +434,21 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       if (dcorner>0.95*dx) {dcorner=0.95*dx;}
       TGeoVolume* TV = GeoTrapezoid(nm,0.,dz-0.1*cm,dx,dy,slopeX,slopeY,dcorner,1,decayVolumeMed);
       TV->SetVisibility(kFALSE);
+
+      if (seg==1) 
+      {
+	fDeltaCpy=3000000;
+	if (fPlasticVeto)
+	  InsertInnerVeto(nm, 1.0, dz-0.1, dx-1.0, dy-1.0, slopeX, slopeY, dcorner, 3, vetoMed, TV, 2, 28);
+      }
+
       if (seg==2) 
       {
 	fDeltaCpy=1000000;
 	if (fPlasticVeto)
 	  InsertInnerVeto(nm, 1.0, dz-0.1, dx-1.0, dy-1.0, slopeX, slopeY, dcorner, 3, vetoMed, TV);
       }
+
       tTankVol->AddNode(TV,0, Zero);
 
       //now place inner wall
@@ -796,13 +805,23 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
         TGeoVolume* T = GeoTrapezoid(tmp,f_OuterSupportThickness,0.5*ribspacing-1.e-6-hwidth/2.,dx,dy,slopeX,slopeY,dcorner,18,supportMedOut);
         tOuterwall->AddNode(T, nr, new TGeoTranslation(0, 0,zlisc));
        }
-      if (seg==2) 
+      if (seg==2||seg==1) 
       {
-	fDeltaCpy=2000000;
 	dx=dx_start;
 	dy=dy_start;
 	if (fPlasticVeto)
-	  InsertInnerVeto(nm, 1.0, dz-0.1, dx+5.0, dy+5.0, slopeX, slopeY, dcorner, 3, vetoMed, tTankVol,  4, 32);
+	{
+	  if (seg==1)
+	  {
+	    fDeltaCpy=4000000;
+  	    InsertInnerVeto(nm, 1.0, dz-0.1, dx+5.0, dy+5.0, slopeX, slopeY, dcorner, 3, vetoMed, tTankVol,  2, 26);
+	  }
+	  if (seg==2)
+	  {
+	    fDeltaCpy=2000000;
+  	    InsertInnerVeto(nm, 1.0, dz-0.1, dx+5.0, dy+5.0, slopeX, slopeY, dcorner, 3, vetoMed, tTankVol,  4, 32);
+	  }
+	}
       }
        ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
        tTankVol->AddNode(tOuterwall,0, Zero); 

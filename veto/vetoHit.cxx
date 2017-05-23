@@ -76,7 +76,6 @@ TGeoNode* vetoHit::GetNode()
     nav->cd(path);
    }
    if (fDetectorID>999999){ // plastic scintillator ABBCCCD
-    path+="/T2_1"; 
     TString nodeName="T";TString temp="_";
     Int_t A = int(fDetectorID/1000000);
     Int_t B = int((fDetectorID-A*1000000)/10000);
@@ -85,9 +84,16 @@ TGeoNode* vetoHit::GetNode()
     Int_t vetoNr = fDetectorID;
     if (A==1){
       nodeName+="2decayVolVeto";
-      path += "/T2decayVol_0/";
-    }else{nodeName+="2OuterwallVeto";
-      path += "/";
+      path+="/T2_1/T2decayVol_0/";
+    }else if (A==2){
+      nodeName+="2OuterwallVeto";
+      path += "/T2_1/";
+    }else if (A==3){
+      nodeName+="1decayVolVeto";
+      path+="/T1_1/T1decayVol_0/";     
+    }else {
+      nodeName+="1OuterwallVeto";
+      path += "/T1_1/";
     }
     if (D>3){
       path += "vleft_5/";
