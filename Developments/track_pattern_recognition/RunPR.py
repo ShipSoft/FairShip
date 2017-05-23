@@ -24,7 +24,7 @@ from quality import init_book_hist, quality_metrics, save_hists
 
 
 
-def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong):
+def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong, method):
     """
     Runs all steps of track pattern recognition.
 
@@ -39,6 +39,8 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
         Number of reconstructible tracks in an event.
     threeprong : int
         If 1 - HNL decay into 3 particles is considered.
+    method : string
+        Name of a track pattern recognition method.
     """
 
 
@@ -124,7 +126,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
 
         ########################################### Do track pattern recognition #######################################
 
-        reco_tracks, theTracks  = execute(smeared_hits, sTree, ShipGeo)
+        reco_tracks, theTracks  = execute(smeared_hits, sTree, ShipGeo, method)
 
         ########################################### Get MC truth #######################################################
 
@@ -161,7 +163,7 @@ if __name__ == "__main__":
     dy = None
     reconstructiblerequired = 2
     threeprong = 0
-    model = None
+    method = 'Baseline'
 
 
     argv = sys.argv[1:]
@@ -177,12 +179,13 @@ if __name__ == "__main__":
       -y  --dy                      : dy
       -n  --n_reco                  : NUmber of reconstructible tracks per event is required
       -t  --three                   : Is threeprong mumunu decay?
+      -m  --method                  : Name of a track pattern recognition method: 'Baseline', 'FastHough'
       -h  --help                    : Shows this help
       '''
 
     try:
         opts, args = getopt.getopt(argv, "hm:i:g:y:n:t:",
-                                   ["help", "model=", "input=", "geo=", "dy=", "n_reco=", "three="])
+                                   ["help", "method=", "input=", "geo=", "dy=", "n_reco=", "three="])
     except getopt.GetoptError:
         print "Wrong options were used. Please, read the following help:\n"
         print msg
@@ -194,8 +197,8 @@ if __name__ == "__main__":
         if opt in ('-h', "--help"):
             print msg
             sys.exit()
-        elif opt in ("-m", "--model"):
-            model = arg
+        elif opt in ("-m", "--method"):
+            method = arg
         elif opt in ("-i", "--input"):
             input_file = arg
         elif opt in ("-g", "--geo"):
@@ -208,4 +211,4 @@ if __name__ == "__main__":
             threeprong = int(arg)
 
 
-    run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong)
+    run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong, method)
