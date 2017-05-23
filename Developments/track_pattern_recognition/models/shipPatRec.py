@@ -537,7 +537,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink, ShipGeo):
     #now Kalman fit, collect "all hits" around fitted track, outlier removal etc..
     return ntracks,tracks,hitids,ytan,ycst,stereotan,stereocst,horpx,horpy,horpz,fraction,trackid
 
-def TrackFit(hitPosList,theTrack,charge,pinv, ShipGeo, theTracks):
+def TrackFit(fitter, hitPosList, theTrack, charge, pinv, ShipGeo, theTracks):
 
     if debug==1:
         fitter.setDebugLvl(1)
@@ -843,6 +843,15 @@ def execute(SmearedHits, sTree, ShipGeo):
     VetoStationZ, \
     VetoStationEndZ = geo_init.initialize(ShipGeo)
 
+    ########################################## Define track fitter #####################################################
+
+    geoMat =  ROOT.genfit.TGeoMaterialInterface()
+    bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
+    fM = ROOT.genfit.FieldManager.getInstance()
+    fM.init(bfield)
+    ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+    fitter = ROOT.genfit.DAF()
+
     ####################################################################################################################
 
     fittedtrackids=[]
@@ -1059,7 +1068,7 @@ def execute(SmearedHits, sTree, ShipGeo):
                     seedCov   = ROOT.TMatrixDSym(6)
                     rep.get6DStateCov(stateSmeared, seedState, seedCov)
                     theTrack=ROOT.genfit.Track(rep, seedState, seedCov)
-                    TrackFit(hitPosList,theTrack,charge,pinv, ShipGeo, theTracks)
+                    TrackFit(fitter, hitPosList,theTrack,charge,pinv, ShipGeo, theTracks)
                     fittedtrackids.append(trackid34[item1])
 
                 else :
