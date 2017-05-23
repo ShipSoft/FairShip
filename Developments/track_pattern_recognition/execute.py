@@ -7,9 +7,10 @@ import shipunit  as u
 from pattern_recognition import track_pattern_recognition
 from digitization import Digitization
 from fit import track_fit
+import shipPatRec
 
 
-def execute(smeared_hits, stree, ShipGeo):
+def execute(smeared_hits, stree, ShipGeo, method='Baseline'):
     """
     Does real track pattern recognition and track fit.
 
@@ -22,6 +23,8 @@ def execute(smeared_hits, stree, ShipGeo):
         Events in raw format.
     ShipGeo : object
         Contains SHiP detector geometry.
+    method : string
+        Name of a track pattern recognition model.
 
     Returns
     -------
@@ -39,13 +42,22 @@ def execute(smeared_hits, stree, ShipGeo):
         List of fitted track objects.
     """
 
+    ############################################### Baseline ###########################################################
+
+    if method == 'Baseline':
+        reco_tracks, theTracks = shipPatRec.execute(smeared_hits, stree, ShipGeo)
+        return reco_tracks, theTracks
+
+
+    ######################################## Other methods #############################################################
+
     ######################################## Hits digitization #########################################################
 
     X = Digitization(stree, smeared_hits)
 
     ######################################## Do Track Pattern Recognition ##############################################
 
-    reco_tracks = track_pattern_recognition(X, z_magnet=ShipGeo.Bfield.z, method='FastHough')
+    reco_tracks = track_pattern_recognition(X, z_magnet=ShipGeo.Bfield.z, method=method)
 
     ######################################### Fit recognized tracks ####################################################
 
