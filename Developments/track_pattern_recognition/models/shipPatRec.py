@@ -539,11 +539,14 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink, ShipGeo):
 
 def TrackFit(hitPosList,theTrack,charge,pinv, ShipGeo, theTracks):
 
-    if debug==1: fitter.setDebugLvl(1)
+    if debug==1:
+        fitter.setDebugLvl(1)
     resolution = ShipGeo.strawtubes.sigma_spatial
     hitCov = ROOT.TMatrixDSym(7)
     hitCov[6][6] = resolution*resolution
+
     for item in hitPosList:
+
         itemarray=array('d',[item[0],item[1],item[2],item[3],item[4],item[5],item[6]])
         ms=ROOT.TVectorD(7,itemarray)
         tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to
@@ -551,8 +554,9 @@ def TrackFit(hitPosList,theTrack,charge,pinv, ShipGeo, theTracks):
         measurement.setMaxDistance(0.5*u.cm)
         tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
         theTrack.insertPoint(tp)  # add point to Track
+
+
     theTracks.append(theTrack)
-    if not debug == 1: return # leave track fitting shipDigiReco
     #check
     if not theTrack.checkConsistency():
         if debug==1: print 'Problem with track before fit, not consistent',theTrack
@@ -1031,7 +1035,7 @@ def execute(SmearedHits, sTree, ShipGeo):
                     nM = len(hitPosList)
                     if nM<25:
                         if debug==1: print "Only",nM,"hits on this track. Insufficient for fitting."
-                        return
+                        return {}, []
                     #all particles are assumed to be muons
                     if int(charge)<0:
                         pdg=13
@@ -1066,7 +1070,7 @@ def execute(SmearedHits, sTree, ShipGeo):
     else:
         #remove events with >500 hits
         morethan500+=1
-        return
+        return {}, []
 
         #else:
         #morethan100tracks+=1
