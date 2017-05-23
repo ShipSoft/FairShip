@@ -95,7 +95,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
     TStation1StartZ, \
     TStation4EndZ, \
     VetoStationZ, \
-    VetoStationEndZ = initialize(fgeo, ShipGeo)
+    VetoStationEndZ = initialize(ShipGeo)
 
 
     ########################################## Start Track Pattern Recognition #########################################

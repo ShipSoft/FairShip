@@ -5,14 +5,12 @@ __author__ = 'Mikhail Hushchyn'
 import ROOT
 import numpy
 
-def initialize(fGeo, ShipGeo):
+def initialize(ShipGeo):
     """
     Estimates SHiP Spectrometer Tracker geometry parameters.
 
     Parameters
     ----------
-    fGeo : object
-        Contains SHiP detector geometry.
     ShipGeo : object
         Contains SHiP detector geometry.
 
@@ -51,7 +49,6 @@ def initialize(fGeo, ShipGeo):
     VetoStationZ=0.
     VetoStationEndZ=0.
 
-    fgeo=fGeo
     #z-positions of Y-view tracking
     #4 stations, 4 views (Y,u,v,Y); each view has 2 planes and each plane has 2 layers
 

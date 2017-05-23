@@ -19,8 +19,9 @@ from array import array
 import operator, sys
 
 import numpy
-
 import rootUtils as ut
+
+import geo_init
 
 reconstructiblehorizontalidsfound12=0
 reconstructiblestereoidsfound12=0
@@ -69,6 +70,9 @@ VetoStationZ=0.
 VetoStationEndZ=0.
 
 debug=0
+
+
+
 
 def Digitization(sTree,SmearedHits):
     #digitization
@@ -823,6 +827,19 @@ def execute(SmearedHits, sTree, ShipGeo):
 
     global totalaftermatching,morethan500,falsepositive,falsenegative,totalafterpatrec
     global reconstructibleevents,morethan100tracks,theTracks
+
+    ############################################## SHiP geometry init ##################################################
+
+    zlayer, \
+    zlayerv2, \
+    z34layer, \
+    z34layerv2, \
+    TStation1StartZ, \
+    TStation4EndZ, \
+    VetoStationZ, \
+    VetoStationEndZ = geo_init.initialize(ShipGeo)
+
+    ####################################################################################################################
 
     fittedtrackids=[]
     reconstructibles12=0
