@@ -10,10 +10,13 @@ utils_path = os.path.join(DIR_PATH, 'models/')
 sys.path.insert(0, utils_path)
 
 from recognition import TracksRecognition2D
+
 from fast_hough import FastHough
+from artificial_retina import ArtificialRetina
+
 from combination import Combinator
 
-def track_pattern_recognition(X, z_magnet, method='FastHough'):
+def track_pattern_recognition(X, z_magnet, method='FH'):
     """
     Does track pattern recognition.
 
@@ -57,7 +60,7 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
 
     ################################## Select models to search tracks in 2D planes #####################################
 
-    if method=='FastHough':
+    if method=='FH':
 
 
         stm_y = FastHough(n_tracks=2,
@@ -75,6 +78,27 @@ def track_pattern_recognition(X, z_magnet, method='FastHough'):
                                k_limits=(-0.3, 0.3),
                                b_limits=(-500, 500),
                                unique_hit_labels=True)
+
+    if method=='AR':
+
+
+        stm_y = ArtificialRetina(n_tracks=2,
+                                 min_hits=2,
+                                 residuals_threshold=0.15,
+                                 sigma=0.2,
+                                 k_size=0.7/10000,
+                                 b_size=1700./10000,
+                                 k_limits=(-0.5, 0.5),
+                                 b_limits=(-1150, 1150))
+
+    stm_stereo = ArtificialRetina(n_tracks=1,
+                                  min_hits=2,
+                                  residuals_threshold=2,
+                                  sigma=2,
+                                  k_size=0.6/200,
+                                  b_size=1000./200,
+                                  k_limits=(-0.3, 0.3),
+                                  b_limits=(-500, 500))
 
     ################################## Recognize track before and after the magnet #####################################
 

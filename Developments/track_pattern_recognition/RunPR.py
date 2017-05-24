@@ -179,7 +179,7 @@ if __name__ == "__main__":
       -y  --dy                      : dy
       -n  --n_reco                  : NUmber of reconstructible tracks per event is required
       -t  --three                   : Is threeprong mumunu decay?
-      -m  --method                  : Name of a track pattern recognition method: 'Baseline', 'FastHough'
+      -m  --method                  : Name of a track pattern recognition method: 'Baseline', 'FH', 'ARR'
       -h  --help                    : Shows this help
       '''
 
