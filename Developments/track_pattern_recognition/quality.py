@@ -638,13 +638,13 @@ def init_book_hist():
     h['n_hits_34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h,'perr','|(p - p-true)/p|',30, 0, 150)
+    ut.bookProf(h,'perr','(p - p-true)/p',30, 0, 150)
     h['perr'].GetXaxis().SetTitle('Momentum')
-    h['perr'].GetYaxis().SetTitle('|(p - p-true)/p|')
+    h['perr'].GetYaxis().SetTitle('(p - p-true)/p')
 
-    ut.bookProf(h,'perr_direction','|(p - p-true)/p| from track direction in YZ plane',40, -10.01, 10.01)
+    ut.bookProf(h,'perr_direction','(p - p-true)/p from track direction in YZ plane',40, -10.01, 10.01)
     h['perr_direction'].GetXaxis().SetTitle('Degree')
-    h['perr_direction'].GetYaxis().SetTitle('|(p - p-true)/p|')
+    h['perr_direction'].GetYaxis().SetTitle('(p - p-true)/p')
 
 
     ut.bookProf(h, 'frac_total', 'Fraction of hits the same as MC hits, total', 30, 0, 150)
@@ -674,6 +674,11 @@ def init_book_hist():
     ut.bookProf(h, 'frac_34', 'Fraction of hits the same as MC hits, station 3&4', 30, 0, 150)
     h['frac_34'].GetXaxis().SetTitle('Momentum')
     h['frac_34'].GetYaxis().SetTitle('Fraction')
+
+
+    ut.bookProf(h, 'frac_total_angle', 'Fraction of hits the same as MC hits, total', 30, 0, 150)
+    h['frac_total_angle'].GetXaxis().SetTitle('Angle between tracks, degree')
+    h['frac_total_angle'].GetYaxis().SetTitle('Fraction')
 
 
     # Fitted values
@@ -1127,7 +1132,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         err = 1 - charge * pinv / pinv_true
 
         h['ptrue-p/ptrue'].Fill(err)
-        h['perr'].Fill(1./pinv_true, abs(err))
+        h['perr'].Fill(1./pinv_true, err)
 
         params12 = reco_tracks[i]['params12']
         params34 = reco_tracks[i]['params34']
@@ -1136,7 +1141,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         [[ky34, by34], [kx34, bx34]] = params12
 
         deg = numpy.rad2deg(numpy.arctan(ky12))
-        h['perr_direction'].Fill(deg, abs(err))
+        h['perr_direction'].Fill(deg, err)
 
 
     ########################################### Momentum dependencies  #################################################
@@ -1202,6 +1207,67 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         frac_34, tmax_34 = fracMCsame(y[atrack[mask_34]])
         h['n_hits_34'].Fill(p, n_hits_34)
         h['frac_34'].Fill(p, frac_34)
+
+
+    #################################### Angle between two reconstructible tracks ######################################
+    # Attention: Works only for two reconstructible tracks.
+
+    angle = None
+    alpha1 = None
+    alpha2 = None
+
+    for i in reco_tracks.keys():
+
+        atrack = reco_tracks[i]['hits']
+        frac, tmax = fracMCsame(y[atrack])
+
+        if tmax not in reco_mc_tracks:
+            continue
+
+        pinv_true = pinvs[y == tmax][0]
+        p = 1. / pinv_true
+
+        params12 = reco_tracks[i]['params12']
+        params34 = reco_tracks[i]['params34']
+
+        [[ky12, by12], [kx12, bx12]] = params12
+        [[ky34, by34], [kx34, bx34]] = params12
+
+        if tmax == reco_mc_tracks[0] and alpha1 == None:
+            alpha1 = numpy.rad2deg(numpy.arctan(ky12))
+
+        if tmax == reco_mc_tracks[1] and alpha2 == None:
+            alpha2 = numpy.rad2deg(numpy.arctan(ky12))
+
+
+    if alpha1 != None and alpha2 != None:
+        angle = numpy.abs(alpha2 - alpha1)
+
+
+    ############################################ The angle dependencies ################################################
+
+    for i in reco_tracks.keys():
+
+        atrack = reco_tracks[i]['hits']
+        frac, tmax = fracMCsame(y[atrack])
+
+        if tmax not in reco_mc_tracks:
+            continue
+
+        pinv_true = pinvs[y == tmax][0]
+        p = 1. / pinv_true
+
+        params12 = reco_tracks[i]['params12']
+        params34 = reco_tracks[i]['params34']
+
+        [[ky12, by12], [kx12, bx12]] = params12
+        [[ky34, by34], [kx34, bx34]] = params12
+
+        n_hits_total = len(atrack)
+        frac_total, tmax_total = fracMCsame(y[atrack])
+
+        if angle != None:
+            h['frac_total_angle'].Fill(angle, frac_total)
 
 
     ################################################# Track fit ########################################################
