@@ -676,7 +676,7 @@ def init_book_hist():
     h['frac_34'].GetYaxis().SetTitle('Fraction')
 
 
-    ut.bookProf(h, 'frac_total_angle', 'Fraction of hits the same as MC hits, total', 30, 0, 150)
+    ut.bookProf(h, 'frac_total_angle', 'Fraction of hits the same as MC hits, total', 20, 0, 10.01)
     h['frac_total_angle'].GetXaxis().SetTitle('Angle between tracks, degree')
     h['frac_total_angle'].GetYaxis().SetTitle('Fraction')
 
