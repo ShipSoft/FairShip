@@ -1211,48 +1211,54 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         [[ky12, by12], [kx12, bx12]] = params12
         [[ky34, by34], [kx34, bx34]] = params12
 
-        n_hits_total = len(atrack)
         frac_total, tmax_total = fracMCsame(y[atrack])
+        n_hits_total = len(atrack[y[atrack] == tmax_total])
         h['n_hits_total'].Fill(p, n_hits_total)
         h['frac_total'].Fill(p, frac_total)
 
         mask_y12 = (is_before * is_y)[atrack]
-        n_hits_y12 = len(atrack[mask_y12])
         frac_y12, tmax_y12 = fracMCsame(y[atrack[mask_y12]])
+        atrack_y12 = atrack[mask_y12]
+        n_hits_y12 = len(atrack_y12[y[atrack_y12] == tmax_y12])
         h['n_hits_y12'].Fill(p, n_hits_y12)
         h['frac_y12'].Fill(p, frac_y12)
         h['n_hits_y12_direction'].Fill(numpy.rad2deg(numpy.arctan(ky12)), n_hits_y12)
 
         mask_stereo12 = (is_before * is_stereo)[atrack]
-        n_hits_stereo12 = len(atrack[mask_stereo12])
         frac_stereo12, tmax_stereo12 = fracMCsame(y[atrack[mask_stereo12]])
+        atrack_stereo12 = atrack[mask_stereo12]
+        n_hits_stereo12 = len(atrack_stereo12[y[atrack_stereo12] == tmax_stereo12])
         h['n_hits_stereo12'].Fill(p, n_hits_stereo12)
         h['frac_stereo12'].Fill(p, frac_stereo12)
         h['n_hits_stereo12_direction'].Fill(numpy.rad2deg(numpy.arctan(kx12)), n_hits_stereo12)
 
         mask_12 = (is_before)[atrack]
-        n_hits_12 = len(atrack[mask_12])
         frac_12, tmax_12 = fracMCsame(y[atrack[mask_12]])
+        atrack_12 = atrack[mask_12]
+        n_hits_12 = len(atrack_12[y[atrack_12] == tmax_12])
         h['n_hits_12'].Fill(p, n_hits_12)
         h['frac_12'].Fill(p, frac_12)
 
         mask_y34 = (is_after * is_y)[atrack]
-        n_hits_y34 = len(atrack[mask_y34])
         frac_y34, tmax_y34 = fracMCsame(y[atrack[mask_y34]])
+        atrack_y34 = atrack[mask_y34]
+        n_hits_y34 = len(atrack_y34[y[atrack_y34] == tmax_y34])
         h['n_hits_y34'].Fill(p, n_hits_y34)
         h['frac_y34'].Fill(p, frac_y34)
         h['n_hits_y34_direction'].Fill(numpy.rad2deg(numpy.arctan(ky34)), n_hits_y34)
 
         mask_stereo34 = (is_after * is_stereo)[atrack]
-        n_hits_stereo34 = len(atrack[mask_stereo34])
         frac_stereo34, tmax_stereo34 = fracMCsame(y[atrack[mask_stereo34]])
+        atrack_stereo34 = atrack[mask_stereo34]
+        n_hits_stereo34 = len(atrack_stereo34[y[atrack_stereo34] == tmax_stereo34])
         h['n_hits_stereo34'].Fill(p, n_hits_stereo34)
         h['frac_stereo34'].Fill(p, frac_stereo34)
         h['n_hits_stereo34_direction'].Fill(numpy.rad2deg(numpy.arctan(kx34)), n_hits_stereo34)
 
         mask_34 = (is_after)[atrack]
-        n_hits_34 = len(atrack[mask_34])
         frac_34, tmax_34 = fracMCsame(y[atrack[mask_34]])
+        atrack34 = atrack[mask_34]
+        n_hits_34 = len(atrack34[y[atrack34] == tmax_34])
         h['n_hits_34'].Fill(p, n_hits_34)
         h['frac_34'].Fill(p, frac_34)
 
