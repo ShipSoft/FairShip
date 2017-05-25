@@ -600,6 +600,36 @@ def init_book_hist():
     ut.bookHist(h,'n_hits_mc_y34','Number of hits per track, Y view station 3&4',16,0.,16.01)
     ut.bookHist(h,'n_hits_mc_stereo34','Number of hits per track, Stereo view station 3&4',16,0.,16.01)
 
+    # Momentum dependencies
+    ut.bookProf(h,'n_hits_mc_p','Number of hits per track, total', 30, 0, 150)
+    h['n_hits_mc_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_12_p','Number of hits per track, station 1&2', 30, 0, 150)
+    h['n_hits_mc_12_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_12_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_y12_p','Number of hits per track, Y view station 1&2', 30, 0, 150)
+    h['n_hits_mc_y12_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_y12_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_stereo12_p','Number of hits per track, Stereo view station 1&2', 30, 0, 150)
+    h['n_hits_mc_stereo12_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_stereo12_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_34_p','Number of hits per track, station 3&4', 30, 0, 150)
+    h['n_hits_mc_34_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_34_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_y34_p','Number of hits per track, Y view station 3&4', 30, 0, 150)
+    h['n_hits_mc_y34_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_y34_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_stereo34_p','Number of hits per track, Stereo view station 3&4', 30, 0, 150)
+    h['n_hits_mc_stereo34_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_stereo34_p'].GetYaxis().SetTitle('N')
+
+
 
     ut.bookHist(h,'n_hits_reco','Number of recognized hits per track, total',64,0.,64.01)
     ut.bookHist(h,'n_hits_reco_12','Number of recognized hits per track, station 1&2',32,0.,32.01)
@@ -814,8 +844,14 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
     ######################## RecoEff, Clone and Ghost rates, TrackEff for stations and views ###########################
 
+    # Pinv
+    pinvs = get_pinvs(stree, smeared_hits)
+
     # N hits
     for t in reco_mc_tracks:
+
+        pinv_true = pinvs[y == t][0]
+        p = 1. / pinv_true
 
         n_y12 = len(y[(y == t) * is_before * is_y])
         n_stereo12 = len(y[(y == t) * is_before * is_stereo])
@@ -836,6 +872,18 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['n_hits_mc_34'].Fill(n_34)
         h['n_hits_mc_y34'].Fill(n_y34)
         h['n_hits_mc_stereo34'].Fill(n_stereo34)
+
+        # Momentum dependencies
+        h['n_hits_mc_p'].Fill(p, n_tot)
+
+        h['n_hits_mc_12_p'].Fill(p, n_12)
+        h['n_hits_mc_y12_p'].Fill(p, n_y12)
+        h['n_hits_mc_stereo12_p'].Fill(p, n_stereo12)
+
+        h['n_hits_mc_34_p'].Fill(p, n_34)
+        h['n_hits_mc_y34_p'].Fill(p, n_y34)
+        h['n_hits_mc_stereo34_p'].Fill(p, n_stereo34)
+
 
     for i in range(len(track_inds)):
 
