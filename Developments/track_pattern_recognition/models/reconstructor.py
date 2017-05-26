@@ -241,10 +241,22 @@ class Reconstructor(object):
         self.mask_before = mask_before
         self.mask_after = mask_after
         self.labels = labels
-        self.track_inds_ = np.array([indexes[used_0], indexes[used_1]])
+
+        atrack0 = indexes[used_0]
+        atrack1 = indexes[used_1]
+
+        self.track_inds_ = []
+        track_params12 = []
+        track_params34 = []
+
+        if len(atrack0) >= 2:
+            self.track_inds_.append(atrack0)
+            track_params12.append([[k_y_b_0, b_y_b_0], [k_x_0, b_x_0]])
+            track_params34.append([[k_y_a_0, b_y_a_0], [k_x_0, b_x_0]])
+        if len(atrack1) >= 2:
+            self.track_inds_.append(atrack1)
+            track_params12.append([[k_y_b_1, b_y_b_1], [k_x_1, b_x_1]])
+            track_params34.append([[k_y_a_1, b_y_a_1], [k_x_1, b_x_1]])
         
         #define params
-        self.tracks_params_ = np.array([[ [[k_y_b_0, b_y_b_0], [k_x_0, b_x_0]],\
-                                          [[k_y_b_1, b_y_b_1], [k_x_1, b_x_1]] ],\
-                                        [ [[k_y_a_0, b_y_a_0], [k_x_0, b_x_0]],\
-                                          [[k_y_a_1, b_y_a_1], [k_x_1, b_x_1]] ]])
+        self.tracks_params_ = np.array([track_params12, track_params34])
