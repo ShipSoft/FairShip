@@ -138,14 +138,14 @@ def track_pattern_recognition(X, z_magnet, method='FH'):
                                  k_limits=(-0.5, 0.5),
                                  b_limits=(-1150, 1150))
 
-    stm_stereo = ArtificialRetina(n_tracks=1,
-                                  min_hits=2,
-                                  residuals_threshold=2,
-                                  sigma=2,
-                                  k_size=0.6/200,
-                                  b_size=1000./200,
-                                  k_limits=(-0.3, 0.3),
-                                  b_limits=(-500, 500))
+        stm_stereo = ArtificialRetina(n_tracks=1,
+                                      min_hits=2,
+                                      residuals_threshold=2,
+                                      sigma=2,
+                                      k_size=0.6/200,
+                                      b_size=1000./200,
+                                      k_limits=(-0.3, 0.3),
+                                      b_limits=(-500, 500))
 
     ################################## Recognize track before and after the magnet #####################################
 
