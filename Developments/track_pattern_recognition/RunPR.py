@@ -24,7 +24,7 @@ from quality import init_book_hist, quality_metrics, save_hists
 
 
 
-def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong, method):
+def run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconstructiblerequired, threeprong, method):
     """
     Runs all steps of track pattern recognition.
 
@@ -151,7 +151,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
 
     ############################################### Save results #######################################################
 
-    save_hists(h, 'hists.root')
+    save_hists(h, output_file)
 
 
     return
@@ -160,6 +160,7 @@ if __name__ == "__main__":
 
     input_file = None
     geo_file = None
+    output_file = 'hists.root'
     dy = None
     reconstructiblerequired = 2
     threeprong = 0
@@ -176,6 +177,7 @@ if __name__ == "__main__":
     Options:
       -i  --input                   : Input file path
       -g  --geo                     : Path to geo file
+      -o  --output                  : Output .root file path
       -y  --dy                      : dy
       -n  --n_reco                  : NUmber of reconstructible tracks per event is required
       -t  --three                   : Is threeprong mumunu decay?
@@ -184,8 +186,8 @@ if __name__ == "__main__":
       '''
 
     try:
-        opts, args = getopt.getopt(argv, "hm:i:g:y:n:t:",
-                                   ["help", "method=", "input=", "geo=", "dy=", "n_reco=", "three="])
+        opts, args = getopt.getopt(argv, "hm:i:g:y:n:t:o:",
+                                   ["help", "method=", "input=", "geo=", "dy=", "n_reco=", "three=", "output="])
     except getopt.GetoptError:
         print "Wrong options were used. Please, read the following help:\n"
         print msg
@@ -209,6 +211,8 @@ if __name__ == "__main__":
             reconstructiblerequired = int(arg)
         elif opt in ("-t", "--three"):
             threeprong = int(arg)
+        elif opt in ("-o", "--output"):
+            output_file = arg
 
 
-    run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong, method)
+    run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconstructiblerequired, threeprong, method)
