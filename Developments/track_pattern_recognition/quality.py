@@ -850,6 +850,9 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
     # N hits
     for t in reco_mc_tracks:
 
+        if t not in y:
+            continue
+
         pinv_true = pinvs[y == t][0]
         p = 1. / pinv_true
 
