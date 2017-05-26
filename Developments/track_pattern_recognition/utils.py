@@ -3,7 +3,7 @@ __author__ = 'Mikhail Hushchyn'
 import ROOT
 import numpy
 
-def decodeDetectorID(self, detID):
+def decodeDetectorID(detID):
     """
     Decodes detector ID.
 
@@ -59,7 +59,11 @@ def fracMCsame(trackids):
         else:
             track[tid]=1
     #now get track with largest number of hits
-    tmax=max(track, key=track.get)
+    if track != {}:
+        tmax=max(track, key=track.get)
+    else:
+        track = {-999:0}
+        tmax = -999
 
     frac=0.
     if nh>0: frac=float(track[tmax])/float(nh)
