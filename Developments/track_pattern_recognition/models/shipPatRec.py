@@ -983,23 +983,8 @@ def execute(SmearedHits, sTree, ShipGeo):
                     tantheta=(tgy1-tgy2)/(1+tgy1*tgy2)
                     if tantheta>0 :
                         charge="-1"
-                        if charge34>0:
-                            falsenegative+=1
-                            falsenegativethistrack=1
                     else:
                         charge="1"
-                        if charge34<0:
-                            falsepositive+=1
-                            falsepositivethistrack=1
-
-                    #reject track (and event) if it doesn't correspond to MC truth
-                    if matches==0:
-                        matches==1
-                        totalaftermatching+=1
-
-                    if debug==1:
-                        print "******* MATCH FOUND stations 12 track id",trackid12[item],"(fraction",fraction12[item]*100,"%) and stations 34 track id",trackid34[item1],"(fraction",fraction34[item1]*100,"%)"
-
 
                     ####################################### True Momentum Estimation ###################################
 
