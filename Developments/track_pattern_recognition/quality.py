@@ -745,6 +745,10 @@ def init_book_hist():
     h['n_hits_stereo34_direction'].GetYaxis().SetTitle('N')
 
 
+    ut.bookHist(h,'duplicates_tot','Fraction of hit duplicates per track, Total', 20 ,0., 1.01)
+    ut.bookHist(h,'duplicates_y12','Fraction of hit duplicates per track, Y view station 1&2', 20 ,0., 1.01)
+
+
 
     return h
 
@@ -1406,7 +1410,28 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         [[ky12, by12], [kx12, bx12]] = params12
         [[ky34, by34], [kx34, bx34]] = params12
 
+    ################################################ Hit Duplicates ####################################################
 
+    for t in reco_mc_tracks:
+
+        if t not in y:
+            continue
+
+        detid = X[:, -1]
+
+        atrack_mask_tot = (y == t)
+        atrack_detid = detid[atrack_mask_tot]
+        other_detid = detid[~atrack_mask_tot]
+        n_dup_tot = len(set(atrack_detid) & set(other_detid))
+        frac_dup_tot = 1. * n_dup_tot / len(atrack_detid)
+        h['duplicates_tot'].Fill(frac_dup_tot)
+
+        atrack_mask_y12 = (y == t) * is_before * is_y
+        atrack_detid = detid[atrack_mask_y12]
+        other_detid = detid[~atrack_mask_y12]
+        n_dup_y12 = len(set(atrack_detid) & set(other_detid))
+        frac_dup_y12 = 1. * n_dup_y12 / len(atrack_detid)
+        h['duplicates_y12'].Fill(frac_dup_y12)
 
 
 
