@@ -65,14 +65,14 @@ def smearHits(sTree, ShipGeo, modules, no_amb=None):
 
         ahit = sTree.strawtubesPoint[i]
 
-        if i in duplicatestrawhit:
-            continue
-
-        if (str(ahit.GetDetectorID())[:1]=="5") :
-            continue
-
-        if (((ahit.GetX()/245.)**2 + (ahit.GetY()/495.)**2) >= 1.):
-            continue
+        # if i in duplicatestrawhit:
+        #     continue
+        #
+        # if (str(ahit.GetDetectorID())[:1]=="5") :
+        #     continue
+        #
+        # if (((ahit.GetX()/245.)**2 + (ahit.GetY()/495.)**2) >= 1.):
+        #     continue
 
         key+=1
         detID = ahit.GetDetectorID()
