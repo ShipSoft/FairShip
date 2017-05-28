@@ -137,12 +137,12 @@ for o, a in opts:
         if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
         if o in ("-m", "--mass",):
-         if HNL: theHNLmass = float(a)
-         if DarkPhoton: theDPmass = float(a)
+            if HNL or RPVSUSY: theMass = float(a)
+            if DarkPhoton: theDPmass = float(a)
         if o in ("-c", "--couplings", "--coupling",):
-         theCouplings = [float(c) for c in a.split(",")]
+            theCouplings = [float(c) for c in a.split(",")]
         if o in ("-e", "--epsilon",):
-         theDPepsilon = float(a)
+            theDPepsilon = float(a)
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
