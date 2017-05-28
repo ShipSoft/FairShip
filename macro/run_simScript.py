@@ -63,7 +63,7 @@ except getopt.GetoptError:
         print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
         print '       --mass or -m to set HNL or New Particle mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
-	print '       --epsilon value or -e value to set mixing parameter epsilon' 
+        print '       --epsilon value or -e value to set mixing parameter epsilon' 
         print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
         sys.exit()
 for o, a in opts:
@@ -121,7 +121,7 @@ for o, a in opts:
             dv = int(a)
         if o in ("--muShieldDesign",):
             ds = int(a)
-	if o in ("--nuTauTargetDesign",):
+        if o in ("--nuTauTargetDesign",):
             nud = int(a)
         if o in ("--charm",):
             charm = int(a)
@@ -133,12 +133,12 @@ for o, a in opts:
         if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
         if o in ("-m", "--mass",):
-		if HNL: theHNLmass = float(a)
-		if DarkPhoton: theDPmass = float(a)
+            if HNL or RPVSUSY: theMass = float(a)
+            if DarkPhoton: theDPmass = float(a)
         if o in ("-c", "--couplings", "--coupling",):
             theCouplings = [float(c) for c in a.split(",")]
-	if o in ("-e", "--epsilon",):
-		theDPepsilon = float(a)
+        if o in ("-e", "--epsilon",):
+            theDPepsilon = float(a)
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
