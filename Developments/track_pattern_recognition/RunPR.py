@@ -24,7 +24,7 @@ from quality import init_book_hist, quality_metrics, save_hists
 
 
 
-def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong):
+def run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconstructiblerequired, threeprong, method):
     """
     Runs all steps of track pattern recognition.
 
@@ -34,11 +34,15 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
         Path to an input .root file with events.
     geo_file : string
         Path to a file with SHiP geometry.
+    output_file : string
+        Path to an output .root file with quality plots.
     dy : float
     reconstructiblerequired : int
         Number of reconstructible tracks in an event.
     threeprong : int
         If 1 - HNL decay into 3 particles is considered.
+    method : string
+        Name of a track pattern recognition method.
     """
 
 
@@ -95,7 +99,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
     TStation1StartZ, \
     TStation4EndZ, \
     VetoStationZ, \
-    VetoStationEndZ = initialize(fgeo, ShipGeo)
+    VetoStationEndZ = initialize(ShipGeo)
 
 
     ########################################## Start Track Pattern Recognition #########################################
@@ -124,7 +128,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
 
         ########################################### Do track pattern recognition #######################################
 
-        reco_tracks, theTracks  = execute(smeared_hits, sTree, ShipGeo)
+        reco_tracks, theTracks  = execute(smeared_hits, sTree, ShipGeo, method)
 
         ########################################### Get MC truth #######################################################
 
@@ -149,7 +153,7 @@ def run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequi
 
     ############################################### Save results #######################################################
 
-    save_hists(h, 'hists.root')
+    save_hists(h, output_file)
 
 
     return
@@ -158,10 +162,11 @@ if __name__ == "__main__":
 
     input_file = None
     geo_file = None
+    output_file = 'hists.root'
     dy = None
     reconstructiblerequired = 2
     threeprong = 0
-    model = None
+    method = 'Baseline'
 
 
     argv = sys.argv[1:]
@@ -174,15 +179,18 @@ if __name__ == "__main__":
     Options:
       -i  --input                   : Input file path
       -g  --geo                     : Path to geo file
+      -o  --output                  : Output .root file path. Default is hists.root
       -y  --dy                      : dy
-      -n  --n_reco                  : NUmber of reconstructible tracks per event is required
+      -n  --n_reco                  : Number of reconstructible tracks per event is required
       -t  --three                   : Is threeprong mumunu decay?
+      -m  --method                  : Name of a track pattern recognition method: 'Baseline', 'FH', 'AR', 'R'
+                                    : Default is 'Baseline'
       -h  --help                    : Shows this help
       '''
 
     try:
-        opts, args = getopt.getopt(argv, "hm:i:g:y:n:t:",
-                                   ["help", "model=", "input=", "geo=", "dy=", "n_reco=", "three="])
+        opts, args = getopt.getopt(argv, "hm:i:g:y:n:t:o:",
+                                   ["help", "method=", "input=", "geo=", "dy=", "n_reco=", "three=", "output="])
     except getopt.GetoptError:
         print "Wrong options were used. Please, read the following help:\n"
         print msg
@@ -194,8 +202,8 @@ if __name__ == "__main__":
         if opt in ('-h', "--help"):
             print msg
             sys.exit()
-        elif opt in ("-m", "--model"):
-            model = arg
+        elif opt in ("-m", "--method"):
+            method = arg
         elif opt in ("-i", "--input"):
             input_file = arg
         elif opt in ("-g", "--geo"):
@@ -206,6 +214,8 @@ if __name__ == "__main__":
             reconstructiblerequired = int(arg)
         elif opt in ("-t", "--three"):
             threeprong = int(arg)
+        elif opt in ("-o", "--output"):
+            output_file = arg
 
 
-    run_track_pattern_recognition(input_file, geo_file, dy, reconstructiblerequired, threeprong)
+    run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconstructiblerequired, threeprong, method)

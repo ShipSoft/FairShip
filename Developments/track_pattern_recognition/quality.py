@@ -600,6 +600,36 @@ def init_book_hist():
     ut.bookHist(h,'n_hits_mc_y34','Number of hits per track, Y view station 3&4',16,0.,16.01)
     ut.bookHist(h,'n_hits_mc_stereo34','Number of hits per track, Stereo view station 3&4',16,0.,16.01)
 
+    # Momentum dependencies
+    ut.bookProf(h,'n_hits_mc_p','Number of hits per track, total', 30, 0, 150)
+    h['n_hits_mc_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_12_p','Number of hits per track, station 1&2', 30, 0, 150)
+    h['n_hits_mc_12_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_12_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_y12_p','Number of hits per track, Y view station 1&2', 30, 0, 150)
+    h['n_hits_mc_y12_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_y12_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_stereo12_p','Number of hits per track, Stereo view station 1&2', 30, 0, 150)
+    h['n_hits_mc_stereo12_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_stereo12_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_34_p','Number of hits per track, station 3&4', 30, 0, 150)
+    h['n_hits_mc_34_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_34_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_y34_p','Number of hits per track, Y view station 3&4', 30, 0, 150)
+    h['n_hits_mc_y34_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_y34_p'].GetYaxis().SetTitle('N')
+
+    ut.bookProf(h,'n_hits_mc_stereo34_p','Number of hits per track, Stereo view station 3&4', 30, 0, 150)
+    h['n_hits_mc_stereo34_p'].GetXaxis().SetTitle('Momentum')
+    h['n_hits_mc_stereo34_p'].GetYaxis().SetTitle('N')
+
+
 
     ut.bookHist(h,'n_hits_reco','Number of recognized hits per track, total',64,0.,64.01)
     ut.bookHist(h,'n_hits_reco_12','Number of recognized hits per track, station 1&2',32,0.,32.01)
@@ -638,13 +668,13 @@ def init_book_hist():
     h['n_hits_34'].GetXaxis().SetTitle('Momentum')
     h['n_hits_34'].GetYaxis().SetTitle('N')
 
-    ut.bookProf(h,'perr','|(p - p-true)/p|',30, 0, 150)
+    ut.bookProf(h,'perr','(p - p-true)/p',30, 0, 150)
     h['perr'].GetXaxis().SetTitle('Momentum')
-    h['perr'].GetYaxis().SetTitle('|(p - p-true)/p|')
+    h['perr'].GetYaxis().SetTitle('(p - p-true)/p')
 
-    ut.bookProf(h,'perr_direction','|(p - p-true)/p| from track direction in YZ plane',40, -10.01, 10.01)
+    ut.bookProf(h,'perr_direction','(p - p-true)/p from track direction in YZ plane',40, -10.01, 10.01)
     h['perr_direction'].GetXaxis().SetTitle('Degree')
-    h['perr_direction'].GetYaxis().SetTitle('|(p - p-true)/p|')
+    h['perr_direction'].GetYaxis().SetTitle('(p - p-true)/p')
 
 
     ut.bookProf(h, 'frac_total', 'Fraction of hits the same as MC hits, total', 30, 0, 150)
@@ -674,6 +704,11 @@ def init_book_hist():
     ut.bookProf(h, 'frac_34', 'Fraction of hits the same as MC hits, station 3&4', 30, 0, 150)
     h['frac_34'].GetXaxis().SetTitle('Momentum')
     h['frac_34'].GetYaxis().SetTitle('Fraction')
+
+
+    ut.bookProf(h, 'frac_total_angle', 'Fraction of hits the same as MC hits, total', 20, 0, 10.01)
+    h['frac_total_angle'].GetXaxis().SetTitle('Angle between tracks, degree')
+    h['frac_total_angle'].GetYaxis().SetTitle('Fraction')
 
 
     # Fitted values
@@ -708,6 +743,10 @@ def init_book_hist():
     ut.bookProf(h, 'n_hits_stereo34_direction', 'Number of recognized hits per track, Stereo view station 3&4', 40, -10.01, 10.01)
     h['n_hits_stereo34_direction'].GetXaxis().SetTitle('Degree')
     h['n_hits_stereo34_direction'].GetYaxis().SetTitle('N')
+
+
+    ut.bookHist(h,'duplicates_tot','Fraction of hit duplicates per track, Total', 20 ,0., 1.01)
+    ut.bookHist(h,'duplicates_y12','Fraction of hit duplicates per track, Y view station 1&2', 20 ,0., 1.01)
 
 
 
@@ -809,8 +848,17 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
     ######################## RecoEff, Clone and Ghost rates, TrackEff for stations and views ###########################
 
+    # Pinv
+    pinvs = get_pinvs(stree, smeared_hits)
+
     # N hits
     for t in reco_mc_tracks:
+
+        if t not in y:
+            continue
+
+        pinv_true = pinvs[y == t][0]
+        p = 1. / pinv_true
 
         n_y12 = len(y[(y == t) * is_before * is_y])
         n_stereo12 = len(y[(y == t) * is_before * is_stereo])
@@ -831,6 +879,18 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['n_hits_mc_34'].Fill(n_34)
         h['n_hits_mc_y34'].Fill(n_y34)
         h['n_hits_mc_stereo34'].Fill(n_stereo34)
+
+        # Momentum dependencies
+        h['n_hits_mc_p'].Fill(p, n_tot)
+
+        h['n_hits_mc_12_p'].Fill(p, n_12)
+        h['n_hits_mc_y12_p'].Fill(p, n_y12)
+        h['n_hits_mc_stereo12_p'].Fill(p, n_stereo12)
+
+        h['n_hits_mc_34_p'].Fill(p, n_34)
+        h['n_hits_mc_y34_p'].Fill(p, n_y34)
+        h['n_hits_mc_stereo34_p'].Fill(p, n_stereo34)
+
 
     for i in range(len(track_inds)):
 
@@ -1127,7 +1187,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         err = 1 - charge * pinv / pinv_true
 
         h['ptrue-p/ptrue'].Fill(err)
-        h['perr'].Fill(1./pinv_true, abs(err))
+        h['perr'].Fill(1./pinv_true, err)
 
         params12 = reco_tracks[i]['params12']
         params34 = reco_tracks[i]['params34']
@@ -1136,7 +1196,7 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         [[ky34, by34], [kx34, bx34]] = params12
 
         deg = numpy.rad2deg(numpy.arctan(ky12))
-        h['perr_direction'].Fill(deg, abs(err))
+        h['perr_direction'].Fill(deg, err)
 
 
     ########################################### Momentum dependencies  #################################################
@@ -1158,50 +1218,117 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         [[ky12, by12], [kx12, bx12]] = params12
         [[ky34, by34], [kx34, bx34]] = params12
 
-        n_hits_total = len(atrack)
         frac_total, tmax_total = fracMCsame(y[atrack])
+        n_hits_total = len(atrack[y[atrack] == tmax_total])
         h['n_hits_total'].Fill(p, n_hits_total)
         h['frac_total'].Fill(p, frac_total)
 
         mask_y12 = (is_before * is_y)[atrack]
-        n_hits_y12 = len(atrack[mask_y12])
         frac_y12, tmax_y12 = fracMCsame(y[atrack[mask_y12]])
+        atrack_y12 = atrack[mask_y12]
+        n_hits_y12 = len(atrack_y12[y[atrack_y12] == tmax_y12])
         h['n_hits_y12'].Fill(p, n_hits_y12)
         h['frac_y12'].Fill(p, frac_y12)
         h['n_hits_y12_direction'].Fill(numpy.rad2deg(numpy.arctan(ky12)), n_hits_y12)
 
         mask_stereo12 = (is_before * is_stereo)[atrack]
-        n_hits_stereo12 = len(atrack[mask_stereo12])
         frac_stereo12, tmax_stereo12 = fracMCsame(y[atrack[mask_stereo12]])
+        atrack_stereo12 = atrack[mask_stereo12]
+        n_hits_stereo12 = len(atrack_stereo12[y[atrack_stereo12] == tmax_stereo12])
         h['n_hits_stereo12'].Fill(p, n_hits_stereo12)
         h['frac_stereo12'].Fill(p, frac_stereo12)
         h['n_hits_stereo12_direction'].Fill(numpy.rad2deg(numpy.arctan(kx12)), n_hits_stereo12)
 
         mask_12 = (is_before)[atrack]
-        n_hits_12 = len(atrack[mask_12])
         frac_12, tmax_12 = fracMCsame(y[atrack[mask_12]])
+        atrack_12 = atrack[mask_12]
+        n_hits_12 = len(atrack_12[y[atrack_12] == tmax_12])
         h['n_hits_12'].Fill(p, n_hits_12)
         h['frac_12'].Fill(p, frac_12)
 
         mask_y34 = (is_after * is_y)[atrack]
-        n_hits_y34 = len(atrack[mask_y34])
         frac_y34, tmax_y34 = fracMCsame(y[atrack[mask_y34]])
+        atrack_y34 = atrack[mask_y34]
+        n_hits_y34 = len(atrack_y34[y[atrack_y34] == tmax_y34])
         h['n_hits_y34'].Fill(p, n_hits_y34)
         h['frac_y34'].Fill(p, frac_y34)
         h['n_hits_y34_direction'].Fill(numpy.rad2deg(numpy.arctan(ky34)), n_hits_y34)
 
         mask_stereo34 = (is_after * is_stereo)[atrack]
-        n_hits_stereo34 = len(atrack[mask_stereo34])
         frac_stereo34, tmax_stereo34 = fracMCsame(y[atrack[mask_stereo34]])
+        atrack_stereo34 = atrack[mask_stereo34]
+        n_hits_stereo34 = len(atrack_stereo34[y[atrack_stereo34] == tmax_stereo34])
         h['n_hits_stereo34'].Fill(p, n_hits_stereo34)
         h['frac_stereo34'].Fill(p, frac_stereo34)
         h['n_hits_stereo34_direction'].Fill(numpy.rad2deg(numpy.arctan(kx34)), n_hits_stereo34)
 
         mask_34 = (is_after)[atrack]
-        n_hits_34 = len(atrack[mask_34])
         frac_34, tmax_34 = fracMCsame(y[atrack[mask_34]])
+        atrack34 = atrack[mask_34]
+        n_hits_34 = len(atrack34[y[atrack34] == tmax_34])
         h['n_hits_34'].Fill(p, n_hits_34)
         h['frac_34'].Fill(p, frac_34)
+
+
+    #################################### Angle between two reconstructible tracks ######################################
+    # Attention: Works only for two reconstructible tracks.
+
+    angle = None
+    alpha1 = None
+    alpha2 = None
+
+    for i in reco_tracks.keys():
+
+        atrack = reco_tracks[i]['hits']
+        frac, tmax = fracMCsame(y[atrack])
+
+        if tmax not in reco_mc_tracks:
+            continue
+
+        pinv_true = pinvs[y == tmax][0]
+        p = 1. / pinv_true
+
+        params12 = reco_tracks[i]['params12']
+        params34 = reco_tracks[i]['params34']
+
+        [[ky12, by12], [kx12, bx12]] = params12
+        [[ky34, by34], [kx34, bx34]] = params12
+
+        if tmax == reco_mc_tracks[0] and alpha1 == None:
+            alpha1 = numpy.rad2deg(numpy.arctan(ky12))
+
+        if tmax == reco_mc_tracks[1] and alpha2 == None:
+            alpha2 = numpy.rad2deg(numpy.arctan(ky12))
+
+
+    if alpha1 != None and alpha2 != None:
+        angle = numpy.abs(alpha2 - alpha1)
+
+
+    ############################################ The angle dependencies ################################################
+
+    for i in reco_tracks.keys():
+
+        atrack = reco_tracks[i]['hits']
+        frac, tmax = fracMCsame(y[atrack])
+
+        if tmax not in reco_mc_tracks:
+            continue
+
+        pinv_true = pinvs[y == tmax][0]
+        p = 1. / pinv_true
+
+        params12 = reco_tracks[i]['params12']
+        params34 = reco_tracks[i]['params34']
+
+        [[ky12, by12], [kx12, bx12]] = params12
+        [[ky34, by34], [kx34, bx34]] = params12
+
+        n_hits_total = len(atrack)
+        frac_total, tmax_total = fracMCsame(y[atrack])
+
+        if angle != None:
+            h['frac_total_angle'].Fill(angle, frac_total)
 
 
     ################################################# Track fit ########################################################
@@ -1283,7 +1410,28 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         [[ky12, by12], [kx12, bx12]] = params12
         [[ky34, by34], [kx34, bx34]] = params12
 
+    ################################################ Hit Duplicates ####################################################
 
+    for t in reco_mc_tracks:
+
+        if t not in y:
+            continue
+
+        detid = X[:, -1]
+
+        atrack_mask_tot = (y == t)
+        atrack_detid = detid[atrack_mask_tot]
+        other_detid = detid[~atrack_mask_tot]
+        n_dup_tot = len(set(atrack_detid) & set(other_detid))
+        frac_dup_tot = 1. * n_dup_tot / len(atrack_detid)
+        h['duplicates_tot'].Fill(frac_dup_tot)
+
+        atrack_mask_y12 = (y == t) * is_before * is_y
+        atrack_detid = detid[atrack_mask_y12]
+        other_detid = detid[~atrack_mask_y12]
+        n_dup_y12 = len(set(atrack_detid) & set(other_detid))
+        frac_dup_y12 = 1. * n_dup_y12 / len(atrack_detid)
+        h['duplicates_y12'].Fill(frac_dup_y12)
 
 
 
