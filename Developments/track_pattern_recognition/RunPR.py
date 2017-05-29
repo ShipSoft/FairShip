@@ -179,11 +179,12 @@ if __name__ == "__main__":
     Options:
       -i  --input                   : Input file path
       -g  --geo                     : Path to geo file
-      -o  --output                  : Output .root file path
+      -o  --output                  : Output .root file path. Default is hists.root
       -y  --dy                      : dy
-      -n  --n_reco                  : NUmber of reconstructible tracks per event is required
+      -n  --n_reco                  : Number of reconstructible tracks per event is required
       -t  --three                   : Is threeprong mumunu decay?
-      -m  --method                  : Name of a track pattern recognition method: 'Baseline', 'FH', 'ARR'
+      -m  --method                  : Name of a track pattern recognition method: 'Baseline', 'FH', 'AR', 'R'
+                                    : Default is 'Baseline'
       -h  --help                    : Shows this help
       '''
 
