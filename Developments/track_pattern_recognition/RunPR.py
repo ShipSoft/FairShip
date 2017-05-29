@@ -34,6 +34,8 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconst
         Path to an input .root file with events.
     geo_file : string
         Path to a file with SHiP geometry.
+    output_file : string
+        Path to an output .root file with quality plots.
     dy : float
     reconstructiblerequired : int
         Number of reconstructible tracks in an event.
