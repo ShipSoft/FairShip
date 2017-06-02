@@ -37,7 +37,7 @@ ShipMuonShield::ShipMuonShield()
 {
 }
 
-ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title, 
+ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
                                Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t y, Double_t floor, Double_t field)
   : FairModule(name ,Title)
@@ -45,7 +45,7 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
  fDesign = Design;
  fField  = field;
  if (fDesign==1){
-     fMuonShieldLength = L1;   
+     fMuonShieldLength = L1;
     }
  if (fDesign==2 || fDesign==3 || fDesign==4 ){
      Fatal("ShipMuonShield","Design %i not anymore supported",fDesign);
@@ -61,9 +61,9 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      dZ7 = L7;
      dZ8 = L8;
      dXgap= gap;
-     fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7+dZ8) + LE ; //leave some space for nu-tau detector   
+     fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7+dZ8) + LE ; //leave some space for nu-tau detector
     }
-    
+
  if (fDesign==7){
      dZ1 = L1;
      dZ2 = L2;
@@ -76,17 +76,17 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      fMuonShieldLength =
 	 2 * (dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7 + dZ8) + LE;
    }
-    
+
  fFloor = (fDesign == 7) ? floor : 0;
 
- zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
+ zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;
  if(fDesign==6||fDesign==7){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
 }
 
 
-// -----   Private method InitMedium 
-Int_t ShipMuonShield::InitMedium(const char* name) 
+// -----   Private method InitMedium
+Int_t ShipMuonShield::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
@@ -110,7 +110,7 @@ void ShipMuonShield::CreateTube(const char* tubeName, TGeoMedium* medium, Double
 					Double_t z_translation)
 {
   TGeoVolume* absorber = gGeoManager->MakeTube(tubeName, medium, dX, dY,dZ);
-  absorber->SetLineColor(color);  
+  absorber->SetLineColor(color);
   tShield->AddNode(absorber, numberOfItems, new TGeoTranslation(x_translation, y_translation, z_translation ));
 }
 
@@ -168,25 +168,25 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
     Double_t cornerMainSideL[16] = {dX+middleGap+gap,-HmainSideMag,dX+middleGap+gap,HmainSideMag, 2*dX+middleGap+gap,HmainSideMag, 2*dX+middleGap+gap,-HmainSideMag,
 				    dX2+middleGap2+gap2,-HmainSideMag2, dX2+middleGap2+gap2,HmainSideMag2, 2*dX2+middleGap2+gap2,HmainSideMag2, 2*dX2+middleGap2+gap2,-HmainSideMag2};
     Double_t cornerMainSideR[16] = {-dX-middleGap-gap,-HmainSideMag, -2*dX-middleGap-gap,-HmainSideMag, -2*dX-middleGap-gap,HmainSideMag,  -dX-middleGap-gap,HmainSideMag,
-				    -dX2-middleGap2-gap2,-HmainSideMag2, -2*dX2-middleGap2-gap2,-HmainSideMag2, -2*dX2-middleGap2-gap2,HmainSideMag2,-dX2-middleGap2-gap2,HmainSideMag2};			       
+				    -dX2-middleGap2-gap2,-HmainSideMag2, -2*dX2-middleGap2-gap2,-HmainSideMag2, -2*dX2-middleGap2-gap2,HmainSideMag2,-dX2-middleGap2-gap2,HmainSideMag2};
     Double_t cornersCLBA[16] = {dX+middleGap+gap,-HmainSideMag,2*dX+middleGap+gap,-HmainSideMag,2*dX+middleGap+Clgap,-dY-dX+testGap ,dX+middleGap+Clgap,-dY+testGap ,
                                 dX2+middleGap2+gap2,-HmainSideMag2,2*dX2+middleGap2+gap2,-HmainSideMag2,2*dX2+middleGap2+Clgap2,-dY2-dX2+testGap ,dX2+middleGap2+Clgap2,-dY2+testGap };
-    Double_t cornersCLTA[16] = {dX+middleGap+Clgap,dY-testGap ,2*dX+middleGap+Clgap,dY+dX-testGap ,2*dX+middleGap+gap,HmainSideMag,dX+middleGap+gap,HmainSideMag, 
+    Double_t cornersCLTA[16] = {dX+middleGap+Clgap,dY-testGap ,2*dX+middleGap+Clgap,dY+dX-testGap ,2*dX+middleGap+gap,HmainSideMag,dX+middleGap+gap,HmainSideMag,
                                 dX2+middleGap2+Clgap2,dY2-testGap ,2*dX2+middleGap2+Clgap2,dY2+dX2-testGap ,2*dX2+middleGap2+gap2,HmainSideMag2, dX2+middleGap2+gap2,HmainSideMag2};
     Double_t cornersCRBA[16] = {-dX-middleGap-Clgap,-dY+testGap ,-2*dX-middleGap-Clgap,-dY-dX+testGap , -2*dX-middleGap-gap,-HmainSideMag,-dX-middleGap-gap,-HmainSideMag,
-                                -dX2-middleGap2-Clgap2,-dY2+testGap ,-2*dX2-middleGap2-Clgap2,-dY2-dX2+testGap ,-2*dX2-middleGap2-gap2,-HmainSideMag2,-dX2-middleGap2-gap2,-HmainSideMag2}; 
+                                -dX2-middleGap2-Clgap2,-dY2+testGap ,-2*dX2-middleGap2-Clgap2,-dY2-dX2+testGap ,-2*dX2-middleGap2-gap2,-HmainSideMag2,-dX2-middleGap2-gap2,-HmainSideMag2};
     Double_t cornersCRTA[16] = {-dX-middleGap-gap,HmainSideMag, -2*dX-middleGap-gap,HmainSideMag, -2*dX-middleGap-Clgap,dY+dX-testGap , -dX-middleGap-Clgap,dY-testGap ,
                                 -dX2-middleGap2-gap2,HmainSideMag2,-2*dX2-middleGap2-gap2,HmainSideMag2,-2*dX2-middleGap2-Clgap2,dY2+dX2-testGap ,-dX2-middleGap2-Clgap2,dY2-testGap };
-    Double_t cornersTL[16] = {middleGap+dX,dY,middleGap,dY+dX, 2*dX+middleGap+Clgap,dY+dX, dX+middleGap+Clgap,dY, 
-                             middleGap2+dX2,dY2, middleGap2,dY2+dX2, 2*dX2+middleGap2+Clgap2,dY2+dX2, dX2+middleGap2+Clgap2,dY2}; 
-    Double_t cornersTR[16] = {-dX-middleGap-Clgap,dY,-2*dX-middleGap-Clgap,dY+dX,-middleGap,dY+dX,-middleGap-dX,dY, 
+    Double_t cornersTL[16] = {middleGap+dX,dY,middleGap,dY+dX, 2*dX+middleGap+Clgap,dY+dX, dX+middleGap+Clgap,dY,
+                             middleGap2+dX2,dY2, middleGap2,dY2+dX2, 2*dX2+middleGap2+Clgap2,dY2+dX2, dX2+middleGap2+Clgap2,dY2};
+    Double_t cornersTR[16] = {-dX-middleGap-Clgap,dY,-2*dX-middleGap-Clgap,dY+dX,-middleGap,dY+dX,-middleGap-dX,dY,
                              -dX2-middleGap2-Clgap2,dY2,-2*dX2-middleGap2-Clgap2,dY2+dX2, -middleGap2,dY2+dX2, -middleGap2-dX2,dY2};
-    Double_t cornersBL[16] = {dX+middleGap+Clgap,-dY,2*dX+middleGap+Clgap,-dY-dX,middleGap,-dY-dX,middleGap+dX,-dY, 
-                               dX2+middleGap2+Clgap2,-dY2, 2*dX2+middleGap2+Clgap2,-dY2-dX2,middleGap2,-dY2-dX2, middleGap2+dX2,-dY2}; 
-    Double_t cornersBR[16] = {-middleGap-dX,-dY, -middleGap,-dY-dX, -2*dX-middleGap-Clgap,-dY-dX, -dX-middleGap-Clgap,-dY, 
+    Double_t cornersBL[16] = {dX+middleGap+Clgap,-dY,2*dX+middleGap+Clgap,-dY-dX,middleGap,-dY-dX,middleGap+dX,-dY,
+                               dX2+middleGap2+Clgap2,-dY2, 2*dX2+middleGap2+Clgap2,-dY2-dX2,middleGap2,-dY2-dX2, middleGap2+dX2,-dY2};
+    Double_t cornersBR[16] = {-middleGap-dX,-dY, -middleGap,-dY-dX, -2*dX-middleGap-Clgap,-dY-dX, -dX-middleGap-Clgap,-dY,
                               -middleGap2-dX2,-dY2, -middleGap2,-dY2-dX2, -2*dX2-middleGap2-Clgap2,-dY2-dX2, -dX2-middleGap2-Clgap2,-dY2};
-				 
-				 
+
+
     char magnetId[100];
     const char* str1L ="_MiddleMagL";
     const char* str1R ="_MiddleMagR";
@@ -201,7 +201,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
     const char* str10 ="_MagBotLeft";
     const char* str11 ="_MagBotRight";
     strcpy(magnetId,magnetName);
-    if (fieldDirection == "up") {		    
+    if (!strncmp(fieldDirection, "up", 2)) {
       CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
@@ -215,7 +215,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       CreateArb8(strcat(magnetId,str10), medium, dZ, cornersBL,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[2],fields[3],tShield,1,0, 0, Z);
     } else{
-      if (fieldDirection == "down") {
+      if (!strncmp(fieldDirection, "down", 4)) {
 	CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
@@ -240,7 +240,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   Double_t zgap = (fDesign > 6) ? 10 : 0;  // fixed distance between magnets in Z-axis
   Double_t dYEnd = fY;
   if(fDesign==7){
-      
+
   magnetName[0] = "MagnAbsorb1";	fieldDirection[0] = "up";
   dXIn[0]  = 0.4*m;			dYIn[0]	= 1.5*m;
   dXOut[0] = 0.40*m;			dYOut[0]= 1.5*m;
@@ -248,7 +248,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[0] = dYIn[0]/2;  	HmainSideMagOut[0] = dYOut[0]/2;
   gapIn[0] = 0.02*m;			gapOut[0] = 0.02*m;
   dZ[0] = dZ1-zgap/2;			Z[0] = zEndOfAbsorb + dZ[0]+zgap;
-  
+
   magnetName[1] = "MagnAbsorb2";	fieldDirection[1] = "up";
   dXIn[1]  = 0.8*m;			dYIn[1]	= 1.5*m;
   dXOut[1] = 0.8*m;			dYOut[1]= 1.5*m;
@@ -256,7 +256,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[1] = dYIn[1]/2;  	HmainSideMagOut[1] = dYOut[1]/2;
   gapIn[1] = 0.02*m;				gapOut[1] = 0.02*m;
   dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
-    
+
   magnetName[2] = "Magn1";		fieldDirection[2] = "up";
   dXIn[2]  = 0.87*m;			dYIn[2]	= 0.35*m;
   dXOut[2] = 0.65*m;			dYOut[2]= 1.21*m;
@@ -280,7 +280,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[4] = dYIn[4]/2;  	HmainSideMagOut[4] = dYOut[4]/2;
   gapIn[4] = 0.7*m;			gapOut[4] = 0.11*m;
   dZ[4] = dZ5-zgap/2;			Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;
-  
+
   magnetName[5] = "Magn4";		fieldDirection[5] = "down";
   dXIn[5]  = 0.05*m;			dYIn[5]	= 1.12*m;
   dXOut[5] =0.16*m;			dYOut[5]= 0.05*m;
@@ -288,7 +288,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[5] = dYIn[5]/2;  	HmainSideMagOut[5] = dYOut[5]/2;
   gapIn[5] = 0.04*m;			gapOut[5] = 0.02*m;
   dZ[5] = dZ6-zgap/2;			Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;
-  
+
   magnetName[6] = "Magn5";		fieldDirection[6] = "down";
   dXIn[6]  = 0.15*m;			dYIn[6]	= 2.35*m;
   dXOut[6] = 0.34*m;			dYOut[6]= 0.32*m;
@@ -296,7 +296,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[6] = dYIn[6]/2;  	HmainSideMagOut[6] = dYOut[6]/2;
   gapIn[6] = 0.05*m;			gapOut[6] = 0.08*m;
   dZ[6] = dZ7-zgap/2;			Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;
-  
+
   Double_t clip_width = 0.1*m; // clip field width by this width
   magnetName[7] = "Magn6";		fieldDirection[7] = "down";
   dXIn[7]  = 0.31*m;			dYIn[7]	= 1.86*m;
@@ -315,17 +315,17 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[8] = dYIn[8]/2;  	HmainSideMagOut[8] = dYOut[8]/2;
   gapIn[8] = 0.55*m;			gapOut[8] = 0.55*m;
   dZ[8] = clip_len;			Z[8] = Z[7] + dZ[7] + dZ[8];
-      
+
     }
   else{
   magnetName[0] = "1";			fieldDirection[0] = "up";
-  dXIn[0]  = 0.7*m;			dYIn[0]	= 1.*m; 
+  dXIn[0]  = 0.7*m;			dYIn[0]	= 1.*m;
   dXOut[0] = 0.7*m;			dYOut[0]= 0.8158*m;
   midGapIn[0] = 0; 			midGapOut[0] = 0;
   HmainSideMagIn[0] = dYIn[0];  	HmainSideMagOut[0] = dYOut[0];
   gapIn[0] = 20;			gapOut[0] = 20;
   dZ[0] = dZ1-zgap;			Z[0] = zEndOfAbsorb + dZ[0]+zgap;
-    
+
   magnetName[1] = "2";			fieldDirection[1] = "up";
   dXIn[1]  = 0.36*m;			dYIn[1]	= 0.8158*m;
   dXOut[1] = 0.19*m;			dYOut[1]= 0.499*m;
@@ -333,7 +333,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[1] = dYIn[1]/2;  	HmainSideMagOut[1] = dYOut[1]/2;
   gapIn[1] = 88;			gapOut[1] = 122;
   dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
-  
+
   magnetName[2] = "3";			fieldDirection[2] = "down";
   dXIn[2]  = 0.075*m;			dYIn[2]	= 0.499*m;
   dXOut[2] = 0.25*m;			dYOut[2]= 1.10162*m;
@@ -341,7 +341,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[2] = dYIn[2]/2;  	HmainSideMagOut[2] = dYOut[2]/2;
   gapIn[2] = 0;				gapOut[2] = 0;
   dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;
-    
+
   magnetName[3] = "4";			fieldDirection[3] = "down";
   dXIn[3]  = 0.25*m;			dYIn[3]	= 1.10262*m;
   dXOut[3] = 0.3*m;			dYOut[3]= 1.82697*m;
@@ -357,7 +357,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[4] = dXIn[4];  	HmainSideMagOut[4] = dXOut[4];
   gapIn[4] = 20;			gapOut[4] = 20;
   dZ[4] = dZ6-zgap/2;			Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;
-  
+
   magnetName[5] = "6";			fieldDirection[5] = "down";
   dXIn[5]  = 0.4*m;			dYIn[5]	= 2.55131*m;
   dXOut[5] =0.4*m;			dYOut[5]= 3.27566*m;
@@ -365,7 +365,7 @@ void ShipMuonShield::Initialize (const char* (&magnetName)[9],const char* (&fiel
   HmainSideMagIn[5] = dXIn[5];  	HmainSideMagOut[5] = dXOut[5];
   gapIn[5] = 20;			gapOut[5] = 20;
   dZ[5] = dZ7-zgap/2;			Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;
-  
+
   magnetName[6] = "7";			fieldDirection[6] = "down";
   dXIn[6]  = 0.4*m;			dYIn[6]	= 3.27566*m;
   dXOut[6] = 0.75*m;			dYOut[6]= 4*m;
@@ -389,7 +389,7 @@ void ShipMuonShield::ConstructGeometry()
     TGeoMedium *lead  =gGeoManager->GetMedium("lead");
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
-    
+
     if (fDesign==4||fDesign==5||fDesign==6||fDesign==7){
       Double_t ironField = fField*tesla;
       cout<<"fField  "<<fField<<endl;
@@ -412,7 +412,7 @@ void ShipMuonShield::ConstructGeometry()
 	  midGapOut[nMag], HmainSideMagIn[nMag], HmainSideMagOut[nMag], gapIn[nMag],
 	  gapOut[nMag], Z[nMag];
       Initialize (magnetName,fieldDirection,dXIn,dYIn,dXOut,dYOut,dZf,midGapIn,midGapOut,HmainSideMagIn,HmainSideMagOut,gapIn,gapOut,Z);
-      
+
       if (fDesign==6){
 	Double_t dA = 3*m;
 	CreateMagnet("AbsorberStop-1",iron,tShield,fields,"up",
@@ -436,7 +436,7 @@ void ShipMuonShield::ConstructGeometry()
 
       TGeoTranslation* mag1 = new TGeoTranslation("mag1",0,0,Z[0]-(zEndOfAbsorb + (dZ1+dZ2)));
       TGeoTranslation* mag2 = new TGeoTranslation("mag2",0,0,Z[1]-(zEndOfAbsorb + (dZ1+dZ2)));
-            
+
       mag1->RegisterYourself();
       mag2->RegisterYourself();
 
@@ -519,7 +519,7 @@ void ShipMuonShield::ConstructGeometry()
 				     0, -0.5 * (dYOut[nM] + dXOut[nM] + fFloor),
 				     Z[nM] + dZf[nM] - 0.5 * m));
       }
-          
+
       } else {
 	CreateTube("AbsorberAdd", iron, 15, 400, dZ0, 43, tShield, 1, 0, 0, zEndOfAbsorb - dZ0);
 	CreateTube("AbsorberAddCore", iron, 0, 15, dZ0, 38, tShield, 1, 0, 0, zEndOfAbsorb - dZ0);

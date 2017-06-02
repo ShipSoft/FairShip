@@ -10,7 +10,7 @@ const Bool_t debug = false;
 using namespace Pythia8;
 
 // -----   Default constructor   -------------------------------------------
-HNLPythia8Generator::HNLPythia8Generator() 
+HNLPythia8Generator::HNLPythia8Generator()
 {
   fId         = 2212; // proton
   fMom        = 400;  // proton
@@ -27,7 +27,7 @@ HNLPythia8Generator::HNLPythia8Generator()
 // -------------------------------------------------------------------------
 
 // -----   Default constructor   -------------------------------------------
-Bool_t HNLPythia8Generator::Init() 
+Bool_t HNLPythia8Generator::Init()
 {
   if ( debug ){List(9900015);}
   fLogger = FairLogger::GetLogger();
@@ -35,13 +35,13 @@ Bool_t HNLPythia8Generator::Init()
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   fPythia->setRndmEnginePtr(fRandomEngine);
   fn = 0;
-  if (fextFile != ""){
+  if (fextFile && *fextFile) {
     if (0 == strncmp("/eos",fextFile,4) ) {
      char stupidCpp[100];
      strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
      strcat(stupidCpp,fextFile);
      fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",stupidCpp);
-     fInputFile  = TFile::Open(stupidCpp); 
+     fInputFile  = TFile::Open(stupidCpp);
      if (!fInputFile) {
       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch");
       return kFALSE; }
@@ -62,14 +62,14 @@ Bool_t HNLPythia8Generator::Init()
      fTree->SetBranchAddress("px",&hpx);   // momentum
      fTree->SetBranchAddress("py",&hpy);
      fTree->SetBranchAddress("pz",&hpz);
-     fTree->SetBranchAddress("E",&hE);     
-     fTree->SetBranchAddress("M",&hM);     
+     fTree->SetBranchAddress("E",&hE);
+     fTree->SetBranchAddress("M",&hM);
      fTree->SetBranchAddress("mid",&mid);   // mother
      fTree->SetBranchAddress("mpx",&mpx);   // momentum
      fTree->SetBranchAddress("mpy",&mpy);
      fTree->SetBranchAddress("mpz",&mpz);
      fTree->SetBranchAddress("mE",&mE);
-  }else{ 
+  }else{
      if ( debug ){cout<<"Beam Momentum "<<fMom<<endl;}
      fPythia->settings.mode("Beams:idA",  fId);
      fPythia->settings.mode("Beams:idB",  2212);
@@ -90,7 +90,7 @@ Bool_t HNLPythia8Generator::Init()
 
 
 // -----   Destructor   ----------------------------------------------------
-HNLPythia8Generator::~HNLPythia8Generator() 
+HNLPythia8Generator::~HNLPythia8Generator()
 {
 }
 // -------------------------------------------------------------------------
@@ -98,23 +98,23 @@ HNLPythia8Generator::~HNLPythia8Generator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 {
-   Double_t tp,td,tS,zp,xp,yp,zd,xd,yd,zS,xS,yS,pz,px,py,e,w;  
-   Double_t tm,zm,xm,ym,pmz,pmx,pmy,em;  
+   Double_t tp,td,tS,zp,xp,yp,zd,xd,yd,zS,xS,yS,pz,px,py,e,w;
+   Double_t tm,zm,xm,ym,pmz,pmx,pmy,em;
    Int_t im;
 // take HNL decay of Pythia, move it to the SHiP decay region
-// recalculate decay time 
-// weight event with exp(-t_ship/tau_HNL) / exp(-t_pythia/tau_HNL) 
+// recalculate decay time
+// weight event with exp(-t_ship/tau_HNL) / exp(-t_pythia/tau_HNL)
 
    int iHNL = 0; // index of the chosen HNL (the 1st one), also ensures that at least 1 HNL is produced
    std::vector<int> dec_chain; // pythia indices of the particles to be stored on the stack
    std::vector<int> hnls; // pythia indices of HNL particles
    do {
-   
-   if (fextFile != ""){
+
+   if (fextFile && *fextFile) {
 // take charm or beauty hadron from external file
 // correct for too much Ds produced by pythia6
-    bool x = true; 
-    while(x){ 
+    bool x = true;
+    while(x){
      if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
      fTree->GetEntry(fn%fNevents);
      fn++;
@@ -124,7 +124,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        if( rnr<fFDs ) { x = false; };
        //cout<<"what is x "<<x<<" id "<<int(fabs(hid[0]))<<" rnr " << rnr <<" "<< fFDs <<endl ;
      }
-    }          
+    }
    fPythia->event.reset();
    fPythia->event.append( (Int_t)hid[0], 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
    }
@@ -147,40 +147,40 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          // production vertex
          zp =fPythia->event[i].zProd();
          xp =fPythia->event[i].xProd();
-         yp =fPythia->event[i].yProd(); 
+         yp =fPythia->event[i].yProd();
          tp =fPythia->event[i].tProd();
          // momentum
          pz =fPythia->event[i].pz();
-         px =fPythia->event[i].px();  
-         py =fPythia->event[i].py();  
-         e  =fPythia->event[i].e();  
+         px =fPythia->event[i].px();
+         py =fPythia->event[i].py();
+         e  =fPythia->event[i].e();
          // old decay vertex
          Int_t ida =fPythia->event[i].daughter1();
          zd =fPythia->event[ida].zProd();
          xd =fPythia->event[ida].xProd();
          yd =fPythia->event[ida].yProd();
-         td =fPythia->event[ida].tProd();  
+         td =fPythia->event[ida].tProd();
          // new decay vertex
          Double_t LS = gRandom->Uniform(fLmin,fLmax); // mm, G4 and Pythia8 units
-         Double_t p = TMath::Sqrt(px*px+py*py+pz*pz); 
-         Double_t lam = LS/p;   
+         Double_t p = TMath::Sqrt(px*px+py*py+pz*pz);
+         Double_t lam = LS/p;
          xS = xp + lam * px;
          yS = yp + lam * py;
          zS = zp + lam * pz;
-         Double_t gam  = e/TMath::Sqrt(e*e-p*p); 
-         Double_t beta = p/e; 
+         Double_t gam  = e/TMath::Sqrt(e*e-p*p);
+         Double_t beta = p/e;
          tS = tp + LS/beta; // units ? [mm/c] + [mm/beta] (beta is dimensionless speed, and c=1 here)
                             // if one would use [s], then tS = tp/(cm*c_light) + (LS/cm)/(beta*c_light) = tS/(cm*c_light) i.e. units look consisent
          w = TMath::Exp(-LS/(beta*gam*fctau))*( (fLmax-fLmin)/(beta*gam*fctau) );
          im  = (Int_t)fPythia->event[i].mother1();
          zm  =fPythia->event[im].zProd();
-         xm  =fPythia->event[im].xProd();  
-         ym  =fPythia->event[im].yProd();  
+         xm  =fPythia->event[im].xProd();
+         ym  =fPythia->event[im].yProd();
          pmz =fPythia->event[im].pz();
-         pmx =fPythia->event[im].px();  
-         pmy =fPythia->event[im].py();  
-         em  =fPythia->event[im].e();  
-         tm  =fPythia->event[im].tProd();  
+         pmx =fPythia->event[im].px();
+         pmy =fPythia->event[im].py();
+         em  =fPythia->event[im].e();
+         tm  =fPythia->event[im].tProd();
 // foresee finite beam size
          Double_t dx=0;
          Double_t dy=0;
@@ -193,21 +193,21 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
                Rsq = dx*dx+dy*dy;
             }
          }
-         if (fextFile != ""){
+         if (fextFile && *fextFile) {
 // take grand mother particle from input file, to know if primary or secondary production
           cpg->AddTrack((Int_t)mid[0],mpx[0],mpy[0],mpz[0],xm/cm+dx,ym/cm+dy,zm/cm,-1,false,mE[0],0.,1.);
 	  cpg->AddTrack((Int_t)fPythia->event[im].id(),pmx,pmy,pmz,xm/cm+dx,ym/cm+dy,zm/cm,0,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-	  cpg->AddTrack(fHNL, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 1,false,e,tp/cm/c_light,w); 
+	  cpg->AddTrack(fHNL, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 1,false,e,tp/cm/c_light,w);
          }else{
 	  cpg->AddTrack((Int_t)fPythia->event[im].id(),pmx,pmy,pmz,xm/cm+dx,ym/cm+dy,zm/cm,-1,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-	  cpg->AddTrack(fHNL, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 0,false,e,tp/cm/c_light,w); 
+	  cpg->AddTrack(fHNL, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 0,false,e,tp/cm/c_light,w);
          }
          // bookkeep the indices of stored particles
          dec_chain.push_back( im );
          dec_chain.push_back(  i );
          //cout << endl << " insert mother pdg=" <<fPythia->event[im].id() << " pmz = " << pmz << " [GeV],  zm = " << zm << " [mm] tm = " << tm << " [mm/c]" << endl;
          //cout << " ----> insert HNL =" << fHNL << " pz = " << pz << " [GeV] zp = " << zp << " [mm] tp = " << tp << " [mm/c]" << endl;
-         iHNL = i; 
+         iHNL = i;
     }
    } while ( iHNL == 0 ); // ----------- avoid rare empty events w/o any HNL's produced
 
@@ -242,10 +242,10 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      Bool_t wanttracking=false;
      if(fPythia->event[k].isFinal()){ wanttracking=true;}
      pz =fPythia->event[k].pz();
-     px =fPythia->event[k].px();  
-     py =fPythia->event[k].py();  
-     e  =fPythia->event[k].e();  
-     if (fextFile != ""){im+=1;};
+     px =fPythia->event[k].px();
+     py =fPythia->event[k].py();
+     e  =fPythia->event[k].e();
+     if (fextFile && *fextFile) {im+=1;}
      cpg->AddTrack((Int_t)fPythia->event[k].id(),px,py,pz,xS/cm,yS/cm,zS/cm,im,wanttracking,e,tS/cm/c_light,w);
      // cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " << pz << " [GeV] zS = " << zS << " [mm] tS = " << tS << "[mm/c]" <<  endl;
   }
@@ -257,7 +257,7 @@ void HNLPythia8Generator::SetParameters(char* par)
   // Set Parameters
    fPythia->readString(par);
     if ( debug ){cout<<"fPythia->readString(\""<<par<<"\")"<<endl;}
-} 
+}
 
 // -------------------------------------------------------------------------
 

@@ -16,13 +16,13 @@ using namespace std;
 double Co3Rng::fSpectrumL(double theta, double minE, Bool_t generateP = 1){
 	// 2 Options: a) generateP, b) calcInt
 	// see doi: 10.1016/j.nuclphysbps.2005.07.056. for flux details
-	// ad a) returns a random P between minE and 100GeV taken from the 
-	//       zenith angle dependend momentum distribution 
-	//       Here, the inverse of the function is computed and a random  
+	// ad a) returns a random P between minE and 100GeV taken from the
+	//       zenith angle dependend momentum distribution
+	//       Here, the inverse of the function is computed and a random
 	//       number between 0 and 1 mapped to the interval [minE, 100[ GeV
 	// ad b) return the momentum-integrated flux for a given zenith angle
 	//       from minE to 100 GeV. Result in cm-2s-1
-	
+
 	theta = 180*theta/TMath::Pi(); // theta in degrees
 	double a = -0.8816/10000 /(1/theta  -0.1117/1000 * theta) - 0.1096 - 0.01966*TMath::Exp(-0.02040*theta);
 	double b = 0.4169/100 /(1/theta  -0.9891/10000 * theta) + 4.0395 - 4.3118*TMath::Exp(0.9235/1000*theta);
@@ -30,7 +30,7 @@ double Co3Rng::fSpectrumL(double theta, double minE, Bool_t generateP = 1){
 	double gamma = sqrt(-TMath::Ln10()*a);
 	double offset = 0.5*btilde/a;
 	double norm = TMath::Erf(gamma*(TMath::Log(100)+offset)) - TMath::Erf(gamma*(offset + TMath::Log(minE)));
-	
+
 	if (generateP){
 		double r3 = rng->Uniform();
 		return exp(TMath::ErfInverse(r3*norm+TMath::Erf(gamma*(offset + TMath::Log(minE))))/gamma-offset);
@@ -43,11 +43,14 @@ double Co3Rng::fSpectrumL(double theta, double minE, Bool_t generateP = 1){
 }
 
 Bool_t CosmicsGenerator::DetectorBox(){
-	// check, if a given staring setup x,y,z,px,py,pz will lead to a 
+	// check, if a given staring setup x,y,z,px,py,pz will lead to a
 	// close enough to the detector
-	
-	if((abs(x-(y+yBox)*px/py) < xBox && abs(z-z0-(y+yBox)*pz/py) < zBox) || (abs(x-(y-yBox)*px/py) < xBox && abs(z-z0-(y-yBox)*pz/py) <  zBox)|| abs(y-(x+xBox)*py/px)<yBox && abs(z-z0-(x+xBox)*pz/px)<zBox || abs(y-(x-xBox)*py/px)<yBox && abs(z-z0-(x-xBox)*pz/px)<zBox){
-			return true;	
+
+	if ((TMath::Abs(x-(y+yBox)*px/py) < xBox && TMath::Abs(z-z0-(y+yBox)*pz/py) < zBox) ||
+       (TMath::Abs(x-(y-yBox)*px/py) < xBox && TMath::Abs(z-z0-(y-yBox)*pz/py) < zBox) ||
+       (TMath::Abs(y-(x+xBox)*py/px) < yBox && TMath::Abs(z-z0-(x+xBox)*pz/px) < zBox) ||
+       (TMath::Abs(y-(x-xBox)*py/px) < yBox && TMath::Abs(z-z0-(x-xBox)*pz/px) < zBox)) {
+		return true;
 	}
 	return false;
 }
@@ -59,7 +62,7 @@ void CosmicsGenerator::GenerateDynamics(){
 		//momentum components
 		double phi = fRandomEngine->Uniform(0,2*TMath::Pi());
 		theta = fRandomEngine->fTheta->GetRandom();
-		px = TMath::Sin(phi)*TMath::Sin(theta); 
+		px = TMath::Sin(phi)*TMath::Sin(theta);
 		pz = TMath::Cos(phi)*TMath::Sin(theta);
 		py = -TMath::Cos(theta);
 		//staring location
@@ -84,11 +87,11 @@ Bool_t CosmicsGenerator::Init(Bool_t largeMom){
 	cout<<"n_EVENTS:"<<n_EVENTS<<endl;
 	cout<<"minE:    "<<minE<<endl<<endl;
 	if (xdist*zdist*n_EVENTS == 0){cout<<"check the configuration for unphysical behavior."<<endl<<"We stop the execution."<<endl<<endl; return kFALSE;}
-	
+
 	high = largeMom;
 	if (high) cout<<"Simulation for high momentum"<<endl;
 	else cout<<"Simulation for low momentum"<<endl;
-	
+
 	// calculating weights for this run
 	// weight_flux: expected #muons per spill/ #simulated events per spill: FluxIntegral*xdist*zdist/EVENTS;
 	//              the respective integrals are calculated from the fluxes
@@ -102,25 +105,25 @@ Bool_t CosmicsGenerator::Init(Bool_t largeMom){
 		for (double t= dt/2; t< TMath::Pi()/2; t += dt){
 			FluxIntegral += fRandomEngine->fSpectrumL(t, minE, 0);
 		}
-		FluxIntegral = 2*TMath::Pi()/3*FluxIntegral*dt*10000; 
+		FluxIntegral = 2*TMath::Pi()/3*FluxIntegral*dt*10000;
 		cout<< "LowE CM flux with P < minE = "<<minE<<" : "<<FluxIntegral<< "m-2s-1"<<endl;
-	} 
+	}
 	else { // momentum range 100 GeV - 1000 GeV
 		FluxIntegral = 2*TMath::Pi()/3*fRandomEngine->fSpectrumH->Integral(100,1000);
 		cout<< "HighE CM flux: "<<FluxIntegral<< "m-2s-1"<<endl;
 	}
-	weight_flux = FluxIntegral*xdist*zdist/n_EVENTS/10000;	
+	weight_flux = FluxIntegral*xdist*zdist/n_EVENTS/10000;
 	nInside = 0;  nTest = 0; weighttest = 0; // book keeping
 	y = 1900; //all muons start 19m over beam axis
 	for (; nInside < 10*n_EVENTS;){
-		GenerateDynamics();		
+		GenerateDynamics();
 	}
-	weight_DetectorBox = 0.10 * nTest/n_EVENTS;	
+	weight_DetectorBox = 0.10 * nTest/n_EVENTS;
 	weight = weight_flux / weight_DetectorBox;
 	cout<<"weight_DetectorBox: "<< weight_DetectorBox<<", weight: "<< weight<<endl;
 	cout<<"----------------------------------------------------------------------"<<endl<<endl;
 	nInside = 0;  nTest = 0; weighttest = 0; // book keeping
-	
+
 	return kTRUE;
 }
 // -----   Passing the event   -----------------------------------------
@@ -128,7 +131,7 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 	// muon or anti-muon
 	PID = 26*(fRandomEngine->Uniform(0,1) < 1.0/2.278) - 13;
 	// starting conditions
-	GenerateDynamics();	
+	GenerateDynamics();
 	//momentum in the two regions, < or > 100 GeV
 	if (!high) P = fRandomEngine->fSpectrumL(theta, minE);
 	else P = fRandomEngine->fSpectrumH->GetRandom();
