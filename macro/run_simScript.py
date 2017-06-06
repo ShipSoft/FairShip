@@ -19,6 +19,10 @@ nEvents      = 100
 firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, TBD: proton brem, QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
+MCTracksWithHitsOnly   = False  # copy particles which produced a hit and their history
+MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
+MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
+
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
 HNL          = True
 DarkPhoton   = False
@@ -321,6 +325,7 @@ if simEngine == "Genie":
  Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC-5*u.m, ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
+ run.SetPythiaDecayer("DecayConfigNuAge.C")
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
 if simEngine == "nuRadiography":
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -382,7 +387,18 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 run.Init()
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
+if MCTracksWithHitsOnly:
+ fStack.SetMinPoints(1)
+ fStack.SetEnergyCut(-100.*u.MeV)
+elif MCTracksWithEnergyCutOnly:
+ fStack.SetMinPoints(-1)
+ fStack.SetEnergyCut(100.*u.MeV)
+elif MCTracksWithHitsOrEnergyCut: 
+ fStack.SetMinPoints(1)
+ fStack.SetEnergyCut(100.*u.MeV)
+elif deepCopy: 
+ fStack.SetMinPoints(0)
+ fStack.SetEnergyCut(0.*u.MeV)
 
 if eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
