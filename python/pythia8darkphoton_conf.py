@@ -117,7 +117,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
         proton_bremsstrahlung.protonEnergy=P8gen.GetMom()
         norm=proton_bremsstrahlung.prodRate(mass, epsilon)
         print "A' production rate per p.o.t: \t %.8g"%norm
-        P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 190, 3000,-3.14159,3.14159,""))
+        P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
 
     #Define dark photon
     ctau = darkphoton.cTau(mass,epsilon)
