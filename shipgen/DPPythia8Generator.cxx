@@ -187,7 +187,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      }
 
      fPythia->next();
-     fPythia->event.list();
+     //fPythia->event.list();
      for(int i=0; i<fPythia->event.size(); i++){
        // find first DP
        if (abs(fPythia->event[i].id())==fDP){
