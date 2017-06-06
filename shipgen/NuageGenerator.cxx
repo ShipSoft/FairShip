@@ -119,15 +119,15 @@ Double_t NuageGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   //        Andrea Dainese, Andrea.Dainese@lnl.infn.it,
   //        Andrei Gheata,  Andrei.Gheata@cern.ch
   //
-    
+
   mparam[0]=0; mparam[1]=1; mparam[2] =0; mparam[3] =0;
   mparam[4]=0; mparam[5]=0; mparam[6]=0; mparam[7]=0;
   //
   Double_t bparam[6]; // total parameters
   Double_t lparam[6]; // local parameters
-    
+
   for (Int_t i=0;i<6;i++) bparam[i]=0;
-    
+
   if (!gGeoManager) {
     //AliFatalClass("No TGeo\n");
     return 0.;
@@ -144,7 +144,7 @@ Double_t NuageGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   dir[0] = (end[0]-start[0])*invlen;
   dir[1] = (end[1]-start[1])*invlen;
   dir[2] = (end[2]-start[2])*invlen;
-    
+
   // Initialize start point and direction
   TGeoNode *currentnode = 0;
   TGeoNode *startnode = gGeoManager->InitTrack(start, dir);
@@ -171,7 +171,7 @@ Double_t NuageGenerator::MeanMaterialBudget(const Double_t *start, const Double_
     }
     lparam[5]/=sum;
   }
-    
+
   // Locate next boundary within length without computing safety.
   // Propagate either with length (if no boundary found) or just cross boundary
   gGeoManager->FindNextBoundaryAndStep(length, kFALSE);
@@ -213,7 +213,7 @@ Double_t NuageGenerator::MeanMaterialBudget(const Double_t *start, const Double_
     bparam[3]    += snext*lparam[3];
     bparam[5]    += snext*lparam[5];
     bparam[0]    += snext*lparam[0];
-        
+
     if (snext>=length) break;
     if (!currentnode) break;
     length -= snext;
@@ -289,7 +289,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t start[3]={startX,startY,startZ};
   //cout << "startX = " << startX << "    Y = " << startY << "   Z = " << startZ << endl;
   //cout << "endX = " << endX << "    Y = " << endY << "    Z = " << endZ << endl;
-  
+
   Double_t end[3]={endX,endY,endZ};
   if (fFirst)
     {
@@ -306,28 +306,28 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       cout << "Info NuageGenerator: MaterialBudget 5 " << mparam[5] <<  endl;
       cout << "Info NuageGenerator: MaterialBudget 6 " << mparam[6] <<  endl;
       cout << "Info NuageGenerator: MaterialBudget " << mparam[0]*mparam[4] <<  endl;
-      
+
       fFirst = kFALSE;
     }
   //cout << endl;
   //cout << "*****************************************************************" << endl;
-    
-  if (fn==fNevents) 
+
+  if (fn==fNevents)
     {
       fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");
     }
   fTree->GetEntry(fn%fNevents);
   fn++;
-  if (fn%100==0) 
+  if (fn%100==0)
     {
       cout << "Info NuageGenerator: neutrino event-nr "<< fn << endl;
     }
-    
+
   //Mean distance between start[2] and end[2]
   Double_t zMean = (start[2]+end[2])/2;
   //Distance from the target (Beam Dump (0,0));
   Double_t zBD = zMean - ztarget;
-    
+
   //only accept neutrinos with a ThetaX in the ThetaXMin/Max range and same for ThetaY
   Double_t ThetaXMax = startX/zBD;
   Double_t ThetaXMin = endX/zBD;
@@ -335,7 +335,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t ThetaYMin = endY/zBD;
   // cout << "ThetaXMax = " << ThetaXMax << "   ThetaXMin = " << ThetaXMin << endl;
   //cout << "ThetaYMax = " << ThetaYMax << "   ThetaYMin = " << ThetaYMin << endl;
-    
+
   // Incoming neutrino, get a random px,py
   //cout << "Info NuageGenerator: neutrino " << neu << "p-in "<< pxv << pyv << pzv << " nf "<< nf << endl;
   //cout << "Info NuageGenerator: ztarget " << ztarget << endl;
@@ -350,33 +350,33 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     {
       txnu = gRandom->Uniform(ThetaXMax,ThetaXMin);
       tynu = gRandom->Uniform(ThetaYMax,ThetaYMin);
-	
+
       pout[2] = pzv*pzv/(1+txnu*txnu+tynu*tynu);
-	  
+
       if (pout[2]>0.)
 	{
 	  pout[2]=TMath::Sqrt(pout[2]);
 	  pout[0] = pout[2]*txnu;
 	  pout[1] = pout[2]*tynu;
 	  //cout << "txnu = " << txnu << "     tynu = " << tynu << endl;
-	    
+
 	  //cout << "Info NuageGenerator: neutrino pxyz " << pout[0] << ", " << pout[1] << ", " << pout[2] << endl;
 
 	  start[0]=txnu*(start[2]-ztarget);
-	  start[1]=tynu*(start[2]-ztarget);		
+	  start[1]=tynu*(start[2]-ztarget);
 	  //cout << "Info NuageGenerator: neutrino xyz-start " << start[0] << "  -  " << start[1] << "  -   " << start[2] << endl;
-		
+
 	  end[0]=txnu*(end[2]-ztarget);
-	  end[1]=tynu*(end[2]-ztarget);  
+	  end[1]=tynu*(end[2]-ztarget);
 	  //cout << "Info NuageGenerator: neutrino xyz-end " << end[0] << "  -   " << end[1] << "   -  " << end[2] << endl;
-	    
+
 	  //get material density between these two points
 	  bparam=MeanMaterialBudget(start, end, mparam);
-            
+
 	}
       else bparam = 1.e-10;
     }
-    
+
   //loop over trajectory between start and end to pick an interaction point
   Double_t prob2int = 0.;
   Double_t x=0.;
@@ -385,23 +385,23 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   //Int_t count=0;
   //cout << "Info NuageGenerator Start prob2int while loop, bparam= " << bparam << ", " << bparam*1.e8 <<endl;
   //cout << "Info NuageGenerator What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7]*1.e8 <<endl;
-  while (prob2int<gRandom->Uniform(0.,1.)) 
+  while (prob2int<gRandom->Uniform(0.,1.))
     {
       z=gRandom->Uniform(start[2],end[2]);
       //x & y are computed so to be along the neutrino trajectory
       x= txnu*(z-ztarget);
       y= tynu*(z-ztarget);
       //cout << "x = " << x << "  y = " << y << "   z " << z << endl;
-        
+
       //get local material at this point
       TGeoNode *node = gGeoManager->FindNode(x,y,z);
       TGeoMaterial *mat = 0;
       if (node && !gGeoManager->IsOutside()) mat = node->GetVolume()->GetMaterial();
       //cout << "Info NuageGenerator: mat " <<  count << ", " << mat->GetName() << ", " << mat->GetDensity() << endl;
-        
+
       //density relative to Prob largest density along this trajectory, i.e. use rho(Pt)
       prob2int= mat->GetDensity()/mparam[7];
-        
+
       if (prob2int>1.)
 	cout << "***WARNING*** NuageGenerator: prob2int > Maximum density????" << prob2int << " maxrho:" << mparam[7] << " material: " <<  mat->GetName() << endl;
       //count+=1;
@@ -409,7 +409,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   //cout << "Info NuageGenerator: prob2int " << prob2int << ", " << count << endl;
 
   //cout <<" Neutrino pdg = " <<  neu << endl;
-    
+
   Double_t zrelative=z-ztarget;
   Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
   cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false,TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1]+pout[2]*pout[2]),tof,mparam[0]*mparam[4]);
@@ -421,7 +421,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       Int_t nAddTrk=0;
       if (cc)
 	{
-	  oLPdgCode = copysign(fabs(neu)-1,neu);
+	  oLPdgCode = copysign(TMath::Abs(neu)-1,neu);
 	}
       if(TMath::Abs(oLPdgCode)!=15)
 	{
@@ -430,7 +430,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	}
       //cout << "oLpdgCode " << oLPdgCode << " pz "<< pzl << endl;
       if(TMath::Abs(oLPdgCode)==15)
-	{ 
+	{
 	  if(fExtDecayer==0)
 	    {
 	      cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,false,TMath::Sqrt(pp[0]*pp[0]+pp[1]*pp[1]+pp[2]*pp[2]),tof,mparam[0]*mparam[4]);
@@ -452,7 +452,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 		    }
 		  nAddTrk+=nf2;
 		}
-	  
+
 	      if(TMath::Abs(parent3)==15)
 		{
 		  //Coordinate third vertex
@@ -489,7 +489,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	  else
 	    cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,true,TMath::Sqrt(pp[0]*pp[0]+pp[1]*pp[1]+pp[2]*pp[2]),tof,mparam[0]*mparam[4]);
 	}
-        
+
       // last, all others
       // cout<< "nf: " << nf<<endl;
       for(int i=0; i<nf; i++)
@@ -526,7 +526,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 			}
 		      nAddTrk+=nf2;
 		    }
-		
+
 		  if(TMath::Abs(parent3)==pdgf[i])
 		    {
 		      //Coordinate third vertex
@@ -563,8 +563,8 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	      else
 		cpg->AddTrack(pdgf[i],pp[0],pp[1],pp[2],x,y,z,0,true,TMath::Sqrt(pp[0]*pp[0]+pp[1]*pp[1]+pp[2]*pp[2]),tof,mparam[0]*mparam[4]);
 	    }
-	
-	  
+
+
 	}
     }
 

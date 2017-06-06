@@ -393,11 +393,17 @@ class ShipDigiReco:
 # do the fit
     try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
     except: 
-       print "genfit failed to fit track"
-       continue
+      if debug: print "genfit failed to fit track"
+      error = "genfit failed to fit track"
+      if not log.has_key(error): log[error]=0
+      log[error]+=1
+      continue
 #check
     if not theTrack.checkConsistency():
-     print 'Problem with track after fit, not consistent',atrack,theTrack
+     if debug: print 'Problem with track after fit, not consistent',atrack,theTrack
+     error = "Problem with track after fit, not consistent"
+     if not log.has_key(error): log[error]=0
+     log[error]+=1  
      continue
     fitStatus   = theTrack.getFitStatus()
     nmeas = fitStatus.getNdf()   
@@ -440,7 +446,10 @@ class ShipDigiReco:
      try:
       rep.extrapolateToPoint(state,vetoHitPos,False)
      except:
-      print "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      if not log.has_key(error): log[error]=0
+      log[error]+=1
+      if debug: print "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
       continue
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:

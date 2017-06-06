@@ -6,7 +6,7 @@ from ShipGeoConfig import ConfigRegistry
 debug = 0  # 1 print weights and field
            # 2 make overlap check
 # Default HNL parameters
-theMass = 1.0*u.GeV
+theHNLmass = 1.0*u.GeV
 theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km  TP default for HNL
 
 # Default dark photon parameters
@@ -19,6 +19,10 @@ nEvents      = 100
 firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, to do: QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
+MCTracksWithHitsOnly   = False  # copy particles which produced a hit and their history
+MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
+MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
+
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
 HNL          = True
 DarkPhoton   = False
@@ -65,7 +69,7 @@ except getopt.GetoptError:
         print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
         print '       --mass or -m to set HNL or New Particle mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
-	print '       --epsilon value or -e value to set mixing parameter epsilon' 
+        print '       --epsilon value or -e value to set mixing parameter epsilon' 
         print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
         sys.exit()
 for o, a in opts:
@@ -123,7 +127,7 @@ for o, a in opts:
             dv = int(a)
         if o in ("--muShieldDesign",):
             ds = int(a)
-	if o in ("--nuTauTargetDesign",):
+        if o in ("--nuTauTargetDesign",):
             nud = int(a)
         if o in ("--charm",):
             charm = int(a)
@@ -138,12 +142,12 @@ for o, a in opts:
         if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
         if o in ("-m", "--mass",):
-		if HNL: theHNLmass = float(a)
-		if DarkPhoton: theDPmass = float(a)
+         if HNL: theHNLmass = float(a)
+         if DarkPhoton: theDPmass = float(a)
         if o in ("-c", "--couplings", "--coupling",):
-            theCouplings = [float(c) for c in a.split(",")]
-	if o in ("-e", "--epsilon",):
-		theDPepsilon = float(a)
+         theCouplings = [float(c) for c in a.split(",")]
+        if o in ("-e", "--epsilon",):
+         theDPepsilon = float(a)
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
@@ -220,14 +224,14 @@ if simEngine == "Pythia8":
   P8gen = ROOT.HNLPythia8Generator()
   import pythia8_conf
   if HNL:
-   print 'Generating HNL events of mass %.3f GeV\n'%theMass
+   print 'Generating HNL events of mass %.3f GeV\n'%theHNLmass
    print 'and with couplings=',theCouplings
-   pythia8_conf.configure(P8gen,theMass,theCouplings,inclusive,deepCopy)
+   pythia8_conf.configure(P8gen,theHNLmass,theCouplings,inclusive,deepCopy)
   if RPVSUSY:
-   print 'Generating RPVSUSY events of mass %.3f GeV\n'%theMass
+   print 'Generating RPVSUSY events of mass %.3f GeV\n'%theDPmass
    print 'and with couplings=[%.3f,%.3f]\n'%(theCouplings[0],theCouplings[1])
    print 'and with stop mass=\%.3f GeV\n',theCouplings[2]
-   pythia8_conf.configurerpvsusy(P8gen,theMass,[theCouplings[0],theCouplings[1]],
+   pythia8_conf.configurerpvsusy(P8gen,theDPmass,[theCouplings[0],theCouplings[1]],
                                 theCouplings[2],RPVSUSYbench,'c',deepCopy)
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
@@ -326,6 +330,7 @@ if simEngine == "Genie":
  Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC-5*u.m, ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
+ run.SetPythiaDecayer("DecayConfigNuAge.C")
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
 if simEngine == "nuRadiography":
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -340,7 +345,7 @@ if simEngine == "nuRadiography":
  pdg = ROOT.TDatabasePDG.Instance()
  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
 #
- run.SetPythiaDecayer('DecayConfigPy8.C')  # this does not work !! It insists of using DecayConfig.C 
+ run.SetPythiaDecayer('DecayConfigPy8.C')
  # this requires writing a C macro, would have been easier to do directly in python! 
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
@@ -387,7 +392,18 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 run.Init()
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
+if MCTracksWithHitsOnly:
+ fStack.SetMinPoints(1)
+ fStack.SetEnergyCut(-100.*u.MeV)
+elif MCTracksWithEnergyCutOnly:
+ fStack.SetMinPoints(-1)
+ fStack.SetEnergyCut(100.*u.MeV)
+elif MCTracksWithHitsOrEnergyCut: 
+ fStack.SetMinPoints(1)
+ fStack.SetEnergyCut(100.*u.MeV)
+elif deepCopy: 
+ fStack.SetMinPoints(0)
+ fStack.SetEnergyCut(0.*u.MeV)
 
 if eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)

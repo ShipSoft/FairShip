@@ -48,7 +48,7 @@ Bool_t DPPythia8Generator::Init()
   fPythia->setRndmEnginePtr(fRandomEngine);
   //fPythiaHadDecay->setRndmEnginePtr(fRandomEngine);
   fn = 0;
-  if (fextFile != ""){
+  if (fextFile && *fextFile){
     /*if (0 == strncmp("/eos",fextFile,4) ) {
      char stupidCpp[100];
      strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
@@ -149,7 +149,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    bool hadDecay = false;
    do {
      
-     if (fextFile != ""){
+     if (fextFile && *fextFile){
        // take charm or beauty hadron from external file
        // correct for too much Ds produced by pythia6
        /*bool x = true; 
@@ -259,7 +259,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 	   Rsq = dx*dx+dy*dy;
 	 }
        }
-       if (fextFile != ""){
+       if (fextFile && *fextFile){
 	 // take grand mother particle from input file, to know if primary or secondary production
 	 //cpg->AddTrack((Int_t)mid[0],mpx[0],mpy[0],mpz[0],xm/cm+dx,ym/cm+dy,zm/cm,-1,false,mE[0],0.,1.);
 	 //cpg->AddTrack((Int_t)fPythia->event[im].id(),pmx,pmy,pmz,xm/cm+dx,ym/cm+dy,zm/cm,0,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
@@ -334,7 +334,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      px =fPythia->event[k].px();  
      py =fPythia->event[k].py();  
      e  =fPythia->event[k].e();  
-     if (fextFile != ""){im+=1;};
+     if (fextFile && *fextFile){im+=1;};
      cpg->AddTrack((Int_t)fPythia->event[k].id(),px,py,pz,xS/cm,yS/cm,zS/cm,im,wanttracking,e,tS/cm/c_light,w);
      // cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " << pz << " [GeV] zS = " << zS << " [mm] tS = " << tS << "[mm/c]" <<  endl;
    }
