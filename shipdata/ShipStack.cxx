@@ -464,7 +464,9 @@ void ShipStack::SelectTracks()
       if (!fStoreSecondaries) { store = kFALSE; }
       if (nPoints < fMinPoints) { store = kFALSE; }
       if (eKin < fEnergyCut) { store = kFALSE; }
-      if (nPoints>=fMinPoints && fMinPoints>0 || eKin>=fEnergyCut&&fEnergyCut>0) {store=kTRUE;}
+      if ((nPoints >= fMinPoints && fMinPoints > 0) || (eKin >= fEnergyCut && fEnergyCut > 0)) {
+         store=kTRUE;
+      }
     }
     // --> Set storage flag
     fStoreMap[i] = store;

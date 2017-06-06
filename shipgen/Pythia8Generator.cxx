@@ -38,7 +38,7 @@ Bool_t Pythia8Generator::Init()
 {
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
-  if (fextFile != ""){
+  if (fextFile && *fextFile) {
     if (0 == strncmp("/eos",fextFile,4) ) {
      char stupidCpp[100];
      strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
