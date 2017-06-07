@@ -120,7 +120,8 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
         P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
 
     #Define dark photon
-    ctau = darkphoton.cTau(mass,epsilon)
+    DP_instance = darkphoton.DarkPhoton(mass,epsilon)
+    ctau = DP_instance.cTau()
     print 'ctau p8dpconf file =%3.15f cm'%ctau
     P8gen.SetParameters("9900015:new = A A 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
     if debug: cf.write('P8gen.SetParameters("9900015:new = A A 2 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
@@ -131,7 +132,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
     if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')
 
     # Configuring decay modes...
-    readDecayTable.addDarkPhotondecayChannels(P8gen,mass, epsilon, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
+    readDecayTable.addDarkPhotondecayChannels(P8gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish HNL setup...
     P8gen.SetParameters("9900015:mayDecay = on")
     if debug: cf.write('P8gen.SetParameters("9900015:mayDecay = on")\n')
