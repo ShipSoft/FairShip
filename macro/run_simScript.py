@@ -6,7 +6,7 @@ from ShipGeoConfig import ConfigRegistry
 debug = 0  # 1 print weights and field
            # 2 make overlap check
 # Default HNL parameters
-theHNLmass = 1.0*u.GeV
+theMass = 1.0*u.GeV
 theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km  TP default for HNL
 
 # Default dark photon parameters
@@ -137,8 +137,8 @@ for o, a in opts:
         if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
         if o in ("-m", "--mass",):
-         if HNL: theHNLmass = float(a)
          if DarkPhoton: theDPmass = float(a)
+         else: theMass = float(a)
         if o in ("-c", "--couplings", "--coupling",):
          theCouplings = [float(c) for c in a.split(",")]
         if o in ("-e", "--epsilon",):
@@ -219,14 +219,14 @@ if simEngine == "Pythia8":
   P8gen = ROOT.HNLPythia8Generator()
   import pythia8_conf
   if HNL:
-   print 'Generating HNL events of mass %.3f GeV\n'%theHNLmass
+   print 'Generating HNL events of mass %.3f GeV\n'%theMass
    print 'and with couplings=',theCouplings
-   pythia8_conf.configure(P8gen,theHNLmass,theCouplings,inclusive,deepCopy)
+   pythia8_conf.configure(P8gen,theMass,theCouplings,inclusive,deepCopy)
   if RPVSUSY:
-   print 'Generating RPVSUSY events of mass %.3f GeV\n'%theDPmass
+   print 'Generating RPVSUSY events of mass %.3f GeV\n'%theMass
    print 'and with couplings=[%.3f,%.3f]\n'%(theCouplings[0],theCouplings[1])
    print 'and with stop mass=\%.3f GeV\n',theCouplings[2]
-   pythia8_conf.configurerpvsusy(P8gen,theDPmass,[theCouplings[0],theCouplings[1]],
+   pythia8_conf.configurerpvsusy(P8gen,theMass,[theCouplings[0],theCouplings[1]],
                                 theCouplings[2],RPVSUSYbench,'c',deepCopy)
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
