@@ -6,15 +6,73 @@ import numpy
 
 
 def smearHits(sTree, ShipGeo, modules, no_amb=None):
+    """
+    Smears hits.
+
+    Parameters
+    ----------
+    sTree : root file
+        Events in raw format.
+    ShipGeo : object
+        Contains SHiP detector geometry.
+    modules : object
+        Contains SHiP detector geometry.
+    no_amb : boolean
+        If False - no hit smearing.
+
+    Returns
+    -------
+    SmearedHits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+    """
 
     random = ROOT.TRandom()
     ROOT.gRandom.SetSeed(13)
 
-    # smear strawtube points
+
+    # Loking for duplicates
+    hitstraws = {}
+    duplicatestrawhit = []
+
+    nHits = sTree.strawtubesPoint.GetEntriesFast()
+    for i in range(nHits):
+
+        ahit = sTree.strawtubesPoint[i]
+
+        if (str(ahit.GetDetectorID())[:1]=="5") :
+            continue
+
+        strawname=str(ahit.GetDetectorID())
+
+        if hitstraws.has_key(strawname):
+
+            if ahit.GetX()>hitstraws[strawname][1]:
+                duplicatestrawhit.append(i)
+            else:
+                duplicatestrawhit.append(hitstraws[strawname][0])
+                hitstraws[strawname]=[i,ahit.GetX()]
+        else:
+
+            hitstraws[strawname]=[i,ahit.GetX()]
+
+
+    # Smear strawtube points
     SmearedHits = []
     key = -1
 
-    for ahit in sTree.strawtubesPoint:
+    for i in range(nHits):
+
+        ahit = sTree.strawtubesPoint[i]
+
+        # if i in duplicatestrawhit:
+        #     continue
+        #
+        # if (str(ahit.GetDetectorID())[:1]=="5") :
+        #     continue
+        #
+        # if (((ahit.GetX()/245.)**2 + (ahit.GetY()/495.)**2) >= 1.):
+        #     continue
 
         key+=1
         detID = ahit.GetDetectorID()

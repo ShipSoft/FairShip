@@ -37,3 +37,10 @@ build/
 
 # VM stuff
 .vagrant/
+
+# OS X
+*.idea
+*.DS_Store
+
+# IPython notebooks
+*.ipynb_checkpoints

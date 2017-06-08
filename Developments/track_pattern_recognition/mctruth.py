@@ -1,11 +1,29 @@
 __author__ = 'Mikhail Hushchyn'
 
+# This code is taken from the FairShip/python/shipPatRec.py and modified.
+
 import ROOT
 import numpy
 
 from utils import fracMCsame
 
 def get_track_ids(stree, smeared_hits):
+    """
+    Estimate MC true track ids of hits.
+
+    Parameters
+    ----------
+    stree : root file
+        Events in raw format.
+    smeared_hits : list of dicts
+        List of smeared hits. A smeared hit is a dictionary:
+        {'digiHit':key,'xtop':top x,'ytop':top y,'z':top z,'xbot':bot x,'ybot':bot y,'dist':smeared dist2wire}
+
+    Returns
+    -------
+    y : array-like
+        MC true track ids of hits.
+    """
 
     y = []
 
@@ -16,7 +34,32 @@ def get_track_ids(stree, smeared_hits):
 
     return numpy.array(y)
 
+
 def get_fitted_trackids(y, reco_tracks):
+    """
+    Estimates max fraction of MC true track id for recognized tracks.
+
+    Parameters
+    ----------
+    y : array-like
+        MC true track ids of hits.
+    reco_tracks : dict
+        Dictionary of recognized tracks: {track_id: reco_track}.
+        Reco_track is a dictionary:
+        {'hits': [ind1, ind2, ind3, ...],
+         'hitPosList': X[atrack, :-1],
+         'charge': charge,
+         'pinv': pinv,
+         'params12': [[k_yz, b_yz], [k_xz, b_xz]],
+         'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
+
+    Returns
+    -------
+    fittedtrackids : array-like
+        List of MC true track id with max fraction for recognized tracks.
+    fittedtrackfrac : array-like
+        List of max fractions of MC true track id for recognized tracks.
+    """
 
     fittedtrackids = []
     fittedtrackfrac = []
@@ -29,7 +72,38 @@ def get_fitted_trackids(y, reco_tracks):
 
     return fittedtrackids, fittedtrackfrac
 
+
 def getReconstructibleTracks(iEvent,sTree,sGeo, reconstructiblerequired, threeprong, TStation1StartZ,TStation4EndZ,VetoStationZ,VetoStationEndZ):
+    """
+    Estimates reconstructible tracks of an event.
+
+    Parameters
+    ----------
+    iEvent : int
+        Event id.
+    stree : root file
+        Events in raw format.
+    fGeo : object
+        Contains SHiP detector geometry.
+    reconstructiblerequired : int
+        Number of tracks of HNL decay (2 or 3).
+    threeprong : int
+        0 - HNL decays into 2 particles, 1 - HNL decays into 3 particles
+    TStation1StartZ : float
+        Z-coordinate where station 1 begins.
+    TStation4EndZ : float
+        Z-coordinate where station 4 ends.
+    VetoStationZ : float
+        Z-coordinate where veto station begins.
+    VetoStationEndZ: float
+        Z-coordinate where veto station ends.
+
+    Returns
+    -------
+    MCTrackIDs : array-like
+        List of reconstructible track ids.
+    """
+
     debug = 0
 
     PDG=ROOT.TDatabasePDG.Instance()
