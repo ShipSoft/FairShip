@@ -33,7 +33,7 @@ MuonTaggerPoint.cxx
 
 Set(HEADERS )
 Set(LINKDEF BoxLinkDef.h)
-Set(LIBRARY_NAME Box)
+Set(LIBRARY_NAME charmdet)
 Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core)
 
 GENERATE_LIBRARY()
