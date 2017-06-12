@@ -50,10 +50,10 @@ followMuon  = False   # only transport muons for a fast muon only background est
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
 Opt_high = None # switch for cosmic generator
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t",[\
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
-                                   "output=","tankDesign=","muShieldDesign=","NuRadio",\
+                                   "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
                                    "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign="])
 
 except getopt.GetoptError:
@@ -64,8 +64,8 @@ except getopt.GetoptError:
         print ' or    --PG for particle gun'  
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
-	print '       --DarkPhoton to generate events with dark photons (default HNL)'
-	print ' for darkphoton generation, use -A meson or -A pbrem'
+        print '       --DarkPhoton to generate events with dark photons (default HNL)'
+        print ' for darkphoton generation, use -A meson or -A pbrem'
         print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
         print '       --mass or -m to set HNL or New Particle mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
@@ -142,12 +142,15 @@ for o, a in opts:
         if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
         if o in ("-m", "--mass",):
-         if DarkPhoton: theDPmass = float(a)
-         else: theMass = float(a)
+           if DarkPhoton: theDPmass = float(a)
+           else: theMass = float(a)
         if o in ("-c", "--couplings", "--coupling",):
-         theCouplings = [float(c) for c in a.split(",")]
+           theCouplings = [float(c) for c in a.split(",")]
         if o in ("-e", "--epsilon",):
-         theDPepsilon = float(a)
+           theDPepsilon = float(a)
+        if o in ("-t", "--test"):
+            inputFile = "../FairShip/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
+            nEvents = 50
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
