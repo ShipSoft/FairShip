@@ -73,7 +73,7 @@ def get_fitted_trackids(y, reco_tracks):
     return fittedtrackids, fittedtrackfrac
 
 
-def getReconstructibleTracks(iEvent,sTree,sGeo, reconstructiblerequired, threeprong, TStation1StartZ,TStation4EndZ,VetoStationZ,VetoStationEndZ):
+def getReconstructibleTracks(iEvent,sTree,sGeo, reconstructiblerequired, threeprong, ShipGeo):
     """
     Estimates reconstructible tracks of an event.
 
@@ -89,20 +89,24 @@ def getReconstructibleTracks(iEvent,sTree,sGeo, reconstructiblerequired, threepr
         Number of tracks of HNL decay (2 or 3).
     threeprong : int
         0 - HNL decays into 2 particles, 1 - HNL decays into 3 particles
-    TStation1StartZ : float
-        Z-coordinate where station 1 begins.
-    TStation4EndZ : float
-        Z-coordinate where station 4 ends.
-    VetoStationZ : float
-        Z-coordinate where veto station begins.
-    VetoStationEndZ: float
-        Z-coordinate where veto station ends.
+    ShipGeo : object
+        Contains SHiP detector geometry.
 
     Returns
     -------
     MCTrackIDs : array-like
         List of reconstructible track ids.
     """
+
+    VetoStationZ = ShipGeo.vetoStation.z
+    VetoStationEndZ = VetoStationZ+(ShipGeo.strawtubes.DeltazView+ShipGeo.strawtubes.OuterStrawDiameter)/2
+
+    TStationz = ShipGeo.TrackStation1.z
+    Zpos = TStationz-3./2.*ShipGeo.strawtubes.DeltazView-1./2.*ShipGeo.strawtubes.DeltazPlane-1./2.*ShipGeo.strawtubes.DeltazLayer
+    TStation1StartZ = Zpos-ShipGeo.strawtubes.OuterStrawDiameter/2
+
+    Zpos = TStationz+3./2.*ShipGeo.strawtubes.DeltazView+1./2.*ShipGeo.strawtubes.DeltazPlane+1./2.*ShipGeo.strawtubes.DeltazLayer
+    TStation4EndZ=Zpos+ShipGeo.strawtubes.OuterStrawDiameter/2
 
     debug = 0
 

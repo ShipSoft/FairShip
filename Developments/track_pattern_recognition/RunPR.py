@@ -90,18 +90,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconst
 
     sTree = fn.cbmsim
 
-    ############################## Initialize SHiP Spectrometer Tracker geometry #######################################
-
-    zlayer, \
-    zlayerv2, \
-    z34layer, \
-    z34layerv2, \
-    TStation1StartZ, \
-    TStation4EndZ, \
-    VetoStationZ, \
-    VetoStationEndZ = initialize(ShipGeo)
-
-
     ########################################## Start Track Pattern Recognition #########################################
 
     # Init book of hists for the quality measurements
@@ -141,10 +129,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconst
                                                   sGeo,
                                                   reconstructiblerequired,
                                                   threeprong,
-                                                  TStation1StartZ,
-                                                  TStation4EndZ,
-                                                  VetoStationZ,
-                                                  VetoStationEndZ) # TODO:!!!
+                                                  ShipGeo)
 
         ########################################### Measure quality metrics ############################################
 
