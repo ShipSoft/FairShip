@@ -7,6 +7,25 @@ python RunPR.py -i ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pyt
 ```
 Results of track pattern recognition will appear in `hists.root` file. 
 
+General options of `RunPR.py`:
+```
+-i  --input                   : Input file path
+-g  --geo                     : Path to geo file
+-o  --output                  : Output .root file path. Default is hists.root
+-y  --dy                      : dy
+-n  --n_reco                  : Number of reconstructible tracks per event is required
+-t  --three                   : Is threeprong mumunu decay?
+-m  --method                  : Name of a track pattern recognition method: 
+                                  'Baseline' - base PR method described in 
+                                               https://cds.cern.ch/record/2005715/files/main.pdf
+                                  'FH' - a PR method based on Hough Transform, 
+                                  'AR' - a method based on Artificial Retina, 
+                                  'R' - this method recognizes tracks before and 
+                                        after the magnet simultaneously
+                                Default is 'Baseline'
+-h  --help                    : Shows this help
+```
+
 ## Code
 <img src="pic/code.png" width="50%" align="center">
 
