@@ -14,7 +14,6 @@ from rootpyPickler import Unpickler
 import shipDet_conf
 
 # For track pattern recognition
-from geo_init import initialize
 from mctruth import getReconstructibleTracks, get_fitted_trackids, get_track_ids
 from smear_hits import smearHits
 from execute import execute
