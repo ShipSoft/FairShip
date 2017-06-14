@@ -201,7 +201,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
     const char* str10 ="_MagBotLeft";
     const char* str11 ="_MagBotRight";
     strcpy(magnetId,magnetName);
-    if (fieldDirection == "up") {		    
+    if (!strncmp(fieldDirection, "up", 2)) {
       CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
@@ -215,7 +215,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       CreateArb8(strcat(magnetId,str10), medium, dZ, cornersBL,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[2],fields[3],tShield,1,0, 0, Z);
     } else{
-      if (fieldDirection == "down") {
+      if (!strncmp(fieldDirection, "down", 4)) {
 	CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
