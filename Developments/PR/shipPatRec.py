@@ -248,9 +248,6 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
                               global_inds_stereo12[track_inds_stereo12[track_id]]])
         track_params_12.append([track_params_y12[track_id], track_params_stereo12[track_id]])
 
-    track_inds_12 = numpy.unique(track_inds_12)
-    track_params_12 = numpy.unique(track_params_12)
-
 
     ######################################### Y-views, stations 3&4 ####################################################
 
@@ -299,9 +296,6 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
         track_inds_34.append([global_inds_y34[track_inds_y34[track_id]],
                               global_inds_stereo34[track_inds_stereo34[track_id]]])
         track_params_34.append([track_params_y34[track_id], track_params_stereo34[track_id]])
-
-    track_inds_34 = numpy.unique(track_inds_34)
-    track_params_34 = numpy.unique(track_params_34)
 
 
     ############################################## Tracks combination ##################################################
