@@ -12,6 +12,7 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
   sw_vers
   osx_vers=`sw_vers -productVersion | cut -d . -f1 -f2`
   brew update >& /dev/null
+  brew cask uninstall oclint
   brew install gcc
   brew install openssl
   export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
