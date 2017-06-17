@@ -5,12 +5,10 @@ matrix:
         - os: osx
           compiler: clang
           osx_image: xcode8.3
-          env: FAIRSOFT_VERSION=osx12-Jun16
 #        - os: linux
 #          compiler: gcc
 #          dist: trusty
 #          sudo: required
-#          env: FAIRSOFT_VERSION=trusty-Jun16
 
 script:
   - ./travis.sh
