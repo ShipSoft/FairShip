@@ -714,9 +714,6 @@ def stereo_track_recognition(model, X, track_params_y, sample_weight=None, uniqu
         track_params_stereo.append(atrack_params)
 
 
-    track_inds_stereo = numpy.array(track_inds_stereo)
-    track_params_stereo = numpy.array(track_params_stereo)
-
     return track_inds_stereo, track_params_stereo
 
 
