@@ -14,12 +14,11 @@ from rootpyPickler import Unpickler
 import shipDet_conf
 
 # For track pattern recognition
-from mctruth import getReconstructibleTracks, get_fitted_trackids, get_track_ids
-from smear_hits import smearHits
-from execute import execute
+from utils.utils import getReconstructibleTracks, get_fitted_trackids, get_track_ids, smearHits
+from shipPatRec import execute
 
 # For track pattern recognition quality measure
-from quality import init_book_hist, quality_metrics, save_hists
+from utils.quality import init_book_hist, quality_metrics, save_hists
 
 
 
