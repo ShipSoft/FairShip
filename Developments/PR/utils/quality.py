@@ -7,8 +7,8 @@ import rootUtils as ut
 import math
 
 from utils import fracMCsame
-from digitization import Digitization
-from mctruth import get_track_ids
+from utils import Digitization
+from utils import get_track_ids
 
 ################################################ Helping functions #####################################################
 
