@@ -53,7 +53,7 @@ class Baseline(object):
             x_track = x[track]
             y_track = y[track]
 
-            if sample_weight != None:
+            if sample_weight is not None:
                 sample_weight_track = sample_weight[track]
             else:
                 sample_weight_track = None
@@ -68,10 +68,15 @@ class Baseline(object):
 
     def fit(self, x, y, sample_weight=None):
 
-        track_inds = []
         track_params = []
+        track_inds = []
 
-        xlayer, hits = self.sort_hits(self, x, y)
+        if len(x) == 0:
+            self.tracks_params_ = numpy.array(track_params)
+            self.track_inds_ = numpy.array(track_inds)
+            return
+
+        xlayer, hits = self.sort_hits(x, y)
         used = numpy.zeros(len(x))
 
         planes=xlayer.keys()
