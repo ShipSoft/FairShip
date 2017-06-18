@@ -308,7 +308,7 @@ class FastHough(object):
             x_track = x[track]
             y_track = y[track]
 
-            if sample_weight != None:
+            if sample_weight is not None:
                 sample_weight_track = sample_weight[track]
             else:
                 sample_weight_track = None

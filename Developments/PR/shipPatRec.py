@@ -680,7 +680,7 @@ def stereo_track_recognition(model, X, track_params_y, sample_weight=None, uniqu
             else:
                 sel = (numpy.abs(ys) <= 293.)
 
-            if sample_weight != None:
+            if sample_weight is not None:
                 sample_weight_stereo = sample_weight[sel]
             else:
                 sample_weight_stereo = None
