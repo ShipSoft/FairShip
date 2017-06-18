@@ -207,11 +207,15 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
 
     select_y12 = ((statnb == 1) + (statnb == 2)) * ((vnb == 0) + (vnb == 3))
     XX_y12 = XX[select_y12]
+    if sample_weight is None:
+        sample_weight_y12 = None
+    else:
+        sample_weight_y12 = sample_weight[select_y12]
     global_inds_y12 = global_inds[select_y12]
 
     # Look for tracks in the 16 layers with horizontal straw tubes in YZ-plane.
 
-    track_inds_y12, track_params_y12 = y_track_recognition(ptrack_y, XX_y12, sample_weight)
+    track_inds_y12, track_params_y12 = y_track_recognition(ptrack_y, XX_y12, sample_weight_y12)
 
     # track_inds_y12 = [[ind1, ind2, ind3, ...], [...], ...]
     # track_params_y12 = [[k1, b1], [k2, b2], ...], where y = k * x + b
@@ -223,6 +227,10 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
 
     select_stereo12 = ((statnb == 1) + (statnb == 2)) * ((vnb == 1) + (vnb == 2))
     XX_stereo12 = XX[select_stereo12]
+    if sample_weight is None:
+        sample_weight_stereo12 = None
+    else:
+        sample_weight_stereo12 = sample_weight[select_stereo12]
     global_inds_stereo12 = global_inds[select_stereo12]
 
     # For each track found in the Y-views, intersect the plane defined by this track and the X-axis with the stereo (U,V) hits.
@@ -231,7 +239,7 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
     # It is supposed that one track in Y-views has only one track in Stereo-views.
 
     track_inds_stereo12, track_params_stereo12 = stereo_track_recognition(ptrack_stereo, XX_stereo12,
-                                                                                   track_params_y12, sample_weight,
+                                                                                   track_params_y12, sample_weight_stereo12,
                                                                                    unique_hit_labels=True)
 
     # track_inds_stereo12 = [[ind1, ind2, ind3, ...], [...], ...]
@@ -255,11 +263,15 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
 
     select_y34 = ((statnb == 3) + (statnb == 4)) * ((vnb == 0) + (vnb == 3))
     XX_y34 = XX[select_y34]
+    if sample_weight is None:
+        sample_weight_y34 = None
+    else:
+        sample_weight_y34 = sample_weight[select_y34]
     global_inds_y34 = global_inds[select_y34]
 
     # Look for tracks in the 16 layers with horizontal straw tubes in YZ-plane.
 
-    track_inds_y34, track_params_y34 = y_track_recognition(ptrack_y, XX_y34, sample_weight)
+    track_inds_y34, track_params_y34 = y_track_recognition(ptrack_y, XX_y34, sample_weight_y34)
 
     # track_inds_y34 = [[ind1, ind2, ind3, ...], [...], ...]
     # track_params_y34 = [[k1, b1], [k2, b2], ...], where y = k * x + b
@@ -271,6 +283,10 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
 
     select_stereo34 = ((statnb == 3) + (statnb == 4)) * ((vnb == 1) + (vnb == 2))
     XX_stereo34 = XX[select_stereo34]
+    if sample_weight is None:
+        sample_weight_stereo34 = None
+    else:
+        sample_weight_stereo34 = sample_weight[select_stereo34]
     global_inds_stereo34 = global_inds[select_stereo34]
 
     # For each track found in the Y-views, intersect the plane defined by this track and the X-axis with the stereo (U,V) hits.
@@ -279,7 +295,7 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
     # It is supposed that one track in Y-views has only one track in Stereo-views.
 
     track_inds_stereo34, track_params_stereo34 = stereo_track_recognition(ptrack_stereo, XX_stereo34,
-                                                                                   track_params_y34, sample_weight,
+                                                                                   track_params_y34, sample_weight_stereo34,
                                                                                    unique_hit_labels=True)
 
     # track_inds_stereo34 = [[ind1, ind2, ind3, ...], [...], ...]
