@@ -659,8 +659,8 @@ def stereo_track_recognition(model, X, track_params_y, sample_weight=None, uniqu
         List of parameters of the recognized tracks. Example: [[k1, b1], [k2, b2], ...]
     """
 
-    track_inds = []
-    tracks_params = []
+    atrack_inds = []
+    atracks_params = []
 
     indeces = numpy.arange(len(X))
     used = numpy.zeros(len(X))
@@ -688,10 +688,12 @@ def stereo_track_recognition(model, X, track_params_y, sample_weight=None, uniqu
             model.fit(xs[sel], ys[sel], sample_weight_stereo)
 
             if len(model.track_inds_) == 0:
+                track_inds_stereo.append([])
+                track_params_stereo.append([])
                 continue
 
-            atrack_inds = model.track_inds_
-            atrack_params = model.tracks_params_
+            atrack_inds = model.track_inds_[0]
+            atrack_params = model.tracks_params_[0]
 
             for i in range(len(atrack_inds)):
                 inds = indeces[sel][atrack_inds[i]]
