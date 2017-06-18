@@ -693,11 +693,10 @@ def stereo_track_recognition(model, X, track_params_y, sample_weight=None, uniqu
                 continue
 
             atrack_inds = model.track_inds_[0]
+            atrack_inds = indeces[sel][atrack_inds]
             atrack_params = model.tracks_params_[0]
 
-            for i in range(len(atrack_inds)):
-                inds = indeces[sel][atrack_inds[i]]
-                used[inds] = 1
+            used[atrack_inds] = 1
 
 
         else:
