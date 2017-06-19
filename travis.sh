@@ -39,13 +39,15 @@ fi
 
 # install FairSoft
 #wget https://root.cern.ch/download/FairSoft-${FAIRSOFT_VERSION}.tgz 2> /dev/null
-wget --no-check-certificate https://www.dropbox.com/s/4ya3s4o75kuz64f/FairSoft-osx12-Jun16.tgz 2> /dev/null
-tar zxf FairSoft-osx12-Jun16.tgz
+#wget --progress=dot:giga --no-check-certificate https://www.dropbox.com/s/4ya3s4o75kuz64f/FairSoft-${FAIRSOFT_VERSION}.tgz
+wget --progress=dot:giga --no-check-certificate https://cernbox.cern.ch/index.php/s/xEZLZgDknqACMwL/download -O FairSoft-${FAIRSOFT_VERSION}.tgz
+tar zxf FairSoft-${FAIRSOFT_VERSION}.tgz
 
 # install FairRoot
 #wget https://root.cern.ch/download/FairRoot-${FAIRSOFT_VERSION}.tgz 2> /dev/null
-wget --no-check-certificate https://www.dropbox.com/s/aafjbjcz6dyoidq/FairRoot-osx12-Jun16.tgz 2> /dev/null
-tar zxf FairRoot-osx12-Jun16.tgz
+#wget --progress=dot:giga --no-check-certificate https://www.dropbox.com/s/aafjbjcz6dyoidq/FairRoot-${FAIRSOFT_VERSION}.tgz
+wget --progress=dot:giga --no-check-certificate https://cernbox.cern.ch/index.php/s/qPmN8KuA83f8dFf/download -O FairRoot-${FAIRSOFT_VERSION}.tgz
+tar zxf FairRoot-${FAIRSOFT_VERSION}.tgz
 
 # output compiler information
 echo ${CXX}
