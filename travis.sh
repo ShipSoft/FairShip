@@ -71,7 +71,7 @@ git remote set-branches --add origin master
 # run FairShip tests
 cd ../FairShipRun
 . config.sh
-python ../FairShip/macro/run_simScript.py --test
+/usr/bin/python ../FairShip/macro/run_simScript.py --test
 
 # run following commands only on Linux
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
