@@ -17,8 +17,12 @@ mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100
 firstEvent   = 0
-inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, TBD: proton brem, QCD prod.
+inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, to do: QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
+MCTracksWithHitsOnly   = False  # copy particles which produced a hit and their history
+MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
+MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
+
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
 HNL          = True
 DarkPhoton   = False
@@ -46,11 +50,11 @@ followMuon  = False   # only transport muons for a fast muon only background est
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
 Opt_high = None # switch for cosmic generator
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:",[\
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t",[\
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
-                                   "output=","tankDesign=","muShieldDesign=","NuRadio",\
-                                   "RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign="])
+                                   "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -60,10 +64,12 @@ except getopt.GetoptError:
         print ' or    --PG for particle gun'  
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
+        print '       --DarkPhoton to generate events with dark photons (default HNL)'
+        print ' for darkphoton generation, use -A meson or -A pbrem'
         print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
         print '       --mass or -m to set HNL or New Particle mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
-	print '       --epsilon value or -e value to set mixing parameter epsilon' 
+        print '       --epsilon value or -e value to set mixing parameter epsilon' 
         print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
         sys.exit()
 for o, a in opts:
@@ -80,7 +86,7 @@ for o, a in opts:
             if a.lower() == 'charmonly':
                charmonly = True
                HNL = False 
-            if a not in ['b','c']: inclusive = True
+            if a not in ['b','c','meson','pbrem']: inclusive = True
         if o in ("--Genie",):
             simEngine = "Genie"
         if o in ("--NuRadio",):
@@ -121,7 +127,7 @@ for o, a in opts:
             dv = int(a)
         if o in ("--muShieldDesign",):
             ds = int(a)
-	if o in ("--nuTauTargetDesign",):
+        if o in ("--nuTauTargetDesign",):
             nud = int(a)
         if o in ("--charm",):
             charm = int(a)
@@ -130,15 +136,21 @@ for o, a in opts:
         if o in ("--RpvSusy",):
             HNL = False
             RPVSUSY = True
+        if o in ("--DarkPhoton",):
+            HNL = False
+            DarkPhoton = True
         if o in ("--SusyBench",):
             RPVSUSYbench = int(a)
         if o in ("-m", "--mass",):
-		if HNL: theHNLmass = float(a)
-		if DarkPhoton: theDPmass = float(a)
+           if DarkPhoton: theDPmass = float(a)
+           else: theMass = float(a)
         if o in ("-c", "--couplings", "--coupling",):
-            theCouplings = [float(c) for c in a.split(",")]
-	if o in ("-e", "--epsilon",):
-		theDPepsilon = float(a)
+           theCouplings = [float(c) for c in a.split(",")]
+        if o in ("-e", "--epsilon",):
+           theDPepsilon = float(a)
+        if o in ("-t", "--test"):
+            inputFile = "../FairShip/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
+            nEvents = 50
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
@@ -321,6 +333,7 @@ if simEngine == "Genie":
  Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC-5*u.m, ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
+ run.SetPythiaDecayer("DecayConfigNuAge.C")
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
 if simEngine == "nuRadiography":
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -335,7 +348,7 @@ if simEngine == "nuRadiography":
  pdg = ROOT.TDatabasePDG.Instance()
  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
 #
- run.SetPythiaDecayer('DecayConfigPy8.C')  # this does not work !! It insists of using DecayConfig.C 
+ run.SetPythiaDecayer('DecayConfigPy8.C')
  # this requires writing a C macro, would have been easier to do directly in python! 
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
@@ -382,7 +395,18 @@ else:            run.SetStoreTraj(ROOT.kFALSE)
 run.Init()
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-if not deepCopy : fStack.SetEnergyCut(100.*u.MeV)
+if MCTracksWithHitsOnly:
+ fStack.SetMinPoints(1)
+ fStack.SetEnergyCut(-100.*u.MeV)
+elif MCTracksWithEnergyCutOnly:
+ fStack.SetMinPoints(-1)
+ fStack.SetEnergyCut(100.*u.MeV)
+elif MCTracksWithHitsOrEnergyCut: 
+ fStack.SetMinPoints(1)
+ fStack.SetEnergyCut(100.*u.MeV)
+elif deepCopy: 
+ fStack.SetMinPoints(0)
+ fStack.SetEnergyCut(0.*u.MeV)
 
 if eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)

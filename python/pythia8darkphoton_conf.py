@@ -2,6 +2,7 @@ import ROOT, os, sys
 import shipunit as u
 import readDecayTable
 import darkphoton
+import proton_bremsstrahlung
 
 # Boundaries for production in meson decays
 # mass of the meson - mass of other decay product!!
@@ -73,7 +74,6 @@ def manipulatePhysics(mass, P8gen, cf):
 
 
 def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
-    PdgR = DarkPhoton.interpolatePDGtable()
     # configure pythia8 for Ship usage
     debug=True
     if debug: cf=open('pythia8_darkphotonconf.txt','w')
@@ -87,42 +87,63 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
     #P8gen.SetParameters("ParticleDecays:limitTau0 = on")
     #P8gen.SetParameters("ParticleDecays:tau0Max = 1")
     # explicitly make KS and KL stable
-    P8gen.SetParameters("130:mayDecay  = off")
-    if debug: cf.write('P8gen.SetParameters("130:mayDecay  = off")\n')
-    P8gen.SetParameters("310:mayDecay  = off")
-    if debug: cf.write('P8gen.SetParameters("310:mayDecay  = off")\n')
-    P8gen.SetParameters("3122:mayDecay = off")
-    if debug: cf.write('P8gen.SetParameters("3122:mayDecay = off")\n')
-    P8gen.SetParameters("3222:mayDecay = off")
-    if debug: cf.write('P8gen.SetParameters("3222:mayDecay = off")\n')
     if inclusive=="meson":
+        P8gen.SetParameters("130:mayDecay  = off")
+        if debug: cf.write('P8gen.SetParameters("130:mayDecay  = off")\n')
+        P8gen.SetParameters("310:mayDecay  = off")
+        if debug: cf.write('P8gen.SetParameters("310:mayDecay  = off")\n')
+        P8gen.SetParameters("3122:mayDecay = off")
+        if debug: cf.write('P8gen.SetParameters("3122:mayDecay = off")\n')
+        P8gen.SetParameters("3222:mayDecay = off")
+        if debug: cf.write('P8gen.SetParameters("3222:mayDecay = off")\n')
+    
         # Configuring production
         P8gen.SetParameters("SoftQCD:nonDiffractive = on")
-	if debug: cf.write('P8gen.SetParameters("SoftQCD:nonDiffractive = on")\n')
+        if debug: cf.write('P8gen.SetParameters("SoftQCD:nonDiffractive = on")\n')
 
-        #Define dark photon
-        ctau = darkphoton.cTau(mass,epsilon)
-        print 'ctau p8dpconf file =%3.15f cm'%ctau
-        P8gen.SetParameters("9900015:new = A A 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
-        if debug: cf.write('P8gen.SetParameters("9900015:new = A A 2 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
-        P8gen.SetParameters("9900015:isResonance = false")
-        if debug: cf.write('P8gen.SetParameters("9900015:isResonance = false")\n')
+    elif inclusive=="pbrem":
+        P8gen.SetParameters("ProcessLevel:all = off")
+        if debug: cf.write('P8gen.SetParameters("ProcessLevel:all = off")\n')
+        #Also allow resonance decays, with showers in them
+        #P8gen.SetParameters("Standalone:allowResDec = on")
 
-	P8gen.SetParameters("Next:numberCount    =  0")
-        if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')
+        #Optionally switch off decays.
+        #P8gen.SetParameters("HadronLevel:Decay = off")
 
-        # Configuring decay modes...
-        readDecayTable.addDarkPhotondecayChannels(P8gen,mass, epsilon, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
-         # Finish HNL setup...
-        P8gen.SetParameters("9900015:mayDecay = on")
-	if debug: cf.write('P8gen.SetParameters("9900015:mayDecay = on")\n')
-        P8gen.SetDPId(9900015)
-	if debug: cf.write('P8gen.SetDPId(9900015)\n')
+        #Switch off automatic event listing in favour of manual.
+        P8gen.SetParameters("Next:numberShowInfo = 0")
+        P8gen.SetParameters("Next:numberShowProcess = 0")
+        P8gen.SetParameters("Next:numberShowEvent = 0")
+        proton_bremsstrahlung.protonEnergy=P8gen.GetMom()
+        norm=proton_bremsstrahlung.prodRate(mass, epsilon)
+        print "A' production rate per p.o.t: \t %.8g"%norm
+        P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
+
+    #Define dark photon
+    DP_instance = darkphoton.DarkPhoton(mass,epsilon)
+    ctau = DP_instance.cTau()
+    print 'ctau p8dpconf file =%3.15f cm'%ctau
+    P8gen.SetParameters("9900015:new = A A 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+    if debug: cf.write('P8gen.SetParameters("9900015:new = A A 2 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
+    P8gen.SetParameters("9900015:isResonance = false")
+    if debug: cf.write('P8gen.SetParameters("9900015:isResonance = false")\n')
+    
+    P8gen.SetParameters("Next:numberCount    =  0")
+    if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')
+
+    # Configuring decay modes...
+    readDecayTable.addDarkPhotondecayChannels(P8gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
+    # Finish HNL setup...
+    P8gen.SetParameters("9900015:mayDecay = on")
+    if debug: cf.write('P8gen.SetParameters("9900015:mayDecay = on")\n')
+    P8gen.SetDPId(9900015)
+    if debug: cf.write('P8gen.SetDPId(9900015)\n')
        # also add to PDG
-        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
-        print 'gamma=%e'%gamma
-        addDPtoROOT(pid=9900015,m=mass,g=gamma)
-
+    gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
+    print 'gamma=%e'%gamma
+    addDPtoROOT(pid=9900015,m=mass,g=gamma)
+    
+    if inclusive=="meson":
         #change meson decay to dark photon depending on mass
 	selectedMum = manipulatePhysics(mass, P8gen, cf)
         print 'selected mum is : %d'%selectedMum

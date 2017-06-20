@@ -54,7 +54,8 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TString view;
     switch (vnb) {
 	      case 0:
-	        view = "_x1";      	      	 
+	        view = "_x1";   
+                if (statnb==5){view = "_x";}   	      	 
 	        break;
 	      case 1:  
 	      	view = "_u";     
@@ -68,13 +69,22 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 	      default:
 	        view = "_x1";}
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-    TString prefix = "Tr";prefix+=statnb;prefix+=view;prefix+="_plane_";prefix+=pnb;prefix+="_";
+    TString prefix = "Tr";
+    if (statnb==5){prefix="Veto";}
+    else{prefix+=statnb;}
+    prefix+=view;prefix+="_plane_";prefix+=pnb;prefix+="_";
     TString plane = prefix;plane+=statnb;plane+=vnb;plane+=+pnb;plane+="00000";
     TString layer = prefix+"layer_";layer+=lnb;layer+="_";layer+=statnb;layer+=vnb;layer+=pnb;layer+=lnb;layer+="0000";
-    TString wire = "wire_";wire+=fDetectorID;wire+=1000;
+    TString wire = "wire_";
+    if (statnb==5){wire+="veto_";}
+    wire+=(fDetectorID+1000);
     if (statnb<3){wire = "wire_12_";wire+=(fDetectorID+1000);}
     TString path = "/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire;
-    nav->cd(path);
+    Bool_t rc = nav->cd(path);
+    if (not rc){
+      cout << "strawtubes::StrawDecode, TgeoNavigator failed "<<path<<endl; 
+      return;
+    }  
     TGeoNode* W = nav->GetCurrentNode();
     TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
     Double_t top[3] = {0,0,S->GetDZ()};

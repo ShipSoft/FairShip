@@ -81,7 +81,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
 
 
 
-def addDarkPhotondecayChannels(P8Gen,mDarkPhoton,epsilon,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
+def addDarkPhotondecayChannels(P8Gen,DP,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
     """
     Configures the DP decay table in Pythia8
     
@@ -90,7 +90,7 @@ def addDarkPhotondecayChannels(P8Gen,mDarkPhoton,epsilon,conffile=os.path.expand
     - conffile: a file listing the channels one wishes to activate
     """
     # First fetch the list of kinematically allowed decays
-    allowed = allowedChannels(mDarkPhoton)
+    allowed = DP.allowedChannels()
     # Then fetch the list of desired channels to activate
     wanted = load(conffile=conffile, verbose=verbose)
     # Add decay channels
@@ -103,7 +103,7 @@ def addDarkPhotondecayChannels(P8Gen,mDarkPhoton,epsilon,conffile=os.path.expand
 
         if allowed[dec] == 'yes' and wanted[dec] == 'yes':
             
-            BR = findBranchingRatio(mDarkPhoton,epsilon,dec)
+            BR = DP.findBranchingRatio(dec)
             
             if 'hadrons' in dec:
                 #P8Gen.SetDecayToHadrons()

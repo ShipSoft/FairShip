@@ -6,6 +6,8 @@
 #include "TLorentzVector.h"
 #include "TGeoVolume.h"
 
+#include <map>
+
 class vetoPoint;
 class FairVolume;
 class TClonesArray;
@@ -82,6 +84,14 @@ class veto: public FairDetector
     virtual void   PreTrack();
     virtual void   BeginEvent() {;}
 
+    inline void SetUseSupport(Int_t use=1) {fUseSupport=use;}
+    inline Int_t GetUseSupport() const {return fUseSupport;}
+
+    inline void SetPlasticVeto(Int_t plastic=1) {fPlasticVeto=plastic;}
+    inline Int_t GetPlasticVeto() const {return fPlasticVeto;}
+
+    inline void SetLiquidVeto(Int_t liquid=1) {fLiquidVeto=liquid;}
+    inline Int_t GetLiquidVeto() const {return fLiquidVeto;}
 
   private:
 
@@ -143,8 +153,11 @@ class veto: public FairDetector
     Float_t fXstart,fYstart; // horizontal/vertical width at start of tank
     Float_t zFocusX,zFocusY; // focus points for conical design
     Float_t floorHeightA,floorHeightB; // height of floor
-    /** container for data points */
 
+    Int_t fUseSupport;
+    Int_t fPlasticVeto;
+    Int_t fLiquidVeto;
+    /** container for data points */
     TClonesArray*  fvetoPointCollection;
 
     veto(const veto&);
@@ -162,7 +175,24 @@ class veto: public FairDetector
 
     TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
     TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
-    ClassDef(veto,7)
+
+    
+    Int_t fDeltaCpy;	//Delta in copy number for solid plastic veto
+    std::map<Int_t, TVector3> fCenters; //! Map of copy number to center of tiles 
+
+    // Return copy number for solid plastic scitillator veto
+    inline Int_t GetCopyNumber(Int_t iz, Int_t iplank, Int_t region) 
+    { return (iz*1000+iplank)*10+region+fDeltaCpy; }
+
+    // Add center of volume and its dx, dy and dz (currently dummy) to a map for futher export 
+    void InnerAddToMap(Int_t ncpy, Double_t x, Double_t y, Double_t z, Double_t dx=-1111, Double_t dy=-1111, Double_t dz=-1111);
+
+    // Insert inner veto into the decay volume. ix (iy) is a number of tiles at the beginning
+    // of the volume
+    void InsertInnerVeto(TString xname,Double_t th,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material, TGeoVolume* Inner, Int_t ix=2, Int_t iy=30);
+
+
+    ClassDef(veto, 8)
 };
 
 #endif //VETO_H

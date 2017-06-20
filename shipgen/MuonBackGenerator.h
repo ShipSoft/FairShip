@@ -26,9 +26,13 @@ class MuonBackGenerator : public FairGenerator
   void CloseFile();//!
   void SetPhiRandom(Bool_t fl) { fPhiRandomize = fl; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
-  void SetSameSeed(Double_t s) { fSameSeed = s; };
- private:  
- protected:
+  void SetSameSeed(Int_t s) {
+    fLogger->Info(MESSAGE_ORIGIN, TString::Format("Seed: %d", s));
+    fSameSeed = s;
+  };
+
+private:
+protected:
   Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz,ecut;
   TFile* fInputFile;    //! 
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command

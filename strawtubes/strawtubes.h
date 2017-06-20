@@ -64,6 +64,7 @@ class strawtubes: public FairDetector
     void SetTr34YDim(Double_t tr34ydim);      
     void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
+    void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
     void SetStrawResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
     Double_t StrawVdrift() {return v_drift;}

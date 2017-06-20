@@ -33,7 +33,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   }
   fn = firstEvent;
   fPhiRandomize = fl;
-  fSameSeed = -1;
+  fSameSeed = 0;
   fsmearBeam = 0; // default no beam smearing, use SetSmearBeam(sb) if different, sb [cm]
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
   fNevents = fTree->GetEntries();
@@ -82,9 +82,10 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t mass = pdgBase->GetParticle(id)->Mass();
   Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
   Double_t tof = 0;
-  if (!fSameSeed<0){
-   Int_t theSeed = fn + fSameSeed*fNevents;
-   gRandom->SetSeed(theSeed);
+  if (fSameSeed) {
+    Int_t theSeed = fn + fSameSeed * fNevents;
+    fLogger->Debug(MESSAGE_ORIGIN, TString::Format("Seed: %d", theSeed));
+    gRandom->SetSeed(theSeed);
   }
   if (fPhiRandomize){
       Double_t pt  = TMath::Sqrt( px*px+py*py );

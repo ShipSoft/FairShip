@@ -34,7 +34,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
    char stupidCpp[100];
    strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
    strcat(stupidCpp,fileName);
-   fInputFile  = TFile::Open(stupidCpp); 
+   fInputFile  = TFile::Open(stupidCpp);
    fLogger->Info(MESSAGE_ORIGIN,"Opening input file on eos %s",stupidCpp);
   }else{
    fInputFile  = new TFile(fileName);
@@ -94,11 +94,11 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   //  Corrections and improvements by
   //        Andrea Dainese, Andrea.Dainese@lnl.infn.it,
   //        Andrei Gheata,  Andrei.Gheata@cern.ch
-  //        Thomas Ruf,  Thomas.Ruf@cern.ch 
+  //        Thomas Ruf,  Thomas.Ruf@cern.ch
   //
 
-  mparam[0]=0; mparam[1]=1; mparam[2]=0; mparam[3]=0; mparam[4]=0; 
-  mparam[5]=0; mparam[6]=0; mparam[7]=0; mparam[8]=0; mparam[9]=0; 
+  mparam[0]=0; mparam[1]=1; mparam[2]=0; mparam[3]=0; mparam[4]=0;
+  mparam[5]=0; mparam[6]=0; mparam[7]=0; mparam[8]=0; mparam[9]=0;
   //
   Double_t bparam[7]; // total parameters
   Double_t lparam[7]; // local parameters
@@ -384,7 +384,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
 // second, outgoing lepton
     pout = Rotate(x,y,zrelative,pxl,pyl,pzl);
     Int_t oLPdgCode = neu;
-    if (cc){oLPdgCode = copysign(fabs(neu)-1,neu);}
+    if (cc){oLPdgCode = copysign(TMath::Abs(neu)-1,neu);}
     cpg->AddTrack(oLPdgCode,pout[0],pout[1],pout[2],x,y,z,0,true);
 // last, all others
     for(int i=0; i<nf; i++)
@@ -431,7 +431,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	  sprintf(ts,"%d",idhnu);
 	  //pickup corresponding (log10(p),log10(pt)) histogram
           if (fInputFile->FindObjectAny(ts)){
-           TH2F* h2tmp = (TH2F*) fInputFile->Get(ts);                      
+           TH2F* h2tmp = (TH2F*) fInputFile->Get(ts);
            printf("HISTID=%d, Title:%s\n",idhnu,h2tmp->GetTitle());
 	   sprintf(ts,"px_%d",idhnu);
           //make its x-projection, to later be able to convert log10(p) to its bin-number
@@ -442,7 +442,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
            for (Int_t k=1;k<nbinx+1;k+=1){
 	    sprintf(ts,"h%d%d",idhnu,k);
             //printf("idnu %d idhnu %d bin%d  ts=%s\n",idnu,idhnu,k,ts);
-            pyslice[idhnu][k]=h2tmp->ProjectionY(ts,k,k);  
+            pyslice[idhnu][k]=h2tmp->ProjectionY(ts,k,k);
 	  }
          }
 	}
@@ -476,7 +476,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       //pout[2] = pzv*pzv-pout[0]*pout[0]-pout[1]*pout[1];
 
       //**NEW** get pt of this neutrino from 2D hists.
-      Int_t idhnu=fabs(neu)+idbase;
+      Int_t idhnu=TMath::Abs(neu)+idbase;
       if (neu<0) idhnu+=1000;
       Int_t nbinmx=pxhist[idhnu]->GetNbinsX();
       Double_t pl10=log10(pzv);
@@ -541,18 +541,18 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         }else{
           prob2int=0.;
         }
-     } 
+     }
     }
     //cout << "Info GenieGenerator: prob2int " << prob2int << ", " << count << endl;
 
     Double_t zrelative=z-ztarget;
     Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
     cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false,TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1]+pout[2]*pout[2]),tof,mparam[0]*mparam[4]);
-    if (not fNuOnly){ 
+    if (not fNuOnly){
 // second, outgoing lepton
     std::vector<double> pp = Rotate(x,y,zrelative,pxl,pyl,pzl);
     Int_t oLPdgCode = neu;
-    if (cc){oLPdgCode = copysign(fabs(neu)-1,neu);}
+    if (cc){oLPdgCode = copysign(TMath::Abs(neu)-1,neu);}
     cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,true,TMath::Sqrt(pp[0]*pp[0]+pp[1]*pp[1]+pp[2]*pp[2]),tof,mparam[0]*mparam[4]);
 // last, all others
     for(int i=0; i<nf; i++)

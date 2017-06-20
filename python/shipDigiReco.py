@@ -9,7 +9,7 @@ start = ROOT.TVector3()
 class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
  def __init__(self,fout,fgeo):
-  self.fn = ROOT.TFile(fout,'update')
+  self.fn = ROOT.TFile.Open(fout,'update')
   self.sTree     = self.fn.cbmsim
   if self.sTree.GetBranch("FitTracks"):
     print "remove RECO branches and rerun reconstruction"
@@ -218,7 +218,7 @@ class ShipDigiReco:
      for aMCPoint in self.sTree.vetoPoint:
        key+=1
        detID=aMCPoint.GetDetectorID()
-       if not detID>100000: continue  # not a LiSc detector
+       if not detID>100000: continue  # not a LiSc or plastic detector
        Eloss=aMCPoint.GetEnergyLoss()
        if not ElossPerDetId.has_key(detID): 
         ElossPerDetId[detID]=0
@@ -234,7 +234,8 @@ class ShipDigiReco:
        if self.digiSBT.GetSize() == index: 
           self.digiSBT.Expand(index+1000)
           self.mcLinkSBT.Expand(index+1000)
-       if ElossPerDetId[seg]<0.045:    aHit.setInvalid()
+       if detID<999999 and ElossPerDetId[seg]<0.045:    aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
+       if detID>999999 and ElossPerDetId[seg]<0.001:    aHit.setInvalid()  # precise threshold for plastic to be determined 
        self.digiSBT[index] = aHit
        v = ROOT.std.vector('int')()
        for x in listOfVetoPoints[seg]:
@@ -392,11 +393,17 @@ class ShipDigiReco:
 # do the fit
     try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
     except: 
-       print "genfit failed to fit track"
-       continue
+      if debug: print "genfit failed to fit track"
+      error = "genfit failed to fit track"
+      if not log.has_key(error): log[error]=0
+      log[error]+=1
+      continue
 #check
     if not theTrack.checkConsistency():
-     print 'Problem with track after fit, not consistent',atrack,theTrack
+     if debug: print 'Problem with track after fit, not consistent',atrack,theTrack
+     error = "Problem with track after fit, not consistent"
+     if not log.has_key(error): log[error]=0
+     log[error]+=1  
      continue
     fitStatus   = theTrack.getFitStatus()
     nmeas = fitStatus.getNdf()   
@@ -439,7 +446,10 @@ class ShipDigiReco:
      try:
       rep.extrapolateToPoint(state,vetoHitPos,False)
      except:
-      print "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      if not log.has_key(error): log[error]=0
+      log[error]+=1
+      if debug: print "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
       continue
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:

@@ -1,0 +1,21 @@
+language: c++
+
+matrix:
+    include:
+        - os: osx
+          compiler: clang
+          osx_image: xcode8.3
+#        - os: linux
+#          compiler: gcc
+#          dist: trusty
+#          sudo: required
+
+script:
+  - ./travis.sh
+
+notifications:
+  email:
+    recipients:
+      - fons.rademakers@cern.ch   # - ship-software@cern.ch
+    on_success: always
+    on_failure: always

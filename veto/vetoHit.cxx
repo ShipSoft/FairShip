@@ -60,7 +60,10 @@ Double_t vetoHit::GetZ()
 }
 TGeoNode* vetoHit::GetNode()
 {
-    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+   TGeoNode* node;
+   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+   TString path = "/DecayVolume_1";
+   if (fDetectorID<999999){ // liquid scintillator
     Int_t iseq   = fDetectorID/100000;
     Int_t corner = (fDetectorID-100000*iseq)/10000;
     Int_t key    = fDetectorID%10000;
@@ -68,10 +71,51 @@ TGeoNode* vetoHit::GetNode()
     if (corner==1){  seq+=iseq; seq+="LiScC";}
     else          {  seq+=iseq; seq+="LiSc";}
     TGeoVolume* assembly = gGeoManager->FindVolumeFast(seq);
-    TGeoNode* node = assembly->GetNode(key-1);
-    TString path = "/DecayVolume_1/T";path+=iseq;path+="_1/";path+=seq;path+="_0/";path+=node->GetName();
+    node = assembly->GetNode(key-1);
+    path += "/T";path+=iseq;path+="_1/";path+=seq;path+="_0/";path+=node->GetName();
     nav->cd(path);
-    return node;
+   }
+   if (fDetectorID>999999){ // plastic scintillator ABBCCCD
+    TString nodeName="T";TString temp="_";
+    Int_t A = int(fDetectorID/1000000);
+    Int_t B = int((fDetectorID-A*1000000)/10000);
+    Int_t C = int((fDetectorID-A*1000000-B*10000)/10);
+    Int_t D = fDetectorID%10;
+    Int_t vetoNr = fDetectorID;
+    if (A==1){
+      nodeName+="2decayVolVeto";
+      path+="/T2_1/T2decayVol_0/";
+    }else if (A==2){
+      nodeName+="2OuterwallVeto";
+      path += "/T2_1/";
+    }else if (A==3){
+      nodeName+="1decayVolVeto";
+      path+="/T1_1/T1decayVol_0/";     
+    }else {
+      nodeName+="1OuterwallVeto";
+      path += "/T1_1/";
+    }
+    if (D>3){
+      path += "vleft_5/";
+      temp += D;temp+="V";
+      D=D-4;vetoNr=fDetectorID-4;} 
+    else {path += "vleft_1/";}
+    if (D==3){nodeName+="X";}
+    if (D==1){nodeName+="Y";}
+    if (D==2){nodeName+="T1";}
+    if (D==0){nodeName+="T2";}
+    if (D==1||D==3){
+     if (C==0){nodeName+="DwTr";}
+     else if (C==1){nodeName+="UpTr";}
+     else {nodeName+="Rect";}
+     if (B!=99){nodeName+="1";}
+     if (B==99){nodeName+="2";}
+    }else {nodeName+="_";nodeName+=C;nodeName+="V";}
+    path+=nodeName;path+="_";path+=vetoNr;
+    nav->cd(path);
+    node=nav->GetCurrentNode();
+   }
+   return node;
 } 
 
 // -----   Public method Print   -------------------------------------------

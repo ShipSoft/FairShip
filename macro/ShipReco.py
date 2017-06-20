@@ -84,14 +84,15 @@ else:
 # outfile should be in local directory
   tmp = outFile.split('/')
   outFile = tmp[len(tmp)-1]
-  if saveDisk: os.system('mv '+inputFile+' '+outFile)
+  if inputFile[:7]=="root://" : os.system('xrdcp '+inputFile+' '+outFile)
+  elif saveDisk: os.system('mv '+inputFile+' '+outFile)
   else :       os.system('cp '+inputFile+' '+outFile)
 
 if not geoFile:
  tmp = inputFile.replace('ship.','geofile_full.')
  geoFile = tmp.replace('_rec','')
 # try to figure out which ecal geo to load
-fgeo = ROOT.TFile(geoFile)
+fgeo = ROOT.TFile.Open(geoFile)
 sGeo = fgeo.FAIRGeom
 
 from ShipGeoConfig import ConfigRegistry

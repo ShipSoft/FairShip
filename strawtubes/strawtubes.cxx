@@ -737,7 +737,60 @@ void strawtubes::StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb,
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
 // -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
-void strawtubes::StrawEndPoints(Int_t detID, TVector3 &bot, TVector3 &top)
+void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
+// method to get end points from TGeoNavigator
+{
+    Int_t statnb = fDetectorID/10000000;
+    Int_t vnb =  (fDetectorID - statnb*10000000)/1000000;
+    Int_t pnb =  (fDetectorID- statnb*10000000 - vnb*1000000)/100000;
+    Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
+    TString stat = "Tr";stat+=+statnb;stat+="_";stat+=statnb;
+    if (statnb==5){stat="Veto_5";}
+    TString view;
+    switch (vnb) {
+	      case 0:
+	        view = "_x1"; 
+                if (statnb==5){view = "_x";}   	       	      	 
+	        break;
+	      case 1:  
+	      	view = "_u";     
+	        break;
+	      case 2:
+	        view = "_v";
+	        break;
+	      case 3:
+	        view = "_x2";
+	        break;
+	      default:
+	        view = "_x1";}
+    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+    TString prefix = "Tr";
+    if (statnb==5){prefix="Veto";}
+    else{prefix+=statnb;}
+    prefix+=view;prefix+="_plane_";prefix+=pnb;prefix+="_";
+    TString plane = prefix;plane+=statnb;plane+=vnb;plane+=+pnb;plane+="00000";
+    TString layer = prefix+"layer_";layer+=lnb;layer+="_";layer+=statnb;layer+=vnb;layer+=pnb;layer+=lnb;layer+="0000";
+    TString wire = "wire_";
+    if (statnb==5){wire+="veto_";}
+    wire+=(fDetectorID+1000);
+    if (statnb<3){wire = "wire_12_";wire+=(fDetectorID+1000);}
+    TString path = "/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire;
+    Bool_t rc = nav->cd(path);
+    if (not rc){
+      cout << "strawtubes::StrawDecode, TgeoNavigator failed "<<path<<endl; 
+      return;
+    }  
+    TGeoNode* W = nav->GetCurrentNode();
+    TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
+    Double_t top[3] = {0,0,S->GetDZ()};
+    Double_t bot[3] = {0,0,-S->GetDZ()};
+    Double_t Gtop[3],Gbot[3];
+    nav->LocalToMaster(top, Gtop);   nav->LocalToMaster(bot, Gbot);
+    vtop.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);
+    vbot.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
+}
+void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &top)
+// method to get end points by emulating the geometry
 {
   Double_t sinangle,cosangle;
   Int_t statnb,vnb,pnb,lnb,snb;

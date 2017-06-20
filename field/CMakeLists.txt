@@ -25,7 +25,7 @@ ShipBellField.cxx
 )
 
 set(LINKDEF FieldLinkDef.h)
-Set(LIBRARY_NAME Field)
+Set(LIBRARY_NAME ShipField)
 Set(DEPENDENCIES
     Base 
 )

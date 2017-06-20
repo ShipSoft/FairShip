@@ -31,7 +31,7 @@ ShipGoliath.cxx
 
 Set(HEADERS )
 Set(LINKDEF PassiveLinkDef.h)
-Set(LIBRARY_NAME Passive)
+Set(LIBRARY_NAME ShipPassive)
 Set(DEPENDENCIES Base GeoBase ParBase Geom Core)
 
 GENERATE_LIBRARY()
