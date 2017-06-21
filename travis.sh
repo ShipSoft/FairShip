@@ -48,7 +48,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
    export PATH=/home/travis/miniconda2/bin:$PATH
    conda update --yes conda
    conda install --yes python=2.7 numpy scipy
-   python setup.py install
+   #python setup.py install
 
    export PYTHON=python
    export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/RUwyXapOiiG3tPZ/download"
@@ -73,9 +73,9 @@ ${CXX} -v
 cd $fairship
 
 # run following commands only on Linux
-if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-   cloc .
-fi
+#if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+#   cloc .
+#fi
 
 # add master branch
 # https://github.com/travis-ci/travis-ci/issues/6069
