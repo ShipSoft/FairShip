@@ -8,8 +8,8 @@ matrix:
         - os: linux
           compiler: gcc
           dist: trusty
-#          sudo: required
-          sudo: false
+          sudo: required
+#          sudo: false
           group: edge
 
 script:
