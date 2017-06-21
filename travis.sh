@@ -47,7 +47,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
    ./miniconda.sh -b
    export PATH=/home/travis/miniconda2/bin:$PATH
    conda update --yes conda
-   conda install --yes python=$TRAVIS_PYTHON_VERSION numpy scipy
+   conda install --yes python=2.7 numpy scipy
    python setup.py install
 
    export PYTHON=python
