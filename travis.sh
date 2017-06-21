@@ -64,9 +64,9 @@ ${CXX} -v
 cd $fairship
 
 # run following commands only on Linux
-if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+#if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   #cloc .
-fi
+#fi
 
 # add master branch
 # https://github.com/travis-ci/travis-ci/issues/6069
