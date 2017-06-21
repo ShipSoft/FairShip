@@ -31,16 +31,25 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
    #wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
    #sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main"
    #sudo apt-get update
-   sudo apt-get -y install python-numpy
-   sudo apt-get -y install python-scipy
+   ##sudo apt-get -y install python-numpy
+   ##sudo apt-get -y install python-scipy
    #sudo apt-get -y install gfortran
    #sudo apt-get -y install gcc-5 g++-5
    #sudo apt-get -y install valgrind
    #sudo apt-get -y install doxygen
-   sudo apt-get -y install cloc
+   ##sudo apt-get -y install cloc
    #sudo apt-get -y install clang-format-3.9 clang-tidy-3.9
    #export CC=gcc-5
    #export CXX=g++-5
+
+   wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+   chmod +x miniconda.sh
+   ./miniconda.sh -b
+   export PATH=/home/travis/miniconda2/bin:$PATH
+   conda update --yes conda
+   conda install --yes python=$TRAVIS_PYTHON_VERSION numpy scipy
+   python setup.py install
+
    export PYTHON=python
    export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/RUwyXapOiiG3tPZ/download"
    export FAIRROOTTAR="https://cernbox.cern.ch/index.php/s/JQpquOipHWLaaJB/download"
