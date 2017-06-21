@@ -15,10 +15,20 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
    # oclint conflicts with gcc, gcc is needed for gfortran run-time
    brew cask uninstall oclint
    brew install gcc
-   #brew install openssl
+   brew install cloc
+
+   # get clang 3.9
+   wget http://releases.llvm.org/3.9.0/clang+llvm-3.9.0-x86_64-apple-darwin.tar.xz 2> /dev/null
+   tar xf clang+llvm-3.9.0-x86_64-apple-darwin.tar.xz > /dev/null
+   export LLVMDIR="`pwd`/clang+llvm-3.9.0-x86_64-apple-darwin"
+   export CC=$LLVMDIR/bin/clang
+   export CXX=$LLVMDIR/bin/clang++
+   export CXXFLAGS=-I$LLVMDIR/include
+   export LDFLAGS=-L$LLVMDIR/lib
+   export DYLD_LIBRARY_PATH=$LLVMDIR/lib:$DYLD_LIBRARY_PATH
+   export PATH=$LLVMDIR/bin:$PATH:
+
    export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
-   #brew cask install xquartz
-   #brew install libtool
    export PYTHON=/usr/bin/python
    export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/xEZLZgDknqACMwL/download"
    export FAIRROOTTAR="https://cernbox.cern.ch/index.php/s/qPmN8KuA83f8dFf/download"
@@ -31,13 +41,11 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
    #wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
    #sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main"
    #sudo apt-get update
-   ##sudo apt-get -y install python-numpy
-   ##sudo apt-get -y install python-scipy
    #sudo apt-get -y install gfortran
    #sudo apt-get -y install gcc-5 g++-5
    #sudo apt-get -y install valgrind
    #sudo apt-get -y install doxygen
-   ##sudo apt-get -y install cloc
+   #sudo apt-get -y install cloc
    #sudo apt-get -y install clang-format-3.9 clang-tidy-3.9
    #export CC=gcc-5
    #export CXX=g++-5
@@ -48,7 +56,6 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
    export PATH=/home/travis/miniconda2/bin:$PATH
    conda update --yes conda
    conda install --yes python=2.7 numpy scipy
-   #python setup.py install
 
    export PYTHON=python
    export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/RUwyXapOiiG3tPZ/download"
@@ -73,9 +80,9 @@ ${CXX} -v
 cd $fairship
 
 # run following commands only on Linux
-#if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-#   cloc .
-#fi
+if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+   cloc .
+fi
 
 # add master branch
 # https://github.com/travis-ci/travis-ci/issues/6069
@@ -90,7 +97,7 @@ cd ../FairShipRun
 $PYTHON ../FairShip/macro/run_simScript.py --test
 
 # run following commands only on Linux
-if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+if [ "$TRAVIS_OS_NAME" = "osx" ]; then
    cd ../FairShip
    #make check-submission
 fi

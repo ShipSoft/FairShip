@@ -2,19 +2,15 @@ language: c++
 
 matrix:
     include:
-#        - os: osx
-#          compiler: clang
-#          osx_image: xcode8.3
+        - os: osx
+          compiler: clang
+          osx_image: xcode8.3
         - os: linux
           compiler: gcc
           dist: trusty
 #          sudo: required
           sudo: false
           group: edge
-
-# to use numpy and scipy installed via apt-get
-#virtualenv:
-#  system_site_packages: true
 
 script:
   - ./travis.sh
