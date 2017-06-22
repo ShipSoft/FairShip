@@ -234,8 +234,19 @@ IF(HAS_CXX11_SHAREDPOINTER)
   Add_Definitions(-DHAS_SHAREDPOINTER)
 ENDIF(HAS_CXX11_SHAREDPOINTER)
 
-# Recurse into the given subdirectories.  This does not actually
-# cause another cmake executable to run.  The same process will walk through
+# --------------- add targets for code style and submission checks -------------
+find_package(Git)
+find_package(ClangTools)
+if ("$ENV{CMAKE_EXPORT_COMPILE_COMMANDS}" STREQUAL "1" OR CLANG_TIDY_FOUND)
+  # Generate a Clang compile_commands.json "compilation database" file for use
+  # with various development tools, such as Vim's YouCompleteMe plugin.
+  # See http://clang.llvm.org/docs/JSONCompilationDatabase.html
+  set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+endif()
+include(CppStyleGuideChecks)
+
+# Recurse into the given subdirectories. This does not actually
+# cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
 
 IF(NOT FAIRROOT_FOUND)
