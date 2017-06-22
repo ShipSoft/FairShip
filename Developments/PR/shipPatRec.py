@@ -187,7 +187,8 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
 
         # Hits preprocessing
         XX = X.copy()
-        sample_weight = 1. / numpy.sqrt(XX[:, 6]**2 + 0.2**2)
+        resolution = ShipGeo.strawtubes.sigma_spatial
+        sample_weight = 1. / numpy.sqrt(XX[:, 6]**2 + resolution**2)
         XX_inds = numpy.arange(len(XX))
         global_inds = numpy.arange(len(XX))
 
