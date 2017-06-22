@@ -434,13 +434,15 @@ void ShipMuonShield::ConstructGeometry()
 		   gapIn[nM],gapOut[nM],Z[nM],1);
       }
 
-      TGeoTranslation* mag1 = new TGeoTranslation("mag1",0,0, -dZ1);
-      TGeoTranslation* mag2 = new TGeoTranslation("mag2",0,0, +dZ2);
-            
+      TGeoTranslation *mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
+      TGeoTranslation *mag2 = new TGeoTranslation("mag2", 0, 0, +dZ1);
+
       mag1->RegisterYourself();
       mag2->RegisterYourself();
 
-      Double_t absorber_half_length = (dZ1 + dZ2);
+      Double_t zgap = 10;
+      Double_t absorber_offset = zgap;
+      Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
       TGeoTube *abs = new TGeoTube("absorber", 0, 400, absorber_half_length);
       const std::vector<TString> absorber_magnets = {"MagnAbsorb1",
 						     "MagnAbsorb2"};
@@ -465,8 +467,7 @@ void ShipMuonShield::ConstructGeometry()
 								// from absorber
       TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
       absorber->SetLineColor(42); // brown / light red
-      tShield->AddNode(absorber, 1,
-		       new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length));
+      tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
 
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
 	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
