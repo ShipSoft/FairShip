@@ -11,13 +11,31 @@ class Baseline(object):
         self.window = window
 
     def sort_hits(self, x, y):
+        """
+        Sort hits by x-layer and by y inside one layer.
+
+        Parameters
+        ----------
+        x : array-like
+            Array of x coordinates of hits.
+        y : array-like
+            Array of x coordinates of hits.
+
+        Returns
+        -------
+        xlayer : dict
+            Dictionary of layer x values: {1: x1, 2: x2, 3: x3, ...}
+        hits : dict
+            Hits indexes inside layers: {x1: [ind1, ind2, ...], x2: [...], ...}
+        """
 
         hits = {}
         xlayer = {}
         indexes = numpy.arange(len(x))
 
         for num, ax in enumerate(numpy.unique(x)):
-            hits[ax] = indexes[x == ax]
+            yx = y[x == ax]
+            hits[ax] = indexes[x == ax][numpy.argsort(yx)]
             xlayer[num] = ax
 
         return xlayer, hits
@@ -67,6 +85,18 @@ class Baseline(object):
         return numpy.array(tracks_params)
 
     def fit(self, x, y, sample_weight=None):
+        """
+        Runs track pattern recognition. Track parametrization: y = k * x + b.
+
+        Parameters
+        ----------
+        x : array-like
+            Array of x coordinates of hits.
+        y : array-like
+            Array of x coordinates of hits.
+        sample_weight : array-like
+            Hit weights used during the track fit.
+        """
 
         track_params = []
         track_inds = []
