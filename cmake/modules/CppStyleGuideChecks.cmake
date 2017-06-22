@@ -10,7 +10,7 @@ set(clang_tidy_header_helper ${CMAKE_BINARY_DIR}/clang_tidy_header_helper.cc)
 file(WRITE ${clang_tidy_header_helper} "" ) # creates file
 add_executable(clang-tidy-header-helper EXCLUDE_FROM_ALL ${clang_tidy_header_helper})
 
-# -------------------- "make format*" and "make check-format*" targets ------------
+# -------------------- "make format*", "make show-format*" and "make check-format*" targets ------------
 function(add_clang_format_target make_target_id get_files_cmd)
   if (${CLANG_FORMAT_FOUND})
     add_custom_target(${make_target_id}
@@ -27,7 +27,7 @@ function(add_clang_format_target make_target_id get_files_cmd)
   endif()
 endfunction(add_clang_format_target)
 
-# -------------------- "make clang-tidy*", "make show-clang-tidy*" and "make check-clang-tidy*" targets ------------
+# -------------------- "make tidy*", "make show-tidy*" and "make check-tidy*" targets ------------
 function(add_clang_tidy_target make_target_id get_files_cmd)
   if (${CLANG_TIDY_FOUND})
     add_custom_target(${make_target_id}
