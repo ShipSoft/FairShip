@@ -5,6 +5,7 @@
 #include "Rtypes.h"                     // for ShipTargetStation::Class, Bool_t, etc
 #include <string>                       // for string
 #include <stdlib.h>
+
 class ShipTargetStation : public FairModule
 {
   public:
@@ -55,8 +56,8 @@ class ShipTargetStation : public FairModule
      fM.push_back(m17);  
      fDiameter = d;                                         
      }
-
-    ClassDef(ShipTargetStation,2)
+    void SetBoost(Double_t f); // boost factor for rare di-muon decays in hadronic Geant4 processes
+    ClassDef(ShipTargetStation,3)
  protected:
   
   Double_t fTargetLength;       //

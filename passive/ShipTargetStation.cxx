@@ -17,6 +17,8 @@
 #include "TGeoMedium.h"
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include "G4SystemOfUnits.hh"
+double gDiMuBoost;
 
 using std::cout;
 using std::endl;
@@ -75,6 +77,8 @@ Int_t ShipTargetStation::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
+void ShipTargetStation::SetBoost(Double_t f) { gDiMuBoost = f;} 
+
 void ShipTargetStation::ConstructGeometry()
 {
     TGeoVolume *top=gGeoManager->GetTopVolume();
@@ -93,12 +97,12 @@ void ShipTargetStation::ConstructGeometry()
       TGeoVolume *slit; 
       //Double_t zPos =  fTargetZ - fTargetLength/2.;
       for (Int_t i=0; i<fnS; i++) {
-       TString nm = "Target_"; nm += i+1;
+       TString nmi = "Target_"; nmi += i+1;
        TString sm = "Slit_";   sm += i+1;
        TGeoMedium *material;
        if (fM.at(i)=="molybdenum") {material = mo;};
        if (fM.at(i)=="tungsten")   {material = tungsten;};
-       target = gGeoManager->MakeBox(nm, material, fDiameter/2., fDiameter/2., fL.at(i)/2.);
+       target = gGeoManager->MakeBox(nmi, material, fDiameter/2., fDiameter/2., fL.at(i)/2.);
        if (fM.at(i)=="molybdenum") {
          target->SetLineColor(28);
        } else {target->SetLineColor(38);};  // silver/blue
@@ -115,9 +119,9 @@ void ShipTargetStation::ConstructGeometry()
       Double_t dZ = (fTargetLength - (fnS-1)*fsl)/float(fnS);
     // target made of tungsten and air slits
       for (Int_t i=0; i<fnS-1; i++) {
-       TString nm = "Target_"; nm += i;
+       TString nmi = "Target_"; nmi += i;
        TString sm = "Slit_";   sm += i;
-       TGeoVolume *target = gGeoManager->MakeTube(nm, tungsten, 0, 25, dZ/2.);
+       TGeoVolume *target = gGeoManager->MakeTube(nmi, tungsten, 0, 25, dZ/2.);
        target->SetLineColor(38);  // silver/blue
        tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos+dZ/2.));
        TGeoVolume *slit   = gGeoManager->MakeTube(sm, water,    0, 25, fsl/2.);
@@ -125,8 +129,8 @@ void ShipTargetStation::ConstructGeometry()
        tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos+dZ+fsl/2.));
        zPos+=dZ+fsl;
       }
-      TString nm = "Target_"; nm += fnS;
-      TGeoVolume *target = gGeoManager->MakeTube(nm, tungsten, 0, 25, dZ/2.);
+      TString nmi = "Target_"; nmi += fnS;
+      TGeoVolume *target = gGeoManager->MakeTube(nmi, tungsten, 0, 25, dZ/2.);
       target->SetLineColor(38);  // silver/blue
       tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos+dZ/2.));      
     }else{
@@ -165,9 +169,9 @@ void ShipTargetStation::ConstructGeometry()
     Double_t totLength = asmb->GetDZ();
     top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength));
     if (fAbsorberLength>0){
-     cout << "target and absorber postioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
+     cout << "target and absorber positioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
     }else{
-     cout << "target at " << fTargetZ <<"m "<< endl;
+     cout << "target at " << fTargetZ/100. <<"m "<< endl;
     }
 }
 
