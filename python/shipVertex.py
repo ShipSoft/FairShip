@@ -287,8 +287,6 @@ class Task:
      covV = array('d',[m.matrix()[0][0],m.matrix()[0][1],m.matrix()[0][2],m.matrix()[1][1],m.matrix()[1][2],m.matrix()[2][2]])
      HNLtest.SetCovV(covV)
      
-     
-     
      pid = PosDirCharge[t1]['pdgCode']
      mass = self.PDG.GetParticle(pid).Mass()
      mom  = self.newPosDir[t1]['momentum']
@@ -302,7 +300,8 @@ class Task:
      HNL = self.LV[1]+self.LV[2]
 # try to make it persistent
      vx = ROOT.TLorentzVector(HNLPos,doca)  # misuse time as DOCA  
-     particle = ROOT.TParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
+     particle = ROOT.ShipParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
+     particle.SetCovV(covV)
      particle.SetMother(1,99) # as marker to remember doca is set
      nParts   = particles.GetEntries()
      particles[nParts] = particle
