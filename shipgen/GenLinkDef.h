@@ -14,5 +14,6 @@
 #pragma link C++ class  CosmicsGenerator+;
 #pragma link C++ class  MuDISGenerator+;
 #pragma link C++ class  NuageGenerator+;
+#pragma link C++ class  FixedTargetGenerator+;
 
 #endif
