@@ -57,7 +57,7 @@ if (GIT_FOUND)
   add_custom_target(fetch-master
     COMMAND git fetch origin master
     COMMENT "Fetch latest changes from origin master. If you forked the project,
-       make sure that it is synchronized with the biodynamo repository!")
+       make sure that it is synchronized with the FairShip repository!")
 
   add_clang_format_target(format "${CHANGED_SRC_FILES_ORIGIN_MASTER}" )
   add_clang_tidy_target(tidy "${CHANGED_SRC_FILES_ORIGIN_MASTER}" )
