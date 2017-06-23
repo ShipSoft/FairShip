@@ -33,6 +33,9 @@ class FixedTargetGenerator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
   void SetBoost(Double_t f) { fBoost  = f; }  // boost factor for rare di-muon decays
+  void SetG4only() { G4only  = true; }  // only run Geant4, no pythia primary interaction
+  void SetTauOnly() { tauOnly  = true; }  // only have Ds decay to tau 
+  void SetJpsiMainly() { JpsiMainly  = true; }  // let all Jpsi decay to mumu
   inline void SetSeed(Double_t seed){fSeed=seed;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
 
@@ -46,7 +49,7 @@ class FixedTargetGenerator : public FairGenerator
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fSeed,EMax,fBoost;
-  Bool_t tauOnly,JpsiMainly;
+  Bool_t tauOnly,JpsiMainly,G4only;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia* fPythiaN;            //!
   Pythia* fPythiaP;            //!

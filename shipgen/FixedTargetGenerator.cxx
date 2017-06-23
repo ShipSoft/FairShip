@@ -28,6 +28,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   xOff=0; yOff=0;
   tauOnly = false;
   JpsiMainly = false;
+  G4only = false;
   maxCrossSection = 0.;
   EMax = 0;
   fBoost = 1.;
@@ -78,13 +79,16 @@ Bool_t FixedTargetGenerator::Init()
   }
 // boost branching fraction of rare di-muon decays
 //                       eta  omega rho0  eta' phi   
-   for (unsigned int i=0; i<r.size(); ++i) {  
-    Pythia8::ParticleDataEntry* V = fPythia->particleData.particleDataEntryPtr(r[i]);
-    Pythia8::DecayChannel ch = V->channel(c[i]);
-    if (TMath::Abs(ch.product(0))!=13 || TMath::Abs(ch.product(1))!=13){
+   if (fBoost != 1.){
+    fLogger->Info(MESSAGE_ORIGIN,"Rescale BRs of dimuon decays in Pythia: %f",fBoost);
+    for (unsigned int i=0; i<r.size(); ++i) {  
+     Pythia8::ParticleDataEntry* V = fPythia->particleData.particleDataEntryPtr(r[i]);
+     Pythia8::DecayChannel ch = V->channel(c[i]);
+     if (TMath::Abs(ch.product(0))!=13 || TMath::Abs(ch.product(1))!=13){
       fLogger->Info(MESSAGE_ORIGIN,"this is not the right decay channel: %i %i",r,c[i]);
-    }else{
-     ch.rescaleBR(fBoost);
+     }else{
+      ch.rescaleBR(fBoost);
+     }
     }
    }
    fPythia->init();
@@ -167,6 +171,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    }
   zinter = zinter*cm;
   }
+  if (G4only){
+   cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,zinter/cm,-1,true,-1.,0.,1.);  
+  }else{
   Pythia8::Pythia* fPythia;
   if (gRandom->Uniform(0.,1.) < ZoverA){
     fPythia = fPythiaP;
@@ -183,8 +190,8 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Bool_t wanttracking=true;
      if (e-m<EMax || !fPythia->event[ii].isFinal() || pz<0) {wanttracking=false;}
      Double_t z  = fPythia->event[ii].zProd()+zinter;
-     Double_t x  = fPythia->event[ii].xProd();
-     Double_t y  = fPythia->event[ii].yProd();
+     Double_t x  = fPythia->event[ii].xProd()+xOff;
+     Double_t y  = fPythia->event[ii].yProd()+yOff;
      Double_t tof = fPythia->event[ii].tProd();
      Double_t px = fPythia->event[ii].px();  
      Double_t py = fPythia->event[ii].py();  
@@ -192,6 +199,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      if (ii==0){im = -1;}
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,1.);
     }    
+  }
   return kTRUE;
 }
 // -------------------------------------------------------------------------
