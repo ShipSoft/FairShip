@@ -103,7 +103,7 @@ void exitHadronAbsorber::ConstructGeometry()
 
    FairGeoMedium *ShipMedium=media->getMedium("vacuums");
    TGeoMedium* vac=gGeoManager->GetMedium("vacuums");
-   if (vac=NULL)
+   if (vac==NULL)
      geoBuild->createMedium(ShipMedium);
    vac =gGeoManager->GetMedium("vacuums");
    //Add thin sensitive plane after hadron absorber
