@@ -2,7 +2,10 @@
 import ROOT,sys
 import shipunit as u
 import rootUtils as ut
-
+import iminuit
+import numpy as np
+from math import *
+from array import array
 
 class Task:
  "initialize"
@@ -97,7 +100,195 @@ class Task:
       self.h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
       self.h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
       self.h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
+      self.h['dVx'].Fill( (mctrack.GetStartX()-HNLPos[0]) )
+      self.h['dVy'].Fill( (mctrack.GetStartY()-HNLPos[1]) )
+      self.h['dVz'].Fill( (mctrack.GetStartZ()-HNLPos[2]) )
+      
 #
+     
+     print "*********************************** vertex fit precise   ******************************************** "
+     
+     detPlane = ROOT.genfit.DetPlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
+     plane = ROOT.genfit.RKTrackRep().makePlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
+     st1  = fittedTracks[t1].getFittedState()
+     st2  = fittedTracks[t2].getFittedState()
+     try:
+      st1.extrapolateToPlane(plane)
+     except:
+      print "TwoTrackVertex: extrapolation does not worked"
+      continue
+     try:
+      st2.extrapolateToPlane(plane)
+     except:
+      print "TwoTrackVertex: extrapolation does not worked"
+      continue
+     mom1 = st1.getMom()
+     mom2 = st2.getMom()
+     cov1 = st1.getCov()
+     cov2 = st2.getCov()
+     cov = ROOT.TMatrixDSym(10)
+     for i in range(10):
+       for j in range(10):
+	 if i<5 and j<5: cov[i][j]=cov1[i][j]
+	 if i>4 and j>4: cov[i][j]=cov2[i-5][j-5]
+     covInv = ROOT.TMatrixDSym()
+     ROOT.genfit.tools.invertMatrix(cov,covInv)
+     
+     y_data = np.array([0.,0.,0.,0.,0.,0.,0.,0.,0.,0.])
+     stVal1 = st1.getState()
+     stVal2 = st2.getState()
+     for i in range(5):
+      y_data[i]=stVal1[i]
+      y_data[i+5]=stVal2[i]
+     z0 = HNLPos[2]
+     Vy = np.zeros(100)
+     for i in range(100):	
+       Vy[i] = covInv[i/10][i%10]
+     
+    
+     def residuals(y_data,a,z0):
+       res = np.zeros(10)
+       res[0] = abs(y_data[0]) - a[5]
+       res[1] = y_data[1] - a[3] 
+       res[2] = y_data[2] - a[4] 
+       res[3] = y_data[3] - a[0] - a[3]*(a[2] - z0)
+       res[4] = y_data[4] - a[1] - a[4]*(a[2] - z0)
+       res[5] = abs(y_data[5]) - a[8] 
+       res[6] = y_data[6] - a[6] 
+       res[7] = y_data[7] - a[7] 
+       res[8] = y_data[8] - a[0] - a[6]*(a[2] - z0)
+       res[9] = y_data[9] - a[1] - a[7]*(a[2] - z0)
+       return res
+     def chi2(res,Vy):       
+       s=0
+       for i in range(100):
+	 s+=Vy[i]*res[i/10]*res[i%10]
+       return s
+     
+     def f_chi2(*a):
+       v = chi2(residuals(y_data,a,z0),Vy)
+       #print v, a
+       return v
+     
+     p_vals = [HNLPos[0], HNLPos[1], HNLPos[2], mom1[0]/mom1[2], mom1[1]/mom1[2], 1./mom1.Mag(), mom2[0]/mom2[2], mom2[1]/mom2[2], 1./mom2.Mag()]
+     p_names = ['par_{}'.format(_) for _ in range(len(p_vals))]
+     #print "fcn value before minuit: ", f_chi2(*p_vals) 
+     m = iminuit.Minuit(
+       fcn=f_chi2,
+       forced_parameters=p_names,
+       **dict(zip(p_names, p_vals))
+     )
+     m.migrad()
+     try:
+      m.minos()
+     except:
+       print "minos does not work"
+       continue
+     xFit = m.values["par_0"]
+     yFit = m.values["par_1"]
+     zFit = m.values["par_2"]
+     HNLPosFit =  ROOT.TVector3(xFit,yFit,zFit)
+     xFitErr = m.errors["par_0"]
+     yFitErr = m.errors["par_1"]
+     zFitErr = m.errors["par_2"]
+     
+     #fixme: mass from track reconstraction needed 
+     m1 = self.PDG.GetParticle(PosDirCharge[t1]['pdgCode']).Mass()
+     m2 = self.PDG.GetParticle(PosDirCharge[t2]['pdgCode']).Mass()
+     
+     self.h['VxpullFit'].Fill( (mctrack.GetStartX()-xFit)/xFitErr )
+     self.h['VypullFit'].Fill( (mctrack.GetStartY()-yFit)/yFitErr )
+     self.h['VzpullFit'].Fill( (mctrack.GetStartZ()-zFit)/zFitErr )
+     self.h['dVxFit'].Fill( (mctrack.GetStartX()-xFit) )
+     self.h['dVyFit'].Fill( (mctrack.GetStartY()-yFit) )
+     self.h['dVzFit'].Fill( (mctrack.GetStartZ()-zFit) )
+     
+     def getP(fitValues,cov,m1,m2):
+       a3=fitValues["par_3"]
+       a4=fitValues["par_4"]
+       a5=fitValues["par_5"]
+       a6=fitValues["par_6"]
+       a7=fitValues["par_7"]
+       a8=fitValues["par_8"]
+       px1 = a3/(a5*sqrt(1 + a3**2 + a4**2))
+       py1 = a4/(a5*sqrt(1 + a3**2 + a4**2))
+       pz1 = 1/(a5*sqrt(1 + a3**2 + a4**2))
+       px2 = a6/(a8*sqrt(1 + a6**2 + a7**2))
+       py2 = a7/(a8*sqrt(1 + a6**2 + a7**2))
+       pz2 = 1/(a8*sqrt(1 + a6**2 + a7**2))
+       Px = px1 + px2
+       Py = py1 + py2
+       Pz = pz1 + pz2
+       E1 = sqrt(px1**2 + py1**2 + pz1**2 + m1**2)
+       E2 = sqrt(px2**2 + py2**2 + pz2**2 + m2**2)
+       M = sqrt(2*E1*E2+m1**2+m2**2-2*pz1*pz2*(1+a3*a6+a4*a7))
+       MM = 2*M
+       A5 = 1 + a3**2 + a4**2
+       A8 = 1 + a6**2 + a7**2
+       M_AtoP = ROOT.TMatrixD(4,6)
+       MT_AtoP = ROOT.TMatrixD(6,4)
+       covA = ROOT.TMatrixD(6,6)
+       M_AtoP[0][0] = (1.-a3*a3/A5)/(a5*sqrt(A5))
+       M_AtoP[0][1] = (-a3*a4/A5)/(a5*sqrt(A5))
+       M_AtoP[0][2] = (-a3)/(a5*a5*sqrt(A5))
+       M_AtoP[0][3] = (1.-a6*a6/A8)/(a8*sqrt(A8))
+       M_AtoP[0][4] = (-a6*a7/A8)/(a8*sqrt(A8))
+       M_AtoP[0][5] = (-a6)/(a8*a8*sqrt(A8))
+       
+       M_AtoP[1][0] = (-a3*a4/A5)/(a5*sqrt(A5))
+       M_AtoP[1][1] = (1.-a4*a4/A5)/(a5*sqrt(A5))
+       M_AtoP[1][2] = (-a4)/(a5*a5*sqrt(A5))
+       M_AtoP[1][3] = (-a6*a7/A8)/(a8*sqrt(A8))
+       M_AtoP[1][4] = (1.-a7*a7/A8)/(a8*sqrt(A8))
+       M_AtoP[1][5] = (-a7)/(a8*a8*sqrt(A8))
+       
+       M_AtoP[2][0] = (-a3/A5)/(a5*sqrt(A5))
+       M_AtoP[2][1] = (-a4/A5)/(a5*sqrt(A5))
+       M_AtoP[2][2] = (-1.)/(a5*a5*sqrt(A5))
+       M_AtoP[2][3] = (-a6/A8)/(a8*sqrt(A8))
+       M_AtoP[2][4] = (-a7/A8)/(a8*sqrt(A8))
+       M_AtoP[2][5] = (-1.)/(a8*a8*sqrt(A8))
+       
+       a5a8 = a5*a8*sqrt(A5)*sqrt(A8)
+       
+       M_AtoP[3][0] = (-2*a6/a5a8 + 2*a3*E2/(a5*a5*A5*E1))/MM
+       M_AtoP[3][1] = (-2*a7/a5a8 + 2*a4*E2/(a5*a5*A5*E1))/MM
+       M_AtoP[3][2] = (2*(1+a3*a6+a4*a7)/(a5*a5a8) - 2*(1.+a3*a3+a4*a4)*E2/(a5*a5*a5*A5*E1))/MM
+       M_AtoP[3][3] = (-2*a3/a5a8 + 2*a6*E1/(a8*a8*A8*E2))/MM
+       M_AtoP[3][4] = (-2*a4/a5a8 + 2*a7*E1/(a8*a8*A8*E2))/MM
+       M_AtoP[3][5] = (2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2))/MM
+       
+       for i in range(4):
+	 for j in range(6):
+	   MT_AtoP[j][i] = M_AtoP[i][j]
+       
+       for i in range(36):
+	 covA[i/6][i%6] = cov[i/6+3][i%6+3]
+       
+       tmp   = ROOT.TMatrixD(4,6)
+       tmp.Mult(M_AtoP,covA)
+       covP  = ROOT.TMatrixD(4,4)
+       covP.Mult(tmp,MT_AtoP)
+       P = ROOT.TLorentzVector()
+       P.SetXYZM(Px,Py,Pz,M)
+       return P,covP
+      
+     P,covP = getP(m.values,m.matrix(),m1,m2)
+     print "******************************************************************************* "
+     
+     #create ship particle
+     #notes:
+     #P-TLorentzVector of fitted HNL prticle
+     #covP - covariance matrix of HNL four-vector (Px,Py,Pz,M)
+     #HNLPosFit - fited position of HNL
+     #covV - comariance matrix of the vtx position
+     vxFit = ROOT.TLorentzVector(HNLPosFit,doca)
+     HNLtest =  ROOT.ShipParticle(13,0,-1,-1,12,13,P,vxFit)
+     covV = array('d',[m.matrix()[0][0],m.matrix()[0][1],m.matrix()[0][2],m.matrix()[1][1],m.matrix()[1][2],m.matrix()[2][2]])
+     HNLtest.SetCovV(covV)
+     
+     
+     
      pid = PosDirCharge[t1]['pdgCode']
      mass = self.PDG.GetParticle(pid).Mass()
      mom  = self.newPosDir[t1]['momentum']
@@ -115,6 +306,10 @@ class Task:
      particle.SetMother(1,99) # as marker to remember doca is set
      nParts   = particles.GetEntries()
      particles[nParts] = particle
+     
+     self.h['dM'].Fill( (1.-HNL.M()) )
+     self.h['dMFit'].Fill( (1.-P.M()) )
+     self.h['MpullFit'].Fill( (1.-P.M())/sqrt(covP[3][3]) )
 
  def VertexError(self,t1,t2,PosDir,CovMat=None,scalFac=None):
 # with improved Vx x,y resolution
