@@ -2,6 +2,7 @@
 import ROOT,os,sys,getopt,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
+time.sleep(30)
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"
@@ -127,24 +128,29 @@ sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
 run.AddModule(sensPlane)
 
-
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
 P8gen.SetTarget("/TargetArea_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
-P8gen.SetBoost(1000.) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons
+boostDiMuon = 1. # 100.
+P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
+TargetStation.SetBoost(boostDiMuon) # same for Geant4
 P8gen.SetSeed(theSeed)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
+# boost gamma2muon conversion
+ROOT.kShipMuonsCrossSectionFactor = 10000 
 # -----Initialize simulation run------------------------------------
 run.Init()
+
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.)
+
 # -----Start run----------------------------------------------------
 run.Run(nev)
 
