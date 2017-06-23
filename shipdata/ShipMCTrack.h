@@ -19,6 +19,7 @@
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TMath.h"                      // for Sqrt
 #include "TVector3.h"                   // for TVector3
+#include "TMCProcess.h"                   // enum with process ids
 
 class TParticle;
 
@@ -63,6 +64,8 @@ class ShipMCTrack : public TObject
     Double_t GetStartY()   const { return fStartY; }
     Double_t GetStartZ()   const { return fStartZ; }
     Double_t GetStartT()   const { return fStartT; }
+    Int_t GetProcID()      const { return fProcID; }
+    TString GetProcName()  const { return TMCProcessName[fProcID]; }
     Double_t GetMass()     const;
     Double_t GetEnergy()   const;
     Double_t GetPt()       const { return TMath::Sqrt(fPx*fPx+fPy*fPy); }
@@ -100,6 +103,9 @@ class ShipMCTrack : public TObject
 
     /** weight **/
     Double32_t fW;
+
+    /** Geant4 process ID which created the particle **/
+    Int_t fProcID;
 
     /**  Bitvector representing the number of MCPoints for this track in
      **  each subdetector. The detectors are represented by
