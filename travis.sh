@@ -17,14 +17,14 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
    brew install gcc
    brew install cloc
 
-   # get clang 3.9
+   # get clang 3.9 for clang-format and clang-tidy
    wget http://releases.llvm.org/3.9.0/clang+llvm-3.9.0-x86_64-apple-darwin.tar.xz 2> /dev/null
    tar xf clang+llvm-3.9.0-x86_64-apple-darwin.tar.xz > /dev/null
    export LLVMDIR="`pwd`/clang+llvm-3.9.0-x86_64-apple-darwin"
-   export CC=$LLVMDIR/bin/clang
-   export CXX=$LLVMDIR/bin/clang++
-   export CXXFLAGS=-I$LLVMDIR/include
-   export LDFLAGS=-L$LLVMDIR/lib
+   #export CC=$LLVMDIR/bin/clang
+   #export CXX=$LLVMDIR/bin/clang++
+   #export CXXFLAGS=-I$LLVMDIR/include
+   #export LDFLAGS=-L$LLVMDIR/lib
    export DYLD_LIBRARY_PATH=$LLVMDIR/lib:$DYLD_LIBRARY_PATH
    export PATH=$LLVMDIR/bin:$PATH:
 
