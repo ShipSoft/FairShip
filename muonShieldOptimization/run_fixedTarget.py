@@ -134,7 +134,7 @@ P8gen = ROOT.FixedTargetGenerator()
 P8gen.SetTarget("/TargetArea_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
-boostDiMuon = 1. # 100.
+boostDiMuon = 100.
 P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
 TargetStation.SetBoost(boostDiMuon) # same for Geant4
 P8gen.SetSeed(theSeed)
@@ -142,7 +142,7 @@ primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
 # boost gamma2muon conversion
-ROOT.kShipMuonsCrossSectionFactor = 10000 
+ROOT.kShipMuonsCrossSectionFactor = 1. 
 # -----Initialize simulation run------------------------------------
 run.Init()
 
