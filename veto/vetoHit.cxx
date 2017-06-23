@@ -39,7 +39,7 @@ TVector3 vetoHit::GetXYZ()
 {
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TGeoNode* node = GetNode();
-    TGeoBBox* shape =  dynamic_cast<TGeoBBox*>(node->GetVolume()->GetShape());
+    TGeoBBox* shape =  (TGeoBBox*)node->GetVolume()->GetShape();
     Double_t origin[3] = {shape->GetOrigin()[0],shape->GetOrigin()[1],shape->GetOrigin()[2]};
     Double_t master[3] = {0,0,0};
     nav->LocalToMaster(origin,master);

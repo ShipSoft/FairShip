@@ -1197,10 +1197,10 @@ void veto::ConstructGeometry()
       T6Lid->SetLineColor(18);
       tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+f_LidThickness/2.+0.1*cm - zStartMagVol));
       //finisMakeSeh assembly and position
-      TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tDecayVol->GetShape());
+      TGeoShapeAssembly* asmb = (TGeoShapeAssembly*)tDecayVol->GetShape();
       Double_t totLength = asmb->GetDZ();
       top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol+totLength));
-      asmb = dynamic_cast<TGeoShapeAssembly*>(tMaGVol->GetShape());
+      asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
 
@@ -1379,10 +1379,10 @@ void veto::ConstructGeometry()
       tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+lidradius-1.*m - zStartMagVol));
 
       //finish assembly and position
-      TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tDecayVol->GetShape());
+      TGeoShapeAssembly* asmb = (TGeoShapeAssembly*)tDecayVol->GetShape();
       Double_t totLength = asmb->GetDZ();
       top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol+totLength));
-      asmb = dynamic_cast<TGeoShapeAssembly*>(tMaGVol->GetShape());
+      asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
 
@@ -1413,7 +1413,7 @@ void veto::ConstructGeometry()
       Det2->SetLineColor(kGreen+3);
       tDet2->AddNode(Det2, 1, new TGeoTranslation(0, 0, 0));
       AddSensitiveVolume(Det2);
-      asmb = dynamic_cast<TGeoShapeAssembly*>(tDet2->GetShape());
+      asmb = (TGeoShapeAssembly*)tDet2->GetShape();
       totLength = asmb->GetDZ();
       top->AddNode(tDet2, 1, new TGeoTranslation(0, 0,zStartDet2+totLength));
      }
