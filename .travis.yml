@@ -18,6 +18,7 @@ script:
 notifications:
   email:
     recipients:
-      - fons.rademakers@cern.ch   # - ship-software@cern.ch
+      - ship-software@cern.ch
+#      - fons.rademakers@cern.ch
     on_success: always
     on_failure: always
