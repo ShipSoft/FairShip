@@ -16,7 +16,7 @@ def MCTrackPrintOut(x):
   txt = '("ShipMCTrack") pdgCode: %7i(%10s) P=%6.3F GeV/c mother=%i %s'%(c,n,x.GetP(),m,x.GetProcName())
   return txt
 def vetoHitPrintOut(x):
-  txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.adc(),x.tdc())
+  txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.GetADC(),x.GetTDC())
   return txt
 def FitTrackPrintOut(x):
   st = x.getFitStatus()
