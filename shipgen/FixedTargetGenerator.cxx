@@ -1,4 +1,5 @@
 #include <math.h>
+#include <array>
 #include "TROOT.h"
 #include "FairPrimaryGenerator.h"
 #include "TGeoNode.h"
@@ -85,7 +86,7 @@ Bool_t FixedTargetGenerator::Init()
      Pythia8::ParticleDataEntry* V = fPythia->particleData.particleDataEntryPtr(r[i]);
      Pythia8::DecayChannel ch = V->channel(c[i]);
      if (TMath::Abs(ch.product(0))!=13 || TMath::Abs(ch.product(1))!=13){
-      fLogger->Info(MESSAGE_ORIGIN,"this is not the right decay channel: %i %i",r,c[i]);
+      fLogger->Info(MESSAGE_ORIGIN,"this is not the right decay channel: %i %i",r[i],c[i]);
      }else{
       ch.rescaleBR(fBoost);
      }
