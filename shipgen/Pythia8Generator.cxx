@@ -11,8 +11,8 @@
 #include "HNLPythia8Generator.h"
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
-int counter = 0;
-Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
+Int_t counter = 0;
+const Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
 
 using namespace Pythia8;
 
