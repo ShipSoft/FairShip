@@ -182,8 +182,8 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
 
     elif method == 'Baseline':
 
-        ptrack_y = Baseline(nrwant = 6, window = 0.6)
-        ptrack_stereo = Baseline(nrwant = 7, window = 15)
+        ptrack_y = Baseline(nrwant = 7, window = 0.7)
+        ptrack_stereo = Baseline(nrwant = 6, window = 15)
 
         # Hits preprocessing
         XX = X.copy()
