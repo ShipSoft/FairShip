@@ -10,6 +10,25 @@ import hepunit as G4Unit
 import ROOT
 gTransportationManager = G4TransportationManager.GetTransportationManager()
 
+def printVMCFields():
+    '''
+    Method to print out information about VMC fields
+    '''
+    print 'Printing VMC fields and associated volumes'
+
+    fGeo = ROOT.gGeoManager  
+    vols = fGeo.GetListOfVolumes()
+
+    for v in vols:
+        field =  v.GetField()
+
+        if field:
+            bx = field.GetFieldValue()[0]/u.tesla
+            by = field.GetFieldValue()[1]/u.tesla
+            bz = field.GetFieldValue()[2]/u.tesla
+            print 'Volume {0} has B = ({1}, {2}, {3}) T'.format(v.GetName(), bx, by, bz)
+
+
 def setMagnetField(flag=None):
     print 'setMagnetField() called'
     fGeo = ROOT.gGeoManager  

@@ -421,6 +421,10 @@ if eventDisplay:
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 
+# Print VMC fields and associated geometry objects
+import geomGeant4
+geomGeant4.printVMCFields()
+
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
