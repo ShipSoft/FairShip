@@ -15,7 +15,7 @@ theDPepsilon = 0.00000008
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
-nEvents      = 100
+nEvents      = 10 #100
 firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, to do: QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
@@ -34,8 +34,11 @@ inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root
 
 defaultInputFile = True
 outputDir    = "."
-sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
-theSeed      = int(10000 * time.time() % 10000000)
+#sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
+#theSeed      = int(10000 * time.time() % 10000000)
+sameSeed     = True
+theSeed      = 1490325
+
 dy           = 10.
 dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
 ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 

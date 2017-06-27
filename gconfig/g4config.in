@@ -19,6 +19,6 @@
 #/run/particle/applyCuts
 #/mcTracking/saveSecondariesInStep true
 
-#/tracking/verbose 1
+/tracking/verbose 1
 #/control/cout/ignoreThreadsExcept 0
 
