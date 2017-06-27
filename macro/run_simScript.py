@@ -420,10 +420,7 @@ if eventDisplay:
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
-# manipulate G4 geometry to enable magnetic field in active shielding, VMC can't do it.
-import geomGeant4
-geomGeant4.setMagnetField() # ('dump') for printout of mag fields
-if debug > 0: geomGeant4.printWeightsandFields()
+
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
