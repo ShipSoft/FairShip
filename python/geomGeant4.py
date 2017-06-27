@@ -8,6 +8,7 @@ from G4digits_hits import *
 from G4track import *
 import hepunit as G4Unit
 import ROOT
+from array import array
 gTransportationManager = G4TransportationManager.GetTransportationManager()
 
 def printVMCFields():
@@ -23,10 +24,12 @@ def printVMCFields():
         field =  v.GetField()
 
         if field:
-            bx = field.GetFieldValue()[0]/u.tesla
-            by = field.GetFieldValue()[1]/u.tesla
-            bz = field.GetFieldValue()[2]/u.tesla
-            print 'Volume {0} has B = ({1}, {2}, {3}) T'.format(v.GetName(), bx, by, bz)
+            # Get the field value in the local volume centre
+            centre = array('d',[0.0, 0.0, 0.0])
+            B = array('d',[0.0, 0.0, 0.0])
+            field.Field(centre, B)
+            print 'Volume {0} has B = ({1}, {2}, {3}) T'.format(v.GetName(), B[0]/u.tesla,
+                                                                B[1]/u.tesla, B[2]/u.tesla)
 
 
 def setMagnetField(flag=None):
