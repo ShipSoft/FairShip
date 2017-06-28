@@ -88,7 +88,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   while (fn<fNevents) {
    fTree->GetEntry(fn);
    fn++;
-   if (fn %1==100000)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
+   if (fn%100000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
 // test if we have a muon, don't look at neutrinos:
    if (abs(int(id))==13) {
         mass = pdgBase->GetParticle(id)->Mass();
