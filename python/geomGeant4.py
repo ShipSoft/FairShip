@@ -11,6 +11,20 @@ import ROOT
 from array import array
 gTransportationManager = G4TransportationManager.GetTransportationManager()
 
+def addVMCFields(controlFile = 'field/BFieldSetup.txt'):
+    '''
+    Define VMC B fields, e.g. global field, field maps, local or local+global fields
+    '''
+    print 'Calling addVMCFields using input control file {0}'.format(controlFile)
+    
+    fieldMaker = ROOT.ShipFieldMaker()
+    fieldMaker.makeFields(controlFile)
+
+    # Return the fieldMaker object, otherwise it will "go out of scope" and its
+    # content will be deleted
+    return fieldMaker
+
+
 def printVMCFields():
     '''
     Method to print out information about VMC fields
@@ -21,7 +35,9 @@ def printVMCFields():
     vols = fGeo.GetListOfVolumes()
 
     for v in vols:
+
         field =  v.GetField()
+        #print 'Vol is {0}, field is {1}'.format(v.GetName(), field)
 
         if field:
             # Get the field value in the local volume centre

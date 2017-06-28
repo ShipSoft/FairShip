@@ -421,9 +421,13 @@ if eventDisplay:
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 
-# Print VMC fields and associated geometry objects
+# Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
+# any field maps, or defining if any volumes feel only the local or local+global field
 import geomGeant4
+fieldMaker = geomGeant4.addVMCFields('field/BFieldSetup.txt')
+# Print VMC fields and associated geometry objects
 geomGeant4.printVMCFields()
+# Could also add plotBField() function?
 
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
