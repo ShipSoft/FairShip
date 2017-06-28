@@ -113,8 +113,8 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
     if method=='FH':
 
 
-        ptrack_y = FastHough(n_tracks=2,
-                             min_hits=3,
+        ptrack_y = FastHough(n_tracks=None,
+                             min_hits=5,
                              k_size=0.7/10000,
                              b_size=1700./10000,
                              k_limits=(-0.5, 0.5),
@@ -147,8 +147,8 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
     elif method=='AR':
 
 
-        ptrack_y = ArtificialRetina(n_tracks=2,
-                                    min_hits=2,
+        ptrack_y = ArtificialRetina(n_tracks=2, # TODO: search for all tracks
+                                    min_hits=5,
                                     residuals_threshold=0.15,
                                     sigma=0.2,
                                     k_size=0.7/10000,

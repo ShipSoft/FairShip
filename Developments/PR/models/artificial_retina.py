@@ -287,7 +287,7 @@ class ArtificialRetina(object):
             one_track_params = self.fit_one_track(x_track, y_track, sample_weight_track)
 
             if len(one_track_params) == 0:
-                continue
+                break # continue
 
             dists = numpy.abs(one_track_params[0] * x + one_track_params[1] - y)
             dist_mask = (dists <= self.residuals_threshold)
@@ -295,7 +295,7 @@ class ArtificialRetina(object):
             if (dist_mask * 1).sum() < self.min_hits:
                 if self.unique_hit_labels == True:
                     used[dist_mask] = 1
-                continue
+                break # continue
 
             atrack = indexes[dist_mask & (used == 0)]
             atrack, _ = self.one_hit_per_layer(atrack, x[atrack], y[atrack], x[atrack], one_track_params[0], one_track_params[1])
