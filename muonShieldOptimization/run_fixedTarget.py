@@ -2,7 +2,6 @@
 import ROOT,os,sys,getopt,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
-time.sleep(30)
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"
@@ -126,6 +125,7 @@ MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
 run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
+sensPlane.SetOnlyMuons()
 run.AddModule(sensPlane)
 
 # -----Create PrimaryGenerator--------------------------------------
@@ -142,7 +142,7 @@ primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
 # boost gamma2muon conversion
-ROOT.kShipMuonsCrossSectionFactor = 1. 
+ROOT.kShipMuonsCrossSectionFactor = 1
 # -----Initialize simulation run------------------------------------
 run.Init()
 
@@ -150,7 +150,10 @@ gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.)
-
+#
+import AddDiMuonDecayChannelsToG4
+AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
+1/0
 # -----Start run----------------------------------------------------
 run.Run(nev)
 
@@ -169,16 +172,19 @@ fin   = ROOT.gROOT.GetListOfFiles()[0]
 t     = fin.cbmsim
 fout  = ROOT.TFile(tmpFile,'recreate' )
 sTree = t.CloneTree(0)
+nEvents = 0
 for n in range(t.GetEntries()):
      rc = t.GetEvent(n)
-     if t.MCTrack.GetEntries()>1: rc = sTree.Fill()
+     if t.MCTrack.GetEntries()>1: 
+          rc = sTree.Fill()
+          nEvents+=1
      #t.Clear()
 sTree.AutoSave()
 fout.Write()
 fout.Close()
 os.system("mv "+tmpFile+" "+outFile)
 
-#os.system('rm '+tmpFile)
+print "Number of events produced with activity after hadron absorber:",nEvents
 
 if checkOverlap:
  sGeo = ROOT.gGeoManager
