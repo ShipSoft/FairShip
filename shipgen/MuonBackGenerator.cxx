@@ -152,8 +152,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        vz = track->GetStartZ(); 
        tof =  track->GetStartT();
        e = track->GetEnergy();
-       Bool_t wanttracking = false;
-       if (abs(track->GetPdgCode())==13){  wanttracking = true; }
+       Bool_t wanttracking = (i==0);
        cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,-1.,wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
      } 
   }else{
