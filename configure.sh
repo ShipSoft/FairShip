@@ -64,5 +64,3 @@ else
    cmake ../FairShip -DCMAKE_CXX_COMPILER=$xx -DCMAKE_C_COMPILER=$yy
    make
 fi
-
-source config.sh
