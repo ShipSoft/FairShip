@@ -136,7 +136,7 @@ P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 boostDiMuon = 100.
 P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
-TargetStation.SetBoost(boostDiMuon) # same for Geant4
+                            # and later copied to Geant4
 P8gen.SetSeed(theSeed)
 primGen.AddGenerator(P8gen)
 #

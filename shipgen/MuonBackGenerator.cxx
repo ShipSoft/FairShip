@@ -9,6 +9,7 @@
 #include "vetoPoint.h"                
 #include "ShipMCTrack.h"                
 #include "TMCProcess.h"
+#include <algorithm>
 
 // read events from Pythia8/Geant4 base simulation (only target + hadron absorber
 
@@ -85,6 +86,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t mass,e,tof,phi,dx,dy;
+  std::vector<int> muList;
+
   while (fn<fNevents) {
    fTree->GetEntry(fn);
    fn++;
@@ -100,7 +103,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      for (int i = 0; i < vetoPoints->GetEntries(); i++) {
          vetoPoint *v = (vetoPoint*)vetoPoints->At(i); 
          if (abs(v->PdgCode())==13){found = true;
-           break;} 
+           muList.push_back(v->GetTrackID());} 
      }                     
      if (found) {break;}
    }
@@ -152,7 +155,10 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        vz = track->GetStartZ(); 
        tof =  track->GetStartT();
        e = track->GetEnergy();
-       Bool_t wanttracking = (i==0);
+       Bool_t wanttracking = false;
+       if(std::find(muList.begin(), muList.end(), i) != muList.end()) {
+         wanttracking = true;
+       }
        cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,-1.,wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
      } 
   }else{
