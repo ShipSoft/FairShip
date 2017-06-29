@@ -260,7 +260,7 @@ void ShipFieldMaker::createBell(const stringVect& inputLine)
     // Expecting a line such as:
     // Bell LabelName BPeak zMiddle orientationInt tubeRadius
 
-    if (nWords == 6) {
+    if (nWords == 6 || nWords == 9) {
 
 	TString label(inputLine[1].c_str());
 
@@ -269,14 +269,23 @@ void ShipFieldMaker::createBell(const stringVect& inputLine)
 
 	    // Input field in Tesla_, interface needs kGauss units
 	    Double_t BPeak = std::atof(inputLine[2].c_str())*Tesla_;
-	    Double_t zMiddle = std::atof(inputLine[3].c_str());
+	    Double_t zMiddle = std::atof(inputLine[3].c_str()); // cm
 
 	    Int_t orient = std::atoi(inputLine[4].c_str());
-	    Double_t tubeR = std::atof(inputLine[5].c_str());
+	    Double_t tubeR = std::atof(inputLine[5].c_str()); // cm
 
 	    std::cout<<"Creating Bell field for "<<label.Data()<<std::endl;
 
 	    ShipBellField* theField = new ShipBellField(label.Data(), BPeak, zMiddle, orient, tubeR);
+
+	    if (nWords == 9) {
+		// Specify "target" dimensions (cm)
+		Double_t xy = std::atof(inputLine[6].c_str());
+		Double_t z  = std::atof(inputLine[7].c_str());
+		Double_t L  = std::atof(inputLine[8].c_str());
+		theField->IncludeTarget(xy, z, L);
+	    }
+
 	    theFields_[label] = theField;
 
 	} else {
@@ -286,8 +295,8 @@ void ShipFieldMaker::createBell(const stringVect& inputLine)
 
     } else {
 
-	std::cout<<"Expecting 6 words for the definition of the Bell field: "
-		 <<"Bell Label BPeak zMiddle orientationInt tubeRadius "<<std::endl;
+	std::cout<<"Expecting 6 or 9 words for the definition of the Bell field: "
+		 <<"Bell Label BPeak zMiddle orientationInt tubeRadius [targetXY targetZ0 targetL]"<<std::endl;
 
     }
 

@@ -1,4 +1,4 @@
-# Recreate the uniform fields (Tesla) using the new interface
+# Specify the uniform fields (Tesla)
 Uniform B1_xPos 1.8 0.0 0.0
 Uniform B1_xNeg -1.8 0.0 0.0
 Uniform B1_yPos 0.0 1.8 0.0
@@ -9,6 +9,9 @@ Uniform B2_yNeg 0.0 -1.5 0.0
 Uniform B2_yPos 0.0 1.5 0.0
 Uniform B3_xPos 1.0 0.0 0.0
 Uniform B3_xNeg -1.0 0.0 0.0
+# Spectrometer field; set this as a global field
+Bell Wilfried 0.1436 3068.0 2 500.0
+Global Wilfried
 # Assign the fields to volumes
 Local MagnAbsorb1_MiddleMagL B1_yPos
 Local MagnAbsorb1_MiddleMagR B1_yPos
