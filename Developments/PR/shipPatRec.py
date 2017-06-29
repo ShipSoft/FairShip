@@ -346,6 +346,53 @@ def PatRec(X, ShipGeo, z_magnet, method='FH'):
                                  'params12': track_params_12[acomb[0]],
                                  'params34': track_params_34[acomb[1]]}
 
+    ################################ Save tracks found only in 1&2 or 3&4 stations #####################################
+
+    combined_ids_12 = [acomb[0] for acomb in comb.tracks_combinations_]
+    combined_ids_34 = [acomb[1] for acomb in comb.tracks_combinations_]
+
+    # Before
+    for i_track in range(len(track_inds_12)):
+
+        if i_track in combined_ids_12:
+            continue
+
+        track_before_y, track_before_stereo = track_inds_12[i_track]
+        track_before = numpy.concatenate((track_before_y, track_before_stereo))
+
+        atrack = track_before
+        atrack = numpy.unique(XX_inds[atrack])
+
+        reco_tracks[track_id] = {'hits': atrack,
+                                 'hitPosList': X[atrack, :-1],
+                                 'charge': -999,
+                                 'pinv': -999,
+                                 'params12': track_params_12[i_track],
+                                 'params34': [[], []]}
+
+        track_id += 1
+
+    # After
+    for i_track in range(len(track_inds_34)):
+
+        if i_track in combined_ids_34:
+            continue
+
+        track_after_y, track_after_stereo = track_inds_34[i_track]
+        track_after = numpy.concatenate((track_after_y, track_after_stereo))
+
+        atrack = track_after
+        atrack = numpy.unique(XX_inds[atrack])
+
+        reco_tracks[track_id] = {'hits': atrack,
+                                 'hitPosList': X[atrack, :-1],
+                                 'charge': -999,
+                                 'pinv': -999,
+                                 'params12': [[], []],
+                                 'params34': track_params_34[i_track]}
+
+        track_id += 1
+
     return reco_tracks
 
 
