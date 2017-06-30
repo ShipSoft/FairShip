@@ -130,7 +130,7 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     B[2] = this->BInterCalc(ShipBFieldMap::zAxis);
 
     //std::cout<<GetName()<<": Bins = "<<iX<<", "<<iY<<", "<<iZ
-    //<<", B = "<<B[0]<<", "<<B[1]<<", "<<B[2]<<std::endl;
+    //         <<", B = "<<B[0]<<", "<<B[1]<<", "<<B[2]<<std::endl;
 
 }
 
@@ -160,6 +160,8 @@ void ShipBFieldMap::readMapFile()
 	    >> yMin_ >> yMax_ >> dy_ >> zMin_ >> zMax_ >> dz_;    
 
     std::cout<<"x values: "<<xMin_<<", "<<xMax_<<", dx = "<<dx_<<std::endl;
+    std::cout<<"y values: "<<yMin_<<", "<<yMax_<<", dy = "<<dy_<<std::endl;
+    std::cout<<"z values: "<<zMin_<<", "<<zMax_<<", dz = "<<dz_<<std::endl;
 
     // Since the default SHIP distance unit is cm, we do not need to convert
     // these map limits, i.e. cm = 1 already

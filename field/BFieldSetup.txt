@@ -9,10 +9,12 @@ Uniform B2_yNeg 0.0 -1.5 0.0
 Uniform B2_yPos 0.0 1.5 0.0
 Uniform B3_xPos 1.0 0.0 0.0
 Uniform B3_xNeg -1.0 0.0 0.0
-# Spectrometer field; set this as a global field
+# Spectrometer Bell field; set this as a global field
 Bell Wilfried 0.1436 3068.0 2 500.0
 Global Wilfried
-# Assign the fields to volumes
+# Assign the fields to volumes. Use "Local" to ignore global field 
+# for the specific volume or "Region" for local & global field
+# Active muon shield
 Local MagnAbsorb1_MiddleMagL B1_yPos
 Local MagnAbsorb1_MiddleMagR B1_yPos
 Local MagnAbsorb1_MagRetL B1_yNeg
@@ -121,9 +123,10 @@ Local Magn7_MagTopLeft B1_xNeg
 Local Magn7_MagTopRight B1_xPos
 Local Magn7_MagBotLeft B1_xPos
 Local Magn7_MagBotRight B1_xNeg
-Local volUpYoke B2_zNeg
-Local volLowYoke B2_zPos
-Local volArm1MS B2_yNeg
-Local volArm2MS B2_yPos
-Local ColumnVol B3_xNeg
-Local volTarget B3_xPos
+# Spectrometer
+Region volUpYoke B2_zNeg
+Region volLowYoke B2_zPos
+Region volArm1MS B2_yNeg
+Region volArm2MS B2_yPos
+Region ColumnVol B3_xNeg
+Region volTarget B3_xPos

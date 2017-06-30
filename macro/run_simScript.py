@@ -428,7 +428,7 @@ fieldMaker = geomGeant4.addVMCFields('field/BFieldSetup.txt')
 # Print VMC fields and associated geometry objects
 geomGeant4.printVMCFields()
 # Plot the fields
-#fieldMaker.plotField(1, ROOT.TVector3(-10000.0, 10000.0, 250.0), ROOT.TVector3(-400.0, 400.0, 100.0), 'Bzx.png')
+fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
