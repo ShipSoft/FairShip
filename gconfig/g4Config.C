@@ -49,10 +49,4 @@ void Config()
    //set geant4 specific stuff
   geant4->SetMaxNStep(10000.);  // default is 30000
   geant4->ProcessGeantMacro(configm1.Data());
-  if (kShipMuonsCrossSectionFactor>1){
-   TString value;
-   value+= kShipMuonsCrossSectionFactor;
-   geant4->ProcessGeantCommand("/mcPhysics/setGammaToMuonsCrossSectionFactor "+value);
-   cout << " -I g4Config() set GammaToMuonsCrossSectionFactor "<<value<< endl;
-  }
 }

@@ -141,8 +141,6 @@ P8gen.SetSeed(theSeed)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
-# boost gamma2muon conversion
-ROOT.kShipMuonsCrossSectionFactor = 1
 # -----Initialize simulation run------------------------------------
 run.Init()
 
@@ -153,7 +151,16 @@ fStack.SetEnergyCut(-1.)
 #
 import AddDiMuonDecayChannelsToG4
 AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
-1/0
+
+# boost gamma2muon conversion
+boostFactor = 100.
+import G4processes
+gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
+procAnnihil = gProcessTable.FindProcessA('AnnihiToMuPair','e+')
+procGMuPair = gProcessTable.FindProcess('GammaToMuPair','gamma')
+procGMuPair.SetCrossSecFactor(boostFactor)
+procAnnihil.SetCrossSecFactor(boostFactor)
+
 # -----Start run----------------------------------------------------
 run.Run(nev)
 
