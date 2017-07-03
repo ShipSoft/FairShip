@@ -252,7 +252,7 @@ class ShipDigiReco:
      self.digiStraw[index]=aHit
      detID = aHit.GetDetectorID() 
      if hitsPerDetId.has_key(detID):
-       if self.digiStraw[hitsPerDetId[detID]].tdc() > aHit.tdc():
+       if self.digiStraw[hitsPerDetId[detID]].GetTDC() > aHit.GetTDC():
  # second hit with smaller tdc
         self.digiStraw[hitsPerDetId[detID]].setInvalid()
         hitsPerDetId[detID] = index
