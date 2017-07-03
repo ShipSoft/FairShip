@@ -173,9 +173,13 @@ print "Macro finished succesfully."
 print "Output file is ",  outFile 
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
+
 # ---post processing--- remove empty events
 tmpFile = outFile+"tmp"
 fin   = ROOT.gROOT.GetListOfFiles()[0]
+fHeader = fin.FileHeader
+fHeader.SetRunId(runnr)
+fHeader.SetTitle("POT = "+str(nev))
 t     = fin.cbmsim
 fout  = ROOT.TFile(tmpFile,'recreate' )
 sTree = t.CloneTree(0)
@@ -187,6 +191,9 @@ for n in range(t.GetEntries()):
           nEvents+=1
      #t.Clear()
 sTree.AutoSave()
+ff   = fin.FileHeader.Clone(fout.GetName())
+fout.cd()
+ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 fout.Write()
 fout.Close()
 os.system("mv "+tmpFile+" "+outFile)
