@@ -404,8 +404,8 @@ file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   echo \"# This file has been crea
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   echo \"Unix.*.Root.DynamicPath: $DYLD_LIBRARY_PATH\" >> .rootrc\n")
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "endif\n")
 
-file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   source \"${SIMPATH}/bin/geant4.csh\" ${SIMPATH}/bin\n")
-file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "   source \"${SIMPATH}/bin/geant4.sh\" ${SIMPATH}/bin\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "  source ${SIMPATH}/bin/geant4.csh ${SIMPATH}/bin\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "  source ${SIMPATH}/bin/geant4.sh \n")
 
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
