@@ -2,7 +2,6 @@
 import ROOT,os,sys,getopt,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
-time.sleep(30)
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"
@@ -126,6 +125,7 @@ MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
 run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
+sensPlane.SetOnlyMuons()
 run.AddModule(sensPlane)
 
 # -----Create PrimaryGenerator--------------------------------------
@@ -136,13 +136,11 @@ P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 boostDiMuon = 100.
 P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
-TargetStation.SetBoost(boostDiMuon) # same for Geant4
+                            # and later copied to Geant4
 P8gen.SetSeed(theSeed)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
-# boost gamma2muon conversion
-ROOT.kShipMuonsCrossSectionFactor = 1. 
 # -----Initialize simulation run------------------------------------
 run.Init()
 
@@ -150,6 +148,18 @@ gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.)
+#
+import AddDiMuonDecayChannelsToG4
+AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
+
+# boost gamma2muon conversion
+boostFactor = 100.
+import G4processes
+gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
+procAnnihil = gProcessTable.FindProcessA('AnnihiToMuPair','e+')
+procGMuPair = gProcessTable.FindProcess('GammaToMuPair','gamma')
+procGMuPair.SetCrossSecFactor(boostFactor)
+procAnnihil.SetCrossSecFactor(boostFactor)
 
 # -----Start run----------------------------------------------------
 run.Run(nev)
@@ -163,22 +173,32 @@ print "Macro finished succesfully."
 print "Output file is ",  outFile 
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
+
 # ---post processing--- remove empty events
 tmpFile = outFile+"tmp"
 fin   = ROOT.gROOT.GetListOfFiles()[0]
+fHeader = fin.FileHeader
+fHeader.SetRunId(runnr)
+fHeader.SetTitle("POT = "+str(nev))
 t     = fin.cbmsim
 fout  = ROOT.TFile(tmpFile,'recreate' )
 sTree = t.CloneTree(0)
+nEvents = 0
 for n in range(t.GetEntries()):
      rc = t.GetEvent(n)
-     if t.MCTrack.GetEntries()>1: rc = sTree.Fill()
+     if t.MCTrack.GetEntries()>1: 
+          rc = sTree.Fill()
+          nEvents+=1
      #t.Clear()
 sTree.AutoSave()
+ff   = fin.FileHeader.Clone(fout.GetName())
+fout.cd()
+ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 fout.Write()
 fout.Close()
 os.system("mv "+tmpFile+" "+outFile)
 
-#os.system('rm '+tmpFile)
+print "Number of events produced with activity after hadron absorber:",nEvents
 
 if checkOverlap:
  sGeo = ROOT.gGeoManager

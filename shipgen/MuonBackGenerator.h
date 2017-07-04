@@ -4,6 +4,7 @@
 #include "TROOT.h"
 #include "FairGenerator.h"
 #include "TTree.h"                      // for TTree
+#include "TClonesArray.h"               
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
 class FairPrimaryGenerator;
@@ -34,6 +35,8 @@ class MuonBackGenerator : public FairGenerator
 private:
 protected:
   Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz,ecut;
+  TClonesArray* MCTrack; //!
+  TClonesArray* vetoPoints; //!
   TFile* fInputFile;    //! 
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TTree* fTree;         //! 
@@ -43,7 +46,7 @@ protected:
   Bool_t fPhiRandomize;
   Int_t fSameSeed;
   Double_t fsmearBeam ;
-  ClassDef(MuonBackGenerator,3);
+  ClassDef(MuonBackGenerator,4);
 };
 
 #endif /* !PNDmuGENERATOR_H */

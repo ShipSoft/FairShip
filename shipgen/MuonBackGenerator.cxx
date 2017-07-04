@@ -6,6 +6,10 @@
 #include "MuonBackGenerator.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TMath.h"                      // for Sqrt
+#include "vetoPoint.h"                
+#include "ShipMCTrack.h"                
+#include "TMCProcess.h"
+#include <algorithm>
 
 // read events from Pythia8/Geant4 base simulation (only target + hadron absorber
 
@@ -21,10 +25,9 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   if (0 == strncmp("/eos",fileName,4) ) {
-     char stupidCpp[100];
-     strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
-     strcat(stupidCpp,fileName);
-     fInputFile  = TFile::Open(stupidCpp); 
+     TString tmp = "root://eoslhcb.cern.ch/";
+     tmp+=fileName;
+     fInputFile  = TFile::Open(tmp); 
   }else{
   fInputFile  = new TFile(fileName);
   }
@@ -36,30 +39,40 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fSameSeed = 0;
   fsmearBeam = 0; // default no beam smearing, use SetSmearBeam(sb) if different, sb [cm]
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
-  fNevents = fTree->GetEntries();
+  if (fTree){
+   fNevents = fTree->GetEntries();
   // count only events with muons
   // fMuons  = fTree->Draw("id","abs(id)==13","goff");
-  fTree->SetBranchAddress("id",&id);                // particle id
-  fTree->SetBranchAddress("parentid",&parentid);    // parent id, could be different
-  fTree->SetBranchAddress("pythiaid",&pythiaid);    // pythiaid original particle
-  fTree->SetBranchAddress("ecut",&ecut);    // energy cut used in simulation
-  fTree->SetBranchAddress("w",&w);                  // weight of event
+   fTree->SetBranchAddress("id",&id);                // particle id
+   fTree->SetBranchAddress("parentid",&parentid);    // parent id, could be different
+   fTree->SetBranchAddress("pythiaid",&pythiaid);    // pythiaid original particle
+   fTree->SetBranchAddress("ecut",&ecut);    // energy cut used in simulation
+   fTree->SetBranchAddress("w",&w);                  // weight of event
 //  check if ntuple has information of momentum at origin
-  if (fTree->GetListOfLeaves()->GetSize() < 17){  
-   fTree->SetBranchAddress("x",&vx);   // position with respect to startOfTarget at -89.27m
-   fTree->SetBranchAddress("y",&vy);
-   fTree->SetBranchAddress("z",&vz);
-   fTree->SetBranchAddress("px",&px);   // momentum
-   fTree->SetBranchAddress("py",&py);
-   fTree->SetBranchAddress("pz",&pz);
+   if (fTree->GetListOfLeaves()->GetSize() < 17){  
+    fTree->SetBranchAddress("x",&vx);   // position with respect to startOfTarget at -89.27m
+    fTree->SetBranchAddress("y",&vy);
+    fTree->SetBranchAddress("z",&vz);
+    fTree->SetBranchAddress("px",&px);   // momentum
+    fTree->SetBranchAddress("py",&py);
+    fTree->SetBranchAddress("pz",&pz);
+   }else{
+    fTree->SetBranchAddress("ox",&vx);   // position with respect to startOfTarget at -50m
+    fTree->SetBranchAddress("oy",&vy);
+    fTree->SetBranchAddress("oz",&vz);
+    fTree->SetBranchAddress("opx",&px);   // momentum
+    fTree->SetBranchAddress("opy",&py);
+    fTree->SetBranchAddress("opz",&pz);
+   }
   }else{
-   fTree->SetBranchAddress("ox",&vx);   // position with respect to startOfTarget at -50m
-   fTree->SetBranchAddress("oy",&vy);
-   fTree->SetBranchAddress("oz",&vz);
-   fTree->SetBranchAddress("opx",&px);   // momentum
-   fTree->SetBranchAddress("opy",&py);
-   fTree->SetBranchAddress("opz",&pz);
-  } 
+   id = -1;
+   fTree = (TTree *)fInputFile->Get("cbmsim");
+   fNevents   = fTree->GetEntries();
+   MCTrack = new TClonesArray("ShipMCTrack");
+   vetoPoints = new TClonesArray("vetoPoint");
+   fTree->SetBranchAddress("MCTrack",&MCTrack);
+   fTree->SetBranchAddress("vetoPoint",&vetoPoints);
+  }    
   return kTRUE;
 }
 // -----   Destructor   ----------------------------------------------------
@@ -71,42 +84,92 @@ MuonBackGenerator::~MuonBackGenerator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
+  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  Double_t mass,e,tof,phi,dx,dy;
+  std::vector<int> muList;
+
   while (fn<fNevents) {
    fTree->GetEntry(fn);
    fn++;
-   if (fn %10000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
+   if (fn%100000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
 // test if we have a muon, don't look at neutrinos:
-   if (abs(int(id))==13) {break;}
+   if (abs(int(id))==13) {
+        mass = pdgBase->GetParticle(id)->Mass();
+        e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
+        tof = 0;
+        break;}
+   if (id==-1){ // use tree as input file
+     Bool_t found = false;
+     for (int i = 0; i < vetoPoints->GetEntries(); i++) {
+         vetoPoint *v = (vetoPoint*)vetoPoints->At(i); 
+         if (abs(v->PdgCode())==13){found = true;
+           muList.push_back(v->GetTrackID());} 
+     }                     
+     if (found) {break;}
+   }
   }
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  Double_t mass = pdgBase->GetParticle(id)->Mass();
-  Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
-  Double_t tof = 0;
+  if (fn==fNevents){ 
+     fLogger->Info(MESSAGE_ORIGIN,"End of file reached %i",fNevents);
+     return kFALSE;
+  } 
   if (fSameSeed) {
     Int_t theSeed = fn + fSameSeed * fNevents;
     fLogger->Debug(MESSAGE_ORIGIN, TString::Format("Seed: %d", theSeed));
     gRandom->SetSeed(theSeed);
   }
-  if (fPhiRandomize){
-      Double_t pt  = TMath::Sqrt( px*px+py*py );
-      Double_t phi = gRandom->Uniform(0.,2.) * TMath::Pi();
-      px = pt*TMath::Cos(phi);
-      py = pt*TMath::Sin(phi);
-  }
+  if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}
   if (fsmearBeam>0){
     Double_t test = fsmearBeam*fsmearBeam;
     Double_t Rsq  = test + 1.;
-    Double_t dx,dy;
     while(Rsq>test){
      dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
      dy = gRandom->Uniform(-1.,1.) * fsmearBeam;
      Rsq = dx*dx+dy*dy;
     }
-    vx = vx + dx/100.; 
+   }
+  if (id==-1){
+     std::vector<int> partList;
+     for (int k = 0; k < vetoPoints->GetEntries(); k++) {
+         vetoPoint *v = (vetoPoint*)vetoPoints->At(k); 
+         if (abs(v->PdgCode())==13){
+            partList.push_back(v->GetTrackID());
+            ShipMCTrack* track =  (ShipMCTrack*)MCTrack->At(v->GetTrackID());
+            Int_t mother = track->GetMotherId();
+            while (mother>0){
+              track = (ShipMCTrack*)(MCTrack->At(mother));  
+              mother = track->GetMotherId();
+              partList.push_back(mother);
+            }
+         }  
+     }
+     for (unsigned i = partList.size(); i-- > 0; ){
+       ShipMCTrack* track = (ShipMCTrack*)MCTrack->At(partList[i]);
+       px = track->GetPx();
+       py = track->GetPy();
+       pz = track->GetPz();
+       Double_t pt  = TMath::Sqrt( px*px+py*py );
+       px = pt*TMath::Cos(phi);
+       py = pt*TMath::Sin(phi);
+       vx = track->GetStartX()+dx; 
+       vy = track->GetStartY()+dy; 
+       vz = track->GetStartZ(); 
+       tof =  track->GetStartT();
+       e = track->GetEnergy();
+       Bool_t wanttracking = false;
+       if(std::find(muList.begin(), muList.end(), i) != muList.end()) {
+         wanttracking = true;
+       }
+       cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,-1.,wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
+     } 
+  }else{
+    vx = vx + dx/100.;  
     vy = vy + dy/100.; 
+    Double_t pt  = TMath::Sqrt( px*px+py*py );
+    px = pt*TMath::Cos(phi);
+    py = pt*TMath::Sin(phi);
+    cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
+    cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   }
-  cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
-  cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   return kTRUE;
 }
 

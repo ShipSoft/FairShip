@@ -17,8 +17,6 @@
 #include "TGeoMedium.h"
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
-#include "G4SystemOfUnits.hh"
-double gDiMuBoost;
 
 using std::cout;
 using std::endl;
@@ -76,8 +74,6 @@ Int_t ShipTargetStation::InitMedium(const char* name)
      return ShipMedium->getMediumIndex();
    return geoBuild->createMedium(ShipMedium);
 }
-
-void ShipTargetStation::SetBoost(Double_t f) { gDiMuBoost = f;} 
 
 void ShipTargetStation::ConstructGeometry()
 {

@@ -56,7 +56,6 @@ class ShipTargetStation : public FairModule
      fM.push_back(m17);  
      fDiameter = d;                                         
      }
-    void SetBoost(Double_t f); // boost factor for rare di-muon decays in hadronic Geant4 processes
     ClassDef(ShipTargetStation,3)
  protected:
   

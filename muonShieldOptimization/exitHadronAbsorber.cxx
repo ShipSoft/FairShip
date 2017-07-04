@@ -41,6 +41,7 @@ exitHadronAbsorber::exitHadronAbsorber()
     fMom(),
     fTime(-1.),
     fLength(-1.),
+    fOnlyMuons(kFALSE),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
 {}
 
@@ -59,18 +60,20 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPos);
-    gMC->TrackMomentum(fMom);
-    if ( (fMom.E()-fMom.M() )>EMax) {
-     AddHit(fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
+    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){ 
+     fTime   = gMC->TrackTime() * 1.0e09;
+     fLength = gMC->TrackLength();
+     gMC->TrackPosition(fPos);
+     gMC->TrackMomentum(fMom);
+     if ( (fMom.E()-fMom.M() )>EMax) {
+      AddHit(fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            0,pdgCode,TVector3(p->Vx(), p->Vy(), p->Vz()),TVector3(p->Px(), p->Py(), p->Pz()) );
+      ShipStack* stack = (ShipStack*) gMC->GetStack();
+      stack->AddPoint(kVETO);
       }
+    }
   }
-  ShipStack* stack = (ShipStack*) gMC->GetStack();
-  stack->AddPoint(kVETO);
   gMC->StopTrack();
   return kTRUE;
 }

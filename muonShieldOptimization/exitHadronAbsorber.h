@@ -68,6 +68,7 @@ class exitHadronAbsorber: public FairDetector
                              Double_t time, Double_t length,
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
     inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
+    inline void SetOnlyMuons(){fOnlyMuons=kTRUE;}
 
   private:
 
@@ -81,6 +82,7 @@ class exitHadronAbsorber: public FairDetector
     Double_t     fTime;              //!  time
     Double_t     fLength;            //!  length
     Float_t EMax;  //! max energy to transport
+    Bool_t fOnlyMuons;  //! flag if only muons should be stored
     /** container for data points */
     TClonesArray*  fexitHadronAbsorberPointCollection;
     ClassDef(exitHadronAbsorber, 0)

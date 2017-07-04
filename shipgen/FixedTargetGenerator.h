@@ -38,7 +38,7 @@ class FixedTargetGenerator : public FairGenerator
   void SetJpsiMainly() { JpsiMainly  = true; }  // let all Jpsi decay to mumu
   inline void SetSeed(Double_t seed){fSeed=seed;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
-
+  Pythia* GetPythia() {return fPythiaP;}
  private:
   
   RndmEngine* fRandomEngine;  //!
