@@ -353,7 +353,7 @@ def left_right_ambiguity(stree, X, track, deg=5):
         kx12, bx12 = params12[1]
     else:
         return results
-        
+
     if len(params34[0]) != 0:
         ky34, by34 = params34[0]
     else:
@@ -1442,6 +1442,8 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
             continue
 
         res = left_right_ambiguity(stree, X, reco_tracks[i], deg=5)
+        if res == {}:
+            continue
 
         tot_len_y12, reco_len_y12, ratio_y12 = res['y12']
         tot_len_v1_12, reco_len_v1_12, ratio_v1_12 = res['v1_12']
