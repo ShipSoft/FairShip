@@ -1397,38 +1397,42 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
     for i, thetrack in enumerate(theTracks):
 
-        atrack = reco_tracks[i]['hits']
-        frac, tmax = fracMCsame(y[atrack])
+        try:
+            atrack = reco_tracks[i]['hits']
+            frac, tmax = fracMCsame(y[atrack])
 
-        if tmax not in reco_mc_tracks:
-            continue
+            if tmax not in reco_mc_tracks:
+                continue
 
-        fitStatus   = thetrack.getFitStatus()
-        thetrack.prune("CFL") # http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
+            fitStatus   = thetrack.getFitStatus()
+            thetrack.prune("CFL") # http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
 
-        nmeas = fitStatus.getNdf()
-        pval = fitStatus.getPVal()
-        chi2 = fitStatus.getChi2() / nmeas
+            nmeas = fitStatus.getNdf()
+            pval = fitStatus.getPVal()
+            chi2 = fitStatus.getChi2() / nmeas
 
-        h['chi2fittedtracks'].Fill(chi2)
-        h['pvalfittedtracks'].Fill(pval)
+            h['chi2fittedtracks'].Fill(chi2)
+            h['pvalfittedtracks'].Fill(pval)
 
-        fittedState = thetrack.getFittedState()
-        fittedMom = fittedState.getMomMag()
-        fittedMom = fittedMom*int(charge)
+            fittedState = thetrack.getFittedState()
+            fittedMom = fittedState.getMomMag()
+            fittedMom = fittedMom*int(charge)
 
-        if math.fabs(pinv) > 0.0 :
-            h['pvspfitted'].Fill(1./pinv,fittedMom)
-        fittedtrackDir = fittedState.getDir()
-        fittedx=math.degrees(math.acos(fittedtrackDir[0]))
-        fittedy=math.degrees(math.acos(fittedtrackDir[1]))
-        fittedz=math.degrees(math.acos(fittedtrackDir[2]))
-        fittedmass = fittedState.getMass()
-        h['momentumfittedtracks'].Fill(fittedMom)
-        h['xdirectionfittedtracks'].Fill(fittedx)
-        h['ydirectionfittedtracks'].Fill(fittedy)
-        h['zdirectionfittedtracks'].Fill(fittedz)
-        h['massfittedtracks'].Fill(fittedmass)
+            if math.fabs(pinv) > 0.0 :
+                h['pvspfitted'].Fill(1./pinv,fittedMom)
+            fittedtrackDir = fittedState.getDir()
+            fittedx=math.degrees(math.acos(fittedtrackDir[0]))
+            fittedy=math.degrees(math.acos(fittedtrackDir[1]))
+            fittedz=math.degrees(math.acos(fittedtrackDir[2]))
+            fittedmass = fittedState.getMass()
+            h['momentumfittedtracks'].Fill(fittedMom)
+            h['xdirectionfittedtracks'].Fill(fittedx)
+            h['ydirectionfittedtracks'].Fill(fittedy)
+            h['zdirectionfittedtracks'].Fill(fittedz)
+            h['massfittedtracks'].Fill(fittedmass)
+
+        except:
+            print "Something wrong!"
 
 
     ############################################ left-right ambiguity ##################################################
