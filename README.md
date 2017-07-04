@@ -17,6 +17,12 @@ Additionally for developers:
   * clang-tidy (to check coding conventions -- mostly naming rules which are not covered by `cpplint`)
 
 ## Build Instructions
+0. If you work on lxplus, or on SLC6 and have access to /cvmfs/ship.cern.ch, define enviroment varaibles:
+    export SHIPSOFT=/cvmfs/ship.cern.ch/ShipSoft
+    export FAIRROOTPATH=${SHIPSOFT}/FairRootInst
+    export SIMPATH=${SHIPSOFT}/FairSoftInst
+    
+    move to step 4.
 
 1. In case you use SLC6 where the GitHub cert is missing, first do (only once):
 
