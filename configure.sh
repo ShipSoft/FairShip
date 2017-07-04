@@ -36,7 +36,7 @@ if `which lsb_release > /dev/null 2>&1` ; then
       xx=$($SIMPATH/bin/fairsoft-config --cxx)
       if [[ "$xx" =~ "lcg" ]]; then
          echo "*** execute lcg setup with gcc62"
-         /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_87 x86_64-slc6-gcc62-opt Python >> tmp.sh
+         /cvmfs/sft.cern.ch/lcg/releases/lcgenv/latest/lcgenv -p /cvmfs/sft.cern.ch/lcg/releases/LCG_87 x86_64-slc6-gcc62-opt Python >> tmp.sh
          source tmp.sh
          rm tmp.sh
       fi
