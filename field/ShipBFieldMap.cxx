@@ -1,10 +1,13 @@
 /*! \class ShipBFieldMap
-  \brief Class that defines a (3d) magnetic field map (istances in cm, fields in tesla)
+  \brief Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)
 
   \author John Back <J.J.Back@warwick.ac.uk>
 */
 
 #include "ShipBFieldMap.h"
+
+#include "TFile.h"
+#include "TTree.h"
 
 #include <fstream>
 #include <iostream>
@@ -152,6 +155,89 @@ void ShipBFieldMap::readMapFile()
     std::cout<<"ShipBFieldMap::readMapFile() creating field "<<this->GetName()
 	     <<" using file "<<mapFileName_<<std::endl;
 
+    // Check to see if we have a ROOT file
+    if (mapFileName_.find(".root") != std::string::npos) {
+
+	this->readRootFile();
+
+    } else {
+
+	this->readTextFile();
+
+    }
+
+
+}
+
+void ShipBFieldMap::readRootFile() {
+
+    TFile* theFile = TFile::Open(mapFileName_.c_str());
+
+    // Coordinate ranges
+    TTree* rTree = dynamic_cast<TTree*>(theFile->Get("Range"));
+    rTree->SetBranchAddress("xMin", &xMin_);
+    rTree->SetBranchAddress("xMax", &xMax_);
+    rTree->SetBranchAddress("dx", &dx_);
+    rTree->SetBranchAddress("yMin", &yMin_);
+    rTree->SetBranchAddress("yMax", &yMax_);
+    rTree->SetBranchAddress("dy", &dy_);
+    rTree->SetBranchAddress("zMin", &zMin_);
+    rTree->SetBranchAddress("zMax", &zMax_);
+    rTree->SetBranchAddress("dz", &dz_);
+
+    // Fill the ranges
+    rTree->GetEntry(0);
+
+    this->setLimits();
+
+    if (isCopy_ == kFALSE) {
+
+	// The data is expected to contain Bx,By,Bz data values 
+	// in ascending z,y,x co-ordinate order
+
+	fieldMap_->clear();
+
+	TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
+	Double_t Bx, By, Bz;
+	dTree->SetBranchStatus("*", 0);
+	dTree->SetBranchStatus("Bx", 1);
+	dTree->SetBranchStatus("By", 1);
+	dTree->SetBranchStatus("Bz", 1);
+
+	dTree->SetBranchAddress("Bx", &Bx);
+	dTree->SetBranchAddress("By", &By);
+	dTree->SetBranchAddress("Bz", &Bz);
+
+	Int_t nEntries = dTree->GetEntries();
+	if (nEntries != N_) {
+	    std::cout<<"Expected "<<N_<<" field map entries but found "<<nEntries<<std::endl;
+	    nEntries = 0;
+	}
+
+	for (Int_t i = 0; i < nEntries; i++) {
+
+	    dTree->GetEntry(i);
+
+	    // B field values are in Tesla. This means these values are multiplied
+	    // by a factor of ten since both FairRoot and the VMC interface use kGauss
+	    Bx *= Tesla_;
+	    By *= Tesla_;
+	    Bz *= Tesla_;
+
+	    // Store the B field 3-vector
+	    TVector3 BVector(Bx, By, Bz);
+	    fieldMap_->push_back(BVector);
+
+	}
+
+    }
+
+    theFile->Close();
+
+}
+
+void ShipBFieldMap::readTextFile() {
+
     std::ifstream getData(mapFileName_.c_str());
 
     std::string tmpString("");
@@ -159,31 +245,7 @@ void ShipBFieldMap::readMapFile()
     getData >> tmpString >> xMin_ >> xMax_ >> dx_ 
 	    >> yMin_ >> yMax_ >> dy_ >> zMin_ >> zMax_ >> dz_;    
 
-    std::cout<<"x values: "<<xMin_<<", "<<xMax_<<", dx = "<<dx_<<std::endl;
-    std::cout<<"y values: "<<yMin_<<", "<<yMax_<<", dy = "<<dy_<<std::endl;
-    std::cout<<"z values: "<<zMin_<<", "<<zMax_<<", dz = "<<dz_<<std::endl;
-
-    // Since the default SHIP distance unit is cm, we do not need to convert
-    // these map limits, i.e. cm = 1 already
-
-    xRange_ = xMax_ - xMin_;
-    yRange_ = yMax_ - yMin_;
-    zRange_ = zMax_ - zMin_;
-
-    if (dx_ > 0.0) {
-	Nx_ = static_cast<Int_t>(((xMax_ - xMin_)/dx_) + 1.0);
-    }
-    if (dy_ > 0.0) {
-	Ny_ = static_cast<Int_t>(((yMax_ - yMin_)/dy_) + 1.0);
-    }
-    if (dz_ > 0.0) {
-	Nz_ = static_cast<Int_t>(((zMax_ - zMin_)/dz_) + 1.0);
-    }
-
-    N_ = Nx_*Ny_*Nz_;
-
-    std::cout<<"Total number of bins = "<<N_
-	     <<"; Nx = "<<Nx_<<", Ny = "<<Ny_<<", Nz = "<<Nz_<<std::endl;
+    this->setLimits();
 
     // Check to see if this object is a "copy"
     if (isCopy_ == kFALSE) {
@@ -200,7 +262,7 @@ void ShipBFieldMap::readMapFile()
 
 	Double_t Bx(0.0), By(0.0), Bz(0.0);
 
-	for (size_t i = 0; i < N_; i++) {
+	for (Int_t i = 0; i < N_; i++) {
 	    
 	    getData >> Bx >> By >> Bz;
 
@@ -234,6 +296,37 @@ Bool_t ShipBFieldMap::insideRange(Double_t x, Double_t y, Double_t z)
     return inside;
 
 }
+
+void ShipBFieldMap::setLimits() {
+
+    // Since the default SHIP distance unit is cm, we do not need to convert
+    // these map limits, i.e. cm = 1 already
+
+    xRange_ = xMax_ - xMin_;
+    yRange_ = yMax_ - yMin_;
+    zRange_ = zMax_ - zMin_;
+
+    if (dx_ > 0.0) {
+	Nx_ = static_cast<Int_t>(((xMax_ - xMin_)/dx_) + 1.0);
+    }
+    if (dy_ > 0.0) {
+	Ny_ = static_cast<Int_t>(((yMax_ - yMin_)/dy_) + 1.0);
+    }
+    if (dz_ > 0.0) {
+	Nz_ = static_cast<Int_t>(((zMax_ - zMin_)/dz_) + 1.0);
+    }
+
+    N_ = Nx_*Ny_*Nz_;
+
+    std::cout<<"x values: "<<xMin_<<", "<<xMax_<<", dx = "<<dx_<<std::endl;
+    std::cout<<"y values: "<<yMin_<<", "<<yMax_<<", dy = "<<dy_<<std::endl;
+    std::cout<<"z values: "<<zMin_<<", "<<zMax_<<", dz = "<<dz_<<std::endl;
+
+    std::cout<<"Total number of bins = "<<N_
+	     <<"; Nx = "<<Nx_<<", Ny = "<<Ny_<<", Nz = "<<Nz_<<std::endl;
+
+}
+
 
 ShipBFieldMap::binPair ShipBFieldMap::getBinInfo(Double_t u, ShipBFieldMap::CoordAxis theAxis)
 {

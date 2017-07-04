@@ -12,6 +12,9 @@ Uniform B3_xNeg -1.0 0.0 0.0
 # Spectrometer Bell field; set this as a global field
 Bell Wilfried 0.1436 3068.0 2 500.0
 Global Wilfried
+# Example if using a field map:
+# FieldMap Map files/MuonFilterBFieldMap1.root 0.0 0.0 0.0
+# Global Map Wilfried
 # Assign the fields to volumes. Use "Local" to ignore global field 
 # for the specific volume or "Region" for local & global field
 # Active muon shield

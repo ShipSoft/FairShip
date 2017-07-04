@@ -219,6 +219,15 @@ class ShipBFieldMap : public TVirtualMagField
     //! Read the field map data and store the information internally
     void readMapFile();
 
+    //! Process the ROOT file containing the field map data
+    void readRootFile();
+
+    //! Process the text file containing the field map data
+    void readTextFile();
+
+    // ! Set the coordinate limits from information stored in the datafile
+    void setLimits();
+
     //! Check to see if a point is within the map validity range
     /*!
       \param [in] x The x co-ordinate of the point (cm)
