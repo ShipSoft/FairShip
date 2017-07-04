@@ -1192,8 +1192,25 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         params12 = reco_tracks[i]['params12']
         params34 = reco_tracks[i]['params34']
 
-        [[ky12, by12], [kx12, bx12]] = params12
-        [[ky34, by34], [kx34, bx34]] = params12
+        if len(params12[0]) != 0:
+            ky12, by12 = params12[0]
+        else:
+            continue
+
+        if len(params12[1]) != 0:
+            kx12, bx12 = params12[1]
+        else:
+            continue
+
+        if len(params34[0]) != 0:
+            ky34, by34 = params34[0]
+        else:
+            continue
+
+        if len(params34[1]) != 0:
+            kx34, bx34 = params34[1]
+        else:
+            continue
 
         deg = numpy.rad2deg(numpy.arctan(ky12))
         h['perr_direction'].Fill(deg, err)
@@ -1215,8 +1232,25 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         params12 = reco_tracks[i]['params12']
         params34 = reco_tracks[i]['params34']
 
-        [[ky12, by12], [kx12, bx12]] = params12
-        [[ky34, by34], [kx34, bx34]] = params12
+        if len(params12[0]) != 0:
+            ky12, by12 = params12[0]
+        else:
+            continue
+
+        if len(params12[1]) != 0:
+            kx12, bx12 = params12[1]
+        else:
+            continue
+
+        if len(params34[0]) != 0:
+            ky34, by34 = params34[0]
+        else:
+            continue
+
+        if len(params34[1]) != 0:
+            kx34, bx34 = params34[1]
+        else:
+            continue
 
         frac_total, tmax_total = fracMCsame(y[atrack])
         n_hits_total = len(atrack[y[atrack] == tmax_total])
@@ -1291,8 +1325,25 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         params12 = reco_tracks[i]['params12']
         params34 = reco_tracks[i]['params34']
 
-        [[ky12, by12], [kx12, bx12]] = params12
-        [[ky34, by34], [kx34, bx34]] = params12
+        if len(params12[0]) != 0:
+            ky12, by12 = params12[0]
+        else:
+            continue
+
+        if len(params12[1]) != 0:
+            kx12, bx12 = params12[1]
+        else:
+            continue
+
+        if len(params34[0]) != 0:
+            ky34, by34 = params34[0]
+        else:
+            continue
+
+        if len(params34[1]) != 0:
+            kx34, bx34 = params34[1]
+        else:
+            continue
 
         if tmax == reco_mc_tracks[0] and alpha1 == None:
             alpha1 = numpy.rad2deg(numpy.arctan(ky12))
@@ -1317,12 +1368,6 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
 
         pinv_true = pinvs[y == tmax][0]
         p = 1. / pinv_true
-
-        params12 = reco_tracks[i]['params12']
-        params34 = reco_tracks[i]['params34']
-
-        [[ky12, by12], [kx12, bx12]] = params12
-        [[ky34, by34], [kx34, bx34]] = params12
 
         n_hits_total = len(atrack)
         frac_total, tmax_total = fracMCsame(y[atrack])
@@ -1403,12 +1448,6 @@ def quality_metrics(smeared_hits, stree, reco_mc_tracks, reco_tracks, theTracks,
         h['left_right_ambiguity_stereo34'].Fill(ratio_stereo34)
         h['left_right_ambiguity'].Fill(ratio_total)
 
-
-        params12 = reco_tracks[i]['params12']
-        params34 = reco_tracks[i]['params34']
-
-        [[ky12, by12], [kx12, bx12]] = params12
-        [[ky34, by34], [kx34, bx34]] = params12
 
     ################################################ Hit Duplicates ####################################################
 
