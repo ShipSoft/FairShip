@@ -102,7 +102,10 @@ Bool_t FixedTargetGenerator::Init()
   }
   // Initialize EvtGen.
   if (withEvtGen){
-   evtgenP = new EvtGenDecays(fPythiaP, "/media/ShipSoft/FairSoftInst/share/EvtGen/DECAY_2010.DEC", "/media/ShipSoft/FairSoftInst/share/EvtGen/evt.pdl");
+   TString DecayFile = getenv("SIMPATH");DecayFile +="/share/EvtGen/DECAY_2010.DEC";
+   TString ParticleFile = getenv("SIMPATH");ParticleFile +="/share/EvtGen/evt.pdl";
+
+   evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data());
    // seems to be a problem with the EvtGen framework, can't work with two instances, disable for neutrons for the moment  
    // evtgenN = new EvtGenDecays(fPythiaN, "/media/ShipSoft/FairSoftInst/share/EvtGen/DECAY_2010.DEC", "/media/ShipSoft/FairSoftInst/share/EvtGen/evt.pdl");
   }
