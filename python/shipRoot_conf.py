@@ -60,6 +60,7 @@ def configure(darkphoton=None):
    pdg.AddParticle('psi(3770)'        ,'psi(3770)'        ,3.77315,False,0.02720, 0, 'Meson', 30443)
    pdg.AddParticle('psi(3770)[3PJ(8)]','psi(3770)[3PJ(8)]',3.97315,False,0.0,     0, 'Meson', 9942033)
    pdg.AddParticle('J/psi[3S1(8)]'    ,'J/psi[3S1(8)]'    ,3.29692,False,0.0,     0, 'Meson', 9940003)
+   pdg.AddParticle('chi_0c[3S1(8)]'    ,'chi_0c[3S1(8)]'  ,3.61475,False,0.0,     0, 'Meson', 9940011)
    if (darkphoton):
       addDPtoROOT()
    else:
