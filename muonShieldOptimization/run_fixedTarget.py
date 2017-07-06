@@ -132,6 +132,7 @@ run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
 sensPlane.SetOnlyMuons()
+# sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlane)
 
 # -----Create PrimaryGenerator--------------------------------------
