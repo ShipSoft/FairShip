@@ -9,6 +9,7 @@
 #include "GenieGenerator.h"
 
 class FairPrimaryGenerator;
+class EvtGenDecays;
 using namespace Pythia8;
 
 class FixedTargetGenerator : public FairGenerator
@@ -36,6 +37,7 @@ class FixedTargetGenerator : public FairGenerator
   void SetG4only() { G4only  = true; }  // only run Geant4, no pythia primary interaction
   void SetTauOnly() { tauOnly  = true; }  // only have Ds decay to tau 
   void SetJpsiMainly() { JpsiMainly  = true; }  // let all Jpsi decay to mumu
+  void WithEvtGen() { withEvtGen = true;} // use EvtGen as external decayer to Pythia, experimental phase, only works for one Pythia instance
   inline void SetSeed(Double_t seed){fSeed=seed;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
   Pythia* GetPythia() {return fPythiaP;}
@@ -53,6 +55,9 @@ class FixedTargetGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia* fPythiaN;            //!
   Pythia* fPythiaP;            //!
+  Bool_t withEvtGen;
+  EvtGenDecays* evtgenN;            //!
+  EvtGenDecays* evtgenP;            //!
   GenieGenerator* fMaterialInvestigator;  //!
   TString targetName;
   Double_t xOff;
@@ -65,7 +70,7 @@ class FixedTargetGenerator : public FairGenerator
   Double_t endZ;
   Double_t maxCrossSection;
 
-  ClassDef(FixedTargetGenerator,0);
+  ClassDef(FixedTargetGenerator,1);
 };
 
 #endif /* !FIXEDTARGETGENERATOR_H */

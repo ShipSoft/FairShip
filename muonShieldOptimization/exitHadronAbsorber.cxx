@@ -42,6 +42,7 @@ exitHadronAbsorber::exitHadronAbsorber()
     fTime(-1.),
     fLength(-1.),
     fOnlyMuons(kFALSE),
+    fzPos(3E8),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
 {}
 
@@ -109,14 +110,18 @@ void exitHadronAbsorber::ConstructGeometry()
    if (vac==NULL)
      geoBuild->createMedium(ShipMedium);
    vac =gGeoManager->GetMedium("vacuums");
-   //Add thin sensitive plane after hadron absorber
    TGeoVolume *top=gGeoManager->GetTopVolume();
-   TGeoVolume *muonShield = top->GetNode("MuonShieldArea_1")->GetVolume();
-   Double_t z   = muonShield->GetNode("MagnAbsorb2_MagCRB_1")->GetMatrix()->GetTranslation()[2]; // this piece is bigger than AbsorberVol!
-   TGeoBBox* tmp =  (TGeoBBox*)muonShield->GetNode("MagnAbsorb2_MagCRB_1")->GetVolume()->GetShape();
-   Double_t dz  = tmp->GetDZ();
+   Double_t zLoc;
+   if (fzPos>1E8){
+   //Add thin sensitive plane after hadron absorber
+    TGeoVolume *muonShield = top->GetNode("MuonShieldArea_1")->GetVolume();
+    Double_t z   = muonShield->GetNode("MagnAbsorb2_MagCRB_1")->GetMatrix()->GetTranslation()[2]; // this piece is bigger than AbsorberVol!
+    TGeoBBox* tmp =  (TGeoBBox*)muonShield->GetNode("MagnAbsorb2_MagCRB_1")->GetVolume()->GetShape();
+    Double_t dz  = tmp->GetDZ();
+    zLoc = z+dz;
+   }else{zLoc = fzPos;} // use external input
    TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,10.*m-1.*mm,10.*m-1.*mm,1.*mm);
-   top->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, z+dz+1*cm));
+   top->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc+1*cm));
    AddSensitiveVolume(sensPlane);
 }
 
