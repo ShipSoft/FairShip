@@ -79,6 +79,7 @@ class RKTrackRep : public AbsTrackRep {
 
   virtual AbsTrackRep* clone() const {return new RKTrackRep(*this);}
 
+  SharedPlanePtr makePlane(const TVector3& o,const TVector3& u,const TVector3& v);
   virtual double extrapolateToPlane(StateOnPlane& state,
       const SharedPlanePtr& plane,
       bool stopAtBoundary = false,

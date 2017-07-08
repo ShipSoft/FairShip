@@ -75,6 +75,12 @@ RKTrackRep::RKTrackRep(int pdgCode, char propDir) :
 RKTrackRep::~RKTrackRep() {
   ;
 }
+
+SharedPlanePtr RKTrackRep::makePlane(const TVector3& o,const TVector3& u,const TVector3& v){
+  SharedPlanePtr plane = SharedPlanePtr(new DetPlane(o,u,v));
+  return plane;
+}
+
 double RKTrackRep::extrapolateToPlane(StateOnPlane& state,
     const TVector3 & point,const TVector3 & dir,
     bool stopAtBoundary,
