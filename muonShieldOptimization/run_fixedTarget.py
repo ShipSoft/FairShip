@@ -8,6 +8,9 @@ simEngine    = "Pythia8"
 runnr     = 1
 nev       = 1000
 checkOverlap = True
+G4only = False
+boostDiMuon = 1.
+boostFactor = 1.
 
 outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
@@ -38,7 +41,7 @@ def get_work_dir(run_number):
 
 
 def init():
-  global runnr, nev, ecut, tauOnly,JpsiMainly, work_dir
+  global runnr, nev, ecut, G4onyl, tauOnly,JpsiMainly, work_dir
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
   ap = argparse.ArgumentParser(
@@ -48,8 +51,11 @@ def init():
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
+  ap.add_argument('-G', '--G4only', action='store_true', dest='G4only',     default=False, help="use Geant4 directly, no Pythia8")
   ap.add_argument('-t', '--tau-only',     action='store_true', dest='tauOnly',     default=False)
   ap.add_argument('-J', '--Jpsi-mainly',  action='store_true', dest='JpsiMainly',  default=False)
+  ap.add_argument('-b', '--boostDiMuon', type=float,   dest='boostDiMuon',  default=1., help="boost Di-muon branching ratios")
+  ap.add_argument('-X', '--boostFactor', type=float,   dest='boostFactor',  default=1., help="boost Di-muon prod cross sections")
   ap.add_argument('-o', '--output', type=str, help="output directory", dest='work_dir', default=None)
   args = ap.parse_args()
   if args.debug:
@@ -126,6 +132,7 @@ run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
 sensPlane.SetOnlyMuons()
+# sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlane)
 
 # -----Create PrimaryGenerator--------------------------------------
@@ -134,15 +141,14 @@ P8gen = ROOT.FixedTargetGenerator()
 P8gen.SetTarget("/TargetArea_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
-boostDiMuon = 100.
-P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
-TargetStation.SetBoost(boostDiMuon) # same for Geant4
+if G4only: P8gen.SetG4only()
+if boostDiMuon > 1:
+ P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
+                            # and later copied to Geant4
 P8gen.SetSeed(theSeed)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
-# boost gamma2muon conversion
-ROOT.kShipMuonsCrossSectionFactor = 1
 # -----Initialize simulation run------------------------------------
 run.Init()
 
@@ -153,7 +159,16 @@ fStack.SetEnergyCut(-1.)
 #
 import AddDiMuonDecayChannelsToG4
 AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
-1/0
+
+# boost gamma2muon conversion
+if boostFactor > 1:
+ import G4processes
+ gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
+ procAnnihil = gProcessTable.FindProcessA('AnnihiToMuPair','e+')
+ procGMuPair = gProcessTable.FindProcess('GammaToMuPair','gamma')
+ procGMuPair.SetCrossSecFactor(boostFactor)
+ procAnnihil.SetCrossSecFactor(boostFactor)
+
 # -----Start run----------------------------------------------------
 run.Run(nev)
 
@@ -166,9 +181,13 @@ print "Macro finished succesfully."
 print "Output file is ",  outFile 
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
+
 # ---post processing--- remove empty events
 tmpFile = outFile+"tmp"
 fin   = ROOT.gROOT.GetListOfFiles()[0]
+fHeader = fin.FileHeader
+fHeader.SetRunId(runnr)
+fHeader.SetTitle("POT = "+str(nev))
 t     = fin.cbmsim
 fout  = ROOT.TFile(tmpFile,'recreate' )
 sTree = t.CloneTree(0)
@@ -180,6 +199,9 @@ for n in range(t.GetEntries()):
           nEvents+=1
      #t.Clear()
 sTree.AutoSave()
+ff   = fin.FileHeader.Clone(fout.GetName())
+fout.cd()
+ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 fout.Write()
 fout.Close()
 os.system("mv "+tmpFile+" "+outFile)

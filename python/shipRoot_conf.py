@@ -50,14 +50,17 @@ def configure(darkphoton=None):
    ROOT.gROOT.ProcessLine('#include "'+os.environ["FAIRSHIP"]+'/shipdata/ShipGlobals.h"')
    pdg = ROOT.TDatabasePDG.Instance()
    # pythia stuff not known to ROOT
-   pdg.AddParticle('system','system', 0., False, 0., 0., 'XXX', 90)
-   pdg.AddParticle('Pomeron','Pomeron', 0., False, 0., 0., 'Pomeron', 990)
-   pdg.AddParticle('J/psi[3PJ(8)]','J/psi[3PJ(8)]', 3.29692, False, 0., 0., 'Meson', 9942003)
-   pdg.AddParticle('J/psi[1S0(8)]','J/psi[1S0(8)]', 3.29692, False, 0., 0., 'Meson', 9941003)
+   pdg.AddParticle('system','system',     0., False, 0., 0., 'XXX', 90)
+   pdg.AddParticle('Pomeron','Pomeron',   0., False, 0., 0., 'Pomeron', 990)
    pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'XXX', 9902210)
    pdg.AddParticle('n_diffr0','n_diffr0', 0., False, 0., 0., 'XXX', 9902110)
-   pdg.AddParticle('f0(980)','f0(980)', 0., False, 0.07, 0., 'Meson', 9010221)
-   pdg.AddParticle('psi(3770)','psi(3770)', 0., False, 3.77315, 0.02720, 'Meson', 30443)
+   pdg.AddParticle('J/psi[3PJ(8)]'    ,'J/psi[3PJ(8)]'    ,3.29692,False,0.,      0.,'Meson', 9942003)
+   pdg.AddParticle('J/psi[1S0(8)]'    ,'J/psi[1S0(8)]'    ,3.29692,False,0.,      0.,'Meson', 9941003)
+   pdg.AddParticle('f0(980)'          ,'f0(980)'          ,1.0,    False,0.0,     0.,'Meson', 9010221)
+   pdg.AddParticle('psi(3770)'        ,'psi(3770)'        ,3.77315,False,0.02720, 0, 'Meson', 30443)
+   pdg.AddParticle('psi(3770)[3PJ(8)]','psi(3770)[3PJ(8)]',3.97315,False,0.0,     0, 'Meson', 9942033)
+   pdg.AddParticle('J/psi[3S1(8)]'    ,'J/psi[3S1(8)]'    ,3.29692,False,0.0,     0, 'Meson', 9940003)
+   pdg.AddParticle('chi_0c[3S1(8)]'    ,'chi_0c[3S1(8)]'  ,3.61475,False,0.0,     0, 'Meson', 9940011)
    if (darkphoton):
       addDPtoROOT()
    else:

@@ -13,17 +13,10 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0 FATAL_ERROR)
 project(ShipRoot)
 
 If($ENV{HOSTNAME} MATCHES "cern")
- If($ENV{SIMPATH} MATCHES "gcc62")
   MESSAGE("discovered lxplus: take gcc6.2 from lcg")
-  execute_process(COMMAND source /afs/cern.ch/sw/lcg/external/gcc/6.2/x86_64-slc6-gcc62-opt/setup.sh)
+  execute_process(COMMAND source /cvmfs/sft.cern.ch/lcg/external/gcc/6.2/x86_64-slc6-gcc62-opt/setup.sh)
   SET(GCCVERSION "x86_64-slc6-gcc62-opt")
-  SET(LCGVERSION "LCG_87") 
- ELSE()
-  MESSAGE("discovered lxplus: take gcc4.9 from lcg")
-  execute_process(COMMAND source /afs/cern.ch/sw/lcg/external/gcc/4.9/x86_64-slc6/setup.sh)
-  SET(GCCVERSION "x86_64-slc6-gcc49-opt")
-  SET(LCGVERSION "LCG_85") 
- EndIf()
+  SET(LCGVERSION "LCG_87")
 EndIf()
 FIND_PATH(FAIRBASE NAMES FairRun.h  PATHS
   ${CMAKE_SOURCE_DIR}/base/steer
@@ -137,6 +130,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 
 find_package(ROOT 5.34.00 REQUIRED)
 find_package(Pythia8 REQUIRED)
+find_package(EvtGen REQUIRED)
 find_package(GENERATORS REQUIRED)
 find_package(GEANT3)
 find_package(GEANT4)
@@ -403,6 +397,9 @@ file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   # DYLD_LIBRARY_PATH is not set i
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   echo \"# This file has been created by config.csh\" > .rootrc\n")
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   echo \"Unix.*.Root.DynamicPath: $DYLD_LIBRARY_PATH\" >> .rootrc\n")
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "endif\n")
+
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "  source ${SIMPATH}/bin/geant4.csh ${SIMPATH}/bin\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "  source ${SIMPATH}/bin/geant4.sh \n")
 
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake

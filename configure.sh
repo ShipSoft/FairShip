@@ -35,14 +35,8 @@ if `which lsb_release > /dev/null 2>&1` ; then
       # operating system of last century
       xx=$($SIMPATH/bin/fairsoft-config --cxx)
       if [[ "$xx" =~ "lcg" ]]; then
-         # check that FairSoft is compiled with devtoolset
-         if test "${SIMPATH#*gcc62}" != "$SIMPATH" ; then
-            echo "*** execute lcg setup with gcc62"
-            /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_87 x86_64-slc6-gcc62-opt Python >> tmp.sh
-         else
-            echo "*** execute lcg setup with gcc49"
-            /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -p /afs/cern.ch/sw/lcg/releases/LCG_85 x86_64-slc6-gcc49-opt Python >> tmp.sh
-         fi
+         echo "*** execute lcg setup with gcc62"
+         /cvmfs/sft.cern.ch/lcg/releases/lcgenv/latest/lcgenv -p /cvmfs/sft.cern.ch/lcg/releases/LCG_87 x86_64-slc6-gcc62-opt Python >> tmp.sh
          source tmp.sh
          rm tmp.sh
       fi
@@ -64,5 +58,3 @@ else
    cmake ../FairShip -DCMAKE_CXX_COMPILER=$xx -DCMAKE_C_COMPILER=$yy
    make
 fi
-
-source config.sh
