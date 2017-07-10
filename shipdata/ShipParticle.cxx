@@ -23,7 +23,8 @@ ShipParticle::ShipParticle(Int_t pdg,  Int_t status,
        px, py, pz, etot, vx, vy, vz, time),
        fCovP(TMatrixDSym(4)),
        fCovV(TMatrixDSym(3))
- {   
+ {
+ doca = 0.;   
  }
 
 ShipParticle::ShipParticle(Int_t pdg,  Int_t status,
@@ -34,6 +35,7 @@ ShipParticle::ShipParticle(Int_t pdg,  Int_t status,
        fCovP(TMatrixDSym(4)),
        fCovV(TMatrixDSym(3))
  {
+ doca = 0.;   
  }
 
 // -----   Destructor   ----------------------------------------------------
@@ -83,6 +85,12 @@ void ShipParticle::SetCovV(Double_t* covElements)
    fCovV(2,1) = covElements[4];
 }
 // -------------------------------------------------------------------------
-
-
+void ShipParticle::GetMomentum(TLorentzVector& momentum)
+{
+  momentum.SetPxPyPzE(fPx,fPy,fPz,fE);
+}
+void ShipParticle::GetVertex(TVector3& vx)
+{
+  vx.SetXYZ(fVx,fVy,fVz);
+}
 ClassImp(ShipParticle)

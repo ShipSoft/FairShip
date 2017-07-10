@@ -354,11 +354,11 @@ class Task:
      covP = array('d',[covP[0][0],covP[0][1],covP[0][2],covP[0][3],covP[1][1],covP[1][2],covP[1][3],covP[2][2],covP[2][3],covP[3][3]])
           
 # try to make it persistent
-     vx = ROOT.TLorentzVector(HNLPosFit,doca)  # misuse time as DOCA  
+     vx = ROOT.TLorentzVector(HNLPosFit,0)  # time at vertex still needs to be evaluated from time of tracks and time of flight
      particle = ROOT.ShipParticle(9900015,0,-1,-1,t1,t2,P,vx)
      particle.SetCovV(covV)
      particle.SetCovP(covP)
-     particle.SetMother(1,99) # as marker to remember doca is set
+     particle.SetDoca(doca)
      nParts   = particles.GetEntries()
      particles[nParts] = particle
      

@@ -5,14 +5,14 @@ from array import array
 
 class Task:
  "initialize and give response of the veto systems"
- def __init__(self):
+ def __init__(self,t):
   self.UVTefficiency = 0.999 # Upstream Veto tagger: 99.9% efficiency picked up from TP
   self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
   self.SVTefficiency = 0.995 # Straw Veto tagger: guestimate, including dead channels
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   self.detList  = self.detMap()
-  self.sTree = ROOT.FairRootManager.Instance().GetInChain()
+  self.sTree = t
 
  def detMap(self):
   fGeo = ROOT.gGeoManager  
@@ -32,9 +32,9 @@ class Task:
      index+=1 
      if mcParticle:
         found = False
-        for mcParticle in self.sTree.digiSBT2MC[index]: 
-         if mcParticle>0 and mcParticle != ahit.GetTrackID() : found=True
-         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : found=True
+        for mcP in self.sTree.digiSBT2MC[index]: 
+         if mcParticle>0 and mcParticle != mcP : found=True
+         if mcParticle<0 and abs(mcParticle) == mcP : found=True
         if found: continue
      detID    = aDigi.GetDetectorID()
      position = aDigi.GetXYZ()
@@ -150,8 +150,8 @@ class Task:
 
 #usage
 # import shipVeto
-# veto = shipVeto.Task()
-# veto,w = veto.SBT_decision(sTree)
+# veto = shipVeto.Task(sTree)
+# veto,w = veto.SBT_decision()
 # if veto: continue # reject event
 # or
 # continue using weight w 
