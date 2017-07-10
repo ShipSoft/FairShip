@@ -60,7 +60,7 @@ class ShipParticle : public TParticle
   private:
     TMatrixDSym  fCovP;
     TMatrixDSym  fCovV;
-    ClassDef(ShipParticle,0);
+    ClassDef(ShipParticle,1);
 
 };
 
