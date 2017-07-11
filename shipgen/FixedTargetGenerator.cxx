@@ -10,6 +10,7 @@
 #include "TMath.h"
 #include "FixedTargetGenerator.h"
 #include "HNLPythia8Generator.h"
+#include "Pythia8Plugins/EvtGen.h"
 
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
@@ -33,6 +34,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   maxCrossSection = 0.;
   EMax = 0;
   fBoost = 1.;
+  withEvtGen = kFALSE;
   fPythiaN =  new Pythia8::Pythia();
   fPythiaP =  new Pythia8::Pythia();
 }
@@ -97,6 +99,15 @@ Bool_t FixedTargetGenerator::Init()
     }
    }
    fPythia->init();
+  }
+  // Initialize EvtGen.
+  if (withEvtGen){
+   TString DecayFile = getenv("SIMPATH");DecayFile +="/share/EvtGen/DECAY_2010.DEC";
+   TString ParticleFile = getenv("SIMPATH");ParticleFile +="/share/EvtGen/evt.pdl";
+
+   evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data());
+   // seems to be a problem with the EvtGen framework, can't work with two instances, disable for neutrons for the moment  
+   // evtgenN = new EvtGenDecays(fPythiaN, "/media/ShipSoft/FairSoftInst/share/EvtGen/DECAY_2010.DEC", "/media/ShipSoft/FairSoftInst/share/EvtGen/evt.pdl");
   }
   if (targetName!=""){
    fMaterialInvestigator = new GenieGenerator();
@@ -176,16 +187,19 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    }
   zinter = zinter*cm;
   }
+  Pythia8::Pythia* fPythia;   
   if (G4only){
    cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,zinter/cm,-1,true,-1.,0.,1.);  
   }else{
-  Pythia8::Pythia* fPythia;
   if (gRandom->Uniform(0.,1.) < ZoverA){
+    fPythiaP->next();
+    if (withEvtGen){evtgenP->decay();}
     fPythia = fPythiaP;
   }else{
+    fPythiaN->next();
+    //if (withEvtGen){evtgenN->decay();}
     fPythia = fPythiaN;
   }
-  fPythia->next();
 
   for(Int_t ii=0; ii<fPythia->event.size(); ii++){
      Double_t  e = fPythia->event[ii].e();

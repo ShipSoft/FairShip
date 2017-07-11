@@ -130,6 +130,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 
 find_package(ROOT 5.34.00 REQUIRED)
 find_package(Pythia8 REQUIRED)
+find_package(EvtGen REQUIRED)
 find_package(GENERATORS REQUIRED)
 find_package(GEANT3)
 find_package(GEANT4)

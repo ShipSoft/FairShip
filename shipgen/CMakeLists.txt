@@ -48,6 +48,6 @@ FixedTargetGenerator.cxx
 set(LINKDEF  GenLinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
-set(DEPENDENCIES  Base ShipData)
+set(DEPENDENCIES  Base ShipData EvtGenExternal EvtGen)
 
 GENERATE_LIBRARY()

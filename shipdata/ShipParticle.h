@@ -44,10 +44,8 @@ class ShipParticle : public TParticle
     /**  Destructor  **/
     virtual ~ShipParticle();
 
-
     /**  Output to screen  **/
     void Print(Int_t iTrack=0) const;
-
 
     /**  Accessors  **/
     void GetMomentum(TLorentzVector& momentum);
@@ -56,15 +54,14 @@ class ShipParticle : public TParticle
     TMatrixDSym*  GetCovV();
     void SetCovP(Double_t *x);
     void SetCovV(Double_t *x);
-
+    Double_t GetDoca()  const { return doca; }
+    void SetDoca(Double_t x) {doca=x;}
   private:
     TMatrixDSym  fCovP;
     TMatrixDSym  fCovV;
-    ClassDef(ShipParticle,0);
-
+    Double_t doca;
+    ClassDef(ShipParticle,1);
 };
-
-
 
 // ==========   Inline functions   ========================================
 

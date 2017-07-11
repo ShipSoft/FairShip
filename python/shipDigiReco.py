@@ -134,7 +134,7 @@ class ShipDigiReco:
    import shipPid
    self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
-  self.Vertexing = shipVertex.Task(h,self)
+  self.Vertexing = shipVertex.Task(h,self.sTree)
 # setup random number generator 
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
@@ -395,15 +395,13 @@ class ShipDigiReco:
     except: 
       if debug: print "genfit failed to fit track"
       error = "genfit failed to fit track"
-      if not log.has_key(error): log[error]=0
-      log[error]+=1
+      ut.reportError(error)
       continue
 #check
     if not theTrack.checkConsistency():
      if debug: print 'Problem with track after fit, not consistent',atrack,theTrack
      error = "Problem with track after fit, not consistent"
-     if not log.has_key(error): log[error]=0
-     log[error]+=1  
+     ut.reportError(error)
      continue
     fitStatus   = theTrack.getFitStatus()
     nmeas = fitStatus.getNdf()   
@@ -447,9 +445,8 @@ class ShipDigiReco:
       rep.extrapolateToPoint(state,vetoHitPos,False)
      except:
       error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
-      if not log.has_key(error): log[error]=0
-      log[error]+=1
-      if debug: print "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      ut.reportError(error)
+      if debug: print error
       continue
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:

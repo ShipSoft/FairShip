@@ -12,7 +12,7 @@ class Task:
 
  def __init__(self,main):
   print "****************************************"
-  print "*** You are using PID version 16.0.4 ***"
+  print "*** You are using PID version 17.1.4 ***"
   print "****************************************"
   self.sTree = main.sTree
   self.fpidArray  = ROOT.TClonesArray("pid")
@@ -186,7 +186,15 @@ class Task:
     self.P=0.
     i+=1
     fst = fT.getFitStatus()
-    if not fst.isFitConverged() or fst.getNdf() < self.cutNdf: continue
+    if not fst.isFitConverged() or fst.getNdf() < self.cutNdf: 
+      pidObject=ROOT.pid()
+      pidObject.SetTrackID(i)
+      pidObject.SetElectronID(-3)
+      pidObject.SetMuonID(-3)
+      pidObject.SetHadronID(-3)
+      nPID=ppid.GetEntries()
+      ppid[nPID]=pidObject
+      continue
     fittedState = fT.getFittedState()
     self.P = fittedState.getMomMag()
     self.extrapStates = {}
