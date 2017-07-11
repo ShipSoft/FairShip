@@ -43,6 +43,7 @@ MuonBackGenerator.cxx
 CosmicsGenerator.cxx
 MuDISGenerator.cxx
 FixedTargetGenerator.cxx
+HeavyFlavourGenerator.cxx
 )
 
 set(LINKDEF  GenLinkDef.h)
