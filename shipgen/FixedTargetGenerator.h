@@ -72,5 +72,4 @@ class FixedTargetGenerator : public FairGenerator
 
   ClassDef(FixedTargetGenerator,1);
 };
-
 #endif /* !FIXEDTARGETGENERATOR_H */

@@ -11,6 +11,8 @@
 #include "FixedTargetGenerator.h"
 #include "HNLPythia8Generator.h"
 #include "Pythia8Plugins/EvtGen.h"
+#include "EvtGenBase/EvtSimpleRandomEngine.hh"
+#include "EvtGenBase/EvtRandom.hh"
 
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
@@ -102,12 +104,21 @@ Bool_t FixedTargetGenerator::Init()
   }
   // Initialize EvtGen.
   if (withEvtGen){
-   TString DecayFile = getenv("SIMPATH");DecayFile +="/share/EvtGen/DECAY_2010.DEC";
+   TString DecayFile    = getenv("SIMPATH");DecayFile +="/share/EvtGen/DECAY.DEC";
    TString ParticleFile = getenv("SIMPATH");ParticleFile +="/share/EvtGen/evt.pdl";
-
-   evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data());
-   // seems to be a problem with the EvtGen framework, can't work with two instances, disable for neutrons for the moment  
-   // evtgenN = new EvtGenDecays(fPythiaN, "/media/ShipSoft/FairSoftInst/share/EvtGen/DECAY_2010.DEC", "/media/ShipSoft/FairSoftInst/share/EvtGen/evt.pdl");
+   EvtAbsRadCorr *fsrPtrIn = 0;
+   EvtExternalGenList *extPtr = new EvtExternalGenList();
+   std::list<EvtDecayBase*> models = extPtr->getListOfModels();
+ // Define the random number generator
+   EvtRandomEngine* eng = new EvtSimpleRandomEngine();
+   EvtRandom::setRandomEngine(eng);
+   EvtGen *myEvtGenPtr = new EvtGen(DecayFile.Data(), ParticleFile.Data(),eng, fsrPtrIn, &models, 1, false);
+   TString UdecayFile    = getenv("FAIRSHIP");UdecayFile +="/gconfig/USERDECAY.DEC";
+   //myEvtGenPtr->readUDecay(UdecayFile.Data());
+   // use one instance of EvtGen, requires patch to Pythia8Plugins/EvtGen.h
+   evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
+   evtgenP->readDecayFile(UdecayFile.Data()); // will make update of EvtGen with user decay file
+   evtgenN = new EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
   }
   if (targetName!=""){
    fMaterialInvestigator = new GenieGenerator();
@@ -197,7 +208,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     fPythia = fPythiaP;
   }else{
     fPythiaN->next();
-    //if (withEvtGen){evtgenN->decay();}
+    if (withEvtGen){evtgenN->decay();}
     fPythia = fPythiaN;
   }
 
