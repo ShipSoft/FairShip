@@ -111,7 +111,7 @@ Bool_t FixedTargetGenerator::Init()
   }else if (Option == "charm" || Option == "beauty") {
    fPythiaP =  new Pythia8::Pythia();
   } else {
-   fLogger->Error(MESSAGE_ORIGIN,"Option not known %s, abort",Option);
+   fLogger->Error(MESSAGE_ORIGIN,"Option not known %s, abort",Option.Data());
   }
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
