@@ -1,10 +1,6 @@
 #ifndef HEAVYFLAVOURGENERATOR_H
 #define HEAVYFLAVOURGENERATOR_H 1
 
-#ifndef Pythia8_EvtGen_H
-#define Pythia8_EvtGen_H 1
-#endif
-
 #include "TROOT.h"
 #include "Pythia.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
