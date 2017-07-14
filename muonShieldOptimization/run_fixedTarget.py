@@ -99,6 +99,18 @@ def init():
   boostFactor  = args.boostFactor
   boostDiMuon  = args.boostDiMuon
   storeOnlyMuons = args.storeOnlyMuons
+  if G4only:
+    args.charm  = False
+    args.beauty = False
+    args.withEvtGen = False
+    args.pythiaDecay = False
+  elif args.pythiaDecay:
+    withEvtGen = False
+    args.withEvtGen = False
+    logger.info("use Pythia8 as primary decayer")
+  else:
+    withEvtGen = True
+    logger.info("use EvtGen as primary decayer")
   withEvtGen     = args.withEvtGen
   charm  = args.charm
   beauty = args.beauty
@@ -108,13 +120,6 @@ def init():
   charmInputFile = args.charmInputFile
   nStart = args.nStart
   Debug  = args.debug
-  if args.pythiaDecay:
-    withEvtGen = False
-    args.withEvtGen = False
-    logger.info("use Pythia8 as primary decayer")
-  else:
-    withEvtGen = True
-    logger.info("use EvtGen as primary decayer")
   if args.work_dir is None:
     if charm: args.work_dir = get_work_dir(runnr,"charm")
     if beauty: args.work_dir = get_work_dir(runnr,"beauty")

@@ -325,7 +325,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }
   if (withEvtGen){
    fPythia->moreDecays();} // let the very short lived resonances decay via Pythia8
-  if(Debug){fPythia->event.list();}
+  if(Debug && !G4only){fPythia->event.list();}
   TMCProcess procID;
   for(Int_t ii=1; ii<fPythia->event.size(); ii++){
      Double_t  e = fPythia->event[ii].e();
