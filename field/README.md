@@ -1,16 +1,31 @@
+Magnetic fields for the FairShip simulation use the Geant4 VMC ("geant4_vmc") interface,
+which associates ROOT [TVirtualMagField](https://root.cern.ch/doc/master/classTVirtualMagField.html)
+objects to Geant4 
+[G4MagneticField](https://www-zeuthen.desy.de/geant4/geant4.9.3.b01/classG4MagneticField.html) 
+ones via the macro command
 
-Magnetic fields for the FairShip simulation use the Geant4 VMC ("geant4_vmc") interface.
-The [ShipFieldMaker](ShipFieldMaker.h) class is used to create fields, setting them to be either
-global and/or local fields to specific volumes in the geometry. The VMC uses cm for 
-distances and kGauss (0.1 Tesla) for magnetic fields. Here, we use the same cm unit for 
-lengths, but use Tesla for magnetic fields, which the ShipFieldMaker class converts to 
-kGauss units when passed to the VMC.
+```
+/mcDet/setIsLocalMagField true
+```
 
-The script [g4Config.C](../gconfig/g4Config.C) creates a ShipFieldMaker pointer, whose makeFields 
-function takes a control file that specifies what magnetic fields are required for the simulation. 
-This script can also generate plots of the magnitude of the magnetic field in the z-x, z-y and/or x-y
-plane using the plotField functions in [ShipFieldMaker](ShipFieldMaker.h). The location of the control 
-file, and any field maps that it uses, must be specified relative to the VMCWORKDIR directory.
+which is called in the [g4config.in](../gconfig/g4config.in) input file.
+
+Most of the required TVirtualMagField objects are already created in the C++ source code 
+where the geometry volumes are defined. The [ShipFieldMaker](ShipFieldMaker.h) class can
+be used to create new, extra fields, or replace already existing ones, using an input control 
+text file, where we can set global and/or local fields for specific volumes. The VMC uses cm 
+for distances and kGauss (0.1 Tesla) for magnetic fields. Here, we use the same cm unit for 
+lengths, but use Tesla for magnetic fields, which the ShipFieldMaker class converts to kGauss 
+units when passed to the VMC.
+
+The script [run_simScript.py](../macro/run_simScript.py) calls the addVMCFields() function defined
+in [geomGeant4.py](../python/geomGeant4.py), which creates a ShipFieldMaker object, where its
+makeFields() function takes a control file that specifies what magnetic fields are required for the 
+simulation. Note that B fields (TVirtualMagFields) already defined in the geometry C++ source code
+do not need to be added to this input file. This script can also generate plots of the magnitude of 
+the magnetic field in the z-x, z-y and/or x-y plane using the plotField function in 
+[ShipFieldMaker](ShipFieldMaker.h). The location of the control file, and any field maps that it 
+uses, must be specified relative to the VMCWORKDIR directory.
 
 The structure of the control file, such as [BFieldSetup.txt](BFieldSetup.txt), uses specific 
 keywords to denote what each line represents:
@@ -30,63 +45,35 @@ keywords to denote what each line represents:
 
 The syntax for each of the above options are:
 
-1) FieldMap
+1) [FieldMap](ShipBFieldMap.h)
 
 ```
 FieldMap MapLabel MapFileName x0 y0 z0
 ```
 
 where MapLabel is the descriptive name of the field, MapFileName is the location of
-the file containing the field map data (relative to the VMCWORKDIR directory), and 
+the ROOT file containing the field map data (relative to the VMCWORKDIR directory), and 
 x0,y0,z0 are the offset co-ordinates in cm for centering the field map.
 
-The field from a map is calculated by the [ShipBFieldMap](ShipBFieldMap.h) class using trilinear 
+The field is calculated by the [ShipBFieldMap](ShipBFieldMap.h) class using trilinear 
 interpolation based on the binned map data, which is essentially a 3d histogram.
 
-The structure of the field map data file is as follows. The first line should be:
+The structure of the field map data ROOT file is as follows. It should contain two TTrees, 
+one called Range which specifies the co-ordinate limits and bin sizes (in cm) using the 
+following double variables:
 
 ```
-CLimits xMin xMax dx yMin yMax dy zMin zMax dz
+xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz
 ```
 
-where xMin, xMax and dx are the minimum, maximum and bin-width values (in cm) along 
-the x axis, respectively, with similar values for the y and z axes.
-
-The second line should contain the line
+and another one called Data which stores the points (cm) and their B field components (T):
 
 ```
-Bx(T) By(T) Bz(T)
+x, y, z, Bx, By, Bz
 ```
 
-which is just a label so that the user knows the following lines contain the 
-field components.
-
-The rest of the lines should contain the Bx, By and Bz components of the field
-(in Tesla) for each "bin" in the order of increasing z, increasing y, then 
-increasing x co-ordinates. 
-
-The first data line corresponds to the point (xMin, yMin, zMin). The next set of 
-lines correspond to the points (xMin, yMin, dz * zBin + zMin). 
-After we reach z = zMax, z is reset to zMin, y is incremented using y = dy * yBin + yMin,
-and the rest of the lines follow by incrementing z up to zMax as before. When y = yMax 
-has been reached, x is incremented by dx, while the y and z values are reset to 
-yMin and zMin, and are both incremented using the same logic as before. This is repeated 
-until the very last line of the data, which will correspond to the point (xMax, yMax, zMax).
-
-There are three field maps provided, created by Victoria Bayliss and Tom Rawlings from RAL,
-which have a positional resolution of 10 cm for x,y,z. To save on disk space, they have a 
-B-field precision down to 0.01 mT and are compressed. The script [convertMap.py](convertMap.py)
-was used to convert the RAL field maps for FairShip use.
-
-* [MuonFilterBFieldMap1.txt.gz](MuonFilterBFieldMap1.txt.gz) Using original co-ordinates for the steel
-* [MuonFilterBFieldMap2.txt.gz](MuonFilterBFieldMap2.txt.gz) Magnet C0 inner and outer gap moved from 0 to 2 cm
-* [MuonFilterBFieldMap3.txt.gz](MuonFilterBFieldMap3.txt.gz) Simplified overall magnet shape for manufacturing considerations with the 2 cm gap for magnet C0
-* [MuonFilterBFieldMap4.txt.gz](MuonFilterBFieldMap4.txt.gz) As map 3, but gaps between the magnets (A0, B0, C0, C4, ...) reduced from 30 cm to 10 cm
-* [MuonFilterBFieldMap5.txt.gz](MuonFilterBFieldMap5.txt.gz) As map 3, but using US1010 steel instead of grain-oriented steel
-
-Only one of these field maps should be used as the global field map in [BFieldSetup.txt](BFieldSetup.txt). 
-They need to be uncompressed before the simulation can be run; the [macro/run_simScript.py]
-(../macro/run_simScript.py) run file currently does this automatically.
+The script [convertMap.py](convertMap.py) can be used to convert (ascii) field map data 
+generated from VectorFields/Opera software output to the ROOT file format for FairShip use.
 
 2) CopyMap
 
@@ -98,7 +85,7 @@ where MapToCopy is the name of the (previously defined) map to be copied, with t
 new co-ordinate offset specified by the values x0,y0,z0 (cm). Note that this will
 reuse the field map data already stored in memory.
 
-3) Uniform
+3) [Uniform](https://root.cern.ch/doc/master/classTGeoUniformMagField.html)
 
 ```
 Uniform Label Bx By Bz
@@ -107,7 +94,7 @@ Uniform Label Bx By Bz
 where Bx, By and Bz are the components of the uniform field (in Tesla),
 valid for any x,y,z co-ordinate value.
 
-4) Constant
+4) [Constant](ShipConstField.h)
 
 ```
 Constant Label xMin xMax yMin yMax zMin zMax Bx By Bz
@@ -129,7 +116,7 @@ to specify if the field is aligned either along the x (2) or y (1) axes
  (Bz = 0 always), and tubeRad is the radius of the tube (cm) inside the
 region which specifies the extent of the field (for Bx).
 
-6) Composite
+6) [Composite](ShipCompField.h)
 
 ```
 Composite CompLabel Label1 ... LabelN
@@ -171,17 +158,17 @@ will not include the global field, i.e. any particle inside this volume will
 only see the local one.
 
 
-Magnetic fields for local volumes are pre-enabled for the VMC with the setting 
+As mentioned earlier, magnetic fields for local volumes are enabled for the VMC with the setting 
 "/mcDet/setIsLocalMagField true" in the [g4config.in](../gconfig/g4config.in) file. 
 Extra options for B field tracking (stepper/chord finders..), such as those mentioned here
 
-https://root.cern.ch/drupal/content/magnetic-field
+https://root.cern.ch/magnetic-field
 
 should be added to the (end of) the g4config.in file.
 
 
 Other magnetic field classes can use the above interface provided they inherit 
-from [TVirtualMagField](https://root.cern.ch/root/htmldoc/TVirtualMagField.html), 
+from [TVirtualMagField](https://root.cern.ch/doc/master/classTVirtualMagField.html),
 implement the TVirtualMagField::Field() virtual function, and have unique 
 keyword-formatted lines assigned to them in the configuration file 
 that is then understood by the ShipFieldMaker::makeFields() function, which will 
