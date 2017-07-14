@@ -14,17 +14,15 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
     if deepCopy: P8gen.UseDeepCopy()
     pdg = ROOT.TDatabasePDG.Instance()
     # let strange particle decay in Geant4
-    ## the following does not work because need to have N2 decaying
-    #P8gen.SetParameters("ParticleDecays:limitTau0 = on")
-    #P8gen.SetParameters("ParticleDecays:tau0Max = 1")
-    # explicitly make KS and KL stable
-    P8gen.SetParameters("130:mayDecay  = off")
-    if debug: cf.write('P8gen.SetParameters("130:mayDecay  = off")\n')
-    P8gen.SetParameters("310:mayDecay  = off")
-    if debug: cf.write('P8gen.SetParameters("310:mayDecay  = off")\n')
-    P8gen.SetParameters("3122:mayDecay = off")
-    if debug: cf.write('P8gen.SetParameters("3122:mayDecay = off")\n')
-    P8gen.SetParameters("3222:mayDecay = off")
+    p8 = P8gen.getPythiaInstance()
+    n=1
+    while n!=0:
+     n = p8.particleData.nextId(n)
+     p = p8.particleData.particleDataEntryPtr(n)
+     if p.tau0()>1: 
+      command = str(n)+":mayDecay = false"
+      p8.readString(command)
+      print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name())
     if inclusive=="True":
         P8gen.SetParameters("SoftQCD:inelastic = on")
         P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
@@ -187,17 +185,15 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
     if deepCopy: P8gen.UseDeepCopy()
     pdg = ROOT.TDatabasePDG.Instance()
     # let strange particle decay in Geant4
-    ## the following does not work because need to have N2 decaying
-    #P8gen.SetParameters("ParticleDecays:limitTau0 = on")
-    #P8gen.SetParameters("ParticleDecays:tau0Max = 1")
-    # explicitly make KS and KL stable
-    P8gen.SetParameters("130:mayDecay  = off")
-    if debug: cf.write('P8gen.SetParameters("130:mayDecay  = off")\n')
-    P8gen.SetParameters("310:mayDecay  = off")
-    if debug: cf.write('P8gen.SetParameters("310:mayDecay  = off")\n')
-    P8gen.SetParameters("3122:mayDecay = off")
-    if debug: cf.write('P8gen.SetParameters("3122:mayDecay = off")\n')
-    P8gen.SetParameters("3222:mayDecay = off")
+    p8 = P8gen.getPythiaInstance()
+    n=1
+    while n!=0:
+     n = p8.particleData.nextId(n)
+     p = p8.particleData.particleDataEntryPtr(n)
+     if p.tau0()>1: 
+      command = str(n)+":mayDecay = false"
+      p8.readString(command)
+      print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name())
     if inclusive=="True":
         P8gen.SetParameters("SoftQCD:inelastic = on")
         P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")

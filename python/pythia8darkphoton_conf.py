@@ -82,20 +82,17 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
     P8gen.SetMom(400)  # beam momentum in GeV 
     if deepCopy: P8gen.UseDeepCopy()
     pdg = ROOT.TDatabasePDG.Instance()
-    # let strange particle decay in Geant4
-    ## the following does not work because need to have N2 decaying
-    #P8gen.SetParameters("ParticleDecays:limitTau0 = on")
-    #P8gen.SetParameters("ParticleDecays:tau0Max = 1")
-    # explicitly make KS and KL stable
     if inclusive=="meson":
-        P8gen.SetParameters("130:mayDecay  = off")
-        if debug: cf.write('P8gen.SetParameters("130:mayDecay  = off")\n')
-        P8gen.SetParameters("310:mayDecay  = off")
-        if debug: cf.write('P8gen.SetParameters("310:mayDecay  = off")\n')
-        P8gen.SetParameters("3122:mayDecay = off")
-        if debug: cf.write('P8gen.SetParameters("3122:mayDecay = off")\n')
-        P8gen.SetParameters("3222:mayDecay = off")
-        if debug: cf.write('P8gen.SetParameters("3222:mayDecay = off")\n')
+    # let strange particle decay in Geant4
+        p8 = P8gen.getPythiaInstance()
+        n=1
+        while n!=0:
+          n = p8.particleData.nextId(n)
+          p = p8.particleData.particleDataEntryPtr(n)
+          if p.tau0()>1: 
+           command = str(n)+":mayDecay = false"
+           p8.readString(command)
+           print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name())
     
         # Configuring production
         P8gen.SetParameters("SoftQCD:nonDiffractive = on")

@@ -92,9 +92,9 @@ Bool_t FixedTargetGenerator::Init()
   }
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
-  std::vector<int> s = { 211,321,130,310,3122,3112,3312 };
   std::vector<int> r = { 221, 223,   113, 331, 333};
   std::vector<int> c = { 7, 7, 5, 6, 9}; // decay channel mumu
+
   if (Option == "Primary"){
    fPythiaP->settings.mode("Beams:idB",  2212);
    fPythiaN->settings.mode("Beams:idB",  2112);
@@ -127,11 +127,17 @@ Bool_t FixedTargetGenerator::Init()
     fPythia->readString("443:new  J/psi  J/psi  4   0   0    3.09692    0.00009    3.09602    3.09782  0.   1   1   0   1   0");
     fPythia->readString("443:addChannel = 1   0.1    0      -13       13");
    }
-// make pions/kaons/lambda stable  
-   for (unsigned int i=0; i<s.size(); ++i) {
-    string particle = std::to_string(s[i])+":mayDecay = false";
-    fPythia->readString(particle);
-  }
+// find all long lived particles in pythia
+   Int_t n = 1;
+   while(n!=0){
+    n = fPythia->particleData.nextId(n);
+    ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+    if (p->tau0()>1){
+     string particle = std::to_string(n)+":mayDecay = false";
+     fPythia->readString(particle);
+     fLogger->Info(MESSAGE_ORIGIN,"Made %s stable for Pythia, should decay in Geant4",p->name().c_str());
+    }
+   } 
 // boost branching fraction of rare di-muon decays
 //                       eta  omega rho0  eta' phi   
    if (fBoost != 1.){

@@ -73,10 +73,17 @@ Bool_t Pythia8Generator::Init()
      fTree->SetBranchAddress("mpz",&mpz);
      fTree->SetBranchAddress("mE",&mE);
      fPythia->readString("ProcessLevel:all = off");
-     fPythia->readString("130:mayDecay  = off");
-     fPythia->readString("310:mayDecay  = off");
-     fPythia->readString("3122:mayDecay = off");
-     fPythia->readString("3222:mayDecay = off");
+// find all long lived particles in pythia
+     Int_t n = 1;
+     while(n!=0){
+      n = fPythia->particleData.nextId(n);
+      ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+      if (p->tau0()>1){
+      string particle = std::to_string(n)+":mayDecay = false";
+      fPythia->readString(particle);
+      fLogger->Info(MESSAGE_ORIGIN,"Made %s stable for Pythia, should decay in Geant4",p->name().c_str());
+      }
+     }
   } else {  
    fPythia->setRndmEnginePtr(fRandomEngine);
    fPythia->settings.mode("Beams:idA",  fId);
