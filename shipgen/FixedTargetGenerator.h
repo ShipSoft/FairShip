@@ -40,6 +40,8 @@ class FixedTargetGenerator : public FairGenerator
   void SetTauOnly() { tauOnly  = true; }  // only have Ds decay to tau 
   void SetJpsiMainly() { JpsiMainly  = true; }  // let all Jpsi decay to mumu
   void WithEvtGen() { withEvtGen = true;} // use EvtGen as external decayer to Pythia, experimental phase, only works for one Pythia instance
+  void SetChibb(Double_t x) { chibb = x; }  // chibb = bbbar over mbias cross section   
+  void SetChicc(Double_t x) { chicc = x; }  // chicc = ccbar over mbias cross section   
   inline void SetSeed(Double_t seed){fSeed=seed;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
   inline void SetDebug(Bool_t x){Debug=x;}
@@ -54,8 +56,8 @@ class FixedTargetGenerator : public FairGenerator
   Double_t fMom;       // proton momentum
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
-  Double_t fSeed,EMax,fBoost,chicc,chibb,wspill;
-  Int_t nEvents,nEntry,pot,nDsprim,ntotprim,nrpotspill,nrcpot;      //!
+  Double_t fSeed,EMax,fBoost,chicc,chibb,wspill,nrpotspill;
+  Int_t nEvents,nEntry,pot,nDsprim,ntotprim,nrcpot;      
   Bool_t firstTime,tauOnly,JpsiMainly,G4only,setByHand,Debug,withEvtGen;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia* fPythiaN;            //!

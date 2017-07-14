@@ -45,6 +45,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   Debug = kFALSE;
   firstTime = kTRUE;
   Option = "Primary";
+  wspill = 1.; // event weight == 1 for primary events
 }
 Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Double_t npot, Int_t nStart)
 {
@@ -71,30 +72,6 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Double_t npot
   nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.;
   // pot are counted double, i.e. for each signal, i.e. pot/2.
   fLogger->Info(MESSAGE_ORIGIN,"Input file: %s   with %i entries, corresponding to nr-pot=%i",fInName.Data(),nEvents,nrcpot);
-  // book hists for Genie neutrino momentum distribution
-  TDatabasePDG* PDG = TDatabasePDG::Instance();
-  for(Int_t idnu=12; idnu<18; idnu+=2){
-  // nu or anti-nu
-   for (Int_t idadd=-1; idadd<3; idadd+=2){
-    Int_t idhnu=1000+idnu;
-    Int_t idw=idnu;
-    if (idadd==-1){
-     idhnu+=1000;
-     idw=-idnu;
-    }
-    TString name=PDG->GetParticle(idw)->GetName();
-    TString title = name;title+=" momentum (GeV)";
-    TString key = "";key+=idhnu;
-    TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
-    title = name;title+="  log10-p vs log10-pt";
-    key = "";key+=idhnu+100;
-    TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
-    title = name;title+="  log10-p vs log10-pt";
-    key = "";key+=idhnu+200;
-    TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
-   }
-  }
-  wspill = 1.; // event weight == 1 for primary events
   pot=0.;
   //Determine fDs on this file for primaries
   nDsprim=0;
@@ -226,6 +203,31 @@ Bool_t FixedTargetGenerator::Init()
    bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
   }
+  // book hists for Genie neutrino momentum distribution
+  TDatabasePDG* PDG = TDatabasePDG::Instance();
+  for(Int_t idnu=12; idnu<18; idnu+=2){
+  // nu or anti-nu
+   for (Int_t idadd=-1; idadd<3; idadd+=2){
+    Int_t idhnu=1000+idnu;
+    Int_t idw=idnu;
+    if (idadd==-1){
+     idhnu+=1000;
+     idw=-idnu;
+    }
+    TString name=PDG->GetParticle(idw)->GetName();
+    TString title = name;title+=" momentum (GeV)";
+    TString key = "";key+=idhnu;
+    TSeqCollection* fileList=gROOT->GetListOfFiles();
+    ((TFile*)fileList->At(0))->cd();
+    TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
+    title = name;title+="  log10-p vs log10-pt";
+    key = "";key+=idhnu+100;
+    TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
+    title = name;title+="  log10-p vs log10-pt";
+    key = "";key+=idhnu+200;
+    TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
+   }
+  }
   return kTRUE;
 }
 // -------------------------------------------------------------------------
@@ -321,7 +323,8 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     fPythiaP->next();
     fPythia = fPythiaP;
   }
-  if (withEvtGen){fPythiaP->moreDecays();} // let the very short lived resonances decay via Pythia8
+  if (withEvtGen){
+   fPythia->moreDecays();} // let the very short lived resonances decay via Pythia8
   if(Debug){fPythia->event.list();}
   TMCProcess procID;
   for(Int_t ii=1; ii<fPythia->event.size(); ii++){
@@ -337,11 +340,14 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Double_t tof = fPythia->event[ii].tProd();
      Double_t px = fPythia->event[ii].px();  
      Double_t py = fPythia->event[ii].py();  
-     Int_t im = fPythia->event[ii].mother1()-1+1;
+     Int_t im = fPythia->event[ii].mother1()-1;
      procID = kPPrimary;
      if (Option != "Primary"){
         procID = kPDecay;
+        im+=1;
         if (ii==1) {procID  = kPHadronic;}
+     }else{
+      if (ii<3){im=-1;}
      }
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,wspill,procID);
     }    
