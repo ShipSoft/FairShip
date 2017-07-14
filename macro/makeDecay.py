@@ -59,8 +59,16 @@ print 'Output ntuples written to: ',FOUT
 P8gen = ROOT.TPythia8()
 P8=P8gen.Pythia8()
 P8.readString("ProcessLevel:all = off")
-for s in [211,321,130,310,3122,3112,3312]:
-  P8.readString(str(s)+':mayDecay = false')
+
+# let strange particle decay in Geant4
+n=1
+while n!=0:
+  n = p8.particleData.nextId(n)
+  p = p8.particleData.particleDataEntryPtr(n)
+  if p.tau0()>1: 
+    command = str(n)+":mayDecay = false"
+    p8.readString(command)
+    print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4",p.name()
 P8.init()
 
 

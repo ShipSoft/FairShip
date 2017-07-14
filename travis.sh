@@ -58,10 +58,10 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
    conda install --yes python=2.7 numpy scipy
 
    export PYTHON=python
-   export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/RUwyXapOiiG3tPZ/download"
-   export FAIRROOTTAR="https://cernbox.cern.ch/index.php/s/JQpquOipHWLaaJB/download"
-   export FAIRSOFT_VERSION=trusty-Jun16
-   export FAIRROOT_VERSION=trusty-Jun16
+   export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/ciIustpVqDbLvxF/download"
+   export FAIRROOTTAR="https://cernbox.cern.ch/index.php/s/XxwkA47XHruUGIA/download"
+   export FAIRSOFT_VERSION=trusty-Jul13
+   export FAIRROOT_VERSION=trusty-Jul13
 fi
 
 # install FairSoft

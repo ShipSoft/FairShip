@@ -6,6 +6,7 @@
 #include "Pythia.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "TTree.h"
+#include "TNtuple.h"
 #include "GenieGenerator.h"
 
 class FairPrimaryGenerator;
@@ -28,6 +29,7 @@ class FixedTargetGenerator : public FairGenerator
   void Print(); //!
   
   virtual Bool_t Init(); //!
+  Bool_t InitForCharmOrBeauty(TString fInName, Double_t npots=5E13, Int_t nStart=0); //!
   
   void SetMom(Double_t mom) { fMom = mom; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
@@ -38,8 +40,12 @@ class FixedTargetGenerator : public FairGenerator
   void SetTauOnly() { tauOnly  = true; }  // only have Ds decay to tau 
   void SetJpsiMainly() { JpsiMainly  = true; }  // let all Jpsi decay to mumu
   void WithEvtGen() { withEvtGen = true;} // use EvtGen as external decayer to Pythia, experimental phase, only works for one Pythia instance
+  void SetChibb(Double_t x) { chibb = x; }  // chibb = bbbar over mbias cross section   
+  void SetChicc(Double_t x) { chicc = x; }  // chicc = ccbar over mbias cross section   
   inline void SetSeed(Double_t seed){fSeed=seed;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
+  inline void SetDebug(Bool_t x){Debug=x;}
+  Double_t GetPotForCharm(){return nrcpot;}
   Pythia* GetPythia() {return fPythiaP;}
  private:
   
@@ -50,16 +56,16 @@ class FixedTargetGenerator : public FairGenerator
   Double_t fMom;       // proton momentum
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
-  Double_t fSeed,EMax,fBoost;
-  Bool_t tauOnly,JpsiMainly,G4only;
+  Double_t fSeed,EMax,fBoost,chicc,chibb,wspill,nrpotspill;
+  Int_t nEvents,nEntry,pot,nDsprim,ntotprim,nrcpot;      
+  Bool_t firstTime,tauOnly,JpsiMainly,G4only,setByHand,Debug,withEvtGen;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia* fPythiaN;            //!
   Pythia* fPythiaP;            //!
-  Bool_t withEvtGen;
   EvtGenDecays* evtgenN;            //!
   EvtGenDecays* evtgenP;            //!
   GenieGenerator* fMaterialInvestigator;  //!
-  TString targetName;
+  TString targetName,Option;
   Double_t xOff;
   Double_t yOff;
   Double_t start[3];
@@ -69,8 +75,10 @@ class FixedTargetGenerator : public FairGenerator
   Double_t startZ;
   Double_t endZ;
   Double_t maxCrossSection;
+  TFile* fin;//!
+  TNtuple* nTree;//!
+  Float_t  n_id,n_px,n_py,n_pz,n_M,n_E,n_mpx,n_mpy,n_mpz,n_mE,n_mid;
 
   ClassDef(FixedTargetGenerator,1);
 };
-
 #endif /* !FIXEDTARGETGENERATOR_H */

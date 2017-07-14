@@ -85,6 +85,7 @@ class exitHadronAbsorber: public FairDetector
     Double_t     fzPos;              //!  zPos, optional
     Float_t EMax;  //! max energy to transport
     Bool_t fOnlyMuons;  //! flag if only muons should be stored
+    TFile* fout;
     /** container for data points */
     TClonesArray*  fexitHadronAbsorberPointCollection;
     ClassDef(exitHadronAbsorber, 0)

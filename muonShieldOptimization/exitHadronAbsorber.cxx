@@ -24,6 +24,9 @@
 #include "TGeoBoolNode.h"
 #include "TGeoMaterial.h"
 #include "TParticle.h"
+#include "TROOT.h"
+#include "TH1D.h"
+#include "TH2D.h"
 
 #include <iostream>
 using std::cout;
@@ -61,11 +64,11 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
+    gMC->TrackMomentum(fMom);
     if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){ 
      fTime   = gMC->TrackTime() * 1.0e09;
      fLength = gMC->TrackLength();
      gMC->TrackPosition(fPos);
-     gMC->TrackMomentum(fMom);
      if ( (fMom.E()-fMom.M() )>EMax) {
       AddHit(fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
@@ -74,6 +77,24 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
       stack->AddPoint(kVETO);
       }
     }
+// record statistics for neutrinos
+    Int_t idabs = TMath::Abs(pdgCode);
+    if (idabs==16 || idabs==14 || idabs==12){
+         Double_t wspill = p->GetWeight();
+         Int_t idhnu=idabs+1000;
+         if (pdgCode<0){ idhnu+=1000;}
+         Double_t l10ptot = TMath::Min(TMath::Max(TMath::Log10(fMom.P()),-0.3),1.69999);
+         Double_t l10pt   = TMath::Min(TMath::Max(TMath::Log10(fMom.Pt()),-2.),0.4999);
+         TString key; key+=idhnu;
+         TH1D* h1 = (TH1D*)fout->Get(key);
+         if (h1){h1->Fill(fMom.P(),wspill);}
+         key="";key+=idhnu+100;
+         TH2D* h2 = (TH2D*)fout->Get(key);
+         if (h2){h2->Fill(l10ptot,l10pt,wspill);}
+         key="";key+=idhnu+200;
+         h2 = (TH2D*)fout->Get(key);
+         if (h2){h2->Fill(l10ptot,l10pt,wspill);}
+       }
   }
   gMC->StopTrack();
   return kTRUE;
@@ -82,6 +103,8 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
 void exitHadronAbsorber::Initialize()
 {
   FairDetector::Initialize();
+  TSeqCollection* fileList=gROOT->GetListOfFiles();
+  fout = ((TFile*)fileList->At(0));
 }
 
 void exitHadronAbsorber::EndOfEvent()

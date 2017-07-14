@@ -1,5 +1,5 @@
 # simple vertex reconstruction with errors
-import ROOT,sys
+import ROOT,sys,os
 import shipunit as u
 import rootUtils as ut
 import numpy as np
@@ -213,7 +213,7 @@ class Task:
       tmp = array('d',[0])
       err = array('i',[0])
       gMinuit.mnexcm( "HESSE", tmp, -1, err )
-      gMinuit.mnexcm( "MINOS", tmp, -1, err )
+      #gMinuit.mnexcm( "MINOS", tmp, -1, err )
      except:
        ut.reportError("shipVertex::minos does not work")
        continue
