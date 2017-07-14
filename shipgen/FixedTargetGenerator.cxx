@@ -82,12 +82,10 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Double_t npot
 // -----   Default Init   -------------------------------------------
 Bool_t FixedTargetGenerator::Init() 
 {
-  fPythiaP =  new Pythia8::Pythia();
-  if (Option == "Primary"){
+  fPythiaP =  new Pythia8::Pythia(); // pythia needed also for G4only, to copy 2mu BRs
+  if (Option == "Primary" && !G4only){
    fPythiaN =  new Pythia8::Pythia();
-  }else if (Option == "charm" || Option == "beauty") {
-   fPythiaP =  new Pythia8::Pythia();
-  } else {
+  }else if (Option != "charm" && Option != "beauty" && !G4only) {
    fLogger->Error(MESSAGE_ORIGIN,"Option not known %s, abort",Option.Data());
   }
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
@@ -95,7 +93,7 @@ Bool_t FixedTargetGenerator::Init()
   std::vector<int> r = { 221, 223,   113, 331, 333};
   std::vector<int> c = { 7, 7, 5, 6, 9}; // decay channel mumu
 
-  if (Option == "Primary"){
+  if (Option == "Primary" && !G4only){
    fPythiaP->settings.mode("Beams:idB",  2212);
    fPythiaN->settings.mode("Beams:idB",  2112);
   }else{
@@ -104,7 +102,7 @@ Bool_t FixedTargetGenerator::Init()
   std::array<Pythia8::Pythia*,2> plist = {fPythiaP,fPythiaN};
   Int_t pcount = 0;
   for(const auto& fPythia : plist) {
-   if (pcount == 1 && Option != "Primary"){continue;}
+   if (pcount > 0 && (Option != "Primary" || G4only)){continue;}
    pcount+=1; 
    fPythia->setRndmEnginePtr(fRandomEngine);
    fPythia->settings.mode("Random:seed",fSeed);
@@ -282,7 +280,8 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }
   Pythia8::Pythia* fPythia;
   if (G4only){
-   cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,zinter/cm,-1,kTRUE,-1.,0.,1.);  
+   cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,zinter/cm,-1,kTRUE,-1.,0.,1.);
+   return kTRUE;
   }else if (Option == "Primary"){
    if (gRandom->Uniform(0.,1.) < ZoverA ){
     fPythiaP->next();
@@ -332,7 +331,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   if (withEvtGen){
    fPythia->moreDecays();} // let the very short lived resonances decay via Pythia8
   if(Debug && !G4only){fPythia->event.list();}
-  TMCProcess procID;
+  TMCProcess procID; 
   for(Int_t ii=1; ii<fPythia->event.size(); ii++){
      Double_t  e = fPythia->event[ii].e();
      Double_t  m = fPythia->event[ii].m();
