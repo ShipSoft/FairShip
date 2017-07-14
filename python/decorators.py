@@ -13,7 +13,7 @@ def MCTrackPrintOut(x):
   n=''
   if p: n = p.GetName()
   m = x.GetMotherId()
-  txt = '("ShipMCTrack") pdgCode: %7i(%10s) P=%6.3F GeV/c mother=%i %s'%(c,n,x.GetP(),m,x.GetProcName())
+  txt = '("ShipMCTrack") pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s'%(c,n,x.GetStartZ()/u.m,x.GetP(),m,x.GetProcName())
   return txt
 def vetoHitPrintOut(x):
   txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.GetADC(),x.GetTDC())
