@@ -32,9 +32,10 @@
 #include <iostream>
 #include <cstdlib>
 
-ShipFieldMaker::ShipFieldMaker() :
+ShipFieldMaker::ShipFieldMaker(Bool_t verbose) :
     globalField_(0),
     theFields_(),
+    verbose_(verbose),
     Tesla_(10.0) // To convert T to kGauss for VMC/FairRoot
 {
 }
@@ -182,7 +183,7 @@ void ShipFieldMaker::createUniform(const stringVect& inputLine)
 	    Double_t By = std::atof(inputLine[3].c_str())*Tesla_;
 	    Double_t Bz = std::atof(inputLine[4].c_str())*Tesla_;
 	    
-	    std::cout<<"Creating uniform field for "<<label.Data()<<std::endl;
+	    if (verbose_) {std::cout<<"Creating uniform field for "<<label.Data()<<std::endl;}
 
 	    TGeoUniformMagField* uField = new TGeoUniformMagField(Bx, By, Bz);
 	    theFields_[label] = uField;
@@ -231,7 +232,7 @@ void ShipFieldMaker::createConstant(const stringVect& inputLine)
 	    Double_t By = std::atof(inputLine[9].c_str())*Tesla_;
 	    Double_t Bz = std::atof(inputLine[10].c_str())*Tesla_;
 
-	    std::cout<<"Creating constant field for "<<label.Data()<<std::endl;
+	    if (verbose_) {std::cout<<"Creating constant field for "<<label.Data()<<std::endl;}
 
 	    ShipConstField* theField = new ShipConstField(label.Data(), xMin, xMax, yMin, yMax,
 							  zMin, zMax, Bx, By, Bz);
@@ -274,7 +275,7 @@ void ShipFieldMaker::createBell(const stringVect& inputLine)
 	    Int_t orient = std::atoi(inputLine[4].c_str());
 	    Double_t tubeR = std::atof(inputLine[5].c_str()); // cm
 
-	    std::cout<<"Creating Bell field for "<<label.Data()<<std::endl;
+	    if (verbose_) {std::cout<<"Creating Bell field for "<<label.Data()<<std::endl;}
 
 	    ShipBellField* theField = new ShipBellField(label.Data(), BPeak, zMiddle, orient, tubeR);
 
@@ -329,7 +330,9 @@ void ShipFieldMaker::createFieldMap(const stringVect& inputLine)
 	    Double_t y0 = std::atof(inputLine[4].c_str());
 	    Double_t z0 = std::atof(inputLine[5].c_str());
 	    
-	    std::cout<<"Creating map field "<<label.Data()<<" using "<<fullFileName<<std::endl;
+	    if (verbose_) {
+		std::cout<<"Creating map field "<<label.Data()<<" using "<<fullFileName<<std::endl;
+	    }
 	    
 	    ShipBFieldMap* mapField = new ShipBFieldMap(label.Data(), fullFileName, x0, y0, z0);
 	    theFields_[label] = mapField;
@@ -377,8 +380,10 @@ void ShipFieldMaker::copyFieldMap(const stringVect& inputLine)
 
 	    if (mapToCopy) {
 		
-		std::cout<<"Creating map field copy "<<label.Data()
-			 <<" based on "<<mapToCopy.Data()<<std::endl;
+		if (verbose_) {
+		    std::cout<<"Creating map field copy "<<label.Data()
+			     <<" based on "<<mapToCopy.Data()<<std::endl;
+		}
 
 		ShipBFieldMap* copiedMap = new ShipBFieldMap(label.Data(), *fieldToCopy,
 							     x0, y0, z0);
@@ -416,7 +421,7 @@ void ShipFieldMaker::createComposite(const stringVect& inputLine)
 	// Check if the field is already in the map
 	if (!this->gotField(label)) {
 
-	    std::cout<<"Creating composite for "<<label.Data()<<std::endl;
+	    if (verbose_) {std::cout<<"Creating composite for "<<label.Data()<<std::endl;}
 
 	    // Loop over the list of fields and add them to the composite
 	    std::vector<TVirtualMagField*> vectFields;
@@ -425,7 +430,7 @@ void ShipFieldMaker::createComposite(const stringVect& inputLine)
 		TString aLabel(inputLine[i].c_str());
 		TVirtualMagField* aField = this->getField(aLabel);
 		if (aField) {
-		    std::cout<<"Adding field "<<aLabel<<std::endl;
+		    if (verbose_) {std::cout<<"Adding field "<<aLabel<<std::endl;}
 		    vectFields.push_back(aField);
 		}
 
@@ -460,7 +465,7 @@ void ShipFieldMaker::setGlobalField(const stringVect& inputLine)
 
     if (nWords > 1) {
 
-	std::cout<<"Setting the global field"<<std::endl;
+	if (verbose_) {std::cout<<"Setting the global field"<<std::endl;}
 
 	TString label("Global");
 
@@ -470,7 +475,7 @@ void ShipFieldMaker::setGlobalField(const stringVect& inputLine)
 	    TString aLabel(inputLine[i].c_str());
 	    TVirtualMagField* aField = this->getField(aLabel);
 	    if (aField) {
-		std::cout<<"Adding field "<<aLabel<<" to global"<<std::endl;
+		if (verbose_) {std::cout<<"Adding field "<<aLabel<<" to global"<<std::endl;}
 		vectFields.push_back(aField);
 	    } else {
 		std::cout<<"Could not find the field "<<aLabel<<std::endl;
@@ -481,7 +486,9 @@ void ShipFieldMaker::setGlobalField(const stringVect& inputLine)
 	globalField_ = new ShipCompField(label.Data(), vectFields);
 	// Set this as the global field in the virtual MC
 	if (gMC) {
-	    std::cout<<"Settting "<<label.Data()<<" field as the global field for gMC"<<std::endl;
+	    if (verbose_) {
+		std::cout<<"Settting "<<label.Data()<<" field as the global field for gMC"<<std::endl;
+	    }
 	    gMC->SetMagField(globalField_);
 	} else {
 	    std::cout<<"Error. The global virtual MC pointer gMC is null! The global field can't be used!"<<std::endl;
@@ -511,8 +518,10 @@ void ShipFieldMaker::setRegionField(const stringVect& inputLine)
 	TString volName(inputLine[1].c_str());
 	TString fieldName(inputLine[2].c_str());
 
-	std::cout<<"ShipFieldMaker::setRegionField for volume "
-		 <<volName.Data()<<" and field "<<fieldName.Data()<<std::endl;
+	if (verbose_) {
+	    std::cout<<"ShipFieldMaker::setRegionField for volume "
+		     <<volName.Data()<<" and field "<<fieldName.Data()<<std::endl;
+	}
 
 	TGeoVolume* theVol(0);
 	if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}
@@ -533,9 +542,11 @@ void ShipFieldMaker::setRegionField(const stringVect& inputLine)
 
 			// Create the combined local + global field and store in the internal map.
 			// Other volumes that use the same combined field will use the stored pointer
-			std::cout<<"Creating the combined field "<<lgName.Data()<<", with local field "
-				 <<fieldName.Data()<<" with the global field for volume "
-				 <<volName.Data()<<std::endl;
+			if (verbose_) {
+			    std::cout<<"Creating the combined field "<<lgName.Data()<<", with local field "
+				     <<fieldName.Data()<<" with the global field for volume "
+				     <<volName.Data()<<std::endl;
+			}
 
 			ShipCompField* combField = new ShipCompField(lgName.Data(), localField, globalField_);
 			theFields_[lgName] = combField;
@@ -543,8 +554,10 @@ void ShipFieldMaker::setRegionField(const stringVect& inputLine)
 
 		    } else {
 
-			std::cout<<"Setting the field "<<lgName.Data()
-				 <<" for volume "<<volName.Data()<<std::endl;
+			if (verbose_) {
+			    std::cout<<"Setting the field "<<lgName.Data()
+				     <<" for volume "<<volName.Data()<<std::endl;
+			}
 			theVol->SetField(lgField);
 
 		    }
@@ -593,8 +606,10 @@ void ShipFieldMaker::setLocalField(const stringVect& inputLine)
 	TString volName(inputLine[1].c_str());
 	TString fieldName(inputLine[2].c_str());
 
-	std::cout<<"ShipFieldMaker::setLocalField for volume "
-		 <<volName.Data()<<" and field "<<fieldName.Data()<<std::endl;
+	if (verbose_) {
+	    std::cout<<"ShipFieldMaker::setLocalField for volume "
+		     <<volName.Data()<<" and field "<<fieldName.Data()<<std::endl;
+	}
 
 	TGeoVolume* theVol(0);
 	if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}
@@ -632,7 +647,7 @@ TVirtualMagField* ShipFieldMaker::getVolumeField(const TString& volName) const
 
     TVirtualMagField* theField(0);
 
-    std::cout<<"Finding field for "<<volName<<std::endl;
+    //std::cout<<"Finding field for "<<volName<<std::endl;
 
     TGeoVolume* theVol(0);
     if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}

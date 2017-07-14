@@ -23,10 +23,10 @@
 #/run/particle/applyCuts
 #/mcTracking/saveSecondariesInStep true
 
-/tracking/verbose 1
+#/tracking/verbose 1
 #/control/cout/ignoreThreadsExcept 0
 
 # Enable local magnetic fields
 /mcDet/setIsLocalMagField true
-# Enable verbosity for VMC geometry manager (just for verbose checks)
-/mcVerbose/geometryManager 2
+# Enable verbosity for VMC geometry manager
+#/mcVerbose/geometryManager 2

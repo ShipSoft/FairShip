@@ -15,7 +15,7 @@ theDPepsilon = 0.00000008
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
-nEvents      = 10 #100
+nEvents      = 100
 firstEvent   = 0
 inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, to do: QCD prod.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
@@ -34,10 +34,8 @@ inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root
 
 defaultInputFile = True
 outputDir    = "."
-#sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
-#theSeed      = int(10000 * time.time() % 10000000)
-sameSeed     = True
-theSeed      = 1490325
+sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
+theSeed      = int(10000 * time.time() % 10000000)
 
 dy           = 10.
 dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
@@ -424,11 +422,12 @@ if eventDisplay:
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
 # any field maps, or defining if any volumes feel only the local or local+global field
 import geomGeant4
-fieldMaker = geomGeant4.addVMCFields('field/BFieldSetup.txt')
+fieldMaker = geomGeant4.addVMCFields('field/BFieldSetup.txt', False)
 # Print VMC fields and associated geometry objects
-geomGeant4.printVMCFields()
-# Plot the fields
-fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
+#geomGeant4.printVMCFields()
+#geomGeant4.printWeightsandFields()
+# Plot the field example
+#fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()

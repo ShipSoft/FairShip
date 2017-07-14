@@ -22,7 +22,7 @@ class ShipFieldMaker
  public:
 
     //! Constructor
-    ShipFieldMaker();
+    ShipFieldMaker(Bool_t verbose = kFALSE);
 
     //! Destructor
     virtual ~ShipFieldMaker();
@@ -175,6 +175,9 @@ class ShipFieldMaker
 
     //! The map storing all created magnetic fields
     SFMap theFields_;
+
+    //! Verbose boolean
+    Bool_t verbose_;
 
     //! Double converting Tesla to kiloGauss (for VMC/FairRoot B field units)
     Double_t Tesla_;
