@@ -149,8 +149,10 @@ ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 a
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)
 
-outFile = outputDir+'/pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root'
-parFile = outputDir+'/ship.params.pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root'
+txt = 'pythia8_Geant4_'
+if withEvtGen: txt = 'pythia8_evtgen_Geant4_'
+outFile = outputDir+'/'+txt+str(runnr)+'_'+str(ecut)+'.root'
+parFile = outputDir+'/ship.params.'+txt+str(runnr)+'_'+str(ecut)+'.root'
 
 # -----Timer--------------------------------------------------------
 timer = ROOT.TStopwatch()
