@@ -30,10 +30,10 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
 
    export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
    export PYTHON=/usr/bin/python
-   export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/xEZLZgDknqACMwL/download"
-   export FAIRROOTTAR="https://cernbox.cern.ch/index.php/s/qPmN8KuA83f8dFf/download"
-   export FAIRSOFT_VERSION=osx12-Jun16
-   export FAIRROOT_VERSION=osx12-Jun16
+   export FAIRSOFTTAR="https://cernbox.cern.ch/index.php/s/LQbdnj9yDgfgBim/download"
+   export FAIRROOTTAR="https://cernbox.cern.ch/index.php/s/YkR2hxqdk3s1T1j/download"
+   export FAIRSOFT_VERSION=osx12-Jul13
+   export FAIRROOT_VERSION=osx12-Jul13
 fi
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
