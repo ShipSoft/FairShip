@@ -707,7 +707,7 @@ def projection_prescale():
    sev.AddScene(eventscene)
    eventscene.AddElement(smng)
    ROOT.gEve.GetBrowser().GetTabRight().SetTab(1)
-   ROOT.gEve.FullRedraw3D(kTRUE)
+   ROOT.gEve.FullRedraw3D(ROOT.kTRUE)
 def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
    xvol = fGeo.GetVolume(x)
