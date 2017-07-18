@@ -213,7 +213,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz()+zinter;
       x  = fPythia->event[ii].xProd()+dl*fPythia->event[1].px();
       y  = fPythia->event[ii].yProd()+dl*fPythia->event[1].py();
-      tof = fPythia->event[ii].tProd()+(dl+zinter)*fPythia->event[1].e()/cm/c_light;
+      tof = fPythia->event[ii].tProd()+dl*fPythia->event[1].e()/cm/c_light;
      }else{
       z  = fPythia->event[ii].zProd()+zinter;
       x  = fPythia->event[ii].xProd();
