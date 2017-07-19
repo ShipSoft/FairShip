@@ -78,7 +78,6 @@ def init():
   ap.add_argument('-X', '--boostFactor', type=float,   dest='boostFactor',  default=boostFactor, help="boost Di-muon prod cross sections")
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
   ap.add_argument('-B', '--beauty',     action='store_true',  dest='beauty', default=beauty, help="generate beauty decays")
-  ap.add_argument('-s', '--Start',  action='store_true',  dest='nStart',  default=nStart, help="first event of input file if any")
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
 # for charm production       
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
@@ -118,7 +117,7 @@ def init():
     logger.warn("charm and beauty decays are set! Beauty gets priority")
     charm = False
   charmInputFile = args.charmInputFile
-  nStart = args.nStart
+  nStart = int(args.nStart)
   Debug  = args.debug
   if args.work_dir is None:
     if charm: args.work_dir = get_work_dir(runnr,"charm")
