@@ -164,6 +164,7 @@ PoorE791_tune(myPythia)
 #  Pythia output to dummy (11) file (to screen use 6)
 myPythia.SetMSTU(11, 11)
 
+
 #start with different random number for each run...
 if R == '': R = int(time.time()*100000000%900000000)
 print 'Setting random number seed =',R
@@ -250,13 +251,16 @@ ut.bookHist(h,str(5),'D0 pt',100,0.,10.)
 ut.bookHist(h,str(6),'D0 XF',100,-1.,1.)
 
 ftup = ROOT.TFile.Open(Fntuple, 'RECREATE')
-Ntup = ROOT.TNtuple("pythia6","pythia6 heavy flavour","id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM")
+Ntup = ROOT.TNtuple("pythia6","pythia6 heavy flavour","id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k")
 
 #make sure all particles for cascade production are stable
 for kf in idbeam:
    kc = myPythia.Pycomp(kf)
    myPythia.SetMDCY(kc,1,0)
-
+# make charm or beauty signal hadrons stable
+for kf in idsig:
+   kc = myPythia.Pycomp(kf)
+   myPythia.SetMDCY(kc,1,0)
 
 #declare the stack for the cascade particles
 stack=1000*[0]
@@ -289,16 +293,15 @@ for iev in range(nevgen):
          myPythia.Initialize('3MOM',PDG.GetParticle(stack[nstack][0]).GetName(),target[idpn],0.)
          myPythia.GenerateEvent()
 #  look for the signal particles
-         charmFound = -1   
+         charmFound = []   
          for itrk in range(1,myPythia.GetN()+1):
             idabs = ROOT.TMath.Abs(myPythia.GetK(itrk,2))
-            for isig in range(len(idsig)):
-               if idabs==idsig[isig]:
+            if idabs in idsig:
 #                  print myPythia.GetK(itrk,2),myPythia.GetP(itrk,1),myPythia.GetP(itrk,2),myPythia.GetP(itrk,3),myPythia.GetK(1,2),myPythia.GetP(1,1),myPythia.GetP(1,2),myPythia.GetP(1,3)
                   Ntup.Fill(float(myPythia.GetK(itrk,2)),float(myPythia.GetP(itrk,1)),float(myPythia.GetP(itrk,2)),float(myPythia.GetP(itrk,3)),\
                             float(myPythia.GetP(itrk,4)),float(myPythia.GetP(itrk,5)),float(myPythia.GetK(1,2)),float(myPythia.GetP(1,1)),\
-                            float(myPythia.GetP(1,2)),float(myPythia.GetP(1,3)),float(myPythia.GetP(1,4)),float(myPythia.GetP(1,5)))
-                  charmFound = itrk    
+                            float(myPythia.GetP(1,2)),float(myPythia.GetP(1,3)),float(myPythia.GetP(1,4)),float(myPythia.GetP(1,5)),float(stack[nstack][4]))
+                  charmFound.append(itrk)    
                   h['1'].Fill(myPythia.GetP(itrk,4))
                   h['2'].Fill(stack[nstack][4])
                   if idabs==421 and stack[nstack][4]==1 :
@@ -314,16 +317,16 @@ for iev in range(nevgen):
                      pDcm=-gamma*beta*myPythia.GetP(itrk,4)+gamma*myPythia.GetP(itrk,3)
                      xf=pDcm/pbcm
                      h['6'].Fill(xf)
-         if not charmFound<0 and storePrimaries:
+         if len(charmFound)>0 and storePrimaries:
             for itP in range(1,myPythia.GetN()+1):
-             if itP == charmFound: continue
+             if itP in charmFound: continue
              if myPythia.GetK(itP,1)==1:
-#  store only undecayed particle
+#  store only undecayed particle and no charm found
               Ntup.Fill(float(myPythia.GetK(itP,2)),float(myPythia.GetP(itP,1)),float(myPythia.GetP(itP,2)),float(myPythia.GetP(itP,3)),\
                             float(myPythia.GetP(itP,4)),float(myPythia.GetP(itP,5)),-1,\
-                            float(myPythia.GetV(itP,1)-myPythia.GetV(charmFound,1)),\
-                            float(myPythia.GetV(itP,2)-myPythia.GetV(charmFound,2)),\
-                            float(myPythia.GetV(itP,3)-myPythia.GetV(charmFound,3)),0,0)                        
+                            float(myPythia.GetV(itP,1)-myPythia.GetV(charmFound[0],1)),\
+                            float(myPythia.GetV(itP,2)-myPythia.GetV(charmFound[0],2)),\
+                            float(myPythia.GetV(itP,3)-myPythia.GetV(charmFound[0],3)),0,0,stack[nstack][4])                        
 
 #  now generate msel=2 to add new cascade particles to the stack
       for k in range(1,4):  
