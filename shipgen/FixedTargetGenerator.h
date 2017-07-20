@@ -29,7 +29,7 @@ class FixedTargetGenerator : public FairGenerator
   void Print(); //!
   
   virtual Bool_t Init(); //!
-  Bool_t InitForCharmOrBeauty(TString fInName, Double_t npots=5E13, Int_t nStart=0); //!
+  Bool_t InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npots=5E13, Int_t nStart=0); //!
   
   void SetMom(Double_t mom) { fMom = mom; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
@@ -45,7 +45,7 @@ class FixedTargetGenerator : public FairGenerator
   inline void SetSeed(Double_t seed){fSeed=seed;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
   inline void SetDebug(Bool_t x){Debug=x;}
-  Double_t GetPotForCharm(){return nrcpot;}
+  Double_t GetPotForCharm(){return nrpotspill/wspill;}
   Pythia* GetPythia() {return fPythiaP;}
  private:
   
@@ -57,8 +57,8 @@ class FixedTargetGenerator : public FairGenerator
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fSeed,EMax,fBoost,chicc,chibb,wspill,nrpotspill;
-  Int_t nEvents,nEntry,pot,nDsprim,ntotprim,nrcpot;      
-  Bool_t firstTime,tauOnly,JpsiMainly,G4only,setByHand,Debug,withEvtGen;
+  Int_t nEvents,nEntry,pot,nDsprim,ntotprim;      
+  Bool_t tauOnly,JpsiMainly,G4only,setByHand,Debug,withEvtGen;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia* fPythiaN;            //!
   Pythia* fPythiaP;            //!
@@ -77,7 +77,7 @@ class FixedTargetGenerator : public FairGenerator
   Double_t maxCrossSection;
   TFile* fin;//!
   TNtuple* nTree;//!
-  Float_t  n_id,n_px,n_py,n_pz,n_M,n_E,n_mpx,n_mpy,n_mpz,n_mE,n_mid;
+  Float_t  n_id,n_px,n_py,n_pz,n_M,n_E,n_mpx,n_mpy,n_mpz,n_mE,n_mid,ck;
 
   ClassDef(FixedTargetGenerator,1);
 };

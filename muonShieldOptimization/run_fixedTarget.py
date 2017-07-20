@@ -208,7 +208,7 @@ P8gen.SetSeed(theSeed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if charm or beauty:
- P8gen.InitForCharmOrBeauty("root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",npot,nStart)
+ P8gen.InitForCharmOrBeauty("root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",nev,npot,nStart)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
@@ -252,10 +252,7 @@ fHeader = fin.FileHeader
 fHeader.SetRunId(runnr)
 if charm or beauty:
 # normalization for charm
- fcharm = ROOT.gROOT.GetListOfFiles()[1]
- nTot = fcharm.Get('pythia6').GetEntries()
- norm = float(nev)/float(nTot)
- poteq = P8gen.GetPotForCharm() * norm
+ poteq = P8gen.GetPotForCharm()
  fHeader.SetTitle("POT equivalent = %7.3G"%(poteq))
 else: 
  fHeader.SetTitle("POT = "+str(nev))
