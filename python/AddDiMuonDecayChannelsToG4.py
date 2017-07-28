@@ -1,6 +1,6 @@
 import G4particles,G4global,ROOT
 def Initialize(p8):
-# take decay and brancing ratios from Pythia8
+# take decay and branching ratios from Pythia8
   pt = G4particles.G4ParticleTable.GetParticleTable()
   for vreso in [223,333,113]:
    particleG4  = pt.FindParticle(vreso)

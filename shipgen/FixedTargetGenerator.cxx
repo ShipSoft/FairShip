@@ -43,18 +43,32 @@ FixedTargetGenerator::FixedTargetGenerator()
   chibb=1.6e-7;     //prob to produce primary bbbar pair/pot
   setByHand = kFALSE;
   Debug = kFALSE;
-  firstTime = kTRUE;
   Option = "Primary";
   wspill = 1.; // event weight == 1 for primary events
 }
-Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Double_t npot, Int_t nStart)
+Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npot, Int_t nStart)
 {
   Option = "charm";
-  nrpotspill = npot;
   nEntry = nStart;
   // open input file with charm or beauty
   fin   = TFile::Open(fInName);
   nTree = (TNtuple*)fin->FindObjectAny("pythia6"); // old format, simple ntuple
+  nEvents = nTree->GetEntries();
+// check if we deal with charm or beauty:
+  if (!setByHand and n_M>5){ 
+    chicc = chibb;
+    fLogger->Info(MESSAGE_ORIGIN,"automatic detection of beauty, configured for beauty");
+    fLogger->Info(MESSAGE_ORIGIN,"bb cross section / mbias %f",chicc);
+  }else{
+    fLogger->Info(MESSAGE_ORIGIN,"cc cross section / mbias %f",chicc);
+  }
+// convert pot to weight corresponding to one spill of 5e13 pot
+ // get histogram with number of pot to normalise
+ // pot are counted double, i.e. for each signal, i.e. pot/2.
+  Int_t nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.; // number of primary interactions
+  wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
+  fLogger->Info(MESSAGE_ORIGIN,"Input file: %s   with %i entries, corresponding to nr-pot=%f",fInName.Data(),nEvents,nrcpot/chicc);
+  fLogger->Info(MESSAGE_ORIGIN,"weight %f corresponding to %f p.o.t. per spill for %f events to process",wspill,nrpotspill,nev);
   nTree->SetBranchAddress("id",&n_id);
   nTree->SetBranchAddress("px",&n_px);
   nTree->SetBranchAddress("py",&n_py);
@@ -66,12 +80,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Double_t npot
   nTree->SetBranchAddress("mpy",&n_mpy);
   nTree->SetBranchAddress("mpz",&n_mpz);
   nTree->SetBranchAddress("mE",&n_mE);
-  nEvents = nTree->GetEntries();
-  // Calculate weights, for the whole file.
-  // get histogram with number of pot to normalise
-  nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.;
-  // pot are counted double, i.e. for each signal, i.e. pot/2.
-  fLogger->Info(MESSAGE_ORIGIN,"Input file: %s   with %i entries, corresponding to nr-pot=%i",fInName.Data(),nEvents,nrcpot);
+  if (nTree->GetBranch("k")){nTree->SetBranchAddress("k",&ck);}
   pot=0.;
   //Determine fDs on this file for primaries
   nDsprim=0;
@@ -255,9 +264,13 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    Double_t rndm = 0.;
    Double_t sigma;
    Int_t count=0;
-   while (prob2int<rndm) {
+   Double_t zinterStart = start[2];
+// simulate more downstream interaction points for interactions down in the cascade
+   if (!(nTree->GetBranch("k"))){ck=1;}
+   while (ck>0.5){
+    while (prob2int<rndm) {
  //place x,y,z uniform along path
-      zinter = gRandom->Uniform(start[2],end[2]);
+      zinter = gRandom->Uniform(zinterStart,end[2]);
       Double_t point[3]={xOff,yOff,zinter};
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
       Double_t interLength = mparam[8]; 
@@ -272,10 +285,12 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       }else{
          prob2int=0.;
       }
-      // cout<< "positioning "<<zinter<<" "<<interLength<<" "<<start[2]<<" "<<end[2]<<" "<<prob2int<<" "<<maxCrossSection<<endl;
       rndm = gRandom->Uniform(0.,1.); 
       count+=1;
-   }
+    }
+    zinterStart = zinter;
+    ck-=1;
+  } 
   zinter = zinter*cm;
   }
   Pythia8::Pythia* fPythia;
@@ -298,20 +313,6 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       nEntry=0;}
     nTree->GetEvent(nEntry);
     nEntry+=1;
-// check if we deal with charm or beauty:
-    if (firstTime){ 
-     if (!setByHand and n_M>5){ 
-      chicc = chibb;
-      fLogger->Info(MESSAGE_ORIGIN,"automatic detection of beauty, configured for beauty");
-      fLogger->Info(MESSAGE_ORIGIN,"bb cross section / mbias %f",chicc);
-     }else{
-      fLogger->Info(MESSAGE_ORIGIN,"cc cross section / mbias %f",chicc);
-     }
-   // convert pot to weight corresponding to one spill of 5e13 pot
-     fLogger->Info(MESSAGE_ORIGIN,"weights: %f p.o.t. per spill",nrpotspill);
-     wspill = nrpotspill*chicc/nrcpot;
-     firstTime = kFALSE;
-    }
     // sanity check, count number of p.o.t. on input file.
     Double_t pt=TMath::Sqrt( (n_mpx*n_mpx)+(n_mpy*n_mpy));
     // every event appears twice, i.e.

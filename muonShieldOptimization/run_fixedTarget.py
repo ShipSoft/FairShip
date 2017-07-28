@@ -78,7 +78,6 @@ def init():
   ap.add_argument('-X', '--boostFactor', type=float,   dest='boostFactor',  default=boostFactor, help="boost Di-muon prod cross sections")
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
   ap.add_argument('-B', '--beauty',     action='store_true',  dest='beauty', default=beauty, help="generate beauty decays")
-  ap.add_argument('-s', '--Start',  action='store_true',  dest='nStart',  default=nStart, help="first event of input file if any")
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
 # for charm production       
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
@@ -118,7 +117,7 @@ def init():
     logger.warn("charm and beauty decays are set! Beauty gets priority")
     charm = False
   charmInputFile = args.charmInputFile
-  nStart = args.nStart
+  nStart = int(args.nStart)
   Debug  = args.debug
   if args.work_dir is None:
     if charm: args.work_dir = get_work_dir(runnr,"charm")
@@ -149,8 +148,10 @@ ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 a
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)
 
-outFile = outputDir+'/pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root'
-parFile = outputDir+'/ship.params.pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root'
+txt = 'pythia8_Geant4_'
+if withEvtGen: txt = 'pythia8_evtgen_Geant4_'
+outFile = outputDir+'/'+txt+str(runnr)+'_'+str(ecut)+'.root'
+parFile = outputDir+'/ship.params.'+txt+str(runnr)+'_'+str(ecut)+'.root'
 
 # -----Timer--------------------------------------------------------
 timer = ROOT.TStopwatch()
@@ -207,7 +208,7 @@ P8gen.SetSeed(theSeed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if charm or beauty:
- P8gen.InitForCharmOrBeauty("root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",npot,nStart)
+ P8gen.InitForCharmOrBeauty("root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",nev,npot,nStart)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
@@ -251,10 +252,7 @@ fHeader = fin.FileHeader
 fHeader.SetRunId(runnr)
 if charm or beauty:
 # normalization for charm
- fcharm = ROOT.gROOT.GetListOfFiles()[1]
- nTot = fcharm.Get('pythia6').GetEntries()
- norm = float(nev)/float(nTot)
- poteq = P8gen.GetPotForCharm() * norm
+ poteq = P8gen.GetPotForCharm()
  fHeader.SetTitle("POT equivalent = %7.3G"%(poteq))
 else: 
  fHeader.SetTitle("POT = "+str(nev))

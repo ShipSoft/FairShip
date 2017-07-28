@@ -72,6 +72,7 @@ Bool_t Pythia8Generator::Init()
      fTree->SetBranchAddress("mpy",&mpy);
      fTree->SetBranchAddress("mpz",&mpz);
      fTree->SetBranchAddress("mE",&mE);
+     if (fTree->GetBranch("k")){fTree->SetBranchAddress("k",&ck);}
      fPythia->readString("ProcessLevel:all = off");
 // find all long lived particles in pythia
      Int_t n = 1;
@@ -97,6 +98,9 @@ Bool_t Pythia8Generator::Init()
    fMaterialInvestigator = new GenieGenerator();
    TGeoVolume* top = gGeoManager->GetTopVolume();
    TGeoNode* target = top->FindNode(targetName);
+   if (!target){
+       fLogger->Error(MESSAGE_ORIGIN,"target not found, %s, program will crash",targetName.Data());
+   }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
    TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
    startZ =  z_middle - sha->GetDZ();
@@ -159,9 +163,13 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    Double_t rndm = 0.;
    Double_t sigma;
    Int_t count=0;
-   while (prob2int<rndm) {
+   Double_t zinterStart = start[2];
+// simulate more downstream interaction points for interactions down in the cascade
+   if (!(fTree->GetBranch("k"))){ck[0]=1;}
+   while (ck[0]>0.5){
+    while (prob2int<rndm) {
  //place x,y,z uniform along path
-      zinter = gRandom->Uniform(start[2],end[2]);
+      zinter = gRandom->Uniform(zinterStart,end[2]);
       Double_t point[3]={xOff,yOff,zinter};
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
       Double_t interLength = mparam[8]; 
@@ -177,8 +185,11 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       }
       rndm = gRandom->Uniform(0.,1.); 
       count+=1;
-   }
-  zinter = zinter*cm;
+    }
+    zinterStart = zinter;
+    ck[0]-=1;
+   } 
+   zinter = zinter*cm;
   }
   for(Int_t c=0; c<2; c++){
     if(c>0){
@@ -213,7 +224,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz()+zinter;
       x  = fPythia->event[ii].xProd()+dl*fPythia->event[1].px();
       y  = fPythia->event[ii].yProd()+dl*fPythia->event[1].py();
-      tof = fPythia->event[ii].tProd()+(dl+zinter)*fPythia->event[1].e()/cm/c_light;
+      tof = fPythia->event[ii].tProd()+dl*fPythia->event[1].e()/cm/c_light;
      }else{
       z  = fPythia->event[ii].zProd()+zinter;
       x  = fPythia->event[ii].xProd();
