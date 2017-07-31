@@ -10,6 +10,72 @@ import ROOT
 from array import array
 gTransportationManager = G4TransportationManager.GetTransportationManager()
 
+def setMagnetField(flag=None):
+    print 'setMagnetField() called'
+    fGeo = ROOT.gGeoManager
+    vols = fGeo.GetListOfVolumes()
+    #copy field by hand to geant4
+    listOfFields={}
+    for v in vols:
+     field =  v.GetField()
+     print 'Volume is {0}'.format(v.GetName())
+     if not field: continue
+     bx = field.GetFieldValue()[0]/u.tesla*G4Unit.tesla
+     by = field.GetFieldValue()[1]/u.tesla*G4Unit.tesla
+     bz = field.GetFieldValue()[2]/u.tesla*G4Unit.tesla
+     print 'Volume {0} has B field: {1}, {2}, {3}'.format(v.GetName(), bx, by, bz)
+     magFieldIron = G4UniformMagField(G4ThreeVector(bx,by,bz))
+     FieldIronMgr = G4FieldManager(magFieldIron)
+     FieldIronMgr.CreateChordFinder(magFieldIron)
+     listOfFields[v.GetName()]=FieldIronMgr
+    gt = gTransportationManager
+    gn = gt.GetNavigatorForTracking()
+    world = gn.GetWorldVolume().GetLogicalVolume()
+    setField = {}
+    for da in range(world.GetNoDaughters()):
+        vl0  = world.GetDaughter(da)
+        vln  = vl0.GetName().__str__()
+        lvl0 = vl0.GetLogicalVolume()
+        if listOfFields.has_key(vln) :
+            print 'Setting field A for {0}'.format(vln)
+            setField[lvl0]=vln
+        else:
+            print 'No field A for {0}'.format(vln)
+        for dda in range(lvl0.GetNoDaughters()):
+         vl  = lvl0.GetDaughter(dda)
+         vln = vl.GetName().__str__()
+         lvl = vl.GetLogicalVolume()
+         if listOfFields.has_key(vln) :
+             print 'Setting field B for {0}'.format(vln)
+             setField[lvl]=vln
+         else:
+             print 'No field B for {0}'.format(vln)
+
+         for ddda in range(lvl.GetNoDaughters()):
+             vlC  = lvl.GetDaughter(ddda)
+             vlnC = vlC.GetName().__str__()
+             lvlC = vlC.GetLogicalVolume()
+             if listOfFields.has_key(vlnC) :
+                 print 'Setting field C for {0}'.format(vlnC)
+                 setField[lvlC]=vlnC
+             else:
+                 print 'No field C for {0}'.format(vlnC)
+
+    #print '***********************************************************'
+    #print 'listOfFields dictionary {0}'.format(listOfFields)
+    #print '***********************************************************'
+    #print 'setField dictionary {0}'.format(setField)
+
+    for lvl in setField:
+       print 'In setField loop, lvl = {0}'.format(lvl.GetName())
+       lvl.SetFieldManager(listOfFields[setField[lvl]],True)
+       if flag=='dump':
+            constField = listOfFields[setField[lvl]].GetDetectorField().GetConstantFieldValue()
+            print 'set field for ',setField[lvl], constField
+    g4Run = G4RunManager.GetRunManager()
+    g4Run.GeometryHasBeenModified(True)
+
+
 def addVMCFields(controlFile = 'field/BFieldSetup.txt', verbose = False):
     '''
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
