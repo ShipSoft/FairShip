@@ -419,13 +419,16 @@ if eventDisplay:
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 
-# Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
-# any field maps, or defining if any volumes feel only the local or local+global field
+# The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
 import geomGeant4
-fieldMaker = geomGeant4.addVMCFields('field/BFieldSetup.txt', False)
+# Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
+# any field maps, or defining if any volumes feel only the local or local+global field.
+# For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
+#fieldMaker = geomGeant4.addVMCFields('field/ExampleBFieldSetup.txt', False)
 # Print VMC fields and associated geometry objects
-#geomGeant4.printVMCFields()
-#geomGeant4.printWeightsandFields()
+if debug > 0:
+ geomGeant4.printVMCFields()
+ geomGeant4.printWeightsandFields()
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 
