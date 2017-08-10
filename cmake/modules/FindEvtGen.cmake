@@ -13,16 +13,20 @@ MESSAGE(STATUS "Looking for EvtGen ...")
 
 FIND_PATH(EVTGEN_INCLUDE_DIR NAMES EvtGen/EvtGen.hh PATHS
   ${SIMPATH}/include/EvtGen
+  ${EVTGENPATH}/include/EvtGen
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(EVTGEN_LIBRARY_DIR NAMES libEvtGen.so PATHS
   ${SIMPATH}/lib
+  ${EVTGENPATH}/lib
   NO_DEFAULT_PATH
 )
 
 Find_Path(EVTGENDATA NAMES evt.pdl PATHS
   ${SIMPATH}/share/EvtGen/
+  ${EVTGENPATH}/share/EvtGen/
+  ${EVTGENPATH}/share/
 )
 
 If (NOT EVTGENDATA)

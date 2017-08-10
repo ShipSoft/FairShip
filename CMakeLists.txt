@@ -12,14 +12,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0 FATAL_ERROR)
 # after check of cmake version since this is a new feature                  
 project(ShipRoot)
 
-If($ENV{HOSTNAME} MATCHES "cern")
-  MESSAGE("discovered lxplus: take gcc6.2 from lcg")
-  execute_process(COMMAND source /cvmfs/sft.cern.ch/lcg/external/gcc/6.2/x86_64-slc6-gcc62-opt/setup.sh)
-  SET(GCCVERSION "x86_64-slc6-gcc62-opt")
-  SET(LCGVERSION "LCG_87")
-EndIf()
 FIND_PATH(FAIRBASE NAMES FairRun.h  PATHS
   ${CMAKE_SOURCE_DIR}/base/steer
+  ${FAIRBASE}
   NO_DEFAULT_PATH
 )
 
@@ -110,7 +105,7 @@ ENDIF(NOT UNIX)
 
 # Check if FairSoft is available, defines SIMPATH
 IF(NOT DEFINED ENV{SIMPATH})
-   MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.") 
+   MESSAGE(STATUS "You did not define the environment variable SIMPATH. Using aliBuild recipe.") 
 ENDIF(NOT DEFINED ENV{SIMPATH})
 
 SET(SIMPATH $ENV{SIMPATH})
@@ -141,13 +136,19 @@ find_package(HEPMC)
  Set(Boost_NO_SYSTEM_PATHS TRUE)
   Set(Boost_NO_BOOST_CMAKE TRUE)
 #  set(Boost_DEBUG TRUE)
-  If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-    set(BOOST_ROOT ${SIMPATH})
-    set(GSL_DIR ${SIMPATH})
-  Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-    set(BOOST_ROOT ${SIMPATH}/basics/boost)
-    set(GSL_DIR ${SIMPATH}/basics/gsl)
-  EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  IF(DEFINED ENV{SIMPATH})
+    If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+      set(BOOST_ROOT ${SIMPATH})
+      set(GSL_DIR ${SIMPATH})
+    Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+      set(BOOST_ROOT ${SIMPATH}/basics/boost)
+      set(GSL_DIR ${SIMPATH}/basics/gsl)
+    EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  ELSE(DEFINED ENV{SIMPATH})
+      set(BOOST_ROOT $ENV{BOOST_ROOT})
+      set(GSL_DIR $ENV{GSL_ROOT})    
+  ENDIF(DEFINED ENV{SIMPATH})
+
   Message("-- Looking for Boost ...")
   # If an older version of boost is found both of the variables below are
   # cached and in a second cmake run, a good boost version is found even 
@@ -274,6 +275,7 @@ add_subdirectory (muonShieldOptimization)
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
   ${SIMPATH}/tools/root/include
   ${SIMPATH}/include/root
+  $ENV{ROOTSYS}/include/root
   NO_DEFAULT_PATH
 )
 
@@ -293,9 +295,10 @@ add_custom_target(  # make relative links to folders
     COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
     COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'macro') , 'macro') \"
 )
-
-WRITE_CONFIG_FILE(config.sh)
-WRITE_CONFIG_FILE(config.csh)
+IF(DEFINED $ENV{SIMPATH})
+  WRITE_CONFIG_FILE(config.sh)
+  WRITE_CONFIG_FILE(config.csh)
+ENDIF(DEFINED $ENV{SIMPATH})
 
 # manipulate the config file:
 
@@ -304,19 +307,21 @@ MESSAGE(STATUS "Looking for GENIE ...")
 # genie in general
 FIND_PATH(GENIE  NAMES genie PATHS
   ${SIMPATH}/../FairSoft/generators
+  ${GENIE_ROOT}
   NO_DEFAULT_PATH
-)
+  )
 
 If(NOT GENIE)
   Message(STATUS "Could not find Genie source directory")
 Else()
- file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv GENIE \"${GENIE}/genie\"\n")
- file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export GENIE=\"${GENIE}/genie\"\n")
+  file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv GENIE \"${GENIE}/genie\"\n")
+  file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export GENIE=\"${GENIE}/genie\"\n")
 EndIf()
 
 # location of cross section files
-FIND_PATH(GENPATH  NAMES genie PATHS
+FIND_PATH(GENPATH NAMES genie PATHS
   ${SIMPATH}/share/
+  ${GENIE_ROOT}
   NO_DEFAULT_PATH
 )
 
@@ -328,16 +333,19 @@ Else()
 EndIf()
 
 # location of pdf file
-FIND_PATH(LHAPATH NAMES PDFsets PATHS
-  ${SIMPATH}/share/lhapdf
+FIND_PATH(LHAPATH NAMES PDFsets.index PATHS
+  ${SIMPATH}/share/lhapdf/PDFsets
+  ${LHAPDF5_ROOT}/share/lhapdf
   NO_DEFAULT_PATH
 )
 
 If(NOT LHAPATH)
   Message(STATUS "Could not find LHA data files")
 Else()
- file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LHAPATH \"${LHAPATH}/data\"\n")
- file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LHAPATH=\"${LHAPATH}/data\"\n")
+  IF(DEFINED $ENV{SIMPATH})
+    file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LHAPATH \"${LHAPATH}/data\"\n")
+    file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LHAPATH=\"${LHAPATH}/data\"\n")
+  ENDIF(DEFINED $ENV{SIMPATH})
 EndIf()
 
 # for lxplus, need to change LD_LIBRARY_PATH
