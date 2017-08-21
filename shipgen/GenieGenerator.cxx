@@ -60,7 +60,8 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pxl",&pxl);
   fTree->SetBranchAddress("pyl",&pyl);
   fTree->SetBranchAddress("pzl",&pzl);
-  fTree->SetBranchAddress("pxf",&pxf);   // outgoing hadronic momenta
+  fTree->SetBranchAddress("Ef",&Ef);   // outgoing hadronic momenta
+  fTree->SetBranchAddress("pxf",&pxf);    
   fTree->SetBranchAddress("pyf",&pyf);
   fTree->SetBranchAddress("pzf",&pzf);
   fTree->SetBranchAddress("nf",&nf);     // nr of outgoing hadrons
@@ -553,13 +554,13 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     std::vector<double> pp = Rotate(x,y,zrelative,pxl,pyl,pzl);
     Int_t oLPdgCode = neu;
     if (cc){oLPdgCode = copysign(TMath::Abs(neu)-1,neu);}
-    cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,true,TMath::Sqrt(pp[0]*pp[0]+pp[1]*pp[1]+pp[2]*pp[2]),tof,mparam[0]*mparam[4]);
+    cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,true,El,tof,mparam[0]*mparam[4]);
 // last, all others
     for(int i=0; i<nf; i++)
     	{
          pp = Rotate(x,y,zrelative,pxf[i],pyf[i],pzf[i]);
-         cpg->AddTrack(pdgf[i],pp[0],pp[1],pp[2],x,y,z,0,true,TMath::Sqrt(pp[0]*pp[0]+pp[1]*pp[1]+pp[2]*pp[2]),tof,mparam[0]*mparam[4]);
-         // cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
+         cpg->AddTrack(pdgf[i],pp[0],pp[1],pp[2],x,y,z,0,true,Ef[i],tof,mparam[0]*mparam[4]);
+         //cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
        }
     //cout << "Info GenieGenerator Return from GenieGenerator" << endl;
     }

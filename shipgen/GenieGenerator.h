@@ -45,7 +45,7 @@ class GenieGenerator : public FairGenerator
  protected:
   Double_t Yvessel,Xvessel,Lvessel,ztarget,startZ,endZ;
   Double_t Ev,pxv,pyv,pzv, El,pxl, pyl, pzl,vtxx,vtxy,vtxz,vtxt;
-  Double_t pxf[500], pyf[500], pzf[500];
+  Double_t Ef[500], pxf[500], pyf[500], pzf[500];
   Int_t pdgf[500];
   std::vector<TVector3> dVecs;
   std::vector<TVector3> boxs;
