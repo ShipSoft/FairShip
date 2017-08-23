@@ -309,7 +309,7 @@ FIND_PATH(GENIE  NAMES genie PATHS
   ${SIMPATH}/../FairSoft/generators
   ${GENIE_ROOT}
   NO_DEFAULT_PATH
-  )
+)
 
 If(NOT GENIE)
   Message(STATUS "Could not find Genie source directory")
