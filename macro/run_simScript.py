@@ -255,8 +255,8 @@ if simEngine == "Pythia8":
    P8gen.SetLmin(44*u.m)
    P8gen.SetLmax(107*u.m)
  if charmonly:
-   primGen.SetBeam(0.,0., ship_geo.Box.TX-2., ship_geo.Box.TY-2.) #Uniform distribution in x/y on the target (1 cm of margin at both sides)    
-   primGen.SmearVertexXY(True)
+  primGen.SetBeam(0.,0., ship_geo.Box.TX-2., ship_geo.Box.TY-2.) #Uniform distribution in x/y on the target (1 cm of margin at both sides)    
+  primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, firstEvent)
   if ship_geo.MufluxSpectrometer.muflux == False :
