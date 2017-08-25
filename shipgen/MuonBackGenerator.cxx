@@ -90,6 +90,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
   while (fn<fNevents) {
    fTree->GetEntry(fn);
+   muList.clear(); 
    fn++;
    if (fn%100000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
 // test if we have a muon, don't look at neutrinos:
@@ -103,7 +104,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      for (int i = 0; i < vetoPoints->GetEntries(); i++) {
          vetoPoint *v = (vetoPoint*)vetoPoints->At(i); 
          if (abs(v->PdgCode())==13){found = true;
-           muList.push_back(v->GetTrackID());} 
+           muList.push_back(v->GetTrackID());
+            } 
      }                     
      if (found) {break;}
    }
@@ -142,8 +144,13 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
             }
          }  
      }
-     for (unsigned i = partList.size(); i-- > 0; ){
-       ShipMCTrack* track = (ShipMCTrack*)MCTrack->At(partList[i]);
+     for (unsigned i = MCTrack->GetEntries(); i-- > 0; ){
+       Bool_t wanted = false;
+       if(std::find(partList.begin(), partList.end(), i) != partList.end()) {
+         wanted = true;
+       } 
+       if (!wanted){continue;}
+       ShipMCTrack* track = (ShipMCTrack*)MCTrack->At(i);
        px = track->GetPx();
        py = track->GetPy();
        pz = track->GetPz();
@@ -155,7 +162,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        vz = track->GetStartZ(); 
        tof =  track->GetStartT();
        e = track->GetEnergy();
-       Bool_t wanttracking = false;
+       Bool_t wanttracking = false; // only transport muons
        if(std::find(muList.begin(), muList.end(), i) != muList.end()) {
          wanttracking = true;
        }
