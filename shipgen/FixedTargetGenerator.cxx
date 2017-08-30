@@ -80,7 +80,9 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   nTree->SetBranchAddress("mpy",&n_mpy);
   nTree->SetBranchAddress("mpz",&n_mpz);
   nTree->SetBranchAddress("mE",&n_mE);
-  if (nTree->GetBranch("k")){nTree->SetBranchAddress("k",&ck);}
+  if (nTree->GetBranch("k")){
+   fLogger->Info(MESSAGE_ORIGIN,"+++has branch+++");
+   nTree->SetBranchAddress("k",&ck);}
   pot=0.;
   //Determine fDs on this file for primaries
   nDsprim=0;
@@ -257,7 +259,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
   Double_t zinter=0;
   Double_t ZoverA = 1.;
-  if (targetName!=""){
+  if (targetName.Data() !=""){
 // calculate primary proton interaction point:
 // loop over trajectory between start and end to pick an interaction point, copied from GenieGenerator and adapted to hadrons
    Double_t prob2int = -1.;
@@ -265,8 +267,11 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    Double_t sigma;
    Int_t count=0;
    Double_t zinterStart = start[2];
+   if (Option == "charm" || Option == "beauty"){ 
 // simulate more downstream interaction points for interactions down in the cascade
-   if (!(nTree->GetBranch("k"))){ck=1;}
+    if (!(nTree->GetBranch("k"))){ck=1;}
+   }
+   else {ck=1;} 
    while (ck>0.5){
     while (prob2int<rndm) {
  //place x,y,z uniform along path
