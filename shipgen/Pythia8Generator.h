@@ -49,6 +49,7 @@ class Pythia8Generator : public FairGenerator
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   const char* fextFile; // read charm and beauty hadrons from external file, decay with Pythia
   Float_t hpx[1], hpy[1], hpz[1], hE[1],hM[1],mpx[1], mpy[1], mpz[1], mE[1],hid[1], mid[1],ck[1];
+  Float_t ancestors[16],subprocCodes[16];
   Int_t  fNevents,fn,firstEvent,fShipEventNr;
   TFile* fInputFile;   //! pointer to a file
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
