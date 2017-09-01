@@ -167,8 +167,15 @@ Bool_t FixedTargetGenerator::Init()
   }
   // Initialize EvtGen.
   if (withEvtGen){
-   TString DecayFile    = getenv("SIMPATH");DecayFile +="/share/EvtGen/DECAY.DEC";
-   TString ParticleFile = getenv("SIMPATH");ParticleFile +="/share/EvtGen/evt.pdl";
+   TString SIMPATH=getenv("SIMPATH");
+   TString DecayFile =SIMPATH+"/share/EvtGen/DECAY.DEC";
+   TString ParticleFile =SIMPATH + "/share/EvtGen/evt.pdl";
+   if(SIMPATH == "")
+     {
+       std::cout << "Using $EVTGENDATA "<< getenv("EVTGENDATA") << std::endl;
+       DecayFile =TString(getenv("EVTGENDATA"))+"/DECAY.DEC";
+       ParticleFile =TString(getenv("EVTGENDATA"))+ "/evt.pdl";
+     }
    EvtAbsRadCorr *fsrPtrIn = 0;
    EvtExternalGenList *extPtr = new EvtExternalGenList();
    std::list<EvtDecayBase*> models = extPtr->getListOfModels();
@@ -266,6 +273,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    Int_t count=0;
    Double_t zinterStart = start[2];
 // simulate more downstream interaction points for interactions down in the cascade
+   std::cout << std::hex << nTree<< std::endl;
    if (!(nTree->GetBranch("k"))){ck=1;}
    while (ck>0.5){
     while (prob2int<rndm) {
