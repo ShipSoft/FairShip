@@ -75,6 +75,11 @@ Int_t ShipTargetStation::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
+void ShipTargetStation::SetMuFlux(Bool_t muflux)
+{
+  fMuFlux = muflux;
+}
+
 void ShipTargetStation::ConstructGeometry()
 {
     TGeoVolume *top=gGeoManager->GetTopVolume();
@@ -88,6 +93,9 @@ void ShipTargetStation::ConstructGeometry()
     TGeoMedium *mo  =gGeoManager->GetMedium("molybdenum");
     TGeoVolume *tTarget = new TGeoVolumeAssembly("TargetArea");
     Double_t zPos =  0.;
+    Int_t slots = fnS;
+    slots = slots-1;    
+    
     if (fnS > 10){
       TGeoVolume *target;
       TGeoVolume *slit; 
@@ -98,13 +106,23 @@ void ShipTargetStation::ConstructGeometry()
        TGeoMedium *material;
        if (fM.at(i)=="molybdenum") {material = mo;};
        if (fM.at(i)=="tungsten")   {material = tungsten;};
-       target = gGeoManager->MakeBox(nmi, material, fDiameter/2., fDiameter/2., fL.at(i)/2.);
+       if (fnS == 18) { // new target layout
+          target = gGeoManager->MakeTube(nmi, material, 0., fDiameter/2., fL.at(i)/2.);                     
+       }
+       else {
+          target = gGeoManager->MakeBox(nmi, material, fDiameter/2., fDiameter/2., fL.at(i)/2.);
+       }
        if (fM.at(i)=="molybdenum") {
          target->SetLineColor(28);
        } else {target->SetLineColor(38);};  // silver/blue
        tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos + fL.at(i)/2.) );
-       if (i < 16){
-        slit   = gGeoManager->MakeBox(sm, water, fDiameter/2., fDiameter/2., fsl/2.);
+       if (i < slots){
+        if(fnS == 18) {
+	  slit   = gGeoManager->MakeTube(sm, water, 0., fDiameter/2., fsl/2.); 
+	}
+	else {  
+	  slit   = gGeoManager->MakeBox(sm, water, fDiameter/2., fDiameter/2., fsl/2.);
+	}  
         slit->SetLineColor(7);  // cyan
         tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos+fL.at(i)+fsl/2.) );
         zPos+=fL.at(i)+fsl;
@@ -138,7 +156,13 @@ void ShipTargetStation::ConstructGeometry()
     if (fAbsorberLength>0){  // otherwise, magnetized hadron absorber defined in ShipMuonShield.cxx
      zPos =  fTargetZ - fTargetLength/2.;
     // Absorber made of iron
-     TGeoVolume *absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
+    TGeoVolume *absorber;
+     if(fMuFlux) {    
+        absorber = gGeoManager->MakeBox("Absorber", iron, 40., 40., fAbsorberLength/2.);  // 1890
+     }
+     else {
+        absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
+     }
      absorber->SetLineColor(42); // brown / light red
      tTarget->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ-zPos));
     } 
@@ -148,14 +172,16 @@ void ShipTargetStation::ConstructGeometry()
       Float_t yTot = 400./2.;
       Float_t spaceTopBot = 10.;
       Float_t spaceSide   = 5.;
-      TGeoVolume *moreShieldingTopBot   = gGeoManager->MakeBox("moreShieldingTopBot", iron, xTot, yTot/2., fTargetLength/2.);
-      moreShieldingTopBot->SetLineColor(33); 
-      tTarget->AddNode(moreShieldingTopBot, 1, new TGeoTranslation(0., fDiameter/2. +spaceTopBot+yTot/2.,fTargetLength/2.));
-      tTarget->AddNode(moreShieldingTopBot, 2, new TGeoTranslation(0.,-fDiameter/2. -spaceTopBot-yTot/2.,fTargetLength/2.));
-      TGeoVolume *moreShieldingSide   = gGeoManager->MakeBox("moreShieldingSide", iron, xTot/2., (fDiameter+1.9*spaceTopBot)/2., fTargetLength/2.);
-      moreShieldingSide->SetLineColor(33); 
-      tTarget->AddNode(moreShieldingSide, 1, new TGeoTranslation(fDiameter/2.+spaceSide+xTot/2.,0.,fTargetLength/2.));
-      tTarget->AddNode(moreShieldingSide, 2, new TGeoTranslation(-fDiameter/2.-spaceSide-xTot/2.,0.,fTargetLength/2.));
+      if (!fMuFlux) {
+        TGeoVolume *moreShieldingTopBot   = gGeoManager->MakeBox("moreShieldingTopBot", iron, xTot, yTot/2., fTargetLength/2.);
+        moreShieldingTopBot->SetLineColor(33); 
+        tTarget->AddNode(moreShieldingTopBot, 1, new TGeoTranslation(0., fDiameter/2. +spaceTopBot+yTot/2.,fTargetLength/2.));
+        tTarget->AddNode(moreShieldingTopBot, 2, new TGeoTranslation(0.,-fDiameter/2. -spaceTopBot-yTot/2.,fTargetLength/2.));
+        TGeoVolume *moreShieldingSide   = gGeoManager->MakeBox("moreShieldingSide", iron, xTot/2., (fDiameter+1.9*spaceTopBot)/2., fTargetLength/2.);
+        moreShieldingSide->SetLineColor(33); 
+        tTarget->AddNode(moreShieldingSide, 1, new TGeoTranslation(fDiameter/2.+spaceSide+xTot/2.,0.,fTargetLength/2.));
+        tTarget->AddNode(moreShieldingSide, 2, new TGeoTranslation(-fDiameter/2.-spaceSide-xTot/2.,0.,fTargetLength/2.));
+      } 
     }else{
     TGeoVolume *moreShielding = gGeoManager->MakeTube("MoreShielding", iron, 30, 400, fTargetLength/2.);  
     moreShielding->SetLineColor(43); //  

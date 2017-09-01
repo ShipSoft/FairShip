@@ -21,14 +21,35 @@ using namespace TMath;
 // important to read back number of events to give to FairRoot
 
 // -----   Default constructor   -------------------------------------------
-NuageGenerator::NuageGenerator() {}
+NuageGenerator::NuageGenerator() {
+  cout<<endl;
+  cout<<"**************************************"<<endl;
+  cout<<"WARNING!!!!!!"<<endl;
+  cout<<"Bug on decays found and solved for GenieGenerator still to be fixed (25.08.2017)" <<endl;
+  cout<<"**************************************"<<endl;
+  cout<<endl;
+}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t NuageGenerator::Init(const char* fileName) {
+  cout<<endl;
+  cout<<"**************************************"<<endl;
+  cout<<"WARNING!!!!!!"<<endl;
+    cout<<"Bug on decays found and solved for GenieGenerator still to be fixed (2\
+5.08.2017)" <<endl;
+  cout<<"**************************************"<<endl;
+  cout<<endl;
   return Init(fileName, 0);
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t NuageGenerator::Init(const char* fileName, const int firstEvent) {
+  cout<<endl;
+  cout<<"**************************************"<<endl;
+  cout<<"WARNING!!!!!!"<<endl;
+    cout<<"Bug on decays found and solved for GenieGenerator still to be fixed (2\
+5.08.2017)" <<endl;
+  cout<<"**************************************"<<endl;
+  cout<<endl;
   fNuOnly = false;
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);

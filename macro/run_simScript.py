@@ -217,6 +217,7 @@ rtdb = run.GetRuntimeDb()
 # import shipTarget_only as shipDet_conf
 if charm!=0: import charmDet_conf as shipDet_conf 
 else:        import shipDet_conf
+
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -253,12 +254,16 @@ if simEngine == "Pythia8":
   if ds==7: # short muon shield
    P8gen.SetLmin(44*u.m)
    P8gen.SetLmax(107*u.m)
- if charmonly: 
+ if charmonly:
   primGen.SetBeam(0.,0., ship_geo.Box.TX-2., ship_geo.Box.TY-2.) #Uniform distribution in x/y on the target (1 cm of margin at both sides)    
   primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, firstEvent)
-  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+  if ship_geo.MufluxSpectrometer.muflux == False :
+     P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+  else: 
+     print "ERROR: charmonly option should not be used for the muonflux measurement"
+     1/0
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
@@ -372,6 +377,8 @@ if simEngine == "MuonBack":
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  print 'Process ',nEvents,' from input file, with Phi random=',phiRandom
  if followMuon :  modules['Veto'].SetFastMuon()
+ # optional, boost gamma2muon conversion
+ # ROOT.kShipMuonsCrossSectionFactor = 100. 
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)

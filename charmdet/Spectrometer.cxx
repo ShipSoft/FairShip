@@ -240,7 +240,8 @@ void Spectrometer::ConstructGeometry()
     TGeoBBox *BoxGoliath = new TGeoBBox(TransversalSize/2,Height/2,LongitudinalSize/2);
     TGeoVolume *volGoliath = new TGeoVolume("volGoliath",BoxGoliath,vacuum);
     //volProva->AddNode(volGoliath,1,new TGeoTranslation(0,0,-SBoxZ/2 + z[1] + LongitudinalSize/2));  
-    top->AddNode(volGoliath,1,new TGeoTranslation(0,0,zBoxPosition-SBoxZ/2 + z[1] + LongitudinalSize/2)); 
+    //Goliath raised by 17cm
+    top->AddNode(volGoliath,1,new TGeoTranslation(0,17*cm,zBoxPosition-SBoxZ/2 + z[1] + LongitudinalSize/2)); 
     //
     //******* UPPER AND LOWER BASE *******
     //
