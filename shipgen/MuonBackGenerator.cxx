@@ -154,9 +154,11 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        px = track->GetPx();
        py = track->GetPy();
        pz = track->GetPz();
-       Double_t pt  = TMath::Sqrt( px*px+py*py );
-       px = pt*TMath::Cos(phi);
-       py = pt*TMath::Sin(phi);
+       if (fPhiRandomize){
+        Double_t pt  = TMath::Sqrt( px*px+py*py );
+        px = pt*TMath::Cos(phi);
+        py = pt*TMath::Sin(phi);
+       }
        vx = track->GetStartX()+dx; 
        vy = track->GetStartY()+dy; 
        vz = track->GetStartZ(); 
@@ -171,9 +173,11 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }else{
     vx = vx + dx/100.;  
     vy = vy + dy/100.; 
-    Double_t pt  = TMath::Sqrt( px*px+py*py );
-    px = pt*TMath::Cos(phi);
-    py = pt*TMath::Sin(phi);
+    if (fPhiRandomize){
+     Double_t pt  = TMath::Sqrt( px*px+py*py );
+     px = pt*TMath::Cos(phi);
+     py = pt*TMath::Sin(phi);
+    }
     cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
     cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   }
