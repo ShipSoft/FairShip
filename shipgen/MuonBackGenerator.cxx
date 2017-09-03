@@ -155,9 +155,10 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        py = track->GetPy();
        pz = track->GetPz();
        if (fPhiRandomize){
-        Double_t pt  = TMath::Sqrt( px*px+py*py );
-        px = pt*TMath::Cos(phi);
-        py = pt*TMath::Sin(phi);
+        Double_t phi0 = TMath::ATan2(py,px);
+        Double_t pt  = track->GetPt();
+        px = pt*TMath::Cos(phi+phi0);
+        py = pt*TMath::Sin(phi+phi0);
        }
        vx = track->GetStartX()+dx; 
        vy = track->GetStartY()+dy; 
