@@ -114,7 +114,9 @@ class Task:
   delPhi = 2.*ROOT.TMath.Pi()/nSteps
   distmin = 1E10
   nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())
-  cNode = nav.FindNode().GetName()
+  cNode = 'outside'
+  aNode = nav.FindNode()
+  if aNode: cNode = aNode.GetName()
   if cNode != 'T2decayVol_0' and cNode != 'T1decayVol_0': 
    distmin = 0. 
   else:
