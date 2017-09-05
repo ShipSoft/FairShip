@@ -277,7 +277,7 @@ sTree.AutoSave()
 ff   = fin.FileHeader.Clone(fout.GetName())
 fout.cd()
 ff.Write("FileHeader", ROOT.TObject.kSingleKey)
-fout.Write()
+sTree.Write()
 fout.Close()
 os.system("mv "+tmpFile+" "+outFile)
 
