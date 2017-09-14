@@ -23,20 +23,28 @@ class Task:
    detList[i] = nm
   return detList 
 
- def SBT_decision(self,mcParticle=None):
+ def SBT-plastic_decision(self,mcParticle=None):
+    SBT_decision(self,mcParticle,detector='plastic')
+ def SBT-liquid_decision(self,mcParticle=None):
+    SBT_decision(self,mcParticle,detector='liquid')
+ 
+ def SBT_decision(self,mcParticle=None,detector='liquid'):
   # if mcParticle >0, only count hits with this particle
   # if mcParticle <0, do not count hits with this particle
   hitSegments = 0
   index = -1
+  fdetector = detector=='liquid'
   for aDigi in self.sTree.Digi_SBTHits:
      index+=1 
+     detID    = aDigi.GetDetectorID()
+     if fdetector and detID > 999999:continue
+     if not fdetector and not detID > 999999:continue 
      if mcParticle:
         found = False
         for mcP in self.sTree.digiSBT2MC[index]: 
          if mcParticle>0 and mcParticle != mcP : found=True
          if mcParticle<0 and abs(mcParticle) == mcP : found=True
         if found: continue
-     detID    = aDigi.GetDetectorID()
      position = aDigi.GetXYZ()
      ELoss    = aDigi.GetEloss()
      if aDigi.isValid(): hitSegments += 1 #threshold of 45 MeV per segment
@@ -154,6 +162,7 @@ class Task:
 # import shipVeto
 # veto = shipVeto.Task(sTree)
 # veto,w = veto.SBT_decision()
+# or for plastic veto,w = veto.SBT_decision(detector='plastic')
 # if veto: continue # reject event
 # or
 # continue using weight w 
