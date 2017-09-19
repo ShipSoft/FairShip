@@ -27,3 +27,7 @@
 #/tracking/verbose 1
 #/control/cout/ignoreThreadsExcept 0
 
+# Enable local magnetic fields
+/mcDet/setIsLocalMagField true
+# Enable verbosity for VMC geometry manager
+#/mcVerbose/geometryManager 2

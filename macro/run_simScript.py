@@ -36,6 +36,7 @@ defaultInputFile = True
 outputDir    = "."
 sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
 theSeed      = int(10000 * time.time() % 10000000)
+
 dy           = 10.
 dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
 ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
@@ -431,11 +432,21 @@ if eventDisplay:
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 
+# The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
 import geomGeant4
 # geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
-# check for magnetic fields, for speed reasons, exclude regions known without magnet
-if debug > 0: geomGeant4.printWeightsandFields(onlyWithField = True,\
+
+# Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
+# any field maps, or defining if any volumes feel only the local or local+global field.
+# For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
+#fieldMaker = geomGeant4.addVMCFields('field/ExampleBFieldSetup.txt', False)
+# Print VMC fields and associated geometry objects
+if debug > 0:
+ geomGeant4.printVMCFields()
+ geomGeant4.printWeightsandFields(onlyWithField = True,\
              exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector'])
+# Plot the field example
+#fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()

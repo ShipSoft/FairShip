@@ -112,6 +112,43 @@ def printWeightsandFields(onlyWithField = True,exclude=[]):
    dummy,nM = nextLevel(world,magnetMass,onlyWithField,exclude,alreadyPrinted)
    print 'total magnet mass',nM/1000.,'t'
    return
+
+def addVMCFields(controlFile = 'field/BFieldSetup.txt', verbose = False):
+    '''
+    Define VMC B fields, e.g. global field, field maps, local or local+global fields
+    '''
+    print 'Calling addVMCFields using input control file {0}'.format(controlFile)
+    
+    fieldMaker = ROOT.ShipFieldMaker(verbose)
+    fieldMaker.makeFields(controlFile)
+
+    # Return the fieldMaker object, otherwise it will "go out of scope" and its
+    # content will be deleted
+    return fieldMaker
+
+
+def printVMCFields():
+    '''
+    Method to print out information about VMC fields
+    '''
+    print 'Printing VMC fields and associated volumes'
+
+    fGeo = ROOT.gGeoManager  
+    vols = fGeo.GetListOfVolumes()
+
+    for v in vols:
+
+        field =  v.GetField()
+        #print 'Vol is {0}, field is {1}'.format(v.GetName(), field)
+
+        if field:
+            # Get the field value in the local volume centre
+            centre = array('d',[0.0, 0.0, 0.0])
+            B = array('d',[0.0, 0.0, 0.0])
+            field.Field(centre, B)
+            print 'Volume {0} has B = ({1}, {2}, {3}) T'.format(v.GetName(), B[0]/u.tesla,
+                                                                B[1]/u.tesla, B[2]/u.tesla)
+
 def getRunManager():
  return G4RunManager.GetRunManager()
 def startUI():
