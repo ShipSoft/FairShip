@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# git clone https://github.com/PMunkes/FairShip
-# source FairShip/aliBuild.sh
-
 if [[ $HOSTNAME == *lxplus* ]]
 then
   echo "Setup lcg environment"
@@ -16,7 +13,7 @@ fi
 
 if [ ! -d shipdist ];
 then
-  git clone https://github.com/PMunkes/shipdist
+  git clone https://github.com/ShipSoft/shipdist
 fi
 
 if [ ! -d OpenSSL ];
