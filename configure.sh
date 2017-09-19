@@ -43,6 +43,14 @@ if `which lsb_release > /dev/null 2>&1` ; then
    fi
 fi
 
+if [[ $HOSTNAME == *"cern.ch"* ]];
+then
+    echo "discovered lxplus: take gcc6.2 from lcg"
+    source /cvmfs/sft.cern.ch/lcg/external/gcc/6.2/x86_64-slc6-gcc62-opt/setup.sh
+    export GCCVERSION="x86_64-slc6-gcc62-opt"
+    export LCGVERSION="LCG_87"
+fi
+
 if [ ! -d ../FairShipRun ]; then
    mkdir ../FairShipRun
 fi
@@ -55,6 +63,6 @@ if `which ninja > /dev/null 2>&1` ; then
    cmake -GNinja ../FairShip -DCMAKE_CXX_COMPILER=$xx -DCMAKE_C_COMPILER=$yy
    ninja
 else
-   cmake ../FairShip -DCMAKE_CXX_COMPILER=$xx -DCMAKE_C_COMPILER=$yy
+   cmake ../FairShip -DCMAKE_CXX_COMPILER=$xx -DCMAKE_C_COMPILER=$yy -DGCCVERSION="$GCCVERSION" -DLCGVERSION="$LCGVERSION" 
    make
 fi
