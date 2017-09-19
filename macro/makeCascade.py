@@ -1,4 +1,5 @@
-import ROOT,time,os,sys,random,getopt
+import ROOT,time,os,sys,random,getopt,copy
+from array import array
 import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
@@ -43,7 +44,7 @@ print 'Output ntuples written to: ',Fntuple
 
 #some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
 # event/momentum, and number of momentum points taken to calculate sig/sigtot
-nev=5000    
+nev=5000
 nrpoints=20 
 # cascade beam particles, anti-particles are generated automatically if they exist.
 idbeam=[2212,211,2112,321,130,310]
@@ -244,14 +245,16 @@ for i in range(1,id+1):
 # Generate ccbar (or bbbar) pairs according to probability in hists i*10+8.
 # some check histos 
 ut.bookHist(h,str(1),'E of signals',100,0.,400.)
-ut.bookHist(h,str(2),'nr signal per cascade depth',10,0.5,10.5)
+ut.bookHist(h,str(2),'nr signal per cascade depth',50,0.5,50.5)
 ut.bookHist(h,str(3),'D0 pt**2',40,0.,4.)
 ut.bookHist(h,str(4),'D0 pt**2',100,0.,18.)
 ut.bookHist(h,str(5),'D0 pt',100,0.,10.)
 ut.bookHist(h,str(6),'D0 XF',100,-1.,1.)
 
 ftup = ROOT.TFile.Open(Fntuple, 'RECREATE')
-Ntup = ROOT.TNtuple("pythia6","pythia6 heavy flavour","id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k")
+Ntup = ROOT.TNtuple("pythia6","pythia6 heavy flavour",\
+       "id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\
+s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15")
 
 #make sure all particles for cascade production are stable
 for kf in idbeam:
@@ -268,8 +271,9 @@ for iev in range(nevgen):
    if iev%1000==0: print 'Generate event ',iev
 #put 400. GeV proton on the stack
    nstack=0
-# stack: PID,px,py,pz,cascade depth
-   stack[nstack]=[2212,0.,0.,pbeamh,1]
+# stack: PID,px,py,pz,cascade depth,nstack of mother
+   stack[nstack]=[2212,0.,0.,pbeamh,1,100*[0],100*[0]]
+   stack[nstack][5][0]=2212
    while nstack>=0:
 # generate a signal based on probabilities in hists i*10+8?
       ptot=ROOT.TMath.Sqrt(stack[nstack][1]**2+stack[nstack][2]**2+stack[nstack][3]**2)
@@ -297,10 +301,25 @@ for iev in range(nevgen):
          for itrk in range(1,myPythia.GetN()+1):
             idabs = ROOT.TMath.Abs(myPythia.GetK(itrk,2))
             if idabs in idsig:
-#                  print myPythia.GetK(itrk,2),myPythia.GetP(itrk,1),myPythia.GetP(itrk,2),myPythia.GetP(itrk,3),myPythia.GetK(1,2),myPythia.GetP(1,1),myPythia.GetP(1,2),myPythia.GetP(1,3)
-                  Ntup.Fill(float(myPythia.GetK(itrk,2)),float(myPythia.GetP(itrk,1)),float(myPythia.GetP(itrk,2)),float(myPythia.GetP(itrk,3)),\
-                            float(myPythia.GetP(itrk,4)),float(myPythia.GetP(itrk,5)),float(myPythia.GetK(1,2)),float(myPythia.GetP(1,1)),\
-                            float(myPythia.GetP(1,2)),float(myPythia.GetP(1,3)),float(myPythia.GetP(1,4)),float(myPythia.GetP(1,5)),float(stack[nstack][4]))
+                  #signal found store in ntuple
+                  vl=array('f')
+                  vl.append(float(myPythia.GetK(itrk,2)))
+		  for i in range(1,6):
+                   vl.append(float(myPythia.GetP(itrk,i)))
+		  vl.append(float(myPythia.GetK(1,2)))
+                  for i in range(1,6):
+                   vl.append(float(myPythia.GetP(1,i)))
+                  vl.append(float(stack[nstack][4]))
+                  for i in range(16):
+                    vl.append(float(stack[nstack][5][i]))
+                  nsub=stack[nstack][4]-1
+                  if nsub>15: nsub=15
+                  for i in range(nsub):
+                    vl.append(float(stack[nstack][6][i]))
+		  vl.append(float(myPythia.GetMSTI(1)))
+                  for i in range(nsub+1,16):
+                    vl.append(float(0))                 
+                  Ntup.Fill(vl)
                   charmFound.append(itrk)    
                   h['1'].Fill(myPythia.GetP(itrk,4))
                   h['2'].Fill(stack[nstack][4])
@@ -322,6 +341,7 @@ for iev in range(nevgen):
              if itP in charmFound: continue
              if myPythia.GetK(itP,1)==1:
 #  store only undecayed particle and no charm found
+# ***WARNING****: with new with new ancestor and process info (a0-15, s0-15) add to ntuple, might not work???
               Ntup.Fill(float(myPythia.GetK(itP,2)),float(myPythia.GetP(itP,1)),float(myPythia.GetP(itP,2)),float(myPythia.GetP(itP,3)),\
                             float(myPythia.GetP(itP,4)),float(myPythia.GetP(itP,5)),-1,\
                             float(myPythia.GetV(itP,1)-myPythia.GetV(charmFound[0],1)),\
@@ -338,8 +358,14 @@ for iev in range(nevgen):
       if random.random()>fracp: idpn=1
       myPythia.Initialize('3MOM',PDG.GetParticle(stack[nstack][0]).GetName(),target[idpn],0.)
       myPythia.GenerateEvent()
-#  remove used particle from the stack, before adding new
+# remove used particle from the stack, before adding new
+# first store its history: cascade depth and ancestors-list
       icas=stack[nstack][4]+1
+      if icas>98: icas=98 
+      anclist=copy.copy(stack[nstack][5])
+      sublist=copy.copy(stack[nstack][6])
+      #fill in interaction process of first proton
+      if nstack==0: sublist[0]=myPythia.GetMSTI(1)
       nstack=nstack-1  
       for itrk in range(1,myPythia.GetN()+1):
          if myPythia.GetK(itrk,1)==1:
@@ -348,8 +374,14 @@ for iev in range(nevgen):
 #  produced particle is stable and has enough momentum, is it in the wanted list?
                for isig in range(len(idbeam)):
                   if ROOT.TMath.Abs(myPythia.GetK(itrk,2))==idbeam[isig] and nstack<999:
-                     nstack=nstack+1
-                     stack[nstack]=[myPythia.GetK(itrk,2),myPythia.GetP(itrk,1),myPythia.GetP(itrk,2),myPythia.GetP(itrk,3),icas]
+                     if nstack<999: nstack+=1
+                     #update ancestor list
+                     tmp=copy.copy(anclist)
+                     tmp[icas-1]=myPythia.GetK(itrk,2)
+                     stmp=copy.copy(sublist)
+                     #Pythia interaction process identifier
+                     stmp[icas-1]=myPythia.GetMSTI(1)
+                     stack[nstack]=[myPythia.GetK(itrk,2),myPythia.GetP(itrk,1),myPythia.GetP(itrk,2),myPythia.GetP(itrk,3),icas,tmp,stmp]
 
 print 'Now at Ntup.Write()'
 Ntup.Write()
