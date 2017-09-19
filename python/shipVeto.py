@@ -23,9 +23,9 @@ class Task:
    detList[i] = nm
   return detList 
 
- def SBT-plastic_decision(self,mcParticle=None):
+ def SBT_plastic_decision(self,mcParticle=None):
     SBT_decision(self,mcParticle,detector='plastic')
- def SBT-liquid_decision(self,mcParticle=None):
+ def SBT_liquid_decision(self,mcParticle=None):
     SBT_decision(self,mcParticle,detector='liquid')
  
  def SBT_decision(self,mcParticle=None,detector='liquid'):
