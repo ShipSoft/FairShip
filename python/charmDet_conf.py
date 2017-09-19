@@ -82,11 +82,15 @@ def configure(run,ship_geo):
     detectorList.append(Spectrometer)
  else:
     TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
+
     if ship_geo.targetOpt>10:
+     slices_length=ROOT.std.vector('float')()     
+     slices_material=ROOT.std.vector('string')()
      for i in range(1,ship_geo.targetOpt+1):
-      slices_length.push_back(  eval("ship_geo.target.L"+str(i)))
+      slices_length.push_back(eval("ship_geo.target.L"+str(i)))
       slices_material.push_back(eval("ship_geo.target.M"+str(i)))
-      TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
+
+     TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
      TargetStation.SetMuFlux(ship_geo.MufluxSpectrometer.muflux)
      detectorList.append(TargetStation)
     detectorList.append(MufluxSpectrometer)
