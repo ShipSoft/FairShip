@@ -2,9 +2,9 @@ language: c++
 
 matrix:
     include:
-        - os: osx
-          compiler: clang
-          osx_image: xcode8.3
+#        - os: osx
+#          compiler: clang
+#          osx_image: xcode8.3
         - os: linux
           compiler: gcc
           dist: trusty

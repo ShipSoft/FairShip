@@ -72,7 +72,19 @@ Bool_t Pythia8Generator::Init()
      fTree->SetBranchAddress("mpy",&mpy);
      fTree->SetBranchAddress("mpz",&mpz);
      fTree->SetBranchAddress("mE",&mE);
-     if (fTree->GetBranch("k")){fTree->SetBranchAddress("k",&ck);}
+     if (fTree->GetBranch("k")){
+      fTree->SetBranchAddress("k",&ck);
+      if (fTree->GetBranch("a0")){
+       for(Int_t i=0; i<16; i++){
+        TString na = "a";na+=i;
+        fTree->SetBranchAddress(na,&(ancestors[i]));
+        TString ns = "s";ns+=i;
+        fTree->SetBranchAddress(ns,&(subprocCodes[i]));
+       }
+      }
+     }else{
+      ck[0]=1;subprocCodes[0]=88;ancestors[0]=2212;
+     }
      fPythia->readString("ProcessLevel:all = off");
 // find all long lived particles in pythia
      Int_t n = 1;
@@ -165,20 +177,27 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    Int_t count=0;
    Double_t zinterStart = start[2];
 // simulate more downstream interaction points for interactions down in the cascade
-   if (!(fTree->GetBranch("k"))){ck[0]=1;}
-   while (ck[0]>0.5){
+   Int_t nInter = ck[0]; if (nInter>16){nInter=16;}
+   for( Int_t nI=0; nI<nInter; nI++){
+    if (!subprocCodes[nI]<90){continue;}  //if process is not inelastic, go to next
+    prob2int = -1.;   
+    Int_t intLengthFactor = 1; // for nucleons
+    if (TMath::Abs(ancestors[nI]) < 1000){intLengthFactor = 1.16;} // for mesons 
+    // Fe: nuclear /\ 16.77 cm pion 20.42 cm  f=1.22
+    // W:  nuclear /\ 9.946 cm pion 11.33 cm  f=1.14
+    // Mo: nuclear /\ 15.25 cm pion 17.98 cm  f=1.18
     while (prob2int<rndm) {
  //place x,y,z uniform along path
       zinter = gRandom->Uniform(zinterStart,end[2]);
       Double_t point[3]={xOff,yOff,zinter};
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
-      Double_t interLength = mparam[8]; 
+      Double_t interLength = mparam[8]  * intLengthFactor ; 
       TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
       TGeoMaterial *mat = 0;
       if (node && !gGeoManager->IsOutside()) {
          mat = node->GetVolume()->GetMaterial();
          Double_t n = mat->GetDensity()/mat->GetA();
-         sigma = 1./(n*mat->GetIntLen())/mbarn;
+         sigma = 1./(n*mat->GetIntLen())/mbarn;   // no need to multiply with intLengthFactor, will cancel in next equation.
          prob2int = TMath::Exp(-interLength)*sigma/maxCrossSection;
       }else{
          prob2int=0.;
@@ -187,7 +206,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       count+=1;
     }
     zinterStart = zinter;
-    ck[0]-=1;
    } 
    zinter = zinter*cm;
   }

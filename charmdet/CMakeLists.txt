@@ -27,8 +27,13 @@ BoxPoint.cxx
 BoxContFact.cxx
 Spectrometer.cxx
 SpectrometerPoint.cxx
+MufluxSpectrometer.cxx
+MufluxSpectrometerHit.cxx
+MufluxSpectrometerPoint.cxx
 MuonTagger.cxx
 MuonTaggerPoint.cxx
+Scintillator.cxx
+ScintillatorPoint.cxx
 )
 
 Set(HEADERS )

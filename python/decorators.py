@@ -50,6 +50,10 @@ def TVector3PrintOut(x):
   txt = '%9.5F,%9.5F,%9.5F'%(x.X(),x.Y(),x.Z())
   return txt
 
+def TLorentzVectorPrintOut(x):
+  txt = '%9.5F,%9.5F,%9.5F,%9.5F,%9.5F'%(x.Px(),x.Py(),x.Pz(),x.E(),x.Mag())
+  return txt
+
 def TEvePointSetPrintOut(P):
  x,y,z = ROOT.Double(),ROOT.Double(),ROOT.Double()
  txt = ''
@@ -71,3 +75,4 @@ ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
 ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
 ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
 ROOT.vetoHit.__repr__ = vetoHitPrintOut
+ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut

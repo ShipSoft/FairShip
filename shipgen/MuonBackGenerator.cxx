@@ -90,6 +90,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
   while (fn<fNevents) {
    fTree->GetEntry(fn);
+   muList.clear(); 
    fn++;
    if (fn%100000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
 // test if we have a muon, don't look at neutrinos:
@@ -103,7 +104,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      for (int i = 0; i < vetoPoints->GetEntries(); i++) {
          vetoPoint *v = (vetoPoint*)vetoPoints->At(i); 
          if (abs(v->PdgCode())==13){found = true;
-           muList.push_back(v->GetTrackID());} 
+           muList.push_back(v->GetTrackID());
+            } 
      }                     
      if (found) {break;}
    }
@@ -142,20 +144,28 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
             }
          }  
      }
-     for (unsigned i = partList.size(); i-- > 0; ){
-       ShipMCTrack* track = (ShipMCTrack*)MCTrack->At(partList[i]);
+     for (unsigned i = MCTrack->GetEntries(); i-- > 0; ){
+       Bool_t wanted = false;
+       if(std::find(partList.begin(), partList.end(), i) != partList.end()) {
+         wanted = true;
+       } 
+       if (!wanted){continue;}
+       ShipMCTrack* track = (ShipMCTrack*)MCTrack->At(i);
        px = track->GetPx();
        py = track->GetPy();
        pz = track->GetPz();
-       Double_t pt  = TMath::Sqrt( px*px+py*py );
-       px = pt*TMath::Cos(phi);
-       py = pt*TMath::Sin(phi);
+       if (fPhiRandomize){
+        Double_t phi0 = TMath::ATan2(py,px);
+        Double_t pt  = track->GetPt();
+        px = pt*TMath::Cos(phi+phi0);
+        py = pt*TMath::Sin(phi+phi0);
+       }
        vx = track->GetStartX()+dx; 
        vy = track->GetStartY()+dy; 
        vz = track->GetStartZ(); 
        tof =  track->GetStartT();
        e = track->GetEnergy();
-       Bool_t wanttracking = false;
+       Bool_t wanttracking = false; // only transport muons
        if(std::find(muList.begin(), muList.end(), i) != muList.end()) {
          wanttracking = true;
        }
@@ -164,9 +174,11 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }else{
     vx = vx + dx/100.;  
     vy = vy + dy/100.; 
-    Double_t pt  = TMath::Sqrt( px*px+py*py );
-    px = pt*TMath::Cos(phi);
-    py = pt*TMath::Sin(phi);
+    if (fPhiRandomize){
+     Double_t pt  = TMath::Sqrt( px*px+py*py );
+     px = pt*TMath::Cos(phi);
+     py = pt*TMath::Sin(phi);
+    }
     cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
     cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
   }
