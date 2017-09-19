@@ -182,6 +182,12 @@ shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit 
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)
 else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 
+# switch off magnetic field to measure muon flux
+#ship_geo.muShield.Field = 0.
+#ship_geo.EmuMagnet.B = 0.
+#ship_geo.tauMS.B = 0.
+
+
 # Output file name, add dy to be able to setup geometry with ambiguities.
 tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
@@ -424,10 +430,13 @@ if eventDisplay:
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
   trajFilter.SetStorePrimaries(ROOT.kTRUE)
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
-# manipulate G4 geometry to enable magnetic field in active shielding, VMC can't do it.
+
 import geomGeant4
-geomGeant4.setMagnetField() # ('dump') for printout of mag fields
-if debug > 0: geomGeant4.printWeightsandFields()
+# geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
+# check for magnetic fields, for speed reasons, exclude regions known without magnet
+if debug > 0: geomGeant4.printWeightsandFields(onlyWithField = True,\
+             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector'])
+
 if inactivateMuonProcesses : 
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
