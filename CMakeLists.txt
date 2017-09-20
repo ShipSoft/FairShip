@@ -301,7 +301,8 @@ add_custom_target(  # make relative links to folders
     COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
     COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'macro') , 'macro') \"
 )
-IF(DEFINED $ENV{SIMPATH})
+IF(DEFINED SIMPATH)
+  MESSAGE(STATUS "Write configuration files ...")
   WRITE_CONFIG_FILE(config.sh)
   WRITE_CONFIG_FILE(config.csh)
 
@@ -347,10 +348,10 @@ FIND_PATH(LHAPATH NAMES PDFsets.index PATHS
 If(NOT LHAPATH)
   Message(STATUS "Could not find LHA data files")
 Else()
-  IF(DEFINED $ENV{SIMPATH})
+  IF(DEFINED SIMPATH)
     file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LHAPATH \"${LHAPATH}/data\"\n")
     file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LHAPATH=\"${LHAPATH}/data\"\n")
-  ENDIF(DEFINED $ENV{SIMPATH})
+  ENDIF(DEFINED SIMPATH)
 EndIf()
 
 # for lxplus, need to change LD_LIBRARY_PATH
@@ -418,4 +419,4 @@ configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
 
-ENDIF(DEFINED $ENV{SIMPATH})
+ENDIF(DEFINED SIMPATH)
