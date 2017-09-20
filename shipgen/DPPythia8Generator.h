@@ -12,7 +12,7 @@
 #include "TTree.h"
 #include "TH2F.h"
 #include "FairGenerator.h"
-#include "Pythia.h"
+#include "Pythia8/Pythia.h"
 #include "TRandom1.h"
 #include "TRandom3.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN

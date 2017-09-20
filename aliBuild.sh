@@ -18,7 +18,7 @@ fi
 
 if [ ! -d OpenSSL ];
 then
-  git clone https://github.com/PMunkes/FairShip-openssl OpenSSL
+  git clone https://github.com/ShipSoft/FairShip-openssl OpenSSL
 fi
 
 if [ ! -d FairRoot ];

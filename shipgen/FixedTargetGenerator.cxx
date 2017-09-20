@@ -6,7 +6,6 @@
 #include "TGeoVolume.h"
 #include <TGeoManager.h>
 #include "TGeoBBox.h"
-#include "Pythia8/Pythia.h"
 #include "TMath.h"
 #include "FixedTargetGenerator.h"
 #include "HNLPythia8Generator.h"

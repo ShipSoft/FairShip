@@ -11,6 +11,11 @@ else
 fi
 echo "use SHIPBUILD from $SHIPBUILD"
 
+if [ -f config.sh ];
+then
+ rm config.sh
+fi
+
 $SHIPBUILD/alibuild/alienv -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
 sed -i 's/\/afs\/cern.ch\/user\/t\/truf\/scratch2\/SHiPBuild/$SHIPBUILD/g' config.sh
@@ -19,7 +24,7 @@ source config.sh  # makes global FairShip environment
 if [[ $HOSTNAME == *lxplus* ]]
 then
   echo "Setup lcg environment"
-  source FairShip/genenv.sh
+  source genenv.sh
 fi
 
 temp=$(cat $SHIPBUILD/shipdist/defaults-fairship.sh | grep CXXFLAGS)
@@ -29,17 +34,17 @@ temp=$(cat $SHIPBUILD/shipdist/defaults-fairship.sh | grep CMAKE_BUILD_TYPE )
 temx=$( cut -d ':' -f 2 <<< "$temp" )
 CMAKE_BUILD_TYPE=${temx//'"'}
 
-if [ ! -d FairShipRun ];
+if [ ! -d ../FairShipRun ];
 then
- mkdir FairShipRun
+ mkdir ../FairShipRun
 fi
-INSTALLROOT="FairShipRun"
+cd ../FairShipRun
+
+INSTALLROOT=$PWD
 SOURCEDIR="../FairShip"  
 export FAIRROOTPATH=$FAIRROOT_ROOT
 export ROOT_ROOT=$ROOTSYS 
-cd $INSTALLROOT
 
-echo "Start cmake 1 $SOURCEDIR 2 $FAIRROOT_ROOT/share/fairbase 3 $FAIRROOT_ROOT 4 $CXXFLAGS 5 $ROOTSYS"
 cmake $SOURCEDIR                                                 \
       -DFAIRBASE="$FAIRROOT_ROOT/share/fairbase"                 \
       -DFAIRROOTPATH="$FAIRROOT_ROOT"                            \
@@ -51,9 +56,11 @@ cmake $SOURCEDIR                                                 \
       -DHEPMC_DIR=$HEPMC_ROOT                                    \
       -DHEPMC_INCLUDE_DIR=$HEPMC_ROOT/include/HepMC              \
       -DEVTGENPATH=$EVTGEN_ROOT                                  \
-      -DEVTGEN_INCLUDE_DIR=$EVTGEN_ROOT/include/EvtGen           \
+      -DEVTGEN_INCLUDE_DIR=$EVTGEN_ROOT/include                  \
+      -DEVTGEN_LIBRARY_DIR=$EVTGEN_ROOT/lib                      \
       -DPythia6_LIBRARY_DIR=$PYTHIA6_ROOT/lib                    \
       -DPYTHIA8_DIR=$PYTHIA_ROOT                                 \
+      -DPYTHIA8_INCLUDE_DIR=$PYTHIA_ROOT/include                 \
       -DGEANT3_PATH=$GEANT3_ROOT                                 \
       -DGEANT3_LIB=$GEANT3_ROOT/lib                              \
       -DGEANT4_ROOT=$GEANT4_ROOT                                 \

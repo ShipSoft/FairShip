@@ -3,7 +3,7 @@
 
 #include "TROOT.h"
 #include "FairGenerator.h"
-#include "Pythia.h"
+#include "Pythia8/Pythia.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "TTree.h"
 #include "TNtuple.h"
