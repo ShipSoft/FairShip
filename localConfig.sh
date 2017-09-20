@@ -4,14 +4,16 @@ if [ $# -eq 0 ]
 # check if SHIPBUILD is set
     if [[ ! -v SHIPBUILD ]]; then
      echo "You need to parse the path to SHIPBUILD as argument or define environment variable SHIPBUILD"
-     return
+     exit
     fi
 else
   export SHIPBUILD=$1
 fi
 echo "use SHIPBUILD from $SHIPBUILD"
 
-$SHIPSOFT/alibuild/alienv printenv FairShip/latest > config.sh
+$SHIPBUILD/alibuild/alienv -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
+
+sed -i 's/\/afs\/cern.ch\/user\/t\/truf\/scratch2\/SHiPBuild/$SHIPBUILD/g' config.sh
 source config.sh  # makes global FairShip environment
 
 if [[ $HOSTNAME == *lxplus* ]]
@@ -20,10 +22,10 @@ then
   source FairShip/genenv.sh
 fi
 
-temp=$(cat $SHIPSOFT/shipdist/defaults-fairship.sh | grep CXXFLAGS)
+temp=$(cat $SHIPBUILD/shipdist/defaults-fairship.sh | grep CXXFLAGS)
 temx=$( cut -d ':' -f 2 <<< "$temp" )
 CXXFLAGS=${temx//'"'}
-temp=$(cat $SHIPSOFT/shipdist/defaults-fairship.sh | grep CMAKE_BUILD_TYPE )
+temp=$(cat $SHIPBUILD/shipdist/defaults-fairship.sh | grep CMAKE_BUILD_TYPE )
 temx=$( cut -d ':' -f 2 <<< "$temp" )
 CMAKE_BUILD_TYPE=${temx//'"'}
 
@@ -37,6 +39,7 @@ export FAIRROOTPATH=$FAIRROOT_ROOT
 export ROOT_ROOT=$ROOTSYS 
 cd $INSTALLROOT
 
+echo "Start cmake 1 $SOURCEDIR 2 $FAIRROOT_ROOT/share/fairbase 3 $FAIRROOT_ROOT 4 $CXXFLAGS 5 $ROOTSYS"
 cmake $SOURCEDIR                                                 \
       -DFAIRBASE="$FAIRROOT_ROOT/share/fairbase"                 \
       -DFAIRROOTPATH="$FAIRROOT_ROOT"                            \
