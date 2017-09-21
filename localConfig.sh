@@ -3,7 +3,7 @@ if [ $# -eq 0 ]
   then
 # check if SHIPBUILD is set
     if [[ ! -v SHIPBUILD ]]; then
-     echo "You need to parse the path to SHIPBUILD as argument or define environment variable SHIPBUILD"
+     echo "You need to parse the path to SHIPBUILD as argument or define environment variable SHIPBUILD, probably /cvmfs/ship.cern.ch/ShipSoft/SHiPBuild"
      exit
     fi
 else
@@ -19,6 +19,7 @@ fi
 $SHIPBUILD/alibuild/alienv -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
 sed -i 's/\/afs\/cern.ch\/user\/t\/truf\/scratch2\/SHiPBuild/$SHIPBUILD/g' config.sh
+sed -i 's/$SHIPBUILD\/sw\/slc7_x86-64\/FairShip\/master-1/\/afs\/cern.ch\/user\/t\/trufship\/FairShip/g' config.sh
 source config.sh  # makes global FairShip environment
 
 if [[ $HOSTNAME == *lxplus* ]]
@@ -45,6 +46,7 @@ SOURCEDIR="../FairShip"
 export FAIRROOTPATH=$FAIRROOT_ROOT
 export ROOT_ROOT=$ROOTSYS 
 
+echo "using 1 $FAIRROOT_ROOT 2 $FAIRROOT_ROOT 3 $ROOTSYS "
 cmake $SOURCEDIR                                                 \
       -DFAIRBASE="$FAIRROOT_ROOT/share/fairbase"                 \
       -DFAIRROOTPATH="$FAIRROOT_ROOT"                            \
@@ -78,5 +80,9 @@ cmake $SOURCEDIR                                                 \
 make
 # make test does not exist yet
 make install
-
+echo "export SHIPBUILD=${SHIPBUILD}" > config.sh
+cat ../FairShip/config.sh >> config.sh
+echo "export LD_LIBRARY_PATH=${pwd}/lib:${LD_LIBRARY_PATH}
+echo "source ${PWD}/../lcgenv.sh \# makes lxplus environment" >> config.sh
+chmod u+x config.sh
 cd -

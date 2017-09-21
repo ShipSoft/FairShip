@@ -168,8 +168,15 @@ Bool_t FixedTargetGenerator::Init()
   }
   // Initialize EvtGen.
   if (withEvtGen){
-   TString DecayFile    = getenv("SIMPATH");DecayFile +="/share/EvtGen/DECAY.DEC";
-   TString ParticleFile = getenv("SIMPATH");ParticleFile +="/share/EvtGen/evt.pdl";
+   TString SIMPATH=getenv("SIMPATH");
+   TString DecayFile =SIMPATH+"/share/EvtGen/DECAY.DEC";
+   TString ParticleFile =SIMPATH + "/share/EvtGen/evt.pdl";
+   if(SIMPATH == "")
+     {
+       std::cout << "Using $EVTGENDATA "<< getenv("EVTGENDATA") << std::endl;
+       DecayFile =TString(getenv("EVTGENDATA"))+"/DECAY.DEC";
+       ParticleFile =TString(getenv("EVTGENDATA"))+ "/evt.pdl";
+     }
    EvtAbsRadCorr *fsrPtrIn = 0;
    EvtExternalGenList *extPtr = new EvtExternalGenList();
    std::list<EvtDecayBase*> models = extPtr->getListOfModels();

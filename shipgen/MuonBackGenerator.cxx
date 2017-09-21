@@ -32,7 +32,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fInputFile  = new TFile(fileName);
   }
   if (fInputFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");
+    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file:",fInputFile);
   }
   fn = firstEvent;
   fPhiRandomize = fl;

@@ -32,7 +32,16 @@ fi
 alibuild/aliBuild -c shipdist/ --defaults fairship build FairShip
 
 # not done by the framework
-cp sw/SOURCES/GENIE/fairshipdev/fairshipdev/data/evgen/pdfs/GRV98lo_patched.LHgrid $LHAPDF5_ROOT/share/lhapdf
+
+if [ -f config.sh ];
+then
+ rm config.sh
+fi
+
+alibuild/alienv printenv  FairShip/latest >> config.sh
+chmod u+x config.sh
+source config.sh
+cp $GENIE/data/evgen/pdfs/GRV98lo_patched.LHgrid $LHAPDF5_ROOT/share/lhapdf
 
 # assume everything is build and placed on cvmfs. How to get the correct environment, if not build there?
 # alibuild/alienv printenv  FairShip/latest > config.sh
