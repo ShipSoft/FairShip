@@ -81,8 +81,11 @@ make
 # make test does not exist yet
 make install
 echo "export SHIPBUILD=${SHIPBUILD}" > config.sh
+echo "echo setup aliBuild environment" >> config.sh
 cat ../FairShip/config.sh >> config.sh
-echo "export LD_LIBRARY_PATH=${pwd}/lib:${LD_LIBRARY_PATH}
-echo "source ${PWD}/../lcgenv.sh \# makes lxplus environment" >> config.sh
+echo "export LD_LIBRARY_PATH=${pwd}/lib:${LD_LIBRARY_PATH}" >> config.sh
+echo "echo setup lcg environment" >> config.sh
+echo "source ${PWD}/../lcgenv.sh" >> config.sh
+echo "export LD_LIBRARY_PATH=$(pwd)/lib:${LD_LIBRARY_PATH}" >> config.sh
 chmod u+x config.sh
 cd -
