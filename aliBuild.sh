@@ -4,6 +4,7 @@ if [[ $HOSTNAME == *lxplus* ]]
 then
   echo "Setup lcg environment"
   source FairShip/genenv.sh
+  export PATH=$(pwd):${PATH}
 fi
 
 if [ ! -d alibuild ];
@@ -29,20 +30,25 @@ then
  cd ..
 fi
 
-alibuild/aliBuild -c shipdist/ --defaults fairship build FairShip
+if [ $# -eq 0 ]
+  then
+
+ alibuild/aliBuild -c shipdist/ --defaults fairship build FairShip
 
 # not done by the framework
+ if [ -f config.sh ];
+ then
+  rm config.sh
+ fi
 
-if [ -f config.sh ];
-then
- rm config.sh
+ alibuild/alienv printenv  FairShip/latest >> config.sh
+ chmod u+x config.sh
+ source config.sh
+ cp $GENIE/data/evgen/pdfs/GRV98lo_patched.LHgrid $LHAPDF5_ROOT/share/lhapdf
+
+else
+  alibuild/aliDoctor -c shipdist/ --defaults fairship FairShip
 fi
-
-alibuild/alienv printenv  FairShip/latest >> config.sh
-chmod u+x config.sh
-source config.sh
-cp $GENIE/data/evgen/pdfs/GRV98lo_patched.LHgrid $LHAPDF5_ROOT/share/lhapdf
-
 # assume everything is build and placed on cvmfs. How to get the correct environment, if not build there?
 # alibuild/alienv printenv  FairShip/latest > config.sh
 # source config.sh          # makes FairShip environment
