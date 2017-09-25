@@ -1,25 +1,21 @@
 #! /bin/bash
-if [ $# -eq 0 ]
-  then
 # check if SHIPBUILD is set
-    if [[ ! -v SHIPBUILD ]]; then
-     echo "You need to parse the path to SHIPBUILD as argument or define environment variable SHIPBUILD, probably /cvmfs/ship.cern.ch/ShipSoft/SHiPBuild"
+if [[ ! -v SHIPBUILD ]]; then
+     echo "SHIPBUILD not defined. probably should be export SHIPBUILD=/cvmfs/ship.cern.ch/ShipSoft/SHiPBuild"
      exit
-    fi
-else
-  export SHIPBUILD=$1
 fi
-echo "use SHIPBUILD from $SHIPBUILD"
 
 if [ -f config.sh ];
 then
  rm config.sh
 fi
 
-$SHIPBUILD/alibuild/alienv -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
+architecture="slc7_x86-64"
+echo "Setting environment for ${architecture} slc7_x86-64 for $SHIPBUILD"
+$SHIPBUILD/alibuild/alienv -a slc7_x86-64 -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
 sed -i 's!/afs/cern.ch/user/t/truf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
-sed -i "s!$SHIPBUILD/sw/slc7_x86-64/FairShip/master-1!$(pwd)!g" config.sh
+sed -i "s!$SHIPBUILD/sw/${architecture}/FairShip/master-1!$(pwd)!g" config.sh
 source config.sh  # makes global FairShip environment
 
 if [[ $HOSTNAME == *lxplus* ]]
@@ -46,7 +42,6 @@ SOURCEDIR="../FairShip"
 export FAIRROOTPATH=$FAIRROOT_ROOT
 export ROOT_ROOT=$ROOTSYS 
 
-echo "using 1 $FAIRROOT_ROOT 2 $FAIRROOT_ROOT 3 $ROOTSYS "
 cmake $SOURCEDIR                                                 \
       -DFAIRBASE="$FAIRROOT_ROOT/share/fairbase"                 \
       -DFAIRROOTPATH="$FAIRROOT_ROOT"                            \
@@ -85,7 +80,10 @@ echo "echo setup aliBuild environment" >> config.sh
 cat ../FairShip/config.sh >> config.sh
 echo "export LD_LIBRARY_PATH=${pwd}/lib:${LD_LIBRARY_PATH}" >> config.sh
 echo "echo setup lcg environment" >> config.sh
-echo "source ${PWD}/../FairShip/lcgenv.sh" >> config.sh
-echo "export LD_LIBRARY_PATH=$(pwd)/lib:${LD_LIBRARY_PATH}" >> config.sh
+if [[ $HOSTNAME == *lxplus* ]]
+ then
+  echo "source ${PWD}/../FairShip/lcgenv.sh" >> config.sh
+fi
+echo "export LD_LIBRARY_PATH=$(pwd)/lib:${LD_LIBRARY_PATH}:${SHIPBUILD}/${architecture}" >> config.sh
 chmod u+x config.sh
 cd -
