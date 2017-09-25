@@ -18,11 +18,8 @@ sed -i 's!/afs/cern.ch/user/t/truf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
 sed -i "s!$SHIPBUILD/sw/${architecture}/FairShip/master-1!$(pwd)!g" config.sh
 source config.sh  # makes global FairShip environment
 
-if [[ $HOSTNAME == *lxplus* ]]
-then
-  echo "Setup lcg environment"
-  source genenv.sh
-fi
+echo "Setup lcg environment"
+source genenv.sh
 
 temp=$(cat $SHIPBUILD/shipdist/defaults-fairship.sh | grep CXXFLAGS)
 temx=$( cut -d ':' -f 2 <<< "$temp" )
@@ -80,10 +77,7 @@ echo "echo setup aliBuild environment" >> config.sh
 cat ../FairShip/config.sh >> config.sh
 echo "export LD_LIBRARY_PATH=${pwd}/lib:${LD_LIBRARY_PATH}" >> config.sh
 echo "echo setup lcg environment" >> config.sh
-if [[ $HOSTNAME == *lxplus* ]]
- then
-  echo "source ${PWD}/../FairShip/lcgenv.sh" >> config.sh
-fi
-echo "export LD_LIBRARY_PATH=$(pwd)/lib:${LD_LIBRARY_PATH}:${SHIPBUILD}/${architecture}" >> config.sh
+echo "source ${PWD}/../FairShip/lcgenv.sh" >> config.sh
+echo "export LD_LIBRARY_PATH=$(pwd)/lib:${LD_LIBRARY_PATH}:${SHIPBUILD}/../${architecture}" >> config.sh
 chmod u+x config.sh
 cd -

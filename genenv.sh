@@ -16,7 +16,7 @@ fi
 # Use cvmfs on lxplus
 export lcgenv="/cvmfs/sft.cern.ch/lcg/releases/lcgenv/latest/lcgenv"
 
-source "/afs/cern.ch/sw/lcg/contrib/gcc/6.2/${GCCVERSION}/setup.sh"
+source "/cvmfs/sft.cern.ch/lcg/contrib/gcc/6.2/${GCCVERSION}/setup.sh"
 
 if [ -f cc ];
 then
@@ -56,4 +56,3 @@ $lcgenv -p /cvmfs/sft.cern.ch/lcg/releases/${LCGVERSION} ${GCCVERSION} ipykernel
 $lcgenv -p /cvmfs/sft.cern.ch/lcg/releases/${LCGVERSION} ${GCCVERSION} decorator >> lcgenv.sh
 $lcgenv -p /cvmfs/sft.cern.ch/lcg/releases/${LCGVERSION} ${GCCVERSION} jupyter >> lcgenv.sh
 source lcgenv.sh
-
