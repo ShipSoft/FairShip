@@ -18,8 +18,8 @@ fi
 
 $SHIPBUILD/alibuild/alienv -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
-sed -i 's/\/afs\/cern.ch\/user\/t\/truf\/scratch2\/SHiPBuild/$SHIPBUILD/g' config.sh
-sed -i 's/$SHIPBUILD\/sw\/slc7_x86-64\/FairShip\/master-1/\/afs\/cern.ch\/user\/t\/trufship\/FairShip/g' config.sh
+sed -i 's!/afs/cern.ch/user/t/truf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
+sed -i "s!$SHIPBUILD/sw/slc7_x86-64/FairShip/master-1!$(pwd)!g" config.sh
 source config.sh  # makes global FairShip environment
 
 if [[ $HOSTNAME == *lxplus* ]]
@@ -85,7 +85,7 @@ echo "echo setup aliBuild environment" >> config.sh
 cat ../FairShip/config.sh >> config.sh
 echo "export LD_LIBRARY_PATH=${pwd}/lib:${LD_LIBRARY_PATH}" >> config.sh
 echo "echo setup lcg environment" >> config.sh
-echo "source ${PWD}/../lcgenv.sh" >> config.sh
+echo "source ${PWD}/../FairShip/lcgenv.sh" >> config.sh
 echo "export LD_LIBRARY_PATH=$(pwd)/lib:${LD_LIBRARY_PATH}" >> config.sh
 chmod u+x config.sh
 cd -
