@@ -447,17 +447,18 @@ if debug > 0:
              exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector'])
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
+#fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
 
-if inactivateMuonProcesses : 
+if inactivateMuonProcesses :
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
  mygMC.ProcessGeantCommand("/process/inactivate muBrems")
  mygMC.ProcessGeantCommand("/process/inactivate muIoni")
  mygMC.ProcessGeantCommand("/particle/select mu+")
  mygMC.ProcessGeantCommand("/particle/process/dump")
- import G4processes
- gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
- procmu = gProcessTable.FindProcess('muIoni','mu+')
+ gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
+ procmu = gProcessTable.FindProcess(ROOT.G4String('muIoni'),ROOT.G4String('mu+'))
  procmu.SetVerboseLevel(2)
 # -----Start run----------------------------------------------------
 run.Run(nEvents)

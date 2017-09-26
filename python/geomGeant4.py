@@ -1,15 +1,14 @@
 import shipunit as u
 from array import array
-# import geant4 submodules
-# requires to have ${SIMPATH}/lib/Geant4/ in PYTHONPATH
-from G4global import *
-from G4run import *
-from G4geometry import *
-from G4digits_hits import *
-from G4track import *
 import hepunit as G4Unit
 import ROOT
-gTransportationManager = G4TransportationManager.GetTransportationManager()
+# requires to have ${SIMPATH}/include/Geant4/ in PYTHONPATH
+ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
+ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
+ROOT.gROOT.ProcessLine('#include "Geant4/G4UIterminal.hh"')
+ROOT.gROOT.ProcessLine('#include "Geant4/G4RunManager.hh"')
+
+gTransportationManager = ROOT.G4TransportationManager.GetTransportationManager()
 
 def setMagnetField(flag=None):
     print 'setMagnetField() called. Out of date, does not set field for tau neutrino detector!'
@@ -60,10 +59,10 @@ def setMagnetField(flag=None):
 
 def printWF(vl,alreadyPrinted,onlyWithField=True):
     magnetMass = 0
-    vname = vl.GetName().__str__()
+    vname = vl.GetName().data()
     if alreadyPrinted.has_key(vname): return magnetMass
     vln  = vname+' '+str(vl.GetCopyNo())
-    mvl  = vl.GetMotherLogical().GetName()
+    mvl  = vl.GetMotherLogical().GetName().data()
     alreadyPrinted[vname]=mvl
     if mvl !='cave': vln = mvl+'/'+vln   
     lvl  = vl.GetLogicalVolume()
@@ -152,8 +151,8 @@ def printVMCFields():
 def getRunManager():
  return G4RunManager.GetRunManager()
 def startUI():
- import G4interface
- G4interface.StartUISession() 
+ session = ROOT.G4UIterminal()
+ session.SessionStart()
 def debug():
   gt = gTransportationManager
   gn = gt.GetNavigatorForTracking()

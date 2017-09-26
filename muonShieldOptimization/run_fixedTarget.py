@@ -226,10 +226,12 @@ AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
 
 # boost gamma2muon conversion
 if boostFactor > 1:
- import G4processes
- gProcessTable = G4processes.G4ProcessTable.GetProcessTable()
- procAnnihil = gProcessTable.FindProcessA('AnnihiToMuPair','e+')
- procGMuPair = gProcessTable.FindProcess('GammaToMuPair','gamma')
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4AnnihiToMuPair.hh"')
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4GammaConversionToMuons.hh"')
+ gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
+ procAnnihil = gProcessTable.FindProcess(ROOT.G4String('AnnihiToMuPair'),ROOT.G4String('e+'))
+ procGMuPair = gProcessTable.FindProcess(ROOT.G4String('GammaToMuPair'),ROOT.G4String('gamma'))
  procGMuPair.SetCrossSecFactor(boostFactor)
  procAnnihil.SetCrossSecFactor(boostFactor)
 
