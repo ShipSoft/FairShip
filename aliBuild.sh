@@ -17,19 +17,6 @@ then
   git clone https://github.com/ShipSoft/shipdist
 fi
 
-if [ ! -d OpenSSL ];
-then
-  git clone https://github.com/ShipSoft/FairShip-openssl OpenSSL
-fi
-
-if [ ! -d FairRoot ];
-then
- git clone https://github.com/PMunkes/FairRoot
- cd FairRoot
- git checkout fairshipdev
- cd ..
-fi
-
 if [ $# -eq 0 ]
   then
 
