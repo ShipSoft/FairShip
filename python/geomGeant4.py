@@ -7,8 +7,7 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4UIterminal.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4RunManager.hh"')
-
-gTransportationManager = ROOT.G4TransportationManager.GetTransportationManager()
+ROOT.gROOT.ProcessLine('#include "TG4GeometryServices.h"')
 
 def setMagnetField(flag=None):
     print 'setMagnetField() called. Out of date, does not set field for tau neutrino detector!'
@@ -26,7 +25,7 @@ def setMagnetField(flag=None):
      FieldIronMgr = G4FieldManager(magFieldIron)
      FieldIronMgr.CreateChordFinder(magFieldIron)
      listOfFields[v.GetName()]=FieldIronMgr  
-    gt = gTransportationManager
+    gt = ROOT.G4TransportationManager.GetTransportationManager()
     gn = gt.GetNavigatorForTracking()
     world = gn.GetWorldVolume().GetLogicalVolume()
     setField = {}
@@ -103,7 +102,7 @@ def nextLevel(lv,magnetMass,onlyWithField,exclude,alreadyPrinted):
 def printWeightsandFields(onlyWithField = True,exclude=[]):
    if len(exclude)!=0:
       print "will not search in ",exclude  
-   gt = gTransportationManager
+   gt = ROOT.G4TransportationManager.GetTransportationManager()
    gn = gt.GetNavigatorForTracking()
    world = gn.GetWorldVolume().GetLogicalVolume()
    magnetMass = 0
@@ -154,7 +153,7 @@ def startUI():
  session = ROOT.G4UIterminal()
  session.SessionStart()
 def debug():
-  gt = gTransportationManager
+  gt = ROOT.G4TransportationManager.GetTransportationManager()
   gn = gt.GetNavigatorForTracking()
   world = gn.GetWorldVolume().GetLogicalVolume()
   vmap = {}
