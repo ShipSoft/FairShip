@@ -47,6 +47,7 @@ void Config()
    TString configm1 = configm + "/gconfig/g4config.in";
    cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
    //set geant4 specific stuff
-  geant4->SetMaxNStep(10000.);  // default is 30000
+  // still stupid bug in geant4_vmc 
+  // geant4->SetMaxNStep(10000.);  // default is 30000
   geant4->ProcessGeantMacro(configm1.Data());
 }
