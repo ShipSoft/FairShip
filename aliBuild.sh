@@ -4,6 +4,8 @@ if [[ $HOSTNAME == *lxplus* ]]
 then
   echo "Setup lcg environment"
   source FairShip/genenv.sh
+# fixing a strange error in ROOT v6-10-06
+  cp FairShip/map . 
   export PATH=$(pwd):${PATH}
 fi
 
