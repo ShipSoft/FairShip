@@ -83,9 +83,9 @@ echo "export FAIRSHIP=$(pwd)/../FairShip" >> config.sh
 echo "export FAIRSHIPRUN=$(pwd)" >> config.sh
 echo "export SHIPBUILD=$SHIPBUILD" >> config.sh
 
-echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:/home/truf/cmtuser/MissingLibraries" >> config.sh
+echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture" >> config.sh
 # ugly fix 
-echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8
+echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8" >> config.sh
 
 chmod u+x config.sh
 cd -
