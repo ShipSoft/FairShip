@@ -1,6 +1,6 @@
 #! /bin/bash
 # check if SHIPBUILD is set
-if [[ ! -v SHIPBUILD ]]; then
+if [[ -z $SHIPBUILD ]]; then
      echo "SHIPBUILD not defined. probably should be export SHIPBUILD=/cvmfs/ship.cern.ch/ShipSoft/SHiPBuild"
      exit
 fi
@@ -14,8 +14,10 @@ architecture="slc7_x86-64"
 echo "Setting environment for ${architecture} slc7_x86-64 for $SHIPBUILD"
 $SHIPBUILD/alibuild/alienv -a slc7_x86-64 -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
+A=$SHIPBUILD/sw/$architecture/FairShip/master-1
+sed -i "s,$A,$(pwd),g" config.sh
 sed -i 's!/afs/cern.ch/user/t/truf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
-sed -i "s!$SHIPBUILD/sw/${architecture}/FairShip/master-1!$(pwd)!g" config.sh
+
 source config.sh  # makes global FairShip environment
 
 echo "Setup lcg environment"
@@ -71,13 +73,19 @@ cmake $SOURCEDIR                                                 \
       -DCMAKE_INSTALL_PREFIX=$INSTALLROOT
 make
 # make test does not exist yet
-make install
+
 echo "export SHIPBUILD=${SHIPBUILD}" > config.sh
-echo "echo setup aliBuild environment" >> config.sh
+echo "echo \"setup aliBuild environment\"" >> config.sh
 cat ../FairShip/config.sh >> config.sh
-echo "export LD_LIBRARY_PATH=${pwd}/lib:${LD_LIBRARY_PATH}" >> config.sh
-echo "echo setup lcg environment" >> config.sh
-echo "source ${PWD}/../FairShip/lcgenv.sh" >> config.sh
-echo "export LD_LIBRARY_PATH=$(pwd)/lib:${LD_LIBRARY_PATH}:${SHIPBUILD}/../${architecture}" >> config.sh
+echo "echo \"setup lcg environment\"" >> config.sh
+cat ../FairShip/lcgenv.sh >> config.sh
+echo "export FAIRSHIP=$(pwd)/../FairShip" >> config.sh
+echo "export FAIRSHIPRUN=$(pwd)" >> config.sh
+echo "export SHIPBUILD=$SHIPBUILD" >> config.sh
+
+echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture" >> config.sh
+# ugly fix 
+echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8" >> config.sh
+
 chmod u+x config.sh
 cd -
