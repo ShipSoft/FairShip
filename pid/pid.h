@@ -30,10 +30,15 @@ class pid : public TObject
 
     /** Information to be stored  */
 
-    Int_t        fTrackID;           //  track index
-    Int_t        fElectronID;          //  electron id
+    Int_t        fTrackID;           //  track index 
+    Int_t        fElectronID;          //  electron id 
     Int_t        fHadronID;          //  hadron id
     Int_t        fMuonID;          //  muon id
+    // fElectronID (fHadronID or fMuonID) =  1 -> it is a/an electron (hadron or muon); 
+    // fElectronID (fHadronID or fMuonID) =  0 -> it is not a/an electron (hadron or muon); 
+    // fElectronID (fHadronID or fMuonID) = -1 -> informtion is not enough to discuss;
+    // fElectronID (fHadronID or fMuonID) = -2 -> track is outside of pid subdetector acceptance;
+    // fElectronID (fHadronID or fMuonID) = -3 -> track does not satisfied "FitConverged" or "ndf > 25" cuts 
 
     /** container for data points */
 

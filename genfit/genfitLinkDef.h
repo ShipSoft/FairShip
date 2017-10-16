@@ -48,6 +48,7 @@
 #pragma link C++ class genfit::MeasuredStateOnPlane+;
 #pragma link C++ class genfit::EventDisplay+;
 #pragma link C++ class genfit::ConstField+;
+#pragma link C++ class genfit::GoliathField+;
 #pragma link C++ class genfit::BellField+;
 #pragma link C++ class genfit::KalmanFittedStateOnPlane+;
 #pragma link C++ class genfit::ReferenceStateOnPlane+;

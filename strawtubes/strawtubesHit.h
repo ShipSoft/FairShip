@@ -27,7 +27,7 @@ class strawtubesHit : public ShipHit
 
     /** Output to screen **/
     virtual void Print() const;
-    Float_t tdc() const {return fdigi;}
+    Float_t GetTDC() const {return fdigi;}
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
 

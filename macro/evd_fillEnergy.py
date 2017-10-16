@@ -59,7 +59,7 @@ def execute():
   traj.Set(0)
   SHiPDisplay = lsOfGlobals.FindObject('SHiP Displayer')
 # get zmin, zmax from graphic
-  v = ROOT.gEve.GetViewers().FindChild('Bar Embedded Viewer ZnOX')
+  v = ROOT.gEve.GetViewers().FindChild('Bar Embedded Viewer side')
   vw = v.GetGLViewer()
   cam = vw.CurrentCamera()
   ed = v.GetEditorObject()
@@ -82,6 +82,7 @@ def execute():
    if E<emin:emin=E
    n+=1
   emin,emax = emin*0.9,emax*1.1
+  print "zmin/max",zmin,zmax
   hist = c1.DrawFrame(zmin,emin,zmax,emax)
   hist.SetYTitle('p (GeV/c)')
   hist.SetXTitle('z cm')

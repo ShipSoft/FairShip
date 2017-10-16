@@ -22,6 +22,7 @@ set(SRCS
 ShipHit.cxx 
 ShipStack.cxx 
 ShipMCTrack.cxx
+ShipParticle.cxx
 )
 
 Set(HEADERS )

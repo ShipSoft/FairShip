@@ -37,7 +37,7 @@ ShipMuonShield::ShipMuonShield()
 {
 }
 
-ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title, 
+ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
                                Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t y, Double_t floor, Double_t field)
   : FairModule(name ,Title)
@@ -82,8 +82,8 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
  if(fDesign==6||fDesign==7){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
  fY = y;
+ fSupport = true;
 }
-
 
 // -----   Private method InitMedium 
 Int_t ShipMuonShield::InitMedium(const char* name) 
@@ -201,7 +201,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
     const char* str10 ="_MagBotLeft";
     const char* str11 ="_MagBotRight";
     strcpy(magnetId,magnetName);
-    if (fieldDirection == "up") {		    
+    if (!strncmp(fieldDirection, "up", 2)) {
       CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[3],fields[0],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
@@ -215,7 +215,7 @@ void ShipMuonShield::CreateMagnet(const char* magnetName,TGeoMedium* medium,TGeo
       CreateArb8(strcat(magnetId,str10), medium, dZ, cornersBL,color[0],fields[2],tShield,1,0, 0, Z);			strcpy(magnetId,magnetName);
       CreateArb8(strcat(magnetId,str11), medium, dZ, cornersBR,color[2],fields[3],tShield,1,0, 0, Z);
     } else{
-      if (fieldDirection == "down") {
+      if (!strncmp(fieldDirection, "down", 4)) {
 	CreateArb8(strcat(magnetId,str1L), medium, dZ, cornerMainL,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str1R), medium, dZ, cornerMainR,color[1],fields[1],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
 	CreateArb8(strcat(magnetId,str2), medium, dZ, cornerMainSideL,color[3],fields[0],tShield,1,0, 0, Z);		strcpy(magnetId,magnetName);
@@ -434,13 +434,16 @@ void ShipMuonShield::ConstructGeometry()
 		   gapIn[nM],gapOut[nM],Z[nM],1);
       }
 
-      TGeoTranslation* mag1 = new TGeoTranslation("mag1",0,0,Z[0]-(zEndOfAbsorb + (dZ1+dZ2)));
-      TGeoTranslation* mag2 = new TGeoTranslation("mag2",0,0,Z[1]-(zEndOfAbsorb + (dZ1+dZ2)));
-            
+      TGeoTranslation *mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
+      TGeoTranslation *mag2 = new TGeoTranslation("mag2", 0, 0, +dZ1);
+
       mag1->RegisterYourself();
       mag2->RegisterYourself();
 
-      TGeoTube *abs = new TGeoTube("absorber", 0, 400, (dZ1 + dZ2 - 15));
+      Double_t zgap = 10;
+      Double_t absorber_offset = zgap;
+      Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
+      TGeoTube *abs = new TGeoTube("absorber", 0, 400, absorber_half_length);
       const std::vector<TString> absorber_magnets = {"MagnAbsorb1",
 						     "MagnAbsorb2"};
       const std::vector<TString> magnet_components = {
@@ -464,8 +467,7 @@ void ShipMuonShield::ConstructGeometry()
 								// from absorber
       TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
       absorber->SetLineColor(42); // brown / light red
-      tShield->AddNode(absorber, 1,
-		       new TGeoTranslation(0, 0, zEndOfAbsorb + (dZ1 + dZ2)));
+      tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
 
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
 	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
@@ -473,7 +475,7 @@ void ShipMuonShield::ConstructGeometry()
 		     midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
 		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8);
 
-	if (nM==8) continue;
+	if (nM==8 || !fSupport) continue;
 	// TODO split out into function/method?
 	Double_t dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
 	Double_t dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
@@ -554,7 +556,7 @@ void ShipMuonShield::ConstructGeometry()
       TGeoBBox *box3    = new TGeoBBox("box3", 15*m, 15*m,dZD/2.);
       TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
 
-      if (fDesign == 7) {
+      if (fDesign == 7 && fFloor > 0) {
 	// Only add floor for new shield
 	TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2.,
 				      fMuonShieldLength / 2.);

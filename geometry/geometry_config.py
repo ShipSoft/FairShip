@@ -196,6 +196,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.muShield       =  AttrDict(z=0*u.cm)
     c.muShieldDesign = muShieldDesign
+    c.muShield.Field = 1.8 # in units of Tesla expected by ShipMuonShield
     # design 4,5,6
     c.muShield.LE  = 10*u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
     c.muShield.dZ0 = 2.5*u.m if muShieldDesign == 6 else 1*u.m

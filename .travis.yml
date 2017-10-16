@@ -1,0 +1,23 @@
+language: c++
+
+matrix:
+    include:
+#        - os: osx
+#          compiler: clang
+#          osx_image: xcode8.3
+        - os: linux
+          compiler: gcc
+          dist: trusty
+#          sudo: required
+          sudo: false
+          group: edge
+
+script:
+  - ./travis.sh
+
+notifications:
+  email:
+    recipients:
+      - ship-software@cern.ch
+    on_success: always
+    on_failure: always

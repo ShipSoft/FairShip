@@ -5,14 +5,13 @@
 #include "TGeoVolume.h"
 #include <TGeoManager.h>
 #include "TGeoBBox.h"
-#include "Pythia8/Pythia.h"
 #include "TMath.h"
 #include "Pythia8Generator.h"
 #include "HNLPythia8Generator.h"
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
-int counter = 0;
-Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
+Int_t counter = 0;
+const Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
 
 using namespace Pythia8;
 
@@ -38,7 +37,7 @@ Bool_t Pythia8Generator::Init()
 {
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
-  if (fextFile != ""){
+  if (fextFile && *fextFile) {
     if (0 == strncmp("/eos",fextFile,4) ) {
      char stupidCpp[100];
      strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
@@ -72,11 +71,31 @@ Bool_t Pythia8Generator::Init()
      fTree->SetBranchAddress("mpy",&mpy);
      fTree->SetBranchAddress("mpz",&mpz);
      fTree->SetBranchAddress("mE",&mE);
+     if (fTree->GetBranch("k")){
+      fTree->SetBranchAddress("k",&ck);
+      if (fTree->GetBranch("a0")){
+       for(Int_t i=0; i<16; i++){
+        TString na = "a";na+=i;
+        fTree->SetBranchAddress(na,&(ancestors[i]));
+        TString ns = "s";ns+=i;
+        fTree->SetBranchAddress(ns,&(subprocCodes[i]));
+       }
+      }
+     }else{
+      ck[0]=1;subprocCodes[0]=88;ancestors[0]=2212;
+     }
      fPythia->readString("ProcessLevel:all = off");
-     fPythia->readString("130:mayDecay  = off");
-     fPythia->readString("310:mayDecay  = off");
-     fPythia->readString("3122:mayDecay = off");
-     fPythia->readString("3222:mayDecay = off");
+// find all long lived particles in pythia
+     Int_t n = 1;
+     while(n!=0){
+      n = fPythia->particleData.nextId(n);
+      ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+      if (p->tau0()>1){
+      string particle = std::to_string(n)+":mayDecay = false";
+      fPythia->readString(particle);
+      fLogger->Info(MESSAGE_ORIGIN,"Made %s stable for Pythia, should decay in Geant4",p->name().c_str());
+      }
+     }
   } else {  
    fPythia->setRndmEnginePtr(fRandomEngine);
    fPythia->settings.mode("Beams:idA",  fId);
@@ -90,6 +109,9 @@ Bool_t Pythia8Generator::Init()
    fMaterialInvestigator = new GenieGenerator();
    TGeoVolume* top = gGeoManager->GetTopVolume();
    TGeoNode* target = top->FindNode(targetName);
+   if (!target){
+       fLogger->Error(MESSAGE_ORIGIN,"target not found, %s, program will crash",targetName.Data());
+   }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
    TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
    startZ =  z_middle - sha->GetDZ();
@@ -152,26 +174,39 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    Double_t rndm = 0.;
    Double_t sigma;
    Int_t count=0;
-   while (prob2int<rndm) {
+   Double_t zinterStart = start[2];
+// simulate more downstream interaction points for interactions down in the cascade
+   Int_t nInter = ck[0]; if (nInter>16){nInter=16;}
+   for( Int_t nI=0; nI<nInter; nI++){
+    // if (!subprocCodes[nI]<90){continue;}  //if process is not inelastic, go to next. Changed by taking now collision length
+    prob2int = -1.;   
+    Int_t intLengthFactor = 1; // for nucleons
+    if (TMath::Abs(ancestors[nI]) < 1000){intLengthFactor = 1.16;} // for mesons 
+    // Fe: nuclear /\ 16.77 cm pion 20.42 cm  f=1.22
+    // W:  nuclear /\ 9.946 cm pion 11.33 cm  f=1.14
+    // Mo: nuclear /\ 15.25 cm pion 17.98 cm  f=1.18
+    while (prob2int<rndm) {
  //place x,y,z uniform along path
-      zinter = gRandom->Uniform(start[2],end[2]);
+      zinter = gRandom->Uniform(zinterStart,end[2]);
       Double_t point[3]={xOff,yOff,zinter};
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
-      Double_t interLength = mparam[8]; 
+      Double_t interLength = mparam[8]  * intLengthFactor * 1.7; // 1.7 = interaction length / collision length from PDG Tables 
       TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
       TGeoMaterial *mat = 0;
       if (node && !gGeoManager->IsOutside()) {
          mat = node->GetVolume()->GetMaterial();
          Double_t n = mat->GetDensity()/mat->GetA();
-         sigma = 1./(n*mat->GetIntLen())/mbarn;
+         sigma = 1./(n*mat->GetIntLen())/mbarn;   // no need to multiply with intLengthFactor, will cancel in next equation.
          prob2int = TMath::Exp(-interLength)*sigma/maxCrossSection;
       }else{
          prob2int=0.;
       }
       rndm = gRandom->Uniform(0.,1.); 
       count+=1;
-   }
-  zinter = zinter*cm;
+    }
+    zinterStart = zinter;
+   } 
+   zinter = zinter*cm;
   }
   for(Int_t c=0; c<2; c++){
     if(c>0){
@@ -206,7 +241,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz()+zinter;
       x  = fPythia->event[ii].xProd()+dl*fPythia->event[1].px();
       y  = fPythia->event[ii].yProd()+dl*fPythia->event[1].py();
-      tof = fPythia->event[ii].tProd()+(dl+zinter)*fPythia->event[1].e()/cm/c_light;
+      tof = fPythia->event[ii].tProd()+dl*fPythia->event[1].e()/cm/c_light;
      }else{
       z  = fPythia->event[ii].zProd()+zinter;
       x  = fPythia->event[ii].xProd();

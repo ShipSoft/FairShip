@@ -93,7 +93,7 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t polz, TMCProcess proc, Int_t& ntr,
                           Double_t weight, Int_t is, Int_t secondparentID)
 {
-  // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId << " " << secondparentID << endl;
+ // cout << "ShipStack:  " << fNParticles << " " << pdgCode << " " << parentId <<    " " << secondparentID<<" "<<proc<< endl;
 
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
@@ -464,26 +464,28 @@ void ShipStack::SelectTracks()
       if (!fStoreSecondaries) { store = kFALSE; }
       if (nPoints < fMinPoints) { store = kFALSE; }
       if (eKin < fEnergyCut) { store = kFALSE; }
+      if ((nPoints >= fMinPoints && fMinPoints > 0) || (eKin >= fEnergyCut && fEnergyCut > 0)) {
+         store=kTRUE;
+      }
     }
-
     // --> Set storage flag
     fStoreMap[i] = store;
+// special case for Ship generators, want to keep all original particles with their mother daughter relationship 
+// independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles. 
+// doesn't work, always true: Int_t iMother2 = GetParticle(i)->GetMother(1); maybe should set Mother2 to -1 in the generator
+// if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
   }
-
   // --> If flag is set, flag recursively mothers of selected tracks
   if (fStoreMothers) {
     for (Int_t i=0; i<fNParticles; i++) {
       if (fStoreMap[i]) {
         Int_t iMother  = GetParticle(i)->GetMother(0);
-        Int_t iMother2 = GetParticle(i)->GetMother(1);
-      // special case for Ship generators, want to keep all original particles with their mother daughter relationship
-      // independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles.
-        if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
-        else{
-         while(iMother >= 0) {
-          fStoreMap[iMother] = kTRUE;
-          iMother = GetParticle(iMother)->GetMother(0);
-         }
+	{
+          while(iMother >= 0)
+	  {
+            fStoreMap[iMother] = kTRUE;
+            iMother = GetParticle(iMother)->GetMother(0);
+          }
        }
       }
     }
