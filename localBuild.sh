@@ -10,7 +10,7 @@ then
  rm config.sh
 fi
 
-architecture="$(${SHIPBUILD}/FairShip/python/detectArch)"
+architecture="$(python/detectArch)"
 
 echo "Setting environment for ${architecture} for $SHIPBUILD"
 $SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
