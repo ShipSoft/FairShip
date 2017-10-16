@@ -10,9 +10,10 @@ then
  rm config.sh
 fi
 
-architecture="slc7_x86-64"
-echo "Setting environment for ${architecture} slc7_x86-64 for $SHIPBUILD"
-$SHIPBUILD/alibuild/alienv -a slc7_x86-64 -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
+architecture="$(${SHIPBUILD}/FairShip/python/detectArch)"
+
+echo "Setting environment for ${architecture} for $SHIPBUILD"
+$SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
 A=$SHIPBUILD/sw/$architecture/FairShip/master-1
 sed -i "s,$A,$(pwd),g" config.sh
