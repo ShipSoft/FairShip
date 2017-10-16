@@ -36,8 +36,8 @@ class vetoHit : public ShipHit
     /** Output to screen **/
 
     virtual void Print(Int_t detID) const;
-    Float_t adc() const {return fdigi;}
-    Float_t tdc() const {return ft;}
+    Float_t GetADC() const {return fdigi;}
+    Float_t GetTDC() const {return ft;}
     Double_t GetEloss() {return fdigi;}
     void setInvalid() {flag = false;}
     void setIsValid() {flag = true;}

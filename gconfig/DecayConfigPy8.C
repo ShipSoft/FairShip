@@ -18,12 +18,23 @@ void DecayConfig() {
 	//   of type pdgId even if the concrete monte carlo has a decay mode 
 	//   already defined for that particle type.
 	gMC->SetExternalDecayer(decayer);
+        // to get the rare muon decays, HOWEVER does not work with Geant4 logic
+        //gMC->SetUserDecay(221); // eta
+        //gMC->SetUserDecay(223); // omega
+        //gMC->SetUserDecay(113); // rho0
+        //gMC->SetUserDecay(331); // eta_prime
+        //gMC->SetUserDecay(333); // phi
         gMC->SetUserDecay(411);
         gMC->SetUserDecay(-411);
         gMC->SetUserDecay(421);
         gMC->SetUserDecay(-421);
+        gMC->SetUserDecay(4122);
+        gMC->SetUserDecay(-4122);
         gMC->SetUserDecay(431);
         gMC->SetUserDecay(-431);
+        gMC->SetUserDecay(15);
+        gMC->SetUserDecay(-15);
+        cout<< "External decayer DecayConfigPy8 initialized"<<endl;
 }
 
 

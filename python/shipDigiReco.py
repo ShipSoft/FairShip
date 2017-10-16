@@ -134,7 +134,7 @@ class ShipDigiReco:
    import shipPid
    self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
-  self.Vertexing = shipVertex.Task(h,self)
+  self.Vertexing = shipVertex.Task(h,self.sTree)
 # setup random number generator 
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
@@ -233,7 +233,6 @@ class ShipDigiReco:
        aHit.SetTDC(min( tOfFlight[seg] ) + self.sTree.t0 )
        if self.digiSBT.GetSize() == index: 
           self.digiSBT.Expand(index+1000)
-          self.mcLinkSBT.Expand(index+1000)
        if detID<999999 and ElossPerDetId[seg]<0.045:    aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
        if detID>999999 and ElossPerDetId[seg]<0.001:    aHit.setInvalid()  # precise threshold for plastic to be determined 
        self.digiSBT[index] = aHit
@@ -252,7 +251,7 @@ class ShipDigiReco:
      self.digiStraw[index]=aHit
      detID = aHit.GetDetectorID() 
      if hitsPerDetId.has_key(detID):
-       if self.digiStraw[hitsPerDetId[detID]].tdc() > aHit.tdc():
+       if self.digiStraw[hitsPerDetId[detID]].GetTDC() > aHit.GetTDC():
  # second hit with smaller tdc
         self.digiStraw[hitsPerDetId[detID]].setInvalid()
         hitsPerDetId[detID] = index
@@ -393,11 +392,15 @@ class ShipDigiReco:
 # do the fit
     try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
     except: 
-       print "genfit failed to fit track"
-       continue
+      if debug: print "genfit failed to fit track"
+      error = "genfit failed to fit track"
+      ut.reportError(error)
+      continue
 #check
     if not theTrack.checkConsistency():
-     print 'Problem with track after fit, not consistent',atrack,theTrack
+     if debug: print 'Problem with track after fit, not consistent',atrack,theTrack
+     error = "Problem with track after fit, not consistent"
+     ut.reportError(error)
      continue
     fitStatus   = theTrack.getFitStatus()
     nmeas = fitStatus.getNdf()   
@@ -440,7 +443,9 @@ class ShipDigiReco:
      try:
       rep.extrapolateToPoint(state,vetoHitPos,False)
      except:
-      print "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
+      ut.reportError(error)
+      if debug: print error
       continue
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:

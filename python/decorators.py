@@ -13,10 +13,10 @@ def MCTrackPrintOut(x):
   n=''
   if p: n = p.GetName()
   m = x.GetMotherId()
-  txt = '("ShipMCTrack") pdgCode: %7i(%10s) P=%6.3F GeV/c mother=%i'%(c,n,x.GetP(),m)
+  txt = '("ShipMCTrack") pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s'%(c,n,x.GetStartZ()/u.m,x.GetP(),m,x.GetProcName())
   return txt
 def vetoHitPrintOut(x):
-  txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.adc(),x.tdc())
+  txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.GetADC(),x.GetTDC())
   return txt
 def FitTrackPrintOut(x):
   st = x.getFitStatus()
@@ -30,6 +30,9 @@ def FitTrackPrintOut(x):
   return txt
 def TParticlePrintOut(x):
   txt = '("TParticle") %s  P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.P(),x.Vz()/u.m)
+  return txt
+def ShipParticlePrintOut(x):
+  txt = '("ShipParticle") %s  P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.P(),x.Vz()/u.m)
   return txt
 def ecalReconstructedPrintOut(cl):
   txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.RecoE(),cl.X()/u.m,cl.Y()/u.m)
@@ -45,6 +48,10 @@ def Dump(x):
   
 def TVector3PrintOut(x):
   txt = '%9.5F,%9.5F,%9.5F'%(x.X(),x.Y(),x.Z())
+  return txt
+
+def TLorentzVectorPrintOut(x):
+  txt = '%9.5F,%9.5F,%9.5F,%9.5F,%9.5F'%(x.Px(),x.Py(),x.Pz(),x.E(),x.Mag())
   return txt
 
 def TEvePointSetPrintOut(P):
@@ -63,7 +70,9 @@ ROOT.genfit.Track.__repr__ = FitTrackPrintOut
 ROOT.TClonesArray.Dump = Dump
 ROOT.TVector3.__repr__ = TVector3PrintOut
 ROOT.TParticle.__repr__ = TParticlePrintOut
+ROOT.ShipParticle.__repr__ = ShipParticlePrintOut
 ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
 ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
 ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
 ROOT.vetoHit.__repr__ = vetoHitPrintOut
+ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut

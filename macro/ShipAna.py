@@ -100,7 +100,7 @@ fM.init(bfield)
 
 # prepare veto decisions
 import shipVeto
-veto = shipVeto.Task()
+veto = shipVeto.Task(sTree)
 vetoDets={}
 
 # fiducial cuts
@@ -123,9 +123,9 @@ ut.bookHist(h,'IP','Impact Parameter',100,0.,10.)
 ut.bookHist(h,'Vzresol','Vz reco - true [cm]',100,-50.,50.)
 ut.bookHist(h,'Vxresol','Vx reco - true [cm]',100,-10.,10.)
 ut.bookHist(h,'Vyresol','Vy reco - true [cm]',100,-10.,10.)
-ut.bookHist(h,'Vzpull','Vz pull',100,-3.,3.)
-ut.bookHist(h,'Vxpull','Vx pull',100,-3.,3.)
-ut.bookHist(h,'Vypull','Vy pull',100,-3.,3.)
+ut.bookHist(h,'Vzpull','Vz pull',100,-5.,5.)
+ut.bookHist(h,'Vxpull','Vx pull',100,-5.,5.)
+ut.bookHist(h,'Vypull','Vy pull',100,-5.,5.)
 ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
 ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
 ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
@@ -696,16 +696,18 @@ def myEventLoop(n):
     HNLMom = ROOT.TLorentzVector()
     HNL.Momentum(HNLMom)
 # check if DOCA info exist
-    if HNL.GetMother(1)==99 :
-      xv,yv,zv,doca  =  HNLPos.X(),HNLPos.Y(),HNLPos.Z(),HNLPos.T()
+    if hasattr(HNL,"GetDoca"):
+      doca  =  HNL.GetDoca()
+    elif HNL.GetMother(1)==99 :
+      doca  =  HNLPos.T()
     else:
 # redo doca calculation
      xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)
      if HNLMom == -1: continue
  # check if decay inside decay volume
-    if not isInFiducial(xv,yv,zv): continue  
+    if not isInFiducial(HNLPos.X(),HNLPos.Y(),HNLPos.Z()): continue  
     h['Doca'].Fill(doca) 
-    # if  doca > docaCut : continue
+    if  doca > docaCut : continue
     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
     dist = ImpactParameter(tr,HNLPos,HNLMom)
     mass = HNLMom.M()
@@ -714,11 +716,11 @@ def myEventLoop(n):
     h['HNL'].Fill(mass)
     h['HNLw'].Fill(mass,wg)
 #
-    vetoDets['SBT'] = veto.SBT_decision(sTree)
-    vetoDets['SVT'] = veto.SVT_decision(sTree)
-    vetoDets['UVT'] = veto.UVT_decision(sTree)
-    vetoDets['RPC'] = veto.RPC_decision(sTree)
-    vetoDets['TRA'] = veto.Track_decision(sTree)
+    vetoDets['SBT'] = veto.SBT_decision()
+    vetoDets['SVT'] = veto.SVT_decision()
+    vetoDets['UVT'] = veto.UVT_decision()
+    vetoDets['RPC'] = veto.RPC_decision()
+    vetoDets['TRA'] = veto.Track_decision()
     h['nrtracks'].Fill(vetoDets['TRA'][2])
     h['nrSVT'].Fill(vetoDets['SVT'][2])
     h['nrUVT'].Fill(vetoDets['UVT'][2])
@@ -726,12 +728,12 @@ def myEventLoop(n):
     h['nrRPC'].Fill(vetoDets['RPC'][2])
 #   HNL true
     mctrack = sTree.MCTrack[sTree.fitTrack2MC[t1]]
-    h['Vzresol'].Fill( (mctrack.GetStartZ()-zv)/u.cm )
-    h['Vxresol'].Fill( (mctrack.GetStartX()-xv)/u.cm )
-    h['Vyresol'].Fill( (mctrack.GetStartY()-yv)/u.cm )
+    h['Vzresol'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/u.cm )
+    h['Vxresol'].Fill( (mctrack.GetStartX()-HNLPos.X())/u.cm )
+    h['Vyresol'].Fill( (mctrack.GetStartY()-HNLPos.Y())/u.cm )
     PosDir,newPosDir,CovMat,scalFac = {},{},{},{}
 # opening angle at vertex
-    newPos = ROOT.TVector3(xv,yv,zv)
+    newPos = ROOT.TVector3(HNLPos.X(),HNLPos.Y(),HNLPos.Z())
     st1,st2 = sTree.FitTracks[t1].getFittedState(),sTree.FitTracks[t2].getFittedState()
     PosDir[t1] = {'position':st1.getPos(),'direction':st1.getDir(),'momentum':st1.getMom()}
     PosDir[t2] = {'position':st2.getPos(),'direction':st2.getDir(),'momentum':st2.getMom()}
@@ -751,13 +753,12 @@ def myEventLoop(n):
     newPosDir[t2] = {'position':rep2.getPos(state2),'direction':rep2.getDir(state2),'momentum':mom2}
     oa = mom1.Dot(mom2)/(mom1.Mag()*mom2.Mag()) 
     h['oa'].Fill(oa)
-# error on vertex
-    scalFac[t1] = (zv-PosDir[t1]['position'][2])/PosDir[t1]['direction'][2]/PosDir[t1]['momentum'].Mag()
-    scalFac[t2] = (zv-PosDir[t2]['position'][2])/PosDir[t2]['direction'][2]/PosDir[t2]['momentum'].Mag()
-    XPos,covX,dist = VertexError(t1,t2,newPosDir,CovMat,scalFac)
-    h['Vzpull'].Fill( (mctrack.GetStartZ()-XPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
-    h['Vxpull'].Fill( (mctrack.GetStartX()-XPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )
-    h['Vypull'].Fill( (mctrack.GetStartY()-XPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )
+#
+    covX = HNL.GetCovV()
+    dist = HNL.GetDoca()
+    h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )
+    h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )
+    h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )
 #
 def HNLKinematics():
  HNLorigin={}

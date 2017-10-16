@@ -8,5 +8,8 @@
 #pragma link C++ class ShipFieldCreator+;
 #pragma link C++ class ShipFieldPar+;
 #pragma link C++ class ShipBellField+;
+#pragma link C++ class ShipBFieldMap+;
+#pragma link C++ class ShipCompField+;
+#pragma link C++ class ShipFieldMaker+;
 
 #endif

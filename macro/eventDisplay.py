@@ -529,6 +529,16 @@ class IO():
         bnx.SetToolTipText('click for next event')
         bnx.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_nextEvent.py")')
         guiFrame.AddFrame(bnx, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+        bzt = ROOT.TGTextButton(guiFrame, "synch zoom top->side")
+        bzt.SetWidth(150)
+        bzt.SetToolTipText('synchronize zoom top with side')
+        bzt.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_synchZoomt.py")')
+        guiFrame.AddFrame(bzt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+        bzs = ROOT.TGTextButton(guiFrame, "synch zoom side->top")
+        bzs.SetWidth(150)
+        bzs.SetToolTipText('synchronize zoom side with top')
+        bzs.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_synchZooms.py")')
+        guiFrame.AddFrame(bzs, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
 #
         cf.MapSubwindows()
         cf.Layout()
@@ -697,7 +707,7 @@ def projection_prescale():
    sev.AddScene(eventscene)
    eventscene.AddElement(smng)
    ROOT.gEve.GetBrowser().GetTabRight().SetTab(1)
-   ROOT.gEve.FullRedraw3D(kTRUE)
+   ROOT.gEve.FullRedraw3D(ROOT.kTRUE)
 def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
    xvol = fGeo.GetVolume(x)
@@ -1093,5 +1103,37 @@ def DrawCharmTracks():
       if pa.Lifetime()>1.E-12: 
        print  sTree.MCTrack[i]
        SHiPDisplay.tracks.DrawMCTrack(i)
-
+def DrawSimpleMCTracks():
+  comp = SHiPDisplay.tracks.comp
+  comp.OpenCompound()
+  n = -1
+  ntot = 0
+  fPos = ROOT.TVector3()
+  fMom = ROOT.TVector3()
+  delZ = 10*u.m
+  for fT in sTree.MCTrack:
+   n+=1
+   DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
+   DTrack.SetTitle(fT.__repr__())
+   fT.GetStartVertex(fPos)
+   fT.GetMomentum(fMom)
+   hitlist = {}
+   hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
+   z = fPos.Z() + delZ
+   slx,sly = fMom.X()/fMom.Z(),fMom.Y()/fMom.Z()
+   hitlist[z] = [fPos.X()+slx*delZ,fPos.Y()+sly*delZ]
+   lz = hitlist.keys()
+   for z in lz:  DTrack.SetNextPoint(hitlist[z][0],hitlist[z][1],z)
+   p = pdg.GetParticle(fT.GetPdgCode()) 
+   if p : pName = p.GetName()
+   else:  pName =  str(fT.GetPdgCode())
+   DTrack.SetName('MCTrack_'+str(n)+'_'+pName)
+   c = ROOT.kYellow
+   DTrack.SetMainColor(c)
+   DTrack.SetLineWidth(3)
+   comp.AddElement(DTrack)
+   ntot+=1
+  comp.CloseCompound()
+  gEve.ElementChanged(SHiPDisplay.tracks.evscene,True,True)
 

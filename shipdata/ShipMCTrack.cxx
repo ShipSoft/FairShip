@@ -23,7 +23,8 @@ ShipMCTrack::ShipMCTrack()
     fStartZ(0.),
     fStartT(0.),
     fNPoints(0),
-    fW(1.)
+    fW(1.),
+    fProcID(44)
 {
 }
 // -------------------------------------------------------------------------
@@ -67,6 +68,7 @@ ShipMCTrack::ShipMCTrack(const ShipMCTrack& track)
     fStartZ(track.fStartZ),
     fStartT(track.fStartT),
     fNPoints(track.fNPoints),
+    fProcID(track.GetProcID()),
     fW(track.GetWeight())
 {
 }
@@ -82,12 +84,13 @@ ShipMCTrack::ShipMCTrack(TParticle* part)
     fPx(part->Px()),
     fPy(part->Py()),
     fPz(part->Pz()),
-    fM(part->GetCalcMass()),
+    fM(TMath::Sqrt( part->Energy()*part->Energy()-part->P()*part->P() )),
     fStartX(part->Vx()),
     fStartY(part->Vy()),
     fStartZ(part->Vz()),
     fStartT(part->T()*1e09),
     fNPoints(0),
+    fProcID(part->GetUniqueID()),
     fW(part->GetWeight())
 {
 }

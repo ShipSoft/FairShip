@@ -15,7 +15,7 @@ PDG = ROOT.TDatabasePDG.Instance()
 myPythia = ROOT.TPythia6()
 myPythia.SetMSEL(2)       # msel 2 includes diffractive parts
 myPythia.SetPARP(2,2)     # To get below 10 GeV, you have to change PARP(2)
-for kf in [211,321,130,310,3122,3112,3312]:
+for kf in [211,321,130,310,3112,3122,3222,3312,3322,3334]:
    kc = myPythia.Pycomp(kf) 
    myPythia.SetMDCY(kc,1,0)
 

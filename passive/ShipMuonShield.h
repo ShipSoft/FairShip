@@ -2,6 +2,7 @@
 #define MuonShield_H
 
 #include "FairModule.h"                 // for FairModule
+#include "FairLogger.h"
 
 #include "Rtypes.h"                     // for ShipMuonShield::Class, Bool_t, etc
 
@@ -23,12 +24,18 @@ class ShipMuonShield : public FairModule
    virtual ~ShipMuonShield();
    void ConstructGeometry();
    ClassDef(ShipMuonShield,4)
+
+  void SetSupports(Bool_t supports) { 
+    fSupport = supports;
+    FairLogger::GetLogger()->Warning(MESSAGE_ORIGIN, "Setting supports to %s. This will not have any effect if called after the geometry has been constructed.", fSupport ? "true" : "false");
+  }
     
  protected:
   
   Int_t  fDesign;       // design of muon shield, 1=passive, active = ...
   Double_t  fMuonShieldLength,fY,fField;
   Double_t fFloor;
+  Bool_t fSupport;
   Double_t  dZ0,dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,dZ7,dZ8,dXgap,zEndOfAbsorb,mag4Gap,midGapOut7,midGapOut8;
   Int_t InitMedium(const char* name);
   
@@ -47,6 +54,7 @@ class ShipMuonShield : public FairModule
  
   void CreateTube(const char* tubeName, TGeoMedium* medium, Double_t dX,Double_t dY,Double_t dZ,Int_t color,TGeoVolume *top,Int_t numberOfItems, Double_t x_translation,Double_t y_translation,
 					Double_t z_translation);
+
 
   void Initialize(const char *(&magnetName)[9],
 		  const char *(&fieldDirection)[9], Double_t (&dXIn)[9],

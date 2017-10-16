@@ -66,22 +66,18 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
             children = particles[1:]
             childrenCodes = [PDGcode(p) for p in children]
             BR = hnl.findBranchingRatio(dec)
-            if not (('pi0' in dec) or ('rho0' in dec)):
-                # Take care of Majorana modes
-                BR = BR/2.
-                codes = ' '.join([str(code) for code in childrenCodes])
-                P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
-                # Charge conjugate modes
-                codes = ' '.join([str(-1*code) for code in childrenCodes])
-                P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
-            else:
-                codes = ' '.join([str(code) for code in childrenCodes])
-                P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
+            # Take care of Majorana modes
+            BR = BR/2.
+            codes = ' '.join([str(code) for code in childrenCodes])
+            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
+            # Charge conjugate modes
+            codes = ' '.join([(str(-1*code) if pdg.GetParticle(-code)!=None else str(code)) for code in childrenCodes])
+            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
             print "debug readdecay table",particles,children,BR
 
 
 
-def addDarkPhotondecayChannels(P8Gen,mDarkPhoton,epsilon,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
+def addDarkPhotondecayChannels(P8Gen,DP,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
     """
     Configures the DP decay table in Pythia8
     
@@ -90,7 +86,7 @@ def addDarkPhotondecayChannels(P8Gen,mDarkPhoton,epsilon,conffile=os.path.expand
     - conffile: a file listing the channels one wishes to activate
     """
     # First fetch the list of kinematically allowed decays
-    allowed = allowedChannels(mDarkPhoton)
+    allowed = DP.allowedChannels()
     # Then fetch the list of desired channels to activate
     wanted = load(conffile=conffile, verbose=verbose)
     # Add decay channels
@@ -103,7 +99,7 @@ def addDarkPhotondecayChannels(P8Gen,mDarkPhoton,epsilon,conffile=os.path.expand
 
         if allowed[dec] == 'yes' and wanted[dec] == 'yes':
             
-            BR = findBranchingRatio(mDarkPhoton,epsilon,dec)
+            BR = DP.findBranchingRatio(dec)
             
             if 'hadrons' in dec:
                 #P8Gen.SetDecayToHadrons()

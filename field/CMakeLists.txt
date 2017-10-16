@@ -22,10 +22,13 @@ ShipConstField.cxx
 ShipFieldCreator.cxx 
 ShipFieldPar.cxx
 ShipBellField.cxx
+ShipBFieldMap.cxx
+ShipCompField.cxx
+ShipFieldMaker.cxx
 )
 
 set(LINKDEF FieldLinkDef.h)
-Set(LIBRARY_NAME Field)
+Set(LIBRARY_NAME ShipField)
 Set(DEPENDENCIES
     Base 
 )
