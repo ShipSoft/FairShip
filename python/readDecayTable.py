@@ -66,17 +66,13 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
             children = particles[1:]
             childrenCodes = [PDGcode(p) for p in children]
             BR = hnl.findBranchingRatio(dec)
-            if not (('pi0' in dec) or ('rho0' in dec)):
-                # Take care of Majorana modes
-                BR = BR/2.
-                codes = ' '.join([str(code) for code in childrenCodes])
-                P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
-                # Charge conjugate modes
-                codes = ' '.join([str(-1*code) for code in childrenCodes])
-                P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
-            else:
-                codes = ' '.join([str(code) for code in childrenCodes])
-                P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
+            # Take care of Majorana modes
+            BR = BR/2.
+            codes = ' '.join([str(code) for code in childrenCodes])
+            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
+            # Charge conjugate modes
+            codes = ' '.join([(str(-1*code) if pdg.GetParticle(-code)!=None else str(code)) for code in childrenCodes])
+            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
             print "debug readdecay table",particles,children,BR
 
 
