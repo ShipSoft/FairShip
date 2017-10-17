@@ -15,9 +15,9 @@ architecture="$(python/detectArch)"
 echo "Setting environment for ${architecture} for $SHIPBUILD"
 $SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
-A=$SHIPBUILD/sw/$architecture/FairShip/master-1
-sed -i "s,$A,$(pwd),g" config.sh
+A=\$SHIPBUILD/sw/$architecture/FairShip/master-1
 sed -i 's!/afs/cern.ch/user/t/truf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
+sed -i "s,$A,$(pwd),g" config.sh
 
 source config.sh  # makes global FairShip environment
 
@@ -39,6 +39,7 @@ cd ../FairShipRun
 
 INSTALLROOT=$PWD
 SOURCEDIR="../FairShip"  
+
 export FAIRROOTPATH=$FAIRROOT_ROOT
 export ROOT_ROOT=$ROOTSYS 
 
@@ -85,6 +86,7 @@ echo "export FAIRSHIPRUN=$(pwd)" >> config.sh
 echo "export SHIPBUILD=$SHIPBUILD" >> config.sh
 
 echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture" >> config.sh
+echo "export LD_LIBRARY_PATH=$INSTALLROOT/lib:\${LD_LIBRARY_PATH}" >> config.sh
 # ugly fix 
 echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8" >> config.sh
 
