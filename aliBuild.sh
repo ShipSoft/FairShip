@@ -1,8 +1,8 @@
 #!/bin/bash
-
-if [[ $HOSTNAME == *lxplus* ]]
+GCC_MAJOR=$(gcc -dumpversion | cut -c 1)
+if [[ $GCC_MAJOR -lt 6 ]]
 then
-  echo "Setup lcg environment"
+  echo "GCC version too old, trying setup lcg environment"
   source FairShip/genenv.sh
 # fixing a strange error in ROOT v6-10-06
   cp FairShip/map . 
