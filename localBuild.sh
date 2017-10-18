@@ -10,13 +10,19 @@ then
  rm config.sh
 fi
 
-architecture="$(python/detectArch)"
+if [ $# -eq 0 ]
+  then
+    architecture="$(python/detectArch)"
+  else
+    architecture=$1
+fi
 
 echo "Setting environment for ${architecture} for $SHIPBUILD"
 $SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
 
 A=\$SHIPBUILD/sw/$architecture/FairShip/master-1
 sed -i 's!/afs/cern.ch/user/t/truf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
+sed -i 's!/home/truf/afstruf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
 sed -i "s,$A,$(pwd),g" config.sh
 
 source config.sh  # makes global FairShip environment
