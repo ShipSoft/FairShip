@@ -10,7 +10,12 @@ then
  rm config.sh
 fi
 
-architecture="$(python/detectArch)"
+if [ $# -eq 0 ]
+  then
+    architecture="$(python/detectArch)"
+  else
+    architecture=$1
+fi
 
 echo "Setting environment for ${architecture} for $SHIPBUILD"
 $SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
