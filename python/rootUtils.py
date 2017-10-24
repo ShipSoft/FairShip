@@ -175,3 +175,10 @@ def stripOffBranches(fout):
     if nEvents == sTree.GetEntries(): print "looks ok, could be deleted",os.path.abspath('.')
     else:  print "stripping failed, keep old file",os.path.abspath('.')
     # os.system('mv '+sFile +' '+fout)
+def checkFileExists(x):
+    if x[0:4] == "/eos": f="root://eoslhcb.cern.ch/"+x
+    else: f=x  
+    test = TFile.Open(f)
+    if not test: 
+       print "input file",f," does not exist. Missing authentication?"
+       os._exit(1)

@@ -2,6 +2,7 @@
 import ROOT,os,sys,getopt,time
 import shipunit as u
 import shipRoot_conf
+import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 debug = 0  # 1 print weights and field
            # 2 make overlap check
@@ -250,6 +251,7 @@ if simEngine == "Pythia8":
    P8gen.SetLmin(44*u.m)
    P8gen.SetLmax(107*u.m)
   if inputFile: 
+   ut.checkFileExists(inputFile)
 # read from external file
    P8gen.UseExternalFile(inputFile, firstEvent)
  if DarkPhoton:
@@ -262,6 +264,7 @@ if simEngine == "Pythia8":
    P8gen.SetLmin(44*u.m)
    P8gen.SetLmax(107*u.m)
  if charmonly:
+  ut.checkFileExists(inputFile)
   primGen.SetBeam(0.,0., ship_geo.Box.TX-2., ship_geo.Box.TY-2.) #Uniform distribution in x/y on the target (1 cm of margin at both sides)    
   primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
@@ -295,6 +298,7 @@ if simEngine == "PG":
   run.SetGenerator(primGen)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
+ ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) 
  DISgen = ROOT.MuDISGenerator()
  # from nu_tau detector to tracking station 2
@@ -331,6 +335,7 @@ if simEngine == "Nuage":
  endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
  Nuagegen.SetPositions(ship_geo.target.z0, startz, endz, startx, endx, starty, endy)
  #--------------------------------
+ ut.checkFileExists(inputFile)
  Nuagegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Nuagegen)
  nEvents = min(nEvents,Nuagegen.GetNevents())
@@ -339,6 +344,7 @@ if simEngine == "Nuage":
 # -----Neutrino Background------------------------
 if simEngine == "Genie":
 # Genie
+ ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
@@ -348,6 +354,7 @@ if simEngine == "Genie":
  run.SetPythiaDecayer("DecayConfigNuAge.C")
  print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
 if simEngine == "nuRadiography":
+ ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
@@ -366,6 +373,7 @@ if simEngine == "nuRadiography":
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
 # reading previously processed muon events, [-50m - 50m]
+ ut.checkFileExists(inputFile)
  primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
  Ntuplegen = ROOT.NtupleGenerator()
  Ntuplegen.Init(inputFile,firstEvent)
@@ -375,6 +383,7 @@ if simEngine == "Ntuple":
 #
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
+ ut.checkFileExists(inputFile)
  primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
