@@ -18,12 +18,12 @@ if [ $# -eq 0 ]
 fi
 
 echo "Setting environment for ${architecture} for $SHIPBUILD"
-$SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest > config.sh
+echo "export SHIPBUILD=$SHIPBUILD" > config.sh
+echo "SHIPBUILD=$SHIPBUILD" > config.sh
 
-A=\$SHIPBUILD/sw/$architecture/FairShip/master-1
-sed -i 's!/afs/cern.ch/user/t/truf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
-sed -i 's!/home/truf/afstruf/scratch2/SHiPBuild!$SHIPBUILD!g' config.sh
-sed -i "s,$A,$(pwd),g" config.sh
+$SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest >> config.sh
+
+P="$(python/tweakConfig)"
 
 source config.sh  # makes global FairShip environment
 
@@ -80,19 +80,18 @@ cmake $SOURCEDIR                                                 \
 make
 # make test does not exist yet
 
-echo "export SHIPBUILD=${SHIPBUILD}" > config.sh
+cp ../FairShip/config.sh  config.sh
 echo "echo \"setup aliBuild environment\"" >> config.sh
-cat ../FairShip/config.sh >> config.sh
-echo "echo \"setup lcg environment\"" >> config.sh
+echo "export SHIPBUILD=${SHIPBUILD}" >> config.sh
 cat ../FairShip/lcgenv.sh >> config.sh
+echo "echo \"setup lcg environment\"" >> config.sh
 echo "export FAIRSHIP=$(pwd)/../FairShip" >> config.sh
 echo "export FAIRSHIPRUN=$(pwd)" >> config.sh
-echo "export SHIPBUILD=$SHIPBUILD" >> config.sh
 
 echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture" >> config.sh
 echo "export LD_LIBRARY_PATH=$INSTALLROOT/lib:\${LD_LIBRARY_PATH}" >> config.sh
 # ugly fix 
-echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8" >> config.sh
+echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include/geant4vmc:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include" >> config.sh
 
 chmod u+x config.sh
 cd -
