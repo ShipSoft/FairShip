@@ -18,7 +18,7 @@ else:
  print p
  x=tmp[tmp.find('/sw')+3:].find('/') 
  f=open('newconfig.sh','w')
- A=tmp.replace(p,"$SHIPBUILD")
+ A=tmp.replace(p,"$SHIPBUILD").replace(' ','')
  for al in l:
   tmp = al.replace(p,"$SHIPBUILD")
   nl = tmp.replace(A,os.path.abspath('.')+' ')
