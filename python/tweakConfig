@@ -21,7 +21,7 @@ else:
  A=tmp.replace(p,"$SHIPBUILD").replace(' ','')
  for al in l:
   tmp = al.replace(p,"$SHIPBUILD")
-  nl = tmp.replace(A,os.path.abspath('.')+' ')
+  nl = tmp.replace(A,os.path.abspath('.'))
   f.write(nl+'\n')
  f.close()
  os.system('mv newconfig.sh config.sh')
