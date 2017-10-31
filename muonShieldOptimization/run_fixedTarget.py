@@ -168,7 +168,7 @@ rtdb = run.GetRuntimeDb()
 run.SetMaterials("media.geo")  
 # -----Create geometry----------------------------------------------
 cave= ROOT.ShipCave("CAVE")
-cave.SetGeometryFileName("cave.geo")
+cave.SetGeometryFileName("caveWithAir.geo")
 run.AddModule(cave)
 
 TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
@@ -250,7 +250,6 @@ print "Real time ",rtime, " s, CPU time ",ctime,"s"
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile+"tmp"
 fin   = ROOT.gROOT.GetListOfFiles()[0]
-
 fHeader = fin.FileHeader
 fHeader.SetRunId(runnr)
 if charm or beauty:
@@ -282,6 +281,7 @@ ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 sTree.Write()
 fout.Close()
 os.system("mv "+tmpFile+" "+outFile)
+fin.SetWritable(False) # bpyass flush error
 
 print "Number of events produced with activity after hadron absorber:",nEvents
 
