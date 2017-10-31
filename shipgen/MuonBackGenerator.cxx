@@ -85,7 +85,8 @@ MuonBackGenerator::~MuonBackGenerator()
 Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  Double_t mass,e,tof,phi,dx,dy;
+  Double_t mass,e,tof,phi;
+  Double_t dx = 0, dy = 0;
   std::vector<int> muList;
 
   while (fn<fNevents) {
@@ -125,9 +126,6 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      phi = gRandom->Uniform(0., 2.) * TMath::Pi();
      dx = r * TMath::Cos(phi);
      dy = r * TMath::Sin(phi);
-  } else {
-     dx = 0;
-     dy = 0;
   }
   if (id==-1){
      std::vector<int> partList;
