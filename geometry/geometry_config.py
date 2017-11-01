@@ -18,7 +18,7 @@ if "nuTauTargetDesign" not in globals():
     if muShieldDesign == 7: 
         nuTauTargetDesign=1
 if "targetOpt" not in globals():
-    targetOpt = 17
+    targetOpt = 18
 if "strawDesign" not in globals():
     strawDesign = 4
 if "tankDesign" not in globals():
@@ -301,16 +301,18 @@ with ConfigRegistry.register_config("basic") as c:
      c.target.M13 = "molybdenum"
      c.target.L13 = 8.*u.cm
      c.target.M14 = "tungsten"
-     c.target.L14 = 8.*u.cm
+     c.target.L14 = 5.*u.cm
      c.target.M15 = "tungsten"
      c.target.L15 = 8.*u.cm
      c.target.M16 = "tungsten"
      c.target.L16 = 10.*u.cm
      c.target.M17 = "tungsten"
-     c.target.L17 = 35.*u.cm
-     c.target.sl  =  0.5*u.cm  # H20 slit *16 times
+     c.target.L17 = 20.*u.cm
+     c.target.M18 = "tungsten"
+     c.target.L18 = 35.*u.cm
+     c.target.sl  =  0.5*u.cm  # H20 slit *17 times
      c.target.xy  = 30.*u.cm   # full length in x and y
-     c.target.length = 16*c.target.sl + c.target.L1 + 7*c.target.L2 + 2*c.target.L9 + c.target.L11 + 4*c.target.L12 + c.target.L16 + c.target.L17
+     c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18
     # interaction point, start of target
     c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
     c.target.z0  =  c.target.z - c.target.length/2.
@@ -381,9 +383,6 @@ with ConfigRegistry.register_config("basic") as c:
           c.EmuMagnet.PillarX = 0 *u.m
           c.EmuMagnet.PillarZ = 0 * u.m
           c.EmuMagnet.PillarY = 0 * u.m
-       
-        
-
    
     #Parameters for tau magnetic Spectrometer
     c.tauMS = AttrDict(z=0*u.cm)
