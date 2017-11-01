@@ -85,7 +85,8 @@ MuonBackGenerator::~MuonBackGenerator()
 Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  Double_t mass,e,tof,phi,dx,dy;
+  Double_t mass,e,tof,phi;
+  Double_t dx = 0, dy = 0;
   std::vector<int> muList;
 
   while (fn<fNevents) {
@@ -120,15 +121,12 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     gRandom->SetSeed(theSeed);
   }
   if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}
-  if (fsmearBeam>0){
-    Double_t test = fsmearBeam*fsmearBeam;
-    Double_t Rsq  = test + 1.;
-    while(Rsq>test){
-     dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
-     dy = gRandom->Uniform(-1.,1.) * fsmearBeam;
-     Rsq = dx*dx+dy*dy;
-    }
-   }
+  if (fsmearBeam > 0) {
+     Double_t r = fsmearBeam + 0.8 * gRandom->Gaus();
+     phi = gRandom->Uniform(0., 2.) * TMath::Pi();
+     dx = r * TMath::Cos(phi);
+     dy = r * TMath::Sin(phi);
+  }
   if (id==-1){
      std::vector<int> partList;
      for (int k = 0; k < vetoPoints->GetEntries(); k++) {
@@ -172,8 +170,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,-1.,wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
      } 
   }else{
-    vx = vx + dx/100.;  
-    vy = vy + dy/100.; 
+    vx += dx/100.;
+    vy += dy/100.;
     if (fPhiRandomize){
      Double_t pt  = TMath::Sqrt( px*px+py*py );
      px = pt*TMath::Cos(phi);
