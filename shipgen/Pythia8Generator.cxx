@@ -1,4 +1,5 @@
 #include <math.h>
+#include "TSystem.h"
 #include "TROOT.h"
 #include "FairPrimaryGenerator.h"
 #include "TGeoNode.h"
@@ -39,11 +40,10 @@ Bool_t Pythia8Generator::Init()
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   if (fextFile && *fextFile) {
     if (0 == strncmp("/eos",fextFile,4) ) {
-     char stupidCpp[100];
-     strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
-     strcat(stupidCpp,fextFile);
-     fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",stupidCpp);
-     fInputFile  = TFile::Open(stupidCpp); 
+     TString tmp = gSystem->Getenv("EOSSHIP");
+     tmp+=fextFile;
+     fInputFile  = TFile::Open(tmp); 
+     fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",tmp.Data());
      if (!fInputFile) {
       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch");
       return kFALSE; }

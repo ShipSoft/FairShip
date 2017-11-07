@@ -989,10 +989,10 @@ from basiclibs import *
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
 if geoFile: 
- if geoFile[0:4] == "/eos": geoFile="root://eoslhcb.cern.ch/"+geoFile
+ if geoFile[0:4] == "/eos": geoFile=ROOT.gSystem.Getenv("EOSSHIP")+geoFile
  fRun.SetGeomFile(geoFile)
 
-if InputFile[0:4] == "/eos": InputFile="root://eoslhcb.cern.ch/"+InputFile
+if InputFile[0:4] == "/eos": InputFile=ROOT.gSystem.Getenv("EOSSHIP")+InputFile
 if hasattr(fRun,'SetSource'):
  inFile = ROOT.FairFileSource(InputFile)
  fRun.SetSource(inFile)

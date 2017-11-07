@@ -3,7 +3,7 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
-${CMAKE_SOURCE_DIR}/muonShieldOptimization ${CMAKE_SOURCE_DIR}/veto ${CMAKE_SOURCE_DIR}/shipdata
+${CMAKE_SOURCE_DIR}/muonShieldOptimization ${CMAKE_SOURCE_DIR}/veto ${CMAKE_SOURCE_DIR}/shipdata /usr/include/python2.7/
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -19,6 +19,7 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 exitHadronAbsorber.cxx
+pyFairModule.h
 )
 
 Set(HEADERS )

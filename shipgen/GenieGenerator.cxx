@@ -1,4 +1,5 @@
 #include <math.h>
+#include "TSystem.h"
 #include "TROOT.h"
 #include "TMath.h"
 #include "TFile.h"
@@ -31,11 +32,10 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
   fLogger = FairLogger::GetLogger();
   if (0 == strncmp("/eos",fileName,4) ) {
-   char stupidCpp[100];
-   strcpy(stupidCpp,"root://eoslhcb.cern.ch/");
-   strcat(stupidCpp,fileName);
-   fInputFile  = TFile::Open(stupidCpp);
-   fLogger->Info(MESSAGE_ORIGIN,"Opening input file on eos %s",stupidCpp);
+   TString tmp = gSystem->Getenv("EOSSHIP");
+   tmp+=fileName;
+   fInputFile  = TFile::Open(tmp); 
+   fLogger->Info(MESSAGE_ORIGIN,"Opening input file on eos %s",tmp.Data());
   }else{
    fInputFile  = new TFile(fileName);
    fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);

@@ -1,4 +1,5 @@
 #include <math.h>
+#include "TSystem.h"
 #include "TROOT.h"
 #include "TRandom.h"
 #include "TFile.h"
@@ -25,7 +26,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fLogger = FairLogger::GetLogger();
   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
   if (0 == strncmp("/eos",fileName,4) ) {
-     TString tmp = "root://eoslhcb.cern.ch/";
+     TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fileName;
      fInputFile  = TFile::Open(tmp); 
   }else{

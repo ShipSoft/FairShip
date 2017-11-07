@@ -2,6 +2,11 @@
 GCC_MAJOR=$(gcc -dumpversion | cut -c 1)
 if [[ $GCC_MAJOR -lt 6 ]]
 then
+  if [ ! -d /cvmfs ];
+  then
+    echo "GCC version too old and cvmfs not available. Stop."
+    exit 1
+  fi
   echo "GCC version too old, trying setup lcg environment"
   source FairShip/genenv.sh
 # fixing a strange error in ROOT v6-10-06

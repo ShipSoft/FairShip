@@ -34,15 +34,15 @@ for o, a in opts:
             dy = float(a)
         if o in ("-n", "--nEvents=",):
             nEvents = int(a)
-
+eosship = ROOT.gSystem.Getenv("EOSSHIP")
 if not inputFile.find(',')<0 :  
   sTree = ROOT.TChain("cbmsim")
   for x in inputFile.split(','):
    if x[0:4] == "/eos":
-    sTree.AddFile("root://eoslhcb.cern.ch/"+x)
+    sTree.AddFile(eosship+x)
    else: sTree.AddFile(x)
 elif inputFile[0:4] == "/eos":
-  eospath = "root://eoslhcb.cern.ch/"+inputFile
+  eospath = eosship+inputFile
   f = ROOT.TFile.Open(eospath)
   sTree = f.cbmsim
 else:
@@ -53,7 +53,7 @@ else:
 if not geoFile:
  geoFile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
 if geoFile[0:4] == "/eos":
-  eospath = "root://eoslhcb.cern.ch/"+geoFile
+  eospath = eosship+geoFile
   fgeo = ROOT.TFile.Open(eospath)
 else:  
   fgeo = ROOT.TFile(geoFile)

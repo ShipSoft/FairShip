@@ -1,7 +1,7 @@
 #! /bin/bash
 # check if SHIPBUILD is set
 if [[ -z $SHIPBUILD ]]; then
-     echo "SHIPBUILD not defined. probably should be export SHIPBUILD=/cvmfs/ship.cern.ch/ShipSoft/SHiPBuild"
+     echo "SHIPBUILD not defined. probably should be export SHIPBUILD=/cvmfs/ship.cern.ch/SHiPBuild"
      exit
 fi
 
