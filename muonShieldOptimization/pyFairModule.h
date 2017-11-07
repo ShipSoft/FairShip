@@ -23,4 +23,5 @@ class pyFairModule : public FairModule {
    virtual void ConstructGeometry() { call_python_method(fSelf,"ConstructGeometry"); }
  private:
    PyObject* fSelf;
+ClassDef(pyFairModule, 0)
 };
