@@ -90,7 +90,7 @@ fi
 git remote set-branches --add origin master
 
 # build FairShip
-./configure.sh
+./configure.sh || exit 1
 
 # run FairShip tests
 cd ../FairShipRun
