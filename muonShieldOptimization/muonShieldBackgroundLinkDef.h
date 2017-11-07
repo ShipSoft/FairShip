@@ -7,7 +7,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class  exitHadronAbsorber+;
-
+#pragma link C++ class  pyFairModule+;
 
 #endif
 
