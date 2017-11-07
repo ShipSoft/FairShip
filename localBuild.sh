@@ -87,7 +87,7 @@ cat ../FairShip/lcgenv.sh >> config.sh
 echo "echo \"setup lcg environment\"" >> config.sh
 echo "export FAIRSHIP=$(pwd)/../FairShip" >> config.sh
 echo "export FAIRSHIPRUN=$(pwd)" >> config.sh
-
+echo "export EOSSHIP=root://eoslhcb.cern.ch/"  >> config.sh
 echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture" >> config.sh
 echo "export LD_LIBRARY_PATH=$INSTALLROOT/lib:\${LD_LIBRARY_PATH}" >> config.sh
 # ugly fix 
