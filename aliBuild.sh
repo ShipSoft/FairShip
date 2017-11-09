@@ -14,9 +14,16 @@ then
   export PATH=$(pwd):${PATH}
 fi
 
-if [ ! -d alibuild ];
+if command -v aliBuild >/dev/null 2>&1;
 then
-  git clone https://github.com/alisw/alibuild
+  echo "Using aliBuild found in PATH."
+else
+  if [ ! -x alibuild/aliBuild ]; then
+    git clone https://github.com/alisw/alibuild
+  else
+    echo "Using previously cloned aliBuild."
+  fi
+  export PATH=${PATH}:$(pwd)/alibuild
 fi
 
 if [ ! -d shipdist ];
@@ -27,7 +34,7 @@ fi
 if [ $# -eq 0 ]
   then
 
- alibuild/aliBuild -c shipdist/ --defaults fairship build FairShip
+ aliBuild -c shipdist/ --defaults fairship build FairShip --force-unknown-architecture
 
 # not done by the framework
  if [ -f config.sh ];
@@ -35,13 +42,13 @@ if [ $# -eq 0 ]
   rm config.sh
  fi
 
- alibuild/alienv printenv  FairShip/latest >> config.sh
+ alienv printenv FairShip/latest >> config.sh
  chmod u+x config.sh
  source config.sh
  cp $GENIE/data/evgen/pdfs/GRV98lo_patched.LHgrid $LHAPDF5_ROOT/share/lhapdf
 
 else
-  alibuild/aliDoctor -c shipdist/ --defaults fairship FairShip
+  aliDoctor -c shipdist/ --defaults fairship FairShip
 fi
 # assume everything is build and placed on cvmfs. How to get the correct environment, if not build there?
 # alibuild/alienv printenv  FairShip/latest > config.sh
