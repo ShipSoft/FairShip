@@ -19,7 +19,7 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 exitHadronAbsorber.cxx
-pyFairModule.h
+# pyFairModule.h  lxplus is unable to find Python.h
 )
 
 Set(HEADERS )
