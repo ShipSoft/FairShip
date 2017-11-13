@@ -548,7 +548,8 @@ def myEventLoop(n):
   if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
   if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
   if not checkHNLorigin(sTree): return
-  wg = sTree.MCTrack[1].GetWeight()
+  if not sTree.MCTrack.GetEntries()>1: wg = 1.
+  else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
 # 
 # make some ecal cluster analysis if exist
