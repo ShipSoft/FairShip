@@ -16,7 +16,17 @@ be used to create new, extra fields, or replace already existing ones, using an 
 text file, where we can set global and/or local fields for specific volumes. The VMC uses cm 
 for distances and kGauss (0.1 Tesla) for magnetic fields. Here, we use the same cm unit for 
 lengths, but use Tesla for magnetic fields, which the ShipFieldMaker class converts to kGauss 
-units when passed to the VMC.
+units when passed to the VMC. 
+
+The function
+
+``` 
+TVirtuaMagField::Field(const Double_t* pos, Double_t* B)
+```
+
+that is implemented in the various derived field classes finds the magnetic field components
+and stores them in the array B given the global (not local) co-ordinate position pos.
+
 
 The script [run_simScript.py](../macro/run_simScript.py) calls the addVMCFields() function defined
 in [geomGeant4.py](../python/geomGeant4.py), which creates a ShipFieldMaker object, where its
@@ -48,12 +58,29 @@ The syntax for each of the above options are:
 1) [FieldMap](ShipBFieldMap.h)
 
 ```
-FieldMap MapLabel MapFileName x0 y0 z0
+FieldMap MapLabel MapFileName x0 y0 z0 phi theta psi
 ```
 
 where MapLabel is the descriptive name of the field, MapFileName is the location of
-the ROOT file containing the field map data (relative to the VMCWORKDIR directory), and 
-x0,y0,z0 are the offset co-ordinates in cm for centering the field map.
+the ROOT file containing the field map data (relative to the VMCWORKDIR directory),
+x0, y0, z0 are the offset co-ordinates in cm, and phi, theta and psi are the Euler 
+rotation angles in degrees about the z axis, the new x axis, and then the new z axis, 
+in that order. The offsets and angles are optional parameters; offsets still need to 
+be provided (can be set to zero) if angles are required.
+
+A field map that is local to a particular volume is assumed to be centred and aligned 
+along the local symmetry axes. For example, if there is a collection of identical magnets 
+that all use the same field map, but the magnets have different global positions and 
+orientations in the geometry, then we only need to define one field map, with zero offsets 
+and angles, using a binning that ensures that the map is centred and aligned along the 
+local co-ordinate axes of the magnet shape. The code will then create lightweight copies 
+of the field map (reusing the binning data) for each of the magnets, displaced and rotated 
+to match their global positions and orientations. This occurs when the map name is used 
+in either the Local or Region field-volume definitions described below. If the field map 
+definition contains non-zero offsets and angles (i.e. if the original data needs 
+displacement or rotation corrections) then these would be applied first before the 
+individual volume transformations. A global field map will not apply local volume
+transformations, only those offsets and angles that is part of its definition.
 
 The field is calculated by the [ShipBFieldMap](ShipBFieldMap.h) class using trilinear 
 interpolation based on the binned map data, which is essentially a 3d histogram.
@@ -78,12 +105,14 @@ generated from VectorFields/Opera software output to the ROOT file format for Fa
 2) CopyMap
 
 ```
-CopyMap MapLabel MapToCopy x0 y0 z0
+CopyMap MapLabel MapToCopy x0 y0 z0 [phi theta psi]
 ```
 
 where MapToCopy is the name of the (previously defined) map to be copied, with the 
-new co-ordinate offset specified by the values x0,y0,z0 (cm). Note that this will
-reuse the field map data already stored in memory.
+new co-ordinate offsets specified by the values x0, y0 and z0 (cm), as well as the 
+optional Euler rotation angles phi, theta and psi (degrees), corresponding to rotations 
+about the z, new x and new z axis, in that order. Note that this will reuse the field 
+map data already stored in memory.
 
 3) [Uniform](https://root.cern.ch/doc/master/classTGeoUniformMagField.html)
 
@@ -100,7 +129,7 @@ valid for any x,y,z co-ordinate value.
 Constant Label xMin xMax yMin yMax zMin zMax Bx By Bz
 ```
 
-where xMin, xMax are the co-ordinate limits along the x axis (in cm),
+where xMin, xMax are the global co-ordinate limits along the x axis (in cm),
 similarly for the y and z axes, and Bx, By and Bz are the components
 of the uniform field in Tesla.
 
@@ -111,9 +140,9 @@ Bell Label BPeak zMiddle orientInt tubeRad
 ```
 
 where BPeak is the peak of the magnetic field (in Tesla), zMiddle is
-the z location of the centre of the field (cm), orientInt is an integer
-to specify if the field is aligned either along the x (2) or y (1) axes
- (Bz = 0 always), and tubeRad is the radius of the tube (cm) inside the
+the global z location of the centre of the field (cm), orientInt is an integer
+to specify if the field is aligned either along the x (2) or y (1) axes 
+(Bz = 0 always), and tubeRad is the radius of the tube (cm) inside the
 region which specifies the extent of the field (for Bx).
 
 6) [Composite](ShipCompField.h)
@@ -137,25 +166,28 @@ to represent the global one for the whole geometry.
 8) Region
 
 ```
-Region VolName FieldLabel
+Region VolName FieldLabel [FieldMapScaleFactor]
 ```
 
-where VolName is the name of the TGeo volume and FieldLabel is the
-name of the local field that should be assigned to this volume. Note that this
-will include the global field if it has been defined earlier in the 
-configuration file, i.e. any particle inside this volume will experience
-the superposition of the local field with the global one.
+where VolName is the name of the TGeo volume, FieldLabel is the name 
+of the local field that should be assigned to this volume and FieldMapScaleFactor 
+is an optional scaling number that can be used to adjust the (maximum) magnitude 
+of any local field map (not other field types). Note that this keyword will 
+include the global field if it has been defined earlier in the configuration file, 
+i.e. any particle inside this volume will experience the superposition of the 
+(scaled) local field with the global one.
 
 9) Local
 
 ```
-Local VolName FieldLabel
+Local VolName FieldLabel {FieldMapScaleFactor]
 ```
 
-where VolName is again the name of the TGeo volume and FieldLabel
-is the name of the local field that should be assigned to this volume. This
-will not include the global field, i.e. any particle inside this volume will
-only see the local one.
+where VolName is again the name of the TGeo volume, FieldLabel is the name 
+of the local field that should be assigned to this volume and FieldMapScaleFactor 
+is an optional scaling number that can be used to adjust the (maximum) magnitude 
+of any local field map (not other field types). This keyword will not include the 
+global field, i.e. any particle inside this volume will only see the local one.
 
 
 As mentioned earlier, magnetic fields for local volumes are enabled for the VMC with the setting 
