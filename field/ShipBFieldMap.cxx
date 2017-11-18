@@ -176,7 +176,7 @@ void ShipBFieldMap::initialise()
 	if (isCopy_ == kFALSE) {this->readMapFile();}
 
 	// Set the global co-ordinate translation and rotation info
-	if (fabs(phi_) > 1e-6 && fabs(theta_) > 1e-6 && fabs(psi_) > 1e-6) {
+	if (fabs(phi_) > 1e-6 || fabs(theta_) > 1e-6 || fabs(psi_) > 1e-6) {
 
 	    // We have non-zero rotation angles. Create a combined translation and rotation
 	    TGeoTranslation tr("offsets", xOffset_, yOffset_, zOffset_);
