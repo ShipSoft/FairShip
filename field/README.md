@@ -58,15 +58,15 @@ The syntax for each of the above options are:
 1) [FieldMap](ShipBFieldMap.h)
 
 ```
-FieldMap MapLabel MapFileName x0 y0 z0 phi theta psi
+FieldMap MapLabel MapFileName [x0 y0 z0] [phi theta psi]
 ```
 
 where MapLabel is the descriptive name of the field, MapFileName is the location of
 the ROOT file containing the field map data (relative to the VMCWORKDIR directory),
 x0, y0, z0 are the offset co-ordinates in cm, and phi, theta and psi are the Euler 
 rotation angles in degrees about the z axis, the new x axis, and then the new z axis, 
-in that order. The offsets and angles are optional parameters; offsets still need to 
-be provided (can be set to zero) if angles are required.
+in that order. The offsets and angles are optional parameters (denoted by the square
+brackets); offsets still need to be provided (can be set to zero) if angles are required.
 
 A field map that is local to a particular volume is assumed to be centred and aligned 
 along the local symmetry axes. For example, if there is a collection of identical magnets 
@@ -180,7 +180,7 @@ i.e. any particle inside this volume will experience the superposition of the
 9) Local
 
 ```
-Local VolName FieldLabel {FieldMapScaleFactor]
+Local VolName FieldLabel [FieldMapScaleFactor]
 ```
 
 where VolName is again the name of the TGeo volume, FieldLabel is the name 
