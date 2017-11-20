@@ -100,11 +100,8 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, dy, reconst
 
     for iEvent in range(nEvents):
 
-        if iEvent%100 == 0:
+        if iEvent%1000 == 0:
             print 'Event ', iEvent
-            
-        if iEvent >= 30000:
-            break
 
         ########################################### Select one event ###################################################
 
