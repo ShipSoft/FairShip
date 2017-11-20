@@ -58,6 +58,9 @@ class ShipDigiReco:
 # event header
   self.header  = ROOT.FairEventHeader()
   self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+# Hits of recognized tracks
+  self.patRecArray  = ROOT.TClonesArray("strawtubesPoint")
+  self.patRecPoint   = self.sTree.Branch("PatRecPoint",  self.patRecArray, 32000, -1)
 # fitted tracks
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -181,7 +184,9 @@ class ShipDigiReco:
   shipPatRec.initialize(fgeo)
 
  def reconstruct(self):
+   self.patRecArray.Delete()
    ntracks = self.findTracks()
+   self.patRecPoint.Fill()
    nGoodTracks = self.findGoodTracks()
    self.linkVetoOnTracks()
    for x in self.caloTasks: 
@@ -322,7 +327,26 @@ class ShipDigiReco:
   nTrack = -1
   trackCandidates = []
   if realPR:
-     fittedtrackids=shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
+     fittedtrackids, reco_points = shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
+     # Save hits of recognized tracks
+     for i_point in range(len(reco_points['TrackID'])):
+            pr_object = ROOT.strawtubesPoint(int(reco_points['TrackID'][i_point]), 
+                                             int(reco_points['DetID'][i_point]), 
+                                             ROOT.TVector3(reco_points['X'][i_point], 
+                                                           reco_points['Y'][i_point], 
+                                                           reco_points['Z'][i_point]), 
+                                             ROOT.TVector3(reco_points['Px'][i_point], 
+                                                           reco_points['Py'][i_point], 
+                                                           reco_points['Pz'][i_point]), 
+                                             -999., 
+                                             -999., 
+                                             -999., 
+                                             int(reco_points['PdgCode'][i_point]), 
+                                             reco_points['dist2wire'][i_point])
+            
+            if self.patRecArray.GetSize() == i_point: self.patRecArray.Expand(i_point+1000)
+            self.patRecArray[i_point] = pr_object
+            
      if fittedtrackids:
        tracknbr=0
        for ids in fittedtrackids:
