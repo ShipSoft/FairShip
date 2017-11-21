@@ -73,7 +73,7 @@ except getopt.GetoptError:
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
         print '       --epsilon value or -e value to set mixing parameter epsilon' 
         print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
-        sys.exit()
+        sys.exit(2)
 for o, a in opts:
         if o in ("-D","--display"):
             eventDisplay = True
@@ -157,7 +157,7 @@ for o, a in opts:
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
  print "cannot have HNL and SUSY or DP at the same time, abort"
- sys.exit()
+ sys.exit(2)
 
 if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
   inputFile = "/eos/ship/data/GenieEvents/genie-nu_mu.root"
