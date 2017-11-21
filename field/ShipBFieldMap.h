@@ -6,6 +6,7 @@
 #ifndef ShipBFieldMap_H
 #define ShipBFieldMap_H
 
+#include "TGeoMatrix.h"
 #include "TVirtualMagField.h"
 #include "TVector3.h"
 
@@ -25,11 +26,17 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] xOffset The x global co-ordinate shift to position the field map (cm)
       \param [in] yOffset The y global co-ordinate shift to position the field map (cm)
       \param [in] zOffset The z global co-ordinate shift to position the field map (cm)
+      \param [in] phi The first Euler rotation angle about the z axis (degrees)
+      \param [in] theta The second Euler rotation angle about the new x axis (degrees)
+      \param [in] psi The third Euler rotation angle about the new z axis (degrees)
+      \param [in] scale The field magnitude scaling factor (default = 1.0)
     */
     ShipBFieldMap(const std::string& label, const std::string& mapFileName,
-		  Double_t xOffset = 0.0, Double_t yOffset = 0.0, Double_t zOffset = 0.0);
+		  Double_t xOffset = 0.0, Double_t yOffset = 0.0, Double_t zOffset = 0.0,
+		  Double_t phi = 0.0, Double_t theta = 0.0, Double_t psi = 0.0,
+		  Double_t scale = 1.0);
 
-    //! Copy constructor with a new global positioning offset. Use this if you want
+    //! Copy constructor with a new global transformation. Use this if you want
     //! to reuse the same field map information elsewhere in the geometry
     /*! 
       \param [in] rhs The ShipBFieldMap object to be copied
@@ -37,10 +44,16 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] newXOffset The new global offset x co-ordinate (cm)
       \param [in] newYOffset The new global offset y co-ordinate (cm)
       \param [in] newZOffset The new global offset z co-ordinate (cm)
-      \returns a copy of the field map object "rhs", keeping the same fieldMap pointer
+      \param [in] newPhi The first Euler rotation angle about the z axis (degrees)
+      \param [in] newTheta The second Euler rotation angle about the new x axis (degrees)
+      \param [in] newPsi The third Euler rotation angle about the new z axis (degrees)
+      \param [in] newScale The field magnitude scaling factor (default = 1.0)
+     \returns a copy of the field map object "rhs", keeping the same fieldMap pointer
     */
     ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rhs,
-		  Double_t newXOffset, Double_t newYOffset, Double_t newZOffset);
+		  Double_t newXOffset, Double_t newYOffset, Double_t newZOffset,
+		  Double_t newPhi = 0.0, Double_t newTheta = 0.0, Double_t newPsi = 0.0,
+		  Double_t newScale = 1.0);
 
     //! Destructor
     virtual ~ShipBFieldMap();
@@ -69,6 +82,30 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] zValue The value of the z global co-ordinate shift (cm)
     */
     void SetZOffset(Double_t zValue) {zOffset_ = zValue;}
+
+    //! Set the first Euler rotation angle phi about the z axis
+    /*!
+      \param [in] phi The first Euler rotation angle about the z axis (degrees)
+    */
+    void SetPhi(Double_t phi) {phi_ = phi;}
+
+    //! Set the second Euler rotation angle theta about the new x axis
+    /*!
+      \param [in] theta The second Euler rotation angle about the new x axis (degrees)
+    */
+    void SetTheta(Double_t theta) {theta_ = theta;}
+
+    //! Set the third Euler rotation angle psi about the new z axis
+    /*!
+      \param [in] psi The third Euler rotation angle about the new z axis (degrees)
+    */
+    void SetPsi(Double_t psi) {psi_ = psi;}
+
+    //! Set the field magnitude scaling factor
+    /*!
+      \param [in] scale The scaling factor for the field magnitude
+    */
+    void SetScale(Double_t scale) {scale_ = scale;}
 
     //! Get the name of the map file
     /*!
@@ -102,93 +139,117 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Get the minimum value of x for the map
     /*!
-      \returns the minimum x co-ordinate
+      \returns the minimum x co-ordinate (cm)
     */
     Double_t GetXMin() const {return xMin_;}
 
     //! Get the maximum value of x for the map
     /*!
-      \returns the maximum x co-ordinate
+      \returns the maximum x co-ordinate (cm)
     */
     Double_t GetXMax() const {return xMax_;}
 
     //! Get the bin width along x for the map
     /*!
-      \returns the bin width along x
+      \returns the bin width along x (cm)
     */
     Double_t GetdX() const {return dx_;}
 
      //! Get the x co-ordinate range for the map
     /*!
-      \returns the x co-ordinate range
+      \returns the x co-ordinate range (cm)
     */
     Double_t GetXRange() const {return xRange_;}
 
    //! Get the minimum value of y for the map
     /*!
-      \returns the minimum y co-ordinate
+      \returns the minimum y co-ordinate (cm)
     */
     Double_t GetYMin() const {return yMin_;}
 
     //! Get the maximum value of y for the map
     /*!
-      \returns the maximum y co-ordinate
+      \returns the maximum y co-ordinate (cm)
     */
     Double_t GetYMax() const {return yMax_;}
 
     //! Get the bin width along y for the map
     /*!
-      \returns the bin width along y
+      \returns the bin width along y (cm)
     */
     Double_t GetdY() const {return dy_;}
 
      //! Get the y co-ordinate range for the map
     /*!
-      \returns the y co-ordinate range
+      \returns the y co-ordinate range (cm)
     */
     Double_t GetYRange() const {return yRange_;}
 
     //! Get the minimum value of z for the map
     /*!
-      \returns the minimum z co-ordinate
+      \returns the minimum z co-ordinate (cm)
     */
     Double_t GetZMin() const {return zMin_;}
 
     //! Get the maximum value of z for the map
     /*!
-      \returns the maximum z co-ordinate
+      \returns the maximum z co-ordinate (cm)
     */
     Double_t GetZMax() const {return zMax_;}
 
     //! Get the bin width along z for the map
     /*!
-      \returns the bin width along z
+      \returns the bin width along z (cm)
     */
     Double_t GetdZ() const {return dz_;}
 
      //! Get the z co-ordinate range for the map
     /*!
-      \returns the z co-ordinate range
+      \returns the z co-ordinate range (cm)
     */
     Double_t GetZRange() const {return zRange_;}
 
     //! Get the x offset co-ordinate of the map for global positioning
     /*!
-      \returns the map's x offset co-ordinate for global positioning
+      \returns the map's x offset co-ordinate for global positioning (cm)
     */
     Double_t GetXOffset() const {return xOffset_;}
 
     //! Get the y offset co-ordinate of the map for global positioning
     /*!
-      \returns the map's y offset co-ordinate for global positioning
+      \returns the map's y offset co-ordinate for global positioning (cm)
     */
     Double_t GetYOffset() const {return yOffset_;}
 
     //! Get the z offset co-ordinate of the map for global positioning
     /*!
-      \returns the map's z offset co-ordinate for global positioning
+      \returns the map's z offset co-ordinate for global positioning (cm)
     */
     Double_t GetZOffset() const {return zOffset_;}
+
+    //! Get the first Euler rotation angle about the z axis for global positioning
+    /*!
+      \returns the map's first Euler rotation angle about the z axis (degrees)
+    */
+    Double_t GetPhi() const {return phi_;}
+
+    //! Get the second Euler rotation angle about the new x axis for global positioning
+    /*!
+      \returns the map's second Euler rotation angle about the new x axis (degrees)
+    */
+    Double_t GetTheta() const {return theta_;}
+
+    //! Get the third Euler rotation angle about the new z axis for global positioning
+    /*!
+      \returns the map's third Euler rotation angle about the new z axis (degrees)
+    */
+    Double_t GetPsi() const {return psi_;}
+
+    //! Get the field magnitude scaling factor
+    /*!
+      \returns the scaling factor for the field magnitude
+    */
+    Double_t GetScale() const {return scale_;}
 
     //! Get the boolean flag to specify if we are a "copy"
     /*!
@@ -335,6 +396,21 @@ class ShipBFieldMap : public TVirtualMagField
     //! The z value of the positional offset for the map
     Double_t zOffset_;
 
+    //! The first Euler rotation angle about the z axis
+    Double_t phi_;
+
+    //! The second Euler rotation angle about the new x axis
+    Double_t theta_;
+
+    //! The third Euler rotation angle about the new z axis
+    Double_t psi_;
+
+    //! The B field magnitude scaling factor
+    Double_t scale_;
+
+    //! The combined translation and rotation transformation
+    TGeoMatrix* theTrans_;
+
     //! Double converting Tesla to kiloGauss (for VMC/FairRoot B field units)
     Double_t Tesla_;
 
@@ -379,7 +455,6 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Complimentary fractional bin distance along z
     Double_t zFrac1_;
-
 
 };
 

@@ -16,22 +16,31 @@ ShipBFieldMap::ShipBFieldMap(const std::string& label,
 			     const std::string& mapFileName,
 			     Double_t xOffset,
 			     Double_t yOffset,
-			     Double_t zOffset) : 
+			     Double_t zOffset,
+			     Double_t phi,
+			     Double_t theta,
+			     Double_t psi,
+			     Double_t scale) : 
     TVirtualMagField(label.c_str()),
     fieldMap_(new std::vector<TVector3>()),
     mapFileName_(mapFileName),
-    initialised_(kFALSE), 
+    initialised_(kFALSE),
     isCopy_(kFALSE),
     Nx_(0), Ny_(0), Nz_(0), N_(0),
-    xMin_(0.0), xMax_(0.0), 
+    xMin_(0.0), xMax_(0.0),
     dx_(0.0), xRange_(0.0),
     yMin_(0.0), yMax_(0.0),
     dy_(0.0), yRange_(0.0),
-    zMin_(0.0), zMax_(0.0), 
+    zMin_(0.0), zMax_(0.0),
     dz_(0.0), zRange_(0.0),
-    xOffset_(xOffset), 
+    xOffset_(xOffset),
     yOffset_(yOffset),
     zOffset_(zOffset),
+    phi_(phi),
+    theta_(theta),
+    psi_(psi),
+    scale_(scale),
+    theTrans_(0),
     Tesla_(10.0)
 {
     this->initialise();
@@ -40,27 +49,47 @@ ShipBFieldMap::ShipBFieldMap(const std::string& label,
 ShipBFieldMap::~ShipBFieldMap()
 {
     // Delete the internal vector storing the field map values
-    if (fieldMap_) {delete fieldMap_;}
+    if (fieldMap_ && isCopy_ == kFALSE) {
+	delete fieldMap_; fieldMap_ = 0;
+    }
+
+    if (theTrans_) {delete theTrans_; theTrans_ = 0;}
+
 }
 
 
 ShipBFieldMap::ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rhs,
-			     Double_t newXOffset, Double_t newYOffset, Double_t newZOffset) :
+			     Double_t newXOffset, Double_t newYOffset, Double_t newZOffset,
+			     Double_t newPhi, Double_t newTheta, Double_t newPsi, Double_t newScale) :
     TVirtualMagField(newName.c_str()),
     fieldMap_(rhs.fieldMap_),
     mapFileName_(rhs.GetMapFileName()),
-    initialised_(kFALSE), 
+    initialised_(kFALSE),
     isCopy_(kTRUE),
-    Nx_(0), Ny_(0), Nz_(0), N_(0),
-    xMin_(0.0), xMax_(0.0), 
-    dx_(0.0), xRange_(0.0),
-    yMin_(0.0), yMax_(0.0),
-    dy_(0.0), yRange_(0.0),
-    zMin_(0.0), zMax_(0.0), 
-    dz_(0.0), zRange_(0.0),
+    Nx_(rhs.Nx_),
+    Ny_(rhs.Ny_),
+    Nz_(rhs.Nz_),
+    N_(rhs.N_),
+    xMin_(rhs.xMin_),
+    xMax_(rhs.xMax_),
+    dx_(rhs.dx_),
+    xRange_(rhs.xRange_),
+    yMin_(rhs.yMin_),
+    yMax_(rhs.yMax_),
+    dy_(rhs.dy_),
+    yRange_(rhs.yRange_),
+    zMin_(rhs.zMin_),
+    zMax_(rhs.zMax_),
+    dz_(rhs.dz_),
+    zRange_(rhs.zRange_),
     xOffset_(newXOffset), 
     yOffset_(newYOffset),
     zOffset_(newZOffset),
+    phi_(newPhi),
+    theta_(newTheta),
+    psi_(newPsi),
+    scale_(newScale),
+    theTrans_(0),
     Tesla_(10.0)
 {
     // Copy constructor with new label and different global offset, which uses
@@ -71,15 +100,20 @@ ShipBFieldMap::ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rh
 void ShipBFieldMap::Field(const Double_t* position, Double_t* B) 
 {
 
-    // Set the B field components given the position vector
+    // Set the B field components given the global position co-ordinates
 
-    // The point (global) co-ordinates, subtracting any offsets
-    Double_t x = position[0] - xOffset_;
-    Double_t y = position[1] - yOffset_;
-    Double_t z = position[2] - zOffset_;
+    // Convert the global position into a local one for the volume field.
+    // Initialise the local co-ords, which will get overwritten if the
+    // co-ordinate transformation exists. For a global field, any local
+    // volume transformation is ignored
+    Double_t localCoords[3] = {position[0], position[1], position[2]};
 
-    //std::cout<<"Offsets: "<<xOffset_<<", "<<yOffset_<<", "<<zOffset_<<std::endl;
-    //std::cout<<"Position = "<<position[0]<<", "<<position[1]<<", "<<position[2]<<std::endl;
+    if (theTrans_) {theTrans_->MasterToLocal(position, localCoords);}
+
+    // The local position co-ordinates
+    Double_t x = localCoords[0];
+    Double_t y = localCoords[1];
+    Double_t z = localCoords[2];
 
     // Initialise the B field components to zero
     B[0] = 0.0;
@@ -88,7 +122,6 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
 
     // First check to see if we are inside the field map range
     Bool_t inside = this->insideRange(x, y, z);
-    //std::cout<<"x,y,z = "<<x<<", "<<y<<", "<<z<<", Inside = "<<(int) inside<<std::endl;
     if (inside == kFALSE) {return;}
 
     // Find the neighbouring bins for the given point
@@ -128,22 +161,36 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     zFrac1_ = 1.0 - zFrac_;
 
     // Finally get the magnetic field components using trilinear interpolation
-    B[0] = this->BInterCalc(ShipBFieldMap::xAxis);
-    B[1] = this->BInterCalc(ShipBFieldMap::yAxis);
-    B[2] = this->BInterCalc(ShipBFieldMap::zAxis);
-
-    //std::cout<<GetName()<<": Bins = "<<iX<<", "<<iY<<", "<<iZ
-    //         <<", B = "<<B[0]<<", "<<B[1]<<", "<<B[2]<<std::endl;
+    // and scale with the appropriate multiplication factor (default = 1.0)
+    B[0] = this->BInterCalc(ShipBFieldMap::xAxis)*scale_;
+    B[1] = this->BInterCalc(ShipBFieldMap::yAxis)*scale_;
+    B[2] = this->BInterCalc(ShipBFieldMap::zAxis)*scale_;
 
 }
 
 void ShipBFieldMap::initialise()
 {
- 
-   if (initialised_ == kFALSE) {
+    
+    if (initialised_ == kFALSE) {
+	
+	if (isCopy_ == kFALSE) {this->readMapFile();}
 
-	this->readMapFile();
-	initialised_ = kTRUE;    
+	// Set the global co-ordinate translation and rotation info
+	if (fabs(phi_) > 1e-6 || fabs(theta_) > 1e-6 || fabs(psi_) > 1e-6) {
+
+	    // We have non-zero rotation angles. Create a combined translation and rotation
+	    TGeoTranslation tr("offsets", xOffset_, yOffset_, zOffset_);
+	    TGeoRotation rot("angles", phi_, theta_, psi_);
+	    theTrans_ = new TGeoCombiTrans(tr, rot);
+
+	} else {
+
+	    // We only need a translation
+	    theTrans_ = new TGeoTranslation("offsets", xOffset_, yOffset_, zOffset_);
+
+	}
+
+	initialised_ = kTRUE;
 
     }
 
@@ -166,15 +213,24 @@ void ShipBFieldMap::readMapFile()
 
     }
 
-
 }
 
 void ShipBFieldMap::readRootFile() {
 
     TFile* theFile = TFile::Open(mapFileName_.c_str());
 
+    if (!theFile) {
+	std::cout<<"ShipBFieldMap: could not find the file "<<mapFileName_<<std::endl;
+	return;
+    }
+    
     // Coordinate ranges
     TTree* rTree = dynamic_cast<TTree*>(theFile->Get("Range"));
+    if (!rTree) {
+	std::cout<<"ShipBFieldMap: could not find Range tree in "<<mapFileName_<<std::endl;
+	return;
+    }
+
     rTree->SetBranchAddress("xMin", &xMin_);
     rTree->SetBranchAddress("xMax", &xMax_);
     rTree->SetBranchAddress("dx", &dx_);
@@ -190,6 +246,7 @@ void ShipBFieldMap::readRootFile() {
 
     this->setLimits();
 
+    // Make sure we don't have a copy
     if (isCopy_ == kFALSE) {
 
 	// The data is expected to contain Bx,By,Bz data values 
@@ -198,6 +255,11 @@ void ShipBFieldMap::readRootFile() {
 	fieldMap_->clear();
 
 	TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
+	if (!dTree) {
+	    std::cout<<"ShipBFieldMap: could not find Data tree in "<<mapFileName_<<std::endl;
+	    return;
+	}
+
 	Double_t Bx, By, Bz;
 	dTree->SetBranchStatus("*", 0);
 	dTree->SetBranchStatus("Bx", 1);
@@ -292,7 +354,6 @@ Bool_t ShipBFieldMap::insideRange(Double_t x, Double_t y, Double_t z)
     if (x >= xMin_ && x <= xMax_ && y >= yMin_ &&
 	y <= yMax_ && z >= zMin_ && z <= zMax_) {inside = kTRUE;}
 	
-
     return inside;
 
 }

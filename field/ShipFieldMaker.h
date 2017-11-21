@@ -16,6 +16,10 @@
 #include <string>
 #include <vector>
 
+class TGeoMatrix;
+class TGeoNode;
+class TGeoVolume;
+
 class ShipFieldMaker
 {
 
@@ -38,61 +42,6 @@ class ShipFieldMaker
       \param [in] inputFile The file containing the information about fields and volumes
     */
     void makeFields(const std::string& inputFile);
-
-    //! Create the uniform field based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void createUniform(const stringVect& inputLine);
-
-    //! Create the constant field based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void createConstant(const stringVect& inputLine);
-
-    //! Create the Bell field based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void createBell(const stringVect& inputLine);
-
-    //! Create the field map based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void createFieldMap(const stringVect& inputLine);
-
-    //! Copy (&translate) a field map based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void copyFieldMap(const stringVect& inputLine);
-
-     //! Create the composite field based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void createComposite(const stringVect& inputLine);
-
-   //! Set the global field based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void setGlobalField(const stringVect& inputLine);
-
-    //! Set the regional (local+global) field based on the info from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void setRegionField(const stringVect& inputLine);
-
-    //! Set the local field only based on information from the inputLine
-    /*!
-      \param [in] inputLine The space separated input line
-    */
-    void setLocalField(const stringVect& inputLine);
-    
 
     //! Get the global magnetic field
     /*!
@@ -167,6 +116,101 @@ class ShipFieldMaker
  
  protected:
 
+    //! Structure to hold transformation information
+    struct transformInfo {
+
+	//! The x translation displacement
+	Double_t x0_;
+	//! The y translation displacement
+	Double_t y0_;
+	//! The z translation displacement
+	Double_t z0_;
+
+	//! The first Euler rotation angle (about Z axis)
+	Double_t phi_;
+	//! The second Euler rotation angle (about new X' axis)
+	Double_t theta_;
+	//! The third Euler rotation angle (about new Z' axis)
+	Double_t psi_;
+
+    };
+
+    //! Create the uniform field based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void createUniform(const stringVect& inputLine);
+
+    //! Create the constant field based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void createConstant(const stringVect& inputLine);
+
+    //! Create the Bell field based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void createBell(const stringVect& inputLine);
+
+    //! Create the field map based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void createFieldMap(const stringVect& inputLine);
+
+    //! Copy (&translate) a field map based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void copyFieldMap(const stringVect& inputLine);
+
+     //! Create the composite field based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void createComposite(const stringVect& inputLine);
+
+   //! Set the global field based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void setGlobalField(const stringVect& inputLine);
+
+    //! Set the regional (local+global) field based on the info from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void setRegionField(const stringVect& inputLine);
+
+    //! Set the local field only based on information from the inputLine
+    /*!
+      \param [in] inputLine The space separated input line
+    */
+    void setLocalField(const stringVect& inputLine);
+
+    //! Check if we have a local field map and store the volume global transformation
+    /*!
+      \param [in] localField The pointer (reference) to the field map (which may be updated)
+      \param [in] volName The name of the volume (which is used to find the transformation)
+      \param [in] scale The B field magnitude scaling factor
+    */
+    void checkLocalFieldMap(TVirtualMagField*& localField, const TString& volName, Double_t scale);
+
+    //! Get the transformation matrix for the volume position and orientation
+    /*!
+      \param [in] volName The name of the volume
+      \param [in] theInfo The transformation information structure
+    */
+    void getTransformation(const TString& volName, transformInfo& theInfo);
+
+    //! Update the current geometry node pointer that matches the required volume name
+    /*!
+      \param [in] aVolume The current volume, whose nodes are looked at
+      \param [in] volName The required volume name we want to find
+    */
+    void findNode(TGeoVolume* aVolume, const TString& volName);
+
 
  private:
 
@@ -181,6 +225,12 @@ class ShipFieldMaker
 
     //! Double converting Tesla to kiloGauss (for VMC/FairRoot B field units)
     Double_t Tesla_;
+
+    //! The current volume node: used for finding volume transformations
+    TGeoNode* theNode_;
+
+    //! Boolean to specify if we have found the volume node we need
+    Bool_t gotNode_;
 
     //! Split a string
     /*!
