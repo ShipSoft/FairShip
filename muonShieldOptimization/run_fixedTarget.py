@@ -199,6 +199,7 @@ P8gen.SetTarget("/TargetArea_1",0.,0.) # will distribute PV inside target, beam 
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
+P8gen.SetHeartBeat(100000)
 if G4only: P8gen.SetG4only()
 if withEvtGen: P8gen.WithEvtGen()
 if boostDiMuon > 1:
