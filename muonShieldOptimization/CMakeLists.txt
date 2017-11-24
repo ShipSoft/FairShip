@@ -1,13 +1,10 @@
 # Create a library called "libMuonShieldBackground" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
-execute_process(COMMAND pkg-config --cflags python OUTPUT_VARIABLE temp1)
-
-string(REPLACE  "-I" " " temp2 ${temp1})
-string(REPLACE  "  " ";" pythonInclude ${temp2})
+FIND_PACKAGE(PythonLibs REQUIRED) 
 
 set(INCLUDE_DIRECTORIES
-${CMAKE_SOURCE_DIR}/muonShieldOptimization ${CMAKE_SOURCE_DIR}/veto ${CMAKE_SOURCE_DIR}/shipdata ${pythonInclude}
+${CMAKE_SOURCE_DIR}/muonShieldOptimization ${CMAKE_SOURCE_DIR}/veto ${CMAKE_SOURCE_DIR}/shipdata ${PYTHON_INCLUDE_DIRS}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
