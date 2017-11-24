@@ -261,11 +261,8 @@ void Target::ConstructGeometry()
   InitMedium("CoilCopper");
   TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
     
-  InitMedium("NuclearEmulsion");
-  TGeoMedium *NEmu =gGeoManager->GetMedium("NuclearEmulsion");
-    
-  InitMedium("PlasticBase");
-  TGeoMedium *PBase =gGeoManager->GetMedium("PlasticBase");
+  InitMedium("EmulsionFilm");
+  TGeoMedium *NEmu =gGeoManager->GetMedium("EmulsionFilm");
     
   InitMedium("lead");
   TGeoMedium *lead = gGeoManager->GetMedium("lead");
@@ -288,7 +285,7 @@ void Target::ConstructGeometry()
   TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox,vacuum);
       
   // In both fDesign=0 & fDesign=1 the emulsion target is inserted within a magnet
-  if(fDesign==0||fDesign==1)
+  if(fDesign!=2)
     {
       TGeoVolume *MagnetVol;
 
@@ -305,6 +302,11 @@ void Target::ConstructGeometry()
 	  MagnetVol=gGeoManager->GetVolume("Goliath");
 	  magField2->SetFieldValue(0.,fField,0.);
 	}
+      if(fDesign==3)
+	{
+	  magField2->SetFieldValue(fField,0,0.);
+	  MagnetVol=gGeoManager->GetVolume("NudetMagnet");
+	}
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT) 
       volTarget->SetField(magField2);
@@ -314,6 +316,8 @@ void Target::ConstructGeometry()
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+fCoilH2+YDimension/2,0));
       if(fDesign==1) //NEW
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
+      if(fDesign==3)
+	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
     }
 
     
@@ -335,20 +339,15 @@ void Target::ConstructGeometry()
   volBrick->SetLineColor(kCyan);
   volBrick->SetTransparency(1);
     
-  TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+  TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
   TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,NEmu); //TOP
-  TGeoVolume *volEmulsionFilm2 = new TGeoVolume("Emulsion2",EmulsionFilm,NEmu); //BOTTOM
   volEmulsionFilm->SetLineColor(kBlue);
-  volEmulsionFilm2->SetLineColor(kBlue);
+
   if(fPassive==0)
     {
       AddSensitiveVolume(volEmulsionFilm);
-      AddSensitiveVolume(volEmulsionFilm2);
     }
     
-  TGeoBBox *PlBase = new TGeoBBox("PlBase", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
-  TGeoVolume *volPlBase = new TGeoVolume("PlasticBase",PlBase,PBase);
-  volPlBase->SetLineColor(kYellow-4);
     
   TGeoBBox *Lead = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
   TGeoVolume *volLead = new TGeoVolume("Lead",Lead,lead);
@@ -360,9 +359,7 @@ void Target::ConstructGeometry()
     
   for(Int_t n=0; n<NPlates+1; n++)
     {
-      volBrick->AddNode(volEmulsionFilm2, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmulsionThickness/2 + n*AllPlateWidth)); //BOTTOM
-      volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*AllPlateWidth)); //TOP
-      volBrick->AddNode(volPlBase, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*AllPlateWidth)); //PLASTIC BASE
+      volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth/2 + n*AllPlateWidth));
     }
   for(Int_t n=0; n<NPlates; n++)
     {
@@ -372,7 +369,7 @@ void Target::ConstructGeometry()
   volBrick->SetVisibility(kTRUE);
 
   //The CES is required only in the option with magnet surrounding the emulsion target
-  if(fDesign==0||fDesign==1)
+  if(fDesign!=2)
     {    
       //CES
     
@@ -388,28 +385,17 @@ void Target::ConstructGeometry()
       volRohGap->SetLineColor(kYellow);
     
     
-      TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+      TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
       TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,NEmu); //TOP
-      TGeoVolume *volEmulsionFilm2CES = new TGeoVolume("Emulsion2CES",EmulsionFilmCES,NEmu); //BOTTOM
       volEmulsionFilmCES->SetLineColor(kBlue);
-      volEmulsionFilm2CES->SetLineColor(kBlue);
       if(fPassive==0)
 	{
 	  AddSensitiveVolume(volEmulsionFilmCES);
-	  AddSensitiveVolume(volEmulsionFilm2CES);
 	}
-    
-      TGeoBBox *PlBaseCES = new TGeoBBox("PlBaseCES", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
-      TGeoVolume *volPlBaseCES = new TGeoVolume("PlasticBaseCES",PlBaseCES,PBase);
-      volPlBaseCES->SetLineColor(kYellow);
     
       for(Int_t n=0; n<NRohacellGap+1;n++)
 	{
-	  volCES->AddNode(volEmulsionFilm2CES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness/2+n*LayerCESWidth)); //BOTTOM
-	  volCES->AddNode(volEmulsionFilmCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth)); //TOP
-	  volCES->AddNode(volPlBaseCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*LayerCESWidth)); //PLASTIC BASE
-	  //	if(n == 2)
-	  // cout << "-CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth = " << -CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth << endl;
+	  volCES->AddNode(volEmulsionFilmCES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmPlateWidth/2+n*LayerCESWidth)); 
 	}
       for(Int_t n=0; n<NRohacellGap; n++)
 	{
@@ -508,17 +494,18 @@ void Target::ConstructGeometry()
       TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
       volBase->SetLineColor(kYellow-3);
       tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-YDimension/2 - fBaseY/2,fCenterZ));
-      
-      TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
-      TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
-      PillarVol->SetLineColor(kGreen+3);
-      tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
-      tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
-      tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
-      tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
-    }
-   
 
+      if(fDesign==2)
+	{
+	  TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
+	  TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
+	  PillarVol->SetLineColor(kGreen+3);
+	  tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
+	  tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
+	  tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
+	  tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
+	}
+    }
 }
 
 Bool_t  Target::ProcessHits(FairVolume* vol)
@@ -559,7 +546,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	
 
     Int_t motherV[MaxL];
-    Bool_t EmTop = 0, EmBot = 0, EmCESTop = 0, EmCESBot = 0;
+    Bool_t EmBrick = 0, EmCES = 0;
     Int_t NPlate =0;
     const char *name;
 	
@@ -568,22 +555,12 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
     if(strcmp(name, "Emulsion") == 0)
       {
-	EmTop=1;
-	NPlate = detID;
-      }
-    if(strcmp(name, "Emulsion2") == 0)
-      {
-	EmBot=1;
+	EmBrick;
 	NPlate = detID;
       }
     if(strcmp(name, "EmulsionCES") == 0)
       {
-	EmCESTop=1;
-	NPlate = detID;
-      }
-    if(strcmp(name, "Emulsion2CES") == 0) 
-      {
-	EmCESBot=1;
+	EmCES=1;
 	NPlate = detID;
       }
 	
@@ -610,16 +587,13 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
       }
     
     Bool_t BrickorCES = 0;   //Brick = 1 / CES = 0;
-    if(EmTop == 1 || EmBot ==1)
+    if(EmBrick==1)
       BrickorCES = 1;
-    Bool_t TopBot = 0; //Top = 1 / Bot = 0;
-    if(EmTop == 1 || EmCESTop == 1)
-      TopBot = 1;
 
     Double_t zEnd = 0, zStart =0;
 	
 
-    detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + TopBot*1 ;
+    detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1);
 
 
     fVolumeID = detID;
@@ -638,11 +612,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
     Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
         
-    /*AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
-      TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-      fELoss, pdgCode, EmTop, EmBot, EmCESTop,EmCESBot,TT,
-      NPlate,NColumn,NRow,NWall);
-    */
+   
     AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
 	   TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
 	   fELoss, pdgCode);
@@ -656,7 +626,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 }
 
 
-void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot)
+void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick)
 {
   Bool_t BrickorCES = 0, TopBot = 0;
   
@@ -667,29 +637,25 @@ void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColum
   if(b < 1)
     {
       BrickorCES = 0;
-      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;
     }
   if(b >= 1)
     {
       BrickorCES = 1;
-      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;
     }
-  TopBot = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4- BrickorCES*1E3- NPlate*1E1)/1E0;
   if(BrickorCES == 0)
     {
-      if(TopBot == 1) {EmCESTop = 1; EmCESBot =0;}
-      if(TopBot == 0) {EmCESTop = 0; EmCESBot = 1;}
+      EmCES = 1; EmBrick =0;
     }
   if(BrickorCES == 1)
     {
-      if(TopBot == 1) {EmTop = 1; EmBot =0;}
-      if(TopBot == 0) {EmTop = 0; EmBot = 1;}
+      EmBrick = 1; EmCES =0;
     }
   
   // cout << "NPlate = " << NPlate << ";  NColumn = " << NColumn << ";  NRow = " << NRow << "; NWall = " << NWall << endl;
-  // cout << "BrickorCES = " << BrickorCES << ";    TopBot = " << TopBot << endl;
-  // cout << "EmCESTop = " << EmCESTop << ";    EmCESBot = " << EmCESBot << endl;
-  // cout << "EmTop = " << EmTop << ";    EmBot = " << EmBot << endl;
+  // cout << "BrickorCES = " << BrickorCES <<endl;
+  // cout << "EmCES = " << EmCES << ";    EmBrick = " << EmBick << endl;
   // cout << endl;
 }
 

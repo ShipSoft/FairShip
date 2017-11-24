@@ -25,7 +25,8 @@ class EmulsionMagnet : public FairModule
   void SetMagnetSizes(Double_t X, Double_t Y, Double_t Z);
   void SetMagnetColumn(Double_t ColX, Double_t ColY, Double_t ColZ);
   void SetBaseDim(Double_t BaseX, Double_t BaseY, Double_t BaseZ);
-  void SetCoilParameters(Double_t Radius, Double_t height1, Double_t height2, Double_t Distance);
+  void SetCoilParameters(Double_t radius, Double_t height1, Double_t height2, Double_t Distance);
+  void SetCoilParameters(Double_t X, Double_t Y, Double_t height1, Double_t height2, Double_t Thickness);
   void SetDesign(Int_t Design);
   void SetMagneticField(Double_t B); 
   
@@ -34,7 +35,7 @@ class EmulsionMagnet : public FairModule
   void ConstructGeometry();
   Int_t InitMedium(const char* name);
  
-  ClassDef(EmulsionMagnet,3);
+  ClassDef(EmulsionMagnet,4);
 
  protected:
 
@@ -49,9 +50,12 @@ class EmulsionMagnet : public FairModule
   Double_t fBaseZ;
   Double_t fCenterZ;
   Double_t fCoilR;
+  Double_t fCoilX;
+  Double_t fCoilY;
   Double_t fCoilH1; //thickness of the upper (left) coil  
   Double_t fCoilH2; //thickness of the loweer (right) coil  
   Double_t fCoilDist;
+  Double_t fCoilThickness;//Thickness in Z config. fDesign==3
   Double_t fGapUpstream;
   Double_t fGapDownstream;
   Double_t fField;

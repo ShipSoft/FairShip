@@ -38,7 +38,11 @@ public:
     void SetTotZDimension(Double_t Zdim);
     void DecodeTTID(Int_t detID, Int_t &NTT);
     void SetNumberTT(Int_t n);
+    void SetNumberTT(Int_t nWBricks, Int_t nWOBricks);
+    void SetDistanceWOBricks(Double_t dd);
+    void SetDesign(Int_t Design);
 
+    
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -84,7 +88,7 @@ public:
     TargetTracker(const TargetTracker&);
     TargetTracker& operator=(const TargetTracker&);
     
-    ClassDef(TargetTracker,2);
+    ClassDef(TargetTracker,3);
     
  private:
     
@@ -113,6 +117,11 @@ protected:
     
     Int_t fNTT; //number of TT
 
+    Int_t fDesign;
+    Double_t fDistance; //Distance between TT planes not interleaved to bricks (fDesign==3)
+    Int_t fNTTnoBricks;
+
+    
     Int_t InitMedium(const char* name);
     
 };

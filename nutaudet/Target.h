@@ -62,7 +62,7 @@ public:
     void SetPillarDimension(Double_t X, Double_t Y, Double_t Z);
 
   
-    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot);
+    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick);
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -118,7 +118,7 @@ public:
     Target(const Target&);
     Target& operator=(const Target&);
     
-    ClassDef(Target,3)
+    ClassDef(Target,4)
     
 private:
     
