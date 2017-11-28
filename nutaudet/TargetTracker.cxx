@@ -13,7 +13,7 @@
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                    // for ostream
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
@@ -144,6 +144,23 @@ void TargetTracker::SetNumberTT(Int_t n)
   fNTT =n;
 }
 
+void TargetTracker::SetNumberTT(Int_t n, Int_t nWOBricks)
+{
+  fNTT =n;
+  fNTTnoBricks = nWOBricks;
+}
+
+void TargetTracker::SetDesign(Int_t Design)
+{
+  fDesign = Design;
+}
+
+void TargetTracker::SetDistanceWOBricks(Double_t dd)
+{
+  fDistance = dd;
+}
+
+
 void TargetTracker::ConstructGeometry()
 {
 
@@ -157,9 +174,24 @@ void TargetTracker::ConstructGeometry()
     AddSensitiveVolume(volTT);
 
     Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
-
+    Double_t zpos = 0;
+    Int_t n = 0;
+    
     for(int l = 0; l < fNTT; l++)
-      volTarget->AddNode(volTT,l,new TGeoTranslation(0,0, d_tt + l*(TTrackerZ +CellWidth)));
+      {
+	volTarget->AddNode(volTT,n,new TGeoTranslation(0,0, d_tt + l*(TTrackerZ +CellWidth)));
+	zpos = d_tt+l*(TTrackerZ +CellWidth);
+	n++;
+      }
+
+    if(fDesign==3)
+      {
+	for(int i=0;i<fNTTnoBricks;i++)
+	  {
+	    volTarget->AddNode(volTT,n,new TGeoTranslation(0,0, zpos+(i+1)*(fDistance+TTrackerZ)));
+	    n++;
+	  }
+      }
 }
 
 Bool_t TargetTracker::ProcessHits(FairVolume* vol)

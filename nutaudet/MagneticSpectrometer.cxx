@@ -3,7 +3,7 @@
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                    // for ostream
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
@@ -69,6 +69,12 @@ MagneticSpectrometer::MagneticSpectrometer(const char* name, const Double_t Zcen
     fShipRpcPointCollection(new TClonesArray("ShipRpcPoint"))
 {
   fZcenter = Zcenter;
+}
+
+void MagneticSpectrometer::SetDesign(Int_t Design)
+{  
+  fDesign = Design;
+  cout <<" Mag Spectro Design "<< fDesign<<endl;
 }
 
 void MagneticSpectrometer::SetTotDimensions(Double_t X, Double_t Y, Double_t Z)
@@ -246,165 +252,222 @@ void MagneticSpectrometer::ConstructGeometry()
   TGeoUniformMagField *retFieldL   = new TGeoUniformMagField(0.,0.,fField); //magnetic field low return yoke
     
   Double_t d = 0;
-    
-  TGeoBBox *MSBox = new TGeoBBox("MagneticSpectrometerBox", fXRyoke/2, fYtot/2, fZtot/2);
-  TGeoVolume *volMSBox = new TGeoVolume("volMagneticSpectrometer", MSBox, vacuum);
-  tTauNuDet->AddNode(volMSBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
+
+  if(fDesign!=3)
+    {
+      TGeoBBox *MSBox = new TGeoBBox("MagneticSpectrometerBox", fXRyoke/2, fYtot/2, fZtot/2);
+      TGeoVolume *volMSBox = new TGeoVolume("volMagneticSpectrometer", MSBox, vacuum);
+      tTauNuDet->AddNode(volMSBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
   
       
-  TGeoBBox *UpYokeBox = new TGeoBBox("UpYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
-  TGeoVolume *volUpYoke = new TGeoVolume("volUpYoke",UpYokeBox,vacuum);
-  volMSBox->AddNode(volUpYoke,1,new TGeoTranslation(0,fYtot/2 - fYRyoke/2,0));
-  volUpYoke->SetField(retFieldU);
+      TGeoBBox *UpYokeBox = new TGeoBBox("UpYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
+      TGeoVolume *volUpYoke = new TGeoVolume("volUpYoke",UpYokeBox,vacuum);
+      volMSBox->AddNode(volUpYoke,1,new TGeoTranslation(0,fYtot/2 - fYRyoke/2,0));
+      volUpYoke->SetField(retFieldU);
     
     
-  TGeoBBox *FeYoke = new TGeoBBox("FeYoke",fXtot/2, fYRyoke/2, fZArm/2);
-  TGeoVolume *volFeYoke = new TGeoVolume("volFeYoke",FeYoke,Iron);
-  volFeYoke->SetLineColor(kGray+1);
+      TGeoBBox *FeYoke = new TGeoBBox("FeYoke",fXtot/2, fYRyoke/2, fZArm/2);
+      TGeoVolume *volFeYoke = new TGeoVolume("volFeYoke",FeYoke,Iron);
+      volFeYoke->SetLineColor(kGray+1);
   
-  TGeoBBox *FeYoke1 = new TGeoBBox("FeYoke1",fXtot/2, fYRyoke_s/2, fZRyoke_s/2);
-  TGeoVolume *volFeYoke1 = new TGeoVolume("volFeYoke1",FeYoke1,Iron);
-  volFeYoke1->SetLineColor(kGray+1);
+      TGeoBBox *FeYoke1 = new TGeoBBox("FeYoke1",fXtot/2, fYRyoke_s/2, fZRyoke_s/2);
+      TGeoVolume *volFeYoke1 = new TGeoVolume("volFeYoke1",FeYoke1,Iron);
+      volFeYoke1->SetLineColor(kGray+1);
     
-  TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer",fXtot/2, fCoilH/2, 40*cm);
-  TGeoVolume *volCoilContainer = new TGeoVolume("volCoilContainer",CoilContainer,vacuum);
+      TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer",fXtot/2, fCoilH/2, 40*cm);
+      TGeoVolume *volCoilContainer = new TGeoVolume("volCoilContainer",CoilContainer,vacuum);
     
-  TGeoBBox *Coil = new TGeoBBox("Coil",fXtot/2, fCoilH/2, fCoilW/2);
-  TGeoVolume *volCoil = new TGeoVolume("volCoil",Coil,Cu);
-  volCoil->SetLineColor(kOrange -5);
-  for(int i = 0; i < fNCoil; i++)
-    {
-      volCoilContainer->AddNode(volCoil, i, new TGeoTranslation(0,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
-    }
+      TGeoBBox *Coil = new TGeoBBox("Coil",fXtot/2, fCoilH/2, fCoilW/2);
+      TGeoVolume *volCoil = new TGeoVolume("volCoil",Coil,Cu);
+      volCoil->SetLineColor(kOrange -5);
+      for(int i = 0; i < fNCoil; i++)
+	{
+	  volCoilContainer->AddNode(volCoil, i, new TGeoTranslation(0,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
+	}
     
-  //vertical coils
-  TGeoBBox *CoilV = new TGeoBBox("CoilV",fCoilH/2, fYRyoke/2 , fCoilW/2);
-  TGeoVolume *volCoilV = new TGeoVolume("volCoilV",CoilV,Cu);
-  volCoilV->SetLineColor(kOrange -5);
-  for(int i = 0; i < fNCoil; i++)
-    {
-      volUpYoke->AddNode(volCoilV, i, new TGeoTranslation(fXRyoke/2 - fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
-    }
-  for(int i = 0; i < fNCoil; i++)
-    {
-      volUpYoke->AddNode(volCoilV, i, new TGeoTranslation(-fXRyoke/2 + fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
-    }
+      //vertical coils
+      TGeoBBox *CoilV = new TGeoBBox("CoilV",fCoilH/2, fYRyoke/2 , fCoilW/2);
+      TGeoVolume *volCoilV = new TGeoVolume("volCoilV",CoilV,Cu);
+      volCoilV->SetLineColor(kOrange -5);
+      for(int i = 0; i < fNCoil; i++)
+	{
+	  volUpYoke->AddNode(volCoilV, i, new TGeoTranslation(fXRyoke/2 - fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
+	}
+      for(int i = 0; i < fNCoil; i++)
+	{
+	  volUpYoke->AddNode(volCoilV, i, new TGeoTranslation(-fXRyoke/2 + fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
+	}
 
-  //cout <<"fZArm: " << fZArm<< endl;
+      //cout <<"fZArm: " << fZArm<< endl;
     
-  volUpYoke->AddNode(volFeYoke,1, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
-  volUpYoke->AddNode(volFeYoke,2, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
-  volUpYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
-  volUpYoke->AddNode(volCoilContainer,1,new TGeoTranslation(0,fYRyoke/2 - fCoilH/2,0)); //up
-  volUpYoke->AddNode(volCoilContainer,2,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
+      volUpYoke->AddNode(volFeYoke,1, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
+      volUpYoke->AddNode(volFeYoke,2, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
+      volUpYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
+      volUpYoke->AddNode(volCoilContainer,1,new TGeoTranslation(0,fYRyoke/2 - fCoilH/2,0)); //up
+      volUpYoke->AddNode(volCoilContainer,2,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
     
-  TGeoBBox *LowYokeBox = new TGeoBBox("LowYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
-  TGeoVolume *volLowYoke = new TGeoVolume("volLowYoke",LowYokeBox,vacuum);
-  volMSBox->AddNode(volLowYoke,1,new TGeoTranslation(0,-fYtot/2 + fYRyoke/2,0));
-  volLowYoke->SetField(retFieldL);
+      TGeoBBox *LowYokeBox = new TGeoBBox("LowYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
+      TGeoVolume *volLowYoke = new TGeoVolume("volLowYoke",LowYokeBox,vacuum);
+      volMSBox->AddNode(volLowYoke,1,new TGeoTranslation(0,-fYtot/2 + fYRyoke/2,0));
+      volLowYoke->SetField(retFieldL);
    
-  //vertical coils
-  for(int i = 0; i < fNCoil; i++)
-    {
-      volLowYoke->AddNode(volCoilV, i, new TGeoTranslation(fXRyoke/2 - fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
-    }
-  for(int i = 0; i < fNCoil; i++)
-    {
-      volLowYoke->AddNode(volCoilV, i, new TGeoTranslation(-fXRyoke/2 + fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
-    }
+      //vertical coils
+      for(int i = 0; i < fNCoil; i++)
+	{
+	  volLowYoke->AddNode(volCoilV, i, new TGeoTranslation(fXRyoke/2 - fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
+	}
+      for(int i = 0; i < fNCoil; i++)
+	{
+	  volLowYoke->AddNode(volCoilV, i, new TGeoTranslation(-fXRyoke/2 + fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
+	}
     
-  volLowYoke->AddNode(volFeYoke,3, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
-  volLowYoke->AddNode(volFeYoke,4, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
-  volLowYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
-  volLowYoke->AddNode(volCoilContainer,3,new TGeoTranslation(0,fYRyoke/2- fCoilH/2,0)); //up
-  volLowYoke->AddNode(volCoilContainer,4,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
+      volLowYoke->AddNode(volFeYoke,3, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
+      volLowYoke->AddNode(volFeYoke,4, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
+      volLowYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
+      volLowYoke->AddNode(volCoilContainer,3,new TGeoTranslation(0,fYRyoke/2- fCoilH/2,0)); //up
+      volLowYoke->AddNode(volCoilContainer,4,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
 
-  Int_t ArmNumber = 1;
-  TGeoBBox *Arm1Box = new TGeoBBox("Arm1MSBox", fXFe/2, fYFe/2, fZArm/2);
-  TGeoVolume *volArm1 = new TGeoVolume("volArm1MS", Arm1Box,vacuum);
-  TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field arm1
-  volArm1->SetField(magField1);
-  volMSBox ->AddNode(volArm1,ArmNumber,new TGeoTranslation(0,0,-(fGapMiddle+fZArm)/2));
+      Int_t ArmNumber = 1;
+      TGeoBBox *Arm1Box = new TGeoBBox("Arm1MSBox", fXFe/2, fYFe/2, fZArm/2);
+      TGeoVolume *volArm1 = new TGeoVolume("volArm1MS", Arm1Box,vacuum);
+      TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field arm1
+      volArm1->SetField(magField1);
+      volMSBox ->AddNode(volArm1,ArmNumber,new TGeoTranslation(0,0,-(fGapMiddle+fZArm)/2));
     
-  Int_t nr =  ArmNumber*1E4;
+      Int_t nr =  ArmNumber*1E4;
 
-  TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
-  TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
-  //volIron->SetField(magField1);
+      TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
+      TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
+      //volIron->SetField(magField1);
 
-  for(Int_t i = 0; i < fNFe; i++)
-    {
-      volArm1->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
-    }
+      for(Int_t i = 0; i < fNFe; i++)
+	{
+	  volArm1->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
+	}
     
-  TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
-  TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
+      TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
+      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
   
-  TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
-  TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
-  volStrip->SetLineColor(kRed);
-  volRpcContainer->AddNode(volStrip,1,new TGeoTranslation (0,0,-3.25*mm));
-  volRpcContainer->AddNode(volStrip,2,new TGeoTranslation (0,0,3.25*mm));
-  TGeoBBox *PETinsulator = new TGeoBBox("PETinsulator", fXPet/2, fYPet/2, fZPet/2);
-    TGeoVolume *volPETinsulator = new TGeoVolume("volPETinsulator", PETinsulator, bakelite);
-    volPETinsulator->SetLineColor(kYellow);
-    volRpcContainer->AddNode(volPETinsulator,1,new TGeoTranslation(0,0,-3.1*mm));
-    volRpcContainer->AddNode(volPETinsulator,2,new TGeoTranslation(0,0, 3.1*mm));
-    TGeoBBox *Electrode = new TGeoBBox("Electrode",fXEle/2, fYEle/2, fZEle/2);
-    TGeoVolume *volElectrode = new TGeoVolume("volElectrode",Electrode,bakelite);
-    volElectrode->SetLineColor(kGreen);
-    volRpcContainer->AddNode(volElectrode,1,new TGeoTranslation(0,0,-2*mm));
-    volRpcContainer->AddNode(volElectrode,2,new TGeoTranslation(0,0, 2*mm));
-    TGeoBBox *RpcGas = new TGeoBBox("RpcGas", fXGas/2, fYGas/2, fZGas/2);
-    TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
-    volRpc->SetLineColor(kCyan);
-    volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
+      TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
+      TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
+      volStrip->SetLineColor(kRed);
+      volRpcContainer->AddNode(volStrip,1,new TGeoTranslation (0,0,-3.25*mm));
+      volRpcContainer->AddNode(volStrip,2,new TGeoTranslation (0,0,3.25*mm));
+      TGeoBBox *PETinsulator = new TGeoBBox("PETinsulator", fXPet/2, fYPet/2, fZPet/2);
+      TGeoVolume *volPETinsulator = new TGeoVolume("volPETinsulator", PETinsulator, bakelite);
+      volPETinsulator->SetLineColor(kYellow);
+      volRpcContainer->AddNode(volPETinsulator,1,new TGeoTranslation(0,0,-3.1*mm));
+      volRpcContainer->AddNode(volPETinsulator,2,new TGeoTranslation(0,0, 3.1*mm));
+      TGeoBBox *Electrode = new TGeoBBox("Electrode",fXEle/2, fYEle/2, fZEle/2);
+      TGeoVolume *volElectrode = new TGeoVolume("volElectrode",Electrode,bakelite);
+      volElectrode->SetLineColor(kGreen);
+      volRpcContainer->AddNode(volElectrode,1,new TGeoTranslation(0,0,-2*mm));
+      volRpcContainer->AddNode(volElectrode,2,new TGeoTranslation(0,0, 2*mm));
+      TGeoBBox *RpcGas = new TGeoBBox("RpcGas", fXGas/2, fYGas/2, fZGas/2);
+      TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
+      volRpc->SetLineColor(kCyan);
+      volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
    
-  AddSensitiveVolume(volRpc);
+      AddSensitiveVolume(volRpc);
     
-  for(Int_t i = 0; i < fNRpc; i++)
-    {
-      volArm1->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
-    }
+      for(Int_t i = 0; i < fNRpc; i++)
+	{
+	  volArm1->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
+	}
     
-  ArmNumber = 2;
-  nr =  ArmNumber*1E4;
+      ArmNumber = 2;
+      nr =  ArmNumber*1E4;
 
-  TGeoBBox *Arm2Box = new TGeoBBox("Arm2MSBox",fXFe/2, fYFe/2, fZArm/2);
-  TGeoVolume *volArm2 = new TGeoVolume("volArm2MS", Arm2Box,vacuum);
-  TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field arm2
-  volArm2->SetField(magField2);
-  volMSBox ->AddNode(volArm2,1,new TGeoTranslation(0,0,(fGapMiddle+fZArm)/2));
-  TGeoVolume *volIron1 = new TGeoVolume("volIron",IronLayer,Iron);
+      TGeoBBox *Arm2Box = new TGeoBBox("Arm2MSBox",fXFe/2, fYFe/2, fZArm/2);
+      TGeoVolume *volArm2 = new TGeoVolume("volArm2MS", Arm2Box,vacuum);
+      TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field arm2
+      volArm2->SetField(magField2);
+      volMSBox ->AddNode(volArm2,1,new TGeoTranslation(0,0,(fGapMiddle+fZArm)/2));
+      TGeoVolume *volIron1 = new TGeoVolume("volIron",IronLayer,Iron);
    
-  for(Int_t i = 0; i < fNFe; i++)
-    {
-      volArm2->AddNode(volIron1,nr + 100 + i,new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
-    }
+      for(Int_t i = 0; i < fNFe; i++)
+	{
+	  volArm2->AddNode(volIron1,nr + 100 + i,new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
+	}
     
-  for(Int_t i = 0; i < fNRpc; i++)
-    {
-      volArm2->AddNode(volRpcContainer, nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
-    }
+      for(Int_t i = 0; i < fNRpc; i++)
+	{
+	  volArm2->AddNode(volRpcContainer, nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
+	}
     
-  //10 cm of Concrete on which the whole Magnetic Spectrometer volume (HPT included) will be placed
-  TGeoBBox *Base = new TGeoBBox("Base", fXtot/2, 10*cm/2, fZtot/2);
-  TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
-  volBase->SetLineColor(kYellow-3);
+      //10 cm of Concrete on which the whole Magnetic Spectrometer volume (HPT included) will be placed
+      TGeoBBox *Base = new TGeoBBox("Base", fXtot/2, 10*cm/2, fZtot/2);
+      TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
+      volBase->SetLineColor(kYellow-3);
 
-  tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-fYtot/2 + 10*cm/2,fZcenter));
-
-
-  TGeoBBox *Pillar1Box = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
-  TGeoVolume *Pillar1Vol = new TGeoVolume("Pillar1Vol",Pillar1Box,Steel);
-  Pillar1Vol->SetLineColor(kGreen+3);
-
-  tTauNuDet->AddNode(Pillar1Vol,1, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter-fZArm/2 - fGapMiddle/2 +fPillarZ/2));
-  tTauNuDet->AddNode(Pillar1Vol,2, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter-fZArm/2 - fGapMiddle/2 +fPillarZ/2));
-  tTauNuDet->AddNode(Pillar1Vol,3, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZArm/2+fGapMiddle/2-fPillarZ/2));
-  tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZArm/2+fGapMiddle/2-fPillarZ/2));
+      tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-fYtot/2 + 10*cm/2,fZcenter));
 
 
+      TGeoBBox *Pillar1Box = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
+      TGeoVolume *Pillar1Vol = new TGeoVolume("Pillar1Vol",Pillar1Box,Steel);
+      Pillar1Vol->SetLineColor(kGreen+3);
+
+      tTauNuDet->AddNode(Pillar1Vol,1, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter-fZArm/2 - fGapMiddle/2 +fPillarZ/2));
+      tTauNuDet->AddNode(Pillar1Vol,2, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter-fZArm/2 - fGapMiddle/2 +fPillarZ/2));
+      tTauNuDet->AddNode(Pillar1Vol,3, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZArm/2+fGapMiddle/2-fPillarZ/2));
+      tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZArm/2+fGapMiddle/2-fPillarZ/2));
+    }
+  if(fDesign==3)
+    {
+      Int_t nr = 1E4;
+      
+      TGeoBBox *MSBox = new TGeoBBox("MagneticSpectrometerBox", fXtot/2, fYtot/2, fZtot/2);
+      TGeoVolume *volMSBox = new TGeoVolume("volMagneticSpectrometer", MSBox, vacuum);
+      tTauNuDet->AddNode(volMSBox, 1, new TGeoTranslation(0,0,fZcenter));
+
+      TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
+      TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
+      //volIron->SetField(magField1);
+
+      for(Int_t i = 0; i < fNFe; i++)
+	{
+	  volMSBox->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+i*fZRpc));
+	}
+
+       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
+      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
+  
+      TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
+      TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
+      volStrip->SetLineColor(kRed);
+      volRpcContainer->AddNode(volStrip,1,new TGeoTranslation (0,0,-3.25*mm));
+      volRpcContainer->AddNode(volStrip,2,new TGeoTranslation (0,0,3.25*mm));
+      TGeoBBox *PETinsulator = new TGeoBBox("PETinsulator", fXPet/2, fYPet/2, fZPet/2);
+      TGeoVolume *volPETinsulator = new TGeoVolume("volPETinsulator", PETinsulator, bakelite);
+      volPETinsulator->SetLineColor(kYellow);
+      volRpcContainer->AddNode(volPETinsulator,1,new TGeoTranslation(0,0,-3.1*mm));
+      volRpcContainer->AddNode(volPETinsulator,2,new TGeoTranslation(0,0, 3.1*mm));
+      TGeoBBox *Electrode = new TGeoBBox("Electrode",fXEle/2, fYEle/2, fZEle/2);
+      TGeoVolume *volElectrode = new TGeoVolume("volElectrode",Electrode,bakelite);
+      volElectrode->SetLineColor(kGreen);
+      volRpcContainer->AddNode(volElectrode,1,new TGeoTranslation(0,0,-2*mm));
+      volRpcContainer->AddNode(volElectrode,2,new TGeoTranslation(0,0, 2*mm));
+      TGeoBBox *RpcGas = new TGeoBBox("RpcGas", fXGas/2, fYGas/2, fZGas/2);
+      TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
+      volRpc->SetLineColor(kCyan);
+      volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
+   
+      AddSensitiveVolume(volRpc);
+    
+      for(Int_t i = 0; i < fNRpc; i++)
+	{
+	  volMSBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, -fZtot/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
+	}
+      
+      TGeoBBox *Pillar1Box = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
+      TGeoVolume *Pillar1Vol = new TGeoVolume("Pillar1Vol",Pillar1Box,Steel);
+      Pillar1Vol->SetLineColor(kGreen+3);
+
+      tTauNuDet->AddNode(Pillar1Vol,1, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter-fZtot/2+fPillarZ/2));
+      tTauNuDet->AddNode(Pillar1Vol,2, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter-fZtot/2 +fPillarZ/2));
+      //      tTauNuDet->AddNode(Pillar1Vol,3, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2));
+      //tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2));
+    }
 
 }
 

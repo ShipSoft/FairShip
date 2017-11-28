@@ -3,8 +3,8 @@
 # export PATH=$(pwd):"/usr/sue/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin"
 
 export distribution=$(lsb_release -is)
-export LCGVERSION=LCG_87
-if [ $distribution == "ScientificCERNSLC" ]
+export LCGVERSION="LCG_87"
+if [ $distribution=="ScientificCERNSLC" ]
 then
      export GCCVERSION="x86_64-slc6-gcc62-opt"
      gcctag="x86_64-slc6"
@@ -15,7 +15,6 @@ fi
 
 # Use cvmfs on lxplus
 export lcgenv="/cvmfs/sft.cern.ch/lcg/releases/lcgenv/latest/lcgenv"
-
 source "/cvmfs/sft.cern.ch/lcg/contrib/gcc/6.2/${GCCVERSION}/setup.sh"
 
 if [ -f cc ];

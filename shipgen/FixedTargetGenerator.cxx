@@ -2,6 +2,7 @@
 #include <array>
 #include "TROOT.h"
 #include "FairPrimaryGenerator.h"
+#include "FairMCEventHeader.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
 #include <TGeoManager.h>
@@ -44,6 +45,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   Debug = kFALSE;
   Option = "Primary";
   wspill = 1.; // event weight == 1 for primary events
+  heartbeat = 1000;
 }
 Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Double_t npot, Int_t nStart)
 {
@@ -116,7 +118,7 @@ Bool_t FixedTargetGenerator::Init()
    pcount+=1; 
    fPythia->setRndmEnginePtr(fRandomEngine);
    fPythia->settings.mode("Random:seed",fSeed);
-   fPythia->readString("Next:numberCount = 100000");
+   fPythia->settings.mode("Next:numberCount",heartbeat);
    if (Option == "Primary"){
     fPythia->settings.mode("Beams:idA",  2212);
     fPythia->settings.mode("Beams:frameType",  2);
@@ -225,9 +227,11 @@ Bool_t FixedTargetGenerator::Init()
    maxCrossSection =  mparam[9];
   }
   // book hists for Genie neutrino momentum distribution
+  // add also leptons, and photon
   TDatabasePDG* PDG = TDatabasePDG::Instance();
-  for(Int_t idnu=12; idnu<18; idnu+=2){
+  for(Int_t idnu=11; idnu<19; idnu+=1){
   // nu or anti-nu
+   if (idnu==18){idnu=22;}  
    for (Int_t idadd=-1; idadd<3; idadd+=2){
     Int_t idhnu=1000+idnu;
     Int_t idw=idnu;
@@ -235,6 +239,8 @@ Bool_t FixedTargetGenerator::Init()
      idhnu+=1000;
      idw=-idnu;
     }
+    if (idnu==22){idadd=3;idw=idnu;}
+    fLogger->Info(MESSAGE_ORIGIN,"what is: %i",idw);
     TString name=PDG->GetParticle(idw)->GetName();
     TString title = name;title+=" momentum (GeV)";
     TString key = "";key+=idhnu;

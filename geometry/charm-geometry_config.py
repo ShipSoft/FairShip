@@ -9,10 +9,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.muflux  = False 
     
     if "targetOpt" not in globals():
-       if c.MufluxSpectrometer.muflux == True:
-         targetOpt = 18 # add extra 20cm of tungsten as per 13/06/2017
-       else:	 
-         targetOpt = 17
+       targetOpt = 18 # add extra 20cm of tungsten as per 13/06/2017
     
     c.target = AttrDict(z0=0*u.cm)
 
@@ -116,7 +113,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.M13 = "molybdenum"
     c.target.L13 = 8.*u.cm
     c.target.M14 = "tungsten"
-    c.target.L14 = 8.*u.cm
+    c.target.L14 = 5.*u.cm
     c.target.M15 = "tungsten"
     c.target.L15 = 8.*u.cm
     c.target.M16 = "tungsten"
@@ -127,7 +124,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.L18 = 35.*u.cm
     c.target.sl  =  0.5*u.cm  # H20 slit *17 times
     c.target.xy  = 15.*u.cm   # diameter of muflux target
-    c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 2*c.target.L9 + c.target.L11 + 4*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18
+    c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18
     
     # interaction point, start of target
     c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.

@@ -37,7 +37,7 @@ FIN =fname+'.root'
 tmp = os.path.abspath(FIN).split('/')
 FOUT='Decay-'+tmp[len(tmp)-1]
 if FIN.find('eos')<0: fin = ROOT.TFile(FIN)
-else:                 fin = ROOT.TFile.Open('root://eoslhcb.cern.ch/'+FIN)
+else:                 fin = ROOT.TFile.Open(ROOT.gSystem.Getenv("EOSSHIP")+FIN)
 sTree = fin.FindObjectAny("pythia6")
 nEvents = sTree.GetEntries()
 

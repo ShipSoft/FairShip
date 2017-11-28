@@ -43,6 +43,7 @@ class FixedTargetGenerator : public FairGenerator
   void SetChibb(Double_t x) { chibb = x; }  // chibb = bbbar over mbias cross section   
   void SetChicc(Double_t x) { chicc = x; }  // chicc = ccbar over mbias cross section   
   inline void SetSeed(Double_t seed){fSeed=seed;}
+  inline void SetHeartBeat(Int_t x){heartbeat=x;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
   inline void SetDebug(Bool_t x){Debug=x;}
   Double_t GetPotForCharm(){return nrpotspill/wspill;}
@@ -78,6 +79,7 @@ class FixedTargetGenerator : public FairGenerator
   TFile* fin;//!
   TNtuple* nTree;//!
   Float_t  n_id,n_px,n_py,n_pz,n_M,n_E,n_mpx,n_mpy,n_mpz,n_mE,n_mid,ck;
+  Int_t heartbeat;
 
   ClassDef(FixedTargetGenerator,1);
 };

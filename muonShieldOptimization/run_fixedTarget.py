@@ -20,7 +20,7 @@ chibb = 1.6e-7
 npot  = 5E13
 nStart = 0
 
-charmInputFile = "root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+charmInputFile = ROOT.gSystem.Getenv("EOSSHIP")+"/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 nStart = 0
 
 outputDir    = "."
@@ -168,7 +168,7 @@ rtdb = run.GetRuntimeDb()
 run.SetMaterials("media.geo")  
 # -----Create geometry----------------------------------------------
 cave= ROOT.ShipCave("CAVE")
-cave.SetGeometryFileName("cave.geo")
+cave.SetGeometryFileName("caveWithAir.geo")
 run.AddModule(cave)
 
 TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
@@ -199,6 +199,7 @@ P8gen.SetTarget("/TargetArea_1",0.,0.) # will distribute PV inside target, beam 
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
+P8gen.SetHeartBeat(100000)
 if G4only: P8gen.SetG4only()
 if withEvtGen: P8gen.WithEvtGen()
 if boostDiMuon > 1:
@@ -209,7 +210,7 @@ P8gen.SetSeed(theSeed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if charm or beauty:
- P8gen.InitForCharmOrBeauty("root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",nev,npot,nStart)
+ P8gen.InitForCharmOrBeauty(ROOT.gSystem.Getenv("EOSSHIP")+"/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",nev,npot,nStart)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
@@ -250,7 +251,6 @@ print "Real time ",rtime, " s, CPU time ",ctime,"s"
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile+"tmp"
 fin   = ROOT.gROOT.GetListOfFiles()[0]
-
 fHeader = fin.FileHeader
 fHeader.SetRunId(runnr)
 if charm or beauty:
@@ -282,6 +282,7 @@ ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 sTree.Write()
 fout.Close()
 os.system("mv "+tmpFile+" "+outFile)
+fin.SetWritable(False) # bpyass flush error
 
 print "Number of events produced with activity after hadron absorber:",nEvents
 

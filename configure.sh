@@ -66,3 +66,7 @@ else
    cmake ../FairShip -DCMAKE_CXX_COMPILER=$xx -DCMAKE_C_COMPILER=$yy -DGCCVERSION="$GCCVERSION" -DLCGVERSION="$LCGVERSION" 
    make
 fi
+# fix a bug in FairRoot ?
+sed -i 's|\. |source |g' ../FairShipRun/config.csh
+sed -i 's|\. |source |g' ../FairShipRun/config.sh
+

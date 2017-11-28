@@ -3,7 +3,7 @@
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                    // for ostream
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
@@ -96,6 +96,16 @@ void EmulsionMagnet::SetCoilParameters(Double_t Radius, Double_t height1, Double
   fCoilH1 = height1; //upper(left)
   fCoilH2 = height2; //lowe(right)
   fCoilDist = Distance;
+}
+
+void EmulsionMagnet::SetCoilParameters(Double_t X, Double_t Y, Double_t height1, Double_t height2, Double_t Thickness)
+{
+  fCoilX = X;
+  fCoilY = Y;
+  cout << "fCoilX = "<< fCoilX<< "    fCoilY = "<<fCoilY<<endl;
+  fCoilH1 = height1; //upper(left)
+  fCoilH2 = height2; //lowe(right)
+  fCoilThickness = Thickness;
 }
 
 void EmulsionMagnet::SetMagneticField(Double_t B)
@@ -420,6 +430,43 @@ void EmulsionMagnet::ConstructGeometry()
       TGeoVolume *BaseVol = new TGeoVolume("BaseVol",BaseBox,Fe);
       BaseVol->SetLineColor(kRed);
       MagnetVol->AddNode(BaseVol,1, new TGeoTranslation(0,-fMagnetY/2+fColumnY/2,0));
+
+      TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
+      TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
+      PillarVol->SetLineColor(kGreen+3);
+      tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-fMagnetX/2+fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ-fMagnetZ/2+fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ-fMagnetZ/2+fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-fMagnetX/2+fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
+    }
+
+   if(fDesign==3) //NEW with magnet
+    {
+      TGeoUniformMagField *magField1 = new TGeoUniformMagField(-fField,0.,0.); //magnetic field in Magnet pillars
+      TGeoUniformMagField *magField2 = new TGeoUniformMagField(fField,0.,0.); //magnetic field in target
+      
+      TGeoBBox *MagnetBox = new TGeoBBox(fMagnetX/2, fMagnetY/2, fMagnetZ/2);
+      TGeoVolume *MagnetVol = new TGeoVolume("NudetMagnet",MagnetBox,vacuum);
+      tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
+
+      TGeoBBox *BaseBox = new TGeoBBox(fBaseX/2,fBaseY/2,fBaseZ/2);
+      TGeoVolume *BaseVol = new TGeoVolume("BaseVol",BaseBox,Fe);
+      BaseVol->SetLineColor(kRed);
+      TGeoBBox *LateralBox = new TGeoBBox(fColumnX/2,fColumnY/2,fColumnZ/2);
+      TGeoVolume *LateralVol = new TGeoVolume("LateralVol",LateralBox,Fe);
+      LateralVol->SetLineColor(kRed);
+      MagnetVol->AddNode(BaseVol,1, new TGeoTranslation(0,-fMagnetY/2+fBaseY/2,0));
+      MagnetVol->AddNode(BaseVol,2, new TGeoTranslation(0,fMagnetY/2-fBaseY/2,0));
+      MagnetVol->AddNode(LateralVol,1, new TGeoTranslation(-fMagnetX/2+fColumnX/2,0,0));
+      MagnetVol->AddNode(LateralVol,2, new TGeoTranslation(fMagnetX/2-fColumnX/2,0,0));
+
+      TGeoBBox *OutcoilBox = new TGeoBBox("OC", fCoilX/2, fCoilH1/2,fMagnetZ/2);
+      TGeoBBox *IncoilBox = new TGeoBBox("IC", fCoilX/2,fCoilH2/2,(fMagnetZ-fCoilThickness)/2);
+
+      TGeoCompositeShape *Coil = new TGeoCompositeShape("Coil","OC-IC");
+      TGeoVolume *CoilVol = new TGeoVolume("CoilVol",Coil, Cu);
+      CoilVol->SetLineColor(kGreen);
+      MagnetVol->AddNode(CoilVol,1,new TGeoTranslation(0,0,0));
 
       TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
       TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);

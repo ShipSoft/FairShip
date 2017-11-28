@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+import os,sys
+f=open('config.sh')
+l=f.readlines()
+f.close()
+found=False
+for al in l:
+  tmp = al.split(';')
+  for x in tmp: 
+    if not x.find('FAIRSHIP_ROOT=')<0: 
+      found = True 
+      break
+if not found: 
+ print "Path not found"
+else:
+ tmp=x.split('FAIRSHIP_ROOT=')[1]
+ p=tmp[:tmp.find('/sw')]
+ print p
+ x=tmp[tmp.find('/sw')+3:].find('/') 
+ f=open('newconfig.sh','w')
+ A=tmp.replace(p,"$SHIPBUILD").replace(' ','')
+ for al in l:
+  tmp = al.replace(p,"$SHIPBUILD")
+  nl = tmp.replace(A,os.path.abspath('.'))
+  f.write(nl+'\n')
+ f.close()
+ os.system('mv newconfig.sh config.sh')
+
+

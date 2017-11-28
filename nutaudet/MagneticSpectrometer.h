@@ -21,7 +21,8 @@ class MagneticSpectrometer:public FairDetector
   MagneticSpectrometer(const char* name, const Double_t Zcenter, Bool_t Active, const char* Title="MagneticSpectrometer");
     MagneticSpectrometer();
     virtual ~MagneticSpectrometer();
-    
+
+    void SetDesign(Int_t Design);
     void SetTotDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetFeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetRpcDimensions(Double_t X, Double_t Y, Double_t Z);
@@ -107,7 +108,8 @@ private:
     
     
 protected:
-    
+
+    Int_t fDesign;
     Double_t fZcenter; //z distance of the center of the spectrometer in cm from the center of the vacuum tube
     Double_t fXtot;
     Double_t fYtot;
@@ -160,7 +162,7 @@ protected:
 
     MagneticSpectrometer(const MagneticSpectrometer&);
     MagneticSpectrometer& operator=(const MagneticSpectrometer&);
-    ClassDef(MagneticSpectrometer,4)
+    ClassDef(MagneticSpectrometer,5)
 
 };
 
