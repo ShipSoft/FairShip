@@ -23,6 +23,7 @@ strawtubes.cxx
 strawtubesContFact.cxx
 strawtubesPoint.cxx
 strawtubesHit.cxx
+Tracklet.cxx
 )
 
 Set(LINKDEF strawtubesLinkDef.h)
