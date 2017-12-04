@@ -443,6 +443,7 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
     }
     Int_t id=(my*100+mx)*100+cell+1;
     if (id<0){
+      TString Ecal="Ecal";
       if (gMC->CurrentVolName()==Ecal&&fELoss<1e-25)
        return kTRUE;
       cout << "neg id "<<mx<<" "<<my<<" "<<cell<<" "<<gMC->CurrentVolName()<<" "<<gMC->CurrentVolOffName(1)<<" "<<gMC->CurrentVolOffName(2)<<endl;
