@@ -91,7 +91,7 @@ echo "export EOSSHIP=root://eoslhcb.cern.ch/"  >> config.sh
 echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture" >> config.sh
 echo "export LD_LIBRARY_PATH=$INSTALLROOT/lib:\${LD_LIBRARY_PATH}" >> config.sh
 # ugly fix 
-echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include/geant4vmc:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include" >> config.sh
+echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include/geant4vmc:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include:\${SHIPBUILD}/sw/$architecture/boost/latest/include" >> config.sh
 
 chmod u+x config.sh
 cd -
