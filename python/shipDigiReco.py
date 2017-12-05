@@ -45,7 +45,7 @@ class ShipDigiReco:
 #  check that all containers are present, otherwise create dummy version
   self.dummyContainers={}
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
-                  "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint"}
+                  "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint","splitcalPoint":"splitcalPoint"}
   for x in branch_class:
     if not self.sTree.GetBranch(x):
      self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
@@ -268,7 +268,7 @@ class ShipDigiReco:
   key = -1
   SmearedHits = []
   v_drift = modules["Strawtubes"].StrawVdrift()
-  modules["Strawtubes"].StrawEndPoints(10000001,start,stop)
+  modules["Strawtubes"].StrawEndPoints(10002001,start,stop)
   z1 = stop.z()
   for aDigi in self.digiStraw:
     key+=1

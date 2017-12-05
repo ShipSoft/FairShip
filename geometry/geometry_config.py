@@ -23,8 +23,8 @@ if "strawDesign" not in globals():
     strawDesign = 4
 if "tankDesign" not in globals():
     tankDesign = 4
-if "HcalOption" not in globals():
-    HcalOption = 1
+if "CaloDesign" not in globals():
+    CaloDesign = 0
 if "Yheight" not in globals():
     Yheight = 10.
 if "EcalGeoFile" not in globals():
@@ -37,8 +37,6 @@ if "HcalGeoFile" not in globals():
         HcalGeoFile = "hcal_rect.geo"
     else:
         HcalGeoFile = "hcal.geo"
-if "preshowerOption" not in globals():
-    preshowerOption = 0
 
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign, Yheight
@@ -143,9 +141,25 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 3.*u.m
 
+    if CaloDesign==0:
+     c.HcalOption = 1
+     c.EcalOption = 1
+     c.preshowerOption = 0
+     c.splitCal = 0
+    elif CaloDesign==1:
+     c.HcalOption = 1
+     c.EcalOption = 1
+     c.preshowerOption = 1
+    elif CaloDesign==2:
+     c.HcalOption = -1
+     c.EcalOption = 2
+     c.preshowerOption = 0
+    else:
+     print "CaloDesign option wrong -> ",CaloDesign
+     1/0
+
     presShowerDeltaZ = 0. 
-    c.preshowerOption = preshowerOption
-    if preshowerOption >0:
+    if c.preshowerOption >0:
      PreshowerStart = c.Chamber6.z + windowBulge + 2*u.cm   
      c.PreshowerFilter0  = AttrDict(z= PreshowerStart )
      c.PreshowerStation0 = AttrDict(z= c.PreshowerFilter0.z + 10*u.cm )
@@ -164,17 +178,44 @@ with ConfigRegistry.register_config("basic") as c:
 
      presShowerDeltaZ = PreshowerLeverArm + 2*10*u.cm + 2*2.*u.cm
 
+    c.SplitCal = AttrDict(z=0)
+    c.SplitCal.ZStart = c.Chamber6.z + windowBulge + 2*u.cm + presShowerDeltaZ
+    c.SplitCal.XMax    =  290.*u.cm
+    c.SplitCal.YMax    =  510.*u.cm * c.Yheight / (10.*u.m)
+    c.SplitCal.Empty = 0*u.cm
+    c.SplitCal.BigGap = 100*u.cm
+    c.SplitCal.ActiveECALThickness = 0.56*u.cm
+    c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm                                                                               
+    c.SplitCal.FilterECALThickness_first = 0.56*u.cm
+    c.SplitCal.ActiveHCALThickness = 1*u.cm
+    c.SplitCal.FilterHCALThickness = 20*u.cm
+    c.SplitCal.nECALSamplings = 50
+    c.SplitCal.nHCALSamplings = 0
+    c.SplitCal.FilterECALMaterial= 3    # 1=scintillator 2=Iron 3 = lead  4 =Argon                                                                     
+    c.SplitCal.FilterHCALMaterial= 2
+    c.SplitCal.ActiveECALMaterial= 1
+    c.SplitCal.ActiveHCALMaterial= 1
+    c.SplitCal.ActiveECAL_gas_Thickness=1.12*u.cm
+    c.SplitCal.num_precision_layers=1
+    c.SplitCal.first_precision_layer=6
+    c.SplitCal.second_precision_layer=10
+    c.SplitCal.third_precision_layer=13
+    c.SplitCal.ActiveECAL_gas_gap=10*u.cm
+
     c.ecal  =  AttrDict(z = c.Chamber6.z + windowBulge + 2*u.cm + presShowerDeltaZ)
     c.ecal.File = EcalGeoFile
-    c.HcalOption  =  HcalOption
     hcalThickness = 232*u.cm
-    if not HcalOption < 0:
+    if not c.HcalOption < 0:
      c.hcal =  AttrDict(z=c.ecal.z + hcalThickness/2. + 45.*u.cm  )
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
      c.hcal.File  =  HcalGeoFile
     else:
-     c.hcal  =  AttrDict(z=c.ecal.z)     
-    c.MuonStation0 = AttrDict(z=c.hcal.z+hcalThickness/2.+20.5*u.cm)
+     c.hcal  =  AttrDict(z=c.ecal.z)
+    if c.EcalOption == 1: 
+     c.MuonStation0 = AttrDict(z=c.hcal.z+hcalThickness/2.+20.5*u.cm)
+    if c.EcalOption == 2: 
+     c.MuonStation0 = AttrDict(z=c.SplitCal.ZStart+2*u.m) # should be replaced by a parameter based on thicknesses of SplitCal
+
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
     c.MuonStation3 = AttrDict(z=c.MuonStation0.z+3*u.m)

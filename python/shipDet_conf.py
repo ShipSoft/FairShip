@@ -275,18 +275,32 @@ def configure(run,ship_geo):
   Strawtubes.SetStrawResolution(getParameter("strawtubes.v_drift",ship_geo,latestShipGeo),getParameter("strawtubes.sigma_spatial",ship_geo,latestShipGeo) )
   detectorList.append(Strawtubes)
 
- if ship_geo.preshowerOption > 0:
-  Preshower = ROOT.preshower("Preshower", ROOT.kTRUE)
-  Preshower.SetZStationPosition2(ship_geo.PreshowerStation0.z,ship_geo.PreshowerStation1.z)
-  Preshower.SetZFilterPosition2(ship_geo.PreshowerFilter0.z,ship_geo.PreshowerFilter1.z)
-  Preshower.SetXMax(ship_geo.Preshower.XMax)
-  Preshower.SetYMax(ship_geo.Preshower.YMax)
-  Preshower.SetActiveThickness(ship_geo.Preshower.ActiveThickness)
-  Preshower.SetFilterThickness2(ship_geo.Preshower.FilterThickness0,ship_geo.Preshower.FilterThickness1)
-  detectorList.append(Preshower)
+ if ship_geo.EcalOption == 1:  # shashlik design TP 
+  if ship_geo.preshowerOption > 0 :
+   Preshower = ROOT.preshower("Preshower", ROOT.kTRUE)
+   Preshower.SetZStationPosition2(ship_geo.PreshowerStation0.z,ship_geo.PreshowerStation1.z)
+   Preshower.SetZFilterPosition2(ship_geo.PreshowerFilter0.z,ship_geo.PreshowerFilter1.z)
+   Preshower.SetXMax(ship_geo.Preshower.XMax)
+   Preshower.SetYMax(ship_geo.Preshower.YMax)
+   Preshower.SetActiveThickness(ship_geo.Preshower.ActiveThickness)
+   Preshower.SetFilterThickness2(ship_geo.Preshower.FilterThickness0,ship_geo.Preshower.FilterThickness1)
+   detectorList.append(Preshower)
 
- ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
- detectorList.append(ecal)
+   ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
+   detectorList.append(ecal)
+
+ if ship_geo.EcalOption == 2:  # splitCal with pointing information
+  stupid = 1 
+  SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
+  x = ship_geo.SplitCal 
+  SplitCal.SetThickness(x.ActiveECALThickness,x.ActiveHCALThickness,x.FilterECALThickness,x.FilterECALThickness_first,x.FilterHCALThickness,x.ActiveECAL_gas_Thickness)
+  SplitCal.SetMaterial(x.ActiveECALMaterial,x.ActiveHCALMaterial,x.FilterECALMaterial ,x.FilterHCALMaterial)
+  SplitCal.SetNSamplings(x.nECALSamplings,x.nHCALSamplings)
+  SplitCal.SetZStart(x.ZStart)
+  SplitCal.SetXMax(x.XMax)
+  SplitCal.SetYMax(x.YMax)
+  SplitCal.SetEmpty(x.Empty,x.BigGap,x.ActiveECAL_gas_gap,x.first_precision_layer,x.second_precision_layer,x.third_precision_layer,x.num_precision_layers)
+  detectorList.append(SplitCal)
 
  if not ship_geo.HcalOption < 0:
   hcal,HcalZSize = posHcal(ship_geo.hcal.z,ship_geo.hcal.File)
