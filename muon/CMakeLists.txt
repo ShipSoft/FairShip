@@ -22,6 +22,7 @@ set(SRCS
 muon.cxx
 muonContFact.cxx
 muonPoint.cxx
+muonHit.cxx
 )
 
 Set(LINKDEF muonLinkDef.h)

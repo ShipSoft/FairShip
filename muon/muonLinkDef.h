@@ -7,5 +7,6 @@
 #pragma link C++ class muonContFact;
 #pragma link C++ class muon+;
 #pragma link C++ class muonPoint+;
+#pragma link C++ class muonHit+;
 
 #endif
