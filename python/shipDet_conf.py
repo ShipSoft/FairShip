@@ -79,6 +79,9 @@ def configure(run,ship_geo):
    ship_geo.cave.floorHeightMuonShield = 5*u.m
    ship_geo.cave.floorHeightTankA   = 4.5*u.m
    ship_geo.cave.floorHeightTankB   = 2.*u.m
+ if not hasattr(ship_geo,'NuTauTT') : ship_geo.NuTauTT= AttrDict(z=0*u.cm)
+ if not hasattr(ship_geo.NuTauTT,'design') : ship_geo.NuTauTT.design = 0
+ if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1      
  latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
