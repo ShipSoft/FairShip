@@ -5,7 +5,7 @@ from rootpyPickler import Unpickler
 from array import array
 import shipunit as u
 from decorators import *
-import shipRoot_conf
+import shipRoot_conf,shipDet_conf
 shipRoot_conf.configure()
 
 def evExit():

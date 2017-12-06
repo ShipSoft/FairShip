@@ -126,7 +126,7 @@ class ShipMCTrack : public TObject
     Int_t fNPoints;
 
 
-    ClassDef(ShipMCTrack,4);
+    ClassDef(ShipMCTrack,5);
 
 };
 
