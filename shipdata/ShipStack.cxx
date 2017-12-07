@@ -252,7 +252,7 @@ void ShipStack::FillTrackArray()
         new( (*fTracks)[fNTracks]) ShipMCTrack(GetParticle(iPart));
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
-      for (Int_t iDet=kVETO; iDet<kTRSTATION; iDet++) {
+      for (Int_t iDet=kVETO; iDet<kEndOfList; iDet++) {
         pair<Int_t, Int_t> a(iPart, iDet);
         track->SetNPoints(iDet, fPointsMap[a]);
       }
@@ -451,7 +451,7 @@ void ShipStack::SelectTracks()
 
     // --> Calculate number of points
     Int_t nPoints = 0;
-    for (Int_t iDet=kVETO; iDet<kTRSTATION; iDet++) {
+    for (Int_t iDet=kVETO; iDet<kEndOfList; iDet++) {
       pair<Int_t, Int_t> a(i, iDet);
       if ( fPointsMap.find(a) != fPointsMap.end() ) {
         nPoints += fPointsMap[a];
