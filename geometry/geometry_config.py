@@ -280,8 +280,8 @@ with ConfigRegistry.register_config("basic") as c:
     # zGap to compensate automatic shortening of magnets
     zGap = 0.5 * c.muShield.dZgap  # halflengh of gap
     if muShieldDesign == 7:
-        c.muShield.dZ1 = 0.7*u.m
-        c.muShield.dZ2 = 1.7*u.m
+        c.muShield.dZ1 = 0.35*u.m + zGap
+        c.muShield.dZ2 = 2.26*u.m + zGap
         c.muShield.dZ3 = 2.0*u.m + zGap
         c.muShield.dZ4 = 2.0*u.m + zGap
         c.muShield.dZ5 = 2.75*u.m + zGap
@@ -301,8 +301,8 @@ with ConfigRegistry.register_config("basic") as c:
         params = r.TVectorD()
         params.Read('params')
         f.Close()
-        c.muShield.dZ1 = params[0]
-        c.muShield.dZ2 = params[1]
+        c.muShield.dZ1 = 0.35*u.m + zGap
+        c.muShield.dZ2 = 2.26*u.m + zGap
         c.muShield.dZ3 = params[2]
         c.muShield.dZ4 = params[3]
         c.muShield.dZ5 = params[4]

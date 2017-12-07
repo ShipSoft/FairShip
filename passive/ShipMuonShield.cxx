@@ -38,8 +38,8 @@ ShipMuonShield::ShipMuonShield(TString geofile)
   fDesign = 8;
   fField = 1.8;
   dZ0 = 1 * m;
-  dZ1 = params[0];
-  dZ2 = params[1];
+  dZ1 = 0.4 * m;
+  dZ2 = 2.31 * m;
   dZ3 = params[2];
   dZ4 = params[3];
   dZ5 = params[4];
@@ -324,7 +324,20 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 
     const int offset = 7;
 
-    for (Int_t i = 0; i < nMagnets - 1; ++i) {
+    dXIn[0] = 0.4 * m;
+    dXOut[0] = 0.40 * m;
+    gapIn[0] = 0.1 * mm;
+    dYIn[0] = 1.5 * m;
+    dYOut[0] = 1.5 * m;
+    gapOut[0] = 0.1 * mm;
+    dXIn[1] = 0.5 * m;
+    dXOut[1] = 0.5 * m;
+    gapIn[1] = 0.02 * m;
+    dYIn[1] = 1.3 * m;
+    dYOut[1] = 1.3 * m;
+    gapOut[1] = 0.02 * m;
+
+    for (Int_t i = 2; i < nMagnets - 1; ++i) {
       dXIn[i] = params[offset + i * 6 + 1];
       dXOut[i] = params[offset + i * 6 + 2];
       dYIn[i] = params[offset + i * 6 + 3];
@@ -338,7 +351,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
     dZ[1] = dZ2 - zgap / 2;
     Z[1] = Z[0] + dZ[0] + dZ[1] + zgap;
     dZ[2] = dZ3 - zgap / 2;
-    Z[2] = Z[1] + dZ[1] + dZ[2] + zgap;
+    Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * zgap;
     dZ[3] = dZ4 - zgap / 2;
     Z[3] = Z[2] + dZ[2] + dZ[3] + zgap;
     dZ[4] = dZ5 - zgap / 2;
@@ -374,12 +387,12 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   fieldDirection[0] = FieldDirection::up;
   dXIn[0]  = 0.4*m;			dYIn[0]	= 1.5*m;
   dXOut[0] = 0.40*m;			dYOut[0]= 1.5*m;
-  gapIn[0] = 0.02*m;			gapOut[0] = 0.02*m;
+  gapIn[0] = 0.1*mm;			gapOut[0] = 0.1*mm;
   dZ[0] = dZ1-zgap/2;			Z[0] = zEndOfAbsorb + dZ[0]+zgap;
   
   fieldDirection[1] = FieldDirection::up;
-  dXIn[1]  = 0.8*m;			dYIn[1]	= 1.5*m;
-  dXOut[1] = 0.8*m;			dYOut[1]= 1.5*m;
+  dXIn[1]  = 0.5*m;			dYIn[1]	= 1.3*m;
+  dXOut[1] = 0.5*m;			dYOut[1]= 1.3*m;
   gapIn[1] = 0.02*m;			gapOut[1] = 0.02*m;
   dZ[1] = dZ2-zgap/2;			Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;
     
@@ -387,7 +400,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   dXIn[2]  = 0.87*m;			dYIn[2]	= 0.35*m;
   dXOut[2] = 0.65*m;			dYOut[2]= 1.21*m;
   gapIn[2] = 0.11*m;			gapOut[2] = 0.02*m;
-  dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;
+  dZ[2] = dZ3-zgap/2;			Z[2] = Z[1] + dZ[1] + dZ[2]+2*zgap;
 
   fieldDirection[3] = FieldDirection::up;
   dXIn[3]  = 0.65*m;			dYIn[3]	= 1.21*m;
@@ -538,11 +551,20 @@ void ShipMuonShield::ConstructGeometry()
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
       } else if (fDesign==7||fDesign==8) {
+
+	TGeoUniformMagField *fieldsAbsorber[4] = {
+	    new TGeoUniformMagField(0., 1.6 * tesla, 0.),
+	    new TGeoUniformMagField(0., -1.6 * tesla, 0.),
+	    new TGeoUniformMagField(-1.6 * tesla, 0., 0.),
+	    new TGeoUniformMagField(1.6 * tesla, 0., 0.)
+	};
+
 	for (Int_t nM = 0; nM < 2; nM++) {
-	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
-		    dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
-		    midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
-		    gapIn[nM],gapOut[nM],Z[nM],1);
+	  CreateMagnet(magnetName[nM], iron, tShield, fieldsAbsorber,
+		       fieldDirection[nM], dXIn[nM], dYIn[nM], dXOut[nM],
+		       dYOut[nM], dZf[nM], midGapIn[nM], midGapOut[nM],
+		       HmainSideMagIn[nM], HmainSideMagOut[nM], gapIn[nM],
+		       gapOut[nM], Z[nM], nM == 1);
 	}
 
       TGeoTranslation *mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
@@ -579,6 +601,13 @@ void ShipMuonShield::ConstructGeometry()
       TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
       absorber->SetLineColor(42); // brown / light red
       tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
+
+      TGeoVolume *wall = gGeoManager->MakeBox("wall", concrete, 3 * m, 3 * m,
+					      10 * cm - 1 * mm);
+      tShield->AddNode(
+	  wall, 1, new TGeoTranslation(0, 0,
+				       zEndOfAbsorb + 2 * absorber_half_length +
+					   absorber_offset + 10 * cm));
 
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
 	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
