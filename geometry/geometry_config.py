@@ -186,7 +186,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.BigGap = 100*u.cm
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
     c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm                                                                               
-    c.SplitCal.FilterECALThickness_first = 0.56*u.cm
+    c.SplitCal.FilterECALThickness_first = 0.28*u.cm
     c.SplitCal.ActiveHCALThickness = 1*u.cm
     c.SplitCal.FilterHCALThickness = 20*u.cm
     c.SplitCal.nECALSamplings = 50
@@ -201,6 +201,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.second_precision_layer=10
     c.SplitCal.third_precision_layer=13
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
+    c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
     c.ecal  =  AttrDict(z = c.Chamber6.z + windowBulge + 2*u.cm + presShowerDeltaZ)
     c.ecal.File = EcalGeoFile
@@ -214,7 +215,7 @@ with ConfigRegistry.register_config("basic") as c:
     if c.EcalOption == 1: 
      c.MuonStation0 = AttrDict(z=c.hcal.z+hcalThickness/2.+20.5*u.cm)
     if c.EcalOption == 2: 
-     c.MuonStation0 = AttrDict(z=c.SplitCal.ZStart+2*u.m) # should be replaced by a parameter based on thicknesses of SplitCal
+     c.MuonStation0 = AttrDict(z=c.SplitCal.ZStart+10*u.cm+c.SplitCal.SplitCalThickness) 
 
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z+1*u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z+2*u.m)
