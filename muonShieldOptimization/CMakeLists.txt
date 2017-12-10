@@ -20,7 +20,7 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 exitHadronAbsorber.cxx
-pyFairModule.h
+pyFairModule.cxx
 )
 
 Set(HEADERS )

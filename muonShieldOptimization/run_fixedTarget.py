@@ -201,6 +201,8 @@ P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
 P8gen.SetHeartBeat(100000)
 if G4only: P8gen.SetG4only()
+if JpsiMainly: P8gen.SetJpsiMainly()
+if tauOnly:    P8gen.SetTauOnly()
 if withEvtGen: P8gen.WithEvtGen()
 if boostDiMuon > 1:
  P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
@@ -281,6 +283,7 @@ fout.cd()
 ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 sTree.Write()
 fout.Close()
+os.system("rm  "+outFile)
 os.system("mv "+tmpFile+" "+outFile)
 fin.SetWritable(False) # bpyass flush error
 

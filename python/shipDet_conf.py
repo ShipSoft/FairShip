@@ -79,6 +79,9 @@ def configure(run,ship_geo):
    ship_geo.cave.floorHeightMuonShield = 5*u.m
    ship_geo.cave.floorHeightTankA   = 4.5*u.m
    ship_geo.cave.floorHeightTankB   = 2.*u.m
+ if not hasattr(ship_geo,'NuTauTT') : ship_geo.NuTauTT= AttrDict(z=0*u.cm)
+ if not hasattr(ship_geo.NuTauTT,'design') : ship_geo.NuTauTT.design = 0
+ if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1      
  latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
@@ -275,18 +278,32 @@ def configure(run,ship_geo):
   Strawtubes.SetStrawResolution(getParameter("strawtubes.v_drift",ship_geo,latestShipGeo),getParameter("strawtubes.sigma_spatial",ship_geo,latestShipGeo) )
   detectorList.append(Strawtubes)
 
- if ship_geo.preshowerOption > 0:
-  Preshower = ROOT.preshower("Preshower", ROOT.kTRUE)
-  Preshower.SetZStationPosition2(ship_geo.PreshowerStation0.z,ship_geo.PreshowerStation1.z)
-  Preshower.SetZFilterPosition2(ship_geo.PreshowerFilter0.z,ship_geo.PreshowerFilter1.z)
-  Preshower.SetXMax(ship_geo.Preshower.XMax)
-  Preshower.SetYMax(ship_geo.Preshower.YMax)
-  Preshower.SetActiveThickness(ship_geo.Preshower.ActiveThickness)
-  Preshower.SetFilterThickness2(ship_geo.Preshower.FilterThickness0,ship_geo.Preshower.FilterThickness1)
-  detectorList.append(Preshower)
+ if ship_geo.EcalOption == 1:  # shashlik design TP 
+  if ship_geo.preshowerOption > 0 :
+   Preshower = ROOT.preshower("Preshower", ROOT.kTRUE)
+   Preshower.SetZStationPosition2(ship_geo.PreshowerStation0.z,ship_geo.PreshowerStation1.z)
+   Preshower.SetZFilterPosition2(ship_geo.PreshowerFilter0.z,ship_geo.PreshowerFilter1.z)
+   Preshower.SetXMax(ship_geo.Preshower.XMax)
+   Preshower.SetYMax(ship_geo.Preshower.YMax)
+   Preshower.SetActiveThickness(ship_geo.Preshower.ActiveThickness)
+   Preshower.SetFilterThickness2(ship_geo.Preshower.FilterThickness0,ship_geo.Preshower.FilterThickness1)
+   detectorList.append(Preshower)
 
- ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
- detectorList.append(ecal)
+   ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
+   detectorList.append(ecal)
+
+ if ship_geo.EcalOption == 2:  # splitCal with pointing information
+  stupid = 1 
+  SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
+  x = ship_geo.SplitCal 
+  SplitCal.SetThickness(x.ActiveECALThickness,x.ActiveHCALThickness,x.FilterECALThickness,x.FilterECALThickness_first,x.FilterHCALThickness,x.ActiveECAL_gas_Thickness)
+  SplitCal.SetMaterial(x.ActiveECALMaterial,x.ActiveHCALMaterial,x.FilterECALMaterial ,x.FilterHCALMaterial)
+  SplitCal.SetNSamplings(x.nECALSamplings,x.nHCALSamplings)
+  SplitCal.SetZStart(x.ZStart)
+  SplitCal.SetXMax(x.XMax)
+  SplitCal.SetYMax(x.YMax)
+  SplitCal.SetEmpty(x.Empty,x.BigGap,x.ActiveECAL_gas_gap,x.first_precision_layer,x.second_precision_layer,x.third_precision_layer,x.num_precision_layers)
+  detectorList.append(SplitCal)
 
  if not ship_geo.HcalOption < 0:
   hcal,HcalZSize = posHcal(ship_geo.hcal.z,ship_geo.hcal.File)

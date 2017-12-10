@@ -1,10 +1,10 @@
-# Create a library called "libstrawtubes" which includes the source files given in
+# Create a library called "libsplitcal" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/shipdata
-${CMAKE_SOURCE_DIR}/strawtubes
+${CMAKE_SOURCE_DIR}/splitcal
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -19,15 +19,13 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 #Put here your sourcefiles
-strawtubes.cxx
-strawtubesContFact.cxx
-strawtubesPoint.cxx
-strawtubesHit.cxx
-Tracklet.cxx
+splitcal.cxx
+splitcalContFact.cxx
+splitcalPoint.cxx
 )
 
-Set(LINKDEF strawtubesLinkDef.h)
-Set(LIBRARY_NAME strawtubes)
+Set(LINKDEF splitcalLinkDef.h)
+Set(LIBRARY_NAME splitcal)
 Set(DEPENDENCIES
     Base ShipData
 )

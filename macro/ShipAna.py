@@ -531,10 +531,11 @@ def makePlots():
    print 'finished making plots'
 # calculate z front face of ecal, needed later
 top = ROOT.gGeoManager.GetTopVolume()
-z_ecal      = top.GetNode('Ecal_1').GetMatrix().GetTranslation()[2]
-z_ecalFront = z_ecal + top.GetNode('Ecal_1').GetVolume().GetShape().GetDZ()
-z_ecalBack  = z_ecal + top.GetNode('Ecal_1').GetVolume().GetShape().GetDZ()
-
+ecal = top.GetNode('Ecal_1')
+if ecal:
+ z_ecal = top.GetNode('Ecal_1').GetMatrix().GetTranslation()[2]
+else:
+ z_ecal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]
 
 # start event loop
 def myEventLoop(n):

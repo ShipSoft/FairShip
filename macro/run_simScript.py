@@ -43,6 +43,7 @@ dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangula
 ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
 nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 charm        = 0 # !=0 create charm detector instead of SHiP
+caloDesign   = 0 # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
@@ -56,7 +57,7 @@ try:
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign="])
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -131,6 +132,8 @@ for o, a in opts:
             ds = int(a)
         if o in ("--nuTauTargetDesign",):
             nud = int(a)
+        if o in ("--caloDesign",):
+            caloDesign = int(a)
         if o in ("--charm",):
             charm = int(a)
         if o in ("-F",):
@@ -179,9 +182,10 @@ shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit 
 # - muShieldDesign = 2  # 1=passive 5=active (default) 7=short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
-# - HcalOption     = -1 # no hcal,  0=hcal after muon,  1=hcal between ecal and muon (default)
-# - preshowerOption = 0 # no preshower, default. 1= simple preshower 
-if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)
+#   caloDesign     = 0 # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
+  
+if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
+                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign)
 else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 
 # switch off magnetic field to measure muon flux
@@ -453,7 +457,7 @@ import geomGeant4
 if debug > 0:
  geomGeant4.printVMCFields()
  geomGeant4.printWeightsandFields(onlyWithField = True,\
-             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector'])
+             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector','SplitCal'])
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
