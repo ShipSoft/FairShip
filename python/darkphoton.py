@@ -59,7 +59,7 @@ class DarkPhoton:
         #fun = interpolate.interp1d(dataEcm,dataR)
         #using ROOT
         fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR) #,Interpolation.kPOLYNOMIAL)
-        print 'function type:%s'%fun.Type()
+        # print 'function type:%s'%fun.Type()
         fun.SetData(self.dataEcm,self.dataR);
         return fun
 
@@ -100,7 +100,7 @@ class DarkPhoton:
     def hadronicDecayWidth(self):
         """ Dark photon decay into hadrons """
         """(mumu)*R"""
-        gmumu=self.leptonicDecayWidth('mu')
+        gmumu=self.leptonicDecayWidth('mu-')
         tdw=gmumu*self.Ree_interp(self.mDarkPhoton)
         #print 'Hadronic decay width is %.3e'%(tdw)
         return tdw;
@@ -111,9 +111,9 @@ class DarkPhoton:
     def totalDecayWidth(self): # mDarkPhoton in GeV
         """ Total decay width in GeV """
         #return hGeV*c / cTau(mDarkPhoton, epsilon)
-        tdw = (self.leptonicDecayWidth('e')
-               + self.leptonicDecayWidth('mu')
-               + self.leptonicDecayWidth('tau')
+        tdw = (self.leptonicDecayWidth('e-')
+               + self.leptonicDecayWidth('mu-')
+               + self.leptonicDecayWidth('tau-')
                + self.hadronicDecayWidth())
         
         #print 'Total decay width %e'%(tdw)
@@ -131,9 +131,9 @@ class DarkPhoton:
 
     def findBranchingRatio(self,decayString):
         br = 0.
-        if   decayString == 'A -> e- e+': br = self.leptonicBranchingRatio('e')
-        elif   decayString == 'A -> mu- mu+': br = self.leptonicBranchingRatio('mu')
-        elif   decayString == 'A -> tau- tau+': br = self.leptonicBranchingRatio('tau')
+        if   decayString == 'A -> e- e+': br = self.leptonicBranchingRatio('e-')
+        elif   decayString == 'A -> mu- mu+': br = self.leptonicBranchingRatio('mu-')
+        elif   decayString == 'A -> tau- tau+': br = self.leptonicBranchingRatio('tau-')
         elif   decayString == 'A -> hadrons': br = self.hadronicBranchingRatio()
         else:
             print 'findBranchingRatio ERROR: unknown decay %s'%decayString
@@ -144,13 +144,13 @@ class DarkPhoton:
     def allowedChannels(self):
         print "Allowed channels for dark photon mass = %3.3f"%self.mDarkPhoton
         allowedDecays = {'A -> hadrons':'yes'}
-        if self.mDarkPhoton > 2.*mass('e'):
+        if self.mDarkPhoton > 2.*mass('e-'):
             allowedDecays.update({'A -> e- e+':'yes'})
             print "allowing decay to e"
-        if self.mDarkPhoton > 2.*mass('mu'):
+        if self.mDarkPhoton > 2.*mass('mu-'):
             allowedDecays.update({'A -> mu- mu+':'yes'})
             print "allowing decay to mu"
-        if self.mDarkPhoton > 2.*mass('tau'):
+        if self.mDarkPhoton > 2.*mass('tau-'):
             allowedDecays.update({'A -> tau- tau+':'yes'})
             print "allowing decay to tau"
                         
