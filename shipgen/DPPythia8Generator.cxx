@@ -179,11 +179,11 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        double dpe = sqrt(dpmom*dpmom+dpm*dpm);
        double phiin = 2. * M_PI * gRandom->Rndm();
        
-       std::cout << " Adding DP gun with p " 
+       if ( debug ){std::cout << " Adding DP gun with p " 
 		 << dpmom 
 		 << " m " << dpm
 		 << " e " << dpe
-		 << " theta,phi " << thetain << "," << phiin << std::endl << std::flush;
+		 << " theta,phi " << thetain << "," << phiin << std::endl << std::flush;}
        fPythia->event.append( fDP, 1, 0, 0, dpmom * sin(thetain) * cos(phiin), dpmom * sin(thetain) * sin(phiin), dpmom * cos(thetain), dpe, dpm); 
      }
 
