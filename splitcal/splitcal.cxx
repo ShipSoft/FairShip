@@ -116,8 +116,16 @@ Bool_t  splitcal::ProcessHits(FairVolume* vol)
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     //fVolumeID = vol->getMCid();
     //cout << "splitcal proc "<< fVolumeID<<" "<<vol->GetName()<<" "<<vol->getVolumeId() <<endl;
-    //cout << " "<< gGeoManager->FindVolumeFast(vol->GetName())->GetNumber()<<endl;
-    fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
+    //   cout << " "<< gGeoManager->FindVolumeFast(vol->GetName())->GetNumber()<< "  " << gMC->CurrentVolID() << endl;
+    ///  fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
+    //VolumeID = vol->getMCid();
+    Int_t detID=0;
+    gMC->CurrentVolID(detID);
+
+    //if (fVolumeID == detID) {
+    //  return kTRUE; }
+    fVolumeID = detID;
+    //    cout << " "<<fVolumeID << endl;  
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
@@ -267,15 +275,18 @@ void splitcal::ConstructGeometry()
      
     Double_t z_splitcal=0;
     Int_t i_nlayECAL_gas;
-    for (i_nlayECAL_gas=0; i_nlayECAL_gas<fnum_precision_layers*3; i_nlayECAL_gas++){
+
+    for (i_nlayECAL_gas=0; i_nlayECAL_gas<1; i_nlayECAL_gas++){
       labelECALdet_gas="ECALdet_gas_";
       labelECALdet_gas+=i_nlayECAL_gas;
       char_labelECALdet_gas[i_nlayECAL_gas]=labelECALdet_gas;
+
       newECALdet_gas[i_nlayECAL_gas] = gGeoManager->MakeBox(char_labelECALdet_gas[i_nlayECAL_gas], A4, fXMax, fYMax, fActiveECAL_gas_Thickness/2);      
       AddSensitiveVolume(newECALdet_gas[i_nlayECAL_gas]);
       newECALdet_gas[i_nlayECAL_gas]->SetLineColor(kRed);
+
     }
-    for (Int_t i_nlayECAL=0; i_nlayECAL<fnECALSamplings; i_nlayECAL++){
+    for (Int_t i_nlayECAL=0; i_nlayECAL<1; i_nlayECAL++){
       labelECALfilter="ECALfilter_";
       labelECALfilter+=i_nlayECAL;
       char_labelECALfilter[i_nlayECAL]=labelECALfilter;
@@ -292,14 +303,17 @@ void splitcal::ConstructGeometry()
        
       // cout << "SplitCal Debug:" << z_splitcal << " " << i_nlayECAL << " " << i_nlayECAL_gas << " " << xfFilterECALThickness<< endl;
       newECALfilter[i_nlayECAL] = gGeoManager->MakeBox(char_labelECALfilter[i_nlayECAL], A3, fXMax, fYMax, xfFilterECALThickness/2);
-      newECALdet[i_nlayECAL] = gGeoManager->MakeBox(char_labelECALdet[i_nlayECAL], A1, fXMax, fYMax, fActiveECALThickness/2);
+      if(i_nlayECAL!=ffirst_precision_layer and i_nlayECAL!=fsecond_precision_layer and i_nlayECAL!=fthird_precision_layer){
+        newECALdet[i_nlayECAL] = gGeoManager->MakeBox(char_labelECALdet[i_nlayECAL], A1, fXMax, fYMax, fActiveECALThickness/2);
 
-      AddSensitiveVolume(newECALdet[i_nlayECAL]);
-      newECALdet[i_nlayECAL]->SetLineColor(kGreen);
-      newECALfilter[i_nlayECAL]->SetLineColor(kGray);
-
+        AddSensitiveVolume(newECALdet[i_nlayECAL]);
+        newECALdet[i_nlayECAL]->SetLineColor(kGreen);
+        newECALfilter[i_nlayECAL]->SetLineColor(kGray);
+      }
+    } 
+    for (Int_t i_nlayECAL=0; i_nlayECAL<fnECALSamplings; i_nlayECAL++){
       z_splitcal+=xfFilterECALThickness/2;
-      tSplitCal->AddNode(newECALfilter[i_nlayECAL], 1, new TGeoTranslation(0, 0, z_splitcal));
+      tSplitCal->AddNode(newECALfilter[0], 1, new TGeoTranslation(0, 0, z_splitcal));
       z_splitcal+=xfFilterECALThickness/2;      
       if(i_nlayECAL==0)z_splitcal+=fEmpty;
       if(i_nlayECAL==7)        z_splitcal+=fBigGap;
@@ -325,7 +339,7 @@ void splitcal::ConstructGeometry()
          i_nlayECAL_gas=2;	 
 	}
        }
-       tSplitCal->AddNode(newECALdet_gas[i_nlayECAL_gas], 1, new TGeoTranslation(0, 0, z_splitcal));
+       tSplitCal->AddNode(newECALdet_gas[0], 1000.+i_nlayECAL_gas , new TGeoTranslation(0, 0, z_splitcal));
        z_splitcal+=fActiveECAL_gas_Thickness/2;
        if(fnum_precision_layers==2){
         z_splitcal+=fActiveECAL_gas_gap;
@@ -338,7 +352,7 @@ void splitcal::ConstructGeometry()
       }
       else{ 
        z_splitcal+=fActiveECALThickness/2;      
-       tSplitCal->AddNode(newECALdet[i_nlayECAL], 1, new TGeoTranslation(0, 0, z_splitcal));
+       tSplitCal->AddNode(newECALdet[0], 2000.+i_nlayECAL, new TGeoTranslation(0, 0, z_splitcal));
        z_splitcal+=fActiveECALThickness/2;      
       }
 
@@ -346,7 +360,7 @@ void splitcal::ConstructGeometry()
 
 
     }
-    for (Int_t i_nlayHCAL=0; i_nlayHCAL<fnHCALSamplings; i_nlayHCAL++){
+    for (Int_t i_nlayHCAL=0; i_nlayHCAL<1; i_nlayHCAL++){
       labelHCALfilter="HCALfilter_";
       labelHCALfilter+=i_nlayHCAL;
       char_labelHCALfilter[i_nlayHCAL]=labelHCALfilter;
@@ -360,7 +374,8 @@ void splitcal::ConstructGeometry()
 
       newHCALdet[i_nlayHCAL]->SetLineColor(kRed);
       newHCALfilter[i_nlayHCAL]->SetLineColor(kBlue);
-
+    }
+    for (Int_t i_nlayHCAL=0; i_nlayHCAL<fnHCALSamplings; i_nlayHCAL++){
       z_splitcal+=fFilterHCALThickness/2;
       tSplitCal->AddNode(newHCALfilter[i_nlayHCAL], 1, new TGeoTranslation(0, 0, z_splitcal));
       z_splitcal+=fFilterHCALThickness/2;      
