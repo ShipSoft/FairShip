@@ -175,6 +175,7 @@ class ShipDigiReco:
   #fitter          = ROOT.genfit.KalmanFitter()
   #fitter          = ROOT.genfit.KalmanFitterRefTrack()
   self.fitter      = ROOT.genfit.DAF()
+  self.fitter.setMaxIterations(50)
   if debug: self.fitter.setDebugLvl(1) # produces lot of printout
   #set to True if "real" pattern recognition is required also
   if debug == True: shipPatRec.debug = 1
