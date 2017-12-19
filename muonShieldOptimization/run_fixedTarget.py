@@ -258,9 +258,19 @@ fHeader.SetRunId(runnr)
 if charm or beauty:
 # normalization for charm
  poteq = P8gen.GetPotForCharm()
- fHeader.SetTitle("POT equivalent = %7.3G"%(poteq))
+ info = "POT equivalent = %7.3G"%(poteq)
 else: 
- fHeader.SetTitle("POT = "+str(nev))
+ info = "POT = "+str(nev)
+
+conditions = " with ecut="+str(ecut)
+if JpsiMainly: conditions+=" J"
+if tauOnly:    conditions+=" T"
+if withEvtGen: conditions+=" V"
+if boostDiMuon > 1: conditions+=" diMu"+str(boostDiMuon)
+if boostFactor > 1: conditions+=" X"+str(boostFactor)
+
+info += conditions
+fHeader.SetTitle(info)
 print "Data generated ", fHeader.GetTitle()
 t     = fin.cbmsim
 fout  = ROOT.TFile(tmpFile,'recreate' )
