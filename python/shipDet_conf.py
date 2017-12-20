@@ -71,7 +71,7 @@ def posEcal(z,efile):
 
 def configure(run,ship_geo):
 # ---- for backward compatibility ----
- if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 4
+ if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 5
  if not hasattr(ship_geo.hcal,"File"): ship_geo.hcal.File = "hcal.geo"
  if not hasattr(ship_geo.Bfield,'x') :  ship_geo.Bfield.x   = 3.*u.m
  if not hasattr(ship_geo,'cave') :       
@@ -131,6 +131,7 @@ def configure(run,ship_geo):
 
  magnet_design = 2
  if ship_geo.tankDesign == 5: magnet_design = 3
+ if ship_geo.tankDesign == 6: magnet_design = 4
  if ship_geo.strawDesign > 1 : 
    magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
@@ -147,7 +148,7 @@ def configure(run,ship_geo):
                     ship_geo.chambers.Tub4length,ship_geo.chambers.Tub5length,ship_geo.chambers.Tub6length);
  Veto.SetB(ship_geo.Yheight/2.)
  Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA,ship_geo.cave.floorHeightTankB);
- if ship_geo.tankDesign == 5: 
+ if ship_geo.tankDesign > 4: 
     dzX = ship_geo.zFocusX+ship_geo.target.z0    
     x1  = ship_geo.xMax/(ship_geo.Chamber1.z -ship_geo.chambers.Tub1length-dzX)*(ship_geo.TrackStation4.z-dzX)
     dzY = ship_geo.zFocusY+ship_geo.target.z0    

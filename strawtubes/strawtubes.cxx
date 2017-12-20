@@ -393,7 +393,7 @@ void strawtubes::ConstructGeometry()
     TGeoTube *gas_tube_veto = new TGeoTube("gas_veto",rmin,rmax,fStraw_length_veto-6.*eps);
     TGeoVolume *gas_veto = new TGeoVolume("gas_veto",gas_tube_veto, sttmix9010_2bar);
     gas_veto->SetLineColor(5);    //only the gas is sensitive
-    AddSensitiveVolume(gas_veto);
+    if (fStraw_length_veto>1){AddSensitiveVolume(gas_veto);}
        
     // Volume: wire
     rmin=0.;
@@ -414,7 +414,7 @@ void strawtubes::ConstructGeometry()
     // statnb = station number. 1,2,3,4 tracking stations, 5 veto station
     TGeoVolume *vetovac = new TGeoVolume("Veto", vetovacbox, med);
 
-    top->AddNode(vetovac, statnb, new TGeoTranslation(0,0,fT0z));
+    if (fStraw_length_veto>1){top->AddNode(vetovac, statnb, new TGeoTranslation(0,0,fT0z));}
     //vetovac->SetVisDaughters(kTRUE);
     //vetovac->SetTransparency(80);
 

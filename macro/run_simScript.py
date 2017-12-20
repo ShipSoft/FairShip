@@ -39,7 +39,7 @@ sameSeed     = False # can be set to an integer for the muonBackground simulatio
 theSeed      = int(10000 * time.time() % 10000000)
 
 dy           = 10.
-dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
+dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
 nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 charm        = 0 # !=0 create charm detector instead of SHiP
@@ -198,7 +198,7 @@ else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config
 tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if eventDisplay: tag = tag+'_D'
-if dv == 5 : tag = 'conical.'+tag
+if dv > 4 : tag = 'conical.'+tag
 elif dy: tag = str(dy)+'.'+tag 
 if not os.path.exists(outputDir):
   os.makedirs(outputDir)

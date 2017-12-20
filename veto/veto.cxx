@@ -1123,13 +1123,91 @@ void veto::ConstructGeometry()
     decayVolumeMed = gGeoManager->GetMedium(decayVolumeMed_name);  // decay volume, air/helium/vacuum
     ribMed = gGeoManager->GetMedium(ribMed_name); //! medium of support structure
     phi_ribMed=gGeoManager->GetMedium(phi_ribMed_name); //medium of the  structure separating  the LiSc segments in XY plane
-    if (fDesign<4||fDesign>5){ fLogger->Fatal(MESSAGE_ORIGIN, "Only Designs 4 and 5 are supported!");}
+    if (fDesign<4||fDesign>6){ fLogger->Fatal(MESSAGE_ORIGIN, "Only Designs 4 and 5 are supported!");}
     // put everything in an assembly
     TGeoVolume *tDecayVol = new TGeoVolumeAssembly("DecayVolume");
     TGeoVolume *tMaGVol   = new TGeoVolumeAssembly("MagVolume");
     Double_t zStartDecayVol = fTub1z-fTub1length-f_InnerSupportThickness;
     Double_t zStartMagVol = fTub3z+fTub3length-f_InnerSupportThickness; //? is this needed, -f_InnerSupportThickness
-    if (fDesign==5){
+    if (fDesign==6){
+    // Note: almost a copy of 5, but removed first segment, and closed
+    // gap of straw-veto by making segment2 longer by this gap, and the length
+    // of seg1. Hence: no change in external steering parameters, just redefine them based
+    // on seg1 and straw info here.
+      Double_t d = f_VetoThickness+2*f_RibThickness+f_OuterSupportThickness;
+      Double_t slopex = (2.5*m + d)/(fTub6z-fTub6length - zFocusX);
+      Double_t slopey = (fBtube + d) /(fTub6z-fTub6length - zFocusY);
+      Double_t zpos = fTub1z -fTub1length -f_LidThickness;
+   // Add veto-timing sensitive plane before vacuum tube, same size as entrance window
+      Double_t dx1 = slopex*(zpos - zFocusX);
+      Double_t dy  = slopey*(zpos - zFocusY);
+      TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,dx1,dy,10.*mm);
+      VetoTimeDet->SetLineColor(kMagenta-10);
+      top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-10.*cm));
+      AddSensitiveVolume(VetoTimeDet);
+   // make the entrance window
+      // add floor:
+      Double_t Length = zStartMagVol - zStartDecayVol - 1.8*m;
+      TGeoBBox *box = new TGeoBBox("box1",  10 * m, floorHeightA/2., Length/2.);
+      TGeoVolume *floor = new TGeoVolume("floor1",box,concrete);
+      floor->SetLineColor(11);
+      tDecayVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightA/2.,Length/2.));
+      //entrance lid
+      TGeoVolume* T1Lid = MakeLidSegments(1,dx1,dy);
+      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, zpos - zStartDecayVol+f_LidThickness/2.1));
+
+      //without segment1, recalculate the z and (half)length of segment 2:
+      //Take into account to remove the between seg1 and seg2 due to straw-veto station.
+      //and add this gap to the total length.
+      Double_t tgap=fTub2z-fTub1z-fTub2length-fTub1length;
+      fTub2z=fTub1z+fTub2length+tgap/2.;
+      fTub2length=fTub2length+fTub1length+tgap/2.;
+      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeightA);
+      tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z-zStartDecayVol));
+
+      Length = fTub6z+fTub6length-fTub2z-fTub2length;
+      box = new TGeoBBox("box2",  10 * m, floorHeightB/2., Length/2.);
+      floor = new TGeoVolume("floor2",box,concrete);
+      floor->SetLineColor(11);
+      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length));
+
+      //After T1: not conical, size of T4, hencee slopes=0. etc..
+      dx1 = slopex*(fTub6z -fTub6length - zFocusX);
+      dy = slopey*(fTub6z -fTub6length - zFocusY);
+      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeightB);
+      tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
+
+      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,0.,0.,floorHeightB);
+      tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
+
+      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeightB);
+      tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
+
+      if (fTub6length>0.2*m){
+       TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,0.,0.,floorHeightB);
+       tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
+      }
+
+   // make the exit window
+      Double_t dx2 = slopex*(fTub6z +fTub6length - zFocusX);
+      TGeoVolume *T6Lid = gGeoManager->MakeBox("T6Lid",supportMedOut,dx2,dy,f_LidThickness/2.);
+      T6Lid->SetLineColor(18);
+      tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+f_LidThickness/2.+0.1*cm - zStartMagVol));
+      //finisMakeSegments assembly and position
+      TGeoShapeAssembly* asmb = (TGeoShapeAssembly*)tDecayVol->GetShape();
+      Double_t totLength = asmb->GetDZ();
+      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol+totLength));
+      asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
+      totLength = asmb->GetDZ();
+      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
+
+      //Add one more sensitive plane after vacuum tube for timing
+      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,dx2,dy,15.*mm);
+      TimeDet->SetLineColor(kMagenta-10);
+      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
+      AddSensitiveVolume(TimeDet);
+    }
+    else if (fDesign==5){
     // designMakeSe 5: simplified trapezoidal design for optimization study
     // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
     // rib width = rib thickness, H bar therefore 2*

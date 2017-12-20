@@ -8,7 +8,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
 # preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
-# tankDesign = 5 #  4=TP, elliptical shape, 5=rectangular, conical
+# tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 if "muShieldDesign" not in globals():
     muShieldDesign = 5
 if "nuTargetPassive" not in globals():
@@ -22,18 +22,18 @@ if "targetOpt" not in globals():
 if "strawDesign" not in globals():
     strawDesign = 4
 if "tankDesign" not in globals():
-    tankDesign = 4
+    tankDesign = 6
 if "CaloDesign" not in globals():
     CaloDesign = 0
 if "Yheight" not in globals():
     Yheight = 10.
 if "EcalGeoFile" not in globals():
-    if tankDesign == 5:
+    if tankDesign > 4:
         EcalGeoFile = "ecal_rect5x10m2.geo"
     else:
         EcalGeoFile = "ecal_ellipse5x10m2.geo"
 if "HcalGeoFile" not in globals():
-    if tankDesign == 5:
+    if tankDesign > 4:
         HcalGeoFile = "hcal_rect.geo"
     else:
         HcalGeoFile = "hcal.geo"
@@ -364,15 +364,16 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
     c.strawtubes.StrawLength     = c.xMax
-    if tankDesign == 5:
+    if tankDesign > 4:
        zF = c.target.z0+c.zFocusX
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
        c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)   
+       if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5
     else:
        c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
-       c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength  
+       c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength
 # height of tracking stations
-    if tankDesign == 5:
+    if tankDesign > 4:
      zF = c.target.z0+c.zFocusY
      c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
      c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
