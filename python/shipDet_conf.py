@@ -290,11 +290,10 @@ def configure(run,ship_geo):
    Preshower.SetFilterThickness2(ship_geo.Preshower.FilterThickness0,ship_geo.Preshower.FilterThickness1)
    detectorList.append(Preshower)
 
-   ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
-   detectorList.append(ecal)
+  ecal,EcalZSize = posEcal(ship_geo.ecal.z,ship_geo.ecal.File)
+  detectorList.append(ecal)
 
  if ship_geo.EcalOption == 2:  # splitCal with pointing information
-  stupid = 1 
   SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
   x = ship_geo.SplitCal 
   SplitCal.SetThickness(x.ActiveECALThickness,x.ActiveHCALThickness,x.FilterECALThickness,x.FilterECALThickness_first,x.FilterHCALThickness,x.ActiveECAL_gas_Thickness)

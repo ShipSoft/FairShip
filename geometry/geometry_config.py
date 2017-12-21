@@ -45,6 +45,7 @@ with ConfigRegistry.register_config("basic") as c:
     totalLength       = 2.5*c.Yheight + 35*u.m
     extraVesselLength = totalLength - 50*u.m
     windowBulge = 1*u.m
+    if tankDesign > 5: windowBulge = 0*u.m
     c.strawDesign = strawDesign
     c.tankDesign = tankDesign
 # cave parameters
