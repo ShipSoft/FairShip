@@ -846,7 +846,7 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
         dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-f_RibThickness);
         dy = dy_start -f_OuterSupportThickness;
 	if (fPlasticVeto==1)
-	  dy+=10.0;
+	  dy+=11.0;
         if (slopeY>0) {dy+=slopeY*(zrib+dz-f_RibThickness);}
         TString tmp = nm;
         tmp+="-";tmp+=nr;
