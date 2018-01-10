@@ -75,7 +75,7 @@ veto::veto(const char* name, Bool_t active)
     f_InnerSupportThickness(3.*cm),    //!  inner support thickness of decay volume
     f_OuterSupportThickness(8.*mm),    //!  outer support thickness of decay volume
     f_LidThickness(80.*mm),    //!  thickness of Al entrance and exit lids
-    f_PhiRibsThickness(3.*mm),    //!  thickness ribs for phi segmentation
+    f_PhiRibsThickness(15.*mm),    //!  thickness ribs for phi segmentation
     f_VetoThickness(0.3*m), 	//!  thickness of liquid or plastic scintillator
     zFocusX(-80*m),              //! focus point for x dimension, given by muon free envelope
     zFocusY(-80*m),              //! focus point for Y dimension
@@ -128,10 +128,10 @@ TGeoVolume* veto::GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t
 
 
   int cornerNr = 0;
-  if(phi1>=0&&phi2>0&&phi1<90&&(int)phi2<=90)cornerNr=1;
-  if(phi1>=90&&phi2>90&&phi1<180&&(int)phi2<=180)cornerNr=2;
-  if(phi1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
-  if(phi1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
+  if((int)phi1+1>=0&&phi2>0&&phi1<90&&(int)phi2<=90)cornerNr=1;
+  if((int)phi1+1>=90&&phi2>90&&phi1<180&&(int)phi2<=180)cornerNr=2;
+  if((int)phi1+1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
+  if((int)phi1+1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
 
   double xdeg=atan(slopeX)*180./TMath::Pi();
   double ydeg=atan(slopeY)*180./TMath::Pi();
@@ -139,8 +139,10 @@ TGeoVolume* veto::GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t
   double xc = dxm-dcorner+0.02;
   double yc = dym-dcorner+0.02;
 
-  TGeoTubeSeg *Ts = new TGeoTubeSeg("Ts"+nm,dcorner,dcorner+thick,zlength*sqrt(1+slopeX*slopeX+slopeY*slopeY)/2 +
-                                         thick*sqrt(slopeX*slopeX+slopeY*slopeY),phi1,phi2);
+  //TGeoTubeSeg *Ts = new TGeoTubeSeg("Ts"+nm,dcorner,dcorner+thick,zlength*sqrt(1+slopeX*slopeX+slopeY*slopeY)/2 +
+    //                                     thick*sqrt(slopeX*slopeX+slopeY*slopeY),phi1,phi2);
+  TGeoTubeSeg *Ts = new TGeoTubeSeg("Ts"+nm,dcorner,dcorner+thick,zlength,phi1,phi2);
+  
   TGeoRotation *r = new TGeoRotation("r"+nm);
   if(cornerNr==1){r->RotateX(-ydeg);r->RotateY(xdeg);}
   if(cornerNr==2){r->RotateX(-ydeg);r->RotateY(-xdeg);xc=-xc;}
@@ -483,7 +485,7 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       if (seg<3){
        //dcorner+=f_InnerSupportThickness; //already the right corner radius == as outside of ribs
        Double_t wL = 0.5*m;//width of liqued scintilator
-       Double_t wLscale = 2*0.5;
+       Double_t wLscale = 1.7;
        Double_t wR = f_PhiRibsThickness;
        int nRx = 1;
        int nRy = 1;
@@ -492,22 +494,33 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
        int liSc_C_Counter = 1 + 100000*seg + 10000;
        int ribPhi_C_Counter = 1;
 
-       TGeoVolume* phiRib_Y_slope = GeoParalepiped("phiRib_Y_slope",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,0,-slopeY,kBlue,phi_ribMed);
-       TGeoVolume* phiRib_X_slope = GeoParalepiped("phiRib_X_slope",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,0,kBlue,phi_ribMed);
+       TGeoVolume* phiRib_Y_slope = GeoParalepiped("phiRib_Y_slope",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,0,-slopeY, kBlue,phi_ribMed);
+       TGeoVolume* phiRib_X_slope = GeoParalepiped("phiRib_X_slope",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,0, kBlue,phi_ribMed);
+       TGeoVolume* phiRib_XY_slope1 = GeoParalepiped("phiRib_XY_slope1",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY/2,kBlue,phi_ribMed);
+       TGeoVolume* phiRib_XY_slope2 = GeoParalepiped("phiRib_XY_slope2",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,-slopeY/2,kBlue,phi_ribMed);
+       
+       TGeoVolume* phiRib_Y_slope_steel = GeoParalepiped("phiRib_Y_slope_steel",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,0,-slopeY,15,supportMedIn);
+       TGeoVolume* phiRib_X_slope_steel = GeoParalepiped("phiRib_X_slope_steel",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,0,15,supportMedIn);
+       TGeoVolume* phiRib_XY_slopeL_steel = GeoParalepiped("phiRib_XY_slopeL_steel",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,-slopeY/2,15,supportMedIn);
+       TGeoVolume* phiRib_XY_slopeR_steel = GeoParalepiped("phiRib_XY_slopeR_steel",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY/2,15,supportMedIn);
 
-       TGeoVolume* phiRib_YX_slopeL = GeoParalepiped("phiRib_YX_slopeL",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,-slopeY,kBlue,phi_ribMed);
-       TGeoVolume* phiRib_XY_slopeL = GeoParalepiped("phiRib_XY_slopeL",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,-slopeY,kBlue,phi_ribMed);
+       TGeoVolume* phiRib_YX_slopeL = GeoParalepiped("phiRib_YX_slopeL",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,-slopeY,15,supportMedIn);
+       TGeoVolume* phiRib_XY_slopeL = GeoParalepiped("phiRib_XY_slopeL",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,-slopeY,15,supportMedIn);
 
-       TGeoVolume* phiRib_YX_slopeR = GeoParalepiped("phiRib_YX_slopeR",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,slopeX,-slopeY,kBlue,phi_ribMed);
-       TGeoVolume* phiRib_XY_slopeR = GeoParalepiped("phiRib_XY_slopeR",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY,kBlue,phi_ribMed);
+       TGeoVolume* phiRib_YX_slopeR = GeoParalepiped("phiRib_YX_slopeR",zlength,f_PhiRibsThickness/2,f_VetoThickness/2,slopeX,-slopeY,15,supportMedIn);
+       TGeoVolume* phiRib_XY_slopeR = GeoParalepiped("phiRib_XY_slopeR",zlength,f_VetoThickness/2,f_PhiRibsThickness/2,-slopeX,slopeY,15,supportMedIn);
 
        TGeoVolume* liScYslope=NULL;
        if (fLiquidVeto==1)
 	 liScYslope = GeoParalepiped("liScYslope",zlength,wL/2,f_VetoThickness/2,0,-slopeY,kMagenta-10,vetoMed,kTRUE);
        TGeoVolume* liScXslope=NULL;
-       if (fLiquidVeto==1)
+       TGeoVolume* liScXslope1=NULL;
+       TGeoVolume* liScXslope2=NULL;
+       if (fLiquidVeto==1){
 	 liScXslope = GeoParalepiped("liScXslope",zlength,f_VetoThickness/2,wL/2,-slopeX,0,kMagenta-10,vetoMed,kTRUE);
-
+	 liScXslope1 = GeoParalepiped("liScXslope1",zlength,f_VetoThickness/2,wL/2,-slopeX,slopeY/2,kMagenta-10,vetoMed,kTRUE);
+	 liScXslope2 = GeoParalepiped("liScXslope2",zlength,f_VetoThickness/2,wL/2,-slopeX,-slopeY/2,kMagenta-10,vetoMed,kTRUE);
+       }
 
 
        TGeoVolume* liSc_Corner[16];
@@ -529,8 +542,10 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
        nmRC+= "RibPhiC";
        TGeoVolumeAssembly *tRibPhiC = new TGeoVolumeAssembly(nmRC);
 
-         double phiStep = 22.44;
-         double phiRibTh = 0.08;
+         //double phiStep = 22.44;
+         //double phiRibTh = 0.08;
+	 double phiStep = 21.75;
+         double phiRibTh = 1.0;
 	 double phi1=0;
 	 double phi2=0;
 	 dx=dx_start - f_OuterSupportThickness - f_VetoThickness - f_InnerSupportThickness-3*gap;
@@ -552,7 +567,8 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
 	  phi2=phi1+phiRibTh;
 	  TString tmp="T"; tmp += seg;
 	  tmp += "phiRib_Corner";tmp+=nrPhiC;
-	  phiRib_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx,dy,slopeX,slopeY,dcorner-f_VetoThickness-gap,phi1,phi2,-zlength, 2*zlength, kBlue,phi_ribMed);
+	  if(nrPhiC!=2&&nrPhiC!=5&&nrPhiC!=8&&nrPhiC!=11)phiRib_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx,dy,slopeX,slopeY,dcorner-f_VetoThickness-gap,phi1,phi2,-zlength, 2*zlength, kBlue,phi_ribMed);
+	  else phiRib_Corner[nrPhiC-1]=GeoCornerSeg(tmp,f_VetoThickness,dz,dx,dy,slopeX,slopeY,dcorner-f_VetoThickness-gap,phi1,phi2,-zlength, 2*zlength, 15,supportMedIn);
 	  phi1+=phiStep;
 	  phi1+=phiRibTh;
 	}
@@ -578,6 +594,10 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       Double_t Y = -dy_start+f_OuterSupportThickness+f_InnerSupportThickness+f_VetoThickness/2-slopeY*(zlisc+dz-zlength)+2*gap;
       Double_t lx=-2*x-f_PhiRibsThickness;
       Double_t ly=-2*y-f_PhiRibsThickness;
+      
+      Double_t lx1=lx/2;
+      Double_t ly1=ly/4;
+      Double_t ly2=ly/4;
 
       //place phi ribs
       tmpX = x;
@@ -599,116 +619,173 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
       ribPhiCounter++;
       tRibPhi->AddNode(phiRib_XY_slopeR, ribPhiCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)));
       ribPhiCounter++;
-
-      //place phi-lics and phi ribs on X axis
-      while(lx>=wLscale*wL+(nRx+1)*wR+nRx*wL)nRx+=1;
-      if(lx<wLscale*wL+wR){
-	tmp = nmLnr;
-	tmp+="_";tmp+=liScCounter;
-	TGeoVolume* liSc=NULL;
-	if (fLiquidVeto==1)
-	{
-	  liSc=GeoPolyhedron(tmp,zlength,-x-f_PhiRibsThickness,f_VetoThickness/2,-slopeX,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
-	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(0,Y,zlisc));
-	  liScCounter+=1;
-          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(0,-Y,zlisc,new TGeoRotation("r",0,0,180)));
-	  liScCounter+=1;
-	}
+      
+      tRibPhi->AddNode(phiRib_Y_slope_steel, ribPhiCounter, new TGeoTranslation(0,Y,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_Y_slope_steel, ribPhiCounter, new TGeoCombiTrans(0,-Y,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_X_slope_steel, ribPhiCounter, new TGeoTranslation(X,0,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_X_slope_steel, ribPhiCounter, new TGeoCombiTrans(-X,0,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_XY_slopeL_steel, ribPhiCounter, new TGeoTranslation(X,tmpY/2,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_XY_slopeL_steel, ribPhiCounter, new TGeoCombiTrans(-X,-tmpY/2,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_XY_slopeR_steel, ribPhiCounter, new TGeoTranslation(X,-tmpY/2,zlisc));
+      ribPhiCounter++;
+      tRibPhi->AddNode(phiRib_XY_slopeR_steel, ribPhiCounter, new TGeoCombiTrans(-X,tmpY/2,zlisc,new TGeoRotation("r",0,0,180)));
+      ribPhiCounter++;
+      
+      
+     //place phi-lics and phi ribs on X axis
+     tmpX=(wL+wR)/2;
+     if (fLiquidVeto==1){
+      while(lx1>wL*wLscale){
+	tLiSc->AddNode(liScYslope, liScCounter, new TGeoTranslation(tmpX,Y,zlisc));
+	liScCounter+=1;
+	tLiSc->AddNode(liScYslope, liScCounter, new TGeoTranslation(-tmpX,Y,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liScYslope, liScCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
+	liScCounter++;
+	tLiSc->AddNode(liScYslope, liScCounter, new TGeoCombiTrans(-tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
+	liScCounter++;
+	lx1=lx1-wL;
+	tmpX += wL;
+	
+	tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoTranslation((tmpX-wL/2+wR/2),Y,zlisc));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoTranslation(-(tmpX-wL/2+wR/2),Y,zlisc));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoCombiTrans((tmpX-wL/2+wR/2),-Y,zlisc, new TGeoRotation("r",0,0,180)));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoCombiTrans(-(tmpX-wL/2+wR/2),-Y,zlisc, new TGeoRotation("r",0,0,180)));
+        ribPhiCounter++;
+	lx1=lx1-wR;
+        tmpX += wR;
       }
-      else if(lx<wLscale*wL+(nRx+1)*wR+nRx*wL){
-	double wC = (lx-(nRx*wR+(nRx-1)*wL))/2;
+     }
 	tmp = nmLnr;
 	tmp+="_";tmp+=liScCounter;
 	TGeoVolume* liSc=NULL;
 	if (fLiquidVeto==1)
 	{
-	  liSc=GeoPolyhedron(tmp,zlength,wC/2-f_PhiRibsThickness/2,f_VetoThickness/2,-slopeX,0,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
-	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(x+wC/2+wR/2,Y,zlisc));
+	  liSc=GeoPolyhedron(tmp,zlength,-x/2-wR/2-(tmpX-(wL+wR)/2)/2,f_VetoThickness/2,0,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(-x/2+(tmpX-(wL+wR)/2)/2,Y,zlisc));
 	  liScCounter+=1;
-          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-(x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(x/2-(tmpX-(wL+wR)/2)/2,-Y,zlisc,new TGeoRotation("r",0,0,180)));
 	  liScCounter+=1;
-
+	  
 	  tmp = nmLnr;
 	  tmp+="_";tmp+=liScCounter;
-	  liSc = GeoPolyhedron(tmp,zlength,wC/2-f_PhiRibsThickness/2,f_VetoThickness/2,0,slopeX,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
-	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(-(x+wC/2+wR/2),Y,zlisc));
+	  
+	  liSc=GeoPolyhedron(tmp,zlength,-x/2-wR/2-(tmpX-(wL+wR)/2)/2,f_VetoThickness/2,-slopeX,0,-slopeY,-slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(x/2-(tmpX-(wL+wR)/2)/2,Y,zlisc));
 	  liScCounter+=1;
-          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans((x+wC/2+wR/2),-Y,zlisc,new TGeoRotation("r",0,0,180)));
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-x/2+(tmpX-(wL+wR)/2)/2,-Y,zlisc,new TGeoRotation("r",0,0,180)));
 	  liScCounter+=1;
+	}
+      
 
-	  for(int i=1;i<=nRx-1;i++){
-	    tmpX = x+wR+wC+(i-1)*(wR+wL)+wL/2;
-	    tLiSc->AddNode(liScYslope, liScCounter, new TGeoTranslation(tmpX,Y,zlisc));
-	    liScCounter+=1;
-            tLiSc->AddNode(liScYslope, liScCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
-	    liScCounter++;
-	  }
-	}
-	//place phi-ribs
-	for(int i=1;i<=nRx;i++){
-	  tmpX = x+wC+(i-1)*(wR+wL)+wR/2;
-	  tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoTranslation(tmpX,Y,zlisc));
-	  ribPhiCounter++;
-          tRibPhi->AddNode(phiRib_Y_slope, ribPhiCounter, new TGeoCombiTrans(tmpX,-Y,zlisc,new TGeoRotation("r",0,0,180)) );
-	  ribPhiCounter++;
-	}
+     //place phi-lics and phi ribs on Y axis
+     tmpY=(wL+wR)/2;
+     if (fLiquidVeto==1){
+      while(ly1>wL*wLscale){
+	tLiSc->AddNode(liScXslope, liScCounter, new TGeoTranslation(X,tmpY,zlisc));
+	liScCounter+=1;
+	tLiSc->AddNode(liScXslope, liScCounter, new TGeoTranslation(X,-tmpY,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liScXslope, liScCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
+	liScCounter++;
+	tLiSc->AddNode(liScXslope, liScCounter, new TGeoCombiTrans(-X,-tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
+	liScCounter++;
+	ly1=ly1-wL;
+	tmpY += wL;
+	
+	tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoTranslation(X,(tmpY-wL/2+wR/2),zlisc));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoTranslation(X,-(tmpY-wL/2+wR/2),zlisc));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoCombiTrans(-X,(tmpY-wL/2+wR/2),zlisc, new TGeoRotation("r",0,0,180)));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoCombiTrans(-X,-(tmpY-wL/2+wR/2),zlisc, new TGeoRotation("r",0,0,180)));
+        ribPhiCounter++;
+	ly1=ly1-wR;
+        tmpY += wR;
       }
-
-
-      //place phi-lics and phi ribs on Y axis
-      while(ly>=wLscale*wL+(nRy+1)*wR+nRy*wL)nRy+=1;
-      if(ly<wLscale*wL+wR){
+     }
 	tmp = nmLnr;
 	tmp+="_";tmp+=liScCounter;
-	TGeoVolume* liSc=NULL;
+	liSc=NULL;
 	if (fLiquidVeto==1)
 	{
-	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y-f_PhiRibsThickness,-slopeX,-slopeX,-slopeY,slopeY,kMagenta-10,vetoMed,kTRUE);
-	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,0,zlisc));
+	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y/4-wR/2-(tmpY-(wL+wR)/2)/2,-slopeX,-slopeX,0,slopeY/2,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,-y/4+(tmpY-(wL+wR)/2)/2,zlisc));
 	  liScCounter+=1;
-          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,0,zlisc,new TGeoRotation("r",0,0,180)));
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,y/4-(tmpY-(wL+wR)/2)/2,zlisc,new TGeoRotation("r",0,0,180)));
 	  liScCounter+=1;
-	}
-      }
-      else if(ly<wLscale*wL+(nRy+1)*wR+nRy*wL){
-	double wC = (ly-(nRy*wR+(nRy-1)*wL))/2;
-	tmp = nmLnr;
-	tmp+="_"; tmp+=liScCounter;
-	TGeoVolume* liSc=NULL;
-	if (fLiquidVeto==1)
-	{
-	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2-f_PhiRibsThickness/2,-slopeX,-slopeX,-slopeY,0,kMagenta-10,vetoMed,kTRUE);
-	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,y+wC/2+wR/2,zlisc));
-	  liScCounter+=1;
-          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,-(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
-	  liScCounter+=1;
-
+	  
 	  tmp = nmLnr;
 	  tmp+="_";tmp+=liScCounter;
-	  liSc = GeoPolyhedron(tmp,zlength,f_VetoThickness/2,wC/2-f_PhiRibsThickness/2,-slopeX,-slopeX,0,slopeY,kMagenta-10,vetoMed,kTRUE);
-	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,-(y+wC/2+wR/2),zlisc));
+	  
+	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y/4-wR/2-(tmpY-(wL+wR)/2)/2,-slopeX,-slopeX,-slopeY/2,0,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,y/4-(tmpY-(wL+wR)/2)/2,zlisc));
 	  liScCounter+=1;
-          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,(y+wC/2+wR/2),zlisc,new TGeoRotation("r",0,0,180)));
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,-y/4+(tmpY-(wL+wR)/2)/2,zlisc,new TGeoRotation("r",0,0,180)));
 	  liScCounter+=1;
-
-
-	  for(int i=1;i<=nRy-1;i++){
-	    tmpY = y+wR+wC+(i-1)*(wR+wL)+wL/2;
-	    tLiSc->AddNode(liScXslope, liScCounter, new TGeoTranslation(X,tmpY,zlisc));
-	    liScCounter+=1;
-            tLiSc->AddNode(liScXslope, liScCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
-	    liScCounter++;
-	  }
 	}
-	//place phi-ribs
-	for(int i=1;i<=nRy;i++){
-	  tmpY = y+wC+(i-1)*(wR+wL)+wR/2;
-	  tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoTranslation(X,tmpY,zlisc));
-	  ribPhiCounter++;
-          tRibPhi->AddNode(phiRib_X_slope, ribPhiCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
-	  ribPhiCounter++;
+
+	
+	tmp = nmLnr;
+	tmp+="_";tmp+=liScCounter;
+	liSc=NULL;
+	if (fLiquidVeto==1)
+	{
+	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y/4-wR/2-(tmpY-(wL+wR)/2)/2,-slopeX,-slopeX,slopeY/2,slopeY,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,-y/4+(tmpY-(wL+wR)/2)/2+ly2+wR/4,zlisc));
+	  liScCounter+=1;
+          tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,y/4-(tmpY-(wL+wR)/2)/2-ly2-wR/4,zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
+	  
+	  tmp = nmLnr;
+	  tmp+="_";tmp+=liScCounter;
+	  
+	  liSc=GeoPolyhedron(tmp,zlength,f_VetoThickness/2,-y/4-wR/2-(tmpY-(wL+wR)/2)/2,-slopeX,-slopeX,-slopeY,-slopeY/2,kMagenta-10,vetoMed,kTRUE);
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoTranslation(X,y/4-(tmpY-(wL+wR)/2)/2-ly2-wR/4,zlisc));
+	  liScCounter+=1;
+	  tLiSc->AddNode(liSc, liScCounter, new TGeoCombiTrans(-X,-y/4+(tmpY-(wL+wR)/2)/2+ly2+wR/4,zlisc,new TGeoRotation("r",0,0,180)));
+	  liScCounter+=1;
 	}
+	
+	
+     ly1=ly2;
+     tmpY=(wL+wR)/2+ly2+wR/4;
+     if (fLiquidVeto==1){
+      while(ly1>wL*wLscale){
+	tLiSc->AddNode(liScXslope1, liScCounter, new TGeoTranslation(X,tmpY,zlisc));
+	liScCounter+=1;
+	tLiSc->AddNode(liScXslope2, liScCounter, new TGeoTranslation(X,-tmpY,zlisc));
+	liScCounter+=1;
+        tLiSc->AddNode(liScXslope1, liScCounter, new TGeoCombiTrans(-X,-tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
+	liScCounter++;
+	tLiSc->AddNode(liScXslope2, liScCounter, new TGeoCombiTrans(-X,tmpY,zlisc,new TGeoRotation("r",0,0,180)) );
+	liScCounter++;
+	ly1=ly1-wL;
+	tmpY += wL;
+	
+	tRibPhi->AddNode(phiRib_XY_slope1, ribPhiCounter, new TGeoTranslation(X,(tmpY-wL/2+wR/2),zlisc));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_XY_slope2, ribPhiCounter, new TGeoTranslation(X,-(tmpY-wL/2+wR/2),zlisc));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_XY_slope1, ribPhiCounter, new TGeoCombiTrans(-X,-(tmpY-wL/2+wR/2),zlisc, new TGeoRotation("r",0,0,180)));
+        ribPhiCounter++;
+	tRibPhi->AddNode(phiRib_XY_slope2, ribPhiCounter, new TGeoCombiTrans(-X,(tmpY-wL/2+wR/2),zlisc, new TGeoRotation("r",0,0,180)));
+        ribPhiCounter++;
+	ly1=ly1-wR;
+        tmpY += wR;
       }
+     }
+	
 
 
 
@@ -722,10 +799,10 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
 	   phi2=phi1+phiStep;
 
 	   int cornerNr = 0;
-           if(phi1>=0&&phi2>0&&phi1<90&&(int)phi2<=90)cornerNr=1;
-           if(phi1>=90&&phi2>90&&phi1<180&&(int)phi2<=180)cornerNr=2;
-           if(phi1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
-           if(phi1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
+           if((int)phi1+1>=0&&phi2>0&&phi1<90&&(int)phi2<=90)cornerNr=1;
+           if((int)phi1+1>=90&&phi2>90&&phi1<180&&(int)phi2<=180)cornerNr=2;
+           if((int)phi1+1>=180&&phi2>180&&phi1<270&&(int)phi2<=270)cornerNr=3;
+           if((int)phi1+1>=270&&phi2>270&&phi1<360&&(int)phi2<=360)cornerNr=4;
 
 	   if (fLiquidVeto==1)
 	   {
