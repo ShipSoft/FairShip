@@ -1123,7 +1123,7 @@ void veto::ConstructGeometry()
     decayVolumeMed = gGeoManager->GetMedium(decayVolumeMed_name);  // decay volume, air/helium/vacuum
     ribMed = gGeoManager->GetMedium(ribMed_name); //! medium of support structure
     phi_ribMed=gGeoManager->GetMedium(phi_ribMed_name); //medium of the  structure separating  the LiSc segments in XY plane
-    if (fDesign<4||fDesign>6){ fLogger->Fatal(MESSAGE_ORIGIN, "Only Designs 4 and 5 are supported!");}
+    if (fDesign<4||fDesign>6){ fLogger->Fatal(MESSAGE_ORIGIN, "Only Designs 4, 5 and 6 are supported!");}
     // put everything in an assembly
     TGeoVolume *tDecayVol = new TGeoVolumeAssembly("DecayVolume");
     TGeoVolume *tMaGVol   = new TGeoVolumeAssembly("MagVolume");
@@ -1204,7 +1204,7 @@ void veto::ConstructGeometry()
       //Add one more sensitive plane after vacuum tube for timing
       TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,dx2,dy,15.*mm);
       TimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
+      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+f_LidThickness+15.*mm+5.*cm));
       AddSensitiveVolume(TimeDet);
     }
     else if (fDesign==5){
