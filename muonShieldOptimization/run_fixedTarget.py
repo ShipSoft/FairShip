@@ -20,7 +20,7 @@ chibb = 1.6e-7
 npot  = 5E13
 nStart = 0
 
-charmInputFile = ROOT.gSystem.Getenv("EOSSHIP")+"/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+charmInputFile = ROOT.gSystem.Getenv("EOSSHIP")+"/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 nStart = 0
 
 outputDir    = "."
@@ -83,7 +83,7 @@ def init():
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
   ap.add_argument('-p','--pot',action='store_true',  dest='npot',  default=npot, help="number of protons on target per spill to normalize on")
-  ap.add_argument('-S','--nStart',action='store_true',  dest='nStart',  default=nStart, help="first event of input file to start")
+  ap.add_argument('-S', '--nStart', type=int, help="first event of input file to start", dest='nStart', default=nStart)
   ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile',  default=charmInputFile, help="input file for charm/beauty decays")
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   args = ap.parse_args()
@@ -212,7 +212,7 @@ P8gen.SetSeed(theSeed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if charm or beauty:
- P8gen.InitForCharmOrBeauty(ROOT.gSystem.Getenv("EOSSHIP")+"/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",nev,npot,nStart)
+ P8gen.InitForCharmOrBeauty(charmInputFile,nev,npot,nStart)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
@@ -293,11 +293,14 @@ fout.cd()
 ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 sTree.Write()
 fout.Close()
-os.system("rm  "+outFile)
-os.system("mv "+tmpFile+" "+outFile)
+
+rc1 = os.system("rm  "+outFile)
+rc2 = os.system("mv "+tmpFile+" "+outFile)
+print "removed out file, moved tmpFile to out file",rc1,rc2
 fin.SetWritable(False) # bpyass flush error
 
 print "Number of events produced with activity after hadron absorber:",nEvents
+time.sleep(60)
 
 if checkOverlap:
  sGeo = ROOT.gGeoManager

@@ -7,12 +7,12 @@ except:
   pass
 
 
-from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas,TProfile
+from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas,TProfile,gSystem
 import os,sys
 
 def readHists(h,fname):
   if fname[0:4] == "/eos":
-    eospath = "root://eoslhcb.cern.ch/"+fname
+    eospath = ROOT.gSystem.Getenv("EOSSHIP")+fname
     f = ROOT.TFile.Open(eospath)
   else:  
     f = TFile(fname)
@@ -176,7 +176,7 @@ def stripOffBranches(fout):
     else:  print "stripping failed, keep old file",os.path.abspath('.')
     # os.system('mv '+sFile +' '+fout)
 def checkFileExists(x):
-    if x[0:4] == "/eos": f="root://eoslhcb.cern.ch/"+x
+    if x[0:4] == "/eos": f=gSystem.Getenv("EOSSHIP")+x
     else: f=x  
     test = TFile.Open(f)
     if not test: 

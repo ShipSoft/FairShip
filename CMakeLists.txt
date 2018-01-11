@@ -398,8 +398,8 @@ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export PYTHONPATH=\"\${PYTHONPATH}:$
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIPRUN \"${CMAKE_CURRENT_BINARY_DIR}\"\n")
 file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIPRUN=\"${CMAKE_CURRENT_BINARY_DIR}\"\n")
 
-file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "setenv EOSSHIP \"root://eoslhcb.cern.ch/\"\n")
-file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export EOSSHIP=\"root://eoslhcb.cern.ch/\"\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "setenv EOSSHIP \"root://eospublic.cern.ch/\"\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export EOSSHIP=\"root://eospublic.cern.ch/\"\n")
 
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIP \"${CMAKE_CURRENT_SOURCE_DIR}\"\n")
 file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIP=\"${CMAKE_CURRENT_SOURCE_DIR}\"\n")

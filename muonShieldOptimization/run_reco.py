@@ -309,7 +309,7 @@ def copyRecoToEos(pl):
   for x in result['Rec']: 
      if result['Rec'][x]<1 : print 'Reco failed !',x,result['Rec'][x]
      else:
-      cmd = eos+' cp -r '+os.path.abspath('.')+'/'+x+'/ /eos/ship/data/DAFreco/muonBackground/'+x+'/' 
+      cmd = eos+' cp -r '+os.path.abspath('.')+'/'+x+'/ /eos/experiment/ship/data/DAFreco/muonBackground/'+x+'/' 
       os.system(cmd)
       print 'copied to eos',x
 

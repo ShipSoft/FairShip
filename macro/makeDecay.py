@@ -6,7 +6,7 @@ ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
 
 # latest production May 2016,76 M pot which produce a charm event equivalent,roughly 150 M charm hadrons
-fname='/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1'
+fname='/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1'
 
 nrpotspill=5.e13  #number of pot/spill
 chicc=1.7e-3      #prob to produce primary ccbar pair/pot

@@ -31,7 +31,7 @@ RPVSUSY      = False
 RPVSUSYbench = 2
 
 eventDisplay = False
-inputFile    = "/eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 
 defaultInputFile = True
 outputDir    = "."
@@ -163,11 +163,11 @@ if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY):
  sys.exit(2)
 
 if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
-  inputFile = "/eos/ship/data/GenieEvents/genie-nu_mu.root"
-            # "/eos/ship/data/GenieEvents/genie-nu_mu_bar.root"
+  inputFile = "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
+            # "/eos/experiment/ship/data/GenieEvents/genie-nu_mu_bar.root"
 if simEngine == "muonDIS" and defaultInputFile:
   print 'input file required if simEngine = muonDIS'
-  print " for example -f  /eos/ship/data/muonDIS/muonDis_1.root"
+  print " for example -f  /eos/experiment/ship/data/muonDIS/muonDis_1.root"
   sys.exit()
 if simEngine == "Nuage" and not inputFile:
  inputFile = 'Numucc.root'
@@ -175,7 +175,7 @@ if simEngine == "Nuage" and not inputFile:
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
-  print " for example -f /eos/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root"
+  print " for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root"
   sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit for python
