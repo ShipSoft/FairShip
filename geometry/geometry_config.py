@@ -189,7 +189,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm                                                                               
     c.SplitCal.FilterECALThickness_first = 0.28*u.cm
     c.SplitCal.ActiveHCALThickness = 90*u.cm
-    c.SplitCal.FilterHCALThickness = 20*u.cm
+    c.SplitCal.FilterHCALThickness = 90*u.cm
     c.SplitCal.nECALSamplings = 50
     c.SplitCal.nHCALSamplings = 1
     c.SplitCal.ActiveHCAL = 0
