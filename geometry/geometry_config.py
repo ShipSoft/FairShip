@@ -45,7 +45,7 @@ with ConfigRegistry.register_config("basic") as c:
     totalLength       = 2.5*c.Yheight + 35*u.m
     extraVesselLength = totalLength - 50*u.m
     windowBulge = 1*u.m
-    if tankDesign > 5: windowBulge = 0*u.m
+    if tankDesign > 5: windowBulge = 25*u.cm
     c.strawDesign = strawDesign
     c.tankDesign = tankDesign
 # cave parameters
@@ -159,9 +159,9 @@ with ConfigRegistry.register_config("basic") as c:
      print "CaloDesign option wrong -> ",CaloDesign
      1/0
 
-    presShowerDeltaZ = 0. 
+    presShowerDeltaZ = 0.
     if c.preshowerOption >0:
-     PreshowerStart = c.Chamber6.z + windowBulge + 2*u.cm   
+     PreshowerStart = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + (8+5)*u.cm
      c.PreshowerFilter0  = AttrDict(z= PreshowerStart )
      c.PreshowerStation0 = AttrDict(z= c.PreshowerFilter0.z + 10*u.cm )
 
@@ -180,7 +180,7 @@ with ConfigRegistry.register_config("basic") as c:
      presShowerDeltaZ = PreshowerLeverArm + 2*10*u.cm + 2*2.*u.cm
 
     c.SplitCal = AttrDict(z=0)
-    c.SplitCal.ZStart = c.Chamber6.z + windowBulge + 2*u.cm + presShowerDeltaZ
+    c.SplitCal.ZStart = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + (8+5)*u.cm + presShowerDeltaZ
     c.SplitCal.XMax    =  290.*u.cm
     c.SplitCal.YMax    =  510.*u.cm * c.Yheight / (10.*u.m)
     c.SplitCal.Empty = 0*u.cm
@@ -188,10 +188,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
     c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm                                                                               
     c.SplitCal.FilterECALThickness_first = 0.28*u.cm
-    c.SplitCal.ActiveHCALThickness = 1*u.cm
+    c.SplitCal.ActiveHCALThickness = 90*u.cm
     c.SplitCal.FilterHCALThickness = 20*u.cm
     c.SplitCal.nECALSamplings = 50
-    c.SplitCal.nHCALSamplings = 0
+    c.SplitCal.nHCALSamplings = 1
+    c.SplitCal.ActiveHCAL = 0
     c.SplitCal.FilterECALMaterial= 3    # 1=scintillator 2=Iron 3 = lead  4 =Argon                                                                     
     c.SplitCal.FilterHCALMaterial= 2
     c.SplitCal.ActiveECALMaterial= 1
@@ -202,9 +203,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.second_precision_layer=10
     c.SplitCal.third_precision_layer=13
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
-    c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
+    c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap+c.SplitCal.FilterHCALThickness
 
-    c.ecal  =  AttrDict(z = c.Chamber6.z + windowBulge + 2*u.cm + presShowerDeltaZ)
+    c.ecal  =  AttrDict(z = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + (8+5)*u.cm + presShowerDeltaZ)  # 8cm space for time det, hardcoded in veto.cxx
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if not c.HcalOption < 0:

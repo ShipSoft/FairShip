@@ -216,10 +216,10 @@ void splitcal::SetMaterial(Double_t ActiveECALMaterial, Double_t ActiveHCALMater
 
 }
 
-void splitcal::SetNSamplings(Double_t nECALSamplings, Double_t nHCALSamplings)
-{
+void splitcal::SetNSamplings(Double_t nECALSamplings, Double_t nHCALSamplings, Double_t ActiveHCAL){
   fnHCALSamplings=nHCALSamplings;
   fnECALSamplings=nECALSamplings;
+  fActiveHCAL=ActiveHCAL;
 }
 
 void splitcal::SetXMax(Double_t xMax)
@@ -368,20 +368,20 @@ void splitcal::ConstructGeometry()
       labelHCALdet+=i_nlayHCAL;
       char_labelHCALdet[i_nlayHCAL]=labelHCALdet;
       newHCALfilter[i_nlayHCAL] = gGeoManager->MakeBox(char_labelHCALfilter[i_nlayHCAL], A2, fXMax, fYMax, fFilterHCALThickness/2);
-      newHCALdet[i_nlayHCAL] = gGeoManager->MakeBox(char_labelHCALdet[i_nlayHCAL], A4, fXMax, fYMax, fActiveHCALThickness/2);
+      if(fActiveHCAL)newHCALdet[i_nlayHCAL] = gGeoManager->MakeBox(char_labelHCALdet[i_nlayHCAL], A4, fXMax, fYMax, fActiveHCALThickness/2);
 
-      AddSensitiveVolume(newHCALdet[i_nlayHCAL]);
+      if(fActiveHCAL)AddSensitiveVolume(newHCALdet[i_nlayHCAL]);
 
-      newHCALdet[i_nlayHCAL]->SetLineColor(kRed);
+      if(fActiveHCAL)newHCALdet[i_nlayHCAL]->SetLineColor(kRed);
       newHCALfilter[i_nlayHCAL]->SetLineColor(kBlue);
     }
     for (Int_t i_nlayHCAL=0; i_nlayHCAL<fnHCALSamplings; i_nlayHCAL++){
       z_splitcal+=fFilterHCALThickness/2;
-      tSplitCal->AddNode(newHCALfilter[i_nlayHCAL], 1, new TGeoTranslation(0, 0, z_splitcal));
+      tSplitCal->AddNode(newHCALfilter[0], 1, new TGeoTranslation(0, 0, z_splitcal));
       z_splitcal+=fFilterHCALThickness/2;      
       // z_splitcal+=fEmpty;
       z_splitcal+=fActiveHCALThickness/2;      
-      tSplitCal->AddNode(newHCALdet[i_nlayHCAL], 1, new TGeoTranslation(0, 0, z_splitcal));
+      if(fActiveHCAL)tSplitCal->AddNode(newHCALdet[0], 1, new TGeoTranslation(0, 0, z_splitcal));
       z_splitcal+=fActiveHCALThickness/2;      
       // z_splitcal+=fEmpty;
 

@@ -298,7 +298,7 @@ def configure(run,ship_geo):
   x = ship_geo.SplitCal 
   SplitCal.SetThickness(x.ActiveECALThickness,x.ActiveHCALThickness,x.FilterECALThickness,x.FilterECALThickness_first,x.FilterHCALThickness,x.ActiveECAL_gas_Thickness)
   SplitCal.SetMaterial(x.ActiveECALMaterial,x.ActiveHCALMaterial,x.FilterECALMaterial ,x.FilterHCALMaterial)
-  SplitCal.SetNSamplings(x.nECALSamplings,x.nHCALSamplings)
+  SplitCal.SetNSamplings(x.nECALSamplings,x.nHCALSamplings,x.ActiveHCAL)
   SplitCal.SetZStart(x.ZStart)
   SplitCal.SetXMax(x.XMax)
   SplitCal.SetYMax(x.YMax)

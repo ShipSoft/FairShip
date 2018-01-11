@@ -52,8 +52,8 @@ class splitcal: public FairDetector
 
     void SetMaterial(Double_t ActiveECALMaterial, Double_t ActiveHCALMaterial, Double_t FilterECALMaterial, Double_t FilterHCALMaterial);
 
-    void SetNSamplings(Double_t nECALSamplings, Double_t nHCALSamplings);
- 
+    void SetNSamplings(Double_t nECALSamplings, Double_t nHCALSamplings, Double_t ActiveHCAL);
+
     void SetXMax(Double_t xMax);
 
     void SetYMax(Double_t yMax);
@@ -103,7 +103,7 @@ class splitcal: public FairDetector
     Double_t fActiveECALThickness,  fActiveHCALThickness, fFilterECALThickness, xfFilterECALThickness,   fFilterECALThickness_first, fFilterHCALThickness;
     Double_t fActiveECALMaterial,  fActiveHCALMaterial, fFilterECALMaterial, fFilterHCALMaterial;
     Double_t fActiveECAL_gas_gap, fActiveECAL_gas_Thickness;
-    Double_t fnECALSamplings, fnHCALSamplings;
+    Double_t fnECALSamplings, fnHCALSamplings, fActiveHCAL;
     Double_t fZStart;
     Double_t fEmpty,fBigGap; 
     Double_t fXMax;
