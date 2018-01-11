@@ -102,8 +102,8 @@ Bool_t FixedTargetGenerator::Init()
   }
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
-  std::vector<int> r = { 221, 223,   113, 331, 333};
-  std::vector<int> c = { 7, 7, 5, 6, 9}; // decay channel mumu
+  std::vector<int> r = { 221, 221, 223, 223,   113, 331, 333};
+  std::vector<int> c = {  6 ,  7,   5 ,  7,     5,   6,   9}; // decay channel mumu mumuX
 
   if (Option == "Primary" && !G4only){
    fPythiaP->settings.mode("Beams:idB",  2212);
@@ -124,19 +124,25 @@ Bool_t FixedTargetGenerator::Init()
     fPythia->settings.mode("Beams:frameType",  2);
     fPythia->settings.parm("Beams:eA",fMom);
     fPythia->settings.parm("Beams:eB",0.);
-    fPythia->readString("SoftQCD:inelastic = on");
-    fPythia->readString("PhotonCollision:gmgm2mumu = on");
-    fPythia->readString("PromptPhoton:all = on");
-    fPythia->readString("WeakBosonExchange:all = on");
+    if (JpsiMainly){
+// use this for all onia productions
+     fPythia->readString("Onia:all(3S1) = on");
+     fPythia->readString("443:new  J/psi  J/psi  3   0   0    3.09692    0.00009    3.09602    3.09782  0.   1   1   0   1   0");
+     fPythia->readString("443:addChannel = 1   1.    0      -13       13");
+     fPythia->readString("553:new  Upsilon  Upsilon  3   0   0    9.46030    0.00005    9.45980    9.46080  0.00000e+00   0   1   0   1   0");
+     fPythia->readString("553:addChannel = 1   1.    0      -13       13");
+    }else{
+     fPythia->readString("SoftQCD:inelastic = on");
+     fPythia->readString("PhotonCollision:gmgm2mumu = on");
+     fPythia->readString("PromptPhoton:all = on");
+     fPythia->readString("WeakBosonExchange:all = on");
+    }
    }
    if (tauOnly){
     fPythia->readString("431:new  D_s+  D_s-  1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0");
     fPythia->readString("431:addChannel = 1   0.0640000    0      -15       16");
    }
-   if (JpsiMainly){
-    fPythia->readString("443:new  J/psi  J/psi  4   0   0    3.09692    0.00009    3.09602    3.09782  0.   1   1   0   1   0");
-    fPythia->readString("443:addChannel = 1   0.1    0      -13       13");
-   }
+
 // find all long lived particles in pythia
    Int_t n = 1;
    while(n!=0){
@@ -240,7 +246,6 @@ Bool_t FixedTargetGenerator::Init()
      idw=-idnu;
     }
     if (idnu==22){idadd=3;idw=idnu;}
-    fLogger->Info(MESSAGE_ORIGIN,"what is: %i",idw);
     TString name=PDG->GetParticle(idw)->GetName();
     TString title = name;title+=" momentum (GeV)";
     TString key = "";key+=idhnu;
