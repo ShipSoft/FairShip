@@ -24,7 +24,6 @@ charmInputFile = ROOT.gSystem.Getenv("EOSSHIP")+"/eos/experiment/ship/data/Charm
 nStart = 0
 
 outputDir    = "."
-seedFromTime      = int(10000 * time.time() % 10000000)
 work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
                  
@@ -86,7 +85,7 @@ def init():
   ap.add_argument('-S', '--nStart', type=int, help="first event of input file to start", dest='nStart', default=nStart)
   ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile',  default=charmInputFile, help="input file for charm/beauty decays")
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
-  ap.add_argument('-rs','--seed', type=int, help="random seed, is set from time if not specified", dest='seed', default=seedFromTime)
+  ap.add_argument('-rs','--seed', type=int, help="random seed; default value is 0, see TRrandom::SetSeed documentation", dest='seed', default=0)
   args = ap.parse_args()
   if args.debug:
       logger.setLevel(logging.DEBUG)
