@@ -24,7 +24,7 @@ charmInputFile = ROOT.gSystem.Getenv("EOSSHIP")+"/eos/experiment/ship/data/Charm
 nStart = 0
 
 outputDir    = "."
-theSeed      = int(10000 * time.time() % 10000000)
+seedFromTime      = int(10000 * time.time() % 10000000)
 work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
                  
@@ -86,6 +86,7 @@ def init():
   ap.add_argument('-S', '--nStart', type=int, help="first event of input file to start", dest='nStart', default=nStart)
   ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile',  default=charmInputFile, help="input file for charm/beauty decays")
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
+  ap.add_argument('-rs','--seed', type=int, help="random seed, is set from time if not specified", dest='seed', default=seedFromTime)
   args = ap.parse_args()
   if args.debug:
       logger.setLevel(logging.DEBUG)
@@ -144,7 +145,7 @@ def init():
 args = init()
 os.chdir(work_dir)
 # -------------------------------------------------------------------
-ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
+ROOT.gRandom.SetSeed(args.seed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)
 
@@ -207,7 +208,7 @@ if withEvtGen: P8gen.WithEvtGen()
 if boostDiMuon > 1:
  P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
                             # and later copied to Geant4
-P8gen.SetSeed(theSeed)
+P8gen.SetSeed(args.seed)
 # for charm/beauty
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
