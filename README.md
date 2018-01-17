@@ -16,8 +16,38 @@ Additionally for developers:
   * clang-format (to format code according to our style guide)
   * clang-tidy (to check coding conventions -- mostly naming rules which are not covered by `cpplint`)
 
-## Build Instructions
-0. If you work on lxplus, or on SLC6 and have access to /cvmfs/ship.cern.ch, define enviroment varaibles:
+## Build Instructions, following tutorial given at Nov'17 collab meeting https://indico.cern.ch/event/663423/contributions/2760156/attachments/1555373/2445724/Ship-Soft-CollaborationMeetingNov2017.pdf 
+0. For a full installation go to step 3. f you work on lxplus, or on SLC6/7 and have access to /cvmfs/ship.cern.ch, and you only want to install FairShip, define enviroment variables:
+    ```bash
+    export SHIPBUILD=/cvmfs/ship.cern.ch/SHiPBuild
+    ```    
+
+1. Install [FairShip]
+    ```bash
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    ./localConfig.sh
+    ```    
+2. Setup environment
+    ```bash
+    source FairShipRun/config.sh
+    ```    
+
+3. For a full installation on any linux system:
+    ```bash
+    mkdir SHiPBuild; cd SHiPBuild
+    git clone https://github.com/ShipSoft/FairShip.git 
+    FairShip/aliBuild.sh
+    ```    
+
+4. Setup environment
+    ```bash
+    alibuild/alienv enter (--shellrc) FairShip/latest
+    ```    
+
+
+## Old Build Instructions, not recommended anymore
+0. If you work on lxplus, or on SLC6/7 and have access to /cvmfs/ship.cern.ch, define enviroment variables:
     ```bash
     export SHIPSOFT=/cvmfs/ship.cern.ch/ShipSoft
     export FAIRROOTPATH=${SHIPSOFT}/FairRootInst
