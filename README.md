@@ -26,7 +26,7 @@ Additionally for developers:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     cd FairShip
-    ./localConfig.sh
+    ./localBuild.sh
     ```    
 2. Setup environment
     ```bash
