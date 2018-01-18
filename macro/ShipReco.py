@@ -36,12 +36,13 @@ shipRoot_conf.configure()
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
-           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR","withT0"])
+           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR=","withT0"])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,'
         print ' noStrawSmearing: no smearing of distance to wire, default on'
         print ' outputfile will have same name with _rec added'  
+        print ' --realPR= defines track pattern recognition. Possible options: Prev, FH, AR, Baseline.'
         sys.exit()
 for o, a in opts:
         if o in ("noVertexing",):
@@ -62,8 +63,8 @@ for o, a in opts:
             EcalDebugDraw = True
         if o in ("--saveDisk",):
             saveDisk = True
-	if o in ("--realPR",):
-            realPR = "_PR"
+        if o in ("--realPR",):
+            realPR = a
 if EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
 # need to figure out which geometry was used

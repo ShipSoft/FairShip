@@ -40,19 +40,15 @@ def execute(smeared_hits, stree, ReconstructibleMCTracks, method='Baseline'):
 
     Globals
     -------         
-    reco_points : dict
-        Dictionary of hits of an event:
-        {'TrackID': [id1, id2, id3, ...]
-         'DetID': [det_id1, det_id2, ...]
-         'X': [x1, x2, x3, ...]
-         'Y': [y1, y2, y3, ...]
-         'Z': [z1, z2, z3, ...]
-         'Px': [px1, px2, px3, ...]
-         'Py': [py1, py2, py3, ...]
-         'Pz': [pz1, pz2, pz3, ...]
-         'PdgCode': [pdg1, pdg2, pdg3, ...]
-         'dist2wire': [dist1, dist2, dist3, ...]}
-         where len(reco_points) == len(event)
+    reco_tracks : dict
+        Dictionary of recognized tracks: {track_id: reco_track}.
+        Reco_track is a dictionary:
+        {'hits': [ind1, ind2, ind3, ...],
+         'hitPosList': X[atrack, :-1],
+         'charge': charge,
+         'pinv': pinv,
+         'params12': [[k_yz, b_yz], [k_xz, b_xz]],
+         'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
 
     theTracks : list
         List of fitted track objects.
@@ -70,7 +66,7 @@ def execute(smeared_hits, stree, ReconstructibleMCTracks, method='Baseline'):
     ######################################## Do Track Pattern Recognition ##############################################
 
     global reco_tracks
-    reco_tracks, reco_points = PatRec(X, ShipGeo, z_magnet=ShipGeo.Bfield.z, method=method)
+    reco_tracks = PatRec(X, ShipGeo, z_magnet=ShipGeo.Bfield.z, method=method)
     
     # reco_tracks : {track_id1: reco_track1, track_id2: reco_track2, ...}
     # reco_track : {'hits': [ind1, ind2, ind3, ...],
@@ -79,21 +75,7 @@ def execute(smeared_hits, stree, ReconstructibleMCTracks, method='Baseline'):
     #               'pinv': pinv,
     #               'params12': [[k_yz, b_yz], [k_xz, b_xz]],
     #               'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
-    
-    
-    # reco_points : 
-    #    {'TrackID': [id1, id2, id3, ...]
-    #     'DetID': [det_id1, det_id2, ...]
-    #     'X': [x1, x2, x3, ...]
-    #     'Y': [y1, y2, y3, ...]
-    #     'Z': [z1, z2, z3, ...]
-    #     'Px': [px1, px2, px3, ...]
-    #     'Py': [py1, py2, py3, ...]
-    #     'Pz': [pz1, pz2, pz3, ...]
-    #     'PdgCode': [pdg1, pdg2, pdg3, ...]
-    #     'dist2wire': [dist1, dist2, dist3, ...]}
-    #     where len(reco_points) == len(event)
-    # This is used to create a branch with reconstructed hits in .root file.
+
 
     ######################################### Fit recognized tracks ####################################################
 
@@ -102,10 +84,11 @@ def execute(smeared_hits, stree, ReconstructibleMCTracks, method='Baseline'):
 
     ######################################### Estimate true track ids ##################################################
     
-    y = get_track_ids(stree, smeared_hits)
-    fittedtrackids, fittedtrackfrac = get_fitted_trackids(y, reco_tracks)
+    # y = get_track_ids(stree, smeared_hits) # No MC truth
+    # fittedtrackids, fittedtrackfrac = get_fitted_trackids(y, reco_tracks)
+    fittedtrackids = range(len(theTracks))
 
-    return fittedtrackids, reco_points
+    return fittedtrackids, reco_tracks
 
 
 
@@ -145,34 +128,12 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
          'params12': [[k_yz, b_yz], [k_xz, b_xz]],
          'params34': [[k_yz, b_yz], [k_xz, b_xz]]}
          
-    reco_points : dict
-        Dictionary of hits of an event:
-        {'TrackID': [id1, id2, id3, ...]
-         'DetID': [det_id1, det_id2, ...]
-         'X': [x1, x2, x3, ...]
-         'Y': [y1, y2, y3, ...]
-         'Z': [z1, z2, z3, ...]
-         'Px': [px1, px2, px3, ...]
-         'Py': [py1, py2, py3, ...]
-         'Pz': [pz1, pz2, pz3, ...]
-         'PdgCode': [pdg1, pdg2, pdg3, ...]
-         'dist2wire': [dist1, dist2, dist3, ...]}
-         where len(reco_points) == len(event)
     """
 
     if len(X) == 0:
-        reco_points = {}
-        reco_points['TrackID'] = []
-        reco_points['DetID'] = []
-        reco_points['X'] = []
-        reco_points['Y'] = []
-        reco_points['Z'] = []
-        reco_points['Px'] = []
-        reco_points['Py'] = []
-        reco_points['Pz'] = []
-        reco_points['PdgCode'] = []
-        reco_points['dist2wire'] = []
-        return {}, reco_points
+        return {}
+    
+    angle = 1. * ShipGeo.strawtubes.ViewAngle
 
 
     ################################## Select models to search tracks in 2D planes #####################################
@@ -180,7 +141,7 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
     if method=='FH':
 
 
-        ptrack_y = FastHough(n_tracks=2,
+        ptrack_y = FastHough(n_tracks=None, # search for all tracks
                              min_hits=3,
                              k_size=0.7/10000,
                              b_size=1700./10000,
@@ -198,12 +159,12 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
 
         # Double hits to increase PR precision.
         X1 = X.copy()
-        X1[:, 1] += X1[:, 6] * numpy.cos(numpy.deg2rad(5))
-        X1[:, 4] += X1[:, 6] * numpy.cos(numpy.deg2rad(5))
+        X1[:, 1] += X1[:, 6] * numpy.cos(numpy.deg2rad(angle))
+        X1[:, 4] += X1[:, 6] * numpy.cos(numpy.deg2rad(angle))
 
         X2 = X.copy()
-        X2[:, 1] += - X2[:, 6] * numpy.cos(numpy.deg2rad(5))
-        X2[:, 4] += - X2[:, 6] * numpy.cos(numpy.deg2rad(5))
+        X2[:, 1] += - X2[:, 6] * numpy.cos(numpy.deg2rad(angle))
+        X2[:, 4] += - X2[:, 6] * numpy.cos(numpy.deg2rad(angle))
 
         XX = numpy.concatenate((X1, X2), axis=0)
         sample_weight = None
@@ -234,12 +195,12 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
 
         # Double hits to increase PR precision.
         X1 = X.copy()
-        X1[:, 1] += X1[:, 6] * numpy.cos(numpy.deg2rad(5))
-        X1[:, 4] += X1[:, 6] * numpy.cos(numpy.deg2rad(5))
+        X1[:, 1] += X1[:, 6] * numpy.cos(numpy.deg2rad(angle))
+        X1[:, 4] += X1[:, 6] * numpy.cos(numpy.deg2rad(angle))
 
         X2 = X.copy()
-        X2[:, 1] += - X2[:, 6] * numpy.cos(numpy.deg2rad(5))
-        X2[:, 4] += - X2[:, 6] * numpy.cos(numpy.deg2rad(5))
+        X2[:, 1] += - X2[:, 6] * numpy.cos(numpy.deg2rad(angle))
+        X2[:, 4] += - X2[:, 6] * numpy.cos(numpy.deg2rad(angle))
 
         XX = numpy.concatenate((X1, X2), axis=0)
         sample_weight = None
@@ -281,6 +242,13 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
     # Look for tracks in the 16 layers with horizontal straw tubes in YZ-plane.
 
     track_inds_y12, track_params_y12 = y_track_recognition(ptrack_y, XX_y12, sample_weight_y12)
+    
+    # Remove clones
+    
+    tracks = [XX_inds[global_inds_y12[tr]] for tr in track_inds_y12]
+    res_y12 = remove_clones(tracks, max_shared_hits=2)
+    track_inds_y12 = [track_inds_y12[i] for i in res_y12]
+    track_params_y12 = [track_params_y12[i] for i in res_y12]
 
     # track_inds_y12 = [[ind1, ind2, ind3, ...], [...], ...]
     # track_params_y12 = [[k1, b1], [k2, b2], ...], where y = k * x + b
@@ -331,6 +299,13 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
     # Look for tracks in the 16 layers with horizontal straw tubes in YZ-plane.
 
     track_inds_y34, track_params_y34 = y_track_recognition(ptrack_y, XX_y34, sample_weight_y34)
+    
+    # Remove clones
+    
+    tracks = [XX_inds[global_inds_y34[tr]] for tr in track_inds_y34]
+    res_y34 = remove_clones(tracks, max_shared_hits=2)
+    track_inds_y34 = [track_inds_y34[i] for i in res_y34]
+    track_params_y34 = [track_params_y34[i] for i in res_y34]
 
     # track_inds_y34 = [[ind1, ind2, ind3, ...], [...], ...]
     # track_params_y34 = [[k1, b1], [k2, b2], ...], where y = k * x + b
@@ -382,26 +357,9 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
     ############################################ Save combined tracks ##################################################
 
     reco_tracks = {}
-    
-    # int trackID, int detID, TVector3 pos, TVector3 mom, double tof, double length, double eLoss, int pdgcode, double dist
-    reco_points = {}
-    reco_points['TrackID'] = -999 * numpy.ones(len(X))
-    reco_points['DetID'] = X[:, -1]
-    reco_points['X'] = -999 * numpy.ones(len(X))
-    reco_points['Y'] = -999 * numpy.ones(len(X))
-    reco_points['Z'] = X[:, 2]
-    reco_points['Px'] = -999 * numpy.ones(len(X))
-    reco_points['Py'] = -999 * numpy.ones(len(X))
-    reco_points['Pz'] = -999 * numpy.ones(len(X))
-    reco_points['PdgCode'] = -999 * numpy.ones(len(X))
-    reco_points['dist2wire'] = X[:, -2]
-    
-    detID = X[:, -1]
-    statnb, vnb, pnb, lnb, snb = decodeDetectorID(detID)
-    select_before = ((statnb == 1) + (statnb == 2))
-    select_after = ((statnb == 3) + (statnb == 4))
+    track_id = 0
 
-    for track_id, acomb in enumerate(comb.tracks_combinations_):
+    for acomb in comb.tracks_combinations_:
 
         track_before_y, track_before_stereo = track_inds_12[acomb[0]]
         track_before = numpy.concatenate((track_before_y, track_before_stereo))
@@ -413,70 +371,42 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
         atrack = numpy.unique(XX_inds[atrack])
 
         reco_tracks[track_id] = {'hits': atrack,
+                                 'flag': 1, # full track
                                  'hitPosList': X[atrack, :-1],
                                  'charge': comb.charges_[track_id],
                                  'pinv':comb.inv_momentums_[track_id],
                                  'params12': track_params_12[acomb[0]],
                                  'params34': track_params_34[acomb[1]]}
-        
-
-        [[k_yz12, b_yz12], [k_xz12, b_xz12]] = track_params_12[acomb[0]]
-        [[k_yz34, b_yz34], [k_xz34, b_xz34]] = track_params_34[acomb[1]]
-        p = 1./comb.inv_momentums_[track_id]
-        cos2_yz12 = 1./(1 + k_yz12**2)
-        cos2_xz12 = 1./(1 + k_xz12**2)
-        cos2_yz34 = 1./(1 + k_yz34**2)
-        cos2_xz34 = 1./(1 + k_xz34**2)
-        q = comb.charges_[track_id]
-        
-        before = atrack[select_before[atrack]]
-        after = atrack[select_after[atrack]]
-        
-        reco_points['TrackID'][atrack] = track_id
-        reco_points['Y'][before] = k_yz12 * reco_points['Z'][before] + b_yz12
-        reco_points['X'][before] = k_xz12 * reco_points['Z'][before] + b_xz12
-        reco_points['Y'][after] = k_yz34 * reco_points['Z'][after] + b_yz34
-        reco_points['X'][after] = k_xz34 * reco_points['Z'][after] + b_xz34
-        reco_points['Pz'][before] = numpy.sign(p) * numpy.sqrt(p**2/(3 - cos2_yz12 - cos2_xz12))
-        reco_points['Px'][before] = reco_points['Pz'][before] * numpy.sqrt(1-cos2_xz12)
-        reco_points['Py'][before] = reco_points['Pz'][before] * numpy.sqrt(1-cos2_yz12)
-        reco_points['Pz'][after] = numpy.sign(p) * numpy.sqrt(p**2/(3 - cos2_yz34 - cos2_xz34))
-        reco_points['Px'][after] = reco_points['Pz'][after] * numpy.sqrt(1-cos2_xz34)
-        reco_points['Py'][after] = reco_points['Pz'][after] * numpy.sqrt(1-cos2_yz34)
-        if q == -1:
-            reco_points['PdgCode'][atrack] = 11
-        elif q == 1:
-            reco_points['PdgCode'][atrack] = -11
-        else:
-            reco_points['PdgCode'][atrack] = -999
+        track_id += 1
             
 
     ################################ Save tracks found only in 1&2 or 3&4 stations #####################################
 
-#    combined_ids_12 = [acomb[0] for acomb in comb.tracks_combinations_]
-#    combined_ids_34 = [acomb[1] for acomb in comb.tracks_combinations_]
-#
-#    # Before
-#    for i_track in range(len(track_inds_12)):
-#
-#        if i_track in combined_ids_12:
-#            continue
-#
-#        track_before_y, track_before_stereo = track_inds_12[i_track]
-#        track_before = numpy.concatenate((track_before_y, track_before_stereo))
-#
-#        atrack = track_before
-#        atrack = numpy.unique(XX_inds[atrack])
-#
-#        reco_tracks[track_id] = {'hits': atrack,
-#                                 'hitPosList': X[atrack, :-1],
-#                                 'charge': -999,
-#                                 'pinv': -999,
-#                                 'params12': track_params_12[i_track],
-#                                 'params34': [[], []]}
-#
-#        track_id += 1
-#
+    combined_ids_12 = [acomb[0] for acomb in comb.tracks_combinations_]
+    combined_ids_34 = [acomb[1] for acomb in comb.tracks_combinations_]
+
+    # Before
+    for i_track in range(len(track_inds_12)):
+
+        if i_track in combined_ids_12:
+            continue
+
+        track_before_y, track_before_stereo = track_inds_12[i_track]
+        track_before = numpy.concatenate((track_before_y, track_before_stereo))
+
+        atrack = track_before
+        atrack = numpy.unique(XX_inds[atrack])
+
+        reco_tracks[track_id] = {'hits': atrack,
+                                 'flag': 0, # tracklet
+                                 'hitPosList': X[atrack, :-1],
+                                 'charge': -999,
+                                 'pinv': -999,
+                                 'params12': track_params_12[i_track],
+                                 'params34': [[], []]}
+
+        track_id += 1
+
 #    # After
 #    for i_track in range(len(track_inds_34)):
 #
@@ -498,7 +428,7 @@ def PatRec(X, ShipGeo, z_magnet, method='Baseline'):
 #
 #        track_id += 1
 
-    return reco_tracks, reco_points
+    return reco_tracks
 
 
 
@@ -542,13 +472,14 @@ def TrackFit(ShipGeo, reco_tracks, isfit=True):
 
     if isfit:
 
-        # Init track fitter
-        geoMat =  ROOT.genfit.TGeoMaterialInterface()
-        bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
-        fM = ROOT.genfit.FieldManager.getInstance()
-        fM.init(bfield)
-        ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
-        fitter = ROOT.genfit.DAF()
+        # # Init track fitter # It is done in shipDigiReco
+        # geoMat =  ROOT.genfit.TGeoMaterialInterface()
+        # bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
+        # fM = ROOT.genfit.FieldManager.getInstance()
+        # fM.init(bfield)
+        # ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+        # fitter = ROOT.genfit.DAF()
+        pass
 
     # Iterate recognized tracks
     for track_id in reco_tracks.keys():
@@ -556,10 +487,18 @@ def TrackFit(ShipGeo, reco_tracks, isfit=True):
         hitPosList = reco_tracks[track_id]['hitPosList']
         charge = reco_tracks[track_id]['charge']
         pinv = reco_tracks[track_id]['pinv']
+        flag = reco_tracks[track_id]['flag']
+        
+        # Skip if it is a tracklet
+        if flag == 0:
+            continue
 
         # Track preparation before the fit
 
         nM = len(hitPosList)
+        
+        # if nM<25: # Insufficient for fitting.
+        #    continue
 
         if int(charge)<0:
             pdg=13
@@ -614,20 +553,20 @@ def TrackFit(ShipGeo, reco_tracks, isfit=True):
             tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
             theTrack.insertPoint(tp)  # add point to Track
 
-        # Track fit
-
-        if isfit:
-
-            if not theTrack.checkConsistency():
-                continue
-
-            try:
-                fitter.processTrack(theTrack)
-            except:
-                continue
-
-            if not theTrack.checkConsistency():
-                continue
+        # # Track fit # shipDigiReco fits tthe track
+        # 
+        # if isfit:
+        #  
+        #     if not theTrack.checkConsistency():
+        #         continue
+        # 
+        #     try:
+        #         fitter.processTrack(theTrack)
+        #     except:
+        #         continue
+        # 
+        #     if not theTrack.checkConsistency():
+        #         continue
 
 
         # Collect tracks
@@ -793,7 +732,7 @@ def get_xz(plane_k, plane_b, X):
     Wy2 = X[:, 4]
 
     y = plane_k * Wz1 + plane_b
-    x = (Wx2 - Wx1) / (Wy2 - Wy1) * (y - Wy1) + Wx1
+    x = (Wx2 - Wx1) / (Wy2 - Wy1 + 10**-6) * (y - Wy1) + Wx1
 
     return Wz1, x
 
@@ -2075,6 +2014,28 @@ def fracMCsame(trackids):
     if nh>0: frac=float(track[tmax])/float(nh)
 
     return frac,tmax
+
+########################################################################################################################
+
+def remove_clones(tracks, max_shared_hits=0):
+    
+    results = []
+    
+    tot_max = 0
+    for atrack in tracks:
+        amax = max(atrack)
+        if amax > tot_max:
+            tot_max = amax
+    used = numpy.zeros(tot_max+1)
+    
+    
+    for i_track, atrack in enumerate(tracks):
+        n_shared_hits = used[atrack].sum()
+        if n_shared_hits <= max_shared_hits:
+            used[atrack] = 1
+            results.append(i_track)
+    
+    return results
 
 
 ########################################################################################################################

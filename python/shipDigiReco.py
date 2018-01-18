@@ -1,4 +1,5 @@
 import os,ROOT,shipVertex,shipPatRec,shipDet_conf
+import shipPatRec_prev # The previous version of the pattern recognition
 import shipunit as u
 import rootUtils as ut
 from array import array
@@ -58,9 +59,6 @@ class ShipDigiReco:
 # event header
   self.header  = ROOT.FairEventHeader()
   self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
-# Hits of recognized tracks
-  self.patRecArray  = ROOT.TClonesArray("strawtubesPoint")
-  self.patRecPoint   = self.sTree.Branch("PatRecPoint",  self.patRecArray, 32000, -1)
 # fitted tracks
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -181,14 +179,14 @@ class ShipDigiReco:
   if debug: self.fitter.setDebugLvl(1) # produces lot of printout
   #set to True if "real" pattern recognition is required also
   if debug == True: shipPatRec.debug = 1
+  if debug == True: shipPatRec_prev.debug = 1
 
 # for 'real' PatRec
   shipPatRec.initialize(fgeo)
+  shipPatRec_prev.initialize(fgeo)
 
  def reconstruct(self):
-   self.patRecArray.Delete()
    ntracks = self.findTracks()
-   self.patRecPoint.Fill()
    nGoodTracks = self.findGoodTracks()
    self.linkVetoOnTracks()
    for x in self.caloTasks: 
@@ -339,32 +337,30 @@ class ShipDigiReco:
 
   nTrack = -1
   trackCandidates = []
+  
   if realPR:
-     fittedtrackids, reco_points = shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
-     # Save hits of recognized tracks
-     for i_point in range(len(reco_points['TrackID'])):
-            pr_object = ROOT.strawtubesPoint(int(reco_points['TrackID'][i_point]), 
-                                             int(reco_points['DetID'][i_point]), 
-                                             ROOT.TVector3(reco_points['X'][i_point], 
-                                                           reco_points['Y'][i_point], 
-                                                           reco_points['Z'][i_point]), 
-                                             ROOT.TVector3(reco_points['Px'][i_point], 
-                                                           reco_points['Py'][i_point], 
-                                                           reco_points['Pz'][i_point]), 
-                                             -999., 
-                                             -999., 
-                                             -999., 
-                                             int(reco_points['PdgCode'][i_point]), 
-                                             reco_points['dist2wire'][i_point])
-            
-            if self.patRecArray.GetSize() == i_point: self.patRecArray.Expand(i_point+1000)
-            self.patRecArray[i_point] = pr_object
-            
-     if fittedtrackids:
-       tracknbr=0
-       for ids in fittedtrackids:
-         trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
-	 tracknbr+=1
+     if realPR == "Prev": # Runs previously used pattern recognition
+        fittedtrackids=shipPatRec_prev.execute(self.SmearedHits,self.sTree,shipPatRec_prev.ReconstructibleMCTracks)
+        if fittedtrackids:
+           tracknbr=0
+           for ids in fittedtrackids:
+              trackCandidates.append( [shipPatRec_prev.theTracks[tracknbr],ids] )
+              tracknbr+=1
+     else: # Runs new pattern recognition
+        fittedtrackids, reco_tracks = shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks, method=realPR)
+         # Save hit ids of recognized tracks
+        for atrack in reco_tracks.values():
+            nTracks   = self.fTrackletsArray.GetEntries()
+            aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
+            listOfHits = aTracklet.getList()
+            aTracklet.setType(atrack['flag'])
+            for index in atrack['hits']:
+                listOfHits.push_back(index)
+        if fittedtrackids:
+            tracknbr=0
+            for ids in fittedtrackids:
+                trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
+                tracknbr+=1
   else: # do fake pattern recognition
    for sm in self.SmearedHits:
     detID = self.digiStraw[sm['digiHit']].GetDetectorID()
@@ -526,3 +522,4 @@ class ShipDigiReco:
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")
   if realPR: shipPatRec.finalize()
+  if realPR: shipPatRec_prev.finalize()
