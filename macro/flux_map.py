@@ -11,19 +11,19 @@ import rootUtils as ut
 def main():
     parser = argparse.ArgumentParser(description='Script to create flux maps.')
     parser.add_argument(
-            'inputfile',
-            help='''Simulation results to use as input. '''
-            '''Supports retrieving files from EOS via the XRootD protocol.''')
+        'inputfile',
+        help='''Simulation results to use as input. '''
+        '''Supports retrieving files from EOS via the XRootD protocol.''')
     parser.add_argument(
-            'geofile',
-            help='''Geometry file to use. '''
-            '''Supports retrieving files from EOS via the XRootD protocol.''')
+        'geofile',
+        help='''Geometry file to use. '''
+        '''Supports retrieving files from EOS via the XRootD protocol.''')
     parser.add_argument(
-            '-o',
-            '--outputfile',
-            default='flux_map.root',
-            help='''File to write the flux maps to. '''
-            '''Will be recreated if it already exists.''')
+        '-o',
+        '--outputfile',
+        default='flux_map.root',
+        help='''File to write the flux maps to. '''
+        '''Will be recreated if it already exists.''')
     args = parser.parse_args()
     g = r.TFile.Open(args.geofile, 'read')
     sGeo = g.FAIRGeom
