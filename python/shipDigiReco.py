@@ -1,5 +1,6 @@
-import os,ROOT,shipVertex,shipPatRec,shipDet_conf
-import shipPatRec_prev # The previous version of the pattern recognition
+import os,ROOT,shipVertex,shipDet_conf
+if realPR == "Prev": import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
+else: import shipPatRec
 import shipunit as u
 import rootUtils as ut
 from array import array
@@ -179,11 +180,9 @@ class ShipDigiReco:
   if debug: self.fitter.setDebugLvl(1) # produces lot of printout
   #set to True if "real" pattern recognition is required also
   if debug == True: shipPatRec.debug = 1
-  if debug == True: shipPatRec_prev.debug = 1
 
 # for 'real' PatRec
   shipPatRec.initialize(fgeo)
-  shipPatRec_prev.initialize(fgeo)
 
  def reconstruct(self):
    ntracks = self.findTracks()
@@ -340,11 +339,11 @@ class ShipDigiReco:
   
   if realPR:
      if realPR == "Prev": # Runs previously used pattern recognition
-        fittedtrackids=shipPatRec_prev.execute(self.SmearedHits,self.sTree,shipPatRec_prev.ReconstructibleMCTracks)
+        fittedtrackids=shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
         if fittedtrackids:
            tracknbr=0
            for ids in fittedtrackids:
-              trackCandidates.append( [shipPatRec_prev.theTracks[tracknbr],ids] )
+              trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
               tracknbr+=1
      else: # Runs new pattern recognition
         fittedtrackids, reco_tracks = shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks, method=realPR)
@@ -522,4 +521,3 @@ class ShipDigiReco:
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")
   if realPR: shipPatRec.finalize()
-  if realPR: shipPatRec_prev.finalize()
