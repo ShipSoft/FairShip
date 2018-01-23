@@ -129,7 +129,7 @@ Local Magn7_MagBotRight B1_xNeg
 # Spectrometer
 Region volUpYoke B2_zNeg
 Region volLowYoke B2_zPos
-Region volArm1MS B2_yNeg
-Region volArm2MS B2_yPos
+Region volArm1Mudet B2_yNeg
+Region volArm2Mudet B2_yPos
 Region ColumnVol B3_xNeg
 Region volTarget B3_xPos

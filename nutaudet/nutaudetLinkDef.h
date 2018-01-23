@@ -6,7 +6,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class MagneticSpectrometer+;
+#pragma link C++ class NuTauMudet+;
 #pragma link C++ class ShipRpcPoint+;
 #pragma link C++ class Hpt+;
 #pragma link C++ class HptPoint+;

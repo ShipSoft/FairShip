@@ -31,11 +31,12 @@ class EmulsionMagnet : public FairModule
   void SetMagneticField(Double_t B); 
   
   void SetPillarDimensions(Double_t X, Double_t Y, Double_t Z);
+  void SetCutDimensions(Double_t CutLength, Double_t CutHeight); 
 
   void ConstructGeometry();
   Int_t InitMedium(const char* name);
  
-  ClassDef(EmulsionMagnet,4);
+  ClassDef(EmulsionMagnet,5);
 
  protected:
 
@@ -45,6 +46,8 @@ class EmulsionMagnet : public FairModule
   Double_t fColumnX;
   Double_t fColumnY;
   Double_t fColumnZ;
+  Double_t fCutLength; //dimensions of triangular cuts for lateral volumes (only in NuTauTargetDesign 3)
+  Double_t fCutHeight;
   Double_t fBaseX;
   Double_t fBaseY;
   Double_t fBaseZ;

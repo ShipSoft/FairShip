@@ -1,5 +1,13 @@
+//
+//  TargetTracker.cxx
+//  
+//
+//  Created by Annarita Buonaura.
+//  Design3 added by Antonio Iuliano for HPT
+//
+
 #include "HPT.h"
-#include "MagneticSpectrometer.h"
+#include "NuTauMudet.h"
 #include "HptPoint.h"
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
@@ -88,9 +96,9 @@ void Hpt::Initialize()
 }
 
 //Sets the dimension of the Magnetic Spectrometer volume in which the HPT are placed
-void Hpt::SetZsize(const Double_t MSsize)
+void Hpt::SetZsize(const Double_t Mudetsize)
 {
-  zSizeMS = MSsize;
+  zSizeMudet = Mudetsize;
 }
 
 //Sets the dimension of the concrete base on which the external couples of HPTs are placed
@@ -101,6 +109,20 @@ void Hpt::SetConcreteBaseDim(Double_t X, Double_t Y, Double_t Z)
   fConcreteZ = Z;
 }
 
+void Hpt::SetDistanceHPTs(Double_t dd) //only for geometry 3
+{
+  fDistance = dd;
+}
+
+void Hpt::SetHPTNumber(Int_t nHPT)
+{
+ fnHPT = nHPT;
+}
+
+void Hpt::SetDesign(Int_t Design)
+{
+  fDesign = Design;
+}
 
 // -----   Private method InitMedium 
 Int_t Hpt::InitMedium(const char* name)
@@ -125,17 +147,16 @@ Int_t Hpt::InitMedium(const char* name)
 
 void Hpt::ConstructGeometry()
 { 
-  TGeoVolume *volMSBox = gGeoManager->GetVolume("volMagneticSpectrometer");
-  //  TGeoVolume *volMSBox = gGeoManager->GetTopVolume();
-    
+       
     InitMedium("HPTgas");
     TGeoMedium *HPTmat =gGeoManager->GetMedium("HPTgas");
 
     InitMedium("Concrete");
     TGeoMedium *Conc =gGeoManager->GetMedium("Concrete");
 
-    // cout << "zSizeMS = " << zSizeMS << endl;
-    
+    // cout << "zSizeMudet = " << zSizeMudet << endl;
+    if (fDesign < 3){
+    TGeoVolume *volMudetBox = gGeoManager->GetVolume("volNuTauMudet");
     TGeoBBox *HPT = new TGeoBBox("HPT", DimX/2, DimY/2, DimZ/2);
     TGeoVolume *volHPT = new TGeoVolume("volHPT",HPT,HPTmat);
     volHPT->SetLineColor(kBlue-5);
@@ -146,27 +167,47 @@ void Hpt::ConstructGeometry()
     volCbase->SetLineColor(kOrange-7);
 
     //1 closer to Goliath
-    volMSBox->AddNode(volHPT,1,new TGeoTranslation(0,0,-zSizeMS/2 + DimZ/2));
-    volMSBox->AddNode(volCbase,1,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMS/2 + DimZ/2));
+    volMudetBox->AddNode(volHPT,1,new TGeoTranslation(0,0,-zSizeMudet/2 + DimZ/2));
+    volMudetBox->AddNode(volCbase,1,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMudet/2 + DimZ/2));
 
     //2 closer to Arm1
     //NB: 55 cm is the distance between the borders of the last 2 drift tubes
-    volMSBox->AddNode(volHPT,2,new TGeoTranslation(0,0,-zSizeMS/2 + 3*DimZ/2 +55*cm));
-    volMSBox->AddNode(volCbase,2,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMS/2 + 3*DimZ/2 +55*cm));
+    volMudetBox->AddNode(volHPT,2,new TGeoTranslation(0,0,-zSizeMudet/2 + 3*DimZ/2 +55*cm));
+    volMudetBox->AddNode(volCbase,2,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMudet/2 + 3*DimZ/2 +55*cm));
    
     //Central Drift tubes // 3 closer to Arm1, 4 closer to Arm2
-    volMSBox->AddNode(volHPT,3,new TGeoTranslation(0,0,-72*cm/2 - DimZ/2));
+    volMudetBox->AddNode(volHPT,3,new TGeoTranslation(0,0,-72*cm/2 - DimZ/2));
 
     //NB: 72cm is the distance between the borders of the central drift tubes
-    volMSBox->AddNode(volHPT,4,new TGeoTranslation(0,0,72*cm/2 + DimZ/2));
+    volMudetBox->AddNode(volHPT,4,new TGeoTranslation(0,0,72*cm/2 + DimZ/2));
    
     
     //After spectro Drift Tubes 5 closer to Arm, 6 closer to decay vessel
-    volMSBox->AddNode(volHPT,5,new TGeoTranslation(0,0,zSizeMS/2 - 3*DimZ/2 - 55*cm));
-    volMSBox->AddNode(volCbase,5,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMS/2 - 3*DimZ/2 - 55*cm));    
+    volMudetBox->AddNode(volHPT,5,new TGeoTranslation(0,0,zSizeMudet/2 - 3*DimZ/2 - 55*cm));
+    volMudetBox->AddNode(volCbase,5,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMudet/2 - 3*DimZ/2 - 55*cm));    
 
-    volMSBox->AddNode(volHPT,6,new TGeoTranslation(0,0,zSizeMS/2 - DimZ/2));
-    volMSBox->AddNode(volCbase,6,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMS/2 - DimZ/2));
+    volMudetBox->AddNode(volHPT,6,new TGeoTranslation(0,0,zSizeMudet/2 - DimZ/2));
+    volMudetBox->AddNode(volCbase,6,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMudet/2 - DimZ/2));
+
+    }
+    if (fDesign == 3){
+    //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
+    TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");    
+
+    TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
+    TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); //downstreamtrackers
+    volDT->SetLineColor(kBlue-5);
+    AddSensitiveVolume(volDT);
+
+    Double_t distTTtoHPT = 50 *cm; //distance from last TT to HPT
+
+    Int_t n = 0;
+    for(int i=0;i<fnHPT;i++){
+	  {
+            volMagRegion->AddNode(volDT,n,new TGeoTranslation(0,0, DimZ/2 + distTTtoHPT + i*(fDistance+DimZ)));	              
+	  }
+     }
+    }
 }
 
 Bool_t  Hpt::ProcessHits(FairVolume* vol)

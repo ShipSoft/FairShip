@@ -309,15 +309,17 @@ void Target::ConstructGeometry()
 	}
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT) 
-      volTarget->SetField(magField2);
+      if (fDesign != 3) volTarget->SetField(magField2);
       volTarget->SetVisibility(1);
       volTarget->SetVisDaughters(1);
       if(fDesign==0) //TP
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+fCoilH2+YDimension/2,0));
       if(fDesign==1) //NEW
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
-      if(fDesign==3)
-	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
+      if(fDesign==3){        
+        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
+        volMagRegion->AddNode(volTarget,1,new TGeoTranslation(0,0,-ZDimension/2));
+       }
     }
 
     

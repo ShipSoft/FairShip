@@ -144,20 +144,9 @@ void TargetTracker::SetNumberTT(Int_t n)
   fNTT =n;
 }
 
-void TargetTracker::SetNumberTT(Int_t n, Int_t nWOBricks)
-{
-  fNTT =n;
-  fNTTnoBricks = nWOBricks;
-}
-
 void TargetTracker::SetDesign(Int_t Design)
 {
   fDesign = Design;
-}
-
-void TargetTracker::SetDistanceWOBricks(Double_t dd)
-{
-  fDistance = dd;
 }
 
 
@@ -182,15 +171,6 @@ void TargetTracker::ConstructGeometry()
 	volTarget->AddNode(volTT,n,new TGeoTranslation(0,0, d_tt + l*(TTrackerZ +CellWidth)));
 	zpos = d_tt+l*(TTrackerZ +CellWidth);
 	n++;
-      }
-
-    if(fDesign==3)
-      {
-	for(int i=0;i<fNTTnoBricks;i++)
-	  {
-	    volTarget->AddNode(volTT,n,new TGeoTranslation(0,0, zpos+(i+1)*(fDistance+TTrackerZ)));
-	    n++;
-	  }
       }
 }
 

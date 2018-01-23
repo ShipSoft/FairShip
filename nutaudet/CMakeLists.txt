@@ -22,7 +22,7 @@ ${FAIRROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
-MagneticSpectrometer.cxx
+NuTauMudet.cxx
 ShipRpcPoint.cxx
 HPT.cxx
 HptPoint.cxx

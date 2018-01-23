@@ -23,9 +23,14 @@ class Hpt:public FairDetector
     virtual ~Hpt();
       
     void ConstructGeometry();
-    void SetZsize(const Double_t MSsize);
+    void SetZsize(const Double_t Mudetsize);
     void SetConcreteBaseDim(Double_t X, Double_t Y, Double_t Z);
     
+    void SetDesign(Int_t Design);
+    //methods for design 3 
+    void SetDistanceHPTs(Double_t dd);       
+    void SetHPTNumber(Int_t nHPT);
+    //
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -94,14 +99,18 @@ protected:
     Double_t DimX;
     Double_t DimY;
     Double_t DimZ;
-    Double_t zSizeMS; //dimension of the Magnetic Spectrometer volume
+    Double_t zSizeMudet; //dimension of the Muon Detector volume
     Double_t fConcreteX; //dimesion of Concrete Base on which the external HPTs lie
     Double_t fConcreteY;
     Double_t fConcreteZ;
 
+    Double_t fDesign;
+    Double_t fDistance;
+    Int_t fnHPT;
+
     Hpt(const Hpt&);
     Hpt& operator=(const Hpt&);
-    ClassDef(Hpt,4)
+    ClassDef(Hpt,5)
 
 };
 #endif 

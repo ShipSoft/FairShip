@@ -183,7 +183,7 @@ shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit 
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 # - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
 #   caloDesign     = 0 # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
-  
+#   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
                                                 muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign)
 else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
@@ -191,7 +191,7 @@ else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
 #ship_geo.EmuMagnet.B = 0.
-#ship_geo.tauMS.B = 0.
+#ship_geo.tauMudet.B = 0.
 
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
@@ -306,7 +306,7 @@ if simEngine == "muonDIS":
  primGen.SetTarget(0., 0.) 
  DISgen = ROOT.MuDISGenerator()
  # from nu_tau detector to tracking station 2
- # mu_start, mu_end =  ship_geo.tauMS.zMSC,ship_geo.TrackStation2.z
+ # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
  #
  # in front of UVT up to tracking station 1
  mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
@@ -352,7 +352,7 @@ if simEngine == "Genie":
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC-5*u.m, ship_geo.TrackStation2.z)
+ Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC-5*u.m, ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
@@ -363,7 +363,7 @@ if simEngine == "nuRadiography":
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
  # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMS.zMSC, ship_geo.MuonStation3.z)
+ Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
  Geniegen.NuOnly()
  primGen.AddGenerator(Geniegen)
  print 'Generate ',nEvents,' for nuRadiography', ' first event',firstEvent

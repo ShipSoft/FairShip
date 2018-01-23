@@ -1547,30 +1547,32 @@ void veto::ConstructGeometry()
       top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
       AddSensitiveVolume(TimeDet);
 
-      //Add veto-timing sensitive plane before vacuum tube
-      TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,aO1+wallo/2.,6.*m,10.*mm);
-      VetoTimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-5.*cm));
-      AddSensitiveVolume(VetoTimeDet);
-
+      //Add veto-timing sensitive plane before vacuum tube, not for new design 6, January 2018
+      if (fDesign<6){
+       TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,aO1+wallo/2.,6.*m,10.*mm);
+       VetoTimeDet->SetLineColor(kMagenta-10);
+       top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-5.*cm));
+       AddSensitiveVolume(VetoTimeDet);
+      
 //Add one sensitive plane counting rate in second detector downstream
-      // with shielding around,
-      TGeoVolume *tDet2 = new TGeoVolumeAssembly("Detector2");
-      Double_t zStartDet2 = fTub6z + 50.*m;
-      Double_t thickness = 10.*cm /2.;
-      TGeoBBox *shield2Out = new TGeoBBox("shield2Out",2.5*m+thickness, 3*m+thickness, 20.*cm+thickness);
-      TGeoBBox *shield2In  = new TGeoBBox("shield2In", 2.5*m+0.1*cm, 3*m+0.1*cm, 20.*cm+0.1*cm);
-      TGeoCompositeShape *shieldDet2 = new TGeoCompositeShape("shieldDet2", "shield2Out-shield2In");
-      TGeoVolume *sdet2 = new TGeoVolume("shieldDet2", shieldDet2, St);
-      sdet2->SetLineColor(kWhite-5);
-      tDet2->AddNode(sdet2, 1, new TGeoTranslation(0, 0, 0));
-      TGeoVolume *Det2 = gGeoManager->MakeBox("Det2", Sens, 2.5*m, 3.*m, 5.*cm);
-      Det2->SetLineColor(kGreen+3);
-      tDet2->AddNode(Det2, 1, new TGeoTranslation(0, 0, 0));
-      AddSensitiveVolume(Det2);
-      asmb = (TGeoShapeAssembly*)tDet2->GetShape();
-      totLength = asmb->GetDZ();
-      top->AddNode(tDet2, 1, new TGeoTranslation(0, 0,zStartDet2+totLength));
+      // with shielding around, also not needed anymore with new design
+       TGeoVolume *tDet2 = new TGeoVolumeAssembly("Detector2");
+       Double_t zStartDet2 = fTub6z + 50.*m;
+       Double_t thickness = 10.*cm /2.;
+       TGeoBBox *shield2Out = new TGeoBBox("shield2Out",2.5*m+thickness, 3*m+thickness, 20.*cm+thickness);
+       TGeoBBox *shield2In  = new TGeoBBox("shield2In", 2.5*m+0.1*cm, 3*m+0.1*cm, 20.*cm+0.1*cm);
+       TGeoCompositeShape *shieldDet2 = new TGeoCompositeShape("shieldDet2", "shield2Out-shield2In");
+       TGeoVolume *sdet2 = new TGeoVolume("shieldDet2", shieldDet2, St);
+       sdet2->SetLineColor(kWhite-5);
+       tDet2->AddNode(sdet2, 1, new TGeoTranslation(0, 0, 0));
+       TGeoVolume *Det2 = gGeoManager->MakeBox("Det2", Sens, 2.5*m, 3.*m, 5.*cm);
+       Det2->SetLineColor(kGreen+3);
+       tDet2->AddNode(Det2, 1, new TGeoTranslation(0, 0, 0));
+       AddSensitiveVolume(Det2);
+       asmb = (TGeoShapeAssembly*)tDet2->GetShape();
+       totLength = asmb->GetDZ();
+       top->AddNode(tDet2, 1, new TGeoTranslation(0, 0,zStartDet2+totLength));
+      }
      }
 
 // only for fastMuon simulation, otherwise output becomes too big
