@@ -2,11 +2,13 @@
 
 ## Introduction
 
-FairShip is the software framework for the SHiP experiment which is based on FairRoot. To use this software you need to install three packages: FairSoft, FairRoot and FairShip. The first two
-pacakges are quite stable and you don't have to modify them. They will be updated
-infrequently only when the FairRoot team releases a new version. In such a case you will be
-warned and you have to rebuild them. All packages are managed in Git and GitHub. Please
-read [the Git tutorial for SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first, even if you already know Git, as it explains how development is done on GitHub.
+FairShip is the software framework for the SHiP experiment which is based on
+FairRoot. The dependencies of FairShip are tracked and installed using
+[alibuild](https://alisw.github.io/alibuild/).
+
+All packages are managed in Git and GitHub. Please read [the Git tutorial for
+SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
+even if you already know Git, as it explains how development is done on GitHub.
 
 ## Prerequisites
 
@@ -16,13 +18,14 @@ Additionally for developers:
   * clang-format (to format code according to our style guide)
   * clang-tidy (to check coding conventions -- mostly naming rules which are not covered by `cpplint`)
 
-## Build Instructions, following tutorial given at Nov'17 collab meeting https://indico.cern.ch/event/663423/contributions/2760156/attachments/1555373/2445724/Ship-Soft-CollaborationMeetingNov2017.pdf 
-0. For a full installation go to step 3. f you work on lxplus, or on SLC6/7 and have access to /cvmfs/ship.cern.ch, and you only want to install FairShip, define enviroment variables:
+## Build Instructions, following [the tutorial given at the Nov'17 collab meeting](https://indico.cern.ch/event/663423/contributions/2760156/attachments/1555373/2445724/Ship-Soft-CollaborationMeetingNov2017.pdf)
+0. For a full installation go to step 3. If you work on lxplus, or on SLC6/CC7
+   and have access to `/cvmfs/ship.cern.ch`, and you only want to install FairShip, define enviroment variables:
     ```bash
     export SHIPBUILD=/cvmfs/ship.cern.ch/SHiPBuild
     ```    
 
-1. Install [FairShip]
+1. Install FairShip
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     cd FairShip
@@ -63,7 +66,7 @@ Additionally for developers:
     git config --global http.sslcainfo ~/certs/cacert.pem
     ```
 
-2. Install [FairSoft]
+2. Install [FairSoft](https://github.com/ShipSoft/FairSoft)
 
     ```bash
     mkdir ~/ShipSoft    [ or where ever you like to place the software ]
@@ -77,7 +80,7 @@ Additionally for developers:
     # Experts can fine-tune if they like
     ```
 
-3. Install [FairRoot]
+3. Install [FairRoot](https://github.com/ShipSoft/FairRoot)
 
     ```bash
     cd ~/ShipSoft
@@ -86,7 +89,7 @@ Additionally for developers:
     ./configure.sh
     ```
 
-4. Install the [SHiP](https://github.com/ShipSoft/FairShip.git) software:
+4. Install FairShip:
 
     ```bash
     cd ~/ShipSoft
@@ -95,7 +98,7 @@ Additionally for developers:
     ./configure.sh
     ```
 
-    To only compile FairShip, e.g. after the initial install and after having edited files, do:
+    To only re-compile FairShip, e.g. after the initial install and after having edited files, do:
 
     ```bash
     cd ~/ShipSoft/FairShipRun
@@ -104,7 +107,7 @@ Additionally for developers:
 
 ## Run Instructions
 
-Before running the [SHiP](https://github.com/ShipSoft/FairShip.git) software, set the necessary environment by doing:
+Before running the SHiP software, set the necessary environment by doing:
 
     ```bash
     source ~/ShipSoft/FairShipRun/config.[c]sh
