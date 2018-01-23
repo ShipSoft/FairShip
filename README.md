@@ -49,62 +49,6 @@ Additionally for developers:
     ```    
 
 
-## Old Build Instructions, not recommended anymore
-0. If you work on lxplus, or on SLC6/7 and have access to /cvmfs/ship.cern.ch, define enviroment variables:
-    ```bash
-    export SHIPSOFT=/cvmfs/ship.cern.ch/ShipSoft
-    export FAIRROOTPATH=${SHIPSOFT}/FairRootInst
-    export SIMPATH=${SHIPSOFT}/FairSoftInst
-    ```    
-    move to step 4.
-
-1. In case you use SLC6 where the GitHub cert is missing, first do (only once):
-
-    ```bash
-    mkdir ~/certs
-    curl http://curl.haxx.se/ca/cacert.pem -o ~/certs/cacert.pem
-    git config --global http.sslcainfo ~/certs/cacert.pem
-    ```
-
-2. Install [FairSoft](https://github.com/ShipSoft/FairSoft)
-
-    ```bash
-    mkdir ~/ShipSoft    [ or where ever you like to place the software ]
-    cd ~/ShipSoft
-    git clone https://github.com/ShipSoft/FairSoft.git
-    cd FairSoft
-    cat DEPENDENCIES
-    # Make sure all the required dependencies are installed
-    ./configure.sh
-    # Accept ShipSoft default
-    # Experts can fine-tune if they like
-    ```
-
-3. Install [FairRoot](https://github.com/ShipSoft/FairRoot)
-
-    ```bash
-    cd ~/ShipSoft
-    git clone  https://github.com/ShipSoft/FairRoot.git
-    cd FairRoot
-    ./configure.sh
-    ```
-
-4. Install FairShip:
-
-    ```bash
-    cd ~/ShipSoft
-    git clone https://github.com/ShipSoft/FairShip.git
-    cd FairShip
-    ./configure.sh
-    ```
-
-    To only re-compile FairShip, e.g. after the initial install and after having edited files, do:
-
-    ```bash
-    cd ~/ShipSoft/FairShipRun
-    make
-    ```
-
 ## Run Instructions
 
 Before running the SHiP software, set the necessary environment by doing:
