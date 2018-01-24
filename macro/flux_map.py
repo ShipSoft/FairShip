@@ -49,6 +49,8 @@ def main():
                     501)
         ut.bookHist(h, 'UVT_{}'.format(suffix), '{};x[cm];y[cm]'.format(title),
                     100, -300, +300, 100, -300, 300)
+        ut.bookHist(h, 'NuTauMu_{}'.format(suffix), '{};x[cm];y[cm]'.format(title),
+                    100, -300, +300, 100, -300, 300)
         ut.bookHist(h, 'ECAL_TP_{}'.format(suffix),
                     '{};x[cm];y[cm]'.format(title), 167, -501, +501, 334,
                     -1002, 1002)
@@ -154,6 +156,27 @@ def main():
                     h['ECAL_gamma_E'].Fill(np.sqrt(Esq), weight)
                     h['ECAL_TP_gamma'].Fill(x, y, weight)
                     h['ECAL_Alt_gamma'].Fill(x, y, weight)
+        for hit in event.ShipRpcPoint:
+            if hit:
+                if not hit.GetEnergyLoss() > 0:
+                    continue
+                x = hit.GetX()
+                y = hit.GetY()
+                z = hit.GetZ()
+                px = hit.GetPx()
+                py = hit.GetPy()
+                pz = hit.GetPz()
+                pt = np.hypot(px, py)
+                P = np.hypot(pz, pt)
+                pid = hit.PdgCode()
+                assert pid not in [12, -12, 14, -14, 16, -16]
+                h['NuTauMu_all'].Fill(x, y, weight)
+                if abs(pid) == 13:
+                    muon = True
+                    h['mu_p'].Fill(P, weight)
+                    h['mu_pt'].Fill(pt, weight)
+                    h['mu_ppt'].Fill(P, pt, weight)
+                    h['NuTauMu_mu'].Fill(x, y, weight)
         for hit in event.muonPoint:
             if hit:
                 if not hit.GetEnergyLoss() > 0:
