@@ -53,14 +53,15 @@ Additionally for developers:
 
 Partial installation, step 1 of above :
 
-    ```bash
-    source FairShipRun/config.sh
-    ```    
+```bash
+source FairShipRun/config.sh
+```    
 
 If you have a full installation, step 3 of above:
-    ```bash
-    alibuild/alienv enter (--shellrc) FairShip/latest
-    ```    
+
+```bash
+alibuild/alienv enter (--shellrc) FairShip/latest
+```    
 
 Now you can for example simulate some events, run reconstruction and analysis:
 
