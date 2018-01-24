@@ -8,7 +8,7 @@ if top.GetNode('Ecal_1'): z_ecal = top.GetNode('Ecal_1').GetMatrix().GetTranslat
 elif top.GetNode('SplitCalDetector_1'):    z_ecal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]
 else:
   print "TrackExtraploate tool: Error, no calo present"
-  1/0 
+  z_ecal = 100*u.m
 def extrapolateToPlane(fT,z):
 # etrapolate to a plane perpendicular to beam direction (z)
   rc,pos,mom = False,None,None

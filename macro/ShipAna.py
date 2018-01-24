@@ -531,11 +531,13 @@ def makePlots():
    print 'finished making plots'
 # calculate z front face of ecal, needed later
 top = ROOT.gGeoManager.GetTopVolume()
-ecal = top.GetNode('Ecal_1')
-if ecal:
- z_ecal = top.GetNode('Ecal_1').GetMatrix().GetTranslation()[2]
-else:
- z_ecal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]
+ecal = None
+if top.GetNode('Ecal_1'):
+ ecal = top.GetNode('Ecal_1')
+ z_ecal = ecal.GetMatrix().GetTranslation()[2]
+elif top.GetNode('SplitCalDetector_1'):
+ ecal = top.GetNode('SplitCalDetector_1')
+ z_ecal = ecal.GetMatrix().GetTranslation()[2]
 
 # start event loop
 def myEventLoop(n):
@@ -554,7 +556,7 @@ def myEventLoop(n):
   if not wg>0.: wg=1.
 # 
 # make some ecal cluster analysis if exist
-  if sTree.FindBranch("EcalClusters"):
+  if hasattr(sTree,"EcalClusters"):
    if calReco:  ecalReconstructed.Delete()
    else:        ecalReconstructed = sTree.EcalReconstructed
    for x in caloTasks: 
@@ -799,55 +801,57 @@ def HNLKinematics():
 #
 # initialize ecalStructure
 caloTasks = []
+calReco = False
 sTree.GetEvent(0)
-ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
-if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
-ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
-ecalFiller.SetUseMCPoints(ROOT.kTRUE)
-ecalFiller.StoreTrackInformation()
-ecalStructure = ecalFiller.InitPython(sTree.EcalPointLite)
-caloTasks.append(ecalFiller)
-if sTree.GetBranch("EcalReconstructed"):
- calReco = False
- sTree.GetEvent(0)
- ecalReconstructed = sTree.EcalReconstructed
-else:
- calReco = True
- print "setup calo reconstruction of ecalReconstructed objects"
+if ecal:
+ ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+ if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
+ ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
+ ecalFiller.SetUseMCPoints(ROOT.kTRUE)
+ ecalFiller.StoreTrackInformation()
+ ecalStructure = ecalFiller.InitPython(sTree.EcalPointLite)
+ caloTasks.append(ecalFiller)
+ 
+ if hasattr(sTree,"EcalReconstructed"):
+  calReco = False
+  ecalReconstructed = sTree.EcalReconstructed
+ else:
+  calReco = True
+  print "setup calo reconstruction of ecalReconstructed objects"
 # Calorimeter reconstruction
  #GeV -> ADC conversion
- ecalDigi=ROOT.ecalDigi("ecalDigi",0)
- ecalPrepare=ROOT.ecalPrepare("ecalPrepare",0)
- ecalStructure     = ecalFiller.InitPython(sTree.EcalPointLite)
- ecalDigi.InitPython(ecalStructure)
- caloTasks.append(ecalDigi)
- ecalPrepare.InitPython(ecalStructure)
- caloTasks.append(ecalPrepare)
+  ecalDigi=ROOT.ecalDigi("ecalDigi",0)
+  ecalPrepare=ROOT.ecalPrepare("ecalPrepare",0)
+  ecalStructure     = ecalFiller.InitPython(sTree.EcalPointLite)
+  ecalDigi.InitPython(ecalStructure)
+  caloTasks.append(ecalDigi)
+  ecalPrepare.InitPython(ecalStructure)
+  caloTasks.append(ecalPrepare)
  # Cluster calibration
- ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
+  ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
  #4x4 cm cells
- ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))")
- ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03, -1.16383e-04)
- ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS)
- ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
- ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
- ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
+  ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))")
+  ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03, -1.16383e-04)
+  ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS)
+  ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
+  ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
+  ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
 #6x6 cm cells
- ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
- ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
- ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
- ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
- ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
- ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
- caloTasks.append(ecalClusterCalib)
- ecalReco=ROOT.ecalReco('ecalReco',0)
- caloTasks.append(ecalReco)
+  ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
+  ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
+  ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
+  ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
+  ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
+  ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
+  caloTasks.append(ecalClusterCalib)
+  ecalReco=ROOT.ecalReco('ecalReco',0)
+  caloTasks.append(ecalReco)
 # Match reco to MC
- ecalMatch=ROOT.ecalMatch('ecalMatch',0)
- caloTasks.append(ecalMatch)
- ecalCalib         = ecalClusterCalib.InitPython()
- ecalReconstructed = ecalReco.InitPython(sTree.EcalClusters, ecalStructure, ecalCalib)
- ecalMatch.InitPython(ecalStructure, ecalReconstructed, sTree.MCTrack)
+  ecalMatch=ROOT.ecalMatch('ecalMatch',0)
+  caloTasks.append(ecalMatch)
+  ecalCalib         = ecalClusterCalib.InitPython()
+  ecalReconstructed = ecalReco.InitPython(sTree.EcalClusters, ecalStructure, ecalCalib)
+  ecalMatch.InitPython(ecalStructure, ecalReconstructed, sTree.MCTrack)
 
 nEvents = min(sTree.GetEntries(),nEvents)
 
