@@ -53,78 +53,78 @@ Additionally for developers:
 
 Before running the SHiP software, set the necessary environment by doing:
 
-    ```bash
-    source ~/ShipSoft/FairShipRun/config.[c]sh
-    ```
+```bash
+source ~/ShipSoft/FairShipRun/config.[c]sh
+```
 
 Or if you work on lxplus, after logon, you have to do, for bash users:
 
-    ```bash
-    export xxx ~/myship    [ or where ever you like to place the software ]
-    export SHIPSOFT=/cvmfs/ship.cern.ch/ShipSoft/gcc62
-    export SIMPATH=$SHIPSOFT/FairSoftInst
-    export FAIRROOTPATH=$SHIPSOFT/FairRootInst
-    export FAIRSHIP=$xxx/FairShip
-    source $xxx/FairShipRun/config.sh
-    ```
+```bash
+export xxx ~/myship    [ or where ever you like to place the software ]
+export SHIPSOFT=/cvmfs/ship.cern.ch/ShipSoft/gcc62
+export SIMPATH=$SHIPSOFT/FairSoftInst
+export FAIRROOTPATH=$SHIPSOFT/FairRootInst
+export FAIRSHIP=$xxx/FairShip
+source $xxx/FairShipRun/config.sh
+```
 
 And for csh users:
 
-    ```bash
-    setenv xxx ~/myship    [ or where ever you like to place the software ]
-    setenv SHIPSOFT /cvmfs/ship.cern.ch/ShipSoft/gcc62
-    setenv SIMPATH      ${SHIPSOFT}/FairSoftInst
-    setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
-    setenv FAIRSHIP ${xxx}/FairShip
-    source ${xxx}/FairShipRun/config.csh
-    ```
+```bash
+setenv xxx ~/myship    [ or where ever you like to place the software ]
+setenv SHIPSOFT /cvmfs/ship.cern.ch/ShipSoft/gcc62
+setenv SIMPATH      ${SHIPSOFT}/FairSoftInst
+setenv FAIRROOTPATH ${SHIPSOFT}/FairRootInst
+setenv FAIRSHIP ${xxx}/FairShip
+source ${xxx}/FairShipRun/config.csh
+```
 
 Now you can for example simulate some events, run reconstruction and analysis:
 
-    ```bash
-    python $FAIRSHIP/macro/run_simScript.py
-    >> Macro finished succesfully.
-    >> Output file is  ship.conical.Pythia8-TGeant4.root
+```bash
+python $FAIRSHIP/macro/run_simScript.py
+>> Macro finished succesfully.
+>> Output file is  ship.conical.Pythia8-TGeant4.root
 
-    python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
-    >> finishing pyExit
+python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
+>> finishing pyExit
 
-    python -i $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
-    >> finished making plots
-    ```
+python -i $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+>> finished making plots
+```
 
 Run the event display:
 
-    ```bash
-    python -i $FAIRSHIP/macro/eventDisplay.py -f ship.10.0.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
-    // use SHiP Event Display GUI
-    Use quit() or Ctrl-D (i.e. EOF) to exit
-    ```
+```bash
+python -i $FAIRSHIP/macro/eventDisplay.py -f ship.10.0.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+// use SHiP Event Display GUI
+Use quit() or Ctrl-D (i.e. EOF) to exit
+```
 
 ## Running Previous Versions
 
 Some git hints on how to run previously tagged versions:
 
-    ```bash
-    mkdir $SHIPSOFT/v1
-    cd $SHIPSOFT/v1
-    git clone -b dev https://github.com/ShipSoft/FairSoft.git
-    cd $SHIPSOFT/v1/FairSoft
-    git checkout -b v1-00 v1-00
-    ./configure.sh
-    cd $SHIPSOFT/v1
-    git clone -b dev https://github.com/ShipSoft/FairRoot.git
-    cd $SHIPSOFT/v1/FairRoot
-    git checkout -b v1-00 v1-00
-    ./configure.sh
-    cd $SHIPSOFT/v1
-    git clone https://github.com/ShipSoft/FairShip.git
-    cd FairShip
-    git checkout -b v1-00 v1-00
-    ./configure.sh
-    cd ../FairShipRun
-    source config.sh
-    ```
+```bash
+mkdir $SHIPSOFT/v1
+cd $SHIPSOFT/v1
+git clone -b dev https://github.com/ShipSoft/FairSoft.git
+cd $SHIPSOFT/v1/FairSoft
+git checkout -b v1-00 v1-00
+./configure.sh
+cd $SHIPSOFT/v1
+git clone -b dev https://github.com/ShipSoft/FairRoot.git
+cd $SHIPSOFT/v1/FairRoot
+git checkout -b v1-00 v1-00
+./configure.sh
+cd $SHIPSOFT/v1
+git clone https://github.com/ShipSoft/FairShip.git
+cd FairShip
+git checkout -b v1-00 v1-00
+./configure.sh
+cd ../FairShipRun
+source config.sh
+```
 
 ## Contributing Code
 
