@@ -84,9 +84,9 @@ def execute(smeared_hits, stree, ReconstructibleMCTracks, method='Baseline'):
 
     ######################################### Estimate true track ids ##################################################
     
-    # y = get_track_ids(stree, smeared_hits) # No MC truth
-    # fittedtrackids, fittedtrackfrac = get_fitted_trackids(y, reco_tracks)
-    fittedtrackids = range(len(theTracks))
+    y = get_track_ids(stree, smeared_hits) # It uses MC truth
+    fittedtrackids, fittedtrackfrac = get_fitted_trackids(y, reco_tracks) # It uses MC truth
+    # fittedtrackids = range(len(theTracks))
 
     return fittedtrackids, reco_tracks
 
@@ -1969,6 +1969,9 @@ def get_fitted_trackids(y, reco_tracks):
     fittedtrackfrac = []
 
     for track_id in reco_tracks.keys():
+        
+        if reco_tracks[track_id]['flag'] != 1:
+            continue
 
         frac, tmax = fracMCsame(y[reco_tracks[track_id]['hits']])
         fittedtrackids.append(tmax)
