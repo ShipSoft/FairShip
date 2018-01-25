@@ -57,7 +57,9 @@ def main():
         ut.bookHist(h, 'ECAL_Alt_{}'.format(suffix),
                     '{};x[cm];y[cm]'.format(title), 50, -500, +500, 100, -1000,
                     1000)
-        ut.bookHist(h, 'SBT_{}'.format(suffix), '{};z[cm];#phi'.format(title),
+        ut.bookHist(h, 'SBT_Liquid_{}'.format(suffix), '{};z[cm];#phi'.format(title),
+                    100, -3000, +3000, 100, -r.TMath.Pi(), r.TMath.Pi())
+        ut.bookHist(h, 'SBT_Plastic_{}'.format(suffix), '{};z[cm];#phi'.format(title),
                     100, -3000, +3000, 100, -r.TMath.Pi(), r.TMath.Pi())
         for station in range(1, 6):
             ut.bookHist(h, 'T{}_{}'.format(station, suffix),
@@ -214,6 +216,7 @@ def main():
                 pt = np.hypot(px, py)
                 P = np.hypot(pz, pt)
                 pid = hit.PdgCode()
+                detector_ID = hit.GetDetectorID()
                 assert pid not in [12, -12, 14, -14, 16, -16]
                 detector = sGeo.FindNode(x, y, z).GetName()
                 # Timing detector:
@@ -236,16 +239,26 @@ def main():
                         h['mu_ppt'].Fill(P, pt, weight)
                         h['UVT_mu'].Fill(x, y, weight)
                     continue
-                # NOTE: If using --follow-muon for the simulation, hits in the
-                #       sensitised volumes will be counted as SBT!
                 phi = r.TMath.ATan2(y, x)
-                h['SBT_all'].Fill(z, phi, weight)
-                if abs(pid) == 13:
-                    muon = True
-                    h['mu_p'].Fill(P, weight)
-                    h['mu_pt'].Fill(pt, weight)
-                    h['mu_ppt'].Fill(P, pt, weight)
-                    h['SBT_mu'].Fill(z, phi, weight)
+                if 99999 < detector_ID < 999999:
+                    h['SBT_Liquid_all'].Fill(z, phi, weight)
+                    if abs(pid) == 13:
+                        muon = True
+                        h['mu_p'].Fill(P, weight)
+                        h['mu_pt'].Fill(pt, weight)
+                        h['mu_ppt'].Fill(P, pt, weight)
+                        h['SBT_Liquid_mu'].Fill(z, phi, weight)
+                    continue
+                elif detector_ID > 999999:
+                    h['SBT_Plastic_all'].Fill(z, phi, weight)
+                    if abs(pid) == 13:
+                        muon = True
+                        h['mu_p'].Fill(P, weight)
+                        h['mu_pt'].Fill(pt, weight)
+                        h['mu_ppt'].Fill(P, pt, weight)
+                        h['SBT_Plastic_mu'].Fill(z, phi, weight)
+                    continue
+                print 'Unidentified vetoPoint.'
         if muon:
             h['mu_p_original'].Fill(original_muon.GetP(), weight)
             h['mu_pt_original'].Fill(original_muon.GetPt(), weight)
