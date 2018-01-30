@@ -49,6 +49,7 @@ class ShipParticle : public TParticle
 
     /**  Accessors  **/
     void GetMomentum(TLorentzVector& momentum);
+    Double_t GetMass();
     void GetVertex(TVector3& vertex);
     TMatrixDSym*  GetCovP();
     TMatrixDSym*  GetCovV();
@@ -60,7 +61,7 @@ class ShipParticle : public TParticle
     TMatrixDSym  fCovP;
     TMatrixDSym  fCovV;
     Double_t doca;
-    ClassDef(ShipParticle,1);
+    ClassDef(ShipParticle,2);
 };
 
 // ==========   Inline functions   ========================================
