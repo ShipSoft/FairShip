@@ -3,6 +3,9 @@ from array import array
 import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
+timer = ROOT.TStopwatch()
+timer.Start()
+
 R = ''
 #generate ccbar (msel=4) or bbbar(msel=5)
 mselcb=4
@@ -163,6 +166,7 @@ PoorE791_tune(myPythia)
 #myPythia.OpenFortranFile(6, os.devnull)
 
 #  Pythia output to dummy (11) file (to screen use 6)
+myPythia.OpenFortranFile(11, os.devnull)
 myPythia.SetMSTU(11, 11)
 
 
@@ -387,4 +391,12 @@ print 'Now at Ntup.Write()'
 Ntup.Write()
 for akey in h: h[akey].Write()
 ftup.Close()
+
+timer.Stop()
+rtime = timer.RealTime()
+ctime = timer.CpuTime()
+print ' ' 
+print "Macro finished succesfully." 
+print "Output file is ",  ftup.GetName()
+print "Real time ",rtime, " s, CPU time ",ctime,"s"
 

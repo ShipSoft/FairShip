@@ -1,4 +1,6 @@
-import os,ROOT,shipVertex,shipPatRec,shipDet_conf
+import os,ROOT,shipVertex,shipDet_conf
+if realPR == "Prev": import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
+else: import shipPatRec
 import shipunit as u
 import rootUtils as ut
 from array import array
@@ -335,13 +337,30 @@ class ShipDigiReco:
 
   nTrack = -1
   trackCandidates = []
+  
   if realPR:
-     fittedtrackids=shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
-     if fittedtrackids:
-       tracknbr=0
-       for ids in fittedtrackids:
-         trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
-	 tracknbr+=1
+     if realPR == "Prev": # Runs previously used pattern recognition
+        fittedtrackids=shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
+        if fittedtrackids:
+           tracknbr=0
+           for ids in fittedtrackids:
+              trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
+              tracknbr+=1
+     else: # Runs new pattern recognition
+        fittedtrackids, reco_tracks = shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks, method=realPR)
+         # Save hit ids of recognized tracks
+        for atrack in reco_tracks.values():
+            nTracks   = self.fTrackletsArray.GetEntries()
+            aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
+            listOfHits = aTracklet.getList()
+            aTracklet.setType(atrack['flag'])
+            for index in atrack['hits']:
+                listOfHits.push_back(index)
+        if fittedtrackids:
+            tracknbr=0
+            for ids in fittedtrackids:
+                trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
+                tracknbr+=1
   else: # do fake pattern recognition
    for sm in self.SmearedHits:
     detID = self.digiStraw[sm['digiHit']].GetDetectorID()

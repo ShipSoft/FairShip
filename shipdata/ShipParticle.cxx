@@ -93,4 +93,10 @@ void ShipParticle::GetVertex(TVector3& vx)
 {
   vx.SetXYZ(fVx,fVy,fVz);
 }
+Double_t ShipParticle::GetMass()
+{
+ TLorentzVector momentum;
+ GetMomentum(momentum);
+ return momentum.M();
+}
 ClassImp(ShipParticle)
