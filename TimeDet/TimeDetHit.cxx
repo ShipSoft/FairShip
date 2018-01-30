@@ -74,9 +74,9 @@ Double_t TimeDetHit::GetZ()
 TGeoNode* TimeDetHit::GetNode()
 {
    TGeoNode* node=0;
-   /*
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    TString path = "/DecayVolume_1";
+   /*
    if (fDetectorID<999999){ // liquid scintillator
     Int_t iseq   = fDetectorID/100000;
     Int_t corner = (fDetectorID-100000*iseq)/10000;
@@ -89,6 +89,7 @@ TGeoNode* TimeDetHit::GetNode()
     path += "/T";path+=iseq;path+="_1/";path+=seq;path+="_0/";path+=node->GetName();
     nav->cd(path);
    }
+   
    if (fDetectorID>999999){ // plastic scintillator ABBCCCD
     TString nodeName="T";TString temp="_";
     Int_t A = int(fDetectorID/1000000);
@@ -96,6 +97,7 @@ TGeoNode* TimeDetHit::GetNode()
     Int_t C = int((fDetectorID-A*1000000-B*10000)/10);
     Int_t D = fDetectorID%10;
     Int_t TimeDetNr = fDetectorID;
+    Int_t vetoNr = fDetectorID;
     if (A==1){
       nodeName+="2decayVolVeto";
       path+="/T2_1/T2decayVol_0/";
@@ -104,7 +106,7 @@ TGeoNode* TimeDetHit::GetNode()
       path += "/T2_1/";
     }else if (A==3){
       nodeName+="1decayVolVeto";
-      path+="/T1_1/T1decayVol_0/";     
+      path+="/T1_1/T1decayVol_0/";
     }else {
       nodeName+="1OuterwallVeto";
       path += "/T1_1/";
@@ -112,7 +114,7 @@ TGeoNode* TimeDetHit::GetNode()
     if (D>3){
       path += "vleft_5/";
       temp += D;temp+="V";
-      D=D-4;vetoNr=fDetectorID-4;} 
+      D=D-4;vetoNr=fDetectorID-4;}
     else {path += "vleft_1/";}
     if (D==3){nodeName+="X";}
     if (D==1){nodeName+="Y";}
@@ -129,7 +131,7 @@ TGeoNode* TimeDetHit::GetNode()
     nav->cd(path);
     node=nav->GetCurrentNode();
    }
-   */
+*/
    return node;
 } 
 
