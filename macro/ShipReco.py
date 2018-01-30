@@ -12,6 +12,7 @@ dy  = None
 saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
+realPROptions=["Prev", "FH", "AR", "Baseline"]
 withT0 = False
 
 import resource
@@ -42,7 +43,7 @@ except getopt.GetoptError:
         print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,'
         print ' noStrawSmearing: no smearing of distance to wire, default on'
         print ' outputfile will have same name with _rec added'  
-        print ' --realPR= defines track pattern recognition. Possible options: Prev, FH, AR, Baseline.'
+        print ' --realPR= defines track pattern recognition. Possible options: ',realPROptions, "if no option given, fake PR is used."
         sys.exit()
 for o, a in opts:
         if o in ("noVertexing",):
@@ -65,6 +66,9 @@ for o, a in opts:
             saveDisk = True
         if o in ("--realPR",):
             realPR = a
+            if not realPR in realPROptions:
+              print "wrong option given for realPR,",a," should be one of ",realPROptions
+              exit(1)
 if EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
 # need to figure out which geometry was used
@@ -76,7 +80,7 @@ if not dy:
   except:
     dy = None
 print 'configured to process ',nEvents,' events from ' ,inputFile, \
-      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco',realPR=="_PR"
+      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco ',realPR
 if not inputFile.find('_rec.root') < 0: 
   outFile   = inputFile
   inputFile = outFile.replace('_rec.root','.root') 
