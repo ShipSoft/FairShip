@@ -41,4 +41,3 @@ void TimeDetPoint::Print() const
 // -------------------------------------------------------------------------
 
 ClassImp(TimeDetPoint)
-
