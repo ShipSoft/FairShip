@@ -1273,11 +1273,6 @@ void veto::ConstructGeometry()
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
 
-      //Add one more sensitive plane after vacuum tube for timing
-      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,dx2,dy,15.*mm);
-      TimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+f_LidThickness+15.*mm+5.*cm));
-      AddSensitiveVolume(TimeDet);
     }
     else if (fDesign==5){
     // designMakeSe 5: simplified trapezoidal design for optimization study
@@ -1353,12 +1348,6 @@ void veto::ConstructGeometry()
       asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
-
-      //Add one more sensitive plane after vacuum tube for timing
-      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,dx2,dy,15.*mm);
-      TimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
-      AddSensitiveVolume(TimeDet);
     }
     else if (fDesign==4){
     // design 4: elliptical double walled tube with LiSci in between
@@ -1535,12 +1524,6 @@ void veto::ConstructGeometry()
       asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
       totLength = asmb->GetDZ();
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
-
-      //Add one more sensitive plane after vacuum tube for timing
-      TGeoVolume *TimeDet = gGeoManager->MakeBox("TimeDet",Sens,3.*m,6.*m,15.*mm);
-      TimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(TimeDet, 1, new TGeoTranslation(0, 0, fTub6z+fTub6length+10.*cm));
-      AddSensitiveVolume(TimeDet);
 
       //Add veto-timing sensitive plane before vacuum tube
       TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,aO1+wallo/2.,6.*m,10.*mm);

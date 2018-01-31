@@ -66,8 +66,6 @@ TimeDet::TimeDet()
   FairDetector::Initialize();
 }
 
-
-
 TimeDet::TimeDet(const char* name, Bool_t active)
   : FairDetector(name, active, kTimeDet),
     fTrackID(-1),
@@ -98,8 +96,6 @@ TimeDet::TimeDet(const char* name, Bool_t active)
   FairDetector::Initialize();
 }
 
-
-
 TimeDet::~TimeDet()
 {
   if (fTimeDetPointCollection) {
@@ -107,17 +103,6 @@ TimeDet::~TimeDet()
     delete fTimeDetPointCollection;
   }
 }
-
-
-/*
-void TimeDet::Initialize()
-{
-  FairDetector::Initialize();
-  //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
-}
-*/
-
 
 // -----   Private method InitMedium
 Int_t TimeDet::InitMedium(const char* name)
@@ -240,15 +225,6 @@ void TimeDet::Reset()
   fTimeDetPointCollection->Clear();
 }
 
-
-
-//void TimeDet::SetZpositions(Double_t z0)
-//{
-//  fzPos = z0;
-//}
-
-
-
 void TimeDet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
@@ -257,8 +233,8 @@ void TimeDet::ConstructGeometry()
   InitMedium("Scintillator");
   
   double dz  =    1.5;
-  
-  fDetector = gGeoManager->MakeBox("TimeDet",Sens,fxSize,fySize,dz);
+
+  fDetector = gGeoManager->MakeBox("TimeDet", Sens, fxSize / 2, fySize / 2, dz);
   fDetector->SetLineColor(kMagenta-10);
   
   top->AddNode(fDetector, 1, new TGeoTranslation(0,0,fzPos));

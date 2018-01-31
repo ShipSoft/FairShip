@@ -46,7 +46,7 @@ class TimeDet: public FairDetector
     virtual void Reset();
 
     /** Sets detector position along z */
-    void SetZpositions(Double_t z) {fzPos = z;}
+    void SetZposition(Double_t z) {fzPos = z;}
 
     /**  Create the detector geometry */
     void ConstructGeometry();

@@ -328,6 +328,10 @@ def configure(run,ship_geo):
  Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
  detectorList.append(Muon)
 
+ timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
+ timeDet.SetZposition(ship_geo.Chamber6.z + ship_geo.chambers.Tub6length + ship_geo.Veto.lidThickness + 15 if ship_geo.tankDesign == 6 else ship_geo.Chamber6.z + ship_geo.chambers.Tub6length + 10)
+ detectorList.append(timeDet)
+
 #-----   Magnetic field   -------------------------------------------
  if ship_geo.strawDesign == 4: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
  else :                        fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
@@ -336,7 +340,7 @@ def configure(run,ship_geo):
 #
  exclusionList = []
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
- #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet"]
+ #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet"]
  for x in detectorList:
    if x.GetName() in exclusionList: continue
    run.AddModule(x)

@@ -1,5 +1,5 @@
-#ifndef VETOPOINT_H
-#define VETOPOINT_H 1
+#ifndef TIMEDETPOINT_H
+#define TIMEDETPOINT_H 1
 
 
 #include "FairMCPoint.h"
@@ -47,7 +47,7 @@ class TimeDetPoint : public FairMCPoint
     TimeDetPoint(const TimeDetPoint& point);
     TimeDetPoint operator=(const TimeDetPoint& point);
 
-    ClassDef(TimeDetPoint,3)
+    ClassDef(TimeDetPoint,1)
 
 };
 
