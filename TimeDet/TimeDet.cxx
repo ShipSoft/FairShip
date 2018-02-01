@@ -63,8 +63,14 @@ TimeDet::TimeDet()
     //
     fTimeDetPointCollection(new TClonesArray("TimeDetPoint"))
 {
+  fNBars = fNCol * fNRow;
+  if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / (double)(fNCol-1); else fxOv = 0;
+  if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / (double)(fNRow-1); else fyOv = 0;
+  
   FairDetector::Initialize();
 }
+
+
 
 TimeDet::TimeDet(const char* name, Bool_t active)
   : FairDetector(name, active, kTimeDet),
@@ -93,8 +99,13 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     //
     fTimeDetPointCollection(new TClonesArray("TimeDetPoint"))
 {
+  fNBars = fNCol * fNRow;
+  if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / (double)(fNCol-1); else fxOv = 0;
+  if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / (double)(fNRow-1); else fyOv = 0;
+
   FairDetector::Initialize();
 }
+
 
 TimeDet::~TimeDet()
 {
@@ -104,7 +115,8 @@ TimeDet::~TimeDet()
   }
 }
 
-// -----   Private method InitMedium
+
+
 Int_t TimeDet::InitMedium(const char* name)
 {
   
@@ -225,6 +237,8 @@ void TimeDet::Reset()
   fTimeDetPointCollection->Clear();
 }
 
+
+
 void TimeDet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
@@ -232,6 +246,35 @@ void TimeDet::ConstructGeometry()
   TGeoMedium *Sens =gGeoManager->GetMedium("ShipSens");
   InitMedium("Scintillator");
   
+  ///////////////////////////////////////////////////////
+
+  fDetector = new TGeoVolumeAssembly("Timing Detector");
+
+  TGeoVolume *plate = gGeoManager->MakeBox("sci_plate", Sens, fxBar/2,fyBar/2,fzBar/2);
+  plate->SetLineColor(kBlue);
+  AddSensitiveVolume(plate);
+
+  for(int ib=0; ib<fNBars; ib++) {
+
+    int irow=0, icol=0;
+    GetBarRowCol(ib,irow,icol);
+
+    double xbar=0,ybar=0,zbar=0;
+    xbar = GetXCol(icol);
+    ybar = GetYRow(irow);
+    zbar = GetZBar(irow,icol);
+
+    fDetector->AddNode(plate, ib, new TGeoTranslation( xbar,ybar,zbar) );
+    
+
+    //printf("%3i  %3i %2i   %8.3f %8.3f %8.3f\n",ib, irow,icol, xbar,ybar,zbar);
+  }
+
+  top->AddNode(fDetector, 1, new TGeoTranslation(0,0,fzPos));
+
+  ///////////////////////////////////////////////////////
+
+  /*
   double dz  =    1.5;
 
   fDetector = gGeoManager->MakeBox("TimeDet", Sens, fxSize / 2, fySize / 2, dz);
@@ -239,6 +282,7 @@ void TimeDet::ConstructGeometry()
   
   top->AddNode(fDetector, 1, new TGeoTranslation(0,0,fzPos));
   AddSensitiveVolume(fDetector);
+  */
 
   return;
 }
@@ -255,6 +299,37 @@ TimeDetPoint* TimeDet::AddHit(Int_t trackID, Int_t detID,
   // cout << "veto hit called "<< pos.z()<<endl;
   return new(clref[size]) TimeDetPoint(trackID, detID, pos, mom,
 		         time, length, eLoss, pdgCode,Lpos,Lmom);
+}
+
+
+void TimeDet::GetBarRowCol(int ib,int &irow,int& icol) const
+{
+  irow = ib / fNCol;
+  icol = (ib%fNCol);
+  return;
+}
+
+
+double TimeDet::GetXCol(int ic) const
+{
+  ic += 1;
+  double x = fxBar*ic - fxOv*(ic-1) - fxBar/2;
+  return x - fxSize/2 + fxCenter;
+}
+
+
+double TimeDet::GetYRow(int ir) const
+{
+  ir += 1;
+  double y = fyBar*ir - fyOv*(ir-1) - fyBar/2;
+  return y - fySize/2 + fyCenter;
+}
+
+
+double TimeDet::GetZBar(int ir,int ic) const
+{
+  double z = (ir%2) * fdzBarRow + (ic%2) * fdzBarCol;
+  return z;
 }
 
 

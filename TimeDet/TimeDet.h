@@ -40,13 +40,18 @@ class TimeDet: public FairDetector
     virtual void Register();
 
     /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const ;
+    virtual TClonesArray* GetCollection(Int_t iColl) const;
 
     /** has to be called after each event to reset the containers */
     virtual void Reset();
 
     /** Sets detector position along z */
     void SetZposition(Double_t z) {fzPos = z;}
+
+    double GetXCol(int ic) const;
+    double GetYRow(int ir) const;
+    void GetBarRowCol(int ib,int &irow,int& icol) const;
+    double GetZBar(int ir,int ic) const;
 
     /**  Create the detector geometry */
     void ConstructGeometry();
@@ -102,10 +107,10 @@ class TimeDet: public FairDetector
     Double_t fxOv;   //! Overlap along x
     Double_t fyOv;   //! Overlap along y
 
-    TGeoVolume *fDetector; // Timing detector object
+    TGeoVolume* fDetector; // Timing detector object
 
     /** container for data points */
-    TClonesArray*  fTimeDetPointCollection;
+    TClonesArray* fTimeDetPointCollection;
 
     TimeDet(const TimeDet&);
     TimeDet& operator=(const TimeDet&);
