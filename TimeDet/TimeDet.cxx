@@ -185,7 +185,7 @@ Bool_t  TimeDet::ProcessHits(FairVolume* vol)
     Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
     Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
 
-    cout << uniqueId << " :(" << xmean << ", " << ymean << ", " << zmean << "): " << gMC->CurrentVolName() << endl;
+    //cout << uniqueId << " :(" << xmean << ", " << ymean << ", " << zmean << "): " << gMC->CurrentVolName() << endl;
 
     AddHit(fTrackID, uniqueId, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
@@ -243,14 +243,14 @@ void TimeDet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
   
-  TGeoMedium *Sens =gGeoManager->GetMedium("ShipSens");
-  InitMedium("Scintillator");
+  InitMedium("polyvinyltoluene");
+  TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
   
   ///////////////////////////////////////////////////////
 
   fDetector = new TGeoVolumeAssembly("Timing Detector");
 
-  TGeoVolume *plate = gGeoManager->MakeBox("sci_plate", Sens, fxBar/2,fyBar/2,fzBar/2);
+  TGeoVolume *plate = gGeoManager->MakeBox("TimeDet", Scint, fxBar/2,fyBar/2,fzBar/2);
   plate->SetLineColor(kBlue);
   AddSensitiveVolume(plate);
 
@@ -266,23 +266,12 @@ void TimeDet::ConstructGeometry()
 
     fDetector->AddNode(plate, ib, new TGeoTranslation( xbar,ybar,zbar) );
     
-
     //printf("%3i  %3i %2i   %8.3f %8.3f %8.3f\n",ib, irow,icol, xbar,ybar,zbar);
   }
 
   top->AddNode(fDetector, 1, new TGeoTranslation(0,0,fzPos));
 
   ///////////////////////////////////////////////////////
-
-  /*
-  double dz  =    1.5;
-
-  fDetector = gGeoManager->MakeBox("TimeDet", Sens, fxSize / 2, fySize / 2, dz);
-  fDetector->SetLineColor(kMagenta-10);
-  
-  top->AddNode(fDetector, 1, new TGeoTranslation(0,0,fzPos));
-  AddSensitiveVolume(fDetector);
-  */
 
   return;
 }
