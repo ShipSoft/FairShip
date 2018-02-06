@@ -383,16 +383,40 @@ void MagneticSpectrometer::ConstructGeometry()
       TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field arm2
       volArm2->SetField(magField2);
       volMSBox ->AddNode(volArm2,1,new TGeoTranslation(0,0,(fGapMiddle+fZArm)/2));
-      TGeoVolume *volIron1 = new TGeoVolume("volIron",IronLayer,Iron);
+            TGeoVolume *volIron2 = new TGeoVolume("volIron2",IronLayer,Iron);
+
+     //different volumes for second arm
+      
+      TGeoVolume *volRpcContainer2 = new TGeoVolume("volRpcContainer2",RpcContainer,vacuum);
+      TGeoVolume *volStrip2 = new TGeoVolume("volStrip2",Strip,Cu);
+      
+      volStrip2->SetLineColor(kRed);
+      volRpcContainer2->AddNode(volStrip2,1,new TGeoTranslation (0,0,-3.25*mm));
+      volRpcContainer2->AddNode(volStrip2,2,new TGeoTranslation (0,0,3.25*mm));
+
+      TGeoVolume *volPETinsulator2 = new TGeoVolume("volPETinsulator2", PETinsulator, bakelite);
+      volPETinsulator2->SetLineColor(kYellow);
+      volRpcContainer2->AddNode(volPETinsulator2,1,new TGeoTranslation(0,0,-3.1*mm));
+      volRpcContainer2->AddNode(volPETinsulator2,2,new TGeoTranslation(0,0, 3.1*mm));
+
+      TGeoVolume *volElectrode2 = new TGeoVolume("volElectrode2",Electrode,bakelite);
+      volElectrode2->SetLineColor(kGreen);
+      volRpcContainer2->AddNode(volElectrode2,1,new TGeoTranslation(0,0,-2*mm));
+      volRpcContainer2->AddNode(volElectrode2,2,new TGeoTranslation(0,0, 2*mm));
+   
+      TGeoVolume *volRpc2 = new TGeoVolume("volRpc2",RpcGas,RPCmat);
+      volRpc2->SetLineColor(kCyan);
+      volRpcContainer2->AddNode(volRpc2,1,new TGeoTranslation(0,0,0));
+      AddSensitiveVolume(volRpc2);
    
       for(Int_t i = 0; i < fNFe; i++)
 	{
-	  volArm2->AddNode(volIron1,nr + 100 + i,new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
+	  volArm2->AddNode(volIron2,nr + 100 + i,new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
 	}
     
       for(Int_t i = 0; i < fNRpc; i++)
 	{
-	  volArm2->AddNode(volRpcContainer, nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
+	  volArm2->AddNode(volRpcContainer2, nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
 	}
     
       //10 cm of Concrete on which the whole Magnetic Spectrometer volume (HPT included) will be placed
