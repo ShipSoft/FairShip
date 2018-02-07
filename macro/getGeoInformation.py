@@ -21,15 +21,15 @@ def doloop(node,level,currentlevel,translation):
   for key in sorted(snoz.items(),key=operator.itemgetter(1)):
      transs = key[0].GetMatrix()   
      vs = key[0].GetVolume().GetShape()
-     newtranslation=snoz[key[0]]
+     newztranslation=snoz[key[0]]
      newxtranslation=snox[key[0]]
      newytranslation=snoy[key[0]]     
-     print blanks+"%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm] dx=%10.4Fcm [%10.4F   %10.4Fcm] dy=%10.4Fcm [%10.4F   %10.4Fcm]"%(key[0].GetName(),newtranslation,\
-     vs.GetDZ(),min(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()),max(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()),\
+     print blanks+"%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm] dx=%10.4Fcm [%10.4F   %10.4Fcm] dy=%10.4Fcm [%10.4F   %10.4Fcm]"%(key[0].GetName(),newztranslation,\
+     vs.GetDZ(),min(newztranslation-vs.GetDZ(),newztranslation+vs.GetDZ()),max(newztranslation-vs.GetDZ(),newztranslation+vs.GetDZ()),\
      vs.GetDX(),min(newxtranslation-vs.GetDX(),newxtranslation+vs.GetDX()),max(newxtranslation-vs.GetDX(),newxtranslation+vs.GetDX()),\
      vs.GetDY(),min(newytranslation-vs.GetDY(),newytranslation+vs.GetDY()),max(newytranslation-vs.GetDY(),newytranslation+vs.GetDY()) )
      if int(newcurrentlevel)<int(level) and key[0].GetNodes():
-        doloop(key[0],level,newcurrentlevel,newtranslation)
+        doloop(key[0],level,newcurrentlevel,[newxtranslation, newytranslation, newztranslation])
 
 from optparse import OptionParser
 parser = OptionParser()
