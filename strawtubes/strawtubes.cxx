@@ -144,7 +144,7 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
     AddHit(fTrackID, straw_uniqueId, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, deltaTrackLength,
            fELoss,pdgCode,dist2Wire);
-    if (dist2Wire>0.6){
+    if (dist2Wire>fInner_Straw_diameter/2){  
      std::cout << "addhit " << dist2Wire<< " straw id " << straw_uniqueId << " pdgcode " << pdgCode<< " dot prod " << pq.Dot(uCrossv)<< std::endl;
      std::cout << " exit:" << gMC->IsTrackExiting() << " stop:" << gMC->IsTrackStop() << " disappeared:" << gMC->IsTrackDisappeared()<< std::endl;
      std::cout << " entry:" << fPos.X()<< " " << fPos.Y()<< " " << fPos.Z() << std::endl;
@@ -220,11 +220,11 @@ void strawtubes::SetOuterStrawDiameter(Double_t outerstrawdiameter)
 }
 
 
-void strawtubes::SetStrawPitch(Double_t strawpitch)
+void strawtubes::SetStrawPitch(Double_t strawpitch,Double_t layer_offset, Double_t plane_offset)
 {
      fStraw_pitch = strawpitch;                                 //!  Distance (x) between straws in one layer
-     fOffset_layer12 = strawpitch/2;
-     fOffset_plane12 = strawpitch/4;
+     fOffset_layer12 = layer_offset;
+     fOffset_plane12 = plane_offset;
 }
 
 void strawtubes::SetDeltazLayer(Double_t deltazlayer)

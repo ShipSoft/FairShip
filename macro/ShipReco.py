@@ -79,8 +79,10 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
+realPRoption = realPR
+if realPR=='':realPRoption='No' 
 print 'configured to process ',nEvents,' events from ' ,inputFile, \
-      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco ',realPR
+      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco ',realPRoption
 if not inputFile.find('_rec.root') < 0: 
   outFile   = inputFile
   inputFile = outFile.replace('_rec.root','.root') 

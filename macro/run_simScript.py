@@ -44,6 +44,7 @@ ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design
 nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 charm        = 0 # !=0 create charm detector instead of SHiP
 caloDesign   = 0 # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
+strawDesign  = 4 # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
@@ -57,7 +58,7 @@ try:
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign="])
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -134,6 +135,8 @@ for o, a in opts:
             nud = int(a)
         if o in ("--caloDesign",):
             caloDesign = int(a)
+        if o in ("--strawDesign",):
+            strawDesign = int(a)
         if o in ("--charm",):
             charm = int(a)
         if o in ("-F",):
@@ -181,11 +184,9 @@ ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 a
 shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit for python
 # - muShieldDesign = 2  # 1=passive 5=active (default) 7=short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
-# - strawDesign    = 4  # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default)
-#   caloDesign     = 0 # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
-                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign)
+                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign)
 else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 
 # switch off magnetic field to measure muon flux

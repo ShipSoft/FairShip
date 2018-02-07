@@ -6,7 +6,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
-# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design
+# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
 # preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 if "muShieldDesign" not in globals():
@@ -62,8 +62,8 @@ with ConfigRegistry.register_config("basic") as c:
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
     z4=2438.*u.cm+magnetIncrease+extraVesselLength
-    if strawDesign != 4:
-     print "this design is not supported, use strawDesign = 4"
+    if strawDesign != 4 and strawDesign != 10 :
+     print "this design ",strawDesign," is not supported, use strawDesign = 4 or 10"
      1/0 
     else:
      c.chambers.Length = totalLength
@@ -121,14 +121,23 @@ with ConfigRegistry.register_config("basic") as c:
     c.scintillator.Rmax = 260.*u.cm
 
     c.strawtubes = AttrDict(z=0*u.cm)
-    
-    c.strawtubes.InnerStrawDiameter = 0.975*u.cm
+    if strawDesign==4:
+     c.strawtubes.InnerStrawDiameter = 0.975*u.cm
+     c.strawtubes.StrawPitch         = 1.76*u.cm  
+     c.strawtubes.DeltazLayer        = 1.1*u.cm   
+     c.strawtubes.DeltazPlane        = 2.6*u.cm   
+     c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch  / 2.
+     c.strawtubes.YPlaneOffset = c.strawtubes.StrawPitch  / 4.
+    elif strawDesign==10:  # baseline for 2018
+     c.strawtubes.InnerStrawDiameter = 1.975*u.cm
+     c.strawtubes.StrawPitch         = 3.60*u.cm  
+     c.strawtubes.DeltazLayer        = 1.6*u.cm   
+     c.strawtubes.DeltazPlane        = 4.2*u.cm   
+     c.strawtubes.YLayerOffset = 1.9*u.cm        
+     c.strawtubes.YPlaneOffset = 1.3*u.cm
+
     c.strawtubes.WallThickness      = 0.0039*u.cm
     c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
-
-    c.strawtubes.StrawPitch         = 1.76*u.cm
-    c.strawtubes.DeltazLayer        = 1.1*u.cm
-    c.strawtubes.DeltazPlane        = 2.6*u.cm
     
     c.strawtubes.StrawsPerLayer     = int(c.Yheight/c.strawtubes.StrawPitch)
     c.strawtubes.ViewAngle          = 5

@@ -421,7 +421,7 @@ class ShipDigiReco:
       tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
-      measurement.setMaxDistance(0.5*u.cm)
+      measurement.setMaxDistance(ShipGeo.strawtubes.InnerStrawDiameter/2.)
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
       theTrack.insertPoint(tp)  # add point to Track

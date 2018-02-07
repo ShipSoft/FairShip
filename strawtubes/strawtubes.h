@@ -48,7 +48,7 @@ class strawtubes: public FairDetector
     void SetStrawLength(Double_t strawlength);
     void SetInnerStrawDiameter(Double_t innerstrawdiameter);
     void SetOuterStrawDiameter(Double_t outerstrawdiameter);
-    void SetStrawPitch(Double_t strawpitch);
+    void SetStrawPitch(Double_t strawpitch,Double_t layer_offset, Double_t plane_offset);
     void SetDeltazLayer(Double_t deltazlayer);
     void SetDeltazPlane(Double_t deltazplane);
     void SetStrawsPerLayer(Int_t strawsperlayer);
@@ -148,7 +148,7 @@ class strawtubes: public FairDetector
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
     Int_t InitMedium(const char* name);
-    ClassDef(strawtubes,3)
+    ClassDef(strawtubes,4)
 };
 
 #endif //STRAWTUBES_H

@@ -255,13 +255,17 @@ def configure(run,ship_geo):
     tauHpt.SetDistanceHPTs(ship_geo.tauHPT.distHPT)
    detectorList.append(tauHpt)
 
+ # for backward compatibility
+ if not hasattr(ship_geo.strawtubes, "YPlaneOffset"):
+   ship_geo.strawtubes.YLayerOffset = ship_geo.strawtubes.StrawPitch  / 2.
+   ship_geo.strawtubes.YPlaneOffset = ship_geo.strawtubes.StrawPitch  / 4.
  if ship_geo.strawDesign > 1 :
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    
   Strawtubes.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
   Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)
   Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)
   Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)
-  Strawtubes.SetStrawPitch(ship_geo.strawtubes.StrawPitch)
+  Strawtubes.SetStrawPitch(ship_geo.strawtubes.StrawPitch,ship_geo.strawtubes.YLayerOffset,ship_geo.strawtubes.YPlaneOffset)
   Strawtubes.SetDeltazLayer(ship_geo.strawtubes.DeltazLayer)
   Strawtubes.SetDeltazPlane(ship_geo.strawtubes.DeltazPlane)
   Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer)
@@ -333,8 +337,8 @@ def configure(run,ship_geo):
  detectorList.append(timeDet)
 
 #-----   Magnetic field   -------------------------------------------
- if ship_geo.strawDesign == 4: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
- else :                        fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
+ if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
+ else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
  if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
  run.SetField(fMagField)
 #
