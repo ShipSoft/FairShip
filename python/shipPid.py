@@ -12,7 +12,7 @@ class Task:
 
  def __init__(self,main):
   print "****************************************"
-  print "*** You are using PID version 17.1.4 ***"
+  print "*** You are using PID version 18.1.0 ***"
   print "****************************************"
   self.sTree = main.sTree
   self.fpidArray  = ROOT.TClonesArray("pid")
@@ -189,9 +189,7 @@ class Task:
     if not fst.isFitConverged() or fst.getNdf() < self.cutNdf: 
       pidObject=ROOT.pid()
       pidObject.SetTrackID(i)
-      pidObject.SetElectronID(-3)
-      pidObject.SetMuonID(-3)
-      pidObject.SetHadronID(-3)
+      pidObject.SetTrackPID(-3)
       nPID=ppid.GetEntries()
       ppid[nPID]=pidObject
       continue
@@ -209,9 +207,7 @@ class Task:
     pidObject=ROOT.pid()
     pidObject.SetTrackID(i)
     if not rc> 0:
-      pidObject.SetElectronID(-1)
-      pidObject.SetMuonID(-1)
-      pidObject.SetHadronID(-1)
+      pidObject.SetTrackPID(-1)
       nPID=ppid.GetEntries()
       ppid[nPID]=pidObject
       continue
@@ -219,25 +215,18 @@ class Task:
     self.run_elec_ID()
     self.run_muon_ID()
     if self.El==True and self.vol_ecal==False:
-      pidObject.SetElectronID(1)
+      pidObject.SetTrackPID(1)
 #      print '==== Is Electron'
     if (self.pid10==True or self.pid20==True or self.pid21==True or self.pid30==True or self.pid_mu==True) and self.El==False and self.vol_mu1==False: 
-      pidObject.SetMuonID(1)
+      pidObject.SetTrackPID(3)
       self.Hl=False
  #     print '**** Is Muon'
     if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False and self.pid_mu==False and self.El==False and self.Hl==True and self.vol_hcal==False:
-        pidObject.SetHadronID(1)
+      pidObject.SetTrackPID(2)
   #      print '$$$$ Is Hadron'
-    if self.vol_ecal==True:
-      pidObject.SetElectronID(-2)
-#      print '==== It could be an Electron but it is out of acceptance'
-    if self.vol_mu1==True:
-      pidObject.SetMuonID(-2)
-      self.Hl=False
-#      print '**** It could be a Muon but it is out of acceptance'
-    if self.vol_hcal==True:
-      pidObject.SetHadronID(-2)
-#      print '$$$$ It could be a Hadron but it is out of acceptance'
+    if self.vol_ecal==True or self.vol_mu1==True:
+      pidObject.SetTrackPID(-2)
+#      print '==== It is out of the acceptance'
     nPID=ppid.GetEntries()
     ppid[nPID]=pidObject
    # print "---------------- "
