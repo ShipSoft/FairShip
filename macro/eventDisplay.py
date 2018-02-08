@@ -1,5 +1,6 @@
 #!/usr/bin/env python -i
 import ROOT,sys,getopt,os,Tkinter,atexit
+import tempfile
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 from array import array
@@ -69,7 +70,6 @@ if not dy:
  except:
    tmp = None
 
-OutFile	      = "tst."+InputFile.split('/')[-1]
 if InputFile.find('_D')>0: withGeo = True
 
 def printMCTrack(n,MCTrack):
@@ -998,7 +998,8 @@ if hasattr(fRun,'SetSource'):
  fRun.SetSource(inFile)
 else:
  fRun.SetInputFile(InputFile)
-fRun.SetOutputFile(OutFile)
+tf = tempfile.NamedTemporaryFile(suffix='.root')
+fRun.SetOutputFile(tf.name)
 
 if ParFile:
  rtdb      = fRun.GetRuntimeDb()
