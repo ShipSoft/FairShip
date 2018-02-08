@@ -204,7 +204,7 @@ void Hpt::ConstructGeometry()
     Int_t n = 0;
     for(int i=0;i<fnHPT;i++){
 	  {
-            volMagRegion->AddNode(volDT,n,new TGeoTranslation(0,0, DimZ/2 + distTTtoHPT + i*(fDistance+DimZ)));	              
+            volMagRegion->AddNode(volDT,i,new TGeoTranslation(0,0, DimZ/2 + distTTtoHPT + i*(fDistance+DimZ)));	              
 	  }
      }
     }
