@@ -1,6 +1,5 @@
 #!/usr/bin/env python -i
 import ROOT,sys,getopt,os,Tkinter,atexit
-import tempfile
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 from array import array
@@ -29,6 +28,7 @@ geoFile    = None
 mcEngine  = "TGeant4"
 simEngine = "Pythia8"
 InputFile = None 
+OutputFile = None
 withGeo   = False
 dy = str(10.)
 withMCTracks = True
@@ -54,6 +54,8 @@ for o, a in opts:
             geoFile = a
         if o in ("-f",):
             InputFile = a
+        if o in ("-o", "--outFile"):
+            OutputFile = a
 
 print "FairShip setup for",simEngine
 
@@ -998,8 +1000,9 @@ if hasattr(fRun,'SetSource'):
  fRun.SetSource(inFile)
 else:
  fRun.SetInputFile(InputFile)
-tf = tempfile.NamedTemporaryFile(suffix='.root')
-fRun.SetOutputFile(tf.name)
+if OutputFile == None:
+  OutputFile = ROOT.TMemFile('event_display_output', 'recreate')
+fRun.SetOutputFile(OutputFile)
 
 if ParFile:
  rtdb      = fRun.GetRuntimeDb()
