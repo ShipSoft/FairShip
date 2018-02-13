@@ -25,7 +25,7 @@ except getopt.GetoptError:
         print '            : c chicc= ccbar over mbias cross section'
         sys.exit()
 for o, a in opts:
-        if o in ("-f"):
+        if o in ("-f",):
             fname = a.replace('.root','')
         if o in ("-p","--pot"):
             nrpotspill = float(a)

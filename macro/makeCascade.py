@@ -29,13 +29,13 @@ except getopt.GetoptError:
         print '       -P : store all particles produced together with charm'
         sys.exit()
 for o, a in opts:
-        if o in ("-n"):
+        if o in ("-n",):
             nevgen = int(a)
         if o in ("-E","--beam"):
             pbeamh = float(a)
         if o in ("-m","--msel"):
              mselcb = int(a)
-        if o in ("-t"):
+        if o in ("-t",):
             Fntuple = a
         if o in ("-s","--seed"):
             R = int(a)
