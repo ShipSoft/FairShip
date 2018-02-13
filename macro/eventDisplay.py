@@ -45,13 +45,13 @@ except getopt.GetoptError:
         print ' enter -f filename -g geofile (-p param file  not needed if geofile present)'  
         sys.exit()
 for o, a in opts:
-        if o in ("-Y"): 
+        if o in ("-Y",):
             dy = float(a)
         if o in ("-p", "--paramFile"):
             ParFile = a
         if o in ("-g", "--geoFile"):
             geoFile = a
-        if o in ("-f"):
+        if o in ("-f",):
             InputFile = a
 
 print "FairShip setup for",simEngine
