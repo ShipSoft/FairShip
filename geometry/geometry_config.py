@@ -645,5 +645,17 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
     c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
-        
 
+# TimeDet
+c.TimeDet = AttrDict(z=c.Chamber6.z
+                     + c.chambers.Tub6length
+                     + c.Veto.lidThickness + 15 * u.cm
+                     if c.tankDesign == 6
+                     else c.Chamber6.z
+                     + c.chambers.Tub6length + 10 * u.cm)
+c.TimeDet.dzBarRow = 1.2 * u.cm
+c.TimeDet.dzBarCol = 2.4 * u.cm
+c.TimeDet.zBar = 1 * u.cm
+c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
+c.TimeDet.DX = 250 * u.cm
+c.TimeDet.DY = 500 * u.cm

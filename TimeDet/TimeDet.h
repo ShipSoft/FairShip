@@ -47,6 +47,14 @@ class TimeDet: public FairDetector
 
     /** Sets detector position along z */
     void SetZposition(Double_t z) {fzPos = z;}
+    void SetBarZspacing(Double_t row, Double_t column)
+    {
+       fdzBarRow = row;
+       fdzBarCol = column;
+    }
+    void SetBarZ(Double_t dz) {fzBar = dz;}
+    void SetSizeX(Double_t x) {fxSize = x;}
+    void SetSizeY(Double_t y) {fySize = y;}
 
     double GetXCol(int ic) const;
     double GetYRow(int ir) const;

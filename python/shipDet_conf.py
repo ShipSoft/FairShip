@@ -333,7 +333,11 @@ def configure(run,ship_geo):
  detectorList.append(Muon)
 
  timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)
- timeDet.SetZposition(ship_geo.Chamber6.z + ship_geo.chambers.Tub6length + ship_geo.Veto.lidThickness + 15 if ship_geo.tankDesign == 6 else ship_geo.Chamber6.z + ship_geo.chambers.Tub6length + 10)
+ timeDet.SetZposition(ship_geo.TimeDet.z)
+ timeDet.SetBarZspacing(ship_geo.TimeDet.dzBarRow, ship_geo.TimeDet.dzBarCol)
+ timeDet.SetBarZ(ship_geo.TimeDet.zBar)
+ timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)
+ timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)
  detectorList.append(timeDet)
 
 #-----   Magnetic field   -------------------------------------------
