@@ -124,9 +124,9 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}
   if (fsmearBeam > 0) {
      Double_t r = fsmearBeam + 0.8 * gRandom->Gaus();
-     phi = gRandom->Uniform(0., 2.) * TMath::Pi();
-     dx = r * TMath::Cos(phi);
-     dy = r * TMath::Sin(phi);
+     Double_t _phi = gRandom->Uniform(0., 2.) * TMath::Pi();
+     dx = r * TMath::Cos(_phi);
+     dy = r * TMath::Sin(_phi);
   }
   if (id==-1){
      std::vector<int> partList;
