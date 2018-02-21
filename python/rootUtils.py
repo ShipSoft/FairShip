@@ -7,13 +7,13 @@ except:
   pass
 
 
-from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas,TProfile,gSystem
+from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
 import os,sys
 
 def readHists(h,fname):
   if fname[0:4] == "/eos":
-    eospath = ROOT.gSystem.Getenv("EOSSHIP")+fname
-    f = ROOT.TFile.Open(eospath)
+    eospath = gSystem.Getenv("EOSSHIP")+fname
+    f = TFile.Open(eospath)
   else:  
     f = TFile(fname)
   for akey in f.GetListOfKeys():
@@ -47,9 +47,9 @@ def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1
     return
   rkey = str(key) # in case somebody wants to use integers, or floats as keys 
   if h.has_key(key):    h[key].Reset()  
-  elif nbinsz >0:       h[key] = TH3F(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax) 
-  elif nbinsy >0:       h[key] = TH2F(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
-  else:                 h[key] = TH1F(rkey,title,nbinsx,xmin,xmax)
+  elif nbinsz >0:       h[key] = TH3D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax) 
+  elif nbinsy >0:       h[key] = TH2D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
+  else:                 h[key] = TH1D(rkey,title,nbinsx,xmin,xmax)
   h[key].SetDirectory(gROOT)
 def bookProf(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,ymin=None,ymax=None,option=""):
   if key==None : 
