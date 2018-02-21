@@ -43,10 +43,6 @@ class ShipMuonShield : public FairModule
   Bool_t fSupport;
   Double_t  dZ0,dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,dZ7,dZ8,dXgap,zEndOfAbsorb,mag4Gap,midGapOut7,midGapOut8;
   Int_t InitMedium(TString name);
-  
-  void CreateArb8(const char* arbName, TGeoMedium* medium,Double_t dZ,std::array<Double_t,16> corners,Int_t color,
-				     TGeoUniformMagField *magField,TGeoVolume *top,Int_t numberOfItems,Double_t x_translation,Double_t y_translation,
-					Double_t z_translation);
 
   void CreateArb8(TString arbName, TGeoMedium *medium, Double_t dZ,
 		  std::array<Double_t, 16> corners, Int_t color,
