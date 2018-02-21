@@ -50,12 +50,13 @@ inactivateMuonProcesses = False   # provisionally for making studies of various 
 checking4overlaps = False
 if debug>1 : checking4overlaps = True
 phiRandom   = False  # only relevant for muon background generator
-followMuon  = False   # only transport muons for a fast muon only background estimate
+followMuon  = False  # make muonshield active to follow muons
+FastMuon    = False  # only transport muons for a fast muon only background estimate
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
 Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t",[\
-                                   "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon",\
+                                   "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
                                    "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign="])
@@ -99,6 +100,8 @@ for o, a in opts:
             simEngine = "Ntuple"
         if o in ("--FollowMuon",):
             followMuon = True
+        if o in ("--FastMuon",):
+            fastMuon = True
         if o in ("--MuonBack",):
             simEngine = "MuonBack"
         if o in ("--Nuage",):
@@ -396,8 +399,13 @@ if simEngine == "MuonBack":
  if sameSeed: MuonBackgen.SetSameSeed(sameSeed)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
- print 'Process ',nEvents,' from input file, with Phi random=',phiRandom
- if followMuon :  modules['Veto'].SetFastMuon()
+ MCTracksWithHitsOnly = True # otherwise, output file becomes too big
+ print 'Process ',nEvents,' from input file, with Phi random=',phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly
+ if followMuon :  
+    fastMuon = True
+    modules['Veto'].SetFollowMuon()
+ if fastMuon :    modules['Veto'].SetFastMuon()
+ #   missing for the above use case, without making muon shield sensitve
  # optional, boost gamma2muon conversion
  # ROOT.kShipMuonsCrossSectionFactor = 100. 
 #
@@ -516,6 +524,27 @@ print "Output file is ",  outFile
 print "Parameter file is ",parFile
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
+# remove empty events
+if simEngine == "MuonBack":
+ tmpFile = outFile+"tmp"
+ fin   = ROOT.gROOT.GetListOfFiles()[0]
+ t     = fin.cbmsim
+ fout  = ROOT.TFile(tmpFile,'recreate')
+ sTree = t.CloneTree(0)
+ nEvents = 0
+ for n in range(t.GetEntries()):
+     rc = t.GetEvent(n)
+     if t.MCTrack.GetEntries()>2: 
+          rc = sTree.Fill()
+          nEvents+=1
+ sTree.AutoSave()
+ fout.Close()
+ if nEvents > 0:
+  rc1 = os.system("rm  "+outFile)
+  rc2 = os.system("mv "+tmpFile+" "+outFile)
+  fin.SetWritable(False) # bpyass flush error
+ else:
+  rc1 = os.system("rm  "+tmpFile)
 # ------------------------------------------------------------------------
 import checkMagFields
 def visualizeMagFields():
@@ -526,3 +555,4 @@ def checkOverlapsWithGeant4():
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
+

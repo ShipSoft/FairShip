@@ -47,6 +47,7 @@ class veto: public FairDetector
     virtual void   Reset();
 
     void SetFastMuon() {fFastMuon=true;}  // kill all tracks except of muons
+    void SetFollowMuon() {fFollowMuon=true;}  // make muon shield active to follow muons
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
@@ -115,7 +116,7 @@ class veto: public FairDetector
                                        //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
                                        //   4: design used for TP, smaller upstream part in x
                                        //   5: optimized design, changed to trapezoidal shape
-    Bool_t     fFastMuon;
+    Bool_t     fFastMuon, fFollowMuon;
     Float_t fTub1z;
     Float_t fTub2z;
     Float_t fTub3z;
@@ -192,7 +193,7 @@ class veto: public FairDetector
     void InsertInnerVeto(TString xname,Double_t th,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material, TGeoVolume* Inner, Int_t ix=2, Int_t iy=30);
 
 
-    ClassDef(veto, 8)
+    ClassDef(veto, 9)
 };
 
 #endif //VETO_H

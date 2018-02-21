@@ -67,6 +67,7 @@ veto::veto(const char* name, Bool_t active)
     fLength(-1.),
     fELoss(-1),
     fFastMuon(kFALSE),
+    fFollowMuon(kFALSE),
     fT0z(-2390.),              //!  z-position of veto station
     fT1z(1510.),               //!  z-position of tracking station 1
     fT2z(1710.),               //!  z-position of tracking station 2
@@ -1552,7 +1553,7 @@ void veto::ConstructGeometry()
      }
 
 // only for fastMuon simulation, otherwise output becomes too big
-     if (fFastMuon){
+     if (fFastMuon && fFollowMuon){
         const char* Vol  = "TGeoVolume";
         const char* Mag  = "Mag";
         const char* Rock = "rock";
