@@ -129,26 +129,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      dy = r * TMath::Sin(phi);
   }
   if (id==-1){
-     std::vector<int> partList;
-     for (int k = 0; k < vetoPoints->GetEntries(); k++) {
-         vetoPoint *v = (vetoPoint*)vetoPoints->At(k); 
-         if (abs(v->PdgCode())==13){
-            partList.push_back(v->GetTrackID());
-            ShipMCTrack* track =  (ShipMCTrack*)MCTrack->At(v->GetTrackID());
-            Int_t mother = track->GetMotherId();
-            while (mother>0){
-              track = (ShipMCTrack*)(MCTrack->At(mother));  
-              mother = track->GetMotherId();
-              partList.push_back(mother);
-            }
-         }  
-     }
-     for (unsigned i = MCTrack->GetEntries(); i-- > 0; ){
-       Bool_t wanted = false;
-       if(std::find(partList.begin(), partList.end(), i) != partList.end()) {
-         wanted = true;
-       } 
-       if (!wanted){continue;}
+     for (unsigned i = 0; i< MCTrack->GetEntries();  i++ ){
        ShipMCTrack* track = (ShipMCTrack*)MCTrack->At(i);
        px = track->GetPx();
        py = track->GetPy();
@@ -159,17 +140,17 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         px = pt*TMath::Cos(phi+phi0);
         py = pt*TMath::Sin(phi+phi0);
        }
-       vx = track->GetStartX()+dx; 
-       vy = track->GetStartY()+dy; 
-       vz = track->GetStartZ(); 
+       vx = track->GetStartX()+dx;
+       vy = track->GetStartY()+dy;
+       vz = track->GetStartZ();
        tof =  track->GetStartT();
        e = track->GetEnergy();
        Bool_t wanttracking = false; // only transport muons
        if(std::find(muList.begin(), muList.end(), i) != muList.end()) {
          wanttracking = true;
        }
-       cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,-1.,wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
-     } 
+       cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,track->GetMotherId(),wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
+     }
   }else{
     vx += dx/100.;
     vy += dy/100.;
