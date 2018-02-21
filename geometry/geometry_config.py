@@ -151,6 +151,16 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 3.*u.m
 
+# TimeDet
+    c.TimeDet = AttrDict(z=0)
+    c.TimeDet.dzBarRow = 1.2 * u.cm
+    c.TimeDet.dzBarCol = 2.4 * u.cm
+    c.TimeDet.zBar = 1 * u.cm
+    c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
+    c.TimeDet.DX = 250 * u.cm
+    c.TimeDet.DY = 500 * u.cm
+    c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + c.TimeDet.DZ + 1*u.cm # safety margin
+
     if CaloDesign==0:
      c.HcalOption = 1
      c.EcalOption = 1
@@ -170,7 +180,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     presShowerDeltaZ = 0.
     if c.preshowerOption >0:
-     PreshowerStart = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + (8+5)*u.cm
+     PreshowerStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ
      c.PreshowerFilter0  = AttrDict(z= PreshowerStart )
      c.PreshowerStation0 = AttrDict(z= c.PreshowerFilter0.z + 10*u.cm )
 
@@ -189,7 +199,7 @@ with ConfigRegistry.register_config("basic") as c:
      presShowerDeltaZ = PreshowerLeverArm + 2*10*u.cm + 2*2.*u.cm
 
     c.SplitCal = AttrDict(z=0)
-    c.SplitCal.ZStart = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + (8+5)*u.cm + presShowerDeltaZ
+    c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ 
     c.SplitCal.XMax    =  290.*u.cm
     c.SplitCal.YMax    =  510.*u.cm * c.Yheight / (10.*u.m)
     c.SplitCal.Empty = 0*u.cm
@@ -214,7 +224,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap+c.SplitCal.FilterHCALThickness
 
-    c.ecal  =  AttrDict(z = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + (8+5)*u.cm + presShowerDeltaZ)  # 8cm space for time det, hardcoded in veto.cxx
+    c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm + presShowerDeltaZ)  #
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if not c.HcalOption < 0:
@@ -645,17 +655,3 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
     c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
-
-# TimeDet
-c.TimeDet = AttrDict(z=c.Chamber6.z
-                     + c.chambers.Tub6length
-                     + c.Veto.lidThickness + 15 * u.cm
-                     if c.tankDesign == 6
-                     else c.Chamber6.z
-                     + c.chambers.Tub6length + 10 * u.cm)
-c.TimeDet.dzBarRow = 1.2 * u.cm
-c.TimeDet.dzBarCol = 2.4 * u.cm
-c.TimeDet.zBar = 1 * u.cm
-c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
-c.TimeDet.DX = 250 * u.cm
-c.TimeDet.DY = 500 * u.cm
