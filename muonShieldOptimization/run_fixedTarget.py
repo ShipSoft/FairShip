@@ -212,6 +212,7 @@ P8gen.SetSeed(args.seed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if charm or beauty:
+ print "--- process heavy flavours ---"
  P8gen.InitForCharmOrBeauty(charmInputFile,nev,npot,nStart)
 primGen.AddGenerator(P8gen)
 #
@@ -300,7 +301,6 @@ print "removed out file, moved tmpFile to out file",rc1,rc2
 fin.SetWritable(False) # bpyass flush error
 
 print "Number of events produced with activity after hadron absorber:",nEvents
-time.sleep(60)
 
 if checkOverlap:
  sGeo = ROOT.gGeoManager
