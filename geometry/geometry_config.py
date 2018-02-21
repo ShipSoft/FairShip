@@ -289,12 +289,19 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = 3.0*u.m + zGap
         c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
-        c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
-                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
-
-    if muShieldDesign == 8:
-       if muShieldGeo:
+    elif muShieldDesign == 9:
+        c.muShield.Field = 1.7  # Tesla
+        c.muShield.dZ1 = 0.35 * u.m + zGap
+        c.muShield.dZ2 = 2.26 * u.m + zGap
+        c.muShield.dZ3 = 2.08 * u.m + zGap
+        c.muShield.dZ4 = 2.07 * u.m + zGap
+        c.muShield.dZ5 = 2.81 * u.m + zGap
+        c.muShield.dZ6 = 2.48 * u.m + zGap
+        c.muShield.dZ7 = 3.05 * u.m + zGap
+        c.muShield.dZ8 = 2.42 * u.m + zGap
+        c.muShield.dXgap = 0. * u.m
+    elif muShieldDesign == 8:
+        assert muShieldGeo
         c.muShieldGeo = muShieldGeo
         print "Load geo"
         f = r.TFile.Open(muShieldGeo)
@@ -310,9 +317,14 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = params[6]
         c.muShield.dZ8 = params[7]
         c.muShield.dXgap = 0.*u.m
-        c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
-                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
+    if muShieldDesign in range(7, 10):
+        c.muShield.length = 2 * (
+              c.muShield.dZ1 + c.muShield.dZ2 +
+              c.muShield.dZ3 + c.muShield.dZ4 +
+              c.muShield.dZ5 + c.muShield.dZ6 +
+              c.muShield.dZ7 + c.muShield.dZ8
+        ) + c.muShield.LE
+        c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 
     if muShieldDesign == 3:
      c.muShield.dZ1 = 3.5*u.m
