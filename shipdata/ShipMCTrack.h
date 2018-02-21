@@ -72,6 +72,7 @@ class ShipMCTrack : public TObject
     Double_t GetPt()       const { return TMath::Sqrt(fPx*fPx+fPy*fPy); }
     Double_t GetP() const { return TMath::Sqrt(fPx*fPx+fPy*fPy+fPz*fPz); }
     Double_t GetRapidity() const;
+    void MultiplyWeight(Double_t w) {fW = fW*w;}
     Double_t GetWeight()   const;
     void GetMomentum(TVector3& momentum);
     void Get4Momentum(TLorentzVector& momentum);
@@ -126,7 +127,7 @@ class ShipMCTrack : public TObject
     Int_t fNPoints;
 
 
-    ClassDef(ShipMCTrack,5);
+    ClassDef(ShipMCTrack,6);
 
 };
 
