@@ -280,8 +280,8 @@ with ConfigRegistry.register_config("basic") as c:
     # zGap to compensate automatic shortening of magnets
     zGap = 0.5 * c.muShield.dZgap  # halflengh of gap
     if muShieldDesign == 7:
-        c.muShield.dZ1 = 0.35*u.m + zGap
-        c.muShield.dZ2 = 2.26*u.m + zGap
+        c.muShield.dZ1 = 0.7 * u.m + zGap
+        c.muShield.dZ2 = 1.7 * u.m + zGap
         c.muShield.dZ3 = 2.0*u.m + zGap
         c.muShield.dZ4 = 2.0*u.m + zGap
         c.muShield.dZ5 = 2.75*u.m + zGap
