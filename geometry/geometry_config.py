@@ -1,4 +1,5 @@
 import shipunit as u
+import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber
@@ -11,11 +12,13 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 if "muShieldDesign" not in globals():
     muShieldDesign = 5
+if "muShieldGeo" not in globals():
+    muShieldGeo = None
 if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
     nuTauTargetDesign = 0
-    if muShieldDesign == 7: 
+    if muShieldDesign >= 7: 
         nuTauTargetDesign=1
 if "targetOpt" not in globals():
     targetOpt = 18
@@ -277,8 +280,8 @@ with ConfigRegistry.register_config("basic") as c:
     # zGap to compensate automatic shortening of magnets
     zGap = 0.5 * c.muShield.dZgap  # halflengh of gap
     if muShieldDesign == 7:
-        c.muShield.dZ1 = 0.7*u.m
-        c.muShield.dZ2 = 1.7*u.m
+        c.muShield.dZ1 = 0.7 * u.m + zGap
+        c.muShield.dZ2 = 1.7 * u.m + zGap
         c.muShield.dZ3 = 2.0*u.m + zGap
         c.muShield.dZ4 = 2.0*u.m + zGap
         c.muShield.dZ5 = 2.75*u.m + zGap
@@ -286,9 +289,42 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = 3.0*u.m + zGap
         c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
-        c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
-                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
+    elif muShieldDesign == 9:
+        c.muShield.Field = 1.7  # Tesla
+        c.muShield.dZ1 = 0.35 * u.m + zGap
+        c.muShield.dZ2 = 2.26 * u.m + zGap
+        c.muShield.dZ3 = 2.08 * u.m + zGap
+        c.muShield.dZ4 = 2.07 * u.m + zGap
+        c.muShield.dZ5 = 2.81 * u.m + zGap
+        c.muShield.dZ6 = 2.48 * u.m + zGap
+        c.muShield.dZ7 = 3.05 * u.m + zGap
+        c.muShield.dZ8 = 2.42 * u.m + zGap
+        c.muShield.dXgap = 0. * u.m
+    elif muShieldDesign == 8:
+        assert muShieldGeo
+        c.muShieldGeo = muShieldGeo
+        print "Load geo"
+        f = r.TFile.Open(muShieldGeo)
+        params = r.TVectorD()
+        params.Read('params')
+        f.Close()
+        c.muShield.dZ1 = 0.35*u.m + zGap
+        c.muShield.dZ2 = 2.26*u.m + zGap
+        c.muShield.dZ3 = params[2]
+        c.muShield.dZ4 = params[3]
+        c.muShield.dZ5 = params[4]
+        c.muShield.dZ6 = params[5]
+        c.muShield.dZ7 = params[6]
+        c.muShield.dZ8 = params[7]
+        c.muShield.dXgap = 0.*u.m
+    if muShieldDesign in range(7, 10):
+        c.muShield.length = 2 * (
+              c.muShield.dZ1 + c.muShield.dZ2 +
+              c.muShield.dZ3 + c.muShield.dZ4 +
+              c.muShield.dZ5 + c.muShield.dZ6 +
+              c.muShield.dZ7 + c.muShield.dZ8
+        ) + c.muShield.LE
+        c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 
     if muShieldDesign == 3:
      c.muShield.dZ1 = 3.5*u.m

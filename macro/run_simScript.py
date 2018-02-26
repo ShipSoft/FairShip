@@ -45,6 +45,7 @@ nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet
 charm        = 0 # !=0 create charm detector instead of SHiP
 caloDesign   = 0 # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
 strawDesign  = 4 # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
+geofile = None
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
@@ -55,7 +56,7 @@ FastMuon    = False  # only transport muons for a fast muon only background esti
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
 Opt_high = None # switch for cosmic generator
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t",[\
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t:g",[\
                                    "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
@@ -126,6 +127,8 @@ for o, a in opts:
             if a.lower() == "none": inputFile = None
             else: inputFile = a
             defaultInputFile = False
+        if o in ("-g",):
+            geofile = a
         if o in ("-o", "--output",):
             outputDir = a
         if o in ("-Y",): 
@@ -189,7 +192,7 @@ shipRoot_conf.configure(DarkPhoton)      # load basic libraries, prepare atexit 
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
-                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign)
+                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile)
 else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 
 # switch off magnetic field to measure muon flux
@@ -555,4 +558,3 @@ def checkOverlapsWithGeant4():
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
-
