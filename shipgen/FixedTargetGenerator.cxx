@@ -317,7 +317,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }
   Pythia8::Pythia* fPythia;
   if (G4only){
-   cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,zinter/cm,-1,kTRUE,-1.,0.,1.);
+   cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,start[2]/cm,-1,kTRUE,-1.,0.,1.);
    return kTRUE;
   }else if (Option == "Primary"){
    if (gRandom->Uniform(0.,1.) < ZoverA ){
