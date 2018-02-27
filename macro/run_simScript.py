@@ -535,19 +535,24 @@ if simEngine == "MuonBack":
  fout  = ROOT.TFile(tmpFile,'recreate')
  sTree = t.CloneTree(0)
  nEvents = 0
+ pointContainers = []
+ for x in sTree.GetListOfBranches():
+   name = x.GetName() 
+   if not name.find('Point')<0: pointContainers.append('sTree.'+name+'.GetEntries()') # makes use of convention that all sensitive detectors fill XXXPoint containers
  for n in range(t.GetEntries()):
      rc = t.GetEvent(n)
-     if t.MCTrack.GetEntries()>2: 
-          rc = sTree.Fill()
-          nEvents+=1
+     empty = True 
+     for x in pointContainers:
+        if eval(x)>0: empty = False
+     if not empty:
+        rc = sTree.Fill()
+        nEvents+=1
  sTree.AutoSave()
  fout.Close()
- if nEvents > 0:
-  rc1 = os.system("rm  "+outFile)
-  rc2 = os.system("mv "+tmpFile+" "+outFile)
-  fin.SetWritable(False) # bpyass flush error
- else:
-  rc1 = os.system("rm  "+tmpFile)
+ print "removed empty events, left with:", nEvents
+ rc1 = os.system("rm  "+outFile)
+ rc2 = os.system("mv "+tmpFile+" "+outFile)
+ fin.SetWritable(False) # bpyass flush error
 # ------------------------------------------------------------------------
 import checkMagFields
 def visualizeMagFields():
