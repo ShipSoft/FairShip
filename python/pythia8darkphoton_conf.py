@@ -42,30 +42,30 @@ def readFromAscii():
        n+=1
     return h
 
-def manipulatePhysics(mass, P8gen, cf):
+def manipulatePhysics(mass, P8Gen, cf):
     if (pi0Start < mass < pi0Stop):
         # use pi0 -> gamma A'
         selectedMum = 111
-        P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
-        cf.write('P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")\n')
+        P8Gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
+        cf.write('P8Gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")\n')
     elif etaStart < mass < etaStop:
         # use eta -> gamma A'
         selectedMum = 221
-        P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")
-        cf.write('P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")\n')
+        P8Gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")
+        cf.write('P8Gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")\n')
     elif omegaStart < mass < omegaStop:
         # use omega -> pi0 A'
         selectedMum = 223
-        P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")
-        cf.write('P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")\n')
+        P8Gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")
+        cf.write('P8Gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")\n')
     elif eta1Start < mass < eta1Stop:
         # use eta' -> gamma A'
         selectedMum = 331
-        P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")
+        P8Gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")
         #should be considered also for mass < 0.188 GeV....
-        #P8gen.SetParameters("331:oneChannel = 1 1 0 223 9900015")29%BR
-        #P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
-        cf.write('P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")\n')
+        #P8Gen.SetParameters("331:oneChannel = 1 1 0 223 9900015")29%BR
+        #P8Gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
+        cf.write('P8Gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")\n')
     else:
         print "ERROR: please enter a nicer mass."
         return -1
@@ -73,18 +73,18 @@ def manipulatePhysics(mass, P8gen, cf):
 
 
 
-def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
+def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
     # configure pythia8 for Ship usage
     debug=True
     if debug: cf=open('pythia8_darkphotonconf.txt','w')
     #h=readFromAscii()
-    P8gen.UseRandom3() # TRandom1 or TRandom3 ?
-    P8gen.SetMom(400)  # beam momentum in GeV 
-    if deepCopy: P8gen.UseDeepCopy()
+    P8Gen.UseRandom3() # TRandom1 or TRandom3 ?
+    P8Gen.SetMom(400)  # beam momentum in GeV 
+    if deepCopy: P8Gen.UseDeepCopy()
     pdg = ROOT.TDatabasePDG.Instance()
     if inclusive=="meson":
     # let strange particle decay in Geant4
-        p8 = P8gen.getPythiaInstance()
+        p8 = P8Gen.getPythiaInstance()
         n=1
         while n!=0:
           n = p8.particleData.nextId(n)
@@ -95,54 +95,77 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
            print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name())
     
         # Configuring production
-        P8gen.SetParameters("SoftQCD:nonDiffractive = on")
-        if debug: cf.write('P8gen.SetParameters("SoftQCD:nonDiffractive = on")\n')
+        P8Gen.SetParameters("SoftQCD:nonDiffractive = on")
+        if debug: cf.write('P8Gen.SetParameters("SoftQCD:nonDiffractive = on")\n')
+
+    elif inclusive=="qcd":
+        P8Gen.SetDY()
+    # produce a Z' from hidden valleys model
+        p8 = P8Gen.getPythiaInstance()
+        n=1
+        while n!=0:
+          n = p8.particleData.nextId(n)
+          p = p8.particleData.particleDataEntryPtr(n)
+          if p.tau0()>1: 
+           command = str(n)+":mayDecay = false"
+           p8.readString(command)
+           print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name())
+    
+        # Configuring production
+        P8Gen.SetParameters("HiddenValley:ffbar2Zv = on")
+        if debug: cf.write('P8Gen.SetParameters("HiddenValley:ffbar2Zv = on")\n')
 
     elif inclusive=="pbrem":
-        P8gen.SetParameters("ProcessLevel:all = off")
-        if debug: cf.write('P8gen.SetParameters("ProcessLevel:all = off")\n')
+        P8Gen.SetParameters("ProcessLevel:all = off")
+        if debug: cf.write('P8Gen.SetParameters("ProcessLevel:all = off")\n')
         #Also allow resonance decays, with showers in them
-        #P8gen.SetParameters("Standalone:allowResDec = on")
+        #P8Gen.SetParameters("Standalone:allowResDec = on")
 
         #Optionally switch off decays.
-        #P8gen.SetParameters("HadronLevel:Decay = off")
+        #P8Gen.SetParameters("HadronLevel:Decay = off")
 
         #Switch off automatic event listing in favour of manual.
-        P8gen.SetParameters("Next:numberShowInfo = 0")
-        P8gen.SetParameters("Next:numberShowProcess = 0")
-        P8gen.SetParameters("Next:numberShowEvent = 0")
-        proton_bremsstrahlung.protonEnergy=P8gen.GetMom()
+        P8Gen.SetParameters("Next:numberShowInfo = 0")
+        P8Gen.SetParameters("Next:numberShowProcess = 0")
+        P8Gen.SetParameters("Next:numberShowEvent = 0")
+        proton_bremsstrahlung.protonEnergy=P8Gen.GetMom()
         norm=proton_bremsstrahlung.prodRate(mass, epsilon)
         print "A' production rate per p.o.t: \t %.8g"%norm
-        P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
+        P8Gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
 
     #Define dark photon
     DP_instance = darkphoton.DarkPhoton(mass,epsilon)
     ctau = DP_instance.cTau()
     print 'ctau p8dpconf file =%3.15f cm'%ctau
-    P8gen.SetParameters("9900015:new = A A 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
-    if debug: cf.write('P8gen.SetParameters("9900015:new = A A 2 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
-    P8gen.SetParameters("9900015:isResonance = false")
-    if debug: cf.write('P8gen.SetParameters("9900015:isResonance = false")\n')
+    P8Gen.List(P8Gen.GetDPId())
+    if inclusive=="qcd":
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.002 0.0 0.0 "+str(ctau/u.mm)+"  1   1   0   1   0") 
+        if debug: cf.write('P8Gen.SetParameters('+str(P8Gen.GetDPId())+'":new = A A 3 0 0 '+str(mass)+' 0.002 0.0 0.0 '+str(ctau/u.mm)+'  1   1   0   1   0") \n')
+    else:
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+        if debug: cf.write('P8Gen.SetParameters('+str(P8Gen.GetDPId())+'":new = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
+
+    if inclusive=="qcd":
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":onMode = off")
     
-    P8gen.SetParameters("Next:numberCount    =  0")
-    if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')
+    P8Gen.SetParameters("Next:numberCount    =  0")
+    if debug: cf.write('P8Gen.SetParameters("Next:numberCount    =  0")\n')
 
     # Configuring decay modes...
-    readDecayTable.addDarkPhotondecayChannels(P8gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
+    readDecayTable.addDarkPhotondecayChannels(P8Gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish HNL setup...
-    P8gen.SetParameters("9900015:mayDecay = on")
-    if debug: cf.write('P8gen.SetParameters("9900015:mayDecay = on")\n')
-    P8gen.SetDPId(9900015)
-    if debug: cf.write('P8gen.SetDPId(9900015)\n')
+    P8Gen.SetParameters(str(P8Gen.GetDPId())+":mayDecay = on")
+    if debug: cf.write('P8Gen.SetParameters('+str(P8Gen.GetDPId())+'":mayDecay = on")\n')
+    #P8Gen.SetDPId(P8Gen.GetDPId())
+    #if debug: cf.write('P8Gen.SetDPId(%d)\n',%P8Gen.GetDPId())
        # also add to PDG
     gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
     print 'gamma=%e'%gamma
-    addDPtoROOT(pid=9900015,m=mass,g=gamma)
+    addDPtoROOT(pid=P8Gen.GetDPId(),m=mass,g=gamma)
     
     if inclusive=="meson":
         #change meson decay to dark photon depending on mass
-	selectedMum = manipulatePhysics(mass, P8gen, cf)
+	selectedMum = manipulatePhysics(mass, P8Gen, cf)
         print 'selected mum is : %d'%selectedMum
 
 

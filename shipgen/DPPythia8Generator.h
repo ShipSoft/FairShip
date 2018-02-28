@@ -48,6 +48,7 @@ class DPPythia8Generator : public FairGenerator
   Double_t GetMom() { return fMom; };
   void SetId(Double_t id) { fId  = id; };
   void SetDPId(Int_t id) { fDP = id; };
+  Int_t GetDPId() { return fDP; };
   void SetLmin(Double_t z) { fLmin = z*10; };
   void SetLmax(Double_t z) { fLmax = z*10; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
@@ -58,6 +59,9 @@ class DPPythia8Generator : public FairGenerator
   void SetPbrem(TH2F *pdf) {
     fpbrem = kTRUE;
     fpbremPDF = pdf;
+  };
+  void SetDY(){
+    fdy = kTRUE;
   };
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
   Int_t nrOfRetries(){ return fnRetries; };
@@ -79,6 +83,7 @@ class DPPythia8Generator : public FairGenerator
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Bool_t fpbrem;       //flag to do proton bremstrahlung production (default is false)
   TH2F *fpbremPDF;     // pointer to TH2 containing PDF(p,theta) to have a dark photon with momentum p and angle theta to be produced by pbrem.
+  Bool_t fdy;          // flag to do Drell-Yan QCD production
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
   Int_t fnRetries;     // number of events without any DP 

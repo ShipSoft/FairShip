@@ -18,7 +18,7 @@ mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 nEvents      = 100
 firstEvent   = 0
-inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, to do: QCD prod.
+inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, qcd = ffbar -> DP.
 deepCopy     = False  # False = copy only stable particles to stack, except for HNL events
 MCTracksWithHitsOnly   = False  # copy particles which produced a hit and their history
 MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
@@ -71,7 +71,7 @@ except getopt.GetoptError:
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
         print '       --DarkPhoton to generate events with dark photons (default HNL)'
-        print ' for darkphoton generation, use -A meson or -A pbrem'
+        print ' for darkphoton generation, use -A meson or -A pbrem or -A qcd'
         print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
         print '       --mass or -m to set HNL or New Particle mass'
         print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
@@ -92,7 +92,7 @@ for o, a in opts:
             if a.lower() == 'charmonly':
                charmonly = True
                HNL = False 
-            if a not in ['b','c','meson','pbrem']: inclusive = True
+            if a not in ['b','c','meson','pbrem','qcd']: inclusive = True
         if o in ("--Genie",):
             simEngine = "Genie"
         if o in ("--NuRadio",):
@@ -267,7 +267,10 @@ if simEngine == "Pythia8":
    P8gen.UseExternalFile(inputFile, firstEvent)
  if DarkPhoton:
   P8gen = ROOT.DPPythia8Generator()
-  P8gen.SetDPId(9900015)
+  if inclusive=='qcd':
+	  P8gen.SetDPId(4900023)
+  else:
+	  P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
   pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,deepCopy)
   P8gen.SetSmearBeam(1*u.cm) # finite beam size

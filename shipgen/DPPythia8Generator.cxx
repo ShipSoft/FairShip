@@ -29,6 +29,7 @@ DPPythia8Generator::DPPythia8Generator()
   fFDs        = 7.7/10.4;    // correction for Pythia6 to match measured Ds production
   fpbrem = kFALSE;
   fpbremPDF = 0;
+  fdy = kFALSE;
   fextFile    = "";
   fInputFile  = NULL;
   fnRetries   = 0;
@@ -42,7 +43,7 @@ DPPythia8Generator::DPPythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t DPPythia8Generator::Init() 
 {
-  if ( debug ){List(9900015);}
+  if ( debug ){List(fDP);}
   fLogger = FairLogger::GetLogger();
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
@@ -116,10 +117,10 @@ Bool_t DPPythia8Generator::Init()
     }*/
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fDP)->Lifetime();
+  if ( debug ){List(fDP);}
   if ( debug ){cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<endl;}
   fctau = fPythia->particleData.tau0(fDP); //* 3.3333e-12
   if ( debug ){cout<<"ctau pythia "<<fctau<<"[mm]"<<endl;}
-  if ( debug ){List(9900015);}
   fPythia->init();
   //if (fHadDecay) fPythiaHadDecay->init();
   return kTRUE;
