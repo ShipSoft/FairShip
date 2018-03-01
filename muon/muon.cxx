@@ -239,17 +239,17 @@ void muon::ConstructGeometry()
     muonfilter1->SetLineColor(kBlue);
     muonfilter2->SetLineColor(kBlue);
     Double_t zStartMuon = fM0z;
-    tMuon->AddNode(muondet0, 1, new TGeoTranslation(0, 0, fM0z-zStartMuon));
-    tMuon->AddNode(muonfilter0, 1, new TGeoTranslation(0, 0, fF0z-zStartMuon));
-    tMuon->AddNode(muondet1, 1, new TGeoTranslation(0, 0, fM1z-zStartMuon));
-    tMuon->AddNode(muonfilter1, 1, new TGeoTranslation(0, 0, fF1z-zStartMuon));
-    tMuon->AddNode(muondet2, 1, new TGeoTranslation(0, 0, fM2z-zStartMuon));
-    tMuon->AddNode(muonfilter2, 1, new TGeoTranslation(0, 0, fF2z-zStartMuon));
-    tMuon->AddNode(muondet3, 1, new TGeoTranslation(0, 0, fM3z-zStartMuon));
+    Double_t totLength = fM3z-fM0z+2*fActiveThickness;
+    Double_t relPos = zStartMuon-fActiveThickness+totLength/2.;
+    tMuon->AddNode(muondet0, 1, new TGeoTranslation(0, 0, fM0z-relPos));
+    tMuon->AddNode(muonfilter0, 1, new TGeoTranslation(0, 0, fF0z-relPos));
+    tMuon->AddNode(muondet1, 1, new TGeoTranslation(0, 0, fM1z-relPos));
+    tMuon->AddNode(muonfilter1, 1, new TGeoTranslation(0, 0, fF1z-relPos));
+    tMuon->AddNode(muondet2, 1, new TGeoTranslation(0, 0, fM2z-relPos));
+    tMuon->AddNode(muonfilter2, 1, new TGeoTranslation(0, 0, fF2z-relPos));
+    tMuon->AddNode(muondet3, 1, new TGeoTranslation(0, 0, fM3z-relPos));
           //finish assembly and position
-    TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tMuon->GetShape());
-    Double_t totLength = asmb->GetDZ();
-    top->AddNode(tMuon, 1, new TGeoTranslation(0, 0,zStartMuon+totLength));  
+    top->AddNode(tMuon, 1, new TGeoTranslation(0, 0,relPos));
 }
 
 muonPoint* muon::AddHit(Int_t trackID, Int_t detID,
