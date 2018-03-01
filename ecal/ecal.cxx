@@ -384,14 +384,22 @@ void ecal::SetSpecialPhysicsCuts()
 Bool_t  ecal::ProcessHits(FairVolume* vol)
 {
   /** Fill MC point for sensitive ECAL volumes **/
+  TString Ecal="Ecal";
   fELoss   = gMC->Edep();
   fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
   fTime    = gMC->TrackTime()*1.0e09;
   fLength  = gMC->TrackLength();
-
-  if (vol->getVolumeId()==fStructureId) {
+  Double_t bx, by, bz;
+  TParticle* bp=gMC->GetStack()->GetCurrentTrack();
+  gMC->TrackPosition(bx, by, bz);
+  Int_t volID;
+  gMC->CurrentVolID(volID);
+  //cout <<"Ecal called  "<<volID<<" "<<vol->getVolumeId()<<" "<<fStructureId<<" "<<fELoss*1e10<<" "<<gGeoManager->GetVolume(vol->getVolumeId())->GetName()<<" "<<gMC->CurrentVolName()<<" "<<bz<<endl;
+  //if (vol->getVolumeId()==fStructureId) {
+  if (Ecal.CompareTo(gMC->CurrentVolName())==0) {
     if (gMC->IsTrackEntering()) {
       FillWallPoint();
+      //cout <<"fill wallpoint "<<vol->getVolumeId()<<" "<<fStructureId<<" "<<fELoss*1e10<<endl;
       ((ShipStack*)gMC->GetStack())->AddPoint(kecal, fTrackID);
   
       ResetParameters();
@@ -443,10 +451,9 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
     }
     Int_t id=(my*100+mx)*100+cell+1;
     if (id<0){
-      TString Ecal="Ecal";
-      if (gMC->CurrentVolName()==Ecal&&fELoss<1e-25)
+      if (Ecal.CompareTo(gMC->CurrentVolName())==0&&fELoss<1e-19)
        return kTRUE;
-      cout << "neg id "<<mx<<" "<<my<<" "<<cell<<" "<<gMC->CurrentVolName()<<" "<<gMC->CurrentVolOffName(1)<<" "<<gMC->CurrentVolOffName(2)<<endl;
+      cout << "neg id "<<mx<<" "<<my<<" "<<cell<<" "<<gMC->CurrentVolName()<<" "<<gMC->CurrentVolOffName(1)<<" "<<gMC->CurrentVolOffName(2)<<" "<<fELoss<<" "<<fELoss*1e10<<endl;
     }
 /*   
     Float_t rx; Float_t ry; Int_t ten;

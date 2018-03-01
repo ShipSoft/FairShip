@@ -347,17 +347,18 @@ void hcal::SetSpecialPhysicsCuts()
     SetHcalCuts(mediumID);
   }
 }
-
 // -----   Public method ProcessHits  --------------------------------------
 Bool_t  hcal::ProcessHits(FairVolume* vol)
 {
   /** Fill MC point for sensitive ECAL volumes **/
+  TString Hcal="Hcal";
   fELoss   = gMC->Edep();
   fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
   fTime    = gMC->TrackTime()*1.0e09;
   fLength  = gMC->TrackLength();
 
-  if (vol->getVolumeId()==fStructureId) {
+  //if (vol->getVolumeId()==fStructureId) {
+  if (Hcal.CompareTo(gMC->CurrentVolName())==0) {
     if (gMC->IsTrackEntering()) {
       FillWallPoint();
       ((ShipStack*)gMC->GetStack())->AddPoint(khcal, fTrackID);
