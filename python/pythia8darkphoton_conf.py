@@ -114,6 +114,8 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
         # Configuring production
         P8Gen.SetParameters("HiddenValley:ffbar2Zv = on")
         if debug: cf.write('P8Gen.SetParameters("HiddenValley:ffbar2Zv = on")\n')
+        P8Gen.SetParameters("HiddenValley:Ngauge = 1")
+
 
     elif inclusive=="pbrem":
         P8Gen.SetParameters("ProcessLevel:all = off")
@@ -137,16 +139,22 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
     DP_instance = darkphoton.DarkPhoton(mass,epsilon)
     ctau = DP_instance.cTau()
     print 'ctau p8dpconf file =%3.15f cm'%ctau
+    print 'Initial particle parameters for PDGID %d :'%P8Gen.GetDPId()
     P8Gen.List(P8Gen.GetDPId())
     if inclusive=="qcd":
-        P8Gen.SetParameters(str(P8Gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.002 0.0 0.0 "+str(ctau/u.mm)+"  1   1   0   1   0") 
-        if debug: cf.write('P8Gen.SetParameters('+str(P8Gen.GetDPId())+'":new = A A 3 0 0 '+str(mass)+' 0.002 0.0 0.0 '+str(ctau/u.mm)+'  1   1   0   1   0") \n')
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":m0 = "+str(mass))
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(mass*0.01))
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":mMin = 0.001")
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":tau0 = "+str(ctau/u.mm))
+        #P8Gen.SetParameters(str(P8Gen.GetDPId())+":isResonance = false")
+        #P8Gen.SetParameters(str(P8Gen.GetDPId())+":all = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+        #if debug: cf.write('P8Gen.SetParameters("'+str(P8Gen.GetDPId())+':all = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":onMode = off")
+        #print 'qcd inclusive test'
     else:
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
-        if debug: cf.write('P8Gen.SetParameters('+str(P8Gen.GetDPId())+'":new = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
+        if debug: cf.write('P8Gen.SetParameters("'+str(P8Gen.GetDPId())+':new = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
 
-    if inclusive=="qcd":
-        P8Gen.SetParameters(str(P8Gen.GetDPId())+":onMode = off")
     
     P8Gen.SetParameters("Next:numberCount    =  0")
     if debug: cf.write('P8Gen.SetParameters("Next:numberCount    =  0")\n')
@@ -155,7 +163,7 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
     readDecayTable.addDarkPhotondecayChannels(P8Gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish HNL setup...
     P8Gen.SetParameters(str(P8Gen.GetDPId())+":mayDecay = on")
-    if debug: cf.write('P8Gen.SetParameters('+str(P8Gen.GetDPId())+'":mayDecay = on")\n')
+    if debug: cf.write('P8Gen.SetParameters("'+str(P8Gen.GetDPId())+':mayDecay = on")\n')
     #P8Gen.SetDPId(P8Gen.GetDPId())
     #if debug: cf.write('P8Gen.SetDPId(%d)\n',%P8Gen.GetDPId())
        # also add to PDG
@@ -168,5 +176,7 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
 	selectedMum = manipulatePhysics(mass, P8Gen, cf)
         print 'selected mum is : %d'%selectedMum
 
+
+    #P8Gen.SetParameters("Check:particleData = on")
 
     if debug: cf.close()

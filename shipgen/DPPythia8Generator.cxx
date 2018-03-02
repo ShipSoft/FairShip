@@ -43,7 +43,6 @@ DPPythia8Generator::DPPythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t DPPythia8Generator::Init() 
 {
-  if ( debug ){List(fDP);}
   fLogger = FairLogger::GetLogger();
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
@@ -96,7 +95,8 @@ Bool_t DPPythia8Generator::Init()
   }
   else {
     if (!fpbremPDF) {
-      std::cout << " Failed in retrieving dark photon PDF for production by proton bremstrahlung! Exiting..." << std::endl;
+      //std::cout << " Failed in retrieving dark photon PDF for production by proton bremstrahlung! Exiting..." << std::endl;
+      fLogger->Fatal(MESSAGE_ORIGIN, "Failed in retrieving dark photon PDF for production by proton bremstrahlung!");
       return kFALSE;
     }
   }
@@ -117,13 +117,24 @@ Bool_t DPPythia8Generator::Init()
     }*/
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fDP)->Lifetime();
-  if ( debug ){List(fDP);}
-  if ( debug ){cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<endl;}
+  if ( debug ){
+    cout<<"Final particle parameters for PDGID " << fDP << ":" << std::endl;
+    List(fDP);
+  }
+  if ( debug ){cout<<"tau root PDG database "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<endl;}
   fctau = fPythia->particleData.tau0(fDP); //* 3.3333e-12
   if ( debug ){cout<<"ctau pythia "<<fctau<<"[mm]"<<endl;}
-  fPythia->init();
-  //if (fHadDecay) fPythiaHadDecay->init();
+  int initPass = fPythia->init();
+  if ( debug ){cout<<"Pythia initialisation bool: " << initPass << std::endl;}
+
+  if (!initPass) {
+    fLogger->Fatal(MESSAGE_ORIGIN, "Pythia initialisation failed");
+    return kFALSE;
+  }
+
   return kTRUE;
+  //if (fHadDecay) fPythiaHadDecay->init();
+  //return kTRUE;
 }
 // -------------------------------------------------------------------------
 
@@ -188,7 +199,8 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        fPythia->event.append( fDP, 1, 0, 0, dpmom * sin(thetain) * cos(phiin), dpmom * sin(thetain) * sin(phiin), dpmom * cos(thetain), dpe, dpm); 
      }
 
-     fPythia->next();
+     if (!fPythia->next()) fLogger->Fatal(MESSAGE_ORIGIN, "fPythia->next() failed");
+
      //fPythia->event.list();
      for(int i=0; i<fPythia->event.size(); i++){
        // find first DP
@@ -203,7 +215,9 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        //fPythia->event.list();
        fnRetries+=1; // can happen if phasespace does not allow meson to decay to DP
      }else{
-       int r =  int( gRandom->Uniform(0,iDP) );
+       //for mesons, could have more than one ... but for DY prod, need to take the last one...
+       //int r =  int( gRandom->Uniform(0,iDP) );
+       int r =  iDP-1;
        // cout << " ----> debug 2 " << r  <<  endl;
        int i =  dpvec[r];
        // production vertex
