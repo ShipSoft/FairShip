@@ -69,10 +69,10 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
             # Take care of Majorana modes
             BR = BR/2.
             codes = ' '.join([str(code) for code in childrenCodes])
-            P8Gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(BR)+" 0 "+codes)
+            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
             # Charge conjugate modes
             codes = ' '.join([(str(-1*code) if pdg.GetParticle(-code)!=None else str(code)) for code in childrenCodes])
-            P8Gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(BR)+" 0 "+codes)
+            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
             print "debug readdecay table",particles,children,BR
 
 
@@ -85,7 +85,7 @@ def addDarkPhotondecayChannels(P8Gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
     - P8Gen: an instance of ROOT.HNLPythia8Generator()
     - conffile: a file listing the channels one wishes to activate
     """
-    isResonant = P8Gen.GetDPId()==4900023
+    isResonant = (P8Gen.GetDPId()==4900023 or P8Gen.IsPbrem())
     # First fetch the list of kinematically allowed decays
     allowed = DP.allowedChannels()
     # Then fetch the list of desired channels to activate

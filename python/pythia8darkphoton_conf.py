@@ -143,7 +143,7 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
     P8Gen.List(P8Gen.GetDPId())
     if inclusive=="qcd":
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":m0 = "+str(mass))
-        P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(mass*0.01))
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(u.mm/ctau))
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":mMin = 0.001")
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":tau0 = "+str(ctau/u.mm))
         #P8Gen.SetParameters(str(P8Gen.GetDPId())+":isResonance = false")
@@ -154,7 +154,10 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
     else:
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
         if debug: cf.write('P8Gen.SetParameters("'+str(P8Gen.GetDPId())+':new = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
-
+        if (inclusive=="pbrem"): 
+            P8Gen.SetParameters(str(P8Gen.GetDPId())+":isResonance = true")
+            P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(u.mm/ctau))
+            P8Gen.SetParameters(str(P8Gen.GetDPId())+":mMin = 0.001")
     
     P8Gen.SetParameters("Next:numberCount    =  0")
     if debug: cf.write('P8Gen.SetParameters("Next:numberCount    =  0")\n')

@@ -60,6 +60,7 @@ class DPPythia8Generator : public FairGenerator
     fpbrem = kTRUE;
     fpbremPDF = pdf;
   };
+  Bool_t IsPbrem() { return fpbrem; };
   void SetDY(){
     fdy = kTRUE;
   };
