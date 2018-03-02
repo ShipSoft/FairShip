@@ -73,14 +73,14 @@ python $FAIRSHIP/macro/run_simScript.py
 python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
 >> finishing pyExit
 
-python -i $FAIRSHIP/macro/ShipAna.py -f ship.10.0.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 >> finished making plots
 ```
 
 Run the event display:
 
 ```bash
-python -i $FAIRSHIP/macro/eventDisplay.py -f ship.10.0.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 // use SHiP Event Display GUI
 Use quit() or Ctrl-D (i.e. EOF) to exit
 ```
