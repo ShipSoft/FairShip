@@ -52,7 +52,7 @@ checking4overlaps = False
 if debug>1 : checking4overlaps = True
 phiRandom   = False  # only relevant for muon background generator
 followMuon  = False  # make muonshield active to follow muons
-FastMuon    = False  # only transport muons for a fast muon only background estimate
+fastMuon    = False  # only transport muons for a fast muon only background estimate
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
 Opt_high = None # switch for cosmic generator
 try:
