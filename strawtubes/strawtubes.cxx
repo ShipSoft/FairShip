@@ -508,30 +508,30 @@ void strawtubes::ConstructGeometry()
     for (statnb=1;statnb<5;statnb++) {
        // tracking station loop
        TString nmstation = "Tr"; 
-       TString nmstation_12 = "Tr"; 
        std::stringstream ss;
        ss << statnb;
-       nmstation_12 = nmstation_12 + ss.str();
        nmstation = nmstation + ss.str();
-                        	
-       TGeoVolume *vac_12 = new TGeoVolume(nmstation_12, vacbox_12, med);
-       TGeoVolume *vac = new TGeoVolume(nmstation, vacbox, med);
-	 
+       TGeoVolume *vac;
+       TGeoVolume *vac_12;
        switch (statnb) {
 	   case 1:
 	      TStationz=fT1z;
+              vac_12 = new TGeoVolume(nmstation, vacbox_12, med);
 	      top->AddNode(vac_12, statnb, new TGeoTranslation(0,0,TStationz));
 	      break;
 	   case 2:
 	      TStationz=fT2z;
+              vac_12 = new TGeoVolume(nmstation, vacbox_12, med);
 	      top->AddNode(vac_12, statnb, new TGeoTranslation(0,0,TStationz));
 	      break;
 	   case 3:
 	      TStationz=fT3z;
+              vac = new TGeoVolume(nmstation, vacbox, med);
 	      top->AddNode(vac, statnb, new TGeoTranslation(0,0,TStationz));
 	      break;
 	   case 4:
 	      TStationz=fT4z;
+              vac = new TGeoVolume(nmstation, vacbox, med);
 	      top->AddNode(vac, statnb, new TGeoTranslation(0,0,TStationz));
 	      break;
 	   default:
@@ -550,23 +550,23 @@ void strawtubes::ConstructGeometry()
             switch (vnb) {
 	      case 0:
 	        angle=0.;
-	        nmview_12 = nmstation_12+"_x1";      	      	 
+	        nmview_12 = nmstation+"_x1";      	      	 
 	        break;
 	      case 1:
 	        angle=fView_angle;      
-	      	nmview_12 = nmstation_12+"_u";     
+	      	nmview_12 = nmstation+"_u";     
 	        break;
 	      case 2:
 	        angle=-fView_angle;      
-	        nmview_12 = nmstation_12+"_v";
+	        nmview_12 = nmstation+"_v";
 	        break;
 	      case 3:
 	        angle=0.;	      
-	        nmview_12 = nmstation_12+"_x2";
+	        nmview_12 = nmstation+"_x2";
 	        break;
 	      default:
 	        angle=0.;      
-	        nmview_12 = nmstation_12+"_x1";
+	        nmview_12 = nmstation+"_x1";
             }	
 	  
 	    TGeoVolume *viewframe_12 = new TGeoVolume(nmview_12, detcomp1_12, Al);	 
