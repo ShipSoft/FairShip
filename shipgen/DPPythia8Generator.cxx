@@ -1,9 +1,3 @@
-//The plan: take input file with DP kinematics and PDF
-//throw random number according to pdf and choose DP ???
-//use Pythia to decay the DP ???
-
-
-
 #include <math.h>
 #include "TSystem.h"
 #include "TROOT.h"
@@ -14,7 +8,7 @@
 #include "Pythia8/Pythia.h"
 const Double_t cm = 10.; // pythia units are mm
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
-const Bool_t debug = true;
+const Int_t debug = 1;
 using namespace Pythia8;
 
 // -----   Default constructor   -------------------------------------------
@@ -156,7 +150,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 // recalculate decay time 
 // weight event with exp(-t_ship/tau_DP) / exp(-t_pythia/tau_DP) 
 
-   int iDP = 0; // index of the chosen DP (the 1st one), also ensures that at least 1 DP is produced
+   int iDP = 0; // index of the chosen DP, also ensures that at least 1 DP is produced
    std::vector<int> dec_chain; // pythia indices of the particles to be stored on the stack
    std::vector<int> dpvec; // pythia indices of DP particles
    bool hadDecay = false;
@@ -191,7 +185,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        double dpe = sqrt(dpmom*dpmom+dpm*dpm);
        double phiin = 2. * M_PI * gRandom->Rndm();
        
-       if ( debug ){std::cout << " Adding DP gun with p " 
+       if ( debug > 1){std::cout << " Adding DP gun with p " 
 		 << dpmom 
 		 << " m " << dpm
 		 << " e " << dpe
@@ -203,7 +197,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 
      //fPythia->event.list();
      for(int i=0; i<fPythia->event.size(); i++){
-       // find first DP
+       // find all DP
        if (abs(fPythia->event[i].id())==fDP){
 	 dpvec.push_back( i );
        }
@@ -287,8 +281,8 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        // bookkeep the indices of stored particles
        dec_chain.push_back( im );
        dec_chain.push_back(  i );
-       //cout << endl << " insert mother pdg=" <<fPythia->event[im].id() << " pmz = " << pmz << " [GeV],  zm = " << zm << " [mm] tm = " << tm << " [mm/c]" << endl;
-       //cout << " ----> insert DP =" << fDP << " pz = " << pz << " [GeV] zp = " << zp << " [mm] tp = " << tp << " [mm/c]" << endl;
+       if (debug>1) cout << endl << " insert mother id " << im << " pdg=" <<fPythia->event[im].id() << " pmz = " << pmz << " [GeV],  zm = " << zm << " [mm] tm = " << tm << " [mm/c]" << endl;
+       if (debug>1) cout << " ----> insert DP id " << i << " pdg=" << fDP << " pz = " << pz << " [GeV] zp = " << zp << " [mm] tp = " << tp << " [mm/c]" << endl;
        iDP = i; 
      }
    } while ( iDP == 0 ); // ----------- avoid rare empty events w/o any DP's produced
@@ -298,11 +292,11 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    }
    fShipEventNr += 1;
    // fill a container with pythia indices of the DP decay chain
-   //cout << "Filling daughter particles" << std::endl;
+   if (debug>1) cout << "Filling daughter particles" << std::endl;
    //if (!hadDecay){
      for(int k=0; k<fPythia->event.size(); k++){
        // if daughter of DP, copy
-       //cout <<k<< " pdg =" <<fPythia->event[k].id() << " mum " << fPythia->event[k].mother1() << std::endl;
+       if (debug>1) cout <<k<< " pdg =" <<fPythia->event[k].id() << " mum " << fPythia->event[k].mother1() << std::endl;
        im =fPythia->event[k].mother1();
        while (im>0){
 	 if ( im == iDP ){break;} // pick the decay products of only 1 chosen DP
@@ -310,10 +304,10 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 	 else {im =fPythia->event[im].mother1();}
        }
        if (im < 1) {
-	 //cout << "reject" << std::endl;
+	 if (debug>1) cout << "reject" << std::endl;
 	 continue;
        }
-       //std::cout << "accept" << std::endl;
+       if (debug>1) std::cout << "accept" << std::endl;
        dec_chain.push_back( k );
      }
      //}
