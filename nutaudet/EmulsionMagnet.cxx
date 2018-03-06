@@ -470,8 +470,6 @@ void EmulsionMagnet::ConstructGeometry()
       Double_t delta = 0.1; //to avoid border effects in the cuts (cut is not visualized in viewer, I do not know if it can affect simulation)
       TGeoTrd2  * Model= new TGeoTrd2("Model",fCutHeight/2,0, (fColumnZ+delta)/2,(fColumnZ+delta)/2,(fCutLength+delta)/2); //length and height are not x and y here, because it will be rotated!
       Model->SetName("T");
-      TGeoVolume * volModel = new TGeoVolume("volModel", Model, vacuum);
-      volModel->SetLineColor(kMagenta);
 
       const Double_t SemiLateralBoxHeight =(fColumnY - fCutHeight)/2;
 
