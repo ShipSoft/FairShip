@@ -8,7 +8,6 @@
 
 #include "TGeoMatrix.h"
 #include "TVirtualMagField.h"
-#include "TVector3.h"
 
 #include <string>
 #include <utility>
@@ -30,16 +29,17 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] theta The second Euler rotation angle about the new x axis (degrees)
       \param [in] psi The third Euler rotation angle about the new z axis (degrees)
       \param [in] scale The field magnitude scaling factor (default = 1.0)
+      \param [in] isSymmetric Boolean to specify if we have quadrant symmetry (default = false)
     */
     ShipBFieldMap(const std::string& label, const std::string& mapFileName,
-		  Double_t xOffset = 0.0, Double_t yOffset = 0.0, Double_t zOffset = 0.0,
-		  Double_t phi = 0.0, Double_t theta = 0.0, Double_t psi = 0.0,
-		  Double_t scale = 1.0);
+		  Float_t xOffset = 0.0, Float_t yOffset = 0.0, Float_t zOffset = 0.0,
+		  Float_t phi = 0.0, Float_t theta = 0.0, Float_t psi = 0.0,
+		  Float_t scale = 1.0, Bool_t isSymmetric = kFALSE);
 
     //! Copy constructor with a new global transformation. Use this if you want
     //! to reuse the same field map information elsewhere in the geometry
     /*! 
-      \param [in] rhs The ShipBFieldMap object to be copied
+      \param [in] rhs The ShipBFieldMap object to be copied (retaining any symmetry)
       \param [in] newName The new description or title of the field
       \param [in] newXOffset The new global offset x co-ordinate (cm)
       \param [in] newYOffset The new global offset y co-ordinate (cm)
@@ -51,9 +51,9 @@ class ShipBFieldMap : public TVirtualMagField
      \returns a copy of the field map object "rhs", keeping the same fieldMap pointer
     */
     ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rhs,
-		  Double_t newXOffset, Double_t newYOffset, Double_t newZOffset,
-		  Double_t newPhi = 0.0, Double_t newTheta = 0.0, Double_t newPsi = 0.0,
-		  Double_t newScale = 1.0);
+		  Float_t newXOffset, Float_t newYOffset, Float_t newZOffset,
+		  Float_t newPhi = 0.0, Float_t newTheta = 0.0, Float_t newPsi = 0.0,
+		  Float_t newScale = 1.0);
 
     //! Destructor
     virtual ~ShipBFieldMap();
@@ -65,47 +65,63 @@ class ShipBFieldMap : public TVirtualMagField
     */
     virtual void Field(const Double_t* position, Double_t* B);
 
+    //! Typedef for a vector containing a vector of floats
+    typedef std::vector< std::vector<Float_t> > floatArray;
+
+    //! Retrieve the field map
+    /*!
+      \returns the field map
+    */
+    floatArray* getFieldMap() const {return fieldMap_;}
+
     //! Set the x global co-ordinate shift
     /*!
       \param [in] xValue The value of the x global co-ordinate shift (cm)
     */
-    void SetXOffset(Double_t xValue) {xOffset_ = xValue;}
+    void SetXOffset(Float_t xValue) {xOffset_ = xValue;}
 
     //! Set the y global co-ordinate shift
     /*!
       \param [in] yValue The value of the y global co-ordinate shift (cm)
     */
-    void SetYOffset(Double_t yValue) {yOffset_ = yValue;}
+    void SetYOffset(Float_t yValue) {yOffset_ = yValue;}
 
     //! Set the z global co-ordinate shift
     /*!
       \param [in] zValue The value of the z global co-ordinate shift (cm)
     */
-    void SetZOffset(Double_t zValue) {zOffset_ = zValue;}
+    void SetZOffset(Float_t zValue) {zOffset_ = zValue;}
 
     //! Set the first Euler rotation angle phi about the z axis
     /*!
       \param [in] phi The first Euler rotation angle about the z axis (degrees)
     */
-    void SetPhi(Double_t phi) {phi_ = phi;}
+    void SetPhi(Float_t phi) {phi_ = phi;}
 
     //! Set the second Euler rotation angle theta about the new x axis
     /*!
       \param [in] theta The second Euler rotation angle about the new x axis (degrees)
     */
-    void SetTheta(Double_t theta) {theta_ = theta;}
+    void SetTheta(Float_t theta) {theta_ = theta;}
 
     //! Set the third Euler rotation angle psi about the new z axis
     /*!
       \param [in] psi The third Euler rotation angle about the new z axis (degrees)
     */
-    void SetPsi(Double_t psi) {psi_ = psi;}
+    void SetPsi(Float_t psi) {psi_ = psi;}
 
     //! Set the field magnitude scaling factor
     /*!
       \param [in] scale The scaling factor for the field magnitude
     */
-    void SetScale(Double_t scale) {scale_ = scale;}
+    void SetScale(Float_t scale) {scale_ = scale;}
+
+    //! Set the boolean to specify if we have quadrant symmetry
+    /*!
+      \param [in] isSymmetric Boolean to specify if we have quadrant symmetry
+    */
+    void UseSymmetry(Bool_t flag) {isSymmetric_ = flag;}
+
 
     //! Get the name of the map file
     /*!
@@ -141,115 +157,121 @@ class ShipBFieldMap : public TVirtualMagField
     /*!
       \returns the minimum x co-ordinate (cm)
     */
-    Double_t GetXMin() const {return xMin_;}
+    Float_t GetXMin() const {return xMin_;}
 
     //! Get the maximum value of x for the map
     /*!
       \returns the maximum x co-ordinate (cm)
     */
-    Double_t GetXMax() const {return xMax_;}
+    Float_t GetXMax() const {return xMax_;}
 
     //! Get the bin width along x for the map
     /*!
       \returns the bin width along x (cm)
     */
-    Double_t GetdX() const {return dx_;}
+    Float_t GetdX() const {return dx_;}
 
      //! Get the x co-ordinate range for the map
     /*!
       \returns the x co-ordinate range (cm)
     */
-    Double_t GetXRange() const {return xRange_;}
+    Float_t GetXRange() const {return xRange_;}
 
    //! Get the minimum value of y for the map
     /*!
       \returns the minimum y co-ordinate (cm)
     */
-    Double_t GetYMin() const {return yMin_;}
+    Float_t GetYMin() const {return yMin_;}
 
     //! Get the maximum value of y for the map
     /*!
       \returns the maximum y co-ordinate (cm)
     */
-    Double_t GetYMax() const {return yMax_;}
+    Float_t GetYMax() const {return yMax_;}
 
     //! Get the bin width along y for the map
     /*!
       \returns the bin width along y (cm)
     */
-    Double_t GetdY() const {return dy_;}
+    Float_t GetdY() const {return dy_;}
 
      //! Get the y co-ordinate range for the map
     /*!
       \returns the y co-ordinate range (cm)
     */
-    Double_t GetYRange() const {return yRange_;}
+    Float_t GetYRange() const {return yRange_;}
 
     //! Get the minimum value of z for the map
     /*!
       \returns the minimum z co-ordinate (cm)
     */
-    Double_t GetZMin() const {return zMin_;}
+    Float_t GetZMin() const {return zMin_;}
 
     //! Get the maximum value of z for the map
     /*!
       \returns the maximum z co-ordinate (cm)
     */
-    Double_t GetZMax() const {return zMax_;}
+    Float_t GetZMax() const {return zMax_;}
 
     //! Get the bin width along z for the map
     /*!
       \returns the bin width along z (cm)
     */
-    Double_t GetdZ() const {return dz_;}
+    Float_t GetdZ() const {return dz_;}
 
      //! Get the z co-ordinate range for the map
     /*!
       \returns the z co-ordinate range (cm)
     */
-    Double_t GetZRange() const {return zRange_;}
+    Float_t GetZRange() const {return zRange_;}
 
     //! Get the x offset co-ordinate of the map for global positioning
     /*!
       \returns the map's x offset co-ordinate for global positioning (cm)
     */
-    Double_t GetXOffset() const {return xOffset_;}
+    Float_t GetXOffset() const {return xOffset_;}
 
     //! Get the y offset co-ordinate of the map for global positioning
     /*!
       \returns the map's y offset co-ordinate for global positioning (cm)
     */
-    Double_t GetYOffset() const {return yOffset_;}
+    Float_t GetYOffset() const {return yOffset_;}
 
     //! Get the z offset co-ordinate of the map for global positioning
     /*!
       \returns the map's z offset co-ordinate for global positioning (cm)
     */
-    Double_t GetZOffset() const {return zOffset_;}
+    Float_t GetZOffset() const {return zOffset_;}
 
     //! Get the first Euler rotation angle about the z axis for global positioning
     /*!
       \returns the map's first Euler rotation angle about the z axis (degrees)
     */
-    Double_t GetPhi() const {return phi_;}
+    Float_t GetPhi() const {return phi_;}
 
     //! Get the second Euler rotation angle about the new x axis for global positioning
     /*!
       \returns the map's second Euler rotation angle about the new x axis (degrees)
     */
-    Double_t GetTheta() const {return theta_;}
+    Float_t GetTheta() const {return theta_;}
 
     //! Get the third Euler rotation angle about the new z axis for global positioning
     /*!
       \returns the map's third Euler rotation angle about the new z axis (degrees)
     */
-    Double_t GetPsi() const {return psi_;}
+    Float_t GetPsi() const {return psi_;}
 
     //! Get the field magnitude scaling factor
     /*!
       \returns the scaling factor for the field magnitude
     */
-    Double_t GetScale() const {return scale_;}
+    Float_t GetScale() const {return scale_;}
+
+    //! Get the boolean flag to specify if we have quadrant symmetry
+    /*!
+      \returns the boolean specifying if we have quadrant symmetry
+    */
+    Bool_t HasSymmetry() const {return isSymmetric_;}
 
     //! Get the boolean flag to specify if we are a "copy"
     /*!
@@ -296,10 +318,10 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] z The z co-ordinate of the point (cm)
       \returns true/false if the point is inside the field map range
     */
-    Bool_t insideRange(Double_t x, Double_t y, Double_t z);
+    Bool_t insideRange(Float_t x, Float_t y, Float_t z);
 
     //! Typedef for an int-double pair
-    typedef std::pair<Int_t, Double_t> binPair;
+    typedef std::pair<Int_t, Float_t> binPair;
 
     //! Get the bin number and fractional distance from the leftmost bin edge
     /*!
@@ -307,7 +329,7 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] theAxis The co-ordinate axis (CoordAxis enumeration for x, y or z)
       \returns the bin number and fractional distance from the leftmost bin edge as a pair
     */
-    binPair getBinInfo(Double_t x, CoordAxis theAxis);
+    binPair getBinInfo(Float_t x, CoordAxis theAxis);
 
     //! Find the vector entry of the field map data given the bins iX, iY and iZ
     /*!
@@ -324,11 +346,11 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] theAxis The co-ordinate axis (CoordAxis enumeration for x, y or z)
       \returns the magnetic field component for the given axis
     */
-    Double_t BInterCalc(CoordAxis theAxis);
+    Float_t BInterCalc(CoordAxis theAxis);
 
-    //! Store the field map information as a vector of 3-vectors, whose order
-    //! is given by first incrementing z, then y, then x
-    std::vector<TVector3>* fieldMap_;
+    //! Store the field map information as a vector of 3 floats.
+    //! Map data ordering is given by first incrementing z, then y, then x
+    floatArray* fieldMap_;
 
     //! The name of the map file
     std::string mapFileName_;
@@ -352,67 +374,70 @@ class ShipBFieldMap : public TVirtualMagField
     Int_t N_;
 
     //! The minimum value of x for the map
-    Double_t xMin_;
+    Float_t xMin_;
 
     //! The maximum value of x for the map
-    Double_t xMax_;
+    Float_t xMax_;
 
     //! The bin width along x
-    Double_t dx_;
+    Float_t dx_;
 
     //! The co-ordinate range along x
-    Double_t xRange_;
+    Float_t xRange_;
 
     //! The minimum value of y for the map
-    Double_t yMin_;
+    Float_t yMin_;
 
     //! The maximum value of y for the map
-    Double_t yMax_;
+    Float_t yMax_;
 
     //! The bin width along y
-    Double_t dy_;
+    Float_t dy_;
 
     //! The co-ordinate range along y
-    Double_t yRange_;
+    Float_t yRange_;
 
     //! The minimum value of z for the map
-    Double_t zMin_;
+    Float_t zMin_;
 
     //! The maximum value of z for the map
-    Double_t zMax_;
+    Float_t zMax_;
 
     //! The bin width along z
-    Double_t dz_;
+    Float_t dz_;
 
     //! The co-ordinate range along z
-    Double_t zRange_;
+    Float_t zRange_;
 
     //! The x value of the positional offset for the map
-    Double_t xOffset_;
+    Float_t xOffset_;
 
     //! The y value of the positional offset for the map
-    Double_t yOffset_;
+    Float_t yOffset_;
 
     //! The z value of the positional offset for the map
-    Double_t zOffset_;
+    Float_t zOffset_;
 
     //! The first Euler rotation angle about the z axis
-    Double_t phi_;
+    Float_t phi_;
 
     //! The second Euler rotation angle about the new x axis
-    Double_t theta_;
+    Float_t theta_;
 
     //! The third Euler rotation angle about the new z axis
-    Double_t psi_;
+    Float_t psi_;
 
     //! The B field magnitude scaling factor
-    Double_t scale_;
+    Float_t scale_;
+
+    //! The boolean specifying if we have quadrant symmetry
+    Bool_t isSymmetric_;
 
     //! The combined translation and rotation transformation
     TGeoMatrix* theTrans_;
 
     //! Double converting Tesla to kiloGauss (for VMC/FairRoot B field units)
-    Double_t Tesla_;
+    Float_t Tesla_;
 
     //! Bin A for the trilinear interpolation
     Int_t binA_;
@@ -439,22 +464,22 @@ class ShipBFieldMap : public TVirtualMagField
     Int_t binH_;
 
     //! Fractional bin distance along x
-    Double_t xFrac_;
+    Float_t xFrac_;
 
     //! Fractional bin distance along y
-    Double_t yFrac_;
+    Float_t yFrac_;
 
     //! Fractional bin distance along z
-    Double_t zFrac_;
+    Float_t zFrac_;
 
     //! Complimentary fractional bin distance along x
-    Double_t xFrac1_;
+    Float_t xFrac1_;
 
     //! Complimentary fractional bin distance along y
-    Double_t yFrac1_;
+    Float_t yFrac1_;
 
     //! Complimentary fractional bin distance along z
-    Double_t zFrac1_;
+    Float_t zFrac1_;
 
 };
 

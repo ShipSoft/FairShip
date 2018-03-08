@@ -156,8 +156,9 @@ class ShipFieldMaker
     //! Create the field map based on information from the inputLine
     /*!
       \param [in] inputLine The space separated input line
+      \param [in] useSymmetry Boolean to specify if we have x-y quadrant symmetry
     */
-    void createFieldMap(const stringVect& inputLine);
+    void createFieldMap(const stringVect& inputLine, Bool_t useSymmetry = kFALSE);
 
     //! Copy (&translate) a field map based on information from the inputLine
     /*!

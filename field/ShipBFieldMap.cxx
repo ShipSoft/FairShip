@@ -14,15 +14,16 @@
 
 ShipBFieldMap::ShipBFieldMap(const std::string& label,
 			     const std::string& mapFileName,
-			     Double_t xOffset,
-			     Double_t yOffset,
-			     Double_t zOffset,
-			     Double_t phi,
-			     Double_t theta,
-			     Double_t psi,
-			     Double_t scale) : 
+			     Float_t xOffset,
+			     Float_t yOffset,
+			     Float_t zOffset,
+			     Float_t phi,
+			     Float_t theta,
+			     Float_t psi,
+			     Float_t scale,
+			     Bool_t isSymmetric) : 
     TVirtualMagField(label.c_str()),
-    fieldMap_(new std::vector<TVector3>()),
+    fieldMap_(new floatArray()),
     mapFileName_(mapFileName),
     initialised_(kFALSE),
     isCopy_(kFALSE),
@@ -40,6 +41,7 @@ ShipBFieldMap::ShipBFieldMap(const std::string& label,
     theta_(theta),
     psi_(psi),
     scale_(scale),
+    isSymmetric_(isSymmetric),
     theTrans_(0),
     Tesla_(10.0)
 {
@@ -59,8 +61,8 @@ ShipBFieldMap::~ShipBFieldMap()
 
 
 ShipBFieldMap::ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rhs,
-			     Double_t newXOffset, Double_t newYOffset, Double_t newZOffset,
-			     Double_t newPhi, Double_t newTheta, Double_t newPsi, Double_t newScale) :
+			     Float_t newXOffset, Float_t newYOffset, Float_t newZOffset,
+			     Float_t newPhi, Float_t newTheta, Float_t newPsi, Float_t newScale) :
     TVirtualMagField(newName.c_str()),
     fieldMap_(rhs.fieldMap_),
     mapFileName_(rhs.GetMapFileName()),
@@ -89,6 +91,7 @@ ShipBFieldMap::ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rh
     theta_(newTheta),
     psi_(newPsi),
     scale_(newScale),
+    isSymmetric_(rhs.isSymmetric_),
     theTrans_(0),
     Tesla_(10.0)
 {
@@ -97,7 +100,7 @@ ShipBFieldMap::ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rh
     this->initialise();
 }
 
-void ShipBFieldMap::Field(const Double_t* position, Double_t* B) 
+void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
 {
 
     // Set the B field components given the global position co-ordinates
@@ -111,9 +114,34 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     if (theTrans_) {theTrans_->MasterToLocal(position, localCoords);}
 
     // The local position co-ordinates
-    Double_t x = localCoords[0];
-    Double_t y = localCoords[1];
-    Double_t z = localCoords[2];
+    Float_t x = localCoords[0];
+    Float_t y = localCoords[1];
+    Float_t z = localCoords[2];
+
+    // Now check to see if we have x-y quadrant symmetry (z has no symmetry):
+    // Bx is antisymmetric in x and y, By is symmetric and Bz has no symmetry
+    // so only Bx can change sign. This can happen if either x < 0 or y < 0:
+    // 1. x > 0, y > 0: Bx = Bx
+    // 2. x > 0, y < 0: Bx = -Bx
+    // 3. x < 0, y > 0: Bx = -Bx
+    // 4. x < 0, y < 0: Bx = Bx
+
+    Float_t BxSign(1.0);
+    if (isSymmetric_) {
+
+      // The field map co-ordinates only contain x > 0 and y > 0, i.e. we
+      // are using x-y quadrant symmetry. If the local x or y coordinates 
+      // are negative we need to change their sign and keep track of the 
+      // adjusted sign of Bx which we use as a multiplication factor at the end
+      if (x < 0.0) {
+	x = -x; BxSign *= -1.0;
+      }
+
+      if (y < 0.0) {
+	y = -y; BxSign *= -1.0;
+      }
+
+    }
 
     // Initialise the B field components to zero
     B[0] = 0.0;
@@ -162,7 +190,7 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
 
     // Finally get the magnetic field components using trilinear interpolation
     // and scale with the appropriate multiplication factor (default = 1.0)
-    B[0] = this->BInterCalc(ShipBFieldMap::xAxis)*scale_;
+    B[0] = this->BInterCalc(ShipBFieldMap::xAxis)*scale_*BxSign;
     B[1] = this->BInterCalc(ShipBFieldMap::yAxis)*scale_;
     B[2] = this->BInterCalc(ShipBFieldMap::zAxis)*scale_;
 
@@ -252,15 +280,14 @@ void ShipBFieldMap::readRootFile() {
 	// The data is expected to contain Bx,By,Bz data values 
 	// in ascending z,y,x co-ordinate order
 
-	fieldMap_->clear();
-
 	TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
 	if (!dTree) {
 	    std::cout<<"ShipBFieldMap: could not find Data tree in "<<mapFileName_<<std::endl;
 	    return;
 	}
 
-	Double_t Bx, By, Bz;
+	Float_t Bx, By, Bz;
+	// Only enable the field components
 	dTree->SetBranchStatus("*", 0);
 	dTree->SetBranchStatus("Bx", 1);
 	dTree->SetBranchStatus("By", 1);
@@ -276,6 +303,8 @@ void ShipBFieldMap::readRootFile() {
 	    nEntries = 0;
 	}
 
+	fieldMap_->reserve(nEntries);
+
 	for (Int_t i = 0; i < nEntries; i++) {
 
 	    dTree->GetEntry(i);
@@ -287,7 +316,8 @@ void ShipBFieldMap::readRootFile() {
 	    Bz *= Tesla_;
 
 	    // Store the B field 3-vector
-	    TVector3 BVector(Bx, By, Bz);
+	    std::vector<Float_t> BVector(3);
+	    BVector[0] = Bx; BVector[1] = By; BVector[2] = Bz;
 	    fieldMap_->push_back(BVector);
 
 	}
@@ -322,7 +352,7 @@ void ShipBFieldMap::readTextFile() {
 	// in ascending z,y,x co-ord order
 	fieldMap_->clear();
 
-	Double_t Bx(0.0), By(0.0), Bz(0.0);
+	Float_t Bx(0.0), By(0.0), Bz(0.0);
 
 	for (Int_t i = 0; i < N_; i++) {
 	    
@@ -335,7 +365,8 @@ void ShipBFieldMap::readTextFile() {
 	    Bz *= Tesla_;
 
 	    // Store the B field 3-vector
-	    TVector3 BVector(Bx, By, Bz);
+	    std::vector<Float_t> BVector(3);
+	    BVector[0] = Bx; BVector[1] = By; BVector[2] = Bz;
 	    fieldMap_->push_back(BVector);
 	    
 	}
@@ -346,7 +377,7 @@ void ShipBFieldMap::readTextFile() {
 
 }
 
-Bool_t ShipBFieldMap::insideRange(Double_t x, Double_t y, Double_t z)
+Bool_t ShipBFieldMap::insideRange(Float_t x, Float_t y, Float_t z)
 {
 
     Bool_t inside(kFALSE);
@@ -389,10 +420,10 @@ void ShipBFieldMap::setLimits() {
 }
 
 
-ShipBFieldMap::binPair ShipBFieldMap::getBinInfo(Double_t u, ShipBFieldMap::CoordAxis theAxis)
+ShipBFieldMap::binPair ShipBFieldMap::getBinInfo(Float_t u, ShipBFieldMap::CoordAxis theAxis)
 {
 
-    Double_t du(0.0), uMin(0.0), Nu(0);
+    Float_t du(0.0), uMin(0.0), Nu(0);
 
     if (theAxis == ShipBFieldMap::xAxis) {
 	du = dx_; uMin = xMin_; Nu = Nx_;
@@ -403,12 +434,12 @@ ShipBFieldMap::binPair ShipBFieldMap::getBinInfo(Double_t u, ShipBFieldMap::Coor
     }
 
     Int_t iBin(-1);
-    Double_t fracL(0.0);
+    Float_t fracL(0.0);
 
     if (du > 1e-10) {
 
 	// Get the number of fractional bin widths the point is from the first volume bin
-	Double_t dist = (u - uMin)/du;
+	Float_t dist = (u - uMin)/du;
 	// Get the integer equivalent of this distance, which is the bin number
 	iBin = static_cast<Int_t>(dist);
 	// Get the actual fractional distance of the point from the leftmost bin edge
@@ -445,12 +476,12 @@ Int_t ShipBFieldMap::getMapBin(Int_t iX, Int_t iY, Int_t iZ)
 
 }
 
-Double_t ShipBFieldMap::BInterCalc(CoordAxis theAxis)
+Float_t ShipBFieldMap::BInterCalc(CoordAxis theAxis)
 {
 
     // Find the magnetic field component along theAxis using trilinear 
     // interpolation based on the current position and neighbouring bins
-    Double_t result(0.0);
+    Float_t result(0.0);
 
     Int_t iAxis(0);
 
@@ -463,24 +494,24 @@ Double_t ShipBFieldMap::BInterCalc(CoordAxis theAxis)
     if (fieldMap_) {
 
 	// Get the field component values for the neighbouring bins
-	Double_t A = (*fieldMap_)[binA_](iAxis);
-	Double_t B = (*fieldMap_)[binB_](iAxis);
-	Double_t C = (*fieldMap_)[binC_](iAxis);
-	Double_t D = (*fieldMap_)[binD_](iAxis);
-	Double_t E = (*fieldMap_)[binE_](iAxis);
-	Double_t F = (*fieldMap_)[binF_](iAxis);
-	Double_t G = (*fieldMap_)[binG_](iAxis);
-	Double_t H = (*fieldMap_)[binH_](iAxis);
+	Float_t A = (*fieldMap_)[binA_][iAxis];
+	Float_t B = (*fieldMap_)[binB_][iAxis];
+	Float_t C = (*fieldMap_)[binC_][iAxis];
+	Float_t D = (*fieldMap_)[binD_][iAxis];
+	Float_t E = (*fieldMap_)[binE_][iAxis];
+	Float_t F = (*fieldMap_)[binF_][iAxis];
+	Float_t G = (*fieldMap_)[binG_][iAxis];
+	Float_t H = (*fieldMap_)[binH_][iAxis];
 
 	// Perform linear interpolation along x
-	Double_t F00 = A*xFrac1_ + B*xFrac_;
-	Double_t F10 = C*xFrac1_ + D*xFrac_;
-	Double_t F01 = E*xFrac1_ + F*xFrac_;
-	Double_t F11 = G*xFrac1_ + H*xFrac_;
+	Float_t F00 = A*xFrac1_ + B*xFrac_;
+	Float_t F10 = C*xFrac1_ + D*xFrac_;
+	Float_t F01 = E*xFrac1_ + F*xFrac_;
+	Float_t F11 = G*xFrac1_ + H*xFrac_;
 
 	// Linear interpolation along y
-	Double_t F0 = F00*yFrac1_ + F10*yFrac_;
-	Double_t F1 = F01*yFrac1_ + F11*yFrac_;
+	Float_t F0 = F00*yFrac1_ + F10*yFrac_;
+	Float_t F1 = F01*yFrac1_ + F11*yFrac_;
 
 	// Linear interpolation along z
 	result = F0*zFrac1_ + F1*zFrac_;
