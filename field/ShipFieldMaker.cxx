@@ -110,47 +110,52 @@ void ShipFieldMaker::makeFields(const std::string& inputFile)
 		TString keyWord(lineVect[0].c_str());
 		keyWord.ToLower();
 
-		if (keyWord.Contains("uniform")) {
+		if (!keyWord.CompareTo("uniform")) {
 
 		    // Create the uniform magnetic field
 		    this->createUniform(lineVect);
 
-		} else if (keyWord.Contains("constant")) {
+		} else if (!keyWord.CompareTo("constant")) {
 
 		    // Create a uniform field with an x,y,z boundary
 		    this->createConstant(lineVect);
 
-		} else if (keyWord.Contains("bell")) {
+		} else if (!keyWord.CompareTo("bell")) {
 
 		    // Create the Bell-shaped field
 		    this->createBell(lineVect);
 
-		} else if (keyWord.Contains("fieldmap")) {
+		} else if (!keyWord.CompareTo("fieldmap")) {
 
 		    // Create the field map
 		    this->createFieldMap(lineVect);
 
-		} else if (keyWord.Contains("copymap")) {
+		} else if (!keyWord.CompareTo("symfieldmap")) {
+
+		    // Create the symmetric field map
+		    this->createFieldMap(lineVect, kTRUE);
+  
+		} else if (!keyWord.CompareTo("copymap")) {
 
 		    // Copy (& translate) the field map
 		    this->copyFieldMap(lineVect);
 
-		} else if (keyWord.Contains("composite")) {
+		} else if (!keyWord.CompareTo("composite")) {
 
 		    // Create the composite field
 		    this->createComposite(lineVect);
 
-		} else if (keyWord.Contains("global")) {
+		} else if (!keyWord.CompareTo("global")) {
 
 		    // Set which fields are global
 		    this->setGlobalField(lineVect);
 
-		} else if (keyWord.Contains("region")) {
+		} else if (!keyWord.CompareTo("region")) {
 
 		    // Set the local and global fields for the given volume
 		    this->setRegionField(lineVect);
 
-		} else if (keyWord.Contains("local")) {
+		} else if (!keyWord.CompareTo("local")) {
 
 		    // Set the field for the given volume as the local one only
 		    this->setLocalField(lineVect);
@@ -308,7 +313,7 @@ void ShipFieldMaker::createBell(const stringVect& inputLine)
 }
 
 
-void ShipFieldMaker::createFieldMap(const stringVect& inputLine)
+void ShipFieldMaker::createFieldMap(const stringVect& inputLine, Bool_t useSymmetry)
 {
 
     size_t nWords = inputLine.size();
@@ -331,6 +336,8 @@ void ShipFieldMaker::createFieldMap(const stringVect& inputLine)
 
 	    Double_t x0(0.0), y0(0.0), z0(0.0);
 	    Double_t phi(0.0), theta(0.0), psi(0.0);
+	    Double_t scale(1.0);
+
 	    if (nWords > 5) {
 		x0 = std::atof(inputLine[3].c_str());
 		y0 = std::atof(inputLine[4].c_str());
@@ -344,11 +351,15 @@ void ShipFieldMaker::createFieldMap(const stringVect& inputLine)
 	    }
 
 	    if (verbose_) {
-		std::cout<<"Creating map field "<<label.Data()<<" using "<<fullFileName<<std::endl;
+       	        if (useSymmetry) {
+		    std::cout<<"Creating symmetric map field "<<label.Data()<<" using "<<fullFileName<<std::endl;
+		} else {
+		    std::cout<<"Creating map field "<<label.Data()<<" using "<<fullFileName<<std::endl;
+		}
 	    }
 	    
-	    ShipBFieldMap* mapField = new ShipBFieldMap(label.Data(), fullFileName, 
-							x0, y0, z0, phi, theta, psi);
+	    ShipBFieldMap* mapField = new ShipBFieldMap(label.Data(), fullFileName, x0, y0, z0, 
+							phi, theta, psi, scale, useSymmetry);
 	    theFields_[label] = mapField;
 
 	} else {
@@ -361,7 +372,7 @@ void ShipFieldMaker::createFieldMap(const stringVect& inputLine)
     } else {
 
 	std::cout<<"Expecting 3, 6 or 9 words for the definition of the field map: "
-		 <<"FieldMap Label mapFileName [x0 y0 z0] [[phi theta psi]]"<<std::endl;
+		 <<"(Sym)FieldMap Label mapFileName [x0 y0 z0] [[phi theta psi]]"<<std::endl;
 
     }
 
@@ -389,7 +400,7 @@ void ShipFieldMaker::copyFieldMap(const stringVect& inputLine)
 	    Double_t y0 = std::atof(inputLine[4].c_str());
 	    Double_t z0 = std::atof(inputLine[5].c_str());
 
-	    Double_t phi(0.0), theta(0.0), psi(0.0);
+	    Double_t phi(0.0), theta(0.0), psi(0.0), scale(1.0);
 
 	    if (nWords == 9) {
 		phi = std::atof(inputLine[6].c_str());
@@ -400,7 +411,7 @@ void ShipFieldMaker::copyFieldMap(const stringVect& inputLine)
 	    ShipBFieldMap* fieldToCopy = 
 		dynamic_cast<ShipBFieldMap*>(this->getField(mapToCopy));
 
-	    if (mapToCopy) {
+	    if (fieldToCopy) {
 		
 		if (verbose_) {
 		    std::cout<<"Creating map field copy "<<label.Data()
@@ -408,7 +419,7 @@ void ShipFieldMaker::copyFieldMap(const stringVect& inputLine)
 		}
 
 		ShipBFieldMap* copiedMap = new ShipBFieldMap(label.Data(), *fieldToCopy,
-							     x0, y0, z0, phi, theta, psi);
+							     x0, y0, z0, phi, theta, psi, scale);
 		theFields_[label] = copiedMap;		    
 		
 	    }
@@ -771,7 +782,8 @@ void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TSt
 			 <<": x0 = "<<theInfo.x0_<<", y0 = "<<theInfo.y0_
 			 <<", z0 = "<<theInfo.z0_<<", phi = "<<theInfo.phi_
 			 <<", theta = "<<theInfo.theta_
-			 <<", psi = "<<theInfo.psi_<<" and scale = "<<scale<<std::endl;
+			 <<", psi = "<<theInfo.psi_<<", scale = "<<scale
+			 <<" and symmetry = "<<mapField->HasSymmetry()<<std::endl;
 	    }
 
 	    localMap = new ShipBFieldMap(localName.Data(), *mapField, 
