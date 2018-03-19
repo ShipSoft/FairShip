@@ -223,7 +223,7 @@ void ShipMagnet::ConstructGeometry()
      TGeoTranslation *b2 = new TGeoTranslation("b2",-xaperture,-yaperture+CoilThick,0.); b2->RegisterYourself();
      TGeoCompositeShape *CBot1 = new TGeoCompositeShape("CBot1", "CBot:b1-myc");
      TGeoCompositeShape *CBot2 = new TGeoCompositeShape("CBot2", "CBot:b2-myc");
-     TGeoVolume *MCoil3 = new TGeoVolume("MCoil4", CBot1, Al);
+     TGeoVolume *MCoil3 = new TGeoVolume("MCoil3", CBot1, Al);
      TGeoVolume *MCoil4 = new TGeoVolume("MCoil4", CBot2, Al);
      MCoil3->SetLineColor(kYellow);   
      tMagnet->AddNode(MCoil3, 1, new TGeoTranslation(0, 0, fSpecMagz));
