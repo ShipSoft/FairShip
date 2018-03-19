@@ -43,14 +43,15 @@ keywords to denote what each line represents:
 ```
 0) Comment lines start with the # symbol
 1) "FieldMap" for using field maps to represent the magnetic field
-2) "CopyMap" for copying a previously defined field map to another location (saving memory)
-3) "Uniform" for creating a uniform magnetic field (no co-ordinate limits)
-4) "Constant" for creating a uniform magnetic field with co-ordinate boundary limits
-5) "Bell" for creating the Bell shaped magnetic field distribution
-6) "Composite" for combining two or more field types/sources
-7) "Global" for setting which (single or composite) field is the global one
-8) "Region" for setting a local field to a specific volume, including the global field
-9) "Local" for only setting a local field to a specific volume, ignoring the global field
+2) "SymFieldMap" for using field maps with x-y quadrant symmetry
+3) "CopyMap" for copying a previously defined field map to another location (saving memory)
+4) "Uniform" for creating a uniform magnetic field (no co-ordinate limits)
+5) "Constant" for creating a uniform magnetic field with co-ordinate boundary limits
+6) "Bell" for creating the Bell shaped magnetic field distribution
+7) "Composite" for combining two or more field types/sources
+8) "Global" for setting which (single or composite) field is the global one
+9) "Region" for setting a local field to a specific volume, including the global field
+10) "Local" for only setting a local field to a specific volume, ignoring the global field
 ```
 
 The syntax for each of the above options are:
@@ -85,24 +86,52 @@ transformations, only those offsets and angles that is part of its definition.
 The field is calculated by the [ShipBFieldMap](ShipBFieldMap.h) class using trilinear 
 interpolation based on the binned map data, which is essentially a 3d histogram.
 
-The structure of the field map data ROOT file is as follows. It should contain two TTrees, 
+The structure of the field map ROOT data file is as follows. It should contain two TTrees, 
 one called Range which specifies the co-ordinate limits and bin sizes (in cm) using the 
-following double variables:
+following floating-point precision variables:
 
 ```
 xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz
 ```
 
-and another one called Data which stores the points (cm) and their B field components (T):
+and another one called Data which stores the floating-point precision B field components (T) 
 
 ```
-x, y, z, Bx, By, Bz
+Bx, By, Bz
 ```
 
-The script [convertMap.py](convertMap.py) can be used to convert (ascii) field map data 
-generated from VectorFields/Opera software output to the ROOT file format for FairShip use.
+assuming the position binning order (iX\*Ny + iY)\*Nz + iZ, where (iX,iY,iZ) is the equivalent
+bin for coordinate (x,y,z), and Ny and Nz are the number of y and z bins, respectively.
 
-2) CopyMap
+All variables are stored with floating-point (not double) precision to save both 
+disk space as well as memory consumption within the FairShip code.
+
+The script [convertMisisMap.py](convertMisisMap.py) can be used to convert (ascii) field map data 
+generated from MISIS engineering work to the ROOT file format for FairShip use. Alternatively, the 
+script [convertRALMap.py](convertRALMap.py) can be used to convert (ascii) field map data generated 
+by RAL engineers (VectorFields/Opera software output) to the ROOT file format for FairShip use. 
+
+
+2) [SymFieldMap](ShipBFieldMap.h)
+
+```
+SymFieldMap MapLabel MapFileName [x0 y0 z0] [phi theta psi]
+```
+
+This reuses the [ShipBFieldMap](ShipBFieldMap.h) class to define a field map where we
+have x-y quadrant symmetry: Bx is antisymmetric in x and y, By is symmetric in x and y, 
+while no symmetry is assumed for Bz. This implies that Bx changes sign whenever x < 0 
+or y < 0; note that Bx remains unchanged when we have both x < 0 and y < 0. We only need to 
+store the field components for the positive x and y quadrant co-ordinates in the ROOT file
+defined by the MapFileName string (relative to the VMCWORKDIR directory), requiring only
+roughly 25% of the memory compared to a full field map. The parameters x0, y0, z0 are the 
+offset co-ordinates in cm, and phi, theta and psi are the Euler rotation angles in degrees 
+about the z axis, the new x axis, and then the new z axis, in that order. The offsets and 
+angles are optional parameters (denoted by the square brackets); offsets still need to be 
+provided (can be set to zero) if angles are required.
+
+
+3) CopyMap
 
 ```
 CopyMap MapLabel MapToCopy x0 y0 z0 [phi theta psi]
@@ -114,7 +143,7 @@ optional Euler rotation angles phi, theta and psi (degrees), corresponding to ro
 about the z, new x and new z axis, in that order. Note that this will reuse the field 
 map data already stored in memory.
 
-3) [Uniform](https://root.cern.ch/doc/master/classTGeoUniformMagField.html)
+4) [Uniform](https://root.cern.ch/doc/master/classTGeoUniformMagField.html)
 
 ```
 Uniform Label Bx By Bz
@@ -123,7 +152,7 @@ Uniform Label Bx By Bz
 where Bx, By and Bz are the components of the uniform field (in Tesla),
 valid for any x,y,z co-ordinate value.
 
-4) [Constant](ShipConstField.h)
+5) [Constant](ShipConstField.h)
 
 ```
 Constant Label xMin xMax yMin yMax zMin zMax Bx By Bz
@@ -133,7 +162,7 @@ where xMin, xMax are the global co-ordinate limits along the x axis (in cm),
 similarly for the y and z axes, and Bx, By and Bz are the components
 of the uniform field in Tesla.
 
-5) [Bell](ShipBellField.h)
+6) [Bell](ShipBellField.h)
 
 ```
 Bell Label BPeak zMiddle orientInt tubeRad
@@ -145,7 +174,7 @@ to specify if the field is aligned either along the x (2) or y (1) axes
 (Bz = 0 always), and tubeRad is the radius of the tube (cm) inside the
 region which specifies the extent of the field (for Bx).
 
-6) [Composite](ShipCompField.h)
+7) [Composite](ShipCompField.h)
 
 ```
 Composite CompLabel Label1 ... LabelN
@@ -154,7 +183,7 @@ Composite CompLabel Label1 ... LabelN
 where CompLabel is the label of the composite field, comprising of the fields
 named Label1 up to LabelN.
 
-7) Global
+8) Global
 
 ```
 Global Label1 .. LabelN
@@ -163,7 +192,7 @@ Global Label1 .. LabelN
 where Label1 to LabelN are the labels of the field(s) that are combined
 to represent the global one for the whole geometry.
 
-8) Region
+9) Region
 
 ```
 Region VolName FieldLabel [FieldMapScaleFactor]
@@ -177,7 +206,7 @@ include the global field if it has been defined earlier in the configuration fil
 i.e. any particle inside this volume will experience the superposition of the 
 (scaled) local field with the global one.
 
-9) Local
+10) Local
 
 ```
 Local VolName FieldLabel [FieldMapScaleFactor]

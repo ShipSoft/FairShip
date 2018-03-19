@@ -3,35 +3,37 @@
 # Python script to convert B field maps into text and ROOT files for FairShip.
 # Reduce the number of decimal places to try to reduce the file size.
 # Also add to the file info about the binning, offsets etc..
-# The field maps should have 10 cm binning resolution. 
 # Input file distances are in m; convert them to centimetres
 
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field info
+
 ROOT.gROOT.ProcessLine(
 "struct rangeStruct{\
-   double xMin;\
-   double xMax;\
-   double dx;\
-   double yMin;\
-   double yMax;\
-   double dy;\
-   double zMin;\
-   double zMax;\
-   double dz;\
+   float xMin;\
+   float xMax;\
+   float dx;\
+   float yMin;\
+   float yMax;\
+   float dy;\
+   float zMin;\
+   float zMax;\
+   float dz;\
 };");
+
+# The field map is assumed to obey the following co-ordinate bin ordering:
+# z is increased first, y is increased 2nd, x is increased last.
+# So we only store the field components (x,y,z is known from the ordering).
+# For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ, 
+# where Ny and Nz are the number of y and z bins
 
 ROOT.gROOT.ProcessLine(
 "struct dataStruct{\
-   double x;\
-   double y;\
-   double z;\
-   double Bx;\
-   double By;\
-   double Bz;\
+   float Bx;\
+   float By;\
+   float Bz;\
 };");
-
 
 
 def run(inFileName  = 'test07_10cm_grid.table', 
@@ -104,7 +106,7 @@ def createTextMap(inFileName, outFileName):
             BzWord = formatNumber(Bz)
 
             # Write out the new line. Just print out the B field components, since we
-            # can infer x,y,z co-ords from the ordering...
+            # can infer x,y,z co-ords from the ordering
             newLine = '{0} {1} {2}\n'.format(BxWord, ByWord, BzWord)
             #newLine = '{0:.0f} {1:.0f} {2:.0f} {3:.3e} {4:.3e} {5:.3e}\n'.format(x,y,z,Bx,By,Bz)
             tmpFile.write(newLine)
@@ -200,27 +202,29 @@ def createRootMap(inFileName, outFileName):
     rangeTree = ROOT.TTree('Range', 'Range')
     rangeTree.SetDirectory(theFile)
 
+    # Co-ordinate ranges
     rStruct = ROOT.rangeStruct()
-    rangeTree.Branch('xMin', ROOT.AddressOf(rStruct, 'xMin'), 'xMin/D')
-    rangeTree.Branch('xMax', ROOT.AddressOf(rStruct, 'xMax'), 'xMax/D')
-    rangeTree.Branch('dx', ROOT.AddressOf(rStruct, 'dx'), 'dx/D')
-    rangeTree.Branch('yMin', ROOT.AddressOf(rStruct, 'yMin'), 'yMin/D')
-    rangeTree.Branch('yMax', ROOT.AddressOf(rStruct, 'yMax'), 'yMax/D')
-    rangeTree.Branch('dy', ROOT.AddressOf(rStruct, 'dy'), 'dy/D')
-    rangeTree.Branch('zMin', ROOT.AddressOf(rStruct, 'zMin'), 'zMin/D')
-    rangeTree.Branch('zMax', ROOT.AddressOf(rStruct, 'zMax'), 'zMax/D')
-    rangeTree.Branch('dz', ROOT.AddressOf(rStruct, 'dz'), 'dz/D')
+    rangeTree.Branch('xMin', ROOT.AddressOf(rStruct, 'xMin'), 'xMin/F')
+    rangeTree.Branch('xMax', ROOT.AddressOf(rStruct, 'xMax'), 'xMax/F')
+    rangeTree.Branch('dx', ROOT.AddressOf(rStruct, 'dx'), 'dx/F')
+    rangeTree.Branch('yMin', ROOT.AddressOf(rStruct, 'yMin'), 'yMin/F')
+    rangeTree.Branch('yMax', ROOT.AddressOf(rStruct, 'yMax'), 'yMax/F')
+    rangeTree.Branch('dy', ROOT.AddressOf(rStruct, 'dy'), 'dy/F')
+    rangeTree.Branch('zMin', ROOT.AddressOf(rStruct, 'zMin'), 'zMin/F')
+    rangeTree.Branch('zMax', ROOT.AddressOf(rStruct, 'zMax'), 'zMax/F')
+    rangeTree.Branch('dz', ROOT.AddressOf(rStruct, 'dz'), 'dz/F')
 
     dataTree = ROOT.TTree('Data', 'Data')
     dataTree.SetDirectory(theFile)
 
+    # Field components with (x,y,z) coordinate binning ordered such that
+    # z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),
+    # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number 
+    # of y and z bins
     dStruct = ROOT.dataStruct()
-    dataTree.Branch('x', ROOT.AddressOf(dStruct, 'x'), 'x/D')
-    dataTree.Branch('y', ROOT.AddressOf(dStruct, 'y'), 'y/D')
-    dataTree.Branch('z', ROOT.AddressOf(dStruct, 'z'), 'z/D')
-    dataTree.Branch('Bx', ROOT.AddressOf(dStruct, 'Bx'), 'Bx/D')
-    dataTree.Branch('By', ROOT.AddressOf(dStruct, 'By'), 'By/D')
-    dataTree.Branch('Bz', ROOT.AddressOf(dStruct, 'Bz'), 'Bz/D')
+    dataTree.Branch('Bx', ROOT.AddressOf(dStruct, 'Bx'), 'Bx/F')
+    dataTree.Branch('By', ROOT.AddressOf(dStruct, 'By'), 'By/F')
+    dataTree.Branch('Bz', ROOT.AddressOf(dStruct, 'Bz'), 'Bz/F')
 
     # Open text file and process the information
     iLine = 0
@@ -267,14 +271,13 @@ def createRootMap(inFileName, outFileName):
 
                 # Also store bin centre coordinates.
                 # Map is ordered in ascending z, y, then x
-                iBin = iLine - 3
-                zBin = iBin%Nz
-                yBin = int((iBin/Nz))%Ny
-                xBin = int(iBin/Nzy)
-
-                dStruct.x = rStruct.dx*(xBin + 0.5) + rStruct.xMin
-                dStruct.y = rStruct.dy*(yBin + 0.5) + rStruct.yMin
-                dStruct.z = rStruct.dz*(zBin + 0.5) + rStruct.zMin
+                #iBin = iLine - 3
+                #zBin = iBin%Nz
+                #yBin = int((iBin/Nz))%Ny
+                #xBin = int(iBin/Nzy)
+                #dStruct.x = rStruct.dx*(xBin + 0.5) + rStruct.xMin
+                #dStruct.y = rStruct.dy*(yBin + 0.5) + rStruct.yMin
+                #dStruct.z = rStruct.dz*(zBin + 0.5) + rStruct.zMin
 
                 dataTree.Fill()
                 
