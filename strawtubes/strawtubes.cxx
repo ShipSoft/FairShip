@@ -350,18 +350,19 @@ void strawtubes::ConstructGeometry()
     
     TGeoBBox *detbox1_12 = new TGeoBBox("detbox1_12", fStraw_length_12+1.,  ftr12ydim+1., fDeltaz_view/2.+eps);
     TGeoBBox *detbox2_12 = new TGeoBBox("detbox2_12", fStraw_length_12+eps, ftr12ydim+eps, fDeltaz_view/2.);
-    
-    TGeoBBox *detbox1_veto = new TGeoBBox("detbox1_veto", fStraw_length_veto+1.,  fvetoydim+1., fDeltaz_view/2.+eps);
-    TGeoBBox *detbox2_veto = new TGeoBBox("detbox2_veto", fStraw_length_veto+eps, fvetoydim+eps, fDeltaz_view/2.);
+    TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
+    TGeoCompositeShape *detcomp1_12 = new TGeoCompositeShape("detcomp1_12", "detbox1_12-detbox2_12");
+    TGeoBBox *vetovacbox;
+    TGeoCompositeShape *detcomp1_veto;
+    if (fStraw_length_veto>1){
+     TGeoBBox *detbox1_veto = new TGeoBBox("detbox1_veto", fStraw_length_veto+1.,  fvetoydim+1., fDeltaz_view/2.+eps);
+     TGeoBBox *detbox2_veto = new TGeoBBox("detbox2_veto", fStraw_length_veto+eps, fvetoydim+eps, fDeltaz_view/2.);
 
     //the station sits inside a vacuum box
     //TGeoBBox *vetovacbox = new TGeoBBox("Vetovacbox", fVacBox_x, fVacBox_y, fDeltaz_view );
-    TGeoBBox *vetovacbox = new TGeoBBox("Vetovacbox", fStraw_length_veto+75., fvetoydim+75., fDeltaz_view );
-    
-    TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
-    TGeoCompositeShape *detcomp1_12 = new TGeoCompositeShape("detcomp1_12", "detbox1_12-detbox2_12"); 
-    TGeoCompositeShape *detcomp1_veto = new TGeoCompositeShape("detcomp1_veto", "detbox1_veto-detbox2_veto"); 
-       
+     vetovacbox = new TGeoBBox("Vetovacbox", fStraw_length_veto+75., fvetoydim+75., fDeltaz_view );
+     detcomp1_veto = new TGeoCompositeShape("detcomp1_veto", "detbox1_veto-detbox2_veto"); 
+    }
     // Volume: straw
     rmin = fInner_Straw_diameter/2.;
     rmax = fOuter_Straw_diameter/2.;
@@ -374,11 +375,13 @@ void strawtubes::ConstructGeometry()
     TGeoVolume *straw_12 = new TGeoVolume("straw_12",straw_tube_12, mylar);
     straw_12->SetLineColor(4);
     straw_12->SetVisibility(kTRUE);
-    TGeoTube *straw_tube_veto = new TGeoTube("straw_veto",rmin,rmax,fStraw_length_veto-4.*eps);
-    TGeoVolume *straw_veto = new TGeoVolume("straw_veto",straw_tube_veto, mylar);
-    straw_veto->SetLineColor(4);
-    straw_veto->SetVisibility(kTRUE);
-	       	
+    TGeoVolume *straw_veto;
+    if (fStraw_length_veto>1){
+     TGeoTube *straw_tube_veto = new TGeoTube("straw_veto",rmin,rmax,fStraw_length_veto-4.*eps);
+     straw_veto = new TGeoVolume("straw_veto",straw_tube_veto, mylar);
+     straw_veto->SetLineColor(4);
+     straw_veto->SetVisibility(kTRUE);
+    }
     // Volume: gas
     rmin = fWire_thickness/2.+epsS;
     rmax = fInner_Straw_diameter/2.-epsS;
@@ -390,10 +393,14 @@ void strawtubes::ConstructGeometry()
     TGeoVolume *gas_12 = new TGeoVolume("gas_12",gas_tube_12, sttmix9010_2bar);
     gas_12->SetLineColor(5);    //only the gas is sensitive
     AddSensitiveVolume(gas_12);
-    TGeoTube *gas_tube_veto = new TGeoTube("gas_veto",rmin,rmax,fStraw_length_veto-6.*eps);
-    TGeoVolume *gas_veto = new TGeoVolume("gas_veto",gas_tube_veto, sttmix9010_2bar);
-    gas_veto->SetLineColor(5);    //only the gas is sensitive
-    if (fStraw_length_veto>1){AddSensitiveVolume(gas_veto);}
+    TGeoVolume *gas_veto;
+    TGeoBBox *layer_veto;
+    if (fStraw_length_veto>1){
+     TGeoTube *gas_tube_veto = new TGeoTube("gas_veto",rmin,rmax,fStraw_length_veto-6.*eps);
+     gas_veto = new TGeoVolume("gas_veto",gas_tube_veto, sttmix9010_2bar);
+     gas_veto->SetLineColor(5);    //only the gas is sensitive
+     AddSensitiveVolume(gas_veto);
+    }
        
     // Volume: wire
     rmin=0.;
@@ -403,18 +410,17 @@ void strawtubes::ConstructGeometry()
     wire->SetLineColor(6); 
     TGeoTube *wire_tube_12 = new TGeoTube("wire_12",rmin,rmax,fStraw_length_12-8.*eps);
     TGeoVolume *wire_12 = new TGeoVolume("wire_12",wire_tube_12, tungsten);
-    wire_12->SetLineColor(6);     
-    TGeoTube *wire_tube_veto = new TGeoTube("wire_veto",rmin,rmax,fStraw_length_veto-8.*eps);
-    TGeoVolume *wire_veto = new TGeoVolume("wire_veto",wire_tube_veto, tungsten);
-    wire_veto->SetLineColor(6);     
-    
-      
+    wire_12->SetLineColor(6);
     Int_t statnb;
-    statnb=5;
+    if (fStraw_length_veto>1){
+     TGeoTube *wire_tube_veto = new TGeoTube("wire_veto",rmin,rmax,fStraw_length_veto-8.*eps);
+     TGeoVolume *wire_veto = new TGeoVolume("wire_veto",wire_tube_veto, tungsten);
+     wire_veto->SetLineColor(6);
+     statnb=5;
     // statnb = station number. 1,2,3,4 tracking stations, 5 veto station
-    TGeoVolume *vetovac = new TGeoVolume("Veto", vetovacbox, med);
+     TGeoVolume *vetovac = new TGeoVolume("Veto", vetovacbox, med);
 
-    if (fStraw_length_veto>1){top->AddNode(vetovac, statnb, new TGeoTranslation(0,0,fT0z));}
+     top->AddNode(vetovac, statnb, new TGeoTranslation(0,0,fT0z));
     //vetovac->SetVisDaughters(kTRUE);
     //vetovac->SetTransparency(80);
 
@@ -471,7 +477,7 @@ void strawtubes::ConstructGeometry()
          for (Int_t lnb=0; lnb<2; lnb++) {
            TString nmlayer_veto = nmplane_veto+"_layer_"; nmlayer_veto += lnb;
 	   //width of the layer: (plane width-2eps)/2
-	   TGeoBBox *layer_veto = new TGeoBBox("layer box_veto", fStraw_length_veto+eps/4., fvetoydim+eps/4., layerwidth/2.+eps/4.);
+	   layer_veto = new TGeoBBox("layer box_veto", fStraw_length_veto+eps/4., fvetoydim+eps/4., layerwidth/2.+eps/4.);
            TGeoVolume *layerbox_veto = new TGeoVolume(nmlayer_veto, layer_veto, med);      
 	   //z translate the layerbox wrt the plane box (which is already rotated)	          	
 	   planebox_veto->AddNode(layerbox_veto, statnb*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12)); 	  	
@@ -496,7 +502,7 @@ void strawtubes::ConstructGeometry()
         //end of plane loop	 	
       }
       //end of view loop
-     }
+     } }
      // end of veto station loop
     //Tracking stations
     //statnb=station number; vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
