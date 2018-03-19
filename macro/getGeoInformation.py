@@ -24,8 +24,9 @@ def doloop(node,level,currentlevel,translation):
      material = key[0].GetVolume().GetMaterial().GetName()
      newztranslation=snoz[key[0]]
      newxtranslation=snox[key[0]]
-     newytranslation=snoy[key[0]]     
-     print blanks+"%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm] dx=%10.4Fcm [%10.4F   %10.4Fcm] dy=%10.4Fcm [%10.4F   %10.4Fcm] %20s"%(key[0].GetName(),newztranslation,\
+     newytranslation=snoy[key[0]]
+     name =  blanks+key[0].GetName()
+     print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F] %+20s"%(name,newztranslation,\
      vs.GetDZ(),min(newztranslation-vs.GetDZ(),newztranslation+vs.GetDZ()),max(newztranslation-vs.GetDZ(),newztranslation+vs.GetDZ()),\
      vs.GetDX(),min(newxtranslation-vs.GetDX(),newxtranslation+vs.GetDX()),max(newxtranslation-vs.GetDX(),newxtranslation+vs.GetDX()),\
      vs.GetDY(),min(newytranslation-vs.GetDY(),newytranslation+vs.GetDY()),max(newytranslation-vs.GetDY(),newytranslation+vs.GetDY()),material )
@@ -45,17 +46,19 @@ fGeo = ROOT.gGeoManager
 top = fGeo.GetTopVolume() 
 noz={}
 currentlevel=0
-print "           Detector element z(midpoint)     halflength        volume-start volume-end   dx                x-start       x-end       dy                 y-start       y-end "
+print "   Detector element             z(midpoint)     halflength       volume-start volume-end   dx                x-start       x-end       dy                y-start       y-end         material "
 for no in top.GetNodes():
   transno = no.GetMatrix()
   noz[no]=transno.GetTranslation()[2]
 for key in sorted(noz.items(),key=operator.itemgetter(1)):
     trans = key[0].GetMatrix()
     v = key[0].GetVolume().GetShape()
-    print "%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm] dx=%10.4Fcm [%10.4F   %10.4Fcm] dy=%10.4Fcm [%10.4F   %10.4Fcm]"%(key[0].GetName(),trans.GetTranslation()[2],\
+    mat = key[0].GetVolume().GetMaterial().GetName()
+    name = key[0].GetName()
+    print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F]    %+20s"%(name,trans.GetTranslation()[2],\
     v.GetDZ(),min(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()),max(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()),\
     v.GetDX(),min(trans.GetTranslation()[0]-v.GetDX(),trans.GetTranslation()[0]+v.GetDX()),max(trans.GetTranslation()[0]-v.GetDX(),trans.GetTranslation()[0]+v.GetDX()),\
-    v.GetDY(),min(trans.GetTranslation()[1]-v.GetDY(),trans.GetTranslation()[1]+v.GetDY()),max(trans.GetTranslation()[1]-v.GetDY(),trans.GetTranslation()[1]+v.GetDY()),)
+    v.GetDY(),min(trans.GetTranslation()[1]-v.GetDY(),trans.GetTranslation()[1]+v.GetDY()),max(trans.GetTranslation()[1]-v.GetDY(),trans.GetTranslation()[1]+v.GetDY()),mat,)
     if options.volume:
       if key[0].GetNodes() and int(options.level)>0 and options.volume==key[0].GetName():
          doloop(key[0],options.level,currentlevel,trans.GetTranslation()) 
