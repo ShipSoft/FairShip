@@ -35,6 +35,7 @@ class GenieGenerator : public FairGenerator
     startZ      = zS;
     endZ        = zE; 
   }
+  void SaveAllTrajectories(){alltrajectories = true;}
   void AddBox(TVector3 dVec, TVector3 box);
   Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
  private:
@@ -49,7 +50,7 @@ class GenieGenerator : public FairGenerator
   Int_t pdgf[500];
   std::vector<TVector3> dVecs;
   std::vector<TVector3> boxs;
-  Bool_t cc;
+  Bool_t cc, nuel;
   Int_t nf,neu;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
@@ -62,6 +63,9 @@ class GenieGenerator : public FairGenerator
   TH1D* pxhist[3000];//!
   TH1D* pyslice[3000][100];//!
 
+  Double_t totalparam[10]; //always saved, referred to whole target in [startz,endz]
+  Int_t nreadevent;
+  bool alltrajectories;
   ClassDef(GenieGenerator,1);
 };
 

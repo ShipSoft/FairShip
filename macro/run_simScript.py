@@ -359,7 +359,11 @@ if simEngine == "Genie":
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,firstEvent) 
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC-5*u.m, ship_geo.TrackStation2.z)
+ #Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC-5*u.m, ship_geo.TrackStation2.z)
+ #Geniegen.SaveAllTrajectories()
+ Geniegen.SetPositions(ship_geo.target.z0,ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2) #<----------------(MODIFICATO)
+ #Geniegen.SetPositions(ship_geo.target.z0,ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.tauMudet.zMudetC + ship_geo.tauMudet.Ztot/2)
+ print 'DIMMI DOVE FINIRAI DI GENERARE:', ship_geo.tauMudet.zMudetC + ship_geo.tauMudet.Ztot/2
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
