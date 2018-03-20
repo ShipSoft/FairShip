@@ -24,6 +24,7 @@ DPPythia8Generator::DPPythia8Generator()
   fpbrem = kFALSE;
   fpbremPDF = 0;
   fdy = kFALSE;
+  fDPminM = 0.5;
   fextFile    = "";
   fInputFile  = NULL;
   fnRetries   = 0;
@@ -86,6 +87,9 @@ Bool_t DPPythia8Generator::Init()
     fPythia->settings.mode("Beams:frameType",  2);
     fPythia->settings.parm("Beams:eA",fMom);
     fPythia->settings.parm("Beams:eB",0.);
+
+    if (fdy) fPythia->settings.parm("PhaseSpace:mHatMin",fDPminM);
+
   }
   else {
     if (!fpbremPDF) {
@@ -111,6 +115,7 @@ Bool_t DPPythia8Generator::Init()
     }*/
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fDP)->Lifetime();
+  //fPythia->particleData.readString("4900023:useBreitWigner = false");
   if ( debug ){
     cout<<"Final particle parameters for PDGID " << fDP << ":" << std::endl;
     List(fDP);

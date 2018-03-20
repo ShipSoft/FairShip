@@ -272,7 +272,8 @@ if simEngine == "Pythia8":
   else:
 	  P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
-  pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,deepCopy)
+  passDPconf = pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,deepCopy)
+  if (passDPconf!=1): sys.exit()
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   if ds==7: # short muon shield
    P8gen.SetLmin(44*u.m)

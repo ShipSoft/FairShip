@@ -64,6 +64,12 @@ class DPPythia8Generator : public FairGenerator
   void SetDY(){
     fdy = kTRUE;
   };
+
+  Double_t MinDPMass() { return fDPminM; };
+  void SetMinDPMass(Double_t m){
+    fDPminM = m;
+  };
+
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
   Int_t nrOfRetries(){ return fnRetries; };
   Int_t nrOfDP(){ return fnDPtot; };
@@ -85,6 +91,7 @@ class DPPythia8Generator : public FairGenerator
   Bool_t fpbrem;       //flag to do proton bremstrahlung production (default is false)
   TH2F *fpbremPDF;     // pointer to TH2 containing PDF(p,theta) to have a dark photon with momentum p and angle theta to be produced by pbrem.
   Bool_t fdy;          // flag to do Drell-Yan QCD production
+  Double_t fDPminM;    //Minimum mass, in GeV, for the DP produced in ffbar to DP QCD production.
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
   Int_t fnRetries;     // number of events without any DP 

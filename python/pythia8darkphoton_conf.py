@@ -67,7 +67,7 @@ def manipulatePhysics(mass, P8Gen, cf):
         #P8Gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
         cf.write('P8Gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")\n')
     else:
-        print "ERROR: please enter a nicer mass."
+        print "ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop)
         return -1
     return selectedMum
 
@@ -100,6 +100,12 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
 
     elif inclusive=="qcd":
         P8Gen.SetDY()
+        P8Gen.SetMinDPMass(0.5)
+
+        if (mass<P8Gen.MinDPMass()): 
+            print "WARNING! Mass is too small, minimum is set to %3.3f GeV."%P8Gen.MinDPMass()
+            return 0
+
     # produce a Z' from hidden valleys model
         p8 = P8Gen.getPythiaInstance()
         n=1
@@ -115,7 +121,6 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
         P8Gen.SetParameters("HiddenValley:ffbar2Zv = on")
         if debug: cf.write('P8Gen.SetParameters("HiddenValley:ffbar2Zv = on")\n')
         P8Gen.SetParameters("HiddenValley:Ngauge = 1")
-
 
     elif inclusive=="pbrem":
         P8Gen.SetParameters("ProcessLevel:all = off")
@@ -138,14 +143,16 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
     #Define dark photon
     DP_instance = darkphoton.DarkPhoton(mass,epsilon)
     ctau = DP_instance.cTau()
-    print 'ctau p8dpconf file =%3.15f cm'%ctau
+    print 'ctau p8dpconf file =%3.6f cm'%ctau
     print 'Initial particle parameters for PDGID %d :'%P8Gen.GetDPId()
     P8Gen.List(P8Gen.GetDPId())
     if inclusive=="qcd":
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":m0 = "+str(mass))
-        P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(u.mm/ctau))
+        #P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(u.mm/ctau))
+        P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(u.hbarc/ctau))
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":mMin = 0.001")
         P8Gen.SetParameters(str(P8Gen.GetDPId())+":tau0 = "+str(ctau/u.mm))
+        #P8Gen.SetParameters("ParticleData:modeBreitWigner = 0")   
         #P8Gen.SetParameters(str(P8Gen.GetDPId())+":isResonance = false")
         #P8Gen.SetParameters(str(P8Gen.GetDPId())+":all = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
         #if debug: cf.write('P8Gen.SetParameters("'+str(P8Gen.GetDPId())+':all = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
@@ -156,7 +163,7 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
         if debug: cf.write('P8Gen.SetParameters("'+str(P8Gen.GetDPId())+':new = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
         if (inclusive=="pbrem"): 
             P8Gen.SetParameters(str(P8Gen.GetDPId())+":isResonance = true")
-            P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(u.mm/ctau))
+            P8Gen.SetParameters(str(P8Gen.GetDPId())+":mWidth = "+str(u.hbarc/ctau))
             P8Gen.SetParameters(str(P8Gen.GetDPId())+":mMin = 0.001")
     
     P8Gen.SetParameters("Next:numberCount    =  0")
@@ -178,8 +185,11 @@ def configure(P8Gen, mass, epsilon, inclusive, deepCopy=False):
         #change meson decay to dark photon depending on mass
 	selectedMum = manipulatePhysics(mass, P8Gen, cf)
         print 'selected mum is : %d'%selectedMum
-
+        if (selectedMum == -1): return 0
 
     #P8Gen.SetParameters("Check:particleData = on")
 
     if debug: cf.close()
+
+    return 1
+
