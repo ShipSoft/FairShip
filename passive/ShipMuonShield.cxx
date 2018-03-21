@@ -159,13 +159,20 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
     Int_t color[4] = {45,31,30,38};
 
     if (NotMagnet) {
-      coil_gap = gap;
-      coil_gap2 = gap2;
+       coil_gap = gap;
+       coil_gap2 = gap2;
+    } else if (fDesign > 7) {
+       // Assuming 0.5A/mm^2 and 10000At needed, about 200cm^2 gaps are necessary
+       // Current design safely above this. Will consult with MISiS to get a better minimum.
+       gap = std::ceil(std::max(100. / dY, gap));
+       gap2 = std::ceil(std::max(100. / dY2, gap2));
+       coil_gap = gap;
+       coil_gap2 = gap2;
     } else {
-      coil_gap = std::max(20., gap);
-      coil_gap2 = std::max(20., gap2);
-      gap = std::max(2., gap);
-      gap2 = std::max(2., gap2);
+       coil_gap = std::max(20., gap);
+       coil_gap2 = std::max(20., gap2);
+       gap = std::max(2., gap);
+       gap2 = std::max(2., gap2);
     }
 
     Double_t anti_overlap = (fDesign == 5) ? 0.0 : 0.1; // gap between fields in the
@@ -184,7 +191,26 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 	dX2 + middleGap2, -(dY2 - anti_overlap)
     };
 
-    std::array<Double_t, 16> cornersMainSideL = {
+    std::array<Double_t, 16> cornersTL = {middleGap + dX,
+                                          dY,
+                                          middleGap,
+                                          dY + dX,
+                                          2 * dX + middleGap + coil_gap,
+                                          dY + dX,
+                                          dX + middleGap + coil_gap,
+                                          dY,
+                                          middleGap2 + dX2,
+                                          dY2,
+                                          middleGap2,
+                                          dY2 + dX2,
+                                          2 * dX2 + middleGap2 + coil_gap2,
+                                          dY2 + dX2,
+                                          dX2 + middleGap2 + coil_gap2,
+                                          dY2};
+
+    std::array<Double_t, 16> cornersMainSideL = 
+      fDesign <= 7 ?
+      std::array<Double_t, 16>{
 	dX + middleGap + gap, -HmainSideMag,
 	dX + middleGap + gap, HmainSideMag,
 	2 * dX + middleGap + gap, HmainSideMag,
@@ -193,33 +219,42 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 	dX2 + middleGap2 + gap2, HmainSideMag2,
 	2 * dX2 + middleGap2 + gap2, HmainSideMag2,
 	2 * dX2 + middleGap2 + gap2, -HmainSideMag2
+      } :
+      std::array<Double_t, 16>{
+	dX + middleGap + gap, -(dY - anti_overlap),
+	dX + middleGap + gap, dY - anti_overlap,
+	2 * dX + middleGap + gap, dY + dX - anti_overlap,
+	2 * dX + middleGap + gap, -(dY + dX - anti_overlap),
+	dX2 + middleGap2 + gap2, -(dY2 - anti_overlap),
+	dX2 + middleGap2 + gap2, dY2 - anti_overlap,
+	2 * dX2 + middleGap2 + gap2, dY2 + dX2 - anti_overlap,
+	2 * dX2 + middleGap2 + gap2, -(dY2 + dX2 - anti_overlap)
     };
 
-    std::array<Double_t,16> cornersCLBA = {
-	dX + middleGap + gap, -HmainSideMag,
-	2 * dX + middleGap + gap, -HmainSideMag,
-	2 * dX + middleGap + coil_gap, -(dY + dX - anti_overlap),
-	dX + middleGap + coil_gap, -(dY - anti_overlap),
-	dX2 + middleGap2 + gap2, -HmainSideMag2,
-	2 * dX2 + middleGap2 + gap2, -HmainSideMag2,
-	2 * dX2 + middleGap2 + coil_gap2, -(dY2 + dX2 - anti_overlap),
-	dX2 + middleGap2 + coil_gap2, -(dY2 - anti_overlap)
-    };
+    std::array<Double_t, 16> cornersMainR, cornersCLBA,
+       cornersMainSideR, cornersCLTA, cornersCRBA,
+       cornersCRTA, cornersTR, cornersBL, cornersBR;
 
-    std::array<Double_t,16> cornersTL = {
-	middleGap + dX, dY,
-	middleGap, dY + dX,
-	2 * dX + middleGap + coil_gap, dY + dX,
-	dX + middleGap + coil_gap, dY,
-	middleGap2 + dX2, dY2,
-	middleGap2, dY2 + dX2,
-	2 * dX2 + middleGap2 + coil_gap2, dY2 + dX2,
-	dX2 + middleGap2 + coil_gap2, dY2
-    };
+    if (fDesign <= 7) {
+       cornersCLBA = {dX + middleGap + gap,
+                      -HmainSideMag,
+                      2 * dX + middleGap + gap,
+                      -HmainSideMag,
+                      2 * dX + middleGap + coil_gap,
+                      -(dY + dX - anti_overlap),
+                      dX + middleGap + coil_gap,
+                      -(dY - anti_overlap),
+                      dX2 + middleGap2 + gap2,
+                      -HmainSideMag2,
+                      2 * dX2 + middleGap2 + gap2,
+                      -HmainSideMag2,
+                      2 * dX2 + middleGap2 + coil_gap2,
+                      -(dY2 + dX2 - anti_overlap),
+                      dX2 + middleGap2 + coil_gap2,
+                      -(dY2 - anti_overlap)};
+    }
 
     // Use symmetries to define remaining magnets
-    std::array<Double_t, 16> cornersMainR, cornersMainSideR, cornersCLTA,
-	cornersCRBA, cornersCRTA, cornersTR, cornersBL, cornersBR;
     for (int i = 0; i < 16; ++i) {
       cornersMainR[i] = -cornersMainL[i];
       cornersMainSideR[i] = -cornersMainSideL[i];
@@ -259,10 +294,12 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
       CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[0], fields[0], tShield,  0, 0, Z);
       CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[1], fields[1], tShield,  0, 0, Z);
       CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[1], fields[1], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[1], fields[1], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[1], fields[1], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[1], fields[1], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[1], fields[1], tShield,  0, 0, Z);
+      if (fDesign <= 7) {
+         CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[1], fields[1], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[1], fields[1], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[1], fields[1], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[1], fields[1], tShield, 0, 0, Z);
+      }
       CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[3], fields[3], tShield,  0, 0, Z);
       CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[2], fields[2], tShield,  0, 0, Z);
       CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[2], fields[2], tShield,  0, 0, Z);
@@ -273,10 +310,12 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
       CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z);
       CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[0], fields[0], tShield,  0, 0, Z);
       CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[0], fields[0], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[0], fields[0], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[0], fields[0], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[0], fields[0], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[0], fields[0], tShield,  0, 0, Z);
+      if (fDesign <= 7) {
+         CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[0], fields[0], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[0], fields[0], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[0], fields[0], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[0], fields[0], tShield, 0, 0, Z);
+      }
       CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[2], fields[2], tShield,  0, 0, Z);
       CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[3], fields[3], tShield,  0, 0, Z);
       CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[3], fields[3], tShield,  0, 0, Z);
@@ -677,9 +716,12 @@ void ShipMuonShield::ConstructGeometry()
       TGeoTube *abs = new TGeoTube("absorber", 0, 400, absorber_half_length);
       const std::vector<TString> absorber_magnets = {"MagnAbsorb1",
 						     "MagnAbsorb2"};
-      const std::vector<TString> magnet_components = {
+      const std::vector<TString> magnet_components = fDesign <= 7 ? std::vector<TString>{
 	  "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
 	  "_MagCLB",     "_MagCLT",      "_MagCRT",     "_MagCRB",
+	  "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
+      }: std::vector<TString>{
+	  "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
 	  "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
       };
       TString absorber_magnet_components;
