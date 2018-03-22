@@ -192,19 +192,37 @@ void Hpt::ConstructGeometry()
     }
     if (fDesign == 3){
     //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
-    TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");    
+    TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion"); 
+    TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
+
+    Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;  
+    Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;  
+    Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;      
+
+    Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
 
     TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
     TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); //downstreamtrackers
     volDT->SetLineColor(kBlue-5);
     AddSensitiveVolume(volDT);
 
-    Double_t distTTtoHPT = 50 *cm; //distance from last TT to HPT
+   
+   
+    TGeoBBox *Kraft = new TGeoBBox("Kraft",DXMagnetizedRegion/2., 10*cm, DZMagnetizedRegion/2.);
+    TGeoVolume *volKraft = new TGeoVolume("volKraft", Kraft, HPTmat);
+    AddSensitiveVolume(volKraft);
+    volKraft->SetLineColor(kMagenta);
+    volMagRegion->AddNode(volKraft, 1, new TGeoTranslation(0.,-DYMagnetizedRegion/2+10*cm,0.));
+    volMagRegion->AddNode(volKraft, 2, new TGeoTranslation(0.,+DYMagnetizedRegion/2-10*cm,0.));
+ 
+    Double_t distTTtoHPT = 25 *cm; //distance from last TT to HPT
 
     Int_t n = 0;
     for(int i=0;i<fnHPT;i++){
 	  {
-            volMagRegion->AddNode(volDT,i,new TGeoTranslation(0,0, DimZ/2 + distTTtoHPT + i*(fDistance+DimZ)));	              
+           volMagRegion->AddNode(volDT,i,new TGeoTranslation(0,0, -DZMagnetizedRegion/2 + DZTarget + DimZ/2 + distTTtoHPT + i*(fDistance+DimZ)));
+           volMagRegion->AddNode(volDT,i+fnHPT,new TGeoTranslation(0,0, -DZMagnetizedRegion/2 + DZTarget + distTTtoHPT + (fnHPT-1)*fDistance + DZTarget + fnHPT * DimZ + i*(fDistance+DimZ) + DimZ/2));
+          // volMagRegion->AddNode(volDT,i,new TGeoTranslation(0,0, DimZ/2 + distTTtoHPT + i*(fDistance+DimZ)));	              
 	  }
      }
     }

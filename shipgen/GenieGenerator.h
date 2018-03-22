@@ -35,6 +35,7 @@ class GenieGenerator : public FairGenerator
     startZ      = zS;
     endZ        = zE; 
   }
+  void SaveAllTrajectories(){alltrajectories = true;}
   void AddBox(TVector3 dVec, TVector3 box);
   Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
  private:
@@ -62,6 +63,8 @@ class GenieGenerator : public FairGenerator
   TH1D* pxhist[3000];//!
   TH1D* pyslice[3000][100];//!
 
+  Int_t nreadevent;
+  bool alltrajectories;
   ClassDef(GenieGenerator,1);
 };
 

@@ -10,6 +10,7 @@
 
 #include "TGeoBBox.h"
 #include "TGeoTrd1.h"
+#include "TGeoSphere.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
@@ -539,6 +540,14 @@ void EmulsionMagnet::ConstructGeometry()
       TGeoBBox *OutcoilBox = new TGeoBBox("OC", fCoilX/2, fCoilH1/2,fMagnetZ/2);
       TGeoBBox *IncoilBox = new TGeoBBox("IC", fCoilX/2,fCoilH2/2,(fMagnetZ-fCoilThickness)/2);
 
+      TGeoSphere *ProvaSphere = new TGeoSphere("SPH", 0.,fCoilH1/2,90.,180.,0.,360.);
+      TGeoVolume *VolSphere = new TGeoVolume("VolSphere",ProvaSphere,Steel);
+      VolSphere->SetLineColor(kRed);
+      tTauNuDet->AddNode(VolSphere,1, new TGeoTranslation(0.,0., -1000.));
+
+      //spherical form at the ends of the coil
+      TGeoTranslation *transsphereleft = new TGeoTranslation("transsphereleft",0,0,-fMagnetZ/2. + fCoilThickness/2.);
+      transsphereleft->RegisterYourself();
       TGeoCompositeShape *Coil = new TGeoCompositeShape("Coil","OC-IC");
       TGeoVolume *CoilVol = new TGeoVolume("CoilVol",Coil, Cu);
       CoilVol->SetLineColor(kGreen);
@@ -556,6 +565,7 @@ void EmulsionMagnet::ConstructGeometry()
       tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ-fMagnetZ/2+fPillarZ/2));
       tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-fMagnetX/2+fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
       tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
+
     }
 }
 

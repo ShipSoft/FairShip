@@ -617,7 +617,8 @@ with ConfigRegistry.register_config("basic") as c:
     if c.NuTauTarget.Design == 3: #One unique magnet
         c.NuTauTarget.row=7
         c.NuTauTarget.col=7
-        c.NuTauTarget.wall=19
+        #c.NuTauTarget.wall=19
+        c.NuTauTarget.wall=9
         
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
 
@@ -662,7 +663,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.DX = c.NuTauTarget.xdim;       
         c.tauHPT.DY = 120 * u.cm
         c.tauHPT.DZ = c.NuTauTT.TTZ
-        c.tauHPT.nHPT = 5
+        #c.tauHPT.nHPT = 5
+        c.tauHPT.nHPT = 3
         c.tauHPT.distHPT = 50*u.cm
     
     if nuTauTargetDesign!=2: #TP or NEW with magnet

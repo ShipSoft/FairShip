@@ -1061,7 +1061,7 @@ else:
 
 for x in mcHits: fMan.AddTask(mcHits[x])
 
-fMan.Init(1,4,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+fMan.Init(1,6,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
 #visopt, set drawing mode :
 # option=0 (default) all nodes drawn down to vislevel
 # option=1           leaves and nodes at vislevel drawn
@@ -1102,6 +1102,14 @@ print 'With the camera button, you can switch to different views.'
 # d GL debug mode
 
 # fGeo.SetNsegments(10) # can help a bit in case of performance problems
+def DrawNeutrinoTrack():
+  i = -1
+  for aTrack in sTree.MCTrack:
+    i+=1
+    if i==0:
+      pa = pdg.GetParticle(sTree.MCTrack[i] .GetPdgCode()) 
+      print  sTree.MCTrack[i]
+      SHiPDisplay.tracks.DrawMCTrack(i)
 def DrawCharmTracks():
   i = -1
   for aTrack in sTree.MCTrack:
