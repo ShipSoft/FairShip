@@ -49,7 +49,7 @@ class GenieGenerator : public FairGenerator
   Int_t pdgf[500];
   std::vector<TVector3> dVecs;
   std::vector<TVector3> boxs;
-  Bool_t cc;
+  Bool_t cc, nuel;
   Int_t nf,neu;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
