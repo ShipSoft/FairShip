@@ -444,16 +444,22 @@ void MagneticSpectrometer::ConstructGeometry()
       TGeoVolume *volMSBox = new TGeoVolume("volMagneticSpectrometer", MSBox, vacuum);
       tTauNuDet->AddNode(volMSBox, 1, new TGeoTranslation(0,0,fZcenter));
 
+      Double_t deltax = 10 *cm, deltay = 20 *cm;
+
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
       //volIron->SetField(magField1);
 
+     TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2 -deltax/2, fYFe/2 -deltay/2, fZFe/2);
+     TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
+      //volIron->SetField(magField1);
       for(Int_t i = 0; i < fNFe; i++)
 	{
-	  volMSBox->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+i*fZRpc));
+	  if (i >= (fNFe-3)) volMSBox->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+i*fZRpc));
+          else volMSBox->AddNode(volIron1,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+i*fZRpc));
 	}
 
-       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
+      TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
       TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
   
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
@@ -475,12 +481,37 @@ void MagneticSpectrometer::ConstructGeometry()
       TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
       volRpc->SetLineColor(kCyan);
       volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
+
+      TGeoBBox *RpcContainer1 = new TGeoBBox("RpcContainer1", fXRpc/2 -deltax/2, fYRpc/2-deltay/2, fZRpc/2);
+      TGeoVolume *volRpcContainer1 = new TGeoVolume("volRpcContainer1",RpcContainer1,vacuum);
+  
+      TGeoBBox *Strip1  = new TGeoBBox("Strip1",fXStrip/2-deltax/2, fYStrip/2-deltay/2, fZStrip/2);
+      TGeoVolume *volStrip1  = new TGeoVolume("volStrip1",Strip1,Cu);
+      volStrip1->SetLineColor(kRed);
+      volRpcContainer1->AddNode(volStrip1,1,new TGeoTranslation (0,0,-3.25*mm));
+      volRpcContainer1->AddNode(volStrip1,2,new TGeoTranslation (0,0,3.25*mm));
+      TGeoBBox *PETinsulator1 = new TGeoBBox("PETinsulator1", fXPet/2-deltax/2, fYPet/2-deltay/2, fZPet/2);
+      TGeoVolume *volPETinsulator1 = new TGeoVolume("volPETinsulator1", PETinsulator1, bakelite);
+      volPETinsulator1->SetLineColor(kYellow);
+      volRpcContainer1->AddNode(volPETinsulator1,1,new TGeoTranslation(0,0,-3.1*mm));
+      volRpcContainer1->AddNode(volPETinsulator1,2,new TGeoTranslation(0,0, 3.1*mm));
+      TGeoBBox *Electrode1 = new TGeoBBox("Electrode1",fXEle/2-deltax/2, fYEle/2-deltay/2, fZEle/2);
+      TGeoVolume *volElectrode1 = new TGeoVolume("volElectrode1",Electrode1,bakelite);
+      volElectrode1->SetLineColor(kGreen);
+      volRpcContainer1->AddNode(volElectrode1,1,new TGeoTranslation(0,0,-2*mm));
+      volRpcContainer1->AddNode(volElectrode1,2,new TGeoTranslation(0,0, 2*mm));
+      TGeoBBox *RpcGas1 = new TGeoBBox("RpcGas1", fXGas-deltax/2/2, fYGas/2-deltay/2, fZGas/2);
+      TGeoVolume *volRpc1 = new TGeoVolume("volRpc1",RpcGas1,RPCmat);
+      volRpc1->SetLineColor(kCyan);
+      volRpcContainer1->AddNode(volRpc1,1,new TGeoTranslation(0,0,0));
    
       AddSensitiveVolume(volRpc);
+      AddSensitiveVolume(volRpc1;
     
       for(Int_t i = 0; i < fNRpc; i++)
 	{
-	  volMSBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, -fZtot/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
+	  if (i >= (fNRpc-3)) volMSBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, -fZtot/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
+          else volMSBox->AddNode(volRpcContainer1,nr + i,new TGeoTranslation(0, 0, -fZtot/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
 	}
       
       TGeoBBox *Pillar1Box = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);

@@ -318,7 +318,10 @@ void Target::ConstructGeometry()
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
       if(fDesign==3){        
         TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
-        volMagRegion->AddNode(volTarget,1,new TGeoTranslation(0,0,-ZDimension/2));
+        Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension 
+        //volMagRegion->AddNode(volTarget,1,new TGeoTranslation(0,0, -ZDimension/2));
+        volMagRegion->AddNode(volTarget,1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + 25*cm));
+        volMagRegion->AddNode(volTarget,2,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension + 144 * cm + ZDimension/2.));
        }
     }
 
@@ -438,7 +441,6 @@ void Target::ConstructGeometry()
       for(int l = 0; l < fNWall; l++)
 	{
 	  volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +CellWidth/2));
-        
 	  //6 cm is the distance between 2 columns of consecutive Target for TT placement
 	  d_cl_z += CellWidth + TTrackerZ;
 	}
@@ -584,6 +586,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	    if(strcmp(mumname, "Cell") == 0) NColumn = motherV[i];
 	    if(strcmp(mumname, "Row") == 0) NRow = motherV[i];
 	    if(strcmp(mumname, "Wall") == 0) NWall = motherV[i];
+             if((strcmp(mumname, "volTarget") == 0) && (motherV[i]=2)) NWall += fNWall;
 	  }
 	//cout << i << "   " << motherV[i] << "    name = " << mumname << endl;
       }
