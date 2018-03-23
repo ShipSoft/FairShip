@@ -17,7 +17,7 @@ ShipMCTrack::ShipMCTrack()
     fPx(0.),
     fPy(0.),
     fPz(0.),
-    fM(0.),
+    fM(-1.),
     fStartX(0.),
     fStartY(0.),
     fStartZ(0.),
@@ -121,8 +121,8 @@ void ShipMCTrack::Print(Int_t trackId) const
 
 Double_t ShipMCTrack::GetEnergy() const
 {
-  if (fM==0){
-// probably older data, mass not made persistent
+  if (fM<0){
+// older data, mass not made persistent
    Double_t mass = GetMass();
    return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
   }else{
@@ -132,12 +132,15 @@ Double_t ShipMCTrack::GetEnergy() const
 // -----   Public method GetMass   -----------------------------------------
 Double_t ShipMCTrack::GetMass() const
 {
-  if ( TDatabasePDG::Instance() ) {
+  if (fM<0){
+// older data, mass not made persistent
+   if ( TDatabasePDG::Instance() ) {
     TParticlePDG* particle = TDatabasePDG::Instance()->GetParticle(fPdgCode);
     if ( particle ) { return particle->Mass(); }
     else { return 0.; }
+   }
   }
-  return 0.;
+  return fM;
 }
 // -------------------------------------------------------------------------
 
