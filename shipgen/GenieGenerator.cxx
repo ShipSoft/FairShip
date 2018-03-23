@@ -52,6 +52,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pzv",&pzv);
   fTree->SetBranchAddress("neu",&neu);    // incoming neutrino PDG code
   fTree->SetBranchAddress("cc",&cc);      // Is it a CC event?
+  fTree->SetBranchAddress("nuel",&nuel);  // Is it a NUEEL event?
   fTree->SetBranchAddress("vtxx",&vtxx);  // vertex  in SI units
   fTree->SetBranchAddress("vtxy",&vtxy);
   fTree->SetBranchAddress("vtxz",&vtxz);
@@ -386,6 +387,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
     pout = Rotate(x,y,zrelative,pxl,pyl,pzl);
     Int_t oLPdgCode = neu;
     if (cc){oLPdgCode = copysign(TMath::Abs(neu)-1,neu);}
+    if (nuel){oLPdgCode = 11;}
     cpg->AddTrack(oLPdgCode,pout[0],pout[1],pout[2],x,y,z,0,true);
 // last, all others
     for(int i=0; i<nf; i++)
@@ -550,18 +552,19 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
     cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false,TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1]+pout[2]*pout[2]),tof,mparam[0]*mparam[4]);
     if (not fNuOnly){
-// second, outgoing lepton
-    std::vector<double> pp = Rotate(x,y,zrelative,pxl,pyl,pzl);
-    Int_t oLPdgCode = neu;
-    if (cc){oLPdgCode = copysign(TMath::Abs(neu)-1,neu);}
-    cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,true,El,tof,mparam[0]*mparam[4]);
+      // second, outgoing lepton
+      std::vector<double> pp = Rotate(x,y,zrelative,pxl,pyl,pzl);
+      Int_t oLPdgCode = neu;
+      if (cc){oLPdgCode = copysign(TMath::Abs(neu)-1,neu);}
+      if (nuel){oLPdgCode = 11;}
+      cpg->AddTrack(oLPdgCode,pp[0],pp[1],pp[2],x,y,z,0,true,El,tof,mparam[0]*mparam[4]);
 // last, all others
-    for(int i=0; i<nf; i++)
+      for(int i=0; i<nf; i++)
     	{
-         pp = Rotate(x,y,zrelative,pxf[i],pyf[i],pzf[i]);
-         cpg->AddTrack(pdgf[i],pp[0],pp[1],pp[2],x,y,z,0,true,Ef[i],tof,mparam[0]*mparam[4]);
+	  pp = Rotate(x,y,zrelative,pxf[i],pyf[i],pzf[i]);
+	  cpg->AddTrack(pdgf[i],pp[0],pp[1],pp[2],x,y,z,0,true,Ef[i],tof,mparam[0]*mparam[4]);
          //cout << "f " << pdgf[i] << " pz "<< pzf[i] << endl;
-       }
+	}
     //cout << "Info GenieGenerator Return from GenieGenerator" << endl;
     }
   return kTRUE;

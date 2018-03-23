@@ -40,7 +40,7 @@ class DarkPhoton:
                     strBis = line[8]
                     #if numEcm<2:
                     #   print numEcm,numR,strType
-                    if 'EXCLSUM' in strType:
+                    if (('EXCLSUM' in strType) or ('EDWARDS' in strType) or ('BLINOV' in strType)):
                         ecm.push_back(numEcm)
                         ratio.push_back(numR)
                         #print numEcm,numR,strType
@@ -68,9 +68,9 @@ class DarkPhoton:
         # Da http://pdg.lbl.gov/2012/hadronic-xsections/hadron.html#miscplots
         #ecm = math.sqrt(s)
         ecm = s
-        if ecm>=4.8:
-            print 'Asking for interpolation beyond 4.8 GeV: not implemented, needs extending!'
-            result=0
+        if ecm>=10.29:
+            print 'Warning! Asking for interpolation beyond 10.29 GeV: not implemented, needs extending! Taking value at 10.29 GeV'
+            result=float(self.PdgR.Eval(10.29))
         elif ecm>=self.dataEcm[0]:
             result = float(self.PdgR.Eval(ecm))
         else:
