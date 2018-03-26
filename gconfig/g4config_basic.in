@@ -1,0 +1,28 @@
+#
+# Geant4 configuration macro for Example02
+# (called from Root macro Config.C)
+
+/mcVerbose/all 0
+/mcTracking/loopVerbose 0    # suggested by Ivana Hrivnacova to switch off *** Particle reached max step number ....
+/mcPhysics/g4NeutronHPVerbose 0 #   - suppress the warnings about missing neutron data
+/mcPhysics/g4HadronicProcessStoreVerbose 0
+
+# drives me crazy how to stop this tons of output !!!
+/process/em/verbose 0
+/process/eLoss/verbose 0
+
+#/mcVerbose/composedPhysicsList 0
+#/mcVerbose/trackManager 2
+
+#/mcVerbose/regionsManager 3  
+
+#/run/particle/applyCuts
+#/mcTracking/saveSecondariesInStep true
+
+#/tracking/verbose 1
+#/control/cout/ignoreThreadsExcept 0
+
+# Enable local magnetic fields
+/mcDet/setIsLocalMagField true
+# Enable verbosity for VMC geometry manager
+#/mcVerbose/geometryManager 2
