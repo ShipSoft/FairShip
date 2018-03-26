@@ -55,21 +55,6 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   fin   = TFile::Open(fInName);
   nTree = (TNtuple*)fin->FindObjectAny("pythia6"); // old format, simple ntuple
   nEvents = nTree->GetEntries();
-// check if we deal with charm or beauty:
-  if (!setByHand and n_M>5){ 
-    chicc = chibb;
-    fLogger->Info(MESSAGE_ORIGIN,"automatic detection of beauty, configured for beauty");
-    fLogger->Info(MESSAGE_ORIGIN,"bb cross section / mbias %f",chicc);
-  }else{
-    fLogger->Info(MESSAGE_ORIGIN,"cc cross section / mbias %f",chicc);
-  }
-// convert pot to weight corresponding to one spill of 5e13 pot
- // get histogram with number of pot to normalise
- // pot are counted double, i.e. for each signal, i.e. pot/2.
-  Int_t nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.; // number of primary interactions
-  wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
-  fLogger->Info(MESSAGE_ORIGIN,"Input file: %s   with %i entries, corresponding to nr-pot=%f",fInName.Data(),nEvents,nrcpot/chicc);
-  fLogger->Info(MESSAGE_ORIGIN,"weight %f corresponding to %f p.o.t. per spill for %f events to process",wspill,nrpotspill,nev);
   nTree->SetBranchAddress("id",&n_id);
   nTree->SetBranchAddress("px",&n_px);
   nTree->SetBranchAddress("py",&n_py);
@@ -84,6 +69,23 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   if (nTree->GetBranch("k")){
    fLogger->Info(MESSAGE_ORIGIN,"+++has branch+++");
    nTree->SetBranchAddress("k",&ck);}
+// check if we deal with charm or beauty:
+  nTree->GetEvent(0);
+  if (!setByHand and n_M>5){ 
+    chicc = chibb;
+    fLogger->Info(MESSAGE_ORIGIN,"automatic detection of beauty, configured for beauty");
+    fLogger->Info(MESSAGE_ORIGIN,"bb cross section / mbias %f",chicc);
+  }else{
+    fLogger->Info(MESSAGE_ORIGIN,"cc cross section / mbias %f",chicc);
+  }
+// convert pot to weight corresponding to one spill of 5e13 pot
+ // get histogram with number of pot to normalise
+ // pot are counted double, i.e. for each signal, i.e. pot/2.
+  Int_t nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.; // number of primary interactions
+  wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
+  fLogger->Info(MESSAGE_ORIGIN,"Input file: %s   with %i entries, corresponding to nr-pot=%f",fInName.Data(),nEvents,nrcpot/chicc);
+  fLogger->Info(MESSAGE_ORIGIN,"weight %f corresponding to %f p.o.t. per spill for %f events to process",wspill,nrpotspill,nev);
+
   pot=0.;
   //Determine fDs on this file for primaries
   nDsprim=0;
