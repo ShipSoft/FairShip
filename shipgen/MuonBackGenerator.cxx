@@ -107,12 +107,13 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
          vetoPoint *v = (vetoPoint*)vetoPoints->At(i); 
          if (abs(v->PdgCode())==13){found = true;
            muList.push_back(v->GetTrackID());
-            } 
-     }                     
+            }
+     }
+     if (!found) {fLogger->Warning(MESSAGE_ORIGIN, "no muon found %i",fn-1);}
      if (found) {break;}
    }
   }
-  if (fn==fNevents){ 
+  if (fn>fNevents-1){ 
      fLogger->Info(MESSAGE_ORIGIN,"End of file reached %i",fNevents);
      return kFALSE;
   } 
