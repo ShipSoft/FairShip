@@ -98,30 +98,15 @@ else:
 if not geoFile:
  tmp = inputFile.replace('ship.','geofile_full.')
  geoFile = tmp.replace('_rec','')
-# try to figure out which ecal geo to load
+
 fgeo = ROOT.TFile.Open(geoFile)
-sGeo = fgeo.FAIRGeom
 
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
-
-if not fgeo.FindKey('ShipGeo'):
- # old geofile, missing Shipgeo dictionary
- if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
- else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
- print 'found ecal geo for ',ecalGeoFile
- if dy: 
-  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile)
- else:
-  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile) 
-else: 
- # new geofile, load Shipgeo dictionary
-  upkl    = Unpickler(fgeo)
-  ShipGeo = upkl.load('ShipGeo')
-  ecalGeoFile = ShipGeo.ecal.File
-
-ps = 0
-if sGeo.GetVolume('PreshowerDetector'):ps = 1
+#load Shipgeo dictionary
+upkl    = Unpickler(fgeo)
+ShipGeo = upkl.load('ShipGeo')
+ecalGeoFile = ShipGeo.ecal.File
 
 h={}
 log={}
@@ -132,10 +117,15 @@ if withHists:
  ut.bookHist(h,'nmeas','nr measuerements',100,0.,50.)
  ut.bookHist(h,'chi2','Chi2/DOF',100,0.,20.)
 
-# -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
+run.SetName("TGeant4")  # Transport engine
+run.SetOutputFile("dummy")  # Output file
+run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
+rtdb = run.GetRuntimeDb()
+# -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
+run.Init()
 
 # make global variables
 builtin.debug    = debug

@@ -57,57 +57,43 @@ if geoFile[0:4] == "/eos":
   fgeo = ROOT.TFile.Open(eospath)
 else:  
   fgeo = ROOT.TFile(geoFile)
-sGeo = fgeo.FAIRGeom
 
-if not fgeo.FindKey('ShipGeo'):
- # old geofile, missing Shipgeo dictionary
- if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
- else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
- print 'found ecal geo for ',ecalGeoFile
- # re-create geometry and mag. field
- if not dy:
-  # try to extract from input file name
-  tmp = inputFile.split('.')
-  try:
-    dy = float( tmp[1]+'.'+tmp[2] )
-  except:
-    dy = 10.
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
-else: 
- # new geofile, load Shipgeo dictionary written by run_simScript.py
-  upkl    = Unpickler(fgeo)
-  ShipGeo = upkl.load('ShipGeo')
-  ecalGeoFile = ShipGeo.ecal.File
-  dy = ShipGeo.Yheight/u.m
+# new geofile, load Shipgeo dictionary written by run_simScript.py
+upkl    = Unpickler(fgeo)
+ShipGeo = upkl.load('ShipGeo')
+ecalGeoFile = ShipGeo.ecal.File
+dy = ShipGeo.Yheight/u.m
 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
+run.SetName("TGeant4")  # Transport engine
+run.SetOutputFile("dummy")  # Output file
+run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for the mag field
+rtdb = run.GetRuntimeDb()
+# -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
+run.Init()
 
-gMan  = ROOT.gGeoManager
+sGeo   = ROOT.gGeoManager
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+bfield = ROOT.genfit.FairShipFields()
+fM = ROOT.genfit.FieldManager.getInstance()
+fM.init(bfield)
+
 volDict = {}
 i=0
 for x in ROOT.gGeoManager.GetListOfVolumes():
  volDict[i]=x.GetName()
  i+=1
 
-bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.)
-fM = ROOT.genfit.FieldManager.getInstance()
-fM.init(bfield)
+
 
 # prepare veto decisions
 import shipVeto
 veto = shipVeto.Task(sTree)
 vetoDets={}
-
-# fiducial cuts
-vetoStation = ROOT.gGeoManager.GetTopVolume().GetNode('Veto_5')
-vetoStation_zDown = vetoStation.GetMatrix().GetTranslation()[2]+vetoStation.GetVolume().GetShape().GetDZ()
-T1Station = ROOT.gGeoManager.GetTopVolume().GetNode('Tr1_1')
-T1Station_zUp = T1Station.GetMatrix().GetTranslation()[2]-T1Station.GetVolume().GetShape().GetDZ()
 
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',400,0.,200.,100,-0.5,0.5)
@@ -139,6 +125,9 @@ ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
 ut.bookHist(h,'ecalClusters','x/y and energy',50,-3.,3.,50,-6.,6.)
+
+ut.bookHist(h,'extrapTimeDetX','extrapolation to TimeDet X',100,-10.,10.)
+ut.bookHist(h,'extrapTimeDetY','extrapolation to TimeDet Y',100,-10.,10.)
 
 ut.bookHist(h,'oa','cos opening angle',100,0.999,1.)
 # potential Veto detectors
@@ -554,7 +543,14 @@ def myEventLoop(n):
   if not sTree.MCTrack.GetEntries()>1: wg = 1.
   else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
-# 
+# check extrapolation to TimeDet if exists
+  z_TimeDet = 3615.5000
+  for fT in sTree.FitTracks:
+     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
+     if rc:
+      for aPoint in sTree.TimeDetPoint:
+       h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
+       h['extrapTimeDetY'].Fill(pos.Y()-aPoint.GetY())
 # make some ecal cluster analysis if exist
   if hasattr(sTree,"EcalClusters"):
    if calReco:  ecalReconstructed.Delete()
