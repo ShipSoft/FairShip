@@ -94,8 +94,12 @@ with ConfigRegistry.register_config("basic") as c:
      c.Veto = AttrDict(z=0*u.cm)
      c.Veto.innerSupport = 3.*u.cm 
      c.Veto.innerSupportMed = "steel"
-     c.Veto.outerSupport = 8.*u.mm
-     c.Veto.outerSupportMed = "Aluminum"
+     if tankDesign > 5: 
+      c.Veto.outerSupport = 5.*u.mm
+      c.Veto.outerSupportMed = "steel"
+     else:
+      c.Veto.outerSupport = 8.*u.mm
+      c.Veto.outerSupportMed = "Aluminum"
      c.Veto.sensitiveThickness = 0.3*u.m
      c.Veto.sensitiveMed = "Scintillator"
      c.Veto.lidThickness = 80.*u.mm
