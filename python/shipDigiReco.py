@@ -24,13 +24,14 @@ class ShipDigiReco:
     if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
     if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
     if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
-    if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)     
-    if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)     
-    if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)  
+    if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)
+    if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)
+    if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)
     if sTree.GetBranch("Digi_StrawtubesHits"): sTree.SetBranchStatus("Digi_StrawtubesHits",0)
     if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
     if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
-    if sTree.GetBranch("Digi_StrawtubesHits"): sTree.SetBranchStatus("Digi_StrawtubesHits",0)     
+    if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
+
     rawFile = fout.replace("_rec.root","_raw.root")
     recf = ROOT.TFile(rawFile,"recreate")
     newTree = sTree.CloneTree(0)
@@ -47,7 +48,8 @@ class ShipDigiReco:
 #  check that all containers are present, otherwise create dummy version
   self.dummyContainers={}
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
-                  "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint","splitcalPoint":"splitcalPoint"}
+                  "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint",\
+                  "splitcalPoint":"splitcalPoint","TimeDetPoint":"TimeDetPoint"}
   for x in branch_class:
     if not self.sTree.GetBranch(x):
      self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
@@ -79,6 +81,8 @@ class ShipDigiReco:
   self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
   self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
   self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
+  self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
+  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
 # for the digitizing step
   self.v_drift = modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
@@ -168,7 +172,7 @@ class ShipDigiReco:
 # init geometry and mag. field
   gMan  = ROOT.gGeoManager
 #
-  self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Yheight/2.*u.m)
+  self.bfield = ROOT.genfit.FairShipFields()
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
   ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
@@ -215,6 +219,31 @@ class ShipDigiReco:
    self.digiStraw.Delete()
    self.digitizeStrawTubes()
    self.digiStrawBranch.Fill()
+   self.digiTimeDet.Delete()
+   self.digitizeTimeDet()
+   self.digiTimeDetBranch.Fill()
+
+ def digitizeTimeDet(self):
+   index = 0
+   hitsPerDetId = {}
+   for aMCPoint in self.sTree.TimeDetPoint:
+     aHit = ROOT.TimeDetHit(aMCPoint,self.sTree.t0)
+     if self.digiTimeDet.GetSize() == index: self.digiTimeDet.Expand(index+1000)
+     self.digiTimeDet[index]=aHit
+     detID = aHit.GetDetectorID()
+     if hitsPerDetId.has_key(detID):
+       t = aHit.GetMeasurements()
+       ct = aHit.GetMeasurements()
+# this is not really correct, only first attempt
+# case that one measurement only is earlier not taken into account
+       if  t[0]>ct[0] or t[1]>ct[1]:
+ # second hit with smaller tdc
+        self.digiTimeDet[hitsPerDetId[detID]].setInvalid()
+        hitsPerDetId[detID] = index
+     else:
+       hitsPerDetId[detID] = index         
+     index+=1
+
  def digitizeSBT(self):
      ElossPerDetId    = {}
      tOfFlight        = {}

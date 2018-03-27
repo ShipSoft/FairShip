@@ -1,13 +1,12 @@
 #include "TimeDetHit.h"
 #include "TimeDet.h"
 #include "TVector3.h"
-#include "FairRun.h"
-#include "FairRunSim.h"
 #include "TMath.h"
 #include "TRandom1.h"
 #include "TRandom3.h"
 #include "TGeoManager.h"
-#include "TGeoArb8.h"
+#include "TGeoBBox.h"
+#include "TGeoNode.h"
 
 #include <iostream>
 #include <math.h>
@@ -26,19 +25,61 @@ TimeDetHit::TimeDetHit()
 }
 
 
-// -----   Standard constructor   ------------
-TimeDetHit::TimeDetHit(Int_t detID, Float_t adc)
-  : ShipHit(detID,adc)
+// -----   constructor from TimeDetPoint from TimeDetHit-------------------------------
+TimeDetHit::TimeDetHit(TimeDetPoint* p, Double_t t0)
+  : ShipHit()
 {
- ft = -1;
- flag = true;
+     fDetectorID = p->GetDetectorID();
+     Float_t lpos, lneg;
+     Dist(p->GetX(), lpos, lneg);
+     Double_t sigma = Resol(lneg); // in ns
+     t_1 = gRandom->Gaus( 0, sigma ) + lneg/v_drift + t0 + p->GetTime();
+     sigma = Resol(lpos); // in ns
+     t_2 = gRandom->Gaus( 0, sigma ) + lpos/v_drift + t0 + p->GetTime();
+     flag = true;
 }
 
 
 // -----   Destructor   -------------------------
 TimeDetHit::~TimeDetHit() { }
 
+// ---- return time information for a given track extrapolation
+std::vector<double>  TimeDetHit::GetTime(Double_t x){
+     // calculate distance to left and right end
+     Float_t lpos, lneg;
+     Dist(x, lpos, lneg);
+     Double_t r = Resol(lneg);
+     Double_t w1 = 1./(r*r);
+     r = Resol(lpos);
+     Double_t w2 = 1./(r*r);
+     Double_t dt = 1./TMath::Sqrt(w1+w2);
+     Double_t t  =  ( (t_1-lneg/v_drift)*w1+(t_2-lpos/v_drift)*w2 )/(w1+w2);
+     std::vector<double> m;
+     m.push_back(t);
+     m.push_back(dt);
+     return m;
+}
+// -----   resolution function-------------------
+Double_t TimeDetHit::Resol(Double_t x)
+{
+  return par[0]*TMath::Exp( (x-par[2])/par[1] )+par[3]; 
+}
 
+std::vector<double> TimeDetHit::GetMeasurements(){
+ std::vector<double> m;
+ m.push_back( t_1);
+ m.push_back( t_2);
+ return m;
+}
+
+// distance to edges
+void TimeDetHit::Dist(Float_t x, Float_t lpos, Float_t lneg){
+     TGeoNode* node  = GetNode();
+     TGeoBBox* shape =  (TGeoBBox*)node->GetVolume()->GetShape();
+     TVector3 pos    = GetXYZ();
+     lpos = TMath::Abs( pos.X() + shape->GetDX() - x );
+     lneg = TMath::Abs( pos.X() - shape->GetDX() - x );
+}
 // ----------------------------------------------
 TVector3 TimeDetHit::GetXYZ()
 {
@@ -73,74 +114,18 @@ Double_t TimeDetHit::GetZ()
 
 TGeoNode* TimeDetHit::GetNode()
 {
-   TGeoNode* node=0;
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-   TString path = "/DecayVolume_1";
-   /*
-   if (fDetectorID<999999){ // liquid scintillator
-    Int_t iseq   = fDetectorID/100000;
-    Int_t corner = (fDetectorID-100000*iseq)/10000;
-    Int_t key    = fDetectorID%10000;
-    TString seq="T";
-    if (corner==1){  seq+=iseq; seq+="LiScC";}
-    else          {  seq+=iseq; seq+="LiSc";}
-    TGeoVolume* assembly = gGeoManager->FindVolumeFast(seq);
-    node = assembly->GetNode(key-1);
-    path += "/T";path+=iseq;path+="_1/";path+=seq;path+="_0/";path+=node->GetName();
-    nav->cd(path);
-   }
-   
-   if (fDetectorID>999999){ // plastic scintillator ABBCCCD
-    TString nodeName="T";TString temp="_";
-    Int_t A = int(fDetectorID/1000000);
-    Int_t B = int((fDetectorID-A*1000000)/10000);
-    Int_t C = int((fDetectorID-A*1000000-B*10000)/10);
-    Int_t D = fDetectorID%10;
-    Int_t TimeDetNr = fDetectorID;
-    Int_t vetoNr = fDetectorID;
-    if (A==1){
-      nodeName+="2decayVolVeto";
-      path+="/T2_1/T2decayVol_0/";
-    }else if (A==2){
-      nodeName+="2OuterwallVeto";
-      path += "/T2_1/";
-    }else if (A==3){
-      nodeName+="1decayVolVeto";
-      path+="/T1_1/T1decayVol_0/";
-    }else {
-      nodeName+="1OuterwallVeto";
-      path += "/T1_1/";
-    }
-    if (D>3){
-      path += "vleft_5/";
-      temp += D;temp+="V";
-      D=D-4;vetoNr=fDetectorID-4;}
-    else {path += "vleft_1/";}
-    if (D==3){nodeName+="X";}
-    if (D==1){nodeName+="Y";}
-    if (D==2){nodeName+="T1";}
-    if (D==0){nodeName+="T2";}
-    if (D==1||D==3){
-     if (C==0){nodeName+="DwTr";}
-     else if (C==1){nodeName+="UpTr";}
-     else {nodeName+="Rect";}
-     if (B!=99){nodeName+="1";}
-     if (B==99){nodeName+="2";}
-    }else {nodeName+="_";nodeName+=C;nodeName+="V";}
-    path+=nodeName;path+="_";path+=vetoNr;
-    nav->cd(path);
-    node=nav->GetCurrentNode();
-   }
-*/
-   return node;
+   TString path = "/Timing Detector_1/TimeDet_";path+=fDetectorID;
+   Bool_t rc = nav->cd(path);
+   return nav->GetCurrentNode();
 } 
 
 
 // -----   Public method Print   -----------------------
-void TimeDetHit::Print(Int_t detID) const
+void TimeDetHit::Print() const
 { 
   cout << "-I- TimeDetHit: TimeDet hit " << " in detector " << fDetectorID << endl;
-  cout << "  ADC " << fdigi << " ns" << endl;
+  cout << "  TDC left " << t_1 << " ns   TDC right " << t_2 << " ns" << endl;
 }
 
 

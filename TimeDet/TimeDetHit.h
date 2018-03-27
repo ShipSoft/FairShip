@@ -15,12 +15,12 @@ class TimeDetHit : public ShipHit
     /** Default constructor **/
     TimeDetHit();
 
-    /** Constructor with arguments
+    /** Constructor from TimeDetHit
      *@param detID    Detector ID
-     *@param digi      digitized/measured ADC
-     *@param flag      True/False, false if below threshold
+     *@param t_1, t_2      TDC on both sides
+     *@param flag      True/False, in case of pile up
      **/
-    TimeDetHit(Int_t detID, Float_t adc);
+    TimeDetHit(TimeDetPoint* p, Double_t t0);
 
     /** Destructor **/
     virtual ~TimeDetHit();
@@ -31,25 +31,27 @@ class TimeDetHit : public ShipHit
     Double_t GetZ();
     TVector3 GetXYZ();
     TGeoNode* GetNode();
+    std::vector<double> GetTime(Double_t x);
+    std::vector<double> GetMeasurements();
     /** Modifier **/
-    void SetEloss(Double_t val){fdigi=val;}
-    void SetTDC(Double_t val){ft=val;}
+    void SetTDC(Float_t val1, Float_t val2){t_1=val1;t_2=val2;}
 
     /** Output to screen **/
+    virtual void Print() const;
 
-    virtual void Print(Int_t detID) const;
-    Float_t GetADC() const {return fdigi;}
-    Float_t GetTDC() const {return ft;}
-    Double_t GetEloss() {return fdigi;}
+    void Dist(Float_t x, Float_t lpos, Float_t lneg);
+    Double_t Resol(Double_t x);
     void setInvalid() {flag = false;}
     void setIsValid() {flag = true;}
     bool isValid() const {return flag;}
   private:
-    Double_t ft;
     TimeDetHit(const TimeDetHit& point);
     TimeDetHit operator=(const TimeDetHit& point);
+    Double_t v_drift = 15.; // cm/ns
+    Double_t par[4] = { 0.0272814, 109.303, 0, 0.0539487 };
 
-    Float_t flag;   ///< flag
+    Float_t flag;     ///< flag
+    Float_t t_1,t_2;  ///< TDC on both sides
 
     ClassDef(TimeDetHit,1);
 
