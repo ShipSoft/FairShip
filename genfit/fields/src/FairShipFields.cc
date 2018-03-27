@@ -24,6 +24,10 @@ TVector3 FairShipFields::get(const TVector3& pos) const {
 void FairShipFields::get(const double& x, const double& y, const double& z, double& Bx, double& By, double& Bz) const {
   Double_t X[3] = {x,y,z};
   Double_t B[3] = {Bx,By,Bz};
+  if (!gMC){
+   cout<<"no Field Manager instantiated"<<endl;
+   return;
+  }
   gMC->GetMagField()->Field(X,B);
   Bx = B[0];
   By = B[1];
