@@ -38,13 +38,18 @@ outputDir    = "."
 sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
 theSeed      = int(10000 * time.time() % 10000000)
 
-dy           = 10.
-dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
-ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
-nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
+globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDesign':4},\
+                 '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':0,'strawDesign':10}}
+default = '2016'
+
+dy           = globalDesigns[default]['dy'] # max height of vacuum tank
+dv           = globalDesigns[default]['dv'] # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
+ds           = globalDesigns[default]['ds'] # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
+nud          = globalDesigns[default]['nud'] # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
+caloDesign   = globalDesigns[default]['caloDesign'] # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
+strawDesign  = globalDesigns[default]['strawDesign'] # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
+
 charm        = 0 # !=0 create charm detector instead of SHiP
-caloDesign   = 0 # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal
-strawDesign  = 4 # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
 geofile = None
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
