@@ -32,6 +32,7 @@ class TimeDetHit : public ShipHit
     TVector3 GetXYZ();
     TGeoNode* GetNode();
     std::vector<double> GetTime(Double_t x);
+    std::vector<double> GetTime();
     std::vector<double> GetMeasurements();
     /** Modifier **/
     void SetTDC(Float_t val1, Float_t val2){t_1=val1;t_2=val2;}

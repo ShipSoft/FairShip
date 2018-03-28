@@ -59,6 +59,21 @@ std::vector<double>  TimeDetHit::GetTime(Double_t x){
      m.push_back(dt);
      return m;
 }
+// ---- return mean time information
+std::vector<double>  TimeDetHit::GetTime(){
+     TGeoBBox* shape =  (TGeoBBox*)gGeoManager->GetVolume("TimeDet")->GetShape();
+     Double_t t0  =  (t_1+t_2)/2.-shape->GetDX()/v_drift;
+     Float_t lpos, lneg;
+     lneg = (t_1-t0)*v_drift;
+     lpos = (t_2-t0)*v_drift;
+     Float_t r1 = Resol(lneg);
+     Float_t r2 = Resol(lpos);
+     Double_t dt =  TMath::Sqrt(r1*r1+r2*r2);
+     std::vector<double> m;
+     m.push_back(t0);
+     m.push_back(dt);
+     return m;
+}
 // -----   resolution function-------------------
 Double_t TimeDetHit::Resol(Double_t x)
 {
