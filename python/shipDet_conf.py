@@ -19,7 +19,7 @@ def getParameter(x,ship_geo,latestShipGeo):
   a = getattr(latestShipGeo,top)
   return getattr(a,last)
     
-def posHcal(z,hfile): 
+def posHcal(z,hfile,HcalOption): 
  HcalZSize = 0
  sz = hfile+"z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
@@ -40,7 +40,7 @@ def posHcal(z,hfile):
      HcalZSize = float(l[len('HcalZSize')+1:].split('#')[0]) 
  f.close()
  if rewrite: fn.close()
- if ship_geo.HcalOption==2: hcal = ROOT.hcal("Hcal", ROOT.kFALSE, sz)
+ if HcalOption==2: hcal = ROOT.hcal("Hcal", ROOT.kFALSE, sz)
  else:                      hcal = ROOT.hcal("Hcal", ROOT.kTRUE, sz)
  return hcal,HcalZSize
 def makeEcalGeoFile(z,efile):
@@ -333,7 +333,7 @@ def configure(run,ship_geo):
   detectorList.append(SplitCal)
 
  if not ship_geo.HcalOption < 0:
-  hcal,HcalZSize = posHcal(ship_geo.hcal.z,ship_geo.hcal.File)
+  hcal,HcalZSize = posHcal(ship_geo.hcal.z,ship_geo.hcal.File,ship_geo.HcalOption)
   if abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 10*u.cm:
     print 'mismatch between hcalsize in geo file and python configuration'
     print ship_geo.hcal.hcalSpace -  HcalZSize, ship_geo.hcal.hcalSpace , HcalZSize
