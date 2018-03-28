@@ -39,8 +39,9 @@ def posHcal(z,hfile):
    if not l.find("HcalZSize")<0:
      HcalZSize = float(l[len('HcalZSize')+1:].split('#')[0]) 
  f.close()
- if rewrite: fn.close()  
- hcal = ROOT.hcal("Hcal", ROOT.kTRUE, sz)
+ if rewrite: fn.close()
+ if ship_geo.HcalOption==2: hcal = ROOT.hcal("Hcal", ROOT.kFALSE, sz)
+ else:                      hcal = ROOT.hcal("Hcal", ROOT.kTRUE, sz)
  return hcal,HcalZSize
 def makeEcalGeoFile(z,efile):
  EcalZSize = 0

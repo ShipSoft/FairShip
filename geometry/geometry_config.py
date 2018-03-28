@@ -173,6 +173,11 @@ with ConfigRegistry.register_config("basic") as c:
      c.EcalOption = 1
      c.preshowerOption = 0
      c.splitCal = 0
+    elif CaloDesign==3:
+     c.HcalOption = 2
+     c.EcalOption = 1
+     c.preshowerOption = 0
+     c.splitCal = 0
     elif CaloDesign==1:
      c.HcalOption = 1
      c.EcalOption = 1
