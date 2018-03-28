@@ -687,11 +687,20 @@ void hcal::ConstructGeometry()
   par[0]=fSemiX;
   par[1]=fSemiY;
   par[2]=fHcalSize[2]/2.0;
+
+  if (!IsActive()){
+   volume=gGeoManager->Volume("Hcal", "BOX",  gGeoManager->GetMedium("iron")->GetId(), par, 3);
+   gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
+   return;
+  }
+
   volume=gGeoManager->Volume("Hcal", "BOX",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
   volume->SetVisLeaves(kTRUE);
   volume->SetVisContainers(kFALSE);
   volume->SetVisibility(kFALSE);
+
+
   AddSensitiveVolume(volume);
   fStructureId=volume->GetNumber();
 
