@@ -1,10 +1,12 @@
 #ifndef MUONHIT_H
 #define MUONHIT_H 1
 
-#include "ShipHit.h"
-#include "muonPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
+
+#include "ShipHit.h"
+#include "muonPoint.h"
+
 
 class muonHit : public ShipHit
 {
@@ -18,20 +20,23 @@ class muonHit : public ShipHit
      *@param digi      digitized/measured TDC 
      *@param flag      True/False, false if there is another hit with smaller tdc 
      **/
-    muonHit(Int_t detID, Float_t tdc);
+    muonHit(Int_t detID, Float_t digi, Bool_t isValid);
     muonHit(muonPoint* p, Double_t t0);
 
-    Int_t fromXYZ(TVector3 p);    // should provide the mapping, true xyz to detectorID
-    void XYZfromDetID(TVector3 &p);  // should return centre of muon tile  
+    Int_t DetIDfromXYZ(TVector3 p); //provide mapping, true xyz to detectorID
+    TVector3 XYZfromDetID(Int_t detID);  // return centre of muon tile  
 /** Destructor **/
     virtual ~muonHit();
 
     /** Output to screen **/
     virtual void Print() const;
-    Float_t GetTDC() const {return fdigi;}
-    void setInvalid() {flag = false;}
-    bool isValid() const {return flag;}
-
+//
+    TVector3 getPos() {return XYZfromDetID(fDetectorID);}
+    Bool_t isValid() const {return hisV;}
+//
+    Double_t SetMuonTimeRes(Double_t mcTime); // return tdc
+    void setValidity(Bool_t isValid);
+//
   private:
     /** Copy constructor **/
     muonHit(const muonHit& point);
@@ -39,8 +44,12 @@ class muonHit : public ShipHit
 
     Float_t flag;   ///< flag
 
-    ClassDef(muonHit,1);
-    
+    static bool onlyOnce;
+    void stInit(); // stations init
+//
+    Bool_t hisV;
+//
+    ClassDef(muonHit,3)
 };
 
-#endif
+#endif  //MUONHIT.H
