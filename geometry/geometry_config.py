@@ -54,7 +54,7 @@ with ConfigRegistry.register_config("basic") as c:
 # cave parameters
     c.cave = AttrDict(z=0*u.cm)
     c.cave.floorHeightMuonShield = 5*u.m
-    c.cave.floorHeightTankA = 4.5*u.m
+    c.cave.floorHeightTankA = 4.2*u.m  # no overlapp with 4.5 -> 4.2
     c.cave.floorHeightTankB = 2*u.m
 #
     #neutrino detector
@@ -430,25 +430,21 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
     c.strawtubes.StrawLength     = c.xMax
-    if tankDesign > 4:
+    if tankDesign == 5:
        zF = c.target.z0+c.zFocusX
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)   
-       if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5
+       c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
+       zF = c.target.z0+c.zFocusY
+       c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
+       c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
+       c.strawtubes.tr34ydim           = int(c.Yheight/2.)  
     else:
        c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
        c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength
-# height of tracking stations
-    if tankDesign > 4:
-     zF = c.target.z0+c.zFocusY
-     c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
-     c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-     c.strawtubes.tr34ydim           = int(c.Yheight/2.)  
-    else:
-     c.strawtubes.vetoydim           = int(c.Yheight/2.)
-     c.strawtubes.tr12ydim           = int(c.Yheight/2.)
-     c.strawtubes.tr34ydim           = int(c.Yheight/2.)
-
+       if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5 # switch of veto strawtracker
+       c.strawtubes.vetoydim           = int(c.Yheight/2.)
+       c.strawtubes.tr12ydim           = int(c.Yheight/2.)
+       c.strawtubes.tr34ydim           = int(c.Yheight/2.)
 
     #Parameters for tau neutrino target Magnet
     if nuTauTargetDesign!=2:
