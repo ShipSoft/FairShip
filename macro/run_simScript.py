@@ -403,8 +403,13 @@ if simEngine == "Ntuple":
 #
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
- ut.checkFileExists(inputFile)
- primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
+ fileType = ut.checkFileExists(inputFile)
+ if fileType == 'tree':
+ # 2018 background production 
+  primGen.SetTarget(ship_geo.target.z0+70.1225*u.m,0.)
+ else:
+  primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
+ #
  MuonBackgen = ROOT.MuonBackGenerator()
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
