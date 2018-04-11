@@ -124,6 +124,22 @@ void Hpt::SetDesign(Int_t Design)
   fDesign = Design;
 }
 
+void Hpt::SetSurroundingDetHeight(Double_t height)
+{ 
+ fSRHeight = height;
+}
+
+void Hpt::GetMagnetGeometry(Double_t EmuzC, Double_t EmuY)
+{
+  fmagnetcenter = EmuzC;
+  fmagnety = EmuY;
+}
+
+void Hpt::GetNumberofTargets(Int_t ntarget) //in nutautargetdesign 3 more than one neutrino target are considered
+{
+   fntarget = ntarget;
+} 
+
 // -----   Private method InitMedium 
 Int_t Hpt::InitMedium(const char* name)
 {
@@ -192,19 +208,37 @@ void Hpt::ConstructGeometry()
     }
     if (fDesign == 3){
     //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
-    TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");    
+    TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion"); 
+    TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
+    TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
+
+    Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;  
+    Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;  
+    Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;      
+
+    Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
 
     TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
     TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); //downstreamtrackers
     volDT->SetLineColor(kBlue-5);
     AddSensitiveVolume(volDT);
 
-    Double_t distTTtoHPT = 50 *cm; //distance from last TT to HPT
+    TGeoBBox *Surroundingdet = new TGeoBBox("Surroundingdet",DXMagnetizedRegion/2., fSRHeight/2, DZMagnetizedRegion/2.);
+    TGeoVolume *volSurroundingdet = new TGeoVolume("volSurroundingdet",Surroundingdet, HPTmat);
+    AddSensitiveVolume(volSurroundingdet);
+    volSurroundingdet->SetLineColor(kBlue);
+    tTauNuDet->AddNode(volSurroundingdet,1, new TGeoTranslation(0,+fmagnety/2+fSRHeight/2, fmagnetcenter));
+    volMagRegion->AddNode(volSurroundingdet, 2, new TGeoTranslation(0.,+DYMagnetizedRegion/2-fSRHeight/2,0.));
+    volMagRegion->AddNode(volSurroundingdet, 3, new TGeoTranslation(0.,-DYMagnetizedRegion/2+fSRHeight/2,0.));
+    tTauNuDet->AddNode(volSurroundingdet,4, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
+    
 
     Int_t n = 0;
     for(int i=0;i<fnHPT;i++){
 	  {
-            volMagRegion->AddNode(volDT,i,new TGeoTranslation(0,0, DimZ/2 + distTTtoHPT + i*(fDistance+DimZ)));	              
+           for (int j = 0; j < fntarget; j++){
+           volMagRegion->AddNode(volDT,i+j*fnHPT,new TGeoTranslation(0,0, -DZMagnetizedRegion/2 + DZTarget + DimZ/2 + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
+           }
 	  }
      }
     }

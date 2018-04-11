@@ -469,7 +469,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.CutLength = scale * 50*u.cm
             c.EmuMagnet.CutHeight = scale * 100*u.cm
             c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
-            c.EmuMagnet.CoilY = 30*u.cm
+            c.EmuMagnet.CoilY = 40*u.cm
             c.EmuMagnet.Height1 = c.EmuMagnet.Y-2*c.EmuMagnet.BaseY
             c.EmuMagnet.Height2 = c.EmuMagnet.Height1-2*c.EmuMagnet.CoilY
             c.EmuMagnet.Thickness = scale*50*u.cm
@@ -566,6 +566,8 @@ with ConfigRegistry.register_config("basic") as c:
     	c.tauMudet.NRpc= 23
         c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
         c.tauMudet.Ytot = scaleMudet*4.9124968*u.m
+        c.tauMudet.deltax = 10* u.cm
+        c.tauMudet.deltay = 20* u.cm
         c.tauMudet.XFe = c.tauMudet.Xtot
         c.tauMudet.YFe = c.tauMudet.Ytot
         c.tauMudet.ZFe = 5.*u.cm
@@ -619,10 +621,13 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.row=20
         c.NuTauTarget.col=9
         c.NuTauTarget.wall=20
-    if c.NuTauTarget.Design == 3: #One unique magnet
+    if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
         c.NuTauTarget.row=7
         c.NuTauTarget.col=7
-        c.NuTauTarget.wall=19
+        #c.NuTauTarget.wall=19
+        c.NuTauTarget.wall=10
+        c.NuTauTarget.target=2 #number of neutrino target volumes
+
         
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
 
@@ -664,11 +669,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.ConcreteY = c.tauMudet.Ytot/2 - c.tauHPT.DY/2
         c.tauHPT.ConcreteZ = c.tauHPT.DZ
     if nuTauTargetDesign==3:
-        c.tauHPT.DX = c.NuTauTarget.xdim;       
-        c.tauHPT.DY = 120 * u.cm
-        c.tauHPT.DZ = c.NuTauTT.TTZ
-        c.tauHPT.nHPT = 5
-        c.tauHPT.distHPT = 50*u.cm
+        c.tauHPT.SRDY = 10 *u.cm  #additional detectors for improving acceptance
+        c.tauHPT.DX = c.NuTauTarget.xdim
+        c.tauHPT.DY = c.EmuMagnet.Height2 - 2 *c.tauHPT.SRDY
+        c.tauHPT.DZ = c.NuTauTT.TTZ        
+        c.tauHPT.nHPT = 3 #n.d.r. number after each neutrino target
+        c.tauHPT.distHPT = 25*u.cm
     
     if nuTauTargetDesign!=2: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm
