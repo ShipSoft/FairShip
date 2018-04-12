@@ -46,7 +46,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree = (TTree *)fInputFile->Get("gst");
   fNevents = fTree->GetEntries();
   fn = firstEvent;
-  fTree->SetBranchAddress("Ev",&pxl);    // incoming neutrino energy
+  fTree->SetBranchAddress("Ev",&Ev);    // incoming neutrino energy
   fTree->SetBranchAddress("pxv",&pxv);
   fTree->SetBranchAddress("pyv",&pyv);
   fTree->SetBranchAddress("pzv",&pzv);
