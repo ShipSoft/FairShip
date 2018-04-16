@@ -227,10 +227,10 @@ void Hpt::ConstructGeometry()
     TGeoVolume *volSurroundingdet = new TGeoVolume("volSurroundingdet",Surroundingdet, HPTmat);
     AddSensitiveVolume(volSurroundingdet);
     volSurroundingdet->SetLineColor(kBlue);
-    tTauNuDet->AddNode(volSurroundingdet,1, new TGeoTranslation(0,+fmagnety/2+fSRHeight/2, fmagnetcenter));
-    volMagRegion->AddNode(volSurroundingdet, 2, new TGeoTranslation(0.,+DYMagnetizedRegion/2-fSRHeight/2,0.));
-    volMagRegion->AddNode(volSurroundingdet, 3, new TGeoTranslation(0.,-DYMagnetizedRegion/2+fSRHeight/2,0.));
-    tTauNuDet->AddNode(volSurroundingdet,4, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
+    tTauNuDet->AddNode(volSurroundingdet,100, new TGeoTranslation(0,+fmagnety/2+fSRHeight/2, fmagnetcenter));
+    volMagRegion->AddNode(volSurroundingdet, 200, new TGeoTranslation(0.,+DYMagnetizedRegion/2-fSRHeight/2,0.));
+    volMagRegion->AddNode(volSurroundingdet, 300, new TGeoTranslation(0.,-DYMagnetizedRegion/2+fSRHeight/2,0.));
+    tTauNuDet->AddNode(volSurroundingdet,400, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
     
 
     Int_t n = 0;
