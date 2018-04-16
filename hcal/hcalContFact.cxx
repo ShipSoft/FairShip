@@ -7,7 +7,7 @@
 
 ClassImp(hcalContFact)
 
-static hcalContFact ghcalContFact;
+//static hcalContFact ghcalContFact;
 
 hcalContFact::hcalContFact()
   : FairContFact()

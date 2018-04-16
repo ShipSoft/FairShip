@@ -5,7 +5,7 @@
 
 ClassImp(preshowerContFact)
 
-static preshowerContFact gpreshowerContFact;
+//static preshowerContFact gpreshowerContFact;
 
 preshowerContFact::preshowerContFact()
   : FairContFact()

@@ -23,7 +23,7 @@ using namespace std;
 
 ClassImp(ShipPassiveContFact)
 
-static ShipPassiveContFact gShipPassiveContFact;
+//static ShipPassiveContFact gShipPassiveContFact;
 
 ShipPassiveContFact::ShipPassiveContFact()
   : FairContFact()
