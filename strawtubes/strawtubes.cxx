@@ -335,8 +335,8 @@ void strawtubes::ConstructGeometry()
     TGeoMedium *sttmix9010_2bar   = gGeoManager->GetMedium("STTmix9010_2bar");
     InitMedium("tungsten");
     TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");
-    InitMedium("steel");
-    TGeoMedium *steel             = gGeoManager->GetMedium("steel");
+    InitMedium(fFrame_material);
+    TGeoMedium *FrameMatPtr       = gGeoManager->GetMedium(fFrame_material);
     InitMedium("vacuum");
     TGeoMedium *med          = gGeoManager->GetMedium("vacuum");
 
@@ -606,7 +606,7 @@ void strawtubes::ConstructGeometry()
                 viewframe_12 = new TGeoVolume(nmview_12, detcomp1_12, Al);
             }
             else {
-                viewframe_12 = new TGeoVolume(nmview_12, detcomp1_12, steel);
+                viewframe_12 = new TGeoVolume(nmview_12, detcomp1_12, FrameMatPtr);
             }
 	 
 
@@ -703,7 +703,7 @@ void strawtubes::ConstructGeometry()
                 viewframe = new TGeoVolume(nmview, detcomp1, Al);
             }
             else {
-                viewframe = new TGeoVolume(nmview, detcomp1, steel);
+                viewframe = new TGeoVolume(nmview, detcomp1, FrameMatPtr);
             }
 	 
 

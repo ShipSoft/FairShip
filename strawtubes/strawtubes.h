@@ -154,7 +154,7 @@ class strawtubes: public FairDetector
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
     Int_t InitMedium(const char* name);
-    ClassDef(strawtubes,4)
+    ClassDef(strawtubes,5)
 };
 
 #endif //STRAWTUBES_H

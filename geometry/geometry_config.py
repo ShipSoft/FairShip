@@ -55,8 +55,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.cave = AttrDict(z=0*u.cm)
     c.cave.floorHeightMuonShield = 5*u.m
     c.cave.floorHeightTankA = 4.2*u.m  # no overlapp with 4.5 -> 4.2
-    if strawDesign == 11:
-        c.cave.floorHeightTankA = 3.0*u.m # avoid overlap with Tr_1
+    if strawDesign == 10:
+        c.cave.floorHeightTankA = 3.0*u.m # avoid overlaps between Tr_1 and DecayVolume
     c.cave.floorHeightTankB = 2*u.m
 #
     #neutrino detector
@@ -67,8 +67,8 @@ with ConfigRegistry.register_config("basic") as c:
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
     z4=2438.*u.cm+magnetIncrease+extraVesselLength
-    if strawDesign != 4 and strawDesign != 10 and strawDesign != 11:
-     print "this design ",strawDesign," is not supported, use strawDesign = 4, 10 or 11"
+    if strawDesign != 4 and strawDesign != 10:
+     print "this design ",strawDesign," is not supported, use strawDesign = 4 or 10"
      1/0 
     else:
      c.chambers.Length = totalLength
@@ -140,22 +140,16 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.FrameMaterial      = "aluminium"
      c.strawtubes.FrameLateralWidth  = 1.*u.cm
      c.strawtubes.DeltazFrame        = 10.*u.cm
-    elif strawDesign==10 or strawDesign==11:  # 10 - baseline for 2018, 11 - 2018 design with material frames around each view
+    elif strawDesign==10:  # 10 - baseline for 2018 
      c.strawtubes.InnerStrawDiameter = 1.975*u.cm
      c.strawtubes.StrawPitch         = 3.60*u.cm  
      c.strawtubes.DeltazLayer        = 1.6*u.cm   
      c.strawtubes.DeltazPlane        = 4.2*u.cm   
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
-     if strawDesign==11:
-       c.strawtubes.FrameMaterial      = "steel"
-       c.strawtubes.FrameLateralWidth  = 1.2*u.m
-       c.strawtubes.DeltazFrame        = 2.5*u.cm
-     else:
-       c.strawtubes.FrameMaterial      = "aluminium"
-       c.strawtubes.FrameLateralWidth  = 1.*u.cm
-       c.strawtubes.DeltazFrame        = 10.*u.cm
-
+     c.strawtubes.FrameMaterial      = "steel"
+     c.strawtubes.FrameLateralWidth  = 1.2*u.m
+     c.strawtubes.DeltazFrame        = 2.5*u.cm
 
     c.strawtubes.WallThickness      = 0.0039*u.cm
     c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
