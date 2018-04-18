@@ -4,6 +4,7 @@ import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
+
 debug = 0  # 1 print weights and field
            # 2 make overlap check
 # Default HNL parameters
@@ -31,7 +32,7 @@ RPVSUSY      = False
 RPVSUSYbench = 2
 
 eventDisplay = False
-inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
+inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 
 defaultInputFile = True
 outputDir    = "."
@@ -40,7 +41,7 @@ theSeed      = int(10000 * time.time() % 10000000)
 
 globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDesign':4},\
                  '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}}
-default = '2016'
+default = '2018'
 
 dy           = globalDesigns[default]['dy'] # max height of vacuum tank
 dv           = globalDesigns[default]['dv'] # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
@@ -94,6 +95,7 @@ for o, a in opts:
             simEngine = "PG"
         if o in ("-A",):
             inclusive = a
+            if a=='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
             if a.lower() == 'charmonly':
                charmonly = True
                HNL = False 
@@ -229,7 +231,6 @@ parFile="%s/ship.params.%s.root" % (outputDir, tag)
 timer = ROOT.TStopwatch()
 timer.Start()
 # ------------------------------------------------------------------------
-
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
