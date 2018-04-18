@@ -235,141 +235,50 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         totalBR=gettotalbr(h,charmhistograms,mass,couplings,totaltauBR)
         #overwrite Xi_c0 decays
         P8gen.SetParameters("4132:new  Xi_c0            Xi_cbar0    2   0   0    2.47088    0.00000    0.00000    0.00000  3.36000e-02   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("4132:new Xi_c0  Xi_cbar0     2 0 0 2.47088 0.00000 0.00000 0.00000 3.36000e-02 0 1 0 1 0")\n')
-        sumBR=0.
-        if getbr(h,'xic0_Xi-_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("4132:addChannel      1  "+str(getbr(h,'xic0_Xi-_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015 3312")
-	   if debug: cf.write('P8gen.SetParameters("4132:addChannel      1  '+str(getbr(h,'xic0_Xi-_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015 3312")\n')
-           sumBR+=float(getbr(h,'xic0_Xi-_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'xic0_Xi-_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("4132:addChannel      1  "+str(getbr(h,'xic0_Xi-_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015 3312")
-	   if debug: cf.write('P8gen.SetParameters("4132:addChannel      1  '+str(getbr(h,'xic0_Xi-_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015 3312")\n')
-           sumBR+=float(getbr(h,'xic0_Xi-_mu',mass,couplings[1])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("4132:addChannel      1   "+str(1.-sumBR)+"    0       22      22")
-	   if debug: cf.write('P8gen.SetParameters("4132:addChannel      1  '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'4132','decay':'xic0_Xi-_e',   'coupling':0,'idlepton':-11,'idhadron':-3312},\
+                     {'id':'4132','decay':'xic0_Xi-_mu',  'coupling':1,'idlepton':-11,'idhadron':-3312}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
+
         #overwrite D0 decays
         P8gen.SetParameters("421:new  D0  Dbar0    1   0   0    1.86486    0.00000    0.00000    0.00000  1.22900e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("421:new D0      Dbar0         1 0 0 1.86486 0.00000 0.00000 0.00000 1.22900e-01  1 0 1 0")\n')
-        sumBR=0.
-        if getbr(h,'d0_K-_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("421:addChannel      1  "+str(getbr(h,'d0_K-_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015     -321")
-	   if debug: cf.write('P8gen.SetParameters("421:addChannel       1  '+str(getbr(h,'d0_K-_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015     -321")\n')
-           sumBR+=float(getbr(h,'d0_K-_e',mass,couplings[0])/maxsumBR)  
-        if getbr(h,'d0_K*-_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("421:addChannel      1  "+str(getbr(h,'d0_K*-_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015     -323")
-	   if debug: cf.write('P8gen.SetParameters("421:addChannel       1  '+str(getbr(h,'d0_K*-_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015     -323")\n')
-           sumBR+=float(getbr(h,'d0_K*-_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'d0_K-_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("421:addChannel      1  "+str(getbr(h,'d0_K-_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015     -321")
-	   if debug: cf.write('P8gen.SetParameters("421:addChannel       1  '+str(getbr(h,'d0_K-_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015     -321")\n')
-           sumBR+=float(getbr(h,'d0_K-_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'d0_K*-_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("421:addChannel      1  "+str(getbr(h,'d0_K*-_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015     -323")
-	   if debug: cf.write('P8gen.SetParameters("421:addChannel       1  '+str(getbr(h,'d0_K*-_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015     -323")\n')
-           sumBR+=float(getbr(h,'d0_K*-_mu',mass,couplings[1])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("421:addChannel      1   "+str(1.-sumBR)+"    0       22      22")
-           if debug: cf.write('P8gen.SetParameters("421:addChannel       1  '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'421','decay':'d0_K-_e',   'coupling':0,'idlepton':-11,'idhadron':-321},\
+                     {'id':'421','decay':'d0_K*-_e',  'coupling':0,'idlepton':-11,'idhadron':-323},\
+                     {'id':'421','decay':'d0_K-_mu',  'coupling':1,'idlepton':-13,'idhadron':-321},\
+                     {'id':'421','decay':'d0_K*-_mu', 'coupling':1,'idlepton':-13,'idhadron':-323}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
 
         #overwrite tau- decays
         P8gen.SetParameters("15:new  tau-  tau+    2   -3   0    1.77682    0.00000    0.00000    0.00000  8.71100e-02   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("15:new  tau-     tau+         2 -3 0 1.77682 0.00000 0.00000 0.00000 8.71100e-02 0 1 0 1 0")\n')
-        sumBR=0.
-        if getbr(h,'tau_pi-',mass,couplings[2])>0.:
-           P8gen.SetParameters("15:addChannel      1  "+str(getbr(h,'tau_pi-',mass,couplings[2])/maxsumBR)+" 1521       9900015     -211")
-	   if debug: cf.write('P8gen.SetParameters("15:addChannel        1  '+str(getbr(h,'tau_pi-',mass,couplings[2])/maxsumBR)+' 1521       9900015     -211")\n')
-           sumBR+=float(getbr(h,'tau_pi-',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'tau_K-',mass,couplings[2])>0.:
-           P8gen.SetParameters("15:addChannel      1  "+str(getbr(h,'tau_K-',mass,couplings[2])/maxsumBR)+" 1521       9900015     -321")
-	   if debug: cf.write('P8gen.SetParameters("15:addChannel        1  '+str(getbr(h,'tau_K-',mass,couplings[2])/maxsumBR)+' 1521       9900015     -321")\n')
-           sumBR+=float(getbr(h,'tau_K-',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'tau_rho-',mass,couplings[2])>0.:
-           P8gen.SetParameters("15:addChannel      1  "+str(getbr(h,'tau_rho-',mass,couplings[2])/maxsumBR)+" 1521       9900015     -213")
-	   if debug: cf.write('P8gen.SetParameters("15:addChannel        1  '+str(getbr(h,'tau_rho-',mass,couplings[2])/maxsumBR)+' 1521       9900015     -213")\n')
-           sumBR+=float(getbr(h,'tau_rho-',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'tau_nu_e_bar_e',mass,couplings[2])>0.:
-           P8gen.SetParameters("15:addChannel      1  "+str(getbr(h,'tau_nu_e_bar_e',mass,couplings[2])/maxsumBR)+" 1531       9900015       11      -12")
-	   if debug: cf.write('P8gen.SetParameters("15:addChannel        1  '+str(getbr(h,'tau_nu_e_bar_e',mass,couplings[2])/maxsumBR)+' 1531       9900015       11      -12")\n')
-           sumBR+=float(getbr(h,'tau_nu_e_bar_e',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'tau_nu_tau_e',mass,couplings[2])>0.:
-           P8gen.SetParameters("15:addChannel      1  "+str(getbr(h,'tau_nu_tau_e',mass,couplings[2])/maxsumBR)+" 1531       9900015       11      -16")
-	   if debug: cf.write('P8gen.SetParameters("15:addChannel        1  '+str(getbr(h,'tau_nu_tau_e',mass,couplings[2])/maxsumBR)+' 1531       9900015       11      -16")\n')
-           sumBR+=float(getbr(h,'tau_nu_tau_e',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'tau_nu_mu_bar_mu',mass,couplings[2])>0.:
-           P8gen.SetParameters("15:addChannel      1  "+str(getbr(h,'tau_nu_mu_bar_mu',mass,couplings[2])/maxsumBR)+" 1531       9900015       13      -14")
-	   if debug: cf.write('P8gen.SetParameters("15:addChannel        1  '+str(getbr(h,'tau_nu_mu_bar_mu',mass,couplings[2])/maxsumBR)+' 1531       9900015       13      -14")\n')
-           sumBR+=float(getbr(h,'tau_nu_mu_bar_mu',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'tau_nu_tau_mu',mass,couplings[2])>0.:
-           P8gen.SetParameters("15:addChannel      1  "+str(getbr(h,'tau_nu_tau_mu',mass,couplings[2])/maxsumBR)+" 1531       9900015       13      -16")
-	   if debug: cf.write('P8gen.SetParameters("15:addChannel        1  '+str(getbr(h,'tau_nu_tau_mu',mass,couplings[2])/maxsumBR)+' 1531       9900015       13      -16")\n')
-           sumBR+=float(getbr(h,'tau_nu_tau_mu',mass,couplings[2])/maxsumBR) 
+        channels = [ {'id':'15','decay':'tau_pi-', 'coupling':2,'idhadron':-211},\
+                     {'id':'15','decay':'tau_K-',  'coupling':2,'idhadron':-321},\
+                     {'id':'15','decay':'tau_rho-',  'coupling':2,'idhadron':-213},\
+                     {'id':'15','decay':'tau__nu_e_bar_e',  'coupling':2,'idlepton':11,'idhadron':-12},\
+                     {'id':'15','decay':'tau_nu_tau_e',     'coupling':2,'idlepton':11,'idhadron':-16},\
+                     {'id':'15','decay':'tau_nu_mu_bar_mu',     'coupling':2,'idlepton':13,'idhadron':-14},\
+                     {'id':'15','decay':'tau_nu_tau_mu',     'coupling':2,'idlepton':13,'idhadron':-16}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
 
         #overwrite D_s+ decays
         P8gen.SetParameters("431:new  D_s+  D_s-    1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("431:new  D_s+      D_s-        1 3 0 1.96849 0.00000 0.00000 0.00000 1.49900e-01 0 1 0 1 0")\n')
-        sumBR=0.
-        if getbr(h,'ds_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("431:addChannel      1  "+str(getbr(h,'ds_mu',mass,couplings[1])/maxsumBR)+"    0      -13       9900015")
-	   if debug: cf.write('P8gen.SetParameters("431:addChannel       1  '+str(getbr(h,'ds_mu',mass,couplings[1])/maxsumBR)+'    0      -13       9900015")\n')
-           sumBR+=float(getbr(h,'ds_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'ds_e',mass,couplings[1])>0.:
-           P8gen.SetParameters("431:addChannel      1  "+str(getbr(h,'ds_e',mass,couplings[0])/maxsumBR)+"    0      -11       9900015")
-	   if debug: cf.write('P8gen.SetParameters("431:addChannel       1  '+str(getbr(h,'ds_e',mass,couplings[0])/maxsumBR)+'    0      -11       9900015")\n')
-           sumBR+=float(getbr(h,'ds_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'ds_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("431:addChannel      1  "+str(getbr(h,'ds_tau',mass,couplings[2])/maxsumBR)+"    0      -15       9900015")
-	   if debug: cf.write('P8gen.SetParameters("431:addChannel       1  '+str(getbr(h,'ds_tau',mass,couplings[2])/maxsumBR)+'    0      -15       9900015")\n')
-           sumBR+=float(getbr(h,'ds_tau',mass,couplings[2])/maxsumBR) 
-        P8gen.SetParameters("431:addChannel      1  "+str(totaltauBR/maxsumBR)+"    0      -15       16")
-	if debug: cf.write('P8gen.SetParameters("431:addChannel       1  '+str(totaltauBR/maxsumBR)+'    0      -15       16")\n')
-        sumBR+=float(totaltauBR/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("431:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
-	   if debug: cf.write('P8gen.SetParameters("431:addChannel       1  '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'431','decay':'ds_mu', 'coupling':1,'idlepton':-13},\
+                     {'id':'411','decay':'ds_e',  'coupling':0,'idlepton':-11},\
+                     {'id':'411','decay':'ds_tau','coupling':2,'idlepton':-15}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
+
         #overwrite Lambda_c+ decays
         P8gen.SetParameters("4122:new  Lambda_c+   Lambda_cbar-    2   3   0    2.28646    0.00000    0.00000    0.00000  5.99000e-02   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("4122:new Lambda_c+ Lambda_cbar- 2 3 0 2.28646 0.00000 0.00000 0.00000 5.99000e-02 0 1 0 1 0")\n')
-        sumBR=0
-        if getbr(h,'lambdac_Lambda0_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("4122:addChannel      1  "+str(getbr(h,'lambdac_Lambda0_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015     3122")
-	   if debug: cf.write('P8gen.SetParameters("4122:addChannel      1  '+str(getbr(h,'lambdac_Lambda0_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015     3122")\n')
-           sumBR+=float(getbr(h,'lambdac_Lambda0_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'lambdac_Lambda0_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("4122:addChannel      1  "+str(getbr(h,'lambdac_Lambda0_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015     3122")
-	   if debug: cf.write('P8gen.SetParameters("4122:addChannel      1  '+str(getbr(h,'lambdac_Lambda0_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015     3122")\n')
-           sumBR+=float(getbr(h,'lambdac_Lambda0_mu',mass,couplings[1])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("4122:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
-	   if debug: cf.write('P8gen.SetParameters("4122:addChannel      1  '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'4122','decay':'lambdac_Lambda0_e', 'coupling':0,'idlepton':-11,'idhadron':3122},\
+                     {'id':'4122','decay':'lambdac_Lambda0_mu', 'coupling':1,'idlepton':-13,'idhadron':3122}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
 
         #overwrite D+ decays
         P8gen.SetParameters("411:new  D+ D-    1   3   0    1.86962    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("411:new D+          D-        1 3 0 1.86962 0.00000 0.00000 0.00000 3.11800e-01 0 1 0 1 0")\n')
-        sumBR=0.
-        if getbr(h,'d_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("411:addChannel      1  "+str(getbr(h,'d_mu',mass,couplings[1])/maxsumBR)+"    0      -13       9900015")
-	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+str(getbr(h,'d_mu',mass,couplings[1])/maxsumBR)+'    0      -13       9900015")\n')
-           sumBR+=float(getbr(h,'d_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'d_e',mass,couplings[1])>0.:
-           P8gen.SetParameters("411:addChannel      1  "+str(getbr(h,'d_e',mass,couplings[0])/maxsumBR)+"    0      -11       9900015")
-	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+str(getbr(h,'d_e',mass,couplings[0])/maxsumBR)+'    0      -11       9900015")\n')
-           sumBR+=float(getbr(h,'d_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'d_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("411:addChannel      1  "+str(getbr(h,'d_tau',mass,couplings[2])/maxsumBR)+"    0      -15       9900015")
-	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+str(getbr(h,'d_tau',mass,couplings[2])/maxsumBR)+'    0      -15       9900015")\n')
-           sumBR+=float(getbr(h,'d_tau',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'d_K0_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("411:addChannel      1  "+str(getbr(h,'d_K0_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015      311")
-	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+str(getbr(h,'d_K0_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015      311")\n')
-           sumBR+=float(getbr(h,'d_K0_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'d_K0_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("411:addChannel      1  "+str(getbr(h,'d_K0_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015      311")
-	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+str(getbr(h,'d_K0_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015      311")\n')
-           sumBR+=float(getbr(h,'d_K0_mu',mass,couplings[1])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("411:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
-	   if debug: cf.write('P8gen.SetParameters("411:addChannel       1  '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'411','decay':'d_mu', 'coupling':1,'idlepton':-13},\
+                     {'id':'411','decay':'d_e',  'coupling':0,'idlepton':-11},\
+                     {'id':'411','decay':'d_tau','coupling':2,'idlepton':-15},\
+                     {'id':'411','decay':'d_K0_e','coupling':0,'idlepton':-11,'idhadron':311},\
+                     {'id':'411','decay':'d_K0_mu','coupling':1,'idlepton':-13,'idhadron':311}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
         P8gen.List(9900015)
 	if debug: cf.write('P8gen.List(9900015)\n')
     if inclusive=="b":
@@ -395,7 +304,17 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
         addHNLtoROOT(pid=9900015,m=mass,g=gamma)
         # 12 14 16 neutrinos replace with N2
-        beautyhistograms = ['bc_tau','b_D*0_bar_tau','bs_D_s-_tau','b_tau','lambdab_Lambda_c+_tau','Xib_Xi_c+_tau','Omega_b-_tau','b0_D*-_tau','bs_D*_s-_tau','b_D0_bar_tau','b0_D-_tau','b_e','bc_e','b_D*0_bar_e','b_D0_bar_e','b0_D*-_e','b0_D-_e','bs_D_s-_e','bs_D*_s-_e','bc_B_s0_e','bc_B0_e','bc_B*0_e','bc_B*_s0_e','lambdab_Lambda_c+_e','Xib_Xi_c+_e','Omega_b-_e','b_mu','bc_mu','b_D*0_bar_mu','b_D0_bar_mu','b0_D-_mu','b0_D*-_mu','bs_D_s-_mu','bs_D*_s-_mu','bc_B_s0_mu','bc_B0_mu','bc_B*0_mu','bc_B*_s0_mu','lambdab_Lambda_c+_mu','Xib_Xi_c+_mu','Omega_b-_mu','b_mu',] 
+        beautyhistograms = ['bc_tau','b_D*0_bar_tau','bs_D_s-_tau','b_tau','lambdab_Lambda_c+_tau','Xib_Xi_c+_tau',\
+                            'Omega_b-_tau','b0_D*-_tau','bs_D*_s-_tau','b_D0_bar_tau','b0_D-_tau','b_e','bc_e','b_D*0_bar_e',\
+                            'b_D0_bar_e','b0_D*-_e','b0_D-_e','bs_D_s-_e','bs_D*_s-_e','bc_B_s0_e','bc_B0_e','bc_B*0_e','bc_B*_s0_e',\
+                            'lambdab_Lambda_c+_e','Xib_Xi_c+_e','Omega_b-_e','b_mu','bc_mu','b_D*0_bar_mu','b_D0_bar_mu','b0_D-_mu',\
+                            'b0_D*-_mu','bs_D_s-_mu','bs_D*_s-_mu','bc_B_s0_mu','bc_B0_mu','bc_B*0_mu','bc_B*_s0_mu','lambdab_Lambda_c+_mu','Xib_Xi_c+_mu','Omega_b-_mu','b_mu']
+# disable Bc until production is sorted out
+        tmp = []
+        for x in beautyhistograms:
+           if  x[:2]=='bc': continue
+           tmp.append(x)
+        beautyhistograms = tmp
         maxsumBR=getmaxsumbr(h,beautyhistograms,mass,couplings,0.)
         if maxsumBR==0.:
            print "No phase space for HNL from b at this mass:",mass,". Quitting."
@@ -403,197 +322,73 @@ def configure(P8gen, mass, couplings, inclusive, deepCopy=False):
         totalBR=gettotalbr(h,beautyhistograms,mass,couplings,0.)
         #overwrite Lambda_b0 decays
         P8gen.SetParameters("5122:new  Lambda_b0        Lambda_bbar0    2   0   0    5.61940    0.00000    0.00000    0.00000  3.69000e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("5122:new  Lambda_b0        Lambda_bbar0    2   0   0    5.61940    0.00000    0.00000    0.00000  3.69000e-01   0   1   0   1   0")\n')
-        sumBR=0.
-        if getbr(h,'lambdab_Lambda_c+_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("5122:addChannel      1  "+str(getbr(h,'lambdab_Lambda_c+_e',mass,couplings[0])/maxsumBR)+"   22      9900015       11     4122")
-	   if debug: cf.write('P8gen.SetParameters("5122:addChannel      1  '+str(getbr(h,'lambdab_Lambda_c+_e',mass,couplings[0])/maxsumBR)+'   22      9900015       11     4122")\n')
-           sumBR+=float(getbr(h,'lambdab_Lambda_c+_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'lambdab_Lambda_c+_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("5122:addChannel      1  "+str(getbr(h,'lambdab_Lambda_c+_mu',mass,couplings[1])/maxsumBR)+"   22      9900015       13     4122")
-	   if debug: cf.write('P8gen.SetParameters("5122:addChannel      1  '+str(getbr(h,'lambdab_Lambda_c+_mu',mass,couplings[1])/maxsumBR)+'   22      9900015       13     4122")\n')
-           sumBR+=float(getbr(h,'lambdab_Lambda_c+_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'lambdab_Lambda_c+_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("5122:addChannel      1  "+str(getbr(h,'lambdab_Lambda_c+_tau',mass,couplings[2])/maxsumBR)+"   22      9900015       15     4122")
-	   if debug: cf.write('P8gen.SetParameters("5122:addChannel      1  '+str(getbr(h,'lambdab_Lambda_c+_tau',mass,couplings[2])/maxsumBR)+'   22      9900015       15     4122")\n')
-           sumBR+=float(getbr(h,'lambdab_Lambda_c+_tau',mass,couplings[2])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("5122:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
-	   if debug: cf.write('P8gen.SetParameters("5122:addChannel      1   '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'5122','decay':'lambdab_Lambda_c+_e','coupling':0,'idlepton':11,'idhadron':4122},\
+                     {'id':'5122','decay':'lambdab_Lambda_c+_mu','coupling':1,'idlepton':13,'idhadron':4122},\
+                     {'id':'5122','decay':'lambdab_Lambda_c+_tau','coupling':2,'idlepton':15,'idhadron':4122}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
+
         #overwrite B+ decays
         P8gen.SetParameters("521:new  B+               B-    1   3   0    5.27925    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("521:new  B+               B-    1   3   0    5.27925    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0")\n')
-        sumBR=0.
-        if getbr(h,'b_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_tau',mass,couplings[2])/maxsumBR)+"    0       9900015      -15")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_tau',mass,couplings[2])/maxsumBR)+'    0       9900015      -15")\n')
-           sumBR+=float(getbr(h,'b_tau',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'b_mu',mass,couplings[2])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_mu',mass,couplings[1])/maxsumBR)+"    0       9900015      -13")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_mu',mass,couplings[1])/maxsumBR)+'    0       9900015      -13")\n')
-           sumBR+=float(getbr(h,'b_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'b_e',mass,couplings[2])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_e',mass,couplings[0])/maxsumBR)+"    0       9900015      -11")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_e',mass,couplings[0])/maxsumBR)+'    0       9900015      -11")\n')
-           sumBR+=float(getbr(h,'b_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'b_D0_bar_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_D0_bar_e',mass,couplings[0])/maxsumBR)+"   22       9900015      -11     -421")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_D0_bar_e',mass,couplings[0])/maxsumBR)+'   22       9900015      -11     -421")\n')
-           sumBR+=float(getbr(h,'b_D0_bar_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'b_D*0_bar_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_D*0_bar_e',mass,couplings[0])/maxsumBR)+"   22       9900015      -11     -423")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_D*0_bar_e',mass,couplings[0])/maxsumBR)+'   22       9900015      -11     -423")\n')
-           sumBR+=float(getbr(h,'b_D*0_bar_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'b_D0_bar_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_D0_bar_mu',mass,couplings[1])/maxsumBR)+"   22       9900015      -13     -421")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_D0_bar_mu',mass,couplings[1])/maxsumBR)+'   22       9900015      -13     -421")\n')
-           sumBR+=float(getbr(h,'b_D0_bar_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'b_D*0_bar_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_D*0_bar_mu',mass,couplings[1])/maxsumBR)+"   22       9900015      -13     -423")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_D*0_bar_mu',mass,couplings[1])/maxsumBR)+'   22       9900015      -13     -423")\n')
-           sumBR+=float(getbr(h,'b_D*0_bar_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'b_D0_bar_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_D0_bar_tau',mass,couplings[2])/maxsumBR)+"   22       9900015      -15     -421")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_D0_bar_tau',mass,couplings[2])/maxsumBR)+'   22       9900015      -15     -421")\n')
-           sumBR+=float(getbr(h,'b_D0_bar_tau',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'b_D*0_bar_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+str(getbr(h,'b_D*0_bar_tau',mass,couplings[2])/maxsumBR)+"   22       9900015      -15     -423")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1  '+str(getbr(h,'b_D*0_bar_tau',mass,couplings[2])/maxsumBR)+'   22       9900015      -15     -423")\n')
-           sumBR+=float(getbr(h,'b_D*0_bar_tau',mass,couplings[2])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("521:addChannel      1   "+str(1.-sumBR)+"    0       22      22")
-	   if debug: cf.write('P8gen.SetParameters("521:addChannel      1   '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'521','decay':'b_tau','coupling':2,'idlepton':-15},\
+                     {'id':'521','decay':'b_mu', 'coupling':1,'idlepton':-13},\
+                     {'id':'521','decay':'b_e',  'coupling':0,'idlepton':-11},\
+                     {'id':'521','decay':'b_D0_bar_e',   'coupling':0,'idlepton':-11,'idhadron':-421},\
+                     {'id':'521','decay':'b_D*0_bar_e',  'coupling':0,'idlepton':-11,'idhadron':-423},\
+                     {'id':'521','decay':'b_D0_bar_mu',   'coupling':1,'idlepton':-13,'idhadron':-421},\
+                     {'id':'521','decay':'b_D*0_bar_mu',  'coupling':1,'idlepton':-13,'idhadron':-423},\
+                     {'id':'521','decay':'b_D0_bar_tau',   'coupling':2,'idlepton':-15,'idhadron':-421},\
+                     {'id':'521','decay':'b_D*0_bar_tau',  'coupling':2,'idlepton':-15,'idhadron':-423}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
+
         #overwrite Xi_b0 decays
         P8gen.SetParameters("5232:new  Xi_b0            Xi_bbar0    2   0   0    5.78800    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("5232:new  Xi_b0            Xi_bbar0    2   0   0    5.78800    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0")\n')
-        sumBR=0.
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("5232:addChannel      1   "+str(1.-sumBR)+"    0       22      22")
-	   if debug: cf.write('P8gen.SetParameters("5232:addChannel      1   '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'5232','decay':'Xib_Xi_c+_tau','coupling':2,'idlepton':-15},\
+                     {'id':'5232','decay':'Xib_Xi_c+_mu','coupling':1,'idlepton':-13},\
+                     {'id':'5232','decay':'Xib_Xi_c+_e','coupling':0,'idlepton':-11}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
 
         #overwrite B_s0 decays
         P8gen.SetParameters("531:new  B_s0             B_sbar0    1   0   0    5.36677    0.00000    0.00000    0.00000  4.39000e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("531:new  B_s0             B_sbar0    1   0   0    5.36677    0.00000    0.00000    0.00000  4.39000e-01   0   1   0   1   0")\n')
-        sumBR=0.
-        if getbr(h,'bs_D_s-_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("531:addChannel      1  "+str(getbr(h,'bs_D_s-_e',mass,couplings[0])/maxsumBR)+"   22       9900015      -11     -431")
-	   if debug: cf.write('P8gen.SetParameters("531:addChannel      1  '+str(getbr(h,'bs_D_s-_e',mass,couplings[0])/maxsumBR)+'   22       9900015      -11     -431")\n')
-           sumBR+=float(getbr(h,'bs_D_s-_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'bs_D*_s-_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("531:addChannel      1  "+str(getbr(h,'bs_D*_s-_e',mass,couplings[0])/maxsumBR)+"   22       9900015      -11     -433")
-	   if debug: cf.write('P8gen.SetParameters("531:addChannel      1  '+str(getbr(h,'bs_D*_s-_e',mass,couplings[0])/maxsumBR)+'   22       9900015      -11     -433")\n')
-           sumBR+=float(getbr(h,'bs_D*_s-_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'bs_D_s-_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("531:addChannel      1  "+str(getbr(h,'bs_D_s-_mu',mass,couplings[1])/maxsumBR)+"   22       9900015      -13     -431")
-	   if debug: cf.write('P8gen.SetParameters("531:addChannel      1  '+str(getbr(h,'bs_D_s-_mu',mass,couplings[1])/maxsumBR)+'   22       9900015      -13     -431")\n')
-           sumBR+=float(getbr(h,'bs_D_s-_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'bs_D*_s-_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("531:addChannel      1  "+str(getbr(h,'bs_D*_s-_mu',mass,couplings[1])/maxsumBR)+"   22       9900015      -13     -433")
-	   if debug: cf.write('P8gen.SetParameters("531:addChannel      1  '+str(getbr(h,'bs_D*_s-_mu',mass,couplings[1])/maxsumBR)+'   22       9900015      -13     -433")\n')
-           sumBR+=float(getbr(h,'bs_D*_s-_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'bs_D_s-_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("531:addChannel      1  "+str(getbr(h,'bs_D_s-_tau',mass,couplings[2])/maxsumBR)+"   22       9900015      -15     -431")
-	   if debug: cf.write('P8gen.SetParameters("531:addChannel      1  '+str(getbr(h,'bs_D_s-_tau',mass,couplings[2])/maxsumBR)+'   22       9900015      -15     -431")\n')
-           sumBR+=float(getbr(h,'bs_D_s-_tau',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'bs_D*_s-_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("531:addChannel      1  "+str(getbr(h,'bs_D*_s-_tau',mass,couplings[2])/maxsumBR)+"   22       9900015      -15     -433")
-	   if debug: cf.write('P8gen.SetParameters("531:addChannel      1  '+str(getbr(h,'bs_D*_s-_tau',mass,couplings[2])/maxsumBR)+'   22       9900015      -15     -433")\n')
-           sumBR+=float(getbr(h,'bs_D*_s-_tau',mass,couplings[2])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("531:addChannel      1   "+str(1.-sumBR)+"    0       22      22")
-	   if debug: cf.write('P8gen.SetParameters("531:addChannel      1   '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'531','decay':'bs_D_s-_e',   'coupling':0,'idlepton':-11,'idhadron':-431},\
+                     {'id':'531','decay':'bs_D*_s-_e',  'coupling':0,'idlepton':-11,'idhadron':-433},\
+                     {'id':'531','decay':'bs_D_s-_mu',  'coupling':1,'idlepton':-13,'idhadron':-431},\
+                     {'id':'531','decay':'bs_D*_s-_mu', 'coupling':1,'idlepton':-13,'idhadron':-433},\
+                     {'id':'531','decay':'bs_D_s-_tau', 'coupling':2,'idlepton':-15,'idhadron':-431},\
+                     {'id':'531','decay':'bs_D*_s-_tau','coupling':2,'idlepton':-15,'idhadron':-433}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
 
         #overwrite Omega_b- decays
         P8gen.SetParameters("5332:new  Omega_b-         Omega_bbar+    2   -3   0    6.07000    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("5332:new  Omega_b-         Omega_bbar+    2   -3   0    6.07000    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0")\n')
-        sumBR=0.
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("5332:addChannel      1   "+str(1.-sumBR)+"    0       22      11")
-	   if debug: cf.write('P8gen.SetParameters("5332:addChannel      1   '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'5332','decay':'Omega_b-_tau','coupling':2,'idlepton':-15},\
+                     {'id':'5332','decay':'Omega_b-_mu','coupling':1,'idlepton':-13},\
+                     {'id':'5332','decay':'Omega_b-_e','coupling':0,'idlepton':-11}]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
 
         #overwrite B_c+ decays
         P8gen.SetParameters("541:new  B_c+             B_c-    1   3   0    6.27700    0.00000    0.00000    0.00000  1.38000e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("541:new  B_c+             B_c-    1   3   0    6.27700    0.00000    0.00000    0.00000  1.38000e-01   0   1   0   1   0")\n')
-        sumBR=0.
-        if getbr(h,'bc_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_tau',mass,couplings[2])/maxsumBR)+"    0       9900015      -15")
-	   if debug: cf.write(' P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_tau',mass,couplings[2])/maxsumBR)+'    0       9900015      -15")\n')
-           sumBR+=float(getbr(h,'bc_tau',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'bc_e',mass,couplings[2])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_e',mass,couplings[0])/maxsumBR)+"    0       9900015      -11")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_e',mass,couplings[0])/maxsumBR)+'    0       9900015      -11")\n')
-           sumBR+=float(getbr(h,'bc_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'bc_mu',mass,couplings[2])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_mu',mass,couplings[1])/maxsumBR)+"    0       9900015      -13")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_mu',mass,couplings[1])/maxsumBR)+'    0       9900015      -13")\n')
-           sumBR+=float(getbr(h,'bc_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'bc_B0_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B0_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015      511")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B0_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015      511")\n')
-           sumBR+=float(getbr(h,'bc_B0_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'bc_B*0_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B*0_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015      513")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B*0_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015      513")\n')
-           sumBR+=float(getbr(h,'bc_B*0_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'bc_B_s0_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B_s0_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015      531")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B_s0_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015      531")\n')
-           sumBR+=float(getbr(h,'bc_B_s0_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'bc_B*_s0_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B*_s0_e',mass,couplings[0])/maxsumBR)+"   22      -11       9900015      533")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B*_s0_e',mass,couplings[0])/maxsumBR)+'   22      -11       9900015      533")\n')
-           sumBR+=float(getbr(h,'bc_B*_s0_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'bc_B0_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B0_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015      511")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B0_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015      511")\n')
-           sumBR+=float(getbr(h,'bc_B0_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'bc_B*0_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B*0_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015      513")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B*0_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015      513")\n')
-           sumBR+=float(getbr(h,'bc_B*0_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'bc_B_s0_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B_s0_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015      531")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B_s0_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015      531")\n')
-           sumBR+=float(getbr(h,'bc_B_s0_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'bc_B*_s0_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("541:addChannel      1  "+str(getbr(h,'bc_B*_s0_mu',mass,couplings[1])/maxsumBR)+"   22      -13       9900015      533")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1  '+str(getbr(h,'bc_B*_s0_mu',mass,couplings[1])/maxsumBR)+'   22      -13       9900015      533")\n')
-           sumBR+=float(getbr(h,'bc_B*_s0_mu',mass,couplings[1])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("541:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
-	   if debug: cf.write('P8gen.SetParameters("541:addChannel      1   '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'541','decay':'bc_tau','coupling':2,'idlepton':-15},\
+                     {'id':'541','decay':'bc_e',  'coupling':0,'idlepton':-11},\
+                     {'id':'541','decay':'bc_mu', 'coupling':1,'idlepton':-13},\
+                     {'id':'541','decay':'bc_B0_e',    'coupling':0,'idlepton':-11,'idhadron':511},\
+                     {'id':'541','decay':'bc_B*0_e',   'coupling':0,'idlepton':-11,'idhadron':513},\
+                     {'id':'541','decay':'bc_B_s0_e',  'coupling':0,'idlepton':-11,'idhadron':531},\
+                     {'id':'541','decay':'bc_B*_s0_e', 'coupling':0,'idlepton':-11,'idhadron':533},\
+                     {'id':'541','decay':'bc_B0_mu',   'coupling':1,'idlepton':-13,'idhadron':511},\
+                     {'id':'541','decay':'bc_B*0_mu',  'coupling':1,'idlepton':-13,'idhadron':513},\
+                     {'id':'541','decay':'bc_B_s0_mu', 'coupling':1,'idlepton':-13,'idhadron':531},\
+                     {'id':'541','decay':'bc_B*_s0_mu','coupling':1,'idlepton':-13,'idhadron':533} ]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
 
         #overwrite B0 decays
         P8gen.SetParameters("511:new  B0  Bbar0    1   0   0    5.27958    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0")
-	if debug: cf.write('P8gen.SetParameters("511:new  B0  Bbar0    1   0   0    5.27958    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0")\n')
-        sumBR=0.
-        if getbr(h,'b0_D-_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("511:addChannel      1  "+str(getbr(h,'b0_D-_e',mass,couplings[0])/maxsumBR)+"   22       9900015      -11     -411")
-	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1  '+str(getbr(h,'b0_D-_e',mass,couplings[0])/maxsumBR)+'   22       9900015      -11     -411")\n')
-           sumBR+=float(getbr(h,'b0_D-_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'b0_D*-_e',mass,couplings[0])>0.:
-           P8gen.SetParameters("511:addChannel      1  "+str(getbr(h,'b0_D*-_e',mass,couplings[0])/maxsumBR)+"   22       9900015      -11     -413")
-	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1  '+str(getbr(h,'b0_D*-_e',mass,couplings[0])/maxsumBR)+'   22       9900015      -11     -413")\n')
-           sumBR+=float(getbr(h,'b0_D*-_e',mass,couplings[0])/maxsumBR) 
-        if getbr(h,'b0_D-_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("511:addChannel      1  "+str(getbr(h,'b0_D-_mu',mass,couplings[1])/maxsumBR)+"   22       9900015      -13     -411")
-	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1  '+str(getbr(h,'b0_D-_mu',mass,couplings[1])/maxsumBR)+'   22       9900015      -13     -411")\n')
-           sumBR+=float(getbr(h,'b0_D-_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'b0_D*-_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("511:addChannel      1  "+str(getbr(h,'b0_D*-_mu',mass,couplings[1])/maxsumBR)+"   22       9900015      -13     -413")
-	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1  '+str(getbr(h,'b0_D*-_mu',mass,couplings[1])/maxsumBR)+'   22       9900015      -13     -413")\n')
-           sumBR+=float(getbr(h,'b0_D*-_mu',mass,couplings[1])/maxsumBR) 
-        if getbr(h,'b0_D-_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("511:addChannel      1  "+str(getbr(h,'b0_D-_tau',mass,couplings[2])/maxsumBR)+"   22       9900015      -15     -411")
-	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1  '+str(getbr(h,'b0_D-_tau',mass,couplings[2])/maxsumBR)+'   22       9900015      -15     -411")\n')
-           sumBR+=float(getbr(h,'b0_D-_tau',mass,couplings[2])/maxsumBR) 
-        if getbr(h,'b0_D*-_tau',mass,couplings[2])>0.:
-           P8gen.SetParameters("511:addChannel      1  "+str(getbr(h,'b0_D*-_tau',mass,couplings[2])/maxsumBR)+"   22       9900015      -15     -413")
-	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1  '+str(getbr(h,'b0_D*-_tau',mass,couplings[2])/maxsumBR)+'   22       9900015      -15     -413")\n')
-           sumBR+=float(getbr(h,'b0_D*-_tau',mass,couplings[2])/maxsumBR) 
-        if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("511:addChannel      1   "+str(1.-sumBR)+"    0       22      22")
-	   if debug: cf.write('P8gen.SetParameters("511:addChannel      1   '+str(1.-sumBR)+'    0       22      22")\n')
+        channels = [ {'id':'511','decay':'b0_D-_e',   'coupling':0,'idlepton':-11,'idhadron':-411},\
+                     {'id':'511','decay':'b0_D*-_e',  'coupling':0,'idlepton':-11,'idhadron':-413},\
+                     {'id':'511','decay':'b0_D-_mu',  'coupling':1,'idlepton':-13,'idhadron':-411},\
+                     {'id':'511','decay':'b0_D*-_mu', 'coupling':1,'idlepton':-13,'idhadron':-413},\
+                     {'id':'511','decay':'b0_D-_tau', 'coupling':2,'idlepton':-15,'idhadron':-411},\
+                     {'id':'511','decay':'b0_D*-_tau','coupling':2,'idlepton':-15,'idhadron':-413} ]
+        setChannels(P8gen,h,channels,mass,couplings,maxsumBR)
+
         P8gen.List(9900015)
         if debug: cf.write('P8gen.List(9900015)\n')
     if debug: cf.close()
