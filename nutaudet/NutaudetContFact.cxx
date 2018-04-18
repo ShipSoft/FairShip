@@ -23,7 +23,7 @@ using namespace std;
 
 ClassImp(NutaudetContFact)
 
-static NutaudetContFact gNutaudetContFact;
+//static NutaudetContFact gNutaudetContFact;
 
 NutaudetContFact::NutaudetContFact()
   : FairContFact()

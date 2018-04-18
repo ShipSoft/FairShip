@@ -5,7 +5,7 @@
 
 ClassImp(muonContFact)
 
-static muonContFact gmuonContFact;
+//static muonContFact gmuonContFact;
 
 muonContFact::muonContFact()
   : FairContFact()
