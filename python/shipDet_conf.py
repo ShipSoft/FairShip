@@ -284,12 +284,9 @@ def configure(run,ship_geo):
  if ship_geo.strawDesign > 1 :
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    
   Strawtubes.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
-
-  if ship_geo.strawDesign == 10 or ship_geo.strawDesign == 11:
-      Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
-      Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)
-      Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)
-
+  Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
+  Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)
+  Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)
   Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)
   Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)
   Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)

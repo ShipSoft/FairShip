@@ -137,6 +137,9 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.DeltazPlane        = 2.6*u.cm   
      c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch  / 2.
      c.strawtubes.YPlaneOffset = c.strawtubes.StrawPitch  / 4.
+     c.strawtubes.FrameMaterial      = "aluminium"
+     c.strawtubes.FrameLateralWidth  = 1.*u.cm
+     c.strawtubes.DeltazFrame        = 10.*u.cm
     elif strawDesign==10 or strawDesign==11:  # 10 - baseline for 2018, 11 - 2018 design with material frames around each view
      c.strawtubes.InnerStrawDiameter = 1.975*u.cm
      c.strawtubes.StrawPitch         = 3.60*u.cm  
