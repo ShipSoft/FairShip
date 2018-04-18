@@ -284,6 +284,9 @@ def configure(run,ship_geo):
  if ship_geo.strawDesign > 1 :
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    
   Strawtubes.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
+  Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
+  Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)
+  Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)
   Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)
   Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)
   Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)
@@ -363,7 +366,7 @@ def configure(run,ship_geo):
  detectorList.append(timeDet)
 
 #-----   Magnetic field   -------------------------------------------
- if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
+ if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10 : fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
  else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
  if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
  run.SetField(fMagField)
