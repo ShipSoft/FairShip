@@ -23,8 +23,7 @@ def configure(run,ship_geo):
  latestCharmGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
-# ------------------------------------------------------------------------
-  
+ 
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
  cave.SetGeometryFileName("caveWithAir.geo")
@@ -47,7 +46,7 @@ def configure(run,ship_geo):
  Spectrometer.SetCoilParameters(ship_geo.Spectrometer.CoilR, ship_geo.Spectrometer.UpCoilH, ship_geo.Spectrometer.LowCoilH,  ship_geo.Spectrometer.CoilD);
 # --------------------------------------
  Spectrometer.SetBoxParam(ship_geo.Spectrometer.SX,ship_geo.Spectrometer.SY,ship_geo.Spectrometer.SZ,ship_geo.Spectrometer.zBox)
- 
+  
  MufluxSpectrometer = ROOT.MufluxSpectrometer("MufluxSpectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
  # -----Drift tube part --------
  
@@ -66,17 +65,23 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetTubesPerLayer(ship_geo.MufluxSpectrometer.TubesPerLayer)
  MufluxSpectrometer.SetStereoAngle(ship_geo.MufluxSpectrometer.ViewAngle)
  MufluxSpectrometer.SetWireThickness(ship_geo.MufluxSpectrometer.WireThickness)
- MufluxSpectrometer.SetVacBox_x(ship_geo.MufluxSpectrometer.VacBox_x)
- MufluxSpectrometer.SetVacBox_y(ship_geo.MufluxSpectrometer.VacBox_y)
  MufluxSpectrometer.SetTubeLength(ship_geo.MufluxSpectrometer.TubeLength)
  MufluxSpectrometer.SetTubeLength12(ship_geo.MufluxSpectrometer.TubeLength12) 
  MufluxSpectrometer.SetTr12YDim(ship_geo.MufluxSpectrometer.tr12ydim)
  MufluxSpectrometer.SetTr34YDim(ship_geo.MufluxSpectrometer.tr34ydim)
  MufluxSpectrometer.SetTr12XDim(ship_geo.MufluxSpectrometer.tr12xdim)
  MufluxSpectrometer.SetTr34XDim(ship_geo.MufluxSpectrometer.tr34xdim) 
- #MufluxSpectrometer.SetMuonFlux(ship_geo.MufluxSpectrometer.muflux)            
+ MufluxSpectrometer.SetDistStereo(ship_geo.MufluxSpectrometer.diststereo)
+ MufluxSpectrometer.SetDistT1T2(ship_geo.MufluxSpectrometer.distT1T2)
+ MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)    
+       
  # for the digitizing step
  MufluxSpectrometer.SetTubeResolution(ship_geo.MufluxSpectrometer.v_drift,ship_geo.MufluxSpectrometer.sigma_spatial) 
+
+ Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
+ Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
+ Scintillator.SetDistT1(ship_geo.MufluxSpectrometer.DeltazView/2+ship_geo.MufluxSpectrometer.OuterTubeDiameter/2-ship_geo.Scintillator.DistT1)
+ Scintillator.SetDistT2(ship_geo.Scintillator.DistT2)
  
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(Spectrometer)
@@ -93,10 +98,9 @@ def configure(run,ship_geo):
      TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
      TargetStation.SetMuFlux(ship_geo.MufluxSpectrometer.muflux)
      detectorList.append(TargetStation)
-    detectorList.append(MufluxSpectrometer)
-    Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
-    Scintillator.SetScoring1XY(ship_geo.Scintillator.Scoring1X,ship_geo.Scintillator.Scoring1Y)
+     
     detectorList.append(Scintillator)
+    detectorList.append(MufluxSpectrometer)
    
  MuonTagger = ROOT.MuonTagger("MuonTagger", ship_geo.MuonTagger.BX, ship_geo.MuonTagger.BY, ship_geo.MuonTagger.BZ, ship_geo.MuonTagger.zBox, ROOT.kTRUE)
  MuonTagger.SetPassiveParameters(ship_geo.MuonTagger.PX, ship_geo.MuonTagger.PY, ship_geo.MuonTagger.PTh)
@@ -104,7 +108,13 @@ def configure(run,ship_geo):
  detectorList.append(MuonTagger)
  for x in detectorList:
   run.AddModule(x)
+  
+ fMagField = ROOT.ShipGoliathField()
+ fMagField.Init()
+ run.SetField(fMagField)   
+ 
 # return list of detector elements
  detElements = {}
- for x in run.GetListOfModules(): detElements[x.GetName()]=x
+ for x in run.GetListOfModules(): detElements[x.GetName()]=x 
+ 
  return detElements

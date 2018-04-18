@@ -63,10 +63,10 @@ nuRadiography = False # misuse GenieGenerator for neutrino radiography and geome
 Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t:g",[\
-                                   "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
+                                   "PG","PGplus","PGmin","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign="])
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -93,6 +93,16 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--PG",):
             simEngine = "PG"
+        if o in ("--PGplus",):
+            simEngine = "PGplus"
+        if o in ("--PGmin",):
+            simEngine = "PGmin"
+        if o in ("--Estart",):
+            Estart = 10.
+            if a!=str(0): Estart = float(a)
+        if o in ("--Eend",):
+            Eend = 10.
+            if a!=str(0): Eend = float(a)   
         if o in ("-A",):
             inclusive = a
             if a=='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
@@ -309,14 +319,21 @@ if simEngine == "Pythia6":
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
 # -----Particle Gun-----------------------
-if simEngine == "PG": 
-  myPgun = ROOT.FairBoxGenerator(22,1)
+if simEngine[:2] == "PG": 
+  if simEngine == "PGplus":
+     myPgun = ROOT.FairBoxGenerator(-13,1)
+  elif simEngine == "PGmin":
+     myPgun = ROOT.FairBoxGenerator(13,1)
+  else:
+     myPgun = ROOT.FairBoxGenerator(22,1)
   myPgun.SetPRange(10,10.2)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
+  if charm!=0: myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
+  else: myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
+  if charm!=0: primGen.SetTarget(ship_geo.target.z0,0.)
   primGen.AddGenerator(myPgun)
-  run.SetGenerator(primGen)
+  if charm==0: run.SetGenerator(primGen)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
@@ -578,3 +595,5 @@ def checkOverlapsWithGeant4():
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
+
+
