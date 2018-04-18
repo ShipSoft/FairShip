@@ -2,7 +2,7 @@ import ROOT, os, sys
 import shipunit as u
 
 def addHNLtoROOT(pid=9900015 ,m = 1.0, g=3.654203020370371E-21):
-    pdg = ROOT.TDatabasePDG.Instance()                                                                        
+    pdg = ROOT.TDatabasePDG.Instance()
     pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid) 
 
 def readFromAscii(filename="branchingratios"):
