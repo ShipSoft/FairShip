@@ -244,15 +244,22 @@ def checkHNLorigin(sTree):
  flag = True
  if not fiducialCut: return flag
 # only makes sense for signal == HNL
- if  sTree.MCTrack.GetEntries()<3: return
- # hnlkey = 2 # pythia8 cascade events
- # hnlkey = 1 # pythia8 primary events
- for hnlkey in [1,2]: 
-  if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015:
-   theHNLVx = sTree.MCTrack[hnlkey+1]
-   X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
-   if not isInFiducial(X,Y,Z): flag = False
+ hnlkey = -1
+ found = False
+ for hnlkey in range(sTree.MCTrack.GetEntries()):
+   hnlkey+=1
+   if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015: 
+       found = True
+       break
+ if not found : 
+  print "checkHNLorigin: no HNL found"
+  flag = False
+ else:
+  theHNLVx = sTree.MCTrack[hnlkey]
+  X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
+  if not isInFiducial(X,Y,Z): flag = False
  return flag 
+
 def checkFiducialVolume(sTree,tkey,dy):
 # extrapolate track to middle of magnet and check if in decay volume
    inside = True
