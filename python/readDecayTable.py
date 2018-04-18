@@ -73,9 +73,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
             # Charge conjugate modes
             codes = ' '.join([(str(-1*code) if pdg.GetParticle(-code)!=None else str(code)) for code in childrenCodes])
             P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
-            print "debug readdecay table",particles,children,BR
-
-
+            # print "debug readdecay table",particles,children,BR
 
 def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
     """
