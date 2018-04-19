@@ -54,9 +54,9 @@ with ConfigRegistry.register_config("basic") as c:
 # cave parameters
     c.cave = AttrDict(z=0*u.cm)
     c.cave.floorHeightMuonShield = 5*u.m
-    c.cave.floorHeightTankA = 4.2*u.m  # no overlapp with 4.5 -> 4.2
+    c.cave.floorHeightTankA = 4.2*u.m
     if strawDesign == 10:
-        c.cave.floorHeightTankA = 3.0*u.m # avoid overlaps between Tr_1 and DecayVolume
+        c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2*u.m
 #
     #neutrino detector

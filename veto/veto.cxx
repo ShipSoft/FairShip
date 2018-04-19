@@ -1220,7 +1220,7 @@ void veto::ConstructGeometry()
       Double_t dy  = slopey*(zpos - zFocusY);
    // make the entrance window
       // add floor:
-      Double_t Length = zStartMagVol - zStartDecayVol - 1.8*m;
+      Double_t Length = zStartMagVol - zStartDecayVol - 2.2*m;
       TGeoBBox *box = new TGeoBBox("box1",  10 * m, floorHeightA/2., Length/2.);
       TGeoVolume *floor = new TGeoVolume("floor1",box,concrete);
       floor->SetLineColor(11);
@@ -1238,11 +1238,11 @@ void veto::ConstructGeometry()
       TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeightA);
       tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z-zStartDecayVol));
 
-      Length = fTub6z+fTub6length-fTub2z-fTub2length;
+      Length = fTub6length+fTub2length+3*m; // extend under ecal and muon detectors
       box = new TGeoBBox("box2",  10 * m, floorHeightB/2., Length/2.);
       floor = new TGeoVolume("floor2",box,concrete);
       floor->SetLineColor(11);
-      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length));
+      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length - 0.5*m));
 
       //After T1: not conical, size of T4, hencee slopes=0. etc..
       dx1 = slopex*(fTub6z -fTub6length - zFocusX);
