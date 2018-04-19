@@ -445,8 +445,17 @@ void NuTauMudet::ConstructGeometry()
   if(fDesign==3)
     {
       Int_t nr = 1E4;
-      
-      TGeoBBox *MudetBox = new TGeoBBox("NuTauMudetBox", fXtot/2, fYtot/2, fZtot/2);
+      TGeoBBox *LargedetBox = new TGeoBBox("LargedetBox", fXtot/2, fYtot/2, (2*fZFe+3*fZRpc)/2);  
+      TGeoBBox *SmalldetBox = new TGeoBBox("SmalldetBox", fXtot/2, (fYtot-fdeltay)/2, fZtot/2); //solving overlapping with pillars->dividing box to an union of two different boxes
+ 
+      TGeoTranslation *translationlarge = new TGeoTranslation(0,0,(fZtot-2*fZFe-3*fZRpc)/2);
+      translationlarge->SetName("translationlarge");
+      translationlarge->RegisterYourself();
+      TGeoTranslation *translationsmall = new TGeoTranslation(0,0,0);
+      translationsmall->SetName("translationsmall");
+      translationsmall->RegisterYourself();
+      TGeoCompositeShape *MudetBox = new TGeoCompositeShape("MudetBox", "LargedetBox:translationlarge + SmalldetBox:translationsmall");
+            
       TGeoVolume *volMudetBox = new TGeoVolume("volTauNuMudet", MudetBox, vacuum);
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter));
 
