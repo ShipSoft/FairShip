@@ -110,7 +110,10 @@ def configure(run,ship_geo):
   run.AddModule(x)
   
  fMagField = ROOT.ShipGoliathField()
- fMagField.Init()
+ 
+ fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
+ print "Goliath field file ",fieldfile
+ fMagField.Init(fieldfile)
  run.SetField(fMagField)   
  
 # return list of detector elements

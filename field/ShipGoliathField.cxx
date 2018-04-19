@@ -62,11 +62,9 @@ ShipGoliathField::~ShipGoliathField() { }
 }
 */
 
-void ShipGoliathField::Init(){
-  //std::cout<<"Calling ShipGoliathField::Init"<<std::endl;
-  char* mypath =  std::getenv("FAIRSHIP");
-  strcat(mypath,"/field/GoliathFieldMap.root");
-  TFile *fieldmap = new TFile(mypath); 
+void ShipGoliathField::Init(const char* fieldfile){
+
+  TFile *fieldmap = new TFile(fieldfile); 
   
   
   TH3D* histbx= (TH3D*)fieldmap->Get("Bx");

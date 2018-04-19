@@ -36,7 +36,7 @@ class ShipGoliathField : public FairField
   /** Destructor **/
   virtual ~ShipGoliathField();
 
-  void Init();
+  void Init(const char* fieldfile);
 
   Double_t coords[13][6]; 
   
