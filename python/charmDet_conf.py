@@ -112,7 +112,6 @@ def configure(run,ship_geo):
  fMagField = ROOT.ShipGoliathField()
  
  fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
- print "Goliath field file ",fieldfile
  fMagField.Init(fieldfile)
  run.SetField(fMagField)   
  
