@@ -230,7 +230,10 @@ MuonTagger.SetPassiveParameters(ship_geo.MuonTagger.PX, ship_geo.MuonTagger.PY, 
 MuonTagger.SetSensitiveParameters(ship_geo.MuonTagger.SX, ship_geo.MuonTagger.SY, ship_geo.MuonTagger.STh)
 run.AddModule(MuonTagger)
   
-  
+fMagField = ROOT.ShipGoliathField()
+fMagField.Init()
+run.SetField(fMagField)   
+
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
