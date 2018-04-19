@@ -551,14 +551,7 @@ def myEventLoop(n):
   if not sTree.MCTrack.GetEntries()>1: wg = 1.
   else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
-# check extrapolation to TimeDet if exists
-  z_TimeDet = 3615.5000
-  for fT in sTree.FitTracks:
-     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_TimeDet)
-     if rc:
-      for aPoint in sTree.TimeDetPoint:
-       h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
-       h['extrapTimeDetY'].Fill(pos.Y()-aPoint.GetY())
+
 # make some ecal cluster analysis if exist
   if hasattr(sTree,"EcalClusters"):
    if calReco:  ecalReconstructed.Delete()
@@ -767,6 +760,15 @@ def myEventLoop(n):
     h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )
     h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )
     h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )
+
+# check extrapolation to TimeDet if exists
+  if hasattr(ShipGeo,"TimeDet"):
+   for fT in sTree.FitTracks:
+     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,ShipGeo.TimeDet.z)
+     if rc:
+      for aPoint in sTree.TimeDetPoint:
+       h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
+       h['extrapTimeDetY'].Fill(pos.Y()-aPoint.GetY())
 #
 def HNLKinematics():
  HNLorigin={}
