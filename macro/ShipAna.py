@@ -243,21 +243,22 @@ def ImpactParameter(point,tPos,tMom):
 def checkHNLorigin(sTree):
  flag = True
  if not fiducialCut: return flag
+ flag = False
 # only makes sense for signal == HNL
  hnlkey = -1
- found = False
- for hnlkey in range(sTree.MCTrack.GetEntries()):
-   hnlkey+=1
-   if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015: 
-       found = True
+ for n in range(sTree.MCTrack.GetEntries()):
+   mo = sTree.MCTrack[n].GetMotherId()
+   if mo <0: continue
+   if abs(sTree.MCTrack[mo].GetPdgCode()) == 9900015: 
+       hnlkey = n
        break
- if not found : 
+ if hnlkey<0 : 
   print "checkHNLorigin: no HNL found"
-  flag = False
  else:
+  # MCTrack after HNL should be first daughter
   theHNLVx = sTree.MCTrack[hnlkey]
   X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
-  if not isInFiducial(X,Y,Z): flag = False
+  if isInFiducial(X,Y,Z): flag = True
  return flag 
 
 def checkFiducialVolume(sTree,tkey,dy):
@@ -550,14 +551,7 @@ def myEventLoop(n):
   if not sTree.MCTrack.GetEntries()>1: wg = 1.
   else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
-# check extrapolation to TimeDet if exists
-  z_TimeDet = 3615.5000
-  for fT in sTree.FitTracks:
-     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
-     if rc:
-      for aPoint in sTree.TimeDetPoint:
-       h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
-       h['extrapTimeDetY'].Fill(pos.Y()-aPoint.GetY())
+
 # make some ecal cluster analysis if exist
   if hasattr(sTree,"EcalClusters"):
    if calReco:  ecalReconstructed.Delete()
@@ -766,6 +760,15 @@ def myEventLoop(n):
     h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )
     h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )
     h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )
+
+# check extrapolation to TimeDet if exists
+  if hasattr(ShipGeo,"TimeDet"):
+   for fT in sTree.FitTracks:
+     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,ShipGeo.TimeDet.z)
+     if rc:
+      for aPoint in sTree.TimeDetPoint:
+       h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
+       h['extrapTimeDetY'].Fill(pos.Y()-aPoint.GetY())
 #
 def HNLKinematics():
  HNLorigin={}

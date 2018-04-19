@@ -29,19 +29,12 @@ Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
 muonHit::muonHit()
   : ShipHit()
 {
-  if (!onlyOnce) {
-    stInit();
-    onlyOnce = true;
-  }
+
 }
 // -----   Standard constructor   ------------------------------------------
 muonHit::muonHit(Int_t detID, Float_t digi, Bool_t isV)
   : ShipHit(detID,digi) 
 {
-  if (!onlyOnce) {
-    stInit();
-    onlyOnce = true;
-  }
   //
   SetDigi(digi);
   setValidity(isV);
@@ -50,10 +43,6 @@ muonHit::muonHit(Int_t detID, Float_t digi, Bool_t isV)
 muonHit::muonHit(muonPoint* p, Double_t t0)
   : ShipHit()
 {
-  if (!onlyOnce) {
-    stInit();
-    onlyOnce = true;
-  }
 //
   TVector3 truePosition = TVector3( p->GetX(), p->GetY(),p->GetZ());
   fdigi = t0 + p->GetTime(); // + drift time,  propagation inside tile + tdc    
@@ -81,6 +70,10 @@ Int_t muonHit::DetIDfromXYZ(TVector3 p)
 //
     Int_t detID, nStat; // unique detector ID, station number
 //
+  if (!onlyOnce) {
+    stInit();
+    onlyOnce = true;
+  }
     nStat = -1;
     for(Int_t i=0; i<muStZpos.size(); i++) {
      if (abs(p.Z() - muStZpos[i]) <= muStzMax[i]) { 
@@ -108,6 +101,10 @@ TVector3 muonHit::XYZfromDetID(Int_t dID)
 //
     Int_t nStat; TVector3 p; // station number, center tile coordinate
 //
+  if (!onlyOnce) {
+    stInit();
+    onlyOnce = true;
+  }
     nStat = -1;
     for(Int_t i=0; i<=muStZpos.size(); i++) {
       if (dID < 10000*i) { 
