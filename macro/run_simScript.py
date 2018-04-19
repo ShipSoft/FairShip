@@ -51,6 +51,7 @@ caloDesign   = globalDesigns[default]['caloDesign'] # 0=ECAL/HCAL TP  1=ECAL/HCA
 strawDesign  = globalDesigns[default]['strawDesign'] # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
 
 charm        = 0 # !=0 create charm detector instead of SHiP
+pID          = 22 # default for the particle gun
 geofile = None
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
@@ -63,7 +64,7 @@ nuRadiography = False # misuse GenieGenerator for neutrino radiography and geome
 Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t:g",[\
-                                   "PG","PGplus","PGmin","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
+                                   "PG","pID=","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
                                    "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend="])
@@ -93,10 +94,9 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--PG",):
             simEngine = "PG"
-        if o in ("--PGplus",):
-            simEngine = "PGplus"
-        if o in ("--PGmin",):
-            simEngine = "PGmin"
+        if o in ("--pID",):	    
+            if a: pID = int(a)
+	    print "pID= ",pID
         if o in ("--Estart",):
             Estart = 10.
             if a!=str(0): Estart = float(a)
@@ -219,7 +219,8 @@ else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config
 
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
-tag = simEngine+"-"+mcEngine
+if simEngine == "PG": tag = simEngine + "_"+str(pID)+"-"+mcEngine
+else: tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if eventDisplay: tag = tag+'_D'
 if dv > 4 : tag = 'conical.'+tag
@@ -319,13 +320,8 @@ if simEngine == "Pythia6":
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
 # -----Particle Gun-----------------------
-if simEngine[:2] == "PG": 
-  if simEngine == "PGplus":
-     myPgun = ROOT.FairBoxGenerator(-13,1)
-  elif simEngine == "PGmin":
-     myPgun = ROOT.FairBoxGenerator(13,1)
-  else:
-     myPgun = ROOT.FairBoxGenerator(22,1)
+if simEngine == "PG": 
+  myPgun = ROOT.FairBoxGenerator(pID,1)
   myPgun.SetPRange(10,10.2)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
   if charm!=0: myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
