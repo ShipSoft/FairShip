@@ -243,21 +243,22 @@ def ImpactParameter(point,tPos,tMom):
 def checkHNLorigin(sTree):
  flag = True
  if not fiducialCut: return flag
+ flag = False
 # only makes sense for signal == HNL
  hnlkey = -1
- found = False
- for hnlkey in range(sTree.MCTrack.GetEntries()):
-   hnlkey+=1
-   if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015: 
-       found = True
+ for n in range(sTree.MCTrack.GetEntries()):
+   mo = sTree.MCTrack[n].GetMotherId()
+   if mo <0: continue
+   if abs(sTree.MCTrack[mo].GetPdgCode()) == 9900015: 
+       hnlkey = n
        break
- if not found : 
+ if hnlkey<0 : 
   print "checkHNLorigin: no HNL found"
-  flag = False
  else:
+  # MCTrack after HNL should be first daughter
   theHNLVx = sTree.MCTrack[hnlkey]
   X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
-  if not isInFiducial(X,Y,Z): flag = False
+  if isInFiducial(X,Y,Z): flag = True
  return flag 
 
 def checkFiducialVolume(sTree,tkey,dy):
@@ -553,7 +554,7 @@ def myEventLoop(n):
 # check extrapolation to TimeDet if exists
   z_TimeDet = 3615.5000
   for fT in sTree.FitTracks:
-     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
+     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_TimeDet)
      if rc:
       for aPoint in sTree.TimeDetPoint:
        h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
