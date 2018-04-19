@@ -6,7 +6,7 @@ from ShipGeoConfig import ConfigRegistry
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"
 runnr        = 1000
-nev          = 1000
+nev          = 100
 checkOverlap = False
 G4only       = False
 storeOnlyMuons = False
@@ -231,7 +231,8 @@ MuonTagger.SetSensitiveParameters(ship_geo.MuonTagger.SX, ship_geo.MuonTagger.SY
 run.AddModule(MuonTagger)
   
 fMagField = ROOT.ShipGoliathField()
-fMagField.Init()
+fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
+fMagField.Init(fieldfile)
 run.SetField(fMagField)   
 
 # -----Create PrimaryGenerator--------------------------------------
