@@ -282,6 +282,16 @@ def configure(run,ship_geo):
    ship_geo.strawtubes.YLayerOffset = ship_geo.strawtubes.StrawPitch  / 2.
    ship_geo.strawtubes.YPlaneOffset = ship_geo.strawtubes.StrawPitch  / 4.
  if ship_geo.strawDesign > 1 :
+  # for backward compatibility
+  if ship_geo.strawDesign == 10 and not hasattr(ship_geo.strawtubes, "DeltazFrame"):
+   ship_geo.strawtubes.DeltazFrame = 2.5*u.cm
+   ship_geo.strawtubes.FrameLateralWidth = 1.2*u.m
+   ship_geo.strawtubes.FrameMaterial = "steel"
+  elif not hasattr(ship_geo.strawtubes, "DeltazFrame"):
+   ship_geo.strawtubes.DeltazFrame = 10.*u.cm
+   ship_geo.strawtubes.FrameLateralWidth = 1.*u.cm
+   ship_geo.strawtubes.FrameMaterial = "aluminium"
+
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    
   Strawtubes.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
   Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
