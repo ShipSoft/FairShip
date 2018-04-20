@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-inputFile = 'ship.conical.PGplus-TGeant4.root'
-geoFile   = 'geofile_full.conical.PGplus-TGeant4.root'
+inputFile = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/pythia.root'
+geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
 debug = False
 
 withNoStrawSmearing = None # True   for debugging purposes
@@ -92,12 +92,14 @@ if not geoFile:
  geoFile = tmp.replace('_rec','')
 
 fgeo = ROOT.TFile.Open(geoFile)
+#fgeo = ROOT.TFile(geoFile)
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 #load Shipgeo dictionary
 upkl    = Unpickler(fgeo)
-ShipGeo = upkl.load('ShipGeo')
-  
+#ShipGeo = upkl.load('ShipGeo')
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Yheight = dy)  
+
 h={}
 log={}
 if withHists:

@@ -86,7 +86,7 @@ def configure(run,ship_geo):
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(Spectrometer)
  else:
-    TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
+    TargetStation = ROOT.MufluxTargetStation("MufluxTargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
 
     if ship_geo.targetOpt>10:
      slices_length=ROOT.std.vector('float')()     
@@ -96,7 +96,6 @@ def configure(run,ship_geo):
       slices_material.push_back(eval("ship_geo.target.M"+str(i)))
 
      TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
-     TargetStation.SetMuFlux(ship_geo.MufluxSpectrometer.muflux)
      detectorList.append(TargetStation)
      
     detectorList.append(Scintillator)
