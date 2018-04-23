@@ -6,7 +6,7 @@ from ShipGeoConfig import ConfigRegistry
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"
 runnr        = 1000
-nev          = 100
+nev          = 500
 checkOverlap = False
 G4only       = False
 storeOnlyMuons = False
@@ -209,7 +209,7 @@ Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxS
 Scintillator.SetDistT1(ship_geo.MufluxSpectrometer.DeltazView/2+ship_geo.MufluxSpectrometer.OuterTubeDiameter/2-ship_geo.Scintillator.DistT1)
 Scintillator.SetDistT2(ship_geo.Scintillator.DistT2)
 
-TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
+TargetStation = ROOT.MufluxTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
                                                         ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
 slices_length   = ROOT.std.vector('float')()
 slices_material = ROOT.std.vector('std::string')()
