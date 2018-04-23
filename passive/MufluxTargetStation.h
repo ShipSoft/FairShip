@@ -21,7 +21,6 @@ class MufluxTargetStation : public FairModule
      fL = L;
      fM = M;
      }
-    void SetMuFlux(Bool_t muflux); //target for muonflux measurement
     ClassDef(MufluxTargetStation,4)
  protected:
   

@@ -217,7 +217,6 @@ for i in range(1,ship_geo.targetOpt+1):
    slices_length.push_back(  eval("ship_geo.target.L"+str(i)))
    slices_material.push_back(eval("ship_geo.target.M"+str(i)))
 TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
-TargetStation.SetMuFlux(ship_geo.MufluxSpectrometer.muflux)
 
 run.AddModule(TargetStation)
 
