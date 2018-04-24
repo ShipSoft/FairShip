@@ -120,7 +120,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.sl  =  0.5*u.cm  # H20 slit *17 times
     #c.target.xy  = 15.*u.cm   # diameter of muflux target
     c.target.xy  = 10.*u.cm   # new diameter of muflux target    
-    c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18
+    # 5.0 cm is for front and endcaps
+    c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18 + 5.0*u.cm
     
     # interaction point, start of target
     c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.

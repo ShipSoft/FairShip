@@ -96,7 +96,8 @@ void MufluxTargetStation::ConstructGeometry()
     TGeoMedium *steel = gGeoManager->GetMedium("steel");
 
     TGeoVolume *tTarget = new TGeoVolumeAssembly("TargetArea");
-    Double_t zPos =  -4.59; //for front end endcap //-3.02
+    //Double_t zPos =  -2.09; //for front end endcap 
+    Double_t zPos =  0.; //for front end endcap 
     Int_t slots = fnS;
     slots = slots-1;    
 
@@ -108,7 +109,7 @@ void MufluxTargetStation::ConstructGeometry()
     frontcap->SetLineColor(20); 
     endcap   = gGeoManager->MakeTube("EndCap", steel, 0, 15./2., 2.5/2.);
     endcap->SetLineColor(20); 
-    targettube = gGeoManager->MakeTube("TargetTube", steel, fDiameter/2.+0.5, fDiameter/2.+1.1, fTargetLength/2.-0.225);
+    targettube = gGeoManager->MakeTube("TargetTube", steel, fDiameter/2.+0.5, fDiameter/2.+1.1, fTargetLength/2.-2.725); //subtract 2.5 (front&endcaps)
     targettube->SetLineColor(20);  
     
     TGeoVolume *target;
@@ -150,7 +151,7 @@ void MufluxTargetStation::ConstructGeometry()
          zPos+=fL.at(i);
 	 if (fnS==18) {
                tTarget->AddNode(endcap, 12, new TGeoTranslation(0, 0, zPos+1.29) );	
-               tTarget->AddNode(targettube, 13, new TGeoTranslation(0, 0, fTargetLength/2.-4.815));   //-3.245   
+               tTarget->AddNode(targettube, 13, new TGeoTranslation(0, 0, fTargetLength/2.-2.725));   //-3.245   
 	  }	 
 	  zPos+=1.27;   
 	 }
@@ -192,7 +193,7 @@ void MufluxTargetStation::ConstructGeometry()
     top->AddNode(concreteshield, 3, new TGeoTranslation(85.,-45.,fTargetZ - 83.49));   
     top->AddNode(abovetargetshield, 4, new TGeoTranslation(50.,77.5,fTargetZ - 83.49)); 
     top->AddNode(aboveabovetargetshield, 5, new TGeoTranslation(-50.,165.0,fAbsorberZ-zPos-624.5)); 
-    top->AddNode(aboveabsorbershield, 6, new TGeoTranslation(0.,165.0,-31.48));        
+    top->AddNode(aboveabsorbershield, 6, new TGeoTranslation(0.,165.0,-26.48));        
 
     cout << "target and absorber positioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
 
