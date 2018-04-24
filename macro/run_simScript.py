@@ -75,6 +75,9 @@ except getopt.GetoptError:
         print ' or    --Genie for reading and processing neutrino interactions '
         print ' or    --Pythia6 for muon nucleon scattering'  
         print ' or    --PG for particle gun'  
+	print '       --pID= id of particle used by the gun (default=22)'
+	print '       --Estart= start of energy range of particle gun for muflux detector (default=10 GeV)'
+	print '       --Eend= end of energy range of particle gun for muflux detector (default=10 GeV)'	
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
         print '       --DarkPhoton to generate events with dark photons (default HNL)'
@@ -96,7 +99,6 @@ for o, a in opts:
             simEngine = "PG"
         if o in ("--pID",):	    
             if a: pID = int(a)
-	    print "pID= ",pID
         if o in ("--Estart",):
             Estart = 10.
             if a!=str(0): Estart = float(a)
@@ -327,7 +329,9 @@ if simEngine == "PG":
   if charm!=0: myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
   else: myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
-  if charm!=0: primGen.SetTarget(ship_geo.target.z0,0.)
+  if charm!=0: 
+     myPgun.SetPRange(Estart,Eend)  
+     primGen.SetTarget(ship_geo.target.z0,0.)
   primGen.AddGenerator(myPgun)
   if charm==0: run.SetGenerator(primGen)
 # -----muon DIS Background------------------------

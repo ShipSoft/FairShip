@@ -87,21 +87,16 @@ void ShipTargetStation::ConstructGeometry()
     TGeoMedium *water  =gGeoManager->GetMedium("H2O");
     InitMedium("molybdenum");
     TGeoMedium *mo  =gGeoManager->GetMedium("molybdenum");
-
-    InitMedium("air");
-    TGeoMedium *air = gGeoManager->GetMedium("air");   
-
-
     TGeoVolume *tTarget = new TGeoVolumeAssembly("TargetArea");
-    Double_t zPos =  -4.59; //for front end endcap //-3.02
+    
+    Double_t zPos =  0.;
     Int_t slots = fnS;
     slots = slots-1;    
-
     
     if (fnS > 10){
       TGeoVolume *target;
       TGeoVolume *slit; 
-
+      //Double_t zPos =  fTargetZ - fTargetLength/2.;      
       for (Int_t i=0; i<fnS; i++) {
        TString nmi = "Target_"; nmi += i+1;
        TString sm = "Slit_";   sm += i+1;
@@ -116,7 +111,7 @@ void ShipTargetStation::ConstructGeometry()
        else {
           target = gGeoManager->MakeBox(nmi, material, fDiameter/2., fDiameter/2., fL.at(i)/2.);
        }
-       if (fM.at(i)=="mo") {
+       if (fM.at(i)=="molybdenum") {
          target->SetLineColor(28);
        } else {target->SetLineColor(38);};  // silver/blue
        tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos + fL.at(i)/2.) );
@@ -159,14 +154,14 @@ void ShipTargetStation::ConstructGeometry()
       target->SetLineColor(38);  // silver/blue
       tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, fTargetZ));
     }
-    TGeoVolume *absorber;
     
     if (fAbsorberLength>0){  // otherwise, magnetized hadron absorber defined in ShipMuonShield.cxx
      zPos =  fTargetZ - fTargetLength/2.;
      // Absorber made of iron
+     TGeoVolume *absorber;
      absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
      absorber->SetLineColor(42); // brown / light red
-     tTarget->AddNode(absorber, 1, new TGeoTranslation(0., 0, fAbsorberZ-zPos));
+     tTarget->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ-zPos));
     } 
     // put iron shielding around target
     if (fnS > 10){
@@ -189,7 +184,7 @@ void ShipTargetStation::ConstructGeometry()
     }
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());
     Double_t totLength = asmb->GetDZ();
-    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength+2.5));
+    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength));
     
     if (fAbsorberLength>0){
      cout << "target and absorber positioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
