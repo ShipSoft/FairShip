@@ -1,7 +1,6 @@
 #
 # Geant4 configuration macro for Example02
 # (called from Root macro Config.C)
-/mcDet/setIsLocalMagField  true
 
 /mcVerbose/all 0
 /mcTracking/loopVerbose 0    # suggested by Ivana Hrivnacova to switch off *** Particle reached max step number ....
@@ -29,5 +28,6 @@
 
 # Enable local magnetic fields
 /mcDet/setIsLocalMagField true
+
 # Enable verbosity for VMC geometry manager
 #/mcVerbose/geometryManager 2

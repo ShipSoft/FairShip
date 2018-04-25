@@ -33,9 +33,11 @@
 #include <iostream>
 #include <cstdlib>
 
-ShipFieldMaker::ShipFieldMaker(Bool_t verbose) :
+ShipFieldMaker::ShipFieldMaker(const std::string& inputFile, Bool_t verbose) :
+    TG4VUserPostDetConstruction(),
     globalField_(0),
     theFields_(),
+    inputFile_(inputFile),
     verbose_(verbose),
     Tesla_(10.0), // To convert T to kGauss for VMC/FairRoot
     theNode_(0),
@@ -58,11 +60,11 @@ ShipFieldMaker::~ShipFieldMaker()
 
 }
 
-void ShipFieldMaker::makeFields(const std::string& inputFile)
+void ShipFieldMaker::Construct()
 {
 
     std::string fullFileName = getenv("VMCWORKDIR");
-    fullFileName += "/"; fullFileName += inputFile.c_str();
+    fullFileName += "/"; fullFileName += inputFile_.c_str();
 
     std::cout<<"ShipFieldMaker::makeFields inputFile = "<<fullFileName<<std::endl;
 
@@ -197,6 +199,7 @@ void ShipFieldMaker::createUniform(const stringVect& inputLine)
 	    theFields_[label] = uField;
 
 	} else {
+
 	    std::cout<<"We already have a field with the name "
 		     <<label.Data()<<std::endl;
 	}
@@ -247,6 +250,7 @@ void ShipFieldMaker::createConstant(const stringVect& inputLine)
 	    theFields_[label] = theField;
 
 	} else {
+
 	    std::cout<<"We already have a field with the name "
 		     <<label.Data()<<std::endl;
 	}
@@ -298,6 +302,7 @@ void ShipFieldMaker::createBell(const stringVect& inputLine)
 	    theFields_[label] = theField;
 
 	} else {
+
 	    std::cout<<"We already have a field with the name "
 		     <<label.Data()<<std::endl;
 	}
@@ -426,6 +431,7 @@ void ShipFieldMaker::copyFieldMap(const stringVect& inputLine)
 	    
 
 	} else {
+
 	    std::cout<<"We already have a field with the name "
 		     <<label.Data()<<std::endl;
 	}
@@ -473,6 +479,7 @@ void ShipFieldMaker::createComposite(const stringVect& inputLine)
 	    theFields_[label] = composite;
 
 	} else {
+
 	    std::cout<<"We already have a field with the name "
 		     <<label.Data()<<std::endl;
 	}
@@ -909,9 +916,6 @@ TVirtualMagField* ShipFieldMaker::getVolumeField(const TString& volName) const
 {
 
     TVirtualMagField* theField(0);
-
-    //std::cout<<"Finding field for "<<volName<<std::endl;
-
     TGeoVolume* theVol(0);
     if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}
 
@@ -994,20 +998,20 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 			       const std::string& plotFile) const
 {
 
-    std::cout<<"ShipFieldMaker plotField "<<plotFile<<std::endl;
+    std::cout<<"ShipFieldMaker plotField "<<plotFile<<": type = "<<type<<std::endl;
 
     Double_t xMin = xAxis(0);
     Double_t xMax = xAxis(1);
     Double_t dx   = xAxis(2);
     Int_t Nx(0);
-    if (dx > 0.0) {Nx = static_cast<Int_t>(((xMax - xMin)/dx) + 1);}
+    if (dx > 0.0) {Nx = static_cast<Int_t>(((xMax - xMin)/dx) + 0.5);}
     
     Double_t yMin = yAxis(0);
     Double_t yMax = yAxis(1);
     Double_t dy   = yAxis(2);
     Int_t Ny(0);
-    if (dy > 0.0) {Ny = static_cast<Int_t>(((yMax - yMin)/dy) + 1);}
-    
+    if (dy > 0.0) {Ny = static_cast<Int_t>(((yMax - yMin)/dy) + 0.5);}
+
     // Create a 2d histogram
     TH2D theHist("theHist", "", Nx, xMin, xMax, Ny, yMin, yMax);
     theHist.SetDirectory(0);
