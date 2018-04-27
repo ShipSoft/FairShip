@@ -106,7 +106,7 @@ void EmulsionMagnet::SetCoilParameters(Double_t X, Double_t Y, Double_t height1,
 {
   fCoilX = X;
   fCoilY = Y;
-  cout << "fCoilX = "<< fCoilX<< "    fCoilY = "<<fCoilY<<endl;
+  // cout << "fCoilX = "<< fCoilX<< "    fCoilY = "<<fCoilY<<endl;
   fCoilH1 = height1; //upper(left)
   fCoilH2 = height2; //lowe(right)
   fCoilThickness = Thickness;
