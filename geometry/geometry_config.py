@@ -49,8 +49,14 @@ with ConfigRegistry.register_config("basic") as c:
     extraVesselLength = totalLength - 50*u.m
     windowBulge = 1*u.m
     if tankDesign > 5: windowBulge = 25*u.cm
+#
+    magnet_design = 2
+    if tankDesign == 5: magnet_design = 3
+    if tankDesign == 6: magnet_design = 4
+#
     c.strawDesign = strawDesign
     c.tankDesign = tankDesign
+    c.magnetDesign = magnet_design
 # cave parameters
     c.cave = AttrDict(z=0*u.cm)
     c.cave.floorHeightMuonShield = 5*u.m
@@ -165,6 +171,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 3.*u.m
+    if c.magnetDesign>3:                          # MISIS design
+      c.Bfield.YokeWidth=0.85*u.m  # full width       200.*cm; 
+      c.Bfield.YokeDepth=1.75*u.m  # half length      200 *cm;
+      c.Bfield.CoilThick=25.*u.cm  # thickness
+      VesselThick=37.*u.cm;   # full thickness
+      c.Bfield.x = 251.*u.cm+VesselThick; # half apertures
+      c.Bfield.y = 501.*u.cm+VesselThick+c.Bfield.CoilThick
 
 # TimeDet
     c.TimeDet = AttrDict(z=0)

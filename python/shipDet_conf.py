@@ -152,6 +152,11 @@ def configure(run,ship_geo):
    print "version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",ship_geo.tankDesign, ship_geo.nuTauTargetDesign 
    exit()
  if ship_geo.strawDesign > 1 : 
+  if ship_geo.magnetDesign>3:
+   B = ship_geo.Bfield
+   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",B.z, magnet_design, B.x, B.y, ship_geo.cave.floorHeightTankB, B.YokeWidth, B.YokeDepth, B.CoilThick)
+#                                                               xaperture,  yaperture 
+  else: 
    magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  detectorList.append(magnet)
