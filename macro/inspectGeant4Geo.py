@@ -24,6 +24,7 @@ run.SetOutputFile("x.x")
 run.Init()
 run.Run(0)
 import geomGeant4
+geomGeant4.printVMCFields()
 geomGeant4.printWeightsandFields()
 
 
