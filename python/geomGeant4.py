@@ -10,6 +10,25 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4RunManager.hh"')
 ROOT.gROOT.ProcessLine('#include "TG4GeometryServices.h"')
 ROOT.gROOT.ProcessLine('#include "TG4GeometryManager.h"')
 
+def check4OrphanVolumes(fGeo):
+# fill list with volumes from nodes and compare with list of volumes
+ top = fGeo.GetTopVolume()
+ listOfVolumes = [top.GetName()]
+ findNode(top,listOfVolumes)
+ orphan = []
+ gIndex = {}
+ for v in fGeo.GetListOfVolumes():
+   name = v.GetName()
+   if not name in listOfVolumes:
+     orphan.append(name)
+   if not name in gIndex: gIndex[name]=[]
+   gIndex[name].append(v.GetNumber())
+ print "list of orphan volumes:",orphan
+ vSame = {}
+ for x in gIndex:
+   if len(gIndex[x])>1: vSame[x]=len(gIndex[x])
+ print "list of volumes with same name",vSame
+
 def setMagnetField(flag=None):
     print 'setMagnetField() called. Out of date, does not set field for tau neutrino detector!'
     fGeo = ROOT.gGeoManager  
@@ -142,7 +161,10 @@ def printVMCFields():
     for v in vols:
 
         field =  v.GetField()
-        print 'Vol is {0}, field is {1}'.format(v.GetName(), field)
+        if field:
+         print 'Vol is {0}, field is {1}'.format(v.GetName(), field)
+        else: 
+         print 'Vol is {0}'.format(v.GetName())
 
         if field:
             # Get the field value assuming the global co-ordinate origin.
