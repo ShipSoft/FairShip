@@ -479,7 +479,9 @@ import geomGeant4
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
-#fieldMaker = geomGeant4.addVMCFields('field/ExampleBFieldSetup.txt', False)
+if hasattr(ship_geo.Bfield,"fieldMap"):
+  fieldMaker = geomGeant4.addVMCFields(ship_geo.Bfield.fieldMap, ship_geo.Bfield.z, True)
+
 # Print VMC fields and associated geometry objects
 if debug > 0:
  geomGeant4.printVMCFields()

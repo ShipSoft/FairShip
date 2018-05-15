@@ -143,10 +143,15 @@ def configure(run,ship_geo):
  
  detectorList.append(MuonShield)
 
-
- magnet_design = 2
- if ship_geo.tankDesign == 5: magnet_design = 3
- if ship_geo.tankDesign == 6: magnet_design = 4
+ if not hasattr(ship_geo,"magnetDesign"):
+ # backward compatibility
+  magnet_design = 2
+  if ship_geo.tankDesign == 5: magnet_design = 3
+  if ship_geo.tankDesign == 6: magnet_design = 4
+  ship_geo.magnetDesign = magnet_design
+  ship_geo.Bfield.YokeWidth = 200.*u.cm 
+  ship_geo.Bfield.YokeDepth = 200.*u.cm
+  ship_geo.Bfield.CoilThick = 25.*u.cm
 # sanity check, 2018 layout ship_geo.tankDesign == 6 has to be together with ship_geo.nuTauTargetDesign == 3
  if (ship_geo.tankDesign == 6 and ship_geo.nuTauTargetDesign != 3) or (ship_geo.tankDesign != 6 and ship_geo.nuTauTargetDesign == 3):
    print "version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",ship_geo.tankDesign, ship_geo.nuTauTargetDesign 
@@ -154,10 +159,10 @@ def configure(run,ship_geo):
  if ship_geo.strawDesign > 1 : 
   if ship_geo.magnetDesign>3:
    B = ship_geo.Bfield
-   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",B.z, magnet_design, B.x, B.y, ship_geo.cave.floorHeightTankB, B.YokeWidth, B.YokeDepth, B.CoilThick)
+   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",B.z, ship_geo.magnetDesign, B.x, B.y, ship_geo.cave.floorHeightTankB, B.YokeWidth, B.YokeDepth, B.CoilThick)
 #                                                               xaperture,  yaperture 
   else: 
-   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
+   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, ship_geo.magnetDesign, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  detectorList.append(magnet)
   
@@ -381,10 +386,11 @@ def configure(run,ship_geo):
  detectorList.append(timeDet)
 
 #-----   Magnetic field   -------------------------------------------
- if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10 : fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
- else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
- if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
- run.SetField(fMagField)
+ if not hasattr(ship_geo.Bfield,"fieldMap"):
+  if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10 : fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
+  else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
+  if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
+  run.SetField(fMagField)
 #
  exclusionList = []
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\

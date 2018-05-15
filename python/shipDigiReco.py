@@ -171,9 +171,9 @@ class ShipDigiReco:
    self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
    self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
 #
-  self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
 # init geometry and mag. field
   gMan  = ROOT.gGeoManager
+  self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
 #
   self.bfield = ROOT.genfit.FairShipFields()
   self.fM = ROOT.genfit.FieldManager.getInstance()

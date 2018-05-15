@@ -118,6 +118,7 @@ if withHists:
  ut.bookHist(h,'chi2','Chi2/DOF',100,0.,20.)
 
 import shipDet_conf
+gFairBaseContFact = ROOT.FairBaseContFact() # required by change to FairBaseContFact to avoid TList::Clear errors
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
 run.SetOutputFile("dummy")  # Output file
@@ -126,6 +127,10 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
 run.Init()
+import geomGeant4
+
+if hasattr(ShipGeo.Bfield,"fieldMap"):
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo.Bfield.fieldMap, ShipGeo.Bfield.z, True)
 
 # make global variables
 builtin.debug    = debug
@@ -145,6 +150,8 @@ builtin.iEvent  = iEvent
 
 # import reco tasks
 import shipDigiReco
+geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
+
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
 # main loop

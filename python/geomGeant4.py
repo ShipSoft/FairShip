@@ -1,7 +1,7 @@
 import shipunit as u
 from array import array
 import hepunit as G4Unit
-import ROOT
+import ROOT,os
 # requires to have ${SIMPATH}/include/Geant4/ in PYTHONPATH
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
@@ -131,12 +131,22 @@ def printWeightsandFields(onlyWithField = True,exclude=[]):
    print 'total magnet mass',nM/1000.,'t'
    return
 
-def addVMCFields(controlFile = 'field/BFieldSetup.txt', verbose = False):
+def addVMCFields(controlFile = 'field/BFieldSetup.txt', zPos = 0.0, verbose = False):
     '''
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
     '''
     print 'Calling addVMCFields using input control file {0}'.format(controlFile)
     
+    # consistency check of z position until there are methods to set z position for the VMC interface directly
+    ftmp = open(os.environ['FAIRSHIP']+'/'+controlFile)
+    ok = False
+    for l in ftmp.readlines():
+     if not l.find(str(zPos))<0: ok = True
+    ftmp.close()
+    if not ok: 
+     print "position in ",controlFile," does not agree with selected geometry! z=",zPos,". Stop execution."
+     exit()
+
     fieldMaker = ROOT.ShipFieldMaker(controlFile, verbose)
 
     # Reset the fields in the VMC to use info from the fieldMaker object

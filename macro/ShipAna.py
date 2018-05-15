@@ -74,6 +74,9 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
 run.Init()
+import geomGeant4
+if hasattr(ShipGeo.Bfield,"fieldMap"):
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo.Bfield.fieldMap, ShipGeo.Bfield.z, True)
 
 sGeo   = ROOT.gGeoManager
 geoMat =  ROOT.genfit.TGeoMaterialInterface()

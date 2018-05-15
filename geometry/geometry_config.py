@@ -168,9 +168,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
            
     c.Bfield = AttrDict(z=c.z)
-    c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
+    c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 3.*u.m
+    c.Bfield.fieldMap = "field/MainSpectrometerField.txt"
     if c.magnetDesign>3:                          # MISIS design
       c.Bfield.YokeWidth=0.85*u.m  # full width       200.*cm; 
       c.Bfield.YokeDepth=1.75*u.m  # half length      200 *cm;
