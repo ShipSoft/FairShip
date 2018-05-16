@@ -22,6 +22,7 @@ set(SRCS
 splitcal.cxx
 splitcalContFact.cxx
 splitcalPoint.cxx
+splitcalHit.cxx
 )
 
 Set(LINKDEF splitcalLinkDef.h)

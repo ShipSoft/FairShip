@@ -360,6 +360,9 @@ def configure(run,ship_geo):
   SplitCal.SetXMax(x.XMax)
   SplitCal.SetYMax(x.YMax)
   SplitCal.SetEmpty(x.Empty,x.BigGap,x.ActiveECAL_gas_gap,x.first_precision_layer,x.second_precision_layer,x.third_precision_layer,x.num_precision_layers)
+  SplitCal.SetNModules(x.NModulesInX, x.NModulesInY)
+  SplitCal.SetNStrips(x.NStripsPerModule)
+  SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
   detectorList.append(SplitCal)
 
  if not ship_geo.HcalOption < 0:

@@ -234,19 +234,19 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.SplitCal = AttrDict(z=0)
     c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ 
-    c.SplitCal.XMax    =  290.*u.cm
-    c.SplitCal.YMax    =  510.*u.cm * c.Yheight / (10.*u.m)
+    c.SplitCal.XMax = 600.*u.cm/2. #290.*u.cm  #half length
+    c.SplitCal.YMax = 1200.*u.cm/2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length  
     c.SplitCal.Empty = 0*u.cm
     c.SplitCal.BigGap = 100*u.cm
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
-    c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm                                                                               
+    c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm           
     c.SplitCal.FilterECALThickness_first = 0.28*u.cm
     c.SplitCal.ActiveHCALThickness = 90*u.cm
     c.SplitCal.FilterHCALThickness = 90*u.cm
     c.SplitCal.nECALSamplings = 50
-    c.SplitCal.nHCALSamplings = 1
+    c.SplitCal.nHCALSamplings = 0
     c.SplitCal.ActiveHCAL = 0
-    c.SplitCal.FilterECALMaterial= 3    # 1=scintillator 2=Iron 3 = lead  4 =Argon                                                                     
+    c.SplitCal.FilterECALMaterial= 3    # 1=scintillator 2=Iron 3 = lead  4 =Argon  
     c.SplitCal.FilterHCALMaterial= 2
     c.SplitCal.ActiveECALMaterial= 1
     c.SplitCal.ActiveHCALMaterial= 1
@@ -256,7 +256,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.second_precision_layer=10
     c.SplitCal.third_precision_layer=13
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
-    c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap+c.SplitCal.FilterHCALThickness
+    c.SplitCal.NModulesInX = 2
+    c.SplitCal.NModulesInY = 4
+    c.SplitCal.NStripsPerModule = 50
+    c.SplitCal.StripHalfWidth = 3*u.cm # c.SplitCal.XMax/(c.SplitCal.NStripsPerModule*c.SplitCal.NModulesInX)
+    c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
+    c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
     c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm + presShowerDeltaZ)  #
     c.ecal.File = EcalGeoFile

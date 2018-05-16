@@ -27,6 +27,9 @@
 #include "TGeoMedium.h"
 #include "TParticle.h"
 
+#include "TROOT.h"
+#include "TCanvas.h"
+#include "TView3D.h"
 
 
 #include <iostream>
@@ -216,10 +219,28 @@ void splitcal::SetMaterial(Double_t ActiveECALMaterial, Double_t ActiveHCALMater
 
 }
 
-void splitcal::SetNSamplings(Double_t nECALSamplings, Double_t nHCALSamplings, Double_t ActiveHCAL){
+void splitcal::SetNSamplings(Int_t nECALSamplings, Int_t nHCALSamplings, Double_t ActiveHCAL)
+{
   fnHCALSamplings=nHCALSamplings;
   fnECALSamplings=nECALSamplings;
   fActiveHCAL=ActiveHCAL;
+}
+
+void splitcal::SetNModules(Int_t nModulesInX, Int_t nModulesInY)
+{
+  fNModulesInX=nModulesInX;
+  fNModulesInY=nModulesInY;
+}
+
+void splitcal::SetNStrips(Int_t nStrips)
+{
+  fNStripsPerModule=nStrips;
+}
+
+void splitcal::SetStripSize(Double_t stripHalfWidth, Double_t stripHalfLength)
+{
+  fStripHalfWidth=stripHalfWidth;
+  fStripHalfLength=stripHalfLength;
 }
 
 void splitcal::SetXMax(Double_t xMax)
@@ -254,15 +275,11 @@ void splitcal::ConstructGeometry()
 
     Double_t zStartSplitCal = fZStart;
     
-    TGeoVolume *newECALfilter[100];
-    TGeoVolume *newECALdet[100];     
-    TGeoVolume *newECALdet_gas[6];     
-    const char* char_labelECALfilter[100];
-    TString labelECALfilter; 
-    const char* char_labelECALdet[100];
-    TString labelECALdet;
-    const char* char_labelECALdet_gas[6];
-    TString labelECALdet_gas;
+    TGeoVolume *newECALfilter_first; //first layer can have different thickeness
+    TGeoVolume *newECALfilter;
+    TGeoVolume *newECALdet_gas;
+    TGeoVolume *stripGivingX;     
+    TGeoVolume *stripGivingY;     
 
     TGeoVolume *newHCALfilter[100];
     TGeoVolume *newHCALdet[100];     
@@ -271,95 +288,115 @@ void splitcal::ConstructGeometry()
     const char* char_labelHCALdet[100];
     TString labelHCALdet;
 
-
      
     Double_t z_splitcal=0;
     Int_t i_nlayECAL_gas;
 
-    for (i_nlayECAL_gas=0; i_nlayECAL_gas<1; i_nlayECAL_gas++){
-      labelECALdet_gas="ECALdet_gas_";
-      labelECALdet_gas+=i_nlayECAL_gas;
-      char_labelECALdet_gas[i_nlayECAL_gas]=labelECALdet_gas;
+    // logical volume for the absorbing layers
+    // first absorbing layer can have different thinkens from the others
+    newECALfilter_first = gGeoManager->MakeBox("ECALfilter_first", A3, fXMax, fYMax, fFilterECALThickness_first/2);
+    newECALfilter_first->SetLineColor(kGray);
+    newECALfilter = gGeoManager->MakeBox("ECALfilter", A3, fXMax, fYMax, fFilterECALThickness/2);
+    newECALfilter->SetLineColor(kGray);   
+	
+    stripGivingX = gGeoManager->MakeBox("stripGivingX", A1, fStripHalfWidth, fStripHalfLength, fActiveECALThickness/2);
+    stripGivingX->SetVisibility(kTRUE);
+    AddSensitiveVolume(stripGivingX);
+    stripGivingX->SetLineColor(kGreen);
 
-      newECALdet_gas[i_nlayECAL_gas] = gGeoManager->MakeBox(char_labelECALdet_gas[i_nlayECAL_gas], A4, fXMax, fYMax, fActiveECAL_gas_Thickness/2);      
-      AddSensitiveVolume(newECALdet_gas[i_nlayECAL_gas]);
-      newECALdet_gas[i_nlayECAL_gas]->SetLineColor(kRed);
+    stripGivingY = gGeoManager->MakeBox("stripGivingY", A1, fStripHalfLength, fStripHalfWidth, fActiveECALThickness/2);
+    stripGivingY->SetVisibility(kTRUE);
+    AddSensitiveVolume(stripGivingY);
+    stripGivingY->SetLineColor(kGreen);
 
-    }
-    for (Int_t i_nlayECAL=0; i_nlayECAL<1; i_nlayECAL++){
-      labelECALfilter="ECALfilter_";
-      labelECALfilter+=i_nlayECAL;
-      char_labelECALfilter[i_nlayECAL]=labelECALfilter;
-      labelECALdet="ECALdet_";
-      labelECALdet+=i_nlayECAL;
-      char_labelECALdet[i_nlayECAL]=labelECALdet;
-      if(i_nlayECAL==0){
-	xfFilterECALThickness=fFilterECALThickness_first;
-      }
-      else
-	{
-	  xfFilterECALThickness=fFilterECALThickness;
-	}
-       
-      // cout << "SplitCal Debug:" << z_splitcal << " " << i_nlayECAL << " " << i_nlayECAL_gas << " " << xfFilterECALThickness<< endl;
-      newECALfilter[i_nlayECAL] = gGeoManager->MakeBox(char_labelECALfilter[i_nlayECAL], A3, fXMax, fYMax, xfFilterECALThickness/2);
-      if(i_nlayECAL!=ffirst_precision_layer and i_nlayECAL!=fsecond_precision_layer and i_nlayECAL!=fthird_precision_layer){
-        newECALdet[i_nlayECAL] = gGeoManager->MakeBox(char_labelECALdet[i_nlayECAL], A1, fXMax, fYMax, fActiveECALThickness/2);
+    // logical volume for the high precision sensitive layers 
+    newECALdet_gas = gGeoManager->MakeBox("ECALdet_gas", A4, fXMax, fYMax, fActiveECAL_gas_Thickness/2);    
+    AddSensitiveVolume(newECALdet_gas);
+    newECALdet_gas->SetLineColor(kRed);
 
-        AddSensitiveVolume(newECALdet[i_nlayECAL]);
-        newECALdet[i_nlayECAL]->SetLineColor(kGreen);
-        newECALfilter[i_nlayECAL]->SetLineColor(kGray);
-      }
-    } 
+
+    // now position layer volumes in tSplitCal mother volume
     for (Int_t i_nlayECAL=0; i_nlayECAL<fnECALSamplings; i_nlayECAL++){
-      z_splitcal+=xfFilterECALThickness/2;
-      tSplitCal->AddNode(newECALfilter[0], 1, new TGeoTranslation(0, 0, z_splitcal));
-      z_splitcal+=xfFilterECALThickness/2;      
-      if(i_nlayECAL==0)z_splitcal+=fEmpty;
-      if(i_nlayECAL==7)        z_splitcal+=fBigGap;
+
+      // position absorber layers
+      // thinkness of first layer can be different from others
+      if (i_nlayECAL==0){
+	z_splitcal+=fFilterECALThickness_first/2;
+        tSplitCal->AddNode(newECALfilter_first, i_nlayECAL*1e5, new TGeoTranslation(0, 0, z_splitcal));
+	z_splitcal+=fFilterECALThickness_first/2;  
+      } else {
+	z_splitcal+=fFilterECALThickness/2;
+	tSplitCal->AddNode(newECALfilter, i_nlayECAL*1e5, new TGeoTranslation(0, 0, z_splitcal)); 
+	z_splitcal+=fFilterECALThickness/2;  	
+      }
+      // std::cout<< "--- i_nlayECAL*1e5 = "<< i_nlayECAL*1e5 << std::endl;
+      
+      if(i_nlayECAL==0) z_splitcal+=fEmpty; // space after first layer? set to 0 in the config file? for whar is it for?
+      if(i_nlayECAL==7) z_splitcal+=fBigGap;
+
+      // position high precision sensitive layers
       i_nlayECAL_gas=-1000;
       if(i_nlayECAL==ffirst_precision_layer or i_nlayECAL==fsecond_precision_layer or i_nlayECAL==fthird_precision_layer){
-       z_splitcal+=fActiveECAL_gas_Thickness/2;    
-       if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=0;
-       if(i_nlayECAL==fsecond_precision_layer ){
-	 if(fnum_precision_layers==2){
-	  i_nlayECAL_gas=3;
-         }
-         else
-       	{
-         i_nlayECAL_gas=1;	 
+	z_splitcal+=fActiveECAL_gas_Thickness/2;    
+	if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=0;
+	else if(i_nlayECAL==fsecond_precision_layer ){
+	  if(fnum_precision_layers==2) i_nlayECAL_gas=3;
+	  else i_nlayECAL_gas=1; 
+	} 
+	else if(i_nlayECAL==fthird_precision_layer){
+	  if(fnum_precision_layers==2) i_nlayECAL_gas=4;
+	  else i_nlayECAL_gas=2;	 
 	}
-       }
-       if(i_nlayECAL==fthird_precision_layer ){
-	 if(fnum_precision_layers==2){
-	  i_nlayECAL_gas=4;
-         }
-         else
-       	{
-         i_nlayECAL_gas=2;	 
+
+	tSplitCal->AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , new TGeoTranslation(0, 0, z_splitcal));
+	z_splitcal+=fActiveECAL_gas_Thickness/2;
+	if(fnum_precision_layers==2){
+	  z_splitcal+=fActiveECAL_gas_gap;
+	  z_splitcal+=fActiveECAL_gas_Thickness/2;      
+	  if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=1;
+	  if(i_nlayECAL==fsecond_precision_layer) i_nlayECAL_gas=3;
+	  tSplitCal->AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , new TGeoTranslation(0, 0, z_splitcal)); 
+	  z_splitcal+=fActiveECAL_gas_Thickness/2;
 	}
-       }
-       tSplitCal->AddNode(newECALdet_gas[0], 1000.+i_nlayECAL_gas , new TGeoTranslation(0, 0, z_splitcal));
-       z_splitcal+=fActiveECAL_gas_Thickness/2;
-       if(fnum_precision_layers==2){
-        z_splitcal+=fActiveECAL_gas_gap;
-        z_splitcal+=fActiveECAL_gas_Thickness/2;      
-        if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=1;
-        if(i_nlayECAL==fsecond_precision_layer) i_nlayECAL_gas=3;
-        tSplitCal->AddNode(newECALdet_gas[i_nlayECAL_gas], 1, new TGeoTranslation(0, 0, z_splitcal));
-        z_splitcal+=fActiveECAL_gas_Thickness/2;
-       }
+	// std::cout<< "--- index high precision layer = "<< 1e8+(i_nlayECAL+1)*1e5 << std::endl;
       }
       else{ 
-       z_splitcal+=fActiveECALThickness/2;      
-       tSplitCal->AddNode(newECALdet[0], 2000.+i_nlayECAL, new TGeoTranslation(0, 0, z_splitcal));
-       z_splitcal+=fActiveECALThickness/2;      
-      }
+	// position sensitive layers
+	z_splitcal+=fActiveECALThickness/2;      
+	if (i_nlayECAL%2==0) {
+	  //strips giving x information
+	  for (int mx=0; mx<fNModulesInX; mx++){
+	    for(int my=0; my<fNModulesInY; my++){
+	      for(int j=0;j<fNStripsPerModule;j++){
+ 		int index = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;
+		double xCoordinate = -fXMax + (fNStripsPerModule*mx + j+0.5) * fStripHalfWidth * 2; // the times 2 is to get the total width from the half-width
+		double yCoordinate = -fYMax + (my+0.5) * fStripHalfLength * 2; // the times 2 is to get the total length from the half-length
+		tSplitCal->AddNode(stripGivingX, index, new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
+		std::cout<< "--- index = "<< index << std::endl;
+	      }//end loop on strips
+	    }//end loop on modules in y   
+	  }//end loop on modules in x
+	}//end layer stripped in X
+	else {
+	  //strips giving y information
+	  for (int mx=0; mx<fNModulesInX; mx++){
+	    for(int my=0; my<fNModulesInY; my++){
+	      for(int j=0;j<fNStripsPerModule;j++){
+		int index = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;
+                double xCoordinate = -fXMax + (mx+0.5) * fStripHalfLength * 2; // the times 2 is to get the total length from the half-length       
+                double yCoordinate = -fYMax + (fNStripsPerModule*my+ j+0.5) * fStripHalfWidth * 2; // the times 2 is to get the total width from the half-width      
+                tSplitCal->AddNode(stripGivingY, index, new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
+		std::cout<< "--- index = "<< index << std::endl;
+	      }//end loop on strips
+	    }//end loop on modules in y      
+	  }//end loop on modules in x                  
+	}//end layer stripped in Y
 
-      //      z_splitcal+=fEmpty;
+	z_splitcal+=fActiveECALThickness/2;     
+      }// end loop on sensitive scintillator layers
 
-
-    }
+    } //end loop in ecal layers
+ 
     for (Int_t i_nlayHCAL=0; i_nlayHCAL<1; i_nlayHCAL++){
       labelHCALfilter="HCALfilter_";
       labelHCALfilter+=i_nlayHCAL;
@@ -368,20 +405,22 @@ void splitcal::ConstructGeometry()
       labelHCALdet+=i_nlayHCAL;
       char_labelHCALdet[i_nlayHCAL]=labelHCALdet;
       newHCALfilter[i_nlayHCAL] = gGeoManager->MakeBox(char_labelHCALfilter[i_nlayHCAL], A2, fXMax, fYMax, fFilterHCALThickness/2);
-      if(fActiveHCAL)newHCALdet[i_nlayHCAL] = gGeoManager->MakeBox(char_labelHCALdet[i_nlayHCAL], A4, fXMax, fYMax, fActiveHCALThickness/2);
+      if(fActiveHCAL){
+	newHCALdet[i_nlayHCAL] = gGeoManager->MakeBox(char_labelHCALdet[i_nlayHCAL], A4, fXMax, fYMax, fActiveHCALThickness/2);
 
-      if(fActiveHCAL)AddSensitiveVolume(newHCALdet[i_nlayHCAL]);
+	AddSensitiveVolume(newHCALdet[i_nlayHCAL]);
 
-      if(fActiveHCAL)newHCALdet[i_nlayHCAL]->SetLineColor(kRed);
+	newHCALdet[i_nlayHCAL]->SetLineColor(kRed);
+      }
       newHCALfilter[i_nlayHCAL]->SetLineColor(kBlue);
     }
     for (Int_t i_nlayHCAL=0; i_nlayHCAL<fnHCALSamplings; i_nlayHCAL++){
       z_splitcal+=fFilterHCALThickness/2;
-      tSplitCal->AddNode(newHCALfilter[0], 1, new TGeoTranslation(0, 0, z_splitcal));
+      tSplitCal->AddNode(newHCALfilter[i_nlayHCAL], 1, new TGeoTranslation(0, 0, z_splitcal));
       z_splitcal+=fFilterHCALThickness/2;      
       // z_splitcal+=fEmpty;
       z_splitcal+=fActiveHCALThickness/2;      
-      if(fActiveHCAL)tSplitCal->AddNode(newHCALdet[0], 1, new TGeoTranslation(0, 0, z_splitcal));
+      if(fActiveHCAL) tSplitCal->AddNode(newHCALdet[i_nlayHCAL], 1, new TGeoTranslation(0, 0, z_splitcal));
       z_splitcal+=fActiveHCALThickness/2;      
       // z_splitcal+=fEmpty;
 
@@ -390,10 +429,28 @@ void splitcal::ConstructGeometry()
     
 
 
-          //finish assembly and position
+    //finish assembly and position
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tSplitCal->GetShape());
     Double_t totLength = asmb->GetDZ();
     top->AddNode(tSplitCal, 1, new TGeoTranslation(0, 0,zStartSplitCal+totLength));  
+
+
+
+
+    // //gROOT->SetBatch(true);
+
+    //    TCanvas* c1 = new TCanvas("splitcalCanvas", "", 800, 800);
+    //    c1->cd();
+
+    //    TView3D* tview = (TView3D*) TView::CreateView();
+    //    tview->SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);                                                             
+    //    tview->RotateView(0, 90, c1);
+
+    //    tSplitCal->Draw("ogle");
+    //    c1->SaveAs(TString("splitcal.eps"));
+    //    c1->SaveAs(TString("splitcal.pdf"));
+
+
 }
 
 splitcalPoint* splitcal::AddHit(Int_t trackID, Int_t detID,

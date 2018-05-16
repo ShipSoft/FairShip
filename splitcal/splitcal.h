@@ -52,8 +52,14 @@ class splitcal: public FairDetector
 
     void SetMaterial(Double_t ActiveECALMaterial, Double_t ActiveHCALMaterial, Double_t FilterECALMaterial, Double_t FilterHCALMaterial);
 
-    void SetNSamplings(Double_t nECALSamplings, Double_t nHCALSamplings, Double_t ActiveHCAL);
+    void SetNSamplings(Int_t nECALSamplings, Int_t nHCALSamplings, Double_t ActiveHCAL);
 
+    void SetNModules(Int_t nModulesInX, Int_t nModulesInY);
+
+    void SetNStrips(Int_t nStrips);
+
+    void SetStripSize(Double_t stripHalfWidth, Double_t stripHalfLength);
+ 
     void SetXMax(Double_t xMax);
 
     void SetYMax(Double_t yMax);
@@ -103,12 +109,17 @@ class splitcal: public FairDetector
     Double_t fActiveECALThickness,  fActiveHCALThickness, fFilterECALThickness, xfFilterECALThickness,   fFilterECALThickness_first, fFilterHCALThickness;
     Double_t fActiveECALMaterial,  fActiveHCALMaterial, fFilterECALMaterial, fFilterHCALMaterial;
     Double_t fActiveECAL_gas_gap, fActiveECAL_gas_Thickness;
-    Double_t fnECALSamplings, fnHCALSamplings, fActiveHCAL;
+    Int_t fnECALSamplings, fnHCALSamplings;
+    Double_t fActiveHCAL;
     Double_t fZStart;
     Double_t fEmpty,fBigGap; 
     Double_t fXMax;
     Double_t fYMax;
     Double_t ffirst_precision_layer, fsecond_precision_layer, fthird_precision_layer, fnum_precision_layers;
+    Int_t fNModulesInX, fNModulesInY;
+    Int_t fNStripsPerModule; 
+    Double_t fStripHalfWidth, fStripHalfLength;
+
     /** container for data points */
 
     TClonesArray*  fsplitcalPointCollection;
