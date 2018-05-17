@@ -34,7 +34,8 @@ class splitcalPoint : public FairMCPoint
     virtual ~splitcalPoint();
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+    /* virtual void Print(const Option_t* opt) const; */
+    virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
 
   private:
