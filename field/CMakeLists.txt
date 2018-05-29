@@ -31,6 +31,7 @@ ShipBellField.cxx
 ShipBFieldMap.cxx
 ShipCompField.cxx
 ShipFieldMaker.cxx
+ShipGoliathField.cxx
 )
 
 set(LINKDEF FieldLinkDef.h)

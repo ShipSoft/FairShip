@@ -23,6 +23,7 @@ ShipGeoCave.cxx
 ShipMagnet.cxx         
 ShipChamber.cxx
 ShipTargetStation.cxx
+MufluxTargetStation.cxx
 ShipMuonShield.cxx
 ShipPassiveContFact.cxx
 ShipTAUMagneticSpectrometer.cxx
