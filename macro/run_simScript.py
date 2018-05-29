@@ -262,11 +262,7 @@ if simEngine == "Pythia8":
    print 'and with stop mass=\%.3f GeV\n',theCouplings[2]
    pythia8_conf.configurerpvsusy(P8gen,theMass,[theCouplings[0],theCouplings[1]],
                                 theCouplings[2],RPVSUSYbench,'c',deepCopy)
-  P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetParameters("ProcessLevel:all = off")
-  if ds==7: # short muon shield
-   P8gen.SetLmin(44*u.m)
-   P8gen.SetLmax(107*u.m)
   if inputFile: 
    ut.checkFileExists(inputFile)
 # read from external file
@@ -280,10 +276,10 @@ if simEngine == "Pythia8":
   import pythia8darkphoton_conf
   passDPconf = pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,deepCopy)
   if (passDPconf!=1): sys.exit()
+ if HNL or RPVSUSY or DarkPhoton: 
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
-  if ds==7: # short muon shield
-   P8gen.SetLmin(44*u.m)
-   P8gen.SetLmax(107*u.m)
+  P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
+  P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
  if charmonly:
   ut.checkFileExists(inputFile)
   primGen.SetBeam(0.,0., ship_geo.Box.TX-2., ship_geo.Box.TY-2.) #Uniform distribution in x/y on the target (1 cm of margin at both sides)    
