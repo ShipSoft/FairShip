@@ -34,7 +34,7 @@ InitStatus ShipTdcTask::Init()
       return kFATAL;
    }
 
-   fRawData = static_cast<TClonesArray *>(mgr->GetObject("DriftTubesHit"));
+   fRawData = static_cast<TClonesArray *>(mgr->GetObject("MufluxSpectrometerHit"));
    if (nullptr == fRawData) {
       return kERROR;
    }

@@ -19,7 +19,7 @@ using DriftTubes::ChannelId;
 // DriftTubeUnpack: Constructor
 DriftTubeUnpack::DriftTubeUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
    : FairUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray("MufluxSpectrometerHit")),
-     fNHits(0), fNHitsTotal(0)
+     fNHits(0), fNHitsTotal(0), fPartitionId(0x0C00)
 {
 }
 
