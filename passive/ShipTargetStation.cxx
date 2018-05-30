@@ -75,16 +75,12 @@ Int_t ShipTargetStation::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
-void ShipTargetStation::SetMuFlux(Bool_t muflux)
-{
-  fMuFlux = muflux;
-}
-
 void ShipTargetStation::ConstructGeometry()
 {
     TGeoVolume *top=gGeoManager->GetTopVolume();
     InitMedium("tungsten");
     TGeoMedium *tungsten =gGeoManager->GetMedium("tungsten");
+ 
     InitMedium("iron");
     TGeoMedium *iron  =gGeoManager->GetMedium("iron");
     InitMedium("H2O");
@@ -92,6 +88,7 @@ void ShipTargetStation::ConstructGeometry()
     InitMedium("molybdenum");
     TGeoMedium *mo  =gGeoManager->GetMedium("molybdenum");
     TGeoVolume *tTarget = new TGeoVolumeAssembly("TargetArea");
+    
     Double_t zPos =  0.;
     Int_t slots = fnS;
     slots = slots-1;    
@@ -99,13 +96,15 @@ void ShipTargetStation::ConstructGeometry()
     if (fnS > 10){
       TGeoVolume *target;
       TGeoVolume *slit; 
-      //Double_t zPos =  fTargetZ - fTargetLength/2.;
+      //Double_t zPos =  fTargetZ - fTargetLength/2.;      
       for (Int_t i=0; i<fnS; i++) {
        TString nmi = "Target_"; nmi += i+1;
        TString sm = "Slit_";   sm += i+1;
        TGeoMedium *material;
        if (fM.at(i)=="molybdenum") {material = mo;};
        if (fM.at(i)=="tungsten")   {material = tungsten;};
+
+       
        if (fnS == 18) { // new target layout
           target = gGeoManager->MakeTube(nmi, material, 0., fDiameter/2., fL.at(i)/2.);                     
        }
@@ -127,7 +126,8 @@ void ShipTargetStation::ConstructGeometry()
         tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos+fL.at(i)+fsl/2.) );
         zPos+=fL.at(i)+fsl;
        } else {
-         zPos+=fL.at(i);}
+         zPos+=fL.at(i);   
+	 }
       } 
     }else if(fnS > 0){
       Double_t dZ = (fTargetLength - (fnS-1)*fsl)/float(fnS);
@@ -145,24 +145,21 @@ void ShipTargetStation::ConstructGeometry()
       }
       TString nmi = "Target_"; nmi += fnS;
       TGeoVolume *target = gGeoManager->MakeTube(nmi, tungsten, 0, 25, dZ/2.);
-      target->SetLineColor(38);  // silver/blue
-      tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos+dZ/2.));      
-    }else{
-    // target made of solid tungsten
-    TGeoVolume *target = gGeoManager->MakeTube("Target", tungsten, 0, 25, fTargetLength/2.);
-    target->SetLineColor(38);  // silver/blue
-    tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, fTargetZ));
+      target->SetLineColor(38);  // silver/blue	
+      tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos+dZ/2.));       
     }
+    else{
+      // target made of solid tungsten
+      TGeoVolume *target = gGeoManager->MakeTube("Target", tungsten, 0, 25, fTargetLength/2.);
+      target->SetLineColor(38);  // silver/blue
+      tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, fTargetZ));
+    }
+    
     if (fAbsorberLength>0){  // otherwise, magnetized hadron absorber defined in ShipMuonShield.cxx
      zPos =  fTargetZ - fTargetLength/2.;
-    // Absorber made of iron
-    TGeoVolume *absorber;
-     if(fMuFlux) {    
-        absorber = gGeoManager->MakeBox("Absorber", iron, 40., 40., fAbsorberLength/2.);  // 1890
-     }
-     else {
-        absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
-     }
+     // Absorber made of iron
+     TGeoVolume *absorber;
+     absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength/2.);  // 1890
      absorber->SetLineColor(42); // brown / light red
      tTarget->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ-zPos));
     } 
@@ -172,16 +169,14 @@ void ShipTargetStation::ConstructGeometry()
       Float_t yTot = 400./2.;
       Float_t spaceTopBot = 10.;
       Float_t spaceSide   = 5.;
-      if (!fMuFlux) {
-        TGeoVolume *moreShieldingTopBot   = gGeoManager->MakeBox("moreShieldingTopBot", iron, xTot, yTot/2., fTargetLength/2.);
-        moreShieldingTopBot->SetLineColor(33); 
-        tTarget->AddNode(moreShieldingTopBot, 1, new TGeoTranslation(0., fDiameter/2. +spaceTopBot+yTot/2.,fTargetLength/2.));
-        tTarget->AddNode(moreShieldingTopBot, 2, new TGeoTranslation(0.,-fDiameter/2. -spaceTopBot-yTot/2.,fTargetLength/2.));
-        TGeoVolume *moreShieldingSide   = gGeoManager->MakeBox("moreShieldingSide", iron, xTot/2., (fDiameter+1.9*spaceTopBot)/2., fTargetLength/2.);
-        moreShieldingSide->SetLineColor(33); 
-        tTarget->AddNode(moreShieldingSide, 1, new TGeoTranslation(fDiameter/2.+spaceSide+xTot/2.,0.,fTargetLength/2.));
-        tTarget->AddNode(moreShieldingSide, 2, new TGeoTranslation(-fDiameter/2.-spaceSide-xTot/2.,0.,fTargetLength/2.));
-      } 
+      TGeoVolume *moreShieldingTopBot   = gGeoManager->MakeBox("moreShieldingTopBot", iron, xTot, yTot/2., fTargetLength/2.);
+      moreShieldingTopBot->SetLineColor(33); 
+      tTarget->AddNode(moreShieldingTopBot, 1, new TGeoTranslation(0., fDiameter/2. +spaceTopBot+yTot/2.,fTargetLength/2.));
+      tTarget->AddNode(moreShieldingTopBot, 2, new TGeoTranslation(0.,-fDiameter/2. -spaceTopBot-yTot/2.,fTargetLength/2.));
+      TGeoVolume *moreShieldingSide   = gGeoManager->MakeBox("moreShieldingSide", iron, xTot/2., (fDiameter+1.9*spaceTopBot)/2., fTargetLength/2.);
+      moreShieldingSide->SetLineColor(33); 
+      tTarget->AddNode(moreShieldingSide, 1, new TGeoTranslation(fDiameter/2.+spaceSide+xTot/2.,0.,fTargetLength/2.));
+      tTarget->AddNode(moreShieldingSide, 2, new TGeoTranslation(-fDiameter/2.-spaceSide-xTot/2.,0.,fTargetLength/2.));
     }else{
     TGeoVolume *moreShielding = gGeoManager->MakeTube("MoreShielding", iron, 30, 400, fTargetLength/2.);  
     moreShielding->SetLineColor(43); //  
@@ -190,6 +185,7 @@ void ShipTargetStation::ConstructGeometry()
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());
     Double_t totLength = asmb->GetDZ();
     top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength));
+    
     if (fAbsorberLength>0){
      cout << "target and absorber positioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
     }else{

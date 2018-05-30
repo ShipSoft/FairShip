@@ -51,6 +51,7 @@ caloDesign   = globalDesigns[default]['caloDesign'] # 0=ECAL/HCAL TP  1=ECAL/HCA
 strawDesign  = globalDesigns[default]['strawDesign'] # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
 
 charm        = 0 # !=0 create charm detector instead of SHiP
+pID          = 22 # default for the particle gun
 geofile = None
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
@@ -63,10 +64,10 @@ nuRadiography = False # misuse GenieGenerator for neutrino radiography and geome
 Opt_high = None # switch for cosmic generator
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t:g",[\
-                                   "PG","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
+                                   "PG","pID=","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign="])
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -74,6 +75,9 @@ except getopt.GetoptError:
         print ' or    --Genie for reading and processing neutrino interactions '
         print ' or    --Pythia6 for muon nucleon scattering'  
         print ' or    --PG for particle gun'  
+	print '       --pID= id of particle used by the gun (default=22)'
+	print '       --Estart= start of energy range of particle gun for muflux detector (default=10 GeV)'
+	print '       --Eend= end of energy range of particle gun for muflux detector (default=10 GeV)'	
         print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
         print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
         print '       --DarkPhoton to generate events with dark photons (default HNL)'
@@ -93,6 +97,14 @@ for o, a in opts:
             simEngine = "Pythia8"
         if o in ("--PG",):
             simEngine = "PG"
+        if o in ("--pID",):	    
+            if a: pID = int(a)
+        if o in ("--Estart",):
+            Estart = 10.
+            if a!=str(0): Estart = float(a)
+        if o in ("--Eend",):
+            Eend = 10.
+            if a!=str(0): Eend = float(a)   
         if o in ("-A",):
             inclusive = a
             if a=='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
@@ -209,7 +221,8 @@ else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config
 
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
-tag = simEngine+"-"+mcEngine
+if simEngine == "PG": tag = simEngine + "_"+str(pID)+"-"+mcEngine
+else: tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if eventDisplay: tag = tag+'_D'
 if dv > 4 : tag = 'conical.'+tag
@@ -310,13 +323,17 @@ if simEngine == "Pythia6":
  primGen.AddGenerator(P6gen)
 # -----Particle Gun-----------------------
 if simEngine == "PG": 
-  myPgun = ROOT.FairBoxGenerator(22,1)
+  myPgun = ROOT.FairBoxGenerator(pID,1)
   myPgun.SetPRange(10,10.2)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
+  if charm!=0: myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
+  else: myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
+  if charm!=0: 
+     myPgun.SetPRange(Estart,Eend)  
+     primGen.SetTarget(ship_geo.target.z0,0.)
   primGen.AddGenerator(myPgun)
-  run.SetGenerator(primGen)
+  if charm==0: run.SetGenerator(primGen)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
@@ -578,3 +595,5 @@ def checkOverlapsWithGeant4():
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
+
+
