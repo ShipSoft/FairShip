@@ -2,6 +2,7 @@ set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/online
     ${CMAKE_SOURCE_DIR}/shipdata
+    ${CMAKE_SOURCE_DIR}/charmdet
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -23,6 +24,7 @@ Set(SRCS
     ShipTdcTask.cxx
     ShipTdcSource.cxx
     ShipTdcUnpack.cxx
+    DriftTubeUnpack.cxx
 )
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")

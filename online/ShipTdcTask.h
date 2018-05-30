@@ -11,37 +11,36 @@ class TCanvas;
  * An example analysis task for demonstartion of THttpServer usage.
  * Loops over detector raw items in an event and fills the histogram.
  */
-class ShipTdcTask : public FairTask
-{
-  public:
-    /** Standard Constructor. */
-    ShipTdcTask(const char* name, Int_t iVerbose);
-    
-    /** Destructor. */
-    virtual ~ShipTdcTask();
+class ShipTdcTask : public FairTask {
+public:
+   /** Standard Constructor. */
+   ShipTdcTask(const char *name, Int_t iVerbose);
 
-    /** Initialization of the task. */
-    virtual InitStatus Init();
+   /** Destructor. */
+   virtual ~ShipTdcTask();
 
-    /** Process an event. */
-    virtual void Exec(Option_t*);
+   /** Initialization of the task. */
+   virtual InitStatus Init();
 
-    /** Called at the end of each event. */
-    virtual void FinishEvent();
+   /** Process an event. */
+   virtual void Exec(Option_t *);
 
-    /** Called at the end of task. */
-    virtual void FinishTask();
+   /** Called at the end of each event. */
+   virtual void FinishEvent();
 
-  private:
-    TClonesArray* fRawData; /**< Array with input data. */
-    TH1I* fhChannel;            /**< Histogram object which is registered on http server. */
-    TH1I* fhTime;
+   /** Called at the end of task. */
+   virtual void FinishTask();
 
-    ShipTdcTask(const ShipTdcTask&);
-    ShipTdcTask& operator=(const ShipTdcTask&);
+private:
+   TClonesArray *fRawData; /**< Array with input data. */
+   TH1I *fhChannel;        /**< Histogram object which is registered on http server. */
+   TH1I *fhTime;
 
-  public:
-    ClassDef(ShipTdcTask, 1)
+   ShipTdcTask(const ShipTdcTask &);
+   ShipTdcTask &operator=(const ShipTdcTask &);
+
+public:
+   ClassDef(ShipTdcTask, 1)
 };
 
 #endif

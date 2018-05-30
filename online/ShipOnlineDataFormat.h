@@ -33,15 +33,15 @@ namespace DriftTubes {
       uint16_t padding : 3;
       uint16_t edge : 1;
       uint16_t TDC : 4;
-      uint16_t channel : 8
-   }
+      uint16_t channel : 8;
+   };
    struct Flags {
       uint16_t completely_different_settings : 1;
       uint16_t width_resolution : 3;
       uint16_t time_resolution : 2;
       uint16_t measurement_type : 2;
       uint16_t padding : 8;
-   }
+   };
 }
 
 #endif

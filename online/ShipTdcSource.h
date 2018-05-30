@@ -6,24 +6,22 @@
 
 #include "FairUnpack.h"
 
+class ShipTdcSource : public FairOnlineSource {
+public:
+   ShipTdcSource();
+   ShipTdcSource(const ShipTdcSource &source);
+   virtual ~ShipTdcSource();
 
-class ShipTdcSource : public FairOnlineSource
-{
-  public:
-    ShipTdcSource();
-    ShipTdcSource(const ShipTdcSource& source);
-    virtual ~ShipTdcSource();
+   virtual Bool_t Init();
+   virtual Int_t ReadEvent(UInt_t = 0); // Read frame by frame
+   virtual void Close();
 
-    virtual Bool_t Init();
-    virtual Int_t ReadEvent(UInt_t=0); // Read frame by frame
-    virtual void Close();
+protected:
+   Bool_t Unpack(Int_t *data, Int_t size, uint16_t partitionId);
+   std::ifstream *fIn;
+   unsigned char buffer[UINT16_MAX];
 
-  protected:
-    Bool_t Unpack(Int_t* data, Int_t size);
-    std::ifstream *fIn;
-    unsigned char buffer[UINT16_MAX];
-
-    ClassDef(ShipTdcSource, 0)
+   ClassDef(ShipTdcSource, 0)
 };
 
 #endif
