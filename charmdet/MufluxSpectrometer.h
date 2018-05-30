@@ -25,7 +25,7 @@ class MufluxSpectrometer:public FairDetector
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
-    
+        
     //methods for drift tubes by Eric
     void SetTubeLength(Double_t tubelength);
     void SetInnerTubeDiameter(Double_t innertubediameter);
@@ -38,8 +38,6 @@ class MufluxSpectrometer:public FairDetector
     void SetWireThickness(Double_t wirethickness);
     void SetDeltazView(Double_t deltazview);
     void SetTubeLength12(Double_t strawlength12);
-    void SetVacBox_x(Double_t vacbox_x);
-    void SetVacBox_y(Double_t vacbox_y);
     void SetTr12YDim(Double_t tr12ydim); 
     void SetTr34YDim(Double_t tr34ydim); 
     void SetTr12XDim(Double_t tr12xdim); 
@@ -47,12 +45,19 @@ class MufluxSpectrometer:public FairDetector
     void SetMuonFlux(Bool_t muonflux);   
     void TubeDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void TubeEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
+    void SetDistStereo(Double_t diststereo);
+    void SetDistT1T2(Double_t distT1T2);
+    void SetDistT3T4(Double_t distT3T4);
+    void SetSetScintillatorThickness(Double_t scintillatorthickness);
+    void SetScintillatorDistT(Double_t scintillatorDistT);
+    void SetscintillatorPlasticThickness(Double_t scintillatorPlasticThickness);
 
 // for the digitizing step
     void SetTubeResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
     Double_t TubeVdrift() {return v_drift;}
     Double_t TubeSigmaSpatial() {return sigma_spatial;}    
-    
+    Double_t ViewAngle() {return fView_angle;} 
+           
      //methods for Goliath by Annarita
     void SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH);
     void SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t LowCoilH, Double_t CoilD);
@@ -129,8 +134,6 @@ private:
     Double_t       fsinphi;
     Double_t       fWire_thickness;          //!  Thickness of the wire
     Double_t       fDeltaz_view;             //!  Distance (z) between views
-    Double_t       fVacBox_x;              //!  x size of station vacuumbox
-    Double_t       fVacBox_y;                //!  y size of station vacuumbox
     Double_t       fvetoydim;                //!  y size of veto station
     Double_t       ftr12ydim;                //!  y size of tr12 stations
     Double_t       ftr34ydim;                //!  y size of tr34 stations
@@ -138,9 +141,12 @@ private:
     Double_t       ftr34xdim;                //!  x size of tr34 stations
     Int_t          fTubes_per_layer_tr12;    //!  Number of tubes in one tr12 layer
     Int_t          fTubes_per_layer_tr34;    //!  Number of tubes in one tr34 layer
-    Double_t       v_drift;                  //! drift velocity  
-    Double_t       sigma_spatial;            //! spatial resolution    
-    Bool_t         fMuonFlux;                //! set up for muonflux    
+    Double_t       v_drift;                  //!  drift velocity  
+    Double_t       sigma_spatial;            //!  spatial resolution    
+    Bool_t         fMuonFlux;                //!  set up for muonflux    
+    Double_t       fdiststereo;              //!  distance between stereo layers
+    Double_t       fdistT1T2;                //!  distance between T1&T2
+    Double_t       fdistT3T4;                //!  distance between T3&T4
     
     /** container for data points */
     TClonesArray*  fMufluxSpectrometerPointCollection;
