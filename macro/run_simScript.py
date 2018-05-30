@@ -333,7 +333,6 @@ if simEngine == "PG":
      myPgun.SetPRange(Estart,Eend)  
      primGen.SetTarget(ship_geo.target.z0,0.)
   primGen.AddGenerator(myPgun)
-  if charm==0: run.SetGenerator(primGen)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
