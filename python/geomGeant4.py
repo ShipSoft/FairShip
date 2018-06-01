@@ -1,7 +1,7 @@
 import shipunit as u
 from array import array
 import hepunit as G4Unit
-import ROOT,os
+import ROOT
 # requires to have ${SIMPATH}/include/Geant4/ in PYTHONPATH
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
