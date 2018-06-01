@@ -12,11 +12,11 @@ which is called in the [g4config.in](../gconfig/g4config.in) input file.
 
 Most of the required TVirtualMagField objects are already created in the C++ source code 
 where the geometry volumes are defined. The [ShipFieldMaker](ShipFieldMaker.h) class can
-be used to create new, extra fields, or replace already existing ones, using an input control 
-text file, where we can set global and/or local fields for specific volumes. The VMC uses cm 
-for distances and kGauss (0.1 Tesla) for magnetic fields. Here, we use the same cm unit for 
-lengths, but use Tesla for magnetic fields, which the ShipFieldMaker class converts to kGauss 
-units when passed to the VMC. 
+be used to create new, extra fields, or replace already existing ones, using either an input 
+control text file or by calling various definition functions, where we can set global 
+and/or local fields for specific volumes. The VMC uses cm for distances and kGauss (0.1 Tesla) 
+for magnetic fields. Here, we use the same cm unit for lengths, but use Tesla for magnetic 
+fields, which the ShipFieldMaker class converts to kGauss units when passed to the VMC. 
 
 The function
 
@@ -25,19 +25,27 @@ TVirtuaMagField::Field(const Double_t* pos, Double_t* B)
 ```
 
 that is implemented in the various derived field classes finds the magnetic field components
-and stores them in the array B given the global (not local) co-ordinate position pos.
+and stores them in the array B given the global, not local, co-ordinate position pos; 
+note that Geant4 can only use global positional coordinates for finding fields.
 
 
 The script [run_simScript.py](../macro/run_simScript.py) calls the addVMCFields() function defined
-in [geomGeant4.py](../python/geomGeant4.py), which creates a ShipFieldMaker object, where its
-makeFields() function takes a control file that specifies what magnetic fields are required for the 
-simulation. Note that B fields (TVirtualMagFields) already defined in the geometry C++ source code
-do not need to be added to this input file. This script can also generate plots of the magnitude of 
-the magnetic field in the z-x, z-y and/or x-y plane using the plotField function in 
-[ShipFieldMaker](ShipFieldMaker.h). The location of the control file, and any field maps that it 
-uses, must be specified relative to the VMCWORKDIR directory.
+in [geomGeant4.py](../python/geomGeant4.py), which creates a ShipFieldMaker object. This then
+reads a control file, or calls definition functions, that specifies what magnetic fields are required 
+for the simulation. Note that B fields (TVirtualMagFields) already defined in the geometry C++ source 
+code do not need to be added again via either the input file or with definition functions. The
+ShipFieldMaker, which inherits from 
+[TG4VUserPostDetConstruction]
+(https://github.com/vmc-project/geant4_vmc/blob/master/source/geometry/include/TG4VUserRegionConstruction.h), 
+is then passed onto the ROOT/Geant4 [geometry manager]
+(https://github.com/vmc-project/geant4_vmc/blob/master/source/geometry/include/TG4GeometryManager.h) 
+and the VMC fields are updated via the overriden ShipFieldMaker::Construct() function.
 
-The structure of the control file, such as [BFieldSetup.txt](BFieldSetup.txt), uses specific 
+The run script can also generate plots of the magnitude of the magnetic field in the z-x, z-y and/or 
+x-y plane using the plotField function in [ShipFieldMaker](ShipFieldMaker.h). The location of the 
+control file, and any field maps that it uses, must be specified relative to the VMCWORKDIR directory.
+
+The structure of the control file, such as [ExampleBFieldSetup.txt](ExampleBFieldSetup.txt), uses specific 
 keywords to denote what each line represents:
 
 ```
@@ -54,20 +62,31 @@ keywords to denote what each line represents:
 10) "Local" for only setting a local field to a specific volume, ignoring the global field
 ```
 
-The syntax for each of the above options are:
+Alternatively, the above field types can be defined using various "defineX()" functions
+in [ShipFieldMaker](ShipFieldMaker.h), where parameters are passed as function arguments.
+
+The syntax for each of the above options are as follows, where the control file arguments
+are shown first then the alternative definition functions:
 
 1) [FieldMap](ShipBFieldMap.h)
 
 ```
-FieldMap MapLabel MapFileName [x0 y0 z0] [phi theta psi]
+FieldMap Name MapFileName [x0 y0 z0] [phi theta psi]
 ```
 
-where MapLabel is the descriptive name of the field, MapFileName is the location of
+or
+
+```
+defineFieldMap(Name, MapFileName, TVector3(x0, y0, z0), TVector3(phi, theta, psi));
+```
+
+where Name is the descriptive name or title of the field, MapFileName is the location of
 the ROOT file containing the field map data (relative to the VMCWORKDIR directory),
 x0, y0, z0 are the offset co-ordinates in cm, and phi, theta and psi are the Euler 
 rotation angles in degrees about the z axis, the new x axis, and then the new z axis, 
 in that order. The offsets and angles are optional parameters (denoted by the square
-brackets); offsets still need to be provided (can be set to zero) if angles are required.
+brackets); default values are all set to zero. Note that offsets still need to be 
+provided (can be set to zero) if angles are required.
 
 A field map that is local to a particular volume is assumed to be centred and aligned 
 along the local symmetry axes. For example, if there is a collection of identical magnets 
@@ -106,17 +125,26 @@ bin for coordinate (x,y,z), and Ny and Nz are the number of y and z bins, respec
 All variables are stored with floating-point (not double) precision to save both 
 disk space as well as memory consumption within the FairShip code.
 
-The script [convertMisisMap.py](convertMisisMap.py) can be used to convert (ascii) field map data 
-generated from MISIS engineering work to the ROOT file format for FairShip use. Alternatively, the 
-script [convertRALMap.py](convertRALMap.py) can be used to convert (ascii) field map data generated 
-by RAL engineers (VectorFields/Opera software output) to the ROOT file format for FairShip use. 
+The script [convertMap.py](convertMap.py) can be used to convert a general (ascii) field map 
+data file into the ROOT file format for FairShip use. Alternatively, the scripts 
+[convertMisisMap.py](convertMisisMap.py) and [convertRALMap.py](convertRALMap.py) can be used 
+for converting field maps generated from MISIS or RAL (VectorFields/Opera software output) 
+engineering work, respectively.
 
 
-2) [SymFieldMap](ShipBFieldMap.h)
+2) [SymFieldMap](ShipBFieldMap.h): x-y quadrant symmetric field map
 
 ```
-SymFieldMap MapLabel MapFileName [x0 y0 z0] [phi theta psi]
+SymFieldMap Name MapFileName [x0 y0 z0] [phi theta psi]
 ```
+
+or
+
+```
+defineFieldMap(Name, MapFileName, TVector3(x0, y0, z0), TVector3(phi, theta, psi), useSymmetry);
+```
+
+where useSymmetry is a boolean that needs to be set to kTRUE (default = kFALSE).
 
 This reuses the [ShipBFieldMap](ShipBFieldMap.h) class to define a field map where we
 have x-y quadrant symmetry: Bx is antisymmetric in x and y, By is symmetric in x and y, 
@@ -127,26 +155,39 @@ defined by the MapFileName string (relative to the VMCWORKDIR directory), requir
 roughly 25% of the memory compared to a full field map. The parameters x0, y0, z0 are the 
 offset co-ordinates in cm, and phi, theta and psi are the Euler rotation angles in degrees 
 about the z axis, the new x axis, and then the new z axis, in that order. The offsets and 
-angles are optional parameters (denoted by the square brackets); offsets still need to be 
-provided (can be set to zero) if angles are required.
+angles are optional parameters (denoted by the square brackets) with default values equal 
+to zero; offsets still need to be provided (can be set to zero) if angles are required.
 
 
 3) CopyMap
 
 ```
-CopyMap MapLabel MapToCopy x0 y0 z0 [phi theta psi]
+CopyMap Name MapToCopy x0 y0 z0 [phi theta psi]
 ```
 
-where MapToCopy is the name of the (previously defined) map to be copied, with the 
-new co-ordinate offsets specified by the values x0, y0 and z0 (cm), as well as the 
-optional Euler rotation angles phi, theta and psi (degrees), corresponding to rotations 
-about the z, new x and new z axis, in that order. Note that this will reuse the field 
-map data already stored in memory.
+or
+
+```
+defineFieldMapCopy(Name, MapToCopy, TVector3(x0, y0, z0), TVector3(phi, theta, psi));
+```
+
+where Name is the new name or title of the copied map, MapToCopy is the name of the 
+(previously defined) map to be copied, with the new co-ordinate offsets specified by the 
+values x0, y0 and z0 (cm), as well as the optional Euler rotation angles phi, theta and 
+psi (degrees), corresponding to rotations about the z, new x and new z axis, in that order. 
+Note that this will reuse the field map data already stored in memory.
+
 
 4) [Uniform](https://root.cern.ch/doc/master/classTGeoUniformMagField.html)
 
 ```
-Uniform Label Bx By Bz
+Uniform Name Bx By Bz
+```
+
+or
+
+```
+defineUniform(Name, TVector3(Bx, By, Bz));
 ```
 
 where Bx, By and Bz are the components of the uniform field (in Tesla),
@@ -155,7 +196,13 @@ valid for any x,y,z co-ordinate value.
 5) [Constant](ShipConstField.h)
 
 ```
-Constant Label xMin xMax yMin yMax zMin zMax Bx By Bz
+Constant Name xMin xMax yMin yMax zMin zMax Bx By Bz
+```
+
+or
+
+```
+defineConstant(Name, TVector2(xMin, xMax), TVector2(yMin, yMax), TVector2(zMin, zMax), TVector3(Bx, By, Bz));
 ```
 
 where xMin, xMax are the global co-ordinate limits along the x axis (in cm),
@@ -165,57 +212,102 @@ of the uniform field in Tesla.
 6) [Bell](ShipBellField.h)
 
 ```
-Bell Label BPeak zMiddle orientInt tubeRad
+Bell Name BPeak zMiddle orientInt tubeRad [xy z L]
 ```
 
-where BPeak is the peak of the magnetic field (in Tesla), zMiddle is
-the global z location of the centre of the field (cm), orientInt is an integer
-to specify if the field is aligned either along the x (2) or y (1) axes 
-(Bz = 0 always), and tubeRad is the radius of the tube (cm) inside the
-region which specifies the extent of the field (for Bx).
-
-7) [Composite](ShipCompField.h)
+or
 
 ```
-Composite CompLabel Label1 ... LabelN
+defineBell(Name, BPeak, zMiddle, orientInt, tubeR, xy, z, L);
 ```
 
-where CompLabel is the label of the composite field, comprising of the fields
-named Label1 up to LabelN.
+where Name is the name or title of the field, BPeak is the peak of the 
+magnetic field (in Tesla), zMiddle is the global z location of the centre 
+of the field (cm), orientInt is an integer to specify if the field is aligned 
+either along the x (2) or y (1) axes (Bz = 0 always), and tubeRad is the 
+radius of the tube (cm) inside the region which specifies the extent of 
+the field (for Bx). The parameters xy, z and L are optional "target" 
+settings; xy is the target radius region (cm), z is its starting global 
+position (cm) while L specifies the length (cm).
+
+
+7) [Composite](ShipCompField.h): linear combination of fields
+
+```
+Composite theName Name1 ... NameN
+```
+
+or
+
+```
+defineComposite(theName, Name1, Name2, Name3 = "", Name4 = "");
+```
+
+or
+
+```
+defineComposite(theName, std_vector_of_field_names);
+```
+
+where theName is the name of the composite field, comprising of the fields
+named Name1 up to NameN. There are two versions of the definition functions;
+the first can accept up to four field names (at least two names are required), 
+while the other can accept a general vector of TString names.
 
 8) Global
 
 ```
-Global Label1 .. LabelN
+Global Name1 .. NameN
 ```
 
-where Label1 to LabelN are the labels of the field(s) that are combined
-to represent the global one for the whole geometry.
-
-9) Region
+or
 
 ```
-Region VolName FieldLabel [FieldMapScaleFactor]
+defineGlobalField(Name1, Name2 = "", Name3 = "", Name4 = "");
 ```
 
-where VolName is the name of the TGeo volume, FieldLabel is the name 
+or
+
+```
+defineGlobalField(std_vector_of_field_names);
+```
+
+where Name1 to NameN are the names of the fields that are combined
+to represent the "Global" field for the whole geometry. There are two 
+versions of the definition functions; the first can accept up to four 
+field names (at least one name is required), while the other can accept 
+a general vector of TString names. Note that there can only be one global 
+field in the VMC by definition, and any previously defined global field is
+overriden.
+
+9) Region: linear combination of local and global fields
+
+```
+Region VolName FieldName [FieldMapScaleFactor]
+```
+
+or
+
+```
+defineRegionField(VolName, FieldName, FieldMapScaleFactor = 1.0);
+```
+
+where VolName is the name of the TGeo volume, FieldName is the name 
 of the local field that should be assigned to this volume and FieldMapScaleFactor 
 is an optional scaling number that can be used to adjust the (maximum) magnitude 
-of any local field map (not other field types). Note that this keyword will 
-include the global field if it has been defined earlier in the configuration file, 
-i.e. any particle inside this volume will experience the superposition of the 
-(scaled) local field with the global one.
+of any local field map (not other field types). Any particle inside this volume 
+will experience the superposition of the (scaled) local field with the global one.
 
-10) Local
+10) Local: global fields are ignored
 
 ```
-Local VolName FieldLabel [FieldMapScaleFactor]
+Local VolName FieldName [FieldMapScaleFactor]
 ```
 
-where VolName is again the name of the TGeo volume, FieldLabel is the name 
+where VolName is the name of the TGeo volume, FieldName is the name 
 of the local field that should be assigned to this volume and FieldMapScaleFactor 
 is an optional scaling number that can be used to adjust the (maximum) magnitude 
-of any local field map (not other field types). This keyword will not include the 
+of any local field map (not other field types). This will not include the 
 global field, i.e. any particle inside this volume will only see the local one.
 
 
@@ -230,7 +322,7 @@ should be added to the (end of) the g4config.in file.
 
 Other magnetic field classes can use the above interface provided they inherit 
 from [TVirtualMagField](https://root.cern.ch/doc/master/classTVirtualMagField.html),
-implement the TVirtualMagField::Field() virtual function, and have unique 
-keyword-formatted lines assigned to them in the configuration file 
-that is then understood by the ShipFieldMaker::makeFields() function, which will 
-then create the fields and assign them to volumes in the geometry.
+implement the TVirtualMagField::Field() virtual function, and are recognised by
+the [ShipFieldMaker](ShipFieldMaker.h) class by appropriate "defineX()"
+functions that can also be called by the readInputFile() function via unique 
+keyword-formatted lines within the configuration text file.
