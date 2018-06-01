@@ -143,16 +143,26 @@ def configure(run,ship_geo):
  
  detectorList.append(MuonShield)
 
-
- magnet_design = 2
- if ship_geo.tankDesign == 5: magnet_design = 3
- if ship_geo.tankDesign == 6: magnet_design = 4
+ if not hasattr(ship_geo,"magnetDesign"):
+ # backward compatibility
+  magnet_design = 2
+  if ship_geo.tankDesign == 5: magnet_design = 3
+  if ship_geo.tankDesign == 6: magnet_design = 4
+  ship_geo.magnetDesign = magnet_design
+  ship_geo.Bfield.YokeWidth = 200.*u.cm 
+  ship_geo.Bfield.YokeDepth = 200.*u.cm
+  ship_geo.Bfield.CoilThick = 25.*u.cm
 # sanity check, 2018 layout ship_geo.tankDesign == 6 has to be together with ship_geo.nuTauTargetDesign == 3
  if (ship_geo.tankDesign == 6 and ship_geo.nuTauTargetDesign != 3) or (ship_geo.tankDesign != 6 and ship_geo.nuTauTargetDesign == 3):
    print "version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",ship_geo.tankDesign, ship_geo.nuTauTargetDesign 
    exit()
  if ship_geo.strawDesign > 1 : 
-   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, magnet_design, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
+  if ship_geo.magnetDesign>3:
+   B = ship_geo.Bfield
+   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",B.z, ship_geo.magnetDesign, B.x, B.y, ship_geo.cave.floorHeightTankB, B.YokeWidth, B.YokeDepth, B.CoilThick)
+#                                                               xaperture,  yaperture 
+  else: 
+   magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, ship_geo.magnetDesign, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  detectorList.append(magnet)
   
@@ -162,11 +172,11 @@ def configure(run,ship_geo):
 
  Veto.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, \
                     ship_geo.TrackStation3.z, ship_geo.TrackStation4.z,ship_geo.tankDesign)
- Veto.SetTubZpositions(ship_geo.Chamber1.z,ship_geo.Chamber2.z,ship_geo.Chamber3.z,ship_geo.Chamber4.z,ship_geo.Chamber5.z,ship_geo.Chamber6.z);
+ Veto.SetTubZpositions(ship_geo.Chamber1.z,ship_geo.Chamber2.z,ship_geo.Chamber3.z,ship_geo.Chamber4.z,ship_geo.Chamber5.z,ship_geo.Chamber6.z)
  Veto.SetTublengths(ship_geo.chambers.Tub1length,ship_geo.chambers.Tub2length,ship_geo.chambers.Tub3length, \
-                    ship_geo.chambers.Tub4length,ship_geo.chambers.Tub5length,ship_geo.chambers.Tub6length);
+                    ship_geo.chambers.Tub4length,ship_geo.chambers.Tub5length,ship_geo.chambers.Tub6length)
  Veto.SetB(ship_geo.Yheight/2.)
- Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA,ship_geo.cave.floorHeightTankB);
+ Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA,ship_geo.cave.floorHeightTankB)
  if ship_geo.tankDesign > 4: 
     dzX = ship_geo.zFocusX+ship_geo.target.z0    
     x1  = ship_geo.xMax/(ship_geo.Chamber1.z -ship_geo.chambers.Tub1length-dzX)*(ship_geo.TrackStation4.z-dzX)
@@ -195,6 +205,8 @@ def configure(run,ship_geo):
    taumuondetector.SetNRpcInArm(ship_geo.tauMudet.NRpc)
    taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)
    detectorList.append(taumuondetector)
+   if ship_geo.nuTauTargetDesign==3: 
+    taumuondetector.SetRpcDimDifferences(ship_geo.tauMudet.deltax, ship_geo.tauMudet.deltay)
    if ship_geo.nuTauTargetDesign<3:
     taumuondetector.SetReturnYokeDimensions(ship_geo.tauMudet.XRyoke,ship_geo.tauMudet.YRyoke, ship_geo.tauMudet.ZRyoke)
     taumuondetector.SetSmallerYokeDimensions(ship_geo.tauMudet.XRyoke_s,ship_geo.tauMudet.YRyoke_s, ship_geo.tauMudet.ZRyoke_s)
@@ -229,7 +241,9 @@ def configure(run,ship_geo):
     NuTauTarget.SetCenterZ(ship_geo.NuTauTarget.zC)
    if ship_geo.nuTauTargetDesign==3:
     NuTauTarget.SetCenterZ(ship_geo.EmuMagnet.zC) #now the centers of emumagnet and nutautarget are different (target does not include HPT)
-   NuTauTarget.SetNumberBricks(ship_geo.NuTauTarget.col,ship_geo.NuTauTarget.row,ship_geo.NuTauTarget.wall) 
+    NuTauTarget.SetNumberTargets(ship_geo.NuTauTarget.target)
+    NuTauTarget.SetHpTParam(ship_geo.tauHPT.nHPT, ship_geo.tauHPT.distHPT, ship_geo.tauHPT.DZ) 
+   NuTauTarget.SetNumberBricks(ship_geo.NuTauTarget.col,ship_geo.NuTauTarget.row,ship_geo.NuTauTarget.wall)
    NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim)
    NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW)
    NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ)
@@ -268,6 +282,9 @@ def configure(run,ship_geo):
    if ship_geo.nuTauTargetDesign==3:
     tauHpt.SetHPTNumber(ship_geo.tauHPT.nHPT)
     tauHpt.SetDistanceHPTs(ship_geo.tauHPT.distHPT)
+    tauHpt.SetSurroundingDetHeight(ship_geo.tauHPT.SRDY)
+    tauHpt.GetMagnetGeometry(ship_geo.EmuMagnet.zC, ship_geo.EmuMagnet.Y)
+    tauHpt.GetNumberofTargets(ship_geo.NuTauTarget.target)
    detectorList.append(tauHpt)
 
  # for backward compatibility
@@ -275,8 +292,21 @@ def configure(run,ship_geo):
    ship_geo.strawtubes.YLayerOffset = ship_geo.strawtubes.StrawPitch  / 2.
    ship_geo.strawtubes.YPlaneOffset = ship_geo.strawtubes.StrawPitch  / 4.
  if ship_geo.strawDesign > 1 :
+  # for backward compatibility
+  if ship_geo.strawDesign == 10 and not hasattr(ship_geo.strawtubes, "DeltazFrame"):
+   ship_geo.strawtubes.DeltazFrame = 2.5*u.cm
+   ship_geo.strawtubes.FrameLateralWidth = 1.2*u.m
+   ship_geo.strawtubes.FrameMaterial = "steel"
+  elif not hasattr(ship_geo.strawtubes, "DeltazFrame"):
+   ship_geo.strawtubes.DeltazFrame = 10.*u.cm
+   ship_geo.strawtubes.FrameLateralWidth = 1.*u.cm
+   ship_geo.strawtubes.FrameMaterial = "aluminium"
+
   Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    
   Strawtubes.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
+  Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
+  Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)
+  Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)
   Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)
   Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)
   Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)
@@ -330,6 +360,9 @@ def configure(run,ship_geo):
   SplitCal.SetXMax(x.XMax)
   SplitCal.SetYMax(x.YMax)
   SplitCal.SetEmpty(x.Empty,x.BigGap,x.ActiveECAL_gas_gap,x.first_precision_layer,x.second_precision_layer,x.third_precision_layer,x.num_precision_layers)
+  SplitCal.SetNModules(x.NModulesInX, x.NModulesInY)
+  SplitCal.SetNStrips(x.NStripsPerModule)
+  SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
   detectorList.append(SplitCal)
 
  if not ship_geo.HcalOption < 0:
@@ -356,10 +389,11 @@ def configure(run,ship_geo):
  detectorList.append(timeDet)
 
 #-----   Magnetic field   -------------------------------------------
- if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10: fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
- else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
- if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
- run.SetField(fMagField)
+ if not hasattr(ship_geo.Bfield,"fieldMap"):
+  if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10 : fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
+  else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
+  if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
+  run.SetField(fMagField)
 #
  exclusionList = []
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\

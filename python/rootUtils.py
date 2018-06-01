@@ -182,3 +182,10 @@ def checkFileExists(x):
     if not test: 
        print "input file",f," does not exist. Missing authentication?"
        os._exit(1)
+    if test.FindObjectAny('cbmsim'): 
+     return 'tree'
+    else:
+     return 'ntuple'
+
+
+

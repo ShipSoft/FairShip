@@ -851,8 +851,8 @@ void ShipMuonShield::ConstructGeometry()
 	Double_t w1 = 2 * dXIn[nM] + std::max(20., gapIn[nM]);
 	Double_t w2 = 2 * dXOut[nM] + std::max(20., gapOut[nM]);
 	Double_t anti_overlap = 0.1;
-	Double_t h1 = 0.5 * (dYIn[nM] + dXIn[nM] + anti_overlap - fFloor);
-	Double_t h2 = 0.5 * (dYOut[nM] + dXOut[nM] + anti_overlap - fFloor);
+	Double_t h1 = 0.5 * (dYIn[nM] + dXIn[nM] + anti_overlap - 10 * m + fFloor);
+	Double_t h2 = 0.5 * (dYOut[nM] + dXOut[nM] + anti_overlap - 10 * m + fFloor);
 	Double_t length = std::min(0.5 * m, std::abs(dZf[nM]/2. - 5 * cm));
 	std::array<Double_t, 16> verticesIn = {
 	    -w1, -h1,
@@ -883,10 +883,10 @@ void ShipMuonShield::ConstructGeometry()
 	pillar1->SetLineColor(kGreen-5);
 	pillar2->SetLineColor(kGreen-5);
 	tShield->AddNode(pillar1, 1, new TGeoTranslation(
-				     0, -0.5 * (dYIn[nM] + dXIn[nM] + fFloor),
+				     0, -0.5 * (dYIn[nM] + dXIn[nM] + 10 * m - fFloor),
 				     Z[nM] - dZf[nM] + length));
 	tShield->AddNode(pillar2, 1, new TGeoTranslation(
-				     0, -0.5 * (dYOut[nM] + dXOut[nM] + fFloor),
+				     0, -0.5 * (dYOut[nM] + dXOut[nM] + 10 * m - fFloor),
 				     Z[nM] + dZf[nM] - length));
       }
           

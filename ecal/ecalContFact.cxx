@@ -7,7 +7,7 @@
 
 ClassImp(ecalContFact)
 
-static ecalContFact gecalContFact;
+//static ecalContFact gecalContFact;
 
 ecalContFact::ecalContFact()
   : FairContFact()

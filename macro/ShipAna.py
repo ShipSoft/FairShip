@@ -74,6 +74,9 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
 run.Init()
+import geomGeant4
+if hasattr(ShipGeo.Bfield,"fieldMap"):
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo.Bfield.fieldMap, ShipGeo.Bfield.z, True)
 
 sGeo   = ROOT.gGeoManager
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
@@ -243,16 +246,24 @@ def ImpactParameter(point,tPos,tMom):
 def checkHNLorigin(sTree):
  flag = True
  if not fiducialCut: return flag
+ flag = False
 # only makes sense for signal == HNL
- if  sTree.MCTrack.GetEntries()<3: return
- # hnlkey = 2 # pythia8 cascade events
- # hnlkey = 1 # pythia8 primary events
- for hnlkey in [1,2]: 
-  if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015:
-   theHNLVx = sTree.MCTrack[hnlkey+1]
-   X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
-   if not isInFiducial(X,Y,Z): flag = False
+ hnlkey = -1
+ for n in range(sTree.MCTrack.GetEntries()):
+   mo = sTree.MCTrack[n].GetMotherId()
+   if mo <0: continue
+   if abs(sTree.MCTrack[mo].GetPdgCode()) == 9900015: 
+       hnlkey = n
+       break
+ if hnlkey<0 : 
+  print "checkHNLorigin: no HNL found"
+ else:
+  # MCTrack after HNL should be first daughter
+  theHNLVx = sTree.MCTrack[hnlkey]
+  X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()
+  if isInFiducial(X,Y,Z): flag = True
  return flag 
+
 def checkFiducialVolume(sTree,tkey,dy):
 # extrapolate track to middle of magnet and check if in decay volume
    inside = True
@@ -543,14 +554,7 @@ def myEventLoop(n):
   if not sTree.MCTrack.GetEntries()>1: wg = 1.
   else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
-# check extrapolation to TimeDet if exists
-  z_TimeDet = 3615.5000
-  for fT in sTree.FitTracks:
-     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
-     if rc:
-      for aPoint in sTree.TimeDetPoint:
-       h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
-       h['extrapTimeDetY'].Fill(pos.Y()-aPoint.GetY())
+
 # make some ecal cluster analysis if exist
   if hasattr(sTree,"EcalClusters"):
    if calReco:  ecalReconstructed.Delete()
@@ -759,6 +763,15 @@ def myEventLoop(n):
     h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )
     h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )
     h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )
+
+# check extrapolation to TimeDet if exists
+  if hasattr(ShipGeo,"TimeDet"):
+   for fT in sTree.FitTracks:
+     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,ShipGeo.TimeDet.z)
+     if rc:
+      for aPoint in sTree.TimeDetPoint:
+       h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())
+       h['extrapTimeDetY'].Fill(pos.Y()-aPoint.GetY())
 #
 def HNLKinematics():
  HNLorigin={}

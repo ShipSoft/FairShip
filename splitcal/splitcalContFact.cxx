@@ -5,7 +5,7 @@
 
 ClassImp(splitcalContFact)
 
-static splitcalContFact gsplitcalContFact;
+//static splitcalContFact gsplitcalContFact;
 
 splitcalContFact::splitcalContFact()
   : FairContFact()

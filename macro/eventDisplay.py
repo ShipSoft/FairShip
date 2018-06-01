@@ -762,6 +762,7 @@ def switchOf(tag):
    if not vname.find(tag)<0:
      v.SetVisibility(0)
      v.SetVisDaughters(0)
+ gEve.ElementChanged(geoscene,True,True)
 def switchOn(tag):
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
@@ -772,6 +773,17 @@ def switchOn(tag):
      v.SetVisibility(1)
      v.SetVisDaughters(1)
  gEve.ElementChanged(geoscene,True,True)
+def hidePlasticScintillator():
+  sc    = gEve.GetScenes()
+  geoscene = sc.FindChild('Geometry scene')
+  v = fGeo.FindVolumeFast('vleft')
+  v.SetVisibility(0)
+  v.SetVisDaughters(0)
+  for v in fGeo.GetListOfVolumes():
+   if v.GetName().find('wallVeto')>0:
+    v.SetVisibility(0)
+    v.SetVisDaughters(0)
+  gEve.ElementChanged(geoscene,True,True)
 
 # switch of drawing of rock
 def switchOfRock():
@@ -1049,7 +1061,7 @@ else:
    mcHits['SplitCalPoints']  = ROOT.FairMCPointDraw("splitcalPoint", ROOT.kRed, ROOT.kFullSquare)
  if not hasattr(mcHits,'SplitCalPoints'):
   mcHits['EcalPoints']  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
-  mcHits['HcalPoints']  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
+  if ShipGeo.HcalOption!=2: mcHits['HcalPoints']  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
  mcHits['MuonPoints']  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
  mcHits['RpcPoints']   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
  mcHits['TargetPoints']   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
@@ -1082,7 +1094,8 @@ br = gEve.GetBrowser()
 br.HideBottomTab() # make more space for graphics
 br.SetWindowName('SHiP Eve Window')
 
-#switchOfAll('RockD')
+#switchOf('RockD')
+if fGeo.FindVolumeFast('T2LiSc'): hidePlasticScintillator()
 rulers = Rulers()
 SHiPDisplay = EventLoop()
 SHiPDisplay.SetName('SHiP Displayer')

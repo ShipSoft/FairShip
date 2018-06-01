@@ -49,12 +49,20 @@ with ConfigRegistry.register_config("basic") as c:
     extraVesselLength = totalLength - 50*u.m
     windowBulge = 1*u.m
     if tankDesign > 5: windowBulge = 25*u.cm
+#
+    magnet_design = 2
+    if tankDesign == 5: magnet_design = 3
+    if tankDesign == 6: magnet_design = 4
+#
     c.strawDesign = strawDesign
     c.tankDesign = tankDesign
+    c.magnetDesign = magnet_design
 # cave parameters
     c.cave = AttrDict(z=0*u.cm)
     c.cave.floorHeightMuonShield = 5*u.m
-    c.cave.floorHeightTankA = 4.5*u.m
+    c.cave.floorHeightTankA = 4.2*u.m
+    if strawDesign == 10:
+        c.cave.floorHeightMuonShield = c.cave.floorHeightTankA  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2*u.m
 #
     #neutrino detector
@@ -65,7 +73,7 @@ with ConfigRegistry.register_config("basic") as c:
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
     z4=2438.*u.cm+magnetIncrease+extraVesselLength
-    if strawDesign != 4 and strawDesign != 10 :
+    if strawDesign != 4 and strawDesign != 10:
      print "this design ",strawDesign," is not supported, use strawDesign = 4 or 10"
      1/0 
     else:
@@ -135,13 +143,19 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.DeltazPlane        = 2.6*u.cm   
      c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch  / 2.
      c.strawtubes.YPlaneOffset = c.strawtubes.StrawPitch  / 4.
-    elif strawDesign==10:  # baseline for 2018
+     c.strawtubes.FrameMaterial      = "aluminium"
+     c.strawtubes.FrameLateralWidth  = 1.*u.cm
+     c.strawtubes.DeltazFrame        = 10.*u.cm
+    elif strawDesign==10:  # 10 - baseline for 2018 
      c.strawtubes.InnerStrawDiameter = 1.975*u.cm
      c.strawtubes.StrawPitch         = 3.60*u.cm  
      c.strawtubes.DeltazLayer        = 1.6*u.cm   
      c.strawtubes.DeltazPlane        = 4.2*u.cm   
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
+     c.strawtubes.FrameMaterial      = "steel"
+     c.strawtubes.FrameLateralWidth  = 1.2*u.m
+     c.strawtubes.DeltazFrame        = 2.5*u.cm
 
     c.strawtubes.WallThickness      = 0.0039*u.cm
     c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
@@ -154,9 +168,17 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
            
     c.Bfield = AttrDict(z=c.z)
-    c.Bfield.max = 1.4361*u.kilogauss  # was 1.15 in EOI
+    c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 3.*u.m
+    c.Bfield.fieldMap = "field/MainSpectrometerField.txt"
+    if c.magnetDesign>3:                          # MISIS design
+      c.Bfield.YokeWidth=0.85*u.m  # full width       200.*cm; 
+      c.Bfield.YokeDepth=1.75*u.m  # half length      200 *cm;
+      c.Bfield.CoilThick=25.*u.cm  # thickness
+      VesselThick=37.*u.cm;   # full thickness
+      c.Bfield.x = 251.*u.cm+VesselThick; # half apertures
+      c.Bfield.y = 501.*u.cm+VesselThick+c.Bfield.CoilThick
 
 # TimeDet
     c.TimeDet = AttrDict(z=0)
@@ -212,19 +234,19 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.SplitCal = AttrDict(z=0)
     c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ 
-    c.SplitCal.XMax    =  290.*u.cm
-    c.SplitCal.YMax    =  510.*u.cm * c.Yheight / (10.*u.m)
+    c.SplitCal.XMax = 600.*u.cm/2. #290.*u.cm  #half length
+    c.SplitCal.YMax = 1200.*u.cm/2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length  
     c.SplitCal.Empty = 0*u.cm
     c.SplitCal.BigGap = 100*u.cm
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
-    c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm                                                                               
+    c.SplitCal.FilterECALThickness = 0.28*u.cm #  0.56*u.cm   1.757*u.cm           
     c.SplitCal.FilterECALThickness_first = 0.28*u.cm
     c.SplitCal.ActiveHCALThickness = 90*u.cm
     c.SplitCal.FilterHCALThickness = 90*u.cm
     c.SplitCal.nECALSamplings = 50
-    c.SplitCal.nHCALSamplings = 1
+    c.SplitCal.nHCALSamplings = 0
     c.SplitCal.ActiveHCAL = 0
-    c.SplitCal.FilterECALMaterial= 3    # 1=scintillator 2=Iron 3 = lead  4 =Argon                                                                     
+    c.SplitCal.FilterECALMaterial= 3    # 1=scintillator 2=Iron 3 = lead  4 =Argon  
     c.SplitCal.FilterHCALMaterial= 2
     c.SplitCal.ActiveECALMaterial= 1
     c.SplitCal.ActiveHCALMaterial= 1
@@ -234,7 +256,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.second_precision_layer=10
     c.SplitCal.third_precision_layer=13
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
-    c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap+c.SplitCal.FilterHCALThickness
+    c.SplitCal.NModulesInX = 2
+    c.SplitCal.NModulesInY = 4
+    c.SplitCal.NStripsPerModule = 50
+    c.SplitCal.StripHalfWidth = 3*u.cm # c.SplitCal.XMax/(c.SplitCal.NStripsPerModule*c.SplitCal.NModulesInX)
+    c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
+    c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
     c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm + presShowerDeltaZ)  #
     c.ecal.File = EcalGeoFile
@@ -430,25 +457,21 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
     c.strawtubes.StrawLength     = c.xMax
-    if tankDesign > 4:
+    if tankDesign == 5:
        zF = c.target.z0+c.zFocusX
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)   
-       if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5
+       c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
+       zF = c.target.z0+c.zFocusY
+       c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
+       c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
+       c.strawtubes.tr34ydim           = int(c.Yheight/2.)  
     else:
        c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
        c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength
-# height of tracking stations
-    if tankDesign > 4:
-     zF = c.target.z0+c.zFocusY
-     c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
-     c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-     c.strawtubes.tr34ydim           = int(c.Yheight/2.)  
-    else:
-     c.strawtubes.vetoydim           = int(c.Yheight/2.)
-     c.strawtubes.tr12ydim           = int(c.Yheight/2.)
-     c.strawtubes.tr34ydim           = int(c.Yheight/2.)
-
+       if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5 # switch of veto strawtracker
+       c.strawtubes.vetoydim           = int(c.Yheight/2.)
+       c.strawtubes.tr12ydim           = int(c.Yheight/2.)
+       c.strawtubes.tr34ydim           = int(c.Yheight/2.)
 
     #Parameters for tau neutrino target Magnet
     if nuTauTargetDesign!=2:
@@ -473,7 +496,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.CutLength = scale * 50*u.cm
             c.EmuMagnet.CutHeight = scale * 100*u.cm
             c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
-            c.EmuMagnet.CoilY = 30*u.cm
+            c.EmuMagnet.CoilY = 40*u.cm
             c.EmuMagnet.Height1 = c.EmuMagnet.Y-2*c.EmuMagnet.BaseY
             c.EmuMagnet.Height2 = c.EmuMagnet.Height1-2*c.EmuMagnet.CoilY
             c.EmuMagnet.Thickness = scale*50*u.cm
@@ -570,6 +593,8 @@ with ConfigRegistry.register_config("basic") as c:
     	c.tauMudet.NRpc= 23
         c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
         c.tauMudet.Ytot = scaleMudet*4.9124968*u.m
+        c.tauMudet.deltax = 10* u.cm
+        c.tauMudet.deltay = 20* u.cm
         c.tauMudet.XFe = c.tauMudet.Xtot
         c.tauMudet.YFe = c.tauMudet.Ytot
         c.tauMudet.ZFe = 5.*u.cm
@@ -581,7 +606,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
-        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 -10*u.cm - 0.1*u.mm
+        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 + c.tauMudet.deltay/2  - 0.1*u.mm
     c.tauMudet.XGas =  c.tauMudet.Xtot
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
@@ -599,7 +624,7 @@ with ConfigRegistry.register_config("basic") as c:
        c.EmuMagnet.zC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot - c.EmuMagnet.GapDown - c.EmuMagnet.Z/2
 
     if nuTauTargetDesign==3:
-       c.EmuMagnet.zC = -c.decayVolume.length/2. - c.tauMudet.Ztot- c.EmuMagnet.Z/2 - c.EmuMagnet.GapDown   
+       c.EmuMagnet.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - c.EmuMagnet.Z/2   
        
     #tau Bricks
     c.NuTauTarget = AttrDict(z=0*u.cm)
@@ -623,10 +648,13 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.row=20
         c.NuTauTarget.col=9
         c.NuTauTarget.wall=20
-    if c.NuTauTarget.Design == 3: #One unique magnet
+    if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
         c.NuTauTarget.row=7
         c.NuTauTarget.col=7
-        c.NuTauTarget.wall=19
+        #c.NuTauTarget.wall=19
+        c.NuTauTarget.wall=10
+        c.NuTauTarget.target=2 #number of neutrino target volumes
+
         
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
 
@@ -668,11 +696,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.ConcreteY = c.tauMudet.Ytot/2 - c.tauHPT.DY/2
         c.tauHPT.ConcreteZ = c.tauHPT.DZ
     if nuTauTargetDesign==3:
-        c.tauHPT.DX = c.NuTauTarget.xdim;       
-        c.tauHPT.DY = 120 * u.cm
-        c.tauHPT.DZ = c.NuTauTT.TTZ
-        c.tauHPT.nHPT = 5
-        c.tauHPT.distHPT = 50*u.cm
+        c.tauHPT.SRDY = 10 *u.cm  #additional detectors for improving acceptance
+        c.tauHPT.DX = c.NuTauTarget.xdim
+        c.tauHPT.DY = c.EmuMagnet.Height2 - 2 *c.tauHPT.SRDY
+        c.tauHPT.DZ = c.NuTauTT.TTZ        
+        c.tauHPT.nHPT = 3 #n.d.r. number after each neutrino target
+        c.tauHPT.distHPT = 25*u.cm
     
     if nuTauTargetDesign!=2: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm

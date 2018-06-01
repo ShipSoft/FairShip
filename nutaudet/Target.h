@@ -46,6 +46,7 @@ public:
     void SetCellParam(Double_t CellW);
     void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
     void SetTTzdimension(Double_t TTZ);
+    void SetNumberTargets(Int_t target);
 
     //Functions to get parameters relative to the magnet in which the detector is placed
     void SetMagnetConfiguration(Int_t config);//1=TP, 0=new
@@ -63,6 +64,8 @@ public:
 
   
     void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick);
+
+    void SetHpTParam(Int_t n, Double_t dd, Double_t DZ); //other detector's parameters (needed for positioning)
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -160,6 +163,7 @@ protected:
     Int_t fNCol;
     Int_t fNRow;
     Int_t fNWall;
+    Int_t fNTarget;
 
     Double_t XDimension; //dimension of the target box (= 2 x 2 x 1) m^3
     Double_t YDimension;
@@ -202,7 +206,12 @@ protected:
      Double_t fPillarX;
      Double_t fPillarY;
      Double_t fPillarZ;  
-    
+
+    //other detector's parameters (needed for positioning)
+     Double_t fHpTDistance;    
+     Double_t fHpTDZ;
+     Int_t fnHpT;
+
     Int_t InitMedium(const char* name);
     
 };

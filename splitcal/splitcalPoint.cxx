@@ -27,7 +27,8 @@ splitcalPoint::~splitcalPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void splitcalPoint::Print(const Option_t* opt) const
+// void splitcalPoint::Print(const Option_t* opt) const
+void splitcalPoint::Print() const
 {
   cout << "-I- splitcalPoint: splitcal point for track " << fTrackID
        << " in detector " << fDetectorID << endl;

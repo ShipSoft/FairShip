@@ -21,7 +21,6 @@ class ShipTargetStation : public FairModule
      fL = L;
      fM = M;
      }
-    void SetMuFlux(Bool_t muflux); //target for muonflux measurement
     ClassDef(ShipTargetStation,4)
  protected:
   
@@ -35,6 +34,5 @@ class ShipTargetStation : public FairModule
   Int_t InitMedium(const char* name);
   Int_t fnS;
   Double_t fsl;
-  Bool_t fMuFlux;
 };
 #endif //TargetStation_H

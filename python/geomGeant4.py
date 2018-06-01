@@ -1,13 +1,33 @@
 import shipunit as u
 from array import array
 import hepunit as G4Unit
-import ROOT
+import ROOT,os
 # requires to have ${SIMPATH}/include/Geant4/ in PYTHONPATH
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4UIterminal.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4RunManager.hh"')
 ROOT.gROOT.ProcessLine('#include "TG4GeometryServices.h"')
+ROOT.gROOT.ProcessLine('#include "TG4GeometryManager.h"')
+
+def check4OrphanVolumes(fGeo):
+# fill list with volumes from nodes and compare with list of volumes
+ top = fGeo.GetTopVolume()
+ listOfVolumes = [top.GetName()]
+ findNode(top,listOfVolumes)
+ orphan = []
+ gIndex = {}
+ for v in fGeo.GetListOfVolumes():
+   name = v.GetName()
+   if not name in listOfVolumes:
+     orphan.append(name)
+   if not name in gIndex: gIndex[name]=[]
+   gIndex[name].append(v.GetNumber())
+ print "list of orphan volumes:",orphan
+ vSame = {}
+ for x in gIndex:
+   if len(gIndex[x])>1: vSame[x]=len(gIndex[x])
+ print "list of volumes with same name",vSame
 
 def setMagnetField(flag=None):
     print 'setMagnetField() called. Out of date, does not set field for tau neutrino detector!'
@@ -111,14 +131,28 @@ def printWeightsandFields(onlyWithField = True,exclude=[]):
    print 'total magnet mass',nM/1000.,'t'
    return
 
-def addVMCFields(controlFile = 'field/BFieldSetup.txt', verbose = False):
+def addVMCFields(controlFile = 'field/BFieldSetup.txt', zPos = 0.0, verbose = False):
     '''
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
     '''
     print 'Calling addVMCFields using input control file {0}'.format(controlFile)
     
-    fieldMaker = ROOT.ShipFieldMaker(verbose)
-    fieldMaker.makeFields(controlFile)
+    # consistency check of z position until there are methods to set z position for the VMC interface directly
+    ftmp = open(os.environ['FAIRSHIP']+'/'+controlFile)
+    ok = False
+    for l in ftmp.readlines():
+     if not l.find(str(zPos))<0: ok = True
+    ftmp.close()
+    if not ok: 
+     print "position in ",controlFile," does not agree with selected geometry! z=",zPos,". Stop execution."
+     exit()
+
+    fieldMaker = ROOT.ShipFieldMaker(controlFile, verbose)
+
+    # Reset the fields in the VMC to use info from the fieldMaker object
+    geom = ROOT.TG4GeometryManager.Instance()
+    geom.SetUserPostDetConstruction(fieldMaker)
+    geom.ConstructSDandField()
 
     # Return the fieldMaker object, otherwise it will "go out of scope" and its
     # content will be deleted
@@ -137,10 +171,14 @@ def printVMCFields():
     for v in vols:
 
         field =  v.GetField()
-        #print 'Vol is {0}, field is {1}'.format(v.GetName(), field)
+        if field:
+         print 'Vol is {0}, field is {1}'.format(v.GetName(), field)
+        else: 
+         print 'Vol is {0}'.format(v.GetName())
 
         if field:
-            # Get the field value in the local volume centre
+            # Get the field value assuming the global co-ordinate origin.
+            # This needs to be modified to use the local volume centre
             centre = array('d',[0.0, 0.0, 0.0])
             B = array('d',[0.0, 0.0, 0.0])
             field.Field(centre, B)

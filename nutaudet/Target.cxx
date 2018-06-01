@@ -147,6 +147,11 @@ void Target::SetNumberBricks(Double_t col, Double_t row, Double_t wall)
   fNWall = wall; 
 }
 
+void Target::SetNumberTargets(Int_t target)
+{
+  fNTarget = target;
+}
+
 void Target::SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim)
 {
   XDimension = xdim;
@@ -244,6 +249,13 @@ void Target::SetPillarDimension(Double_t x, Double_t y, Double_t z)
   fPillarZ=z;
 }
 
+void Target::SetHpTParam(Int_t n, Double_t dd, Double_t DZ) //need to know about HPT.cxx geometry to place additional targets
+{
+ fnHpT = n;
+ fHpTDistance = dd;
+ fHpTDZ = DZ;
+}
+
 void Target::ConstructGeometry()
 {
   // cout << "Design = " << fDesign << endl;
@@ -318,7 +330,10 @@ void Target::ConstructGeometry()
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
       if(fDesign==3){        
         TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
-        volMagRegion->AddNode(volTarget,1,new TGeoTranslation(0,0,-ZDimension/2));
+        Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension 
+        for (int i = 0; i < fNTarget; i++){
+         volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
+        }
        }
     }
 
@@ -577,6 +592,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	    if(strcmp(mumname, "Brick") == 0 ||strcmp(mumname, "CES") == 0) NColumn = motherV[i];
 	    if(strcmp(mumname, "Cell") == 0) NRow = motherV[i];
 	    if(strcmp(mumname, "Row") == 0) NWall = motherV[i];
+            if((strcmp(mumname, "Wall") == 0)&& (motherV[i]==2)) NWall += fNWall;
 	  }
 	else
 	  {
@@ -584,6 +600,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	    if(strcmp(mumname, "Cell") == 0) NColumn = motherV[i];
 	    if(strcmp(mumname, "Row") == 0) NRow = motherV[i];
 	    if(strcmp(mumname, "Wall") == 0) NWall = motherV[i];
+             if((strcmp(mumname, "volTarget") == 0) && (motherV[i]==2)) NWall += fNWall;
 	  }
 	//cout << i << "   " << motherV[i] << "    name = " << mumname << endl;
       }

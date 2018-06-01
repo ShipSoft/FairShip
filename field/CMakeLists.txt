@@ -4,6 +4,10 @@
 
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/field 
+${ROOT_INCLUDE_DIR}
+${GEANT4VMC_INCLUDE_DIR}
+${GEANT4_INCLUDE_DIR}
+
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -12,6 +16,8 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
+${GEANT4VMC_LIBRARY_DIR}
+${GEANT4_LIBRARY_DIR}
 
 )
  
@@ -25,6 +31,7 @@ ShipBellField.cxx
 ShipBFieldMap.cxx
 ShipCompField.cxx
 ShipFieldMaker.cxx
+ShipGoliathField.cxx
 )
 
 set(LINKDEF FieldLinkDef.h)

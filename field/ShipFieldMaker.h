@@ -1,6 +1,16 @@
 /*! \class ShipFieldMaker
   \brief Creates various magnetic fields and assigns them to geometry regions
   \author John Back <J.J.Back@warwick.ac.uk>
+
+  This inherits from TG4VUserPostDetConstruction and overloads the Contruct()
+  function so that the VMC (re)assigns the G4 magnetic fields to volumes using the
+  input configuration file defined in this class constructor, together with
+  the code below used in the addVMCFields function in python/geomGeant4.py:
+
+  geom = ROOT.TG4GeometryManager.Instance()
+  geom.SetUserPostDetConstruction(fieldMaker)
+  geom.ConstructSDandField()
+
 */
 
 #ifndef ShipFieldMaker_H
@@ -11,6 +21,7 @@
 #include "TString.h"
 #include "TVirtualMagField.h"
 #include "TVector3.h"
+#include "TG4VUserPostDetConstruction.h"
 
 #include <map>
 #include <string>
@@ -20,13 +31,13 @@ class TGeoMatrix;
 class TGeoNode;
 class TGeoVolume;
 
-class ShipFieldMaker
+class ShipFieldMaker : public TG4VUserPostDetConstruction
 {
 
  public:
 
     //! Constructor
-    ShipFieldMaker(Bool_t verbose = kFALSE);
+    ShipFieldMaker(const std::string& inputFile, Bool_t verbose = kFALSE);
 
     //! Destructor
     virtual ~ShipFieldMaker();
@@ -38,10 +49,7 @@ class ShipFieldMaker
     typedef std::vector<std::string> stringVect;
 
     //! Set-up all the fields and assign to local volumes
-    /*!
-      \param [in] inputFile The file containing the information about fields and volumes
-    */
-    void makeFields(const std::string& inputFile);
+    virtual void Construct();
 
     //! Get the global magnetic field
     /*!
@@ -220,6 +228,9 @@ class ShipFieldMaker
 
     //! The map storing all created magnetic fields
     SFMap theFields_;
+
+    //! Configuration input file
+    std::string inputFile_;
 
     //! Verbose boolean
     Bool_t verbose_;

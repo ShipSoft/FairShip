@@ -5,7 +5,7 @@
 
 ClassImp(vetoContFact)
 
-static vetoContFact gvetoContFact;
+//static vetoContFact gvetoContFact;
 
 vetoContFact::vetoContFact()
   : FairContFact()

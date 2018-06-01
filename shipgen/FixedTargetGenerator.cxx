@@ -41,6 +41,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   withEvtGen = kFALSE;
   chicc=1.7e-3;     //prob to produce primary ccbar pair/pot
   chibb=1.6e-7;     //prob to produce primary bbbar pair/pot
+  nrpotspill = 5.E13; // nr of protons / spill
   setByHand = kFALSE;
   Debug = kFALSE;
   Option = "Primary";

@@ -5,7 +5,7 @@
 
 ClassImp(strawtubesContFact)
 
-static strawtubesContFact gstrawtubesContFact;
+// static strawtubesContFact gstrawtubesContFact;
 
 strawtubesContFact::strawtubesContFact()
   : FairContFact()
