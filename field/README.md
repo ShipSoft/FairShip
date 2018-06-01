@@ -35,7 +35,7 @@ reads a control file, or calls definition functions, that specifies what magneti
 for the simulation. Note that B fields (TVirtualMagFields) already defined in the geometry C++ source 
 code do not need to be added again via either the input file or with definition functions. The
 ShipFieldMaker, which inherits from 
-[TG4VUserPostDetConstruction](https://github.com/vmc-project/geant4_vmc/blob/master/source/geometry/include/TG4VUserRegionConstruction.h), 
+[TG4VUserPostDetConstruction](https://github.com/vmc-project/geant4_vmc/blob/master/source/geometry/include/TG4VUserPostDetConstruction.h), 
 is then passed onto the ROOT/Geant4 geometry [manager](https://github.com/vmc-project/geant4_vmc/blob/master/source/geometry/include/TG4GeometryManager.h) 
 and the VMC fields are updated via the overriden ShipFieldMaker::Construct() function.
 
