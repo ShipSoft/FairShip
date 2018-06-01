@@ -130,7 +130,7 @@ run.Init()
 import geomGeant4
 
 if hasattr(ShipGeo.Bfield,"fieldMap"):
-  fieldMaker = geomGeant4.addVMCFields(ShipGeo.Bfield.fieldMap, ShipGeo.Bfield.z, True)
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True)
 
 # make global variables
 builtin.debug    = debug
