@@ -888,7 +888,7 @@ void ShipMuonShield::ConstructGeometry()
 	// tShield->AddNode(pillar2, 1, new TGeoTranslation(
 	// 			     0, -0.5 * (dYOut[nM] + dXOut[nM] + 10 * m - fFloor),
 	// 			     Z[nM] + dZf[nM] - length));
- //      }
+      }
           
       } else {
 	CreateTube("AbsorberAdd", iron, 15, 400, dZ0, 43, tShield, 0, 0, zEndOfAbsorb - dZ0);
