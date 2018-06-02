@@ -266,6 +266,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm + presShowerDeltaZ)  #
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
+    if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
      c.hcal =  AttrDict(z=c.ecal.z + hcalThickness/2. + 45.*u.cm  )
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
