@@ -2,9 +2,10 @@ import os,ROOT,shipPatRec,charmDet_conf
 import shipunit as u
 import rootUtils as ut
 
-from array import array
 import sys, os
 
+from array import array
+from ShipGeoConfig import ConfigRegistry
 
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
@@ -92,7 +93,8 @@ class MufluxDigiReco:
 # init geometry and mag. field
   gMan  = ROOT.gGeoManager
   #import geomGeant4
-  #fieldMaker = geomGeant4.addVMCFields('field/GoliathBFieldSetup.txt', False)
+  #shipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
+  #fieldMaker = geomGeant4.addVMCFields(shipGeo, 'field/GoliathBFieldSetup.txt', False)
   #geomGeant4.printVMCFields()
   self.bfield = ROOT.genfit.FairShipFields()
   self.fM = ROOT.genfit.FieldManager.getInstance()

@@ -33,11 +33,12 @@
 #include <iostream>
 #include <cstdlib>
 
-ShipFieldMaker::ShipFieldMaker(const std::string& inputFile, Bool_t verbose) :
+ShipFieldMaker::ShipFieldMaker(Bool_t verbose) :
     TG4VUserPostDetConstruction(),
     globalField_(0),
     theFields_(),
-    inputFile_(inputFile),
+    regionInfo_(),
+    localInfo_(),
     verbose_(verbose),
     Tesla_(10.0), // To convert T to kGauss for VMC/FairRoot
     theNode_(0),
@@ -63,8 +64,23 @@ ShipFieldMaker::~ShipFieldMaker()
 void ShipFieldMaker::Construct()
 {
 
+    // Assign volumes with their regional (local + global) or local B fields
+    this->setAllRegionFields();
+    this->setAllLocalFields();
+
+}
+
+void ShipFieldMaker::readInputFile(const std::string& inputFile)
+{
+
+    // Check that we have a non-empty string
+    if (inputFile.size() < 1) {
+	std::cerr<<"Skipping ShipFieldMaker::readInputFile(): file name is empty"<<std::endl;
+	return;
+    }
+
     std::string fullFileName = getenv("VMCWORKDIR");
-    fullFileName += "/"; fullFileName += inputFile_.c_str();
+    fullFileName += "/"; fullFileName += inputFile.c_str();
 
     std::cout<<"ShipFieldMaker::makeFields inputFile = "<<fullFileName<<std::endl;
 
@@ -114,53 +130,53 @@ void ShipFieldMaker::Construct()
 
 		if (!keyWord.CompareTo("uniform")) {
 
-		    // Create the uniform magnetic field
-		    this->createUniform(lineVect);
+		    // Define the uniform magnetic field
+		    this->defineUniform(lineVect);
 
 		} else if (!keyWord.CompareTo("constant")) {
 
-		    // Create a uniform field with an x,y,z boundary
-		    this->createConstant(lineVect);
+		    // Define a uniform field with an x,y,z boundary
+		    this->defineConstant(lineVect);
 
 		} else if (!keyWord.CompareTo("bell")) {
 
-		    // Create the Bell-shaped field
-		    this->createBell(lineVect);
+		    // Define the Bell-shaped field
+		    this->defineBell(lineVect);
 
 		} else if (!keyWord.CompareTo("fieldmap")) {
 
-		    // Create the field map
-		    this->createFieldMap(lineVect);
+		    // Define the field map
+		    this->defineFieldMap(lineVect);
 
 		} else if (!keyWord.CompareTo("symfieldmap")) {
 
-		    // Create the symmetric field map
-		    this->createFieldMap(lineVect, kTRUE);
+		    // Define the symmetric field map
+		    this->defineFieldMap(lineVect, kTRUE);
   
 		} else if (!keyWord.CompareTo("copymap")) {
 
 		    // Copy (& translate) the field map
-		    this->copyFieldMap(lineVect);
+		    this->defineFieldMapCopy(lineVect);
 
 		} else if (!keyWord.CompareTo("composite")) {
 
-		    // Create the composite field
-		    this->createComposite(lineVect);
+		    // Define the composite field
+		    this->defineComposite(lineVect);
 
 		} else if (!keyWord.CompareTo("global")) {
 
-		    // Set which fields are global
-		    this->setGlobalField(lineVect);
+		    // Define which fields are global
+		    this->defineGlobalField(lineVect);
 
 		} else if (!keyWord.CompareTo("region")) {
 
-		    // Set the local and global fields for the given volume
-		    this->setRegionField(lineVect);
+		    // Define the local and global fields for the given volume
+		    this->defineRegionField(lineVect);
 
 		} else if (!keyWord.CompareTo("local")) {
 
-		    // Set the field for the given volume as the local one only
-		    this->setLocalField(lineVect);
+		    // Define the field for the given volume as the local one only
+		    this->defineLocalField(lineVect);
 
 		}
 
@@ -174,365 +190,475 @@ void ShipFieldMaker::Construct()
 
 }
 
-void ShipFieldMaker::createUniform(const stringVect& inputLine)
+void ShipFieldMaker::defineUniform(const stringVect& inputLine)
 {
 
     size_t nWords = inputLine.size();
 
     // Expecting a line such as:
-    // Uniform LabelName Bx By Bz
+    // Uniform Name Bx By Bz
 
     if (nWords == 5) {
 
-	TString label(inputLine[1].c_str());
+	const TString name(inputLine[1].c_str());
 
-	// Check if the field is already in the map
-	if (!this->gotField(label)) {
+	Double_t Bx = std::atof(inputLine[2].c_str());
+	Double_t By = std::atof(inputLine[3].c_str());
+	Double_t Bz = std::atof(inputLine[4].c_str());
+	const TVector3 BVector(Bx, By, Bz);
 
-	    Double_t Bx = std::atof(inputLine[2].c_str())*Tesla_;
-	    Double_t By = std::atof(inputLine[3].c_str())*Tesla_;
-	    Double_t Bz = std::atof(inputLine[4].c_str())*Tesla_;
-	    
-	    if (verbose_) {std::cout<<"Creating uniform field for "<<label.Data()<<std::endl;}
-
-	    TGeoUniformMagField* uField = new TGeoUniformMagField(Bx, By, Bz);
-	    theFields_[label] = uField;
-
-	} else {
-
-	    std::cout<<"We already have a field with the name "
-		     <<label.Data()<<std::endl;
-	}
+	this->defineUniform(name, BVector);
 
     } else {
 
 	std::cout<<"Expecting 5 words for the definition of the uniform field: "
-		 <<"Uniform Label Bx By Bz"<<std::endl;
+		 <<"Uniform Name Bx By Bz"<<std::endl;
 
     }
 
-
 }
 
-void ShipFieldMaker::createConstant(const stringVect& inputLine)
+void ShipFieldMaker::defineUniform(const TString& name, const TVector3& BVector)
+{
+
+    // Check if the field is already in the map
+    if (!this->gotField(name)) {
+
+	if (verbose_) {std::cout<<"Creating uniform field for "<<name.Data()<<std::endl;}
+
+	Double_t Bx = BVector.X()*Tesla_;
+	Double_t By = BVector.Y()*Tesla_;
+	Double_t Bz = BVector.Z()*Tesla_;
+
+	TGeoUniformMagField* uField = new TGeoUniformMagField(Bx, By, Bz);
+	theFields_[name] = uField;
+
+    }  else {
+
+	if (verbose_) {
+	    std::cout<<"We already have a uniform field with the name "
+		     <<name.Data()<<std::endl;
+	}
+    }
+}
+
+
+void ShipFieldMaker::defineConstant(const stringVect& inputLine)
 {
 
     size_t nWords = inputLine.size();
 
     // Expecting a line such as:
-    // Constant LabelName xMin xMax yMin yMax zMin zMax Bx By Bz
+    // Constant Name xMin xMax yMin yMax zMin zMax Bx By Bz
 
     if (nWords == 11) {
 
-	TString label(inputLine[1].c_str());
+	TString name(inputLine[1].c_str());
 
-	// Check if the field is already in the map
-	if (!this->gotField(label)) {
+	Double_t xMin = std::atof(inputLine[2].c_str());
+	Double_t xMax = std::atof(inputLine[3].c_str());
 
-	    Double_t xMin = std::atof(inputLine[2].c_str());
-	    Double_t xMax = std::atof(inputLine[3].c_str());
+	Double_t yMin = std::atof(inputLine[4].c_str());
+	Double_t yMax = std::atof(inputLine[5].c_str());
 
-	    Double_t yMin = std::atof(inputLine[4].c_str());
-	    Double_t yMax = std::atof(inputLine[5].c_str());
+	Double_t zMin = std::atof(inputLine[6].c_str());
+	Double_t zMax = std::atof(inputLine[7].c_str());
 
-	    Double_t zMin = std::atof(inputLine[6].c_str());
-	    Double_t zMax = std::atof(inputLine[7].c_str());
+	// Input field in Tesla_, interface needs kGauss units
+	Double_t Bx = std::atof(inputLine[8].c_str());
+	Double_t By = std::atof(inputLine[9].c_str());
+	Double_t Bz = std::atof(inputLine[10].c_str());
+	
+	const TVector2 xRange(xMin, xMax);
+	const TVector2 yRange(yMin, yMax);
+	const TVector2 zRange(zMin, zMax);
+	const TVector3 BVector(Bx, By, Bz);
 
-	    // Input field in Tesla_, interface needs kGauss units
-	    Double_t Bx = std::atof(inputLine[8].c_str())*Tesla_;
-	    Double_t By = std::atof(inputLine[9].c_str())*Tesla_;
-	    Double_t Bz = std::atof(inputLine[10].c_str())*Tesla_;
-
-	    if (verbose_) {std::cout<<"Creating constant field for "<<label.Data()<<std::endl;}
-
-	    ShipConstField* theField = new ShipConstField(label.Data(), xMin, xMax, yMin, yMax,
-							  zMin, zMax, Bx, By, Bz);
-	    theFields_[label] = theField;
-
-	} else {
-
-	    std::cout<<"We already have a field with the name "
-		     <<label.Data()<<std::endl;
-	}
+	this->defineConstant(name, xRange, yRange, zRange, BVector);
 
     } else {
 
 	std::cout<<"Expecting 11 words for the definition of the constant field: "
-		 <<"Constant Label xMin xMax yMin yMax zMin zMax Bx By Bz"<<std::endl;
+		 <<"Constant Name xMin xMax yMin yMax zMin zMax Bx By Bz"<<std::endl;
 
     }
 
-
 }
 
-void ShipFieldMaker::createBell(const stringVect& inputLine)
+void ShipFieldMaker::defineConstant(const TString& name, const TVector2& xRange, const TVector2& yRange,
+				    const TVector2& zRange, const TVector3& BVector)
+{
+
+    // Check if the field is already in the map
+    if (!this->gotField(name)) {
+
+	Double_t xMin = xRange.X();
+	Double_t xMax = xRange.Y();
+	Double_t yMin = yRange.X();
+	Double_t yMax = yRange.Y();
+	Double_t zMin = zRange.X();
+	Double_t zMax = zRange.Y();
+
+	Double_t Bx = BVector.X()*Tesla_;
+	Double_t By = BVector.Y()*Tesla_;
+	Double_t Bz = BVector.Z()*Tesla_;
+
+	ShipConstField* theField = new ShipConstField(name.Data(), xMin, xMax, yMin, yMax,
+						      zMin, zMax, Bx, By, Bz);
+	theFields_[name] = theField;
+
+    }  else {
+
+	if (verbose_) {
+	    std::cout<<"We already have a constant field with the name "
+		     <<name.Data()<<std::endl;
+	}
+    }
+}
+
+void ShipFieldMaker::defineBell(const stringVect& inputLine)
 {
 
     size_t nWords = inputLine.size();
 
     // Expecting a line such as:
-    // Bell LabelName BPeak zMiddle orientationInt tubeRadius
+    // Bell Name BPeak zMiddle orientationInt tubeRadius
 
     if (nWords == 6 || nWords == 9) {
 
-	TString label(inputLine[1].c_str());
+	TString name(inputLine[1].c_str());
 
-	// Check if the field is already in the map
-	if (!this->gotField(label)) {
+	Double_t BPeak = std::atof(inputLine[2].c_str());
+	Double_t zMiddle = std::atof(inputLine[3].c_str()); // cm
 
-	    // Input field in Tesla_, interface needs kGauss units
-	    Double_t BPeak = std::atof(inputLine[2].c_str())*Tesla_;
-	    Double_t zMiddle = std::atof(inputLine[3].c_str()); // cm
+	Int_t orient = std::atoi(inputLine[4].c_str());
+	Double_t tubeR = std::atof(inputLine[5].c_str()); // cm
 
-	    Int_t orient = std::atoi(inputLine[4].c_str());
-	    Double_t tubeR = std::atof(inputLine[5].c_str()); // cm
+	Double_t xy(0.0), z(0.0), L(0.0);
 
-	    if (verbose_) {std::cout<<"Creating Bell field for "<<label.Data()<<std::endl;}
-
-	    ShipBellField* theField = new ShipBellField(label.Data(), BPeak, zMiddle, orient, tubeR);
-
-	    if (nWords == 9) {
-		// Specify "target" dimensions (cm)
-		Double_t xy = std::atof(inputLine[6].c_str());
-		Double_t z  = std::atof(inputLine[7].c_str());
-		Double_t L  = std::atof(inputLine[8].c_str());
-		theField->IncludeTarget(xy, z, L);
-	    }
-
-	    theFields_[label] = theField;
-
-	} else {
-
-	    std::cout<<"We already have a field with the name "
-		     <<label.Data()<<std::endl;
+	if (nWords == 9) {
+	    // Specify "target" dimensions (cm)
+	    xy = std::atof(inputLine[6].c_str());
+	    z  = std::atof(inputLine[7].c_str());
+	    L  = std::atof(inputLine[8].c_str());
 	}
+
+	this->defineBell(name, BPeak, zMiddle, orient, tubeR, xy, z, L);
 
     } else {
 
 	std::cout<<"Expecting 6 or 9 words for the definition of the Bell field: "
-		 <<"Bell Label BPeak zMiddle orientationInt tubeRadius [targetXY targetZ0 targetL]"<<std::endl;
+		 <<"Bell Name BPeak zMiddle orientationInt tubeRadius [targetXY targetZ0 targetL]"<<std::endl;
 
     }
 
+}
 
+void ShipFieldMaker::defineBell(const TString& name, Double_t BPeak, Double_t zMiddle, 
+				Int_t orient, Double_t tubeR, Double_t xy, Double_t z, Double_t L) 
+{
+    
+    if (!this->gotField(name)) {
+	
+	ShipBellField* theField = new ShipBellField(name.Data(), BPeak*Tesla_, zMiddle, orient, tubeR);
+
+	// Set additional parameters if we have a non-zero target length
+	if (fabs(L) > 0.0) {
+	    theField->IncludeTarget(xy, z, L);
+	}
+
+	theFields_[name] = theField;
+	
+    } else {
+
+	if (verbose_) {
+	    std::cout<<"We already have a Bell field with the name "
+		     <<name.Data()<<std::endl;
+	}
+    }
 }
 
 
-void ShipFieldMaker::createFieldMap(const stringVect& inputLine, Bool_t useSymmetry)
+void ShipFieldMaker::defineFieldMap(const stringVect& inputLine, Bool_t useSymmetry)
 {
 
     size_t nWords = inputLine.size();
 
     // Expecting the line:
-    // FieldMap LabelName mapFileName [x0 y0 z0] [phi theta psi]
+    // FieldMap Name mapFileName [x0 y0 z0] [phi theta psi]
 
     if (nWords == 3 || nWords == 6 || nWords == 9) {
 
-	TString label(inputLine[1].c_str());
+	const TString name(inputLine[1].c_str());
+	const TString mapFileName(inputLine[2].c_str());
+	
+	Double_t x0(0.0), y0(0.0), z0(0.0);
+	Double_t phi(0.0), theta(0.0), psi(0.0);
 
-	// Check if the field is already in the map
-	if (!this->gotField(label)) {
-
-	    std::string mapFileName = inputLine[2];
-
-	    // Add the VMCWORKDIR prefix to this map name
-	    std::string fullFileName = getenv("VMCWORKDIR");
-	    fullFileName += "/"; fullFileName += mapFileName.c_str();
-
-	    Double_t x0(0.0), y0(0.0), z0(0.0);
-	    Double_t phi(0.0), theta(0.0), psi(0.0);
-	    Double_t scale(1.0);
-
-	    if (nWords > 5) {
-		x0 = std::atof(inputLine[3].c_str());
-		y0 = std::atof(inputLine[4].c_str());
-		z0 = std::atof(inputLine[5].c_str());
-	    }
-
-	    if (nWords == 9) {
-		phi = std::atof(inputLine[6].c_str());
-		theta = std::atof(inputLine[7].c_str());
-		psi = std::atof(inputLine[8].c_str());
-	    }
-
-	    if (verbose_) {
-       	        if (useSymmetry) {
-		    std::cout<<"Creating symmetric map field "<<label.Data()<<" using "<<fullFileName<<std::endl;
-		} else {
-		    std::cout<<"Creating map field "<<label.Data()<<" using "<<fullFileName<<std::endl;
-		}
-	    }
-	    
-	    ShipBFieldMap* mapField = new ShipBFieldMap(label.Data(), fullFileName, x0, y0, z0, 
-							phi, theta, psi, scale, useSymmetry);
-	    theFields_[label] = mapField;
-
-	} else {
-
-	    std::cout<<"We already have a field with the name "
-		     <<label.Data()<<std::endl;
-
+	if (nWords > 5) {
+	    x0 = std::atof(inputLine[3].c_str());
+	    y0 = std::atof(inputLine[4].c_str());
+	    z0 = std::atof(inputLine[5].c_str());
 	}
+
+	if (nWords == 9) {
+	    phi = std::atof(inputLine[6].c_str());
+	    theta = std::atof(inputLine[7].c_str());
+	    psi = std::atof(inputLine[8].c_str());
+	}
+
+	const TVector3 localCentre(x0, y0, z0);
+	const TVector3 localAngles(phi, theta, psi);
+
+	this->defineFieldMap(name, mapFileName, localCentre, localAngles, useSymmetry);
 
     } else {
 
 	std::cout<<"Expecting 3, 6 or 9 words for the definition of the field map: "
-		 <<"(Sym)FieldMap Label mapFileName [x0 y0 z0] [[phi theta psi]]"<<std::endl;
+		 <<"(Sym)FieldMap Name mapFileName [x0 y0 z0] [[phi theta psi]]"<<std::endl;
+
+    }
+}
+
+void ShipFieldMaker::defineFieldMap(const TString& name, const TString& mapFileName, 
+				    const TVector3& localCentre, const TVector3& localAngles,
+				    Bool_t useSymmetry)
+{
+    // Check if the field is already in the map
+    if (!this->gotField(name)) {
+
+	// Add the VMCWORKDIR prefix to this map file location
+	std::string fullFileName = getenv("VMCWORKDIR");
+	fullFileName += "/"; fullFileName += mapFileName.Data();
+
+	if (verbose_) {
+	    if (useSymmetry) {
+		std::cout<<"Creating symmetric field map called "<<name.Data()<<" using "<<fullFileName<<std::endl;
+	    } else {
+		std::cout<<"Creating field map called "<<name.Data()<<" using "<<fullFileName<<std::endl;
+	    }
+	}
+
+	// Since field maps use floating point precision we convert any double parameter
+	// values to floats, i.e. we can't simply pass TVector3 objects
+	Float_t x0 = localCentre.X();
+	Float_t y0 = localCentre.Y();
+	Float_t z0 = localCentre.Z();
+
+	Float_t phi = localAngles.X();
+	Float_t theta = localAngles.Y();
+	Float_t psi = localAngles.Z();
+
+	Float_t scale(1.0);
+
+	ShipBFieldMap* mapField = new ShipBFieldMap(name.Data(), fullFileName, x0, y0, z0, 
+						    phi, theta, psi, scale, useSymmetry);
+	theFields_[name] = mapField;
+
+    } else {
+
+	if (verbose_) {
+	    std::cout<<"We already have a field map with the name "
+		     <<name.Data()<<std::endl;	    
+	}
 
     }
 
-
 }
 
-void ShipFieldMaker::copyFieldMap(const stringVect& inputLine)
+void ShipFieldMaker::defineFieldMapCopy(const stringVect& inputLine)
 {
+
+    // Define a (translated) copy of a field map based in the input file line
 
     size_t nWords = inputLine.size();
 
     // Expecting the line:
-    // CopyMap LabelName MapLabelToCopy x0 y0 z0 [phi theta psi]
+    // CopyMap Name MapNameToCopy x0 y0 z0 [phi theta psi]
 
     if (nWords == 6 || nWords == 9) {
 
-	TString label(inputLine[1].c_str());
-
-	// Check if the field is already in the map
-	if (!this->gotField(label)) {
+	const TString name(inputLine[1].c_str());
 	    
-	    // We want to try to copy and transpose an already existing field map
-	    TString mapToCopy(inputLine[2].c_str());
-	    Double_t x0 = std::atof(inputLine[3].c_str());
-	    Double_t y0 = std::atof(inputLine[4].c_str());
-	    Double_t z0 = std::atof(inputLine[5].c_str());
+	// We want to try to copy and transpose an already existing field map
+	const TString mapNameToCopy(inputLine[2].c_str());
 
-	    Double_t phi(0.0), theta(0.0), psi(0.0), scale(1.0);
+	Double_t x0 = std::atof(inputLine[3].c_str());
+	Double_t y0 = std::atof(inputLine[4].c_str());
+	Double_t z0 = std::atof(inputLine[5].c_str());
 
-	    if (nWords == 9) {
-		phi = std::atof(inputLine[6].c_str());
-		theta = std::atof(inputLine[7].c_str());
-		psi = std::atof(inputLine[8].c_str());
-	    }
+	Double_t phi(0.0), theta(0.0), psi(0.0), scale(1.0);
 
-	    ShipBFieldMap* fieldToCopy = 
-		dynamic_cast<ShipBFieldMap*>(this->getField(mapToCopy));
-
-	    if (fieldToCopy) {
-		
-		if (verbose_) {
-		    std::cout<<"Creating map field copy "<<label.Data()
-			     <<" based on "<<mapToCopy.Data()<<std::endl;
-		}
-
-		ShipBFieldMap* copiedMap = new ShipBFieldMap(label.Data(), *fieldToCopy,
-							     x0, y0, z0, phi, theta, psi, scale);
-		theFields_[label] = copiedMap;		    
-		
-	    }
-	    
-
-	} else {
-
-	    std::cout<<"We already have a field with the name "
-		     <<label.Data()<<std::endl;
+	if (nWords == 9) {
+	    phi = std::atof(inputLine[6].c_str());
+	    theta = std::atof(inputLine[7].c_str());
+	    psi = std::atof(inputLine[8].c_str());
 	}
+
+	const TVector3 translation(x0, y0, z0);
+	const TVector3 eulerAngles(phi, theta, psi);
+
+	this->defineFieldMapCopy(name, mapNameToCopy, translation, eulerAngles);
 
     } else {
 
 	std::cout<<"Expecting 6 or 9 words for the copy of a field map: "
-		 <<"CopyMap Label MapLabelToCopy x0 y0 z0 [phi theta psi]"<<std::endl;
+		 <<"CopyMap Name MapNameToCopy x0 y0 z0 [phi theta psi]"<<std::endl;
 
     }
 
 }
 
-void ShipFieldMaker::createComposite(const stringVect& inputLine)
+void ShipFieldMaker::defineFieldMapCopy(const TString& name, const TString& mapNameToCopy,
+					const TVector3& translation, const TVector3& eulerAngles) 
+{
+
+    // Check if the field is already in the map
+    if (!this->gotField(name)) {
+
+	ShipBFieldMap* fieldToCopy = 
+	    dynamic_cast<ShipBFieldMap*>(this->getField(mapNameToCopy));
+
+	if (fieldToCopy) {
+		
+	    if (verbose_) {
+		std::cout<<"Creating map field copy "<<name.Data()
+			 <<" based on "<<mapNameToCopy.Data()<<std::endl;
+	    }
+
+	    // Since field maps use floating point precision we convert any double parameter
+	    // values to floats, i.e. we can't simply pass TVector3 objects
+	    Float_t x0 = translation.X();
+	    Float_t y0 = translation.Y();
+	    Float_t z0 = translation.Z();
+
+	    Float_t phi = eulerAngles.X();
+	    Float_t theta = eulerAngles.Y();
+	    Float_t psi = eulerAngles.Z();
+	    
+	    Float_t scale(1.0);
+
+	    ShipBFieldMap* copiedMap = new ShipBFieldMap(name.Data(), *fieldToCopy,
+							 x0, y0, z0, phi, theta, psi, scale);
+	    theFields_[name] = copiedMap;		    
+		
+	}
+
+    } else {
+
+	std::cout<<"We already have a copied field map with the name "
+		 <<name.Data()<<std::endl;
+    }
+
+}
+
+
+void ShipFieldMaker::defineComposite(const stringVect& inputLine)
 {
 
     size_t nWords = inputLine.size();
 
     // Expecting a line such as:
-    // Composite Label Field1 Field2 ... FieldN
+    // Composite Name Field1 Field2 ... FieldN
 
     if (nWords > 2) {
 
-	TString label(inputLine[1].c_str());
+	TString name(inputLine[1].c_str());
 
-	// Check if the field is already in the map
-	if (!this->gotField(label)) {
+	std::vector<TString> fieldNames;
+	for (size_t i = 2; i < nWords; i++) {
 
-	    if (verbose_) {std::cout<<"Creating composite for "<<label.Data()<<std::endl;}
+	    TString aName(inputLine[i].c_str());
+	    fieldNames.push_back(aName);
 
-	    // Loop over the list of fields and add them to the composite
-	    std::vector<TVirtualMagField*> vectFields;
-	    for (size_t i = 2; i < nWords; i++) {
-
-		TString aLabel(inputLine[i].c_str());
-		TVirtualMagField* aField = this->getField(aLabel);
-		if (aField) {
-		    if (verbose_) {std::cout<<"Adding field "<<aLabel<<std::endl;}
-		    vectFields.push_back(aField);
-		}
-
-	    }
-
-	    ShipCompField* composite = new ShipCompField(label.Data(), vectFields);
-	    theFields_[label] = composite;
-
-	} else {
-
-	    std::cout<<"We already have a field with the name "
-		     <<label.Data()<<std::endl;
 	}
+
+	this->defineComposite(name, fieldNames);
 
     } else {
 
 	std::cout<<"Expecting at least 3 words for the composite definition: "
-		 <<"Composite Label Field1 Field2 ... FieldN"<<std::endl;
+		 <<"Composite Name Field1 Field2 ... FieldN"<<std::endl;
 
     }
 
 }
 
-void ShipFieldMaker::setGlobalField(const stringVect& inputLine)
+void ShipFieldMaker::defineComposite(const TString& name, const TString& field1Name,
+				     const TString& field2Name, const TString& field3Name,
+				     const TString& field4Name)
 {
+
+    std::vector<TString> fieldNames;
+    fieldNames.push_back(field1Name);
+    fieldNames.push_back(field2Name);
+
+    if (field3Name.Length() > 0) {
+	fieldNames.push_back(field3Name);
+    }
+    if (field4Name.Length() > 0) {
+	fieldNames.push_back(field4Name);
+    }
+
+    this->defineComposite(name, fieldNames);
+
+}
+
+void ShipFieldMaker::defineComposite(const TString& name, std::vector<TString> fieldNames)
+{
+
+    // Check if the field is already in the map
+    if (!this->gotField(name)) {
+
+	// Loop over the list of fields and add them to the composite
+	std::vector<TVirtualMagField*> vectFields;
+	
+	std::vector<TString>::iterator iter;
+	for (iter = fieldNames.begin(); iter != fieldNames.end(); ++iter) {
+
+	    TString aName = *iter;
+	    TVirtualMagField* aField = this->getField(aName);
+	    if (aField) {
+		if (verbose_) {std::cout<<"Adding field "<<aName<<std::endl;}
+		vectFields.push_back(aField);
+	    }
+
+	    ShipCompField* composite = new ShipCompField(name.Data(), vectFields);
+	    theFields_[name] = composite;
+
+	}
+
+    } else {
+
+	std::cout<<"We already have a composite field with the name "
+		 <<name.Data()<<std::endl;
+    }
+
+}
+
+void ShipFieldMaker::defineGlobalField(const stringVect& inputLine)
+{
+
+    // Define the global field using the input file line
 
     size_t nWords = inputLine.size();
 
     // Expecting the line:
     // Global Field1 ... FieldN
 
-    if (globalField_) {delete globalField_;}
-
     if (nWords > 1) {
 
-	if (verbose_) {std::cout<<"Setting the global field"<<std::endl;}
+	TString name("Global");
 
-	TString label("Global");
-
-	std::vector<TVirtualMagField*> vectFields;
+	std::vector<TString> fieldNames;
 	for (size_t i = 1; i < nWords; i++) {
 
-	    TString aLabel(inputLine[i].c_str());
-	    TVirtualMagField* aField = this->getField(aLabel);
-	    if (aField) {
-		if (verbose_) {std::cout<<"Adding field "<<aLabel<<" to global"<<std::endl;}
-		vectFields.push_back(aField);
-	    } else {
-		std::cout<<"Could not find the field "<<aLabel<<std::endl;
-	    }
+	    TString aName(inputLine[i].c_str());
+	    fieldNames.push_back(aName);
 
 	}
 
-	globalField_ = new ShipCompField(label.Data(), vectFields);
-	// Set this as the global field in the virtual MC
-	if (gMC) {
-	    if (verbose_) {
-		std::cout<<"Settting "<<label.Data()<<" field as the global field for gMC"<<std::endl;
-	    }
-	    gMC->SetMagField(globalField_);
-	} else {
-	    std::cout<<"Error. The global virtual MC pointer gMC is null! The global field can't be used!"<<std::endl;
-	}
+	this->defineGlobalField(fieldNames);
 
     } else {
 
@@ -543,7 +669,69 @@ void ShipFieldMaker::setGlobalField(const stringVect& inputLine)
 
 }
 
-void ShipFieldMaker::setRegionField(const stringVect& inputLine)
+void ShipFieldMaker::defineGlobalField(const TString& field1Name, const TString& field2Name, 
+				       const TString& field3Name, const TString& field4Name)
+{
+
+    std::vector<TString> fieldNames;
+    fieldNames.push_back(field1Name);
+
+    if (field2Name.Length() > 0) {
+	fieldNames.push_back(field2Name);
+    }
+    if (field3Name.Length() > 0) {
+	fieldNames.push_back(field3Name);
+    }
+    if (field4Name.Length() > 0) {
+	fieldNames.push_back(field4Name);
+    }
+
+    this->defineGlobalField(fieldNames);
+
+}
+
+void ShipFieldMaker::defineGlobalField(std::vector<TString> fieldNames)
+{
+
+    if (globalField_) {
+	if (verbose_) {
+	    std::cout<<"Deleting already existing Global field"<<std::endl;
+	}
+	delete globalField_;
+    }
+
+    if (verbose_) {std::cout<<"Setting the Global field"<<std::endl;}
+
+    std::vector<TVirtualMagField*> vectFields;
+
+    std::vector<TString>::iterator iter;
+    for (iter = fieldNames.begin(); iter != fieldNames.end(); ++iter) {
+
+	TString aName = *iter;
+	TVirtualMagField* aField = this->getField(aName);
+	
+	if (aField) {
+	    if (verbose_) {std::cout<<"Adding field "<<aName<<" to Global"<<std::endl;}
+	    vectFields.push_back(aField);
+	} else {
+	    std::cout<<"Could not find the field "<<aName<<std::endl;
+	}
+
+    }
+
+    TString name("Global");
+    globalField_ = new ShipCompField(name.Data(), vectFields);
+
+    // Set this as the global field in the virtual MC
+    if (gMC) {
+	gMC->SetMagField(globalField_);
+    } else {
+	std::cout<<"Error. The global virtual MC pointer gMC is null! The global field can't be used!"<<std::endl;
+    }
+
+}
+
+void ShipFieldMaker::defineRegionField(const stringVect& inputLine)
 {
 
     // Set the local + global field for the region using info from inputLine
@@ -560,17 +748,51 @@ void ShipFieldMaker::setRegionField(const stringVect& inputLine)
 	Double_t scale(1.0);
 	if (nWords == 4) {scale = std::atof(inputLine[3].c_str());}
 
-	if (verbose_) {
-	    std::cout<<"ShipFieldMaker::setRegionField for volume "
-		     <<volName.Data()<<" and field "<<fieldName.Data()
-		     <<" with scale = "<<scale<<std::endl;
-	}
+	this->defineRegionField(volName, fieldName, scale);
 
+    } else {
+
+	std::cout<<"Expecting 3 or 4 words for the region (local + global) field definition: "
+		 <<"Region VolName LocalFieldName [LocalFieldMapScale]"<<std::endl;
+
+    }
+
+}
+
+void ShipFieldMaker::defineRegionField(const TString& volName, const TString& fieldName, Double_t scale)
+{
+
+    if (verbose_) {
+	std::cout<<"ShipFieldMaker::defineRegionField for volume "
+		 <<volName.Data()<<" and field "<<fieldName.Data()
+		 <<" with scale = "<<scale<<std::endl;
+    }
+
+    fieldInfo theInfo(volName, fieldName, scale);
+    regionInfo_.push_back(theInfo);
+
+}
+
+void ShipFieldMaker::setAllRegionFields()
+{
+
+    // Loop over all entries in the regionInfo_ vector and assign fields to their volumes
+    std::vector<fieldInfo>::iterator regionIter;
+
+    for (regionIter = regionInfo_.begin(); regionIter != regionInfo_.end(); ++regionIter) {
+
+	fieldInfo theInfo = *regionIter;
+	const TString volName = theInfo.volName_;
+	TString fieldName = theInfo.fieldName_;
+	Double_t scale = theInfo.scale_;
+
+	// Find the volume
 	TGeoVolume* theVol(0);
 	if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}
 
 	if (theVol) {	    
 
+	    // Find the local field
 	    TVirtualMagField* localField = this->getField(fieldName);
 
 	    if (localField) {
@@ -615,7 +837,9 @@ void ShipFieldMaker::setRegionField(const stringVect& inputLine)
 
 		} else {
 
-		    std::cout<<"There is no global field defined. Just setting the local field"<<std::endl;
+		    if (verbose_) {
+			std::cout<<"There is no global field defined. Just setting the local field"<<std::endl;
+		    }
 		    theVol->SetField(localField);
 
 		}
@@ -633,20 +857,14 @@ void ShipFieldMaker::setRegionField(const stringVect& inputLine)
 
 	}
 
-    } else {
-
-	std::cout<<"Expecting 3 or 4 words for the region (local + global) field definition: "
-		 <<"Region VolName LocalFieldToInclude [LocalFieldMapScale]"<<std::endl;
-
-    }
+    } // regionIter loop
 
 }
 
-void ShipFieldMaker::setLocalField(const stringVect& inputLine)
+void ShipFieldMaker::defineLocalField(const stringVect& inputLine)
 {
 
-    // Set the local + global field for the region using info from inputLine
-
+    // Set only the local field for the region using info from inputLine
     size_t nWords = inputLine.size();
 
     // Expecting the line:
@@ -660,11 +878,43 @@ void ShipFieldMaker::setLocalField(const stringVect& inputLine)
 	Double_t scale(1.0);
 	if (nWords == 4) {scale = std::atof(inputLine[3].c_str());}
 
-	if (verbose_) {
-	    std::cout<<"ShipFieldMaker::setLocalField for volume "
-		     <<volName.Data()<<" and field "<<fieldName.Data()
-		     <<" with scale = "<<scale<<std::endl;
-	}
+	this->defineLocalField(volName, fieldName, scale);
+
+    } else {
+
+	std::cout<<"Expecting 3 or 4 words for the local field definition: "
+		 <<"Local VolName LocalFieldName [FieldMapScale]"<<std::endl;
+
+    }
+
+}
+
+void ShipFieldMaker::defineLocalField(const TString& volName, const TString& fieldName, Double_t scale)
+{
+
+    if (verbose_) {
+	std::cout<<"ShipFieldMaker::defineLocalField for volume "
+		 <<volName.Data()<<" and field "<<fieldName.Data()
+		 <<" with scale = "<<scale<<std::endl;
+    }
+    
+    fieldInfo theInfo(volName, fieldName,scale);
+    localInfo_.push_back(theInfo);
+
+}
+
+void ShipFieldMaker::setAllLocalFields()
+{
+
+    // Loop over all entries in the localInfo_ vector and assign fields to their volumes
+    std::vector<fieldInfo>::iterator localIter;
+
+    for (localIter = localInfo_.begin(); localIter != localInfo_.end(); ++localIter) {
+
+	fieldInfo theInfo = *localIter;
+	const TString volName = theInfo.volName_;
+	TString fieldName = theInfo.fieldName_;
+	Double_t scale = theInfo.scale_;
 
 	TGeoVolume* theVol(0);
 	if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}
@@ -693,12 +943,7 @@ void ShipFieldMaker::setLocalField(const stringVect& inputLine)
 	    std::cout<<"Could not find the volume "<<volName.Data()<<std::endl;
 	}
 
-    } else {
-
-	std::cout<<"Expecting 3 or 4 words for the local field definition: "
-		 <<"Local VolName LocalFieldName [FieldMapScale]"<<std::endl;
-
-    }
+    } // localIter loop
 
 }
 
@@ -928,7 +1173,7 @@ TVirtualMagField* ShipFieldMaker::getVolumeField(const TString& volName) const
 
 }
 
-Bool_t ShipFieldMaker::gotField(const TString& label) const
+Bool_t ShipFieldMaker::gotField(const TString& name) const
 {
 
     Bool_t result(kFALSE);
@@ -941,7 +1186,7 @@ Bool_t ShipFieldMaker::gotField(const TString& label) const
 	TVirtualMagField* theField = iter->second;
 
 	// Check that we have the key already stored and the pointer is not null
-	if (!key.CompareTo(label, TString::kExact) && theField) {
+	if (!key.CompareTo(name, TString::kExact) && theField) {
 	    result = kTRUE;
 	    break;
 	}
@@ -952,7 +1197,7 @@ Bool_t ShipFieldMaker::gotField(const TString& label) const
 
 }
 
-TVirtualMagField* ShipFieldMaker::getField(const TString& label) const
+TVirtualMagField* ShipFieldMaker::getField(const TString& name) const
 {
   
     TVirtualMagField* theField(0);
@@ -965,7 +1210,7 @@ TVirtualMagField* ShipFieldMaker::getField(const TString& label) const
 	TVirtualMagField* BField = iter->second;
 
 	// Check that we have the key already stored
-	if (!key.CompareTo(label, TString::kExact)) {
+	if (!key.CompareTo(name, TString::kExact)) {
 	    theField = BField;
 	    break;
 	}

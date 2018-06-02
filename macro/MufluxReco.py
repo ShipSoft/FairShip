@@ -162,7 +162,7 @@ modules = charmDet_conf.configure(run,ShipGeo)
 run.Init()
 
 #import geomGeant4
-#fieldMaker = geomGeant4.addVMCFields('field/GoliathBFieldSetup.txt', False)
+#fieldMaker = geomGeant4.addVMCFields(ShipGeo, 'field/GoliathBFieldSetup.txt', False)
 #print "!!!!!!!!!!!! printing fields"
 #geomGeant4.printVMCFields()
 
