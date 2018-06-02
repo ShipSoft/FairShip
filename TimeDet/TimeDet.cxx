@@ -66,8 +66,6 @@ TimeDet::TimeDet()
   fNBars = fNCol * fNRow;
   if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / (double)(fNCol-1); else fxOv = 0;
   if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / (double)(fNRow-1); else fyOv = 0;
-  
-  FairDetector::Initialize();
 }
 
 
@@ -103,6 +101,10 @@ TimeDet::TimeDet(const char* name, Bool_t active)
   if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / (double)(fNCol-1); else fxOv = 0;
   if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / (double)(fNRow-1); else fyOv = 0;
 
+}
+
+void TimeDet::Initialize()
+{
   FairDetector::Initialize();
 }
 
