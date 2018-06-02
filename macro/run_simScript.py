@@ -320,14 +320,14 @@ if simEngine == "Pythia6":
 # -----Particle Gun-----------------------
 if simEngine == "PG": 
   myPgun = ROOT.FairBoxGenerator(pID,1)
-  myPgun.SetPRange(10,10.2)
+  myPgun.SetPRange(Estart,Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  if charm!=0: myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
-  else: myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
-  if charm!=0: 
-     myPgun.SetPRange(Estart,Eend)  
+  if charm!=0:
+     myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
      primGen.SetTarget(ship_geo.target.z0,0.)
+  else:  
+     myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
