@@ -367,7 +367,7 @@ def configure(run,ship_geo):
 
  if not ship_geo.HcalOption < 0:
   hcal,HcalZSize = posHcal(ship_geo.hcal.z,ship_geo.hcal.File,ship_geo.HcalOption)
-  if abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 10*u.cm:
+  if ship_geo.HcalOption!=2 and abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 10*u.cm:
     print 'mismatch between hcalsize in geo file and python configuration'
     print ship_geo.hcal.hcalSpace -  HcalZSize, ship_geo.hcal.hcalSpace , HcalZSize
   detectorList.append(hcal)
