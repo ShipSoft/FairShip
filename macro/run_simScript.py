@@ -492,7 +492,7 @@ import geomGeant4
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
 if hasattr(ship_geo.Bfield,"fieldMap"):
-  fieldMaker = geomGeant4.addVMCFields(ship_geo.Bfield.fieldMap, ship_geo.Bfield.z, True)
+  fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
 
 # Print VMC fields and associated geometry objects
 if debug > 0:
