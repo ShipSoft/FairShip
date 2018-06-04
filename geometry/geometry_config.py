@@ -105,12 +105,13 @@ with ConfigRegistry.register_config("basic") as c:
      if tankDesign > 5: 
       c.Veto.outerSupport = 5.*u.mm
       c.Veto.outerSupportMed = "steel"
+      c.Veto.lidThickness = 16.*u.mm
      else:
       c.Veto.outerSupport = 8.*u.mm
       c.Veto.outerSupportMed = "Aluminum"
+      c.Veto.lidThickness = 80.*u.mm
      c.Veto.sensitiveThickness = 0.3*u.m
      c.Veto.sensitiveMed = "Scintillator"
-     c.Veto.lidThickness = 80.*u.mm
      c.Veto.decayMed = "vacuums"
      c.Veto.rib = 3.*u.cm
      c.Veto.ribMed = "steel"
