@@ -180,8 +180,10 @@ void ShipMuonShield::CreateStepArb8(TString arbName, TGeoMedium *medium,
   }
   for (int i = 0; i < zParts; ++i){
     for (int k = 0; k < 4; ++k){
-      finalCorners[i][8+2*k] = finalCorners[i][0+2*k]  = (finalCorners[i][0+2*k] + finalCorners[i][8+2*k]) / 2.0;
-      finalCorners[i][9+2*k] = finalCorners[i][1+2*k]  = (finalCorners[i][9+2*k] + finalCorners[i][1+2*k]) / 2.0;
+      // finalCorners[i][8+2*k] = finalCorners[i][0+2*k]  = (finalCorners[i][0+2*k] + finalCorners[i][8+2*k]) / 2.0;
+      // finalCorners[i][9+2*k] = finalCorners[i][1+2*k]  = (finalCorners[i][9+2*k] + finalCorners[i][1+2*k]) / 2.0;
+      finalCorners[i][0+2*k] = finalCorners[i][8+2*k];
+      finalCorners[i][1+2*k] = finalCorners[i][9+2*k];
     }
   }
   std::vector<TGeoVolume*> magF;
