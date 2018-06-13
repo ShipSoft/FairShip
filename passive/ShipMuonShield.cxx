@@ -29,7 +29,6 @@ ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 ShipMuonShield::ShipMuonShield(TString geofile)
   : FairModule("MuonShield", "ShipMuonShield")
 {
-  // TODO use other constructor once parameters extracted
   fGeofile = geofile;
   auto f = TFile::Open(geofile, "read");
   TVectorT<Double_t> params;
@@ -696,27 +695,32 @@ void ShipMuonShield::ConstructGeometry()
 	    new TGeoUniformMagField(1.6 * tesla, 0., 0.)
 	};
 
-	for (Int_t nM = 0; nM < 2; nM++) {
+	for (Int_t nM = (fDesign == 7) ? 0 : 1; nM < 2; nM++) {
 	  CreateMagnet(magnetName[nM], iron, tShield, fieldsAbsorber,
 		       fieldDirection[nM], dXIn[nM], dYIn[nM], dXOut[nM],
 		       dYOut[nM], dZf[nM], midGapIn[nM], midGapOut[nM],
 		       HmainSideMagIn[nM], HmainSideMagOut[nM], gapIn[nM],
-		       gapOut[nM], Z[nM], nM == 1 || fDesign == 7);
+		       gapOut[nM], Z[nM], true);
 	}
 
-      TGeoTranslation *mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
-      TGeoTranslation *mag2 = new TGeoTranslation("mag2", 0, 0, +dZ1);
+      std::vector<TGeoTranslation*> mag_trans;
 
-      mag1->RegisterYourself();
+      if (fDesign > 7) {
+         auto mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
+         mag1->RegisterYourself();
+	 mag_trans.push_back(mag1);
+      }
+      auto mag2 = new TGeoTranslation("mag2", 0, 0, +dZ1);
       mag2->RegisterYourself();
+      mag_trans.push_back(mag2);
 
       Double_t zgap = 10;
       Double_t absorber_offset = zgap;
       Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
-      TGeoTube *abs = new TGeoTube("absorber", 0, 400, absorber_half_length);
-      const std::vector<TString> absorber_magnets = {"MagnAbsorb1",
-						     "MagnAbsorb2"};
-      const std::vector<TString> magnet_components = fDesign <= 7 ? std::vector<TString>{
+      auto abs = new TGeoBBox("absorber", 3.95 * m, 3.4 * m, absorber_half_length);
+      const std::vector<TString> absorber_magnets =
+         (fDesign == 7) ? std::vector<TString>{"MagnAbsorb1", "MagnAbsorb2"} : std::vector<TString>{"MagnAbsorb2"};
+      const std::vector<TString> magnet_components = fDesign == 7 ? std::vector<TString>{
 	  "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
 	  "_MagCLB",     "_MagCLT",      "_MagCRT",     "_MagCRB",
 	  "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
@@ -729,10 +733,12 @@ void ShipMuonShield::ConstructGeometry()
 	// format: "-<magnetName>_<magnet_component>:<translation>"
 	absorber_magnet_components +=
 	    ("-" + absorber_magnets[0] + magnet_component + ":" +
-	     mag1->GetName());
+	     mag_trans[0]->GetName());
+	if (fDesign == 7) {
 	absorber_magnet_components +=
 	    ("-" + absorber_magnets[1] + magnet_component + ":" +
-	     mag2->GetName());
+	     mag_trans[1]->GetName());
+	}
       }
       TGeoCompositeShape *absorberShape = new TGeoCompositeShape(
 	  "Absorber", "absorber" + absorber_magnet_components); // cutting out
@@ -742,10 +748,13 @@ void ShipMuonShield::ConstructGeometry()
       absorber->SetLineColor(42); // brown / light red
       tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
 
-      if (fDesign >=8 ){
-         TGeoVolume *wall = gGeoManager->MakeBox("wall", concrete, 3 * m, 3 * m, 10 * cm - 1 * mm);
-         tShield->AddNode(
-            wall, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 10 * cm));
+      if (fDesign > 7) {
+         auto coat_trans = new TGeoTranslation("coat_trans", 0, 0, +10 * cm);
+         coat_trans->RegisterYourself();
+         auto coatBox = new TGeoBBox("coat", 10 * m - 1 * mm, 10 * m - 1 * mm, absorber_half_length + 10 * cm);
+         auto coatShape = new TGeoCompositeShape("CoatShape", "coat:coat_trans-absorber");
+         auto coat = new TGeoVolume("CoatVol", coatShape, concrete);
+         tShield->AddNode(coat, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
       }
 
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
@@ -755,7 +764,6 @@ void ShipMuonShield::ConstructGeometry()
 		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8);
 
 	if (nM==8 || !fSupport) continue;
-	// TODO split out into function/method?
 	Double_t dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
 	Double_t dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
 	Double_t slope =
