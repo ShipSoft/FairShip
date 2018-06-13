@@ -705,7 +705,7 @@ void ShipMuonShield::ConstructGeometry()
 
       std::vector<TGeoTranslation*> mag_trans;
 
-      if (fDesign > 7) {
+      if (fDesign == 7) {
          auto mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
          mag1->RegisterYourself();
 	 mag_trans.push_back(mag1);
