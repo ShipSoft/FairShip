@@ -705,7 +705,7 @@ void ShipMuonShield::ConstructGeometry()
 
       std::vector<TGeoTranslation*> mag_trans;
 
-      if (fDesign > 7) {
+      if (fDesign == 7) {
          auto mag1 = new TGeoTranslation("mag1", 0, 0, -dZ2);
          mag1->RegisterYourself();
 	 mag_trans.push_back(mag1);
@@ -830,7 +830,6 @@ void ShipMuonShield::ConstructGeometry()
 
 // Concrete around first magnets. i.e. Tunnel
       Double_t dZ = dZ1 + dZ2;
-      Double_t dYT = dY+dX1;
       Double_t ZT  = zEndOfAbsorb + dZ;
       TGeoBBox *box1    = new TGeoBBox("box1", 10*m,10*m,dZ);
       TGeoBBox *box2    = new TGeoBBox("box2", 15*m,15*m,dZ);
@@ -847,12 +846,12 @@ void ShipMuonShield::ConstructGeometry()
       if (fDesign >= 7 && fFloor > 0) {
 	// Only add floor for new shield
 	TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2.,
-				      fMuonShieldLength / 2.);
+				      fMuonShieldLength / 2. - dZ);
 	TGeoVolume *floor = new TGeoVolume("floorM", box5, concrete);
 	floor->SetLineColor(11); // grey
 	top->AddNode(floor, 1, new TGeoTranslation(0, -10 * m + fFloor / 2.,
 						   zEndOfAbsorb +
-						       fMuonShieldLength / 2.));
+						       fMuonShieldLength / 2. + dZ));
       }
       TGeoCompositeShape *compRockD =
 	  new TGeoCompositeShape("compRockD", "(box3-box4)");
