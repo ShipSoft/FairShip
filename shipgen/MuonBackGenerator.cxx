@@ -3,6 +3,7 @@
 #include "TROOT.h"
 #include "TRandom.h"
 #include "TFile.h"
+#include "TVector.h"
 #include "FairPrimaryGenerator.h"
 #include "MuonBackGenerator.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
@@ -15,7 +16,9 @@
 // read events from Pythia8/Geant4 base simulation (only target + hadron absorber
 
 // -----   Default constructor   -------------------------------------------
-MuonBackGenerator::MuonBackGenerator() {}
+MuonBackGenerator::MuonBackGenerator() {
+ followMuons = true;
+}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName) {
@@ -88,15 +91,14 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t mass,e,tof,phi;
   Double_t dx = 0, dy = 0;
-  std::vector<int> muList;
-
+  std::unordered_map<int, int> muList;
   while (fn<fNevents) {
    fTree->GetEntry(fn);
    muList.clear(); 
    fn++;
    if (fn%100000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
 // test if we have a muon, don't look at neutrinos:
-   if (abs(int(id))==13) {
+   if (TMath::Abs(int(id))==13) {
         mass = pdgBase->GetParticle(id)->Mass();
         e = TMath::Sqrt( px*px+py*py+pz*pz+mass*mass );
         tof = 0;
@@ -105,8 +107,9 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Bool_t found = false;
      for (int i = 0; i < vetoPoints->GetEntries(); i++) {
          vetoPoint *v = (vetoPoint*)vetoPoints->At(i); 
-         if (abs(v->PdgCode())==13){found = true;
-           muList.push_back(v->GetTrackID());
+         Int_t abspid = TMath::Abs(v->PdgCode()); 
+         if (abspid==13 or (not followMuons and abspid!=12 and abspid!=14) ){found = true;
+           muList.insert( { v->GetTrackID(),i });
             }
      }
      if (!found) {fLogger->Warning(MESSAGE_ORIGIN, "no muon found %i",fn-1);}
@@ -132,6 +135,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   if (id==-1){
      for (unsigned i = 0; i< MCTrack->GetEntries();  i++ ){
        ShipMCTrack* track = (ShipMCTrack*)MCTrack->At(i);
+       Int_t abspid = TMath::Abs(track->GetPdgCode());
        px = track->GetPx();
        py = track->GetPy();
        pz = track->GetPz();
@@ -147,8 +151,25 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        tof =  track->GetStartT();
        e = track->GetEnergy();
        Bool_t wanttracking = false; // only transport muons
-       if(std::find(muList.begin(), muList.end(), i) != muList.end()) {
-         wanttracking = true;
+       for (std::pair<int, int> element : muList){
+         if (element.first==i){
+          wanttracking = true;
+          if (not followMuons){
+           vetoPoint* v = (vetoPoint*)vetoPoints->At(element.second);
+           TVector3 lpv = v->LastPoint();
+           TVector3 lmv = v->LastMom();
+           if (abspid == 22){ e=lmv.Mag();}
+           else{ e = TMath::Sqrt(lmv.Mag2()+(track->GetMass())*(track->GetMass()));}
+           px = lmv[0];
+           py = lmv[1];
+           pz = lmv[2];
+           vx = lpv[0];
+           vy = lpv[1];
+           vz = lpv[2];
+           tof =  v->GetTime();
+          }
+          break;
+        }
        }
        cpg->AddTrack(track->GetPdgCode(),px,py,pz,vx,vy,vz,track->GetMotherId(),wanttracking,e,tof,track->GetWeight(),(TMCProcess)track->GetProcID());
      }

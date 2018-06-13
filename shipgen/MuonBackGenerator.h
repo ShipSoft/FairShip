@@ -26,6 +26,7 @@ class MuonBackGenerator : public FairGenerator
   Int_t GetNevents();//!
   void CloseFile();//!
   void SetPhiRandom(Bool_t fl) { fPhiRandomize = fl; };
+  void FollowAllParticles() { followMuons = false; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetSameSeed(Int_t s) {
     fLogger->Info(MESSAGE_ORIGIN, TString::Format("Seed: %d", s));
@@ -44,9 +45,10 @@ protected:
   float f_zOffset;      //!
   int fn;
   Bool_t fPhiRandomize;
+  Bool_t followMuons;
   Int_t fSameSeed;
   Double_t fsmearBeam ;
-  ClassDef(MuonBackGenerator,4);
+  ClassDef(MuonBackGenerator,5);
 };
 
 #endif /* !PNDmuGENERATOR_H */
