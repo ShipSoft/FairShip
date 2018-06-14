@@ -107,3 +107,10 @@ Build targets indicated with `*` always come in three different flavors.
 | `check-cpplint*` | run cpplint on selected files. Fails if errors are found and displays them. |
 | `check-submission` | will build, run all tests, check formatting, code style, and generate documentation and coverage report |
 | `fix-submission` | will attempt to fix the reported issues using `clang-format` and `clang-tidy`. Failing build, tests, compiler warnings, issues from cpplint and warnings from doxygen must be fixed manually. Also some `clang-tidy` issues cannot be resolved automatically |
+
+
+
+
+
+
+## End

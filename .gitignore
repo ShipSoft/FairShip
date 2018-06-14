@@ -44,3 +44,7 @@ build/
 
 # IPython notebooks
 *.ipynb_checkpoints
+
+# Eclipse
+*.project
+*.pydevproject
