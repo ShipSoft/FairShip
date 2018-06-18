@@ -60,7 +60,10 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    for (int i : ROOT::MakeSeq(nhits)) {
       auto channel = reinterpret_cast<ChannelId*>(&(df->hits[i].channelId));
       Float_t time = df->hits[i].hitTime * 0.098; // Convert time to ns
-      auto detectorId = channel->channel; // TODO need to convert accordingly
+      auto detectorId = channel->GetDetectorId(); // TODO need to convert accordingly
+      if (!detectorId) {
+         // TODO use trigger for time adjustment
+      }
       new ((*fRawData)[fNHits]) MufluxSpectrometerHit(detectorId, time);
       fNHits++;
    }
