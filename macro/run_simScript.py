@@ -37,7 +37,7 @@ inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-97
 defaultInputFile = True
 outputDir    = "."
 sameSeed     = False # can be set to an integer for the muonBackground simulation with specific seed for each muon 
-theSeed      = int(10000 * time.time() % 10000000)
+theSeed      = 0 # see TRrandom::SetSeed documentation
 
 globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDesign':4},\
                  '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}}
@@ -424,6 +424,7 @@ if simEngine == "MuonBack":
   primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
  #
  MuonBackgen = ROOT.MuonBackGenerator()
+ # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
  if sameSeed: MuonBackgen.SetSameSeed(sameSeed)
