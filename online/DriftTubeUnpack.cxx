@@ -1,4 +1,5 @@
 #include <cassert>
+#include <unordered_map>
 
 // ROOT headers
 #include "TClonesArray.h"
@@ -63,22 +64,40 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    int skipped = 0;
    int trigger = 0;
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
+   std::unordered_map<uint16_t, uint16_t> channels;
+   std::unordered_map<int, uint16_t> triggerTime;
    for (auto &&hit : hits) {
-      // TODO read array into searchable container?
+      if (hit.channelId >= 0x1000) {
+         // trailing edge
+         skipped++;
+         continue;
+      }
       auto channel = reinterpret_cast<ChannelId *>(&(hit.channelId));
-      Float_t time = hit.hitTime * 0.098; // Convert time to ns
       auto detectorId = channel->GetDetectorId();
       if (!detectorId) {
-         // TODO use trigger for time adjustment, don't save it as a hit
          trigger++;
+         triggerTime[channel->TDC] = hit.hitTime;
          skipped++;
-      } else if (detectorId == 6 || detectorId == 7) {
-         // Trigger scintillator
-         new ((*fRawScintillator)[fNHitsScintillator]) ScintillatorHit(detectorId, time);
-         fNHitsScintillator++;
       } else if (detectorId == -1) {
          // beam counter
          skipped++;
+      } else if (channels.find(hit.channelId) != channels.end()) {
+         channels[hit.channelId] = std::min(hit.hitTime, channels[hit.channelId]);
+         skipped++;
+      } else {
+         channels[hit.channelId] = hit.hitTime;
+      }
+   }
+   for (auto &&channel_and_time : channels) {
+      auto channel = reinterpret_cast<const ChannelId *>(&(channel_and_time.first));
+      uint16_t raw_time = channel_and_time.second;
+      uint16_t trigger_time = triggerTime.at(channel->TDC);
+      Float_t time = 0.098 * (DriftTubes::delay - trigger_time + raw_time); // conversion to ns and jitter correction
+      auto detectorId = channel->GetDetectorId();
+      if (detectorId == 6 || detectorId == 7) {
+         // Trigger scintillator
+         new ((*fRawScintillator)[fNHitsScintillator]) ScintillatorHit(detectorId, time);
+         fNHitsScintillator++;
       } else {
          new ((*fRawTubes)[fNHitsTubes]) MufluxSpectrometerHit(detectorId, time);
          fNHitsTubes++;

@@ -34,7 +34,7 @@ struct ChannelId {
    uint16_t TDC : 4;
    uint16_t edge : 1;
    uint16_t padding : 3;
-   int GetDetectorId()
+   int GetDetectorId() const
    {
       bool trigger = (TDC == 0 || TDC == 2) ? channel == 126 : (TDC == 1 || TDC == 4) ? channel == 0 : false;
       if (trigger) {
@@ -80,6 +80,7 @@ struct Flags {
    uint16_t measurement_type : 2;
    uint16_t padding : 8;
 };
+const uint16_t delay(2000 / 0.098); // TODO update value
 } // namespace DriftTubes
 
 #endif
