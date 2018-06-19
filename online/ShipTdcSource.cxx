@@ -3,7 +3,9 @@
 #include "ShipOnlineDataFormat.h"
 #include "DriftTubeUnpack.h"
 
-ShipTdcSource::ShipTdcSource() : FairOnlineSource() {}
+ShipTdcSource::ShipTdcSource() : FairOnlineSource(), fFilename("tdcdata.bin") {}
+
+ShipTdcSource::ShipTdcSource(std::string filename) : FairOnlineSource(), fFilename(filename) {}
 
 ShipTdcSource::ShipTdcSource(const ShipTdcSource &source) : FairOnlineSource(source) {}
 
@@ -11,7 +13,7 @@ ShipTdcSource::~ShipTdcSource() {}
 
 Bool_t ShipTdcSource::Init()
 {
-   fIn = new std::ifstream("tdcdata.bin", std::ios::binary);
+   fIn = new std::ifstream(fFilename, std::ios::binary);
    return true;
 }
 
@@ -27,7 +29,8 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
       auto nhits = df->getHitCount();
       if (fIn->read(reinterpret_cast<char *>(df->hits), nhits * sizeof(RawDataHit))) {
 
-         if (Unpack(reinterpret_cast<Int_t *>(&buffer), sizeof(DataFrame) + nhits * sizeof(RawDataHit), df->header.partitionId)) {
+         if (Unpack(reinterpret_cast<Int_t *>(&buffer), sizeof(DataFrame) + nhits * sizeof(RawDataHit),
+                    df->header.partitionId)) {
             return 0;
          }
          LOG(WARNING) << "ShipTdcSource: Failed to Unpack." << FairLogger::endl;
@@ -43,8 +46,8 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
 Bool_t ShipTdcSource::Unpack(Int_t *data, Int_t size, uint16_t partitionId)
 {
 
-   for (TObject* item: *fUnpackers){
-      auto unpacker = static_cast<DriftTubeUnpack*>(item); // TODO need ShipUnpack with partitionId?
+   for (TObject *item : *fUnpackers) {
+      auto unpacker = static_cast<DriftTubeUnpack *>(item); // TODO need ShipUnpack with partitionId?
       if (unpacker->GetPartition() == partitionId) {
          return unpacker->DoUnpack(data, size);
       }

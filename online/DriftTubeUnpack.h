@@ -35,7 +35,7 @@ public:
    virtual void Reset();
 
    /** Method for controling the functionality. */
-   inline Int_t GetNHitsTotal() { return fNHitsTotal; }
+   inline Int_t GetNHitsTotal() { return fNHitsTotalTubes + fNHitsTotalScintillator; }
 
    uint16_t GetPartition() { return fPartitionId; }
 
@@ -44,9 +44,12 @@ protected:
    virtual void Register();
 
 private:
-   TClonesArray *fRawData; /**< Array of output raw items. */
-   Int_t fNHits;           /**< Number of raw items in current event. */
-   Int_t fNHitsTotal;      /**< Total number of raw items. */
+   TClonesArray *fRawTubes;        /**< Array of output raw items. */
+   TClonesArray *fRawScintillator; /**< Array of output raw items. */
+   Int_t fNHitsTubes;              /**< Number of raw items in current event. */
+   Int_t fNHitsScintillator;       /**< Number of raw items in current event. */
+   Int_t fNHitsTotalTubes;         /**< Total number of raw items. */
+   Int_t fNHitsTotalScintillator;  /**< Total number of raw items. */
    uint16_t fPartitionId;
 
    DriftTubeUnpack(const DriftTubeUnpack &);

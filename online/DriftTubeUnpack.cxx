@@ -12,14 +12,16 @@
 // SHiP headers
 #include "DriftTubeUnpack.h"
 #include "MufluxSpectrometerHit.h"
+#include "ScintillatorHit.h"
 #include "ShipOnlineDataFormat.h"
 
 using DriftTubes::ChannelId;
 
 // DriftTubeUnpack: Constructor
 DriftTubeUnpack::DriftTubeUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
-   : FairUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray("MufluxSpectrometerHit")),
-     fNHits(0), fNHitsTotal(0), fPartitionId(0x0C00)
+   : FairUnpack(type, subType, procId, subCrate, control), fRawTubes(new TClonesArray("MufluxSpectrometerHit")),
+     fRawScintillator(new TClonesArray("ScintillatorHit")), fNHitsTubes(0), fNHitsScintillator(0), fNHitsTotalTubes(0),
+     fNHitsTotalScintillator(0), fPartitionId(0x0C00)
 {
 }
 
@@ -27,7 +29,7 @@ DriftTubeUnpack::DriftTubeUnpack(Short_t type, Short_t subType, Short_t procId, 
 DriftTubeUnpack::~DriftTubeUnpack()
 {
    LOG(INFO) << "DriftTubeUnpack: Delete instance" << FairLogger::endl;
-   delete fRawData;
+   delete fRawTubes, fRawScintillator;
 }
 
 // Init: Public method
@@ -46,7 +48,8 @@ void DriftTubeUnpack::Register()
    if (!fMan) {
       return;
    }
-   fMan->Register("MufluxSpectrometerHit", "TDC", fRawData, kTRUE);
+   fMan->Register("MufluxSpectrometerHit", "DriftTubes", fRawTubes, kTRUE);
+   fMan->Register("ScintillatorHit", "DriftTubes", fRawScintillator, kTRUE);
 }
 
 // DoUnpack: Public method
@@ -57,21 +60,38 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    auto df = reinterpret_cast<DataFrame *>(data);
    assert(df->header.size == size);
    auto nhits = df->getHitCount();
-   for (int i : ROOT::MakeSeq(nhits)) {
-      auto channel = reinterpret_cast<ChannelId*>(&(df->hits[i].channelId));
-      Float_t time = df->hits[i].hitTime * 0.098; // Convert time to ns
-      auto detectorId = channel->GetDetectorId(); // TODO need to convert accordingly
+   int skipped = 0;
+   int trigger = 0;
+   std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
+   for (auto &&hit : hits) {
+      // TODO read array into searchable container?
+      auto channel = reinterpret_cast<ChannelId *>(&(hit.channelId));
+      Float_t time = hit.hitTime * 0.098; // Convert time to ns
+      auto detectorId = channel->GetDetectorId();
       if (!detectorId) {
-         // TODO use trigger for time adjustment
+         // TODO use trigger for time adjustment, don't save it as a hit
+         trigger++;
+         skipped++;
+      } else if (detectorId == 6 || detectorId == 7) {
+         // Trigger scintillator
+         new ((*fRawScintillator)[fNHitsScintillator]) ScintillatorHit(detectorId, time);
+         fNHitsScintillator++;
+      } else if (detectorId == -1) {
+         // beam counter
+         skipped++;
+      } else {
+         new ((*fRawTubes)[fNHitsTubes]) MufluxSpectrometerHit(detectorId, time);
+         fNHitsTubes++;
       }
-      new ((*fRawData)[fNHits]) MufluxSpectrometerHit(detectorId, time);
-      fNHits++;
    }
 
-   assert(fRawData->GetEntries() == nhits);
-   assert(nhits == fNHits);
+   LOG(INFO) << trigger << FairLogger::endl;
 
-   fNHitsTotal += fNHits;
+   assert(fRawTubes->GetEntries() + fRawScintillator->GetEntries() + skipped == nhits);
+   assert(nhits == fNHitsTubes + fNHitsScintillator + skipped);
+
+   fNHitsTotalTubes += fNHitsTubes;
+   fNHitsTotalScintillator += fNHitsScintillator;
 
    return kTRUE;
 }
@@ -80,8 +100,10 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 void DriftTubeUnpack::Reset()
 {
    LOG(DEBUG) << "DriftTubeUnpack : Clearing Data Structure" << FairLogger::endl;
-   fRawData->Clear();
-   fNHits = 0;
+   fRawTubes->Clear();
+   fRawScintillator->Clear();
+   fNHitsTubes = 0;
+   fNHitsScintillator = 0;
 }
 
 ClassImp(DriftTubeUnpack)

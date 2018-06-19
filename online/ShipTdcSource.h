@@ -9,6 +9,7 @@
 class ShipTdcSource : public FairOnlineSource {
 public:
    ShipTdcSource();
+   ShipTdcSource(std::string filename);
    ShipTdcSource(const ShipTdcSource &source);
    virtual ~ShipTdcSource();
 
@@ -20,6 +21,7 @@ protected:
    Bool_t Unpack(Int_t *data, Int_t size, uint16_t partitionId);
    std::ifstream *fIn;
    unsigned char buffer[UINT16_MAX];
+   std::string fFilename;
 
    ClassDef(ShipTdcSource, 0)
 };
