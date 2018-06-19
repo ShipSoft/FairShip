@@ -28,9 +28,9 @@ work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
                  
 dy           = 10.
-dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
-ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
-nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
+dv           = 6 # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
+ds           = 9 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
+nud          = 3 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 
 # example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10
 #                                                               10000 events, energy cut 10GeV, run nr 10, override existing output folder
