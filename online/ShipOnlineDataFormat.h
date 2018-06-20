@@ -60,16 +60,16 @@ struct ChannelId {
          _channel += _channel ? 63 : 191;
       }
 
-      int module = _channel / 48 + 1;
-      module += (TDC == 1 && channel < 80) ? 1 : (TDC == 0 && channel < 96) ? 1 : 0;
+      int module = _channel / 48 + ((TDC == 1 && channel < 80) || (TDC == 0 && channel < 96) ? 1 : 0);
       int station =
          (TDC == 4)
             ? 3
             : (TDC == 2) ? 3 : (TDC == 1 && channel >= 80) ? 3 : (TDC == 1) ? 2 : (TDC == 0 && channel >= 96) ? 2 : 1;
-      int view = (TDC == 0) ? (module - 1) % 2 : (TDC == 1) ? (module - 1) % 2 : 0;
+      int view = TDC == 0 || TDC == 1 ? module % 2 : 0;
       int plane = (TDC == 2) ? ((_channel % 48) / 24 + 1) % 2 : (_channel % 48) / 24;
       int layer = (_channel % 24) / 12;
-      int straw = _channel % 12 + 1 + ((TDC == 4 ? 0 : TDC == 2 ? (_channel + 24) / 48 : TDC == 1 && channel >= 80 ? 3 : 0) * 12);
+      int straw = _channel % 12 + 1 +
+                  ((TDC == 4 ? 0 : TDC == 2 ? (_channel + 24) / 48 : TDC == 1 && channel >= 80 ? 3 : 0) * 12);
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
