@@ -139,13 +139,13 @@ void exitHadronAbsorber::ConstructGeometry()
    Double_t zLoc;
    if (fzPos>1E8){
    //Add thin sensitive plane after hadron absorber
-    TGeoVolume *muonShield = top->GetNode("MuonShieldArea_1")->GetVolume();
-    TGeoNode *tnode = muonShield->GetNode("CoatVol_1");
-    if (not tnode){tnode = muonShield->GetNode("MagnAbsorb2_MagRetL_1");}
-    Double_t z   = tnode->GetMatrix()->GetTranslation()[2];
-    TGeoBBox* tmp =  (TGeoBBox*)tnode->GetVolume()->GetShape();
-    Double_t dz  = tmp->GetDZ();
-    zLoc = z+dz;
+    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+    if (not nav->cd("/MuonShieldArea_1/CoatVol_1")) {nav->cd("/MuonShieldArea_1/MagnAbsorb2_MagRetL_1");}
+    TGeoBBox* tmp =  (TGeoBBox*)(nav->GetCurrentNode()->GetVolume()->GetShape());
+    Double_t local[3] = {0,0,tmp->GetDZ()};
+    Double_t global[3] = {0,0,0};
+    nav->LocalToMaster(local,global);
+    zLoc = global[2];
    }else{zLoc = fzPos;} // use external input
    TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,10.*m-1.*mm,10.*m-1.*mm,1.*mm);
    top->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc+1*cm));
