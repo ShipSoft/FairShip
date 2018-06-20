@@ -69,7 +69,7 @@ struct ChannelId {
       int view = (TDC == 0) ? (module - 1) % 2 : (TDC == 1) ? (module - 1) % 2 : 0;
       int plane = (TDC == 2) ? ((_channel % 48) / 24 + 1) % 2 : (_channel % 48) / 24;
       int layer = (_channel % 24) / 12;
-      int straw = _channel % 12 + 1;
+      int straw = _channel % 12 + 1 + ((TDC == 4 ? 0 : TDC == 2 ? (_channel + 24) / 48 : TDC == 1 && channel >= 80 ? 3 : 0) * 12);
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
