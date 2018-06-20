@@ -49,8 +49,8 @@ void DriftTubeUnpack::Register()
    if (!fMan) {
       return;
    }
-   fMan->Register("MufluxSpectrometerHit", "DriftTubes", fRawTubes, kTRUE);
-   fMan->Register("ScintillatorHit", "DriftTubes", fRawScintillator, kTRUE);
+   fMan->Register("Digi_MufluxSpectrometerHits", "DriftTubes", fRawTubes, kTRUE);
+   fMan->Register("Digi_ScintillatorHits", "DriftTubes", fRawScintillator, kTRUE);
 }
 
 // DoUnpack: Public method
