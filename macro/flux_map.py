@@ -99,13 +99,11 @@ def main():
                             original_muon.GetStartY())
         except AttributeError:
             continue
-        weight = original_muon.GetWeight()
-        if weight == 0:
-            weight = 1.
         for hit in event.strawtubesPoint:
             if hit:
                 if not hit.GetEnergyLoss() > 0:
                     continue
+                weight = event.MCTrack[hit.GetTrackID()].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -129,6 +127,7 @@ def main():
             if hit:
                 if not hit.GetEnergyLoss() > 0:
                     continue
+                weight = event.MCTrack[hit.GetTrackID()].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 px = hit.GetPx()
@@ -162,6 +161,7 @@ def main():
             if hit:
                 if not hit.GetEnergyLoss() > 0:
                     continue
+                weight = event.MCTrack[hit.GetTrackID()].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -183,6 +183,7 @@ def main():
             if hit:
                 if not hit.GetEnergyLoss() > 0:
                     continue
+                weight = event.MCTrack[hit.GetTrackID()].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 px = hit.GetPx()
@@ -207,6 +208,7 @@ def main():
             if hit:
                 if not hit.GetEnergyLoss() > 0:
                     continue
+                weight = event.MCTrack[hit.GetTrackID()].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -260,6 +262,7 @@ def main():
                     continue
                 print 'Unidentified vetoPoint.'
         if muon:
+            weight = event.MCTrack[1].GetWeight()
             h['mu_p_original'].Fill(original_muon.GetP(), weight)
             h['mu_pt_original'].Fill(original_muon.GetPt(), weight)
             h['mu_ppt_original'].Fill(original_muon.GetP(),
