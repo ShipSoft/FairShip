@@ -253,7 +253,10 @@ print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile+"tmp"
-fin   = ROOT.gROOT.GetListOfFiles()[0]
+if ROOT.gROOT.GetListOfFiles().GetEntries()>0:
+ fin   = ROOT.gROOT.GetListOfFiles()[0]
+else:
+ fin = ROOT.TFile.Open(outFile)
 fHeader = fin.FileHeader
 fHeader.SetRunId(runnr)
 if charm or beauty:
