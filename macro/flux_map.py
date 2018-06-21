@@ -82,6 +82,22 @@ def main():
     print n
     i = 0
     for event in ch:
+        default_weight = 0
+
+        def getMuonWeight():
+            if not default_weight:
+                weights = [
+                    m.GetWeight() for m in event.MCTrack
+                    if abs(m.GetPdgCode()) == 13 and m.GetProcName == 0
+                ]
+                if len(weights) == 0:
+                    print "getMuonWeight: no muon found"
+                    default_weight = 1.
+                if len(weights) > 1:
+                    print "getMuonWeight: more than one muon found"
+                default_weight = weights[0]
+            return default_weight
+
         if i % 10000 == 0:
             print '{}/{}'.format(i, n)
         i += 1
@@ -91,9 +107,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[trid].GetWeight() if trid > 0 else 0
-                if not weight:
-                    continue
+                weight = event.MCTrack[
+                    trid].GetWeight() if trid > 0 else getMuonWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -119,9 +134,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[trid].GetWeight() if trid > 0 else 0
-                if not weight:
-                    continue
+                weight = event.MCTrack[
+                    trid].GetWeight() if trid > 0 else getMuonWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 px = hit.GetPx()
@@ -157,9 +171,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[trid].GetWeight() if trid > 0 else 0
-                if not weight:
-                    continue
+                weight = event.MCTrack[
+                    trid].GetWeight() if trid > 0 else getMuonWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -183,9 +196,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[trid].GetWeight() if trid > 0 else 0
-                if not weight:
-                    continue
+                weight = event.MCTrack[
+                    trid].GetWeight() if trid > 0 else getMuonWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -209,9 +221,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[trid].GetWeight() if trid > 0 else 0
-                if not weight:
-                    continue
+                weight = event.MCTrack[
+                    trid].GetWeight() if trid > 0 else getMuonWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 px = hit.GetPx()
@@ -238,9 +249,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[trid].GetWeight() if trid > 0 else 0
-                if not weight:
-                    continue
+                weight = event.MCTrack[
+                    trid].GetWeight() if trid > 0 else getMuonWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
