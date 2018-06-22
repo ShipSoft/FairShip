@@ -233,9 +233,9 @@ void ShipMagnet::ConstructGeometry()
      TGeoVolume *CV = new TGeoVolume("CV", CVert, Al);
      CV->SetLineColor(kYellow);   
      tMagnet->AddNode(CV, 1, new TGeoTranslation(xaperture+YokeWidth/2., 0, fSpecMagz-YokeDepth-CoilThick/2.));
-     tMagnet->AddNode(CV, 1, new TGeoTranslation(-xaperture-YokeWidth/2., 0, fSpecMagz-YokeDepth-CoilThick/2.));
-     tMagnet->AddNode(CV, 1, new TGeoTranslation(xaperture+YokeWidth/2., 0, fSpecMagz+YokeDepth+CoilThick/2.));
-     tMagnet->AddNode(CV, 1, new TGeoTranslation(-xaperture-YokeWidth/2., 0, fSpecMagz+YokeDepth+CoilThick/2.));
+     tMagnet->AddNode(CV, 2, new TGeoTranslation(-xaperture-YokeWidth/2., 0, fSpecMagz-YokeDepth-CoilThick/2.));
+     tMagnet->AddNode(CV, 3, new TGeoTranslation(xaperture+YokeWidth/2., 0, fSpecMagz+YokeDepth+CoilThick/2.));
+     tMagnet->AddNode(CV, 4, new TGeoTranslation(-xaperture-YokeWidth/2., 0, fSpecMagz+YokeDepth+CoilThick/2.));
      
 
     }
