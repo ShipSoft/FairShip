@@ -344,6 +344,7 @@ if simEngine == "muonDIS":
  DISgen.Init(inputFile,firstEvent) 
  primGen.AddGenerator(DISgen)
  nEvents = min(nEvents,DISgen.GetNevents())
+ inactivateMuonProcesses = True # avoid unwanted hadronic events of "incoming" muon flying backward
  print 'Generate ',nEvents,' with DIS input', ' first event',firstEvent
 # -----neutrino interactions from nuage------------------------
 if simEngine == "Nuage":
