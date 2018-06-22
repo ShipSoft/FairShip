@@ -510,6 +510,7 @@ if inactivateMuonProcesses :
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
  mygMC.ProcessGeantCommand("/process/inactivate muBrems")
  mygMC.ProcessGeantCommand("/process/inactivate muIoni")
+ mygMC.ProcessGeantCommand("/process/inactivate muonNuclear")
  mygMC.ProcessGeantCommand("/particle/select mu+")
  mygMC.ProcessGeantCommand("/particle/process/dump")
  gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
