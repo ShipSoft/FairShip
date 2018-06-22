@@ -10,6 +10,7 @@ nev          = 1000
 checkOverlap = True
 G4only       = False
 storeOnlyMuons = False
+skipNeutrinos  = False
 withEvtGen     = True
 boostDiMuon    = 1.
 boostFactor    = 1.
@@ -78,6 +79,7 @@ def init():
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
   ap.add_argument('-B', '--beauty',     action='store_true',  dest='beauty', default=beauty, help="generate beauty decays")
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
+  ap.add_argument('-N', '--skipNeutrinos',  action='store_true',  dest='skipNeutrinos',  default=False, help="skip neutrinos")
 # for charm production       
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
@@ -98,6 +100,7 @@ def init():
   boostFactor  = args.boostFactor
   boostDiMuon  = args.boostDiMuon
   storeOnlyMuons = args.storeOnlyMuons
+  skipNeutrinos  = args.skipNeutrinos
   if G4only:
     args.charm  = False
     args.beauty = False
@@ -189,6 +192,7 @@ run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
 if storeOnlyMuons: sensPlane.SetOnlyMuons()
+if skipNeutrinos: sensPlane.SkipNeutrinos()
 # sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlane)
 

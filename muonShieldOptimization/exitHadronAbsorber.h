@@ -69,6 +69,7 @@ class exitHadronAbsorber: public FairDetector
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
     inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
     inline void SetOnlyMuons(){fOnlyMuons=kTRUE;}
+    inline void SkipNeutrinos(){fSkipNeutrinos=kTRUE;}
     inline void SetZposition(Float_t x){fzPos=x;}
 
   private:
@@ -85,7 +86,10 @@ class exitHadronAbsorber: public FairDetector
     Double_t     fzPos;              //!  zPos, optional
     Float_t EMax;  //! max energy to transport
     Bool_t fOnlyMuons;  //! flag if only muons should be stored
+    Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
     TFile* fout;
+    TClonesArray* fElectrons;
+    Int_t index;
     /** container for data points */
     TClonesArray*  fexitHadronAbsorberPointCollection;
     ClassDef(exitHadronAbsorber, 0)

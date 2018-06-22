@@ -45,6 +45,7 @@ exitHadronAbsorber::exitHadronAbsorber()
     fTime(-1.),
     fLength(-1.),
     fOnlyMuons(kFALSE),
+    fSkipNeutrinos(kFALSE),
     fzPos(3E8),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
 {}
@@ -118,9 +119,8 @@ void exitHadronAbsorber::PreTrack(){
          h2 = (TH2D*)fout->Get(key);
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
        }
-    if  ( (fMom.E()-fMom.M() )<EMax){
-        gMC->StopTrack();
-    }
+    if (fSkipNeutrinos && (idabs==12 or idabs==14 or idabs == 16 )){gMC->StopTrack();}
+    if  ( (fMom.E()-fMom.M() )<EMax){gMC->StopTrack();}
 }
 
 void exitHadronAbsorber::ConstructGeometry()
