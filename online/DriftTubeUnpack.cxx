@@ -104,7 +104,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
    }
 
-   LOG(INFO) << trigger << FairLogger::endl;
+   LOG(DEBUG) << trigger << FairLogger::endl;
 
    assert(fRawTubes->GetEntries() + fRawScintillator->GetEntries() + skipped == nhits);
    assert(nhits == fNHitsTubes + fNHitsScintillator + skipped);
