@@ -1,6 +1,10 @@
 # Create a library called "libMuonShieldBackground" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
+if(EXISTS "$ENV{PYTHON_HOME}")
+ set(PYTHON_LIBRARY $ENV{PYTHON_HOME}/lib)
+ set(PYTHON_INCLUDE_DIR ${PYTHON_HOME}/include/python2.7)
+endif(EXISTS "$ENV{PYTHON_HOME}")
 FIND_PACKAGE(PythonLibs REQUIRED) 
 
 set(INCLUDE_DIRECTORIES
@@ -20,6 +24,7 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 exitHadronAbsorber.cxx
+simpleTarget.cxx
 pyFairModule.cxx
 )
 
