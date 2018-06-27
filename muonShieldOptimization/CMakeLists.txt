@@ -24,7 +24,6 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 exitHadronAbsorber.cxx
-simpleTarget.cxx
 pyFairModule.cxx
 )
 
