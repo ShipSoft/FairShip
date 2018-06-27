@@ -203,14 +203,8 @@ Bool_t  MuonTagger::ProcessHits(FairVolume* vol)
         gMC->IsTrackStop()       ||
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
-	Int_t detID=0;
-	gMC->CurrentVolID(detID);
-
-	if (fVolumeID == detID) {
-	  return kTRUE; }
-	fVolumeID = detID;
-
+       
+	gMC->CurrentVolID(fVolumeID);
 	//gGeoManager->PrintOverlaps();		
 	
 	if (fELoss == 0. ) { return kFALSE; }
