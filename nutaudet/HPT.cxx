@@ -263,18 +263,11 @@ Bool_t  Hpt::ProcessHits(FairVolume* vol)
         gMC->IsTrackStop()       ||
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-	fVolumeID = vol->getMCid();
         if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
 	//Int_t fMotherID =p->GetFirstMother();
-	Int_t detID=0;
-	gMC->CurrentVolID(detID);
-
-	if (fVolumeID == detID) {
-	  return kTRUE; }
-	fVolumeID = detID;
-
+	gMC->CurrentVolID(fVolumeID);
         TLorentzVector Pos; 
         gMC->TrackPosition(Pos); 
         Double_t xmean = (fPos.X()+Pos.X())/2. ;      
