@@ -545,14 +545,8 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
        gMC->IsTrackDisappeared()   ) {
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     //Int_t fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    fVolumeID = vol->getMCid();
-    Int_t detID=0;
-    gMC->CurrentVolID(detID);
-
-    if (fVolumeID == detID) {
-      return kTRUE; }
-    fVolumeID = detID;
-
+    gMC->CurrentVolID(fVolumeID);
+    Int_t detID = fVolumeID;
     //gGeoManager->PrintOverlaps();
 	
     //cout<< "detID = " << detID << endl;

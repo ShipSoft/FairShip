@@ -194,14 +194,7 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
         //Int_t fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
-	Int_t detID=0;
-	gMC->CurrentVolID(detID);
-
-	if (fVolumeID == detID) {
-	  return kTRUE; }
-	fVolumeID = detID;
-
+        gMC->CurrentVolID(fVolumeID);
 	//gGeoManager->PrintOverlaps();
 	
 	//cout<< "detID = " << detID << endl;
@@ -214,7 +207,6 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
 	
 	Double_t zEnd = 0, zStart =0;
 
-	fVolumeID = detID;
 	
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
