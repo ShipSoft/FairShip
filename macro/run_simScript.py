@@ -437,7 +437,7 @@ if simEngine == "MuonBack":
     fastMuon = True
     modules['Veto'].SetFollowMuon()
  if fastMuon :    modules['Veto'].SetFastMuon()
- #   missing for the above use case, without making muon shield sensitve
+
  # optional, boost gamma2muon conversion
  # ROOT.kShipMuonsCrossSectionFactor = 100. 
 #
@@ -562,7 +562,13 @@ print "Real time ",rtime, " s, CPU time ",ctime,"s"
 # remove empty events
 if simEngine == "MuonBack":
  tmpFile = outFile+"tmp"
- fin   = ROOT.gROOT.GetListOfFiles()[0]
+ xxx = outFile.split('/')
+ check = xxx[len(xxx)-1]
+ fin = False
+ for ff in ROOT.gROOT.GetListOfFiles():
+    nm = ff.GetName().split('/')
+    if nm[len(nm)-1] == check: fin = ff
+ if not fin: fin   = ROOT.TFile.Open(outFile)
  t     = fin.cbmsim
  fout  = ROOT.TFile(tmpFile,'recreate')
  sTree = t.CloneTree(0)
