@@ -826,9 +826,8 @@ void ShipMuonShield::ConstructGeometry()
       Double_t dX1 = dXIn[0];
       Double_t dY = dYIn[0];
 
-      TGeoShapeAssembly* asmbShield = dynamic_cast<TGeoShapeAssembly*>(tShield->GetShape());
-      Double_t totLength = asmbShield->GetDZ();
-      top->AddNode(tShield, 1, new TGeoTranslation(0, 0, totLength));
+      // Place in origin of SHiP coordinate system as subnodes placed correctly
+      top->AddNode(tShield, 1);
 
 // Concrete around first magnets. i.e. Tunnel
       Double_t dZ = dZ1 + dZ2;
