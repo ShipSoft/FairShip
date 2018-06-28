@@ -750,10 +750,13 @@ void ShipMuonShield::ConstructGeometry()
 
       if (fDesign > 7) {
          auto coatBox = new TGeoBBox("coat", 10 * m - 1 * mm, 10 * m - 1 * mm, absorber_half_length);
-         auto coatWall = new TGeoBBox("wall", 10 * m - 1 * mm, 10 * m - 1 * mm, 10 * cm);
-         auto coatShape = new TGeoCompositeShape("CoatShape", "coat-absorber+wall");
+         auto coatShape = new TGeoCompositeShape("CoatShape", "coat-absorber");
          auto coat = new TGeoVolume("CoatVol", coatShape, concrete);
-         tShield->AddNode(coat, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset+10 * cm));
+         tShield->AddNode(coat, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset ));
+         TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete,10 * m - 1 * mm, 10 * m - 1 * mm, 7 * cm - 1 * mm);
+         coatWall->SetLineColor(kRed);
+         tShield->AddNode(coatWall, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*absorber_half_length + absorber_offset+7 * cm));
+
       }
 
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
