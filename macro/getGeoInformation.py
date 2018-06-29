@@ -16,11 +16,13 @@ def local2Global(n):
     Info['path'] = n
     tmp = nav.GetCurrentNode().GetVolume().GetShape()
     Info['material'] = nav.GetCurrentNode().GetVolume().GetMaterial().GetName()
-    local = array('d',[0,0,0])
+    o = [tmp.GetOrigin()[0],tmp.GetOrigin()[1],tmp.GetOrigin()[2]]
+    Info['locorign'] = o
+    local = array('d',o)
     globOrigin  = array('d',[0,0,0])
     nav.LocalToMaster(local,globOrigin)
     Info['origin'] = globOrigin
-    shifts = [ [-tmp.GetDX(),0,0],[tmp.GetDX(),0,0],[0,-tmp.GetDY(),0],[0,tmp.GetDY(),0],[0,0,-tmp.GetDZ()],[0,0,tmp.GetDZ()]]
+    shifts = [ [-tmp.GetDX()+o[0],o[1],o[2]],[tmp.GetDX()+o[0],o[1],o[2]],[o[0],-tmp.GetDY()+o[1],o[2]],[o[0],tmp.GetDY()+o[1],o[2]],[o[0],o[1],-tmp.GetDZ()+o[2]],[o[0],o[1],tmp.GetDZ()+o[2]]]
     shifted = []
     for s in shifts:
      local = array('d',s)
@@ -66,10 +68,11 @@ parser.add_option("-l","--level", dest="level", help="max subnode level", defaul
 parser.add_option("-v","--volume", dest="volume", help="name of volume to expand",default="")
 
 (options,args)=parser.parse_args()
-tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-tgeom.Import(options.geometry)
-fGeo = ROOT.gGeoManager 
-top = fGeo.GetTopVolume() 
+fname = options.geometry
+if not fname.find('eos')<0: fname = os.environ['EOSSHIP']+fname
+fgeom = ROOT.TFile.Open(fname)
+fGeo = fgeom.FAIRGeom
+top = fGeo.GetTopVolume()
 noz={}
 fullInfo = {}
 currentlevel=0
