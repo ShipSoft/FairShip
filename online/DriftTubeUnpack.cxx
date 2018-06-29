@@ -43,7 +43,6 @@ Bool_t DriftTubeUnpack::Init()
 // Register: Protected method
 void DriftTubeUnpack::Register()
 {
-   //  LOG(DEBUG) << "Registering" << FairLogger::endl;
    LOG(INFO) << "DriftTubeUnpack : Registering..." << FairLogger::endl;
    FairRootManager *fMan = FairRootManager::Instance();
    if (!fMan) {
@@ -56,7 +55,7 @@ void DriftTubeUnpack::Register()
 // DoUnpack: Public method
 Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size = " << size << FairLogger::endl;
+   LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
    assert(df->header.size == size);
@@ -91,7 +90,18 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    for (auto &&channel_and_time : channels) {
       auto channel = reinterpret_cast<const ChannelId *>(&(channel_and_time.first));
       uint16_t raw_time = channel_and_time.second;
-      uint16_t trigger_time = triggerTime.at(channel->TDC);
+      uint16_t trigger_time;
+      try {
+         trigger_time = triggerTime.at(channel->TDC);
+      } catch (const std::out_of_range &e) {
+         auto detectorId = channel->GetDetectorId();
+         LOG(WARNING) << e.what() << "\t TDC " << channel->TDC << "\t Detector ID " << detectorId << "\t Channel "
+                      << channel_and_time.first << "\t Sequential trigger number " << df->header.timeExtent
+                      << FairLogger::endl;
+         skipped++;
+         continue;
+      }
+      LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
       Float_t time = 0.098 * (DriftTubes::delay - trigger_time + raw_time); // conversion to ns and jitter correction
       auto detectorId = channel->GetDetectorId();
       if (detectorId == 6 || detectorId == 7) {
@@ -104,7 +114,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
    }
 
-   LOG(DEBUG) << trigger << FairLogger::endl;
+   LOG(DEBUG) << trigger << " triggers." << FairLogger::endl;
 
    assert(fRawTubes->GetEntries() + fRawScintillator->GetEntries() + skipped == nhits);
    assert(nhits == fNHitsTubes + fNHitsScintillator + skipped);

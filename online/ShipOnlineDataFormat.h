@@ -36,40 +36,80 @@ struct ChannelId {
    uint16_t padding : 3;
    int GetDetectorId() const
    {
-      bool trigger = (TDC == 0 || TDC == 2) ? channel == 126 : (TDC == 1 || TDC == 4) ? channel == 0 : false;
+      bool trigger = false;
+      bool beamcounter = false;
+      bool RC_signal = false;
+      bool scintillatorA = false;
+      bool scintillatorB = false;
+      int module = 0;
+      int station = 0;
+      int channel_offset = 0;
+      switch (TDC) {
+      case 0:
+         trigger = channel == 126;
+         scintillatorA = channel == 127;
+         station = (channel < 96) ? 1 : 2;
+         module = (channel / 48) % 2;
+         break;
+      case 1:
+         trigger = channel == 0;
+         scintillatorA = channel == 1;
+         station = (channel < 80) ? 2 : 3;
+         channel_offset = (channel < 80) ? 112 : 1;
+         break;
+      case 2:
+         trigger = channel == 126;
+         scintillatorB = channel == 127;
+         station = 3;
+         channel_offset = -119;
+         module = (channel / 48) % 3 + 1;
+         break;
+      case 3:
+         trigger = channel == 0;
+         scintillatorB = channel == 1;
+         station = (channel < 32) ? 3 : 4;
+         channel_offset = (channel < 32) ? 1 : 33;
+         module = ((channel + 16) / 48 + 3) % 4;
+         break;
+      case 4:
+         trigger = channel == 96;
+         RC_signal = channel == 97 || channel == 98;
+         beamcounter = channel > 111;
+         module = (channel / 48) % 2 + 2;
+         channel_offset = (channel < 48) ? 33 : 0;
+         station = 4;
+         break;
+      }
       if (trigger) {
          return 0;
-      }
-      if ((TDC == 0 && channel == 127) || (TDC == 1 && channel == 1)) {
-         // Scintillator S1/S2.1/S2.2
-         return 6;
-      } else if ((TDC == 2 && channel == 127) || (TDC == 4 && channel == 1)) {
-         // Scintillator S2/S2.3/S2.4
-         return 7;
-      } else if (TDC == 4 && (channel >= 112 && channel <= 115)) {
-         // BC Scintillator
+      } else if (beamcounter || RC_signal) {
          return -1;
+      } else if (scintillatorA) {
+         return 6;
+      } else if (scintillatorB) {
+         return 7;
       }
-      int channel_offset = (TDC == 1 && channel < 80) ? 64 : (TDC == 1) ? 1 : (TDC == 2) ? -119 : (TDC == 4) ? -31 : 0;
-      bool reverse = !((TDC == 0 && channel >= 96) || (TDC == 1 && channel < 80));
-      int _channel = channel;
-      _channel += channel_offset;
+      bool reverse_x = !(station == 2 || (TDC == 4 && channel >= 48));
+      int _channel = channel + channel_offset;
       _channel += (_channel < 0) ? 0x80 : 0;
-      _channel = reverse ? (0x80 - _channel % 0x80) % 0x80 : _channel;
+      _channel = reverse_x ? (0x80 - _channel % 0x80) % 0x80 : _channel;
       if (TDC == 0 && channel < 96) {
          _channel += _channel ? 63 : 191;
+      } else if (TDC == 3 && channel < 96) {
+         _channel += (channel < 32) ? 24 : 32;
+      }
+      if (TDC == 1) {
+         module = (_channel / 48) % 2;
       }
 
-      int module = _channel / 48 + ((TDC == 1 && channel < 80) || (TDC == 0 && channel < 96) ? 1 : 0);
-      int station =
-         (TDC == 4)
-            ? 3
-            : (TDC == 2) ? 3 : (TDC == 1 && channel >= 80) ? 3 : (TDC == 1) ? 2 : (TDC == 0 && channel >= 96) ? 2 : 1;
-      int view = TDC == 0 || TDC == 1 ? module % 2 : 0;
-      int plane = (TDC == 2) ? ((_channel % 48) / 24 + 1) % 2 : (_channel % 48) / 24;
-      int layer = (_channel % 24) / 12;
-      int straw = _channel % 12 + 1 +
-                  ((TDC == 4 ? 0 : TDC == 2 ? (_channel + 24) / 48 : TDC == 1 && channel >= 80 ? 3 : 0) * 12);
+      int view = station == 1 || station == 2 ? module % 2 : 0;
+      int plane = (TDC == 2) ? ((_channel % 48) / 24 + 1) % 2
+                             : (station == 4 && TDC == 4) ? 1 - (channel % 48) / 24 : (_channel % 48) / 24;
+      if (station == 3 && TDC == 3) {
+         plane -= 1;
+      }
+      int layer = (TDC == 4) ? 1 - (channel % 24) / 12 : (_channel % 24) / 12;
+      int straw = _channel % 12 + ((station == 3 || station == 4) ? 1 + (3 - module) * 12 : 1);
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
