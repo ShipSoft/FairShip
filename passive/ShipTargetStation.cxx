@@ -184,6 +184,7 @@ void ShipTargetStation::ConstructGeometry()
     }
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());
     Double_t totLength = asmb->GetDZ();
+    std::cout << "targetStation" << totLength<<std::endl;
     top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength));
     
     if (fAbsorberLength>0){
