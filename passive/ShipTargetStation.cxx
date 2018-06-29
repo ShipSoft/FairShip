@@ -182,10 +182,7 @@ void ShipTargetStation::ConstructGeometry()
     moreShielding->SetLineColor(43); //  
     tTarget->AddNode(moreShielding, 1, new TGeoTranslation(0, 0, fTargetLength/2.));
     }
-    TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());
-    Double_t totLength = asmb->GetDZ();
-    std::cout << "targetStation" << totLength<<std::endl;
-    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength));
+    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2.));
     
     if (fAbsorberLength>0){
      cout << "target and absorber positioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
