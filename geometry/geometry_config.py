@@ -662,10 +662,11 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.NuTauTarget.Ydist = 0.2*u.cm
     
-    c.NuTauTarget.EmTh = 0.0045 * u.cm
+    c.NuTauTarget.SingleEmFilm = True
+    c.NuTauTarget.EmTh = 0.0070 * u.cm
     c.NuTauTarget.EmX = 12.5 * u.cm
     c.NuTauTarget.EmY = 9.9 * u.cm
-    c.NuTauTarget.PBTh = 0.0205 * u.cm
+    c.NuTauTarget.PBTh = 0.0175 * u.cm
     c.NuTauTarget.LeadTh = 0.1 * u.cm
     c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW

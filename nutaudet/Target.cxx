@@ -138,6 +138,11 @@ void Target::MakeNuTargetPassive(Bool_t a)
   fPassive=a;
 }
 
+void Target::MergeTopBot(Bool_t SingleEmFilm)
+{
+  fsingleemulsionfilm=SingleEmFilm;
+}
+
 //--------------------------
 
 void Target::SetNumberBricks(Double_t col, Double_t row, Double_t wall)
@@ -273,9 +278,27 @@ void Target::ConstructGeometry()
   InitMedium("CoilCopper");
   TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
     
-  InitMedium("EmulsionFilm");
-  TGeoMedium *NEmu =gGeoManager->GetMedium("EmulsionFilm");
-    
+  InitMedium("PlasticBase");
+  TGeoMedium *PBase =gGeoManager->GetMedium("PlasticBase");     
+
+  InitMedium("NuclearEmulsion");
+  TGeoMedium *NEmu =gGeoManager->GetMedium("NuclearEmulsion");
+  
+  TGeoMaterial *NEmuMat = NEmu->GetMaterial(); //I need the materials to build the mixture
+  TGeoMaterial *PBaseMat = PBase->GetMaterial();
+
+  Double_t rho_film = (NEmuMat->GetDensity() * 2 * EmulsionThickness +  PBaseMat->GetDensity() * PlasticBaseThickness)/(2* EmulsionThickness  + PlasticBaseThickness);
+  Double_t frac_emu = NEmuMat->GetDensity() * 2 * EmulsionThickness /(NEmuMat->GetDensity() * 2 * EmulsionThickness + PBaseMat->GetDensity() * PlasticBaseThickness);
+
+  if (fsingleemulsionfilm) cout<<"TARGET PRINTOUT: Single volume for emulsion film chosen: average density: "<<rho_film<<" fraction in mass of emulsion "<<frac_emu<<endl;
+
+  TGeoMixture * emufilmmixture = new TGeoMixture("EmulsionFilmMixture", 2.00); // two nuclear emulsions separated by the plastic base
+
+  emufilmmixture->AddElement(NEmuMat,frac_emu);
+  emufilmmixture->AddElement(PBaseMat,1. - frac_emu);
+  
+  TGeoMedium *Emufilm = new TGeoMedium("EmulsionFilm",100,emufilmmixture);
+
   InitMedium("lead");
   TGeoMedium *lead = gGeoManager->GetMedium("lead");
     
@@ -354,17 +377,7 @@ void Target::ConstructGeometry()
   TGeoBBox *Brick = new TGeoBBox("brick", BrickX/2, BrickY/2, BrickZ/2);
   TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,vacuum);
   volBrick->SetLineColor(kCyan);
-  volBrick->SetTransparency(1);
-    
-  TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
-  TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,NEmu); //TOP
-  volEmulsionFilm->SetLineColor(kBlue);
-
-  if(fPassive==0)
-    {
-      AddSensitiveVolume(volEmulsionFilm);
-    }
-    
+  volBrick->SetTransparency(1);   
     
   TGeoBBox *Lead = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
   TGeoVolume *volLead = new TGeoVolume("Lead",Lead,lead);
@@ -372,16 +385,48 @@ void Target::ConstructGeometry()
   volLead->SetLineColor(kGray);
   //volLead->SetField(magField2);
     
-    
-    
-  for(Int_t n=0; n<NPlates+1; n++)
-    {
-      volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth/2 + n*AllPlateWidth));
-    }
+  Bool_t singleemulsionfilm = true;
   for(Int_t n=0; n<NPlates; n++)
     {
       volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
     }
+  if (singleemulsionfilm){  //simplified configuration, unique sensitive layer for the whole emulsion plate
+   TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
+   TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
+   volEmulsionFilm->SetLineColor(kBlue);
+
+   if(fPassive==0)
+    {
+      AddSensitiveVolume(volEmulsionFilm);
+    }
+    
+   for(Int_t n=0; n<NPlates+1; n++)
+    {
+      volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth/2 + n*AllPlateWidth));
+    }
+   }
+  else { //more accurate configuration, two emulsion films divided by a plastic base
+   TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+   TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,NEmu); //TOP
+   TGeoVolume *volEmulsionFilm2 = new TGeoVolume("Emulsion2",EmulsionFilm,NEmu); //BOTTOM
+   volEmulsionFilm->SetLineColor(kBlue);
+   volEmulsionFilm2->SetLineColor(kBlue);
+
+   if(fPassive==0)
+     {
+       AddSensitiveVolume(volEmulsionFilm);
+       AddSensitiveVolume(volEmulsionFilm2);
+     }
+   TGeoBBox *PlBase = new TGeoBBox("PlBase", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
+   TGeoVolume *volPlBase = new TGeoVolume("PlasticBase",PlBase,PBase);
+   volPlBase->SetLineColor(kYellow-4);
+   for(Int_t n=0; n<NPlates+1; n++)
+    {
+      volBrick->AddNode(volEmulsionFilm2, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmulsionThickness/2 + n*AllPlateWidth)); //BOTTOM
+      volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*AllPlateWidth)); //TOP
+      volBrick->AddNode(volPlBase, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*AllPlateWidth)); //PLASTIC BASE
+    }    
+ }
     
   volBrick->SetVisibility(kTRUE);
 
@@ -401,23 +446,51 @@ void Target::ConstructGeometry()
       volRohGap->SetTransparency(1);
       volRohGap->SetLineColor(kYellow);
     
-    
-      TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
-      TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,NEmu); //TOP
-      volEmulsionFilmCES->SetLineColor(kBlue);
-      if(fPassive==0)
-	{
-	  AddSensitiveVolume(volEmulsionFilmCES);
-	}
-    
-      for(Int_t n=0; n<NRohacellGap+1;n++)
-	{
-	  volCES->AddNode(volEmulsionFilmCES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmPlateWidth/2+n*LayerCESWidth)); 
-	}
       for(Int_t n=0; n<NRohacellGap; n++)
 	{
 	  volCES->AddNode(volRohGap, n, new TGeoTranslation(0,0,-CESWidth/2 +CESPackageZ/2+  EmPlateWidth + RohacellGap/2 + n*LayerCESWidth)); //ROHACELL
 	}
+      if(singleemulsionfilm){ //simplified configuration, unique sensitive layer for the whole emulsion plate
+       TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
+       TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,Emufilm); //TOP
+       volEmulsionFilmCES->SetLineColor(kBlue);
+       if(fPassive==0)
+	{
+	  AddSensitiveVolume(volEmulsionFilmCES);
+	}
+    
+       for(Int_t n=0; n<NRohacellGap+1;n++)
+	{
+	  volCES->AddNode(volEmulsionFilmCES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmPlateWidth/2+n*LayerCESWidth)); 
+	}
+
+      }
+      else{ //more accurate configuration, two emulsion films divided by a plastic base
+    
+       TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+       TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,NEmu); //TOP
+       TGeoVolume *volEmulsionFilm2CES = new TGeoVolume("Emulsion2CES",EmulsionFilmCES,NEmu); //BOTTOM
+       volEmulsionFilmCES->SetLineColor(kBlue);
+       volEmulsionFilm2CES->SetLineColor(kBlue);
+       if(fPassive==0)
+ 	{
+ 	  AddSensitiveVolume(volEmulsionFilmCES);
+ 	  AddSensitiveVolume(volEmulsionFilm2CES);
+ 	}
+       //CES PLASTIC BASE
+       TGeoBBox *PlBaseCES = new TGeoBBox("PlBaseCES", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
+       TGeoVolume *volPlBaseCES = new TGeoVolume("PlasticBaseCES",PlBaseCES,PBase);
+       volPlBaseCES->SetLineColor(kYellow);
+       for(Int_t n=0; n<NRohacellGap+1;n++)
+ 	{
+ 	  volCES->AddNode(volEmulsionFilm2CES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness/2+n*LayerCESWidth)); //BOTTOM
+ 	  volCES->AddNode(volEmulsionFilmCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth)); //TOP
+ 	  volCES->AddNode(volPlBaseCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*LayerCESWidth)); //PLASTIC BASE
+ 	  //	if(n == 2)
+ 	  // cout << "-CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth = " << -CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth << endl;
+       }
+
+      }
     
       volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
       volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
@@ -557,7 +630,8 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	
 
     Int_t motherV[MaxL];
-    Bool_t EmBrick = 0, EmCES = 0;
+//   Bool_t EmTop = 0, EmBot = 0, EmCESTop = 0, EmCESBot = 0;
+    Bool_t EmBrick = 0, EmCES = 0, EmTop;
     Int_t NPlate =0;
     const char *name;
 	
@@ -566,13 +640,27 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
     if(strcmp(name, "Emulsion") == 0)
       {
-	EmBrick;
+	EmBrick=1;
 	NPlate = detID;
+        EmTop=1;
+      }
+    if(strcmp(name, "Emulsion2") == 0)
+      {
+	EmBrick=1;
+	NPlate = detID;
+        EmTop=0;
       }
     if(strcmp(name, "EmulsionCES") == 0)
       {
 	EmCES=1;
 	NPlate = detID;
+        EmTop=1;
+      }
+    if(strcmp(name, "Emulsion2CES") == 0)
+      {
+	EmCES=1;
+	NPlate = detID;
+        EmTop=0;
       }
 	
     Int_t  NWall = 0, NColumn =0, NRow =0;
@@ -606,7 +694,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     Double_t zEnd = 0, zStart =0;
 	
 
-    detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1);
+    detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + EmTop*1 ;
 
 
     fVolumeID = detID;
@@ -639,7 +727,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 }
 
 
-void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick)
+void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick, Bool_t &EmTop)
 {
   Bool_t BrickorCES = 0, TopBot = 0;
   
@@ -650,13 +738,16 @@ void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColum
   if(b < 1)
     {
       BrickorCES = 0;
-      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;
+      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+//      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;
     }
   if(b >= 1)
     {
       BrickorCES = 1;
-      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;
+      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;
+//      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;
     }
+  EmTop = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4- BrickorCES*1E3- NPlate*1E1)/1E0;
   if(BrickorCES == 0)
     {
       EmCES = 1; EmBrick =0;
