@@ -8,6 +8,8 @@ from decorators import *
 import shipRoot_conf,shipDet_conf
 shipRoot_conf.configure()
 
+HiddenParticleID = 9900015
+
 def evExit():
  if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'):
   print "make suicide before framework makes seg fault" 
@@ -40,10 +42,10 @@ transparentMaterials = {'iron':80,'aluminium':80,'mylar':60,'STTmix9010_2bar':95
                         'CoilAluminium':70,'molybdenum':80,'PlasticBase':70,'tantalum':70}
 #
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:Y:i",["paramFile=","geoFile="])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:i:Y",["paramFile=","geoFile="])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter -f filename -g geofile (-p param file  not needed if geofile present)'  
+        print ' enter -f filename -g geofile (-p param file  not needed if geofile present) -i hidden particle ID (default 9900015)'  
         sys.exit()
 for o, a in opts:
         if o in ("-Y",):
@@ -56,6 +58,8 @@ for o, a in opts:
             InputFile = a
         if o in ("-o", "--outFile"):
             OutputFile = a
+        if o in ("-i",):
+            HiddenParticleID = int(a)
 
 print "FairShip setup for",simEngine
 
@@ -313,7 +317,7 @@ class DrawTracks(ROOT.FairTask):
    hitlist = {}
    hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
   # look for HNL 
-   if abs(fT.GetPdgCode()) == 9900015:
+   if abs(fT.GetPdgCode()) == HiddenParticleID:
     for da in sTree.MCTrack:
      if da.GetMotherId()==n: break
   # end vertex of HNL
@@ -337,7 +341,7 @@ class DrawTracks(ROOT.FairTask):
         hitlist[p.GetZ()] = [p.GetX(),p.GetY()]
    if len(hitlist)==1:
     if fT.GetMotherId()<0: continue
-    if abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode()) == 9900015:
+    if abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode()) == HiddenParticleID:
      # still would like to draw track stub
      # check for end vertex
      evVx = False
@@ -361,7 +365,7 @@ class DrawTracks(ROOT.FairTask):
     else:  pName =  str(fT.GetPdgCode())
     DTrack.SetName('MCTrack_'+str(n)+'_'+pName)
     c = ROOT.kYellow
-    if abs(fT.GetPdgCode()) == 9900015:c = ROOT.kMagenta
+    if abs(fT.GetPdgCode()) == HiddenParticleID:c = ROOT.kMagenta
     DTrack.SetMainColor(c)
     DTrack.SetLineWidth(3)
     self.comp.AddElement(DTrack)
