@@ -385,12 +385,11 @@ void Target::ConstructGeometry()
   volLead->SetLineColor(kGray);
   //volLead->SetField(magField2);
     
-  Bool_t singleemulsionfilm = true;
   for(Int_t n=0; n<NPlates; n++)
     {
       volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
     }
-  if (singleemulsionfilm){  //simplified configuration, unique sensitive layer for the whole emulsion plate
+  if (fsingleemulsionfilm){  //simplified configuration, unique sensitive layer for the whole emulsion plate
    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
    TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
    volEmulsionFilm->SetLineColor(kBlue);
@@ -450,7 +449,7 @@ void Target::ConstructGeometry()
 	{
 	  volCES->AddNode(volRohGap, n, new TGeoTranslation(0,0,-CESWidth/2 +CESPackageZ/2+  EmPlateWidth + RohacellGap/2 + n*LayerCESWidth)); //ROHACELL
 	}
-      if(singleemulsionfilm){ //simplified configuration, unique sensitive layer for the whole emulsion plate
+      if(fsingleemulsionfilm){ //simplified configuration, unique sensitive layer for the whole emulsion plate
        TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
        TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,Emufilm); //TOP
        volEmulsionFilmCES->SetLineColor(kBlue);
