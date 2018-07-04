@@ -71,7 +71,7 @@ def doloop(path,node,level,currentlevel):
       print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F] %+20s "%(xname,origin[2],\
       abs(boundingbox[2][0]-boundingbox[2][1])/2.,boundingbox[2][0],boundingbox[2][1],\
       abs(boundingbox[0][0]-boundingbox[0][1])/2.,boundingbox[0][0],boundingbox[0][1],\
-      abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],material,weight,cubicmeter)
+      abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],material)
      if int(newcurrentlevel)<int(level) and key[0].GetNodes():
         doloop(path+'/'+key[0].GetName(),key[0],level,newcurrentlevel)
 
