@@ -23,8 +23,9 @@ link_directories(${LINK_DIRECTORIES})
 Set(SRCS
     ShipTdcTask.cxx
     ShipTdcSource.cxx
-    ShipTdcUnpack.cxx
+    ShipUnpack.cxx
     DriftTubeUnpack.cxx
+    RPCUnpack.cxx
 )
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")

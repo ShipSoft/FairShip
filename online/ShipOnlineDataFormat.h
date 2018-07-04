@@ -2,6 +2,7 @@
 #define ONLINE_SHIPONLINEDATAFORMAT_H
 
 #include <cstdint>
+#include <cassert>
 
 struct RawDataHit {
    uint16_t channelId;    // Channel Identifier
@@ -122,5 +123,48 @@ struct Flags {
 };
 const uint16_t delay(2000 / 0.098); // TODO update value
 } // namespace DriftTubes
+
+namespace RPC {
+enum Direction { horizontal, vertical };
+struct RawHit {
+   uint16_t ncrate : 8;
+   uint16_t nboard : 8;
+   uint16_t hitTime;
+   uint8_t pattern[8];
+   int GetDetectorId(int channel) const
+   {
+      assert(ncrate == 16 || ncrate == 18);
+      assert(nboard > 0 && nboard < 16);
+      assert(!(ncrate == 16 && (nboard == 5 || nboard == 10) && channel >= 50 && channel <= 55));
+      assert(!(ncrate == 16 && (nboard == 3 || nboard == 8) && channel >= 60 && channel <= 63));
+      assert(!(ncrate == 16 && (nboard == 4 || nboard == 9) && channel >= 8 && channel <= 13));
+      assert(!(ncrate == 16 && (nboard == 1 || nboard == 6) && channel >= 0 && channel <= 3));
+      assert(!(ncrate == 18 && (nboard == 1 || nboard == 6 || nboard == 11) && channel >= 0 && channel <= 3));
+      assert(!(ncrate == 18 && (nboard == 5 || nboard == 10 || nboard == 15) && channel >= 50 && channel <= 55));
+      assert(!(ncrate == 18 && (nboard == 4 || nboard == 9 || nboard == 14) && channel >= 8 && channel <= 13));
+      assert(!(ncrate == 18 && (nboard == 3 || nboard == 8 || nboard == 13) && channel >= 60 && channel <= 63));
+      int station;
+      int nboardofstation;
+      switch (ncrate) {
+      case 16: station = (nboard < 6) ? 1 : 2; nboardofstation = nboard - (station - 1) * 5;
+               break;
+      case 18: station = (nboard < 6) ? 3 : (nboard < 11) ? 4 : 5; nboardofstation = nboard - (station - 3) * 5;
+               break;
+      }
+      int direction = (nboardofstation < 4) ? vertical : horizontal;
+      int strip = direction == vertical ? channel - 3: 
+         (channel < 8) ? channel + 3 : 
+         (channel < 16) ? channel - 13:
+         (channel < 24) ? channel + 3 : 
+         (channel < 32) ? channel - 13 : 
+         (channel < 40) ? channel + 3 : 
+         (channel < 48) ? channel - 13 : 
+         (channel < 56) ? channel + 3 : 
+         channel - 13; 
+      strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
+      return 10000 * station + 1000 * direction + strip;
+   }
+};
+} // namespace RPC
 
 #endif

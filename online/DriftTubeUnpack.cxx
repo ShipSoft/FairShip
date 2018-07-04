@@ -20,7 +20,7 @@ using DriftTubes::ChannelId;
 
 // DriftTubeUnpack: Constructor
 DriftTubeUnpack::DriftTubeUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
-   : FairUnpack(type, subType, procId, subCrate, control), fRawTubes(new TClonesArray("MufluxSpectrometerHit")),
+   : ShipUnpack(type, subType, procId, subCrate, control), fRawTubes(new TClonesArray("MufluxSpectrometerHit")),
      fRawScintillator(new TClonesArray("ScintillatorHit")), fNHitsTubes(0), fNHitsScintillator(0), fNHitsTotalTubes(0),
      fNHitsTotalScintillator(0), fPartitionId(0x0C00)
 {
@@ -55,9 +55,10 @@ void DriftTubeUnpack::Register()
 // DoUnpack: Public method
 Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
+   LOG(INFO) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
+   LOG(INFO) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
    assert(df->header.size == size);
    auto nhits = df->getHitCount();
    int skipped = 0;
@@ -65,6 +66,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
    std::unordered_map<int, uint16_t> triggerTime;
+   std::vector<std::pair<int,uint16_t>> trigger_times;
    for (auto &&hit : hits) {
       if (hit.channelId >= 0x1000) {
          // trailing edge
@@ -76,6 +78,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       if (!detectorId) {
          trigger++;
          triggerTime[channel->TDC] = hit.hitTime;
+         trigger_times.push_back(std::make_pair(int(channel->TDC), hit.hitTime));
          skipped++;
       } else if (detectorId == -1) {
          // beam counter
@@ -114,7 +117,14 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
    }
 
-   LOG(DEBUG) << trigger << " triggers." << FairLogger::endl;
+   if (trigger != 5) {
+      LOG(INFO) << trigger << " triggers." << FairLogger::endl;
+      for (auto&& i : trigger_times) {
+         LOG(INFO) << i.first << '\t' <<  i.second << FairLogger::endl;
+      }
+   } else {
+      LOG(DEBUG) << trigger << " triggers." << FairLogger::endl;
+   }
 
    assert(fRawTubes->GetEntries() + fRawScintillator->GetEntries() + skipped == nhits);
    assert(nhits == fNHitsTubes + fNHitsScintillator + skipped);

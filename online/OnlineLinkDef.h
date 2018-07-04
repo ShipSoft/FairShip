@@ -14,9 +14,11 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class ShipTdcUnpack+ ;
-#pragma link C++ class DriftTubeUnpack+ ;
-#pragma link C++ class ShipTdcTask+ ;
-#pragma link C++ class ShipTdcSource+ ;
+#pragma link C++ class ShipUnpack + ;
+#pragma link C++ class DriftTubeUnpack + ;
+#pragma link C++ class RPCUnpack + ;
+#pragma link C++ class ShipTdcTask + ;
+#pragma link C++ class ShipTdcSource + ;
+#pragma link C++ class ControlHostSource + ;
 
 #endif
