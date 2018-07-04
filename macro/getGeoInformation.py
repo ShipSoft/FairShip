@@ -14,8 +14,14 @@ def local2Global(n):
     nav.cd(n)
     Info['node'] = nav.GetCurrentNode()
     Info['path'] = n
-    tmp = nav.GetCurrentNode().GetVolume().GetShape()
-    Info['material'] = nav.GetCurrentNode().GetVolume().GetMaterial().GetName()
+    tmp = Info['node'].GetVolume().GetShape()
+    Info['material'] = Info['node'].GetVolume().GetMaterial().GetName()
+    if options.moreInfo:
+     x = ROOT.gGeoManager.GetVerboseLevel()
+     ROOT.gGeoManager.SetVerboseLevel(0)
+     Info['weight']=Info['node'].GetVolume().Weight() # kg
+     Info['cubicmeter']=Info['node'].GetVolume().Capacity()/1000000. # 
+     ROOT.gGeoManager.SetVerboseLevel(x)
     o = [tmp.GetOrigin()[0],tmp.GetOrigin()[1],tmp.GetOrigin()[2]]
     Info['locorign'] = o
     local = array('d',o)
@@ -53,11 +59,19 @@ def doloop(path,node,level,currentlevel):
      boundingbox = fullInfo[name]['boundingbox']
      origin = fullInfo[name]['origin']
      material = fullInfo[name]['material']
-     name =  blanks+key[0]
-     print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F] %+20s"%(name,origin[2],\
-     abs(boundingbox[2][0]-boundingbox[2][1])/2.,boundingbox[2][0],boundingbox[2][1],\
-     abs(boundingbox[0][0]-boundingbox[0][1])/2.,boundingbox[0][0],boundingbox[0][1],\
-     abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],material)
+     xname =  blanks+key[0]
+     if options.moreInfo:
+      cubicmeter = fullInfo[name]['cubicmeter']
+      weight = fullInfo[name]['weight']
+      print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F] %+20s %10.4Fkg %10.4Fm3"%(xname,origin[2],\
+      abs(boundingbox[2][0]-boundingbox[2][1])/2.,boundingbox[2][0],boundingbox[2][1],\
+      abs(boundingbox[0][0]-boundingbox[0][1])/2.,boundingbox[0][0],boundingbox[0][1],\
+      abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],material,weight,cubicmeter)
+     else:
+      print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F] %+20s "%(xname,origin[2],\
+      abs(boundingbox[2][0]-boundingbox[2][1])/2.,boundingbox[2][0],boundingbox[2][1],\
+      abs(boundingbox[0][0]-boundingbox[0][1])/2.,boundingbox[0][0],boundingbox[0][1],\
+      abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],material,weight,cubicmeter)
      if int(newcurrentlevel)<int(level) and key[0].GetNodes():
         doloop(path+'/'+key[0].GetName(),key[0],level,newcurrentlevel)
 
@@ -66,6 +80,7 @@ parser = OptionParser()
 parser.add_option("-g","--geometry", dest="geometry", help="input geometry file", default='$FAIRSHIP/geofile_full.10.0.Pythia8-TGeant4.root')
 parser.add_option("-l","--level", dest="level", help="max subnode level", default=0)
 parser.add_option("-v","--volume", dest="volume", help="name of volume to expand",default="")
+parser.add_option("-X","--moreInfo", dest="moreInfo", help="print weight and capacity",default=False)
 
 (options,args)=parser.parse_args()
 fname = options.geometry
@@ -76,7 +91,10 @@ top = fGeo.GetTopVolume()
 noz={}
 fullInfo = {}
 currentlevel=0
-print "   Detector element             z(midpoint)     halflength       volume-start volume-end   dx                x-start       x-end       dy                y-start       y-end         material "
+if options.moreInfo:
+ print "   Detector element             z(midpoint)     halflength       volume-start volume-end   dx                x-start       x-end       dy                y-start       y-end         material          weight  capacity"
+else:
+ print "   Detector element             z(midpoint)     halflength       volume-start volume-end   dx                x-start       x-end       dy                y-start       y-end         material "
 for no in top.GetNodes():
   name = no.GetName()
   fullInfo[name] = local2Global('/'+name)
@@ -88,16 +106,24 @@ for key in sorted(noz.items(),key=operator.itemgetter(1)):
     mat  = fullInfo[name]['material']
     boundingbox = fullInfo[name]['boundingbox']
     origin = fullInfo[name]['origin']
-    print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F]    %+20s"%(name,origin[2],\
-     abs(boundingbox[2][0]-boundingbox[2][1])/2.,boundingbox[2][0],boundingbox[2][1],\
-     abs(boundingbox[0][0]-boundingbox[0][1])/2.,boundingbox[0][0],boundingbox[0][1],\
-     abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],mat)
+    if options.moreInfo:
+     cubicmeter = fullInfo[name]['cubicmeter']
+     weight = fullInfo[name]['weight']
+     print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F]    %+20s %10.1Fkg %10.1Fm3"%(name,origin[2],\
+      abs(boundingbox[2][0]-boundingbox[2][1])/2.,boundingbox[2][0],boundingbox[2][1],\
+      abs(boundingbox[0][0]-boundingbox[0][1])/2.,boundingbox[0][0],boundingbox[0][1],\
+      abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],mat,weight,cubicmeter)
+    else:
+     print "%-28s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4F] dx=%10.4Fcm [%10.4F   %10.4F] dy=%10.4Fcm [%10.4F   %10.4F]    %+20s "%(name,origin[2],\
+      abs(boundingbox[2][0]-boundingbox[2][1])/2.,boundingbox[2][0],boundingbox[2][1],\
+      abs(boundingbox[0][0]-boundingbox[0][1])/2.,boundingbox[0][0],boundingbox[0][1],\
+      abs(boundingbox[1][0]-boundingbox[1][1])/2.,boundingbox[1][0],boundingbox[1][1],mat)
+
     if options.volume:
       if node.GetNodes() and int(options.level)>0 and options.volume==name:
          doloop(path,node,options.level,currentlevel) 
     else:
       if node.GetNodes() and int(options.level)>0:
          doloop(path,node,options.level,currentlevel)
-    
 
 
