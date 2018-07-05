@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <cassert>
+#include <iostream>
 
 struct RawDataHit {
    uint16_t channelId;    // Channel Identifier
@@ -61,14 +62,14 @@ struct ChannelId {
       case 2:
          trigger = channel == 126;
          scintillatorB = channel == 127;
-         station = 3;
+         station = 4;
          channel_offset = -119;
          module = (channel / 48) % 3 + 1;
          break;
       case 3:
          trigger = channel == 0;
          scintillatorB = channel == 1;
-         station = (channel < 32) ? 3 : 4;
+         station = (channel < 32) ? 4 : 3;
          channel_offset = (channel < 32) ? 1 : 33;
          module = ((channel + 16) / 48 + 3) % 4;
          break;
@@ -78,7 +79,7 @@ struct ChannelId {
          beamcounter = channel > 111;
          module = (channel / 48) % 2 + 2;
          channel_offset = (channel < 48) ? 33 : 0;
-         station = 4;
+         station = 3;
          break;
       }
       if (trigger) {
@@ -105,8 +106,8 @@ struct ChannelId {
 
       int view = station == 1 || station == 2 ? module % 2 : 0;
       int plane = (TDC == 2) ? ((_channel % 48) / 24 + 1) % 2
-                             : (station == 4 && TDC == 4) ? 1 - (channel % 48) / 24 : (_channel % 48) / 24;
-      if (station == 3 && TDC == 3) {
+                             : (station == 3 && TDC == 4) ? 1 - (channel % 48) / 24 : (_channel % 48) / 24;
+      if (station == 4 && TDC == 3) {
          plane -= 1;
       }
       int layer = (TDC == 4) ? 1 - (channel % 24) / 12 : (_channel % 24) / 12;
@@ -130,38 +131,40 @@ struct RawHit {
    uint16_t ncrate : 8;
    uint16_t nboard : 8;
    uint16_t hitTime;
-   uint8_t pattern[8];
+   uint16_t pattern[4];
    int GetDetectorId(int channel) const
    {
       assert(ncrate == 16 || ncrate == 18);
       assert(nboard > 0 && nboard < 16);
-      assert(!(ncrate == 16 && (nboard == 5 || nboard == 10) && channel >= 50 && channel <= 55));
-      assert(!(ncrate == 16 && (nboard == 3 || nboard == 8) && channel >= 60 && channel <= 63));
-      assert(!(ncrate == 16 && (nboard == 4 || nboard == 9) && channel >= 8 && channel <= 13));
-      assert(!(ncrate == 16 && (nboard == 1 || nboard == 6) && channel >= 0 && channel <= 3));
-      assert(!(ncrate == 18 && (nboard == 1 || nboard == 6 || nboard == 11) && channel >= 0 && channel <= 3));
-      assert(!(ncrate == 18 && (nboard == 5 || nboard == 10 || nboard == 15) && channel >= 50 && channel <= 55));
-      assert(!(ncrate == 18 && (nboard == 4 || nboard == 9 || nboard == 14) && channel >= 8 && channel <= 13));
-      assert(!(ncrate == 18 && (nboard == 3 || nboard == 8 || nboard == 13) && channel >= 60 && channel <= 63));
       int station;
       int nboardofstation;
       switch (ncrate) {
-      case 16: station = (nboard < 6) ? 1 : 2; nboardofstation = nboard - (station - 1) * 5;
-               break;
-      case 18: station = (nboard < 6) ? 3 : (nboard < 11) ? 4 : 5; nboardofstation = nboard - (station - 3) * 5;
-               break;
+      case 16:
+         station = (nboard < 6) ? 1 : 2;
+         nboardofstation = nboard - (station - 1) * 5;
+         break;
+      case 18:
+         station = (nboard < 6) ? 3 : (nboard < 11) ? 4 : 5;
+         nboardofstation = nboard - (station - 3) * 5;
+         break;
       }
       int direction = (nboardofstation < 4) ? vertical : horizontal;
-      int strip = direction == vertical ? channel - 3: 
-         (channel < 8) ? channel + 3 : 
-         (channel < 16) ? channel - 13:
-         (channel < 24) ? channel + 3 : 
-         (channel < 32) ? channel - 13 : 
-         (channel < 40) ? channel + 3 : 
-         (channel < 48) ? channel - 13 : 
-         (channel < 56) ? channel + 3 : 
-         channel - 13; 
+      int strip = direction == vertical
+                     ? channel - 3
+                     : (channel < 8) ? channel + 3
+                                     : (channel < 16)
+                                          ? channel - 13
+                                          : (channel < 24)
+                                               ? channel + 3
+                                               : (channel < 32)
+                                                    ? channel - 13
+                                                    : (channel < 40)
+                                                         ? channel + 3
+                                                         : (channel < 48) ? channel - 13
+                                                                          : (channel < 56) ? channel + 3 : channel - 13;
       strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
+      std::cout << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
+                << (direction == vertical ? 'V' : 'H') << std::endl;
       return 10000 * station + 1000 * direction + strip;
    }
 };
