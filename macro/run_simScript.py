@@ -7,6 +7,8 @@ from ShipGeoConfig import ConfigRegistry
 
 debug = 0  # 1 print weights and field
            # 2 make overlap check
+dryrun = False # True: just setup Pythia and exit
+
 # Default HNL parameters
 theMass = 1.0*u.GeV
 theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km  TP default for HNL
@@ -69,7 +71,7 @@ try:
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
                                    "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend=",\
-                                   "production-couplings=","decay-couplings="])
+                                   "production-couplings=","decay-couplings=","dry-run"])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -192,6 +194,8 @@ for o, a in opts:
         if o in ("-t", "--test"):
             inputFile = "../FairShip/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
             nEvents = 50
+        if o in ("--dry-run",):
+            dryrun = True
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
@@ -476,6 +480,8 @@ if eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
 else:            run.SetStoreTraj(ROOT.kFALSE)
 # -----Initialize simulation run------------------------------------
 run.Init()
+if dryrun: # Early stop after setting up Pythia 8
+ sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 if MCTracksWithHitsOnly:
