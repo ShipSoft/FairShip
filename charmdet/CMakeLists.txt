@@ -32,8 +32,10 @@ MufluxSpectrometerHit.cxx
 MufluxSpectrometerPoint.cxx
 MuonTagger.cxx
 MuonTaggerPoint.cxx
+MuonTaggerHit.cxx
 Scintillator.cxx
 ScintillatorPoint.cxx
+ScintillatorHit.cxx
 )
 
 Set(HEADERS )
