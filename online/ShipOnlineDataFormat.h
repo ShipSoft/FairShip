@@ -125,48 +125,13 @@ struct Flags {
 const uint16_t delay(2000 / 0.098); // TODO update value
 } // namespace DriftTubes
 
-namespace RPC {
 enum Direction { horizontal, vertical };
+namespace RPC {
 struct RawHit {
    uint16_t ncrate : 8;
    uint16_t nboard : 8;
    uint16_t hitTime;
-   uint16_t pattern[4];
-   int GetDetectorId(int channel) const
-   {
-      assert(ncrate == 16 || ncrate == 18);
-      assert(nboard > 0 && nboard < 16);
-      int station;
-      int nboardofstation;
-      switch (ncrate) {
-      case 16:
-         station = (nboard < 6) ? 1 : 2;
-         nboardofstation = nboard - (station - 1) * 5;
-         break;
-      case 18:
-         station = (nboard < 6) ? 3 : (nboard < 11) ? 4 : 5;
-         nboardofstation = nboard - (station - 3) * 5;
-         break;
-      }
-      int direction = (nboardofstation < 4) ? vertical : horizontal;
-      int strip = direction == vertical
-                     ? channel - 3
-                     : (channel < 8) ? channel + 3
-                                     : (channel < 16)
-                                          ? channel - 13
-                                          : (channel < 24)
-                                               ? channel + 3
-                                               : (channel < 32)
-                                                    ? channel - 13
-                                                    : (channel < 40)
-                                                         ? channel + 3
-                                                         : (channel < 48) ? channel - 13
-                                                                          : (channel < 56) ? channel + 3 : channel - 13;
-      strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
-      std::cout << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
-                << (direction == vertical ? 'V' : 'H') << std::endl;
-      return 10000 * station + 1000 * direction + strip;
-   }
+   uint8_t pattern[8];
 };
 } // namespace RPC
 
