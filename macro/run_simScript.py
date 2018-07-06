@@ -493,7 +493,8 @@ import geomGeant4
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
-if hasattr(ship_geo.Bfield,"fieldMap"):
+if charm == 0:   # charm and muflux testbeam not yet updated for using the new bfield interface
+ if hasattr(ship_geo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
 
 # Print VMC fields and associated geometry objects
