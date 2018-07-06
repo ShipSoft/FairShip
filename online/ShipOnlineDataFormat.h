@@ -56,7 +56,7 @@ struct ChannelId {
       case 1:
          trigger = channel == 0;
          scintillatorA = channel == 1;
-         station = (channel < 80) ? 2 : 3;
+         station = (channel < 80) ? 2 : 4;
          channel_offset = (channel < 80) ? 112 : 1;
          break;
       case 2:
