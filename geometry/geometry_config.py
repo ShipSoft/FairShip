@@ -673,7 +673,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrX = 12.9 *u.cm
     c.NuTauTarget.BrY = 10.5 *u.cm
     c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
-    c.NuTauTarget.ydim = c.NuTauTarget.row*(c.NuTauTarget.BrY+c.NuTauTarget.Ydist)    
+    c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist    
 
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
