@@ -115,13 +115,6 @@ struct ChannelId {
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
-struct Flags {
-   uint16_t completely_different_settings : 1;
-   uint16_t width_resolution : 3;
-   uint16_t time_resolution : 2;
-   uint16_t measurement_type : 2;
-   uint16_t padding : 8;
-};
 const uint16_t delay(2000 / 0.098); // TODO update value
 } // namespace DriftTubes
 
