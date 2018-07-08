@@ -118,7 +118,7 @@ struct ChannelId {
 const uint16_t delay(2000 / 0.098); // TODO update value
 } // namespace DriftTubes
 
-enum Direction { horizontal, vertical };
+enum Direction { horizontal = 0, vertical = 1 };
 namespace RPC {
 struct RawHit {
    uint16_t ncrate : 8;
