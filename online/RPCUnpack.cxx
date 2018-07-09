@@ -122,7 +122,7 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
                   skipped++;
                   continue;
                }
-               new ((*fRawData)[fNHits]) MuonTaggerHit(GetId(crate, board, channel), 0);
+               new ((*fRawData)[fNHits]) MuonTaggerHit(GetId(crate, board, channel), df->header.frameTime/25);
                fNHits++;
             }
             bitMask <<= 1;

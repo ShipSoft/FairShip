@@ -22,14 +22,17 @@ Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
 MufluxSpectrometerHit::MufluxSpectrometerHit() 
   : ShipHit() 
 { 
-  flag = true; 
+  flags &= DriftTubes::Valid; 
 } 
 // -----   Standard constructor   ------------------------------------------ 
 MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc) 
   : ShipHit(detID,ftdc) 
 { 
-  flag = true; 
+  flags &= DriftTubes::Valid; 
 } 
+//
+MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag) 
+  : ShipHit(detID,ftdc), flags(flag) {}
 // -----   constructor from SpectrometerPoint   ------------------------------------------ 
 MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_t t0) 
   : ShipHit() 
@@ -43,7 +46,7 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_
      module->TubeEndPoints(fDetectorID,start,stop); 
      Double_t t_drift = fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift; 
      fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; 
-     flag = true; 
+     flags &= DriftTubes::Valid; 
 } 
 
 void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop) 
