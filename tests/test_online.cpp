@@ -16,44 +16,37 @@ int DetectorIdTest(uint16_t channel)
    return detId;
 }
 
-int DetectorIdTestRPC(uint16_t ncrate, uint16_t nboard, int channel)
-{
-   RPC::RawHit test{ncrate, nboard, 0};
-   auto detId = test.GetDetectorId(channel);
-   return detId;
-}
-
 TEST_CASE("Detector ID conversion", "[drifttubes]")
 {
    // T4
-   REQUIRE(DetectorIdTest(1072) == 40112001);
-   REQUIRE(DetectorIdTest(1108) == 40002001);
-   REQUIRE(DetectorIdTest(1119) == 40002012);
-   REQUIRE(DetectorIdTest(1071) == 40002013);
-   REQUIRE(DetectorIdTest(1055) == 40012017);
-   REQUIRE(DetectorIdTest(1054) == 40012018);
-   REQUIRE(DetectorIdTest(1053) == 40012019);
-   REQUIRE(DetectorIdTest(1032) == 40112016);
-   REQUIRE(DetectorIdTest(1024) == 40112024);
-   REQUIRE(DetectorIdTest(895) == 40002025);
-   REQUIRE(DetectorIdTest(884) == 40002036);
-   REQUIRE(DetectorIdTest(883) == 40012025);
-   REQUIRE(DetectorIdTest(872) == 40012036);
-   REQUIRE(DetectorIdTest(871) == 40102025);
-   REQUIRE(DetectorIdTest(864) == 40102032);
-   REQUIRE(DetectorIdTest(863) == 40102033);
-   REQUIRE(DetectorIdTest(860) == 40102036);
-   REQUIRE(DetectorIdTest(848) == 40112036);
-   REQUIRE(DetectorIdTest(847) == 40002037);
-   REQUIRE(DetectorIdTest(800) == 40112048);
+   REQUIRE(DetectorIdTest(1072) == 30112001);
+   REQUIRE(DetectorIdTest(1108) == 30002001);
+   REQUIRE(DetectorIdTest(1119) == 30002012);
+   REQUIRE(DetectorIdTest(1071) == 30002013);
+   REQUIRE(DetectorIdTest(1055) == 30012017);
+   REQUIRE(DetectorIdTest(1054) == 30012018);
+   REQUIRE(DetectorIdTest(1053) == 30012019);
+   REQUIRE(DetectorIdTest(1032) == 30112016);
+   REQUIRE(DetectorIdTest(1024) == 30112024);
+   REQUIRE(DetectorIdTest(895) == 30002025);
+   REQUIRE(DetectorIdTest(884) == 30002036);
+   REQUIRE(DetectorIdTest(883) == 30012025);
+   REQUIRE(DetectorIdTest(872) == 30012036);
+   REQUIRE(DetectorIdTest(871) == 30102025);
+   REQUIRE(DetectorIdTest(864) == 30102032);
+   REQUIRE(DetectorIdTest(863) == 30102033);
+   REQUIRE(DetectorIdTest(860) == 30102036);
+   REQUIRE(DetectorIdTest(848) == 30112036);
+   REQUIRE(DetectorIdTest(847) == 30002037);
+   REQUIRE(DetectorIdTest(800) == 30112048);
    // T3
-   REQUIRE(DetectorIdTest(799) == 30002001);
-   REQUIRE(DetectorIdTest(776) == 30012012);
-   REQUIRE(DetectorIdTest(631) == 30102001);
-   REQUIRE(DetectorIdTest(600) == 30002020);
-   REQUIRE(DetectorIdTest(547) == 30012025);
-   REQUIRE(DetectorIdTest(383) == 30002037);
-   REQUIRE(DetectorIdTest(336) == 30112048);
+   REQUIRE(DetectorIdTest(799) == 40002001);
+   REQUIRE(DetectorIdTest(776) == 40012012);
+   REQUIRE(DetectorIdTest(631) == 40102001);
+   REQUIRE(DetectorIdTest(600) == 40002020);
+   REQUIRE(DetectorIdTest(547) == 40012025);
+   REQUIRE(DetectorIdTest(383) == 40002037);
+   REQUIRE(DetectorIdTest(336) == 40112048);
    // T2
    REQUIRE(DetectorIdTest(335) == 21112012);
    REQUIRE(DetectorIdTest(264) == 20102001);
@@ -96,9 +89,4 @@ TEST_CASE("Detector ID conversion (RC signal)", "[RC_signal]")
 {
    REQUIRE(DetectorIdTest(1121) == -1);
    REQUIRE(DetectorIdTest(1122) == -1);
-}
-TEST_CASE("Detector ID conversion (RPC)", "[RPC]")
-{
-   REQUIRE(DetectorIdTestRPC(18, 14, 14) == 50001);
-   REQUIRE(DetectorIdTestRPC(18, 15, 49) == 50116);
 }
