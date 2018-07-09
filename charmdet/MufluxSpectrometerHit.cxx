@@ -79,10 +79,9 @@ void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3
      TString path = "";path+="/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire; 
      Bool_t rc = nav->cd(path); 
      if (not rc){ 
-        cout << "MufluxSpectrometer::TubeDecode, TGeoNavigator failed "<<path<<endl;  
+        cout << "MufluxSpectrometer::TubeDecode, TGeoNavigator failed "<<path<<endl;
         return; 
      }   
-     cout << "MufluxSpectrometer::TubeDecode path "<<path<<endl;       
      TGeoNode* W = nav->GetCurrentNode(); 
      TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape()); 
      Double_t top[3] = {0,0,S->GetDZ()}; 
