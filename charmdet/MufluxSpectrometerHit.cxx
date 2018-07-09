@@ -53,18 +53,18 @@ void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3
      Int_t pnb =  (fDetectorID- statnb*10000000 - vnb*1000000)/100000; 
      Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000; 
      TString stat = "volDriftTube";stat+=+statnb;stat+="_";stat+=statnb; 
-     TString view; 
+     TString view = "_x"; 
      switch (vnb) {
       case 0:
        if (statnb==1) {view = "_x";}
-       if (statnb==2) {view = "_v";}        
+       else if (statnb==2) {view = "_v";}        
        break;
       case 1:
        if (statnb==1) { view = "_u";}
-       if (statnb==2) { view = "_x";}       
+       else if (statnb==2) { view = "_x";}       
        break;         
       default:
-         view = "_x";
+       break;
      }  
      TGeoNavigator* nav = gGeoManager->GetCurrentNavigator(); 
      TString prefix = "Station_"; 
