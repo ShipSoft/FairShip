@@ -112,7 +112,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          new ((*fRawScintillator)[fNHitsScintillator]) ScintillatorHit(detectorId, time);
          fNHitsScintillator++;
       } else {
-         new ((*fRawTubes)[fNHitsTubes]) MufluxSpectrometerHit(detectorId, time);
+         new ((*fRawTubes)[fNHitsTubes]) MufluxSpectrometerHit(detectorId, time, df->header.flags);
          fNHitsTubes++;
       }
    }

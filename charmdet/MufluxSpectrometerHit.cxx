@@ -30,6 +30,9 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc)
 { 
   flags &= DriftTubes::Valid; 
 } 
+//
+MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag) 
+  : ShipHit(detID,ftdc), flags(flag) {}
 // -----   constructor from SpectrometerPoint   ------------------------------------------ 
 MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_t t0) 
   : ShipHit() 

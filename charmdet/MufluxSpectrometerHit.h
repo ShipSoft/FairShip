@@ -24,6 +24,7 @@ public:
     *@param flag      True/False, false if there is another hit with smaller tdc
     **/
    MufluxSpectrometerHit(Int_t detID, Float_t tdc);
+   MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag);
    MufluxSpectrometerHit(MufluxSpectrometerPoint *p, Double_t t0);
    void MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop);
    /** Destructor **/
