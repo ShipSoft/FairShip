@@ -43,7 +43,7 @@ private:
 
    uint16_t flags; ///< flag
 
-   ClassDef(MufluxSpectrometerHit, 3);
+   ClassDef(MufluxSpectrometerHit, 4);
 };
 
 #endif
