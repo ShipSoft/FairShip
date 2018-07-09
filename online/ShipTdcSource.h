@@ -19,6 +19,7 @@ public:
 
 protected:
    Bool_t Unpack(Int_t *data, Int_t size, uint16_t partitionId);
+   Int_t UnpackEventFrame(Int_t *data, Int_t size);
    std::ifstream *fIn;
    unsigned char buffer[UINT16_MAX];
    std::string fFilename;
