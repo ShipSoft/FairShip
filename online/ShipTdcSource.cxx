@@ -27,6 +27,16 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
    auto mf = reinterpret_cast<DataFrame *>(data);
    total_size -= sizeof(DataFrame);
    data = reinterpret_cast<Int_t *>(&(mf->hits));
+   switch (mf->header.frameTime){
+      case 0xFF005C03:
+         LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl;
+         break;
+      case 0xFF005C04:
+         LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl;
+         break;
+      default:
+         break;
+   }
    while (total_size > 0) {
       auto df = reinterpret_cast<DataFrame *>(data);
       Int_t size = df->header.size;
@@ -39,7 +49,7 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
                       << FairLogger::endl;
          return 3;
       }
-      data += size;
+      data += size/sizeof(Int_t);
       total_size -= size;
       LOG(INFO) << data << '\t' << total_size << FairLogger::endl;
    }

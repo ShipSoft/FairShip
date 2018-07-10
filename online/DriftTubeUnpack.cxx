@@ -58,8 +58,18 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    LOG(INFO) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
-   LOG(INFO) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
    assert(df->header.size == size);
+   switch (df->header.frameTime){
+      case 0xFF005C03:
+         LOG(INFO) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
+         return kTRUE;
+      case 0xFF005C04:
+         LOG(INFO) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl;
+         return kTRUE;
+      default:
+         break;
+   }
+   LOG(INFO) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
    auto nhits = df->getHitCount();
    int skipped = 0;
    int trigger = 0;
