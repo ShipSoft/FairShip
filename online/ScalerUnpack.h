@@ -6,21 +6,19 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef ONLINE_RPCUNPACK_H
-#define ONLINE_RPCUNPACK_H
+#ifndef ONLINE_SCALERUNPACK_H
+#define ONLINE_SCALERUNPACK_H
 
 #include "ShipUnpack.h"
 
-class TClonesArray;
-
-class RPCUnpack : public ShipUnpack {
+class ScalerUnpack : public ShipUnpack {
 public:
    /** Standard Constructor. Input - MBS parameters of the detector. */
-   RPCUnpack(Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
+   ScalerUnpack(Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
                    Short_t control = 3);
 
    /** Destructor. */
-   virtual ~RPCUnpack();
+   virtual ~ScalerUnpack();
 
    /** Initialization. Called once, before the event loop. */
    virtual Bool_t Init();
@@ -31,9 +29,6 @@ public:
    /** Clear the output structures. */
    virtual void Reset();
 
-   /** Method for controling the functionality. */
-   inline Int_t GetNHitsTotal() { return fNHitsTotal; }
-
    uint16_t GetPartition() override { return fPartitionId; }
 
 protected:
@@ -41,17 +36,14 @@ protected:
    virtual void Register();
 
 private:
-   TClonesArray *fRawData;        /**< Array of output raw items. */
-   Int_t fNHits;              /**< Number of raw items in current event. */
-   Int_t fNHitsTotal;         /**< Total number of raw items. */
    uint16_t fPartitionId;
 
-   RPCUnpack(const RPCUnpack &);
-   RPCUnpack &operator=(const RPCUnpack &);
+   ScalerUnpack(const ScalerUnpack &);
+   ScalerUnpack &operator=(const ScalerUnpack &);
 
 public:
    // Class definition
-   ClassDef(RPCUnpack, 1)
+   ClassDef(ScalerUnpack, 1)
 };
 
 #endif

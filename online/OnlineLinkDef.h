@@ -17,6 +17,7 @@
 #pragma link C++ class ShipUnpack + ;
 #pragma link C++ class DriftTubeUnpack + ;
 #pragma link C++ class RPCUnpack + ;
+#pragma link C++ class ScalerUnpack + ;
 #pragma link C++ class ShipTdcTask + ;
 #pragma link C++ class ShipTdcSource + ;
 #pragma link C++ class ControlHostSource + ;

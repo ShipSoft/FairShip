@@ -26,6 +26,7 @@ Set(SRCS
     ShipUnpack.cxx
     DriftTubeUnpack.cxx
     RPCUnpack.cxx
+    ScalerUnpack.cxx
 )
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")

@@ -3,13 +3,14 @@
 
 #include "FairOnlineSource.h"
 #include "TObjArray.h"
+#include "TFile.h"
 
 #include "FairUnpack.h"
 
 class ShipTdcSource : public FairOnlineSource {
 public:
    ShipTdcSource();
-   ShipTdcSource(std::string filename);
+   ShipTdcSource(TString filename);
    ShipTdcSource(const ShipTdcSource &source);
    virtual ~ShipTdcSource();
 
@@ -20,9 +21,9 @@ public:
 protected:
    Bool_t Unpack(Int_t *data, Int_t size, uint16_t partitionId);
    Int_t UnpackEventFrame(Int_t *data, Int_t size);
-   std::ifstream *fIn;
+   TFile *fIn;
    unsigned char buffer[UINT16_MAX];
-   std::string fFilename;
+   TString fFilename;
 
    ClassDef(ShipTdcSource, 0)
 };
