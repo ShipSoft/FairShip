@@ -77,7 +77,6 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
       return 2;
    }
    return 1;
-   LOG(WARNING) << "ShipTdcSource: Failed to read header." << FairLogger::endl;
 }
 
 Bool_t ShipTdcSource::Unpack(Int_t *data, Int_t size, uint16_t partitionId)

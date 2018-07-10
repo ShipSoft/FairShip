@@ -32,7 +32,7 @@ public:
    virtual void Reset();
 
    /** Method for controling the functionality. */
-   inline Int_t GetNHitsTotal() { return fNHitsTotal + fNHitsTotal; }
+   inline Int_t GetNHitsTotal() { return fNHitsTotal; }
 
    uint16_t GetPartition() override { return fPartitionId; }
 

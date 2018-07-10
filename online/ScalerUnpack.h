@@ -11,8 +11,6 @@
 
 #include "ShipUnpack.h"
 
-/* class TClonesArray; */
-
 class ScalerUnpack : public ShipUnpack {
 public:
    /** Standard Constructor. Input - MBS parameters of the detector. */
@@ -31,9 +29,6 @@ public:
    /** Clear the output structures. */
    virtual void Reset();
 
-   /** Method for controling the functionality. */
-   /* inline Int_t GetNHitsTotal() { return fNHitsTotal; } */
-
    uint16_t GetPartition() override { return fPartitionId; }
 
 protected:
@@ -41,9 +36,6 @@ protected:
    virtual void Register();
 
 private:
-   /* TClonesArray *fRawData;        /**< Array of output raw items. *1/ */
-   /* Int_t fNHits;              /**< Number of raw items in current event. *1/ */
-   /* Int_t fNHitsTotal;         /**< Total number of raw items. *1/ */
    uint16_t fPartitionId;
 
    ScalerUnpack(const ScalerUnpack &);

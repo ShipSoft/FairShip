@@ -1,10 +1,7 @@
 #include <cassert>
-#include <unordered_map>
-#include <bitset>
 
 // ROOT headers
 #include "TClonesArray.h"
-#include "ROOT/TSeq.hxx"
 
 // Fair headers
 #include "FairRootManager.h"
