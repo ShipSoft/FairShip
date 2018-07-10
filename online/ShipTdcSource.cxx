@@ -5,7 +5,7 @@
 
 ShipTdcSource::ShipTdcSource() : FairOnlineSource(), fFilename("tdcdata.bin") {}
 
-ShipTdcSource::ShipTdcSource(std::string filename) : FairOnlineSource(), fFilename(filename) {}
+ShipTdcSource::ShipTdcSource(TString filename) : FairOnlineSource(), fFilename(filename) {}
 
 ShipTdcSource::ShipTdcSource(const ShipTdcSource &source) : FairOnlineSource(source) {}
 
@@ -13,13 +13,13 @@ ShipTdcSource::~ShipTdcSource() {}
 
 Bool_t ShipTdcSource::Init()
 {
-   fIn = new std::ifstream(fFilename, std::ios::binary);
+   fIn = TFile::Open(fFilename+"?filetype=raw", "read");
    return kTRUE;
 }
 
 void ShipTdcSource::Close()
 {
-   fIn->close();
+   fIn->Close();
 }
 
 Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
@@ -53,17 +53,17 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
 Int_t ShipTdcSource::ReadEvent(UInt_t)
 {
    auto df = new (buffer) DataFrame();
-   if (fIn->read(reinterpret_cast<char *>(df), sizeof(DataFrame))) {
+   if (!fIn->ReadBuffer(reinterpret_cast<char *>(df), sizeof(DataFrame))) {
       size_t size = df->header.size;
       uint16_t partitionId = df->header.partitionId;
       if (partitionId == 0x8000) {
          LOG(INFO) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
-         if (fIn->read(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
+         if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
             return UnpackEventFrame(reinterpret_cast<Int_t *>(&buffer), size);
          }
       }
       LOG(INFO) << "ShipTdcSource: PartitionId " << std::hex << partitionId << std::dec << FairLogger::endl;
-      if (fIn->read(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
+      if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
 
          if (Unpack(reinterpret_cast<Int_t *>(&buffer), size, partitionId)) {
             return 0;
