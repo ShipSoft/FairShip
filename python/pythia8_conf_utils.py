@@ -12,37 +12,12 @@ def addHNLtoROOT(pid=9900015 ,m = 1.0, g=3.654203020370371E-21):
     pdg = ROOT.TDatabasePDG.Instance()
     pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid) 
 
-def readFromAscii(filename="branchingratios"):
-    FairShip = os.environ['FAIRSHIP'] 
-    ascii = open(FairShip+'/shipgen/%s.dat'%filename)
-    h={}
-    content = ascii.readlines()
-    n = 0
-    while n<len(content):
-       line = content[n]
-       if not line.find('TH1F')<0:
-          keys = line.split('|')
-          n+=1
-          limits = content[n].split(',')
-          hname = keys[1]
-          if len(keys)<5: keys.append(',') 
-          h[ hname ] = ROOT.TH1F(hname,keys[2]+';'+keys[3]+';'+keys[4],int(limits[0]),float(limits[1]),float(limits[2]) )
-       else:
-          keys = line.split(',')
-          h[ hname ].SetBinContent(int(keys[0]),float(keys[1]) )
-       n+=1
-    return h
-
-def getbr(h,histoname,mass,coupling):
-    #0 MeV< mass < 3.200 GeV 
-    # FIXME: the above assumption is not valid anymore
-    # FIXME: assert that bin width == 1 MeV
-    mass = int(mass*1000) 
-    try:
-        br=h[histoname].GetBinContent(mass)
-        br=br*coupling
-    except:
-        br=0
+def getbr_rpvsusy(h,histoname,mass,coupling):
+    if histoname in h:
+        normalized_br = h[histoname](mass)
+        br = normalized_br * coupling
+    else:
+        br = 0
     return br
 
 def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
@@ -55,9 +30,9 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
        meson = item[0]
        coupling=couplings[1]
        try:
-           sumbrs[meson]+=getbr(h,histoname,mass,coupling)
+           sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
        except:
-           sumbrs[meson]=getbr(h,histoname,mass,coupling)
+           sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
     print(sumbrs.values())
     maxsumbr=max(sumbrs.values())
     return maxsumbr
@@ -67,10 +42,11 @@ def gettotalbrrpvsusy(h,histograms,mass,couplings):
     for histoname in histograms: 
        item = histoname.split('_') 
        coupling=couplings[1]
-       totalbr+=getbr(h,histoname,mass,coupling)
+       totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
     return totalbr
 
 def make_particles_stable(P8gen, above_lifetime):
+    # FIXME: find time unit and add it to the docstring
     """
     Make the particles with a lifetime above the specified one stable, to allow
     them to decay in Geant4 instead.
@@ -97,7 +73,7 @@ def parse_histograms(filepath):
         lines = f.readlines()
     # Define regular expressions matching (sub-)headers and data lines
     th1f_exp      = re.compile(r'^TH1F\|.+')
-    header_exp    = re.compile(r'^TH1F\|(.+?)\|BR/U2(.+?)\|HNL mass \(GeV\)\|$')
+    header_exp    = re.compile(r'^TH1F\|(.+?)\|B(?:R|F)/U2(.+?)\|.+? mass \(GeV\)\|?')
     subheader_exp = re.compile(r'^\s*?(\d+?),\s*(\d+?\.\d+?),\s*(\d+\.\d+)\s*$')
     data_exp      = re.compile(r'^\s*(\d+?)\s*,\s*(\d+\.\d+)\s*$')
     # Locate beginning of each histogram

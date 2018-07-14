@@ -289,11 +289,11 @@ if simEngine == "Pythia8":
     raise ValueError('Either both production and decay couplings must be specified, or neither.')
    pythia8_conf.configure(P8gen,theMass,theProductionCouplings,theDecayCouplings,inclusive,deepCopy)
   if RPVSUSY:
-   print 'Generating RPVSUSY events of mass %.3f GeV\n'%theMass
-   print 'and with couplings=[%.3f,%.3f]\n'%(theCouplings[0],theCouplings[1])
-   print 'and with stop mass=\%.3f GeV\n',theCouplings[2]
+   print 'Generating RPVSUSY events of mass %.3f GeV'%theMass
+   print 'and with couplings=[%.3f,%.3f]'%(theCouplings[0],theCouplings[1])
+   print 'and with stop mass=%.3f GeV\n'%theCouplings[2]
    pythia8_conf.configurerpvsusy(P8gen,theMass,[theCouplings[0],theCouplings[1]],
-                                theCouplings[2],RPVSUSYbench,'c',deepCopy)
+                                theCouplings[2],RPVSUSYbench,inclusive,deepCopy)
   P8gen.SetParameters("ProcessLevel:all = off")
   if inputFile: 
    ut.checkFileExists(inputFile)
