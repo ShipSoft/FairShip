@@ -1,0 +1,188 @@
+{
+    "particles":
+    [
+        {
+            "name": "Xi_c0",
+            "id"  : 4132,
+            "cmd" : "4132:new  Xi_c0            Xi_cbar0    2   0   0    2.47088    0.00000    0.00000    0.00000  3.36000e-02   0   1   0   1   0"
+        },
+        {
+            "name": "D0",
+            "id"  : 421,
+            "cmd" : "421:new  D0  Dbar0    1   0   0    1.86486    0.00000    0.00000    0.00000  1.22900e-01   0   1   0   1   0"
+        },
+        {
+            "name": "tau-",
+            "id"  : 15,
+            "cmd" : "15:new  tau-  tau+    2   -3   0    1.77682    0.00000    0.00000    0.00000  8.71100e-02   0   1   0   1   0"
+        },
+        {
+            "name": "D_s+",
+            "id"  : 431,
+            "cmd" : "431:new  D_s+  D_s-    1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0"
+        },
+        {
+            "name": "Lambda_c+",
+            "id"  : 4122,
+            "cmd" : "4122:new  Lambda_c+   Lambda_cbar-    2   3   0    2.28646    0.00000    0.00000    0.00000  5.99000e-02   0   1   0   1   0"
+        },
+        {
+            "name": "D+",
+            "id"  : 411,
+            "cmd" : "411:new  D+ D-    1   3   0    1.86962    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0"
+        },
+        {
+            "name": "Lambda_b0",
+            "id"  : 5122,
+            "cmd" : "5122:new  Lambda_b0        Lambda_bbar0    2   0   0    5.61940    0.00000    0.00000    0.00000  3.69000e-01   0   1   0   1   0"
+        },
+        {
+            "name": "B+",
+            "id"  : 521,
+            "cmd" : "521:new  B+               B-    1   3   0    5.27925    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0"
+        },
+        {
+            "name": "Xi_b0",
+            "id"  : 5232,
+            "cmd" : "5232:new  Xi_b0            Xi_bbar0    2   0   0    5.78800    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0"
+        },
+        {
+            "name": "B_s0",
+            "id"  : 531,
+            "cmd" : "531:new  B_s0             B_sbar0    1   0   0    5.36677    0.00000    0.00000    0.00000  4.39000e-01   0   1   0   1   0"
+        },
+        {
+            "name": "Omega_b-",
+            "id"  : 5332,
+            "cmd" : "5332:new  Omega_b-         Omega_bbar+    2   -3   0    6.07000    0.00000    0.00000    0.00000  3.64000e-01   0   1   0   1   0"
+        },
+        {
+            "name": "B0",
+            "id"  : 511,
+            "cmd" : "511:new  B0  Bbar0    1   0   0    5.27958    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0"
+        },
+        {
+            "name": "B_c+",
+            "id"  : 541,
+            "cmd" : "541:new  B_c+             B_c-    1   3   0    6.27700    0.00000    0.00000    0.00000  1.38000e-01   0   1   0   1   0"
+        }
+    ],
+
+    "selections":
+    {
+        "c"  : {
+            "parameters": ["HardQCD::hardccbar  = on"],
+            "particles": [4132, 421, 431, 4122, 411],
+        },
+        "b"  : {
+            "parameters": ["HardQCD::hardbbbar  = on"],
+            "particles": [5122, 521, 5232, 531, 5332, 511],
+        },
+        "bc" : {
+            "parameters": ["HardQCD::hardbbbar  = on"],
+            "particles": [541],
+        },
+    },
+
+    "channels":
+    [
+        {"id":4132,"decay":"xic0_Xi-_e",   "coupling":0,"idlepton":-11,"idhadron":-3312},
+        {"id":4132,"decay":"xic0_Xi-_mu",  "coupling":1,"idlepton":-13,"idhadron":-3312},
+
+        {"id":421,"decay":"d0_K-_e",   "coupling":0,"idlepton":-11,"idhadron":-321},
+        {"id":421,"decay":"d0_K*-_e",  "coupling":0,"idlepton":-11,"idhadron":-323},
+        {"id":421,"decay":"d0_K-_mu",  "coupling":1,"idlepton":-13,"idhadron":-321},
+        {"id":421,"decay":"d0_K*-_mu", "coupling":1,"idlepton":-13,"idhadron":-323},
+
+        {"id":15,"decay":"tau_pi-", "coupling":2,"idhadron":-211},
+        {"id":15,"decay":"tau_K-",  "coupling":2,"idhadron":-321},
+        {"id":15,"decay":"tau_rho-",  "coupling":2,"idhadron":-213},
+        {"id":15,"decay":"tau_nu_e_bar_e",  "coupling":2,"idlepton":11,"idhadron":-12},
+        {"id":15,"decay":"tau_nu_tau_e",     "coupling":0,"idlepton":11,"idhadron":+16},
+        {"id":15,"decay":"tau_nu_mu_bar_mu",     "coupling":2,"idlepton":13,"idhadron":-14},
+        {"id":15,"decay":"tau_nu_tau_mu",     "coupling":1,"idlepton":13,"idhadron":+16},
+
+        {"id":431,"decay":"ds_mu", "coupling":1,"idlepton":-13},
+        {"id":431,"decay":"ds_e",  "coupling":0,"idlepton":-11},
+        {"id":431,"decay":"ds_tau","coupling":2,"idlepton":-15},
+        {"id":431,"decay":"ds_eta_e" ,"coupling":0,"idlepton":-11,"idhadron":221},
+        {"id":431,"decay":"ds_eta_mu","coupling":1,"idlepton":-13,"idhadron":221},
+
+        {"id":4122,"decay":"lambdac_Lambda0_e", "coupling":0,"idlepton":-11,"idhadron":3122},
+        {"id":4122,"decay":"lambdac_Lambda0_mu", "coupling":1,"idlepton":-13,"idhadron":3122},
+
+        {"id":411,"decay":"d_mu", "coupling":1,"idlepton":-13},
+        {"id":411,"decay":"d_e",  "coupling":0,"idlepton":-11},
+        {"id":411,"decay":"d_tau","coupling":2,"idlepton":-15},
+        {"id":411,"decay":"d_K0_e","coupling":0,"idlepton":-11,"idhadron":-311},
+        {"id":411,"decay":"d_K0_mu","coupling":1,"idlepton":-13,"idhadron":-311},
+        {"id":411,"decay":"d_K*bar0_e" ,"coupling":0,"idlepton":-11,"idhadron":-313},
+        {"id":411,"decay":"d_K*bar0_mu","coupling":1,"idlepton":-13,"idhadron":-313},
+
+        {"id":5122,"decay":"lambdab_Lambda_c+_e","coupling":0,"idlepton":11,"idhadron":4122},
+        {"id":5122,"decay":"lambdab_Lambda_c+_mu","coupling":1,"idlepton":13,"idhadron":4122},
+        {"id":5122,"decay":"lambdab_Lambda_c+_tau","coupling":2,"idlepton":15,"idhadron":4122},
+
+        {"id":521,"decay":"b_tau","coupling":2,"idlepton":-15},
+        {"id":521,"decay":"b_mu", "coupling":1,"idlepton":-13},
+        {"id":521,"decay":"b_e",  "coupling":0,"idlepton":-11},
+        {"id":521,"decay":"b_D0_bar_e",   "coupling":0,"idlepton":-11,"idhadron":-421},
+        {"id":521,"decay":"b_D*0_bar_e",  "coupling":0,"idlepton":-11,"idhadron":-423},
+        {"id":521,"decay":"b_D0_bar_mu",   "coupling":1,"idlepton":-13,"idhadron":-421},
+        {"id":521,"decay":"b_D*0_bar_mu",  "coupling":1,"idlepton":-13,"idhadron":-423},
+        {"id":521,"decay":"b_D0_bar_tau",   "coupling":2,"idlepton":-15,"idhadron":-421},
+        {"id":521,"decay":"b_D*0_bar_tau",  "coupling":2,"idlepton":-15,"idhadron":-423},
+        {"id":521,"decay":"b_pi0_e",  "coupling":0,"idlepton":-11,"idhadron":111},
+        {"id":521,"decay":"b_pi0_mu", "coupling":1,"idlepton":-13,"idhadron":111},
+        {"id":521,"decay":"b_pi0_tau","coupling":2,"idlepton":-15,"idhadron":111},
+        {"id":521,"decay":"b_rho0_e",  "coupling":0,"idlepton":-11,"idhadron":113},
+        {"id":521,"decay":"b_rho0_mu", "coupling":1,"idlepton":-13,"idhadron":113},
+        {"id":521,"decay":"b_rho0_tau","coupling":2,"idlepton":-15,"idhadron":113},
+
+        {"id":5232,"decay":"Xib_Xi_c+_tau","coupling":2,"idlepton":-15},
+        {"id":5232,"decay":"Xib_Xi_c+_mu","coupling":1,"idlepton":-13},
+        {"id":5232,"decay":"Xib_Xi_c+_e","coupling":0,"idlepton":-11},
+
+        {"id":531,"decay":"bs_D_s-_e",   "coupling":0,"idlepton":-11,"idhadron":-431},
+        {"id":531,"decay":"bs_D*_s-_e",  "coupling":0,"idlepton":-11,"idhadron":-433},
+        {"id":531,"decay":"bs_D_s-_mu",  "coupling":1,"idlepton":-13,"idhadron":-431},
+        {"id":531,"decay":"bs_D*_s-_mu", "coupling":1,"idlepton":-13,"idhadron":-433},
+        {"id":531,"decay":"bs_D_s-_tau", "coupling":2,"idlepton":-15,"idhadron":-431},
+        {"id":531,"decay":"bs_D*_s-_tau","coupling":2,"idlepton":-15,"idhadron":-433},
+        {"id":531,"decay":"bs_K-_e",     "coupling":0,"idlepton":-11,"idhadron":-321},
+        {"id":531,"decay":"bs_K-_mu",    "coupling":1,"idlepton":-13,"idhadron":-321},
+        {"id":531,"decay":"bs_K-_tau",   "coupling":2,"idlepton":-15,"idhadron":-321},
+        {"id":531,"decay":"bs_K*-_e",    "coupling":0,"idlepton":-11,"idhadron":-323},
+        {"id":531,"decay":"bs_K*-_mu",   "coupling":1,"idlepton":-13,"idhadron":-323},
+        {"id":531,"decay":"bs_K*-_tau",  "coupling":2,"idlepton":-15,"idhadron":-323},
+
+        {"id":5332,"decay":"Omega_b-_tau","coupling":2,"idlepton":-15},
+        {"id":5332,"decay":"Omega_b-_mu","coupling":1,"idlepton":-13},
+        {"id":5332,"decay":"Omega_b-_e","coupling":0,"idlepton":-11},
+
+        {"id":511,"decay":"b0_D-_e",   "coupling":0,"idlepton":-11,"idhadron":-411},
+        {"id":511,"decay":"b0_D*-_e",  "coupling":0,"idlepton":-11,"idhadron":-413},
+        {"id":511,"decay":"b0_D-_mu",  "coupling":1,"idlepton":-13,"idhadron":-411},
+        {"id":511,"decay":"b0_D*-_mu", "coupling":1,"idlepton":-13,"idhadron":-413},
+        {"id":511,"decay":"b0_D-_tau", "coupling":2,"idlepton":-15,"idhadron":-411},
+        {"id":511,"decay":"b0_D*-_tau","coupling":2,"idlepton":-15,"idhadron":-413},
+        {"id":511,"decay":"b0_pi-_e",  "coupling":0,"idlepton":-11,"idhadron":-211},
+        {"id":511,"decay":"b0_pi-_mu", "coupling":1,"idlepton":-13,"idhadron":-211},
+        {"id":511,"decay":"b0_pi-_tau","coupling":2,"idlepton":-15,"idhadron":-211},
+        {"id":511,"decay":"b0_rho-_e",  "coupling":0,"idlepton":-11,"idhadron":-213},
+        {"id":511,"decay":"b0_rho-_mu", "coupling":1,"idlepton":-13,"idhadron":-213},
+        {"id":511,"decay":"b0_rho-_tau","coupling":2,"idlepton":-15,"idhadron":-213},
+
+        {"id":541,"decay":"bc_tau","coupling":2,"idlepton":-15},
+        {"id":541,"decay":"bc_e",  "coupling":0,"idlepton":-11},
+        {"id":541,"decay":"bc_mu", "coupling":1,"idlepton":-13},
+        {"id":541,"decay":"bc_B0_e",    "coupling":0,"idlepton":-11,"idhadron":511},
+        {"id":541,"decay":"bc_B*0_e",   "coupling":0,"idlepton":-11,"idhadron":513},
+        {"id":541,"decay":"bc_B_s0_e",  "coupling":0,"idlepton":-11,"idhadron":531},
+        {"id":541,"decay":"bc_B*_s0_e", "coupling":0,"idlepton":-11,"idhadron":533},
+        {"id":541,"decay":"bc_B0_mu",   "coupling":1,"idlepton":-13,"idhadron":511},
+        {"id":541,"decay":"bc_B*0_mu",  "coupling":1,"idlepton":-13,"idhadron":513},
+        {"id":541,"decay":"bc_B_s0_mu", "coupling":1,"idlepton":-13,"idhadron":531},
+        {"id":541,"decay":"bc_B*_s0_mu","coupling":1,"idlepton":-13,"idhadron":533}
+    ]
+}
