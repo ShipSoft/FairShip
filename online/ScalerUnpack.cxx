@@ -6,6 +6,7 @@
 
 // Fair headers
 #include "FairLogger.h"
+#include "FairRootManager.h"
 
 // SHiP headers
 #include "ScalerUnpack.h"
@@ -27,6 +28,7 @@ ScalerUnpack::~ScalerUnpack()
 Bool_t ScalerUnpack::Init()
 {
    Register();
+   fMan = FairRootManager::Instance();
    return kTRUE;
 }
 
@@ -62,18 +64,20 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
    for (auto i : ROOT::MakeSeq(df->getSliceCount())) {
       LOG(INFO) << "Slice " << i << "= " << df->slices[i] << FairLogger::endl;
    }
+   auto f = fMan->GetOutFile();
+   tree = dynamic_cast<TTree *>(f->Get("scalers"));
+   if (tree == nullptr) {
+      tree = new TTree("scalers", "scalers");
+   }
    std::vector<uint16_t> slices(df->slices, df->slices + df->getSliceCount());
-   TTree *tree = new TTree("scalers", "scalers");
    tree->Branch("PSW", &(df->PSW));
    tree->Branch("SPW", &(df->SPW));
-   tree->Branch("POTSPS", &(df->scalers[0]));
-   tree->Branch("S1raw", &(df->scalers[1]));
-   tree->Branch("S1strobed", &(df->scalers[2]));
-   tree->Branch("TrgRaw", &(df->scalers[3]));
-   tree->Branch("TrgStrobed", &(df->scalers[4]));
+   for (auto i : ROOT::MakeSeq(16)) {
+      tree->Branch(TString::Format("SC%.2d", i), &(df->scalers[i]));
+   }
    tree->Branch("slices", "vector<uint16_t>", &slices);
    tree->Fill();
-   tree->Write();
+   tree->Write("", TObject::kOverwrite);
    return kTRUE;
 }
 

@@ -34,17 +34,8 @@ int GetId(int ncrate, int nboard, int channel)
    int direction = (nboardofstation < 4) ? vertical : horizontal;
    int strip = direction == vertical
                   ? channel - 3
-                  : (channel < 8)
-                       ? channel + 3
-                       : (channel < 16)
-                            ? channel - 13
-                            : (channel < 24)
-                                 ? channel + 3
-                                 : (channel < 32)
-                                      ? channel - 13
-                                      : (channel < 40) ? channel + 3
-                                                       : (channel < 48) ? channel - 13
-                                                                        : (channel < 56) ? channel + 3 : channel - 13;
+                  : (channel < 16) ? 10 - channel
+                                   : (channel < 32) ? 42 - channel : (channel < 48) ? 74 - channel : 106 - channel;
    strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
    std::cout << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
              << (direction == vertical ? 'V' : 'H') << std::endl;
@@ -100,7 +91,7 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
       auto hit = hits + i * BYTES_PER_RECORD;
       auto crate = (unsigned int)hit[0];
       auto board = (unsigned int)hit[1];
-      for (int k = 1; k <= BYTES_PER_HITPATTERN; k++) // 1st byte read -> channels 63->56
+      for (int k = 1; k <= BYTES_PER_HITPATTERN; k++)
       {
          auto index = k + 3;
 
@@ -108,18 +99,18 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
          for (int j = 0; j < 8; j++) {
             if (hit[index] & bitMask) {
                auto channel = (BYTES_PER_HITPATTERN - k) * 8 + j;
-               if ((crate == 16 && (board == 5 || board == 10) && channel >= 50 && channel <= 55) ||
+               if ((crate == 16 && (board == 5 || board == 10) && channel >= 48 && channel <= 53) ||
                    (crate == 16 && (board == 3 || board == 8) && channel >= 60 && channel <= 63) ||
-                   (crate == 16 && (board == 4 || board == 9) && channel >= 8 && channel <= 13) ||
+                   (crate == 16 && (board == 4 || board == 9) && channel >= 10 && channel <= 15) ||
                    (crate == 16 && (board == 1 || board == 6) && channel >= 0 && channel <= 3) ||
-                   (crate == 18 && (board == 1 || board == 6 || board == 11) && channel >= 0 && channel <= 3) ||
-                   (crate == 18 && (board == 5 || board == 10 || board == 15) && channel >= 50 && channel <= 55) ||
-                   (crate == 18 && (board == 4 || board == 9 || board == 14) && channel >= 8 && channel <= 13) ||
-                   (crate == 18 && (board == 3 || board == 8 || board == 13) && channel >= 60 && channel <= 63)) {
+                   (crate == 18 && (board == 5 || board == 10 || board == 15) && channel >= 48 && channel <= 53) ||
+                   (crate == 18 && (board == 3 || board == 8 || board == 13) && channel >= 60 && channel <= 63) ||
+                   (crate == 18 && (board == 4 || board == 9 || board == 14) && channel >= 10 && channel <= 15) ||
+                   (crate == 18 && (board == 1 || board == 6 || board == 11) && channel >= 0 && channel <= 3)) {
                   skipped++;
                   continue;
                }
-               new ((*fRawData)[fNHits]) MuonTaggerHit(GetId(crate, board, channel), df->header.frameTime/25);
+               new ((*fRawData)[fNHits]) MuonTaggerHit(GetId(crate, board, channel), 0);
                fNHits++;
             }
             bitMask <<= 1;
