@@ -203,22 +203,22 @@ void MuonTagger::ConstructGeometry()
   const Int_t nsensitive2 = 4;
   
   for (int n = 0; n < npassive; n++){
-    zpassive = n * PasThickness + PasThickness/2. + n* SensThickness + SensThickness;
+    zpassive = n * PasThickness + PasThickness/2. + n* SensThickness;
     VMuonBox->AddNode(VPassive, n, new TGeoTranslation(0,0,-BoxZ/2 + zpassive));
 }
 
   for (int n = 0; n < nsensitive1; n++){
-    zsensitive = n * PasThickness + n * SensThickness + SensThickness/2;
+    zsensitive = n * PasThickness + n * SensThickness + SensThickness/2 + PasThickness;
     VMuonBox->AddNode(VSensitive, n+1, new TGeoTranslation(0,0,-BoxZ/2 + zsensitive));
 }
 
   for (int n = 0; n < npassiveshort; n++){
-    zpassive = 2 * PasThickness + 2*SensThickness + n * PasThickness1 + (n+1) * SensThickness + PasThickness1/2;
+    zpassive = 2 * PasThickness + 2*SensThickness + n * PasThickness1 + n * SensThickness + PasThickness1/2;
     VMuonBox->AddNode(VPassive1, n, new TGeoTranslation(0,0,-BoxZ/2 + zpassive));
 }
 
   for (int n = 0; n < nsensitive2; n++){ 
-     zsensitive = 2 * PasThickness + n * PasThickness1 + (n+1) * SensThickness + SensThickness/2 + SensThickness; 
+     zsensitive = 2 * PasThickness + n * PasThickness1 + n * SensThickness + SensThickness/2 + SensThickness; 
      VMuonBox->AddNode(VSensitive, nsensitive1+n+1, new TGeoTranslation(0,0,-BoxZ/2 + zsensitive));//to recognize rpc according to DetectorId  
   }
 }
