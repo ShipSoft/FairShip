@@ -29,8 +29,6 @@ modules = charmDet_conf.configure(run,ShipGeo)
 # -----Create geometry----------------------------------------------
 run.Init()
 
-#geofile =  ROOT.TFile.Open(os.environ['EOSSHIP']+"/eos/experiment/ship/data/muflux/display-data/geo.root")
-#sGeo = geofile.FAIRGeom
 sGeo = ROOT.gGeoManager
 nav = sGeo.GetCurrentNavigator()
 top = sGeo.GetTopVolume()
@@ -38,14 +36,14 @@ top.SetVisibility(0)
 top.Draw('ogl')
 
 
-for n in range(6):
- rc = nav.cd('/VMuonBox_1/VSensitive_'+str(n))
+for n in range(1,7):
+ rc = nav.cd('/VMuonBox_1/VSensitive_'+str(n))  # detector setup wrong, there is no station in front of iron wall
  vol = nav.GetCurrentNode()
  shape = vol.GetVolume().GetShape()
  local = array('d',[0,0,0])
  globOrigin = array('d',[0,0,0])
  nav.LocalToMaster(local,globOrigin)
- rpc[n] = [shape.GetDX(),shape.GetDY(),globOrigin[2]]
+ rpc[n-1] = [shape.GetDX(),shape.GetDY(),globOrigin[2]]
 rpcchannels = 184 # estimate for x view
 
 vbot = ROOT.TVector3()
@@ -74,7 +72,7 @@ def plotEvent(n):
    for c in hitCollection: rc=hitCollection[c][1].Set(0)
    global stereoHits
    stereoHits = []
-   ut.bookHist(h,'xz','x vs z',500,0.,1000.,100,-150.,150.)
+   ut.bookHist(h,'xz','x vs z',500,0.,1200.,100,-150.,150.)
    if not h.has_key('simpleDisplay'): ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1600,ny=1200,cx=1,cy=0)
    rc = h[ 'simpleDisplay'].cd(1)
    h['xz'].SetMarkerStyle(30)
@@ -310,6 +308,7 @@ def plotRPCHitmap():
     rc = h['rpcPlot'].cd(j)
     h['rpcHitmap'+str(n)+str(l)].Draw()
  j+=1
+ rc = h['rpcPlot'].cd(j)
  h['rpcHitmap'].Draw()
 
 from array import array
