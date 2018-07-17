@@ -99,18 +99,23 @@ void MufluxTargetStation::ConstructGeometry()
     //Double_t zPos =  -2.09; //for front end endcap 
     Double_t zPos =  0.; //for front end endcap 
     Int_t slots = fnS;
-    slots = slots-1;    
-
+    slots = slots-1;  
+      
+    fTargetLength = 154.328;
 
     TGeoVolume *frontcap;
     TGeoVolume *endcap;   
     TGeoVolume *targettube;   
-    frontcap   = gGeoManager->MakeTube("FrontCap", steel, 0, 15./2., 2.5/2.);
+    frontcap   = gGeoManager->MakeTube("FrontCap", steel, 0, 15./2., 0.5/2.);
     frontcap->SetLineColor(20); 
-    endcap   = gGeoManager->MakeTube("EndCap", steel, 0, 15./2., 2.5/2.);
+    endcap   = gGeoManager->MakeTube("EndCap", steel, 0, 15./2., 0.5/2.);
     endcap->SetLineColor(20); 
-    targettube = gGeoManager->MakeTube("TargetTube", steel, fDiameter/2.+0.5, fDiameter/2.+1.1, fTargetLength/2.-2.725); //subtract 2.5 (front&endcaps)
+    targettube = gGeoManager->MakeTube("TargetTube", steel, fDiameter/2.+0.5, fDiameter/2.+1.1, fTargetLength/2.-0.5); //subtract 1 (front&endcaps)
     targettube->SetLineColor(20);  
+    std::cout << " *************************************************** " << std::endl;
+    Float_t tubelength = fTargetLength/2.-1.0;
+    std::cout << " fTargetLength " << fTargetLength << " tubelength "<<tubelength << std::endl;       
+    std::cout << " *************************************************** " << std::endl;   
     
     TGeoVolume *target;
     TGeoVolume *slit; 
@@ -143,54 +148,76 @@ void MufluxTargetStation::ConstructGeometry()
 	}  
         slit->SetLineColor(7);  // cyan
 	if (i==0) {
-           tTarget->AddNode(frontcap, 11, new TGeoTranslation(0, 0, zPos-1.251) );	  
+           tTarget->AddNode(frontcap, 11, new TGeoTranslation(0, 0, zPos-0.2501) );	  
 	}	
         tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos+fL.at(i)+fsl/2.) );
         zPos+=fL.at(i)+fsl;
        } else {
          zPos+=fL.at(i);
 	 if (fnS==18) {
-               tTarget->AddNode(endcap, 12, new TGeoTranslation(0, 0, zPos+1.29) );	
-               tTarget->AddNode(targettube, 13, new TGeoTranslation(0, 0, fTargetLength/2.-2.725));   //-3.245   
+               //tTarget->AddNode(endcap, 12, new TGeoTranslation(0, 0, zPos+1.29) );	
+               //tTarget->AddNode(targettube, 13, new TGeoTranslation(0, 0, fTargetLength/2.-2.725));  
+	       tTarget->AddNode(targettube, 13, new TGeoTranslation(0, 0, fTargetLength/2-0.5));    
+	       tTarget->AddNode(endcap, 12, new TGeoTranslation(0, 0, fTargetLength-0.7499) );	     
 	  }	 
 	  zPos+=1.27;   
 	 }
     } 
-
+    std::cout << " *************************************************** " << std::endl;
+    std::cout << " *************************************************** " << std::endl;
+    std::cout << " fTargetLength " << fTargetLength << " zPos "<<zPos << std::endl;
+    std::cout << " *************************************************** " << std::endl;
+    std::cout << " *************************************************** " << std::endl;
+    
     TGeoVolume *absorber;
     TGeoVolume *absorbercutout;
     TGeoVolume *aboveabsorbershield;
     TGeoVolume *ironshield;
     TGeoVolume *concreteshield;
     TGeoVolume *abovetargetshield;
-    TGeoVolume *aboveabovetargetshield;  
+    TGeoVolume *aboveabovetargetshield; 
+    TGeoVolume *floor; 
+    TGeoVolume *floorT34; 
+    TGeoVolume *floorRPC;     
     
     zPos =  fTargetZ - fTargetLength/2.;
     // Absorber made of iron 
     absorber = gGeoManager->MakeBox("Absorber", iron, 120., 97.5, fAbsorberLength/2.); 
     absorbercutout = gGeoManager->MakeBox("AbsorberCO", iron, 102., 27.5, fAbsorberLength/2.); 
 
-    ironshield = gGeoManager->MakeBox("IronShield", iron, 20., 80., 160.);  
-    concreteshield = gGeoManager->MakeBox("ConcreteShield", concrete, 40., 80., 160.); 
+    ironshield = gGeoManager->MakeBox("IronShield", iron, 20., 82.5, 160.);  
+    concreteshield = gGeoManager->MakeBox("ConcreteShield", concrete, 40., 82.5, 160.); 
     abovetargetshield = gGeoManager->MakeBox("AboveTargetShield", concrete, 120., 42.5, 160.); 
     aboveabsorbershield = gGeoManager->MakeBox("AboveBsorberShield", concrete, 120., 40.0, 80.); 
     aboveabovetargetshield = gGeoManager->MakeBox("AboveAboveTargetShield", concrete, fAbsorberLength, 40., fAbsorberLength); 
+    floor = gGeoManager->MakeBox("Floor", concrete, 500., 80., 800.);
+    //floorT34 = gGeoManager->MakeBox("FloorT34", concrete, 500., 16., 95.0);
+    floorT34 = gGeoManager->MakeBox("FloorT34", concrete, 500., 16., 118.875);
+    floorRPC = gGeoManager->MakeBox("FloorRPC", concrete, 500., 32.5, 110.);
+    
     ironshield->SetLineColor(42); // brown / light red	
     concreteshield->SetLineColor(kGray); // gray
+    floor->SetLineColor(kGray); // gray
+    floorT34->SetLineColor(kGray); // gray
+    floorRPC->SetLineColor(kGray); // gray
     aboveabsorbershield->SetLineColor(kGray); // gray
     abovetargetshield->SetLineColor(kGray); // gray
     aboveabovetargetshield->SetLineColor(kGray); // gray
     frontcap->SetLineColor(29); // blue-ish
     endcap->SetLineColor(29); // blue-ish
     absorber->SetLineColor(42); // brown / light red
-    tTarget->AddNode(absorbercutout, 11, new TGeoTranslation(18., 97.5, fAbsorberZ-zPos-2.5)); 	
-    tTarget->AddNode(absorber, 1, new TGeoTranslation(0., -27.5, fAbsorberZ-zPos-2.5)); 	
- 
+    tTarget->AddNode(absorbercutout, 11, new TGeoTranslation(18., 97.5, fAbsorberZ-zPos)); 	
+    tTarget->AddNode(absorber, 1, new TGeoTranslation(0., -27.5, fAbsorberZ-zPos)); 	
+    tTarget->AddNode(floor, 7, new TGeoTranslation(0., -210., 500.)); 
+    //tTarget->AddNode(floorT34, 8, new TGeoTranslation(0., -112.5, fAbsorberZ-zPos+768.5)); 
+    tTarget->AddNode(floorT34, 8, new TGeoTranslation(0., -112.5, fAbsorberZ-zPos+771.125)); 
+    tTarget->AddNode(floorRPC, 9, new TGeoTranslation(0., -97, fAbsorberZ-zPos+1000.));
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());
     Double_t totLength = asmb->GetDZ();
-    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength+2.5));    
-    top->AddNode(ironshield, 2, new TGeoTranslation(-50., -45.,fTargetZ - 83.49));    //3.6
-    top->AddNode(concreteshield, 3, new TGeoTranslation(85.,-45.,fTargetZ - 83.49));   
+    //top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength+2.5));    
+    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2. + totLength));  
+    top->AddNode(ironshield, 2, new TGeoTranslation(-50., -47.5,fTargetZ - 83.49));    //3.6
+    top->AddNode(concreteshield, 3, new TGeoTranslation(85.,-47.5,fTargetZ - 83.49));   
     top->AddNode(abovetargetshield, 4, new TGeoTranslation(50.,77.5,fTargetZ - 83.49)); 
     top->AddNode(aboveabovetargetshield, 5, new TGeoTranslation(-50.,165.0,fAbsorberZ-zPos-624.5)); 
     top->AddNode(aboveabsorbershield, 6, new TGeoTranslation(0.,165.0,-26.48));        
