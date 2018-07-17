@@ -36,14 +36,14 @@ top.SetVisibility(0)
 top.Draw('ogl')
 
 
-for n in range(1,7):
+for n in range(1,6):
  rc = nav.cd('/VMuonBox_1/VSensitive_'+str(n))  # detector setup wrong, there is no station in front of iron wall
  vol = nav.GetCurrentNode()
  shape = vol.GetVolume().GetShape()
  local = array('d',[0,0,0])
  globOrigin = array('d',[0,0,0])
  nav.LocalToMaster(local,globOrigin)
- rpc[n-1] = [shape.GetDX(),shape.GetDY(),globOrigin[2]]
+ rpc[n] = [shape.GetDX(),shape.GetDY(),globOrigin[2]]
 rpcchannels = 184 # estimate for x view
 
 vbot = ROOT.TVector3()
@@ -416,11 +416,18 @@ def fitTracks(nMax=-1,withDisplay=False):
  rc = h['mom'].cd(1)
  h['p/pt'].SetStats(0)
  rc = h['p/pt'].Draw('colz')
+ rc = h['mom'].cd(2)
+ h['p/pt_x']=h['p/pt'].ProjectionX()
+ h['p/pt_x'].Draw()
+ h['mom'].Update()
+ stats = h['p/pt_x'].FindObject('stats')
+ stats.SetOptStat(11111111)
  rc = h['mom'].cd(3)
  h['chi2'].Draw()
  rc = h['mom'].cd(4)
  h['Nmeasurements'].Draw()
-
+ h['mom'].Update()
+ 
 sigma_spatial = ShipGeo.MufluxSpectrometer.TubePitch/ROOT.TMath.Sqrt(12)
 
 def makeTracks():
