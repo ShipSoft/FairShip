@@ -19,6 +19,7 @@
 #include "TGeoBBox.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
+#include "TGeoCompositeShape.h" //for boolean operations
 
 #include "TParticle.h"
 #include "TParticlePDG.h"
@@ -95,11 +96,12 @@ void MuonTagger::Initialize()
     FairDetector::Initialize();
 }
 
-void MuonTagger::SetPassiveParameters(Double_t PX, Double_t PY, Double_t PTh)
+void MuonTagger::SetPassiveParameters(Double_t PX, Double_t PY, Double_t PTh, Double_t PTh1)
 {
   PasX = PX;
   PasY = PY;
   PasThickness = PTh;
+  PasThickness1 = PTh1;
 }//setting paramters of passive layers
 
 void MuonTagger::SetSensitiveParameters(Double_t SX, Double_t SY, Double_t STh)
@@ -108,6 +110,12 @@ void MuonTagger::SetSensitiveParameters(Double_t SX, Double_t SY, Double_t STh)
   SensY = SY;
   SensThickness = STh;
 }//setting parameters of sensitive layers
+
+void MuonTagger::SetHoleDimensions(Double_t HX, Double_t HY)
+{
+  HoleX = HX;
+  HoleY = HY;
+}
 
 // -----   Private method InitMedium
 Int_t MuonTagger::InitMedium(const char* name)
@@ -134,8 +142,8 @@ Int_t MuonTagger::InitMedium(const char* name)
 
 void MuonTagger::ConstructGeometry()
 {
-  InitMedium("vacuum");
-  TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
+  InitMedium("air");
+  TGeoMedium *air = gGeoManager->GetMedium("air");
   
   InitMedium("iron");
   TGeoMedium *Iron = gGeoManager->GetMedium("iron");
@@ -146,39 +154,72 @@ void MuonTagger::ConstructGeometry()
   TGeoVolume *top= gGeoManager->GetTopVolume(); 
 
   TGeoBBox *MuonBox = new TGeoBBox(BoxX/2,BoxY/2,BoxZ/2);
-  TGeoVolume *VMuonBox = new TGeoVolume("VMuonBox", MuonBox,vacuum);
+  TGeoVolume *VMuonBox = new TGeoVolume("VMuonBox", MuonBox,air);
   VMuonBox->SetTransparency(1);
   Double_t goliathcentre_to_beam = 178.6; //mm    
   
   top->AddNode(VMuonBox, 1, new TGeoTranslation(0, goliathcentre_to_beam*mm, zBoxPosition));
 
   //begin muon filter part
+  //hole for the passive layers.
+  TGeoBBox *inbox = new TGeoBBox("inbox",HoleX/2,HoleY/2,PasThickness/2 + SensThickness/2); 
+  inbox->SetName("T");
   
+  TGeoBBox *inbox1 = new TGeoBBox("inbox1",HoleX/2,HoleY/2,PasThickness1/2 + SensThickness/2); 
+  inbox1->SetName("T1");
+  
+  //passive layers
   TGeoBBox * Passive = new TGeoBBox(PasX/2, PasY/2, PasThickness/2);
-  TGeoVolume * VPassive = new TGeoVolume("VPassive", Passive, Iron);
+  Passive->SetName("P");
+  TGeoCompositeShape *SubtractionPassive = new TGeoCompositeShape("SubtractionPassive", "P-T");
+
+  TGeoBBox * Passive1 = new TGeoBBox(PasX/2, PasY/2, PasThickness1/2);
+  Passive1->SetName("P1");
+  TGeoCompositeShape *SubtractionPassive1 = new TGeoCompositeShape("SubtractionPassive1", "P1-T1");
+
+  TGeoVolume * VPassive = new TGeoVolume("VPassive", SubtractionPassive, Iron);
   VPassive->SetLineColor(kGreen+1);
+
+  TGeoVolume * VPassive1; 
+
+  VPassive1= new TGeoVolume("VPassive1", SubtractionPassive1, Iron);     
+  VPassive1->SetLineColor(kGreen+1);
+ 
   
+  //sensitive layers
   TGeoBBox * Sensitive = new TGeoBBox(SensX/2, SensY/2, SensThickness/2);
+  Sensitive->SetName("S");
+  TGeoCompositeShape *SubtractionSensitive = new TGeoCompositeShape("SubtractionSensitive", "S-T");
+
   TGeoVolume * VSensitive = new TGeoVolume("VSensitive", Sensitive, RPCmat);
   VSensitive->SetLineColor(kOrange-5);
-  AddSensitiveVolume(VSensitive);
-  
-  const Int_t npassive = 5;
-  const Int_t nsensitive = 6;
-
+  AddSensitiveVolume(VSensitive); 
   Double_t zpassive;
   Double_t zsensitive;
   
+  const Int_t npassive = 2;
+  const Int_t nsensitive1 = 2;
+  const Int_t npassiveshort = 3;
+  const Int_t nsensitive2 = 4;
+  
   for (int n = 0; n < npassive; n++){
-    // zpassive = n * (PasThickness + SensThickness);
-    zpassive = n * (PasThickness + SensThickness) + PasThickness/2 + SensThickness; //the first layer is sensitive
+    zpassive = n * PasThickness + PasThickness/2. + n* SensThickness + SensThickness;
     VMuonBox->AddNode(VPassive, n, new TGeoTranslation(0,0,-BoxZ/2 + zpassive));
 }
 
-  for (int n = 0; n < nsensitive; n++){
-    //zsensitive = n * (PasThickness + SensThickness) + PasThickness/2 + SensThickness/2;
-     zsensitive = n * (PasThickness + SensThickness) + SensThickness/2; 
-      VMuonBox->AddNode(VSensitive, n, new TGeoTranslation(0,0,-BoxZ/2 + zsensitive));
+  for (int n = 0; n < nsensitive1; n++){
+    zsensitive = n * PasThickness + n * SensThickness + SensThickness/2;
+    VMuonBox->AddNode(VSensitive, n+1, new TGeoTranslation(0,0,-BoxZ/2 + zsensitive));
+}
+
+  for (int n = 0; n < npassiveshort; n++){
+    zpassive = 2 * PasThickness + 2*SensThickness + n * PasThickness1 + (n+1) * SensThickness + PasThickness1/2;
+    VMuonBox->AddNode(VPassive1, n, new TGeoTranslation(0,0,-BoxZ/2 + zpassive));
+}
+
+  for (int n = 0; n < nsensitive2; n++){ 
+     zsensitive = 2 * PasThickness + n * PasThickness1 + (n+1) * SensThickness + SensThickness/2 + SensThickness; 
+     VMuonBox->AddNode(VSensitive, nsensitive1+n+1, new TGeoTranslation(0,0,-BoxZ/2 + zsensitive));//to recognize rpc according to DetectorId  
   }
 }
 

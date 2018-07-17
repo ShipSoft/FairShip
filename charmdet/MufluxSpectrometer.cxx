@@ -114,6 +114,11 @@ Int_t MufluxSpectrometer::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
+void MufluxSpectrometer::ChooseDetector(Bool_t muflux)
+{
+ fMuonFlux = muflux;
+}
+
 void MufluxSpectrometer::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox)
 {
   SBoxX = SX;
@@ -289,12 +294,13 @@ void MufluxSpectrometer::ConstructGeometry()
   TGeoUniformMagField *magField = new TGeoUniformMagField(0., MagneticField, 0.); //The magnetic field must be only in the vacuum space between the stations
   
 
-  TGeoBBox *ProvaBox = new TGeoBBox("ProvaBox", 0. , 0., 0.);  
-  TGeoVolume *volProva = new TGeoVolume("volProva", ProvaBox, vacuum);   
+  //TGeoBBox *ProvaBox = new TGeoBBox("ProvaBox", 0. , 0., 0.); //avoid creating orphaned volume  
+  //TGeoVolume *volProva = new TGeoVolume("volProva", ProvaBox, vacuum);   
   
   Double_t z[4] = {0.,0.,0.,0.}; 
     
  
+  if (fMuonFlux){
     //***************************************************************************************************************
     //*****************************************   OPERA DRIFT TUBES BY ERIC *****************************************
     //*****************************************   Dimensions from https://www-opera.desy.de/tracker.html*************     
@@ -521,7 +527,13 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
       //end of view loop		
       }	
     } //end of statnb loop             
-     
+ }   
+    else{ //station positions for charm measurement
+  z[0] = (2.*DimZ + fdiststereo+ fDeltaz_view)/2;
+  z[1] = z[0] + fdistT1T2 + 2.*DimZ + fdiststereo; 
+  z[2] =  662.6400 - fdistT3T4 - 3*DimZ/2 + 12.6*cm;
+  z[3] = z[3] = z[2]+ fdistT3T4+ DimZ + 12.6*cm; //with SA and SB   
+    }
     //field measurement done in this box, called vacuumbox for historical reasons
     TGeoBBox *VacuumBox = new TGeoBBox("VacuumBox", 156.0*cm/2, 82.6*cm/2., (360 * cm)/2.);
     TGeoVolume *volVacuum = new TGeoVolume("VolVacuum", VacuumBox, air);

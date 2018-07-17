@@ -25,6 +25,7 @@ class MufluxSpectrometer:public FairDetector
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
+    void ChooseDetector(Bool_t muflux); //sets experimental configuration (true = muflux, false = charmxsec)
         
     //methods for drift tubes by Eric
     void SetTubeLength(Double_t tubelength);
