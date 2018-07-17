@@ -451,6 +451,7 @@ def makeTracks():
     hitCov = ROOT.TMatrixDSym(7)
     hitCov[6][6] = resolution*resolution
     for hit in sTree.Digi_MufluxSpectrometerHits:
+      if hit.GetDetectorID() in noisyChannels: continue
       rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
       tdc = hit.GetDigi()
       distance = RT(hit.GetDetectorID()/10000000,tdc) 
