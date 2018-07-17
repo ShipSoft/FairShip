@@ -109,12 +109,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.L17 = 20.82*u.cm
     c.target.M18 = "tungstenmisis"
     c.target.L18 = 36.47*u.cm
-    c.target.sl  =  0.5*u.cm  # H20 slit *17 times
+    c.target.sl  =  0.54459*u.cm  # H20 slit *17 times; to get to the measured length by survey 
     #c.target.xy  = 15.*u.cm   # diameter of muflux target
     c.target.xy  = 10.*u.cm   # new diameter of muflux target    
     # 5.0 cm is for front and endcaps
-    c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18 + 5.0*u.cm
+    #c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18 + 5.0*u.cm
     
+    c.target.length = 154.328*u.cm    
     # interaction point, start of target
     c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
     c.target.z0  =  c.target.z - c.target.length/2.
@@ -155,9 +156,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.TubesPerLayer      = 12
     c.MufluxSpectrometer.ViewAngle          = 60
     c.MufluxSpectrometer.WireThickness      = 0.0045*u.cm
-    c.MufluxSpectrometer.DeltazView         = 16.*u.cm
+    c.MufluxSpectrometer.DeltazView         = 15.*u.cm
     
-    c.MufluxSpectrometer.diststereo         = 16.*u.cm  
+    c.MufluxSpectrometer.diststereo         = 16.25*u.cm  
     c.MufluxSpectrometer.distT1T2           = 11.*u.cm   
     if c.MufluxSpectrometer.muflux == True:
        c.MufluxSpectrometer.distT3T4           = 1.6*u.m       
@@ -208,8 +209,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.Scintillator = AttrDict(z = 0*u.cm)
     c.Scintillator.Scoring1X           = 55.*u.cm
     c.Scintillator.Scoring1Y           = 110.*u.cm    
-    c.Scintillator.DistT1               = 3.7*u.cm       
-    c.Scintillator.DistT2               = 2*(2*c.Spectrometer.DZ +c.MufluxSpectrometer.diststereo) + c.MufluxSpectrometer.distT1T2 + 10*u.cm
+    c.Scintillator.DistT1               = 11.5*u.cm   
+    #c.Scintillator.DistT1               = 3.7*u.cm       
+    c.Scintillator.DistT2               = 135.25*u.cm
+    #c.Scintillator.DistT2               = 2*(2*c.Spectrometer.DZ +c.MufluxSpectrometer.diststereo) + c.MufluxSpectrometer.distT1T2 + 10*u.cm
                    
     if c.MufluxSpectrometer.muflux == True: 
        #these parameters are also used inside the MufluxSpectrometer.cxx
@@ -237,7 +240,9 @@ with ConfigRegistry.register_config("basic") as c:
     
     if c.MufluxSpectrometer.muflux == True:
        #for the muflux measurement the muontagger has to be moved back
-       c.MuonTagger.zBox = c.Spectrometer.SZ+ c.MuonTagger.BZ*3./2. + 5*u.cm -420*u.cm
+       c.MuonTagger.zBox = 791.75*u.cm  + 155*u.cm
+       #c.MuonTagger.zBox = c.Spectrometer.zSi5 +c.Spectrometer.PairSiDistance/2.+c.Spectrometer.DimZSi/2. + c.Spectrometer.LS +           c.MuonTagger.BZ/2. + 199.5*u.cm#starting from 223 cm from Goliath, like in muonflux measurement
+
     else:    
        #c.MuonTagger.zBox = c.Spectrometer.SZ+ c.MuonTagger.BZ/2 + 5*u.cm
        c.MuonTagger.zBox = c.Spectrometer.zSi5 +c.Spectrometer.PairSiDistance/2.+c.Spectrometer.DimZSi/2. + c.Spectrometer.LS +           c.MuonTagger.BZ/2. + 199.5*u.cm#starting from 223 cm from Goliath, like in muonflux measurement

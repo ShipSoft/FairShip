@@ -9,23 +9,32 @@ import shipunit as u
 import shipRoot_conf
 
 h={}
-ut.bookHist(h,'Bx','Bx',40,-71.86,84.14,15,-23.44,59.16,73,-176.27,183.73)
-ut.bookHist(h,'By','By',40,-71.86,84.14,15,-23.44,59.16,73,-176.27,183.73)
-ut.bookHist(h,'Bz','Bz',40,-71.86,84.14,15,-23.44,59.16,73,-176.27,183.73) 
+# new limits x: -1118.6, 1241.4 (59); y: -411.40, 768.60 (20); z: -2512.7, 2537.3 (101)
+# 
 
-f=open('GoliathFieldMap.txt','r')
+ut.bookHist(h,'Bx','Bx',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
+ut.bookHist(h,'By','By',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
+ut.bookHist(h,'Bz','Bz',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27) 
+ut.bookHist(h,'Byvsz','By vs z for x=1.4,y=1.6',102,-253.77,256.27) 
+f=open('ExtGoliathFieldMap.txt','r')
 
 i=0
 for line in f:
   i+=1
   if i<6: continue
   x,y,z,Bx,By,Bz = line.split()
+  x=float(x)/10.
+  y=float(y)/10.
+  z=float(z)/10.
   Bx = Bx
   By = By  
   Bz = Bz  
+
+  rc=h['Bx'].Fill(float(x),float(y),float(z),float(Bx))
+  rc=h['By'].Fill(float(x),float(y),float(z),float(By)) 
+  rc=h['Bz'].Fill(float(x),float(y),float(z),float(Bz)) 
   
-  rc=h['Bx'].SetBinContent(i-5,float(Bx))
-  rc=h['By'].SetBinContent(i-5,float(By))  
-  rc=h['Bz'].SetBinContent(i-5,float(Bz))  
+  if (round(x,2)==0.14) and (round(y,2)==0.16):
+     rc=h['Byvsz'].Fill(float(z),float(By)) 
   
 ut.writeHists(h,"GoliathFieldMap.root")

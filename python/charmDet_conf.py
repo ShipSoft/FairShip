@@ -91,8 +91,8 @@ def configure(run,ship_geo):
 
  Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
  Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
- Scintillator.SetDistT1(ship_geo.MufluxSpectrometer.DeltazView/2+ship_geo.MufluxSpectrometer.OuterTubeDiameter/2-ship_geo.Scintillator.DistT1)
- Scintillator.SetDistT2(ship_geo.Scintillator.DistT2)
+ Scintillator.SetDistT1(ship_geo.Scintillator.DistT1)
+ Scintillator.SetDistT2(ship_geo.Scintillator.DistT2) 
  
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(Spectrometer)
