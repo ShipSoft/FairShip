@@ -35,6 +35,12 @@ top = sGeo.GetTopVolume()
 top.SetVisibility(0)
 top.Draw('ogl')
 
+saveGeofile = True
+import saveBasicParameters
+if saveGeofile:
+ run.CreateGeometryFile("muflux_geofile.root")
+# save ShipGeo dictionary in geofile
+ saveBasicParameters.execute("muflux_geofile.root",ShipGeo)
 
 for n in range(1,6):
  rc = nav.cd('/VMuonBox_1/VSensitive_'+str(n))  # detector setup wrong, there is no station in front of iron wall
@@ -72,7 +78,7 @@ def plotEvent(n):
    for c in hitCollection: rc=hitCollection[c][1].Set(0)
    global stereoHits
    stereoHits = []
-   ut.bookHist(h,'xz','x vs z',500,0.,1200.,100,-150.,150.)
+   ut.bookHist(h,'xz','x (y) vs z',500,0.,1200.,100,-150.,150.)
    if not h.has_key('simpleDisplay'): ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1600,ny=1200,cx=1,cy=0)
    rc = h[ 'simpleDisplay'].cd(1)
    h['xz'].SetMarkerStyle(30)
@@ -351,8 +357,9 @@ def extrapolateToPlane(fT,z):
       mZmin = abs(z-Pos.z())
       mClose = m
     fstate =  fT.getFittedState(mClose)
-    NewPosition = ROOT.TVector3(0., 0., z) 
-    rep    = ROOT.genfit.RKTrackRep(fstate.getPDG() ) 
+    NewPosition = ROOT.TVector3(0., 0., z)
+    pdgcode = -int(13*fstate.getCharge())
+    rep    = ROOT.genfit.RKTrackRep( pdgcode ) 
     state  = ROOT.genfit.StateOnPlane(rep) 
     pos,mom = fstate.getPos(),fstate.getMom()
     rep.setPosMom(state,pos,mom) 
@@ -364,11 +371,13 @@ def extrapolateToPlane(fT,z):
       # print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
       pass
   return rc,pos,mom
-def fitTracks(nMax=-1,withDisplay=False):
+def fitTracks(nMax=-1,withDisplay=False,debug=False):
 # select special clean events for testing track fit
  ut.bookHist(h,'p/pt','momentum vs Pt (GeV)',400,0.,400.,100,0.,10.)
  ut.bookHist(h,'chi2','chi2/nDoF',100,0.,25.)
  ut.bookHist(h,'Nmeasurements','number of measurements used',25,-0.5,24.5)
+ bfield = ROOT.genfit.FairShipFields()
+ Bx,By,Bz = ROOT.Double(),ROOT.Double(),ROOT.Double()
  n=-1
  for event in sTree:
    if nMax==0: break
@@ -396,18 +405,41 @@ def fitTracks(nMax=-1,withDisplay=False):
      nPoints = 100
      delz = 1000./nPoints
      h['dispTrack'] = ROOT.TGraph(nPoints)
+     h['dispTrackY'] = ROOT.TGraph(nPoints)
      for nP in range(nPoints):
       zstart+=delz
       rc,pos,mom = extrapolateToPlane(theTrack,zstart)
       if not rc: print "extrap failed"
-      else: h['dispTrack'].SetPoint(nP,pos[2],pos[0])
+      else: 
+        h['dispTrack'].SetPoint(nP,pos[2],pos[0])
+        h['dispTrackY'].SetPoint(nP,pos[2],pos[1])
+        if debug:
+         bfield.get(pos[0],pos[1],pos[2],Bx,By,Bz)
+         print "%5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F "%(pos[0],pos[1],pos[2],Bx,By,Bz,mom[0],mom[1],mom[2])
+        # ptkick 1.03 / dalpha
       if nP ==0:
         fitStatus = theTrack.getFitStatus()
         print "trackinfoP/Pt/chi2/DoF/Ndf:%6.2F %6.2F %6.2F %6.2F"%(mom.Mag(),mom.Pt(),fitStatus.getChi2()/fitStatus.getNdf(),fitStatus.getNdf())
+        st = theTrack.getFittedState(0)
+        # if st.getPDG()*st.getCharge()>0: print "something wrong here",st.getPDG(),st.getCharge()
+        if debug:
+         N = theTrack.getNumPointsWithMeasurement()
+         momU = theTrack.getFittedState(0).getMom()
+         momD = theTrack.getFittedState(N-1).getMom()
+         dalpha = momU[0]/momU[2] - ( momD[0]/momD[2] )
+         print "mom from pt kick=",1.03/dalph
+         for j in range(theTrack.getNumPointsWithMeasurement()):
+          st = theTrack.getFittedState(j)
+          pos,mom = st.getPos(), st.getMom()
+          print "%i %5.2F %5.2F %5.2F %5.2F %5.2F  %5.2F %i %i "%(j,pos[0],pos[1],pos[2],mom[0],mom[1],mom[2],st.getPDG(),st.getCharge())
+
      h['dispTrack'].SetLineColor(ROOT.kMagenta)
      h['dispTrack'].SetLineWidth(2)
+     h['dispTrackY'].SetLineColor(ROOT.kCyan)
+     h['dispTrackY'].SetLineWidth(2)
      h['simpleDisplay'].cd(1)
      h['dispTrack'].Draw('same')
+     h['dispTrackY'].Draw('same')
      h[ 'simpleDisplay'].Update()
      next = raw_input("Next (Ret/Quit): ")         
      if next<>'':  break
@@ -520,6 +552,47 @@ def testT0():
      rc = h['means1'].Fill(mean,event.Digi_ScintillatorHits[1].GetDigi())
      if event.Digi_ScintillatorHits.GetEntries()>2:
       rc = h['means2'].Fill(mean,event.Digi_ScintillatorHits[2].GetDigi())
+def testClusters():
+  topA,botA = ROOT.TVector3(),ROOT.TVector3()
+  topB,botB = ROOT.TVector3(),ROOT.TVector3()
+  clusters = {}
+  for s in range(1,5):
+   for view in ['_x','_u','_v']: 
+    ut.bookHist(h,'del'+view+str(s),'del x for '+str(s)+view,100,-20.,20.)
+    clusters[s]={view:{}}
+  ut.bookHist(h,'clsN','cluster sizes',10,-0.5,9.5)
+  for event in sTree:
+   spectrHitsSorted = sortHits(event)
+   for s in range(1,5):
+    for view in ['_x','_u','_v']:
+     allHits = {}
+     for hit in spectrHitsSorted[view][s]:
+      statnb,vnb,pnb,layer,view = stationInfo(hit)
+      if not allHits.has_key(layer):allHits[layer]=[]
+      allHits[layer].append(hit)
+     ncl = 0
+     for l in allHits:
+      for n in range(len(allHits[l])-1):
+       hitA = allHits[l][n]
+       rc = hitA.MufluxSpectrometerEndPoints(botA,topA)
+       xA = (botA[0]+topA[0])/2.
+       clusters[s][view][ncl]=[[hitA.GetDetectorID(),xA]]
+       for m in range(n,len(allHits)):
+        hitB = allHits[m]
+        rc = hitB.MufluxSpectrometerEndPoints(botB,topB)
+        xB = (botB[0]+topB[0])/2.
+        delx = xA-xB
+        rc = h['del'+view+str(s)].Fill(delx)
+        if abs(delx)<5.:
+         clusters[s][view][ncl].append([hitB.GetDetectorID(),xB])
+         ncl+=1
+     rc = h['clsN'].Fill(ncl)
+  for s in range(1,5):
+   for view in ['_x','_u','_v']: 
+     next = raw_input("Next (Ret/Quit): ")
+     if next<>'':  break
+     h['del'+view+str(s)].Draw()
+# conclusion, hits from same track are within +/- 5cm,  some satellite peaks for station 3
 
 print "existing methods"
 print " --- plotHitMaps(): hitmaps / layer, TDC / layer, together with list of noisy channels"
