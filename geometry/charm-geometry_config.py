@@ -252,7 +252,7 @@ with ConfigRegistry.register_config("basic") as c:
     
     if c.MufluxSpectrometer.muflux == True:
        #for the muflux measurement the muontagger has to be moved back
-       c.MuonTagger.zBox = 791.75*u.cm  + 155*u.cm
+       c.MuonTagger.zBox = 791.75*u.cm  + 152.5*u.cm
        #c.MuonTagger.zBox = c.Spectrometer.zSi5 +c.Spectrometer.PairSiDistance/2.+c.Spectrometer.DimZSi/2. + c.Spectrometer.LS +           c.MuonTagger.BZ/2. + 199.5*u.cm#starting from 223 cm from Goliath, like in muonflux measurement
 
     else:    
