@@ -9,6 +9,7 @@ debug = 0  # 1 print weights and field
            # 2 make overlap check
 dryrun = False # True: just setup Pythia and exit
 
+CharmdetSetup = 0 # 0 charm cross section setup, 1 muon flux setup
 # Default HNL parameters
 theMass = 1.0*u.GeV
 theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km  TP default for HNL
@@ -70,7 +71,7 @@ try:
                                    "PG","pID=","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend=",\
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend=",\
                                    "production-couplings=","decay-couplings=","dry-run"])
 
 except getopt.GetoptError:
@@ -170,6 +171,8 @@ for o, a in opts:
             strawDesign = int(a)
         if o in ("--charm",):
             charm = int(a)
+        if o in ("--CharmdetSetup",):
+            CharmdetSetup = int(a)
         if o in ("-F",):
             deepCopy = True
         if o in ("--RpvSusy",):
@@ -224,8 +227,10 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
                                                 muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile)
-else: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
-
+else: 
+ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup)
+ if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
+ else: print "Setup for charm cross section measurement has been set"
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
 #ship_geo.EmuMagnet.B = 0.
