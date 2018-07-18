@@ -300,6 +300,7 @@ void MufluxSpectrometer::ConstructGeometry()
   Double_t z[4] = {0.,0.,0.,0.}; 
     
  
+  if (fMuonFlux){
     //***************************************************************************************************************
     //*****************************************   OPERA DRIFT TUBES BY ERIC *****************************************
     //*****************************************   Dimensions from https://www-opera.desy.de/tracker.html*************     
@@ -529,7 +530,13 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
       //end of view loop		
       }	
     } //end of statnb loop             
-     
+ }   
+    else{ //station positions for charm measurement
+  z[0] = 38.875*cm;
+  z[1] = 107.625*cm; //not used
+  z[2] = 581.500*cm;
+  z[3] = z[2] + fdistT3T4 + 2* DimZ/2;
+    }
     //field measurement done in this box, called vacuumbox for historical reasons
     TGeoBBox *VacuumBox = new TGeoBBox("VacuumBox", 156.0*cm/2, 82.6*cm/2., (360 * cm)/2.);
     TGeoVolume *volVacuum = new TGeoVolume("VolVacuum", VacuumBox, air);

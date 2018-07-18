@@ -193,7 +193,7 @@ with ConfigRegistry.register_config("basic") as c:
          
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY    
-    c.Spectrometer.Sidist = 5 * u.cm      
+   
     
     #position of module centres
     c.Spectrometer.zSi0 = c.Spectrometer.PairSiDistance/2. + c.Spectrometer.DimZSi/2. + c.Box.GapPostTargetTh
@@ -229,12 +229,16 @@ with ConfigRegistry.register_config("basic") as c:
        c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
     c.Spectrometer.DimZpixelbox = c.Box.GapPostTargetTh + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi
-    c.Spectrometer.zBox = c.Box.zBox + c.Spectrometer.DimZpixelbox/2.
+    
+    PixeltoGoliath = 40 *u.cm
+    c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.Spectrometer.DimZpixelbox/2.
+    c.Box.zBox = c.Spectrometer.zBox - c.Spectrometer.DimZpixelbox/2. 
 
     #position of SciFis 
     distGoliathSciFi1 = 10*u.cm
-    c.Spectrometer.zSciFi1 = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + c.Spectrometer.zSi5 +c.Spectrometer.PairSiDistance/2.+c.Spectrometer.DimZSi/2. + c.Spectrometer.TS + distGoliathSciFi1 +  c.Spectrometer.DZ/2.
-    c.Spectrometer.zSciFi2 = c.Spectrometer.zSciFi1 + c.Spectrometer.DZ/2. + c.Spectrometer.Sidist + c.Spectrometer.DZ/2.
+    c.Spectrometer.Scifidist = 5 * u.cm   
+    c.Spectrometer.zSciFi1 = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + distGoliathSciFi1 +  c.Spectrometer.DZ/2.
+    c.Spectrometer.zSciFi2 = c.Spectrometer.zSciFi1 + c.Spectrometer.DZ/2. + c.Spectrometer.Scifidist + c.Spectrometer.DZ/2.
 
     #Muon Filter
     
@@ -244,7 +248,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonTagger.STh = 5.0 * u.cm
     c.MuonTagger.BX = 2.00 * u.m
     c.MuonTagger.BY = 1.30 * u.m
-    c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 6
+    c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 5
     
     if c.MufluxSpectrometer.muflux == True:
        #for the muflux measurement the muontagger has to be moved back
@@ -253,7 +257,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     else:    
        #c.MuonTagger.zBox = c.Spectrometer.SZ+ c.MuonTagger.BZ/2 + 5*u.cm
-       c.MuonTagger.zBox = c.Spectrometer.zSi5 +c.Spectrometer.PairSiDistance/2.+c.Spectrometer.DimZSi/2. + c.Spectrometer.LS +           c.MuonTagger.BZ/2. + 199.5*u.cm#starting from 223 cm from Goliath, like in muonflux measurement
+       c.MuonTagger.zBox = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
 
     c.MuonTagger.PX = c.MuonTagger.BX
     c.MuonTagger.PY = c.MuonTagger.BY
