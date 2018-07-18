@@ -137,7 +137,7 @@ Double_t ShipGoliathField::GetBx(Double_t x, Double_t y, Double_t z)  {
     hbx=ShipGoliathField::gethistbx();
     Int_t binx = hbx->GetXaxis()->FindBin(x); 
     Int_t biny = hbx->GetYaxis()->FindBin(y); 
-    Int_t binz = hbx->GetZaxis()->FindBin(z - 297.27); 
+    Int_t binz = hbx->GetZaxis()->FindBin(z - 350.75); 
     bx=hbx->GetBinContent(binx,biny,binz)*tesla;    
     //cout << "GetBX " << x << ", binx " << binx <<" y "<< y << " biny "<<biny<<" z "<< z << " binz "<<binz<<" Bx= " << bx <<  endl;
    return bx;
@@ -156,7 +156,7 @@ Double_t ShipGoliathField::GetBy(Double_t x, Double_t y, Double_t z) {
     hby=ShipGoliathField::gethistby();
     Int_t binx = hby->GetXaxis()->FindBin(x); 
     Int_t biny = hby->GetYaxis()->FindBin(y); 
-    Int_t binz = hby->GetZaxis()->FindBin(z- 297.27); 
+    Int_t binz = hby->GetZaxis()->FindBin(z- 350.75); 
     by=hby->GetBinContent(binx,biny,binz)*tesla;    
    return by;
 }
@@ -176,7 +176,7 @@ Double_t ShipGoliathField::GetBz(Double_t x, Double_t y, Double_t z)  {
     hbz=ShipGoliathField::gethistbz(); 
     Int_t binx = hbz->GetXaxis()->FindBin(x); 
     Int_t biny = hbz->GetYaxis()->FindBin(y); 
-    Int_t binz = hbz->GetZaxis()->FindBin(z- 297.27); 
+    Int_t binz = hbz->GetZaxis()->FindBin(z- 350.75); 
     bz=hbz->GetBinContent(binx,biny,binz)*tesla;    
   return bz;
 }
