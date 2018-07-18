@@ -5,8 +5,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 with ConfigRegistry.register_config("basic") as c:
 
     c.MufluxSpectrometer = AttrDict(z = 0*u.cm)  
-    # False = charm cross-section; True = muon flux measurement
-    #c.MufluxSpectrometer.muflux  = True 
+    # False = charm cross-section; True = muon flux measurement 
     
     if "targetOpt" not in globals():
        targetOpt = 18 # add extra 20cm of tungsten as per 13/06/2017

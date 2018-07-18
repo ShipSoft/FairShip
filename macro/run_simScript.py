@@ -9,7 +9,7 @@ debug = 0  # 1 print weights and field
            # 2 make overlap check
 dryrun = False # True: just setup Pythia and exit
 
-CharmdetSetup = 0 # 0 charm cross section setup, 1 muon flux setup
+CharmdetSetup = 0 # 1 charm cross section setup, 0 muon flux setup
 # Default HNL parameters
 theMass = 1.0*u.GeV
 theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km  TP default for HNL
