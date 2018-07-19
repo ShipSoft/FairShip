@@ -253,10 +253,11 @@ void Box::ConstructGeometry()
       for (int i = 0; i<NBricks; i++) activate[i] = false; //JUST FOR NOW
       activate[nrun-1]=true;
       }
-      else  for (int i = 0; i<NBricks; i++) activate[i] = false;      
+      else  for (int i = 0; i<NBricks; i++) activate[i] = true;      
       Double_t zPasLead = NPlates * PassiveSlabThickness; //Parti passive prima del bersaglio    
       if (nrun > 0) TargetZ = (NPlates * AllPlateWidth + EmPlateWidth) + zPasLead*(nrun-1);  
       else TargetZ = (NPlates * AllPlateWidth + EmPlateWidth)*NBricks;
+      if (nrun > 6) TargetZ = zPasLead * NBricks; //all passive      
 
       TGeoBBox *Brick = new TGeoBBox("brick", TargetX/2, TargetY/2, TargetZ/2);
       TGeoVolume *volTarget = new TGeoVolume("volTarget",Brick,vacuum);
@@ -278,7 +279,7 @@ void Box::ConstructGeometry()
       volLeadslab->SetTransparency(1);
       volLeadslab->SetLineColor(kGray);
       
-      Int_t nfilm = 1;
+      Int_t nfilm = 1, nlead = 1;
       Double_t zpoint = -TargetZ/2;
       for (Int_t irun = 0; irun < NBricks; irun++){
         if (activate[irun]){	  
@@ -294,8 +295,9 @@ void Box::ConstructGeometry()
 	  zpoint = zpoint + NPlates *AllPlateWidth + EmPlateWidth;
 	}
 	else if (volPasLead != NULL){ //only passive layer of lead
-	  volTarget->AddNode(volPasLead,1,new TGeoTranslation(0,0,zpoint + zPasLead/2));
+	  volTarget->AddNode(volPasLead,nlead,new TGeoTranslation(0,0,zpoint + zPasLead/2));
 	  zpoint = zpoint + zPasLead;
+          nlead++;
 	}
 	
       }    
