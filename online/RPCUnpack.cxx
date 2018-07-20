@@ -15,6 +15,8 @@
 
 using RPC::RawHit;
 
+enum Direction { horizontal = 0, vertical = 1 };
+
 int GetId(int ncrate, int nboard, int channel)
 {
    assert(ncrate == 16 || ncrate == 18);
@@ -37,8 +39,8 @@ int GetId(int ncrate, int nboard, int channel)
                   : (channel < 16) ? 10 - channel
                                    : (channel < 32) ? 42 - channel : (channel < 48) ? 74 - channel : 106 - channel;
    strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
-   std::cout << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
-             << (direction == vertical ? 'V' : 'H') << std::endl;
+   LOG(DEBUG) << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
+             << (direction == vertical ? 'V' : 'H') << FairLogger::endl;
    return 10000 * station + 1000 * direction + strip;
 }
 
