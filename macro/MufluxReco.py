@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-inputFile = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/pythia.root'
-geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
-debug = False
+#inputFile = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/pythia.root'
+#geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
+debug = False#False
 
 withNoStrawSmearing = None # True   for debugging purposes
 nEvents    = 10000
@@ -98,7 +98,7 @@ from rootpyPickler import Unpickler
 #load Shipgeo dictionary
 upkl    = Unpickler(fgeo)
 #ShipGeo = upkl.load('ShipGeo')
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Yheight = dy)  
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Yheight = dy)
 
 h={}
 log={}
@@ -148,6 +148,135 @@ if withHists:
  ut.bookHist(h,'hits-T2v','x vs y hits in T2 v plane',50,-25.,25.,100,-50.,50) 
  ut.bookHist(h,'hits-T3','x vs y hits in T3',200,-100.,100.,160,-80.,80) 
  ut.bookHist(h,'hits-T4','x vs y hits in T4',200,-100.,100.,160,-80.,80)   
+    
+ ut.bookHist(h,'NTrueTracks','Number of tracks.', 3, -0.5, 2.5)
+ h['NTrueTracks'].GetXaxis().SetBinLabel(1,"Stations 1&2, Y views")
+ h['NTrueTracks'].GetXaxis().SetBinLabel(2,"Stations 1&2, Stereo views")
+ h['NTrueTracks'].GetXaxis().SetBinLabel(3,"Stations 3&4")
+    
+ ut.bookHist(h,'Reco_y12','Number of recognized tracks, clones and ghosts in stations 1&2, Y views', 5, -0.5, 4.5)
+ h['Reco_y12'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_y12'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_y12'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_y12'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_y12'].GetXaxis().SetBinLabel(5,"N others")
+
+ ut.bookHist(h,'Reco_stereo12','Number of recognized tracks, clones and ghosts in stations 1&2, Stereo views', 5, -0.5, 4.5)
+ h['Reco_stereo12'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_stereo12'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_stereo12'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_stereo12'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_stereo12'].GetXaxis().SetBinLabel(5,"N others")
+    
+ ut.bookHist(h,'Reco_34','Number of recognized tracks, clones and ghosts in stations 3&4', 5, -0.5, 4.5)
+ h['Reco_34'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_34'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_34'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_34'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_34'].GetXaxis().SetBinLabel(5,"N others")
+    
+ 
+
+ ut.bookHist(h,'NTrueTracks_3hits','Number of tracks with more than 3 hits.', 3, -0.5, 2.5)
+ h['NTrueTracks_3hits'].GetXaxis().SetBinLabel(1,"Stations 1&2, Y views")
+ h['NTrueTracks_3hits'].GetXaxis().SetBinLabel(2,"Stations 1&2, Stereo views")
+ h['NTrueTracks_3hits'].GetXaxis().SetBinLabel(3,"Stations 3&4")
+    
+ ut.bookHist(h,'Reco_y12_3hits','Number of recognized tracks, clones and ghosts with more than 3 hits in stations 1&2, Y views', 5, -0.5, 4.5)
+ h['Reco_y12_3hits'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_y12_3hits'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_y12_3hits'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_y12_3hits'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_y12_3hits'].GetXaxis().SetBinLabel(5,"N others")
+
+ ut.bookHist(h,'Reco_stereo12_3hits','Number of recognized tracks, clones and ghosts with more than 3 hits in stations 1&2, Stereo views', 5, -0.5, 4.5)
+ h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(5,"N others")
+    
+ ut.bookHist(h,'Reco_34_3hits','Number of recognized tracks, clones and ghosts with more than 3 hits in stations 3&4', 5, -0.5, 4.5)
+ h['Reco_34_3hits'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_34_3hits'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_34_3hits'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_34_3hits'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_34_3hits'].GetXaxis().SetBinLabel(5,"N others")
+    
+    
+    
+ ut.bookHist(h,'NTrueTracks_Tr4','Number of tracks. At least one hit in stations 1-4.', 3, -0.5, 2.5)
+ h['NTrueTracks_Tr4'].GetXaxis().SetBinLabel(1,"Stations 1&2, Y views")
+ h['NTrueTracks_Tr4'].GetXaxis().SetBinLabel(2,"Stations 1&2, Stereo views")
+ h['NTrueTracks_Tr4'].GetXaxis().SetBinLabel(3,"Stations 3&4")
+    
+ ut.bookHist(h,'Reco_y12_Tr4','Number of recognized tracks, clones and ghosts in stations 1&2, Y views. At least one hit in stations 1-4.', 5, -0.5, 4.5)
+ h['Reco_y12_Tr4'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_y12_Tr4'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_y12_Tr4'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_y12_Tr4'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_y12_Tr4'].GetXaxis().SetBinLabel(5,"N others")
+
+ ut.bookHist(h,'Reco_stereo12_Tr4','Number of recognized tracks, clones and ghosts in stations 1&2, Stereo views. At least one hit in stations 1-4.', 5, -0.5, 4.5)
+ h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(5,"N others")
+    
+ ut.bookHist(h,'Reco_34_Tr4','Number of recognized tracks, clones and ghosts in stations 3&4. At least one hit in stations 1-4.', 5, -0.5, 4.5)
+ h['Reco_34_Tr4'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_34_Tr4'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_34_Tr4'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_34_Tr4'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_34_Tr4'].GetXaxis().SetBinLabel(5,"N others")
+
+ ut.bookHist(h,'Reco_target','Number of recognized target tracks, clones and ghosts.', 5, -0.5, 4.5)
+ h['Reco_target'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_target'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_target'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_target'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_target'].GetXaxis().SetBinLabel(5,"N others")
+
+ ut.bookHist(h,'Reco_muon','Number of recognized muon tracks, clones and ghosts.', 5, -0.5, 4.5)
+ h['Reco_muon'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_muon'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_muon'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_muon'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_muon'].GetXaxis().SetBinLabel(5,"N others")
+
+ ut.bookHist(h,'Reco_all_tracks','Number of recognized all tracks, clones and ghosts.', 5, -0.5, 4.5)
+ h['Reco_all_tracks'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_all_tracks'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_all_tracks'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_all_tracks'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_all_tracks'].GetXaxis().SetBinLabel(5,"N others")
+
+
+ ut.bookHist(h,'NHits_true_y12','Number of hits per MC track. Stations 1&2, Y views', 9, -0.5, 8.5)
+ ut.bookHist(h,'NHits_true_stereo12','Number of hits per MC track. Stations 1&2, Stereo views', 9, -0.5, 8.5)
+ ut.bookHist(h,'NHits_true_34','Number of hits per MC track. Stations 3&4, Y views', 9, -0.5, 8.5)
+
+ ut.bookHist(h,'NHits_reco_y12','Number of hits per Reco track. Stations 1&2, Y views', 9, -0.5, 8.5)
+ ut.bookHist(h,'NHits_reco_stereo12','Number of hits per Reco track. Stations 1&2, Stereo views', 9, -0.5, 8.5)
+ ut.bookHist(h,'NHits_reco_34','Number of hits per Reco track. Stations 3&4, Y views', 9, -0.5, 8.5)
+
+
+ ut.bookHist(h,'p/pt','P vs Pt (GeV), Reco',100,0.,400.,100,0.,10.)
+ ut.bookHist(h,'p/pt_truth','P vs Pt (GeV), MC Truth',100,0.,400.,100,0.,10.)
+ ut.bookHist(h,'p/pt_noT4','P vs Pt (GeV), Reco',100,0.,400.,100,0.,10.)
+ ut.bookHist(h,'p/pt_truth_noT4','P vs Pt (GeV), MC Truth',100,0.,400.,100,0.,10.)
+
+ ut.bookHist(h,'p_rel_error','(P_reco - P_true) / P_true',200,-2.,2.)
+ ut.bookHist(h,'pt_rel_error','(Pt_reco - Pt_true) / Pt_true',200,-2.,2.)
+ ut.bookHist(h,'p_rel_error_noT4','(P_reco - P_true) / P_true',200,-2.,2.)
+ ut.bookHist(h,'pt_rel_error_noT4','(Pt_reco - Pt_true) / Pt_true',200,-2.,2.)
+
+
+ ut.bookHist(h,'Reco_muons_vs_p_true','Number of recognized muons vs P MC truth',40,0.,400.)
+ ut.bookHist(h,'Ghosts_muons_vs_p_true','Number of ghosts vs P MC truth',40,0.,400.)
+ ut.bookHist(h,'True_muons_vs_p_true','Number of muons vs P MC truth',40,0.,400.)
+ ut.bookHist(h,'True_all_tracks_vs_p_true','Number of muons vs P MC truth',40,0.,400.)
  
 # -----Create geometry----------------------------------------------
 
@@ -190,10 +319,9 @@ nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
 # main loop
 for iEvent in range(firstEvent, nEvents):
  if iEvent%1000 == 0 or debug: print 'event ',iEvent
- #print 'event =',iEvent
+ SHiP.iEvent = iEvent
  rc    = SHiP.sTree.GetEvent(iEvent) 
- SHiP.digitize() 
- #print "!!!!!!!!!!!! printing fields"
+ SHiP.digitize()
  SHiP.reconstruct()
  # memory monitoring
  # mem_monitor() 
