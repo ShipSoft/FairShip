@@ -8,6 +8,7 @@ public:
    MuonTaggerHit() : ShipHit() {}
    ~MuonTaggerHit() = default;
    MuonTaggerHit(Int_t detID, Float_t digi);
+   void EndPoints(TVector3 &vbot, TVector3 &vtop);
 
 private:
     MuonTaggerHit(const MuonTaggerHit& other); 
