@@ -1,4 +1,5 @@
 #include "MuonTaggerHit.h"
+#include <iostream>
 
 MuonTaggerHit::MuonTaggerHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
 
@@ -24,17 +25,50 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop)
    const float total_height = 114 * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH;
    const float x_start = -(total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2;
    const float y_start = total_height / 2;
-   const float Z = 0; //TODO
-   switch (direction) {
-   case horizontal:
-      vbot.SetXYZ(x_start, y_start, Z); // TODO
-      vtop.SetXYZ(x_start + total_width, y_start, Z); // TODO
-      break;
-   case vertical:
-      vbot.SetXYZ(x_start , y_start - total_height, Z); // TODO
-      vtop.SetXYZ(x_start , y_start, Z); // TODO
-      break;
-   }
+   float Z = 0;
+    ///station conditions - remove once z position automated from geo file
+    if(station == 1){Z = 874.25;};
+    if(station == 2){Z = 959.25;};
+    if(station == 3){Z = 1004.25;};
+    if(station == 4){Z = 1049.25;};
+    if(station == 5){Z = 1094.25;};
+    if(station > 5){
+	std::cout << "Invalid station" << std::endl;
+
+        }
+
+
+    switch (direction) {
+    case horizontal:
+            if(strip == 1){ //1st strip (top)
+                vtop.SetXYZ(x_start, y_start, Z);
+                vbot.SetXYZ(x_start + total_width, y_start - EXT_STRIP_YWIDTH, Z);
+            }
+
+            if(strip == 116){ //last strip (bottom)
+                vtop.SetXYZ(x_start, y_start - EXT_STRIP_YWIDTH - 114*STRIP_YWIDTH, Z);
+                vbot.SetXYZ(x_start + total_width, y_start - total_height, Z);
+            }
+            else{ //all other horizontal strips
+                vtop.SetXYZ(x_start, y_start - EXT_STRIP_YWIDTH - (strip-2)*STRIP_YWIDTH, Z);
+                vbot.SetXYZ(x_start + total_width, y_start - EXT_STRIP_YWIDTH - (strip-1)*STRIP_YWIDTH, Z);
+            }
+        break;
+    case  vertical:
+            if(strip == 1){//first strip (left)
+                vtop.SetXYZ(x_start, y_start - total_height, Z);
+                vbot.SetXYZ(x_start + EXT_STRIP_XWIDTH_L, y_start, Z);
+            }
+            if(strip == 184){ //last strip (right)
+                vtop.SetXYZ(x_start + EXT_STRIP_XWIDTH_L + 182*STRIP_XWIDTH, y_start - total_height, Z);
+                vbot.SetXYZ(x_start + total_width, y_start, Z);
+            }
+            else{ //all other vertical strips
+                vtop.SetXYZ(x_start + EXT_STRIP_XWIDTH_L + (strip-2)*STRIP_XWIDTH, y_start - total_height, Z);
+                vbot.SetXYZ(x_start + EXT_STRIP_XWIDTH_L + (strip-1)*STRIP_XWIDTH, y_start, Z);
+            }
+        break;
+    }
 }
 
 ClassImp(MuonTaggerHit)
