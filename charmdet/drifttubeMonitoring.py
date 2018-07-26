@@ -182,7 +182,7 @@ for s in range(1,5):
    channels[s][p][l]={}
    for view in ['_x','_u','_v']:
     ut.bookHist(h,str(1000*s+100*p+10*l)+view,'hit map station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,50,-0.5,49.5)
-    ut.bookHist(h,"TDC"+str(1000*s+100*p+10*l)+view,'TDC station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,100,0.,3000.)
+    ut.bookHist(h,"TDC"+str(1000*s+100*p+10*l)+view,'TDC station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,500,0.,3000.)
     xLayers[s][p][l][view]=h[str(1000*s+100*p+10*l)+view]
     channels[s][p][l][view]=12
     if s>2: channels[s][p][l][view]=48
@@ -237,9 +237,32 @@ def plotHitMaps():
         if s==2 and view == "_x": v = 1
         if s==1 and view == "_u": v = 1
         myDetID = s * 10000000 + v * 1000000 + p * 100000 + l*10000
-        noisyChannels.append(myDetID+i)
+        noisyChannels.append(myDetID+i-1)
  print "list of noisy channels"
  for n in noisyChannels: print n
+ makeRTrelations() # this requires large number of events > 10000
+
+
+def sumStations():
+ h['TDC_12']= h['TDC1000_x'].Clone('TDC_12')
+ h['TDC_12'].SetTitle('TDC station 1 and 2 all layers')
+ h['TDC_12'].Reset()
+ for s in range(1,3):
+  for p in range(2):
+   for l in range(2):
+    for view in ['_x','_u','_v']:
+     h['TDC_12'].Add(h["TDC"+str(1000*s+100*p+10*l)+view])
+ h['TDC_34']= h['TDC3000_x'].Clone('TDC_34')
+ h['TDC_34'].SetTitle('TDC station 3 and 4 all layers')
+ h['TDC_34'].Reset()
+ for s in range(3,5):
+  for p in range(2):
+   for l in range(2):
+    if s==4 and p==0 and l==1 or s==4 and p==1 and l==1: continue 
+    for view in ['_x']:
+     h['TDC_34'].Add(h["TDC"+str(1000*s+100*p+10*l)+view])
+
+
 
 def printScalers():
    ut.bookHist(h,'rate','rate',100,-0.5,99.5)
@@ -357,17 +380,103 @@ ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 fitter = ROOT.genfit.DAF()
 fitter.setMaxIterations(50)
 # fitter.setDebugLvl(1) # produces lot of printout
-def RT(s,t):
+
+def extractRTPanda(hname= 'TDC1000_x'):
+ s = int(hname[3:4])
+ R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm 
+ tMinAndTmax = {1:[587,1860],2:[587,1860],3:[610,2300],4:[610,2100]}
+ h['rt'+hname] = ROOT.TGraph()
+ n0 = h[hname].FindBin(tMinAndTmax[s][0])
+ n1 = h[hname].FindBin(tMinAndTmax[s][1])
+ Ntot = 0
+ for n in range(n0,n1):
+   Ntot += h[hname].GetBinContent(n)
+ for n in range(n0,n1):
+   N = 0
+   for k in range(n0,n):
+     N+=h[hname].GetBinContent(k)
+   h['rt'+hname].SetPoint(n,h[hname].GetBinCenter(n), N/float(Ntot)*R)
+ h['rt'+hname].SetTitle('rt'+hname)
+ h['rt'+hname].SetLineWidth(2)
+ h['rt'+hname].Draw('same')
+
+def makeRTrelations():
+ if not h.has_key('RTrelations'): 
+  ut.bookCanvas(h,key='RTrelations',title='RT relations',nx=800,ny=500,cx=1,cy=1)
+  h['RTrelations'].cd(1)
+  h['emptyHist'] = ROOT.TH2F('empty',' ',100,0.,3000.,100,0.,2.)
+  h['emptyHist'].SetStats(0)
+  h['emptyHist'].Draw()
+ for s in range(1,5):
+  for view in ['_x','_u','_v']:
+   for p in range(2):
+    for l in range(2):
+     if not xLayers[s][p][l].has_key(view):continue
+     if s>2 and view != '_x': continue
+     if s==1 and view == '_v'or s==2 and view == '_u': continue
+     extractRTPanda(hname= 'TDC'+xLayers[s][p][l][view].GetName())
+
+def extractRT(xmin,xmax,hname= 'TDC1000_x',function='parabola'):
+# good result with extractRT(610,1850,hname= 'TDC1000_x')
+#                  extractRT(625,2000,hname= 'TDC4000_x')
+#                  extractRT(610,2000,hname= 'TDC3000_x')
+# 
+ s = int(hname[3:4])
+ binW = h[hname].GetBinWidth(2)
+ tMinAndTmax = {1:[587,1860],2:[587,1860],3:[610,2300],4:[610,2100]}
+ R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm 
+ maxDriftTime = tMinAndTmax[s][1]-tMinAndTmax[s][0]
+ # parabola
+ if function == 'parabola':
+  P2 = '( ('+str(maxDriftTime)+'-'+str(R)+'*[1] )/'+str(R)+'**2 )'
+  myDnDr = ROOT.TF1('DnDr','[0]/([1]+2*(x-[2])*'+P2+')+[3]',4)
+  myDnDr.SetParameter(0,h[hname].GetMaximum())
+  myDnDr.SetParameter(1,1.)
+  myDnDr.SetParameter(2,tMinAndTmax[s][0])
+  myDnDr.ReleaseParameter(2)
+ #myDnDr.FixParameter(2,tMinAndTmax[s][0])
+  myDnDr.SetParameter(3,10.)
+  myDnDr.FixParameter(3,0)
+# Panda function
+ else:
+  # myDnDr = ROOT.TF1('DnDr','[0]+[1]*(1+[2]*exp(([4]-x)/[3]))',5)
+  myDnDr = ROOT.TF1('DnDr','[0]+[1]*(1+[2]*exp(([4]-x)/[3]))/( (1+exp(([4]-x)/[6]))*(1+exp((x-[5])/[7])) )',8)
+  myDnDr.SetParameter(0,3.9) # noise level
+  myDnDr.SetParameter(1,h[hname].GetMaximum()) # normalisation
+  myDnDr.SetParameter(2,1.) # shape parameters
+  myDnDr.SetParameter(3,1.)
+  myDnDr.SetParameter(4,tMinAndTmax[s][0]) # t0 and tmax
+  myDnDr.FixParameter(5,tMinAndTmax[s][1])
+  myDnDr.FixParameter(6,1E20) # slope of the leading and trailing edge
+  myDnDr.FixParameter(7,1E20)
+ fitResult = h[hname].Fit(myDnDr,'S','',xmin,xmax)
+ rc = fitResult.Get()
+ p1 = rc.GetParams()[1]
+ p2 = (maxDriftTime-R*p1)/R**2
+ print 'constants for ',hname,p1,p2
+# cross check
+ tx = R*p1+R**2*p2
+ rx = (-p1 + ROOT.TMath.Sqrt( p1**2 + 4*p2*maxDriftTime) )/ ( 2*p2 )
+ print maxDriftTime,R,'|',tx,rx
+ # ROOT.gROOT.FindObject('c1').cd(1)
+
+ut.bookHist(h,'TDC2R','RT relation',100,0.,3000.,100,0.,2.)
+
+def RT(s,t,function='PandaBins'):
 # rt relation, drift time to distance, drift time?
-  tMinAndTmax = {1:[550,1800],2:[550,1800],3:[550,2400],4:[550,2400]}
-  #If you have a clean drift-time spectrum you get the rt-relation for each time bin by dividing the sum of the histogram from 0 to that bin by the total integral, 
-  # multiplied with the tube radius, which is 1.815 cm (inner tube radius).
-  # Since the gas conditions were not as stable as before, we probably have to have individual calibrations for the different 
-  # modules for different times. Also, the readout cables for T1/2 are a little shorter than for T3/4, which will shift the position of the dt spectrum a little.
-  r = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm 
-  t0_corr = t-tMinAndTmax[s][0]
-  if t0_corr<0: t0_corr=0
-  return t0_corr * r / (tMinAndTmax[s][1]-tMinAndTmax[s][0])
+  tMinAndTmax = {1:[587,1860],2:[587,1860],3:[610,2300],4:[610,2100]}
+  R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm 
+  # parabola 
+  if function == 'parabola' or not h.has_key('rtTDC'+str(s)+'000_x'):
+   p1p2 = {1:[688.,7.01],2:[688.,7.01],3:[923.,4.41],4:[819.,0.995]}
+   t0_corr = max(0,t-tMinAndTmax[s][0])
+   r = max(0,(-p1p2[s][0] + ROOT.TMath.Sqrt( p1p2[s][0]**2 + 4*p1p2[s][1]*t0_corr ) )/ ( 2*p1p2[s][1] ) )
+  else:
+   if t > tMinAndTmax[s][1]: r = R
+   elif t< tMinAndTmax[s][0]: r = 0
+   else: r = h['rtTDC'+str(s)+'000_x'].Eval(t)
+  h['TDC2R'].Fill(t,r)
+  return r
 
 # from TrackExtrapolateTool
 parallelToZ = ROOT.TVector3(0., 0., 1.) 
@@ -509,7 +618,7 @@ def fitTracks(nMax=-1,withDisplay=False,debug=False):
  h['Nmeasurements'].Draw()
  h['mom'].Update()
  
-sigma_spatial = ShipGeo.MufluxSpectrometer.TubePitch/ROOT.TMath.Sqrt(12) / 2.
+sigma_spatial = (ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
 def makeTracks():
      hitlist = []
      for hit in sTree.Digi_MufluxSpectrometerHits:
@@ -551,7 +660,7 @@ def fitTrack(hitlist):
       m = ROOT.TVectorD(7,tmp)
       tp = ROOT.genfit.TrackPoint(theTrack[pdg][0]) # note how the point is told which track it belongs to 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
-      measurement.setMaxDistance(ShipGeo.MufluxSpectrometer.TubePitch) 
+      measurement.setMaxDistance(ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
       theTrack[pdg][0].insertPoint(tp)  # add point to Track
     if not theTrack[pdg][0].checkConsistency():
@@ -758,7 +867,7 @@ def findTracks():
        h['dispTrackSeg'].append( ROOT.TGraph(2) )
        h['dispTrackSeg'][nt].SetPoint(0,0.,bA)
        h['dispTrackSeg'][nt].SetPoint(1,400.,slopeA*400+bA)
-       h['dispTrackSeg'][nt].SetLineColor(ROOT.kCyan)
+       h['dispTrackSeg'][nt].SetLineColor(ROOT.kRed)
        h['dispTrackSeg'][nt].SetLineWidth(2)
        h['simpleDisplay'].cd(1)
        h['dispTrackSeg'][nt].Draw('same')
@@ -773,7 +882,7 @@ def findTracks():
        h['dispTrackSeg'].append( ROOT.TGraph(2) )
        h['dispTrackSeg'][nt].SetPoint(0,300.,slopeA*300+bA)
        h['dispTrackSeg'][nt].SetPoint(1,900.,slopeA*900+bA)
-       h['dispTrackSeg'][nt].SetLineColor(ROOT.kMagenta)
+       h['dispTrackSeg'][nt].SetLineColor(ROOT.kBlue)
        h['dispTrackSeg'][nt].SetLineWidth(2)
        h['simpleDisplay'].cd(1)
        h['dispTrackSeg'][nt].Draw('same')
@@ -847,14 +956,12 @@ def testClusters(nEvent=-1,nTot=1000):
    if next<>'':  break
 
 def plotBiasedResiduals(nEvent=-1,nTot=1000):
-  plotHitMaps()
-  
+  if not h.has_key('hitMapsX'): plotHitMaps()
   eventRange = [0,sTree.GetEntries()]
   if not nEvent<0: eventRange = [nEvent,nEvent+nTot]
   for Nr in range(eventRange[0],eventRange[1]):
    sTree.GetEvent(Nr)
-   #if Nr%100==0:  
-   print "now at event",Nr
+   if Nr%500==0:   print "now at event",Nr
    if not findSimpleEvent(sTree): continue
    trackCandidates = findTracks()
    for aTrack in trackCandidates:
@@ -871,10 +978,11 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
            rc,pos,mom = extrapolateToPlane(aTrack,z)
           except:
            continue
-          if view == '_x': res = pos[0]-(vbot[0]+vtop[0])/2.
+          if view == '_x': 
+            res = pos[0]-(vbot[0]+vtop[0])/2.
           else: 
             res = vbot[0]*pos[1] - vtop[0]*pos[1] - vbot[1]*pos[0]+ vtop[0]*vbot[1] + pos[0]*vtop[1]-vbot[0]*vtop[1]
-            res = res/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)
+            res = -res/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as _x
           h['biasResX_'+str(s)+view+str(2*l+p)].Fill(res,pos[0])
           h['biasResY_'+str(s)+view+str(2*l+p)].Fill(res,pos[1])
   if not h.has_key('biasedResiduals'): 
