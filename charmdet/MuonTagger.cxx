@@ -198,7 +198,7 @@ void MuonTagger::ConstructGeometry()
   Double_t zsensitive;
   
   const Int_t npassive = 2;
-  const Int_t nsensitive1 = 2;
+  const Int_t nsensitive1 = 1;
   const Int_t npassiveshort = 3;
   const Int_t nsensitive2 = 4;
   
@@ -218,7 +218,7 @@ void MuonTagger::ConstructGeometry()
 }
 
   for (int n = 0; n < nsensitive2; n++){ 
-     zsensitive = 2 * PasThickness + n * PasThickness1 + n * SensThickness + SensThickness/2 + SensThickness; 
+     zsensitive = npassive * PasThickness + n * PasThickness1 + n * SensThickness + SensThickness/2 + nsensitive1 * SensThickness; 
      VMuonBox->AddNode(VSensitive, nsensitive1+n+1, new TGeoTranslation(0,0,-BoxZ/2 + zsensitive));//to recognize rpc according to DetectorId  
   }
 }
