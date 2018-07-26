@@ -512,8 +512,8 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
             TGeoRotation r6s;	
             TGeoTranslation t6s;
             for (Int_t snb=1; snb<fTubes_per_layer_tr12+1; snb++) {
-              //tubes loop
-	      t6s.SetTranslation(ftr12xdim/2.-fTubes_pitch*(snb-1)+fOffset_plane12*pnb-lnb*fOffset_layer12,0,0); 
+              //tubes loop	      
+	      t6s.SetTranslation(ftr12xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0); 
 	      r6s.SetAngles(0,90,90);
               TGeoCombiTrans c6s(t6s, r6s);
               TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
@@ -906,7 +906,7 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
            TGeoTranslation t6s;
            for (Int_t snb=1; snb<fTubes_per_layer_tr34+1; snb++) {
               //tubes loop
-	      t6s.SetTranslation(ftr34xdim/2.-fTubes_pitch*(snb-1)+fOffset_plane12*pnb-lnb*fOffset_layer12,0,0); 
+	      t6s.SetTranslation(ftr34xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0); 
 	      r6s.SetAngles(0,90,90);
               TGeoCombiTrans c6s(t6s, r6s);
               TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
