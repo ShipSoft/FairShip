@@ -20,6 +20,5 @@
 #pragma link C++ class ScalerUnpack + ;
 #pragma link C++ class ShipTdcTask + ;
 #pragma link C++ class ShipTdcSource + ;
-#pragma link C++ class ControlHostSource + ;
 
 #endif
