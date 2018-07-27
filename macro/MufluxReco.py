@@ -4,6 +4,7 @@
 debug = False#False
 
 withNoStrawSmearing = None # True   for debugging purposes
+withNTaggerHits = 0
 nEvents    = 10000
 firstEvent = 0
 withHists = True
@@ -35,8 +36,8 @@ import shipRoot_conf
 shipRoot_conf.configure()
 
 try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
-           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR","withT0"])
+        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:t:",\
+           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR","withT0", "withNTaggerHits="])
 except getopt.GetoptError:
         # print help information and exit:
         print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,' 
@@ -50,6 +51,8 @@ for o, a in opts:
             withNoStrawSmearing = True
         if o in ("--withT0"):
             withT0 = True
+        if o in ("-t", "--withNTaggerHits"):
+            withNTaggerHits = int(a)
         if o in ("-f", "--inputFile"):
             inputFile = a
         if o in ("-g", "--geoFile"):
@@ -245,6 +248,13 @@ if withHists:
  h['Reco_muon'].GetXaxis().SetBinLabel(4,"N ghosts")
  h['Reco_muon'].GetXaxis().SetBinLabel(5,"N others")
 
+ ut.bookHist(h,'Reco_muon_with_tagger','Number of recognized muon tracks, clones and ghosts with tagger hits.', 5, -0.5, 4.5)
+ h['Reco_muon_with_tagger'].GetXaxis().SetBinLabel(1,"N total")
+ h['Reco_muon_with_tagger'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+ h['Reco_muon_with_tagger'].GetXaxis().SetBinLabel(3,"N clones")
+ h['Reco_muon_with_tagger'].GetXaxis().SetBinLabel(4,"N ghosts")
+ h['Reco_muon_with_tagger'].GetXaxis().SetBinLabel(5,"N others")
+
  ut.bookHist(h,'Reco_all_tracks','Number of recognized all tracks, clones and ghosts.', 5, -0.5, 4.5)
  h['Reco_all_tracks'].GetXaxis().SetBinLabel(1,"N total")
  h['Reco_all_tracks'].GetXaxis().SetBinLabel(2,"N recognized tracks")
@@ -306,6 +316,7 @@ builtin.ShipGeo = ShipGeo
 builtin.modules = modules
 
 builtin.withNoStrawSmearing = withNoStrawSmearing
+builtin.withNTaggerHits = withNTaggerHits
 builtin.h    = h
 builtin.log  = log
 iEvent = 0

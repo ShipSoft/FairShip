@@ -302,6 +302,37 @@ class MufluxDigiReco:
         return SmearedHits
 
 
+    def muonTaggerHits_mc(self):
+
+        # smear strawtube points
+        TaggerHits = []
+        key = -1
+        for ahit in self.sTree.MuonTaggerPoint:
+            key+=1
+            detID = ahit.GetDetectorID()
+
+            TaggerHits.append( {'digiHit':key,'xtop':ahit.GetX(),'ytop':ahit.GetY(),'z':ahit.GetZ(),
+                                'xbot':ahit.GetX(),'ybot':ahit.GetY(), 'detID':detID} )
+
+        return TaggerHits
+
+    def muonTaggerHits_realData(self):
+
+        # smear strawtube points
+        TaggerHits = []
+        key = -1
+        for ahit in self.sTree.Digi_MuonTaggerHits:
+            key+=1
+            detID = ahit.GetDetectorID()
+            top = ROOT.TVector3()
+            bot = ROOT.TVector3()
+            ahit.EndPoints(bot,top)
+
+            TaggerHits.append( {'digiHit':key,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(), 'detID':detID} )
+
+        return TaggerHits
+
+
     def getPtruthFirst(self,mcPartKey):
         Ptruth,Ptruthx,Ptruthy,Ptruthz = -1.,-1.,-1.,-1.
         for ahit in self.sTree.MufluxSpectrometerPoint:
@@ -488,6 +519,7 @@ class MufluxDigiReco:
             atrack_y12 = atrack['y12']
             atrack_stereo12 = atrack['stereo12']
             atrack_34 = atrack['34']
+            atrack_y_tagger = atrack['y_tagger']
 
             if len(atrack_y12) > 0:
                 reco_hit_ids_y12 = []
@@ -612,8 +644,9 @@ class MufluxDigiReco:
             atrack_y12 = atrack['y12']
             atrack_stereo12 = atrack['stereo12']
             atrack_34 = atrack['34']
+            atrack_y_tagger = atrack['y_tagger']
 
-            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits:
+            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits and len(atrack_y_tagger) >= withNTaggerHits:
 
                 reco_hit_ids_y12 = []
                 for i_hit in atrack_y12:
@@ -632,6 +665,7 @@ class MufluxDigiReco:
                     ahit = self.sTree.MufluxSpectrometerPoint[i_hit['digiHit']]
                     reco_hit_ids_34.append(ahit.GetTrackID())
                 frac_34, tmax_34 = self.fracMCsame(reco_hit_ids_34)
+
 
                 min_eff = 0.7
                 if tmax_y12 == tmax_stereo12 and tmax_y12 == tmax_34:
@@ -682,8 +716,9 @@ class MufluxDigiReco:
             atrack_y12 = atrack['y12']
             atrack_stereo12 = atrack['stereo12']
             atrack_34 = atrack['34']
+            atrack_y_tagger = atrack['y_tagger']
 
-            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits:
+            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits and len(atrack_y_tagger) >= withNTaggerHits:
 
                 reco_hit_ids_y12 = []
                 for i_hit in atrack_y12:
@@ -754,8 +789,91 @@ class MufluxDigiReco:
             atrack_y12 = atrack['y12']
             atrack_stereo12 = atrack['stereo12']
             atrack_34 = atrack['34']
+            atrack_y_tagger = atrack['y_tagger']
 
-            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits:
+            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits and len(atrack_y_tagger) >= withNTaggerHits:
+
+                reco_hit_ids_y12 = []
+                for i_hit in atrack_y12:
+                    ahit = self.sTree.MufluxSpectrometerPoint[i_hit['digiHit']]
+                    reco_hit_ids_y12.append(ahit.GetTrackID())
+                frac_y12, tmax_y12 = self.fracMCsame(reco_hit_ids_y12)
+
+                reco_hit_ids_stereo12 = []
+                for i_hit in atrack_stereo12:
+                    ahit = self.sTree.MufluxSpectrometerPoint[i_hit['digiHit']]
+                    reco_hit_ids_stereo12.append(ahit.GetTrackID())
+                frac_stereo12, tmax_stereo12 = self.fracMCsame(reco_hit_ids_stereo12)
+
+                reco_hit_ids_34 = []
+                for i_hit in atrack_34:
+                    ahit = self.sTree.MufluxSpectrometerPoint[i_hit['digiHit']]
+                    reco_hit_ids_34.append(ahit.GetTrackID())
+                frac_34, tmax_34 = self.fracMCsame(reco_hit_ids_34)
+
+                min_eff = 0.7
+                if tmax_y12 == tmax_stereo12 and tmax_y12 == tmax_34:
+                    if frac_y12 >= min_eff and frac_stereo12 >= min_eff and frac_34 >= min_eff:
+
+                        if tmax_y12 in true_track_ids and tmax_y12 not in found_track_ids:
+                            n_recognized += 1
+                            found_track_ids.append(tmax_y12)
+                        elif tmax_y12 in true_track_ids and tmax_y12 in found_track_ids:
+                            n_clones += 1
+                        elif tmax_y12 not in true_track_ids:
+                            n_others += 1
+
+                    else:
+                        n_ghosts += 1
+                else:
+                    n_ghosts += 1
+
+            else:
+                n_ghosts += 1
+
+        output = (n_tracks, n_recognized, n_clones, n_ghosts, n_others)
+
+        return output
+
+
+    def muon_with_tagger_metrics(self, track_hit_ids):
+
+        n_tracks = 0
+        n_recognized = 0
+        n_clones = 0
+        n_ghosts = 0
+        n_others = 0
+
+        true_tagger_track_ids = []
+        for ahit in self.sTree.MuonTaggerPoint:
+            track_id = ahit.GetTrackID()
+            pdg = ahit.PdgCode()
+            if track_id not in true_tagger_track_ids:
+                if abs(pdg)==13:
+                    true_tagger_track_ids.append(track_id)
+
+        true_track_ids = []
+        for ahit in self.sTree.MufluxSpectrometerPoint:
+            track_id = ahit.GetTrackID()
+            pdg = ahit.PdgCode()
+            if track_id not in true_track_ids:
+                if abs(pdg)==13:
+                    if track_id in true_tagger_track_ids:
+                        true_track_ids.append(track_id)
+
+        n_tracks = len(true_track_ids)
+        found_track_ids = []
+        min_hits = 3
+
+        for i_track in track_hit_ids.keys():
+
+            atrack = track_hit_ids[i_track]
+            atrack_y12 = atrack['y12']
+            atrack_stereo12 = atrack['stereo12']
+            atrack_34 = atrack['34']
+            atrack_y_tagger = atrack['y_tagger']
+
+            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits and len(atrack_y_tagger) >= withNTaggerHits:
 
                 reco_hit_ids_y12 = []
                 for i_hit in atrack_y12:
@@ -833,6 +951,7 @@ class MufluxDigiReco:
             atrack_y12 = atrack['y12']
             atrack_stereo12 = atrack['stereo12']
             atrack_34 = atrack['34']
+            atrack_y_tagger = atrack['y_tagger']
 
             reco_hit_ids_y12 = []
             for i_hit in atrack_y12:
@@ -852,7 +971,7 @@ class MufluxDigiReco:
                 reco_hit_ids_34.append(ahit.GetTrackID())
             frac_34, tmax_34 = self.fracMCsame(reco_hit_ids_34)
 
-            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits:
+            if len(atrack_y12) >= min_hits and len(atrack_stereo12) >= min_hits and len(atrack_34) >= min_hits and len(atrack_y_tagger) >= withNTaggerHits:
 
                 min_eff = 0.7
                 if tmax_y12 == tmax_stereo12 and tmax_y12 == tmax_34:
@@ -903,18 +1022,22 @@ class MufluxDigiReco:
         if self.sTree.GetBranch("MufluxSpectrometerPoint"):
             if withT0:
                 self.SmearedHits = self.withT0Estimate()
+                self.TaggerHits = self.muonTaggerHits_mc()
             else:
                 self.SmearedHits = self.smearHits(withNoStrawSmearing)
+                self.TaggerHits = self.muonTaggerHits_mc()
         elif self.sTree.GetBranch("Digi_MufluxSpectrometerHits"):
             self.SmearedHits = self.smearHits_realData()
+            self.TaggerHits = self.muonTaggerHits_realData()
         else:
             print('No branches "MufluxSpectrometer" or "Digi_MufluxSpectrometerHits".')
             return nTrack
 
+
         if realPR:
 
             # Do real PatRec
-            track_hits = MufluxPatRec.execute(self.SmearedHits)
+            track_hits = MufluxPatRec.execute(self.SmearedHits, self.TaggerHits, withNTaggerHits)
 
             # Create hitPosLists for track fit
             for i_track in track_hits.keys():
@@ -1129,18 +1252,32 @@ class MufluxDigiReco:
                     x_hits_y.append(ahit['xtop'])
             plt.figure(figsize=(11, 6))
             plt.scatter(z_hits_y, x_hits_y, color='b')
+
+            z_tagger_hits_y = []
+            x_tagger_hits_y = []
+            for ahit in self.TaggerHits:
+                detID = ahit['detID']
+                station = detID // 10000
+                direction = (detID - station * 10000) // 1000
+                if direction == 1 or detID < 10:
+                    z_tagger_hits_y.append(ahit['z'])
+                    x_tagger_hits_y.append((ahit['xtop'] + ahit['xbot']) / 2.)
+            plt.scatter(z_tagger_hits_y, x_tagger_hits_y, color='b')
+
             for i_track in track_hits:
                 atrack = track_hits[i_track]
                 atrack_y12 = atrack['y12']
                 atrack_stereo12 = atrack['stereo12']
                 atrack_34 = atrack['34']
-                atrack_y = list(atrack_y12) + list(atrack_34)
+                atrack_tagger = atrack['y_tagger']
+                atrack_y = list(atrack_y12) + list(atrack_34) + list(atrack_tagger)
                 z_atrack_y = [ahit['z'] for ahit in atrack_y]
                 x_atrack_y = [ahit['xtop'] for ahit in atrack_y]
                 plt.scatter(z_atrack_y, x_atrack_y, color=np.random.rand(3,))
+
             plt.xlabel('z')
             plt.ylabel('x')
-            plt.xlim(0, 1000)
+            plt.xlim(0, 1200)
             plt.ylim(-150, 150)
             plt.savefig('pics/event_'+str(self.iEvent)+'.pdf', format='pdf', bbox_inches='tight')
             plt.clf()
@@ -1167,6 +1304,13 @@ class MufluxDigiReco:
             h['Reco_muon'].Fill("N clones", n_clones)
             h['Reco_muon'].Fill("N ghosts", n_ghosts)
             h['Reco_muon'].Fill("N others", n_others)
+
+            (n_tracks, n_recognized, n_clones, n_ghosts, n_others) = self.muon_with_tagger_metrics(track_hits)
+            h['Reco_muon_with_tagger'].Fill("N total", n_tracks)
+            h['Reco_muon_with_tagger'].Fill("N recognized tracks", n_recognized)
+            h['Reco_muon_with_tagger'].Fill("N clones", n_clones)
+            h['Reco_muon_with_tagger'].Fill("N ghosts", n_ghosts)
+            h['Reco_muon_with_tagger'].Fill("N others", n_others)
 
             (n_tracks, n_recognized, n_clones, n_ghosts, n_others) = self.muon_metrics_vs_p(track_hits)
 

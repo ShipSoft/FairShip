@@ -11,7 +11,7 @@ def initialize(fgeo):
     pass
 
 
-def execute(SmearedHits):
+def execute(SmearedHits, TaggerHits, withNTaggerHits):
     """
     Main function of track pattern recognition.
     
@@ -465,7 +465,40 @@ def execute(SmearedHits):
             short_tracks_stereo12.append(max_track)
             for ahit in max_track['hits']:
                 used_hits.append(ahit['digiHit'])
-        
+
+
+    # MuID
+    short_tracks_y_tagger = []
+    used_hits = []
+    min_tagger_hits = 1
+    for atrack_34 in short_tracks_34:
+
+        k, b = atrack_34['k'], atrack_34['b']
+        atrack = {}
+        atrack['hits'] = []
+        atrack['x'] = []
+        atrack['z'] = []
+        atrack['layer'] = []
+        atrack['i_track_y12'] = atrack_34['i_track_y12']
+
+        for ahit in TaggerHits:
+            detID = ahit['detID']
+            station = detID // 10000
+            direction = (detID - station * 10000) // 1000
+            if detID < 10:
+                station = detID
+            if direction == 1 or detID < 10:
+                z = ahit['z']
+                x = (ahit['xtop'] + ahit['xbot']) / 2
+                if hit_in_window(z, x, k, b, window_width=10.):
+                    if station not in atrack['layer']:
+                        if ahit['digiHit'] not in used_hits:
+                            atrack['hits'].append(ahit)
+                            atrack['layer'].append(station)
+                            used_hits.append(ahit['digiHit'])
+
+        if len(atrack['hits']) >= min_tagger_hits:
+            short_tracks_y_tagger.append(atrack)
 
 
     # Prepare output of PatRec
@@ -475,6 +508,7 @@ def execute(SmearedHits):
         hits_y12 = []
         hits_stereo12 = []
         hits_34 = []
+        hits_tagger = []
         
         for ahit in short_tracks_y12[i_track]['hits']:
             hits_y12.append(ahit)
@@ -491,8 +525,14 @@ def execute(SmearedHits):
                     hits_34.append(ahit)
                 break
 
-        if len(hits_y12) >= min_hits and len(hits_stereo12) >= min_hits and len(hits_34) >= min_hits:
-            atrack = {'y12': hits_y12, 'stereo12': hits_stereo12, '34': hits_34}
+        for atrack in short_tracks_y_tagger:
+            if atrack['i_track_y12'] == i_track:
+                for ahit in atrack['hits']:
+                    hits_tagger.append(ahit)
+                break
+
+        if len(hits_y12) >= min_hits and len(hits_stereo12) >= min_hits and len(hits_34) >= min_hits and len(hits_tagger) >= withNTaggerHits:
+            atrack = {'y12': hits_y12, 'stereo12': hits_stereo12, '34': hits_34, 'y_tagger': hits_tagger}
             track_hits[i_track] = atrack
 
 
