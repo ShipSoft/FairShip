@@ -25,7 +25,7 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop)
    const float H_STRIP_OFF = 0.1983;   // offset between adjacent H strips, in cm
    const float V_STRIP_OFF = 0.2000;   // offset between adjacent V strips, in cm
    const float total_width =
-      (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STIP_OFF;
+      (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF;
    const float total_height =
       (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF;
    const float x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2;
@@ -42,7 +42,7 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop)
    };
 
    switch (direction) {
-   case horizontal:
+   case horizontal: {
       float y;
       auto xtop = x_start;
       auto xbot = x_start - total_width;
@@ -56,7 +56,8 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop)
       vtop.SetXYZ(xtop, y, Z);
       vbot.SetXYZ(xbot, y, Z);
       break;
-   case vertical:
+   }
+   case vertical: {
       float x;
       auto ytop = y_start - total_height;
       auto ybot = y_start;
@@ -70,6 +71,7 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop)
       vtop.SetXYZ(x, ytop, Z);
       vbot.SetXYZ(x, ybot, Z);
       break;
+   }
    }
 }
 
