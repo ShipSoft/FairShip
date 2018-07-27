@@ -145,8 +145,8 @@ def plotEvent(n):
      c[0]+=1
     if view == 0:
      hit.EndPoints(vtop,vbot)
-     x,z =  (vtop[0]+vbot[0])/2.,(vtop[2]+vbot[2])/2.
-     rc = cy[1].SetPoint(c[0],z,x)
+     y,z =  (vtop[1]+vbot[1])/2.,(vtop[2]+vbot[2])/2.
+     rc = cy[1].SetPoint(c[0],z,y)
      cy[0]+=1
    h['hitCollection']['downstream'][1].SetMarkerColor(ROOT.kRed)
    h['hitCollection']['upstream'][1].SetMarkerColor(ROOT.kBlue)
