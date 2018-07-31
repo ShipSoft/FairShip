@@ -117,6 +117,7 @@ class MufluxDigiReco:
 
         # init fitter, to be done before importing shipPatRec
         self.fitter      = ROOT.genfit.DAF()
+        self.fitter.setMaxIterations(20)
 
         if debug:
 
@@ -126,6 +127,7 @@ class MufluxDigiReco:
                 print('The directiry is already exists. It is OK.')
             else:
                 os.mkdir(output_dir)
+
 
     # for 'real' PatRec
     #shipPatRec.initialize(fgeo)
@@ -278,6 +280,73 @@ class MufluxDigiReco:
         return SmearedHits
 
 
+    def stationInfo(self, hit):
+        # Taken from charmdet/drifttubeMonitoring.py
+        detid = hit.GetDetectorID()
+        statnb = detid/10000000;
+        vnb =  (detid - statnb*10000000)/1000000
+        pnb =  (detid - statnb*10000000 - vnb*1000000)/100000
+        lnb =  (detid - statnb*10000000 - vnb*1000000 - pnb*100000)/10000
+        view = "_x"
+        if vnb==0 and statnb==2: view = "_v"
+        if vnb==1 and statnb==1: view = "_u"
+        if pnb>1:
+            print "something wrong with detector id",detid
+            pnb = 0
+        return statnb,vnb,pnb,lnb,view
+
+    def correctAlignment(self, hit):
+        # Taken from charmdet/drifttubeMonitoring.py
+        sqrt2 = ROOT.TMath.Sqrt(2.)
+        cos30 = ROOT.TMath.Cos(30./180.*ROOT.TMath.Pi())
+        sin30 = ROOT.TMath.Sin(30./180.*ROOT.TMath.Pi())
+        #delX=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+        delX=[[-1.2,1.4,-0.9,0.7],[-1.69-1.31,0.3+2.82,0.6-0.4,-0.8-0.34],[-0.9,1.14,-0.80,1.1],[-0.8,1.29,0.15,2.0]]
+        #delUV = [[1.8,-2.,0.8,-1.],[1.2,-1.1,-0.5,0.3]]
+        delUV = [[0,0,0,0],[0,0,0,0]]
+        vtop = ROOT.TVector3()
+        vbot = ROOT.TVector3()
+        rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
+        s,v,p,l,view = self.stationInfo(hit)
+        if view=='_x':
+            cor = delX[s-1][2*l+p]
+            vbot[0]=vbot[0]+cor
+            vtop[0]=vtop[0]+cor
+        else:
+            if view=='_u':     cor = delUV[0][2*l+p]
+            elif view=='_v':   cor = delUV[1][2*l+p]
+            vbot[0]=vbot[0]+cor*cos30
+            vtop[0]=vtop[0]+cor*cos30
+            vbot[1]=vbot[1]+cor*sin30
+            vtop[1]=vtop[1]+cor*sin30
+            #tmp = vbot[0]*ROOT.TMath.Cos(rotUV)-vbot[1]*ROOT.TMath.Sin(rotUV)
+            #vbot[1]=vbot[1]*ROOT.TMath.Cos(rotUV)+vbot[0]*ROOT.TMath.Sin(rotUV)
+            #vbot[0]=tmp
+            #tmp = vtop[0]*ROOT.TMath.Cos(rotUV)-vtop[1]*ROOT.TMath.Sin(rotUV)
+            #vtop[1]=vtop[1]*ROOT.TMath.Cos(rotUV)+vtop[0]*ROOT.TMath.Sin(rotUV)
+            #vbot[0]=tmp
+        return vbot,vtop
+
+
+    def RT(self, s,t,function='parabola'):
+        # Taken from charmdet/drifttubeMonitoring.py
+        # rt relation, drift time to distance, drift time?
+        tMinAndTmax = {1:[587,1860],2:[587,1860],3:[610,2300],4:[610,2100]}
+        R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm
+        # parabola
+        if function == 'parabola' or not h.has_key('rtTDC'+str(s)+'000_x'):
+            p1p2 = {1:[688.,7.01],2:[688.,7.01],3:[923.,4.41],4:[819.,0.995]}
+            t0_corr = max(0,t-tMinAndTmax[s][0])
+            tmp1 = ROOT.TMath.Sqrt(p1p2[s][0]**2+4.*p1p2[s][1]*t0_corr)
+            r = (2*tmp1-2*p1p2[s][0]+p1p2[s][0]*ROOT.TMath.Log(-p1p2[s][0]+2*tmp1)-p1p2[s][0]*ROOT.TMath.Log(p1p2[s][0]) )/(8*p1p2[s][1])
+        else:
+            if t > tMinAndTmax[s][1]: r = R
+            elif t< tMinAndTmax[s][0]: r = 0
+            else: r = h['rtTDC'+str(s)+'000_x'].Eval(t)
+        # h['TDC2R'].Fill(t,r)
+        return r
+
+
     def smearHits_realData(self):
 
         # smear strawtube points
@@ -288,10 +357,14 @@ class MufluxDigiReco:
             detID = ahit.GetDetectorID()
             top = ROOT.TVector3()
             bot = ROOT.TVector3()
-            ahit.MufluxSpectrometerEndPoints(bot,top)
+            bot, top = self.correctAlignment(ahit)
+            # modules["MufluxSpectrometer"].TubeEndPoints(detID,bot,top)
+            # ahit.MufluxSpectrometerEndPoints(bot,top)
             # MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop)
             # distance to wire.
-            dist  = ahit.GetDigi() * 3.7 / (2000. * 2.)
+            # dist  = ahit.GetDigi() * 3.7 / (2000. * 2.)
+            tdc = ahit.GetDigi()
+            dist = self.RT(ahit.GetDetectorID()/10000000, tdc)
 
             SmearedHits.append( {'digiHit':key,'xtop':top.x(),'ytop':top.y(),'z':top.z(),'xbot':bot.x(),'ybot':bot.y(),'dist':dist, 'detID':detID} )
 
@@ -1013,6 +1086,7 @@ class MufluxDigiReco:
         trackDigiHits_noT4 = {}
         trackCandidates = []
         trackCandidates_noT4 = []
+        trackCandidates_all = []
         nTrack = -1
 
         self.fGenFitArray.Delete()
@@ -1037,7 +1111,7 @@ class MufluxDigiReco:
         if realPR:
 
             # Do real PatRec
-            track_hits = MufluxPatRec.execute(self.SmearedHits, self.TaggerHits, withNTaggerHits)
+            track_hits = MufluxPatRec.execute(self.SmearedHits, self.TaggerHits, withNTaggerHits, withDist2Wire)
 
             # Create hitPosLists for track fit
             for i_track in track_hits.keys():
@@ -1050,7 +1124,8 @@ class MufluxDigiReco:
 
                 for sm in atrack_smeared_hits:
 
-                    detID = self.digiMufluxSpectrometer[sm['digiHit']].GetDetectorID()
+                    # detID = self.digiMufluxSpectrometer[sm['digiHit']].GetDetectorID()
+                    detID = sm['detID']
                     station = int(detID/10000000)
                     trID = i_track
 
@@ -1089,7 +1164,8 @@ class MufluxDigiReco:
             track_hits = {}
             for sm in self.SmearedHits:
 
-                detID = self.digiMufluxSpectrometer[sm['digiHit']].GetDetectorID()
+                # detID = self.digiMufluxSpectrometer[sm['digiHit']].GetDetectorID()
+                detID = sm['detID']
                 station = int(detID/10000000)
                 vnb = (detID - station * 10000000) // 1000000
                 is_y12 = (station == 1) * (vnb == 0) + (station == 2) * (vnb == 1)
@@ -1133,6 +1209,58 @@ class MufluxDigiReco:
                         stationCrossed_noT4[trID][station]=0
                     stationCrossed_noT4[trID][station]+=1
                     trackDigiHits_noT4[trID].append(sm['digiHit'])
+
+
+        # All tracks fit
+        for atrack in hitPosLists:
+
+            if atrack < 0:
+                continue # these are hits not assigned to MC track because low E cut
+            pdg = 13 # only muons
+            if not abs(pdg)==13:
+                continue # only keep muons
+
+            meas = hitPosLists[atrack]
+            nM = meas.size()
+
+            #if nM < 12 : continue                          # not enough hits to make a good trackfit
+            #comment for hits in t1-3
+            #if len(stationCrossed[atrack]) < 4 :
+            #    continue  # not enough stations crossed to make a good trackfit
+
+            charge = self.PDG.GetParticle(pdg).Charge()/(3.)
+            posM = ROOT.TVector3(0, 0, 0)
+            momM = ROOT.TVector3(0,0,3.*u.GeV)
+            # approximate covariance
+            covM = ROOT.TMatrixDSym(6)
+            resolution = self.sigma_spatial
+            if withT0:
+                resolution = resolution*1.4 # worse resolution due to t0 estimate
+            for i in range(3):
+                covM[i][i] = resolution*resolution
+            covM[0][0]=resolution*resolution*100.
+            for i in range(3,6):
+                covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
+            # trackrep
+            rep = ROOT.genfit.RKTrackRep(pdg)
+            # smeared start state
+            stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
+            rep.setPosMomCov(stateSmeared, posM, momM, covM)
+            # create track
+            seedState = ROOT.TVectorD(6)
+            seedCov   = ROOT.TMatrixDSym(6)
+            rep.get6DStateCov(stateSmeared, seedState, seedCov)
+            theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
+            hitCov = ROOT.TMatrixDSym(7)
+            hitCov[6][6] = resolution*resolution
+            for m in meas:
+                tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to
+                measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
+                measurement.setMaxDistance(1.85*u.cm)
+                # measurement.setLeftRightResolution(-1)
+                tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
+                theTrack.insertPoint(tp)  # add point to Track
+            trackCandidates_all.append([theTrack,atrack])
 
 
         # T1-4 track fit
@@ -1250,7 +1378,8 @@ class MufluxDigiReco:
                 if is_y12 or is_34:
                     z_hits_y.append(ahit['z'])
                     x_hits_y.append(ahit['xtop'])
-            plt.figure(figsize=(11, 6))
+            plt.figure(figsize=(22, 6))
+            plt.subplot(1, 2, 1)
             plt.scatter(z_hits_y, x_hits_y, color='b')
 
             z_tagger_hits_y = []
@@ -1279,6 +1408,39 @@ class MufluxDigiReco:
             plt.ylabel('x')
             plt.xlim(0, 1200)
             plt.ylim(-150, 150)
+
+
+            plt.subplot(1, 2, 2)
+            for ahit in self.SmearedHits:
+                detID = ahit['detID']
+                station = int(detID/10000000)
+                vnb = (detID - station * 10000000) // 1000000
+                is_y12 = (station == 1) * (vnb == 0) + (station == 2) * (vnb == 1)
+                is_stereo12 = (station == 1) * (vnb == 1) + (station == 2) * (vnb == 0)
+                is_34 = (station == 3) + (station == 4)
+                if is_y12 or is_stereo12:
+                    xbot, xtop = ahit['xbot'], ahit['xtop']
+                    ybot, ytop = ahit['ybot'], ahit['ytop']
+                    plt.plot([ybot, ytop], [xbot, xtop], color='b')
+
+            for i_track in track_hits:
+                atrack = track_hits[i_track]
+                atrack_y12 = atrack['y12']
+                atrack_stereo12 = atrack['stereo12']
+                atrack_34 = atrack['34']
+                atrack_tagger = atrack['y_tagger']
+                atrack_12 = list(atrack_y12) + list(atrack_stereo12)
+                color = np.random.rand(3,)
+                for ahit in atrack_12:
+                    xbot, xtop = ahit['xbot'], ahit['xtop']
+                    ybot, ytop = ahit['ybot'], ahit['ytop']
+                    plt.plot([ybot, ytop], [xbot, xtop], color=color)
+
+            plt.xlabel('y')
+            plt.ylabel('x')
+            plt.xlim(-50, 50)
+            plt.ylim(-50, 50)
+
             plt.savefig('pics/event_'+str(self.iEvent)+'.pdf', format='pdf', bbox_inches='tight')
             plt.clf()
             plt.close()
@@ -1497,6 +1659,8 @@ class MufluxDigiReco:
                 P = fittedMom
                 Pt = ROOT.TMath.Sqrt(Px*Px+Py*Py)
                 h['p/pt'].Fill(P,Pt)
+                h['pt-fittedtracks'].Fill(Pt)
+                h['1/pt-fittedtracks'].Fill(1./Pt)
 
                 if self.sTree.GetBranch("MufluxSpectrometerPoint"):
 
@@ -1590,6 +1754,8 @@ class MufluxDigiReco:
                 P = fittedMom
                 Pt = ROOT.TMath.Sqrt(Px*Px+Py*Py)
                 h['p/pt_noT4'].Fill(P,Pt)
+                h['pt-fittedtracks-noT4'].Fill(Pt)
+                h['1/pt-fittedtracks-noT4'].Fill(1./Pt)
 
                 if self.sTree.GetBranch("MufluxSpectrometerPoint"):
 
@@ -1632,6 +1798,88 @@ class MufluxDigiReco:
                 print "noT4 track: problem with fittedstate"
                 continue
 
+
+        for entry in trackCandidates_all:
+            #check
+            #print "fitting without stereo hits"
+            atrack = entry[1]
+            theTrack = entry[0]
+            if not theTrack.checkConsistency():
+                print 'Problem with track before fit, not consistent',atrack,theTrack
+                continue
+            # do the fit
+            try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
+            except:
+                print "genfit failed to fit track"
+                continue
+            #check
+            if not theTrack.checkConsistency():
+                print 'Problem with track after fit, not consistent',atrack,theTrack
+                continue
+            fitStatus   = theTrack.getFitStatus()
+            nmeas = fitStatus.getNdf()
+            chi2        = fitStatus.getChi2()/nmeas
+            pvalue = fitStatus.getPVal()
+            #if pvalue < 0.05:
+            #  print "P value too low. Rejecting track."
+            #  continue
+            h['nmeas-all'].Fill(nmeas)
+            h['chi2-all'].Fill(chi2)
+            h['p-value-all'].Fill(pvalue)
+            try:
+
+                fittedState = theTrack.getFittedState()
+                fittedMom = fittedState.getMomMag()
+                h['p-fittedtracks-all'].Fill(fittedMom)
+                h['1/p-fittedtracks-all'].Fill(1./fittedMom)
+                Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
+                P = fittedMom
+                Pt = ROOT.TMath.Sqrt(Px*Px+Py*Py)
+                h['p/pt_all'].Fill(P,Pt)
+                h['pt-fittedtracks-all'].Fill(Pt)
+                h['1/pt-fittedtracks-all'].Fill(1./Pt)
+
+                if self.sTree.GetBranch("MufluxSpectrometerPoint"):
+
+                    atrack_ids = []
+                    for digi_hit in trackDigiHits_noT4[atrack]:
+                        ahit = self.sTree.MufluxSpectrometerPoint[digi_hit]
+                        atrack_ids.append(ahit.GetTrackID())
+                    frac, tmax = self.fracMCsame(atrack_ids)
+                    Ptruth,Ptruthx,Ptruthy,Ptruthz = self.getPtruthFirst(tmax)
+                    Pgun,Pgunx,Pguny,Pgunz = self.getPtruthAtOrigin(tmax)
+                    Pttruth = ROOT.TMath.Sqrt(Ptruthx*Ptruthx+Ptruthy*Ptruthy)
+                    h['p/pt_truth_all'].Fill(Ptruth,Pttruth)
+                    perr = (P - Ptruth) / Ptruth
+                    pterr = (Pt - Pttruth) / Pttruth
+                    h['p_rel_error_all'].Fill(perr)
+                    h['pt_rel_error_all'].Fill(pterr)
+
+                    if Pz !=0:
+                        pxpzfitted = Px/Pz
+                        pypzfitted = Py/Pz
+                        if Ptruthz !=0:
+                            pxpztrue = Ptruthx/Ptruthz
+                            pypztrue = Ptruthy/Ptruthz
+                            h['Px/Pzfitted-Px/Pztruth-all'].Fill(Ptruth,pxpzfitted-pxpztrue)
+                            h['Py/Pzfitted-Py/Pztruth-all'].Fill(Ptruth,pypzfitted-pypztrue)
+                            h['Px/Pzfitted-all'].Fill(pxpzfitted)
+                            h['Py/Pzfitted-all'].Fill(pypzfitted)
+                            h['Px/Pztrue-all'].Fill(pxpztrue)
+                            h['Py/Pztrue-all'].Fill(pypztrue)
+
+                    h['ptruth-all'].Fill(Ptruth)
+                    delPOverP = (P/Ptruth)-1
+                    invdelPOverP = (Ptruth/P)-1
+                    h['delPOverP-all'].Fill(Ptruth,delPOverP)
+                    h['invdelPOverP-all'].Fill(Ptruth,invdelPOverP)
+                    h['deltaPOverP-all'].Fill(Ptruth,delPOverP)
+                    h['Pfitted-Pgun-all'].Fill(Pgun,P)
+                    #print "end fitting without stereo hits"
+            except:
+                print "All tracks: problem with fittedstate"
+                continue
+
             # make track persistent
             nTrack   = self.fGenFitArray.GetEntries()
             if not debug:
@@ -1640,6 +1888,7 @@ class MufluxDigiReco:
             self.fitTrack2MC.push_back(atrack)
             if debug:
                 print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
+
         self.fitTracks.Fill()
         self.mcLink.Fill()
         return nTrack+1
@@ -1649,10 +1898,6 @@ class MufluxDigiReco:
         print 'finished writing tree'
         self.sTree.Write()
         ut.errorSummary()
-        h['p/pt_truth_noT4'].Draw('colz')
-        h['p/pt_truth'].Draw('colz')
-        h['p/pt'].Draw('colz')
-        h['p/pt_noT4'].Draw('colz')
         ut.writeHists(h,"recohists.root")
         # if realPR: ut.writeHists(shipPatRec.h,"recohists_patrec.root")
 
