@@ -66,7 +66,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.gausbeam = True
     c.Box.Julytarget = False
     #c.Box.GapPostTargetTh = 5 * u.cm #gap between charm target and T1 station
-    c.Box.GapPostTargetTh = 1.2 * u.cm     
+    c.Box.GapPostTargetTh = 0.73 * u.cm     
     #c.Box.GapPostTargetTh = 0*u.cm
     c.Box.RunNumber =  3 #run configuration for charm
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
@@ -188,7 +188,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
     c.Spectrometer.D1Long = 4 * u.cm;   
     c.Spectrometer.DimZSi = 0.0200 * u.cm
-    c.Spectrometer.PairSiDistance = 0.6 * u.cm +c.Spectrometer.DimZSi 
+    c.Spectrometer.PairSiDistance = 0.600 * u.cm +c.Spectrometer.DimZSi 
     c.Spectrometer.Sioverlap = 0.2*u.cm   
          
     c.Spectrometer.SX = c.Spectrometer.DX
@@ -197,11 +197,11 @@ with ConfigRegistry.register_config("basic") as c:
     
     #position of module centres
     c.Spectrometer.zSi0 = c.Spectrometer.PairSiDistance/2. + c.Spectrometer.DimZSi/2. + c.Box.GapPostTargetTh
-    c.Spectrometer.zSi1 = c.Spectrometer.zSi0 + 2.5 *u.cm
-    c.Spectrometer.zSi2 = c.Spectrometer.zSi1 + 2.5 *u.cm
-    c.Spectrometer.zSi3 = c.Spectrometer.zSi2 + 2.5 *u.cm
-    c.Spectrometer.zSi4 = c.Spectrometer.zSi3 + 2.5 *u.cm
-    c.Spectrometer.zSi5 = c.Spectrometer.zSi4 + 2.5 *u.cm    
+    c.Spectrometer.zSi1 = c.Spectrometer.zSi0 + 2.70 *u.cm
+    c.Spectrometer.zSi2 = c.Spectrometer.zSi1 + 2.54 *u.cm
+    c.Spectrometer.zSi3 = c.Spectrometer.zSi2 + 2.70 *u.cm
+    c.Spectrometer.zSi4 = c.Spectrometer.zSi3 + 2.54 *u.cm
+    c.Spectrometer.zSi5 = c.Spectrometer.zSi4 + 2.70 *u.cm    
 
     c.Spectrometer.DSciFi1X = 40 * u.cm;
     c.Spectrometer.DSciFi1Y = 40 * u.cm;
@@ -230,7 +230,7 @@ with ConfigRegistry.register_config("basic") as c:
    
     c.Spectrometer.DimZpixelbox = c.Box.GapPostTargetTh + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi
     
-    PixeltoGoliath = 40 *u.cm
+    PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.Spectrometer.DimZpixelbox/2.
     c.Box.zBox = c.Spectrometer.zBox - c.Spectrometer.DimZpixelbox/2. 
 
