@@ -18,6 +18,7 @@
 #pragma link C++ class Scintillator+;
 #pragma link C++ class ScintillatorPoint+;
 #pragma link C++ class ScintillatorHit+;
+#pragma link C++ class PixelHit+;
 
 #endif
 

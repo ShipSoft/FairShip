@@ -60,10 +60,10 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    auto df = reinterpret_cast<DataFrame *>(data);
    assert(df->header.size == size);
    switch (df->header.frameTime){
-      case 0xFF005C03:
+      case SoS:
          LOG(INFO) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
          return kTRUE;
-      case 0xFF005C04:
+      case EoS:
          LOG(INFO) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl;
          return kTRUE;
       default:

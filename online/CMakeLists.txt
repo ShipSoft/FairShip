@@ -27,6 +27,7 @@ Set(SRCS
     DriftTubeUnpack.cxx
     RPCUnpack.cxx
     ScalerUnpack.cxx
+    PixelUnpack.cxx
 )
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")

@@ -82,6 +82,16 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
    LOG(INFO) << "RPCUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
+   switch (df->header.frameTime){
+      case SoS:
+         LOG(INFO) << "RPCUnpack: SoS frame." << FairLogger::endl;
+         return kTRUE;
+      case EoS:
+         LOG(INFO) << "RPCUnpack: EoS frame." << FairLogger::endl;
+         return kTRUE;
+      default:
+         break;
+   }
    assert(df->header.size == size);
    auto nhits = (size - sizeof(DataFrame)) / 12;
    static_assert(sizeof(RawHit) == 12, "Padding is off");

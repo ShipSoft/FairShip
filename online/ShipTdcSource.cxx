@@ -1,7 +1,7 @@
 #include "ShipTdcSource.h"
 #include "FairLogger.h"
+#include "ShipUnpack.h"
 #include "ShipOnlineDataFormat.h"
-#include "DriftTubeUnpack.h"
 
 ShipTdcSource::ShipTdcSource() : FairOnlineSource(), fFilename("tdcdata.bin") {}
 
@@ -28,8 +28,8 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
    total_size -= sizeof(DataFrame);
    data = reinterpret_cast<Int_t *>(&(mf->hits));
    switch (mf->header.frameTime) {
-   case 0xFF005C03: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; break;
-   case 0xFF005C04: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
+   case SoS: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; break;
+   case EoS: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
    default: break;
    }
    while (total_size > 0) {
