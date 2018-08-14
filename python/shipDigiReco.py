@@ -253,7 +253,9 @@ class ShipDigiReco:
      # print '--- digitizeSplitcal - index = ', index
      # print '--- digitizeSplitcal - detID = ', detID
      if detID not in listOfDetID:
-       # print '--- digitizeSplitcal - NEW DETID '       
+       # print '--- digitizeSplitcal - NEW DETID ' 
+       if self.digiSplitcal.GetSize() == index: 
+         self.digiSplitcal.Expand(index+1000)
        listOfDetID[detID] = index
        self.digiSplitcal[index]=aHit
        index+=1
@@ -266,7 +268,7 @@ class ShipDigiReco:
        self.digiSplitcal[indexOfExistingHit].UpdateEnergy(aHit.GetEnergy())
        # print '--- digitizeSplitcal - existingHit.GetEnergy() after update = ', self.digiSplitcal[indexOfExistingHit].GetEnergy()
        
-     #if self.digiSplitcal.GetSize() == index: self.digiSplitcal.Expand(index+1000)  # not sure what it does and if it is really neeeded
+     #if self.digiSplitcal.GetSize() == index: self.digiSplitcal.Expand(index+1000)  
      #self.digiSplitcal[index]=aHit
      #index+=1
 
