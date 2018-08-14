@@ -5,6 +5,9 @@ import shipunit as u
 import rootUtils as ut
 from array import array
 import sys 
+from math import fabs
+import numpy as np
+import matplotlib.pyplot as plt
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -13,6 +16,8 @@ class ShipDigiReco:
  def __init__(self,fout,fgeo):
   self.fn = ROOT.TFile.Open(fout,'update')
   self.sTree     = self.fn.cbmsim
+  self.dTree = ROOT.TTree( 'dTree', 'tree with digitised (splitcal) hits' ) #ROSA - tree with digitised (splitcal) hits
+
   if self.sTree.GetBranch("FitTracks"):
     print "remove RECO branches and rerun reconstruction"
     self.fn.Close()    
@@ -32,6 +37,7 @@ class ShipDigiReco:
     if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
     if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
     if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
+    if sTree.GetBranch("Digi_SplitcalHits"): sTree.SetBranchStatus("Digi_SplitcalHits",0) 
 
     rawFile = fout.replace("_rec.root","_raw.root")
     recf = ROOT.TFile(rawFile,"recreate")
@@ -45,7 +51,7 @@ class ShipDigiReco:
     recf.Close() 
     os.system('cp '+rawFile +' '+fout)
     self.fn = ROOT.TFile(fout,'update')
-    self.sTree     = self.fn.cbmsim     
+    self.sTree     = self.fn.cbmsim 
 #  check that all containers are present, otherwise create dummy version
   self.dummyContainers={}
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
@@ -89,6 +95,9 @@ class ShipDigiReco:
 # for the digitizing step
   self.v_drift = modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
+  self.digiSplitcal = ROOT.TClonesArray("splitcalHit") 
+  #self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1) # ROSA: it is not working for me. Expanding existing tree can be sometimes problematic --> create and fill new tree 
+  self.digiSplitcalBranch=self.dTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1) #ROSA - tree with digitised (splitcal) hits
 
 # setup ecal reconstruction
   self.caloTasks = []  
@@ -228,6 +237,328 @@ class ShipDigiReco:
    self.digiMuon.Delete()
    self.digitizeMuon()
    self.digiMuonBranch.Fill()
+   self.digiSplitcal.Delete()      
+   self.digitizeSplitcal()         
+   self.digiSplitcalBranch.Fill() 
+   self.dTree.Fill() #ROSA - tree with digitised (splitcal) hits
+
+
+ def digitizeSplitcal(self):  
+   listOfDetID = {} # the idea is to keep only one hit for each cell/strip and if more points fall in the same cell/strip just sum up the energy
+   index = 0
+   #print '--- digitizeSplitcal - self.sTree.splitcalPoint.GetSize() = ', self.sTree.splitcalPoint.GetSize()  
+   for aMCPoint in self.sTree.splitcalPoint:
+     aHit = ROOT.splitcalHit(aMCPoint,self.sTree.t0)
+     detID = aHit.GetDetectorID()
+     # print '--- digitizeSplitcal - index = ', index
+     # print '--- digitizeSplitcal - detID = ', detID
+     if detID not in listOfDetID:
+       # print '--- digitizeSplitcal - NEW DETID '       
+       listOfDetID[detID] = index
+       self.digiSplitcal[index]=aHit
+       index+=1
+     else:
+       # print '--- digitizeSplitcal - already existing detID '       
+       indexOfExistingHit = listOfDetID[detID]
+       # existingHit = self.digiSplitcal[indexOfExistingHit]
+       # print '--- digitizeSplitcal - existingHit.GetEnergy() = ', existingHit.GetEnergy()       
+       # print '--- digitizeSplitcal - aHit.GetEnergy() = ', aHit.GetEnergy() 
+       self.digiSplitcal[indexOfExistingHit].UpdateEnergy(aHit.GetEnergy())
+       # print '--- digitizeSplitcal - existingHit.GetEnergy() after update = ', self.digiSplitcal[indexOfExistingHit].GetEnergy()
+       
+     #if self.digiSplitcal.GetSize() == index: self.digiSplitcal.Expand(index+1000)  # not sure what it does and if it is really neeeded
+     #self.digiSplitcal[index]=aHit
+     #index+=1
+
+   ##########################    
+   # cluster reconstruction #
+   ##########################
+   
+   # hits above threshold
+   noise_energy_threshold = 0.002 #GeV
+   list_hits_above_threshold = []
+   print '--- digitizeSplitcal - self.digiSplitcal.GetSize() = ', self.digiSplitcal.GetSize()  
+   for hit in self.digiSplitcal:
+     #print '--- digitizeSplitcal - hit.GetEnergy() = ', hit.GetEnergy()  
+     if hit.GetEnergy() > noise_energy_threshold:
+       list_hits_above_threshold.append(hit)
+       hit.SetIsUsed(0)
+
+   self.list_hits_above_threshold = list_hits_above_threshold
+
+   print '--- digitizeSplitcal - n hits above threshold = ', len(list_hits_above_threshold) 
+    
+   #clustering
+   list_hits_in_cluster = {}
+   cluster_index = -1
+   for i,hit in enumerate(list_hits_above_threshold):
+     if hit.IsUsed()==1:
+       continue
+     neighbours = self.getNeighbours(hit)
+     hit.Print()
+     print "--- digitizeSplitcal - index of unused hit = ", i
+     print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
+     if len(neighbours) < 1:
+       hit.SetClusterIndex(-1) # lonely fragment
+       print '--- digitizeSplitcal - lonely fragment '
+       continue
+     cluster_index = cluster_index + 1
+     hit.SetIsUsed(1)
+     hit.SetClusterIndex(cluster_index)
+     list_hits_in_cluster[cluster_index] = []
+     list_hits_in_cluster[cluster_index].append(hit)
+     print '--- digitizeSplitcal - cluster_index = ', cluster_index
+     for neighbouringHit in neighbours:
+       # print '--- digitizeSplitcal - in neighbouringHit - len(neighbours) = ', len(neighbours)
+       if neighbouringHit.IsUsed()==1: #TODO: allow used hits to handle with shared strips - be carefull to inf loops (need thinking)
+         continue
+       neighbouringHit.SetClusterIndex(cluster_index)
+       neighbouringHit.SetIsUsed(1)
+       list_hits_in_cluster[cluster_index].append(neighbouringHit)
+       expand_neighbours = self.getNeighbours(neighbouringHit)
+       # print '--- digitizeSplitcal - len(expand_neighbours) = ', len(expand_neighbours)
+       if len(expand_neighbours) >= 1:
+         for additionalHit in expand_neighbours:
+           if additionalHit not in neighbours:
+             neighbours.append(additionalHit)
+
+   # grouping
+   
+   for i in range (0, cluster_index+1):
+   #for i in range (0, 1):
+     print '------ digitizeSplitcal - cluster n = ', i 
+     print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
+
+     x_coordinates = []
+     z_coordinates = []
+
+     layer = 0
+     sumWeightX = {}
+     weightedAverageX = {}
+     layerZ = {}
+
+     for hit in list_hits_in_cluster[i]:
+       if hit.IsX():
+         x_coordinates.append(hit.GetX())
+         z_coordinates.append(hit.GetZ())
+         layer = hit.GetLayerNumber()
+         if layer in weightedAverageX:
+           weightedAverageX[layer] = weightedAverageX[layer] + hit.GetX()*hit.GetEnergy()
+           sumWeightX[layer] = sumWeightX[layer] + hit.GetEnergy()
+         else:
+           weightedAverageX[layer] = hit.GetX()*hit.GetEnergy()
+           sumWeightX[layer] = hit.GetEnergy()
+           layerZ[layer] = hit.GetZ()
+
+     x = []
+     z = []
+     for l in weightedAverageX:
+       x.append(weightedAverageX[l]/sumWeightX[l])
+       z.append(layerZ[l])
+
+
+   #   # x = np.array(x_coordinates)
+   #   # z =  np.array(z_coordinates)
+   #   # data = np.stack((np.array(x_coordinates), np.array(z_coordinates)), axis=-1)
+   #   # datamean = data.mean(axis=0) 
+   #   # print '------'
+   #   # print '------ digitizeSplitcal - x = ', x
+   #   # print '------'
+   #   # print '------ digitizeSplitcal - z = ', z
+   #   # print '------'
+   #   # print '------ digitizeSplitcal - data = ', data
+   #   # print '------'
+
+   #   # m,b = np.polyfit(x_coordinates, z_coordinates, 1)
+   #   # print '------ digitizeSplitcal - m = ', m
+   #   # print '------ digitizeSplitcal - b = ', b
+
+   #   # am,ab = np.polyfit(x, z, 1)
+   #   # print '------ digitizeSplitcal - am = ', am
+   #   # print '------ digitizeSplitcal - ab = ', ab
+
+   #   # LAST 
+   #   fit = np.polyfit(x_coordinates, z_coordinates, 1)
+   #   fit_fn = np.poly1d(fit) 
+   #   plt.plot(x_coordinates, z_coordinates, 'yo', x, fit_fn(x), '--k')
+
+   # # vector_of_cluster = {}
+   # # for i in range (0, cluster_index):
+   # #   print '------ digitizeSplitcal - cluster n = ', i 
+   # #   print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
+   # #   clusters[i] = []
+   # #   sumWeightX = 0
+   # #   weightedAverageX = 0
+   # #   sumWeightY = 0
+   # #   weightedAverageY = 0
+   # #   #startZ = -1
+   # #   #endZ = -1
+   # #   for hit in list_hits_in_cluster[i]:
+   # #     if hit.IsX():
+   # #       weightedAverageX = weightedAverageX + hit.GetX()*hit.GetEnergy()
+   # #       sumWeightX = sumWeightX + hit.GetEnergy()
+   # #     if hit.IsY():
+   # #       weightedAverageY = weightedAverageY + hit.GetY()*hit.GetEnergy()
+   # #       sumWeightY = sumWeightY + hit.GetEnergy()
+   # #   weightedAverageX = weightedAverageX/sumWeightX
+   # #   weightedAverageY = weightedAverageY/sumWeightY
+   # #   vector_of_cluster[i].append(weightedAverageX)
+   # #   vector_of_cluster[i].append(weightedAverageY)
+
+   # visualisation
+
+   ROOT.gStyle.SetPadRightMargin(0.15)
+   ROOT.gStyle.SetPalette(104)
+   c_e = ROOT.TCanvas("c_e","c_e", 200, 10, 800, 800)
+   gr_e = ROOT.TGraph2D()
+   gr_e.SetTitle( 'energy for all hits above threshold in x-z plane' )
+   gr_e.GetXaxis().SetTitle( 'X' )
+   gr_e.GetYaxis().SetTitle( 'Z' )
+   h_dummy = ROOT.TH2D("h_dummy","h_dummy",1,-60,60,1,3600, 3800)
+   h_dummy.SetMinimum(0.001)
+   h_dummy.SetMaximum(0.003)
+   for j,hit in enumerate (list_hits_above_threshold):
+     gr_e.SetPoint(j,hit.GetX(),hit.GetZ(),hit.GetEnergy())
+
+   c_e.cd()
+   h_dummy.Draw()
+   gr_e.Draw( 'samecolz' )
+   c_e.Print("energy.eps")
+
+
+   c_xz_all = ROOT.TCanvas("c_xz_all","c_xz_all", 200, 10, 800, 800)
+   c_yz_all = ROOT.TCanvas("c_yz_all","c_yz_all", 200, 10, 800, 800)
+
+   gr_xz_all = ROOT.TGraphErrors()
+   gr_xz_all.SetLineColor( 2 )
+   gr_xz_all.SetLineWidth( 2 )
+   gr_xz_all.SetMarkerColor( 2 )
+   gr_xz_all.SetMarkerStyle( 21 )
+   gr_xz_all.SetTitle( 'all hits in x-z plane' )
+   gr_xz_all.GetXaxis().SetTitle( 'X' )
+   gr_xz_all.GetYaxis().SetTitle( 'Z' )
+
+
+   gr_yz_all = ROOT.TGraphErrors()     
+   gr_yz_all.SetLineColor( 2 )
+   gr_yz_all.SetLineWidth( 2 )
+   gr_yz_all.SetMarkerColor( 2 )
+   gr_yz_all.SetMarkerStyle( 21 )
+   gr_yz_all.SetTitle( 'all hits in y-z plane' )
+   gr_yz_all.GetXaxis().SetTitle( 'Y' )
+   gr_yz_all.GetYaxis().SetTitle( 'Z' )
+
+   for i,h in enumerate(list_hits_above_threshold):     
+     gr_xz_all.SetPoint(i,h.GetX(),h.GetZ())
+     gr_xz_all.SetPointError(i,h.GetXError(),h.GetZError())
+     gr_yz_all.SetPoint(i,h.GetY(),h.GetZ())
+     gr_yz_all.SetPointError(i,h.GetYError(),h.GetZError())
+
+
+   h_range = ROOT.TH2D("h_range","h_range",1,-320,320,1,3600, 3800) # workaround: for some reasons the commands GetXaxis().SetRangeUser or GetXaxis().SetLimits get ignored...
+
+   # gr_xz_all.GetXaxis().SetRangeUser( -320, 320 )
+   # gr_xz_all.GetYaxis().SetRangeUser( 3620, 3630 )
+   # gr_yz_all.GetXaxis().SetRangeUser( -320, 320 )
+   # gr_yz_all.GetYaxis().SetRangeUser( 3620, 3630 )
+
+   c_xz_all.cd()
+   h_range.Draw( '' )
+   c_xz_all.Update()
+   gr_xz_all.Draw( 'sameP' )
+   c_xz_all.Print("hits_xz.eps")
+
+   c_yz_all.cd()
+   h_range.Draw( '' )
+   gr_yz_all.Draw( 'sameP' )
+   c_yz_all.Print("hits_yz.eps")
+
+
+
+   c_xz = ROOT.TCanvas("c_xz","c_xz", 200, 10, 800, 800)
+   c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
+   graphs_xz = []
+   graphs_yz = []
+   for i in range (0, cluster_index+1):
+     print '------ digitizeSplitcal - cluster index = ', i 
+     print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
+     
+     gr_xz = ROOT.TGraphErrors()
+     gr_xz.SetLineColor( i+1 )
+     gr_xz.SetLineWidth( 2 )
+     gr_xz.SetMarkerColor( i+1 )
+     gr_xz.SetMarkerStyle( 21 )
+     gr_xz.SetTitle( 'clusters in x-z plane' )
+     gr_xz.GetXaxis().SetTitle( 'X' )
+     gr_xz.GetYaxis().SetTitle( 'Z' )
+
+     gr_yz = ROOT.TGraphErrors()     
+     gr_yz.SetLineColor( i+1 )
+     gr_yz.SetLineWidth( 2 )
+     gr_yz.SetMarkerColor( i+1 )
+     gr_yz.SetMarkerStyle( 21 )
+     gr_yz.SetTitle( 'clusters in y-z plane' )
+     gr_yz.GetXaxis().SetTitle( 'Y' )
+     gr_yz.GetYaxis().SetTitle( 'Z' )
+
+     for j,hit in enumerate (list_hits_in_cluster[i]):
+      
+       gr_xz.SetPoint(j,hit.GetX(),hit.GetZ())
+       gr_xz.SetPointError(j,hit.GetXError(),hit.GetZError())
+       gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
+       gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
+       
+     gr_xz.GetXaxis().SetRangeUser( -320, 320 )
+     gr_xz.GetYaxis().SetRangeUser( 3600, 3800 )
+     #gr_xz.GetYaxis().SetRangeUser( 3720, 3760 )
+     #gr_xz.GetYaxis().SetRangeUser( 3620, 3630 )
+     graphs_xz.append(gr_xz)
+
+     gr_yz.GetXaxis().SetRangeUser( -320, 320 )
+     gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
+     #gr_yz.GetYaxis().SetRangeUser( 3720, 3760 )
+     #gr_yz.GetYaxis().SetRangeUser( 3620, 3630 )
+     graphs_yz.append(gr_yz)
+
+     c_xz.cd()
+     c_xz.Update()
+     if i==0:
+       graphs_xz[-1].Draw( 'AP' )
+     else:
+       graphs_xz[-1].Draw( 'P' )
+
+     c_yz.cd()
+     c_yz.Update()
+     if i==0:
+       graphs_yz[-1].Draw( 'AP' )
+     else:
+       graphs_yz[-1].Draw( 'P' )
+
+   c_xz.Print("clusters_xz.eps")
+   c_yz.Print("clusters_yz.eps")
+
+
+ def getNeighbours(self,hit):
+   list_neighbours = []
+   err_x_1 = hit.GetXError()
+   err_y_1 = hit.GetYError()
+   err_z_1 = hit.GetZError()
+
+   for hit2 in self.list_hits_above_threshold:
+     if hit2 is not hit:
+       Dx = fabs(hit2.GetX()-hit.GetX())
+       Dy = fabs(hit2.GetY()-hit.GetY())
+       Dz = fabs(hit2.GetZ()-hit.GetZ())
+       err_x_2 = hit.GetXError()
+       err_y_2 = hit.GetYError()
+       err_z_2 = hit.GetZError()
+
+       #if Dx<=(err_x_1+err_x_2) and Dy<=(err_y_1+err_y_2) and Dz<=2*(err_z_1+err_z_2):
+       if ((Dx<=(err_x_1+err_x_2) or Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
+         list_neighbours.append(hit2)
+
+   return list_neighbours
+
 
  def digitizeTimeDet(self):
    index = 0
@@ -569,6 +900,7 @@ class ShipDigiReco:
   del self.fitter
   print 'finished writing tree'
   self.sTree.Write()
+  self.dTree.Write() #ROSA - tree with digitised (splitcal) hits
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")
   if realPR: shipPatRec.finalize()
