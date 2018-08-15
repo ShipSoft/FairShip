@@ -3,6 +3,7 @@
 
 #include "splitcalHit.h"
 #include <vector> 
+//#include <boost/python.hpp>
 
 class splitcalCluster 
 {
@@ -10,7 +11,8 @@ class splitcalCluster
 
     /** Constructors **/
     splitcalCluster();
-    splitcalCluster(std::vector<splitcalHit >& v);
+    //splitcalCluster(boost::python::list& l);
+    splitcalCluster(splitcalHit* h);
 
     /** Destructor **/
     virtual ~splitcalCluster();
@@ -22,14 +24,16 @@ class splitcalCluster
     void SetEta(double& eta) {_eta = eta;}
     void SetPhi(double& phi) {_phi = phi;}
     void SetEnergy(double& e) {_energy = e;}
-    void SetVectorOfHits(std::vector<splitcalHit >& v) {_vectorOfHit = v;}
+    void SetVectorOfHits(std::vector<splitcalHit* >& v) {_vectorOfHits = v;}
+    void AddHit(splitcalHit* h) {_vectorOfHits.push_back(h);}
 
     double GetEta() {return _eta;}
     double GetPhi() {return _phi;}
     double GetEnergy() {return _energy;}
-    std::vector<splitcalHit >& GetVectorOfHits() {return _vectorOfHits;}
+    std::vector<splitcalHit* >& GetVectorOfHits() {return _vectorOfHits;}
 
     double SlopeFromLinearRegression(std::vector<double >& x, std::vector<double >& y);
+    void ComputeEtaPhiE();
 
 
   private:
@@ -38,7 +42,7 @@ class splitcalCluster
     /* splitcalCluster operator=(const splitcalCluster& point); */
 
     double _eta, _phi, _energy;
-    std::vector<splitcalHit > _vectorOfHits;
+    std::vector<splitcalHit* > _vectorOfHits;
 
     ClassDef(splitcalCluster,3);
     

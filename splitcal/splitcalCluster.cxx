@@ -3,12 +3,30 @@
 
 #include <iostream>
 #include <math.h>
+#include <functional>   
+#include <numeric>     
 
-// -----   constructor from vector of splitcalHit   ------------------------------------------
-splitcalCluster::splitcalCluster(std::vector<splitcalHit >& v)
+
+// -----   constructor from list/vector of splitcalHit   ------------------------------------------
+// splitcalCluster::splitcalCluster(boost::python::list& l)
+// {
+//   std::vector<splitcalHit > v;
+//   for(int i=0; i<boost::python::len(l); i++) { 
+//     v.push_back(boost::python::extract<splitcalHit >(l[i]));
+//   }
+//   SetVectorOfHits(v);
+// }
+
+
+// -----   constructor from splitcalHit   ------------------------------------------
+splitcalCluster::splitcalCluster(splitcalHit* h)
 {
+  _vectorOfHits.push_back(h);
+}
 
-  SetVectorOfHits(v); //just to fill the data member
+
+void splitcalCluster::ComputeEtaPhiE()
+{
   
   // Compute energy weighted average for hits in the same layer 
   // This is in preparation of the linear fit to get the cluster eta and phi 
@@ -23,27 +41,27 @@ splitcalCluster::splitcalCluster(std::vector<splitcalHit >& v)
 
   // loop over hits to compute cluster energy sum and to compute the coordinates weighted average per layer
   double energy = 0.;
-  for (auto hit : v){
-    energy += hit.GetEnergy();
-    int layer = hit.GetLayerNumber();
+  for (auto hit : _vectorOfHits){
+    energy += hit->GetEnergy();
+    int layer = hit->GetLayerNumber();
     // hits from high precision layers give both x and y coordinates --> use if-if instead of if-else
-    if (hit.IsX()){
+    if (hit->IsX()){
       if (mapLayerWeigthedX.count(layer)==0) { //if key is not yet in map, initialise element to 0
 	mapLayerWeigthedX[layer] = 0.; 
 	mapLayerSumWeigthsX[layer] = 0.;
       }
-      mapLayerWeigthedX[layer] += hit.GetX()*hit.GetEnergy();
-      mapLayerSumWeigthsX[layer] += hit.GetEnergy();
-      mapLayerZ1[layer] = hit.getZ();
+      mapLayerWeigthedX[layer] += hit->GetX()*hit->GetEnergy();
+      mapLayerSumWeigthsX[layer] += hit->GetEnergy();
+      mapLayerZ1[layer] = hit->GetZ();
     }
-    if (hit.IsY()){ 
+    if (hit->IsY()){ 
       if (mapLayerWeigthedY.count(layer)==0) { //if key is not yet in map, initialise element to 0
 	mapLayerWeigthedY[layer] = 0.; 
 	mapLayerSumWeigthsY[layer] = 0.;
       }
-      mapLayerWeigthedY[layer] += hit.GetY()*hit.GetEnergy();
-      mapLayerSumWeigthsY[layer] += hit.GetEnergy();
-      mapLayerZ2[layer] = hit.getZ();
+      mapLayerWeigthedY[layer] += hit->GetY()*hit->GetEnergy();
+      mapLayerSumWeigthsY[layer] += hit->GetEnergy();
+      mapLayerZ2[layer] = hit->GetZ();
     }
   }//end loop on hit
 
@@ -56,7 +74,7 @@ splitcalCluster::splitcalCluster(std::vector<splitcalHit >& v)
 
   for (auto const& element : mapLayerWeigthedX){
     int key = element.first;
-    x.push_back(element.second/mapLayerSumWeigthsX[layer]);
+    x.push_back(element.second/mapLayerSumWeigthsX[key]);
     z1.push_back(mapLayerZ1[key]);
   }
 
@@ -65,7 +83,7 @@ splitcalCluster::splitcalCluster(std::vector<splitcalHit >& v)
 
   for (auto const& element : mapLayerWeigthedY){
     int key = element.first;
-    y.push_back(element.second/mapLayerSumWeigthsY[layer]);
+    y.push_back(element.second/mapLayerSumWeigthsY[key]);
     z2.push_back(mapLayerZ2[key]);
   }
 
