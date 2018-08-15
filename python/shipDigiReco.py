@@ -272,6 +272,7 @@ class ShipDigiReco:
      #self.digiSplitcal[index]=aHit
      #index+=1
 
+
    ##########################    
    # cluster reconstruction #
    ##########################
@@ -324,156 +325,172 @@ class ShipDigiReco:
            if additionalHit not in neighbours:
              neighbours.append(additionalHit)
 
-   # grouping
-   
+
+   #################
+   # fill clusters #
+   #################
+
    for i in range (0, cluster_index+1):
-   #for i in range (0, 1):
+     print '------------------------'
      print '------ digitizeSplitcal - cluster n = ', i 
      print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
 
-     x_coordinates = []
-     z_coordinates = []
 
-     layer = 0
-     sumWeightX = {}
-     weightedAverageX = {}
-     layerZ = {}
+   # #fit to extract cluster quantities --> move to cluster class
+   
+   # for i in range (0, cluster_index+1):
+   # #for i in range (0, 1):
+   #   print '------------------------'
+   #   print '------ digitizeSplitcal - cluster n = ', i 
+   #   print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
 
-     for hit in list_hits_in_cluster[i]:
-       if hit.IsX():
-         x_coordinates.append(hit.GetX())
-         z_coordinates.append(hit.GetZ())
-         layer = hit.GetLayerNumber()
-         if layer in weightedAverageX:
-           weightedAverageX[layer] = weightedAverageX[layer] + hit.GetX()*hit.GetEnergy()
-           sumWeightX[layer] = sumWeightX[layer] + hit.GetEnergy()
-         else:
-           weightedAverageX[layer] = hit.GetX()*hit.GetEnergy()
-           sumWeightX[layer] = hit.GetEnergy()
-           layerZ[layer] = hit.GetZ()
+   #   x_coordinates = []
+   #   z_coordinates = []
 
-     x = []
-     z = []
-     for l in weightedAverageX:
-       x.append(weightedAverageX[l]/sumWeightX[l])
-       z.append(layerZ[l])
+   #   layer = 0
+   #   sumWeightX = {}
+   #   weightedAverageX = {}
+   #   layerZ = {}
+
+   #   for hit in list_hits_in_cluster[i]:
+   #     if hit.IsX():
+   #       x_coordinates.append(hit.GetX())
+   #       z_coordinates.append(hit.GetZ())
+   #       layer = hit.GetLayerNumber()
+   #       if layer in weightedAverageX:
+   #         weightedAverageX[layer] = weightedAverageX[layer] + hit.GetX()*hit.GetEnergy()
+   #         sumWeightX[layer] = sumWeightX[layer] + hit.GetEnergy()
+   #       else:
+   #         weightedAverageX[layer] = hit.GetX()*hit.GetEnergy()
+   #         sumWeightX[layer] = hit.GetEnergy()
+   #         layerZ[layer] = hit.GetZ()
+
+   #   x = []
+   #   z = []
+   #   for l in weightedAverageX:
+   #     x.append(weightedAverageX[l]/sumWeightX[l])
+   #     z.append(layerZ[l])
+
+   #     print '------ digitizeSplitcal - x[-1] = ', x[-1]
+   #     print '------ digitizeSplitcal - z[-1] = ', z[-1]
+
+   # #   # x = np.array(x_coordinates)
+   # #   # z =  np.array(z_coordinates)
+   # #   # data = np.stack((np.array(x_coordinates), np.array(z_coordinates)), axis=-1)
+   # #   # datamean = data.mean(axis=0) 
+   # #   # print '------'
+   # #   # print '------ digitizeSplitcal - x = ', x
+   # #   # print '------'
+   # #   # print '------ digitizeSplitcal - z = ', z
+   # #   # print '------'
+   # #   # print '------ digitizeSplitcal - data = ', data
+   # #   # print '------'
+
+   # #   # m,b = np.polyfit(x_coordinates, z_coordinates, 1)
+   # #   # print '------ digitizeSplitcal - m = ', m
+   # #   # print '------ digitizeSplitcal - b = ', b
+
+   # #   # am,ab = np.polyfit(x, z, 1)
+   # #   # print '------ digitizeSplitcal - am = ', am
+   # #   # print '------ digitizeSplitcal - ab = ', ab
+
+   # #   # LAST 
+   # #   fit = np.polyfit(x_coordinates, z_coordinates, 1)
+   # #   fit_fn = np.poly1d(fit) 
+   # #   plt.plot(x_coordinates, z_coordinates, 'yo', x, fit_fn(x), '--k')
+
+   # # # vector_of_cluster = {}
+   # # # for i in range (0, cluster_index):
+   # # #   print '------ digitizeSplitcal - cluster n = ', i 
+   # # #   print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
+   # # #   clusters[i] = []
+   # # #   sumWeightX = 0
+   # # #   weightedAverageX = 0
+   # # #   sumWeightY = 0
+   # # #   weightedAverageY = 0
+   # # #   #startZ = -1
+   # # #   #endZ = -1
+   # # #   for hit in list_hits_in_cluster[i]:
+   # # #     if hit.IsX():
+   # # #       weightedAverageX = weightedAverageX + hit.GetX()*hit.GetEnergy()
+   # # #       sumWeightX = sumWeightX + hit.GetEnergy()
+   # # #     if hit.IsY():
+   # # #       weightedAverageY = weightedAverageY + hit.GetY()*hit.GetEnergy()
+   # # #       sumWeightY = sumWeightY + hit.GetEnergy()
+   # # #   weightedAverageX = weightedAverageX/sumWeightX
+   # # #   weightedAverageY = weightedAverageY/sumWeightY
+   # # #   vector_of_cluster[i].append(weightedAverageX)
+   # # #   vector_of_cluster[i].append(weightedAverageY)
 
 
-   #   # x = np.array(x_coordinates)
-   #   # z =  np.array(z_coordinates)
-   #   # data = np.stack((np.array(x_coordinates), np.array(z_coordinates)), axis=-1)
-   #   # datamean = data.mean(axis=0) 
-   #   # print '------'
-   #   # print '------ digitizeSplitcal - x = ', x
-   #   # print '------'
-   #   # print '------ digitizeSplitcal - z = ', z
-   #   # print '------'
-   #   # print '------ digitizeSplitcal - data = ', data
-   #   # print '------'
-
-   #   # m,b = np.polyfit(x_coordinates, z_coordinates, 1)
-   #   # print '------ digitizeSplitcal - m = ', m
-   #   # print '------ digitizeSplitcal - b = ', b
-
-   #   # am,ab = np.polyfit(x, z, 1)
-   #   # print '------ digitizeSplitcal - am = ', am
-   #   # print '------ digitizeSplitcal - ab = ', ab
-
-   #   # LAST 
-   #   fit = np.polyfit(x_coordinates, z_coordinates, 1)
-   #   fit_fn = np.poly1d(fit) 
-   #   plt.plot(x_coordinates, z_coordinates, 'yo', x, fit_fn(x), '--k')
-
-   # # vector_of_cluster = {}
-   # # for i in range (0, cluster_index):
-   # #   print '------ digitizeSplitcal - cluster n = ', i 
-   # #   print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
-   # #   clusters[i] = []
-   # #   sumWeightX = 0
-   # #   weightedAverageX = 0
-   # #   sumWeightY = 0
-   # #   weightedAverageY = 0
-   # #   #startZ = -1
-   # #   #endZ = -1
-   # #   for hit in list_hits_in_cluster[i]:
-   # #     if hit.IsX():
-   # #       weightedAverageX = weightedAverageX + hit.GetX()*hit.GetEnergy()
-   # #       sumWeightX = sumWeightX + hit.GetEnergy()
-   # #     if hit.IsY():
-   # #       weightedAverageY = weightedAverageY + hit.GetY()*hit.GetEnergy()
-   # #       sumWeightY = sumWeightY + hit.GetEnergy()
-   # #   weightedAverageX = weightedAverageX/sumWeightX
-   # #   weightedAverageY = weightedAverageY/sumWeightY
-   # #   vector_of_cluster[i].append(weightedAverageX)
-   # #   vector_of_cluster[i].append(weightedAverageY)
 
    # visualisation
 
    ROOT.gStyle.SetPadRightMargin(0.15)
    ROOT.gStyle.SetPalette(104)
-   c_e = ROOT.TCanvas("c_e","c_e", 200, 10, 800, 800)
-   gr_e = ROOT.TGraph2D()
-   gr_e.SetTitle( 'energy for all hits above threshold in x-z plane' )
-   gr_e.GetXaxis().SetTitle( 'X' )
-   gr_e.GetYaxis().SetTitle( 'Z' )
-   h_dummy = ROOT.TH2D("h_dummy","h_dummy",1,-60,60,1,3600, 3800)
-   h_dummy.SetMinimum(0.001)
-   h_dummy.SetMaximum(0.003)
-   for j,hit in enumerate (list_hits_above_threshold):
-     gr_e.SetPoint(j,hit.GetX(),hit.GetZ(),hit.GetEnergy())
+   # c_e = ROOT.TCanvas("c_e","c_e", 200, 10, 800, 800)
+   # gr_e = ROOT.TGraph2D()
+   # gr_e.SetTitle( 'energy for all hits above threshold in x-z plane' )
+   # gr_e.GetXaxis().SetTitle( 'X' )
+   # gr_e.GetYaxis().SetTitle( 'Z' )
+   # h_dummy = ROOT.TH2D("h_dummy","h_dummy",1,-60,60,1,3600, 3800)
+   # h_dummy.SetMinimum(0.001)
+   # h_dummy.SetMaximum(0.003)
+   # for j,hit in enumerate (list_hits_above_threshold):
+   #   gr_e.SetPoint(j,hit.GetX(),hit.GetZ(),hit.GetEnergy())
 
-   c_e.cd()
-   h_dummy.Draw()
-   gr_e.Draw( 'samecolz' )
-   c_e.Print("energy.eps")
-
-
-   c_xz_all = ROOT.TCanvas("c_xz_all","c_xz_all", 200, 10, 800, 800)
-   c_yz_all = ROOT.TCanvas("c_yz_all","c_yz_all", 200, 10, 800, 800)
-
-   gr_xz_all = ROOT.TGraphErrors()
-   gr_xz_all.SetLineColor( 2 )
-   gr_xz_all.SetLineWidth( 2 )
-   gr_xz_all.SetMarkerColor( 2 )
-   gr_xz_all.SetMarkerStyle( 21 )
-   gr_xz_all.SetTitle( 'all hits in x-z plane' )
-   gr_xz_all.GetXaxis().SetTitle( 'X' )
-   gr_xz_all.GetYaxis().SetTitle( 'Z' )
+   # c_e.cd()
+   # h_dummy.Draw()
+   # gr_e.Draw( 'samecolz' )
+   # c_e.Print("energy.eps")
 
 
-   gr_yz_all = ROOT.TGraphErrors()     
-   gr_yz_all.SetLineColor( 2 )
-   gr_yz_all.SetLineWidth( 2 )
-   gr_yz_all.SetMarkerColor( 2 )
-   gr_yz_all.SetMarkerStyle( 21 )
-   gr_yz_all.SetTitle( 'all hits in y-z plane' )
-   gr_yz_all.GetXaxis().SetTitle( 'Y' )
-   gr_yz_all.GetYaxis().SetTitle( 'Z' )
+   # c_xz_all = ROOT.TCanvas("c_xz_all","c_xz_all", 200, 10, 800, 800)
+   # c_yz_all = ROOT.TCanvas("c_yz_all","c_yz_all", 200, 10, 800, 800)
 
-   for i,h in enumerate(list_hits_above_threshold):     
-     gr_xz_all.SetPoint(i,h.GetX(),h.GetZ())
-     gr_xz_all.SetPointError(i,h.GetXError(),h.GetZError())
-     gr_yz_all.SetPoint(i,h.GetY(),h.GetZ())
-     gr_yz_all.SetPointError(i,h.GetYError(),h.GetZError())
+   # gr_xz_all = ROOT.TGraphErrors()
+   # gr_xz_all.SetLineColor( 2 )
+   # gr_xz_all.SetLineWidth( 2 )
+   # gr_xz_all.SetMarkerColor( 2 )
+   # gr_xz_all.SetMarkerStyle( 21 )
+   # gr_xz_all.SetTitle( 'all hits in x-z plane' )
+   # gr_xz_all.GetXaxis().SetTitle( 'X' )
+   # gr_xz_all.GetYaxis().SetTitle( 'Z' )
 
 
-   h_range = ROOT.TH2D("h_range","h_range",1,-320,320,1,3600, 3800) # workaround: for some reasons the commands GetXaxis().SetRangeUser or GetXaxis().SetLimits get ignored...
+   # gr_yz_all = ROOT.TGraphErrors()     
+   # gr_yz_all.SetLineColor( 2 )
+   # gr_yz_all.SetLineWidth( 2 )
+   # gr_yz_all.SetMarkerColor( 2 )
+   # gr_yz_all.SetMarkerStyle( 21 )
+   # gr_yz_all.SetTitle( 'all hits in y-z plane' )
+   # gr_yz_all.GetXaxis().SetTitle( 'Y' )
+   # gr_yz_all.GetYaxis().SetTitle( 'Z' )
 
-   # gr_xz_all.GetXaxis().SetRangeUser( -320, 320 )
-   # gr_xz_all.GetYaxis().SetRangeUser( 3620, 3630 )
-   # gr_yz_all.GetXaxis().SetRangeUser( -320, 320 )
-   # gr_yz_all.GetYaxis().SetRangeUser( 3620, 3630 )
+   # for i,h in enumerate(list_hits_above_threshold):     
+   #   gr_xz_all.SetPoint(i,h.GetX(),h.GetZ())
+   #   gr_xz_all.SetPointError(i,h.GetXError(),h.GetZError())
+   #   gr_yz_all.SetPoint(i,h.GetY(),h.GetZ())
+   #   gr_yz_all.SetPointError(i,h.GetYError(),h.GetZError())
 
-   c_xz_all.cd()
-   h_range.Draw( '' )
-   c_xz_all.Update()
-   gr_xz_all.Draw( 'sameP' )
-   c_xz_all.Print("hits_xz.eps")
 
-   c_yz_all.cd()
-   h_range.Draw( '' )
-   gr_yz_all.Draw( 'sameP' )
-   c_yz_all.Print("hits_yz.eps")
+   # h_range = ROOT.TH2D("h_range","h_range",1,-320,320,1,3600, 3800) # workaround: for some reasons the commands GetXaxis().SetRangeUser or GetXaxis().SetLimits get ignored...
+
+   # # gr_xz_all.GetXaxis().SetRangeUser( -320, 320 )
+   # # gr_xz_all.GetYaxis().SetRangeUser( 3620, 3630 )
+   # # gr_yz_all.GetXaxis().SetRangeUser( -320, 320 )
+   # # gr_yz_all.GetYaxis().SetRangeUser( 3620, 3630 )
+
+   # c_xz_all.cd()
+   # h_range.Draw( '' )
+   # c_xz_all.Update()
+   # gr_xz_all.Draw( 'sameP' )
+   # c_xz_all.Print("hits_xz.eps")
+
+   # c_yz_all.cd()
+   # h_range.Draw( '' )
+   # gr_yz_all.Draw( 'sameP' )
+   # c_yz_all.Print("hits_yz.eps")
 
 
 
@@ -482,8 +499,6 @@ class ShipDigiReco:
    graphs_xz = []
    graphs_yz = []
    for i in range (0, cluster_index+1):
-     print '------ digitizeSplitcal - cluster index = ', i 
-     print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
      
      gr_xz = ROOT.TGraphErrors()
      gr_xz.SetLineColor( i+1 )
