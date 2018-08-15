@@ -44,6 +44,7 @@ class splitcalHit : public ShipHit
     void SetIsUsed(int u) {_isUsed = u;}
     void SetClusterIndex(int i) {_clusterIndex = i;}
     void SetXYZErrors(double xError, double yError, double zError) {_xError = xError; _yError = yError; _zError = zError;}
+    void SetEnergyWeight(double w) {_energyWeight = w;}
 
     double GetX() {return _x;}
     double GetY() {return _y;}
@@ -61,6 +62,7 @@ class splitcalHit : public ShipHit
     double GetXError() {return _xError;}
     double GetYError() {return _yError;}
     double GetZError() {return _zError;}
+    double GetEnergyWeight() {return _energyWeight;}
 
   private:
     /** Copy constructor **/
@@ -69,7 +71,7 @@ class splitcalHit : public ShipHit
 
     Float_t flag;   
     double _x, _y, _z, _xError, _yError, _zError;
-    double _energy;
+    double _energy, _energyWeight;
     /* std::string _nameSubDetector;  */
     int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed, _clusterIndex;
     bool _isX, _isY;
