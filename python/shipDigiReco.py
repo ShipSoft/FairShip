@@ -334,78 +334,12 @@ class ShipDigiReco:
        else: aCluster.AddHit(h)
      aCluster.ComputeEtaPhiE()
      aCluster.Print()
+   # segentation fault when trying to fill the splitcal cluster branch...
    #   if self.recoSplitcal.GetSize() == i: 
-   #       self.digiSplitcal.Expand(i+1000)
+   #       self.recoSplitcal.Expand(i+1000)
    #   self.recoSplitcal[i]=aCluster
    # self.recoSplitcal.Compress()
 
-
-   #################
-   # visualisation #
-   #################
-
-   ROOT.gStyle.SetPadRightMargin(0.15)
-   ROOT.gStyle.SetPalette(104)
-
-   c_xz = ROOT.TCanvas("c_xz","c_xz", 200, 10, 800, 800)
-   c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
-   graphs_xz = []
-   graphs_yz = []
-   for i in range (0, cluster_index+1):
-     
-     gr_xz = ROOT.TGraphErrors()
-     gr_xz.SetLineColor( i+1 )
-     gr_xz.SetLineWidth( 2 )
-     gr_xz.SetMarkerColor( i+1 )
-     gr_xz.SetMarkerStyle( 21 )
-     gr_xz.SetTitle( 'clusters in x-z plane' )
-     gr_xz.GetXaxis().SetTitle( 'X' )
-     gr_xz.GetYaxis().SetTitle( 'Z' )
-
-     gr_yz = ROOT.TGraphErrors()     
-     gr_yz.SetLineColor( i+1 )
-     gr_yz.SetLineWidth( 2 )
-     gr_yz.SetMarkerColor( i+1 )
-     gr_yz.SetMarkerStyle( 21 )
-     gr_yz.SetTitle( 'clusters in y-z plane' )
-     gr_yz.GetXaxis().SetTitle( 'Y' )
-     gr_yz.GetYaxis().SetTitle( 'Z' )
-
-     for j,hit in enumerate (list_hits_in_cluster[i]):
-      
-       gr_xz.SetPoint(j,hit.GetX(),hit.GetZ())
-       gr_xz.SetPointError(j,hit.GetXError(),hit.GetZError())
-       gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
-       gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
-       
-     gr_xz.GetXaxis().SetRangeUser( -320, 320 )
-     gr_xz.GetYaxis().SetRangeUser( 3600, 3800 )
-     #gr_xz.GetYaxis().SetRangeUser( 3720, 3760 )
-     #gr_xz.GetYaxis().SetRangeUser( 3620, 3630 )
-     graphs_xz.append(gr_xz)
-
-     gr_yz.GetXaxis().SetRangeUser( -320, 320 )
-     gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
-     #gr_yz.GetYaxis().SetRangeUser( 3720, 3760 )
-     #gr_yz.GetYaxis().SetRangeUser( 3620, 3630 )
-     graphs_yz.append(gr_yz)
-
-     c_xz.cd()
-     c_xz.Update()
-     if i==0:
-       graphs_xz[-1].Draw( 'AP' )
-     else:
-       graphs_xz[-1].Draw( 'P' )
-
-     c_yz.cd()
-     c_yz.Update()
-     if i==0:
-       graphs_yz[-1].Draw( 'AP' )
-     else:
-       graphs_yz[-1].Draw( 'P' )
-
-   c_xz.Print("clusters_xz.eps")
-   c_yz.Print("clusters_yz.eps")
 
 
  def getNeighbours(self,hit):
