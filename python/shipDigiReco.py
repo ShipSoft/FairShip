@@ -334,12 +334,11 @@ class ShipDigiReco:
        else: aCluster.AddHit(h)
      aCluster.ComputeEtaPhiE()
      aCluster.Print()
-   # segentation fault when trying to fill the splitcal cluster branch...
+   # # segentation fault when trying to fill the splitcal cluster branch...
    #   if self.recoSplitcal.GetSize() == i: 
    #       self.recoSplitcal.Expand(i+1000)
    #   self.recoSplitcal[i]=aCluster
    # self.recoSplitcal.Compress()
-
 
 
  def getNeighbours(self,hit):
