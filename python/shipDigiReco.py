@@ -11,6 +11,21 @@ import matplotlib.pyplot as plt
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
+
+ROOT.gROOT.ProcessLine( # this struct needs just to save few variables in a flat ntuple 
+"struct treeCluster {\
+   Double_t     _E;\
+   Double_t     _eta;\
+   Double_t     _phi;\
+   Double_t     _m1;\
+   Double_t     _q1;\
+   Double_t     _m2;\
+   Double_t     _q2;\
+};" );
+
+from ROOT import treeCluster
+
+
 class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
  def __init__(self,fout,fgeo):
@@ -99,8 +114,11 @@ class ShipDigiReco:
   self.digiSplitcal = ROOT.TClonesArray("splitcalHit") 
   #self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1) # ROSA: it is not working for me. Expanding existing tree can be sometimes problematic --> create and fill new tree 
   self.digiSplitcalBranch=self.dTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1) #ROSA - tree with digitised (splitcal) hits
-  self.recoSplitcal = ROOT.TClonesArray("splitcalCluster") 
-  self.recoSplitcalBranch=self.dTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1) #ROSA 
+  #self.recoSplitcal = ROOT.TClonesArray("splitcalCluster") 
+  #self.recoSplitcalBranch=self.dTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1) #ROSA 
+  self.recoSplitcal = treeCluster()
+  self.recoSplitcalBranch=self.dTree.Branch( 'Reco_SplitcalClusters', self.recoSplitcal, 'E/F:eta:phi:m1:q1:m2:q2' )
+ 
 
 
 # setup ecal reconstruction
@@ -242,7 +260,7 @@ class ShipDigiReco:
    self.digitizeMuon()
    self.digiMuonBranch.Fill()
    self.digiSplitcal.Delete()      
-   self.recoSplitcal.Delete()      
+   #self.recoSplitcal.Delete()      
    self.digitizeSplitcal()         
    self.digiSplitcalBranch.Fill() 
    self.recoSplitcalBranch.Fill() 
@@ -270,84 +288,147 @@ class ShipDigiReco:
    # cluster reconstruction #
    ##########################
    
-   # hits above threshold
+   # hit selection
+   # step 0: select hits above noise threshold to use in cluster reconstruction  
    noise_energy_threshold = 0.002 #GeV
    list_hits_above_threshold = []
    print '--- digitizeSplitcal - self.digiSplitcal.GetSize() = ', self.digiSplitcal.GetSize()  
    for hit in self.digiSplitcal:
      if hit.GetEnergy() > noise_energy_threshold:
-       list_hits_above_threshold.append(hit)
        hit.SetIsUsed(0)
+       hit.SetEnergyWeight(1)
+       list_hits_above_threshold.append(hit)
 
    self.list_hits_above_threshold = list_hits_above_threshold
 
    print '--- digitizeSplitcal - n hits above threshold = ', len(list_hits_above_threshold) 
     
    # clustering
-   list_hits_in_cluster = {}
-   cluster_index = -1
-   for i,hit in enumerate(list_hits_above_threshold):
-     if hit.IsUsed()==1:
-       continue
-     neighbours = self.getNeighbours(hit)
-     hit.Print()
-     print "--- digitizeSplitcal - index of unused hit = ", i
-     print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
-     if len(neighbours) < 1:
-       hit.SetClusterIndex(-1) # lonely fragment
-       print '--- digitizeSplitcal - lonely fragment '
-       continue
-     cluster_index = cluster_index + 1
-     hit.SetIsUsed(1)
-     hit.SetClusterIndex(cluster_index)
-     list_hits_in_cluster[cluster_index] = []
-     list_hits_in_cluster[cluster_index].append(hit)
-     print '--- digitizeSplitcal - cluster_index = ', cluster_index
-     for neighbouringHit in neighbours:
-       # print '--- digitizeSplitcal - in neighbouringHit - len(neighbours) = ', len(neighbours)
-       if neighbouringHit.IsUsed()==1: 
-         continue
-       neighbouringHit.SetClusterIndex(cluster_index)
-       neighbouringHit.SetIsUsed(1)
-       list_hits_in_cluster[cluster_index].append(neighbouringHit)
-       expand_neighbours = self.getNeighbours(neighbouringHit)
-       # print '--- digitizeSplitcal - len(expand_neighbours) = ', len(expand_neighbours)
-       if len(expand_neighbours) >= 1:
-         for additionalHit in expand_neighbours:
-           if additionalHit not in neighbours:
-             neighbours.append(additionalHit)
+   # step 1: group of neighbouring cells: loose criteria -> splitting clusters is easier than merging clusters
+
+   self.step = 1 
+   self.input_hits = list_hits_above_threshold
+   list_clusters_of_hits = self.Clustering()
+
+   # step 2-3: check if clusters can be split, clustering separtely in the XZ and YZ planes
+   # step 2: clustering in XZ plane
+
+   self.step = 2 
+   for i in list_clusters_of_hits:
+
+     #re-run reclustering with different criteria 
+     for hit in list_clusters_of_hits[i]:
+       hit.SetIsUsed(0)
+
+     self.input_hits = list_clusters_of_hits[i]
+     list_subclusters_of_hits = self.Clustering()
+
+     if len(list_subclusters_of_hits)>1:
+       print "'--- digitizeSplitcal - CLUSTER NEED TO BE SPLIT - set energy weight"
+     else:
+       print "'--- digitizeSplitcal - no need to split cluster"
+
+   # step 3: clustering in YZ plane
+
+   self.step = 3 
+   for i in list_clusters_of_hits:
+
+     #re-run reclustering with different criteria 
+     for hit in list_clusters_of_hits[i]:
+       hit.SetIsUsed(0)
+
+     self.input_hits = list_clusters_of_hits[i]
+     list_subclusters_of_hits = self.Clustering()
+
+     if len(list_subclusters_of_hits)>1:
+       print "'--- digitizeSplitcal - CLUSTER NEED TO BE SPLIT - set energy weight"
+     else:
+       print "'--- digitizeSplitcal - no need to split cluster"
 
 
    #################
    # fill clusters #
    #################
 
-   #self.recoSplitcal.Expand(cluster_index+1) #resize array to number of clusters
-   for i in range (0, cluster_index+1):
+   for i in list_clusters_of_hits:
      print '------------------------'
      print '------ digitizeSplitcal - cluster n = ', i 
-     print '------ digitizeSplitcal - cluster size = ', len(list_hits_in_cluster[i]) 
-     # aCluster = ROOT.splitcalCluster(list_hits_in_cluster[i])
-     # aCluster.Print()
-     for j,h in enumerate(list_hits_in_cluster[i]):
+     print '------ digitizeSplitcal - cluster size = ', len(list_clusters_of_hits[i]) 
+
+     for j,h in enumerate(list_clusters_of_hits[i]):
        if j==0: aCluster = ROOT.splitcalCluster(h)
        else: aCluster.AddHit(h)
+
      aCluster.ComputeEtaPhiE()
      aCluster.Print()
-   # # segentation fault when trying to fill the splitcal cluster branch...
-   #   if self.recoSplitcal.GetSize() == i: 
-   #       self.recoSplitcal.Expand(i+1000)
-   #   self.recoSplitcal[i]=aCluster
-   # self.recoSplitcal.Compress()
+
+     self.recoSplitcal._E = aCluster.GetEnergy()
+     self.recoSplitcal._eta = aCluster.GetEta()
+     self.recoSplitcal._phi = aCluster.GetPhi()
+     self.recoSplitcal._m1 = aCluster.GetSlopeZX()
+     self.recoSplitcal._q1 = aCluster.GetInterceptZX()
+     self.recoSplitcal._m2 = aCluster.GetSlopeZY()
+     self.recoSplitcal._q2 = aCluster.GetInterceptZY()
+
+
+
+ def Clustering(self): 
+
+   list_hits_in_cluster = {}
+   cluster_index = -1
+
+   for i,hit in enumerate(self.input_hits):
+     if hit.IsUsed()==1:
+       continue
+
+     neighbours = self.getNeighbours(hit)
+     hit.Print()
+     print "--- digitizeSplitcal - index of unused hit = ", i
+     print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
+
+     if len(neighbours) < 1:
+       hit.SetClusterIndex(-1) # lonely fragment
+       print '--- digitizeSplitcal - lonely fragment '
+       continue
+
+     cluster_index = cluster_index + 1
+     hit.SetIsUsed(1)
+     hit.SetClusterIndex(cluster_index)
+     list_hits_in_cluster[cluster_index] = []
+     list_hits_in_cluster[cluster_index].append(hit)
+     print '--- digitizeSplitcal - cluster_index = ', cluster_index
+
+     for neighbouringHit in neighbours:
+       # print '--- digitizeSplitcal - in neighbouringHit - len(neighbours) = ', len(neighbours)
+
+       if neighbouringHit.IsUsed()==1: 
+         continue
+
+       neighbouringHit.SetClusterIndex(cluster_index)
+       neighbouringHit.SetIsUsed(1)
+       list_hits_in_cluster[cluster_index].append(neighbouringHit)
+       expand_neighbours = self.getNeighbours(neighbouringHit)
+       # print '--- digitizeSplitcal - len(expand_neighbours) = ', len(expand_neighbours)
+
+       if len(expand_neighbours) >= 1:
+         for additionalHit in expand_neighbours:
+           if additionalHit not in neighbours:
+             neighbours.append(additionalHit)
+
+   return list_hits_in_cluster
+
 
 
  def getNeighbours(self,hit):
+
    list_neighbours = []
    err_x_1 = hit.GetXError()
    err_y_1 = hit.GetYError()
    err_z_1 = hit.GetZError()
 
-   for hit2 in self.list_hits_above_threshold:
+   layer_1 = hit.GetLayerNumber()
+
+   for hit2 in self.input_hits:
      if hit2 is not hit:
        Dx = fabs(hit2.GetX()-hit.GetX())
        Dy = fabs(hit2.GetY()-hit.GetY())
@@ -356,11 +437,35 @@ class ShipDigiReco:
        err_y_2 = hit.GetYError()
        err_z_2 = hit.GetZError()
 
-       #if Dx<=(err_x_1+err_x_2) and Dy<=(err_y_1+err_y_2) and Dz<=2*(err_z_1+err_z_2):
-       if ((Dx<=(err_x_1+err_x_2) or Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
-         list_neighbours.append(hit2)
+       layer_2 = hit2.GetLayerNumber()
+       Dlayer = fabs(layer_2-layer_1)
+
+       if self.step == 1: 
+         # use Dz instead of Dlayer due to split of 1m between teh 2 parts of the calo 
+         if ((Dx<=(err_x_1+err_x_2) or Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
+           list_neighbours.append(hit2)
+       elif self.step == 2:
+         # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
+         if hit.IsX():
+           if Dx<=(err_x_1+err_x_2) and Dlayer<=2:
+             list_neighbours.append(hit2)
+         else:
+           if Dx<=(err_x_1+err_x_2) and Dlayer<=2 and Dlayer>0:
+             list_neighbours.append(hit2)
+       elif self.step == 3:
+         # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
+         if hit.IsY():
+           if Dy<=(err_y_1+err_y_2) and Dlayer<=2:
+             list_neighbours.append(hit2)
+         else:
+           if Dy<=(err_y_1+err_y_2) and Dlayer<=2 and Dlayer>0:
+             list_neighbours.append(hit2)
+       else:
+         print "-- getNeighbours: something is wrong, step not foreseen "
 
    return list_neighbours
+
+
 
 
  def digitizeTimeDet(self):
