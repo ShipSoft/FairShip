@@ -22,6 +22,15 @@
 splitcalCluster::splitcalCluster(splitcalHit* h)
 {
   _vectorOfHits.push_back(h);
+ 
+  if ( _vectorOfHits.size() == 1){ //first element added to the cluster
+    SetStartPoint(h);
+    SetEndPoint(h);
+  } else {
+    if (_start.Z() > h->GetZ()) SetStartPoint(h); // start point is the hit with the smalllest z
+    if (_end.Z() < h->GetZ()) SetEndPoint(h); // end point is the hit with the largest z
+  }
+ 
 }
 
 
@@ -78,8 +87,8 @@ void splitcalCluster::ComputeEtaPhiE()
     z1.push_back(mapLayerZ1[key]);
   }
 
-  double m1 = SlopeFromLinearRegression(z1,x);
-  double eta = atan(m1);
+  regression resultZX = LinearRegression(z1,x);
+  double alpha = acos(resultZX.slope);
 
   for (auto const& element : mapLayerWeigthedY){
     int key = element.first;
@@ -87,19 +96,51 @@ void splitcalCluster::ComputeEtaPhiE()
     z2.push_back(mapLayerZ2[key]);
   }
 
-  double m2 = SlopeFromLinearRegression(z2,y);
-  double phi = atan(m2);
+  regression resultZY = LinearRegression(z2,y);
+  double eta_check = acos(resultZY.slope);
 
+  // regression resultXY = LinearRegression(x,y);
+  // double phi = acos(resultXY.slope);
+
+  std::cout<<" ---- before fit " << std::endl;
+  _start.Print();
+  _end.Print();
+
+  // replace the x and y of start and end points with the re-evaluated values from the corresponding fit
+  _start.SetX( resultZX.slope * _start.Z() + resultZX.intercept ); 
+  _start.SetY( resultZY.slope * _start.Z() + resultZY.intercept ); 
+
+  _end.SetX( resultZX.slope * _end.Z() + resultZX.intercept ); 
+  _end.SetY( resultZY.slope * _end.Z() + resultZY.intercept ); 
+  
+  // get direction vector from end-strat vector difference
+  TVector3 direction;
+  direction = _end - _start;
+  double eta = direction.Eta();
+  double phi = direction.Phi();
+
+  std::cout<<" ---- after fit " << std::endl;
+  _start.Print();
+  _end.Print();
+
+  std::cout<<" -- eta = "<< eta << std::endl;
+  std::cout<<" -- eta_check = "<< eta_check << std::endl;
+  std::cout<<" -- phi = "<< phi << std::endl;
+  std::cout<<" -- energy = "<< energy << std::endl;
+  
   SetEtaPhiE(eta, phi, energy);
+
+  // temporary for test
+  _mZX = resultZX.slope;
+  _qZX = resultZX.intercept;
+  _mZY = resultZY.slope;
+  _qZY = resultZY.intercept;
 
 }
 
 
 
-double splitcalCluster::SlopeFromLinearRegression(std::vector<double >& x, std::vector<double >& y) { //, double& slope, double& intercept){
-
-  double slope; //, slopeError;
-  // double intercept, interceptError;
+regression splitcalCluster::LinearRegression(std::vector<double >& x, std::vector<double >& y) {
 
   const auto n    = x.size();
   const auto s_x  = std::accumulate(x.begin(), x.end(), 0.);
@@ -107,12 +148,27 @@ double splitcalCluster::SlopeFromLinearRegression(std::vector<double >& x, std::
   const auto s_xx = std::inner_product(x.begin(), x.end(), x.begin(), 0.);
   const auto s_xy = std::inner_product(x.begin(), x.end(), y.begin(), 0.);
 
-  slope = (n * s_xy - s_x * s_y) / (n * s_xx - s_x * s_x);
-  //intercept = (s_x * s_x * s_y - s_xy * s_x) / (n * s_xx - s_x * s_x);
+  regression result;
 
-  return slope;
+  result.slope = (n * s_xy - s_x * s_y) / (n * s_xx - s_x * s_x);
+  result.intercept = (s_x * s_x * s_y - s_xy * s_x) / (n * s_xx - s_x * s_x);
+
+  std::cout<< "--- LinearRegression ---" <<std::endl;
+  std::cout<< "--------- slope = " <<  result.slope <<std::endl;
+  std::cout<< "--------- intercept = " <<  result.intercept <<std::endl;
+
+  return result;
 
 }
+
+
+void splitcalCluster::SetStartPoint(splitcalHit*& h) {
+  SetStartPoint(h->GetX(),h->GetY(),h->GetZ());
+} 
+
+void  splitcalCluster::SetEndPoint(splitcalHit*& h) {
+  SetEndPoint(h->GetX(),h->GetY(),h->GetZ());
+} 
 
 
 // -------------------------------------------------------------------------
@@ -130,6 +186,14 @@ void splitcalCluster::Print() const
 	   << _eta << " ,  "
 	   << _phi << " ,  "
 	   << _energy << std::endl;  
+  std::cout<< "    start(x,y,z) = " 
+	   << _start.X() << " ,  "
+	   << _start.Y() << " ,  "
+	   << _start.Z() << std::endl;  
+  std::cout<< "    end(x,y,z) = " 
+	   << _end.X() << " ,  "
+	   << _end.Y() << " ,  "
+	   << _end.Z() << std::endl;  
    std::cout<< "------- " <<std::endl;
 }
 // -------------------------------------------------------------------------

@@ -5,6 +5,21 @@
 #include <vector> 
 //#include <boost/python.hpp>
 
+// ROOT headers
+/* #include <TLorentzVector.h> */
+#include <TVector3.h>
+
+struct regression
+{
+
+  double slope;
+  double slopeError;
+  double intercept;
+  double interceptError;
+
+};
+
+
 class splitcalCluster 
 {
   public:
@@ -30,21 +45,41 @@ class splitcalCluster
     double GetEta() {return _eta;}
     double GetPhi() {return _phi;}
     double GetEnergy() {return _energy;}
+    double GetPx() {return _energy*sin(_eta)*cos(_phi);}
+    double GetPy() {return _energy*sin(_eta)*sin(_phi);}
+    double GetPz() {return _energy*cos(_eta);}
+    double GetEx() {return GetPx();}
+    double GetEy() {return GetPy();}
+    double GetEz() {return GetPz();}
     std::vector<splitcalHit* >& GetVectorOfHits() {return _vectorOfHits;}
 
-    double SlopeFromLinearRegression(std::vector<double >& x, std::vector<double >& y);
+    regression LinearRegression(std::vector<double >& x, std::vector<double >& y);
     void ComputeEtaPhiE();
+    
+    void SetStartPoint(const double& x, const double& y, const double& z) {_start.SetXYZ(x,y,z); }
+    void SetStartPoint(splitcalHit*& h);
+    void SetEndPoint(const double& x, const double& y, const double& z) {_end.SetXYZ(x,y,z);}
+    void SetEndPoint(splitcalHit*& h);
+
+    TVector3 GetStartPoint() {return _start; }
+    TVector3 GetEndPoint() {return _end; }
 
 
   private:
-    /* /\** Copy constructor **\/ */
-    /* splitcalCluster(const splitcalCluster& point); */
-    /* splitcalCluster operator=(const splitcalCluster& point); */
+    /** Copy constructor **/
+    splitcalCluster(const splitcalCluster& cluster);
+    splitcalCluster operator=(const splitcalCluster& cluster);
 
     double _eta, _phi, _energy;
+    TVector3 _start;
+    TVector3 _end;
     std::vector<splitcalHit* > _vectorOfHits;
 
-    ClassDef(splitcalCluster,3);
+    // temporary for test
+    double _mZX, _qZX;
+    double _mZY, _qZY;
+
+    ClassDef(splitcalCluster,1);
     
 };
 

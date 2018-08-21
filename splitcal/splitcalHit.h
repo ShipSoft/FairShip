@@ -64,10 +64,12 @@ class splitcalHit : public ShipHit
     double GetZError() {return _zError;}
     double GetEnergyWeight() {return _energyWeight;}
 
-  private:
+
     /** Copy constructor **/
     splitcalHit(const splitcalHit& point);
     splitcalHit operator=(const splitcalHit& point);
+
+  private:
 
     Float_t flag;   
     double _x, _y, _z, _xError, _yError, _zError;
