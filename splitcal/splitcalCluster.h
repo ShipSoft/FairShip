@@ -39,6 +39,10 @@ class splitcalCluster
     void SetEta(double& eta) {_eta = eta;}
     void SetPhi(double& phi) {_phi = phi;}
     void SetEnergy(double& e) {_energy = e;}
+    void SetStartPoint(const double& x, const double& y, const double& z) {_start.SetXYZ(x,y,z); }
+    void SetStartPoint(splitcalHit*& h);
+    void SetEndPoint(const double& x, const double& y, const double& z) {_end.SetXYZ(x,y,z);}
+    void SetEndPoint(splitcalHit*& h);
     void SetVectorOfHits(std::vector<splitcalHit* >& v) {_vectorOfHits = v;}
     void AddHit(splitcalHit* h) {_vectorOfHits.push_back(h);}
 
@@ -51,19 +55,18 @@ class splitcalCluster
     double GetEx() {return GetPx();}
     double GetEy() {return GetPy();}
     double GetEz() {return GetPz();}
+    TVector3 GetStartPoint() {return _start; }
+    TVector3 GetEndPoint() {return _end; }
     std::vector<splitcalHit* >& GetVectorOfHits() {return _vectorOfHits;}
 
     regression LinearRegression(std::vector<double >& x, std::vector<double >& y);
     void ComputeEtaPhiE();
     
-    void SetStartPoint(const double& x, const double& y, const double& z) {_start.SetXYZ(x,y,z); }
-    void SetStartPoint(splitcalHit*& h);
-    void SetEndPoint(const double& x, const double& y, const double& z) {_end.SetXYZ(x,y,z);}
-    void SetEndPoint(splitcalHit*& h);
-
-    TVector3 GetStartPoint() {return _start; }
-    TVector3 GetEndPoint() {return _end; }
-
+    // temporary for test
+    double GetSlopeZX() {return _mZX;}
+    double GetInterceptZX() {return _qZX;}
+    double GetSlopeZY() {return _mZY;}
+    double GetInterceptZY() {return _qZY;}
 
   private:
     /** Copy constructor **/
