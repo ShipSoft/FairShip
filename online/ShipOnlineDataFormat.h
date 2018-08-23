@@ -43,6 +43,7 @@ struct ChannelId {
       bool RC_signal = false;
       bool scintillatorA = false;
       bool scintillatorB = false;
+      bool master_trigger = false;
       int module = 0;
       int station = 0;
       int channel_offset = 0;
@@ -77,6 +78,7 @@ struct ChannelId {
       case 4:
          trigger = channel == 96;
          RC_signal = channel == 97 || channel == 98;
+         master_trigger = channel == 99;
          beamcounter = channel > 111;
          module = (channel / 48) % 2 + 2;
          channel_offset = (channel < 48) * 33;
@@ -85,7 +87,7 @@ struct ChannelId {
       }
       if (trigger) {
          return 0;
-      } else if (beamcounter || RC_signal) {
+      } else if (beamcounter || RC_signal || master_trigger) {
          return -1;
       } else if (scintillatorA) {
          return 6;
