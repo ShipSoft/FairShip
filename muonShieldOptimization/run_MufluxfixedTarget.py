@@ -200,7 +200,9 @@ MufluxSpectrometer.SetTr34XDim(ship_geo.MufluxSpectrometer.tr34xdim)
 MufluxSpectrometer.SetDistStereo(ship_geo.MufluxSpectrometer.diststereo)
 MufluxSpectrometer.SetDistT1T2(ship_geo.MufluxSpectrometer.distT1T2)
 MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4) 
-     
+MufluxSpectrometer.SetGoliathCentre(ship_geo.MufluxSpectrometer.goliathcentre_to_beam)
+MufluxSpectrometer.SetTStationsZ(ship_geo.MufluxSpectrometer.T1z,ship_geo.MufluxSpectrometer.T2z,ship_geo.MufluxSpectrometer.T3z,ship_geo.MufluxSpectrometer.T4z) 
+      
 # for the digitizing step
 MufluxSpectrometer.SetTubeResolution(ship_geo.MufluxSpectrometer.v_drift,ship_geo.MufluxSpectrometer.sigma_spatial) 
  
@@ -208,11 +210,23 @@ Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
 Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
 #Scintillator.SetDistT1(ship_geo.MufluxSpectrometer.DeltazView/2+ship_geo.MufluxSpectrometer.OuterTubeDiameter/2-ship_geo.Scintillator.DistT1)
 #Scintillator.SetDistT2(ship_geo.Scintillator.DistT2)
-Scintillator.SetDistT1(11.5*u.cm)
-Scintillator.SetDistT2(135.25*u.cm)
+Scintillator.SetDistT1(ship_geo.Scintillator.DistT1)
+Scintillator.SetDistT2(ship_geo.Scintillator.DistT2)
 
 TargetStation = ROOT.MufluxTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
                                                         ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
+
+TargetStation.SetIronAbsorber(ship_geo.MufluxTargetStation.absorber_x,ship_geo.MufluxTargetStation.absorber_y)
+TargetStation.SetAbsorberCutout(ship_geo.MufluxTargetStation.absorbercutout_x, ship_geo.MufluxTargetStation.absorbercutout_y)
+TargetStation.SetIronShield(ship_geo.MufluxTargetStation.ironshield_x, ship_geo.MufluxTargetStation.ironshield_y, ship_geo.MufluxTargetStation.ironshield_z)
+TargetStation.SetConcreteShield(ship_geo.MufluxTargetStation.concreteshield_x, ship_geo.MufluxTargetStation.concreteshield_y, ship_geo.MufluxTargetStation.concreteshield_z)
+TargetStation.SetAboveTargetShield(ship_geo.MufluxTargetStation.abovetargetshield_x, ship_geo.MufluxTargetStation.abovetargetshield_y,ship_geo.MufluxTargetStation.abovetargetshield_z)
+TargetStation.SetAboveAbsorberShield(ship_geo.MufluxTargetStation.aboveabsorbershield_x, ship_geo.MufluxTargetStation.aboveabsorbershield_y,ship_geo.MufluxTargetStation.aboveabsorbershield_z)
+TargetStation.SetAboveAboveTargetShield(ship_geo.MufluxTargetStation.aboveabovetargetshield_y)
+TargetStation.SetFloor(ship_geo.MufluxTargetStation.floor_x,ship_geo.MufluxTargetStation.floor_y,ship_geo.MufluxTargetStation.floor_z)
+TargetStation.SetFloorT34(ship_geo.MufluxTargetStation.floorT34_x,ship_geo.MufluxTargetStation.floorT34_y,ship_geo.MufluxTargetStation.floorT34_z)
+TargetStation.SetFloorRPC(ship_geo.MufluxTargetStation.floorRPC_x, ship_geo.MufluxTargetStation.floorRPC_y,ship_geo.MufluxTargetStation.floorRPC_z)
+
 slices_length   = ROOT.std.vector('float')()
 slices_material = ROOT.std.vector('std::string')()
 for i in range(1,ship_geo.targetOpt+1):
@@ -227,7 +241,7 @@ run.AddModule(Scintillator)
 run.AddModule(MufluxSpectrometer)
    
 MuonTagger = ROOT.MuonTagger("MuonTagger", ship_geo.MuonTagger.BX, ship_geo.MuonTagger.BY, ship_geo.MuonTagger.BZ, ship_geo.MuonTagger.zBox, ROOT.kTRUE)
-MuonTagger.SetPassiveParameters(ship_geo.MuonTagger.PX, ship_geo.MuonTagger.PY, ship_geo.MuonTagger.PTh)
+MuonTagger.SetPassiveParameters(ship_geo.MuonTagger.PX, ship_geo.MuonTagger.PY, ship_geo.MuonTagger.PTh, ship_geo.MuonTagger.PTh1)
 MuonTagger.SetSensitiveParameters(ship_geo.MuonTagger.SX, ship_geo.MuonTagger.SY, ship_geo.MuonTagger.STh)
 run.AddModule(MuonTagger)
   

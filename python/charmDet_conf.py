@@ -85,6 +85,8 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetDistStereo(ship_geo.MufluxSpectrometer.diststereo)
  MufluxSpectrometer.SetDistT1T2(ship_geo.MufluxSpectrometer.distT1T2)
  MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)    
+ MufluxSpectrometer.SetGoliathCentre(ship_geo.MufluxSpectrometer.goliathcentre_to_beam)
+ MufluxSpectrometer.SetTStationsZ(ship_geo.MufluxSpectrometer.T1z,ship_geo.MufluxSpectrometer.T2z,ship_geo.MufluxSpectrometer.T3z,ship_geo.MufluxSpectrometer.T4z) 
        
  # for the digitizing step
  MufluxSpectrometer.SetTubeResolution(ship_geo.MufluxSpectrometer.v_drift,ship_geo.MufluxSpectrometer.sigma_spatial) 
@@ -99,6 +101,17 @@ def configure(run,ship_geo):
     detectorList.append(MufluxSpectrometer)
  else:
     TargetStation = ROOT.MufluxTargetStation("MufluxTargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
+    
+    TargetStation.SetIronAbsorber(ship_geo.MufluxTargetStation.absorber_x,ship_geo.MufluxTargetStation.absorber_y)
+    TargetStation.SetAbsorberCutout(ship_geo.MufluxTargetStation.absorbercutout_x, ship_geo.MufluxTargetStation.absorbercutout_y)
+    TargetStation.SetIronShield(ship_geo.MufluxTargetStation.ironshield_x, ship_geo.MufluxTargetStation.ironshield_y, ship_geo.MufluxTargetStation.ironshield_z)
+    TargetStation.SetConcreteShield(ship_geo.MufluxTargetStation.concreteshield_x, ship_geo.MufluxTargetStation.concreteshield_y, ship_geo.MufluxTargetStation.concreteshield_z)
+    TargetStation.SetAboveTargetShield(ship_geo.MufluxTargetStation.abovetargetshield_x, ship_geo.MufluxTargetStation.abovetargetshield_y,ship_geo.MufluxTargetStation.abovetargetshield_z)
+    TargetStation.SetAboveAbsorberShield(ship_geo.MufluxTargetStation.aboveabsorbershield_x, ship_geo.MufluxTargetStation.aboveabsorbershield_y,ship_geo.MufluxTargetStation.aboveabsorbershield_z)
+    TargetStation.SetAboveAboveTargetShield(ship_geo.MufluxTargetStation.aboveabovetargetshield_y)
+    TargetStation.SetFloor(ship_geo.MufluxTargetStation.floor_x,ship_geo.MufluxTargetStation.floor_y,ship_geo.MufluxTargetStation.floor_z)
+    TargetStation.SetFloorT34(ship_geo.MufluxTargetStation.floorT34_x,ship_geo.MufluxTargetStation.floorT34_y,ship_geo.MufluxTargetStation.floorT34_z)
+    TargetStation.SetFloorRPC(ship_geo.MufluxTargetStation.floorRPC_x, ship_geo.MufluxTargetStation.floorRPC_y,ship_geo.MufluxTargetStation.floorRPC_z)
 
     if ship_geo.targetOpt>10:
      slices_length=ROOT.std.vector('float')()     
@@ -123,7 +136,10 @@ def configure(run,ship_geo):
   
  fMagField = ROOT.ShipGoliathField()
  
- fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
+ #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_3600A_0A.root"  
+ fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
+ #default field map
+ #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
  fMagField.Init(fieldfile)
  run.SetField(fMagField)   
  

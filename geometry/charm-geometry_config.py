@@ -17,9 +17,36 @@ with ConfigRegistry.register_config("basic") as c:
      c.MufluxSpectrometer.muflux = True
     else: 
      c.MufluxSpectrometer.muflux = False
-   
 
     c.target = AttrDict(z0=0*u.cm)
+     
+    c.MufluxTargetStation=AttrDict(z0=0* u.cm)
+    c.MufluxTargetStation.absorber_x=120 *u.cm
+    c.MufluxTargetStation.absorber_y=97.5*u.cm
+    c.MufluxTargetStation.absorbercutout_x=102* u.cm
+    c.MufluxTargetStation.absorbercutout_y=27.5*u.cm
+    c.MufluxTargetStation.ironshield_x=20.*u.cm
+    c.MufluxTargetStation.ironshield_y=82.5*u.cm
+    c.MufluxTargetStation.ironshield_z=160*u.cm
+    c.MufluxTargetStation.concreteshield_x=40*u.cm
+    c.MufluxTargetStation.concreteshield_y=82.5*u.cm
+    c.MufluxTargetStation.concreteshield_z=160.*u.cm
+    c.MufluxTargetStation.abovetargetshield_x=120*u.cm
+    c.MufluxTargetStation.abovetargetshield_y=42.5*u.cm
+    c.MufluxTargetStation.abovetargetshield_z=160*u.cm
+    c.MufluxTargetStation.aboveabsorbershield_x=120*u.cm
+    c.MufluxTargetStation.aboveabsorbershield_y=40*u.cm
+    c.MufluxTargetStation.aboveabsorbershield_z=80*u.cm
+    c.MufluxTargetStation.aboveabovetargetshield_y=40*u.cm
+    c.MufluxTargetStation.floor_x=500.*u.cm
+    c.MufluxTargetStation.floor_y=80.*u.cm
+    c.MufluxTargetStation.floor_z=800.*u.cm
+    c.MufluxTargetStation.floorT34_x=500.*u.cm
+    c.MufluxTargetStation.floorT34_y=16.*u.cm
+    c.MufluxTargetStation.floorT34_z=118.875*u.cm
+    c.MufluxTargetStation.floorRPC_x=500.*u.cm
+    c.MufluxTargetStation.floorRPC_y=32.5*u.cm
+    c.MufluxTargetStation.floorRPC_z=110.*u.cm   
 
     #BOX (Brick!)
     c.Box = AttrDict(z=0*u.cm)
@@ -69,6 +96,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.GapPostTargetTh = 0.73 * u.cm     
     #c.Box.GapPostTargetTh = 0*u.cm
     c.Box.RunNumber =  3 #run configuration for charm
+
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
     c.decayVolume            =  AttrDict(z=0*u.cm)
     c.decayVolume.length     =   50*u.m
@@ -118,13 +146,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.M18 = "tungstenmisis"
     c.target.L18 = 36.47*u.cm
     c.target.sl  =  0.54459*u.cm  # H20 slit *17 times; to get to the measured length by survey 
-    #c.target.xy  = 15.*u.cm   # diameter of muflux target
     c.target.xy  = 10.*u.cm   # new diameter of muflux target    
-    # 5.0 cm is for front and endcaps
-    #c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18 + 5.0*u.cm
     
-    c.target.length = 154.328*u.cm    
+    # 5.0 cm is for front and endcaps
+    
+    c.target.length = 154.328*u.cm   #from survey 
     # interaction point, start of target
+    
     c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
     c.target.z0  =  c.target.z - c.target.length/2.
        
@@ -141,10 +169,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.H = 2*c.Spectrometer.BasisH + c.Spectrometer.CoilD + c.Spectrometer.UpCoilH + c.Spectrometer.LowCoilH
 
     # -----Drift tube part --------
-    #c.MufluxSpectrometer.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
     c.MufluxSpectrometer.v_drift = 1./(72*u.ns/u.mm) # 1300 ns max for 36.3 mm drifttubes
     c.MufluxSpectrometer.sigma_spatial = 0.027*u.cm # from Daniel 8feb2018
-    #c.MufluxSpectrometer.sigma_spatial = 0.035*u.cm # 25% worse   
+    
     c.MufluxSpectrometer.TubeLength         = 160.*u.cm
     c.MufluxSpectrometer.TubeLength12       = 100.*u.cm    
     c.MufluxSpectrometer.tr12ydim           = 100.*u.cm
@@ -171,8 +198,14 @@ with ConfigRegistry.register_config("basic") as c:
     if c.MufluxSpectrometer.muflux == True:
        c.MufluxSpectrometer.distT3T4           = 1.6*u.m       
     else:
-       c.MufluxSpectrometer.distT3T4 = 1.0*u.m    
-   
+       c.MufluxSpectrometer.distT3T4 = 1.0*u.m   
+        
+    c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
+    c.MufluxSpectrometer.T1z=38.875 *u.cm
+    c.MufluxSpectrometer.T2z=107.625*u.cm
+    c.MufluxSpectrometer.T3z=586.25*u.cm
+    c.MufluxSpectrometer.T4z=747.25*u.cm       
+    
     if c.MufluxSpectrometer.muflux == True:    
        c.Spectrometer.DX = 2.*u.m
        c.Spectrometer.DY = 1.6*u.m   
@@ -181,9 +214,11 @@ with ConfigRegistry.register_config("basic") as c:
        c.Spectrometer.DX = 1*u.m
        c.Spectrometer.DY = 0.5*u.m
        c.Spectrometer.DZ = 13.5 * u.cm
+       
     c.MufluxSpectrometer.DX = 2.*u.m
     c.MufluxSpectrometer.DY = 1.6*u.m
     c.MufluxSpectrometer.DZ = 16.*u.cm
+    
     #These parameters are used only by the charm detector ---   
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
     c.Spectrometer.D1Long = 4 * u.cm;   
@@ -217,10 +252,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.Scintillator = AttrDict(z = 0*u.cm)
     c.Scintillator.Scoring1X           = 55.*u.cm
     c.Scintillator.Scoring1Y           = 110.*u.cm    
-    c.Scintillator.DistT1               = 11.5*u.cm   
-    #c.Scintillator.DistT1               = 3.7*u.cm       
-    c.Scintillator.DistT2               = 135.25*u.cm
-    #c.Scintillator.DistT2               = 2*(2*c.Spectrometer.DZ +c.MufluxSpectrometer.diststereo) + c.MufluxSpectrometer.distT1T2 + 10*u.cm
+    c.Scintillator.DistT1              = 11.5*u.cm       
+    c.Scintillator.DistT2              = 135.25*u.cm
                    
     if c.MufluxSpectrometer.muflux == True: 
        #these parameters are also used inside the MufluxSpectrometer.cxx

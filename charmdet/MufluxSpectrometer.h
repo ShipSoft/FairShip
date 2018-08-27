@@ -52,6 +52,8 @@ class MufluxSpectrometer:public FairDetector
     void SetSetScintillatorThickness(Double_t scintillatorthickness);
     void SetScintillatorDistT(Double_t scintillatorDistT);
     void SetscintillatorPlasticThickness(Double_t scintillatorPlasticThickness);
+    void SetGoliathCentre(Double_t goliathcentre_to_beam);
+    void SetTStationsZ(Double_t T1z, Double_t T2z, Double_t T3z, Double_t T4z);
 
 // for the digitizing step
     void SetTubeResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
@@ -148,7 +150,11 @@ private:
     Double_t       fdiststereo;              //!  distance between stereo layers
     Double_t       fdistT1T2;                //!  distance between T1&T2
     Double_t       fdistT3T4;                //!  distance between T3&T4
-    
+    Double_t       fgoliathcentre_to_beam;
+    Double_t       fT1z;
+    Double_t       fT2z;
+    Double_t       fT3z;
+    Double_t       fT4z;    
     /** container for data points */
     TClonesArray*  fMufluxSpectrometerPointCollection;
     
