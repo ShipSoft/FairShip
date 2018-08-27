@@ -85,7 +85,10 @@ class ShipGoliathField : public FairField
    TH3D* fhistby;
    TH3D* fhistbz;   
 
-  
+   Double_t xmin, xmax, ymin, ymax, zmin, zmax;
+   
+   
+   
 ClassDef(ShipGoliathField, 2);
 
 };

@@ -70,7 +70,13 @@ void ShipGoliathField::Init(const char* fieldfile){
   TH3D* histbx= (TH3D*)fieldmap->Get("Bx");
   TH3D* histby= (TH3D*)fieldmap->Get("By"); 
   TH3D* histbz= (TH3D*)fieldmap->Get("Bz");   
-
+  xmin = histbx->GetXaxis()->GetXmin();
+  xmax = histbx->GetXaxis()->GetXmax();  
+  ymin = histbx->GetYaxis()->GetXmin();
+  ymax = histbx->GetYaxis()->GetXmax();    
+  zmin = histbx->GetZaxis()->GetXmin();
+  zmax = histbx->GetZaxis()->GetXmax(); 
+    
   ShipGoliathField::sethistbxyz(histbx, histby, histbz);
 
   /*    
@@ -131,7 +137,7 @@ Double_t ShipGoliathField::GetBx(Double_t x, Double_t y, Double_t z)  {
    Double_t bx=0.;
    TH3D* hbx;
 
-   if ((x < -111.86 )|| (x> 124.14) || (y < -44.09) || (y>79.81) || (z<43.5) || (z>653.54)) {
+   if ((x < xmin )|| (x> xmax) || (y < ymin) || (y>ymax) || ((z-350.75)<zmin) || ((z-350.75)>zmax)) {
        return bx;}  
     // FairShip: 0 after absorber -384.5<target<-240 -239.9<absorber<0<T1T2<121<Goliath<481<T3T4<755 766.6<RPC<966.6    
     hbx=ShipGoliathField::gethistbx();
@@ -151,7 +157,7 @@ Double_t ShipGoliathField::GetBy(Double_t x, Double_t y, Double_t z) {
     Double_t by=0.;
     TH3D* hby;
 
-   if ((x < -111.86 )|| (x> 124.14) || (y < -44.09) || (y>79.81) || (z<43.5) || (z>653.54)) {
+   if ((x < xmin )|| (x> xmax) || (y < ymin) || (y>ymax) || ((z-350.75)<zmin) || ((z-350.75)>zmax)) {
        return by;}   
     hby=ShipGoliathField::gethistby();
     Int_t binx = hby->GetXaxis()->FindBin(x); 
@@ -170,7 +176,7 @@ Double_t ShipGoliathField::GetBz(Double_t x, Double_t y, Double_t z)  {
     Double_t bz=0.;
     TH3D* hbz;
 
-  if ((x < -111.86 )|| (x> 124.14) || (y < -44.09) || (y>79.81) || (z<43.5) || (z>653.54)) {
+   if ((x < xmin )|| (x> xmax) || (y < ymin) || (y>ymax) || ((z-350.75)<zmin) || ((z-350.75)>zmax)) {
        return bz;}   
        
     hbz=ShipGoliathField::gethistbz(); 

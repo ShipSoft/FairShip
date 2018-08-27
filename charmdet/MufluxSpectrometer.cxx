@@ -241,6 +241,18 @@ void MufluxSpectrometer::SetDistT3T4(Double_t distT3T4)
       fdistT3T4 = distT3T4;                                       //! distance between T3&T4
 }
 
+void MufluxSpectrometer::SetGoliathCentre(Double_t goliathcentre_to_beam)
+{
+      fgoliathcentre_to_beam=goliathcentre_to_beam;
+}
+
+void MufluxSpectrometer::SetTStationsZ(Double_t T1z, Double_t T2z, Double_t T3z, Double_t T4z)
+{
+      fT1z=T1z;
+      fT2z=T2z;
+      fT3z=T3z;
+      fT4z=T4z;
+}
 
 void MufluxSpectrometer::ConstructGeometry()
 { 
@@ -276,8 +288,6 @@ void MufluxSpectrometer::ConstructGeometry()
   
   gGeoManager->SetTopVisible();
 
-  Double_t goliathcentre_to_beam = 178.6; //mm
-
   //epsilon to avoid overlapping volumes
   Double_t eps=0.05;
   Double_t epsS=0.00001;
@@ -297,8 +307,6 @@ void MufluxSpectrometer::ConstructGeometry()
   TGeoBBox *ProvaBox = new TGeoBBox("ProvaBox", 0. , 0., 0.);  
   TGeoVolume *volProva = new TGeoVolume("volProva", ProvaBox, vacuum);   
   
-  Double_t z[4] = {0.,0.,0.,0.}; 
-    
  
   if (fMuonFlux){
     //***************************************************************************************************************
@@ -340,18 +348,12 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoBBox *DriftTube2 = new TGeoBBox("DriftTube2", DimX/2+ 1*m/2, DimY/2+ 0.9*m/2, DimZ+fdiststereo/2+eps);  
     TGeoVolume *volDriftTube2 = new TGeoVolume("volDriftTube2",DriftTube2,air);
     volDriftTube2->SetLineColor(kBlue-5);
-        
-    //z[0] = (2.*DimZ + fdiststereo+ fDeltaz_view)/2; //37 mm between center of scint and outer tube layer center; 5cm from absorber to scint center
-    //z[1] = z[0] + fdistT1T2 + 2.*DimZ + fdiststereo;   
-    //z[2] = z[1]+ TransversalSize  + 3*DimZ/2+fdiststereo+5.*cm ; //z[3] distance  till end of T3 + 5cm   
-    //z[3] = z[2]+ fdistT3T4+ DimZ + 12.6*cm; 
-    
-    z[0] = 38.875*cm;
-    z[1] = 107.625*cm;
-    z[2] = 586.25*cm;
-    z[3] = 747.25*cm;
-    
-    	    
+            
+    //Double_t xT1[4] = {-1.2*cm,1.4*cm,-0.9*cm,0.7*cm};     
+    //Double_t xT2[4] = {-3.0*cm,3.12*cm,0.2*cm,-1.14*cm};  
+    Double_t xT1[4] = {0.*cm,0.*cm,0.*cm,0.*cm};     
+    Double_t xT2[4] = {0.*cm,0.*cm,0.*cm,0.*cm};  
+     	    
     for (Int_t statnb=1; statnb<3; statnb++) {
       TString nmview_top_12="x";
       TString nmview_bot_12="x";
@@ -359,12 +361,12 @@ void MufluxSpectrometer::ConstructGeometry()
       TString nmstation="x";
       if (statnb==1) {
          volDriftTube1->SetVisibility(kFALSE);
-	 top->AddNode(volDriftTube1,1,new TGeoTranslation(0,0,z[0]));
+	 top->AddNode(volDriftTube1,1,new TGeoTranslation(0,0,fT1z));
          nmstation = "Station_1"; 
 	 }  
       if (statnb==2) {
          volDriftTube2->SetVisibility(kFALSE);      
-	 top->AddNode(volDriftTube2,2,new TGeoTranslation(0,0,z[1])); 
+	 top->AddNode(volDriftTube2,2,new TGeoTranslation(0,0,fT2z)); 
          nmstation = "Station_2";	  
 	 }      
   
@@ -512,8 +514,14 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
             TGeoRotation r6s;	
             TGeoTranslation t6s;
             for (Int_t snb=1; snb<fTubes_per_layer_tr12+1; snb++) {
-              //tubes loop	      
-	      t6s.SetTranslation(ftr12xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0); 
+              //tubes loop
+	      if ((statnb==1)&&(angle==0.)) {      	        
+                 t6s.SetTranslation(xT1[lnb*1+pnb*2]+ftr12xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0);} 	      	      
+	      if ((statnb==2)&&(angle==0.)) {		     
+                 t6s.SetTranslation(xT2[lnb*1+pnb*2]+ftr12xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0);} 
+	      if (angle!=0.){
+                 t6s.SetTranslation(ftr12xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0);} 
+	      
 	      r6s.SetAngles(0,90,90);
               TGeoCombiTrans c6s(t6s, r6s);
               TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
@@ -532,10 +540,6 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
     } //end of statnb loop             
  }   
     else{ //station positions for charm measurement
-  z[0] = 38.875*cm;
-  z[1] = 107.625*cm; //not used
-  z[2] = 581.500*cm;
-  z[3] = z[2] + fdistT3T4 + 2* DimZ/2;
     }
     //field measurement done in this box, called vacuumbox for historical reasons
     TGeoBBox *VacuumBox = new TGeoBBox("VacuumBox", 156.0*cm/2, 82.6*cm/2., (360 * cm)/2.);
@@ -554,8 +558,7 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
     TGeoTranslation gtrans;
     ry90.SetAngles(90,90,90); 
     //From latest (2017) field measurements: beam coordinates x=-1.4mm, y=-178.6mm, hence need to move Goliath up
-    //gtrans.SetTranslation(1.4*mm,goliathcentre_to_beam*mm,z[1] + (2.*DimZ + fdiststereo)/2+  TransversalSize/2 - fOuter_Tube_diameter/2 + 7.9*cm);
-    gtrans.SetTranslation(1.4*mm,goliathcentre_to_beam*mm,350.75);
+    gtrans.SetTranslation(1.4*mm,fgoliathcentre_to_beam,350.75);
     TGeoCombiTrans cg(gtrans,ry90);
     TGeoHMatrix *mcg = new TGeoHMatrix(cg);
 
@@ -801,7 +804,12 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
       TGeoTube *wire_tube = new TGeoTube("wire",rmin,rmax,fTube_length/2.-8.*eps);
       TGeoVolume *wire = new TGeoVolume("wire",wire_tube, tungsten);
       wire->SetLineColor(6);    
-
+      
+      //Double_t xT3[4] = {-0.9*cm,1.14*cm,-0.8*cm,1.1*cm};    
+      //Double_t xT4[4] = {0.8*cm,1.29*cm,0.15*cm,2.0*cm}; 
+      Double_t xT3[4] = {0.*cm,0.*cm,0.*cm,0.*cm};    
+      Double_t xT4[4] = {0.*cm,0.*cm,0.*cm,0.*cm}; 
+      
       for (Int_t statnb=3; statnb<5; statnb++) {
     
         //TGeoBBox *platebox_34 = new TGeoBBox("platebox_34", ftr34xdim/2.+1.+2*fTubes_pitch,  plate_thickness/2. , fDeltaz_view/2.);
@@ -820,9 +828,8 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
         TString nmview_bot_34="x";
         if (statnb==3) {
           volDriftTube3->SetVisibility(kFALSE);
-	  //top->AddNode(volDriftTube3,3,new TGeoTranslation(0,0,4.5*m +89*cm + 2.5 * DimZ + 3.*cm));//with SA and SB
 	  //move drifttubes up so they cover the Goliath aperture, not centered on the beam
-	  top->AddNode(volDriftTube3,3,new TGeoTranslation(0,goliathcentre_to_beam*mm,z[2]));
+	  top->AddNode(volDriftTube3,3,new TGeoTranslation(0,fgoliathcentre_to_beam,fT3z));
           nmview_34 = "Station_3_x";
 	  nmview_top_34="Station_3_top_x";
 	  nmview_bot_34="Station_3_bot_x";	 
@@ -830,11 +837,8 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
 	}  
         if (statnb==4) {
           volDriftTube4->SetVisibility(kFALSE);     
-	  //top->AddNode(volDriftTube4,4,new TGeoTranslation(0,0,4.5*m +286*cm + 2.5 * DimZ + 3.*cm)); //with SA and SB
-	  //top->AddNode(volDriftTube4,4,new TGeoTranslation(0,0,z[3]-(DimZ+5.8)));
 	  //move drifttubes up so they cover the Goliath aperture, not centered on the beam
-	  //top->AddNode(volDriftTube4,4,new TGeoTranslation(0,goliathcentre_to_beam*mm,z[3]-(DimZ+11.6)));
-	  top->AddNode(volDriftTube4,4,new TGeoTranslation(0,goliathcentre_to_beam*mm,z[3]));
+	  top->AddNode(volDriftTube4,4,new TGeoTranslation(0,fgoliathcentre_to_beam,fT4z));
           nmview_34 = "Station_4_x";
 	  nmview_top_34="Station_4_top_x";
 	  nmview_bot_34="Station_4_bot_x";		  	  	  
@@ -906,7 +910,11 @@ t5.SetTranslation(-(ftr12ydim/2+eps-1.*cm)*cos(angle),(ftr12ydim/2+eps+plate_thi
            TGeoTranslation t6s;
            for (Int_t snb=1; snb<fTubes_per_layer_tr34+1; snb++) {
               //tubes loop
-	      t6s.SetTranslation(ftr34xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0); 
+	      if (statnb==3){	
+                   t6s.SetTranslation(xT3[pnb*2+lnb*1]+ftr34xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0); }
+	      if (statnb==4){	       
+                   t6s.SetTranslation(xT4[pnb*2+lnb*1]+ftr34xdim/2.-fTubes_pitch*(snb-1)+(fOffset_plane12-fTubes_pitch*(1-lnb))*pnb-lnb*fOffset_layer12,0,0); }
+
 	      r6s.SetAngles(0,90,90);
               TGeoCombiTrans c6s(t6s, r6s);
               TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
