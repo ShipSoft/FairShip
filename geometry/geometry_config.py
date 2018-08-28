@@ -653,9 +653,9 @@ with ConfigRegistry.register_config("basic") as c:
     if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
         c.NuTauTarget.row=7
         c.NuTauTarget.col=7
-        #c.NuTauTarget.wall=19
-        c.NuTauTarget.wall=10
-        c.NuTauTarget.target=2 #number of neutrino target volumes
+        c.NuTauTarget.wall=19
+        #c.NuTauTarget.wall=10
+        c.NuTauTarget.target=1 #number of neutrino target volumes
 
         
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
@@ -704,7 +704,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.DY = c.EmuMagnet.Height2 - 2 *c.tauHPT.SRDY
         c.tauHPT.DZ = c.NuTauTT.TTZ        
         c.tauHPT.nHPT = 3 #n.d.r. number after each neutrino target
-        c.tauHPT.distHPT = 25*u.cm
+        c.tauHPT.distHPT = 50*u.cm
     
     if nuTauTargetDesign!=2: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm
