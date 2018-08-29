@@ -42,9 +42,11 @@ class splitcalHit : public ShipHit
     void SetIsX(bool x) {_isX = x;}
     void SetIsY(bool y) {_isY = y;}
     void SetIsUsed(int u) {_isUsed = u;}
-    void SetClusterIndex(int i) {_clusterIndex = i;}
     void SetXYZErrors(double xError, double yError, double zError) {_xError = xError; _yError = yError; _zError = zError;}
-    void SetEnergyWeight(double w) {_energyWeight = w;}
+    /* void SetClusterIndex(int i) {_clusterIndex = i;} */
+    /* void SetEnergyWeight(double w) {_energyWeight = w;} */
+    void AddClusterIndex(int i) {_vecClusterIndices.push_back(i);}
+    void AddEnergyWeight(double w) {_vecEnergyWeights.push_back(w);}
 
     double GetX() {return _x;}
     double GetY() {return _y;}
@@ -58,12 +60,14 @@ class splitcalHit : public ShipHit
     bool IsX() {return _isX;}
     bool IsY() {return _isY;}
     int IsUsed() {return _isUsed;}
-    int GetClusterIndex() {return _clusterIndex;}
     double GetXError() {return _xError;}
     double GetYError() {return _yError;}
     double GetZError() {return _zError;}
-    double GetEnergyWeight() {return _energyWeight;}
-
+    /* double GetEnergyWeight() {return _energyWeight;} */
+    /* int GetClusterIndex() {return _clusterIndex;} */
+    std::vector<int > GetClusterIndices() {return _vecClusterIndices;}
+    std::vector<double > GetEnergyWeights() {return _vecEnergyWeights;}
+    bool IsShared() {return GetClusterIndices().size()>1; }
 
     /** Copy constructor **/
     splitcalHit(const splitcalHit& point);
@@ -73,10 +77,12 @@ class splitcalHit : public ShipHit
 
     Float_t flag;   
     double _x, _y, _z, _xError, _yError, _zError;
-    double _energy, _energyWeight;
+    double _energy;// _energyWeight;
     /* std::string _nameSubDetector;  */
-    int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed, _clusterIndex;
+    int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed;// _clusterIndex;
     bool _isX, _isY;
+    std::vector<double > _vecEnergyWeights;
+    std::vector<int > _vecClusterIndices;
 
     ClassDef(splitcalHit,3);
     

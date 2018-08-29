@@ -298,7 +298,7 @@ class ShipDigiReco:
    for hit in self.digiSplitcal:
      if hit.GetEnergy() > noise_energy_threshold:
        hit.SetIsUsed(0)
-       hit.SetEnergyWeight(1)
+       # hit.SetEnergyWeight(1)
        list_hits_above_threshold.append(hit)
 
    self.list_hits_above_threshold = list_hits_above_threshold
@@ -312,48 +312,13 @@ class ShipDigiReco:
    self.input_hits = list_hits_above_threshold
    list_clusters_of_hits = self.Clustering()
 
-   # ### visualisation ###
-
-   # c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
-   # graphs_yz = []
-
-   # for i in list_clusters_of_hits:
-     
-   #   gr_yz = ROOT.TGraphErrors()
-   #   gr_yz.SetLineColor( i+1 )
-   #   gr_yz.SetLineWidth( 2 )
-   #   gr_yz.SetMarkerColor( i+1 )
-   #   gr_yz.SetMarkerStyle( 21 )
-   #   gr_yz.SetTitle( 'clusters in y-z plane' )
-   #   gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
-   #   gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
-
-   #   for j,hit in enumerate (list_clusters_of_hits[i]):
-      
-   #     gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
-   #     gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
-       
-   #   gr_yz.GetXaxis().SetLimits( -620, 620 )
-   #   gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
-   #   graphs_yz.append(gr_yz)
-
-   #   c_yz.cd()
-   #   c_yz.Update()
-   #   if i==0:
-   #     graphs_yz[-1].Draw( 'AP' )
-   #   else:
-   #     graphs_yz[-1].Draw( 'P' )
-
-   # c_yz.Print("clusters_yz.eps")
-
-   # # ############################
-
    # step 2: to check if clusters can be split do clustering separtely in the XZ and YZ planes
 
    self.step = 2 
    print "--- digitizeSplitcal ==== STEP 2 ==== "
    list_final_clusters = {}
-   
+   index_final_cluster = 0
+
    for i in list_clusters_of_hits:
 
      list_hits_x = []
@@ -373,14 +338,14 @@ class ShipDigiReco:
      print "--- digitizeSplitcal - len(list_subclusters_of_x_hits) = ", len(list_subclusters_of_x_hits)
 
      self.list_subclusters_of_hits = list_subclusters_of_x_hits
-     list_of_subclusters_x = self.GetSubclustersExclusingFragments()
+     list_of_subclusters_x = self.GetSubclustersExcludingFragments()
 
      # compute energy weight
      weights_from_x_splitting = {}
      for index_subcluster in list_of_subclusters_x:
        subcluster_energy_x = self.GetClusterEnergy(list_of_subclusters_x[index_subcluster])
        weight = subcluster_energy_x/cluster_energy_x
-       print "======> weight = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
+       print "======> weight = ", weight 
        weights_from_x_splitting[index_subcluster] = weight
      
      ###########       
@@ -393,29 +358,56 @@ class ShipDigiReco:
      print "--- digitizeSplitcal - len(list_subclusters_of_y_hits) = ", len(list_subclusters_of_y_hits)
 
      self.list_subclusters_of_hits = list_subclusters_of_y_hits
-     list_of_subclusters_y = self.GetSubclustersExclusingFragments()
+     list_of_subclusters_y = self.GetSubclustersExcludingFragments()
 
      # compute energy weight
      weights_from_y_splitting = {}
      for index_subcluster in list_of_subclusters_y:
        subcluster_energy_y = self.GetClusterEnergy(list_of_subclusters_y[index_subcluster])
        weight = subcluster_energy_y/cluster_energy_y
-       print "======> weight = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
+       print "======> weight = ", weight 
        weights_from_y_splitting[index_subcluster] = weight
 
+
+     ###########       
   
-     # fill final list of clusters
+     # final list of clusters
+     # In principle one could go directly with the loop without checking if the size of subcluster x/y are == 1. 
+     # But I noticed that in the second step the reclustering can trow away few lonely hits, making the weight just below 1 
+     # While looking for how to recover that, this is a quick fix
+     if list_of_subclusters_x == 1 and list_of_subclusters_y == 1:
+       list_final_clusters[index_final_cluster] = list_clusters_of_hits[i]
+       for hit in list_final_clusters[index_final_cluster]:
+         hit.AddClusterIndex(index_final_cluster)
+         hit.AddEnergyWeight(1.) 
+       index_final_cluster += 1
+     else:
+       for ix in list_of_subclusters_x:
+         for iy in list_of_subclusters_y:
+
+           for hit in list_of_subclusters_y[iy]:
+              hit.AddClusterIndex(index_final_cluster)
+              hit.AddEnergyWeight(weights_from_x_splitting[ix])
+
+           for hit in list_of_subclusters_x[ix]:
+              hit.AddClusterIndex(index_final_cluster)
+              hit.AddEnergyWeight(weights_from_y_splitting[iy])
+         
+           list_final_clusters[index_final_cluster] = list_of_subclusters_y[iy] + list_of_subclusters_x[ix]
+           index_final_cluster += 1
+
+
 
    #################
    # fill clusters #
    #################
 
-   for i in list_clusters_of_hits:
+   for i in list_final_clusters: 
      print '------------------------'
      print '------ digitizeSplitcal - cluster n = ', i 
-     print '------ digitizeSplitcal - cluster size = ', len(list_clusters_of_hits[i]) 
+     print '------ digitizeSplitcal - cluster size = ', len(list_final_clusters[i]) 
 
-     for j,h in enumerate(list_clusters_of_hits[i]):
+     for j,h in enumerate(list_final_clusters[i]):
        if j==0: aCluster = ROOT.splitcalCluster(h)
        else: aCluster.AddHit(h)
 
@@ -430,9 +422,50 @@ class ShipDigiReco:
      self.recoSplitcal._m2 = aCluster.GetSlopeZY()
      self.recoSplitcal._q2 = aCluster.GetInterceptZY()
 
+
+   #################
+   # visualisation #
+   #################
+
+   c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
+   graphs_yz = []
+
+   for i in list_final_clusters:
+     
+     gr_yz = ROOT.TGraphErrors()
+     gr_yz.SetLineColor( i+1 )
+     gr_yz.SetLineWidth( 2 )
+     gr_yz.SetMarkerColor( i+1 )
+     gr_yz.SetMarkerStyle( 21 )
+     gr_yz.SetTitle( 'clusters in y-z plane' )
+     gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
+     gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
+
+     for j,hit in enumerate (list_final_clusters[i]):
+      
+       gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
+       gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
+       
+     gr_yz.GetXaxis().SetLimits( -620, 620 )
+     gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
+     graphs_yz.append(gr_yz)
+
+     c_yz.cd()
+     c_yz.Update()
+     if i==0:
+       graphs_yz[-1].Draw( 'AP' )
+     else:
+       graphs_yz[-1].Draw( 'P' )
+
+   c_yz.Print("final_clusters_yz.eps")
+
+   ############################
+
+
+
 ##########################
 
- def GetSubclustersExclusingFragments(self):
+ def GetSubclustersExcludingFragments(self):
 
    list_subclusters_excluding_fragments = {}
 
@@ -472,8 +505,8 @@ class ShipDigiReco:
          minDistance = distance
          minIndex = index_subcluster
 
-     for h in self.list_subclusters_of_hits[index_fragment]:
-       h.SetClusterIndex(minIndex)
+     # for h in self.list_subclusters_of_hits[index_fragment]:
+     #   h.SetClusterIndex(minIndex)
 
      print "--- minIndex = ", minIndex
      if minIndex != index_fragment: # in case there were only fragments - this is to prevent to sum twice fragment 0
@@ -511,13 +544,13 @@ class ShipDigiReco:
      print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
 
      if len(neighbours) < 1:
-       hit.SetClusterIndex(-1) # lonely fragment
+       # hit.SetClusterIndex(-1) # lonely fragment
        print '--- digitizeSplitcal - lonely fragment '
        continue
 
      cluster_index = cluster_index + 1
      hit.SetIsUsed(1)
-     hit.SetClusterIndex(cluster_index)
+     # hit.SetClusterIndex(cluster_index)
      list_hits_in_cluster[cluster_index] = []
      list_hits_in_cluster[cluster_index].append(hit)
      print '--- digitizeSplitcal - cluster_index = ', cluster_index
@@ -528,7 +561,7 @@ class ShipDigiReco:
        if neighbouringHit.IsUsed()==1: 
          continue
 
-       neighbouringHit.SetClusterIndex(cluster_index)
+       # neighbouringHit.SetClusterIndex(cluster_index)
        neighbouringHit.SetIsUsed(1)
        list_hits_in_cluster[cluster_index].append(neighbouringHit)
        expand_neighbours = self.getNeighbours(neighbouringHit)
@@ -564,8 +597,8 @@ class ShipDigiReco:
        err_y_2 = hit2.GetYError()
        err_z_2 = hit2.GetZError()
 
-       layer_2 = hit2.GetLayerNumber()
-       Dlayer = fabs(layer_2-layer_1)
+       # layer_2 = hit2.GetLayerNumber()
+       # Dlayer = fabs(layer_2-layer_1)
 
        if hit2.IsX(): err_x_2 = err_x_2*2.  #test
        if hit2.IsY(): err_y_2 = err_y_2*2.  #test
