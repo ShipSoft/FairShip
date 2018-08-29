@@ -355,7 +355,6 @@ class ShipDigiReco:
    list_final_clusters = {}
    
    for i in list_clusters_of_hits:
-   # for i in range (0,1):
 
      list_hits_x = []
      list_hits_y = []
@@ -364,6 +363,8 @@ class ShipDigiReco:
        if hit.IsX(): list_hits_x.append(hit)
        if hit.IsY(): list_hits_y.append(hit) # FIXME: this probably will not work with hits from high precision layers
      
+     ###########       
+
      #re-run reclustering only in xz plane possibly with different criteria 
      self.input_hits = list_hits_x
      list_subclusters_of_x_hits = self.Clustering()
@@ -371,59 +372,18 @@ class ShipDigiReco:
      
      print "--- digitizeSplitcal - len(list_subclusters_of_x_hits) = ", len(list_subclusters_of_x_hits)
 
-     n_subcluster_excluding_fragments = 0 
-     fragment_indices = []
-     subclusters_indices = []
-     for k in list_subclusters_of_x_hits:         
-       print '------ digitizeSplitcal - subcluster index = ', k 
-       subcluster_size = len(list_subclusters_of_x_hits[k])
-       print '------ digitizeSplitcal - subcluster size = ', subcluster_size
-       if subcluster_size < 4:
-         fragment_indices.append(k)
-       else: 
-         n_subcluster_excluding_fragments += 1
-         subclusters_indices.append(k)
-     if n_subcluster_excluding_fragments > 1:
-       print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
-     else: 
-       print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
+     self.list_subclusters_of_hits = list_subclusters_of_x_hits
+     list_of_subclusters_x = self.GetSubclustersExclusingFragments()
 
-     # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all tge fragments together
-     minDx = -1
-     minIndex = -1
-
-     if len(subclusters_indices) == 0 and len(fragment_indices) != 0: # only fragments
-       subclusters_indices.append(0) # merge all fragments into the first fragment
-
-     for index_fragment in fragment_indices:
-       print "--- index_fragment = ", index_fragment
-       first_hit_fragment = list_subclusters_of_x_hits[index_fragment][0]
-       for index_subcluster in subclusters_indices:
-         print "--- index_subcluster = ", index_subcluster
-         first_hit_subcluster = list_subclusters_of_x_hits[index_subcluster][0]
-         Dx = fabs(first_hit_fragment.GetX()-first_hit_subcluster.GetX())
-         if minDx<0 or Dx<minDx:  
-           minDx = Dx
-           minIndex = index_subcluster
-
-       for h in list_subclusters_of_x_hits[index_fragment]:
-         h.SetClusterIndex(minIndex)
-
-       print "--- minIndex = ", minIndex
-       if minIndex != index_fragment: # in case there were only fragments - this is to prevent to sum twice fragment 0
-         print "--- BEFORE - len(list_subclusters_of_x_hits[minIndex]) = ", len(list_subclusters_of_x_hits[minIndex])
-         list_subclusters_of_x_hits[minIndex] += list_subclusters_of_x_hits[index_fragment] 
-         print "--- AFTER - len(list_subclusters_of_x_hits[minIndex]) = ", len(list_subclusters_of_x_hits[minIndex])
-
-         
      # compute energy weight
      weights_from_x_splitting = {}
-     for index_subcluster in subclusters_indices:
-       subcluster_energy_x = self.GetClusterEnergy(list_subclusters_of_x_hits[index_subcluster])
+     for index_subcluster in list_of_subclusters_x:
+       subcluster_energy_x = self.GetClusterEnergy(list_of_subclusters_x[index_subcluster])
        weight = subcluster_energy_x/cluster_energy_x
-       print "======> weght = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
+       print "======> weight = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
        weights_from_x_splitting[index_subcluster] = weight
-
+     
+     ###########       
 
      #re-run reclustering only in yz plane possibly with different criteria 
      self.input_hits = list_hits_y
@@ -432,113 +392,19 @@ class ShipDigiReco:
      
      print "--- digitizeSplitcal - len(list_subclusters_of_y_hits) = ", len(list_subclusters_of_y_hits)
 
-     n_subcluster_excluding_fragments = 0 
-     fragment_indices = []
-     subclusters_indices = []
-     for k in list_subclusters_of_y_hits:         
-       print '------ digitizeSplitcal - subcluster index = ', k 
-       subcluster_size = len(list_subclusters_of_y_hits[k])
-       print '------ digitizeSplitcal - subcluster size = ', subcluster_size
-       if subcluster_size < 4:
-         fragment_indices.append(k)
-       else: 
-         n_subcluster_excluding_fragments += 1
-         subclusters_indices.append(k)
-     if n_subcluster_excluding_fragments > 1:
-       print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
-     else: 
-       print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
-
-     # if len(subclusters_indices)==0:
-     #   print "------ ONLY FRAGMENTS ------ "
-
-     #   ### visualisation ###
-
-     #   c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
-     #   graphs_yz = []
-
-     #   #for i in list_clusters_of_hits:
-     #   for counter,ifragment in enumerate(fragment_indices):
-     #     list_subclusters_of_y_hits[ifragment]
-
-     #     gr_yz = ROOT.TGraphErrors()
-     #     gr_yz.SetLineColor( counter+1 )
-     #     gr_yz.SetLineWidth( 2 )
-     #     gr_yz.SetMarkerColor( counter+1 )
-     #     gr_yz.SetMarkerStyle( 21 )
-     #     gr_yz.SetTitle( 'clusters in y-z plane' )
-     #     gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
-     #     gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
-
-     #     print " ==== ONLY FRAGMENTS - counter = ", counter
-     #     print " ==== ONLY FRAGMENTS - ifragment = ", ifragment
-
-     #     for q,hitFragment in enumerate (list_subclusters_of_y_hits[ifragment]):
-
-     #       print " ==== ONLY FRAGMENTS ---- hit number = ", q
-     #       print " ==== ONLY FRAGMENTS ---- hit Y = ", hitFragment.GetY()
-     #       print " ==== ONLY FRAGMENTS ---- hit Y err = ", hitFragment.GetYError()
-     #       print " ==== ONLY FRAGMENTS ---- hit Z = ", hitFragment.GetZ()
-     #       print " ==== ONLY FRAGMENTS ---- hit Z err = ", hitFragment.GetZError()
-
-     #       gr_yz.SetPoint(q,hitFragment.GetY(),hitFragment.GetZ())
-     #       gr_yz.SetPointError(q,hitFragment.GetYError(),hitFragment.GetZError())
-
-     #     gr_yz.GetXaxis().SetLimits(-90, 0) #( -620, 620 )
-     #     gr_yz.GetYaxis().SetRangeUser( 3700, 3750) #( 3600, 3800 )
-     #     graphs_yz.append(gr_yz)
-
-     #     c_yz.cd()
-     #     c_yz.Update()
-     #     if counter==0:
-     #       graphs_yz[-1].Draw( 'AP' )
-     #     else:
-     #       graphs_yz[-1].Draw( 'P' )
-
-     #   c_yz.Print("subclusters_zoom_yz.eps")
-
-     #   ############################
-
-
-     # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all tge fragments together
-     minDy = -1
-     minIndex = -1
-
-     if len(subclusters_indices) == 0 and len(fragment_indices) != 0: # only fragments
-       subclusters_indices.append(0) # merge all fragments into the first fragment
-
-     for index_fragment in fragment_indices:
-       print "--- index_fragment = ", index_fragment
-       first_hit_fragment = list_subclusters_of_y_hits[index_fragment][0]
-       for index_subcluster in subclusters_indices:
-         print "--- index_subcluster = ", index_subcluster
-         first_hit_subcluster = list_subclusters_of_y_hits[index_subcluster][0]
-         Dy = fabs(first_hit_fragment.GetY()-first_hit_subcluster.GetY())
-         if minDy<0 or Dy<minDy:  
-           minDy = Dy
-           minIndex = index_subcluster
-
-       for h in list_subclusters_of_y_hits[index_fragment]:
-         h.SetClusterIndex(minIndex)
-
-       print "--- minIndex = ", minIndex
-       if minIndex != index_fragment: #in case there were only fragments - this is to prevent to sum twice fragment 0
-         print "--- BEFORE - len(list_subclusters_of_y_hits[minIndex]) = ", len(list_subclusters_of_y_hits[minIndex])
-         list_subclusters_of_y_hits[minIndex] += list_subclusters_of_y_hits[index_fragment] 
-         print "--- AFTER - len(list_subclusters_of_y_hits[minIndex]) = ", len(list_subclusters_of_y_hits[minIndex])
-         
+     self.list_subclusters_of_hits = list_subclusters_of_y_hits
+     list_of_subclusters_y = self.GetSubclustersExclusingFragments()
 
      # compute energy weight
      weights_from_y_splitting = {}
-     for index_subcluster in subclusters_indices:
-       subcluster_energy_y = self.GetClusterEnergy(list_subclusters_of_y_hits[index_subcluster])
+     for index_subcluster in list_of_subclusters_y:
+       subcluster_energy_y = self.GetClusterEnergy(list_of_subclusters_y[index_subcluster])
        weight = subcluster_energy_y/cluster_energy_y
-       print "======> weght = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
+       print "======> weight = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
        weights_from_y_splitting[index_subcluster] = weight
-       
+
   
      # fill final list of clusters
-     for 
 
    #################
    # fill clusters #
@@ -563,6 +429,64 @@ class ShipDigiReco:
      self.recoSplitcal._q1 = aCluster.GetInterceptZX()
      self.recoSplitcal._m2 = aCluster.GetSlopeZY()
      self.recoSplitcal._q2 = aCluster.GetInterceptZY()
+
+##########################
+
+ def GetSubclustersExclusingFragments(self):
+
+   list_subclusters_excluding_fragments = {}
+
+   fragment_indices = []
+   subclusters_indices = []
+   for k in self.list_subclusters_of_hits:         
+     print '------ digitizeSplitcal - subcluster index = ', k 
+     subcluster_size = len(self.list_subclusters_of_hits[k])
+     print '------ digitizeSplitcal - subcluster size = ', subcluster_size
+     if subcluster_size < 4:
+       fragment_indices.append(k)
+     else: 
+       subclusters_indices.append(k)
+   if len(subclusters_indices) > 1:
+     print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
+   else: 
+     print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
+
+   # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all tge fragments together
+   minDistance = -1
+   minIndex = -1
+
+   if len(subclusters_indices) == 0 and len(fragment_indices) != 0: # only fragments
+     subclusters_indices.append(0) # merge all fragments into the first fragment
+
+   for index_fragment in fragment_indices:
+     print "--- index_fragment = ", index_fragment
+     first_hit_fragment = self.list_subclusters_of_hits[index_fragment][0]
+     for index_subcluster in subclusters_indices:
+       print "--- index_subcluster = ", index_subcluster
+       first_hit_subcluster = self.list_subclusters_of_hits[index_subcluster][0]
+       if first_hit_fragment.IsX(): 
+         distance = fabs(first_hit_fragment.GetX()-first_hit_subcluster.GetX())
+       else: 
+         distance = fabs(first_hit_fragment.GetY()-first_hit_subcluster.GetY())
+       if (minDistance < 0 or distance < minDistance):  
+         minDistance = distance
+         minIndex = index_subcluster
+
+     for h in self.list_subclusters_of_hits[index_fragment]:
+       h.SetClusterIndex(minIndex)
+
+     print "--- minIndex = ", minIndex
+     if minIndex != index_fragment: # in case there were only fragments - this is to prevent to sum twice fragment 0
+       print "--- BEFORE - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
+       self.list_subclusters_of_hits[minIndex] += self.list_subclusters_of_hits[index_fragment] 
+       print "--- AFTER - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
+
+
+   for counter, index_subcluster in enumerate(subclusters_indices):
+     list_subclusters_excluding_fragments[counter] = self.list_subclusters_of_hits[index_subcluster]
+
+   return list_subclusters_excluding_fragments
+
 
 
  def GetClusterEnergy(self, list_hits):
