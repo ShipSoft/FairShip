@@ -291,6 +291,8 @@ class ShipDigiReco:
    # hit selection
    # step 0: select hits above noise threshold to use in cluster reconstruction  
    noise_energy_threshold = 0.002 #GeV
+   #noise_energy_threshold = 0.0015 #GeV
+   #noise_energy_threshold = 0.001 #GeV
    list_hits_above_threshold = []
    print '--- digitizeSplitcal - self.digiSplitcal.GetSize() = ', self.digiSplitcal.GetSize()  
    for hit in self.digiSplitcal:
@@ -310,41 +312,233 @@ class ShipDigiReco:
    self.input_hits = list_hits_above_threshold
    list_clusters_of_hits = self.Clustering()
 
-   # step 2-3: check if clusters can be split, clustering separtely in the XZ and YZ planes
-   # step 2: clustering in XZ plane
+   # ### visualisation ###
+
+   # c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
+   # graphs_yz = []
+
+   # for i in list_clusters_of_hits:
+     
+   #   gr_yz = ROOT.TGraphErrors()
+   #   gr_yz.SetLineColor( i+1 )
+   #   gr_yz.SetLineWidth( 2 )
+   #   gr_yz.SetMarkerColor( i+1 )
+   #   gr_yz.SetMarkerStyle( 21 )
+   #   gr_yz.SetTitle( 'clusters in y-z plane' )
+   #   gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
+   #   gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
+
+   #   for j,hit in enumerate (list_clusters_of_hits[i]):
+      
+   #     gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
+   #     gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
+       
+   #   gr_yz.GetXaxis().SetLimits( -620, 620 )
+   #   gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
+   #   graphs_yz.append(gr_yz)
+
+   #   c_yz.cd()
+   #   c_yz.Update()
+   #   if i==0:
+   #     graphs_yz[-1].Draw( 'AP' )
+   #   else:
+   #     graphs_yz[-1].Draw( 'P' )
+
+   # c_yz.Print("clusters_yz.eps")
+
+   # # ############################
+
+   # step 2: to check if clusters can be split do clustering separtely in the XZ and YZ planes
 
    self.step = 2 
+   print "--- digitizeSplitcal ==== STEP 2 ==== "
+   list_final_clusters = {}
+   
    for i in list_clusters_of_hits:
+   # for i in range (0,1):
 
-     #re-run reclustering with different criteria 
+     list_hits_x = []
+     list_hits_y = []
      for hit in list_clusters_of_hits[i]:
        hit.SetIsUsed(0)
+       if hit.IsX(): list_hits_x.append(hit)
+       if hit.IsY(): list_hits_y.append(hit) # FIXME: this probably will not work with hits from high precision layers
+     
+     #re-run reclustering only in xz plane possibly with different criteria 
+     self.input_hits = list_hits_x
+     list_subclusters_of_x_hits = self.Clustering()
+     cluster_energy_x = self.GetClusterEnergy(list_hits_x)
+     
+     print "--- digitizeSplitcal - len(list_subclusters_of_x_hits) = ", len(list_subclusters_of_x_hits)
 
-     self.input_hits = list_clusters_of_hits[i]
-     list_subclusters_of_hits = self.Clustering()
+     n_subcluster_excluding_fragments = 0 
+     fragment_indices = []
+     subclusters_indices = []
+     for k in list_subclusters_of_x_hits:         
+       print '------ digitizeSplitcal - subcluster index = ', k 
+       subcluster_size = len(list_subclusters_of_x_hits[k])
+       print '------ digitizeSplitcal - subcluster size = ', subcluster_size
+       if subcluster_size < 4:
+         fragment_indices.append(k)
+       else: 
+         n_subcluster_excluding_fragments += 1
+         subclusters_indices.append(k)
+     if n_subcluster_excluding_fragments > 1:
+       print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
+     else: 
+       print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
 
-     if len(list_subclusters_of_hits)>1:
-       print "'--- digitizeSplitcal - CLUSTER NEED TO BE SPLIT - set energy weight"
-     else:
-       print "'--- digitizeSplitcal - no need to split cluster"
+     # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all tge fragments together
+     minDx = -1
+     minIndex = -1
 
-   # step 3: clustering in YZ plane
+     if len(subclusters_indices) == 0 and len(fragment_indices) != 0: # only fragments
+       subclusters_indices.append(0) # merge all fragments into the first fragment
 
-   self.step = 3 
-   for i in list_clusters_of_hits:
+     for index_fragment in fragment_indices:
+       print "--- index_fragment = ", index_fragment
+       first_hit_fragment = list_subclusters_of_x_hits[index_fragment][0]
+       for index_subcluster in subclusters_indices:
+         print "--- index_subcluster = ", index_subcluster
+         first_hit_subcluster = list_subclusters_of_x_hits[index_subcluster][0]
+         Dx = fabs(first_hit_fragment.GetX()-first_hit_subcluster.GetX())
+         if minDx<0 or Dx<minDx:  
+           minDx = Dx
+           minIndex = index_subcluster
 
-     #re-run reclustering with different criteria 
-     for hit in list_clusters_of_hits[i]:
-       hit.SetIsUsed(0)
+       for h in list_subclusters_of_x_hits[index_fragment]:
+         h.SetClusterIndex(minIndex)
 
-     self.input_hits = list_clusters_of_hits[i]
-     list_subclusters_of_hits = self.Clustering()
+       print "--- minIndex = ", minIndex
+       if minIndex != index_fragment: # in case there were only fragments - this is to prevent to sum twice fragment 0
+         print "--- BEFORE - len(list_subclusters_of_x_hits[minIndex]) = ", len(list_subclusters_of_x_hits[minIndex])
+         list_subclusters_of_x_hits[minIndex] += list_subclusters_of_x_hits[index_fragment] 
+         print "--- AFTER - len(list_subclusters_of_x_hits[minIndex]) = ", len(list_subclusters_of_x_hits[minIndex])
 
-     if len(list_subclusters_of_hits)>1:
-       print "'--- digitizeSplitcal - CLUSTER NEED TO BE SPLIT - set energy weight"
-     else:
-       print "'--- digitizeSplitcal - no need to split cluster"
+         
+     # compute energy weight
+     weights_from_x_splitting = {}
+     for index_subcluster in subclusters_indices:
+       subcluster_energy_x = self.GetClusterEnergy(list_subclusters_of_x_hits[index_subcluster])
+       weight = subcluster_energy_x/cluster_energy_x
+       print "======> weght = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
+       weights_from_x_splitting[index_subcluster] = weight
 
+
+     #re-run reclustering only in yz plane possibly with different criteria 
+     self.input_hits = list_hits_y
+     list_subclusters_of_y_hits = self.Clustering()
+     cluster_energy_y = self.GetClusterEnergy(list_hits_y)
+     
+     print "--- digitizeSplitcal - len(list_subclusters_of_y_hits) = ", len(list_subclusters_of_y_hits)
+
+     n_subcluster_excluding_fragments = 0 
+     fragment_indices = []
+     subclusters_indices = []
+     for k in list_subclusters_of_y_hits:         
+       print '------ digitizeSplitcal - subcluster index = ', k 
+       subcluster_size = len(list_subclusters_of_y_hits[k])
+       print '------ digitizeSplitcal - subcluster size = ', subcluster_size
+       if subcluster_size < 4:
+         fragment_indices.append(k)
+       else: 
+         n_subcluster_excluding_fragments += 1
+         subclusters_indices.append(k)
+     if n_subcluster_excluding_fragments > 1:
+       print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
+     else: 
+       print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
+
+     # if len(subclusters_indices)==0:
+     #   print "------ ONLY FRAGMENTS ------ "
+
+     #   ### visualisation ###
+
+     #   c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
+     #   graphs_yz = []
+
+     #   #for i in list_clusters_of_hits:
+     #   for counter,ifragment in enumerate(fragment_indices):
+     #     list_subclusters_of_y_hits[ifragment]
+
+     #     gr_yz = ROOT.TGraphErrors()
+     #     gr_yz.SetLineColor( counter+1 )
+     #     gr_yz.SetLineWidth( 2 )
+     #     gr_yz.SetMarkerColor( counter+1 )
+     #     gr_yz.SetMarkerStyle( 21 )
+     #     gr_yz.SetTitle( 'clusters in y-z plane' )
+     #     gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
+     #     gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
+
+     #     print " ==== ONLY FRAGMENTS - counter = ", counter
+     #     print " ==== ONLY FRAGMENTS - ifragment = ", ifragment
+
+     #     for q,hitFragment in enumerate (list_subclusters_of_y_hits[ifragment]):
+
+     #       print " ==== ONLY FRAGMENTS ---- hit number = ", q
+     #       print " ==== ONLY FRAGMENTS ---- hit Y = ", hitFragment.GetY()
+     #       print " ==== ONLY FRAGMENTS ---- hit Y err = ", hitFragment.GetYError()
+     #       print " ==== ONLY FRAGMENTS ---- hit Z = ", hitFragment.GetZ()
+     #       print " ==== ONLY FRAGMENTS ---- hit Z err = ", hitFragment.GetZError()
+
+     #       gr_yz.SetPoint(q,hitFragment.GetY(),hitFragment.GetZ())
+     #       gr_yz.SetPointError(q,hitFragment.GetYError(),hitFragment.GetZError())
+
+     #     gr_yz.GetXaxis().SetLimits(-90, 0) #( -620, 620 )
+     #     gr_yz.GetYaxis().SetRangeUser( 3700, 3750) #( 3600, 3800 )
+     #     graphs_yz.append(gr_yz)
+
+     #     c_yz.cd()
+     #     c_yz.Update()
+     #     if counter==0:
+     #       graphs_yz[-1].Draw( 'AP' )
+     #     else:
+     #       graphs_yz[-1].Draw( 'P' )
+
+     #   c_yz.Print("subclusters_zoom_yz.eps")
+
+     #   ############################
+
+
+     # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all tge fragments together
+     minDy = -1
+     minIndex = -1
+
+     if len(subclusters_indices) == 0 and len(fragment_indices) != 0: # only fragments
+       subclusters_indices.append(0) # merge all fragments into the first fragment
+
+     for index_fragment in fragment_indices:
+       print "--- index_fragment = ", index_fragment
+       first_hit_fragment = list_subclusters_of_y_hits[index_fragment][0]
+       for index_subcluster in subclusters_indices:
+         print "--- index_subcluster = ", index_subcluster
+         first_hit_subcluster = list_subclusters_of_y_hits[index_subcluster][0]
+         Dy = fabs(first_hit_fragment.GetY()-first_hit_subcluster.GetY())
+         if minDy<0 or Dy<minDy:  
+           minDy = Dy
+           minIndex = index_subcluster
+
+       for h in list_subclusters_of_y_hits[index_fragment]:
+         h.SetClusterIndex(minIndex)
+
+       print "--- minIndex = ", minIndex
+       if minIndex != index_fragment: #in case there were only fragments - this is to prevent to sum twice fragment 0
+         print "--- BEFORE - len(list_subclusters_of_y_hits[minIndex]) = ", len(list_subclusters_of_y_hits[minIndex])
+         list_subclusters_of_y_hits[minIndex] += list_subclusters_of_y_hits[index_fragment] 
+         print "--- AFTER - len(list_subclusters_of_y_hits[minIndex]) = ", len(list_subclusters_of_y_hits[minIndex])
+         
+
+     # compute energy weight
+     weights_from_y_splitting = {}
+     for index_subcluster in subclusters_indices:
+       subcluster_energy_y = self.GetClusterEnergy(list_subclusters_of_y_hits[index_subcluster])
+       weight = subcluster_energy_y/cluster_energy_y
+       print "======> weght = ", weight # set weight only if n subcluster >1 (in the second reclustering few lonely its can lower the weight just below 1)
+       weights_from_y_splitting[index_subcluster] = weight
+       
+  
+     # fill final list of clusters
+     for 
 
    #################
    # fill clusters #
@@ -370,6 +564,12 @@ class ShipDigiReco:
      self.recoSplitcal._m2 = aCluster.GetSlopeZY()
      self.recoSplitcal._q2 = aCluster.GetInterceptZY()
 
+
+ def GetClusterEnergy(self, list_hits):
+   energy = 0
+   for hit in list_hits: 
+     energy += hit.GetEnergy()
+   return energy
 
 
  def Clustering(self): 
@@ -428,40 +628,54 @@ class ShipDigiReco:
 
    layer_1 = hit.GetLayerNumber()
 
+   if hit.IsX(): err_x_1 = err_x_1*2.  #test
+   if hit.IsY(): err_y_1 = err_y_1*2.  #test
+
    for hit2 in self.input_hits:
      if hit2 is not hit:
        Dx = fabs(hit2.GetX()-hit.GetX())
        Dy = fabs(hit2.GetY()-hit.GetY())
        Dz = fabs(hit2.GetZ()-hit.GetZ())
-       err_x_2 = hit.GetXError()
-       err_y_2 = hit.GetYError()
-       err_z_2 = hit.GetZError()
+       err_x_2 = hit2.GetXError()
+       err_y_2 = hit2.GetYError()
+       err_z_2 = hit2.GetZError()
 
        layer_2 = hit2.GetLayerNumber()
        Dlayer = fabs(layer_2-layer_1)
 
-       if self.step == 1: 
+       if hit2.IsX(): err_x_2 = err_x_2*2.  #test
+       if hit2.IsY(): err_y_2 = err_y_2*2.  #test
+
+       if self.step == 1 or self.step == 2: 
          # use Dz instead of Dlayer due to split of 1m between teh 2 parts of the calo 
-         if ((Dx<=(err_x_1+err_x_2) or Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
-           list_neighbours.append(hit2)
-       elif self.step == 2:
-         # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
+         #if ((Dx<=(err_x_1+err_x_2) or Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
+         #if ((Dx<=(err_x_1+err_x_2) and Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
          if hit.IsX():
-           if Dx<=(err_x_1+err_x_2) and Dlayer<=2:
-             list_neighbours.append(hit2)
-         else:
-           if Dx<=(err_x_1+err_x_2) and Dlayer<=2 and Dlayer>0:
-             list_neighbours.append(hit2)
-       elif self.step == 3:
-         # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
+           #if (Dx<=(err_x_1+err_x_2) and Dz<=2*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
+           if (Dx<=(err_x_1+err_x_2) and Dz<=2*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
+                 list_neighbours.append(hit2)
          if hit.IsY():
-           if Dy<=(err_y_1+err_y_2) and Dlayer<=2:
-             list_neighbours.append(hit2)
-         else:
-           if Dy<=(err_y_1+err_y_2) and Dlayer<=2 and Dlayer>0:
-             list_neighbours.append(hit2)
-       else:
-         print "-- getNeighbours: something is wrong, step not foreseen "
+           #if (Dy<=(err_y_1+err_y_2) and Dz<=2*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
+           if (Dy<=(err_y_1+err_y_2) and Dz<=2*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
+                 list_neighbours.append(hit2)
+       # elif self.step == 2:
+       #   # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
+       #   if hit.IsX():
+       #     if Dx<=(err_x_1+err_x_2) and  Dlayer<=2:
+       #       list_neighbours.append(hit2)
+       #   else:
+       #     if Dx<=(err_x_1+err_x_2) and  Dlayer<=2 and Dlayer>0:
+       #       list_neighbours.append(hit2)
+       # elif self.step == 3:
+       #   # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
+       #   if hit.IsY():
+       #     if Dy<=(err_y_1+err_y_2) and Dlayer<=2:
+       #       list_neighbours.append(hit2)
+       #   else:
+       #     if Dy<=(err_y_1+err_y_2) and Dlayer<=2 and Dlayer>0:
+       #       list_neighbours.append(hit2)
+       # else:
+       #   print "-- getNeighbours: something is wrong, step not foreseen "
 
    return list_neighbours
 
