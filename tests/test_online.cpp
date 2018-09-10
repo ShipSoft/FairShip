@@ -50,6 +50,8 @@ TEST_CASE("Detector ID conversion", "[drifttubes]")
    REQUIRE(DetectorIdTest(336) == 40112048);
    // T2
    REQUIRE(DetectorIdTest(335) == 21112012);
+   REQUIRE(DetectorIdTest(304) == 21002001);
+   REQUIRE(DetectorIdTest(288) == 21012005);
    REQUIRE(DetectorIdTest(264) == 20102001);
    REQUIRE(DetectorIdTest(119) == 20012012);
    REQUIRE(DetectorIdTest(96) == 20002001);
