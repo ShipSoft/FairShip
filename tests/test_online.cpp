@@ -83,6 +83,10 @@ TEST_CASE("Detector ID conversion (trigger)", "[trigger]")
    REQUIRE(DetectorIdTest(768) == 0);
    REQUIRE(DetectorIdTest(1120) == 0);
 }
+TEST_CASE("Detector ID conversion (master trigger)", "[master trigger]")
+{
+   REQUIRE(DetectorIdTest(1123) == 1);
+}
 TEST_CASE("Detector ID conversion (scintillator)", "[scint]")
 {
    REQUIRE(DetectorIdTest(127) == 6);

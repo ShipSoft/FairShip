@@ -87,6 +87,8 @@ struct ChannelId {
       }
       if (trigger) {
          return 0;
+      } else if (master_trigger) {
+         return 1;
       } else if (beamcounter || RC_signal || master_trigger) {
          return -1;
       } else if (scintillatorA) {
@@ -118,7 +120,6 @@ struct ChannelId {
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
-const uint16_t delay(2000 / 0.098); // TODO update value
 } // namespace DriftTubes
 
 namespace RPC {

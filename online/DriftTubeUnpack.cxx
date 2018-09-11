@@ -76,6 +76,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
    std::unordered_map<int, uint16_t> triggerTime;
+   uint16_t master_trigger_time;
    std::vector<std::pair<int,uint16_t>> trigger_times;
    for (auto &&hit : hits) {
       if (hit.channelId >= 0x1000) {
@@ -90,6 +91,9 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          triggerTime[channel->TDC] = hit.hitTime;
          trigger_times.push_back(std::make_pair(int(channel->TDC), hit.hitTime));
          skipped++;
+      } else if (detectorId == 1) {
+         master_trigger_time = hit.hitTime;
+         skipped++;
       } else if (detectorId == -1) {
          // beam counter
          skipped++;
@@ -100,6 +104,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          channels[hit.channelId] = hit.hitTime;
       }
    }
+   uint16_t delay = triggerTime.at(4) - master_trigger_time;
    for (auto &&channel_and_time : channels) {
       auto channel = reinterpret_cast<const ChannelId *>(&(channel_and_time.first));
       uint16_t raw_time = channel_and_time.second;
@@ -115,7 +120,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          continue;
       }
       LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
-      Float_t time = 0.098 * (DriftTubes::delay - trigger_time + raw_time); // conversion to ns and jitter correction
+      Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
       auto detectorId = channel->GetDetectorId();
       if (detectorId == 6 || detectorId == 7) {
          // Trigger scintillator
