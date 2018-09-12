@@ -186,6 +186,17 @@ def checkFileExists(x):
      return 'tree'
     else:
      return 'ntuple'
-
+def findMaximumAndMinimum(histo):
+ amin,amax = 1E30, -130
+ nmin,nmax = 0, 0
+ for n in range(1,histo.GetNbinsX()+1):
+  c =  histo.GetBinContent(n)
+  if c>amax:
+    amax = c
+    nmax = n
+  if c<amin:
+    amin = c
+    nmin = n
+ return amin,amax,nmin,nmax
 
 

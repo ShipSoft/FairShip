@@ -185,11 +185,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.OuterTubeDiameter  = (c.MufluxSpectrometer.InnerTubeDiameter + 2*c.MufluxSpectrometer.WallThickness)
 
     c.MufluxSpectrometer.TubePitch          = 4.2*u.cm
-    c.MufluxSpectrometer.DeltazLayer        = 3.8*u.cm
-    c.MufluxSpectrometer.DeltazPlane        = 8.*u.cm
+    c.MufluxSpectrometer.DeltazLayer        = 3.64*u.cm
+    c.MufluxSpectrometer.DeltazPlane        = 7.7*u.cm
     
     c.MufluxSpectrometer.TubesPerLayer      = 12
-    c.MufluxSpectrometer.ViewAngle          = 60
+    c.MufluxSpectrometer.ViewAngle          = -60
     c.MufluxSpectrometer.WireThickness      = 0.0045*u.cm
     c.MufluxSpectrometer.DeltazView         = 15.*u.cm
     
@@ -199,7 +199,7 @@ with ConfigRegistry.register_config("basic") as c:
        c.MufluxSpectrometer.distT3T4           = 1.6*u.m       
     else:
        c.MufluxSpectrometer.distT3T4 = 1.0*u.m   
-        
+            
     c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
     c.MufluxSpectrometer.T1z=38.875 *u.cm
     c.MufluxSpectrometer.T2z=107.625*u.cm

@@ -15,6 +15,201 @@ else:
 #f = ROOT.TFile.Open(os.environ['EOSSHIP']+"/eos/experiment/ship/data/muflux/rawdata/RUN_0C00_2091/SPILLDATA_0C00_0512761705.root") # 0 field
 
 sTree=f.cbmsim
+sTree.SetMaxVirtualSize(300000000)
+# alignment
+xpos = {}
+zpos = {}
+
+#T1X:
+n = 10002012
+start = (244.30+243.60)/2.
+delta = (start - (-207.80-207.50)/2. -11. -21. ) / 10.
+for i in range(12): xpos[n-i] = start - delta * i
+n = 10012001
+start = (-207.80-207.50)/2. +11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 10102001
+start = (-207.80-207.50)/2.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 10112001
+start = (-207.80-207.50)/2. - 21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T1X'] = (9052.70 + 9057.80 + 9050.20 + 9056.40)/4.
+
+#T1u:
+n = 11002012
+m = (564.60 +107.28)/(-504.54-669.28)
+b = 564.60 - m * (-504.54)
+start = -b/m
+angleu = ROOT.TMath.ATan2((-504.54-669.28),(564.60-(-107.28)))/ROOT.TMath.Pi()*180.
+deltau = ((-504.54+669.28)/2. - (-729.38+444.63)/2.)/10.
+for i in range(12): xpos[n-i] = start - deltau * i
+n = 11012001
+start = (-729.38+444.63)/2. +11.
+for i in range(12): xpos[n+i] = start + deltau * i
+n = 11102001
+start = (-729.38+444.63)/2.
+for i in range(12): xpos[n+i] = start + deltau * i
+n = 11112001
+start = (-729.38+444.63)/2. - 21.
+for i in range(12): xpos[n+i] = start + deltau * i
+zpos['T1U'] = (9537.42 + 9543.47 + 9539.00 + 9541.94)/4.
+
+
+# T2X:
+n = 21112001
+start = (-212.10-215.70)/2.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 21102001
+start = (-212.10-215.70)/2. - 21.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 21012001
+start = (-212.10-215.70)/2. + 11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 21002012
+start = (238.50+236.10)/2. + 21.
+for i in range(12): xpos[n-i] = start - delta * i
+zpos['T2X'] = (10231.40 + 10230.20 + 10227.60 + 10228.50)/4.
+
+#T2v:
+n = 20112001
+m = (173.03 + 501.89)/(758.84 + 412.30)
+b = 173.03 - m * (758.84)
+start = -b/m
+anglev = ROOT.TMath.ATan2((532.67-(-637.45)),(565.72-(-110.36)))/ROOT.TMath.Pi()*180
+deltav = ( (758.84-412.30)/2. - (532.67-637.45)/2. )/10.
+for i in range(12): xpos[n+i] = start + deltav * i
+n = 20102001
+start = (532.67+(-637.45))/2. -21.
+for i in range(12): xpos[n+i] = start + deltav * i
+n = 20012012
+start = (758.84-412.30)/2.
+for i in range(12): xpos[n-i] = start - deltav * i
+n = 20002012
+start = (758.84-412.30)/2. + 21.
+for i in range(12): xpos[n-i] = start - deltav * i
+zpos['T2V'] = (10231.40 + 10230.20 + 10227.60 + 10228.50)/4.
+
+#T3aX:
+n = 30002037
+start = (584.44+582.36)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30012037
+start = (584.44+582.36)/2. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30102037
+start = (584.44+582.36)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30112037
+start = (584.44+582.36)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T3aX'] = (17245.00 + 17243.60 + 17245.70 + 17241.90)/4.
+
+#T3bX:
+n = 30002025
+start = (80.34+78.51)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30012025
+start = (80.34+78.51)/2. -delta 
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30102025
+start = (80.34+78.51)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30112025
+start = (80.34+78.51)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T3bX'] = (17246.10 + 17240.90 + 17247.50 + 17238.90)/4.
+
+#T3cX:
+n = 30002013
+start = (-423.40-424.75)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30012013
+start = (-423.40-424.75)/2. -delta 
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30102013
+start = (-423.40-424.75)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30112013
+start = (-423.40-424.75)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T3cX'] = (17248.00 + 17238.90 + 17249.80 + 17239.60)/4.
+
+#T3dX:
+n = 30002001
+start = (-928.06-929.54)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30012001
+start = (-928.06-929.54)/2. -delta 
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30102001
+start = (-928.06-929.54)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 30112001
+start = (-928.06-929.54)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T3dX'] = (17250.80 + 17240.00 + 17251.80 + 17240.20)/4.
+
+#T4aX:
+n = 40002037
+start = (589.42+592.62)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40012037
+start = (589.42+592.62)/2. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40102037
+start = (589.42+592.62)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40112037
+start = (589.42+592.62)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T4aX'] = (13873.20 + 13871.10 + 13874.10 + 13870.30)/4.
+
+#T4bX:
+n = 40002025
+start = (85.28+88.46)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40012025
+start = (85.28+88.46)/2. -delta 
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40102025
+start = (85.28+88.46)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40112025
+start = (85.28+88.46)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T4bX'] = (13874.60 + 13869.90 + 13875.00 + 13868.60)/4.
+
+#T4cX:
+n = 40002013
+start = (-419.69-417.09)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40012013
+start = (-419.69-417.09)/2. -delta 
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40102013
+start = (-419.69-417.09)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40112013
+start = (-419.69-417.09)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T4cX'] = (13875.50 + 13868.50 + 13876.90 + 13869.30)/4.
+
+#T4dX:
+n = 40002001
+start = (-925.57-921.58)/2. -delta +21. -delta
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40012001
+start = (-925.57-921.58)/2. -delta 
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40102001
+start = (-925.57-921.58)/2. -delta -11.
+for i in range(12): xpos[n+i] = start + delta * i
+n = 40112001
+start = (-925.57-921.58)/2. -delta -11. -21.
+for i in range(12): xpos[n+i] = start + delta * i
+zpos['T4dX'] = (13878.10 + 13869.60 + 13881.20 + 13869.20)/4.
+
 
 #rpc
 rpc={}
@@ -44,6 +239,29 @@ if saveGeofile:
  run.CreateGeometryFile("muflux_geofile.root")
 # save ShipGeo dictionary in geofile
  saveBasicParameters.execute("muflux_geofile.root",ShipGeo)
+
+
+def compareAlignment():
+ ut.bookHist(h,'alignCompare','compare Alignments',100,-120.,120.,100,-120.,120.)
+ for d in xpos:
+   test = ROOT.MufluxSpectrometerHit(d,0.)
+   test.MufluxSpectrometerEndPoints(vbot,vtop)
+   angle = ROOT.TMath.ATan2(vtop[0]-vbot[0],vtop[1]-vbot[1])/ROOT.TMath.Pi()*180
+   L = ROOT.TMath.Sqrt( (vbot[0]-vtop[0])**2+(vbot[1]-vtop[1])**2)
+   vbotD,vtopD = correctAlignment(test,1)
+   angleD = ROOT.TMath.ATan2(vtopD[0]-vbotD[0],vtopD[1]-vbotD[1])/ROOT.TMath.Pi()*180
+   print d,"x/y pos from Daniel",(vbotD[0]+vtopD[0])/2.,angleD," from FairShip",(vbot[0]+vtop[0])/2.,angle
+   rc = h['alignCompare'].Fill((vbotD[0]+vtopD[0])/2.,(vbot[0]+vtop[0])/2.)
+
+def RPCPositions():
+ for i in [1,116]: 
+    test = ROOT.MuonTaggerHit(10000+i,0)
+    test.EndPoints(vbot,vtop)
+    print "horizonzal strip ",i, "x=",(vtop[0]+vbot[0])/2.,"y=",(vtop[1]+vbot[1])/2.
+ for i in [1,184]:
+    test = ROOT.MuonTaggerHit(11000+i,0)
+    test.EndPoints(vbot,vtop)
+    print "vertical strip ",i, "x=",(vtop[0]+vbot[0])/2.,"y=",(vtop[1]+vbot[1])/2.
 
 modid=[10002001,10112012,11002001,11112012,20002001,20112012,21002001,21112012,30002001,30112048,40002001,40112048]
 
@@ -116,7 +334,7 @@ def plotEvent(n):
    for hit in sTree.Digi_MufluxSpectrometerHits:
     statnb,vnb,pnb,lnb,view = stationInfo(hit)
     # print statnb,vnb,pnb,lnb,view,hit.GetDetectorID()
-    rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
+    vbot,vtop = correctAlignment(hit)
     if view != '_x':
       stereoHit = ROOT.TGraph()
       stereoHit.SetPoint(0,vbot[2],vbot[0])
@@ -139,14 +357,14 @@ def plotEvent(n):
     view   = (channelID-10000*statnb)/1000
     channel = channelID%1000
     if view == 1:
-     hit.EndPoints(vtop,vbot)
+     vtop,vbot = correctAlignmentRPC(hit,view)
      x,z =  (vtop[0]+vbot[0])/2.,(vtop[2]+vbot[2])/2.
-     rc = c[1].SetPoint(c[0],z,x)
+     rc = c[1].SetPoint(c[0],z,-x)  # fix wrong position
      c[0]+=1
     if view == 0:
-     hit.EndPoints(vtop,vbot)
+     vtop,vbot = correctAlignmentRPC(hit,view)
      y,z =  (vtop[1]+vbot[1])/2.,(vtop[2]+vbot[2])/2.
-     rc = cy[1].SetPoint(c[0],z,y)
+     rc = cy[1].SetPoint(cy[0],z,y)  
      cy[0]+=1
    h['hitCollection']['downstream'][1].SetMarkerColor(ROOT.kRed)
    h['hitCollection']['upstream'][1].SetMarkerColor(ROOT.kBlue)
@@ -508,6 +726,7 @@ def extrapolateToPlane(fT,z):
     mZmin = 999999.
     M = min(fT.getNumPointsWithMeasurement(),30) # for unknown reason, get stuck for track with large measurements
     for m in [0,M/2,M-1]:
+     # print "extr to state m",m,fT.getNumPointsWithMeasurement()
      st = fT.getFittedState(m)
      Pos = st.getPos()
      if abs(z-Pos.z())<mZmin:
@@ -659,7 +878,7 @@ def momDisplay():
  h['xy'].Draw('colz')
  h['mom'].Update()
  
-sigma_spatial = (ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
+sigma_spatial = 0.5*(ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
 def makeTracks():
      hitlist = []
      for hit in sTree.Digi_MufluxSpectrometerHits:
@@ -728,6 +947,8 @@ def fitTrack(hitlist,Pstart=3.):
         charge = pdg
         maxChi2 = chi2
    if charge != 0:
+# now get the TDC value corrected for propagation along wire
+     # .....
      fitStatus   = theTrack[charge][0].getFitStatus()
      rc = h['Nmeasurements'].Fill(fitStatus.getNdf())
      fittedState = theTrack[charge][0].getFittedState()
@@ -999,6 +1220,12 @@ def testClusters(nEvent=-1,nTot=1000):
 
 def plotBiasedResiduals(nEvent=-1,nTot=1000):
   if not h.has_key('hitMapsX'): plotHitMaps()
+  for s in xLayers:
+     for p in xLayers[s]:
+      for l in xLayers[s][p]:
+       for view in xLayers[s][p][l]:
+         h['TDC'+xLayers[s][p][l][view].GetName()].Reset()
+#
   eventRange = [0,sTree.GetEntries()]
   if not nEvent<0: eventRange = [nEvent,nEvent+nTot]
   for Nr in range(eventRange[0],eventRange[1]):
@@ -1007,6 +1234,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
    if not findSimpleEvent(sTree): continue
    trackCandidates = findTracks()
    for aTrack in trackCandidates:
+       if not aTrack.getNumPointsWithMeasurement()>0: continue
        sta = aTrack.getFittedState(0)
        if sta.getMomMag() < 3.: continue
        pos = sta.getPos()
@@ -1028,6 +1256,10 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
             res = -res/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as _x
           h['biasResX_'+str(s)+view+str(2*l+p)].Fill(res,pos[0])
           h['biasResY_'+str(s)+view+str(2*l+p)].Fill(res,pos[1])
+# make TDC plots for hits matched to tracks
+          if abs(res) < 2. :
+            rc = h['TDC'+xLayers[s][p][l][view].GetName()].Fill(hit.GetDigi()) 
+
   if not h.has_key('biasedResiduals'): 
       ut.bookCanvas(h,key='biasedResiduals',title='biasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
@@ -1041,7 +1273,10 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
     for l in range(0,4):
      hname = 'biasResX_'+str(s)+view+str(l)
      hnameProjX = 'biasRes_'+str(s)+view+str(l)
-     if h[hname].GetEntries()==0: continue
+     if h[hname].GetEntries()<10:
+       h[hnameProjX].Draw() 
+       j+=1
+       continue
      h[hnameProjX] = h[hname].ProjectionX()
      myGauss.SetParameter(0,h[hnameProjX].GetMaximum())
      myGauss.SetParameter(1,0.)
@@ -1053,6 +1288,11 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
      myGauss.ReleaseParameter(1)
      fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-5.,5.)
      rc = fitResult.Get()
+     if not rc:
+       print hnameProjX
+       h[hnameProjX].Draw()
+       j+=1
+       continue
      mean = rc.GetParams()[1]
      rms  = rc.GetParams()[2]
      print "%i, %s, %i mean=%5.2F RMS=%5.2F"%(s,view,l,mean,rms)
@@ -1124,42 +1364,48 @@ def plotRPCExtrap(nEvent=-1,nTot=1000):
    if not sTree.Digi_MuonTaggerHits.GetEntries()>0: continue
    trackCandidates = findTracks()
    for aTrack in trackCandidates:
+       if not aTrack.getNumPointsWithMeasurement()>0: continue
        sta = aTrack.getFittedState(0)
        if sta.getMomMag() < 3.: continue
        for hit in sTree.Digi_MuonTaggerHits:
         channelID = hit.GetDetectorID()
         s  = channelID/10000
         v  = (channelID-10000*s)/1000
-        #if v==0:
-        #  wire = channelID%1000
-        #  hit = ROOT.MuonTaggerHit( (channelID-wire) + 116 - wire + 1,0)
-        hit.EndPoints(vtop,vbot)
+        vtop,vbot = correctAlignmentRPC(hit,v)
         z = (vtop[2]+vbot[2])/2.
+        vtop[0] = -vtop[0]
+        vbot[0] = -vbot[0]
         try:
            rc,pos,mom = extrapolateToPlane(aTrack,z)
         except:
            print "plotRPCExtrap failed"
            continue
         # closest distance from point to line
-        res = vbot[0]*pos[1] - vtop[0]*pos[1] - vbot[1]*pos[0]+ vtop[0]*vbot[1] + pos[0]*vtop[1]-vbot[0]*vtop[1]
-        res = -res/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)
-        if v==5:
-         resA = pos[0] - (vbot[0]+vtop[0])/2. # only valid for vertical strips
-         print "debug",res, resA
-         print v,vbot[0],vbot[1],vbot[2],vtop[0],vtop[1],vtop[2]
-        h['RPCResX_'+str(s)+str(v)].Fill(res,pos[0])
-        #if v==0: h['RPCResY_'+str(s)+str(v)].Fill(pos[1],vbot[1])
-        h['RPCResY_'+str(s)+str(v)].Fill(res,pos[1])
+        # res = vbot[0]*pos[1] - vtop[0]*pos[1] - vbot[1]*pos[0]+ vtop[0]*vbot[1] + pos[0]*vtop[1]-vbot[0]*vtop[1]
+        # res = -res/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)
+        if v==0:
+         Y = (vtop[1]+vbot[1])/2.
+         res = pos[1] - Y
+         h['RPCResY_'+str(s)+str(v)].Fill(res,Y)
+        else:
+         X = (vtop[0]+vbot[0])/2.
+         res = pos[0] - X
+         h['RPCResX_'+str(s)+str(v)].Fill(res,X)
+
   if not h.has_key('RPCResiduals'): 
       ut.bookCanvas(h,key='RPCResiduals',title='RPCResiduals',nx=1600,ny=1200,cx=2,cy=4)
-      ut.bookCanvas(h,key='RPCResidualsX',title='RPCResiduals function of X',nx=1600,ny=1200,cx=2,cy=4)
-      ut.bookCanvas(h,key='RPCResidualsY',title='RPCResiduals function of Y',nx=1600,ny=1200,cx=2,cy=4)
+      ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=4)
   j=1
-  rc = h['RPCResiduals'].cd(j)
   for s in range(1,5):
    for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
-     if v==1:     hname = 'RPCResX_'+str(s)+str(v)
-     elif v==0:   hname = 'RPCResY_'+str(s)+str(v)
+     if v==1:     
+       hname = 'RPCResX_'+str(s)+str(v)
+       p='X'
+       jk = 2*j
+     elif v==0:   
+       hname = 'RPCResY_'+str(s)+str(v)
+       p='Y'
+       jk = 2*j-1
      hnameProjX = 'RPCRes_'+str(s)+str(v)
      if h[hname].GetEntries()==0: continue
      h[hnameProjX] = h[hname].ProjectionX()
@@ -1167,21 +1413,21 @@ def plotRPCExtrap(nEvent=-1,nTot=1000):
      myGauss.SetParameter(1,0.)
      myGauss.SetParameter(2,10.)
      myGauss.SetParameter(3,1.)
-     rc = h['RPCResiduals'].cd(j)
-     fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-10.,10.)
+     rc = h['RPCResiduals'].cd(jk)
+     if v==0: fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-40.,40.)
+     else:    fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-10.,10.)
      rc = fitResult.Get()
      if not rc: continue
      mean = rc.GetParams()[1]
      rms  = rc.GetParams()[2]
      print "%i, %i, mean=%5.2F RMS=%5.2F"%(s,v,mean,rms)
      # make plot of mean as function of X,Y
-     for p in ['X','Y']:
-      hname = 'RPCRes'+p+'_'+str(s)+str(v)
-      hmean = hname+'_mean'+p
-      h[hmean] = h[hname].ProjectionY(hname+'_mean')
-      h[hmean].Reset()
-      rc = h['RPCResiduals'+p].cd(j)  
-      for k in range(1,h[hname].GetNbinsY()+1):
+     rc = h['RPCResidualsXY'].cd(jk)   
+     hname = 'RPCRes'+p+'_'+str(s)+str(v)
+     hmean = hname+'_mean'+p
+     h[hmean] = h[hname].ProjectionY(hname+'_mean')
+     h[hmean].Reset()
+     for k in range(1,h[hname].GetNbinsY()+1):
        sli = hname+'_'+str(k) 
        h[sli] = h[hname].ProjectionX(sli,k,k)
        if h[sli].GetEntries()<10: continue
@@ -1189,7 +1435,8 @@ def plotRPCExtrap(nEvent=-1,nTot=1000):
        myGauss.SetParameter(1,0.)
        myGauss.SetParameter(2,4.)
        myGauss.SetParameter(3,1.)
-       fitResult = h[sli].Fit(myGauss,'SQ','',-10.,10.)
+       if v==0: fitResult = h[sli].Fit(myGauss,'SQ','',-40.,40.)
+       else:   fitResult = h[sli].Fit(myGauss,'SQ','',-10.,10.)
        rc = fitResult.Get()
        if not rc: continue
        params = rc.GetParams()
@@ -1197,19 +1444,23 @@ def plotRPCExtrap(nEvent=-1,nTot=1000):
        mean = rc.GetParams()[1]
        rms  = rc.GetParams()[2]
        rc = h[hmean].Fill( h[hmean].GetBinCenter(k), mean)
-      h[hmean].Draw()
-     j+=1
-  if not h.has_key('biasedResiduals2dX'): 
-      ut.bookCanvas(h,key='RPCResiduals2dX',title='muon tagger Residuals function of X',nx=1600,ny=1200,cx=2,cy=4)
-      ut.bookCanvas(h,key='RPCResiduals2dY',title='muon tagger Residuals function of Y',nx=1600,ny=1200,cx=2,cy=4)
+     h[hmean].Draw()
+   j+=1
+  if not h.has_key('biasedResiduals2dXY'): 
+      ut.bookCanvas(h,key='RPCResiduals2dXY',title='muon tagger Residuals function of X/Y',nx=1600,ny=1200,cx=2,cy=4)
   j=1
   for s in range(1,5):
    for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
-    for p in ['X','Y']:
-     rc = h['RPCResiduals2d'+p].cd(j)  
+     if v==0: 
+       p = 'Y'
+       jk = j*2-1
+     if v==1: 
+       p = 'X'
+       jk = j*2 
+     rc = h['RPCResiduals2dXY'].cd(jk)  
      hname = 'RPCRes'+p+'_'+str(s)+str(v)
      h[hname].Draw('box')
-    j+=1
+   j+=1
 
 def debugRPCstrips():
   ut.bookHist(h,'RPCstrips','RPC strips',1000,-100.,100.,1000,-100.,100.)
@@ -1224,6 +1475,8 @@ def debugRPCstrips():
      detID = s*10000+v*1000+c
      hit = ROOT.MuonTaggerHit(detID,0)
      hit.EndPoints(vtop,vbot)
+     vtop[0]=-vtop[0]
+     vbot[0]=-vbot[0]
      h['RPCstrip'+str(v)+str(c)].SetPoint(0,vtop[0],vtop[1])
      h['RPCstrip'+str(v)+str(c)].SetPoint(1,vbot[0],vbot[1])
      if v == 0: h['RPCstrip'+str(v)+str(c)].SetLineColor(ROOT.kRed)
@@ -1250,33 +1503,35 @@ def debugRPCYCoordinate():
         y2 = (vtop[1]+vbot[1])/2.
         rc = h['y1y2'].Fill(y1,y2)
 
-sqrt2 = ROOT.TMath.Sqrt(2.)
-cos30 = ROOT.TMath.Cos(30./180.*ROOT.TMath.Pi())
-sin30 = ROOT.TMath.Sin(30./180.*ROOT.TMath.Pi())
-def correctAlignment(hit):
- #delX=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
- delX=[[-1.2,1.4,-0.9,0.7],[-1.69-1.31,0.3+2.82,0.6-0.4,-0.8-0.34],[-0.9,1.14,-0.80,1.1],[-0.8,1.29,0.15,2.0]]
- #delUV = [[1.8,-2.,0.8,-1.],[1.2,-1.1,-0.5,0.3]]
- delUV = [[0,0,0,0],[0,0,0,0]]
+def correctAlignment(hit,force=False):
+ vbot,vtop = ROOT.TVector3(), ROOT.TVector3()
  rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
- s,v,p,l,view = stationInfo(hit)
- if view=='_x':
-   cor = delX[s-1][2*l+p]
-   vbot[0]=vbot[0]+cor
-   vtop[0]=vtop[0]+cor
+ if 0>1 or force:
+  s,v,p,l,view = stationInfo(hit)
+  if s<3: L =  99.7
+  else: L = 159.4
+  if view=='_x':
+   vbot[0]=xpos[hit.GetDetectorID()]/10.
+   vtop[0]=xpos[hit.GetDetectorID()]/10.
+  else:
+   if view=='_u':     angle = angleu/180.*ROOT.TMath.Pi()
+   elif view=='_v':   angle = anglev/180.*ROOT.TMath.Pi()
+   else: print 'not possible'
+   vbot[0]= xpos[hit.GetDetectorID()]/10. - L/2.*ROOT.TMath.Sin(angle)
+   vtop[0]= xpos[hit.GetDetectorID()]/10. + L/2.*ROOT.TMath.Sin(angle)
+   vbot[1]= - L/2.*ROOT.TMath.Cos(angle)
+   vtop[1]= + L/2.*ROOT.TMath.Cos(angle)
+ return vbot,vtop
+
+
+def correctAlignmentRPC(hit,v):
+ hit.EndPoints(vtop,vbot)
+ if v==1:
+  vbot[0] = vbot[0]+5.
+  vtop[0] = vtop[0]+5.
  else:
-   if view=='_u':     cor = delUV[0][2*l+p]
-   elif view=='_v':   cor = delUV[1][2*l+p]
-   vbot[0]=vbot[0]+cor*cos30
-   vtop[0]=vtop[0]+cor*cos30
-   vbot[1]=vbot[1]+cor*sin30
-   vtop[1]=vtop[1]+cor*sin30
-   #tmp = vbot[0]*ROOT.TMath.Cos(rotUV)-vbot[1]*ROOT.TMath.Sin(rotUV)
-   #vbot[1]=vbot[1]*ROOT.TMath.Cos(rotUV)+vbot[0]*ROOT.TMath.Sin(rotUV)
-   #vbot[0]=tmp
-   #tmp = vtop[0]*ROOT.TMath.Cos(rotUV)-vtop[1]*ROOT.TMath.Sin(rotUV)
-   #vtop[1]=vtop[1]*ROOT.TMath.Cos(rotUV)+vtop[0]*ROOT.TMath.Sin(rotUV)
-   #vbot[0]=tmp
+  vbot[1] = vbot[1]+60.
+  vtop[1] = vtop[1]+60.
  return vbot,vtop
 
 def testMultipleHits(nEvent=-1,nTot=1000):
