@@ -422,43 +422,43 @@ class ShipDigiReco:
      self.recoSplitcal._q2 = aCluster.GetInterceptZY()
 
 
-   #################
-   # visualisation #
-   #################
+   # #################
+   # # visualisation #
+   # #################
 
-   c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
-   graphs_yz = []
+   # c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
+   # graphs_yz = []
 
-   for i in list_final_clusters:
+   # for i in list_final_clusters:
      
-     gr_yz = ROOT.TGraphErrors()
-     gr_yz.SetLineColor( i+1 )
-     gr_yz.SetLineWidth( 2 )
-     gr_yz.SetMarkerColor( i+1 )
-     gr_yz.SetMarkerStyle( 21 )
-     gr_yz.SetTitle( 'clusters in y-z plane' )
-     gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
-     gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
+   #   gr_yz = ROOT.TGraphErrors()
+   #   gr_yz.SetLineColor( i+1 )
+   #   gr_yz.SetLineWidth( 2 )
+   #   gr_yz.SetMarkerColor( i+1 )
+   #   gr_yz.SetMarkerStyle( 21 )
+   #   gr_yz.SetTitle( 'clusters in y-z plane' )
+   #   gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
+   #   gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
 
-     for j,hit in enumerate (list_final_clusters[i]):
+   #   for j,hit in enumerate (list_final_clusters[i]):
       
-       gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
-       gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
+   #     gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
+   #     gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
        
-     gr_yz.GetXaxis().SetLimits( -620, 620 )
-     gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
-     graphs_yz.append(gr_yz)
+   #   gr_yz.GetXaxis().SetLimits( -620, 620 )
+   #   gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
+   #   graphs_yz.append(gr_yz)
 
-     c_yz.cd()
-     c_yz.Update()
-     if i==0:
-       graphs_yz[-1].Draw( 'AP' )
-     else:
-       graphs_yz[-1].Draw( 'P' )
+   #   c_yz.cd()
+   #   c_yz.Update()
+   #   if i==0:
+   #     graphs_yz[-1].Draw( 'AP' )
+   #   else:
+   #     graphs_yz[-1].Draw( 'P' )
 
-   c_yz.Print("final_clusters_yz.eps")
+   # c_yz.Print("final_clusters_yz.eps")
 
-   ############################
+   # ############################
 
 
 
@@ -483,7 +483,7 @@ class ShipDigiReco:
    else: 
      print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
 
-   # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all tge fragments together
+   # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all the fragments together
    minDistance = -1
    minIndex = -1
 
@@ -563,6 +563,7 @@ class ShipDigiReco:
        # neighbouringHit.SetClusterIndex(cluster_index)
        neighbouringHit.SetIsUsed(1)
        list_hits_in_cluster[cluster_index].append(neighbouringHit)
+
        expand_neighbours = self.getNeighbours(neighbouringHit)
        # print '--- digitizeSplitcal - len(expand_neighbours) = ', len(expand_neighbours)
 
@@ -622,9 +623,11 @@ class ShipDigiReco:
          # first try: relax z condition 
          if hit.IsX():
            if (Dx<=(err_x_1+err_x_2) and Dz<=6*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
+           #if (Dx<=(err_x_1+err_x_2) and Dz<=6*(err_z_1+err_z_2) and Dy<=(err_y_1+err_y_2) and Dz>0.):
                  list_neighbours.append(hit2)
          if hit.IsY():
            if (Dy<=(err_y_1+err_y_2) and Dz<=6*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
+           #if (Dy<=(err_y_1+err_y_2) and Dz<=6*(err_z_1+err_z_2) and Dx<=(err_x_1+err_x_2) and Dz>0. ):
                  list_neighbours.append(hit2)
        else:
          print "-- getNeighbours: ERROR: step not defined "
