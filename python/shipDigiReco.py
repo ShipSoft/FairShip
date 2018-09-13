@@ -292,7 +292,6 @@ class ShipDigiReco:
    # step 0: select hits above noise threshold to use in cluster reconstruction  
    noise_energy_threshold = 0.002 #GeV
    #noise_energy_threshold = 0.0015 #GeV
-   #noise_energy_threshold = 0.001 #GeV
    list_hits_above_threshold = []
    print '--- digitizeSplitcal - self.digiSplitcal.GetSize() = ', self.digiSplitcal.GetSize()  
    for hit in self.digiSplitcal:
@@ -540,7 +539,7 @@ class ShipDigiReco:
 
      neighbours = self.getNeighbours(hit)
      hit.Print()
-     print "--- digitizeSplitcal - index of unused hit = ", i
+     #print "--- digitizeSplitcal - index of unused hit = ", i
      print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
 
      if len(neighbours) < 1:
@@ -553,7 +552,7 @@ class ShipDigiReco:
      # hit.SetClusterIndex(cluster_index)
      list_hits_in_cluster[cluster_index] = []
      list_hits_in_cluster[cluster_index].append(hit)
-     print '--- digitizeSplitcal - cluster_index = ', cluster_index
+     #print '--- digitizeSplitcal - cluster_index = ', cluster_index
 
      for neighbouringHit in neighbours:
        # print '--- digitizeSplitcal - in neighbouringHit - len(neighbours) = ', len(neighbours)
@@ -585,8 +584,10 @@ class ShipDigiReco:
 
    layer_1 = hit.GetLayerNumber()
 
-   if hit.IsX(): err_x_1 = err_x_1*2.  #test
-   if hit.IsY(): err_y_1 = err_y_1*2.  #test
+   # allow one or more 'missing' hit in x/y: not large difference between 1 (no gap) or 2 (one 'missing' hit)
+   max_gap = 2.
+   if hit.IsX(): err_x_1 = err_x_1*max_gap  
+   if hit.IsY(): err_y_1 = err_y_1*max_gap  
 
    for hit2 in self.input_hits:
      if hit2 is not hit:
@@ -600,39 +601,33 @@ class ShipDigiReco:
        # layer_2 = hit2.GetLayerNumber()
        # Dlayer = fabs(layer_2-layer_1)
 
-       if hit2.IsX(): err_x_2 = err_x_2*2.  #test
-       if hit2.IsY(): err_y_2 = err_y_2*2.  #test
+       # allow one or more 'missing' hit in x/y
+       if hit2.IsX(): err_x_2 = err_x_2*max_gap
+       if hit2.IsY(): err_y_2 = err_y_2*max_gap
 
-       if self.step == 1 or self.step == 2: 
-         # use Dz instead of Dlayer due to split of 1m between teh 2 parts of the calo 
+       if self.step == 1: # or self.step == 2: 
+         # use Dz instead of Dlayer due to split of 1m between the 2 parts of the calo 
          #if ((Dx<=(err_x_1+err_x_2) or Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
          #if ((Dx<=(err_x_1+err_x_2) and Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
          if hit.IsX():
-           #if (Dx<=(err_x_1+err_x_2) and Dz<=2*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
            if (Dx<=(err_x_1+err_x_2) and Dz<=2*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
                  list_neighbours.append(hit2)
          if hit.IsY():
-           #if (Dy<=(err_y_1+err_y_2) and Dz<=2*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
            if (Dy<=(err_y_1+err_y_2) and Dz<=2*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
                  list_neighbours.append(hit2)
-       # elif self.step == 2:
-       #   # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
-       #   if hit.IsX():
-       #     if Dx<=(err_x_1+err_x_2) and  Dlayer<=2:
-       #       list_neighbours.append(hit2)
-       #   else:
-       #     if Dx<=(err_x_1+err_x_2) and  Dlayer<=2 and Dlayer>0:
-       #       list_neighbours.append(hit2)
-       # elif self.step == 3:
-       #   # here one can use Dlayer (easier) since step1 is already run and the split already accounted for
-       #   if hit.IsY():
-       #     if Dy<=(err_y_1+err_y_2) and Dlayer<=2:
-       #       list_neighbours.append(hit2)
-       #   else:
-       #     if Dy<=(err_y_1+err_y_2) and Dlayer<=2 and Dlayer>0:
-       #       list_neighbours.append(hit2)
-       # else:
-       #   print "-- getNeighbours: something is wrong, step not foreseen "
+
+       elif self.step == 2:
+         #for step 2 relax or remove at all condition on Dz 
+         #(some clusters were split erroneously along z while here one wants to split only in x/y )
+         # first try: relax z condition 
+         if hit.IsX():
+           if (Dx<=(err_x_1+err_x_2) and Dz<=6*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
+                 list_neighbours.append(hit2)
+         if hit.IsY():
+           if (Dy<=(err_y_1+err_y_2) and Dz<=6*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
+                 list_neighbours.append(hit2)
+       else:
+         print "-- getNeighbours: ERROR: step not defined "
 
    return list_neighbours
 
