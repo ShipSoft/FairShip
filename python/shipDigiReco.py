@@ -293,7 +293,7 @@ class ShipDigiReco:
    noise_energy_threshold = 0.002 #GeV
    #noise_energy_threshold = 0.0015 #GeV
    list_hits_above_threshold = []
-   print '--- digitizeSplitcal - self.digiSplitcal.GetSize() = ', self.digiSplitcal.GetSize()  
+   # print '--- digitizeSplitcal - self.digiSplitcal.GetSize() = ', self.digiSplitcal.GetSize()  
    for hit in self.digiSplitcal:
      if hit.GetEnergy() > noise_energy_threshold:
        hit.SetIsUsed(0)
@@ -302,7 +302,7 @@ class ShipDigiReco:
 
    self.list_hits_above_threshold = list_hits_above_threshold
 
-   print '--- digitizeSplitcal - n hits above threshold = ', len(list_hits_above_threshold) 
+   # print '--- digitizeSplitcal - n hits above threshold = ', len(list_hits_above_threshold) 
     
    # clustering
    # step 1: group of neighbouring cells: loose criteria -> splitting clusters is easier than merging clusters
@@ -314,7 +314,7 @@ class ShipDigiReco:
    # step 2: to check if clusters can be split do clustering separtely in the XZ and YZ planes
 
    self.step = 2 
-   print "--- digitizeSplitcal ==== STEP 2 ==== "
+   # print "--- digitizeSplitcal ==== STEP 2 ==== "
    list_final_clusters = {}
    index_final_cluster = 0
 
@@ -334,7 +334,7 @@ class ShipDigiReco:
      list_subclusters_of_x_hits = self.Clustering()
      cluster_energy_x = self.GetClusterEnergy(list_hits_x)
      
-     print "--- digitizeSplitcal - len(list_subclusters_of_x_hits) = ", len(list_subclusters_of_x_hits)
+     # print "--- digitizeSplitcal - len(list_subclusters_of_x_hits) = ", len(list_subclusters_of_x_hits)
 
      self.list_subclusters_of_hits = list_subclusters_of_x_hits
      list_of_subclusters_x = self.GetSubclustersExcludingFragments()
@@ -344,7 +344,7 @@ class ShipDigiReco:
      for index_subcluster in list_of_subclusters_x:
        subcluster_energy_x = self.GetClusterEnergy(list_of_subclusters_x[index_subcluster])
        weight = subcluster_energy_x/cluster_energy_x
-       print "======> weight = ", weight 
+       # print "======> weight = ", weight 
        weights_from_x_splitting[index_subcluster] = weight
      
      ###########       
@@ -354,7 +354,7 @@ class ShipDigiReco:
      list_subclusters_of_y_hits = self.Clustering()
      cluster_energy_y = self.GetClusterEnergy(list_hits_y)
      
-     print "--- digitizeSplitcal - len(list_subclusters_of_y_hits) = ", len(list_subclusters_of_y_hits)
+     # print "--- digitizeSplitcal - len(list_subclusters_of_y_hits) = ", len(list_subclusters_of_y_hits)
 
      self.list_subclusters_of_hits = list_subclusters_of_y_hits
      list_of_subclusters_y = self.GetSubclustersExcludingFragments()
@@ -364,7 +364,7 @@ class ShipDigiReco:
      for index_subcluster in list_of_subclusters_y:
        subcluster_energy_y = self.GetClusterEnergy(list_of_subclusters_y[index_subcluster])
        weight = subcluster_energy_y/cluster_energy_y
-       print "======> weight = ", weight 
+       # print "======> weight = ", weight 
        weights_from_y_splitting[index_subcluster] = weight
 
 
@@ -426,9 +426,9 @@ class ShipDigiReco:
    #################
 
    for i in list_final_clusters: 
-     print '------------------------'
-     print '------ digitizeSplitcal - cluster n = ', i 
-     print '------ digitizeSplitcal - cluster size = ', len(list_final_clusters[i]) 
+     # print '------------------------'
+     # print '------ digitizeSplitcal - cluster n = ', i 
+     # print '------ digitizeSplitcal - cluster size = ', len(list_final_clusters[i]) 
 
      for j,h in enumerate(list_final_clusters[i]):
        if j==0: aCluster = ROOT.splitcalCluster(h)
@@ -501,10 +501,10 @@ class ShipDigiReco:
        fragment_indices.append(k)
      else: 
        subclusters_indices.append(k)
-   if len(subclusters_indices) > 1:
-     print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
-   else: 
-     print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
+   # if len(subclusters_indices) > 1:
+   #   print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
+   # else: 
+   #   print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
 
    # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all the fragments together
    minDistance = -1
@@ -514,10 +514,10 @@ class ShipDigiReco:
      subclusters_indices.append(0) # merge all fragments into the first fragment
 
    for index_fragment in fragment_indices:
-     print "--- index_fragment = ", index_fragment
+     #print "--- index_fragment = ", index_fragment
      first_hit_fragment = self.list_subclusters_of_hits[index_fragment][0]
      for index_subcluster in subclusters_indices:
-       print "--- index_subcluster = ", index_subcluster
+       #print "--- index_subcluster = ", index_subcluster
        first_hit_subcluster = self.list_subclusters_of_hits[index_subcluster][0]
        if first_hit_fragment.IsX(): 
          distance = fabs(first_hit_fragment.GetX()-first_hit_subcluster.GetX())
@@ -530,11 +530,11 @@ class ShipDigiReco:
      # for h in self.list_subclusters_of_hits[index_fragment]:
      #   h.SetClusterIndex(minIndex)
 
-     print "--- minIndex = ", minIndex
+     #print "--- minIndex = ", minIndex
      if minIndex != index_fragment: # in case there were only fragments - this is to prevent to sum twice fragment 0
-       print "--- BEFORE - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
+       #print "--- BEFORE - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
        self.list_subclusters_of_hits[minIndex] += self.list_subclusters_of_hits[index_fragment] 
-       print "--- AFTER - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
+       #print "--- AFTER - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
 
 
    for counter, index_subcluster in enumerate(subclusters_indices):
@@ -562,12 +562,12 @@ class ShipDigiReco:
 
      neighbours = self.getNeighbours(hit)
      hit.Print()
-     #print "--- digitizeSplitcal - index of unused hit = ", i
-     print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
+     # #print "--- digitizeSplitcal - index of unused hit = ", i
+     # print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
 
      if len(neighbours) < 1:
-       # hit.SetClusterIndex(-1) # lonely fragment
-       print '--- digitizeSplitcal - lonely fragment '
+       # # hit.SetClusterIndex(-1) # lonely fragment
+       # print '--- digitizeSplitcal - lonely fragment '
        continue
 
      cluster_index = cluster_index + 1
