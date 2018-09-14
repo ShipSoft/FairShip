@@ -3,8 +3,8 @@
 #WARNING: printing the entire geometry takes a lot of time
 #24-02-2015 comments to EvH
 
-import operator, sys, getopt
-from optparse import OptionParser
+import operator, sys
+from argparse import ArgumentParser
 from array import array
 import os,ROOT
 
@@ -89,18 +89,17 @@ def print_info(path, node, level, currentlevel, print_sub_det_info=False):
       print_sub_det_info = False
 
 
-from optparse import OptionParser
-parser = OptionParser()
-parser.add_option("-g","--geometry", dest="geometry", help="input geometry file",
-                  default='$FAIRSHIP/geofile_full.10.0.Pythia8-TGeant4.root')
-parser.add_option("-l","--level", dest="level", help="max subnode level", default=0)
-parser.add_option("-v","--volume", dest="volume", help="name of volume to expand",default="")
-parser.add_option("-X","--moreInfo", dest="moreInfo", help="print weight and capacity",default=False)
+parser = ArgumentParser()
+parser.add_argument("-g", "--geometry", dest="geometry", help="input geometry file",
+                    required=True)
+parser.add_argument("-l", "--level", dest="level", help="max subnode level", default=0)
+parser.add_argument("-v", "--volume", dest="volume", help="name of volume to expand", default="")
+parser.add_argument("-X", "--moreInfo", dest="moreInfo", help="print weight and capacity", default=False)
 
-(options, args) = parser.parse_args()
+options = parser.parse_args()
 fname = options.geometry
-if not fname.find('eos') < 0: 
-  fname = os.environ['EOSSHIP'] + fname
+if fname.startswith('/eos/'):
+    fname = os.environ['EOSSHIP'] + fname
 fgeom = ROOT.TFile.Open(fname)
 fGeo = fgeom.FAIRGeom
 top = fGeo.GetTopVolume()
