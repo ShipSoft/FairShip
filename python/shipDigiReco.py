@@ -434,6 +434,7 @@ class ShipDigiReco:
        if j==0: aCluster = ROOT.splitcalCluster(h)
        else: aCluster.AddHit(h)
 
+     aCluster.SetIndex(int(i))
      aCluster.ComputeEtaPhiE()
      aCluster.Print()
 

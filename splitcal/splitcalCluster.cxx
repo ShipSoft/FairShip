@@ -37,6 +37,7 @@ splitcalCluster::splitcalCluster(splitcalHit* h)
 void splitcalCluster::ComputeEtaPhiE()
 {
   
+  
   // Compute energy weighted average for hits in the same layer 
   // This is in preparation of the linear fit to get the cluster eta and phi 
 
@@ -51,7 +52,7 @@ void splitcalCluster::ComputeEtaPhiE()
   // loop over hits to compute cluster energy sum and to compute the coordinates weighted average per layer
   double energy = 0.;
   for (auto hit : _vectorOfHits){
-    energy += hit->GetEnergy();
+    energy += hit->GetEnergyForCluster(_index);
     int layer = hit->GetLayerNumber();
     // hits from high precision layers give both x and y coordinates --> use if-if instead of if-else
     if (hit->IsX()){
@@ -59,8 +60,8 @@ void splitcalCluster::ComputeEtaPhiE()
 	mapLayerWeigthedX[layer] = 0.; 
 	mapLayerSumWeigthsX[layer] = 0.;
       }
-      mapLayerWeigthedX[layer] += hit->GetX()*hit->GetEnergy();
-      mapLayerSumWeigthsX[layer] += hit->GetEnergy();
+      mapLayerWeigthedX[layer] += hit->GetX()*hit->GetEnergyForCluster(_index);
+      mapLayerSumWeigthsX[layer] += hit->GetEnergyForCluster(_index);
       mapLayerZ1[layer] = hit->GetZ();
     }
     if (hit->IsY()){ 
@@ -68,74 +69,113 @@ void splitcalCluster::ComputeEtaPhiE()
 	mapLayerWeigthedY[layer] = 0.; 
 	mapLayerSumWeigthsY[layer] = 0.;
       }
-      mapLayerWeigthedY[layer] += hit->GetY()*hit->GetEnergy();
-      mapLayerSumWeigthsY[layer] += hit->GetEnergy();
+      mapLayerWeigthedY[layer] += hit->GetY()*hit->GetEnergyForCluster(_index);
+      mapLayerSumWeigthsY[layer] += hit->GetEnergyForCluster(_index);
       mapLayerZ2[layer] = hit->GetZ();
     }
   }//end loop on hit
 
 
-  // vectors holding the weighted coordinates per layer: x and z for the eta fit, and y and z for the phi fit
-  std::vector<double > x;
-  std::vector<double > z1;
-  std::vector<double > y;
-  std::vector<double > z2;
+  // FIXME: regression fit seems instable --> for the moment commented it out in favour of simple direction from initial and end point 
 
-  for (auto const& element : mapLayerWeigthedX){
-    int key = element.first;
-    x.push_back(element.second/mapLayerSumWeigthsX[key]);
-    z1.push_back(mapLayerZ1[key]);
-  }
+  auto const& firstElementX = mapLayerWeigthedX.begin();
+  int minLayerX = firstElementX->first;
+  double minX = firstElementX->second/mapLayerSumWeigthsX[minLayerX];
+  double minZ1 = mapLayerZ1[minLayerX];
 
-  regression resultZX = LinearRegression(z1,x);
-  double alpha = acos(resultZX.slope);
-
-  for (auto const& element : mapLayerWeigthedY){
-    int key = element.first;
-    y.push_back(element.second/mapLayerSumWeigthsY[key]);
-    z2.push_back(mapLayerZ2[key]);
-  }
-
-  regression resultZY = LinearRegression(z2,y);
-  double eta_check = acos(resultZY.slope);
-
-  // regression resultXY = LinearRegression(x,y);
-  // double phi = acos(resultXY.slope);
-
-  std::cout<<" ---- before fit " << std::endl;
-  _start.Print();
-  _end.Print();
-
-  // replace the x and y of start and end points with the re-evaluated values from the corresponding fit
-  _start.SetX( resultZX.slope * _start.Z() + resultZX.intercept ); 
-  _start.SetY( resultZY.slope * _start.Z() + resultZY.intercept ); 
-
-  _end.SetX( resultZX.slope * _end.Z() + resultZX.intercept ); 
-  _end.SetY( resultZY.slope * _end.Z() + resultZY.intercept ); 
+  auto const& firstElementY = mapLayerWeigthedY.begin();
+  int minLayerY = firstElementY->first;
+  double minY = firstElementY->second/mapLayerSumWeigthsY[minLayerY];
+  double minZ2 = mapLayerZ1[minLayerY];
   
+  double minZ = (minZ1+minZ2)/2.;
+  
+  SetStartPoint(minX, minY, minZ);
+
+  auto const& lastElementX = mapLayerWeigthedX.rbegin();
+  int maxLayerX = lastElementX->first;
+  double maxX = lastElementX->second/mapLayerSumWeigthsX[maxLayerX];
+  double maxZ1 = mapLayerZ1[maxLayerX];
+
+  auto const& lastElementY = mapLayerWeigthedY.rbegin();
+  int maxLayerY = lastElementY->first;
+  double maxY = lastElementY->second/mapLayerSumWeigthsY[maxLayerY];
+  double maxZ2 = mapLayerZ1[maxLayerY];
+  
+  double maxZ = (maxZ1+maxZ2)/2.;
+  
+  SetEndPoint(maxX, maxY, maxZ);
+
   // get direction vector from end-strat vector difference
   TVector3 direction;
   direction = _end - _start;
   double eta = direction.Eta();
   double phi = direction.Phi();
-
-  std::cout<<" ---- after fit " << std::endl;
-  _start.Print();
-  _end.Print();
-
-  std::cout<<" -- eta = "<< eta << std::endl;
-  std::cout<<" -- eta_check = "<< eta_check << std::endl;
-  std::cout<<" -- phi = "<< phi << std::endl;
-  std::cout<<" -- energy = "<< energy << std::endl;
-  
   SetEtaPhiE(eta, phi, energy);
 
-  // temporary for test
-  _mZX = resultZX.slope;
-  _qZX = resultZX.intercept;
-  _mZY = resultZY.slope;
-  _qZY = resultZY.intercept;
 
+  // // vectors holding the weighted coordinates per layer: x and z for the eta fit, and y and z for the phi fit
+  // std::vector<double > x;
+  // std::vector<double > z1;
+  // std::vector<double > y;
+  // std::vector<double > z2;
+
+  // for (auto const& element : mapLayerWeigthedX){
+  //   int key = element.first;
+  //   x.push_back(element.second/mapLayerSumWeigthsX[key]);
+  //   z1.push_back(mapLayerZ1[key]);
+  // }
+
+  // regression resultZX = LinearRegression(z1,x);
+  // double alpha = acos(resultZX.slope);
+
+  // for (auto const& element : mapLayerWeigthedY){
+  //   int key = element.first;
+  //   y.push_back(element.second/mapLayerSumWeigthsY[key]);
+  //   z2.push_back(mapLayerZ2[key]);
+  // }
+
+  // regression resultZY = LinearRegression(z2,y);
+  // double eta_check = acos(resultZY.slope);
+
+  // // regression resultXY = LinearRegression(x,y);
+  // // double phi = acos(resultXY.slope);
+
+  // std::cout<<" ---- before fit " << std::endl;
+  // _start.Print();
+  // _end.Print();
+
+  // // replace the x and y of start and end points with the re-evaluated values from the corresponding fit
+  // _start.SetX( resultZX.slope * _start.Z() + resultZX.intercept ); 
+  // _start.SetY( resultZY.slope * _start.Z() + resultZY.intercept ); 
+
+  // _end.SetX( resultZX.slope * _end.Z() + resultZX.intercept ); 
+  // _end.SetY( resultZY.slope * _end.Z() + resultZY.intercept ); 
+  
+  // // get direction vector from end-strat vector difference
+  // TVector3 direction;
+  // direction = _end - _start;
+  // double eta = direction.Eta();
+  // double phi = direction.Phi();
+
+  // std::cout<<" ---- after fit " << std::endl;
+  // _start.Print();
+  // _end.Print();
+
+  // std::cout<<" -- eta = "<< eta << std::endl;
+  // std::cout<<" -- eta_check = "<< eta_check << std::endl;
+  // std::cout<<" -- phi = "<< phi << std::endl;
+  // std::cout<<" -- energy = "<< energy << std::endl;
+  
+  // SetEtaPhiE(eta, phi, energy);
+
+  // // temporary for test
+  // _mZX = resultZX.slope;
+  // _qZX = resultZX.intercept;
+  // _mZY = resultZY.slope;
+  // _qZY = resultZY.intercept;
+  
+  return;
 }
 
 

@@ -52,6 +52,7 @@ class splitcalHit : public ShipHit
     double GetY() {return _y;}
     double GetZ() {return _z;}
     double GetEnergy() {return _energy;}
+    double GetEnergyForCluster(int i);
     int GetIsPrecisionLayer() {return _isPrecisionLayer;}
     int GetLayerNumber() {return _nLayer;}
     int GetModuleXNumber() {return _nModuleX;}
@@ -68,6 +69,7 @@ class splitcalHit : public ShipHit
     std::vector<int > GetClusterIndices() {return _vecClusterIndices;}
     std::vector<double > GetEnergyWeights() {return _vecEnergyWeights;}
     bool IsShared() {return GetClusterIndices().size()>1; }
+    double GetEnergyWeightForIndex(int index);
 
     /** Copy constructor **/
     splitcalHit(const splitcalHit& point);

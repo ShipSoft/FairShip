@@ -39,6 +39,7 @@ class splitcalCluster
     void SetEta(double& eta) {_eta = eta;}
     void SetPhi(double& phi) {_phi = phi;}
     void SetEnergy(double& e) {_energy = e;}
+    void SetIndex(int i) {_index = i;}
     void SetStartPoint(const double& x, const double& y, const double& z) {_start.SetXYZ(x,y,z); }
     void SetStartPoint(splitcalHit*& h);
     void SetEndPoint(const double& x, const double& y, const double& z) {_end.SetXYZ(x,y,z);}
@@ -46,6 +47,7 @@ class splitcalCluster
     void SetVectorOfHits(std::vector<splitcalHit* >& v) {_vectorOfHits = v;}
     void AddHit(splitcalHit* h) {_vectorOfHits.push_back(h);}
 
+    int GetIndex() {return _index;}
     double GetEta() {return _eta;}
     double GetPhi() {return _phi;}
     double GetEnergy() {return _energy;}
@@ -73,6 +75,7 @@ class splitcalCluster
     splitcalCluster(const splitcalCluster& cluster);
     splitcalCluster operator=(const splitcalCluster& cluster);
 
+    int _index;
     double _eta, _phi, _energy;
     TVector3 _start;
     TVector3 _end;
