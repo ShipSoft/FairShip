@@ -381,6 +381,9 @@ class ShipDigiReco:
          hit.AddEnergyWeight(1.) 
        index_final_cluster += 1
      else:
+
+       # this works, but one could try to reduce the number of shared hits 
+       
        for ix in list_of_subclusters_x:
          for iy in list_of_subclusters_y:
 
@@ -395,6 +398,27 @@ class ShipDigiReco:
            list_final_clusters[index_final_cluster] = list_of_subclusters_y[iy] + list_of_subclusters_x[ix]
            index_final_cluster += 1
 
+       # # try to reduce number of shared hits (if it does not work go back to solution above)
+       # # ok, it has potential but it needs more thinking
+       
+       # for ix in list_of_subclusters_x:
+       #   for iy in list_of_subclusters_y:
+           
+       #     list_final_clusters[index_final_cluster] = []
+           
+       #     for hitx in list_of_subclusters_x[ix]:
+       #       self.input_hits = list_of_subclusters_y[iy]
+       #       neighbours = self.getNeighbours(hitx)
+       #       if len(neighbours) > 0:
+       #         hitx.AddClusterIndex(index_final_cluster)
+       #         hitx.AddEnergyWeight(weights_from_y_splitting[iy])
+       #         list_final_clusters[index_final_cluster].append(hitx)
+       #         for hity in neighbours:
+       #           hity.AddClusterIndex(index_final_cluster)
+       #           hity.AddEnergyWeight(weights_from_x_splitting[ix])
+       #           list_final_clusters[index_final_cluster].append(hity)
+             
+       #     index_final_cluster += 1
 
 
    #################
@@ -471,10 +495,8 @@ class ShipDigiReco:
    fragment_indices = []
    subclusters_indices = []
    for k in self.list_subclusters_of_hits:         
-     print '------ digitizeSplitcal - subcluster index = ', k 
      subcluster_size = len(self.list_subclusters_of_hits[k])
-     print '------ digitizeSplitcal - subcluster size = ', subcluster_size
-     if subcluster_size < 4:
+     if subcluster_size < 5: #FIXME: it can be tuned on a physics case (maybe use fraction of hits or energy)
        fragment_indices.append(k)
      else: 
        subclusters_indices.append(k)
@@ -563,6 +585,13 @@ class ShipDigiReco:
        # neighbouringHit.SetClusterIndex(cluster_index)
        neighbouringHit.SetIsUsed(1)
        list_hits_in_cluster[cluster_index].append(neighbouringHit)
+       
+       # ## test ###
+       # # for step 2, add hits of different type to subcluster but to not look for their neighbours
+       # not_same_type = hit.IsX() != neighbouringHit.IsX()
+       # if self.step==2 and not_same_type:
+       #   continue
+       # ###########
 
        expand_neighbours = self.getNeighbours(neighbouringHit)
        # print '--- digitizeSplitcal - len(expand_neighbours) = ', len(expand_neighbours)
