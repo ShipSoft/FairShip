@@ -76,7 +76,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
    std::unordered_map<int, uint16_t> triggerTime;
-   uint16_t master_trigger_time;
+   uint16_t master_trigger_time = 0;
    std::vector<std::pair<int,uint16_t>> trigger_times;
    for (auto &&hit : hits) {
       if (hit.channelId >= 0x1000) {
@@ -104,7 +104,17 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          channels[hit.channelId] = hit.hitTime;
       }
    }
-   uint16_t delay = triggerTime.at(4) - master_trigger_time;
+   uint16_t delay = 0;
+   triggerTime[4] ? triggerTime[4] - master_trigger_time: 0;
+   if (!triggerTime[4]) {
+      LOG(WARNING) << "No trigger in TDC 4";
+      return true;
+   } else if (master_trigger_time == 0){
+      LOG(WARNING) << "No master trigger";
+      return true;
+   } else {
+      delay = triggerTime[4] - master_trigger_time;
+   }
    for (auto &&channel_and_time : channels) {
       auto channel = reinterpret_cast<const ChannelId *>(&(channel_and_time.first));
       uint16_t raw_time = channel_and_time.second;
