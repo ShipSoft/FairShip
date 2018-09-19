@@ -1,5 +1,8 @@
-#!/usr/bin/env python 
-import ROOT,os,sys,getopt,time
+#!/usr/bin/env python2
+import os
+import sys
+import getopt
+import ROOT
 import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
@@ -195,7 +198,7 @@ for o, a in opts:
         if o in ("-e", "--epsilon",):
            theDPepsilon = float(a)
         if o in ("-t", "--test"):
-            inputFile = "../FairShip/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
+            inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
             nEvents = 50
         if o in ("--dry-run",):
             dryrun = True
