@@ -203,7 +203,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
     c.MufluxSpectrometer.T1z=38.875 *u.cm
     c.MufluxSpectrometer.T2z=107.625*u.cm
-    c.MufluxSpectrometer.T3z=586.25*u.cm
+    c.MufluxSpectrometer.T3z=584.25*u.cm
     c.MufluxSpectrometer.T4z=747.25*u.cm       
     
     if c.MufluxSpectrometer.muflux == True:    
