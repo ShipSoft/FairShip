@@ -63,6 +63,7 @@ def bookProf(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,ymin=None,ymax=None,op
 def writeHists(h,fname,plusCanvas=False):
   f = TFile(fname,'RECREATE')
   for akey in h:
+    if not hasattr(h[akey],'Class'): continue
     cln = h[akey].Class().GetName()
     if not cln.find('TH')<0 or not cln.find('TP')<0:   h[akey].Write()
     if plusCanvas and not cln.find('TC')<0:   h[akey].Write()
