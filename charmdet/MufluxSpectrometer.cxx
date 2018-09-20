@@ -256,6 +256,28 @@ void MufluxSpectrometer::SetTStationsZ(Double_t T1z, Double_t T2z, Double_t T3z,
       fT4z=T4z;
 }
 
+void MufluxSpectrometer::SetTStationsX(Double_t T1x_x, Double_t T1u_x, Double_t T2x_x, Double_t T2v_x, Double_t T3x, Double_t T4x)
+{
+      fT1x_x=T1x_x;
+      fT1u_x=T1u_x;
+      fT2x_x=T2x_x;
+      fT2v_x=T2v_x;
+      fT3x=T3x;
+      fT4x=T4x;
+}
+
+void MufluxSpectrometer::SetTStationsY(Double_t T1x_y, Double_t T1u_y, Double_t T2x_y, Double_t T2v_y, Double_t T3y, Double_t T4y)
+{
+      fT1x_y=T1x_y;
+      fT1u_y=T1u_y;
+      fT2x_y=T2x_y;
+      fT2v_y=T2v_y;
+      fT3y=T3y;
+      fT4y=T4y;
+}
+
+
+
 void MufluxSpectrometer::ConstructGeometry()
 { 
   gGeoManager->SetVisLevel(4);
@@ -429,16 +451,16 @@ void MufluxSpectrometer::ConstructGeometry()
 				
 	//z-translate the viewframe from station z pos
 	if (angle==0.) {
-	    t5.SetTranslation(-fTubes_pitch/2., ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view);
-	    t6.SetTranslation(-fTubes_pitch/2., -ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view);
-	    t5b.SetTranslation(-fTubes_pitch/2., ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);
-	    t6b.SetTranslation(-fTubes_pitch/2., -ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);   
+	    t5.SetTranslation(fT1x_x-fTubes_pitch/2.,fT1x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view);
+	    t6.SetTranslation(fT1x_x-fTubes_pitch/2., fT1x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view);
+	    t5b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);
+	    t6b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);   
 	}
         else {
-            t5.SetTranslation(-(ftr12ydim/2.+eps+plate_thickness/2+fTubes_pitch)*sin(TMath::Pi()*abs(angle)/180.),(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),fDeltaz_view+fTubes_pitch/4.);
-	    t6.SetTranslation((ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),fDeltaz_view+fTubes_pitch/4.);
-	    t5b.SetTranslation((ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),(vnb-1)*fDeltaz_view);
-	    t6b.SetTranslation(-(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),(vnb-1)*fDeltaz_view);	     	    	    	    	    
+            t5.SetTranslation(fT1u_x-(ftr12ydim/2.+eps+plate_thickness/2+fTubes_pitch)*sin(TMath::Pi()*abs(angle)/180.),fT1u_y+(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),fDeltaz_view+fTubes_pitch/4.);
+	    t6.SetTranslation(fT1u_x+(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),fT1u_y-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),fDeltaz_view+fTubes_pitch/4.);
+	    t5b.SetTranslation(fT2v_x+(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),fT2v_y+(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),(vnb-1)*fDeltaz_view);
+	    t6b.SetTranslation(fT2v_x-(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),fT2v_y-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),(vnb-1)*fDeltaz_view);	     	    	    	    	    
 	}
 	TGeoCombiTrans c5(t5, r5);
         TGeoHMatrix *h5 = new TGeoHMatrix(c5);	
@@ -471,18 +493,18 @@ void MufluxSpectrometer::ConstructGeometry()
           TGeoTranslation t3;
 	  if (statnb==1){
 	    if (angle==0.){
-               t3.SetTranslation(0, 0,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	
+               t3.SetTranslation(fT1x_x, fT1x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	
 	    }
 	    else {
-	       t3.SetTranslation(0, 0,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
+	       t3.SetTranslation(fT1u_x, fT1u_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
 	    }  
 	  }
 	  if (statnb==2){   
 	    if (angle==0.){
-               t3.SetTranslation(0, 0,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
+               t3.SetTranslation(fT2x_x, fT2x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
 	    }
 	    else {
-	       t3.SetTranslation(0, 0,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	
+	       t3.SetTranslation(fT2v_x, fT2v_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	
 	    } 	  	  	  
 	  }
 	    
@@ -825,7 +847,7 @@ void MufluxSpectrometer::ConstructGeometry()
         if (statnb==3) {
           volDriftTube3->SetVisibility(kFALSE);
 	  //move drifttubes up so they cover the Goliath aperture, not centered on the beam
-	  top->AddNode(volDriftTube3,3,new TGeoTranslation(0,fgoliathcentre_to_beam,fT3z));
+	  top->AddNode(volDriftTube3,3,new TGeoTranslation(fT3x,fT3y+fgoliathcentre_to_beam,fT3z));
           nmview_34 = "Station_3_x";
 	  nmview_top_34="Station_3_top_x";
 	  nmview_bot_34="Station_3_bot_x";	 
@@ -834,7 +856,7 @@ void MufluxSpectrometer::ConstructGeometry()
         if (statnb==4) {
           volDriftTube4->SetVisibility(kFALSE);     
 	  //move drifttubes up so they cover the Goliath aperture, not centered on the beam
-	  top->AddNode(volDriftTube4,4,new TGeoTranslation(0,fgoliathcentre_to_beam,fT4z));
+	  top->AddNode(volDriftTube4,4,new TGeoTranslation(fT4x,fT4y+fgoliathcentre_to_beam,fT4z));
           nmview_34 = "Station_4_x";
 	  nmview_top_34="Station_4_top_x";
 	  nmview_bot_34="Station_4_bot_x";		  	  	  

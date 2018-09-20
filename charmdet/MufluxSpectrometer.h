@@ -54,7 +54,9 @@ class MufluxSpectrometer:public FairDetector
     void SetscintillatorPlasticThickness(Double_t scintillatorPlasticThickness);
     void SetGoliathCentre(Double_t goliathcentre_to_beam);
     void SetTStationsZ(Double_t T1z, Double_t T2z, Double_t T3z, Double_t T4z);
-
+    void SetTStationsX(Double_t T1x_x, Double_t T1u_x, Double_t T2x_x, Double_t T2v_x, Double_t T3x, Double_t T4x);
+    void SetTStationsY(Double_t T1x_y, Double_t T1u_y, Double_t T2x_y, Double_t T2v_y, Double_t T3y, Double_t T4y);    
+    
 // for the digitizing step
     void SetTubeResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
     Double_t TubeVdrift() {return v_drift;}
@@ -153,8 +155,21 @@ private:
     Double_t       fgoliathcentre_to_beam;
     Double_t       fT1z;
     Double_t       fT2z;
+    Double_t       fT1x_x;
+    Double_t       fT2x_x;
+    Double_t       fT1u_x;
+    Double_t       fT2v_x;
+    Double_t       fT1x_y;
+    Double_t       fT2x_y;
+    Double_t       fT1u_y;
+    Double_t       fT2v_y;
     Double_t       fT3z;
-    Double_t       fT4z;    
+    Double_t       fT4z;  
+    Double_t       fT3x;
+    Double_t       fT4x;  
+    Double_t       fT3y;
+    Double_t       fT4y;    
+    
     /** container for data points */
     TClonesArray*  fMufluxSpectrometerPointCollection;
     

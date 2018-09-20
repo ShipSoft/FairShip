@@ -270,8 +270,8 @@ void MufluxTargetStation::ConstructGeometry()
     //TGeoNode *node = GetNode("Absorber");    
     //tTarget->ReplaceNode(node,new TGeoTube(1.,2.,10.),new TGeoTranslation(0,-100.2,12),iron); //
         
-    tTarget->AddNode(floor, 7, new TGeoTranslation(0., -210., 500.)); 
-    tTarget->AddNode(floorT34, 8, new TGeoTranslation(0., -112.5, fAbsorberZ-zPos+771.125)); 
+    tTarget->AddNode(floor, 7, new TGeoTranslation(0., -217., 500.)); 
+    tTarget->AddNode(floorT34, 8, new TGeoTranslation(0., -120., fAbsorberZ-zPos+771.125)); 
     tTarget->AddNode(floorRPC, 9, new TGeoTranslation(0., -97, fAbsorberZ-zPos+1000.));
     
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());

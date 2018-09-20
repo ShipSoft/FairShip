@@ -173,8 +173,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.sigma_spatial = 0.027*u.cm # from Daniel 8feb2018
     
     c.MufluxSpectrometer.TubeLength         = 160.*u.cm
-    c.MufluxSpectrometer.TubeLength12       = 100.*u.cm    
-    c.MufluxSpectrometer.tr12ydim           = 100.*u.cm
+    c.MufluxSpectrometer.TubeLength12       = 110.*u.cm    
+    c.MufluxSpectrometer.tr12ydim           = 110.*u.cm
     c.MufluxSpectrometer.tr34xdim           = 200.*u.cm
     c.MufluxSpectrometer.tr12xdim           = 50.*u.cm
     c.MufluxSpectrometer.tr34ydim           = 160.*u.cm
@@ -193,7 +193,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.WireThickness      = 0.0045*u.cm
     c.MufluxSpectrometer.DeltazView         = 15.*u.cm
     
-    c.MufluxSpectrometer.diststereo         = 16.25*u.cm  
+    c.MufluxSpectrometer.diststereo         = 16.25*u.cm    
     c.MufluxSpectrometer.distT1T2           = 11.*u.cm   
     if c.MufluxSpectrometer.muflux == True:
        c.MufluxSpectrometer.distT3T4           = 1.6*u.m       
@@ -201,10 +201,25 @@ with ConfigRegistry.register_config("basic") as c:
        c.MufluxSpectrometer.distT3T4 = 1.0*u.m   
             
     c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
-    c.MufluxSpectrometer.T1z=38.875 *u.cm
-    c.MufluxSpectrometer.T2z=107.625*u.cm
-    c.MufluxSpectrometer.T3z=584.25*u.cm
-    c.MufluxSpectrometer.T4z=747.25*u.cm       
+   
+    c.MufluxSpectrometer.T1x_x=4.2*u.cm
+    c.MufluxSpectrometer.T1x_y=-1.995*u.cm
+    c.MufluxSpectrometer.T1z=38.875*u.cm
+    c.MufluxSpectrometer.T1u_x=7.79*u.cm
+    c.MufluxSpectrometer.T1u_y=0.182*u.cm
+    c.MufluxSpectrometer.T2x_x=2.61*u.cm
+    c.MufluxSpectrometer.T2x_y=-2.1875*u.cm  
+    c.MufluxSpectrometer.T2z=107.625*u.cm       
+    c.MufluxSpectrometer.T2v_x=3.4804*u.cm  
+    c.MufluxSpectrometer.T2v_y=-0.5*u.cm       
+    c.MufluxSpectrometer.T3x=2.6*u.cm
+    c.MufluxSpectrometer.T3y=-7.3405*u.cm
+    c.MufluxSpectrometer.T3z=586.25*u.cm
+    c.MufluxSpectrometer.T4x=2.95*u.cm   
+    c.MufluxSpectrometer.T4y=-6.9845*u.cm 
+    c.MufluxSpectrometer.T4z=747.25*u.cm               
+
+     
     
     if c.MufluxSpectrometer.muflux == True:    
        c.Spectrometer.DX = 2.*u.m
