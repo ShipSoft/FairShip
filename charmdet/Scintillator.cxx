@@ -127,6 +127,21 @@ void Scintillator::SetDistT2(Float_t DistT2)
 {
      fDistT2 = DistT2;    //! distance from scintillator 2 to center of last tube
 }
+
+void Scintillator::SetS_T1coords(Float_t S_T1_x, Float_t S_T1_y)
+{
+     fS_T1_x = S_T1_x;    //! x origin of S_T1
+     fS_T1_y = S_T1_y;    //! y origin of S_T1
+}
+
+void Scintillator::SetS_T2coords(Float_t S_T2_x, Float_t S_T2_y)
+{
+     fS_T2_x = S_T2_x;    //! x origin of S_T2
+     fS_T2_y = S_T2_y;    //! y origin of S_T2     
+}
+
+
+
 //
 void Scintillator::ConstructGeometry()
 { 
