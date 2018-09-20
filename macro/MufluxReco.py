@@ -41,18 +41,18 @@ try:
            ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR","withT0", "withNTaggerHits=", "withDist2Wire"])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,' 
-        print ' noStrawSmearing: no smearing of distance to wire, default on' 
-        print ' outputfile will have same name with _rec added'   
+        print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,'
+        print ' noStrawSmearing: no smearing of distance to wire, default on'
+        print ' outputfile will have same name with _rec added'
         sys.exit()
 for o, a in opts:
-        if o in ("noVertexing"):
+        if o in ("--noVertexing",):
             vertexing = False
-        if o in ("noStrawSmearing"):
+        if o in ("--noStrawSmearing",):
             withNoStrawSmearing = True
-        if o in ("--withT0"):
+        if o in ("--withT0",):
             withT0 = True
-        if o in ("--withDist2Wire"):
+        if o in ("--withDist2Wire",):
             withDist2Wire = True
         if o in ("-t", "--withNTaggerHits"):
             withNTaggerHits = int(a)
@@ -62,13 +62,13 @@ for o, a in opts:
             geoFile = a
         if o in ("-n", "--nEvents="):
             nEvents = int(a)
-        if o in ("-Y"): 
+        if o in ("-Y",):
             dy = float(a)
-        if o in ("--ecalDebugDraw"):
+        if o in ("--ecalDebugDraw",):
             EcalDebugDraw = True
-        if o in ("--saveDisk"):
+        if o in ("--saveDisk",):
             saveDisk = True
-	if o in ("--realPR"):
+        if o in ("--realPR",):
             realPR = "_PR"
 
 

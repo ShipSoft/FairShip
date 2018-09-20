@@ -18,80 +18,81 @@ if [ $# -eq 0 ]
 fi
 
 echo "Setting environment for ${architecture} for $SHIPBUILD"
-echo "export SHIPBUILD=$SHIPBUILD" > config.sh
 echo "SHIPBUILD=$SHIPBUILD" > config.sh
 
-$SHIPBUILD/alibuild/alienv -a ${architecture} -w $SHIPBUILD/sw printenv FairShip/latest >> config.sh
+"$SHIPBUILD"/alibuild/alienv -a "${architecture}" -w "$SHIPBUILD"/sw printenv FairShip/latest >> config.sh
 
-P="$(python/tweakConfig)"
+python/tweakConfig
 
 source config.sh  # makes global FairShip environment
 
 echo "Setup lcg environment"
 source genenv.sh
 
-temp=$(cat $SHIPBUILD/shipdist/defaults-fairship.sh | grep CXXFLAGS)
+temp=$(grep CXXFLAGS < "$SHIPBUILD"/shipdist/defaults-fairship.sh)
 temx=$( cut -d ':' -f 2 <<< "$temp" )
 CXXFLAGS=${temx//'"'}
-temp=$(cat $SHIPBUILD/shipdist/defaults-fairship.sh | grep CMAKE_BUILD_TYPE )
+temp=$(grep CMAKE_BUILD_TYPE < "$SHIPBUILD"/shipdist/defaults-fairship.sh)
 temx=$( cut -d ':' -f 2 <<< "$temp" )
 CMAKE_BUILD_TYPE=${temx//'"'}
 
-if [ ! -d ../FairShipRun ];
-then
- mkdir ../FairShipRun
-fi
 SOURCEDIR=$PWD
+INSTALLROOT="$SOURCEDIR/../FairShipRun"
 
-cd ../FairShipRun
-INSTALLROOT=$PWD
+if [ ! -d "$INSTALLROOT" ];
+then
+ mkdir "$INSTALLROOT" || exit 1
+fi
+
+cd "$INSTALLROOT" || exit 1
 
 export FAIRROOTPATH=$FAIRROOT_ROOT
 export ROOT_ROOT=$ROOTSYS 
 
 echo "DEBUG -DCMAKE_BINARY_DIR=$INSTALLROOT    $SOURCEDIR  "
 
-cmake $SOURCEDIR                                                 \
-      -DFAIRBASE=$FAIRROOT_ROOT/share/fairbase                 \
-      -DFAIRROOTPATH=$FAIRROOT_ROOT                            \
+cmake "$SOURCEDIR"                                                 \
+      -DFAIRBASE="$FAIRROOT_ROOT"/share/fairbase                 \
+      -DFAIRROOTPATH="$FAIRROOT_ROOT"                            \
       -DCMAKE_CXX_FLAGS="$CXXFLAGS"                              \
       -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"                     \
-      -DROOTSYS=$ROOTSYS                                         \
-      -DROOT_CONFIG_SEARCHPATH=$ROOT_ROOT/bin                    \
-      -DROOT_DIR=$ROOT_ROOT                                      \
-      -DHEPMC_DIR=$HEPMC_ROOT                                    \
-      -DHEPMC_INCLUDE_DIR=$HEPMC_ROOT/include/HepMC              \
-      -DEVTGEN_INCLUDE_DIR=$EVTGEN_ROOT/include                  \
-      -DEVTGEN_LIBRARY_DIR=$EVTGEN_ROOT/lib                      \
-      -DPythia6_LIBRARY_DIR=$PYTHIA6_ROOT/lib                    \
-      -DPYTHIA8_DIR=$PYTHIA_ROOT                                 \
-      -DPYTHIA8_INCLUDE_DIR=$PYTHIA_ROOT/include                 \
-      -DGEANT3_PATH=$GEANT3_ROOT                                 \
-      -DGEANT3_LIB=$GEANT3_ROOT/lib                              \
-      -DGEANT4_ROOT=$GEANT4_ROOT                                 \
-      -DGEANT4_VMC_ROOT=$GEANT4_VMC_ROOT                         \
-      -DVGM_ROOT=$VGM_ROOT                                       \
+      -DROOTSYS="$ROOTSYS"                                         \
+      -DROOT_CONFIG_SEARCHPATH="$ROOT_ROOT"/bin                    \
+      -DROOT_DIR="$ROOT_ROOT"                                      \
+      -DHEPMC_DIR="$HEPMC_ROOT"                                    \
+      -DHEPMC_INCLUDE_DIR="$HEPMC_ROOT"/include/HepMC              \
+      -DEVTGEN_INCLUDE_DIR="$EVTGEN_ROOT"/include                  \
+      -DEVTGEN_LIBRARY_DIR="$EVTGEN_ROOT"/lib                      \
+      -DPythia6_LIBRARY_DIR="$PYTHIA6_ROOT"/lib                    \
+      -DPYTHIA8_DIR="$PYTHIA_ROOT"                                 \
+      -DPYTHIA8_INCLUDE_DIR="$PYTHIA_ROOT"/include                 \
+      -DGEANT3_PATH="$GEANT3_ROOT"                                 \
+      -DGEANT3_LIB="$GEANT3_ROOT"/lib                              \
+      -DGEANT4_ROOT="$GEANT4_ROOT"                                 \
+      -DGEANT4_VMC_ROOT="$GEANT4_VMC_ROOT"                         \
+      -DVGM_ROOT="$VGM_ROOT"                                       \
       ${CMAKE_VERBOSE_MAKEFILE:+-DCMAKE_VERBOSE_MAKEFILE=ON}     \
-      ${BOOST_ROOT:+-DBOOST_ROOT=$BOOST_ROOT}                    \
-      ${BOOST_ROOT:+-DBOOST_INCLUDEDIR=$BOOST_ROOT/include}      \
-      ${BOOST_ROOT:+-DBOOST_LIBRARYDIR=$BOOST_ROOT/lib}          \
-      -DCMAKE_BINARY_DIR=$INSTALLROOT                            \
-      -DCMAKE_INSTALL_PREFIX=$INSTALLROOT
+      ${BOOST_ROOT:+-DBOOST_ROOT="$BOOST_ROOT"}                    \
+      ${BOOST_ROOT:+-DBOOST_INCLUDEDIR="$BOOST_ROOT"/include}      \
+      ${BOOST_ROOT:+-DBOOST_LIBRARYDIR="$BOOST_ROOT"/lib}          \
+      -DCMAKE_BINARY_DIR="$INSTALLROOT"                            \
+      -DCMAKE_INSTALL_PREFIX="$INSTALLROOT"
 make
-# make test does not exist yet
 
-cp ../FairShip/config.sh  config.sh
-echo "echo \"setup aliBuild environment\"" >> config.sh
-echo "export SHIPBUILD=${SHIPBUILD}" >> config.sh
-cat ../FairShip/lcgenv.sh >> config.sh
-echo "echo \"setup lcg environment\"" >> config.sh
-echo "export FAIRSHIP=$(pwd)/../FairShip" >> config.sh
-echo "export FAIRSHIPRUN=$(pwd)" >> config.sh
-echo "export EOSSHIP=root://eospublic.cern.ch/"  >> config.sh
-echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture" >> config.sh
-echo "export LD_LIBRARY_PATH=$INSTALLROOT/lib:\${LD_LIBRARY_PATH}" >> config.sh
-# ugly fix 
-echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include/geant4vmc:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include:\${SHIPBUILD}/sw/$architecture/boost/latest/include" >> config.sh
+cp "$SOURCEDIR"/config.sh  config.sh
+{
+  echo "echo \"setup aliBuild environment\""
+  echo "export SHIPBUILD=${SHIPBUILD}"
+  cat "$SOURCEDIR"/lcgenv.sh
+  echo "echo \"setup lcg environment\""
+  echo "export FAIRSHIP=$SOURCEDIR"
+  echo "export FAIRSHIPRUN=$INSTALLROOT"
+  echo "export EOSSHIP=root://eospublic.cern.ch/"
+  echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture"
+  echo "export LD_LIBRARY_PATH=$INSTALLROOT/lib:\${LD_LIBRARY_PATH}"
+  # ugly fix
+  echo "export ROOT_INCLUDE_PATH=\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include/geant4vmc:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include:\${SHIPBUILD}/sw/$architecture/boost/latest/include"
+} >> config.sh
 
 chmod u+x config.sh
 cd -

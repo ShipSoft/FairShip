@@ -40,7 +40,7 @@ class TimeDetHit : public ShipHit
     /** Output to screen **/
     virtual void Print() const;
 
-    void Dist(Float_t x, Float_t lpos, Float_t lneg);
+    void Dist(Float_t x, Float_t& lpos, Float_t& lneg);
     Double_t Resol(Double_t x);
     void setInvalid() {flag = false;}
     void setIsValid() {flag = true;}
