@@ -423,7 +423,7 @@ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 import charmDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
-run.SetOutputFile("dummy")  # Output file
+run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
 run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
 rtdb = run.GetRuntimeDb()
 modules = charmDet_conf.configure(run,ShipGeo)
