@@ -1,3 +1,20 @@
+// Example for basic material, https://fairroot.gsi.de/?q=node/34
+//ALUMINIUM	1	26.98	13	2.7
+//		0	0	0	0.0001
+//0
+//corresponds to :
+//name	ncomp	aw	an	dens 
+//sensflag	fldflag	fld	epsil
+//npckov
+//ncomp: - number of components in the material (ncomp= 1 for a basic material and <1 or >1 for a mixture
+//aw: 	- atomic weights A for the components
+//an: 	- atomic numbers Z for the components 
+//dens:	density DENS in g cm(**-3)
+//sensflag - sensitivity flag ISVOL
+//fldflag - fieldflag IFIELD
+//fld - maximum field value FIELDM in kilogauss
+//epsil - boundary crossing precision EPSIL
+//npckov - number of values used to define the optical properties of the medium.  
 //----------------------------------------------------------
 air                3  14.01  16.  39.95  7.  8.  18.  1.205e-3  .755  .231  .014
                    0  1  30.  .001
@@ -103,6 +120,10 @@ iron               1  55.847  26.  7.87
                    0
 
 krypton            1 83.798 36 2.413
+                   1  0  20.  .001
+		   0
+
+LiqKrypton         1 83.798 36 2.413
                    1  0  20.  .001
 		   0
 //Gd3Al2Ga3O12
