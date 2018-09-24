@@ -12,7 +12,6 @@ matplotlib.use('pdf')
 import matplotlib.pyplot as plt
 import numpy as np
 
-from numpy.linalg import inv
 from sets import Set
 
 stop  = ROOT.TVector3()
@@ -24,34 +23,34 @@ start = ROOT.TVector3()
 #sGeo = fgeo.FAIRGeom
 
 #function for calculating the strip number from a coordinate
-def StripX(x):
-
-        #defining constants for rpc properties
-        STRIP_XWIDTH = 0.8625 #internal STRIP V, WIDTH, in cm
-        EXT_STRIP_XWIDTH_L = 0.9625 #nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
-        EXT_STRIP_XWIDTH_R = 0.86 #measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
-        V_STRIP_OFF = 0.2000
-	NR_VER_STRIPS = 184
-	total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
-        x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) /2
-
-        #calculating strip as an integer
-        strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
-
-        return int(strip_x)
-
-def StripY(y):
-
-        STRIP_YWIDTH = 0.8625 #internal STRIP H, WIDTH, in cm
-        EXT_STRIP_YWIDTH = 0.3  #measured external STRIP H, WIDTH, in cm
-        H_STRIP_OFF = 0.1983
-        NR_HORI_STRIPS = 116
-	total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
-	y_start = total_height / 2
-       
-	strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
+	def StripX(x):
 	
-	return int(strip_y)
+        	#defining constants for rpc properties
+        	STRIP_XWIDTH = 0.8625 #internal STRIP V, WIDTH, in cm
+        	EXT_STRIP_XWIDTH_L = 0.9625 #nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
+        	EXT_STRIP_XWIDTH_R = 0.86 #measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
+        	V_STRIP_OFF = 0.2000
+		NR_VER_STRIPS = 184
+		total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
+        	x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) /2
+
+        	#calculating strip as an integer
+        	strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
+
+        	return int(strip_x)
+
+	def StripY(y):
+
+        	STRIP_YWIDTH = 0.8625 #internal STRIP H, WIDTH, in cm
+        	EXT_STRIP_YWIDTH = 0.3  #measured external STRIP H, WIDTH, in cm
+        	H_STRIP_OFF = 0.1983
+        	NR_HORI_STRIPS = 116
+		total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
+		y_start = total_height / 2
+       
+		strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
+	
+		return int(strip_y)
 
 class MufluxDigiReco:
     " convert FairSHiP MC hits / digitized hits to measurements"
@@ -111,7 +110,7 @@ class MufluxDigiReco:
         # prepare for output
         # event header
         self.header  = ROOT.FairEventHeader()
-        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)#creating a branch
+        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
         # fitted tracks
         self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
         self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -239,19 +238,10 @@ class MufluxDigiReco:
 			#station -= 1 #offset - 6 volumes defined in the geo file but 1 not sensitive
 		assert station in range(1,6) #limiting the range of rpcs
 		
-		#z coordinates of every station 
-		if station == 1: zcoord = 874.25
-		elif station == 2: zcoord = 959.25
-		elif station == 3: zcoord = 1004.25
-		elif station == 4: zcoord = 1049.25
-		elif station == 5: zcoord = 1094.25
-
                 #calculate strip
                 # x gives vertical direction
                 direction = 1
                 strip = StripX(xcoord) 
-		if strip < 0 and strip > 185 :
-			break 
 		#sampling number of strips around the exact strip for emulating clustering 
 		s = np.random.poisson(3)
 		strip = strip - int(s/2)
@@ -262,8 +252,6 @@ class MufluxDigiReco:
                 #y gives horizontal direction
                 direction = 0
                 strip = StripY(ycoord)
-		if strip < 0 and strip > 117:
-			break
 		#sampling number of strips around the exact strip for emulating clustering 
 		s = np.random.poisson(3) 
 		strip = strip - int(s/2)
@@ -329,8 +317,8 @@ class MufluxDigiReco:
             pid = MufluxHit.PdgCode()
             xcoord = MufluxHit.GetX()
             ycoord = MufluxHit.GetY()
-            if abs(pid)==13:            #selecting particle type as muon
-                if (detector[0:8]=="gas_12_1")               :#identifying which volume and converting into station number and filling (what is h????)
+            if abs(pid)==13:
+                if (detector[0:8]=="gas_12_1"):
                     rc=h['hits-T1'].Fill(xcoord,ycoord)
                 if (detector[0:9]=="gas_12_10"):
                     rc=h['hits-T1x'].Fill(xcoord,ycoord)
