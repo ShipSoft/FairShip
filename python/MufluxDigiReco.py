@@ -33,9 +33,9 @@ def StripX(x):
 	NR_VER_STRIPS = 184
 	total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
 	x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) /2
-
         #calculating strip as an integer
 	strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
+	assert (0 < strip_x > 185),"X strip outside range!"
       	return int(strip_x)
 
 def StripY(y):
@@ -47,7 +47,7 @@ def StripY(y):
 	total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
 	y_start = total_height / 2
 	strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
-	
+	assert (0 < strip_y > 117),"Y strip outside range!"
 	return int(strip_y)
 
 class MufluxDigiReco:
@@ -200,46 +200,44 @@ class MufluxDigiReco:
         DetectorID = set() #set of detector ids - already deduplicated - change to list to avoid deduplication? 
 	
         for i in range(nMuonTaggerHits):
-            #getting points
-            MuonTaggerHit = self.sTree.MuonTaggerPoint[i]
-	    #getting rpc nodes, name and matrix
-            rpc_box = self.sGeo.FindNode(MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ())
-	    rpc = rpc_box.GetName()
-            master_matrix = rpc_box.GetMatrix()
-
-	    #getting muon box volume (lower level)
-	    muon_box = self.sGeo.GetTopVolume().FindNode("VMuonBox_1")
-	    muonbox_matrix = muon_box.GetMatrix()
+           	#getting points
+		MuonTaggerHit = self.sTree.MuonTaggerPoint[i]
+		#getting rpc nodes, name and matrix
+		rpc_box = self.sGeo.FindNode(MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ())
+		rpc = rpc_box.GetName()
+		master_matrix = rpc_box.GetMatrix()
+		
+		#getting muon box volume (lower level)
+		muon_box = self.sGeo.GetTopVolume().FindNode("VMuonBox_1")
+		muonbox_matrix = muon_box.GetMatrix()
 	    
-	    #other varialbles 
-            MuonTaggerTrackID = MuonTaggerHit.GetTrackID()
-            pid = MuonTaggerHit.PdgCode()
+		#other varialbles 
+		MuonTaggerTrackID = MuonTaggerHit.GetTrackID()
+		pid = MuonTaggerHit.PdgCode()
 
-	    #translation from top to MuonBox_1
-	    point = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ(), 1])
-            point_muonbox = array('d', [0,0,0, 1])
-            muonbox_matrix.MasterToLocal(point, point_muonbox)
+		#translation from top to MuonBox_1
+		point = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ(), 1])
+		point_muonbox = array('d', [0,0,0, 1])
+		muonbox_matrix.MasterToLocal(point, point_muonbox)
 
-	    #translation to local frame
-	    #point_muonbox = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ()])
-	    point_local = array('d', [0,0,0, 1])
-            master_matrix.MasterToLocal(point_muonbox, point_local)
-            
-	    xcoord = point_local[0]
-	    ycoord = point_local[1]
-	   	
-            #selecting muons
-            if abs(pid) == 13 :
-                #identify individual rpcs
+		#translation to local frame
+		#point_muonbox = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ()])
+		point_local = array('d', [0,0,0, 1])
+		master_matrix.MasterToLocal(point_muonbox, point_local)
+ 
+		xcoord = point_local[0]
+		ycoord = point_local[1]
+
+		#identify individual rpcs
 		station = int(rpc[-1])
 		#if station > 2:
-			#station -= 1 #offset - 6 volumes defined in the geo file but 1 not sensitive
+		#station -= 1 #offset - 6 volumes defined in the geo file but 1 not sensitive
 		assert station in range(1,6) #limiting the range of rpcs
-		
-                #calculate strip
-                # x gives vertical direction
-                direction = 1
-                strip = StripX(xcoord) 
+
+		#calculate strip
+		# x gives vertical direction
+		direction = 1
+		strip = StripX(xcoord) 
 		#sampling number of strips around the exact strip for emulating clustering 
 		s = np.random.poisson(3)
 		strip = strip - int(s/2)
@@ -247,9 +245,9 @@ class MufluxDigiReco:
 			detectorid = station*10000 + direction*1000 + strip + i 
 			DetectorID.add(detectorid)
 		
-                #y gives horizontal direction
-                direction = 0
-                strip = StripY(ycoord)
+		#y gives horizontal direction
+		direction = 0
+		strip = StripY(ycoord)
 		#sampling number of strips around the exact strip for emulating clustering 
 		s = np.random.poisson(3) 
 		strip = strip - int(s/2)
