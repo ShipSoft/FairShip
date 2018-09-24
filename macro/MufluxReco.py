@@ -175,8 +175,17 @@ if withHists:
  ut.bookHist(h,'hits-T2x','x vs y hits in T2 x plane',50,-25.,25.,100,-50.,50) 
  ut.bookHist(h,'hits-T2v','x vs y hits in T2 v plane',50,-25.,25.,100,-50.,50) 
  ut.bookHist(h,'hits-T3','x vs y hits in T3',200,-100.,100.,160,-80.,80) 
- ut.bookHist(h,'hits-T4','x vs y hits in T4',200,-100.,100.,160,-80.,80)   
-    
+ ut.bookHist(h,'hits-T4','x vs y hits in T4',200,-100.,100.,160,-80.,80) 
+
+ ut.bookHist(h,'muontaggerhits', 'Muon Tagger Points', 300, -150, 150, 200, -100, 100)
+ h['muontaggerhits'].SetMarkerSize(15)  
+
+ ut.bookHist(h, 'muontagger_z', 'Z Hits', 600, 850, 2500)
+ ut.bookHist(h, 'muontaggerdist', 'Muontagger Hits', 300, -150, 150, 200, -100, 100, 600, 850, 2000)
+
+ 
+ ut.bookHist(h, 'muontagger_clusters', 'Clusters', 50, 0, 50)
+   
  ut.bookHist(h,'NTrueTracks','Number of tracks.', 3, -0.5, 2.5)
  h['NTrueTracks'].GetXaxis().SetBinLabel(1,"Stations 1&2, Y views")
  h['NTrueTracks'].GetXaxis().SetBinLabel(2,"Stations 1&2, Stereo views")

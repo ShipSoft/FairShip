@@ -12,6 +12,9 @@ matplotlib.use('pdf')
 import matplotlib.pyplot as plt
 import numpy as np
 
+from numpy.linalg import inv
+from sets import Set
+
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -20,6 +23,35 @@ start = ROOT.TVector3()
 #fgeo = ROOT.TFile(geoFile)
 #sGeo = fgeo.FAIRGeom
 
+#function for calculating the strip number from a coordinate
+def StripX(x):
+
+        #defining constants for rpc properties
+        STRIP_XWIDTH = 0.8625 #internal STRIP V, WIDTH, in cm
+        EXT_STRIP_XWIDTH_L = 0.9625 #nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
+        EXT_STRIP_XWIDTH_R = 0.86 #measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
+        V_STRIP_OFF = 0.2000
+	NR_VER_STRIPS = 184
+	total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
+        x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) /2
+
+        #calculating strip as an integer
+        strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
+
+        return int(strip_x)
+
+def StripY(y):
+
+        STRIP_YWIDTH = 0.8625 #internal STRIP H, WIDTH, in cm
+        EXT_STRIP_YWIDTH = 0.3  #measured external STRIP H, WIDTH, in cm
+        H_STRIP_OFF = 0.1983
+        NR_HORI_STRIPS = 116
+	total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
+	y_start = total_height / 2
+       
+	strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
+	
+	return int(strip_y)
 
 class MufluxDigiReco:
     " convert FairSHiP MC hits / digitized hits to measurements"
@@ -79,7 +111,7 @@ class MufluxDigiReco:
         # prepare for output
         # event header
         self.header  = ROOT.FairEventHeader()
-        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)#creating a branch
         # fitted tracks
         self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
         self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -94,6 +126,12 @@ class MufluxDigiReco:
         self.v_drift = modules["MufluxSpectrometer"].TubeVdrift()
         self.sigma_spatial = modules["MufluxSpectrometer"].TubeSigmaSpatial()
         self.viewangle = modules["MufluxSpectrometer"].ViewAngle()
+
+        #muon taggger
+        if self.sTree.GetBranch("MuonTaggerPoint"):
+            self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
+            self.digiMuonTaggerBranch = self.sTree.Branch("Digi_MuonTagger", self.digiMuonTagger, 32000, -1)
+
 
         # setup random number generator
         self.random = ROOT.TRandom()
@@ -124,7 +162,7 @@ class MufluxDigiReco:
             # self.fitter.setDebugLvl(1) # produces lot of printout
             output_dir = 'pics/'
             if os.path.exists(output_dir):
-                print('The directiry is already exists. It is OK.')
+                print('The directory already exists. It is OK.')
             else:
                 os.mkdir(output_dir)
 
@@ -151,6 +189,115 @@ class MufluxDigiReco:
         self.digitizeMufluxSpectrometer()
         self.digiMufluxSpectrometerBranch.Fill()
 
+        self.digiMuonTagger.Delete()
+        self.digitizeMuonTagger()
+        self.digiMuonTaggerBranch.Fill()
+
+
+
+    def digitizeMuonTagger(self):
+
+	nMuonTaggerHits = self.sTree.MuonTaggerPoint.GetEntriesFast() #getting entries
+        station = 0
+        strip = 0
+        DetectorID = set() #set of detector ids - already deduplicated - change to list to avoid deduplication? 
+	
+        for i in range(nMuonTaggerHits):
+            #getting points
+            MuonTaggerHit = self.sTree.MuonTaggerPoint[i]
+	    #getting rpc nodes, name and matrix
+            rpc_box = self.sGeo.FindNode(MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ())
+	    rpc = rpc_box.GetName()
+            master_matrix = rpc_box.GetMatrix()
+
+	    #getting muon box volume (lower level)
+	    muon_box = self.sGeo.GetTopVolume().FindNode("VMuonBox_1")
+	    muonbox_matrix = muon_box.GetMatrix()
+	    
+	    #other varialbles 
+            MuonTaggerTrackID = MuonTaggerHit.GetTrackID()
+            pid = MuonTaggerHit.PdgCode()
+
+	    #translation from top to MuonBox_1
+	    point = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ(), 1])
+            point_muonbox = array('d', [0,0,0, 1])
+            muonbox_matrix.MasterToLocal(point, point_muonbox)
+
+	    #translation to local frame
+	    #point_muonbox = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ()])
+	    point_local = array('d', [0,0,0, 1])
+            master_matrix.MasterToLocal(point_muonbox, point_local)
+            
+	    xcoord = point_local[0]
+	    ycoord = point_local[1]
+	   	
+            #selecting muons
+            if abs(pid) == 13 :
+                #identify individual rpcs
+		station = int(rpc[-1])
+		#if station > 2:
+			#station -= 1 #offset - 6 volumes defined in the geo file but 1 not sensitive
+		assert station in range(1,6) #limiting the range of rpcs
+		
+		#z coordinates of every station 
+		if station == 1: zcoord = 874.25
+		elif station == 2: zcoord = 959.25
+		elif station == 3: zcoord = 1004.25
+		elif station == 4: zcoord = 1049.25
+		elif station == 5: zcoord = 1094.25
+
+                #calculate strip
+                # x gives vertical direction
+                direction = 1
+                strip = StripX(xcoord) 
+		if strip < 0 and strip > 185 :
+			break 
+		#sampling number of strips around the exact strip for emulating clustering 
+		s = np.random.poisson(3)
+		strip = strip - int(s/2)
+		for i in range(0, s):
+			detectorid = station*10000 + direction*1000 + strip + i 
+			DetectorID.add(detectorid)
+		
+                #y gives horizontal direction
+                direction = 0
+                strip = StripY(ycoord)
+		if strip < 0 and strip > 117:
+			break
+		#sampling number of strips around the exact strip for emulating clustering 
+		s = np.random.poisson(3) 
+		strip = strip - int(s/2)
+		for i in range(0, s):
+			detectorid = station*10000 + direction*1000 + strip + i
+			DetectorID.add(detectorid)
+					
+
+	j = 0
+
+	for detID in DetectorID:
+		Hit = ROOT.MuonTaggerHit(detID, 0)
+		if self.digiMuonTagger.GetSize() == j: self.digiMuonTagger.Expand(j +1000)
+		self.digiMuonTagger[j] = Hit
+	
+	#cluster size loop - plotting the cluster size distribution 
+	cluster_size = list()
+	DetectorID_list = list(DetectorID) # turn set into list to allow indexing 
+	DetectorID_list.sort() # sorting the list
+	print DetectorID_list
+	if len(DetectorID_list) > 1:
+		
+		clusters = [[DetectorID_list[0]]]
+		for x in DetectorID_list[1:]:
+			if abs(x - clusters[-1][-1]) <= 1: 
+				clusters[-1].append(x)
+			else: 
+				clusters.append([x])
+		cluster_size = [len(x) for x in clusters]
+		print cluster_size
+		for i in cluster_size:
+			rc = h['muontagger_clusters'].Fill(i)
+	 
+	 
 
     def digitizeMufluxSpectrometer(self):
 
@@ -182,8 +329,8 @@ class MufluxDigiReco:
             pid = MufluxHit.PdgCode()
             xcoord = MufluxHit.GetX()
             ycoord = MufluxHit.GetY()
-            if abs(pid)==13:
-                if (detector[0:8]=="gas_12_1"):
+            if abs(pid)==13:            #selecting particle type as muon
+                if (detector[0:8]=="gas_12_1")               :#identifying which volume and converting into station number and filling (what is h????)
                     rc=h['hits-T1'].Fill(xcoord,ycoord)
                 if (detector[0:9]=="gas_12_10"):
                     rc=h['hits-T1x'].Fill(xcoord,ycoord)
@@ -1900,5 +2047,3 @@ class MufluxDigiReco:
         ut.errorSummary()
         ut.writeHists(h,"recohists.root")
         # if realPR: ut.writeHists(shipPatRec.h,"recohists_patrec.root")
-
-
