@@ -10,17 +10,13 @@
 #define ONLINE_SHIPUNPACK_H
 
 #include "FairUnpack.h"
-/* #include <type_traits> */
-/* #include <typeinfo> */
 
 class TClonesArray;
 
 /**
  * An example unpacker of MBS data.
  */
-/* template <class HitType> */
 class ShipUnpack : public FairUnpack {
-   /* static_assert(std::is_base_of<ShipHit, HitType>::value); */
 
 public:
    /** Standard Constructor. Input - MBS parameters of the detector. */
@@ -42,7 +38,7 @@ public:
    /** Method for controling the functionality. */
    inline Int_t GetNHitsTotal() { return fNHitsTotal; }
 
-   virtual uint16_t GetPartition()=0;
+   virtual uint16_t GetPartition() = 0;
 
 protected:
    /** Register the output structures. */
@@ -61,8 +57,5 @@ public:
    // Class definition
    ClassDef(ShipUnpack, 1)
 };
-
-/* template <> */
-/* Bool_t ShipUnpack<MufluxSpectrometerHit>::DoUnpack(Int_t *data, Int_t size); */
 
 #endif

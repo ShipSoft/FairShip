@@ -19,10 +19,7 @@ ScalerUnpack::ScalerUnpack(Short_t type, Short_t subType, Short_t procId, Short_
 }
 
 // Virtual ScalerUnpack: Public method
-ScalerUnpack::~ScalerUnpack()
-{
-   LOG(DEBUG) << "ScalerUnpack: Delete instance" << FairLogger::endl;
-}
+ScalerUnpack::~ScalerUnpack() = default;
 
 // Init: Public method
 Bool_t ScalerUnpack::Init()
@@ -51,7 +48,7 @@ struct ScalerFrame {
 // DoUnpack: Public method
 Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   static_assert(sizeof(ScalerFrame) == 88);
+   static_assert(sizeof(ScalerFrame) == 88, "Scaler frame size incorrect!");
    auto df = reinterpret_cast<ScalerFrame *>(data);
    LOG(DEBUG) << "ScalerUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
    LOG(DEBUG) << "PSW = " << df->PSW << FairLogger::endl;

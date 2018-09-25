@@ -9,7 +9,7 @@ ShipTdcSource::ShipTdcSource(TString filename) : FairOnlineSource(), fFilename(f
 
 ShipTdcSource::ShipTdcSource(const ShipTdcSource &source) : FairOnlineSource(source) {}
 
-ShipTdcSource::~ShipTdcSource() {}
+ShipTdcSource::~ShipTdcSource() = default;
 
 Bool_t ShipTdcSource::Init()
 {
@@ -83,7 +83,7 @@ Bool_t ShipTdcSource::Unpack(Int_t *data, Int_t size, uint16_t partitionId)
 {
 
    for (TObject *item : *fUnpackers) {
-      auto unpacker = static_cast<ShipUnpack *>(item);
+      auto unpacker = dynamic_cast<ShipUnpack *>(item);
       if (unpacker->GetPartition() == partitionId) {
          return unpacker->DoUnpack(data, size);
       }

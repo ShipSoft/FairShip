@@ -26,22 +26,22 @@ public:
    virtual ~DriftTubeUnpack();
 
    /** Initialization. Called once, before the event loop. */
-   virtual Bool_t Init();
+   virtual Bool_t Init() override;
 
    /** Process an MBS sub-event. */
-   virtual Bool_t DoUnpack(Int_t *data, Int_t size);
+   virtual Bool_t DoUnpack(Int_t *data, Int_t size) override;
 
    /** Clear the output structures. */
-   virtual void Reset();
+   virtual void Reset() override;
 
-   /** Method for controling the functionality. */
+   /** Method for controlling the functionality. */
    inline Int_t GetNHitsTotal() { return fNHitsTotalTubes + fNHitsTotalScintillator; }
 
    uint16_t GetPartition() override { return fPartitionId; }
 
 protected:
    /** Register the output structures. */
-   virtual void Register();
+   virtual void Register() override;
 
 private:
    TClonesArray *fRawTubes;        /**< Array of output raw items. */

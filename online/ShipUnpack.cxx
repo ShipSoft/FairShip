@@ -12,8 +12,8 @@
 
 // ShipUnpack: Constructor
 ShipUnpack::ShipUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
-   : FairUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray()),
-     fNHits(0), fNHitsTotal(0), fPartitionId(-1)
+   : FairUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray()), fNHits(0), fNHitsTotal(0),
+     fPartitionId(-1)
 {
 }
 
@@ -24,7 +24,8 @@ ShipUnpack::~ShipUnpack()
    delete fRawData;
 }
 
-Bool_t ShipUnpack::DoUnpack(Int_t *data, Int_t size){
+Bool_t ShipUnpack::DoUnpack(Int_t *, Int_t)
+{
    return kTRUE;
 }
 
@@ -36,14 +37,12 @@ Bool_t ShipUnpack::Init()
 }
 
 // Reset: Public method
-void ShipUnpack::Reset()
-{
-}
+void ShipUnpack::Reset() {}
 
 void ShipUnpack::Register()
 {
    LOG(INFO) << "ShipUnpack : Registering..." << FairLogger::endl;
-   FairRootManager *fMan = FairRootManager::Instance();
+   auto *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
    }

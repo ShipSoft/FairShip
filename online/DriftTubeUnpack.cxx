@@ -30,7 +30,8 @@ DriftTubeUnpack::DriftTubeUnpack(Short_t type, Short_t subType, Short_t procId, 
 DriftTubeUnpack::~DriftTubeUnpack()
 {
    LOG(INFO) << "DriftTubeUnpack: Delete instance" << FairLogger::endl;
-   delete fRawTubes, fRawScintillator;
+   delete fRawTubes;
+   delete fRawScintillator;
 }
 
 // Init: Public method
@@ -44,7 +45,7 @@ Bool_t DriftTubeUnpack::Init()
 void DriftTubeUnpack::Register()
 {
    LOG(INFO) << "DriftTubeUnpack : Registering..." << FairLogger::endl;
-   FairRootManager *fMan = FairRootManager::Instance();
+   auto fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
    }
@@ -55,21 +56,21 @@ void DriftTubeUnpack::Register()
 // DoUnpack: Public method
 Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(INFO) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
+   LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
    assert(df->header.size == size);
    switch (df->header.frameTime){
       case SoS:
-         LOG(INFO) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
+         LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
          return kTRUE;
       case EoS:
-         LOG(INFO) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl;
+         LOG(DEBUG) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl;
          return kTRUE;
       default:
          break;
    }
-   LOG(INFO) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
+   LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
    auto nhits = df->getHitCount();
    int skipped = 0;
    int trigger = 0;
@@ -105,7 +106,6 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
    }
    uint16_t delay = 0;
-   triggerTime[4] ? triggerTime[4] - master_trigger_time: 0;
    if (!triggerTime[4]) {
       LOG(WARNING) << "No trigger in TDC 4";
       return true;

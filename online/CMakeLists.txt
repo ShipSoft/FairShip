@@ -21,7 +21,6 @@ set(LINK_DIRECTORIES
 link_directories(${LINK_DIRECTORIES})
 
 Set(SRCS
-    ShipTdcTask.cxx
     ShipTdcSource.cxx
     ShipUnpack.cxx
     DriftTubeUnpack.cxx
