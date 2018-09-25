@@ -35,7 +35,7 @@ def StripX(x):
 	x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) /2
         #calculating strip as an integer
 	strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
-	assert (0 < strip_x > 185),"X strip outside range!"
+	assert (0 < strip_x < 185),"X strip outside range!"
       	return int(strip_x)
 
 def StripY(y):
@@ -47,7 +47,7 @@ def StripY(y):
 	total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
 	y_start = total_height / 2
 	strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
-	assert (0 < strip_y > 117),"Y strip outside range!"
+	assert (0 < strip_y < 117),"Y strip outside range!"
 	return int(strip_y)
 
 class MufluxDigiReco:
