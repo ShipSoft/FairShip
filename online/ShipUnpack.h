@@ -35,7 +35,7 @@ public:
    /** Clear the output structures. */
    virtual void Reset();
 
-   /** Method for controling the functionality. */
+   /** Method for controlling the functionality. */
    inline Int_t GetNHitsTotal() { return fNHitsTotal; }
 
    virtual uint16_t GetPartition() = 0;

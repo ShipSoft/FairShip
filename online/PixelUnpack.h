@@ -31,7 +31,7 @@ public:
    /** Clear the output structures. */
    virtual void Reset() override;
 
-   /** Method for controling the functionality. */
+   /** Method for controlling the functionality. */
    inline Int_t GetNHitsTotal() { return fNHitsTotal; }
 
    uint16_t GetPartition() override { return fPartitionId; }

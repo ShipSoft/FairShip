@@ -10,7 +10,7 @@
 
 // SHiP headers
 #include "PixelUnpack.h"
-#include "PixelHit.h"
+#include "ShipPixelHit.h"
 #include "ShipOnlineDataFormat.h"
 
 struct HitData {
@@ -27,7 +27,7 @@ struct ChannelId {
 // PixelUnpack: Constructor
 PixelUnpack::PixelUnpack(uint16_t PartitionId, Short_t type, Short_t subType, Short_t procId, Short_t subCrate,
                          Short_t control)
-   : ShipUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray("PixelHit")), fNHits(0),
+   : ShipUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray("ShipPixelHit")), fNHits(0),
      fNHitsTotal(0), fPartitionId(PartitionId)
 {
 }
@@ -50,7 +50,7 @@ Bool_t PixelUnpack::Init()
 void PixelUnpack::Register()
 {
    LOG(INFO) << "PixelUnpack : Registering..." << FairLogger::endl;
-   FairRootManager *fMan = FairRootManager::Instance();
+   auto *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
    }
@@ -76,7 +76,7 @@ Bool_t PixelUnpack::DoUnpack(Int_t *data, Int_t size)
       auto channelId = reinterpret_cast<ChannelId *>(&(hit.channelId));
       auto detectorId = 1000000 * hitData->moduleID + 1000 * channelId->row + channelId->column;
       auto adc = hitData->tot;
-      new ((*fRawData)[fNHits]) PixelHit(detectorId, adc);
+      new ((*fRawData)[fNHits]) ShipPixelHit(detectorId, adc);
       fNHits++;
    }
 

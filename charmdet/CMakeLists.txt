@@ -36,7 +36,7 @@ MuonTaggerHit.cxx
 Scintillator.cxx
 ScintillatorPoint.cxx
 ScintillatorHit.cxx
-PixelHit.cxx
+ShipPixelHit.cxx
 )
 
 Set(HEADERS )
