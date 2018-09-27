@@ -64,7 +64,7 @@ ShipGoliathField::~ShipGoliathField() { }
 
 void ShipGoliathField::Init(const char* fieldfile){
 
-  TFile *fieldmap = new TFile(fieldfile); 
+  fieldmap = TFile::Open(fieldfile);
   
   
   TH3D* histbx= (TH3D*)fieldmap->Get("Bx");
