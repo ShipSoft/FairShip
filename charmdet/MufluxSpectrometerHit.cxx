@@ -45,7 +45,7 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_
      Double_t sigma_spatial = module->TubeSigmaSpatial(); 
      module->TubeEndPoints(fDetectorID,start,stop); 
      Double_t t_drift = fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift; 
-     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; 
+     fdigi = t0 + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; 
      flags &= DriftTubes::Valid; 
 } 
 

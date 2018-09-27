@@ -1215,6 +1215,8 @@ class MufluxDigiReco:
         stationCrossed_noT4 = {}
         trackDigiHits = {}
         trackDigiHits_noT4 = {}
+        trackMomentums = {}
+        trackMomentums_noT4 = {}
         trackCandidates = []
         trackCandidates_noT4 = []
         trackCandidates_all = []
@@ -1252,6 +1254,7 @@ class MufluxDigiReco:
                 atrack_stereo12 = atrack['stereo12']
                 atrack_34 = atrack['34']
                 atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_34)
+                atrack_p = np.abs(atrack['p'])
 
                 for sm in atrack_smeared_hits:
 
@@ -1265,6 +1268,7 @@ class MufluxDigiReco:
                         hitPosLists[trID] = ROOT.std.vector('TVectorD')()
                         stationCrossed[trID] = {}
                         trackDigiHits[trID] = []
+                        trackMomentums[trID] = atrack_p
                     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                     hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
                     if not stationCrossed[trID].has_key(station):
@@ -1278,6 +1282,7 @@ class MufluxDigiReco:
                             hitPosLists_noT4[trID]     = ROOT.std.vector('TVectorD')()
                             stationCrossed_noT4[trID]  = {}
                             trackDigiHits_noT4[trID] = []
+                            trackMomentums_noT4[trID] = atrack_p
                         m_noT4 = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                         hitPosLists_noT4[trID].push_back(ROOT.TVectorD(7,m_noT4))
                         if not stationCrossed_noT4[trID].has_key(station):
@@ -1321,6 +1326,7 @@ class MufluxDigiReco:
                     hitPosLists[trID] = ROOT.std.vector('TVectorD')()
                     stationCrossed[trID]  = {}
                     trackDigiHits[trID] = []
+                    trackMomentums[trID] = 3.
                 m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                 hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
                 if not stationCrossed[trID].has_key(station):
@@ -1334,6 +1340,7 @@ class MufluxDigiReco:
                         hitPosLists_noT4[trID] = ROOT.std.vector('TVectorD')()
                         stationCrossed_noT4[trID]  = {}
                         trackDigiHits_noT4[trID] = []
+                        trackMomentums_noT4[trID] = 3.
                     m_noT4 = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                     hitPosLists_noT4[trID].push_back(ROOT.TVectorD(7,m_noT4))
                     if not stationCrossed_noT4[trID].has_key(station):
@@ -1352,6 +1359,7 @@ class MufluxDigiReco:
                 continue # only keep muons
 
             meas = hitPosLists[atrack]
+            mom_init = trackMomentums[atrack]
             nM = meas.size()
 
             #if nM < 12 : continue                          # not enough hits to make a good trackfit
@@ -1361,7 +1369,7 @@ class MufluxDigiReco:
 
             charge = self.PDG.GetParticle(pdg).Charge()/(3.)
             posM = ROOT.TVector3(0, 0, 0)
-            momM = ROOT.TVector3(0,0,3.*u.GeV)
+            momM = ROOT.TVector3(0,0,mom_init * u.GeV)
             # approximate covariance
             covM = ROOT.TMatrixDSym(6)
             resolution = self.sigma_spatial
@@ -1404,6 +1412,7 @@ class MufluxDigiReco:
                 continue # only keep muons
 
             meas = hitPosLists[atrack]
+            mom_init = trackMomentums[atrack]
             nM = meas.size()
 
             #if nM < 12 : continue                          # not enough hits to make a good trackfit
@@ -1413,7 +1422,7 @@ class MufluxDigiReco:
 
             charge = self.PDG.GetParticle(pdg).Charge()/(3.)
             posM = ROOT.TVector3(0, 0, 0)
-            momM = ROOT.TVector3(0,0,3.*u.GeV)
+            momM = ROOT.TVector3(0,0,mom_init * u.GeV)
             # approximate covariance
             covM = ROOT.TMatrixDSym(6)
             resolution = self.sigma_spatial
@@ -1454,6 +1463,7 @@ class MufluxDigiReco:
             if not abs(pdg)==13:
                 continue # only keep muons
             meas = hitPosLists_noT4[atrack]
+            mom_init = trackMomentums_noT4[atrack]
             nM = meas.size()
 
             #if nM < 6 : continue                          # not enough hits to make a good trackfit
@@ -1463,7 +1473,7 @@ class MufluxDigiReco:
 
             charge = self.PDG.GetParticle(pdg).Charge()/(3.)
             posM = ROOT.TVector3(0, 0, 0)
-            momM = ROOT.TVector3(0,0,3.*u.GeV)
+            momM = ROOT.TVector3(0,0,mom_init * u.GeV)
             # approximate covariance
             covM = ROOT.TMatrixDSym(6)
             resolution = self.sigma_spatial
@@ -1808,6 +1818,9 @@ class MufluxDigiReco:
                     pterr = (Pt - Pttruth) / Pttruth
                     h['p_rel_error'].Fill(perr)
                     h['pt_rel_error'].Fill(pterr)
+
+                    mom_init = trackMomentums[atrack]
+                    print "P_precalc, P_truth: ", mom_init, Ptruth
 
                     if Pz !=0:
                         pxpzfitted = Px/Pz

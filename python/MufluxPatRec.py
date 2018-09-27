@@ -445,25 +445,30 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
     for atrack in short_tracks_34:
         [atrack['k'], atrack['b']] = np.polyfit(atrack['z'], atrack['x'], deg=1)
 
-    # Combine track y12 and 34
+    # Combine track y12 and 34 and momentum calculation
     i_track_y12 = []
     i_track_34 = []
     deltas_y = []
+    momentums = []
     for i_y12 in range(len(short_tracks_y12)):
         atrack_y12 = short_tracks_y12[i_y12]
         y_center_y12 = atrack_y12['k'] * z_center + atrack_y12['b']
+        alpha_y12 = np.arctan(atrack_y12['k'])
         for i_34 in range(len(short_tracks_34)):
             atrack_34 = short_tracks_34[i_34]
             y_center_34 = atrack_34['k'] * z_center + atrack_34['b']
+            alpha_34 = np.arctan(atrack_34['k'])
             i_track_y12.append(i_y12)
             i_track_34.append(i_34)
             deltas_y.append(abs(y_center_y12 - y_center_34))
+            momentums.append(1.03 / (alpha_y12 - alpha_34))
 
     max_dy = 50
     used_y12 = []
     used_34 = []
     for i in np.argsort(deltas_y):
         dy = deltas_y[i]
+        mom = momentums[i]
         i_y12 = i_track_y12[i]
         i_34 = i_track_34[i]
         if dy < max_dy:
@@ -471,6 +476,7 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
                 if i_34 not in used_34:
                     atrack = short_tracks_34[i_34]
                     atrack['i_track_y12'] = i_y12
+                    atrack['p'] = mom
                     used_y12.append(i_y12)
                     used_34.append(i_34)
 
@@ -699,6 +705,7 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
         hits_stereo12 = []
         hits_34 = []
         hits_tagger = []
+        p = 0
         
         for ahit in short_tracks_y12[i_track]['hits']:
             hits_y12.append(ahit)
@@ -711,6 +718,7 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
                     
         for atrack in short_tracks_34:
             if atrack['i_track_y12'] == i_track:
+                p = atrack['p']
                 for ahit in atrack['hits']:
                     hits_34.append(ahit)
                 break
@@ -722,7 +730,7 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
                 break
 
         if len(hits_y12) >= min_hits and len(hits_stereo12) >= min_hits and len(hits_34) >= min_hits and len(hits_tagger) >= withNTaggerHits:
-            atrack = {'y12': hits_y12, 'stereo12': hits_stereo12, '34': hits_34, 'y_tagger': hits_tagger}
+            atrack = {'y12': hits_y12, 'stereo12': hits_stereo12, '34': hits_34, 'y_tagger': hits_tagger, 'p': p}
             track_hits[i_track] = atrack
 
 
