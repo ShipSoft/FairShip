@@ -20,6 +20,7 @@ chibb = 1.6e-7
 npot  = 5E13
 nStart = 0
 
+CharmdetSetup = 0 # 1 charm cross section setup, 0 muonflux setup
 charmInputFile = "root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 nStart = 0
 
@@ -66,6 +67,7 @@ def init():
       description='Run SHiP "pot" simulation')
   ap.add_argument('-d', '--debug', action='store_true', dest='debug')
   ap.add_argument('-f', '--force', action='store_true', help="force overwriting output directory")
+  ap.add_argument('-cs', '--CharmdetSetup', type=int, dest='CharmdetSetup',help="setting detector setup")
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
@@ -112,6 +114,7 @@ def init():
     logger.info("use EvtGen as primary decayer")
   withEvtGen     = args.withEvtGen
   charm  = args.charm
+  CharmdetSetup = args.CharmdetSetup
   beauty = args.beauty
   if charm and beauty: 
     logger.warn("charm and beauty decays are set! Beauty gets priority")
@@ -147,7 +150,7 @@ os.chdir(work_dir)
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 #this is for the muon flux geometry
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup)
 
 txt = 'pythia8_Geant4_'
 if withEvtGen: txt = 'pythia8_evtgen_Geant4_'
@@ -168,12 +171,23 @@ rtdb = run.GetRuntimeDb()
 # -----Materials----------------------------------------------
 run.SetMaterials("media.geo")  
 # -----Create geometry----------------------------------------------
+import charmDet_conf as shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
-P8gen.SetTarget("/TargetArea_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+if (ship_geo.MufluxSpectrometer.muflux==True):
+ P8gen.SetTarget("/TargetArea_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+else:
+ P8gen.SetCharmTarget() #looks for charm target instead of SHiP standard target
+ P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+ if ship_geo.Box.gausbeam:
+  primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors    
+  primGen.SmearGausVertexXY(True) #sigma = x
+ else:
+  primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
+  primGen.SmearVertexXY(True)
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
@@ -227,46 +241,51 @@ print "Macro finished succesfully."
 print "Output file is ",  outFile 
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
+if (ship_geo.MufluxSpectrometer.muflux==True):
 # ---post processing--- remove empty events --- save histograms
-tmpFile = outFile+"tmp"
-fin   = ROOT.gROOT.GetListOfFiles()[0]
+ tmpFile = outFile+"tmp"
+ fin   = ROOT.gROOT.GetListOfFiles()[0]
 
-fHeader = fin.FileHeader
-fHeader.SetRunId(runnr)
-if charm or beauty:
-# normalization for charm
- poteq = P8gen.GetPotForCharm()
- fHeader.SetTitle("POT equivalent = %7.3G"%(poteq))
-else: 
- fHeader.SetTitle("POT = "+str(nev))
-print "Data generated ", fHeader.GetTitle()
-t     = fin.cbmsim
-fout  = ROOT.TFile(tmpFile,'recreate' )
-sTree = t.CloneTree(0)
-nEvents = 0
-for n in range(t.GetEntries()):
+ fHeader = fin.FileHeader
+ fHeader.SetRunId(runnr)
+ if charm or beauty:
+ # normalization for charm
+  poteq = P8gen.GetPotForCharm()
+  fHeader.SetTitle("POT equivalent = %7.3G"%(poteq))
+ else: 
+  fHeader.SetTitle("POT = "+str(nev))
+ print "Data generated ", fHeader.GetTitle()
+ t     = fin.cbmsim
+ fout  = ROOT.TFile(tmpFile,'recreate' )
+ sTree = t.CloneTree(0)
+ nEvents = 0
+ for n in range(t.GetEntries()):
      rc = t.GetEvent(n)
      if (t.ScintillatorPoint.GetEntries()>0): 
           rc = sTree.Fill()
           nEvents+=1  
      #t.Clear()
-fout.cd()
-for x in fin.GetList():
- if not x.Class().GetName().find('TH')<0: 
-   xcopy = x.Clone()
-   rc = xcopy.Write()
-sTree.AutoSave()
-ff   = fin.FileHeader.Clone(fout.GetName())
-fout.cd()
-ff.Write("FileHeader", ROOT.TObject.kSingleKey)
-sTree.Write()
-fout.Close()
-os.system("mv "+tmpFile+" "+outFile)
+ fout.cd()
+ for x in fin.GetList():
+  if not x.Class().GetName().find('TH')<0: 
+    xcopy = x.Clone()
+    rc = xcopy.Write()
+ sTree.AutoSave()
+ ff   = fin.FileHeader.Clone(fout.GetName())
+ fout.cd()
+ ff.Write("FileHeader", ROOT.TObject.kSingleKey)
+ sTree.Write()
+ fout.Close()
+ os.system("mv "+tmpFile+" "+outFile)
 
-print "Number of events produced with activity after hadron absorber:",nEvents 
+ print "Number of events produced with activity after hadron absorber:",nEvents 
+
+else:
+ print "No post processing done"
+
 sGeo = ROOT.gGeoManager
 run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
- 
+
 if checkOverlap:
  sGeo = ROOT.gGeoManager
  sGeo.CheckOverlaps()
