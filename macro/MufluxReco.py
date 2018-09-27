@@ -93,18 +93,21 @@ else:
   if saveDisk: os.system('mv '+inputFile+' '+outFile)
   else :       os.system('cp '+inputFile+' '+outFile)
 
-if not geoFile:
- tmp = inputFile.replace('ship.','geofile_full.')
- geoFile = tmp.replace('_rec','')
+# check if simulation or raw data
+f=ROOT.TFile.Open(outFile)
+if f.cbmsim.FindBranch('MCTrack'): simulation = True
+else: simulation = False
+f.Close()
 
-fgeo = ROOT.TFile.Open(geoFile)
-#fgeo = ROOT.TFile(geoFile)
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
+if simulation and geoFile:
+ fgeo = ROOT.TFile.Open(geoFile)
+ from ShipGeoConfig import ConfigRegistry
+ from rootpyPickler import Unpickler
 #load Shipgeo dictionary
-upkl    = Unpickler(fgeo)
-#ShipGeo = upkl.load('ShipGeo')
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Yheight = dy)
+ upkl    = Unpickler(fgeo)
+ ShipGeo = upkl.load('ShipGeo')
+else:
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Yheight = dy)
 
 h={}
 log={}
@@ -358,12 +361,14 @@ builtin.withNTaggerHits = withNTaggerHits
 builtin.withDist2Wire = withDist2Wire
 builtin.h    = h
 builtin.log  = log
+builtin.simulation = simulation
 iEvent = 0
 builtin.iEvent  = iEvent
 
 # import reco tasks
 import MufluxDigiReco
-SHiP = MufluxDigiReco.MufluxDigiReco(outFile,fgeo)
+geoMat =  ROOT.genfit.TGeoMaterialInterface()
+SHiP = MufluxDigiReco.MufluxDigiReco(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
 # main loop
@@ -371,7 +376,7 @@ for iEvent in range(firstEvent, nEvents):
  if iEvent%1000 == 0 or debug: print 'event ',iEvent
  SHiP.iEvent = iEvent
  rc    = SHiP.sTree.GetEvent(iEvent) 
- SHiP.digitize()
+ if simulation: SHiP.digitize() 
  SHiP.reconstruct()
  # memory monitoring
  # mem_monitor() 
