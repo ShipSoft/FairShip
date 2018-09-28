@@ -1,11 +1,10 @@
-import os,ROOT,MufluxPatRec,charmDet_conf
+import os,ROOT,MufluxPatRec
 import shipunit as u
 import rootUtils as ut
 
 import sys, os
 
 from array import array
-from ShipGeoConfig import ConfigRegistry
 
 import matplotlib
 matplotlib.use('pdf')
@@ -17,12 +16,7 @@ from sets import Set
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
-# geoFile   = 'geofile_full.conical.PGplus-TGeant4.root'
-#geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
-#fgeo = ROOT.TFile(geoFile)
-#sGeo = fgeo.FAIRGeom
-
-#function for calculating the strip number from a coordinate
+#function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
 	
         #defining constants for rpc properties
@@ -52,10 +46,9 @@ def StripY(y):
 
 class MufluxDigiReco:
     " convert FairSHiP MC hits / digitized hits to measurements"
-    def __init__(self,fout,fgeo):
+    def __init__(self,fout):
 
         self.iEvent = 0
-        self.sGeo = fgeo.FAIRGeom
 
         outdir=os.getcwd()
         outfile=outdir+"/"+fout
@@ -92,58 +85,38 @@ class MufluxDigiReco:
             self.fn = ROOT.TFile(fout,'update')
             self.sTree     = self.fn.cbmsim
 
-        #  check that all containers are present, otherwise create dummy version
-        """
-        self.dummyContainers={}
-        branch_class = {"MufluxSpectrometerPoint":"MufluxSpectrometerPoint","MuonTaggerPoint":"MuonTaggerPoint"}
-        for x in branch_class:
-            if not self.sTree.GetBranch(x):
-                self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
-                self.dummyContainers[x] = self.sTree.Branch(x,self.dummyContainers[x+"_array"],32000,-1)
-                setattr(self.sTree,x,self.dummyContainers[x+"_array"])
-                self.dummyContainers[x].Fill()
-        """
-        if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
-
         # prepare for output
+        if simulation:
         # event header
-        self.header  = ROOT.FairEventHeader()
-        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+         self.header  = ROOT.FairEventHeader()
+         self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+         self.fitTrack2MC  = ROOT.std.vector('int')()
+         self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
+         self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
+         self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
+        #muon taggger
+         if self.sTree.GetBranch("MuonTaggerPoint"):
+            self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
+            self.digiMuonTaggerBranch = self.sTree.Branch("Digi_MuonTagger", self.digiMuonTagger, 32000, -1)
+        # setup random number generator
+         self.random = ROOT.TRandom()
+         ROOT.gRandom.SetSeed()
         # fitted tracks
         self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
         self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
-        self.fitTrack2MC  = ROOT.std.vector('int')()
-        self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
         self.fitTracks   = self.sTree.Branch("FitTracks"+realPR,  self.fGenFitArray,32000,-1)
 
-        if self.sTree.GetBranch("MufluxSpectrometerPoint"):
-            self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
-            self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
-        # for the digitizing step
-        self.v_drift = modules["MufluxSpectrometer"].TubeVdrift()
-        self.sigma_spatial = modules["MufluxSpectrometer"].TubeSigmaSpatial()
-        self.viewangle = modules["MufluxSpectrometer"].ViewAngle()
-
-        #muon taggger
-        if self.sTree.GetBranch("MuonTaggerPoint"):
-            self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
-            self.digiMuonTaggerBranch = self.sTree.Branch("Digi_MuonTagger", self.digiMuonTagger, 32000, -1)
-
-
-        # setup random number generator
-        self.random = ROOT.TRandom()
-        ROOT.gRandom.SetSeed(13)
         self.PDG = ROOT.TDatabasePDG.Instance()
+        # for the digitizing and reconstruction step
+        self.v_drift       = modules["MufluxSpectrometer"].TubeVdrift()
+        self.sigma_spatial = modules["MufluxSpectrometer"].TubeSigmaSpatial()
+        self.viewangle     = modules["MufluxSpectrometer"].ViewAngle()
 
         # access ShipTree
         self.sTree.GetEvent(0)
         self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
         # init geometry and mag. field
-        gMan  = ROOT.gGeoManager
-        #import geomGeant4
-        #shipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
-        #fieldMaker = geomGeant4.addVMCFields(shipGeo, 'field/GoliathBFieldSetup.txt', False)
-        #geomGeant4.printVMCFields()
+        self.gMan  = ROOT.gGeoManager
         self.bfield = ROOT.genfit.FairShipFields()
         self.fM = ROOT.genfit.FieldManager.getInstance()
         self.fM.init(self.bfield)
@@ -163,19 +136,10 @@ class MufluxDigiReco:
             else:
                 os.mkdir(output_dir)
 
-
-    # for 'real' PatRec
-    #shipPatRec.initialize(fgeo)
-
     def reconstruct(self):
         ntracks = self.findTracks()
 
     def digitize(self):
-
-        if not self.sTree.GetBranch("MufluxSpectrometerPoint"):
-            if self.sTree.GetBranch("Digi_MufluxSpectrometerHits"):
-                self.digiMufluxSpectrometer = self.sTree.Digi_MufluxSpectrometerHits
-                return
 
         self.sTree.t0 = self.random.Rndm()*1*u.microsecond
         self.header.SetEventTime( self.sTree.t0 )
@@ -185,12 +149,9 @@ class MufluxDigiReco:
         self.digiMufluxSpectrometer.Delete()
         self.digitizeMufluxSpectrometer()
         self.digiMufluxSpectrometerBranch.Fill()
-
         self.digiMuonTagger.Delete()
-        self.digitizeMuonTagger()
+        # BROKEN self.digitizeMuonTagger()
         self.digiMuonTaggerBranch.Fill()
-
-
 
     def digitizeMuonTagger(self):
 
@@ -203,12 +164,12 @@ class MufluxDigiReco:
            	#getting points
 		MuonTaggerHit = self.sTree.MuonTaggerPoint[i]
 		#getting rpc nodes, name and matrix
-		rpc_box = self.sGeo.FindNode(MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ())
+		rpc_box = self.gMan.FindNode(MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ())
 		rpc = rpc_box.GetName()
 		master_matrix = rpc_box.GetMatrix()
 		
 		#getting muon box volume (lower level)
-		muon_box = self.sGeo.GetTopVolume().FindNode("VMuonBox_1")
+		muon_box = self.gMan.GetTopVolume().FindNode("VMuonBox_1")
 		muonbox_matrix = muon_box.GetMatrix()
 	    
 		#other varialbles 
@@ -308,7 +269,7 @@ class MufluxDigiReco:
         nMufluxHits = self.sTree.MufluxSpectrometerPoint.GetEntriesFast()
         for i in range(nMufluxHits):
             MufluxHit = self.sTree.MufluxSpectrometerPoint[i]
-            detector = self.sGeo.FindNode(MufluxHit.GetX(),MufluxHit.GetY(),MufluxHit.GetZ()).GetName()
+            detector = self.gMan.FindNode(MufluxHit.GetX(),MufluxHit.GetY(),MufluxHit.GetZ()).GetName()
             MufluxTrackId = MufluxHit.GetTrackID()
             pid = MufluxHit.PdgCode()
             xcoord = MufluxHit.GetX()
