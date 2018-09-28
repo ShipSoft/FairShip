@@ -20,7 +20,6 @@ chibb = 1.6e-7
 npot  = 5E13
 nStart = 0
 
-CharmdetSetup = 0 # 1 charm cross section setup, 0 muonflux setup
 charmInputFile = "root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
 nStart = 0
 
@@ -67,7 +66,7 @@ def init():
       description='Run SHiP "pot" simulation')
   ap.add_argument('-d', '--debug', action='store_true', dest='debug')
   ap.add_argument('-f', '--force', action='store_true', help="force overwriting output directory")
-  ap.add_argument('-cs', '--CharmdetSetup', type=int, dest='CharmdetSetup',help="setting detector setup")
+  ap.add_argument('-cs', '--CharmdetSetup', type=int, dest='CharmdetSetup',help="setting detector setup", default=0)
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
@@ -114,7 +113,6 @@ def init():
     logger.info("use EvtGen as primary decayer")
   withEvtGen     = args.withEvtGen
   charm  = args.charm
-  CharmdetSetup = args.CharmdetSetup
   beauty = args.beauty
   if charm and beauty: 
     logger.warn("charm and beauty decays are set! Beauty gets priority")
@@ -150,7 +148,7 @@ os.chdir(work_dir)
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 #this is for the muon flux geometry
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = args.CharmdetSetup)
 
 txt = 'pythia8_Geant4_'
 if withEvtGen: txt = 'pythia8_evtgen_Geant4_'
