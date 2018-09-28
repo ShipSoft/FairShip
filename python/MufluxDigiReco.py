@@ -16,37 +16,37 @@ from sets import Set
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
+
 # function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
-	
-        #defining constants for rpc properties
-	STRIP_XWIDTH = 0.8625 #internal STRIP V, WIDTH, in cm
-	EXT_STRIP_XWIDTH_L = 0.9625 #nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
-	EXT_STRIP_XWIDTH_R = 0.86 #measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
-	V_STRIP_OFF = 0.200
-	NR_VER_STRIPS = 184
-	total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
-	x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) /2
-        #calculating strip as an integer
-	strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
-        if not (0 < strip_x < 185):
-            print "WARNING: X strip outside range!"
-            strip_x = 0
-      	return int(strip_x)
+    # defining constants for rpc properties
+    STRIP_XWIDTH = 0.8625  # internal STRIP V, WIDTH, in cm
+    EXT_STRIP_XWIDTH_L = 0.9625  # nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
+    EXT_STRIP_XWIDTH_R = 0.86  # measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
+    V_STRIP_OFF = 0.200
+    NR_VER_STRIPS = 184
+    total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
+    x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2
+    # calculating strip as an integer
+    strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
+    if not (0 < strip_x <= NR_VER_STRIPS):
+        print "WARNING: X strip outside range!"
+        strip_x = 0
+    return int(strip_x)
+
 
 def StripY(y):
-
-	STRIP_YWIDTH = 0.8625 #internal STRIP H, WIDTH, in cm
-	EXT_STRIP_YWIDTH = 0.3  #measured external STRIP H, WIDTH, in cm
-	H_STRIP_OFF = 0.1983
-	NR_HORI_STRIPS = 116
-	total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
-	y_start = total_height / 2
-	strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
-        if not (0 < strip_y < 117):
-            print "WARNING: Y strip outside range!"
-            strip_y = 0
-	return int(strip_y)
+    STRIP_YWIDTH = 0.8625  # internal STRIP H, WIDTH, in cm
+    EXT_STRIP_YWIDTH = 0.3  # measured external STRIP H, WIDTH, in cm
+    H_STRIP_OFF = 0.1983
+    NR_HORI_STRIPS = 116
+    total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
+    y_start = total_height / 2
+    strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
+    if not (0 < strip_y <= NR_HORI_STRIPS):
+        print "WARNING: Y strip outside range!"
+        strip_y = 0
+    return int(strip_y)
 
 class MufluxDigiReco:
     " convert FairSHiP MC hits / digitized hits to measurements"
