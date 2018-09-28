@@ -1394,6 +1394,7 @@ def testPR():
  key = -1
  for hit in sTree.Digi_MufluxSpectrometerHits:
    key+=1
+   if not hit.isValid: continue
    detID = hit.GetDetectorID()
    vbot,vtop = correctAlignment(hit)
    tdc = hit.GetDigi()
