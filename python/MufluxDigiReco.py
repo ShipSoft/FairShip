@@ -160,7 +160,7 @@ class MufluxDigiReco:
         station = 0
         strip = 0
         DetectorID = set()  # set of detector ids - already deduplicated
-        for MuonTaggerHit in self.sTree.MuonTaggerPoint.GetEntriesFast():
+        for MuonTaggerHit in self.sTree.MuonTaggerPoint:
             # getting rpc nodes, name and matrix
             rpc_box = self.gMan.FindNode(
                     MuonTaggerHit.GetX(),
