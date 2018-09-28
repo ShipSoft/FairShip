@@ -1,8 +1,8 @@
-import os,ROOT,MufluxPatRec
+import os
+import ROOT
+import MufluxPatRec
 import shipunit as u
 import rootUtils as ut
-
-import sys, os
 
 from array import array
 
@@ -10,8 +10,6 @@ import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as plt
 import numpy as np
-
-from sets import Set
 
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
@@ -157,95 +155,98 @@ class MufluxDigiReco:
         self.digitizeMuonTagger()
         self.digiMuonTaggerBranch.Fill()
 
-    def digitizeMuonTagger(self):
+    def digitizeMuonTagger(self, fake_clustering=True):
 
-	nMuonTaggerHits = self.sTree.MuonTaggerPoint.GetEntriesFast() #getting entries
         station = 0
         strip = 0
-        DetectorID = set() #set of detector ids - already deduplicated - change to list to avoid deduplication? 
-	
-        for i in range(nMuonTaggerHits):
-           	#getting points
-		MuonTaggerHit = self.sTree.MuonTaggerPoint[i]
-		#getting rpc nodes, name and matrix
-		rpc_box = self.gMan.FindNode(MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ())
-		rpc = rpc_box.GetName()
-		master_matrix = rpc_box.GetMatrix()
-		
-		#getting muon box volume (lower level)
-		muon_box = self.gMan.GetTopVolume().FindNode("VMuonBox_1")
-		muonbox_matrix = muon_box.GetMatrix()
-	    
-		#other varialbles 
-		MuonTaggerTrackID = MuonTaggerHit.GetTrackID()
-		pid = MuonTaggerHit.PdgCode()
+        DetectorID = set()  # set of detector ids - already deduplicated
+        for MuonTaggerHit in self.sTree.MuonTaggerPoint.GetEntriesFast():
+            # getting rpc nodes, name and matrix
+            rpc_box = self.gMan.FindNode(
+                    MuonTaggerHit.GetX(),
+                    MuonTaggerHit.GetY(),
+                    MuonTaggerHit.GetZ())
+            rpc = rpc_box.GetName()
+            master_matrix = rpc_box.GetMatrix()
 
-		#translation from top to MuonBox_1
-		point = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ(), 1])
-		point_muonbox = array('d', [0,0,0, 1])
-		muonbox_matrix.MasterToLocal(point, point_muonbox)
+            # getting muon box volume (lower level)
+            muon_box = self.gMan.GetTopVolume().FindNode("VMuonBox_1")
+            muonbox_matrix = muon_box.GetMatrix()
 
-		#translation to local frame
-		#point_muonbox = array('d', [MuonTaggerHit.GetX(), MuonTaggerHit.GetY(), MuonTaggerHit.GetZ()])
-		point_local = array('d', [0,0,0, 1])
-		master_matrix.MasterToLocal(point_muonbox, point_local)
- 
-		xcoord = point_local[0]
-		ycoord = point_local[1]
+            # translation from top to MuonBox_1
+            point = array('d', [
+                MuonTaggerHit.GetX(),
+                MuonTaggerHit.GetY(),
+                MuonTaggerHit.GetZ(), 1])
+            point_muonbox = array('d', [0, 0, 0, 1])
+            muonbox_matrix.MasterToLocal(point, point_muonbox)
 
-		#identify individual rpcs
-		station = int(rpc[-1])
-		#if station > 2:
-		#station -= 1 #offset - 6 volumes defined in the geo file but 1 not sensitive
-                if station not in range(1,6):  # limiting the range of rpcs
-                    print "WARNING: Invalid RPC number, something's wrong with the geometry"
+            # translation to local frame
+            point_local = array('d', [0, 0, 0, 1])
+            master_matrix.MasterToLocal(point_muonbox, point_local)
 
-		#calculate strip
-		# x gives vertical direction
-		direction = 1
-		strip = StripX(xcoord) 
-                if not strip: continue
-		#sampling number of strips around the exact strip for emulating clustering 
-		s = np.random.poisson(3)
-		strip = strip - int(s/2)
-		for i in range(0, s):
-			detectorid = station*10000 + direction*1000 + strip + i 
-			DetectorID.add(detectorid)
-		
-		#y gives horizontal direction
-		direction = 0
-		strip = StripY(ycoord)
-                if not strip: continue
-		#sampling number of strips around the exact strip for emulating clustering 
-		s = np.random.poisson(3) 
-		strip = strip - int(s/2)
-		for i in range(0, s):
-			detectorid = station*10000 + direction*1000 + strip + i
-			DetectorID.add(detectorid)
+            xcoord = point_local[0]
+            ycoord = point_local[1]
 
+            # identify individual rpcs
+            station = int(rpc[-1])
+            if station not in range(1, 6):  # limiting the range of rpcs
+                print "WARNING: Invalid RPC number, something's wrong with the geometry"
+
+            # calculate strip
+            # x gives vertical direction
+            direction = 1
+            strip = StripX(xcoord)
+            if not strip:
+                continue
+            # sampling number of strips around the exact strip for emulating clustering
+            if fake_clustering:
+                s = np.random.poisson(3)
+                strip = strip - int(s/2)
+                for i in range(0, s):
+                        detectorid = station*10000 + direction*1000 + strip + i
+                        DetectorID.add(detectorid)
+            else:
+                detectorid = station*10000 + direction*1000 + strip
+                DetectorID.add(detectorid)
+
+            # y gives horizontal direction
+            direction = 0
+            strip = StripY(ycoord)
+            if not strip:
+                continue
+            # sampling number of strips around the exact strip for emulating clustering
+            if fake_clustering:
+                s = np.random.poisson(3)
+                strip = strip - int(s/2)
+                for i in range(0, s):
+                        detectorid = station*10000 + direction*1000 + strip + i
+                        DetectorID.add(detectorid)
+            else:
+                detectorid = station*10000 + direction*1000 + strip
+                DetectorID.add(detectorid)
+
+        self.digiMuonTagger.Expand(len(DetectorID))
         for index, detID in enumerate(DetectorID):
             hit = ROOT.MuonTaggerHit(detID, 0)
-            if self.digiMuonTagger.GetSize() == index:
-                self.digiMuonTagger.Expand(2 * index)
             self.digiMuonTagger[index] = hit
-	
-	#cluster size loop - plotting the cluster size distribution 
-	cluster_size = list()
-	DetectorID_list = list(DetectorID) # turn set into list to allow indexing 
-	DetectorID_list.sort() # sorting the list
-	if len(DetectorID_list) > 1:
-		
-		clusters = [[DetectorID_list[0]]]
-		for x in DetectorID_list[1:]:
-			if abs(x - clusters[-1][-1]) <= 1: 
-				clusters[-1].append(x)
-			else: 
-				clusters.append([x])
-		cluster_size = [len(x) for x in clusters]
-		for i in cluster_size:
-			rc = h['muontagger_clusters'].Fill(i)
-	 
-	 
+
+        if fake_clustering:
+            # cluster size loop - plotting the cluster size distribution
+            cluster_size = list()
+            DetectorID_list = list(DetectorID)  # turn set into list to allow indexing
+            DetectorID_list.sort()  # sorting the list
+            if len(DetectorID_list) > 1:
+                clusters = [[DetectorID_list[0]]]
+                for x in DetectorID_list[1:]:
+                    if abs(x - clusters[-1][-1]) <= 1:
+                        clusters[-1].append(x)
+                    else:
+                        clusters.append([x])
+                    cluster_size = [len(x) for x in clusters]
+                    for i in cluster_size:
+                        h['muontagger_clusters'].Fill(i)
+
 
     def digitizeMufluxSpectrometer(self):
 
