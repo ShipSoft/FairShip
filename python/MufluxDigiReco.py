@@ -222,14 +222,12 @@ class MufluxDigiReco:
 		for i in range(0, s):
 			detectorid = station*10000 + direction*1000 + strip + i
 			DetectorID.add(detectorid)
-					
 
-	j = 0
-
-	for detID in DetectorID:
-		Hit = ROOT.MuonTaggerHit(detID, 0)
-		if self.digiMuonTagger.GetSize() == j: self.digiMuonTagger.Expand(j +1000)
-		self.digiMuonTagger[j] = Hit
+        for index, detID in enumerate(DetectorID):
+            hit = ROOT.MuonTaggerHit(detID, 0)
+            if self.digiMuonTagger.GetSize() == index:
+                self.digiMuonTagger.Expand(2 * index)
+            self.digiMuonTagger[index] = hit
 	
 	#cluster size loop - plotting the cluster size distribution 
 	cluster_size = list()
