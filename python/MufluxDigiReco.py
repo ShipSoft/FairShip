@@ -157,7 +157,7 @@ class MufluxDigiReco:
         self.digitizeMuonTagger()
         self.digiMuonTaggerBranch.Fill()
 
-    def digitizeMuonTagger(self):
+    def digitizeMuonTagger(self, fake_clustering=True):
 
         station = 0
         strip = 0
@@ -202,11 +202,15 @@ class MufluxDigiReco:
             if not strip:
                 continue
             # sampling number of strips around the exact strip for emulating clustering
-            s = np.random.poisson(3)
-            strip = strip - int(s/2)
-            for i in range(0, s):
-                    detectorid = station*10000 + direction*1000 + strip + i
-                    DetectorID.add(detectorid)
+            if fake_clustering:
+                s = np.random.poisson(3)
+                strip = strip - int(s/2)
+                for i in range(0, s):
+                        detectorid = station*10000 + direction*1000 + strip + i
+                        DetectorID.add(detectorid)
+            else:
+                detectorid = station*10000 + direction*1000 + strip
+                DetectorID.add(detectorid)
 
             # y gives horizontal direction
             direction = 0
@@ -214,32 +218,36 @@ class MufluxDigiReco:
             if not strip:
                 continue
             # sampling number of strips around the exact strip for emulating clustering
-            s = np.random.poisson(3)
-            strip = strip - int(s/2)
-            for i in range(0, s):
-                    detectorid = station*10000 + direction*1000 + strip + i
-                    DetectorID.add(detectorid)
+            if fake_clustering:
+                s = np.random.poisson(3)
+                strip = strip - int(s/2)
+                for i in range(0, s):
+                        detectorid = station*10000 + direction*1000 + strip + i
+                        DetectorID.add(detectorid)
+            else:
+                detectorid = station*10000 + direction*1000 + strip
+                DetectorID.add(detectorid)
 
+        self.digiMuonTagger.Expand(len(DetectorID))
         for index, detID in enumerate(DetectorID):
             hit = ROOT.MuonTaggerHit(detID, 0)
-            if self.digiMuonTagger.GetSize() == index:
-                self.digiMuonTagger.Expand(2 * index)
             self.digiMuonTagger[index] = hit
 
-        # cluster size loop - plotting the cluster size distribution
-        cluster_size = list()
-        DetectorID_list = list(DetectorID)  # turn set into list to allow indexing
-        DetectorID_list.sort()  # sorting the list
-        if len(DetectorID_list) > 1:
-            clusters = [[DetectorID_list[0]]]
-            for x in DetectorID_list[1:]:
-                if abs(x - clusters[-1][-1]) <= 1:
-                    clusters[-1].append(x)
-                else:
-                    clusters.append([x])
-                cluster_size = [len(x) for x in clusters]
-                for i in cluster_size:
-                    h['muontagger_clusters'].Fill(i)
+        if fake_clustering:
+            # cluster size loop - plotting the cluster size distribution
+            cluster_size = list()
+            DetectorID_list = list(DetectorID)  # turn set into list to allow indexing
+            DetectorID_list.sort()  # sorting the list
+            if len(DetectorID_list) > 1:
+                clusters = [[DetectorID_list[0]]]
+                for x in DetectorID_list[1:]:
+                    if abs(x - clusters[-1][-1]) <= 1:
+                        clusters[-1].append(x)
+                    else:
+                        clusters.append([x])
+                    cluster_size = [len(x) for x in clusters]
+                    for i in cluster_size:
+                        h['muontagger_clusters'].Fill(i)
 
 
     def digitizeMufluxSpectrometer(self):
