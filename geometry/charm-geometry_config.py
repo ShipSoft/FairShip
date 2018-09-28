@@ -309,8 +309,8 @@ with ConfigRegistry.register_config("basic") as c:
        #c.MuonTagger.zBox = c.Spectrometer.SZ+ c.MuonTagger.BZ/2 + 5*u.cm
        c.MuonTagger.zBox = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
 
-    c.MuonTagger.PX = c.MuonTagger.BX
-    c.MuonTagger.PY = c.MuonTagger.BY
+    c.MuonTagger.PX = 2.40 *u.m
+    c.MuonTagger.PY = 2.20 *u.m
     c.MuonTagger.SX = 1.936725 * u.m
     c.MuonTagger.SY = 1.215312 * u.m
     c.MuonTagger.HX = 5 * u.cm #dimensions of central hole
