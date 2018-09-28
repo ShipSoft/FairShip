@@ -31,6 +31,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   fMom        = 400;  // proton
   fLogger = FairLogger::GetLogger();
   targetName = ""; 
+  fcharmtarget = false;
   xOff=0; yOff=0;
   tauOnly = false;
   JpsiMainly = false;
@@ -205,6 +206,7 @@ Bool_t FixedTargetGenerator::Init()
   }
   if (targetName!=""){
    fMaterialInvestigator = new GenieGenerator();
+   if (!fcharmtarget){   
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    nav->cd(targetName);
    TGeoNode* target = nav->GetCurrentNode(); 
@@ -231,6 +233,24 @@ Bool_t FixedTargetGenerator::Init()
    end[0]=xOff;
    end[1]=yOff;
    end[2]=endZ;
+   }
+   else{  //charm geometry uses a different target 
+   TGeoVolume* top = gGeoManager->GetTopVolume();
+   TGeoNode* target = top->FindNode(targetName);
+   if (!target){
+       fLogger->Error(MESSAGE_ORIGIN,"target not found, %s, program will crash",targetName.Data());
+   }
+   Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
+   TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
+   startZ =  z_middle - sha->GetDZ();
+   endZ   =  z_middle + sha->GetDZ();
+   start[0]=xOff;
+   start[1]=yOff;
+   start[2]=startZ;
+   end[0]=xOff;
+   end[1]=yOff;
+   end[2]=endZ;
+   }
 //find maximum interaction length
    bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
