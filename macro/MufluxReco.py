@@ -377,7 +377,7 @@ for iEvent in range(firstEvent, nEvents):
  SHiP.iEvent = iEvent
  rc    = SHiP.sTree.GetEvent(iEvent) 
  if simulation: SHiP.digitize() 
- SHiP.reconstruct()
+ # IS BROKEN SHiP.reconstruct()
  # memory monitoring
  # mem_monitor() 
  
