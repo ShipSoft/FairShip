@@ -706,12 +706,20 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
         hits_34 = []
         hits_tagger = []
         p = 0
+        x_in_magnet = 0
+        y_in_magnet = 0
+
+        # [atrack['k'], atrack['b']] = np.polyfit(atrack['z'], atrack['x'], deg=1)
         
         for ahit in short_tracks_y12[i_track]['hits']:
+            [k, b] = np.polyfit(short_tracks_y12[i_track]['z'], short_tracks_y12[i_track]['x'], deg=1)
+            x_in_magnet = k * z_center + b
             hits_y12.append(ahit)
             
         for atrack in short_tracks_stereo12:
             if atrack['i_track_y12'] == i_track:
+                [k, b] = np.polyfit(atrack['z'], atrack['y'], deg=1)
+                y_in_magnet = k * z_center + b
                 for ahit in atrack['hits']:
                     hits_stereo12.append(ahit)
                 break
@@ -730,7 +738,8 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
                 break
 
         if len(hits_y12) >= min_hits and len(hits_stereo12) >= min_hits and len(hits_34) >= min_hits and len(hits_tagger) >= withNTaggerHits:
-            atrack = {'y12': hits_y12, 'stereo12': hits_stereo12, '34': hits_34, 'y_tagger': hits_tagger, 'p': p}
+            atrack = {'y12': hits_y12, 'stereo12': hits_stereo12, '34': hits_34, 'y_tagger': hits_tagger,
+                      'p': p, 'x_in_magnet': x_in_magnet, 'y_in_magnet': y_in_magnet}
             track_hits[i_track] = atrack
 
 
