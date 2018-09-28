@@ -1,5 +1,6 @@
 #include "ShipTdcSource.h"
 #include "FairLogger.h"
+#include "FairEventHeader.h"
 #include "ShipUnpack.h"
 #include "ShipOnlineDataFormat.h"
 
@@ -13,7 +14,7 @@ ShipTdcSource::~ShipTdcSource() = default;
 
 Bool_t ShipTdcSource::Init()
 {
-   fIn = TFile::Open(fFilename+"?filetype=raw", "read");
+   fIn = TFile::Open(fFilename + "?filetype=raw", "read");
    return kTRUE;
 }
 
@@ -55,6 +56,7 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
    auto df = new (buffer) DataFrame();
    if (!fIn->ReadBuffer(reinterpret_cast<char *>(df), sizeof(DataFrame))) {
       size_t size = df->header.size;
+      fEventTime = df->header.frameTime;
       uint16_t partitionId = df->header.partitionId;
       if (partitionId == 0x8000) {
          LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
@@ -91,6 +93,13 @@ Bool_t ShipTdcSource::Unpack(Int_t *data, Int_t size, uint16_t partitionId)
 
    LOG(WARNING) << "ShipTdcSource: Failed to find suitable unpacker." << FairLogger::endl;
    return kFALSE;
+}
+
+void ShipTdcSource::FillEventHeader(FairEventHeader *feh)
+{
+   feh->SetEventTime(fEventTime);
+   feh->SetRunId(fRunId);
+   return;
 }
 
 ClassImp(ShipTdcSource)
