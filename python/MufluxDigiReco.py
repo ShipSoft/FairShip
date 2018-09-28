@@ -1,8 +1,8 @@
-import os,ROOT,MufluxPatRec
+import os
+import ROOT
+import MufluxPatRec
 import shipunit as u
 import rootUtils as ut
-
-import sys, os
 
 from array import array
 
@@ -10,8 +10,6 @@ import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as plt
 import numpy as np
-
-from sets import Set
 
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
