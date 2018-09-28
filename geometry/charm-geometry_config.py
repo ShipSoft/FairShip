@@ -89,13 +89,15 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.Passive2mmZ = 0.2 * u.cm
     c.Box.Passive1mmZ = 0.1 * u.cm
 
+    #Distance between passive bricks and ECC brick
+    c.Box.distancePassive2ECC = 3.0 *u.cm
+
     #OPTIONS FOR CHARM XSEC DETECTOR
     c.Box.gausbeam = True
-    c.Box.Julytarget = False
-    #c.Box.GapPostTargetTh = 5 * u.cm #gap between charm target and T1 station
-    c.Box.GapPostTargetTh = 0.73 * u.cm     
-    #c.Box.GapPostTargetTh = 0*u.cm
-    c.Box.RunNumber =  3 #run configuration for charm
+    c.Box.Julytarget = True
+    c.Box.GapPostTargetTh = 0.73 * u.cm #gap between charm target and T1 station    
+    
+    c.Box.RunNumber = 3 #run configuration for charm
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
     c.decayVolume            =  AttrDict(z=0*u.cm)
@@ -294,8 +296,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonTagger.PTh = 80 * u.cm;
     c.MuonTagger.PTh1 = 40 * u.cm #last 3 slabs' thickness
     c.MuonTagger.STh = 5.0 * u.cm
-    c.MuonTagger.BX = 1.936725 * u.m
-    c.MuonTagger.BY = 1.215312 * u.m
+    c.MuonTagger.BX = 2.40 * u.m
+    c.MuonTagger.BY = 2.20 * u.m + 2*c.MufluxSpectrometer.goliathcentre_to_beam + 30 *u.mm
     c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 5
     
     if c.MufluxSpectrometer.muflux == True:
@@ -309,8 +311,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.MuonTagger.PX = c.MuonTagger.BX
     c.MuonTagger.PY = c.MuonTagger.BY
-    c.MuonTagger.SX = c.MuonTagger.BX
-    c.MuonTagger.SY = c.MuonTagger.BY
+    c.MuonTagger.SX = 1.936725 * u.m
+    c.MuonTagger.SY = 1.215312 * u.m
     c.MuonTagger.HX = 5 * u.cm #dimensions of central hole
     c.MuonTagger.HY = 5 * u.cm
 

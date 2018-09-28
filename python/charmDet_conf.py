@@ -37,7 +37,7 @@ def configure(run,ship_geo):
  Box.SetPassiveSampling(ship_geo.Box.Passive3mmZ, ship_geo.Box.Passive2mmZ, ship_geo.Box.Passive1mmZ)
  Box.SetCoolingParam(ship_geo.Box.CoolX, ship_geo.Box.CoolY, ship_geo.Box.CoolZ)
  Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
- Box.SetGapGeometry(ship_geo.Box.GapPostTargetTh)
+ Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
  Box.SetTargetDesign(ship_geo.Box.Julytarget)
  Box.SetRunNumber(ship_geo.Box.RunNumber)
 
