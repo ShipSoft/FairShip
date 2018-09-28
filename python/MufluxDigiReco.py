@@ -16,33 +16,37 @@ from sets import Set
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
-#function for calculating the strip number from a coordinate, for MuonTagger / RPC
+
+# function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
-	
-        #defining constants for rpc properties
-	STRIP_XWIDTH = 0.8625 #internal STRIP V, WIDTH, in cm
-	EXT_STRIP_XWIDTH_L = 0.9625 #nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
-	EXT_STRIP_XWIDTH_R = 0.86 #measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
-	V_STRIP_OFF = 0.200
-	NR_VER_STRIPS = 184
-	total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
-	x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) /2
-        #calculating strip as an integer
-	strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
-	assert (0 < strip_x < 185),"X strip outside range!"
-      	return int(strip_x)
+    # defining constants for rpc properties
+    STRIP_XWIDTH = 0.8625  # internal STRIP V, WIDTH, in cm
+    EXT_STRIP_XWIDTH_L = 0.9625  # nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
+    EXT_STRIP_XWIDTH_R = 0.86  # measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
+    V_STRIP_OFF = 0.200
+    NR_VER_STRIPS = 184
+    total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
+    x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2
+    # calculating strip as an integer
+    strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
+    if not (0 < strip_x <= NR_VER_STRIPS):
+        print "WARNING: X strip outside range!"
+        strip_x = 0
+    return int(strip_x)
+
 
 def StripY(y):
-
-	STRIP_YWIDTH = 0.8625 #internal STRIP H, WIDTH, in cm
-	EXT_STRIP_YWIDTH = 0.3  #measured external STRIP H, WIDTH, in cm
-	H_STRIP_OFF = 0.1983
-	NR_HORI_STRIPS = 116
-	total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
-	y_start = total_height / 2
-	strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
-	assert (0 < strip_y < 117),"Y strip outside range!"
-	return int(strip_y)
+    STRIP_YWIDTH = 0.8625  # internal STRIP H, WIDTH, in cm
+    EXT_STRIP_YWIDTH = 0.3  # measured external STRIP H, WIDTH, in cm
+    H_STRIP_OFF = 0.1983
+    NR_HORI_STRIPS = 116
+    total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
+    y_start = total_height / 2
+    strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
+    if not (0 < strip_y <= NR_HORI_STRIPS):
+        print "WARNING: Y strip outside range!"
+        strip_y = 0
+    return int(strip_y)
 
 class MufluxDigiReco:
     " convert FairSHiP MC hits / digitized hits to measurements"
@@ -150,7 +154,7 @@ class MufluxDigiReco:
         self.digitizeMufluxSpectrometer()
         self.digiMufluxSpectrometerBranch.Fill()
         self.digiMuonTagger.Delete()
-        # BROKEN self.digitizeMuonTagger()
+        self.digitizeMuonTagger()
         self.digiMuonTaggerBranch.Fill()
 
     def digitizeMuonTagger(self):
@@ -193,12 +197,14 @@ class MufluxDigiReco:
 		station = int(rpc[-1])
 		#if station > 2:
 		#station -= 1 #offset - 6 volumes defined in the geo file but 1 not sensitive
-		assert station in range(1,6) #limiting the range of rpcs
+                if station not in range(1,6):  # limiting the range of rpcs
+                    print "WARNING: Invalid RPC number, something's wrong with the geometry"
 
 		#calculate strip
 		# x gives vertical direction
 		direction = 1
 		strip = StripX(xcoord) 
+                if not strip: continue
 		#sampling number of strips around the exact strip for emulating clustering 
 		s = np.random.poisson(3)
 		strip = strip - int(s/2)
@@ -209,26 +215,24 @@ class MufluxDigiReco:
 		#y gives horizontal direction
 		direction = 0
 		strip = StripY(ycoord)
+                if not strip: continue
 		#sampling number of strips around the exact strip for emulating clustering 
 		s = np.random.poisson(3) 
 		strip = strip - int(s/2)
 		for i in range(0, s):
 			detectorid = station*10000 + direction*1000 + strip + i
 			DetectorID.add(detectorid)
-					
 
-	j = 0
-
-	for detID in DetectorID:
-		Hit = ROOT.MuonTaggerHit(detID, 0)
-		if self.digiMuonTagger.GetSize() == j: self.digiMuonTagger.Expand(j +1000)
-		self.digiMuonTagger[j] = Hit
+        for index, detID in enumerate(DetectorID):
+            hit = ROOT.MuonTaggerHit(detID, 0)
+            if self.digiMuonTagger.GetSize() == index:
+                self.digiMuonTagger.Expand(2 * index)
+            self.digiMuonTagger[index] = hit
 	
 	#cluster size loop - plotting the cluster size distribution 
 	cluster_size = list()
 	DetectorID_list = list(DetectorID) # turn set into list to allow indexing 
 	DetectorID_list.sort() # sorting the list
-	print DetectorID_list
 	if len(DetectorID_list) > 1:
 		
 		clusters = [[DetectorID_list[0]]]
@@ -238,7 +242,6 @@ class MufluxDigiReco:
 			else: 
 				clusters.append([x])
 		cluster_size = [len(x) for x in clusters]
-		print cluster_size
 		for i in cluster_size:
 			rc = h['muontagger_clusters'].Fill(i)
 	 
