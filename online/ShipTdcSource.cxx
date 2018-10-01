@@ -4,9 +4,9 @@
 #include "ShipUnpack.h"
 #include "ShipOnlineDataFormat.h"
 
-ShipTdcSource::ShipTdcSource() : FairOnlineSource(), fFilename("tdcdata.bin") {}
+ShipTdcSource::ShipTdcSource() : fFilename("tdcdata.bin") {}
 
-ShipTdcSource::ShipTdcSource(TString filename) : FairOnlineSource(), fFilename(filename) {}
+ShipTdcSource::ShipTdcSource(TString filename) : fFilename(std::move(filename)) {}
 
 ShipTdcSource::ShipTdcSource(const ShipTdcSource &source) : FairOnlineSource(source) {}
 
@@ -28,8 +28,8 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
    auto mf = reinterpret_cast<DataFrame *>(data);
    total_size -= sizeof(DataFrame);
    data = reinterpret_cast<Int_t *>(&(mf->hits));
-   switch (mf->header.frameTime) {
-   case SoS: LOG(DEBUG) << "ShipTdcSource: SoS frame." << FairLogger::endl; break;
+   auto frameTime = mf->header.frameTime;
+   switch (frameTime) {
    case EoS: LOG(DEBUG) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
    default: break;
    }
@@ -48,7 +48,7 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
       total_size -= size;
    }
    assert(total_size == 0);
-   return 0;
+   return (frameTime == EoS) ? 2 : 0;
 }
 
 Int_t ShipTdcSource::ReadEvent(UInt_t)
@@ -56,11 +56,28 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
    auto df = new (buffer) DataFrame();
    if (!fIn->ReadBuffer(reinterpret_cast<char *>(df), sizeof(DataFrame))) {
       size_t size = df->header.size;
-      fEventTime = df->header.frameTime;
+      auto frameTime = df->header.frameTime;
+      switch (frameTime) {
+      case SoS: LOG(DEBUG) << "ShipTdcSource: SoS frame." << FairLogger::endl; return 2;
+      case EoS: LOG(DEBUG) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
+      default: break;
+      }
+      fEventTime = df->header.frameTime * 25;
       uint16_t partitionId = df->header.partitionId;
       if (partitionId == 0x8000) {
          LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
          if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
+            if (fEventTime > 5) {
+               LOG(WARNING) << "Late event:" << FairLogger::endl;
+               for (int i = 0; i < size; i++) {
+                  if (i % 8 == 0) {
+                     std::cout << ' ';
+                  } else if (i % 16 == 0) {
+                     std::cout << '\n';
+                  }
+                  std::cout << ' ' << std::setw(2) << +buffer[i];
+               }
+            }
             return UnpackEventFrame(reinterpret_cast<Int_t *>(&buffer), size);
          }
       }

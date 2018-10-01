@@ -23,7 +23,7 @@ public:
 
 protected:
    Bool_t Unpack(Int_t *data, Int_t size, uint16_t partitionId);
-   Int_t UnpackEventFrame(Int_t *data, Int_t size);
+   Int_t UnpackEventFrame(Int_t *data, Int_t total_size);
    TFile *fIn;
    unsigned char buffer[UINT16_MAX];
    Double_t fEventTime = 0;

@@ -105,13 +105,11 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          channels[hit.channelId] = hit.hitTime;
       }
    }
-   uint16_t delay = 0;
+   uint16_t delay = 2000;
    if (!triggerTime[4]) {
-      LOG(WARNING) << "No trigger in TDC 4";
-      return true;
+      LOG(WARNING) << "No trigger in TDC 4, guessing delay" << FairLogger::endl;
    } else if (master_trigger_time == 0){
-      LOG(WARNING) << "No master trigger";
-      return true;
+      LOG(WARNING) << "No master trigger, guessing delay" << FairLogger::endl;
    } else {
       delay = triggerTime[4] - master_trigger_time;
    }
