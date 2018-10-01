@@ -1205,7 +1205,6 @@ class MufluxDigiReco:
             print('No branches "MufluxSpectrometer" or "Digi_MufluxSpectrometerHits".')
             return nTrack
 
-
         if realPR:
 
             # Do real PatRec
@@ -1220,6 +1219,8 @@ class MufluxDigiReco:
                 atrack_34 = atrack['34']
                 atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_34)
                 atrack_p = np.abs(atrack['p'])
+                atrack_y_in_magnet = atrack['y_in_magnet']
+                atrack_x_in_magnet = atrack['x_in_magnet']
 
                 for sm in atrack_smeared_hits:
 
