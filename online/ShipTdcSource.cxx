@@ -67,7 +67,7 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
       if (partitionId == 0x8000) {
          LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
          if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
-            if (fEventTime > 5) {
+            if (fEventTime > 5000000000) {
                LOG(WARNING) << "Late event:" << FairLogger::endl;
                for (int i = 0; i < size; i++) {
                   if (i % 8 == 0) {
