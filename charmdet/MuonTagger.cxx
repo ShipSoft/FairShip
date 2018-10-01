@@ -157,7 +157,9 @@ void MuonTagger::ConstructGeometry()
   TGeoVolume *VMuonBox = new TGeoVolume("VMuonBox", MuonBox,air);
   VMuonBox->SetTransparency(1);
   Double_t goliathcentre_to_beam = 178.6; //mm    
-  
+
+  Double_t walldisalignment = 15; //mm, all walls but one were disaligned with respect to the nominal beam position  
+
   top->AddNode(VMuonBox, 1, new TGeoTranslation(0, goliathcentre_to_beam*mm, zBoxPosition));
 
   //begin muon filter part
@@ -188,8 +190,6 @@ void MuonTagger::ConstructGeometry()
   
   //sensitive layers
   TGeoBBox * Sensitive = new TGeoBBox(SensX/2, SensY/2, SensThickness/2);
-  Sensitive->SetName("S");
-  TGeoCompositeShape *SubtractionSensitive = new TGeoCompositeShape("SubtractionSensitive", "S-T");
 
   TGeoVolume * VSensitive = new TGeoVolume("VSensitive", Sensitive, RPCmat);
   VSensitive->SetLineColor(kOrange-5);
@@ -204,7 +204,7 @@ void MuonTagger::ConstructGeometry()
   
   for (int n = 0; n < npassive; n++){
     zpassive = n * PasThickness + PasThickness/2. + n* SensThickness;
-    VMuonBox->AddNode(VPassive, n, new TGeoTranslation(0,0,-BoxZ/2 + zpassive));
+    VMuonBox->AddNode(VPassive, n, new TGeoTranslation(0,-goliathcentre_to_beam*mm - walldisalignment*mm,-BoxZ/2 + zpassive));
 }
 
   for (int n = 0; n < nsensitive1; n++){
@@ -214,7 +214,8 @@ void MuonTagger::ConstructGeometry()
 
   for (int n = 0; n < npassiveshort; n++){
     zpassive = 2 * PasThickness + 2*SensThickness + n * PasThickness1 + n * SensThickness + PasThickness1/2;
-    VMuonBox->AddNode(VPassive1, n, new TGeoTranslation(0,0,-BoxZ/2 + zpassive));
+    if (n < npassiveshort - 1) VMuonBox->AddNode(VPassive1, n, new TGeoTranslation(0,-goliathcentre_to_beam*mm - walldisalignment*mm,-BoxZ/2 + zpassive));
+    else  VMuonBox->AddNode(VPassive1, n, new TGeoTranslation(0,-goliathcentre_to_beam*mm,-BoxZ/2 + zpassive));
 }
 
   for (int n = 0; n < nsensitive2; n++){ 

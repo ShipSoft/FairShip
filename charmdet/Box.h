@@ -43,7 +43,7 @@ public:
     void SetCoolingParam(Double_t CoolX, Double_t CoolY, Double_t CoolZ);
     void SetCoatingParam(Double_t CoatX, Double_t CoatY, Double_t CoatZ);
 
-    void SetGapGeometry(Double_t GapPostTargetTh);
+    void SetGapGeometry(Double_t distancePassive2ECC); //distance between passive and ECC
     
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -135,6 +135,8 @@ protected:
     Double_t Pas3mmZ;
     Double_t Pas2mmZ;
     Double_t Pas1mmZ;
+
+    Double_t distPas2ECC;
          
     //attributes for the cooling system( water )
     Double_t CoolingX;

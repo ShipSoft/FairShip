@@ -97,8 +97,8 @@ void Box::Initialize()
     FairDetector::Initialize();
 }
 
-void Box::SetGapGeometry(Double_t GapPostTargetTh){ 
-  GapPostTargetThickness = GapPostTargetTh;
+void Box::SetGapGeometry(Double_t distancePassive2ECC){ 
+  distPas2ECC = distancePassive2ECC;
 }
 
 void Box::SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh, Double_t EPlW,Double_t PasSlabTh, Double_t AllPW)
@@ -242,22 +242,35 @@ void Box::ConstructGeometry()
     volPlBase->SetLineColor(kYellow-4);
 
     
-    if (fJulytarget == false){   
+    if (fJulytarget == true){   
       //begin brick part (July testbeam)
       //Int_t NPlates = 19; //Number of doublets emulsion + Pb (two interaction lengths for 3 mm lead slabs)
-      Int_t NPlates = 56; //when we consider 1 mm lead slabs
-      Int_t NBricks = nrun;
-      if (nrun > 6 || nrun == 0) NBricks = 6; //maximum number of bricks is 6, Run 0 means all active
+      Int_t NPlates[6] = {28,28,56,56,56,56}; //when we consider 1 mm lead slabs
+     
+      Int_t NBlocks[6] = {1, 2, 2, 3, 4, 5}; //last active, other passive
+      Int_t NBricks;
+
+      if (nrun > 6 || nrun == 0) NBricks = 6; //Run 0 means 6 active bricks
+      else NBricks = NBlocks[nrun-1];
+
       bool activate[NBricks];
-      if (nrun > 0){
-      for (int i = 0; i<NBricks; i++) activate[i] = false; //JUST FOR NOW
-      activate[nrun-1]=true;
+
+      if (nrun > 0){ //passive red blocks followed by an ECC brick
+      for (int i = 0; i<NBricks; i++) activate[i] = false;
+      activate[NBricks-1]=true;
       }
       else  for (int i = 0; i<NBricks; i++) activate[i] = true;      
-      Double_t zPasLead = NPlates * PassiveSlabThickness; //Parti passive prima del bersaglio    
-      if (nrun > 0) TargetZ = (NPlates * AllPlateWidth + EmPlateWidth) + zPasLead*(nrun-1);  
-      else TargetZ = (NPlates * AllPlateWidth + EmPlateWidth)*NBricks;
-      if (nrun > 6) TargetZ = zPasLead * NBricks; //all passive      
+     
+      Double_t zPasLead = NPlates[5] * PassiveSlabThickness;   
+      if (nrun == 2) zPasLead = zPasLead/2; //in CH2 only half of a passive block      
+
+      //computing target z for the different configurations
+
+      if (nrun == 1) TargetZ = NPlates[nrun-1] * AllPlateWidth + EmPlateWidth; //CH1
+      else if (nrun == 2) TargetZ = zPasLead + NPlates[nrun-1] * AllPlateWidth + EmPlateWidth; //CH2
+      else if (nrun > 2 && nrun <= 6) TargetZ = NPlates[nrun-1] * AllPlateWidth + EmPlateWidth + zPasLead*(nrun-2) + distPas2ECC;//CH3-CH6      
+      else if (nrun > 6) TargetZ = zPasLead * NBricks; //all passive 
+      else TargetZ = (NPlates[5] * AllPlateWidth + EmPlateWidth)*NBricks;          
 
       TGeoBBox *Brick = new TGeoBBox("brick", TargetX/2, TargetY/2, TargetZ/2);
       TGeoVolume *volTarget = new TGeoVolume("volTarget",Brick,vacuum);
@@ -271,33 +284,40 @@ void Box::ConstructGeometry()
       TGeoBBox *PasLead = new TGeoBBox("PasLead", EmulsionX/2, EmulsionY/2, zPasLead/2);
       volPasLead = new TGeoVolume("volPasLead",PasLead,lead);
       volPasLead->SetTransparency(1);
-      volPasLead->SetLineColor(kGray);
+      volPasLead->SetLineColor(kRed);
       }
+    
       TGeoBBox *Leadslab = new TGeoBBox("Leadslab", EmulsionX/2, EmulsionY/2, PassiveSlabThickness/2);
       TGeoVolume *volLeadslab = new TGeoVolume("volLeadslab",Leadslab,lead);
- //     TGeoVolume *volLeadslab = new TGeoVolume("volLeadslab",Leadslab,molybdenum); //I need to see the difference
       volLeadslab->SetTransparency(1);
       volLeadslab->SetLineColor(kGray);
       
-      Int_t nfilm = 1, nlead = 1;
+      Int_t nfilm = 1, nlead = 1, nleadslab = 1;
       Double_t zpoint = -TargetZ/2;
-      for (Int_t irun = 0; irun < NBricks; irun++){
-        if (activate[irun]){	  
-	  for(Int_t n=0; n<NPlates+1; n++)
+
+      for (Int_t irun = 0; irun < NBricks; irun++){ //irun is the index, nrun is the number of the configuration run
+        if (activate[irun]){
+         
+         if (nrun > 2) zpoint = zpoint + distPas2ECC;	  
+	 
+         for(Int_t n=0; n<NPlates[nrun]+1; n++) //adding emulsions
 	    {
 	      AddEmulsionFilm(zpoint + n*AllPlateWidth, nfilm, volTarget, volEmulsionFilm, volEmulsionFilm2, volPlBase);
 	      nfilm++;
 	    }
-	  for(Int_t n=0; n<NPlates; n++)
+           
+	 for(Int_t n=0; n<NPlates[nrun]; n++) //adding 1 mm lead plates
 	    {
-              volTarget->AddNode(volLeadslab, n, new TGeoTranslation(0,0,zpoint + EmPlateWidth + PassiveSlabThickness/2 + n*AllPlateWidth));
+              volTarget->AddNode(volLeadslab, nleadslab, new TGeoTranslation(0,0,zpoint + EmPlateWidth + PassiveSlabThickness/2 + n*AllPlateWidth));
+              nleadslab++;
 	    }	
-	  zpoint = zpoint + NPlates *AllPlateWidth + EmPlateWidth;
+	 zpoint = zpoint + NPlates[nrun] *AllPlateWidth + EmPlateWidth;
 	}
-	else if (volPasLead != NULL){ //only passive layer of lead
-	  volTarget->AddNode(volPasLead,nlead,new TGeoTranslation(0,0,zpoint + zPasLead/2));
-	  zpoint = zpoint + zPasLead;
-          nlead++;
+
+	else if (volPasLead != NULL && ((irun > 0) || (NBricks == 2))) { //only passive layer of lead, first is skipped
+	 volTarget->AddNode(volPasLead,nlead,new TGeoTranslation(0,0,zpoint + zPasLead/2));
+	 zpoint = zpoint + zPasLead;
+         nlead++;
 	}
 	
       }    
