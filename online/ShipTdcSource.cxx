@@ -75,8 +75,9 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
                   } else if (i % 16 == 0) {
                      std::cout << '\n';
                   }
-                  std::cout << ' ' << std::setw(2) << +buffer[i];
+                  std::cout << std::hex << +buffer[i] << std::dec;
                }
+               std::cout << std::endl;
             }
             return UnpackEventFrame(reinterpret_cast<Int_t *>(&buffer), size);
          }
