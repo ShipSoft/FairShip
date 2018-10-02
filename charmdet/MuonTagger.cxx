@@ -230,6 +230,7 @@ void MuonTagger::ConstructGeometry()
   TGeoBBox *GapBox = new TGeoBBox(SensX/2,SensY/2,fGapThickness/2-eps);  
   TGeoVolume *Gap = new TGeoVolume("Gap", GapBox,RPCmat);  
   Gap->SetLineColor(kGreen);
+  AddSensitiveVolume(Gap); 
   
   TGeoBBox *GroundBox = new TGeoBBox(SensX/2,SensY/2,fStripz/2-eps);  
   TGeoVolume *Ground = new TGeoVolume("Ground", GroundBox,Copper);  
@@ -317,11 +318,6 @@ void MuonTagger::ConstructGeometry()
   for (int i=0;i<5;i++) {    
      VSensitive[i]->SetLineColor(kOrange-5);
   }
-  AddSensitiveVolume(Hstrip); 
-  AddSensitiveVolume(Hstrip_ext);
-  AddSensitiveVolume(Vstrip); 
-  AddSensitiveVolume(Vstrip_L); 
-  AddSensitiveVolume(Vstrip_R);   
   
   Double_t zpassive;
   Double_t zsensitive;
