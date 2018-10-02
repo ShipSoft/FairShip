@@ -8,5 +8,10 @@
 #pragma link C++ class splitcal+;
 #pragma link C++ class splitcalPoint+;
 #pragma link C++ class splitcalHit+;
+#pragma link C++ class splitcalCluster+;
+
+#pragma link C++ class std::vector<double >+;
+#pragma link C++ class std::vector<splitcalHit >+;
+#pragma link C++ class std::vector<splitcalHit* >+;
 
 #endif
