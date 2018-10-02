@@ -5,14 +5,34 @@ import shipunit as u
 import rootUtils as ut
 from array import array
 import sys 
+from math import fabs
+import numpy as np
+import matplotlib.pyplot as plt
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
+
+
+ROOT.gROOT.ProcessLine( # this struct needs just to save few variables in a flat ntuple 
+"struct treeCluster {\
+   Double_t     _E;\
+   Double_t     _eta;\
+   Double_t     _phi;\
+   Double_t     _m1;\
+   Double_t     _q1;\
+   Double_t     _m2;\
+   Double_t     _q2;\
+};" );
+
+from ROOT import treeCluster
+
 
 class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
  def __init__(self,fout,fgeo):
   self.fn = ROOT.TFile.Open(fout,'update')
   self.sTree     = self.fn.cbmsim
+  self.dTree = ROOT.TTree( 'dTree', 'tree with digitised (splitcal) hits' ) #ROSA - tree with digitised (splitcal) hits
+
   if self.sTree.GetBranch("FitTracks"):
     print "remove RECO branches and rerun reconstruction"
     self.fn.Close()    
@@ -32,6 +52,8 @@ class ShipDigiReco:
     if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
     if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
     if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
+    if sTree.GetBranch("Digi_SplitcalHits"): sTree.SetBranchStatus("Digi_SplitcalHits",0) 
+    if sTree.GetBranch("Reco_SplitcalClusters"): sTree.SetBranchStatus("Reco_SplitcalClusters",0) 
 
     rawFile = fout.replace("_rec.root","_raw.root")
     recf = ROOT.TFile(rawFile,"recreate")
@@ -45,8 +67,8 @@ class ShipDigiReco:
     recf.Close() 
     os.system('cp '+rawFile +' '+fout)
     self.fn = ROOT.TFile(fout,'update')
-    self.sTree     = self.fn.cbmsim     
-#  check that all containers are present, otherwise create dummy version
+    self.sTree     = self.fn.cbmsim 
+  #  check that all containers are present, otherwise create dummy version
   self.dummyContainers={}
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
                   "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint",\
@@ -89,6 +111,15 @@ class ShipDigiReco:
 # for the digitizing step
   self.v_drift = modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
+  self.digiSplitcal = ROOT.TClonesArray("splitcalHit") 
+  #self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1) # ROSA: it is not working for me. Expanding existing tree can be sometimes problematic --> create and fill new tree 
+  self.digiSplitcalBranch=self.dTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1) #ROSA - tree with digitised (splitcal) hits
+  #self.recoSplitcal = ROOT.TClonesArray("splitcalCluster") 
+  #self.recoSplitcalBranch=self.dTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1) #ROSA 
+  self.recoSplitcal = treeCluster()
+  self.recoSplitcalBranch=self.dTree.Branch( 'Reco_SplitcalClusters', self.recoSplitcal, 'E/F:eta:phi:m1:q1:m2:q2' )
+ 
+
 
 # setup ecal reconstruction
   self.caloTasks = []  
@@ -228,6 +259,413 @@ class ShipDigiReco:
    self.digiMuon.Delete()
    self.digitizeMuon()
    self.digiMuonBranch.Fill()
+   self.digiSplitcal.Delete()      
+   #self.recoSplitcal.Delete()      
+   self.digitizeSplitcal()         
+   self.digiSplitcalBranch.Fill() 
+   self.recoSplitcalBranch.Fill() 
+   self.dTree.Fill() #ROSA - tree with digitised (splitcal) hits
+
+
+ def digitizeSplitcal(self):  
+   listOfDetID = {} # the idea is to keep only one hit for each cell/strip and if more points fall in the same cell/strip just sum up the energy
+   index = 0
+   for aMCPoint in self.sTree.splitcalPoint:
+     aHit = ROOT.splitcalHit(aMCPoint,self.sTree.t0)
+     detID = aHit.GetDetectorID()
+     if detID not in listOfDetID:
+       if self.digiSplitcal.GetSize() == index: 
+         self.digiSplitcal.Expand(index+1000)
+       listOfDetID[detID] = index
+       self.digiSplitcal[index]=aHit
+       index+=1
+     else:
+       indexOfExistingHit = listOfDetID[detID]
+       self.digiSplitcal[indexOfExistingHit].UpdateEnergy(aHit.GetEnergy())
+   self.digiSplitcal.Compress() #remove empty slots from array
+
+   ##########################    
+   # cluster reconstruction #
+   ##########################
+   
+   # hit selection
+   # step 0: select hits above noise threshold to use in cluster reconstruction  
+   noise_energy_threshold = 0.002 #GeV
+   #noise_energy_threshold = 0.0015 #GeV
+   list_hits_above_threshold = []
+   # print '--- digitizeSplitcal - self.digiSplitcal.GetSize() = ', self.digiSplitcal.GetSize()  
+   for hit in self.digiSplitcal:
+     if hit.GetEnergy() > noise_energy_threshold:
+       hit.SetIsUsed(0)
+       # hit.SetEnergyWeight(1)
+       list_hits_above_threshold.append(hit)
+
+   self.list_hits_above_threshold = list_hits_above_threshold
+
+   # print '--- digitizeSplitcal - n hits above threshold = ', len(list_hits_above_threshold) 
+    
+   # clustering
+   # step 1: group of neighbouring cells: loose criteria -> splitting clusters is easier than merging clusters
+
+   self.step = 1 
+   self.input_hits = list_hits_above_threshold
+   list_clusters_of_hits = self.Clustering()
+
+   # step 2: to check if clusters can be split do clustering separtely in the XZ and YZ planes
+
+   self.step = 2 
+   # print "--- digitizeSplitcal ==== STEP 2 ==== "
+   list_final_clusters = {}
+   index_final_cluster = 0
+
+   for i in list_clusters_of_hits:
+
+     list_hits_x = []
+     list_hits_y = []
+     for hit in list_clusters_of_hits[i]:
+       hit.SetIsUsed(0)
+       if hit.IsX(): list_hits_x.append(hit)
+       if hit.IsY(): list_hits_y.append(hit) # FIXME: this probably will not work with hits from high precision layers
+     
+     ###########       
+
+     #re-run reclustering only in xz plane possibly with different criteria 
+     self.input_hits = list_hits_x
+     list_subclusters_of_x_hits = self.Clustering()
+     cluster_energy_x = self.GetClusterEnergy(list_hits_x)
+     
+     # print "--- digitizeSplitcal - len(list_subclusters_of_x_hits) = ", len(list_subclusters_of_x_hits)
+
+     self.list_subclusters_of_hits = list_subclusters_of_x_hits
+     list_of_subclusters_x = self.GetSubclustersExcludingFragments()
+
+     # compute energy weight
+     weights_from_x_splitting = {}
+     for index_subcluster in list_of_subclusters_x:
+       subcluster_energy_x = self.GetClusterEnergy(list_of_subclusters_x[index_subcluster])
+       weight = subcluster_energy_x/cluster_energy_x
+       # print "======> weight = ", weight 
+       weights_from_x_splitting[index_subcluster] = weight
+     
+     ###########       
+
+     #re-run reclustering only in yz plane possibly with different criteria 
+     self.input_hits = list_hits_y
+     list_subclusters_of_y_hits = self.Clustering()
+     cluster_energy_y = self.GetClusterEnergy(list_hits_y)
+     
+     # print "--- digitizeSplitcal - len(list_subclusters_of_y_hits) = ", len(list_subclusters_of_y_hits)
+
+     self.list_subclusters_of_hits = list_subclusters_of_y_hits
+     list_of_subclusters_y = self.GetSubclustersExcludingFragments()
+
+     # compute energy weight
+     weights_from_y_splitting = {}
+     for index_subcluster in list_of_subclusters_y:
+       subcluster_energy_y = self.GetClusterEnergy(list_of_subclusters_y[index_subcluster])
+       weight = subcluster_energy_y/cluster_energy_y
+       # print "======> weight = ", weight 
+       weights_from_y_splitting[index_subcluster] = weight
+
+
+     ###########       
+  
+     # final list of clusters
+     # In principle one could go directly with the loop without checking if the size of subcluster x/y are == 1. 
+     # But I noticed that in the second step the reclustering can trow away few lonely hits, making the weight just below 1 
+     # While looking for how to recover that, this is a quick fix
+     if list_of_subclusters_x == 1 and list_of_subclusters_y == 1:
+       list_final_clusters[index_final_cluster] = list_clusters_of_hits[i]
+       for hit in list_final_clusters[index_final_cluster]:
+         hit.AddClusterIndex(index_final_cluster)
+         hit.AddEnergyWeight(1.) 
+       index_final_cluster += 1
+     else:
+
+       # this works, but one could try to reduce the number of shared hits 
+       
+       for ix in list_of_subclusters_x:
+         for iy in list_of_subclusters_y:
+
+           for hit in list_of_subclusters_y[iy]:
+              hit.AddClusterIndex(index_final_cluster)
+              hit.AddEnergyWeight(weights_from_x_splitting[ix])
+
+           for hit in list_of_subclusters_x[ix]:
+              hit.AddClusterIndex(index_final_cluster)
+              hit.AddEnergyWeight(weights_from_y_splitting[iy])
+         
+           list_final_clusters[index_final_cluster] = list_of_subclusters_y[iy] + list_of_subclusters_x[ix]
+           index_final_cluster += 1
+
+       # # try to reduce number of shared hits (if it does not work go back to solution above)
+       # # ok, it has potential but it needs more thinking
+       
+       # for ix in list_of_subclusters_x:
+       #   for iy in list_of_subclusters_y:
+           
+       #     list_final_clusters[index_final_cluster] = []
+           
+       #     for hitx in list_of_subclusters_x[ix]:
+       #       self.input_hits = list_of_subclusters_y[iy]
+       #       neighbours = self.getNeighbours(hitx)
+       #       if len(neighbours) > 0:
+       #         hitx.AddClusterIndex(index_final_cluster)
+       #         hitx.AddEnergyWeight(weights_from_y_splitting[iy])
+       #         list_final_clusters[index_final_cluster].append(hitx)
+       #         for hity in neighbours:
+       #           hity.AddClusterIndex(index_final_cluster)
+       #           hity.AddEnergyWeight(weights_from_x_splitting[ix])
+       #           list_final_clusters[index_final_cluster].append(hity)
+             
+       #     index_final_cluster += 1
+
+
+   #################
+   # fill clusters #
+   #################
+
+   for i in list_final_clusters: 
+     # print '------------------------'
+     # print '------ digitizeSplitcal - cluster n = ', i 
+     # print '------ digitizeSplitcal - cluster size = ', len(list_final_clusters[i]) 
+
+     for j,h in enumerate(list_final_clusters[i]):
+       if j==0: aCluster = ROOT.splitcalCluster(h)
+       else: aCluster.AddHit(h)
+
+     aCluster.SetIndex(int(i))
+     aCluster.ComputeEtaPhiE()
+     aCluster.Print()
+
+     self.recoSplitcal._E = aCluster.GetEnergy()
+     self.recoSplitcal._eta = aCluster.GetEta()
+     self.recoSplitcal._phi = aCluster.GetPhi()
+     self.recoSplitcal._m1 = aCluster.GetSlopeZX()
+     self.recoSplitcal._q1 = aCluster.GetInterceptZX()
+     self.recoSplitcal._m2 = aCluster.GetSlopeZY()
+     self.recoSplitcal._q2 = aCluster.GetInterceptZY()
+
+
+   # #################
+   # # visualisation #
+   # #################
+
+   # c_yz = ROOT.TCanvas("c_yz","c_yz", 200, 10, 800, 800)
+   # graphs_yz = []
+
+   # for i in list_final_clusters:
+     
+   #   gr_yz = ROOT.TGraphErrors()
+   #   gr_yz.SetLineColor( i+1 )
+   #   gr_yz.SetLineWidth( 2 )
+   #   gr_yz.SetMarkerColor( i+1 )
+   #   gr_yz.SetMarkerStyle( 21 )
+   #   gr_yz.SetTitle( 'clusters in y-z plane' )
+   #   gr_yz.GetXaxis().SetTitle( 'Y [cm]' )
+   #   gr_yz.GetYaxis().SetTitle( 'Z [cm]' )
+
+   #   for j,hit in enumerate (list_final_clusters[i]):
+      
+   #     gr_yz.SetPoint(j,hit.GetY(),hit.GetZ())
+   #     gr_yz.SetPointError(j,hit.GetYError(),hit.GetZError())
+       
+   #   gr_yz.GetXaxis().SetLimits( -620, 620 )
+   #   gr_yz.GetYaxis().SetRangeUser( 3600, 3800 )
+   #   graphs_yz.append(gr_yz)
+
+   #   c_yz.cd()
+   #   c_yz.Update()
+   #   if i==0:
+   #     graphs_yz[-1].Draw( 'AP' )
+   #   else:
+   #     graphs_yz[-1].Draw( 'P' )
+
+   # c_yz.Print("final_clusters_yz.eps")
+
+   # ############################
+
+
+
+##########################
+
+ def GetSubclustersExcludingFragments(self):
+
+   list_subclusters_excluding_fragments = {}
+
+   fragment_indices = []
+   subclusters_indices = []
+   for k in self.list_subclusters_of_hits:         
+     subcluster_size = len(self.list_subclusters_of_hits[k])
+     if subcluster_size < 5: #FIXME: it can be tuned on a physics case (maybe use fraction of hits or energy)
+       fragment_indices.append(k)
+     else: 
+       subclusters_indices.append(k)
+   # if len(subclusters_indices) > 1:
+   #   print "--- digitizeSplitcal - *** CLUSTER NEED TO BE SPLIT - set energy weight"
+   # else: 
+   #   print "--- digitizeSplitcal - CLUSTER DOES NOT NEED TO BE SPLIT "
+
+   # merge fragments in the closest subcluster. If there is not subcluster but everything is fragmented, merge all the fragments together
+   minDistance = -1
+   minIndex = -1
+
+   if len(subclusters_indices) == 0 and len(fragment_indices) != 0: # only fragments
+     subclusters_indices.append(0) # merge all fragments into the first fragment
+
+   for index_fragment in fragment_indices:
+     #print "--- index_fragment = ", index_fragment
+     first_hit_fragment = self.list_subclusters_of_hits[index_fragment][0]
+     for index_subcluster in subclusters_indices:
+       #print "--- index_subcluster = ", index_subcluster
+       first_hit_subcluster = self.list_subclusters_of_hits[index_subcluster][0]
+       if first_hit_fragment.IsX(): 
+         distance = fabs(first_hit_fragment.GetX()-first_hit_subcluster.GetX())
+       else: 
+         distance = fabs(first_hit_fragment.GetY()-first_hit_subcluster.GetY())
+       if (minDistance < 0 or distance < minDistance):  
+         minDistance = distance
+         minIndex = index_subcluster
+
+     # for h in self.list_subclusters_of_hits[index_fragment]:
+     #   h.SetClusterIndex(minIndex)
+
+     #print "--- minIndex = ", minIndex
+     if minIndex != index_fragment: # in case there were only fragments - this is to prevent to sum twice fragment 0
+       #print "--- BEFORE - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
+       self.list_subclusters_of_hits[minIndex] += self.list_subclusters_of_hits[index_fragment] 
+       #print "--- AFTER - len(self.list_subclusters_of_hits[minIndex]) = ", len(self.list_subclusters_of_hits[minIndex])
+
+
+   for counter, index_subcluster in enumerate(subclusters_indices):
+     list_subclusters_excluding_fragments[counter] = self.list_subclusters_of_hits[index_subcluster]
+
+   return list_subclusters_excluding_fragments
+
+
+
+ def GetClusterEnergy(self, list_hits):
+   energy = 0
+   for hit in list_hits: 
+     energy += hit.GetEnergy()
+   return energy
+
+
+ def Clustering(self): 
+
+   list_hits_in_cluster = {}
+   cluster_index = -1
+
+   for i,hit in enumerate(self.input_hits):
+     if hit.IsUsed()==1:
+       continue
+
+     neighbours = self.getNeighbours(hit)
+     hit.Print()
+     # #print "--- digitizeSplitcal - index of unused hit = ", i
+     # print '--- digitizeSplitcal - hit has n neighbours = ', len(neighbours)
+
+     if len(neighbours) < 1:
+       # # hit.SetClusterIndex(-1) # lonely fragment
+       # print '--- digitizeSplitcal - lonely fragment '
+       continue
+
+     cluster_index = cluster_index + 1
+     hit.SetIsUsed(1)
+     # hit.SetClusterIndex(cluster_index)
+     list_hits_in_cluster[cluster_index] = []
+     list_hits_in_cluster[cluster_index].append(hit)
+     #print '--- digitizeSplitcal - cluster_index = ', cluster_index
+
+     for neighbouringHit in neighbours:
+       # print '--- digitizeSplitcal - in neighbouringHit - len(neighbours) = ', len(neighbours)
+
+       if neighbouringHit.IsUsed()==1: 
+         continue
+
+       # neighbouringHit.SetClusterIndex(cluster_index)
+       neighbouringHit.SetIsUsed(1)
+       list_hits_in_cluster[cluster_index].append(neighbouringHit)
+       
+       # ## test ###
+       # # for step 2, add hits of different type to subcluster but to not look for their neighbours
+       # not_same_type = hit.IsX() != neighbouringHit.IsX()
+       # if self.step==2 and not_same_type:
+       #   continue
+       # ###########
+
+       expand_neighbours = self.getNeighbours(neighbouringHit)
+       # print '--- digitizeSplitcal - len(expand_neighbours) = ', len(expand_neighbours)
+
+       if len(expand_neighbours) >= 1:
+         for additionalHit in expand_neighbours:
+           if additionalHit not in neighbours:
+             neighbours.append(additionalHit)
+
+   return list_hits_in_cluster
+
+
+
+ def getNeighbours(self,hit):
+
+   list_neighbours = []
+   err_x_1 = hit.GetXError()
+   err_y_1 = hit.GetYError()
+   err_z_1 = hit.GetZError()
+
+   layer_1 = hit.GetLayerNumber()
+
+   # allow one or more 'missing' hit in x/y: not large difference between 1 (no gap) or 2 (one 'missing' hit)
+   max_gap = 2.
+   if hit.IsX(): err_x_1 = err_x_1*max_gap  
+   if hit.IsY(): err_y_1 = err_y_1*max_gap  
+
+   for hit2 in self.input_hits:
+     if hit2 is not hit:
+       Dx = fabs(hit2.GetX()-hit.GetX())
+       Dy = fabs(hit2.GetY()-hit.GetY())
+       Dz = fabs(hit2.GetZ()-hit.GetZ())
+       err_x_2 = hit2.GetXError()
+       err_y_2 = hit2.GetYError()
+       err_z_2 = hit2.GetZError()
+
+       # layer_2 = hit2.GetLayerNumber()
+       # Dlayer = fabs(layer_2-layer_1)
+
+       # allow one or more 'missing' hit in x/y
+       if hit2.IsX(): err_x_2 = err_x_2*max_gap
+       if hit2.IsY(): err_y_2 = err_y_2*max_gap
+
+       if self.step == 1: # or self.step == 2: 
+         # use Dz instead of Dlayer due to split of 1m between the 2 parts of the calo 
+         #if ((Dx<=(err_x_1+err_x_2) or Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
+         #if ((Dx<=(err_x_1+err_x_2) and Dy<=(err_y_1+err_y_2)) and Dz<=2*(err_z_1+err_z_2)):
+         if hit.IsX():
+           if (Dx<=(err_x_1+err_x_2) and Dz<=2*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
+                 list_neighbours.append(hit2)
+         if hit.IsY():
+           if (Dy<=(err_y_1+err_y_2) and Dz<=2*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
+                 list_neighbours.append(hit2)
+
+       elif self.step == 2:
+         #for step 2 relax or remove at all condition on Dz 
+         #(some clusters were split erroneously along z while here one wants to split only in x/y )
+         # first try: relax z condition 
+         if hit.IsX():
+           if (Dx<=(err_x_1+err_x_2) and Dz<=6*(err_z_1+err_z_2) and ((Dy<=(err_y_1+err_y_2) and Dz>0.) or (Dy==0)) ):
+           #if (Dx<=(err_x_1+err_x_2) and Dz<=6*(err_z_1+err_z_2) and Dy<=(err_y_1+err_y_2) and Dz>0.):
+                 list_neighbours.append(hit2)
+         if hit.IsY():
+           if (Dy<=(err_y_1+err_y_2) and Dz<=6*(err_z_1+err_z_2) and ((Dx<=(err_x_1+err_x_2) and Dz>0.) or (Dx==0)) ):
+           #if (Dy<=(err_y_1+err_y_2) and Dz<=6*(err_z_1+err_z_2) and Dx<=(err_x_1+err_x_2) and Dz>0. ):
+                 list_neighbours.append(hit2)
+       else:
+         print "-- getNeighbours: ERROR: step not defined "
+
+   return list_neighbours
+
+
+
 
  def digitizeTimeDet(self):
    index = 0
@@ -569,6 +1007,7 @@ class ShipDigiReco:
   del self.fitter
   print 'finished writing tree'
   self.sTree.Write()
+  self.dTree.Write() #ROSA - tree with digitised (splitcal) hits
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")
   if realPR: shipPatRec.finalize()
