@@ -37,7 +37,7 @@ def configure(run,ship_geo):
  Box.SetPassiveSampling(ship_geo.Box.Passive3mmZ, ship_geo.Box.Passive2mmZ, ship_geo.Box.Passive1mmZ)
  Box.SetCoolingParam(ship_geo.Box.CoolX, ship_geo.Box.CoolY, ship_geo.Box.CoolZ)
  Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
- Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
+ Box.SetGapGeometry(ship_geo.Box.GapPostTargetTh)
  Box.SetTargetDesign(ship_geo.Box.Julytarget)
  Box.SetRunNumber(ship_geo.Box.RunNumber)
 
@@ -134,6 +134,15 @@ def configure(run,ship_geo):
  MuonTagger.SetPassiveParameters(ship_geo.MuonTagger.PX, ship_geo.MuonTagger.PY, ship_geo.MuonTagger.PTh, ship_geo.MuonTagger.PTh1)
  MuonTagger.SetSensitiveParameters(ship_geo.MuonTagger.SX, ship_geo.MuonTagger.SY, ship_geo.MuonTagger.STh)
  MuonTagger.SetHoleDimensions(ship_geo.MuonTagger.HX, ship_geo.MuonTagger.HY)
+ MuonTagger.SetRPCz(ship_geo.MuonTagger.RPC1z, ship_geo.MuonTagger.RPC2z, ship_geo.MuonTagger.RPC3z, ship_geo.MuonTagger.RPC4z, ship_geo.MuonTagger.RPC5z)
+ MuonTagger.SetRPCThickness(ship_geo.MuonTagger.RPCthickness)
+ MuonTagger.SetGapThickness(ship_geo.MuonTagger.Gapthickness)
+ MuonTagger.SetElectrodeThickness(ship_geo.MuonTagger.Electrodethickness)
+ MuonTagger.SetStripz(ship_geo.MuonTagger.Stripz, ship_geo.MuonTagger.Stripfoamz)
+ MuonTagger.SetVStrip(ship_geo.MuonTagger.VStripx,ship_geo.MuonTagger.VStripx_L,ship_geo.MuonTagger.VStripx_R,ship_geo.MuonTagger.VStripoffset) 
+ MuonTagger.SetHStrip(ship_geo.MuonTagger.HStripy,ship_geo.MuonTagger.HStripy_ext,ship_geo.MuonTagger.HStripoffset)  
+ MuonTagger.SetNStrips(ship_geo.MuonTagger.NVstrips,ship_geo.MuonTagger.NHstrips) 
+  
  detectorList.append(MuonTagger)
  for x in detectorList:
   run.AddModule(x)

@@ -45,9 +45,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxTargetStation.floorT34_y=16.*u.cm
     c.MufluxTargetStation.floorT34_z=118.875*u.cm
     c.MufluxTargetStation.floorRPC_x=500.*u.cm
-    c.MufluxTargetStation.floorRPC_y=32.5*u.cm
-    c.MufluxTargetStation.floorRPC_z=110.*u.cm   
-
+    #c.MufluxTargetStation.floorRPC_y=32.5*u.cm
+    #c.MufluxTargetStation.floorRPC_z=110.*u.cm   
+    c.MufluxTargetStation.floorRPC_y=42.5*u.cm
+    c.MufluxTargetStation.floorRPC_z=175.*u.cm  
+    
     #BOX (Brick!)
     c.Box = AttrDict(z=0*u.cm)
     c.Box.zBox = 106.66 * u.cm
@@ -89,15 +91,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.Passive2mmZ = 0.2 * u.cm
     c.Box.Passive1mmZ = 0.1 * u.cm
 
-    #Distance between passive bricks and ECC brick
-    c.Box.distancePassive2ECC = 3.0 *u.cm
-
     #OPTIONS FOR CHARM XSEC DETECTOR
     c.Box.gausbeam = True
-    c.Box.Julytarget = True
-    c.Box.GapPostTargetTh = 0.73 * u.cm #gap between charm target and T1 station    
-    
-    c.Box.RunNumber = 3 #run configuration for charm
+    c.Box.Julytarget = False
+    #c.Box.GapPostTargetTh = 5 * u.cm #gap between charm target and T1 station
+    c.Box.GapPostTargetTh = 0.73 * u.cm     
+    #c.Box.GapPostTargetTh = 0*u.cm
+    c.Box.RunNumber =  3 #run configuration for charm
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
     c.decayVolume            =  AttrDict(z=0*u.cm)
@@ -295,24 +295,59 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonTagger = AttrDict(z = 0*u.cm)
     c.MuonTagger.PTh = 80 * u.cm;
     c.MuonTagger.PTh1 = 40 * u.cm #last 3 slabs' thickness
-    c.MuonTagger.STh = 5.0 * u.cm
-    c.MuonTagger.BX = 2.40 * u.m
-    c.MuonTagger.BY = 2.20 * u.m + 2*c.MufluxSpectrometer.goliathcentre_to_beam + 30 *u.mm
-    c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 5
+    c.MuonTagger.STh = 15.0 * u.cm
+    
+    #from survey relative to center of RPC system
+    c.MuonTagger.RPC1z = -86.60245 * u.cm
+    c.MuonTagger.RPC2z = 8.35755 * u.cm  
+    c.MuonTagger.RPC3z = 63.75255 * u.cm
+    c.MuonTagger.RPC4z = 118.86755 * u.cm   
+    c.MuonTagger.RPC5z = 173.67755 * u.cm 
+       
+    #from survey 
+    #c.MuonTagger.RPC1z = 878.8251 * u.cm
+    #c.MuonTagger.RPC2z = 973.7851 * u.cm  
+    #c.MuonTagger.RPC3z = 1029.1801 * u.cm
+    #c.MuonTagger.RPC4z = 1084.2951 * u.cm   
+    #c.MuonTagger.RPC5z = 1139.1051 * u.cm 
+           
+    c.MuonTagger.RPCthickness = 8. * u.cm
+    c.MuonTagger.VStripx =  0.8625 * u.cm
+    c.MuonTagger.VStripx_L =  0.9625 * u.cm    
+    c.MuonTagger.VStripx_R =  0.86 * u.cm 
+    c.MuonTagger.HStripy =  0.8625 * u.cm   
+    c.MuonTagger.HStripy_ext =  0.3 * u.cm   
+    c.MuonTagger.Stripfoamz =  0.6 * u.cm       
+    c.MuonTagger.Stripz =  0.003 * u.cm # same as ground plane thickness
+    c.MuonTagger.HStripoffset = 0.1983 * u.cm
+    c.MuonTagger.VStripoffset = 0.2 * u.cm              
+    c.MuonTagger.Gapthickness =  0.2 * u.cm
+    c.MuonTagger.Electrodethickness =  0.275 * u.cm  
+    c.MuonTagger.NVstrips =  184
+    c.MuonTagger.NHstrips =  116         
+      
+      
+                
+    c.MuonTagger.BX = 195.3975 * u.cm
+    c.MuonTagger.BY = 121.7295 * u.cm
+    #c.MuonTagger.BX = 195.5 * u.cm
+    #c.MuonTagger.BY = 125. * u.cm
+    #c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 5
+    #length of muon tagger from survey + 80 cm + 7.5 cm
+    c.MuonTagger.BZ = 347.3551 * u.cm + 9. * u.cm
+    #c.MuonTagger.BZ = 347.3551 * u.cm 
     
     if c.MufluxSpectrometer.muflux == True:
-       #for the muflux measurement the muontagger has to be moved back
-       c.MuonTagger.zBox = 791.75*u.cm  + 152.5*u.cm
-       #c.MuonTagger.zBox = c.Spectrometer.zSi5 +c.Spectrometer.PairSiDistance/2.+c.Spectrometer.DimZSi/2. + c.Spectrometer.LS +           c.MuonTagger.BZ/2. + 199.5*u.cm#starting from 223 cm from Goliath, like in muonflux measurement
+       #for the muflux measurement the muontagger has to be moved back 791.75 measured by hand, 173.6775=347.3551/2
+       c.MuonTagger.zBox = 791.*u.cm  + 173.67755*u.cm
 
     else:    
-       #c.MuonTagger.zBox = c.Spectrometer.SZ+ c.MuonTagger.BZ/2 + 5*u.cm
        c.MuonTagger.zBox = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
 
-    c.MuonTagger.PX = 2.40 *u.m
-    c.MuonTagger.PY = 2.20 *u.m
-    c.MuonTagger.SX = 1.936725 * u.m
-    c.MuonTagger.SY = 1.215312 * u.m
+    c.MuonTagger.PX = c.MuonTagger.BX
+    c.MuonTagger.PY = c.MuonTagger.BY
+    c.MuonTagger.SX = c.MuonTagger.BX
+    c.MuonTagger.SY = c.MuonTagger.BY
     c.MuonTagger.HX = 5 * u.cm #dimensions of central hole
     c.MuonTagger.HY = 5 * u.cm
 
