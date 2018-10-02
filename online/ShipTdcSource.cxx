@@ -62,7 +62,7 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
       case EoS: LOG(DEBUG) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
       default: break;
       }
-      fEventTime = df->header.frameTime * 25;
+      fEventTime = double(frameTime) * 25;
       uint16_t partitionId = df->header.partitionId;
       if (partitionId == 0x8000) {
          LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
