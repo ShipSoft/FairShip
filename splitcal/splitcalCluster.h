@@ -1,6 +1,8 @@
 #ifndef SPLITCALCLUSTER_H
 #define SPLITCALCLUSTER_H 1
 
+#include "TObject.h"              //  
+
 #include "splitcalHit.h"
 #include <vector> 
 //#include <boost/python.hpp>
@@ -20,7 +22,7 @@ struct regression
 };
 
 
-class splitcalCluster 
+class splitcalCluster : public TObject
 {
   public:
 
