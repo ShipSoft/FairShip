@@ -30,7 +30,8 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
    data = reinterpret_cast<Int_t *>(&(mf->hits));
    auto frameTime = mf->header.frameTime;
    switch (frameTime) {
-   case EoS: LOG(DEBUG) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
+   case SoS: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; return 2;
+   case EoS: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
    default: break;
    }
    while (total_size > 0) {
@@ -48,7 +49,7 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
       total_size -= size;
    }
    assert(total_size == 0);
-   return (frameTime == EoS) ? 2 : 0;
+   return (frameTime == EoS) ? 1 : 0;
 }
 
 Int_t ShipTdcSource::ReadEvent(UInt_t)
@@ -58,19 +59,20 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
       size_t size = df->header.size;
       auto frameTime = df->header.frameTime;
       switch (frameTime) {
-      case SoS: LOG(DEBUG) << "ShipTdcSource: SoS frame." << FairLogger::endl; return 2;
-      case EoS: LOG(DEBUG) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
+      case SoS: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; break;
+      case EoS: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
       default: break;
       }
       fEventTime = double(frameTime) * 25;
       uint16_t partitionId = df->header.partitionId;
       if (partitionId == 0x8000) {
          LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
+         assert(size - sizeof(DataFrame) > 0);
          if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
-            if (fEventTime > 5000000000) {
+            if (fEventTime > 5000000000 && frameTime != EoS && frameTime != SoS) {
                LOG(WARNING) << "Late event:" << FairLogger::endl;
                for (int i = 0; i < size; i++) {
-                  if (i % 8 == 0) {
+                  if (i % 4 == 0) {
                      std::cout << ' ';
                   } else if (i % 16 == 0) {
                      std::cout << '\n';
