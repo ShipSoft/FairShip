@@ -86,6 +86,7 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetDistT1T2(ship_geo.MufluxSpectrometer.distT1T2)
  MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)    
  MufluxSpectrometer.SetGoliathCentre(ship_geo.MufluxSpectrometer.goliathcentre_to_beam)
+ MufluxSpectrometer.SetGoliathCentreZ(ship_geo.MufluxSpectrometer.goliathcentre)
  MufluxSpectrometer.SetTStationsZ(ship_geo.MufluxSpectrometer.T1z,ship_geo.MufluxSpectrometer.T2z,ship_geo.MufluxSpectrometer.T3z,ship_geo.MufluxSpectrometer.T4z) 
  MufluxSpectrometer.SetTStationsX(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1u_x,ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2v_x,ship_geo.MufluxSpectrometer.T3x,ship_geo.MufluxSpectrometer.T4x) 
  MufluxSpectrometer.SetTStationsY(ship_geo.MufluxSpectrometer.T1x_y,ship_geo.MufluxSpectrometer.T1u_y,ship_geo.MufluxSpectrometer.T2x_y,ship_geo.MufluxSpectrometer.T2v_y,ship_geo.MufluxSpectrometer.T3y,ship_geo.MufluxSpectrometer.T4y) 
@@ -150,9 +151,9 @@ def configure(run,ship_geo):
  fMagField = ROOT.ShipGoliathField()
  
  #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_3600A_0A.root"  
- fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
+ #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
  #default field map
- #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
+ fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
  fMagField.Init(fieldfile)
  run.SetField(fMagField)   
  

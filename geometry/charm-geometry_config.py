@@ -163,11 +163,14 @@ with ConfigRegistry.register_config("basic") as c:
     #Parameters for Goliath by Annarita
     c.Spectrometer.LS = 4.5*u.m
     c.Spectrometer.TS = 3.6*u.m
-    c.Spectrometer.CoilR = 1*u.m
+    #c.Spectrometer.CoilR = 1.*u.m
+    c.Spectrometer.CoilR = 1.6458*u.m
     c.Spectrometer.UpCoilH = 45*u.cm
     c.Spectrometer.LowCoilH = 30*u.cm
-    c.Spectrometer.CoilD = 105*u.cm
-    c.Spectrometer.BasisH = 57*u.cm
+    #c.Spectrometer.CoilD = 105*u.cm
+    c.Spectrometer.CoilD = 103.5575*u.cm
+    #c.Spectrometer.BasisH = 57*u.cm
+    c.Spectrometer.BasisH = 50.22125*u.cm
     c.Spectrometer.H = 2*c.Spectrometer.BasisH + c.Spectrometer.CoilD + c.Spectrometer.UpCoilH + c.Spectrometer.LowCoilH
 
     # -----Drift tube part --------
@@ -202,8 +205,11 @@ with ConfigRegistry.register_config("basic") as c:
     else:
        c.MufluxSpectrometer.distT3T4 = 1.0*u.m   
             
-    c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
-   
+    #c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
+    #from edms 1825777 + cumer email
+    c.MufluxSpectrometer.goliathcentre_to_beam = 17.32*u.cm + (c.Spectrometer.UpCoilH-c.Spectrometer.LowCoilH)/2.
+    c.MufluxSpectrometer.goliathcentre = 351.19*u.cm  
+      
     c.MufluxSpectrometer.T1x_x=4.2*u.cm
     c.MufluxSpectrometer.T1x_y=-1.995*u.cm
     c.MufluxSpectrometer.T1z=38.875*u.cm

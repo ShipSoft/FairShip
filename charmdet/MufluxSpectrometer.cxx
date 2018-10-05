@@ -248,6 +248,11 @@ void MufluxSpectrometer::SetGoliathCentre(Double_t goliathcentre_to_beam)
       fgoliathcentre_to_beam=goliathcentre_to_beam;
 }
 
+void MufluxSpectrometer::SetGoliathCentreZ(Double_t goliathcentre)
+{
+      fgoliathcentre=goliathcentre;
+}
+
 void MufluxSpectrometer::SetTStationsZ(Double_t T1z, Double_t T2z, Double_t T3z, Double_t T4z)
 {
       fT1z=T1z;
@@ -559,14 +564,9 @@ void MufluxSpectrometer::ConstructGeometry()
  }   
     else{ //station positions for charm measurement
     }
-    //field measurement done in this box, called vacuumbox for historical reasons
-    TGeoBBox *VacuumBox = new TGeoBBox("VacuumBox", 156.0*cm/2, 82.6*cm/2., (360 * cm)/2.);
-    TGeoVolume *volVacuum = new TGeoVolume("VolVacuum", VacuumBox, air);
-    volVacuum->SetVisibility(0);
-    volVacuum->SetLineColor(kYellow);
 
     
-      //***********************************************************************************************
+    //***********************************************************************************************
     //*****************************************   GOLIATH BY ANNARITA *****************************************
     //***********************************************************************************************
     
@@ -574,15 +574,16 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoVolume *volGoliath = new TGeoVolume("volGoliath",BoxGoliath,air);
     TGeoRotation ry90;	
     TGeoTranslation gtrans;
-    ry90.SetAngles(90,90,90); 
+
+    ry90.RotateY(90);
     //From latest (2017) field measurements: beam coordinates x=-1.4mm, y=-178.6mm, hence need to move Goliath up
-    gtrans.SetTranslation(1.4*mm,fgoliathcentre_to_beam,350.75);
+    //gtrans.SetTranslation(1.4*mm,fgoliathcentre_to_beam,350.75);
+    //edms 1834065 v.1 :
+    gtrans.SetTranslation(1.4*mm,fgoliathcentre_to_beam-0.75*cm,fgoliathcentre);
     TGeoCombiTrans cg(gtrans,ry90);
     TGeoHMatrix *mcg = new TGeoHMatrix(cg);
 
     top->AddNode(volGoliath,1,mcg); 
-    //volvacuum in centre of Goliath
-    volGoliath->AddNode(volVacuum, 1, new TGeoTranslation(0,0,0));
 
 
     //
