@@ -1,5 +1,6 @@
 #include <cassert>
 #include <unordered_map>
+#include <iostream>
 
 // ROOT headers
 #include "TClonesArray.h"
@@ -63,6 +64,15 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    switch (df->header.frameTime){
       case SoS:
          LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
+            for (int i = 0; i < size; i++) {
+               if (i % 4 == 0) {
+                  std::cout << ' ';
+               } else if (i % 16 == 0) {
+                  std::cout << '\n';
+               }
+               std::cout << std::hex << +data[i] << std::dec;
+            }
+            std::cout << std::endl;
          return kTRUE;
       case EoS:
          LOG(DEBUG) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl;
