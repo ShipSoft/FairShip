@@ -9,7 +9,7 @@
 MuonTaggerHit::MuonTaggerHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
 
 
-void MuonTaggerHit::EndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop) {
+void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
 // method to get strip endpoints from TGeoNavigator
   Int_t statnb = fDetectorID/10000;
   Int_t orientationnb = (fDetectorID-statnb*10000)/1000;  //1=vertical, 0=horizontal
@@ -22,7 +22,7 @@ void MuonTaggerHit::EndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
   if (orientationnb == 0) { striptype = "Hstrip_";}
   if (orientationnb == 1) { striptype = "Vstrip_";}
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
-  TString path = "";path+="/";path+=stat;path+="/";path+=fDetectorID;
+  TString path = "";path+="/";path+=stat;path+="/"+striptype;path+=fDetectorID;
   Bool_t rc = nav->cd(path);
   if (not rc){
        std::cout << "MuonTagger::StripEndPoints, TGeoNavigator failed "<<path<<std::endl; 
