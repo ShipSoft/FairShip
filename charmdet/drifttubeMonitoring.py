@@ -3,7 +3,17 @@ from decorators import *
 import __builtin__ as builtin
 ROOT.gStyle.SetPalette(ROOT.kDarkBodyRadiator)
 PDG = ROOT.TDatabasePDG.Instance()
+# -----Timer--------------------------------------------------------
+timer = ROOT.TStopwatch()
+# stop printing errors
+ROOT.gErrorIgnoreLevel = ROOT.kBreak
+
 import shipunit as u
+vbot = ROOT.TVector3()
+vtop = ROOT.TVector3()
+import rootUtils as ut
+h={}
+
 from array import array
 if len(sys.argv)<2:
   print "file name required, run/spilldata"
@@ -22,9 +32,39 @@ rname = fname[fname.rfind('/')+1:]
 
 sTree=f.cbmsim
 sTree.SetMaxVirtualSize(300000000)
+
+from ShipGeoConfig import ConfigRegistry
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
+builtin.ShipGeo = ShipGeo
+import charmDet_conf
+run = ROOT.FairRunSim()
+run.SetName("TGeant4")  # Transport engine
+run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
+run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
+rtdb = run.GetRuntimeDb()
+modules = charmDet_conf.configure(run,ShipGeo)
+# -----Create geometry----------------------------------------------
+run.Init()
+
+sGeo = ROOT.gGeoManager
+nav = sGeo.GetCurrentNavigator()
+top = sGeo.GetTopVolume()
+top.SetVisibility(0)
+top.Draw('ogl')
+
+saveGeofile = True
+import saveBasicParameters
+if saveGeofile:
+ run.CreateGeometryFile("muflux_geofile.root")
+# save ShipGeo dictionary in geofile
+ saveBasicParameters.execute("muflux_geofile.root",ShipGeo)
+
+
 # alignment
 xpos = {}
+xposb = {}
 ypos = {}
+yposb = {}
 zpos = {}
 residuals = [0.]*24
 # positions are relative to the top / bottom end plates of a station, corrected from survey positions with known offset in y, 
@@ -70,39 +110,67 @@ daniel['T2_MD_04']=[ 236.10, -575.05, 10230.20  ]
 survey['T3_B01']=[  14.5712,  0.9285, -0.6818 ]
 daniel['T3_B01']=[  928.59, -681.74, 14641.10 ]
 survey['T3_B02']=[  14.5704,  0.5926, -0.6823 ]
+daniel['T3_B02']=[  592.62, -682.23, 14640.30 ]
 survey['T3_B03']=[  14.5699,  0.4245, -0.6844 ]
+daniel['T3_B03']=[  424.52, -684.35, 14639.90 ]
 survey['T3_B04']=[  14.5686,  0.0884, -0.6854 ]
+daniel['T3_B04']=[  88.46, -685.39, 14638.60 ]
 survey['T3_B05']=[  14.5685, -0.0813, -0.6836 ]
+daniel['T3_B05']=[  -81.23, -683.57, 14638.50 ]
 survey['T3_B06']=[  14.5694, -0.4172, -0.6840 ]
+daniel['T3_B06']=[  -417.09, -683.99, 14639.30 ]
 survey['T3_B07']=[  14.5696, -0.5859, -0.6864 ]
+daniel['T3_B07']=[  -585.80, -686.33, 14639.60 ]
 survey['T3_B08']=[  14.5693, -0.9216, -0.6845 ]
+daniel['T3_B08']=[  -921.58, -684.47, 14639.20 ]
 survey['T3_T01']=[  14.5733,  0.9253, 0.8931 ]
 daniel['T3_T01']=[  925.40, 893.09,14643.20 ]
 survey['T3_T02']=[  14.5741,  0.5893, 0.8914 ]
+daniel['T3_T02']=[  589.42, 891.36,14644.10 ]
 survey['T3_T03']=[  14.5746,  0.4212, 0.8907 ]
+daniel['T3_T03']=[  421.23, 890.75, 14644.60 ]
 survey['T3_T04']=[  14.5750,  0.0852, 0.8905 ]
+daniel['T3_T04']=[  85.28, 890.55, 14645.00 ]
 survey['T3_T05']=[  14.5756, -0.0839, 0.8899 ]
+daniel['T3_T05']=[  -83.89, 889.94, 14645.50 ]
 survey['T3_T06']=[  14.5769, -0.4198, 0.8888 ]
+daniel['T3_T06']=[  -419.69, 888.85, 14646.90 ]
 survey['T3_T07']=[  14.5781, -0.5896, 0.8908 ]
+daniel['T3_T07']=[  -589.56, 890.77, 14648.10 ]
 survey['T3_T08']=[  14.5812, -0.9256, 0.8896 ]
+daniel['T3_T08']=[  -925.57, 889.62, 14651.20 ]
 survey['T4_B01']=[  16.5436,  0.9184, -0.6848 ]
 daniel['T4_B01']=[  918.35,-684.86,16473.60 ]
 survey['T4_B02']=[  16.5418,  0.5824, -0.6867 ]
+daniel['T4_B02']=[  582.36, -686.73, 16471.90 ]
 survey['T4_B03']=[  16.5408,  0.4144, -0.6875 ]
+daniel['T4_B03']=[  414.37, -687.52, 16470.90 ]
 survey['T4_B04']=[  16.5389,  0.0785, -0.6883 ]
+daniel['T4_B04']=[  78.51, -688.32, 16468.90 ]
 survey['T4_B05']=[  16.5389, -0.0888, -0.6890 ]
+daniel['T4_B05']=[  -88.80, -689.05, 16468.90 ]
 survey['T4_B06']=[  16.5396, -0.4247, -0.6884 ]
+daniel['T4_B06']=[  -424.75, -688.49, 16469.60 ]
 survey['T4_B07']=[  16.5400, -0.5936, -0.6888 ]
+daniel['T4_B07']=[  -593.65, -688.85, 16470.00 ]
 survey['T4_B08']=[  16.5402, -0.9295, -0.6877 ]
+daniel['T4_B08']=[  -929.54, -687.77, 16470.20 ]
 survey['T4_T01']=[  16.5449,  0.9207, 0.8899 ]
 daniel['T4_T01']=[  920.70,889.81,16475.00  ]
 survey['T4_T02']=[  16.5456,  0.5845, 0.8884 ]
+daniel['T4_T02']=[  584.44, 888.30, 16475.70  ]
 survey['T4_T03']=[  16.5460,  0.4168, 0.8873 ]
+daniel['T4_T03']=[  416.74, 887.26, 16476.10  ]
 survey['T4_T04']=[  16.5474,  0.0804, 0.8862 ]
+daniel['T4_T04']=[  80.34, 886.14, 16477.50 ]
 survey['T4_T05']=[  16.5480, -0.0876, 0.8862 ]
+daniel['T4_T05']=[  -87.55, 886.10, 16478.00 ]
 survey['T4_T06']=[  16.5497, -0.4234, 0.8862 ]
+daniel['T4_T06']=[  -423.40, 886.18, 16479.80 ]
 survey['T4_T07']=[  16.5507, -0.5919, 0.8866 ]
+daniel['T4_T07']=[  -591.89, 886.58, 16480.80 ]
 survey['T4_T08']=[  16.5518, -0.9280, 0.8869 ]
+daniel['T4_T08']=[  -928.06, 886.85, 16481.80 ]
 
 survey['RPC1_L']= [ 17.6823, 1.1611, 1.1909]
 survey['RPC1_R']= [ 17.6864, -1.2679, 1.2145 ]
@@ -153,255 +221,455 @@ for s in survey:
   elif s.find('04')>0: a = s.replace('04','01-04')
   elif s.find('02')>0: a = s.replace('02','02-03')
   elif s.find('03')>0: a = s.replace('03','02-03')
-  surveyXYZ[s][0] = surveyXYZ[s][0] + Lcorrection[s]*ROOT.TMath.Cos(Langle[a])
-  surveyXYZ[s][1] = surveyXYZ[s][1] + Lcorrection[s]*ROOT.TMath.Sin(Langle[a])
+  #surveyXYZ[s][0] = surveyXYZ[s][0] + Lcorrection[s]*ROOT.TMath.Cos(Langle[a])
+  #surveyXYZ[s][1] = surveyXYZ[s][1] + Lcorrection[s]*ROOT.TMath.Sin(Langle[a])
 
+# cross checks
+ut.bookHist(h,'lengthCalibration','length Calibration',100,-0.2,0.2)
+for s in ['T1_MA_0','T2_MD_0']:
+ delta = daniel[s+'1'][0]-daniel[s+'2'][0]
+ print s,'top',delta-45.2
+ rc=h['lengthCalibration'].Fill(delta-45.2)
+ delta = daniel[s+'4'][0]-daniel[s+'3'][0]
+ rc=h['lengthCalibration'].Fill(delta-45.2)
+ print s,'bottom',delta-45.2
+for k in range(4):
+ for s in ['T3_T0','T4_T0']:
+  delta = daniel[s+str(2*k+1)][0]-daniel[s+str(2*k+2)][0]
+  rc=h['lengthCalibration'].Fill(delta-8.*4.2)
+
+
+rn ={}
+rn['T1_MB_01'] = [21.55,72.60]    # top left = 1
+rn['T1_MB_02'] = [-23.65,72.60]   # top right = 2
+rn['T1_MB_04'] = [21.55,-62.60]   # bottom left = 4
+rn['T1_MB_03'] = [-23.65,-62.60]  # bottom right = 3
+rn['T2_MC_01'] = rn['T1_MB_01'] 
+rn['T2_MC_02'] = rn['T1_MB_02']
+rn['T2_MC_04'] = rn['T1_MB_04']
+rn['T2_MC_03'] = rn['T1_MB_03']
+
+#overall z positioning
 #T1X:
 zpos['T1X'] = (daniel['T1_MA_01'][2]+daniel['T1_MA_02'][2]+daniel['T1_MA_03'][2]+daniel['T1_MA_04'][2])/4. + 3.03
 ypos['T1X'] = [(daniel['T1_MA_01'][1]+daniel['T1_MA_02'][1])/2.,(daniel['T1_MA_04'][1]+daniel['T1_MA_03'][1])/2.]
+test = ROOT.MufluxSpectrometerHit(10002012,0.)
+test.MufluxSpectrometerEndPoints(vbot,vtop)
+deltaZ = zpos['T1X']-(vbot[2]+vtop[2])/2. 
 n = 10002012
-daniel['T1_MA_01'][0]
-start = (daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0])/2.
-delta = (start - (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2. -1.1 -2.1 ) 
+start = daniel['T1_MA_01'][0] # (daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0])/2. bottom survey measurements do not match nominal distance
+delta = (start - (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2.-1.1-2.1) / 10.
+delta = 4.2
 for i in range(12): 
  xpos[n-i] = start - delta * i
- ypos[n-i] = ['T1X']
- zpos[n-i] = zpos['T1X']
+ ypos[n-i] = ypos['T1X']
+ zpos[n-i] = zpos['T1X']-deltaZ
 n = 10012001
-start = (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2. +1.1
+start =  daniel['T1_MA_02'][0] +1.1 #   (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2. +1.1
 for i in range(12): 
  xpos[n+i] = start + delta * i
- ypos[n-i] = ['T1X']
- zpos[n-i] = zpos['T1X']
+ ypos[n+i] = ypos['T1X']
+ zpos[n+i] = zpos['T1X']+3.64-deltaZ
 n = 10102001
-start = (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2.
+start = start -1.1 #  (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2.
 for i in range(12): 
  xpos[n+i] = start + delta * i
- ypos[n-i] = ['T1X']
- zpos[n-i] = zpos['T1X']
+ ypos[n+i] = ypos['T1X']
+ zpos[n+i] = zpos['T1X']+3.64+4.06-deltaZ
 n = 10112001
-start = (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2. - 2.1
+start = start - 2.1 #  (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2. - 2.1
 for i in range(12): 
  xpos[n+i] = start + delta * i
- ypos[n-i] = ['T1X']
- zpos[n-i] = zpos['T1X']
+ ypos[n+i] = ypos['T1X']
+ zpos[n+i] = zpos['T1X']+3.64+4.06+3.64-deltaZ
 
 #T1u: take survey corrected points
 zpos['T1U'] = (daniel['T1_MB_01'][2]+daniel['T1_MB_02'][2]+daniel['T1_MB_03'][2]+daniel['T1_MB_04'][2])/4. - 3.03 -3.64 -4.06 -3.64
 angleu1 = ROOT.TMath.ATan2((daniel['T1_MB_01'][0]-daniel['T1_MB_04'][0]),(daniel['T1_MB_01'][1]-daniel['T1_MB_04'][1]))
 angleu2 = ROOT.TMath.ATan2((daniel['T1_MB_02'][0]-daniel['T1_MB_03'][0]),(daniel['T1_MB_02'][1]-daniel['T1_MB_03'][1]))
 angleu = (angleu1+angleu2)/2.
-deltau = delta / abs(ROOT.TMath.Cos(angleu))
 
-L =  99.7
-angle = angleu
-ypos['T1U']=[L*ROOT.TMath.Cos(angle),-L*ROOT.TMath.Cos(angle)]
+angle = -angleu # 60.208/180.*ROOT.TMath.Pi()  ???
+tx,ty=0,0
+for i in range(1,5):
+ p = 'T1_MB_0'+str(i)
+ tx += daniel[p][0] - (rn[p][0]*ROOT.TMath.Cos(angle) - rn[p][1]*ROOT.TMath.Sin(angle))
+ ty += daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle))
+ print "%s: %5.4F, %5.4F"%(p, (daniel[p][0] - (rn[p][0]*ROOT.TMath.Cos(angle) - rn[p][1]*ROOT.TMath.Sin(angle)))*10,\
+                        (daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle)))*10)
+tx=tx/4.
+ty=ty/4.
 
-m = (daniel['T1_MB_01'][1]-daniel['T1_MB_04'][1])/(daniel['T1_MB_01'][0]-daniel['T1_MB_04'][0])
-b = daniel['T1_MB_01'][1] - m * daniel['T1_MB_01'][0]
+L =  110.
+start = (rn['T1_MB_01'][0]+rn['T1_MB_04'][0])/2.
+delta = (start - ( (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.+1.1+2.1) )/ 10.
+delta = 4.2
+
 n = 11002012
-start = -b/m
 for i in range(12): 
- xpos[n-i] = start - deltau * i
- ypos[n-i] = ['T1U']
- zpos[n-i] = zpos['T1U']
-n = 11012012
-start = -b/m +2.1*deltau/delta
+ xnom = start - delta * i
+ ynom = L/2.
+ xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n-i] = zpos['T1U']-deltaZ
+n = 11012001
+start = (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.+1.1
 for i in range(12): 
- xpos[n-i] = start - deltau * i
- ypos[n-i] = ['T1U']
- zpos[n-i] = zpos['T1U']
+ xnom = start + delta * i
+ ynom = L/2.
+ xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n+i] = zpos['T1U']+3.64-deltaZ
 n = 11102001
-m = (daniel['T1_MB_02'][1]-daniel['T1_MB_03'][1])/(daniel['T1_MB_02'][0]-daniel['T1_MB_03'][0])
-b = daniel['T1_MB_02'][1] - m * daniel['T1_MB_02'][0]
-start = -b/m
+start = (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.
 for i in range(12): 
- xpos[n+i] = start + deltau * i
- ypos[n-i] = ['T1U']
- zpos[n-i] = zpos['T1U']
+ xnom = start + delta * i
+ ynom = L/2.
+ xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n+i] = zpos['T1U']+3.64+4.06 -deltaZ
 n = 11112001
-start = start - 2.1*deltau/delta
+start = start - 2.1
 for i in range(12): 
- xpos[n+i] = start + deltau * i
- ypos[n-i] = ['T1U']
- zpos[n-i] = zpos['T1U']
+ xnom = start + delta * i
+ ynom = L/2.
+ xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n+i] = zpos['T1U']+3.64+4.06+3.64-deltaZ
 
 # T2X:
 zpos['T2X'] = (daniel['T2_MD_01'][2]+daniel['T2_MD_02'][2]+daniel['T2_MD_03'][2]+daniel['T2_MD_04'][2])/4. - 3.03 - 3.64 - 4.06 - 3.64
 ypos['T2X'] = [(daniel['T2_MD_01'][1]+daniel['T2_MD_02'][1])/2.,(daniel['T2_MD_04'][1]+daniel['T2_MD_03'][1])/2.]
 n = 21112001
-start = (daniel['T2_MD_02'][0]+daniel['T2_MD_03'][0])/2.
+start = daniel['T2_MD_03'][0] # (daniel['T2_MD_02'][0]+daniel['T2_MD_03'][0])/2.  top x survey do not match nominal distance
+delta = ( (daniel['T2_MD_01'][0]+daniel['T2_MD_04'][0])/2. - (start+1.1-2.1)) / 11.
+delta = 4.2  # nominal distance, more reliable
+
 for i in range(12): 
  xpos[n+i] = start + delta * i
- ypos[n-i] = ['T2X']
- zpos[n-i] = zpos['T2X']
+ ypos[n+i] = ypos['T2X']
+ zpos[n+i] = zpos['T2X']+3.64+4.06+3.64-deltaZ
 n = 21102001
 start = start - 2.1
 for i in range(12): 
  xpos[n+i] = start + delta * i
- ypos[n-i] = ['T2X']
- zpos[n-i] = zpos['T2X']
+ ypos[n+i] = ypos['T2X']
+ zpos[n+i] = zpos['T2X']+3.64+4.06-deltaZ
 n = 21012001
-start = start + 11.
+start = start + 1.1
 for i in range(12): 
  xpos[n+i] = start + delta * i
- ypos[n-i] = ['T2X']
- zpos[n-i] = zpos['T2X']
-n = 21002012
-start = (daniel['T2_MD_01'][0]+daniel['T2_MD_04'][0])/2. + 2.1
+ ypos[n+i] = ypos['T2X']
+ zpos[n+i] = zpos['T2X']+3.64-deltaZ
+n = 21002001
+start = start + 2.1
 for i in range(12): 
- xpos[n-i] = start - delta * i
- ypos[n-i] = ['T2X']
- zpos[n-i] = zpos['T2X']
+ xpos[n+i] = start + delta * i
+ ypos[n+i] = ypos['T2X']
+ zpos[n+i] = zpos['T2X']-deltaZ
 
 #T2v:take survey corrected points
 anglev1 = ROOT.TMath.ATan2((daniel['T2_MC_02'][0]-daniel['T2_MC_03'][0]),(daniel['T2_MC_02'][1]-daniel['T2_MC_03'][1]))
 anglev2 = ROOT.TMath.ATan2((daniel['T2_MC_01'][0]-daniel['T2_MC_04'][0]),(daniel['T2_MC_01'][1]-daniel['T2_MC_04'][1]))
 anglev = (anglev1+anglev2)/2.
-deltav = delta / abs(ROOT.TMath.Cos(anglev))
-zpos['T2V'] = (daniel['T2_MC_01'][2]+daniel['T2_MC_02'][2]+daniel['T2_MC_03'][2]+daniel['T2_MC_04'][2])/4.+ 3.03
-L =  99.7
-angle = anglev
-ypos['T2V']=[L*ROOT.TMath.Cos(angle),-L*ROOT.TMath.Cos(angle)]
+
+zpos['T2V'] = (daniel['T2_MC_01'][2]+daniel['T2_MC_02'][2]+daniel['T2_MC_03'][2]+daniel['T2_MC_04'][2])/4. + 3.03
+L =  110.
+angle = -anglev # ???
+tx,ty=0,0
+for i in range(1,5):
+ p = 'T2_MC_0'+str(i)
+ tx += daniel[p][0] - (rn[p][0]*ROOT.TMath.Cos(angle) - rn[p][1]*ROOT.TMath.Sin(angle))
+ ty += daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle))
+ print "%s: %5.4F, %5.4F"%(p, (daniel[p][0] - (rn[p][0]*ROOT.TMath.Cos(angle) - rn[p][1]*ROOT.TMath.Sin(angle)))*10,\
+                        (daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle)))*10)
+tx=tx/4.
+ty=ty/4.
 
 n = 20112001
-m =  (daniel['T2_MC_02'][1]-daniel['T2_MC_03'][1]) / (daniel['T2_MC_02'][0]-daniel['T2_MC_03'][0])
-b = daniel['T2_MC_02'][1] - m * daniel['T2_MC_02'][0]
-start = -b/m
-for i in range(12): xpos[n+i] = start + deltav * i
+start = (rn['T2_MC_02'][0]+rn['T2_MC_03'][0])/2.
+delta = ((rn['T2_MC_01'][0]+rn['T2_MC_04'][0])/2. - ( (rn['T2_MC_02'][0]+rn['T2_MC_03'][0])/2.-2.1+1.1)) / 11.
+delta = 4.2
+
+for i in range(12): 
+ xnom = start + delta * i
+ ynom = L/2.
+ xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n+i] = zpos['T2V']+3.64+4.06+3.64-deltaZ
 n = 20102001
-start = start -2.1*deltau/delta
-for i in range(12): xpos[n+i] = start + deltav * i
+start = start - 2.1
+for i in range(12): 
+ xnom = start + delta * i
+ ynom = L/2.
+ xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n+i] = zpos['T2V']+3.64+4.06-deltaZ
 n = 20012012
-m =  (daniel['T2_MC_01'][1]-daniel['T2_MC_04'][1]) / (daniel['T2_MC_01'][0]-daniel['T2_MC_04'][0])
-b = daniel['T2_MC_01'][1] - m * daniel['T2_MC_01'][0]
-start = -b/m
-for i in range(12): xpos[n-i] = start - deltav * i
+start = (rn['T2_MC_01'][0]+rn['T2_MC_04'][0])/2.
+for i in range(12): 
+ xnom = start - delta * i
+ ynom = L/2.
+ xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n-i] = zpos['T2V']+3.64-deltaZ
 n = 20002012
-start = start + 2.1*deltau/delta
-for i in range(12): xpos[n-i] = start - deltav * i
+start = start + 2.1
+for i in range(12): 
+ xnom = start - delta * i
+ ynom = L/2.
+ xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ ypos[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ ynom = -L/2.
+ xposb[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
+ yposb[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
+ zpos[n-i] = zpos['T2V']-deltaZ
 
 #T3aX:
+zpos['T3aX'] = (( daniel['T3_T01'][2] + daniel['T3_B01'][2] + daniel['T3_T02'][2] + daniel['T3_B02'][2])/4. + 4.33)
+ypos['T3aX'] = [(daniel['T3_T01'][1]+daniel['T3_T02'][1])/2.,(daniel['T3_B01'][1]+daniel['T3_B02'][1])/2.]
+
+delta = ( (daniel['T3_T01'][0] + daniel['T3_B01'][0])/2. - (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. )/8.
+delta = 4.2
+
 n = 30002037
-start = (589.42+592.62)/2. -delta +2.1 -delta
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta +2.1 -delta
+for i in range(12): 
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3aX']-deltaZ
 n = 30012037
-start = (589.42+592.62)/2. -delta
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta
+for i in range(12): 
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3aX']+3.64-deltaZ
 n = 30102037
-start = (589.42+592.62)/2. -delta -1.1
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta -1.1
+for i in range(12): 
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3aX']+3.64+4.6-deltaZ
 n = 30112037
-start = (589.42+592.62)/2. -delta -1.1 -2.1
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T3aX'] = (14643.20 + 14641.10 + 14644.10 + 14640.30)/40. + 4.33
-ypos['T3aX'] = [(daniel['T2_MD_01'][1]+daniel['T2_MD_02'][1])/2.,(daniel['T2_MD_04'][1]+daniel['T2_MD_03'][1])/2.]
+start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta -1.1 -2.1
+for i in range(12): 
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3aX']+3.64+4.6+3.64-deltaZ
 
 #T3bX:
+zpos['T3bX'] = (( daniel['T3_T03'][2] + daniel['T3_B03'][2] + daniel['T3_T04'][2] + daniel['T3_B04'][2])/4. + 4.33)
+ypos['T3bX'] = [(daniel['T3_T03'][1]+daniel['T3_T04'][1])/2.,(daniel['T3_B03'][1]+daniel['T3_B04'][1])/2.]
+
+delta = ( (daniel['T3_T03'][0] + daniel['T3_B03'][0])/2. - (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2. )/8.
+delta = 4.2
+
 n = 30002025
-start = (85.28+88.46)/2. -delta +21. -delta
-for i in range(12): xpos[n+i] = start + delta * i
+start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta +2.1 -delta
+for i in range(12): 
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3bX']+3.64+4.6+3.64-deltaZ
 n = 30012025
-start = (85.28+88.46)/2. -delta 
-for i in range(12): xpos[n+i] = start + delta * i
+start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta 
+for i in range(12): 
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3bX']+3.64+4.6-deltaZ
 n = 30102025
-start = (85.28+88.46)/2. -delta -11.
-for i in range(12): xpos[n+i] = start + delta * i
+start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta -1.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3bX']+3.64-deltaZ
 n = 30112025
-start = (85.28+88.46)/2. -delta -11. -21.
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T3bX'] = (14644.60 + 14639.90 + 14645.00 + 14638.60)/40. + 4.33
+start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta -1.1 -2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3bX']-deltaZ
 
 #T3cX:
+zpos['T3cX'] = (( daniel['T3_T05'][2] + daniel['T3_B05'][2] + daniel['T3_T06'][2] + daniel['T3_B06'][2])/4. + 4.33)
+ypos['T3cX'] = [(daniel['T3_T05'][1]+daniel['T3_T06'][1])/2.,(daniel['T3_B05'][1]+daniel['T3_B06'][1])/2.]
+
+delta = ( (daniel['T3_T05'][0] + daniel['T3_B05'][0])/2. - (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. )/8.
+delta = 4.2
+
 n = 30002013
-start = (-419.69-417.09)/2. -delta +2.1 -delta
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. -delta +2.1 -delta
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3cX']-deltaZ
 n = 30012013
-start = (-419.69-417.09)/2. -delta 
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. -delta 
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3cX']+3.64-deltaZ
 n = 30102013
-start = (-419.69-417.09)/2. -delta -1.1
-for i in range(12): xpos[n+i] = start + delta * i
+start = start -1.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3cX']+3.64+4.06-deltaZ
 n = 30112013
-start = (-419.69-417.09)/2. -delta -1.1 -2.1
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T3cX'] = (14645.50 + 14638.50 + 14646.90 + 14639.30)/40. + 4.33
+start = start -2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3cX']+3.64+4.06+3.64-deltaZ
 
 #T3dX:
+zpos['T3dX'] = (( daniel['T3_T07'][2] + daniel['T3_B07'][2] + daniel['T3_T08'][2] + daniel['T3_B08'][2])/4. + 4.33)
+ypos['T3dX'] = [(daniel['T3_T07'][1]+daniel['T3_T08'][1])/2.,(daniel['T3_B07'][1]+daniel['T3_B08'][1])/2.]
+
+delta = ( (daniel['T3_T07'][0] + daniel['T3_B07'][0])/2. - (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. )/8.
+delta = 4.2
+
+
 n = 30002001
-start = (-925.57-921.58)/2. -delta +2.1 -delta
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta +2.1 -delta
+for i in range(12): 
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3dX'] -deltaZ
 n = 30012001
-start = (-925.57-921.58)/2. -delta 
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta 
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3dX']+3.64-deltaZ
 n = 30102001
-start = (-925.57-921.58)/2. -delta -1.1
-for i in range(12): xpos[n+i] = start + delta * i
+start =(daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta -1.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3dX']+3.64+4.06-deltaZ
 n = 30112001
-start = (-925.57-921.58)/2. -delta -1.1 -2.1
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T3dX'] = (14648.10 + 14639.60 + 14651.20 + 14639.20)/40. + 4.33
+start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta -1.1 -2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T3dX']+3.64+4.06+3.64-deltaZ
 
 #T4aX:
-n = 40002037
-start = (584.44+582.36)/2. -delta +21. -delta
-for i in range(12): xpos[n+i] = start + delta * i
+zpos['T4aX'] = (( daniel['T4_T01'][2] + daniel['T4_B01'][2] + daniel['T4_T02'][2] + daniel['T4_B02'][2])/4. - 4.33 -3.64-4.06-3.64)
+ypos['T4aX'] = [(daniel['T4_T01'][1]+daniel['T4_T02'][1])/2.,(daniel['T4_B01'][1]+daniel['T4_B02'][1])/2.]
+
+delta = ( (daniel['T4_T01'][0] + daniel['T4_B01'][0])/2. - (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2. )/8.
+delta = 4.2
+
+n = 40002048
+start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta +45.2
+for i in range(12):
+ xpos[n-i] = start - delta * i
+ zpos[n-i] = zpos['T4aX']-deltaZ
 n = 40012037
-start = (584.44+582.36)/2. -delta
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta +1.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4aX']+3.64-deltaZ
 n = 40102037
-start = (584.44+582.36)/2. -delta -11.
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta  
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4aX']+3.64+4.06-deltaZ
 n = 40112037
-start = (584.44+582.36)/2. -delta -1.1 -2.1
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T4aX'] = (16475.00 + 16473.60 + 16475.70 + 16471.90)/40. - 4.33 -3.64 -4.06 -3.64
+start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta  -2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4aX']+3.64+4.06+3.64-deltaZ
 
 #T4bX:
-n = 40002025
-start = (80.34+78.51)/2. -delta +21. -delta
-for i in range(12): xpos[n+i] = start + delta * i
+zpos['T4bX'] = (( daniel['T4_T03'][2] + daniel['T4_B03'][2] + daniel['T4_T04'][2] + daniel['T4_B04'][2])/4. - 4.33 -3.64-4.06-3.64)
+ypos['T4bX'] = [(daniel['T4_T03'][1]+daniel['T4_T04'][1])/2.,(daniel['T4_B03'][1]+daniel['T4_B04'][1])/2.]
+
+delta = ( (daniel['T4_T03'][0] + daniel['T4_B03'][0])/2. - (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. )/8.
+delta = 4.2
+
+n = 40002036
+start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta +45.2
+for i in range(12):
+ xpos[n-i] = start - delta * i
+ zpos[n-i] = zpos['T4bX']-deltaZ
 n = 40012025
-start = (80.34+78.51)/2. -delta 
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta +45.2 -10*delta-2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4bX']+3.64-deltaZ
 n = 40102025
-start = (80.34+78.51)/2. -delta -11.
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta 
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4bX']+3.64+4.06-deltaZ
 n = 40112025
-start = (80.34+78.51)/2. -delta -11. -21.
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T4bX'] = (16476.10 + 16470.90 + 16477.50 + 16468.90)/40.- 4.33 -3.64 -4.06 -3.64
+start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta  -2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4bX']+3.64+4.06+3.64-deltaZ
 
 #T4cX:
-n = 40002013
-start = (-423.40-424.75)/2. -delta +2.1 -delta
-for i in range(12): xpos[n+i] = start + delta * i
+zpos['T4cX'] = (( daniel['T4_T05'][2] + daniel['T4_B05'][2] + daniel['T4_T06'][2] + daniel['T4_B06'][2])/4. - 4.33 -3.64-4.06-3.64)
+ypos['T4cX'] = [(daniel['T4_T05'][1]+daniel['T4_T06'][1])/2.,(daniel['T4_B05'][1]+daniel['T4_B06'][1])/2.]
+
+delta = ( (daniel['T4_T05'][0] + daniel['T4_B05'][0])/2. - (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2. )/8.
+delta = 4.2
+
+n = 40002024
+start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta +45.2
+for i in range(12):
+ xpos[n-i] = start - delta * i
+ zpos[n-i] = zpos['T4cX']-deltaZ
 n = 40012013
-start = (-423.40-424.75)/2. -delta 
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta +45.2 -10*delta-2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4cX']+3.64-deltaZ
 n = 40102013
-start = (-423.40-424.75)/2. -delta -1.1
-for i in range(12): xpos[n+i] = start + delta * i
+start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta  
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4cX']+3.64+4.06-deltaZ
 n = 40112013
-start = (-423.40-424.75)/2. -delta -1.1 -2.1
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T4cX'] = (16478.00 + 16468.90 + 16479.80 + 16469.60)/40.- 4.33 -3.64 -4.06 -3.64
+start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta -2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4cX']+3.64+4.06+3.64-deltaZ
 
 #T4dX:
-n = 40002001
-start = (-928.06-929.54)/2. -delta +2.1 -delta
-for i in range(12): xpos[n+i] = start + delta * i
-n = 40012001
-start = (-928.06-929.54)/2. -delta 
-for i in range(12): xpos[n+i] = start + delta * i
-n = 40102001
-start = (-928.06-929.54)/2. -delta -1.1
-for i in range(12): xpos[n+i] = start + delta * i
-n = 40112001
-start = (-928.06-929.54)/2. -delta -1.1 -2.1
-for i in range(12): xpos[n+i] = start + delta * i
-zpos['T4dX'] = (16480.80 + 16470.00 + 16481.80 + 16470.20)/40.- 4.33 -3.64 -4.06 -3.64
+zpos['T4dX'] = (( daniel['T4_T07'][2] + daniel['T4_B07'][2] + daniel['T4_T08'][2] + daniel['T4_B08'][2])/4. - 4.33 -3.64-4.06-3.64)
+ypos['T4dX'] = [(daniel['T4_T07'][1]+daniel['T4_T08'][1])/2.,(daniel['T4_B07'][1]+daniel['T4_B08'][1])/2.]
 
+delta = ( (daniel['T4_T07'][0] + daniel['T4_B07'][0])/2. - (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2. )/8.
+delta = 4.2
+
+n = 40002012
+start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2. -delta +45.2
+for i in range(12):
+ xpos[n-i] = start - delta * i
+ zpos[n-i] = zpos['T4dX']-deltaZ
+n = 40012001
+start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2.  -delta +45.2 -10*delta-2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4dX']+3.64-deltaZ
+n = 40102001
+start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2.  -delta
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4dX']+3.64+4.06-deltaZ
+n = 40112001
+start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2.  -delta -2.1
+for i in range(12):
+ xpos[n+i] = start + delta * i
+ zpos[n+i] = zpos['T4dX']+3.64+4.06+3.64-deltaZ
 
 if debug:
  for a in Langle:
@@ -421,43 +689,19 @@ if debug:
 rpc={}
 DT={}
 
-from ShipGeoConfig import ConfigRegistry
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
-builtin.ShipGeo = ShipGeo
-import charmDet_conf
-run = ROOT.FairRunSim()
-run.SetName("TGeant4")  # Transport engine
-run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
-run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
-rtdb = run.GetRuntimeDb()
-modules = charmDet_conf.configure(run,ShipGeo)
-# -----Create geometry----------------------------------------------
-run.Init()
-
-sGeo = ROOT.gGeoManager
-nav = sGeo.GetCurrentNavigator()
-top = sGeo.GetTopVolume()
-top.SetVisibility(0)
-top.Draw('ogl')
-
-saveGeofile = True
-import saveBasicParameters
-if saveGeofile:
- run.CreateGeometryFile("muflux_geofile.root")
-# save ShipGeo dictionary in geofile
- saveBasicParameters.execute("muflux_geofile.root",ShipGeo)
-
 def compareAlignment():
  ut.bookHist(h,'alignCompare','compare Alignments',100,-120.,120.,100,-120.,120.)
- ut.bookHist(h,'alignCompareDiffs','compare Alignments',100,-10.,10.)
+ ut.bookHist(h,'alignCompareDiffs','compare Alignments',100,-1.,1.)
  keys = xpos.keys()
  keys.sort()
  for d in keys:
    test = ROOT.MufluxSpectrometerHit(d,0.)
    test.MufluxSpectrometerEndPoints(vbot,vtop)
-   angle = ROOT.TMath.ATan2(vtop[0]-vbot[0],vtop[1]-vbot[1])/ROOT.TMath.Pi()*180
+   statnb,vnb,pnb,lnb,view = stationInfo(test)
+   angle = ROOT.TMath.ATan2(-vtop[0]+vbot[0],-vtop[1]+vbot[1])/ROOT.TMath.Pi()*180
    L = ROOT.TMath.Sqrt( (vbot[0]-vtop[0])**2+(vbot[1]-vtop[1])**2)
-   vbotD,vtopD = correctAlignment(test,1)
+   if view=='_x': vbotD,vtopD = ROOT.TVector3(xpos[d],L/2.,zpos[d]),ROOT.TVector3(xpos[d],-L/2.,zpos[d])
+   else: vbotD,vtopD = ROOT.TVector3(xposb[d],yposb[d],zpos[d]),ROOT.TVector3(xpos[d],ypos[d],zpos[d])
    angleD = ROOT.TMath.ATan2(vtopD[0]-vbotD[0],vtopD[1]-vbotD[1])/ROOT.TMath.Pi()*180
    if abs(vtop[0]-vbot[0])<1:
     x0 = (vtop[0]+vbot[0])/2.
@@ -472,9 +716,12 @@ def compareAlignment():
     bD = vtopD[1]-mD*vtopD[0]
     x0D = -bD/mD
    diff = x0-x0D
+   z = (vbot[2]+vtop[2])/2.
    txt = ""
-   if abs(diff)>5. : txt = "!!! "
-   print txt,d,"x/y pos from Daniel",x0D,angleD,vbotD[1],vtopD[1]," from FairShip",x0,angle,vbot[1],vtop[1]
+   if abs(diff)>0.5 : txt = "!!! "
+   if abs(z-vbotD[2])>0.5: txt = "!!z"
+   print "%s %i x/y pos from Daniel %7.4F %7.4F %7.4F %7.4F %7.4F  from FairShip  %7.4F %7.4F %7.4F %7.4F %7.4F diff %5.4F"\
+                %(txt,d,x0D,angleD,vbotD[1],vtopD[1],vbotD[2],x0,angle,vtop[1],vbot[1],vbot[2],(x0D-x0)*10.)
    if abs(vbot[2]-vtop[2])>0.1: print "!!! z tilt",vbot[2],vtop[2]
    rc = h['alignCompare'].Fill(x0D,x0)
    rc = h['alignCompareDiffs'].Fill(x0D-x0)
@@ -579,10 +826,6 @@ def surveyVSfairship():
  print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T4_T01/B01  Daniel          ",(daniel['T4_T01'][0]+daniel['T4_B01'][0])/2.,daniel['T4_T01'][1],daniel['T4_B01'][1],(daniel['T4_T01'][2]+daniel['T4_B01'][2])/2.-4.33-3.64-z1)
  print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 40102046               ",vtop[0],vbot[1],vtop[1],vtop[2]-z1F)
 
-vbot = ROOT.TVector3()
-vtop = ROOT.TVector3()
-import rootUtils as ut
-h={}
 h['dispTrack3D']=[]
 h['dispTrack']=[]
 h['dispTrackY']=[]
@@ -746,6 +989,7 @@ def sortHits(event):
  return spectrHitsSorted
 
 def plotHitMaps():
+ noisyChannels=[]
  for event in sTree:
   for hit in event.Digi_MufluxSpectrometerHits:
    s,v,p,l,view = stationInfo(hit)
@@ -776,7 +1020,7 @@ def plotHitMaps():
      mean = xLayers[s][p][l][view].GetEntries()/channels[s][p][l][view]
      for i in range(1,int(xLayers[s][p][l][view].GetEntries())+1):
       if xLayers[s][p][l][view].GetBinContent(i) > noiseThreshold * mean:
-        print s,p,l,view,xLayers[s][p][l][view].GetBinContent(i) , noiseThreshold , mean
+        print "noisy channel:",s,p,l,view,xLayers[s][p][l][view].GetBinContent(i) , noiseThreshold , mean
         v = 0
         if s==2 and view == "_x": v = 1
         if s==1 and view == "_u": v = 1
@@ -808,8 +1052,9 @@ def sumStations():
 
 
 def printScalers():
+   ut.bookHist(h,'integratedrate','rate integrated',100,-0.5,99.5)
    ut.bookHist(h,'rate','rate',100,-0.5,99.5)
-   if not h.has_key('rates'): ut.bookCanvas(h,key='rates',title='Rates',nx=600,ny=400,cx=1,cy=1)
+   if not h.has_key('rates'): ut.bookCanvas(h,key='rates',title='Rates',nx=800,ny=400,cx=2,cy=1)
    rc = h['rates'].cd(1)
    scalers = f.scalers
    if not scalers:
@@ -821,11 +1066,20 @@ def printScalers():
     s = eval('scalers.'+name)
     if name!='slices': print "%20s :%8i"%(name,s)
     else:
+      r0 = 0
       for n in range(s.size()):
-        rc=h['rate'].Fill(n,s[n])
+        r0 = s[n] - r0
+        if r0<0: r0 = s[n]
+        rc=h['rate'].Fill(n,r0)
+        rc=h['integratedrate'].Fill(n,s[n])
+        r0 = s[n]
    h['rate'].Draw('hist')
+   rc = h['rates'].cd(2)
+   h['integratedrate'].Draw('hist')
 
 ut.bookHist(h,'delx','delta x',200,-50.,50.)
+ut.bookHist(h,'magPos','XY at goliath, PR',100,-50.,50.,100,-50.,50.)
+for dets in ['34','stereo12','y12']: ut.bookHist(h,'tracklets'+dets,'hits per view',10,-0.5,9.5)
 def zCentre():
  ut.bookHist(h,'xs','x vs z',500,0.,800.,100,-150.,150.)
  ut.bookHist(h,'xss','x vs station',4,0.5,4.5,100,-150.,150.)
@@ -920,8 +1174,9 @@ bfield = ROOT.genfit.FairShipFields()
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+ROOT.genfit.MaterialEffects.getInstance().setNoEffects()
 fitter = ROOT.genfit.DAF()
-fitter.setMaxIterations(50)
+fitter.setMaxIterations(10)
 # fitter.setDebugLvl(1) # produces lot of printout
 
 def extractMinAndMax():
@@ -1222,16 +1477,19 @@ def momDisplay():
  h['pxpy'].Draw('colz')
  h['mom'].Update()
  
-sigma_spatial = 0.2*(ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
+sigma_spatial = 0.1 # 0.2*(ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
 def makeTracks():
      hitlist = []
+     nhit = -1
      for hit in sTree.Digi_MufluxSpectrometerHits:
+      nhit+=1
       if hit.GetDetectorID() in noisyChannels: continue
-      hitlist.append(hit)
+      hitlist.append(nhit)
      return fitTrack(hitlist)
 
 def fitTrack(hitlist,Pstart=3.):
 # need measurements
+   global fitter
    hitPosLists={}
    trID = 0
    posM = ROOT.TVector3(0, 0, 20.)
@@ -1257,7 +1515,9 @@ def fitTrack(hitlist,Pstart=3.):
     theTrack[pdg][0] = ROOT.genfit.Track(rep, seedState, seedCov)
     hitCov = ROOT.TMatrixDSym(7)
     hitCov[6][6] = resolution*resolution
-    for hit in hitlist:
+    for nhit in hitlist:
+      if type(nhit)==type(1):   hit = sTree.Digi_MufluxSpectrometerHits[nhit]
+      else: hit = nhit
       vbot,vtop = correctAlignment(hit)
       tdc = hit.GetDigi()
       s,v,p,l,view = stationInfo(hit)
@@ -1274,10 +1534,15 @@ def fitTrack(hitlist,Pstart=3.):
       theTrack[pdg][1] = False
       continue
 # do the fit
+    timer.Start()
     try:  fitter.processTrack(theTrack[pdg][0]) # processTrackWithRep(theTrack,rep,True)
     except:   
+      print "fit failed"
       theTrack[pdg][1] = False
       continue
+    # print "time to fit the track",timer.RealTime()
+    if timer.RealTime()>1: # make a new fitter, didn't helped
+     print "very long fit time",timer.RealTime(),len(hitlist)
     fitStatus   = theTrack[pdg][0].getFitStatus()
     # print "Fit result:",fitStatus.isFitConverged(),fitStatus.getChi2(),fitStatus.getNdf()
     if not fitStatus.isFitConverged():
@@ -1367,9 +1632,9 @@ for s in range(1,5):
          break
       if dx == 0:
         print "this should never happen",'Station_'+str(s)+view+'_plane_'+pl[layer][0]+'_layer_'+pl[layer][1]
-      ut.bookHist(h,'biasResX_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,10,-dx,dx)
+      ut.bookHist(h,'biasResX_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,20,-dx,dx)
       ut.bookHist(h,'linearRes'+str(s)+view+str(layer),'linear track model residual for '+str(s)+view+' '+str(layer),100,-20.,20.,10,-dx,dx)
-      ut.bookHist(h,'biasResY_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,10,-dy,dy)      
+      ut.bookHist(h,'biasResY_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,20,-dy,dy)      
 
 ut.bookHist(h,'clsN','cluster sizes',10,-0.5,9.5)
 ut.bookHist(h,'Ncls','number of clusters / event',10,-0.5,9.5)
@@ -1378,14 +1643,16 @@ ut.bookHist(h,'yest','estimated Y from stereo; [cm]',100,-100.,100.)
 ut.bookHist(h,'xy','xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
 ut.bookHist(h,'pxpy','px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
 views = {1:['_x','_u'],2:['_x','_v'],3:['_x'],4:['_x']}
-myGauss = ROOT.TF1('gauss','[0]/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]',4)
+myGauss = ROOT.TF1('gauss','abs([0])/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+abs([3])',4)
 myGauss.SetParName(0,'Signal')
 myGauss.SetParName(1,'Mean')
 myGauss.SetParName(2,'Sigma')
 myGauss.SetParName(3,'bckgr')
 
+exclude_layer = None
 import MufluxPatRec
-def testPR():
+def testPR(onlyHits=False):
+ global exclude_layer
  trackCandidates = []
  TaggerHits = []
  withNTaggerHits = 0
@@ -1395,7 +1662,11 @@ def testPR():
  for hit in sTree.Digi_MufluxSpectrometerHits:
    key+=1
    if not hit.isValid: continue
+   if hit.GetDetectorID() in noisyChannels: continue
    detID = hit.GetDetectorID()
+   s,v,p,l,view = stationInfo(hit)
+   if exclude_layer != None and view != '_x':
+     if (2*p+l)==exclude_layer:  continue
    vbot,vtop = correctAlignment(hit)
    tdc = hit.GetDigi()
    s,v,p,l,view = stationInfo(hit)
@@ -1403,14 +1674,24 @@ def testPR():
    if withTDC: distance = RT(xLayers[s][p][l][view].GetName(),tdc)
    DTHits.append( {'digiHit':key,'xtop':vtop.x(),'ytop':vtop.y(),'z':vtop.z(),'xbot':vbot.x(),'ybot':vbot.y(),'dist':distance, 'detID':detID} )
  track_hits = MufluxPatRec.execute(DTHits, TaggerHits, withNTaggerHits, withTDC)
+ hitlist = {}
+ k = 0
  for nTrack in track_hits:
-  hitlist = []
+  h['magPos'].Fill(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'])
+  node = sGeo.FindNode(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'],zgoliath)
+  if node.GetName() != "volGoliath_1": continue
+  hitlist[k]=[]
+  if len(track_hits[nTrack]['34'])<5 or len(track_hits[nTrack]['y12'])<5: continue
   for dets in ['34','stereo12','y12']:
+   rc = h['tracklets'+dets].Fill(len(track_hits[nTrack][dets]))
    for aHit in  track_hits[nTrack][dets]:
-    hitlist.append( sTree.Digi_MufluxSpectrometerHits[aHit['digiHit']])
-  aTrack = fitTrack(hitlist,1.)
+    hitlist[k].append( aHit['digiHit'])
+  aTrack = fitTrack(hitlist[k],abs(track_hits[nTrack]['p']))
   if type(aTrack) != type(1):
    trackCandidates.append(aTrack)
+   k+=1
+  else: hitlist.pop(k)
+ if onlyHits: return hitlist
  return trackCandidates
 
 def findTracks(linearTrackModel = False):
@@ -1557,8 +1838,8 @@ def findTracks(linearTrackModel = False):
            b = topA[1]-sl*topA[0]
            yest = sl*(t1t2[3]*topA[2]+t1t2[4])+b
            rc = h['yest'].Fill(yest)
-           if yest > botA[1]+yMax: continue
-           if yest < topA[1]-yMax: continue
+           if yest < botA[1]-yMax: continue
+           if yest >topA[1]+yMax: continue
            stereoHits['u'].append([cl[0],sl,b,yest])
        for n in clusters[2]['_v']: 
         for cl in clusters[2]['_v'][n]: 
@@ -1567,8 +1848,8 @@ def findTracks(linearTrackModel = False):
            b = topA[1]-sl*topA[0]
            yest = sl*(t1t2[3]*topA[2]+t1t2[4])+b
            rc = h['yest'].Fill(yest)
-           if yest > botA[1]+yMax: continue
-           if yest < topA[1]-yMax: continue
+           if yest < botA[1]-yMax: continue
+           if yest > topA[1]+yMax: continue
            stereoHits['v'].append([cl[0],sl,b,yest])
        nu = 0
        matched = {}
@@ -1578,6 +1859,8 @@ def findTracks(linearTrackModel = False):
            dely = clu[3]-clv[3]
            rc = h['delY'].Fill(dely)
            if abs(dely)<yMatching:
+            node = sGeo.FindNode(0,(clu[3]+clv[3])/2.,zgoliath)
+            if node.GetName() == "volGoliath_1":
              matched[clv[0]]=True
              matched[clu[0]]=True
            nv+=1
@@ -1604,7 +1887,7 @@ def makeLinearExtrapolations(t1t2,t3t4):
     if s < 3: track = t3t4
     else:     track = t1t2
     delX = x - (track[3]*z+track[4])
-    h['linearRes'+str(s)+view+str(2*l+p)].Fill(delX,x)
+    h['linearRes'+str(s)+view+str(2*p+l)].Fill(delX,x)
  track = t3t4
  for hit in sTree.Digi_MuonTaggerHits:
     channelID = hit.GetDetectorID()
@@ -1631,7 +1914,7 @@ def testClusters(nEvent=-1,nTot=1000):
    next = raw_input("Next (Ret/Quit): ")
    if next<>'':  break
 
-def plotBiasedResiduals(nEvent=-1,nTot=1000):
+def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1):
   if not h.has_key('hitMapsX'): plotHitMaps()
   for s in xLayers:
      for p in xLayers[s]:
@@ -1646,7 +1929,8 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
    h['T0tmp'].Reset()
    if Nr%500==0:   print "now at event",Nr
    if not findSimpleEvent(sTree): continue
-   trackCandidates = findTracks()
+   if PR==1:   trackCandidates = findTracks()
+   else: trackCandidates = testPR()
    for aTrack in trackCandidates:
        if not aTrack.getNumPointsWithMeasurement()>0: continue
        sta = aTrack.getFittedState(0)
@@ -1664,27 +1948,21 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
           distance = 0
           if RTrelations.has_key(rname) or hasattr(sTree,'MCTrack'):
            distance = RT(xLayers[s][p][l][view].GetName(),hit.GetDigi())
-          if view == '_x': 
-            xL = pos[0]-((vbot[0]+vtop[0])/2. -distance)
-            xR = pos[0]-((vbot[0]+vtop[0])/2. +distance)
-            if abs(xL)<abs(xR):res = xL
-            else: res = xR
-          else: 
-            tmp = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
-            tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as _x
-            xL = tmp -distance
-            xR = tmp +distance
-            if abs(xL)<abs(xR):res = xL
-            else: res = xR
-          h['biasResX_'+str(s)+view+str(2*l+p)].Fill(res,pos[0])
-          h['biasResY_'+str(s)+view+str(2*l+p)].Fill(res,pos[1])
+          tmp = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
+          tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
+          xL = tmp -distance
+          xR = tmp +distance
+          if abs(xL)<abs(xR):res = xL
+          else: res = xR
+          h['biasResX_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
+          h['biasResY_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
 # make TDC plots for hits matched to tracks
-          if abs(res) < 2. :
+          if abs(res) < 0.2 :
             t0 = 0
             if hasattr(sTree,'MCTrack'): t0 = sTree.ShipEventHeader.GetEventTime()
             rc = h['TDC'+xLayers[s][p][l][view].GetName()].Fill(hit.GetDigi()-t0)
             rc = h['T0tmp'].Fill(hit.GetDigi()-t0)
-   for aTrack in trackCandidates: aTrack.Delete()
+   #for aTrack in trackCandidates: aTrack.Delete()
    t0 = h['T0tmp'].GetMean()
    rc = h['T0'].Fill(t0)
   if not h.has_key('biasedResiduals'): 
@@ -1692,7 +1970,6 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
       ut.bookCanvas(h,key='biasedResidualsX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsY',title='biasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
   j=1
-  rc = h['biasedResiduals'].cd(j)
   for s in range(1,5):
    for view in ['_x','_u','_v']:
     if s>2 and view != '_x': continue
@@ -1705,14 +1982,21 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
        j+=1
        continue
      h[hnameProjX] = h[hname].ProjectionX()
-     myGauss.SetParameter(0,h[hnameProjX].GetMaximum())
-     myGauss.SetParameter(1,0.)
-     myGauss.SetParameter(2,0.1)
-     myGauss.SetParameter(3,1.)
-     rc = h['biasedResiduals'].cd(j)
-     myGauss.FixParameter(1,0.)
-     fitResult = h[hnameProjX].Fit(myGauss,'Q','',-0.5,0.5)
-     myGauss.ReleaseParameter(1)
+     tc = h['biasedResiduals'].cd(j)
+     fitResult = h[hnameProjX].Fit('gaus','SQ','',-0.5,0.5)
+     rc = fitResult.Get()
+     if not rc:
+      print "simple gaus fit failed"
+      myGauss.SetParameter(0,h[hnameProjX].GetEntries())
+      myGauss.SetParameter(1,0.)
+      myGauss.SetParameter(2,0.1)
+      myGauss.SetParameter(3,1.)
+     else:
+      myGauss.SetParameter(0,rc.GetParams()[0])
+      myGauss.SetParameter(1,rc.GetParams()[1])
+      myGauss.SetParameter(2,rc.GetParams()[2])
+      myGauss.SetParameter(3,0.)
+     fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-0.2,0.2)
      fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-0.5,0.5)
      rc = fitResult.Get()
      if not rc:
@@ -1720,6 +2004,14 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
        h[hnameProjX].Draw()
        j+=1
        continue
+     tc.Update()
+     stats = h[hnameProjX].FindObject("stats")
+     stats.SetX1NDC(0.563258)
+     stats.SetY1NDC(0.526687)
+     stats.SetX2NDC(0.938728)
+     stats.SetY2NDC(0.940086)
+     stats.SetOptFit(111)
+     stats.SetOptStat(0)
      mean = rc.GetParams()[1]
      rms  = rc.GetParams()[2]
      Emean = rc.GetErrors()[1]
@@ -1739,11 +2031,8 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000):
        if h[sli].GetEntries()<10: continue
        myGauss.SetParameter(0,h[sli].GetMaximum())
        myGauss.SetParameter(1,0.)
-       myGauss.SetParameter(2,1.)
-       myGauss.SetParameter(3,2.)
-       myGauss.FixParameter(2,1.2)
-       fitResult = h[sli].Fit(myGauss,'Q','',-5.,5.)
-       myGauss.ReleaseParameter(2)
+       myGauss.SetParameter(2,0.1)
+       myGauss.SetParameter(3,1.)
        fitResult = h[sli].Fit(myGauss,'SQ','',-5.,5.)
        rc = fitResult.Get()
        mean,rms = 0,0
@@ -1846,13 +2135,13 @@ def hitResolution():
     distance = RT('x',TDC)
     h['hitResol'].Fill(distance - trueHit.dist2Wire())
 
-def plotRPCExtrap(nEvent=-1,nTot=1000):
+def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1):
   eventRange = [0,sTree.GetEntries()]
   if not nEvent<0: eventRange = [nEvent,nEvent+nTot]
   for s in range(1,6):
    for v in range(2):
     if v==1: dx=20
-    if v==0: dx=100
+    if v==0: dx=20
     ut.bookHist(h,'RPCResX_'+str(s)+str(v),'RPC residual for '+str(s)+' '+ str(v),100,-dx,dx,20,-140.,140.)
     ut.bookHist(h,'RPCResY_'+str(s)+str(v),'RPC residual for '+str(s)+' '+ str(v),100,-dx,dx,20,-140.,140.)
   ut.bookHist(h,'RPCResX1_p','RPC residual for station 1 function of track momentum',100,-dx,dx,100,0.,100.)
@@ -1861,7 +2150,8 @@ def plotRPCExtrap(nEvent=-1,nTot=1000):
    if Nr%1==1000:   print "now at event",Nr
    if not sTree.Digi_MuonTaggerHits.GetEntries()>0: continue
    if not findSimpleEvent(sTree): continue
-   trackCandidates = findTracks()
+   if PR==1:   trackCandidates = findTracks()
+   else: trackCandidates = testPR()
    for aTrack in trackCandidates:
        if not aTrack.getNumPointsWithMeasurement()>0: continue
        sta = aTrack.getFittedState(0)
@@ -2002,79 +2292,138 @@ def debugRPCYCoordinate():
         hit.EndPoints(vtop,vbot)
         y2 = (vtop[1]+vbot[1])/2.
         rc = h['y1y2'].Fill(y1,y2)
+
 alignCorrection={}
-best = False
-for p in range(24):
-   alignCorrection[p]=[0,0,0]
-if best:
- alignCorrection['T1_x']=[4.2,0,0]
- alignCorrection['T2_x']=[2.6,0,0]
- alignCorrection['T1_u']=[7.8,0,0]
- alignCorrection['T2_v']=[3.5,0,0]
- alignCorrection['T3_x']=[2.6,0,0]
- alignCorrection['T4_x']=[2.95,0,0]
+for p in range(24): alignCorrection[p]=[0,0,0]
+# x layer
+withCorrections=True
+if not hasattr(sTree,'MCTrack') and withCorrections:
+ alignCorrection[0]=[ 0.012, 0, 0]   # by hand
+ alignCorrection[1]=[ 0.0, 0, 0]
+ alignCorrection[2]=[ -0.02, 0, 0]
+ alignCorrection[3]=[ -0.024 ,0, 0]
+# u layers
+ alignCorrection[4]=[ 0.0, 0, 0]
+ alignCorrection[5]=[ 0.0, 0, 0]
+ alignCorrection[6]=[ 0.0, 0, 0]
+ alignCorrection[7]=[ 0.0, 0, 0]
+# v layers
+ alignCorrection[8]= [ 0.0, 0, 0]
+ alignCorrection[9]= [ 0.0, 0, 0]
+ alignCorrection[10]=[ 0.0, 0, 0]
+ alignCorrection[11]=[ 0.0, 0, 0]
+# x layers
+ alignCorrection[12]=[0.041, 0, 0]
+ alignCorrection[13]=[0.020, 0, 0]
+ alignCorrection[14]=[0.0, 0, 0]
+ alignCorrection[15]=[0.0, 0, 0]
+# T 3
+ alignCorrection[16]=[0.0, 0, 0]
+ alignCorrection[17]=[-0.027, 0, 0]
+ alignCorrection[18]=[0.0, 0, 0]
+ alignCorrection[19]=[0.03, 0, 0]
+# T 3
+ alignCorrection[20]=[0.0, 0, 0]
+ alignCorrection[21]=[0.0, 0, 0]
+ alignCorrection[22]=[0.0, 0, 0]
+ alignCorrection[23]=[0.0, 0, 0]
 
 def correctAlignment(hit,force=False):
  vbot,vtop = ROOT.TVector3(), ROOT.TVector3()
  rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
  s,v,p,l,view = stationInfo(hit)
- p = 4*s+2*l+p
+ if view=='_x':
+  vbot[0]=xpos[hit.GetDetectorID()]
+  vtop[0]=xpos[hit.GetDetectorID()]
+ else:
+  vtop[0]=xpos[hit.GetDetectorID()]
+  vtop[1]=ypos[hit.GetDetectorID()]
+  vbot[0]=xposb[hit.GetDetectorID()]
+  vbot[1]=yposb[hit.GetDetectorID()]
+ vbot[2]=zpos[hit.GetDetectorID()]
+ vtop[2]=zpos[hit.GetDetectorID()]
+
+ x= (2*p+l)
+ if s==1 and view=='_u': x+=4
+ if s==2 and view=='_v': x+=8
+ if s==2 and view=='_x': x+=12
+ if s==3 : x+=16
+ if s==4:  x+=20
  for i in range(3):
-   vbot[i] = vbot[i]+alignCorrection[p][i]
-   vtop[i] = vtop[i]+alignCorrection[p][i]
+     vbot[i] = vbot[i]+alignCorrection[x][i]
+     vtop[i] = vtop[i]+alignCorrection[x][i]
  return vbot,vtop
+
+def loopTracks(r,w):
+    os.close(r) 
+    w = os.fdopen(w, 'w') 
+    chisq=0
+    for Nr in listOfTracks:
+     rc=sTree.GetEvent(Nr)
+     hitlist = listOfTracks[Nr]
+     aTrack = fitTrack(hitlist,1.)
+     if type(aTrack) != type(1):
+      fitStatus = aTrack.getFitStatus()
+      chisq+=fitStatus.getChi2()/fitStatus.getNdf()
+     else: chisq+=10
+    chisq = chisq/len(listOfTracks)
+    print "chisq=",chisq
+    w.write(str(chisq))
+    w.close()
+    os._exit(0)
 
 def FCN(npar, gin, f, par, iflag):
 #calculate chisquare
    chisq  = 0
-   for p in range(24):
+   for p in range(16):
      alignCorrection[p]=[par[p],0,0]
-     print p,par[p]
-   plotBiasedResiduals(0,5000)
-   for p in range(24):
-     chisq+=residuals[p]**2
-   f[0] = chisq
-   print 'fcn debug',chisq,residuals[0],par[0]
+   r, w = os.pipe()
+   pid  = os.fork() # bypassing memory issues with running genfit
+   if pid == 0:
+      chisq = loopTracks(r,w)
+   else:
+    print("In the parent process after forking the child {}".format(pid))
+    finished = os.waitpid(0, 0)
+    print(finished)
+    os.close(w)
+    r=os.fdopen(r)
+    f[0] = float(r.read())
+    print "FCN returns",f[0],len(listOfTracks)
+    print "T1x",par[0],par[1],par[2],par[3]
+    print "T1u",par[4],par[5],par[6],par[7]
+    print "T2v",par[8],par[9],par[10],par[11]
+    print "T2x",par[12],par[13],par[14],par[15]
    return
-def FCNs(par):
-#calculate chisquare
-   chisq  = 0
-   for p in range(24):
-     alignCorrection[p]=[par[p],0,0]
-     print p,par[p]
-   plotBiasedResiduals(0,5000)
-   for p in range(24):
-     chisq+=residuals[p]**2
-   print 'fcns debug',chisq
-   return chisq
-
-from scipy.optimize import minimize
+listOfTracks = {}
 def makeFit():
+# new idea, first loop over N events, store hits of all track candidates
+# then make loop over tracks and fit, sum track chi2
+ for Nr in range(50000):
+   rc = sTree.GetEvent(Nr)
+   if not findSimpleEvent(sTree): continue
+   track_hits = testPR(onlyHits=True)
+   if len(track_hits)!=1: continue
+   listOfTracks[Nr]= []
+   for nhit in track_hits[0]: listOfTracks[Nr].append(nhit)
  npar = 24
  ierflg  = ROOT.Long(0)
- gMinuit = ROOT.TMinuit(24)
+ gMinuit = ROOT.TMinuit(npar) # https://root.cern.ch/download/minuit.pdf
  gMinuit.SetFCN(FCN)
- vstart  = array('d',[0]*24)
+ gMinuit.SetErrorDef(0.5)
+ vstart  = array('d',[0]*npar)
+ for p in range(16):
+    vstart[p] = alignCorrection[p][0]
  p = 0
- for s in range(1,5):
-   for view in ['_x','_u','_v']:
-    if s>2 and view != '_x': continue
-    if s==1 and view == '_v' or s==2 and view == '_u': continue
-    for l in range(0,4):
-     name = ROOT.TString("T"+str(s)+view+str(l))
-     vstart[p]=alignCorrection[p][0]
-     gMinuit.mnparm(p, name, vstart[p], 0.1, 0.,0.,ierflg)
-     p+=1
- # fix x stations
- for p in range(4): gMinuit.FixParameter(p)
- for p in range(8,12): gMinuit.FixParameter(p)
- for p in range(16,24): gMinuit.FixParameter(p)
+ for s in ['T1_x','T1_u','T2_v','T2_x','T3_x','T4_x']:
+  for l in range(4):
+      gMinuit.mnparm(p, s+str(l), vstart[p], 0.5, 0.,0.,ierflg)
+      p+=1
+ for p in range(4,24):gMinuit.FixParameter(p)
+ strat = array('d',[0])
+ gMinuit.mnexcm("SET STR",strat,1,ierflg) # 0 faster, 2 more reliable
  gMinuit.mnexcm("SIMPLEX",vstart,npar,ierflg)
  gMinuit.mnexcm("MIGRAD",vstart,npar,ierflg)
-
- res = minimize(FCNs,vstart,method='Nelder-Mead',tol=1e-3)
-
-
+ 
 def debugGeometrie():
  test = ROOT.MufluxSpectrometerHit(10002012,0)
  test.MufluxSpectrometerEndPoints(vbot,vtop)
@@ -2208,7 +2557,7 @@ def findV0(nstart=0,nmax=-1):
 # to START
 import pickle
 zeroFieldData=['SPILLDATA_8000_0515970150_20180715_220030.root']
-def init(database='muflux_RTrelations.pkl',remake='False'):
+def init(database='muflux_RTrelations.pkl',remake=False):
  global withTDC
  RTrelations = {}
  if os.path.exists(database): RTrelations = pickle.load(open(database))
@@ -2259,4 +2608,105 @@ print " --- init(): do boostrapping, determine RT relation using fitted tracks, 
 # SPILLDATA_8000_0519180060_20180723_082012.root
 # SPILLDATA_8000_0519180250_20180723_082050.root
 # SPILLDATA_8000_0519567560_20180724_055152.root
-# SPILLDATA_8000_0515970150_20180715_220030.root file with multiple hits   
+# SPILLDATA_8000_0515970150_20180715_220030.root file with multiple hits   TDC calibration bad, few events
+
+
+#new idea for residuals:
+#4 rounds, in each round one layer from all stations is switched off
+def residualLoop(nstart=0,nend=50000):
+  for l in range(4):
+   global exclude_layer
+   exclude_layer = l
+   plotBiasedResiduals(nstart,nend,2)
+   for s in ['1_x','1_u','2_x','2_u','3_x','4_x']:
+    name = 'biasResX_'+s+str(2*p+l)
+    h['un'+name] = h[name].Clone('un'+name)
+    name = 'biasResY_'+s+str(2*p+l)
+    h['un'+name] = h[name].Clone('un'+name)
+  exclude_layer = None
+  if not h.has_key('unbiasedResiduals'): 
+      ut.bookCanvas(h,key='unbiasedResiduals',title='unbiasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
+      ut.bookCanvas(h,key='unbiasedResidualsX',title='unbiasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
+      ut.bookCanvas(h,key='unbiasedResidualsY',title='unbiasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
+  j=1
+  for s in range(1,5):
+   for view in ['_x','_u','_v']:
+    if s>2 and view != '_x': continue
+    if s==1 and view == '_v' or s==2 and view == '_u': continue
+    for l in range(0,4):
+     hname = 'biasResX_'+str(s)+view+str(l)
+     hnameProjX = 'biasRes_'+str(s)+view+str(l)
+     if h[hname].GetEntries()<10:
+       h[hnameProjX].Draw() 
+       j+=1
+       continue
+     h[hnameProjX] = h[hname].ProjectionX()
+     tc = h['unbiasedResiduals'].cd(j)
+     fitResult = h[hnameProjX].Fit('gaus','SQ','',-0.5,0.5)
+     rc = fitResult.Get()
+     if not rc:
+      print "simple gaus fit failed"
+      myGauss.SetParameter(0,h[hnameProjX].GetEntries())
+      myGauss.SetParameter(1,0.)
+      myGauss.SetParameter(2,0.1)
+      myGauss.SetParameter(3,1.)
+     else:
+      myGauss.SetParameter(0,rc.GetParams()[0])
+      myGauss.SetParameter(1,rc.GetParams()[1])
+      myGauss.SetParameter(2,rc.GetParams()[2])
+      myGauss.SetParameter(3,0.)
+     fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-0.2,0.2)
+     fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-0.5,0.5)
+     rc = fitResult.Get()
+     if not rc:
+       print hnameProjX
+       h[hnameProjX].Draw()
+       j+=1
+       continue
+     tc.Update()
+     stats = h[hnameProjX].FindObject("stats")
+     stats.SetX1NDC(0.563258)
+     stats.SetY1NDC(0.526687)
+     stats.SetX2NDC(0.938728)
+     stats.SetY2NDC(0.940086)
+     stats.SetOptFit(111)
+     stats.SetOptStat(0)
+     mean = rc.GetParams()[1]
+     rms  = rc.GetParams()[2]
+     Emean = rc.GetErrors()[1]
+     Erms  = rc.GetErrors()[2]
+     print "%i, %s, %i mean=%5.2F+/-%5.2F RMS=%5.2F+/-%5.2F [mm]"%(s,view,l,mean*10,Emean*10,rms*10,Erms*10)
+     residuals[j-1]= h[hnameProjX].GetMean()   # fitresult too unstable, mean
+     # make plot of mean as function of X,Y
+     for p in ['X','Y']:
+      hname = 'biasRes'+p+'_'+str(s)+view+str(l)
+      hmean = hname+'_mean'+p
+      h[hmean] = h[hname].ProjectionY(hname+'_mean')
+      h[hmean].Reset()
+      rc = h['unbiasedResiduals'+p].cd(j)  
+      for k in range(1,h[hname].GetNbinsY()+1):
+       sli = hname+'_'+str(k) 
+       h[sli] = h[hname].ProjectionX(sli,k,k)
+       if h[sli].GetEntries()<10: continue
+       myGauss.SetParameter(0,h[sli].GetMaximum())
+       myGauss.SetParameter(1,0.)
+       myGauss.SetParameter(2,0.1)
+       myGauss.SetParameter(3,1.)
+       fitResult = h[sli].Fit(myGauss,'SQ','',-5.,5.)
+       rc = fitResult.Get()
+       mean,rms = 0,0
+       if rc:
+        mean = rc.GetParams()[1]
+        rms  = rc.GetParams()[2]
+       rc = h[hmean].Fill( h[hmean].GetBinCenter(k), mean)
+      amin,amax,nmin,nmax = ut.findMaximumAndMinimum(h[hmean])
+      if amax<3. and amin>-3.:
+       h[hmean].SetMaximum(2.)
+       h[hmean].SetMinimum(-2.)
+      else: 
+       h[hmean].SetLineColor(ROOT.kRed)
+       h[hmean].SetMaximum(10.)
+       h[hmean].SetMinimum(-10.)
+      h[hmean].Draw()
+     j+=1
+
