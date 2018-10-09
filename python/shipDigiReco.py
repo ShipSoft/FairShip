@@ -234,9 +234,10 @@ class ShipDigiReco:
    self.digiMuon.Delete()
    self.digitizeMuon()
    self.digiMuonBranch.Fill()
-   self.digiSplitcal.Delete()
-   self.digitizeSplitcal()
-   self.digiSplitcalBranch.Fill()
+   if self.sTree.GetBranch("splitcalPoint"):
+    self.digiSplitcal.Delete()
+    self.digitizeSplitcal()
+    self.digiSplitcalBranch.Fill()
 
  def digitizeSplitcal(self):  
    listOfDetID = {} # the idea is to keep only one hit for each cell/strip and if more points fall in the same cell/strip just sum up the energy
