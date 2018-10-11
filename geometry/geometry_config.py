@@ -483,6 +483,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmuMagnet.GapDown = 25*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
+            c.EmuMagnet.WithConstField=False  #now loaded field map
             c.EmuMagnet.X = scale*2.2*u.m
             c.EmuMagnet.Y = scale*3.4*u.m
             c.EmuMagnet.Z = 7*u.m
@@ -506,6 +507,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.PillarZ = 0.5*u.m
             c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
         if c.EmuMagnet.Design<2:
+            c.EmuMagnet.WithConstField=True  #older geometries still use constant fields
             c.EmuMagnet.Z = 4.5*u.m
             c.EmuMagnet.GapUp = 27*u.cm
         if c.EmuMagnet.Design == 1:

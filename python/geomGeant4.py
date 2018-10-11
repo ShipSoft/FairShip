@@ -149,11 +149,13 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False):
       fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))      
 
-      fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC),ROOT.TVector3(0,-ROOT.TMath.Pi()/2, -ROOT.TMath.Pi()/2))
-       
+      if not shipGeo.EmuMagnet.WithConstField:
+       fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC),ROOT.TVector3(0,-ROOT.TMath.Pi()/2, -ROOT.TMath.Pi()/2))       
     # Combine the two fields to obtain the global field
-      fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
-      fieldMaker.defineGlobalField('TotalField')
+       fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
+       fieldMaker.defineGlobalField('TotalField')
+      else:
+       fieldMaker.defineGlobalField('MainSpecMap')
     # Force the VMC to update/reset the fields defined by the fieldMaker object.
     # Get the ROOT/Geant4 geometry manager
     geom = ROOT.TG4GeometryManager.Instance()

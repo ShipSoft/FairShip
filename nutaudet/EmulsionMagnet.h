@@ -33,6 +33,8 @@ class EmulsionMagnet : public FairModule
   void SetPillarDimensions(Double_t X, Double_t Y, Double_t Z);
   void SetCutDimensions(Double_t CutLength, Double_t CutHeight); 
 
+  void SetConstantField(Bool_t EmuMagnetConstField);
+
   void ConstructGeometry();
   Int_t InitMedium(const char* name);
  
@@ -66,6 +68,7 @@ class EmulsionMagnet : public FairModule
   Double_t fPillarX;
   Double_t fPillarY;
   Double_t fPillarZ;  
+  Bool_t fConstField;
 };
 
 #endif
