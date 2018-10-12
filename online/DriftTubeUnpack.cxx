@@ -61,46 +61,42 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 
    auto df = reinterpret_cast<DataFrame *>(data);
    assert(df->header.size == size);
-   switch (df->header.frameTime){
-      case SoS:
-         LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
-            for (int i = 0; i < size; i++) {
-               if (i % 4 == 0) {
-                  std::cout << ' ';
-               } else if (i % 16 == 0) {
-                  std::cout << '\n';
-               }
-               std::cout << std::hex << +data[i] << std::dec;
-            }
-            std::cout << std::endl;
-         return kTRUE;
-      case EoS:
-         LOG(DEBUG) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl;
-         return kTRUE;
-      default:
-         break;
+   switch (df->header.frameTime) {
+   case SoS:
+      LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
+      for (int i = 0; i < size; i++) {
+         if (i % 4 == 0) {
+            std::cout << ' ';
+         } else if (i % 16 == 0) {
+            std::cout << '\n';
+         }
+         std::cout << std::hex << +data[i] << std::dec;
+      }
+      std::cout << std::endl;
+      return kTRUE;
+   case EoS: LOG(DEBUG) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl; return kTRUE;
+   default: break;
    }
    LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
    auto nhits = df->getHitCount();
+   auto flags = df->header.flags;
    int skipped = 0;
    int trigger = 0;
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
    std::unordered_map<int, uint16_t> triggerTime;
    uint16_t master_trigger_time = 0;
-   std::vector<std::pair<int,uint16_t>> trigger_times;
+   std::vector<std::pair<int, uint16_t>> trigger_times;
    for (auto &&hit : hits) {
-      if (hit.channelId >= 0x1000) {
-         // trailing edge
-         skipped++;
-         continue;
-      }
       auto channel = reinterpret_cast<ChannelId *>(&(hit.channelId));
+      auto TDC = channel->TDC;
       auto detectorId = channel->GetDetectorId();
       if (!detectorId) {
-         trigger++;
-         triggerTime[channel->TDC] = hit.hitTime;
-         trigger_times.push_back(std::make_pair(int(channel->TDC), hit.hitTime));
+         if (channel->edge == 0) {
+            trigger++;
+            triggerTime[TDC] = hit.hitTime;
+            trigger_times.emplace_back(TDC, hit.hitTime);
+         }
          skipped++;
       } else if (detectorId == 1) {
          master_trigger_time = hit.hitTime;
@@ -118,20 +114,22 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    uint16_t delay = 2000;
    if (!triggerTime[4]) {
       LOG(WARNING) << "No trigger in TDC 4, guessing delay" << FairLogger::endl;
-   } else if (master_trigger_time == 0){
+   } else if (master_trigger_time == 0) {
       LOG(WARNING) << "No master trigger, guessing delay" << FairLogger::endl;
    } else {
       delay = triggerTime[4] - master_trigger_time;
    }
    for (auto &&channel_and_time : channels) {
-      auto channel = reinterpret_cast<const ChannelId *>(&(channel_and_time.first));
+      uint16_t raw_chan = channel_and_time.first;
       uint16_t raw_time = channel_and_time.second;
+      auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
+      auto TDC = channel->TDC;
       uint16_t trigger_time;
       try {
-         trigger_time = triggerTime.at(channel->TDC);
+         trigger_time = triggerTime.at(TDC);
       } catch (const std::out_of_range &e) {
          auto detectorId = channel->GetDetectorId();
-         LOG(WARNING) << e.what() << "\t TDC " << channel->TDC << "\t Detector ID " << detectorId << "\t Channel "
+         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel "
                       << channel_and_time.first << "\t Sequential trigger number " << df->header.timeExtent
                       << FairLogger::endl;
          skipped++;
@@ -140,27 +138,38 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
       Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
       auto detectorId = channel->GetDetectorId();
-      if (detectorId == 6 || detectorId == 7) {
+      switch (detectorId) {
+      case -1:
+         // beam counter
+      case 1:
+         // master trigger
+      case 6:
+      case 7: {
          // Trigger scintillator
-         new ((*fRawScintillator)[fNHitsScintillator]) ScintillatorHit(detectorId, time);
+         new ((*fRawScintillator)[fNHitsScintillator]) ScintillatorHit(detectorId, time, flags, raw_chan);
          fNHitsScintillator++;
-      } else {
-         new ((*fRawTubes)[fNHitsTubes]) MufluxSpectrometerHit(detectorId, time, df->header.flags);
+         break;
+      }
+      default: {
+         new ((*fRawTubes)[fNHitsTubes]) MufluxSpectrometerHit(detectorId, time, flags, raw_chan);
          fNHitsTubes++;
+      }
       }
    }
 
    if (trigger != 5) {
       LOG(INFO) << trigger << " triggers." << FairLogger::endl;
-      for (auto&& i : trigger_times) {
-         LOG(INFO) << i.first << '\t' <<  i.second << FairLogger::endl;
+      for (auto &&i : trigger_times) {
+         LOG(INFO) << i.first << '\t' << i.second << FairLogger::endl;
       }
    } else {
       LOG(DEBUG) << trigger << " triggers." << FairLogger::endl;
    }
 
-   assert(fRawTubes->GetEntries() + fRawScintillator->GetEntries() + skipped == nhits);
-   assert(nhits == fNHitsTubes + fNHitsScintillator + skipped);
+   if (fRawTubes->GetEntries() + fRawScintillator->GetEntries() + skipped != nhits ||
+       nhits != fNHitsTubes + fNHitsScintillator + skipped) {
+      LOG(WARNING) << "Number of Entries is containers and header disagree!" << FairLogger::endl;
+   }
 
    fNHitsTotalTubes += fNHitsTubes;
    fNHitsTotalScintillator += fNHitsScintillator;

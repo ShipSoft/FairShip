@@ -12,31 +12,16 @@
  
  
 #include <iostream> 
-#include <math.h> 
-using std::cout; 
-using std::endl; 
+#include <cmath> 
  
  
 Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns 
-// -----   Default constructor   ------------------------------------------- 
-MufluxSpectrometerHit::MufluxSpectrometerHit() 
-  : ShipHit() 
-{ 
-  flags &= DriftTubes::Valid; 
-} 
 // -----   Standard constructor   ------------------------------------------ 
-MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc) 
-  : ShipHit(detID,ftdc) 
-{ 
-  flags &= DriftTubes::Valid; 
-} 
-//
-MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag) 
-  : ShipHit(detID,ftdc), flags(flag) {}
+MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag, uint16_t ch) 
+  : ShipHit(detID,ftdc), flags(flag), channel(ch) {}
 // -----   constructor from SpectrometerPoint   ------------------------------------------ 
-MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_t t0) 
-  : ShipHit() 
-{ 
+MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_t t0)
+{
      TVector3 start = TVector3(); 
      TVector3 stop  = TVector3(); 
      fDetectorID = p->GetDetectorID(); 
@@ -44,12 +29,12 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_
      Double_t v_drift       = module->TubeVdrift(); 
      Double_t sigma_spatial = module->TubeSigmaSpatial(); 
      module->TubeEndPoints(fDetectorID,start,stop); 
-     Double_t t_drift = fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift; 
+     Double_t t_drift = std::abs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift; 
      fdigi = t0 + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; 
      flags &= DriftTubes::Valid; 
 } 
 
-void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop) 
+void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop)
 { 
      Int_t statnb = fDetectorID/10000000; 
      Int_t vnb =  (fDetectorID - statnb*10000000)/1000000; 
@@ -82,7 +67,7 @@ void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3
      TString path = "";path+="/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire; 
      Bool_t rc = nav->cd(path); 
      if (not rc){ 
-        cout << "MufluxSpectrometer::TubeDecode, TGeoNavigator failed "<<path<<endl;
+        std::cout << "MufluxSpectrometer::TubeDecode, TGeoNavigator failed "<<path<< std::endl;
         return; 
      }   
      TGeoNode* W = nav->GetCurrentNode(); 
@@ -100,15 +85,15 @@ void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3
 
  
 // -----   Destructor   ---------------------------------------------------- 
-MufluxSpectrometerHit::~MufluxSpectrometerHit() { } 
+MufluxSpectrometerHit::~MufluxSpectrometerHit() = default;
 // ------------------------------------------------------------------------- 
 
  
 // -----   Public method Print   ------------------------------------------- 
 void MufluxSpectrometerHit::Print() const 
 { 
-     cout << "-I- MufluxSpectrometerHit: MufluxSpectrometer hit " << " in detector " << fDetectorID << endl; 
-     cout << "  TDC " << fdigi << " ns" << endl; 
+  std::cout << "-I- MufluxSpectrometerHit: MufluxSpectrometer hit " << " in detector " << fDetectorID << std::endl; 
+  std::cout << "  TDC " << fdigi << " ns" << std::endl; 
 } 
 // ------------------------------------------------------------------------- 
 

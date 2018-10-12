@@ -13,7 +13,12 @@
 #include "MuonTaggerHit.h"
 #include "ShipOnlineDataFormat.h"
 
-using RPC::RawHit;
+struct RawHit {
+   uint16_t ncrate : 8;
+   uint16_t nboard : 8;
+   uint16_t hitTime;
+   uint8_t pattern[8];
+};
 
 enum Direction { horizontal = 0, vertical = 1 };
 

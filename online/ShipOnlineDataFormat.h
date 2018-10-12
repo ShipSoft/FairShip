@@ -89,7 +89,7 @@ struct ChannelId {
          return 0;
       } else if (master_trigger) {
          return 1;
-      } else if (beamcounter || RC_signal || master_trigger) {
+      } else if (beamcounter || RC_signal) {
          return -1;
       } else if (scintillatorA) {
          return 6;
@@ -120,16 +120,16 @@ struct ChannelId {
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
-} // namespace DriftTubes
-
-namespace RPC {
-struct RawHit {
-   uint16_t ncrate : 8;
-   uint16_t nboard : 8;
-   uint16_t hitTime;
-   uint8_t pattern[8];
+enum Flag : uint16_t {
+   All_OK = 1,
+   TDC0_OK = 1 << 1,
+   TDC1_OK = 1 << 2,
+   TDC2_OK = 1 << 3,
+   TDC3_OK = 1 << 4,
+   TDC4_OK = 1 << 5,
+   Valid = 1<<15,
 };
-} // namespace RPC
+} // namespace DriftTubes
 
 enum MagicFrameTime { SoS = 0xFF005C03, EoS = 0xFF005C04 };
 

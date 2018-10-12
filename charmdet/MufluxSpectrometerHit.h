@@ -3,28 +3,20 @@
 
 #include "ShipHit.h"
 #include "MufluxSpectrometerPoint.h"
-#include "TObject.h"
+#include "ShipOnlineDataFormat.h"
 #include "TVector3.h"
-
-namespace DriftTubes {
-enum Flag : uint16_t {
-   Valid = 0,
-   UnmatchedHeaderTrailer = 1 << 15,
-};
-}
 
 class MufluxSpectrometerHit : public ShipHit {
 public:
    /** Default constructor **/
-   MufluxSpectrometerHit();
+   MufluxSpectrometerHit() = default;
 
    /** Constructor with arguments
     *@param detID    Detector ID
-    *@param digi      digitized/measured TDC
-    *@param flag      True/False, false if there is another hit with smaller tdc
+    *@param digi     digitized/measured TDC
+    *@param flags    collection of flags
     **/
-   MufluxSpectrometerHit(Int_t detID, Float_t tdc);
-   MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag);
+   MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag, uint16_t ch);
    MufluxSpectrometerHit(MufluxSpectrometerPoint *p, Double_t t0);
    void MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop);
    /** Destructor **/
@@ -35,6 +27,9 @@ public:
    Float_t tdc() const { return fdigi; }
    void setInvalid() { flags &= ~DriftTubes::Valid; }
    bool isValid() const { return flags & DriftTubes::Valid; }
+   bool isTrailing() const { return (channel & 0x1000) == 0x1000; }
+   bool isLeading() const { return !isLeading(); }
+   int GetTDC() const { return int((channel & 0xF00) >> 8); }
 
 private:
    /** Copy constructor **/
@@ -42,8 +37,9 @@ private:
    MufluxSpectrometerHit operator=(const MufluxSpectrometerHit &point);
 
    uint16_t flags; ///< flag
+   uint16_t channel;
 
-   ClassDef(MufluxSpectrometerHit, 4);
+   ClassDef(MufluxSpectrometerHit, 5);
 };
 
 #endif
