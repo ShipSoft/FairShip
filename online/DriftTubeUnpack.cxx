@@ -99,7 +99,9 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          }
          skipped++;
       } else if (detectorId == 1) {
-         master_trigger_time = hit.hitTime;
+         if (channel->edge == 0) {
+            master_trigger_time = hit.hitTime;
+         }
          skipped++;
       } else if (detectorId == -1) {
          // beam counter
