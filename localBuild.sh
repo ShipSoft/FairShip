@@ -91,7 +91,7 @@ cp "$SOURCEDIR"/config.sh  config.sh
   echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${SHIPBUILD}/$architecture"
   echo "export LD_LIBRARY_PATH=$INSTALLROOT/lib:\${LD_LIBRARY_PATH}"
   # ugly fix
-  echo "export ROOT_INCLUDE_PATH=\${FAIRSHIP}/nutaudet:\${ROOT_INCLUDE_PATH}:\${SHIPBUILD}/sw/$architecture/GEANT4/latest/include:/\${SHIPBUILD}/sw/$architecture/include/Geant4:\${SHIPBUILD}/sw/$architecture/pythia/latest/include:\${SHIPBUILD}/sw/$architecture/pythia/latest/include/Pythia8:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include/geant4vmc:\${SHIPBUILD}/sw/$architecture/GEANT4_VMC/latest/include:\${SHIPBUILD}/sw/$architecture/boost/latest/include:\${SHIPBUILD}/sw/SOURCES/FairRoot/May30-ship/May30-ship/base"
+  echo "export ROOT_INCLUDE_PATH=\${FAIRSHIP}/nutaudet:\${ROOT_INCLUDE_PATH}:\${GEANT4_ROOT}/include:\${PYTHIA_ROOT}/include:\${PYTHIA_ROOT}/include/Pythia8:\${GEANT4_VMC_ROOT}/include/geant4vmc:\${GEANT4_VMC_ROOT}/include:\${BOOST_ROOT}/include:\${SHIPBUILD}/sw/SOURCES/FairRoot/May30-ship/May30-ship/base"
 } >> config.sh
 
 chmod u+x config.sh
