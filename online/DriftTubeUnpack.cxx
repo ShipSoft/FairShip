@@ -78,6 +78,11 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    int skipped = 0;
    int trigger = 0;
    int expected_triggers = 5;
+   if ((flags & DriftTubes::All_OK) == DriftTubes::All_OK) {
+      LOG(DEBUG) << "All TDCs are OK" << FairLogger::endl;
+   } else {
+      LOG(WARNING) << "Not TDCs are OK:" << std::hex << flags << std::dec << FairLogger::endl;
+   }
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
    std::unordered_map<int, uint16_t> triggerTime;
