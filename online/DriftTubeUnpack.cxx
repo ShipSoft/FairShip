@@ -1,6 +1,7 @@
 #include <cassert>
 #include <unordered_map>
 #include <iostream>
+#include <bitset>
 
 // ROOT headers
 #include "TClonesArray.h"
@@ -59,7 +60,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    switch (df->header.frameTime) {
    case SoS:
       LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
-      for (int i = 0; i < size; i++) {
+      for (auto i : ROOT::MakeSeq(size)) {
          if (i % 4 == 0) {
             std::cout << ' ';
          } else if (i % 16 == 0) {
@@ -81,7 +82,15 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    if ((flags & DriftTubes::All_OK) == DriftTubes::All_OK) {
       LOG(DEBUG) << "All TDCs are OK" << FairLogger::endl;
    } else {
-      LOG(WARNING) << "Not TDCs are OK:" << std::hex << flags << std::dec << FairLogger::endl;
+      LOG(DEBUG) << "Not all TDCs are OK:" << std::bitset<16>(flags) << FairLogger::endl;
+      for (auto i : ROOT::MakeSeq(5)) {
+         if ((flags & 1 << (i + 1)) == 1 << (i + 1)) {
+            expected_triggers--;
+            LOG(WARNING) << "TDC " << i << " NOT OK" << FairLogger::endl;
+         } else {
+            LOG(DEBUG) << "TDC " << i << " OK" << FairLogger::endl;
+         }
+      }
    }
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
@@ -160,7 +169,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
    }
 
-   if (trigger != expected_triggers) {
+   if (trigger < expected_triggers) {
       LOG(INFO) << trigger << " triggers." << FairLogger::endl;
       for (auto &&i : trigger_times) {
          LOG(INFO) << i.first << '\t' << i.second << FairLogger::endl;
