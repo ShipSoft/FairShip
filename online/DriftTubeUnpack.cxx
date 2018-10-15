@@ -28,12 +28,7 @@ DriftTubeUnpack::DriftTubeUnpack(Short_t type, Short_t subType, Short_t procId, 
 }
 
 // Virtual DriftTubeUnpack: Public method
-DriftTubeUnpack::~DriftTubeUnpack()
-{
-   LOG(INFO) << "DriftTubeUnpack: Delete instance" << FairLogger::endl;
-   delete fRawTubes;
-   delete fRawScintillator;
-}
+DriftTubeUnpack::~DriftTubeUnpack() = default;
 
 // Init: Public method
 Bool_t DriftTubeUnpack::Init()
@@ -50,8 +45,8 @@ void DriftTubeUnpack::Register()
    if (!fMan) {
       return;
    }
-   fMan->Register("Digi_MufluxSpectrometerHits", "DriftTubes", fRawTubes, kTRUE);
-   fMan->Register("Digi_ScintillatorHits", "DriftTubes", fRawScintillator, kTRUE);
+   fMan->Register("Digi_MufluxSpectrometerHits", "DriftTubes", fRawTubes.get(), kTRUE);
+   fMan->Register("Digi_ScintillatorHits", "DriftTubes", fRawScintillator.get(), kTRUE);
 }
 
 // DoUnpack: Public method
@@ -82,6 +77,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    auto flags = df->header.flags;
    int skipped = 0;
    int trigger = 0;
+   int expected_triggers = 5;
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
    std::unordered_map<int, uint16_t> triggerTime;
@@ -159,7 +155,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
    }
 
-   if (trigger != 5) {
+   if (trigger != expected_triggers) {
       LOG(INFO) << trigger << " triggers." << FairLogger::endl;
       for (auto &&i : trigger_times) {
          LOG(INFO) << i.first << '\t' << i.second << FairLogger::endl;
@@ -170,7 +166,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 
    if (fRawTubes->GetEntries() + fRawScintillator->GetEntries() + skipped != nhits ||
        nhits != fNHitsTubes + fNHitsScintillator + skipped) {
-      LOG(WARNING) << "Number of Entries is containers and header disagree!" << FairLogger::endl;
+      LOG(WARNING) << "Number of Entries in containers and header disagree!" << FairLogger::endl;
    }
 
    fNHitsTotalTubes += fNHitsTubes;

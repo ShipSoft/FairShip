@@ -10,12 +10,10 @@
 #define ONLINE_DRIFTTUBEUNPACK_H
 
 #include "ShipUnpack.h"
+#include <memory>
 
 class TClonesArray;
 
-/**
- * An example unpacker of MBS data.
- */
 class DriftTubeUnpack : public ShipUnpack {
 public:
    /** Standard Constructor. Input - MBS parameters of the detector. */
@@ -44,8 +42,8 @@ protected:
    virtual void Register() override;
 
 private:
-   TClonesArray *fRawTubes;        /**< Array of output raw items. */
-   TClonesArray *fRawScintillator; /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawTubes;        /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawScintillator; /**< Array of output raw items. */
    Int_t fNHitsTubes;              /**< Number of raw items in current event. */
    Int_t fNHitsScintillator;       /**< Number of raw items in current event. */
    Int_t fNHitsTotalTubes;         /**< Total number of raw items. */
