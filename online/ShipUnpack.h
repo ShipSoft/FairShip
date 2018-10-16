@@ -10,6 +10,7 @@
 #define ONLINE_SHIPUNPACK_H
 
 #include "FairUnpack.h"
+#include <memory>
 
 class TClonesArray;
 
@@ -19,9 +20,7 @@ class TClonesArray;
 class ShipUnpack : public FairUnpack {
 
 public:
-   /** Standard Constructor. Input - MBS parameters of the detector. */
-   ShipUnpack(Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
-              Short_t control = 3);
+   ShipUnpack();
 
    /** Destructor. */
    virtual ~ShipUnpack();
@@ -45,7 +44,7 @@ protected:
    virtual void Register();
 
 private:
-   TClonesArray *fRawData; /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawData; /**< Array of output raw items. */
    Int_t fNHits;           /**< Number of raw items in current event. */
    Int_t fNHitsTotal;      /**< Total number of raw items. */
    uint16_t fPartitionId;

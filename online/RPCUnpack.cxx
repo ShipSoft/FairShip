@@ -50,18 +50,10 @@ int GetId(int ncrate, int nboard, int channel)
 }
 
 // RPCUnpack: Constructor
-RPCUnpack::RPCUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
-   : ShipUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray("MuonTaggerHit")), fNHits(0),
-     fNHitsTotal(0), fPartitionId(0x0B00)
-{
-}
+RPCUnpack::RPCUnpack() : fRawData(new TClonesArray("MuonTaggerHit")), fNHits(0), fNHitsTotal(0), fPartitionId(0x0B00) {}
 
 // Virtual RPCUnpack: Public method
-RPCUnpack::~RPCUnpack()
-{
-   LOG(INFO) << "RPCUnpack: Delete instance" << FairLogger::endl;
-   delete fRawData;
-}
+RPCUnpack::~RPCUnpack() = default;
 
 // Init: Public method
 Bool_t RPCUnpack::Init()
@@ -78,7 +70,7 @@ void RPCUnpack::Register()
    if (!fMan) {
       return;
    }
-   fMan->Register("Digi_MuonTaggerHits", "RPCs", fRawData, kTRUE);
+   fMan->Register("Digi_MuonTaggerHits", "RPCs", fRawData.get(), kTRUE);
 }
 
 // DoUnpack: Public method

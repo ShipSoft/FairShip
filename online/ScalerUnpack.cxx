@@ -13,10 +13,7 @@
 #include "ShipOnlineDataFormat.h"
 
 // ScalerUnpack: Constructor
-ScalerUnpack::ScalerUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
-   : ShipUnpack(type, subType, procId, subCrate, control), fPartitionId(0x8100)
-{
-}
+ScalerUnpack::ScalerUnpack() : fPartitionId(0x8100) {}
 
 // Virtual ScalerUnpack: Public method
 ScalerUnpack::~ScalerUnpack() = default;

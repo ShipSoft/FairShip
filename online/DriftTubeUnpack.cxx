@@ -21,10 +21,10 @@
 using DriftTubes::ChannelId;
 
 // DriftTubeUnpack: Constructor
-DriftTubeUnpack::DriftTubeUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
-   : ShipUnpack(type, subType, procId, subCrate, control), fRawTubes(new TClonesArray("MufluxSpectrometerHit")),
-     fRawScintillator(new TClonesArray("ScintillatorHit")), fNHitsTubes(0), fNHitsScintillator(0), fNHitsTotalTubes(0),
-     fNHitsTotalScintillator(0), fPartitionId(0x0C00)
+DriftTubeUnpack::DriftTubeUnpack()
+   : fRawTubes(new TClonesArray("MufluxSpectrometerHit")), fRawScintillator(new TClonesArray("ScintillatorHit")),
+     fRawTriggers(new TClonesArray("ScintillatorHit")), fNHitsTubes(0), fNHitsTotalTubes(0), fNHitsScintillator(0),
+     fNHitsTotalScintillator(0), fNHitsTriggers(0), fNHitsTotalTriggers(0), fPartitionId(0x0C00)
 {
 }
 
@@ -47,7 +47,8 @@ void DriftTubeUnpack::Register()
       return;
    }
    fMan->Register("Digi_MufluxSpectrometerHits", "DriftTubes", fRawTubes.get(), kTRUE);
-   fMan->Register("Digi_ScintillatorHits", "DriftTubes", fRawScintillator.get(), kTRUE);
+   fMan->Register("Digi_Scintillators", "DriftTubes", fRawScintillator.get(), kTRUE);
+   fMan->Register("Digi_Triggers", "DriftTubes", fRawTriggers.get(), kTRUE);
 }
 
 // DoUnpack: Public method

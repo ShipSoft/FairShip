@@ -10,15 +10,12 @@
 #define ONLINE_DRIFTTUBEUNPACK_H
 
 #include "ShipUnpack.h"
-#include <memory>
 
 class TClonesArray;
 
 class DriftTubeUnpack : public ShipUnpack {
 public:
-   /** Standard Constructor. Input - MBS parameters of the detector. */
-   DriftTubeUnpack(Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
-                   Short_t control = 3);
+   DriftTubeUnpack();
 
    /** Destructor. */
    virtual ~DriftTubeUnpack();
@@ -44,10 +41,13 @@ protected:
 private:
    std::unique_ptr<TClonesArray> fRawTubes;        /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawScintillator; /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawTriggers; /**< Array of output raw items. */
    Int_t fNHitsTubes;              /**< Number of raw items in current event. */
-   Int_t fNHitsScintillator;       /**< Number of raw items in current event. */
    Int_t fNHitsTotalTubes;         /**< Total number of raw items. */
+   Int_t fNHitsScintillator;       /**< Number of raw items in current event. */
    Int_t fNHitsTotalScintillator;  /**< Total number of raw items. */
+   Int_t fNHitsTriggers;       /**< Number of raw items in current event. */
+   Int_t fNHitsTotalTriggers;  /**< Total number of raw items. */
    uint16_t fPartitionId;
 
    DriftTubeUnpack(const DriftTubeUnpack &);

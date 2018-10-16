@@ -15,9 +15,7 @@ class TClonesArray;
 
 class PixelUnpack : public ShipUnpack {
 public:
-   /** Standard Constructor. Input - MBS parameters of the detector. */
-   PixelUnpack(uint16_t PartitionId, Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
-                   Short_t control = 3);
+   PixelUnpack(uint16_t PartitionId);
 
    /** Destructor. */
    virtual ~PixelUnpack();

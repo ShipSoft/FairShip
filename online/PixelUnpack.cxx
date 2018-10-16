@@ -25,10 +25,8 @@ struct ChannelId {
 };
 
 // PixelUnpack: Constructor
-PixelUnpack::PixelUnpack(uint16_t PartitionId, Short_t type, Short_t subType, Short_t procId, Short_t subCrate,
-                         Short_t control)
-   : ShipUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray("ShipPixelHit")), fNHits(0),
-     fNHitsTotal(0), fPartitionId(PartitionId)
+PixelUnpack::PixelUnpack(uint16_t PartitionId)
+   : fRawData(new TClonesArray("ShipPixelHit")), fNHits(0), fNHitsTotal(0), fPartitionId(PartitionId)
 {
 }
 

@@ -20,6 +20,7 @@ Bool_t ShipTdcSource::Init()
 
 void ShipTdcSource::Close()
 {
+   LOG(DEBUG) << "Closing file " << fFilename << FairLogger::endl;
    fIn->Close();
 }
 

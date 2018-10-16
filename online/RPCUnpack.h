@@ -15,9 +15,7 @@ class TClonesArray;
 
 class RPCUnpack : public ShipUnpack {
 public:
-   /** Standard Constructor. Input - MBS parameters of the detector. */
-   RPCUnpack(Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
-                   Short_t control = 3);
+   RPCUnpack();
 
    /** Destructor. */
    virtual ~RPCUnpack();
@@ -41,7 +39,7 @@ protected:
    virtual void Register() override;
 
 private:
-   TClonesArray *fRawData;        /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawData;        /**< Array of output raw items. */
    Int_t fNHits;              /**< Number of raw items in current event. */
    Int_t fNHitsTotal;         /**< Total number of raw items. */
    uint16_t fPartitionId;

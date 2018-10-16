@@ -122,11 +122,11 @@ struct ChannelId {
 };
 enum Flag : uint16_t {
    All_OK = 1,
-   TDC0_OK = 1 << 1,
-   TDC1_OK = 1 << 2,
-   TDC2_OK = 1 << 3,
-   TDC3_OK = 1 << 4,
-   TDC4_OK = 1 << 5,
+   TDC0_PROBLEM = 1 << 1,
+   TDC1_PROBLEM = 1 << 2,
+   TDC2_PROBLEM = 1 << 3,
+   TDC3_PROBLEM = 1 << 4,
+   TDC4_PROBLEM = 1 << 5,
    Valid = 1<<15,
 };
 } // namespace DriftTubes
