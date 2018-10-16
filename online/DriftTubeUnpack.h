@@ -29,9 +29,6 @@ public:
    /** Clear the output structures. */
    virtual void Reset() override;
 
-   /** Method for controlling the functionality. */
-   inline Int_t GetNHitsTotal() { return fNHitsTotalTubes + fNHitsTotalScintillator; }
-
    uint16_t GetPartition() override { return fPartitionId; }
 
 protected:
@@ -44,16 +41,6 @@ private:
    std::unique_ptr<TClonesArray> fRawBeamCounter; /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawMasterTrigger; /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawTriggers; /**< Array of output raw items. */
-   Int_t fNHitsTubes;              /**< Number of raw items in current event. */
-   Int_t fNHitsTotalTubes;         /**< Total number of raw items. */
-   Int_t fNHitsScintillator;       /**< Number of raw items in current event. */
-   Int_t fNHitsTotalScintillator;  /**< Total number of raw items. */
-   Int_t fNHitsBeamCounter;       /**< Number of raw items in current event. */
-   Int_t fNHitsTotalBeamCounter;  /**< Total number of raw items. */
-   Int_t fNHitsMasterTrigger;       /**< Number of raw items in current event. */
-   Int_t fNHitsTotalMasterTrigger;  /**< Total number of raw items. */
-   Int_t fNHitsTriggers;       /**< Number of raw items in current event. */
-   Int_t fNHitsTotalTriggers;  /**< Total number of raw items. */
    uint16_t fPartitionId;
 
    DriftTubeUnpack(const DriftTubeUnpack &);
