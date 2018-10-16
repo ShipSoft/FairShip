@@ -74,7 +74,7 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetDeltazLayer(ship_geo.MufluxSpectrometer.DeltazLayer)
  MufluxSpectrometer.SetDeltazPlane(ship_geo.MufluxSpectrometer.DeltazPlane)
  MufluxSpectrometer.SetTubesPerLayer(ship_geo.MufluxSpectrometer.TubesPerLayer)
- MufluxSpectrometer.SetStereoAngle(ship_geo.MufluxSpectrometer.ViewAngle)
+ MufluxSpectrometer.SetStereoAngle(ship_geo.MufluxSpectrometer.ViewAngle, ship_geo.MufluxSpectrometer.ViewvAngle)
  MufluxSpectrometer.SetWireThickness(ship_geo.MufluxSpectrometer.WireThickness)
  MufluxSpectrometer.SetTubeLength(ship_geo.MufluxSpectrometer.TubeLength)
  MufluxSpectrometer.SetTubeLength12(ship_geo.MufluxSpectrometer.TubeLength12) 

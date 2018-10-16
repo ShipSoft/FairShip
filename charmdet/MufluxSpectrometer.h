@@ -35,7 +35,7 @@ class MufluxSpectrometer:public FairDetector
     void SetDeltazLayer(Double_t deltazlayer);
     void SetDeltazPlane(Double_t deltazplane);
     void SetTubesPerLayer(Int_t tubesperlayer);
-    void SetStereoAngle(Int_t stereoangle);
+    void SetStereoAngle(Double_t stereoangle, Double_t stereovangle);
     void SetWireThickness(Double_t wirethickness);
     void SetDeltazView(Double_t deltazview);
     void SetTubeLength12(Double_t strawlength12);
@@ -136,6 +136,7 @@ private:
     Double_t       fOffset_plane12;          //!  Offset (x) between straws of plane1&2
     Int_t          fTubes_per_layer;         //!  Number of tubes in one layer
     Double_t       fView_angle;              //!  Stereo angle of layers in a view
+    Double_t       fView_vangle;    
     Double_t       fcosphi;
     Double_t       fsinphi;
     Double_t       fWire_thickness;          //!  Thickness of the wire
