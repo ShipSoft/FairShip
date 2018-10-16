@@ -194,7 +194,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.DeltazPlane        = 7.7*u.cm
     
     c.MufluxSpectrometer.TubesPerLayer      = 12
-    c.MufluxSpectrometer.ViewAngle          = -60
+    c.MufluxSpectrometer.ViewAngle          = 60.2
+    c.MufluxSpectrometer.ViewvAngle         = -60.
     c.MufluxSpectrometer.WireThickness      = 0.0045*u.cm
     c.MufluxSpectrometer.DeltazView         = 15.*u.cm
     
@@ -213,16 +214,16 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.T1x_x=4.2*u.cm
     c.MufluxSpectrometer.T1x_y=-1.995*u.cm
     c.MufluxSpectrometer.T1z=38.875*u.cm
-    c.MufluxSpectrometer.T1u_x=7.79*u.cm
-    c.MufluxSpectrometer.T1u_y=0.182*u.cm
+    c.MufluxSpectrometer.T1u_x=7.8*u.cm    
+    c.MufluxSpectrometer.T1u_y=-0.16*u.cm
     c.MufluxSpectrometer.T2x_x=2.61*u.cm
     c.MufluxSpectrometer.T2x_y=-2.1875*u.cm  
-    c.MufluxSpectrometer.T2z=107.625*u.cm       
-    c.MufluxSpectrometer.T2v_x=3.4804*u.cm  
-    c.MufluxSpectrometer.T2v_y=-0.5*u.cm       
+    c.MufluxSpectrometer.T2z=107.665*u.cm             
+    c.MufluxSpectrometer.T2v_x=3.5*u.cm      
+    c.MufluxSpectrometer.T2v_y=0.1*u.cm    
     c.MufluxSpectrometer.T3x=2.6*u.cm
     c.MufluxSpectrometer.T3y=-7.3405*u.cm
-    c.MufluxSpectrometer.T3z=586.25*u.cm
+    c.MufluxSpectrometer.T3z=584.125*u.cm
     c.MufluxSpectrometer.T4x=2.95*u.cm   
     c.MufluxSpectrometer.T4y=-6.9845*u.cm 
     c.MufluxSpectrometer.T4z=747.25*u.cm               
