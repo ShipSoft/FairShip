@@ -41,11 +41,17 @@ protected:
 private:
    std::unique_ptr<TClonesArray> fRawTubes;        /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawScintillator; /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawBeamCounter; /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawMasterTrigger; /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawTriggers; /**< Array of output raw items. */
    Int_t fNHitsTubes;              /**< Number of raw items in current event. */
    Int_t fNHitsTotalTubes;         /**< Total number of raw items. */
    Int_t fNHitsScintillator;       /**< Number of raw items in current event. */
    Int_t fNHitsTotalScintillator;  /**< Total number of raw items. */
+   Int_t fNHitsBeamCounter;       /**< Number of raw items in current event. */
+   Int_t fNHitsTotalBeamCounter;  /**< Total number of raw items. */
+   Int_t fNHitsMasterTrigger;       /**< Number of raw items in current event. */
+   Int_t fNHitsTotalMasterTrigger;  /**< Total number of raw items. */
    Int_t fNHitsTriggers;       /**< Number of raw items in current event. */
    Int_t fNHitsTotalTriggers;  /**< Total number of raw items. */
    uint16_t fPartitionId;
