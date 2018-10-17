@@ -37,6 +37,7 @@ protected:
 
 private:
    std::unique_ptr<TClonesArray> fRawTubes;        /**< Array of output raw items. */
+   std::unique_ptr<TClonesArray> fRawLateTubes;        /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawScintillator; /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawBeamCounter; /**< Array of output raw items. */
    std::unique_ptr<TClonesArray> fRawMasterTrigger; /**< Array of output raw items. */

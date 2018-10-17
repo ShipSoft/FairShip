@@ -22,9 +22,10 @@ using DriftTubes::ChannelId;
 
 // DriftTubeUnpack: Constructor
 DriftTubeUnpack::DriftTubeUnpack()
-   : fRawTubes(new TClonesArray("MufluxSpectrometerHit")), fRawScintillator(new TClonesArray("ScintillatorHit")),
-     fRawBeamCounter(new TClonesArray("ScintillatorHit")), fRawMasterTrigger(new TClonesArray("ScintillatorHit")),
-     fRawTriggers(new TClonesArray("ScintillatorHit")),  fPartitionId(0x0C00)
+   : fRawTubes(new TClonesArray("MufluxSpectrometerHit")), fRawLateTubes(new TClonesArray("MufluxSpectrometerHit")),
+     fRawScintillator(new TClonesArray("ScintillatorHit")), fRawBeamCounter(new TClonesArray("ScintillatorHit")),
+     fRawMasterTrigger(new TClonesArray("ScintillatorHit")), fRawTriggers(new TClonesArray("ScintillatorHit")),
+     fPartitionId(0x0C00)
 {
 }
 
@@ -47,6 +48,7 @@ void DriftTubeUnpack::Register()
       return;
    }
    fMan->Register("Digi_MufluxSpectrometerHits", "DriftTubes", fRawTubes.get(), kTRUE);
+   fMan->Register("Digi_LateMufluxSpectrometerHits", "DriftTubes", fRawLateTubes.get(), kTRUE);
    fMan->Register("Digi_Scintillators", "DriftTubes", fRawScintillator.get(), kTRUE);
    fMan->Register("Digi_BeamCounters", "DriftTubes", fRawBeamCounter.get(), kTRUE);
    fMan->Register("Digi_MasterTrigger", "DriftTubes", fRawMasterTrigger.get(), kTRUE);
@@ -79,6 +81,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
    auto nhits = df->getHitCount();
    int nhitsTubes = 0;
+   int nhitsLateTubes = 0;
    int nhitsScintillator = 0;
    int nhitsBeamCounter = 0;
    int nhitsMasterTrigger = 0;
@@ -102,6 +105,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    }
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
+   std::unordered_map<uint16_t, std::vector<uint16_t>> late_hits;
    std::unordered_map<int, uint16_t> triggerTime;
    uint16_t master_trigger_time = 0;
    std::vector<std::pair<int, uint16_t>> trigger_times;
@@ -137,8 +141,11 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
             ScintillatorHit(detectorId, 0.098 * Float_t(hit.hitTime), flags, hit.channelId);
          nhitsScintillator++;
       } else if (channels.find(hit.channelId) != channels.end()) {
-         channels[hit.channelId] = std::min(hit.hitTime, channels[hit.channelId]);
-         skipped++;
+         if (hit.hitTime < channels[hit.channelId]) {
+            std::swap(hit.hitTime, channels[hit.channelId]);
+            assert(hit.hitTime > channels[hit.channelId]);
+         }
+         late_hits[hit.channelId].push_back(hit.hitTime);
       } else {
          channels[hit.channelId] = hit.hitTime;
       }
@@ -163,9 +170,8 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       try {
          trigger_time = triggerTime.at(TDC);
       } catch (const std::out_of_range &e) {
-         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel "
-                      << channel_and_time.first << "\t Sequential trigger number " << df->header.timeExtent
-                      << FairLogger::endl;
+         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
+                      << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
          skipped++;
          continue;
       }
@@ -173,6 +179,27 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
       new ((*fRawTubes)[nhitsTubes]) MufluxSpectrometerHit(detectorId, time, flags, raw_chan);
       nhitsTubes++;
+   }
+   for (auto &&channel_and_times : late_hits) {
+      uint16_t raw_chan = channel_and_times.first;
+      auto raw_times = channel_and_times.second;
+      auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
+      auto detectorId = channel->GetDetectorId();
+      auto TDC = channel->TDC;
+      uint16_t trigger_time;
+      try {
+         trigger_time = triggerTime.at(TDC);
+      } catch (const std::out_of_range &e) {
+         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
+                      << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
+         continue;
+      }
+      for (auto &&raw_time : raw_times) {
+         Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
+         new ((*fRawLateTubes)[nhitsLateTubes])
+            MufluxSpectrometerHit(detectorId, time, flags | DriftTubes::InValid, raw_chan);
+         nhitsLateTubes++;
+      }
    }
 
    if (trigger < expected_triggers) {
@@ -184,7 +211,8 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       LOG(DEBUG) << trigger << " triggers." << FairLogger::endl;
    }
 
-   if (nhits != nhitsTubes + nhitsScintillator + nhitsBeamCounter + nhitsMasterTrigger + nhitsTriggers + skipped) {
+   if (nhits != nhitsTubes + nhitsLateTubes + nhitsScintillator + nhitsBeamCounter + nhitsMasterTrigger +
+                   nhitsTriggers + skipped) {
       LOG(WARNING) << "Number of Entries in containers and header disagree!" << FairLogger::endl;
    }
 
@@ -196,6 +224,7 @@ void DriftTubeUnpack::Reset()
 {
    LOG(DEBUG) << "DriftTubeUnpack : Clearing Data Structure" << FairLogger::endl;
    fRawTubes->Clear();
+   fRawLateTubes->Clear();
    fRawScintillator->Clear();
    fRawBeamCounter->Clear();
    fRawMasterTrigger->Clear();
