@@ -76,7 +76,7 @@ void RPCUnpack::Register()
 // DoUnpack: Public method
 Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(INFO) << "RPCUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
+   LOG(DEBUG) << "RPCUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
    switch (df->header.frameTime) {
