@@ -125,7 +125,10 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          nhitsTriggers++;
       } else if (detectorId == 1) {
          if (channel->edge == 0) {
-            master_trigger_time = hit.hitTime;
+            // Use the earliest if there are several
+            if (nhitsMasterTrigger == 0 || hit.hitTime < master_trigger_time) {
+               master_trigger_time = hit.hitTime;
+            }
          }
          new ((*fRawMasterTrigger)[nhitsMasterTrigger])
             ScintillatorHit(detectorId, 0.098 * Float_t(hit.hitTime), flags, hit.channelId);
