@@ -12,6 +12,12 @@ public:
    bool isTrailing() const { return (channel & 0x1000) == 0x1000; }
    bool isLeading() const { return !isLeading(); }
    int GetTDC() const { return int((channel & 0xF00) >> 8); }
+   bool TDCGood() const {
+      auto TDC = GetTDC();
+      auto AllOK = (flags & DriftTubes::All_OK) == DriftTubes::All_OK;
+      uint16_t TDCNotOK = 1 << (TDC + 1);
+      return AllOK || !((flags & TDCNotOK) == TDCNotOK);
+   }
 
 private:
    ScintillatorHit(const ScintillatorHit &other);
@@ -19,7 +25,7 @@ private:
    uint16_t flags; ///< flag
    uint16_t channel;
 
-   ClassDef(ScintillatorHit, 2)
+   ClassDef(ScintillatorHit, 3)
 };
 
 #endif

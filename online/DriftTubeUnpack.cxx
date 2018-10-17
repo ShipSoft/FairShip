@@ -146,8 +146,10 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    uint16_t delay = 2000;
    if (!triggerTime[4]) {
       LOG(WARNING) << "No trigger in TDC 4, guessing delay" << FairLogger::endl;
+      flags |= DriftTubes::NoDelay;
    } else if (master_trigger_time == 0) {
       LOG(WARNING) << "No master trigger, guessing delay" << FairLogger::endl;
+      flags |= DriftTubes::NoDelay;
    } else {
       delay = triggerTime[4] - master_trigger_time;
    }
@@ -155,12 +157,12 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       uint16_t raw_chan = channel_and_time.first;
       uint16_t raw_time = channel_and_time.second;
       auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
+      auto detectorId = channel->GetDetectorId();
       auto TDC = channel->TDC;
       uint16_t trigger_time;
       try {
          trigger_time = triggerTime.at(TDC);
       } catch (const std::out_of_range &e) {
-         auto detectorId = channel->GetDetectorId();
          LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel "
                       << channel_and_time.first << "\t Sequential trigger number " << df->header.timeExtent
                       << FairLogger::endl;
@@ -169,7 +171,6 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
       LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
       Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
-      auto detectorId = channel->GetDetectorId();
       new ((*fRawTubes)[nhitsTubes]) MufluxSpectrometerHit(detectorId, time, flags, raw_chan);
       nhitsTubes++;
    }

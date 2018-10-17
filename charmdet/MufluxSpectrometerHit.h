@@ -25,11 +25,19 @@ public:
    /** Output to screen **/
    virtual void Print() const;
    Float_t tdc() const { return fdigi; }
-   void setInvalid() { flags &= ~DriftTubes::Valid; }
-   bool isValid() const { return flags & DriftTubes::Valid; }
+   void setInvalid() { flags |= DriftTubes::InValid; }
+   bool isValid() const { return !((flags & DriftTubes::InValid) == DriftTubes::InValid); }
    bool isTrailing() const { return (channel & 0x1000) == 0x1000; }
    bool isLeading() const { return !isLeading(); }
    int GetTDC() const { return int((channel & 0xF00) >> 8); }
+   bool TDCGood() const
+   {
+      auto TDC = GetTDC();
+      auto AllOK = (flags & DriftTubes::All_OK) == DriftTubes::All_OK;
+      uint16_t TDCNotOK = 1 << (TDC + 1);
+      return AllOK || !((flags & TDCNotOK) == TDCNotOK);
+   }
+   bool hasDelay() const { return !((flags & DriftTubes::NoDelay) == DriftTubes::NoDelay); }
 
 private:
    /** Copy constructor **/
@@ -39,7 +47,7 @@ private:
    uint16_t flags; ///< flag
    uint16_t channel;
 
-   ClassDef(MufluxSpectrometerHit, 5);
+   ClassDef(MufluxSpectrometerHit, 6);
 };
 
 #endif

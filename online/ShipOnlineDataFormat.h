@@ -127,7 +127,8 @@ enum Flag : uint16_t {
    TDC2_PROBLEM = 1 << 3,
    TDC3_PROBLEM = 1 << 4,
    TDC4_PROBLEM = 1 << 5,
-   Valid = 1<<15,
+   NoDelay = 1<<14,
+   InValid = 1<<15,
 };
 } // namespace DriftTubes
 
