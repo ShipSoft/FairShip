@@ -91,12 +91,14 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.Passive2mmZ = 0.2 * u.cm
     c.Box.Passive1mmZ = 0.1 * u.cm
 
+    #Distance between passive bricks and ECC brick
+    c.Box.distancePassive2ECC = 3.0 *u.cm
+
+
     #OPTIONS FOR CHARM XSEC DETECTOR
     c.Box.gausbeam = True
-    c.Box.Julytarget = False
-    #c.Box.GapPostTargetTh = 5 * u.cm #gap between charm target and T1 station
+    c.Box.Julytarget = True
     c.Box.GapPostTargetTh = 0.73 * u.cm     
-    #c.Box.GapPostTargetTh = 0*u.cm
     c.Box.RunNumber =  3 #run configuration for charm
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
