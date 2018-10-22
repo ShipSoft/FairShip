@@ -10,7 +10,7 @@ public:
    ~ScintillatorHit() = default;
    ScintillatorHit(Int_t detID, Float_t ftdc, uint16_t flag, uint16_t ch);
    bool isTrailing() const { return (channel & 0x1000) == 0x1000; }
-   bool isLeading() const { return !isLeading(); }
+   bool isLeading() const { return !isTrailing(); }
    int GetTDC() const { return int((channel & 0xF00) >> 8); }
    bool TDCGood() const
    {
