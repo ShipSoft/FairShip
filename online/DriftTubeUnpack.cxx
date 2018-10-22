@@ -114,44 +114,45 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       auto channel = reinterpret_cast<ChannelId *>(&(hit.channelId));
       auto TDC = channel->TDC;
       auto detectorId = channel->GetDetectorId();
+      auto hit_time = hit.hitTime;
       if (!detectorId) {
          if (channel->edge == 0) {
             trigger++;
             triggerTime[TDC] =
-               (triggerTime.find(TDC) != triggerTime.end()) ? std::min(hit.hitTime, triggerTime[TDC]) : hit.hitTime;
-            trigger_times.emplace_back(TDC, hit.hitTime);
+               (triggerTime.find(TDC) != triggerTime.end()) ? std::min(hit_time, triggerTime[TDC]) : hit_time;
+            trigger_times.emplace_back(TDC, hit_time);
          }
          new ((*fRawTriggers)[nhitsTriggers])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit.hitTime), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
          nhitsTriggers++;
       } else if (detectorId == 1) {
          if (channel->edge == 0) {
             // Use the earliest if there are several
-            if (nhitsMasterTrigger == 0 || hit.hitTime < master_trigger_time) {
-               master_trigger_time = hit.hitTime;
+            if (nhitsMasterTrigger == 0 || hit_time < master_trigger_time) {
+               master_trigger_time = hit_time;
             }
          }
          new ((*fRawMasterTrigger)[nhitsMasterTrigger])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit.hitTime), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
          nhitsMasterTrigger++;
       } else if (detectorId == -1) {
          // beam counter
          new ((*fRawBeamCounter)[nhitsBeamCounter])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit.hitTime), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
          nhitsBeamCounter++;
       } else if (detectorId == 6 || detectorId == 7) {
          // beam counter
          new ((*fRawScintillator)[nhitsScintillator])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit.hitTime), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
          nhitsScintillator++;
       } else if (channels.find(hit.channelId) != channels.end()) {
-         if (hit.hitTime < channels[hit.channelId]) {
-            std::swap(hit.hitTime, channels[hit.channelId]);
-            assert(hit.hitTime > channels[hit.channelId]);
+         if (hit_time < channels[hit.channelId]) {
+            std::swap(hit_time, channels[hit.channelId]);
+            assert(hit_time > channels[hit.channelId]);
          }
-         late_hits[hit.channelId].push_back(hit.hitTime);
+         late_hits[hit.channelId].emplace_back(hit_time);
       } else {
-         channels[hit.channelId] = hit.hitTime;
+         channels[hit.channelId] = hit_time;
       }
    }
    uint16_t delay = 2000;
