@@ -49,7 +49,7 @@ private:
 
 public:
    // Class definition
-   ClassDef(DriftTubeUnpack, 1)
+   ClassDefOverride(DriftTubeUnpack, 1)
 };
 
 #endif

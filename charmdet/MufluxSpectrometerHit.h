@@ -16,7 +16,7 @@ public:
     *@param digi     digitized/measured TDC
     *@param flags    collection of flags
     **/
-   MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag, uint16_t ch);
+   MufluxSpectrometerHit(Int_t detID, Float_t ftdc, Float_t signal_width, uint16_t flag, uint16_t ch);
    MufluxSpectrometerHit(MufluxSpectrometerPoint *p, Double_t t0);
    void MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop);
    /** Destructor **/
@@ -27,8 +27,6 @@ public:
    Float_t tdc() const { return fdigi; }
    void setInvalid() { flags |= DriftTubes::InValid; }
    bool isValid() const { return !((flags & DriftTubes::InValid) == DriftTubes::InValid); }
-   bool isTrailing() const { return (channel & 0x1000) == 0x1000; }
-   bool isLeading() const { return !isLeading(); }
    int GetTDC() const { return int((channel & 0xF00) >> 8); }
    bool TDCGood() const
    {
@@ -38,16 +36,18 @@ public:
       return AllOK || !((flags & TDCNotOK) == TDCNotOK);
    }
    bool hasDelay() const { return !((flags & DriftTubes::NoDelay) == DriftTubes::NoDelay); }
+   Float_t GetWidth() const { return width; }
 
 private:
    /** Copy constructor **/
    MufluxSpectrometerHit(const MufluxSpectrometerHit &point);
    MufluxSpectrometerHit operator=(const MufluxSpectrometerHit &point);
 
-   uint16_t flags; ///< flag
+   Float_t width;
+   uint16_t flags;
    uint16_t channel;
 
-   ClassDef(MufluxSpectrometerHit, 6);
+   ClassDef(MufluxSpectrometerHit, 7);
 };
 
 #endif

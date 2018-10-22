@@ -17,8 +17,8 @@
  
 Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns 
 // -----   Standard constructor   ------------------------------------------ 
-MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag, uint16_t ch) 
-  : ShipHit(detID,ftdc), flags(flag), channel(ch) {}
+MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, Float_t signal_width, uint16_t flag, uint16_t ch)
+  : ShipHit(detID,ftdc), width(signal_width), flags(flag), channel(ch) {}
 // -----   constructor from SpectrometerPoint   ------------------------------------------ 
 MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_t t0)
 {

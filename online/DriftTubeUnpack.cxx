@@ -6,6 +6,7 @@
 // ROOT headers
 #include "TClonesArray.h"
 #include "ROOT/TSeq.hxx"
+#include "ROOT/RVec.hxx"
 
 // Fair headers
 #include "FairRootManager.h"
@@ -105,7 +106,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    }
    std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
    std::unordered_map<uint16_t, uint16_t> channels;
-   std::unordered_map<uint16_t, std::vector<uint16_t>> late_hits;
+   std::unordered_map<uint16_t, ROOT::VecOps::RVec<uint16_t>> late_hits;
    std::unordered_map<int, uint16_t> triggerTime;
    uint16_t master_trigger_time = 0;
    std::vector<std::pair<int, uint16_t>> trigger_times;
@@ -167,6 +168,9 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       uint16_t raw_chan = channel_and_time.first;
       uint16_t raw_time = channel_and_time.second;
       auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
+      if(channel->edge == 1){
+         continue;
+      }
       auto detectorId = channel->GetDetectorId();
       auto TDC = channel->TDC;
       uint16_t trigger_time;
@@ -178,14 +182,15 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          skipped++;
          continue;
       }
-      LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
       Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
-      new ((*fRawTubes)[nhitsTubes]) MufluxSpectrometerHit(detectorId, time, flags, raw_chan);
+      Float_t width = 0.098 * (channels.at(raw_chan + 0x1000) - raw_time);
+      new ((*fRawTubes)[nhitsTubes]) MufluxSpectrometerHit(detectorId, time, width, flags, raw_chan);
       nhitsTubes++;
    }
    for (auto &&channel_and_times : late_hits) {
       uint16_t raw_chan = channel_and_times.first;
       auto raw_times = channel_and_times.second;
+      auto trailing_times = late_hits.at(raw_chan + 0x1000);
       auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
       auto detectorId = channel->GetDetectorId();
       auto TDC = channel->TDC;
@@ -197,10 +202,11 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
                       << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
          continue;
       }
-      for (auto &&raw_time : raw_times) {
-         Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
+      auto times = 0.098 * (delay - trigger_time + raw_times); // conversion to ns and jitter correction
+      auto widths = 0.098 * (trailing_times -  raw_times);
+      for (auto &&i : ROOT::MakeSeq(raw_times.size())) {
          new ((*fRawLateTubes)[nhitsLateTubes])
-            MufluxSpectrometerHit(detectorId, time, flags | DriftTubes::InValid, raw_chan);
+            MufluxSpectrometerHit(detectorId, times.at(i), widths.at(i), flags | DriftTubes::InValid, raw_chan);
          nhitsLateTubes++;
       }
    }
