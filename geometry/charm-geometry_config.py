@@ -337,8 +337,8 @@ with ConfigRegistry.register_config("basic") as c:
       
       
                 
-    c.MuonTagger.BX = 195.3975 * u.cm
-    c.MuonTagger.BY = 121.7295 * u.cm
+    c.MuonTagger.BX = 2.40 *u.m
+    c.MuonTagger.BY = 2.20 * u.m
     #c.MuonTagger.BX = 195.5 * u.cm
     #c.MuonTagger.BY = 125. * u.cm
     #c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 5
@@ -355,8 +355,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.MuonTagger.PX = c.MuonTagger.BX
     c.MuonTagger.PY = c.MuonTagger.BY
-    c.MuonTagger.SX = c.MuonTagger.BX
-    c.MuonTagger.SY = c.MuonTagger.BY
+    c.MuonTagger.SX = 195.3975 * u.cm
+    c.MuonTagger.SY = 121.7295 * u.cm
     c.MuonTagger.HX = 5 * u.cm #dimensions of central hole
     c.MuonTagger.HY = 5 * u.cm
 
