@@ -130,6 +130,11 @@ void EmulsionMagnet::SetCutDimensions(Double_t CutLength, Double_t CutHeight)
   fCutHeight = CutHeight;
 }
 
+void EmulsionMagnet::SetConstantField(Bool_t EmuMagnetConstField)
+{
+  fConstField = EmuMagnetConstField;
+}
+
 Int_t EmulsionMagnet::InitMedium(const char* name)
 {
   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -451,11 +456,6 @@ void EmulsionMagnet::ConstructGeometry()
 
    if(fDesign==3) //NEW with magnet
     {
-      TGeoUniformMagField *magField1 = new TGeoUniformMagField(-fField,0.,0.); //magnetic field in Magnet pillars
-      TGeoUniformMagField *magField2 = new TGeoUniformMagField(fField,0.,0.); //magnetic field in target
-      TGeoUniformMagField *magField1y = new TGeoUniformMagField(0.,-fField,0.); //down return magnetic field along y
-      TGeoUniformMagField *magField2y = new TGeoUniformMagField(0.,fField,0.); //up return magnetic field along y 
-
       //Box for Magnet
       TGeoBBox *MagnetBox = new TGeoBBox(fMagnetX/2, fMagnetY/2, fMagnetZ/2);
       TGeoVolume *MagnetVol = new TGeoVolume("NudetMagnet",MagnetBox,vacuum);
@@ -464,7 +464,6 @@ void EmulsionMagnet::ConstructGeometry()
       TGeoBBox *BaseBox = new TGeoBBox(fBaseX/2,fBaseY/2,fBaseZ/2);
       TGeoVolume *BaseVol = new TGeoVolume("BaseVol",BaseBox,Fe);
       BaseVol->SetLineColor(kRed);
-      BaseVol->SetField(magField1);
       TGeoBBox *LateralBox = new TGeoBBox(fColumnX/2,fColumnY/2,fColumnZ/2);
 
       //prepare for triangolar cuts
@@ -478,9 +477,8 @@ void EmulsionMagnet::ConstructGeometry()
       //we need different volumes to place different magnetic fields
       TGeoBBox *SemiLateralBox = new TGeoBBox("SemiLateralBox",(fColumnX)/2, SemiLateralBoxHeight /2, fColumnZ/2);           
       TGeoVolume *volUpLateral = new TGeoVolume("volUpLateral",SemiLateralBox,Fe); //up and down refer to the magnetic field verse
-      volUpLateral->SetField(magField2y);
+     
       TGeoVolume *volDownLateral = new TGeoVolume("volDownLateral",SemiLateralBox,Fe);       
-      volDownLateral->SetField(magField1y);
       SemiLateralBox->SetName("S");       
       volUpLateral->SetLineColor(kRed);
       volDownLateral->SetLineColor(kRed);
@@ -575,7 +573,6 @@ void EmulsionMagnet::ConstructGeometry()
 
       //magnetized region
       TGeoVolume *volMagRegion = new TGeoVolume("volMagRegion",IncoilBox, vacuum);
-      volMagRegion->SetField(magField2);
       MagnetVol->AddNode(volMagRegion, 1, new TGeoTranslation(0,0,0));
 
       //pillars for the magnet
@@ -586,6 +583,19 @@ void EmulsionMagnet::ConstructGeometry()
       tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ-fMagnetZ/2+fPillarZ/2));
       tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-fMagnetX/2+fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
       tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(fMagnetX/2-fPillarX/2,-fMagnetY/2-fPillarY/2, fCenterZ+fMagnetZ/2-fPillarZ/2));
+
+
+      if (fConstField){ //adding magnetic field if not implemented from nudet field map
+      TGeoUniformMagField *magField1 = new TGeoUniformMagField(-fField,0.,0.); //magnetic field in Magnet pillars
+      TGeoUniformMagField *magField2 = new TGeoUniformMagField(fField,0.,0.); //magnetic field in target
+      TGeoUniformMagField *magField1y = new TGeoUniformMagField(0.,-fField,0.); //down return magnetic field along y
+      TGeoUniformMagField *magField2y = new TGeoUniformMagField(0.,fField,0.); //up return magnetic field along y 
+
+      BaseVol->SetField(magField1);
+      volUpLateral->SetField(magField2y);
+      volDownLateral->SetField(magField1y);
+      volMagRegion->SetField(magField2);
+      }
     }
 }
 

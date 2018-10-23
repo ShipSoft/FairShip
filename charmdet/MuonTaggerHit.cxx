@@ -1,78 +1,42 @@
 #include "MuonTaggerHit.h"
 #include <iostream>
+#include "TGeoBBox.h"
+#include "TGeoNode.h"
+#include "TGeoManager.h" 
+#include "TGeoShape.h" 
+#include "TVector3.h" 
 
 MuonTaggerHit::MuonTaggerHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
 
-enum Direction { horizontal = 0, vertical = 1 };
 
-void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop)
-{
-   // Detector ID scheme:
-   // 10000 * station + 1000 * direction + strip;
-   // sets vbot and vtop to opposing corners of the cuboid
-   int station = fDetectorID / 10000;
-   Direction direction = static_cast<Direction>((fDetectorID % 10000) / 1000);
-   int strip = fDetectorID % 1000;
-   const int NR_HORI_STRIPS = 116;    // nr horizontal strips, X dir, Y coord
-   const int NR_VER_STRIPS = 184;     // nr vertical strips, Y dir, X coord
-   const float STRIP_XWIDTH = 0.8625; // internal STRIP V, WIDTH, in cm
-   const float EXT_STRIP_XWIDTH_L =
-      0.9625; // nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
-   const float EXT_STRIP_XWIDTH_R =
-      0.86; // measured Right external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
-   const float STRIP_YWIDTH = 0.8625;  // internal STRIP H, WIDTH, in cm
-   const float EXT_STRIP_YWIDTH = 0.3; // measured external STRIP H, WIDTH, in cm (nominal 0.4375)
-   const float H_STRIP_OFF = 0.1983;   // offset between adjacent H strips, in cm
-   const float V_STRIP_OFF = 0.2000;   // offset between adjacent V strips, in cm
-   const float total_width =
-      (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF;
-   const float total_height =
-      (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF;
-   const float x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2;
-   const float y_start = total_height / 2;
-   float Z = 0;
-   /// station conditions - remove once z position automated from geo file
-   switch (station) {
-   case 1: Z = 874.25; break;
-   case 2: Z = 959.25; break;
-   case 3: Z = 1004.25; break;
-   case 4: Z = 1049.25; break;
-   case 5: Z = 1094.25; break;
-   default: std::cout << "Invalid station" << std::endl;
-   };
-
-   switch (direction) {
-   case horizontal: {
-      float y;
-      auto xtop = x_start;
-      auto xbot = x_start - total_width;
-      if (strip == 1) { // 1st strip (top)
-         y = y_start - EXT_STRIP_YWIDTH / 2;
-      } else if (strip == NR_HORI_STRIPS) { // last strip (bottom)
-         y = y_start - total_height + EXT_STRIP_YWIDTH / 2;
-      } else { // all other horizontal strips
-         y = y_start - EXT_STRIP_YWIDTH - (strip - 1.5) * STRIP_YWIDTH - (strip - 1) * H_STRIP_OFF;
-      }
-      vtop.SetXYZ(xtop, y, Z);
-      vbot.SetXYZ(xbot, y, Z);
-      break;
-   }
-   case vertical: {
-      float x;
-      auto ytop = y_start - total_height;
-      auto ybot = y_start;
-      if (strip == 1) { // first strip (left)
-         x = x_start - EXT_STRIP_XWIDTH_L / 2;
-      } else if (strip == NR_VER_STRIPS) { // last strip (right)
-         x = x_start - total_width + EXT_STRIP_XWIDTH_R / 2;
-      } else { // all other vertical strips
-         x = x_start - EXT_STRIP_XWIDTH_L - (strip - 1.5) * STRIP_XWIDTH - (strip - 1) * V_STRIP_OFF;
-      }
-      vtop.SetXYZ(x, ytop, Z);
-      vbot.SetXYZ(x, ybot, Z);
-      break;
-   }
-   }
+void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
+// method to get strip endpoints from TGeoNavigator
+  Int_t statnb = fDetectorID/10000;
+  Int_t orientationnb = (fDetectorID-statnb*10000)/1000;  //1=vertical, 0=horizontal
+  if (orientationnb > 1) {
+     std::cout << "MuonTagger::StripEndPoints, not a sensitive volume "<<fDetectorID<<std::endl;              
+     return;
+  }
+  TString stat="VMuonBox_1/VSensitive";stat+=+statnb;stat+="_";stat+=statnb;
+  TString striptype;
+  if (orientationnb == 0) { striptype = "Hstrip_";}
+  if (orientationnb == 1) { striptype = "Vstrip_";}
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
+  TString path = "";path+="/";path+=stat;path+="/"+striptype;path+=fDetectorID;
+  Bool_t rc = nav->cd(path);
+  if (not rc){
+       std::cout << "MuonTagger::StripEndPoints, TGeoNavigator failed "<<path<<std::endl; 
+       return;
+  }  
+  TGeoNode* W = nav->GetCurrentNode();
+  TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
+  Double_t top[3] = {0,0,S->GetDZ()};
+  Double_t bot[3] = {0,0,-S->GetDZ()};
+  Double_t Gtop[3],Gbot[3];
+  nav->LocalToMaster(top, Gtop);
+  nav->LocalToMaster(bot, Gbot);
+  vtop.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);   
+  vbot.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);        
 }
 
 ClassImp(MuonTaggerHit)

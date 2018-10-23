@@ -27,7 +27,19 @@ public:
 
     void SetPassiveParameters(Double_t PX, Double_t PY, Double_t PTh, Double_t PTh1);
     void SetSensitiveParameters(Double_t SX, Double_t SY, Double_t STh);
+    void SetRPCz(Double_t RPC1z, Double_t RPC2z, Double_t RPC3z, Double_t RPC4z,  Double_t RPC5z);
+    void SetRPCThickness(Double_t RPCThickness);
+    void SetGapThickness(Double_t GapThickness);
+    void SetElectrodeThickness(Double_t ElectrodeThickness);
+    void SetStripz(Double_t Stripz, Double_t Stripfoamz);  
+    void SetNStrips(Int_t NVstrips, Int_t NHstrips);   
+    void SetVStrip(Double_t Vstripx, Double_t Vstrip_L, Double_t Vstrip_R, Double_t Vstripoffset);
+    void SetHStrip(Double_t Hstripy, Double_t Hstrip_ext, Double_t Hstripoffset);    
+    
     void SetHoleDimensions(Double_t HX, Double_t HY);
+    void EndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
+        
+    
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -91,13 +103,31 @@ protected:
     //exclusive for the muon filter
     Double_t PasX;
     Double_t PasY;
+    Double_t PasThicknessz[5];
     Double_t PasThickness;
-    Double_t PasThickness1;
+    Double_t PasThickness1;        
     
     Double_t SensX;
     Double_t SensY;
     Double_t SensThickness;
-
+    
+    Double_t fRPCz[5];
+    
+    Double_t fRPCThickness;
+    Double_t fGapThickness;
+    Double_t fElectrodeThickness;
+    Double_t fStripz; 
+    Double_t fStripfoamz;    
+    Double_t fVstripx;
+    Double_t fVstrip_L;
+    Double_t fVstrip_R; 
+    Double_t fVstripoffset;
+    Double_t fHstripy;
+    Double_t fHstrip_ext;
+    Double_t fHstripoffset;  
+    Int_t    fNVstrips;
+    Int_t    fNHstrips;  
+         
     Double_t HoleX, HoleY;
     bool lastslabsconcrete;
 };

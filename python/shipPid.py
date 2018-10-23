@@ -88,7 +88,7 @@ class Task:
   self.hcal1 = []
   self.hcal2 = []
   self.new_hcal2 = []
-  if not self.sTree.HcalPointLite: return
+  if not  hasattr(self.sTree,'HcalPointLite'): return
   for chit in self.sTree.HcalPointLite:
    if not chit.GetEnergyLoss()>0: continue
    detID = chit.GetDetectorID()

@@ -49,8 +49,8 @@ class ShipDigiReco:
 #  check that all containers are present, otherwise create dummy version
   self.dummyContainers={}
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
-                  "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint","HcalPointLite":"hcalPoint",\
-                  "splitcalPoint":"splitcalPoint","TimeDetPoint":"TimeDetPoint","muonPoint":"muonPoint"}
+                  "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint",\
+                  "TimeDetPoint":"TimeDetPoint","muonPoint":"muonPoint"}
   for x in branch_class:
     if not self.sTree.GetBranch(x):
      self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
@@ -89,10 +89,16 @@ class ShipDigiReco:
 # for the digitizing step
   self.v_drift = modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
+# optional if present, splitcalCluster
+  if self.sTree.GetBranch("splitcalPoint"):
+   self.digiSplitcal = ROOT.TClonesArray("splitcalHit") 
+   self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1) 
+   self.recoSplitcal = ROOT.TClonesArray("splitcalCluster") 
+   self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1) 
 
 # setup ecal reconstruction
   self.caloTasks = []  
-  if self.sTree.GetBranch("EcalPoint"):
+  if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
 # Creates. exports and fills calorimeter structure
    dflag = 0
    if debug: dflag = 10
@@ -228,6 +234,27 @@ class ShipDigiReco:
    self.digiMuon.Delete()
    self.digitizeMuon()
    self.digiMuonBranch.Fill()
+   if self.sTree.GetBranch("splitcalPoint"):
+    self.digiSplitcal.Delete()
+    self.digitizeSplitcal()
+    self.digiSplitcalBranch.Fill()
+
+ def digitizeSplitcal(self):  
+   listOfDetID = {} # the idea is to keep only one hit for each cell/strip and if more points fall in the same cell/strip just sum up the energy
+   index = 0
+   for aMCPoint in self.sTree.splitcalPoint:
+     aHit = ROOT.splitcalHit(aMCPoint,self.sTree.t0)
+     detID = aHit.GetDetectorID()
+     if detID not in listOfDetID:
+       if self.digiSplitcal.GetSize() == index: 
+         self.digiSplitcal.Expand(index+1000)
+       listOfDetID[detID] = index
+       self.digiSplitcal[index]=aHit
+       index+=1
+     else:
+       indexOfExistingHit = listOfDetID[detID]
+       self.digiSplitcal[indexOfExistingHit].UpdateEnergy(aHit.GetEnergy())
+   self.digiSplitcal.Compress() #remove empty slots from array
 
  def digitizeTimeDet(self):
    index = 0

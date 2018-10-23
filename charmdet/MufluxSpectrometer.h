@@ -35,7 +35,7 @@ class MufluxSpectrometer:public FairDetector
     void SetDeltazLayer(Double_t deltazlayer);
     void SetDeltazPlane(Double_t deltazplane);
     void SetTubesPerLayer(Int_t tubesperlayer);
-    void SetStereoAngle(Int_t stereoangle);
+    void SetStereoAngle(Double_t stereoangle, Double_t stereovangle);
     void SetWireThickness(Double_t wirethickness);
     void SetDeltazView(Double_t deltazview);
     void SetTubeLength12(Double_t strawlength12);
@@ -53,6 +53,7 @@ class MufluxSpectrometer:public FairDetector
     void SetScintillatorDistT(Double_t scintillatorDistT);
     void SetscintillatorPlasticThickness(Double_t scintillatorPlasticThickness);
     void SetGoliathCentre(Double_t goliathcentre_to_beam);
+    void SetGoliathCentreZ(Double_t goliathcentre);
     void SetTStationsZ(Double_t T1z, Double_t T2z, Double_t T3z, Double_t T4z);
     void SetTStationsX(Double_t T1x_x, Double_t T1u_x, Double_t T2x_x, Double_t T2v_x, Double_t T3x, Double_t T4x);
     void SetTStationsY(Double_t T1x_y, Double_t T1u_y, Double_t T2x_y, Double_t T2v_y, Double_t T3y, Double_t T4y);    
@@ -135,6 +136,7 @@ private:
     Double_t       fOffset_plane12;          //!  Offset (x) between straws of plane1&2
     Int_t          fTubes_per_layer;         //!  Number of tubes in one layer
     Double_t       fView_angle;              //!  Stereo angle of layers in a view
+    Double_t       fView_vangle;    
     Double_t       fcosphi;
     Double_t       fsinphi;
     Double_t       fWire_thickness;          //!  Thickness of the wire
@@ -153,6 +155,7 @@ private:
     Double_t       fdistT1T2;                //!  distance between T1&T2
     Double_t       fdistT3T4;                //!  distance between T3&T4
     Double_t       fgoliathcentre_to_beam;
+    Double_t       fgoliathcentre;
     Double_t       fT1z;
     Double_t       fT2z;
     Double_t       fT1x_x;

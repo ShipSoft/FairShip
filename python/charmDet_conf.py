@@ -74,7 +74,7 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetDeltazLayer(ship_geo.MufluxSpectrometer.DeltazLayer)
  MufluxSpectrometer.SetDeltazPlane(ship_geo.MufluxSpectrometer.DeltazPlane)
  MufluxSpectrometer.SetTubesPerLayer(ship_geo.MufluxSpectrometer.TubesPerLayer)
- MufluxSpectrometer.SetStereoAngle(ship_geo.MufluxSpectrometer.ViewAngle)
+ MufluxSpectrometer.SetStereoAngle(ship_geo.MufluxSpectrometer.ViewAngle, ship_geo.MufluxSpectrometer.ViewvAngle)
  MufluxSpectrometer.SetWireThickness(ship_geo.MufluxSpectrometer.WireThickness)
  MufluxSpectrometer.SetTubeLength(ship_geo.MufluxSpectrometer.TubeLength)
  MufluxSpectrometer.SetTubeLength12(ship_geo.MufluxSpectrometer.TubeLength12) 
@@ -86,6 +86,7 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetDistT1T2(ship_geo.MufluxSpectrometer.distT1T2)
  MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)    
  MufluxSpectrometer.SetGoliathCentre(ship_geo.MufluxSpectrometer.goliathcentre_to_beam)
+ MufluxSpectrometer.SetGoliathCentreZ(ship_geo.MufluxSpectrometer.goliathcentre)
  MufluxSpectrometer.SetTStationsZ(ship_geo.MufluxSpectrometer.T1z,ship_geo.MufluxSpectrometer.T2z,ship_geo.MufluxSpectrometer.T3z,ship_geo.MufluxSpectrometer.T4z) 
  MufluxSpectrometer.SetTStationsX(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1u_x,ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2v_x,ship_geo.MufluxSpectrometer.T3x,ship_geo.MufluxSpectrometer.T4x) 
  MufluxSpectrometer.SetTStationsY(ship_geo.MufluxSpectrometer.T1x_y,ship_geo.MufluxSpectrometer.T1u_y,ship_geo.MufluxSpectrometer.T2x_y,ship_geo.MufluxSpectrometer.T2v_y,ship_geo.MufluxSpectrometer.T3y,ship_geo.MufluxSpectrometer.T4y) 
@@ -134,6 +135,15 @@ def configure(run,ship_geo):
  MuonTagger.SetPassiveParameters(ship_geo.MuonTagger.PX, ship_geo.MuonTagger.PY, ship_geo.MuonTagger.PTh, ship_geo.MuonTagger.PTh1)
  MuonTagger.SetSensitiveParameters(ship_geo.MuonTagger.SX, ship_geo.MuonTagger.SY, ship_geo.MuonTagger.STh)
  MuonTagger.SetHoleDimensions(ship_geo.MuonTagger.HX, ship_geo.MuonTagger.HY)
+ MuonTagger.SetRPCz(ship_geo.MuonTagger.RPC1z, ship_geo.MuonTagger.RPC2z, ship_geo.MuonTagger.RPC3z, ship_geo.MuonTagger.RPC4z, ship_geo.MuonTagger.RPC5z)
+ MuonTagger.SetRPCThickness(ship_geo.MuonTagger.RPCthickness)
+ MuonTagger.SetGapThickness(ship_geo.MuonTagger.Gapthickness)
+ MuonTagger.SetElectrodeThickness(ship_geo.MuonTagger.Electrodethickness)
+ MuonTagger.SetStripz(ship_geo.MuonTagger.Stripz, ship_geo.MuonTagger.Stripfoamz)
+ MuonTagger.SetVStrip(ship_geo.MuonTagger.VStripx,ship_geo.MuonTagger.VStripx_L,ship_geo.MuonTagger.VStripx_R,ship_geo.MuonTagger.VStripoffset) 
+ MuonTagger.SetHStrip(ship_geo.MuonTagger.HStripy,ship_geo.MuonTagger.HStripy_ext,ship_geo.MuonTagger.HStripoffset)  
+ MuonTagger.SetNStrips(ship_geo.MuonTagger.NVstrips,ship_geo.MuonTagger.NHstrips) 
+  
  detectorList.append(MuonTagger)
  for x in detectorList:
   run.AddModule(x)
@@ -141,9 +151,9 @@ def configure(run,ship_geo):
  fMagField = ROOT.ShipGoliathField()
  
  #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_3600A_0A.root"  
- fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
+ #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
  #default field map
- #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
+ fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
  fMagField.Init(fieldfile)
  run.SetField(fMagField)   
  
