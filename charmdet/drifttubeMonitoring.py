@@ -19,14 +19,30 @@ debug = False
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
+parser.add_argument("-l", "--fileCatalog", dest="catalog", help="list of files in file", default=False)
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
 parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=True)
 parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False)
 parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False)
 
 options = parser.parse_args()
-
-fnames = options.listOfFiles.split(',')
+fnames = []
+if options.catalog:
+ tmp = open(options.listOfFiles)
+ for x in tmp.readlines():
+  fname = x.replace('\n','')
+  if fname.find("root")<0:continue
+  f=ROOT.TFile.Open(fname)
+  sTree = f.cbmsim
+  if not sTree.GetBranch("FitTracks"): 
+   print "does not contain FitTracks",fname
+   f.Close()
+   continue
+  fnames.append(fname)
+  fnames.append(x.replace('\n',''))
+ tmp.close()
+else:
+ fnames = options.listOfFiles.split(',')
 fname = fnames[0]
 if options.updateFile:
  f=ROOT.TFile(fname,'update')
@@ -42,7 +58,7 @@ rnames = []
 for fname in fnames:
  rnames.append(fname[fname.rfind('/')+1:])
 rname = rnames[0]
-sTree.SetMaxVirtualSize(300000000)
+sTree.SetMaxVirtualSize(300000)
 
 from ShipGeoConfig import ConfigRegistry
 ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
@@ -1022,6 +1038,8 @@ def sortHits(event):
 
 def plotHitMaps():
  noisyChannels=[]
+ for x in sTree.GetListOfBranches():sTree.SetBranchStatus(x.GetName(),0)
+ sTree.SetBranchStatus("Digi_MufluxSpectrometerHits",1)
  for event in sTree:
   for hit in event.Digi_MufluxSpectrometerHits:
    s,v,p,l,view = stationInfo(hit)
@@ -1059,8 +1077,10 @@ def plotHitMaps():
         myDetID = s * 10000000 + v * 1000000 + p * 100000 + l*10000
         channel = myDetID+i-1 + 2000
         if not channel in noisyChannels: noisyChannels.append(myDetID+i-1)
+  sTree.Digi_MufluxSpectrometerHits.Delete()
  print "list of noisy channels"
  for n in noisyChannels: print n
+ if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",1)
 
 def sumStations():
  h['TDC_12']= h['TDC1000_x'].Clone('TDC_12')
@@ -1348,13 +1368,15 @@ def extrapolateToPlane(fT,z):
   rc,pos,mom = False,None,None
   fst = fT.getFitStatus()
   if fst.isFitConverged():
+   rep = fT.getCardinalRep()
    if z > DT['Station_1_x_plane_0_layer_0_10000000'][2]-10 and z < DT['Station_4_x_plane_1_layer_1_40110000'][2] + 10:
 # find closest measurement
     mClose = 0
     mZmin = 999999.
     M = min(fT.getNumPointsWithMeasurement(),30) # for unknown reason, get stuck for track with large measurements
-    for m in [0,M/2,M-1]:
+    for m in range(0,M):
      # print "extr to state m",m,fT.getNumPointsWithMeasurement()
+     if not fT.getPointWithMeasurementAndFitterInfo(m,rep): continue
      st = fT.getFittedState(m)
      Pos = st.getPos()
      if abs(z-Pos.z())<mZmin:
@@ -1379,6 +1401,10 @@ def extrapolateToPlane(fT,z):
 # use linear extrapolation from first state
      fstate = fT.getFittedState(0)
     elif z > DT['Station_4_x_plane_1_layer_1_40110000'][2]:
+     M = min(fT.getNumPointsWithMeasurement()-1,30)
+     if not fT.getPointWithMeasurementAndFitterInfo(M,rep):
+      print 'error with extrapolation: z=',z/u.m,'m state does not exist'
+      return False,None,None
      fstate = fT.getFittedState(fT.getNumPointsWithMeasurement()-1)
 # use linear extrap
     pos,mom = fstate.getPos(),fstate.getMom()
@@ -1407,8 +1433,8 @@ def displayTrack(theTrack,debug=False):
       rc,pos,mom = extrapolateToPlane(theTrack,zstart)
       if not rc: print "dispTrack extrap failed"
       else: 
-        h['dispTrack'][nt].SetPoint(nP,pos[2],pos[0])
-        h['dispTrackY'][nt].SetPoint(nP,pos[2],pos[1])
+        h['dispTrack'][nt].SetPoint(nP,zstart,pos[0])
+        h['dispTrackY'][nt].SetPoint(nP,zstart,pos[1])
         if debug:
          bfield.get(pos[0],pos[1],pos[2],Bx,By,Bz)
          print "%5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F "%(pos[0],pos[1],pos[2],Bx,By,Bz,mom[0],mom[1],mom[2])
@@ -1644,7 +1670,7 @@ Debug = False
 delxAtGoliath=8.
 clusterWidth = 5.
 yMatching = 10.
-minHitsPerCluster, maxHitsPerCluster = 2,6
+minHitsPerCluster, maxHitsPerCluster = 2,10
 topA,botA = ROOT.TVector3(),ROOT.TVector3()
 topB,botB = ROOT.TVector3(),ROOT.TVector3()
 clusters = {}
@@ -1714,7 +1740,7 @@ def testPR(onlyHits=False):
  for nTrack in track_hits:
   h['magPos'].Fill(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'])
   node = sGeo.FindNode(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'],zgoliath)
-  if node.GetName() != "volGoliath_1": continue
+  #if node.GetName() != "volGoliath_1": continue
   hitlist[k]=[]
   #if len(track_hits[nTrack]['34'])<5 or len(track_hits[nTrack]['y12'])<5: continue
   for dets in ['34','stereo12','y12']:
@@ -2040,10 +2066,6 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1):
    #for aTrack in trackCandidates: aTrack.Delete()
    t0 = h['T0tmp'].GetMean()
    rc = h['T0'].Fill(t0)
-   for aTrack in trackCandidates: 
-     rep = aTrack.getCardinalRep()
-     aTrack.Delete()
-     rep.Delete()
   if not h.has_key('biasedResiduals'): 
       ut.bookCanvas(h,key='biasedResiduals',title='biasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
@@ -2219,7 +2241,7 @@ def hitResolution():
     distance = RT('x',TDC)
     h['hitResol'].Fill(distance - trueHit.dist2Wire())
 
-def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1):
+def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2):
   nav.cd('/VMuonBox_1/VSensitive1_1')
   loc = array('d',[0,0,0])
   glob = array('d',[0,0,0])
@@ -2238,6 +2260,10 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1):
   ut.bookHist(h,'RPCMatchedHits','matched RPC hits as function of track momentum',10,0.5,10.5,20,-0.5,19.5,100,0.,100.)
   ut.bookHist(h,'RPCMeanMatchedHits','mean matched RPC hits as function of track momentum',100,0.,100.)
   ut.bookHist(h,'RPC>1','fraction of tracks with > 1 RPC hits',100,0.,100.)
+  ut.bookHist(h,'RPC<2XY','position of tracks with < 2 RPC hits and p>30GeV',50,-100.,100.,50,-100.,100.)
+  ut.bookHist(h,'RPC_p', 'momentum of tracks pointing to RPC',100,0.,100.)
+  for k in range(2,20):
+   ut.bookHist(h, 'RPC<'+str(k)+'_p', '  < '+str(k)+' RPC hits p',100,0.,100.)
   for Nr in range(eventRange[0],eventRange[1]):
    getEvent(Nr)
    if Nr%10000==0:   print "now at event",Nr
@@ -2251,12 +2277,14 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1):
        if sta.getMomMag() < 1.: continue
        nHit = -1
        rc,pos,mom = extrapolateToPlane(aTrack,zRPC1)
+       xRPC1,yRPC1 = pos[0],pos[1]
        inAcc=False
        node = sGeo.FindNode(pos[0],pos[1],zRPC1)
        if not node: 
          print "RPCextrap: node not found, ",pos[0],pos[1],zRPC1
        elif node.GetName() != "cave_1": 
          inAcc=True
+       if (pos[0]<-80): inAcc = False
        for hit in sTree.Digi_MuonTaggerHits:
         nHit+=1
         channelID = hit.GetDetectorID()
@@ -2287,10 +2315,16 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1):
        # record number of hits per station and view and track momentum
        # but only for tracks in acceptance
        if inAcc:
+        Nmatched = 0
+        p = min(99.9,sta.getMomMag())
         for s in matchedHits:
          for v in matchedHits[s]:
-          p = min(99.9,sta.getMomMag())
           rc = h['RPCMatchedHits'].Fill(2*s-1+v,len(matchedHits[s][v]),p)
+          Nmatched+=len(matchedHits[s][v])
+        if Nmatched <2 and p>30: rc = h['RPC<2XY'].Fill(xRPC1,yRPC1)
+        rc = h['RPC_p'].Fill(p)
+        for k in range(2,20):
+         if Nmatched<k: rc = h['RPC<'+str(k)+'_p'].Fill(p)
   if not h.has_key('RPCResiduals'): 
       ut.bookCanvas(h,key='RPCResiduals',title='RPCResiduals',nx=1600,ny=1200,cx=2,cy=4)
       ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=4)
@@ -2364,22 +2398,26 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1):
   h['RPCResidualsP'].cd(1)
   h['RPCResX1_p'].Draw('colz')
 #         rc = h['RPCMatchedHits'].Fill(2*s-1+v,len(matchedHits[s][v]),mom.Mag())
-  zax = h['RPCMatchedHits'].GetZaxis()
-  xax = h['RPCMatchedHits'].GetXaxis()
-  yax = h['RPCMatchedHits'].GetYaxis()
+  zax = h['RPCMatchedHits'].GetZaxis() # 100  momentum
+  xax = h['RPCMatchedHits'].GetXaxis() # 10  bins  station and view
+  yax = h['RPCMatchedHits'].GetYaxis() # 20  multiplicity
   for ip in range(1,zax.GetNbins()+1):
     Nmean = 0
     Nentries = 0
     Ntracks1 = 0
     for ks in range(1,xax.GetNbins()+1):
+      Ntracks1=h['RPCMatchedHits'].GetBinContent(ks,1,ip)+h['RPCMatchedHits'].GetBinContent(ks,2,ip)
       for n in range(1,yax.GetNbins()+1):
          Nmean += h['RPCMatchedHits'].GetBinContent(ks,n,ip)*xax.GetBinCenter(n)
          Nentries+=h['RPCMatchedHits'].GetBinContent(ks,n,ip)
-         if xax.GetBinCenter(n)>1: Ntracks1+=h['RPCMatchedHits'].GetBinContent(ks,n,ip)
     Nmean = Nmean / float(Nentries+1E-10)
     rc = h['RPCMeanMatchedHits'].SetBinContent(ip,Nmean)
-    fraction = Ntracks1/(Nentries+1E-10)
+    fraction = (Nentries-Ntracks1)/(Nentries+1E-10)
     rc = h['RPC>1'].SetBinContent(ip,fraction)
+    for k in range(2,20):
+      h['RPCeff_'+str(k)]=h['RPC<'+str(k)+'_p'].Clone('RPCeff_'+str(k))
+      h['RPCeff_'+str(k)].Divide(h['RPC_p'])
+
 def debugRPCstrips():
   ut.bookHist(h,'RPCstrips','RPC strips',1000,-100.,100.,1000,-100.,100.)
   h['RPCstrips'].Draw()
@@ -2840,16 +2878,19 @@ def importRTrel():
    RTrelations[rname] = {}
    upkl    = Unpickler(f)
    RTrelations[rname]={}
-   RTrelations[rname]['tMinAndTmax'] = upkl.load('tMinAndTmax')
-   for x in RTrelations[rname]['tMinAndTmax']: RTrelations[rname]['rt'+x]=f.RT.Get('rt'+x)
-   h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
-   for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
+   try:
+    RTrelations[rname]['tMinAndTmax'] = upkl.load('tMinAndTmax')
+    for x in RTrelations[rname]['tMinAndTmax']: RTrelations[rname]['rt'+x]=f.RT.Get('rt'+x)
+    h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
+    for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
+   except:
+    print "loading of RT failed for file",rname
    f.Close()
 # to START
 RTrelations = {}
 zeroFieldData=['SPILLDATA_8000_0515970150_20180715_220030.root']
 def init(database='muflux_RTrelations.pkl',remake=False,withReco=False):
- global withTDC
+ global withTDC,RTrelations
  if os.path.exists(database): RTrelations = pickle.load(open(database))
  N = sTree.GetEntries()
  if not RTrelations.has_key(rname) or remake:
