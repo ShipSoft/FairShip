@@ -24,7 +24,6 @@ class MufluxSpectrometer:public FairDetector
       
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
     void ChooseDetector(Bool_t muflux); //sets experimental configuration (true = muflux, false = charmxsec)
         
     //methods for drift tubes by Eric
@@ -46,7 +45,7 @@ class MufluxSpectrometer:public FairDetector
     void SetMuonFlux(Bool_t muonflux);   
     void TubeDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void TubeEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
-    void SetDistStereo(Double_t diststereo);
+    void SetDistStereo(Double_t diststereoT1,Double_t diststereoT2);
     void SetDistT1T2(Double_t distT1T2);
     void SetDistT3T4(Double_t distT3T4);
     void SetSetScintillatorThickness(Double_t scintillatorthickness);
@@ -151,7 +150,8 @@ private:
     Double_t       v_drift;                  //!  drift velocity  
     Double_t       sigma_spatial;            //!  spatial resolution    
     Bool_t         fMuonFlux;                //!  set up for muonflux    
-    Double_t       fdiststereo;              //!  distance between stereo layers
+    Double_t       fdiststereoT1;              //!  distance between stereo layers
+    Double_t       fdiststereoT2;              //!  distance between stereo layers
     Double_t       fdistT1T2;                //!  distance between T1&T2
     Double_t       fdistT3T4;                //!  distance between T3&T4
     Double_t       fgoliathcentre_to_beam;

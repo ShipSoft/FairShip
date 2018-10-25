@@ -119,14 +119,6 @@ void MufluxSpectrometer::ChooseDetector(Bool_t muflux)
  fMuonFlux = muflux;
 }
 
-void MufluxSpectrometer::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox)
-{
-  SBoxX = SX;
-  SBoxY = SY;
-  SBoxZ = SZ;
-  zBoxPosition = zBox;
-}
-
 //Methods for Goliath by Annarita
 void MufluxSpectrometer::SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH)
 {
@@ -225,9 +217,11 @@ void MufluxSpectrometer::SetTr34XDim(Double_t tr34xdim)
       ftr34xdim = tr34xdim;                                          //! x size of stations 34      
 }
 
-void MufluxSpectrometer::SetDistStereo(Double_t diststereo)
+void MufluxSpectrometer::SetDistStereo(Double_t diststereoT1,Double_t diststereoT2)
 {
-      fdiststereo = diststereo;                                       //! distance between stereo layers
+      fdiststereoT1 = diststereoT1;                                       //! distance between x (outside)  & u (inside) layers
+      fdiststereoT2 = diststereoT2;                                       //! distance between v (inside) & x (outside)
+
 }
 
 void MufluxSpectrometer::SetDistT1T2(Double_t distT1T2)
@@ -369,11 +363,11 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoVolume *wire_12 = new TGeoVolume("wire_12",wire_tube_12, tungsten);
     wire_12->SetLineColor(6);             
 
-    TGeoBBox *DriftTube1 = new TGeoBBox("DriftTube1", DimX/2+ 1.*m/2, DimY/2+ 0.9*m/2, DimZ+2*cm+fdiststereo/2+eps); 
+    TGeoBBox *DriftTube1 = new TGeoBBox("DriftTube1", DimX/2+ 1.*m/2, DimY/2+ 0.9*m/2, DimZ+2*cm+fdiststereoT1/2+eps); 
     TGeoVolume *volDriftTube1 = new TGeoVolume("volDriftTube1",DriftTube1,air);
     volDriftTube1->SetLineColor(kBlue-5);
   
-    TGeoBBox *DriftTube2 = new TGeoBBox("DriftTube2", DimX/2+ 1.*m/2, DimY/2+ 1.*m/2, DimZ+2*cm+fdiststereo/2+eps);  
+    TGeoBBox *DriftTube2 = new TGeoBBox("DriftTube2", DimX/2+ 1.*m/2, DimY/2+ 1.*m/2, DimZ+2*cm+fdiststereoT2/2+eps);  
     TGeoVolume *volDriftTube2 = new TGeoVolume("volDriftTube2",DriftTube2,air);
     volDriftTube2->SetLineColor(kBlue-5);
             
@@ -457,8 +451,8 @@ void MufluxSpectrometer::ConstructGeometry()
 	if (angle==0.) {
 	    t5.SetTranslation(fT1x_x-fTubes_pitch/2.,fT1x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view);
 	    t6.SetTranslation(fT1x_x-fTubes_pitch/2., fT1x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view);
-	    t5b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);
-	    t6b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);   
+	    t5b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view+fdiststereoT2);
+	    t6b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view+fdiststereoT2);   
 	}
         else {
 	    if (statnb==1) {
@@ -504,12 +498,12 @@ void MufluxSpectrometer::ConstructGeometry()
                t3.SetTranslation(fT1x_x, fT1x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	
 	    }
 	    else {
-	       t3.SetTranslation(fT1u_x, fT1u_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
+	       t3.SetTranslation(fT1u_x, fT1u_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereoT1);	
 	    }  
 	  }
 	  if (statnb==2){   
 	    if (angle==0.){
-               t3.SetTranslation(fT2x_x, fT2x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
+               t3.SetTranslation(fT2x_x, fT2x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereoT2);	
 	    }
 	    else {
 	       t3.SetTranslation(fT2v_x, fT2v_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	

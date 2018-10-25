@@ -335,7 +335,7 @@ void MuonTagger::ConstructGeometry()
        VMuonBox->AddNode(VPassive, n+1, new TGeoTranslation(0,0,fRPCz[n]-PasThicknessz[n]/2-7.5)); }
     else { 
        if (n==1) { VMuonBox->AddNode(VPassive, n+1, new TGeoTranslation(0,0,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); }
-       else if (n==npassive-1) VMuonBox->AddNode(VPassive1, n+1, new TGeoTranslation(0,walldisalignment,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); //last wall had been disaligned with respect to the others
+       //else if (n==npassive-1) VMuonBox->AddNode(VPassive1, n+1, new TGeoTranslation(0,walldisalignment,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); //last wall had been disaligned with respect to the others
        else{
          VMuonBox->AddNode(VPassive1, n+1, new TGeoTranslation(0,0,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); }  
     }
