@@ -199,9 +199,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.ViewAngle          = 60.2
     c.MufluxSpectrometer.ViewvAngle         = -60.
     c.MufluxSpectrometer.WireThickness      = 0.0045*u.cm
-    c.MufluxSpectrometer.DeltazView         = 15.*u.cm
+    c.MufluxSpectrometer.DeltazView         = 15.14*u.cm
     
-    c.MufluxSpectrometer.diststereo         = 16.25*u.cm    
+    c.MufluxSpectrometer.diststereoT1       = 16.08*u.cm  
+    c.MufluxSpectrometer.diststereoT2       = 16.27*u.cm        
     c.MufluxSpectrometer.distT1T2           = 11.*u.cm   
     if c.MufluxSpectrometer.muflux == True:
        c.MufluxSpectrometer.distT3T4           = 1.6*u.m       
@@ -213,24 +214,22 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.goliathcentre_to_beam = 17.32*u.cm + (c.Spectrometer.UpCoilH-c.Spectrometer.LowCoilH)/2.
     c.MufluxSpectrometer.goliathcentre = 351.19*u.cm  
       
-    c.MufluxSpectrometer.T1x_x=4.2*u.cm
+    c.MufluxSpectrometer.T1x_x=4.23*u.cm
     c.MufluxSpectrometer.T1x_y=-1.995*u.cm
-    c.MufluxSpectrometer.T1z=38.875*u.cm
+    c.MufluxSpectrometer.T1z=40.13*u.cm
     c.MufluxSpectrometer.T1u_x=7.8*u.cm    
     c.MufluxSpectrometer.T1u_y=-0.16*u.cm
-    c.MufluxSpectrometer.T2x_x=2.61*u.cm
+    c.MufluxSpectrometer.T2x_x=2.43*u.cm
     c.MufluxSpectrometer.T2x_y=-2.1875*u.cm  
-    c.MufluxSpectrometer.T2z=107.665*u.cm             
+    c.MufluxSpectrometer.T2z=108.82*u.cm      #-1mm ad hoc        
     c.MufluxSpectrometer.T2v_x=3.5*u.cm      
-    c.MufluxSpectrometer.T2v_y=0.1*u.cm    
-    c.MufluxSpectrometer.T3x=2.6*u.cm
+    c.MufluxSpectrometer.T2v_y=0.09*u.cm    
+    c.MufluxSpectrometer.T3x=2.475*u.cm
     c.MufluxSpectrometer.T3y=-7.3405*u.cm
-    c.MufluxSpectrometer.T3z=584.125*u.cm
+    c.MufluxSpectrometer.T3z=585.18*u.cm      # plus 7cm offset + 5mm ad hoc
     c.MufluxSpectrometer.T4x=2.95*u.cm   
     c.MufluxSpectrometer.T4y=-6.9845*u.cm 
-    c.MufluxSpectrometer.T4z=747.25*u.cm               
-
-     
+    c.MufluxSpectrometer.T4z=748.32*u.cm      # min 7cm offset +5mm ad hoc            
     
     if c.MufluxSpectrometer.muflux == True:    
        c.Spectrometer.DX = 2.*u.m
@@ -243,7 +242,7 @@ with ConfigRegistry.register_config("basic") as c:
        
     c.MufluxSpectrometer.DX = 2.*u.m
     c.MufluxSpectrometer.DY = 1.6*u.m
-    c.MufluxSpectrometer.DZ = 16.*u.cm
+    c.MufluxSpectrometer.DZ = 11.72*u.cm
     
     #These parameters are used only by the charm detector ---   
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
@@ -279,13 +278,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.Scintillator.Scoring1X           = 55.*u.cm
     c.Scintillator.Scoring1Y           = 110.*u.cm    
     c.Scintillator.DistT1              = 11.5*u.cm       
-    c.Scintillator.DistT2              = 135.25*u.cm
-                   
-    if c.MufluxSpectrometer.muflux == True: 
-       #these parameters are also used inside the MufluxSpectrometer.cxx
-       c.Spectrometer.SZ = 2*(2*c.Spectrometer.DZ +c.MufluxSpectrometer.diststereo) + c.MufluxSpectrometer.distT1T2 +4.5*u.m + c.MufluxSpectrometer.distT3T4 + 2*(2*c.Spectrometer.DZ) + 2.5*u.cm
-    else: 
-       c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
+    #c.Scintillator.DistT2              = 135.25*u.cm
+    c.Scintillator.DistT2              = 136.26*u.cm 
+                  
+    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
     c.Spectrometer.DimZpixelbox = c.Box.GapPostTargetTh + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi
     
@@ -337,8 +333,8 @@ with ConfigRegistry.register_config("basic") as c:
       
       
                 
-    c.MuonTagger.BX = 2.40 *u.m
-    c.MuonTagger.BY = 2.20 * u.m
+    c.MuonTagger.BX = 2.0 *u.m
+    c.MuonTagger.BY = 1.3 * u.m
     #c.MuonTagger.BX = 195.5 * u.cm
     #c.MuonTagger.BY = 125. * u.cm
     #c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 5

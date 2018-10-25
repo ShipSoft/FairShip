@@ -64,7 +64,6 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetGoliathSizes(ship_geo.Spectrometer.H, ship_geo.Spectrometer.TS, ship_geo.Spectrometer.LS, ship_geo.Spectrometer.BasisH);
  MufluxSpectrometer.SetCoilParameters(ship_geo.Spectrometer.CoilR, ship_geo.Spectrometer.UpCoilH, ship_geo.Spectrometer.LowCoilH,  ship_geo.Spectrometer.CoilD);
 # --------------------------------------
- MufluxSpectrometer.SetBoxParam(ship_geo.Spectrometer.SX,ship_geo.Spectrometer.SY,ship_geo.Spectrometer.SZ,ship_geo.Spectrometer.zBox)
  
  MufluxSpectrometer.ChooseDetector(ship_geo.MufluxSpectrometer.muflux)
  MufluxSpectrometer.SetDeltazView(ship_geo.MufluxSpectrometer.DeltazView)
@@ -82,7 +81,7 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetTr34YDim(ship_geo.MufluxSpectrometer.tr34ydim)
  MufluxSpectrometer.SetTr12XDim(ship_geo.MufluxSpectrometer.tr12xdim)
  MufluxSpectrometer.SetTr34XDim(ship_geo.MufluxSpectrometer.tr34xdim) 
- MufluxSpectrometer.SetDistStereo(ship_geo.MufluxSpectrometer.diststereo)
+ MufluxSpectrometer.SetDistStereo(ship_geo.MufluxSpectrometer.diststereoT1,ship_geo.MufluxSpectrometer.diststereoT2)
  MufluxSpectrometer.SetDistT1T2(ship_geo.MufluxSpectrometer.distT1T2)
  MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)    
  MufluxSpectrometer.SetGoliathCentre(ship_geo.MufluxSpectrometer.goliathcentre_to_beam)
