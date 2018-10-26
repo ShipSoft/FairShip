@@ -302,25 +302,21 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonTagger.PTh1 = 40 * u.cm #last 3 slabs' thickness
     c.MuonTagger.STh = 15.0 * u.cm
     
-    #from survey relative to center of RPC system
-    c.MuonTagger.RPC1z = -86.60245 * u.cm
-    c.MuonTagger.RPC2z = 8.35755 * u.cm  
-    c.MuonTagger.RPC3z = 63.75255 * u.cm
-    c.MuonTagger.RPC4z = 118.86755 * u.cm   
-    c.MuonTagger.RPC5z = 173.67755 * u.cm 
-       
+    #from survey relative to center of RPC system (18.569225 + 0.00326706 ad hoc, iron blocks were measured by hand in survey coords)
+    #from survey to FairShip: subtract 8.89608294 m
+          
     #from survey 
-    #c.MuonTagger.RPC1z = 878.8251 * u.cm
-    #c.MuonTagger.RPC2z = 973.7851 * u.cm  
-    #c.MuonTagger.RPC3z = 1029.1801 * u.cm
-    #c.MuonTagger.RPC4z = 1084.2951 * u.cm   
-    #c.MuonTagger.RPC5z = 1139.1051 * u.cm 
-           
+    c.MuonTagger.RPC1z = -88.160794 * u.cm
+    c.MuonTagger.RPC2z = 6.799206 * u.cm  
+    c.MuonTagger.RPC3z = 62.194206 * u.cm
+    c.MuonTagger.RPC4z = 117.309206 * u.cm   
+    c.MuonTagger.RPC5z = 172.119206 * u.cm  
+             
     c.MuonTagger.RPCthickness = 8. * u.cm
     c.MuonTagger.VStripx =  0.8625 * u.cm
     c.MuonTagger.VStripx_L =  0.9625 * u.cm    
     c.MuonTagger.VStripx_R =  0.86 * u.cm 
-    c.MuonTagger.HStripy =  0.8625 * u.cm   
+    c.MuonTagger.HStripy =  0.8625 * u.cm 
     c.MuonTagger.HStripy_ext =  0.3 * u.cm   
     c.MuonTagger.Stripfoamz =  0.6 * u.cm       
     c.MuonTagger.Stripz =  0.003 * u.cm # same as ground plane thickness
@@ -338,14 +334,16 @@ with ConfigRegistry.register_config("basic") as c:
     #c.MuonTagger.BX = 195.5 * u.cm
     #c.MuonTagger.BY = 125. * u.cm
     #c.MuonTagger.BZ = c.MuonTagger.PTh * 2 + c.MuonTagger.PTh1 * 3 + c.MuonTagger.STh * 5
-    #length of muon tagger from survey + 80 cm + 7.5 cm
-    c.MuonTagger.BZ = 347.3551 * u.cm + 9. * u.cm
-    #c.MuonTagger.BZ = 347.3551 * u.cm 
+    #length of muon tagger from survey (260.475) + half of first rpc space (7.5) + first wall (80cm) + half of last rpc (4)
+    # half length 175.9875
+    #c.MuonTagger.BZ = 347.3551 * u.cm + 9. * u.cm
+    c.MuonTagger.BZ = 352.301706 * u.cm 
+    #c.MuonTagger.BZ = 351.975 * u.cm 
     
     if c.MufluxSpectrometer.muflux == True:
        #for the muflux measurement the muontagger has to be moved back 791.75 measured by hand, 173.6775=347.3551/2
-       c.MuonTagger.zBox = 791.*u.cm  + 173.67755*u.cm
-
+       #c.MuonTagger.zBox = 791.*u.cm  + 173.67755*u.cm
+       c.MuonTagger.zBox = 791.*u.cm  + 175.9875*u.cm
     else:    
        c.MuonTagger.zBox = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
 
