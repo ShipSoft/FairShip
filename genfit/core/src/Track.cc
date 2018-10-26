@@ -222,7 +222,8 @@ TrackPoint* Track::getPointWithMeasurementAndFitterInfo(int id, const AbsTrackRe
       ++i;
     }
   }
-  //std::cout << "track debug " << id << " " << i << std::endl;
+  if (i == id) 
+    return NULL;  // otherwise endless loop
 
   if (i == 0)
     return NULL;
