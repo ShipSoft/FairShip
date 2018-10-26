@@ -33,6 +33,7 @@ class Spectrometer:public FairDetector
      //methods for Goliath by Annarita
     void SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH);
     void SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t LowCoilH, Double_t CoilD);
+    void GetBeamPosition(Double_t beamx, Double_t beamy);
     //
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -136,6 +137,8 @@ protected:
     Double_t DimSciFi2X;
     Double_t DimSciFi2Y;
     Double_t DimZPixelBox;
+
+    Double_t fbeamx, fbeamy;
 
     Int_t nSi;
     Double_t DimZSi;

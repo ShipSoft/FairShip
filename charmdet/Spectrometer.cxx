@@ -89,6 +89,8 @@ Spectrometer::~Spectrometer()
 void Spectrometer::Initialize()
 {
     FairDetector::Initialize();
+    fbeamx = 0.; //default beam center position in xy plane is origin
+    fbeamy = 0.;
 }
 
 // -----   Private method InitMedium 
@@ -159,6 +161,12 @@ void Spectrometer::SetTransverseSizes(Double_t D1short, Double_t D1long, Double_
   DimSciFi2Y = DSciFi2Y;
 }   
 
+void Spectrometer::GetBeamPosition(Double_t beamx, Double_t beamy)
+{
+ fbeamx = beamx;
+ fbeamy = beamy;
+}
+
 
 //Methods for Goliath by Annarita
 void Spectrometer::SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH)
@@ -200,14 +208,14 @@ void Spectrometer::ConstructGeometry()
     InitMedium("STTmix8020_2bar");
     TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
   
-  TGeoVolume *top = gGeoManager->GetTopVolume();
+    TGeoVolume *top = gGeoManager->GetTopVolume();
 
 
     //Double_t DimZPixelBox = zs5 -zs0 +pairwisedistance + DimZSi;
     TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2 + overlap, Dim1Long/2 + overlap, DimZPixelBox/2.);
     TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
 
-    top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition));
+    top->AddNode(volPixelBox, 1, new TGeoTranslation(fbeamx,fbeamy,zBoxPosition));
 
     TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
     TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon); 

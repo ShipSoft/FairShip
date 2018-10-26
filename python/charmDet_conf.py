@@ -39,12 +39,15 @@ def configure(run,ship_geo):
  Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
  Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
  Box.SetTargetDesign(ship_geo.Box.Julytarget)
- Box.SetRunNumber(ship_geo.Box.RunNumber)
+ Box.SetTargetNumber(ship_geo.Box.CharmTargetNumber)
+ Box.GetBeamPosition(ship_geo.Box.beamx, ship_geo.Box.beamy)
 
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(Box)
    
  Spectrometer = ROOT.Spectrometer("Spectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
+ if (ship_geo.MufluxSpectrometer.muflux==False):
+  Spectrometer.GetBeamPosition(ship_geo.Box.beamx, ship_geo.Box.beamy)
  Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.Sioverlap, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)   
  Spectrometer.SetSiliconDZ(ship_geo.Spectrometer.DimZSi)
  #Spectrometer.SetSiliconDetNumber(ship_geo.Spectrometer.nSiDet)

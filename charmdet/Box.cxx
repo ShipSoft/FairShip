@@ -95,6 +95,8 @@ Box::~Box()
 void Box::Initialize()
 {
     FairDetector::Initialize();
+    fbeamx = 0.; //default beam center position in xy plane is origin
+    fbeamy = 0.;
 }
 
 void Box::SetGapGeometry(Double_t distancePassive2ECC){ 
@@ -163,10 +165,14 @@ void Box::SetTargetDesign(Bool_t Julytarget){
   fJulytarget = Julytarget;
 }
 
-void Box::SetRunNumber(Int_t RunNumber){		
-  nrun = RunNumber;		
+void Box::SetTargetNumber(Int_t CharmTargetNumber){		
+  nrun = CharmTargetNumber;		
 }
 
+void Box::GetBeamPosition(Double_t beamx, Double_t beamy){
+  fbeamx = beamx;
+  fbeamy = beamy;
+}
 
 // -----   Private method InitMedium
 Int_t Box::InitMedium(const char* name)
@@ -277,7 +283,7 @@ void Box::ConstructGeometry()
       volTarget->SetLineColor(kCyan);
       volTarget->SetTransparency(1);
       
-      top->AddNode(volTarget,1,new TGeoTranslation(0,0,zBoxPosition-TargetZ/2)); //Box ends at origin           
+      top->AddNode(volTarget,1,new TGeoTranslation(fbeamx,fbeamy,zBoxPosition-TargetZ/2)); //Box ends at origin           
  
       TGeoVolume *volPasLead = NULL;
       if (nrun > 1){
@@ -300,21 +306,21 @@ void Box::ConstructGeometry()
          
          if (nrun > 2) zpoint = zpoint + distPas2ECC;	  
 	 
-         for(Int_t n=0; n<NPlates[nrun]+1; n++) //adding emulsions
+         for(Int_t n=0; n<NPlates[nrun-1]+1; n++) //adding emulsions
 	    {
 	      AddEmulsionFilm(zpoint + n*AllPlateWidth, nfilm, volTarget, volEmulsionFilm, volEmulsionFilm2, volPlBase);
 	      nfilm++;
 	    }
            
-	 for(Int_t n=0; n<NPlates[nrun]; n++) //adding 1 mm lead plates
+	 for(Int_t n=0; n<NPlates[nrun-1]; n++) //adding 1 mm lead plates
 	    {
               volTarget->AddNode(volLeadslab, nleadslab, new TGeoTranslation(0,0,zpoint + EmPlateWidth + PassiveSlabThickness/2 + n*AllPlateWidth));
               nleadslab++;
 	    }	
-	 zpoint = zpoint + NPlates[nrun] *AllPlateWidth + EmPlateWidth;
+	 zpoint = zpoint + NPlates[nrun-1] *AllPlateWidth + EmPlateWidth;
 	}
 
-	else if (volPasLead != NULL && ((irun > 0) || (NBricks == 2))) { //only passive layer of lead, first is skipped
+        else if (volPasLead != NULL) { //only passive layer of lead
 	 volTarget->AddNode(volPasLead,nlead,new TGeoTranslation(0,0,zpoint + zPasLead/2));
 	 zpoint = zpoint + zPasLead;
          nlead++;
@@ -392,7 +398,7 @@ void Box::ConstructGeometry()
       TGeoVolume *volTarget = new TGeoVolume("volTarget", Target, air);
       volTarget->SetTransparency(1);
 
-      top->AddNode(volTarget,1,new TGeoTranslation(0,0,zBoxPosition-TargetZ/2));
+      top->AddNode(volTarget,1,new TGeoTranslation(fbeamx, fbeamy,zBoxPosition-TargetZ/2));
       TGeoBBox *Cooling = new TGeoBBox("Cooling", CoolingX/2, CoolingY/2, CoolingZ/4); //water slips to cool the target (i split in half, to put an other emulsion in the middle
       TGeoVolume *volCooling = new TGeoVolume("volCooling", Cooling, PBase);
       volCooling->SetLineColor(kCyan);      

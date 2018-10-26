@@ -13,6 +13,7 @@ debug = 0  # 1 print weights and field
 dryrun = False # True: just setup Pythia and exit
 
 CharmdetSetup = 0 # 1 charm cross section setup, 0 muon flux setup
+CharmTarget = 1 #six different configurations used in July 2018 exposure for charm
 # Default HNL parameters
 theMass = 1.0*u.GeV
 theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km  TP default for HNL
@@ -74,8 +75,8 @@ try:
                                    "PG","pID=","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend=",\
-                                   "production-couplings=","decay-couplings=","dry-run"])
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","CharmTarget=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=",\
+                                   "Eend=","production-couplings=","decay-couplings=","dry-run"])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -176,6 +177,8 @@ for o, a in opts:
             charm = int(a)
         if o in ("--CharmdetSetup",):
             CharmdetSetup = int(a)
+        if o in ("--CharmTarget",):
+            CharmTarget = int(a)
         if o in ("-F",):
             deepCopy = True
         if o in ("--RpvSusy",):
@@ -231,7 +234,7 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
                                                 muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile)
 else: 
- ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup)
+ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup, cTarget = CharmTarget)
  if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
  else: print "Setup for charm cross section measurement has been set"
 # switch off magnetic field to measure muon flux
@@ -324,7 +327,7 @@ if simEngine == "Pythia8":
   primGen.SetTarget(0., 0.) #vertex is setted in pythia8Generator
   ut.checkFileExists(inputFile)
   if ship_geo.Box.gausbeam:
-   primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors    
+   primGen.SetBeam(ship_geo.Box.beamx,ship_geo.Box.beamy, 0.5, 0.5) #more central beam, for hits in downstream detectors    
    primGen.SmearGausVertexXY(True) #sigma = x
   else:
    primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
