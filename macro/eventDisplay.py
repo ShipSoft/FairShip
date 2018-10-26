@@ -211,7 +211,12 @@ class DrawTracks(ROOT.FairTask):
   self.comp  = ROOT.TEveCompound('Tracks')
   gEve.AddElement(self.comp)
   self.trackColors = {13:ROOT.kGreen,211:ROOT.kRed,11:ROOT.kOrange,321:ROOT.kMagenta}
-  self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Bfield.y/2.*u.m)
+  if hasattr(ShipGeo.Bfield,"fieldMap"):
+    fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
+    self.bfield = ROOT.genfit.FairShipFields()
+    self.bfield.setField(fieldMaker.getGlobalField())
+  else: 
+    self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Bfield.y/2.*u.m)
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
@@ -714,6 +719,19 @@ def projection_prescale():
    eventscene.AddElement(smng)
    ROOT.gEve.GetBrowser().GetTabRight().SetTab(1)
    ROOT.gEve.FullRedraw3D(ROOT.kTRUE)
+
+def storeCameraSetting(fname='camSetting.root'):
+ f = ROOT.TFile.Open(fname, "RECREATE");
+ cam  = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()
+ cam.Write()
+ f.Close()
+def readCameraSetting(fname='camSetting.root'):
+ f = ROOT.TFile.Open(fname)
+ cam  = ROOT.gEve.GetDefaultGLViewer().CurrentCamera()
+ f.GetKey(cam.ClassName()).Read(cam)
+ cam.IncTimeStamp()
+ gEve.GetDefaultGLViewer().RequestDraw()
+ f.Close()
 def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
    xvol = fGeo.GetVolume(x)
@@ -847,47 +865,42 @@ class Rulers(ROOT.FairTask):
  def __init__(self):
   self.ruler  = ROOT.TEveCompound('Rulers')
   gEve.AddElement(self.ruler)
- def show(self,xy=0):
+ def show(self,xy=0,ticks=5):
   self.ruler.DestroyElements()
   self.ruler.OpenCompound()
-  xpos,ypos = -500., 0.
+  xpos,ypos = -500., -1500.
   zstart  = ShipGeo.target.z0
   zlength = ShipGeo.MuonStation3.z - zstart + 10*u.m
   a1 = ROOT.TEveLine()
   a1.SetNextPoint(xpos,ypos, zstart)
   a1.SetNextPoint(xpos,ypos, zstart+zlength)
-  a1.SetMainColor(ROOT.kBlue)
-  a1.SetLineWidth(50)
-  self.ruler.AddElement(a1)
+  a1.SetMainColor(ROOT.kAzure-9)
+  a1.SetLineWidth(30)
+  #self.ruler.AddElement(a1)
   z=zstart
-  for i in range(int(zlength/100)):
+  for i in range(int(zlength/100/ticks)):
    m = ROOT.TEveLine()
    m.SetNextPoint(xpos,ypos, z)
-   m.SetNextPoint(xpos-0.5*u.m,ypos,z)
+   m.SetNextPoint(xpos-1*u.m,ypos,z)
    m.SetMainColor(ROOT.kRed)
-   m.SetLineWidth(3)
-   a1.AddElement(m)
-   m = ROOT.TEveLine()
-   m.SetNextPoint(xpos,ypos, z+0.5*u.m )
-   m.SetNextPoint(xpos-0.2*u.m,ypos,z+0.5*u.m )
-   m.SetMainColor(ROOT.kRed)
-   m.SetLineWidth(2)
-   a1.AddElement(m)
-   t1 = ROOT.TEveText(str(i)+'m')
+   m.SetLineWidth(5)
+   self.ruler.AddElement(m)
+   t1 = ROOT.TEveText(str(i*ticks)+'m')
+   t1.SetMainColor(ROOT.kGray+3)
    t1.SetFontSize(5)
    t1.RefMainTrans().SetPos(xpos-0.1*u.m,ypos+0.2*u.m,z)
-   a1.AddElement(t1)
-   z+=1*u.m
+   self.ruler.AddElement(t1)
+   z+=ticks*u.m
   xpos,ypos = 0., 0.
-  if xy==0:  z = ShipGeo.MuonStation3.z+2*u.m
+  if xy==0:  z = ShipGeo.MuonStation3.z+6*u.m
   else: z=xy 
   ylength = 7*u.m
   a2 = ROOT.TEveLine()
   a2.SetNextPoint(xpos,-ylength, z)
   a2.SetNextPoint(xpos,ylength, z)
-  a2.SetMainColor(ROOT.kBlue)
-  a2.SetLineWidth(50)
-  self.ruler.AddElement(a2)
+  a2.SetMainColor(ROOT.kAzure-9)
+  a2.SetLineWidth(30)
+  #self.ruler.AddElement(a2)
   ypos=-ylength
   for i in range(-int(ylength/100),int(ylength/100),1):
    m = ROOT.TEveLine()
@@ -895,31 +908,27 @@ class Rulers(ROOT.FairTask):
    m.SetNextPoint(xpos+0.05*u.m,ypos,z)
    m.SetMainColor(ROOT.kRed)
    m.SetLineWidth(3)
-   a2.AddElement(m)
-   m = ROOT.TEveLine()
-   m.SetNextPoint(xpos,         ypos+0.5*u.m, z )
-   m.SetNextPoint(xpos+0.02*u.m,ypos+0.5*u.m,z)
-   m.SetMainColor(ROOT.kRed)
-   m.SetLineWidth(1)
-   a2.AddElement(m)
+   self.ruler.AddElement(m)
    t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetMainColor(ROOT.kGray+3)
    t1.SetFontSize(5)
    t1.RefMainTrans().SetPos(xpos-0.5*u.m,ypos,z)
-   a2.AddElement(t1)
+   self.ruler.AddElement(t1)
    ypos+=1*u.m
   ty = ROOT.TEveText("y-axis")
   ty.SetFontSize(10)
   ty.RefMainTrans().SetPos(0.,ypos+1*u.m,z)
   ty.SetMainColor(ROOT.kRed-2)
-  a2.AddElement(ty)
+  self.ruler.AddElement(ty)
   xpos,ypos = 0., 0.
+  if xy==0:  z = ShipGeo.MuonStation3.z+10*u.m
   xlength = 3*u.m
   a3 = ROOT.TEveLine()
   a3.SetNextPoint(-xlength,0, z)
   a3.SetNextPoint(xlength,0, z)
-  a3.SetMainColor(ROOT.kBlue)
-  a3.SetLineWidth(50)
-  self.ruler.AddElement(a3)
+  a3.SetMainColor(ROOT.kAzure-9)
+  a3.SetLineWidth(30)
+  #self.ruler.AddElement(a3)
   xpos=-xlength
   for i in range(-int(xlength/100),int(xlength/100),1):
    m = ROOT.TEveLine()
@@ -927,24 +936,18 @@ class Rulers(ROOT.FairTask):
    m.SetNextPoint(xpos,ypos-0.05*u.m,z)
    m.SetMainColor(ROOT.kRed)
    m.SetLineWidth(3)
-   a3.AddElement(m)
-   m = ROOT.TEveLine()
-   m.SetNextPoint(xpos+0.5*u.m,ypos, z )
-   m.SetNextPoint(xpos+0.5*u.m,ypos-0.02*u.m,z)
-   m.SetMainColor(ROOT.kRed)
-   m.SetLineWidth(2)
-   a3.AddElement(m)
+   self.ruler.AddElement(m)
    t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetMainColor(ROOT.kGray+3)
    t1.SetFontSize(5)
    t1.RefMainTrans().SetPos(xpos,ypos-0.1*u.m,z)
-   a3.AddElement(t1)
+   self.ruler.AddElement(t1)
    xpos+=1*u.m 
   tx = ROOT.TEveText("x-axis")
   tx.SetFontSize(10)
   tx.RefMainTrans().SetPos(xpos+1*u.m,0.,z)
   tx.SetMainColor(ROOT.kRed-2)
-  a3.AddElement(tx)
-
+  self.ruler.AddElement(tx)
   t1 = ROOT.TEveText("SHiP")
   t1.SetFontSize(200)
   t1.RefMainTrans().SetPos(0.,600.,ShipGeo.TrackStation1.z-10*u.m)
@@ -952,7 +955,7 @@ class Rulers(ROOT.FairTask):
   t1.SetMainColor(ROOT.kOrange-2)
   t1.SetFontMode(ROOT.TGLFont.kExtrude)
   t1.SetLighting(ROOT.kTRUE)
-  a1.AddElement(t1)
+  self.ruler.AddElement(t1)
   self.ruler.CloseCompound()
   sc    = ROOT.gEve.GetScenes()
   geoscene = sc.FindChild('Geometry scene')
@@ -1094,6 +1097,12 @@ top   = fGeo.GetTopVolume()
 speedUp()
 gEve  = ROOT.gEve
 
+if hasattr(ShipGeo.Bfield,"fieldMapXXX"):
+  ROOT.gSystem.Load('libG4clhep.so')
+  ROOT.gSystem.Load('libgeant4vmc.so')
+  import geomGeant4
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True)
+
 br = gEve.GetBrowser()
 br.HideBottomTab() # make more space for graphics
 br.SetWindowName('SHiP Eve Window')
@@ -1162,4 +1171,100 @@ def DrawSimpleMCTracks():
    ntot+=1
   comp.CloseCompound()
   gEve.ElementChanged(SHiPDisplay.tracks.evscene,True,True)
+
+def positionText(r,x,y,z,angle,txt,size=200,color=ROOT.kBlue,mode=ROOT.TGLFont.kExtrude,light=ROOT.kTRUE):
+ tt = ROOT.TEveText(txt)
+ tt.SetFontSize(size)
+ tt.RefMainTrans().SetPos(x,y,z)
+ tt.PtrMainTrans().RotateLF(1, 3, angle)
+ tt.SetMainColor(color)
+ tt.SetFontMode(mode)
+ tt.SetLighting(light)
+ r.AddElement(tt)
+def PRVersion():
+ readCameraSetting()
+ for x in ['moreShieldingSide', 'moreShieldingTopBot','CoatWall','CoatVol','AbsorberVol']:
+  vol = ROOT.gGeoManager.FindVolumeFast(x)
+  vol.SetVisibility(0)
+ ROOT.gGeoManager.GetMaterial('Concrete').SetTransparency(0)
+ r = rulers.ruler
+ ticks = 5
+ r.DestroyElements()
+ r.OpenCompound()
+ xpos,ypos = -500., -1500.
+ zstart  = ShipGeo.target.z0
+ zlength = ShipGeo.MuonStation3.z - zstart + 10*u.m
+ z=zstart
+ for i in range(int(zlength/100/ticks)):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos-1*u.m,ypos,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(5)
+   r.AddElement(m)
+   t1 = ROOT.TEveText(str(i*ticks)+'m')
+   t1.SetMainColor(ROOT.kGray+3)
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos-0.1*u.m,ypos+0.2*u.m,z)
+   r.AddElement(t1)
+   z+=ticks*u.m
+ xpos,ypos = 0., 0.
+ z = ShipGeo.MuonStation3.z+6*u.m
+ ylength = 7*u.m
+ ypos=-ylength
+ for i in range(-int(ylength/100),int(ylength/100),1):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos+0.05*u.m,ypos,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   r.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetMainColor(ROOT.kGray+3)
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos-0.5*u.m,ypos,z)
+   r.AddElement(t1)
+   ypos+=1*u.m
+ ty = ROOT.TEveText("y-axis")
+ ty.SetFontSize(10)
+ ty.RefMainTrans().SetPos(0.,ypos+1*u.m,z)
+ ty.SetMainColor(ROOT.kRed-2)
+ r.AddElement(ty)
+ xpos,ypos = 0., 0.
+ z = ShipGeo.MuonStation3.z+10*u.m
+ xlength = 3*u.m
+ xpos=-xlength
+ for i in range(-int(xlength/100),int(xlength/100),1):
+   m = ROOT.TEveLine()
+   m.SetNextPoint(xpos,ypos, z)
+   m.SetNextPoint(xpos,ypos-0.05*u.m,z)
+   m.SetMainColor(ROOT.kRed)
+   m.SetLineWidth(3)
+   r.AddElement(m)
+   t1 = ROOT.TEveText(str(i)+'m')
+   t1.SetMainColor(ROOT.kGray+3)
+   t1.SetFontSize(5)
+   t1.RefMainTrans().SetPos(xpos,ypos-0.1*u.m,z)
+   r.AddElement(t1)
+   xpos+=1*u.m 
+ tx = ROOT.TEveText("x-axis")
+ tx.SetFontSize(10)
+ tx.RefMainTrans().SetPos(xpos+1*u.m,0.,z)
+ tx.SetMainColor(ROOT.kRed-2)
+ r.AddElement(tx)
+ rotAngle = ROOT.TMath.Pi()+ROOT.TMath.PiOver2()*5./2.
+ positionText(r,0.,900.,ShipGeo.TrackStation1.z-20*u.m,rotAngle,"SHiP",200,ROOT.kOrange-2)
+ positionText(r,0.,750.,ShipGeo.TrackStation1.z-40*u.m,rotAngle,"Vacuum decay vessel",200,ROOT.kGrey+1)
+ positionText(r,0.,100.,ShipGeo.target.z-6*u.m,rotAngle,"Target",200,ROOT.kBlue)
+ positionText(r,0.,600.,ShipGeo.muShield.z-10*u.m,rotAngle,"Active muon shield",200,ROOT.kGreen-2)
+ positionText(r,0.,600.,ShipGeo.tauMudet.zMudetC-10*u.m,rotAngle,"Tau neutrino detector",200,ROOT.kRed-2)
+ positionText(r,0.,900.,ShipGeo.Bfield.z-5*u.m,rotAngle,"Dipole Magnet",200,ROOT.kBlue+2)
+ positionText(r,-1500.,-800.,ShipGeo.TrackStation3.z-2*u.m,rotAngle,"Strawtracker",200,ROOT.kRed+2)
+ positionText(r,0.,730.,ShipGeo.ecal.z-1*u.m,rotAngle,"Ecal",200,ROOT.kOrange)
+ positionText(r,0.,700.,ShipGeo.MuonFilter2.z,rotAngle,"Muon",200,ROOT.kGreen+2)
+ r.CloseCompound()
+ sc    = gEve.GetScenes()
+ geoscene = sc.FindChild('Geometry scene')
+ gEve.ElementChanged(geoscene,True,True)
+
 

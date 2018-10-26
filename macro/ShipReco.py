@@ -125,14 +125,16 @@ run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed f
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
-run.Init()
+# run.Init()
+fgeo.FAIRGeom
 import geomGeant4
 
 if hasattr(ShipGeo.Bfield,"fieldMap"):
-  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True)
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True,withVirtualMC = False)
 
 # make global variables
 builtin.debug    = debug
+builtin.fieldMaker = fieldMaker
 builtin.pidProton = pidProton
 builtin.withT0 = withT0
 builtin.realPR = realPR
