@@ -1737,12 +1737,13 @@ def testPR(onlyHits=False):
  track_hits = MufluxPatRec.execute(DTHits, TaggerHits, withNTaggerHits, withTDC)
  hitlist = {}
  k = 0
+ if Debug: print "PR returned %i track candidates"%(len(track_hits))
  for nTrack in track_hits:
   h['magPos'].Fill(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'])
-  node = sGeo.FindNode(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'],zgoliath)
-  #if node.GetName() != "volGoliath_1": continue
+  # node = sGeo.FindNode(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'],zgoliath)
+  # if node.GetName() != "volGoliath_1": continue
   hitlist[k]=[]
-  #if len(track_hits[nTrack]['34'])<5 or len(track_hits[nTrack]['y12'])<5: continue
+  # if len(track_hits[nTrack]['34'])<5 or len(track_hits[nTrack]['y12'])<5: continue
   for dets in ['34','stereo12','y12']:
    rc = h['tracklets'+dets].Fill(len(track_hits[nTrack][dets]))
    for aHit in  track_hits[nTrack][dets]:
@@ -1992,9 +1993,8 @@ def printResiduals(aTrack):
           s,v,p,l,view = stationInfo(hit)
           vbot,vtop = correctAlignment(hit)
           z = (vbot[2]+vtop[2])/2.
-          try:
-           rc,pos,mom = extrapolateToPlane(aTrack,z)
-          except:
+          rc,pos,mom = extrapolateToPlane(aTrack,z)
+          if not rc:
            print "plotBiasedResiduals extrap failed"
            continue
           distance = 0
@@ -2014,7 +2014,8 @@ def printResiduals(aTrack):
       print txt[k[0]]
 
 # make TDC plots for hits matched to tracks)
-def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1):
+def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
+ if not onlyPlotting:
   if not h.has_key('hitMapsX'): plotHitMaps()
   for s in xLayers:
      for p in xLayers[s]:
@@ -2031,17 +2032,21 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1):
    if not findSimpleEvent(sTree): continue
    trackCandidates = findTracks(PR)
    for aTrack in trackCandidates:
-       if not aTrack.getNumPointsWithMeasurement()>0: continue
-       sta = aTrack.getFittedState(0)
+       fst = aTrack.getFitStatus()
+       if not fst.isFitConverged(): continue
+       try:
+        sta = aTrack.getFittedState(0)
+       except:
+        print "problem with getting state, event",sTree.GetCurrentFile().GetName(),Nr
+        continue
        if sta.getMomMag() < 3.: continue
        for hit in sTree.Digi_MufluxSpectrometerHits:
           if hit.GetDetectorID() in noisyChannels:  continue
           s,v,p,l,view = stationInfo(hit)
           vbot,vtop = correctAlignment(hit)
           z = (vbot[2]+vtop[2])/2.
-          try:
-           rc,pos,mom = extrapolateToPlane(aTrack,z)
-          except:
+          rc,pos,mom = extrapolateToPlane(aTrack,z)
+          if not rc:
            print "plotBiasedResiduals extrap failed"
            continue
           distance = 0
@@ -2066,12 +2071,12 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1):
    #for aTrack in trackCandidates: aTrack.Delete()
    t0 = h['T0tmp'].GetMean()
    rc = h['T0'].Fill(t0)
-  if not h.has_key('biasedResiduals'): 
+ if not h.has_key('biasedResiduals'): 
       ut.bookCanvas(h,key='biasedResiduals',title='biasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsY',title='biasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
-  j=1
-  for s in range(1,5):
+ j=1
+ for s in range(1,5):
    for view in ['_x','_u','_v']:
     if s>2 and view != '_x': continue
     if s==1 and view == '_v' or s==2 and view == '_u': continue
@@ -2156,8 +2161,8 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1):
        h[hmean].SetMinimum(-0.5)
       h[hmean].Draw()
      j+=1
-  momDisplay()
-def plot2dResiduals():
+ momDisplay()
+def plot2dResiduals(minEntries=-1):
  if not h.has_key('biasedResiduals2dX'): 
       ut.bookCanvas(h,key='biasedResiduals2dX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResiduals2dY',title='biasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
@@ -2172,7 +2177,8 @@ def plot2dResiduals():
      print s,view,l,h[hname].GetEntries()
      for p in ['X','Y']:
       hname = 'biasRes'+p+'_'+str(s)+view+str(l)
-      rc = h['biasedResiduals2d'+p].cd(j)  
+      rc = h['biasedResiduals2d'+p].cd(j)
+      if minEntries >0: h[hname].SetMinimum(minEntries)
       h[hname].Draw('box')
      j+=1
 def plotLinearResiduals():
@@ -2241,7 +2247,8 @@ def hitResolution():
     distance = RT('x',TDC)
     h['hitResol'].Fill(distance - trueHit.dist2Wire())
 
-def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2):
+def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
+ if not onlyPlotting:
   nav.cd('/VMuonBox_1/VSensitive1_1')
   loc = array('d',[0,0,0])
   glob = array('d',[0,0,0])
@@ -2277,6 +2284,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2):
        if sta.getMomMag() < 1.: continue
        nHit = -1
        rc,pos,mom = extrapolateToPlane(aTrack,zRPC1)
+       if not rc: continue
        xRPC1,yRPC1 = pos[0],pos[1]
        inAcc=False
        node = sGeo.FindNode(pos[0],pos[1],zRPC1)
@@ -2292,9 +2300,8 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2):
         v  = (channelID-10000*s)/1000
         vtop,vbot = correctAlignmentRPC(hit,v)
         z = (vtop[2]+vbot[2])/2.
-        try:
-           rc,pos,mom = extrapolateToPlane(aTrack,z)
-        except:
+        rc,pos,mom = extrapolateToPlane(aTrack,z)
+        if not rc:
            print "plotRPCExtrap failed"
            continue
         if rc<0: continue
@@ -2325,12 +2332,12 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2):
         rc = h['RPC_p'].Fill(p)
         for k in range(2,20):
          if Nmatched<k: rc = h['RPC<'+str(k)+'_p'].Fill(p)
-  if not h.has_key('RPCResiduals'): 
+ if not h.has_key('RPCResiduals'): 
       ut.bookCanvas(h,key='RPCResiduals',title='RPCResiduals',nx=1600,ny=1200,cx=2,cy=4)
       ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=4)
       ut.bookCanvas(h,key='RPCResidualsP',title='RPCResiduals function of muon momentum',nx=900,ny=900,cx=1,cy=1)
-  j=1
-  for s in range(1,5):
+ j=1
+ for s in range(1,5):
    for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
      if v==1:     
        hname = 'RPCResX_'+str(s)+str(v)
@@ -2380,10 +2387,10 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2):
        rc = h[hmean].Fill( h[hmean].GetBinCenter(k), mean)
      h[hmean].Draw()
    j+=1
-  if not h.has_key('RPCResiduals2dXY'): 
+ if not h.has_key('RPCResiduals2dXY'): 
       ut.bookCanvas(h,key='RPCResiduals2dXY',title='muon tagger Residuals function of X/Y',nx=1600,ny=1200,cx=2,cy=4)
-  j=1
-  for s in range(1,5):
+ j=1
+ for s in range(1,5):
    for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
      if v==0: 
        p = 'Y'
@@ -2395,13 +2402,13 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2):
      hname = 'RPCRes'+p+'_'+str(s)+str(v)
      h[hname].Draw('box')
    j+=1
-  h['RPCResidualsP'].cd(1)
-  h['RPCResX1_p'].Draw('colz')
+ h['RPCResidualsP'].cd(1)
+ h['RPCResX1_p'].Draw('colz')
 #         rc = h['RPCMatchedHits'].Fill(2*s-1+v,len(matchedHits[s][v]),mom.Mag())
-  zax = h['RPCMatchedHits'].GetZaxis() # 100  momentum
-  xax = h['RPCMatchedHits'].GetXaxis() # 10  bins  station and view
-  yax = h['RPCMatchedHits'].GetYaxis() # 20  multiplicity
-  for ip in range(1,zax.GetNbins()+1):
+ zax = h['RPCMatchedHits'].GetZaxis() # 100  momentum
+ xax = h['RPCMatchedHits'].GetXaxis() # 10  bins  station and view
+ yax = h['RPCMatchedHits'].GetYaxis() # 20  multiplicity
+ for ip in range(1,zax.GetNbins()+1):
     Nmean = 0
     Nentries = 0
     Ntracks1 = 0
@@ -2494,9 +2501,10 @@ if not hasattr(sTree,'MCTrack') and withCorrections:
  alignCorrection[22]=[ 0.0, 0, 0]
  alignCorrection[23]=[ 0.0, 0, 0]
 
-def correctAlignment(hit,force=False):
+def correctAlignment(hit,default=True):
  vbot,vtop = ROOT.TVector3(), ROOT.TVector3()
  rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
+ if default: return vbot,vtop
  s,v,p,l,view = stationInfo(hit)
  if view=='_x':
   vbot[0]=xpos[hit.GetDetectorID()]
@@ -2943,7 +2951,11 @@ def recoStep1():
   ftemp=sTree.GetCurrentFile()
   ftemp.Write("",ROOT.TFile.kOverwrite)
   ftemp.Close()
-
+def anaResiduals():
+  importRTrel()
+  plotBiasedResiduals(nEvent=0,nTot=sTree.GetEntries(),PR=2)
+  plotRPCExtrap()
+  ut.writeHists(h,'histos-residuals-'+rname)
 if options.command == "":
  print "existing methods"
  print " --- plotHitMaps(): hitmaps / layer, TDC / layer, together with list of noisy channels"
@@ -2995,6 +3007,8 @@ if options.command == "recoStep0":
   withTDC=False
   print "determine RT relations, make new files"
   recoStep0()
-if options.command == "recoStep1":
+elif options.command == "recoStep1":
   print "add fitted tracks"
   recoStep1()
+elif options.command == "anaResiduals":
+  anaResiduals()
