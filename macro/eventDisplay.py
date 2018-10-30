@@ -211,16 +211,6 @@ class DrawTracks(ROOT.FairTask):
   self.comp  = ROOT.TEveCompound('Tracks')
   gEve.AddElement(self.comp)
   self.trackColors = {13:ROOT.kGreen,211:ROOT.kRed,11:ROOT.kOrange,321:ROOT.kMagenta}
-  if hasattr(ShipGeo.Bfield,"fieldMap"):
-    fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
-    self.bfield = ROOT.genfit.FairShipFields()
-    self.bfield.setField(fieldMaker.getGlobalField())
-  else: 
-    self.bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Bfield.y/2.*u.m)
-  self.fM = ROOT.genfit.FieldManager.getInstance()
-  self.fM.init(self.bfield)
-  self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
-  ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
   dv = top.GetNode('DecayVolume_1')
   if dv:
    ns = dv.GetNodes()
@@ -395,30 +385,15 @@ class DrawTracks(ROOT.FairTask):
    zs = self.z_start
    before = True
    for i in range(self.niter):
-    NewPosition = ROOT.TVector3(0., 0., zs) 
-    if zs>self.z_mag and before:
-       before = False
-       fstate  = fT.getFittedState(1) 
-       fPos = fstate.getPos()
-       fMom = fstate.getMom() 
-    rc = True     
-    if zs < self.z_ecal:  
-    # extrapolation through ecal fails, maybe problem with material?
-     rep    = ROOT.genfit.RKTrackRep(pid) 
-     state  = ROOT.genfit.StateOnPlane(rep) 
-     rep.setPosMom(state,fPos,fMom) 
-     try:    
-      rep.extrapolateToPlane(state, NewPosition, self.parallelToZ)
-      pos = state.getPos()
-      mom = state.getMom()
-      DTrack.SetNextPoint(pos.X(),pos.Y(),pos.Z())
-     except: 
+    rc,newpos,newmom = TrackExtrapolateTool.extrapolateToPlane(fT,zs)
+    if rc:
+      DTrack.SetNextPoint(newpos.X(),newpos.Y(),newpos.Z())
+    else: 
       print 'error with extrapolation: z=',zs
-      rc = False
-    if not rc or zs > self.z_ecal: # use linear extrapolation
-     px,py,pz  = mom.X(),mom.Y(),mom.Z() 
-     lam = (zs-pos.Z())/pz
-     DTrack.SetNextPoint(pos.X()+lam*px,pos.Y()+lam*py,zs)
+      # use linear extrapolation
+      px,py,pz  = mom.X(),mom.Y(),mom.Z() 
+      lam = (zs-pos.Z())/pz
+      DTrack.SetNextPoint(pos.X()+lam*px,pos.Y()+lam*py,zs)
     zs+=self.dz
    DTrack.SetName('FitTrack_'+str(n))
    c = ROOT.kWhite
@@ -597,8 +572,8 @@ class EventLoop(ROOT.FairTask):
  def InitTask(self):
    self.n = 0
    self.first = True
-   if fGeo.GetVolume('volTarget'): DisplayNuDetector()
-   if fGeo.GetVolume('Ecal'):
+   if sGeo.GetVolume('volTarget'): DisplayNuDetector()
+   if sGeo.GetVolume('Ecal'):
  # initialize ecalStructure
     ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo" 
     if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
@@ -710,8 +685,8 @@ def projection_prescale():
    ss = ROOT.gEve.SpawnNewScene("Scaled Geom")
    sev.AddScene(ss)
    ss.AddElement(smng)
-   N = fGeo.GetTopNode()
-   TNod=ROOT.TEveGeoTopNode(fGeo, N, 1, 3, 10)
+   N = sGeo.GetTopNode()
+   TNod=ROOT.TEveGeoTopNode(sGeo, N, 1, 3, 10)
    ss.AddElement(TNod)
    eventscene = ROOT.gEve.SpawnNewScene('Scaled event')
    eventscene.AddElement(ROOT.FairEventManager.Instance())
@@ -734,10 +709,10 @@ def readCameraSetting(fname='camSetting.root'):
  f.Close()
 def speedUp():
  for x in ["wire","gas","rockD","rockS","rockSFe"]:  
-   xvol = fGeo.GetVolume(x)
+   xvol = sGeo.GetVolume(x)
    if xvol: xvol.SetVisibility(0) 
  for k in range(1,7):
-     va = fGeo.GetVolume("T"+str(k))
+     va = sGeo.GetVolume("T"+str(k))
      if not va: continue
      for x in va.GetNodes():
        nm = x.GetName()
@@ -748,7 +723,7 @@ def speedUp():
        if not nm.find("RibPhi")<0: x.SetVisDaughters(False)
 # 
  for x in ["Ecal","Hcal"]:
-  xvol = fGeo.GetVolume(x)
+  xvol = sGeo.GetVolume(x)
   if not xvol: continue
   xvol.SetVisDaughters(0)
   xvol.SetVisibility(1)
@@ -758,7 +733,7 @@ def speedUp():
 # set display properties for tau nu target
 def DisplayNuDetector():
  for x in ["Wall"]:
-  xvol = fGeo.GetVolume(x)
+  xvol = sGeo.GetVolume(x)
   if not xvol: continue
   xvol.SetVisDaughters(0)
   xvol.SetVisibility(1)
@@ -798,10 +773,10 @@ def switchOn(tag):
 def hidePlasticScintillator():
   sc    = gEve.GetScenes()
   geoscene = sc.FindChild('Geometry scene')
-  v = fGeo.FindVolumeFast('vleft')
+  v = sGeo.FindVolumeFast('vleft')
   v.SetVisibility(0)
   v.SetVisDaughters(0)
-  for v in fGeo.GetListOfVolumes():
+  for v in sGeo.GetListOfVolumes():
    if v.GetName().find('wallVeto')>0:
     v.SetVisibility(0)
     v.SetVisDaughters(0)
@@ -812,7 +787,7 @@ def switchOfRock():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for x in [ 'rockD', 'rockS']:
-  v = fGeo.FindVolumeFast(x)
+  v = sGeo.FindVolumeFast(x)
   v.SetVisibility(0)
  gEve.ElementChanged(geoscene,True,True)
 def switchOfAll(exc):
@@ -844,7 +819,7 @@ def switchOnAll(exc):
 
 def select(pattern):
  exc = []
- for v in fGeo.GetListOfVolumes():
+ for v in sGeo.GetListOfVolumes():
    vname = v.GetName()
    if not vname.find(pattern) < 0 : exc.append(vname)
  return exc
@@ -986,8 +961,8 @@ def mydebug():
    t.GetEntry(i)
    print t.MCEventHeader.GetEventID(),t.MCEventHeader.GetRunID(),t.MCEventHeader.GetZ()
 # geometrie
- fGeo = g.FindObjectAny("FAIRGeom")
- cave = fGeo.GetTopVolume()
+ sGeo = ROOT.gGeoManager
+ cave = sGeo.GetTopVolume()
  cave.Draw('ogl')
 # eve
  gEve = ROOT.gEve
@@ -998,8 +973,8 @@ def mydebug():
  topnode.SetVisLevel(4)
  gEve.ElementChanged(geoscene,True,True)
 def debugStraw(n):
- fGeo = ROOT.gGeoManager  
- vols = fGeo.GetListOfVolumes()
+ sGeo = ROOT.gGeoManager  
+ vols = sGeo.GetListOfVolumes()
  sTree = g.FindObjectAny('cbmsim')
  sTree.GetEntry(n)
  for s in sTree.strawtubesPoint:
@@ -1046,7 +1021,7 @@ if withGeo:
 if not fRun.GetGeoFile().FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # try to figure out which ecal geo to load
-  if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+  if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
   else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
   ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile)
 else: 
@@ -1091,30 +1066,40 @@ fRman = ROOT.FairRootManager.Instance()
 sTree = fRman.GetInChain()
 lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree) 
-fGeo  = ROOT.gGeoManager 
-top   = fGeo.GetTopVolume()
+sGeo  = ROOT.gGeoManager 
+top   = sGeo.GetTopVolume()
 # manipulate colors and transparency before scene created
 speedUp()
 gEve  = ROOT.gEve
 
-if hasattr(ShipGeo.Bfield,"fieldMapXXX"):
+if hasattr(ShipGeo.Bfield,"fieldMap"):
   ROOT.gSystem.Load('libG4clhep.so')
   ROOT.gSystem.Load('libgeant4vmc.so')
   import geomGeant4
-  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True)
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
+  bfield = ROOT.genfit.FairShipFields()
+  bfield.setField(fieldMaker.getGlobalField())
+else:
+  bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Bfield.y/2.*u.m)
+geoMat =  ROOT.genfit.TGeoMaterialInterface()
+ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+fM = ROOT.genfit.FieldManager.getInstance()
+fM.init(bfield)
 
+import TrackExtrapolateTool
 br = gEve.GetBrowser()
 br.HideBottomTab() # make more space for graphics
 br.SetWindowName('SHiP Eve Window')
 
 #switchOf('RockD')
-if fGeo.FindVolumeFast('T2LiSc'): hidePlasticScintillator()
+if sGeo.FindVolumeFast('T2LiSc'): hidePlasticScintillator()
 rulers = Rulers()
 SHiPDisplay = EventLoop()
 SHiPDisplay.SetName('SHiP Displayer')
 lsOfGlobals.Add(SHiPDisplay) 
 SHiPDisplay.InitTask()
-SHiPDisplay.NextEvent(0)
+
+# SHiPDisplay.NextEvent(0)
 
 print 'Help on GL viewer can be found by pressing Help button followed by help on GL viewer'
 print 'With the camera button, you can switch to different views.'
@@ -1254,7 +1239,7 @@ def PRVersion():
  r.AddElement(tx)
  rotAngle = ROOT.TMath.Pi()+ROOT.TMath.PiOver2()*5./2.
  positionText(r,0.,900.,ShipGeo.TrackStation1.z-20*u.m,rotAngle,"SHiP",200,ROOT.kOrange-2)
- positionText(r,0.,750.,ShipGeo.TrackStation1.z-40*u.m,rotAngle,"Vacuum decay vessel",200,ROOT.kGrey+1)
+ positionText(r,0.,750.,ShipGeo.TrackStation1.z-40*u.m,rotAngle,"Vacuum decay vessel",200,ROOT.kGray+1)
  positionText(r,0.,100.,ShipGeo.target.z-6*u.m,rotAngle,"Target",200,ROOT.kBlue)
  positionText(r,0.,600.,ShipGeo.muShield.z-10*u.m,rotAngle,"Active muon shield",200,ROOT.kGreen-2)
  positionText(r,0.,600.,ShipGeo.tauMudet.zMudetC-10*u.m,rotAngle,"Tau neutrino detector",200,ROOT.kRed-2)
