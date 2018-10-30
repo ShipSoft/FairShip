@@ -17,6 +17,7 @@ fi
 if [ ! -d alibuild ];
 then
   git clone https://github.com/alisw/alibuild
+  git checkout v1.5.4.rc3
 fi
 
 if [ ! -d shipdist ];
