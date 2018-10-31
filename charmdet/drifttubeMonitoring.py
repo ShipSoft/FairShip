@@ -1,4 +1,4 @@
-import ROOT,os,sys,operator
+import ROOT,os,time,sys,operator,atexit
 from decorators import *
 import __builtin__ as builtin
 ROOT.gStyle.SetPalette(ROOT.kDarkBodyRadiator)
@@ -14,8 +14,15 @@ from array import array
 
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
+alignConstants = {}
 h={}
+log = {}
 debug = False
+
+#-----prepare python exit-----------------------------------------------
+def pyExit():
+ ut.errorSummary()
+atexit.register(pyExit)
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
@@ -46,7 +53,10 @@ else:
 fname = fnames[0]
 if options.updateFile:
  f=ROOT.TFile(fname,'update')
- sTree=f.cbmsim
+ sTree=f.Get('cbmsim')
+ if not sTree: 
+   print "Problem with file",f
+   exit(-1)
 else:
  sTree = ROOT.TChain('cbmsim')
  for f in fnames: 
@@ -861,7 +871,6 @@ h['dispTrackY']=[]
 
 withTDC = True
 
-import time
 def printEventsWithDTandRPC(nstart=0):
  for n in range(nstart,sTree.GetEntries()):
   rc = sTree.GetEvent(n)
@@ -1377,7 +1386,10 @@ def extrapolateToPlane(fT,z):
     for m in range(0,M):
      # print "extr to state m",m,fT.getNumPointsWithMeasurement()
      if not fT.getPointWithMeasurementAndFitterInfo(m,rep): continue
-     st = fT.getFittedState(m)
+     try:     st = fT.getFittedState(m)
+     except:  
+       print "cannot get fitted state"
+       continue
      Pos = st.getPos()
      if abs(z-Pos.z())<mZmin:
       mZmin = abs(z-Pos.z())
@@ -1395,7 +1407,11 @@ def extrapolateToPlane(fT,z):
       rc = True 
     except: 
       print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
-      pass
+      error =  "extrapolateToPlane: error with extrapolation: z=%7.3F m %7.3F %7.3F %7.3F %7.3F %7.3F %7.3F "%(z/u.m,pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z())
+      ut.reportError(error)
+      if Debug: print error
+      rc = False
+      return rc,pos,mom
    else:
     if z < DT['Station_1_x_plane_0_layer_0_10000000'][2]:
 # use linear extrapolation from first state
@@ -1611,7 +1627,9 @@ def fitTrack(hitlist,Pstart=3.):
       return -1
     # print "time to fit the track",timer.RealTime()
    if timer.RealTime()>1: # make a new fitter, didn't helped
-     print "very long fit time",timer.RealTime(),len(hitlist)
+      error =  "fitTrack::very long fit time %8.6F  %6i"%(timer.RealTime(),len(hitlist))
+      ut.reportError(error)
+      if Debug: print error
    fitStatus   = theTrack.getFitStatus()
    if Debug: print "Fit result:",fitStatus.isFitConverged(),fitStatus.getChi2(),fitStatus.getNdf()
    if not fitStatus.isFitConverged():
@@ -1995,7 +2013,8 @@ def printResiduals(aTrack):
           z = (vbot[2]+vtop[2])/2.
           rc,pos,mom = extrapolateToPlane(aTrack,z)
           if not rc:
-           print "plotBiasedResiduals extrap failed"
+           error =  "printResiduals: plotBiasedResiduals extrap failed"
+           ut.reportError(error)
            continue
           distance = 0
           if RTrelations.has_key(rname) or hasattr(sTree,'MCTrack'):
@@ -2028,7 +2047,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
   for Nr in range(eventRange[0],eventRange[1]):
    getEvent(Nr)
    h['T0tmp'].Reset()
-   if Nr%500==0:   print "now at event",Nr
+   if Nr%1000==0:   print "now at event",Nr,sTree.GetCurrentFile().GetName()
    if not findSimpleEvent(sTree): continue
    trackCandidates = findTracks(PR)
    for aTrack in trackCandidates:
@@ -2047,7 +2066,8 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
           z = (vbot[2]+vtop[2])/2.
           rc,pos,mom = extrapolateToPlane(aTrack,z)
           if not rc:
-           print "plotBiasedResiduals extrap failed"
+           error =  "plotBiasedResiduals: extrapolation failed"
+           ut.reportError(error)
            continue
           distance = 0
           if withTDC and (RTrelations.has_key(rname) or hasattr(sTree,'MCTrack')):
@@ -2289,7 +2309,9 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
        inAcc=False
        node = sGeo.FindNode(pos[0],pos[1],zRPC1)
        if not node: 
-         print "RPCextrap: node not found, ",pos[0],pos[1],zRPC1
+        error =  "RPCextrap: node not found, %7.3F,%7.3F,%7.3F"%(pos[0],pos[1],zRPC1)
+        ut.reportError(error)
+        if Debug: print error
        elif node.GetName() != "cave_1": 
          inAcc=True
        if (pos[0]<-80): inAcc = False
@@ -2302,9 +2324,10 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
         z = (vtop[2]+vbot[2])/2.
         rc,pos,mom = extrapolateToPlane(aTrack,z)
         if not rc:
-           print "plotRPCExtrap failed"
-           continue
-        if rc<0: continue
+         error =  "RPCextrap: plotRPCExtrap failed"
+         ut.reportError(error)
+         if Debug: print error
+         continue
         # closest distance from point to line
         # res = vbot[0]*pos[1] - vtop[0]*pos[1] - vbot[1]*pos[0]+ vtop[0]*vbot[1] + pos[0]*vtop[1]-vbot[0]*vtop[1]
         # res = -res/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)
@@ -2501,21 +2524,28 @@ if not hasattr(sTree,'MCTrack') and withCorrections:
  alignCorrection[22]=[ 0.0, 0, 0]
  alignCorrection[23]=[ 0.0, 0, 0]
 
-def correctAlignment(hit,default=True):
- vbot,vtop = ROOT.TVector3(), ROOT.TVector3()
- rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
+def correctAlignment(hit,default=False):
+ detID = hit.GetDetectorID()
+ if alignConstants.has_key('strawPositions'):
+  b = alignConstants['strawPositions'][detID]['bot']
+  vbot = ROOT.TVector3(b[0],b[1],b[2])
+  t = alignConstants['strawPositions'][detID]['top']
+  vtop = ROOT.TVector3(t[0],t[1],t[2])
+ else:
+  vbot,vtop = ROOT.TVector3(), ROOT.TVector3()
+  rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
  if default: return vbot,vtop
  s,v,p,l,view = stationInfo(hit)
  if view=='_x':
-  vbot[0]=xpos[hit.GetDetectorID()]
-  vtop[0]=xpos[hit.GetDetectorID()]
+  vbot[0]=xpos[detID]
+  vtop[0]=xpos[detID]
  else:
-  vtop[0]=xpos[hit.GetDetectorID()]
-  vtop[1]=ypos[hit.GetDetectorID()]
-  vbot[0]=xposb[hit.GetDetectorID()]
-  vbot[1]=yposb[hit.GetDetectorID()]
- vbot[2]=zpos[hit.GetDetectorID()]
- vtop[2]=zpos[hit.GetDetectorID()]
+  vtop[0]=xpos[detID]
+  vtop[1]=ypos[hdetID]
+  vbot[0]=xposb[detID]
+  vbot[1]=yposb[detID]
+ vbot[2]=zpos[detID]
+ vtop[2]=zpos[detID]
  x= (2*p+l)
  if s==1 and view=='_u': x+=4
  if s==2 and view=='_v': x+=8
@@ -2829,13 +2859,15 @@ def findV0(nstart=0,nmax=-1):
 def getEvent(n):
  global rname
  rc = sTree.GetEvent(n)
- if withTDC:
-  temp = sTree.GetCurrentFile().GetName()
-  curFile = temp[temp.rfind('/')+1:]
-  if curFile != rname:
-   rname = curFile
-   h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
-   for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
+ if sTree.GetListOfFiles().GetEntries()>1:
+   temp = sTree.GetCurrentFile().GetName()
+   curFile = temp[temp.rfind('/')+1:]
+   if curFile != rname:
+    rname = curFile
+    if withTDC:
+     h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
+     for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
+    importAlignmentConstants()
 
 from rootpyPickler import Pickler
 from rootpyPickler import Unpickler
@@ -2849,9 +2881,18 @@ def makeRTrelPersistent(RTrelations):
    if fname.find('eos')<0:
     copyfile(fname,newName)
    else:
-    os.system("xrdcp $EOSSHIP"+fname+" "+newName)
+    for l in range(10):
+     rc = os.system("xrdcp -f $EOSSHIP"+fname+" "+newName)
+     if rc == 0: break
+     time.sleep(30)
+    if rc != 0: 
+        print "Problem with copying file",fname,rc
+        continue
    ftemp = ROOT.TFile.Open(newName,'update')
-   sTree = ftemp.cbmsim
+   sTree = ftemp.Get("cbmsim")
+   if not sTree:
+     print "Problem with file",ftemp,ftemp.ls()
+     continue
    ftemp.cd('')
    ftemp.mkdir('RT')
    ftemp.cd('RT')
@@ -2873,12 +2914,26 @@ def makeAlignmentConstantsPersistent():
   ftemp.cd('')
   ftemp.mkdir('alignment')
   ftemp.alignment.cd('')
-  alignConstants={'xpos':xpos,'ypos':ypos,'zpos':zpos,'alignCorrection':alignCorrection}
+  strawPositions = {}
+  for straw in xpos:
+    hit = ROOT.MufluxSpectrometerHit(straw,0.)
+    vbot,vtop = correctAlignment(hit)
+    strawPositions[straw]={'top':[vtop[0],vtop[1],vtop[2]],'bot':[vbot[0],vbot[1],vbot[2]]}
+  alignConstants={'strawPositions':strawPositions,'alignCorrection':alignCorrection}
   pkl = Pickler(ftemp)
   pkl.dump(alignConstants,'alignConstants')
   momDisplay()
   h['mom'].Write()
 
+def importAlignmentConstants():
+   global alignConstants
+   alignConstants = {}
+   if not sTree.GetCurrentFile().Get('alignConstants'):return
+   upkl    = Unpickler(sTree.GetCurrentFile())
+   try:
+    alignConstants = upkl.load('alignConstants')
+   except:
+    print "loading of alignment constants failed for file",sTree.GetCurrentFile().GetName()
 def importRTrel():
   for fname in fnames:
    f = ROOT.TFile.Open(fname)
@@ -2937,7 +2992,7 @@ def recoStep1():
   fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
   n = 0
   for event in sTree:
-    if n%1000==0: print "Now at event",n
+    if n%1000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName()
     n+=1
     fGenFitArray.Delete()
     theTracks = testPR()
@@ -2953,6 +3008,7 @@ def recoStep1():
   ftemp.Close()
 def anaResiduals():
   importRTrel()
+  importAlignmentConstants()
   plotBiasedResiduals(nEvent=0,nTot=sTree.GetEntries(),PR=2)
   plotRPCExtrap()
   ut.writeHists(h,'histos-residuals-'+rname)
@@ -3007,8 +3063,12 @@ if options.command == "recoStep0":
   withTDC=False
   print "determine RT relations, make new files"
   recoStep0()
+  print "finished making RT relations"
 elif options.command == "recoStep1":
   print "add fitted tracks"
   recoStep1()
+  print "finished adding fitted tracks"
 elif options.command == "anaResiduals":
   anaResiduals()
+  print "finished with analysis step"
+
