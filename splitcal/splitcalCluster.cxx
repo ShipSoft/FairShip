@@ -17,7 +17,10 @@
 //   SetVectorOfHits(v);
 // }
 
-
+// -----   Default constructor   -------------------------------------------
+splitcalCluster::splitcalCluster()
+{
+}
 // -----   constructor from splitcalHit   ------------------------------------------
 splitcalCluster::splitcalCluster(splitcalHit* h)
 {
