@@ -40,7 +40,9 @@ simpleTarget::simpleTarget()
     fMom(),
     fTime(-1.),
     fLength(-1.),
+    fThick(-1.),
     fOnlyMuons(kFALSE),
+    fFastMuon(kFALSE),
     fzPos(3E8),
     fTotalEloss(0),
     fsimpleTargetPointCollection(new TClonesArray("vetoPoint"))
@@ -73,6 +75,7 @@ Bool_t  simpleTarget::ProcessHits(FairVolume* vol)
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
     if (fELoss == 0. ) { return kFALSE; }
+   // if (fOnlyMuons and fPos.Z()<140){ used for LiquidKrypton study
     if (fOnlyMuons){
        fTotalEloss+=fELoss;
        TClonesArray& clref = *fsimpleTargetPointCollection;
@@ -135,7 +138,7 @@ void simpleTarget::ConstructGeometry()
      geoBuild->createMedium(ShipMedium);
    mat =gGeoManager->GetMedium(fMaterial);
    TGeoVolume *top=gGeoManager->GetTopVolume();
-   TGeoVolume *target = gGeoManager->MakeBox("target",mat,10.*100.,10.*100.,fLength);
+   TGeoVolume *target = gGeoManager->MakeBox("target",mat,10.*100.,10.*100.,fThick);
    top->AddNode(target, 1, new TGeoTranslation(0, 0, fzPos));
    AddSensitiveVolume(target);
 }
@@ -149,6 +152,13 @@ vetoPoint* simpleTarget::AddHit(Int_t trackID, Int_t detID,
   Int_t size = clref.GetEntriesFast();
   return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode,Lpos,Lmom);
+}
+
+void simpleTarget::PreTrack(){
+    if (!fFastMuon){return;}
+    if (TMath::Abs(gMC->TrackPid())!=13){
+        gMC->StopTrack();
+    }
 }
 
 void simpleTarget::Register()
