@@ -65,7 +65,7 @@ Bool_t ReProcessAbsorber::ReadEvent(FairPrimaryGenerator* cpg)
        TVector3 mom = fState.getMom();
        Double_t E = TMath::Sqrt(mom.Mag2()+muMass*muMass);
        TMCProcess procID  = kPTransportation;
-       cpg->AddTrack(pdgCode,mom[0],mom[1],mom[2],pos[0],pos[1],fZ, -1,kTrue,E, 0.,1.,procID);
+       cpg->AddTrack(pdgCode,mom[0],mom[1],mom[2],pos[0],pos[1],fZ, -1,kTRUE,E, 0.,1.,procID);
    }
    if (FitTracks->GetEntriesFast()>0)break;
   }
