@@ -118,6 +118,7 @@ Bool_t ShipTdcSource::Unpack(Int_t *data, Int_t size, uint16_t partitionId)
 
 void ShipTdcSource::FillEventHeader(FairEventHeader *feh)
 {
+   // TODO add frame times per partition?, -1 if not present?
    feh->SetEventTime(fEventTime);
    feh->SetRunId(fRunId);
    return;

@@ -54,7 +54,7 @@ private:
 
 public:
    // Class definition
-   ClassDef(ShipUnpack, 1)
+   ClassDefOverride(ShipUnpack, 1)
 };
 
 #endif

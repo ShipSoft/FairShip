@@ -59,6 +59,7 @@ void DriftTubeUnpack::Register()
 // DoUnpack: Public method
 Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 {
+   // TODO add histogram leading-trailing
    LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
@@ -169,7 +170,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       uint16_t raw_chan = channel_and_time.first;
       uint16_t raw_time = channel_and_time.second;
       auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
-      if(channel->edge == 1){
+      if (channel->edge == 1) {
          continue;
       }
       auto detectorId = channel->GetDetectorId();
@@ -184,30 +185,63 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          continue;
       }
       Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
-      Float_t width = 0.098 * (channels.at(raw_chan + 0x1000) - raw_time);
+      Float_t width = 0;
+      try {
+         width = 0.098 * (channels.at(raw_chan + 0x1000) - raw_time);
+      } catch (const std::out_of_range &e) {
+         LOG(ERROR) << "trailing edge channel out of range" << FairLogger::endl;
+         LOG(ERROR) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
+                      << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
+         skipped++;
+         continue;
+      }
       new ((*fRawTubes)[nhitsTubes]) MufluxSpectrometerHit(detectorId, time, width, flags, raw_chan);
       nhitsTubes++;
    }
    for (auto &&channel_and_times : late_hits) {
       uint16_t raw_chan = channel_and_times.first;
       auto raw_times = channel_and_times.second;
-      auto trailing_times = late_hits.at(raw_chan + 0x1000);
       auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
+      if (channel->edge == 1) {
+         continue;
+      }
       auto detectorId = channel->GetDetectorId();
       auto TDC = channel->TDC;
+      ROOT::VecOps::RVec<uint16_t> trailing_times;
+      try {
+         trailing_times = late_hits.at(raw_chan + 0x1000);
+      } catch (const std::out_of_range &e) {
+         LOG(WARNING) << "trailing edge channel out of range" << FairLogger::endl;
+         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
+                      << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
+         skipped += raw_times.size();
+         continue;
+      }
+
       uint16_t trigger_time;
       try {
          trigger_time = triggerTime.at(TDC);
       } catch (const std::out_of_range &e) {
          LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
                       << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
+         skipped += raw_times.size();
          continue;
       }
       auto times = 0.098 * (delay - trigger_time + raw_times); // conversion to ns and jitter correction
-      auto widths = 0.098 * (trailing_times -  raw_times);
+      if (trailing_times.size() != raw_times.size()) {
+         LOG(WARNING) << "Mismatch between leading and trailing edges:\nLeading: " << raw_times.size()
+                      << "\tTrailing:" << trailing_times.size() << FairLogger::endl;
+         skipped += raw_times.size();
+         continue;
+      }
+      auto widths = 0.098 * (trailing_times - raw_times);
       for (auto &&i : ROOT::MakeSeq(raw_times.size())) {
-         new ((*fRawLateTubes)[nhitsLateTubes])
-            MufluxSpectrometerHit(detectorId, times.at(i), widths.at(i), flags | DriftTubes::InValid, raw_chan);
+         try {
+            new ((*fRawLateTubes)[nhitsLateTubes])
+               MufluxSpectrometerHit(detectorId, times.at(i), widths.at(i), flags | DriftTubes::InValid, raw_chan);
+         } catch (const std::out_of_range &e) {
+            LOG(WARNING) << i << "\t" << raw_times.size() << "\t" << times.size() << FairLogger::endl;
+         }
          nhitsLateTubes++;
       }
    }
