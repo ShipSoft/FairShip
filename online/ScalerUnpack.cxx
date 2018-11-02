@@ -7,6 +7,7 @@
 // Fair headers
 #include "FairLogger.h"
 #include "FairRootManager.h"
+#include "FairRootFileSink.h"
 
 // SHiP headers
 #include "ScalerUnpack.h"
@@ -58,7 +59,10 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
    for (auto i : ROOT::MakeSeq(df->getSliceCount())) {
       LOG(DEBUG) << "Slice " << i << "= " << df->slices[i] << FairLogger::endl;
    }
-   auto f = fMan->GetOutFile();
+   auto sink = fMan->GetSink();
+   assert(sink->GetSinkType() == kFILESINK);
+   auto rootFileSink = dynamic_cast<FairRootFileSink*>(sink);
+   auto f = rootFileSink->GetRootFile();
    tree = dynamic_cast<TTree *>(f->Get("scalers"));
    if (tree == nullptr) {
       tree = new TTree("scalers", "scalers");
