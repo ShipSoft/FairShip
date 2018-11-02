@@ -28,6 +28,13 @@ def main():
     h = {}
 
     # Define histograms
+    for nplane in ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22']:
+                ut.bookHist(h, 'NuTauMu_all_{}'.format(nplane),
+                    'Rpc_{};x[cm];y[cm]'.format(nplane), 100, -300, +300, 100, -300,
+                    300)
+                ut.bookHist(h, 'NuTauMu_mu_{}'.format(nplane),
+                    'Rpc_{};x[cm];y[cm]'.format(nplane), 100, -300, +300, 100, -300,
+                    300)
     for suffix, title in [('mu', '#mu#pm hits'), ('all', 'All hits')]:
         ut.bookHist(h, 'muon_tiles_{}'.format(suffix),
                     '{};x[cm];y[cm]'.format(title), 200, -1000, +1000, 90,
@@ -41,8 +48,23 @@ def main():
         ut.bookHist(h, 'timing_{}'.format(suffix),
                     '{};x[cm];y[cm]'.format(title), 3, -252, +252, 167, -501,
                     501)
+        ut.bookHist(h, 'TargetTracker_{}'.format(suffix),
+                    '{};x[cm];y[cm]'.format(title), 120, -60, 60, 120, -60,
+                    60)
+        ut.bookHist(h, 'TargetTracker_yvsz_{}'.format(suffix),
+                    '{};z[cm];y[cm]'.format(title), 400, -3300, -2900, 120, -60,
+                    60)
+        ut.bookHist(h, 'TargetTracker_xvsz_{}'.format(suffix),
+                    '{};z[cm];x[cm]'.format(title), 400, -3300, -2900, 120, -60,
+                    60)
         ut.bookHist(h, 'NuTauMu_{}'.format(suffix),
                     '{};x[cm];y[cm]'.format(title), 100, -300, +300, 100, -300,
+                    300)
+        ut.bookHist(h, 'NuTauMu_yvsz_{}'.format(suffix),
+                    '{};z[cm];y[cm]'.format(title), 200, -2680, -2480, 600, -300,
+                    300)
+        ut.bookHist(h, 'NuTauMu_xvsz_{}'.format(suffix),
+                    '{};z[cm];x[cm]'.format(title), 200, -2680, -2480, 600, -300,
                     300)
         ut.bookHist(h, 'ECAL_TP_{}'.format(suffix),
                     '{};x[cm];y[cm]'.format(title), 167, -501, +501, 334,
@@ -60,6 +82,18 @@ def main():
             ut.bookHist(h, 'T{}_{}'.format(station, suffix),
                         '{};x[cm];y[cm]'.format(title), 10, -250, +250, 20,
                         -500, 500)
+    
+    ut.bookHist(h, 'NuTauMu_mu_p', '#mu#pm;p[GeV];', 100, 0, maxp)
+    ut.bookHist(h, 'NuTauMu_mu_pt', '#mu#pm;p_t[GeV];', 100, 0,
+                    maxpt)
+    ut.bookHist(h, 'NuTauMu_mu_ppt', '#mu#pm;p[GeV];p_t[GeV];',
+                    100, 0, maxp, 100, 0, maxpt)
+    ut.bookHist(h, 'NuTauMu_all_p', '#mu#pm;p[GeV];', 100, 0, maxp)
+    ut.bookHist(h, 'NuTauMu_all_pt', '#mu#pm;p_t[GeV];', 100, 0,
+                    maxpt)
+    ut.bookHist(h, 'NuTauMu_all_ppt', '#mu#pm;p[GeV];p_t[GeV];',
+                    100, 0, maxp, 100, 0, maxpt)
+    
     for suffix in ['', '_original']:
         ut.bookHist(h, 'mu_p{}'.format(suffix), '#mu#pm;p[GeV];', 100, 0, maxp)
         ut.bookHist(h, 'mu_pt{}'.format(suffix), '#mu#pm;p_t[GeV];', 100, 0,
@@ -166,11 +200,45 @@ def main():
                     h['ECAL_gamma_E'].Fill(np.sqrt(Esq), weight)
                     h['ECAL_TP_gamma'].Fill(x, y, weight)
                     h['ECAL_Alt_gamma'].Fill(x, y, weight)
+        for hit in event.TTPoint:
+            if hit:
+                if not hit.GetEnergyLoss() > 0:
+                    continue
+                trid = hit.GetTrackID()
+                detID = hit.GetDetectorID()
+                weight = event.MCTrack[
+                    trid].GetWeight() if trid > 0 else getMuonWeight()
+                x = hit.GetX()
+                y = hit.GetY()
+                z = hit.GetZ()
+                px = hit.GetPx()
+                py = hit.GetPy()
+                pz = hit.GetPz()
+                pt = np.hypot(px, py)
+                P = np.hypot(pz, pt)
+                pid = hit.PdgCode()
+                assert pid not in [12, -12, 14, -14, 16, -16]
+                if detID == 0:
+                 h['TargetTracker_all'].Fill(x, y, weight)
+                h['TargetTracker_xvsz_all'].Fill(z,x,weight)
+                h['TargetTracker_yvsz_all'].Fill(z,y,weight)
+                if abs(pid) == 13:
+                    muon = True
+                    muonid = trid
+                    h['mu_p'].Fill(P, weight)
+                    h['mu_pt'].Fill(pt, weight)
+                    h['mu_ppt'].Fill(P, pt, weight)
+                    if detID == 0:
+                     h['TargetTracker_mu'].Fill(x, y, weight)
+                    h['TargetTracker_xvsz_mu'].Fill(z,x,weight)
+                    h['TargetTracker_yvsz_mu'].Fill(z,y,weight)            
         for hit in event.ShipRpcPoint:
             if hit:
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
+                detID = hit.GetDetectorID()         
+                nplane = detID - 10000
                 weight = event.MCTrack[
                     trid].GetWeight() if trid > 0 else getMuonWeight()
                 x = hit.GetX()
@@ -184,6 +252,14 @@ def main():
                 pid = hit.PdgCode()
                 assert pid not in [12, -12, 14, -14, 16, -16]
                 h['NuTauMu_all'].Fill(x, y, weight)
+                if nplane >= 0 :
+                 h['NuTauMu_all_{}'.format(nplane)].Fill(x,y,weight)
+                h['NuTauMu_xvsz_all'].Fill(z,x,weight)
+                h['NuTauMu_yvsz_all'].Fill(z,y,weight)               
+                if detID == 10000:
+                 h['NuTauMu_all_p'].Fill(P,weight)
+                 h['NuTauMu_all_pt'].Fill(pt,weight)
+                 h['NuTauMu_all_ppt'].Fill(P,pt,weight)   
                 if abs(pid) == 13:
                     muon = True
                     muonid = trid
@@ -191,6 +267,14 @@ def main():
                     h['mu_pt'].Fill(pt, weight)
                     h['mu_ppt'].Fill(P, pt, weight)
                     h['NuTauMu_mu'].Fill(x, y, weight)
+                    if nplane >= 0 :
+                     h['NuTauMu_mu_{}'.format(nplane)].Fill(x,y,weight) #fill the histogram corresponding to nplane
+                    if detID == 10000:
+                     h['NuTauMu_mu_p'].Fill(P,weight)
+                     h['NuTauMu_mu_pt'].Fill(pt,weight)
+                     h['NuTauMu_mu_ppt'].Fill(P,pt,weight)
+                    h['NuTauMu_xvsz_mu'].Fill(z,x,weight)
+                    h['NuTauMu_yvsz_mu'].Fill(z,y,weight)
         for hit in event.TimeDetPoint:
             if hit:
                 if not hit.GetEnergyLoss() > 0:
