@@ -6,6 +6,7 @@
 #include "TMCProcess.h"
 #include "ReProcessAbsorber.h"
 #include "Track.h"
+#include "FitStatus.h"
 #include "MeasuredStateOnPlane.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TMath.h"                      // for Sqrt
@@ -59,6 +60,9 @@ Bool_t ReProcessAbsorber::ReadEvent(FairPrimaryGenerator* cpg)
    fn++;
    for (Int_t i=0;i<FitTracks->GetEntriesFast();i++) {
        genfit::Track *atrack = (genfit::Track*)FitTracks->At(i);
+       genfit::FitStatus  *fst = atrack->getFitStatus();
+       if (!fst->isFitConverged()) continue;
+
        const genfit::MeasuredStateOnPlane fState =  atrack->getFittedState(0);
        int pdgCode = -int(13*fState.getCharge());
        TVector3 pos = fState.getPos();
