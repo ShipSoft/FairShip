@@ -151,7 +151,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
       withConstField = False
       if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstField = shipGeo.EmuMagnet.WithConstField
       if not withConstField:
-       fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC),ROOT.TVector3(0,-ROOT.TMath.Pi()/2, -ROOT.TMath.Pi()/2))       
+       fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))       
     # Combine the two fields to obtain the global field
        fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
        fieldMaker.defineGlobalField('TotalField')
