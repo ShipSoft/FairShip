@@ -26,7 +26,6 @@ def get_n_hits(hits):
 def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     """
     Runs all steps of track pattern recognition.
-
     Parameters
     ----------
     input_file : string
@@ -73,8 +72,19 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
     ############################################# Load SHiP modules ####################################################
 
+    import shipDet_conf
     run = ROOT.FairRunSim()
+    run.SetName("TGeant4")  # Transport engine
+    run.SetOutputFile("dummy")  # Output file
+    run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for the mag field
+    rtdb = run.GetRuntimeDb()
+
     modules = shipDet_conf.configure(run,ShipGeo)
+    run.Init()
+
+    #run = ROOT.FairRunSim()
+    #modules = shipDet_conf.configure(run,ShipGeo)
+
 
     ############################################# Load inpur data file #################################################
 
@@ -137,6 +147,15 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
         in_stereo34 = []
         in_34 = []
         in_combo = []
+
+        found_track_ids = []
+        n_tracks = len(reconstructible_tracks)
+        n_recognized = 0
+        n_clones = 0
+        n_ghosts = 0
+        n_others = 0
+
+        min_eff = 0.
         
         ########################################## Recognized tracks ###################################################
         
@@ -203,6 +222,22 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
             n_hits_34 = get_n_hits(hits['TrackID'][is_after])
             frac_tot, tmax_tot = fracMCsame(hits['TrackID'])
             n_hits_tot = get_n_hits(hits['TrackID'])
+
+            if tmax_y12 == tmax_stereo12 and tmax_y12 == tmax_y34 and tmax_y12 == tmax_stereo34:
+                if frac_y12 >= min_eff and frac_stereo12 >= min_eff and frac_y34 >= min_eff and frac_stereo34 >= min_eff:
+
+                    if tmax_y12 in reconstructible_tracks and tmax_y12 not in found_track_ids:
+                        n_recognized += 1
+                        found_track_ids.append(tmax_y12)
+                    elif tmax_y12 in reconstructible_tracks and tmax_y12 in found_track_ids:
+                        n_clones += 1
+                    elif tmax_y12 not in reconstructible_tracks:
+                        n_others += 1
+
+                else:
+                    n_ghosts += 1
+            else:
+                n_ghosts += 1
             
             is_reconstructed = 0
             is_reconstructed_no_clones = 0
@@ -259,27 +294,28 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                                     if tmax_12 == tmax_34:
                                         metrics['passed_combined'] += 1
                                         h['TracksPassed'].Fill("Combined stations 1&2/3&4", 1)
+                                        metrics['reco_passed'] += 1
                                         is_reconstructed = 1
                                         if tmax_34 not in in_combo:
                                             h['TracksPassedU'].Fill("Combined stations 1&2/3&4", 1)
+                                            metrics['reco_passed_no_clones'] += 1
                                             in_combo.append(tmax_34)
                                             is_reconstructed_no_clones = 1
                                         
             # For reconstructed tracks
             if is_reconstructed == 0:
                 continue
-                
-            metrics['reco_passed'] += 1
-            metrics['reco_passed_no_clones'] += 1
+
             metrics['reco_frac_tot'] += [frac_tot]
             
             # Momentum
             Pz = hits['Pz']
             Px = hits['Px']
             Py = hits['Py']
-            P = numpy.sqrt(Pz**2 + Px**2 + Py**2)
-            P = P[hits['TrackID'] == tmax_tot]
-            p = numpy.mean(P)
+
+            p, px, py, pz = getPtruthFirst(sTree, tmax_tot)
+            pt = math.sqrt(px**2 + py**2)
+
             
             metrics['reco_mc_p'] += [p]
             h['TracksPassed_p'].Fill(p, 1)
@@ -320,6 +356,14 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
             h['frac_stereo34'].Fill(p, frac_stereo34)
             h['frac_34'].Fill(p, frac_34)
             h['frac_total'].Fill(p, frac_tot)
+
+            h['frac_y12_dist'].Fill(frac_y12)
+            h['frac_stereo12_dist'].Fill(frac_stereo12)
+            h['frac_12_dist'].Fill(frac_12)
+            h['frac_y34_dist'].Fill(frac_y34)
+            h['frac_stereo34_dist'].Fill(frac_stereo34)
+            h['frac_34_dist'].Fill(frac_34)
+            h['frac_total_dist'].Fill(frac_tot)
             
             # Fitted track
             
@@ -338,33 +382,61 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
             h['chi2fittedtracks'].Fill(chi2)
             h['pvalfittedtracks'].Fill(pval)
 
-            fittedState = thetrack.getFittedState()
-            fittedMom = fittedState.getMomMag()
-            fittedMom = fittedMom #*int(charge)
-            
-            metrics['fitted_p'] += [fittedMom]
-            perr = (p - fittedMom) / p
-            h['ptrue-p/ptrue'].Fill(perr)
-            h['perr'].Fill(p, perr)
-            h['perr_direction'].Fill(numpy.rad2deg(theta), perr)
+            try:
 
-            if math.fabs(p) > 0.0 :
-                h['pvspfitted'].Fill(p, fittedMom)
-            fittedtrackDir = fittedState.getDir()
-            fittedx=math.degrees(math.acos(fittedtrackDir[0]))
-            fittedy=math.degrees(math.acos(fittedtrackDir[1]))
-            fittedz=math.degrees(math.acos(fittedtrackDir[2]))
-            fittedmass = fittedState.getMass()
-            h['momentumfittedtracks'].Fill(fittedMom)
-            h['xdirectionfittedtracks'].Fill(fittedx)
-            h['ydirectionfittedtracks'].Fill(fittedy)
-            h['zdirectionfittedtracks'].Fill(fittedz)
-            h['massfittedtracks'].Fill(fittedmass)
-            
-            metrics['fitted_x'] += [fittedx]
-            metrics['fitted_y'] += [fittedy]
-            metrics['fitted_z'] += [fittedz]
-            metrics['fitted_mass'] += [fittedmass]
+                fittedState = thetrack.getFittedState()
+                fittedMom = fittedState.getMomMag()
+                fittedMom = fittedMom #*int(charge)
+
+                px_fit,py_fit,pz_fit = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
+                p_fit = fittedMom
+                pt_fit = math.sqrt(px_fit**2 + py_fit**2)
+
+                metrics['fitted_p'] += [p_fit]
+                perr = (p - p_fit) / p
+                h['ptrue-p/ptrue'].Fill(perr)
+                h['perr'].Fill(p, perr)
+                h['perr_direction'].Fill(numpy.rad2deg(theta), perr)
+
+                pterr = (pt - pt_fit) / pt
+                h['pttrue-pt/pttrue'].Fill(pterr)
+
+                pxerr = (px - px_fit) / px
+                h['pxtrue-px/pxtrue'].Fill(pxerr)
+
+                pyerr = (py - py_fit) / py
+                h['pytrue-py/pytrue'].Fill(pyerr)
+
+                pzerr = (pz - pz_fit) / pz
+                h['pztrue-pz/pztrue'].Fill(pzerr)
+
+                if math.fabs(p) > 0.0 :
+                    h['pvspfitted'].Fill(p, fittedMom)
+                fittedtrackDir = fittedState.getDir()
+                fittedx=math.degrees(math.acos(fittedtrackDir[0]))
+                fittedy=math.degrees(math.acos(fittedtrackDir[1]))
+                fittedz=math.degrees(math.acos(fittedtrackDir[2]))
+                fittedmass = fittedState.getMass()
+                h['momentumfittedtracks'].Fill(fittedMom)
+                h['xdirectionfittedtracks'].Fill(fittedx)
+                h['ydirectionfittedtracks'].Fill(fittedy)
+                h['zdirectionfittedtracks'].Fill(fittedz)
+                h['massfittedtracks'].Fill(fittedmass)
+
+                metrics['fitted_x'] += [fittedx]
+                metrics['fitted_y'] += [fittedy]
+                metrics['fitted_z'] += [fittedz]
+                metrics['fitted_mass'] += [fittedmass]
+
+            except:
+                print "Problem with fitted state."
+
+
+        h['Reco_tracks'].Fill("N total", n_tracks)
+        h['Reco_tracks'].Fill("N recognized tracks", n_recognized)
+        h['Reco_tracks'].Fill("N clones", n_clones)
+        h['Reco_tracks'].Fill("N ghosts", n_ghosts)
+        h['Reco_tracks'].Fill("N others", n_others)
             
     ############################################# Save hists #########################################################
     
@@ -384,12 +456,10 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 def decodeDetectorID(detID):
     """
     Decodes detector ID.
-
     Parameters
     ----------
     detID : int or array-like
         Detector ID values.
-
     Returns
     -------
     statnb : int or array-like
@@ -419,7 +489,6 @@ def fracMCsame(trackids):
     Estimates max fraction of true hit labels for a recognized track.
     trackids : array_like
         hit indexes of a recognized track
-
     Retunrs
     -------
     frac : float
@@ -456,7 +525,6 @@ def fracMCsame(trackids):
 def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     """
     Estimates reconstructible tracks of an event.
-
     Parameters
     ----------
     iEvent : int
@@ -467,7 +535,6 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
         Contains SHiP detector geometry.
     ShipGeo : object
         Contains SHiP detector geometry.
-
     Returns
     -------
     MCTrackIDs : array-like
@@ -515,27 +582,27 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     
     
     #2. hitsinTimeDet: list of tracks with hits in TimeDet
-    nVetoHits = sTree.vetoPoint.GetEntriesFast()
-    hitsinTimeDet=[]
-    for i in range(nVetoHits):
-        avetohit = sTree.vetoPoint.At(i)
-        #hit in TimeDet?
-        if sGeo.FindNode(avetohit.GetX(), avetohit.GetY(), avetohit.GetZ()).GetName() == 'TimeDet_1':
-            if avetohit.GetTrackID() not in hitsinTimeDet:
-                hitsinTimeDet.append(avetohit.GetTrackID())
+    #nVetoHits = sTree.vetoPoint.GetEntriesFast()
+    #hitsinTimeDet=[]
+    #for i in range(nVetoHits):
+    #    avetohit = sTree.vetoPoint.At(i)
+    #    #hit in TimeDet?
+    #    if sGeo.FindNode(avetohit.GetX(), avetohit.GetY(), avetohit.GetZ()).GetName() == 'TimeDet_1':
+    #        if avetohit.GetTrackID() not in hitsinTimeDet:
+    #            hitsinTimeDet.append(avetohit.GetTrackID())
 
     
     
     #3. Remove tracks from MCTrackIDs that are not in hitsinTimeDet
-    itemstoremove = []
-    for item in MCTrackIDs:
-        if item not in hitsinTimeDet:
-            itemstoremove.append(item)
-    for item in itemstoremove:
-        MCTrackIDs.remove(item)
+    #itemstoremove = []
+    #for item in MCTrackIDs:
+    #    if item not in hitsinTimeDet:
+    #        itemstoremove.append(item)
+    #for item in itemstoremove:
+    #    MCTrackIDs.remove(item)
 
-    if len(MCTrackIDs)==0: 
-        return MCTrackIDs
+    #if len(MCTrackIDs)==0: 
+    #    return MCTrackIDs
     
     
     
@@ -652,20 +719,30 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     if len(MCTrackIDs)==0: 
         return MCTrackIDs
     
-    # itemstoremove = []
+    itemstoremove = []
     
-    # for item in MCTrackIDs:
-    #     atrack = sTree.MCTrack.At(item)
-    #     motherId=atrack.GetMotherId()
-    #     if motherId != 2: #!!!!
-    #         itemstoremove.append(item)
+    for item in MCTrackIDs:
+        atrack = sTree.MCTrack.At(item)
+        motherId=atrack.GetMotherId()
+        if motherId != 2: #!!!!
+            itemstoremove.append(item)
     
-    # for item in itemstoremove:
-    #     MCTrackIDs.remove(item)
+    for item in itemstoremove:
+        MCTrackIDs.remove(item)
 
     
     
     return MCTrackIDs
+
+
+def getPtruthFirst(sTree, mcPartKey):
+    Ptruth,Ptruthx,Ptruthy,Ptruthz = -1.,-1.,-1.,-1.
+    for ahit in sTree.strawtubesPoint:
+        if ahit.GetTrackID() == mcPartKey:
+            Ptruthx,Ptruthy,Ptruthz = ahit.GetPx(),ahit.GetPy(),ahit.GetPz()
+            Ptruth  = ROOT.TMath.Sqrt(Ptruthx**2+Ptruthy**2+Ptruthz**2)
+            break
+    return Ptruth,Ptruthx,Ptruthy,Ptruthz
 
 
 #################################################################################################################################
@@ -684,7 +761,6 @@ import math
 def save_hists(h, path):
     """
     Save book of plots.
-
     Parameters
     ----------
     h : dict
@@ -697,7 +773,6 @@ def save_hists(h, path):
 def init_book_hist():
     """
     Creates empty plots.
-
     Returns
     -------
     h : dict
@@ -730,7 +805,11 @@ def init_book_hist():
     h['TracksPassed_p'].GetXaxis().SetTitle('Momentum')
     h['TracksPassed_p'].GetYaxis().SetTitle('N')
 
-    ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-1.,1.)
+    ut.bookHist(h,'ptrue-p/ptrue','(p - p-true)/p',200,-0.25,0.25)
+    ut.bookHist(h,'pttrue-pt/pttrue','(pt - pt-true)/pt',200,-0.25,0.25)
+    ut.bookHist(h,'pxtrue-px/pxtrue','(px - px-true)/px',200,-0.25,0.25)
+    ut.bookHist(h,'pytrue-py/pytrue','(py - py-true)/py',200,-0.25,0.25)
+    ut.bookHist(h,'pztrue-pz/pztrue','(pz - pz-true)/pz',200,-0.25,0.25)
 
 
     ut.bookHist(h,'n_hits_reco','Number of recognized hits per track, total',64,0.,64.01)
@@ -806,6 +885,22 @@ def init_book_hist():
     ut.bookProf(h, 'frac_34', 'Fraction of hits the same as MC hits, station 3&4', 30, 0, 150)
     h['frac_34'].GetXaxis().SetTitle('Momentum')
     h['frac_34'].GetYaxis().SetTitle('Fraction')
+
+    ut.bookHist(h,'frac_y12_dist','Fraction of hits the same as MC hits, Y view station 1&2',50,0.5,1.001)
+    ut.bookHist(h,'frac_stereo12_dist','Fraction of hits the same as MC hits, Stereo view station 1&2',50,0.5,1.001)
+    ut.bookHist(h,'frac_12_dist','Fraction of hits the same as MC hits, station 1&2',50,0.5,1.001)
+    ut.bookHist(h,'frac_y34_dist','Fraction of hits the same as MC hits, Y view station 3&4',50,0.5,1.001)
+    ut.bookHist(h,'frac_stereo34_dist','Fraction of hits the same as MC hits, Stereo view station 3&4',50,0.5,1.001)
+    ut.bookHist(h,'frac_34_dist','Fraction of hits the same as MC hits, station 3&4',50,0.5,1.001)
+    ut.bookHist(h,'frac_total_dist','Fraction of hits the same as MC hits, total',50,0.5,1.001)
+
+
+    ut.bookHist(h,'Reco_tracks','Number of recognized tracks, clones and ghosts for reconstructible tracks.', 5, -0.5, 4.5)
+    h['Reco_tracks'].GetXaxis().SetBinLabel(1,"N total")
+    h['Reco_tracks'].GetXaxis().SetBinLabel(2,"N recognized tracks")
+    h['Reco_tracks'].GetXaxis().SetBinLabel(3,"N clones")
+    h['Reco_tracks'].GetXaxis().SetBinLabel(4,"N ghosts")
+    h['Reco_tracks'].GetXaxis().SetBinLabel(5,"N others")
 
 
     # Fitted values

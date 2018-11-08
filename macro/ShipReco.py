@@ -12,7 +12,7 @@ dy  = None
 saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
-realPROptions=["Prev", "FH", "AR", "Baseline"]
+realPROptions=["Prev", "FH", "AR", "Baseline", "TemplateMatching", "TemplateMatchingShort", "TCV0", "TCV1", "TCV2"]
 withT0 = False
 
 import resource
