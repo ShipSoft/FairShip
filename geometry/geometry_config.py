@@ -17,7 +17,8 @@ if "muShieldGeo" not in globals():
 if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
-    nuTauTargetDesign = 0
+    nuTauTargetDesign = 3
+    #nuTauTargetDesign = 0
     if muShieldDesign >= 7: 
         nuTauTargetDesign=1
 if "targetOpt" not in globals():
@@ -611,6 +612,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
         c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 + c.tauMudet.deltay/2  - 0.1*u.mm
+	c.tauMudet.B = 1.5 * u.tesla        
+	## (!) REMOVE UPSIDE
     c.tauMudet.XGas =  c.tauMudet.Xtot
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
@@ -653,16 +656,19 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.col=9
         c.NuTauTarget.wall=20
     if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
-        c.NuTauTarget.row=7
-        c.NuTauTarget.col=7
-        c.NuTauTarget.wall=19
-        #c.NuTauTarget.wall=10
-        c.NuTauTarget.target=1 #number of neutrino target volumes
+       	##c.NuTauTarget.row=7 
+        ##c.NuTauTarget.col=7
+	c.NuTauTarget.n_films = 56 	## 
+        c.NuTauTarget.row = 8		##
+        c.NuTauTarget.col = 4		##
+        ## c.NuTauTarget.wall = 6
+  	c.NuTauTarget.wall = 19
+	c.NuTauTarget.target = 1 	#number of neutrino target volumes
 
-        
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
 
-    c.NuTauTarget.Ydist = 0.2*u.cm
+    ## c.NuTauTarget.Ydist = 0.2*u.cm
+    c.NuTauTarget.Ydist = 0.0*u.cm	## 
     
     c.NuTauTarget.SingleEmFilm = True
     c.NuTauTarget.EmTh = 0.0070 * u.cm
@@ -670,25 +676,36 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.EmY = 9.9 * u.cm
     c.NuTauTarget.PBTh = 0.0175 * u.cm
     c.NuTauTarget.LeadTh = 0.1 * u.cm
-    c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
+    c.NuTauTarget.EPlW = 2 * c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
-    c.NuTauTarget.BrX = 12.9 *u.cm
-    c.NuTauTarget.BrY = 10.5 *u.cm
+    c.NuTauTarget.BrX = 12.9 * u.cm
+    c.NuTauTarget.BrY = 10.5 * u.cm
     c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
-    c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist    
+    c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist
+    ###c.NuTauTarget.xdim = 52.2 * u.cm
+    ###c.NuTauTarget.ydim = 104.4 * u.cm   
 
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
-    c.NuTauTarget.BrZ = 56 * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW +c.NuTauTarget.BrPackZ
+
+    ## c.NuTauTarget.BrZ = 56 * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW +c.NuTauTarget.BrPackZ
+    c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ	##
 
  #TargetTrackers!
-    c.NuTauTT = AttrDict(z=0*u.cm)
+    c.NuTauTT = AttrDict(z = 0 * u.cm)
     c.NuTauTT.design = nuTauTargetDesign
-    c.NuTauTT.TTX = c.NuTauTarget.xdim
-    c.NuTauTT.TTY = c.NuTauTarget.ydim
-    c.NuTauTT.TTZ= 6.0*u.cm
-    c.NuTauTT.n = c.NuTauTarget.wall+1
+    #Active area 522 * 1044 mm2  
+    #CC + SF_X + SF_Y + Support + CC
+    c.NuTauTT.TTX = 52.2 * u.cm 		#c.NuTauTarget.xdim	# col * BrX = 4 * 12.9 cm ??? 
+    c.NuTauTT.TTY = 104.4 * u.cm 		#c.NuTauTarget.ydim	# row * BrY = 8 * 10.5 cm ???
+    #c.NuTauTT.TTZ= 6.0 * u.cm
+    c.NuTauTT.composite_z = 0.02 * u.cm	#0.02	## Carbon Composite (CC)
+    c.NuTauTT.sci_fi_z = 0.145 * u.cm		## Scintillating Fiber (SF)
+    c.NuTauTT.support_z = 2 * u.cm		## Airex
+    c.NuTauTT.TTZ = 2 * c.NuTauTT.composite_z + c.NuTauTT.sci_fi_z + 2 * c.NuTauTT.support_z 
+    #c.NuTauTT.n = c.NuTauTarget.wall + 1
+    c.NuTauTT.n = c.NuTauTarget.wall		# Number of wall and TT's, but the parameter don't play ???
 
  #HPT!
     c.tauHPT = AttrDict(z=0*u.cm)

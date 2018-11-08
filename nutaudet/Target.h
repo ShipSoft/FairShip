@@ -42,7 +42,7 @@ public:
       
     void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
     void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t LeadTh, Double_t AllPW);
-    void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ);
+    void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ, Int_t number_of_films_);
     void SetCESParam(Double_t RohG, Double_t LayerCESW, Double_t CESW, Double_t CESPack);
     void SetCellParam(Double_t CellW);
     void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
@@ -166,6 +166,7 @@ protected:
     Int_t fNRow;
     Int_t fNWall;
     Int_t fNTarget;
+    Int_t number_of_films; ////
 
     Double_t XDimension; //dimension of the target box (= 2 x 2 x 1) m^3
     Double_t YDimension;

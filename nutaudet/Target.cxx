@@ -176,7 +176,7 @@ void Target::SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_
 }
 
 
-void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ)
+void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ, Int_t number_of_films_) ////
 {
   BrickPackageX = BrPackX;
   BrickPackageY = BrPackY;
@@ -184,6 +184,7 @@ void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t Br
   BrickX = BrX;
   BrickY = BrY;
   BrickZ = BrZ;
+  number_of_films = number_of_films_;	////
 }
 
 void Target::SetCESParam(Double_t RohG, Double_t LayerCESW,Double_t CESW, Double_t CESPack)
@@ -312,7 +313,10 @@ void Target::ConstructGeometry()
   TGeoMedium *Steel =gGeoManager->GetMedium("steel");
 
 
-  Int_t NPlates = 56; //Number of doublets emulsion + Pb
+  //Int_t NPlates = 56; //Number of doublets emulsion + Pb
+  Int_t NPlates = number_of_films; //// Number of doublets emulsion + Pb
+  //std::cout << "NPLATES" << NPlates << std::endl; ////
+
   Int_t NRohacellGap = 2;
 
   //Definition of the target box containing emulsion bricks + (CES if fDesign = 0 o 1) + target trackers (TT) 

@@ -248,7 +248,9 @@ def configure(run,ship_geo):
    NuTauTarget.SetNumberBricks(ship_geo.NuTauTarget.col,ship_geo.NuTauTarget.row,ship_geo.NuTauTarget.wall)
    NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim)
    NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW)
-   NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ)
+##
+   NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ,ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ, ship_geo.NuTauTarget.n_films)
+
    NuTauTarget.SetCESParam(ship_geo.NuTauTarget.RohG, ship_geo.NuTauTarget.LayerCESW, ship_geo.NuTauTarget.CESW, ship_geo.NuTauTarget.CESPack)
    NuTauTarget.SetCellParam(ship_geo.NuTauTarget.CellW)
    if ship_geo.nuTauTargetDesign==0 or ship_geo.nuTauTargetDesign==1:
@@ -265,7 +267,9 @@ def configure(run,ship_geo):
   
    NuTauTT = ROOT.TargetTracker("TargetTrackers",ROOT.kTRUE)
    NuTauTT.SetDesign(ship_geo.NuTauTT.design)
-   NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ)
+   ##
+   NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ,
+                                 ship_geo.NuTauTT.composite_z, ship_geo.NuTauTT.sci_fi_z,  					 ship_geo.NuTauTT.support_z)
    NuTauTT.SetBrickParam(ship_geo.NuTauTarget.CellW)
    NuTauTT.SetTotZDimension(ship_geo.NuTauTarget.zdim)
    NuTauTT.SetNumberTT(ship_geo.NuTauTT.n)
@@ -397,7 +401,7 @@ def configure(run,ship_geo):
   if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
   run.SetField(fMagField)
 #
- exclusionList = []
+ exclusionList = ["Muon","Ecal","Hcal","Strawtubes","Veto","Magnet","MuonShield","TargetStation","TimeDet"]
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
  #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet"]
  for x in detectorList:

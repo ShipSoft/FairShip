@@ -31,9 +31,15 @@ public:
     virtual ~TargetTracker();
     
     /**      Create the detector geometry        */
+    TGeoVolume* DefineVolume(const std::string& name, Double_t x_half_size,
+                             Double_t y_half_size, Double_t z_half_size,
+                             const std::string& medium_name,
+                             int colour, size_t transparency_level = 0);
+
     void ConstructGeometry();
     
-    void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ);
+    void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ,
+			       Double_t composite_z_, Double_t sci_fi_z_, Double_t support_z_);////
     void SetBrickParam(Double_t CellW);
     void SetTotZDimension(Double_t Zdim);
     void DecodeTTID(Int_t detID, Int_t &NTT);
@@ -109,6 +115,21 @@ protected:
     Double_t TTrackerX;
     Double_t TTrackerY;
     Double_t TTrackerZ;
+
+    Double_t composite_z; ////
+    Double_t sci_fi_z;	  ////	
+    Double_t support_z;   ////
+
+    Int_t nSciFi; 		//Number of fibers on 1st layer
+    Int_t nStep;		//For triangle definition of fiber volumes
+    Double_t dFiber;		//Inner diameter sensitive core ??? 
+    Double_t dSciFi;		//Full diameter with 
+    Double_t LySciFi; 		//Long ~2424 mm ???
+    Double_t LxSciFi; 		//Width ~132 mm
+    Double_t LzSciFi; 		//Height - six fiber layers
+    Double_t distFiber;		//distance between ...???
+
+
 
     Double_t CellWidth; //dimension of the cell containing brick and CES
     Double_t ZDimension; //Dimension of the TTs+bricks total volume
