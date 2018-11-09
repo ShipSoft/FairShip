@@ -743,7 +743,7 @@ class ShipDigiReco:
     modules["Strawtubes"].StrawEndPoints(detID,start,stop)
     delt1 = (start[2]-z1)/u.speedOfLight
     t0+=aDigi.GetDigi()-delt1
-    SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi()} )
+    SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi(), 'detID':detID} )
     n+=1  
   if n>0: t0 = t0/n - 73.2*u.ns
   for s in SmearedHits:
@@ -773,160 +773,217 @@ class ShipDigiReco:
      #     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
      smear = (aDigi.GetDigi() - self.sTree.t0  - p.GetTime() - ( stop[0]-p.GetX() )/ u.speedOfLight) * v_drift
      if no_amb: smear = p.dist2Wire()
-     SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear} )
+     SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear, 'detID':detID} )
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
      if abs(stop.y())==abs(start.y()): h['disty'].Fill(smear)
      if abs(stop.y())>abs(start.y()): h['distu'].Fill(smear)
      if abs(stop.y())<abs(start.y()): h['distv'].Fill(smear)
 
   return SmearedHits
-  
+
  def findTracks(self):
-  hitPosLists    = {}
-  stationCrossed = {}
-  fittedtrackids=[]
-  listOfIndices  = {}
-  self.fGenFitArray.Delete()
-  self.fTrackletsArray.Delete()
-  self.fitTrack2MC.clear()
 
-#   
-  if withT0:  self.SmearedHits = self.withT0Estimate()
-  # old procedure, not including estimation of t0 
-  else:       self.SmearedHits = self.smearHits(withNoStrawSmearing)
+    hitPosLists    = {}
+    stationCrossed = {}
+    listOfIndices  = {}
 
-  nTrack = -1
-  trackCandidates = []
-  
-  if realPR:
-     if realPR == "Prev": # Runs previously used pattern recognition
-        fittedtrackids=shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
-        if fittedtrackids:
-           tracknbr=0
-           for ids in fittedtrackids:
-              trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
-              tracknbr+=1
-     else: # Runs new pattern recognition
-        fittedtrackids, reco_tracks = shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks, method=realPR)
-         # Save hit ids of recognized tracks
-        for atrack in reco_tracks.values():
-            nTracks   = self.fTrackletsArray.GetEntries()
-            aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
-            listOfHits = aTracklet.getList()
-            aTracklet.setType(atrack['flag'])
-            for index in atrack['hits']:
-                listOfHits.push_back(index)
-        if fittedtrackids:
-            tracknbr=0
-            for ids in fittedtrackids:
-                trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
-                tracknbr+=1
-  else: # do fake pattern recognition
-   for sm in self.SmearedHits:
-    detID = self.digiStraw[sm['digiHit']].GetDetectorID()
-    station = int(detID/10000000)
-    trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
-    if not hitPosLists.has_key(trID):   
-      hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
-      listOfIndices[trID] = [] 
-      stationCrossed[trID]  = {}
-    m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
-    hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
-    listOfIndices[trID].append(sm['digiHit'])
-    if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
-    stationCrossed[trID][station]+=1
-#
-   for atrack in listOfIndices:
-     # make tracklets out of trackCandidates, just for testing, should be output of proper pattern recognition
-    nTracks   = self.fTrackletsArray.GetEntries()
-    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
-    listOfHits = aTracklet.getList()
-    aTracklet.setType(3)
-    for index in listOfIndices[atrack]:
-      listOfHits.push_back(index)
-#  
-   for atrack in hitPosLists:
-    if atrack < 0: continue # these are hits not assigned to MC track because low E cut
-    pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
-    if not self.PDG.GetParticle(pdg): continue # unknown particle
-    meas = hitPosLists[atrack]
-    nM = meas.size()
-    if nM < 25 : continue                          # not enough hits to make a good trackfit 
-    if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
-    if debug: 
-       mctrack = self.sTree.MCTrack[atrack]
-    charge = self.PDG.GetParticle(pdg).Charge()/(3.)
-    posM = ROOT.TVector3(0, 0, 0)
-    momM = ROOT.TVector3(0,0,3.*u.GeV)
-# approximate covariance
-    covM = ROOT.TMatrixDSym(6)
-    resolution = self.sigma_spatial
-    if withT0: resolution = resolution*1.4 # worse resolution due to t0 estimate
-    for  i in range(3):   covM[i][i] = resolution*resolution
-    covM[0][0]=resolution*resolution*100.
-    for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
-# trackrep
-    rep = ROOT.genfit.RKTrackRep(pdg)
-# smeared start state
-    stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
-    rep.setPosMomCov(stateSmeared, posM, momM, covM)
-# create track
-    seedState = ROOT.TVectorD(6)
-    seedCov   = ROOT.TMatrixDSym(6)
-    rep.get6DStateCov(stateSmeared, seedState, seedCov)
-    theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
-    hitCov = ROOT.TMatrixDSym(7)
-    hitCov[6][6] = resolution*resolution
-    for m in meas:
-      tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
-      measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
-      # print measurement.getMaxDistance()
-      measurement.setMaxDistance(ShipGeo.strawtubes.InnerStrawDiameter/2.)
-      # measurement.setLeftRightResolution(-1)
-      tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
-      theTrack.insertPoint(tp)  # add point to Track
-   # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
-    trackCandidates.append([theTrack,atrack])
-  for entry in trackCandidates:
-#check
-    atrack = entry[1]
-    theTrack = entry[0]
-    if not theTrack.checkConsistency():
-     print 'Problem with track before fit, not consistent',atrack,theTrack
-     continue
-# do the fit
-    try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
-    except: 
-      if debug: print "genfit failed to fit track"
-      error = "genfit failed to fit track"
-      ut.reportError(error)
-      continue
-#check
-    if not theTrack.checkConsistency():
-     if debug: print 'Problem with track after fit, not consistent',atrack,theTrack
-     error = "Problem with track after fit, not consistent"
-     ut.reportError(error)
-     continue
-    fitStatus   = theTrack.getFitStatus()
-    nmeas = fitStatus.getNdf()   
-    chi2        = fitStatus.getChi2()/nmeas   
-    h['chi2'].Fill(chi2)
-# make track persistent
-    nTrack   = self.fGenFitArray.GetEntries()
-    if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
-    self.fGenFitArray[nTrack] = theTrack
-    self.fitTrack2MC.push_back(atrack)
-    if debug: 
-     print 'save track',theTrack,chi2,nmeas,fitStatus.isFitConverged()
-  self.Tracklets.Fill()
-  self.fitTracks.Fill()
-  self.mcLink.Fill()
-# debug 
-  if debug:
-   print 'save tracklets:' 
-   for x in self.sTree.Tracklets:
-    print x.getType(),x.getList().size()
-  return nTrack+1
+    self.fGenFitArray.Delete()
+    self.fTrackletsArray.Delete()
+    self.fitTrack2MC.clear()
+
+    if withT0:
+        self.SmearedHits = self.withT0Estimate()
+    else:
+        self.SmearedHits = self.smearHits(withNoStrawSmearing)
+
+    nTrack = -1
+    trackCandidates = []
+
+    if realPR:
+
+        # Do real PatRec
+        track_hits = shipPatRec.execute(self.SmearedHits, ShipGeo, realPR)
+
+        # Create hitPosLists for track fit
+        for i_track in track_hits.keys():
+
+            atrack = track_hits[i_track]
+            atrack_y12 = atrack['y12']
+            atrack_stereo12 = atrack['stereo12']
+            atrack_y34 = atrack['y34']
+            atrack_stereo34 = atrack['stereo34']
+            atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
+
+            for sm in atrack_smeared_hits:
+
+                detID = sm['detID']
+                station = int(detID/10000000)
+                trID = i_track
+
+                # For track fit
+                if not hitPosLists.has_key(trID):
+                    hitPosLists[trID] = ROOT.std.vector('TVectorD')()
+                    listOfIndices[trID] = []
+                    stationCrossed[trID]  = {}
+                m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
+                hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
+                listOfIndices[trID].append(sm['digiHit'])
+                if not stationCrossed[trID].has_key(station):
+                    stationCrossed[trID][station] = 0
+                stationCrossed[trID][station] += 1
+
+    else:
+
+        # Do fake PatRec
+        track_hits = {}
+        for sm in self.SmearedHits:
+
+            detID = self.digiStraw[sm['digiHit']].GetDetectorID()
+            station = int(detID/10000000)
+            trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
+
+            # For track fit
+            if not hitPosLists.has_key(trID):
+                hitPosLists[trID] = ROOT.std.vector('TVectorD')()
+                listOfIndices[trID] = []
+                stationCrossed[trID]  = {}
+            m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
+            hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
+            listOfIndices[trID].append(sm['digiHit'])
+            if not stationCrossed[trID].has_key(station):
+                stationCrossed[trID][station] = 0
+            stationCrossed[trID][station] += 1
+
+    # Save track hit indeces
+    # for atrack in listOfIndices:
+    #     nTracks   = self.fTrackletsArray.GetEntries()
+    #     aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
+    #     listOfHits = aTracklet.getList()
+    #     aTracklet.setType(1)
+    #     for index in listOfIndices[atrack]:
+    #         listOfHits.push_back(index)
+
+    # Track fit
+    for atrack in hitPosLists:
+        if atrack < 0:
+            continue # these are hits not assigned to MC track because low E cut
+        # pdg = self.sTree.MCTrack[atrack].GetPdgCode()
+        # if not self.PDG.GetParticle(pdg):
+        #     continue # unknown particle
+        pdg = 13
+        meas = hitPosLists[atrack]
+        nM = meas.size()
+        # if nM < 25 :
+        #     continue # not enough hits to make a good trackfit
+        # if len(stationCrossed[atrack]) < 3 :
+        #     continue  # not enough stations crossed to make a good trackfit
+        if debug:
+            mctrack = self.sTree.MCTrack[atrack]
+        # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
+        posM = ROOT.TVector3(0, 0, 0)
+        momM = ROOT.TVector3(0,0,3.*u.GeV)
+        # approximate covariance
+        covM = ROOT.TMatrixDSym(6)
+        resolution = self.sigma_spatial
+        if withT0: resolution = resolution*1.4 # worse resolution due to t0 estimate
+        for  i in range(3):   covM[i][i] = resolution*resolution
+        covM[0][0]=resolution*resolution*100.
+        for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
+        # trackrep
+        rep = ROOT.genfit.RKTrackRep(pdg)
+        # smeared start state
+        stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)
+        rep.setPosMomCov(stateSmeared, posM, momM, covM)
+        # create track
+        seedState = ROOT.TVectorD(6)
+        seedCov   = ROOT.TMatrixDSym(6)
+        rep.get6DStateCov(stateSmeared, seedState, seedCov)
+        theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
+        hitCov = ROOT.TMatrixDSym(7)
+        hitCov[6][6] = resolution*resolution
+        for m in meas:
+            tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to
+            measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
+            # print measurement.getMaxDistance()
+            measurement.setMaxDistance(ShipGeo.strawtubes.InnerStrawDiameter/2.)
+            # measurement.setLeftRightResolution(-1)
+            tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
+            theTrack.insertPoint(tp)  # add point to Track
+            # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
+        trackCandidates.append([theTrack,atrack])
+
+    # Check fitted tracks and save them
+    for entry in trackCandidates:
+        #check
+        atrack = entry[1]
+        theTrack = entry[0]
+        if not theTrack.checkConsistency():
+            print 'Problem with track before fit, not consistent',atrack,theTrack
+            continue
+        # do the fit
+        try:
+            self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
+        except:
+            if debug:
+                print "genfit failed to fit track"
+            error = "genfit failed to fit track"
+            ut.reportError(error)
+            continue
+        #check
+        if not theTrack.checkConsistency():
+            if debug:
+                print 'Problem with track after fit, not consistent',atrack,theTrack
+            error = "Problem with track after fit, not consistent"
+            ut.reportError(error)
+            continue
+        try:
+            fittedState = theTrack.getFittedState()
+            fittedMom = fittedState.getMomMag()
+        except:
+            error = "problem with fittedstate"
+            print error
+            ut.reportError(error)
+            continue
+        fitStatus   = theTrack.getFitStatus()
+        nmeas = fitStatus.getNdf()
+        chi2        = fitStatus.getChi2()/nmeas
+        # make track persistent
+        if not debug:
+            theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
+        if debug:
+            print 'save track',theTrack,chi2,nmeas,fitStatus.isFitConverged()
+
+        # Save fitted tracks
+        nTrack   = self.fGenFitArray.GetEntries()
+        self.fGenFitArray[nTrack] = theTrack
+
+        # Save MC link
+        track_ids = []
+        for index in listOfIndices[atrack]:
+            ahit = self.sTree.strawtubesPoint[index]
+            track_ids += [ahit.GetTrackID()]
+        frac, tmax = self.fracMCsame(track_ids)
+        self.fitTrack2MC.push_back(tmax)
+
+        # Save hits indexes of the the fitted tracks
+        nTracks   = self.fTrackletsArray.GetEntries()
+        aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
+        listOfHits = aTracklet.getList()
+        aTracklet.setType(1)
+        for index in listOfIndices[atrack]:
+            listOfHits.push_back(index)
+
+    self.Tracklets.Fill()
+    self.fitTracks.Fill()
+    self.mcLink.Fill()
+
+    # debug
+    if debug:
+        print 'save tracklets:'
+        for x in self.sTree.Tracklets:
+            print x.getType(),x.getList().size()
+
+    return nTrack+1
 
  def findGoodTracks(self):
    self.goodTracksVect.clear()
@@ -975,10 +1032,27 @@ class ShipDigiReco:
      index+=1
    self.vetoHitOnTrackBranch.Fill()
 
+ def fracMCsame(self, trackids):
+     track={}
+     nh=len(trackids)
+     for tid in trackids:
+         if track.has_key(tid):
+             track[tid] += 1
+         else:
+             track[tid] = 1
+     if track != {}:
+         tmax = max(track, key=track.get)
+     else:
+         track = {-999: 0}
+         tmax = -999
+     frac=0.0
+     if nh > 0:
+         frac = float(track[tmax]) / float(nh)
+     return frac, tmax
+
  def finish(self):
   del self.fitter
   print 'finished writing tree'
   self.sTree.Write()
   ut.errorSummary()
-  ut.writeHists(h,"recohists.root")
   if realPR: shipPatRec.finalize()

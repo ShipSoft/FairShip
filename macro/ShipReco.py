@@ -12,7 +12,7 @@ dy  = None
 saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
-realPROptions=["Prev", "FH", "AR", "Baseline"]
+realPROptions=["FH", "AR", "TemplateMatching", "TemplateMatchingShort", "TCV0", "TCV1", "TCV2"]
 withT0 = False
 
 import resource
@@ -44,6 +44,14 @@ except getopt.GetoptError:
         print ' noStrawSmearing: no smearing of distance to wire, default on'
         print ' outputfile will have same name with _rec added'  
         print ' --realPR= defines track pattern recognition. Possible options: ',realPROptions, "if no option given, fake PR is used."
+        print ' Options description:'
+        print '      FH                        : Hough transform.'
+        print '      AR                        : Artificial retina.'
+        print '      TemplateMatching          : Tracks are searched for based on the template: track seed + hits within a window around the seed.'
+        print '      TemplateMatchingShort     : Same as TemplateMatching but with smaller number of track candidates.'
+        print '      TCV0                      : PR based on a simple hit triplets classifier (WIP).'
+        print '      TCV1                      : PR based on Random Forest classifier for hit triplets (WIP).'
+        print '      TCV2                      : PR based on Random Forest classifier for hit triplets with modification (WIP).'
         sys.exit()
 for o, a in opts:
         if o in ("noVertexing",):
