@@ -46,7 +46,7 @@ private:
 
 public:
    // Class definition
-   ClassDef(ScalerUnpack, 1)
+   ClassDefOverride(ScalerUnpack, 1)
 };
 
 #endif

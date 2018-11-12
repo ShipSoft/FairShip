@@ -26,13 +26,13 @@ public:
    virtual ~ShipUnpack();
 
    /** Initialization. Called once, before the event loop. */
-   virtual Bool_t Init();
+   virtual Bool_t Init() override;
 
    /** Process an MBS sub-event. */
-   virtual Bool_t DoUnpack(Int_t *data, Int_t size);
+   virtual Bool_t DoUnpack(Int_t *data, Int_t size) override;
 
    /** Clear the output structures. */
-   virtual void Reset();
+   virtual void Reset() override;
 
    /** Method for controlling the functionality. */
    inline Int_t GetNHitsTotal() { return fNHitsTotal; }
@@ -41,7 +41,7 @@ public:
 
 protected:
    /** Register the output structures. */
-   virtual void Register();
+   virtual void Register() override;
 
 private:
    std::unique_ptr<TClonesArray> fRawData; /**< Array of output raw items. */

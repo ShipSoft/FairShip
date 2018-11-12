@@ -49,7 +49,7 @@ private:
 
 public:
    // Class definition
-   ClassDef(RPCUnpack, 1)
+   ClassDefOverride(RPCUnpack, 1)
 };
 
 #endif

@@ -49,7 +49,7 @@ private:
 
 public:
    // Class definition
-   ClassDef(PixelUnpack, 1)
+   ClassDefOverride(PixelUnpack, 1)
 };
 
 #endif
