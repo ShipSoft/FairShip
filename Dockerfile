@@ -4,7 +4,7 @@ FROM olantwin/ship-base:20180627-online
 COPY . /FairShip
 
 # Build FairShip
-RUN aliBuild -c shipdist/ --defaults fairship build FairShip --no-local ROOT
+RUN aliBuild -c shipdist/ --defaults fairship build FairShip --no-local ROOT && aliBuild clean --aggressive-cleanup
 
 # Additional library for OpenGL
 RUN yum install -y mesa-dri-drivers
