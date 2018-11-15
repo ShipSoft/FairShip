@@ -64,7 +64,7 @@ Additionally for developers:
     docker run -i -t --rm \
     -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v /local_workdir:/image_workdir \
-    --privileged fairship /bin/bash
+    fairship /bin/bash
     ``` 
     Line ```-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix``` forwards graphics from the image to your local system         (similar to ssh -X). Line ```-v /local_workdir:/image_workdir``` shares ```/local_workdir``` directory on the local system with ```/image_workdir``` directory on the docker image system.
 
