@@ -47,7 +47,26 @@ Additionally for developers:
     ```bash
     alibuild/alienv enter (--shellrc) FairShip/latest
     ```    
-
+    
+## Docker Instructions
+1. Build an docker image from a Dockerfile:
+    ```bash
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    docker build -t fairship .
+    ``` 
+2. Run the FairShip docker image:
+    ```bash
+    docker run -i -t --rm fairship /bin/bash
+    ``` 
+3. Advanced docker run options:
+    ```bash
+    docker run -i -t --rm \
+    -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /local_workdir:/image_workdir \
+    fairship /bin/bash
+    ``` 
+    Line ```-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix``` forwards graphics from the image to your local system         (similar to ssh -X). Line ```-v /local_workdir:/image_workdir``` shares ```/local_workdir``` directory on the local system with ```/image_workdir``` directory on the docker image system.
 
 ## Run Instructions
 
