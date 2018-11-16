@@ -11,5 +11,7 @@ COPY . /FairShip
 # Build FairShip
 RUN aliBuild -c shipdist/ --defaults fairship build FairShip --no-local ROOT && aliBuild clean --aggressive-cleanup
 
-# Setup environment. Setup the command that will be invoked when your docker image is run.
+# Setup environment. Setup the command that will be invoked when your docker
+# image is run. Note that this requires running with `docker run -t` so that
+# `alienv` detects an interactive terminal.
 ENTRYPOINT alienv enter --shellrc FairShip/latest
