@@ -12,6 +12,11 @@ import shipunit as u
 import rootUtils as ut
 from array import array
 
+########
+zeroField = False
+DAFfitter = True
+########
+
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
 alignConstants = {}
@@ -68,7 +73,7 @@ rnames = []
 for fname in fnames:
  rnames.append(fname[fname.rfind('/')+1:])
 rname = rnames[0]
-sTree.SetMaxVirtualSize(300000)
+#sTree.SetMaxVirtualSize(300000)
 
 from ShipGeoConfig import ConfigRegistry
 ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
@@ -1011,7 +1016,7 @@ for s in range(1,5):
    channels[s][p][l]={}
    for view in ['_x','_u','_v']:
     ut.bookHist(h,str(1000*s+100*p+10*l)+view,'hit map station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,50,-0.5,49.5)
-    ut.bookHist(h,"TDC"+str(1000*s+100*p+10*l)+view,'TDC station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,1250,-500.,2000.)
+    ut.bookHist(h,"TDC"+str(1000*s+100*p+10*l)+view,'TDC station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,1500,-500.,2500.)
     xLayers[s][p][l][view]=h[str(1000*s+100*p+10*l)+view]
     channels[s][p][l][view]=12
     if s>2: channels[s][p][l][view]=48
@@ -1047,8 +1052,9 @@ def sortHits(event):
 
 def plotHitMaps():
  noisyChannels=[]
- for x in sTree.GetListOfBranches():sTree.SetBranchStatus(x.GetName(),0)
- sTree.SetBranchStatus("Digi_MufluxSpectrometerHits",1)
+ if sTree.GetBranch("FitTracks"):
+   FitTracksBrStatus =  sTree.GetBranchStatus("FitTracks")
+   sTree.SetBranchStatus("FitTracks",0)
  for event in sTree:
   for hit in event.Digi_MufluxSpectrometerHits:
    s,v,p,l,view = stationInfo(hit)
@@ -1089,7 +1095,7 @@ def plotHitMaps():
   sTree.Digi_MufluxSpectrometerHits.Delete()
  print "list of noisy channels"
  for n in noisyChannels: print n
- if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",1)
+ if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",FitTracksBrStatus)
 
 def sumStations():
  h['TDC_12']= h['TDC1000_x'].Clone('TDC_12')
@@ -1231,11 +1237,13 @@ from array import array
 gMan  = ROOT.gGeoManager
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 #
-bfield = ROOT.genfit.FairShipFields()
+if zeroField: bfield = ROOT.genfit.BellField()
+else:         bfield = ROOT.genfit.FairShipFields()
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
-#ROOT.genfit.MaterialEffects.getInstance().setNoEffects()
+if zeroField: ROOT.genfit.MaterialEffects.getInstance().setNoEffects()
+
 fitter = ROOT.genfit.DAF()
 fitter.setMaxIterations(50)
 # fitter.setDebugLvl(1) # produces lot of printout
@@ -1292,17 +1300,19 @@ def extractRTPanda(hname= 'TDC1000_x'):
  elif not hname.find('TDC3')<0: h['rt'+hname].SetLineColor(ROOT.kGreen)
  elif not hname.find('TDC4')<0: h['rt'+hname].SetLineColor(ROOT.kGreen+2)
  h['RTrelations'].cd(1)
+ h['legRT'].AddEntry(h['rt'+hname],h['rt'+hname].GetTitle(),'PL')
  h['rt'+hname].Draw('same')
-
+ 
 def makeRTrelations():
  if not h.has_key('RTrelations'): 
   ut.bookCanvas(h,key='RTrelations',title='RT relations',nx=800,ny=500,cx=1,cy=1)
   h['RTrelations'].cd(1)
   x = h['TDC1000_x']
-  h['emptyHist'] = ROOT.TH2F('empty',' ',100,x.GetBinCenter(1),x.GetBinCenter(x.GetNbinsX()),100,0.,2.)
+  h['emptyHist'] = ROOT.TH2F('empty',' ;[ns];[cm] ',100,x.GetBinCenter(1),x.GetBinCenter(x.GetNbinsX()),100,0.,2.)
   h['emptyHist'].SetStats(0)
   h['emptyHist'].Draw()
   extractMinAndMax()    # this has to run after filling TDC histos from trackfit!!
+  h['legRT'] = ROOT.TLegend(0.76,0.11,0.997,0.869)
  for s in range(1,5):
   for view in ['_x','_u','_v']:
    for p in range(2):
@@ -1311,7 +1321,7 @@ def makeRTrelations():
      if s>2 and view != '_x': continue
      if s==1 and view == '_v'or s==2 and view == '_u': continue
      extractRTPanda(hname= 'TDC'+xLayers[s][p][l][view].GetName())
-
+ h['legRT'].Draw('same')
 def extractRT(xmin,xmax,hname= 'TDC1000_x',function='parabola'):
 # good result with extractRT(610,1850,hname= 'TDC1000_x')
 #                  extractRT(625,2000,hname= 'TDC4000_x')
@@ -1505,7 +1515,7 @@ def findSimpleEvent(event,nmin=3,nmax=6):
    if nv<nmin or nv>nmax: passed = False
    return passed 
 
-def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,PR=1):
+def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,PR=2):
 # select special clean events for testing track fit
  for n in range(nStart,sTree.GetEntries()):
    rc = sTree.GetEvent(n)
@@ -1595,7 +1605,10 @@ def fitTrack(hitlist,Pstart=3.):
    tmpList = {}
    k=0
    for nhit in hitlist:
-      if type(nhit)==type(1):   hit = sTree.Digi_MufluxSpectrometerHits[nhit]
+      numHit = 0
+      if type(nhit)==type(1):   
+          hit = sTree.Digi_MufluxSpectrometerHits[nhit]
+          numHit = nhit
       else: hit = nhit
       vbot,vtop = correctAlignment(hit)
       tdc = hit.GetDigi()
@@ -1603,14 +1616,16 @@ def fitTrack(hitlist,Pstart=3.):
       distance = 0
       if withTDC: distance = RT(xLayers[s][p][l][view].GetName(),tdc)
       tmp = array('d',[vtop[0],vtop[1],vtop[2],vbot[0],vbot[1],vbot[2],distance])
-      unSortedList[k] = ROOT.TVectorD(7,tmp)
+      unSortedList[k] = [ROOT.TVectorD(7,tmp),hit.GetDetectorID(),numHit]
       tmpList[k] = vtop[2]
       k+=1
    sorted_z = sorted(tmpList.items(), key=operator.itemgetter(1))
    for k in sorted_z:
       tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
-      measurement = ROOT.genfit.WireMeasurement(unSortedList[k[0]],hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
+      measurement = ROOT.genfit.WireMeasurement(unSortedList[k[0]][0],hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
       measurement.setMaxDistance(ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)
+      measurement.setDetId(unSortedList[k[0]][1])
+      measurement.setHitId(unSortedList[k[0]][2])
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
       theTrack.insertPoint(tp)  # add point to Track
    if not theTrack.checkConsistency():
@@ -1770,7 +1785,6 @@ def testPR(onlyHits=False):
   if type(aTrack) != type(1):
    trackCandidates.append(aTrack)
    k+=1
-  else: hitlist.pop(k)
  if onlyHits: return hitlist
  return trackCandidates
 
@@ -1953,7 +1967,7 @@ def findTracks(PR = 2,linearTrackModel = False, onlyX = False):
         for cl in matched: 
           if matched[cl]: hitList.append(cl)
        if linearTrackModel: return hitList
-       if rname in zeroFieldData: 
+       if zeroField: 
          momFromptkick = 1000.
        else: momFromptkick=ROOT.TMath.Abs(1.03/(t3t4[3]-t1t2[3]+1E-20))
        if Debug:  print "fit track t1t2 t3t4 with hits, stereo, delx, pstart",nt1t2,nt3t4,len(hitList),len(matched),delx,momFromptkick
@@ -2033,7 +2047,7 @@ def printResiduals(aTrack):
       print txt[k[0]]
 
 # make TDC plots for hits matched to tracks)
-def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
+def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
  if not onlyPlotting:
   if not h.has_key('hitMapsX'): plotHitMaps()
   for s in xLayers:
@@ -2058,7 +2072,14 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
        except:
         print "problem with getting state, event",sTree.GetCurrentFile().GetName(),Nr
         continue
-       if sta.getMomMag() < 3.: continue
+       if sta.getMomMag() < 10. and not zeroField: continue
+# check for hits in each station
+       stations={1:0,2:0,3:0,4:0}
+       for p in aTrack.getPoints():
+           rawM = p.getRawMeasurement()
+           s = rawM.getDetId()/10000000 
+           stations[s]+=1
+       if not (stations[1]>1 and stations[2]>1 and stations[3]>1 and stations[4]>1) : continue
        for hit in sTree.Digi_MufluxSpectrometerHits:
           if hit.GetDetectorID() in noisyChannels:  continue
           s,v,p,l,view = stationInfo(hit)
@@ -2076,14 +2097,13 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
           tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
           xL = tmp -distance
           xR = tmp +distance
-          if abs(xL)<abs(xR):res = xL
-          else: res = xR
-          h['biasResX_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
-          h['biasResY_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
-          h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
-          h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
+          for res in [xL,xR]:
+           h['biasResX_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
+           h['biasResY_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
+           h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
+           h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
 # make TDC plots for hits matched to tracks, within window suitable for not using TDC
-          if abs(res) < 2. :
+          if min(abs(xL),abs(xR)) < 1. :
             t0 = 0
             if hasattr(sTree,'MCTrack'): t0 = sTree.ShipEventHeader.GetEventTime()
             rc = h['TDC'+xLayers[s][p][l][view].GetName()].Fill(hit.GetDigi()-t0)
@@ -2159,11 +2179,22 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
        sli = hname+'_'+str(k) 
        h[sli] = h[hname].ProjectionX(sli,k,k)
        if h[sli].GetEntries()<10: continue
-       myGauss.SetParameter(0,h[sli].GetMaximum())
-       myGauss.SetParameter(1,0.)
-       myGauss.SetParameter(2,0.1)
-       myGauss.SetParameter(3,1.)
-       fitResult = h[sli].Fit(myGauss,'SQ','',-5.,5.)
+       fitResult = h[sli].Fit('gaus','SQ','',-0.5,0.5)
+       rc = fitResult.Get()
+       fitFunction = h[sli].GetFunction('gauss')
+       if not fitFunction : fitFunction = myGauss
+       if not rc:
+        print "simple gaus fit failed"
+        fitFunction.SetParameter(0,h[sli].GetEntries())
+        fitFunction.SetParameter(1,0.)
+        fitFunction.SetParameter(2,0.1)
+        fitFunction.SetParameter(3,1.)
+       else:
+        fitFunction.SetParameter(0,rc.GetParams()[0])
+        fitFunction.SetParameter(1,rc.GetParams()[1])
+        fitFunction.SetParameter(2,rc.GetParams()[2])
+        fitFunction.SetParameter(3,0.)
+       fitResult = h[sli].Fit(fitFunction,'SQ','',-0.3,0.3)
        rc = fitResult.Get()
        mean,rms = 0,0
        if rc:
@@ -2173,12 +2204,12 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
        rc = h[hmean].SetBinError(k, rms)
       amin,amax,nmin,nmax = ut.findMaximumAndMinimum(h[hmean])
       if amax<3. and amin>-3.:
-       h[hmean].SetMaximum(0.1)
-       h[hmean].SetMinimum(-0.1)
+       h[hmean].SetMaximum(0.2)
+       h[hmean].SetMinimum(-0.2)
       else: 
        h[hmean].SetLineColor(ROOT.kRed)
-       h[hmean].SetMaximum(0.5)
-       h[hmean].SetMinimum(-0.5)
+       h[hmean].SetMaximum(0.2)
+       h[hmean].SetMinimum(-0.2)
       h[hmean].Draw()
      j+=1
  momDisplay()
@@ -2201,6 +2232,23 @@ def plot2dResiduals(minEntries=-1):
       if minEntries >0: h[hname].SetMinimum(minEntries)
       h[hname].Draw('box')
      j+=1
+def debugTrackFit(nEvents):
+ ut.bookHist(h,'residuals','all residuals',100,-1.,1.)
+ for n in range(nEvents):
+  rc = sTree.GetEvent(n)
+  if not findSimpleEvent(sTree): continue
+  tracks = findTracks(PR=22)
+  for atrack in tracks:
+   for m in range(atrack.getNumPointsWithMeasurement()):
+     apoint = atrack.getPointWithMeasurement(m)
+     fitInfo = apoint.getFitterInfo()
+     if not fitInfo: continue
+     for lr in range(fitInfo.getNumMeasurements()):
+      try:      meas = fitInfo.getResidual(lr)
+      except: continue
+      weight = meas.getWeight()
+      residual = meas.getState()[0]
+      rc = h['residuals'].Fill(residual)
 def plotLinearResiduals():
  if not h.has_key('linearResiduals2dX'): 
    plotRPCExtrap(0,-1)
@@ -2283,6 +2331,9 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
     if v==0: dx=20
     ut.bookHist(h,'RPCResX_'+str(s)+str(v),'RPC residual for '+str(s)+' '+ str(v),100,-dx,dx,20,-140.,140.)
     ut.bookHist(h,'RPCResY_'+str(s)+str(v),'RPC residual for '+str(s)+' '+ str(v),100,-dx,dx,20,-140.,140.)
+    ut.bookHist(h,'RPCextTrack_'+str(s)+str(v),'mom of tracks extr to RPC k with RPC k+1 matched',100,0.,100.)
+    ut.bookHist(h,'RPCfired_'+str(s)+str(v),'mom of tracks extr to RPC k and matched with RPC k+1 matched',100,0.,100.)
+    ut.bookHist(h,'RPCfired_or_'+str(s),'mom of tracks extr to RPC k and matched with RPC k+1 or of 0 and 1',100,0.,100.)
   ut.bookHist(h,'RPCResX1_p','RPC residual for station 1 function of track momentum',100,-dx,dx,100,0.,100.)
   ut.bookHist(h,'RPCMatchedHits','matched RPC hits as function of track momentum',10,0.5,10.5,20,-0.5,19.5,100,0.,100.)
   ut.bookHist(h,'RPCMeanMatchedHits','mean matched RPC hits as function of track momentum',100,0.,100.)
@@ -2347,6 +2398,16 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
        if inAcc:
         Nmatched = 0
         p = min(99.9,sta.getMomMag())
+# try the following:
+#  require matched hit in station k+1
+#  record how often hit matched in station k
+        for k in range(1,5):
+         for v in range(0,2):
+           if len(matchedHits[k+1][v])==0: continue
+           rc = h['RPCextTrack_'+str(k)+str(v)].Fill(p)
+           if len(matchedHits[k][v])>0: rc = h['RPCfired_'+str(k)+str(v)].Fill(p)
+           if v==0:
+              if len(matchedHits[k][v])>0 or len(matchedHits[k][v+1])>0: rc = h['RPCfired_or_'+str(k)].Fill(p)
         for s in matchedHits:
          for v in matchedHits[s]:
           rc = h['RPCMatchedHits'].Fill(2*s-1+v,len(matchedHits[s][v]),p)
@@ -2360,7 +2421,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
       ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=4)
       ut.bookCanvas(h,key='RPCResidualsP',title='RPCResiduals function of muon momentum',nx=900,ny=900,cx=1,cy=1)
  j=1
- for s in range(1,5):
+ for s in range(1,6):
    for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
      if v==1:     
        hname = 'RPCResX_'+str(s)+str(v)
@@ -2411,9 +2472,9 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
      h[hmean].Draw()
    j+=1
  if not h.has_key('RPCResiduals2dXY'): 
-      ut.bookCanvas(h,key='RPCResiduals2dXY',title='muon tagger Residuals function of X/Y',nx=1600,ny=1200,cx=2,cy=4)
+      ut.bookCanvas(h,key='RPCResiduals2dXY',title='muon tagger Residuals function of X/Y',nx=1600,ny=1200,cx=2,cy=5)
  j=1
- for s in range(1,5):
+ for s in range(1,6):
    for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
      if v==0: 
        p = 'Y'
@@ -2447,7 +2508,33 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
     for k in range(2,20):
       h['RPCeff_'+str(k)]=h['RPC<'+str(k)+'_p'].Clone('RPCeff_'+str(k))
       h['RPCeff_'+str(k)].Divide(h['RPC_p'])
-
+ ut.bookCanvas(h,key='RPCEff',title='RPC efficiencies',nx=1600,ny=1200,cx=3,cy=4)
+ const = ROOT.TF1('const','pol0',10,100)
+ l=1
+ for s in range(1,5):
+  for v in range(3):
+   if v==2: 
+     hname = 'RPCfired_or_'+str(s)
+     h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(0)])
+   else: 
+     hname = 'RPCfired_'+str(s)+str(v)
+     h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(v)])
+   pad = h['RPCEff'].cd(l)
+   l+=1
+   rc = h['Eff'+hname].Fit(const)
+   h['Eff'+hname].Draw('AP')
+   pad.Update()
+   graph = h['Eff'+hname].GetPaintedGraph()
+   graph.SetMinimum(0.9)
+   graph.SetMaximum(1.01)
+   pad.Update()
+   fun = h['Eff'+hname].GetListOfFunctions()[0]
+   eff = fun.GetParameter(0)
+   err = fun.GetParError(0)
+   h['txtEff'+hname] = ROOT.TMathText(25,0.92,'eff = (%5.2F\pm%5.2F)%s'%(eff*100,err*100,'\\hbox{%}'))
+   h['txtEff'+hname].SetTextSize(0.1)
+   h['txtEff'+hname].Draw()
+ 
 def debugRPCstrips():
   ut.bookHist(h,'RPCstrips','RPC strips',1000,-100.,100.,1000,-100.,100.)
   h['RPCstrips'].Draw()
@@ -2490,14 +2577,18 @@ def debugRPCYCoordinate():
         rc = h['y1y2'].Fill(y1,y2)
 
 alignCorrection={}
-for p in range(24): alignCorrection[p]=[0,0,0]
+for p in range(32): alignCorrection[p]=[0,0,0]
+slopeX = {3:[0,0,0,0],
+          2:[0,0,0,0]}
+slopeY = {2:[0,0,0,0]}
+
 # x layer
 withCorrections=True
 if not hasattr(sTree,'MCTrack') and withCorrections:
- alignCorrection[0]=[ 0.0, 0, 0]   # by hand
- alignCorrection[1]=[ 0.0, 0, 0]
- alignCorrection[2]=[ 0.0, 0, 0]
- alignCorrection[3]=[ 0.0 ,0, 0]
+ alignCorrection[0]=[ -0.23, 0, 0]   # by hand
+ alignCorrection[1]=[ -0.23, 0, 0]
+ alignCorrection[2]=[ -0.24, 0, 0]
+ alignCorrection[3]=[ -0.26, 0, 0]
 # u layers
  alignCorrection[4]=[ 0.0, 0, 0]
  alignCorrection[5]=[ 0.0, 0, 0]
@@ -2509,20 +2600,32 @@ if not hasattr(sTree,'MCTrack') and withCorrections:
  alignCorrection[10]=[ 0.0, 0, 0]
  alignCorrection[11]=[ 0.0, 0, 0]
 # x layers
- alignCorrection[12]=[ 0.0, 0, 0]
- alignCorrection[13]=[ 0.0, 0, 0]
+ alignCorrection[12]=[ 0.04, 0, 0]
+ alignCorrection[13]=[ 0.02, 0, 0]
  alignCorrection[14]=[ 0.0, 0, 0]
  alignCorrection[15]=[ 0.0, 0, 0]
 # T 3
- alignCorrection[16]=[ 0.0, 0, 0]
- alignCorrection[17]=[ 0.0, 0, 0]
- alignCorrection[18]=[ 0.0, 0, 0]
- alignCorrection[19]=[ 0.0, 0, 0]
+ alignCorrection[16]=[  0.04, 0, 0] #-
+ alignCorrection[17]=[  0.06, 0, 0] #-
+ alignCorrection[18]=[  0.09, 0, 0] #-
+ alignCorrection[19]=[  0.09, 0, 0] #-
+ alignCorrection[20]=[ -0.08, 0, 0] #+
+ alignCorrection[21]=[ -0.08, 0, 0] #+
+ alignCorrection[22]=[ -0.10, 0, 0] #+
+ alignCorrection[23]=[ -0.09, 0, 0] #+
 # T 4
- alignCorrection[20]=[ 0.0, 0, 0]
- alignCorrection[21]=[ 0.0, 0, 0]
- alignCorrection[22]=[ 0.0, 0, 0]
- alignCorrection[23]=[ 0.0, 0, 0]
+ alignCorrection[24]=[ -0.05, 0, 0]
+ alignCorrection[25]=[ -0.05, 0, 0]
+ alignCorrection[26]=[ 0.0, 0, 0]
+ alignCorrection[27]=[ 0.0, 0, 0]
+ alignCorrection[28]=[ 0.0, 0, 0]
+ alignCorrection[29]=[ 0.0, 0, 0]
+ alignCorrection[30]=[ 0.0, 0, 0]
+ alignCorrection[31]=[ 0.0, 0, 0]
+
+ slopeX = {3:[-0.00424,-0.00424,-0.00424,-0.00424],
+          2:[-0.003,-0.003,-0.003,-0.003]}
+ slopeY = {2:[0.005,0.004,0.004,0.005]}
 
 def correctAlignment(hit,default=False):
  detID = hit.GetDetectorID()
@@ -2531,31 +2634,64 @@ def correctAlignment(hit,default=False):
   vbot = ROOT.TVector3(b[0],b[1],b[2])
   t = alignConstants['strawPositions'][detID]['top']
   vtop = ROOT.TVector3(t[0],t[1],t[2])
- else:
-  vbot,vtop = ROOT.TVector3(), ROOT.TVector3()
-  rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
- if default: return vbot,vtop
+  return vbot,vtop
+ vbot,vtop = ROOT.TVector3(), ROOT.TVector3()
+ rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
+ if default and not withCorrections: return vbot,vtop
  s,v,p,l,view = stationInfo(hit)
+ if default and withCorrections:
+  x= (2*p+l)
+  if s==1 and view=='_u': x+=4
+  if s==2 and view=='_v': x+=8
+  if s==2 and view=='_x': x+=12
+  if s==3 : 
+     x+=16
+     if vbot[0]>0:x+=4
+  if s==4:
+     x+=24
+     if vbot[0]>0:x+=4
+  for i in range(3):
+     vbot[i] = vbot[i]+alignCorrection[x][i]
+     vtop[i] = vtop[i]+alignCorrection[x][i]
+  return vbot,vtop
  if view=='_x':
   vbot[0]=xpos[detID]
   vtop[0]=xpos[detID]
  else:
   vtop[0]=xpos[detID]
-  vtop[1]=ypos[hdetID]
+  vtop[1]=ypos[detID]
   vbot[0]=xposb[detID]
   vbot[1]=yposb[detID]
  vbot[2]=zpos[detID]
  vtop[2]=zpos[detID]
- x= (2*p+l)
- if s==1 and view=='_u': x+=4
- if s==2 and view=='_v': x+=8
- if s==2 and view=='_x': x+=12
- if s==3 : x+=16
- if s==4:  x+=20
+ pl= (2*p+l)
+ x = pl
+ if s==1 and view=='_u': x = pl+4
+ if s==2 and view=='_v': x = pl+8
+ if s==2 and view=='_x': x = pl+12
+ if s==3 : 
+     x=pl+16
+     if vbot[0]>0:x+=4
+ if s==4:
+     x=pl+24
+     if vbot[0]>0:x+=4
+ if s==3: 
+    vbot[0] += slopeX[s][pl]*vbot[0]
+    vtop[0] += slopeX[s][pl]*vtop[0]
+ if s==2: 
+    vbot[0] += (slopeY[s][pl]*vbot[1] + slopeX[s][pl]*vbot[0])
+    vtop[0] += (slopeY[s][pl]*vtop[1] + slopeX[s][pl]*vtop[0])
  for i in range(3):
-     vbot[i] = vbot[i]+alignCorrection[x][i]
-     vtop[i] = vtop[i]+alignCorrection[x][i]
+    vbot[i] = vbot[i]+alignCorrection[x][i]
+    vtop[i] = vtop[i]+alignCorrection[x][i]
+
  return vbot,vtop
+
+def trackMult():
+  ut.bookHist(h,'TrackMult','track multiplicity',10,-0.5,9.5)
+  for n in range(sTree.GetEntries()):
+   sTree.GetEvent(n)
+   h['TrackMult'].Fill(sTree.FitTracks.GetEntries())
 
 def loopTracks(r,w):
     os.close(r) 
@@ -2695,7 +2831,7 @@ def residualLoop(nstart=0,nend=50000):
      fitResult = h[hnameProjX].Fit('gaus','SQ','',-0.5,0.5)
      rc = fitResult.Get()
      if not rc:
-      print "simple gaus fit failed"
+      # print "simple gaus fit failed"
       myGauss.SetParameter(0,h[hnameProjX].GetEntries())
       myGauss.SetParameter(1,0.)
       myGauss.SetParameter(2,0.1)
@@ -2911,9 +3047,9 @@ def makeRTrelPersistent(RTrelations):
    ftemp.Close()
 def makeAlignmentConstantsPersistent():
   ftemp=sTree.GetCurrentFile()
-  ftemp.cd('')
-  ftemp.mkdir('alignment')
-  ftemp.alignment.cd('')
+  ftemp.cd('histos')
+  momDisplay()
+  h['mom'].Write()
   strawPositions = {}
   for straw in xpos:
     hit = ROOT.MufluxSpectrometerHit(straw,0.)
@@ -2922,8 +3058,6 @@ def makeAlignmentConstantsPersistent():
   alignConstants={'strawPositions':strawPositions,'alignCorrection':alignCorrection}
   pkl = Pickler(ftemp)
   pkl.dump(alignConstants,'alignConstants')
-  momDisplay()
-  h['mom'].Write()
 
 def importAlignmentConstants():
    global alignConstants
@@ -2932,6 +3066,7 @@ def importAlignmentConstants():
    upkl    = Unpickler(sTree.GetCurrentFile())
    try:
     alignConstants = upkl.load('alignConstants')
+    print "importing alignment constants from file",sTree.GetCurrentFile().GetName()
    except:
     print "loading of alignment constants failed for file",sTree.GetCurrentFile().GetName()
 def importRTrel():
@@ -2986,7 +3121,6 @@ def recoStep0():
   makeRTrelPersistent(RTrelations)
 def recoStep1():
 # fitted tracks
-  importRTrel()
   fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   fGenFitArray.BypassStreamer(ROOT.kFALSE)
   fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
@@ -3007,10 +3141,13 @@ def recoStep1():
   ftemp.Write("",ROOT.TFile.kOverwrite)
   ftemp.Close()
 def anaResiduals():
-  importRTrel()
-  importAlignmentConstants()
-  plotBiasedResiduals(nEvent=0,nTot=sTree.GetEntries(),PR=2)
-  plotRPCExtrap()
+  sTree.SetBranchStatus("FitTracks",0)
+  plotBiasedResiduals(nEvent=0,nTot=sTree.GetEntries(),PR=11)
+  plotRPCExtrap(PR=11)
+  trackMult()
+  norm = h['TrackMult'].GetEntries()
+  print '*** Track Stats ***',norm
+  for n in range(1,5): print 'event track mult',n,':',h['TrackMult'].GetBinContent(n)/norm
   ut.writeHists(h,'histos-residuals-'+rname)
 if options.command == "":
  print "existing methods"
@@ -3038,6 +3175,8 @@ if options.command == "":
    else:
     h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
     for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
+ if sTree.GetCurrentFile().Get('alignConstants'): 
+   importAlignmentConstants()
 
 # spills with TDC 
 # SPILLDATA_8000_0519186540_20180723_084148.root *
@@ -3065,10 +3204,18 @@ if options.command == "recoStep0":
   recoStep0()
   print "finished making RT relations"
 elif options.command == "recoStep1":
+  importRTrel()
   print "add fitted tracks"
   recoStep1()
   print "finished adding fitted tracks"
 elif options.command == "anaResiduals":
+  importRTrel()
   anaResiduals()
   print "finished with analysis step"
+elif options.command == "alignment":
+  importRTrel()
+  sTree.SetBranchStatus("FitTracks",0)
+  h['hitMapsX'] = 1
+  plotBiasedResiduals(PR=11)
+  ut.writeHists(h,'histos-residuals-'+rname)
 
