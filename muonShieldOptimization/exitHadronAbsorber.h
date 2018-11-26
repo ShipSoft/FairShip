@@ -6,6 +6,7 @@
 #include "TLorentzVector.h"
 #include "TGeoVolume.h"
 #include "vetoPoint.h"
+#include "TNtuple.h"
 #include <map>
 
 class FairVolume;
@@ -57,7 +58,7 @@ class exitHadronAbsorber: public FairDetector
     virtual void   SetSpecialPhysicsCuts() {;}
     virtual void   EndOfEvent();
     virtual void   FinishPrimary() {;}
-    virtual void   FinishRun() {;}
+    virtual void   FinishRun();
     virtual void   BeginPrimary() {;}
     virtual void   PostTrack() {;}
     virtual void   PreTrack();
@@ -69,6 +70,7 @@ class exitHadronAbsorber: public FairDetector
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
     inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
     inline void SetOnlyMuons(){fOnlyMuons=kTRUE;}
+    inline void SetOpt4DP(){withNtuple=kTRUE;}
     inline void SkipNeutrinos(){fSkipNeutrinos=kTRUE;}
     inline void SetZposition(Float_t x){fzPos=x;}
 
@@ -84,11 +86,13 @@ class exitHadronAbsorber: public FairDetector
     Double_t     fTime;              //!  time
     Double_t     fLength;            //!  length
     Double_t     fzPos;              //!  zPos, optional
+    Bool_t withNtuple;               //! special option for Dark Photon physics studies
+    TNtuple* fNtuple;               //!  
     Float_t EMax;  //! max energy to transport
     Bool_t fOnlyMuons;  //! flag if only muons should be stored
     Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
-    TFile* fout;
-    TClonesArray* fElectrons;
+    TFile* fout; //!
+    TClonesArray* fElectrons; //!
     Int_t index;
     /** container for data points */
     TClonesArray*  fexitHadronAbsorberPointCollection;
