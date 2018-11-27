@@ -1550,7 +1550,7 @@ def momDisplay():
  h['pxpy'].Draw('colz')
  h['mom'].Update()
  
-sigma_spatial = 0.5 # binary resolution! (ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
+sigma_spatial = 0.25 # almost binary resolution! (ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
 def makeTracks():
      hitlist = []
      nhit = -1
@@ -1572,7 +1572,7 @@ def fitTrack(hitlist,Pstart=3.):
    resolution = sigma_spatial
    if not withTDC: resolution = 5*sigma_spatial
    for  i in range(3):   covM[i][i] = resolution*resolution
-   covM[0][0]=resolution*resolution*100.
+   # covM[0][0]=resolution*resolution*100.
    for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / (4.*2.) / ROOT.TMath.Sqrt(3), 2)
    rep = ROOT.genfit.RKTrackRep(13)
 # start state
@@ -1630,7 +1630,7 @@ def fitTrack(hitlist,Pstart=3.):
       ut.reportError(error)
       if Debug: print error
    fitStatus   = theTrack.getFitStatus()
-   if Debug: print "Fit result:",fitStatus.isFitConverged(),fitStatus.getChi2(),fitStatus.getNdf()
+   if Debug: print "Fit result: converged chi2 Ndf",fitStatus.isFitConverged(),fitStatus.getChi2(),fitStatus.getNdf()
    if not fitStatus.isFitConverged():
       rep.Delete()
       return -1
@@ -1638,7 +1638,7 @@ def fitTrack(hitlist,Pstart=3.):
    rc = h['Nmeasurements'].Fill(fitStatus.getNdf())
    fittedState = theTrack.getFittedState()
    P = fittedState.getMomMag()
-   if Debug: print "track fitted",fitStatus.getNdf(), theTrack.getNumPointsWithMeasurement(),P
+   if Debug: print "track fitted Ndf #Meas P",fitStatus.getNdf(), theTrack.getNumPointsWithMeasurement(),P
    if fitStatus.getNdf() < 9:
       rep.Delete()
       return -2 
@@ -2573,10 +2573,10 @@ slopeY = {2:[0,0,0,0]}
 withCorrections=True
 if sTree.GetBranch('MCTrack'): withCorrections=False
 if withCorrections:
- alignCorrection[0]=[ -0.23, 0, 0]   # by hand
- alignCorrection[1]=[ -0.23, 0, 0]
- alignCorrection[2]=[ -0.24, 0, 0]
- alignCorrection[3]=[ -0.26, 0, 0]
+ alignCorrection[0]=[ 0, 0, 0]   # by hand
+ alignCorrection[1]=[ 0, 0, 0]
+ alignCorrection[2]=[ 0, 0, 0]
+ alignCorrection[3]=[ 0, 0, 0]
 # u layers
  alignCorrection[4]=[ 0.0, 0, 0]
  alignCorrection[5]=[ 0.0, 0, 0]
@@ -2588,22 +2588,22 @@ if withCorrections:
  alignCorrection[10]=[ 0.0, 0, 0]
  alignCorrection[11]=[ 0.0, 0, 0]
 # x layers
- alignCorrection[12]=[ 0.04, 0, 0]
- alignCorrection[13]=[ 0.02, 0, 0]
- alignCorrection[14]=[ 0.0, 0, 0]
- alignCorrection[15]=[ 0.0, 0, 0]
+ alignCorrection[12]=[ 0.19, 0, 0]
+ alignCorrection[13]=[ 0.18, 0, 0]
+ alignCorrection[14]=[ 0.13, 0, 0]
+ alignCorrection[15]=[ 0.10, 0, 0]
 # T 3
- alignCorrection[16]=[  0.04, 0, 0] #-
- alignCorrection[17]=[  0.06, 0, 0] #-
- alignCorrection[18]=[  0.09, 0, 0] #-
- alignCorrection[19]=[  0.09, 0, 0] #-
+ alignCorrection[16]=[ 0.006, 0, 0] #-
+ alignCorrection[17]=[ 0, 0, 0] #-
+ alignCorrection[18]=[ 0.02, 0, 0] #-
+ alignCorrection[19]=[ 0.05, 0, 0] #-
  alignCorrection[20]=[ -0.08, 0, 0] #+
- alignCorrection[21]=[ -0.08, 0, 0] #+
- alignCorrection[22]=[ -0.10, 0, 0] #+
- alignCorrection[23]=[ -0.09, 0, 0] #+
+ alignCorrection[21]=[ 0, 0, 0] #+
+ alignCorrection[22]=[ -0.06, 0, 0] #+
+ alignCorrection[23]=[ -0.04, 0, 0] #+
 # T 4
- alignCorrection[24]=[ -0.05, 0, 0]
- alignCorrection[25]=[ -0.05, 0, 0]
+ alignCorrection[24]=[ 0, 0, 0]
+ alignCorrection[25]=[ 0, 0, 0]
  alignCorrection[26]=[ 0.0, 0, 0]
  alignCorrection[27]=[ 0.0, 0, 0]
  alignCorrection[28]=[ 0.0, 0, 0]
@@ -2611,9 +2611,10 @@ if withCorrections:
  alignCorrection[30]=[ 0.0, 0, 0]
  alignCorrection[31]=[ 0.0, 0, 0]
 
- slopeX = {3:[-0.00424,-0.00424,-0.00424,-0.00424],
-          2:[-0.003,-0.003,-0.003,-0.003]}
- slopeY = {2:[0.005,0.004,0.004,0.005]}
+ slopeX = {2:[0,0,-0.001,-0.001],
+           3:[-0.001,-0.0017,-0.0017,-0.0017]}
+ slopeY = {2:[0.0065,0.0065,0.0065,0.0065]}
+
 
 def correctAlignment(hit):
  detID = hit.GetDetectorID()
@@ -2886,12 +2887,13 @@ def residualLoop(nstart=0,nend=50000):
 
 def correctAlignmentRPC(hit,v):
  hit.EndPoints(vtop,vbot)
- if v==1:
-  vbot[0] = -vbot[0] -1.21
-  vtop[0] = -vtop[0] -1.21
- else:
-  vbot[1] = vbot[1] -1.21
-  vtop[1] = vtop[1] -1.21
+ if not sTree.GetBranch('MuonTaggerPoint'):
+  if v==1:
+   vbot[0] = -vbot[0] -1.21
+   vtop[0] = -vtop[0] -1.21
+  else:
+   vbot[1] = vbot[1] -1.21
+   vtop[1] = vtop[1] -1.21
   
  return vbot,vtop
 
@@ -3187,8 +3189,9 @@ elif options.command == "alignment":
   importRTrel()
   sTree.SetBranchStatus("FitTracks",0)
   h['hitMapsX'] = 1
-  withDefaultAlignment = True
-  withCorrections = False
+  withDefaultAlignment = False
+  sigma_spatial = 0.25
+  withCorrections = True
   plotBiasedResiduals(PR=11)
   ut.writeHists(h,'histos-residuals-'+rname)
 
