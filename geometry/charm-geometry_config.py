@@ -251,15 +251,7 @@ with ConfigRegistry.register_config("basic") as c:
          
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY    
-   
-    
-  #Pixel Dimensions and numbers
-    c.Spectrometer.PixelsizeX=0.0025
-    c.Spectrometer.PixelsizeY=0.0005
-    c.Spectrometer.PixelsizeZ=0.0025
-    c.Spectrometer.PixelNumberX=160
-    c.Spectrometer.PixelNumberY=336
-    
+           
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     #module position naming: "axis"Si"Telescope number"
     
