@@ -38,6 +38,7 @@ Scintillator.cxx
 ScintillatorPoint.cxx
 ScintillatorHit.cxx
 ReProcessAbsorber.cxx
+RPCTrack.cxx
 )
 
 Set(HEADERS )

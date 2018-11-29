@@ -19,6 +19,7 @@
 #pragma link C++ class ScintillatorPoint+;
 #pragma link C++ class ScintillatorHit+;
 #pragma link C++ class ReProcessAbsorber+;
+#pragma link C++ class RPCTrack+;
 
 #endif
 
