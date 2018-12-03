@@ -120,7 +120,7 @@ class MufluxDigi:
             detectorid = station*10000 + direction*1000 + strip
             DetectorID.add(detectorid)
             if fake_clustering:
-                s = ROOT.gRandom.Poisson(3)
+                s = ROOT.gRandom.Poisson(2)
                 if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(s/2)
                 else:                          strip = strip + int(s/2)
                 for i in range(0, s):
