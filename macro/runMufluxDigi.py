@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-nEvents    = 10000
 firstEvent = 0
 dy         = None
 
@@ -28,7 +27,7 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="single input file", required=True)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
-parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", default=-1)
+parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", default=100000)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 
 options = parser.parse_args()
@@ -67,7 +66,7 @@ builtin.iEvent  = iEvent
 import MufluxDigi
 SHiP = MufluxDigi.MufluxDigi(outFile)
 
-nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
+nEvents   = min(SHiP.sTree.GetEntries(),options.nEvents)
 # main loop
 for iEvent in range(firstEvent, nEvents):
  if iEvent%1000 == 0 or debug: print 'event ',iEvent
