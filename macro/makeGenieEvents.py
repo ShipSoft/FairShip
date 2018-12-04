@@ -20,7 +20,7 @@ def init(): #available options
       description='Run GENIE neutrino" simulation')
   ap.add_argument('-s', '--seed', type=int, dest='seed', default=65539) #default seed in $GENIE/src/Conventions/Controls.h
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
-  ap.add_argument('-t', '--target', type=str, help="target material", dest='target', default='lead')
+  ap.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
   args = ap.parse_args()
   return args
 
