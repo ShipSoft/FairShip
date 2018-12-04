@@ -91,6 +91,17 @@ For any question or doubt about these simulations, contact Thomas Ruf
 
 ## Simulations for muon flux measurements
 
+* For full simulation, proton (400GeV) on SHiP muflux target, plus detector setup:
+* `python  run_simScript.py --Muflux -n 1000 --charm=1 --CharmdetSetup=0`
+* For fast simulation, using muons from external file:
+`python  run_simScript.py --MuonBack -n 1000 --charm=1 --CharmdetSetup=0 -f inputFile`
+inputFile: /eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_10.0_withCharmandBeauty0_mu.root (+ 66 more files
+* For digitization:
+`python runMufluxDigi.py -f ship.conical.FixedTarget-TGeant4.root -g geofile_full.conical.FixedTarget-TGeant4.root`
+-> ship.conical.FixedTarget-TGeant4_dig.root 
+Track reconstruction & analysis use drifttubeMonitoring.py, will automatically detect that it is  MC data.
+
+
 ## Checking geometry output  Event display can be launched in the following way:
 `python -i $FAIRSHIP/macro/eventDisplay.py -f simulationfile.root -g
 geofile.root`

@@ -924,11 +924,11 @@ def displayDTLayers():
  h['upstream'].Draw()
  h['upstreamG'].Draw('sameP')
 
-def plotEvent(n):
+def plotEvent(n=-1):
    h['dispTrack']=[]
    h['dispTrack3D']=[]
    h['dispTrackY']=[]
-   rc = sTree.GetEvent(n)
+   if not n<0: rc = sTree.GetEvent(n)
    h['hitCollection']= {'upstream':[0,ROOT.TGraph()],'downstream':[0,ROOT.TGraph()],'muonTaggerX':[0,ROOT.TGraph()],'muonTaggerY':[0,ROOT.TGraph()]}
    h['stereoHits'] = []
    for c in h['hitCollection']: rc=h['hitCollection'][c][1].SetName(c)
@@ -1518,7 +1518,7 @@ def findSimpleEvent(event,nmin=3,nmax=6):
    if nv<nmin or nv>nmax: passed = False
    return passed 
 
-def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,PR=2):
+def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,PR=3):
 # select special clean events for testing track fit
  for n in range(nStart,sTree.GetEntries()):
    rc = sTree.GetEvent(n)
@@ -1528,7 +1528,8 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
    if withDisplay:
      print "event #",n
      plotEvent(n)
-   theTracks = findTracks(PR)
+   if PR==3: theTracks = bestTracks() 
+   else:     theTracks = findTracks(PR)
    if withDisplay:
      for theTrack in theTracks:     displayTrack(theTrack,debug)
      next = raw_input("Next (Ret/Quit): ")         
@@ -1579,6 +1580,11 @@ def makeTracks():
       hitlist.append(nhit)
      return fitTrack(hitlist)
 
+def bestTracks():
+ theTracks1 = findTracks(PR=11)
+ theTracks2 = findTracks(PR=12)
+ bestTracks = cloneKiller(theTracks1 + theTracks2)
+ return bestTracks
 def fitTrack(hitlist,Pstart=3.):
 # need measurements
    global fitter
@@ -1754,12 +1760,12 @@ def testPR(onlyHits=False):
  trackCandidates = []
  TaggerHits = []
  withNTaggerHits = 0
- withTDC = False
+ withTDCPR = False
  DTHits = []
  key = -1
  for hit in sTree.Digi_MufluxSpectrometerHits:
    key+=1
-   if not hit.isValid: continue
+   # if not hit.isValid(): continue
    if hit.GetDetectorID() in noisyChannels: continue
    detID = hit.GetDetectorID()
    s,v,p,l,view,channelID,tdcId = stationInfo(hit)
@@ -1767,14 +1773,15 @@ def testPR(onlyHits=False):
      if (2*p+l)==exclude_layer:  continue
    vbot,vtop = correctAlignment(hit)
    tdc = hit.GetDigi()
-   s,v,p,l,view,channelID,tdcId = stationInfo(hit)
    distance = 0
-   if withTDC: distance = RT(hit,tdc)
+   if withTDCPR: distance = RT(hit,tdc)
    DTHits.append( {'digiHit':key,'xtop':vtop.x(),'ytop':vtop.y(),'z':vtop.z(),'xbot':vbot.x(),'ybot':vbot.y(),'dist':distance, 'detID':detID} )
- track_hits = MufluxPatRec.execute(DTHits, TaggerHits, withNTaggerHits, withTDC)
+ track_hits = MufluxPatRec.execute(DTHits, TaggerHits, withNTaggerHits, withTDCPR)
  hitlist = {}
  k = 0
- if Debug: print "PR returned %i track candidates"%(len(track_hits))
+ if Debug: 
+   print "PR returned %i track candidates"%(len(track_hits))
+   plotTracklets(track_hits)
  for nTrack in track_hits:
   h['magPos'].Fill(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'])
   # node = sGeo.FindNode(track_hits[nTrack]['x_in_magnet'],track_hits[nTrack]['y_in_magnet'],zgoliath)
@@ -1792,9 +1799,39 @@ def testPR(onlyHits=False):
  if onlyHits: return hitlist
  return trackCandidates
 
+def plotTracklets(track_hits):
+ for nTrack in track_hits:
+  upStream = True
+  for x in [track_hits[nTrack]['y12'],track_hits[nTrack]['34']]:
+   clus = {1:[],2:[]}
+   for hits in x:
+    detID = hits['detID']/10000000
+    if detID>2: detID-=2
+    clus[detID].append([0,(hits['xtop']+hits['xbot'])/2.,hits['z']])
+   slopeA,bA = getSlope(clus[1],clus[2])
+   x1 = zgoliath*slopeA+bA
+   nt = len(h['dispTrackSeg'])
+   h['dispTrackSeg'].append( ROOT.TGraph(2) )
+   if upStream:
+    h['dispTrackSeg'][nt].SetPoint(0,0.,bA)
+    h['dispTrackSeg'][nt].SetPoint(1,400.,slopeA*400+bA)
+    h['dispTrackSeg'][nt].SetLineColor(ROOT.kRed)
+    upStream=False
+   else:
+    h['dispTrackSeg'][nt].SetPoint(0,300.,slopeA*300+bA)
+    h['dispTrackSeg'][nt].SetPoint(1,900.,slopeA*900+bA)
+    h['dispTrackSeg'][nt].SetLineColor(ROOT.kBlue)
+   h['dispTrackSeg'][nt].SetLineWidth(2)
+   h['simpleDisplay'].cd(1)
+   h['dispTrackSeg'][nt].Draw('same')
+ h['simpleDisplay'].Update()
+
 def findTracks(PR = 2,linearTrackModel = False, onlyX = False):
    if PR < 3 and sTree.GetBranch('FitTracks'): return sTree.FitTracks
-   if PR%2==0 : return testPR()
+   if PR%2==0 : 
+    trackCandidates = testPR()
+    if len(trackCandidates)>1: trackCandidates=cloneKiller(trackCandidates)
+    return trackCandidates
    yMax = 20.
    trackCandidates = []
    spectrHitsSorted = sortHits(sTree)
@@ -1978,7 +2015,44 @@ def findTracks(PR = 2,linearTrackModel = False, onlyX = False):
        aTrack = fitTrack(hitList,momFromptkick)
        if type(aTrack) != type(1):
          trackCandidates.append(aTrack)
+   if len(trackCandidates)>1: trackCandidates=cloneKiller(trackCandidates)
    return trackCandidates
+
+def overlap(a,b):
+ return [x for x in a if x in b]
+
+
+def cloneKiller(trackCandidates):
+# if tracks share >50% of downstream hits, take the one with max measurements
+ detIDs = {}
+ j=-1
+ for aTrack in trackCandidates:
+   j+=1
+   detIDs[j]=[]
+   for p in aTrack.getPoints():
+     detID = p.getRawMeasurement().getDetId()
+     if detID/10000000 > 2:     detIDs[j].append(detID)
+ for j in range(len(detIDs)-1):
+   if len(detIDs[j])==0: continue
+   for k in range(j+1,len(detIDs)):
+     if len(detIDs[k])==0: continue
+     o = overlap(detIDs[j],detIDs[k])
+     tj = float(len(detIDs[j]))
+     tk = float(len(detIDs[k]))
+     if max(len(o)/tj,len(o)/tk)>0.5: 
+       sj = trackCandidates[j].getFitStatus()
+       sk = trackCandidates[k].getFitStatus()
+       if sj.getNdf() > sk.getNdf():   detIDs[k]=[]
+       elif sk.getNdf() > sk.getNdf(): detIDs[j]=[]
+       elif sj.getChi2() < sk.getNdf(): detIDs[k]=[]
+       else: detIDs[j]=[]
+     if len(detIDs[j])==0: break
+ cloneKilledTracks = []
+ j=-1
+ for aTrack in trackCandidates:
+   j+=1
+   if  len(detIDs[j])>0: cloneKilledTracks.append(aTrack)
+ return cloneKilledTracks
 
 def makeLinearExtrapolations(t1t2,t3t4):
  for hit in sTree.Digi_MufluxSpectrometerHits:
@@ -3051,13 +3125,13 @@ def myVertex(t1,t2,PosDir,xproj=False):
    Z = c.z()+v.z()*t
    return X,Y,Z,abs(dist)
 
-def findV0(nstart=0,nmax=-1):
+def findV0(nstart=0,nmax=-1,PR=2):
  if nmax<0: nmax = sTree.GetEntries()
  ut.bookHist(h,'v0mass_wc','V0 mass wrong charge combinations',100,0.2,1.8,100,-120.,120.)
  ut.bookHist(h,'v0mass','V0 mass ',100,0.2,1.8,100,-120.,120.)
  for n in range(nstart,nmax):
   rc = sTree.GetEvent(n)
-  tracks = findTracks(PR=12)
+  tracks = findTracks(PR)
   if len(tracks)<2: continue
   PosDir = {}
   tr = 0
@@ -3205,17 +3279,18 @@ def recoStep0():
   RTrelations =  {'tMinAndTmax':h['tMinAndTmax']}
   for s in h['tMinAndTmax']: RTrelations['rt'+s] = h['rt'+s]
   makeRTrelPersistent(RTrelations)
-def recoStep1():
+def recoStep1(PR=3):
 # fitted tracks
   fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   fGenFitArray.BypassStreamer(ROOT.kFALSE)
   fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
   n = 0
   for event in sTree:
-    if n%1000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName()
+    if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName()
     n+=1
     fGenFitArray.Delete()
-    theTracks = testPR()
+    if PR==3: theTracks = bestTracks()
+    else theTracks = findTracks(PR)
     for aTrack in theTracks:
      nTrack   = fGenFitArray.GetEntries()
      aTrack.prune("CFL")
@@ -3275,12 +3350,12 @@ if options.command == "recoStep0":
 elif options.command == "recoStep1":
   importRTrel()
   print "add fitted tracks"
-  recoStep1()
-  print "finished adding fitted tracks"
+  recoStep1(PR=3)
+  print "finished adding fitted tracks",options.listOfFiles
 elif options.command == "anaResiduals":
   importRTrel()
   anaResiduals()
-  print "finished with analysis step"
+  print "finished with analysis step",options.listOfFiles
 elif options.command == "alignment":
   importRTrel()
   sTree.SetBranchStatus("FitTracks",0)
