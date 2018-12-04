@@ -5,9 +5,10 @@ import shipRoot_conf
 import argparse
 shipRoot_conf.configure()
 # 
-xsec = "Nu_splines.xml"
-#hfile = "pythia8_Geant4-withCharm_onlyNeutrinos.root"
+xsec = "xsec_splines-iron-nu_e-nu_mu.xml"
 hfile = "pythia8_Geant4_1.0_withCharm_nu.root" #2018 background generation
+#xsec = "Nu_splines.xml"
+#hfile = "pythia8_Geant4-withCharm_onlyNeutrinos.root"
 #put the above files in folder linked by the environment variables GENIEXSECPATH and NUFLUXPATH
 
 splines   = os.environ['XSECPATH']+'/'+xsec #path of splines
