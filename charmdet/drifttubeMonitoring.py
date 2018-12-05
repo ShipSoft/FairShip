@@ -2384,12 +2384,15 @@ def efficiencyEstimates():
  rc=fitResult.Get()
  h['Efftxt'] = ROOT.TLatex(8,0.4,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
  h['Efftxt'].Draw()
+import operator
 def debugTrackFit(nEvents):
  ut.bookHist(h,'residuals','all residuals',100,-1.,1.)
+ fitFailures={}
+ fitSuccess={}
  for n in range(nEvents):
   rc = sTree.GetEvent(n)
   if not findSimpleEvent(sTree): continue
-  tracks = findTracks(PR=22)
+  tracks = findTracks(PR=11)
   for atrack in tracks:
    for m in range(atrack.getNumPointsWithMeasurement()):
      apoint = atrack.getPointWithMeasurement(m)
@@ -2401,6 +2404,40 @@ def debugTrackFit(nEvents):
       weight = meas.getWeight()
       residual = meas.getState()[0]
       rc = h['residuals'].Fill(residual)
+   for p in atrack.getPointsWithMeasurement():
+    rawM = p.getRawMeasurement()
+    info = p.getFitterInfo()
+    if not info: continue
+    detID = rawM.getDetId()
+    if info.getWeights()[0]<0.1 and info.getWeights()[1] < 0.1:
+# record failure rate
+     if not detID in fitFailures: fitFailures[detID]=0
+     fitFailures[detID]+=1
+    else:
+     if not detID in fitSuccess: fitSuccess[detID]=0
+     fitSuccess[detID]+=1
+ zPos={}
+ for detID in fitFailures:
+   test = ROOT.MufluxSpectrometerHit(detID,0)
+   test.MufluxSpectrometerEndPoints(vbot,vtop)
+   zPos[detID] = vtop[2]
+ sorted_x = sorted(zPos.items(), key=operator.itemgetter(1))
+# upstream 12 channel, downstream 48
+# 4 4 4 4    4 4 = 576
+ ut.bookHist(h,'fitfail','fitfailure by channel',700,0.5,700.5)
+ l = 0
+ prevS=1
+ for x in sorted_x:
+  l+=1
+  s = x[0]/10000000 
+  if s!=prevS: 
+   prevS = s
+   l+=20
+  r = 1
+  if fitSuccess.has_key(x[0]): r=fitFailures[x[0]]/float(fitSuccess[x[0]])
+  print x[0],r
+  rc=h['fitfail'].Fill(l,r)
+
 def plotLinearResiduals():
  if not h.has_key('linearResiduals2dX'): 
    plotRPCExtrap(0,-1)
@@ -3290,7 +3327,7 @@ def recoStep1(PR=3):
     n+=1
     fGenFitArray.Delete()
     if PR==3: theTracks = bestTracks()
-    else theTracks = findTracks(PR)
+    else: theTracks = findTracks(PR)
     for aTrack in theTracks:
      nTrack   = fGenFitArray.GetEntries()
      aTrack.prune("CFL")
