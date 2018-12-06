@@ -59,7 +59,7 @@ def get_work_dir(run_number,tag=None):
 
 def init():
   global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
-         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos
+         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos,FourDP
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
   ap = argparse.ArgumentParser(
@@ -80,6 +80,7 @@ def init():
   ap.add_argument('-B', '--beauty',     action='store_true',  dest='beauty', default=beauty, help="generate beauty decays")
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
   ap.add_argument('-N', '--skipNeutrinos',  action='store_true',  dest='skipNeutrinos',  default=False, help="skip neutrinos")
+  ap.add_argument('-D', '--4darkPhoton',  action='store_true',  dest='FourDP',  default=False, help="enable ntuple production")
 # for charm production       
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
@@ -101,6 +102,7 @@ def init():
   boostDiMuon  = args.boostDiMuon
   storeOnlyMuons = args.storeOnlyMuons
   skipNeutrinos  = args.skipNeutrinos
+  FourDP         = args.FourDP
   if G4only:
     args.charm  = False
     args.beauty = False
@@ -193,6 +195,7 @@ sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
 if storeOnlyMuons: sensPlane.SetOnlyMuons()
 if skipNeutrinos: sensPlane.SkipNeutrinos()
+if FourDP: sensPlane.SetOpt4DP() # in case a ntuple should be filled with pi0,etas,omega
 # sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlane)
 
@@ -254,7 +257,6 @@ print ' '
 print "Macro finished succesfully." 
 print "Output file is ",  outFile 
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
-
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile+"tmp"
 if ROOT.gROOT.GetListOfFiles().GetEntries()>0:
@@ -280,6 +282,17 @@ if boostFactor > 1: conditions+=" X"+str(boostFactor)
 info += conditions
 fHeader.SetTitle(info)
 print "Data generated ", fHeader.GetTitle()
+
+nt = fin.Get('4DP')
+if nt:
+ tf = ROOT.TFile('FourDP.root','recreate')
+ tnt = nt.CloneTree(0)
+ for i in range(nt.GetEntries()):
+  rc = nt.GetEvent(i)
+  rc = tnt.Fill(nt.id,nt.px,nt.py,nt.pz,nt.x,nt.y,nt.z)
+ tnt.Write()
+ tf.Close()
+
 t     = fin.cbmsim
 fout  = ROOT.TFile(tmpFile,'recreate' )
 sTree = t.CloneTree(0)
@@ -291,8 +304,10 @@ for n in range(t.GetEntries()):
           nEvents+=1
      #t.Clear()
 fout.cd()
-for x in fin.GetList():
- if not x.Class().GetName().find('TH')<0: 
+for k in fin.GetListOfKeys():
+ x = fin.Get(k.GetName())
+ className = x.Class().GetName()
+ if className.find('TTree')<0 and className.find('TNtuple')<0: 
    xcopy = x.Clone()
    rc = xcopy.Write()
 sTree.AutoSave()

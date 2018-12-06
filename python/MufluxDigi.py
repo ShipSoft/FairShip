@@ -6,6 +6,7 @@ from array import array
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
+deadChannelsForMC = [10112001, 20112003, 30002041, 30012026, 30102025, 30112013, 30112018, 40012014]
 
 # function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
@@ -116,15 +117,15 @@ class MufluxDigi:
             if not strip:
                 continue
             # sampling number of strips around the exact strip for emulating clustering
+            detectorid = station*10000 + direction*1000 + strip
+            DetectorID.add(detectorid)
             if fake_clustering:
-                s = ROOT.gRandom.Poisson(3)
-                strip = strip - int(s/2)
+                s = ROOT.gRandom.Poisson(2)
+                if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(s/2)
+                else:                          strip = strip + int(s/2)
                 for i in range(0, s):
                         detectorid = station*10000 + direction*1000 + strip + i
                         DetectorID.add(detectorid)
-            else:
-                detectorid = station*10000 + direction*1000 + strip
-                DetectorID.add(detectorid)
 
             # y gives horizontal direction
             direction = 0
@@ -132,15 +133,15 @@ class MufluxDigi:
             if not strip:
                 continue
             # sampling number of strips around the exact strip for emulating clustering
+            detectorid = station*10000 + direction*1000 + strip
+            DetectorID.add(detectorid)
             if fake_clustering:
-                s = ROOT.gRandom.Poisson(3)
-                strip = strip - int(s/2)
+                s = ROOT.gRandom.Poisson(2)
+                if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(s/2)
+                else:                          strip = strip + int(s/2)
                 for i in range(0, s):
                         detectorid = station*10000 + direction*1000 + strip + i
                         DetectorID.add(detectorid)
-            else:
-                detectorid = station*10000 + direction*1000 + strip
-                DetectorID.add(detectorid)
 
         self.digiMuonTagger.Expand(len(DetectorID))
         for index, detID in enumerate(DetectorID):
@@ -168,6 +169,7 @@ class MufluxDigi:
         hitsPerDetId = {}
 
         for aMCPoint in self.sTree.MufluxSpectrometerPoint:
+            if aMCPoint.GetDetectorID() in deadChannelsForMC: continue
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             if self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
