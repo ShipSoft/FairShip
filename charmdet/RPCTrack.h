@@ -6,23 +6,23 @@
 /**
  * class for storage of RPC Track data from July 2018 testbeam
  */
-class RpcTrack : public TObject
+class RPCTrack : public TObject
 {
 
   public:
 
 	/** Default constructor **/
-	RpcTrack();
+	RPCTrack();
 
 
 	/** Minimal constructor with track angles **/
 	
 
-	RpcTrack(Double_t theta, Double_t phi);	
+	RPCTrack(Double_t theta, Double_t phi);	
 
 
     /** Destructor **/
-	virtual ~RpcTrack();
+	virtual ~RPCTrack();
 
 
 	/** Accessors **/
@@ -49,8 +49,5 @@ class RpcTrack : public TObject
     
     ClassDef(RPCTrack,1);
 };
-
-#endif
-
 
 #endif

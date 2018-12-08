@@ -4,16 +4,17 @@
 
 RPCTrack::RPCTrack()
  :  TObject(),
-	ftheta = 0.,
-	fphi = 0,
-	fnclusters = 0,
+	ftheta(0.),
+	fphi(0.),
+	fnclusters(0)
 	{}
-RpcTrack(Double_t theta, Double_t phi)
+RPCTrack::RPCTrack(Double_t theta, Double_t phi)
  :  TObject(),
- 	ftheta = theta,
- 	fphi = 0,
- 	fnclusters=0,
- 	{}
+    fnclusters(0),
+    ftheta(theta),
+    fphi(phi)
+ 	{
+	}
 
 void RPCTrack::AddCluster(Double_t x, Double_t y, Double_t z, Int_t dir, Int_t nstation)
 {
@@ -25,6 +26,4 @@ void RPCTrack::AddCluster(Double_t x, Double_t y, Double_t z, Int_t dir, Int_t n
 
 	fnclusters++;
 }
-
-
 
