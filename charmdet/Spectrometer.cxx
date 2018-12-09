@@ -197,9 +197,14 @@ void Spectrometer::ConstructGeometry()
   
     TGeoVolume *top = gGeoManager->GetTopVolume();
 
-
+    //computing the largest offsets in order to set PixelBox dimensions correctly
+    Double_t offsetxmax = 0., offsetymax = 0.;
+    for (int istation = 0; istation < 12; istation++){
+     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
+     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
+    }
     //Double_t DimZPixelBox = zs5 -zs0 +pairwisedistance + DimZSi;
-    TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2, Dim1Long/2, DimZPixelBox/2.);
+    TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZPixelBox/2.);
     TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
 
     top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition));
