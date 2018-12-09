@@ -82,6 +82,8 @@ def run():
  print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
 storeOnlyMuons = True
-nev = 100
+f=ROOT.TFile.Open(fname)
+nev = f.cbmsim.GetEntries()
+f.Close()
 run()
 

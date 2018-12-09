@@ -51,13 +51,17 @@ ReProcessAbsorber::~ReProcessAbsorber()
 // -----   Passing the event   ---------------------------------------------
 Bool_t ReProcessAbsorber::ReadEvent(FairPrimaryGenerator* cpg)
 {
-  while (1>0) {
    if (fn==fNevents) {
      cout << "No more input events"<<endl;
      return kFALSE; }
    fTree->GetEntry(fn);
    if (fn %10000==0)  {cout << "reading event "<<fn<<endl;}
    fn++;
+   if (FitTracks->GetEntriesFast()==0){
+     // add dummy entry to keep FairRoot happy
+     TMCProcess procID  = kPPrimary;
+     cpg->AddTrack(22,0.,0.,0.,0.,0.,0., -1,kFALSE,0, 0.,1.,procID);
+   }else{
    for (Int_t i=0;i<FitTracks->GetEntriesFast();i++) {
        genfit::Track *atrack = (genfit::Track*)FitTracks->At(i);
        genfit::FitStatus  *fst = atrack->getFitStatus();
@@ -71,10 +75,8 @@ Bool_t ReProcessAbsorber::ReadEvent(FairPrimaryGenerator* cpg)
        TMCProcess procID  = kPTransportation;
        cpg->AddTrack(pdgCode,mom[0],mom[1],mom[2],pos[0],pos[1],fZ, -1,kTRUE,E, 0.,1.,procID);
    }
-   if (FitTracks->GetEntriesFast()>0)break;
   }
   return kTRUE;
-
 }
 
 // -------------------------------------------------------------------------
