@@ -141,9 +141,7 @@ protected:
     Double_t DimZSi;
 
     Double_t xs[12], ys[12], zs[12];
-    Double_t xangle[12];
-    Double_t yangle[12];
-    Double_t zangle[12];
+    Double_t xangle[12], yangle[12], zangle[12];
     
     Double_t zposSciFi1, zposSciFi2;
     

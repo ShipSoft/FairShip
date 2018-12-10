@@ -48,8 +48,8 @@ def configure(run,ship_geo):
  Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)   
  Spectrometer.SetSiliconDZ(ship_geo.Spectrometer.DimZSi)
 
- for i in range(0,len(ship_geo.Spectrometer.zSi)): 
-  Spectrometer.SetSiliconStationPositions(i, ship_geo.Spectrometer.xSi[i], ship_geo.Spectrometer.ySi[i], ship_geo.Spectrometer.zSi[i])
+ for i, (x, y, z) in enumerate(zip(ship_geo.Spectrometer.xSi,ship_geo.Spectrometer.ySi,ship_geo.Spectrometer.zSi)): 
+  Spectrometer.SetSiliconStationPositions(i, x, y, z)
 
  Spectrometer.SetSciFiDetPositions(ship_geo.Spectrometer.zSciFi1, ship_geo.Spectrometer.zSciFi2)
 # -----Goliath part by Annarita--------
