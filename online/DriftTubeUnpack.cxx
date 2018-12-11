@@ -140,7 +140,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
             // Successful match
             LOG(DEBUG) << "Successful match on channel " << channel;
             uint16_t time = leading_hits.at(i).hitTime;
-            uint16_t time_over_threshold = trailing_hits.at(j).hitTime - leading_hits.at(i).hitTime;
+            Float_t time_over_threshold = 0.098 * (trailing_hits.at(j).hitTime - leading_hits.at(i).hitTime);
             matches.emplace_back(channel, time, time_over_threshold, first, true);
             n_matched++;
             first = false;
