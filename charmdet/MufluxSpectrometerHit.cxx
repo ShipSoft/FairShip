@@ -18,9 +18,9 @@
 static const Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
 // -----   Standard constructor   ------------------------------------------ 
 MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc)
-  : ShipHit(detID,ftdc), width(0), flags(0), channel(0) {} // TODO improve default valules
+  : ShipHit(detID,ftdc), time_over_treshold(167.2), flags(0), channel(0) {}
 MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, Float_t signal_width, uint16_t flag, uint16_t ch)
-  : ShipHit(detID,ftdc), width(signal_width), flags(flag), channel(ch) {}
+  : ShipHit(detID,ftdc), time_over_treshold(signal_width), flags(flag), channel(ch) {}
 // -----   constructor from SpectrometerPoint   ------------------------------------------ 
 MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_t t0)
 {
@@ -33,6 +33,7 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_
      module->TubeEndPoints(fDetectorID,start,stop); 
      Double_t t_drift = std::abs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift; 
      fdigi = t0 + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; 
+     time_over_treshold = 167.2;
 } 
 
 void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop)
