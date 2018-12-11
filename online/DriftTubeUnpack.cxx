@@ -2,6 +2,9 @@
 #include <unordered_map>
 #include <iostream>
 #include <bitset>
+#include <algorithm>
+#include <set>
+#include <tuple>
 
 // ROOT headers
 #include "TClonesArray.h"
@@ -59,24 +62,12 @@ void DriftTubeUnpack::Register()
 // DoUnpack: Public method
 Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   // TODO add histogram leading-trailing
    LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
    assert(df->header.size == size);
    switch (df->header.frameTime) {
-   case SoS:
-      LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl;
-      for (auto i : ROOT::MakeSeq(size)) {
-         if (i % 4 == 0) {
-            std::cout << ' ';
-         } else if (i % 16 == 0) {
-            std::cout << '\n';
-         }
-         std::cout << std::hex << +data[i] << std::dec;
-      }
-      std::cout << std::endl;
-      return kTRUE;
+   case SoS: LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." << FairLogger::endl; return kTRUE;
    case EoS: LOG(DEBUG) << "DriftTubeUnpacker: EoS frame." << FairLogger::endl; return kTRUE;
    default: break;
    }
@@ -89,7 +80,6 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    int nhitsMasterTrigger = 0;
    int nhitsTriggers = 0;
    auto flags = df->header.flags;
-   int skipped = 0;
    int trigger = 0;
    int expected_triggers = 5;
    if ((flags & DriftTubes::All_OK) == DriftTubes::All_OK) {
@@ -105,159 +95,161 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          }
       }
    }
-   std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
-   std::unordered_map<uint16_t, uint16_t> channels;
-   std::unordered_map<uint16_t, ROOT::VecOps::RVec<uint16_t>> late_hits;
-   std::unordered_map<int, uint16_t> triggerTime;
-   uint16_t master_trigger_time = 0;
-   std::vector<std::pair<int, uint16_t>> trigger_times;
+   ROOT::VecOps::RVec<RawDataHit> hits(df->hits, df->hits + nhits);
+   ROOT::VecOps::RVec<RawDataHit> leading, trailing;
+   int n_matched = 0;
+   int n_unmatched = 0;
+   std::set<uint16_t> channels;
    for (auto &&hit : hits) {
-      auto channel = reinterpret_cast<ChannelId *>(&(hit.channelId));
-      auto TDC = channel->TDC;
-      auto detectorId = channel->GetDetectorId();
-      auto hit_time = hit.hitTime;
-      if (!detectorId) {
-         if (channel->edge == 0) {
-            trigger++;
-            triggerTime[TDC] =
-               (triggerTime.find(TDC) != triggerTime.end()) ? std::min(hit_time, triggerTime[TDC]) : hit_time;
-            trigger_times.emplace_back(TDC, hit_time);
+      channels.emplace(hit.channelId % 0x1000);
+      (hit.channelId < 0x1000 ? leading : trailing).emplace_back(hit);
+   }
+   assert(leading.size() + trailing.size() == hits.size());
+   LOG(DEBUG) << leading.size() << '\t' << trailing.size() << '\t' << hits.size();
+   const int n_leading = leading.size();
+   auto compare_hit_time = [](const RawDataHit &a, const RawDataHit &b) { return a.hitTime < b.hitTime; };
+   std::sort(leading.begin(), leading.end(), compare_hit_time);
+   std::sort(trailing.begin(), trailing.end(), compare_hit_time);
+   std::unordered_map<uint16_t, ROOT::VecOps::RVec<RawDataHit>> channel_leading;
+   for (auto &&hit : leading) {
+      assert(hit.channelId < 0x1000);
+      channel_leading[hit.channelId % 0x1000].emplace_back(hit);
+   }
+   std::unordered_map<uint16_t, ROOT::VecOps::RVec<RawDataHit>> channel_trailing;
+   for (auto &&hit : trailing) {
+      assert(hit.channelId >= 0x1000);
+      channel_trailing[hit.channelId % 0x1000].emplace_back(hit);
+   }
+   ROOT::VecOps::RVec<std::tuple<uint16_t, uint16_t, uint16_t, bool, bool>> matches;
+   for (auto &&channel : channels) {
+      bool first = true;
+      LOG(DEBUG) << "Channel: " << channel;
+      assert(channel < 0x1000);
+      auto leading_hits = channel_leading[channel];
+      auto trailing_hits = channel_trailing[channel];
+      auto difference = int(leading_hits.size() - trailing_hits.size());
+      if (difference != 0) {
+         LOG(DEBUG) << "Difference between leading/trailing edges: " << difference;
+      }
+      for (int i = 0, j = 0; i < leading_hits.size(); i++) {
+         LOG(DEBUG) << "i=" << i << "\tj=" << j;
+         LOG(DEBUG) << "leading_hits.size()=" << leading_hits.size()
+                    << "\ttrailing_hits.size()=" << trailing_hits.size();
+         assert(i < leading_hits.size());
+         if (j < trailing_hits.size() && leading_hits.at(i).hitTime < trailing_hits.at(j).hitTime &&
+             (i + 1 >= leading_hits.size() || trailing_hits.at(j).hitTime < leading_hits.at(i + 1).hitTime)) {
+            // Successful match
+            LOG(DEBUG) << "Successful match on channel " << channel;
+            uint16_t time = leading_hits.at(i).hitTime;
+            uint16_t time_over_threshold = trailing_hits.at(j).hitTime - leading_hits.at(i).hitTime;
+            matches.emplace_back(channel, time, time_over_threshold, first, true);
+            n_matched++;
+            first = false;
+            j++;
+         } else if (j < trailing_hits.size() && leading_hits.at(i).hitTime > trailing_hits.at(j).hitTime &&
+                    (j + 1) < trailing_hits.size()) {
+            // No match for leading edge
+            // Try again with next j, same i
+            LOG(DEBUG) << "Try again for hit on channel " << channel;
+            i--;
+            j++;
+         } else {
+            LOG(DEBUG) << "No match found for hit on channel " << channel;
+            // No match possible, save unmatched hit
+            uint16_t time = leading_hits.at(i).hitTime;
+            uint16_t time_over_threshold = 167.2; // Estimated from data
+            matches.emplace_back(channel, time, time_over_threshold, first, false);
+            first = false;
+            n_unmatched++;
          }
+      }
+   }
+   assert(n_matched + n_unmatched == n_leading);
+   LOG(DEBUG) << "Successfully matched " << n_matched << "/" << n_leading << "(" << hits.size() << " hits)";
+
+   std::unordered_map<int, uint16_t> trigger_times;
+   ROOT::VecOps::RVec<std::tuple<uint16_t, uint16_t, uint16_t, bool, uint16_t>> drifttube_hits;
+   uint16_t master_trigger_time = 0;
+   for (auto &&match : matches) {
+      uint16_t channel, hit_time, time_over_threshold;
+      bool first, matched;
+      std::tie(channel, hit_time, time_over_threshold, first, matched) = match;
+      auto hit_flags = matched ? flags : flags | DriftTubes::NoWidth;
+      auto id = *(reinterpret_cast<ChannelId *>(&channel));
+      auto detectorId = id.GetDetectorId();
+      auto TDC = id.TDC;
+      if (detectorId == 0) {
+         // Trigger
+         trigger++;
+         trigger_times[TDC] =
+            (trigger_times.find(TDC) != trigger_times.end()) ? std::min(hit_time, trigger_times[TDC]) : hit_time;
          new ((*fRawTriggers)[nhitsTriggers])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
          nhitsTriggers++;
       } else if (detectorId == 1) {
-         if (channel->edge == 0) {
-            // Use the earliest if there are several
-            if (nhitsMasterTrigger == 0 || hit_time < master_trigger_time) {
-               master_trigger_time = hit_time;
-            }
+         // Master trigger
+         //
+         // Use the earliest if there are several
+         if (nhitsMasterTrigger == 0 || hit_time < master_trigger_time) {
+            master_trigger_time = hit_time;
          }
          new ((*fRawMasterTrigger)[nhitsMasterTrigger])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
          nhitsMasterTrigger++;
       } else if (detectorId == -1) {
          // beam counter
          new ((*fRawBeamCounter)[nhitsBeamCounter])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
          nhitsBeamCounter++;
       } else if (detectorId == 6 || detectorId == 7) {
-         // beam counter
+         // trigger scintillator
          new ((*fRawScintillator)[nhitsScintillator])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), flags, hit.channelId);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
          nhitsScintillator++;
-      } else if (channels.find(hit.channelId) != channels.end()) {
-         if (hit_time < channels[hit.channelId]) {
-            std::swap(hit_time, channels[hit.channelId]);
-            assert(hit_time > channels[hit.channelId]);
-         }
-         late_hits[hit.channelId].emplace_back(hit_time);
       } else {
-         channels[hit.channelId] = hit_time;
+         drifttube_hits.emplace_back(channel, hit_time, time_over_threshold, first, hit_flags);
       }
    }
-   uint16_t delay = 2000;
-   if (!triggerTime[4]) {
+
+   uint16_t delay = 13500; // Best guess based on data
+   if (!trigger_times[4]) {
       LOG(WARNING) << "No trigger in TDC 4, guessing delay" << FairLogger::endl;
       flags |= DriftTubes::NoDelay;
    } else if (master_trigger_time == 0) {
       LOG(WARNING) << "No master trigger, guessing delay" << FairLogger::endl;
       flags |= DriftTubes::NoDelay;
    } else {
-      delay = triggerTime[4] - master_trigger_time;
+      delay = trigger_times[4] - master_trigger_time;
    }
-   for (auto &&channel_and_time : channels) {
-      uint16_t raw_chan = channel_and_time.first;
-      uint16_t raw_time = channel_and_time.second;
-      auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
-      if (channel->edge == 1) {
-         continue;
-      }
-      auto detectorId = channel->GetDetectorId();
-      auto TDC = channel->TDC;
-      uint16_t trigger_time;
+
+   for (auto &&hit : drifttube_hits) {
+      uint16_t channel, raw_time, time_over_threshold, hit_flags;
+      bool first;
+      std::tie(channel, raw_time, time_over_threshold, first, hit_flags) = hit;
+      hit_flags |= flags;
+      auto id = *(reinterpret_cast<ChannelId *>(&channel));
+      auto detectorId = id.GetDetectorId();
+      auto TDC = id.TDC;
+      Float_t time;
       try {
-         trigger_time = triggerTime.at(TDC);
+         auto trigger_time = trigger_times.at(TDC);
+         time = 0.098 * (delay - trigger_time + raw_time);
       } catch (const std::out_of_range &e) {
-         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
+         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << channel
                       << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
-         skipped++;
-         continue;
-      }
-      Float_t time = 0.098 * (delay - trigger_time + raw_time); // conversion to ns and jitter correction
-      Float_t width = 0;
-      try {
-         width = 0.098 * (channels.at(raw_chan + 0x1000) - raw_time);
-      } catch (const std::out_of_range &e) {
-         LOG(ERROR) << "trailing edge channel out of range" << FairLogger::endl;
-         LOG(ERROR) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
-                      << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
-         skipped++;
-         continue;
-      }
-      new ((*fRawTubes)[nhitsTubes]) MufluxSpectrometerHit(detectorId, time, width, flags, raw_chan);
-      nhitsTubes++;
-   }
-   for (auto &&channel_and_times : late_hits) {
-      uint16_t raw_chan = channel_and_times.first;
-      auto raw_times = channel_and_times.second;
-      auto channel = reinterpret_cast<const ChannelId *>(&raw_chan);
-      if (channel->edge == 1) {
-         continue;
-      }
-      auto detectorId = channel->GetDetectorId();
-      auto TDC = channel->TDC;
-      ROOT::VecOps::RVec<uint16_t> trailing_times;
-      try {
-         trailing_times = late_hits.at(raw_chan + 0x1000);
-      } catch (const std::out_of_range &e) {
-         LOG(WARNING) << "trailing edge channel out of range" << FairLogger::endl;
-         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
-                      << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
-         skipped += raw_times.size();
-         continue;
+         time = 0.098 * raw_time;
+         hit_flags |= DriftTubes::NoTrigger;
       }
 
-      uint16_t trigger_time;
-      try {
-         trigger_time = triggerTime.at(TDC);
-      } catch (const std::out_of_range &e) {
-         LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << raw_chan
-                      << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
-         skipped += raw_times.size();
-         continue;
-      }
-      auto times = 0.098 * (delay - trigger_time + raw_times); // conversion to ns and jitter correction
-      if (trailing_times.size() != raw_times.size()) {
-         LOG(WARNING) << "Mismatch between leading and trailing edges:\nLeading: " << raw_times.size()
-                      << "\tTrailing:" << trailing_times.size() << FairLogger::endl;
-         skipped += raw_times.size();
-         continue;
-      }
-      auto widths = 0.098 * (trailing_times - raw_times);
-      for (auto &&i : ROOT::MakeSeq(raw_times.size())) {
-         try {
-            new ((*fRawLateTubes)[nhitsLateTubes])
-               MufluxSpectrometerHit(detectorId, times.at(i), widths.at(i), flags | DriftTubes::InValid, raw_chan);
-         } catch (const std::out_of_range &e) {
-            LOG(WARNING) << i << "\t" << raw_times.size() << "\t" << times.size() << FairLogger::endl;
-         }
-         nhitsLateTubes++;
-      }
+      new ((*(first ? fRawTubes : fRawLateTubes))[first ? nhitsTubes : nhitsLateTubes])
+         MufluxSpectrometerHit(detectorId, time, Float_t(0.098 * time_over_threshold), hit_flags, channel);
+      (first ? nhitsTubes : nhitsLateTubes)++;
    }
 
    if (trigger < expected_triggers) {
       LOG(INFO) << trigger << " triggers." << FairLogger::endl;
-      for (auto &&i : trigger_times) {
-         LOG(INFO) << i.first << '\t' << i.second << FairLogger::endl;
-      }
    } else {
       LOG(DEBUG) << trigger << " triggers." << FairLogger::endl;
-   }
-
-   if (nhits != nhitsTubes + nhitsLateTubes + nhitsScintillator + nhitsBeamCounter + nhitsMasterTrigger +
-                   nhitsTriggers + skipped) {
-      LOG(WARNING) << "Number of Entries in containers and header disagree!" << FairLogger::endl;
    }
 
    return kTRUE;

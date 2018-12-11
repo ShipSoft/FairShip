@@ -127,6 +127,7 @@ enum Flag : uint16_t {
    TDC2_PROBLEM = 1 << 3,
    TDC3_PROBLEM = 1 << 4,
    TDC4_PROBLEM = 1 << 5,
+   NoTrigger = 1<<12,
    NoWidth = 1<<13,
    NoDelay = 1<<14,
    InValid = 1<<15,
