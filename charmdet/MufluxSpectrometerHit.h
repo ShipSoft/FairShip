@@ -39,14 +39,14 @@ public:
    }
    bool hasDelay() const { return !((flags & DriftTubes::NoDelay) == DriftTubes::NoDelay); }
    bool hasTimeOverThreshold() const { return !((flags & DriftTubes::NoWidth) == DriftTubes::NoWidth); }
-   Float_t GetTimeOverThreshold() const { return time_over_treshold; }
+   Float_t GetTimeOverThreshold() const { return time_over_threshold; }
 
 private:
    /** Copy constructor **/
    MufluxSpectrometerHit(const MufluxSpectrometerHit &point);
    MufluxSpectrometerHit operator=(const MufluxSpectrometerHit &point);
 
-   Float_t time_over_treshold;
+   Float_t time_over_threshold;
    uint16_t flags;
    uint16_t channel;
 

@@ -120,7 +120,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       assert(hit.channelId >= 0x1000);
       channel_trailing[hit.channelId % 0x1000].emplace_back(hit);
    }
-   ROOT::VecOps::RVec<std::tuple<uint16_t, uint16_t, uint16_t, bool, bool>> matches;
+   ROOT::VecOps::RVec<std::tuple<uint16_t, uint16_t, Float_t, bool, bool>> matches;
    for (auto &&channel : channels) {
       bool first = true;
       LOG(DEBUG) << "Channel: " << channel;
@@ -157,7 +157,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
             LOG(DEBUG) << "No match found for hit on channel " << channel;
             // No match possible, save unmatched hit
             uint16_t time = leading_hits.at(i).hitTime;
-            uint16_t time_over_threshold = 167.2; // Estimated from data
+            Float_t time_over_threshold = 167.2; // Estimated from data
             matches.emplace_back(channel, time, time_over_threshold, first, false);
             first = false;
             n_unmatched++;
@@ -168,10 +168,11 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    LOG(DEBUG) << "Successfully matched " << n_matched << "/" << n_leading << "(" << hits.size() << " hits)";
 
    std::unordered_map<int, uint16_t> trigger_times;
-   ROOT::VecOps::RVec<std::tuple<uint16_t, uint16_t, uint16_t, bool, uint16_t>> drifttube_hits;
+   ROOT::VecOps::RVec<std::tuple<uint16_t, uint16_t, Float_t, bool, uint16_t>> drifttube_hits;
    uint16_t master_trigger_time = 0;
    for (auto &&match : matches) {
-      uint16_t channel, hit_time, time_over_threshold;
+      uint16_t channel, hit_time;
+      Float_t time_over_threshold;
       bool first, matched;
       std::tie(channel, hit_time, time_over_threshold, first, matched) = match;
       auto hit_flags = matched ? flags : flags | DriftTubes::NoWidth;
@@ -184,7 +185,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          trigger_times[TDC] =
             (trigger_times.find(TDC) != trigger_times.end()) ? std::min(hit_time, trigger_times[TDC]) : hit_time;
          new ((*fRawTriggers)[nhitsTriggers])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsTriggers++;
       } else if (detectorId == 1) {
          // Master trigger
@@ -194,17 +195,17 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
             master_trigger_time = hit_time;
          }
          new ((*fRawMasterTrigger)[nhitsMasterTrigger])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsMasterTrigger++;
       } else if (detectorId == -1) {
          // beam counter
          new ((*fRawBeamCounter)[nhitsBeamCounter])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsBeamCounter++;
       } else if (detectorId == 6 || detectorId == 7) {
          // trigger scintillator
          new ((*fRawScintillator)[nhitsScintillator])
-            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), hit_flags, channel);
+            ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsScintillator++;
       } else {
          drifttube_hits.emplace_back(channel, hit_time, time_over_threshold, first, hit_flags);
@@ -223,7 +224,8 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    }
 
    for (auto &&hit : drifttube_hits) {
-      uint16_t channel, raw_time, time_over_threshold, hit_flags;
+      uint16_t channel, raw_time, hit_flags;
+      Float_t time_over_threshold;
       bool first;
       std::tie(channel, raw_time, time_over_threshold, first, hit_flags) = hit;
       hit_flags |= flags;
@@ -242,7 +244,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
 
       new ((*(first ? fRawTubes : fRawLateTubes))[first ? nhitsTubes : nhitsLateTubes])
-         MufluxSpectrometerHit(detectorId, time, Float_t(0.098 * time_over_threshold), hit_flags, channel);
+         MufluxSpectrometerHit(detectorId, time, time_over_threshold, hit_flags, channel);
       (first ? nhitsTubes : nhitsLateTubes)++;
    }
 
