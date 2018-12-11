@@ -16,6 +16,7 @@ public:
     *@param digi     digitized/measured TDC
     *@param flags    collection of flags
     **/
+   MufluxSpectrometerHit(Int_t detID, Float_t ftdc);
    MufluxSpectrometerHit(Int_t detID, Float_t ftdc, Float_t signal_width, uint16_t flag, uint16_t ch);
    MufluxSpectrometerHit(MufluxSpectrometerPoint *p, Double_t t0);
    void MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop);
@@ -26,6 +27,7 @@ public:
    virtual void Print() const;
    Float_t tdc() const { return fdigi; }
    void setInvalid() { flags |= DriftTubes::InValid; }
+   void setValid() { flags &= ~DriftTubes::InValid; }
    bool isValid() const { return !((flags & DriftTubes::InValid) == DriftTubes::InValid); }
    int GetTDC() const { return int((channel & 0xF00) >> 8); }
    bool TDCGood() const

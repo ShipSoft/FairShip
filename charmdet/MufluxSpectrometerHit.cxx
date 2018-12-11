@@ -15,8 +15,10 @@
 #include <cmath> 
  
  
-Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns 
+static const Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
 // -----   Standard constructor   ------------------------------------------ 
+MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc)
+  : ShipHit(detID,ftdc), width(0), flags(0), channel(0) {} // TODO improve default valules
 MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc, Float_t signal_width, uint16_t flag, uint16_t ch)
   : ShipHit(detID,ftdc), width(signal_width), flags(flag), channel(ch) {}
 // -----   constructor from SpectrometerPoint   ------------------------------------------ 
