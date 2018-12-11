@@ -68,8 +68,8 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
    for (auto i : ROOT::MakeSeq(16)) {
       switch (i) {
       case 11: {
-         int goliath = int(df->scalars[i]) / 0x10000;
-         int david = int(df->scalars[i]) % 0x10000;
+         int goliath = int(int(df->scalars[i]) / 0x10000);
+         int david = int(int(df->scalars[i]) % 0x10000);
          tree->Branch("Goliath", &goliath);
          tree->Branch("David", &david);
          break;
