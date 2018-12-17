@@ -34,6 +34,7 @@ class RPCTrack : public TObject
 
 	/*** Output to screen */
 	virtual void Print(const Option_t* opt ="") const {;}
+	ClassDef(RPCTrack,1)
 
   private:
 	/** Attributes **/
@@ -47,7 +48,6 @@ class RPCTrack : public TObject
     std::vector<Int_t> fcluster_dir;	//direction of cluster (1=vertical, 0=horizontal)
     std::vector<Int_t> fcluster_nstation; //index of station the cluster belongs to
     
-    ClassDef(RPCTrack,1);
 };
 
 #endif

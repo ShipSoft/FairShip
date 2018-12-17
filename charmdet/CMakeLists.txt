@@ -37,8 +37,8 @@ MuonTaggerHit.cxx
 Scintillator.cxx
 ScintillatorPoint.cxx
 ScintillatorHit.cxx
-ReProcessAbsorber.cxx
 RPCTrack.cxx
+ReProcessAbsorber.cxx
 )
 
 Set(HEADERS )

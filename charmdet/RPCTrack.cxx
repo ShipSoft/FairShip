@@ -27,3 +27,4 @@ void RPCTrack::AddCluster(Double_t x, Double_t y, Double_t z, Int_t dir, Int_t n
 	fnclusters++;
 }
 
+ClassImp(RPCTrack)
