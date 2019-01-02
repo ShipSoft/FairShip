@@ -14,14 +14,14 @@
 #include "ShipOnlineDataFormat.h"
 
 struct HitData {
-   uint16_t tot : 4;
-   uint16_t moduleID : 4;
-   uint16_t flags : 4;
    uint16_t relative_BCID : 4;
+   uint16_t flags : 4;
+   uint16_t moduleID : 4;
+   uint16_t tot : 4;
 };
 struct ChannelId {
-   uint16_t row : 9;
    uint16_t column : 7;
+   uint16_t row : 9;
 };
 
 // PixelUnpack: Constructor
