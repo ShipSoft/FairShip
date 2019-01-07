@@ -3636,6 +3636,7 @@ elif options.command == "recoStep1":
   print "add fitted tracks"
   recoStep1(PR=11)
   print "finished adding fitted tracks",options.listOfFiles
+  os.system('kill '+str(os.getpid()))
 elif options.command == "anaResiduals":
   importRTrel()
   anaResiduals()
