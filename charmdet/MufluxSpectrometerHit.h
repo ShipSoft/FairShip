@@ -3,28 +3,21 @@
 
 #include "ShipHit.h"
 #include "MufluxSpectrometerPoint.h"
-#include "TObject.h"
+#include "ShipOnlineDataFormat.h"
 #include "TVector3.h"
-
-namespace DriftTubes {
-enum Flag : uint16_t {
-   Valid = 0,
-   UnmatchedHeaderTrailer = 1 << 15,
-};
-}
 
 class MufluxSpectrometerHit : public ShipHit {
 public:
    /** Default constructor **/
-   MufluxSpectrometerHit();
+   MufluxSpectrometerHit() = default;
 
    /** Constructor with arguments
     *@param detID    Detector ID
-    *@param digi      digitized/measured TDC
-    *@param flag      True/False, false if there is another hit with smaller tdc
+    *@param digi     digitized/measured TDC
+    *@param flags    collection of flags
     **/
-   MufluxSpectrometerHit(Int_t detID, Float_t tdc);
-   MufluxSpectrometerHit(Int_t detID, Float_t ftdc, uint16_t flag);
+   MufluxSpectrometerHit(Int_t detID, Float_t ftdc);
+   MufluxSpectrometerHit(Int_t detID, Float_t ftdc, Float_t signal_width, uint16_t flag, uint16_t ch);
    MufluxSpectrometerHit(MufluxSpectrometerPoint *p, Double_t t0);
    void MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop);
    /** Destructor **/
@@ -33,17 +26,31 @@ public:
    /** Output to screen **/
    virtual void Print() const;
    Float_t tdc() const { return fdigi; }
-   void setInvalid() { flags &= ~DriftTubes::Valid; }
-   bool isValid() const { return flags & DriftTubes::Valid; }
+   void setInvalid() { flags |= DriftTubes::InValid; }
+   void setValid() { flags &= ~DriftTubes::InValid; }
+   bool isValid() const { return !((flags & DriftTubes::InValid) == DriftTubes::InValid); }
+   int GetTDC() const { return int((channel & 0xF00) >> 8); }
+   bool TDCGood() const
+   {
+      auto TDC = GetTDC();
+      auto AllOK = (flags & DriftTubes::All_OK) == DriftTubes::All_OK;
+      uint16_t TDCNotOK = 1 << (TDC + 1);
+      return AllOK || !((flags & TDCNotOK) == TDCNotOK);
+   }
+   bool hasDelay() const { return !((flags & DriftTubes::NoDelay) == DriftTubes::NoDelay); }
+   bool hasTimeOverThreshold() const { return !((flags & DriftTubes::NoWidth) == DriftTubes::NoWidth); }
+   Float_t GetTimeOverThreshold() const { return time_over_threshold; }
 
 private:
    /** Copy constructor **/
    MufluxSpectrometerHit(const MufluxSpectrometerHit &point);
    MufluxSpectrometerHit operator=(const MufluxSpectrometerHit &point);
 
-   uint16_t flags; ///< flag
+   Float_t time_over_threshold;
+   uint16_t flags;
+   uint16_t channel;
 
-   ClassDef(MufluxSpectrometerHit, 4);
+   ClassDef(MufluxSpectrometerHit, 7);
 };
 
 #endif

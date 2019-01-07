@@ -13,7 +13,14 @@
 #include "MuonTaggerHit.h"
 #include "ShipOnlineDataFormat.h"
 
-using RPC::RawHit;
+struct RawHit {
+   uint16_t ncrate : 8;
+   uint16_t nboard : 8;
+   uint16_t hitTime;
+   uint8_t pattern[8];
+};
+
+enum Direction { horizontal = 0, vertical = 1 };
 
 int GetId(int ncrate, int nboard, int channel)
 {
@@ -37,24 +44,16 @@ int GetId(int ncrate, int nboard, int channel)
                   : (channel < 16) ? 10 - channel
                                    : (channel < 32) ? 42 - channel : (channel < 48) ? 74 - channel : 106 - channel;
    strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
-   std::cout << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
-             << (direction == vertical ? 'V' : 'H') << std::endl;
+   LOG(DEBUG) << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
+              << (direction == vertical ? 'V' : 'H') << FairLogger::endl;
    return 10000 * station + 1000 * direction + strip;
 }
 
 // RPCUnpack: Constructor
-RPCUnpack::RPCUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
-   : ShipUnpack(type, subType, procId, subCrate, control), fRawData(new TClonesArray("MuonTaggerHit")), fNHits(0),
-     fNHitsTotal(0), fPartitionId(0x0B00)
-{
-}
+RPCUnpack::RPCUnpack() : fRawData(new TClonesArray("MuonTaggerHit")), fNHits(0), fNHitsTotal(0), fPartitionId(0x0B00) {}
 
 // Virtual RPCUnpack: Public method
-RPCUnpack::~RPCUnpack()
-{
-   LOG(INFO) << "RPCUnpack: Delete instance" << FairLogger::endl;
-   delete fRawData;
-}
+RPCUnpack::~RPCUnpack() = default;
 
 // Init: Public method
 Bool_t RPCUnpack::Init()
@@ -71,15 +70,20 @@ void RPCUnpack::Register()
    if (!fMan) {
       return;
    }
-   fMan->Register("Digi_MuonTaggerHits", "RPCs", fRawData, kTRUE);
+   fMan->Register("Digi_MuonTaggerHits", "RPCs", fRawData.get(), kTRUE);
 }
 
 // DoUnpack: Public method
 Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(INFO) << "RPCUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
+   LOG(DEBUG) << "RPCUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
    auto df = reinterpret_cast<DataFrame *>(data);
+   switch (df->header.frameTime) {
+   case SoS: LOG(INFO) << "RPCUnpack: SoS frame." << FairLogger::endl; return kTRUE;
+   case EoS: LOG(INFO) << "RPCUnpack: EoS frame." << FairLogger::endl; return kTRUE;
+   default: break;
+   }
    assert(df->header.size == size);
    auto nhits = (size - sizeof(DataFrame)) / 12;
    static_assert(sizeof(RawHit) == 12, "Padding is off");
@@ -91,8 +95,7 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
       auto hit = hits + i * BYTES_PER_RECORD;
       auto crate = (unsigned int)hit[0];
       auto board = (unsigned int)hit[1];
-      for (int k = 1; k <= BYTES_PER_HITPATTERN; k++)
-      {
+      for (int k = 1; k <= BYTES_PER_HITPATTERN; k++) {
          auto index = k + 3;
 
          auto bitMask = 0x1;
@@ -110,7 +113,8 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
                   skipped++;
                   continue;
                }
-               new ((*fRawData)[fNHits]) MuonTaggerHit(GetId(crate, board, channel), 0);
+               new ((*fRawData)[fNHits])
+                  MuonTaggerHit(GetId(crate, board, channel), Float_t(df->header.frameTime) * 25);
                fNHits++;
             }
             bitMask <<= 1;

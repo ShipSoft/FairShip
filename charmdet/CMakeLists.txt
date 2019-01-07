@@ -6,6 +6,7 @@ set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/charmdet
+${CMAKE_SOURCE_DIR}/online
 ${CMAKE_SOURCE_DIR}/genfit/core/include
 ${ROOT_INCLUDE_DIR} 
 )
@@ -37,6 +38,7 @@ MuonTaggerHit.cxx
 Scintillator.cxx
 ScintillatorPoint.cxx
 ScintillatorHit.cxx
+ShipPixelHit.cxx
 ReProcessAbsorber.cxx
 )
 

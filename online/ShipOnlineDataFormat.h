@@ -43,6 +43,7 @@ struct ChannelId {
       bool RC_signal = false;
       bool scintillatorA = false;
       bool scintillatorB = false;
+      bool master_trigger = false;
       int module = 0;
       int station = 0;
       int channel_offset = 0;
@@ -58,7 +59,7 @@ struct ChannelId {
          scintillatorA = channel == 1;
          station = (channel < 80) ? 2 : 4;
          channel_offset = (channel < 80) ? 112 : 1;
-         channel_offset += (channel > 32 && channel < 48) ? +16 : (channel > 48 && channel < 64) ? -16: 0;
+         channel_offset += (channel >= 32 && channel < 48) ? +16 : (channel >= 48 && channel < 64) ? -16 : 0;
          break;
       case 2:
          trigger = channel == 126;
@@ -77,14 +78,17 @@ struct ChannelId {
       case 4:
          trigger = channel == 96;
          RC_signal = channel == 97 || channel == 98;
+         master_trigger = channel == 99;
          beamcounter = channel > 111;
          module = (channel / 48) % 2 + 2;
-         channel_offset = (channel < 48) ? 33 : 0;
+         channel_offset = (channel < 48) * 33;
          station = 3;
          break;
       }
       if (trigger) {
          return 0;
+      } else if (master_trigger) {
+         return 1;
       } else if (beamcounter || RC_signal) {
          return -1;
       } else if (scintillatorA) {
@@ -94,7 +98,7 @@ struct ChannelId {
       }
       bool reverse_x = !(station == 2 || (TDC == 4 && channel >= 48));
       int _channel = channel + channel_offset;
-      _channel += (_channel < 0) ? 0x80 : 0;
+      _channel += (_channel < 0) * 0x80;
       _channel = reverse_x ? (0x80 - _channel % 0x80) % 0x80 : _channel;
       if (TDC == 0 && channel < 96) {
          _channel += _channel ? 63 : 191;
@@ -105,7 +109,7 @@ struct ChannelId {
          module = (_channel / 48) % 2;
       }
 
-      int view = station == 1 || station == 2 ? module % 2 : 0;
+      int view = (station == 1 || station == 2) * module % 2;
       int plane = (TDC == 2) ? ((_channel % 48) / 24 + 1) % 2
                              : (station == 3 && TDC == 4) ? 1 - (channel % 48) / 24 : (_channel % 48) / 24;
       if (station == 4 && TDC == 3) {
@@ -116,17 +120,20 @@ struct ChannelId {
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
-const uint16_t delay(2000 / 0.098); // TODO update value
+enum Flag : uint16_t {
+   All_OK = 1,
+   TDC0_PROBLEM = 1 << 1,
+   TDC1_PROBLEM = 1 << 2,
+   TDC2_PROBLEM = 1 << 3,
+   TDC3_PROBLEM = 1 << 4,
+   TDC4_PROBLEM = 1 << 5,
+   NoTrigger = 1<<12,
+   NoWidth = 1<<13,
+   NoDelay = 1<<14,
+   InValid = 1<<15,
+};
 } // namespace DriftTubes
 
-enum Direction { horizontal = 0, vertical = 1 };
-namespace RPC {
-struct RawHit {
-   uint16_t ncrate : 8;
-   uint16_t nboard : 8;
-   uint16_t hitTime;
-   uint8_t pattern[8];
-};
-} // namespace RPC
+enum MagicFrameTime { SoS = 0xFF005C03, EoS = 0xFF005C04 };
 
 #endif
