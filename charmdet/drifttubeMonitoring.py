@@ -13,8 +13,9 @@ import rootUtils as ut
 from array import array
 
 ########
-zeroField = False
-DAFfitter = True
+zeroField    = False
+DAFfitter    = True
+withMaterial = True
 ########
 
 vbot = ROOT.TVector3()
@@ -883,16 +884,6 @@ h['dispTrackY']=[]
 withTDC = True
 withDefaultAlignment = True
 
-def printEventsWithDTandRPC(nstart=0):
- for n in range(nstart,sTree.GetEntries()):
-  rc = sTree.GetEvent(n)
-  if sTree.Digi_MufluxSpectrometerHits.GetEntries()*sTree.Digi_MuonTaggerHits.GetEntries()>0:
-   print "Event number:",n
-   plotEvent(n)
-   next = raw_input("Next (Ret/Quit): ")         
-   if next<>'':  break
-h['hitCollection']={}
-
 def dispTrack3D(theTrack):
      zstart = 0
      nPoints = 100
@@ -1080,8 +1071,16 @@ def sortHits(event):
                      '_u':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
                      '_v':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}}}
  for hit in event.Digi_MufluxSpectrometerHits:
+   # remove noise hits
+   if not hit.hasTimeOverThreshold(): continue
+   # if hit.GetTimeOverThreshold() < 10: continue
    statnb,vnb,pnb,lnb,view,channelID,tdcId = stationInfo(hit)
-   spectrHitsSorted[view][statnb][pnb*2+lnb].append(hit)
+   if pnb > 2 or lnb >2 : 
+    print "sortHits: unphysical detctor ID",hit.GetDetectorID()
+    try: hit.Dump()
+    except: print "dump does not work"
+   else:
+    spectrHitsSorted[view][statnb][pnb*2+lnb].append(hit)
  return spectrHitsSorted
 
 def plotHitMaps(onlyPlotting=False):
@@ -1201,13 +1200,26 @@ def plotRPCHitmap():
  h['rpcHitmap'].Draw()
 
 def plotTimeOverThreshold(N):
- ut.bookHist(h,'ToverT','Time over threshold',100,0.,2000.)
+ ut.bookHist(h,'ToverT','Time over threshold',3000,-1000.,2000.)
+ ut.bookHist(h,'endTime','End Time',100,0.,2000.)
+ ut.bookHist(h,'tdc','tdc',100,-200.,2000.)
  for n in range(N):
-  rc = sTree.GetEvent(N)
+  rc = sTree.GetEvent(n)
+  flag = False
   for aHit in sTree.Digi_MufluxSpectrometerHits:
-   rc=h['ToverT'].Fill( aHit.GetWidth() )
- h['ToverT'].Draw()
-
+   if not aHit.hasTimeOverThreshold(): continue
+   rc=h['ToverT'].Fill( aHit.GetTimeOverThreshold() )
+   rc=h['tdc'].Fill( aHit.GetDigi())
+   rc=h['endTime'].Fill( aHit.GetDigi()+aHit.GetTimeOverThreshold() )
+   if aHit.GetTimeOverThreshold() < 10: flag = True
+  if flag:
+     print n
+     allhits = sortHits(sTree)
+     for s in range(1,5):
+      for view in views[s]:
+        for l in range(4):
+         for hit in allhits[view][s][l]:
+           print s,view,l,hit.GetDetectorID()%1000,hit.GetTimeOverThreshold()  
 
 from array import array
 
@@ -1224,6 +1236,18 @@ if zeroField: ROOT.genfit.MaterialEffects.getInstance().setNoEffects()
 fitter = ROOT.genfit.DAF()
 fitter.setMaxIterations(50)
 # fitter.setDebugLvl(1) # produces lot of printout
+
+def materialEffects(switch):
+ mat = ROOT.genfit.MaterialEffects.getInstance()
+ if not switch: 
+  mat.setNoEffects()
+ else:
+  mat.setMscModel('GEANE')
+  mat.setEnergyLossBetheBloch(True)
+  mat.setNoiseBetheBloch(True)
+  mat.setNoiseCoulomb(True)
+  mat.setEnergyLossBrems(True)
+  mat.setNoiseBrems(True)
 
 def extractMinAndMax():
  h['tMinAndTmax']={}
@@ -1344,7 +1368,6 @@ def extrapolateToPlane(fT,z):
   rc,pos,mom = False,None,None
   fst = fT.getFitStatus()
   if fst.isFitConverged():
-   rep = fT.getCardinalRep()
    if z > DT['Station_1_x_plane_0_layer_0_10000000'][2]-10 and z < DT['Station_4_x_plane_1_layer_1_40110000'][2] + 10:
 # find closest measurement
     mClose = 0
@@ -1352,7 +1375,7 @@ def extrapolateToPlane(fT,z):
     M = min(fT.getNumPointsWithMeasurement(),30) # for unknown reason, get stuck for track with large measurements
     for m in range(0,M):
      # print "extr to state m",m,fT.getNumPointsWithMeasurement()
-     if not fT.getPointWithMeasurementAndFitterInfo(m,rep): continue
+     # if not fT.getPointWithMeasurementAndFitterInfo(m,rep): continue
      try:     st = fT.getFittedState(m)
      except:  
        print "cannot get fitted state"
@@ -1385,9 +1408,6 @@ def extrapolateToPlane(fT,z):
      fstate = fT.getFittedState(0)
     elif z > DT['Station_4_x_plane_1_layer_1_40110000'][2]:
      M = min(fT.getNumPointsWithMeasurement()-1,30)
-     if not fT.getPointWithMeasurementAndFitterInfo(M,rep):
-      print 'error with extrapolation: z=',z/u.m,'m state does not exist'
-      return False,None,None
      fstate = fT.getFittedState(fT.getNumPointsWithMeasurement()-1)
 # use linear extrap
     pos,mom = fstate.getPos(),fstate.getMom()
@@ -1395,7 +1415,7 @@ def extrapolateToPlane(fT,z):
     pos[2]=z
     pos[0]=pos[0]+lam*mom[0]
     pos[1]=pos[1]+lam*mom[1]
-    rc = True 
+    rc = True
   return rc,pos,mom
 
 ut.bookHist(h,'p/pt','momentum vs Pt (GeV);p [GeV/c]; p_[T] [GeV/c]',400,0.,400.,100,0.,10.)
@@ -1475,7 +1495,7 @@ def findSimpleEvent(event,nmin=2,nmax=6):
    if nv<nmin or nv>nmax: passed = False
    return passed
 
-def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,PR=3):
+def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,PR=1):
 # select special clean events for testing track fit
  for n in range(nStart,sTree.GetEntries()):
    rc = sTree.GetEvent(n)
@@ -1532,6 +1552,7 @@ def makeTracks():
      hitlist = []
      nhit = -1
      for hit in sTree.Digi_MufluxSpectrometerHits:
+      if not hit.hasTimeOverThreshold(): continue
       nhit+=1
       if hit.GetDetectorID() in noisyChannels: continue
       hitlist.append(nhit)
@@ -1597,14 +1618,12 @@ def fitTrack(hitlist,Pstart=3.):
       theTrack.insertPoint(tp)  # add point to Track
    if not theTrack.checkConsistency():
     print "track not consistent"
-    rep.Delete()
     return -2
 # do the fit
    timer.Start()
    try:  fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
    except:   
       print "fit failed"
-      rep.Delete()
       timer.Stop()
       return -1
     # print "time to fit the track",timer.RealTime()
@@ -1615,7 +1634,6 @@ def fitTrack(hitlist,Pstart=3.):
    fitStatus   = theTrack.getFitStatus()
    if Debug: print "Fit result: converged chi2 Ndf",fitStatus.isFitConverged(),fitStatus.getChi2(),fitStatus.getNdf()
    if not fitStatus.isFitConverged():
-      rep.Delete()
       return -1
    chi2 = fitStatus.getChi2()/fitStatus.getNdf()
    rc = h['Nmeasurements'].Fill(fitStatus.getNdf())
@@ -1623,7 +1641,6 @@ def fitTrack(hitlist,Pstart=3.):
    P = fittedState.getMomMag()
    if Debug: print "track fitted Ndf #Meas P",fitStatus.getNdf(), theTrack.getNumPointsWithMeasurement(),P
    if fitStatus.getNdf() < 9:
-      rep.Delete()
       return -2 
    Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
    rc = h['p/pt'].Fill(P,ROOT.TMath.Sqrt(Px*Px+Py*Py))
@@ -1632,24 +1649,6 @@ def fitTrack(hitlist,Pstart=3.):
    rc = h['xy'].Fill(pos[0],pos[1])
    rc = h['pxpy'].Fill(Px/Pz,Py/Pz)
    return theTrack
-
-def testT0():
- ut.bookHist(h,'means0','mean vs s0',100,0.,3000.,100,0.,3000.)
- ut.bookHist(h,'means1','mean vs s1',100,0.,3000.,100,0.,3000.)
- ut.bookHist(h,'means2','mean vs s2',100,0.,3000.,100,0.,3000.)
- for event in sTree:
-    sumOfTDCs = 0
-    if event.Digi_MufluxSpectrometerHits.GetEntries() < 15 or event.Digi_MufluxSpectrometerHits.GetEntries() > 30: continue
-    for m in event.Digi_MufluxSpectrometerHits:
-      sumOfTDCs+=m.GetDigi()
-    mean = sumOfTDCs/float(event.Digi_MufluxSpectrometerHits.GetEntries())
-    if event.Digi_ScintillatorHits.GetEntries()==0:
-      print "no scint"
-    else:
-     rc = h['means0'].Fill(mean,event.Digi_ScintillatorHits[0].GetDigi())
-     rc = h['means1'].Fill(mean,event.Digi_ScintillatorHits[1].GetDigi())
-     if event.Digi_ScintillatorHits.GetEntries()>2:
-      rc = h['means2'].Fill(mean,event.Digi_ScintillatorHits[2].GetDigi())
 
 def getSlope(cl1,cl2):
 # linear fit, minimize distances in X
@@ -1737,6 +1736,7 @@ def testPR(onlyHits=False):
  for hit in sTree.Digi_MufluxSpectrometerHits:
    key+=1
    # if not hit.isValid(): continue
+   if not hit.hasTimeOverThreshold(): continue
    if hit.GetDetectorID() in noisyChannels: continue
    detID = hit.GetDetectorID()
    s,v,p,l,view,channelID,tdcId = stationInfo(hit)
@@ -1805,12 +1805,14 @@ def printClustersPerStation(clusters,s,view):
      print k,':',s,view,2*p+l,x[2],x[3]
    k+=1
 
-def findTracks(PR = 2,linearTrackModel = False,withCloneKiller=True):
+def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
    if PR < 3 and sTree.GetBranch('FitTracks'): return sTree.FitTracks
    if PR%2==0 : 
     trackCandidates = testPR()
     if len(trackCandidates)>1: trackCandidates=cloneKiller(trackCandidates)
     return trackCandidates
+# switch of trackfit material effect in first pass
+   materialEffects(False)
    yMax = 5.
    removeBigClusters=True
    test = ROOT.MufluxSpectrometerHit(30002001,0.)
@@ -2029,7 +2031,12 @@ def findTracks(PR = 2,linearTrackModel = False,withCloneKiller=True):
           if type(aTrack) != type(1):
            trackCandidates.append(aTrack)
    if withCloneKiller:
-    if len(trackCandidates)>1: trackCandidates=cloneKiller(trackCandidates)
+    if len(trackCandidates)>1: trackCandidates = cloneKiller(trackCandidates)
+# switch on trackfit material effect for final fit
+   if withMaterial: materialEffects(True)
+   if Debug: print "# tracks after clonekiller = ",len(trackCandidates)
+   for aTrack in trackCandidates:
+      fitter.processTrack(aTrack)
    return trackCandidates
 
 def overlap(a,b):
@@ -2080,11 +2087,15 @@ def cloneKiller(trackCandidates):
  for aTrack in trackCandidates:
    j+=1
    if Debug: print "clone killer at work",j,len(detIDs[j]['xDown'])
-   if  len(detIDs[j]['xDown'])>0: cloneKilledTracks.append(aTrack)
+   if  len(detIDs[j]['xDown'])>0: 
+     cloneKilledTracks.append(aTrack)
+   else:
+     aTrack.Delete()
  return cloneKilledTracks
 
 def makeLinearExtrapolations(t1t2,t3t4):
  for hit in sTree.Digi_MufluxSpectrometerHits:
+    if not hit.hasTimeOverThreshold(): continue
     if hit.GetDetectorID() in noisyChannels:  continue
     s,v,p,l,view,channelID,tdcId = stationInfo(hit)
     if view != '_x': continue
@@ -2128,6 +2139,7 @@ def printResiduals(aTrack):
    tmpList={}
    k=0
    for hit in sTree.Digi_MufluxSpectrometerHits:
+          if not hit.hasTimeOverThreshold(): continue
           if hit.GetDetectorID() in noisyChannels:  continue
           s,v,p,l,view,channelID,tdcId = stationInfo(hit)
           vbot,vtop = correctAlignment(hit)
@@ -2154,7 +2166,7 @@ def printResiduals(aTrack):
       print txt[k[0]]
 
 # make TDC plots for hits matched to tracks)
-def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False,minP=3.):
+def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
  if not onlyPlotting:
   if not h.has_key('hitMapsX'): plotHitMaps()
   for s in xLayers:
@@ -2199,6 +2211,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False,minP=3.):
        rc = h['biasResTrackMom'].Fill(sta.getMomMag())
        for hit in sTree.Digi_MufluxSpectrometerHits:
           if hit.GetDetectorID() in noisyChannels:  continue
+          if not hit.hasTimeOverThreshold(): continue
           s,v,p,l,view,channelID,tdcId = stationInfo(hit)
           vbot,vtop = correctAlignment(hit)
           z = (vbot[2]+vtop[2])/2.
@@ -2226,7 +2239,6 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False,minP=3.):
             rc = h['TDC'+xLayers[s][p][l][view].GetName()+str(tdcId)].Fill(hit.GetDigi()-t0)
             rc = xLayers[s][p][l][view].Fill( channelID )
             rc = h['T0tmp'].Fill(hit.GetDigi()-t0)
-   #for aTrack in trackCandidates: aTrack.Delete()
    t0 = h['T0tmp'].GetMean()
    rc = h['T0'].Fill(t0)
  if not h.has_key('biasedResiduals'): 
@@ -2508,7 +2520,7 @@ def plotLinearResiduals():
   h['RPCResX_'+str(s)+'1'].ProjectionX().Draw()
   j+=1
 
-def momResolution(PR=12):
+def momResolution(PR=11):
   ut.bookHist(h,'momResol','momentum resolution function of momentum',100,-0.1,0.1,10,0.,100.)
   for n in range(sTree.GetEntries()):
    rc = sTree.GetEvent(n)
@@ -2541,7 +2553,45 @@ def hitResolution():
     distance = RT('x',TDC)
     h['hitResol'].Fill(distance - trueHit.dist2Wire())
 
-def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
+def matchedRPCHits(aTrack,maxDistance=10.):
+  matchedHits={1:{0:[],1:[]},2:{0:[],1:[]},3:{0:[],1:[]},4:{0:[],1:[]},5:{0:[],1:[]}}
+  rc,pos,mom = extrapolateToPlane(aTrack,zRPC1)
+  Nmatched = 0
+  inAcc    = False
+  if rc: 
+    xRPC1,yRPC1 = pos[0],pos[1]
+    node = sGeo.FindNode(pos[0],pos[1],zRPC1)
+    if not node: 
+     error =  "RPCextrap: node not found, %7.3F,%7.3F,%7.3F"%(pos[0],pos[1],zRPC1)
+     ut.reportError(error)
+     if Debug: print error
+    elif node.GetName() != "cave_1": inAcc=True
+    for hit in sTree.Digi_MuonTaggerHits:
+       channelID = hit.GetDetectorID()
+       s  = channelID/10000
+       v  = (channelID-10000*s)/1000
+       vtop,vbot = correctAlignmentRPC(hit,v)
+       z = (vtop[2]+vbot[2])/2.
+       rc,pos,mom = extrapolateToPlane(aTrack,z)
+       if not rc:
+         error =  "RPCextrap: plotRPCExtrap failed"
+         ut.reportError(error)
+         if Debug: print error
+         continue
+       if v==0:
+         Y = (vtop[1]+vbot[1])/2.
+         res = pos[1] - Y
+       else:
+         X = (vtop[0]+vbot[0])/2.
+         res = pos[0] - X
+       if abs(res)<maxDistance:
+         matchedHits[s][v].append(hit)
+    for s in matchedHits:
+      for v in matchedHits[s]:
+        Nmatched+= len(matchedHits[s][v])
+    return inAcc,Nmatched
+
+def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
  if not onlyPlotting:
   nav.cd('/VMuonBox_1/VSensitive1_1')
   loc = array('d',[0,0,0])
@@ -2591,7 +2641,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=2,onlyPlotting=False):
         if Debug: print error
        elif node.GetName() != "cave_1": 
          inAcc=True
-       if (pos[0]<-80): inAcc = False
+       # ??? if (pos[0]<-80): inAcc = False
        for hit in sTree.Digi_MuonTaggerHits:
         nHit+=1
         channelID = hit.GetDetectorID()
@@ -3204,6 +3254,7 @@ def testForSameDetID(nEvent=-1,nTot=1000):
        rc=h['multHits_deltaT'].Fill(t-listOfDigits[x][1][0])
 
 def clusterSizesPerLayer(nevents):
+  ut.bookHist(h,'ToverT','Time over threshold',3000,-1000.,2000.)
   for s in range(1,5):
     for view in views[s]:
      for l in range(4):
@@ -3220,6 +3271,10 @@ def clusterSizesPerLayer(nevents):
        clustersPerLayer = dict(enumerate(grouper(allHits,1), 1))
        for Acl in clustersPerLayer:
          rc = h['multHits_'+str(s)+view+str(l)].Fill(len(clustersPerLayer[Acl]))
+         if len(clustersPerLayer[Acl])>3:
+          for aHit in spectrHitsSorted[view][s][l]: 
+             #print Nr,s,view,l,aHit.GetDetectorID()%1000,aHit.GetWidth()
+             h['ToverT'].Fill(aHit.GetTimeOverThreshold())
   ut.bookCanvas(h,key='clusSizes',title='Cluster sizes per Layer',nx=1600,ny=1200,cx=4,cy=6)
   j=1
   for s in range(1,5):
@@ -3275,32 +3330,42 @@ def myVertex(t1,t2,PosDir,xproj=False):
    Z = c.z()+v.z()*t
    return X,Y,Z,abs(dist)
 
-def findV0(nstart=0,nmax=-1,PR=2):
+def findV0(nstart=0,nmax=-1,PR=1):
  if nmax<0: nmax = sTree.GetEntries()
+ ut.bookHist(h,'doca','distance between two tracks',100,0.,50.)
+ ut.bookHist(h,'nRPC','matchedRPCHits',50,0.,50.)
  ut.bookHist(h,'v0mass_wc','V0 mass wrong charge combinations',100,0.2,1.8,100,-120.,120.)
  ut.bookHist(h,'v0mass','V0 mass ',100,0.2,1.8,100,-120.,120.)
+ mass = PDG.GetParticle(211).Mass()
  for n in range(nstart,nmax):
   rc = sTree.GetEvent(n)
   tracks = findTracks(PR)
   if len(tracks)<2: continue
   PosDir = {}
   tr = 0
-  mass = PDG.GetParticle(211).Mass()
   for aTrack in tracks:
-      if aTrack.getFitStatus().getNdf()<13: continue
+      st = aTrack.getFitStatus()
+      if not st.isFitConverged(): continue
+      if st.getNdf()<12: continue
+      inAcc, nRPC = matchedRPCHits(aTrack)
+      rc = h['nRPC'].Fill(nRPC)
+      if not inAcc: continue
+      if nRPC > 5: continue
       xx  = aTrack.getFittedState()
       PosDir[tr] = [xx.getPos(),xx.getDir(),ROOT.TLorentzVector(),xx.getCharge(),aTrack.getFitStatus().getNdf()]
       mom = xx.getMom()
       E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )
       PosDir[tr][2].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)
       tr+=1
-  if tr!=2: continue
-  xv,yv,zv,doca = myVertex(0,1,PosDir)
-  V0Mom = PosDir[0][2]+PosDir[1][2]
-  print n,doca,zv,V0Mom.M(),PosDir[0][3],PosDir[1][3],PosDir[0][4],PosDir[1][4]
-  if doca > 5: continue
-  if PosDir[0][3]*PosDir[1][3]< 0: rc = h['v0mass'].Fill(V0Mom.M(),zv)
-  else: rc = h['v0mass_wc'].Fill(V0Mom.M(),zv)
+  for tr1 in range(tr-1):
+   for tr2 in range(tr1+1,tr):
+    xv,yv,zv,doca = myVertex(0,1,PosDir)
+    V0Mom = PosDir[0][2]+PosDir[1][2]
+    rc = h['doca'].Fill(doca)
+    print n,doca,zv,V0Mom.M(),PosDir[0][3],PosDir[1][3],PosDir[0][4],PosDir[1][4]
+    if doca > 5: continue
+    if PosDir[tr1][3]*PosDir[tr2][3]< 0: rc = h['v0mass'].Fill(V0Mom.M(),zv)
+    else: rc = h['v0mass_wc'].Fill(V0Mom.M(),zv)
 def getEvent(n):
  global rname
  rc = sTree.GetEvent(n)
@@ -3393,6 +3458,29 @@ def importRTrel():
    except:
     print "loading of RT failed for file",rname
    f.Close()
+def analyzeRTrel():
+  global fnames
+  fnames = []
+  for x in os.listdir('.'):
+   if x.find('_RT')>0 and x.find('histos')<0: fnames.append(x)
+  importRTrel()
+  for x in RTrelations[fnames[0]]['tMinAndTmax']:
+    ut.bookHist(h,x+'Tmin',x+'Tmin',100,-130.,-30.)
+    ut.bookHist(h,x+'Tmax',x+'Tmax',600,1100.,1700.)
+  for fname in RTrelations:
+   for x in RTrelations[fname]['tMinAndTmax']:
+    rc = h[x+'Tmin'].Fill(RTrelations[fname]['tMinAndTmax'][x][0])
+    rc = h[x+'Tmax'].Fill(RTrelations[fname]['tMinAndTmax'][x][1])
+  ut.bookCanvas(h,'RTMins','RT Min',1200,900,7,5)
+  ut.bookCanvas(h,'RTMaxs','RT Max',1200,900,7,5)
+  keys = RTrelations[fnames[0]]['tMinAndTmax'].keys()
+  keys.sort()
+  for n in range(1,35):
+   tc = h['RTMins'].cd(n)
+   h[keys[n-1]+'Tmin'].Draw()
+   tc = h['RTMaxs'].cd(n)
+   h[keys[n-1]+'Tmax'].Draw()
+
 # to START
 RTrelations = {}
 zeroFieldData=['SPILLDATA_8000_0515970150_20180715_220030.root']
@@ -3420,17 +3508,59 @@ def init(database='muflux_RTrelations.pkl',remake=False,withReco=False):
   plotRPCExtrap(PR=11)
   ut.writeHists(h,'histos-'+rname,plusCanvas=True)
 #
+def disableBranches():
+ if sTree.GetBranchStatus("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
+ if sTree.GetBranchStatus("Digi_BeamCounters"): sTree.SetBranchStatus("Digi_BeamCounters",0)
+ if sTree.GetBranchStatus("Digi_LateMufluxSpectrometerHits"): sTree.SetBranchStatus("Digi_LateMufluxSpectrometerHits",0)
+ if sTree.GetBranchStatus("Digi_Scintillators"): sTree.SetBranchStatus("Digi_Scintillators",0)
+ if sTree.GetBranchStatus("Digi_Triggers"): sTree.SetBranchStatus("Digi_Triggers",0)
+ if sTree.GetBranchStatus("Digi_MasterTrigger"): sTree.SetBranchStatus("Digi_MasterTrigger",0)
 
+def copyRTRelation():
+ f       = sTree.GetCurrentFile()
+ fname   = f.GetName()
+ rawName = fname.replace('_RT.root','.root')
+ ftemp   = fname.replace('_RT.root','_RTx.root')
+ os.system('cp '+rawName +' '+ftemp)
+ h['TDCMapsX'] = f.histos.Get('TDCMapsX').Clone('TDCMapsX')
+ h['hitMapsX'] = f.histos.Get('hitMapsX').Clone('hitMapsX')
+ h['RTrelations'] = f.histos.Get('RTrelations').Clone('RTrelations')
+ h['TDC2R_py'] = f.histos.Get('TDC2R_py').Clone('TDC2R_py')
+ f.Close()
+ f = ROOT.TFile.Open(ftemp,'update')
+ event = f.Get("cbmsim")
+ if not event:
+     print "Problem with making RTrel persistent, file",f,f.ls()
+     return -1
+ f.cd('')
+ f.mkdir('RT')
+ f.cd('RT')
+ for s in RTrelations[fname]:
+     if s.find('rt')<0: continue
+     RTrelations[fname][s].Write()
+ pkl = Pickler(f)
+ pkl.dump(h['tMinAndTmax'],'tMinAndTmax')
+ f.cd('')
+ f.mkdir('histos')
+ f.histos.cd('')
+ h['TDCMapsX'].Write()
+ h['hitMapsX'].Write()
+ h["RTrelations"].Write()
+ f.Write("",ROOT.TFile.kOverwrite)
+ f.Close()
 def recoStep0():
   global withTDC
   withTDC = False
+  disableBranches()
+  withMaterial = False
+  materialEffects(False)
   plotBiasedResiduals(PR=1)
   makeRTrelations()
   RTrelations =  {'tMinAndTmax':h['tMinAndTmax']}
   for s in h['tMinAndTmax']: RTrelations['rt'+s] = h['rt'+s]
   makeRTrelPersistent(RTrelations)
-def recoStep1(PR=3):
-# fitted tracks
+def recoStep1(PR=1):
+# make fitted tracks  
   fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   fGenFitArray.BypassStreamer(ROOT.kFALSE)
   fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
@@ -3438,7 +3568,7 @@ def recoStep1(PR=3):
   for event in sTree:
     if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName()
     n+=1
-    fGenFitArray.Delete()
+    fGenFitArray.Clear()
     if PR==3: theTracks = bestTracks()
     else: theTracks = findTracks(PR)
     for aTrack in theTracks:
@@ -3446,6 +3576,7 @@ def recoStep1(PR=3):
      aTrack.prune("CFL")
      fGenFitArray[nTrack] = aTrack
     fitTracks.Fill()
+    for aTrack in theTracks: aTrack.Delete()
   sTree.Write()
   makeAlignmentConstantsPersistent()
   ftemp=sTree.GetCurrentFile()
@@ -3494,13 +3625,16 @@ if options.command == "":
 
 if options.command == "recoStep0":
   withTDC=False
-  print "determine RT relations, make new files"
+  print "make clean TDC distributions"
   recoStep0()
   print "finished making RT relations"
 elif options.command == "recoStep1":
   importRTrel()
+  withDefaultAlignment = False
+  sigma_spatial = 0.25
+  withCorrections = True  
   print "add fitted tracks"
-  recoStep1(PR=3)
+  recoStep1(PR=11)
   print "finished adding fitted tracks",options.listOfFiles
 elif options.command == "anaResiduals":
   importRTrel()
