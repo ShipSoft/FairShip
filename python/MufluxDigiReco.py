@@ -151,9 +151,9 @@ class MufluxDigiReco:
         self.digiMufluxSpectrometer.Delete()
         self.digitizeMufluxSpectrometer()
         self.digiMufluxSpectrometerBranch.Fill()
-        self.digiMuonTagger.Delete()
-        self.digitizeMuonTagger()
-        self.digiMuonTaggerBranch.Fill()
+        #self.digiMuonTagger.Delete() # produces a lot of warnings, rpc station 0
+        #self.digitizeMuonTagger()
+        #self.digiMuonTaggerBranch.Fill()
 
     def digitizeMuonTagger(self, fake_clustering=True):
 
@@ -191,7 +191,7 @@ class MufluxDigiReco:
             # identify individual rpcs
             station = int(rpc[-1])
             if station not in range(1, 6):  # limiting the range of rpcs
-                print "WARNING: Invalid RPC number, something's wrong with the geometry"
+                print "WARNING: Invalid RPC number, something's wrong with the geometry ",station
 
             # calculate strip
             # x gives vertical direction

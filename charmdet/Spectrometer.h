@@ -25,9 +25,9 @@ class Spectrometer:public FairDetector
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel);
-    void SetTransverseSizes(Double_t D1X, Double_t D1Y, Double_t Sioverlap, Double_t DSciFi1X, Double_t DSciFi1Y, Double_t DSciFi2X, Double_t DSciFi2Y);
-    void SetSiliconDZ(Double_t SiliconDZ);
-    void SetSiliconDetPositions(Double_t zSi0, Double_t zSi1, Double_t zSi2, Double_t zSi3, Double_t zSi4, Double_t zSi5, Double_t PairSiDistance);
+    void SetTransverseSizes(Double_t D1X, Double_t D1Y, Double_t DSciFi1X, Double_t DSciFi1Y, Double_t DSciFi2X, Double_t DSciFi2Y);
+    void SetSiliconDZ(Double_t SiliconDZ);  
+    void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSciFiDetPositions(Double_t zSciFi1, Double_t zSciFi2);
     void SetSiliconDetNumber(Int_t nSilicon);
      //methods for Goliath by Annarita
@@ -139,7 +139,10 @@ protected:
 
     Int_t nSi;
     Double_t DimZSi;
-    Double_t zs0, zs1, zs2, zs3, zs4, zs5, pairwisedistance;
+
+    Double_t xs[12], ys[12], zs[12];
+    Double_t xangle[12], yangle[12], zangle[12];
+    
     Double_t zposSciFi1, zposSciFi2;
     
     Spectrometer(const Spectrometer&);

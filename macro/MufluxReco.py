@@ -34,6 +34,7 @@ import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
 
+geoMat =  ROOT.genfit.TGeoMaterialInterface()
 shipRoot_conf.configure()
 
 try:
@@ -330,7 +331,6 @@ if withHists:
  ut.bookHist(h,'True_all_tracks_vs_p_true','Number of muons vs P MC truth',40,0.,400.)
  
 # -----Create geometry----------------------------------------------
-
 import charmDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
@@ -339,14 +339,7 @@ run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed f
 rtdb = run.GetRuntimeDb()
 modules = charmDet_conf.configure(run,ShipGeo)
 # -----Create geometry----------------------------------------------
-run.Init()
-
-#import geomGeant4
-#fieldMaker = geomGeant4.addVMCFields(ShipGeo, 'field/GoliathBFieldSetup.txt', False)
-#print "!!!!!!!!!!!! printing fields"
-#geomGeant4.printVMCFields()
-
-
+fgeo.FAIRGeom
 
 # make global variables
 builtin.debug    = debug
@@ -367,7 +360,6 @@ builtin.iEvent  = iEvent
 
 # import reco tasks
 import MufluxDigiReco
-geoMat =  ROOT.genfit.TGeoMaterialInterface()
 SHiP = MufluxDigiReco.MufluxDigiReco(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)

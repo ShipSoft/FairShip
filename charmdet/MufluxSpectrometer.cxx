@@ -119,14 +119,6 @@ void MufluxSpectrometer::ChooseDetector(Bool_t muflux)
  fMuonFlux = muflux;
 }
 
-void MufluxSpectrometer::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox)
-{
-  SBoxX = SX;
-  SBoxY = SY;
-  SBoxZ = SZ;
-  zBoxPosition = zBox;
-}
-
 //Methods for Goliath by Annarita
 void MufluxSpectrometer::SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH)
 {
@@ -184,13 +176,12 @@ void MufluxSpectrometer::SetTubesPerLayer(Int_t tubesperlayer)
       fTubes_per_layer = tubesperlayer;                              //! number of tubes in one layer
 }
 
-void MufluxSpectrometer::SetStereoAngle(Int_t stereoangle)
+void MufluxSpectrometer::SetStereoAngle(Double_t stereoangle, Double_t stereovangle)
 {
       fView_angle = stereoangle;                                     //! Stereo angle of planes in a view
-      fcosphi=cos(TMath::Pi()*(90.-fView_angle)/180.);
-      fsinphi=sin(TMath::Pi()*(90.-fView_angle)/180.);
+      fView_vangle = stereovangle;  
 }
- 
+
 void MufluxSpectrometer::SetWireThickness(Double_t wirethickness)
 {
       fWire_thickness = wirethickness;                               //! Thickness of the wire
@@ -226,9 +217,11 @@ void MufluxSpectrometer::SetTr34XDim(Double_t tr34xdim)
       ftr34xdim = tr34xdim;                                          //! x size of stations 34      
 }
 
-void MufluxSpectrometer::SetDistStereo(Double_t diststereo)
+void MufluxSpectrometer::SetDistStereo(Double_t diststereoT1,Double_t diststereoT2)
 {
-      fdiststereo = diststereo;                                       //! distance between stereo layers
+      fdiststereoT1 = diststereoT1;                                       //! distance between x (outside)  & u (inside) layers
+      fdiststereoT2 = diststereoT2;                                       //! distance between v (inside) & x (outside)
+
 }
 
 void MufluxSpectrometer::SetDistT1T2(Double_t distT1T2)
@@ -370,11 +363,11 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoVolume *wire_12 = new TGeoVolume("wire_12",wire_tube_12, tungsten);
     wire_12->SetLineColor(6);             
 
-    TGeoBBox *DriftTube1 = new TGeoBBox("DriftTube1", DimX/2+ 1.*m/2, DimY/2+ 0.6*m/2, DimZ+2*cm+fdiststereo/2+eps); 
+    TGeoBBox *DriftTube1 = new TGeoBBox("DriftTube1", DimX/2+ 1.*m/2, DimY/2+ 0.9*m/2, DimZ+2*cm+fdiststereoT1/2+eps); 
     TGeoVolume *volDriftTube1 = new TGeoVolume("volDriftTube1",DriftTube1,air);
     volDriftTube1->SetLineColor(kBlue-5);
   
-    TGeoBBox *DriftTube2 = new TGeoBBox("DriftTube2", DimX/2+ 1.*m/2, DimY/2+ 1.*m/2, DimZ+2*cm+fdiststereo/2+eps);  
+    TGeoBBox *DriftTube2 = new TGeoBBox("DriftTube2", DimX/2+ 1.*m/2, DimY/2+ 1.*m/2, DimZ+2*cm+fdiststereoT2/2+eps);  
     TGeoVolume *volDriftTube2 = new TGeoVolume("volDriftTube2",DriftTube2,air);
     volDriftTube2->SetLineColor(kBlue-5);
             
@@ -420,7 +413,7 @@ void MufluxSpectrometer::ConstructGeometry()
 	         nmview_12 = nmstation+"_x"; 		 		 
 		 }
 	      if (statnb==2) { 
-	      	 angle=fView_angle;
+	      	 angle=fView_vangle;
 	         nmview_top_12 = nmstation+"_top_v"; 
 	         nmview_bot_12 = nmstation+"_bot_v"; 
 	         nmview_12 = nmstation+"_v"; 			 		 
@@ -428,7 +421,7 @@ void MufluxSpectrometer::ConstructGeometry()
 	      break;
 	   case 1:
 	      if (statnb==1) { 
-	      	 angle=-fView_angle;	 
+	      	 angle=fView_angle;	 
 	         nmview_top_12 = nmstation+"_top_u"; 
 	         nmview_bot_12 = nmstation+"_bot_u"; 	
 	         nmview_12 = nmstation+"_u"; 			 	 
@@ -458,14 +451,18 @@ void MufluxSpectrometer::ConstructGeometry()
 	if (angle==0.) {
 	    t5.SetTranslation(fT1x_x-fTubes_pitch/2.,fT1x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view);
 	    t6.SetTranslation(fT1x_x-fTubes_pitch/2., fT1x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view);
-	    t5b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);
-	    t6b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view+fdiststereo);   
+	    t5b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y+ftr12ydim/2.+eps+plate_thickness/2.+0.5*cm,(vnb-1)*fDeltaz_view+fdiststereoT2);
+	    t6b.SetTranslation(fT2x_x-fTubes_pitch/2., fT2x_y-ftr12ydim/2.-eps-plate_thickness/2.-0.5*cm,(vnb-1)*fDeltaz_view+fdiststereoT2);   
 	}
         else {
-            t5.SetTranslation(fT1u_x-(ftr12ydim/2.+eps+plate_thickness/2+fTubes_pitch)*sin(TMath::Pi()*abs(angle)/180.),fT1u_y+(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),fDeltaz_view+fTubes_pitch/4.);
-	    t6.SetTranslation(fT1u_x+(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),fT1u_y-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),fDeltaz_view+fTubes_pitch/4.);
-	    t5b.SetTranslation(fT2v_x+(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),fT2v_y+(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),(vnb-1)*fDeltaz_view);
-	    t6b.SetTranslation(fT2v_x-(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*abs(angle)/180.),fT2v_y-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*abs(angle)/180.),(vnb-1)*fDeltaz_view);	     	    	    	    	    
+	    if (statnb==1) {
+            t5.SetTranslation(fT1u_x-(ftr12ydim/2.+eps+plate_thickness/2+fTubes_pitch)*sin(TMath::Pi()*angle/180.),fT1u_y+(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*angle/180.),fDeltaz_view+fTubes_pitch/4.);
+	    t6.SetTranslation(fT1u_x+(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*angle/180.),fT1u_y-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*angle/180.),fDeltaz_view+fTubes_pitch/4.);
+	    }
+	    if (statnb==2) {    
+	    t5b.SetTranslation(fT2v_x-(ftr12ydim/2.+eps+plate_thickness/2+fTubes_pitch)*sin(TMath::Pi()*angle/180.),fT2v_y+(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*angle/180.),(vnb-1)*fDeltaz_view);
+	    t6b.SetTranslation(fT2v_x+(ftr12ydim/2.+eps+plate_thickness/2)*sin(TMath::Pi()*angle/180.),fT2v_y-(ftr12ydim/2.+eps+plate_thickness/2)*cos(TMath::Pi()*angle/180.),(vnb-1)*fDeltaz_view);	     	    	    	    	    
+	    }
 	}
 	TGeoCombiTrans c5(t5, r5);
         TGeoHMatrix *h5 = new TGeoHMatrix(c5);	
@@ -480,8 +477,8 @@ void MufluxSpectrometer::ConstructGeometry()
 	       volDriftTube1->AddNode(plate_bot_12, statnb*10+vnb+2,h6);	   
 	}
 	if (statnb==2) {
-	       volDriftTube2->AddNode(plate_top_12, statnb*10+vnb,h6b);
-	       volDriftTube2->AddNode(plate_bot_12, statnb*10+vnb+2,h5b);	    
+	       volDriftTube2->AddNode(plate_top_12, statnb*10+vnb,h5b);
+	       volDriftTube2->AddNode(plate_bot_12, statnb*10+vnb+2,h6b);	    
 	 }	 
 	
 	//rotate the frame box by angle degrees around the z axis (0 if it isn't a stereo view)	
@@ -501,12 +498,12 @@ void MufluxSpectrometer::ConstructGeometry()
                t3.SetTranslation(fT1x_x, fT1x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	
 	    }
 	    else {
-	       t3.SetTranslation(fT1u_x, fT1u_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
+	       t3.SetTranslation(fT1u_x, fT1u_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereoT1);	
 	    }  
 	  }
 	  if (statnb==2){   
 	    if (angle==0.){
-               t3.SetTranslation(fT2x_x, fT2x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereo);	
+               t3.SetTranslation(fT2x_x, fT2x_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+fdiststereoT2);	
 	    }
 	    else {
 	       t3.SetTranslation(fT2v_x, fT2v_y,(vnb-1.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);	
@@ -634,7 +631,7 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoTranslation *tr1 = new TGeoTranslation(-TransversalSize/2 + side1/2, Height/2 - BasisHeight - UpCoilHeight/2, -LongitudinalSize/2 + base1/2);
     TGeoVolume *volLateralS1 = new TGeoVolume("volLateralS1",LateralS1,Fe);
     volLateralS1->SetLineColor(kRed);
-    volLateralS1->SetField(magField);    
+    //volLateralS1->SetField(magField);    
     volGoliath->AddNode(volLateralS1, 1, tr1);
     
     //TRAPEZOID
@@ -651,7 +648,7 @@ void MufluxSpectrometer::ConstructGeometry()
     
     TGeoVolume *volLateralS2 = new TGeoVolume("volLateralS2",LateralS2,Fe);
     volLateralS2->SetLineColor(kRed);
-    volLateralS2->SetField(magField);   
+    //volLateralS2->SetField(magField);   
      
     TGeoRotation *r2 = new TGeoRotation();
     r2->SetAngles(0,90,0);
@@ -666,7 +663,7 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoBBox *LateralSurface1low = new TGeoBBox("LateralSurface1low",side1/2,(CoilDistance + LowCoilHeight)/2,side2/2);
     TGeoVolume *volLateralSurface1low = new TGeoVolume("volLateralSurface1low",LateralSurface1low,Fe);
     volLateralSurface1low->SetLineColor(kRed);
-    volLateralSurface1low->SetField(magField);    
+    //volLateralSurface1low->SetField(magField);    
     TGeoTranslation *tr1low = new TGeoTranslation(-TransversalSize/2 +side1/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, -LongitudinalSize/2 + side2/2);
     volGoliath->AddNode(volLateralSurface1low, 1, tr1low);;
     
@@ -677,7 +674,7 @@ void MufluxSpectrometer::ConstructGeometry()
     volLateralSurface2low->SetLineColor(kRed);
     TGeoTranslation *tr2low = new TGeoTranslation(-TransversalSize/2 +side1 + side3/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, -LongitudinalSize/2 + base2/2);
     volGoliath->AddNode(volLateralSurface2low, 1, tr2low);
-    volLateralSurface2low->SetField(magField);  
+    //volLateralSurface2low->SetField(magField);  
       
     //***** SIDE Right Front ****
     
@@ -685,7 +682,7 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoTranslation *tr1_b = new TGeoTranslation(-TransversalSize/2 + side1/2, Height/2 - BasisHeight - UpCoilHeight/2, LongitudinalSize/2 - base1/2);
     TGeoVolume *volLateralS1_b = new TGeoVolume("volLateralS1_b",LateralS1,Fe);
     volLateralS1_b->SetLineColor(kRed);
-    volLateralS1_b->SetField(magField);    
+    //volLateralS1_b->SetField(magField);    
     volGoliath->AddNode(volLateralS1_b, 1, tr1_b);
     
     //TRAPEZOID
@@ -701,7 +698,7 @@ void MufluxSpectrometer::ConstructGeometry()
     
     TGeoVolume *volLateralS2_b = new TGeoVolume("volLateralS2_b",LateralS2_b,Fe);
     volLateralS2_b->SetLineColor(kRed);
-    volLateralS2_b->SetField(magField); 
+    //volLateralS2_b->SetField(magField); 
        
     TGeoRotation *r2_b = new TGeoRotation();
     r2_b->SetAngles(0,270,0);
@@ -715,7 +712,7 @@ void MufluxSpectrometer::ConstructGeometry()
     //LONGER RECTANGLE
     TGeoVolume *volLateralSurface1blow = new TGeoVolume("volLateralSurface1blow",LateralSurface1low,Fe);
     volLateralSurface1blow->SetLineColor(kRed);
-    volLateralSurface1blow->SetField(magField);
+    //volLateralSurface1blow->SetField(magField);
     TGeoTranslation *tr1blow = new TGeoTranslation(-TransversalSize/2 +side1/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, LongitudinalSize/2 - side2/2);
     volGoliath->AddNode(volLateralSurface1blow, 1, tr1blow);;
     
@@ -723,7 +720,7 @@ void MufluxSpectrometer::ConstructGeometry()
     //SHORTER RECTANGLE
     TGeoVolume *volLateralSurface2blow = new TGeoVolume("volLateralSurface2blow",LateralSurface2low,Fe);
     volLateralSurface2blow->SetLineColor(kRed);
-    volLateralSurface2blow->SetField(magField);
+    //volLateralSurface2blow->SetField(magField);
     TGeoTranslation *tr2blow = new TGeoTranslation(-TransversalSize/2 +side1 + side3/2, Height/2 - BasisHeight - UpCoilHeight - (CoilDistance + LowCoilHeight)/2, LongitudinalSize/2 - base2/2);
     volGoliath->AddNode(volLateralSurface2blow, 1, tr2blow);
     
@@ -736,7 +733,7 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoTranslation *tr1_d = new TGeoTranslation(TransversalSize/2 - side1/2, Height/2 - BasisHeight - (UpCoilHeight + LowCoilHeight + CoilDistance)/2, -LongitudinalSize/2 + base1/2);
     TGeoVolume *volLateralS1_d = new TGeoVolume("volLateralS1_d",LateralS1_d,Fe);
     volLateralS1_d->SetLineColor(kRed);
-    volLateralS1_d->SetField(magField);    
+    //volLateralS1_d->SetField(magField);    
     volGoliath->AddNode(volLateralS1_d, 1, tr1_d);
     
     //TRAPEZOID
@@ -754,7 +751,7 @@ void MufluxSpectrometer::ConstructGeometry()
     
     TGeoVolume *volLateralS2_d = new TGeoVolume("volLateralS2_d",LateralS2_d,Fe);
     volLateralS2_d->SetLineColor(kRed);
-    volLateralS2_d->SetField(magField);    
+    //volLateralS2_d->SetField(magField);    
     
     TGeoRotation *r2_d = new TGeoRotation();
     r2_d->SetAngles(0,270,180);
@@ -771,7 +768,7 @@ void MufluxSpectrometer::ConstructGeometry()
     TGeoTranslation *tr1_c = new TGeoTranslation(TransversalSize/2 - side1/2, Height/2 - BasisHeight - (UpCoilHeight + LowCoilHeight + CoilDistance)/2, LongitudinalSize/2 - base1/2);
     TGeoVolume *volLateralS1_c = new TGeoVolume("volLateralS1_c",LateralS1_c,Fe);
     volLateralS1_c->SetLineColor(kRed);
-    volLateralS1_c->SetField(magField);      
+    //volLateralS1_c->SetField(magField);      
     volGoliath->AddNode(volLateralS1_c, 1, tr1_c);
   
     //TRAPEZOID
@@ -788,7 +785,7 @@ void MufluxSpectrometer::ConstructGeometry()
     
     TGeoVolume *volLateralS2_c = new TGeoVolume("volLateralS2_c",LateralS2_c,Fe);
     volLateralS2_c->SetLineColor(kRed);
-    volLateralS2_c->SetField(magField);
+    //volLateralS2_c->SetField(magField);
         
     TGeoRotation *r2_c = new TGeoRotation();
     r2_c->SetAngles(0,90,180);

@@ -73,15 +73,18 @@ run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed f
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
-run.Init()
+
 import geomGeant4
 if hasattr(ShipGeo.Bfield,"fieldMap"):
-  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True)
-
-sGeo   = ROOT.gGeoManager
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
+else:
+  print "no fieldmap given, geofile too old, not anymore support"
+  exit(-1)
+sGeo   = fgeo.FAIRGeom
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 bfield = ROOT.genfit.FairShipFields()
+bfield.setField(fieldMaker.getGlobalField())
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 
@@ -91,13 +94,11 @@ for x in ROOT.gGeoManager.GetListOfVolumes():
  volDict[i]=x.GetName()
  i+=1
 
-
-
 # prepare veto decisions
 import shipVeto
 veto = shipVeto.Task(sTree)
 vetoDets={}
-
+log={}
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'pullPOverPx','delPx / sigma',400,0.,200.,100,-3.,3.)
@@ -257,7 +258,7 @@ def checkHNLorigin(sTree):
        hnlkey = n
        break
  if hnlkey<0 : 
-  print "checkHNLorigin: no HNL found"
+  ut.reportError("ShipAna: checkHNLorigin, no HNL found")
  else:
   # MCTrack after HNL should be first daughter
   theHNLVx = sTree.MCTrack[hnlkey]

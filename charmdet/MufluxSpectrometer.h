@@ -24,7 +24,6 @@ class MufluxSpectrometer:public FairDetector
       
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
     void ChooseDetector(Bool_t muflux); //sets experimental configuration (true = muflux, false = charmxsec)
         
     //methods for drift tubes by Eric
@@ -35,7 +34,7 @@ class MufluxSpectrometer:public FairDetector
     void SetDeltazLayer(Double_t deltazlayer);
     void SetDeltazPlane(Double_t deltazplane);
     void SetTubesPerLayer(Int_t tubesperlayer);
-    void SetStereoAngle(Int_t stereoangle);
+    void SetStereoAngle(Double_t stereoangle, Double_t stereovangle);
     void SetWireThickness(Double_t wirethickness);
     void SetDeltazView(Double_t deltazview);
     void SetTubeLength12(Double_t strawlength12);
@@ -46,7 +45,7 @@ class MufluxSpectrometer:public FairDetector
     void SetMuonFlux(Bool_t muonflux);   
     void TubeDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void TubeEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
-    void SetDistStereo(Double_t diststereo);
+    void SetDistStereo(Double_t diststereoT1,Double_t diststereoT2);
     void SetDistT1T2(Double_t distT1T2);
     void SetDistT3T4(Double_t distT3T4);
     void SetSetScintillatorThickness(Double_t scintillatorthickness);
@@ -136,6 +135,7 @@ private:
     Double_t       fOffset_plane12;          //!  Offset (x) between straws of plane1&2
     Int_t          fTubes_per_layer;         //!  Number of tubes in one layer
     Double_t       fView_angle;              //!  Stereo angle of layers in a view
+    Double_t       fView_vangle;    
     Double_t       fcosphi;
     Double_t       fsinphi;
     Double_t       fWire_thickness;          //!  Thickness of the wire
@@ -150,7 +150,8 @@ private:
     Double_t       v_drift;                  //!  drift velocity  
     Double_t       sigma_spatial;            //!  spatial resolution    
     Bool_t         fMuonFlux;                //!  set up for muonflux    
-    Double_t       fdiststereo;              //!  distance between stereo layers
+    Double_t       fdiststereoT1;              //!  distance between stereo layers
+    Double_t       fdiststereoT2;              //!  distance between stereo layers
     Double_t       fdistT1T2;                //!  distance between T1&T2
     Double_t       fdistT3T4;                //!  distance between T3&T4
     Double_t       fgoliathcentre_to_beam;

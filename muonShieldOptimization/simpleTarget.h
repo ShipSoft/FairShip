@@ -60,7 +60,7 @@ class simpleTarget: public FairDetector
     virtual void   FinishRun() {;}
     virtual void   BeginPrimary() {;}
     virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
+    virtual void   PreTrack();
     virtual void   BeginEvent() {;}
 
     vetoPoint* AddHit(Int_t trackID, Int_t detID,
@@ -69,7 +69,8 @@ class simpleTarget: public FairDetector
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
     inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
     inline void SetOnlyMuons(){fOnlyMuons=kTRUE;}
-    inline void SetParameters(TString m,Float_t l,Float_t z){fMaterial=m;fLength=l;fzPos=z;}
+    inline void SetFastMuon(){fFastMuon=kTRUE;}
+    inline void SetParameters(TString m,Float_t l,Float_t z){fMaterial=m;fThick=l;fzPos=z;}
 
   private:
 
@@ -83,11 +84,13 @@ class simpleTarget: public FairDetector
     Double_t     fTime;              //!  time
     Double_t     fLength;            //!  length
     Double_t     fzPos;              //!  zPos
+    Double_t     fThick;             //!  thickness
     Double_t     fELoss;              //!  
-    Double_t     fTotalEloss;              //!  
-    TString      fMaterial;              //!  material
+    Double_t     fTotalEloss;         //!  
+    TString      fMaterial;           //!  material
     Float_t EMax;  //! max energy to transport
-    Bool_t fOnlyMuons;  //! for fast processing
+    Bool_t fOnlyMuons;  //!
+    Bool_t fFastMuon;  //! for fast processing
     TFile* fout;
     /** container for data points */
     TClonesArray*  fsimpleTargetPointCollection;

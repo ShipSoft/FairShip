@@ -726,7 +726,7 @@ void ShipFieldMaker::defineGlobalField(std::vector<TString> fieldNames)
     if (gMC) {
 	gMC->SetMagField(globalField_);
     } else {
-	std::cout<<"Error. The global virtual MC pointer gMC is null! The global field can't be used!"<<std::endl;
+	std::cout<<"The virtual MC pointer gMC is null! The global field can't be used by Geant4 but will work for track fitting and track extrapolation"<<std::endl;
     }
 
 }

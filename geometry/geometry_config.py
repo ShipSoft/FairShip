@@ -479,14 +479,14 @@ with ConfigRegistry.register_config("basic") as c:
     if nuTauTargetDesign!=2:
         c.EmuMagnet = AttrDict(z=0*u.cm)
         c.EmuMagnet.Design = nuTauTargetDesign
-        c.EmuMagnet.B=1.5*u.tesla
+        c.EmuMagnet.B=1.25*u.tesla
         c.EmuMagnet.GapDown = 25*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
-            c.EmuMagnet.WithConstField=False  #now loaded field map
+            c.EmuMagnet.WithConstField=True  #now loaded field map
             c.EmuMagnet.X = scale*2.2*u.m
-            c.EmuMagnet.Y = scale*3.4*u.m
-            c.EmuMagnet.Z = 7*u.m
+            c.EmuMagnet.Y = scale*3.6*u.m
+            c.EmuMagnet.Z = 7.2*u.m
             c.EmuMagnet.BaseX = scale*c.EmuMagnet.X 
             c.EmuMagnet.BaseY = scale*0.6*u.m
             c.EmuMagnet.BaseZ = scale*c.EmuMagnet.Z
@@ -496,7 +496,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.ColX = scale*60*u.cm
             c.EmuMagnet.ColY = scale*c.EmuMagnet.Y - 2 *scale * c.EmuMagnet.BaseY #avoid overlapping between bases and columns
             c.EmuMagnet.ColZ = scale*c.EmuMagnet.Z
-            c.EmuMagnet.CutLength = scale * 50*u.cm
+            c.EmuMagnet.CutLength = scale * 45*u.cm
             c.EmuMagnet.CutHeight = scale * 100*u.cm
             c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
             c.EmuMagnet.CoilY = 40*u.cm

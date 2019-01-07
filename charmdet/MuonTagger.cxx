@@ -225,6 +225,7 @@ void MuonTagger::ConstructGeometry()
   TGeoVolume *VMuonBox = new TGeoVolume("VMuonBox", MuonBox,air);
   VMuonBox->SetTransparency(1);
   Double_t goliathcentre_to_beam = 178.6; //mm   
+  Double_t walldisalignment = 15; //mm, all walls but one were disaligned with respect to the nominal beam position
   Double_t eps = 0.00001;     
   
   TGeoBBox *GapBox = new TGeoBBox(SensX/2,SensY/2,fGapThickness/2-eps);  
@@ -291,14 +292,17 @@ void MuonTagger::ConstructGeometry()
   TGeoBBox *inbox1 = new TGeoBBox("inbox1",HoleX/2,HoleY/2,PasThickness1/2 + SensThickness/2); 
   inbox1->SetName("T1");
   
+  TGeoTranslation *holeposition = new TGeoTranslation(0, -(goliathcentre_to_beam*mm + 16.443*mm),0);
+  holeposition->SetName("holepos");
+  holeposition->RegisterYourself();
   //passive layers
   TGeoBBox * Passive = new TGeoBBox(PasX/2, PasY/2, PasThickness/2);
   Passive->SetName("P");
-  TGeoCompositeShape *SubtractionPassive = new TGeoCompositeShape("SubtractionPassive", "P-T");
+  TGeoCompositeShape *SubtractionPassive = new TGeoCompositeShape("SubtractionPassive", "P-T:holepos");
 
   TGeoBBox * Passive1 = new TGeoBBox(PasX/2, PasY/2, PasThickness1/2);
   Passive1->SetName("P1");
-  TGeoCompositeShape *SubtractionPassive1 = new TGeoCompositeShape("SubtractionPassive1", "P1-T1");
+  TGeoCompositeShape *SubtractionPassive1 = new TGeoCompositeShape("SubtractionPassive1", "P1-T1:holepos");
 
   TGeoVolume * VPassive = new TGeoVolume("VPassive", SubtractionPassive, Iron);
   VPassive->SetLineColor(kGreen+1);
@@ -331,7 +335,8 @@ void MuonTagger::ConstructGeometry()
        VMuonBox->AddNode(VPassive, n+1, new TGeoTranslation(0,0,fRPCz[n]-PasThicknessz[n]/2-7.5)); }
     else { 
        if (n==1) { VMuonBox->AddNode(VPassive, n+1, new TGeoTranslation(0,0,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); }
-       else {
+       //else if (n==npassive-1) VMuonBox->AddNode(VPassive1, n+1, new TGeoTranslation(0,walldisalignment,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); //last wall had been disaligned with respect to the others
+       else{
          VMuonBox->AddNode(VPassive1, n+1, new TGeoTranslation(0,0,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); }  
     }
   }

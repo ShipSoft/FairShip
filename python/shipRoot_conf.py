@@ -36,6 +36,7 @@ if sys.platform == 'darwin':
 else:
     ROOT.gSystem.Load("libPythia6")
     ROOT.gSystem.Load("libpythia8")
+    ROOT.gSystem.Load("libG4clhep")
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 
 #-----prepare python exit-----------------------------------------------
