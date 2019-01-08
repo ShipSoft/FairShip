@@ -1606,7 +1606,7 @@ def fitTrack(hitlist,Pstart=3.):
       k+=1
    sorted_z = sorted(tmpList.items(), key=operator.itemgetter(1))
    for k in sorted_z:
-      tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to
+      tp = ROOT.genfit.TrackPoint() # note how the point is told which track it belongs to
       hitCov = ROOT.TMatrixDSym(7)
       hitCov[6][6] = resolution*resolution
       measurement = ROOT.genfit.WireMeasurement(unSortedList[k[0]][0],hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
@@ -1625,6 +1625,7 @@ def fitTrack(hitlist,Pstart=3.):
    except:   
       print "fit failed"
       timer.Stop()
+      theTrack.Delete()
       return -1
     # print "time to fit the track",timer.RealTime()
    if timer.RealTime()>1: # make a new fitter, didn't helped
@@ -1634,6 +1635,7 @@ def fitTrack(hitlist,Pstart=3.):
    fitStatus   = theTrack.getFitStatus()
    if Debug: print "Fit result: converged chi2 Ndf",fitStatus.isFitConverged(),fitStatus.getChi2(),fitStatus.getNdf()
    if not fitStatus.isFitConverged():
+      theTrack.Delete()
       return -1
    chi2 = fitStatus.getChi2()/fitStatus.getNdf()
    rc = h['Nmeasurements'].Fill(fitStatus.getNdf())
@@ -1641,6 +1643,7 @@ def fitTrack(hitlist,Pstart=3.):
    P = fittedState.getMomMag()
    if Debug: print "track fitted Ndf #Meas P",fitStatus.getNdf(), theTrack.getNumPointsWithMeasurement(),P
    if fitStatus.getNdf() < 9:
+      theTrack.Delete()
       return -2 
    Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
    rc = h['p/pt'].Fill(P,ROOT.TMath.Sqrt(Px*Px+Py*Py))
@@ -2029,7 +2032,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
           if Debug:  print "fit track t1t2 %i t3t4 %i stereo %i,%i, with hits %i,  delx %6.3F, pstart %6.3F"%(nt1t2,nt3t4,nu,nv,len(hitList),delx,momFromptkick)
           aTrack = fitTrack(hitList,momFromptkick)
           if type(aTrack) != type(1):
-           trackCandidates.append(aTrack)
+            trackCandidates.append(aTrack)
    if withCloneKiller:
     if len(trackCandidates)>1: trackCandidates = cloneKiller(trackCandidates)
 # switch on trackfit material effect for final fit
@@ -2186,7 +2189,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
   for Nr in range(eventRange[0],eventRange[1]):
    getEvent(Nr)
    h['T0tmp'].Reset()
-   if Nr%1000==0:   print "now at event",Nr,sTree.GetCurrentFile().GetName()
+   if Nr%1000==0:   print "now at event",Nr,sTree.GetCurrentFile().GetName(),time.ctime()
    if not findSimpleEvent(sTree): continue
    trackCandidates = findTracks(PR)
    if len(trackCandidates)!=1: continue
@@ -2620,7 +2623,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
    ut.bookHist(h, 'RPC<'+str(k)+'_p', '  < '+str(k)+' RPC hits p',100,0.,100.)
   for Nr in range(eventRange[0],eventRange[1]):
    getEvent(Nr)
-   if Nr%10000==0:   print "now at event",Nr
+   if Nr%10000==0:   print "now at event",Nr,time.ctime()
    if not sTree.Digi_MuonTaggerHits.GetEntries()>0: continue
    if not findSimpleEvent(sTree): continue
    trackCandidates = findTracks(PR)
@@ -3559,29 +3562,33 @@ def recoStep0():
   RTrelations =  {'tMinAndTmax':h['tMinAndTmax']}
   for s in h['tMinAndTmax']: RTrelations['rt'+s] = h['rt'+s]
   makeRTrelPersistent(RTrelations)
-def recoStep1(PR=1):
+def recoStep1(PR=11):
 # make fitted tracks  
-  fGenFitArray = ROOT.TClonesArray("genfit::Track") 
-  fGenFitArray.BypassStreamer(ROOT.kFALSE)
-  fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
+  #disableBranches()
+  #fGenFitArray = ROOT.TClonesArray("genfit::Track") 
+  #fGenFitArray.BypassStreamer(ROOT.kFALSE)
+  #fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
   n = 0
   for event in sTree:
-    if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName()
+    if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName(),time.ctime()
     n+=1
-    fGenFitArray.Clear()
+    #fGenFitArray.Clear()
     if PR==3: theTracks = bestTracks()
     else: theTracks = findTracks(PR)
-    for aTrack in theTracks:
-     nTrack   = fGenFitArray.GetEntries()
-     aTrack.prune("CFL")
-     fGenFitArray[nTrack] = aTrack
-    fitTracks.Fill()
+    #for aTrack in theTracks:
+     #nTrack   = fGenFitArray.GetEntries()
+     #aTrack.prune("CFL")
+     #fGenFitArray[nTrack] = aTrack
+    #fitTracks.Fill()
     for aTrack in theTracks: aTrack.Delete()
-  sTree.Write()
-  makeAlignmentConstantsPersistent()
-  ftemp=sTree.GetCurrentFile()
-  ftemp.Write("",ROOT.TFile.kOverwrite)
-  ftemp.Close()
+  #sTree.Write()
+  #makeAlignmentConstantsPersistent()
+  #ftemp=sTree.GetCurrentFile()
+  #ftemp.Write("",ROOT.TFile.kOverwrite)
+  #ftemp.Close()
+  print "finished adding fitted tracks",options.listOfFiles
+  print "make suicid"
+  os.system('kill '+str(os.getpid()))
 def anaResiduals():
   sTree.SetBranchStatus("FitTracks",0)
   plotBiasedResiduals(nEvent=0,nTot=sTree.GetEntries(),PR=11)
@@ -3635,8 +3642,6 @@ elif options.command == "recoStep1":
   withCorrections = True  
   print "add fitted tracks"
   recoStep1(PR=11)
-  print "finished adding fitted tracks",options.listOfFiles
-  os.system('kill '+str(os.getpid()))
 elif options.command == "anaResiduals":
   importRTrel()
   anaResiduals()
