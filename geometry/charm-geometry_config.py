@@ -192,6 +192,17 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.OuterTubeDiameter  = (c.MufluxSpectrometer.InnerTubeDiameter + 2*c.MufluxSpectrometer.WallThickness)
 
     c.MufluxSpectrometer.TubePitch          = 4.2*u.cm
+    c.MufluxSpectrometer.TubePitch_T1u       = 0.0009765*u.cm
+    #c.MufluxSpectrometer.T1u_const           = -0.008655*u.cm  
+    c.MufluxSpectrometer.T1u_const           = 0.001343*u.cm  
+    c.MufluxSpectrometer.T1u_const_2           = 0.00183*u.cm    
+    c.MufluxSpectrometer.T1u_const_3           = 0.001575*u.cm  
+    c.MufluxSpectrometer.T1u_const_4           = 0.0010859*u.cm  
+    c.MufluxSpectrometer.T2v_const           = 3.100985*u.cm  
+    c.MufluxSpectrometer.T2v_const_2           = -1.09986*u.cm    
+    c.MufluxSpectrometer.T2v_const_3           = -1.100305*u.cm  
+    c.MufluxSpectrometer.T2v_const_4           = 3.100543*u.cm  
+    c.MufluxSpectrometer.TubePitch_T2v       = 0.001695*u.cm 
     c.MufluxSpectrometer.DeltazLayer        = 3.64*u.cm
     c.MufluxSpectrometer.DeltazPlane        = 7.7*u.cm
     
@@ -214,22 +225,42 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.goliathcentre_to_beam = 17.32*u.cm + (c.Spectrometer.UpCoilH-c.Spectrometer.LowCoilH)/2.
     c.MufluxSpectrometer.goliathcentre = 351.19*u.cm  
       
-    c.MufluxSpectrometer.T1x_x=4.23*u.cm
+    c.MufluxSpectrometer.T1x_x=4.22*u.cm
     c.MufluxSpectrometer.T1x_y=-1.995*u.cm
+    c.MufluxSpectrometer.T1x_z=0.*u.cm
     c.MufluxSpectrometer.T1z=40.13*u.cm
     c.MufluxSpectrometer.T1u_x=7.8*u.cm    
     c.MufluxSpectrometer.T1u_y=-0.16*u.cm
+    c.MufluxSpectrometer.T1u_z=-0.00175*u.cm    
     c.MufluxSpectrometer.T2x_x=2.43*u.cm
     c.MufluxSpectrometer.T2x_y=-2.1875*u.cm  
-    c.MufluxSpectrometer.T2z=108.82*u.cm      #-1mm ad hoc        
+    c.MufluxSpectrometer.T2x_z=-0.01074*u.cm  
+    c.MufluxSpectrometer.T2z=108.822745*u.cm            
     c.MufluxSpectrometer.T2v_x=3.5*u.cm      
-    c.MufluxSpectrometer.T2v_y=0.09*u.cm    
+    c.MufluxSpectrometer.T2v_y=0.09*u.cm   
+    c.MufluxSpectrometer.T2v_z=0.*u.cm        
     c.MufluxSpectrometer.T3x=2.475*u.cm
     c.MufluxSpectrometer.T3y=-7.3405*u.cm
     c.MufluxSpectrometer.T3z=585.18*u.cm      # plus 7cm offset + 5mm ad hoc
+    c.MufluxSpectrometer.T3z_1=0.1350*u.cm   
+    c.MufluxSpectrometer.T3z_2=-0.06250*u.cm    
+    c.MufluxSpectrometer.T3z_3=-0.1150*u.cm   
+    c.MufluxSpectrometer.T3z_4=-0.100*u.cm   
+    c.MufluxSpectrometer.T3x_1=-0.13250*u.cm   
+    c.MufluxSpectrometer.T3x_2=-0.014*u.cm    
+    c.MufluxSpectrometer.T3x_3=0.1120*u.cm   
+    c.MufluxSpectrometer.T3x_4=0.1270*u.cm             
     c.MufluxSpectrometer.T4x=2.95*u.cm   
     c.MufluxSpectrometer.T4y=-6.9845*u.cm 
-    c.MufluxSpectrometer.T4z=748.32*u.cm      # min 7cm offset +5mm ad hoc            
+    c.MufluxSpectrometer.T4z=748.32*u.cm      # min 7cm offset +5mm ad hoc  
+    c.MufluxSpectrometer.T4z_1=0.1125*u.cm   
+    c.MufluxSpectrometer.T4z_2=-0.050*u.cm    
+    c.MufluxSpectrometer.T4z_3=-0.12250*u.cm   
+    c.MufluxSpectrometer.T4z_4=-0.05250*u.cm 
+    c.MufluxSpectrometer.T4x_1=-0.030*u.cm   
+    c.MufluxSpectrometer.T4x_2=0.04250*u.cm    
+    c.MufluxSpectrometer.T4x_3=-0.00750*u.cm   
+    c.MufluxSpectrometer.T4x_4=-0.010*u.cm               
     
     if c.MufluxSpectrometer.muflux == True:    
        c.Spectrometer.DX = 2.*u.m
