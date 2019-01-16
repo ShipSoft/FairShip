@@ -22,6 +22,10 @@ withMaterial = True
 cuts={}
 cuts['Ndf'] = 9
 cuts['deltaNdf'] = 2
+cuts['yMax']     = 5.
+cuts['tot']      = 9.
+cuts['hitDist'] = 2.5
+cuts['minLayersUV'] = 2
 
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
@@ -1074,14 +1078,14 @@ for n in range(1,5):
       nav.LocalToMaster(local,globOrigin)
       DT[z.GetName()] = [shape.GetDX(),shape.GetDY(),globOrigin[2]]
 
-def sortHits(event):
+def sortHits(event,flag = True):
  spectrHitsSorted = {'_x':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
                      '_u':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
                      '_v':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}}}
  for hit in event.Digi_MufluxSpectrometerHits:
    # remove noise hits
-   if not hit.hasTimeOverThreshold(): continue
-   #if hit.GetTimeOverThreshold() < 10: continue
+   if not hit.hasTimeOverThreshold() and flag: continue
+   if hit.GetTimeOverThreshold() < cuts['tot']: continue
    statnb,vnb,pnb,lnb,view,channelID,tdcId = stationInfo(hit)
    if pnb > 1 or lnb >1 : 
     print "sortHits: unphysical detctor ID",hit.GetDetectorID()
@@ -1204,6 +1208,7 @@ def printScalers():
    h['integratedrate'].Draw('hist')
 
 ut.bookHist(h,'delx','delta x',200,-50.,50.)
+ut.bookHist(h,'delta_mean_uv','delta to mean u and v',200,-10.,10.)
 ut.bookHist(h,'magPos','XY at goliath, PR',100,-50.,50.,100,-50.,50.)
 for dets in ['34','stereo12','y12']: ut.bookHist(h,'tracklets'+dets,'hits per view',10,-0.5,9.5)
 
@@ -1540,8 +1545,12 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
      plotEvent(n)
    if PR==3: theTracks = bestTracks() 
    else:     theTracks = findTracks(PR)
-   for aTrack in theTracks:    
-     fitStatus   = aTrack.getFitStatus()
+   for aTrack in theTracks:
+     try: 
+      fitStatus   = aTrack.getFitStatus()
+     except:
+       ut.reportError("fitTracks: cannot get fitStatus: event "+str(n)+' '+rfile)
+       continue
      if not fitStatus.isFitConverged(): continue
      chi2 = fitStatus.getChi2()/fitStatus.getNdf()
      fittedState = aTrack.getFittedState()
@@ -1569,7 +1578,10 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
       if not hit.hasTimeOverThreshold(): continue
       rc = RT(hit,hit.GetDigi())
    if withDisplay:
-     for theTrack in theTracks:     displayTrack(theTrack,debug)
+     for theTrack in theTracks:
+          fitStatus   = theTrack.getFitStatus()
+          if not fitStatus.isFitConverged(): continue
+          displayTrack(theTrack,debug)
      next = raw_input("Next (Ret/Quit): ")         
      if next<>'':  break
    if len(theTracks)>0: nMax-=1
@@ -1777,6 +1789,12 @@ for s in range(1,5):
       ut.bookHist(h,'linearRes'+str(s)+view+str(layer),'linear track model residual for '+str(s)+view+' '+str(layer),100,-20.,20.,10,-dx,dx)
       ut.bookHist(h,'biasResY_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,20,-dy,dy)      
       ut.bookHist(h,'biasResYL_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-2.,2.,20,-dy,dy)      
+# book residual histograms for each tube
+for detID in xpos:
+      ut.bookHist(h,'biasResX_' +str(detID),'biased residual for channel '+str(detID),100,-0.5,0.5,20,-dx,dx)
+      ut.bookHist(h,'biasResXL_'+str(detID),'biased residual for channel '+str(detID),100,-2.,2.,20,-dx,dx)
+      ut.bookHist(h,'biasResY_' +str(detID),'biased residual for channel '+str(detID),100,-0.5,0.5,20,-dy,dy)      
+      ut.bookHist(h,'biasResYL_'+str(detID),'biased residual for channel '+str(detID),100,-2.,2.,20,-dy,dy)      
 
 ut.bookHist(h,'clsN','cluster sizes',10,-0.5,9.5)
 ut.bookHist(h,'Ncls','number of clusters / event',10,-0.5,9.5)
@@ -2001,7 +2019,6 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
     return trackCandidates
 # switch of trackfit material effect in first pass
    materialEffects(False)
-   yMax = 5.
    test = ROOT.MufluxSpectrometerHit(30002001,0.)
    test.MufluxSpectrometerEndPoints(vbot,vtop)
    T3z = vbot[2]
@@ -2069,6 +2086,8 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
        for nu in range(len(clusters[1]['_u'])):
         stereoHits['u']={}
         clu = clusters[1]['_u'][nu]
+        mean_u = 0
+        n_u = 0 
         for cl in clu:
            botA,topA = correctAlignment(cl[0])
            z = (botA[2]+topA[2])/2.
@@ -2076,10 +2095,21 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            b = topA[1]-sl*topA[0]
            yest = sl*(t1t2[3]*topA[2]+t1t2[4])+b
            rc = h['yest'].Fill(yest)
-           if yest > botA[1]+yMax: continue
-           if yest < topA[1]-yMax: continue
+           if yest > botA[1]+cuts['yMax'] : continue
+           if yest < topA[1]-cuts['yMax'] : continue
            stereoHits['u'][cl[0].GetDetectorID()]=[cl[0],sl,b,yest,z]
+           mean_u+=yest
+           n_u+=1
+        mean_u = mean_u/float(n_u)
+        for x in stereoHits['u'].keys():
+           delta = stereoHits['u'][x][3]-mean_u
+           rc = h['delta_mean_uv'].Fill(delta)
+           if abs(delta)>cuts['hitDist']:  stereoHits['u'].pop(x)
+# new idea, calulate average of y coordinates, reject hits with distance > 2.5cm!!!!!
+
         for nv in range(len(clusters[2]['_v'])):
+         mean_v = 0
+         n_v = 0 
          stereoHits['v']={}
          clv =  clusters[2]['_v'][nv]
          for cl in clv: 
@@ -2089,14 +2119,23 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            b = topA[1]-sl*topA[0]
            yest = sl*(t1t2[3]*topA[2]+t1t2[4])+b
            rc = h['yest'].Fill(yest)
-           if yest > botA[1]+yMax: continue
-           if yest < topA[1]-yMax: continue
+           if yest > botA[1]+cuts['yMax'] : continue
+           if yest < topA[1]-cuts['yMax'] : continue
            stereoHits['v'][cl[0].GetDetectorID()]=[cl[0],sl,b,yest,z]
+           mean_v+=yest
+           n_v+=1
+         mean_v = mean_v/float(n_v)
+         for x in stereoHits['v'].keys():
+           delta = stereoHits['v'][x][3]-mean_v
+           rc = h['delta_mean_uv'].Fill(delta)
+           if abs(delta)>cuts['hitDist']:  stereoHits['v'].pop(x)
+#
+         if len(stereoHits['u'])<cuts['minLayersUV'] or len(stereoHits['v'])<cuts['minLayersUV']: continue
          slopeA,bA = getSlopeY(stereoHits['u'],stereoHits['v'])
          # remove unphysical combinations, pointing outside t3
          yAtT3 = T3z*slopeA + bA
-         if Debug: print "uv",nu,nv,yAtT3,T3ybot ,T3ytop , (yAtT3 - T3ybot)  > 2*yMax,(T3ytop - yAtT3) > 2*yMax
-         if  (yAtT3 - T3ybot)  > 2*yMax or (T3ytop - yAtT3) > 2*yMax : continue
+         if Debug: print "uv",nu,nv,yAtT3,T3ybot ,T3ytop , (yAtT3 - T3ybot)  > 2*cuts['yMax'] ,(T3ytop - yAtT3) > 2*cuts['yMax'] 
+         if  (yAtT3 - T3ybot)  > 2*cuts['yMax']  or (T3ytop - yAtT3) > 2*cuts['yMax'] : continue
          if Debug:
           nt = len(h['dispTrackSeg'])
           h['dispTrackSeg'].append( ROOT.TGraph(2) )
@@ -2106,6 +2145,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
           h['dispTrackSeg'][nt].SetLineWidth(2)
           h['simpleDisplay'].cd(1)
           h['dispTrackSeg'][nt].Draw('same')
+          h['simpleDisplay'].Update()
           nt+=1
 #
          hitList = []
@@ -2126,31 +2166,32 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
           if type(aTrack) != type(1):
 # check if track is still in acceptance:
             rc,pos,mom = extrapolateToPlane(aTrack,T3z)
-            if not ( (pos[1] - T3ybot)  > 1.2*yMax or (T3ytop - pos[1]) > 1.2*yMax):
-                  trackCandidates.append(aTrack)
+            reject = False
+            if ( (pos[1] - T3ybot)  > 1.2*cuts['yMax'] or (T3ytop - pos[1]) > 1.2*cuts['yMax'] ): reject = True
+            mStatistics = countMeasurements(aTrack)
+            if len(mStatistics['u'])<cuts['minLayersUV'] or len(mStatistics['v'])<cuts['minLayersUV']: reject = True # require 2 measurements in each view
+            if not reject: trackCandidates.append(aTrack)
+            elif Debug: 
+              print "track rejected, outside T3 acceptance or not enough u/v measurements"
+              print  (pos[1] - T3ybot)  > 1.2*cuts['yMax'] , (T3ytop - pos[1]) > 1.2*cuts['yMax'] , \
+                      len(mStatistics['u'])<2, len(mStatistics['v'])<2
    if withMaterial: materialEffects(True)
    if withCloneKiller:
     if len(trackCandidates)>1: trackCandidates = cloneKiller(trackCandidates)
+    if Debug: print "# tracks after clonekiller = ",len(trackCandidates)
     if withMaterial:
      for aTrack in trackCandidates:
       fitter.processTrack(aTrack)
 # switch on trackfit material effect for final fit
-   if Debug: print "# tracks after clonekiller = ",len(trackCandidates)
    return trackCandidates
 
 def overlap(a,b):
  return [x for x in a if x in b]
 
 
-def cloneKiller(trackCandidates):
-# if all x measurements identical take the one with most u,v
-# if tracks share >50% of downstream hits, take the one with max measurements
- detIDs = {}
- j=-1
- for aTrack in trackCandidates:
-   j+=1
-   detIDs[j]={'xAll':[],'xDown':[],'uv':[]}
-   for p in aTrack.getPointsWithMeasurement():
+def countMeasurements(aTrack):
+ mStatistics = {'xAll':[],'xDown':[],'uv':[],'u':[],'v':[]}
+ for p in aTrack.getPointsWithMeasurement():
     rawM = p.getRawMeasurement()
     info = p.getFitterInfo()
     if not info: continue
@@ -2158,9 +2199,19 @@ def cloneKiller(trackCandidates):
     test = ROOT.MufluxSpectrometerHit(detID,0.)
     s,v,p,l,view,channelID,tdcId = stationInfo(test)
     if info.getWeights()[0] <0.1 and info.getWeights()[1] <0.1: continue
-    if view != '_x': detIDs[j]['uv'].append(detID)
-    else:            detIDs[j]['xAll'].append(detID)
-    if s > 2:        detIDs[j]['xDown'].append(detID)
+    if view != '_x': 
+       mStatistics['uv'].append(detID)
+       if view != '_u':  mStatistics['u'].append(detID)
+       if view != '_v':  mStatistics['v'].append(detID)
+    else:            mStatistics['xAll'].append(detID)
+    if s > 2:        mStatistics['xDown'].append(detID)
+ return mStatistics
+def cloneKiller(trackCandidates):
+# if all x measurements identical take the one with most u,v
+# if tracks share >50% of downstream hits, take the one with max measurements
+ detIDs = {}
+ for j in range( len(trackCandidates) ):
+   detIDs[j]=countMeasurements(trackCandidates[j])
  for j in range(len(detIDs)-1):
    if len(detIDs[j]['xDown'])==0: continue
    tj = float(len(detIDs[j]['xDown']))
@@ -2335,6 +2386,12 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
            h['biasResY_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
            h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
            h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
+# now for each tube
+           detID = str(hit.GetDetectorID())
+           h['biasResX_'+detID].Fill(res,pos[0])
+           h['biasResY_'+detID].Fill(res,pos[1])
+           h['biasResXL_'+detID].Fill(res,pos[0])
+           h['biasResYL_'+detID].Fill(res,pos[1])
 # make hit and TDC plots for hits matched to tracks, within window suitable for not using TDC
           if min(abs(xL),abs(xR)) < 4. :
             t0 = 0
@@ -2342,9 +2399,9 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
             rc = h['TDC'+xLayers[s][p][l][view].GetName()+str(tdcId)].Fill(hit.GetDigi()-t0)
             rc = xLayers[s][p][l][view].Fill( channelID )
             rc = h['T0tmp'].Fill(hit.GetDigi()-t0)
+       t0 = h['T0tmp'].GetMean()
+       rc = h['T0'].Fill(t0)
    for aTrack in trackCandidates:   aTrack.Delete()
-   t0 = h['T0tmp'].GetMean()
-   rc = h['T0'].Fill(t0)
  if not h.has_key('biasedResiduals'): 
       ut.bookCanvas(h,key='biasedResiduals',title='biasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
@@ -2531,6 +2588,7 @@ def efficiencyEstimates():
  h['Efftxt'].Draw()
 def printTrackMeasurements(atrack):
    mult = {'_x':0,'_u':0,'_v':0}
+   rej  = {'_x':0,'_u':0,'_v':0}
    for p in atrack.getPointsWithMeasurement():
     rawM = p.getRawMeasurement()
     info = p.getFitterInfo()
@@ -2538,26 +2596,37 @@ def printTrackMeasurements(atrack):
     detID = rawM.getDetId()
     hit = ROOT.MufluxSpectrometerHit(detID,0)
     s,v,p,l,view,channelID,tdcId = stationInfo(hit)
-    print s,v,p,l,view,channelID,tdcId,info.getWeights()[0],info.getWeights()[1]
-    if info.getWeights()[0]<0.1 and info.getWeights()[1] < 0.1: continue
+    coords = rawM.getRawHitCoords()
+    print "%3i %3i %3i %3i %3s %3i %3i %4.2F %4.2F %5.2F %5.2F %5.2F "%(
+    s,v,p,l,view,channelID,tdcId,info.getWeights()[0],info.getWeights()[1],coords[0],coords[1],coords[2])
+    if info.getWeights()[0]<0.1 and info.getWeights()[1] < 0.1: rej[view]+=1
     else:  mult[view]+=1
-   print "views used",mult
+   print "views     used",mult
+   print "views rejected",rej
 import operator
-def debugTrackFit(nEvents):
+def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=11):
+ matches={'good':[],'bad':[]}
  ut.bookHist(h,'residuals','all residuals',100,-1.,1.)
  fitFailures={}
  fitSuccess={}
- for n in range(nEvents):
+ for n in range(nStart,nStart+nEvents):
   rc = sTree.GetEvent(n)
-  if not findSimpleEvent(sTree): continue
-  tracks = findTracks(PR=11)
+  if simpleEvents:
+   if not findSimpleEvent(sTree): continue
+  tracks = findTracks(PR)
+  if singleTrack and len(tracks)!=1: continue
 # select RPC tracks with good Y info
   clusters, RPCtracks = muonTaggerClustering()
-  if len(RPCtracks[0])!=1: continue
-  if len(RPCtracks[0][1])<4: continue
-  Y = RPCtracks[0][1][0]
+  if len(RPCtracks[0])!=2 or len(RPCtracks[1])!=2: continue
+  X = RPCtracks[1][0]*zRPC1+RPCtracks[1][1]
+  Y = RPCtracks[0][0]*zRPC1+RPCtracks[0][1]
+  if abs(pos[0]-X)>5. : continue # not worth checking Y
   for atrack in tracks:
    rc,pos,mom = extrapolateToPlane(atrack,zRPC1)
+   delta = pos[1]-Y
+   print "event# %i difference in X,Y %5.3F %5.3F "%(n,pos[0]-X,delta)
+   if abs(delta)<10. :     matches['good'].append(n)
+   else :                  matches['bad'].append(n)
    if abs(pos[1]-Y)<50.: continue
    for m in range(atrack.getNumPointsWithMeasurement()):
      apoint = atrack.getPointWithMeasurement(m)
@@ -2601,6 +2670,9 @@ def debugTrackFit(nEvents):
   if fitSuccess.has_key(x[0]): r=fitFailures[x[0]]/float(fitSuccess[x[0]])
   print x[0],r
   rc=h['fitfail'].Fill(l,r)
+ print "Summary: good matches: %i   bad matches: %i    failure rate %5.2F"%(
+  len(matches['good']),len(matches['bad']),len(matches['bad'])/float(len(matches['bad'])+len(matches['good']) ) )
+ return matches
 
 def plotLinearResiduals():
  if not h.has_key('linearResiduals2dX'): 
@@ -2743,6 +2815,8 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
    trackCandidates = findTracks(PR)
    for aTrack in trackCandidates:
        matchedHits={1:{0:[],1:[]},2:{0:[],1:[]},3:{0:[],1:[]},4:{0:[],1:[]},5:{0:[],1:[]}}
+       st = aTrack.getFitStatus()
+       if not st.isFitConverged(): continue
        if not aTrack.getNumPointsWithMeasurement()>0: continue
        sta = aTrack.getFittedState(0)
        if sta.getMomMag() < 1.: continue
@@ -3316,7 +3390,7 @@ def grouper(iterable,grouping):
         prev = item
     if group:
         yield group
-
+import numpy
 def muonTaggerClustering():
  hitsPerStation={}
  clustersPerStation={}
@@ -3340,14 +3414,18 @@ def muonTaggerClustering():
      vbot,vtop = correctAlignmentRPC(test,l)
      clusCentre+=vbot[1-l]
     clusCentre=clusCentre/float(len(clustersPerStation[10*s+l][cl]))
-    clustersPerStation[10*s+l][cl]=[clustersPerStation[10*s+l][cl],clusCentre]
+    clustersPerStation[10*s+l][cl]=[clustersPerStation[10*s+l][cl],clusCentre,(vbot[2]+vtop[2])/2.]
  tracks = {}
  for l in range(2):
   allClusters = []
+  zpositions  = []
   for s in range(1,6):
+   if len(clustersPerStation[10*s+l])>1:continue # avoid combinatorics
    for cl in clustersPerStation[10*s+l]:
     allClusters.append(clustersPerStation[10*s+l][cl][1])
-  tracks[l] = dict(enumerate(grouper(allClusters,4), 1))
+    zpositions.append(clustersPerStation[10*s+l][cl][2])
+  if len(zpositions)>1:   tracks[l] = numpy.polyfit(zpositions,allClusters,1)
+  else: tracks[l]=[]
  return clustersPerStation,tracks
 
 def testForSameDetID(nEvent=-1,nTot=1000):
@@ -3703,14 +3781,12 @@ def recoStep1(PR=11):
   print "make suicid"
   os.system('kill '+str(os.getpid()))
 def anaResiduals():
-  sTree.SetBranchStatus("FitTracks",0)
-  plotBiasedResiduals(nEvent=0,nTot=sTree.GetEntries(),PR=11)
-  plotRPCExtrap(PR=11)
+  fitTracks(-1,False,False,PR=1)
+  plotRPCExtrap(PR=1)
   trackMult()
   norm = h['TrackMult'].GetEntries()
   print '*** Track Stats ***',norm
-  for n in range(1,5): print 'event track mult',n,':',h['TrackMult'].GetBinContent(n)/norm
-  ut.writeHists(h,'histos-residuals-'+rname)
+  ut.writeHists(h,'histos-analysis-'+rname)
 if options.command == "":
  print "existing methods"
  print " --- plotHitMaps(): hitmaps / layer, TDC / layer, together with list of noisy channels"
@@ -3757,6 +3833,7 @@ elif options.command == "recoStep1":
   recoStep1(PR=11)
 elif options.command == "anaResiduals":
   importRTrel()
+  importAlignmentConstants()
   anaResiduals()
   print "finished with analysis step",options.listOfFiles
 elif options.command == "alignment":
