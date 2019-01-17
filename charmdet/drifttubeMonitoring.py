@@ -24,8 +24,9 @@ cuts['Ndf'] = 9
 cuts['deltaNdf'] = 2
 cuts['yMax']     = 5.
 cuts['tot']      = 9.
-cuts['hitDist'] = 2.5
+cuts['hitDist'] = 5.
 cuts['minLayersUV'] = 2
+cuts['maxClusterSize'] = 2
 
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
@@ -1911,7 +1912,7 @@ def findDTClusters(removeBigClusters=True):
       for l in range(4):
        clustersPerLayer[l] = dict(enumerate(grouper(allHits[l].keys(),1), 1))
        for Acl in clustersPerLayer[l]:
-        if len(clustersPerLayer[l][Acl])>3: # kill cross talk brute force
+        if len(clustersPerLayer[l][Acl])>cuts['maxClusterSize']: # kill cross talk brute force
            for x in clustersPerLayer[l][Acl]:
             dead = allHits[l].pop(x)
             if Debug: print "pop",s,view,l,x
@@ -2106,7 +2107,6 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            rc = h['delta_mean_uv'].Fill(delta)
            if abs(delta)>cuts['hitDist']:  stereoHits['u'].pop(x)
 # new idea, calulate average of y coordinates, reject hits with distance > 2.5cm!!!!!
-
         for nv in range(len(clusters[2]['_v'])):
          mean_v = 0
          n_v = 0 
@@ -2132,6 +2132,12 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
 #
          if len(stereoHits['u'])<cuts['minLayersUV'] or len(stereoHits['v'])<cuts['minLayersUV']: continue
          slopeA,bA = getSlopeY(stereoHits['u'],stereoHits['v'])
+         if Debug: 
+            print "y slope",slopeA,bA
+            print '----> u'
+            for x in stereoHits['u']:  print stereoHits['u'][x][3],stereoHits['u'][x][4]
+            print '----> v'
+            for x in stereoHits['v']:  print stereoHits['v'][x][3],stereoHits['v'][x][4]
          # remove unphysical combinations, pointing outside t3
          yAtT3 = T3z*slopeA + bA
          if Debug: print "uv",nu,nv,yAtT3,T3ybot ,T3ytop , (yAtT3 - T3ybot)  > 2*cuts['yMax'] ,(T3ytop - yAtT3) > 2*cuts['yMax'] 
@@ -2182,6 +2188,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
     if withMaterial:
      for aTrack in trackCandidates:
       fitter.processTrack(aTrack)
+      if Debug: printTrackMeasurements(aTrack)
 # switch on trackfit material effect for final fit
    return trackCandidates
 
@@ -2375,7 +2382,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
            ut.reportError(error)
            continue
           distance = 0
-          if withTDC and (RTrelations.has_key(rname) or hasattr(sTree,'MCTrack')):
+          if withTDC or hasattr(sTree,'MCTrack')):
            distance = RT(hit,hit.GetDigi())
           tmp = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
           tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
@@ -2514,6 +2521,38 @@ def plotSigmaRes():
  ROOT.gROOT.FindObject('c1').cd()
  h['resDistr'].Draw()
 
+def analyzeSingleDT():
+ keys = xpos.keys()
+ keys.sort()
+ for detID in keys:
+    histo = h['biasResX_'+str(detID)+'_projx']
+    mean,rms = -999.,0.
+    if histo.GetSumOfWeights()>25:
+     fitResult = histo.Fit('gaus','SQ','',-0.5,0.5)
+     rc = fitResult.Get()
+     fitFunction = histo.GetFunction('gauss')
+     if not fitFunction : fitFunction = myGauss
+     if not rc:
+        # print "simple gaus fit failed"
+        fitFunction.SetParameter(0,histo.GetEntries()*histo.GetBinWidth(1))
+        fitFunction.SetParameter(1,0.)
+        fitFunction.SetParameter(2,0.1)
+        fitFunction.SetParameter(3,1.)
+     else:
+        fitFunction.SetParameter(0,rc.GetParams()[0]*ROOT.TMath.Sqrt(2*ROOT.TMath.Pi())*rc.GetParams()[2])
+        fitFunction.SetParameter(1,rc.GetParams()[1])
+        fitFunction.SetParameter(2,rc.GetParams()[2])
+        fitFunction.SetParameter(3,0.)
+     fitResult = histo.Fit(fitFunction,'SQ','',-0.3,0.3)
+     rc = fitResult.Get()
+     if rc:
+        mean = rc.GetParams()[1]
+        rms  = rc.GetParams()[2]
+    uf =  histo.GetBinContent(0)
+    of = histo.GetBinContent(histo.GetNbinsX()+1)
+    if mean < -900: print "channel:%i : not enough statistics, integral=%i, under- over-flow: %i,%i"%(detID,histo.GetSumOfWeights(),uf,of)
+    else: print "channel:%i : mean=%6.3Fmm,  sigma=%6.3Fmm"%(detID,mean*10,rms*10)
+
 def plot2dResiduals(minEntries=-1):
  if not h.has_key('biasedResiduals2dX'): 
       ut.bookCanvas(h,key='biasedResiduals2dX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
@@ -2620,9 +2659,10 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=11):
   if len(RPCtracks[0])!=2 or len(RPCtracks[1])!=2: continue
   X = RPCtracks[1][0]*zRPC1+RPCtracks[1][1]
   Y = RPCtracks[0][0]*zRPC1+RPCtracks[0][1]
-  if abs(pos[0]-X)>5. : continue # not worth checking Y
   for atrack in tracks:
    rc,pos,mom = extrapolateToPlane(atrack,zRPC1)
+   if not rc: continue 
+   if abs(pos[0]-X)>5. : continue # not worth checking Y
    delta = pos[1]-Y
    print "event# %i difference in X,Y %5.3F %5.3F "%(n,pos[0]-X,delta)
    if abs(delta)<10. :     matches['good'].append(n)
@@ -3768,7 +3808,7 @@ def recoStep1(PR=11):
     else: theTracks = findTracks(PR)
     for aTrack in theTracks:
      nTrack   = fGenFitArray.GetEntries()
-     aTrack.prune("CFL")
+     aTrack.prune("CFL") # aTrack.prune("CURM")  # FL keep first and last point only, C deleteTrackRep, W deleteRawMeasurements, I U R M
      fGenFitArray[nTrack] = aTrack
     fitTracks.Fill()
     for aTrack in theTracks: aTrack.Delete()
@@ -3799,7 +3839,7 @@ if options.command == "":
  print " --- plotLinearResiduals(), to be used for zero field"
  print " --- plotRPCExtrap(nstart,nevents), extrapolate track to RPC hits"
  print " --- printScalers()"
- print " --- init(): do boostrapping, determine RT relation using fitted tracks, do plotBiasedResiduals and plotRPCExtrap with TDC"
+ print " --- init(): outdated! do boostrapping, determine RT relation using fitted tracks, do plotBiasedResiduals and plotRPCExtrap with TDC"
  print " --- momResolution(), with MC data"
 
  vetoLayer = []
@@ -3810,7 +3850,7 @@ if options.command == "":
   if os.path.exists(database):
    RTrelations = pickle.load(open(database))
    if not RTrelations.has_key(rname):
-    print "You should run init() to determine the RT relations"
+    print "You should run init() to determine the RT relations or use _RT file"
    else:
     h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
     for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
@@ -3847,7 +3887,8 @@ elif options.command == "alignment":
    plotRPCExtrap()
    trackMult()
   ut.writeHists(h,'histos-residuals-'+rname)
-elif options.command == "plotResiudals":
+elif options.command == "plotResiduals":
+  print "reading histograms with residuals"
   ut.readHists(h,options.inputFile)
   plotBiasedResiduals(onlyPlotting=True)
   if h.has_key('RPCResY_10'):
