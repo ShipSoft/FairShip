@@ -2382,7 +2382,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
            ut.reportError(error)
            continue
           distance = 0
-          if withTDC or hasattr(sTree,'MCTrack')):
+          if withTDC or hasattr(sTree,'MCTrack'):
            distance = RT(hit,hit.GetDigi())
           tmp = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
           tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
@@ -3889,7 +3889,7 @@ elif options.command == "alignment":
   ut.writeHists(h,'histos-residuals-'+rname)
 elif options.command == "plotResiduals":
   print "reading histograms with residuals"
-  ut.readHists(h,options.inputFile)
+  ut.readHists(h,options.listOfFiles)
   plotBiasedResiduals(onlyPlotting=True)
   if h.has_key('RPCResY_10'):
    plotRPCExtrap(onlyPlotting=True)
