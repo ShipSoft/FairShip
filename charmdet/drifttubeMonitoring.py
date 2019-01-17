@@ -1514,6 +1514,24 @@ def displayTrack(theTrack,debug=False):
      h['dispTrackY'][nt].Draw('same')
      h[ 'simpleDisplay'].Update()
      dispTrack3D(theTrack)
+def plotMuonTaggerTrack(muTracks):
+     for view in ['X','Y']:
+      for muTrack in muTracks[view]:
+       h['simpleDisplay'].cd(1)
+       nt = len(h['dispTrack'])
+       h['dispTrack'].append( ROOT.TGraph(2) )
+       h['dispTrackY'].append( ROOT.TGraph(2) ) # tricky, framework expects equal number of x and y projections
+       zStart = 850.
+       x = muTrack[0]*zStart+muTrack[1]
+       h['dispTrack'][nt].SetPoint(0,zStart,x)
+       zEnd = 1180.
+       x = muTrack[0]*zEnd+muTrack[1]
+       h['dispTrack'][nt].SetPoint(1,zEnd,x)
+       if view == 'X': h['dispTrack'][nt].SetLineColor(ROOT.kRed)
+       else:  h['dispTrack'][nt].SetLineColor(ROOT.kBlue)
+       h['dispTrack'][nt].SetLineWidth(2)
+       h['dispTrack'][nt].Draw('same')
+     h[ 'simpleDisplay'].Update()
 
 def findSimpleEvent(event,nmin=2,nmax=6):
    spectrHitsSorted = sortHits(event)
@@ -1544,6 +1562,8 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
    if withDisplay:
      print "event #",n
      plotEvent(n)
+     RPCclusters, RPCtracks = muonTaggerClustering()
+     plotMuonTaggerTrack(RPCtracks)
    if PR==3: theTracks = bestTracks() 
    else:     theTracks = findTracks(PR)
    for aTrack in theTracks:
@@ -2656,9 +2676,10 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=11):
   if singleTrack and len(tracks)!=1: continue
 # select RPC tracks with good Y info
   clusters, RPCtracks = muonTaggerClustering()
-  if len(RPCtracks[0])!=2 or len(RPCtracks[1])!=2: continue
-  X = RPCtracks[1][0]*zRPC1+RPCtracks[1][1]
-  Y = RPCtracks[0][0]*zRPC1+RPCtracks[0][1]
+  if len(RPCtracks['X'])>1 or len(RPCtracks['Y'])>1: print n,len(RPCtracks['X']),len(RPCtracks['Y'])
+  if len(RPCtracks['X'])!=1 or len(RPCtracks['Y'])!=1: continue
+  X = RPCtracks['X'][0][0]*zRPC1+RPCtracks['X'][0][1]
+  Y = RPCtracks['Y'][0][0]*zRPC1+RPCtracks['Y'][0][1]
   for atrack in tracks:
    rc,pos,mom = extrapolateToPlane(atrack,zRPC1)
    if not rc: continue 
@@ -3459,13 +3480,15 @@ def muonTaggerClustering():
  for l in range(2):
   allClusters = []
   zpositions  = []
+  if l==0: view = 'Y' 
+  else: view = 'X'
+  tracks[view] = []
   for s in range(1,6):
-   if len(clustersPerStation[10*s+l])>1:continue # avoid combinatorics
    for cl in clustersPerStation[10*s+l]:
+    if len(clustersPerStation[10*s+l])>1:continue # to avoid combinatorics for the moment
     allClusters.append(clustersPerStation[10*s+l][cl][1])
     zpositions.append(clustersPerStation[10*s+l][cl][2])
-  if len(zpositions)>1:   tracks[l] = numpy.polyfit(zpositions,allClusters,1)
-  else: tracks[l]=[]
+  if len(zpositions)>1:   tracks[view].append(numpy.polyfit(zpositions,allClusters,1))
  return clustersPerStation,tracks
 
 def testForSameDetID(nEvent=-1,nTot=1000):
