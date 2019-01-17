@@ -27,6 +27,7 @@ cuts['tot']      = 9.
 cuts['hitDist'] = 5.
 cuts['minLayersUV'] = 2
 cuts['maxClusterSize'] = 2
+cuts['delxAtGoliath'] = 8.
 
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
@@ -1751,38 +1752,21 @@ def fitTrack(hitlist,Pstart=3.):
    rc = h['pxpy'].Fill(Px/Pz,Py/Pz)
    return theTrack
 
-def getSlope(cl1,cl2):
-# linear fit, minimize distances in X
-    zx,zmx,zsq,zmz,n=0,0,0,0,0
-    xmean,zmean=0,0
+def getSlopes(cl1,cl2,view='_x'):
+    x,z=[],[]
     for cl in [cl1,cl2]:
      for hit in cl:
-       xmean+=hit[1]
-       zmean+=hit[2]
-       zx+=hit[1]*hit[2]
-       zsq+=hit[2]*hit[2]
-       n+=1
-    A = (zx-zmean*xmean/float(n))/(zsq-zmean*zmean/float(n)) # checked 19 September 2018
-    b = (xmean-A*zmean)/float(n) # checked 19 September 2018
-    return A,b
-def getSlopeY(cl1,cl2):
-# linear fit, minimize distances in X
-    zx,zmx,zsq,zmz,n=0,0,0,0,0
-    xmean,zmean=0,0
-    for cl in [cl1,cl2]:
-     for hit in cl:
-       xmean+=cl[hit][3]
-       zmean+=cl[hit][4]
-       zx+=cl[hit][4]*cl[hit][3]
-       zsq+=cl[hit][4]*cl[hit][4]
-       n+=1
-    A = (zx-zmean*xmean/float(n))/(zsq-zmean*zmean/float(n)) # checked 19 September 2018
-    b = (xmean-A*zmean)/float(n) # checked 19 September 2018
-    return A,b
+      if view=='_x':
+        x.append(hit[1])
+        z.append(hit[2])
+      else:
+        x.append(cl[hit][3])
+        z.append(cl[hit][4])
+    line = numpy.polyfit(z,x,1)
+    return line[0],line[1]
 
 Debug = False
-delxAtGoliath=8.
-yMatching = 2.
+
 minHitsPerCluster, maxHitsPerCluster = 2,10
 topA,botA = ROOT.TVector3(),ROOT.TVector3()
 topB,botB = ROOT.TVector3(),ROOT.TVector3()
@@ -1886,7 +1870,7 @@ def plotTracklets(track_hits):
     detID = hits['detID']/10000000
     if detID>2: detID-=2
     clus[detID].append([0,(hits['xtop']+hits['xbot'])/2.,hits['z']])
-   slopeA,bA = getSlope(clus[1],clus[2])
+   slopeA,bA = getSlopes(clus[1],clus[2])
    x1 = zgoliath*slopeA+bA
    nt = len(h['dispTrackSeg'])
    h['dispTrackSeg'].append( ROOT.TGraph(2) )
@@ -2015,6 +1999,19 @@ def findDTClusters(removeBigClusters=True):
            clusters[s][view].pop(ncl)
          else: ncl+=1
      rc = h['clsN'].Fill(ncl)
+# eventually split too big clusters for stero layers:
+   for s in [1,2]:
+    for view in views[s]:
+     if view=='_x':continue
+     tmp = {}
+     for cl in clusters[s][view]:
+      if len(cl)>5:
+       for hit in cl: 
+         if not tmp.has_key(hit[3]):tmp[hit[3]]=[]
+         tmp[hit[3]].append(hit)
+     for n in tmp:
+       if len(tmp[n])>1:
+         clusters[s][view].append(tmp[n])
    if Debug: 
     for s in range(1,5):
      for view in views[s]:
@@ -2057,24 +2054,26 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
     # list of lists of cluster1, cluster2, x
     t3t4cand = []
     h['dispTrackSeg'] = []
+    nTrx = -1
     for cl1 in clusters[1]['_x']:
      for cl2 in clusters[2]['_x']:
-      slopeA,bA = getSlope(cl1,cl2)
+      slopeA,bA = getSlopes(cl1,cl2)
       x1 = zgoliath*slopeA+bA
       t1t2cand.append([cl1,cl2,x1,slopeA,bA])
+      nTrx+=1
       if Debug:
        nt = len(h['dispTrackSeg'])
        h['dispTrackSeg'].append( ROOT.TGraph(2) )
        h['dispTrackSeg'][nt].SetPoint(0,0.,bA)
        h['dispTrackSeg'][nt].SetPoint(1,400.,slopeA*400+bA)
-       h['dispTrackSeg'][nt].SetLineColor(ROOT.kRed)
+       h['dispTrackSeg'][nt].SetLineColor(ROOT.kRed+nTrx)
        h['dispTrackSeg'][nt].SetLineWidth(2)
        h['simpleDisplay'].cd(1)
        h['dispTrackSeg'][nt].Draw('same')
        nt+=1
     for cl1 in clusters[3]['_x']:
      for cl2 in clusters[4]['_x']:
-      slopeA,bA = getSlope(cl1,cl2)
+      slopeA,bA = getSlopes(cl1,cl2)
       x1 = zgoliath*slopeA+bA
       t3t4cand.append([cl1,cl2,x1,slopeA,bA])
       if Debug:
@@ -2093,6 +2092,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
     nTrx = -1
     for nt1t2 in range(len(t1t2cand)):
      t1t2 = t1t2cand[nt1t2]
+     nTrx+=1
      for nt3t4 in range(len(t3t4cand)):
       t3t4 = t3t4cand[nt3t4]
       delx = t3t4[2]-t1t2[2]
@@ -2100,8 +2100,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
 # check also extrapolations at t1 t2, or t3 t4
 # makes only sense for zero field
       if linearTrackModel: makeLinearExtrapolations(t1t2,t3t4)
-      if abs(delx) < delxAtGoliath:
-       nTrx+=1
+      if abs(delx) < cuts['delxAtGoliath']:
 # check for matching u and v hits, make uv combination and check extrap to 
        stereoHits = {}
        for nu in range(len(clusters[1]['_u'])):
@@ -2151,7 +2150,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            if abs(delta)>cuts['hitDist']:  stereoHits['v'].pop(x)
 #
          if len(stereoHits['u'])<cuts['minLayersUV'] or len(stereoHits['v'])<cuts['minLayersUV']: continue
-         slopeA,bA = getSlopeY(stereoHits['u'],stereoHits['v'])
+         slopeA,bA = getSlopes(stereoHits['u'],stereoHits['v'],'_uv')
          if Debug: 
             print "y slope",slopeA,bA
             print '----> u'
@@ -2666,6 +2665,8 @@ import operator
 def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=11):
  matches={'good':[],'bad':[]}
  ut.bookHist(h,'residuals','all residuals',100,-1.,1.)
+ ut.bookHist(h,'extrapX','extrap in X',100,-20.,20.)
+ ut.bookHist(h,'extrapY','extrap in Y',100,-20.,20.)
  fitFailures={}
  fitSuccess={}
  for n in range(nStart,nStart+nEvents):
@@ -2685,9 +2686,13 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=11):
    if not rc: continue 
    if abs(pos[0]-X)>5. : continue # not worth checking Y
    delta = pos[1]-Y
-   print "event# %i difference in X,Y %5.3F %5.3F "%(n,pos[0]-X,delta)
+   if Debug: print "event# %i difference in X,Y %5.3F %5.3F "%(n,pos[0]-X,delta)
+   rc = h['extrapX'].Fill(pos[0]-X)
+   rc = h['extrapY'].Fill(delta)
    if abs(delta)<10. :     matches['good'].append(n)
-   else :                  matches['bad'].append(n)
+   else :                  
+      matches['bad'].append(n)
+      print "event# %i difference in X,Y %5.3F %5.3F "%(n,pos[0]-X,delta)
    if abs(pos[1]-Y)<50.: continue
    for m in range(atrack.getNumPointsWithMeasurement()):
      apoint = atrack.getPointWithMeasurement(m)
@@ -2733,6 +2738,8 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=11):
   rc=h['fitfail'].Fill(l,r)
  print "Summary: good matches: %i   bad matches: %i    failure rate %5.2F"%(
   len(matches['good']),len(matches['bad']),len(matches['bad'])/float(len(matches['bad'])+len(matches['good']) ) )
+ ROOT.gROOT.FindObject('c1').cd()
+ h['extrapY'].Draw()
  return matches
 
 def plotLinearResiduals():
