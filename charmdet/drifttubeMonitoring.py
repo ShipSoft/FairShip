@@ -28,6 +28,7 @@ cuts['hitDist'] = 5.
 cuts['minLayersUV'] = 2
 cuts['maxClusterSize'] = 2
 cuts['delxAtGoliath'] = 8.
+cuts['lateArrivalsToT'] = 50.
 
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
@@ -1097,8 +1098,51 @@ def sortHits(event,flag = True):
     spectrHitsSorted[view][statnb][pnb*2+lnb].append(hit)
  return spectrHitsSorted
 
+def MakeKeysToDThits(minToT=-999):
+  keysToDThits={}
+  key = -1
+  for hit in sTree.Digi_MufluxSpectrometerHits:
+   key+=1
+   #if not hit.hasTimeOverThreshold(): continue
+   detID=hit.GetDetectorID()
+   if keysToDThits.has_key(detID): 
+     print "MakeKeysToDThits, non unique Digi_MufluxSpectrometerHits"
+   keysToDThits[detID]=[key]
+  key = -1
+  for hit in sTree.Digi_LateMufluxSpectrometerHits:
+   key+=1
+   if not hit.hasTimeOverThreshold(): continue
+   if hit.GetTimeOverThreshold()<minToT : continue
+   detID=hit.GetDetectorID()
+   if not keysToDThits.has_key(detID): 
+     print "MakeKeysToDThits, late hit but no first one",detID
+     keysToDThits[detID]=[-1]
+   keysToDThits[detID].append(key)
+  return keysToDThits
+
+def studyLateDTHits(nevents=1000,nStart=0):
+ ut.bookHist(h,'multLateDTHits','multiplicity of late DT hits',11,-1.5,9.5)
+ ut.bookHist(h,'ToverTvsTDC','Time over threshold vs tdc',300,-1000.,2000.,300,-1000.,2000.)
+ nHits=0
+ for n in range(nStart,nevents):
+   rc=sTree.GetEvent(n)
+   keysToDThits=MakeKeysToDThits()
+   for channel in keysToDThits:
+     if keysToDThits[channel][0]<0: rc=h['multLateDTHits'].Fill(-1)
+     else: 
+      nHits+=1
+      rc=h['multLateDTHits'].Fill(len(keysToDThits[channel])-1)
+      for n in range(1,len(keysToDThits[channel])):
+        key = keysToDThits[channel][n]
+        aHit = sTree.Digi_LateMufluxSpectrometerHits[key]
+        rc=h['ToverTvsTDC'].Fill( aHit.GetTimeOverThreshold() ,aHit.GetDigi())
+ ROOT.gROOT.FindObject('c1').cd()
+ h['multLateDTHits'].Draw()
+ print "nHits",nHits
 def nicePrintout(hits):
   print "station layer channels tdc time-over-threshold ..."
+  lateText = []
+  keysToDThits=MakeKeysToDThits(100)
   for s in range(1,5):
    for v in ['_x','_u','_v']:
     if v!='_x' and s>2: continue
@@ -1111,7 +1155,17 @@ def nicePrintout(hits):
       statnb,vnb,pnb,lnb,view,channelID,tdcId = stationInfo(hit)
       txt+=str(channelID)+' '
       tdc+="%5.0F %5.0F "%(hit.GetDigi(),hit.GetTimeOverThreshold())
+      lateArrivals = len(keysToDThits[hit.GetDetectorID()])
+      if lateArrivals>1: 
+       tmp = str(s) + ' '+v+' '+str(l)+' : '+str(channelID)+' '
+       for n in range(1,len(keysToDThits[hit.GetDetectorID()])):
+        key = keysToDThits[hit.GetDetectorID()][n]
+        lHit = sTree.Digi_LateMufluxSpectrometerHits[key]
+        tmp+="%5.0F %5.0F "%(lHit.GetDigi(),lHit.GetTimeOverThreshold())
+       lateText.append(tmp)
      print "%-20s %s"%(txt,tdc)
+  print "---- channels with late hits"
+  for txt in lateText: print txt
 
 def plotHitMaps(onlyPlotting=False):
  noisyChannels = []
@@ -2037,6 +2091,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
     return trackCandidates
 # switch of trackfit material effect in first pass
    materialEffects(False)
+   keysToDThits=MakeKeysToDThits(cuts['lateArrivalsToT'])
    test = ROOT.MufluxSpectrometerHit(30002001,0.)
    test.MufluxSpectrometerEndPoints(vbot,vtop)
    T3z = vbot[2]
@@ -2180,6 +2235,14 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
           for cl in stereoHits[p]: hitList.append(stereoHits[p][cl][0])
          for p in range(2):
           for cl in t3t4[p]: hitList.append(cl[0])
+# add late arrivals
+         tmp=[]
+         for x in hitList:
+           l =  len(keysToDThits[x.GetDetectorID()])
+           for k in range(1,l):
+            key = keysToDThits[x.GetDetectorID()][k]
+            tmp.append(sTree.Digi_LateMufluxSpectrometerHits[key])
+         hitList=hitList+tmp
          if linearTrackModel: 
           trackCandidates = hitList
          else:
@@ -3830,17 +3893,25 @@ def recoStep1(PR=11):
   fGenFitArray = ROOT.TClonesArray("genfit::Track") 
   fGenFitArray.BypassStreamer(ROOT.kFALSE)
   fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
+
+  fTrackInfoArray = ROOT.TClonesArray("TrackInfo") 
+  fTrackInfoArray.BypassStreamer(ROOT.kFALSE)
+  TrackInfos      = sTree.Branch("TrackInfos", fTrackInfoArray,32000,-1)
+
   for n in range(sTree.GetEntries()):
     if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName(),time.ctime()
     rc = sTree.GetEvent(n)
     fGenFitArray.Clear()
+    fTrackInfoArray.Clear()
     if PR==3: theTracks = bestTracks()
     else: theTracks = findTracks(PR)
     for aTrack in theTracks:
      nTrack   = fGenFitArray.GetEntries()
+     fTrackInfoArray[nTrack] = ROOT.TrackInfo(aTrack)
      aTrack.prune("CFL") # aTrack.prune("CURM")  # FL keep first and last point only, C deleteTrackRep, W deleteRawMeasurements, I U R M
      fGenFitArray[nTrack] = aTrack
     fitTracks.Fill()
+    TrackInfos.Fill()
     for aTrack in theTracks: aTrack.Delete()
   sTree.Write()
   makeAlignmentConstantsPersistent()
