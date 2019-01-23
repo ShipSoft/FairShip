@@ -44,6 +44,7 @@ struct ChannelId {
       bool scintillatorA = false;
       bool scintillatorB = false;
       bool master_trigger = false;
+      bool blacklisted = false;
       int module = 0;
       int station = 0;
       int channel_offset = 0;
@@ -53,6 +54,7 @@ struct ChannelId {
          scintillatorA = channel == 127;
          station = (channel < 96) ? 1 : 2;
          module = (channel / 48) % 2;
+         blacklisted = channel >= 120;
          break;
       case 1:
          trigger = channel == 0;
@@ -60,6 +62,8 @@ struct ChannelId {
          station = (channel < 80) ? 2 : 4;
          channel_offset = (channel < 80) ? 112 : 1;
          channel_offset += (channel >= 32 && channel < 48) ? +16 : (channel >= 48 && channel < 64) ? -16 : 0;
+         blacklisted = channel < 8;
+         blacklisted |= channel >= 128;
          break;
       case 2:
          trigger = channel == 126;
@@ -67,6 +71,7 @@ struct ChannelId {
          station = 4;
          channel_offset = -119;
          module = (channel / 48) % 3 + 1;
+         blacklisted = channel >= 120;
          break;
       case 3:
          trigger = channel == 0;
@@ -74,6 +79,8 @@ struct ChannelId {
          station = (channel < 32) ? 4 : 3;
          channel_offset = (channel < 32) ? 1 : 33;
          module = ((channel + 16) / 48 + 3) % 4;
+         blacklisted = channel < 8;
+         blacklisted |= channel >= 128;
          break;
       case 4:
          trigger = channel == 96;
@@ -83,6 +90,7 @@ struct ChannelId {
          module = (channel / 48) % 2 + 2;
          channel_offset = (channel < 48) * 33;
          station = 3;
+         blacklisted = channel >= 96;
          break;
       }
       if (trigger) {
@@ -95,6 +103,8 @@ struct ChannelId {
          return 6;
       } else if (scintillatorB) {
          return 7;
+      } else if(blacklisted) {
+         return -2;
       }
       bool reverse_x = !(station == 2 || (TDC == 4 && channel >= 48));
       int _channel = channel + channel_offset;
