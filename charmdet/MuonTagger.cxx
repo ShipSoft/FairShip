@@ -481,14 +481,29 @@ void MuonTagger::EndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop) {
 // method to get strip endpoints from TGeoNavigator
   Int_t statnb = fDetectorID/10000;
   Int_t orientationnb = (fDetectorID-statnb*10000)/1000;  //1=vertical, 0=horizontal
+  Int_t stripnb = fDetectorID-statnb*10000-orientationnb*1000;
   if (orientationnb > 1) {
      std::cout << "MuonTagger::StripEndPoints, not a sensitive volume "<<fDetectorID<<std::endl;              
      return;
   }
   TString stat="VMuonBox_1/VSensitive";stat+=+statnb;stat+="_";stat+=statnb;
   TString striptype;
-  if (orientationnb == 0) { striptype = "Hstrip_";}
-  if (orientationnb == 1) { striptype = "Vstrip_";}
+  if (orientationnb == 0) { 
+     if ((stripnb==1) || (stripnb==fNHstrips)){
+        striptype = "Hstrip_ext_";}
+     else { striptype = "Hstrip_"; }
+  }   
+  if (orientationnb == 1) { 
+     if (stripnb==1)  {
+       striptype = "Vstrip_R_";
+     }
+     else if (stripnb==fNVstrips) { 
+       striptype = "Vstrip_L_";
+     }     
+     else {
+       striptype = "Vstrip_";
+     }
+  }   
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
   TString path = "";path+="/";path+=stat;path+="/";path+=fDetectorID;
   Bool_t rc = nav->cd(path);
