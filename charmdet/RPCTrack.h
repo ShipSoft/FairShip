@@ -47,6 +47,7 @@ class RPCTrack : public TObject
 #endif // for BOOST serialization
     Float_t fm;
     Float_t fb;
+   ClassDef(RPCTrack, 1)
 };
 
 #endif

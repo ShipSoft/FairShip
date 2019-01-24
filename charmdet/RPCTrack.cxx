@@ -2,15 +2,14 @@
 
 // -----   Default constructor   -------------------------------------------
 RPCTrack::RPCTrack()
-  : TObject()
+  : TObject(),fm(0),fb(0)
 {
 }
 
 // -----   Standard constructor   ------------------------------------------
 RPCTrack::RPCTrack(Float_t m, Float_t b)
+  : TObject(),fm(m),fb(b)
 {
-  fm=m;
-  fb=b;
 }
 
 // -----   Copy constructor   ----------------------------------------------
