@@ -7,6 +7,7 @@ stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
 deadChannelsForMC = [10112001, 20112003, 30002041, 30012026, 30102025, 30112013, 30112018, 40012014]
+ineffiency = {1:0.1,2:0.1,3:0.1,4:0.1,5:0.1}
 
 # function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
@@ -54,6 +55,8 @@ class MufluxDigi:
         self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
         self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
         self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
+        self.digiLateMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
+        self.digiLateMufluxSpectrometerBranch   = self.sTree.Branch("Digi_LateMufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
         #muon taggger
         if self.sTree.GetBranch("MuonTaggerPoint"):
             self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
@@ -76,8 +79,10 @@ class MufluxDigi:
         self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
         self.eventHeader.Fill()
         self.digiMufluxSpectrometer.Delete()
+        self.digiLateMufluxSpectrometer.Delete()
         self.digitizeMufluxSpectrometer()
         self.digiMufluxSpectrometerBranch.Fill()
+        self.digiLateMufluxSpectrometerBranch.Fill()
         self.digiMuonTagger.Delete() # produces a lot of warnings, rpc station 0
         self.digitizeMuonTagger()
         self.digiMuonTaggerBranch.Fill()
@@ -169,7 +174,6 @@ class MufluxDigi:
         hitsPerDetId = {}
 
         for aMCPoint in self.sTree.MufluxSpectrometerPoint:
-            if aMCPoint.GetDetectorID() in deadChannelsForMC: continue
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             if self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
@@ -181,6 +185,9 @@ class MufluxDigi:
                     hitsPerDetId[detID] = index
             else:
                 hitsPerDetId[detID] = index
+            if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
+            station = int(aMCPoint.GetDetectorID()/10000000)
+            if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
             index+=1
 
     def finish(self):
