@@ -7,6 +7,8 @@ stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
 deadChannelsForMC = [10112001, 20112003, 30002041, 30012026, 30102025, 30112013, 30112018, 40012014]
+ineffiency = {1:0.1,2:0.1,3:0.1,4:0.1,5:0.1}
+
 # defining constants for rpc properties
 STRIP_XWIDTH = 0.8625  # internal STRIP V, WIDTH, in cm
 EXT_STRIP_XWIDTH_L = 0.9625  # nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
@@ -14,6 +16,7 @@ EXT_STRIP_XWIDTH_R = 0.86  # measured Right external STRIP V, WIDTH,in cm (beam 
 V_STRIP_OFF = 0.200
 NR_VER_STRIPS = 184
 total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
+reduced_width = total_width - (EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R)
 
 # function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
@@ -23,7 +26,7 @@ def StripX(x):
     elif x >  total_width/2. - EXT_STRIP_XWIDTH_R: strip_x = 1
     else:
       x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
-      strip_x = -int(x_start/182.)+1
+      strip_x = -int(x_start/reduced_width*182.)+1
       if not (0 < strip_x <= NR_VER_STRIPS-1):
         print "WARNING: X strip outside range!",x,strip_x
         strip_x = 0
@@ -58,6 +61,8 @@ class MufluxDigi:
         self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
         self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
         self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
+        self.digiLateMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
+        self.digiLateMufluxSpectrometerBranch   = self.sTree.Branch("Digi_LateMufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
         #muon taggger
         if self.sTree.GetBranch("MuonTaggerPoint"):
             self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
@@ -80,13 +85,15 @@ class MufluxDigi:
         self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
         self.eventHeader.Fill()
         self.digiMufluxSpectrometer.Delete()
+        self.digiLateMufluxSpectrometer.Delete()
         self.digitizeMufluxSpectrometer()
         self.digiMufluxSpectrometerBranch.Fill()
+        self.digiLateMufluxSpectrometerBranch.Fill()
         self.digiMuonTagger.Delete() # produces a lot of warnings, rpc station 0
         self.digitizeMuonTagger()
         self.digiMuonTaggerBranch.Fill()
 
-    def digitizeMuonTagger(self, fake_clustering=True):
+    def digitizeMuonTagger(self, fake_clustering=False):
 
         station = 0
         strip = 0
@@ -173,7 +180,6 @@ class MufluxDigi:
         hitsPerDetId = {}
 
         for aMCPoint in self.sTree.MufluxSpectrometerPoint:
-            if aMCPoint.GetDetectorID() in deadChannelsForMC: continue
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             if self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
@@ -185,6 +191,9 @@ class MufluxDigi:
                     hitsPerDetId[detID] = index
             else:
                 hitsPerDetId[detID] = index
+            if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
+            station = int(aMCPoint.GetDetectorID()/10000000)
+            if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
             index+=1
 
     def finish(self):
