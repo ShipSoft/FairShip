@@ -22,8 +22,8 @@ reduced_width = total_width - (EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R)
 def StripX(x):
     if x < -total_width/2. or x > total_width/2.:
         print "WARNING: x coordinate outside sensitive volume!",x
-    if x <  -total_width/2.  + EXT_STRIP_XWIDTH_L: strip_x = 184
-    elif x >  total_width/2. - EXT_STRIP_XWIDTH_R: strip_x = 1
+    if x <  -total_width/2.  + EXT_STRIP_XWIDTH_L + V_STRIP_OFF/2. : strip_x = 184
+    elif x >  total_width/2. - EXT_STRIP_XWIDTH_R - V_STRIP_OFF/2. : strip_x = 1
     else:
       x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
       strip_x = -int(x_start/reduced_width*182.)+1
@@ -181,6 +181,7 @@ class MufluxDigi:
 
         for aMCPoint in self.sTree.MufluxSpectrometerPoint:
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
+            aHit.setValid()
             if self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
