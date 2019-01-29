@@ -9,20 +9,26 @@ start = ROOT.TVector3()
 deadChannelsForMC = [10112001, 20112003, 30002041, 30012026, 30102025, 30112013, 30112018, 40012014]
 ineffiency = {1:0.1,2:0.1,3:0.1,4:0.1,5:0.1}
 
+# defining constants for rpc properties
+STRIP_XWIDTH = 0.8625  # internal STRIP V, WIDTH, in cm
+EXT_STRIP_XWIDTH_L = 0.9625  # nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
+EXT_STRIP_XWIDTH_R = 0.86  # measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
+V_STRIP_OFF = 0.200
+NR_VER_STRIPS = 184
+total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
+reduced_width = total_width - (EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R)
+
 # function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
-    # defining constants for rpc properties
-    STRIP_XWIDTH = 0.8625  # internal STRIP V, WIDTH, in cm
-    EXT_STRIP_XWIDTH_L = 0.9625  # nominal (R&L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)
-    EXT_STRIP_XWIDTH_R = 0.86  # measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)
-    V_STRIP_OFF = 0.200
-    NR_VER_STRIPS = 184
-    total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF
-    x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2
-    # calculating strip as an integer
-    strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
-    if not (0 < strip_x <= NR_VER_STRIPS):
-        print "WARNING: X strip outside range!"
+    if x < -total_width/2. or x > total_width/2.:
+        print "WARNING: x coordinate outside sensitive volume!",x
+    if x <  -total_width/2.  + EXT_STRIP_XWIDTH_L + V_STRIP_OFF/2. : strip_x = 184
+    elif x >  total_width/2. - EXT_STRIP_XWIDTH_R - V_STRIP_OFF/2. : strip_x = 1
+    else:
+      x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
+      strip_x = -int(x_start/reduced_width*182.)+1
+      if not (0 < strip_x <= NR_VER_STRIPS-1):
+        print "WARNING: X strip outside range!",x,strip_x
         strip_x = 0
     return int(strip_x)
 
@@ -87,7 +93,7 @@ class MufluxDigi:
         self.digitizeMuonTagger()
         self.digiMuonTaggerBranch.Fill()
 
-    def digitizeMuonTagger(self, fake_clustering=True):
+    def digitizeMuonTagger(self, fake_clustering=False):
 
         station = 0
         strip = 0
@@ -175,6 +181,7 @@ class MufluxDigi:
 
         for aMCPoint in self.sTree.MufluxSpectrometerPoint:
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
+            aHit.setValid()
             if self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
