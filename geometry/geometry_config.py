@@ -483,7 +483,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmuMagnet.GapDown = 25*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
-            c.EmuMagnet.WithConstField=True  #now loaded field map
+            c.EmuMagnet.WithConstField=False  #now loaded field map
             c.EmuMagnet.X = scale*2.2*u.m
             c.EmuMagnet.Y = scale*3.6*u.m
             c.EmuMagnet.Z = 7.2*u.m
