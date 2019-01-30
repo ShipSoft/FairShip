@@ -38,6 +38,7 @@ public:
       return AllOK || !((flags & TDCNotOK) == TDCNotOK);
    }
    bool hasDelay() const { return !((flags & DriftTubes::NoDelay) == DriftTubes::NoDelay); }
+   bool hasTrigger() const { return !((flags & DriftTubes::NoTrigger) == DriftTubes::NoTrigger); }
    bool hasTimeOverThreshold() const { return !((flags & DriftTubes::NoWidth) == DriftTubes::NoWidth); }
    Float_t GetTimeOverThreshold() const { return time_over_threshold; }
    std::vector<int> StationInfo();
