@@ -82,7 +82,52 @@ void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3
      vbot.SetXYZ(Gbot[0],Gbot[1],Gbot[2]); 
 } 
 
- 
+std::vector<int> MufluxSpectrometerHit::StationInfo(){
+     std::vector<int> info;
+     Int_t statnb = fDetectorID/10000000;
+     Int_t vnb =  (fDetectorID - statnb*10000000)/1000000; 
+     Int_t pnb =  (fDetectorID- statnb*10000000 - vnb*1000000)/100000; 
+     Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000; 
+     TString stat = "volDriftTube";stat+=+statnb;stat+="_";stat+=statnb; 
+     Int_t iview = 0;
+     switch (vnb) {
+      case 0:
+       if (statnb==1) {iview = 0;}
+       else if (statnb==2) {iview = 2;}
+       break;
+      case 1:
+       if (statnb==1) { iview = 1;}
+       else if (statnb==2) { iview = 0;}
+       break;
+      default:
+       break;
+     }
+     Int_t tdcId = 0;
+     Int_t channelID = fDetectorID%1000;
+     if (statnb==1 && iview==0){ tdcId = 0;}
+     else if (statnb==1 && iview== 1){ tdcId = 0;}
+     else if (statnb==2 && iview== 2 && pnb==0){ tdcId = 0;}
+     else if (statnb==2 && iview== 2 && pnb==1){ tdcId = 1;}
+     else if (statnb==2 && iview== 0){ tdcId = 1;}
+     else if (statnb==3 && channelID<25){ tdcId = 4;}
+     else if (statnb==3 && !(channelID<25)){ tdcId = 3;}
+     else if (statnb==4 && channelID<13 && pnb==0){ tdcId = 3;}
+     else if (statnb==4 && channelID<13 && pnb==1){ tdcId = 2;}
+     else if (statnb==4 && channelID<37 && !(channelID<13)){ tdcId = 2;}
+     else if (statnb==4 && channelID>36){ tdcId = 1;}
+     Int_t moduleId = 1;
+     if (statnb > 2){ moduleId = int( (channelID-1)/12) + 1 ;}
+     info.push_back(statnb);
+     info.push_back(vnb);
+     info.push_back(pnb);
+     info.push_back(lnb);
+     info.push_back(iview);
+     info.push_back(channelID);
+     info.push_back(tdcId);
+     info.push_back(moduleId);
+// don't know of any nice way to return multiple variables, use python to sort out the mess. 
+     return info;
+}
 // ------------------------------------------------------------------------- 
 
  
