@@ -181,8 +181,14 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       if (detectorId == 0) {
          // Trigger
          trigger++;
-         trigger_times[TDC] =
-            (trigger_times.find(TDC) != trigger_times.end()) ? std::min(hit_time, trigger_times[TDC]) : hit_time;
+         if (trigger_times.find(TDC) != trigger_times.end()) {
+            LOG(DEBUG) << "Found time " << trigger_times[TDC] << " for TDC " << TDC << FairLogger::endl;
+            trigger_times[TDC] = std::min(hit_time, trigger_times[TDC]);
+         } else {
+            LOG(DEBUG) << "Inserting new time " << hit_time << FairLogger::endl;
+            trigger_times[TDC] = hit_time;
+         }
+         LOG(DEBUG) << TDC << '\t' << hit_time << '\t' << trigger_times[TDC] << FairLogger::endl;
          new ((*fRawTriggers)[nhitsTriggers])
             ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsTriggers++;
