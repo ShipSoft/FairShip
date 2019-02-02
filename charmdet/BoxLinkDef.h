@@ -21,6 +21,7 @@
 #pragma link C++ class ShipPixelHit+;
 #pragma link C++ class ReProcessAbsorber+;
 #pragma link C++ class RPCTrack+;
+#pragma link C++ class MufluxReco+;
 
 #endif
 

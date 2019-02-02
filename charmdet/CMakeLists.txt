@@ -41,6 +41,7 @@ ScintillatorHit.cxx
 ShipPixelHit.cxx
 ReProcessAbsorber.cxx
 RPCTrack.cxx
+MufluxReco.cxx
 )
 
 Set(HEADERS )
