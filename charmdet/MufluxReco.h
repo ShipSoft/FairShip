@@ -7,6 +7,9 @@
 #include "TClonesArray.h"
 #include "TTreeReader.h"
 #include "TTreeReaderArray.h"
+#include "Track.h"
+#include "TVector3.h"
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -27,10 +30,12 @@ public:
 
    /** methods **/
    void fillHitMaps();
+   void trackKinematics(Float_t chi2UL);
    void setNoisyChannels(std::vector<int> x){noisyChannels = x;}
    void setDeadChannels(std::vector<int> x){deadChannels = x;}
    void setCuts(std::string s,float f){cuts[s]=f;}
    void sortHits(TClonesArray *t, nestedList *l, Bool_t flag=kTRUE);
+   Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3* pos, TVector3* mom);
 private:
   protected:
     Bool_t MCdata;
