@@ -15,136 +15,79 @@ MufluxReco::MufluxReco(TTreeReader* t)
   std::cout << "MufluxReco initialized for "<<xSHiP->GetEntries(true) << " events "<<std::endl;
   xSHiP->ls();
 }
-/* unfinished, C++ is not a language for serious physicists.
-void MufluxReco::findDTClusters(TClonesArray* hits, Bool_t removeBigClusters=True,Bool_t Debug){
-   spectrHitsSorted  = nestedList();
-   sortHits(hits,spectrHitsSorted);
-   clusters =  std::unordered_map<int, std::unordered_map<int, 
-   for (Int_t s=0;s<5;s++) {
-    for (Int_t v=0;v<3;v++) {
-     if (s>2 && v!=0){continue;}
-     if (s==2 && v==1){continue;}
-     if (s==1 && v==2){continue;}
-     allHits = std::unordered_map<int,std::unordered_map<int,MufluxSpectrometerHit*>>;
-     for (Int_t l=0;l<4;l++) {
-      std::vector<(MufluxSpectrometerHit*> list = spectrHitsSorted[v][s][l];
-      for(list::iterator hit = list.begin(); hit != list.end(); +hit) {
-       Int_t channelID = hit->GetDetectorID()%1000;
-       allHits[l][channelID]=hit;
-       }
-     }
-     if (removeBigClusters){
-      clustersPerLayer = std::unordered_map<int,std::unordered_map<int,MufluxSpectrometerHit*>>;
-      for (Int_t l=0;l<4;l++) {
+/* 
 
-        clustersPerLayer[l] = dict(enumerate(grouper(allHits[l].keys(),1), 1))
-        for (Int_t Acl=0;Acl<clustersPerLayer[l].size();Acl++) {
-         if ( clustersPerLayer[l][Acl].size()>cuts["maxClusterSize"]){ // kill cross talk brute force
-           for x in clustersPerLayer[l][Acl]:
-            allHits[l].pop(x);
-            if (Debug){ std::cout << "pop "<<s<<" "<<v<<" "<<l<<" "<<x<<std::endl;}
-         }
-        }
+MufluxReco::getKeys(std::unordered_map<int,MufluxSpectrometerHit*>> map){
+ std::vector<int> keys;
+ keys.reserve(map.size());
+ std::vector<std::string> vals;
+ vals.reserve(allHits.size());
+ for(auto kv : allHits) {
+    keys.push_back(kv.first);
+    vals.push_back(kv.second);  
+}
+
+MufluxReco::trackKinematics(chi2UL){
+ Int_t N = xSHiP->GetEntries(true);
+ xSHiP->Restart();
+ std::cout<< "fill trackKinematics: "<< N << " "<<xSHiP->GetCurrentEntry() <<std::endl;
+ TTreeReaderArray <genfit::Track> FitTracks(*xSHiP, "FitTracks");
+ TTreeReaderArray <RPCTrack> RPCTrackX(*xSHiP, "RPCTrackX");
+ TTreeReaderArray <RPCTrack> RPCTrackY(*xSHiP, "RPCTrackY");
+ while (xSHiP->Next()){
+   for (Int_t k=0;k<FitTracks.GetSize();k++) {
+     genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
+   //if MCdata and PR<10 and sTree.ShipEventHeader.GetUniqueID()==1: continue # non reconstructed events 
+     auto fitStatus   = aTrack->getFitStatus();
+// track quality
+     if (!fitStatus->isFitConverged()){continue;}
+missing     /*if PR<10: hitsPerStation = countMeasurements(N,PR)
+     if len(hitsPerStation['x1'])<2: continue
+     if len(hitsPerStation['x2'])<2: continue
+     if len(hitsPerStation['x3'])<2: continue
+     if len(hitsPerStation['x4'])<2: continue 
+     auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
+     auto fittedState = aTrack->getFittedState();
+     Float_t P = fittedState->getMomMag();
+     Float_t Px = fittedState->getMom().x();
+     Float_t Py = fittedState->getMom().y();
+     Float_t Pz = fittedState->getMom().z();
+     gROOT->FindObject("chi2")->Fill(chi2);
+     gROOT->FindObject("Nmeasurements"))->Fill(fitStatus.getNdf());
+     if (chi2 > chi2UL){ continue;}
+     gROOT->FindObject("p/pt")->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
+     auto pos = fittedState->getPos();
+     gROOT->FindObject("xy")->Fill(pos[0],pos[1]);
+     gROOT->FindObject("pxpy")->Fill(Px/Pz,Py/Pz);
+// check for muon tag
+missing     rc,posRPC,momRPC = extrapolateToPlane(aTrack,zRPC1)
+      Float_t X =-1000;
+      Float_t Y =-1000;
+      if (RPCTrackX.GetSize()>0){X = RPCtracks['X'][0][0]*zRPC1+RPCtracks['X'][0][1];}
+      if (RPCTrackY.GetSize()>0){Y = RPCtracks['Y'][0][0]*zRPC1+RPCtracks['Y'][0][1];}
+      if (rc){
+       if (TMath::Abs(posRPC[0]-X)<5. && TMath::Abs(posRPC[1]-Y)<10.) { // within ~3sigma  X,Y from mutrack
+        gROOT->FindObject("chi2mu")->Fill(chi2);
+        gROOT->FindObject("Nmeasurementsmu")->Fill(fitStatus.getNdf());
+        gROOT->FindObject("p/ptmu")->Fill(P,ROOT.TMath.Sqrt(Px*Px+Py*Py));
+        gROOT->FindObject("xymu")->Fill(pos[0],pos[1]);
+        gROOT->FindObject("pxpymu")->Fill(Px/Pz,Py/Pz);
       }
      }
-
-     ncl=0
-     tmp={}
-     tmp[ncl]=[]
-     perLayerUsedHits = {0:[],1:[],2:[],3:[]}
-     for level in [1]:
-      for i in range(1,Nchannels[s]+1):
-       perLayer = {0:0,1:0,2:0,3:0}
-       for i0 in range( max(1,i-1),min(Nchannels[s]+1,i+2)):
-        if allHits[0].has_key(i0):
-          tmp[ncl].append(allHits[0][i0])
-          perLayer[0]=i0
-       for i1 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[1].has_key(i1):
-          tmp[ncl].append(allHits[1][i1])
-          perLayer[1]=i1
-       for i2 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[2].has_key(i2):  
-          tmp[ncl].append(allHits[2][i2])
-          perLayer[2]=i2
-       for i3 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[3].has_key(i3): 
-          tmp[ncl].append(allHits[3][i3])
-          perLayer[3]=i3
-       if ( (perLayer[0]>0) + (perLayer[1]>0) + (perLayer[2]>0) + (perLayer[3]>0) ) > level:
-         # at least 2 hits per station
-         ncl+=1
-       tmp[ncl]=[]
-     if len(tmp[ncl])==0: tmp.pop(ncl)
-# cleanup, outliers
-     tmpClean = {}
-     for ncl in tmp:
-       test = []
-       mean = 0
-       for hit in tmp[ncl]:
-          bot,top = correctAlignment(hit)
-          x = (bot[0]+top[0])/2.
-          mean+=x
-          test.append([hit,x])
-       mean=mean/float(len(test))
-# more cleanup, outliers
-       tmpClean[ncl]=[]
-       for cl in test:
-          if abs(mean-cl[1])<2.5 : 
-            tmpClean[ncl].append(cl[0])
-# cleanup, remove lists contained in another list
-     clusters[s][view]=[]
-     if len(tmpClean)>0:
-      ncl = 0
-      marked = []
-      for n1 in range(len(tmpClean)):
-        if len(tmpClean[n1])==0: continue
-        contained = False
-        for n2 in range(len(tmpClean)):
-          if n1==n2: continue
-          if n2 in marked: continue
-          if set(tmpClean[n1]) <= set(tmpClean[n2]):
-           contained = True
-           break
-        if contained:  marked.append(n1)
-      for n1 in range(len(tmpClean)):
-         if len(tmpClean[n1])<2: continue
-         if n1 in marked: continue
-         test = []
-         mean = 0
-         for hit in tmpClean[n1]:
-          bot,top = correctAlignment(hit)
-          x = (bot[0]+top[0])/2.
-          z = (bot[2]+top[2])/2.
-          mean+=x
-          test.append([hit,x,z,hit.GetDetectorID()%1000])
-         mean=mean/float(len(test))
-# more cleanup, outliers
-         clusters[s][view].append([])
-         for cl in test:
-          if abs(mean-cl[1])<2.5: clusters[s][view][ncl].append(cl)
-         if len(clusters[s][view][ncl])==0:
-           clusters[s][view].pop(ncl)
-         else: ncl+=1
-     rc = h['clsN'].Fill(ncl)
-# eventually split too big clusters for stero layers:
-   for s in [1,2]:
-    for view in views[s]:
-     if view=='_x':continue
-     tmp = {}
-     for cl in clusters[s][view]:
-      if len(cl)>5:
-       for hit in cl: 
-         if not tmp.has_key(hit[3]):tmp[hit[3]]=[]
-         tmp[hit[3]].append(hit)
-     for n in tmp:
-       if len(tmp[n])>1:
-         clusters[s][view].append(tmp[n])
-   if Debug: 
-    for s in range(1,5):
-     for view in views[s]:
-      printClustersPerStation(clusters,s,view)
-   return clusters
+//
+     if (FitTracks.GetSize()==2 && k==0){
+      bTrack = theTracks[1]
+      fitStatus   = bTrack.getFitStatus()
+      if not fitStatus.isFitConverged(): continue
+      chi2 = fitStatus.getChi2()/fitStatus.getNdf()
+      fittedState = bTrack.getFittedState()
+      Pb = fittedState.getMomMag()
+      Pbx,Pby,Pbz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
+      if chi2 > chi2UL: continue
+      rc = h['p1/p2'].Fill(P,Pb)
+      rc = h['pt1/pt2'].Fill(ROOT.TMath.Sqrt(Px*Px+Py*Py),ROOT.TMath.Sqrt(Pbx*Pbx+Pby*Pby))
+     }
+}
 */
 
 void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
