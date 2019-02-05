@@ -1460,7 +1460,7 @@ def checkMCSmearing():
   trackID = {}
   rc = sTree.GetEvent(i)
   if sTree.Digi_MufluxSpectrometerHits.GetEntries() != sTree.MufluxSpectrometerPoint.GetEntries():
-    print "digi does not agree with MC"
+    print "digi does not agree with MC, break"
     break
   for n in range(sTree.Digi_MufluxSpectrometerHits.GetEntries()):
    p =  sTree.Digi_MufluxSpectrometerHits[n]
@@ -1647,7 +1647,11 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
            'p/ptmu','Nmeasurementsmu','chi2mu','xymu','pxpymu']: h[x].Reset()
  for n in range(nStart,sTree.GetEntries()):
    rc = sTree.GetEvent(n)
-   if MCdata and PR<10 and sTree.ShipEventHeader.GetUniqueID()==1: continue # non reconstructed events 
+   if MCdata:
+    if sTree.Digi_MufluxSpectrometerHits.GetEntries() != sTree.MufluxSpectrometerPoint.GetEntries():
+     print "digi does not agree with MC, break"
+     break
+     if PR<10 and sTree.ShipEventHeader.GetUniqueID()==1: continue # non reconstructed events 
    if not withDisplay and n%10000==0: print "event #",n
    if nMax==0: break
    if simpleEvents:
