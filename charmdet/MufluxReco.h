@@ -9,6 +9,7 @@
 #include "TTreeReaderArray.h"
 #include "Track.h"
 #include "TVector3.h"
+#include "TrackInfo.h"
 
 #include <iostream>
 #include <map>
@@ -16,6 +17,7 @@
 
 enum class view {x, u, v, y}; // to avoid using std::string to index
 typedef std::map<std::string,float> StringFloatMap;
+typedef std::map<std::string,std::vector<int>> StringVecIntMap;
 typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;
 
 class MufluxReco {
@@ -29,13 +31,14 @@ public:
    virtual ~MufluxReco();
 
    /** methods **/
-   void fillHitMaps();
-   void trackKinematics(Float_t chi2UL);
+   void fillHitMaps(Int_t nMax=-1);
+   void trackKinematics(Float_t chi2UL,Int_t nMax=-1);
    void setNoisyChannels(std::vector<int> x){noisyChannels = x;}
    void setDeadChannels(std::vector<int> x){deadChannels = x;}
    void setCuts(std::string s,float f){cuts[s]=f;}
    void sortHits(TClonesArray *t, nestedList *l, Bool_t flag=kTRUE);
-   Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3* pos, TVector3* mom);
+   Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom);
+   StringVecIntMap countMeasurements(TrackInfo* trInfo);
 private:
   protected:
     Bool_t MCdata;

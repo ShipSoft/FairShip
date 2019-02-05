@@ -3,12 +3,13 @@
 #include <TChain.h>
 #include <TH1D.h>
 #include <TH2D.h>
+#include "TString.h"
 #include "TObject.h"
-#include "TrackInfo.h"
 #include "RPCTrack.h"
 #include "RKTrackRep.h"
+#include "MufluxSpectrometerHit.h"
 
-TVector3 parallelToZ = TVector3(0., 0., 1.);
+TVector3* parallelToZ = new TVector3(0., 0., 1.);
 // -----   Standard constructor   ------------------------------------------ 
 MufluxReco::MufluxReco() {}
 // -----   Standard constructor   ------------------------------------------ 
@@ -20,8 +21,8 @@ MufluxReco::MufluxReco(TTreeReader* t)
   std::cout << "MufluxReco initialized for "<<xSHiP->GetEntries(true) << " events "<<std::endl;
   xSHiP->ls();
 }
-/* 
 
+/*
 MufluxReco::getKeys(std::unordered_map<int,MufluxSpectrometerHit*>> map){
  std::vector<int> keys;
  keys.reserve(map.size());
@@ -30,9 +31,9 @@ MufluxReco::getKeys(std::unordered_map<int,MufluxSpectrometerHit*>> map){
  for(auto kv : allHits) {
     keys.push_back(kv.first);
     vals.push_back(kv.second);  
-}
+}*/
 
-Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3* pos, TVector3* mom){
+Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom){
 // etrapolate to a plane perpendicular to beam direction (z)
   Double_t rc = -1;
   auto fst = fT->getFitStatus();
@@ -49,26 +50,26 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3* p
        mClose = m;
       }
     }
-    auto fstate =  fT->getFittedState(mClose);
-    TVector3 NewPosition = TVector3(0., 0., z);
+    genfit::StateOnPlane fstate =  fT->getFittedState(mClose);
+    TVector3* NewPosition = new TVector3(0., 0., z);
     Int_t pdgcode = -int(13*fstate.getCharge());
     genfit::RKTrackRep* rep      = new genfit::RKTrackRep( pdgcode );
     genfit::StateOnPlane* state   = new genfit::StateOnPlane(rep);
-    auto Pos = fstate->getPos();
-    auto Mom = fstate->getMom();
-    rep->setPosMom(state,Pos,Mom);
-    rc = rep->extrapolateToPlane(state, NewPosition, parallelToZ );
-    pos = state->getPos();
-    mom = state->getMom();
+    auto Pos = fstate.getPos();
+    auto Mom = fstate.getMom();
+    rep->setPosMom(*state,Pos,Mom);
+    rc = rep->extrapolateToPlane(*state, *NewPosition, *parallelToZ );
+    pos = (state->getPos());
+    mom = (state->getMom());
    }else{
-    if (z < cuts["firstDTStation_z"]){
-     auto fstate = fT.getFittedState(0);
-    }else if(z > cuts["lastDTStation_z"]){
-     M = min(fT->getNumPointsWithMeasurement()-1,30)
-     fstate = fT->getFittedState(fT.getNumPointsWithMeasurement()-1);
+    genfit::StateOnPlane fstate = fT->getFittedState(0);
+    if ( z > cuts["lastDTStation_z"]){
+     Int_t nmeas = fT->getNumPointsWithMeasurement();
+     Int_t M = TMath::Min(nmeas-1,30);
+     fstate = fT->getFittedState(M);
     }
-    pos = fstate->getPos();
-    mom = fstate->getMom();
+    pos = fstate.getPos();
+    mom = fstate.getMom();
 // use linear extrap 
     Float_t lam = (z-pos[2])/mom[2];
     pos[2]=z;
@@ -76,17 +77,16 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3* p
     pos[1]=pos[1]+lam*mom[1];
     rc = 0;
   }
+ }
   return rc;
 }
 
 
-
-
-std::unordered_map<std::string,std::vector<int>> MufluxReco::countMeasurements(TrackInfo* trInfo){
- mStatistics = std::unordered_map<std::string,std::vector<int>>();
+StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
+ StringVecIntMap mStatistics = StringVecIntMap();
  for (Int_t n=0;n<trInfo->N();n++) {
-    detID = trInfo->detId(n);
-    (MufluxSpectrometerHit)hit = MufluxSpectrometerHit(detID,0);
+    Int_t detID = trInfo->detId(n);
+    MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
     Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
     if (trInfo->wL(n) <0.1 && trInfo->wR(n) <0.1){ continue;}
@@ -96,7 +96,8 @@ std::unordered_map<std::string,std::vector<int>> MufluxReco::countMeasurements(T
        if (v == 2) { mStatistics["v"].push_back(detID);}
     }else{
      mStatistics["xAll"].push_back(detID);
-     mStatistics["x"+std::string(s)].push_back(detID);
+     TString x = "x";x+=s;
+     mStatistics[x.Data()].push_back(detID);
     }
     if (s > 2){  
        mStatistics["xDown"].push_back(detID);
@@ -107,27 +108,33 @@ std::unordered_map<std::string,std::vector<int>> MufluxReco::countMeasurements(T
  return mStatistics;
 }
 
-
-void MufluxReco::trackKinematics(Float_t chi2UL){
+void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t N = xSHiP->GetEntries(true);
- xSHiP->Restart();
+ if (nMax<0){nMax=N;}
+ gROOT->cd();
  std::cout<< "fill trackKinematics: "<< N <<std::endl;
- TTreeReaderArray <genfit::Track> FitTracks(*xSHiP, "FitTracks");
- TTreeReaderArray <RPCTrack> RPCTrackX(*xSHiP, "RPCTrackX");
- TTreeReaderArray <RPCTrack> RPCTrackY(*xSHiP, "RPCTrackY");
- TTreeReaderArray <TrackInfo> TrackInfos(*xSHiP, "TrackInfos");
+ TTreeReaderValue <TClonesArray> FitTracks(*xSHiP, "FitTracks");
+ TTreeReaderValue <TClonesArray> RPCTrackX(*xSHiP, "RPCTrackX");
+ TTreeReaderValue <TClonesArray> RPCTrackY(*xSHiP, "RPCTrackY");
+ TTreeReaderValue <TClonesArray> TrackInfos(*xSHiP, "TrackInfos");
+ Int_t nx = 0;
  while (xSHiP->Next()){
-   for (Int_t k=0;k<FitTracks.GetSize();k++) {
+  nx+=1;
+  if (nx>nMax){break;}
+   Int_t Ntracks = (*FitTracks.Get()).GetEntries();
+   // std::cout<< "next event: "<< Ntracks <<std::endl;
+   for (Int_t k=0;k<Ntracks;k++) {
    //if MCdata and PR<10 and sTree.ShipEventHeader.GetUniqueID()==1: continue # non reconstructed events 
-     genfit::Track* aTrack = &(FitTracks[k]);
+     genfit::Track* aTrack = (genfit::Track*)((*FitTracks.Get())[k]);
      auto fitStatus   = aTrack->getFitStatus();
 // track quality
      if (!fitStatus->isFitConverged()){continue;}
-     std::unordered_map<std::string,std::vector<int>> hitsPerStation = countMeasurements(N);
+     TrackInfo* info = (TrackInfo*)((*TrackInfos.Get())[k]);
+     StringVecIntMap hitsPerStation = countMeasurements(info);
      if (hitsPerStation["x1"].size()<2){ continue;}
      if (hitsPerStation["x2"].size()<2){ continue;}
-     if hitsPerStation["x3"].size()<2){ continue;}
-     if hitsPerStation["x4"].size()<2){ continue;}
+     if (hitsPerStation["x3"].size()<2){ continue;}
+     if (hitsPerStation["x4"].size()<2){ continue;}
      auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
      auto fittedState = aTrack->getFittedState();
      Float_t P = fittedState.getMomMag();
@@ -147,20 +154,27 @@ void MufluxReco::trackKinematics(Float_t chi2UL){
      h2 = (TH2D*)(gROOT->FindObject("pxpy"));
      h2->Fill(Px/Pz,Py/Pz);
 // check for muon tag
-// !!! missing     rc,posRPC,momRPC = extrapolateToPlane(FitTracks->At(k),zRPC1)
-     Int_t rc = -1;
+     TVector3 posRPC; TVector3 momRPC;
+     Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
+     if (rc<0){continue;}
      Float_t X =-1000;
      Float_t Y =-1000;
-     if (RPCTrackX.GetSize()>0){X = RPCTrackX[0].m()*cuts["zRPC1"]+RPCTrackX[0].b();}
-     if (RPCTrackY.GetSize()>0){Y = RPCTrackY[0].m()*cuts["zRPC1"]+RPCTrackY[0].b();}
+     Int_t Nx = (*RPCTrackX.Get()).GetEntries();
+     Int_t Ny = (*RPCTrackY.Get()).GetEntries();
+     if (Nx>0){
+        RPCTrack *hit = (RPCTrack*)(*RPCTrackX.Get())[0];
+        X = hit->m()*cuts["zRPC1"]+hit->b();}
+     if (Ny>0){
+        RPCTrack *hit = (RPCTrack*)(*RPCTrackY.Get())[0];
+        Y = hit->m()*cuts["zRPC1"]+hit->b();}
      if (rc){
        if (TMath::Abs(posRPC[0]-X)<5. && TMath::Abs(posRPC[1]-Y)<10.) { // within ~3sigma  X,Y from mutrack
         h = (TH1D*)(gROOT->FindObject("chi2mu"));
         h->Fill(chi2);
         h = (TH1D*)(gROOT->FindObject("Nmeasurementsmu"));
-        h->Fill(fitStatus.getNdf());
+        h->Fill(fitStatus->getNdf());
         h2=(TH2D*)(gROOT->FindObject("p/ptmu"));
-        h2->Fill(P,ROOT.TMath.Sqrt(Px*Px+Py*Py));
+        h2->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
         h2=(TH2D*)(gROOT->FindObject("xymu"));
         h2->Fill(pos[0],pos[1]);
         h2=(TH2D*)(gROOT->FindObject("pxpymu"));
@@ -168,23 +182,26 @@ void MufluxReco::trackKinematics(Float_t chi2UL){
       }
      }
 //
-     if (FitTracks.GetSize()==2 && k==0){
-      auto fitStatus   = &(FitTracks[1])->getFitStatus()
-      if (!fitStatus->isFitConverged()){ continue;}
-      Float_t chi2 = fitStatus->getChi2()/float(fitStatus->getNdf());
-      if (chi2 > chi2UL){ continue;}
-      auto fittedStateb = theTracks[1].getFittedState();
+     if (Ntracks==2 && k==0){
+      genfit::Track* bTrack = (genfit::Track*)((*FitTracks.Get())[1]);
+      auto fitStatusb   = bTrack->getFitStatus();
+      if (!fitStatusb->isFitConverged()){ continue;}
+      Float_t chi2b = fitStatusb->getChi2()/float(fitStatusb->getNdf());
+      if (chi2b > chi2UL){ continue;}
+      auto fittedStateb = bTrack->getFittedState();
       Float_t Pb = fittedStateb.getMomMag();
-      Float_t Pbx = fittedStateb.getMom()->x();
-      Float_t Pby = fittedStateb.getMom()->y();
-      Float_t Pbz = fittedStateb.getMom()->z();
-      (TH2D*)(gROOT->FindObject("p1/p2"))->Fill(P,Pb);
-      (TH2D*)(gROOT->FindObject("pt1/pt2"))->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+      Float_t Pbx = fittedStateb.getMom().x();
+      Float_t Pby = fittedStateb.getMom().y();
+      Float_t Pbz = fittedStateb.getMom().z();
+      h2=(TH2D*)(gROOT->FindObject("p1/p2"));
+      h2->Fill(P,Pb);
+      h2=(TH2D*)(gROOT->FindObject("pt1/pt2"));
+      h2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
      }
    }
  }
 }
-*/
+
 
 void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
   nestedList spectrHitsSorted = *l;
@@ -214,18 +231,23 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
  *l = spectrHitsSorted;
 }
 
-void MufluxReco::fillHitMaps()
-{ 
+void MufluxReco::fillHitMaps(Int_t nMax)
+{
  Float_t deadThreshold = 1.E-4; // ~1% typical occupancy
  Int_t N = xSHiP->GetEntries(true);
+ if (nMax<0){nMax=N;}
  xSHiP->Restart();
  gROOT->cd();
  std::cout<< "fillHitMaps: "<< N  <<std::endl;
  TTreeReaderArray <MufluxSpectrometerHit> Digi_MufluxSpectrometerHits(*xSHiP, "Digi_MufluxSpectrometerHits");
- TTreeReaderValue <FairEventHeader> MCShipEventHeader(*xSHiP, "ShipEventHeader");
- TTreeReaderValue <FairEventHeader> rvShipEventHeader(*xSHiP, "EventHeader.");
+ TTreeReaderValue<FairEventHeader>* rvShipEventHeader= NULL;
+ if (MCdata){ rvShipEventHeader = new TTreeReaderValue<FairEventHeader>(*xSHiP, "ShipEventHeader");}
+ Int_t nx = 0;
  while (xSHiP->Next()){
-   for (Int_t k=0;k<Digi_MufluxSpectrometerHits.GetSize();k++) {
+  nx+=1;
+  if (nx>nMax){break;}
+  // std::cout<< "next event. #hits "<< Digi_MufluxSpectrometerHits.GetSize()  <<std::endl;
+  for (Int_t k=0;k<Digi_MufluxSpectrometerHits.GetSize();k++) {
      MufluxSpectrometerHit* hit = &(Digi_MufluxSpectrometerHits[k]);
      auto info = hit->StationInfo();
      Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
@@ -245,10 +267,7 @@ void MufluxReco::fillHitMaps()
      auto check = std::find( noisyChannels.begin(), noisyChannels.end(), hit->GetDetectorID() );
      if (check!=noisyChannels.end()){ continue;}
      Float_t t0 = 0;
-     if (MCdata){
-       FairEventHeader * header = (FairEventHeader *) MCShipEventHeader.Get(); 
-       t0 = header->GetEventTime();
-     }
+     if (MCdata){ rvShipEventHeader->Get()->GetEventTime(); }
      TString TDChisto = "TDC"; TDChisto+=histo;TDChisto+=moduleId+tot;
      h = (TH1D*)(gROOT->FindObject(TDChisto));
      if (!h){
