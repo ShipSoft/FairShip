@@ -58,15 +58,15 @@ class MufluxDigi:
 
         # event header
         self.header  = ROOT.FairEventHeader()
-        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,1)
         self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
-        self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
+        self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,1)
         self.digiLateMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
-        self.digiLateMufluxSpectrometerBranch   = self.sTree.Branch("Digi_LateMufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
+        self.digiLateMufluxSpectrometerBranch   = self.sTree.Branch("Digi_LateMufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,1)
         #muon taggger
         if self.sTree.GetBranch("MuonTaggerPoint"):
             self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
-            self.digiMuonTaggerBranch = self.sTree.Branch("Digi_MuonTaggerHits", self.digiMuonTagger, 32000, -1)
+            self.digiMuonTaggerBranch = self.sTree.Branch("Digi_MuonTaggerHits", self.digiMuonTagger, 32000, 1)
         # setup random number generator
         ROOT.gRandom.SetSeed()
         self.PDG = ROOT.TDatabasePDG.Instance()
@@ -182,7 +182,7 @@ class MufluxDigi:
         for aMCPoint in self.sTree.MufluxSpectrometerPoint:
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             aHit.setValid()
-            if self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
+            if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
             if hitsPerDetId.has_key(detID):
