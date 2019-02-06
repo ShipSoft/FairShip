@@ -104,6 +104,8 @@ python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.ro
 Use quit() or Ctrl-D (i.e. EOF) to exit
 ```
 
+Estimated run time = ~30 seconds to setup + ~1.7 seconds per event on my local build 
+ 
 ## Contributing Code
 
 ### Build Targets Related to C++ Code Style-Guide
