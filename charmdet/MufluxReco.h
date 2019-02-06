@@ -46,7 +46,14 @@ private:
     std::vector<int> noisyChannels;
     std::vector<int> deadChannels;
     StringFloatMap cuts;
-
+    TClonesArray    *FitTracks;
+    TClonesArray    *TrackInfos;
+    TClonesArray    *RPCTrackY;
+    TClonesArray    *RPCTrackX;
+    TBranch        *b_FitTracks;   //!
+    TBranch        *b_TrackInfos;   //!
+    TBranch        *b_RPCTrackY;   //!
+    TBranch        *b_RPCTrackX;   //!
    ClassDef(MufluxReco, 1);
 };
 

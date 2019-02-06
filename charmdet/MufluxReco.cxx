@@ -20,6 +20,15 @@ MufluxReco::MufluxReco(TTreeReader* t)
   if (xSHiP->GetTree()->GetBranch("MCTrack")){MCdata=true;}
   std::cout << "MufluxReco initialized for "<<xSHiP->GetEntries(true) << " events "<<std::endl;
   xSHiP->ls();
+  FitTracks = 0;
+  TrackInfos = 0;
+  RPCTrackY = 0;
+  RPCTrackX = 0;
+  TTree* fChain = xSHiP->GetTree();
+  fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
+  fChain->SetBranchAddress("TrackInfos", &TrackInfos, &b_TrackInfos);
+  fChain->SetBranchAddress("RPCTrackY", &RPCTrackY, &b_RPCTrackY);
+  fChain->SetBranchAddress("RPCTrackX", &RPCTrackX, &b_RPCTrackX);
 }
 
 /*
@@ -110,26 +119,43 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
 
 void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t N = xSHiP->GetEntries(true);
+ TTree* sTree = xSHiP->GetTree();
  if (nMax<0){nMax=N;}
+ xSHiP->Restart();
  gROOT->cd();
  std::cout<< "fill trackKinematics: "<< N <<std::endl;
+/* TTreeReader framework cannot deal with unsplit TClonesArray, too badFiles
  TTreeReaderValue <TClonesArray> FitTracks(*xSHiP, "FitTracks");
  TTreeReaderValue <TClonesArray> RPCTrackX(*xSHiP, "RPCTrackX");
  TTreeReaderValue <TClonesArray> RPCTrackY(*xSHiP, "RPCTrackY");
- TTreeReaderValue <TClonesArray> TrackInfos(*xSHiP, "TrackInfos");
+ TTreeReaderValue <TClonesArray> TrackInfos(*xSHiP, "TrackInfos");*/
+
+ TH1D* h_chi2 =  (TH1D*)(gDirectory->GetList()->FindObject("chi2"));
+ TH1D* h_Nmeasurements = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurements"));
+ TH2D* h_ppt = (TH2D*)(gDirectory->GetList()->FindObject("p/pt"));
+ TH2D* h_xy = (TH2D*)(gDirectory->GetList()->FindObject("xy"));
+ TH2D* h_pxpy = (TH2D*)(gDirectory->GetList()->FindObject("pxpy"));
+
+ TH1D* h_chi2mu =  (TH1D*)(gDirectory->GetList()->FindObject("chi2mu"));
+ TH1D* h_Nmeasurementsmu = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurementsmu"));
+ TH2D* h_pptmu = (TH2D*)(gDirectory->GetList()->FindObject("p/ptmu"));
+ TH2D* h_xymu = (TH2D*)(gDirectory->GetList()->FindObject("xymu"));
+ TH2D* h_pxpymu = (TH2D*)(gDirectory->GetList()->FindObject("pxpymu"));
+
+ TH2D* h_p1p2 = (TH2D*)(gDirectory->GetList()->FindObject("p1/p2"));
+ TH2D* h_pt1pt2 = (TH2D*)(gDirectory->GetList()->FindObject("pt1/pt2"));
+
  Int_t nx = 0;
- while (xSHiP->Next()){
-  nx+=1;
-  if (nx>nMax){break;}
-   Int_t Ntracks = (*FitTracks.Get()).GetEntries();
-   // std::cout<< "next event: "<< Ntracks <<std::endl;
+ while (nx<nMax){
+   sTree->GetEvent(nx);
+   nx+=1;
+   Int_t Ntracks = FitTracks->GetEntries();
    for (Int_t k=0;k<Ntracks;k++) {
-   //if MCdata and PR<10 and sTree.ShipEventHeader.GetUniqueID()==1: continue # non reconstructed events 
-     genfit::Track* aTrack = (genfit::Track*)((*FitTracks.Get())[k]);
+     genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
 // track quality
      if (!fitStatus->isFitConverged()){continue;}
-     TrackInfo* info = (TrackInfo*)((*TrackInfos.Get())[k]);
+     TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
      if (hitsPerStation["x1"].size()<2){ continue;}
      if (hitsPerStation["x2"].size()<2){ continue;}
@@ -141,49 +167,36 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      Float_t Px = fittedState.getMom().x();
      Float_t Py = fittedState.getMom().y();
      Float_t Pz = fittedState.getMom().z();
-     TH1D* h =  (TH1D*)(gROOT->FindObject("chi2"));
-     h->Fill(chi2);
-     h = (TH1D*)(gROOT->FindObject("Nmeasurements"));
-     h->Fill(fitStatus->getNdf());
+     h_chi2->Fill(chi2);
+     h_Nmeasurements->Fill(fitStatus->getNdf());
      if (chi2 > chi2UL){ continue;}
-     TH2D* h2 = (TH2D*)(gROOT->FindObject("p/pt"));
-     h2->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
+     h_ppt->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
      auto pos = fittedState.getPos();
-     h2 = (TH2D*)(gROOT->FindObject("xy"));
-     h2->Fill(pos[0],pos[1]);
-     h2 = (TH2D*)(gROOT->FindObject("pxpy"));
-     h2->Fill(Px/Pz,Py/Pz);
+     h_xy->Fill(pos[0],pos[1]);
+     h_pxpy->Fill(Px/Pz,Py/Pz);
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
-     if (rc<0){continue;}
      Float_t X =-1000;
      Float_t Y =-1000;
-     Int_t Nx = (*RPCTrackX.Get()).GetEntries();
-     Int_t Ny = (*RPCTrackY.Get()).GetEntries();
+     Int_t Nx = RPCTrackX->GetEntries();
+     Int_t Ny = RPCTrackY->GetEntries();
      if (Nx>0){
-        RPCTrack *hit = (RPCTrack*)(*RPCTrackX.Get())[0];
+        RPCTrack *hit = (RPCTrack*)RPCTrackX->At(0);
         X = hit->m()*cuts["zRPC1"]+hit->b();}
      if (Ny>0){
-        RPCTrack *hit = (RPCTrack*)(*RPCTrackY.Get())[0];
+        RPCTrack *hit = (RPCTrack*)RPCTrackY->At(0);
         Y = hit->m()*cuts["zRPC1"]+hit->b();}
-     if (rc){
-       if (TMath::Abs(posRPC[0]-X)<5. && TMath::Abs(posRPC[1]-Y)<10.) { // within ~3sigma  X,Y from mutrack
-        h = (TH1D*)(gROOT->FindObject("chi2mu"));
-        h->Fill(chi2);
-        h = (TH1D*)(gROOT->FindObject("Nmeasurementsmu"));
-        h->Fill(fitStatus->getNdf());
-        h2=(TH2D*)(gROOT->FindObject("p/ptmu"));
-        h2->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-        h2=(TH2D*)(gROOT->FindObject("xymu"));
-        h2->Fill(pos[0],pos[1]);
-        h2=(TH2D*)(gROOT->FindObject("pxpymu"));
-        h2->Fill(Px/Pz,Py/Pz);
+      if (TMath::Abs(posRPC[0]-X)<5. && TMath::Abs(posRPC[1]-Y)<10.) { // within ~3sigma  X,Y from mutrack
+        h_chi2mu->Fill(chi2);
+        h_Nmeasurementsmu->Fill(fitStatus->getNdf());
+        h_pptmu->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
+        h_xymu->Fill(pos[0],pos[1]);
+        h_pxpymu->Fill(Px/Pz,Py/Pz);
       }
-     }
 //
      if (Ntracks==2 && k==0){
-      genfit::Track* bTrack = (genfit::Track*)((*FitTracks.Get())[1]);
+      genfit::Track* bTrack = (genfit::Track*)FitTracks->At(1);
       auto fitStatusb   = bTrack->getFitStatus();
       if (!fitStatusb->isFitConverged()){ continue;}
       Float_t chi2b = fitStatusb->getChi2()/float(fitStatusb->getNdf());
@@ -193,10 +206,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       Float_t Pbx = fittedStateb.getMom().x();
       Float_t Pby = fittedStateb.getMom().y();
       Float_t Pbz = fittedStateb.getMom().z();
-      h2=(TH2D*)(gROOT->FindObject("p1/p2"));
-      h2->Fill(P,Pb);
-      h2=(TH2D*)(gROOT->FindObject("pt1/pt2"));
-      h2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+      h_p1p2->Fill(P,Pb);
+      h_pt1pt2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
      }
    }
  }
@@ -258,7 +269,7 @@ void MufluxReco::fillHitMaps(Int_t nMax)
      TString tot = "";
      if (!hit->hasTimeOverThreshold()){ tot = "_noToT";}
      TString histo; histo.Form("%d",1000*s+100*p+10*l);histo+=view;
-     TH1D* h = (TH1D*)(gROOT->FindObject(histo));
+     TH1D* h = (TH1D*)(gDirectory->GetList()->FindObject(histo));
      if (!h){
        std::cout<< "fillHitMaps: ERROR histo not known "<< histo  <<std::endl;
        continue;
@@ -269,14 +280,14 @@ void MufluxReco::fillHitMaps(Int_t nMax)
      Float_t t0 = 0;
      if (MCdata){ rvShipEventHeader->Get()->GetEventTime(); }
      TString TDChisto = "TDC"; TDChisto+=histo;TDChisto+=moduleId+tot;
-     h = (TH1D*)(gROOT->FindObject(TDChisto));
+     h = (TH1D*)(gDirectory->GetList()->FindObject(TDChisto));
      if (!h){
        std::cout<< "fillHitMaps: ERROR histo not known "<< TDChisto  <<std::endl; 
        continue;
      }
      h->Fill( hit->GetDigi()-t0);
      TString channel = "TDC";channel+=hit->GetDetectorID();
-     h = (TH1D*)(gROOT->FindObject(channel));
+     h = (TH1D*)(gDirectory->GetList()->FindObject(channel));
      h->Fill( hit->GetDigi()-t0);
    }
   }

@@ -1482,11 +1482,18 @@ def checkMCSmearing():
 
 # from TrackExtrapolateTool
 parallelToZ = ROOT.TVector3(0., 0., 1.) 
-def extrapolateToPlane(fT,z):
-# etrapolate to a plane perpendicular to beam direction (z)
+def extrapolateToPlane(fT,z,cplusplus=True):
   rc,pos,mom = False,None,None
   fst = fT.getFitStatus()
-  if fst.isFitConverged():
+  if not fst.isFitConverged(): return rc,pos,mom
+# try C++
+  if cplusplus:
+   pos = ROOT.TVector3()
+   mom = ROOT.TVector3()
+   trackLength = muflux_Reco.extrapolateToPlane(fT,z,pos,mom)
+   rc = True
+# etrapolate to a plane perpendicular to beam direction (z)
+  else:
    if z > DT['Station_1_x_plane_0_layer_0_10000000'][2]-10 and z < DT['Station_4_x_plane_1_layer_1_40110000'][2] + 10:
 # find closest measurement
     mClose = 0
@@ -1645,6 +1652,10 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
 # simpleEvents=True: select special clean events for testing track fit
  for x in ['p/pt','Nmeasurements','chi2','xy','pxpy','TDC2R','p1/p2','pt1/pt2',
            'p/ptmu','Nmeasurementsmu','chi2mu','xymu','pxpymu']: h[x].Reset()
+ if not withDisplay and not Debug and not simpleEvents:
+   muflux_Reco.trackKinematics(3.)
+   momDisplay()
+   return
  for n in range(nStart,sTree.GetEntries()):
    rc = sTree.GetEvent(n)
    if MCdata:
@@ -4107,6 +4118,7 @@ def recoStep1(PR=11):
 
   for n in range(sTree.GetEntries()):
     if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName(),time.ctime()
+    if n>1000: break
     rc = sTree.GetEvent(n)
     fGenFitArray.Clear()
     fTrackInfoArray.Clear()
@@ -4146,7 +4158,7 @@ def recoStep1(PR=11):
   print "make suicid"
   os.system('kill '+str(os.getpid()))
 def anaResiduals():
-  fitTracks(-1,False,False,PR=1)
+  muflux_Reco.trackKinematics(3.)
   plotRPCExtrap(PR=1)
   trackMult()
   norm = h['TrackMult'].GetEntries()
