@@ -1,5 +1,5 @@
 import os,subprocess,ROOT,time,multiprocessing
-ncpus = multiprocessing.cpu_count()
+ncpus = multiprocessing.cpu_count()*3./4.
 
 pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
 def count_python_processes(macroName):
@@ -12,7 +12,9 @@ def count_python_processes(macroName):
 
 fileList = {}
 badFiles = []
-eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000' # RUN_8000_2395
+run = "RUN_8000_2396" # "RUN_8000_2395"
+
+eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run 
 
 def getFilesFromEOS():
 # list of files
@@ -171,7 +173,7 @@ def cleanUp(D='.'):
 
 def importRTFiles(local='.',remote='/home/truf/ship-ubuntu-1710-32/home/truf/muflux/Jan08'):
 # mkdir /media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32
-# sshfs  ship-ubuntu-1710-32.cern.ch:/ /media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32
+# sshfs  ship-ubuntu-1710-32.cern.ch:/home/truf/muflux /media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32
  fileWithTracks = checkFilesWithTracks(local)
  allFiles = os.listdir(remote)
  for x in allFiles:
@@ -182,14 +184,17 @@ def importRecoFiles(local='.',remote='/media/truf/disk2/home/truf/ShipSoft/ship-
  fileWithTracks = checkFilesWithTracks(remote)
  for x in fileWithTracks:  os.system('cp '+remote+'/'+x+' .')
 
-def mergeHistos(local='.'):
+def mergeHistos(local='.',case='residuals'):
  allFiles = os.listdir(local)
- cmd = 'hadd -f residuals.root '
+ if case == 'residuals':  cmd = 'hadd -f residuals.root '
+ else:  cmd = 'hadd -f momDistributions.root '
  for x in allFiles:
-  if not x.find('histos')<0 : cmd += x+' '
+  if not x.find('histos')<0 : 
+   if (case == 'residuals' and  x.find('analysis')<0) or  \
+      (case != 'residuals' and not x.find('analysis')<0 ):   cmd += (local+'/'+x+' ')
  os.system(cmd)
- 
-def checkRecoRun(eosLocation="/eos/experiment/ship/user/olantwin/muflux/DATA_Rebuild_8000/RUN_8000_2395/",local='.'):
+
+def checkRecoRun(eosLocation=eospath,local='.'):
  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eosLocation,shell=True)
  for x in temp.split('\n'):
   if x.find('.root')<0: continue
@@ -201,7 +206,7 @@ def checkRecoRun(eosLocation="/eos/experiment/ship/user/olantwin/muflux/DATA_Reb
      print "missing RT file",fname
   if not os.path.isfile(histosName): 
      print "missing histogram file",fname
-def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run="RUN_8000_2395",local="."):
+def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=run,local="."):
  temp = os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir "+eosLocation+"/"+run)
  failures = []
  for x in os.listdir(local):
@@ -210,4 +215,21 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
   rc = os.system(cmd)
   if rc != 0: failures.append(x)
  if len(failures)!=0: print failures
+
+def makeMomDistributions():
+ fileList=[]
+ # all RT files
+ for x in os.listdir('.'):
+  if x.find('_RT')>0 and x.find('histos')<0: 
+    fileList.append(x)
+ fileList.sort()
+ for fname in fileList:
+    cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c anaResiduals -f "+fname+' &'
+    print 'momentum analysis:', cmd
+    os.system(cmd)
+    time.sleep(10)
+    while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(10)
+ print "finished all the tasks."
 
