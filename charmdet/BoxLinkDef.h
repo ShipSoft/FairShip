@@ -9,6 +9,8 @@
 #pragma link C++ class BoxContFact+;
 #pragma link C++ class Spectrometer+;
 #pragma link C++ class SpectrometerPoint+;
+#pragma link C++ class PixelModules+;
+#pragma link C++ class PixelModulesPoint+;
 #pragma link C++ class MufluxSpectrometer+;
 #pragma link C++ class MufluxSpectrometerHit+;
 #pragma link C++ class MufluxSpectrometerPoint+;

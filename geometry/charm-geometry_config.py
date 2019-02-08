@@ -159,7 +159,11 @@ with ConfigRegistry.register_config("basic") as c:
     
     c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
     c.target.z0  =  c.target.z - c.target.length/2.
-       
+    
+    #PixelModules
+
+    c.PixelModules = AttrDict(z = 0*u.cm)
+
     #Spectrometer
     c.Spectrometer = AttrDict(z = 0*u.cm)
     #Parameters for Goliath by Annarita
@@ -270,6 +274,9 @@ with ConfigRegistry.register_config("basic") as c:
        c.Spectrometer.DX = 1*u.m
        c.Spectrometer.DY = 0.5*u.m
        c.Spectrometer.DZ = 13.5 * u.cm
+       c.PixelModules.DX = 1*u.m
+       c.PixelModules.DY = 0.5*u.m
+       c.PixelModules.DZ = 13.5 * u.cm
        
     c.MufluxSpectrometer.DX = 2.*u.m
     c.MufluxSpectrometer.DY = 1.6*u.m
@@ -278,8 +285,9 @@ with ConfigRegistry.register_config("basic") as c:
     #These parameters are used only by the charm detector ---   
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
     c.Spectrometer.D1Long = 4 * u.cm;   
-    c.Spectrometer.DimZSi = 0.0200 * u.cm   
-         
+    c.PixelModules.DimZSi = 0.0200 * u.cm   
+    c.PixelModules.D1Short = 3.36 * u.cm / 2.;
+    c.PixelModules.D1Long = 4 * u.cm;   
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY    
            
@@ -287,58 +295,57 @@ with ConfigRegistry.register_config("basic") as c:
     #module position naming: "axis"Si"Telescope number"
     
 		#measured values
-    c.Spectrometer.xSi = []
-    c.Spectrometer.ySi = []
-    c.Spectrometer.zSi = []
-
-    #Plate 0
-    c.Spectrometer.xSi.append(1.53912)
-    c.Spectrometer.ySi.append(-0.002332)
-    c.Spectrometer.zSi.append(-0.13)
-    #Plate 1
-    c.Spectrometer.xSi.append(-0.229076)
-    c.Spectrometer.ySi.append(0.005328)
-    c.Spectrometer.zSi.append(0.52)
-    #Plate 2
-    c.Spectrometer.xSi.append(0.704924)
-    c.Spectrometer.ySi.append(0.808437)
-    c.Spectrometer.zSi.append(2.412)
-    #Plate 3
-    c.Spectrometer.xSi.append(0.705433)
-    c.Spectrometer.ySi.append(-0.879224)
-    c.Spectrometer.zSi.append(3.09)
-    #Plate 4
-    c.Spectrometer.xSi.append(1.54963)
-    c.Spectrometer.ySi.append(-0.003912)
-    c.Spectrometer.zSi.append(5.17)
-    #Plate 5
-    c.Spectrometer.xSi.append(-0.221577)
-    c.Spectrometer.ySi.append(-0.023944)
-    c.Spectrometer.zSi.append(5.79)
-    #Plate 6
-    c.Spectrometer.xSi.append(0.690749)
-    c.Spectrometer.ySi.append(0.769728)
-    c.Spectrometer.zSi.append(7.77)
-    #Plate 7
-    c.Spectrometer.xSi.append(0.702302)
-    c.Spectrometer.ySi.append(-0.874356)
-    c.Spectrometer.zSi.append(8.46)
-    #Plate 8
-    c.Spectrometer.xSi.append(1.58271)
-    c.Spectrometer.ySi.append(-0.0030432)
-    c.Spectrometer.zSi.append(10.462)
-    #Plate 9
-    c.Spectrometer.xSi.append(-0.209171)
-    c.Spectrometer.ySi.append(0.002488)
-    c.Spectrometer.zSi.append(11.17)
-    #Plate 10
-    c.Spectrometer.xSi.append(0.694199)
-    c.Spectrometer.ySi.append(0.850237)
-    c.Spectrometer.zSi.append(13.162)
-    #Plate 11
-    c.Spectrometer.xSi.append(0.683245)
-    c.Spectrometer.ySi.append(-0.79636)
-    c.Spectrometer.zSi.append(13.85)
+    c.PixelModules.xSi = []
+    c.PixelModules.ySi = []
+    c.PixelModules.zSi = []
+    #Module 0
+    c.PixelModules.xSi.append(1.53912)
+    c.PixelModules.ySi.append(-0.002332)
+    c.PixelModules.zSi.append(-0.13)
+    #Module 1
+    c.PixelModules.xSi.append(-0.229076)
+    c.PixelModules.ySi.append(0.005328)
+    c.PixelModules.zSi.append(0.52)
+    #Module 2
+    c.PixelModules.xSi.append(0.704924)
+    c.PixelModules.ySi.append(0.808437)
+    c.PixelModules.zSi.append(2.412)
+    #Module 3
+    c.PixelModules.xSi.append(0.705433)
+    c.PixelModules.ySi.append(-0.879224)
+    c.PixelModules.zSi.append(3.09)
+    #Module 4 (Didn't work)
+    c.PixelModules.xSi.append(1.54963)
+    c.PixelModules.ySi.append(-0.003912)
+    c.PixelModules.zSi.append(5.17)
+    #Module 5
+    c.PixelModules.xSi.append(-0.221577)
+    c.PixelModules.ySi.append(-0.023944)
+    c.PixelModules.zSi.append(5.79)
+    #Module 6
+    c.PixelModules.xSi.append(0.690749)
+    c.PixelModules.ySi.append(0.769728)
+    c.PixelModules.zSi.append(7.77)
+    #Module 7
+    c.PixelModules.xSi.append(0.702302)
+    c.PixelModules.ySi.append(-0.874356)
+    c.PixelModules.zSi.append(8.46)
+    #Module 8
+    c.PixelModules.xSi.append(1.58271)
+    c.PixelModules.ySi.append(-0.0030432)
+    c.PixelModules.zSi.append(10.462)
+    #Module 9
+    c.PixelModules.xSi.append(-0.209171)
+    c.PixelModules.ySi.append(0.002488)
+    c.PixelModules.zSi.append(11.17)
+    #Module 10
+    c.PixelModules.xSi.append(0.694199)
+    c.PixelModules.ySi.append(0.850237)
+    c.PixelModules.zSi.append(13.162)
+    #Module 11
+    c.PixelModules.xSi.append(0.683245)
+    c.PixelModules.ySi.append(-0.79636)
+    c.PixelModules.zSi.append(13.85)
     
     c.Spectrometer.DSciFi1X = 40 * u.cm;
     c.Spectrometer.DSciFi1Y = 40 * u.cm;
@@ -358,18 +365,18 @@ with ConfigRegistry.register_config("basic") as c:
     #c.Scintillator.DistT2              = 135.25*u.cm
     c.Scintillator.DistT2              = 136.26*u.cm 
                   
-    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.Spectrometer.zSi[11] - c.Spectrometer.zSi[0] + c.Spectrometer.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
+    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
-    c.Spectrometer.DimZpixelbox = c.Spectrometer.zSi[11] - c.Spectrometer.zSi[0] + c.Spectrometer.DimZSi
+    c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi
     
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
-    c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.Spectrometer.DimZpixelbox/2.
-    c.Box.zBox = c.Spectrometer.zBox - c.Spectrometer.DimZpixelbox/2. - c.Box.GapPostTargetTh
+    c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
+    c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh
 
     #position of SciFis 
     distGoliathSciFi1 = 10*u.cm
     c.Spectrometer.Scifidist = 5 * u.cm   
-    c.Spectrometer.zSciFi1 = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + distGoliathSciFi1 +  c.Spectrometer.DZ/2.
+    c.Spectrometer.zSciFi1 = c.Spectrometer.zBox + c.PixelModules.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + distGoliathSciFi1 +  c.Spectrometer.DZ/2.
     c.Spectrometer.zSciFi2 = c.Spectrometer.zSciFi1 + c.Spectrometer.DZ/2. + c.Spectrometer.Scifidist + c.Spectrometer.DZ/2.
 
     #Muon Filter
@@ -422,7 +429,7 @@ with ConfigRegistry.register_config("basic") as c:
        #c.MuonTagger.zBox = 791.*u.cm  + 173.67755*u.cm
        c.MuonTagger.zBox = 791.*u.cm  + 175.9875*u.cm
     else:    
-       c.MuonTagger.zBox = c.Spectrometer.zBox + c.Spectrometer.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
+       c.MuonTagger.zBox = c.Spectrometer.zBox + c.PixelModules.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
 
     c.MuonTagger.PX = c.MuonTagger.BX
     c.MuonTagger.PY = c.MuonTagger.BY

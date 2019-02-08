@@ -40,23 +40,29 @@ def configure(run,ship_geo):
  Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
  Box.SetTargetDesign(ship_geo.Box.Julytarget)
  Box.SetRunNumber(ship_geo.Box.RunNumber)
+ 
+
+ PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
+ PixelModules.SetSiliconDZ(ship_geo.PixelModules.DimZSi)
 
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(Box)
+    detectorList.append(PixelModules)
    
  Spectrometer = ROOT.Spectrometer("Spectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
  Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)   
- Spectrometer.SetSiliconDZ(ship_geo.Spectrometer.DimZSi)
+ 
 
- for i, (x, y, z) in enumerate(zip(ship_geo.Spectrometer.xSi,ship_geo.Spectrometer.ySi,ship_geo.Spectrometer.zSi)): 
-  Spectrometer.SetSiliconStationPositions(i, x, y, z)
+
+ for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)): 
+  PixelModules.SetSiliconStationPositions(i, x, y, z)
 
  Spectrometer.SetSciFiDetPositions(ship_geo.Spectrometer.zSciFi1, ship_geo.Spectrometer.zSciFi2)
 # -----Goliath part by Annarita--------
  Spectrometer.SetGoliathSizes(ship_geo.Spectrometer.H, ship_geo.Spectrometer.TS, ship_geo.Spectrometer.LS, ship_geo.Spectrometer.BasisH);
  Spectrometer.SetCoilParameters(ship_geo.Spectrometer.CoilR, ship_geo.Spectrometer.UpCoilH, ship_geo.Spectrometer.LowCoilH,  ship_geo.Spectrometer.CoilD);
 # --------------------------------------
- Spectrometer.SetBoxParam(ship_geo.Spectrometer.SX,ship_geo.Spectrometer.SY,ship_geo.Spectrometer.SZ,ship_geo.Spectrometer.zBox, ship_geo.Spectrometer.DimZpixelbox) 
+ Spectrometer.SetBoxParam(ship_geo.Spectrometer.SX,ship_geo.Spectrometer.SY,ship_geo.Spectrometer.SZ,ship_geo.Spectrometer.zBox) 
  if (ship_geo.MufluxSpectrometer.muflux==False):
   MufluxSpectrometer = ROOT.MufluxSpectrometer("MufluxSpectrometer",ship_geo.MufluxSpectrometer.DX, ship_geo.MufluxSpectrometer.DY,   ship_geo.MufluxSpectrometer.DZ,ROOT.kTRUE)
  else:
