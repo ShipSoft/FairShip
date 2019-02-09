@@ -1262,7 +1262,7 @@ def printScalers():
    ut.bookHist(h,'rate','rate',100,-0.5,99.5)
    if not h.has_key('rates'): ut.bookCanvas(h,key='rates',title='Rates',nx=800,ny=400,cx=2,cy=1)
    rc = h['rates'].cd(1)
-   scalers = f.scalers
+   scalers = sTree.GetCurrentFile().scalers
    if not scalers:
      print "no scalers in this file"
      return
@@ -1490,8 +1490,11 @@ def extrapolateToPlane(fT,z,cplusplus=True):
   if cplusplus:
    pos = ROOT.TVector3()
    mom = ROOT.TVector3()
-   trackLength = muflux_Reco.extrapolateToPlane(fT,z,pos,mom)
-   rc = True
+   try:
+    trackLength = muflux_Reco.extrapolateToPlane(fT,z,pos,mom)
+    rc = True
+   except:
+    rc = False
 # etrapolate to a plane perpendicular to beam direction (z)
   else:
    if z > DT['Station_1_x_plane_0_layer_0_10000000'][2]-10 and z < DT['Station_4_x_plane_1_layer_1_40110000'][2] + 10:
@@ -3339,7 +3342,7 @@ if withCorrections:
  alignCorrection[31]=[ 0.0, 0, 0]
 
  slopeX = {2:[-0.001,-0.001,-0.001,-0.001],
-           3:[-0.0040,-0.0040,-0.0040,-0.0037]}
+           3:[-0.0048,-0.0048,-0.0048,-0.0048]} # 7Feb
  slopeY = {2:[0.0065,0.0065,0.0065,0.0065]}
 
 strawPositionsBotTop={}
@@ -3914,7 +3917,7 @@ def importAlignmentConstants():
    global alignConstants
    alignConstants = {}
    RPCPosition()
-   if not sTree.GetCurrentFile().Get('alignConstants'):
+   if not sTree.GetCurrentFile().Get('alignConstants') or withCorrections:
     for straw in xpos:
       hit = ROOT.MufluxSpectrometerHit(straw,0.)
       strawPositionsBotTop[hit.GetDetectorID()]=correctAlignment(hit)
@@ -3966,7 +3969,6 @@ def analyzeRTrel():
    h[keys[n-1]+'Tmax'].Draw()
 
 # to START
-importAlignmentConstants()
 RTrelations = {}
 zeroFieldData=['SPILLDATA_8000_0515970150_20180715_220030.root']
 def init(database='muflux_RTrelations.pkl',remake=False,withReco=False):
@@ -4055,6 +4057,58 @@ def checkForDiMuon():
      if rnr.Rndm()>0.99: boost = False
   return boost
 
+hMC = {}
+def MCcomparison():
+ if len(hMC)==0:
+  ut.readHists(h,'momDistributions.root')
+  ut.readHists(hMC,'MCmomDistributions.root')
+ for x in ['','mu']:
+  t = 'MC-Comparison'+x
+  if not h.has_key(t): ut.bookCanvas(h,key=t,title='MC / Data '+x,nx=1200,ny=600,cx=2,cy=2)
+  rc = h[t].cd(1)
+  rc.SetLogy(1)
+  h['p/pt_x'+x]=h['p/pt'+x].ProjectionX()
+  h['p/pt_x'+x].SetLineWidth(1)
+  h['p/pt_x'+x].SetMarkerSize(1)
+  h['p/pt_x'+x].Draw()
+  hMC['p/pt_x'+x]=hMC['p/pt'+x].ProjectionX()
+  norm = h['p/pt_x'+x].GetEntries()/hMC['p/pt_x'+x].GetEntries()
+  h['MCp/pt_x'+x] = hMC['p/pt_x'+x].Clone('MCp/pt_x'+x)
+  h['MCp/pt_x'+x].Scale(norm)
+  h['MCp/pt_x'+x].SetLineColor(ROOT.kRed)
+  h['MCp/pt_x'+x].SetLineWidth(1)
+  h['MCp/pt_x'+x].SetMarkerSize(1)
+  h['MCp/pt_x'+x].Draw('same')
+  rc = h[t].cd(2)
+  rc.SetLogy(1)
+  h['p/pt_y'+x]=h['p/pt'+x].ProjectionY()
+  h['p/pt_y'+x].SetLineWidth(1)
+  h['p/pt_y'+x].SetMarkerSize(1)
+  h['p/pt_y'+x].Draw()
+  hMC['p/pt_y'+x]=hMC['p/pt'+x].ProjectionY()
+  h['MCp/pt_y'+x] = hMC['p/pt_y'+x].Clone('MCp/pt_y'+x)
+  h['MCp/pt_y'+x].Scale(norm)
+  h['MCp/pt_y'+x].SetLineColor(ROOT.kRed)
+  h['MCp/pt_y'+x].SetLineWidth(1)
+  h['MCp/pt_y'+x].SetMarkerSize(1)
+  h['MCp/pt_y'+x].Draw('same')
+  rc = h[t].cd(3)
+  h['linp/pt_x'+x]=h['p/pt_x'+x].Clone('linp/pt_x'+x)
+  h['linMCp/pt_x'+x]=h['MCp/pt_x'+x].Clone('linMCp/pt_x'+x)
+  h['linp/pt_y'+x]=h['p/pt_y'+x].Clone('linp/pt_y'+x)
+  h['linMCp/pt_y'+x]=h['MCp/pt_y'+x].Clone('linMCp/pt_y'+x)
+  h['linp/pt_x'+x].GetXaxis().SetRange(1,120)
+  h['linMCp/pt_x'+x].GetXaxis().SetRange(1,120)
+  h['linp/pt_y'+x].GetXaxis().SetRange(1,25)
+  h['linMCp/pt_y'+x].GetXaxis().SetRange(1,25)
+  h['linp/pt_x'+x].Draw()
+  h['linMCp/pt_x'+x].Draw('same')
+  rc = h[t].cd(4)
+  h['linp/pt_y'+x].Draw()
+  h['linMCp/pt_y'+x].Draw('same')
+  h[t].Update()
+  h[t].Print('MC-Comparison'+x+'.pdf')
+
 def copyRTRelation():
  f       = sTree.GetCurrentFile()
  fname   = f.GetName()
@@ -4118,7 +4172,6 @@ def recoStep1(PR=11):
 
   for n in range(sTree.GetEntries()):
     if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName(),time.ctime()
-    if n>1000: break
     rc = sTree.GetEvent(n)
     fGenFitArray.Clear()
     fTrackInfoArray.Clear()
@@ -4193,7 +4246,8 @@ if options.command == "":
    else:
     h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
     for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
-
+ importAlignmentConstants()
+#
 if options.command == "recoStep0":
   withTDC=False
   print "make clean TDC distributions"
@@ -4211,9 +4265,11 @@ elif options.command == "recoStep1":
    sigma_spatial = 0.25
    withCorrections = True  
   print "add fitted tracks"
+  importAlignmentConstants()
   recoStep1(PR=11)
 elif options.command == "anaResiduals":
   importRTrel()
+  importAlignmentConstants()
   anaResiduals()
   print "finished with analysis step",options.listOfFiles
 elif options.command == "alignment":
@@ -4222,10 +4278,8 @@ elif options.command == "alignment":
   withDefaultAlignment = False
   sigma_spatial = 0.25
   withCorrections = True
+  importAlignmentConstants()
   plotBiasedResiduals(PR=11,minP=10)
-  if sTree.GetBranch("FitTracks"): 
-   plotRPCExtrap()
-   trackMult()
   ut.writeHists(h,'histos-residuals-'+rname)
 elif options.command == "plotResiduals":
   print "reading histograms with residuals"

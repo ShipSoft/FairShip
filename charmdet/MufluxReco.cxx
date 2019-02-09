@@ -10,6 +10,7 @@
 #include "MufluxSpectrometerHit.h"
 
 TVector3* parallelToZ = new TVector3(0., 0., 1.);
+TVector3* NewPosition = new TVector3(0., 0., 0.);
 // -----   Standard constructor   ------------------------------------------ 
 MufluxReco::MufluxReco() {}
 // -----   Standard constructor   ------------------------------------------ 
@@ -60,7 +61,7 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& p
       }
     }
     genfit::StateOnPlane fstate =  fT->getFittedState(mClose);
-    TVector3* NewPosition = new TVector3(0., 0., z);
+    NewPosition->SetXYZ(0., 0., z);
     Int_t pdgcode = -int(13*fstate.getCharge());
     genfit::RKTrackRep* rep      = new genfit::RKTrackRep( pdgcode );
     genfit::StateOnPlane* state   = new genfit::StateOnPlane(rep);
@@ -70,6 +71,8 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& p
     rc = rep->extrapolateToPlane(*state, *NewPosition, *parallelToZ );
     pos = (state->getPos());
     mom = (state->getMom());
+    delete rep;
+    delete state;
    }else{
     genfit::StateOnPlane fstate = fT->getFittedState(0);
     if ( z > cuts["lastDTStation_z"]){
@@ -97,6 +100,7 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
     Int_t detID = trInfo->detId(n);
     MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
+    delete hit;
     Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
     if (trInfo->wL(n) <0.1 && trInfo->wR(n) <0.1){ continue;}
     if (v != 0){ 

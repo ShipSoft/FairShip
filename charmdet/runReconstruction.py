@@ -106,6 +106,23 @@ def recoStep0(local=False):
  print "files created with RT relations "
  cleanUp()
 
+def checkFilesWithRT():
+ fok = []
+ fNotok = []
+ fRaw = []
+ for fname in os.listdir('.'):
+   if not fname.find('_RT')<0:
+    f=ROOT.TFile(fname)
+    RT = f.Get('tMinAndTmax')
+    if RT:
+     fok.append(fname)
+    else:
+     fNotok.append(fname)
+   elif fname.find('root')>0 and not fname.find('SPILL')<0:
+    fRaw.append()
+ print len(fok),len(fNotok),len(fRaw)
+ return fok,fNotok,fRaw
+
 
 def recoStep1():
  fileList=[]
@@ -130,7 +147,7 @@ def checkAlignment():
  fileList=[]
  # all RT files
  for x in os.listdir('.'):
-  if x.find('_RT')>0 and x.find('histos')<0:
+  if x.find('_RT')>0 and x.find('histos-residuals')<0:
     fileList.append(x)
  fileList.sort()
  for fname in fileList:
@@ -160,6 +177,27 @@ def checkFilesWithTracks(D='.'):
  fileList.sort()
  return fileList
 
+def checkFilesWithTracks2(D='.'):
+ badFile=[]
+ # all RT files
+ for x in os.listdir(D):
+  if x.find('_RT')>0 and x.find('histos')<0: 
+   test = ROOT.TFile(D+'/'+x)
+   sTree = test.cbmsim
+   if not sTree: badFile.append(x+"?")
+   elif sTree.GetBranch("FitTracks"): 
+     prev = 0
+     for n in range(min(20000,sTree.GetEntries())):
+        rc = sTree.GetEvent(n)
+        if sTree.FitTracks.GetEntries()>0:
+         st = sTree.FitTracks[0].getFitStatus()
+         if not st.isFitConverged(): continue
+         if prev==st.getChi2():
+          badFile.append(x)
+          break
+         else: prev=st.getChi2()
+ return badFile
+
 def cleanUp(D='.'):
 # remove raw data files for files with RT relations
    for x in os.listdir(D):
@@ -170,6 +208,14 @@ def cleanUp(D='.'):
         cmd = 'rm '+r
         os.system(cmd)
 
+def copyMissingFiles(remote="../../ship-ubuntu-1710-64/RUN_8000_2395"):
+ toCopy=[]
+ allFilesR = os.listdir(remote)
+ allFilesL = os.listdir(".")
+ for fname in allFilesR:
+   if fname.find('RT')>0:
+     if not fname in allFilesL: toCopy.append(fname)
+ for fname in toCopy: os.system('cp '+remote+"/"+fname+' .')
 
 def importRTFiles(local='.',remote='/home/truf/ship-ubuntu-1710-32/home/truf/muflux/Jan08'):
 # mkdir /media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32

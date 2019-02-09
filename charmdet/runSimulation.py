@@ -124,6 +124,7 @@ def checkFilesWithTracks(D='.',splitFactor=10):
     for i in range(splitFactor):
      recoFile = mcFile.replace('.root','-'+str(i)+'.root')
      if recoFile in os.listdir('.'):
+      print "check",fname,recoFile
       test = ROOT.TFile(recoFile)
       sTree = test.Get('cbmsim')
       if sTree:
