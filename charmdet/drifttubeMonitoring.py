@@ -1480,6 +1480,12 @@ def checkMCSmearing():
   for mcp in trackID:
    rc=h['nMeasMC'].Fill(len(trackID[mcp]))
 
+def originMCmuons():
+ ut.bookHist(h,'origin z/r','origin of muons, z vs r',1000,-600.,600.,100,0.,10.)
+ for i in range(sTree.GetEntries()):
+  rc = sTree.GetEvent(i)
+  r = ROOT.TMath.Sqrt(sTree.MCTrack[0].GetStartX()**2+sTree.MCTrack[0].GetStartY()**2)
+  rc = h['origin z/r'].Fill(sTree.MCTrack[0].GetStartZ(),r)
 # from TrackExtrapolateTool
 parallelToZ = ROOT.TVector3(0., 0., 1.) 
 def extrapolateToPlane(fT,z,cplusplus=True):

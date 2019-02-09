@@ -279,3 +279,30 @@ def makeMomDistributions():
         time.sleep(10)
  print "finished all the tasks."
 
+def pot():
+ fileList=[]
+ # all RT files
+ for x in os.listdir('.'):
+  if x.find('_RT')>0 and x.find('histos')<0: 
+    fileList.append(x)
+ fileList.sort()
+ scalerStat = {}
+ for fname in fileList:
+   f=ROOT.TFile(fname)
+   scalers = f.scalers
+   if not scalers:
+     print "no scalers in this file",fname
+     continue
+   scalers.GetEntry(0)
+   for x in scalers.GetListOfBranches():
+    name = x.GetName()
+    s = eval('scalers.'+name)
+    if name!='slices':
+     if not scalerStat.has_key(name):scalerStat[name]=0
+     scalerStat[name]+=s
+ keys = scalerStat.keys()
+ keys.sort()
+ for k in keys: print k,':',scalerStat[k]
+
+
+

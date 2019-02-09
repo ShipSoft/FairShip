@@ -45,7 +45,6 @@ def simulationStep():
     cmd = "python $FAIRSHIP/macro/run_simScript.py -n "+str(N)+" --MuonBack --charm=1 --CharmdetSetup=0 --output "+odir+" -f "+fname+" &"
     print 'step 1:', cmd
     os.system(cmd)
-    time.sleep(100)
     while 1>0:
         if count_python_processes('run_simScript')<ncpus: break 
         time.sleep(100)
@@ -139,22 +138,22 @@ def makeMomDistributions(D='.',splitFactor=10):
  for df in fileList:
    tmp = df.split('/')
    if len(tmp)>1: os.chdir(tmp[0])
-   cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c anaResiduals -f "+tmp[1]+' &'
-   print 'execute:', cmd
-   os.system(cmd)
+   if not "histos-analysis-"+tmp[1] in os.listdir('.'):
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c anaResiduals -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+   if len(tmp)>1: os.chdir('../')
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
-   if len(tmp)>1: os.chdir('../')
  print "finished all the tasks."
 
 def mergeHistos(case='residuals'):
- fileList=checkFilesWithTracks()
+ dirList=getFilesLocal()
  if case == 'residuals':  cmd = 'hadd -f residuals.root '
  else:                    cmd = 'hadd -f momDistributions.root '
- for x in allFiles:
-  if (case != 'residuals' and not x.find('analysis')<0 ):  histoFile = x.replace("/","/histos-analysis-")
-  else:  histoFile = x.replace("/","/histos-")
-  if not os.path.isfile(histoFile):continue
-  cmd += x+" "
-
+ for d in dirList:
+  fileList=os.listdir(d)
+  for x in fileList:
+   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd += d+'/'+x+" "
+ os.system(cmd)
