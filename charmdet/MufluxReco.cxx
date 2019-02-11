@@ -198,7 +198,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         h_chi2mu->Fill(chi2);
         h_Nmeasurementsmu->Fill(fitStatus->getNdf());
         h_pptmu->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-        h_ppx->Fill(P,Px);
+        h_ppxmu->Fill(P,Px);
         h_xymu->Fill(pos[0],pos[1]);
         h_pxpymu->Fill(Px/Pz,Py/Pz);
       }

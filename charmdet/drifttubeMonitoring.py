@@ -1723,7 +1723,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
        rc = h['chi2mu'].Fill(chi2)
        rc = h['Nmeasurementsmu'].Fill(fitStatus.getNdf())
        rc = h['p/ptmu'].Fill(P,ROOT.TMath.Sqrt(Px*Px+Py*Py))
-       rc = h['px'].Fill(P,Px)
+       rc = h['p/pxmu'].Fill(P,Px)
        rc = h['xymu'].Fill(pos[0],pos[1])
        rc = h['pxpymu'].Fill(Px/Pz,Py/Pz)
 #
@@ -1769,7 +1769,7 @@ def momDisplay():
   h['p/pt_x'+x].Draw()
   rc = h[t].cd(3)
   h['p/pt_y'+x]=h['p/pt'+x].ProjectionY()
-  h['p/pt_y'+x].SetName('p/pt_x'+x)
+  h['p/pt_y'+x].SetName('p/pt_y'+x)
   h['p/pt_y'+x].SetTitle('Pt [GeV/c]')
   h['p/pt_y'+x].Draw()
   h[t].Update()
@@ -1789,6 +1789,12 @@ def momDisplay():
    h['TDC2R_projx'].SetTitle('RT Relation r projection')
    h['TDC2R_projx'].SetXTitle('drift distance [cm]')
    h['TDC2R_projx'].Draw()
+  else:
+   h['px'+x]=h['p/pt'+x].ProjectionX()
+   h['px'+x].SetName('px'+x)
+   h['px'+x].SetTitle('P [GeV/c]')
+   h['px'+x].Draw()
+   
   h[t].Update()
  
 sigma_spatial = 0.25 # almost binary resolution! (ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
@@ -4066,55 +4072,97 @@ def checkForDiMuon():
      if rnr.Rndm()>0.99: boost = False
   return boost
 
+def plotEnergyLoss():
+ f=ROOT.TFile('PinPout.root')
+ PinPout = f.PinPout
+ PinPout.SetStats(0)
+ PinPout.SetTitle('incoming vs. outgoing momentum;p [GeV/c];p [GeV/c];  ')
+ PinPout.Draw('box')
+ lx = ROOT.TLine(0.,1.,10.,1.)
+ lx.DrawClone()
+ ly = ROOT.TLine(5.,0.,5.,10.)
+ ly.DrawClone()
 hMC = {}
-def MCcomparison():
+def MCcomparison(pot = 0,pMin=5.):
  if len(hMC)==0:
   ut.readHists(h,'momDistributions.root')
   ut.readHists(hMC,'MCmomDistributions.root')
  for x in ['','mu']:
   t = 'MC-Comparison'+x
-  if not h.has_key(t): ut.bookCanvas(h,key=t,title='MC / Data '+x,nx=1200,ny=600,cx=2,cy=2)
+  if not h.has_key(t): ut.bookCanvas(h,key=t,title='MC / Data '+x,nx=1200,ny=600,cx=3,cy=2)
+  h['MCp/pt'+x] = hMC['p/pt'+x].Clone('MCp/pt'+x)
+  h['MCp/px'+x] = hMC['p/px'+x].Clone('MCp/px'+x)
+  h['p/pt_x'+x]  = h['p/pt'+x].ProjectionX()
+  h['MCp/pt_x'+x]= h['MCp/pt'+x].ProjectionX()
+  if pot == 0:
+    z = h['MCp/pt_x'+x]
+    MCPG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
+    z = h['p/pt_x'+x]
+    PG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
+    norm = PG5/MCPG5
+  else: norm = pot
+  opt = {'':['',ROOT.kBlue],'MC':['same',ROOT.kRed]}
   rc = h[t].cd(1)
   rc.SetLogy(1)
-  h['p/pt_x'+x]=h['p/pt'+x].ProjectionX()
-  h['p/pt_x'+x].SetLineWidth(1)
-  h['p/pt_x'+x].SetMarkerSize(1)
-  h['p/pt_x'+x].Draw()
-  hMC['p/pt_x'+x]=hMC['p/pt'+x].ProjectionX()
-  norm = h['p/pt_x'+x].GetEntries()/hMC['p/pt_x'+x].GetEntries()
-  h['MCp/pt_x'+x] = hMC['p/pt_x'+x].Clone('MCp/pt_x'+x)
   h['MCp/pt_x'+x].Scale(norm)
-  h['MCp/pt_x'+x].SetLineColor(ROOT.kRed)
-  h['MCp/pt_x'+x].SetLineWidth(1)
-  h['MCp/pt_x'+x].SetMarkerSize(1)
-  h['MCp/pt_x'+x].Draw('same')
+  mx1 = ut.findMaximumAndMinimum(h['p/pt_x'+x])[1]
+  mx2 = ut.findMaximumAndMinimum(h['MCp/pt_x'+x])[1]
+  hMax = max(mx1,mx2)
+  for i in opt:
+   h[i+'p/pt_x'+x].SetTitle('momentum P')
+   h[i+'p/pt_x'+x].SetMaximum(hMax*2.)
+   h[i+'p/pt_x'+x].SetLineWidth(1)
+   h[i+'p/pt_x'+x].SetMarkerSize(1)
+   h[i+'p/pt_x'+x].SetLineColor(opt[i][1])
+   h[i+'p/pt_x'+x].Draw(opt[i][0])
   rc = h[t].cd(2)
   rc.SetLogy(1)
-  h['p/pt_y'+x]=h['p/pt'+x].ProjectionY()
-  h['p/pt_y'+x].SetLineWidth(1)
-  h['p/pt_y'+x].SetMarkerSize(1)
-  h['p/pt_y'+x].Draw()
-  hMC['p/pt_y'+x]=hMC['p/pt'+x].ProjectionY()
-  h['MCp/pt_y'+x] = hMC['p/pt_y'+x].Clone('MCp/pt_y'+x)
+  for i in opt:
+   h[i+'p/pt_y'+x]=h[i+'p/pt'+x].ProjectionY(i+'p/pt_y'+x,h[i+'p/pt_x'+x].FindBin(pMin),h[i+'p/pt_x'+x].GetNbinsX())
   h['MCp/pt_y'+x].Scale(norm)
-  h['MCp/pt_y'+x].SetLineColor(ROOT.kRed)
-  h['MCp/pt_y'+x].SetLineWidth(1)
-  h['MCp/pt_y'+x].SetMarkerSize(1)
-  h['MCp/pt_y'+x].Draw('same')
+  mx1 = ut.findMaximumAndMinimum(h['p/pt_y'+x])[1]
+  mx2 = ut.findMaximumAndMinimum(h['MCp/pt_y'+x])[1]
+  hMay = max(mx1,mx2)
+  for i in opt:
+   h[i+'p/pt_y'+x].SetTitle('transverse momentum Pt, P>'+str(pMin))
+   h[i+'p/pt_y'+x].SetMaximum(hMay*2.)
+   h[i+'p/pt_y'+x].SetLineWidth(1)
+   h[i+'p/pt_y'+x].SetMarkerSize(1)
+   h[i+'p/pt_y'+x].SetLineColor(opt[i][1])
+   h[i+'p/pt_y'+x].Draw(opt[i][0])
   rc = h[t].cd(3)
-  h['linp/pt_x'+x]=h['p/pt_x'+x].Clone('linp/pt_x'+x)
-  h['linMCp/pt_x'+x]=h['MCp/pt_x'+x].Clone('linMCp/pt_x'+x)
-  h['linp/pt_y'+x]=h['p/pt_y'+x].Clone('linp/pt_y'+x)
-  h['linMCp/pt_y'+x]=h['MCp/pt_y'+x].Clone('linMCp/pt_y'+x)
-  h['linp/pt_x'+x].GetXaxis().SetRange(1,120)
-  h['linMCp/pt_x'+x].GetXaxis().SetRange(1,120)
-  h['linp/pt_y'+x].GetXaxis().SetRange(1,25)
-  h['linMCp/pt_y'+x].GetXaxis().SetRange(1,25)
-  h['linp/pt_x'+x].Draw()
-  h['linMCp/pt_x'+x].Draw('same')
+  rc.SetLogy(1)
+  for i in opt:
+   h[i+'px'+x]=h[i+'p/px'+x].ProjectionY(i+'px'+x,h[i+'p/pt_x'+x].FindBin(pMin),h[i+'p/pt_x'+x].GetNbinsX())
+  h['MCpx'+x].Scale(norm)
+  mx1 = ut.findMaximumAndMinimum(h['px'+x])[1]
+  mx2 = ut.findMaximumAndMinimum(h['MCpx'+x])[1]
+  hMaPx = max(mx1,mx2)
+  for i in opt:
+   h[i+'px'+x].SetTitle('Px, P>'+str(pMin))
+   h[i+'px'+x].SetMaximum(hMaPx*2.)
+   h[i+'px'+x].SetLineWidth(1)
+   h[i+'px'+x].SetMarkerSize(1)
+   h[i+'px'+x].SetLineColor(opt[i][1])
+   h[i+'px'+x].Draw(opt[i][0])
   rc = h[t].cd(4)
-  h['linp/pt_y'+x].Draw()
-  h['linMCp/pt_y'+x].Draw('same')
+  for i in opt:
+   h['lin'+i+'p/pt_x'+x]=h[i+'p/pt_x'+x].Clone('lin'+i+'p/pt_x'+x)
+   h['lin'+i+'p/pt_x'+x].GetXaxis().SetRange(1,120)
+   h['lin'+i+'p/pt_x'+x].SetMaximum(hMax*1.1)
+   h['lin'+i+'p/pt_x'+x].Draw(opt[i][0])
+  rc = h[t].cd(5)
+  for i in opt:
+   h['lin'+i+'p/pt_y'+x]=h[i+'p/pt_y'+x].Clone('lin'+i+'p/pt_y'+x)
+   h['lin'+i+'p/pt_y'+x].GetXaxis().SetRange(1,25)
+   h['lin'+i+'p/pt_y'+x].SetMaximum(hMay*1.1)
+   h['lin'+i+'p/pt_y'+x].Draw(opt[i][0])
+  rc = h[t].cd(6)
+  for i in opt:
+   h['lin'+i+'px'+x]=h[i+'px'+x].Clone('lin'+i+'px'+x)
+   h['lin'+i+'px'+x].GetXaxis().SetRange(1,25)
+   h['lin'+i+'px'+x].SetMaximum(hMaPx*1.1)
+   h['lin'+i+'px'+x].Draw(opt[i][0])
   h[t].Update()
   h[t].Print('MC-Comparison'+x+'.pdf')
 
@@ -4277,7 +4325,7 @@ elif options.command == "recoStep1":
   importAlignmentConstants()
   recoStep1(PR=11)
 elif options.command == "anaResiduals":
-  importRTrel()
+  if not MCdata: importRTrel()
   importAlignmentConstants()
   anaResiduals()
   print "finished with analysis step",options.listOfFiles

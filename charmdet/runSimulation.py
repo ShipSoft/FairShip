@@ -153,7 +153,6 @@ def mergeHistos(case='residuals'):
  if case == 'residuals':  cmd = 'hadd -f residuals.root '
  else:                    cmd = 'hadd -f momDistributions.root '
  for d in dirList:
-  fileList=os.listdir(d)
-  for x in fileList:
+  for x in os.listdir(d):
    if (case != 'residuals' and not x.find('analysis')<0 ):  cmd += d+'/'+x+" "
  os.system(cmd)
