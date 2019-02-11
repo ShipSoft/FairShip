@@ -44,6 +44,7 @@ def configure(run,ship_geo):
 
  PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
  PixelModules.SetSiliconDZ(ship_geo.PixelModules.DimZSi)
+ PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ,ship_geo.PixelModules.zBox,ship_geo.PixelModules.SZPixel,ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long)
 
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(Box)
