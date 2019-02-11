@@ -505,8 +505,8 @@ void MuonTagger::EndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop) {
   }  
   TGeoNode* W = nav->GetCurrentNode();
   TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
-  Double_t top[3] = {0,0,S->GetDZ()};
-  Double_t bot[3] = {0,0,-S->GetDZ()};
+  Double_t top[3] = {S->GetDX(),S->GetDY(),S->GetDZ()};
+  Double_t bot[3] = {-S->GetDX(),-S->GetDY(),-S->GetDZ()};
   Double_t Gtop[3],Gbot[3];
   nav->LocalToMaster(top, Gtop);
   nav->LocalToMaster(bot, Gbot);
