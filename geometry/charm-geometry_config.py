@@ -287,7 +287,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.D1Long = 4 * u.cm;   
     c.PixelModules.DimZSi = 0.0200 * u.cm   
     c.PixelModules.D1Short = 3.36 * u.cm / 2.;
-    c.PixelModules.D1Long = 4 * u.cm;   
+    c.PixelModules.D1Long = 4 * u.cm;    
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY    
            
@@ -372,7 +372,7 @@ with ConfigRegistry.register_config("basic") as c:
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
     c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh
-
+    c.PixelModules.zBox = c.Spectrometer.zBox
     #position of SciFis 
     distGoliathSciFi1 = 10*u.cm
     c.Spectrometer.Scifidist = 5 * u.cm   
