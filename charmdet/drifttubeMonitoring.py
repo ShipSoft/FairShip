@@ -1100,7 +1100,7 @@ def sortHits(event,flag = True):
    if flag and not MCdata:
     if not hit.hasTimeOverThreshold() or not hit.hasDelay() or not hit.hasTrigger() : continue # no reliable TDC measuerement
     if hit.GetDetectorID() in noisyChannels: continue
-   if hit.GetTimeOverThreshold() < cuts['tot']: continue
+    if hit.GetTimeOverThreshold() < cuts['tot']: continue
    statnb,vnb,pnb,lnb,view,channelID,tdcId,moduleId = stationInfo(hit)
    if pnb > 1 or lnb >1 : 
     print "sortHits: unphysical detctor ID",hit.GetDetectorID()
@@ -1558,6 +1558,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
 
 for x in ['','mu']:
  ut.bookHist(h,'p/pt'+x,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
+ ut.bookHist(h,'p/px'+x,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
  ut.bookHist(h,'chi2'+x,'chi2/nDoF',100,0.,10.)
  ut.bookHist(h,'Nmeasurements'+x,'number of measurements used',25,-0.5,24.5)
  ut.bookHist(h,'xy'+x,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
@@ -1659,8 +1660,8 @@ def findSimpleEvent(event,nmin=2,nmax=6):
 
 def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,PR=1,withRT=False,chi2UL=3):
 # simpleEvents=True: select special clean events for testing track fit
- for x in ['p/pt','Nmeasurements','chi2','xy','pxpy','TDC2R','p1/p2','pt1/pt2',
-           'p/ptmu','Nmeasurementsmu','chi2mu','xymu','pxpymu']: h[x].Reset()
+ for x in ['p/pt','p/px','Nmeasurements','chi2','xy','pxpy','TDC2R','p1/p2','pt1/pt2',
+           'p/ptmu','p/pxmu','Nmeasurementsmu','chi2mu','xymu','pxpymu']: h[x].Reset()
  if not withDisplay and not Debug and not simpleEvents:
    muflux_Reco.trackKinematics(3.)
    momDisplay()
@@ -1711,6 +1712,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
      rc = h['Nmeasurements'].Fill(fitStatus.getNdf())
      if chi2 > chi2UL: continue
      rc = h['p/pt'].Fill(P,ROOT.TMath.Sqrt(Px*Px+Py*Py))
+     rc = h['p/px'].Fill(P,Px)
      pos = fittedState.getPos()
      rc = h['xy'].Fill(pos[0],pos[1])
      rc = h['pxpy'].Fill(Px/Pz,Py/Pz)
@@ -1721,6 +1723,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
        rc = h['chi2mu'].Fill(chi2)
        rc = h['Nmeasurementsmu'].Fill(fitStatus.getNdf())
        rc = h['p/ptmu'].Fill(P,ROOT.TMath.Sqrt(Px*Px+Py*Py))
+       rc = h['px'].Fill(P,Px)
        rc = h['xymu'].Fill(pos[0],pos[1])
        rc = h['pxpymu'].Fill(Px/Pz,Py/Pz)
 #

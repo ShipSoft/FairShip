@@ -35,12 +35,12 @@ def getFilesLocal():
   if os.path.isdir(x): fl.append(x)
  return fl
 
-def simulationStep():
- fnames = getFilesFromEOS()
+def simulationStep(fnames=[]):
+ if len(fnames)==0: fnames = getFilesFromEOS()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
  for fname in fnames:
-    N = fileList[fname]-1
+    N = fnames[fname]-1
     odir = fname[fname.rfind('/')+1:].replace('.root','')
     cmd = "python $FAIRSHIP/macro/run_simScript.py -n "+str(N)+" --MuonBack --charm=1 --CharmdetSetup=0 --output "+odir+" -f "+fname+" &"
     print 'step 1:', cmd
@@ -49,8 +49,8 @@ def simulationStep():
         if count_python_processes('run_simScript')<ncpus: break 
         time.sleep(100)
  print "finished all the tasks."
-def digiStep():
- fnames = getFilesLocal()
+def digiStep(fnames=[]):
+ if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
  for fname in fnames:
@@ -66,8 +66,8 @@ def digiStep():
         time.sleep(100)
  print "finished all the tasks."
 
-def splitDigiFiles(splitFactor=10):
- fnames = getFilesLocal()
+def splitDigiFiles(splitFactor=10,fnames=[]):
+ if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
  for fname in fnames:
@@ -88,8 +88,8 @@ def splitDigiFiles(splitFactor=10):
      N+=deltaN
    os.chdir('../')
 
-def recoStep(splitFactor=10):
- fnames = getFilesLocal()
+def recoStep(splitFactor=10,fnames=[]):
+ if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
  for fname in fnames:
