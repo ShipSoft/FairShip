@@ -41,8 +41,14 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
   Double_t Gtop[3],Gbot[3];
   nav->LocalToMaster(top, Gtop);
   nav->LocalToMaster(bot, Gbot);
-  vtop.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);   
-  vbot.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);        
+  if (orientationnb ==0) {
+     vtop.SetXYZ(Gbot[0],(Gbot[1]+Gtop[1])/2.,Gbot[2]);    
+     vbot.SetXYZ(Gtop[0],(Gbot[1]+Gtop[1])/2.,Gtop[2]);      
+  }     
+  if (orientationnb ==1) {
+     vtop.SetXYZ((Gbot[0]+Gbot[1])/2.,Gtop[1],Gbot[2]);    
+     vbot.SetXYZ((Gbot[0]+Gbot[1])/2.,Gbot[1],Gtop[2]);      
+  }      
 }
 
 ClassImp(MuonTaggerHit)
