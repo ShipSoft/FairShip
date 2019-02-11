@@ -9,6 +9,7 @@
 *.o
 *.ko
 *.pyc
+*.root
 
 # Shared objects (inc. Windows DLLs)
 *.dll
@@ -50,3 +51,6 @@ c++
 cc
 config.sh
 lcgenv.sh
+
+#Files
+macro/mateiresults
