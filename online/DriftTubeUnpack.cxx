@@ -217,7 +217,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
    }
 
-   uint16_t delay = 13500; // Best guess based on data
+   int32_t delay = 13500; // Best guess based on data
    if (!trigger_times[4]) {
       LOG(WARNING) << "No trigger in TDC 4, guessing delay" << FairLogger::endl;
       flags |= DriftTubes::NoDelay;
@@ -226,6 +226,8 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       flags |= DriftTubes::NoDelay;
    } else {
       delay = trigger_times[4] - master_trigger_time;
+      LOG(DEBUG) << "Delay [ns]:";
+      LOG(DEBUG) << 0.098 * delay << " = " << 0.098 * trigger_times[4] << " - " << 0.098 * master_trigger_time;
    }
 
    for (auto &&hit : drifttube_hits) {
@@ -246,6 +248,10 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
                       << "\t Sequential trigger number " << df->header.timeExtent << FairLogger::endl;
          time = 0.098 * raw_time;
          hit_flags |= DriftTubes::NoTrigger;
+      }
+      if (time > 4000) {
+         LOG(WARNING) << "Late event found with time [ns]:";
+         LOG(WARNING) << time << " = " << 0.098 * delay << " - " << 0.098 * (delay + raw_time) - time << " - " << 0.098 * raw_time;
       }
 
       new ((*(first ? fRawTubes : fRawLateTubes))[first ? nhitsTubes : nhitsLateTubes])
