@@ -286,8 +286,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
     c.Spectrometer.D1Long = 4 * u.cm;   
     c.PixelModules.DimZSi = 0.0200 * u.cm   
-    c.PixelModules.D1Short = 3.36 * u.cm / 2.;
-    c.PixelModules.D1Long = 4 * u.cm;    
+    c.PixelModules.D1short = 3.36 * u.cm / 2.;
+    c.PixelModules.D1long = 4 * u.cm;    
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY    
            
