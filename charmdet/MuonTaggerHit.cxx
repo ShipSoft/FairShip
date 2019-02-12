@@ -46,8 +46,8 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
      vbot.SetXYZ(Gtop[0],(Gbot[1]+Gtop[1])/2.,Gtop[2]);      
   }     
   if (orientationnb ==1) {
-     vtop.SetXYZ((Gbot[0]+Gbot[1])/2.,Gtop[1],Gbot[2]);    
-     vbot.SetXYZ((Gbot[0]+Gbot[1])/2.,Gbot[1],Gtop[2]);      
+     vtop.SetXYZ((Gbot[0]+Gtop[0])/2.,Gtop[1],Gbot[2]);    
+     vbot.SetXYZ((Gbot[0]+Gtop[0])/2.,Gbot[1],Gtop[2]);      
   }      
 }
 
