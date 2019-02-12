@@ -298,56 +298,54 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.xSi = []
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []
-    
-    
     #Module 0
     c.PixelModules.xSi.append(1.53912)
     c.PixelModules.ySi.append(-0.002332)
-    c.PixelModules.zSi.append(0)
+    c.PixelModules.zSi.append(-0.13)
     #Module 1
     c.PixelModules.xSi.append(-0.229076)
     c.PixelModules.ySi.append(0.005328)
-    c.PixelModules.zSi.append(0.65)
+    c.PixelModules.zSi.append(0.52)
     #Module 2
     c.PixelModules.xSi.append(0.704924)
     c.PixelModules.ySi.append(0.808437)
-    c.PixelModules.zSi.append(2.542)
+    c.PixelModules.zSi.append(2.412)
     #Module 3
     c.PixelModules.xSi.append(0.705433)
     c.PixelModules.ySi.append(-0.879224)
-    c.PixelModules.zSi.append(3.22)
+    c.PixelModules.zSi.append(3.09)
     #Module 4 (Didn't work)
     c.PixelModules.xSi.append(1.54963)
     c.PixelModules.ySi.append(-0.003912)
-    c.PixelModules.zSi.append(5.3)
+    c.PixelModules.zSi.append(5.17)
     #Module 5
     c.PixelModules.xSi.append(-0.221577)
     c.PixelModules.ySi.append(-0.023944)
-    c.PixelModules.zSi.append(5.92)
+    c.PixelModules.zSi.append(5.79)
     #Module 6
     c.PixelModules.xSi.append(0.690749)
     c.PixelModules.ySi.append(0.769728)
-    c.PixelModules.zSi.append(7.9)
+    c.PixelModules.zSi.append(7.77)
     #Module 7
     c.PixelModules.xSi.append(0.702302)
     c.PixelModules.ySi.append(-0.874356)
-    c.PixelModules.zSi.append(8.59)
+    c.PixelModules.zSi.append(8.46)
     #Module 8
     c.PixelModules.xSi.append(1.58271)
     c.PixelModules.ySi.append(-0.0030432)
-    c.PixelModules.zSi.append(10.592)
+    c.PixelModules.zSi.append(10.462)
     #Module 9
     c.PixelModules.xSi.append(-0.209171)
     c.PixelModules.ySi.append(0.002488)
-    c.PixelModules.zSi.append(11.30)
+    c.PixelModules.zSi.append(11.17)
     #Module 10
     c.PixelModules.xSi.append(0.694199)
     c.PixelModules.ySi.append(0.850237)
-    c.PixelModules.zSi.append(13.292)
+    c.PixelModules.zSi.append(13.162)
     #Module 11
     c.PixelModules.xSi.append(0.683245)
     c.PixelModules.ySi.append(-0.79636)
-    c.PixelModules.zSi.append(13.98)
+    c.PixelModules.zSi.append(13.85)
     
     c.Spectrometer.DSciFi1X = 40 * u.cm;
     c.Spectrometer.DSciFi1Y = 40 * u.cm;
@@ -356,8 +354,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.Spectrometer.Bvalue = 1 * u.tesla;
 
-    #-----------------------------
-
+    #-------------------------------------------------------
             
     
     #Scintillator
