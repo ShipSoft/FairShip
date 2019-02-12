@@ -511,12 +511,12 @@ void MuonTagger::EndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop) {
   nav->LocalToMaster(top, Gtop);
   nav->LocalToMaster(bot, Gbot);
   if (orientationnb ==0) {
-     vtop.SetXYZ(Gbot[0],(Gbot[1]+Gtop[1])/2.,Gbot[2]);    
-     vbot.SetXYZ(Gtop[0],(Gbot[1]+Gtop[1])/2.,Gtop[2]);      
+     vtop.SetXYZ(Gbot[0],(Gbot[1]+Gtop[1])/2.,(Gtop[2]+Gbot[2])/2.);    
+     vbot.SetXYZ(Gtop[0],(Gbot[1]+Gtop[1])/2.,(Gtop[2]+Gbot[2])/2.);      
   }     
   if (orientationnb ==1) {
-     vtop.SetXYZ((Gbot[0]+Gtop[0])/2.,Gtop[1],Gbot[2]);    
-     vbot.SetXYZ((Gbot[0]+Gtop[0])/2.,Gbot[1],Gtop[2]);      
+     vtop.SetXYZ((Gbot[0]+Gtop[0])/2.,Gtop[1],(Gtop[2]+Gbot[2])/2.);    
+     vbot.SetXYZ((Gbot[0]+Gtop[0])/2.,Gbot[1],(Gtop[2]+Gbot[2])/2.);      
   }          
 }
 
