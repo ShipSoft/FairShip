@@ -22,6 +22,10 @@
 *.la
 *.a
 
+# ROOT files
+
+*.root
+
 # CMake
 CMakeCache.txt
 CMakeFiles
