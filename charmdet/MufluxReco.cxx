@@ -239,7 +239,7 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
    if (hit->GetTimeOverThreshold() < cuts["tot"]) { continue;}
    auto info = hit->StationInfo();
    // info[0],info[1],info[2],info[3],viewDict[info[4]],info[5],info[6],info[7]
-   // statnb,   vnb,    pnb,    lnb,    view,         channelID,tdcId,moduleId
+   // statnb,   vnb,    pnb,    lnb,    view,         channelID,tdcId,nRT
    if (info[2] > 1 || info[3] >1){
     std::cout<< "sortHits: unphysical detctor ID "<<hit->GetDetectorID()<<std::endl;
     hit->Dump();
@@ -270,7 +270,7 @@ void MufluxReco::fillHitMaps(Int_t nMax)
      MufluxSpectrometerHit* hit = &(Digi_MufluxSpectrometerHits[k]);
      auto info = hit->StationInfo();
      Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
-     Int_t tdcId=info[6]; Int_t moduleId=info[7];
+     Int_t tdcId=info[6]; Int_t nRT=info[7]/cuts["RTsegmentation"];
      TString view = "_x"; 
      if (info[4]==1){view="_u";}
      if (info[4]==2){view="_v";}
@@ -287,7 +287,7 @@ void MufluxReco::fillHitMaps(Int_t nMax)
      if (check!=noisyChannels.end()){ continue;}
      Float_t t0 = 0;
      if (MCdata){ rvShipEventHeader->Get()->GetEventTime(); }
-     TString TDChisto = "TDC"; TDChisto+=histo;TDChisto+=moduleId+tot;
+     TString TDChisto = "TDC"; TDChisto+=nRT; TDChisto+=tot;
      h = (TH1D*)(gDirectory->GetList()->FindObject(TDChisto));
      if (!h){
        std::cout<< "fillHitMaps: ERROR histo not known "<< TDChisto  <<std::endl; 

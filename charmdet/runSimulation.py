@@ -104,9 +104,13 @@ def recoStep(splitFactor=10,fnames=[]):
       if sTree:
        if sTree.GetBranch("FitTracks"): continue
       test.Close()
+     digiFile = ofile.replace('.root','-'+str(i)+'.root')
+     if not digiFile in os.listdir('.'):
+       print "digiFile missing",fname,digiFile
+       continue
      os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
      cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
-     print 'step 2:', cmd
+     print 'step 2:', cmd,' in directory ',fname
      os.system(cmd)
      while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
@@ -150,9 +154,13 @@ def makeMomDistributions(D='.',splitFactor=10):
 
 def mergeHistos(case='residuals'):
  dirList=getFilesLocal()
- if case == 'residuals':  cmd = 'hadd -f residuals.root '
- else:                    cmd = 'hadd -f momDistributions.root '
+ cmd = {}
+ for z in ['charm','mbias']:
+  if case == 'residuals':  cmd[z] = 'hadd -f residuals-'+z+'.root '
+  else:                    cmd[z] = 'hadd -f momDistributions-'+z+'.root '
  for d in dirList:
   for x in os.listdir(d):
-   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd += d+'/'+x+" "
- os.system(cmd)
+   z='mbias'
+   if d.find('charm')>0: z='charm'
+   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
+ for z in ['charm','mbias']: os.system(cmd[z])

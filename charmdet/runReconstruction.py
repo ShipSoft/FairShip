@@ -197,6 +197,21 @@ def checkFilesWithTracks2(D='.'):
           break
          else: prev=st.getChi2()
  return badFile
+def checkFilesWithTracks3(D='.'):
+ badFile={}
+ # all RT files
+ for x in os.listdir(D):
+  if x.find('_RT')>0 and x.find('histos')<0: 
+   test = ROOT.TFile(D+'/'+x)
+   sTree = test.cbmsim
+   if not sTree: 
+    badFile.append(x+"?")
+    continue
+   b = sTree.GetBranch("FitTracks")
+   if b:
+    if b.GetZipBytes()/1.E6 < 1.: badFile[x]= b.GetZipBytes()/1.E6
+ return badFile
+# for f in bf: os.system('cp ../../ship-ubuntu-1710-64/RUN_8000_2395/'+f+' .')
 
 def cleanUp(D='.'):
 # remove raw data files for files with RT relations
