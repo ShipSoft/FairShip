@@ -22,7 +22,6 @@
 *.la
 *.a
 
-
 # CMake
 CMakeCache.txt
 CMakeFiles
