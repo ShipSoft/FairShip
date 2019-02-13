@@ -192,6 +192,9 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          new ((*fRawTriggers)[nhitsTriggers])
             ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsTriggers++;
+      } else if (detectorId == -2) {
+         // Blacklisted channel
+         continue;
       } else if (detectorId == 1) {
          // Master trigger
          //
