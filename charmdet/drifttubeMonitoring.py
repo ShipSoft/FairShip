@@ -1564,6 +1564,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
 for x in ['','mu']:
  ut.bookHist(h,'p/pt'+x,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
  ut.bookHist(h,'p/px'+x,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
+ ut.bookHist(h,'TrackMult'+x,'track multiplicity',10,-0.5,9.5)
  ut.bookHist(h,'chi2'+x,'chi2/nDoF',100,0.,10.)
  ut.bookHist(h,'Nmeasurements'+x,'number of measurements used',25,-0.5,24.5)
  ut.bookHist(h,'xy'+x,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
@@ -3432,12 +3433,6 @@ def correctAlignment(hit):
     vtop[i] = vtop[i]+alignCorrection[x][i]
  return vbot,vtop
 
-def trackMult():
-  ut.bookHist(h,'TrackMult','track multiplicity',10,-0.5,9.5)
-  for n in range(sTree.GetEntries()):
-   sTree.GetEvent(n)
-   h['TrackMult'].Fill(sTree.FitTracks.GetEntries())
-
 def loopTracks(r,w):
     os.close(r) 
     w = os.fdopen(w, 'w') 
@@ -4272,7 +4267,6 @@ def recoStep1(PR=11):
 def anaResiduals():
   muflux_Reco.trackKinematics(3.)
   plotRPCExtrap(PR=1)
-  trackMult()
   norm = h['TrackMult'].GetEntries()
   print '*** Track Stats ***',norm
   ut.writeHists(h,'histos-analysis-'+rname)
@@ -4328,11 +4322,13 @@ elif options.command == "recoStep1":
   importAlignmentConstants()
   recoStep1(PR=11)
 elif options.command == "anaResiduals":
+  ROOT.gROOT.SetBatch(True)
   if not MCdata: importRTrel()
   importAlignmentConstants()
   anaResiduals()
   print "finished with analysis step",options.listOfFiles
 elif options.command == "alignment":
+  ROOT.gROOT.SetBatch(True)
   importRTrel()
   h['hitMapsX'] = 1
   withDefaultAlignment = False

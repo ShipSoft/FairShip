@@ -12,7 +12,7 @@ def count_python_processes(macroName):
 
 fileList = {}
 badFiles = []
-run = "RUN_8000_2396" # "RUN_8000_2395"
+run = "RUN_8000_2395" # "RUN_8000_2396"
 
 eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run 
 

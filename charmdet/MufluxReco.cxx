@@ -140,6 +140,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TH2D* h_ppx = (TH2D*)(gDirectory->GetList()->FindObject("p/px"));
  TH2D* h_xy = (TH2D*)(gDirectory->GetList()->FindObject("xy"));
  TH2D* h_pxpy = (TH2D*)(gDirectory->GetList()->FindObject("pxpy"));
+ TH1D* h_TrackMult =  (TH1D*)(gDirectory->GetList()->FindObject("TrackMult"));
+ TH1D* h_TrackMultmu =  (TH1D*)(gDirectory->GetList()->FindObject("TrackMultmu"));
 
  TH1D* h_chi2mu =  (TH1D*)(gDirectory->GetList()->FindObject("chi2mu"));
  TH1D* h_Nmeasurementsmu = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurementsmu"));
@@ -156,6 +158,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    sTree->GetEvent(nx);
    nx+=1;
    Int_t Ntracks = FitTracks->GetEntries();
+   Int_t Ngood = 0;
+   Int_t Ngoodmu = 0;
    for (Int_t k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
@@ -181,6 +185,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      auto pos = fittedState.getPos();
      h_xy->Fill(pos[0],pos[1]);
      h_pxpy->Fill(Px/Pz,Py/Pz);
+     Ngood+=1; 
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
@@ -201,6 +206,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         h_ppxmu->Fill(P,Px);
         h_xymu->Fill(pos[0],pos[1]);
         h_pxpymu->Fill(Px/Pz,Py/Pz);
+        Ngoodmu+=1; 
       }
 //
      if (Ntracks==2 && k==0){
@@ -217,6 +223,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       h_p1p2->Fill(P,Pb);
       h_pt1pt2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
      }
+    h_TrackMult->Fill(Ngood);
+    h_TrackMultmu->Fill(Ngoodmu);
    }
  }
 }
