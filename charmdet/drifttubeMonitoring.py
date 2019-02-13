@@ -1450,7 +1450,7 @@ def RT(hit,t):
    s,v,p,l,view,channelID,tdcId,nRT = stationInfo(hit)
    if nRT in [16,17]: nRT = 18
    if nRT in [30,31]: nRT = 32   # not enough statistics for left and right of T3
-   name = 'TDC'+nRT
+   name = 'TDC'+str(nRT)
    if t > h['tMinAndTmax'][name][1]:  r = R
    elif t< h['tMinAndTmax'][name][0]: r = 0
    else: r = h['rt'+name].Eval(t)
@@ -2998,6 +2998,7 @@ def momResolution(PR=11):
    st = tracks[0].getFittedState()
    recoP = st.getMom()
    rc = h['momResol'].Fill((recoP.Mag()-trueP.Mag())/trueP.Mag(),trueP.Mag())
+   for t in tracks: t.Delete()
 def hitResolution():
  ut.bookHist(h,'hitResol','hit resolution',100,-0.5,0.5)
  for n in range(100):
