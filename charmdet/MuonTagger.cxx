@@ -505,13 +505,19 @@ void MuonTagger::EndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop) {
   }  
   TGeoNode* W = nav->GetCurrentNode();
   TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
-  Double_t top[3] = {0,0,S->GetDZ()};
-  Double_t bot[3] = {0,0,-S->GetDZ()};
+  Double_t top[3] = {S->GetDX(),S->GetDY(),S->GetDZ()};
+  Double_t bot[3] = {-S->GetDX(),-S->GetDY(),-S->GetDZ()};
   Double_t Gtop[3],Gbot[3];
   nav->LocalToMaster(top, Gtop);
   nav->LocalToMaster(bot, Gbot);
-  vtop.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);   
-  vbot.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);        
+  if (orientationnb ==0) {
+     vtop.SetXYZ(Gbot[0],(Gbot[1]+Gtop[1])/2.,(Gtop[2]+Gbot[2])/2.);    
+     vbot.SetXYZ(Gtop[0],(Gbot[1]+Gtop[1])/2.,(Gtop[2]+Gbot[2])/2.);      
+  }     
+  if (orientationnb ==1) {
+     vtop.SetXYZ((Gtop[0]+Gbot[0])/2.,Gbot[1],(Gtop[2]+Gbot[2])/2.);    
+     vbot.SetXYZ((Gtop[0]+Gbot[0])/2.,Gtop[1],(Gtop[2]+Gbot[2])/2.);      
+  }       
 }
 
 ClassImp(MuonTagger)
