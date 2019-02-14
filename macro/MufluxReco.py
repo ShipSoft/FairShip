@@ -34,7 +34,7 @@ import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
 
-geoMat =  ROOT.genfit.TGeoMaterialInterface()
+# geoMat =  ROOT.genfit.TGeoMaterialInterface()
 shipRoot_conf.configure()
 
 try:

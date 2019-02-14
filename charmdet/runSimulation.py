@@ -136,6 +136,12 @@ def checkFilesWithTracks(D='.',splitFactor=10):
  fileList.sort()
  return fileList
 
+def cleanUp():
+ reco = checkFilesWithTracks()
+ for f in reco:
+  df = f.replace('_RT','')
+  if os.path.isfile(df): os.system('rm ' +df)
+
 def makeMomDistributions(D='.',splitFactor=10):
  fileList=checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
@@ -164,3 +170,29 @@ def mergeHistos(case='residuals'):
    if d.find('charm')>0: z='charm'
    if (case != 'residuals' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
  for z in ['charm','mbias']: os.system(cmd[z])
+
+def checkStatistics():
+ # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
+ simFiles = getFilesFromEOS()
+ reco = checkFilesWithTracks()
+ Nsim =  {'mbias':0,'charm':0}
+ Nreco = {'mbias':0,'charm':0}
+ for f in simFiles:
+   if f.find('charm')>0: Nsim['charm']+=simFiles[f]
+   else: Nsim['mbias'] += simFiles[f]
+ allFiles = {}
+ for a in simFiles.keys():
+  x = a.split('/')
+  allFiles[x[len(x)-1].replace('.root','')]=simFiles[a]
+ for dname in allFiles:
+  n = 0
+  for x in reco:
+    if  not x.find(dname)<0: n+=1
+  fraction = n/float(splitFactor)
+  if dname.find('charm')>0: Nreco['charm']+=fraction*allFiles[dname]
+  else: Nreco['mbias'] += fraction*allFiles[dname]
+ print "total statistics",Nsim
+ print "                ",Nreco
+ print "internal MC normalization, to be applied to charm", 10.2/1.8 * Nreco['charm']/Nsim['charm']*Nreco['mbias']/Nsim['mbias']
+ # 1.218
+

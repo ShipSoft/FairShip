@@ -8,6 +8,8 @@
 #include "RPCTrack.h"
 #include "RKTrackRep.h"
 #include "MufluxSpectrometerHit.h"
+#include <algorithm>
+#include <vector>
 
 TVector3* parallelToZ = new TVector3(0., 0., 1.);
 TVector3* NewPosition = new TVector3(0., 0., 0.);
@@ -42,6 +44,159 @@ MufluxReco::getKeys(std::unordered_map<int,MufluxSpectrometerHit*>> map){
     keys.push_back(kv.first);
     vals.push_back(kv.second);  
 }*/
+
+// Sort and group integers in arrays iff a[j] - a[i] <= span, where j > i >=0
+std::vector<std::vector<int>> MufluxReco::GroupIntegers(std::vector<int>& input_array, size_t span) {
+    if (input_array.empty())
+        return std::vector<std::vector<int>>();
+    if (input_array.size() == 1)
+        return {{input_array[0]}};
+
+    std::sort(input_array.begin(), input_array.end());
+
+    std::vector<std::vector<int>> output;
+    std::vector<int> running_array = {input_array[0]};
+
+    for (size_t index = 1; index < input_array.size(); ++index) {
+        if (input_array[index] - input_array[index - 1] > span) {
+            output.emplace_back(running_array);
+            running_array.clear();
+        }
+        running_array.push_back(input_array[index]);
+    }
+    output.emplace_back(running_array);
+    return output;
+}
+/* unfinished C++ conversion
+std::map<int,std::vector<int>> viewsI = std::map<int,std::vector<int>>();
+viewsI[1] = {0,1};
+viewsI[2] = {0,2};
+viewsI[3] = {0};
+viewsI[4] = {0};
+
+std::vector<std::vector<int>>  findDTClusters(TClonesArray* hits, removeBigClusters=True){
+   spectrHitsSorted* = new nestedList();
+   sortHits(hits, spectrHitsSorted);
+   // if Debug: nicePrintout(spectrHitsSorted)
+   std::vector<std::vector<int>> clusters;
+   for (int s = 1; s<5; ++s) {
+    for ( it = viewsI[s].begin(); it != viewsI[s].end(); it++ )   {    std::cout << it << std::endl ;}
+
+    for view in viewsI[s]:
+     std::map<int,std::vector<int>> allHits = std::map<int,std::vector<int>>();
+     ncl=0
+     for l in range(4): 
+      allHits[l]={}
+      for hit in spectrHitsSorted[view][s][l]:
+       channelID = hit.GetDetectorID()%1000
+       allHits[l][channelID]=hit
+     if removeBigClusters:
+      clustersPerLayer = {}
+      for l in range(4):
+       clustersPerLayer[l] = dict(enumerate(grouper(allHits[l].keys(),1), 1))
+       for Acl in clustersPerLayer[l]:
+        if len(clustersPerLayer[l][Acl])>cuts['maxClusterSize']: # kill cross talk brute force
+           for x in clustersPerLayer[l][Acl]:
+            dead = allHits[l].pop(x)
+            if Debug: print "pop",s,viewC[view],l,x
+     ncl=0
+     tmp={}
+     tmp[ncl]=[]
+     perLayerUsedHits = {0:[],1:[],2:[],3:[]}
+     for level in [1]:
+      for i in range(1,Nchannels[s]+1):
+       perLayer = {0:0,1:0,2:0,3:0}
+       for i0 in range( max(1,i-1),min(Nchannels[s]+1,i+2)):
+        if allHits[0].has_key(i0):
+          tmp[ncl].append(allHits[0][i0])
+          perLayer[0]=i0
+       for i1 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
+        if allHits[1].has_key(i1):
+          tmp[ncl].append(allHits[1][i1])
+          perLayer[1]=i1
+       for i2 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
+        if allHits[2].has_key(i2):  
+          tmp[ncl].append(allHits[2][i2])
+          perLayer[2]=i2
+       for i3 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
+        if allHits[3].has_key(i3): 
+          tmp[ncl].append(allHits[3][i3])
+          perLayer[3]=i3
+       if ( (perLayer[0]>0) + (perLayer[1]>0) + (perLayer[2]>0) + (perLayer[3]>0) ) > level:
+         # at least 2 hits per station
+         ncl+=1
+       tmp[ncl]=[]
+     if len(tmp[ncl])==0: tmp.pop(ncl)
+# cleanup, outliers
+     tmpClean = {}
+     for ncl in tmp:
+       test = []
+       mean = 0
+       for hit in tmp[ncl]:
+          bot,top =  strawPositionsBotTop[hit.GetDetectorID()]
+          x = (bot[0]+top[0])/2.
+          mean+=x
+          test.append([hit,x])
+       mean=mean/float(len(test))
+# more cleanup, outliers
+       tmpClean[ncl]=[]
+       for cl in test:
+          if abs(mean-cl[1])<2.5 : 
+            tmpClean[ncl].append(cl[0])
+# cleanup, remove lists contained in another list
+     clusters[s][view]=[]
+     if len(tmpClean)>0:
+      ncl = 0
+      marked = []
+      for n1 in range(len(tmpClean)):
+        if len(tmpClean[n1])==0: continue
+        contained = False
+        for n2 in range(len(tmpClean)):
+          if n1==n2: continue
+          if n2 in marked: continue
+          if set(tmpClean[n1]) <= set(tmpClean[n2]):
+           contained = True
+           break
+        if contained:  marked.append(n1)
+      for n1 in range(len(tmpClean)):
+         if len(tmpClean[n1])<2: continue
+         if n1 in marked: continue
+         test = []
+         mean = 0
+         for hit in tmpClean[n1]:
+          bot,top =  strawPositionsBotTop[hit.GetDetectorID()]
+          x = (bot[0]+top[0])/2.
+          z = (bot[2]+top[2])/2.
+          mean+=x
+          test.append([hit,x,z,hit.GetDetectorID()%1000])
+         mean=mean/float(len(test))
+# more cleanup, outliers
+         clusters[s][view].append([])
+         for cl in test:
+          if abs(mean-cl[1])<2.5: clusters[s][view][ncl].append(cl)
+         if len(clusters[s][view][ncl])==0:
+           clusters[s][view].pop(ncl)
+         else: ncl+=1
+     rc = h['clsN'].Fill(ncl)
+# eventually split too big clusters for stero layers:
+   for s in [1,2]:
+    for view in viewsI[s]:
+     if view==0:continue
+     tmp = {}
+     for cl in clusters[s][view]:
+      if len(cl)>5:
+       for hit in cl: 
+         if not tmp.has_key(hit[3]):tmp[hit[3]]=[]
+         tmp[hit[3]].append(hit)
+     for n in tmp:
+       if len(tmp[n])>1:
+         clusters[s][view].append(tmp[n])
+   if Debug: 
+    for s in range(1,5):
+     for view in viewsI[s]:
+      printClustersPerStation(clusters,s,view)
+   return clusters
+*/
 
 Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom){
 // etrapolate to a plane perpendicular to beam direction (z)
@@ -185,7 +340,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      auto pos = fittedState.getPos();
      h_xy->Fill(pos[0],pos[1]);
      h_pxpy->Fill(Px/Pz,Py/Pz);
-     Ngood+=1; 
+     if (P>5){Ngood+=1;}
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
@@ -206,7 +361,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         h_ppxmu->Fill(P,Px);
         h_xymu->Fill(pos[0],pos[1]);
         h_pxpymu->Fill(Px/Pz,Py/Pz);
-        Ngoodmu+=1; 
+        if (P>5){Ngoodmu+=1;}
       }
 //
      if (Ntracks==2 && k==0){
@@ -287,7 +442,7 @@ void MufluxReco::fillHitMaps(Int_t nMax)
      TString histo; histo.Form("%d",1000*s+100*p+10*l);histo+=view;
      TH1D* h = (TH1D*)(gDirectory->GetList()->FindObject(histo));
      if (!h){
-       std::cout<< "fillHitMaps: ERROR histo not known "<< histo  <<std::endl;
+       std::cout<< "fillHitMaps: ERROR histo not known "<< histo <<" event "<< nx <<std::endl;
        continue;
      }
      h->Fill(channelNr);
@@ -298,7 +453,7 @@ void MufluxReco::fillHitMaps(Int_t nMax)
      TString TDChisto = "TDC"; TDChisto+=nRT; TDChisto+=tot;
      h = (TH1D*)(gDirectory->GetList()->FindObject(TDChisto));
      if (!h){
-       std::cout<< "fillHitMaps: ERROR histo not known "<< TDChisto  <<std::endl; 
+       std::cout<< "fillHitMaps: ERROR histo not known "<< TDChisto  <<" event "<< nx <<std::endl; 
        continue;
      }
      h->Fill( hit->GetDigi()-t0);

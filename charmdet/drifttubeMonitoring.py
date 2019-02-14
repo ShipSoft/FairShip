@@ -932,8 +932,10 @@ def displayDTLayers():
  h['upstreamG'].SetMarkerSize(2)
  n=0
  for hit in sTree.Digi_MufluxSpectrometerHits:
+    detID = hit.GetDetectorID()
+    if detID<0: continue # feature for converted data in February'19
     statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(hit)
-    nr = hit.GetDetectorID()%100
+    nr = detID%100
     y = 2*pnb+lnb+(statnb-1)*16
     if view=='_u': y+=8
     if view=='_x' and statnb>1: y+=8
@@ -1116,6 +1118,7 @@ def MakeKeysToDThits(minToT=-999):
    #if not hit.hasTimeOverThreshold(): continue
    if not hit.isValid() and MCdata: continue
    detID=hit.GetDetectorID()
+   if detID<0: continue # feature for converted data in February'19
    if keysToDThits.has_key(detID):
      prevTDC = sTree.Digi_MufluxSpectrometerHits[keysToDThits[detID][0]].GetDigi()
      prevToT = sTree.Digi_MufluxSpectrometerHits[keysToDThits[detID][0]].GetTimeOverThreshold()
@@ -1321,6 +1324,8 @@ def plotTimeOverThreshold(N,Debug=False):
   rc = sTree.GetEvent(n)
   flag = False
   for aHit in sTree.Digi_MufluxSpectrometerHits:
+   detID=hit.GetDetectorID()
+   if detID<0: continue # feature for converted data in February'19
    if not aHit.hasTimeOverThreshold():
     rc=h['ToverT'].Fill( -999. )
     continue
@@ -3718,6 +3723,7 @@ def testForSameDetID(nEvent=-1,nTot=1000):
    listOfDigits={}
    for hit in sTree.Digi_MufluxSpectrometerHits:
      detID = hit.GetDetectorID()
+     if detID<0: continue # feature for converted data in February'19
      if not listOfDigits.has_key(detID): 
        listOfDigits[detID]=[0,[]]
        listOfTDCs[detID]={}
@@ -4032,6 +4038,8 @@ def monitorMasterTrigger():
    delay = sTree.Digi_MasterTrigger[0].GetDigi() - tdcDict[4]
    rc = h['delay'].Fill(delay)
    for hit in sTree.Digi_MufluxSpectrometerHits:
+    detID=hit.GetDetectorID()
+    if detID<0: continue # feature for converted data in February'19
     rc = h['tdc'].Fill(hit.GetDigi())
     if not hit.hasDelay():
      tdcID = hit.GetTDC()
@@ -4080,17 +4088,20 @@ def plotEnergyLoss():
  ly = ROOT.TLine(5.,0.,5.,10.)
  ly.DrawClone()
 hMC = {}
-def MCcomparison(pot = 0,pMin=5.):
+hCharm = {}
+def MCcomparison(pot = 0,pMin=5.,charmNorm=1.):
  if len(hMC)==0:
   ut.readHists(h,'momDistributions.root')
-  ut.readHists(hMC,'MCmomDistributions.root')
+  ut.readHists(hMC,'MCmomDistributionsmbias.root')
+  ut.readHists(hCharm,'MCmomDistributionscharm.root')
  for x in ['','mu']:
   t = 'MC-Comparison'+x
   if not h.has_key(t): ut.bookCanvas(h,key=t,title='MC / Data '+x,nx=1200,ny=600,cx=3,cy=2)
-  h['MCp/pt'+x] = hMC['p/pt'+x].Clone('MCp/pt'+x)
-  h['MCp/px'+x] = hMC['p/px'+x].Clone('MCp/px'+x)
-  h['p/pt_x'+x]  = h['p/pt'+x].ProjectionX()
-  h['MCp/pt_x'+x]= h['MCp/pt'+x].ProjectionX()
+  for a in ['p/pt','p/px']:
+   h['MC'+a+x] = hMC[a+x].Clone('MC'+a+x)
+   h['MC'+a+x].Add(hCharm[a+x],charmNorm)
+   h[a+'_x'+x]  = h[a+x].ProjectionX()
+   h['MC'+'_x'+x] = h['MC'+a+x].ProjectionX()
   if pot == 0:
     z = h['MCp/pt_x'+x]
     MCPG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())

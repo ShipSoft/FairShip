@@ -39,6 +39,8 @@ public:
    void sortHits(TClonesArray *t, nestedList *l, Bool_t flag=kTRUE);
    Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom);
    StringVecIntMap countMeasurements(TrackInfo* trInfo);
+   std::vector<std::vector<int>> GroupIntegers(std::vector<int>& input_array, size_t span);
+
 private:
   protected:
     Bool_t MCdata;
