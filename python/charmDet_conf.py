@@ -42,11 +42,12 @@ def configure(run,ship_geo):
  Box.SetRunNumber(ship_geo.Box.RunNumber)
  
 
- 
+
  if (ship_geo.MufluxSpectrometer.muflux==False): 
-    detectorList.append(Box)
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
+    PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long)
     PixelModules.SetSiliconDZ(ship_geo.PixelModules.DimZSi)
+    detectorList.append(Box)
     detectorList.append(PixelModules)
     for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)): 
     	PixelModules.SetSiliconStationPositions(i, x, y, z)
