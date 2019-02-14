@@ -122,16 +122,6 @@ def main():
     print n
     i = 0
     for event in ch:
-        weights = [
-            m.GetWeight() for m in event.MCTrack
-            if abs(m.GetPdgCode()) == 13 and m.GetProcName == 0
-        ]
-        if len(weights) == 0:
-            print '{}: no muon found'.format(i)
-        if len(weights) > 1:
-            print '{}: more than one muon found'.format(i)
-        default_weight = weights[0] if weights else 1.
-
         if i % 10000 == 0:
             print '{}/{}'.format(i, n)
         i += 1
@@ -141,8 +131,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[
-                    trid].GetWeight() if trid > 0 else default_weight
+                assert trid > 0
+                weight = event.MCTrack[trid].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -168,8 +158,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[
-                    trid].GetWeight() if trid > 0 else default_weight
+                assert trid > 0
+                weight = event.MCTrack[trid].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 px = hit.GetPx()
@@ -191,12 +181,12 @@ def main():
                     h['ECAL_TP_mu'].Fill(x, y, weight)
                     h['ECAL_Alt_mu'].Fill(x, y, weight)
                 elif abs(pid) == 11:
-                    Esq = px**2 + py**2 + pz**2 + 0.000511**2
+                    Esq = px ** 2 + py ** 2 + pz ** 2 + 0.000511 ** 2
                     h['ECAL_e_E'].Fill(np.sqrt(Esq), weight)
                     h['ECAL_TP_e'].Fill(x, y, weight)
                     h['ECAL_Alt_e'].Fill(x, y, weight)
                 elif abs(pid) == 22:
-                    Esq = px**2 + py**2 + pz**2
+                    Esq = px ** 2 + py ** 2 + pz ** 2
                     h['ECAL_gamma_E'].Fill(np.sqrt(Esq), weight)
                     h['ECAL_TP_gamma'].Fill(x, y, weight)
                     h['ECAL_Alt_gamma'].Fill(x, y, weight)
@@ -205,9 +195,9 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
+                assert trid > 0
                 detID = hit.GetDetectorID()
-                weight = event.MCTrack[
-                    trid].GetWeight() if trid > 0 else default_weight
+                weight = event.MCTrack[trid].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -237,10 +227,10 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
+                assert trid > 0
                 detID = hit.GetDetectorID()
                 nplane = detID - 10000
-                weight = event.MCTrack[
-                    trid].GetWeight() if trid > 0 else default_weight
+                weight = event.MCTrack[trid].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -281,8 +271,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[
-                    trid].GetWeight() if trid > 0 else default_weight
+                assert trid > 0
+                weight = event.MCTrack[trid].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
@@ -306,8 +296,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[
-                    trid].GetWeight() if trid > 0 else default_weight
+                assert trid > 0
+                weight = event.MCTrack[trid].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 px = hit.GetPx()
@@ -334,8 +324,8 @@ def main():
                 if not hit.GetEnergyLoss() > 0:
                     continue
                 trid = hit.GetTrackID()
-                weight = event.MCTrack[
-                    trid].GetWeight() if trid > 0 else default_weight
+                assert trid > 0
+                weight = event.MCTrack[trid].GetWeight()
                 x = hit.GetX()
                 y = hit.GetY()
                 z = hit.GetZ()
