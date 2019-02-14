@@ -9,7 +9,6 @@
 *.o
 *.ko
 *.pyc
-*.root
 
 # Shared objects (inc. Windows DLLs)
 *.dll
