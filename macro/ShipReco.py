@@ -100,6 +100,7 @@ if not geoFile:
  geoFile = tmp.replace('_rec','')
 
 fgeo = ROOT.TFile.Open(geoFile)
+geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
@@ -151,7 +152,6 @@ builtin.iEvent  = iEvent
 
 # import reco tasks
 import shipDigiReco
-geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
