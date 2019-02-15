@@ -147,7 +147,7 @@ protected:
     
     Spectrometer(const Spectrometer&);
     Spectrometer& operator=(const Spectrometer&);
-    ClassDef(Spectrometer,1)
+    ClassDef(Spectrometer,2)
 
 };
 #endif 
