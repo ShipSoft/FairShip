@@ -111,6 +111,7 @@ def checkFilesWithRT():
  fNotok = []
  fRaw = []
  for fname in os.listdir('.'):
+   if not fname.find('histo')<0: continue
    if not fname.find('_RT')<0:
     f=ROOT.TFile(fname)
     RT = f.Get('tMinAndTmax')
@@ -119,7 +120,7 @@ def checkFilesWithRT():
     else:
      fNotok.append(fname)
    elif fname.find('root')>0 and not fname.find('SPILL')<0:
-    fRaw.append()
+    fRaw.append(fname)
  print len(fok),len(fNotok),len(fRaw)
  return fok,fNotok,fRaw
 
@@ -278,13 +279,10 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
  if len(failures)!=0: print failures
 
 def makeMomDistributions():
- fileList=[]
- # all RT files
- for x in os.listdir('.'):
-  if x.find('_RT')>0 and x.find('histos')<0: 
-    fileList.append(x)
- fileList.sort()
+ fileList = checkFilesWithTracks(D='.')
+ # all RT files with tracks
  for fname in fileList:
+    if os.path.isfile('histos-analysis-'+fname): continue
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c anaResiduals -f "+fname+' &'
     print 'momentum analysis:', cmd
     os.system(cmd)
