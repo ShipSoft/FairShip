@@ -1415,7 +1415,7 @@ def extractRTPanda(hname= 'TDC1000_x'):
    N = 0
    for k in range(n0,n):
      N+=h[hname].GetBinContent(k)
-   h['rt'+hname].SetPoint(n,h[hname].GetBinCenter(n), N/float(Ntot)*R)
+   h['rt'+hname].SetPoint(n,h[hname].GetBinCenter(n), N/float(Ntot+1E-20)*R)
  h['rt'+hname].SetTitle('rt'+hname)
  h['rt'+hname].SetLineWidth(2)
  if not hname.find('TDC1')<0: h['rt'+hname].SetLineColor(ROOT.kBlue)
@@ -4089,19 +4089,23 @@ def plotEnergyLoss():
  ly.DrawClone()
 hMC = {}
 hCharm = {}
-def MCcomparison(pot = 0,pMin=5.,charmNorm=1.):
+def MCcomparison(pot = 0,pMin=5.,charmNorm=0.05):
+ # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT, data
+ # RUN_2395 ~10 Billion PoT * 408/612
  if len(hMC)==0:
   ut.readHists(h,'momDistributions.root')
-  ut.readHists(hMC,'MCmomDistributionsmbias.root')
-  ut.readHists(hCharm,'MCmomDistributionscharm.root')
+  ut.readHists(hMC,'momDistributions-mbias.root')
+  ut.readHists(hCharm,'momDistributions-charm.root')
  for x in ['','mu']:
   t = 'MC-Comparison'+x
   if not h.has_key(t): ut.bookCanvas(h,key=t,title='MC / Data '+x,nx=1200,ny=600,cx=3,cy=2)
   for a in ['p/pt','p/px']:
    h['MC'+a+x] = hMC[a+x].Clone('MC'+a+x)
+   h['charm'+a+x] = hCharm[a+x].Clone('charm'+a+x)
    h['MC'+a+x].Add(hCharm[a+x],charmNorm)
    h[a+'_x'+x]  = h[a+x].ProjectionX()
-   h['MC'+'_x'+x] = h['MC'+a+x].ProjectionX()
+   h['MC'+a+'_x'+x] = h['MC'+a+x].ProjectionX()
+   h['charm'+a+'_x'+x] = h['charm'+a+x].ProjectionX()
   if pot == 0:
     z = h['MCp/pt_x'+x]
     MCPG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
@@ -4109,10 +4113,11 @@ def MCcomparison(pot = 0,pMin=5.,charmNorm=1.):
     PG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
     norm = PG5/MCPG5
   else: norm = pot
-  opt = {'':['',ROOT.kBlue],'MC':['same',ROOT.kRed]}
+  opt = {'':['',ROOT.kBlue],'MC':['same',ROOT.kRed],'charm':['same',ROOT.kGreen]}
   rc = h[t].cd(1)
   rc.SetLogy(1)
   h['MCp/pt_x'+x].Scale(norm)
+  h['charmp/pt_x'+x].Scale(norm*charmNorm)
   mx1 = ut.findMaximumAndMinimum(h['p/pt_x'+x])[1]
   mx2 = ut.findMaximumAndMinimum(h['MCp/pt_x'+x])[1]
   hMax = max(mx1,mx2)
@@ -4128,6 +4133,7 @@ def MCcomparison(pot = 0,pMin=5.,charmNorm=1.):
   for i in opt:
    h[i+'p/pt_y'+x]=h[i+'p/pt'+x].ProjectionY(i+'p/pt_y'+x,h[i+'p/pt_x'+x].FindBin(pMin),h[i+'p/pt_x'+x].GetNbinsX())
   h['MCp/pt_y'+x].Scale(norm)
+  h['charmp/pt_y'+x].Scale(norm*charmNorm)
   mx1 = ut.findMaximumAndMinimum(h['p/pt_y'+x])[1]
   mx2 = ut.findMaximumAndMinimum(h['MCp/pt_y'+x])[1]
   hMay = max(mx1,mx2)
@@ -4143,6 +4149,7 @@ def MCcomparison(pot = 0,pMin=5.,charmNorm=1.):
   for i in opt:
    h[i+'px'+x]=h[i+'p/px'+x].ProjectionY(i+'px'+x,h[i+'p/pt_x'+x].FindBin(pMin),h[i+'p/pt_x'+x].GetNbinsX())
   h['MCpx'+x].Scale(norm)
+  h['charmpx'+x].Scale(norm*charmNorm)
   mx1 = ut.findMaximumAndMinimum(h['px'+x])[1]
   mx2 = ut.findMaximumAndMinimum(h['MCpx'+x])[1]
   hMaPx = max(mx1,mx2)
@@ -4174,6 +4181,49 @@ def MCcomparison(pot = 0,pMin=5.,charmNorm=1.):
   h[t].Update()
   h[t].Print('MC-Comparison'+x+'.pdf')
   h[t].Print('MC-Comparison'+x+'.png')
+
+def fcn(npar, gin, f, par, iflag):
+#calculate chisquare
+   x='mu'
+   chisq  = 0
+   dataMC     = abs(par[0])
+   charmMbias = abs(par[1])
+   for proj in ['px'+x,'p/pt_x'+x]:
+    for n in range(1, h[proj].GetNbinsX()+1 ):
+     delta = h[proj].GetBinContent(n) - dataMC*(hMC[proj].GetBinContent(n)+charmMbias*hCharm[proj].GetBinContent(n))
+     errSq = h[proj].GetBinContent(n) + dataMC**2*hMC[proj].GetBinContent(n)+\
+             (dataMC*charmMbias)**2*hCharm[proj].GetBinContent(n)
+     if errSq>0: chisq += delta**2/errSq
+   f[0] = chisq
+   print par[0],par[1],chisq
+   return
+def doFit(p0=5.5,p1=0.05):
+# prepare histos
+ x='mu'
+ pMin = 5.
+ for a in ['p/pt','p/px']:
+   for H in [h,hMC,hCharm]:
+    H[a+'_x'+x]  = H[a+x].ProjectionX(a+'_x'+x)
+    H[a+'px'+x]=H[a+x].ProjectionY(a+'px'+x,H[a+'_x'+x].FindBin(pMin),H[a+'_x'+x].GetNbinsX())
+ npar = 2
+ gMinuit = ROOT.TMinuit(npar)
+ gMinuit.SetMaxIterations(100000)
+ gMinuit.SetFCN(fcn)
+ vstart  = array('d',[p0,p1])
+ step    = array('d',[0.01,0.01])
+ ierflg  = ROOT.Long(0)
+ name = [ROOT.TString("dataMC"),ROOT.TString("charmMbias")]
+ for i in range(npar): gMinuit.mnparm(i, name[i], vstart[i], step[i], 0.,0.,ierflg)
+ #gMinuit.FixParameter(0)
+ gMinuit.mnexcm("SIMPLEX",vstart,npar,ierflg)
+ gMinuit.mnexcm("MIGRAD",vstart,npar,ierflg)
+ pot = ROOT.Double()
+ charmNorm = ROOT.Double()
+ e = ROOT.Double()
+ gMinuit.GetParameter(0,pot,e)
+ gMinuit.GetParameter(1,charmNorm,e)
+ print "RESULT:",abs(pot), abs(charmNorm)
+ MCcomparison(abs(pot), pMin,abs(charmNorm))
 
 def copyRTRelation():
  f       = sTree.GetCurrentFile()
@@ -4336,6 +4386,7 @@ elif options.command == "recoStep1":
 elif options.command == "anaResiduals":
   ROOT.gROOT.SetBatch(True)
   if not MCdata: importRTrel()
+  withCorrections = False
   importAlignmentConstants()
   anaResiduals()
   print "finished with analysis step",options.listOfFiles
