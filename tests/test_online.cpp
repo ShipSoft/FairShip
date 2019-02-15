@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "/usr/include/catch/catch.hpp"
 #include "../online/ShipOnlineDataFormat.h"
+#include "ROOT/TSeq.hxx"
 
 using namespace DriftTubes;
 
@@ -49,6 +50,8 @@ TEST_CASE("Detector ID conversion", "[drifttubes]")
    REQUIRE(DetectorIdTest(336) == 40112048);
    // T2
    REQUIRE(DetectorIdTest(335) == 21112012);
+   REQUIRE(DetectorIdTest(304) == 21002001);
+   REQUIRE(DetectorIdTest(288) == 21012005);
    REQUIRE(DetectorIdTest(264) == 20102001);
    REQUIRE(DetectorIdTest(119) == 20012012);
    REQUIRE(DetectorIdTest(96) == 20002001);
@@ -62,6 +65,15 @@ TEST_CASE("Detector ID conversion", "[drifttubes]")
    REQUIRE(DetectorIdTest(2) == 10112010);
    REQUIRE(DetectorIdTest(1) == 10112011);
    REQUIRE(DetectorIdTest(0) == 10112012);
+   for ( auto &&i : ROOT::MakeSeq(5) ){
+      for ( auto &&j : ROOT::MakeSeq(128) ){
+	 uint16_t channel = i*256+j;
+	 if(channel != 1032) {
+	    std::cout << channel << std::endl;
+	    REQUIRE(DetectorIdTest(channel)!=30112016);
+	 }
+      }
+   }
 }
 TEST_CASE("Detector ID conversion (trigger)", "[trigger]")
 {
@@ -70,6 +82,10 @@ TEST_CASE("Detector ID conversion (trigger)", "[trigger]")
    REQUIRE(DetectorIdTest(638) == 0);
    REQUIRE(DetectorIdTest(768) == 0);
    REQUIRE(DetectorIdTest(1120) == 0);
+}
+TEST_CASE("Detector ID conversion (master trigger)", "[master trigger]")
+{
+   REQUIRE(DetectorIdTest(1123) == 1);
 }
 TEST_CASE("Detector ID conversion (scintillator)", "[scint]")
 {

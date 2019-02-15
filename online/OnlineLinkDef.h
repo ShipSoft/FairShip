@@ -18,7 +18,7 @@
 #pragma link C++ class DriftTubeUnpack + ;
 #pragma link C++ class RPCUnpack + ;
 #pragma link C++ class ScalerUnpack + ;
-#pragma link C++ class ShipTdcTask + ;
+#pragma link C++ class PixelUnpack + ;
 #pragma link C++ class ShipTdcSource + ;
 
 #endif

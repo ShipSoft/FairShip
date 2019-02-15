@@ -6,19 +6,19 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef ONLINE_RPCUNPACK_H
-#define ONLINE_RPCUNPACK_H
+#ifndef ONLINE_PIXELUNPACK_H
+#define ONLINE_PIXELUNPACK_H
 
 #include "ShipUnpack.h"
 
 class TClonesArray;
 
-class RPCUnpack : public ShipUnpack {
+class PixelUnpack : public ShipUnpack {
 public:
-   RPCUnpack();
+   PixelUnpack(uint16_t PartitionId);
 
    /** Destructor. */
-   virtual ~RPCUnpack();
+   virtual ~PixelUnpack();
 
    /** Initialization. Called once, before the event loop. */
    virtual Bool_t Init() override;
@@ -39,17 +39,17 @@ protected:
    virtual void Register() override;
 
 private:
-   std::unique_ptr<TClonesArray> fRawData;        /**< Array of output raw items. */
+   TClonesArray *fRawData;        /**< Array of output raw items. */
    Int_t fNHits;              /**< Number of raw items in current event. */
    Int_t fNHitsTotal;         /**< Total number of raw items. */
    uint16_t fPartitionId;
 
-   RPCUnpack(const RPCUnpack &);
-   RPCUnpack &operator=(const RPCUnpack &);
+   PixelUnpack(const PixelUnpack &);
+   PixelUnpack &operator=(const PixelUnpack &);
 
 public:
    // Class definition
-   ClassDefOverride(RPCUnpack, 1)
+   ClassDefOverride(PixelUnpack, 1)
 };
 
 #endif

@@ -11,7 +11,7 @@ def initialize(fgeo):
     pass
 
 
-def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
+def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
     """
     Main function of track pattern recognition.
     
@@ -25,13 +25,94 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
     """
 
     # withDist2Wire = False
+    # withNTaggerHits = 0
+    # TaggerHits = []
+
     
     fittedtrackids = []
     track_hits = {}
     if len(SmearedHits) > 100:
         print "Too large hits in the event!"
         return track_hits
+        
+    min_hits = 3
+    max_shared_hits = 2
     
+    #### Separate hits
+    SmearedHits_y12, SmearedHits_stereo12, SmearedHits_34 = hits_split(SmearedHits)
+
+                       
+    #### PatRec in 12y
+    short_tracks_y12 = pat_rec_y_views(SmearedHits_y12, min_hits, max_shared_hits)
+        
+    
+    #### PatRec in stereo12
+    short_tracks_12 = pet_rec_stereo_views(SmearedHits_stereo12, short_tracks_y12, min_hits)
+    
+
+    #### PatRec in 34
+    short_tracks_34 = pat_rec_y_views(SmearedHits_34, min_hits, max_shared_hits)
+
+    
+    #### Combine tracks
+    z_center=350.75
+    track_combinations = combine_tracks_before_and_after_the_magnet(short_tracks_12, short_tracks_34, z_center)
+
+
+    #### MuID is in other script
+
+
+    # Prepare output of PatRec
+    track_hits = {}
+    for i_track in range(len(track_combinations)):
+    
+        atrack = track_combinations[i_track]
+
+        hits_y12 = atrack['hits_y12']
+        hits_stereo12 = atrack['hits_stereo12']
+        hits_34 = atrack['hits_y34']
+        p = atrack['p']
+ 
+        [k, b] = np.polyfit(atrack['z_y12'], atrack['x_y12'], deg=1)
+        x_in_magnet = k * z_center + b
+        
+        [k, b] = np.polyfit(atrack['z_stereo12'], atrack['y_stereo12'], deg=1)
+        y_in_magnet = k * z_center + b
+
+        if len(hits_y12) >= min_hits and len(hits_stereo12) >= min_hits and len(hits_34) >= min_hits:
+            
+            atrack = {'y12': sort_hits(hits_y12), 
+                      'stereo12': sort_hits(hits_stereo12), 
+                      '34': sort_hits(hits_34), 
+                      'y_tagger': [],
+                      'p': p, 
+                      'x_in_magnet': x_in_magnet, 
+                      'y_in_magnet': y_in_magnet}
+            track_hits[i_track] = atrack
+
+    
+    if debug:
+        print "Recognized tracks:"
+        for i_track in track_hits.keys():
+            atrack = track_hits[i_track]
+            print "Track ", i_track
+            print "Z_y12", [str(np.around(hit['z'], 2)) for hit in atrack['y12']]
+            print "X_y12", [str(np.around(hit['xtop'], 2)) for hit in atrack['y12']]
+            print "Z_stereo12", [str(np.around(hit['z'], 2)) for hit in atrack['stereo12']]
+            print "X_stereo12", [str(np.around(hit['xtop'], 2)) for hit in atrack['stereo12']]
+            print "Z_34", [str(np.around(hit['z'], 2)) for hit in atrack['34']]
+            print "X_34", [str(np.around(hit['xtop'], 2)) for hit in atrack['34']]
+
+    return track_hits
+
+
+def finalize():
+    pass
+ 
+###################################################################################################    
+
+def hits_split(SmearedHits):
+
     # Separate hits
     SmearedHits_12y = []
     SmearedHits_12stereo = []
@@ -50,705 +131,257 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire):
         if is_34:
             SmearedHits_34.append(ahit)
             
-            
-    #### PatRec in 12y
-    min_hits = 3
-    long_tracks_y12 = []
-
-
-    if withDist2Wire:
-
-        # Take 2 hits as a track seed
-        for ahit1 in SmearedHits_12y:
-            for ahit2 in SmearedHits_12y:
-
-                if ahit1['z'] >= ahit2['z']:
-                    continue
-                if ahit1['detID'] == ahit2['detID']:
-                    continue
-
-                # +- dist2wire
-                for sign1 in [-1, 1]:
-                    for sign2 in [-1, 1]:
-
-                        x1 = ahit1['xtop'] + sign1 * ahit1['dist']
-                        x2 = ahit2['xtop'] + sign2 * ahit2['dist']
-                        z1 = ahit1['z']
-                        z2 = ahit2['z']
-                        layer1 = ahit1['detID'] // 10000
-                        layer2 = ahit2['detID'] // 10000
-
-                        k_bin = 1. * (x2 - x1) / (z2 - z1)
-                        b_bin = x1 - k_bin * z1
-
-                        if abs(k_bin) > 1:
-                            continue
-
-                        atrack = {}
-                        atrack['hits'] = [ahit1, ahit2]
-                        atrack['x'] = [x1, x2]
-                        atrack['z'] = [z1, z2]
-                        atrack['layer'] = [layer1, layer2]
-
-                        # Add new hits to the seed
-                        for ahit3 in SmearedHits_12y:
-
-                            if ahit3['detID'] == ahit1['detID'] or ahit3['detID'] == ahit2['detID']:
-                                continue
-
-                            dist3 = ahit3['dist']
-                            x3 = ahit3['xtop']
-                            z3 = ahit3['z']
-                            layer3 = ahit3['detID'] // 10000
-
-                            if layer3 in atrack['layer']:
-                                continue
-
-                            in_bin_p = hit_in_window(z3, x3+dist3, k_bin, b_bin, window_width=.1)
-                            err_p = abs(k_bin * z3 + b_bin - (x3+dist3))
-                            in_bin_m = hit_in_window(z3, x3-dist3, k_bin, b_bin, window_width=.1)
-                            err_m = abs(k_bin * z3 + b_bin - (x3-dist3))
-                            if in_bin_p or in_bin_m:
-                                atrack['hits'].append(ahit3)
-                                atrack['z'].append(z3)
-                                atrack['layer'].append(layer3)
-                                if err_m < err_p:
-                                    atrack['x'].append(x3-dist3)
-                                else:
-                                    atrack['x'].append(x3+dist3)
-
-                        if len(atrack['hits']) >= min_hits:
-                            long_tracks_y12.append(atrack)
-
-    else:
-
-        # Take 2 hits as a track seed
-        for ahit1 in SmearedHits_12y:
-            for ahit2 in SmearedHits_12y:
-
-                if ahit1['z'] >= ahit2['z']:
-                    continue
-                if ahit1['detID'] == ahit2['detID']:
-                    continue
-
-                x1 = ahit1['xtop']
-                x2 = ahit2['xtop']
-                z1 = ahit1['z']
-                z2 = ahit2['z']
-                layer1 = ahit1['detID'] // 10000
-                layer2 = ahit2['detID'] // 10000
-
-                k_bin = 1. * (x2 - x1) / (z2 - z1)
-                b_bin = x1 - k_bin * z1
-
-                if abs(k_bin) > 1:
-                    continue
-
-                atrack = {}
-                atrack['hits'] = [ahit1, ahit2]
-                atrack['x'] = [x1, x2]
-                atrack['z'] = [z1, z2]
-                atrack['layer'] = [layer1, layer2]
-
-                # Add new hits to the seed
-                for ahit3 in SmearedHits_12y:
-
-                    if ahit3['detID'] == ahit1['detID'] or ahit3['detID'] == ahit2['detID']:
-                        continue
-
-                    x3 = ahit3['xtop']
-                    z3 = ahit3['z']
-                    layer3 = ahit3['detID'] // 10000
-
-                    if layer3 in atrack['layer']:
-                        continue
-
-                    in_bin = hit_in_window(z3, x3, k_bin, b_bin, window_width=3.0)
-                    if in_bin:
-                        atrack['hits'].append(ahit3)
-                        atrack['z'].append(z3)
-                        atrack['x'].append(x3)
-                        atrack['layer'].append(layer3)
-
-                if len(atrack['hits']) >= min_hits:
-                    long_tracks_y12.append(atrack)
+    return SmearedHits_12y, SmearedHits_12stereo, SmearedHits_34
     
-    # Remove clones in y12
-    used_hits = []
-    short_tracks_y12 = []
-    n_hits = [len(atrack['hits']) for atrack in long_tracks_y12]
 
-    for i_track in np.argsort(n_hits)[::-1]:
+def pat_rec_y_views(SmearedHits, min_hits=3, max_shared_hits=2):
 
-        atrack = long_tracks_y12[i_track]
-        new_track = {}
-        new_track['hits'] = []
-        new_track['x'] = []
-        new_track['z'] = []
-        new_track['layer'] = []
+    long_tracks = []
 
-        for i_hit in range(len(atrack['hits'])):
-            ahit = atrack['hits'][i_hit]
-            if ahit['digiHit'] not in used_hits:
-                new_track['hits'].append(ahit)
-                new_track['x'].append(atrack['x'][i_hit])
-                new_track['z'].append(atrack['z'][i_hit]) 
+    # Take 2 hits as a track seed
+    for ahit1 in SmearedHits:
+        for ahit2 in SmearedHits:
 
-        if len(new_track['hits']) >= min_hits:
-            short_tracks_y12.append(new_track)
-            for ahit in new_track['hits']:
-                used_hits.append(ahit['digiHit'])
-                
-    # Fit tracks y12
-    for atrack in short_tracks_y12:
-        [atrack['k'], atrack['b']] = np.polyfit(atrack['z'], atrack['x'], deg=1)
-        
-        
-    # Extrapolation to the center of the magnet
-    # ShipGeo is defined in macro/MufluxReco.py
-    z_center = 350.75# ShipGeo.Bfield.z
-    
-    """
-    #### PatRec in 34
-    long_tracks_34 = []
-    short_tracks_34 = []
-    used_hits = []
-
-    for i_track_y12 in range(len(short_tracks_y12)):
-
-        atrack_y12 = short_tracks_y12[i_track_y12]
-        x_center = atrack_y12['k'] * z_center + atrack_y12['b']
-        
-        temp_tracks_34 = []
-
-        for ahit1 in SmearedHits_34:
-
-            if ahit1['digiHit'] in used_hits:
+            if ahit1['z'] >= ahit2['z']:
+                continue
+            if ahit1['detID'] == ahit2['detID']:
                 continue
 
-            for sign1 in [-1, 1]:
+            x1 = ahit1['xtop']
+            x2 = ahit2['xtop']
+            z1 = ahit1['z']
+            z2 = ahit2['z']
+            layer1 = ahit1['detID'] // 10000
+            layer2 = ahit2['detID'] // 10000
 
-                x1 = ahit1['xtop'] + sign1 * ahit1['dist']
-                z1 = ahit1['z']
-                layer1 = ahit1['detID'] // 10000
+            k_bin = 1. * (x2 - x1) / (z2 - z1)
+            b_bin = x1 - k_bin * z1
 
-                k_bin = 1. * (x1 - x_center) / (z1 - z_center)
-                b_bin = x1 - k_bin * z1
+            if abs(k_bin) > 1:
+                continue
 
-                if abs(k_bin) > 1:
+            atrack = {}
+            atrack['hits_y'] = [ahit1, ahit2]
+            atrack['x_y'] = [x1, x2]
+            atrack['z_y'] = [z1, z2]
+            atrack['layer'] = [layer1, layer2]
+
+            # Add new hits to the seed
+            for ahit3 in SmearedHits:
+
+                if ahit3['detID'] == ahit1['detID'] or ahit3['detID'] == ahit2['detID']:
                     continue
 
-                atrack = {}
-                atrack['hits'] = [ahit1]
-                atrack['x'] = [x1]
-                atrack['z'] = [z1]
-                atrack['layer'] = [layer1]
-                atrack['i_track_y12'] = i_track_y12
+                x3 = ahit3['xtop']
+                z3 = ahit3['z']
+                layer3 = ahit3['detID'] // 10000
+
+                if layer3 in atrack['layer']:
+                    continue
+
+                in_bin = hit_in_window(z3, x3, k_bin, b_bin, window_width=3.0)#3
+                if in_bin:
+                    atrack['hits_y'].append(ahit3)
+                    atrack['z_y'].append(z3)
+                    atrack['x_y'].append(x3)
+                    atrack['layer'].append(layer3)
+
+            if len(atrack['hits_y']) >= min_hits:
+                long_tracks.append(atrack)
                 
-                for ahit2 in SmearedHits_34:
+    # Reduce number of clones
+    short_tracks = reduce_clones(long_tracks, min_hits, max_shared_hits)
+                
+    # Fit tracks y12
+    for atrack in short_tracks:
+        [atrack['k_y'], atrack['b_y']] = np.polyfit(atrack['z_y'], atrack['x_y'], deg=1)
+                
+    return short_tracks
+    
+    
+def pet_rec_stereo_views(SmearedHits_stereo, short_tracks_y, min_hits=3):
 
-                    if ahit2['digiHit'] in used_hits:
-                        continue
-                    if ahit1['detID'] == ahit2['detID']:
-                            continue
+    ### PatRec in stereo12
+    long_tracks_stereo = []
+    short_tracks_stereo = []
+    used_hits = []
+    # deg = np.deg2rad(ShipGeo['MufluxSpectrometer']['ViewAngle'])
 
-                    dist2 = ahit2['dist']
-                    x2 = ahit2['xtop']
-                    z2 = ahit2['z']
-                    layer2 = ahit2['detID'] // 10000
+    for i_track_y in range(len(short_tracks_y)):
 
-                    # if hit_in_bin(z2, x2+dist2, k_bin, b_bin, k_size=2./100, b_size=140./100):
-                    if hit_in_window(z2, x2+dist2, k_bin, b_bin, window_width=3.0): #1.5
-                        if layer2 not in atrack['layer']:
-                            atrack['hits'].append(ahit2)
-                            atrack['x'].append(x2+dist2)
-                            atrack['z'].append(z2)
-                            atrack['layer'].append(layer2)
-                    # elif hit_in_bin(z2, x2-dist2, k_bin, b_bin, k_size=2./100, b_size=140./100):
-                    elif hit_in_window(z2, x2-dist2, k_bin, b_bin, window_width=3.0): #1.5
-                        if layer2 not in atrack['layer']:
-                            atrack['hits'].append(ahit2)
-                            atrack['x'].append(x2-dist2)
-                            atrack['z'].append(z2)
-                            atrack['layer'].append(layer2)
+        atrack_y = short_tracks_y[i_track_y]
+        k_y = atrack_y['k_y']
+        b_y = atrack_y['b_y']
+        
+        # Get hit zx projections
+        for ahit in SmearedHits_stereo:
+            y_center  = get_zy_projection(ahit['z'], ahit['xtop'], ahit['ytop'], ahit['xbot'], ahit['ybot'], k_y, b_y)
+            ahit['zy_projection'] = y_center
 
-                if len(atrack['hits']) >= min_hits:
-                    temp_tracks_34.append(atrack)
-                    long_tracks_34.append(atrack)
-                    
-        # Remove clones in 34
-        max_track = None
-        max_n_hits = -999
+        
+        temp_tracks_stereo = []
 
-        for atrack in temp_tracks_34:
-            if len(atrack['hits']) > max_n_hits:
-                max_track = atrack
-                max_n_hits = len(atrack['hits'])
-
-        if max_track is not None:
-            short_tracks_34.append(max_track)
-            for ahit in max_track['hits']:
-                used_hits.append(ahit['digiHit'])
-    """
-
-    #### PatRec in 34
-    min_hits = 3
-    long_tracks_34 = []
-
-    if withDist2Wire:
-
-        # Take 2 hits as a track seed
-        for ahit1 in SmearedHits_34:
-            for ahit2 in SmearedHits_34:
+        for ahit1 in SmearedHits_stereo:
+            for ahit2 in SmearedHits_stereo:
 
                 if ahit1['z'] >= ahit2['z']:
                     continue
                 if ahit1['detID'] == ahit2['detID']:
                     continue
-
-                # +- dist2wire
-                for sign1 in [-1, 1]:
-                    for sign2 in [-1, 1]:
-
-                        x1 = ahit1['xtop'] + sign1 * ahit1['dist']
-                        x2 = ahit2['xtop'] + sign2 * ahit2['dist']
-                        z1 = ahit1['z']
-                        z2 = ahit2['z']
-                        layer1 = ahit1['detID'] // 10000
-                        layer2 = ahit2['detID'] // 10000
-
-                        k_bin = 1. * (x2 - x1) / (z2 - z1)
-                        b_bin = x1 - k_bin * z1
-
-                        if abs(k_bin) > 1:
-                            continue
-
-                        atrack = {}
-                        atrack['hits'] = [ahit1, ahit2]
-                        atrack['x'] = [x1, x2]
-                        atrack['z'] = [z1, z2]
-                        atrack['layer'] = [layer1, layer2]
-                        atrack['i_track_y12'] = -999
-
-                        # Add new hits to the seed
-                        for ahit3 in SmearedHits_34:
-
-                            if ahit3['detID'] == ahit1['detID'] or ahit3['detID'] == ahit2['detID']:
-                                continue
-
-                            dist3 = ahit3['dist']
-                            x3 = ahit3['xtop']
-                            z3 = ahit3['z']
-                            layer3 = ahit3['detID'] // 10000
-
-                            if layer3 in atrack['layer']:
-                                continue
-
-                            in_bin_p = hit_in_window(z3, x3+dist3, k_bin, b_bin, window_width=.1)
-                            err_p = abs(k_bin * z3 + b_bin - (x3+dist3))
-                            in_bin_m = hit_in_window(z3, x3-dist3, k_bin, b_bin, window_width=.1)
-                            err_m = abs(k_bin * z3 + b_bin - (x3-dist3))
-                            if in_bin_p or in_bin_m:
-                                atrack['hits'].append(ahit3)
-                                atrack['z'].append(z3)
-                                atrack['layer'].append(layer3)
-                                if err_m < err_p:
-                                    atrack['x'].append(x3-dist3)
-                                else:
-                                    atrack['x'].append(x3+dist3)
-
-                        if len(atrack['hits']) >= min_hits:
-                            long_tracks_34.append(atrack)
-
-    else:
-
-        # Take 2 hits as a track seed
-        for ahit1 in SmearedHits_34:
-            for ahit2 in SmearedHits_34:
-
-                if ahit1['z'] >= ahit2['z']:
+                if ahit1['digiHit'] in used_hits:
                     continue
-                if ahit1['detID'] == ahit2['detID']:
+                if ahit2['digiHit'] in used_hits:
                     continue
 
-                x1 = ahit1['xtop']
-                x2 = ahit2['xtop']
+                y1_center  = ahit1['zy_projection']
+                y2_center  = ahit2['zy_projection']
+
+                if abs(y1_center ) > 70 or abs(y2_center ) > 70:
+                    continue
+
+                y1 = y1_center
+                y2 = y2_center
                 z1 = ahit1['z']
                 z2 = ahit2['z']
                 layer1 = ahit1['detID'] // 10000
                 layer2 = ahit2['detID'] // 10000
 
-                k_bin = 1. * (x2 - x1) / (z2 - z1)
-                b_bin = x1 - k_bin * z1
-
-                if abs(k_bin) > 1:
-                    continue
+                k_bin = 1. * (y2 - y1) / (z2 - z1)
+                b_bin = y1 - k_bin * z1
 
                 atrack = {}
-                atrack['hits'] = [ahit1, ahit2]
-                atrack['x'] = [x1, x2]
-                atrack['z'] = [z1, z2]
+                atrack['hits_stereo'] = [ahit1, ahit2]
+                atrack['y_stereo'] = [y1, y2]
+                atrack['z_stereo'] = [z1, z2]
                 atrack['layer'] = [layer1, layer2]
-                atrack['i_track_y12'] = -999
 
-                # Add new hits to the seed
-                for ahit3 in SmearedHits_34:
+                for ahit3 in SmearedHits_stereo:
 
-                    if ahit3['detID'] == ahit1['detID'] or ahit3['detID'] == ahit2['detID']:
+                    if ahit3['digiHit'] == ahit1['digiHit'] or ahit3['digiHit'] == ahit2['digiHit']:
+                        continue
+                    if ahit3['digiHit'] in used_hits:
                         continue
 
-                    x3 = ahit3['xtop']
+                    y3_center = ahit3['zy_projection']
                     z3 = ahit3['z']
                     layer3 = ahit3['detID'] // 10000
+
+                    if abs(y3_center) > 70:
+                        continue
 
                     if layer3 in atrack['layer']:
                         continue
 
-                    in_bin = hit_in_window(z3, x3, k_bin, b_bin, window_width=3.0)
+                    in_bin = hit_in_window(z3, y3_center, k_bin, b_bin, window_width=10.0)#10.0
                     if in_bin:
-                        atrack['hits'].append(ahit3)
-                        atrack['z'].append(z3)
-                        atrack['x'].append(x3)
+                        atrack['hits_stereo'].append(ahit3)
+                        atrack['z_stereo'].append(z3)
+                        atrack['y_stereo'].append(y3_center)
                         atrack['layer'].append(layer3)
 
-                if len(atrack['hits']) >= min_hits:
-                    long_tracks_34.append(atrack)
-
-    # Remove clones in 34
-    used_hits = []
-    short_tracks_34 = []
-    n_hits = [len(atrack['hits']) for atrack in long_tracks_34]
-
-    for i_track in np.argsort(n_hits)[::-1]:
-
-        atrack = long_tracks_34[i_track]
-        new_track = {}
-        new_track['hits'] = []
-        new_track['x'] = []
-        new_track['z'] = []
-        new_track['layer'] = []
-        new_track['i_track_y12'] = -999
-
-        for i_hit in range(len(atrack['hits'])):
-            ahit = atrack['hits'][i_hit]
-            if ahit['digiHit'] not in used_hits:
-                new_track['hits'].append(ahit)
-                new_track['x'].append(atrack['x'][i_hit])
-                new_track['z'].append(atrack['z'][i_hit])
-
-        if len(new_track['hits']) >= min_hits:
-            short_tracks_34.append(new_track)
-            for ahit in new_track['hits']:
-                used_hits.append(ahit['digiHit'])
-
-    # Fit tracks 34
-    for atrack in short_tracks_34:
-        [atrack['k'], atrack['b']] = np.polyfit(atrack['z'], atrack['x'], deg=1)
-
-    # Combine track y12 and 34 and momentum calculation
-    i_track_y12 = []
-    i_track_34 = []
-    deltas_y = []
-    momentums = []
-    for i_y12 in range(len(short_tracks_y12)):
-        atrack_y12 = short_tracks_y12[i_y12]
-        y_center_y12 = atrack_y12['k'] * z_center + atrack_y12['b']
-        alpha_y12 = np.arctan(atrack_y12['k'])
-        for i_34 in range(len(short_tracks_34)):
-            atrack_34 = short_tracks_34[i_34]
-            y_center_34 = atrack_34['k'] * z_center + atrack_34['b']
-            alpha_34 = np.arctan(atrack_34['k'])
-            i_track_y12.append(i_y12)
-            i_track_34.append(i_34)
-            deltas_y.append(abs(y_center_y12 - y_center_34))
-            momentums.append(1.03 / (alpha_y12 - alpha_34))
-
-    max_dy = 50
-    used_y12 = []
-    used_34 = []
-    for i in np.argsort(deltas_y):
-        dy = deltas_y[i]
-        mom = momentums[i]
-        i_y12 = i_track_y12[i]
-        i_34 = i_track_34[i]
-        if dy < max_dy:
-            if i_y12 not in used_y12:
-                if i_34 not in used_34:
-                    atrack = short_tracks_34[i_34]
-                    atrack['i_track_y12'] = i_y12
-                    atrack['p'] = mom
-                    used_y12.append(i_y12)
-                    used_34.append(i_34)
-
-
-
-    ### PatRec in stereo12
-    long_tracks_stereo12 = []
-    short_tracks_stereo12 = []
-    used_hits = []
-    deg = np.deg2rad(ShipGeo['MufluxSpectrometer']['ViewAngle'])
-
-    for i_track_y12 in range(len(short_tracks_y12)):
-
-        atrack_y12 = short_tracks_y12[i_track_y12]
-        k_y12 = atrack_y12['k']
-        b_y12 = atrack_y12['b']
-        
-        temp_tracks_stereo12 = []
-
-        if withDist2Wire:
-
-            for ahit1 in SmearedHits_12stereo:
-                for ahit2 in SmearedHits_12stereo:
-
-                    if ahit1['z'] >= ahit2['z']:
-                        continue
-                    if ahit1['detID'] == ahit2['detID']:
-                        continue
-                    if ahit1['digiHit'] in used_hits:
-                        continue
-                    if ahit2['digiHit'] in used_hits:
-                        continue
-
-                    y1_center  = get_zy_projection(ahit1['z'],
-                                                   ahit1['xtop'], ahit1['ytop'],
-                                                   ahit1['xbot'], ahit1['ybot'], k_y12, b_y12)
-                    y2_center  = get_zy_projection(ahit2['z'],
-                                                   ahit2['xtop'], ahit2['ytop'],
-                                                   ahit2['xbot'], ahit2['ybot'], k_y12, b_y12)
-
-                    if abs(y1_center ) > 50 or abs(y2_center ) > 50:
-                        continue
-
-                    for sign1 in [-1, 1]:
-                        for sign2 in [-1, 1]:
-
-                            y1 = y1_center + sign1 * ahit1['dist'] / np.sin(deg)
-                            y2 = y2_center + sign2 * ahit2['dist'] / np.sin(deg)
-                            z1 = ahit1['z']
-                            z2 = ahit2['z']
-                            layer1 = ahit1['detID'] // 10000
-                            layer2 = ahit2['detID'] // 10000
-
-                            k_bin = 1. * (y2 - y1) / (z2 - z1)
-                            b_bin = y1 - k_bin * z1
-
-                            atrack = {}
-                            atrack['hits'] = [ahit1, ahit2]
-                            atrack['y'] = [y1, y2]
-                            atrack['z'] = [z1, z2]
-                            atrack['layer'] = [layer1, layer2]
-                            atrack['i_track_y12'] = i_track_y12
-
-                            for ahit3 in SmearedHits_12stereo:
-
-                                if ahit3['digiHit'] == ahit1['digiHit'] or ahit3['digiHit'] == ahit2['digiHit']:
-                                    continue
-                                if ahit3['digiHit'] in used_hits:
-                                    continue
-
-                                dist3 = ahit3['dist'] / np.sin(deg)
-                                y3_center = get_zy_projection(ahit3['z'],
-                                                              ahit3['xtop'], ahit3['ytop'],
-                                                              ahit3['xbot'], ahit3['ybot'], k_y12, b_y12)
-                                z3 = ahit3['z']
-                                layer3 = ahit3['detID'] // 10000
-
-                                if abs(y3_center) > 50:
-                                    continue
-
-                                if layer3 in atrack['layer']:
-                                    continue
-
-                                in_bin_p = hit_in_window(z3, y3_center+dist3, k_bin, b_bin, window_width=20.0)
-                                err_p = abs(k_bin * z3 + b_bin - (y3_center+dist3))
-                                in_bin_m = hit_in_window(z3, y3_center-dist3, k_bin, b_bin, window_width=20.0)
-                                err_m = abs(k_bin * z3 + b_bin - (y3_center-dist3))
-                                if in_bin_p or in_bin_m:
-                                    atrack['hits'].append(ahit3)
-                                    atrack['z'].append(z3)
-                                    atrack['layer'].append(layer3)
-                                    if err_m < err_p:
-                                        atrack['y'].append(y3_center-dist3)
-                                    else:
-                                        atrack['y'].append(y3_center+dist3)
-
-                            if len(atrack['hits']) >= min_hits:
-                                temp_tracks_stereo12.append(atrack)
-                                long_tracks_stereo12.append(atrack)
-
-        else:
-
-            for ahit1 in SmearedHits_12stereo:
-                for ahit2 in SmearedHits_12stereo:
-
-                    if ahit1['z'] >= ahit2['z']:
-                        continue
-                    if ahit1['detID'] == ahit2['detID']:
-                        continue
-                    if ahit1['digiHit'] in used_hits:
-                        continue
-                    if ahit2['digiHit'] in used_hits:
-                        continue
-
-                    y1_center  = get_zy_projection(ahit1['z'],
-                                                   ahit1['xtop'], ahit1['ytop'],
-                                                   ahit1['xbot'], ahit1['ybot'], k_y12, b_y12)
-                    y2_center  = get_zy_projection(ahit2['z'],
-                                                   ahit2['xtop'], ahit2['ytop'],
-                                                   ahit2['xbot'], ahit2['ybot'], k_y12, b_y12)
-
-                    if abs(y1_center ) > 50 or abs(y2_center ) > 50:
-                        continue
-
-                    y1 = y1_center
-                    y2 = y2_center
-                    z1 = ahit1['z']
-                    z2 = ahit2['z']
-                    layer1 = ahit1['detID'] // 10000
-                    layer2 = ahit2['detID'] // 10000
-
-                    k_bin = 1. * (y2 - y1) / (z2 - z1)
-                    b_bin = y1 - k_bin * z1
-
-                    atrack = {}
-                    atrack['hits'] = [ahit1, ahit2]
-                    atrack['y'] = [y1, y2]
-                    atrack['z'] = [z1, z2]
-                    atrack['layer'] = [layer1, layer2]
-                    atrack['i_track_y12'] = i_track_y12
-
-                    for ahit3 in SmearedHits_12stereo:
-
-                        if ahit3['digiHit'] == ahit1['digiHit'] or ahit3['digiHit'] == ahit2['digiHit']:
-                            continue
-                        if ahit3['digiHit'] in used_hits:
-                            continue
-
-                        y3_center = get_zy_projection(ahit3['z'],
-                                                      ahit3['xtop'], ahit3['ytop'],
-                                                      ahit3['xbot'], ahit3['ybot'], k_y12, b_y12)
-                        z3 = ahit3['z']
-                        layer3 = ahit3['detID'] // 10000
-
-                        if abs(y3_center) > 50:
-                            continue
-
-                        if layer3 in atrack['layer']:
-                            continue
-
-                        in_bin = hit_in_window(z3, y3_center, k_bin, b_bin, window_width=10.0)
-                        if in_bin:
-                            atrack['hits'].append(ahit3)
-                            atrack['z'].append(z3)
-                            atrack['y'].append(y3_center)
-                            atrack['layer'].append(layer3)
-
-                    if len(atrack['hits']) >= min_hits:
-                        temp_tracks_stereo12.append(atrack)
-                        long_tracks_stereo12.append(atrack)
+                if len(atrack['hits_stereo']) >= min_hits:
+                    temp_tracks_stereo.append(atrack)
+                    long_tracks_stereo.append(atrack)
                             
         # Remove clones
         max_track = None
         max_n_hits = -999
 
-        for atrack in temp_tracks_stereo12:
-            if len(atrack['hits']) > max_n_hits:
+        for atrack in temp_tracks_stereo:
+            if len(atrack['hits_stereo']) > max_n_hits:
                 max_track = atrack
-                max_n_hits = len(atrack['hits'])
+                max_n_hits = len(atrack['hits_stereo'])
 
         if max_track is not None:
-            short_tracks_stereo12.append(max_track)
-            for ahit in max_track['hits']:
-                used_hits.append(ahit['digiHit'])
-
-
-    # MuID
-    short_tracks_y_tagger = []
-    used_hits = []
-    min_tagger_hits = 1
-    for atrack_34 in short_tracks_34:
-
-        k, b = atrack_34['k'], atrack_34['b']
-        atrack = {}
-        atrack['hits'] = []
-        atrack['x'] = []
-        atrack['z'] = []
-        atrack['layer'] = []
-        atrack['i_track_y12'] = atrack_34['i_track_y12']
-
-        for ahit in TaggerHits:
-            detID = ahit['detID']
-            station = detID // 10000
-            direction = (detID - station * 10000) // 1000
-            if detID < 10:
-                station = detID
-            if direction == 1 or detID < 10:
-                z = ahit['z']
-                x = (ahit['xtop'] + ahit['xbot']) / 2
-                if hit_in_window(z, x, k, b, window_width=10.):
-                    if station not in atrack['layer']:
-                        if ahit['digiHit'] not in used_hits:
-                            atrack['hits'].append(ahit)
-                            atrack['layer'].append(station)
-                            used_hits.append(ahit['digiHit'])
-
-        if len(atrack['hits']) >= min_tagger_hits:
-            short_tracks_y_tagger.append(atrack)
-
-
-    # Prepare output of PatRec
-    track_hits = {}
-    for i_track in range(len(short_tracks_y12)):
-
-        hits_y12 = []
-        hits_stereo12 = []
-        hits_34 = []
-        hits_tagger = []
-        p = 0
-        x_in_magnet = 0
-        y_in_magnet = 0
-
-        # [atrack['k'], atrack['b']] = np.polyfit(atrack['z'], atrack['x'], deg=1)
-        
-        for ahit in short_tracks_y12[i_track]['hits']:
-            [k, b] = np.polyfit(short_tracks_y12[i_track]['z'], short_tracks_y12[i_track]['x'], deg=1)
-            x_in_magnet = k * z_center + b
-            hits_y12.append(ahit)
+            atrack = {}
+            atrack['hits_y'] = atrack_y['hits_y']
+            atrack['z_y'] = atrack_y['z_y']
+            atrack['x_y'] = atrack_y['x_y']
+            atrack['k_y'] = atrack_y['k_y']
+            atrack['b_y'] = atrack_y['b_y']
+            atrack['hits_stereo'] = max_track['hits_stereo']
+            atrack['z_stereo'] = max_track['z_stereo']
+            atrack['y_stereo'] = max_track['y_stereo']
             
-        for atrack in short_tracks_stereo12:
-            if atrack['i_track_y12'] == i_track:
-                [k, b] = np.polyfit(atrack['z'], atrack['y'], deg=1)
-                y_in_magnet = k * z_center + b
-                for ahit in atrack['hits']:
-                    hits_stereo12.append(ahit)
-                break
+            short_tracks_stereo.append(atrack)
+            for ahit in max_track['hits_stereo']:
+                #used_hits.append(ahit['digiHit'])
+                pass
+                
+    return short_tracks_stereo
+    
+    
+def combine_tracks_before_and_after_the_magnet(short_tracks_12, short_tracks_34, z_center):
+
+    # Combine track y12 and 34 and momentum calculation
+    i_track_12 = []
+    i_track_34 = []
+    deltas_y = []
+    momentums = []
+    for i_12 in range(len(short_tracks_12)):
+        atrack_12 = short_tracks_12[i_12]
+        y_center_12 = atrack_12['k_y'] * z_center + atrack_12['b_y']
+        alpha_12 = np.arctan(atrack_12['k_y'])
+        for i_34 in range(len(short_tracks_34)):
+            atrack_34 = short_tracks_34[i_34]
+            y_center_34 = atrack_34['k_y'] * z_center + atrack_34['b_y']
+            alpha_34 = np.arctan(atrack_34['k_y'])
+            i_track_12.append(i_12)
+            i_track_34.append(i_34)
+            deltas_y.append(abs(y_center_12 - y_center_34))
+            momentums.append(1.03 / (alpha_12 - alpha_34))
+
+    max_dy = 50
+    used_12 = []
+    used_34 = []
+    track_combinations = []
+    for i in np.argsort(deltas_y):
+        dy = deltas_y[i]
+        mom = momentums[i]
+        i_12 = i_track_12[i]
+        i_34 = i_track_34[i]
+        if dy < max_dy:
+            if i_12 not in used_12:
+                if i_34 not in used_34:
+                    atrack = {}
+                    for key in short_tracks_12[i_12].keys():
+                        atrack[key+'12'] = short_tracks_12[i_12][key]
+                    for key in short_tracks_34[i_34].keys():
+                        atrack[key+'34'] = short_tracks_34[i_34][key]
+                    atrack['p'] = abs(mom)
+                    track_combinations.append(atrack)
+                    #used_12.append(i_12)
+                    #used_34.append(i_34)
                     
-        for atrack in short_tracks_34:
-            if atrack['i_track_y12'] == i_track:
-                p = atrack['p']
-                for ahit in atrack['hits']:
-                    hits_34.append(ahit)
-                break
+    return track_combinations
+    
 
-        for atrack in short_tracks_y_tagger:
-            if atrack['i_track_y12'] == i_track:
-                for ahit in atrack['hits']:
-                    hits_tagger.append(ahit)
-                break
+def reduce_clones(long_tracks, min_hits=3, max_shared_hits=2):
 
-        if len(hits_y12) >= min_hits and len(hits_stereo12) >= min_hits and len(hits_34) >= min_hits and len(hits_tagger) >= withNTaggerHits:
-            atrack = {'y12': hits_y12, 'stereo12': hits_stereo12, '34': hits_34, 'y_tagger': hits_tagger,
-                      'p': p, 'x_in_magnet': x_in_magnet, 'y_in_magnet': y_in_magnet}
-            track_hits[i_track] = atrack
+    # Remove clones in y12
+    used_hits = []
+    short_tracks = []
+    n_hits = [len(atrack['hits_y']) for atrack in long_tracks]
 
+    for i_track in np.argsort(n_hits)[::-1]:
 
+        atrack = long_tracks[i_track]
+        n_shared_hits = 0
 
-    return track_hits
+        for i_hit in range(len(atrack['hits_y'])):
+            ahit = atrack['hits_y'][i_hit]
+            if ahit['digiHit'] in used_hits: #digiHit
+                n_shared_hits += 1
 
-
-def finalize():
-    pass
+        if len(atrack['hits_y']) >= min_hits and n_shared_hits <= max_shared_hits:
+            short_tracks.append(atrack)
+            for ahit in atrack['hits_y']:
+                used_hits.append(ahit['digiHit']) #digiHit
+                
+    return short_tracks
+    
+    
+###################################################################################################
 
 
 def decodeDetectorID(detID):
@@ -853,5 +486,23 @@ def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
     y = k * x + b
     
     return y
+    
+
+def sort_hits(hits):
+
+    sorted_hits = []
+    hits_z = [ahit['z'] for ahit in hits]
+    sort_index = np.argsort(hits_z)
+    for i_hit in sort_index:
+        sorted_hits.append(hits[i_hit])
+        
+    return sorted_hits
+
+
+
+
+
+
+
     
     

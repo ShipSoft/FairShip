@@ -98,7 +98,7 @@ with ConfigRegistry.register_config("basic") as c:
     #OPTIONS FOR CHARM XSEC DETECTOR
     c.Box.gausbeam = True
     c.Box.Julytarget = True
-    c.Box.GapPostTargetTh = 0.73 * u.cm     
+    c.Box.GapPostTargetTh = 0.73 * u.cm #distance between end of the emulsion target and start of pixel box (Pixel origin)     
     c.Box.RunNumber =  3 #run configuration for charm
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
@@ -192,6 +192,17 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.OuterTubeDiameter  = (c.MufluxSpectrometer.InnerTubeDiameter + 2*c.MufluxSpectrometer.WallThickness)
 
     c.MufluxSpectrometer.TubePitch          = 4.2*u.cm
+    c.MufluxSpectrometer.TubePitch_T1u       = 0.0009765*u.cm
+    #c.MufluxSpectrometer.T1u_const           = -0.008655*u.cm  
+    c.MufluxSpectrometer.T1u_const           = 0.001343*u.cm  
+    c.MufluxSpectrometer.T1u_const_2           = 0.00183*u.cm    
+    c.MufluxSpectrometer.T1u_const_3           = 0.001575*u.cm  
+    c.MufluxSpectrometer.T1u_const_4           = 0.0010859*u.cm  
+    c.MufluxSpectrometer.T2v_const           = 3.100985*u.cm  
+    c.MufluxSpectrometer.T2v_const_2           = -1.09986*u.cm    
+    c.MufluxSpectrometer.T2v_const_3           = -1.100305*u.cm  
+    c.MufluxSpectrometer.T2v_const_4           = 3.100543*u.cm  
+    c.MufluxSpectrometer.TubePitch_T2v       = 0.001695*u.cm 
     c.MufluxSpectrometer.DeltazLayer        = 3.64*u.cm
     c.MufluxSpectrometer.DeltazPlane        = 7.7*u.cm
     
@@ -214,22 +225,42 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.goliathcentre_to_beam = 17.32*u.cm + (c.Spectrometer.UpCoilH-c.Spectrometer.LowCoilH)/2.
     c.MufluxSpectrometer.goliathcentre = 351.19*u.cm  
       
-    c.MufluxSpectrometer.T1x_x=4.23*u.cm
+    c.MufluxSpectrometer.T1x_x=4.22*u.cm
     c.MufluxSpectrometer.T1x_y=-1.995*u.cm
+    c.MufluxSpectrometer.T1x_z=0.*u.cm
     c.MufluxSpectrometer.T1z=40.13*u.cm
     c.MufluxSpectrometer.T1u_x=7.8*u.cm    
     c.MufluxSpectrometer.T1u_y=-0.16*u.cm
+    c.MufluxSpectrometer.T1u_z=-0.00175*u.cm    
     c.MufluxSpectrometer.T2x_x=2.43*u.cm
     c.MufluxSpectrometer.T2x_y=-2.1875*u.cm  
-    c.MufluxSpectrometer.T2z=108.82*u.cm      #-1mm ad hoc        
+    c.MufluxSpectrometer.T2x_z=-0.01074*u.cm  
+    c.MufluxSpectrometer.T2z=108.822745*u.cm            
     c.MufluxSpectrometer.T2v_x=3.5*u.cm      
-    c.MufluxSpectrometer.T2v_y=0.09*u.cm    
+    c.MufluxSpectrometer.T2v_y=0.09*u.cm   
+    c.MufluxSpectrometer.T2v_z=0.*u.cm        
     c.MufluxSpectrometer.T3x=2.475*u.cm
     c.MufluxSpectrometer.T3y=-7.3405*u.cm
     c.MufluxSpectrometer.T3z=585.18*u.cm      # plus 7cm offset + 5mm ad hoc
+    c.MufluxSpectrometer.T3z_1=0.1350*u.cm   
+    c.MufluxSpectrometer.T3z_2=-0.06250*u.cm    
+    c.MufluxSpectrometer.T3z_3=-0.1150*u.cm   
+    c.MufluxSpectrometer.T3z_4=-0.100*u.cm   
+    c.MufluxSpectrometer.T3x_1=-0.13250*u.cm   
+    c.MufluxSpectrometer.T3x_2=-0.014*u.cm    
+    c.MufluxSpectrometer.T3x_3=0.1120*u.cm   
+    c.MufluxSpectrometer.T3x_4=0.1270*u.cm             
     c.MufluxSpectrometer.T4x=2.95*u.cm   
     c.MufluxSpectrometer.T4y=-6.9845*u.cm 
-    c.MufluxSpectrometer.T4z=748.32*u.cm      # min 7cm offset +5mm ad hoc            
+    c.MufluxSpectrometer.T4z=748.32*u.cm      # min 7cm offset +5mm ad hoc  
+    c.MufluxSpectrometer.T4z_1=0.1125*u.cm   
+    c.MufluxSpectrometer.T4z_2=-0.050*u.cm    
+    c.MufluxSpectrometer.T4z_3=-0.12250*u.cm   
+    c.MufluxSpectrometer.T4z_4=-0.05250*u.cm 
+    c.MufluxSpectrometer.T4x_1=-0.030*u.cm   
+    c.MufluxSpectrometer.T4x_2=0.04250*u.cm    
+    c.MufluxSpectrometer.T4x_3=-0.00750*u.cm   
+    c.MufluxSpectrometer.T4x_4=-0.010*u.cm               
     
     if c.MufluxSpectrometer.muflux == True:    
        c.Spectrometer.DX = 2.*u.m
@@ -247,22 +278,68 @@ with ConfigRegistry.register_config("basic") as c:
     #These parameters are used only by the charm detector ---   
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
     c.Spectrometer.D1Long = 4 * u.cm;   
-    c.Spectrometer.DimZSi = 0.0200 * u.cm
-    c.Spectrometer.PairSiDistance = 0.600 * u.cm +c.Spectrometer.DimZSi 
-    c.Spectrometer.Sioverlap = 0.2*u.cm   
+    c.Spectrometer.DimZSi = 0.0200 * u.cm   
          
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY    
-   
+           
+    #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
+    #module position naming: "axis"Si"Telescope number"
     
-    #position of module centres
-    c.Spectrometer.zSi0 = c.Spectrometer.PairSiDistance/2. + c.Spectrometer.DimZSi/2. + c.Box.GapPostTargetTh
-    c.Spectrometer.zSi1 = c.Spectrometer.zSi0 + 2.70 *u.cm
-    c.Spectrometer.zSi2 = c.Spectrometer.zSi1 + 2.54 *u.cm
-    c.Spectrometer.zSi3 = c.Spectrometer.zSi2 + 2.70 *u.cm
-    c.Spectrometer.zSi4 = c.Spectrometer.zSi3 + 2.54 *u.cm
-    c.Spectrometer.zSi5 = c.Spectrometer.zSi4 + 2.70 *u.cm    
+		#measured values
+    c.Spectrometer.xSi = []
+    c.Spectrometer.ySi = []
+    c.Spectrometer.zSi = []
 
+    #Plate 0
+    c.Spectrometer.xSi.append(1.53912)
+    c.Spectrometer.ySi.append(-0.002332)
+    c.Spectrometer.zSi.append(-0.13)
+    #Plate 1
+    c.Spectrometer.xSi.append(-0.229076)
+    c.Spectrometer.ySi.append(0.005328)
+    c.Spectrometer.zSi.append(0.52)
+    #Plate 2
+    c.Spectrometer.xSi.append(0.704924)
+    c.Spectrometer.ySi.append(0.808437)
+    c.Spectrometer.zSi.append(2.412)
+    #Plate 3
+    c.Spectrometer.xSi.append(0.705433)
+    c.Spectrometer.ySi.append(-0.879224)
+    c.Spectrometer.zSi.append(3.09)
+    #Plate 4
+    c.Spectrometer.xSi.append(1.54963)
+    c.Spectrometer.ySi.append(-0.003912)
+    c.Spectrometer.zSi.append(5.17)
+    #Plate 5
+    c.Spectrometer.xSi.append(-0.221577)
+    c.Spectrometer.ySi.append(-0.023944)
+    c.Spectrometer.zSi.append(5.79)
+    #Plate 6
+    c.Spectrometer.xSi.append(0.690749)
+    c.Spectrometer.ySi.append(0.769728)
+    c.Spectrometer.zSi.append(7.77)
+    #Plate 7
+    c.Spectrometer.xSi.append(0.702302)
+    c.Spectrometer.ySi.append(-0.874356)
+    c.Spectrometer.zSi.append(8.46)
+    #Plate 8
+    c.Spectrometer.xSi.append(1.58271)
+    c.Spectrometer.ySi.append(-0.0030432)
+    c.Spectrometer.zSi.append(10.462)
+    #Plate 9
+    c.Spectrometer.xSi.append(-0.209171)
+    c.Spectrometer.ySi.append(0.002488)
+    c.Spectrometer.zSi.append(11.17)
+    #Plate 10
+    c.Spectrometer.xSi.append(0.694199)
+    c.Spectrometer.ySi.append(0.850237)
+    c.Spectrometer.zSi.append(13.162)
+    #Plate 11
+    c.Spectrometer.xSi.append(0.683245)
+    c.Spectrometer.ySi.append(-0.79636)
+    c.Spectrometer.zSi.append(13.85)
+    
     c.Spectrometer.DSciFi1X = 40 * u.cm;
     c.Spectrometer.DSciFi1Y = 40 * u.cm;
     c.Spectrometer.DSciFi2X = 40 * u.cm;
@@ -281,13 +358,13 @@ with ConfigRegistry.register_config("basic") as c:
     #c.Scintillator.DistT2              = 135.25*u.cm
     c.Scintillator.DistT2              = 136.26*u.cm 
                   
-    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
+    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.Spectrometer.zSi[11] - c.Spectrometer.zSi[0] + c.Spectrometer.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
-    c.Spectrometer.DimZpixelbox = c.Box.GapPostTargetTh + c.Spectrometer.zSi5 - c.Spectrometer.zSi0 + c.Spectrometer.PairSiDistance + c.Spectrometer.DimZSi
+    c.Spectrometer.DimZpixelbox = c.Spectrometer.zSi[11] - c.Spectrometer.zSi[0] + c.Spectrometer.DimZSi
     
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.Spectrometer.DimZpixelbox/2.
-    c.Box.zBox = c.Spectrometer.zBox - c.Spectrometer.DimZpixelbox/2. 
+    c.Box.zBox = c.Spectrometer.zBox - c.Spectrometer.DimZpixelbox/2. - c.Box.GapPostTargetTh
 
     #position of SciFis 
     distGoliathSciFi1 = 10*u.cm

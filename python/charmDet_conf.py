@@ -45,10 +45,12 @@ def configure(run,ship_geo):
     detectorList.append(Box)
    
  Spectrometer = ROOT.Spectrometer("Spectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
- Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.Sioverlap, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)   
+ Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)   
  Spectrometer.SetSiliconDZ(ship_geo.Spectrometer.DimZSi)
- #Spectrometer.SetSiliconDetNumber(ship_geo.Spectrometer.nSiDet)
- Spectrometer.SetSiliconDetPositions(ship_geo.Spectrometer.zSi0,ship_geo.Spectrometer.zSi1, ship_geo.Spectrometer.zSi2,ship_geo.Spectrometer.zSi3,ship_geo.Spectrometer.zSi4, ship_geo.Spectrometer.zSi5, ship_geo.Spectrometer.PairSiDistance)
+
+ for i, (x, y, z) in enumerate(zip(ship_geo.Spectrometer.xSi,ship_geo.Spectrometer.ySi,ship_geo.Spectrometer.zSi)): 
+  Spectrometer.SetSiliconStationPositions(i, x, y, z)
+
  Spectrometer.SetSciFiDetPositions(ship_geo.Spectrometer.zSciFi1, ship_geo.Spectrometer.zSciFi2)
 # -----Goliath part by Annarita--------
  Spectrometer.SetGoliathSizes(ship_geo.Spectrometer.H, ship_geo.Spectrometer.TS, ship_geo.Spectrometer.LS, ship_geo.Spectrometer.BasisH);
@@ -70,6 +72,8 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetInnerTubeDiameter(ship_geo.MufluxSpectrometer.InnerTubeDiameter)
  MufluxSpectrometer.SetOuterTubeDiameter(ship_geo.MufluxSpectrometer.OuterTubeDiameter)
  MufluxSpectrometer.SetTubePitch(ship_geo.MufluxSpectrometer.TubePitch)
+ MufluxSpectrometer.SetTubePitch_T1u(ship_geo.MufluxSpectrometer.TubePitch_T1u,ship_geo.MufluxSpectrometer.T1u_const,ship_geo.MufluxSpectrometer.T1u_const_2,ship_geo.MufluxSpectrometer.T1u_const_3,ship_geo.MufluxSpectrometer.T1u_const_4)
+ MufluxSpectrometer.SetTubePitch_T2v(ship_geo.MufluxSpectrometer.TubePitch_T2v,ship_geo.MufluxSpectrometer.T2v_const,ship_geo.MufluxSpectrometer.T2v_const_2,ship_geo.MufluxSpectrometer.T2v_const_3,ship_geo.MufluxSpectrometer.T2v_const_4) 
  MufluxSpectrometer.SetDeltazLayer(ship_geo.MufluxSpectrometer.DeltazLayer)
  MufluxSpectrometer.SetDeltazPlane(ship_geo.MufluxSpectrometer.DeltazPlane)
  MufluxSpectrometer.SetTubesPerLayer(ship_geo.MufluxSpectrometer.TubesPerLayer)
@@ -86,7 +90,11 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)    
  MufluxSpectrometer.SetGoliathCentre(ship_geo.MufluxSpectrometer.goliathcentre_to_beam)
  MufluxSpectrometer.SetGoliathCentreZ(ship_geo.MufluxSpectrometer.goliathcentre)
- MufluxSpectrometer.SetTStationsZ(ship_geo.MufluxSpectrometer.T1z,ship_geo.MufluxSpectrometer.T2z,ship_geo.MufluxSpectrometer.T3z,ship_geo.MufluxSpectrometer.T4z) 
+ MufluxSpectrometer.SetT3StationsZcorr(ship_geo.MufluxSpectrometer.T3z_1,ship_geo.MufluxSpectrometer.T3z_2,ship_geo.MufluxSpectrometer.T3z_3,ship_geo.MufluxSpectrometer.T3z_4) 
+ MufluxSpectrometer.SetT4StationsZcorr(ship_geo.MufluxSpectrometer.T4z_1,ship_geo.MufluxSpectrometer.T4z_2,ship_geo.MufluxSpectrometer.T4z_3,ship_geo.MufluxSpectrometer.T4z_4) 
+ MufluxSpectrometer.SetT3StationsXcorr(ship_geo.MufluxSpectrometer.T3x_1,ship_geo.MufluxSpectrometer.T3x_2,ship_geo.MufluxSpectrometer.T3x_3,ship_geo.MufluxSpectrometer.T3x_4) 
+ MufluxSpectrometer.SetT4StationsXcorr(ship_geo.MufluxSpectrometer.T4x_1,ship_geo.MufluxSpectrometer.T4x_2,ship_geo.MufluxSpectrometer.T4x_3,ship_geo.MufluxSpectrometer.T4x_4)
+ MufluxSpectrometer.SetTStationsZ(ship_geo.MufluxSpectrometer.T1z,ship_geo.MufluxSpectrometer.T1x_z,ship_geo.MufluxSpectrometer.T1u_z,ship_geo.MufluxSpectrometer.T2z,ship_geo.MufluxSpectrometer.T2v_z,ship_geo.MufluxSpectrometer.T2x_z,ship_geo.MufluxSpectrometer.T3z,ship_geo.MufluxSpectrometer.T4z) 
  MufluxSpectrometer.SetTStationsX(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1u_x,ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2v_x,ship_geo.MufluxSpectrometer.T3x,ship_geo.MufluxSpectrometer.T4x) 
  MufluxSpectrometer.SetTStationsY(ship_geo.MufluxSpectrometer.T1x_y,ship_geo.MufluxSpectrometer.T1u_y,ship_geo.MufluxSpectrometer.T2x_y,ship_geo.MufluxSpectrometer.T2v_y,ship_geo.MufluxSpectrometer.T3y,ship_geo.MufluxSpectrometer.T4y) 
        
