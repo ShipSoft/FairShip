@@ -124,6 +124,19 @@ def checkFilesWithRT():
  print len(fok),len(fNotok),len(fRaw)
  return fok,fNotok,fRaw
 
+def checkMinusTwo():
+ fok,fNotok,fRaw = checkFilesWithRT()
+ for fname in fRaw:
+  if fname in fok: continue
+  N=0
+  f=ROOT.TFile(fname)
+  sTree = f.cbmsim
+  for n in range(sTree.GetEntries()):
+   rc = sTree.GetEvent(n)
+   for m in sTree.Digi_MufluxSpectrometerHits:
+     if m.GetDetectorID()<0: N+=1
+  print sTree.GetCurrentFile(),N
+
 
 def recoStep1():
  fileList=[]

@@ -2572,6 +2572,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
        if not (stations[1]>1 and stations[2]>1 and stations[3]>1 and stations[4]>1) : continue
        rc = h['biasResTrackMom'].Fill(sta.getMomMag())
        for hit in sTree.Digi_MufluxSpectrometerHits:
+          if hit.GetDetectorID() <0:  continue
           if hit.GetDetectorID() in noisyChannels:  continue
           if not hit.hasTimeOverThreshold(): continue
           s,v,p,l,view,channelID,tdcId,nRT = stationInfo(hit)
