@@ -1,5 +1,5 @@
-#ifndef SPECTROMETER_H
-#define SPECTROMETER_H
+#ifndef PIXELMODULES_H
+#define PIXELMODULES_H
 
 #include "FairModule.h"                 // for FairModule
 #include "FairDetector.h"                  // for FairDetector
@@ -11,29 +11,25 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
-class SpectrometerPoint;
+class PixelModulesPoint;
 class FairVolume;
 class TClonesArray;
 
-class Spectrometer:public FairDetector
+class PixelModules:public FairDetector
 {
   public:
-  Spectrometer(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="Magnetic Spectrometer");
-    Spectrometer();
-    virtual ~Spectrometer();
+  PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="PixelModules");
+    PixelModules();
+    virtual ~PixelModules();
       
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
-    void SetTransverseSizes(Double_t D1X, Double_t D1Y, Double_t DSciFi1X, Double_t DSciFi1Y, Double_t DSciFi2X, Double_t DSciFi2Y);
+    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_t Dim1Short, Double_t Dim1Long);
     void SetSiliconDZ(Double_t SiliconDZ);  
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
-    void SetSciFiDetPositions(Double_t zSciFi1, Double_t zSciFi2);
+    void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
     void SetSiliconDetNumber(Int_t nSilicon);
-     //methods for Goliath by Annarita
-    void SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH);
-    void SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t LowCoilH, Double_t CoilD);
-    //
+     
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -54,7 +50,7 @@ class Spectrometer:public FairDetector
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
-    SpectrometerPoint* AddHit(Int_t trackID, Int_t detID,
+    PixelModulesPoint* AddHit(Int_t trackID, Int_t detID,
                          TVector3 pos, TVector3 mom,
                          Double_t time, Double_t length,
                          Double_t eLoss, Int_t pdgCode);
@@ -91,29 +87,16 @@ private:
     Double32_t     fELoss;             //!  energy loss
     
     /** container for data points */
-    TClonesArray*  fSpectrometerPointCollection;
+    TClonesArray*  fPixelModulesPointCollection;
     
     Int_t InitMedium(const char* name);
     
     
     
 protected:
-    //magnetic field intensity
-    Double_t Bfield;
-
-    //Goliath by Annarita
     
-    Double_t Height;
-    // Double_t zCenter;
-    Double_t LongitudinalSize;
-    Double_t TransversalSize;
-    //Double_t GapFromTSpectro;
-    Double_t CoilRadius;
-    Double_t UpCoilHeight;
-    Double_t LowCoilHeight;
-    Double_t CoilDistance;
-    Double_t BasisHeight;
-    //
+    Double_t Dim1Short, Dim1Long;
+ 
     
     Double_t SBoxX = 0;
     Double_t SBoxY = 0;
@@ -127,27 +110,20 @@ protected:
     Double_t DimX =0;
     Double_t DimY =0;
     Double_t DimZ = 0;
-    Double_t zSizeMS = 0; //dimension of the Magnetic Spectrometer volume
+    Double_t zSizeMS = 0; //dimension of the Magnetic PixelModules volume
 
-    Double_t Dim1Short, Dim1Long;
     Double_t overlap;
-    Double_t DimSciFi1X;
-    Double_t DimSciFi1Y;
-    Double_t DimSciFi2X;
-    Double_t DimSciFi2Y;
-  /*  Double_t DimZPixelBox;*/
+    Double_t DimZPixelBox;
 
-   /* Int_t nSi;*/
+    Int_t nSi;
     Double_t DimZSi;
 
- /*   Double_t xs[12], ys[12], zs[12];
-    Double_t xangle[12], yangle[12], zangle[12];*/
+    Double_t xs[12], ys[12], zs[12];
+    Double_t xangle[12], yangle[12], zangle[12];
     
-    Double_t zposSciFi1, zposSciFi2;
-    
-    Spectrometer(const Spectrometer&);
-    Spectrometer& operator=(const Spectrometer&);
-    ClassDef(Spectrometer,2)
+    PixelModules(const PixelModules&);
+    PixelModules& operator=(const PixelModules&);
+    ClassDef(PixelModules,1)
 
 };
 #endif 
