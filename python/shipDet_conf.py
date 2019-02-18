@@ -270,7 +270,7 @@ def configure(run,ship_geo):
    NuTauTT.SetDesign(ship_geo.NuTauTT.design)
    ##
    NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ,
-                                 ship_geo.NuTauTT.composite_z, ship_geo.NuTauTT.sci_fi_z,  					 ship_geo.NuTauTT.support_z)
+                                 ship_geo.NuTauTT.carbonsupport_z, ship_geo.NuTauTT.scifimat_z,  					 ship_geo.NuTauTT.honeycomb_z)
    NuTauTT.SetBrickParam(ship_geo.NuTauTarget.CellW)
    NuTauTT.SetTotZDimension(ship_geo.NuTauTarget.zdim)
    NuTauTT.SetNumberTT(ship_geo.NuTauTT.n)

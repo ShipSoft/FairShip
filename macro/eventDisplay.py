@@ -970,6 +970,7 @@ def mydebug():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  topnode  = geoscene.FindChild('cave_1')
+ #topnode.SetVisLevel(4)
  topnode.SetVisLevel(4)
  gEve.ElementChanged(geoscene,True,True)
 def debugStraw(n):

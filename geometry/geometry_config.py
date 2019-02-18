@@ -700,10 +700,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTT.TTX = 52.2 * u.cm 		#c.NuTauTarget.xdim	# col * BrX = 4 * 12.9 cm ??? 
     c.NuTauTT.TTY = 104.4 * u.cm 		#c.NuTauTarget.ydim	# row * BrY = 8 * 10.5 cm ???
     #c.NuTauTT.TTZ= 6.0 * u.cm
-    c.NuTauTT.composite_z = 0.02 * u.cm	#0.02	## Carbon Composite (CC)
-    c.NuTauTT.sci_fi_z = 0.145 * u.cm		## Scintillating Fiber (SF)
-    c.NuTauTT.support_z = 2 * u.cm		## Airex
-    c.NuTauTT.TTZ = 2 * c.NuTauTT.composite_z + c.NuTauTT.sci_fi_z + 2 * c.NuTauTT.support_z 
+    c.NuTauTT.carbonsupport_z = 0.02 * u.cm	#0.02	## Carbon Composite (CC)
+    c.NuTauTT.scifimat_z = 0.145 * u.cm		## Scintillating Fiber Mat(SF)
+    c.NuTauTT.honeycomb_z = 2 * u.cm		## Airex
+    c.NuTauTT.TTZ = 2 * c.NuTauTT.carbonsupport_z + c.NuTauTT.scifimat_z + 2 * c.NuTauTT.honeycomb_z 
     #c.NuTauTT.n = c.NuTauTarget.wall + 1
     c.NuTauTT.n = c.NuTauTarget.wall		# Number of wall and TT's, but the parameter don't play ???
 

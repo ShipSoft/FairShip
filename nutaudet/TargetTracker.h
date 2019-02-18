@@ -39,7 +39,7 @@ public:
     void ConstructGeometry();
     
     void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ,
-			       Double_t composite_z_, Double_t sci_fi_z_, Double_t support_z_);////
+			       Double_t carbonsupport_z_, Double_t scifimat_z_, Double_t honeycomb_z_);////
     void SetBrickParam(Double_t CellW);
     void SetTotZDimension(Double_t Zdim);
     void DecodeTTID(Int_t detID, Int_t &NTT);
@@ -116,9 +116,9 @@ protected:
     Double_t TTrackerY;
     Double_t TTrackerZ;
 
-    Double_t composite_z; ////
-    Double_t sci_fi_z;	  ////	
-    Double_t support_z;   ////
+    Double_t carbonsupport_z; ////
+    Double_t scifimat_z;	  ////	
+    Double_t honeycomb_z;   ////
 
     Int_t nSciFi; 		//Number of fibers on 1st layer
     Int_t nStep;		//For triangle definition of fiber volumes
