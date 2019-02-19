@@ -16,6 +16,9 @@
  
  
 static const Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
+static const int channelsPerStation [5] = {0,48,48,192,192}; 
+
+
 // -----   Standard constructor   ------------------------------------------ 
 MufluxSpectrometerHit::MufluxSpectrometerHit(Int_t detID, Float_t ftdc)
   : ShipHit(detID,ftdc), time_over_threshold(167.2), flags(0), channel(0) {}
@@ -124,7 +127,15 @@ std::vector<int> MufluxSpectrometerHit::StationInfo(){
      info.push_back(iview);
      info.push_back(channelID);
      info.push_back(tdcId);
-     info.push_back(moduleId);
+// make numbering along gasline
+     Int_t layer = pnb*2+lnb;
+     Int_t nRT   = (channelID-1)*4 + layer;
+     if  (statnb > 2){nRT += (statnb-3)*48*4 + 4*48;}
+     else if (iview == 1){nRT += 48;}
+     else if (iview == 2){nRT += 2*48;}
+     else if (statnb == 2){nRT += 3*48;}
+     info.push_back(nRT);
+
 // don't know of any nice way to return multiple variables, use python to sort out the mess. 
      return info;
 }

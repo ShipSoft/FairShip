@@ -12,7 +12,7 @@ def count_python_processes(macroName):
 
 fileList = {}
 badFiles = []
-run = "RUN_8000_2396" # "RUN_8000_2395"
+run = "RUN_8000_2395" # "RUN_8000_2396"
 
 eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run 
 
@@ -111,6 +111,7 @@ def checkFilesWithRT():
  fNotok = []
  fRaw = []
  for fname in os.listdir('.'):
+   if not fname.find('histo')<0: continue
    if not fname.find('_RT')<0:
     f=ROOT.TFile(fname)
     RT = f.Get('tMinAndTmax')
@@ -119,9 +120,22 @@ def checkFilesWithRT():
     else:
      fNotok.append(fname)
    elif fname.find('root')>0 and not fname.find('SPILL')<0:
-    fRaw.append()
+    fRaw.append(fname)
  print len(fok),len(fNotok),len(fRaw)
  return fok,fNotok,fRaw
+
+def checkMinusTwo():
+ fok,fNotok,fRaw = checkFilesWithRT()
+ for fname in fRaw:
+  if fname in fok: continue
+  N=0
+  f=ROOT.TFile(fname)
+  sTree = f.cbmsim
+  for n in range(sTree.GetEntries()):
+   rc = sTree.GetEvent(n)
+   for m in sTree.Digi_MufluxSpectrometerHits:
+     if m.GetDetectorID()<0: N+=1
+  print sTree.GetCurrentFile(),N
 
 
 def recoStep1():
@@ -197,6 +211,21 @@ def checkFilesWithTracks2(D='.'):
           break
          else: prev=st.getChi2()
  return badFile
+def checkFilesWithTracks3(D='.'):
+ badFile={}
+ # all RT files
+ for x in os.listdir(D):
+  if x.find('_RT')>0 and x.find('histos')<0: 
+   test = ROOT.TFile(D+'/'+x)
+   sTree = test.cbmsim
+   if not sTree: 
+    badFile.append(x+"?")
+    continue
+   b = sTree.GetBranch("FitTracks")
+   if b:
+    if b.GetZipBytes()/1.E6 < 1.: badFile[x]= b.GetZipBytes()/1.E6
+ return badFile
+# for f in bf: os.system('cp ../../ship-ubuntu-1710-64/RUN_8000_2395/'+f+' .')
 
 def cleanUp(D='.'):
 # remove raw data files for files with RT relations
@@ -263,13 +292,10 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
  if len(failures)!=0: print failures
 
 def makeMomDistributions():
- fileList=[]
- # all RT files
- for x in os.listdir('.'):
-  if x.find('_RT')>0 and x.find('histos')<0: 
-    fileList.append(x)
- fileList.sort()
+ fileList = checkFilesWithTracks(D='.')
+ # all RT files with tracks
  for fname in fileList:
+    if os.path.isfile('histos-analysis-'+fname): continue
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c anaResiduals -f "+fname+' &'
     print 'momentum analysis:', cmd
     os.system(cmd)

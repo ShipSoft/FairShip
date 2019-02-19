@@ -104,9 +104,13 @@ def recoStep(splitFactor=10,fnames=[]):
       if sTree:
        if sTree.GetBranch("FitTracks"): continue
       test.Close()
+     digiFile = ofile.replace('.root','-'+str(i)+'.root')
+     if not digiFile in os.listdir('.'):
+       print "digiFile missing",fname,digiFile
+       continue
      os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
      cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
-     print 'step 2:', cmd
+     print 'step 2:', cmd,' in directory ',fname
      os.system(cmd)
      while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
@@ -132,6 +136,12 @@ def checkFilesWithTracks(D='.',splitFactor=10):
  fileList.sort()
  return fileList
 
+def cleanUp():
+ reco = checkFilesWithTracks()
+ for f in reco:
+  df = f.replace('_RT','')
+  if os.path.isfile(df): os.system('rm ' +df)
+
 def makeMomDistributions(D='.',splitFactor=10):
  fileList=checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
@@ -150,9 +160,39 @@ def makeMomDistributions(D='.',splitFactor=10):
 
 def mergeHistos(case='residuals'):
  dirList=getFilesLocal()
- if case == 'residuals':  cmd = 'hadd -f residuals.root '
- else:                    cmd = 'hadd -f momDistributions.root '
+ cmd = {}
+ for z in ['charm','mbias']:
+  if case == 'residuals':  cmd[z] = 'hadd -f residuals-'+z+'.root '
+  else:                    cmd[z] = 'hadd -f momDistributions-'+z+'.root '
  for d in dirList:
   for x in os.listdir(d):
-   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd += d+'/'+x+" "
- os.system(cmd)
+   z='mbias'
+   if d.find('charm')>0: z='charm'
+   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
+ for z in ['charm','mbias']: os.system(cmd[z])
+
+def checkStatistics():
+ # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
+ simFiles = getFilesFromEOS()
+ reco = checkFilesWithTracks()
+ Nsim =  {'mbias':0,'charm':0}
+ Nreco = {'mbias':0,'charm':0}
+ for f in simFiles:
+   if f.find('charm')>0: Nsim['charm']+=simFiles[f]
+   else: Nsim['mbias'] += simFiles[f]
+ allFiles = {}
+ for a in simFiles.keys():
+  x = a.split('/')
+  allFiles[x[len(x)-1].replace('.root','')]=simFiles[a]
+ for dname in allFiles:
+  n = 0
+  for x in reco:
+    if  not x.find(dname)<0: n+=1
+  fraction = n/float(splitFactor)
+  if dname.find('charm')>0: Nreco['charm']+=fraction*allFiles[dname]
+  else: Nreco['mbias'] += fraction*allFiles[dname]
+ print "total statistics",Nsim
+ print "                ",Nreco
+ print "internal MC normalization, to be applied to charm", 10.2/1.8 * Nreco['charm']/Nsim['charm']*Nreco['mbias']/Nsim['mbias']
+ # 1.218
+

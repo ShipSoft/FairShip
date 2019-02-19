@@ -786,7 +786,7 @@ class ShipDigiReco:
   stationCrossed = {}
   fittedtrackids=[]
   listOfIndices  = {}
-  self.fGenFitArray.Delete()
+  self.fGenFitArray.Clear()
   self.fTrackletsArray.Delete()
   self.fitTrack2MC.clear()
 

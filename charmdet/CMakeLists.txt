@@ -30,6 +30,8 @@ BoxPoint.cxx
 BoxContFact.cxx
 Spectrometer.cxx
 SpectrometerPoint.cxx
+PixelModules.cxx
+PixelModulesPoint.cxx
 MufluxSpectrometer.cxx
 MufluxSpectrometerHit.cxx
 MufluxSpectrometerPoint.cxx
