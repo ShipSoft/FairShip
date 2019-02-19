@@ -78,7 +78,8 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
       default: tree->Branch(TString::Format("SC%.2d", i), &(df->scalars[i]));
       }
    }
-   std::vector<uint32_t> slices(df->slices, df->slices + df->getSliceCount());
+   auto slices = df->getSliceCount() > 0 ? std::vector<uint32_t>(df->slices, df->slices + df->getSliceCount())
+                                         : std::vector<uint32_t>();
    tree->Branch("slices", "vector<uint32_t>", &slices);
    tree->Fill();
    tree->Write("", TObject::kOverwrite);

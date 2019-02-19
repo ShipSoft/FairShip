@@ -183,12 +183,18 @@ def runMC():
 
 def checkFilesWithTracks(D='.'):
  fileList=[]
+ rest=[]
+ zombie=[]
  # all RT files
  for x in os.listdir(D):
   if x.find('_RT')>0 and x.find('histos')<0: 
     test = ROOT.TFile(D+'/'+x)
-    if test.cbmsim.GetBranch("FitTracks"): fileList.append(x)
+    if not test.GetKey('cbmsim'):
+       zombie.append(x)
+    elif test.cbmsim.GetBranch("FitTracks"): fileList.append(x)
+    else: rest.append(x)
  fileList.sort()
+ print "n with tracks",len(fileList),' rest:',len(rest),' zombies:',zombie
  return fileList
 
 def checkFilesWithTracks2(D='.'):
@@ -229,21 +235,22 @@ def checkFilesWithTracks3(D='.'):
 
 def cleanUp(D='.'):
 # remove raw data files for files with RT relations
-   for x in os.listdir(D):
-    if not x.find('_RT')<0 and x.find('histos')<0:
-     test = ROOT.TFile(D+'/'+x)
-     if test.cbmsim.GetBranch("FitTracks"): # it is safe to delete the local raw file
-        r = x.replace('_RT','')
-        cmd = 'rm '+r
-        os.system(cmd)
+   fok,fNotok,fRaw = checkFilesWithRT()
+   for x in fok:
+     r = x.replace('_RT','')
+     cmd = 'rm '+r
+     os.system(cmd)
 
-def copyMissingFiles(remote="../../ship-ubuntu-1710-64/RUN_8000_2395"):
+def copyMissingFiles(remote="../../ship-ubuntu-1710-64/RUN_8000_2395",exclude=[]):
  toCopy=[]
  allFilesR = os.listdir(remote)
  allFilesL = os.listdir(".")
  for fname in allFilesR:
-   if fname.find('RT')>0:
-     if not fname in allFilesL: toCopy.append(fname)
+   if not fname.find('histos')<0: continue
+   if fname.find('RT')<0: continue
+   if fname in exclude: continue
+   if not fname in allFilesL: toCopy.append(fname)
+ print "len",len(toCopy)
  for fname in toCopy: os.system('cp '+remote+"/"+fname+' .')
 
 def importRTFiles(local='.',remote='/home/truf/ship-ubuntu-1710-32/home/truf/muflux/Jan08'):
@@ -315,10 +322,10 @@ def pot():
  scalerStat = {}
  for fname in fileList:
    f=ROOT.TFile(fname)
-   scalers = f.scalers
-   if not scalers:
+   if not f.FindKey("scalers"):
      print "no scalers in this file",fname
      continue
+   scalers = f.scalers
    scalers.GetEntry(0)
    for x in scalers.GetListOfBranches():
     name = x.GetName()

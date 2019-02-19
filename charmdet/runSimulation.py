@@ -121,7 +121,9 @@ def checkFilesWithTracks(D='.',splitFactor=10):
  fnames = getFilesLocal()
  Nfiles = len(fnames)
  fileList=[]
+ fileListPer={}
  for fname in fnames:
+    fileListPer[fname]=[]
     os.chdir(fname)
     mcFile = 'ship.conical.MuonBack-TGeant4_dig_RT.root'
     for i in range(splitFactor):
@@ -131,10 +133,12 @@ def checkFilesWithTracks(D='.',splitFactor=10):
       test = ROOT.TFile(recoFile)
       sTree = test.Get('cbmsim')
       if sTree:
-       if sTree.GetBranch("FitTracks"): fileList.append(fname+'/'+recoFile)
+       if sTree.GetBranch("FitTracks"): 
+        fileList.append(fname+'/'+recoFile)
+        fileListPer[fname].append(recoFile)
     os.chdir('../')
  fileList.sort()
- return fileList
+ return fileList,fileListPer
 
 def cleanUp():
  reco = checkFilesWithTracks()
@@ -191,8 +195,12 @@ def checkStatistics():
   fraction = n/float(splitFactor)
   if dname.find('charm')>0: Nreco['charm']+=fraction*allFiles[dname]
   else: Nreco['mbias'] += fraction*allFiles[dname]
- print "total statistics",Nsim
- print "                ",Nreco
- print "internal MC normalization, to be applied to charm", 10.2/1.8 * Nreco['charm']/Nsim['charm']*Nreco['mbias']/Nsim['mbias']
- # 1.218
+ print "total statistics, simulated     ",Nsim
+ print "                , reconstructed ",Nreco
+ # mbias statistics = 1.8 * Nreco/Nsim, charm statistics = 10.2 * Nreco/Nsim
+ # norm factor = 1/charm statistics * mbias statistics
+ print "internal MC normalization, to be applied to charm", 1.8*Nreco['mbias']/Nsim['mbias'] /(10.2*Nreco['charm']/Nsim['charm'])
+ #total statistics, simulated      {'charm': 1800735L, 'mbias': 22905913L}
+ #                , reconstructed  {'charm': 1800735.0, 'mbias': 6789279.4}
+ #internal MC normalization, to be applied to charm 0.0523056264735
 
