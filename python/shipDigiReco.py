@@ -1001,23 +1001,23 @@ class ShipDigiReco:
      index+=1
    self.vetoHitOnTrackBranch.Fill()
 
-  def fracMCsame(self, trackids):
-    track={}
-    nh=len(trackids)
-    for tid in trackids:
-      if track.has_key(tid):
-        track[tid] += 1
-      else:
-        track[tid] = 1
-    if track != {}:
-      tmax = max(track, key=track.get)
+ def fracMCsame(self, trackids):
+  track={}
+  nh=len(trackids)
+  for tid in trackids:
+    if track.has_key(tid):
+      track[tid] += 1
     else:
-      track = {-999: 0}
-      tmax = -999
-    frac=0.0
-    if nh > 0:
-      frac = float(track[tmax]) / float(nh)
-    return frac, tmax
+      track[tid] = 1
+  if track != {}:
+    tmax = max(track, key=track.get)
+  else:
+    track = {-999: 0}
+    tmax = -999
+  frac=0.0
+  if nh > 0:
+    frac = float(track[tmax]) / float(nh)
+  return frac, tmax
 
  def finish(self):
   del self.fitter
