@@ -839,14 +839,14 @@ class ShipDigiReco:
     if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
     stationCrossed[trID][station]+=1
 #
-   for atrack in listOfIndices:
-     # make tracklets out of trackCandidates, just for testing, should be output of proper pattern recognition
-    nTracks   = self.fTrackletsArray.GetEntries()
-    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
-    listOfHits = aTracklet.getList()
-    aTracklet.setType(3)
-    for index in listOfIndices[atrack]:
-      listOfHits.push_back(index)
+   # for atrack in listOfIndices:
+   #   # make tracklets out of trackCandidates, just for testing, should be output of proper pattern recognition
+   #  nTracks   = self.fTrackletsArray.GetEntries()
+   #  aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
+   #  listOfHits = aTracklet.getList()
+   #  aTracklet.setType(3)
+   #  for index in listOfIndices[atrack]:
+   #    listOfHits.push_back(index)
 #  
    for atrack in hitPosLists:
     if atrack < 0: continue # these are hits not assigned to MC track because low E cut
