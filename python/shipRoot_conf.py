@@ -45,6 +45,8 @@ def pyExit():
    if hasattr(x,'run'): 
         del x.run
         print "make suicid, until better solution found to ROOT/genfit interference"
+        for f in ROOT.gROOT.GetListOfFiles(): 
+         if f.IsWritable() and f.IsOpen(): f.Close()
         os.system('kill '+str(os.getpid()))
    if hasattr(x,'fMan'): del x.fMan
    if hasattr(x,'fRun'): del x.fRun
