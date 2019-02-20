@@ -848,7 +848,7 @@ class ShipDigiReco:
    #  for index in listOfIndices[atrack]:
    #    listOfHits.push_back(index)
 #  
-   for atrack in hitPosLists:
+  for atrack in hitPosLists:
     if atrack < 0: continue # these are hits not assigned to MC track because low E cut
     # pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
     # if not self.PDG.GetParticle(pdg): continue # unknown particle
