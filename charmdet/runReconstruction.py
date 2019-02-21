@@ -312,6 +312,18 @@ def makeMomDistributions():
         time.sleep(10)
  print "finished all the tasks."
 
+def redoMuonTracks():
+ fileList = checkFilesWithTracks(D='.')
+ for fname in fileList:
+    cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c  recoMuonTaggerTracks -u 1 -f "+fname+' &'
+    print 'redo muonTracks:', cmd
+    os.system(cmd)
+    time.sleep(10)
+    while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(10)
+ print "finished all the tasks."
+
 def pot():
  fileList=[]
  # all RT files

@@ -3,11 +3,13 @@
 #include <TChain.h>
 #include <TH1D.h>
 #include <TH2D.h>
+#include <TH3D.h>
 #include "TString.h"
 #include "TObject.h"
 #include "RPCTrack.h"
 #include "RKTrackRep.h"
 #include "MufluxSpectrometerHit.h"
+#include "MuonTaggerHit.h"
 #include <algorithm>
 #include <vector>
 
@@ -27,22 +29,27 @@ MufluxReco::MufluxReco(TTreeReader* t)
   TrackInfos = 0;
   RPCTrackY = 0;
   RPCTrackX = 0;
+  Digi_MuonTaggerHits = 0;
+  cDigi_MufluxSpectrometerHits = 0;
   TTree* fChain = xSHiP->GetTree();
   fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
+  fChain->SetBranchAddress("Digi_MufluxSpectrometerHits", &cDigi_MufluxSpectrometerHits, &b_Digi_MufluxSpectrometerHits);
+  fChain->SetBranchAddress("Digi_MuonTaggerHits", &Digi_MuonTaggerHits, &b_Digi_MuonTaggerHits);
   fChain->SetBranchAddress("TrackInfos", &TrackInfos, &b_TrackInfos);
   fChain->SetBranchAddress("RPCTrackY", &RPCTrackY, &b_RPCTrackY);
   fChain->SetBranchAddress("RPCTrackX", &RPCTrackX, &b_RPCTrackX);
 }
 
 /*
-MufluxReco::getKeys(std::unordered_map<int,MufluxSpectrometerHit*>> map){
+std::vector<int> MufluxReco::getKeys(std::unordered_map<int,MufluxSpectrometerHit*>> map){
  std::vector<int> keys;
  keys.reserve(map.size());
  std::vector<std::string> vals;
  vals.reserve(allHits.size());
  for(auto kv : allHits) {
     keys.push_back(kv.first);
-    vals.push_back(kv.second);  
+    vals.push_back(kv.second);
+ return  keys;
 }*/
 
 // Sort and group integers in arrays iff a[j] - a[i] <= span, where j > i >=0
@@ -68,71 +75,83 @@ std::vector<std::vector<int>> MufluxReco::GroupIntegers(std::vector<int>& input_
     return output;
 }
 /* unfinished C++ conversion
-std::map<int,std::vector<int>> viewsI = std::map<int,std::vector<int>>();
-viewsI[1] = {0,1};
-viewsI[2] = {0,2};
-viewsI[3] = {0};
-viewsI[4] = {0};
+std::map<int,std::vector<int>> viewsI = { {1,{0,1}},{2,{0,2}},{3,{0}},{4,{0}} };
+std::unordered_map<int,int> Nchannels = { {1,12},{2,12},{3,48},{4,48}};
 
-std::vector<std::vector<int>>  findDTClusters(TClonesArray* hits, removeBigClusters=True){
+
+std::vector<std::vector<int>>  MufluxReco::findDTClusters(TClonesArray* hits, removeBigClusters=True){
    spectrHitsSorted* = new nestedList();
    sortHits(hits, spectrHitsSorted);
    // if Debug: nicePrintout(spectrHitsSorted)
    std::vector<std::vector<int>> clusters;
    for (int s = 1; s<5; ++s) {
-    for ( it = viewsI[s].begin(); it != viewsI[s].end(); it++ )   {    std::cout << it << std::endl ;}
-
-    for view in viewsI[s]:
-     std::map<int,std::vector<int>> allHits = std::map<int,std::vector<int>>();
-     ncl=0
-     for l in range(4): 
-      allHits[l]={}
-      for hit in spectrHitsSorted[view][s][l]:
-       channelID = hit.GetDetectorID()%1000
-       allHits[l][channelID]=hit
-     if removeBigClusters:
-      clustersPerLayer = {}
-      for l in range(4):
-       clustersPerLayer[l] = dict(enumerate(grouper(allHits[l].keys(),1), 1))
-       for Acl in clustersPerLayer[l]:
-        if len(clustersPerLayer[l][Acl])>cuts['maxClusterSize']: # kill cross talk brute force
-           for x in clustersPerLayer[l][Acl]:
-            dead = allHits[l].pop(x)
-            if Debug: print "pop",s,viewC[view],l,x
-     ncl=0
-     tmp={}
-     tmp[ncl]=[]
-     perLayerUsedHits = {0:[],1:[],2:[],3:[]}
-     for level in [1]:
-      for i in range(1,Nchannels[s]+1):
-       perLayer = {0:0,1:0,2:0,3:0}
-       for i0 in range( max(1,i-1),min(Nchannels[s]+1,i+2)):
-        if allHits[0].has_key(i0):
-          tmp[ncl].append(allHits[0][i0])
-          perLayer[0]=i0
-       for i1 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[1].has_key(i1):
-          tmp[ncl].append(allHits[1][i1])
-          perLayer[1]=i1
-       for i2 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[2].has_key(i2):  
-          tmp[ncl].append(allHits[2][i2])
-          perLayer[2]=i2
-       for i3 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[3].has_key(i3): 
-          tmp[ncl].append(allHits[3][i3])
-          perLayer[3]=i3
-       if ( (perLayer[0]>0) + (perLayer[1]>0) + (perLayer[2]>0) + (perLayer[3]>0) ) > level:
-         # at least 2 hits per station
-         ncl+=1
-       tmp[ncl]=[]
-     if len(tmp[ncl])==0: tmp.pop(ncl)
-# cleanup, outliers
+    for ( auto view = viewsI[s].begin(); view != viewsI[s].end(); view++ )   {
+     std::map<int,std::unordered_map<int,MufluxSpectrometerHit*>> allHits = std::map<int,std::unordered_map<int,MufluxSpectrometerHit*>>();
+     ncl=0;
+     for ( int l = 0; l<4; l++ )   {
+      for (auto hit = spectrHitsSorted[*view][s][l].begin(); hit != spectrHitsSorted[view][s][l].end(); hit++ )   {
+       Int_t channelID = *hit->GetDetectorID()%1000;
+       allHits[l][channelID] = hit;
+      }
+     }
+     if (removeBigClusters){
+      std::map<int,std::vector<int>>  clustersPerLayer = std::map<int,std::vector<int>>();
+      for ( int l = 0; l<4; l++ )   {
+       clustersPerLayer[l] = GroupIntegers( getKeys(allHits[l]), 1);
+       for ( auto Acl = clustersPerLayer[l].begin(); Acl!=clustersPerLayer[l].end(); Acl++ )   {
+        if ( clustersPerLayer[l][*Acl].size()>cuts["maxClusterSize"]) {
+                       // kill cross talk brute force
+          for ( auto x = clustersPerLayer[l][*Acl].begin(); x!=clustersPerLayer[l][*Acl].end(); x++ )   {
+              allHits[l].pop(*x);}
+        }
+       }
+      }
+     }
+     ncl=0;
+     std::unordered_map<int,std::vector<MufluxSpectrometerHit*>> tmp = std::unordered_map<int,std::vector<MufluxSpectrometerHit*>>();
+     std::unordered_map<int,std::vector<int>> perLayerUsedHits = std::unordered_map<int,std::vector<int>>();
+     int level = 1;
+     for ( int i = 1; i<Nchannels[s]+1; i++ )   {
+       std::unordered_map<int,int> perLayer = { {0,0},{1,0},{2,0},{3,0} };
+       for ( int i0 =  max(1,i-1); i0<min(Nchannels[s]+1,i+2); i0++ ) {
+        auto search = allHits[0].find(i0);
+        if (search != example.end()) {
+          tmp[ncl].push_back(allHits[0][i0]);
+          perLayer[0]=1;
+        }
+       }
+       for ( int i1 =  max(1,i-1); i1<min(Nchannels[s]+1,i+2); i1++ ) {
+        auto search = allHits[1].find(i1);
+        if (search != example.end()) {
+          tmp[ncl].push_back(allHits[1][i1]);
+          perLayer[1]=1;
+        }
+       }
+       for ( int i2 =  max(1,i-1); i2<min(Nchannels[s]+1,i+2); i2++ ) {
+        auto search = allHits[2].find(i2);
+        if (search != example.end()) {
+          tmp[ncl].push_back(allHits[2][i2]);
+          perLayer[2]=1;
+        }
+       }
+       for ( int i3 =  max(1,i-1); i3<min(Nchannels[s]+1,i+2); i3++ ) {
+        auto search = allHits[3].find(i3);
+        if (search != example.end()) {
+          tmp[ncl].push_back(allHits[3][i3]);
+          perLayer[3]=1;
+        }
+       }
+       if ( (perLayer[0]+perLayer[1]+perLayer[2]+perLayer[3]) > level){
+       // at least 2 hits per station
+        ncl+=1;
+       }
+     }
+// cleanup, outliers
      tmpClean = {}
-     for ncl in tmp:
-       test = []
-       mean = 0
-       for hit in tmp[ncl]:
+     for ( int ncl = 0; ncl<tmp.size(); ncl++ ) {
+       std::unordered_map<int,std::vector<int>> tmp = std::unordered_map<int,std::vector<int>>();
+       mean = 0;
+       for (auto hit = tmp[ncl].begin(); hit != tmp[ncl].end(); hit++ )   {
           bot,top =  strawPositionsBotTop[hit.GetDetectorID()]
           x = (bot[0]+top[0])/2.
           mean+=x
@@ -197,6 +216,158 @@ std::vector<std::vector<int>>  findDTClusters(TClonesArray* hits, removeBigClust
       printClustersPerStation(clusters,s,view)
    return clusters
 */
+Bool_t MufluxReco::findSimpleEvent(Int_t nmin, Int_t nmax){
+   nestedList spectrHitsSorted = nestedList();
+   sortHits(cDigi_MufluxSpectrometerHits,&spectrHitsSorted);
+   Bool_t passed = kTRUE;
+   Int_t check=0;
+   for ( int s = 1; s<5; s++ )   {
+    check=0;
+    for ( int l = 0; l<4; l++ )   {
+     check+=spectrHitsSorted[0][s][l].size();
+    }
+    if (check<nmin || check>nmax) {passed = kFALSE;}
+   }
+   check=0;
+   // very stupid, works perfectly in python
+   if (spectrHitsSorted[1].size()>0){
+    if (spectrHitsSorted[1][1].size()>0){
+    for ( int l = 0; l<4; l++ )   {
+     check+=spectrHitsSorted[1][1][l].size();
+    }
+   }}
+   if (check<nmin || check>nmax) {passed = kFALSE;}
+   check=0;
+   if (spectrHitsSorted[2].size()>0){
+    if (spectrHitsSorted[2][2].size()>0){
+    for ( int l = 0; l<4; l++ )   {
+     check+=spectrHitsSorted[2][2][l].size();
+    }
+   }}
+   if (check<nmin || check>nmax) {passed = kFALSE;}
+   return passed;
+}
+
+void MufluxReco::RPCextrap(Int_t nMax){
+ Int_t N = xSHiP->GetEntries(true);
+ TTree* sTree = xSHiP->GetTree();
+ if (nMax<0){nMax=N;}
+ xSHiP->Restart();
+ gROOT->cd();
+ std::cout<< "make RPC analysis: "<< N <<std::endl;
+ std::map<int,TH2D*> h_RPCResX;
+ std::map<int,TH2D*> h_RPCResY;
+ std::map<int,TH1D*> h_RPCextTrack;
+ std::map<int,TH1D*> h_RPCfired;
+ std::map<int,TH1D*> h_RPCfired_or;
+ std::map<int,TH1D*> h_RPC;
+ TString hname;
+ for ( int s = 1; s<6; s++ )   {
+  for ( int v = 0; v<2; v++ )   {
+   hname = "RPCResY_";
+   h_RPCResY[s*10+v]=(TH2D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
+   hname = "RPCResX_";
+   h_RPCResX[s*10+v]=(TH2D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
+   hname = "RPCextTrack_";
+   h_RPCextTrack[s*10+v]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
+   hname = "RPCfired_";
+   h_RPCfired[s*10+v]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
+  }
+  hname = "RPCfired_or_";
+  h_RPCfired_or[s]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s)));
+  }
+ for ( int k = 2; k<20; k++ )   {
+  hname = "RPC<";hname+=(k);hname+="_p";
+  h_RPC[k]=(TH1D*)(gDirectory->GetList()->FindObject(hname));
+ }
+ TH1D* h_RPC_p =  (TH1D*)(gDirectory->GetList()->FindObject("RPC_p"));
+ TH2D* h_RPCResX1_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX1_p"));
+ TH2D* h_RPC_2XY =  (TH2D*)(gDirectory->GetList()->FindObject("RPC<2XY"));
+ TH3D* h_RPCMatchedHits =  (TH3D*)(gDirectory->GetList()->FindObject("RPCMatchedHits"));
+
+ Int_t nx = 0;
+ while (nx<nMax){
+   sTree->GetEvent(nx);
+   nx+=1;
+   Int_t Nhits = Digi_MuonTaggerHits->GetEntries();
+   if (Nhits==0){ continue;}
+   Int_t Ntracks = FitTracks->GetEntries();
+   if (!findSimpleEvent(2,6)){continue;}
+   for (Int_t tr=0;tr<Ntracks;tr++) {
+     genfit::Track* aTrack = (genfit::Track*)FitTracks->At(tr);
+     auto fitStatus   = aTrack->getFitStatus();
+// track quality
+     if (!fitStatus->isFitConverged()){continue;}
+     TrackInfo* info = (TrackInfo*)TrackInfos->At(tr);
+     StringVecIntMap hitsPerStation = countMeasurements(info);
+     if (hitsPerStation["x1"].size()<2){ continue;}
+     if (hitsPerStation["x2"].size()<2){ continue;}
+     if (hitsPerStation["x3"].size()<2){ continue;}
+     if (hitsPerStation["x4"].size()<2){ continue;}
+     Double_t pMom0 = aTrack->getFittedState(0).getMomMag();
+     if (pMom0 < 1.){continue;}
+
+     std::map<int,std::vector<int>> matchedHits;
+     TVector3 posRPC;TVector3 pos1; TVector3 momRPC;
+     Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], pos1, momRPC);
+     Bool_t inAcc = kFALSE;
+     if (pos1[0]>cuts["xLRPC1"] && pos1[0]<cuts["xRRPC1"] && pos1[1]>cuts["yBRPC1"] && pos1[1]<cuts["yTRPC1"]){
+       inAcc=kTRUE;}
+     for (Int_t nHit=0;nHit<Nhits;nHit++) {
+        MuonTaggerHit* hit = (MuonTaggerHit*)Digi_MuonTaggerHits->At(nHit);
+        Int_t channelID = hit->GetDetectorID();
+        Int_t s  = channelID/10000;
+        Int_t v  = (channelID-10000*s)/1000;
+        Float_t z = RPCPositions[channelID][2];
+        rc = MufluxReco::extrapolateToPlane(aTrack, z, posRPC, momRPC);
+        Double_t res;
+        if (v==0){
+          res = posRPC[1]-RPCPositions[channelID][1];
+          h_RPCResY[10*s+v]->Fill(res,RPCPositions[channelID][1]);
+        } else {
+          res = posRPC[0]-RPCPositions[channelID][0];
+          h_RPCResX[10*s+v]->Fill(res,RPCPositions[channelID][0]);
+          if(s==1){ h_RPCResX1_p->Fill(res,pMom0);}
+        }
+        if (TMath::Abs(res) < cuts["RPCmaxDistance"]){
+           matchedHits[s*10+v].push_back(nHit);
+        }
+       }
+       // record number of hits per station and view and track momentum
+       // but only for tracks in acceptance
+       if (inAcc){
+        Int_t Nmatched = 0;
+        Double_t p = pMom0;
+        if (p>99.9){p=99.9;}
+/* try the following:
+  require matched hit in station k+1
+  record how often hit matched in station k 
+*/
+        for (Int_t k=1;k<5;k++) {
+         for (Int_t v=0;v<2;v++) {
+           if( matchedHits[ (k+1)*10+v].size()==0){continue;}
+           h_RPCextTrack[10*k+v]->Fill(p);
+           if ( matchedHits[k*10+v].size()>0){h_RPCfired[10*k+v]->Fill(p);}
+           if (v==0){
+             if ( matchedHits[k*10+v].size()>0 || matchedHits[k*10+v+1].size()>0){ h_RPCfired_or[k]->Fill(p);}
+           }
+          }
+        }
+        for (Int_t s=1;s<6;s++) {
+         for (Int_t v=0;v<2;v++) {
+          h_RPCMatchedHits->Fill(2*s-1+v,matchedHits[s*10+v].size(),p);
+          Nmatched+=matchedHits[s*10+v].size();
+         }
+        }
+        if ( Nmatched <2 && p>30){ h_RPC_2XY->Fill(pos1[0],pos1[1]);}
+        h_RPC_p->Fill(p);
+        for (Int_t k=2;k<20;k++) {
+         if (Nmatched<k) {h_RPC[k]->Fill(p);}
+        }
+      }
+  } // end track loop
+ } // end event loop
+}
 
 Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom){
 // etrapolate to a plane perpendicular to beam direction (z)
@@ -283,7 +454,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  xSHiP->Restart();
  gROOT->cd();
  std::cout<< "fill trackKinematics: "<< N <<std::endl;
-/* TTreeReader framework cannot deal with unsplit TClonesArray, too badFiles
+/* TTreeReader framework cannot deal with unsplit TClonesArray, too bad 
  TTreeReaderValue <TClonesArray> FitTracks(*xSHiP, "FitTracks");
  TTreeReaderValue <TClonesArray> RPCTrackX(*xSHiP, "RPCTrackX");
  TTreeReaderValue <TClonesArray> RPCTrackY(*xSHiP, "RPCTrackY");
@@ -344,17 +515,20 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
-     Float_t X =-1000;
-     Float_t Y =-1000;
-     Int_t Nx = RPCTrackX->GetEntries();
-     Int_t Ny = RPCTrackY->GetEntries();
-     if (Nx>0){
-        RPCTrack *hit = (RPCTrack*)RPCTrackX->At(0);
-        X = hit->m()*cuts["zRPC1"]+hit->b();}
-     if (Ny>0){
-        RPCTrack *hit = (RPCTrack*)RPCTrackY->At(0);
-        Y = hit->m()*cuts["zRPC1"]+hit->b();}
-      if (TMath::Abs(posRPC[0]-X)<5. && TMath::Abs(posRPC[1]-Y)<10.) { // within ~3sigma  X,Y from mutrack
+     
+     Bool_t X = kFALSE;
+     Bool_t Y = kFALSE;
+     for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {
+        RPCTrack *hit = (RPCTrack*)RPCTrackX->At(mu);
+        X = hit->m()*cuts["zRPC1"]+hit->b();
+        if (TMath::Abs(posRPC[0]-X)<cuts["muTrackMatchX"]){X=kTRUE;}
+     }
+     for (Int_t mu=0;mu<RPCTrackY->GetEntries();mu++) {
+        RPCTrack *hit = (RPCTrack*)RPCTrackY->At(mu);
+        Y = hit->m()*cuts["zRPC1"]+hit->b();
+        if (TMath::Abs(posRPC[1]-X)<cuts["muTrackMatchY"]){Y=kTRUE;}
+     }
+      if (X && Y) { // within ~3sigma  X,Y from mutrack
         h_chi2mu->Fill(chi2);
         h_Nmeasurementsmu->Fill(fitStatus->getNdf());
         h_pptmu->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
@@ -404,7 +578,7 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
    // info[0],info[1],info[2],info[3],viewDict[info[4]],info[5],info[6],info[7]
    // statnb,   vnb,    pnb,    lnb,    view,         channelID,tdcId,nRT
    if (info[2] > 1 || info[3] >1){
-    std::cout<< "sortHits: unphysical detctor ID "<<hit->GetDetectorID()<<std::endl;
+    std::cout<< "sortHits: unphysical detector ID "<<hit->GetDetectorID()<<std::endl;
     hit->Dump();
    }else{
     spectrHitsSorted[info[4]][info[0]][info[2]*2+info[3]].push_back(hit);
