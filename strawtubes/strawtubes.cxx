@@ -482,7 +482,7 @@ void strawtubes::ConstructGeometry()
 	 //plane loop
          TString nmplane_veto = nmveto+"_plane_"; nmplane_veto += pnb;
 	 //width of the planes: z distance between layers + outer straw diameter
-	 TGeoBBox *plane_veto = new TGeoBBox("plane box", fStraw_length_veto+eps/2., fvetoydim+eps/2., planewidth/2.+eps/2.);
+	 TGeoBBox *plane_veto = new TGeoBBox("plane box", fStraw_length_veto+eps/2., fvetoydim+eps/2., planewidth/2.+3.*eps/2.);
          TGeoVolume *planebox_veto = new TGeoVolume(nmplane_veto, plane_veto, med);
 	 //the planebox sits in the viewframe
 	 //hence z translate the plane wrt to the view
@@ -624,7 +624,7 @@ void strawtubes::ConstructGeometry()
 	      //plane loop	   
 	      TString nmplane_12 = nmview_12+"_plane_"; 
 	      nmplane_12 += pnb;
-	      TGeoBBox *plane_12 = new TGeoBBox("plane box_12", fStraw_length_12+eps/2, ftr12ydim+eps/2, planewidth/2.+eps/2);	   	   
+	      TGeoBBox *plane_12 = new TGeoBBox("plane box_12", fStraw_length_12+eps/2, ftr12ydim+eps/2, planewidth/2.+3.*eps/2);	   	   
  	      TGeoVolume *planebox_12 = new TGeoVolume(nmplane_12, plane_12, med);          
 	   
 	      //the planebox sits in the viewframe
@@ -721,7 +721,7 @@ void strawtubes::ConstructGeometry()
 	      //plane loop	   
 	      TString nmplane = nmview+"_plane_"; 
 	      nmplane += pnb;
-	      TGeoBBox *plane = new TGeoBBox("plane box", fStraw_length+eps/2, ftr34ydim+eps/2, planewidth/2.+eps/2);	   	   
+	      TGeoBBox *plane = new TGeoBBox("plane box", fStraw_length+eps/2, ftr34ydim+eps/2, planewidth/2.+3.*eps/2);	   	   
  	      TGeoVolume *planebox = new TGeoVolume(nmplane, plane, med);          
 	   
 	      //the planebox sits in the viewframe
