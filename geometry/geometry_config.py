@@ -701,6 +701,18 @@ with ConfigRegistry.register_config("basic") as c:
  #HPT!
     c.tauHPT = AttrDict(z=0*u.cm)
     c.tauHPT.design = nuTauTargetDesign
+
+    c.tauHPT.scifimat_width = 13 * u.cm
+    c.tauHPT.scifimat_hor = c.tauHPT.scifimat_width * 4 + 10 * u.cm
+    c.tauHPT.scifimat_vert = c.tauHPT.scifimat_width * 8 + 10 * u.cm
+    c.tauHPT.scifimat_z = 0.145 * u.cm   ## Scintillating Fiber Mat
+    c.tauHPT.support_z = 0.02 * u.cm     ## Support Carbon Composite
+    c.tauHPT.honeycomb_z = 2 * u.cm      ## Airex (or Nomex)
+    
+    c.tauHPT.TTX = c.tauHPT.scifimat_hor
+    c.tauHPT.TTY = c.tauHPT.scifimat_vert
+    c.tauHPT.TTZ = 2 * c.tauHPT.support_z + 2 * c.tauHPT.scifimat_z + c.tauHPT.honeycomb_z 
+
     if nuTauTargetDesign<3:
         c.tauHPT.DZ = 15*u.cm
         c.tauHPT.DX = c.tauMudet.XFe

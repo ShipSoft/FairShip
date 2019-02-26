@@ -266,7 +266,7 @@ def configure(run,ship_geo):
     NuTauTarget.SetPillarDimension(ship_geo.NuTauTarget.PillarX,ship_geo.NuTauTarget.PillarY,ship_geo.NuTauTarget.PillarZ)
     NuTauTarget.SetBaseDimension(ship_geo.NuTauTarget.BaseX, ship_geo.NuTauTarget.BaseY, ship_geo.NuTauTarget.BaseZ)
     
- ##Target Tracker 
+###Target Tracker 
    NuTauTT = ROOT.TargetTracker("TargetTrackers",ROOT.kTRUE)
    NuTauTT.SetDesign(ship_geo.NuTauTT.design)
    NuTauTT.SetSciFiParam(ship_geo.NuTauTT.scifimat_width, ship_geo.NuTauTT.scifimat_hor, ship_geo.NuTauTT.scifimat_vert, 
@@ -284,6 +284,10 @@ def configure(run,ship_geo):
    tauHpt = ROOT.Hpt("HighPrecisionTrackers",ship_geo.tauHPT.DX, ship_geo.tauHPT.DY, ship_geo.tauHPT.DZ, ROOT.kTRUE)
    tauHpt.SetZsize(ship_geo.tauMudet.Ztot)
    tauHpt.SetDesign(ship_geo.NuTauTarget.Design)
+ ###Downstream SciFi Tracker
+   tauHpt.SetDSTSciFiParam(ship_geo.tauHPT.scifimat_width, ship_geo.tauHPT.scifimat_hor, ship_geo.tauHPT.scifimat_vert, 
+                           ship_geo.tauHPT.scifimat_z, ship_geo.tauHPT.support_z, ship_geo.tauHPT.honeycomb_z)
+   tauHpt.SetDSTrackerParam(ship_geo.tauHPT.TTX, ship_geo.tauHPT.TTY, ship_geo.tauHPT.TTZ)
    if ship_geo.nuTauTargetDesign<3:
     tauHpt.SetConcreteBaseDim(ship_geo.tauHPT.ConcreteX,ship_geo.tauHPT.ConcreteY,ship_geo.tauHPT.ConcreteZ)
    if ship_geo.nuTauTargetDesign==3:

@@ -161,6 +161,24 @@ Int_t Hpt::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
+void Hpt::SetDSTSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Double_t scifimat_vert_, 
+                           Double_t scifimat_z_, Double_t support_z_, Double_t honeycomb_z_)
+{
+    scifimat_width = scifimat_width_;
+    scifimat_hor = scifimat_hor_;
+    scifimat_vert = scifimat_vert_;
+    scifimat_z = scifimat_z_;
+    support_z = support_z_; 
+    honeycomb_z = honeycomb_z_;
+}
+void Hpt::SetDSTrackerParam(Double_t DSTX, Double_t DSTY, Double_t DSTZ)
+{   
+    // Change to real DT box size
+    DSTrackerX = DSTX;
+    DSTrackerY = DSTY;
+    DSTrackerZ = DSTZ; 
+}
+
 void Hpt::ConstructGeometry()
 { 
        
@@ -232,6 +250,71 @@ void Hpt::ConstructGeometry()
     volMagRegion->AddNode(volSurroundingdet, 300, new TGeoTranslation(0.,-DYMagnetizedRegion/2+fSRHeight/2,0.));
     tTauNuDet->AddNode(volSurroundingdet,400, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
     
+//////////////////////////////////////////////////////////////
+//// Creating of SciFi modules in the Downstream Tracker ////   
+    InitMedium("CarbonComposite");
+    TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
+
+    InitMedium("SciFiMat");
+    TGeoMedium *SciFiMat = gGeoManager->GetMedium("SciFiMat");
+
+    InitMedium("Airex");
+    TGeoMedium *Airex = gGeoManager->GetMedium("Airex"); 
+
+    //Support Carbon Composite
+    TGeoBBox* DST_support_box = new TGeoBBox("DST_support_box", DSTrackerX / 2, DSTrackerY / 2, support_z / 2);
+    TGeoVolume* DST_support_volume = new TGeoVolume("DST_support", DST_support_box, CarbonComposite);
+    DST_support_volume->SetLineColor(kGray - 2);
+    DST_support_volume->SetVisibility(0);
+
+    //Honeycomb Airex (or Nomex)
+    TGeoBBox* DST_honeycomb_box = new TGeoBBox("DST_honeycomb_box", DSTrackerX / 2, DSTrackerY / 2, honeycomb_z / 2);
+    TGeoVolume* DST_honeycomb_volume = new TGeoVolume("DST_honeycomb", DST_honeycomb_box, Airex);
+    DST_honeycomb_volume->SetLineColor(kYellow);
+    DST_honeycomb_volume->SetVisibility(0);
+    
+    //SciFi mats
+    TGeoBBox* DST_scifimat_hor_box = new TGeoBBox("DST_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
+    TGeoVolume* DST_scifimat_hor_volume = new TGeoVolume("DST_scifimat_hor", DST_scifimat_hor_box, SciFiMat);
+    DST_scifimat_hor_volume->SetLineColor(kCyan);
+    TGeoBBox* DST_scifimat_vert_box = new TGeoBBox("DST_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
+    TGeoVolume* DST_scifimat_vert_volume = new TGeoVolume("DST_scifimat_vert", DST_scifimat_vert_box, SciFiMat);
+    DST_scifimat_vert_volume->SetLineColor(kGreen);
+    
+    //SciFi planes
+    TGeoBBox* DST_scifi_plane_hor_box = new TGeoBBox("DST_scifi_plane_hor_box", DSTrackerX / 2, DSTrackerY / 2, scifimat_z / 2);
+    TGeoVolume* DST_scifi_plane_hor_volume = new TGeoVolume("DST_scifi_plane_hor", DST_scifi_plane_hor_box, SciFiMat);
+    DST_scifi_plane_hor_volume->SetVisibility(0);
+    TGeoBBox* DST_scifi_plane_vert_box = new TGeoBBox("DST_scifi_plane_vert_box", DSTrackerX / 2, DSTrackerY / 2, scifimat_z / 2);
+    TGeoVolume* DST_scifi_plane_vert_volume = new TGeoVolume("DST_scifi_plane_vert", DST_scifi_plane_vert_box, SciFiMat);
+    DST_scifi_plane_vert_volume->SetVisibility(0);
+
+    AddSensitiveVolume(DST_scifimat_hor_volume);
+    AddSensitiveVolume(DST_scifimat_vert_volume);
+    
+    //Creating physical volumes and multiply 
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 0, new TGeoTranslation(0, -3.5 * scifimat_width, 0));
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 1, new TGeoTranslation(0, -2.5 * scifimat_width, 0));
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 2, new TGeoTranslation(0, -1.5 * scifimat_width, 0));
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 3, new TGeoTranslation(0, -0.5 * scifimat_width, 0));
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 4, new TGeoTranslation(0, +0.5 * scifimat_width, 0));
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 5, new TGeoTranslation(0, +1.5 * scifimat_width, 0));
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 6, new TGeoTranslation(0, +2.5 * scifimat_width, 0));
+    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 7, new TGeoTranslation(0, +3.5 * scifimat_width, 0));
+
+    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 0, new TGeoTranslation(-1.5 * scifimat_width, 0, 0));
+    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 1, new TGeoTranslation(-0.5 * scifimat_width, 0, 0));
+    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 2, new TGeoTranslation(+0.5 * scifimat_width, 0, 0));
+    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 3, new TGeoTranslation(+1.5 * scifimat_width, 0, 0));
+
+    volDT->AddNode(DST_support_volume,     0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z / 2));
+    volDT->AddNode(DST_scifi_plane_hor_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z / 2));
+    volDT->AddNode(DST_scifi_plane_vert_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z + scifimat_z / 2));
+    volDT->AddNode(DST_honeycomb_volume,   0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z / 2));
+    volDT->AddNode(DST_support_volume,     1, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z + support_z / 2));
+//////////////////////////////////////////////////////////////
+
+
 
     Int_t n = 0;
     for(int i=0;i<fnHPT;i++){
