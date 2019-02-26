@@ -122,16 +122,22 @@ Int_t TargetTracker::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
-void TargetTracker::SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ,
-                                          Double_t carbonsupport_z_, Double_t scifimat_z_,
-                                          Double_t honeycomb_z_) ////
+void TargetTracker::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_, Double_t scifimat_vert_, 
+                                    Double_t scifimat_z_, Double_t support_z_, Double_t honeycomb_z_)
+{
+    scifimat_width = scifimat_width_;
+    scifimat_hor = scifimat_hor_;
+    scifimat_vert = scifimat_vert_;
+    scifimat_z = scifimat_z_;
+    support_z = support_z_; 
+    honeycomb_z = honeycomb_z_;  
+}
+
+void TargetTracker::SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ)
 {
     TTrackerX = TTX;
     TTrackerY = TTY;
     TTrackerZ = TTZ;
-    carbonsupport_z = carbonsupport_z_;	////
-    scifimat_z = scifimat_z_;	//// (!) Change to 5.33 * dSciFi
-    honeycomb_z = honeycomb_z_;	////
 }
 
 void TargetTracker::SetBrickParam(Double_t CellW)
@@ -154,36 +160,8 @@ void TargetTracker::SetDesign(Int_t Design)
   fDesign = Design;
 }
 
-//// (!) The function to define a BOX volume
-TGeoVolume* TargetTracker::DefineVolume(const std::string& name, Double_t x_half_size,
-                                        Double_t y_half_size, Double_t z_half_size,
-                                        const std::string& medium_name,
-                                        int colour, size_t transparency_level)
-{
-    InitMedium(medium_name.c_str());
-    TGeoMedium *medium = gGeoManager->GetMedium(medium_name.c_str());
-    TGeoBBox* geo_box = new TGeoBBox((name + "_box").c_str(), x_half_size, y_half_size, z_half_size);
-    TGeoVolume* geo_volume = new TGeoVolume(name.c_str(), geo_box, medium);
-    geo_volume->SetLineColor(colour);
-    geo_volume->SetTransparency(transparency_level);
-    geo_volume->SetVisibility(kTRUE);
-    return geo_volume;
-}
-
 void TargetTracker::ConstructGeometry() ////
 {
-  /*(!) Remove ----------------------------------------------------------
-  Int_t nSciFi = 80; 			//Number of fibers on 1st layer
-  Int_t nStep = 3;			//For triangle definition of fiber volumes
-  Double_t dFiber = 0.24 * mm; 		//Inner diameter sensitive core ??? 
-  Double_t dSciFi = 0.25 * mm;		//Full diameter with 
-  Double_t LySciFi = 2424 * mm; 	//Long ~2424 mm ???
-  Double_t LxSciFi = dSciFi * nSciFi; 	//Width ~132 mm
-  Double_t LzSciFi = 5.33 * dSciFi; 	//Height - six fiber layers
-  Double_t distFiber = dSciFi * 0.91; 	//Distance between ...???
-  */
-  
-  //???
   InitMedium("TTmedium");
   TGeoMedium *TTmedium = gGeoManager->GetMedium("TTmedium");
   
@@ -191,20 +169,17 @@ void TargetTracker::ConstructGeometry() ////
   TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
 
   InitMedium("CarbonComposite");
-  TGeoMedium *Composite = gGeoManager->GetMedium("CarbonComposite");
+  TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
 
   InitMedium("SciFiMat");
-  TGeoMedium *SciFi = gGeoManager->GetMedium("SciFiMat");
+  TGeoMedium *SciFiMat = gGeoManager->GetMedium("SciFiMat");
 
   InitMedium("Airex");
   TGeoMedium *Airex = gGeoManager->GetMedium("Airex");
-
   
   //Target Tracker 
   TGeoVolume *volTarget = gGeoManager->GetVolume("volTarget");
 
-  //A plane of TTracker x-y with composite and support
-  //TTrackerZ = 2 * c.NuTauTT.carbonsupport_z + c.NuTauTT.scifimat_z + 2 * c.NuTauTT.honeycomb_z 
   TGeoBBox* TT_box = new TGeoBBox("TT_box", TTrackerX / 2, TTrackerY / 2, TTrackerZ / 2);
   TGeoVolume* TT_volume = new TGeoVolume("TT", TT_box, vacuum);
   TT_volume->SetLineColor(kBlue - 1);
@@ -212,50 +187,67 @@ void TargetTracker::ConstructGeometry() ////
   TT_volume->SetVisibility(1);
   TT_volume->SetVisDaughters(1);
 
+  //Support Carbon Composite
+  TGeoBBox* TT_support_box = new TGeoBBox("TT_support_box", TTrackerX / 2, TTrackerY / 2, support_z / 2);
+  TGeoVolume* TT_support_volume = new TGeoVolume("TT_support", TT_support_box, CarbonComposite);
+  TT_support_volume->SetLineColor(kGray - 2);
+  TT_support_volume->SetVisibility(0);
 
-  //Carbon Composite
-  TGeoBBox* TT_composite_box = new TGeoBBox("TT_composite_box", TTrackerX / 2, TTrackerY / 2, carbonsupport_z / 2);
-  TGeoVolume* TT_composite_volume = new TGeoVolume("TT_composite", TT_composite_box, Composite);
-  TT_composite_volume->SetLineColor(kGray - 1);
-  TT_composite_volume->SetVisibility(1);
-  
   //Honeycomb Airex (or Nomex)
-  TGeoBBox* TT_support_box = new TGeoBBox("TT_support_box", TTrackerX / 2, TTrackerY / 2, honeycomb_z / 2);
-  TGeoVolume* TT_support_volume = new TGeoVolume("TT_support", TT_support_box, Airex);
-  TT_support_volume->SetLineColor(kYellow - 1);
-  TT_support_volume->SetVisibility(1);
-
-  //SciFi tracker (with x and y planes) => size = 2 * sci_fi_size
-  TGeoBBox* TT_scifi_plane_box = new TGeoBBox("TT_scifi_plane_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
-  TGeoVolume* TT_scifi_plane_volume = new TGeoVolume("TT_scifi_plane", TT_scifi_plane_box, SciFi);
-  TT_scifi_plane_volume->SetLineColor(kGreen - 1);
-
-  //SciFi mat (total 4 vertical and 8 horisontal)
-  //(!) Change material to Epoxy Glue with TiO2
-  TGeoBBox* TT_scifi_mat_box = new TGeoBBox("TT_scifi_mat_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
-  TGeoVolume* TT_scifi_mat_volume = new TGeoVolume("TT_scifi_mat", TT_scifi_mat_box, vacuum);
-  TT_scifi_mat_volume->SetLineColor(kGreen - 2);
-
-  AddSensitiveVolume(TT_scifi_plane_volume);
-  //AddSensitiveVolume(TT_scifiber_volume);
+  TGeoBBox* TT_honeycomb_box = new TGeoBBox("TT_honeycomb_box", TTrackerX / 2, TTrackerY / 2, honeycomb_z / 2);
+  TGeoVolume* TT_honeycomb_volume = new TGeoVolume("TT_honeycomb", TT_honeycomb_box, Airex);
+  TT_honeycomb_volume->SetLineColor(kYellow);
+  TT_honeycomb_volume->SetVisibility(0);
   
-  //Create physical volumes and multiply
-  //vol_scifi->AddNode(vol_scifi_mat, 0, new TGeoTranslation(0, 0, 0));
+  //SciFi mats
+  TGeoBBox* TT_scifimat_hor_box = new TGeoBBox("TT_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
+  TGeoVolume* TT_scifimat_hor_volume = new TGeoVolume("TT_scifimat_hor", TT_scifimat_hor_box, SciFiMat);
+  TT_scifimat_hor_volume->SetLineColor(kCyan);
 
-  TT_volume->AddNode(TT_composite_volume, 0, new TGeoTranslation(0, 0, - TTrackerZ / 2 + carbonsupport_z / 2));
-  TT_volume->AddNode(TT_scifi_plane_volume, 0, new TGeoTranslation(0, 0, - TTrackerZ / 2 + carbonsupport_z + scifimat_z / 2));
-  TT_volume->AddNode(TT_scifi_plane_volume, 1, new TGeoTranslation(0, 0, - TTrackerZ / 2 + carbonsupport_z + scifimat_z + scifimat_z / 2));
-  TT_volume->AddNode(TT_support_volume, 0, new TGeoTranslation(0, 0, - TTrackerZ / 2 + carbonsupport_z + 2 * scifimat_z + honeycomb_z / 2));
-  TT_volume->AddNode(TT_composite_volume, 1, new TGeoTranslation(0, 0, - TTrackerZ / 2 + carbonsupport_z + 2 * scifimat_z + honeycomb_z + carbonsupport_z / 2));
-  ////Double_t first_tt_position = -ZDimension / 2 + TTrackerZ / 2;
-  Double_t first_tt_position = -ZDimension / 2 + TTrackerZ / 2 + TTrackerZ / 10 ; //Manually + TTrackerZ / 20 to shift TT. Remove that (!)
+  TGeoBBox* TT_scifimat_vert_box = new TGeoBBox("TT_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
+  TGeoVolume* TT_scifimat_vert_volume = new TGeoVolume("TT_scifimat_vert", TT_scifimat_vert_box, SciFiMat);
+  TT_scifimat_vert_volume->SetLineColor(kGreen);
+  
+  //SciFi planes
+  TGeoBBox* TT_scifi_plane_hor_box = new TGeoBBox("TT_scifi_plane_hor_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
+  TGeoVolume* TT_scifi_plane_hor_volume = new TGeoVolume("TT_scifi_plane_hor", TT_scifi_plane_hor_box, SciFiMat);
+  TT_scifi_plane_hor_volume->SetVisibility(0);
 
+  TGeoBBox* TT_scifi_plane_vert_box = new TGeoBBox("TT_scifi_plane_vert_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
+  TGeoVolume* TT_scifi_plane_vert_volume = new TGeoVolume("TT_scifi_plane_vert", TT_scifi_plane_vert_box, SciFiMat);
+  TT_scifi_plane_vert_volume->SetVisibility(0);
+
+  AddSensitiveVolume(TT_scifimat_hor_volume);
+  AddSensitiveVolume(TT_scifimat_vert_volume);
+  
+  //Creating physical volumes and multiply 
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 0, new TGeoTranslation(0, -3.5 * scifimat_width, 0));
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 1, new TGeoTranslation(0, -2.5 * scifimat_width, 0));
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 2, new TGeoTranslation(0, -1.5 * scifimat_width, 0));
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 3, new TGeoTranslation(0, -0.5 * scifimat_width, 0));
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 4, new TGeoTranslation(0, +0.5 * scifimat_width, 0));
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 5, new TGeoTranslation(0, +1.5 * scifimat_width, 0));
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 6, new TGeoTranslation(0, +2.5 * scifimat_width, 0));
+  TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 7, new TGeoTranslation(0, +3.5 * scifimat_width, 0));
+
+  TT_scifi_plane_vert_volume->AddNode(TT_scifimat_vert_volume, 0, new TGeoTranslation(-1.5 * scifimat_width, 0, 0));
+  TT_scifi_plane_vert_volume->AddNode(TT_scifimat_vert_volume, 1, new TGeoTranslation(-0.5 * scifimat_width, 0, 0));
+  TT_scifi_plane_vert_volume->AddNode(TT_scifimat_vert_volume, 2, new TGeoTranslation(+0.5 * scifimat_width, 0, 0));
+  TT_scifi_plane_vert_volume->AddNode(TT_scifimat_vert_volume, 3, new TGeoTranslation(+1.5 * scifimat_width, 0, 0));
+
+  TT_volume->AddNode(TT_support_volume,          0, new TGeoTranslation(0, 0, - TTrackerZ / 2 + support_z / 2));
+  TT_volume->AddNode(TT_scifi_plane_hor_volume,  0, new TGeoTranslation(0, 0, - TTrackerZ / 2 + support_z + scifimat_z / 2));
+  TT_volume->AddNode(TT_scifi_plane_vert_volume, 0, new TGeoTranslation(0, 0, - TTrackerZ / 2 + support_z + scifimat_z + scifimat_z / 2));
+  TT_volume->AddNode(TT_honeycomb_volume,        0, new TGeoTranslation(0, 0, - TTrackerZ / 2 + support_z + 2 * scifimat_z + honeycomb_z / 2));
+  TT_volume->AddNode(TT_support_volume,          1, new TGeoTranslation(0, 0, - TTrackerZ / 2 + support_z + 2 * scifimat_z + honeycomb_z + support_z / 2));
+
+  Double_t first_tt_position = -ZDimension / 2 + TTrackerZ / 2 + TTrackerZ / 10 ; 
   // l < fNTT
   for (int l = 0; l < fNTT; ++l) 
   {
     volTarget->AddNode(TT_volume, l, new TGeoTranslation(0, 0, first_tt_position + l * (TTrackerZ + CellWidth)));
   }
-//------------------------------------------------------------------------------------
+
 }
 
 

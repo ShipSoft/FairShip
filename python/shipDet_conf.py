@@ -265,16 +265,16 @@ def configure(run,ship_geo):
    if ship_geo.nuTauTargetDesign==2:
     NuTauTarget.SetPillarDimension(ship_geo.NuTauTarget.PillarX,ship_geo.NuTauTarget.PillarY,ship_geo.NuTauTarget.PillarZ)
     NuTauTarget.SetBaseDimension(ship_geo.NuTauTarget.BaseX, ship_geo.NuTauTarget.BaseY, ship_geo.NuTauTarget.BaseZ)
-  
+    
+ ##Target Tracker 
    NuTauTT = ROOT.TargetTracker("TargetTrackers",ROOT.kTRUE)
    NuTauTT.SetDesign(ship_geo.NuTauTT.design)
-   ##
-   NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ,
-                                 ship_geo.NuTauTT.carbonsupport_z, ship_geo.NuTauTT.scifimat_z,  					 ship_geo.NuTauTT.honeycomb_z)
+   NuTauTT.SetSciFiParam(ship_geo.NuTauTT.scifimat_width, ship_geo.NuTauTT.scifimat_hor, ship_geo.NuTauTT.scifimat_vert, 
+                         ship_geo.NuTauTT.scifimat_z, ship_geo.NuTauTT.support_z, ship_geo.NuTauTT.honeycomb_z)
+   NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ)
    NuTauTT.SetBrickParam(ship_geo.NuTauTarget.CellW)
    NuTauTT.SetTotZDimension(ship_geo.NuTauTarget.zdim)
    NuTauTT.SetNumberTT(ship_geo.NuTauTT.n)
-
   #method of nutau target that must be called after TT parameter definition
    NuTauTarget.SetTTzdimension(ship_geo.NuTauTT.TTZ)
  
