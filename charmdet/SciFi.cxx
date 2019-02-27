@@ -49,29 +49,29 @@ using namespace ShipUnit;
 
 SciFi::SciFi()
   : FairDetector("HighPrecisionTrackers",kTRUE, kSciFi),
-    fTrackID(-1),
-    fPdgCode(),
-    fVolumeID(-1),
-    fPos(),
-    fMom(),
-    fTime(-1.),
-    fLength(-1.),
-    fELoss(-1),
-    fSciFiPointCollection(new TClonesArray("SciFiPoint"))
+  fTrackID(-1),
+  fPdgCode(),
+  fVolumeID(-1),
+  fPos(),
+  fMom(),
+  fTime(-1.),
+  fLength(-1.),
+  fELoss(-1),
+  fSciFiPointCollection(new TClonesArray("SciFiPoint"))
 {
 }
 
 SciFi::SciFi(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,const char* Title)
   : FairDetector(name, Active, kSciFi),
-    fTrackID(-1),
-    fPdgCode(),
-    fVolumeID(-1),
-    fPos(),
-    fMom(),
-    fTime(-1.),
-    fLength(-1.),
-    fELoss(-1),
-    fSciFiPointCollection(new TClonesArray("SciFiPoint"))
+  fTrackID(-1),
+  fPdgCode(),
+  fVolumeID(-1),
+  fPos(),
+  fMom(),
+  fTime(-1.),
+  fLength(-1.),
+  fELoss(-1),
+  fSciFiPointCollection(new TClonesArray("SciFiPoint"))
 {
   DimX = DX;
   DimY = DY;
@@ -80,36 +80,36 @@ SciFi::SciFi(const char* name, const Double_t DX, const Double_t DY, const Doubl
 
 SciFi::~SciFi()
 {
-    if (fSciFiPointCollection) {
-        fSciFiPointCollection->Delete();
-        delete fSciFiPointCollection;
-    }
+  if (fSciFiPointCollection) {
+    fSciFiPointCollection->Delete();
+    delete fSciFiPointCollection;
+  }
 }
 
 void SciFi::Initialize()
 {
-    FairDetector::Initialize();
+  FairDetector::Initialize();
 }
 
 // -----   Private method InitMedium
 Int_t SciFi::InitMedium(const char* name)
 {
-   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
-   static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
-   static FairGeoMedia *media=geoFace->getMedia();
-   static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
+  static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
+  static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
+  static FairGeoMedia *media=geoFace->getMedia();
+  static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
 
-   FairGeoMedium *ShipMedium=media->getMedium(name);
+  FairGeoMedium *ShipMedium=media->getMedium(name);
 
-   if (!ShipMedium)
-   {
-     Fatal("InitMedium","Material %s not defined in media file.", name);
-     return -1111;
-   }
-   TGeoMedium* medium=gGeoManager->GetMedium(name);
-   if (medium!=NULL)
-     return ShipMedium->getMediumIndex();
-   return geoBuild->createMedium(ShipMedium);
+  if (!ShipMedium)
+  {
+    Fatal("InitMedium","Material %s not defined in media file.", name);
+    return -1111;
+  }
+  TGeoMedium* medium=gGeoManager->GetMedium(name);
+  if (medium!=NULL)
+    return ShipMedium->getMediumIndex();
+  return geoBuild->createMedium(ShipMedium);
 }
 
 void SciFi::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZSciFi, Double_t D1short, Double_t D1long)
@@ -123,29 +123,29 @@ void SciFi::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Do
   Dim1Long = D1long;
 }
 
-void SciFi::SetSiliconDZ(Double_t SiliconDZ)
+void SciFi::SetSciFiDZ(Double_t SciFiDZ)
 {
-  DimZSi = SiliconDZ;
+  DimZSi = SciFiDZ;
 }
 
 
-void SciFi::SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz)
+void SciFi::SetSciFiStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz)
 {
- xs[nstation] = posx;
- ys[nstation] = posy;
- zs[nstation] = posz;
+  xs[nstation] = posx;
+  ys[nstation] = posy;
+  zs[nstation] = posz;
 }
 
-void SciFi::SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez)
+void SciFi::SetSciFiStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez)
 {
- xangle[nstation] = anglex;
- yangle[nstation] = angley;
- zangle[nstation] = anglez;
+  xangle[nstation] = anglex;
+  yangle[nstation] = angley;
+  zangle[nstation] = anglez;
 }
 
-void SciFi::SetSiliconDetNumber(Int_t nSilicon)
+void SciFi::SetSciFiDetNumber(Int_t nSciFi)
 {
- nSi = nSilicon;
+  nSi = nSciFi;
 }
 
 
@@ -156,123 +156,124 @@ void SciFi::SetSiliconDetNumber(Int_t nSilicon)
 //
 void SciFi::ConstructGeometry()
 {
-    InitMedium("air");
+  InitMedium("air");
   TGeoMedium *air = gGeoManager->GetMedium("air");
 
-    InitMedium("iron");
-    TGeoMedium *Fe =gGeoManager->GetMedium("iron");
+  InitMedium("iron");
+  TGeoMedium *Fe =gGeoManager->GetMedium("iron");
 
-    InitMedium("silicon");
-    TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
+  InitMedium("silicon");
+  TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
 
-    InitMedium("CoilCopper");
-    TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
+  InitMedium("CoilCopper");
+  TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
 
-    InitMedium("CoilAluminium");
-    TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
+  InitMedium("CoilAluminium");
+  TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
 
-    InitMedium("TTmedium");
-    TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
+  InitMedium("TTmedium");
+  TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
 
-    InitMedium("STTmix8020_2bar");
-    TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
+  InitMedium("STTmix8020_2bar");
+  TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
 
-    TGeoVolume *top = gGeoManager->GetTopVolume();
+  TGeoVolume *top = gGeoManager->GetTopVolume();
 
-    //computing the largest offsets in order to set SciFiBox dimensions correctly
-    Double_t offsetxmax = 0., offsetymax = 0.;
-    for (int istation = 0; istation < 12; istation++){
-     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
-     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
-    }
-    //Double_t DimZSciFiBox = zs5 -zs0 +pairwisedistance + DimZSi;
-    TGeoBBox *SciFiBox = new TGeoBBox("SciFiBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZSciFiBox/2.); //The box is symmetric, offsets are not. So we enlarge the offset by a factor two for coverage
-    TGeoVolume *volSciFiBox = new TGeoVolume("volSciFiBox",SciFiBox,air);
-    Double_t inimodZoffset(zs[0]) ;//initial Z offset of SciFi Module 0 so as to avoid volume extrusion
-    top->AddNode(volSciFiBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
+  //computing the largest offsets in order to set SciFiBox dimensions correctly
+  Double_t offsetxmax = 0., offsetymax = 0.;
+  for (int istation = 0; istation < 8; istation++){
+    if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
+    if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
+  }
+  //Double_t DimZSciFiBox = zs5 -zs0 +pairwisedistance + DimZSi;
+  TGeoBBox *SciFiBox = new TGeoBBox("SciFiBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZSciFiBox/2.); //The box is symmetric, offsets are not. So we enlarge the offset by a factor two for coverage
+  TGeoVolume *volSciFiBox = new TGeoVolume("volSciFiBox",SciFiBox,air);
+  Double_t inimodZoffset(zs[0]) ;//initial Z offset of SciFi Module 0 so as to avoid volume extrusion
+  top->AddNode(volSciFiBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
 
 
-    TGeoBBox *SciFiy = new TGeoBBox("SciFiy", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
-    TGeoVolume *volSciFiy = new TGeoVolume("volSciFiy",SciFiy,Silicon);
-    volSciFiy->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volSciFiy);
+  TGeoBBox *SciFiy = new TGeoBBox("SciFiy", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
+  TGeoVolume *volSciFiy = new TGeoVolume("volSciFiy",SciFiy,Silicon);
+  volSciFiy->SetLineColor(kBlue-5);
+  AddSensitiveVolume(volSciFiy);
 
-    TGeoBBox *SciFix = new TGeoBBox("SciFix", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
-    TGeoVolume *volSciFix = new TGeoVolume("volSciFix",SciFix,Silicon);
-    volSciFix->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volSciFix);
+  TGeoBBox *SciFix = new TGeoBBox("SciFix", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
+  TGeoVolume *volSciFix = new TGeoVolume("volSciFix",SciFix,Silicon);
+  volSciFix->SetLineColor(kBlue-5);
+  AddSensitiveVolume(volSciFix);
 
-    //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
-    Int_t SciFiIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162};
-    //Alternated scifi stations optimized for y and x measurements
-    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE};
+  //id convention: 1{a}{b}, a = number of pair (from 1 to 4), b = element of the pair (1 or 2)
+  Int_t SciFiIDlist[8] = {111,112,121,122,131,132,141,142};
 
-    for (int iscifi = 0; iscifi < 12; iscifi++){
-      if (vertical[iscifi]) volSciFiBox->AddNode(volSciFiy, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-DimZSciFiBox/2.+ zs[iscifi]-inimodZoffset)); //compensation for the Node offset
-      else volSciFiBox->AddNode(volSciFix, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-DimZSciFiBox/2.+ zs[iscifi]-inimodZoffset));
-    }
+  //Alternated scifi stations optimized for y and x measurements
+  Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kFALSE,kFALSE,kTRUE,kTRUE};
+
+  for (int iscifi = 0; iscifi < 8; iscifi++){
+    if (vertical[iscifi]) volSciFiBox->AddNode(volSciFiy, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-DimZSciFiBox/2.+ zs[iscifi]-inimodZoffset)); //compensation for the Node offset
+    else volSciFiBox->AddNode(volSciFix, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-DimZSciFiBox/2.+ zs[iscifi]-inimodZoffset));
+  }
 
 }
 
 Bool_t  SciFi::ProcessHits(FairVolume* vol)
 {
-    /** This method is called from the MC stepping */
-    //Set parameters at entrance of volume. Reset ELoss.
-    if ( gMC->IsTrackEntering() ) {
-        fELoss  = 0.;
-        fTime   = gMC->TrackTime() * 1.0e09;
-        fLength = gMC->TrackLength();
-        gMC->TrackPosition(fPos);
-        gMC->TrackMomentum(fMom);
-    }
-    // Sum energy loss for all steps in the active volume
-    fELoss += gMC->Edep();
+  /** This method is called from the MC stepping */
+  //Set parameters at entrance of volume. Reset ELoss.
+  if ( gMC->IsTrackEntering() ) {
+    fELoss  = 0.;
+    fTime   = gMC->TrackTime() * 1.0e09;
+    fLength = gMC->TrackLength();
+    gMC->TrackPosition(fPos);
+    gMC->TrackMomentum(fMom);
+  }
+  // Sum energy loss for all steps in the active volume
+  fELoss += gMC->Edep();
 
-    // Create muonPoint at exit of active volume
-    if ( gMC->IsTrackExiting()    ||
-        gMC->IsTrackStop()       ||
-        gMC->IsTrackDisappeared()   ) {
-        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+  // Create muonPoint at exit of active volume
+  if ( gMC->IsTrackExiting()    ||
+      gMC->IsTrackStop()       ||
+      gMC->IsTrackDisappeared()   ) {
+    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 
-        if (fELoss == 0. ) { return kFALSE; }
-        TParticle* p=gMC->GetStack()->GetCurrentTrack();
-        Int_t pdgCode = p->GetPdgCode();
-	//Int_t fMotherID =p->GetFirstMother();
-        gMC->CurrentVolID(fVolumeID);
+    if (fELoss == 0. ) { return kFALSE; }
+    TParticle* p=gMC->GetStack()->GetCurrentTrack();
+    Int_t pdgCode = p->GetPdgCode();
+    //Int_t fMotherID =p->GetFirstMother();
+    gMC->CurrentVolID(fVolumeID);
 
-        TLorentzVector Pos;
-        gMC->TrackPosition(Pos);
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
+    TLorentzVector Pos;
+    gMC->TrackPosition(Pos);
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
 
-	AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
+    AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
 
-        // Increment number of muon det points in TParticle
-        ShipStack* stack = (ShipStack*) gMC->GetStack();
-        stack->AddPoint(kSciFi);
-    }
+    // Increment number of muon det points in TParticle
+    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    stack->AddPoint(kSciFi);
+  }
 
-    return kTRUE;
+  return kTRUE;
 }
 
 void SciFi::EndOfEvent()
 {
-    fSciFiPointCollection->Clear();
+  fSciFiPointCollection->Clear();
 }
 
 
 void SciFi::Register()
 {
 
-    /** This will create a branch in the output tree called
-     SciFiPoint, setting the last parameter to kFALSE means:
-     this collection will not be written to the file, it will exist
-     only during the simulation.
-     */
+  /** This will create a branch in the output tree called
+    SciFiPoint, setting the last parameter to kFALSE means:
+    this collection will not be written to the file, it will exist
+    only during the simulation.
+    */
 
-    FairRootManager::Instance()->Register("SciFiPoint", "SciFi",
-                                          fSciFiPointCollection, kTRUE);
+  FairRootManager::Instance()->Register("SciFiPoint", "SciFi",
+      fSciFiPointCollection, kTRUE);
 }
 
 // -----   Public method to Decode volume info  -------------------------------------------
@@ -284,26 +285,26 @@ void SciFi::DecodeVolumeID(Int_t detID,int &nHPT)
 
 TClonesArray* SciFi::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) { return fSciFiPointCollection; }
-    else { return NULL; }
+  if (iColl == 0) { return fSciFiPointCollection; }
+  else { return NULL; }
 }
 
 void SciFi::Reset()
 {
-    fSciFiPointCollection->Clear();
+  fSciFiPointCollection->Clear();
 }
 
 
 SciFiPoint* SciFi::AddHit(Int_t trackID, Int_t detID,
-                        TVector3 pos, TVector3 mom,
-                        Double_t time, Double_t length,
-					    Double_t eLoss, Int_t pdgCode)
+    TVector3 pos, TVector3 mom,
+    Double_t time, Double_t length,
+    Double_t eLoss, Int_t pdgCode)
 
 {
-    TClonesArray& clref = *fSciFiPointCollection;
-    Int_t size = clref.GetEntriesFast();
+  TClonesArray& clref = *fSciFiPointCollection;
+  Int_t size = clref.GetEntriesFast();
 
-    return new(clref[size]) SciFiPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
+  return new(clref[size]) SciFiPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
 }
 
 

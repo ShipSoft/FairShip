@@ -1,8 +1,8 @@
-#ifndef SCIFI_H
-#define SCIFI_H
+#ifndef SCIFIMODULES_H
+#define SCIFIMODULES_H
 
 #include "FairModule.h"                 // for FairModule
-#include "FairDetector.h"
+#include "FairDetector.h"                  // for FairDetector
 
 #include "Rtypes.h"                     // for ShipMuonShield::Class, Bool_t, etc
 
@@ -11,30 +11,31 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
-class SciFiPoint;
+class SciFiModulesPoint;
 class FairVolume;
 class TClonesArray;
 
-class SciFi:public FairDetector
+class SciFiModules:public FairDetector
 {
   public:
-    SciFi(const char* name, const Double_t BX, const Double_t BY, const Double_t BZ, const Double_t zBox, Bool_t Active, const char* Title = "SciFi");
-    SciFi();
-    virtual ~SciFi();
+    SciFiModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="SciFiModules");
+    SciFiModules();
+    virtual ~SciFiModules();
 
-    /**      Create the detector geometry        */
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_    t Dim1Short, Double_t Dim1Long);
+    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZSciFi, Double_t Dim1Short, Double_t Dim1Long);
     void SetSiliconDZ(Double_t SiliconDZ);
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
-    void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez)    ;
+    void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
     void SetSiliconDetNumber(Int_t nSilicon);
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
 
-    /**  Method called for each step during simulation (see FairMCApplication::Stepping()) */
+    /**       this method is called for each step during simulation
+     *       (see FairMCApplication::Stepping())
+     */
     virtual Bool_t ProcessHits( FairVolume* v=0);
 
     /**       Registers the produced collections in FAIRRootManager.     */
@@ -46,13 +47,20 @@ class SciFi:public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    /**      How to add your own point of type MuonPoint to the clones array */
+    /**      This method is an example of how to add your own point
+     *       of type muonPoint to the clones array
+     */
+    SciFiModulesPoint* AddHit(Int_t trackID, Int_t detID,
+        TVector3 pos, TVector3 mom,
+        Double_t time, Double_t length,
+        Double_t eLoss, Int_t pdgCode);
 
-    SciFiPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-        Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode);
+    /** The following methods can be implemented if you need to make
+     *  any optional action in your detector during the transport.
+     */
 
-
-    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 , Int_t offset) {;}
+    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
+        Int_t offset) {;}
     virtual void   SetSpecialPhysicsCuts() {;}
     virtual void   EndOfEvent();
     virtual void   FinishPrimary() {;}
@@ -62,21 +70,15 @@ class SciFi:public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-    /*ensuring it can be written to the geometry file*/
-    SciFi(const SciFi&);
-    SciFi& operator=(const SciFi&);
-    ClassDef(SciFi,1);
-
-    /*Allow onvertion of detector ID in other format*/
     void DecodeVolumeID(Int_t detID,int &nHPT);
-
-
 
   private:
 
-    /** Track information to be stored until the track leaves the active volume. */
+    /** Track information to be stored until the track leaves the
+      active volume.
+      */
     Int_t          fTrackID;           //!  track index
-    Int_t          fPdgCode;           //!  PDG code
+    Int_t          fPdgCode;           //!  pdg code
     Int_t          fVolumeID;          //!  volume id
     TLorentzVector fPos;               //!  position at entrance
     TLorentzVector fMom;               //!  momentum at entrance
@@ -85,9 +87,10 @@ class SciFi:public FairDetector
     Double32_t     fELoss;             //!  energy loss
 
     /** container for data points */
-    TClonesArray*  fSciFiPointCollection;
+    TClonesArray*  fSciFiModulesPointCollection;
 
     Int_t InitMedium(const char* name);
+
 
 
   protected:
@@ -107,18 +110,20 @@ class SciFi:public FairDetector
     Double_t DimX =0;
     Double_t DimY =0;
     Double_t DimZ = 0;
-    Double_t zSizeMS = 0; //dimension of the Magnetic PixelModules volume
+    Double_t zSizeMS = 0; //dimension of the Magnetic SciFiModules volume
 
     Double_t overlap;
-    Double_t DimZPixelBox;
+    Double_t DimZSciFiBox;
 
     Int_t nSi;
     Double_t DimZSi;
 
-    Double_t xs[12], ys[12], zs[12];
-    Double_t xangle[12], yangle[12], zangle[12];
+    Double_t xs[8], ys[8], zs[8];
+    Double_t xangle[8], yangle[8], zangle[8];
 
-    PixelModules(const PixelModules&);
-    PixelModules& operator=(const PixelModules&);
-    ClassDef(PixelModules,1)
+    SciFiModules(const SciFiModules&);
+    SciFiModules& operator=(const SciFiModules&);
+    ClassDef(SciFiModules,1)
+
 };
+#endif
