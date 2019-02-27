@@ -464,6 +464,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TH1D* h_Nmeasurements = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurements"));
  TH2D* h_ppt = (TH2D*)(gDirectory->GetList()->FindObject("p/pt"));
  TH2D* h_ppx = (TH2D*)(gDirectory->GetList()->FindObject("p/px"));
+ TH2D* h_Absppx = (TH2D*)(gDirectory->GetList()->FindObject("p/Abspx"));
  TH2D* h_xy = (TH2D*)(gDirectory->GetList()->FindObject("xy"));
  TH2D* h_pxpy = (TH2D*)(gDirectory->GetList()->FindObject("pxpy"));
  TH1D* h_TrackMult =  (TH1D*)(gDirectory->GetList()->FindObject("TrackMult"));
@@ -473,6 +474,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TH1D* h_Nmeasurementsmu = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurementsmu"));
  TH2D* h_pptmu = (TH2D*)(gDirectory->GetList()->FindObject("p/ptmu"));
  TH2D* h_ppxmu = (TH2D*)(gDirectory->GetList()->FindObject("p/pxmu"));
+ TH2D* h_Absppxmu = (TH2D*)(gDirectory->GetList()->FindObject("p/Abspxmu"));
  TH2D* h_xymu = (TH2D*)(gDirectory->GetList()->FindObject("xymu"));
  TH2D* h_pxpymu = (TH2D*)(gDirectory->GetList()->FindObject("pxpymu"));
 
@@ -508,6 +510,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (chi2 > chi2UL){ continue;}
      h_ppt->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
      h_ppx->Fill(P,Px);
+     h_Absppx->Fill(P,TMath::Abs(Px));
      auto pos = fittedState.getPos();
      h_xy->Fill(pos[0],pos[1]);
      h_pxpy->Fill(Px/Pz,Py/Pz);
@@ -533,6 +536,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         h_Nmeasurementsmu->Fill(fitStatus->getNdf());
         h_pptmu->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
         h_ppxmu->Fill(P,Px);
+        h_Absppxmu->Fill(P,TMath::Abs(Px));
         h_xymu->Fill(pos[0],pos[1]);
         h_pxpymu->Fill(Px/Pz,Py/Pz);
         if (P>5){Ngoodmu+=1;}
