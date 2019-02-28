@@ -165,16 +165,51 @@ def makeMomDistributions(D='.',splitFactor=10):
         time.sleep(100)
  print "finished all the tasks."
 
-def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV"):
+def makeMomResolutions(D='.',splitFactor=10):
+ fileList,x,y = checkFilesWithTracks(D,splitFactor)
+ print "fileList established ",len(fileList)
+ for df in fileList:
+   tmp = df.split('/')
+   if len(tmp)>1: os.chdir(tmp[0])
+   if not "histos-momentumResolution-"+tmp[1] in os.listdir('.'):
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c momResolution -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+   if len(tmp)>1: os.chdir('../')
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+ print "finished all the tasks."
+
+
+def checkAlignment(D='.',splitFactor=10):
+ fileList,x,y = checkFilesWithTracks(D,splitFactor)
+ print "fileList established ",len(fileList)
+ for df in fileList:
+   tmp = df.split('/')
+   if len(tmp)>1: os.chdir(tmp[0])
+   if not "histos-residuals-"+tmp[1] in os.listdir('.'):
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c alignment -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+   if len(tmp)>1: os.chdir('../')
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+ print "finished all the tasks."
+
+
+def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True):
   remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination,shell=True).split('\n')
   fnames = getFilesLocal()
   for D in fnames:
     if not D in remote:
        os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir  "+destination+"/"+D)
+    remoteD = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination+'/'+D,shell=True).split('\n')
     for f in os.listdir(D):
+      if f in remoteD and update: continue
       fname = D+'/'+f
       cmd = "xrdcp -f "+fname+" $EOSSHIP/"+destination+"/"+fname
-      print cmd
       os.system(cmd)
 
 def mergeHistos(case='residuals'):
@@ -182,13 +217,18 @@ def mergeHistos(case='residuals'):
  cmd = {}
  for z in ['charm','mbias']:
   if case == 'residuals':  cmd[z] = 'hadd -f residuals-'+z+'.root '
+  elif case == 'momResolution':  cmd[z] = 'hadd -f momentumResolution.root '
   else:                    cmd[z] = 'hadd -f momDistributions-'+z+'.root '
  for d in dirList:
   for x in os.listdir(d):
    z='mbias'
    if d.find('charm')>0: z='charm'
-   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
- for z in ['charm','mbias']: os.system(cmd[z])
+   if (case == 'residuals' and not x.find('histos-residuals')<0 ):  cmd[z] += d+'/'+x+" "
+   elif (case == 'momResolution' and not x.find('momentumResolution')<0 ):  cmd['mbias'] += d+'/'+x+" "
+   elif (case == 'momDistribution' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
+ for z in ['charm','mbias']:
+     if z=='charm' and case == 'momResolution': continue
+     os.system(cmd[z])
 
 def redoMuonTracks():
  fileList,x,y = checkFilesWithTracks(D='.')

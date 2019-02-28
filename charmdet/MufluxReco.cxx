@@ -4,10 +4,13 @@
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TH3D.h>
+#include "TRandom1.h"
+#include "TRandom3.h"
 #include "TString.h"
 #include "TObject.h"
 #include "RPCTrack.h"
 #include "RKTrackRep.h"
+#include "ShipMCTrack.h"
 #include "MufluxSpectrometerHit.h"
 #include "MuonTaggerHit.h"
 #include <algorithm>
@@ -15,6 +18,7 @@
 
 TVector3* parallelToZ = new TVector3(0., 0., 1.);
 TVector3* NewPosition = new TVector3(0., 0., 0.);
+std::vector<int> charmExtern = {4332,4232,4132,4232,4122,431,411,421};
 // -----   Standard constructor   ------------------------------------------ 
 MufluxReco::MufluxReco() {}
 // -----   Standard constructor   ------------------------------------------ 
@@ -29,9 +33,11 @@ MufluxReco::MufluxReco(TTreeReader* t)
   TrackInfos = 0;
   RPCTrackY = 0;
   RPCTrackX = 0;
+  MCTrack = 0;
   Digi_MuonTaggerHits = 0;
   cDigi_MufluxSpectrometerHits = 0;
   TTree* fChain = xSHiP->GetTree();
+  if (MCdata){fChain->SetBranchAddress("MCTrack", &MCTrack, &b_MCTrack);}
   fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
   fChain->SetBranchAddress("Digi_MufluxSpectrometerHits", &cDigi_MufluxSpectrometerHits, &b_Digi_MufluxSpectrometerHits);
   fChain->SetBranchAddress("Digi_MuonTaggerHits", &Digi_MuonTaggerHits, &b_Digi_MuonTaggerHits);
@@ -216,6 +222,39 @@ std::vector<std::vector<int>>  MufluxReco::findDTClusters(TClonesArray* hits, re
       printClustersPerStation(clusters,s,view)
    return clusters
 */
+Bool_t MufluxReco::checkCharm(){
+   Bool_t check = false;
+   for (Int_t m=0;m<MCTrack->GetEntries();m++) {
+      ShipMCTrack* mu = (ShipMCTrack*)MCTrack->At(m);
+      Int_t pdg = TMath::Abs(mu->GetPdgCode());
+      if(std::find(charmExtern.begin(),charmExtern.end(),pdg)!=charmExtern.end()) {check=true;}
+   }
+   return check;
+}
+Bool_t MufluxReco::checkDiMuon(){
+   std::vector<ShipMCTrack*> muplus;
+   std::vector<ShipMCTrack*> muminus;
+   Bool_t check = false;
+   for (Int_t m=0;m<MCTrack->GetEntries();m++) {
+      ShipMCTrack* mu = (ShipMCTrack*)MCTrack->At(m);
+      if (mu->GetPdgCode()==13){ muminus.push_back(mu);}
+      if (mu->GetPdgCode()==-13){ muplus.push_back(mu);}
+   }
+   TLorentzVector mompl;
+   TLorentzVector mommi;
+   for (auto mp : muplus) {
+    mp->Get4Momentum(mompl);
+    for (auto mm : muminus) {
+      mm->Get4Momentum(mommi);
+      auto resonance = mommi+mompl;
+      if (TMath::Abs( resonance.M() - 0.7755) < 0.001){check = true;}
+      if (TMath::Abs( resonance.M() - 1.0195) < 0.001){check = true;}
+    }
+   }
+   if (check && gRandom->Uniform(0.,1.)>0.99){check = false;}
+   return check;
+}
+
 Bool_t MufluxReco::findSimpleEvent(Int_t nmin, Int_t nmax){
    nestedList spectrHitsSorted = nestedList();
    sortHits(cDigi_MufluxSpectrometerHits,&spectrHitsSorted);
@@ -488,6 +527,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    Int_t Ntracks = FitTracks->GetEntries();
    Int_t Ngood = 0;
    Int_t Ngoodmu = 0;
+   if (Ntracks>0 && MCdata && checkDiMuon() ){continue;} // reject randomly events with boosted dimuon channels
    for (Int_t k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();

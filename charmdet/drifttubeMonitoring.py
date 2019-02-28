@@ -3010,8 +3010,8 @@ def plotLinearResiduals():
 
 def momResolution(PR=1,onlyPlotting=False):
  if not onlyPlotting:
-  ut.bookHist(h,'momResol','momentum resolution function of momentum',100,-0.1,0.1,30,0.,300.)
-  ut.bookHist(h,'curvResol','momentum resolution function of momentum',100,-0.1,0.1,30,0.,300.)
+  ut.bookHist(h,'momResol','momentum resolution function of momentum', 200,-0.5,0.5,30,0.,300.)
+  ut.bookHist(h,'curvResol','momentum resolution function of momentum',200,-0.5,0.5,30,0.,300.)
   for n in range(sTree.GetEntries()):
    rc = sTree.GetEvent(n)
    if not findSimpleEvent(sTree): continue
@@ -3046,6 +3046,7 @@ def momResolution(PR=1,onlyPlotting=False):
    h[hname+'Perr']=h[hname+'P'].Clone(hname+'Perr')
    for n in range(1,h[hname+'P'].GetNbinsX()+1):
     h[hname+str(n)] = h[hname].ProjectionX(hname+str(n),n,n)
+    if n>10: h[hname+str(n)].Rebin(5)
     fitFunction = h[hname+str(n)].GetFunction('gauss')
     if not fitFunction: fitFunction = myGauss 
     fitFunction.SetParameter(0,h[hname+str(n)].GetMaximum()*0.02)
@@ -3061,8 +3062,11 @@ def momResolution(PR=1,onlyPlotting=False):
     h[hname+'Perr'].SetBinContent(n,mean)
     h[hname+'Perr'].SetBinError(n,abs(rms))
     h[hname+'P'].SetBinContent(n,abs(rms))
-   h[hname+'P'].Draw()
    h[hname+'P'].Fit('pol1','','',0.,150.)
+ h['momResolP'].SetMaximum(0.01)
+ h['momResolP'].Draw()
+
+ 
 def hitResolution():
  ut.bookHist(h,'hitResol','hit resolution',100,-0.5,0.5)
  for n in range(sTree.GetEntries()):
@@ -4302,7 +4306,44 @@ def MCcomparison(pot = 5.9,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
   for P in [5.,10.,50.,100.]:
    nbin = h['p/pt_x'+x].FindBin(P)
    print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt_x'+x].GetBinContent(nbin)/h['I-MCp/pt_x'+x].GetBinContent(nbin))
-
+# some code for 2 track events
+ if 0>1:
+  hp1 = h['p1/p2'].ProjectionX()
+  hp2 = h['p1/p2'].ProjectionY()
+  hp1.Add(hp2)
+  ratio = h['p/pt_x'].Clone('ratio')
+  ratio.Divide(hp1)
+  ratio.SetMinimum(0.)
+  ratio.SetMaximum(50.)
+  ratio.Draw()
+  p1p2 = hMC['p1/p2'].Clone('p1p2')
+  p1p2.Add(hCharm['p1/p2'],charmNorm*MbiasNorm)
+  mchp1 = p1p2.ProjectionX()
+  mchp2 = p1p2.ProjectionY()
+  mchp1.Add(mchp2)
+  mcratio = h['MCp/pt_x'].Clone('MCratio')
+  mcratio.Divide(mchp1)
+  mcratio.Draw('same')
+def MCchecks():
+ mompl = ROOT.TLorentzVector()
+ mommi = ROOT.TLorentzVector()
+ ut.bookHist(h,'resMwithTracks','mu+mu- inv mass',1500,0.,1.5)
+ ut.bookHist(h,'resM','mu+mu- inv mass',1500,0.,1.5)
+ for n in range(sTree.GetEntries()):
+  rc=sTree.GetEvent(n)
+  if n%10000==0: print n
+  muplus = []
+  muminus = []
+  for m in sTree.MCTrack:
+   if m.GetPdgCode()==13: muplus.append(m)
+   if m.GetPdgCode()==-13: muminus.append(m)
+  for mp in muplus:
+    mp.Get4Momentum(mompl)
+    for mm in muminus:
+      mm.Get4Momentum(mommi)
+      resonance=mommi+mompl
+      rc=h['resM'].Fill(resonance.M())
+      if sTree.FitTracks.GetEntries()>0 and not muflux_Reco.checkDiMuon(): rc=h['resMwithTracks'].Fill(resonance.M())
 def fcn(npar, gin, f, par, iflag):
 #calculate chisquare
    x='mu'
@@ -4546,6 +4587,7 @@ def recoMuonTaggerTracks():
   os.system('kill '+str(os.getpid()))
 def anaResiduals():
   muflux_Reco.trackKinematics(3.)
+  if MCdata: MCchecks()
   plotRPCExtrap(PR=1)
   norm = h['TrackMult'].GetEntries()
   print '*** Track Stats ***',norm
@@ -4604,6 +4646,8 @@ elif options.command == "recoStep1":
   recoStep1(PR=11)
 elif options.command == "anaResiduals":
   ROOT.gROOT.SetBatch(True)
+  if sTree.GetBranch('MCTrack'):
+   MCdata = True
   if not MCdata: importRTrel()
   withCorrections = False
   importAlignmentConstants()
@@ -4634,6 +4678,13 @@ elif options.command == "plotResiduals":
 elif options.command == "recoMuonTaggerTracks":
   importAlignmentConstants()
   recoMuonTaggerTracks()
+elif options.command == "momResolution":
+  MCdata = True
+  withDefaultAlignment = True
+  sigma_spatial = 0.25
+  withCorrections = False
+  importAlignmentConstants()
+  momResolution(PR=1,onlyPlotting=False)
 elif options.command == "test":
  yep.start('output.prof')
  for x in sTree.GetListOfBranches(): sTree.SetBranchStatus(x.GetName(),0)
