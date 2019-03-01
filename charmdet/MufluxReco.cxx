@@ -489,7 +489,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TTreeReaderValue <TClonesArray> RPCTrackX(*xSHiP, "RPCTrackX");
  TTreeReaderValue <TClonesArray> RPCTrackY(*xSHiP, "RPCTrackY");
  TTreeReaderValue <TClonesArray> TrackInfos(*xSHiP, "TrackInfos");*/
-
+ TH1D* h_Trscalers =  (TH1D*)(gDirectory->GetList()->FindObject("Trscalers"));
  TH1D* h_chi2 =  (TH1D*)(gDirectory->GetList()->FindObject("chi2"));
  TH1D* h_Nmeasurements = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurements"));
  TH2D* h_ppt = (TH2D*)(gDirectory->GetList()->FindObject("p/pt"));
@@ -514,14 +514,17 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t nx = 0;
  while (nx<nMax){
    sTree->GetEvent(nx);
+   h_Trscalers->Fill(1);
    nx+=1;
    Int_t Ntracks = FitTracks->GetEntries();
    Int_t Ngood = 0;
    Int_t Ngoodmu = 0;
+   if(Ntracks>0){ h_Trscalers->Fill(2);}
    for (Int_t k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
 // track quality
+     h_Trscalers->Fill(3);
      if (!fitStatus->isFitConverged()){continue;}
      TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
@@ -529,6 +532,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (hitsPerStation["x2"].size()<2){ continue;}
      if (hitsPerStation["x3"].size()<2){ continue;}
      if (hitsPerStation["x4"].size()<2){ continue;}
+     h_Trscalers->Fill(4);
      auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
      auto fittedState = aTrack->getFittedState();
      Float_t P = fittedState.getMomMag();
@@ -538,6 +542,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      h_chi2->Fill(chi2);
      h_Nmeasurements->Fill(fitStatus->getNdf());
      if (chi2 > chi2UL){ continue;}
+     h_Trscalers->Fill(5);
      h_ppt->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
      h_ppx->Fill(P,Px);
      h_Absppx->Fill(P,TMath::Abs(Px));
