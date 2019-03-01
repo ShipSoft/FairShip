@@ -518,7 +518,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    Int_t Ntracks = FitTracks->GetEntries();
    Int_t Ngood = 0;
    Int_t Ngoodmu = 0;
-   if (Ntracks>0 && MCdata && checkDiMuon() ){continue;} // reject randomly events with boosted dimuon channels
    for (Int_t k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
@@ -549,7 +548,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
-     
      Bool_t X = kFALSE;
      Bool_t Y = kFALSE;
      for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {

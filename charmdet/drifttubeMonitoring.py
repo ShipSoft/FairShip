@@ -4146,12 +4146,45 @@ def checkForDiMuon():
      boost = True
      break
    pName = t.GetProcName().Data()
-   if not (pName.find('Lepton pair')<0) or not (pName.find('Positron annihilation')<0): 
+   if pName.find('Lepton pair')<0 and pName.find('Positron annihilation')<0  and  pName.find('Hadronic inelastic')<0:
      boost = True
      break
-  if boost: 
-     if rnr.Rndm()>0.99: boost = False
   return boost
+def splitOffBoostedEvents():
+    curFile = sTree.GetCurrentFile().GetName()
+    newFile1 = curFile.replace(".root","_dimuon99.root")
+    newFile2 = curFile.replace(".root","_dimuon1.root")
+    os.system('cp '+curFile+' '+newFile1)
+    os.system('cp '+curFile+' '+newFile2)
+    # make new files without reco branches
+    sTree.SetBranchStatus("FitTracks",0)
+    sTree.SetBranchStatus("RPCTrackX",0)
+    sTree.SetBranchStatus("RPCTrackY",0)
+    sTree.SetBranchStatus("TrackInfos",0)
+    newf1 = ROOT.TFile(newFile1,"recreate")
+    newTree1 = sTree.CloneTree(0)
+    newf2 = ROOT.TFile(newFile2,"recreate")
+    newTree2 = sTree.CloneTree(0)
+    for n in range(sTree.GetEntries()):
+      sTree.GetEntry(n)
+      if checkForDiMuon() and rnr.Rndm()<0.99: rc = newTree1.Fill()
+      else:                                    rc = newTree2.Fill()
+    sTree.Clear()
+    newTree1.AutoSave()
+    newf1.Close()
+    newTree2.AutoSave()
+    newf2.Close()
+    newf1 = ROOT.TFile(newFile1)
+    newf2 = ROOT.TFile(newFile2)
+    n12 = newf1.cbmsim.GetEntries() + newf2.cbmsim.GetEntries()
+    N = sTree.GetEntries()
+    newf1.Close()
+    newf2.Close()
+    sTree.GetCurrentFile().Close()
+    if n12 == N: 
+       print "check OK"
+       os.system('mv '+newFile2+' '+curFile)
+    else: print "unitarity violated",f,n1,n2,sTree.GetEntries()
 
 def plotEnergyLoss():
  f=ROOT.TFile('PinPout.root')
@@ -4325,25 +4358,26 @@ def MCcomparison(pot = 5.9,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
   mcratio.Divide(mchp1)
   mcratio.Draw('same')
 def MCchecks():
- mompl = ROOT.TLorentzVector()
- mommi = ROOT.TLorentzVector()
- ut.bookHist(h,'resMwithTracks','mu+mu- inv mass',1500,0.,1.5)
- ut.bookHist(h,'resM','mu+mu- inv mass',1500,0.,1.5)
+ mult={}
+ mult['0']=0
  for n in range(sTree.GetEntries()):
   rc=sTree.GetEvent(n)
   if n%10000==0: print n
-  muplus = []
-  muminus = []
+  muon={}
   for m in sTree.MCTrack:
-   if m.GetPdgCode()==13: muplus.append(m)
-   if m.GetPdgCode()==-13: muminus.append(m)
-  for mp in muplus:
-    mp.Get4Momentum(mompl)
-    for mm in muminus:
-      mm.Get4Momentum(mommi)
-      resonance=mommi+mompl
-      rc=h['resM'].Fill(resonance.M())
-      if sTree.FitTracks.GetEntries()>0 and not muflux_Reco.checkDiMuon(): rc=h['resMwithTracks'].Fill(resonance.M())
+   if abs(m.GetPdgCode())==13:
+     mult['0']+=1
+     p = m.GetProcName().Data()
+     if not muon.has_key(p): muon[p]=0
+     muon[p]+=1
+  if len(muon)==0: sTree.MCTrack.Dump()
+  for p in muon:
+   if not mult.has_key(p): mult[p]={}
+   N = muon[p]
+   if not mult[p].has_key(N): mult[p][N]=0
+   mult[p][N]+=1
+ return mult
+
 def fcn(npar, gin, f, par, iflag):
 #calculate chisquare
    x='mu'
@@ -4492,13 +4526,6 @@ def recoStep1(PR=11):
     fGenFitArray.Clear()
     fTrackInfoArray.Clear()
     for x in ['X','Y']: fRPCTrackArray[x].Clear()
-    if MCdata: 
-      if checkForDiMuon(): 
-       for x in ['X','Y']: RPCTrackbranch[x].Fill()
-       fitTracks.Fill()
-       TrackInfos.Fill()
-       sTree.ShipEventHeader.SetUniqueID(1)
-       continue
     if PR==3: theTracks = bestTracks()
     else: theTracks = findTracks(PR)
     for aTrack in theTracks:
@@ -4685,6 +4712,7 @@ elif options.command == "momResolution":
   withCorrections = False
   importAlignmentConstants()
   momResolution(PR=1,onlyPlotting=False)
+elif options.command == "splitOffBoostedEvents": splitOffBoostedEvents()
 elif options.command == "test":
  yep.start('output.prof')
  for x in sTree.GetListOfBranches(): sTree.SetBranchStatus(x.GetName(),0)
