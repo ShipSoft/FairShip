@@ -217,8 +217,8 @@ void TargetTracker::ConstructGeometry() ////
   TGeoVolume* TT_scifi_plane_vert_volume = new TGeoVolume("TT_scifi_plane_vert", TT_scifi_plane_vert_box, SciFiMat);
   TT_scifi_plane_vert_volume->SetVisibility(0);
 
-  AddSensitiveVolume(TT_scifimat_hor_volume);
-  AddSensitiveVolume(TT_scifimat_vert_volume);
+  //AddSensitiveVolume(TT_scifimat_hor_volume);
+  //AddSensitiveVolume(TT_scifimat_vert_volume);
   
   //Creating physical volumes and multiply 
   TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, 0, new TGeoTranslation(0, -3.5 * scifimat_width, 0));
