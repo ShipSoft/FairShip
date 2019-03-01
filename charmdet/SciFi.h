@@ -1,5 +1,5 @@
-#ifndef SCIFIMODULES_H
-#define SCIFIMODULES_H
+#ifndef SCIFI_H
+#define SCIFI_H
 
 #include "FairModule.h"                 // for FairModule
 #include "FairDetector.h"                  // for FairDetector
@@ -11,16 +11,16 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
-class SciFiModulesPoint;
+class SciFiPoint;
 class FairVolume;
 class TClonesArray;
 
-class SciFiModules:public FairDetector
+class SciFi:public FairDetector
 {
   public:
-    SciFiModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="SciFiModules");
-    SciFiModules();
-    virtual ~SciFiModules();
+    SciFi(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="SciFi");
+    SciFi();
+    virtual ~SciFi();
 
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
@@ -50,7 +50,7 @@ class SciFiModules:public FairDetector
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
-    SciFiModulesPoint* AddHit(Int_t trackID, Int_t detID,
+    SciFiPoint* AddHit(Int_t trackID, Int_t detID,
         TVector3 pos, TVector3 mom,
         Double_t time, Double_t length,
         Double_t eLoss, Int_t pdgCode);
@@ -87,7 +87,7 @@ class SciFiModules:public FairDetector
     Double32_t     fELoss;             //!  energy loss
 
     /** container for data points */
-    TClonesArray*  fSciFiModulesPointCollection;
+    TClonesArray*  fSciFiPointCollection;
 
     Int_t InitMedium(const char* name);
 
@@ -110,7 +110,7 @@ class SciFiModules:public FairDetector
     Double_t DimX =0;
     Double_t DimY =0;
     Double_t DimZ = 0;
-    Double_t zSizeMS = 0; //dimension of the Magnetic SciFiModules volume
+    Double_t zSizeMS = 0; //dimension of the Magnetic SciFi volume
 
     Double_t overlap;
     Double_t DimZSciFiBox;
@@ -121,9 +121,9 @@ class SciFiModules:public FairDetector
     Double_t xs[8], ys[8], zs[8];
     Double_t xangle[8], yangle[8], zangle[8];
 
-    SciFiModules(const SciFiModules&);
-    SciFiModules& operator=(const SciFiModules&);
-    ClassDef(SciFiModules,1)
+    SciFi(const SciFi&);
+    SciFi& operator=(const SciFi&);
+    ClassDef(SciFi,1)
 
 };
 #endif

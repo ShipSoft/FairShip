@@ -43,9 +43,9 @@ def configure(run,ship_geo):
 
  if (ship_geo.MufluxSpectrometer.muflux==False):
 # === SciFi modules
-    SciFiModules = ROOT.SciFiModules("SciFiModules",ship_geo.SciFiModules.DX, ship_geo.SciFiModules.DY, ship_geo.SciFiModules.DZ,ROOT.kTRUE)
-    SciFiModules.SetBoxParam(ship_geo.SciFiModules.DX,ship_geo.SciFiModules.DY,ship_geo.SciFiModules.DZ, ship_geo.SciFiModules.zBox, ship_geo.SciFiModules.DimZpixelbox, ship_geo.SciFiModules.D1short, ship_geo.SciFiModules.D1long)
-    SciFiModules.SetSiliconDZ(ship_geo.SciFiModules.DimZSi)
+    SciFi = ROOT.SciFi("SciFi",ship_geo.SciFi.DX, ship_geo.SciFi.DY, ship_geo.SciFi.DZ,ROOT.kTRUE)
+    SciFi.SetBoxParam(ship_geo.SciFi.DX,ship_geo.SciFi.DY,ship_geo.SciFi.DZ, ship_geo.SciFi.zBox, ship_geo.SciFi.DimZpixelbox, ship_geo.SciFi.D1short, ship_geo.SciFi.D1long)
+    SciFi.SetSiliconDZ(ship_geo.SciFi.DimZSi)
 # === Pixel modules
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
     PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long)
@@ -53,9 +53,9 @@ def configure(run,ship_geo):
 # === Box
     detectorList.append(Box)
 # === SciFi modules
-    detectorList.append(SciFiModules)
-    for i, (x, y, z) in enumerate(zip(ship_geo.SciFiModules.xSi,ship_geo.SciFiModules.ySi,ship_geo.SciFiModules.zSi)):
-    	SciFiModules.SetSiliconStationPositions(i, x, y, z)
+    detectorList.append(SciFi)
+    for i, (x, y, z) in enumerate(zip(ship_geo.SciFi.xSi,ship_geo.SciFi.ySi,ship_geo.SciFi.zSi)):
+    	SciFi.SetSiliconStationPositions(i, x, y, z)
 # === Pixel modules
     detectorList.append(PixelModules)
     for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)):
