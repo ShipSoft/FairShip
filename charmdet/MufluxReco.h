@@ -31,6 +31,8 @@ public:
    virtual ~MufluxReco();
 
    /** methods **/
+   Bool_t checkDiMuon();
+   Bool_t checkCharm();
    void fillHitMaps(Int_t nMax=-1);
    void RPCextrap(Int_t nMax=-1);
    void trackKinematics(Float_t chi2UL,Int_t nMax=-1);
@@ -52,19 +54,21 @@ private:
     std::vector<int> deadChannels;
     StringFloatMap cuts;
     std::map<int,TVector3> RPCPositions;
+    TClonesArray    *MCTrack;
     TClonesArray    *FitTracks;
     TClonesArray    *TrackInfos;
     TClonesArray    *RPCTrackY;
     TClonesArray    *RPCTrackX;
     TClonesArray    *Digi_MuonTaggerHits;
     TClonesArray    *cDigi_MufluxSpectrometerHits;
+    TBranch        *b_MCTrack;   //!
     TBranch        *b_FitTracks;   //!
     TBranch        *b_TrackInfos;   //!
     TBranch        *b_RPCTrackY;   //!
     TBranch        *b_RPCTrackX;   //!
     TBranch        *b_Digi_MuonTaggerHits;   //!
     TBranch        *b_Digi_MufluxSpectrometerHits;   //!
-   ClassDef(MufluxReco, 2);
+   ClassDef(MufluxReco,3);
 };
 
 #endif

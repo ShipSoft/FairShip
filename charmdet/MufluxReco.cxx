@@ -4,10 +4,13 @@
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TH3D.h>
+#include "TRandom1.h"
+#include "TRandom3.h"
 #include "TString.h"
 #include "TObject.h"
 #include "RPCTrack.h"
 #include "RKTrackRep.h"
+#include "ShipMCTrack.h"
 #include "MufluxSpectrometerHit.h"
 #include "MuonTaggerHit.h"
 #include <algorithm>
@@ -15,6 +18,7 @@
 
 TVector3* parallelToZ = new TVector3(0., 0., 1.);
 TVector3* NewPosition = new TVector3(0., 0., 0.);
+std::vector<int> charmExtern = {4332,4232,4132,4232,4122,431,411,421};
 // -----   Standard constructor   ------------------------------------------ 
 MufluxReco::MufluxReco() {}
 // -----   Standard constructor   ------------------------------------------ 
@@ -29,9 +33,11 @@ MufluxReco::MufluxReco(TTreeReader* t)
   TrackInfos = 0;
   RPCTrackY = 0;
   RPCTrackX = 0;
+  MCTrack = 0;
   Digi_MuonTaggerHits = 0;
   cDigi_MufluxSpectrometerHits = 0;
   TTree* fChain = xSHiP->GetTree();
+  if (MCdata){fChain->SetBranchAddress("MCTrack", &MCTrack, &b_MCTrack);}
   fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
   fChain->SetBranchAddress("Digi_MufluxSpectrometerHits", &cDigi_MufluxSpectrometerHits, &b_Digi_MufluxSpectrometerHits);
   fChain->SetBranchAddress("Digi_MuonTaggerHits", &Digi_MuonTaggerHits, &b_Digi_MuonTaggerHits);
@@ -216,6 +222,30 @@ std::vector<std::vector<int>>  MufluxReco::findDTClusters(TClonesArray* hits, re
       printClustersPerStation(clusters,s,view)
    return clusters
 */
+Bool_t MufluxReco::checkCharm(){
+   Bool_t check = false;
+   for (Int_t m=0;m<MCTrack->GetEntries();m++) {
+      ShipMCTrack* mu = (ShipMCTrack*)MCTrack->At(m);
+      Int_t pdg = TMath::Abs(mu->GetPdgCode());
+      if(std::find(charmExtern.begin(),charmExtern.end(),pdg)!=charmExtern.end()) {check=true;}
+   }
+   return check;
+}
+Bool_t MufluxReco::checkDiMuon(){
+   std::vector<ShipMCTrack*> muplus;
+   std::vector<ShipMCTrack*> muminus;
+   Bool_t check = false;
+   for (Int_t m=0;m<MCTrack->GetEntries();m++) {
+      ShipMCTrack* mu = (ShipMCTrack*)MCTrack->At(m);
+      TString pName = mu->GetProcName();
+      if (!(pName.Data() == "Hadronic inelastic")){continue;}
+      check = true;
+      if (check && gRandom->Uniform(0.,1.)>0.99){check = false;}
+      break;}
+   
+   return check;
+}
+
 Bool_t MufluxReco::findSimpleEvent(Int_t nmin, Int_t nmax){
    nestedList spectrHitsSorted = nestedList();
    sortHits(cDigi_MufluxSpectrometerHits,&spectrHitsSorted);
@@ -459,7 +489,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TTreeReaderValue <TClonesArray> RPCTrackX(*xSHiP, "RPCTrackX");
  TTreeReaderValue <TClonesArray> RPCTrackY(*xSHiP, "RPCTrackY");
  TTreeReaderValue <TClonesArray> TrackInfos(*xSHiP, "TrackInfos");*/
-
+ TH1D* h_Trscalers =  (TH1D*)(gDirectory->GetList()->FindObject("Trscalers"));
  TH1D* h_chi2 =  (TH1D*)(gDirectory->GetList()->FindObject("chi2"));
  TH1D* h_Nmeasurements = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurements"));
  TH2D* h_ppt = (TH2D*)(gDirectory->GetList()->FindObject("p/pt"));
@@ -484,14 +514,17 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t nx = 0;
  while (nx<nMax){
    sTree->GetEvent(nx);
+   h_Trscalers->Fill(1);
    nx+=1;
    Int_t Ntracks = FitTracks->GetEntries();
    Int_t Ngood = 0;
    Int_t Ngoodmu = 0;
+   if(Ntracks>0){ h_Trscalers->Fill(2);}
    for (Int_t k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
 // track quality
+     h_Trscalers->Fill(3);
      if (!fitStatus->isFitConverged()){continue;}
      TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
@@ -499,6 +532,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (hitsPerStation["x2"].size()<2){ continue;}
      if (hitsPerStation["x3"].size()<2){ continue;}
      if (hitsPerStation["x4"].size()<2){ continue;}
+     h_Trscalers->Fill(4);
      auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
      auto fittedState = aTrack->getFittedState();
      Float_t P = fittedState.getMomMag();
@@ -508,6 +542,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      h_chi2->Fill(chi2);
      h_Nmeasurements->Fill(fitStatus->getNdf());
      if (chi2 > chi2UL){ continue;}
+     h_Trscalers->Fill(5);
      h_ppt->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
      h_ppx->Fill(P,Px);
      h_Absppx->Fill(P,TMath::Abs(Px));
@@ -518,7 +553,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
-     
      Bool_t X = kFALSE;
      Bool_t Y = kFALSE;
      for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {

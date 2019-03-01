@@ -186,13 +186,26 @@ def checkFilesWithTracks(D='.'):
  rest=[]
  zombie=[]
  # all RT files
- for x in os.listdir(D):
-  if x.find('_RT')>0 and x.find('histos')<0: 
+ if D.find('eos')<0:
+  for x in os.listdir(D):
+   if x.find('_RT')>0 and x.find('histos')<0: 
     test = ROOT.TFile(D+'/'+x)
     if not test.GetKey('cbmsim'):
        zombie.append(x)
     elif test.cbmsim.GetBranch("FitTracks"): fileList.append(x)
     else: rest.append(x)
+ else:
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+D,shell=True)
+  for x in temp.split('\n'):
+   if x.find('.root')<0: continue
+   fname =  x[x.find('/eos'):]
+   try: 
+    test=ROOT.TFile.Open(os.environ['EOSSHIP']+fname)
+    if not test.GetKey('cbmsim'):
+       zombie.append(fname)
+    elif test.cbmsim.GetBranch("FitTracks"): fileList.append(fname)
+    else: rest.append(fname)
+   except:zombie.append(fname)
  fileList.sort()
  print "n with tracks",len(fileList),' rest:',len(rest),' zombies:',zombie
  return fileList
@@ -268,12 +281,16 @@ def importRecoFiles(local='.',remote='/media/truf/disk2/home/truf/ShipSoft/ship-
 
 def mergeHistos(local='.',case='residuals'):
  allFiles = os.listdir(local)
- if case == 'residuals':  cmd = 'hadd -f residuals.root '
- else:  cmd = 'hadd -f momDistributions.root '
+ if case == 'residuals':  
+     dest = 'residuals.root'
+     tag = 'histos-residuals'
+ else:  
+     dest = 'momDistributions.root'
+     tag = 'histos-analysis'
+ cmd = "hadd -f "+dest+' '
  for x in allFiles:
-  if not x.find('histos')<0 : 
-   if (case == 'residuals' and  x.find('analysis')<0) or  \
-      (case != 'residuals' and not x.find('analysis')<0 ):   cmd += (local+'/'+x+' ')
+  if not x.find(tag)<0 : 
+     cmd += (local+'/'+x+' ')
  os.system(cmd)
 
 def checkRecoRun(eosLocation=eospath,local='.'):

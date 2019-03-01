@@ -1598,6 +1598,7 @@ for x in ['','mu']:
  ut.bookHist(h,'pxpy'+x,'px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
 ut.bookHist(h,'p1/p2','momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
 ut.bookHist(h,'pt1/pt2','P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
 
 bfield = ROOT.genfit.FairShipFields()
 Bx,By,Bz = ROOT.Double(),ROOT.Double(),ROOT.Double()
@@ -3010,8 +3011,8 @@ def plotLinearResiduals():
 
 def momResolution(PR=1,onlyPlotting=False):
  if not onlyPlotting:
-  ut.bookHist(h,'momResol','momentum resolution function of momentum',100,-0.1,0.1,30,0.,300.)
-  ut.bookHist(h,'curvResol','momentum resolution function of momentum',100,-0.1,0.1,30,0.,300.)
+  ut.bookHist(h,'momResol','momentum resolution function of momentum', 200,-0.5,0.5,30,0.,300.)
+  ut.bookHist(h,'curvResol','momentum resolution function of momentum',200,-0.5,0.5,30,0.,300.)
   for n in range(sTree.GetEntries()):
    rc = sTree.GetEvent(n)
    if not findSimpleEvent(sTree): continue
@@ -3046,6 +3047,7 @@ def momResolution(PR=1,onlyPlotting=False):
    h[hname+'Perr']=h[hname+'P'].Clone(hname+'Perr')
    for n in range(1,h[hname+'P'].GetNbinsX()+1):
     h[hname+str(n)] = h[hname].ProjectionX(hname+str(n),n,n)
+    if n>10: h[hname+str(n)].Rebin(5)
     fitFunction = h[hname+str(n)].GetFunction('gauss')
     if not fitFunction: fitFunction = myGauss 
     fitFunction.SetParameter(0,h[hname+str(n)].GetMaximum()*0.02)
@@ -3061,8 +3063,11 @@ def momResolution(PR=1,onlyPlotting=False):
     h[hname+'Perr'].SetBinContent(n,mean)
     h[hname+'Perr'].SetBinError(n,abs(rms))
     h[hname+'P'].SetBinContent(n,abs(rms))
-   h[hname+'P'].Draw()
    h[hname+'P'].Fit('pol1','','',0.,150.)
+ h['momResolP'].SetMaximum(0.01)
+ h['momResolP'].Draw()
+
+ 
 def hitResolution():
  ut.bookHist(h,'hitResol','hit resolution',100,-0.5,0.5)
  for n in range(sTree.GetEntries()):
@@ -4142,12 +4147,45 @@ def checkForDiMuon():
      boost = True
      break
    pName = t.GetProcName().Data()
-   if not (pName.find('Lepton pair')<0) or not (pName.find('Positron annihilation')<0): 
+   if pName.find('Lepton pair')<0 and pName.find('Positron annihilation')<0  and  pName.find('Hadronic inelastic')<0:
      boost = True
      break
-  if boost: 
-     if rnr.Rndm()>0.99: boost = False
   return boost
+def splitOffBoostedEvents():
+    curFile = sTree.GetCurrentFile().GetName()
+    newFile1 = curFile.replace(".root","_dimuon99.root")
+    newFile2 = curFile.replace(".root","_dimuon1.root")
+    os.system('cp '+curFile+' '+newFile1)
+    os.system('cp '+curFile+' '+newFile2)
+    # make new files without reco branches
+    sTree.SetBranchStatus("FitTracks",0)
+    sTree.SetBranchStatus("RPCTrackX",0)
+    sTree.SetBranchStatus("RPCTrackY",0)
+    sTree.SetBranchStatus("TrackInfos",0)
+    newf1 = ROOT.TFile(newFile1,"recreate")
+    newTree1 = sTree.CloneTree(0)
+    newf2 = ROOT.TFile(newFile2,"recreate")
+    newTree2 = sTree.CloneTree(0)
+    for n in range(sTree.GetEntries()):
+      sTree.GetEntry(n)
+      if checkForDiMuon() and rnr.Rndm()<0.99: rc = newTree1.Fill()
+      else:                                    rc = newTree2.Fill()
+    sTree.Clear()
+    newTree1.AutoSave()
+    newf1.Close()
+    newTree2.AutoSave()
+    newf2.Close()
+    newf1 = ROOT.TFile(newFile1)
+    newf2 = ROOT.TFile(newFile2)
+    n12 = newf1.cbmsim.GetEntries() + newf2.cbmsim.GetEntries()
+    N = sTree.GetEntries()
+    newf1.Close()
+    newf2.Close()
+    sTree.GetCurrentFile().Close()
+    if n12 == N: 
+       print "check OK"
+       os.system('mv '+newFile2+' '+curFile)
+    else: print "unitarity violated",f,n1,n2,sTree.GetEntries()
 
 def plotEnergyLoss():
  f=ROOT.TFile('PinPout.root')
@@ -4302,6 +4340,44 @@ def MCcomparison(pot = 5.9,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
   for P in [5.,10.,50.,100.]:
    nbin = h['p/pt_x'+x].FindBin(P)
    print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt_x'+x].GetBinContent(nbin)/h['I-MCp/pt_x'+x].GetBinContent(nbin))
+# some code for 2 track events
+ if 0>1:
+  hp1 = h['p1/p2'].ProjectionX()
+  hp2 = h['p1/p2'].ProjectionY()
+  hp1.Add(hp2)
+  ratio = h['p/pt_x'].Clone('ratio')
+  ratio.Divide(hp1)
+  ratio.SetMinimum(0.)
+  ratio.SetMaximum(50.)
+  ratio.Draw()
+  p1p2 = hMC['p1/p2'].Clone('p1p2')
+  p1p2.Add(hCharm['p1/p2'],charmNorm*MbiasNorm)
+  mchp1 = p1p2.ProjectionX()
+  mchp2 = p1p2.ProjectionY()
+  mchp1.Add(mchp2)
+  mcratio = h['MCp/pt_x'].Clone('MCratio')
+  mcratio.Divide(mchp1)
+  mcratio.Draw('same')
+def MCchecks():
+ mult={}
+ mult['0']=0
+ for n in range(sTree.GetEntries()):
+  rc=sTree.GetEvent(n)
+  if n%10000==0: print n
+  muon={}
+  for m in sTree.MCTrack:
+   if abs(m.GetPdgCode())==13:
+     mult['0']+=1
+     p = m.GetProcName().Data()
+     if not muon.has_key(p): muon[p]=0
+     muon[p]+=1
+  if len(muon)==0: sTree.MCTrack.Dump()
+  for p in muon:
+   if not mult.has_key(p): mult[p]={}
+   N = muon[p]
+   if not mult[p].has_key(N): mult[p][N]=0
+   mult[p][N]+=1
+ return mult
 
 def fcn(npar, gin, f, par, iflag):
 #calculate chisquare
@@ -4451,13 +4527,6 @@ def recoStep1(PR=11):
     fGenFitArray.Clear()
     fTrackInfoArray.Clear()
     for x in ['X','Y']: fRPCTrackArray[x].Clear()
-    if MCdata: 
-      if checkForDiMuon(): 
-       for x in ['X','Y']: RPCTrackbranch[x].Fill()
-       fitTracks.Fill()
-       TrackInfos.Fill()
-       sTree.ShipEventHeader.SetUniqueID(1)
-       continue
     if PR==3: theTracks = bestTracks()
     else: theTracks = findTracks(PR)
     for aTrack in theTracks:
@@ -4546,6 +4615,7 @@ def recoMuonTaggerTracks():
   os.system('kill '+str(os.getpid()))
 def anaResiduals():
   muflux_Reco.trackKinematics(3.)
+  if MCdata: MCchecks()
   plotRPCExtrap(PR=1)
   norm = h['TrackMult'].GetEntries()
   print '*** Track Stats ***',norm
@@ -4604,6 +4674,8 @@ elif options.command == "recoStep1":
   recoStep1(PR=11)
 elif options.command == "anaResiduals":
   ROOT.gROOT.SetBatch(True)
+  if sTree.GetBranch('MCTrack'):
+   MCdata = True
   if not MCdata: importRTrel()
   withCorrections = False
   importAlignmentConstants()
@@ -4634,6 +4706,14 @@ elif options.command == "plotResiduals":
 elif options.command == "recoMuonTaggerTracks":
   importAlignmentConstants()
   recoMuonTaggerTracks()
+elif options.command == "momResolution":
+  MCdata = True
+  withDefaultAlignment = True
+  sigma_spatial = 0.25
+  withCorrections = False
+  importAlignmentConstants()
+  momResolution(PR=1,onlyPlotting=False)
+elif options.command == "splitOffBoostedEvents": splitOffBoostedEvents()
 elif options.command == "test":
  yep.start('output.prof')
  for x in sTree.GetListOfBranches(): sTree.SetBranchStatus(x.GetName(),0)

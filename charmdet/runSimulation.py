@@ -1,5 +1,5 @@
 import os,subprocess,ROOT,time,multiprocessing
-ncpus = multiprocessing.cpu_count() / 2.
+ncpus = multiprocessing.cpu_count() - 2
 
 pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
 def count_python_processes(macroName):
@@ -14,6 +14,29 @@ fileList = {}
 badFiles = []
 eospath='/eos/experiment/ship/data/Mbias/background-prod-2018/'
 
+def run_FixedTarget(start):
+ N = 10000
+ for n in range(start,start+ncpus):
+   cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -n "+str(N)+" -e 1 -P -o run-"+str(n)+" &"
+   os.system(cmd)
+   while 1>0:
+     if count_python_processes('run_MufluxfixedTarget')<ncpus: break
+     time.sleep(100)
+ print "finished all the tasks."
+def mergeFiles():
+ N = 0
+ cmd = 'hadd -f pythia8_Geant4_1000_1.0-XXX.root '
+ for d in os.listdir('.'):
+   if d.find('run')<0:continue
+   if os.path.isdir(d):
+     fname = d+'/pythia8_Geant4_1000_1.0.root'
+     if  not os.path.isfile(fname): continue
+     f = ROOT.TFile(fname)
+     if f.Get('cbmsim'):
+      cmd += fname+' '
+      N+=1
+ os.system(cmd.replace('XXX',str(N)))
+
 def getFilesFromEOS():
 # list of files
  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospath,shell=True)
@@ -27,12 +50,12 @@ def getFilesFromEOS():
   fileList[fname]=nentries
  return fileList
 
-def getFilesLocal():
+def getFilesLocal(d='.'):
 # list of files
  fl = []
- temp = os.listdir('.')
+ temp = os.listdir(d)
  for x in temp:
-  if os.path.isdir(x): fl.append(x)
+  if os.path.isdir(d+'/'+x): fl.append(x)
  return fl
 
 def simulationStep(fnames=[]):
@@ -165,16 +188,51 @@ def makeMomDistributions(D='.',splitFactor=10):
         time.sleep(100)
  print "finished all the tasks."
 
-def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV"):
+def makeMomResolutions(D='.',splitFactor=10):
+ fileList,x,y = checkFilesWithTracks(D,splitFactor)
+ print "fileList established ",len(fileList)
+ for df in fileList:
+   tmp = df.split('/')
+   if len(tmp)>1: os.chdir(tmp[0])
+   if not "histos-momentumResolution-"+tmp[1] in os.listdir('.'):
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c momResolution -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+   if len(tmp)>1: os.chdir('../')
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+ print "finished all the tasks."
+
+
+def checkAlignment(D='.',splitFactor=10):
+ fileList,x,y = checkFilesWithTracks(D,splitFactor)
+ print "fileList established ",len(fileList)
+ for df in fileList:
+   tmp = df.split('/')
+   if len(tmp)>1: os.chdir(tmp[0])
+   if not "histos-residuals-"+tmp[1] in os.listdir('.'):
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c alignment -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+   if len(tmp)>1: os.chdir('../')
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+ print "finished all the tasks."
+
+
+def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True):
   remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination,shell=True).split('\n')
   fnames = getFilesLocal()
   for D in fnames:
     if not D in remote:
        os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir  "+destination+"/"+D)
+    remoteD = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination+'/'+D,shell=True).split('\n')
     for f in os.listdir(D):
+      if f in remoteD and update: continue
       fname = D+'/'+f
       cmd = "xrdcp -f "+fname+" $EOSSHIP/"+destination+"/"+fname
-      print cmd
       os.system(cmd)
 
 def mergeHistos(case='residuals'):
@@ -182,13 +240,18 @@ def mergeHistos(case='residuals'):
  cmd = {}
  for z in ['charm','mbias']:
   if case == 'residuals':  cmd[z] = 'hadd -f residuals-'+z+'.root '
+  elif case == 'momResolution':  cmd[z] = 'hadd -f momentumResolution.root '
   else:                    cmd[z] = 'hadd -f momDistributions-'+z+'.root '
  for d in dirList:
   for x in os.listdir(d):
    z='mbias'
    if d.find('charm')>0: z='charm'
-   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
- for z in ['charm','mbias']: os.system(cmd[z])
+   if (case == 'residuals' and not x.find('histos-residuals')<0 ):  cmd[z] += d+'/'+x+" "
+   elif (case == 'momResolution' and not x.find('momentumResolution')<0 ):  cmd['mbias'] += d+'/'+x+" "
+   elif (case == 'momDistribution' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
+ for z in ['charm','mbias']:
+     if z=='charm' and case == 'momResolution': continue
+     os.system(cmd[z])
 
 def redoMuonTracks():
  fileList,x,y = checkFilesWithTracks(D='.')
@@ -204,6 +267,36 @@ def redoMuonTracks():
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
  print "finished all the tasks."
+
+def splitOffBoostedEvents(splitFactor=10,check=False):
+ remote = "/home/truf/ship-ubuntu-1710-32/muflux/simulation/"
+ dirList=getFilesLocal(remote)
+ for d in dirList:
+   if not os.path.isdir(d): os.system('mkdir '+d)
+   os.chdir(d)
+   for f in os.listdir(remote+'/'+d):
+    if f.find('histo')<0 and not f.find('ship.conical')<0:
+     if not check:
+      os.system('cp '+remote+'/'+d+'/'+f+' .')
+      cmd = "python /home/truf/muflux/simulation/drifttubeMonitoring.py -c  splitOffBoostedEvents -f "+f+' &'
+      print 'execute:', cmd
+      os.system(cmd)
+      while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+     else:
+      # check
+      f99 = f.replace('.root','dimuon99.')
+      f1  = f.replace('.root','dimuon1.')
+      if f1 in os.listdir('.') and f2 in os.listdir('.'):
+        # only because i screwed up in drifttubeMonitoring
+        os.system('cp '+f1 +' tmp.root')
+        os.system('cp '+f99 +' '+f1)
+        os.system('mv tmp.root' +' '+f99)
+      else:
+        print 'something wrong',f
+   os.chdir('../')
+
 
 def checkStatistics(splitFactor=10):
  # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
