@@ -237,21 +237,12 @@ Bool_t MufluxReco::checkDiMuon(){
    Bool_t check = false;
    for (Int_t m=0;m<MCTrack->GetEntries();m++) {
       ShipMCTrack* mu = (ShipMCTrack*)MCTrack->At(m);
-      if (mu->GetPdgCode()==13){ muminus.push_back(mu);}
-      if (mu->GetPdgCode()==-13){ muplus.push_back(mu);}
-   }
-   TLorentzVector mompl;
-   TLorentzVector mommi;
-   for (auto mp : muplus) {
-    mp->Get4Momentum(mompl);
-    for (auto mm : muminus) {
-      mm->Get4Momentum(mommi);
-      auto resonance = mommi+mompl;
-      if (TMath::Abs( resonance.M() - 0.7755) < 0.001){check = true;}
-      if (TMath::Abs( resonance.M() - 1.0195) < 0.001){check = true;}
-    }
-   }
-   if (check && gRandom->Uniform(0.,1.)>0.99){check = false;}
+      TString pName = mu->GetProcName();
+      if (!(pName.Data() == "Hadronic inelastic")){continue;}
+      check = true;
+      if (check && gRandom->Uniform(0.,1.)>0.99){check = false;}
+      break;}
+   
    return check;
 }
 
