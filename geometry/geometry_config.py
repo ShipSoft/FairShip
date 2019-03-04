@@ -150,7 +150,7 @@ with ConfigRegistry.register_config("basic") as c:
     elif strawDesign==10:  # 10 - baseline for 2018 
      c.strawtubes.InnerStrawDiameter = 1.975*u.cm
      c.strawtubes.StrawPitch         = 3.60*u.cm  
-     c.strawtubes.DeltazLayer        = 1.6*u.cm   
+     c.strawtubes.DeltazLayer        = 2.1*u.cm   
      c.strawtubes.DeltazPlane        = 4.2*u.cm   
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
