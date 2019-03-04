@@ -1,10 +1,13 @@
 import os,subprocess,ROOT,time,multiprocessing
-ncpus = multiprocessing.cpu_count()*3./4.
+import pwd
+ncpus = int(multiprocessing.cpu_count()*3./4.)
 
 pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
 def count_python_processes(macroName):
+ username = pwd.getpwuid(os.getuid()).pw_name
+ callstring = "ps -f -u " + username
 # only works if screen is wide enough to print full name!
- status = subprocess.check_output('ps -f -u truf',shell=True)
+ status = subprocess.check_output(callstring,shell=True)
  n=0
  for x in status.split('\n'):
    if not x.find(macroName)<0 and not x.find('python') <0: n+=1
