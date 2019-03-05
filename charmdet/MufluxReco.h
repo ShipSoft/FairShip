@@ -31,7 +31,6 @@ public:
    virtual ~MufluxReco();
 
    /** methods **/
-   Bool_t checkDiMuon();
    Bool_t checkCharm();
    void fillHitMaps(Int_t nMax=-1);
    void RPCextrap(Int_t nMax=-1);
