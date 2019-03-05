@@ -855,8 +855,8 @@ class ShipDigiReco:
     pdg = 13
     meas = hitPosLists[atrack]
     nM = meas.size()
-    # if nM < 25 : continue                          # not enough hits to make a good trackfit 
-    # if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
+    if nM < 25 : continue                          # not enough hits to make a good trackfit 
+    if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
     if debug: 
        mctrack = self.sTree.MCTrack[atrack]
     # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
