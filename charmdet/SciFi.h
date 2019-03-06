@@ -14,7 +14,7 @@
 class SciFiPoint;
 class FairVolume;
 class TClonesArray;
-
+const int maxnSciFi = 100; //better to prepare arrays larger, to allow larger number of elements
 class SciFi:public FairDetector
 {
   public:
@@ -23,12 +23,10 @@ class SciFi:public FairDetector
     virtual ~SciFi();
 
     void ConstructGeometry();
-    void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZSciFi, Double_t Dim1Short, Double_t Dim1Long);
-    void SetSiliconDZ(Double_t SiliconDZ);
-    void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
-    void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
-    void SetSiliconDetNumber(Int_t nSilicon);
+    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
+    void SetStationDimensions(Double_t SciFiStationDX, Double_t SciFiStationDY, Double_t SciFiStationDZ);
+    void SetStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
+    void SetStationNumber(Int_t nSciFistations);
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -70,8 +68,6 @@ class SciFi:public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-    void DecodeVolumeID(Int_t detID,int &nHPT);
-
   private:
 
     /** Track information to be stored until the track leaves the
@@ -95,9 +91,6 @@ class SciFi:public FairDetector
 
   protected:
 
-    Double_t Dim1Short, Dim1Long;
-
-
     Double_t SBoxX = 0;
     Double_t SBoxY = 0;
     Double_t SBoxZ = 0;
@@ -110,16 +103,12 @@ class SciFi:public FairDetector
     Double_t DimX =0;
     Double_t DimY =0;
     Double_t DimZ = 0;
-    Double_t zSizeMS = 0; //dimension of the Magnetic SciFi volume
 
-    Double_t overlap;
-    Double_t DimZSciFiBox;
-
-    Int_t nSi;
+    Int_t nSciFi;
     Double_t DimZSi;
 
-    Double_t xs[8], ys[8], zs[8];
-    Double_t xangle[8], yangle[8], zangle[8];
+    Double_t xs[maxnSciFi], ys[maxnSciFi], zs[maxnSciFi];
+    Double_t xangle[maxnSciFi], yangle[maxnSciFi], zangle[maxnSciFi];
 
     SciFi(const SciFi&);
     SciFi& operator=(const SciFi&);

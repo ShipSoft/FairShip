@@ -44,8 +44,11 @@ def configure(run,ship_geo):
  if (ship_geo.MufluxSpectrometer.muflux==False):
 # === SciFi modules
     SciFi = ROOT.SciFi("SciFi",ship_geo.SciFi.DX, ship_geo.SciFi.DY, ship_geo.SciFi.DZ,ROOT.kTRUE)
-    SciFi.SetBoxParam(ship_geo.SciFi.DX,ship_geo.SciFi.DY,ship_geo.SciFi.DZ, ship_geo.SciFi.zBox, ship_geo.SciFi.DimZpixelbox, ship_geo.SciFi.D1short, ship_geo.SciFi.D1long)
-    SciFi.SetSiliconDZ(ship_geo.SciFi.DimZSi)
+    SciFi.SetBoxParam(ship_geo.SciFi.DX,ship_geo.SciFi.DY,ship_geo.SciFi.DZ, ship_geo.SciFi.zBox)
+    SciFi.SetStationNumber(ship_geo.SciFi.nstations)
+    SciFi.SetStationDimensions(ship_geo.SciFi.StationDimX, ship_geo.SciFi.StationDimY, ship_geo.SciFi.StationDimZ)
+    for i, (x, y, z) in enumerate(zip(ship_geo.SciFi.xSi,ship_geo.SciFi.ySi,ship_geo.SciFi.zSi)):
+    	SciFi.SetStationPositions(i, x, y, z)
 # === Pixel modules
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
     PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long)
@@ -54,8 +57,6 @@ def configure(run,ship_geo):
     detectorList.append(Box)
 # === SciFi modules
     detectorList.append(SciFi)
-    for i, (x, y, z) in enumerate(zip(ship_geo.SciFi.xSi,ship_geo.SciFi.ySi,ship_geo.SciFi.zSi)):
-    	SciFi.SetSiliconStationPositions(i, x, y, z)
 # === Pixel modules
     detectorList.append(PixelModules)
     for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)):
@@ -63,9 +64,6 @@ def configure(run,ship_geo):
 
  Spectrometer = ROOT.Spectrometer("Spectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
  Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long)
-# Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)
-
-# Spectrometer.SetSciFiDetPositions(ship_geo.Spectrometer.zSciFi1, ship_geo.Spectrometer.zSciFi2)
 # -----Goliath part by Annarita--------
  Spectrometer.SetGoliathSizes(ship_geo.Spectrometer.H, ship_geo.Spectrometer.TS, ship_geo.Spectrometer.LS, ship_geo.Spectrometer.BasisH);
  Spectrometer.SetCoilParameters(ship_geo.Spectrometer.CoilR, ship_geo.Spectrometer.UpCoilH, ship_geo.Spectrometer.LowCoilH,  ship_geo.Spectrometer.CoilD);
@@ -123,7 +121,6 @@ def configure(run,ship_geo):
  Scintillator.SetS_T2coords(ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2x_y)
 
  if (ship_geo.MufluxSpectrometer.muflux==False):
-    detectorList.append(Spectrometer)
     detectorList.append(MufluxSpectrometer)
  else:
     TargetStation = ROOT.MufluxTargetStation("MufluxTargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)

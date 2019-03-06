@@ -112,40 +112,32 @@ Int_t SciFi::InitMedium(const char* name)
   return geoBuild->createMedium(ShipMedium);
 }
 
-void SciFi::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZSciFi, Double_t D1short, Double_t D1long)
+void SciFi::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox)
 {
   SBoxX = SX;
   SBoxY = SY;
   SBoxZ = SZ;
   zBoxPosition = zBox;
-  DimZSciFiBox = SZSciFi;
-  Dim1Short = D1short;
-  Dim1Long = D1long;
 }
-
-void SciFi::SetSciFiDZ(Double_t SciFiDZ)
+//dimensions of SciFi stations
+void SciFi::SetStationDimensions(Double_t SciFiStationDX, Double_t SciFiStationDY, Double_t SciFiStationDZ)
 {
-  DimZSi = SciFiDZ;
+  DimX = SciFiStationDX;
+  DimY = SciFiStationDY;
+  DimZ = SciFiStationDZ;
 }
 
 
-void SciFi::SetSciFiStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz)
+void SciFi::SetStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz)
 {
   xs[nstation] = posx;
   ys[nstation] = posy;
   zs[nstation] = posz;
 }
 
-void SciFi::SetSciFiStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez)
+void SciFi::SetStationNumber(Int_t nSciFistations)
 {
-  xangle[nstation] = anglex;
-  yangle[nstation] = angley;
-  zangle[nstation] = anglez;
-}
-
-void SciFi::SetSciFiDetNumber(Int_t nSciFi)
-{
-  nSi = nSciFi;
+  nSciFi = nSciFistations;
 }
 
 
@@ -159,45 +151,29 @@ void SciFi::ConstructGeometry()
   InitMedium("air");
   TGeoMedium *air = gGeoManager->GetMedium("air");
 
-  InitMedium("iron");
-  TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-
   InitMedium("silicon");
   TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
-
-  InitMedium("CoilCopper");
-  TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
-
-  InitMedium("CoilAluminium");
-  TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
-
-  InitMedium("TTmedium");
-  TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
-
-  InitMedium("STTmix8020_2bar");
-  TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
 
   TGeoVolume *top = gGeoManager->GetTopVolume();
 
   //computing the largest offsets in order to set SciFiBox dimensions correctly
   Double_t offsetxmax = 0., offsetymax = 0.;
-  for (int istation = 0; istation < 8; istation++){
+  for (int istation = 0; istation < nSciFi; istation++){
     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
   }
-  //Double_t DimZSciFiBox = zs5 -zs0 +pairwisedistance + DimZSi;
-  TGeoBBox *SciFiBox = new TGeoBBox("SciFiBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZSciFiBox/2.); //The box is symmetric, offsets are not. So we enlarge the offset by a factor two for coverage
+  TGeoBBox *SciFiBox = new TGeoBBox("SciFiBox", SBoxX/2 + offsetxmax, SBoxY/2 + offsetymax, SBoxZ/2.);
   TGeoVolume *volSciFiBox = new TGeoVolume("volSciFiBox",SciFiBox,air);
-  Double_t inimodZoffset(zs[0]) ;//initial Z offset of SciFi Module 0 so as to avoid volume extrusion
-  top->AddNode(volSciFiBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
+  //positioning the mother volume
+  top->AddNode(volSciFiBox, 1, new TGeoTranslation(0,0,zBoxPosition)); 
 
 
-  TGeoBBox *SciFiy = new TGeoBBox("SciFiy", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
+  TGeoBBox *SciFiy = new TGeoBBox("SciFiy", DimX/2, DimY/2, DimZ/2); //long along y
   TGeoVolume *volSciFiy = new TGeoVolume("volSciFiy",SciFiy,Silicon);
   volSciFiy->SetLineColor(kBlue-5);
   AddSensitiveVolume(volSciFiy);
 
-  TGeoBBox *SciFix = new TGeoBBox("SciFix", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
+  TGeoBBox *SciFix = new TGeoBBox("SciFix", (DimX)/2, (DimY)/2, DimZ/2); //long along x
   TGeoVolume *volSciFix = new TGeoVolume("volSciFix",SciFix,Silicon);
   volSciFix->SetLineColor(kBlue-5);
   AddSensitiveVolume(volSciFix);
@@ -208,9 +184,9 @@ void SciFi::ConstructGeometry()
   //Alternated scifi stations optimized for y and x measurements
   Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kFALSE,kFALSE,kTRUE,kTRUE};
 
-  for (int iscifi = 0; iscifi < 8; iscifi++){
-    if (vertical[iscifi]) volSciFiBox->AddNode(volSciFiy, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-DimZSciFiBox/2.+ zs[iscifi]-inimodZoffset)); //compensation for the Node offset
-    else volSciFiBox->AddNode(volSciFix, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-DimZSciFiBox/2.+ zs[iscifi]-inimodZoffset));
+  for (int iscifi = 0; iscifi < nSciFi; iscifi++){
+    if (vertical[iscifi]) volSciFiBox->AddNode(volSciFiy, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-SBoxZ/2.+ zs[iscifi])); //compensation for the Node offset
+    else volSciFiBox->AddNode(volSciFix, SciFiIDlist[iscifi], new TGeoTranslation(xs[iscifi],ys[iscifi],-SBoxZ/2.+ zs[iscifi]));
   }
 
 }
@@ -277,11 +253,6 @@ void SciFi::Register()
 }
 
 // -----   Public method to Decode volume info  -------------------------------------------
-// -----   returns hpt, arm, rpc numbers -----------------------------------
-void SciFi::DecodeVolumeID(Int_t detID,int &nHPT)
-{
-  nHPT = detID;
-}
 
 TClonesArray* SciFi::GetCollection(Int_t iColl) const
 {

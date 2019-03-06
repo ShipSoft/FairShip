@@ -164,9 +164,6 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.PixelModules = AttrDict(z = 0*u.cm)
 
-    #SciFi Modules
-    c.SciFi = AttrDict(z = 0*u.cm)
-
     #Spectrometer
     c.Spectrometer = AttrDict(z = 0*u.cm)
     #Parameters for Goliath by Annarita
@@ -280,9 +277,6 @@ with ConfigRegistry.register_config("basic") as c:
        c.PixelModules.DX = 1*u.m
        c.PixelModules.DY = 0.5*u.m
        c.PixelModules.DZ = 13.5 * u.cm
-       c.SciFi.DX = 1*u.m
-       c.SciFi.DY = 0.5*u.m
-       c.SciFi.DZ = 13.5 * u.cm
 
     c.MufluxSpectrometer.DX = 2.*u.m
     c.MufluxSpectrometer.DY = 1.6*u.m
@@ -296,9 +290,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.DimZSi = 0.0200 * u.cm
     c.PixelModules.D1short = 3.36 * u.cm / 2.
     c.PixelModules.D1long = 4 * u.cm
-    c.SciFi.DimZSi  = 0.0200 * u.cm
-    c.SciFi.D1short = 3.36   * u.cm / 2.
-    c.SciFi.D1long  = 4      * u.cm
 
 
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
@@ -357,47 +348,55 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.ySi.append(-0.79636)
     c.PixelModules.zSi.append(13.85)
 
-    #SciFi measured values
+    #SciFi Modules
+    c.SciFi = AttrDict(z = 0*u.cm)
+    #mother volume dimensions
+    c.SciFi.DX = 50*u.cm 
+    c.SciFi.DY = 50*u.cm
+    c.SciFi.DZ = 28.07 * u.cm #as difference between positions of SF_DHBR and x of SF_UHTL in the Survey document
+
+    c.SciFi.nstations = 8  #number of stations (currently sensitive volumes)
+    #dimensions of each station
+    c.SciFi.StationDimX = 40 * u.cm
+    c.SciFi.StationDimY = 40 * u.cm
+    c.SciFi.StationDimZ = 0.0200 * u.cm
+    #SciFi position values (referred to the start of SciFi mother volume)
     c.SciFi.xSi = []
     c.SciFi.ySi = []
     c.SciFi.zSi = []
+    zscifigap = c.SciFi.DZ/c.SciFi.nstations - c.SciFi.StationDimZ #distance between center of two stations, for the moment equally spaced
     #Module 0
-    c.SciFi.xSi.append(1.53912)
-    c.SciFi.ySi.append(-0.002332)
-    c.SciFi.zSi.append(-0.13)
+    c.SciFi.xSi.append(0.)
+    c.SciFi.ySi.append(0.)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2)
     #Module 1
-    c.SciFi.xSi.append(-0.229076)
-    c.SciFi.ySi.append(0.005328)
-    c.SciFi.zSi.append(0.52)
+    c.SciFi.xSi.append(0.0)
+    c.SciFi.ySi.append(0.0)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + zscifigap)
     #Module 2
-    c.SciFi.xSi.append(0.704924)
-    c.SciFi.ySi.append(0.808437)
-    c.SciFi.zSi.append(2.412)
+    c.SciFi.xSi.append(0.0)
+    c.SciFi.ySi.append(0.0)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 2* zscifigap)
     #Module 3
-    c.SciFi.xSi.append(0.705433)
-    c.SciFi.ySi.append(-0.879224)
-    c.SciFi.zSi.append(3.09)
+    c.SciFi.xSi.append(0.0)
+    c.SciFi.ySi.append(0.0)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 3*zscifigap)
     #Module 4
-    c.SciFi.xSi.append(1.54963)
-    c.SciFi.ySi.append(-0.003912)
-    c.SciFi.zSi.append(5.17)
+    c.SciFi.xSi.append(0.0)
+    c.SciFi.ySi.append(0.0)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 4*zscifigap)
     #Module 5
-    c.SciFi.xSi.append(-0.221577)
-    c.SciFi.ySi.append(-0.023944)
-    c.SciFi.zSi.append(5.79)
+    c.SciFi.xSi.append(0.0)
+    c.SciFi.ySi.append(0.0)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 5*zscifigap)
     #Module 6
-    c.SciFi.xSi.append(0.690749)
-    c.SciFi.ySi.append(0.769728)
-    c.SciFi.zSi.append(7.77)
+    c.SciFi.xSi.append(0.0)
+    c.SciFi.ySi.append(0.0)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 6*zscifigap)
     #Module 7
-    c.SciFi.xSi.append(0.702302)
-    c.SciFi.ySi.append(-0.874356)
-    c.SciFi.zSi.append(8.46)
-
-    c.Spectrometer.DSciFi1X = 40 * u.cm;
-    c.Spectrometer.DSciFi1Y = 40 * u.cm;
-    c.Spectrometer.DSciFi2X = 40 * u.cm;
-    c.Spectrometer.DSciFi2Y = 40 * u.cm;
+    c.SciFi.xSi.append(0.0)
+    c.SciFi.ySi.append(0.0)
+    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 7*zscifigap)
 
     c.Spectrometer.Bvalue = 1 * u.tesla;
 
@@ -414,13 +413,16 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
 
-    c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi
-    c.SciFi.DimZpixelbox = c.SciFi.zSi[7] - c.SciFi.zSi[0] + c.SciFi.DimZSi
+    c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi    
 
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
+    #position of mother volumes
     c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh
     c.PixelModules.zBox = c.Spectrometer.zBox
+    PixelToSciFi = 469.05 #position of SciFi center defined with respect to distance to start of PixelBox, point PIXEL_UR-Measured in the survey document
+    temporaryoffset = 40. #due to muflux configuration of driftubes
+    c.SciFi.zBox = c.PixelModules.zBox - c.PixelModules.DimZpixelbox/2.  + 469.05 -temporaryoffset
 
 #   Need to add SciFi
     #Muon Filter
