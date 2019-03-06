@@ -16,6 +16,13 @@ def energy(p,m):
     """ Compute energy from momentum and mass """
     return math.sqrt(p*p + m*m)
 
+def penaltyFactor(m):
+    """ Penalty factor for high masses - dipole form factor in the proton-A' vertex """
+    """ m in GeV """
+    if m*m>0.71:
+        return math.pow(m*m/0.71,-4)
+    else:
+        return 1
 
 def zeta(p, theta):
     """ Fraction of the proton momentum carried away by the paraphoton in the beam direction """
@@ -164,8 +171,9 @@ def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi
             hPDFp.Fill(p,w)
     hPdfFilename = sys.modules['__main__'].outputDir+"/ParaPhoton_eps%s_m%s%s.root"%(epsilon,mDarkPhoton,suffix)
     outfile = r.TFile(hPdfFilename,"recreate")
-    weight = hPDF.Integral("width")
-    hPDF.Scale(1./weight)
+    #weight = hPDF.Integral("width")
+    #print "Weight = %3.3f"%weight
+    #hPDF.Scale(1./weight)
     hPDF.Write()
     hPDFp.Write()
     hPDFtheta.Write()
