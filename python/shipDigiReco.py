@@ -1023,7 +1023,6 @@ class ShipDigiReco:
   del self.fitter
   print 'finished writing tree'
   self.sTree.Write()
-  self.sTree.GetCurrentFile().Close()
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")
   if realPR: shipPatRec.finalize()
