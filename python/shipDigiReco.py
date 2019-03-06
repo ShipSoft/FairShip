@@ -850,9 +850,9 @@ class ShipDigiReco:
 #  
   for atrack in hitPosLists:
     if atrack < 0: continue # these are hits not assigned to MC track because low E cut
-    # pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
-    # if not self.PDG.GetParticle(pdg): continue # unknown particle
-    pdg = 13
+    pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
+    if not self.PDG.GetParticle(pdg): continue # unknown particle
+    # pdg = 13
     meas = hitPosLists[atrack]
     nM = meas.size()
     if nM < 25 : continue                          # not enough hits to make a good trackfit 
