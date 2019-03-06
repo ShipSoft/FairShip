@@ -69,7 +69,7 @@ def simulationStep(fnames=[]):
     print 'step 1:', cmd
     os.system(cmd)
     while 1>0:
-        if count_python_processes('run_simScript')<ncpus: break 
+        if count_python_processes('run_simScript')<ncpus: break
         time.sleep(100)
  print "finished all the tasks."
 def digiStep(fnames=[]):
@@ -111,16 +111,18 @@ def splitDigiFiles(splitFactor=10,fnames=[]):
      N+=deltaN
    os.chdir('../')
 
-def recoStep(splitFactor=10,fnames=[]):
+def recoStep(splitFactor=10,fnames=[],dimuon=False):
  if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
  for fname in fnames:
+    if dimuon and not fname.find('charm')<0: continue
     os.chdir(fname)
     mcFile = 'ship.conical.MuonBack-TGeant4_dig_RT.root'
     ofile = 'ship.conical.MuonBack-TGeant4_dig.root'
     for i in range(splitFactor):
      recoFile = mcFile.replace('.root','-'+str(i)+'.root')
+     if dimuon: recoFile = recoFile.replace('.root','_dimuon99.root')
      if recoFile in os.listdir('.'):
       test = ROOT.TFile(recoFile)
       sTree = test.Get('cbmsim')
@@ -128,10 +130,11 @@ def recoStep(splitFactor=10,fnames=[]):
        if sTree.GetBranch("FitTracks"): continue
       test.Close()
      digiFile = ofile.replace('.root','-'+str(i)+'.root')
-     if not digiFile in os.listdir('.'):
+     if digiFile in os.listdir('.'): 
+        os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
+     elif not recoFile in os.listdir('.'):
        print "digiFile missing",fname,digiFile
        continue
-     os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
      cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
      print 'step 2:', cmd,' in directory ',fname
      os.system(cmd)
@@ -140,18 +143,19 @@ def recoStep(splitFactor=10,fnames=[]):
         time.sleep(100)
     os.chdir('../')
  print "finished all the tasks."
-def checkFilesWithTracks(D='.',splitFactor=10):
+def checkFilesWithTracks(D='.',splitFactor=10,dimuon=False):
  fnames = getFilesLocal()
  Nfiles = len(fnames)
  fileList=[]
  fileListPer={}
  failedList = []
  for fname in fnames:
-    fileListPer[fname]=[]
+    fileListPer[fname]={}
     os.chdir(fname)
     mcFile = 'ship.conical.MuonBack-TGeant4_dig_RT.root'
     for i in range(splitFactor):
      recoFile = mcFile.replace('.root','-'+str(i)+'.root')
+     if dimuon: recoFile = recoFile.replace('.root','_dimuon99.root')
      if recoFile in os.listdir('.'):
       print "check",fname,recoFile
       test = ROOT.TFile(recoFile)
@@ -159,7 +163,9 @@ def checkFilesWithTracks(D='.',splitFactor=10):
       if sTree:
        if sTree.GetBranch("FitTracks"): 
         fileList.append(fname+'/'+recoFile)
-        fileListPer[fname].append(recoFile)
+        N=0
+        for event in sTree: N+=event.FitTracks.GetEntries()
+        fileListPer[fname][recoFile]=N/sTree.GetEntries()
       else:
         failedList.append(fname+'/'+recoFile)
     os.chdir('../')
@@ -286,15 +292,14 @@ def splitOffBoostedEvents(splitFactor=10,check=False):
         time.sleep(100)
      else:
       # check
-      f99 = f.replace('.root','dimuon99.')
-      f1  = f.replace('.root','dimuon1.')
-      if f1 in os.listdir('.') and f2 in os.listdir('.'):
-        # only because i screwed up in drifttubeMonitoring
-        os.system('cp '+f1 +' tmp.root')
-        os.system('cp '+f99 +' '+f1)
-        os.system('mv tmp.root' +' '+f99)
-      else:
-        print 'something wrong',f
+      f99 = f.replace('.root','_dimuon99.root')
+      f1 = f.replace('.root','_dimuon1.root')
+      l = os.listdir('.')
+      if not f in l or not f99 in l or f1 in l:
+        print 'something wrong',d,f
+        print f,f in l 
+        print f99,f99 in l 
+        print f1,f1 in l 
    os.chdir('../')
 
 
