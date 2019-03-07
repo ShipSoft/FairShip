@@ -1588,14 +1588,15 @@ def extrapolateToPlane(fT,z,cplusplus=True):
   return rc,pos,mom
 
 for x in ['','mu']:
- ut.bookHist(h,'p/pt'+x,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
- ut.bookHist(h,'p/px'+x,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
- ut.bookHist(h,'p/Abspx'+x,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
- ut.bookHist(h,'TrackMult'+x,'track multiplicity',10,-0.5,9.5)
- ut.bookHist(h,'chi2'+x,'chi2/nDoF',100,0.,10.)
- ut.bookHist(h,'Nmeasurements'+x,'number of measurements used',25,-0.5,24.5)
- ut.bookHist(h,'xy'+x,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
- ut.bookHist(h,'pxpy'+x,'px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
+ for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation"]:
+  ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
+  ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
+  ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+  ut.bookHist(h,'TrackMult'+x+s,'track multiplicity',10,-0.5,9.5)
+  ut.bookHist(h,'chi2'+x+s,'chi2/nDoF',100,0.,10.)
+  ut.bookHist(h,'Nmeasurements'+x+s,'number of measurements used',25,-0.5,24.5)
+  ut.bookHist(h,'xy'+x+s,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
+  ut.bookHist(h,'pxpy'+x+s,'px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
 ut.bookHist(h,'p1/p2','momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
 ut.bookHist(h,'pt1/pt2','P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
@@ -4196,8 +4197,9 @@ def muonOrigin():
    moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())
    pName = t.GetProcName().Data()
    if muP!=0: 
-     # if pName!=muP: print "two muons, two processes",n,muP,pName
-     doubleProc[1] +=1
+     if pName!=muP: 
+       # print "two muons, two processes",n,muP,pName
+       doubleProc[1] +=1
    else:
       muP = pName
    if not muonO.has_key(pName):
@@ -4319,6 +4321,7 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
    for i in opt:
     h[d+i+'p/pt_x'+x].SetTitle('momentum P')
     h[d+i+'p/pt_x'+x].SetMaximum(hMax*2.)
+    h[d+i+'p/pt_x'+x].SetMinimum(10.)
     h[d+i+'p/pt_x'+x].SetLineWidth(1)
     h[d+i+'p/pt_x'+x].SetMarkerSize(1)
     h[d+i+'p/pt_x'+x].SetLineColor(opt[i][1])
@@ -4339,6 +4342,7 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
    for i in opt:
     h[d+i+'p/pt_y'+x].SetTitle('transverse momentum Pt, P>'+str(pMin))
     h[d+i+'p/pt_y'+x].SetMaximum(hMay*2.)
+    h[d+i+'p/pt_y'+x].SetMinimum(10.)
     h[d+i+'p/pt_y'+x].SetLineWidth(1)
     h[d+i+'p/pt_y'+x].SetMarkerSize(1)
     h[d+i+'p/pt_y'+x].SetLineColor(opt[i][1])
@@ -4359,6 +4363,7 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
    for i in opt:
     h[d+i+'px'+x].SetTitle('Px, P>'+str(pMin))
     h[d+i+'px'+x].SetMaximum(hMaPx*2.)
+    h[d+i+'px'+x].SetMinimum(10.)
     h[d+i+'px'+x].SetLineWidth(1)
     h[d+i+'px'+x].SetMarkerSize(1)
     h[d+i+'px'+x].SetLineColor(opt[i][1])
@@ -4374,6 +4379,7 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
     h['lin'+d+i+'p/pt_x'+x]=h[d+i+'p/pt_x'+x].Clone('lin'+d+i+'p/pt_x'+x)
     h['lin'+d+i+'p/pt_x'+x].GetXaxis().SetRange(1,120)
     h['lin'+d+i+'p/pt_x'+x].SetMaximum(hMax*1.1)
+    h['lin'+d+i+'p/pt_x'+x].SetMinimum(0.)
     h['lin'+d+i+'p/pt_x'+x].Draw(opt[i][0])
     if i=='': h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],'data','PL')
     else:     h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],i,'PL')
@@ -4385,6 +4391,7 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
     h['lin'+d+i+'p/pt_y'+x]=h[d+i+'p/pt_y'+x].Clone('lin'+d+i+'p/pt_y'+x)
     h['lin'+d+i+'p/pt_y'+x].GetXaxis().SetRange(1,25)
     h['lin'+d+i+'p/pt_y'+x].SetMaximum(hMay*1.1)
+    h['lin'+d+i+'p/pt_y'+x].SetMinimum(0.)
     h['lin'+d+i+'p/pt_y'+x].SetStats(0)
     h['lin'+d+i+'p/pt_y'+x].Draw(opt[i][0])
     if i=='':   h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_y'+x],'data','PL')
@@ -4397,6 +4404,7 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
     h['lin'+d+i+'px'+x]=h[d+i+'px'+x].Clone('lin'+d+i+'px'+x)
     h['lin'+d+i+'px'+x].GetXaxis().SetRange(1,25)
     h['lin'+d+i+'px'+x].SetMaximum(hMaPx*1.1)
+    h['lin'+d+i+'px'+x].SetMinimum(0.)
     h['lin'+d+i+'px'+x].SetStats(0)
     h['lin'+d+i+'px'+x].Draw(opt[i][0])
     if i=='': h['leg'+t+str(tc)].AddEntry(h[d+i+'px'+x],'data','PL')
@@ -4424,7 +4432,7 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
  tmp.Rebin(5)
  h['ratio'].Divide(tmp)
  h['ratio'].SetMinimum(0.)
- h['ratio'].SetMaximum(1.)
+ h['ratio'].SetMaximum(0.2)
  h['ratio'].Draw()
  p1p2 = hMC['p1/p2'].Clone('p1p2')
  p1p2.Add(hCharm['p1/p2'],charmNorm*MbiasNorm)
