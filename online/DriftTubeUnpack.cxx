@@ -6,7 +6,6 @@
 #include <tuple>
 
 // ROOT headers
-#include "TClonesArray.h"
 #include "ROOT/TSeq.hxx"
 #include "ROOT/RVec.hxx"
 
@@ -24,13 +23,9 @@
 using DriftTubes::ChannelId;
 
 // DriftTubeUnpack: Constructor
-DriftTubeUnpack::DriftTubeUnpack()
-   : fRawTubes(new TClonesArray("MufluxSpectrometerHit")), fRawLateTubes(new TClonesArray("MufluxSpectrometerHit")),
-     fRawScintillator(new TClonesArray("ScintillatorHit")), fRawBeamCounter(new TClonesArray("ScintillatorHit")),
-     fRawMasterTrigger(new TClonesArray("ScintillatorHit")), fRawTriggers(new TClonesArray("ScintillatorHit")),
-     fPartitionId(0x0C00)
-{
-}
+DriftTubeUnpack::DriftTubeUnpack() {}
+
+DriftTubeUnpack::DriftTubeUnpack(bool charm) : fCharm(charm) {}
 
 // Virtual DriftTubeUnpack: Public method
 DriftTubeUnpack::~DriftTubeUnpack() = default;
@@ -38,6 +33,8 @@ DriftTubeUnpack::~DriftTubeUnpack() = default;
 // Init: Public method
 Bool_t DriftTubeUnpack::Init()
 {
+   LOG(INFO) << "DriftTubeUnpack : Initialising in " << (fCharm ? "charm" : "muon flux") << " mode."
+             << FairLogger::endl;
    Register();
    return kTRUE;
 }
@@ -176,7 +173,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       std::tie(channel, hit_time, time_over_threshold, first, matched) = match;
       auto hit_flags = matched ? flags : flags | DriftTubes::NoWidth;
       auto id = *(reinterpret_cast<ChannelId *>(&channel));
-      auto detectorId = id.GetDetectorId();
+      auto detectorId = fCharm ? id.GetDetectorIdCharm() : id.GetDetectorId();
       auto TDC = id.TDC;
       if (detectorId == 0) {
          // Trigger
@@ -240,7 +237,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       std::tie(channel, raw_time, time_over_threshold, first, hit_flags) = hit;
       hit_flags |= flags;
       auto id = *(reinterpret_cast<ChannelId *>(&channel));
-      auto detectorId = id.GetDetectorId();
+      auto detectorId = fCharm ? id.GetDetectorIdCharm() : id.GetDetectorId();
       auto TDC = id.TDC;
       Float_t time;
       try {
@@ -254,7 +251,8 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       }
       if (time > 4000) {
          LOG(WARNING) << "Late event found with time [ns]:";
-         LOG(WARNING) << time << " = " << 0.098 * delay << " - " << 0.098 * (delay + raw_time) - time << " - " << 0.098 * raw_time;
+         LOG(WARNING) << time << " = " << 0.098 * delay << " - " << 0.098 * (delay + raw_time) - time << " - "
+                      << 0.098 * raw_time;
       }
 
       new ((*(first ? fRawTubes : fRawLateTubes))[first ? nhitsTubes : nhitsLateTubes])
