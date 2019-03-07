@@ -23,7 +23,7 @@
 using DriftTubes::ChannelId;
 
 // DriftTubeUnpack: Constructor
-DriftTubeUnpack::DriftTubeUnpack() {}
+DriftTubeUnpack::DriftTubeUnpack() = default;
 
 DriftTubeUnpack::DriftTubeUnpack(bool charm) : fCharm(charm) {}
 
