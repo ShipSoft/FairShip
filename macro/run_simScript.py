@@ -569,9 +569,9 @@ run.Run(nEvents)
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
 parOut.open(parFile)
-rtdb.setOutput(parOut)
-rtdb.saveOutput()
-rtdb.printParamContexts()
+#rtdb.setOutput(parOut)
+#rtdb.saveOutput()
+#rtdb.printParamContexts()
 getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("%s/geofile_full.%s.root" % (outputDir, tag))

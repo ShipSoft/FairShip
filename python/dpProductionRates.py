@@ -78,11 +78,11 @@ def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
 def qcdprodRate(mass,epsilon,doprint=False):
     xs = 0
     if (mass > 3):
-        xs = math.exp(-5.673-0.8869*mass)
+        xs = math.exp(-5.928-0.8669*mass)
     elif (mass > 1.4):
-        xs = math.exp(-3.802-1.532*mass)
+        xs = math.exp(-4.1477-1.4745*mass)
     else:
-        xs = 0.0586-0.09037*mass + 0.0360743*mass*mass
+        xs = 0
     return xs*epsilon*epsilon
 
 def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
