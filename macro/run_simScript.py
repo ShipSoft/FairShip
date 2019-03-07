@@ -239,7 +239,11 @@ if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_con
 else: 
  ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup, cTarget = CharmTarget)
  if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
- else: print "Setup for charm cross section measurement has been set"
+ else: 
+  print "Setup for charm cross section measurement has been set"
+  if (((CharmTarget > 6) or (CharmTarget < 0)) and (CharmTarget != 16)): #check if proper option for emulsion target has been set
+   print "ERROR: unavailable option for CharmTarget. Currently implemented options: 1,2,3,4,5,6,16"
+   1/0
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
 #ship_geo.EmuMagnet.B = 0.
