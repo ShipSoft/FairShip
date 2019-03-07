@@ -231,20 +231,6 @@ Bool_t MufluxReco::checkCharm(){
    }
    return check;
 }
-Bool_t MufluxReco::checkDiMuon(){
-   std::vector<ShipMCTrack*> muplus;
-   std::vector<ShipMCTrack*> muminus;
-   Bool_t check = false;
-   for (Int_t m=0;m<MCTrack->GetEntries();m++) {
-      ShipMCTrack* mu = (ShipMCTrack*)MCTrack->At(m);
-      TString pName = mu->GetProcName();
-      if (!(pName.Data() == "Hadronic inelastic")){continue;}
-      check = true;
-      if (check && gRandom->Uniform(0.,1.)>0.99){check = false;}
-      break;}
-   
-   return check;
-}
 
 Bool_t MufluxReco::findSimpleEvent(Int_t nmin, Int_t nmax){
    nestedList spectrHitsSorted = nestedList();
@@ -520,6 +506,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    Int_t Ngood = 0;
    Int_t Ngoodmu = 0;
    if(Ntracks>0){ h_Trscalers->Fill(2);}
+   std::vector<int> muonTaggedTracks;
    for (Int_t k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
@@ -573,29 +560,33 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         h_Absppxmu->Fill(P,TMath::Abs(Px));
         h_xymu->Fill(pos[0],pos[1]);
         h_pxpymu->Fill(Px/Pz,Py/Pz);
-        if (P>5){Ngoodmu+=1;}
+        if (P>5){
+         Ngoodmu+=1;
+         muonTaggedTracks.push_back(k);
+        }
       }
-//
-     if (Ntracks==2 && k==0){
-      genfit::Track* bTrack = (genfit::Track*)FitTracks->At(1);
-      auto fitStatusb   = bTrack->getFitStatus();
-      if (!fitStatusb->isFitConverged()){ continue;}
-      Float_t chi2b = fitStatusb->getChi2()/float(fitStatusb->getNdf());
-      if (chi2b > chi2UL){ continue;}
+     }
+     h_TrackMult->Fill(Ngood);
+     h_TrackMultmu->Fill(Ngoodmu);
+
+     if (muonTaggedTracks.size()==2){
+      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(muonTaggedTracks[0]);
+      genfit::Track* bTrack = (genfit::Track*)FitTracks->At(muonTaggedTracks[1]);
+      auto fittedState = aTrack->getFittedState();
       auto fittedStateb = bTrack->getFittedState();
       Float_t Pb = fittedStateb.getMomMag();
       Float_t Pbx = fittedStateb.getMom().x();
       Float_t Pby = fittedStateb.getMom().y();
       Float_t Pbz = fittedStateb.getMom().z();
+      Float_t P = fittedState.getMomMag();
+      Float_t Px = fittedState.getMom().x();
+      Float_t Py = fittedState.getMom().y();
+      Float_t Pz = fittedState.getMom().z();
       h_p1p2->Fill(P,Pb);
       h_pt1pt2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
      }
-    h_TrackMult->Fill(Ngood);
-    h_TrackMultmu->Fill(Ngoodmu);
-   }
  }
 }
-
 
 void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
   nestedList spectrHitsSorted = *l;
