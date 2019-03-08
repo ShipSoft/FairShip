@@ -1588,7 +1588,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
   return rc,pos,mom
 
 for x in ['','mu']:
- for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation"]:
+ for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"]:
   ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
   ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
@@ -1600,6 +1600,7 @@ for x in ['','mu']:
 ut.bookHist(h,'p1/p2','momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
 ut.bookHist(h,'pt1/pt2','P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
+ut.bookHist(h,'weightVsSource','weight vs source MC check',10,-0.5,9.5,1000,0.0,1000.)
 
 bfield = ROOT.genfit.FairShipFields()
 Bx,By,Bz = ROOT.Double(),ROOT.Double(),ROOT.Double()
@@ -1801,17 +1802,17 @@ def momDisplay():
   rc = h['p/pt'+x].Draw('colz')
   rc = h[t].cd(2)
   rc.SetLogy(1)
-  h['p/pt_x'+x]=h['p/pt'+x].ProjectionX()
-  h['p/pt_x'+x].SetName('p/pt_x'+x)
-  h['p/pt_x'+x].SetTitle('P [GeV/c]')
-  h['p/pt_x'+x].Draw()
+  h['p/pt'+x+'_x']=h['p/pt'+x].ProjectionX()
+  h['p/pt'+x+'_x'].SetName('p/pt'+x+'_x')
+  h['p/pt'+x+'_x'].SetTitle('P [GeV/c]')
+  h['p/pt'+x+'_x'].Draw()
   rc = h[t].cd(3)
-  h['p/pt_y'+x]=h['p/pt'+x].ProjectionY()
-  h['p/pt_y'+x].SetName('p/pt_y'+x)
-  h['p/pt_y'+x].SetTitle('Pt [GeV/c]')
-  h['p/pt_y'+x].Draw()
+  h['p/pt'+x+'_y']=h['p/pt'+x].ProjectionY()
+  h['p/pt'+x+'_y'].SetName('p/pt'+x+'_y')
+  h['p/pt'+x+'_y'].SetTitle('Pt [GeV/c]')
+  h['p/pt'+x+'_y'].Draw()
   h[t].Update()
-  stats = h['p/pt_x'+x].FindObject('stats')
+  stats = h['p/pt'+x+'_x'].FindObject('stats')
   stats.SetOptStat(11111111)
   rc = h[t].cd(4)
   h['chi2'+x].Draw()
@@ -4271,7 +4272,7 @@ def plotEnergyLoss():
  ly.DrawClone()
 hMC = {}
 hCharm = {}
-def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
+def MCcomparison(pot = -1, pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # data RUN_2395, ~10.6 Billion PoT, 742 files
@@ -4280,135 +4281,176 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
   ut.readHists(h,'momDistributions.root')
   ut.readHists(hMC,'momDistributions-mbias.root')
   ut.readHists(hCharm,'momDistributions-charm.root')
+ optSorted = ['','MC','charm','MCHadronic inelastic','MCLepton pair','MCPositron annihilation'] # decay removed, only covers part
+ opt = {'':['',ROOT.kBlue,'data'],'MC':['same',ROOT.kRed,'MC total'],'charm':['same',ROOT.kGreen,'Charm'],
+           'MCDecay':['same',ROOT.kRed-2,'Decay'],'MCHadronic inelastic':['same',ROOT.kCyan,'Dimuon from decays'],
+           'MCLepton pair':['same',ROOT.kCyan+2,'Lepton pair'],'MCPositron annihilation':['same',ROOT.kRed+2,'Positron annihilation']}
  for d in ['','I-']:
   for x in ['','mu']:
    t = d+'MC-Comparison'+x
    if not h.has_key(t): ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1200,ny=600,cx=3,cy=2)
    if d=='':
     for a in ['p/pt','p/Abspx']:
-     h['MC'+a+x] = hMC[a+x].Clone('MC'+a+x)
-     h['charm'+a+x] = hCharm[a+x].Clone('charm'+a+x)
-     h['MC'+a+x].Add(hCharm[a+x],charmNorm*MbiasNorm)
-     h[a+'_x'+x]  = h[a+x].ProjectionX()
-     h['MC'+a+'_x'+x] = h['MC'+a+x].ProjectionX()
-     h['charm'+a+'_x'+x] = h['charm'+a+x].ProjectionX()
+     for source in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation"]:
+      xxx = a+x+source
+      h['MC'+xxx]    = hMC[xxx].Clone('MC'+xxx)
+      h['charm'+xxx] = hCharm[xxx].Clone('charm'+xxx)
+      h['MC'+xxx].Add(hCharm[xxx],charmNorm*MbiasNorm)
+      h[xxx+'_x']         = h[xxx].ProjectionX()
+      h['MC'+xxx+'_x']    = h['MC'+xxx].ProjectionX()
+      h['charm'+xxx+'_x'] = h['charm'+xxx].ProjectionX()
+    if pot <0: # (default, use Hans normalization)
+      pot = h['Trscalers'].GetBinContent(3) * 626. / 1.8E9
     if pot == 0:
      z = h['MCp/pt_x'+x]
      MCPG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
-     z = h['p/pt_x'+x]
+     z = h['p/pt'+x+'_x']
      PG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
      norm = PG5/MCPG5
      print "use as normalization:",norm
     else: norm = pot
-    opt = {'':['',ROOT.kBlue],'MC':['same',ROOT.kRed],'charm':['same',ROOT.kGreen]}
-    for i in opt:
-     h[i+'p/pt_y'+x]=h[i+'p/pt'+x].ProjectionY(i+'p/pt_y'+x,h[i+'p/pt_x'+x].FindBin(pMin),h[i+'p/pt_x'+x].GetNbinsX())
-     h[i+'px'+x]=h[i+'p/Abspx'+x].ProjectionY(i+'px'+x,h[i+'p/pt_x'+x].FindBin(pMin),h[i+'p/pt_x'+x].GetNbinsX())
-    for i in opt:
-     ut.makeIntegralDistrib(h,i+'p/pt_x'+x)
-     ut.makeIntegralDistrib(h,i+'p/pt_y'+x)
-     ut.makeIntegralDistrib(h,i+'px'+x)
+    for i1 in opt:
+     i = i1
+     source = ""
+     if not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+     h[i+'p/pt'+x+source+'_y']   =h[i+'p/pt'+x+source].ProjectionY(i+'p/pt'+x+source+'_y'      ,h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].GetNbinsX())
+     h[i+'p/Abspx'+x+source+'_y']=h[i+'p/Abspx'+x+source].ProjectionY(i+'p/Abspx'+x+source+'_y',h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].GetNbinsX())
+     ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_x')
+     ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_y')
+     ut.makeIntegralDistrib(h,i+'p/Abspx'+x+source+'_y')
 #
    tc = 1
    rc = h[t].cd(tc)
    rc.SetLogy(1)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.51,0.66,0.88,0.86)
-   h[d+'MCp/pt_x'+x].Scale(norm)
-   h[d+'charmp/pt_x'+x].Scale(norm*charmNorm*MbiasNorm)
-   mx1 = ut.findMaximumAndMinimum(h[d+'p/pt_x'+x])[1]
-   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/pt_x'+x])[1]
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   h[d+'MCp/pt'+x+'_x'].Scale(norm)
+   h[d+'charmp/pt'+x+'_x'].Scale(norm*charmNorm*MbiasNorm)
+   mx1 = ut.findMaximumAndMinimum(h[d+'p/pt'+x+'_x'])[1]
+   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/pt'+x+'_x'])[1]
    hMax = max(mx1,mx2)
-   for i in opt:
-    h[d+i+'p/pt_x'+x].SetTitle('momentum P')
-    h[d+i+'p/pt_x'+x].SetMaximum(hMax*2.)
-    h[d+i+'p/pt_x'+x].SetMinimum(10.)
-    h[d+i+'p/pt_x'+x].SetLineWidth(1)
-    h[d+i+'p/pt_x'+x].SetMarkerSize(1)
-    h[d+i+'p/pt_x'+x].SetLineColor(opt[i][1])
-    h[d+i+'p/pt_x'+x].SetStats(0)
-    h[d+i+'p/pt_x'+x].Draw(opt[i][0])
-    if i=='': h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],'data','PL')
-    else:     h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],i,'PL')
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC')<0: 
+       i = 'MC'
+       source = i1.split('MC')[1]
+    xx = x+source
+    h[d+i+'p/pt'+xx+'_x'].SetTitle('momentum P')
+    h[d+i+'p/pt'+xx+'_x'].SetMaximum(hMax*2.)
+    h[d+i+'p/pt'+xx+'_x'].SetMinimum(1.)
+    h[d+i+'p/pt'+xx+'_x'].SetLineWidth(1)
+    h[d+i+'p/pt'+xx+'_x'].SetMarkerSize(1)
+    h[d+i+'p/pt'+xx+'_x'].SetLineColor(opt[i1][1])
+    h[d+i+'p/pt'+xx+'_x'].SetStats(0)
+    h[d+i+'p/pt'+xx+'_x'].Draw(opt[i1][0])
+    h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
    tc = 2
    rc = h[t].cd(tc)
    rc.SetLogy(1)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.51,0.66,0.88,0.86)
-   h[d+'MCp/pt_y'+x].Scale(norm)
-   h[d+'charmp/pt_y'+x].Scale(norm*charmNorm*MbiasNorm)
-   mx1 = ut.findMaximumAndMinimum(h[d+'p/pt_y'+x])[1]
-   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/pt_y'+x])[1]
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   h[d+'MCp/pt'+x+'_y'].Scale(norm)
+   h[d+'charmp/pt'+x+'_y'].Scale(norm*charmNorm*MbiasNorm)
+   mx1 = ut.findMaximumAndMinimum(h[d+'p/pt'+x+'_y'])[1]
+   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/pt'+x+'_y'])[1]
    hMay = max(mx1,mx2)
-   for i in opt:
-    h[d+i+'p/pt_y'+x].SetTitle('transverse momentum Pt, P>'+str(pMin))
-    h[d+i+'p/pt_y'+x].SetMaximum(hMay*2.)
-    h[d+i+'p/pt_y'+x].SetMinimum(10.)
-    h[d+i+'p/pt_y'+x].SetLineWidth(1)
-    h[d+i+'p/pt_y'+x].SetMarkerSize(1)
-    h[d+i+'p/pt_y'+x].SetLineColor(opt[i][1])
-    h[d+i+'p/pt_y'+x].SetStats(0)
-    h[d+i+'p/pt_y'+x].Draw(opt[i][0])
-    if i=='': h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],'data','PL')
-    else: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],i,'PL')
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC')<0: 
+       i = 'MC'
+       source = i1.split('MC')[1]
+    xx = x+source
+    h[d+i+'p/pt'+xx+'_y'].SetTitle('transverse momentum Pt, P>'+str(pMin))
+    h[d+i+'p/pt'+xx+'_y'].SetMaximum(hMay*2.)
+    h[d+i+'p/pt'+xx+'_y'].SetMinimum(1.)
+    h[d+i+'p/pt'+xx+'_y'].SetLineWidth(1)
+    h[d+i+'p/pt'+xx+'_y'].SetMarkerSize(1)
+    h[d+i+'p/pt'+xx+'_y'].SetLineColor(opt[i1][1])
+    h[d+i+'p/pt'+xx+'_y'].SetStats(0)
+    h[d+i+'p/pt'+xx+'_y'].Draw(opt[i1][0])
+    h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
    tc = 3
    rc = h[t].cd(tc)
    rc.SetLogy(1)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.51,0.66,0.88,0.86)
-   h[d+'MCpx'+x].Scale(norm)
-   h[d+'charmpx'+x].Scale(norm*charmNorm*MbiasNorm)
-   mx1 = ut.findMaximumAndMinimum(h[d+'px'+x])[1]
-   mx2 = ut.findMaximumAndMinimum(h[d+'MCpx'+x])[1]
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   h[d+'MCp/Abspx'+x+'_y'].Scale(norm)
+   h[d+'charmp/Abspx'+x+'_y'].Scale(norm*charmNorm*MbiasNorm)
+   mx1 = ut.findMaximumAndMinimum(h[d+'p/Abspx'+x+'_y'])[1]
+   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/Abspx'+x+'_y'])[1]
    hMaPx = max(mx1,mx2)
-   for i in opt:
-    h[d+i+'px'+x].SetTitle('Px, P>'+str(pMin))
-    h[d+i+'px'+x].SetMaximum(hMaPx*2.)
-    h[d+i+'px'+x].SetMinimum(10.)
-    h[d+i+'px'+x].SetLineWidth(1)
-    h[d+i+'px'+x].SetMarkerSize(1)
-    h[d+i+'px'+x].SetLineColor(opt[i][1])
-    h[d+i+'px'+x].SetStats(0)
-    h[d+i+'px'+x].Draw(opt[i][0])
-    if i=='':  h['leg'+t+str(tc)].AddEntry(h[d+i+'px'+x],'data','PL')
-    else:      h['leg'+t+str(tc)].AddEntry(h[d+i+'px'+x],i,'PL')
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC')<0: 
+       i = 'MC'
+       source = i1.split('MC')[1]
+    xx = x+source
+    h[d+i+'p/Abspx'+xx+'_y'].SetTitle('Px, P>'+str(pMin))
+    h[d+i+'p/Abspx'+xx+'_y'].SetMaximum(hMaPx*2.)
+    h[d+i+'p/Abspx'+xx+'_y'].SetMinimum(1.)
+    h[d+i+'p/Abspx'+xx+'_y'].SetLineWidth(1)
+    h[d+i+'p/Abspx'+xx+'_y'].SetMarkerSize(1)
+    h[d+i+'p/Abspx'+xx+'_y'].SetLineColor(opt[i1][1])
+    h[d+i+'p/Abspx'+xx+'_y'].SetStats(0)
+    h[d+i+'p/Abspx'+xx+'_y'].Draw(opt[i1][0])
+    h['leg'+t+str(tc)].AddEntry(h[d+i+'p/Abspx'+xx+'_y'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
    tc = 4
    rc = h[t].cd(tc)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.51,0.66,0.88,0.86)
-   for i in opt:
-    h['lin'+d+i+'p/pt_x'+x]=h[d+i+'p/pt_x'+x].Clone('lin'+d+i+'p/pt_x'+x)
-    h['lin'+d+i+'p/pt_x'+x].GetXaxis().SetRange(1,120)
-    h['lin'+d+i+'p/pt_x'+x].SetMaximum(hMax*1.1)
-    h['lin'+d+i+'p/pt_x'+x].SetMinimum(0.)
-    h['lin'+d+i+'p/pt_x'+x].Draw(opt[i][0])
-    if i=='': h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],'data','PL')
-    else:     h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_x'+x],i,'PL')
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC')<0: 
+       i = 'MC'
+       source = i1.split('MC')[1]
+    xx = x+source
+    h['lin'+d+i+'p/pt'+xx+'_x']=h[d+i+'p/pt'+xx+'_x'].Clone('lin'+d+i+'p/pt'+xx+'_x')
+    h['lin'+d+i+'p/pt'+xx+'_x'].GetXaxis().SetRange(1,120)
+    h['lin'+d+i+'p/pt'+xx+'_x'].SetMaximum(hMax*1.1)
+    h['lin'+d+i+'p/pt'+xx+'_x'].SetMinimum(0.)
+    h['lin'+d+i+'p/pt'+xx+'_x'].Draw(opt[i1][0])
+    h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
    tc = 5
    rc = h[t].cd(tc)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.51,0.66,0.88,0.86)
-   for i in opt:
-    h['lin'+d+i+'p/pt_y'+x]=h[d+i+'p/pt_y'+x].Clone('lin'+d+i+'p/pt_y'+x)
-    h['lin'+d+i+'p/pt_y'+x].GetXaxis().SetRange(1,25)
-    h['lin'+d+i+'p/pt_y'+x].SetMaximum(hMay*1.1)
-    h['lin'+d+i+'p/pt_y'+x].SetMinimum(0.)
-    h['lin'+d+i+'p/pt_y'+x].SetStats(0)
-    h['lin'+d+i+'p/pt_y'+x].Draw(opt[i][0])
-    if i=='':   h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_y'+x],'data','PL')
-    else:       h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt_y'+x],i,'PL')
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC')<0: 
+       i = 'MC'
+       source = i1.split('MC')[1]
+    xx = x+source
+    h['lin'+d+i+'p/pt'+xx+'_y']=h[d+i+'p/pt'+xx+'_y'].Clone('lin'+d+i+'p/pt'+xx+'_y')
+    h['lin'+d+i+'p/pt'+xx+'_y'].GetXaxis().SetRange(1,25)
+    h['lin'+d+i+'p/pt'+xx+'_y'].SetMaximum(hMay*1.1)
+    h['lin'+d+i+'p/pt'+xx+'_y'].SetMinimum(0.)
+    h['lin'+d+i+'p/pt'+xx+'_y'].SetStats(0)
+    h['lin'+d+i+'p/pt'+xx+'_y'].Draw(opt[i1][0])
+    h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
    tc = 6
    rc = h[t].cd(tc)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.51,0.66,0.88,0.86)
-   for i in opt:
-    h['lin'+d+i+'px'+x]=h[d+i+'px'+x].Clone('lin'+d+i+'px'+x)
-    h['lin'+d+i+'px'+x].GetXaxis().SetRange(1,25)
-    h['lin'+d+i+'px'+x].SetMaximum(hMaPx*1.1)
-    h['lin'+d+i+'px'+x].SetMinimum(0.)
-    h['lin'+d+i+'px'+x].SetStats(0)
-    h['lin'+d+i+'px'+x].Draw(opt[i][0])
-    if i=='': h['leg'+t+str(tc)].AddEntry(h[d+i+'px'+x],'data','PL')
-    else:     h['leg'+t+str(tc)].AddEntry(h[d+i+'px'+x],i,'PL')
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC')<0: 
+       i = 'MC'
+       source = i1.split('MC')[1]
+    xx = x+source
+    h['lin'+d+i+'p/Abspx'+xx+'_y']=h[d+i+'p/Abspx'+xx+'_y'].Clone('lin'+d+i+'p/Abspx'+xx+'_y')
+    h['lin'+d+i+'p/Abspx'+xx+'_y'].GetXaxis().SetRange(1,25)
+    h['lin'+d+i+'p/Abspx'+xx+'_y'].SetMaximum(hMaPx*1.1)
+    h['lin'+d+i+'p/Abspx'+xx+'_y'].SetMinimum(0.)
+    h['lin'+d+i+'p/Abspx'+xx+'_y'].SetStats(0)
+    h['lin'+d+i+'p/Abspx'+xx+'_y'].Draw(opt[i][0])
+    h['leg'+t+str(tc)].AddEntry(h[d+i+'p/Abspx'+xx+'_y'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
    h[t].Update()
    h[t].Print('MC-Comparison'+d+x+'.pdf')
@@ -4417,8 +4459,8 @@ def MCcomparison(pot = 7.02,pMin = 5.,MbiasNorm=1.0,charmNorm = 0.176):
   if x != '': print "=== muon tagged ===="
   else: print       "=== all tracks  ===="
   for P in [5.,10.,50.,100.]:
-   nbin = h['p/pt_x'+x].FindBin(P)
-   print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt_x'+x].GetBinContent(nbin)/h['I-MCp/pt_x'+x].GetBinContent(nbin))
+   nbin = h['p/pt'+x+'_x'].FindBin(P)
+   print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt'+x+'_x'].GetBinContent(nbin)/h['I-MCp/pt'+x+'_x'].GetBinContent(nbin))
 # some code for 2 track events
  t = '2trackOverAll'
  if not h.has_key(t): ut.bookCanvas(h,key=t,title=' momentum of muons in 2-track events over all',nx=800,ny=600,cx=1,cy=1)
@@ -4478,9 +4520,9 @@ def fcn(npar, gin, f, par, iflag):
    chisq  = 0
    dataMC     = abs(par[0])
    charmMbias = abs(par[1])
-   for proj in ['p/Abspx_y'+x,'p/pt_x'+x]:
+   for proj in ['p/Abspx_y'+x,'p/pt'+x+'_x']:
     for n in range(1, h[proj].GetNbinsX()+1 ):
-     if proj == 'p/pt_x'+x and h[proj].GetBinCenter(n)<5: continue
+     if proj == 'p/pt'+x+'_x' and h[proj].GetBinCenter(n)<5: continue
      delta = h[proj].GetBinContent(n) - dataMC*(hMC[proj].GetBinContent(n)+charmMbias*hCharm[proj].GetBinContent(n))
      errSq = h[proj].GetBinContent(n) + dataMC**2*hMC[proj].GetBinContent(n)+\
              (dataMC*charmMbias)**2*hCharm[proj].GetBinContent(n)

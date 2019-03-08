@@ -19,6 +19,7 @@
 TVector3* parallelToZ = new TVector3(0., 0., 1.);
 TVector3* NewPosition = new TVector3(0., 0., 0.);
 std::vector<int> charmExtern = {4332,4232,4132,4232,4122,431,411,421};
+std::vector<int> beautyExtern = {5332,5232,5132,5232,5122,531,511,521};
 std::vector<int> muSources   = {221,223,333,113,331};
 // -----   Standard constructor   ------------------------------------------ 
 MufluxReco::MufluxReco() {}
@@ -240,6 +241,8 @@ Int_t MufluxReco::checkDiMuon(){
    Int_t mode = -1;
    Int_t channel = -1;
    std::vector<int> processed;
+   Double_t weight;
+   TH2D* h_weightVsSource=(TH2D*)(gDirectory->GetList()->FindObject("weightVsSource"));
    for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
       MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
       Int_t i = hit->GetTrackID();
@@ -252,13 +255,18 @@ Int_t MufluxReco::checkDiMuon(){
       Int_t moID      = TMath::Abs( mo->GetPdgCode());
       TString pName   = t->GetProcName();
       if ( strcmp("Decay",pName) == 0){ channel = 1;}
+      if ( strcmp("Primary particle emission",pName) == 0){ channel = 1;}
       if(std::find(muSources.begin(),muSources.end(),moID)!=muSources.end()) { channel = 2;} // count dimuon channels separately
+      if(std::find(charmExtern.begin(),charmExtern.end(),moID)!=charmExtern.end()) {channel = 5;} // this will go wrong for charm from beauty
+      if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}  
       if ( strcmp("Hadronic inelastic",pName) == 0){ channel = 2;}
       if ( strcmp("Lepton pair production",pName) == 0){ channel = 3;}
       if ( strcmp("Positron annihilation",pName) == 0){ channel = 4;}
-      if (channel != mode and mode>1) {return -2;} // for the moment, discard events with two processes
+      if (channel != mode and mode>1) {return -2;} // for the moment, discard events with two processes, and one boosted
       mode = channel;
+      weight = t->GetWeight();
    }
+   h_weightVsSource->Fill(mode,weight);
    return mode;
 }
 
@@ -510,7 +518,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult"};
  std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy"};
  std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> source  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation"};
+ std::vector<TString> source  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
 
  std::vector<TString>::iterator its = source.begin();
  while( its!=source.end()){
@@ -545,6 +553,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
          if (channel == 2){ source = "Hadronic inelastic";}
          if (channel == 3){ source = "Lepton pair";}
          if (channel == 4){ source = "Positron annihilation";}
+         if (channel == 5){ source = "charm";}
+         if (channel == 6){ source = "beauty";}
    }
    Bool_t fSource= kFALSE;
    if ( strcmp("", source.Data())!=0 ){fSource=kTRUE;}
