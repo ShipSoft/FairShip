@@ -49,7 +49,10 @@ void DriftTubeUnpack::Register()
    }
    fMan->Register("Digi_MufluxSpectrometerHits", "DriftTubes", fRawTubes.get(), kTRUE);
    fMan->Register("Digi_LateMufluxSpectrometerHits", "DriftTubes", fRawLateTubes.get(), kTRUE);
-   fMan->Register("Digi_Scintillators", "DriftTubes", fRawScintillator.get(), kTRUE);
+   if (!fCharm) {
+      // Scintillator was removed for charm
+      fMan->Register("Digi_Scintillators", "DriftTubes", fRawScintillator.get(), kTRUE);
+   }
    fMan->Register("Digi_BeamCounters", "DriftTubes", fRawBeamCounter.get(), kTRUE);
    fMan->Register("Digi_MasterTrigger", "DriftTubes", fRawMasterTrigger.get(), kTRUE);
    fMan->Register("Digi_Triggers", "DriftTubes", fRawTriggers.get(), kTRUE);
@@ -209,6 +212,11 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          nhitsBeamCounter++;
       } else if (detectorId == 6 || detectorId == 7) {
          // trigger scintillator
+         if (fCharm) {
+            LOG(ERROR) << "Scintillator hit found! There should not be any in the charmxsec measurement!"
+                       << FairLogger::endl;
+         }
+         continue;
          new ((*fRawScintillator)[nhitsScintillator])
             ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsScintillator++;
