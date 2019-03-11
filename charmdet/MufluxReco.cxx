@@ -256,8 +256,8 @@ Int_t MufluxReco::checkDiMuon(){
       TString pName   = t->GetProcName();
       if ( strcmp("Decay",pName) == 0){ channel = 1;}
       if ( strcmp("Primary particle emission",pName) == 0){ channel = 1;}
-      if(std::find(muSources.begin(),muSources.end(),moID)!=muSources.end()) { channel = 2;} // count dimuon channels separately
-      if(std::find(charmExtern.begin(),charmExtern.end(),moID)!=charmExtern.end()) {channel = 5;} // this will go wrong for charm from beauty
+      if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 2;} // count dimuon channels separately
+      if(std::find( charmExtern.begin(),charmExtern.end(), moID)!=charmExtern.end())  {channel = 5;} // this will go wrong for charm from beauty
       if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}  
       if ( strcmp("Hadronic inelastic",pName) == 0){ channel = 2;}
       if ( strcmp("Lepton pair production",pName) == 0){ channel = 3;}
@@ -512,6 +512,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TH1D* h_Trscalers =  (TH1D*)(gDirectory->GetList()->FindObject("Trscalers"));
  TH2D* h_p1p2 = (TH2D*)(gDirectory->GetList()->FindObject("p1/p2"));
  TH2D* h_pt1pt2 = (TH2D*)(gDirectory->GetList()->FindObject("pt1/pt2"));
+ TH2D* h_p1p2s = (TH2D*)(gDirectory->GetList()->FindObject("p1/p2"));
+ TH2D* h_pt1pt2s = (TH2D*)(gDirectory->GetList()->FindObject("pt1/pt2"));
 
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
@@ -653,9 +655,14 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       Float_t Px = fittedState.getMom().x();
       Float_t Py = fittedState.getMom().y();
       Float_t Pz = fittedState.getMom().z();
-      h_p1p2->Fill(P,Pb);
-      h_pt1pt2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+      if (fittedStateb.getCharge()*fittedState.getCharge()<0){
+       h_p1p2->Fill(P,Pb);
+       h_pt1pt2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+      }else{
+       h_p1p2s->Fill(P,Pb);
+       h_pt1pt2s->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
      }
+   }
  }
 }
 
