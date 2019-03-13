@@ -16,6 +16,7 @@ if "muShieldGeo" not in globals():
     muShieldGeo = None
 if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
+    #nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
     nuTauTargetDesign = 3
     #nuTauTargetDesign = 0
@@ -640,7 +641,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.zC = c.EmuMagnet.zC
     if nuTauTargetDesign==2:
         c.NuTauTarget.zC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot -2.5*u.m
-  
 
     if c.NuTauTarget.Design == 0: #TP                         
         c.NuTauTarget.row=7
@@ -656,9 +656,11 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.wall=20
     if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
         c.NuTauTarget.n_films = 56 
-        c.NuTauTarget.row = 6
-        c.NuTauTarget.col = 4
-        c.NuTauTarget.wall = 19
+        c.NuTauTarget.row = 9
+        c.NuTauTarget.col = 7
+        c.NuTauTarget.wall = 48
+        # manually set walls 48
+        # c.NuTauTarget.wall = 19
     c.NuTauTarget.target = 1  #number of neutrino target volumes
 
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
@@ -680,18 +682,23 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
-    c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
+    #c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
+    # manually set Z size 38 mm
+    c.NuTauTarget.BrZ = 3.8 * u.cm
+    # 
 
  #TargetTrackers!
     c.NuTauTT = AttrDict(z = 0 * u.cm)
     c.NuTauTT.design = nuTauTargetDesign
-    ##lenght = width * n (mats on orto-layer) + 10 cm (endpieces for SiPMs)  
-    c.NuTauTT.scifimat_width = 13 * u.cm
-    c.NuTauTT.scifimat_hor = c.NuTauTT.scifimat_width * 4 + 10 * u.cm
-    c.NuTauTT.scifimat_vert = c.NuTauTT.scifimat_width * 8 + 10 * u.cm
-    c.NuTauTT.scifimat_z = 0.145 * u.cm   ## Scintillating Fiber Mat
-    c.NuTauTT.support_z = 0.02 * u.cm     ## Support Carbon Composite
-    c.NuTauTT.honeycomb_z = 2 * u.cm      ## Airex (or Nomex)
+    # nuTauTargetDesign 4 * 8 mats, 19 + 3 planes
+    # manually set 7 * 11 mats
+    # lenght = width * n (mats on orto-layer) + 10 cm (endpieces for SiPMs)  
+    c.NuTauTT.scifimat_width = 13.045 * u.cm
+    c.NuTauTT.scifimat_hor = c.NuTauTT.scifimat_width * 7
+    c.NuTauTT.scifimat_vert = c.NuTauTT.scifimat_width * 11
+    c.NuTauTT.scifimat_z = 0.145 * u.cm   # Scintillating Fiber Mat
+    c.NuTauTT.support_z = 0.02 * u.cm     # Support Carbon Composite
+    c.NuTauTT.honeycomb_z = 2 * u.cm      # Airex (or Nomex)
 
     c.NuTauTT.TTX = c.NuTauTT.scifimat_hor
     c.NuTauTT.TTY = c.NuTauTT.scifimat_vert
@@ -703,11 +710,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauHPT.design = nuTauTargetDesign
 
     c.tauHPT.scifimat_width = 13 * u.cm
-    c.tauHPT.scifimat_hor = c.tauHPT.scifimat_width * 4 + 10 * u.cm
-    c.tauHPT.scifimat_vert = c.tauHPT.scifimat_width * 8 + 10 * u.cm
-    c.tauHPT.scifimat_z = 0.145 * u.cm   ## Scintillating Fiber Mat
-    c.tauHPT.support_z = 0.02 * u.cm     ## Support Carbon Composite
-    c.tauHPT.honeycomb_z = 2 * u.cm      ## Airex (or Nomex)
+    c.tauHPT.scifimat_hor = c.tauHPT.scifimat_width * 7 + 10 * u.cm
+    c.tauHPT.scifimat_vert = c.tauHPT.scifimat_width * 11 + 10 * u.cm
+    c.tauHPT.scifimat_z = 0.145 * u.cm   # Scintillating Fiber Mat
+    c.tauHPT.support_z = 0.02 * u.cm     # Support Carbon Composite
+    c.tauHPT.honeycomb_z = 2 * u.cm      # Airex (or Nomex)
     
     c.tauHPT.TTX = c.tauHPT.scifimat_hor
     c.tauHPT.TTY = c.tauHPT.scifimat_vert
