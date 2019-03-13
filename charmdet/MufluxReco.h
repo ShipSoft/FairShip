@@ -2,6 +2,7 @@
 #define MUFLUXRECO_H 1
 #include "TChain.h" 
 #include "MufluxSpectrometerHit.h"
+#include "MufluxSpectrometerPoint.h"
 #include "ScintillatorHit.h"
 #include "FairEventHeader.h"
 #include "TClonesArray.h"
@@ -31,11 +32,16 @@ public:
    virtual ~MufluxReco();
 
    /** methods **/
+   Bool_t checkCharm();
+   Int_t checkDiMuon();
    void fillHitMaps(Int_t nMax=-1);
+   void RPCextrap(Int_t nMax=-1);
    void trackKinematics(Float_t chi2UL,Int_t nMax=-1);
+   Bool_t findSimpleEvent(Int_t nmin, Int_t nmax);
    void setNoisyChannels(std::vector<int> x){noisyChannels = x;}
    void setDeadChannels(std::vector<int> x){deadChannels = x;}
    void setCuts(std::string s,float f){cuts[s]=f;}
+   void setRPCPositions(Int_t c,float x,float y,float z){RPCPositions[c]=TVector3(x,y,z);}
    void sortHits(TClonesArray *t, nestedList *l, Bool_t flag=kTRUE);
    Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom);
    StringVecIntMap countMeasurements(TrackInfo* trInfo);
@@ -48,15 +54,24 @@ private:
     std::vector<int> noisyChannels;
     std::vector<int> deadChannels;
     StringFloatMap cuts;
+    std::map<int,TVector3> RPCPositions;
+    TClonesArray    *MCTrack;
     TClonesArray    *FitTracks;
     TClonesArray    *TrackInfos;
     TClonesArray    *RPCTrackY;
     TClonesArray    *RPCTrackX;
+    TClonesArray    *Digi_MuonTaggerHits;
+    TClonesArray    *cDigi_MufluxSpectrometerHits;
+    TClonesArray    *MufluxSpectrometerPoints;
+    TBranch        *b_MCTrack;   //!
     TBranch        *b_FitTracks;   //!
     TBranch        *b_TrackInfos;   //!
     TBranch        *b_RPCTrackY;   //!
     TBranch        *b_RPCTrackX;   //!
-   ClassDef(MufluxReco, 1);
+    TBranch        *b_Digi_MuonTaggerHits;   //!
+    TBranch        *b_Digi_MufluxSpectrometerHits;   //!
+    TBranch        *b_MufluxSpectrometerPoints;   //!
+   ClassDef(MufluxReco,4);
 };
 
 #endif

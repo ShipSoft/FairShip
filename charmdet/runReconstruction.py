@@ -1,10 +1,13 @@
 import os,subprocess,ROOT,time,multiprocessing
-ncpus = multiprocessing.cpu_count()*3./4.
+import pwd
+ncpus = int(multiprocessing.cpu_count()*3./4.)
 
 pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
 def count_python_processes(macroName):
+ username = pwd.getpwuid(os.getuid()).pw_name
+ callstring = "ps -f -u " + username
 # only works if screen is wide enough to print full name!
- status = subprocess.check_output('ps -f -u truf',shell=True)
+ status = subprocess.check_output(callstring,shell=True)
  n=0
  for x in status.split('\n'):
    if not x.find(macroName)<0 and not x.find('python') <0: n+=1
@@ -111,6 +114,7 @@ def checkFilesWithRT():
  fNotok = []
  fRaw = []
  for fname in os.listdir('.'):
+   if not fname.find('histo')<0: continue
    if not fname.find('_RT')<0:
     f=ROOT.TFile(fname)
     RT = f.Get('tMinAndTmax')
@@ -119,9 +123,22 @@ def checkFilesWithRT():
     else:
      fNotok.append(fname)
    elif fname.find('root')>0 and not fname.find('SPILL')<0:
-    fRaw.append()
+    fRaw.append(fname)
  print len(fok),len(fNotok),len(fRaw)
  return fok,fNotok,fRaw
+
+def checkMinusTwo():
+ fok,fNotok,fRaw = checkFilesWithRT()
+ for fname in fRaw:
+  if fname in fok: continue
+  N=0
+  f=ROOT.TFile(fname)
+  sTree = f.cbmsim
+  for n in range(sTree.GetEntries()):
+   rc = sTree.GetEvent(n)
+   for m in sTree.Digi_MufluxSpectrometerHits:
+     if m.GetDetectorID()<0: N+=1
+  print sTree.GetCurrentFile(),N
 
 
 def recoStep1():
@@ -169,12 +186,31 @@ def runMC():
 
 def checkFilesWithTracks(D='.'):
  fileList=[]
+ rest=[]
+ zombie=[]
  # all RT files
- for x in os.listdir(D):
-  if x.find('_RT')>0 and x.find('histos')<0: 
+ if D.find('eos')<0:
+  for x in os.listdir(D):
+   if x.find('_RT')>0 and x.find('histos')<0: 
     test = ROOT.TFile(D+'/'+x)
-    if test.cbmsim.GetBranch("FitTracks"): fileList.append(x)
+    if not test.GetKey('cbmsim'):
+       zombie.append(x)
+    elif test.cbmsim.GetBranch("FitTracks"): fileList.append(x)
+    else: rest.append(x)
+ else:
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+D,shell=True)
+  for x in temp.split('\n'):
+   if x.find('.root')<0: continue
+   fname =  x[x.find('/eos'):]
+   try: 
+    test=ROOT.TFile.Open(os.environ['EOSSHIP']+fname)
+    if not test.GetKey('cbmsim'):
+       zombie.append(fname)
+    elif test.cbmsim.GetBranch("FitTracks"): fileList.append(fname)
+    else: rest.append(fname)
+   except:zombie.append(fname)
  fileList.sort()
+ print "n with tracks",len(fileList),' rest:',len(rest),' zombies:',zombie
  return fileList
 
 def checkFilesWithTracks2(D='.'):
@@ -215,21 +251,22 @@ def checkFilesWithTracks3(D='.'):
 
 def cleanUp(D='.'):
 # remove raw data files for files with RT relations
-   for x in os.listdir(D):
-    if not x.find('_RT')<0 and x.find('histos')<0:
-     test = ROOT.TFile(D+'/'+x)
-     if test.cbmsim.GetBranch("FitTracks"): # it is safe to delete the local raw file
-        r = x.replace('_RT','')
-        cmd = 'rm '+r
-        os.system(cmd)
+   fok,fNotok,fRaw = checkFilesWithRT()
+   for x in fok:
+     r = x.replace('_RT','')
+     cmd = 'rm '+r
+     os.system(cmd)
 
-def copyMissingFiles(remote="../../ship-ubuntu-1710-64/RUN_8000_2395"):
+def copyMissingFiles(remote="../../ship-ubuntu-1710-64/RUN_8000_2395",exclude=[]):
  toCopy=[]
  allFilesR = os.listdir(remote)
  allFilesL = os.listdir(".")
  for fname in allFilesR:
-   if fname.find('RT')>0:
-     if not fname in allFilesL: toCopy.append(fname)
+   if not fname.find('histos')<0: continue
+   if fname.find('RT')<0: continue
+   if fname in exclude: continue
+   if not fname in allFilesL: toCopy.append(fname)
+ print "len",len(toCopy)
  for fname in toCopy: os.system('cp '+remote+"/"+fname+' .')
 
 def importRTFiles(local='.',remote='/home/truf/ship-ubuntu-1710-32/home/truf/muflux/Jan08'):
@@ -247,12 +284,16 @@ def importRecoFiles(local='.',remote='/media/truf/disk2/home/truf/ShipSoft/ship-
 
 def mergeHistos(local='.',case='residuals'):
  allFiles = os.listdir(local)
- if case == 'residuals':  cmd = 'hadd -f residuals.root '
- else:  cmd = 'hadd -f momDistributions.root '
+ if case == 'residuals':  
+     dest = 'residuals.root'
+     tag = 'histos-residuals'
+ else:  
+     dest = 'momDistributions.root'
+     tag = 'histos-analysis'
+ cmd = "hadd -f "+dest+' '
  for x in allFiles:
-  if not x.find('histos')<0 : 
-   if (case == 'residuals' and  x.find('analysis')<0) or  \
-      (case != 'residuals' and not x.find('analysis')<0 ):   cmd += (local+'/'+x+' ')
+  if not x.find(tag)<0 : 
+     cmd += (local+'/'+x+' ')
  os.system(cmd)
 
 def checkRecoRun(eosLocation=eospath,local='.'):
@@ -278,15 +319,24 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
  if len(failures)!=0: print failures
 
 def makeMomDistributions():
- fileList=[]
- # all RT files
- for x in os.listdir('.'):
-  if x.find('_RT')>0 and x.find('histos')<0: 
-    fileList.append(x)
- fileList.sort()
+ fileList = checkFilesWithTracks(D='.')
+ # all RT files with tracks
  for fname in fileList:
+    if os.path.isfile('histos-analysis-'+fname): continue
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c anaResiduals -f "+fname+' &'
     print 'momentum analysis:', cmd
+    os.system(cmd)
+    time.sleep(10)
+    while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(10)
+ print "finished all the tasks."
+
+def redoMuonTracks():
+ fileList = checkFilesWithTracks(D='.')
+ for fname in fileList:
+    cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c  recoMuonTaggerTracks -u 1 -f "+fname+' &'
+    print 'redo muonTracks:', cmd
     os.system(cmd)
     time.sleep(10)
     while 1>0:
@@ -304,10 +354,10 @@ def pot():
  scalerStat = {}
  for fname in fileList:
    f=ROOT.TFile(fname)
-   scalers = f.scalers
-   if not scalers:
+   if not f.FindKey("scalers"):
      print "no scalers in this file",fname
      continue
+   scalers = f.scalers
    scalers.GetEntry(0)
    for x in scalers.GetListOfBranches():
     name = x.GetName()

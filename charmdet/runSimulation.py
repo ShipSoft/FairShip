@@ -1,5 +1,5 @@
 import os,subprocess,ROOT,time,multiprocessing
-ncpus = multiprocessing.cpu_count() / 2.
+ncpus = multiprocessing.cpu_count() - 2
 
 pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
 def count_python_processes(macroName):
@@ -14,6 +14,29 @@ fileList = {}
 badFiles = []
 eospath='/eos/experiment/ship/data/Mbias/background-prod-2018/'
 
+def run_FixedTarget(start):
+ N = 10000
+ for n in range(start,start+ncpus):
+   cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -n "+str(N)+" -e 1 -P -o run-"+str(n)+" &"
+   os.system(cmd)
+   while 1>0:
+     if count_python_processes('run_MufluxfixedTarget')<ncpus: break
+     time.sleep(100)
+ print "finished all the tasks."
+def mergeFiles():
+ N = 0
+ cmd = 'hadd -f pythia8_Geant4_1000_1.0-XXX.root '
+ for d in os.listdir('.'):
+   if d.find('run')<0:continue
+   if os.path.isdir(d):
+     fname = d+'/pythia8_Geant4_1000_1.0.root'
+     if  not os.path.isfile(fname): continue
+     f = ROOT.TFile(fname)
+     if f.Get('cbmsim'):
+      cmd += fname+' '
+      N+=1
+ os.system(cmd.replace('XXX',str(N)))
+
 def getFilesFromEOS():
 # list of files
  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospath,shell=True)
@@ -27,12 +50,12 @@ def getFilesFromEOS():
   fileList[fname]=nentries
  return fileList
 
-def getFilesLocal():
+def getFilesLocal(d='.'):
 # list of files
  fl = []
- temp = os.listdir('.')
+ temp = os.listdir(d)
  for x in temp:
-  if os.path.isdir(x): fl.append(x)
+  if os.path.isdir(d+'/'+x): fl.append(x)
  return fl
 
 def simulationStep(fnames=[]):
@@ -46,7 +69,7 @@ def simulationStep(fnames=[]):
     print 'step 1:', cmd
     os.system(cmd)
     while 1>0:
-        if count_python_processes('run_simScript')<ncpus: break 
+        if count_python_processes('run_simScript')<ncpus: break
         time.sleep(100)
  print "finished all the tasks."
 def digiStep(fnames=[]):
@@ -88,16 +111,18 @@ def splitDigiFiles(splitFactor=10,fnames=[]):
      N+=deltaN
    os.chdir('../')
 
-def recoStep(splitFactor=10,fnames=[]):
+def recoStep(splitFactor=10,fnames=[],dimuon=False):
  if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
  for fname in fnames:
+    if dimuon and not fname.find('charm')<0: continue
     os.chdir(fname)
     mcFile = 'ship.conical.MuonBack-TGeant4_dig_RT.root'
     ofile = 'ship.conical.MuonBack-TGeant4_dig.root'
     for i in range(splitFactor):
      recoFile = mcFile.replace('.root','-'+str(i)+'.root')
+     if dimuon: recoFile = recoFile.replace('.root','_dimuon99.root')
      if recoFile in os.listdir('.'):
       test = ROOT.TFile(recoFile)
       sTree = test.Get('cbmsim')
@@ -105,10 +130,11 @@ def recoStep(splitFactor=10,fnames=[]):
        if sTree.GetBranch("FitTracks"): continue
       test.Close()
      digiFile = ofile.replace('.root','-'+str(i)+'.root')
-     if not digiFile in os.listdir('.'):
+     if digiFile in os.listdir('.'): 
+        os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
+     elif not recoFile in os.listdir('.'):
        print "digiFile missing",fname,digiFile
        continue
-     os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
      cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
      print 'step 2:', cmd,' in directory ',fname
      os.system(cmd)
@@ -117,33 +143,43 @@ def recoStep(splitFactor=10,fnames=[]):
         time.sleep(100)
     os.chdir('../')
  print "finished all the tasks."
-def checkFilesWithTracks(D='.',splitFactor=10):
+def checkFilesWithTracks(D='.',splitFactor=10,dimuon=False):
  fnames = getFilesLocal()
  Nfiles = len(fnames)
  fileList=[]
+ fileListPer={}
+ failedList = []
  for fname in fnames:
+    fileListPer[fname]={}
     os.chdir(fname)
     mcFile = 'ship.conical.MuonBack-TGeant4_dig_RT.root'
     for i in range(splitFactor):
      recoFile = mcFile.replace('.root','-'+str(i)+'.root')
+     if dimuon: recoFile = recoFile.replace('.root','_dimuon99.root')
      if recoFile in os.listdir('.'):
       print "check",fname,recoFile
       test = ROOT.TFile(recoFile)
       sTree = test.Get('cbmsim')
       if sTree:
-       if sTree.GetBranch("FitTracks"): fileList.append(fname+'/'+recoFile)
+       if sTree.GetBranch("FitTracks"): 
+        fileList.append(fname+'/'+recoFile)
+        N=0
+        for event in sTree: N+=event.FitTracks.GetEntries()
+        fileListPer[fname][recoFile]=N/sTree.GetEntries()
+      else:
+        failedList.append(fname+'/'+recoFile)
     os.chdir('../')
  fileList.sort()
- return fileList
+ return fileList,fileListPer,failedList
 
 def cleanUp():
- reco = checkFilesWithTracks()
+ reco,x,y = checkFilesWithTracks()
  for f in reco:
   df = f.replace('_RT','')
   if os.path.isfile(df): os.system('rm ' +df)
 
 def makeMomDistributions(D='.',splitFactor=10):
- fileList=checkFilesWithTracks(D,splitFactor)
+ fileList,x,y = checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
  for df in fileList:
    tmp = df.split('/')
@@ -158,23 +194,119 @@ def makeMomDistributions(D='.',splitFactor=10):
         time.sleep(100)
  print "finished all the tasks."
 
+def makeMomResolutions(D='.',splitFactor=10):
+ fileList,x,y = checkFilesWithTracks(D,splitFactor)
+ print "fileList established ",len(fileList)
+ for df in fileList:
+   tmp = df.split('/')
+   if len(tmp)>1: os.chdir(tmp[0])
+   if not "histos-momentumResolution-"+tmp[1] in os.listdir('.'):
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c momResolution -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+   if len(tmp)>1: os.chdir('../')
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+ print "finished all the tasks."
+
+
+def checkAlignment(D='.',splitFactor=10):
+ fileList,x,y = checkFilesWithTracks(D,splitFactor)
+ print "fileList established ",len(fileList)
+ for df in fileList:
+   tmp = df.split('/')
+   if len(tmp)>1: os.chdir(tmp[0])
+   if not "histos-residuals-"+tmp[1] in os.listdir('.'):
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c alignment -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+   if len(tmp)>1: os.chdir('../')
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+ print "finished all the tasks."
+
+
+def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True):
+  remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination,shell=True).split('\n')
+  fnames = getFilesLocal()
+  for D in fnames:
+    if not D in remote:
+       os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir  "+destination+"/"+D)
+    remoteD = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination+'/'+D,shell=True).split('\n')
+    for f in os.listdir(D):
+      if f in remoteD and update: continue
+      fname = D+'/'+f
+      cmd = "xrdcp -f "+fname+" $EOSSHIP/"+destination+"/"+fname
+      os.system(cmd)
+
 def mergeHistos(case='residuals'):
  dirList=getFilesLocal()
  cmd = {}
  for z in ['charm','mbias']:
   if case == 'residuals':  cmd[z] = 'hadd -f residuals-'+z+'.root '
+  elif case == 'momResolution':  cmd[z] = 'hadd -f momentumResolution.root '
   else:                    cmd[z] = 'hadd -f momDistributions-'+z+'.root '
  for d in dirList:
   for x in os.listdir(d):
    z='mbias'
    if d.find('charm')>0: z='charm'
-   if (case != 'residuals' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
- for z in ['charm','mbias']: os.system(cmd[z])
+   if (case == 'residuals' and not x.find('histos-residuals')<0 ):  cmd[z] += d+'/'+x+" "
+   elif (case == 'momResolution' and not x.find('momentumResolution')<0 ):  cmd['mbias'] += d+'/'+x+" "
+   elif (case == 'momDistribution' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
+ for z in ['charm','mbias']:
+     if z=='charm' and case == 'momResolution': continue
+     os.system(cmd[z])
 
-def checkStatistics():
+def redoMuonTracks():
+ fileList,x,y = checkFilesWithTracks(D='.')
+ for df in fileList:
+   tmp = df.split('/')
+   if len(tmp)>1: 
+    os.chdir(tmp[0])
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -u 1 -f "+tmp[1]+' &'
+    print 'execute:', cmd
+    os.system(cmd)
+    os.chdir('../')
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+ print "finished all the tasks."
+
+def splitOffBoostedEvents(splitFactor=10,check=False):
+ remote = "/home/truf/ship-ubuntu-1710-32/muflux/simulation/"
+ dirList=getFilesLocal(remote)
+ for d in dirList:
+   if not os.path.isdir(d): os.system('mkdir '+d)
+   os.chdir(d)
+   for f in os.listdir(remote+'/'+d):
+    if f.find('histo')<0 and not f.find('ship.conical')<0:
+     if not check:
+      os.system('cp '+remote+'/'+d+'/'+f+' .')
+      cmd = "python /home/truf/muflux/simulation/drifttubeMonitoring.py -c  splitOffBoostedEvents -f "+f+' &'
+      print 'execute:', cmd
+      os.system(cmd)
+      while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(100)
+     else:
+      # check
+      f99 = f.replace('.root','_dimuon99.root')
+      f1 = f.replace('.root','_dimuon1.root')
+      l = os.listdir('.')
+      if not f in l or not f99 in l or f1 in l:
+        print 'something wrong',d,f
+        print f,f in l 
+        print f99,f99 in l 
+        print f1,f1 in l 
+   os.chdir('../')
+
+
+def checkStatistics(splitFactor=10):
  # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
- simFiles = getFilesFromEOS()
- reco = checkFilesWithTracks()
+ simFiles = getFilesFromEOS()  # input data
+ reco,x,y = checkFilesWithTracks()  # 
  Nsim =  {'mbias':0,'charm':0}
  Nreco = {'mbias':0,'charm':0}
  for f in simFiles:
@@ -189,10 +321,11 @@ def checkStatistics():
   for x in reco:
     if  not x.find(dname)<0: n+=1
   fraction = n/float(splitFactor)
+  print "fraction:",dname,fraction
   if dname.find('charm')>0: Nreco['charm']+=fraction*allFiles[dname]
   else: Nreco['mbias'] += fraction*allFiles[dname]
- print "total statistics",Nsim
- print "                ",Nreco
- print "internal MC normalization, to be applied to charm", 10.2/1.8 * Nreco['charm']/Nsim['charm']*Nreco['mbias']/Nsim['mbias']
- # 1.218
-
+ print "total statistics, simulated     ",Nsim
+ print "                , reconstructed ",Nreco
+ # mbias statistics = 1.8 * Nreco/Nsim, charm statistics = 10.2 * Nreco/Nsim
+ # norm factor = 1/charm statistics * mbias statistics
+ print "internal MC normalization, to be applied to charm", 1.8*Nreco['mbias']/Nsim['mbias'] /(10.2*Nreco['charm']/Nsim['charm'])

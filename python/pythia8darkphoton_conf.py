@@ -100,7 +100,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
 
     elif inclusive=="qcd":
         P8gen.SetDY()
-        P8gen.SetMinDPMass(0.5)
+        P8gen.SetMinDPMass(0.7)
 
         if (mass<P8gen.MinDPMass()): 
             print "WARNING! Mass is too small, minimum is set to %3.3f GeV."%P8gen.MinDPMass()
@@ -161,10 +161,11 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
     else:
         P8gen.SetParameters(str(P8gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
         if debug: cf.write('P8gen.SetParameters("'+str(P8gen.GetDPId())+':new = A A 3 0 0 '+str(mass)+' 0.0 0.0 0.0 '+str(ctau/u.mm)+'  0   1   0   1   0") \n')
-        if (inclusive=="pbrem"): 
-            P8gen.SetParameters(str(P8gen.GetDPId())+":isResonance = true")
-            P8gen.SetParameters(str(P8gen.GetDPId())+":mWidth = "+str(u.hbarc/ctau))
-            P8gen.SetParameters(str(P8gen.GetDPId())+":mMin = 0.001")
+        #if (inclusive=="pbrem"): 
+        ### Do not set as resonance: decays to hadron doesn't work properly below 0.7 GeV.
+        #   P8gen.SetParameters(str(P8gen.GetDPId())+":isResonance = true")
+        #   P8gen.SetParameters(str(P8gen.GetDPId())+":mWidth = "+str(u.hbarc/ctau))
+        #   P8gen.SetParameters(str(P8gen.GetDPId())+":mMin = 0.001")
     
     P8gen.SetParameters("Next:numberCount    =  0")
     if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')

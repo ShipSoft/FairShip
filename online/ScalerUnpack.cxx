@@ -13,7 +13,7 @@
 #include "ShipOnlineDataFormat.h"
 
 // ScalerUnpack: Constructor
-ScalerUnpack::ScalerUnpack() : fPartitionId(0x8100) {}
+ScalerUnpack::ScalerUnpack() = default;
 
 // Virtual ScalerUnpack: Public method
 ScalerUnpack::~ScalerUnpack() = default;
@@ -68,17 +68,23 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
    for (auto i : ROOT::MakeSeq(16)) {
       switch (i) {
       case 11: {
-         int goliath = int(int(df->scalars[i]) / 0x10000);
-         int david = int(int(df->scalars[i]) % 0x10000);
-         tree->Branch("Goliath", &goliath);
-         tree->Branch("David", &david);
+         fGoliath = int(int(df->scalars[i]) / 0x10000);
+         fDavid = int(int(df->scalars[i]) % 0x10000);
+         tree->Branch("Goliath", &fGoliath);
+         tree->Branch("David", &fDavid);
+         LOG(INFO) << "David: " << fDavid << FairLogger::endl;
+         LOG(INFO) << "Goliath: " << fGoliath << FairLogger::endl;
          break;
       }
-      case 12: tree->Branch("spill_type", &(df->scalars[i])); break;
+      case 12:
+         LOG(INFO) << "Spill type: " << df->scalars[i] << FairLogger::endl;
+         tree->Branch("spill_type", &(df->scalars[i]));
+         break;
       default: tree->Branch(TString::Format("SC%.2d", i), &(df->scalars[i]));
       }
    }
-   std::vector<uint32_t> slices(df->slices, df->slices + df->getSliceCount());
+   auto slices = df->getSliceCount() > 0 ? std::vector<uint32_t>(df->slices, df->slices + df->getSliceCount())
+                                         : std::vector<uint32_t>();
    tree->Branch("slices", "vector<uint32_t>", &slices);
    tree->Fill();
    tree->Write("", TObject::kOverwrite);
