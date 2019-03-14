@@ -1,3 +1,4 @@
+
 import os,subprocess,ROOT,time,multiprocessing
 import pwd
 ncpus = int(multiprocessing.cpu_count()*3./4.)
@@ -291,9 +292,16 @@ def mergeHistos(local='.',case='residuals'):
      dest = 'momDistributions.root'
      tag = 'histos-analysis'
  cmd = "hadd -f "+dest+' '
+ N=0
  for x in allFiles:
   if not x.find(tag)<0 : 
      cmd += (local+'/'+x+' ')
+     N+=1
+  if N>500:
+    os.system(cmd)
+    os.system('cp '+dest+' tmp.root')
+    cmd = "hadd -f "+dest+' tmp.root '
+    N=0
  os.system(cmd)
 
 def checkRecoRun(eosLocation=eospath,local='.'):
@@ -318,11 +326,18 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
   if rc != 0: failures.append(x)
  if len(failures)!=0: print failures
 
-def makeMomDistributions():
- fileList = checkFilesWithTracks(D='.')
+def makeMomDistributions(run=0):
+ if run==0: fileList = checkFilesWithTracks(D='.')
+ else:
+  eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'+run
+  fileList = []
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+  for x in temp.split('\n'):
+   if x.find('.root')<0: continue
+   fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
  # all RT files with tracks
  for fname in fileList:
-    if os.path.isfile('histos-analysis-'+fname): continue
+    if os.path.isfile('histos-analysis-'+fname[fname.rfind('/')+1:]): continue
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c anaResiduals -f "+fname+' &'
     print 'momentum analysis:', cmd
     os.system(cmd)

@@ -89,29 +89,40 @@ def digiStep(fnames=[]):
         time.sleep(100)
  print "finished all the tasks."
 
-def splitDigiFiles(splitFactor=10,fnames=[]):
+def splitDigiFiles(splitFactor=5,fnames=[]):
  if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
  for fname in fnames:
    os.chdir(fname)
    ofile = 'ship.conical.MuonBack-TGeant4_dig.root'
+   if not ofile in os.listdir('.'): 
+     os.chdir('../')
+     continue
    origin = ROOT.TFile(ofile)
+   if not origin.GetKey('cbmsim'):
+     print "corrupted file",fname
+     os.chdir('../')
+     continue
    sTree = origin.cbmsim
    Nentries = sTree.GetEntries()
    N = 0
    deltaN = int(sTree.GetEntries()/float(splitFactor))
    for i in range(splitFactor):
-     newFile = ROOT.TFile(ofile.replace('.root','-'+str(i)+'.root'),'RECREATE')
+    nf = ofile.replace('.root','-'+str(i)+'.root')
+    if nf in os.listdir('.'): 
+       print "file exists",fname,nf
+    else:
+     newFile = ROOT.TFile(nf,'RECREATE')
      newTree = sTree.CloneTree(0)
      for n in range(N,N+deltaN):
        rc = sTree.GetEntry(n)
        rc = newTree.Fill()
      newFile.Write()
-     N+=deltaN
+    N+=deltaN
    os.chdir('../')
 
-def recoStep(splitFactor=10,fnames=[],dimuon=False):
+def recoStep(splitFactor=5,fnames=[],dimuon=False):
  if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print "fileList established ",Nfiles
@@ -143,7 +154,7 @@ def recoStep(splitFactor=10,fnames=[],dimuon=False):
         time.sleep(100)
     os.chdir('../')
  print "finished all the tasks."
-def checkFilesWithTracks(D='.',splitFactor=10,dimuon=False):
+def checkFilesWithTracks(D='.',splitFactor=5,dimuon=False):
  fnames = getFilesLocal()
  Nfiles = len(fnames)
  fileList=[]
@@ -178,10 +189,11 @@ def cleanUp():
   df = f.replace('_RT','')
   if os.path.isfile(df): os.system('rm ' +df)
 
-def makeMomDistributions(D='.',splitFactor=10):
- fileList,x,y = checkFilesWithTracks(D,splitFactor)
- print "fileList established ",len(fileList)
- for df in fileList:
+def makeMomDistributions(D='.',splitFactor=5):
+ if D=='.':
+  fileList,x,y = checkFilesWithTracks(D,splitFactor)
+  print "fileList established ",len(fileList)
+  for df in fileList:
    tmp = df.split('/')
    if len(tmp)>1: os.chdir(tmp[0])
    if not "histos-analysis-"+tmp[1] in os.listdir('.'):
@@ -192,9 +204,24 @@ def makeMomDistributions(D='.',splitFactor=10):
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
+ else:
+  eospathSim10GeV = '/eos/experiment/ship/data/muflux/MC/19feb2019'
+  fileList = []
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim10GeV,shell=True)
+  for x in temp.split('\n'):
+   if x.find('RT.root')<0: continue
+   fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
+  for fname in fileList:
+    if os.path.isfile('histos-analysis-'+fname[fname.rfind('/')+1:]): continue
+    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c anaResiduals -f "+fname+' &'
+    print 'momentum analysis:', cmd
+    os.system(cmd)
+    while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(10)
  print "finished all the tasks."
 
-def makeMomResolutions(D='.',splitFactor=10):
+def makeMomResolutions(D='.',splitFactor=5):
  fileList,x,y = checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
  for df in fileList:
@@ -211,7 +238,7 @@ def makeMomResolutions(D='.',splitFactor=10):
  print "finished all the tasks."
 
 
-def checkAlignment(D='.',splitFactor=10):
+def checkAlignment(D='.',splitFactor=5):
  fileList,x,y = checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
  for df in fileList:
@@ -259,6 +286,43 @@ def mergeHistos(case='residuals'):
      if z=='charm' and case == 'momResolution': continue
      os.system(cmd[z])
 
+def checkForFilesWithTracks():
+  eospathSim10GeV = '/eos/experiment/ship/data/muflux/MC/19feb2019'
+  fileList = []
+  trList = []
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim10GeV,shell=True)
+  for x in temp.split('\n'):
+   if x.find('RT.root')<0: continue
+   fname = os.environ['EOSSHIP'] + x[x.find('/eos'):]
+   fileList.append( fname )
+   test = ROOT.TFile.Open(fname)
+   if test.GetKey('cbmsim'): 
+     if test.cbmsim.GetBranch('FitTracks'): trList.append(fname)
+  print len(fileList),len(trList)
+
+def mergeHistos10(case='residuals'):
+ N = 1
+ n = 0
+ for x in os.listdir('.'):
+  if n==0:
+   if case == 'residuals':  cmd = 'hadd -f residuals-'+str(N)+'.root '
+   elif case == 'momResolution':  cmd = 'hadd -f momentumResolution-'+str(N)+'.root '
+   else:                    cmd = 'hadd -f momDistributions-'+str(N)+'.root '
+  if (case == 'residuals' and not x.find('histos-residuals')<0 ):  cmd += x+" "
+  elif (case == 'momResolution' and not x.find('momentumResolution')<0 ):  cmd += x+" "
+  elif (case == 'momDistribution' and not x.find('analysis')<0 ):  cmd += x+" "
+  n+=1
+  if n==500:
+   os.system(cmd)
+   n=0
+   N+=1
+ if case == 'residuals':        histname = 'residuals.root '
+ elif case == 'momResolution':  histname = 'momentumResolution.root '
+ else:                          histname = 'momDistributions.root '
+ cmd = 'hadd -f '+histname
+ for n in range(1,N+1):
+    cmd += histname.replace('.','-'+str(N)+'.')
+ os.system(cmd)
 def redoMuonTracks():
  fileList,x,y = checkFilesWithTracks(D='.')
  for df in fileList:
@@ -274,7 +338,7 @@ def redoMuonTracks():
         time.sleep(100)
  print "finished all the tasks."
 
-def splitOffBoostedEvents(splitFactor=10,check=False):
+def splitOffBoostedEvents(splitFactor=5,check=False):
  remote = "/home/truf/ship-ubuntu-1710-32/muflux/simulation/"
  dirList=getFilesLocal(remote)
  for d in dirList:
@@ -303,7 +367,7 @@ def splitOffBoostedEvents(splitFactor=10,check=False):
    os.chdir('../')
 
 
-def checkStatistics(splitFactor=10):
+def checkStatistics(splitFactor=5):
  # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
  simFiles = getFilesFromEOS()  # input data
  reco,x,y = checkFilesWithTracks()  # 

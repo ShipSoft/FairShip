@@ -4564,8 +4564,7 @@ def MCchecks():
  return mult
 hruns={}
 def compareRuns():
- runs = [2359,2360,2365,2366,2390,2395,2396] # 2395 my run
- # first look, 2395 and 2396 very similar, 2390 strange, 2365 a bit different
+ runs = [2276,2307,2357,2359,2360,2361,2365,2366,2395,2396] # 2395 my run and 2396, intermediate field
  runs.sort()
  for r in runs:
   if not hruns.has_key(r): 
@@ -4601,6 +4600,7 @@ def compareRuns():
   h['legRunComparison'].AddEntry(hruns[r][hname],str(r),'PL')
   j+=1
  h['legRunComparison'].Draw('same')
+ hruns[2395]['p/pt_x2395'].SetLineColor(ROOT.kMagenta)
 
 def fcn(npar, gin, f, par, iflag):
 #calculate chisquare
@@ -4840,7 +4840,10 @@ def anaResiduals():
     print "this file has no tracks",sTree.GetCurrentFile().GetName()
   else:
    muflux_Reco.trackKinematics(3.)
-   if MCdata: MCchecks()
+   if MCdata: 
+      MCchecks()
+   else:
+      printScalers()
    plotRPCExtrap(PR=1)
    norm = h['TrackMult'].GetEntries()
    print '*** Track Stats ***',norm
