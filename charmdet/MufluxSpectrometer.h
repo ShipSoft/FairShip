@@ -62,6 +62,11 @@ class MufluxSpectrometer:public FairDetector
     void SetTStationsZ(Double_t T1z, Double_t T1x_z, Double_t T1u_z, Double_t T2z, Double_t T2v_z, Double_t T2x_z,Double_t T3z, Double_t T4z);
     void SetTStationsX(Double_t T1x_x, Double_t T1u_x, Double_t T2x_x, Double_t T2v_x, Double_t T3x, Double_t T4x);
     void SetTStationsY(Double_t T1x_y, Double_t T1u_y, Double_t T2x_y, Double_t T2v_y, Double_t T3y, Double_t T4y);    
+    //add surevy results for charm by Daniel
+
+    void SetT3(Double_t SurveyCharm_T3x, Double_t SurveyCharm_T3y, Double_t SurveyCharm_T3z, Int_t mnb);
+    void SetT4(Double_t SurveyCharm_T4x, Double_t SurveyCharm_T4y, Double_t SurveyCharm_T4z, Int_t mnb);
+
     
 // for the digitizing step
     void SetTubeResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
@@ -207,7 +212,19 @@ private:
     Double_t       fT3x;
     Double_t       fT4x;  
     Double_t       fT3y;
-    Double_t       fT4y;    
+    Double_t       fT4y;
+
+
+    //** Survey results for charm by daniel*/
+
+    Double_t fSurveyCharm_T3x[5];
+    Double_t fSurveyCharm_T3y[5];
+    Double_t fSurveyCharm_T3z[5];
+
+    Double_t fSurveyCharm_T4x[5];
+    Double_t fSurveyCharm_T4y[5];
+    Double_t fSurveyCharm_T4z[5];
+    
     
     /** container for data points */
     TClonesArray*  fMufluxSpectrometerPointCollection;
