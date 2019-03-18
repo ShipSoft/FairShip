@@ -39,9 +39,7 @@ def configure(run,ship_geo):
  Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
  Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
  Box.SetTargetDesign(ship_geo.Box.Julytarget)
- Box.SetRunNumber(ship_geo.Box.RunNumber)
- 
-
+ Box.SetTargetNumber(ship_geo.Box.CharmTargetNumber)
 
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
