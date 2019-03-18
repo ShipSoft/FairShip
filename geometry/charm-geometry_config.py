@@ -281,6 +281,42 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.DX = 2.*u.m
     c.MufluxSpectrometer.DY = 1.6*u.m
     c.MufluxSpectrometer.DZ = 11.72*u.cm
+
+    #Adding survey results for charm measurement (Daniel) 
+    
+    c.MufluxSpectrometer.SurveyCharm_T3ax = 876.075*u.mm 
+    c.MufluxSpectrometer.SurveyCharm_T3ay = 101.6*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3az = 15269*u.mm+70*u.mm-8896.09*u.mm #todo: check th 70mm (probably forgt bolt and alignement sphere before)
+    c.MufluxSpectrometer.SurveyCharm_T3bx = 372.1*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3by = 98.875*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3bz = 15338.475*u.mm-8896.09*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3cx = -323.425*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3cy = 97.85*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3cz = 15337.625*u.mm-8896.09*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3dx = -829.3*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3dy = 97.7*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3dz = 15337.6*u.mm-8896.09*u.mm
+
+    c.MufluxSpectrometer.SurveyCharm_T3tx = 13.8*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3ty = 649.85*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T3tz = 15606.1*u.mm-8896.09*u.mm
+
+    c.MufluxSpectrometer.SurveyCharm_T4ax = 886.15*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4ay = 105.35*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4az = 16572.225*u.mm-200*u.mm-8896.09*u.mm #-200 mm because of wrong sign in first calcualtion
+    c.MufluxSpectrometer.SurveyCharm_T4bx = 351.9*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4by = 102.45*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4bz = 16570.8*u.mm-200*u.mm-8896.09*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4cx = -341.575*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4cy = 100.225*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4cz = 16571.625*u.mm-200*u.mm-8896.09*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4dx = -845.8*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4dy = 99.05*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4dz = 16571.3*u.mm-200*u.mm-8896.09*u.mm
+
+    c.MufluxSpectrometer.SurveyCharm_T4tx = 13.6*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4ty = 675*u.mm
+    c.MufluxSpectrometer.SurveyCharm_T4tz = 16102.45*u.mm-8896.09*u.mm
     
     #These parameters are used only by the charm detector ---   
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
