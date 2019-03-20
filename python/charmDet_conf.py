@@ -9,9 +9,9 @@ def getParameter(x,ship_geo,latestCharmGeo):
   lv = x.split('.')
   last = lv[len(lv)-1]
   top = ''
-  for l in range(len(lv)-1):
+  for l in range(len(lv)-1): 
     top += lv[l]
-    if l<len(lv)-2: top +='.'
+    if l<len(lv)-2: top +='.' 
   a = getattr(ship_geo,top)
   if hasattr(a,last): return getattr(a,last)
 # not in the list of recorded parameteres. probably added after
@@ -23,12 +23,12 @@ def configure(run,ship_geo):
  latestCharmGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
-
+ 
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
  cave.SetGeometryFileName("caveWithAir.geo")
  detectorList.append(cave)
-
+    
  Box = ROOT.Box("Box",ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.zBox,ROOT.kTRUE)
  Box.SetEmulsionParam(ship_geo.Box.EmTh, ship_geo.Box.EmX, ship_geo.Box.EmY, ship_geo.Box.PBTh,ship_geo.Box.EPlW, ship_geo.Box.PasSlabTh, ship_geo.Box.AllPW);
  Box.SetBrickParam(ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.BrPackX, ship_geo.Box.BrPackY, ship_geo.Box.BrPackZ);
@@ -41,7 +41,7 @@ def configure(run,ship_geo):
  Box.SetTargetDesign(ship_geo.Box.Julytarget)
  Box.SetTargetNumber(ship_geo.Box.CharmTargetNumber)
 
- if (ship_geo.MufluxSpectrometer.muflux==False):
+ if (ship_geo.MufluxSpectrometer.muflux==False): 
 # === SciFi modules
     SciFi = ROOT.SciFi("SciFi",ship_geo.SciFi.DX, ship_geo.SciFi.DY, ship_geo.SciFi.DZ,ROOT.kTRUE)
     SciFi.SetBoxParam(ship_geo.SciFi.DX,ship_geo.SciFi.DY,ship_geo.SciFi.DZ, ship_geo.SciFi.zBox)
@@ -74,37 +74,37 @@ def configure(run,ship_geo):
  else:
   MufluxSpectrometer = ROOT.MufluxSpectrometer("MufluxSpectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
  # -----Drift tube part --------
-
+ 
  MufluxSpectrometer.SetGoliathSizes(ship_geo.Spectrometer.H, ship_geo.Spectrometer.TS, ship_geo.Spectrometer.LS, ship_geo.Spectrometer.BasisH);
  MufluxSpectrometer.SetCoilParameters(ship_geo.Spectrometer.CoilR, ship_geo.Spectrometer.UpCoilH, ship_geo.Spectrometer.LowCoilH,  ship_geo.Spectrometer.CoilD);
 # --------------------------------------
-
+ 
  MufluxSpectrometer.ChooseDetector(ship_geo.MufluxSpectrometer.muflux)
  MufluxSpectrometer.SetDeltazView(ship_geo.MufluxSpectrometer.DeltazView)
  MufluxSpectrometer.SetInnerTubeDiameter(ship_geo.MufluxSpectrometer.InnerTubeDiameter)
  MufluxSpectrometer.SetOuterTubeDiameter(ship_geo.MufluxSpectrometer.OuterTubeDiameter)
  MufluxSpectrometer.SetTubePitch(ship_geo.MufluxSpectrometer.TubePitch)
  MufluxSpectrometer.SetTubePitch_T1u(ship_geo.MufluxSpectrometer.TubePitch_T1u,ship_geo.MufluxSpectrometer.T1u_const,ship_geo.MufluxSpectrometer.T1u_const_2,ship_geo.MufluxSpectrometer.T1u_const_3,ship_geo.MufluxSpectrometer.T1u_const_4)
- MufluxSpectrometer.SetTubePitch_T2v(ship_geo.MufluxSpectrometer.TubePitch_T2v,ship_geo.MufluxSpectrometer.T2v_const,ship_geo.MufluxSpectrometer.T2v_const_2,ship_geo.MufluxSpectrometer.T2v_const_3,ship_geo.MufluxSpectrometer.T2v_const_4)
+ MufluxSpectrometer.SetTubePitch_T2v(ship_geo.MufluxSpectrometer.TubePitch_T2v,ship_geo.MufluxSpectrometer.T2v_const,ship_geo.MufluxSpectrometer.T2v_const_2,ship_geo.MufluxSpectrometer.T2v_const_3,ship_geo.MufluxSpectrometer.T2v_const_4) 
  MufluxSpectrometer.SetDeltazLayer(ship_geo.MufluxSpectrometer.DeltazLayer)
  MufluxSpectrometer.SetDeltazPlane(ship_geo.MufluxSpectrometer.DeltazPlane)
  MufluxSpectrometer.SetTubesPerLayer(ship_geo.MufluxSpectrometer.TubesPerLayer)
  MufluxSpectrometer.SetStereoAngle(ship_geo.MufluxSpectrometer.ViewAngle, ship_geo.MufluxSpectrometer.ViewvAngle)
  MufluxSpectrometer.SetWireThickness(ship_geo.MufluxSpectrometer.WireThickness)
  MufluxSpectrometer.SetTubeLength(ship_geo.MufluxSpectrometer.TubeLength)
- MufluxSpectrometer.SetTubeLength12(ship_geo.MufluxSpectrometer.TubeLength12)
+ MufluxSpectrometer.SetTubeLength12(ship_geo.MufluxSpectrometer.TubeLength12) 
  MufluxSpectrometer.SetTr12YDim(ship_geo.MufluxSpectrometer.tr12ydim)
  MufluxSpectrometer.SetTr34YDim(ship_geo.MufluxSpectrometer.tr34ydim)
  MufluxSpectrometer.SetTr12XDim(ship_geo.MufluxSpectrometer.tr12xdim)
- MufluxSpectrometer.SetTr34XDim(ship_geo.MufluxSpectrometer.tr34xdim)
+ MufluxSpectrometer.SetTr34XDim(ship_geo.MufluxSpectrometer.tr34xdim) 
  MufluxSpectrometer.SetDistStereo(ship_geo.MufluxSpectrometer.diststereoT1,ship_geo.MufluxSpectrometer.diststereoT2)
  MufluxSpectrometer.SetDistT1T2(ship_geo.MufluxSpectrometer.distT1T2)
- MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)
+ MufluxSpectrometer.SetDistT3T4(ship_geo.MufluxSpectrometer.distT3T4)    
  MufluxSpectrometer.SetGoliathCentre(ship_geo.MufluxSpectrometer.goliathcentre_to_beam)
  MufluxSpectrometer.SetGoliathCentreZ(ship_geo.MufluxSpectrometer.goliathcentre)
- MufluxSpectrometer.SetT3StationsZcorr(ship_geo.MufluxSpectrometer.T3z_1,ship_geo.MufluxSpectrometer.T3z_2,ship_geo.MufluxSpectrometer.T3z_3,ship_geo.MufluxSpectrometer.T3z_4)
- MufluxSpectrometer.SetT4StationsZcorr(ship_geo.MufluxSpectrometer.T4z_1,ship_geo.MufluxSpectrometer.T4z_2,ship_geo.MufluxSpectrometer.T4z_3,ship_geo.MufluxSpectrometer.T4z_4)
- MufluxSpectrometer.SetT3StationsXcorr(ship_geo.MufluxSpectrometer.T3x_1,ship_geo.MufluxSpectrometer.T3x_2,ship_geo.MufluxSpectrometer.T3x_3,ship_geo.MufluxSpectrometer.T3x_4)
+ MufluxSpectrometer.SetT3StationsZcorr(ship_geo.MufluxSpectrometer.T3z_1,ship_geo.MufluxSpectrometer.T3z_2,ship_geo.MufluxSpectrometer.T3z_3,ship_geo.MufluxSpectrometer.T3z_4) 
+ MufluxSpectrometer.SetT4StationsZcorr(ship_geo.MufluxSpectrometer.T4z_1,ship_geo.MufluxSpectrometer.T4z_2,ship_geo.MufluxSpectrometer.T4z_3,ship_geo.MufluxSpectrometer.T4z_4) 
+ MufluxSpectrometer.SetT3StationsXcorr(ship_geo.MufluxSpectrometer.T3x_1,ship_geo.MufluxSpectrometer.T3x_2,ship_geo.MufluxSpectrometer.T3x_3,ship_geo.MufluxSpectrometer.T3x_4) 
  MufluxSpectrometer.SetT4StationsXcorr(ship_geo.MufluxSpectrometer.T4x_1,ship_geo.MufluxSpectrometer.T4x_2,ship_geo.MufluxSpectrometer.T4x_3,ship_geo.MufluxSpectrometer.T4x_4)
  MufluxSpectrometer.SetTStationsZ(ship_geo.MufluxSpectrometer.T1z,ship_geo.MufluxSpectrometer.T1x_z,ship_geo.MufluxSpectrometer.T1u_z,ship_geo.MufluxSpectrometer.T2z,ship_geo.MufluxSpectrometer.T2v_z,ship_geo.MufluxSpectrometer.T2x_z,ship_geo.MufluxSpectrometer.T3z,ship_geo.MufluxSpectrometer.T4z) 
  MufluxSpectrometer.SetTStationsX(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1u_x,ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2v_x,ship_geo.MufluxSpectrometer.T3x,ship_geo.MufluxSpectrometer.T4x) 
@@ -125,20 +125,20 @@ def configure(run,ship_geo):
 
  
  # for the digitizing step
- MufluxSpectrometer.SetTubeResolution(ship_geo.MufluxSpectrometer.v_drift,ship_geo.MufluxSpectrometer.sigma_spatial)
+ MufluxSpectrometer.SetTubeResolution(ship_geo.MufluxSpectrometer.v_drift,ship_geo.MufluxSpectrometer.sigma_spatial) 
 
  Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
  Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
  Scintillator.SetDistT1(ship_geo.Scintillator.DistT1)
- Scintillator.SetDistT2(ship_geo.Scintillator.DistT2)
- Scintillator.SetS_T1coords(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1x_y)
- Scintillator.SetS_T2coords(ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2x_y)
-
- if (ship_geo.MufluxSpectrometer.muflux==False):
+ Scintillator.SetDistT2(ship_geo.Scintillator.DistT2) 
+ Scintillator.SetS_T1coords(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1x_y) 
+ Scintillator.SetS_T2coords(ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2x_y)  
+  
+ if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(MufluxSpectrometer)
  else:
     TargetStation = ROOT.MufluxTargetStation("MufluxTargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
-
+    
     TargetStation.SetIronAbsorber(ship_geo.MufluxTargetStation.absorber_x,ship_geo.MufluxTargetStation.absorber_y)
     TargetStation.SetAbsorberCutout(ship_geo.MufluxTargetStation.absorbercutout_x, ship_geo.MufluxTargetStation.absorbercutout_y)
     TargetStation.SetIronShield(ship_geo.MufluxTargetStation.ironshield_x, ship_geo.MufluxTargetStation.ironshield_y, ship_geo.MufluxTargetStation.ironshield_z)
@@ -151,7 +151,7 @@ def configure(run,ship_geo):
     TargetStation.SetFloorRPC(ship_geo.MufluxTargetStation.floorRPC_x, ship_geo.MufluxTargetStation.floorRPC_y,ship_geo.MufluxTargetStation.floorRPC_z)
 
     if ship_geo.targetOpt>10:
-     slices_length=ROOT.std.vector('float')()
+     slices_length=ROOT.std.vector('float')()     
      slices_material=ROOT.std.vector('string')()
      for i in range(1,ship_geo.targetOpt+1):
       slices_length.push_back(eval("ship_geo.target.L"+str(i)))
@@ -159,10 +159,10 @@ def configure(run,ship_geo):
 
      TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
      detectorList.append(TargetStation)
-
+     
     detectorList.append(Scintillator)
     detectorList.append(MufluxSpectrometer)
-
+   
  MuonTagger = ROOT.MuonTagger("MuonTagger", ship_geo.MuonTagger.BX, ship_geo.MuonTagger.BY, ship_geo.MuonTagger.BZ, ship_geo.MuonTagger.zBox, ROOT.kTRUE)
  MuonTagger.SetPassiveParameters(ship_geo.MuonTagger.PX, ship_geo.MuonTagger.PY, ship_geo.MuonTagger.PTh, ship_geo.MuonTagger.PTh1)
  MuonTagger.SetSensitiveParameters(ship_geo.MuonTagger.SX, ship_geo.MuonTagger.SY, ship_geo.MuonTagger.STh)
@@ -172,25 +172,25 @@ def configure(run,ship_geo):
  MuonTagger.SetGapThickness(ship_geo.MuonTagger.Gapthickness)
  MuonTagger.SetElectrodeThickness(ship_geo.MuonTagger.Electrodethickness)
  MuonTagger.SetStripz(ship_geo.MuonTagger.Stripz, ship_geo.MuonTagger.Stripfoamz)
- MuonTagger.SetVStrip(ship_geo.MuonTagger.VStripx,ship_geo.MuonTagger.VStripx_L,ship_geo.MuonTagger.VStripx_R,ship_geo.MuonTagger.VStripoffset)
- MuonTagger.SetHStrip(ship_geo.MuonTagger.HStripy,ship_geo.MuonTagger.HStripy_ext,ship_geo.MuonTagger.HStripoffset)
- MuonTagger.SetNStrips(ship_geo.MuonTagger.NVstrips,ship_geo.MuonTagger.NHstrips)
-
+ MuonTagger.SetVStrip(ship_geo.MuonTagger.VStripx,ship_geo.MuonTagger.VStripx_L,ship_geo.MuonTagger.VStripx_R,ship_geo.MuonTagger.VStripoffset) 
+ MuonTagger.SetHStrip(ship_geo.MuonTagger.HStripy,ship_geo.MuonTagger.HStripy_ext,ship_geo.MuonTagger.HStripoffset)  
+ MuonTagger.SetNStrips(ship_geo.MuonTagger.NVstrips,ship_geo.MuonTagger.NHstrips) 
+  
  detectorList.append(MuonTagger)
  for x in detectorList:
   run.AddModule(x)
-
+  
  fMagField = ROOT.ShipGoliathField()
-
- #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_3600A_0A.root"
- #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root"
+ 
+ #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_3600A_0A.root"  
+ #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
  #default field map
  fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
  fMagField.Init(fieldfile)
- run.SetField(fMagField)
-
+ run.SetField(fMagField)   
+ 
 # return list of detector elements
  detElements = {}
- for x in run.GetListOfModules(): detElements[x.GetName()]=x
-
+ for x in run.GetListOfModules(): detElements[x.GetName()]=x 
+ 
  return detElements
