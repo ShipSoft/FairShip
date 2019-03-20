@@ -460,8 +460,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh
     c.PixelModules.zBox = c.Spectrometer.zBox
     PixelToSciFi = 469.05 #position of SciFi center defined with respect to distance to start of PixelBox, point PIXEL_UR-Measured in the survey document
-    temporaryoffset = 40. #due to muflux configuration of driftubes
-    c.SciFi.zBox = c.PixelModules.zBox - c.PixelModules.DimZpixelbox/2.  + 469.05 -temporaryoffset
+    c.SciFi.zBox = c.PixelModules.zBox - c.PixelModules.DimZpixelbox/2.  + 469.05
 
 #   Need to add SciFi
     #Muon Filter
