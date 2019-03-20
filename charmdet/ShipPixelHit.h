@@ -1,5 +1,5 @@
 #ifndef PIXELHIT_H
-#define PIXELHIT_H 1
+#define PIXELHIT_H
 
 #include "ShipHit.h"
 #include "ShipOnlineDataFormat.h"
@@ -19,18 +19,14 @@ public:
    ShipPixelHit() = default;
    ~ShipPixelHit() = default;
 
-   /** Constructor with arguments
-    *@param detID    Detector ID
-    *@param tot      digitized/measured time over threshold in nanoseconds
-    *@param flags    collection of flags
-    **/
-   ShipPixelHit(int32_t detID, uint16_t tot);
+   ShipPixelHit(Int_t detID, Float_t fdigi);
    HitID GetPixel();
-   int32_t GetDetectorID() const { return detID; }
+   int32_t GetDetectorID();
    int32_t GetModule();
-   void PixelCenter(TVector3 &pixel);
-   void Print() const;
-   uint16_t GetTimeOverThreshold() const { return tot*25; } // tot is measured in steps of 25 ns, so multiply by 25 to get ns value
+   void EndPoints(TVector3 &pixel, int detID);
+   void MakePositionMap(std::map<int, TVector3> positionMap);
+   void Print();
+   int32_t GetTimeOverThreshold() const {return ToT;}
 
 private:
    /** Copy constructor **/

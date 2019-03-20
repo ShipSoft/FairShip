@@ -10,7 +10,8 @@
 #include <cmath>
 
 // -----   Standard constructor   ------------------------------------------
-ShipPixelHit::ShipPixelHit(int32_t detID,  uint16_t tot) : ShipHit(detID, tot) {}
+ShipPixelHit::ShipPixelHit(Int_t detID,  Float_t digi)
+    : ShipHit(detID, digi), detectorID(detID), ToT(digi*25){}
 
 
 HitID ShipPixelHit::GetPixel()
@@ -40,38 +41,52 @@ int32_t ShipPixelHit::GetModule()
   return pixelID.moduleID;
 }
 
-void ShipPixelHit::PixelCenter(TVector3 &pixel)
-{
-  HitID hitPixelID;
-  hitPixelID = GetPixel();
-  // build node path for Geant4 geometry
-  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-  TString module = "volPixelModule_";
-          module += hitPixelID.moduleID;
-  TString col = "col_";
-          col += hitPixelID.column;
-  TString row = "row_";
-          row += hitPixelID.row;
-  TString path ="/";
-          path += module;
-          path +="/";
-          path +=col;
-          path +="/";
-          path +=row;
+int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
-  Bool_t rc = nav->cd(path);
-  if (not rc)
-  {
+void ShipPixelHit::MakePositionMap(std::map<int, TVector3> positionMap) {
+  const float mkm = 0.0001;
+  float  z0ref=  -1300.*mkm;
+  float  z1ref=   5200.*mkm;
+  float  z2ref=  24120.*mkm;
+  float  z3ref=  30900.*mkm;
+  float  z4ref=  51000.*mkm;
+  float  z5ref=  57900.*mkm;
+  float  z6ref=  77900.*mkm;
+  float  z7ref=  84600.*mkm;
+  float  z8ref= 104620.*mkm;
+  float  z9ref= 111700.*mkm;
+  float z10ref= 131620.*mkm;
+  float z11ref= 138500.*mkm;
+
+  float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
+
+  int map_index=0;
+  for (int partID=0; partID<3; partID++) {
+    for (int moduleID=0;moduleID<8; moduleID++ ) {
+      for (int row=1; row<337; row++) {
+        for (int column=1; column<81; column++) {
+          map_index = 10000000*partID + 1000000*moduleID + 1000*row + column;
+          positionMap[map_index].SetX(0.025 + (column-1)*0.025);
+          if (column == 80) positionMap[map_index].SetX(0.025 + (column-2)*0.025 + 0.0225);
+          positionMap[map_index].SetY(0.0050*(row-1) + 0.0025);
+          positionMap[map_index].SetZ(Zref[(moduleID + 1)/2 * (partID+1)]);
+        }
+      }
+    }
+  }
+}
+
+void ShipPixelHit::EndPoints(TVector3 &pixel, int detID, std::map<int, TVector3> positionMap {
+
+  int max_detID = 10000000*2 + 1000000*8 + 1000*336 + 160 ;
+  if (detID > max_detID) {
     std::cout << "PixelDetector::PixelDecode, TGeoNavigator failed "<<path<<std::endl;
     return;
   }
-  // get pixel position and write to vector
-  TGeoNode* W = nav->GetCurrentNode();
-  TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
-  Double_t center[3] = {0,0,S->GetDZ()};
-  Double_t Gcenter[3];
-  nav->LocalToMaster(center, Gcenter);
-  pixel.SetXYZ(Gcenter[0],Gcenter[1],Gcenter[2]);
+  pixel_pos = positionMap[detID]
+  pixel.SetX(pixel_pos.X());
+  pixel.SetY(pixel_pos.Y());
+  pixel.SetZ(pixel_pos.Z());
 }
 
 // -----   Destructor   ----------------------------------------------------
@@ -80,10 +95,10 @@ void ShipPixelHit::PixelCenter(TVector3 &pixel)
 
 
 // -----   Public method Print   -------------------------------------------
-void ShipPixelHit::Print() const
+void ShipPixelHit::Print()
 {
-  std::cout << "-I- PixelHit: Pixel hit " << " in detector " << fDetectorID << std::endl;
-  std::cout << "  ToT " << tot*25 << " ns" << std::endl; //Time over threshold in nanoseconds
+  std::cout << "-I- PixelHit: Pixel hit " << " in module " << GetModule() << std::endl;
+  std::cout << "  ToT " << ToT*25 << " ns" << std::endl; //Time over threshold in nanoseconds
 }
 // -------------------------------------------------------------------------
 
