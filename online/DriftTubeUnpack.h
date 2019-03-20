@@ -10,12 +10,15 @@
 #define ONLINE_DRIFTTUBEUNPACK_H
 
 #include "ShipUnpack.h"
+#include "TClonesArray.h"
 
 class TClonesArray;
 
 class DriftTubeUnpack : public ShipUnpack {
 public:
    DriftTubeUnpack();
+
+   DriftTubeUnpack(bool charm);
 
    /** Destructor. */
    virtual ~DriftTubeUnpack();
@@ -36,13 +39,14 @@ protected:
    virtual void Register() override;
 
 private:
-   std::unique_ptr<TClonesArray> fRawTubes;        /**< Array of output raw items. */
-   std::unique_ptr<TClonesArray> fRawLateTubes;        /**< Array of output raw items. */
-   std::unique_ptr<TClonesArray> fRawScintillator; /**< Array of output raw items. */
-   std::unique_ptr<TClonesArray> fRawBeamCounter; /**< Array of output raw items. */
-   std::unique_ptr<TClonesArray> fRawMasterTrigger; /**< Array of output raw items. */
-   std::unique_ptr<TClonesArray> fRawTriggers; /**< Array of output raw items. */
-   uint16_t fPartitionId;
+   std::unique_ptr<TClonesArray> fRawTubes{new TClonesArray("MufluxSpectrometerHit")};
+   std::unique_ptr<TClonesArray> fRawLateTubes{new TClonesArray("MufluxSpectrometerHit")};
+   std::unique_ptr<TClonesArray> fRawScintillator{new TClonesArray("ScintillatorHit")};
+   std::unique_ptr<TClonesArray> fRawBeamCounter{new TClonesArray("ScintillatorHit")};
+   std::unique_ptr<TClonesArray> fRawMasterTrigger{new TClonesArray("ScintillatorHit")};
+   std::unique_ptr<TClonesArray> fRawTriggers{new TClonesArray("ScintillatorHit")};
+   uint16_t fPartitionId = 0x0C00;
+   bool fCharm = false;
 
    DriftTubeUnpack(const DriftTubeUnpack &);
    DriftTubeUnpack &operator=(const DriftTubeUnpack &);

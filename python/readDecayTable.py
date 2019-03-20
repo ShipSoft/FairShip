@@ -83,7 +83,7 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
     - P8gen: an instance of ROOT.HNLPythia8Generator()
     - conffile: a file listing the channels one wishes to activate
     """
-    isResonant = (P8gen.GetDPId()==4900023 or P8gen.IsPbrem())
+    isResonant = (P8gen.GetDPId()==4900023)# or P8gen.IsPbrem())
     # First fetch the list of kinematically allowed decays
     allowed = DP.allowedChannels()
     # Then fetch the list of desired channels to activate
@@ -101,7 +101,7 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
             BR = DP.findBranchingRatio(dec)
             
             meMode = 0
-            if isResonant: meMode = 102
+            if isResonant: meMode = 103
             if 'hadrons' in dec:
                 #P8gen.SetDecayToHadrons()
                 print "debug readdecay table hadrons BR ",BR
