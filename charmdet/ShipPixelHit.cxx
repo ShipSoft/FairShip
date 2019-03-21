@@ -27,7 +27,7 @@ HitID ShipPixelHit::GetPixel()
 
   pixelID.partitionID = partitionID; // DAQ partition, from 0-2
   pixelID.frontEndID = frontEndID; // Front end which was read out, from 0-7
-  pixelID.moduleID = ((1+partitionID)*(1+frontEndID))/2 -1 ; // Id of actual DC module, from 0-11
+  pixelID.moduleID = (8*partitionID + frontEndID)/2 ; // Id of actual DC module, from 0-11
   pixelID.row      = row; // row on front end / module
   pixelID.column   = column; // column on MODULE
 
@@ -46,6 +46,9 @@ int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 void ShipPixelHit::EndPoints(TVector3 &pixel, int detID, std::unordered_map<int, TVector3> &positionMap) {
 
   int max_detID = 10000000*2 + 1000000*8 + 1000*336 + 160 ;
+  if (detID%1000000 == 0) {
+    return;
+  }
   if (detID > max_detID) {
     std::cout << "PixelDetector::PixelDecode, detectorID out of range "<<detID<<std::endl;
     return;
