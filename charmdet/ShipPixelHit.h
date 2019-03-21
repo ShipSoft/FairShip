@@ -23,7 +23,7 @@ public:
    HitID GetPixel();
    int32_t GetDetectorID();
    int32_t GetModule();
-   void EndPoints(TVector3 &pixel, int detID);
+   void EndPoints(TVector3 &pixel, int detID, std::map<int, TVector3> &positionMap);
    void MakePositionMap(std::map<int, TVector3> positionMap);
    void Print();
    int32_t GetTimeOverThreshold() const {return ToT;}

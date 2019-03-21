@@ -63,8 +63,8 @@ void ShipPixelHit::MakePositionMap(std::map<int, TVector3> positionMap) {
   int map_index=0;
   for (int partID=0; partID<3; partID++) {
     for (int moduleID=0;moduleID<8; moduleID++ ) {
-      for (int row=1; row<337; row++) {
-        for (int column=1; column<81; column++) {
+      for (int column=1; column<81; column++) {
+        for (int row=1; row<337; row++) {
           map_index = 10000000*partID + 1000000*moduleID + 1000*row + column;
           positionMap[map_index].SetX(0.025 + (column-1)*0.025);
           if (column == 80) positionMap[map_index].SetX(0.025 + (column-2)*0.025 + 0.0225);
@@ -76,7 +76,7 @@ void ShipPixelHit::MakePositionMap(std::map<int, TVector3> positionMap) {
   }
 }
 
-void ShipPixelHit::EndPoints(TVector3 &pixel, int detID, std::map<int, TVector3> positionMap {
+void ShipPixelHit::EndPoints(TVector3 &pixel, int detID, std::map<int, TVector3> &positionMap {
 
   int max_detID = 10000000*2 + 1000000*8 + 1000*336 + 160 ;
   if (detID > max_detID) {
