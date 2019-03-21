@@ -1,15 +1,19 @@
 #include "RPCTrack.h"
 
-<<<<<<< HEAD
 // Default Constructor
 
 RPCTrack::RPCTrack()
  :  TObject(),
         fm(0),
         fb(0),
+        fnrun(0),
+        ftrigger(0),
+        ftrackID(0),
 	ftheta(0.),
 	fphi(0.),
-	fnclusters(0)
+	fnclusters(0),
+        fslopexz(0.),
+        fslopeyz(0.)
 	{}
 
 // -----   Standard constructor   ------------------------------------------
@@ -19,15 +23,27 @@ RPCTrack::RPCTrack(Float_t m, Float_t b)
     fb(b),
     ftheta(0.),
     fphi(0.),
+    fnrun(0),
+    ftrigger(0),
+    ftrackID(0),
+    fslopexz(0.),
+    fslopeyz(0.),
     fnclusters(0)
 {
 }
 
-RPCTrack::RPCTrack(Double_t theta, Double_t phi)
+RPCTrack::RPCTrack(Float_t theta, Float_t phi, Float_t slopexz, Float_t slopeyz)
  :  TObject(),
     fnclusters(0),
     ftheta(theta),
-    fphi(phi)
+    fphi(phi),
+    fslopexz(0.),
+    fslopeyz(0.),
+    fnrun(0),
+    ftrigger(0),
+    ftrackID(0),
+    fm(0),
+    fb(0)
  	{
 	}
 
@@ -36,13 +52,17 @@ RPCTrack::RPCTrack(const RPCTrack& ti)
   : TObject(ti),
     fm(ti.fm),
     fb(ti.fb),
-    fnclusters(ti.fnclusters)
-    ftheta(ti.ftheta)
+    fnrun(ti.fnrun),
+    fspill(ti.fspill),
+    ftrigger(ti.ftrigger),
+    ftrackID(ti.ftrackID),
+    fnclusters(ti.fnclusters),
+    ftheta(ti.ftheta),
     fphi(ti.fphi)
 {
 }
 
-void RPCTrack::AddCluster(Double_t x, Double_t y, Double_t z, Int_t dir, Int_t nstation)
+void RPCTrack::AddCluster(Float_t x, Float_t y, Float_t z, Int_t dir, Int_t nstation)
 {
 	fcluster_posx.push_back(x);
 	fcluster_posy.push_back(y);
@@ -51,6 +71,17 @@ void RPCTrack::AddCluster(Double_t x, Double_t y, Double_t z, Int_t dir, Int_t n
 	fcluster_nstation.push_back(nstation);
 
 	fnclusters++;
+}
+
+TVector3 RPCTrack::GetClusterPos(const int icluster)
+
+{
+       float x = fcluster_posx[icluster];
+       float y = fcluster_posy[icluster];
+       float z = fcluster_posz[icluster];
+
+       return TVector3(x,y,z);
+
 }
 
 // -----   Destructor   ----------------------------------------------------
