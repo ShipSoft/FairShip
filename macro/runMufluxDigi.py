@@ -66,10 +66,10 @@ builtin.iEvent  = iEvent
 import MufluxDigi
 SHiP = MufluxDigi.MufluxDigi(outFile)
 
-nEvents   = min(SHiP.sTree.GetEntries(),options.nEvents)
+nEvents   = min(SHiP.sTree.GetEntries(),int(options.nEvents))
 # main loop
 for iEvent in range(firstEvent, nEvents):
- if iEvent%1000 == 0 or debug: print 'event ',iEvent
+ if iEvent%50000 == 0 or debug: print 'event ',iEvent,nEvents-firstEvent
  SHiP.iEvent = iEvent
  rc    = SHiP.sTree.GetEvent(iEvent) 
  SHiP.digitize() 

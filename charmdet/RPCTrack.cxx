@@ -1,13 +1,28 @@
 #include "RPCTrack.h"
 
+<<<<<<< HEAD
 // Default Constructor
 
 RPCTrack::RPCTrack()
  :  TObject(),
+        fm(0),
+        fb(0),
 	ftheta(0.),
 	fphi(0.),
 	fnclusters(0)
 	{}
+
+// -----   Standard constructor   ------------------------------------------
+RPCTrack::RPCTrack(Float_t m, Float_t b)
+  : TObject(),
+    fm(m),
+    fb(b),
+    ftheta(0.),
+    fphi(0.),
+    fnclusters(0)
+{
+}
+
 RPCTrack::RPCTrack(Double_t theta, Double_t phi)
  :  TObject(),
     fnclusters(0),
@@ -15,6 +30,17 @@ RPCTrack::RPCTrack(Double_t theta, Double_t phi)
     fphi(phi)
  	{
 	}
+
+// -----   Copy constructor   ----------------------------------------------
+RPCTrack::RPCTrack(const RPCTrack& ti)
+  : TObject(ti),
+    fm(ti.fm),
+    fb(ti.fb),
+    fnclusters(ti.fnclusters)
+    ftheta(ti.ftheta)
+    fphi(ti.fphi)
+{
+}
 
 void RPCTrack::AddCluster(Double_t x, Double_t y, Double_t z, Int_t dir, Int_t nstation)
 {
@@ -27,3 +53,10 @@ void RPCTrack::AddCluster(Double_t x, Double_t y, Double_t z, Int_t dir, Int_t n
 	fnclusters++;
 }
 
+// -----   Destructor   ----------------------------------------------------
+RPCTrack::~RPCTrack() 
+{ 
+}
+// -------------------------------------------------------------------------
+
+ClassImp(RPCTrack)

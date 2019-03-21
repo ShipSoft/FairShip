@@ -150,7 +150,7 @@ with ConfigRegistry.register_config("basic") as c:
     elif strawDesign==10:  # 10 - baseline for 2018 
      c.strawtubes.InnerStrawDiameter = 1.975*u.cm
      c.strawtubes.StrawPitch         = 3.60*u.cm  
-     c.strawtubes.DeltazLayer        = 1.6*u.cm   
+     c.strawtubes.DeltazLayer        = 2.1*u.cm   
      c.strawtubes.DeltazPlane        = 4.2*u.cm   
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
@@ -483,7 +483,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmuMagnet.GapDown = 25*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
-            c.EmuMagnet.WithConstField=True  #now loaded field map
+            c.EmuMagnet.WithConstField=False  #now loaded field map
             c.EmuMagnet.X = scale*2.2*u.m
             c.EmuMagnet.Y = scale*3.6*u.m
             c.EmuMagnet.Z = 7.2*u.m

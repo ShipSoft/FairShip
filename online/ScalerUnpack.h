@@ -16,39 +16,39 @@ class TTree;
 
 class ScalerUnpack : public ShipUnpack {
 public:
-   /** Standard Constructor. Input - MBS parameters of the detector. */
-   ScalerUnpack(Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
-                Short_t control = 3);
+   ScalerUnpack();
 
    /** Destructor. */
    virtual ~ScalerUnpack();
 
    /** Initialization. Called once, before the event loop. */
-   virtual Bool_t Init();
+   virtual Bool_t Init() override;
 
    /** Process an MBS sub-event. */
-   virtual Bool_t DoUnpack(Int_t *data, Int_t size);
+   virtual Bool_t DoUnpack(Int_t *data, Int_t size) override;
 
    /** Clear the output structures. */
-   virtual void Reset();
+   virtual void Reset() override;
 
    uint16_t GetPartition() override { return fPartitionId; }
 
 protected:
    /** Register the output structures. */
-   virtual void Register();
+   virtual void Register() override;
 
 private:
-   uint16_t fPartitionId;
-   FairRootManager *fMan;
-   TTree *tree;
+   uint16_t fPartitionId = 0x8100;
+   FairRootManager *fMan = nullptr;
+   TTree *tree = nullptr;
+   int fDavid = 0;
+   int fGoliath = 0;
 
    ScalerUnpack(const ScalerUnpack &);
    ScalerUnpack &operator=(const ScalerUnpack &);
 
 public:
    // Class definition
-   ClassDef(ScalerUnpack, 1)
+   ClassDefOverride(ScalerUnpack, 1)
 };
 
 #endif

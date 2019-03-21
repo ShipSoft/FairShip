@@ -10,54 +10,50 @@
 #define ONLINE_DRIFTTUBEUNPACK_H
 
 #include "ShipUnpack.h"
+#include "TClonesArray.h"
 
 class TClonesArray;
 
-/**
- * An example unpacker of MBS data.
- */
 class DriftTubeUnpack : public ShipUnpack {
 public:
-   /** Standard Constructor. Input - MBS parameters of the detector. */
-   DriftTubeUnpack(Short_t type = 94, Short_t subType = 9400, Short_t procId = 10, Short_t subCrate = 1,
-                   Short_t control = 3);
+   DriftTubeUnpack();
+
+   DriftTubeUnpack(bool charm);
 
    /** Destructor. */
    virtual ~DriftTubeUnpack();
 
    /** Initialization. Called once, before the event loop. */
-   virtual Bool_t Init();
+   virtual Bool_t Init() override;
 
    /** Process an MBS sub-event. */
-   virtual Bool_t DoUnpack(Int_t *data, Int_t size);
+   virtual Bool_t DoUnpack(Int_t *data, Int_t size) override;
 
    /** Clear the output structures. */
-   virtual void Reset();
-
-   /** Method for controling the functionality. */
-   inline Int_t GetNHitsTotal() { return fNHitsTotalTubes + fNHitsTotalScintillator; }
+   virtual void Reset() override;
 
    uint16_t GetPartition() override { return fPartitionId; }
 
 protected:
    /** Register the output structures. */
-   virtual void Register();
+   virtual void Register() override;
 
 private:
-   TClonesArray *fRawTubes;        /**< Array of output raw items. */
-   TClonesArray *fRawScintillator; /**< Array of output raw items. */
-   Int_t fNHitsTubes;              /**< Number of raw items in current event. */
-   Int_t fNHitsScintillator;       /**< Number of raw items in current event. */
-   Int_t fNHitsTotalTubes;         /**< Total number of raw items. */
-   Int_t fNHitsTotalScintillator;  /**< Total number of raw items. */
-   uint16_t fPartitionId;
+   std::unique_ptr<TClonesArray> fRawTubes{new TClonesArray("MufluxSpectrometerHit")};
+   std::unique_ptr<TClonesArray> fRawLateTubes{new TClonesArray("MufluxSpectrometerHit")};
+   std::unique_ptr<TClonesArray> fRawScintillator{new TClonesArray("ScintillatorHit")};
+   std::unique_ptr<TClonesArray> fRawBeamCounter{new TClonesArray("ScintillatorHit")};
+   std::unique_ptr<TClonesArray> fRawMasterTrigger{new TClonesArray("ScintillatorHit")};
+   std::unique_ptr<TClonesArray> fRawTriggers{new TClonesArray("ScintillatorHit")};
+   uint16_t fPartitionId = 0x0C00;
+   bool fCharm = false;
 
    DriftTubeUnpack(const DriftTubeUnpack &);
    DriftTubeUnpack &operator=(const DriftTubeUnpack &);
 
 public:
    // Class definition
-   ClassDef(DriftTubeUnpack, 1)
+   ClassDefOverride(DriftTubeUnpack, 1)
 };
 
 #endif

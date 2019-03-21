@@ -743,7 +743,7 @@ class ShipDigiReco:
     modules["Strawtubes"].StrawEndPoints(detID,start,stop)
     delt1 = (start[2]-z1)/u.speedOfLight
     t0+=aDigi.GetDigi()-delt1
-    SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi()} )
+    SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi(), 'detID':detID} )
     n+=1  
   if n>0: t0 = t0/n - 73.2*u.ns
   for s in SmearedHits:
@@ -773,7 +773,7 @@ class ShipDigiReco:
      #     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
      smear = (aDigi.GetDigi() - self.sTree.t0  - p.GetTime() - ( stop[0]-p.GetX() )/ u.speedOfLight) * v_drift
      if no_amb: smear = p.dist2Wire()
-     SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear} )
+     SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear, 'detID':detID} )
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
      if abs(stop.y())==abs(start.y()): h['disty'].Fill(smear)
      if abs(stop.y())>abs(start.y()): h['distu'].Fill(smear)
@@ -786,7 +786,7 @@ class ShipDigiReco:
   stationCrossed = {}
   fittedtrackids=[]
   listOfIndices  = {}
-  self.fGenFitArray.Delete()
+  self.fGenFitArray.Clear()
   self.fTrackletsArray.Delete()
   self.fitTrack2MC.clear()
 
@@ -799,28 +799,31 @@ class ShipDigiReco:
   trackCandidates = []
   
   if realPR:
-     if realPR == "Prev": # Runs previously used pattern recognition
-        fittedtrackids=shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks)
-        if fittedtrackids:
-           tracknbr=0
-           for ids in fittedtrackids:
-              trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
-              tracknbr+=1
-     else: # Runs new pattern recognition
-        fittedtrackids, reco_tracks = shipPatRec.execute(self.SmearedHits,self.sTree,shipPatRec.ReconstructibleMCTracks, method=realPR)
-         # Save hit ids of recognized tracks
-        for atrack in reco_tracks.values():
-            nTracks   = self.fTrackletsArray.GetEntries()
-            aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
-            listOfHits = aTracklet.getList()
-            aTracklet.setType(atrack['flag'])
-            for index in atrack['hits']:
-                listOfHits.push_back(index)
-        if fittedtrackids:
-            tracknbr=0
-            for ids in fittedtrackids:
-                trackCandidates.append( [shipPatRec.theTracks[tracknbr],ids] )
-                tracknbr+=1
+    # Do real PatRec
+    track_hits = shipPatRec.execute(self.SmearedHits, ShipGeo, realPR)
+    # Create hitPosLists for track fit
+    for i_track in track_hits.keys():
+      atrack = track_hits[i_track]
+      atrack_y12 = atrack['y12']
+      atrack_stereo12 = atrack['stereo12']
+      atrack_y34 = atrack['y34']
+      atrack_stereo34 = atrack['stereo34']
+      atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
+      for sm in atrack_smeared_hits:
+        detID = sm['detID']
+        station = int(detID/10000000)
+        trID = i_track
+        # Collect hits for track fit
+        if not hitPosLists.has_key(trID):
+          hitPosLists[trID] = ROOT.std.vector('TVectorD')()
+          listOfIndices[trID] = []
+          stationCrossed[trID]  = {}
+        m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
+        hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
+        listOfIndices[trID].append(sm['digiHit'])
+        if not stationCrossed[trID].has_key(station):
+          stationCrossed[trID][station] = 0
+        stationCrossed[trID][station] += 1
   else: # do fake pattern recognition
    for sm in self.SmearedHits:
     detID = self.digiStraw[sm['digiHit']].GetDetectorID()
@@ -836,26 +839,27 @@ class ShipDigiReco:
     if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
     stationCrossed[trID][station]+=1
 #
-   for atrack in listOfIndices:
-     # make tracklets out of trackCandidates, just for testing, should be output of proper pattern recognition
-    nTracks   = self.fTrackletsArray.GetEntries()
-    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
-    listOfHits = aTracklet.getList()
-    aTracklet.setType(3)
-    for index in listOfIndices[atrack]:
-      listOfHits.push_back(index)
+   # for atrack in listOfIndices:
+   #   # make tracklets out of trackCandidates, just for testing, should be output of proper pattern recognition
+   #  nTracks   = self.fTrackletsArray.GetEntries()
+   #  aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
+   #  listOfHits = aTracklet.getList()
+   #  aTracklet.setType(3)
+   #  for index in listOfIndices[atrack]:
+   #    listOfHits.push_back(index)
 #  
-   for atrack in hitPosLists:
+  for atrack in hitPosLists:
     if atrack < 0: continue # these are hits not assigned to MC track because low E cut
     pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
     if not self.PDG.GetParticle(pdg): continue # unknown particle
+    # pdg = 13
     meas = hitPosLists[atrack]
     nM = meas.size()
     if nM < 25 : continue                          # not enough hits to make a good trackfit 
     if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
     if debug: 
        mctrack = self.sTree.MCTrack[atrack]
-    charge = self.PDG.GetParticle(pdg).Charge()/(3.)
+    # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
     posM = ROOT.TVector3(0, 0, 0)
     momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance
@@ -887,6 +891,7 @@ class ShipDigiReco:
       theTrack.insertPoint(tp)  # add point to Track
    # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
     trackCandidates.append([theTrack,atrack])
+  
   for entry in trackCandidates:
 #check
     atrack = entry[1]
@@ -907,6 +912,13 @@ class ShipDigiReco:
      error = "Problem with track after fit, not consistent"
      ut.reportError(error)
      continue
+    try:
+      fittedState = theTrack.getFittedState()
+      fittedMom = fittedState.getMomMag()
+    except:
+      error = "Problem with fittedstate"
+      ut.reportError(error)
+      continue
     fitStatus   = theTrack.getFitStatus()
     nmeas = fitStatus.getNdf()   
     chi2        = fitStatus.getChi2()/nmeas   
@@ -915,9 +927,23 @@ class ShipDigiReco:
     nTrack   = self.fGenFitArray.GetEntries()
     if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
     self.fGenFitArray[nTrack] = theTrack
-    self.fitTrack2MC.push_back(atrack)
+    # self.fitTrack2MC.push_back(atrack)
     if debug: 
      print 'save track',theTrack,chi2,nmeas,fitStatus.isFitConverged()
+    # Save MC link
+    track_ids = []
+    for index in listOfIndices[atrack]:
+      ahit = self.sTree.strawtubesPoint[index]
+      track_ids += [ahit.GetTrackID()]
+    frac, tmax = self.fracMCsame(track_ids)
+    self.fitTrack2MC.push_back(tmax)
+    # Save hits indexes of the the fitted tracks
+    nTracks   = self.fTrackletsArray.GetEntries()
+    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)
+    listOfHits = aTracklet.getList()
+    aTracklet.setType(1)
+    for index in listOfIndices[atrack]:
+      listOfHits.push_back(index)
   self.Tracklets.Fill()
   self.fitTracks.Fill()
   self.mcLink.Fill()
@@ -974,6 +1000,24 @@ class ShipDigiReco:
      self.vetoHitOnTrackArray[index] = self.findVetoHitOnTrack(track)
      index+=1
    self.vetoHitOnTrackBranch.Fill()
+
+ def fracMCsame(self, trackids):
+  track={}
+  nh=len(trackids)
+  for tid in trackids:
+    if track.has_key(tid):
+      track[tid] += 1
+    else:
+      track[tid] = 1
+  if track != {}:
+    tmax = max(track, key=track.get)
+  else:
+    track = {-999: 0}
+    tmax = -999
+  frac=0.0
+  if nh > 0:
+    frac = float(track[tmax]) / float(nh)
+  return frac, tmax
 
  def finish(self):
   del self.fitter

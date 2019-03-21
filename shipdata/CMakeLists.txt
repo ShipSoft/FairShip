@@ -4,6 +4,8 @@
 
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/shipdata
+${CMAKE_SOURCE_DIR}/genfit/core/include
+${CMAKE_SOURCE_DIR}/genfit/fitters/include
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -23,12 +25,13 @@ ShipHit.cxx
 ShipStack.cxx 
 ShipMCTrack.cxx
 ShipParticle.cxx
+TrackInfo.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME ShipData)
-Set(DEPENDENCIES Base EG Physics Core)
+Set(DEPENDENCIES Base EG Physics Core genfit)
 
 GENERATE_LIBRARY()
 

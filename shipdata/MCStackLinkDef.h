@@ -9,6 +9,7 @@
 #pragma link C++ class ShipHit+;
 #pragma link C++ class ShipMCTrack+;
 #pragma link C++ class ShipParticle+;
+#pragma link C++ class TrackInfo+;
 
 #endif
 
