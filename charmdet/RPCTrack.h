@@ -3,6 +3,7 @@
 
 #include "TObject.h"              //  
 #include "TVector3.h"
+#include "TString.h"
 
 #include "Rtypes.h"                     // for Float_t, Int_t, Double32_t, etc
 
@@ -43,7 +44,7 @@ class RPCTrack : public TObject
         //Track and spill information
         int GetTrackID() {return ftrackID;}
         int GetRunNumber() {return fnrun;}
-        std::string GetSpillName() {return fspill;}
+        TString GetSpillName() {return fspill;}
         int GetTrigger() {return ftrigger;}
         //general local track attributes
         float GetTheta() {return ftheta;}
@@ -59,10 +60,12 @@ class RPCTrack : public TObject
 	void AddCluster(Float_t x, Float_t y, Float_t z, Int_t dir, Int_t nstation);
         void SetTrackID(Int_t TrackID){ftrackID = TrackID;};
         void SetRunNumber(Int_t NRun) {fnrun = NRun;};
-        std::string SetSpillName(std::string Spill) { fspill = Spill;};
+        void SetSpillName(TString Spill) { fspill = Spill;};
         void SetTrigger(Int_t NTrigger) {ftrigger = NTrigger;};
 	void SetTheta(Float_t theta) {ftheta = theta;};
 	void SetPhi(Float_t phi) {fphi = phi;};
+        void SetSlopeXZ(Float_t SlopeXZ){fslopexz = SlopeXZ;};
+        void SetSlopeYZ(Float_t SlopeYZ){fslopeyz = SlopeYZ;};
 
         /*** Output to screen */
         virtual void Print(const Option_t* opt ="") const {;}
@@ -84,7 +87,7 @@ class RPCTrack : public TObject
     Float_t fslopexz; 
     Float_t fslopeyz;
     /** Attributes **/
-    std::string fspill;
+    TString fspill;
     Int_t fnrun, ftrigger; //redundant information, probably to be removed
     Int_t ftrackID; //ID of the track
     Float_t ftheta, fphi; //angles
