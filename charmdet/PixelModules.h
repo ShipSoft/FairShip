@@ -10,6 +10,7 @@
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
+#include "unordered_map"
 
 class PixelModulesPoint;
 class FairVolume;
@@ -21,32 +22,32 @@ class PixelModules:public FairDetector
   PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="PixelModules");
     PixelModules();
     virtual ~PixelModules();
-      
+    std::unordered_map<int, TVector3> * MakePositionMap();
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_t Dim1Short, Double_t Dim1Long);
-    void SetSiliconDZ(Double_t SiliconDZ);  
+    void SetSiliconDZ(Double_t SiliconDZ);
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
     void SetSiliconDetNumber(Int_t nSilicon);
-     
+
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
-    
+
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
     virtual Bool_t ProcessHits( FairVolume* v=0);
-    
+
     /**       Registers the produced collections in FAIRRootManager.     */
     virtual void   Register();
-    
+
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const ;
-    
+
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
-    
+
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
@@ -58,7 +59,7 @@ class PixelModules:public FairDetector
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
      */
-    
+
     virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
                               Int_t offset) {;}
     virtual void   SetSpecialPhysicsCuts() {;}
@@ -71,9 +72,9 @@ class PixelModules:public FairDetector
     virtual void   BeginEvent() {;}
 
     void DecodeVolumeID(Int_t detID,int &nHPT);
-    
+
 private:
-    
+
     /** Track information to be stored until the track leaves the
      active volume.
      */
@@ -85,19 +86,19 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    
+
     /** container for data points */
     TClonesArray*  fPixelModulesPointCollection;
-    
+
     Int_t InitMedium(const char* name);
-    
-    
-    
+
+
+
 protected:
-    
+
     Double_t Dim1Short, Dim1Long;
- 
-    
+
+
     Double_t SBoxX = 0;
     Double_t SBoxY = 0;
     Double_t SBoxZ = 0;
@@ -106,7 +107,7 @@ protected:
     Double_t BoxY = 0;
     Double_t BoxZ = 0;
     Double_t zBoxPosition = 0;
-    
+
     Double_t DimX =0;
     Double_t DimY =0;
     Double_t DimZ = 0;
@@ -120,10 +121,10 @@ protected:
 
     Double_t xs[12], ys[12], zs[12];
     Double_t xangle[12], yangle[12], zangle[12];
-    
+
     PixelModules(const PixelModules&);
     PixelModules& operator=(const PixelModules&);
     ClassDef(PixelModules,1)
 
 };
-#endif 
+#endif

@@ -2,7 +2,7 @@
 //  PixelModules, twelve pixel modules physically connected two by two.
 
 #include "PixelModules.h"
-//#include "MagneticPixelModules.h" 
+//#include "MagneticPixelModules.h"
 #include "PixelModulesPoint.h"
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
@@ -72,7 +72,7 @@ PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t D
     fLength(-1.),
     fELoss(-1),
     fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
-{ 
+{
   DimX = DX;
   DimY = DY;
   DimZ = DZ;
@@ -91,7 +91,7 @@ void PixelModules::Initialize()
     FairDetector::Initialize();
 }
 
-// -----   Private method InitMedium 
+// -----   Private method InitMedium
 Int_t PixelModules::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -149,19 +149,52 @@ void PixelModules::SetSiliconDetNumber(Int_t nSilicon)
 }
 
 
+std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
 
+  std::unordered_map<int, TVector3> positionMap;
+  const float mkm = 0.0001;
+  float  z0ref=  -1300.*mkm;
+  float  z1ref=   5200.*mkm;
+  float  z2ref=  24120.*mkm;
+  float  z3ref=  30900.*mkm;
+  float  z4ref=  51000.*mkm;
+  float  z5ref=  57900.*mkm;
+  float  z6ref=  77900.*mkm;
+  float  z7ref=  84600.*mkm;
+  float  z8ref= 104620.*mkm;
+  float  z9ref= 111700.*mkm;
+  float z10ref= 131620.*mkm;
+  float z11ref= 138500.*mkm;
 
+  float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
+
+  int map_index=0;
+  for (int partID=0; partID<3; partID++) {
+    for (int moduleID=0;moduleID<8; moduleID++ ) {
+      for (int column=1; column<81; column++) {
+        for (int row=1; row<337; row++) {
+          map_index = 10000000*partID + 1000000*moduleID + 1000*row + column;
+          positionMap[map_index].SetX(0.025 + (column-1)*0.025);
+          if (column == 80) positionMap[map_index].SetX(0.025 + (column-2)*0.025 + 0.0225);
+          positionMap[map_index].SetY(0.0050*(row-1) + 0.0025);
+          positionMap[map_index].SetZ(Zref[(moduleID + 1)/2 * (partID+1)]);
+        }
+      }
+    }
+  }
+return &positionMap;
+}
 
 
 //
 void PixelModules::ConstructGeometry()
-{ 
+{
     InitMedium("air");
   TGeoMedium *air = gGeoManager->GetMedium("air");
 
     InitMedium("iron");
     TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-    
+
     InitMedium("silicon");
     TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
 
@@ -173,10 +206,10 @@ void PixelModules::ConstructGeometry()
 
     InitMedium("TTmedium");
     TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
-    
+
     InitMedium("STTmix8020_2bar");
     TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
-  
+
     TGeoVolume *top = gGeoManager->GetTopVolume();
 
     //computing the largest offsets in order to set PixelBox dimensions correctly
@@ -190,22 +223,22 @@ void PixelModules::ConstructGeometry()
     TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
     Double_t inimodZoffset(zs[0]) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
     top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
-    
+
 
     TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
-    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon); 
+    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon);
     volPixely->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixely);
 
     TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
-    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon); 
+    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon);
     volPixelx->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixelx);
 
     //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
-    Int_t PixelIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162}; 
+    Int_t PixelIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162};
     //Alternated pixel stations optimized for y and x measurements
-    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE}; 
+    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE};
 
     for (int ipixel = 0; ipixel < 12; ipixel++){
       if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
@@ -227,7 +260,7 @@ Bool_t  PixelModules::ProcessHits(FairVolume* vol)
     }
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
-    
+
     // Create muonPoint at exit of active volume
     if ( gMC->IsTrackExiting()    ||
         gMC->IsTrackStop()       ||
@@ -238,21 +271,21 @@ Bool_t  PixelModules::ProcessHits(FairVolume* vol)
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
 	//Int_t fMotherID =p->GetFirstMother();
-        gMC->CurrentVolID(fVolumeID);	
+        gMC->CurrentVolID(fVolumeID);
 
-        TLorentzVector Pos; 
-        gMC->TrackPosition(Pos); 
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+        TLorentzVector Pos;
+        gMC->TrackPosition(Pos);
+        Double_t xmean = (fPos.X()+Pos.X())/2. ;
+        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
 
 	AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
-        
+
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
         stack->AddPoint(kPixelModules);
     }
-    
+
     return kTRUE;
 }
 
@@ -264,13 +297,13 @@ void PixelModules::EndOfEvent()
 
 void PixelModules::Register()
 {
-    
+
     /** This will create a branch in the output tree called
      PixelModulesPoint, setting the last parameter to kFALSE means:
      this collection will not be written to the file, it will exist
      only during the simulation.
      */
-    
+
     FairRootManager::Instance()->Register("PixelModulesPoint", "PixelModules",
                                           fPixelModulesPointCollection, kTRUE);
 }
