@@ -32,7 +32,7 @@ public:
     void AddEmulsionFilm(Double_t zposition, Int_t nreplica, TGeoVolume * volTarget, TGeoVolume * volEmulsionFilm, TGeoVolume * volEmulsionFilm2, TGeoVolume * volPlBase); 
   
     void SetTargetDesign(Bool_t Julytarget);
-    void SetRunNumber(Int_t RunNumber);
+    void SetTargetNumber(Int_t CharmTargetNumber);
 
     void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ);
     void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t PasSlabTh, Double_t AllPW);
@@ -80,7 +80,7 @@ public:
     Box(const Box&);
     Box& operator=(const Box&);
     
-    ClassDef(Box,1)
+    ClassDef(Box,2)
     
 private:
     
@@ -107,6 +107,7 @@ protected:
     Int_t InitMedium(const char* name);
 
     Bool_t fJulytarget; //Lead ECC vs SHiP ECC
+    Bool_t ch1r6; //special case, CH1 run with a tungsten target
     //Number of the simulated run
     Int_t nrun;
     

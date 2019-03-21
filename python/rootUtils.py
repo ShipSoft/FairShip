@@ -199,5 +199,10 @@ def findMaximumAndMinimum(histo):
     amin = c
     nmin = n
  return amin,amax,nmin,nmax
-
-
+def makeIntegralDistrib(h,key):
+ name = 'I-'+key
+ h[name]=h[key].Clone(name)
+ h[name].SetTitle('Integral > '+h[key].GetTitle())
+ for n in range(1,h[key].GetNbinsX()+1):
+   if n==1: h[name].SetBinContent(1,h[key].GetSumOfWeights())
+   else: h[name].SetBinContent(n,h[name].GetBinContent(n-1)-h[key].GetBinContent(n-1))

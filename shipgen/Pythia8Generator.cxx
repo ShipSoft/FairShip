@@ -241,12 +241,12 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       z  = fPythia->event[ii].zProd()+dl*fPythia->event[1].pz()+zinter;
       x  = fPythia->event[ii].xProd()+dl*fPythia->event[1].px();
       y  = fPythia->event[ii].yProd()+dl*fPythia->event[1].py();
-      tof = fPythia->event[ii].tProd()+dl*fPythia->event[1].e()/cm/c_light;
+      tof = fPythia->event[ii].tProd()/ (10*c_light) + dl*fPythia->event[1].e()/cm/c_light;
      }else{
       z  = fPythia->event[ii].zProd()+zinter;
       x  = fPythia->event[ii].xProd();
       y  = fPythia->event[ii].yProd();
-      tof = fPythia->event[ii].tProd();
+      tof = fPythia->event[ii].tProd() / (10*c_light) ; // to go from mm to s
      }
      pz = fPythia->event[ii].pz();
      px = fPythia->event[ii].px();  

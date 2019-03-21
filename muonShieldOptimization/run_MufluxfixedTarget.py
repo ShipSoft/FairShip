@@ -67,6 +67,7 @@ def init():
   ap.add_argument('-d', '--debug', action='store_true', dest='debug')
   ap.add_argument('-f', '--force', action='store_true', help="force overwriting output directory")
   ap.add_argument('-cs', '--CharmdetSetup', type=int, dest='CharmdetSetup',help="setting detector setup", default=0)
+  ap.add_argument('-ct', '--CharmTarget', type=int, dest='CharmTarget',help="choosing target configuration for charm exposure", default=3)
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
@@ -148,7 +149,7 @@ os.chdir(work_dir)
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 #this is for the muon flux geometry
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = args.CharmdetSetup)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = args.CharmdetSetup, cTarget = args.CharmTarget)
 
 txt = 'pythia8_Geant4_'
 if withEvtGen: txt = 'pythia8_evtgen_Geant4_'
