@@ -25,11 +25,11 @@ HitID ShipPixelHit::GetPixel()
   // stitch together 2 Front ends to one module
   if ((frontEndID%2)==0) column += 80;
 
-  pixelID.partitionID = partitionID;
-  pixelID.frontEndID = frontEndID;
-  pixelID.moduleID = (partitionID*frontEndID)/2;
-  pixelID.row      = row;
-  pixelID.column   = column;
+  pixelID.partitionID = partitionID; // DAQ partition, from 0-2
+  pixelID.frontEndID = frontEndID; // Front end which was read out, from 0-7
+  pixelID.moduleID = ((1+partitionID)*(1+frontEndID))/2 -1 ; // Id of actual DC module, from 0-11
+  pixelID.row      = row; // row on front end / module
+  pixelID.column   = column; // column on MODULE
 
   return pixelID;
 }
