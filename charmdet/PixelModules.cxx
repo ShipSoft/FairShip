@@ -170,14 +170,14 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
 
   int map_index=0;
   for (int partID=0; partID<3; partID++) {
-    for (int moduleID=0;moduleID<8; moduleID++ ) {
+    for (int frontEndID=0;frontEndID<8; frontEndID++ ) {
       for (int column=1; column<81; column++) {
         for (int row=1; row<337; row++) {
-          map_index = 10000000*partID + 1000000*moduleID + 1000*row + column;
+          map_index = 10000000*partID + 1000000*frontEndID + 1000*row + column;
           positionMap[map_index].SetX(0.025 + (column-1)*0.025);
           if (column == 80) positionMap[map_index].SetX(0.025 + (column-2)*0.025 + 0.0225);
           positionMap[map_index].SetY(0.0050*(row-1) + 0.0025);
-          positionMap[map_index].SetZ(Zref[(moduleID + 1)/2 * (partID+1)]);
+          positionMap[map_index].SetZ(Zref[(8*partitionID + frontEndID)/2]);
         }
       }
     }
@@ -186,7 +186,6 @@ return &positionMap;
 }
 
 
-//
 void PixelModules::ConstructGeometry()
 {
     InitMedium("air");
