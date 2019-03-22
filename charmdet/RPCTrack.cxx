@@ -76,9 +76,9 @@ void RPCTrack::AddCluster(Float_t x, Float_t y, Float_t z, Int_t dir, Int_t nsta
 TVector3 RPCTrack::GetClusterPos(const int icluster)
 
 {
-       float x = fcluster_posx[icluster];
-       float y = fcluster_posy[icluster];
-       float z = fcluster_posz[icluster];
+       Float_t x = fcluster_posx[icluster];
+       Float_t y = fcluster_posy[icluster];
+       Float_t z = fcluster_posz[icluster];
 
        return TVector3(x,y,z);
 

@@ -42,20 +42,20 @@ class RPCTrack : public TObject
         float m(){return fm;}
         float b(){return fb;}
         //Track and spill information
-        int GetTrackID() {return ftrackID;}
-        int GetRunNumber() {return fnrun;}
+        Int_t GetTrackID() {return ftrackID;}
+        Int_t GetRunNumber() {return fnrun;}
         TString GetSpillName() {return fspill;}
-        int GetTrigger() {return ftrigger;}
+        Int_t GetTrigger() {return ftrigger;}
         //general local track attributes
-        float GetTheta() {return ftheta;}
-        float GetPhi() {return fphi;}
-        float GetSlopeXZ() {return fslopexz;}
-        float GetSlopeYZ() {return fslopeyz;}
-        int GetNClusters() {return fnclusters;}
+        Float_t GetTheta() {return ftheta;}
+        Float_t GetPhi() {return fphi;}
+        Float_t GetSlopeXZ() {return fslopexz;}
+        Float_t GetSlopeYZ() {return fslopeyz;}
+        Int_t GetNClusters() {return fnclusters;}
         //attribute for a single cluster
-        TVector3 GetClusterPos(const int icluster);
-        int GetClusterDir(const int icluster){ return fcluster_dir[icluster]; }
-        int GetClusterStation(const int icluster) { return fcluster_nstation[icluster];}
+        TVector3 GetClusterPos(const Int_t icluster);
+        Int_t GetClusterDir(const Int_t icluster){ return fcluster_dir[icluster]; }
+        Int_t GetClusterStation(const Int_ icluster) { return fcluster_nstation[icluster];}
 	/** Modifiers **/
 	void AddCluster(Float_t x, Float_t y, Float_t z, Int_t dir, Int_t nstation);
         void SetTrackID(Int_t TrackID){ftrackID = TrackID;};
