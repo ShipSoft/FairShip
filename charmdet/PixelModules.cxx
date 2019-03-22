@@ -201,14 +201,7 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
   const float Yref[12] { y0ref, y1ref, y2ref, y3ref, y4ref, y5ref, y6ref, y7ref, y8ref, y9ref, y10ref, y11ref};
 
   std::unordered_map<int, TVector3> positionMap;
-  std::vector<std::vector<TVector3>> alignment(12);
-
-  for (int i=0; i<12; i++) {
-    (*alignment[i]).SetX(Xref[i]);
-    (*alignment[i]).SetX(Yref[i]);
-    (*alignment[i]).SetZ(Zref[i]);
-  }
-
+  
   int map_index = 0;
   int moduleID = 0;
   float x,x_lcoal,y, y_local;
