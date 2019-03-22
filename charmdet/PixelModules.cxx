@@ -201,15 +201,15 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
   const float Yref[12] { y0ref, y1ref, y2ref, y3ref, y4ref, y5ref, y6ref, y7ref, y8ref, y9ref, y10ref, y11ref};
 
   std::unordered_map<int, TVector3> positionMap;
-  
+
   int map_index = 0;
   int moduleID = 0;
   float x,x_lcoal,y, y_local;
-  for (int partID=0; partID<3; partID++) {
+  for (int partitionID=0; partitionID<3; partitionID++) {
     for (int frontEndID=0;frontEndID<8; frontEndID++ ) {
       for (int column=1; column<81; column++) {
         for (int row=1; row<337; row++) {
-          map_index = 10000000*partID + 1000000*frontEndID + 1000*row + column;
+          map_index = 10000000*partitionID + 1000000*frontEndID + 1000*row + column;
           moduleID = (8*partitionID + frontEndID)/2;
           if (frontEndID%2==1) {
             // calculate LOCAL x position of hit
