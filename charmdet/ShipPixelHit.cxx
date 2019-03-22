@@ -45,7 +45,7 @@ int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
 void ShipPixelHit::EndPoints(TVector3 &pixel, int detID, std::unordered_map<int, TVector3> &positionMap) {
 
-  int max_detID = 10000000*2 + 1000000*8 + 1000*336 + 160 ;
+  int max_detID = 10000000*2 + 1000000*7 + 1000*336 + 80 ;
   if (detID%1000000 == 0) {
     return;
   }
