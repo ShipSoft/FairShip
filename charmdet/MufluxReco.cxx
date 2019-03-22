@@ -510,15 +510,11 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::cout<< "fill trackKinematics: "<< N <<std::endl;
 
  TH1D* h_Trscalers =  (TH1D*)(gDirectory->GetList()->FindObject("Trscalers"));
- TH2D* h_p1p2 = (TH2D*)(gDirectory->GetList()->FindObject("p1/p2"));
- TH2D* h_pt1pt2 = (TH2D*)(gDirectory->GetList()->FindObject("pt1/pt2"));
- TH2D* h_p1p2s = (TH2D*)(gDirectory->GetList()->FindObject("p1/p2"));
- TH2D* h_pt1pt2s = (TH2D*)(gDirectory->GetList()->FindObject("pt1/pt2"));
 
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult"};
- std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy"};
+ std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s"};
  std::vector<TString> tagged  = {"","mu"};
  std::vector<TString> source  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
 
@@ -656,11 +652,19 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       Float_t Py = fittedState.getMom().y();
       Float_t Pz = fittedState.getMom().z();
       if (fittedStateb.getCharge()*fittedState.getCharge()<0){
-       h_p1p2->Fill(P,Pb);
-       h_pt1pt2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       h2D["p1p2"]->Fill(P,Pb);
+       h2D["pt1pt2"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       if (fSource){
+         h2D["p1p2"+source]->Fill(P,Pb);
+         h2D["pt1pt2"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       }
       }else{
-       h_p1p2s->Fill(P,Pb);
-       h_pt1pt2s->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       h2D["p1p2s"]->Fill(P,Pb);
+       h2D["pt1pt2s"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       if (fSource){
+         h2D["p1p2s"+source]->Fill(P,Pb);
+         h2D["pt1pt2s"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       }
      }
    }
  }
