@@ -204,7 +204,7 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
 
   int map_index = 0;
   int moduleID = 0;
-  float x,x_lcoal,y, y_local;
+  float x,x_local,y, y_local;
   for (int partitionID=0; partitionID<3; partitionID++) {
     for (int frontEndID=0;frontEndID<8; frontEndID++ ) {
       for (int column=1; column<81; column++) {
