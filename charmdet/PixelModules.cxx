@@ -150,6 +150,8 @@ void PixelModules::SetSiliconDetNumber(Int_t nSilicon)
 
 
 std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
+// map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
+// the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
 
   std::unordered_map<int, TVector3> positionMap;
   const float mkm = 0.0001;
@@ -169,15 +171,26 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
   float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
 
   int map_index=0;
+  int moduleID = 0;
   for (int partID=0; partID<3; partID++) {
     for (int frontEndID=0;frontEndID<8; frontEndID++ ) {
       for (int column=1; column<81; column++) {
         for (int row=1; row<337; row++) {
           map_index = 10000000*partID + 1000000*frontEndID + 1000*row + column;
-          positionMap[map_index].SetX(0.025 + (column-1)*0.025);
-          if (column == 80) positionMap[map_index].SetX(0.025 + (column-2)*0.025 + 0.0225);
-          positionMap[map_index].SetY(0.0050*(row-1) + 0.0025);
-          positionMap[map_index].SetZ(Zref[(8*partitionID + frontEndID)/2]);
+          moduleID = (8*partitionID + frontEndID)/2;
+          if (frontEndID%2==0) {
+            positionMap[map_index].SetX(0.025 + (column-1)*0.025);
+            if (column == 80) positionMap[map_index].SetX(0.025 + (column-1)*0.025 + 0.0225);
+          }
+          else if (frontEndID%2==1) {
+            positionMap[map_index].SetX(0.0225 + (column-1)*0.025);
+            if (column == 80) positionMap[map_index].SetX(0.0225 + (column-1)*0.025 + 0.025);
+          }
+          else {
+            printf("frontendID out of range: %i", frontEndID);
+          }
+          positionMap[map_index].SetY(1.6775 - 0.0050*(row-1));
+          positionMap[map_index].SetZ(Zref[moduleID]);
         }
       }
     }
