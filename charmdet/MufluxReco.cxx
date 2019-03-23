@@ -652,18 +652,18 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       Float_t Py = fittedState.getMom().y();
       Float_t Pz = fittedState.getMom().z();
       if (fittedStateb.getCharge()*fittedState.getCharge()<0){
-       h2D["p1p2"]->Fill(P,Pb);
-       h2D["pt1pt2"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       h2D["p1/p2"]->Fill(P,Pb);
+       h2D["pt1/pt2"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
        if (fSource){
-         h2D["p1p2"+source]->Fill(P,Pb);
-         h2D["pt1pt2"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+         h2D["p1/p2"+source]->Fill(P,Pb);
+         h2D["pt1/pt2"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
        }
       }else{
-       h2D["p1p2s"]->Fill(P,Pb);
-       h2D["pt1pt2s"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+       h2D["p1/p2s"]->Fill(P,Pb);
+       h2D["pt1/pt2s"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
        if (fSource){
-         h2D["p1p2s"+source]->Fill(P,Pb);
-         h2D["pt1pt2s"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
+         h2D["p1/p2s"+source]->Fill(P,Pb);
+         h2D["pt1/pt2s"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
        }
      }
    }

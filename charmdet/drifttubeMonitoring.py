@@ -1626,11 +1626,10 @@ for x in ['','mu']:
   ut.bookHist(h,'Nmeasurements'+x+s,'number of measurements used',25,-0.5,24.5)
   ut.bookHist(h,'xy'+x+s,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
   ut.bookHist(h,'pxpy'+x+s,'px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
-  if x!='': continue
-  ut.bookHist(h,'p1/p2'+s,'momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
-  ut.bookHist(h,'pt1/pt2'+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
-  ut.bookHist(h,'p1/p2s'+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
-  ut.bookHist(h,'pt1/pt2s'+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+  ut.bookHist(h,'p1/p2'+x+s,'momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
+  ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+  ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
+  ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
 ut.bookHist(h,'weightVsSource','weight vs source MC check',10,-0.5,9.5,1000,0.0,1000.)
 
@@ -4305,17 +4304,6 @@ def plotEnergyLoss():
 hMC      = {}
 hCharm   = {}
 hMC10GeV = {}
-
-def fillKinHistos(F,X):
-   f = ROOT.TFile(F)
-   for a in ['p/pt','p/Abspx','p1/p2','Trscalers']:
-    for x in ['','mu']:
-     for source in ["","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"]:
-      if (source == "charm" or source == "beauty") and (F.find('mbias')>0 or F.find('charm')>0): continue
-      if (a=='p1/p2' or a=='Trscalers') and (source !="" or x !=""):continue
-      xxx = a+x+source
-      X[xxx] = f.GetKey(xxx).ReadObj().Clone()
-      X[xxx].SetDirectory(ROOT.gROOT)
 
 def MCcomparison(pot = -1, pMin = 5.,eric=False):
  # 1GeV mbias,      1.8 Billion PoT 
