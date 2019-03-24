@@ -102,7 +102,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.gausbeam = True
     c.Box.Julytarget = True
     c.Box.GapPostTargetTh = 0.73 * u.cm #distance between end of the emulsion target and start of pixel box (Pixel origin)     
-    c.Box.CharmTargetNumber =  cTarget #run configuration for charm
+    c.Box.RunNumber =  cTarget #run configuration for charm
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
     c.decayVolume            =  AttrDict(z=0*u.cm)

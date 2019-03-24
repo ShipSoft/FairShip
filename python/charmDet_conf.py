@@ -39,7 +39,7 @@ def configure(run,ship_geo):
  Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
  Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
  Box.SetTargetDesign(ship_geo.Box.Julytarget)
- Box.SetTargetNumber(ship_geo.Box.CharmTargetNumber)
+ Box.SetRunNumber(ship_geo.Box.RunNumber)
 
  if (ship_geo.MufluxSpectrometer.muflux==False): 
 # === SciFi modules
