@@ -29,19 +29,21 @@ def configure(run,ship_geo):
  cave.SetGeometryFileName("caveWithAir.geo")
  detectorList.append(cave)
     
- Box = ROOT.Box("Box",ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.zBox,ROOT.kTRUE)
- Box.SetEmulsionParam(ship_geo.Box.EmTh, ship_geo.Box.EmX, ship_geo.Box.EmY, ship_geo.Box.PBTh,ship_geo.Box.EPlW, ship_geo.Box.PasSlabTh, ship_geo.Box.AllPW);
- Box.SetBrickParam(ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.BrPackX, ship_geo.Box.BrPackY, ship_geo.Box.BrPackZ);
- Box.SetTargetParam(ship_geo.Box.TX, ship_geo.Box.TY, ship_geo.Box.TZ);
- Box.SetPassiveComposition(ship_geo.Box.Molblock1Z, ship_geo.Box.Molblock2Z, ship_geo.Box.Molblock3Z, ship_geo.Box.Molblock4Z, ship_geo.Box.Wblock1Z, ship_geo.Box.Wblock2Z, ship_geo.Box.Wblock3Z, ship_geo.Box.Wblock3_5Z, ship_geo.Box.Wblock4Z)
- Box.SetPassiveSampling(ship_geo.Box.Passive3mmZ, ship_geo.Box.Passive2mmZ, ship_geo.Box.Passive1mmZ)
- Box.SetCoolingParam(ship_geo.Box.CoolX, ship_geo.Box.CoolY, ship_geo.Box.CoolZ)
- Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
- Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
- Box.SetTargetDesign(ship_geo.Box.Julytarget)
- Box.SetTargetNumber(ship_geo.Box.CharmTargetNumber)
 
- if (ship_geo.MufluxSpectrometer.muflux==False): 
+ if (ship_geo.MufluxSpectrometer.muflux==False):
+# === Emulsion Target 
+    Box = ROOT.Box("Box",ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.zBox,ROOT.kTRUE)
+    Box.SetEmulsionParam(ship_geo.Box.EmTh, ship_geo.Box.EmX, ship_geo.Box.EmY, ship_geo.Box.PBTh,ship_geo.Box.EPlW, ship_geo.Box.PasSlabTh, ship_geo.Box.AllPW);
+    Box.SetBrickParam(ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.BrPackX, ship_geo.Box.BrPackY, ship_geo.Box.BrPackZ);
+    Box.SetTargetParam(ship_geo.Box.TX, ship_geo.Box.TY, ship_geo.Box.TZ);
+    Box.SetPassiveComposition(ship_geo.Box.Molblock1Z, ship_geo.Box.Molblock2Z, ship_geo.Box.Molblock3Z, ship_geo.Box.Molblock4Z, ship_geo.Box.Wblock1Z, ship_geo.Box.Wblock2Z, ship_geo.Box.Wblock3Z, ship_geo.Box.Wblock3_5Z, ship_geo.Box.Wblock4Z)
+    Box.SetPassiveSampling(ship_geo.Box.Passive3mmZ, ship_geo.Box.Passive2mmZ, ship_geo.Box.Passive1mmZ)
+    Box.SetCoolingParam(ship_geo.Box.CoolX, ship_geo.Box.CoolY, ship_geo.Box.CoolZ)
+    Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
+    Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
+    Box.SetTargetDesign(ship_geo.Box.Julytarget)
+    Box.SetRunNumber(ship_geo.Box.RunNumber)
+    detectorList.append(Box)
 # === SciFi modules
     SciFi = ROOT.SciFi("SciFi",ship_geo.SciFi.DX, ship_geo.SciFi.DY, ship_geo.SciFi.DZ,ROOT.kTRUE)
     SciFi.SetBoxParam(ship_geo.SciFi.DX,ship_geo.SciFi.DY,ship_geo.SciFi.DZ, ship_geo.SciFi.zBox)
@@ -53,8 +55,6 @@ def configure(run,ship_geo):
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
     PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long)
     PixelModules.SetSiliconDZ(ship_geo.PixelModules.DimZSi)
-# === Box
-    detectorList.append(Box)
 # === SciFi modules
     detectorList.append(SciFi)
 # === Pixel modules

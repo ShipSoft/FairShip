@@ -164,9 +164,9 @@ void Box::SetTargetDesign(Bool_t Julytarget){
   fJulytarget = Julytarget;
 }
 
-void Box::SetTargetNumber(Int_t CharmTargetNumber){		
-  nrun = CharmTargetNumber;
-  if (CharmTargetNumber==16){ //special case, CH1 run with a tungsten target
+void Box::SetRunNumber(Int_t RunNumber){		
+  nrun = RunNumber;
+  if (RunNumber==16){ //special case, CH1 run with a tungsten target
     nrun = 1;
     ch1r6 = true;
   }		
