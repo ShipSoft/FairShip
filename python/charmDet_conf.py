@@ -127,17 +127,18 @@ def configure(run,ship_geo):
  
  # for the digitizing step
  MufluxSpectrometer.SetTubeResolution(ship_geo.MufluxSpectrometer.v_drift,ship_geo.MufluxSpectrometer.sigma_spatial) 
-
- Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
- Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
- Scintillator.SetDistT1(ship_geo.Scintillator.DistT1)
- Scintillator.SetDistT2(ship_geo.Scintillator.DistT2) 
- Scintillator.SetS_T1coords(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1x_y) 
- Scintillator.SetS_T2coords(ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2x_y)  
   
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(MufluxSpectrometer)
  else:
+ # Scintillator and Target Station classes for muflux configuration
+    Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
+    Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
+    Scintillator.SetDistT1(ship_geo.Scintillator.DistT1)
+    Scintillator.SetDistT2(ship_geo.Scintillator.DistT2) 
+    Scintillator.SetS_T1coords(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1x_y) 
+    Scintillator.SetS_T2coords(ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2x_y)  
+
     TargetStation = ROOT.MufluxTargetStation("MufluxTargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
     
     TargetStation.SetIronAbsorber(ship_geo.MufluxTargetStation.absorber_x,ship_geo.MufluxTargetStation.absorber_y)
