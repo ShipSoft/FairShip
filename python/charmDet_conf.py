@@ -110,33 +110,35 @@ def configure(run,ship_geo):
  MufluxSpectrometer.SetTStationsX(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1u_x,ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2v_x,ship_geo.MufluxSpectrometer.T3x,ship_geo.MufluxSpectrometer.T4x) 
  MufluxSpectrometer.SetTStationsY(ship_geo.MufluxSpectrometer.T1x_y,ship_geo.MufluxSpectrometer.T1u_y,ship_geo.MufluxSpectrometer.T2x_y,ship_geo.MufluxSpectrometer.T2v_y,ship_geo.MufluxSpectrometer.T3y,ship_geo.MufluxSpectrometer.T4y) 
 
+ if (ship_geo.MufluxSpectrometer.muflux==False):
  ##Survey Results from charm by daniel
- MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3ax,ship_geo.MufluxSpectrometer.SurveyCharm_T3ay,ship_geo.MufluxSpectrometer.SurveyCharm_T3az,0)
- MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3bx,ship_geo.MufluxSpectrometer.SurveyCharm_T3by,ship_geo.MufluxSpectrometer.SurveyCharm_T3bz,1)
- MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3cx,ship_geo.MufluxSpectrometer.SurveyCharm_T3cy,ship_geo.MufluxSpectrometer.SurveyCharm_T3cz,2)
- MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3dx,ship_geo.MufluxSpectrometer.SurveyCharm_T3dy,ship_geo.MufluxSpectrometer.SurveyCharm_T3dz,3)
- MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3tx,ship_geo.MufluxSpectrometer.SurveyCharm_T3ty,ship_geo.MufluxSpectrometer.SurveyCharm_T3tz,4)
+  MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3ax,ship_geo.MufluxSpectrometer.SurveyCharm_T3ay,ship_geo.MufluxSpectrometer.SurveyCharm_T3az,0)
+  MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3bx,ship_geo.MufluxSpectrometer.SurveyCharm_T3by,ship_geo.MufluxSpectrometer.SurveyCharm_T3bz,1)
+  MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3cx,ship_geo.MufluxSpectrometer.SurveyCharm_T3cy,ship_geo.MufluxSpectrometer.SurveyCharm_T3cz,2)
+  MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3dx,ship_geo.MufluxSpectrometer.SurveyCharm_T3dy,ship_geo.MufluxSpectrometer.SurveyCharm_T3dz,3)
+  MufluxSpectrometer.SetT3(ship_geo.MufluxSpectrometer.SurveyCharm_T3tx,ship_geo.MufluxSpectrometer.SurveyCharm_T3ty,ship_geo.MufluxSpectrometer.SurveyCharm_T3tz,4)
 
- MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4ax,ship_geo.MufluxSpectrometer.SurveyCharm_T4ay,ship_geo.MufluxSpectrometer.SurveyCharm_T4az,0)
- MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4bx,ship_geo.MufluxSpectrometer.SurveyCharm_T4by,ship_geo.MufluxSpectrometer.SurveyCharm_T4bz,1)
- MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4cx,ship_geo.MufluxSpectrometer.SurveyCharm_T4cy,ship_geo.MufluxSpectrometer.SurveyCharm_T4cz,2)
- MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4dx,ship_geo.MufluxSpectrometer.SurveyCharm_T4dy,ship_geo.MufluxSpectrometer.SurveyCharm_T4dz,3)
- MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4tx,ship_geo.MufluxSpectrometer.SurveyCharm_T4ty,ship_geo.MufluxSpectrometer.SurveyCharm_T4tz,4)
+  MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4ax,ship_geo.MufluxSpectrometer.SurveyCharm_T4ay,ship_geo.MufluxSpectrometer.SurveyCharm_T4az,0)
+  MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4bx,ship_geo.MufluxSpectrometer.SurveyCharm_T4by,ship_geo.MufluxSpectrometer.SurveyCharm_T4bz,1)
+  MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4cx,ship_geo.MufluxSpectrometer.SurveyCharm_T4cy,ship_geo.MufluxSpectrometer.SurveyCharm_T4cz,2)
+  MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4dx,ship_geo.MufluxSpectrometer.SurveyCharm_T4dy,ship_geo.MufluxSpectrometer.SurveyCharm_T4dz,3)
+  MufluxSpectrometer.SetT4(ship_geo.MufluxSpectrometer.SurveyCharm_T4tx,ship_geo.MufluxSpectrometer.SurveyCharm_T4ty,ship_geo.MufluxSpectrometer.SurveyCharm_T4tz,4)
 
  
  # for the digitizing step
  MufluxSpectrometer.SetTubeResolution(ship_geo.MufluxSpectrometer.v_drift,ship_geo.MufluxSpectrometer.sigma_spatial) 
-
- Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
- Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
- Scintillator.SetDistT1(ship_geo.Scintillator.DistT1)
- Scintillator.SetDistT2(ship_geo.Scintillator.DistT2) 
- Scintillator.SetS_T1coords(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1x_y) 
- Scintillator.SetS_T2coords(ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2x_y)  
   
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     detectorList.append(MufluxSpectrometer)
  else:
+ # Scintillator and Target Station classes for muflux configuration
+    Scintillator = ROOT.Scintillator("Scintillator",ROOT.kTRUE)
+    Scintillator.SetScoring1XY(ship_geo.MufluxSpectrometer.tr12xdim,ship_geo.MufluxSpectrometer.tr12ydim)
+    Scintillator.SetDistT1(ship_geo.Scintillator.DistT1)
+    Scintillator.SetDistT2(ship_geo.Scintillator.DistT2) 
+    Scintillator.SetS_T1coords(ship_geo.MufluxSpectrometer.T1x_x,ship_geo.MufluxSpectrometer.T1x_y) 
+    Scintillator.SetS_T2coords(ship_geo.MufluxSpectrometer.T2x_x,ship_geo.MufluxSpectrometer.T2x_y)  
+
     TargetStation = ROOT.MufluxTargetStation("MufluxTargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length, ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
     
     TargetStation.SetIronAbsorber(ship_geo.MufluxTargetStation.absorber_x,ship_geo.MufluxTargetStation.absorber_y)
