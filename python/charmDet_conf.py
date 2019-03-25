@@ -19,7 +19,7 @@ def getParameter(x,ship_geo,latestCharmGeo):
   a = getattr(latestCharmGeo,top)
   return getattr(a,last)
 
-def configure(run,ship_geo):
+def configure(run,ship_geo,Gfield=''):
  latestCharmGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
@@ -183,13 +183,15 @@ def configure(run,ship_geo):
   run.AddModule(x)
   
  fMagField = ROOT.ShipGoliathField()
- 
- #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_3600A_0A.root"  
- #fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
- #default field map
- fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
+ if Gfield == '':  
+  #default field map
+  fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap.root"
+ elif Gfield == 'inter': 
+  fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_2400A_1167A.root" 
+ elif Gfield == 'noDavid':
+  fieldfile = os.environ["FAIRSHIP"]+"/field/GoliathFieldMap_3600A_0A.root"  
  fMagField.Init(fieldfile)
- run.SetField(fMagField)   
+ run.SetField(fMagField)
  
 # return list of detector elements
  detElements = {}
