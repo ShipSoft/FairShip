@@ -2644,21 +2644,19 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
            distance = RT(hit,hit.GetDigi())
           tmp = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
           tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
-          xL = tmp -distance
-          xR = tmp +distance
-          for res in [xL,xR]:
-           h['biasResX_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
-           h['biasResY_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
-           h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
-           h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
+          res = abs(tmp) -distance
+          h['biasResX_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
+          h['biasResY_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
+          h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(res,pos[0])
+          h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(res,pos[1])
 # now for each tube
-           detID = str(hit.GetDetectorID())
-           h['biasResX_'+detID].Fill(res,pos[0])
-           h['biasResY_'+detID].Fill(res,pos[1])
-           h['biasResXL_'+detID].Fill(res,pos[0])
-           h['biasResYL_'+detID].Fill(res,pos[1])
+          detID = str(hit.GetDetectorID())
+          h['biasResX_'+detID].Fill(res,pos[0])
+          h['biasResY_'+detID].Fill(res,pos[1])
+          h['biasResXL_'+detID].Fill(res,pos[0])
+          h['biasResYL_'+detID].Fill(res,pos[1])
 # make hit and TDC plots for hits matched to tracks, within window suitable for not using TDC
-          if min(abs(xL),abs(xR)) < 4. :
+          if abs(res) < 4. :
             t0 = 0
             if MCdata: t0 = sTree.ShipEventHeader.GetEventTime()
             rc = h['TDC'+str(nRT)].Fill(hit.GetDigi()-t0)
@@ -4655,6 +4653,7 @@ hruns={}
 def compareRuns(runs=[]):
  # runs = [2307,2357,2359,2360,2361,2365,2366,2395,2396]
  # runs = [2200,2201,2202,2203,2205,2206,2207,2208,2276]
+ eventStats = {}
  badRuns = [2390,2209]
  noField = [2199,2200,2201]
  intermediateField = [2383,2388,2389,2390,2392,2395,2396]
@@ -4672,6 +4671,7 @@ def compareRuns(runs=[]):
     runs.append(r)
     hruns[r]={}
     f = ROOT.TFile(x+'/momDistributions.root')
+    print "opening run",x
     hruns[r]['Trscalers'] = f.GetKey('Trscalers').ReadObj().Clone()
     hruns[r]['Trscalers'].SetDirectory(ROOT.gROOT)
     hname = 'p/pt'
@@ -4688,7 +4688,10 @@ def compareRuns(runs=[]):
  runs.sort()
  first = True
  j=0
- if not h.has_key('RunComparison'): ut.bookCanvas(h,key='RunComparison',title='Momentum',nx=1600,ny=1200,cx=1,cy=0)
+ if not h.has_key('RunComparison'): 
+   ut.bookCanvas(h,key='RunComparison',title='Momentum',nx=1600,ny=1200,cx=1,cy=0)
+   ut.bookCanvas(h,key='EventStatistics',title='Event Statistics',nx=800,ny=600,cx=1,cy=0)
+   ut.bookHist(h,'HEventStatistics','Event Statistics;run number',100,2000,3000)
  h['legRunComparison']=ROOT.TLegend(0.42,0.54,0.88,0.86)
  tc = h['RunComparison'].cd(1)
  tc.SetLogy(1)
@@ -4698,9 +4701,11 @@ def compareRuns(runs=[]):
   N = hruns[r]['Trscalers'].GetBinContent(1)
   print ">>>>>>   statistics for RUN",r
   print "number of events",hruns[r]['Trscalers'].GetBinContent(1)
-  print "percentage of events with tracks %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1)*100)
+  print "events with tracks %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1)*100)
   print "tracks/event                     %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1)*100)
   print "mean p %5.2F GeV/c, rms %5.2F GeV/c"%(hruns[r][hname].GetMean(),hruns[r][hname].GetRMS())
+  eventStats[r]=[hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1),
+                 hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1),hruns[r][hname].GetMean(),hruns[r]['Trscalers'].GetBinContent(2)]
   hruns[r][hname].Scale(1/N)
   hruns[r][hname].SetLineWidth(3)
   hruns[r][hname].SetStats(0)
@@ -4712,6 +4717,34 @@ def compareRuns(runs=[]):
   h['legRunComparison'].AddEntry(hruns[r][hname],str(r),'PL')
   j+=1
  tc.BuildLegend()
+ tc = h['EventStatistics'].cd(1)
+ h['eventStats1']=ROOT.TGraph(len(eventStats))
+ h['eventStats2']=ROOT.TGraph(len(eventStats))
+ h['eventStats3']=ROOT.TGraph(len(eventStats))
+ h['meanP']=ROOT.TGraph(len(eventStats))
+ n=0
+ for r in eventStats:
+   h['eventStats1'].SetPoint(n,r,eventStats[r][0])
+   h['eventStats2'].SetPoint(n,r,eventStats[r][1])
+   h['eventStats3'].SetPoint(n,r,eventStats[r][2]/100.)
+   n+=1
+ h['eventStats1'].SetMarkerColor(ROOT.kBlue)
+ h['eventStats1'].SetMarkerSize(1)
+ h['eventStats1'].SetMarkerStyle(21)
+ h['eventStats2'].SetMarkerColor(ROOT.kBlue-4)
+ h['eventStats2'].SetMarkerSize(1)
+ h['eventStats2'].SetMarkerStyle(22)
+ h['eventStats3'].SetMarkerColor(ROOT.kRed)
+ h['eventStats3'].SetMarkerSize(1)
+ h['eventStats3'].SetMarkerStyle(28)
+ h['eventStats1'].SetTitle('Fraction of events with tracks')
+ h['eventStats1'].SetMinimum(0.10)
+ h['eventStats1'].SetMaximum(0.25)
+ h['eventStats1'].Draw('AP')
+ h['eventStats2'].SetMarkerColor(3)
+ h['eventStats2'].Draw('P')
+ h['eventStats3'].Draw('P')
+ return eventStats
 
 def mergeGoodRuns():
  noField           = [2199,2200,2201]
@@ -4971,7 +5004,7 @@ def anaResiduals():
       MCchecks()
    else:
       printScalers()
-   plotRPCExtrap(PR=1)
+      plotRPCExtrap(PR=1)
    norm = h['TrackMult'].GetEntries()
    print '*** Track Stats ***',norm
    ut.writeHists(h,'histos-analysis-'+rname)
