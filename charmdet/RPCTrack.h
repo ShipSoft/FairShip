@@ -55,7 +55,7 @@ class RPCTrack : public TObject
         //attribute for a single cluster
         TVector3 GetClusterPos(const Int_t icluster);
         Int_t GetClusterDir(const Int_t icluster){ return fcluster_dir[icluster]; }
-        Int_t GetClusterStation(const Int_ icluster) { return fcluster_nstation[icluster];}
+        Int_t GetClusterStation(const Int_t icluster) { return fcluster_nstation[icluster];}
 	/** Modifiers **/
 	void AddCluster(Float_t x, Float_t y, Float_t z, Int_t dir, Int_t nstation);
         void SetTrackID(Int_t TrackID){ftrackID = TrackID;};

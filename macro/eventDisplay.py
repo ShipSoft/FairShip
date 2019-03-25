@@ -146,13 +146,82 @@ class DrawVetoDigi(ROOT.FairTask):
    self.comp.CloseCompound()
    gEve.ElementChanged(self.evscene,True,True)
 
+def plotRPCTracks(n=1):
+    tracklist = ROOT.TEveTrackList();
+    prop = tracklist.GetPropagator();
+    #prop.SetFitDaughters(kFALSE);
+    prop.SetMaxZ(20000);
+    tracklist.SetName("RK Propagator");
+    #rpc positioning, as from Alessandra's reconstruction
+    localRPCfile = ROOT.TFile.Open("localrpctrack_test.root")
+    sTree = localRPCfile.Get("RPCTracks")   
+
+    sTree.GetEntry(n)
+    localtracks = sTree.RPCTracks
+    localtrack = localtracks[0]
+    trk_theta = localtrack.GetTheta() * ROOT.TMath.Pi() / 180
+    trk_phi = localtrack.GetPhi() * ROOT.TMath.Pi() / 180
+#print "Track", id_track, "for run", id_run, ", spill", id_spill, "and trigger", trigger
+    #print "Teta and phi angles", trk_teta, " , ", trk_phi
+    #print "Slopes (xz, yz): ( ", trk_slopexz, ", ", trk_slopeyz, " )"
+    #print " # clusters = ", nclusters
+
+    zoffset = 873 #start in FairShip of firstRPC
+    #adding a track
+    fakemomentum = 400
+
+    hitx = []
+    hity = []
+    hitz = []
+    for icluster in range(5):
+     hitx.append(0)
+     hity.append(0)
+     hitz.append(0)
+    nclusters = localtrack.GetNClusters()
+
+    for i in range(nclusters):
+
+     direction = localtrack.GetClusterDir(i)
+     station = localtrack.GetClusterStation(i) - 1
+     if (direction == 1):
+      hitx[station] = localtrack.GetClusterPos(i)[0]
+      hitz[station] = localtrack.GetClusterPos(i)[2]
+     else:
+      hity[station] = localtrack.GetClusterPos(i)[1]
+      hitz[station] = localtrack.GetClusterPos(i)[2]
+    
+    clusterlist = ROOT.TEvePointSet(3);
+    clusterlist.SetElementName("Hits in MuonTagger");
+    for icluster in range(5):
+     clusterlist.SetPoint(icluster,hitx[icluster],  hity[icluster], hitz[icluster] + zoffset);
+     clusterlist.SetMarkerColor(ROOT.kAzure);
+    gEve.AddElement(clusterlist);
+
+    recotrack = ROOT.TEveRecTrackD();
+    recotrack.fV.Set(hitx[4], hity[4], hitz[4] + 873.); #'vertex' of track, here used as starting point
+    #recotrack.fP.Set(0,0,400)
+    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(trk_theta) * ROOT.TMath.Cos(trk_phi), fakemomentum * ROOT.TMath.Sin(trk_theta) * ROOT.TMath.Sin(trk_phi),-fakemomentum * ROOT.TMath.Cos(trk_theta)); #track propagated backwards
+    recotrack.fSign = 1;
+
+    track = ROOT.TEveTrack(recotrack, prop);
+    #track.SetName(Form("Charge %d", sign));
+    track.SetLineColor(ROOT.kRed);
+
+    gEve.AddElement(tracklist);
+    tracklist.AddElement(track);
+
+    track.MakeTrack();
+
+    gEve.Redraw3D();
+    
+
 def plotlocalEvent(n=1):
 
    # I want to add track into list
     tracklist = ROOT.TEveTrackList();
     prop = tracklist.GetPropagator();
     #prop.SetFitDaughters(kFALSE);
-    prop.SetMaxZ(10000);
+    prop.SetMaxZ(20000);
     tracklist.SetName("RK Propagator");
     #rpc positioning, as from Alessandra's reconstruction
     localRPCfile = ROOT.TFile.Open("root:://eospublic.cern.ch//eos/experiment/ship/data/rpc_charm/RPC_RecoTracks_run2793_s1f22ade3.root")
@@ -190,9 +259,9 @@ def plotlocalEvent(n=1):
     gEve.AddElement(clusterlist);
 
     recotrack = ROOT.TEveRecTrackD();
-    recotrack.fV.Set(cl_x_list[1], cl_y_list[0], cl_z_list[0] + 790.); #'vertex' of track, here used as starting point
+    recotrack.fV.Set(cl_x_list[8], cl_y_list[7], cl_z_list[7] + 873.); #'vertex' of track, here used as starting point
     #recotrack.fP.Set(0,0,400)
-    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Cos(trk_phi), fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Sin(trk_phi), fakemomentum * ROOT.TMath.Cos(trk_teta));
+    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Cos(trk_phi), fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Sin(trk_phi),-fakemomentum * ROOT.TMath.Cos(trk_teta)); #track propagated backwards
     recotrack.fSign = 1;
 
     track = ROOT.TEveTrack(recotrack, prop);
