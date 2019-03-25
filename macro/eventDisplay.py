@@ -145,6 +145,67 @@ class DrawVetoDigi(ROOT.FairTask):
     self.comp.AddElement(bx)
    self.comp.CloseCompound()
    gEve.ElementChanged(self.evscene,True,True)
+
+def plotlocalEvent(n=1):
+
+   # I want to add track into list
+    tracklist = ROOT.TEveTrackList();
+    prop = tracklist.GetPropagator();
+    #prop.SetFitDaughters(kFALSE);
+    prop.SetMaxZ(10000);
+    tracklist.SetName("RK Propagator");
+    #rpc positioning, as from Alessandra's reconstruction
+    localRPCfile = ROOT.TFile.Open("root:://eospublic.cern.ch//eos/experiment/ship/data/rpc_charm/RPC_RecoTracks_run2793_s1f22ade3.root")
+    sTree = localRPCfile.Get("RPC_RecoTracks")
+    sTree.GetEntry(n)
+    nclusters = sTree.nclusters
+    id_track = sTree.id_track
+    id_spill = sTree.id_spill
+    trk_teta = sTree.trk_teta * ROOT.TMath.Pi() / 180
+    trk_phi = sTree.trk_phi * ROOT.TMath.Pi() / 180 
+    slopexz = sTree.trk_slopexz
+    slopeyz = sTree.trk_slopeyz
+
+    cl_x_list = sTree.cl_x
+    cl_y_list = sTree.cl_y
+    cl_z_list = sTree.cl_z
+    cl_dir_list = sTree.cl_dir
+    cl_rpc_list = sTree.cl_rpc
+
+    #print "Track", id_track, "for run", id_run, ", spill", id_spill, "and trigger", trigger
+    #print "Teta and phi angles", trk_teta, " , ", trk_phi
+    #print "Slopes (xz, yz): ( ", trk_slopexz, ", ", trk_slopeyz, " )"
+    #print " # clusters = ", nclusters
+
+    zoffset = 873 #start in FairShip of firstRPC
+    #adding a track
+    fakemomentum = 400
+    
+    clusterlist = ROOT.TEvePointSet(3);
+    clusterlist.SetElementName("Hits in MuonTagger");
+    clusterlist.SetPoint(0,cl_x_list[1],  cl_y_list[0], cl_z_list[0] + zoffset);
+    clusterlist.SetPoint(1,cl_x_list[3],  cl_y_list[2], cl_z_list[2] + zoffset);
+    clusterlist.SetPoint(2,cl_x_list[8],  cl_y_list[7], cl_z_list[7] + zoffset);
+    clusterlist.SetMarkerColor(ROOT.kAzure);
+    gEve.AddElement(clusterlist);
+
+    recotrack = ROOT.TEveRecTrackD();
+    recotrack.fV.Set(cl_x_list[1], cl_y_list[0], cl_z_list[0] + 790.); #'vertex' of track, here used as starting point
+    #recotrack.fP.Set(0,0,400)
+    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Cos(trk_phi), fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Sin(trk_phi), fakemomentum * ROOT.TMath.Cos(trk_teta));
+    recotrack.fSign = 1;
+
+    track = ROOT.TEveTrack(recotrack, prop);
+    #track.SetName(Form("Charge %d", sign));
+    track.SetLineColor(ROOT.kRed);
+
+    gEve.AddElement(tracklist);
+    tracklist.AddElement(track);
+
+    track.MakeTrack();
+
+    gEve.Redraw3D();
+
 class DrawEcalCluster(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self,ecalStructure):
@@ -1251,5 +1312,8 @@ def PRVersion():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  gEve.ElementChanged(geoscene,True,True)
+
+
+
 
 
