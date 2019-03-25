@@ -170,33 +170,33 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
 
   const float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
 
-  const float  x0ref= 15396.*mkm      +z0ref/mkm*0.0031;
-  const float  x1ref= -2310.*mkm       +z1ref/mkm*0.0031;
-  const float  x2ref=  6960.*mkm       +z2ref/mkm*0.0031;
-  const float  x3ref=  6940.*mkm       +z3ref/mkm*0.0031;
-  const float  x4ref= 15285.*mkm       +z4ref/mkm*0.0031;
-  const float  x5ref= -2430.*mkm       +z5ref/mkm*0.0031;
-  const float  x6ref=  6620.*mkm       +z6ref/mkm*0.0031;
-  const float  x7ref=  6710.*mkm       +z7ref/mkm*0.0031;
-  const float  x8ref= 15440.*mkm       +z8ref/mkm*0.0031;
-  const float  x9ref= -2505.*mkm       +z9ref/mkm*0.0031;
-  const float x10ref=  6455.*mkm      +z10ref/mkm*0.0031;
-  const float x11ref=  6320.*mkm      +z11ref/mkm*0.0031;
+  const float  (-16800. + 15396.)*mkm       +z0ref*0.0031;
+  const float  x1ref= -2310.*mkm       +z1ref*0.0031;
+  const float  x2ref=  6960.*mkm       +z2ref*0.0031;
+  const float  x3ref=  6940.*mkm       +z3ref*0.0031;
+  const float  (-16800 + 15285.)*mkm        +z4ref*0.0031;
+  const float  x5ref= -2430.*mkm       +z5ref*0.0031;
+  const float  x6ref=  6620.*mkm       +z6ref*0.0031;
+  const float  x7ref=  6710.*mkm       +z7ref*0.0031;
+  const float  (-16800 + 15440.)*mkm      +z8ref*0.0031;
+  const float  x9ref= -2505.*mkm       +z9ref*0.0031;
+  const float x10ref=  6455.*mkm      +z10ref*0.0031;
+  const float x11ref=  6320.*mkm      +z11ref*0.0031;
 
   const float Xref[12] { x0ref, x1ref, x2ref, x3ref, x4ref, x5ref, x6ref, x7ref, x8ref, x9ref, x10ref, x11ref};
 
   const float  y0ref=   -15.*mkm       +z0ref*0.0068;
   const float  y1ref=    20.*mkm       +z1ref*0.0068;
-  const float  y2ref=  7930.*mkm       +z2ref*0.0068;
-  const float  y3ref= -8990.*mkm       +z3ref*0.0068;
+  const float  y2ref= (-8400 + 7930.)*mkm       +z2ref*0.0068;
+  const float  y3ref= (8400 - 8990.)*mkm       +z3ref*0.0068;
   const float  y4ref=  -370.*mkm       +z4ref*0.0068;
   const float  y5ref=  -610.*mkm       +z5ref*0.0068;
-  const float  y6ref=  7200.*mkm       +z6ref*0.0068;
-  const float  y7ref= -9285.*mkm       +z7ref*0.0068;
+  const float  y6ref=  (-8400 + 7200.)*mkm       +z6ref*0.0068;
+  const float  y7ref= (8400 - 9285.)*mkm       +z7ref*0.0068;
   const float  y8ref=  -700.*mkm       +z8ref*0.0068;
   const float  y9ref=  -690.*mkm       +z9ref*0.0068;
-  const float y10ref=  7660.*mkm       +z10ref*0.0068;
-  const float y11ref= -8850.*mkm      +z11ref*0.0068;
+  const float y10ref=  (-8400 + 7660.)*mkm      +z10ref*0.0068;
+  const float y11ref= (8400 - 8850.)*mkm      +z11ref*0.0068;
 
   const float Yref[12] { y0ref, y1ref, y2ref, y3ref, y4ref, y5ref, y6ref, y7ref, y8ref, y9ref, y10ref, y11ref};
 
@@ -213,7 +213,7 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
           moduleID = (8*partitionID + frontEndID)/2;
           if (frontEndID%2==1) {
             // calculate LOCAL x position of hit
-            x_local = -0.025 - (column-1)*0.025;
+            x_local = -0.025 - (80 - column-1)*0.025;
             if (column == 80) x_local -= 0.0225;
           }
           else if (frontEndID%2==0) {
