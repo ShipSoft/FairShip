@@ -40,7 +40,7 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
      Double_t sigma_spatial = module->StrawSigmaSpatial();
      module->StrawEndPoints(fDetectorID,start,stop);
      Double_t t_drift = (fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift)*1.E+09; // in ns
-     fdigi = t0*1.E+09 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; // in ns
+     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; // in ns
      flag = true;
 }
 void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
