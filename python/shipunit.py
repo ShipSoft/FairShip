@@ -81,7 +81,7 @@ deg  = degree
 #
 # Time [T]
 #
-nanosecond  = 1.e-9 # TR 1.
+nanosecond  = 1.
 second      = 1.e+9 *nanosecond
 millisecond = 1.e-3 *second
 microsecond = 1.e-6 *second
