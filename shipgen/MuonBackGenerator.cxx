@@ -189,7 +189,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        vx = track->GetStartX()+dx;
        vy = track->GetStartY()+dy;
        vz = track->GetStartZ();
-       tof =  track->GetStartT();
+       tof =  track->GetStartT()/1E9; // convert back from ns to sec;
        e = track->GetEnergy();
        Bool_t wanttracking = false; // only transport muons
        for (std::pair<int, int> element : muList){
@@ -207,7 +207,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
            vx = lpv[0];
            vy = lpv[1];
            vz = lpv[2];
-           tof =  v->GetTime();
+           tof =  v->GetTime()/1E9; // convert back from ns to sec
           }
           break;
         }

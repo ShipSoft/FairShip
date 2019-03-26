@@ -34,7 +34,7 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_
      Double_t v_drift       = module->TubeVdrift(); 
      Double_t sigma_spatial = module->TubeSigmaSpatial(); 
      module->TubeEndPoints(fDetectorID,start,stop); 
-     Double_t t_drift = std::abs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift; 
+     Double_t t_drift = std::abs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift;
      fdigi = t0 + t_drift + ( stop[0]-p->GetX() )/ speedOfLight; 
      time_over_threshold = 167.2;
 } 
