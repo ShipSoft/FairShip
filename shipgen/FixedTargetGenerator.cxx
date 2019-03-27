@@ -360,7 +360,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Double_t z  = fPythia->event[ii].zProd()+zinter;
      Double_t x  = fPythia->event[ii].xProd()+xOff;
      Double_t y  = fPythia->event[ii].yProd()+yOff;
-     Double_t tof = fPythia->event[ii].tProd();
+     Double_t tof = fPythia->event[ii].tProd() / (10*c_light) ; // to go from mm to s
      Double_t px = fPythia->event[ii].px();  
      Double_t py = fPythia->event[ii].py();  
      Int_t im = fPythia->event[ii].mother1()-1;

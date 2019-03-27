@@ -1151,8 +1151,8 @@ if withGeo:
 if not fRun.GetGeoFile().FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # try to figure out which ecal geo to load
-  if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
-  else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+  #if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+  ecalGeoFile = "ecal_ellipse5x10m2.geo" 
   ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile)
 else: 
  # new geofile, load Shipgeo dictionary written by run_simScript.py
@@ -1160,10 +1160,12 @@ else:
   ShipGeo = upkl.load('ShipGeo')
 
 mcHits = {}
-if hasattr(ShipGeo,"MuonTagger"): 
-  mcHits['BoxPoints']  = ROOT.FairMCPointDraw("BoxPoint", ROOT.kBlue, ROOT.kFullDiamond)
-  mcHits['SpectrometerPoints']  = ROOT.FairMCPointDraw("SpectrometerPoint", ROOT.kRed, ROOT.kFullSquare)
-  mcHits['MuonTaggerPoints']  = ROOT.FairMCPointDraw("MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle)
+if (True): 
+  mcHits['BoxPoints']  = ROOT.FairMCPointDraw("BoxPoint", ROOT.kBlue, ROOT.kFullDiamond) #emulsions
+  mcHits['PixelModulesPoints']  = ROOT.FairMCPointDraw("PixelModulesPoint", ROOT.kRed, ROOT.kFullSquare) #pixel trackers
+  mcHits['MufluxSpectrometerPoints']  = ROOT.FairMCPointDraw("MufluxSpectrometerPoint", ROOT.kAzure, ROOT.kFullSquare) #Drift Tubes
+  mcHits['SciFiPoints']  = ROOT.FairMCPointDraw("SciFiPoint", ROOT.kYellow, ROOT.kFullSquare) #SciFi trackers
+  mcHits['MuonTaggerPoints']  = ROOT.FairMCPointDraw("MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle) #MuonTaggerPoints
 else:
  mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
  mcHits['TimeDetPoints']  = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)
