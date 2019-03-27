@@ -31,12 +31,23 @@ In general:
 Option `--CharmdetSetup 1` activates charm cross section geometry, while
 `--CharmdetSetup 0` activates muon flux geometry.
 
+Option `--CharmTarget ntarget` allows to choose the emulsion target.
+ntarget can assume the following values:
+
+* 1: A brick of 29 emulsions, interleaved with 28 1 mm-thick slabs of lead;
+* 2: 1 passive lead block of 28 mm, followed by a brick of 29 emulsions, interleaved with 28 1 mm-thick slabs of lead;
+* 3: 1 passive lead block of 56 mm, followed by a brick of 57 emulsions, interleaved with 56 1 mm-thick slabs of lead;
+* 4: 2 passive lead blocks of 56 mm, followed by a brick of 57 emulsions, interleaved with 56 1 mm-thick slabs of lead;
+* 5: 3 passive lead blocks of 56 mm, followed by a brick of 57 emulsions, interleaved with 56 1 mm-thick slabs of lead;
+* 6: 4 passive lead blocks of 56 mm, followed by a brick of 57 emulsions, interleaved with 56 1 mm-thick slabs of lead;
+* 16: same as 1, but with tungsten as a material for passive slabs instead of lead (CH1-R6 exposure)
+
 Only the most useful options have been explained here. For the complete list of
 available options please refer to the related scripts.
 
 Charm production simulations are done from `macro/run_simScript.py`. Example
 syntax:  `python $FAIRSHIP/macro/run_simScript.py --charm 1 -A charmonly
---CharmdetSetup 1 -f Cascadefile -n 1000 -o outputfolder`
+--CharmdetSetup 1 --CharmTarget 1 -f Cascadefile -n 1000 -o outputfolder`
 
 Useful options:
 * `--charm 1`: activates `charmdet` configuration instead of SHiP standard (both
@@ -54,7 +65,7 @@ General POT simulations are done from
 `muonShieldOptimization/run_MufluxfixedTarget.py`. Example of syntax:
  
  `python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py
- --CharmdetSetup 1 -G -e 0.001 -n 1000 -o outputfolder`
+ --CharmdetSetup 1 --CharmTarget 1 -G -e 0.001 -n 1000 -o outputfolder`
  
  It is a derivation of the fixed target simulation used in SHiP, applied to
  `charmdet` geometry.

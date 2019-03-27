@@ -21,6 +21,8 @@ h={}
 from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="fname", help="input file", required=True)
+parser.add_argument("-n", "--Nevents", dest="nevents", help="number of events", required=False)
+parser.add_argument("-pg", "--ParticleGun", dest="PG", help="particle gun", required=False)
 options = parser.parse_args()
 
 fname = options.fname
@@ -54,10 +56,18 @@ def run():
  run.AddModule(target)
 #
  primGen = ROOT.FairPrimaryGenerator()
- mufluxSim = ROOT.ReProcessAbsorber()
- mufluxSim.Init(fname)
- mufluxSim.SetZposition(-thickness)
- primGen.AddGenerator(mufluxSim)
+ if options.PG:
+   myPgun = ROOT.FairBoxGenerator(13,1)
+   myPgun.SetPRange(0.,10.)
+   myPgun.SetPhiRange(0, 0)
+   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, -thickness)
+   myPgun.SetThetaRange(0,0)
+   primGen.AddGenerator(myPgun)
+ else:
+   mufluxSim = ROOT.ReProcessAbsorber()
+   mufluxSim.Init(fname)
+   mufluxSim.SetZposition(-thickness)
+   primGen.AddGenerator(mufluxSim)
 #
  run.SetGenerator(primGen)
 # -----Initialize simulation run------------------------------------
@@ -68,6 +78,7 @@ def run():
  fStack.SetMinPoints(1)
  fStack.SetEnergyCut(-1.)
 
+ run.CreateGeometryFile("geofile.root")
 # -----Start run----------------------------------------------------
  print "run for ",nev,"events"
  run.Run(nev)
@@ -82,8 +93,24 @@ def run():
  print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
 storeOnlyMuons = True
-f=ROOT.TFile.Open(fname)
-nev = f.cbmsim.GetEntries()
-f.Close()
-run()
+nev = int(options.nevents)
+if not options.PG:
+ f=ROOT.TFile.Open(fname)
+ nev = f.cbmsim.GetEntries()
+ f.Close()
+#run()
 
+def analyze():
+ ut.bookHist(h,'PinPout','pin pout',105,-0.5,10.,105,-0.5,10.)
+ f=ROOT.TFile(outFile)
+ sTree = f.cbmsim
+ for n in range(sTree.GetEntries()):
+  rc = sTree.GetEvent(n)
+  mu = sTree.MCTrack[0]
+  Pout = -0.49
+  for v in sTree.vetoPoint:
+   if v.GetTrackID()==0:
+    if v.LastPoint()[2]>119.9:
+     Pout = v.LastMom().Mag()
+  rc = h['PinPout'].Fill(mu.GetP(),Pout)
+ ut.writeHists(h,'PinPout.root')

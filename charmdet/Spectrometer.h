@@ -24,7 +24,7 @@ class Spectrometer:public FairDetector
       
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel);
+    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
     void SetTransverseSizes(Double_t D1X, Double_t D1Y, Double_t DSciFi1X, Double_t DSciFi1Y, Double_t DSciFi2X, Double_t DSciFi2Y);
     void SetSiliconDZ(Double_t SiliconDZ);  
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
@@ -135,19 +135,19 @@ protected:
     Double_t DimSciFi1Y;
     Double_t DimSciFi2X;
     Double_t DimSciFi2Y;
-    Double_t DimZPixelBox;
+  /*  Double_t DimZPixelBox;*/
 
-    Int_t nSi;
+   /* Int_t nSi;*/
     Double_t DimZSi;
 
-    Double_t xs[12], ys[12], zs[12];
-    Double_t xangle[12], yangle[12], zangle[12];
+ /*   Double_t xs[12], ys[12], zs[12];
+    Double_t xangle[12], yangle[12], zangle[12];*/
     
     Double_t zposSciFi1, zposSciFi2;
     
     Spectrometer(const Spectrometer&);
     Spectrometer& operator=(const Spectrometer&);
-    ClassDef(Spectrometer,1)
+    ClassDef(Spectrometer,2)
 
 };
 #endif 

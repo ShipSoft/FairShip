@@ -112,19 +112,14 @@ Int_t Spectrometer::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
-void Spectrometer::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel)
+void Spectrometer::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox)
 {
   SBoxX = SX;
   SBoxY = SY;
   SBoxZ = SZ;
   zBoxPosition = zBox;
-  DimZPixelBox = SZPixel;
 }
 
-void Spectrometer::SetSiliconDZ(Double_t SiliconDZ)
-{
-  DimZSi = SiliconDZ;
-}
 
 void Spectrometer::SetSciFiDetPositions(Double_t zSciFi1, Double_t zSciFi2)
 { 
@@ -132,17 +127,6 @@ void Spectrometer::SetSciFiDetPositions(Double_t zSciFi1, Double_t zSciFi2)
  zposSciFi2 = zSciFi2;
 }
 
-void Spectrometer::SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz)
-{
- xs[nstation] = posx;
- ys[nstation] = posy;
- zs[nstation] = posz;
-}
-
-void Spectrometer::SetSiliconDetNumber(Int_t nSilicon)
-{
- nSi = nSilicon;
-}
 
 
 void Spectrometer::SetTransverseSizes(Double_t D1short, Double_t D1long, Double_t DSciFi1X, Double_t DSciFi1Y, Double_t DSciFi2X, Double_t DSciFi2Y){
@@ -197,37 +181,6 @@ void Spectrometer::ConstructGeometry()
   
     TGeoVolume *top = gGeoManager->GetTopVolume();
 
-    //computing the largest offsets in order to set PixelBox dimensions correctly
-    Double_t offsetxmax = 0., offsetymax = 0.;
-    for (int istation = 0; istation < 12; istation++){
-     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
-     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
-    }
-    //Double_t DimZPixelBox = zs5 -zs0 +pairwisedistance + DimZSi;
-    TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZPixelBox/2.); //The box is symmetric, offsets are not. So we enlarge it of doubles times the offset for coverage
-    TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
-
-    top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition));
-
-    TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
-    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon); 
-    volPixely->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixely);
-
-    TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
-    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon); 
-    volPixelx->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixelx);
-
-    //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
-    Int_t PixelIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162}; 
-    //Alternated pixel stations optimized for y and x measurements
-    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE}; 
-
-    for (int ipixel = 0; ipixel < 12; ipixel++){
-      if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]));
-      else volPixelBox->AddNode(volPixelx, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]));
-    }
 
     TGeoBBox *SciFi1 = new TGeoBBox("SciFi1", DimSciFi1X/2, DimSciFi1Y/2, DimZ/2); 
     TGeoVolume *subvolSciFi1 = new TGeoVolume("volSciFi1",SciFi1,sttmix8020_2bar);

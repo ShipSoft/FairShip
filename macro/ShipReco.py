@@ -12,7 +12,7 @@ dy  = None
 saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
-realPROptions=["Prev", "FH", "AR", "Baseline"]
+realPROptions=["FH", "AR", "TemplateMatching"]
 withT0 = False
 
 import resource
@@ -44,6 +44,10 @@ except getopt.GetoptError:
         print ' noStrawSmearing: no smearing of distance to wire, default on'
         print ' outputfile will have same name with _rec added'  
         print ' --realPR= defines track pattern recognition. Possible options: ',realPROptions, "if no option given, fake PR is used."
+        print ' Options description:'
+        print '      FH                        : Hough transform.'
+        print '      AR                        : Artificial retina.'
+        print '      TemplateMatching          : Tracks are searched for based on the template: track seed + hits within a window around the seed.'
         sys.exit()
 for o, a in opts:
         if o in ("noVertexing",):
@@ -100,6 +104,7 @@ if not geoFile:
  geoFile = tmp.replace('_rec','')
 
 fgeo = ROOT.TFile.Open(geoFile)
+geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
@@ -151,7 +156,6 @@ builtin.iEvent  = iEvent
 
 # import reco tasks
 import shipDigiReco
-geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
