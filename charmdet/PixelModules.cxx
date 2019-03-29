@@ -170,15 +170,15 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
 
   const float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
 
-  const float  (-16800. + 15396.)*mkm       +z0ref*0.0031;
+  const float  x0ref= (-16800. + 15396.)*mkm       +z0ref*0.0031;
   const float  x1ref= -2310.*mkm       +z1ref*0.0031;
   const float  x2ref=  6960.*mkm       +z2ref*0.0031;
   const float  x3ref=  6940.*mkm       +z3ref*0.0031;
-  const float  (-16800 + 15285.)*mkm        +z4ref*0.0031;
+  const float  x4ref= (-16800 + 15285.)*mkm        +z4ref*0.0031;
   const float  x5ref= -2430.*mkm       +z5ref*0.0031;
   const float  x6ref=  6620.*mkm       +z6ref*0.0031;
   const float  x7ref=  6710.*mkm       +z7ref*0.0031;
-  const float  (-16800 + 15440.)*mkm      +z8ref*0.0031;
+  const float  x8ref= (-16800 + 15440.)*mkm      +z8ref*0.0031;
   const float  x9ref= -2505.*mkm       +z9ref*0.0031;
   const float x10ref=  6455.*mkm      +z10ref*0.0031;
   const float x11ref=  6320.*mkm      +z11ref*0.0031;
