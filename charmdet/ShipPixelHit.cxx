@@ -1,4 +1,5 @@
 #include "ShipPixelHit.h"
+#include "PixelModules.h"
 // #include "PixelDetector.h"
 #include "TVector3.h"
 #include "TGeoBBox.h"
@@ -10,8 +11,8 @@
 #include <cmath>
 
 // -----   Standard constructor   ------------------------------------------
-ShipPixelHit::ShipPixelHit(Int_t detID,  Float_t digi)
-    : ShipHit(detID, digi) {}
+ShipPixelHit::ShipPixelHit(Int_t detID,  Float_t digi) : ShipHit(detID, digi) {
+}
 
 
 HitID ShipPixelHit::GetPixel()
@@ -43,7 +44,7 @@ int32_t ShipPixelHit::GetModule()
 
 int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
-void ShipPixelHit::EndPoints(TVector3 &pixel, int detID, std::unordered_map<int, TVector3> &positionMap) {
+void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap) {
 
   int max_detID = 10000000*2 + 1000000*7 + 1000*336 + 80 ;
   if (detID%1000000 == 0) {
@@ -53,7 +54,7 @@ void ShipPixelHit::EndPoints(TVector3 &pixel, int detID, std::unordered_map<int,
     std::cout << "PixelDetector::PixelDecode, detectorID out of range "<<detID<<std::endl;
     return;
   }
-  TVector3 pixel_pos = positionMap[detID];
+  TVector3 pixel_pos = (*PixelPositionMap)[detID];
   pixel.SetX(pixel_pos.X());
   pixel.SetY(pixel_pos.Y());
   pixel.SetZ(pixel_pos.Z());
@@ -71,6 +72,5 @@ void ShipPixelHit::Print()
   std::cout << "  ToT " << fdigi*25 << " ns" << std::endl; //Time over threshold in nanoseconds
 }
 // -------------------------------------------------------------------------
-
 
  ClassImp(ShipPixelHit)
