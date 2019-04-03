@@ -18,7 +18,6 @@ class TClonesArray;
 
 class PixelModules:public FairDetector
 {
-  std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap;
   public:
   PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="PixelModules");
     PixelModules();
@@ -26,7 +25,6 @@ class PixelModules:public FairDetector
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_t Dim1Short, Double_t Dim1Long);
-    void MakePositionMap(std::shared_ptr <std::unordered_map<int, TVector3>> MapPointer);
     void SetSiliconDZ(Double_t SiliconDZ);
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
