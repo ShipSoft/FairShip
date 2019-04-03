@@ -4,6 +4,7 @@
 #include "ShipHit.h"
 #include "ShipOnlineDataFormat.h"
 #include "unordered_map"
+#include "PixelModules.h"
 
 struct HitID {
    int32_t partitionID;
@@ -15,6 +16,7 @@ struct HitID {
 
 
 class ShipPixelHit : public ShipHit {
+  //std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap;
 public:
    /** Default constructor **/
    ShipPixelHit() = default;
@@ -23,8 +25,9 @@ public:
    ShipPixelHit(Int_t detID, Float_t fdigi);
    HitID GetPixel();
    int32_t GetDetectorID();
+   //void MakePositionMap(std::shared_ptr <std::unordered_map<int, TVector3>> MapPointer);
    int32_t GetModule();
-   void EndPoints(TVector3 &pixel, int detID, std::unordered_map<int, TVector3> &positionMap);
+   void GetPixelXYZ(TVector3 &pixel, int detID, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap);
    void Print();
    int32_t GetTimeOverThreshold() const {return fdigi*25 ; }
 

@@ -148,8 +148,67 @@ void PixelModules::SetSiliconDetNumber(Int_t nSilicon)
  nSi = nSilicon;
 }
 
+void PixelModules::ConstructGeometry()
+{
+    InitMedium("air");
+  TGeoMedium *air = gGeoManager->GetMedium("air");
 
-std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
+    InitMedium("iron");
+    TGeoMedium *Fe =gGeoManager->GetMedium("iron");
+
+    InitMedium("silicon");
+    TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
+
+    InitMedium("CoilCopper");
+    TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
+
+    InitMedium("CoilAluminium");
+    TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
+
+    InitMedium("TTmedium");
+    TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
+
+    InitMedium("STTmix8020_2bar");
+    TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
+
+    TGeoVolume *top = gGeoManager->GetTopVolume();
+
+    //computing the largest offsets in order to set PixelBox dimensions correctly
+    Double_t offsetxmax = 0., offsetymax = 0.;
+    for (int istation = 0; istation < 12; istation++){
+     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
+     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
+    }
+    //Double_t DimZPixelBox = zs5 -zs0 +pairwisedistance + DimZSi;
+    TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZPixelBox/2.); //The box is symmetric, offsets are not. So we enlarge the offset by a factor two for coverage
+    TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
+    Double_t inimodZoffset(zs[0]) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
+    top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
+
+
+    TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
+    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon);
+    volPixely->SetLineColor(kBlue-5);
+    AddSensitiveVolume(volPixely);
+
+    TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
+    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon);
+    volPixelx->SetLineColor(kBlue-5);
+    AddSensitiveVolume(volPixelx);
+
+    //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
+    Int_t PixelIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162};
+    //Alternated pixel stations optimized for y and x measurements
+    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE};
+
+    for (int ipixel = 0; ipixel < 12; ipixel++){
+      if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
+      else volPixelBox->AddNode(volPixelx, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
+    }
+
+}
+
+void ShipPixelHit::MakePositionMap(std::shared_ptr <std::unordered_map<int, TVector3>> MapPointer) {
 // map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
 // the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
 
@@ -262,68 +321,7 @@ std::unordered_map<int, TVector3> * PixelModules::MakePositionMap() {
       }
     }
   }
-return &positionMap;
-}
-
-
-void PixelModules::ConstructGeometry()
-{
-    InitMedium("air");
-  TGeoMedium *air = gGeoManager->GetMedium("air");
-
-    InitMedium("iron");
-    TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-
-    InitMedium("silicon");
-    TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
-
-    InitMedium("CoilCopper");
-    TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
-
-    InitMedium("CoilAluminium");
-    TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
-
-    InitMedium("TTmedium");
-    TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
-
-    InitMedium("STTmix8020_2bar");
-    TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
-
-    TGeoVolume *top = gGeoManager->GetTopVolume();
-
-    //computing the largest offsets in order to set PixelBox dimensions correctly
-    Double_t offsetxmax = 0., offsetymax = 0.;
-    for (int istation = 0; istation < 12; istation++){
-     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
-     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
-    }
-    //Double_t DimZPixelBox = zs5 -zs0 +pairwisedistance + DimZSi;
-    TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZPixelBox/2.); //The box is symmetric, offsets are not. So we enlarge the offset by a factor two for coverage
-    TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
-    Double_t inimodZoffset(zs[0]) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
-    top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
-
-
-    TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
-    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon);
-    volPixely->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixely);
-
-    TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
-    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon);
-    volPixelx->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixelx);
-
-    //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
-    Int_t PixelIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162};
-    //Alternated pixel stations optimized for y and x measurements
-    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE};
-
-    for (int ipixel = 0; ipixel < 12; ipixel++){
-      if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
-      else volPixelBox->AddNode(volPixelx, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
-    }
-
+  MapPointer = std::make_shared<std::unordered_map<int, TVector3>>(positionMap);
 }
 
 Bool_t  PixelModules::ProcessHits(FairVolume* vol)
