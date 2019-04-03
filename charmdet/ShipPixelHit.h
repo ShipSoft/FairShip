@@ -14,10 +14,7 @@ struct HitID {
    int32_t column;
 };
 
-
 class ShipPixelHit : public ShipHit {
-  static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap; //!
-  static int MapInitialized; //!
 public:
    /** Default constructor **/
    ShipPixelHit() = default;
@@ -31,13 +28,9 @@ public:
    void GetPixelXYZ(TVector3 &pixel, int detID);
    void Print();
    int32_t GetTimeOverThreshold() const {return fdigi*25 ; }
-   static int getPositionMap() {
-     if (PixelPositionMap==NULL)
-      return 0;
-     else
-      return 1;
-   }
 private:
+   static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap; //!
+   static int MapInitialized; //!
    /** Copy constructor **/
    ShipPixelHit(const ShipPixelHit &other);
    ShipPixelHit operator=(const ShipPixelHit &other);
