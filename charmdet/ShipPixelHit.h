@@ -16,8 +16,8 @@ struct HitID {
 
 
 class ShipPixelHit : public ShipHit {
-  static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap; //
-  static int MapInitialized; //
+  static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap; //!
+  static int MapInitialized; //!
 public:
    /** Default constructor **/
    ShipPixelHit() = default;
