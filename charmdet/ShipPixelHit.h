@@ -16,7 +16,7 @@ struct HitID {
 
 
 class ShipPixelHit : public ShipHit {
-  //std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap;
+  static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap;
 public:
    /** Default constructor **/
    ShipPixelHit() = default;
@@ -25,12 +25,17 @@ public:
    ShipPixelHit(Int_t detID, Float_t fdigi);
    HitID GetPixel();
    int32_t GetDetectorID();
-   //void MakePositionMap(std::shared_ptr <std::unordered_map<int, TVector3>> MapPointer);
+   static std::shared_ptr <std::unordered_map<int, TVector3>> MakePositionMap();
    int32_t GetModule();
-   void GetPixelXYZ(TVector3 &pixel, int detID, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap);
+   void GetPixelXYZ(TVector3 &pixel, int detID); //, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap);
    void Print();
    int32_t GetTimeOverThreshold() const {return fdigi*25 ; }
-
+   static int getPositionMap() {
+     if (PixelPositionMap==NULL)
+      return 0;
+     else
+      return 1;
+   }
 private:
    /** Copy constructor **/
    ShipPixelHit(const ShipPixelHit &other);
