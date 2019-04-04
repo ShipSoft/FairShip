@@ -12,7 +12,7 @@
 
 // compute PixelPositionMap once
 
-int ShipPixelHit::MapInitialized = 0;
+
 // -----   Standard constructor   ------------------------------------------
 ShipPixelHit::ShipPixelHit(Int_t detID,  Float_t digi) : ShipHit(detID, digi) {
 }
@@ -47,9 +47,8 @@ int32_t ShipPixelHit::GetModule()
 int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
 void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap
-  if (ShipPixelHit::MapInitialized==0) {
+  if (ShipPixelHit::PixelPositionMap) {
     ShipPixelHit::PixelPositionMap = ShipPixelHit::MakePositionMap();
-    ShipPixelHit::MapInitialized=1;
   }
 
   int max_detID = 10000000*2 + 1000000*7 + 1000*336 + 80 ;
@@ -180,9 +179,7 @@ std::shared_ptr <std::unordered_map<int, TVector3>>  ShipPixelHit::MakePositionM
       }
     }
   }
-  std::shared_ptr <std::unordered_map<int, TVector3>> MapPointer;
-  MapPointer = std::make_shared<std::unordered_map<int, TVector3>>(positionMap);
-  return MapPointer;
+  return std::make_shared<std::unordered_map<int, TVector3>>(positionMap);
 }
 
 // -----   Destructor   ----------------------------------------------------
