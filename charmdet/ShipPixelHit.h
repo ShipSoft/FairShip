@@ -30,7 +30,6 @@ public:
    int32_t GetTimeOverThreshold() const {return fdigi*25 ; }
 private:
    static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap; //!
-   static int MapInitialized; //!
    /** Copy constructor **/
    ShipPixelHit(const ShipPixelHit &other);
    ShipPixelHit operator=(const ShipPixelHit &other);
