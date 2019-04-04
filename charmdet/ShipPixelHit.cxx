@@ -47,7 +47,7 @@ int32_t ShipPixelHit::GetModule()
 int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
 void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap
-  if (ShipPixelHit::PixelPositionMap) {
+  if (!ShipPixelHit::PixelPositionMap) {
     ShipPixelHit::PixelPositionMap = ShipPixelHit::MakePositionMap();
   }
 
