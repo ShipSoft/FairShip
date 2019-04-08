@@ -1,9 +1,11 @@
 
 import os,subprocess,ROOT,time,multiprocessing
+from rootpyPickler import Unpickler
+from rootpyPickler import Pickler
 import pwd
 ncpus = int(multiprocessing.cpu_count()*3./4.)
 
-pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
+pathToMacro = '$FAIRSHIP/charmdet/'
 def count_python_processes(macroName):
  username = pwd.getpwuid(os.getuid()).pw_name
  callstring = "ps -f -u " + username
@@ -161,11 +163,11 @@ def recoStep1():
         time.sleep(100)
  print "finished all the tasks."
 
-def checkAlignment():
- fileList=[]
+def checkAlignment(fileList=[]):
  # all RT files
- for x in os.listdir('.'):
-  if x.find('_RT')>0 and x.find('histos-residuals')<0:
+ if len(fileList)==0:
+  for x in os.listdir('.'):
+   if x.find('_RT')>0 and x.find('histos-residuals')<0:
     fileList.append(x)
  fileList.sort()
  for fname in fileList:
@@ -347,6 +349,59 @@ def makeMomDistributions(run=0):
         time.sleep(10)
  print "finished all the tasks."
 
+def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
+ pathToMacro = "$FAIRSHIP/charmdet/"
+ eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
+ if merge:
+    for run in os.listdir('.'):
+      if run.find(keyword)<0: continue
+      os.chdir(run)
+      mergeHistos(local='.',case='momDistributions')
+      os.chdir('../')
+ else:
+  if len(fnames)==0:
+   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+   fnames = temp.split('\n')
+  for x in fnames:
+   if x.find(keyword)<0: continue
+   run = x[x.rfind('/')+1:]
+   if not run in os.listdir('.'):
+     temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco+run,shell=True)
+     if temp2.find('.root')<0: continue
+     os.system('mkdir '+run)
+     os.chdir(run)
+     makeMomDistributions(run)
+     os.chdir('../')
+def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
+  pathToMacro = "$FAIRSHIP/charmdet/"
+  eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
+  if merge:
+    for run in os.listdir('.'):
+      if run.find(keyword)<0: continue
+      os.chdir(run)
+      mergeHistos(local='.')
+      os.chdir('../')
+  else:
+   if len(fnames)==0:
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+    fnames = temp.split('\n')
+   for x in fnames:
+    if x.find(keyword)<0: continue
+    run = x[x.rfind('/')+1:]
+    if not run in os.listdir('.'):
+         print "directory for this run does not exist",run
+         # os.system('mkdir '+run)
+         continue
+    temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco+run,shell=True)
+    if temp2.find('.root')<0: continue
+    os.chdir(run)
+    fileList = []
+    for x in temp2.split('\n'):
+     if x.find('.root')<0: continue
+     fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
+    checkAlignment(fileList)
+    os.chdir('../')
+
 def redoMuonTracks():
  fileList = checkFilesWithTracks(D='.')
  for fname in fileList:
@@ -358,6 +413,28 @@ def redoMuonTracks():
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(10)
  print "finished all the tasks."
+
+def reRunReco(r,fname):
+ fRT = fname.replace('.root','_RT2.root')
+ os.system('xrdcp -f $EOSSHIP/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+r+'/'+fname+' '+fRT)
+ f = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/'+r+'/'+fname.replace('.root','_RT.root'))
+ ftemp = ROOT.TFile(fRT,'update')
+ ftemp.cd('')
+ upkl    = Unpickler(f)
+ tMinAndTmax = upkl.load('tMinAndTmax')
+ pkl = Pickler(ftemp)
+ pkl.dump(tMinAndTmax,'tMinAndTmax')
+ ftemp.mkdir('histos')
+ ftemp.histos.cd('')
+ for tc in ['TDCMapsX','hitMapsX']:
+    tmp = f.histos.Get(tc)
+    X = tmp.Clone()
+    X.Write()
+ ftemp.Write("",ROOT.TFile.kOverwrite)
+ ftemp.Close()
+ cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c recoStep1 -u 1 -f "+fRT+' &'
+ os.system(cmd)
+ print 'step 1:', cmd
 
 def pot():
  fileList=[]

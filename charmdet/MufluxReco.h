@@ -46,6 +46,7 @@ public:
    Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom);
    StringVecIntMap countMeasurements(TrackInfo* trInfo);
    std::vector<std::vector<int>> GroupIntegers(std::vector<int>& input_array, size_t span);
+   void setEffFudgeFactor(std::string s,float f){effFudgeFac[s]=f;}
 
 private:
   protected:
@@ -63,6 +64,7 @@ private:
     TClonesArray    *Digi_MuonTaggerHits;
     TClonesArray    *cDigi_MufluxSpectrometerHits;
     TClonesArray    *MufluxSpectrometerPoints;
+    std::map<TString,float> effFudgeFac;
     TBranch        *b_MCTrack;   //!
     TBranch        *b_FitTracks;   //!
     TBranch        *b_TrackInfos;   //!
@@ -71,7 +73,7 @@ private:
     TBranch        *b_Digi_MuonTaggerHits;   //!
     TBranch        *b_Digi_MufluxSpectrometerHits;   //!
     TBranch        *b_MufluxSpectrometerPoints;   //!
-   ClassDef(MufluxReco,4);
+   ClassDef(MufluxReco,5);
 };
 
 #endif

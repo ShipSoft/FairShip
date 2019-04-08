@@ -516,10 +516,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult"};
  std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s"};
  std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> source  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
+ std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
 
- std::vector<TString>::iterator its = source.begin();
- while( its!=source.end()){
+ std::vector<TString>::iterator its = Tsource.begin();
+ while( its!=Tsource.end()){
   std::vector<TString>::iterator itt = tagged.begin();
   while( itt!=tagged.end()){
    std::vector<TString>::iterator it1 = h1names.begin();
@@ -564,6 +564,17 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (!fitStatus->isFitConverged()){continue;}
      TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
+// for MC
+     if (MCdata){
+       std::map<TString,int> detectors = { {"u",0}, {"v",0}, {"x2",0}, {"x3",0}, {"x1",0},{"x4",0}};
+       std::map<TString, int>::iterator it;
+       for ( it = detectors.begin(); it != detectors.end(); it++ ){
+        for ( int m=0; m<hitsPerStation[it->first.Data()].size();m+=1){
+         if (TRandom().Uniform() < effFudgeFac[it->first.Data()]){detectors[it->first.Data()]+=1;}
+        if (detectors[it->first.Data()]<2){continue;}
+        }
+       }
+     }
      if (hitsPerStation["x1"].size()<2){ continue;}
      if (hitsPerStation["x2"].size()<2){ continue;}
      if (hitsPerStation["x3"].size()<2){ continue;}
