@@ -1137,7 +1137,7 @@ cuts["lastDTStation_z"]  = DT['Station_4_x_plane_1_layer_1_40110000'][2]
 xSHiP = ROOT.TTreeReader(sTree)
 muflux_Reco = ROOT.MufluxReco(xSHiP)
 for x in cuts: muflux_Reco.setCuts(x,cuts[x])
-effFudgeFactors = {"u":0.84, "v";0.82, "x2":0.91, "x3":0.89, "x1":0.94,"x4":0.96}
+effFudgeFactors = {"u":0.84, "v":0.82, "x2":0.91, "x3":0.89, "x1":0.94,"x4":0.96}
 for x in effFudgeFactors: muflux_Reco.setEffFudgeFactor(x,effFudgeFactors[x])
 
 # rvShipEventHeader = ROOT.TTreeReaderValue(ROOT.FairEventHeader)(xSHiP, "ShipEventHeader") 
