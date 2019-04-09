@@ -34,6 +34,7 @@ class FixedTargetGenerator : public FairGenerator
   void SetMom(Double_t mom) { fMom = mom; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
+  void SetCharmTarget(Bool_t charmtarget = true) {fcharmtarget = charmtarget;}; //charm geometry uses a different target, default one is usual
   void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
   void SetBoost(Double_t f) { fBoost  = f; }  // boost factor for rare di-muon decays
   void SetG4only() { G4only  = true; }  // only run Geant4, no pythia primary interaction
@@ -60,6 +61,7 @@ class FixedTargetGenerator : public FairGenerator
   Double_t fSeed,EMax,fBoost,chicc,chibb,wspill,nrpotspill;
   Int_t nEvents,nEntry,pot,nDsprim,ntotprim;      
   Bool_t tauOnly,JpsiMainly,G4only,setByHand,Debug,withEvtGen;
+  Bool_t fcharmtarget;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia* fPythiaN;            //!
   Pythia* fPythiaP;            //!

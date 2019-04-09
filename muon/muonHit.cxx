@@ -143,7 +143,7 @@ void muonHit::stInit()
     TGeoNode* node = nav->GetCurrentNode();
     TObjArray* nodes =  node->GetVolume()->GetNodes();
 //
-    for (Int_t i = 0; i < nodes->GetSize(); i++) {
+    for (Int_t i = 0; i < nodes->GetEntries(); i++) {
       node = (TGeoNode*)nodes->At(i);
       Int_t muStNs = 0;
       if (TString(node->GetName()).Contains("muondet")) {

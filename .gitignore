@@ -44,3 +44,9 @@ build/
 
 # IPython notebooks
 *.ipynb_checkpoints
+
+# FairShip-specific files
+c++
+cc
+config.sh
+lcgenv.sh

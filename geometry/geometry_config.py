@@ -105,12 +105,13 @@ with ConfigRegistry.register_config("basic") as c:
      if tankDesign > 5: 
       c.Veto.outerSupport = 5.*u.mm
       c.Veto.outerSupportMed = "steel"
+      c.Veto.lidThickness = 16.*u.mm
      else:
       c.Veto.outerSupport = 8.*u.mm
       c.Veto.outerSupportMed = "Aluminum"
+      c.Veto.lidThickness = 80.*u.mm
      c.Veto.sensitiveThickness = 0.3*u.m
      c.Veto.sensitiveMed = "Scintillator"
-     c.Veto.lidThickness = 80.*u.mm
      c.Veto.decayMed = "vacuums"
      c.Veto.rib = 3.*u.cm
      c.Veto.ribMed = "steel"
@@ -149,7 +150,7 @@ with ConfigRegistry.register_config("basic") as c:
     elif strawDesign==10:  # 10 - baseline for 2018 
      c.strawtubes.InnerStrawDiameter = 1.975*u.cm
      c.strawtubes.StrawPitch         = 3.60*u.cm  
-     c.strawtubes.DeltazLayer        = 1.6*u.cm   
+     c.strawtubes.DeltazLayer        = 2.1*u.cm   
      c.strawtubes.DeltazPlane        = 4.2*u.cm   
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
@@ -266,6 +267,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm + presShowerDeltaZ)  #
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
+    if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
      c.hcal =  AttrDict(z=c.ecal.z + hcalThickness/2. + 45.*u.cm  )
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
@@ -477,13 +479,14 @@ with ConfigRegistry.register_config("basic") as c:
     if nuTauTargetDesign!=2:
         c.EmuMagnet = AttrDict(z=0*u.cm)
         c.EmuMagnet.Design = nuTauTargetDesign
-        c.EmuMagnet.B=1.5*u.tesla
+        c.EmuMagnet.B=1.25*u.tesla
         c.EmuMagnet.GapDown = 25*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
+            c.EmuMagnet.WithConstField=False  #now loaded field map
             c.EmuMagnet.X = scale*2.2*u.m
-            c.EmuMagnet.Y = scale*3.4*u.m
-            c.EmuMagnet.Z = 7*u.m
+            c.EmuMagnet.Y = scale*3.6*u.m
+            c.EmuMagnet.Z = 7.2*u.m
             c.EmuMagnet.BaseX = scale*c.EmuMagnet.X 
             c.EmuMagnet.BaseY = scale*0.6*u.m
             c.EmuMagnet.BaseZ = scale*c.EmuMagnet.Z
@@ -493,7 +496,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.ColX = scale*60*u.cm
             c.EmuMagnet.ColY = scale*c.EmuMagnet.Y - 2 *scale * c.EmuMagnet.BaseY #avoid overlapping between bases and columns
             c.EmuMagnet.ColZ = scale*c.EmuMagnet.Z
-            c.EmuMagnet.CutLength = scale * 50*u.cm
+            c.EmuMagnet.CutLength = scale * 45*u.cm
             c.EmuMagnet.CutHeight = scale * 100*u.cm
             c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
             c.EmuMagnet.CoilY = 40*u.cm
@@ -504,6 +507,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.PillarZ = 0.5*u.m
             c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
         if c.EmuMagnet.Design<2:
+            c.EmuMagnet.WithConstField=True  #older geometries still use constant fields
             c.EmuMagnet.Z = 4.5*u.m
             c.EmuMagnet.GapUp = 27*u.cm
         if c.EmuMagnet.Design == 1:
@@ -651,26 +655,27 @@ with ConfigRegistry.register_config("basic") as c:
     if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
         c.NuTauTarget.row=7
         c.NuTauTarget.col=7
-        #c.NuTauTarget.wall=19
-        c.NuTauTarget.wall=10
-        c.NuTauTarget.target=2 #number of neutrino target volumes
+        c.NuTauTarget.wall=19
+        #c.NuTauTarget.wall=10
+        c.NuTauTarget.target=1 #number of neutrino target volumes
 
         
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
 
     c.NuTauTarget.Ydist = 0.2*u.cm
     
-    c.NuTauTarget.EmTh = 0.0045 * u.cm
+    c.NuTauTarget.SingleEmFilm = True
+    c.NuTauTarget.EmTh = 0.0070 * u.cm
     c.NuTauTarget.EmX = 12.5 * u.cm
     c.NuTauTarget.EmY = 9.9 * u.cm
-    c.NuTauTarget.PBTh = 0.0205 * u.cm
+    c.NuTauTarget.PBTh = 0.0175 * u.cm
     c.NuTauTarget.LeadTh = 0.1 * u.cm
     c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
     c.NuTauTarget.BrX = 12.9 *u.cm
     c.NuTauTarget.BrY = 10.5 *u.cm
     c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
-    c.NuTauTarget.ydim = c.NuTauTarget.row*(c.NuTauTarget.BrY+c.NuTauTarget.Ydist)    
+    c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist    
 
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
@@ -701,7 +706,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.DY = c.EmuMagnet.Height2 - 2 *c.tauHPT.SRDY
         c.tauHPT.DZ = c.NuTauTT.TTZ        
         c.tauHPT.nHPT = 3 #n.d.r. number after each neutrino target
-        c.tauHPT.distHPT = 25*u.cm
+        c.tauHPT.distHPT = 50*u.cm
     
     if nuTauTargetDesign!=2: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm

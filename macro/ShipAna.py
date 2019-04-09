@@ -68,20 +68,23 @@ dy = ShipGeo.Yheight/u.m
 import shipDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
-run.SetOutputFile("dummy")  # Output file
+run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
 run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for the mag field
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
-run.Init()
+
 import geomGeant4
 if hasattr(ShipGeo.Bfield,"fieldMap"):
-  fieldMaker = geomGeant4.addVMCFields(ShipGeo.Bfield.fieldMap, ShipGeo.Bfield.z, True)
-
-sGeo   = ROOT.gGeoManager
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
+else:
+  print "no fieldmap given, geofile too old, not anymore support"
+  exit(-1)
+sGeo   = fgeo.FAIRGeom
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 bfield = ROOT.genfit.FairShipFields()
+bfield.setField(fieldMaker.getGlobalField())
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
 
@@ -91,13 +94,11 @@ for x in ROOT.gGeoManager.GetListOfVolumes():
  volDict[i]=x.GetName()
  i+=1
 
-
-
 # prepare veto decisions
 import shipVeto
 veto = shipVeto.Task(sTree)
 vetoDets={}
-
+log={}
 h = {}
 ut.bookHist(h,'delPOverP','delP / P',400,0.,200.,100,-0.5,0.5)
 ut.bookHist(h,'pullPOverPx','delPx / sigma',400,0.,200.,100,-3.,3.)
@@ -116,9 +117,10 @@ ut.bookHist(h,'Vzpull','Vz pull',100,-5.,5.)
 ut.bookHist(h,'Vxpull','Vx pull',100,-5.,5.)
 ut.bookHist(h,'Vypull','Vy pull',100,-5.,5.)
 ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
-ut.bookHist(h,'IP0','Impact Parameter to target',100,0.,100.)
-ut.bookHist(h,'IP0/mass','Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
-ut.bookHist(h,'HNL','reconstructed Mass',500,0.,2.)
+for x in ['','_pi0']:
+ ut.bookHist(h,'IP0'+x,'Impact Parameter to target',100,0.,100.)
+ ut.bookHist(h,'IP0/mass'+x,'Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
+ ut.bookHist(h,'HNL'+x,'reconstructed Mass',500,0.,2.)
 ut.bookHist(h,'HNLw','reconstructed Mass with weights',500,0.,2.)
 ut.bookHist(h,'meas','number of measurements',40,-0.5,39.5)
 ut.bookHist(h,'meas2','number of measurements, fitted track',40,-0.5,39.5)
@@ -256,7 +258,7 @@ def checkHNLorigin(sTree):
        hnlkey = n
        break
  if hnlkey<0 : 
-  print "checkHNLorigin: no HNL found"
+  ut.reportError("ShipAna: checkHNLorigin, no HNL found")
  else:
   # MCTrack after HNL should be first daughter
   theHNLVx = sTree.MCTrack[hnlkey]
@@ -468,26 +470,32 @@ def makePlots():
    h['delPOverP2z_proj'].Draw()
    fitSingleGauss('delPOverP2z_proj')
    h['fitresults'].Print('fitresults.gif')
-   ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
-   print 'finished with first canvas'
-   cv = h['fitresults2'].cd(1)
-   h['Doca'].SetXTitle('closest distance between 2 tracks   [cm]')
-   h['Doca'].SetYTitle('N/1mm')
-   h['Doca'].Draw()
-   cv = h['fitresults2'].cd(2)
-   h['IP0'].SetXTitle('impact parameter to p-target   [cm]')
-   h['IP0'].SetYTitle('N/1cm')
-   h['IP0'].Draw()
-   cv = h['fitresults2'].cd(3)
-   h['HNL'].SetXTitle('inv. mass  [GeV/c2]')
-   h['HNL'].SetYTitle('N/4MeV/c2')
-   h['HNL'].Draw()
-   fitSingleGauss('HNL',0.9,1.1)
-   cv = h['fitresults2'].cd(4)
-   h['IP0/mass'].SetXTitle('inv. mass  [GeV/c2]')
-   h['IP0/mass'].SetYTitle('IP [cm]')
-   h['IP0/mass'].Draw('colz')
-   h['fitresults2'].Print('fitresults2.gif')
+   for x in ['','_pi0']:
+    ut.bookCanvas(h,key='fitresults2'+x,title='Fit Results '+x,nx=1600,ny=1200,cx=2,cy=2)
+    cv = h['fitresults2'+x].cd(1)
+    if x=='': 
+     h['Doca'].SetXTitle('closest distance between 2 tracks   [cm]')
+     h['Doca'].SetYTitle('N/1mm')
+     h['Doca'].Draw()
+    else:
+     h['pi0Mass'].SetXTitle('#gamma #gamma invariant mass   [GeV/c^{2}]')
+     h['pi0Mass'].SetYTitle('N/'+str(int(h['pi0Mass'].GetBinWidth(1)*1000))+'MeV')
+     h['pi0Mass'].Draw()
+     fitResult = h['pi0Mass'].Fit('gaus','S','',0.08,0.19)
+    cv = h['fitresults2'+x].cd(2)
+    h['IP0'+x].SetXTitle('impact parameter to p-target   [cm]')
+    h['IP0'+x].SetYTitle('N/1cm')
+    h['IP0'+x].Draw()
+    cv = h['fitresults2'+x].cd(3)
+    h['HNL'+x].SetXTitle('inv. mass  [GeV/c^{2}]')
+    h['HNL'+x].SetYTitle('N/4MeV/c2')
+    h['HNL'+x].Draw()
+    fitSingleGauss('HNL'+x,0.9,1.1)
+    cv = h['fitresults2'+x].cd(4)
+    h['IP0/mass'+x].SetXTitle('inv. mass  [GeV/c^{2}]')
+    h['IP0/mass'+x].SetYTitle('IP [cm]')
+    h['IP0/mass'+x].Draw('colz')
+    h['fitresults2'+x].Print('fitresults2'+x+'.gif')
    ut.bookCanvas(h,key='vxpulls',title='Vertex resol and pulls',nx=1600,ny=1200,cx=3,cy=2)
    cv = h['vxpulls'].cd(4)
    h['Vxpull'].Draw()
@@ -713,6 +721,19 @@ def myEventLoop(n):
     h['Doca'].Fill(doca) 
     if  doca > docaCut : continue
     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
+
+# look for pi0
+    for pi0 in pi0Reco.findPi0(sTree,HNLPos):
+       rc = h['pi0Mass'].Fill(pi0.M())
+       if abs(pi0.M()-0.135)>0.02: continue 
+# could also be used for eta, by changing cut
+       HNLwithPi0 =  HNLMom + pi0
+       dist = ImpactParameter(tr,HNLPos,HNLwithPi0)
+       mass = HNLwithPi0.M()
+       h['IP0_pi0'].Fill(dist)  
+       h['IP0/mass_pi0'].Fill(mass,dist)
+       h['HNL_pi0'].Fill(mass)
+
     dist = ImpactParameter(tr,HNLPos,HNLMom)
     mass = HNLMom.M()
     h['IP0'].Fill(dist)  
@@ -863,6 +884,9 @@ if ecal:
   ecalMatch.InitPython(ecalStructure, ecalReconstructed, sTree.MCTrack)
 
 nEvents = min(sTree.GetEntries(),nEvents)
+
+import pi0Reco
+ut.bookHist(h,'pi0Mass','gamma gamma inv mass',100,0.,0.5)
 
 for n in range(nEvents): 
  myEventLoop(n)

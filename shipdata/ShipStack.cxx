@@ -418,8 +418,8 @@ Int_t ShipStack::GetCurrentParentTrackNumber() const
 TParticle* ShipStack::GetParticle(Int_t trackID) const
 {
   if (trackID < 0 || trackID >= fNParticles) {
-    fLogger->Debug(MESSAGE_ORIGIN, "ShipStack: Particle index %i out of range.",trackID);
-    Fatal("ShipStack::GetParticle", "Index out of range");
+    fLogger->Info(MESSAGE_ORIGIN, "ShipStack: Particle index %i out of range. Max=%i",trackID,fNParticles);
+    Fatal("ShipStack::GetParticle", "Index out of range ");
   }
   return (TParticle*)fParticles->At(trackID);
 }

@@ -1,7 +1,7 @@
 import shipunit as u
 from array import array
 import hepunit as G4Unit
-import ROOT,os
+import ROOT
 # requires to have ${SIMPATH}/include/Geant4/ in PYTHONPATH
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
@@ -131,28 +131,40 @@ def printWeightsandFields(onlyWithField = True,exclude=[]):
    print 'total magnet mass',nM/1000.,'t'
    return
 
-def addVMCFields(controlFile = 'field/BFieldSetup.txt', zPos = 0.0, verbose = False):
+def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = True):
     '''
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
     '''
-    print 'Calling addVMCFields using input control file {0}'.format(controlFile)
+    print 'Calling addVMCFields'
     
-    # consistency check of z position until there are methods to set z position for the VMC interface directly
-    ftmp = open(os.environ['FAIRSHIP']+'/'+controlFile)
-    ok = False
-    for l in ftmp.readlines():
-     if not l.find(str(zPos))<0: ok = True
-    ftmp.close()
-    if not ok: 
-     print "position in ",controlFile," does not agree with selected geometry! z=",zPos,". Stop execution."
-     exit()
+    fieldMaker = ROOT.ShipFieldMaker(verbose)
 
-    fieldMaker = ROOT.ShipFieldMaker(controlFile, verbose)
+    # Read the input control file. If this is empty then the only fields that are 
+    # defined (so far) are those within the C++ geometry classes
+    if controlFile is not '':
+      fieldMaker.readInputFile(controlFile)
 
-    # Reset the fields in the VMC to use info from the fieldMaker object
-    geom = ROOT.TG4GeometryManager.Instance()
-    geom.SetUserPostDetConstruction(fieldMaker)
-    geom.ConstructSDandField()
+    # Set the main spectrometer field map as a global field
+    if hasattr(shipGeo, 'Bfield'):
+      fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
+                                ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))      
+      withConstField = False
+      if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstField = shipGeo.EmuMagnet.WithConstField
+      if not withConstField:
+       fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))       
+    # Combine the two fields to obtain the global field
+       fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
+       fieldMaker.defineGlobalField('TotalField')
+      else:
+       fieldMaker.defineGlobalField('MainSpecMap')
+    if withVirtualMC:
+    # Force the VMC to update/reset the fields defined by the fieldMaker object.
+    # Get the ROOT/Geant4 geometry manager
+     geom = ROOT.TG4GeometryManager.Instance()
+    # Let the geometry know about the fieldMaker object
+     geom.SetUserPostDetConstruction(fieldMaker)
+    # Update the fields via the overriden ShipFieldMaker::Contruct() function
+     geom.ConstructSDandField()
 
     # Return the fieldMaker object, otherwise it will "go out of scope" and its
     # content will be deleted

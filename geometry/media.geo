@@ -1,3 +1,20 @@
+// Example for basic material, https://fairroot.gsi.de/?q=node/34
+//ALUMINIUM	1	26.98	13	2.7
+//		0	0	0	0.0001
+//0
+//corresponds to :
+//name	ncomp	aw	an	dens 
+//sensflag	fldflag	fld	epsil
+//npckov
+//ncomp: - number of components in the material (ncomp= 1 for a basic material and <1 or >1 for a mixture
+//aw: 	- atomic weights A for the components
+//an: 	- atomic numbers Z for the components 
+//dens:	density DENS in g cm(**-3)
+//sensflag - sensitivity flag ISVOL
+//fldflag - fieldflag IFIELD
+//fld - maximum field value FIELDM in kilogauss
+//epsil - boundary crossing precision EPSIL
+//npckov - number of values used to define the optical properties of the medium.  
 //----------------------------------------------------------
 air                3  14.01  16.  39.95  7.  8.  18.  1.205e-3  .755  .231  .014
                    0  1  30.  .001
@@ -105,10 +122,13 @@ iron               1  55.847  26.  7.87
 krypton            1 83.798 36 2.413
                    1  0  20.  .001
 		   0
+LiqKrypton         1 83.798 36 2.413
+                   1  0  20.  .001
+                   0
 //Gd3Al2Ga3O12
 GAGG               -4  157.25 26.98 69.723 15.994  64 13 31 8 6.63  3. 2. 3. 12.
  		   1  1  30.  .001
-                    0
+                   0
 //PbF2
 PbF2               -2  207.19 18.998 82 9 7.85  1 2
  		   1  1  30.  .001
@@ -2317,7 +2337,7 @@ TTmedium        3  14.01  16.  39.95  7.  8.  18.  0.237  .755  .231  .014
                 0
 
 
-NuclearEmulsion -11  107.9 79.9 12.01 16. 14.01 1.01 126.9 32.06  28.08 22.99 87.62 47.  35.  6.  8.  7.  1.  53.  16.  14.  11.  38.  2.40  0.3834 0.2786 0.13 0.1243 0.0481 0.0240 0.0081 0.0014 0.0013 0.0007 0.0001
+NuclearEmulsion -11  107.9 79.9 12.01 16. 14.01 1.01 126.9 32.06  28.08 22.99 87.62 47.  35.  6.  8.  7.  1.  53.  16.  14.  11.  38.  2.90  0.447 0.33 0.223 0.0858 0.0820 0.0317 0.0158 0.0053 0.0009 0.0005 0.0001
                 0  1  20.  .001
                 0
 
@@ -2325,9 +2345,9 @@ PlasticBase   -3  16.  12.01  1.01  8.  6.  1.  1.28  0.5075  0.4286  0.0639
               0  1  20.  .001
               0
 
-EmulsionFilm -12  107.9 79.9 12.01 16. 14.01 12.01 1.01 126.9 32.06  28.08 22.99 87.62 47.  35.  6.  8. 6.  7.  1.  53.  16.  14.  11.  38.  2.40  0.11502 0.08358 0.039 0.03729 0.01443 0.0072 0.00243 0.00042 0.35564 0.00021 0.30002 0.04476
-                0  1  20.  .001
-                0
+PlasticFoam   -3  16.  12.01  1.01  8.  6.  1.  0.3  0.5075  0.4286  0.0639
+              0  1  20.  .001
+              0	      
 
 CoilCopper  1  63.54  29.  2.99
             0  1  20.  .001

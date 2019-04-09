@@ -64,13 +64,19 @@ ShipGoliathField::~ShipGoliathField() { }
 
 void ShipGoliathField::Init(const char* fieldfile){
 
-  TFile *fieldmap = new TFile(fieldfile); 
+  fieldmap = TFile::Open(fieldfile);
   
   
   TH3D* histbx= (TH3D*)fieldmap->Get("Bx");
   TH3D* histby= (TH3D*)fieldmap->Get("By"); 
   TH3D* histbz= (TH3D*)fieldmap->Get("Bz");   
-
+  xmin = histbx->GetXaxis()->GetXmin();
+  xmax = histbx->GetXaxis()->GetXmax();  
+  ymin = histbx->GetYaxis()->GetXmin();
+  ymax = histbx->GetYaxis()->GetXmax();    
+  zmin = histbx->GetZaxis()->GetXmin();
+  zmax = histbx->GetZaxis()->GetXmax(); 
+    
   ShipGoliathField::sethistbxyz(histbx, histby, histbz);
 
   /*    
@@ -130,18 +136,16 @@ void ShipGoliathField::close(){
 Double_t ShipGoliathField::GetBx(Double_t x, Double_t y, Double_t z)  {
    Double_t bx=0.;
    TH3D* hbx;
-   if ((x < -71.86 )|| (x> 84.14) || (y < -23.44) || (y>59.16) || (z<166) || (z>526)) {
+
+   if ((x < xmin )|| (x> xmax) || (y < ymin) || (y>ymax) || ((z-350.75)<zmin) || ((z-350.75)>zmax)) {
        return bx;}  
-    // x+78.0, y+41.3, z+338.4
-    // FairShip: 0 after absorber -384.5<target<-240 -239.9<absorber<0<T1T2<117<Goliath<576<T3T4<755 766.6<RPC<966.6
-    Int_t xbin=int(round((x+71.86)/4)+1);
-    Int_t ybin=int(round((y+23.44)/5.9)+1);   
-    Int_t zbin=int(round((z-166)/5)+1); 
+    // FairShip: 0 after absorber -384.5<target<-240 -239.9<absorber<0<T1T2<121<Goliath<481<T3T4<755 766.6<RPC<966.6    
     hbx=ShipGoliathField::gethistbx();
-    //cout << "GetBX got histbx"<<endl; 
-    Double_t cont=hbx->GetBinContent(20);
-    bx=hbx->GetBinContent((xbin-1)*15*73+(ybin-1)*73+zbin)*tesla;    
-    //cout << "GetBX " << x << ", xbin " << xbin <<" y "<< y << " ybin "<<ybin<<" z "<< z << " zbin "<<zbin<<" Bx= " << bx << " hist bin "<< (xbin-1)*15*73+(ybin-1)*73+zbin << endl;
+    Int_t binx = hbx->GetXaxis()->FindBin(x); 
+    Int_t biny = hbx->GetYaxis()->FindBin(y); 
+    Int_t binz = hbx->GetZaxis()->FindBin(z - 350.75); 
+    bx=hbx->GetBinContent(binx,biny,binz)*tesla;    
+    //cout << "GetBX " << x << ", binx " << binx <<" y "<< y << " biny "<<biny<<" z "<< z << " binz "<<binz<<" Bx= " << bx <<  endl;
    return bx;
 }
 
@@ -152,14 +156,14 @@ Double_t ShipGoliathField::GetBx(Double_t x, Double_t y, Double_t z)  {
 Double_t ShipGoliathField::GetBy(Double_t x, Double_t y, Double_t z) {
     Double_t by=0.;
     TH3D* hby;
-    if ((x < -71.86 )|| (x> 84.14) || (y < -23.44) || (y>59.16) || (z<166) || (z>526)) {
+
+   if ((x < xmin )|| (x> xmax) || (y < ymin) || (y>ymax) || ((z-350.75)<zmin) || ((z-350.75)>zmax)) {
        return by;}   
-    Int_t xbin=int(round((x+71.86)/4)+1);
-    Int_t ybin=int(round((y+23.44)/5.9)+1);   
-    Int_t zbin=int(round((z-166)/5)+1); 
     hby=ShipGoliathField::gethistby();
-    by=hby->GetBinContent((xbin-1)*15*73+(ybin-1)*73+zbin)*tesla;    
-    //cout << "GetBY " << x << ", xbin " << xbin <<" y "<< y << " ybin "<<ybin<<" z "<< z << " zbin "<<zbin<<" By= " << by << " hist bin "<< (xbin-1)*15*73+(ybin-1)*73+zbin<< endl;
+    Int_t binx = hby->GetXaxis()->FindBin(x); 
+    Int_t biny = hby->GetYaxis()->FindBin(y); 
+    Int_t binz = hby->GetZaxis()->FindBin(z- 350.75); 
+    by=hby->GetBinContent(binx,biny,binz)*tesla;    
    return by;
 }
 
@@ -171,15 +175,16 @@ Double_t ShipGoliathField::GetBy(Double_t x, Double_t y, Double_t z) {
 Double_t ShipGoliathField::GetBz(Double_t x, Double_t y, Double_t z)  {
     Double_t bz=0.;
     TH3D* hbz;
-    if ((x < -71.86 )|| (x> 84.14) || (y < -23.44) || (y>59.16) || (z<166) || (z>526)) {
+
+   if ((x < xmin )|| (x> xmax) || (y < ymin) || (y>ymax) || ((z-350.75)<zmin) || ((z-350.75)>zmax)) {
        return bz;}   
-    Int_t xbin=int(round((x+71.86)/4)+1);
-    Int_t ybin=int(round((y+23.44)/5.9)+1);   
-    Int_t zbin=int(round((z-166)/5)+1); 
+       
     hbz=ShipGoliathField::gethistbz(); 
-    bz=hbz->GetBinContent((xbin-1)*15*73+(ybin-1)*73+zbin)*tesla;    
-    //cout << "GetBZ " << x << ", xbin " << xbin <<" y "<< y << " ybin "<<ybin<<" z "<< z << " zbin "<<zbin<<" Bz= " << bz << " hist bin "<< (xbin-1)*15*73+(ybin-1)*73+zbin<< endl;
-   return bz;
+    Int_t binx = hbz->GetXaxis()->FindBin(x); 
+    Int_t biny = hbz->GetYaxis()->FindBin(y); 
+    Int_t binz = hbz->GetZaxis()->FindBin(z- 350.75); 
+    bz=hbz->GetBinContent(binx,biny,binz)*tesla;    
+  return bz;
 }
 
 

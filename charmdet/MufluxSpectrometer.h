@@ -24,17 +24,19 @@ class MufluxSpectrometer:public FairDetector
       
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox);
+    void ChooseDetector(Bool_t muflux); //sets experimental configuration (true = muflux, false = charmxsec)
         
     //methods for drift tubes by Eric
     void SetTubeLength(Double_t tubelength);
     void SetInnerTubeDiameter(Double_t innertubediameter);
     void SetOuterTubeDiameter(Double_t outertubediameter);
     void SetTubePitch(Double_t tubepitch);
+    void SetTubePitch_T1u(Double_t tubepitch_T1u, Double_t T1u_const, Double_t T1u_const_2, Double_t T1u_const_3, Double_t T1u_const_4);
+    void SetTubePitch_T2v(Double_t tubepitch_T2v, Double_t T2v_const, Double_t T2v_const_2, Double_t T2v_const_3, Double_t T2v_const_4);
     void SetDeltazLayer(Double_t deltazlayer);
     void SetDeltazPlane(Double_t deltazplane);
     void SetTubesPerLayer(Int_t tubesperlayer);
-    void SetStereoAngle(Int_t stereoangle);
+    void SetStereoAngle(Double_t stereoangle, Double_t stereovangle);
     void SetWireThickness(Double_t wirethickness);
     void SetDeltazView(Double_t deltazview);
     void SetTubeLength12(Double_t strawlength12);
@@ -45,13 +47,27 @@ class MufluxSpectrometer:public FairDetector
     void SetMuonFlux(Bool_t muonflux);   
     void TubeDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void TubeEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
-    void SetDistStereo(Double_t diststereo);
+    void SetDistStereo(Double_t diststereoT1,Double_t diststereoT2);
     void SetDistT1T2(Double_t distT1T2);
     void SetDistT3T4(Double_t distT3T4);
     void SetSetScintillatorThickness(Double_t scintillatorthickness);
     void SetScintillatorDistT(Double_t scintillatorDistT);
     void SetscintillatorPlasticThickness(Double_t scintillatorPlasticThickness);
+    void SetGoliathCentre(Double_t goliathcentre_to_beam);
+    void SetGoliathCentreZ(Double_t goliathcentre);
+    void SetT3StationsZcorr(Double_t T3z_1, Double_t T3z_2, Double_t T3z_3, Double_t T3z_4);
+    void SetT4StationsZcorr(Double_t T4z_1, Double_t T4z_2, Double_t T4z_3, Double_t T4z_4);
+    void SetT3StationsXcorr(Double_t T3x_1, Double_t T3x_2, Double_t T3x_3, Double_t T3x_4);
+    void SetT4StationsXcorr(Double_t T4x_1, Double_t T4x_2, Double_t T4x_3, Double_t T4x_4);
+    void SetTStationsZ(Double_t T1z, Double_t T1x_z, Double_t T1u_z, Double_t T2z, Double_t T2v_z, Double_t T2x_z,Double_t T3z, Double_t T4z);
+    void SetTStationsX(Double_t T1x_x, Double_t T1u_x, Double_t T2x_x, Double_t T2v_x, Double_t T3x, Double_t T4x);
+    void SetTStationsY(Double_t T1x_y, Double_t T1u_y, Double_t T2x_y, Double_t T2v_y, Double_t T3y, Double_t T4y);    
+    //add surevy results for charm by Daniel
 
+    void SetT3(Double_t SurveyCharm_T3x, Double_t SurveyCharm_T3y, Double_t SurveyCharm_T3z, Int_t mnb);
+    void SetT4(Double_t SurveyCharm_T4x, Double_t SurveyCharm_T4y, Double_t SurveyCharm_T4z, Int_t mnb);
+
+    
 // for the digitizing step
     void SetTubeResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
     Double_t TubeVdrift() {return v_drift;}
@@ -124,12 +140,23 @@ private:
     Double_t       fInner_Tube_diameter;     //!  Inner Tube diameter
     Double_t       fOuter_Tube_diameter;     //!  Outer Straw diameter
     Double_t       fTubes_pitch;             //!  Distance (x) between tubes in one layer
+    Double_t       fTubes_pitch_T1u;         //!  Extra Distance (x) between tubes in one layer, T1u
+    Double_t       fT1u_const;  
+    Double_t       fT1u_const_2;  
+    Double_t       fT1u_const_3;  
+    Double_t       fT1u_const_4;  
+    Double_t       fT2v_const;  
+    Double_t       fT2v_const_2;  
+    Double_t       fT2v_const_3;  
+    Double_t       fT2v_const_4;  
+    Double_t       fTubes_pitch_T2v;         //!  Extra Distance (x) between tubes in one layer, T2v
     Double_t       fDeltaz_layer12;          //!  Distance (z) between layer 1&2
     Double_t       fDeltaz_plane12;          //!  Distance (z) between plane 1&2
     Double_t       fOffset_layer12;          //!  Offset (x) between straws of layer2&1
     Double_t       fOffset_plane12;          //!  Offset (x) between straws of plane1&2
     Int_t          fTubes_per_layer;         //!  Number of tubes in one layer
     Double_t       fView_angle;              //!  Stereo angle of layers in a view
+    Double_t       fView_vangle;    
     Double_t       fcosphi;
     Double_t       fsinphi;
     Double_t       fWire_thickness;          //!  Thickness of the wire
@@ -144,9 +171,60 @@ private:
     Double_t       v_drift;                  //!  drift velocity  
     Double_t       sigma_spatial;            //!  spatial resolution    
     Bool_t         fMuonFlux;                //!  set up for muonflux    
-    Double_t       fdiststereo;              //!  distance between stereo layers
+    Double_t       fdiststereoT1;              //!  distance between stereo layers
+    Double_t       fdiststereoT2;              //!  distance between stereo layers
     Double_t       fdistT1T2;                //!  distance between T1&T2
     Double_t       fdistT3T4;                //!  distance between T3&T4
+    Double_t       fgoliathcentre_to_beam;
+    Double_t       fgoliathcentre;
+    Double_t       fT1z;
+    Double_t       fT1u_z;
+    Double_t       fT1x_z;
+    Double_t       fT2z;
+    Double_t       fT2v_z;
+    Double_t       fT2x_z;
+    Double_t       fT1x_x;
+    Double_t       fT2x_x;
+    Double_t       fT1u_x;
+    Double_t       fT2v_x;
+    Double_t       fT1x_y;
+    Double_t       fT2x_y;
+    Double_t       fT1u_y;
+    Double_t       fT2v_y;
+    Double_t       fT3z;
+    Double_t       fT4z;  
+    Double_t       fT3z_1;
+    Double_t       fT3z_2;
+    Double_t       fT3z_3;
+    Double_t       fT3z_4;
+    Double_t       fT4z_1; 
+    Double_t       fT4z_2; 
+    Double_t       fT4z_3; 
+    Double_t       fT4z_4;  
+    Double_t       fT3x_1;
+    Double_t       fT3x_2;
+    Double_t       fT3x_3;
+    Double_t       fT3x_4;
+    Double_t       fT4x_1; 
+    Double_t       fT4x_2; 
+    Double_t       fT4x_3; 
+    Double_t       fT4x_4;     
+    Double_t       fT3x;
+    Double_t       fT4x;  
+    Double_t       fT3y;
+    Double_t       fT4y;
+
+
+    //** Survey results for charm by daniel*/
+
+    Double_t fSurveyCharm_T3x[5];
+    Double_t fSurveyCharm_T3y[5];
+    Double_t fSurveyCharm_T3z[5];
+
+    Double_t fSurveyCharm_T4x[5];
+    Double_t fSurveyCharm_T4y[5];
+    Double_t fSurveyCharm_T4z[5];
+    
     
     /** container for data points */
     TClonesArray*  fMufluxSpectrometerPointCollection;

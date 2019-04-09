@@ -11,6 +11,8 @@
 #include "TGeoMatrix.h"
 #include "TGeoVolume.h"
 #include "TGeoNavigator.h"
+#include "TGeoShape.h"
+#include "TGeoBBox.h"
 
 #include <iostream>
 #include <math.h>
@@ -67,6 +69,15 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
   Double_t stripCoordinatesMaster[3] = {0.,0.,0.};
   navigator->LocalToMaster(stripCoordinatesLocal, stripCoordinatesMaster);
 
+  TGeoBBox* box = (TGeoBBox*)strip->GetVolume()->GetShape();
+  double xHalfLength = box->GetDX();
+  double yHalfLength = box->GetDY();
+  double zHalfLength = box->GetDZ();
+  
+  TGeoNode* passiveLayer = caloVolume->GetNode("ECALfilter_200000"); // they are all the same
+  TGeoBBox* boxPassive = (TGeoBBox*)passiveLayer->GetVolume()->GetShape();
+  double zPassiveHalfLength = box->GetDZ();
+
   // std::cout<< "----------------------"<<std::endl;
   // std::cout<< "-- pointX = " << pointX << std::endl; 
   // std::cout<< "-- pointY = " << pointY << std::endl; 
@@ -91,6 +102,7 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
   SetEnergy(pointE);
   if (isPrec==1) SetXYZ(pointX,pointY,stripCoordinatesMaster[2]);
   else  SetXYZ(stripCoordinatesMaster[0], stripCoordinatesMaster[1], stripCoordinatesMaster[2]);
+  SetXYZErrors(xHalfLength,yHalfLength,2*(zHalfLength+zPassiveHalfLength));
   
 
 }
@@ -164,6 +176,29 @@ void splitcalHit::Decoder(int& id, int& isPrecision, int& nLayer, int& nModuleX,
 
 }
 
+
+double splitcalHit::GetEnergyWeightForIndex(int index){
+
+  int iw = 0;
+  for(size_t i=0; i<_vecClusterIndices.size(); i++) {
+    if (_vecClusterIndices.at(i) == index) {
+      iw = i;
+      break; 
+    }
+  }
+  return _vecEnergyWeights.at(iw); 
+}
+
+
+double splitcalHit::GetEnergyForCluster(int i){
+
+  double unweightedEnergy = GetEnergy();
+  double weight = GetEnergyWeightForIndex(i);
+  double energy = unweightedEnergy*weight;
+  return energy;
+
+}
+
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
@@ -173,8 +208,21 @@ splitcalHit::~splitcalHit() { }
 // -----   Public method Print   -------------------------------------------
 void splitcalHit::Print() const
 {
-  cout << "-I- splitcalHit: splitcal hit " << " in detector " << fDetectorID << endl;
-  cout << "  TDC " << fdigi << " ns" << endl;
+  //  cout << "-I- splitcalHit: splitcal hit " << " in detector " << fDetectorID << endl;
+  //  cout << "  TDC " << fdigi << " ns" << endl;
+  // std::cout<< "-I- splitcalHit: " <<std::endl;
+  std::cout<< "------- " <<std::endl;
+  std::cout<< "    (x,y,z) = " 
+	   << _x << " +- " << _xError << " ,  "
+	   << _y << " +- " << _yError << " ,  "
+	   << _z << " +- " << _zError <<std::endl;  
+  std::cout<< "    isP, nL, nMx, nMy, nS = " 
+	   << _isPrecisionLayer << " , "  
+	   << _nLayer << " , "  
+	   << _nModuleX << " , " 
+	   << _nModuleY << " , " 
+	   << _nStrip << std::endl;
+   std::cout<< "------- " <<std::endl;
 }
 // -------------------------------------------------------------------------
 

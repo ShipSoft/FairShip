@@ -36,12 +36,18 @@ if sys.platform == 'darwin':
 else:
     ROOT.gSystem.Load("libPythia6")
     ROOT.gSystem.Load("libpythia8")
+    ROOT.gSystem.Load("libG4clhep")
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 
 #-----prepare python exit-----------------------------------------------
 def pyExit():
    x = sys.modules['__main__']
-   if hasattr(x,'run'): del x.run
+   if hasattr(x,'run'): 
+        del x.run
+        print "make suicid, until better solution found to ROOT/genfit interference"
+        for f in ROOT.gROOT.GetListOfFiles(): 
+         if f.IsWritable() and f.IsOpen(): f.Close()
+        os.system('kill '+str(os.getpid()))
    if hasattr(x,'fMan'): del x.fMan
    if hasattr(x,'fRun'): del x.fRun
    pass

@@ -1,5 +1,8 @@
 #!/bin/bash
-#
+echo "*** You are using an old script which is not anymore supported."
+echo "*** Please read the instructions at https://github.com/ShipSoft/FairShip"
+
+exit 1
 # bootstrapping of FairShip
 # mainly to be used once after git clone
 if [ "x$SIMPATH" == "x" ]; then

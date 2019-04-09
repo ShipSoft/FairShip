@@ -35,6 +35,7 @@ public:
     //Set options for detector contruction (active/passive, which design)
     void SetDetectorDesign(Int_t Design);
     void MakeNuTargetPassive(Bool_t a);
+    void MergeTopBot(Bool_t SingleEmFilm);
 
     void ConstructGeometry();
 
@@ -63,7 +64,7 @@ public:
     void SetPillarDimension(Double_t X, Double_t Y, Double_t Z);
 
   
-    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick);
+    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick, Bool_t &EmTop);
 
     void SetHpTParam(Int_t n, Double_t dd, Double_t DZ); //other detector's parameters (needed for positioning)
 
@@ -145,6 +146,7 @@ private:
 protected:
 
     Bool_t fPassive; //0 = with Emulsion, 1 = only lead + rohacell
+    Bool_t fsingleemulsionfilm; //0 = both top and bottom layers active, separated by plastic base; 1 = only one active layer
     Int_t fDesign; //0=TP, 1=NewMagnet (Davide), 2=No Magnet Config
     
     //Position of the Center of the Detector

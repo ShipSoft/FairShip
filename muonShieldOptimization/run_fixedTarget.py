@@ -10,6 +10,7 @@ nev          = 1000
 checkOverlap = True
 G4only       = False
 storeOnlyMuons = False
+skipNeutrinos  = False
 withEvtGen     = True
 boostDiMuon    = 1.
 boostFactor    = 1.
@@ -28,9 +29,9 @@ work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
                  
 dy           = 10.
-dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
-ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
-nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
+dv           = 6 # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
+ds           = 9 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
+nud          = 3 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 
 # example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10
 #                                                               10000 events, energy cut 10GeV, run nr 10, override existing output folder
@@ -58,7 +59,7 @@ def get_work_dir(run_number,tag=None):
 
 def init():
   global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
-         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot, nStart
+         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos,FourDP
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
   ap = argparse.ArgumentParser(
@@ -78,6 +79,8 @@ def init():
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
   ap.add_argument('-B', '--beauty',     action='store_true',  dest='beauty', default=beauty, help="generate beauty decays")
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
+  ap.add_argument('-N', '--skipNeutrinos',  action='store_true',  dest='skipNeutrinos',  default=False, help="skip neutrinos")
+  ap.add_argument('-D', '--4darkPhoton',  action='store_true',  dest='FourDP',  default=False, help="enable ntuple production")
 # for charm production       
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
@@ -98,6 +101,8 @@ def init():
   boostFactor  = args.boostFactor
   boostDiMuon  = args.boostDiMuon
   storeOnlyMuons = args.storeOnlyMuons
+  skipNeutrinos  = args.skipNeutrinos
+  FourDP         = args.FourDP
   if G4only:
     args.charm  = False
     args.beauty = False
@@ -189,6 +194,8 @@ run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
 if storeOnlyMuons: sensPlane.SetOnlyMuons()
+if skipNeutrinos: sensPlane.SkipNeutrinos()
+if FourDP: sensPlane.SetOpt4DP() # in case a ntuple should be filled with pi0,etas,omega
 # sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlane)
 
@@ -250,10 +257,12 @@ print ' '
 print "Macro finished succesfully." 
 print "Output file is ",  outFile 
 print "Real time ",rtime, " s, CPU time ",ctime,"s"
-
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile+"tmp"
-fin   = ROOT.gROOT.GetListOfFiles()[0]
+if ROOT.gROOT.GetListOfFiles().GetEntries()>0:
+ fin   = ROOT.gROOT.GetListOfFiles()[0]
+else:
+ fin = ROOT.TFile.Open(outFile)
 fHeader = fin.FileHeader
 fHeader.SetRunId(runnr)
 if charm or beauty:
@@ -273,6 +282,17 @@ if boostFactor > 1: conditions+=" X"+str(boostFactor)
 info += conditions
 fHeader.SetTitle(info)
 print "Data generated ", fHeader.GetTitle()
+
+nt = fin.Get('4DP')
+if nt:
+ tf = ROOT.TFile('FourDP.root','recreate')
+ tnt = nt.CloneTree(0)
+ for i in range(nt.GetEntries()):
+  rc = nt.GetEvent(i)
+  rc = tnt.Fill(nt.id,nt.px,nt.py,nt.pz,nt.x,nt.y,nt.z)
+ tnt.Write()
+ tf.Close()
+
 t     = fin.cbmsim
 fout  = ROOT.TFile(tmpFile,'recreate' )
 sTree = t.CloneTree(0)
@@ -284,8 +304,10 @@ for n in range(t.GetEntries()):
           nEvents+=1
      #t.Clear()
 fout.cd()
-for x in fin.GetList():
- if not x.Class().GetName().find('TH')<0: 
+for k in fin.GetListOfKeys():
+ x = fin.Get(k.GetName())
+ className = x.Class().GetName()
+ if className.find('TTree')<0 and className.find('TNtuple')<0: 
    xcopy = x.Clone()
    rc = xcopy.Write()
 sTree.AutoSave()

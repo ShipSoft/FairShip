@@ -170,6 +170,7 @@ void Track::swap(Track& other) {
 
 Track::~Track() {
  // causes problem for python, is it needed ? TR 2014  this->Clear();
+ this->Clear();
 }
 
 void Track::Clear(Option_t*)
@@ -223,13 +224,7 @@ TrackPoint* Track::getPointWithMeasurementAndFitterInfo(int id, const AbsTrackRe
     }
   }
 
-  if (i == 0)
-    return NULL;
-
-  if (id < 0)
-    id += i;
-
-  return getPointWithMeasurementAndFitterInfo(id, rep);
+  return NULL;
 }
 
 

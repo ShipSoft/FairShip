@@ -689,6 +689,8 @@ void hcal::ConstructGeometry()
   par[2]=fHcalSize[2]/2.0;
 
   if (!IsActive()){
+   Double_t fudgeFactor = 6.34 / 13.7 ; // to have same interaction length as before
+   par[2] = par[2]*fudgeFactor;
    volume=gGeoManager->Volume("Hcal", "BOX",  gGeoManager->GetMedium("iron")->GetId(), par, 3);
    gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
    return;

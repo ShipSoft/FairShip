@@ -12,7 +12,7 @@ dy  = None
 saveDisk  = False # remove input file
 pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
-realPROptions=["Prev", "FH", "AR", "Baseline"]
+realPROptions=["FH", "AR", "TemplateMatching"]
 withT0 = False
 
 import resource
@@ -44,6 +44,10 @@ except getopt.GetoptError:
         print ' noStrawSmearing: no smearing of distance to wire, default on'
         print ' outputfile will have same name with _rec added'  
         print ' --realPR= defines track pattern recognition. Possible options: ',realPROptions, "if no option given, fake PR is used."
+        print ' Options description:'
+        print '      FH                        : Hough transform.'
+        print '      AR                        : Artificial retina.'
+        print '      TemplateMatching          : Tracks are searched for based on the template: track seed + hits within a window around the seed.'
         sys.exit()
 for o, a in opts:
         if o in ("noVertexing",):
@@ -100,6 +104,7 @@ if not geoFile:
  geoFile = tmp.replace('_rec','')
 
 fgeo = ROOT.TFile.Open(geoFile)
+geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
@@ -118,22 +123,23 @@ if withHists:
  ut.bookHist(h,'chi2','Chi2/DOF',100,0.,20.)
 
 import shipDet_conf
-gFairBaseContFact = ROOT.FairBaseContFact() # required by change to FairBaseContFact to avoid TList::Clear errors
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
-run.SetOutputFile("dummy")  # Output file
+run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
 run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
-run.Init()
+# run.Init()
+fgeo.FAIRGeom
 import geomGeant4
 
 if hasattr(ShipGeo.Bfield,"fieldMap"):
-  fieldMaker = geomGeant4.addVMCFields(ShipGeo.Bfield.fieldMap, ShipGeo.Bfield.z, True)
+  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True,withVirtualMC = False)
 
 # make global variables
 builtin.debug    = debug
+builtin.fieldMaker = fieldMaker
 builtin.pidProton = pidProton
 builtin.withT0 = withT0
 builtin.realPR = realPR
@@ -150,7 +156,6 @@ builtin.iEvent  = iEvent
 
 # import reco tasks
 import shipDigiReco
-geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)

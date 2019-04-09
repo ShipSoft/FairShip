@@ -9,7 +9,7 @@
 #include "TGeoNode.h"
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
 using std::cout;
 using std::endl;
@@ -88,9 +88,9 @@ std::vector<double> TimeDetHit::GetMeasurements(){
 }
 
 // distance to edges
-void TimeDetHit::Dist(Float_t x, Float_t lpos, Float_t lneg){
+void TimeDetHit::Dist(Float_t x, Float_t& lpos, Float_t& lneg){
      TGeoNode* node  = GetNode();
-     TGeoBBox* shape =  (TGeoBBox*)node->GetVolume()->GetShape();
+     auto shape =  dynamic_cast<TGeoBBox*>(node->GetVolume()->GetShape());
      TVector3 pos    = GetXYZ();
      lpos = TMath::Abs( pos.X() + shape->GetDX() - x );
      lneg = TMath::Abs( pos.X() - shape->GetDX() - x );
@@ -100,7 +100,7 @@ TVector3 TimeDetHit::GetXYZ()
 {
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TGeoNode* node = GetNode();
-    TGeoBBox* shape =  (TGeoBBox*)node->GetVolume()->GetShape();
+    auto shape =  dynamic_cast<TGeoBBox*>(node->GetVolume()->GetShape());
     Double_t origin[3] = {shape->GetOrigin()[0],shape->GetOrigin()[1],shape->GetOrigin()[2]};
     Double_t master[3] = {0,0,0};
     nav->LocalToMaster(origin,master);

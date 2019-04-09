@@ -27,6 +27,7 @@
 #include "TROOT.h"
 #include "TH1D.h"
 #include "TH2D.h"
+#include "TDatabasePDG.h"
 
 #include <iostream>
 using std::cout;
@@ -45,7 +46,9 @@ exitHadronAbsorber::exitHadronAbsorber()
     fTime(-1.),
     fLength(-1.),
     fOnlyMuons(kFALSE),
+    fSkipNeutrinos(kFALSE),
     fzPos(3E8),
+    withNtuple(kFALSE),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
 {}
 
@@ -87,6 +90,40 @@ void exitHadronAbsorber::Initialize()
   FairDetector::Initialize();
   TSeqCollection* fileList=gROOT->GetListOfFiles();
   fout = ((TFile*)fileList->At(0));
+  // book hists for Genie neutrino momentum distribution
+  // add also leptons, and photon
+  // add pi0 111 eta 221 eta' 331  omega 223 for DM production
+  TDatabasePDG* PDG = TDatabasePDG::Instance();
+  for(Int_t idnu=11; idnu<23; idnu+=1){
+  // nu or anti-nu
+   for (Int_t idadd=-1; idadd<3; idadd+=2){
+    Int_t idw=idnu;
+    if (idnu==18){idw=22;}
+    if (idnu==19){idw=111;}
+    if (idnu==20){idw=221;}
+    if (idnu==21){idw=223;}
+    if (idnu==22){idw=331;}
+    Int_t idhnu=10000+idw;
+    if (idadd==-1){
+     if (idnu>17){continue;}
+     idhnu+=10000;
+     idw=-idnu;
+    }
+    TString name=PDG->GetParticle(idw)->GetName();
+    TString title = name;title+=" momentum (GeV)";
+    TString key = "";key+=idhnu;
+    TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
+    title = name;title+="  log10-p vs log10-pt";
+    key = "";key+=idhnu+1000;
+    TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
+    title = name;title+="  log10-p vs log10-pt";
+    key = "";key+=idhnu+2000;
+    TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
+     }
+   }
+  if(withNtuple) {
+         fNtuple = new TNtuple("4DP","4DP","id:px:py:pz:x:y:z");
+  }
 }
 
 void exitHadronAbsorber::EndOfEvent()
@@ -98,29 +135,67 @@ void exitHadronAbsorber::EndOfEvent()
 
 void exitHadronAbsorber::PreTrack(){
     gMC->TrackMomentum(fMom);
+    if  ( (fMom.E()-fMom.M() )<EMax){
+      gMC->StopTrack();
+      return;
+    }
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
 // record statistics for neutrinos, electrons and photons
+// add pi0 111 eta 221 eta' 331  omega 223 
     Int_t idabs = TMath::Abs(pdgCode);
-    if (idabs<18 || idabs==22){
+    if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 ){
          Double_t wspill = p->GetWeight();
-         Int_t idhnu=idabs+1000;
-         if (pdgCode<0 || idabs==22){ idhnu+=1000;}
+         Int_t idhnu=idabs+10000;
+         if (pdgCode<0){ idhnu+=10000;}
          Double_t l10ptot = TMath::Min(TMath::Max(TMath::Log10(fMom.P()),-0.3),1.69999);
          Double_t l10pt   = TMath::Min(TMath::Max(TMath::Log10(fMom.Pt()),-2.),0.4999);
          TString key; key+=idhnu;
          TH1D* h1 = (TH1D*)fout->Get(key);
          if (h1){h1->Fill(fMom.P(),wspill);}
-         key="";key+=idhnu+100;
+         key="";key+=idhnu+1000;
          TH2D* h2 = (TH2D*)fout->Get(key);
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
-         key="";key+=idhnu+200;
+         key="";key+=idhnu+2000;
          h2 = (TH2D*)fout->Get(key);
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
-       }
-    if  ( (fMom.E()-fMom.M() )<EMax){
-        gMC->StopTrack();
+         if(withNtuple){
+          fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z());
+         }
+    if (fSkipNeutrinos && (idabs==12 or idabs==14 or idabs == 16 )){gMC->StopTrack();}
+   }
+}
+
+void exitHadronAbsorber::FinishRun(){
+  for(Int_t idnu=11; idnu<23; idnu+=1){
+  // nu or anti-nu
+   for (Int_t idadd=-1; idadd<3; idadd+=2){
+    Int_t idw=idnu;
+    if (idnu==18){idw=22;}
+    if (idnu==19){idw=111;}
+    if (idnu==20){idw=221;}
+    if (idnu==21){idw=223;}
+    if (idnu==22){idw=331;}
+    Int_t idhnu=10000+idw;
+    if (idadd==-1){
+     if (idnu>17){continue;}
+     idhnu+=10000;
+     idw=-idnu;
     }
+    TString key = "";key+=idhnu;
+    TSeqCollection* fileList=gROOT->GetListOfFiles();
+    ((TFile*)fileList->At(0))->cd();
+    TH1D* Hidhnu = (TH1D*)fout->Get(key);
+    Hidhnu->Write();
+    key="";key+=idhnu+1000;
+    TH2D* Hidhnu100 = (TH2D*)fout->Get(key);
+    Hidhnu100->Write();
+    key = "";key+=idhnu+2000;
+    TH2D* Hidhnu200 = (TH2D*)fout->Get(key);
+    Hidhnu200->Write();
+   }
+  }
+  if(withNtuple){fNtuple->Write();}
 }
 
 void exitHadronAbsorber::ConstructGeometry()
@@ -136,17 +211,24 @@ void exitHadronAbsorber::ConstructGeometry()
      geoBuild->createMedium(ShipMedium);
    vac =gGeoManager->GetMedium("vacuums");
    TGeoVolume *top=gGeoManager->GetTopVolume();
+   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    Double_t zLoc;
    if (fzPos>1E8){
    //Add thin sensitive plane after hadron absorber
-    TGeoVolume *muonShield = top->GetNode("MuonShieldArea_1")->GetVolume();
-    Double_t z   = muonShield->GetNode("MagnAbsorb2_MagCRB_1")->GetMatrix()->GetTranslation()[2]; // this piece is bigger than AbsorberVol!
-    TGeoBBox* tmp =  (TGeoBBox*)muonShield->GetNode("MagnAbsorb2_MagCRB_1")->GetVolume()->GetShape();
-    Double_t dz  = tmp->GetDZ();
-    zLoc = z+dz;
+    Float_t distance = 1.;
+    Double_t local[3]= {0,0,0};
+    if (not nav->cd("/MuonShieldArea_1/CoatWall_1")) {
+      nav->cd("/MuonShieldArea_1/MagnAbsorb2_MagRetL_1");
+      distance = -1.;}
+    TGeoBBox* tmp =  (TGeoBBox*)(nav->GetCurrentNode()->GetVolume()->GetShape());
+    local[2] = distance * tmp->GetDZ();
+    Double_t global[3] = {0,0,0};
+    nav->LocalToMaster(local,global);
+    zLoc = global[2] + distance * 1.*cm;
    }else{zLoc = fzPos;} // use external input
    TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,10.*m-1.*mm,10.*m-1.*mm,1.*mm);
-   top->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc+1*cm));
+   nav->cd("/MuonShieldArea_1/");
+   nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc));
    AddSensitiveVolume(sensPlane);
 }
 

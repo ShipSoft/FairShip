@@ -1267,12 +1267,8 @@ void veto::ConstructGeometry()
       T6Lid->SetLineColor(18);
       tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+f_LidThickness/2.+0.1*cm - zStartMagVol));
       //finisMakeSegments assembly and position
-      TGeoShapeAssembly* asmb = (TGeoShapeAssembly*)tDecayVol->GetShape();
-      Double_t totLength = asmb->GetDZ();
-      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol+totLength));
-      asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
-      totLength = asmb->GetDZ();
-      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
+      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol));
+      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol));
 
     }
     else if (fDesign==5){
@@ -1343,12 +1339,8 @@ void veto::ConstructGeometry()
       T6Lid->SetLineColor(18);
       tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+f_LidThickness/2.+0.1*cm - zStartMagVol));
       //finisMakeSeh assembly and position
-      TGeoShapeAssembly* asmb = (TGeoShapeAssembly*)tDecayVol->GetShape();
-      Double_t totLength = asmb->GetDZ();
-      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol+totLength));
-      asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
-      totLength = asmb->GetDZ();
-      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
+      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol));
+      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol));
     }
     else if (fDesign==4){
     // design 4: elliptical double walled tube with LiSci in between
@@ -1519,12 +1511,8 @@ void veto::ConstructGeometry()
       tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+lidradius-1.*m - zStartMagVol));
 
       //finish assembly and position
-      TGeoShapeAssembly* asmb = (TGeoShapeAssembly*)tDecayVol->GetShape();
-      Double_t totLength = asmb->GetDZ();
-      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol+totLength));
-      asmb = (TGeoShapeAssembly*)tMaGVol->GetShape();
-      totLength = asmb->GetDZ();
-      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol+totLength));
+      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol));
+      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol));
 
       //Add veto-timing sensitive plane before vacuum tube
       TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,aO1+wallo/2.,6.*m,10.*mm);
@@ -1547,9 +1535,7 @@ void veto::ConstructGeometry()
       Det2->SetLineColor(kGreen+3);
       tDet2->AddNode(Det2, 1, new TGeoTranslation(0, 0, 0));
       AddSensitiveVolume(Det2);
-      asmb = (TGeoShapeAssembly*)tDet2->GetShape();
-      totLength = asmb->GetDZ();
-      top->AddNode(tDet2, 1, new TGeoTranslation(0, 0,zStartDet2+totLength));
+      top->AddNode(tDet2, 1, new TGeoTranslation(0, 0,zStartDet2));
      }
 
 // only for fastMuon simulation, otherwise output becomes too big

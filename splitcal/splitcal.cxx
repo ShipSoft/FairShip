@@ -372,7 +372,7 @@ void splitcal::ConstructGeometry()
 		double xCoordinate = -fXMax + (fNStripsPerModule*mx + j+0.5) * fStripHalfWidth * 2; // the times 2 is to get the total width from the half-width
 		double yCoordinate = -fYMax + (my+0.5) * fStripHalfLength * 2; // the times 2 is to get the total length from the half-length
 		tSplitCal->AddNode(stripGivingX, index, new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
-		std::cout<< "--- index = "<< index << std::endl;
+		// std::cout<< "--- index = "<< index << std::endl;
 	      }//end loop on strips
 	    }//end loop on modules in y   
 	  }//end loop on modules in x
@@ -386,7 +386,7 @@ void splitcal::ConstructGeometry()
                 double xCoordinate = -fXMax + (mx+0.5) * fStripHalfLength * 2; // the times 2 is to get the total length from the half-length       
                 double yCoordinate = -fYMax + (fNStripsPerModule*my+ j+0.5) * fStripHalfWidth * 2; // the times 2 is to get the total width from the half-width      
                 tSplitCal->AddNode(stripGivingY, index, new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
-		std::cout<< "--- index = "<< index << std::endl;
+		// std::cout<< "--- index = "<< index << std::endl;
 	      }//end loop on strips
 	    }//end loop on modules in y      
 	  }//end loop on modules in x                  

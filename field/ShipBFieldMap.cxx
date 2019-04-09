@@ -413,9 +413,12 @@ void ShipBFieldMap::setLimits() {
 
     N_ = Nx_*Ny_*Nz_;
 
-    std::cout<<"x values: "<<xMin_<<", "<<xMax_<<", dx = "<<dx_<<std::endl;
-    std::cout<<"y values: "<<yMin_<<", "<<yMax_<<", dy = "<<dy_<<std::endl;
-    std::cout<<"z values: "<<zMin_<<", "<<zMax_<<", dz = "<<dz_<<std::endl;
+    std::cout<<"x limits: "<<xMin_<<", "<<xMax_<<", dx = "<<dx_<<std::endl;
+    std::cout<<"y limits: "<<yMin_<<", "<<yMax_<<", dy = "<<dy_<<std::endl;
+    std::cout<<"z limits: "<<zMin_<<", "<<zMax_<<", dz = "<<dz_<<std::endl;
+
+    std::cout<<"Offsets: x = "<<xOffset_<<", y = "<<yOffset_<<", z = "<<zOffset_<<std::endl;
+    std::cout<<"Angles : phi = "<<phi_<<", theta = "<<theta_<<", psi = "<<psi_<<std::endl;
 
     std::cout<<"Total number of bins = "<<N_
 	     <<"; Nx = "<<Nx_<<", Ny = "<<Ny_<<", Nz = "<<Nz_<<std::endl;
