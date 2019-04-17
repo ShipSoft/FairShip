@@ -60,8 +60,6 @@ nud          = globalDesigns[default]['nud'] # 0=TP, 1=new magnet option for sho
 caloDesign   = globalDesigns[default]['caloDesign'] # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL 
 strawDesign  = globalDesigns[default]['strawDesign'] # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
 
-ds = 10
-
 charm        = 0 # !=0 create charm detector instead of SHiP
 pID          = 22 # default for the particle gun
 geofile = None
