@@ -1133,14 +1133,17 @@ cuts['yTRPC1'] = glob[1]
 cuts["firstDTStation_z"] = DT['Station_1_x_plane_0_layer_0_10000000'][2]
 cuts["lastDTStation_z"]  = DT['Station_4_x_plane_1_layer_1_40110000'][2]
 
+def DTEfficiencyFudgefactor(method=-1):
+ if method <1: effFudgeFactors = {"u":1.1, "v":1.1, "x2":1.1, "x3":1.1, "x1":1.1,"x4":1.1}
+ if method ==0: effFudgeFactors = {"x1":0.97, "u":0.95, "x2":0.96, "v":0.96, "x3":0.92, "x4":0.97} # method 0
+ if method ==2: effFudgeFactors = {"x1":0.94, "u":0.93, "x2":0.95, "v":0.93, "x3":0.90, "x4":0.94} # method 2
+ for x in effFudgeFactors: muflux_Reco.setEffFudgeFactor(x,effFudgeFactors[x])
+
 # C++ reconstruction/monitoring
 xSHiP = ROOT.TTreeReader(sTree)
 muflux_Reco = ROOT.MufluxReco(xSHiP)
 for x in cuts: muflux_Reco.setCuts(x,cuts[x])
-effFudgeFactors = {"u":0.84, "v":0.82, "x2":0.91, "x3":0.89, "x1":0.94,"x4":0.96}
-for x in effFudgeFactors: muflux_Reco.setEffFudgeFactor(x,effFudgeFactors[x])
-
-# rvShipEventHeader = ROOT.TTreeReaderValue(ROOT.FairEventHeader)(xSHiP, "ShipEventHeader") 
+DTEfficiencyFudgefactor(method=-1)
 
 def sortHits(event,flag = True):
  spectrHitsSorted = {'_x':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
@@ -2615,6 +2618,7 @@ def printResiduals(aTrack):
 
 # make TDC plots for hits matched to tracks)
 def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
+ timerStats = {'fit':0,'analysis':0,'prepareTrack':0,'extrapTrack':0,'fillRes':0}
  if not onlyPlotting:
   if not h.has_key('hitMapsX'): plotHitMaps()
   for s in xLayers:
@@ -2642,6 +2646,8 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
    timerStats['fit']+=timer.RealTime()
    if len(trackCandidates)==1: 
     timer.Start()
+    spectrHitsSorted = ROOT.nestedList()
+    muflux_Reco.sortHits(sTree.Digi_MufluxSpectrometerHits,spectrHitsSorted,True)
     for aTrack in trackCandidates:
        fst = aTrack.getFitStatus()
        if not fst.isFitConverged(): continue
@@ -2663,56 +2669,56 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
        rc = h['biasResTrackMom'].Fill(sta.getMomMag())
        timerStats['prepareTrack']+=timer.RealTime()
        timer.Start()
-       for hit in sTree.Digi_MufluxSpectrometerHits:
-          if hit.GetDetectorID() <0:  continue
-          if hit.GetDetectorID() in noisyChannels:  continue
-          if not hit.hasTimeOverThreshold(): continue
-          s,v,p,l,view,channelID,tdcId,nRT = stationInfo(hit)
-          vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
-          z = (vbot[2]+vtop[2])/2.
-          timer.Start()
+       for s in range(1,5):
+        for view in viewsI[s]:
+         for l in range(4):
+          for hit in spectrHitsSorted[view][s][l]:
+           ss,vv,pp,ll,vw,channelID,tdcId,nRT = stationInfo(hit)
+           vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
+           z = (vbot[2]+vtop[2])/2.
+           timer.Start()
           # rc,pos,mom = extrapolateToPlane(aTrack,z)
-          trackLength = muflux_Reco.extrapolateToPlane(aTrack,z,pos,mom)
-          timerStats['extrapTrack']+=timer.RealTime()
-          timer.Start()
-          if not rc:
-           error =  "plotBiasedResiduals: extrapolation failed"
-           ut.reportError(error)
-           continue
-          distance = 0
-          if withTDC or MCdata:
-           distance = RT(hit,hit.GetDigi())
+           trackLength = muflux_Reco.extrapolateToPlane(aTrack,z,pos,mom)
+           timerStats['extrapTrack']+=timer.RealTime()
+           timer.Start()
+           if not rc:
+            error =  "plotBiasedResiduals: extrapolation failed"
+            ut.reportError(error)
+            continue
+           distance = 0
+           if withTDC or MCdata:
+            distance = RT(hit,hit.GetDigi())
           #d = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
           #d = -d/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
-          normal = mom.Cross(vtop-vbot)
-          d = normal.Dot(pos-vbot)/normal.Mag()
-          res = abs(d) - distance
-          h['biasResDist'].Fill(distance,res)
-          h['biasResDist2'].Fill(abs(d),res)
-          h['biasResDist_'+str(s)+view+str(2*p+l)].Fill(distance,res)
-          m = (vtop[0]-vbot[0])/(vtop[1]-vbot[1])
-          b = vtop[0]-m*vtop[1]
-          if pos[0]<m*pos[1]+b:
+           normal = mom.Cross(vtop-vbot)
+           d = normal.Dot(pos-vbot)/normal.Mag()
+           res = abs(d) - distance
+           h['biasResDist'].Fill(distance,res)
+           h['biasResDist2'].Fill(abs(d),res)
+           h['biasResDist_'+str(s)+view+str(2*p+l)].Fill(distance,res)
+           m = (vtop[0]-vbot[0])/(vtop[1]-vbot[1])
+           b = vtop[0]-m*vtop[1]
+           if pos[0]<m*pos[1]+b:
           # left of wire
-           d = -abs(d)
-          resR = d - distance
-          resL = d + distance
-          h['biasResX_'+str(s)+view+str(2*p+l)].Fill(resR,pos[0])
-          h['biasResY_'+str(s)+view+str(2*p+l)].Fill(resR,pos[1])
-          h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(resR,pos[0])
-          h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(resR,pos[1])
-          h['biasResX_'+str(s)+view+str(2*p+l)].Fill(resL,pos[0])
-          h['biasResY_'+str(s)+view+str(2*p+l)].Fill(resL,pos[1])
-          h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(resL,pos[0])
-          h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(resL,pos[1])
+            d = -abs(d)
+           resR = d - distance
+           resL = d + distance
+           h['biasResX_'+str(s)+view+str(2*p+l)].Fill(resR,pos[0])
+           h['biasResY_'+str(s)+view+str(2*p+l)].Fill(resR,pos[1])
+           h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(resR,pos[0])
+           h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(resR,pos[1])
+           h['biasResX_'+str(s)+view+str(2*p+l)].Fill(resL,pos[0])
+           h['biasResY_'+str(s)+view+str(2*p+l)].Fill(resL,pos[1])
+           h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(resL,pos[0])
+           h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(resL,pos[1])
 # now for each tube
-          detID = str(hit.GetDetectorID())
-          h['biasResX_'+detID].Fill(res,pos[0])
-          h['biasResY_'+detID].Fill(res,pos[1])
-          h['biasResXL_'+detID].Fill(res,pos[0])
-          h['biasResYL_'+detID].Fill(res,pos[1])
+           detID = str(hit.GetDetectorID())
+           h['biasResX_'+detID].Fill(res,pos[0])
+           h['biasResY_'+detID].Fill(res,pos[1])
+           h['biasResXL_'+detID].Fill(res,pos[0])
+           h['biasResYL_'+detID].Fill(res,pos[1])
 # make hit and TDC plots for hits matched to tracks, within window suitable for not using TDC
-          if abs(res) < 4. :
+           if abs(res) < 4. :
             t0 = 0
             if MCdata: t0 = sTree.ShipEventHeader.GetEventTime()
             rc = h['TDC'+str(nRT)].Fill(hit.GetDigi()-t0)
@@ -2954,36 +2960,70 @@ def binoEff(n=4,k=2):
  for i in range(k,n+1):  totEff += ROOT.TMath.Binomial(n,i)*eff**i*(1-eff)**(n-i)
  print "global efficiency = %5.4F  %i %i"%(totEff,n,k)
 
-def efficiencyEstimates():
- # don't forget to call plotBiasedResiduals(onlyPlotting=True)
+def efficiencyEstimates(method=0):
+ hinweis={}
+ hinweis[0] = "method 0: use biasResDistX, count entries between -0.5 and 0.5"
+ hinweis[1] = "method 1: use biasResDistX, but take signal from single gauss fit"
+ hinweis[2] = "method 2: use biasRes, subtract background from fit on number of entries"
+ hinweis[3] = "method 3: use biasRes, take signal from double gauss fit"
+ if not h.has_key('biasedResiduals'): plotBiasedResiduals(onlyPlotting=True)
  Ntracks = h['biasResTrackMom'].GetEntries()
  ut.bookHist(h,'effLayer','efficiency per Layer',24,-0.5,23.5)
- j = 0
- h['effDict'] = {}
- for s in range(1,5):
+ if not h.has_key('biasResDistX_1_x1'):
+  for s in range(1,5):
    for view in ['_x','_u','_v']:
     if s>2 and view != '_x': continue
     if s==1 and view == '_v' or s==2 and view == '_u': continue
     for l in range(0,4):
-     hname = 'biasRes_'+str(s)+view+str(l)
-     singleGauss = h[hname].GetFunction('gauss')
-     if not singleGauss: singleGauss = h[hname].GetFunction('DoubleGauss')
-     fitFunction = myGauss2
-     fitFunction.SetParameter(0,singleGauss.GetParameter(0))
-     fitFunction.SetParameter(1,singleGauss.GetParameter(1))
-     fitFunction.SetParameter(2,singleGauss.GetParameter(2))
-     fitFunction.SetParameter(3,singleGauss.GetParameter(3))
-     fitFunction.SetParameter(4,0)
-     fitFunction.SetParameter(5,singleGauss.GetParameter(2)*10.)
-     fitFunction.FixParameter(5,0.2)
-     fitResult = h[hname].Fit(fitFunction,'SQ','',h[hname].GetXaxis().GetXmin(),h[hname].GetXaxis().GetXmax())
+     hname = 'biasResDistX_'+str(s)+view+str(l)
+     h[hname] = h['biasResDist_'+str(s)+view+str(l)].ProjectionY().Clone(hname)
+ j = 0
+ h['effDict'] = {}
+ print "efficiencies using ",hinweis[method]
+ for s in range(1,5):
+   for view in ['_x','_u','_v']:
+    if s>2 and view != '_x': continue
+    if s==1 and view == '_v' or s==2 and view == '_u': continue
+    effStation = 0
+    for l in range(0,4):
+     tc = h['biasedResiduals'].cd(j+1)
+     if method == 0 or method == 1: hname = 'biasResDistX_'+str(s)+view+str(l)
+     else:                          hname = 'biasRes_'+str(s)+view+str(l)
+     fitResult = h[hname].Fit('gaus','SQ','',-0.5,0.5)
      rc = fitResult.Get()
-     estSignal = (rc.GetParams()[0]+rc.GetParams()[4])/h[hname].GetBinWidth(1)
+     fitFunction = h[hname].GetFunction('DoubleGauss')
+     if not fitFunction : fitFunction = myGauss2
+     if not rc:
+      print "simple gaus fit failed"
+      fitFunction.SetParameter(0,h[hname].GetEntries()*h[hname].GetBinWidth(1))
+      fitFunction.SetParameter(1,0.)
+      fitFunction.SetParameter(2,0.1)
+      fitFunction.SetParameter(3,1.)
+      fitFunction.SetParameter(4,0.)
+      fitFunction.SetParameter(5,1.)
+     else:
+      fitFunction.SetParameter(0,rc.GetParams()[0]*ROOT.TMath.Sqrt(2*ROOT.TMath.Pi())*rc.GetParams()[2])
+      fitFunction.SetParameter(1,rc.GetParams()[1])
+      fitFunction.SetParameter(2,rc.GetParams()[2])
+      fitFunction.SetParameter(3,0.)
+      fitFunction.SetParameter(4,0.)
+      fitFunction.SetParameter(5,1.)
+     if method == 0 or method == 1 or method == 2:
+      fitFunction.FixParameter(4,0.)
+      fitFunction.FixParameter(5,1.)
+     fitResult = h[hname].Fit(fitFunction,'SQ','',-0.5,0.5)
+     h[hname].Draw()
+     rc = fitResult.Get()
+     if method == 0: estSignal = h[hname].Integral(375,625)
+     elif method == 1 or method == 3: estSignal = ( abs(rc.GetParams()[0])+abs(rc.GetParams()[4]))/h[hname].GetBinWidth(1)
+     elif method == 2: estSignal = h[hname].GetSumOfWeights() - rc.GetParams()[3]*h[hname].GetNbinsX()
      eff = estSignal/float(Ntracks)
      print "eff for %s = %5.2F"%(hname,eff)
      h['effDict'][hname]=eff
+     effStation += eff
      rc = h['effLayer'].Fill(j,eff)
      j+=1
+    print "station, %i %s, average efficiency: %5.3F"%(s,view,effStation/4.)
  for p in h['biasedResiduals'].GetListOfPrimitives():   p.SetLogy(1)
  ROOT.gROOT.FindObject('c1').cd()
  for n in range(1,h['effLayer'].GetNbinsX()+1): h['effLayer'].SetBinError(n,0.02)
@@ -2994,6 +3034,50 @@ def efficiencyEstimates():
  rc=fitResult.Get()
  h['Efftxt'] = ROOT.TLatex(8,0.4,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
  h['Efftxt'].Draw()
+def checkEffectOfEffCor():
+ interestingHistos = []
+ for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
+  for x in ['','mu']:
+    interestingHistos.append(a+x)
+ h['MC']      = {}
+ h['MCtuned2'] = {}
+ h['MCtuned0'] = {}
+ h['MCNotune'] = {}
+ h['MCtuned0rec'] = {}
+ ut.readHists(h['MC'],         'momDistributions-mbias.root',interestingHistos)
+ ut.readHists(h['MCtuned2'],   'momDistributions-mbias-effTuned-M2.root',interestingHistos)
+ ut.readHists(h['MCtuned0'],   'momDistributions-mbias-effTuned-M0.root',interestingHistos)
+ ut.readHists(h['MCtuned0rec'],   'momDistributions-mbias-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(h['MCNotune'],   'momDistributions-mbias-NoeffTuned.root',interestingHistos)
+ ut.readHists(h['MC'],         'momDistributions-charm.root',interestingHistos)
+ ut.readHists(h['MCtuned2'],   'momDistributions-charm-effTuned-M2.root',interestingHistos)
+ ut.readHists(h['MCtuned0'],   'momDistributions-charm-effTuned-M0.root',interestingHistos)
+ ut.readHists(h['MCtuned0rec'],   'momDistributions-charm-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(h['MCNotune'],   'momDistributions-charm-NoeffTuned.root',interestingHistos)
+ h['MC']['p/pt_projx'].Draw()
+ h['MCtuned0']['p/pt_projx'].SetLineColor(ROOT.kRed)
+ h['MCtuned2']['p/pt_projx'].SetLineColor(ROOT.kGreen)
+ h['MCtuned0rec']['p/pt_projx'].SetLineColor(ROOT.kCyan)
+ h['MCNotune']['p/pt_projx'].SetLineColor(ROOT.kMagenta)
+ h['MC']['p/pt_projxB']=h['MC']['p/pt_projx'].Clone('p/pt_projxB')
+ h['MC']['p/pt_projxB'].Rebin(10)
+ for x in ['MCtuned0','MCtuned2','MCNotune','MCtuned0rec']:
+  print x, h[x]['p/pt_projx'].GetEntries()/h['MC']['p/pt_projx'].GetEntries()
+  # h[x]['p/pt_projx'].Draw('same')
+  h[x+'ratio']= h[x]['p/pt_projx'].Clone(x+'ratio')
+  h[x+'ratio'].Divide(h['MC']['p/pt_projx'])
+  h[x+'ratio'].Fit('pol0','','',5.,300.)
+  h[x+'ratioB']= h[x]['p/pt_projx'].Clone(x+'ratioB')
+  h[x+'ratioB'].Rebin(10)
+  h[x+'ratioB'].Divide(h['MC']['p/pt_projxB'])
+ h['MCtuned0'+'ratioB'].SetMaximum(1.02)
+ h['MCtuned0'+'ratioB'].SetMinimum(0.50)
+ h['MCtuned0'+'ratioB'].Draw()
+ for x in ['MCtuned2','MCtuned0rec']:h[x+'ratioB'].Draw('same')
+ for x in ['MCtuned0','MCtuned2','MCtuned0rec']:
+   h[x+'ratio'].GetXaxis().SetRangeUser(5,100)
+   h[x+'ratio'].Draw('same')
+   
 def printTrackMeasurements(atrack,PR=1):
   mult = {'_x':0,'_u':0,'_v':0}
   rej  = {'_x':0,'_u':0,'_v':0}
@@ -3353,8 +3437,8 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
         for k in range(2,20):
          if Nmatched<k: rc = h['RPC<'+str(k)+'_p'].Fill(p)
  if not h.has_key('RPCResiduals'): 
-      ut.bookCanvas(h,key='RPCResiduals',title='RPCResiduals',nx=1600,ny=1200,cx=2,cy=4)
-      ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=4)
+      ut.bookCanvas(h,key='RPCResiduals',title='RPCResiduals',nx=1600,ny=1200,cx=2,cy=5)
+      ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=5)
       ut.bookCanvas(h,key='RPCResidualsP',title='RPCResiduals function of muon momentum',nx=900,ny=900,cx=1,cy=1)
  j=1
  for s in range(1,6):
@@ -3470,6 +3554,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
    h['txtEff'+hname] = ROOT.TMathText(25,0.92,'eff = (%5.2F\pm%5.2F)%s'%(eff*100,err*100,'\\hbox{%}'))
    h['txtEff'+hname].SetTextSize(0.1)
    h['txtEff'+hname].Draw()
+ print "do not forget there were runs without one RPC station"
  
 def debugRPCstrips():
   ut.bookHist(h,'RPCstrips','RPC strips',1000,-100.,100.,1000,-100.,100.)
@@ -4429,7 +4514,7 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
  # using 626 POT/mu-event and preliminary counting of good tracks -> 12.63 -> pot factor 7.02
  # using 710 POT/mu-event, full field
  # mbias POT/ charm POT = 0.176 (1GeV), 0.424 (10GeV)
- sim10fact = 1.8/65.*67./56.1 # normalize 10GeV to 1GeV stats, only 561 files done out of 670
+ sim10fact = 1.8/65.*67./65.7 # normalize 10GeV to 1GeV stats, only 657 files done out of 670
  muPerPot = 710 # 626
  charmNorm  = {1:0.176,10:0.424}
  beautyNorm = {1:0.,   10:0.01218}
@@ -4457,7 +4542,7 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
  else: norm = pot
  for a in ['p/pt','p/Abspx','p1/p2','p1/p2s']:
    for x in ['','mu']:
-    if a=='p1/p2' and x=='mu': continue
+    if a.find('p1/p2')==0 and x=='mu': continue
     h['MC'+a+x]   = hMC[a+x].Clone('MC'+a+x)
     h['MC'+a+x].Add(hCharm[a+x],charmNorm[1])
     h['MC'+a+x].Scale(norm)
@@ -4540,9 +4625,30 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
       h[i+'p/Abspx'+z+'_y']=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+'_y',h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].FindBin(20.))
       tmp = h[i+'10p/Abspx'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20)+1,h[i+'p/pt'+x+'_x'].GetNbinsX())
       h[i+'p/Abspx'+z+'_y'].Add(tmp)
+      for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
+       interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
+       if pInterval[0]<20:
+         h[i+'p/pt'+z+interval]   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+interval      ,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(20.))
+         tmp = h[i+'10p/pt'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20.)+1,h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+# attempt to make pt/px distribution with 1 GeV and 10 GeV MC
+         h[i+'p/pt'+z+interval].Add(tmp)
+         h[i+'p/Abspx'+z+interval]=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+interval,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(20.))
+         tmp = h[i+'10p/Abspx'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20.)+1,h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+         h[i+'p/Abspx'+z+interval].Add(tmp)
+       else:
+         h[i+'p/pt'+z+interval]   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+interval      ,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+         h[i+'p/Abspx'+z+interval]=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+interval,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+       h[i+'p/pt'+z+interval].SetTitle('pt for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
+       h[i+'p/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
      else:
       h[i+'p/pt'+z+'_y']   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+'_y'      ,h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].GetNbinsX())
       h[i+'p/Abspx'+z+'_y']=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+'_y',h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].GetNbinsX())
+      for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
+       interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
+       h[i+'p/pt'+z+interval]   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+interval      ,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+       h[i+'p/Abspx'+z+interval]=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+interval,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+       h[i+'p/pt'+z+interval].SetTitle('pt for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
+       h[i+'p/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
      ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_x')
      ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_y')
      ut.makeIntegralDistrib(h,i+'p/Abspx'+x+source+'_y')
@@ -4707,6 +4813,47 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
   for P in [5.,10.,50.,100.]:
    nbin = h['p/pt'+x+'_x'].FindBin(P)
    print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt'+x+'_x'].GetBinContent(nbin)/h['I-MCp/pt'+x+'_x'].GetBinContent(nbin))
+# pt in slices of P
+ x = 'mu'
+ for t in ['MC-Comparison Pt','MC-Comparison Px']:
+  if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1200,ny=600,cx=2,cy=2)
+  y = 1
+  for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
+   interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
+   tc = h[t].cd(y)
+   y+=1
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC10')<0: 
+        i = 'MC10'
+        source = i1.split('MC10')[1]
+    elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+    if i=='MC10': continue
+    xx = x+source
+    proj = 'p/pt'
+    if t.find('Px')>0: proj = 'p/Abspx'
+    hname = i+proj+xx+interval
+    mx1 = ut.findMaximumAndMinimum(h[ proj+x+interval])[1]
+    mx2 = ut.findMaximumAndMinimum(h['MC'+proj+x+interval])[1]
+    hMaPx = max(mx1,mx2)
+    h[hname].GetXaxis().SetRangeUser(0.,5.)
+    h[hname].SetMaximum(hMaPx*1.1)
+    h[hname].SetMinimum(0.)
+    h[hname].SetStats(0)
+    h[hname].SetLineWidth(1)
+    h[hname].SetMarkerSize(1)
+    h[hname].SetLineColor(opt[i1][1])
+    h[hname].Draw(opt[i][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[hname],opt[i1][2],'PL')
+   h['leg'+t+str(tc)].Draw('same')
+  h[t].Update()
+  h[t].Print('MC-Comparison'+t.replace(' ','')+'.pdf')
+  h[t].Print('MC-Comparison'+t.replace(' ','')+'.png')
+
 # some code for 2 track events
  osign = {'':'opposite sign','s':'same sign'}
  for s in osign:
@@ -4726,6 +4873,8 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
    h[hn].Scale(1./norm)
    h[hn].SetTitle('P in 2-track events '+txt[case]+'; GeV/c')
    h[hn].SetStats(0)
+   h[hn].SetMaximum(0.05)
+   h[hn].SetMinimum(2E-6)
    h[hn].Draw()
    h[hn].GetXaxis().SetRange(case/rebin+1,500)
    h['leg'+t+str(pad)+s].AddEntry(h[hn],opt[''][2],'PL')
@@ -4741,7 +4890,7 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
    else:         norm = h['MC10p/ptmu_x'].Integral(case,500)
    h[hn].Scale(1./norm)
    h[hn].SetStats(0)
-   h[hn].SetTitle('P in 2-track events '+txt[case]+'; GeV/c')
+   h[hn].SetTitle('P in 2-track events, one track with '+txt[case]+'; GeV/c')
    h[hn].SetLineColor(opt['MC'][1])
    h[hn].Draw('same')
    h[hn].GetXaxis().SetRange(case/rebin+1,500)
@@ -4759,8 +4908,8 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
         source = i1.split('MC')[1]
     if source == '': continue
     hn='MCp1p2'+source+txt[case]+s
-    h[hn] = h[i+'p1/p2'+source].ProjectionX(hn,case,500)
-    h[hn].Add(h[i+'p1/p2'+source].ProjectionY(i+'p1/p2y'+source+txt[case]+s,case,500))
+    h[hn] = h[i+'p1/p2'+s+source].ProjectionX(hn,case,500)
+    h[hn].Add(h[i+'p1/p2'+s+source].ProjectionY(i+'p1/p2y'+source+txt[case]+s,case,500))
     if rebin>1: h[hn].Rebin(5)
     h[hn].SetLineColor(opt[i1][1])
     h[hn].SetStats(0)
@@ -4800,10 +4949,9 @@ def compareRuns(runs=[]):
  # runs = [2307,2357,2359,2360,2361,2365,2366,2395,2396]
  # runs = [2200,2201,2202,2203,2205,2206,2207,2208,2276]
  eventStats = {}
- badRuns = [2390,2209]
  noField = [2199,2200,2201]
  intermediateField = [2383,2388,2389,2390,2392,2395,2396]
- noTracks = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
+ noTracks = [2334, 2335, 2336, 2337, 2345, 2389,2390]
  ROOT.gStyle.SetPalette(ROOT.kGreenPink)
  if len(runs)==0:
   keyword = 'RUN_8000_2'
@@ -4812,7 +4960,7 @@ def compareRuns(runs=[]):
    if x.find(keyword)<0: continue
    if not os.path.isdir(x): continue
    r = int(x[x.rfind('/')+1:].split('_')[2])
-   if r in badRuns or r in noField: continue
+   if r in noField: continue
    if not hruns.has_key(r): 
     runs.append(r)
     hruns[r]={}
@@ -4821,6 +4969,9 @@ def compareRuns(runs=[]):
     hruns[r]['Trscalers'] = f.GetKey('Trscalers').ReadObj().Clone()
     hruns[r]['Trscalers'].SetDirectory(ROOT.gROOT)
     hname = 'p/pt'
+    hruns[r][hname] = f.GetKey(hname).ReadObj().Clone()
+    hruns[r][hname].SetDirectory(ROOT.gROOT)
+    hname = 'p/ptmu'
     hruns[r][hname] = f.GetKey(hname).ReadObj().Clone()
     hruns[r][hname].SetDirectory(ROOT.gROOT)
     hnamex = 'p/pt_x'+str(r)
@@ -4849,9 +5000,13 @@ def compareRuns(runs=[]):
   print "number of events",hruns[r]['Trscalers'].GetBinContent(1)
   print "events with tracks %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1)*100)
   print "tracks/event                     %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1)*100)
+  print "ratio of muon tagged tracks / all tracks %5.2F%%"%(hruns[r]['p/ptmu'].GetEntries()/(hruns[r]['p/pt'].GetEntries()+1E-6))
   print "mean p %5.2F GeV/c, rms %5.2F GeV/c"%(hruns[r][hname].GetMean(),hruns[r][hname].GetRMS())
   eventStats[r]=[hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1),
-                 hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1),hruns[r][hname].GetMean(),hruns[r]['Trscalers'].GetBinContent(2)]
+                 hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1),
+                 hruns[r][hname].GetMean(),
+                 hruns[r]['Trscalers'].GetBinContent(2),
+                 hruns[r]['p/ptmu'].GetEntries()/(hruns[r]['p/pt'].GetEntries()+1E-6)]
   hruns[r][hname].Scale(1/N)
   hruns[r][hname].SetLineWidth(3)
   hruns[r][hname].SetStats(0)
@@ -4867,13 +5022,16 @@ def compareRuns(runs=[]):
  h['eventStats1']=ROOT.TGraph(len(eventStats))
  h['eventStats2']=ROOT.TGraph(len(eventStats))
  h['eventStats3']=ROOT.TGraph(len(eventStats))
- h['meanP']=ROOT.TGraph(len(eventStats))
+ h['eventStats4']=ROOT.TGraph(len(eventStats))
  n=0
  for r in eventStats:
    h['eventStats1'].SetPoint(n,r,eventStats[r][0])
    h['eventStats2'].SetPoint(n,r,eventStats[r][1])
    h['eventStats3'].SetPoint(n,r,eventStats[r][2]/100.)
+   h['eventStats4'].SetPoint(n,r,eventStats[r][4]/5.)
    n+=1
+
+ h['legruns']=ROOT.TLegend(0.29,0.18,0.76,0.36)
  h['eventStats1'].SetMarkerColor(ROOT.kBlue)
  h['eventStats1'].SetMarkerSize(1)
  h['eventStats1'].SetMarkerStyle(21)
@@ -4883,20 +5041,29 @@ def compareRuns(runs=[]):
  h['eventStats3'].SetMarkerColor(ROOT.kRed)
  h['eventStats3'].SetMarkerSize(1)
  h['eventStats3'].SetMarkerStyle(28)
- h['eventStats1'].SetTitle('Fraction of events with tracks')
- h['eventStats1'].SetMinimum(0.10)
- h['eventStats1'].SetMaximum(0.25)
+ h['eventStats4'].SetMarkerColor(ROOT.kMagenta)
+ h['eventStats4'].SetMarkerSize(1)
+ h['eventStats4'].SetMarkerStyle(29)
+ h['eventStats1'].SetTitle('Run statistics  Data Quality')
+ h['eventStats1'].SetMinimum(-0.01)
+ h['eventStats1'].SetMaximum(0.3)
  h['eventStats1'].Draw('AP')
+ h['legruns'].AddEntry(h['eventStats1'],'N events with tracks / N events','PL')
+ h['legruns'].AddEntry(h['eventStats2'],'N of tracks / N events','PL')
+ h['legruns'].AddEntry(h['eventStats3'],'mean momentum GeV *100','PL')
+ h['legruns'].AddEntry(h['eventStats4'],'N of mu tracks / N of tracks *5','PL')
  h['eventStats2'].SetMarkerColor(3)
  h['eventStats2'].Draw('P')
  h['eventStats3'].Draw('P')
+ h['eventStats4'].Draw('P')
+ h['legruns'].Draw('same')
  return eventStats
 
 def mergeGoodRuns():
  noField           = [2199,2200,2201]
  intermediateField = [2383,2388,2389,2390,2392,2395,2396]
  noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
- badRuns = [2390,2209]
+ badRuns = [2142, 2143, 2144, 2149]
  keyword = 'RUN_8000_2'
  temp = os.listdir('.')
  cmd = 'hadd -f momDistributions.root '
@@ -5145,11 +5312,11 @@ def anaResiduals():
     print "this file has no tracks",sTree.GetCurrentFile().GetName()
   else:
    muflux_Reco.trackKinematics(3.)
-   if MCdata: 
+   if MCdata:
       MCchecks()
    else:
       printScalers()
-      plotRPCExtrap(PR=1)
+   plotRPCExtrap(PR=1)
    norm = h['TrackMult'].GetEntries()
    print '*** Track Stats ***',norm
    ut.writeHists(h,'histos-analysis-'+rname)
@@ -5197,6 +5364,7 @@ elif options.command == "recoStep1":
    withDefaultAlignment = True
    sigma_spatial = 0.25
    withCorrections = False
+   # DTEfficiencyFudgefactor(method=0)
   else:
    importRTrel()
    withDefaultAlignment = False
@@ -5210,6 +5378,7 @@ elif options.command == "anaResiduals":
   if sTree.GetEntries()>0:
    if sTree.GetBranch('MCTrack'):
     MCdata = True
+    # DTEfficiencyFudgefactor(method=0)
    if not MCdata: importRTrel()
    withCorrections = False
    importAlignmentConstants()

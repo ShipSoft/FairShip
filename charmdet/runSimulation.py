@@ -203,9 +203,7 @@ def checkFilesWithTracks(D='.',splitFactor=5,dimuon=False):
       if sTree:
        if sTree.GetBranch("FitTracks"): 
         fileList.append(fname+'/'+recoFile)
-        N=0
-        for event in sTree: N+=event.FitTracks.GetEntries()
-        fileListPer[fname][recoFile]=N/sTree.GetEntries()
+        fileListPer[fname][recoFile]=sTree.GetBranch('FitTracks').GetTotalSize()/sTree.GetEntries()
       else:
         failedList.append(fname+'/'+recoFile)
     os.chdir('../')
