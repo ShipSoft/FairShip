@@ -326,7 +326,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.D1Long = 4 * u.cm;
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY
-    c.PixelModules.DimZSi = 0.0200 * u.cm
+    c.PixelModules.DimZSi = 0.00200 * u.cm
     c.PixelModules.D1short = 3.36 * u.cm / 2.
     c.PixelModules.D1long = 4 * u.cm
 
@@ -375,9 +375,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.ySi.append(-0.0030432)
     c.PixelModules.zSi.append(10.462)
     #Module 9
-    c.PixelModules.xSi.append(-0.209171)
-    c.PixelModules.ySi.append(0.002488)
-    c.PixelModules.zSi.append(11.17)
+    for i in range(-5,5):
+	    c.PixelModules.xSi.append(-0.209171)
+	    c.PixelModules.ySi.append(0.002488)
+	    c.PixelModules.zSi.append(11.17+i*c.PixelModules.DimZSi)
     #Module 10
     c.PixelModules.xSi.append(0.694199)
     c.PixelModules.ySi.append(0.850237)

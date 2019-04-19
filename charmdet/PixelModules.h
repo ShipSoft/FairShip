@@ -115,11 +115,11 @@ protected:
     Double_t overlap;
     Double_t DimZPixelBox;
 
-    Int_t nSi;
+    static const Int_t nSi=21;
     Double_t DimZSi;
 
-    Double_t xs[12], ys[12], zs[12];
-    Double_t xangle[12], yangle[12], zangle[12];
+    Double_t xs[nSi], ys[nSi], zs[nSi];
+    Double_t xangle[nSi], yangle[nSi], zangle[nSi];
     
     PixelModules(const PixelModules&);
     PixelModules& operator=(const PixelModules&);
