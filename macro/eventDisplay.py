@@ -1160,12 +1160,15 @@ else:
   ShipGeo = upkl.load('ShipGeo')
 
 mcHits = {}
-if (True): 
-  mcHits['BoxPoints']  = ROOT.FairMCPointDraw("BoxPoint", ROOT.kBlue, ROOT.kFullDiamond) #emulsions
-  mcHits['PixelModulesPoints']  = ROOT.FairMCPointDraw("PixelModulesPoint", ROOT.kRed, ROOT.kFullSquare) #pixel trackers
-  mcHits['MufluxSpectrometerPoints']  = ROOT.FairMCPointDraw("MufluxSpectrometerPoint", ROOT.kAzure, ROOT.kFullSquare) #Drift Tubes
-  mcHits['SciFiPoints']  = ROOT.FairMCPointDraw("SciFiPoint", ROOT.kYellow, ROOT.kFullSquare) #SciFi trackers
-  mcHits['MuonTaggerPoints']  = ROOT.FairMCPointDraw("MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle) #MuonTaggerPoints
+
+if hasattr(ShipGeo,"MuonTagger"): 
+  mcHits['MufluxSpectrometerPoints']  = ROOT.FairMCPointDraw("MufluxSpectrometerPoint", ROOT.kRed, ROOT.kFullSquare)
+  mcHits['MuonTaggerPoints']  = ROOT.FairMCPointDraw("MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle)
+  if ShipGeo.MufluxSpectrometer.muflux == False:
+    mcHits['BoxPoints']  = ROOT.FairMCPointDraw("BoxPoint", ROOT.kBlue, ROOT.kFullDiamond)
+    mcHits['PixelModulesPoints'] = ROOT.FairMCPointDraw("PixelModulesPoint",ROOT.kRed,ROOT.kFullCircle)
+    mcHits['SciFiPoints'] = ROOT.FairMCPointDraw("SciFiPoint",ROOT.kGreen,ROOT.kFullSquare)
+
 else:
  mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
  mcHits['TimeDetPoints']  = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)

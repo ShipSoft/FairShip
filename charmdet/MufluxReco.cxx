@@ -1,3 +1,5 @@
+
+
 #include "MufluxReco.h"
 #include <TROOT.h>
 #include <TChain.h>
@@ -481,7 +483,7 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
     MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
     delete hit;
-    Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
+    Int_t s=info[0]; Int_t v=info[4]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
     if (trInfo->wL(n) <0.1 && trInfo->wR(n) <0.1){ continue;}
     if (v != 0){ 
        mStatistics["uv"].push_back(detID);
@@ -516,10 +518,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult"};
  std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s"};
  std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> source  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
+ std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
 
- std::vector<TString>::iterator its = source.begin();
- while( its!=source.end()){
+ std::vector<TString>::iterator its = Tsource.begin();
+ while( its!=Tsource.end()){
   std::vector<TString>::iterator itt = tagged.begin();
   while( itt!=tagged.end()){
    std::vector<TString>::iterator it1 = h1names.begin();
@@ -564,6 +566,23 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (!fitStatus->isFitConverged()){continue;}
      TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
+// for MC
+     if (MCdata){
+       std::map<TString,int> detectors = { {"u",0}, {"v",0}, {"x2",0}, {"x3",0}, {"x1",0},{"x4",0}};
+       std::map<TString, int>::iterator it;
+       bool failed = false;
+       for ( it = detectors.begin(); it != detectors.end(); it++ ){
+        for ( int m=0; m<hitsPerStation[it->first.Data()].size();m+=1){
+         float rnr = gRandom->Uniform();
+         float eff = effFudgeFac[it->first.Data()];
+         if (rnr < eff){detectors[it->first.Data()]+=1;}
+        }
+        if (detectors[it->first.Data()]<2){
+           failed = true;
+           break;}
+       }
+       if (failed){continue;}
+     }
      if (hitsPerStation["x1"].size()<2){ continue;}
      if (hitsPerStation["x2"].size()<2){ continue;}
      if (hitsPerStation["x3"].size()<2){ continue;}
@@ -692,6 +711,16 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
     std::cout<< "sortHits: unphysical detector ID "<<hit->GetDetectorID()<<std::endl;
     hit->Dump();
    }else{
+     if (MCdata){
+      float rnr = gRandom->Uniform();
+      TString station;
+      if (info[4]==0){station = 'x';station += info[0];}
+      if (info[4]==1){station = 'u';}
+      if (info[4]==2){station = 'v';}
+      float eff = effFudgeFac[station.Data()];
+      std::cout << "debug "<< station.Data()<<" "<<eff<<" "<<rnr<<std::endl;
+      if (rnr > eff){continue;}
+     }
     spectrHitsSorted[info[4]][info[0]][info[2]*2+info[3]].push_back(hit);
   }
  }
