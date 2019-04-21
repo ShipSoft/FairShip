@@ -148,7 +148,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
     if hasattr(shipGeo, 'Bfield'):
       fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))      
-      withConstFieldNuTauDet = False
+      withConstFieldNuTauDet = True
       if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstFieldNuTauDet = shipGeo.EmuMagnet.WithConstField
       if not withConstFieldNuTauDet:
        fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))       
