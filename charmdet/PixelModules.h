@@ -29,7 +29,8 @@ class PixelModules:public FairDetector
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
     void SetSiliconDetNumber(Int_t nSilicon);
-     
+    void SetSiliconSlicesNumber(Int_t nSl);
+    void ComputeDimZSlice();
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -85,6 +86,7 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
+    Int_t nSlices; 
     
     /** container for data points */
     TClonesArray*  fPixelModulesPointCollection;
@@ -97,7 +99,6 @@ protected:
     
     Double_t Dim1Short, Dim1Long;
  
-    
     Double_t SBoxX = 0;
     Double_t SBoxY = 0;
     Double_t SBoxZ = 0;
@@ -115,9 +116,9 @@ protected:
     Double_t overlap;
     Double_t DimZPixelBox;
 
-    static const Int_t nSi=21;
+    static const Int_t nSi=120;
     Double_t DimZSi;
-
+    Double_t DimZSlice;
     Double_t xs[nSi], ys[nSi], zs[nSi];
     Double_t xangle[nSi], yangle[nSi], zangle[nSi];
     

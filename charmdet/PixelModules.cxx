@@ -143,9 +143,14 @@ void PixelModules::SetSiliconStationAngles(Int_t nstation, Double_t anglex, Doub
  zangle[nstation] = anglez;
 }
 
+void PixelModules::SetSiliconSlicesNumber(Int_t nSl)
+{
+nSlices=nSl;
+}
 
-
-
+void PixelModules::ComputeDimZSlice(){
+DimZSlice=DimZSi/nSlices;
+}
 
 
 //
@@ -187,20 +192,55 @@ void PixelModules::ConstructGeometry()
     top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
     
 
-    TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
+    TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSlice/2); //long along y
     TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon); 
     volPixely->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixely);
 
-    TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
+    TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSlice/2); //long along x
     TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon); 
     volPixelx->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixelx);
 
     //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
-    Int_t PixelIDlist[nSi] = {111,112,121,122,131,132,141,142,151,1520,1521,1522,1523,1524,1525,1526,1527,1528,1529,161,162}; 
+    int chi=0;
+    Int_t PixelIDlist[nSi];
+    for(int i=1110;i<1130;i++){
+    PixelIDlist[chi]=i;
+    chi++;
+    }
+    
+    for(int i=1210;i<1230;i++){
+    PixelIDlist[chi]=i;
+    chi++;
+    }
+
+    for(int i=1310;i<1330;i++){
+    PixelIDlist[chi]=i;
+    chi++;
+    }
+    for(int i=1410;i<1430;i++){
+    PixelIDlist[chi]=i;
+    chi++;
+    }
+    for(int i=1510;i<1530;i++){
+    PixelIDlist[chi]=i;
+    chi++;
+    }
+    for(int i=1610;i<1630;i++){
+    PixelIDlist[chi]=i;
+    chi++;
+    }
     //Alternated pixel stations optimized for y and x measurements
-    Bool_t vertical[nSi] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kTRUE,kTRUE,kTRUE,kTRUE,kTRUE,kTRUE,kTRUE,kTRUE,kTRUE,kFALSE,kFALSE}; 
+    Bool_t vertical[nSi];
+    for(int i=0;i<nSi;i++){
+	vertical[i]=kFALSE;
+	}
+    for(int i=0;i<3;i++){
+    	for(int j =0;j<20;j++){
+	vertical[i*40+j]=kTRUE;
+	}
+    }
 
     for (int ipixel = 0; ipixel < nSi; ipixel++){
       if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
