@@ -166,78 +166,21 @@ def RPCPosition():
     x = (a[0]+b[0])/2.
     y = (a[1]+b[1])/2.
     z = (a[2]+b[2])/2.
-    #muflux_Reco.setRPCPositions(detID,x,y,z)
+    print "Posizione per view {} e canale {}: ({}, {},{})".format(v,c,x,y,z)
 
 def GetRPCPosition(s,v,c):
     detID = s*10000+v*1000+c
     return RPCPositionsBotTop[detID]
 
-#copied from event display, but here we do not have Eve, so what can we do?
-def plotRPCTracks(n=1):
-    tracklist = ROOT.TEveTrackList()
-    prop = tracklist.GetPropagator()
-    #prop.SetFitDaughters(kFALSE);
-    prop.SetMaxZ(20000)
-    tracklist.SetName("RK Propagator")
-    #rpc positioning, as from Alessandra's reconstruction
-    localRPCfile = ROOT.TFile.Open("localrpctrack_test.root")
-    sTree = localRPCfile.Get("RPCTracks")   
-
+def loadRPC(n=1):
     sTree.GetEntry(n)
-    localtracks = sTree.RPCTracks
-    localtrack = localtracks[0]
-    trk_theta = localtrack.GetTheta() * ROOT.TMath.Pi() / 180
-    trk_phi = localtrack.GetPhi() * ROOT.TMath.Pi() / 180
-#print "Track", id_track, "for run", id_run, ", spill", id_spill, "and trigger", trigger
-    #print "Teta and phi angles", trk_teta, " , ", trk_phi
-    #print "Slopes (xz, yz): ( ", trk_slopexz, ", ", trk_slopeyz, " )"
-    #print " # clusters = ", nclusters
-
-    zoffset = 873 #start in FairShip of firstRPC
-    #adding a track
-    fakemomentum = 400
-
-    hitx = []
-    hity = []
-    hitz = []
-    for icluster in range(5):
-     hitx.append(0)
-     hity.append(0)
-     hitz.append(0)
-    nclusters = localtrack.GetNClusters()
-
-    for i in range(nclusters):
-
-     direction = localtrack.GetClusterDir(i)
-     station = localtrack.GetClusterStation(i) - 1
-     if (direction == 1):
-      hitx[station] = localtrack.GetClusterPos(i)[0]
-      hitz[station] = localtrack.GetClusterPos(i)[2]
-     else:
-      hity[station] = localtrack.GetClusterPos(i)[1]
-      hitz[station] = localtrack.GetClusterPos(i)[2]
+    trackhits = sTree.MuonTaggerHit
+    for hit in trackhits:
+     a,b = RPCPositionsBotTop[hit.GetDetectorID()]
+     x = (a[0]+b[0])/2.
+     y = (a[1]+b[1])/2.
+     z = (a[2]+b[2])/2.
+     print "Posizione cluster caricato: ({},{},{})".format(x,y,z)
     
-    clusterlist = ROOT.TEvePointSet(3)
-    clusterlist.SetElementName("Hits in MuonTagger")
-    for icluster in range(5):
-     clusterlist.SetPoint(icluster,hitx[icluster],  hity[icluster], hitz[icluster] + zoffset);
-     clusterlist.SetMarkerColor(ROOT.kAzure)
-    gEve.AddElement(clusterlist)
-
-    recotrack = ROOT.TEveRecTrackD()
-    recotrack.fV.Set(hitx[4], hity[4], hitz[4] + 873.); #'vertex' of track, here used as starting point
-    #recotrack.fP.Set(0,0,400)
-    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(trk_theta) * ROOT.TMath.Cos(trk_phi), fakemomentum * ROOT.TMath.Sin(trk_theta) * ROOT.TMath.Sin(trk_phi),-fakemomentum * ROOT.TMath.Cos(trk_theta)); #track propagated backwards
-    recotrack.fSign = 1
-
-    track = ROOT.TEveTrack(recotrack, prop)
-    #track.SetName(Form("Charge %d", sign));
-    track.SetLineColor(ROOT.kRed)
-
-    gEve.AddElement(tracklist)
-    tracklist.AddElement(track)
-
-    track.MakeTrack()
-
-    gEve.Redraw3D()
-    
+RPCPosition()    
+loadRPC(1)
