@@ -172,6 +172,7 @@ def correctAlignmentRPC(hit,v):
  return vbot,vtop
 
 def RPCPosition():
+ """ builds the list of positions for each detectorID. Same as driftubeMonitoring.py """
  for s in range(1,6): #RPC stations
   for v in range(2): #views
    for c in range(1,185): # channels per view
@@ -190,6 +191,7 @@ def GetRPCPosition(s,v,c):
     return RPCPositionsBotTop[detID]
 #getting positions from the MuonTaggerHit containers, built from the files provided by Alessandra
 def loadRPCtracks(n=1):
+    """ Loads MuonTaggerHits from file and get position of clusters"""
     hitx = []
     hity = []
     hitz = []
@@ -239,7 +241,7 @@ def loadRPCtracks(n=1):
     DrawTrack(theta,phi,lastpoint)
 
 def DrawPoints(nclusters,hitx,hity,hitz):
-    #draw clusters
+    """Draws clusters as TEvePointSet"""  
     clusterlist = ROOT.TEvePointSet(3)
     clusterlist.SetElementName("Hits in MuonTagger")
     for icluster in range(nclusters):
@@ -249,14 +251,14 @@ def DrawPoints(nclusters,hitx,hity,hitz):
     #drawing the track
 
 def DrawTrack(theta,phi,lastpoint):
-
+    """Draw track as TEveTrack, propagating backwards from last point provided. A proton of 400 GeV is assumed"""
     recotrack.fV.Set(lastpoint[0], lastpoint[1], lastpoint[2]); #'vertex' of track, here used as starting point
     fakemomentum = 400
     recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Cos(phi), fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Sin(phi),-fakemomentum * ROOT.TMath.Cos(theta)); #track propagated backwards
     recotrack.fSign = 1
 
     track = ROOT.TEveTrack(recotrack, prop)
-    track.SetName("Test")
+    track.SetName("Test proton")
     track.SetLineColor(ROOT.kRed)
     tracklist.AddElement(track)
     gEve.AddElement(tracklist)
@@ -265,8 +267,9 @@ def DrawTrack(theta,phi,lastpoint):
     gEve.Redraw3D()
 
 
-#using Numpy polyfit to obtain the slopes from the clusters
+#
 def getSlopes(clusters,view=0):
+    """using Numpy polyfit to obtain the slopes from the clusters. Adapted from the similar method in driftubeMonitoring.py"""
     x,z=[],[]
     for hit in clusters:     
       if view==0: #horizontal strip, fitting in the zy plane
@@ -277,5 +280,7 @@ def getSlopes(clusters,view=0):
         z.append(hit[2])
     line = numpy.polyfit(z,x,1)
     return line[0],line[1]
+
+# what methods are launched?
 RPCPosition()    
 loadRPCtracks(1)
