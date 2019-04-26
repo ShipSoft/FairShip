@@ -13,6 +13,7 @@ debug = 0  # 1 print weights and field
 dryrun = False # True: just setup Pythia and exit
 
 CharmdetSetup = 0 # 1 charm cross section setup, 0 muon flux setup
+DownScaleDiMuon = False
 CharmTarget = 3 #six different configurations used in July 2018 exposure for charm
 # Default HNL parameters
 theMass = 1.0*u.GeV
@@ -54,6 +55,7 @@ default = '2018'
 dy           = globalDesigns[default]['dy'] # max height of vacuum tank
 dv           = globalDesigns[default]['dv'] # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 ds           = globalDesigns[default]['ds'] # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
+                                            # 10=with field map for hadron absorber
 nud          = globalDesigns[default]['nud'] # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 caloDesign   = globalDesigns[default]['caloDesign'] # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL 
 strawDesign  = globalDesigns[default]['strawDesign'] # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
@@ -478,7 +480,7 @@ if simEngine == "MuonBack":
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  if charm == 0: MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
- else: 
+ elif DownScaleDiMuon: 
     if inputFile[0:4] == "/eos": test = os.environ["EOSSHIP"]+inputFile
     else: test = inputFile
     testf = ROOT.TFile.Open(test)
