@@ -1,7 +1,7 @@
 #import yep
 import ROOT,os,time,sys,operator,atexit
 ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
-
+import numpy
 from decorators import *
 import __builtin__ as builtin
 ROOT.gStyle.SetPalette(ROOT.kGreenPink)
@@ -126,8 +126,18 @@ sGeo = ROOT.gGeoManager
 nav = sGeo.GetCurrentNavigator()
 top = sGeo.GetTopVolume()
 top.SetVisibility(0)
-if options.withDisplay:
- try: top.Draw('ogl')
+if options.withDisplay: 
+ try: 
+   #building the EVE display instead of the simple root one allows to add new objects there (instead of a separate canvas)
+   ROOT.TEveManager.Create()
+   gEve = ROOT.gEve
+   #adding all subnodes for drawing
+   for node in top.GetNodes():
+     evenode = ROOT.TEveGeoTopNode(sGeo,node)
+     evenode.UseNodeTrans()
+     gEve.AddGlobalElement(evenode) 
+   gEve.FullRedraw3D(kTRUE)
+   
  except: pass
 
 saveGeofile = False
@@ -171,16 +181,50 @@ def RPCPosition():
 def GetRPCPosition(s,v,c):
     detID = s*10000+v*1000+c
     return RPCPositionsBotTop[detID]
-
-def loadRPC(n=1):
+#getting positions from the MuonTaggerHit containers, built from the files provided by Alessandra
+def loadRPCtracks(n=1):
     sTree.GetEntry(n)
     trackhits = sTree.MuonTaggerHit
+    clustersH = []
+    clustersV = []
     for hit in trackhits:
-     a,b = RPCPositionsBotTop[hit.GetDetectorID()]
+     detID = hit.GetDetectorID()
+     station = int (detID/10000) #automatically an int in python2, but calling the conversion avoids confusion
+     view = int((detID-station*10000)/1000)
+
+     a,b = RPCPositionsBotTop[detID]
      x = (a[0]+b[0])/2.
      y = (a[1]+b[1])/2.
      z = (a[2]+b[2])/2.
-     print "Posizione cluster caricato: ({},{},{})".format(x,y,z)
-    
+
+    #adding the point to two different lists according to the view  
+     if view == 0:
+      clustersH.append([x,y,z])
+     elif view == 1:
+      clustersV.append([x,y,z])
+     print "Posizione cluster caricato: ({},{},{}), corrispondente alla stazione{} e alla view {}".format(x,y,z,station,view)    
+    #fitting to two 2D tracks
+    mH,bH = getSlopes(clustersH,0) 
+    mV,bV = getSlopes(clustersV,1)   
+    trackH = ROOT.RPCTrack(mH,bH)
+    trackV = ROOT.RPCTrack(mV,bV)
+    print "Line equation along horizontal: {}*z + {}".format(mH,bH)
+    print "Line equation along vertical: {}*z + {}".format(mV,bV)
+    theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
+    phi = ROOT.TMath.ATan(mH/mV)
+    print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)
+
+#using Numpy polyfit to obtain the slopes from the clusters
+def getSlopes(clusters,view=0):
+    x,z=[],[]
+    for hit in clusters:     
+      if view==0: #horizontal strip, fitting in the zy plane
+        x.append(hit[1])
+        z.append(hit[2])
+      else: #vertical strip, fitting in the zx plane
+        x.append(hit[0])
+        z.append(hit[2])
+    line = numpy.polyfit(z,x,1)
+    return line[0],line[1]
 RPCPosition()    
-loadRPC(1)
+loadRPCtracks(1)
