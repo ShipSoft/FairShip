@@ -153,6 +153,13 @@ RPCPositionsBotTop = {}
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
 
+#TEve material for track drawing
+tracklist = ROOT.TEveTrackList()
+prop = tracklist.GetPropagator()
+prop.SetMaxZ(20000)
+tracklist.SetName("RK Propagator")
+recotrack = ROOT.TEveRecTrackD()
+
 def correctAlignmentRPC(hit,v):
  hit.EndPoints(vtop,vbot) #obtaining hit positions
 
@@ -183,6 +190,14 @@ def GetRPCPosition(s,v,c):
     return RPCPositionsBotTop[detID]
 #getting positions from the MuonTaggerHit containers, built from the files provided by Alessandra
 def loadRPCtracks(n=1):
+    hitx = []
+    hity = []
+    hitz = []
+    for icluster in range(5):
+     hitx.append(0)
+     hity.append(0)
+     hitz.append(0)
+
     sTree.GetEntry(n)
     trackhits = sTree.MuonTaggerHit
     clustersH = []
@@ -199,8 +214,12 @@ def loadRPCtracks(n=1):
 
     #adding the point to two different lists according to the view  
      if view == 0:
+      hity[station-1] = y
+      hitz[station-1] = z
       clustersH.append([x,y,z])
      elif view == 1:
+      hitx[station-1] = x
+      hitz[station-1] = z
       clustersV.append([x,y,z])
      print "Posizione cluster caricato: ({},{},{}), corrispondente alla stazione{} e alla view {}".format(x,y,z,station,view)    
     #fitting to two 2D tracks
@@ -212,7 +231,39 @@ def loadRPCtracks(n=1):
     print "Line equation along vertical: {}*z + {}".format(mV,bV)
     theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
     phi = ROOT.TMath.ATan(mH/mV)
-    print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)
+    print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)  
+    DrawPoints(5,hitx,hity,hitz)
+    
+    lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
+    print "Prova, ",hitx[4], hity[4], hitz[4]
+    DrawTrack(theta,phi,lastpoint)
+
+def DrawPoints(nclusters,hitx,hity,hitz):
+    #draw clusters
+    clusterlist = ROOT.TEvePointSet(3)
+    clusterlist.SetElementName("Hits in MuonTagger")
+    for icluster in range(nclusters):
+     clusterlist.SetPoint(icluster,hitx[icluster],  hity[icluster], hitz[icluster])
+     clusterlist.SetMarkerColor(ROOT.kAzure)
+    gEve.AddElement(clusterlist)
+    #drawing the track
+
+def DrawTrack(theta,phi,lastpoint):
+
+    recotrack.fV.Set(lastpoint[0], lastpoint[1], lastpoint[2]); #'vertex' of track, here used as starting point
+    fakemomentum = 400
+    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Cos(phi), fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Sin(phi),-fakemomentum * ROOT.TMath.Cos(theta)); #track propagated backwards
+    recotrack.fSign = 1
+
+    track = ROOT.TEveTrack(recotrack, prop)
+    track.SetName("Test")
+    track.SetLineColor(ROOT.kRed)
+    tracklist.AddElement(track)
+    gEve.AddElement(tracklist)
+
+    track.MakeTrack()
+    gEve.Redraw3D()
+
 
 #using Numpy polyfit to obtain the slopes from the clusters
 def getSlopes(clusters,view=0):
