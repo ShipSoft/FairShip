@@ -145,6 +145,136 @@ class DrawVetoDigi(ROOT.FairTask):
     self.comp.AddElement(bx)
    self.comp.CloseCompound()
    gEve.ElementChanged(self.evscene,True,True)
+
+def plotRPCTracks(n=1):
+    tracklist = ROOT.TEveTrackList();
+    prop = tracklist.GetPropagator();
+    #prop.SetFitDaughters(kFALSE);
+    prop.SetMaxZ(20000);
+    tracklist.SetName("RK Propagator");
+    #rpc positioning, as from Alessandra's reconstruction
+    localRPCfile = ROOT.TFile.Open("localrpctrack_test.root")
+    sTree = localRPCfile.Get("RPCTracks")   
+
+    sTree.GetEntry(n)
+    localtracks = sTree.RPCTracks
+    localtrack = localtracks[0]
+    trk_theta = localtrack.GetTheta() * ROOT.TMath.Pi() / 180
+    trk_phi = localtrack.GetPhi() * ROOT.TMath.Pi() / 180
+#print "Track", id_track, "for run", id_run, ", spill", id_spill, "and trigger", trigger
+    #print "Teta and phi angles", trk_teta, " , ", trk_phi
+    #print "Slopes (xz, yz): ( ", trk_slopexz, ", ", trk_slopeyz, " )"
+    #print " # clusters = ", nclusters
+
+    zoffset = 873 #start in FairShip of firstRPC
+    #adding a track
+    fakemomentum = 400
+
+    hitx = []
+    hity = []
+    hitz = []
+    for icluster in range(5):
+     hitx.append(0)
+     hity.append(0)
+     hitz.append(0)
+    nclusters = localtrack.GetNClusters()
+
+    for i in range(nclusters):
+
+     direction = localtrack.GetClusterDir(i)
+     station = localtrack.GetClusterStation(i) - 1
+     if (direction == 1):
+      hitx[station] = localtrack.GetClusterPos(i)[0]
+      hitz[station] = localtrack.GetClusterPos(i)[2]
+     else:
+      hity[station] = localtrack.GetClusterPos(i)[1]
+      hitz[station] = localtrack.GetClusterPos(i)[2]
+    
+    clusterlist = ROOT.TEvePointSet(3);
+    clusterlist.SetElementName("Hits in MuonTagger");
+    for icluster in range(5):
+     clusterlist.SetPoint(icluster,hitx[icluster],  hity[icluster], hitz[icluster] + zoffset);
+     clusterlist.SetMarkerColor(ROOT.kAzure);
+    gEve.AddElement(clusterlist);
+
+    recotrack = ROOT.TEveRecTrackD();
+    recotrack.fV.Set(hitx[4], hity[4], hitz[4] + 873.); #'vertex' of track, here used as starting point
+    #recotrack.fP.Set(0,0,400)
+    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(trk_theta) * ROOT.TMath.Cos(trk_phi), fakemomentum * ROOT.TMath.Sin(trk_theta) * ROOT.TMath.Sin(trk_phi),-fakemomentum * ROOT.TMath.Cos(trk_theta)); #track propagated backwards
+    recotrack.fSign = 1;
+
+    track = ROOT.TEveTrack(recotrack, prop);
+    #track.SetName(Form("Charge %d", sign));
+    track.SetLineColor(ROOT.kRed);
+
+    gEve.AddElement(tracklist);
+    tracklist.AddElement(track);
+
+    track.MakeTrack();
+
+    gEve.Redraw3D();
+    
+
+def plotlocalEvent(n=1):
+
+   # I want to add track into list
+    tracklist = ROOT.TEveTrackList();
+    prop = tracklist.GetPropagator();
+    #prop.SetFitDaughters(kFALSE);
+    prop.SetMaxZ(20000);
+    tracklist.SetName("RK Propagator");
+    #rpc positioning, as from Alessandra's reconstruction
+    localRPCfile = ROOT.TFile.Open("root:://eospublic.cern.ch//eos/experiment/ship/data/rpc_charm/RPC_RecoTracks_run2793_s1f22ade3.root")
+    sTree = localRPCfile.Get("RPC_RecoTracks")
+    sTree.GetEntry(n)
+    nclusters = sTree.nclusters
+    id_track = sTree.id_track
+    id_spill = sTree.id_spill
+    trk_teta = sTree.trk_teta * ROOT.TMath.Pi() / 180
+    trk_phi = sTree.trk_phi * ROOT.TMath.Pi() / 180 
+    slopexz = sTree.trk_slopexz
+    slopeyz = sTree.trk_slopeyz
+
+    cl_x_list = sTree.cl_x
+    cl_y_list = sTree.cl_y
+    cl_z_list = sTree.cl_z
+    cl_dir_list = sTree.cl_dir
+    cl_rpc_list = sTree.cl_rpc
+
+    #print "Track", id_track, "for run", id_run, ", spill", id_spill, "and trigger", trigger
+    #print "Teta and phi angles", trk_teta, " , ", trk_phi
+    #print "Slopes (xz, yz): ( ", trk_slopexz, ", ", trk_slopeyz, " )"
+    #print " # clusters = ", nclusters
+
+    zoffset = 873 #start in FairShip of firstRPC
+    #adding a track
+    fakemomentum = 400
+    
+    clusterlist = ROOT.TEvePointSet(3);
+    clusterlist.SetElementName("Hits in MuonTagger");
+    clusterlist.SetPoint(0,cl_x_list[1],  cl_y_list[0], cl_z_list[0] + zoffset);
+    clusterlist.SetPoint(1,cl_x_list[3],  cl_y_list[2], cl_z_list[2] + zoffset);
+    clusterlist.SetPoint(2,cl_x_list[8],  cl_y_list[7], cl_z_list[7] + zoffset);
+    clusterlist.SetMarkerColor(ROOT.kAzure);
+    gEve.AddElement(clusterlist);
+
+    recotrack = ROOT.TEveRecTrackD();
+    recotrack.fV.Set(cl_x_list[8], cl_y_list[7], cl_z_list[7] + 873.); #'vertex' of track, here used as starting point
+    #recotrack.fP.Set(0,0,400)
+    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Cos(trk_phi), fakemomentum * ROOT.TMath.Sin(trk_teta) * ROOT.TMath.Sin(trk_phi),-fakemomentum * ROOT.TMath.Cos(trk_teta)); #track propagated backwards
+    recotrack.fSign = 1;
+
+    track = ROOT.TEveTrack(recotrack, prop);
+    #track.SetName(Form("Charge %d", sign));
+    track.SetLineColor(ROOT.kRed);
+
+    gEve.AddElement(tracklist);
+    tracklist.AddElement(track);
+
+    track.MakeTrack();
+
+    gEve.Redraw3D();
+
 class DrawEcalCluster(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self,ecalStructure):
@@ -1021,8 +1151,8 @@ if withGeo:
 if not fRun.GetGeoFile().FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # try to figure out which ecal geo to load
-  if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
-  else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+  #if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+  ecalGeoFile = "ecal_ellipse5x10m2.geo" 
   ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = float(dy), EcalGeoFile = ecalGeoFile)
 else: 
  # new geofile, load Shipgeo dictionary written by run_simScript.py
@@ -1030,6 +1160,7 @@ else:
   ShipGeo = upkl.load('ShipGeo')
 
 mcHits = {}
+
 if hasattr(ShipGeo,"MuonTagger"): 
   mcHits['MufluxSpectrometerPoints']  = ROOT.FairMCPointDraw("MufluxSpectrometerPoint", ROOT.kRed, ROOT.kFullSquare)
   mcHits['MuonTaggerPoints']  = ROOT.FairMCPointDraw("MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle)
@@ -1037,6 +1168,7 @@ if hasattr(ShipGeo,"MuonTagger"):
     mcHits['BoxPoints']  = ROOT.FairMCPointDraw("BoxPoint", ROOT.kBlue, ROOT.kFullDiamond)
     mcHits['PixelModulesPoints'] = ROOT.FairMCPointDraw("PixelModulesPoint",ROOT.kRed,ROOT.kFullCircle)
     mcHits['SciFiPoints'] = ROOT.FairMCPointDraw("SciFiPoint",ROOT.kGreen,ROOT.kFullSquare)
+
 else:
  mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
  mcHits['TimeDetPoints']  = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)
@@ -1254,5 +1386,8 @@ def PRVersion():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  gEve.ElementChanged(geoscene,True,True)
+
+
+
 
 

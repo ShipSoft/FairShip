@@ -448,6 +448,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Scintillator.Scoring1Y           = 110.*u.cm    
     c.Scintillator.DistT1              = 11.5*u.cm       
     #c.Scintillator.DistT2              = 135.25*u.cm
+
     c.Scintillator.DistT2              = 136.26*u.cm 
                   
     c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
