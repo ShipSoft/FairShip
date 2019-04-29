@@ -23,13 +23,14 @@ public:
    ShipPixelHit(Int_t detID, Float_t fdigi);
    HitID GetPixel();
    int32_t GetDetectorID();
-   static std::shared_ptr <std::unordered_map<int, TVector3>> MakePositionMap();
+   TVector3 MakePositionMap(int detectorID);
+   //static std::shared_ptr <std::unordered_map<int, TVector3>> MakePositionMap();
    int32_t GetModule();
    void GetPixelXYZ(TVector3 &pixel, int detID);
    void Print();
    int32_t GetTimeOverThreshold() const {return fdigi*25 ; }
 private:
-   static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap; //!
+   //static std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap; //!
    /** Copy constructor **/
    ShipPixelHit(const ShipPixelHit &other);
    ShipPixelHit operator=(const ShipPixelHit &other);

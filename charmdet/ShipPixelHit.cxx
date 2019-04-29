@@ -47,9 +47,9 @@ int32_t ShipPixelHit::GetModule()
 int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
 void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap
-  if (!ShipPixelHit::PixelPositionMap) {
+  /*if (!ShipPixelHit::PixelPositionMap) {
     ShipPixelHit::PixelPositionMap = ShipPixelHit::MakePositionMap();
-  }
+  }*/
 
   int max_detID = 10000000*2 + 1000000*7 + 1000*336 + 80 ;
   if (detID%1000000 == 0) {
@@ -59,17 +59,23 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
     std::cout << "PixelDetector::PixelDecode, detectorID out of range "<<detID<<std::endl;
     return;
   }
-  TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
+ // TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
+  TVector3 pixel_pos = ShipPixelHit::MakePositionMap(detID);
   pixel.SetX(pixel_pos.X());
   pixel.SetY(pixel_pos.Y());
   pixel.SetZ(pixel_pos.Z());
 }
 
-
-std::shared_ptr <std::unordered_map<int, TVector3>>  ShipPixelHit::MakePositionMap() {
+TVector3 ShipPixelHit::MakePositionMap(int detectorID) {
+//std::shared_ptr <std::unordered_map<int, TVector3>>  ShipPixelHit::MakePositionMap() {
 // map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
 // the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
-
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
+  double local[3] = {0,0,0};
+  double master[3] = {0,0,0};
+  nav->cd("volPixelBox_1/volPixely_111");
+  nav->GetCurrentNode()->LocalToMaster(local,master);
+  std::cout<<"Prova"<<master[0]<<" "<<master[1]<<" "<<master[2]<<std::endl;
   const float mkm = 0.0001;
 
   const float  z0ref=  -1300.*mkm;
@@ -179,7 +185,8 @@ std::shared_ptr <std::unordered_map<int, TVector3>>  ShipPixelHit::MakePositionM
       }
     }
   }
-  return std::make_shared<std::unordered_map<int, TVector3>>(positionMap);
+ // return std::make_shared<std::unordered_map<int, TVector3>>(positionMap);
+ return positionMap[detectorID];
 }
 
 // -----   Destructor   ----------------------------------------------------

@@ -160,6 +160,16 @@ prop.SetMaxZ(20000)
 tracklist.SetName("RK Propagator")
 recotrack = ROOT.TEveRecTrackD()
 
+def GetPixelPositions(n=1):
+    sTree.GetEntry(n)
+    pixelhits = sTree.Digi_PixelHits_1
+    pos = ROOT.TVector3(0,0,0)
+    for hit in pixelhits:
+      detID = hit.GetDetectorID()
+      hit.GetPixelXYZ(pos,detID)
+      print "This is the position of our pixel hit: ", pos[0], pos[1], pos[2]
+
+
 def correctAlignmentRPC(hit,v):
  hit.EndPoints(vtop,vbot) #obtaining hit positions
 
@@ -282,5 +292,4 @@ def getSlopes(clusters,view=0):
     return line[0],line[1]
 
 # what methods are launched?
-RPCPosition()    
-loadRPCtracks(1)
+GetPixelPositions()
