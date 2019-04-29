@@ -49,6 +49,7 @@ using namespace ShipUnit;
 
 PixelModules::PixelModules()
   : FairDetector("HighPrecisionTrackers",kTRUE, kPixelModules),
+    numSi(nSi),
     fTrackID(-1),
     fPdgCode(),
     fVolumeID(-1),
@@ -63,6 +64,7 @@ PixelModules::PixelModules()
 
 PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,const char* Title)
   : FairDetector(name, Active, kPixelModules),
+    numSi(nSi),
     fTrackID(-1),
     fPdgCode(),
     fVolumeID(-1),

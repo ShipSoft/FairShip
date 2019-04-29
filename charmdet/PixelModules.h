@@ -117,6 +117,7 @@ protected:
     Double_t DimZPixelBox;
 
     static const Int_t nSi=120;
+    Int_t numSi;
     Double_t DimZSi;
     Double_t DimZSlice;
     Double_t xs[nSi], ys[nSi], zs[nSi];
