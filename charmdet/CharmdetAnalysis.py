@@ -162,12 +162,21 @@ recotrack = ROOT.TEveRecTrackD()
 
 def GetPixelPositions(n=1):
     sTree.GetEntry(n)
+    npixelpoints = 0
     pixelhits = sTree.Digi_PixelHits_1
     pos = ROOT.TVector3(0,0,0)
+    hitx = []
+    hity = []
+    hitz = []
     for hit in pixelhits:
+      npixelpoints = npixelpoints + 1
       detID = hit.GetDetectorID()
       hit.GetPixelXYZ(pos,detID)
-      print "This is the position of our pixel hit: ", pos[0], pos[1], pos[2]
+      print "This is the position of our pixel hit: ", detID, pos[0], pos[1], pos[2] 
+      hitx.append(pos[0])
+      hity.append(pos[1])
+      hitz.append(pos[2])
+    DrawPoints(npixelpoints,hitx,hity,hitz)
 
 
 def correctAlignmentRPC(hit,v):
@@ -292,4 +301,4 @@ def getSlopes(clusters,view=0):
     return line[0],line[1]
 
 # what methods are launched?
-GetPixelPositions()
+GetPixelPositions(2)
