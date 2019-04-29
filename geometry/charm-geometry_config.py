@@ -330,7 +330,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.nSlice= 10
     c.PixelModules.D1short = 3.36 * u.cm / 2.
     c.PixelModules.D1long = 4 * u.cm
-    c.PixelModules.numSi=12*c.PixelModules.nSlice
+    c.PixelModules.numSi=12*c.PixelModules.nSlice #is identical to nSi in the class, can't reuse nSi because no non-static arrays size
     
 
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
