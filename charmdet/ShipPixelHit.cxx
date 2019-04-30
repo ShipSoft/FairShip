@@ -92,12 +92,12 @@ std::shared_ptr <std::unordered_map<int, TVector3>>  ShipPixelHit::MakePositionM
   Xref[4]-= 16800*mkm;
   Xref[8]-= 16800*mkm;
 
-  Yref[2] -= 8400.mkm;
-  Yref[3] += 8400.mkm;
-  Yref[6] -= 8400.mkm;
-  Yref[7] += 8400.mkm;
-  Yref[10] -= 8400.mkm;
-  Yref[11] += 8400.mkm;
+  Yref[2] -= 8400*mkm;
+  Yref[3] += 8400*mkm;
+  Yref[6] -= 8400*mkm;
+  Yref[7] += 8400*mkm;
+  Yref[10] -= 8400*mkm;
+  Yref[11] += 8400*mkm;
   // const float  z0ref=  -1300.*mkm;
   // const float  z1ref=   5200.*mkm;
   // const float  z2ref=  24120.*mkm;
