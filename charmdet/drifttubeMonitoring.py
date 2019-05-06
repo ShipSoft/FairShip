@@ -2695,7 +2695,8 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
            res = abs(d) - distance
            h['biasResDist'].Fill(distance,res)
            h['biasResDist2'].Fill(abs(d),res)
-           h['biasResDist_'+str(s)+view+str(2*p+l)].Fill(distance,res)
+           hkey = str(ss)+vw+str(2*pp+ll)
+           h['biasResDist_'+hkey].Fill(distance,res)
            m = (vtop[0]-vbot[0])/(vtop[1]-vbot[1])
            b = vtop[0]-m*vtop[1]
            if pos[0]<m*pos[1]+b:
@@ -2703,14 +2704,14 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
             d = -abs(d)
            resR = d - distance
            resL = d + distance
-           h['biasResX_'+str(s)+view+str(2*p+l)].Fill(resR,pos[0])
-           h['biasResY_'+str(s)+view+str(2*p+l)].Fill(resR,pos[1])
-           h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(resR,pos[0])
-           h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(resR,pos[1])
-           h['biasResX_'+str(s)+view+str(2*p+l)].Fill(resL,pos[0])
-           h['biasResY_'+str(s)+view+str(2*p+l)].Fill(resL,pos[1])
-           h['biasResXL_'+str(s)+view+str(2*p+l)].Fill(resL,pos[0])
-           h['biasResYL_'+str(s)+view+str(2*p+l)].Fill(resL,pos[1])
+           h['biasResX_'+hkey].Fill(resR,pos[0])
+           h['biasResY_'+hkey].Fill(resR,pos[1])
+           h['biasResXL_'+hkey].Fill(resR,pos[0])
+           h['biasResYL_'+hkey].Fill(resR,pos[1])
+           h['biasResX_'+hkey].Fill(resL,pos[0])
+           h['biasResY_'+hkey].Fill(resL,pos[1])
+           h['biasResXL_'+hkey].Fill(resL,pos[0])
+           h['biasResYL_'+hkey].Fill(resL,pos[1])
 # now for each tube
            detID = str(hit.GetDetectorID())
            h['biasResX_'+detID].Fill(res,pos[0])
@@ -2722,7 +2723,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
             t0 = 0
             if MCdata: t0 = sTree.ShipEventHeader.GetEventTime()
             rc = h['TDC'+str(nRT)].Fill(hit.GetDigi()-t0)
-            rc = xLayers[s][p][l][view].Fill( channelID )
+            rc = xLayers[ss][pp][ll][vw].Fill( channelID )
             rc = h['T0tmp'].Fill(hit.GetDigi()-t0)
        t0 = h['T0tmp'].GetMean()
        rc = h['T0'].Fill(t0)
@@ -3236,8 +3237,8 @@ def plotLinearResiduals():
 
 def momResolution(PR=1,onlyPlotting=False):
  if not onlyPlotting:
-  ut.bookHist(h,'momResol','momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,30,0.,300.)
-  ut.bookHist(h,'curvResol','momentum resolution function of momentum',200,-0.5,0.5,30,0.,300.)
+  ut.bookHist(h,'momResol','momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
+  ut.bookHist(h,'curvResol','momentum resolution function of momentum',200,-0.5,0.5,40,0.,400.)
   for n in range(sTree.GetEntries()):
    rc = sTree.GetEvent(n)
    if not findSimpleEvent(sTree): continue
@@ -5059,10 +5060,11 @@ def compareRuns(runs=[]):
  h['legruns'].Draw('same')
  return eventStats
 
-def mergeGoodRuns():
+def mergeGoodRuns(excludeRPC=False):
  noField           = [2199,2200,2201]
  intermediateField = [2383,2388,2389,2390,2392,2395,2396]
  noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
+ RPCbad = [2144,2154,2183,2192,2210,2211,2217,2218,2235,2236,2237,2240,2241,2243,2291,2345,2359]
  badRuns = [2142, 2143, 2144, 2149]
  keyword = 'RUN_8000_2'
  temp = os.listdir('.')
@@ -5072,6 +5074,7 @@ def mergeGoodRuns():
   if not os.path.isdir(x): continue
   r = int(x[x.rfind('/')+1:].split('_')[2])
   if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
+  if excludeRPC and (r in RPCbad or (r>2198 and r < 2275)) : continue
   cmd += x+'/momDistributions.root '
  os.system(cmd)
 
