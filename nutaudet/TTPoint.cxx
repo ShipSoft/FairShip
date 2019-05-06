@@ -12,9 +12,8 @@ TTPoint::TTPoint()
 }
 // -------------------------------------------------------------------------
 
-TTPoint::TTPoint(Int_t trackID, Int_t detID,TVector3 pos, TVector3 mom,
-                         Double_t tof, Double_t length,
-			 Double_t eLoss, Int_t pdgcode)
+TTPoint::TTPoint(Int_t trackID, Int_t detID,TVector3 pos, TVector3 mom,Double_t tof, 
+                 Double_t length, Double_t eLoss, Int_t pdgcode)
   : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),fPdgCode(pdgcode)
 {  }
 

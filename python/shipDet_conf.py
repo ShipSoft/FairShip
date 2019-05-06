@@ -267,31 +267,31 @@ def configure(run,ship_geo):
     NuTauTarget.SetBaseDimension(ship_geo.NuTauTarget.BaseX, ship_geo.NuTauTarget.BaseY, ship_geo.NuTauTarget.BaseZ)
     
 # Target Tracker 
-   NuTauTT = ROOT.TargetTracker("TargetTrackers",ROOT.kTRUE)
+   NuTauTT = ROOT.TargetTracker("TargetTrackers", ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ, ROOT.kTRUE)
    NuTauTT.SetDesign(ship_geo.NuTauTT.design)
-   NuTauTT.SetSciFiParam(ship_geo.NuTauTT.scifimat_width, ship_geo.NuTauTT.scifimat_hor, ship_geo.NuTauTT.scifimat_vert, 
-                         ship_geo.NuTauTT.scifimat_z, ship_geo.NuTauTT.support_z, ship_geo.NuTauTT.honeycomb_z)
+   NuTauTT.SetSciFiParam(ship_geo.NuTauTT.scifimat_width, ship_geo.NuTauTT.scifimat_hor, ship_geo.NuTauTT.scifimat_vert, ship_geo.NuTauTT.scifimat_z, ship_geo.NuTauTT.support_z, ship_geo.NuTauTT.honeycomb_z)
    NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ)
    NuTauTT.SetBrickParam(ship_geo.NuTauTarget.CellW)
    NuTauTT.SetTotZDimension(ship_geo.NuTauTarget.zdim)
    NuTauTT.SetNumberTT(ship_geo.NuTauTT.n)
-  #method of nutau target that must be called after TT parameter definition
+  # method of nutau target that must be called after TT parameter definition
    NuTauTarget.SetTTzdimension(ship_geo.NuTauTT.TTZ)
- 
+
    detectorList.append(NuTauTarget)
    detectorList.append(NuTauTT)
 
    tauHpt = ROOT.Hpt("HighPrecisionTrackers",ship_geo.tauHPT.DX, ship_geo.tauHPT.DY, ship_geo.tauHPT.DZ, ROOT.kTRUE)
    tauHpt.SetZsize(ship_geo.tauMudet.Ztot)
    tauHpt.SetDesign(ship_geo.NuTauTarget.Design)
- # Downstream SciFi Tracker
+  # DownStream SciFi Tracker
    tauHpt.SetDSTSciFiParam(ship_geo.tauHPT.scifimat_width, ship_geo.tauHPT.scifimat_hor, ship_geo.tauHPT.scifimat_vert, 
                            ship_geo.tauHPT.scifimat_z, ship_geo.tauHPT.support_z, ship_geo.tauHPT.honeycomb_z)
    tauHpt.SetDSTrackerParam(ship_geo.tauHPT.TTX, ship_geo.tauHPT.TTY, ship_geo.tauHPT.TTZ)
    if ship_geo.nuTauTargetDesign<3:
     tauHpt.SetConcreteBaseDim(ship_geo.tauHPT.ConcreteX,ship_geo.tauHPT.ConcreteY,ship_geo.tauHPT.ConcreteZ)
    if ship_geo.nuTauTargetDesign==3:
-    tauHpt.SetHPTNumber(ship_geo.tauHPT.nHPT)
+    #tauHpt.SetHPTNumber(ship_geo.tauHPT.nHPT)
+    tauHpt.SetHPTNumber(0)
     tauHpt.SetDistanceHPTs(ship_geo.tauHPT.distHPT)
     tauHpt.SetSurroundingDetHeight(ship_geo.tauHPT.SRDY)
     tauHpt.GetMagnetGeometry(ship_geo.EmuMagnet.zC, ship_geo.EmuMagnet.Y)
