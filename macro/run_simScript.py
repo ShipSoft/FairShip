@@ -367,7 +367,7 @@ if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(pID,1)
   myPgun.SetPRange(Estart,Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, ship_geo.target.z0+ship_geo.muShield.length)
+  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm)
   #myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
   if charm!=0:
      myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
