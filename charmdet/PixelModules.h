@@ -113,7 +113,7 @@ protected:
     Double_t DimZ = 0;
     Double_t zSizeMS = 0; //dimension of the Magnetic PixelModules volume
 
-    Double_t overlap;
+    Double_t overlap=0;
     Double_t DimZPixelBox;
 
     static const Int_t nSi=120;

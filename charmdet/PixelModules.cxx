@@ -187,7 +187,6 @@ void PixelModules::ConstructGeometry()
      if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
      if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
     }
-    //Double_t DimZPixelBox = zs5 -zs0 +pairwisedistance + DimZSi;
     TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZPixelBox/2.); //The box is symmetric, offsets are not. So we enlarge the offset by a factor two for coverage
     TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
     Double_t inimodZoffset(zs[0]) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
@@ -204,7 +203,7 @@ void PixelModules::ConstructGeometry()
     volPixelx->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixelx);
 
-    //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
+    //id convention: 1{a}{b}{c}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
     int chi=0;
     Int_t PixelIDlist[nSi];
     for(int i=1110;i<1130;i++){
