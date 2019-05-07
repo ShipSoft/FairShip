@@ -192,10 +192,7 @@ def correctAlignmentRPC(hit,v):
 
 def RPCPosition():
  """ builds the list of positions for each detectorID. Same as driftubeMonitoring.py """
- inputfile = ROOT.TFile.Open("RPCchannelmapfunctions.root")
- fH = inputfile.Get("fH")
- fV = inputfile.Get("fV")
- for s in range(1,2): #RPC stations
+ for s in range(1,6): #RPC stations
   for v in range(2): #views
    for c in range(1,185): # channels per view
     if v==0 and c>116: continue
@@ -206,10 +203,6 @@ def RPCPosition():
     x = (a[0]+b[0])/2.
     y = (a[1]+b[1])/2.
     z = (a[2]+b[2])/2.
-    if v==0:
-      print "Prova differenza in y: ",y-19.404-(fH.Eval(c))," ",y, " ",fH.Eval(c)
-    else:
-      print "Prova differenza in x: ",-x-fV.Eval(c)," ",x, " ",-fV.Eval(c)
     print "Posizione per view {} e canale {}: ({}, {},{})".format(v,c,x,y,z)
 
 def GetRPCPosition(s,v,c):
@@ -308,4 +301,6 @@ def getSlopes(clusters,view=0):
     return line[0],line[1]
 
 # what methods are launched?
-GetPixelPositions(2)
+GetPixelPositions(2)    
+RPCPosition()
+#loadRPCtracks(1)
