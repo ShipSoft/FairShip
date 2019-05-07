@@ -47,9 +47,9 @@ int32_t ShipPixelHit::GetModule()
 int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
 void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap
-  /*if (!ShipPixelHit::PixelPositionMap) {
+  if (!ShipPixelHit::PixelPositionMap) {
     ShipPixelHit::PixelPositionMap = ShipPixelHit::MakePositionMap();
-  }*/
+  }
 
   int max_detID = 10000000*2 + 1000000*7 + 1000*336 + 80 ;
   if (detID%1000000 == 0) {
@@ -59,15 +59,14 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
     std::cout << "PixelDetector::PixelDecode, detectorID out of range "<<detID<<std::endl;
     return;
   }
- // TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
-  TVector3 pixel_pos = ShipPixelHit::MakePositionMap(detID);
+  TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
   pixel.SetX(pixel_pos.X());
   pixel.SetY(pixel_pos.Y());
   pixel.SetZ(pixel_pos.Z());
 }
 
-TVector3 ShipPixelHit::MakePositionMap(int detectorID) {
-//std::shared_ptr <std::unordered_map<int, TVector3>>  ShipPixelHit::MakePositionMap() {
+
+std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
 // map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
 // the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
@@ -75,7 +74,7 @@ TVector3 ShipPixelHit::MakePositionMap(int detectorID) {
   double master[3] = {0,0,0};
   nav->cd("volPixelBox_1/volPixely_111");
   nav->GetCurrentNode()->LocalToMaster(local,master);
-  std::cout<<"Prova"<<master[0]<<" "<<master[1]<<" "<<master[2]<<std::endl;
+//>>>>>>> origin/master
   const float mkm = 0.0001;
 
   const float  z0ref=  -1300.*mkm;
@@ -123,7 +122,7 @@ TVector3 ShipPixelHit::MakePositionMap(int detectorID) {
 
   const float Yref[12] { y0ref, y1ref, y2ref, y3ref, y4ref, y5ref, y6ref, y7ref, y8ref, y9ref, y10ref, y11ref};
 
-  std::unordered_map<int, TVector3> positionMap;
+  auto positionMap = new std::unordered_map<int, TVector3>{};
 
   int map_index = 0;
   int moduleID = 0;
@@ -178,15 +177,15 @@ TVector3 ShipPixelHit::MakePositionMap(int detectorID) {
             x = -x_local;
             y = y_local;
           }
-          positionMap[map_index].SetX(x - Xref[moduleID]);
-          positionMap[map_index].SetY(y - Yref[moduleID]);
-          positionMap[map_index].SetZ(Zref[moduleID]);
+          (*positionMap)[map_index] = TVector3{
+            x - Xref[moduleID],
+            y - Yref[moduleID],
+            Zref[moduleID]};
         }
       }
     }
   }
- // return std::make_shared<std::unordered_map<int, TVector3>>(positionMap);
- return positionMap[detectorID];
+  return positionMap;
 }
 
 // -----   Destructor   ----------------------------------------------------
@@ -202,4 +201,6 @@ void ShipPixelHit::Print()
 }
 // -------------------------------------------------------------------------
 
- ClassImp(ShipPixelHit)
+std::unordered_map<int, TVector3>* ShipPixelHit::PixelPositionMap = nullptr;
+
+ClassImp(ShipPixelHit)

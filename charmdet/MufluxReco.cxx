@@ -718,7 +718,6 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
       if (info[4]==1){station = 'u';}
       if (info[4]==2){station = 'v';}
       float eff = effFudgeFac[station.Data()];
-      std::cout << "debug "<< station.Data()<<" "<<eff<<" "<<rnr<<std::endl;
       if (rnr > eff){continue;}
      }
     spectrHitsSorted[info[4]][info[0]][info[2]*2+info[3]].push_back(hit);
