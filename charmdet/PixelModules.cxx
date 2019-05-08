@@ -125,9 +125,10 @@ void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t z
   Dim1Long = D1long;
 }
 
-void PixelModules::SetSiliconDZ(Double_t SiliconDZ)
+void PixelModules::SetSiliconDZ(Double_t SiliconDZthin,Double_t SiliconDZthick)
 {
-  DimZSi = SiliconDZ;
+  DimZSithin = SiliconDZthin;
+  DimZSithick= SliconDZthick
 }
 
 
@@ -167,6 +168,9 @@ void PixelModules::ConstructGeometry()
     InitMedium("silicon");
     TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
 
+    InitMedium("aluminium");
+    TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
+
     InitMedium("CoilCopper");
     TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
 
@@ -193,15 +197,44 @@ void PixelModules::ConstructGeometry()
     top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
     
 
-    TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSlice/2); //long along y
-    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon); 
+    TGeoBBox *Pixelythin = new TGeoBBox("Pixelythin", Dim1Short/2, Dim1Long/2, DimZThinSlice/2); //long along y
+    TGeoVolume *volPixelythin = new TGeoVolume("volPixelythin",Pixelythin,Silicon); 
     volPixely->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixely);
+    AddSensitiveVolume(volPixelythin);
 
-    TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSlice/2); //long along x
-    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon); 
+    TGeoBBox *Pixelxthin = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZThinSlice/2); //long along x
+    TGeoVolume *volPixelxthin = new TGeoVolume("volPixelxthin",Pixelxthin,Silicon); 
     volPixelx->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixelx);
+    AddSensitiveVolume(volPixelxthin);
+
+    TGeoBBox *Pixelythick = new TGeoBBox("Pixelythick", Dim1Short/2, Dim1Long/2, DimZThinSlice/2); //long along y
+    TGeoVolume *volPixelythick = new TGeoVolume("volPixelythick",Pixelythick,Silicon); 
+    volPixely->SetLineColor(kBlue-5);
+    AddSensitiveVolume(volPixelythick);
+
+    TGeoBBox *Pixelxthick = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZThinSlice/2); //long along x
+    TGeoVolume *volPixelxthick = new TGeoVolume("volPixelxthick",Pixelxthick,Silicon); 
+    volPixelx->SetLineColor(kBlue-5);
+    AddSensitiveVolume(volPixelxthick);
+  
+  ///////////////////////////////////////////////////////Passive material///////////////////////////////////////////////////////
+   
+    TGeoBBox *WindowBox = new TGeoBBox("WindowBox",Windowx/2, Windowy/2,DimZWindow/2);
+    TGeoVolume *volWindow = new TGeoVolume("volWindow",WindowBox,Al);
+    volWindow->SetLineColor(kGray);
+    //AddSensitiveVolume(volWindow);
+
+    TGeoBBox *PixelFramesx = new TGeoBBox("PixelFramesx",Dim1Short/2,Dim1Long/2, DimZAlu/2);
+    TGeoVolume *volAluFramex = new TGeoVolume("volAluFramex",PixelFramesx,Aluminium);
+    volAluFramex->SetLineColor(kGray);
+   // AddSensitiveVolume(volAluFramex);
+
+    TGeoBBox *PixelFramesy = new TGeoBBox("PixelFramesy",Dim1Short/2,Dim1Long/2, DimZAlu/2);
+    TGeoVolume *volAluFramey = new TGeoVolume("volAluFramey",PixelFramesy,Aluminium);
+    volAluFramey->SetLineColor(kGray);
+    //AddSensitiveVolume(volAluFramey);
+
+////////////////////////////////////////////////////////End passive material////////////////////////////////////////////////////////////////
 
     //id convention: 1{a}{b}{c}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
     int chi=0;
@@ -242,13 +275,32 @@ void PixelModules::ConstructGeometry()
 	vertical[i*40+j]=kTRUE;
 	}
     }
+  volWindow->AddNode(0,0,new TGeoTranslation(0,0,-DimZPixelBox/2.-inimodZoffset));
 
     for (int ipixel = 0; ipixel < nSi; ipixel++){
-      if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
-      else volPixelBox->AddNode(volPixelx, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
-    }
+      if (vertical[ipixel]){
+		if(PixelIDlist[ipixel]) {
+			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)) volPixelBox->AddNode(volPixelythick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
+			else volPixelBox->AddNode(volPixelythin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
+		else volPixelBox->AddNode(volPixely, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //else here used for debugging, if the number of slices isn't 10
 
+		if((ipixel+nSlices)%9==1) volAluFramex->AddNode(volAluFramex, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZSlice));
+		}
+      else{ 
+		if(PixelIDlist[ipixel]) 
+			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620))volPixelBox->AddNode(volPixelxthick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
+			else volPixelBox->AddNode(volPixelxthin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
+		
+		else volPixelBox->AddNode(volPixelx, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //debugging else for if nSlice!=10
+
+
+		if((ipixel+nSlices)%9==1)volAluFramey->AddNode(volAluFramey, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZSlice));
+		}
+	
+	}
 }
+
+
 
 Bool_t  PixelModules::ProcessHits(FairVolume* vol)
 {

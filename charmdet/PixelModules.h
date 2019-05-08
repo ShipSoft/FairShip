@@ -25,7 +25,7 @@ class PixelModules:public FairDetector
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_t Dim1Short, Double_t Dim1Long);
-    void SetSiliconDZ(Double_t SiliconDZ);  
+    void SetSiliconDZ(Double_t SiliconDZthin, Double_t SiliconDZthick);  
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
     void SetSiliconDetNumber(Int_t nSilicon);
@@ -110,8 +110,13 @@ protected:
     
     Double_t DimX =0;
     Double_t DimY =0;
-    Double_t DimZ = 0;
+    Double_t DimZthin = 0;
+    Double_t DimZthick = 0;
     Double_t zSizeMS = 0; //dimension of the Magnetic PixelModules volume
+    Double_t DimZAlu= 0.6; //thickness of the aluminium modules
+    Double_t DimZWindow=0.005;
+    Double_t Windowx=5;
+    Double_t Windowy=5;//estimation has to be measured
 
     Double_t overlap=0;
     Double_t DimZPixelBox;
