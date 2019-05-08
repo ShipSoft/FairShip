@@ -115,144 +115,146 @@ tracklist.SetName("RK Propagator")
 recotrack = ROOT.TEveRecTrackD()
 
 def GetPixelPositions(n=1):
-    sTree.GetEntry(n)
-    npixelpoints = 0
-    pixelhits = sTree.Digi_PixelHits_1
-    pos = ROOT.TVector3(0,0,0)
-    hitx = []
-    hity = []
-    hitz = []
-    for hit in pixelhits:
-      npixelpoints = npixelpoints + 1
-      detID = hit.GetDetectorID()
-      hit.GetPixelXYZ(pos,detID)
-      print "This is the position of our pixel hit: ", detID, pos[0], pos[1], pos[2] 
-      hitx.append(pos[0])
-      hity.append(pos[1])
-      hitz.append(pos[2])
-    DrawPoints(npixelpoints,hitx,hity,hitz)
+  """ retrieves the position of the pixel hit using the pixel map """
+  sTree.GetEntry(n)
+  npixelpoints = 0
+  pixelhits = sTree.Digi_PixelHits_1
+  pos = ROOT.TVector3(0,0,0)
+  hitx = []
+  hity = []
+  hitz = []
+  for hit in pixelhits:
+    npixelpoints = npixelpoints + 1
+    detID = hit.GetDetectorID()
+    hit.GetPixelXYZ(pos,detID)
+    print "This is the position of our pixel hit: ", detID, pos[0], pos[1], pos[2] 
+    hitx.append(pos[0])
+    hity.append(pos[1])
+    hitz.append(pos[2])
+  DrawPoints(npixelpoints,hitx,hity,hitz)
 
 
 def correctAlignmentRPC(hit,v):
- hit.EndPoints(vtop,vbot) #obtaining hit positions
+  hit.EndPoints(vtop,vbot) #obtaining hit positions
 
- if v==1:
-   vbot[0] = -vbot[0] -1.21
-   vtop[0] = -vtop[0] -1.21
- else:
-   vbot[1] = vbot[1] -1.21
-   vtop[1] = vtop[1] -1.21
- return vbot,vtop
+  if v==1:
+    vbot[0] = -vbot[0] -1.21
+    vtop[0] = -vtop[0] -1.21
+  else:
+    vbot[1] = vbot[1] -1.21
+    vtop[1] = vtop[1] -1.21
+  return vbot,vtop
 
 def RPCPosition():
- """ builds the list of positions for each detectorID. Same as driftubeMonitoring.py """
- for s in range(1,6): #RPC stations
-  for v in range(2): #views
-   for c in range(1,185): # channels per view
-    if v==0 and c>116: continue
-    detID = s*10000+v*1000+c
-    hit = ROOT.MuonTaggerHit(detID,0)
-    a,b = correctAlignmentRPC(hit,v)
-    RPCPositionsBotTop[detID] = [a.Clone(),b.Clone()]
-    x = (a[0]+b[0])/2.
-    y = (a[1]+b[1])/2.
-    z = (a[2]+b[2])/2.
-    print "Posizione per view {} e canale {}: ({}, {},{})".format(v,c,x,y,z)
+  """ builds the list of positions for each detectorID. Same as driftubeMonitoring.py """
+  for s in range(1,6): #RPC stations
+    for v in range(2): #views
+      for c in range(1,185): # channels per view
+        if v==0 and c>116: continue
+        detID = s*10000+v*1000+c
+        hit = ROOT.MuonTaggerHit(detID,0)
+        a,b = correctAlignmentRPC(hit,v)
+        RPCPositionsBotTop[detID] = [a.Clone(),b.Clone()]
+        x = (a[0]+b[0])/2.
+        y = (a[1]+b[1])/2.
+        z = (a[2]+b[2])/2.
+        print "Postion for view {} and channel {}: ({}, {},{})".format(v,c,x,y,z)
 
 def GetRPCPosition(s,v,c):
-    detID = s*10000+v*1000+c
-    return RPCPositionsBotTop[detID]
-#getting positions from the MuonTaggerHit containers, built from the files provided by Alessandra
+  """ Gets RPC Positions from the information of station, view and channel """
+  detID = s*10000+v*1000+c
+  return RPCPositionsBotTop[detID]
+
 def loadRPCtracks(n=1):
-    """ Loads MuonTaggerHits from file and get position of clusters"""
-    hitx = []
-    hity = []
-    hitz = []
-    for icluster in range(5):
+  """ Loads MuonTaggerHits from file and get position of clusters"""
+  hitx = []
+  hity = []
+  hitz = []
+  for icluster in range(5):
      hitx.append(0)
      hity.append(0)
      hitz.append(0)
 
-    sTree.GetEntry(n)
-    trackhits = sTree.MuonTaggerHit
-    clustersH = []
-    clustersV = []
-    for hit in trackhits:
-     detID = hit.GetDetectorID()
-     station = int (detID/10000) #automatically an int in python2, but calling the conversion avoids confusion
-     view = int((detID-station*10000)/1000)
+  sTree.GetEntry(n)
+  trackhits = sTree.MuonTaggerHit
+  clustersH = []
+  clustersV = []
+  for hit in trackhits:
+    detID = hit.GetDetectorID()
+    station = int (detID/10000) #automatically an int in python2, but calling the conversion avoids confusion
+    view = int((detID-station*10000)/1000)
 
-     a,b = RPCPositionsBotTop[detID]
-     x = (a[0]+b[0])/2.
-     y = (a[1]+b[1])/2.
-     z = (a[2]+b[2])/2.
+    a,b = RPCPositionsBotTop[detID]
+    x = (a[0]+b[0])/2.
+    y = (a[1]+b[1])/2.
+    z = (a[2]+b[2])/2.
 
     #adding the point to two different lists according to the view  
-     if view == 0:
+    if view == 0:
       hity[station-1] = y
       hitz[station-1] = z
       clustersH.append([x,y,z])
-     elif view == 1:
+    elif view == 1:
       hitx[station-1] = x
       hitz[station-1] = z
       clustersV.append([x,y,z])
-     print "Posizione cluster caricato: ({},{},{}), corrispondente alla stazione{} e alla view {}".format(x,y,z,station,view)    
-    #fitting to two 2D tracks
-    mH,bH = getSlopes(clustersH,0) 
-    mV,bV = getSlopes(clustersV,1)   
-    trackH = ROOT.RPCTrack(mH,bH)
-    trackV = ROOT.RPCTrack(mV,bV)
-    print "Line equation along horizontal: {}*z + {}".format(mH,bH)
-    print "Line equation along vertical: {}*z + {}".format(mV,bV)
-    theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
-    phi = ROOT.TMath.ATan(mH/mV)
-    print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)  
-    DrawPoints(5,hitx,hity,hitz)
+    print "Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view)    
+  #fitting to two 2D tracks
+  mH,bH = getSlopes(clustersH,0) 
+  mV,bV = getSlopes(clustersV,1)   
+  trackH = ROOT.RPCTrack(mH,bH)
+  trackV = ROOT.RPCTrack(mV,bV)
+  print "Line equation along horizontal: {}*z + {}".format(mH,bH)
+  print "Line equation along vertical: {}*z + {}".format(mV,bV)
+  theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
+  phi = ROOT.TMath.ATan(mH/mV)
+  print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)  
+  DrawPoints(5,hitx,hity,hitz)
     
-    lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
-    print "Prova, ",hitx[4], hity[4], hitz[4]
-    DrawTrack(theta,phi,lastpoint)
+  lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
+  print "Prova, ",hitx[4], hity[4], hitz[4]
+  DrawTrack(theta,phi,lastpoint)
 
-def DrawPoints(nclusters,hitx,hity,hitz):
-    """Draws clusters as TEvePointSet"""  
-    clusterlist = ROOT.TEvePointSet(3)
-    clusterlist.SetElementName("Hits in MuonTagger")
-    for icluster in range(nclusters):
-     clusterlist.SetPoint(icluster,hitx[icluster],  hity[icluster], hitz[icluster])
-     clusterlist.SetMarkerColor(ROOT.kAzure)
-    gEve.AddElement(clusterlist)
-    #drawing the track
+def DrawPoints(nclusters,hitx,hity,hitz, name = "FairShipHits"):
+  """Draws clusters as TEvePointSet"""  
+  clusterlist = ROOT.TEvePointSet(3)
+  clusterlist.SetElementName(name)
+  for icluster in range(nclusters):
+    clusterlist.SetPoint(icluster,hitx[icluster],  hity[icluster], hitz[icluster])
+    clusterlist.SetMarkerColor(ROOT.kAzure)
+  gEve.AddElement(clusterlist)
+  #drawing the track
 
 def DrawTrack(theta,phi,lastpoint):
-    """Draw track as TEveTrack, propagating backwards from last point provided. A proton of 400 GeV is assumed"""
-    recotrack.fV.Set(lastpoint[0], lastpoint[1], lastpoint[2]); #'vertex' of track, here used as starting point
-    fakemomentum = 400
-    recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Cos(phi), fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Sin(phi),-fakemomentum * ROOT.TMath.Cos(theta)); #track propagated backwards
-    recotrack.fSign = 1
+  """Draw track as TEveTrack, propagating backwards from last point provided. A proton of 400 GeV is assumed"""
+  recotrack.fV.Set(lastpoint[0], lastpoint[1], lastpoint[2]); #'vertex' of track, here used as starting point
+  fakemomentum = 400
+  recotrack.fP.Set(fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Cos(phi), fakemomentum * ROOT.TMath.Sin(theta) * ROOT.TMath.Sin(phi),-fakemomentum * ROOT.TMath.Cos(theta)); #track propagated backwards
+  recotrack.fSign = 1
 
-    track = ROOT.TEveTrack(recotrack, prop)
-    track.SetName("Test proton")
-    track.SetLineColor(ROOT.kRed)
-    tracklist.AddElement(track)
-    gEve.AddElement(tracklist)
+  track = ROOT.TEveTrack(recotrack, prop)
+  track.SetName("Test proton")
+  track.SetLineColor(ROOT.kRed)
+  tracklist.AddElement(track)
+  gEve.AddElement(tracklist)
 
-    track.MakeTrack()
-    gEve.Redraw3D()
+  track.MakeTrack()
+  gEve.Redraw3D()
 
 
 #
 def getSlopes(clusters,view=0):
-    """using Numpy polyfit to obtain the slopes from the clusters. Adapted from the similar method in driftubeMonitoring.py"""
-    x,z=[],[]
-    for hit in clusters:     
-      if view==0: #horizontal strip, fitting in the zy plane
-        x.append(hit[1])
-        z.append(hit[2])
-      else: #vertical strip, fitting in the zx plane
-        x.append(hit[0])
-        z.append(hit[2])
-    line = numpy.polyfit(z,x,1)
-    return line[0],line[1]
+  """using Numpy polyfit to obtain the slopes from the clusters. Adapted from the similar method in driftubeMonitoring.py"""
+  x,z=[],[]
+  for hit in clusters:     
+    if view==0: #horizontal strip, fitting in the zy plane
+      x.append(hit[1])
+      z.append(hit[2])
+    else: #vertical strip, fitting in the zx plane
+      x.append(hit[0])
+      z.append(hit[2])
+  line = numpy.polyfit(z,x,1)
+  return line[0],line[1]
 
 # what methods are launched?
 #GetPixelPositions(2)    
