@@ -1,6 +1,5 @@
-#import yep
 import ROOT,os,time,sys,operator,atexit
-ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
+#ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 import numpy
 from decorators import *
 import __builtin__ as builtin
@@ -15,47 +14,10 @@ import shipunit as u
 import rootUtils as ut
 from array import array
 
-########
-zeroField    = False
-DAFfitter    = True
-withMaterial = True
-MCdata = False
-########
-MCsmearing=0.04  #  + 0.027**2 -> 0.05
-####### 
-cuts={}
-cuts['Ndf'] = 9
-cuts['deltaNdf'] = 2
-cuts['yMax']     = 5.
-cuts['tot']      = 9.
-cuts['hitDist'] = 5.
-cuts['minLayersUV'] = 2
-cuts['maxClusterSize'] = 2
-cuts['delxAtGoliath'] = 8.
-cuts['lateArrivalsToT'] = 9999.
-# smallest group of channels for RT calibration
-cuts['RTsegmentation'] = 12
-# for muontagger clustering
-cuts['muTaggerCluster_max'] = 6
-cuts['muTaggerCluster_sep'] = 15
-cuts['muTrackMatchX']= 5.
-cuts['muTrackMatchY']= 10.
-cuts['muTaggerCluster_grouping'] = 3
-cuts["RPCmaxDistance"] = 10.
-
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
-alignConstants = {}
-h={}
-log = {}
-debug = False
 
-views =  {1:['_x','_u'],2:['_x','_v'],3:['_x'],4:['_x']}
-viewsI = {1:[0,1],2:[0,2],3:[0],4:[0]}
-viewC = {0:"_x",1:"_u",2:"_v"}
 
-muSources = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
-muSourcesIDs = muSources.values()
 rnr       = ROOT.TRandom()
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -65,12 +27,9 @@ def pyExit():
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
 parser.add_argument("-l", "--fileCatalog", dest="catalog", help="list of files in file", default=False)
-parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
 parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=True)
 parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False)
 parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False)
-parser.add_argument("-i", "--input", dest="inputFile", help="input histo file", default='residuals.root')
-
 #-----accessing file------------------------------------------------------
 options = parser.parse_args()
 fnames = []
@@ -104,11 +63,6 @@ else:
   if options.onEOS: sTree.Add(os.environ['EOSSHIP']+f)
   else:             sTree.Add(f)
 
-rnames = []
-for fname in fnames:
- rnames.append(fname[fname.rfind('/')+1:])
-rname = rnames[0]
-#sTree.SetMaxVirtualSize(300000)
 #-------------------------------geometry initialization
 from ShipGeoConfig import ConfigRegistry
 ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = 1, cTarget = 3)
