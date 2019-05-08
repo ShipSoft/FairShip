@@ -59,48 +59,56 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
     std::cout << "PixelDetector::PixelDecode, detectorID out of range "<<detID<<std::endl;
     return;
   }
-  TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
-  pixel.SetX(pixel_pos.X());
-  pixel.SetY(pixel_pos.Y());
-  pixel.SetZ(pixel_pos.Z());
-}
-
-
-std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
-// map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
-// the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
+  // retrieving position of pixelbox mother volume
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
   double origin[3] = {0,0,0};
   double pixelboxcenter[3] = {0,0,0};
   nav->cd("volPixelBox_1");
   TGeoNode *pixelboxnode = nav->GetCurrentNode();
   pixelboxnode->LocalToMaster(origin,pixelboxcenter);
+  TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
+  //translations to pass from LOCAL coordinates system to GLOBAL FairShip coordinates
+  pixel.SetX(pixel_pos.X()+ pixelboxcenter[0]);
+  pixel.SetY(pixel_pos.Y() + pixelboxcenter[1]);
+  pixel.SetZ(pixel_pos.Z()+ pixelboxcenter[2]);
+}
+
+
+std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
+// map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
+// the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
+
+// Positions OF 12 station volumes as from FairShip (global coordinates)
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
+  double origin[3] = {0,0,0};
+  nav->cd("volPixelBox_1");
+  TGeoNode *pixelboxnode = nav->GetCurrentNode();
   const int npixels = 12;
- float Xref[npixels],Yref[npixels],Zref[npixels];
+  float XFairShipref[npixels],YFairShipref[npixels],ZFairShipref[npixels]; //positions with respect to the center of pixelbox mother volume (in cm)
   for (int i = 0; i < npixels; i++){
   TGeoNode * pixelst = (TGeoNode*) pixelboxnode->GetDaughter(i);
   double pixelstation[3] = {0,0,0};
   pixelst->LocalToMaster(origin,pixelstation);
-  Xref[i] = pixelstation[0]+ pixelboxcenter[0];;
-  Yref[i] = pixelstation[1] + pixelboxcenter[1];;
-  Zref[i] = pixelstation[2] + pixelboxcenter[2];
+  XFairShipref[i] = pixelstation[0];
+  YFairShipref[i] = pixelstation[1];
+  ZFairShipref[i] = pixelstation[2];
+  std::cout<<"Check z"<<ZFairShipref[3]<<" "<<ZFairShipref[6]<<std::endl;
   }
-  //std::cout<<"Prova pixel 0: "<<pixelstation[0]+pixelboxcenter[0]<<" "<<pixelstation[1]+pixelboxcenter[1]<<" "<<pixelstation[2]+pixelboxcenter[2]<<std::endl;
 
-  const float mkm = 0.0001;/*
-//  original positions, kept for comparison
-  const float  z0ref=  -1300.*mkm + pixelboxcenter[2];
-  const float  z1ref=   5200.*mkm+ pixelboxcenter[2];
-  const float  z2ref=  24120.*mkm+ pixelboxcenter[2];
-  const float  z3ref=  30900.*mkm+ pixelboxcenter[2];
-  const float  z4ref=  51000.*mkm+ pixelboxcenter[2];
-  const float  z5ref=  57900.*mkm+ pixelboxcenter[2];
-  const float  z6ref=  77900.*mkm+ pixelboxcenter[2];
-  const float  z7ref=  84600.*mkm+ pixelboxcenter[2];
-  const float  z8ref= 104620.*mkm+ pixelboxcenter[2];
-  const float  z9ref= 111700.*mkm+ pixelboxcenter[2];
-  const float z10ref= 131620.*mkm+ pixelboxcenter[2];
-  const float z11ref= 138500.*mkm+ pixelboxcenter[2];
+  const float mkm = 0.0001;
+//  transformations due to local pixel calibration
+  const float  z0ref=  -1300.*mkm;
+  const float  z1ref=   5200.*mkm;
+  const float  z2ref=  24120.*mkm;
+  const float  z3ref=  30900.*mkm;
+  const float  z4ref=  51000.*mkm;
+  const float  z5ref=  57900.*mkm;
+  const float  z6ref=  77900.*mkm;
+  const float  z7ref=  84600.*mkm;
+  const float  z8ref= 104620.*mkm;
+  const float  z9ref= 111700.*mkm;
+  const float z10ref= 131620.*mkm;
+  const float z11ref= 138500.*mkm;
 
   const float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
 
@@ -132,7 +140,7 @@ std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
   const float y10ref=  (-8400 + 7660.)*mkm      +z10ref*0.0068;
   const float y11ref= (8400 - 8850.)*mkm      +z11ref*0.0068;
 
-  const float Yref[12] { y0ref, y1ref, y2ref, y3ref, y4ref, y5ref, y6ref, y7ref, y8ref, y9ref, y10ref, y11ref};*/
+  const float Yref[12] { y0ref, y1ref, y2ref, y3ref, y4ref, y5ref, y6ref, y7ref, y8ref, y9ref, y10ref, y11ref};
 
   auto positionMap = new std::unordered_map<int, TVector3>{};
 
