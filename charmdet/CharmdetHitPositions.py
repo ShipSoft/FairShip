@@ -1,4 +1,4 @@
-import ROOT,os,time,sys,operator,atexit
+import ROOT,os
 #ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 import numpy
 from decorators import *
@@ -11,8 +11,6 @@ timer = ROOT.TStopwatch()
 ROOT.gErrorIgnoreLevel = ROOT.kBreak
 from argparse import ArgumentParser
 import shipunit as u
-import rootUtils as ut
-from array import array
 
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
@@ -22,7 +20,6 @@ rnr       = ROOT.TRandom()
 #-----prepare python exit-----------------------------------------------
 def pyExit():
  ut.errorSummary()
-# atexit.register(pyExit)
 #-----list of arguments--------------------------------------------------
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
