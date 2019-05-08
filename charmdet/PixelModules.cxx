@@ -194,7 +194,7 @@ void PixelModules::ConstructGeometry()
     }
     TGeoBBox *PixelBox = new TGeoBBox("PixelBox", Dim1Long/2 + offsetxmax, Dim1Long/2 + offsetymax, DimZPixelBox/2.); //The box is symmetric, offsets are not. So we enlarge the offset by a factor two for coverage
     TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
-    Double_t inimodZoffset(zs[0]) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
+    Double_t inimodZoffset(zs[0]-DimZSithick) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
     top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
     
 
