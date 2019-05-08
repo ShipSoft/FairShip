@@ -301,6 +301,6 @@ def getSlopes(clusters,view=0):
     return line[0],line[1]
 
 # what methods are launched?
-GetPixelPositions(2)    
+#GetPixelPositions(2)    
 RPCPosition()
-#loadRPCtracks(1)
+loadRPCtracks(1)
