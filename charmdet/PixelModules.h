@@ -110,8 +110,7 @@ protected:
     
     Double_t DimX =0;
     Double_t DimY =0;
-    Double_t DimZthin = 0;
-    Double_t DimZthick = 0;
+    Double_t DimZ = 0;
     Double_t zSizeMS = 0; //dimension of the Magnetic PixelModules volume
     Double_t DimZAlu= 0.6; //thickness of the aluminium modules
     Double_t DimZWindow=0.005;
@@ -123,8 +122,10 @@ protected:
 
     static const Int_t nSi=120;
     Int_t numSi;
-    Double_t DimZSi;
-    Double_t DimZSlice;
+    Double_t DimZSithin;
+    Double_t DimZSithick;
+    Double_t DimZThinSlice;
+    Double_t DimZThickSlice;
     Double_t xs[nSi], ys[nSi], zs[nSi];
     Double_t xangle[nSi], yangle[nSi], zangle[nSi];
     

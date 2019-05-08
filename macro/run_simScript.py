@@ -41,7 +41,7 @@ RPVSUSY      = False
 RPVSUSYbench = 2
 
 eventDisplay = False
-inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
+inputFile    = "/cephfs/user/s6maclim/CharmCascade/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 
 defaultInputFile = True
 outputDir    = "."
