@@ -78,25 +78,8 @@ std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
 // map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
 // the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
 
-// Positions OF 12 station volumes as from FairShip (global coordinates)
-  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
-  double origin[3] = {0,0,0};
-  nav->cd("volPixelBox_1");
-  TGeoNode *pixelboxnode = nav->GetCurrentNode();
-  const int npixels = 12;
-  float XFairShipref[npixels],YFairShipref[npixels],ZFairShipref[npixels]; //positions with respect to the center of pixelbox mother volume (in cm)
-  for (int i = 0; i < npixels; i++){
-  TGeoNode * pixelst = (TGeoNode*) pixelboxnode->GetDaughter(i);
-  double pixelstation[3] = {0,0,0};
-  pixelst->LocalToMaster(origin,pixelstation);
-  XFairShipref[i] = pixelstation[0];
-  YFairShipref[i] = pixelstation[1];
-  ZFairShipref[i] = pixelstation[2];
-  std::cout<<"Check z"<<ZFairShipref[3]<<" "<<ZFairShipref[6]<<std::endl;
-  }
-
   const float mkm = 0.0001;
-//  transformations due to local pixel calibration
+
   const float  z0ref=  -1300.*mkm;
   const float  z1ref=   5200.*mkm;
   const float  z2ref=  24120.*mkm;
