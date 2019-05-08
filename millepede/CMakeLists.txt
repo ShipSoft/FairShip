@@ -23,14 +23,8 @@ link_directories( ${LINK_DIRECTORIES})
 # add the list of source code files -- careful, when a new file is added!
 AUX_SOURCE_DIRECTORY( ${CMAKE_SOURCE_DIR}/millepede          library_sources )
 
-string(REPLACE "/src/" "/include/"  HEADERS "${library_sources}")
-string(REPLACE ".cc" ".h"  HEADERS "${HEADERS}")
-set(HEADERS "${HEADERS}"
-  ${CMAKE_SOURCE_DIR}/genfit/utilities/include/mySpacepointDetectorHit.h
-  ${CMAKE_SOURCE_DIR}/genfit/utilities/include/mySpacepointMeasurement.h
-)
 Set(SRCS ${library_sources})
-Set(LINKDEF ${CMAKE_SOURCE_DIR}/genfit/millepedeLinkDef.h)
+Set(LINKDEF ${CMAKE_SOURCE_DIR}/millepede/millepedeLinkDef.h)
 Set(LIBRARY_NAME millepede)
 Set(DEPENDENCIES Core Geom Matrix Eve Gui Physics MathCore EG)
 
