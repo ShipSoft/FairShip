@@ -55,6 +55,6 @@ MillepedeCaller.cxx
 Set(HEADERS )
 Set(LINKDEF BoxLinkDef.h)
 Set(LIBRARY_NAME charmdet)
-Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit millepde)
+Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit millepede)
 
 GENERATE_LIBRARY()
