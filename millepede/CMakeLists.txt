@@ -21,6 +21,7 @@ ${FAIRROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 Set(SRCS Mille.cc)
+Set(HEADERS)
 Set(LINKDEF millepedeLinkDef.h)
 Set(LIBRARY_NAME millepede)
 Set(DEPENDENCIES Core Geom Matrix Eve Gui Physics MathCore EG)
