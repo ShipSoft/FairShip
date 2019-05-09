@@ -48,11 +48,12 @@ ShipPixelHit.cxx
 ReProcessAbsorber.cxx
 RPCTrack.cxx
 MufluxReco.cxx
+MillepedeCaller.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF BoxLinkDef.h)
 Set(LIBRARY_NAME charmdet)
-Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit)
+Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit millepde)
 
 GENERATE_LIBRARY()
