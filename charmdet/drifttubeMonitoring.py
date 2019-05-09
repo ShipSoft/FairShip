@@ -3274,7 +3274,7 @@ def momResolution(PR=1,onlyPlotting=False):
    trueP = ROOT.TVector3(mp.GetPx(),mp.GetPy(),mp.GetPz())
    st = tracks[0].getFittedState()
    recoP = st.getMom()
-   rc = h['trueMom'].Fill((recoP.Mag())
+   rc = h['trueMom'].Fill(recoP.Mag())
    rc = h['momResol'].Fill((recoP.Mag()-trueP.Mag())/trueP.Mag(),trueP.Mag())
    rc = h['curvResol'].Fill((1./recoP.Mag()-1./trueP.Mag())*trueP.Mag(),trueP.Mag())
    if not PR<10: 
