@@ -20,13 +20,9 @@ ${FAIRROOT_LIBRARY_DIR}
 
 link_directories( ${LINK_DIRECTORIES})
 
-# add the list of source code files -- careful, when a new file is added!
-AUX_SOURCE_DIRECTORY( ${CMAKE_SOURCE_DIR}/millepede          library_sources )
-
-Set(SRCS ${library_sources})
-Set(LINKDEF ${CMAKE_SOURCE_DIR}/millepede/millepedeLinkDef.h)
+Set(SRCS Mille.cc)
+Set(LINKDEF millepedeLinkDef.h)
 Set(LIBRARY_NAME millepede)
 Set(DEPENDENCIES Core Geom Matrix Eve Gui Physics MathCore EG)
 
 GENERATE_LIBRARY()
-
