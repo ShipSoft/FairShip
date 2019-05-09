@@ -2,7 +2,7 @@
 #define CHARMDET_MILLEPEDECALLER_H_
 
 #include "TObject.h"
-#include "Mille.h
+#include "Mille.h"
 
 /**
  * A class for wrapping the millepede function call such that it can be called from
