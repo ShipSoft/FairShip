@@ -2,7 +2,7 @@
 //  PixelModules, twelve pixel modules physically connected two by two.
 
 #include "PixelModules.h"
-//#include "MagneticPixelModules.h" 
+//#include "MagneticPixelModules.h"
 #include "PixelModulesPoint.h"
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
@@ -72,7 +72,7 @@ PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t D
     fLength(-1.),
     fELoss(-1),
     fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
-{ 
+{
   DimX = DX;
   DimY = DY;
   DimZ = DZ;
@@ -91,7 +91,7 @@ void PixelModules::Initialize()
     FairDetector::Initialize();
 }
 
-// -----   Private method InitMedium 
+// -----   Private method InitMedium
 Int_t PixelModules::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -148,20 +148,14 @@ void PixelModules::SetSiliconDetNumber(Int_t nSilicon)
  nSi = nSilicon;
 }
 
-
-
-
-
-
-//
 void PixelModules::ConstructGeometry()
-{ 
+{
     InitMedium("air");
   TGeoMedium *air = gGeoManager->GetMedium("air");
 
     InitMedium("iron");
     TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-    
+
     InitMedium("silicon");
     TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
 
@@ -173,10 +167,10 @@ void PixelModules::ConstructGeometry()
 
     InitMedium("TTmedium");
     TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
-    
+
     InitMedium("STTmix8020_2bar");
     TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
-  
+
     TGeoVolume *top = gGeoManager->GetTopVolume();
 
     //computing the largest offsets in order to set PixelBox dimensions correctly
@@ -190,22 +184,22 @@ void PixelModules::ConstructGeometry()
     TGeoVolume *volPixelBox = new TGeoVolume("volPixelBox",PixelBox,air);
     Double_t inimodZoffset(zs[0]) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
     top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
-    
+
 
     TGeoBBox *Pixely = new TGeoBBox("Pixely", Dim1Short/2, Dim1Long/2, DimZSi/2); //long along y
-    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon); 
+    TGeoVolume *volPixely = new TGeoVolume("volPixely",Pixely,Silicon);
     volPixely->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixely);
 
     TGeoBBox *Pixelx = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZSi/2); //long along x
-    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon); 
+    TGeoVolume *volPixelx = new TGeoVolume("volPixelx",Pixelx,Silicon);
     volPixelx->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixelx);
 
     //id convention: 1{a}{b}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
-    Int_t PixelIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162}; 
+    Int_t PixelIDlist[12] = {111,112,121,122,131,132,141,142,151,152,161,162};
     //Alternated pixel stations optimized for y and x measurements
-    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE}; 
+    Bool_t vertical[12] = {kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE,kTRUE,kTRUE,kFALSE,kFALSE};
 
     for (int ipixel = 0; ipixel < 12; ipixel++){
       if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
@@ -227,7 +221,7 @@ Bool_t  PixelModules::ProcessHits(FairVolume* vol)
     }
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
-    
+
     // Create muonPoint at exit of active volume
     if ( gMC->IsTrackExiting()    ||
         gMC->IsTrackStop()       ||
@@ -238,21 +232,21 @@ Bool_t  PixelModules::ProcessHits(FairVolume* vol)
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
 	//Int_t fMotherID =p->GetFirstMother();
-        gMC->CurrentVolID(fVolumeID);	
+        gMC->CurrentVolID(fVolumeID);
 
-        TLorentzVector Pos; 
-        gMC->TrackPosition(Pos); 
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+        TLorentzVector Pos;
+        gMC->TrackPosition(Pos);
+        Double_t xmean = (fPos.X()+Pos.X())/2. ;
+        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
 
 	AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
-        
+
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
         stack->AddPoint(kPixelModules);
     }
-    
+
     return kTRUE;
 }
 
@@ -264,13 +258,13 @@ void PixelModules::EndOfEvent()
 
 void PixelModules::Register()
 {
-    
+
     /** This will create a branch in the output tree called
      PixelModulesPoint, setting the last parameter to kFALSE means:
      this collection will not be written to the file, it will exist
      only during the simulation.
      */
-    
+
     FairRootManager::Instance()->Register("PixelModulesPoint", "PixelModules",
                                           fPixelModulesPointCollection, kTRUE);
 }

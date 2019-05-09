@@ -43,7 +43,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fPhiRandomize = fl;
   fSameSeed = 0;
   fsmearBeam = 0; // default no beam smearing, use SetSmearBeam(sb) if different, sb [cm]
-  fdownScaleDiMuon = kTRUE; // only needed for muflux simulation
+  fdownScaleDiMuon = kFALSE; // only needed for muflux simulation
   fTree = (TTree *)fInputFile->Get("pythia8-Geant4");
   if (fTree){
    fNevents = fTree->GetEntries();
