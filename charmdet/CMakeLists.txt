@@ -9,6 +9,7 @@ ${CMAKE_SOURCE_DIR}/charmdet
 ${CMAKE_SOURCE_DIR}/online
 ${CMAKE_SOURCE_DIR}/genfit/core/include
 ${CMAKE_SOURCE_DIR}/genfit/trackReps/include
+${CMAKE_SOURCE_DIR}/millepede
 ${ROOT_INCLUDE_DIR}
 )
 
