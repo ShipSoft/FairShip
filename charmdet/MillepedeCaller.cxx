@@ -58,5 +58,5 @@ void MillepedeCaller::call_mille(int n_local_derivatives,
 					float measured_residual,
 					float sigma)
 {
-
+	mille.mille(n_local_derivatives,local_derivatives,n_global_derivatives,global_derivatives,label,measured_residual,sigma);
 }
