@@ -16,6 +16,15 @@ class MillepedeCaller: public TObject
 public:
 	MillepedeCaller(const char *outFileName, bool asBinary = true, bool writeZero = false);
 	~MillepedeCaller();
+
+	void call_mille(int n_local_derivatives,
+					const float *local_derivatives,
+					int n_global_derivatives,
+					const float *global_derivatives,
+					const int *label,
+					float measured_residual,
+					float sigma);
+
 	ClassDef(MillepedeCaller,1);
 
 private:
