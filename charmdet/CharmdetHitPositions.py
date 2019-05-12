@@ -115,12 +115,16 @@ def GetPixelPositions(n=1):
   """ retrieves the position of the pixel hit using the pixel map """
   sTree.GetEntry(n)
   npixelpoints = 0
-  pixelhits = sTree.Digi_PixelHits_1
+  pixelhitslist = []
+  pixelhitslist.append(sTree.Digi_PixelHits_1)
+  pixelhitslist.append(sTree.Digi_PixelHits_2)
+  pixelhitslist.append(sTree.Digi_PixelHits_3)
   pos = ROOT.TVector3(0,0,0)
   hitx = []
   hity = []
   hitz = []
-  for hit in pixelhits:
+  for pixelhits in pixelhitslist:
+   for hit in pixelhits:
     npixelpoints = npixelpoints + 1
     detID = hit.GetDetectorID()
     hit.GetPixelXYZ(pos,detID)
@@ -128,7 +132,7 @@ def GetPixelPositions(n=1):
     hitx.append(pos[0])
     hity.append(pos[1])
     hitz.append(pos[2])
-  DrawPoints(npixelpoints,hitx,hity,hitz)
+  DrawPoints(npixelpoints,hitx,hity,hitz,"PixelHits")
 
 
 def correctAlignmentRPC(hit,v):
@@ -173,7 +177,7 @@ def loadRPCtracks(n=1):
      hitz.append(0)
 
   sTree.GetEntry(n)
-  trackhits = sTree.MuonTaggerHit
+  trackhits = sTree.Digi_MuonTaggerHits
   clustersH = []
   clustersV = []
   for hit in trackhits:
@@ -206,7 +210,7 @@ def loadRPCtracks(n=1):
   theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
   phi = ROOT.TMath.ATan(mH/mV)
   print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)  
-  DrawPoints(5,hitx,hity,hitz)
+  DrawPoints(5,hitx,hity,hitz,"RPChits")
     
   lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
   print "Prova, ",hitx[4], hity[4], hitz[4]
@@ -254,6 +258,6 @@ def getSlopes(clusters,view=0):
   return line[0],line[1]
 
 # what methods are launched?
-#GetPixelPositions(2)    
+GetPixelPositions(2)    
 RPCPosition()
-loadRPCtracks(1)
+loadRPCtracks(2)
