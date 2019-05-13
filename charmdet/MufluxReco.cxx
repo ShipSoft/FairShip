@@ -502,6 +502,34 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
  }
  return mStatistics;
 }
+Double_t MufluxReco::findTrueMomentum(TTree* sTree){
+   Double_t trueP = -1.;
+   if (findSimpleEvent(2,6)){
+     if (FitTracks->GetEntries()==1){
+      Double_t zmin = 1000.;
+      Int_t kMin = -1;
+      TrackInfo* ti = (TrackInfo*)TrackInfos->At(0);
+      for (Int_t k=0;k<ti->N();k++) {
+       if (ti->wL(k)<0.2 && ti->wR(k)<0.2){ continue;}
+       if (ti->detId(k) > 20000000){ continue;}
+       Double_t z = DTPositionsBot[ti->detId(k)].z();
+       if (z<zmin){
+         zmin = z;
+         kMin = ti->detId(k);
+       }
+      }
+      if (!kMin<0){ 
+       for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
+        MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
+        if (hit->GetDetectorID() == kMin) {
+         trueP = TMath::Sqrt(hit->GetPx()*hit->GetPx()+hit->GetPy()*hit->GetPy()+hit->GetPz()*hit->GetPz());
+         break;}
+      }
+     }
+    }
+   }
+   return trueP;
+}
 
 void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t N = xSHiP->GetEntries(true);
@@ -515,8 +543,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
 
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
- std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult"};
- std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s"};
+ std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
+ std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol"};
  std::vector<TString> tagged  = {"","mu"};
  std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
 
@@ -614,6 +642,18 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       h2D["xy"+source]->Fill(pos[0],pos[1]);
       h2D["pxpy"+source]->Fill(Px/Pz,Py/Pz);
      }
+// mom resolution, only simple events, one track
+    Double_t trueMom = findTrueMomentum(sTree);
+    if (trueMom >0){
+     h1D["trueMom"]->Fill(trueMom);
+     h1D["recoMom"]->Fill(P);
+     h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
+     if (fSource){
+      h1D["trueMom"]->Fill(trueMom);
+      h1D["recoMom"+source]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
+      h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
+     }
+    }
     if (P>5){Ngood+=1;}
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;

@@ -1652,6 +1652,9 @@ for x in ['','mu']:
   ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
   ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
   ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+  ut.bookHist(h,'trueMom','true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'recoMom','reco MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'momResol','momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
 ut.bookHist(h,'weightVsSource','weight vs source MC check',10,-0.5,9.5,1000,0.0,1000.)
 
@@ -3246,9 +3249,30 @@ def plotLinearResiduals():
   h['RPCResX_'+str(s)+'1'].ProjectionX().Draw()
   j+=1
 
+def mergeHistosForMomResol():
+ # 1GeV mbias,      1.8 Billion PoT 
+ # 1GeV charm,     10.2 Billion PoT,  10 files
+ # 10GeV MC,         65 Billion PoT 
+ MCStats = 1.8E9
+ sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+ charmNorm  = {1:0.176,10:0.424}
+ beautyNorm = {1:0.,   10:0.01218}
+ interestingHistos = ['trueMom','momResol']
+ ut.readHists(hMC,       'momentumResolution-mbias.root',interestingHistos)
+ ut.readHists(hCharm,    'momentumResolution-charm.root',interestingHistos)
+ ut.readHists(hMC10GeV,  'momentumResolution-10GeV.root',interestingHistos)
+ # h['MC10'+a+x].Add(hMC10GeV[a+x+"charm"],-1.+charmNorm[10])
+ for a in interestingHistos:
+  # 2d histos, only for resolution plot, don't care about mom distribution'
+  h[a] = hMC[a].Clone()
+  h[a].Add(hCharm[a])
+  h[a].Add(hMC10GeV[a])
+# for mom distribution
+
 def momResolution(PR=1,onlyPlotting=False):
  if not onlyPlotting:
   ut.bookHist(h,'trueMom','true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'recoMom','reco MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
   ut.bookHist(h,'momResol','momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
   ut.bookHist(h,'curvResol','momentum resolution function of momentum',200,-0.5,0.5,40,0.,400.)
   for n in range(sTree.GetEntries()):
@@ -3274,12 +3298,13 @@ def momResolution(PR=1,onlyPlotting=False):
    trueP = ROOT.TVector3(mp.GetPx(),mp.GetPy(),mp.GetPz())
    st = tracks[0].getFittedState()
    recoP = st.getMom()
-   rc = h['trueMom'].Fill(recoP.Mag())
+   rc = h['trueMom'].Fill(trueP.Mag())
+   rc = h['recoMom'].Fill(recoP.Mag())
    rc = h['momResol'].Fill((recoP.Mag()-trueP.Mag())/trueP.Mag(),trueP.Mag())
    rc = h['curvResol'].Fill((1./recoP.Mag()-1./trueP.Mag())*trueP.Mag(),trueP.Mag())
    if not PR<10: 
       for t in tracks: t.Delete()
-  ut.writeHists(h,'histos-momentumResolution'+rname+'.root')
+  ut.writeHists(h,'histos-momentumResolution'+rname)
  t = 'momResolution'
  if not h.has_key(t): ut.bookCanvas(h,t,'momentum Resolution',900,600,1,1)
  tc=h[t].cd(1)
@@ -3667,6 +3692,7 @@ def strawPosition():
   b = alignConstants['strawPositions'][detID]['bot']
   t = alignConstants['strawPositions'][detID]['top']
   strawPositionsBotTop[detID]=[ROOT.TVector3(b[0],b[1],b[2]),ROOT.TVector3(t[0],t[1],t[2])]
+  muflux_Reco.setDTPositions(detID,strawPositionsBotTop[0],strawPositionsBotTop[1])
 
 RPCPositionsBotTop = {}
 def RPCPosition():
@@ -5181,6 +5207,7 @@ def additionalMomSmearing():
     for n in range(int(N+0.5)):
       p = rnr.Gaus(P,sig)
       rc = h[folname].Fill(p)
+  ut.makeIntegralDistrib(h,hname)
   h[hname].Draw()
   h[folname].SetLineColor(ROOT.kBlue)
   h[folname].Draw('same')

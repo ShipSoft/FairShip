@@ -248,7 +248,7 @@ def makeMomDistributions(D='.',splitFactor=5):
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
- elif D=='1GeV' or D=='10GeV':
+ elif D.find('1GeV')==0 or D.find('10GeV')==0:
   eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
   for x in temp.split('\n'):
@@ -388,17 +388,16 @@ def mergeHistos(case='residuals'):
  cmd = {}
  for z in ['charm','mbias']:
   if case == 'residuals':  cmd[z] = 'hadd -f residuals-'+z+'.root '
-  elif case == 'momResolution':  cmd[z] = 'hadd -f momentumResolution.root '
+  elif case == 'momResolution':  cmd[z] = 'hadd -f momentumResolution-'+z+'.root '
   else:                    cmd[z] = 'hadd -f momDistributions-'+z+'.root '
  for d in dirList:
   for x in os.listdir(d):
    z='mbias'
    if d.find('charm')>0: z='charm'
    if (case == 'residuals' and not x.find('histos-residuals')<0 ):  cmd[z] += d+'/'+x+" "
-   elif (case == 'momResolution' and not x.find('momentumResolution')<0 ):  cmd['mbias'] += d+'/'+x+" "
+   elif (case == 'momResolution' and not x.find('momentumResolution')<0 ):  cmd[z] += d+'/'+x+" "
    elif (case == 'momDistribution' and not x.find('analysis')<0 ):  cmd[z] += d+'/'+x+" "
  for z in ['charm','mbias']:
-     if z=='charm' and case == 'momResolution': continue
      os.system(cmd[z])
 
 import rootUtils as ut
