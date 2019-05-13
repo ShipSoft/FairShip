@@ -64,13 +64,17 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
   double origin[3] = {0,0,0};
   double pixelboxcenter[3] = {0,0,0};
   nav->cd("volPixelBox_1");
+
+  TGeoVolume *volPixelBox = nav->GetCurrentVolume();
+  double pixelboxDZ = ((TGeoBBox*)volPixelBox->GetShape())->GetDZ();
+
   TGeoNode *pixelboxnode = nav->GetCurrentNode();
   pixelboxnode->LocalToMaster(origin,pixelboxcenter);
   TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
   //translations to pass from LOCAL coordinates system to GLOBAL FairShip coordinates
   pixel.SetX(pixel_pos.X()+ pixelboxcenter[0]);
   pixel.SetY(pixel_pos.Y() + pixelboxcenter[1]);
-  pixel.SetZ(pixel_pos.Z()+ pixelboxcenter[2]);
+  pixel.SetZ(pixel_pos.Z()+ pixelboxcenter[2] - pixelboxDZ);
 }
 
 

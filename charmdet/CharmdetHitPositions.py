@@ -237,7 +237,7 @@ def DrawTrack(theta,phi,lastpoint):
   track.SetName("Test proton")
   track.SetLineColor(ROOT.kRed)
   tracklist.AddElement(track)
-  gEve.AddElement(tracklist)
+  #gEve.AddElement(tracklist) #track seems bugged, to be addressed
 
   track.MakeTrack()
   gEve.Redraw3D()
@@ -259,5 +259,5 @@ def getSlopes(clusters,view=0):
 
 # what methods are launched?
 GetPixelPositions(2)    
-RPCPosition()
-loadRPCtracks(2)
+#RPCPosition()
+#loadRPCtracks(2)
