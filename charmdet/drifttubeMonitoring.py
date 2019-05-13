@@ -1652,9 +1652,10 @@ for x in ['','mu']:
   ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
   ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
   ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
-  ut.bookHist(h,'trueMom','true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
-  ut.bookHist(h,'recoMom','reco MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
-  ut.bookHist(h,'momResol','momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
+  if x != '':continue
+  ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
 ut.bookHist(h,'weightVsSource','weight vs source MC check',10,-0.5,9.5,1000,0.0,1000.)
 
@@ -3692,7 +3693,7 @@ def strawPosition():
   b = alignConstants['strawPositions'][detID]['bot']
   t = alignConstants['strawPositions'][detID]['top']
   strawPositionsBotTop[detID]=[ROOT.TVector3(b[0],b[1],b[2]),ROOT.TVector3(t[0],t[1],t[2])]
-  muflux_Reco.setDTPositions(detID,strawPositionsBotTop[0],strawPositionsBotTop[1])
+  muflux_Reco.setDTPositions(detID,t[0],t[1],t[2],b[0],b[1],b[2])
 
 RPCPositionsBotTop = {}
 def RPCPosition():

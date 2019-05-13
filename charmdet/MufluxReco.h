@@ -42,7 +42,8 @@ public:
    void setNoisyChannels(std::vector<int> x){noisyChannels = x;}
    void setDeadChannels(std::vector<int> x){deadChannels = x;}
    void setCuts(std::string s,float f){cuts[s]=f;}
-   void setDTPositions(Int_t c,TVector3 top, TVector3 bot){DTPositionsTop[c]=top;DTPositionsBot[c]=bot;}
+   void setDTPositions(Int_t c,float tx,float ty,float tz,float bx,float by,float bz){
+       DTPositionsTop[c]=TVector3(tx,ty,tz);DTPositionsBot[c]=TVector3(bx,by,bz);}
    void setRPCPositions(Int_t c,float x,float y,float z){RPCPositions[c]=TVector3(x,y,z);}
    void sortHits(TClonesArray *t, nestedList *l, Bool_t flag=kTRUE);
    Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom);

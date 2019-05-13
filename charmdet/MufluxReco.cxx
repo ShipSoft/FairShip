@@ -512,13 +512,13 @@ Double_t MufluxReco::findTrueMomentum(TTree* sTree){
       for (Int_t k=0;k<ti->N();k++) {
        if (ti->wL(k)<0.2 && ti->wR(k)<0.2){ continue;}
        if (ti->detId(k) > 20000000){ continue;}
-       Double_t z = DTPositionsBot[ti->detId(k)].z();
+       Double_t z = DTPositionsBot[ti->detId(k)][2];
        if (z<zmin){
          zmin = z;
          kMin = ti->detId(k);
        }
       }
-      if (!kMin<0){ 
+      if (!(kMin<0)){ 
        for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
         MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
         if (hit->GetDetectorID() == kMin) {
@@ -649,9 +649,9 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      h1D["recoMom"]->Fill(P);
      h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
      if (fSource){
-      h1D["trueMom"]->Fill(trueMom);
-      h1D["recoMom"+source]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-      h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
+      h1D["trueMom"+source]->Fill(trueMom);
+      h1D["recoMom"+source]->Fill(P);
+      h2D["momResol"+source]->Fill((P-trueMom)/trueMom,trueMom);
      }
     }
     if (P>5){Ngood+=1;}
