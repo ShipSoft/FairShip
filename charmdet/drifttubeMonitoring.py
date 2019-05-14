@@ -1639,7 +1639,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
   return rc,pos,mom
 
 for x in ['','mu']:
- for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"]:
+ for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"]:
   ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
   ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
@@ -3254,22 +3254,44 @@ def mergeHistosForMomResol():
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # 10GeV MC,         65 Billion PoT 
- MCStats = 1.8E9
+ MCStats   = 1.8E9
  sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
  charmNorm  = {1:0.176,10:0.424}
  beautyNorm = {1:0.,   10:0.01218}
- interestingHistos = ['trueMom','momResol']
- ut.readHists(hMC,       'momentumResolution-mbias.root',interestingHistos)
- ut.readHists(hCharm,    'momentumResolution-charm.root',interestingHistos)
- ut.readHists(hMC10GeV,  'momentumResolution-10GeV.root',interestingHistos)
- # h['MC10'+a+x].Add(hMC10GeV[a+x+"charm"],-1.+charmNorm[10])
- for a in interestingHistos:
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+ if len(hMC)==0:
+  interestingHistos = []
+  for a in ['trueMom','recoMom','momResol']:
+    for source in sources:  interestingHistos.append(a+x+source)
+  ut.readHists(hMC,       'momDistributions-mbias-1GeV-0.root',interestingHistos)
+  ut.readHists(hCharm,    'momDistributions-charm-1GeV-0.root',interestingHistos)
+  ut.readHists(hMC10GeV,  'momDistributions-10GeV-10GeV-0.root',interestingHistos)
+  for a in ['trueMom','recoMom']:
+    h['MC'+a] = hMC[a].Clone('MC'+a)
+    h['MC'+a].Add(hCharm[a],charmNorm[1])
+#
+    h['MC10'+a] = hMC10GeV[a].Clone('MC10'+a)
+# special treatment for 10GeV to get weights right
+    h['MC10'+a].Add(hMC10GeV[a+"charm"],-1.+charmNorm[10])
+    h['MC10'+a].Add(hMC10GeV[a+"beauty"],-1.+beautyNorm[10])
+    h['MC10'+a].Scale(sim10fact)
   # 2d histos, only for resolution plot, don't care about mom distribution'
-  h[a] = hMC[a].Clone()
-  h[a].Add(hCharm[a])
-  h[a].Add(hMC10GeV[a])
-# for mom distribution
-
+  h["momResol"] = hMC["momResol"].Clone()
+  h["momResol"].Add(hCharm["momResol"])
+  h["momResol"].Add(hMC10GeV["momResol"])
+  # use 1 GeV below 10GeV and 10 GeV above
+  for a in ['trueMom','recoMom']:
+    h[a]=h["MC10"+a].Clone()
+    for n in range(h[a].GetNbinsX()):
+      if h[a].GetBinCenter(n)<10. : 
+       h[a].SetBinContent(n,h["MC"+a].GetBinContent(n))
+# true mom, reco mom
+ t = "true Mom"
+ if not h.has_key(t): ut.bookCanvas(h,t,'true and reco momentum',900,600,1,1)
+ tc=h[t].cd(1)
+ h['trueMom'].Draw()
+ h['recoMom'].Draw('same')
+ momResolution()
 def momResolution(PR=1,onlyPlotting=False):
  if not onlyPlotting:
   ut.bookHist(h,'trueMom','true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
@@ -4544,9 +4566,41 @@ def plotEnergyLoss():
  lx.DrawClone()
  ly = ROOT.TLine(5.,0.,5.,10.)
  ly.DrawClone()
+
 hMC      = {}
 hCharm   = {}
 hMC10GeV = {}
+hMC0={}
+hMC2={}
+hCharm0={}
+hCharm2={}
+hMC10GeV0={}
+hMC10GeV2={}
+def checkMC():
+ charmNorm  = {1:0.176,10:0.424}
+ beautyNorm = {1:0.,   10:0.01218}
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+ interestingHistos = []
+ for a in ['p/pt']:
+   for x in ['','mu']:
+    for source in sources:  interestingHistos.append(a+x+source)
+ ut.readHists(hMC,   'momDistributions-mbias.root',interestingHistos)
+ ut.readHists(hCharm,'momDistributions-charm.root',interestingHistos)
+ ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
+ ut.readHists(hMC0,   'momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hMC2,   'momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
+ ut.readHists(hCharm0,'momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hCharm2,'momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
+ ut.readHists(hMC10GeV0,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hMC10GeV2,'momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
+ print "method 0 / default"
+ print "1GeV mbias:",hMC0['p/pt_projx'].GetEntries()/hMC['p/pt_projx'].GetEntries()
+ print "1GeV charm:",hCharm0['p/pt_projx'].GetEntries()/hCharm['p/pt_projx'].GetEntries()
+ print "10GeV     :",hMC10GeV0['p/pt_projx'].GetEntries()/hMC10GeV['p/pt_projx'].GetEntries()
+ print "method 2 / default"
+ print "1GeV mbias:",hMC2['p/pt_projx'].GetEntries()/hMC['p/pt_projx'].GetEntries()
+ print "1GeV charm:",hCharm2['p/pt_projx'].GetEntries()/hCharm['p/pt_projx'].GetEntries()
+ print "10GeV     :",hMC10GeV2['p/pt_projx'].GetEntries()/hMC10GeV['p/pt_projx'].GetEntries()
 
 def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
  # 1GeV mbias,      1.8 Billion PoT 
@@ -4561,26 +4615,26 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
  muPerPot = 710 # 626
  charmNorm  = {1:0.176,10:0.424}
  beautyNorm = {1:0.,   10:0.01218}
- sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.}
  if len(hMC)==0:
   interestingHistos = []
   for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
    for x in ['','mu']:
     for source in sources:  interestingHistos.append(a+x+source)
+  ut.readHists(h,     'momDistributions.root',interestingHistos)
   # uncorrected MC histos
   if not effCor:
-   ut.readHists(h,     'momDistributions.root',interestingHistos)
    ut.readHists(hMC,   'momDistributions-mbias.root',interestingHistos)
    ut.readHists(hCharm,'momDistributions-charm.root',interestingHistos)
    if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
    else:    ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
   else:
-   ut.readHists(hMC,   'momDistributions-mbias-effTuned-M0-reco.root',interestingHistos)
-   ut.readHists(hMC,   'momDistributions-mbias-effTuned-M2.root',     interestingHistos)
-   ut.readHists(hCharm,'momDistributions-charm-effTuned-M0-reco.root',interestingHistos)
-   ut.readHists(hCharm,'momDistributions-charm-effTuned-M2.root',     interestingHistos)
-   ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
-   ut.readHists(hMC10GeV,'momDistributions-10GeV-effTuned-M2.root',interestingHistos)
+   ut.readHists(hMC,   'momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hMC,   'momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hCharm,'momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hCharm,'momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
    MCStats = MCStats*2.
   
  if pot <0: # (default, use Hans normalization)
@@ -4613,6 +4667,9 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
         h['MC'+xxx].Reset()
       else:
         h['MC'+xxx] = hMC[xxx].Clone('MC'+xxx)
+# for new category "Di-muon P8", add to previous Hadronic inelastic
+     if source == "Di-muon P8":
+      h['MC'+a+x+"Hadronic inelastic"].Add(h['MC'+xxx])
      h['MC'+xxx].Scale(norm)
 #
     h['MC10'+a+x] = hMC10GeV[a+x].Clone('MC10'+a+x)
@@ -4635,6 +4692,8 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
       h['MC10'+xxx] = hMC10GeV[xxx].Clone('MC10'+xxx)
       if source == "charm" or source == "beauty": h['MC10'+xxx].Scale(sim10fact/sources[source]*norm)
       else: h['MC10'+xxx].Scale(sim10fact*norm)
+      if source == "Di-muon P8":
+       h['MC10'+a+x+"Hadronic inelastic"].Add(h['MC10'+xxx])
      h['MC10'+a+x].Scale(sim10fact*norm)
 
 #

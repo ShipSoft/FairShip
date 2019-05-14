@@ -258,7 +258,7 @@ Int_t MufluxReco::checkDiMuon(){
       TString pName   = t->GetProcName();
       if ( strcmp("Decay",pName) == 0){ channel = 1;}
       if ( strcmp("Primary particle emission",pName) == 0){ channel = 1;}
-      if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 2;} // count dimuon channels separately
+      if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 7;} // count dimuon channels separately
       if(std::find( charmExtern.begin(),charmExtern.end(), moID)!=charmExtern.end())  {channel = 5;} // this will go wrong for charm from beauty
       if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}  
       if ( strcmp("Hadronic inelastic",pName) == 0){ channel = 2;}
@@ -546,7 +546,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
  std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol"};
  std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
+ std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"};
 
  std::vector<TString>::iterator its = Tsource.begin();
  while( its!=Tsource.end()){
@@ -578,6 +578,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    TString source = "";
    if (MCdata){ Int_t channel = checkDiMuon();
          if (channel == 1){ source = "Decay";}
+         if (channel == 7){ source = "Di-muon P8";}
          if (channel == 2){ source = "Hadronic inelastic";}
          if (channel == 3){ source = "Lepton pair";}
          if (channel == 4){ source = "Positron annihilation";}
