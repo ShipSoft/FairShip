@@ -22,6 +22,7 @@ def pyExit():
 #-----list of arguments--------------------------------------------------
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
+parser.add_argument("-nev", "--nevent", dest="nevent", help="number of event to plot", required=True)
 parser.add_argument("-w", "--write", dest="writentuple", help="option to write an ntuple",default=False)
 parser.add_argument("-l", "--fileCatalog", dest="catalog", help="list of files in file", default=False)
 parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=True)
@@ -31,6 +32,7 @@ parser.add_argument("-u", "--update", dest="updateFile", help="update file", def
 options = parser.parse_args()
 
 writentuple = options.writentuple
+nevent = int(options.nevent)
 
 fnames = []
 if options.catalog:
@@ -285,7 +287,7 @@ def getSlopes(clusters,view=0):
   return line[0],line[1]
 
 # what methods are launched?
-GetPixelPositions(2)    
+GetPixelPositions(nevent)    
 RPCPosition()
 def writeNtuples():
   """write positions of subdetectors into an easy to read ntuple. DetectorID go downstream to upstream, 1: Pixel, 2:SciFi, 3:DT,4:RPC"""
@@ -301,4 +303,4 @@ if writentuple:
  ntuple = ROOT.TNtuple("shippositions","Ntuple with hit positions","ievent:detID:x:y:z:subdetector")
  writeNtuples()
 
-#loadRPCtracks(2,True,False,fittedtracks = True)
+#loadRPCtracks(nevent,True,False,fittedtracks = True)
