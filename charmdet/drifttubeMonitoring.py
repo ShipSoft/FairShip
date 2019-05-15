@@ -70,6 +70,7 @@ parser.add_argument("-d", "--Display", dest="withDisplay", help="detector displa
 parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False)
 parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False)
 parser.add_argument("-i", "--input", dest="inputFile", help="input histo file", default='residuals.root')
+parser.add_argument("-g", "--geofile", dest="geoFile", help="input geofile", default='')
 
 options = parser.parse_args()
 fnames = []
@@ -110,7 +111,15 @@ rname = rnames[0]
 #sTree.SetMaxVirtualSize(300000)
 
 from ShipGeoConfig import ConfigRegistry
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
+if options.geoFile=="":
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
+else:
+ from ShipGeoConfig import ConfigRegistry
+ from rootpyPickler import Unpickler
+#load Shipgeo dictionary
+ fgeo = ROOT.TFile.Open(options.geoFile)
+ upkl    = Unpickler(options.geoFile)
+ ShipGeo = upkl.load('ShipGeo')
 builtin.ShipGeo = ShipGeo
 import charmDet_conf
 run = ROOT.FairRunSim()
@@ -1215,6 +1224,8 @@ def studyLateDTHits(nevents=1000,nStart=0):
  h['multLateDTHits'].Draw()
  print "nHits",nHits
 def nicePrintout(hits):
+  t0 = 0
+  if MCdata: t0 = sTree.ShipEventHeader.GetEventTime()
   print "station layer channels tdc time-over-threshold ..."
   lateText = []
   keysToDThits=MakeKeysToDThits(100)
@@ -1228,14 +1239,14 @@ def nicePrintout(hits):
      for hit in hits[v][s][l]:
       statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(hit)
       txt+=str(channelID)+' '
-      tdc+="%5.0F %5.0F "%(hit.GetDigi(),hit.GetTimeOverThreshold())
+      tdc+="%5.0F %5.0F "%(hit.GetDigi()-t0,hit.GetTimeOverThreshold())
       lateArrivals = len(keysToDThits[hit.GetDetectorID()])
       if lateArrivals>1: 
        tmp = str(s) + ' '+viewC[v]+' '+str(l)+' : '+str(channelID)+' '
        for n in range(1,len(keysToDThits[hit.GetDetectorID()])):
         key = keysToDThits[hit.GetDetectorID()][n]
         lHit = sTree.Digi_LateMufluxSpectrometerHits[key]
-        tmp+="%5.0F %5.0F "%(lHit.GetDigi(),lHit.GetTimeOverThreshold())
+        tmp+="%5.0F %5.0F "%(lHit.GetDigi()-t0,lHit.GetTimeOverThreshold())
        lateText.append(tmp)
      print "%-20s %s"%(txt,tdc)
   print "---- channels with late hits",len(lateText)
@@ -1641,6 +1652,10 @@ for x in ['','mu']:
   ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
   ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
   ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+  if x != '':continue
+  ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
 ut.bookHist(h,'weightVsSource','weight vs source MC check',10,-0.5,9.5,1000,0.0,1000.)
 
@@ -3235,8 +3250,30 @@ def plotLinearResiduals():
   h['RPCResX_'+str(s)+'1'].ProjectionX().Draw()
   j+=1
 
+def mergeHistosForMomResol():
+ # 1GeV mbias,      1.8 Billion PoT 
+ # 1GeV charm,     10.2 Billion PoT,  10 files
+ # 10GeV MC,         65 Billion PoT 
+ MCStats = 1.8E9
+ sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+ charmNorm  = {1:0.176,10:0.424}
+ beautyNorm = {1:0.,   10:0.01218}
+ interestingHistos = ['trueMom','momResol']
+ ut.readHists(hMC,       'momentumResolution-mbias.root',interestingHistos)
+ ut.readHists(hCharm,    'momentumResolution-charm.root',interestingHistos)
+ ut.readHists(hMC10GeV,  'momentumResolution-10GeV.root',interestingHistos)
+ # h['MC10'+a+x].Add(hMC10GeV[a+x+"charm"],-1.+charmNorm[10])
+ for a in interestingHistos:
+  # 2d histos, only for resolution plot, don't care about mom distribution'
+  h[a] = hMC[a].Clone()
+  h[a].Add(hCharm[a])
+  h[a].Add(hMC10GeV[a])
+# for mom distribution
+
 def momResolution(PR=1,onlyPlotting=False):
  if not onlyPlotting:
+  ut.bookHist(h,'trueMom','true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
+  ut.bookHist(h,'recoMom','reco MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
   ut.bookHist(h,'momResol','momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
   ut.bookHist(h,'curvResol','momentum resolution function of momentum',200,-0.5,0.5,40,0.,400.)
   for n in range(sTree.GetEntries()):
@@ -3262,11 +3299,13 @@ def momResolution(PR=1,onlyPlotting=False):
    trueP = ROOT.TVector3(mp.GetPx(),mp.GetPy(),mp.GetPz())
    st = tracks[0].getFittedState()
    recoP = st.getMom()
+   rc = h['trueMom'].Fill(trueP.Mag())
+   rc = h['recoMom'].Fill(recoP.Mag())
    rc = h['momResol'].Fill((recoP.Mag()-trueP.Mag())/trueP.Mag(),trueP.Mag())
    rc = h['curvResol'].Fill((1./recoP.Mag()-1./trueP.Mag())*trueP.Mag(),trueP.Mag())
    if not PR<10: 
       for t in tracks: t.Delete()
-  ut.writeHists(h,'histos-momentumResolution'+rname+'.root')
+  ut.writeHists(h,'histos-momentumResolution'+rname)
  t = 'momResolution'
  if not h.has_key(t): ut.bookCanvas(h,t,'momentum Resolution',900,600,1,1)
  tc=h[t].cd(1)
@@ -3654,6 +3693,7 @@ def strawPosition():
   b = alignConstants['strawPositions'][detID]['bot']
   t = alignConstants['strawPositions'][detID]['top']
   strawPositionsBotTop[detID]=[ROOT.TVector3(b[0],b[1],b[2]),ROOT.TVector3(t[0],t[1],t[2])]
+  muflux_Reco.setDTPositions(detID,t[0],t[1],t[2],b[0],b[1],b[2])
 
 RPCPositionsBotTop = {}
 def RPCPosition():
@@ -4285,7 +4325,8 @@ def importAlignmentConstants():
     print "loading of alignment constants failed for file",sTree.GetCurrentFile().GetName()
 def importRTrel():
   for fname in fnames:
-   f = ROOT.TFile.Open(fname)
+   if len(fnames)==1: f=sTree.GetCurrentFile()
+   else:   f = ROOT.TFile.Open(fname)
    rname = fname[fname.rfind('/')+1:]
    RTrelations[rname] = {}
    upkl    = Unpickler(f)
@@ -4507,7 +4548,7 @@ hMC      = {}
 hCharm   = {}
 hMC10GeV = {}
 
-def MCcomparison(pot = -1, pMin = 5.,eric=False):
+def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # 10GeV MC,         65 Billion PoT 
@@ -4515,7 +4556,8 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
  # using 626 POT/mu-event and preliminary counting of good tracks -> 12.63 -> pot factor 7.02
  # using 710 POT/mu-event, full field
  # mbias POT/ charm POT = 0.176 (1GeV), 0.424 (10GeV)
- sim10fact = 1.8/65.*67./65.7 # normalize 10GeV to 1GeV stats, only 657 files done out of 670
+ MCStats = 1.8E9
+ sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
  muPerPot = 710 # 626
  charmNorm  = {1:0.176,10:0.424}
  beautyNorm = {1:0.,   10:0.01218}
@@ -4525,13 +4567,24 @@ def MCcomparison(pot = -1, pMin = 5.,eric=False):
   for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
    for x in ['','mu']:
     for source in sources:  interestingHistos.append(a+x+source)
-  ut.readHists(h,     'momDistributions.root',interestingHistos)
-  ut.readHists(hMC,   'momDistributions-mbias.root',interestingHistos)
-  ut.readHists(hCharm,'momDistributions-charm.root',interestingHistos)
-  if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
-  else:    ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
+  # uncorrected MC histos
+  if not effCor:
+   ut.readHists(h,     'momDistributions.root',interestingHistos)
+   ut.readHists(hMC,   'momDistributions-mbias.root',interestingHistos)
+   ut.readHists(hCharm,'momDistributions-charm.root',interestingHistos)
+   if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
+   else:    ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
+  else:
+   ut.readHists(hMC,   'momDistributions-mbias-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hMC,   'momDistributions-mbias-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hCharm,'momDistributions-charm-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hCharm,'momDistributions-charm-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
+   ut.readHists(hMC10GeV,'momDistributions-10GeV-effTuned-M2.root',interestingHistos)
+   MCStats = MCStats*2.
+  
  if pot <0: # (default, use Hans normalization)
-   pot = h['Trscalers'].GetBinContent(3) * muPerPot / 1.8E9
+   pot = h['Trscalers'].GetBinContent(3) * muPerPot / MCStats
    print "PoT data",h['Trscalers'].GetBinContent(3) * muPerPot / 1E9," billion"
  if pot == 0:
    z = h['MCp/pt'].ProjectionX()
@@ -5155,6 +5208,7 @@ def additionalMomSmearing():
     for n in range(int(N+0.5)):
       p = rnr.Gaus(P,sig)
       rc = h[folname].Fill(p)
+  ut.makeIntegralDistrib(h,hname)
   h[hname].Draw()
   h[folname].SetLineColor(ROOT.kBlue)
   h[folname].Draw('same')
