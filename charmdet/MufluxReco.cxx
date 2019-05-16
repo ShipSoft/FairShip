@@ -1,3 +1,5 @@
+
+
 #include "MufluxReco.h"
 #include <TROOT.h>
 #include <TChain.h>
@@ -481,7 +483,7 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
     MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
     delete hit;
-    Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
+    Int_t s=info[0]; Int_t v=info[4]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
     if (trInfo->wL(n) <0.1 && trInfo->wR(n) <0.1){ continue;}
     if (v != 0){ 
        mStatistics["uv"].push_back(detID);
@@ -500,6 +502,34 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
  }
  return mStatistics;
 }
+Double_t MufluxReco::findTrueMomentum(TTree* sTree){
+   Double_t trueP = -1.;
+   if (findSimpleEvent(2,6)){
+     if (FitTracks->GetEntries()==1){
+      Double_t zmin = 1000.;
+      Int_t kMin = -1;
+      TrackInfo* ti = (TrackInfo*)TrackInfos->At(0);
+      for (Int_t k=0;k<ti->N();k++) {
+       if (ti->wL(k)<0.2 && ti->wR(k)<0.2){ continue;}
+       if (ti->detId(k) > 20000000){ continue;}
+       Double_t z = DTPositionsBot[ti->detId(k)][2];
+       if (z<zmin){
+         zmin = z;
+         kMin = ti->detId(k);
+       }
+      }
+      if (!(kMin<0)){ 
+       for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
+        MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
+        if (hit->GetDetectorID() == kMin) {
+         trueP = TMath::Sqrt(hit->GetPx()*hit->GetPx()+hit->GetPy()*hit->GetPy()+hit->GetPz()*hit->GetPz());
+         break;}
+      }
+     }
+    }
+   }
+   return trueP;
+}
 
 void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t N = xSHiP->GetEntries(true);
@@ -513,13 +543,13 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
 
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
- std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult"};
- std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s"};
+ std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
+ std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol"};
  std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> source  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
+ std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
 
- std::vector<TString>::iterator its = source.begin();
- while( its!=source.end()){
+ std::vector<TString>::iterator its = Tsource.begin();
+ while( its!=Tsource.end()){
   std::vector<TString>::iterator itt = tagged.begin();
   while( itt!=tagged.end()){
    std::vector<TString>::iterator it1 = h1names.begin();
@@ -564,6 +594,23 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (!fitStatus->isFitConverged()){continue;}
      TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
+// for MC
+     if (MCdata){
+       std::map<TString,int> detectors = { {"u",0}, {"v",0}, {"x2",0}, {"x3",0}, {"x1",0},{"x4",0}};
+       std::map<TString, int>::iterator it;
+       bool failed = false;
+       for ( it = detectors.begin(); it != detectors.end(); it++ ){
+        for ( int m=0; m<hitsPerStation[it->first.Data()].size();m+=1){
+         float rnr = gRandom->Uniform();
+         float eff = effFudgeFac[it->first.Data()];
+         if (rnr < eff){detectors[it->first.Data()]+=1;}
+        }
+        if (detectors[it->first.Data()]<2){
+           failed = true;
+           break;}
+       }
+       if (failed){continue;}
+     }
      if (hitsPerStation["x1"].size()<2){ continue;}
      if (hitsPerStation["x2"].size()<2){ continue;}
      if (hitsPerStation["x3"].size()<2){ continue;}
@@ -595,6 +642,18 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       h2D["xy"+source]->Fill(pos[0],pos[1]);
       h2D["pxpy"+source]->Fill(Px/Pz,Py/Pz);
      }
+// mom resolution, only simple events, one track
+    Double_t trueMom = findTrueMomentum(sTree);
+    if (trueMom >0){
+     h1D["trueMom"]->Fill(trueMom);
+     h1D["recoMom"]->Fill(P);
+     h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
+     if (fSource){
+      h1D["trueMom"+source]->Fill(trueMom);
+      h1D["recoMom"+source]->Fill(P);
+      h2D["momResol"+source]->Fill((P-trueMom)/trueMom,trueMom);
+     }
+    }
     if (P>5){Ngood+=1;}
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
@@ -692,6 +751,15 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
     std::cout<< "sortHits: unphysical detector ID "<<hit->GetDetectorID()<<std::endl;
     hit->Dump();
    }else{
+     if (MCdata){
+      float rnr = gRandom->Uniform();
+      TString station;
+      if (info[4]==0){station = 'x';station += info[0];}
+      if (info[4]==1){station = 'u';}
+      if (info[4]==2){station = 'v';}
+      float eff = effFudgeFac[station.Data()];
+      if (rnr > eff){continue;}
+     }
     spectrHitsSorted[info[4]][info[0]][info[2]*2+info[3]].push_back(hit);
   }
  }

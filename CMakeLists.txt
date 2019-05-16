@@ -280,6 +280,7 @@ add_subdirectory (preshower)
 add_subdirectory (pid)
 add_subdirectory (muonShieldOptimization)
 add_subdirectory (online)
+add_subdirectory (millepede)
 
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
   ${SIMPATH}/tools/root/include

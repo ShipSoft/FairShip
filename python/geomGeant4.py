@@ -148,12 +148,19 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
     if hasattr(shipGeo, 'Bfield'):
       fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))      
-      withConstField = False
-      if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstField = shipGeo.EmuMagnet.WithConstField
-      if not withConstField:
+      withConstFieldNuTauDet = False
+      if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstFieldNuTauDet = shipGeo.EmuMagnet.WithConstField
+      if not withConstFieldNuTauDet:
        fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))       
-    # Combine the two fields to obtain the global field
-       fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
+      withConstFieldHadronAbs = True
+      if hasattr(shipGeo.hadronAbsorber,'WithConstField'): withConstFieldHadronAbs = shipGeo.hadronAbsorber.WithConstField
+      if not withConstFieldHadronAbs:
+       fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))       
+    # Combine the fields to obtain the global field
+      if not withConstFieldNuTauDet or not withConstFieldHadronAbs:
+       if not withConstFieldNuTauDet and withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
+       if withConstFieldNuTauDet and not withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'HadronAbsorberMap')
+       if not withConstFieldNuTauDet and not withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'HadronAbsorberMap','NuMap')
        fieldMaker.defineGlobalField('TotalField')
       else:
        fieldMaker.defineGlobalField('MainSpecMap')
