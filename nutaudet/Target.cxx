@@ -397,7 +397,8 @@ void Target::ConstructGeometry()
    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
    TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
    volEmulsionFilm->SetLineColor(kBlue);
-
+   //SET PASSIVE TEMPORARY. REMOVE THIS LINE
+   fPassive = 1;
    if(fPassive==0)
     {
       AddSensitiveVolume(volEmulsionFilm);

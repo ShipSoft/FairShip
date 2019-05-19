@@ -35,6 +35,7 @@ public:
     
     void SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_, Double_t scifimat_vert_, 
                          Double_t scifimat_z_, Double_t support_z_, Double_t honeycomb_z_);
+    void SetNumberSciFi(Int_t n_hor_planes_, Int_t n_vert_planes_);
     void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ);
     void SetBrickParam(Double_t CellW);
     void SetTotZDimension(Double_t Zdim);
@@ -118,6 +119,9 @@ protected:
     Double_t scifimat_z;
     Double_t support_z; 
     Double_t honeycomb_z;
+
+    Int_t n_hor_planes;
+    Int_t n_vert_planes;
 
     Double_t CellWidth; //dimension of the cell containing brick and CES
     Double_t ZDimension; //dimension of the TTs+bricks total volume

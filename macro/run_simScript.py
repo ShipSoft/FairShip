@@ -354,7 +354,6 @@ if simEngine == "FixedTarget":
  primGen.AddGenerator(P8gen)
 if simEngine == "Pythia6":
 # set muon interaction close to decay volume
- #primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.)
  primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.)
 # -----Pythia6-------------------------
  test = ROOT.TPythia6() # don't know any other way of forcing to load lib
@@ -367,13 +366,13 @@ if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(pID,1)
   myPgun.SetPRange(Estart,Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm)
+  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, -5000.*u.cm)
   #myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
   if charm!=0:
      myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
      primGen.SetTarget(ship_geo.target.z0,0.)
   else:  
-     myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
+     myPgun.SetThetaRange(0,4.) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":

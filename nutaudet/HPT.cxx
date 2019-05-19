@@ -161,7 +161,7 @@ Int_t Hpt::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
-void Hpt::SetDSTSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Double_t scifimat_vert_, 
+void Hpt::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Double_t scifimat_vert_, 
                            Double_t scifimat_z_, Double_t support_z_, Double_t honeycomb_z_)
 {
     scifimat_width = scifimat_width_;
@@ -171,17 +171,15 @@ void Hpt::SetDSTSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Do
     support_z = support_z_; 
     honeycomb_z = honeycomb_z_;
 }
-void Hpt::SetDSTrackerParam(Double_t DSTX, Double_t DSTY, Double_t DSTZ)
+void Hpt::SetHPTrackerParam(Double_t HPTX, Double_t HPTY, Double_t HPTZ)
 {   
-    // Change to real DT box size
-    DSTrackerX = DSTX;
-    DSTrackerY = DSTY;
-    DSTrackerZ = DSTZ; 
+    HPTrackerX = HPTX;
+    HPTrackerY = HPTY;
+    HPTrackerZ = HPTZ; 
 }
 
 void Hpt::ConstructGeometry()
-{ 
-       
+{  
     InitMedium("HPTgas");
     TGeoMedium *HPTmat =gGeoManager->GetMedium("HPTgas");
 
@@ -225,105 +223,107 @@ void Hpt::ConstructGeometry()
 
     }
     if (fDesign == 3){
-    //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
-    TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion"); 
-    TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
-    TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
+        //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
+        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion"); 
+        TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
+        TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
 
-    Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;  
-    Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;  
-    Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;      
+        Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;  
+        Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;  
+        Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;      
 
-    Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
+        Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
 
-    TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
-    TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); //downstreamtrackers
-    volDT->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volDT);
+        TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
+        TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); //downstreamtrackers = HPT
+        volDT->SetLineColor(kBlue-5);
+        //AddSensitiveVolume(volDT);
 
-    TGeoBBox *Surroundingdet = new TGeoBBox("Surroundingdet",DXMagnetizedRegion/2., fSRHeight/2, DZMagnetizedRegion/2.);
-    TGeoVolume *volSurroundingdet = new TGeoVolume("volSurroundingdet",Surroundingdet, HPTmat);
-    AddSensitiveVolume(volSurroundingdet);
-    volSurroundingdet->SetLineColor(kBlue);
-    tTauNuDet->AddNode(volSurroundingdet,100, new TGeoTranslation(0,+fmagnety/2+fSRHeight/2, fmagnetcenter));
-    volMagRegion->AddNode(volSurroundingdet, 200, new TGeoTranslation(0.,+DYMagnetizedRegion/2-fSRHeight/2,0.));
-    volMagRegion->AddNode(volSurroundingdet, 300, new TGeoTranslation(0.,-DYMagnetizedRegion/2+fSRHeight/2,0.));
-    tTauNuDet->AddNode(volSurroundingdet,400, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
-    
-//////////////////////////////////////////////////////////////
-//// Creating of SciFi modules in the Downstream Tracker ////   
-    InitMedium("CarbonComposite");
-    TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
+        //(!) The internal size is smaller, so the surrounding detector is divided into two parts  
+        TGeoBBox *SurroundingdetOuter = new TGeoBBox("SurroundingdetOuter",DXMagnetizedRegion/2., fSRHeight/2, DZMagnetizedRegion/2.);
+        TGeoVolume *volSurroundingdetOuter = new TGeoVolume("volSurroundingdetOuter",SurroundingdetOuter, HPTmat);
+        AddSensitiveVolume(volSurroundingdetOuter);
+        volSurroundingdetOuter->SetLineColor(kBlue);
+        tTauNuDet->AddNode(volSurroundingdetOuter,100, new TGeoTranslation(0,+fmagnety/2+fSRHeight/2, fmagnetcenter));
+        tTauNuDet->AddNode(volSurroundingdetOuter,400, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
 
-    InitMedium("SciFiMat");
-    TGeoMedium *SciFiMat = gGeoManager->GetMedium("SciFiMat");
+        Double_t SRInnerHeight = DYMagnetizedRegion / 2 - HPTrackerY / 2;
+        TGeoBBox *SurroundingdetInner = new TGeoBBox("SurroundingdetInner",DXMagnetizedRegion/2., SRInnerHeight/2, DZMagnetizedRegion/2.);
+        TGeoVolume *volSurroundingdetInner = new TGeoVolume("volSurroundingdetInner",SurroundingdetInner, HPTmat);
+        AddSensitiveVolume(volSurroundingdetInner);
+        volSurroundingdetInner->SetLineColor(kBlue);
+        volMagRegion->AddNode(volSurroundingdetInner, 200, new TGeoTranslation(0.,+DYMagnetizedRegion/2-SRInnerHeight/2,0.));
+        volMagRegion->AddNode(volSurroundingdetInner, 300, new TGeoTranslation(0.,-DYMagnetizedRegion/2+SRInnerHeight/2,0.));
 
-    InitMedium("Airex");
-    TGeoMedium *Airex = gGeoManager->GetMedium("Airex"); 
+        //////////////////////////////////////////
+        //// Creating of SciFi modules in HPT ////   
+        InitMedium("CarbonComposite");
+        TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
 
-    //Support Carbon Composite
-    TGeoBBox* DST_support_box = new TGeoBBox("DST_support_box", DSTrackerX / 2, DSTrackerY / 2, support_z / 2);
-    TGeoVolume* DST_support_volume = new TGeoVolume("DST_support", DST_support_box, CarbonComposite);
-    DST_support_volume->SetLineColor(kGray - 2);
-    DST_support_volume->SetVisibility(0);
+        InitMedium("SciFiMat");
+        TGeoMedium *SciFiMat = gGeoManager->GetMedium("SciFiMat");
 
-    //Honeycomb Airex (or Nomex)
-    TGeoBBox* DST_honeycomb_box = new TGeoBBox("DST_honeycomb_box", DSTrackerX / 2, DSTrackerY / 2, honeycomb_z / 2);
-    TGeoVolume* DST_honeycomb_volume = new TGeoVolume("DST_honeycomb", DST_honeycomb_box, Airex);
-    DST_honeycomb_volume->SetLineColor(kYellow);
-    DST_honeycomb_volume->SetVisibility(0);
-    
-    //SciFi mats
-    TGeoBBox* DST_scifimat_hor_box = new TGeoBBox("DST_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
-    TGeoVolume* DST_scifimat_hor_volume = new TGeoVolume("DST_scifimat_hor", DST_scifimat_hor_box, SciFiMat);
-    DST_scifimat_hor_volume->SetLineColor(kCyan);
-    TGeoBBox* DST_scifimat_vert_box = new TGeoBBox("DST_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
-    TGeoVolume* DST_scifimat_vert_volume = new TGeoVolume("DST_scifimat_vert", DST_scifimat_vert_box, SciFiMat);
-    DST_scifimat_vert_volume->SetLineColor(kGreen);
-    
-    //SciFi planes
-    TGeoBBox* DST_scifi_plane_hor_box = new TGeoBBox("DST_scifi_plane_hor_box", DSTrackerX / 2, DSTrackerY / 2, scifimat_z / 2);
-    TGeoVolume* DST_scifi_plane_hor_volume = new TGeoVolume("DST_scifi_plane_hor", DST_scifi_plane_hor_box, SciFiMat);
-    DST_scifi_plane_hor_volume->SetVisibility(0);
-    TGeoBBox* DST_scifi_plane_vert_box = new TGeoBBox("DST_scifi_plane_vert_box", DSTrackerX / 2, DSTrackerY / 2, scifimat_z / 2);
-    TGeoVolume* DST_scifi_plane_vert_volume = new TGeoVolume("DST_scifi_plane_vert", DST_scifi_plane_vert_box, SciFiMat);
-    DST_scifi_plane_vert_volume->SetVisibility(0);
+        InitMedium("Airex");
+        TGeoMedium *Airex = gGeoManager->GetMedium("Airex"); 
 
-    AddSensitiveVolume(DST_scifimat_hor_volume);
-    AddSensitiveVolume(DST_scifimat_vert_volume);
-    
-    //Creating physical volumes and multiply 
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 0, new TGeoTranslation(0, -3.5 * scifimat_width, 0));
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 1, new TGeoTranslation(0, -2.5 * scifimat_width, 0));
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 2, new TGeoTranslation(0, -1.5 * scifimat_width, 0));
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 3, new TGeoTranslation(0, -0.5 * scifimat_width, 0));
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 4, new TGeoTranslation(0, +0.5 * scifimat_width, 0));
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 5, new TGeoTranslation(0, +1.5 * scifimat_width, 0));
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 6, new TGeoTranslation(0, +2.5 * scifimat_width, 0));
-    DST_scifi_plane_hor_volume->AddNode(DST_scifimat_hor_volume, 7, new TGeoTranslation(0, +3.5 * scifimat_width, 0));
+        //Support Carbon Composite
+        TGeoBBox* HPT_support_box = new TGeoBBox("HPT_support_box", HPTrackerX / 2, HPTrackerY / 2, support_z / 2);
+        TGeoVolume* HPT_support_volume = new TGeoVolume("HPT_support", HPT_support_box, CarbonComposite);
+        HPT_support_volume->SetLineColor(kGray - 2);
+        HPT_support_volume->SetVisibility(1);
 
-    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 0, new TGeoTranslation(-1.5 * scifimat_width, 0, 0));
-    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 1, new TGeoTranslation(-0.5 * scifimat_width, 0, 0));
-    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 2, new TGeoTranslation(+0.5 * scifimat_width, 0, 0));
-    DST_scifi_plane_vert_volume->AddNode(DST_scifimat_vert_volume, 3, new TGeoTranslation(+1.5 * scifimat_width, 0, 0));
+        //Honeycomb Airex (or Nomex)
+        TGeoBBox* HPT_honeycomb_box = new TGeoBBox("HPT_honeycomb_box", HPTrackerX / 2, HPTrackerY / 2, honeycomb_z / 2);
+        TGeoVolume* HPT_honeycomb_volume = new TGeoVolume("HPT_honeycomb", HPT_honeycomb_box, Airex);
+        HPT_honeycomb_volume->SetLineColor(kYellow);
+        HPT_honeycomb_volume->SetVisibility(1);
 
-    volDT->AddNode(DST_support_volume,     0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z / 2));
-    volDT->AddNode(DST_scifi_plane_hor_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z / 2));
-    volDT->AddNode(DST_scifi_plane_vert_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z + scifimat_z / 2));
-    volDT->AddNode(DST_honeycomb_volume,   0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z / 2));
-    volDT->AddNode(DST_support_volume,     1, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z + support_z / 2));
-//////////////////////////////////////////////////////////////
+        //SciFi mats
+        TGeoBBox* HPT_scifimat_hor_box = new TGeoBBox("HPT_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifimat_hor_volume = new TGeoVolume("HPT_scifimat_hor", HPT_scifimat_hor_box, SciFiMat);
+        HPT_scifimat_hor_volume->SetLineColor(kCyan);
 
+        TGeoBBox* HPT_scifimat_vert_box = new TGeoBBox("HPT_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifimat_vert_volume = new TGeoVolume("HPT_scifimat_vert", HPT_scifimat_vert_box, SciFiMat);
+        HPT_scifimat_vert_volume->SetLineColor(kGreen);
 
+        //SciFi planes
+        TGeoBBox* HPT_scifi_plane_hor_box = new TGeoBBox("HPT_scifi_plane_hor_box", HPTrackerX / 2, HPTrackerY / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifi_plane_hor_volume = new TGeoVolume("HPT_scifi_plane_hor", HPT_scifi_plane_hor_box, SciFiMat);
+        HPT_scifi_plane_hor_volume->SetVisibility(1);
 
-    Int_t n = 0;
-    for(int i=0;i<fnHPT;i++){
-	  {
-           for (int j = 0; j < fntarget; j++){
-           volMagRegion->AddNode(volDT,i+j*fnHPT,new TGeoTranslation(0,0, -DZMagnetizedRegion/2 + DZTarget + DimZ/2 + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
-           }
-	  }
-     }
+        TGeoBBox* HPT_scifi_plane_vert_box = new TGeoBBox("HPT_scifi_plane_vert_box", HPTrackerX / 2, HPTrackerY / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifi_plane_vert_volume = new TGeoVolume("HPT_scifi_plane_vert", HPT_scifi_plane_vert_box, SciFiMat);
+        HPT_scifi_plane_vert_volume->SetVisibility(1);
+
+        AddSensitiveVolume(HPT_scifimat_hor_volume);
+        AddSensitiveVolume(HPT_scifimat_vert_volume);
+
+        // Creating physical volumes and multiply 
+        // Change to set in python
+        Int_t n_hor_planes = 11;
+        Int_t n_vert_planes = 7;
+
+        for (int i = 0; i < n_hor_planes; i++){
+            HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
+        }
+        for (int i = 0; i < n_vert_planes; i++){
+            HPT_scifi_plane_vert_volume->AddNode(HPT_scifimat_vert_volume, 100+i, new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
+        }
+
+        volDT->AddNode(HPT_support_volume,     0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z / 2));
+        volDT->AddNode(HPT_scifi_plane_hor_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z / 2));
+        volDT->AddNode(HPT_scifi_plane_vert_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z + scifimat_z / 2));
+        volDT->AddNode(HPT_honeycomb_volume,   0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z / 2));
+        volDT->AddNode(HPT_support_volume,     1, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z + support_z / 2));
+        //////////////////////////////////////////////////////////////
+
+        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2 + (DZMagnetizedRegion - DZTarget - DimZ*fnHPT - fDistance*(fnHPT-1));
+        for(int i=0;i<fnHPT;i++){
+            for (int j = 0; j < fntarget; j++){
+                volMagRegion->AddNode(volDT,i+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
+            }
+        }
     }
 }
 

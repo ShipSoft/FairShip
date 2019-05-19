@@ -24,9 +24,9 @@ class Hpt:public FairDetector
       
     void ConstructGeometry();
 
-    void SetDSTSciFiParam(Double_t scifimat_width, Double_t scifimat_hor, Double_t scifimat_vert,   
+    void SetSciFiParam(Double_t scifimat_width, Double_t scifimat_hor, Double_t scifimat_vert,   
                           Double_t scifimat_z, Double_t support_z, Double_t honeycomb_z);
-    void SetDSTrackerParam(Double_t DSTX, Double_t DSTY, Double_t DSTZ);
+    void SetHPTrackerParam(Double_t HPTX, Double_t HPTY, Double_t HPTZ);
 
     void SetZsize(const Double_t Mudetsize);
     void SetConcreteBaseDim(Double_t X, Double_t Y, Double_t Z);
@@ -117,9 +117,9 @@ protected:
     Double_t fDistance;
     Int_t fnHPT;
 
-    Double_t DSTrackerX; // parameters for Downstream SciFi Tracker
-    Double_t DSTrackerY;
-    Double_t DSTrackerZ;
+    Double_t HPTrackerX; // parameters for Downstream SciFi Tracker
+    Double_t HPTrackerY;
+    Double_t HPTrackerZ;
 
     Double_t scifimat_width;     
     Double_t scifimat_hor;
