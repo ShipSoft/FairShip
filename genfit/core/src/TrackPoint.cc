@@ -24,6 +24,7 @@
 #include "KalmanFitterInfo.h"
 
 #include <iostream>
+#include <TBuffer.h>
 
 
 namespace genfit {
@@ -288,7 +289,7 @@ void TrackPoint::Streamer(TBuffer &R__b)
       R__b << sortingParameter_;
       {
         std::vector<genfit::AbsMeasurement*,std::allocator<genfit::AbsMeasurement*> > &R__stl =  rawMeasurements_;
-        int R__n=(&R__stl) ? int(R__stl.size()) : 0;
+        int R__n=int(R__stl.size());
         R__b << R__n;
         if(R__n) {
           std::vector<genfit::AbsMeasurement*,std::allocator<genfit::AbsMeasurement*> >::iterator R__k;

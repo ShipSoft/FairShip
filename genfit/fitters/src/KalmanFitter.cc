@@ -34,6 +34,7 @@
 #include <TDecompChol.h>
 #include <TMatrixDSymEigen.h>
 #include <algorithm>
+#include <TBuffer.h>
 
 using namespace genfit;
 

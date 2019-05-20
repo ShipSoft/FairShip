@@ -1,7 +1,17 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root 
 import os,ROOT
+import multiprocessing as mp
+from rootpyPickler import Unpickler
+ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 local = False
 if not os.uname()[1].lower().find('ubuntu')< 0: local = True
+
+parallel = True
+if parallel: 
+# Define an output queue
+  output = mp.Queue()
+  processes = []
+
 
 # 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN
 # 51-59 passive shielding
@@ -154,6 +164,145 @@ if not os.uname()[1].lower().find('ubuntu')< 0: local = True
 #makeProd("muon1023",10,True,True)
 #makeProd("muon1012",10,False,True)
 #makeProd("muon1022",10,True,True)
+#makeProd("muon633",10,'concrete',False) # run with concrete wall enabled as sensitive
+#makeProd("muon1111",10,'False',False) # try iron for first shield
+#makeProd("muon1121",10,'True',False)  # try iron for first shield
+#makeProd("muon1112",10,'False',True) # try iron for first shield
+#makeProd("muon1122",10,'True',True)  # try iron for first shield
+# restart with also rockS sensitive and &&->||
+#makeProd("muon634",10,'concrete',False) # run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon635",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon636",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon637",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon638",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon639",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon640",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon641",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon642",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon643",10,'concrete',True) #   run with concrete wall enabled as sensitive, and active shield too
+#makeProd("muon650",10,'concrete',False) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon651",10,'concrete',False) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon652",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon653",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon654",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon655",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon656",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon657",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon658",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon659",10,'concrete',True) # run with concrete wall enabled as sensitive, first tunnel 10m wide
+#makeProd("muon660",10,'concrete',False) # liter magnet
+#makeProd("muon661",10,'concrete',True) # liter magnet
+#makeProd("muon662",10,'concrete',True) # liter magnet
+#makeProd("muon663",10,'concrete',True) # liter magnet
+#makeProd("muon664",10,'concrete',True) # liter magnet
+#makeProd("muon665",10,'concrete',True) # liter magnet
+#makeProd("muon666",10,'concrete',True) # liter magnet
+#makeProd("muon667",10,'concrete',True) # liter magnet
+#makeProd("muon668",10,'concrete',True) # liter magnet
+#makeProd("muon669",10,'concrete',True) # liter magnet
+#makeProd("muon670",10,'concrete',False) # even liter magnet
+#makeProd("muon671",10,'concrete',True) # even liter magnet
+#makeProd("muon672",10,'concrete',True) # even liter magnet
+#makeProd("muon673",10,'concrete',True) # even liter magnet
+#makeProd("muon674",10,'concrete',True) # even liter magnet
+#makeProd("muon675",10,'concrete',True) # even liter magnet
+#makeProd("muon676",10,'concrete',True) # even liter magnet
+#makeProd("muon677",10,'concrete',True) # even liter magnet
+#makeProd("muon678",10,'concrete',True) # even liter magnet
+#makeProd("muon679",10,'concrete',True) # even liter magnet
+# new attempt, previous did not worked out
+#makeProd("muon680",10,'concrete',False) # even liter magnet
+#makeProd("muon681",10,'concrete',True) # even liter magnet
+#makeProd("muon682",10,'concrete',True) # even liter magnet
+#makeProd("muon683",10,'concrete',True) # even liter magnet
+#makeProd("muon684",10,'concrete',True) # even liter magnet
+#makeProd("muon685",10,'concrete',True) # even liter magnet
+#makeProd("muon686",10,'concrete',True) # even liter magnet
+#makeProd("muon687",10,'concrete',True) # even liter magnet
+#makeProd("muon688",10,'concrete',True) # even liter magnet
+#makeProd("muon689",10,'concrete',True) # even liter magnet
+# new attempt, increase height of first magnet, previous did not worked out either
+#makeProd("muon690",10,'concrete',False) # even liter magnet
+#makeProd("muon691",10,'concrete',True) # even liter magnet
+#makeProd("muon692",10,'concrete',True) # even liter magnet
+#makeProd("muon693",10,'concrete',True) # even liter magnet
+#makeProd("muon694",10,'concrete',True) # even liter magnet
+#makeProd("muon695",10,'concrete',True) # even liter magnet
+#makeProd("muon696",10,'concrete',True) # even liter magnet
+#makeProd("muon697",10,'concrete',True) # even liter magnet
+#makeProd("muon698",10,'concrete',True) # even liter magnet
+#makeProd("muon699",10,'concrete',True) # even liter magnet
+# testing height 4m->2m
+#makeProd("muon700",10,'concrete',False) # even liter magnet
+#makeProd("muon701",10,'concrete',True) # even liter magnet
+#makeProd("muon702",10,'concrete',True) # even liter magnet
+#makeProd("muon703",10,'concrete',True) # even liter magnet
+#makeProd("muon704",10,'concrete',True) # even liter magnet
+#makeProd("muon705",10,'concrete',True) # even liter magnet
+#makeProd("muon706",10,'concrete',True) # even liter magnet
+#makeProd("muon707",10,'concrete',True) # even liter magnet
+#makeProd("muon708",10,'concrete',True) # even liter magnet
+#makeProd("muon709",10,'concrete',True) # even liter magnet
+# testing height 4m->2m + new magnets
+#makeProd("muon800",10,'concrete',False) # even liter magnet
+#makeProd("muon801",10,'concrete',True) # even liter magnet
+#makeProd("muon802",10,'concrete',True) # even liter magnet
+#makeProd("muon803",10,'concrete',True) # even liter magnet
+#makeProd("muon804",10,'concrete',True) # even liter magnet
+#makeProd("muon805",10,'concrete',True) # even liter magnet
+#makeProd("muon806",10,'concrete',True) # even liter magnet
+#makeProd("muon807",10,'concrete',True) # even liter magnet
+#makeProd("muon808",10,'concrete',True) # even liter magnet
+#makeProd("muon809",10,'concrete',True) # even liter magnet
+# new iteration, and ship_geo.Yheight*1./10.   
+#makeProd("muon710",10,'concrete',False) # even liter magnet
+#makeProd("muon711",10,'concrete',True) # even liter magnet
+#makeProd("muon712",10,'concrete',True) # even liter magnet
+#makeProd("muon713",10,'concrete',True) # even liter magnet
+#makeProd("muon714",10,'concrete',True) # even liter magnet
+#makeProd("muon715",10,'concrete',True) # even liter magnet
+#makeProd("muon716",10,'concrete',True) # even liter magnet
+#makeProd("muon717",10,'concrete',True) # even liter magnet
+#makeProd("muon718",10,'concrete',True) # even liter magnet
+#makeProd("muon719",10,'concrete',True) # even liter magnet
+# new iteration, and back to ship_geo.Yheight*2./10.   
+#makeProd("muon720",10,'concrete',False) # even liter magnet
+#makeProd("muon721",10,'concrete',True) # even liter magnet
+#makeProd("muon722",10,'concrete',True) # even liter magnet
+#makeProd("muon723",10,'concrete',True) # even liter magnet
+#makeProd("muon724",10,'concrete',True) # even liter magnet
+#makeProd("muon725",10,'concrete',True) # even liter magnet
+#makeProd("muon726",10,'concrete',True) # even liter magnet
+#makeProd("muon727",10,'concrete',True) # even liter magnet
+#makeProd("muon728",10,'concrete',True) # even liter magnet
+#makeProd("muon729",10,'concrete',True) # even liter magnet
+# new iteration, and back to ship_geo.Yheight*2./10. but with more info in vetoPoint  
+#makeProd("muon730",10,'concrete',False) # even liter magnet
+#makeProd("muon740",10,'concrete',False) # even liter magnet
+# new iteration,  ship_geo.Yheight*1./10.   
+#makeProd("muon750",10,'concrete',False) # 
+# new iteration,  ship_geo.Yheight*1.5/10.   
+#makeProd("muon760",10,'concrete',False) #
+#makeProd("muon761",10,'concrete',True) #
+# as before but now with full simulation
+#makeProd("muon1710",10,False,False)
+#makeProd("muon1720",10,True,False)
+#makeProd("muon1711",10,False,True)
+#makeProd("muon1721",10,True,True)
+#makeProd("muon1712",10,False,True)
+#makeProd("muon1722",10,True,True)
+#makeProd("muon1713",10,False,True)
+#makeProd("muon1723",10,True,True)
+#makeProd("muon1714",10,False,True)
+#makeProd("muon1724",10,True,True)
+#makeProd("muon1715",10,False,True)
+#makeProd("muon1725",10,True,True)
+#makeProd("muon1716",10,False,True)
+#makeProd("muon1726",10,True,True)
+# another one, hopefully better
+#makeProd("muon1717",10,'concrete',False) #
+# another one, increasing height to 3m
+#makeProd("muon1718",10,'concrete',False) #
 
 prefixes  = []
 withChain = 0
@@ -180,9 +329,8 @@ if prefixes[0]!='': testdir = path+prefixes[0]+'1'
 # figure out which setup
 for f in os.listdir(testdir):
   if not f.find("geofile_full")<0:
-     tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-     tgeom.Import(testdir+'/'+f)
-     fGeo = ROOT.gGeoManager  
+     fgeo = ROOT.TFile(testdir+'/'+f)
+     sGeo = fgeo.FAIRGeom 
      inputFile = f.replace("geofile_full","ship")
      break 
 # try to extract from input file name
@@ -199,27 +347,30 @@ else :
  inputFile1 = inputFile
  inputFile2 = inputFile.replace('.root','_D.root')
 
-from array import array # gymnastic required by Ecal 
-# even more gymnastics
-# try to figure out which ecal geo to load
-if fGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
-else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
-
 import rootUtils as ut
 import shipunit as u
 PDG = ROOT.TDatabasePDG.Instance()
 from ShipGeoConfig import ConfigRegistry
 # init geometry and mag. field
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
+if not fgeo.FindKey('ShipGeo'):
+ # old geofile, missing Shipgeo dictionary
+ if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
+ else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
+ print 'found ecal geo for ',ecalGeoFile
+ # re-create geometry and mag. field
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
+else: 
+ # new geofile, load Shipgeo dictionary written by run_simScript.py
+  upkl    = Unpickler(fgeo)
+  ShipGeo = upkl.load('ShipGeo')
+  ecalGeoFile = ShipGeo.ecal.File
+
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run,ShipGeo)
 
 ecal = modules['Ecal']
-EcalX = array('f',[0.])
-EcalY = array('f',[0.])
-EcalE = array('i',[0])
 
 rz_inter = -1.,0.
 def origin(sTree,it):
@@ -237,7 +388,7 @@ otherPhysList = False
 noField       = False
 passive       = False
 #
-top  = fGeo.GetTopVolume()
+top  = sGeo.GetTopVolume()
 muon = top.GetNode("MuonDetector_1")
 mvol = muon.GetVolume()
 zmuon = muon.GetMatrix().GetTranslation()[2]
@@ -307,11 +458,11 @@ def strawEncoding(detid):
  return [statnb,vnb,pnb,lnb,snb]
 
 def detMap():
-  fGeo = ROOT.gGeoManager  
+  sGeo = ROOT.gGeoManager  
   detList = {}
-  for v in fGeo.GetListOfVolumes():
+  for v in sGeo.GetListOfVolumes():
    nm = v.GetName()
-   i  = fGeo.FindVolumeFast(nm).GetNumber()
+   i  = sGeo.FindVolumeFast(nm).GetNumber()
    detList[i] = nm
   return detList
 
@@ -354,8 +505,8 @@ def bookHist(detName):
   ut.bookHist(h,tag+'_LP','particle mom GeV '+detName,100,0.,1.)
   ut.bookHist(h,tag+'_OP','original particle mom GeV '+detName,400,0.,400.)
   ut.bookHist(h,tag+'_id','particle id '+detName,5001,-2499.5,2499.5)
-  ut.bookHist(h,tag+'_mul','multiplicity of hits/tracks '+detName,10,-0.5,9.5)
-  ut.bookHist(h,tag+'_evmul','multiplicity of hits/event '+detName,10,-0.5,9.5)
+  ut.bookHist(h,tag+'_mul','multiplicity of hits/tracks '+detName,100,-0.5,99.5)
+  ut.bookHist(h,tag+'_evmul','multiplicity of hits/event '+detName,100,-0.5,9999.5)
   ut.bookHist(h,tag+'_origin','r vs z',100,  ztarget,totl,100,0.,12.)
   ut.bookHist(h,tag+'_originmu','r vs z',100,ztarget,totl,100,0.,12.)
  
@@ -376,7 +527,7 @@ h['dummy'].SetMaximum(10.)
 
 histlistAll = {1:'strawstation_5',2:'strawstation_1',3:'strawstation_4',4:'Ecal',5:'muondet',
                6:'VetoTimeDet',7:'T1LiSc',8:'T2LiSc',9:'T3LiSc',10:'T5LiSc',
-              11:'volRpc',12:'volHPT',13:'TargetTracker',14:'TimeDet',15:'Det2'}
+              11:'ShipRpc',12:'volHPT',13:'Target',14:'TimeDet',15:'Det2'}
 hLiSc = {1:{}}
 for i in range(1,7):  hLiSc[1][i] = "T1LiSc_"+str(i)
 hLiSc[2] = {}
@@ -394,17 +545,90 @@ mom = ROOT.TVector3()
 pos = ROOT.TVector3()
 
 def BigEventLoop():
- ntot = 0
+ pid = 1
  for fn in fchain: 
-  f = ROOT.TFile(fn)
-  if not f.FindObjectAny('cbmsim'): 
-   print 'skip file ',f.GetName() 
-   continue
+  if os.path.islink(fn): 
+    rfn = os.path.realpath(fn).split('eos')[1]
+    fn  = ROOT.gSystem.Getenv("EOSSHIP")+'/eos/'+rfn
+  elif not os.path.isfile(fn): 
+    print "Don't know what to do with",fn
+    1/0 
+  if parallel: 
+# process files parallel instead of sequential
+   processes.append(mp.Process(target=executeOneFile, args=(fn,output,pid) ) )
+   pid+=1 
+  else:
+   processes.append(fn)
+# Run processes
+ n=0
+ for p in processes:
+   if parallel: 
+       p.start()
+       n+=1
+   else: executeOneFile(p)
+ if parallel:
+# Exit the completed processes
+   for p in processes: p.join()
+# clean histos before reading in the new ones
+   for x in h: h[x].Reset()
+   print "now, collect the output"
+   pid = 1
+   for p in processes:
+    ut.readHists(h,'tmpHists_'+str(pid)+'.root')
+    pid+=1
+# compactify liquid scintillator
+ for mu in ['','_mu','_muV0']:
+  for x in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
+    for k in [1,2,3,5]: 
+     first = True
+     for j in hLiSc[k]:
+      detName=hLiSc[k][j]
+      tag  = detName+mu+x
+      newh = detName[0:2]+'LiSc'+mu+x
+      if not h.has_key(tag): continue 
+      if first: 
+         h[newh] = h[tag].Clone(newh)
+         h[newh].SetTitle( h[tag].GetTitle().split('_')[0])
+         first = False
+      else:  rc = h[newh].Add(h[tag])
+# compactify muon stations
+ for mu in ['','_mu','_muV0']:
+   for x in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
+    first = True
+    for j in hMuon: 
+     detName=hMuon[j]
+     tag  = detName+mu+x
+     newh = 'muondet'+mu+x
+     if first: 
+       h[newh] = h[tag].Clone(newh)
+       h[newh].SetTitle( h[tag].GetTitle().split(' ')[0]+' '+newh)
+       first = False
+     else:  rc = h[newh].Add(h[tag])
+ 
+ # make list of hists with entries
+ k = 1
+ for x in histlistAll:
+  if h.has_key(histlistAll[x]):
+   histlist[k]=histlistAll[x]    
+# make cumulative histograms
+   for c in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
+    h[histlist[k]+'_mu'+c].Add(  h[histlist[k]+'_muV0'+c] )
+    h[histlist[k]+c].Add(  h[histlist[k]+'_mu'+c] )
+    h[histlist[k]+c].SetMinimum(0.) 
+    h[histlist[k]+'_mu'+c].SetMinimum(0.) 
+    h[histlist[k]+'_muV0'+c] .SetMinimum(0.) 
+   k+=1
+ nstations = len(histlist)
+ makePlots(nstations)
+ 
+def executeOneFile(fn,output=None,pid=None):
+  f     = ROOT.TFile.Open(fn)
   sTree = f.cbmsim
   nEvents = sTree.GetEntries()
   if sTree.GetBranch("GeoTracks"): sTree.SetBranchStatus("GeoTracks",0)
   sTree.GetEntry(0)
   hitContainers = [sTree.vetoPoint,sTree.muonPoint,sTree.EcalPointLite,sTree.strawtubesPoint,sTree.ShipRpcPoint,sTree.TargetPoint]
+  ntot = 0
   for n in range(nEvents):
    rc = sTree.GetEntry(n)
    theMuon = sTree.MCTrack[0]
@@ -447,7 +671,10 @@ def BigEventLoop():
       y = pos.Y()
       E = ahit.GetEnergyLoss()
      else: 
-      detName = logVols[detID]
+      if not logVols.has_key(detID):
+         detName = c.GetName().replace('Points','')
+         if not detName in histlistAll.values(): print detID,detName,c.GetName() 
+      else: detName = logVols[detID]
       x = ahit.GetX()
       y = ahit.GetY()
       z = ahit.GetZ()
@@ -501,51 +728,10 @@ def BigEventLoop():
     rc = h[detName+'_evmul'].Fill(hitmult[detName][-1],w) 
     for tr in hitmult[detName]:
       rc = h[detName+'_mul'].Fill(hitmult[detName][tr],w) 
+  if output:
+   ut.writeHists(h,'tmpHists_'+str(pid)+'.root')
+   output.put('ok')
   f.Close()
-#
-# compactify liquid scintillator
- for mu in ['','_mu','_muV0']:
-  for x in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
-    for k in [1,2,3,5]: 
-     first = True
-     for j in hLiSc[k]:
-      detName=hLiSc[k][j]
-      tag  = detName+mu+x
-      newh = detName[0:2]+'LiSc'+mu+x
-      if not h.has_key(tag): continue 
-      if first: 
-         h[newh] = h[tag].Clone(newh)
-         h[newh].SetTitle( h[tag].GetTitle().split('_')[0])
-         first = False
-      else:  rc = h[newh].Add(h[tag])
-# compactify muon stations
- for mu in ['','_mu','_muV0']:
-   for x in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
-    first = True
-    for j in hMuon: 
-     detName=hMuon[j]
-     tag  = detName+mu+x
-     newh = 'muondet'+mu+x
-     if first: 
-       h[newh] = h[tag].Clone(newh)
-       h[newh].SetTitle( h[tag].GetTitle().split(' ')[0]+' '+newh)
-       first = False
-     else:  rc = h[newh].Add(h[tag]) 
-# make list of hists with entries
- k = 1
- for x in histlistAll:
-  if h.has_key(histlistAll[x]):
-   histlist[k]=histlistAll[x]    
-# make cumulative histograms
-   for c in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
-    h[histlist[k]+'_mu'+c].Add(  h[histlist[k]+'_muV0'+c] )
-    h[histlist[k]+c].Add(  h[histlist[k]+'_mu'+c] )
-    h[histlist[k]+c].SetMinimum(0.) 
-    h[histlist[k]+'_mu'+c].SetMinimum(0.) 
-    h[histlist[k]+'_muV0'+c] .SetMinimum(0.) 
-   k+=1
- nstations = len(histlist)
- makePlots(nstations)
 #
 def makePlots(nstations):
  cxcy = {1:[2,1],2:[3,1],3:[2,2],4:[3,2],5:[3,2],6:[3,2],7:[3,3],8:[3,3],9:[3,3],10:[4,3],11:[4,3],12:[4,3],13:[5,3],14:[5,3],15:[5,3]}
@@ -695,7 +881,7 @@ def analyzeConcrete():
   ut.bookHist(h,'conc_p'+m,'concrete hit p '+m,1000,0.,400.)
   ut.bookHist(h,'conc_pt'+m,'concrete hit pt '+m,100,0.,20.)
   ut.bookHist(h,'conc_hitzy'+m,'concrete hit zy '+m,100,-100.,100.,100,-15.,15.)
- top = fGeo.GetTopVolume()
+ top = sGeo.GetTopVolume()
  magn = top.GetNode("magyoke_1")
  z0 = magn.GetMatrix().GetTranslation()[2]/u.m
  for fn in fchain:
@@ -881,7 +1067,8 @@ def printAndCopy(prefix=None):
   if not prefix: prefix = (h['tc'].GetName()).replace('.root','')
   for x in ['ResultsI','ResultsII','ResultsImu','ResultsImuV0','ResultsIII','ResultsIV','ResultsV']:
    h[x].Update()
-  if not prefix in os.listdir('/media/Work/HNL'): os.mkdir('/media/Work/HNL/'+prefix)
+  if not prefix in os.listdir('.'): os.mkdir(prefix)
+  os.chdir(prefix)
   h['ResultsI'].Print(prefix+'Back_occ.png')
   h['ResultsII'].Print(prefix+'Back_depE.png')
   h['ResultsImu'].Print(prefix+'muBack_occ.png')
@@ -889,7 +1076,7 @@ def printAndCopy(prefix=None):
   h['ResultsIII'].Print(prefix+'Back_P.png')
   h['ResultsIV'].Print(prefix+'Back_OP.png')
   h['ResultsV'].Print(prefix+'origin.png')
-  os.system('cp '+prefix+'*.png /media/Work/HNL/'+prefix)
+  os.chdir("../")
   
 
 def drawBoth(tag,hn):
@@ -1045,10 +1232,11 @@ def makeNicePrintout(x=['rareEvents_61-62.txt','rareEvents_71-72.txt']):
 #guestimate for muonrate above 3GeV =  14792.8113333
  return tmp
 #
-def readAndMergeHistos():
- readHists(h,'muon829.root')
- readHists(h,'muon929.root')
- readHists(h,'muon1029.root')
+def readAndMergeHistos(prods):
+ for p in prods:
+   x=p
+   if p.find('.root')<0: x=p+'.root' 
+   ut.readHists(h,x)
 # make list of hists with entries
  k = 1
  for x in histlistAll:
@@ -1056,8 +1244,9 @@ def readAndMergeHistos():
    histlist[k]=histlistAll[x]
    k+=1
  nstations = len(histlist)
+ print "make plots for ",nstations 
  makePlots(nstations)
-
+ printAndCopy(prods[0].replace('.root',''))
 
 # python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 820 821 822 823 824 825 826 827 828 829
 # python -i $HNL/ana_ShipMuon.py 910 911 912 913 914 915 916 917 918 919 920 921 922 923 924 925 926 927 928 929
@@ -1069,3 +1258,5 @@ def readAndMergeHistos():
 # make muonDIS ntuple: muDISntuple("/media/Data/HNL/muonBackground/rareEvents_81-102.root") -> 'muDISVetoCounter.root'
 #                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root
 #                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root
+# for concrete
+# analyzeConcrete() -> muConcrete.root

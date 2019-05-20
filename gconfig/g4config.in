@@ -7,6 +7,10 @@
 /mcPhysics/g4NeutronHPVerbose 0 #   - suppress the warnings about missing neutron data
 /mcPhysics/g4HadronicProcessStoreVerbose 0
 
+# switch on other sources of di muon 
+/physics_lists/em/PositronToMuons true
+/physics_lists/em/GammaToMuons true
+
 # drives me crazy how to stop this tons of output !!!
 /process/em/verbose 0
 /process/eLoss/verbose 0
@@ -22,3 +26,8 @@
 #/tracking/verbose 1
 #/control/cout/ignoreThreadsExcept 0
 
+# Enable local magnetic fields
+/mcDet/setIsLocalMagField true
+
+# Enable verbosity for VMC geometry manager
+#/mcVerbose/geometryManager 2

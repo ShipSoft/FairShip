@@ -7,13 +7,13 @@ except:
   pass
 
 
-from ROOT import TFile,gROOT,TH3F,TH2F,TH1F,TCanvas
-import os
+from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
+import os,sys
 
 def readHists(h,fname):
   if fname[0:4] == "/eos":
-    eospath = "root://eoslhcb/"+fname
-    f = ROOT.TFile.Open(eospath)
+    eospath = gSystem.Getenv("EOSSHIP")+fname
+    f = TFile.Open(eospath)
   else:  
     f = TFile(fname)
   for akey in f.GetListOfKeys():
@@ -22,20 +22,24 @@ def readHists(h,fname):
     except:  hname = name
     obj = akey.ReadObj()
     cln = obj.Class().GetName()
+    if not cln.find('TCanv')<0: 
+       h[hname] =  obj.Clone()
     if cln.find('TH')<0: continue
     if h.has_key(hname): 
        rc = h[hname].Add(obj)
        if not rc: print "Error when adding histogram ",hname 
     else: 
       h[hname] =  obj.Clone()
-      h[hname].Sumw2() 
+      if h[hname].GetSumw2N()==0 : h[hname].Sumw2() 
     h[hname].SetDirectory(gROOT)
     if cln == 'TH2D' or cln == 'TH2F':
          for p in [ '_projx','_projy']:
-           if p.find('x')>-1: h[hname+p] = h[hname].ProjectionX()  
-           else             : h[hname+p] = h[hname].ProjectionY()  
-           h[hname+p].SetName(name+p)
-           h[hname+p].SetDirectory(gROOT)
+           if type(hname) == type('s'): projname = hname+p
+           else: projname = str(hname)+p
+           if p.find('x')>-1: h[projname] = h[hname].ProjectionX()  
+           else             : h[projname] = h[hname].ProjectionY()  
+           h[projname].SetName(name+p)
+           h[projname].SetDirectory(gROOT)
   return
 def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1,nbinsz=0,zmin=0,zmax=1):
   if key==None : 
@@ -43,16 +47,25 @@ def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1
     return
   rkey = str(key) # in case somebody wants to use integers, or floats as keys 
   if h.has_key(key):    h[key].Reset()  
-  elif nbinsz >0:       h[key] = TH3F(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax) 
-  elif nbinsy >0:       h[key] = TH2F(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
-  else:                 h[key] = TH1F(rkey,title,nbinsx,xmin,xmax)
+  elif nbinsz >0:       h[key] = TH3D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax) 
+  elif nbinsy >0:       h[key] = TH2D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
+  else:                 h[key] = TH1D(rkey,title,nbinsx,xmin,xmax)
   h[key].SetDirectory(gROOT)
-
+def bookProf(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,ymin=None,ymax=None,option=""):
+  if key==None : 
+    print 'missing key'
+    return
+  rkey = str(key) # in case somebody wants to use integers, or floats as keys 
+  if h.has_key(key):    h[key].Reset()  
+  if ymin==None or ymax==None:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,option)
+  else:  h[key] = TProfile(key,title,nbinsx,xmin,xmax,ymin,ymax,option)
+  h[key].SetDirectory(gROOT)
 def writeHists(h,fname,plusCanvas=False):
   f = TFile(fname,'RECREATE')
   for akey in h:
+    if not hasattr(h[akey],'Class'): continue
     cln = h[akey].Class().GetName()
-    if not cln.find('TH')<0:   h[akey].Write()
+    if not cln.find('TH')<0 or not cln.find('TP')<0:   h[akey].Write()
     if plusCanvas and not cln.find('TC')<0:   h[akey].Write()
   f.Close()  
 def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):
@@ -62,7 +75,15 @@ def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):
   if not h.has_key(key):
     h[key]=TCanvas(key,title,nx,ny) 
     h[key].Divide(cx,cy)
-
+def reportError(s):
+ l = sys.modules['__main__'].log
+ if not l.has_key(s): l[s]=0
+ l[s]+=1  
+def errorSummary():
+ l = sys.modules['__main__'].log
+ if len(l) > 0: "Summary of recorded incidents:"
+ for e in l:
+    print e,':',l[e]
 def printout(atc,name,Work):
   atc.Update()
   for x in ['.gif','.eps','.jpg'] :  
@@ -85,12 +106,11 @@ def setAttributes(pyl,leaves,printout=False):
 class PyListOfLeaves(dict) : 
     pass  
 
-def container_sizes(sTree):
- if type(sTree) == type('s'):
-   f=TFile(sTree)
-   sTree = f.cbmsim 
+import operator
+def container_sizes(sTree,perEvent=False):
  counter = {}
  print "name      ZipBytes[MB]    TotBytes[MB]    TotalSize[MB]"
+ counter['total']=[0,0,0]
  for l in sTree.GetListOfLeaves():
   b = l.GetBranch()
   nm = b.GetName()
@@ -100,10 +120,23 @@ def container_sizes(sTree):
   counter[bnm][0]+=b.GetZipBytes()/1.E6
   counter[bnm][1]+=b.GetTotBytes()/1.E6
   counter[bnm][2]+=b.GetTotalSize()/1.E6
+  counter['total'][0]+=b.GetZipBytes()/1.E6
+  counter['total'][1]+=b.GetTotBytes()/1.E6
+  counter['total'][2]+=b.GetTotalSize()/1.E6
  print "---> SUMMARY <---------------"
- print "                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]"
- for x in counter:
-  print "%30s :%8.3F   %8.3F    %8.3F  MB"%(x,counter[x][0],counter[x][1],counter[x][2])
+ N = sTree.GetEntries()/1000.
+ if perEvent:
+  print "                     name     ZipBytes[kB]/ev  TotBytes[kB]/ev  TotalSize[kB]/ev" 
+ else:
+  print "                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]" 
+ sorted_c = sorted(counter.items(), key=operator.itemgetter(1))
+ sorted_c.reverse()
+ for i in range(len(sorted_c)):
+  x = sorted_c[i][0]
+  if perEvent:
+   print "%30s :%8.3F      %8.3F       %8.3F"%(x,counter[x][0]/N,counter[x][1]/N,counter[x][2]/N)
+  else:
+   print "%30s :%8.3F   %8.3F    %8.3F"%(x,counter[x][0],counter[x][1],counter[x][2])
 
 def stripOffBranches(fout):
     f = TFile(fout)
@@ -143,3 +176,28 @@ def stripOffBranches(fout):
     if nEvents == sTree.GetEntries(): print "looks ok, could be deleted",os.path.abspath('.')
     else:  print "stripping failed, keep old file",os.path.abspath('.')
     # os.system('mv '+sFile +' '+fout)
+def checkFileExists(x):
+    if x[0:4] == "/eos": f=gSystem.Getenv("EOSSHIP")+x
+    else: f=x  
+    test = TFile.Open(f)
+    if not test: 
+       print "input file",f," does not exist. Missing authentication?"
+       os._exit(1)
+    if test.FindObjectAny('cbmsim'): 
+     return 'tree'
+    else:
+     return 'ntuple'
+def findMaximumAndMinimum(histo):
+ amin,amax = 1E30, -130
+ nmin,nmax = 0, 0
+ for n in range(1,histo.GetNbinsX()+1):
+  c =  histo.GetBinContent(n)
+  if c>amax:
+    amax = c
+    nmax = n
+  if c<amin:
+    amin = c
+    nmin = n
+ return amin,amax,nmin,nmax
+
+

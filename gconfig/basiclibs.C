@@ -20,4 +20,6 @@ void basiclibs()
   gSystem->Load("libMinuit");
   gSystem->Load("libMathMore");
   gSystem->Load("libpythia8");
+  gSystem->Load("libgenfit.so");
+  gSystem->Load("libLHAPDF.so");
 }  

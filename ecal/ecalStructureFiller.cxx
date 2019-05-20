@@ -100,7 +100,7 @@ ecalStructure* ecalStructureFiller::InitPython(TClonesArray* litePoints)
 /** Loop over MCPoints hits and add them to cells **/
 void ecalStructureFiller::LoopForMCPoints()
 {
-  ecalPoint* pt=NULL;
+  ecalPoint* pt;
   ecalCell* cell;
   Int_t ten;
   UInt_t n;
@@ -139,9 +139,10 @@ void ecalStructureFiller::LoopForMCPoints()
 }
 
 // -----   Execution of Task   ---------------------------------------------
-void ecalStructureFiller::Exec(Option_t* option)
+void ecalStructureFiller::Exec(Option_t* option,TClonesArray* litePoints)
 {
   fEvent++;
+  fListECALpts=litePoints;
   if (fVerbose>0)
     cout << "--> Event no. " << fEvent;
 

@@ -172,7 +172,7 @@ ecalInf::ecalInf(const char* filename)
     rtdb->getContainer("CbmGeoEcalPar");
   }
   */
-  ifstream file(filename);
+  std::ifstream file(filename);
   Int_t linenum;
   Double_t val;
   string buffer;

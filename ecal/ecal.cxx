@@ -384,14 +384,22 @@ void ecal::SetSpecialPhysicsCuts()
 Bool_t  ecal::ProcessHits(FairVolume* vol)
 {
   /** Fill MC point for sensitive ECAL volumes **/
+  TString Ecal="Ecal";
   fELoss   = gMC->Edep();
   fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
   fTime    = gMC->TrackTime()*1.0e09;
   fLength  = gMC->TrackLength();
-
-  if (vol->getVolumeId()==fStructureId) {
+  Double_t bx, by, bz;
+  TParticle* bp=gMC->GetStack()->GetCurrentTrack();
+  gMC->TrackPosition(bx, by, bz);
+  Int_t volID;
+  gMC->CurrentVolID(volID);
+  //cout <<"Ecal called  "<<volID<<" "<<vol->getVolumeId()<<" "<<fStructureId<<" "<<fELoss*1e10<<" "<<gGeoManager->GetVolume(vol->getVolumeId())->GetName()<<" "<<gMC->CurrentVolName()<<" "<<bz<<endl;
+  //if (vol->getVolumeId()==fStructureId) {
+  if (Ecal.CompareTo(gMC->CurrentVolName())==0) {
     if (gMC->IsTrackEntering()) {
       FillWallPoint();
+      //cout <<"fill wallpoint "<<vol->getVolumeId()<<" "<<fStructureId<<" "<<fELoss*1e10<<endl;
       ((ShipStack*)gMC->GetStack())->AddPoint(kecal, fTrackID);
   
       ResetParameters();
@@ -442,6 +450,11 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
       gMC->CurrentVolOffID(1, cell); cell--;
     }
     Int_t id=(my*100+mx)*100+cell+1;
+    if (id<0){
+      if (Ecal.CompareTo(gMC->CurrentVolName())==0&&fELoss<1e-19)
+       return kTRUE;
+      cout << "neg id "<<mx<<" "<<my<<" "<<cell<<" "<<gMC->CurrentVolName()<<" "<<gMC->CurrentVolOffName(1)<<" "<<gMC->CurrentVolOffName(2)<<" "<<fELoss<<" "<<fELoss*1e10<<endl;
+    }
 /*   
     Float_t rx; Float_t ry; Int_t ten;
     GetCellCoordInf(id, rx, ry, ten); rx--; ry--;
@@ -718,7 +731,7 @@ void ecal::ConstructGeometry()
   par[0]=fSemiX;
   par[1]=fSemiY;
   par[2]=moduleth/2.0+0.1;
-  volume=gGeoManager->Volume("Ecal", "ELTU",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
+  volume=gGeoManager->Volume("Ecal", "BOX",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Ecal", 1, top->GetName(), 0.0,0.0, fZEcal+par[2]-0.05, 0, kTRUE, buf, 0);
   volume->SetVisLeaves(kTRUE);
   volume->SetVisContainers(kFALSE);

@@ -43,35 +43,19 @@ class TargetPoint : public FairMCPoint
 
     Int_t PdgCode() const {return fPdgCode;}
 
-    /*Bool_t IsTop() const {return fEmTop;}
-    Bool_t IsBot() const {return fEmBot;}
-    Bool_t IsCESTop() const {return fEmCESTop;}
-    Bool_t IsCESBot() const {return fEmCESBot;}
-    Bool_t IsTT() const {return fTT;}
-    Int_t NPlate() const {return fNPlate;}
-    Int_t NColumn() const {return fNColumn;}
-    Int_t NRow() const {return fNRow;}
-    Int_t NWall() const {return fNWall;}*/
 
   private:
-    /** Copy constructor **/
+
+
     Int_t fPdgCode;
-    /*
-    Bool_t fEmTop; //is emulsion top
-    Bool_t fEmBot;//is emulsion bottom
-    Bool_t fEmCESTop; //is emulsion from CES top
-    Bool_t fEmCESBot; //is emulsion from CES bottom
-    Bool_t fTT; //is point in Target Tracker
-    Int_t fNPlate; //which emulsion plate (<57 for bricks, < 3 CES)
-    Int_t fNColumn; //in which column is the brick (<15)
-    Int_t fNRow; //in which row is the brick (<7)
-    Int_t fNWall; //in which wall is the brick (<11)
-    */
+
+    
+    /** Copy constructor **/
+    
     TargetPoint(const TargetPoint& point);
     TargetPoint operator=(const TargetPoint& point);
 
-    ClassDef(TargetPoint,3)
-
+    ClassDef(TargetPoint,2)
 };
 
 #endif

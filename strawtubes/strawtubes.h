@@ -44,21 +44,34 @@ class strawtubes: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZpositions(Double32_t z0, Double32_t z1, Double32_t z2, Double32_t z3, Double32_t z4);
-    void SetStrawLength(Double32_t strawlength);
-    void SetInnerStrawDiameter(Double32_t innerstrawdiameter);
-    void SetOuterStrawDiameter(Double32_t outerstrawdiameter);
-    void SetStrawPitch(Double32_t strawpitch);
-    void SetDeltazLayer(Double32_t deltazlayer);
-    void SetDeltazPlane(Double32_t deltazplane);
+    void SetZpositions(Double_t z0, Double_t z1, Double_t z2, Double_t z3, Double_t z4);   
+    void SetStrawLength(Double_t strawlength);
+    void SetInnerStrawDiameter(Double_t innerstrawdiameter);
+    void SetOuterStrawDiameter(Double_t outerstrawdiameter);
+    void SetStrawPitch(Double_t strawpitch,Double_t layer_offset, Double_t plane_offset);
+    void SetDeltazLayer(Double_t deltazlayer);
+    void SetDeltazPlane(Double_t deltazplane);
     void SetStrawsPerLayer(Int_t strawsperlayer);
     void SetStereoAngle(Int_t stereoangle);
-    void SetWireThickness(Double32_t wirethickness);
-    void SetDeltazView(Double32_t deltazview);
-    void SetVacBox_x(Double32_t vacbox_x);
-    void SetVacBox_y(Double32_t vacbox_y);
+    void SetWireThickness(Double_t wirethickness);
+    void SetDeltazFrame(Double_t deltazframe);
+    void SetFrameLateralWidth(Double_t framelateralwidth);
+    void SetFrameMaterial(TString framematerial);
+    void SetDeltazView(Double_t deltazview);
+    void SetStrawLength12(Double_t strawlength12);
+    void SetStrawLengthVeto(Double_t strawlengthveto); 
+    void SetVacBox_x(Double_t vacbox_x);
+    void SetVacBox_y(Double_t vacbox_y);
+    void SetVetoYDim(Double_t vetoydim);
+    void SetTr12YDim(Double_t tr12ydim); 
+    void SetTr34YDim(Double_t tr34ydim);      
     void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
+    void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
+// for the digitizing step
+    void SetStrawResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial=b;}
+    Double_t StrawVdrift() {return v_drift;}
+    Double_t StrawSigmaSpatial() {return sigma_spatial;}
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
@@ -97,30 +110,43 @@ class strawtubes: public FairDetector
     Int_t          fVolumeID;               //!  volume id
     TLorentzVector fPos;                    //!  position at entrance
     TLorentzVector fMom;                    //!  momentum at entrance
-    Double32_t     fTime;                   //!  time
-    Double32_t     fLength;                 //!  length
-    Double32_t     fELoss;                  //!  energy loss
-    Double32_t     fT0z;                    //!  z-position of veto station
-    Double32_t     fT1z;                    //!  z-position of tracking station 1
-    Double32_t     fT2z;                    //!  z-position of tracking station 2
-    Double32_t     fT3z;                    //!  z-position of tracking station 3
-    Double32_t     fT4z;                    //!  z-position of tracking station 4
-    Double32_t     fStraw_length;           //!  Length (y) of a straw
-    Double32_t     fInner_Straw_diameter;   //!  Inner Straw diameter
-    Double32_t     fOuter_Straw_diameter;   //!  Outer Straw diameter
-    Double32_t     fStraw_pitch;            //!  Distance (x) between straws in one layer
-    Double32_t     fDeltaz_layer12;         //!  Distance (z) between layer 1&2
-    Double32_t     fDeltaz_plane12;         //!  Distance (z) between plane 1&2
-    Double32_t     fOffset_layer12;         //!  Offset (x) between straws of layer2&1
-    Double32_t     fOffset_plane12;         //!  Offset (x) between straws of plane1&2
-    Int_t          fStraws_per_layer;       //!  Number of straws in one layer
-    Double32_t     fView_angle;             //!  Stereo angle of layers in a view
-    Double32_t     fcosphi;
-    Double32_t     fsinphi;
-    Double32_t     fWire_thickness;         //!  Thickness of the wire
-    Double32_t     fDeltaz_view;            //!  Distance (z) between views
-    Double32_t     fVacBox_x;               //!  x size of station vacuumbox
-    Double32_t     fVacBox_y;               //!  y size of station vacuumbox
+    Double_t     fTime;                   //!  time
+    Double_t     fLength;                 //!  length
+    Double_t     fELoss;                  //!  energy loss
+    Double_t     fT0z;                    //!  z-position of veto station
+    Double_t     fT1z;                    //!  z-position of tracking station 1
+    Double_t     fT2z;                    //!  z-position of tracking station 2
+    Double_t     fT3z;                    //!  z-position of tracking station 3
+    Double_t     fT4z;                    //!  z-position of tracking station 4
+    Double_t     fStraw_length;           //!  Length (y) of a straw
+    Double_t     fStraw_length_12;        //!  strawlength for tracking station 1 & 2
+    Double_t     fStraw_length_veto;      //!  strawlength for veto station 
+    Double_t     fInner_Straw_diameter;   //!  Inner Straw diameter
+    Double_t     fOuter_Straw_diameter;   //!  Outer Straw diameter
+    Double_t     fStraw_pitch;            //!  Distance (x) between straws in one layer
+    Double_t     fDeltaz_layer12;         //!  Distance (z) between layer 1&2
+    Double_t     fDeltaz_plane12;         //!  Distance (z) between plane 1&2
+    Double_t     fOffset_layer12;         //!  Offset (x) between straws of layer2&1
+    Double_t     fOffset_plane12;         //!  Offset (x) between straws of plane1&2
+    Int_t        fStraws_per_layer;       //!  Number of straws in one layer
+    Double_t     fView_angle;             //!  Stereo angle of layers in a view
+    Double_t     fcosphi;
+    Double_t     fsinphi;
+    Double_t     fWire_thickness;         //!  Thickness of the wire
+    Double_t     fDeltaz_frame;           //!  Thickness (z) of the meterial frame
+    Double_t     fFrame_lateral_width;    //!  Width (x and y) of the material frame
+    TString      fFrame_material;         //!  Material of the view frame
+    Double_t     fDeltaz_view;            //!  Distance (z) between views
+    Double_t     fVacBox_x;               //!  x size of station vacuumbox
+    Double_t     fVacBox_y;               //!  y size of station vacuumbox
+    Double_t     fvetoydim;               //!  y size of veto station
+    Double_t     ftr12ydim;               //!  y size of tr12 stations
+    Double_t     ftr34ydim;               //!  y size of tr34 stations
+    Int_t        fStraws_per_layer_veto;  //!  Number of straws in one veto layer
+    Int_t        fStraws_per_layer_tr12;  //!  Number of straws in one tr12 layer
+    Int_t        fStraws_per_layer_tr34;  //!  Number of straws in one tr34 layer
+    Double_t     v_drift;                 //! drift velocity  
+    Double_t     sigma_spatial;           //! spatial resolution 
     /** container for data points */
 
     TClonesArray*  fstrawtubesPointCollection;
@@ -128,7 +154,7 @@ class strawtubes: public FairDetector
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
     Int_t InitMedium(const char* name);
-    ClassDef(strawtubes,1)
+    ClassDef(strawtubes,5)
 };
 
 #endif //STRAWTUBES_H

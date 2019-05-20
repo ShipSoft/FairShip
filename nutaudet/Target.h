@@ -26,28 +26,48 @@ class TClonesArray;
 class Target : public FairDetector
 {
 public:
-    Target(const char* name, const Double_t zC, const Double_t GapTS, Bool_t Active, const char* Title = "NuTauTarget");
+  Target(const char* name, const Double_t Ydist, Bool_t Active, const char* Title = "NuTauTarget");
     Target();
     virtual ~Target();
     
     /**      Create the detector geometry        */
+    
+    //Set options for detector contruction (active/passive, which design)
+    void SetDetectorDesign(Int_t Design);
+    void MakeNuTargetPassive(Bool_t a);
+    void MergeTopBot(Bool_t SingleEmFilm);
+
     void ConstructGeometry();
-    
-    void SetGoliathSizes(Double_t H, Double_t TS, Double_t LS, Double_t BasisH);
-    void SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t LowCoilH, Double_t CoilD);
-    
+
+      
     void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
     void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t LeadTh, Double_t AllPW);
-    void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPack);
+    void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ, Int_t number_of_films_);
     void SetCESParam(Double_t RohG, Double_t LayerCESW, Double_t CESW, Double_t CESPack);
     void SetCellParam(Double_t CellW);
-    
-    void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ);
+    void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
+    void SetTTzdimension(Double_t TTZ);
+    void SetNumberTargets(Int_t target);
 
-    //void DecodeVolumeID(Int_t detID, int &NWall, int &NRow, int &NColumn, bool &BrickorCES, int &NPlate, bool &TopBot ,bool &TT);
-    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCESTop, Bool_t &EmCESBot, Bool_t &EmTop, Bool_t &EmBot, Bool_t &TT);
+    //Functions to get parameters relative to the magnet in which the detector is placed
+    void SetMagnetConfiguration(Int_t config);//1=TP, 0=new
+    void SetMagnetHeight(Double_t Y);
+    void SetBaseHeight(Double_t Y);
+    void SetColumnHeight(Double_t Y);
+    void SetCoilUpHeight(Double_t H1);
+    void SetCoilDownHeight(Double_t H2);
+    void SetMagneticField(Double_t B);
+    void SetCenterZ(Double_t z);
     
-    
+    //Functions to set dimension of both the base and the pillars in no magnet configuration options. The pillars are defined in EmulsionMagnet class in the option with magnet.
+    void SetBaseDimension(Double_t X, Double_t Y, Double_t Z);
+    void SetPillarDimension(Double_t X, Double_t Y, Double_t Z);
+
+  
+    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick, Bool_t &EmTop);
+
+    void SetHpTParam(Int_t n, Double_t dd, Double_t DZ); //other detector's parameters (needed for positioning)
+
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -102,7 +122,7 @@ public:
     Target(const Target&);
     Target& operator=(const Target&);
     
-    ClassDef(Target,1)
+    ClassDef(Target,4)
     
 private:
     
@@ -119,24 +139,35 @@ private:
     
     /** container for data points */
     TClonesArray*  fTargetPointCollection;
+
+    //switch for building the detector with active layers or with passive material only
+
     
 protected:
+
+    Bool_t fPassive; //0 = with Emulsion, 1 = only lead + rohacell
+    Bool_t fsingleemulsionfilm; //0 = both top and bottom layers active, separated by plastic base; 1 = only one active layer
+    Int_t fDesign; //0=TP, 1=NewMagnet (Davide), 2=No Magnet Config
     
-    //Goliath
-    
-    Double_t Height;
-    Double_t zCenter;
-    Double_t LongitudinalSize;
-    Double_t TransversalSize;
-    Double_t GapFromTSpectro;
-    Double_t CoilRadius;
-    Double_t UpCoilHeight;
-    Double_t LowCoilHeight;
-    Double_t CoilDistance;
-    Double_t BasisHeight;
-    
+    //Position of the Center of the Detector
+    Double_t fCenterZ;
+
+    //Some Magnet parameters necessary for target positioning
+    Double_t fMagnetY;
+    Double_t fColumnY;
+    Double_t fMagnetBaseY;
+    Double_t fCoilH1;
+    Double_t fCoilH2;
+
     //Bricks
-    
+    Double_t fField;
+
+    Int_t fNCol;
+    Int_t fNRow;
+    Int_t fNWall;
+    Int_t fNTarget;
+    Int_t number_of_films; ////
+
     Double_t XDimension; //dimension of the target box (= 2 x 2 x 1) m^3
     Double_t YDimension;
     Double_t ZDimension;
@@ -150,8 +181,13 @@ protected:
     Double_t EmPlateWidth; // Z dimension of the emulsion plates = 2*EmulsionThickness+PlasticBaseThickness
     Double_t AllPlateWidth; //PlateZ + LeadThickness
 
+
+    Double_t BrickPackageX; //dimension of the brick package along X
+    Double_t BrickPackageY; //dimension of the brick package along Y
     Double_t BrickPackageZ; //dimension of the brick package along Z
     Double_t CESPackageZ; //dimension of the CES package along Z
+
+    Double_t Ydistance; //distance in Y between 2 bricks
     
     Double_t BrickZ; //dimension of the brick + package along the Z axis
     Double_t BrickY;
@@ -164,11 +200,21 @@ protected:
     Double_t CellWidth; //dimension of Brick + CES along Z axis
     
     //TargetTrackers
-    Double_t TTrackerX;
-    Double_t TTrackerY;
     Double_t TTrackerZ;
 
-    
+    //Base and Pillars for option without magnetic field
+     Double_t fBaseX;
+     Double_t fBaseY;
+     Double_t fBaseZ;
+     Double_t fPillarX;
+     Double_t fPillarY;
+     Double_t fPillarZ;  
+
+    //other detector's parameters (needed for positioning)
+     Double_t fHpTDistance;    
+     Double_t fHpTDZ;
+     Int_t fnHpT;
+
     Int_t InitMedium(const char* name);
     
 };

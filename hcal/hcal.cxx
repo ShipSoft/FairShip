@@ -347,17 +347,18 @@ void hcal::SetSpecialPhysicsCuts()
     SetHcalCuts(mediumID);
   }
 }
-
 // -----   Public method ProcessHits  --------------------------------------
 Bool_t  hcal::ProcessHits(FairVolume* vol)
 {
   /** Fill MC point for sensitive ECAL volumes **/
+  TString Hcal="Hcal";
   fELoss   = gMC->Edep();
   fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
   fTime    = gMC->TrackTime()*1.0e09;
   fLength  = gMC->TrackLength();
 
-  if (vol->getVolumeId()==fStructureId) {
+  //if (vol->getVolumeId()==fStructureId) {
+  if (Hcal.CompareTo(gMC->CurrentVolName())==0) {
     if (gMC->IsTrackEntering()) {
       FillWallPoint();
       ((ShipStack*)gMC->GetStack())->AddPoint(khcal, fTrackID);
@@ -686,11 +687,22 @@ void hcal::ConstructGeometry()
   par[0]=fSemiX;
   par[1]=fSemiY;
   par[2]=fHcalSize[2]/2.0;
-  volume=gGeoManager->Volume("Hcal", "ELTU",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
+
+  if (!IsActive()){
+   Double_t fudgeFactor = 6.34 / 13.7 ; // to have same interaction length as before
+   par[2] = par[2]*fudgeFactor;
+   volume=gGeoManager->Volume("Hcal", "BOX",  gGeoManager->GetMedium("iron")->GetId(), par, 3);
+   gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
+   return;
+  }
+
+  volume=gGeoManager->Volume("Hcal", "BOX",  gGeoManager->GetMedium("SensVacuum")->GetId(), par, 3);
   gGeoManager->Node("Hcal", 1, top->GetName(), 0.0,0.0, fZHcal, 0, kTRUE, buf, 0);
   volume->SetVisLeaves(kTRUE);
   volume->SetVisContainers(kFALSE);
   volume->SetVisibility(kFALSE);
+
+
   AddSensitiveVolume(volume);
   fStructureId=volume->GetNumber();
 

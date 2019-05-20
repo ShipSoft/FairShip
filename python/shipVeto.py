@@ -1,20 +1,18 @@
 # utility to simulate response of the veto systems
 import ROOT
 import shipunit as u
+from array import array
 
 class Task:
  "initialize and give response of the veto systems"
- def __init__(self):
- # needs to be done better
-  self.N = 16  #number of segments in X-Y
-  self.dphi = 2*ROOT.TMath.Pi()/self.N
-  self.phistart = self.dphi/2
+ def __init__(self,t):
   self.UVTefficiency = 0.999 # Upstream Veto tagger: 99.9% efficiency picked up from TP
   self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
   self.SVTefficiency = 0.995 # Straw Veto tagger: guestimate, including dead channels
-  self.detList  = self.detMap()
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
+  self.detList  = self.detMap()
+  self.sTree = t
 
  def detMap(self):
   fGeo = ROOT.gGeoManager  
@@ -23,52 +21,45 @@ class Task:
    nm = v.GetName()
    i  = fGeo.FindVolumeFast(nm).GetNumber()
    detList[i] = nm
-  t2LiSc = fGeo.GetVolume('T2LiSc')
-  if not t2LiSc: t2LiSc = fGeo.GetVolume('T2LiSc_1')
-  T2Shape = t2LiSc.GetShape()
-  self.a = T2Shape.GetDX() - 15 # 15cm = half size of liquid, was not able to figure out how to retrieve from geometry
-  self.b = T2Shape.GetDY() - 15
-  t1LiSc = fGeo.GetVolume('T1LiSc')
-  if not t1LiSc: t1LiSc = fGeo.GetVolume('T1LiSc_1')
-  T1Shape = t1LiSc.GetShape()
-  self.asmall = T1Shape.GetDX() - 15
   return detList 
 
- def SBT_decision(self,sTree,mcParticle=None):
-  # if mcParticle >0, only count hits from this particle
-  # if mcParticle <0, do not count hits from this particle
-  ELOSS = {} 
-  for i in self.detList: 
-    if not self.detList[i].find('LiSc')<0: 
-       ELOSS[self.detList[i]] = [0]*self.N 
-  for ahit in sTree.vetoPoint:
-     if mcParticle: 
-        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
-        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-     detID   = ahit.GetDetectorID()
-     detName = self.detList[detID]
-     if not detName in ELOSS: continue
-     x,y,z = (ahit.GetX(), ahit.GetY(), ahit.GetZ())
-     ELoss = ahit.GetEnergyLoss()
-     if not detName.find("T1")<0:   t = ROOT.TMath.ATan2(self.a*y,self.b*x)
-     else:                          t = ROOT.TMath.ATan2(self.asmall*y,self.b*x)
-     phisegment = ROOT.TMath.FloorNint((t+2*ROOT.TMath.Pi()+self.phistart)/self.dphi)%self.N
-     ELOSS[detName][phisegment] += ELoss
+ def SBT_plastic_decision(self,mcParticle=None):
+    SBT_decision(self,mcParticle,detector='plastic')
+ def SBT_liquid_decision(self,mcParticle=None):
+    SBT_decision(self,mcParticle,detector='liquid')
+ 
+ def SBT_decision(self,mcParticle=None,detector='liquid'):
+  # if mcParticle >0, only count hits with this particle
+  # if mcParticle <0, do not count hits with this particle
   hitSegments = 0
-  for detName in ELOSS:
-    for seg in range(len(ELOSS[detName])):
-      if ELOSS[detName][seg] > 0.045: hitSegments += 1 #threshold of 45 MeV per segment
+  index = -1
+  fdetector = detector=='liquid'
+  for aDigi in self.sTree.Digi_SBTHits:
+     index+=1 
+     detID    = aDigi.GetDetectorID()
+     if fdetector and detID > 999999:continue
+     if not fdetector and not detID > 999999:continue 
+     if mcParticle:
+        found = False
+        for mcP in self.sTree.digiSBT2MC[index]: 
+         if mcParticle>0 and mcParticle != mcP : found=True
+         if mcParticle<0 and abs(mcParticle) == mcP : found=True
+        if found: continue
+     position = aDigi.GetXYZ()
+     ELoss    = aDigi.GetEloss()
+     if aDigi.isValid(): hitSegments += 1 #threshold of 45 MeV per segment
   w = (1-self.SBTefficiency)**hitSegments  
   veto = self.random.Rndm() > w
   #print 'SBT :',hitSegments
   return veto, w, hitSegments
- def UVT_decision(self,sTree,mcParticle=None):
+ def UVT_decision(self,mcParticle=None):
   nHits = 0
-  for ahit in sTree.vetoPoint:
+  for ahit in self.sTree.vetoPoint:
+     detID   = ahit.GetDetectorID()
+     if detID>100000: continue  # this is a LiSc detector
      if mcParticle: 
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-     detID   = ahit.GetDetectorID()
      detName = self.detList[detID]
      if not detName == "VetoTimeDet": continue
      nHits+=1
@@ -76,9 +67,9 @@ class Task:
   veto = self.random.Rndm() > w
   #print 'UVT :',nHits
   return veto, w,nHits
- def SVT_decision(self,sTree,mcParticle=None):
+ def SVT_decision(self,mcParticle=None):
   nHits = 0
-  for ahit in sTree.strawtubesPoint:
+  for ahit in self.sTree.strawtubesPoint:
      if mcParticle: 
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
@@ -89,10 +80,10 @@ class Task:
   veto = self.random.Rndm() > w
   # print 'SVT :',nHits
   return veto,w,nHits
- def RPC_decision(self,sTree,mcParticle=None):
+ def RPC_decision(self,mcParticle=None):
   nHits = 0
   mom = ROOT.TVector3()
-  for ahit in sTree.ShipRpcPoint:
+  for ahit in self.sTree.ShipRpcPoint:
    if mcParticle: 
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
@@ -103,10 +94,10 @@ class Task:
   if veto: w = 0.
   #print 'RPC :',nHits
   return veto,w,nHits
- def Track_decision(self,sTree,mcParticle=None):
+ def Track_decision(self,mcParticle=None):
   nMultCon = 0
   k = -1
-  for aTrack in sTree.FitTracks:
+  for aTrack in self.sTree.FitTracks:
      k+=1 
      if mcParticle: 
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
@@ -119,11 +110,59 @@ class Task:
   veto = nMultCon > 2
   if veto: w = 0.
   return veto,w,nMultCon
+ def fiducialCheckSignal(self,n):
+  hnl = self.sTree.Particles[n]
+  aPoint = ROOT.TVector3(hnl.Vx(),hnl.Vy(),hnl.Vz())
+  distmin = self.fiducialCheck(aPoint)
+  return distmin
+ def fiducialCheck(self,aPoint):
+  nav = ROOT.gGeoManager.GetCurrentNavigator()
+  phi = 0.
+  nSteps = 36
+  delPhi = 2.*ROOT.TMath.Pi()/nSteps
+  distmin = 1E10
+  nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())
+  cNode = 'outside'
+  aNode = nav.FindNode()
+  if aNode: cNode = aNode.GetName()
+  if cNode != 'T2decayVol_0' and cNode != 'T1decayVol_0': 
+   distmin = 0. 
+  else:
+   for n in range(nSteps):
+   # set direction
+    xDir = ROOT.TMath.Sin(phi)
+    yDir = ROOT.TMath.Cos(phi)
+    nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())
+    cNode = nav.FindNode().GetName()
+    nav.SetCurrentDirection(xDir,yDir,0.)
+    rc = nav.FindNextBoundaryAndStep()
+    x,y  = nav.GetCurrentPoint()[0],nav.GetCurrentPoint()[1]
+    if cNode != nav.GetCurrentNode().GetName():
+     dist = ROOT.TMath.Sqrt( (aPoint.x()-x)**2 + (aPoint.y()-y)**2)
+     if dist < distmin : distmin = dist  
+    phi+=delPhi
+# distance to Tr1_x1
+   nav.cd("/Tr1_1")
+   shape = nav.GetCurrentNode().GetVolume().GetShape()
+   origin = array('d',[0,0,shape.GetDZ()])
+   master = array('d',[0,0,0])
+   nav.LocalToMaster(origin,master)
+   dist = master[2] - aPoint.z()  
+   if dist < distmin : distmin = dist  
+# distance to straw veto:
+   nav.cd("/Veto_5")
+   shape = nav.GetCurrentNode().GetVolume().GetShape()
+   origin = array('d',[0,0,shape.GetDZ()])
+   master = array('d',[0,0,0])
+   nav.LocalToMaster(origin,master)
+   dist = aPoint.z() - master[2]
+  return distmin
 
 #usage
 # import shipVeto
-# veto = shipVeto.Task()
-# veto,w = veto.SBT_decision(sTree)
+# veto = shipVeto.Task(sTree)
+# veto,w = veto.SBT_decision()
+# or for plastic veto,w = veto.SBT_decision(detector='plastic')
 # if veto: continue # reject event
 # or
 # continue using weight w 

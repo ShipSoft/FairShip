@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+import os,sys
+sys.path.append(os.environ['SHIPBUILD']+'/alibuild')
+from alibuild_helpers.utilities import getVersion, detectArch
+print detectArch()

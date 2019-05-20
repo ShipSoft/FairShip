@@ -1,0 +1,64 @@
+# make all long lived strange particles stable, should be transported by Geant4
+# in addition make all short lived resonances < 1GeV stable, should decay by Pythia8/Geant4
+# Thomas Ruf July 2017
+#  211, 321, 130, 310, 3122, 3112, 3312, 3222,  3322, 3334
+#  pi+   K+   KL   KS   /\0  Sigma- Xi-  Sigma+  Xi0  Omega- 
+#  221, 223, 113, 331, 333
+#  eta  omega rho0 eta'
+
+# 221
+Decay eta
+Enddecay
+# 113
+Decay rho0
+Enddecay
+Decay rho+
+Enddecay
+Decay rho-
+Enddecay
+# 223
+Decay omega
+Enddecay
+# 331
+Decay eta'
+Enddecay
+# 333
+Decay phi
+Enddecay
+# 130
+Decay K_L0
+Enddecay
+# 310
+Decay K_S0
+Enddecay
+# 3122
+Decay Lambda0
+Enddecay
+Decay anti-Lambda0
+Enddecay
+# 3112
+Decay Sigma-
+Enddecay
+Decay anti-Sigma+
+Enddecay
+# 3312
+Decay Xi-
+Enddecay
+Decay anti-Xi+
+Enddecay
+# 3222
+Decay Sigma+
+Enddecay
+Decay anti-Sigma-
+Enddecay
+# 3322
+Decay Xi0
+Enddecay
+Decay anti-Xi0
+Enddecay
+# 3334
+Decay Omega-
+Enddecay
+Decay anti-Omega+
+Enddecay
+End

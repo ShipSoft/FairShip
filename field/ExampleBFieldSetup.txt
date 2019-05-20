@@ -1,0 +1,135 @@
+# Specify the uniform fields (Tesla)
+Uniform B1_xPos 1.8 0.0 0.0
+Uniform B1_xNeg -1.8 0.0 0.0
+Uniform B1_yPos 0.0 1.8 0.0
+Uniform B1_yNeg 0.0 -1.8 0.0
+Uniform B2_zNeg 0.0 0.0 -1.5
+Uniform B2_zPos 0.0 0.0 1.5
+Uniform B2_yNeg 0.0 -1.5 0.0
+Uniform B2_yPos 0.0 1.5 0.0
+Uniform B3_xPos 1.0 0.0 0.0
+Uniform B3_xNeg -1.0 0.0 0.0
+# Spectrometer Bell field; set this as a global field
+Bell Wilfried 0.1436 3068.0 2 500.0
+Global Wilfried
+# Example if using a field map:
+# FieldMap Map files/MuonFilterBFieldMap1.root 0.0 0.0 0.0
+# Global Map Wilfried
+# Assign the fields to volumes. Use "Local" to ignore global field 
+# for the specific volume or "Region" for local & global field
+# Active muon shield
+Local MagnAbsorb1_MiddleMagL B1_yPos
+Local MagnAbsorb1_MiddleMagR B1_yPos
+Local MagnAbsorb1_MagRetL B1_yNeg
+Local MagnAbsorb1_MagRetR B1_yNeg
+Local MagnAbsorb1_MagCLB B1_yNeg
+Local MagnAbsorb1_MagCLT B1_yNeg
+Local MagnAbsorb1_MagCRT B1_yNeg
+Local MagnAbsorb1_MagCRB B1_yNeg
+Local MagnAbsorb1_MagTopLeft B1_xPos
+Local MagnAbsorb1_MagTopRight B1_xNeg
+Local MagnAbsorb1_MagBotLeft B1_xNeg
+Local MagnAbsorb1_MagBotRight B1_xPos
+Local MagnAbsorb2_MiddleMagL B1_yPos
+Local MagnAbsorb2_MiddleMagR B1_yPos
+Local MagnAbsorb2_MagRetL B1_yNeg
+Local MagnAbsorb2_MagRetR B1_yNeg
+Local MagnAbsorb2_MagCLB B1_yNeg
+Local MagnAbsorb2_MagCLT B1_yNeg
+Local MagnAbsorb2_MagCRT B1_yNeg
+Local MagnAbsorb2_MagCRB B1_yNeg
+Local MagnAbsorb2_MagTopLeft B1_xPos
+Local MagnAbsorb2_MagTopRight B1_xNeg
+Local MagnAbsorb2_MagBotLeft B1_xNeg
+Local MagnAbsorb2_MagBotRight B1_xPos
+Local Magn1_MiddleMagL B1_yPos
+Local Magn1_MiddleMagR B1_yPos
+Local Magn1_MagRetL B1_yNeg
+Local Magn1_MagRetR B1_yNeg
+Local Magn1_MagCLB B1_yNeg
+Local Magn1_MagCLT B1_yNeg
+Local Magn1_MagCRT B1_yNeg
+Local Magn1_MagCRB B1_yNeg
+Local Magn1_MagTopLeft B1_xPos
+Local Magn1_MagTopRight B1_xNeg
+Local Magn1_MagBotLeft B1_xNeg
+Local Magn1_MagBotRight B1_xPos
+Local Magn2_MiddleMagL B1_yPos
+Local Magn2_MiddleMagR B1_yPos
+Local Magn2_MagRetL B1_yNeg
+Local Magn2_MagRetR B1_yNeg
+Local Magn2_MagCLB B1_yNeg
+Local Magn2_MagCLT B1_yNeg
+Local Magn2_MagCRT B1_yNeg
+Local Magn2_MagCRB B1_yNeg
+Local Magn2_MagTopLeft B1_xPos
+Local Magn2_MagTopRight B1_xNeg
+Local Magn2_MagBotLeft B1_xNeg
+Local Magn2_MagBotRight B1_xPos
+Local Magn3_MiddleMagL B1_yPos
+Local Magn3_MiddleMagR B1_yPos
+Local Magn3_MagRetL B1_yNeg
+Local Magn3_MagRetR B1_yNeg
+Local Magn3_MagCLB B1_yNeg
+Local Magn3_MagCLT B1_yNeg
+Local Magn3_MagCRT B1_yNeg
+Local Magn3_MagCRB B1_yNeg
+Local Magn3_MagTopLeft B1_xPos
+Local Magn3_MagTopRight B1_xNeg
+Local Magn3_MagBotLeft B1_xNeg
+Local Magn3_MagBotRight B1_xPos
+Local Magn4_MiddleMagL B1_yNeg
+Local Magn4_MiddleMagR B1_yNeg
+Local Magn4_MagRetL B1_yPos
+Local Magn4_MagRetR B1_yPos
+Local Magn4_MagCLB B1_yPos
+Local Magn4_MagCLT B1_yPos
+Local Magn4_MagCRT B1_yPos
+Local Magn4_MagCRB B1_yPos
+Local Magn4_MagTopLeft B1_xNeg
+Local Magn4_MagTopRight B1_xPos
+Local Magn4_MagBotLeft B1_xPos
+Local Magn4_MagBotRight B1_xNeg
+Local Magn5_MiddleMagL B1_yNeg
+Local Magn5_MiddleMagR B1_yNeg
+Local Magn5_MagRetL B1_yPos
+Local Magn5_MagRetR B1_yPos
+Local Magn5_MagCLB B1_yPos
+Local Magn5_MagCLT B1_yPos
+Local Magn5_MagCRT B1_yPos
+Local Magn5_MagCRB B1_yPos
+Local Magn5_MagTopLeft B1_xNeg
+Local Magn5_MagTopRight B1_xPos
+Local Magn5_MagBotLeft B1_xPos
+Local Magn5_MagBotRight B1_xNeg
+Local Magn6_MiddleMagL B1_yNeg
+Local Magn6_MiddleMagR B1_yNeg
+Local Magn6_MagRetL B1_yPos
+Local Magn6_MagRetR B1_yPos
+Local Magn6_MagCLB B1_yPos
+Local Magn6_MagCLT B1_yPos
+Local Magn6_MagCRT B1_yPos
+Local Magn6_MagCRB B1_yPos
+Local Magn6_MagTopLeft B1_xNeg
+Local Magn6_MagTopRight B1_xPos
+Local Magn6_MagBotLeft B1_xPos
+Local Magn6_MagBotRight B1_xNeg
+Local Magn7_MiddleMagL B1_yNeg
+Local Magn7_MiddleMagR B1_yNeg
+Local Magn7_MagRetL B1_yPos
+Local Magn7_MagRetR B1_yPos
+Local Magn7_MagCLB B1_yPos
+Local Magn7_MagCLT B1_yPos
+Local Magn7_MagCRT B1_yPos
+Local Magn7_MagCRB B1_yPos
+Local Magn7_MagTopLeft B1_xNeg
+Local Magn7_MagTopRight B1_xPos
+Local Magn7_MagBotLeft B1_xPos
+Local Magn7_MagBotRight B1_xNeg
+# Spectrometer
+Region volUpYoke B2_zNeg
+Region volLowYoke B2_zPos
+Region volArm1Mudet B2_yNeg
+Region volArm2Mudet B2_yPos
+Region ColumnVol B3_xNeg
+Region volTarget B3_xPos

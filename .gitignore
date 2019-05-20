@@ -37,3 +37,16 @@ build/
 
 # VM stuff
 .vagrant/
+
+# OS X
+*.idea
+*.DS_Store
+
+# IPython notebooks
+*.ipynb_checkpoints
+
+# FairShip-specific files
+c++
+cc
+config.sh
+lcgenv.sh

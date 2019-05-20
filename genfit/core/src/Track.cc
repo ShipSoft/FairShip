@@ -30,6 +30,7 @@
 
 #include <TDatabasePDG.h>
 #include <TMath.h>
+#include <TBuffer.h>
 
 //#include <glog/logging.h>
 
@@ -169,6 +170,7 @@ void Track::swap(Track& other) {
 
 Track::~Track() {
  // causes problem for python, is it needed ? TR 2014  this->Clear();
+ this->Clear();
 }
 
 void Track::Clear(Option_t*)
@@ -222,13 +224,7 @@ TrackPoint* Track::getPointWithMeasurementAndFitterInfo(int id, const AbsTrackRe
     }
   }
 
-  if (i == 0)
-    return NULL;
-
-  if (id < 0)
-    id += i;
-
-  return getPointWithMeasurementAndFitterInfo(id, rep);
+  return NULL;
 }
 
 
@@ -1447,7 +1443,7 @@ void Track::Streamer(TBuffer &R__b)
       TObject::Streamer(R__b);
       {
         std::vector<AbsTrackRep*> &R__stl =  trackReps_;
-        int R__n=(&R__stl) ? int(R__stl.size()) : 0;
+        int R__n=int(R__stl.size());
         R__b << R__n;
         if(R__n) {
           TClass *R__tcl1 = TBuffer::GetClass(typeid(genfit::AbsTrackRep));
@@ -1465,7 +1461,7 @@ void Track::Streamer(TBuffer &R__b)
       if (streamTrackPoints)
       {
         std::vector<TrackPoint*> &R__stl =  trackPoints_;
-        int R__n=(&R__stl) ? int(R__stl.size()) : 0;
+        int R__n=int(R__stl.size());
         R__b << R__n;
         if(R__n) {
           std::vector<TrackPoint*>::iterator R__k;
@@ -1476,7 +1472,7 @@ void Track::Streamer(TBuffer &R__b)
       }
       {
         std::map<const AbsTrackRep*,FitStatus*> &R__stl =  fitStatuses_;
-        int R__n=(&R__stl) ? int(R__stl.size()) : 0;
+        int R__n=int(R__stl.size());
         R__b << R__n;
         if(R__n) {
           TClass *R__tcl1 = TBuffer::GetClass(typeid(genfit::AbsTrackRep));

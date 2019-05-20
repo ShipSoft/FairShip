@@ -1,11 +1,15 @@
 # result_1Bn_ecut_5.root  		1E9 with Ecut > 5 GeV
 # result_0.1Bn_ecut_0.5.root         	1E8 with Ecut > 0.5 GeV
 Yandex   = False  # False
+Yandex2   = False # summer 2015 production, 10B, Ecut>10GeV, Mo/W/ target
+Yandex3   = True  # spring 2016 production, 10B, Ecut>10GeV, Mo/W/ target, record start of track
+afterHadronAbsorber = False
 JPsi     = False # True
-MoTarget = True
+MoTarget = False 
 Tau      = False
 
 import ROOT,os
+from array import array
 from ROOT import TDatabasePDG,TMath,gDirectory
 from rootUtils import *
 pdg  = TDatabasePDG()
@@ -17,6 +21,14 @@ if Yandex:
  stats =  {5.:[1E9,1E9],0.5:[1E8]}
  files  = {5.:['$SHIPSOFT/data/result_1Bn_ecut_5.root','$SHIPSOFT/data/result_1Bn_ecut_5-v02.root'],0.5:['$SHIPSOFT/data/result_0.1Bn_ecut_0.5.root']}
  fnew  = 'pythia8_Geant4_total_Yandex.root'
+if Yandex2:
+ stats =  {10.:[1E10]}
+ files  = {10.:['$SHIPSOFT/data/result_10Bn_ecut_10.root']}
+ fnew  = 'pythia8_Geant4_total_Yandex2.root'
+if Yandex3:
+ stats =  {10.:[10.05E9]}
+ files  = {10.:['/media/truf/Elements/Data/HNL/ShipSoft/data/Yandex-April2016_10.05B.root']}
+ fnew  = 'pythia8_Geant4_total_Yandex3.root'
 if JPsi:
  BR = 0.05961 
  stats =  {10.:[]}
@@ -127,7 +139,10 @@ def makeFinalNtuples(norm=5.E13,opt=''):
      if opt!='': fxx = fxx.replace('_total','')
      h['N']      = ROOT.TFile(fxx, 'RECREATE')
      print 'new file created',fxx
-     h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","flux after 3m hadron absorber",tuples)
+     if afterHadronAbsorber:  
+      h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","flux after 3m hadron absorber",tuples)
+     else:  
+      h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","flux after 3m hadron absorber, position&momentum before",tuples)
     gROOT.cd()
     t.SetEventList(0) 
     t.Draw(">>temp",cuts[opt])
@@ -137,10 +152,11 @@ def makeFinalNtuples(norm=5.E13,opt=''):
     for iev in range(nev) :
      rc = t.GetEntry(temp.GetEntry(iev))
      leaves = t.GetListOfLeaves()
-     vlist = []
+     vlist = array('f')
      for x in range(leaves.GetEntries()):
       vlist.append( leaves.At(x).GetValue() )
-     # get kinetic energy "id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid")
+     # get kinetic energy "id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid"
+     # since 2016         "id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid"
      Psq = vlist[1]**2+vlist[2]**2+vlist[3]**2
      if abs(vlist[0])==13: Ekin = ROOT.TMath.Sqrt(Mmu2+Psq)-Mmu  
      else: Ekin = ROOT.TMath.Sqrt(Psq)
@@ -148,6 +164,9 @@ def makeFinalNtuples(norm=5.E13,opt=''):
       if Ekin < ecut : continue
       if Ekin > 5. :     weight = norm/(ntot[5.] + ntot[0.5])
       else         :     weight = norm/(ntot[0.5])
+     if Yandex2 or Yandex3:
+      if Ekin < ecut : continue
+      weight = norm/(ntot[10.])
      if JPsi       :     weight = norm/(ntot[10.])
      if Tau        :     weight = norm/(ntot[0.])
      if MoTarget:
@@ -158,9 +177,7 @@ def makeFinalNtuples(norm=5.E13,opt=''):
       else            :     weight = norm/(ntot[0.5])
      vlist.append(weight)
      vlist.append( float(ecut) )
-     # print vlist
-     h['ntuple'].Fill(vlist[0],vlist[1],vlist[2],vlist[3],vlist[4],vlist[5],vlist[6],
-                     vlist[7],vlist[8],vlist[9],vlist[10],vlist[11],vlist[12],vlist[13])
+     h['ntuple'].Fill(vlist)
   h['N'].cd()
   h['ntuple'].Write()
 

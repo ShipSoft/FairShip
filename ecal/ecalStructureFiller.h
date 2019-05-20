@@ -39,7 +39,7 @@ public:
   ecalStructure* InitPython(TClonesArray* litePoints);
 
   /** Executed task **/ 
-  virtual void Exec(Option_t* option);
+  virtual void Exec(Option_t* option,TClonesArray* litePoints);
 
   /** Finish task **/ 
   virtual void Finish();

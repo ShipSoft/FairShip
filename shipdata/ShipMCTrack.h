@@ -19,6 +19,7 @@
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TMath.h"                      // for Sqrt
 #include "TVector3.h"                   // for TVector3
+#include "TMCProcess.h"                   // enum with process ids
 
 class TParticle;
 
@@ -34,7 +35,7 @@ class ShipMCTrack : public TObject
 
     /**  Standard constructor  **/
     ShipMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
-                Double_t pz, Double_t x, Double_t y, Double_t z,
+                Double_t pz, Double_t E, Double_t x, Double_t y, Double_t z,
                 Double_t t, Int_t nPoints, Double_t w);
 
     /**  Copy constructor  **/
@@ -63,11 +64,16 @@ class ShipMCTrack : public TObject
     Double_t GetStartY()   const { return fStartY; }
     Double_t GetStartZ()   const { return fStartZ; }
     Double_t GetStartT()   const { return fStartT; }
+    void SetProcID(Int_t i) { fProcID = i; }
+    Int_t GetProcID()      const { return fProcID; }
+    TString GetProcName()  const { return TMCProcessName[fProcID]; }
     Double_t GetMass()     const;
     Double_t GetEnergy()   const;
     Double_t GetPt()       const { return TMath::Sqrt(fPx*fPx+fPy*fPy); }
     Double_t GetP() const { return TMath::Sqrt(fPx*fPx+fPy*fPy+fPz*fPz); }
     Double_t GetRapidity() const;
+    void MultiplyWeight(Double_t w) {fW = fW*w;}
+    void SetWeight(Double_t w) {fW = w;}
     Double_t GetWeight()   const;
     void GetMomentum(TVector3& momentum);
     void Get4Momentum(TLorentzVector& momentum);
@@ -93,13 +99,16 @@ class ShipMCTrack : public TObject
     Int_t  fMotherId;
 
     /** Momentum components at start vertex [GeV]  **/
-    Double32_t fPx, fPy, fPz;
+    Double32_t fPx, fPy, fPz, fM;
 
     /** Coordinates of start vertex [cm, ns]  **/
     Double32_t fStartX, fStartY, fStartZ, fStartT;
 
     /** weight **/
     Double32_t fW;
+
+    /** Geant4 process ID which created the particle **/
+    Int_t fProcID;
 
     /**  Bitvector representing the number of MCPoints for this track in
      **  each subdetector. The detectors are represented by
@@ -119,19 +128,13 @@ class ShipMCTrack : public TObject
     Int_t fNPoints;
 
 
-    ClassDef(ShipMCTrack,3);
+    ClassDef(ShipMCTrack,7);
 
 };
 
 
 
 // ==========   Inline functions   ========================================
-
-inline Double_t ShipMCTrack::GetEnergy() const
-{
-  Double_t mass = GetMass();
-  return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
-}
 
 
 inline void ShipMCTrack::GetMomentum(TVector3& momentum)

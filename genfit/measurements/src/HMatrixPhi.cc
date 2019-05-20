@@ -21,6 +21,7 @@
 #include <cassert>
 #include <alloca.h>
 #include <math.h>
+#include <TBuffer.h>
 
 
 namespace genfit {

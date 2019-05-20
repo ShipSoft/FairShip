@@ -220,7 +220,7 @@ def copy2EOS():
    if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
    for i in range(1,10):
    # requires full path
-    cmd = eos+' cp -r '+os.path.abspath('.')+'/'+prefix+str(i)+'/ /eos/ship/data/muonBackground/'+prefix+str(i)+'/'
+    cmd = eos+' cp -r '+os.path.abspath('.')+'/'+prefix+str(i)+'/ /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/'
     print cmd
     os.system(cmd)
 def copyFromEOS():
@@ -232,6 +232,6 @@ def copyFromEOS():
    if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
    for i in range(1,10):
    # requires full path
-    cmd = eos+' cp -r  /eos/ship/data/muonBackground/'+prefix+str(i)+'/ ' +os.path.abspath('.')+'/'+prefix+str(i)+'/'
+    cmd = eos+' cp -r  /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/ ' +os.path.abspath('.')+'/'+prefix+str(i)+'/'
     print cmd
     os.system(cmd)

@@ -14,6 +14,7 @@ project(ShipRoot)
 
 FIND_PATH(FAIRBASE NAMES FairRun.h  PATHS
   ${CMAKE_SOURCE_DIR}/base/steer
+  ${FAIRBASE}
   NO_DEFAULT_PATH
 )
 
@@ -64,6 +65,8 @@ set(INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
 Set(VMCWORKDIR ${ShipRoot_SOURCE_DIR})
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
 used." OFF)
+
+Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
 If(USE_PATH_INFO)
   Set(PATH "$PATH")
   If (APPLE)
@@ -75,6 +78,21 @@ Else(USE_PATH_INFO)
   STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
 EndIf(USE_PATH_INFO)
 
+#--------------------- set rpath options -------------
+# When building, use the RPATH
+set(CMAKE_SKIP_BUILD_RPATH FALSE)           # don't skip the full RPATH for the build tree
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)   # use always the build RPATH for the build tree
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE) # point to directories outside the build tree to the install RPATH
+
+if(APPLE)
+  set(CMAKE_MACOSX_RPATH TRUE)                 # use RPATH for MacOSX
+  set(CMAKE_INSTALL_NAME_DIR "@rpath")
+  set(CMAKE_INSTALL_RPATH "@loader_path/")     # self relative LIBDIR
+else()
+  set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}) # install LIBDIR
+endif()
+#------------------- end set rpath options -----------
+
 # Check if the user wants to build the project in the source
 # directory
 CHECK_OUT_OF_SOURCE_BUILD()
@@ -85,10 +103,9 @@ IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
 ENDIF(NOT UNIX)  
 
-# Check if we are at GSI
-# If we are GSI set some variables
+# Check if FairSoft is available, defines SIMPATH
 IF(NOT DEFINED ENV{SIMPATH})
-   MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.") 
+   MESSAGE(STATUS "You did not define the environment variable SIMPATH. Using aliBuild recipe.") 
 ENDIF(NOT DEFINED ENV{SIMPATH})
 
 SET(SIMPATH $ENV{SIMPATH})
@@ -106,26 +123,38 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-find_package(ROOT 5.32.00 REQUIRED)
-find_package(PLUTO REQUIRED)
+find_package(ROOT 5.34.00 REQUIRED)
 find_package(Pythia8 REQUIRED)
+find_package(EvtGen REQUIRED)
 find_package(GENERATORS REQUIRED)
-find_package(GEANT3 REQUIRED)
+find_package(GEANT3)
 find_package(GEANT4)
 find_package(GEANT4DATA)
 find_package(GEANT4VMC)
 find_package(HEPMC)
 
- Set(Boost_NO_SYSTEM_PATHS TRUE)
+IF(DEFINED ${BOOST_ROOT})
+  Set(Boost_NO_SYSTEM_PATHS TRUE)
   Set(Boost_NO_BOOST_CMAKE TRUE)
+ENDIF(DEFINED ${BOOST_ROOT})
 #  set(Boost_DEBUG TRUE)
-  If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-    set(BOOST_ROOT ${SIMPATH})
-    set(GSL_DIR ${SIMPATH})
-  Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-    set(BOOST_ROOT ${SIMPATH}/basics/boost)
-    set(GSL_DIR ${SIMPATH}/basics/gsl)
-  EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  IF(DEFINED ENV{SIMPATH})
+    If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+      set(BOOST_ROOT ${SIMPATH})
+      set(GSL_DIR ${SIMPATH})
+    Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+      set(BOOST_ROOT ${SIMPATH}/basics/boost)
+      set(GSL_DIR ${SIMPATH}/basics/gsl)
+    EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  ELSE(DEFINED ENV{SIMPATH})
+    IF(DEFINED ${BOOST_ROOT})
+      set(BOOST_ROOT $ENV{BOOST_ROOT})
+    ENDIF(DEFINED ${BOOST_ROOT})
+    IF(DEFINED $ENV{GSL_ROOT})
+      set(GSL_DIR $ENV{GSL_ROOT})
+    ENDIF(DEFINED $ENV{GSL_ROOT})
+  ENDIF(DEFINED ENV{SIMPATH})
+
   Message("-- Looking for Boost ...")
   # If an older version of boost is found both of the variables below are
   # cached and in a second cmake run, a good boost version is found even 
@@ -161,11 +190,20 @@ SET(FAIRROOT_MAJOR_VERSION 0)
 SET(FAIRROOT_MINOR_VERSION 0)
 SET(FAIRROOT_PATCH_VERSION 0)
 SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
-SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
-    VERSION "${FAIRROOT_VERSION}"
-    SOVERSION "${FAIRROOT_MAJOR_VERSION}"
-    SUFFIX ".so"
-)
+
+If(ROOT_FOUND_VERSION LESS 59999)
+  SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+      VERSION "${FAIRROOT_VERSION}"
+      SOVERSION "${FAIRROOT_MAJOR_VERSION}"
+      SUFFIX ".so"
+  )
+Else()
+  SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+      VERSION "${FAIRROOT_VERSION}"
+      SOVERSION "${FAIRROOT_MAJOR_VERSION}"
+  )
+  SET(CMAKE_SHARED_LIBRARY_SUFFIX .so)
+EndIf()
 
 Generate_Version_Info()
 
@@ -197,8 +235,19 @@ IF(HAS_CXX11_SHAREDPOINTER)
   Add_Definitions(-DHAS_SHAREDPOINTER)
 ENDIF(HAS_CXX11_SHAREDPOINTER)
 
-# Recurse into the given subdirectories.  This does not actually
-# cause another cmake executable to run.  The same process will walk through
+# --------------- add targets for code style and submission checks -------------
+find_package(Git)
+find_package(ClangTools)
+if ("$ENV{CMAKE_EXPORT_COMPILE_COMMANDS}" STREQUAL "1" OR CLANG_TIDY_FOUND)
+  # Generate a Clang compile_commands.json "compilation database" file for use
+  # with various development tools, such as Vim's YouCompleteMe plugin.
+  # See http://clang.llvm.org/docs/JSONCompilationDatabase.html
+  set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+endif()
+include(CppStyleGuideChecks)
+
+# Recurse into the given subdirectories. This does not actually
+# cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
 
 IF(NOT FAIRROOT_FOUND)
@@ -216,18 +265,26 @@ ENDIF (NOT FAIRROOT_FOUND)
 add_subdirectory (shipdata)
 add_subdirectory (passive)
 add_subdirectory (nutaudet)
+add_subdirectory (charmdet)
 add_subdirectory (ecal)
+add_subdirectory (splitcal)
 add_subdirectory (hcal)
 add_subdirectory (veto)
+add_subdirectory (TimeDet)
 add_subdirectory (strawtubes)
 add_subdirectory (muon)
 add_subdirectory (shipgen)
 add_subdirectory (field)
 add_subdirectory (genfit)
+add_subdirectory (preshower)
+add_subdirectory (pid)
+add_subdirectory (muonShieldOptimization)
+add_subdirectory (online)
 
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
   ${SIMPATH}/tools/root/include
   ${SIMPATH}/include/root
+  $ENV{ROOTSYS}/include/root
   NO_DEFAULT_PATH
 )
 
@@ -236,9 +293,9 @@ If(TEvePath)
 #If (OPENGL_FOUND AND OPENGL_GLU_FOUND)
   Message("Found TEve, so the eventdisplay will be compiled.")
 
-IF(NOT FAIRROOT_FOUND)
+ IF(NOT FAIRROOT_FOUND)
   add_subdirectory (eventdisplay)
-ENDIF(NOT FAIRROOT_FOUND)
+ ENDIF(NOT FAIRROOT_FOUND)
 
 EndIf(TEvePath)
 
@@ -247,10 +304,125 @@ add_custom_target(  # make relative links to folders
     COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
     COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'macro') , 'macro') \"
 )
+IF(DEFINED SIMPATH)
+  MESSAGE(STATUS "Write configuration files ...")
+  WRITE_CONFIG_FILE(config.sh)
+  WRITE_CONFIG_FILE(config.csh)
 
-WRITE_CONFIG_FILE(config.sh)
-WRITE_CONFIG_FILE(config.csh)
+# manipulate the config file:
+
+# add environment for use of GENIE
+MESSAGE(STATUS "Looking for GENIE ...")
+# genie in general
+FIND_PATH(GENIE  NAMES genie PATHS
+  ${SIMPATH}/../FairSoft/generators
+  ${GENIE_ROOT}
+  NO_DEFAULT_PATH
+)
+
+If(NOT GENIE)
+  Message(STATUS "Could not find Genie source directory")
+Else()
+  file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv GENIE \"${GENIE}/genie\"\n")
+  file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export GENIE=\"${GENIE}/genie\"\n")
+EndIf()
+
+# location of cross section files
+FIND_PATH(GENPATH NAMES genie PATHS
+  ${SIMPATH}/share/
+  ${GENIE_ROOT}
+  NO_DEFAULT_PATH
+)
+
+If(NOT GENPATH)
+  Message(STATUS "Could not find Genie data files")
+Else()
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv GENPATH \"${GENPATH}\"\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export GENPATH=\"${GENPATH}\"\n")
+EndIf()
+
+# location of pdf file
+FIND_PATH(LHAPATH NAMES PDFsets.index PATHS
+  ${SIMPATH}/share/lhapdf/PDFsets
+  ${LHAPDF5_ROOT}/share/lhapdf
+  NO_DEFAULT_PATH
+)
+
+If(NOT LHAPATH)
+  Message(STATUS "Could not find LHA data files")
+Else()
+  IF(DEFINED SIMPATH)
+    file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv LHAPATH \"${LHAPATH}/data\"\n")
+    file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export LHAPATH=\"${LHAPATH}/data\"\n")
+  ENDIF(DEFINED SIMPATH)
+EndIf()
+
+# for lxplus, need to change LD_LIBRARY_PATH
+execute_process(COMMAND lsb_release -is OUTPUT_VARIABLE distribution)
+
+If(${distribution} MATCHES "ScientificCERNSLC")
+ Message("add lcg setup")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "if ( -f lcg.csh ) then\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh " rm lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "endif\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh "if [ -e lcg.sh ];\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh "then\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh " rm lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh "fi\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p  /afs/cern.ch/sw/lcg/releases/${LCGVERSION} ${GCCVERSION} Python >> lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p  /afs/cern.ch/sw/lcg/releases/${LCGVERSION} ${GCCVERSION} Python >> lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p  /afs/cern.ch/sw/lcg/releases/${LCGVERSION} ${GCCVERSION} numpy >> lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p  /afs/cern.ch/sw/lcg/releases/${LCGVERSION} ${GCCVERSION} numpy >> lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} scipy >> lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} scipy >> lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} matplotlib >> lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} matplotlib >> lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} numexpr >> lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} numexpr >> lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} pandas >> lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} pandas >> lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} scikitlearn >> lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "eval /afs/cern.ch/sw/lcg/releases/lcgenv/latest/lcgenv -G -p /afs/cern.ch/sw/lcg/releases/${LCGVERSION}  ${GCCVERSION} scikitlearn >> lcg.sh\n")
+# remove duplicated lines
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "perl -i -ne 'print if ! \$a{\$_}++' lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "perl -i -ne 'print if ! \$a{\$_}++' lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "source lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "source ./lcg.sh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.csh "rm lcg.csh\n")
+ file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "rm lcg.sh\n")
  
+EndIf()
+# extend PYTHONPATH
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv PYTHONPATH \"\${PYTHONPATH}:${CMAKE_SOURCE_DIR}/Developments/track_pattern_recognition\"\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export PYTHONPATH=\"\${PYTHONPATH}:${CMAKE_SOURCE_DIR}/Developments/track_pattern_recognition\"\n")
+
+# add some other useful environment variables:
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIPRUN \"${CMAKE_CURRENT_BINARY_DIR}\"\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIPRUN=\"${CMAKE_CURRENT_BINARY_DIR}\"\n")
+
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "setenv EOSSHIP \"root://eospublic.cern.ch/\"\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export EOSSHIP=\"root://eospublic.cern.ch/\"\n")
+
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIP \"${CMAKE_CURRENT_SOURCE_DIR}\"\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export FAIRSHIP=\"${CMAKE_CURRENT_SOURCE_DIR}\"\n")
+
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "if [ `uname` = \"Darwin\" ]; then\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "   # DYLD_LIBRARY_PATH is not set in python on macOS due to SIP\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "   echo \"# This file has been created by config.sh\" > .rootrc\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "   echo \"Unix.*.Root.DynamicPath: $DYLD_LIBRARY_PATH\" >> .rootrc\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "fi\n")
+
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "if ( `uname` == \"Darwin\" ) then\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   # DYLD_LIBRARY_PATH is not set in python on macOS due to SIP\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   echo \"# This file has been created by config.csh\" > .rootrc\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "   echo \"Unix.*.Root.DynamicPath: $DYLD_LIBRARY_PATH\" >> .rootrc\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh  "endif\n")
+
+file(APPEND ${CMAKE_BINARY_DIR}/config.csh "  source ${SIMPATH}/bin/geant4.csh ${SIMPATH}/bin\n")
+file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "  source ${SIMPATH}/bin/geant4.sh \n")
+
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
+
+ENDIF(DEFINED SIMPATH)

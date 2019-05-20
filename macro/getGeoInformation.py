@@ -3,54 +3,114 @@
 #WARNING: printing the entire geometry takes a lot of time
 #24-02-2015 comments to EvH
 
-import operator, sys, getopt
-from optparse import OptionParser
+import operator, sys
+from argparse import ArgumentParser
+from array import array
 import os,ROOT
 
-def doloop(node,level,currentlevel,translation):
-  newcurrentlevel=int(currentlevel)+1
-  blanks="   "*int(newcurrentlevel)
-  snoz={}
+def local2Global(n):
+    Info={}
+    nav = ROOT.gGeoManager.GetCurrentNavigator()
+    nav.cd(n)
+    Info['node'] = nav.GetCurrentNode()
+    Info['path'] = n
+    tmp = Info['node'].GetVolume().GetShape()
+    Info['material'] = Info['node'].GetVolume().GetMaterial().GetName()
+    if options.moreInfo:
+     x = ROOT.gGeoManager.GetVerboseLevel()
+     ROOT.gGeoManager.SetVerboseLevel(0)
+     Info['weight']=Info['node'].GetVolume().Weight() # kg
+     Info['cubicmeter']=Info['node'].GetVolume().Capacity()/1000000. # 
+     ROOT.gGeoManager.SetVerboseLevel(x)
+    o = [tmp.GetOrigin()[0],tmp.GetOrigin()[1],tmp.GetOrigin()[2]]
+    Info['locorign'] = o
+    local = array('d',o)
+    globOrigin  = array('d',[0,0,0])
+    nav.LocalToMaster(local,globOrigin)
+    Info['origin'] = globOrigin
+    shifts = [ [-tmp.GetDX()+o[0],o[1],o[2]],
+               [tmp.GetDX()+o[0],o[1],o[2]],
+               [o[0],-tmp.GetDY()+o[1],o[2]],
+               [o[0],tmp.GetDY()+o[1],o[2]],
+               [o[0],o[1],-tmp.GetDZ()+o[2]],[o[0],o[1],tmp.GetDZ()+o[2]]
+             ]
+    shifted = []
+    for s in shifts:
+     local = array('d',s)
+     glob  = array('d',[0,0,0])
+     nav.LocalToMaster(local,glob)
+     shifted.append([glob[0],glob[1],glob[2]])
+    Info['boundingbox']={}
+    for j in range(3):
+     jmin = 1E30
+     jmax = -1E30
+     for s in shifted:
+       if s[j]<jmin: jmin = s[j]
+       if s[j]>jmax: jmax = s[j]
+     Info['boundingbox'][j]=[jmin,jmax]
+    return Info
+
+def print_info(path, node, level, currentlevel, print_sub_det_info=False):
+  sub_nodes = {}
+  fullInfo = {}
   for subnode in node.GetNodes():
-     transsno = subnode.GetMatrix()
-     snoz[subnode] = translation+transsno.GetTranslation()[2]
-  for key in sorted(snoz.items(),key=operator.itemgetter(1)):
-     transs = key[0].GetMatrix()   
-     vs = key[0].GetVolume().GetShape()
-     newtranslation=snoz[key[0]]
-     print blanks+"%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm]"%(key[0].GetName(),newtranslation,\
-     vs.GetDZ(),min(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()),max(newtranslation-vs.GetDZ(),newtranslation+vs.GetDZ()))
-     if int(newcurrentlevel)<int(level) and key[0].GetNodes():
-        doloop(key[0],level,newcurrentlevel,newtranslation)
+    name = subnode.GetName()
+    fullInfo[name] = local2Global(path + '/' + name)
+    sub_nodes[name] = fullInfo[name]['origin'][2]
 
-from optparse import OptionParser
-parser = OptionParser()
-parser.add_option("-g","--geometry", dest="geometry", help="input geometry file", default='$FAIRSHIP/geofile_full.10.0.Pythia8-TGeant4.root')
-parser.add_option("-l","--level", dest="level", help="max subnode level", default=0)
-parser.add_option("-v","--volume", dest="volume", help="name of volume to expand",default="")
+  for name, _ in sorted(sub_nodes.items(), key=operator.itemgetter(1)):
+    boundingbox = fullInfo[name]['boundingbox']
 
-(options,args)=parser.parse_args()
-tgeom = ROOT.TGeoManager("Geometry", "Geane geometry")
-tgeom.Import(options.geometry)
-fGeo = ROOT.gGeoManager 
-top = fGeo.GetTopVolume() 
-noz={}
-currentlevel=0
-print "           Detector element z(midpoint)     halflength        volume-start volume-end"
-for no in top.GetNodes():
-  transno = no.GetMatrix()
-  noz[no]=transno.GetTranslation()[2]
-for key in sorted(noz.items(),key=operator.itemgetter(1)):
-    trans = key[0].GetMatrix()
-    v = key[0].GetVolume().GetShape()
-    print "%25s: z=%10.4Fcm  dZ=%10.4Fcm  [%10.4F   %10.4Fcm]"%(key[0].GetName(),trans.GetTranslation()[2],\
-    v.GetDZ(),min(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()),max(trans.GetTranslation()[2]-v.GetDZ(),trans.GetTranslation()[2]+v.GetDZ()))
-    if options.volume:
-      if key[0].GetNodes() and int(options.level)>0 and options.volume==key[0].GetName():
-         doloop(key[0],options.level,currentlevel,trans.GetTranslation()[2]) 
-    else:
-      if key[0].GetNodes() and int(options.level)>0:
-         doloop(key[0],options.level,currentlevel,trans.GetTranslation()[2])     
-    
+    format_string = "{:<28s}: z={:10.4F}cm  dZ={:10.4F}cm  [{:10.4F}   {:10.4F}]"+\
+                    " dx={:10.4F}cm [{:10.4F}   {:10.4F}] dy={:10.4F}cm [{:10.4F}   {:10.4F}] {:>20s}"
+
+    format_variable = ["   " * int(currentlevel) + name, fullInfo[name]['origin'][2],
+      abs(boundingbox[2][0]-boundingbox[2][1])/2., boundingbox[2][0],boundingbox[2][1],
+      abs(boundingbox[0][0]-boundingbox[0][1])/2., boundingbox[0][0],boundingbox[0][1],
+      abs(boundingbox[1][0]-boundingbox[1][1])/2., boundingbox[1][0],boundingbox[1][1],
+      fullInfo[name]['material']]
+
+    if options.moreInfo:
+      cubicmeter = fullInfo[name]['cubicmeter']
+      weight = fullInfo[name]['weight']
+      format_string += " {:10.1F}kg {:10.1F}m3"
+      format_variable.extend([weight, cubicmeter])
+
+    print format_string.format(*format_variable)
+
+    if options.volume in ["", name]:
+      print_sub_det_info = True
+
+    if print_sub_det_info and currentlevel < level and fullInfo[name]['node'].GetNodes():
+      print_info(fullInfo[name]['path'], fullInfo[name]['node'], level, currentlevel + 1,
+                 print_sub_det_info)
+
+    if currentlevel == 0:
+      print_sub_det_info = False
 
 
+parser = ArgumentParser()
+parser.add_argument("-g", "--geometry", dest="geometry", help="input geometry file",
+                    required=True)
+parser.add_argument("-l", "--level", dest="level", help="max subnode level", default=0)
+parser.add_argument("-v", "--volume", dest="volume", help="name of volume to expand", default="")
+parser.add_argument("-X", "--moreInfo", dest="moreInfo", help="print weight and capacity", default=False)
+
+options = parser.parse_args()
+fname = options.geometry
+if fname.startswith('/eos/'):
+    fname = os.environ['EOSSHIP'] + fname
+fgeom = ROOT.TFile.Open(fname)
+fGeo = fgeom.FAIRGeom
+top = fGeo.GetTopVolume()
+
+
+if options.moreInfo:
+ print "   Detector element             z(midpoint)     halflength       volume-start volume-end   dx"\
+       "                x-start       x-end       dy                y-start       y-end         material          weight  capacity"
+else:
+ print "   Detector element             z(midpoint)     halflength       volume-start volume-end   dx"\
+       "                x-start       x-end       dy                y-start       y-end         material"
+
+currentlevel = 0
+print_info("", top, int(options.level), currentlevel)

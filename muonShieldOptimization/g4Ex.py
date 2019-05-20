@@ -65,7 +65,7 @@ myPythia.ReadString("Random:seed = "+str(R))
 myPythia.Initialize(2212,2212,400.,0.) # required to hack TPythia8 in root !
 # W = 74 protons and 184-74= 110 neutrons
 
-if tauOnly:  myPythia.plist(431) 
+if tauOnly:  myPythia.Plist(431)
 
 # Open an output file 
 h = {}

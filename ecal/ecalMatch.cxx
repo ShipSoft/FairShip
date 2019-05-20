@@ -14,8 +14,10 @@
 
 using namespace std;
 
-void ecalMatch::Exec(Option_t* option)
+void ecalMatch::Exec(Option_t* option,TClonesArray* reconstructed,TClonesArray* mctracks)
 {
+  fReconstucted=reconstructed;
+  fMCTracks=mctracks;
   fEv++; fN=0; fRejected=0;
 
   Int_t n=fReconstucted->GetEntries();
@@ -68,6 +70,7 @@ void ecalMatch::Exec(Option_t* option)
 	e2[ep->first]=ep->second;
       else
 	e2[ep->first]+=ep->second;
+      if (ep->first<0&&fVerbose==0) continue;
       tr=(ShipMCTrack*)fMCTracks->At(ep->first);
       if (tr==NULL)
       {

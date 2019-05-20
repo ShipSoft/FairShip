@@ -57,7 +57,7 @@ class ShipBellField : public FairField
   virtual Double_t GetBy(Double_t x, Double_t y, Double_t z);
   virtual Double_t GetBz(Double_t x, Double_t y, Double_t z);
 
-
+  void IncludeTarget(Double_t xy, Double_t z, Double_t l);
 
   /** Screen output **/
   virtual void Print();
@@ -70,8 +70,12 @@ class ShipBellField : public FairField
   Double_t fMiddle;
   Double_t fBtube;
   Int_t fOrient;
+  Bool_t fInclTarget;
+  Double_t targetXY;
+  Double_t targetZ0;
+  Double_t targetL;
   
-  ClassDef(ShipBellField, 1);
+  ClassDef(ShipBellField, 2);
 
 };
 

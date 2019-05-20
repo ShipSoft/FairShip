@@ -32,7 +32,7 @@ class tPythia6Generator : public FairGenerator
   int    getPyint5_NGENPD( ){return  fPythia->GetPyint5()->NGENPD;};  
  private:
   
-  TPythia6* fPythia;           //
+  TPythia6* fPythia;           //!
   
  protected:
   
