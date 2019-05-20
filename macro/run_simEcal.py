@@ -25,6 +25,7 @@ if simEngine == "Pythia6" and not inputFile :
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
+
 # Output file name
 outFile ="geant.root"
 
