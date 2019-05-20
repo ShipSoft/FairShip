@@ -27,7 +27,6 @@ class TargetTracker : public FairDetector
 {
 public:
     TargetTracker(const char* name, Double_t TTX, Double_t TTY, Double_t TTZ, Bool_t Active, const char* Title = "TargetTrackers");
-    //TargetTracker(const char* name, Bool_t Active, const char* Title = "TargetTrackers");
     TargetTracker();
     virtual ~TargetTracker();
     

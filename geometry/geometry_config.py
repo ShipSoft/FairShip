@@ -16,10 +16,8 @@ if "muShieldGeo" not in globals():
     muShieldGeo = None
 if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
-    #nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
     nuTauTargetDesign = 3
-    #nuTauTargetDesign = 0
     if muShieldDesign >= 7: 
         nuTauTargetDesign=1
 if "targetOpt" not in globals():
@@ -613,8 +611,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
         c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 + c.tauMudet.deltay/2  - 0.1*u.mm
-	c.tauMudet.B = 1.5 * u.tesla        
-	## (!) REMOVE UPSIDE
     c.tauMudet.XGas =  c.tauMudet.Xtot
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
@@ -659,13 +655,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.row = 9
         c.NuTauTarget.col = 7
         c.NuTauTarget.wall = 23
-        # change to 1 case: c.NuTauTarget.wall = 23
-        #           2 case: c.NuTauTarget.wall = 35
+        # (!) 1 case: c.NuTauTarget.wall = 23
+        #     2 case: c.NuTauTarget.wall = 35
     c.NuTauTarget.target = 1  #number of neutrino target volumes
 
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
 
-    ## c.NuTauTarget.Ydist = 0.2*u.cm
     c.NuTauTarget.Ydist = 0.0*u.cm
     c.NuTauTarget.SingleEmFilm = True
     c.NuTauTarget.EmTh = 0.0070 * u.cm
@@ -729,19 +724,15 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.ConcreteZ = c.tauHPT.DZ
     if nuTauTargetDesign==3:
         c.tauHPT.SRDY = 10 * u.cm  #additional detectors for improving acceptance
-        #c.tauHPT.DX = c.NuTauTarget.xdim
-        #c.tauHPT.DY = c.EmuMagnet.Height2 - 2 *c.tauHPT.SRDY
         c.tauHPT.DX = c.tauHPT.TX
         c.tauHPT.DY = c.tauHPT.TY
         c.tauHPT.DZ = c.tauHPT.TZ
         c.tauHPT.nHPT = 5 #n.d.r. number after each neutrino target
-        #c.tauHPT.distHPT = 30 * u.cm
         c.tauHPT.distHPT = (160 - c.tauHPT.nHPT * c.tauHPT.DZ) / (c.tauHPT.nHPT - 1)
     if nuTauTargetDesign!=2: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm
         c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW
         c.NuTauTarget.CESPack = 0.1 * u.cm
-        #c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW + c.NuTauTarget.CESPack
         c.NuTauTarget.CESW = 3.5 * u.cm
         # (!) 1 case: BrZ + CES = 7.6 cm + 3.5 cm = 11.1 cm
         #     2 case: BrZ + CES = 3.8 cm + 3.0 cm = 6.8 cm

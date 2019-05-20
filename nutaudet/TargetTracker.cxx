@@ -169,11 +169,6 @@ void TargetTracker::SetDesign(Int_t Design)
   fDesign = Design;
 }
 
-/*void TargetTracker::SetTDesign(Int_t Design)
-{
-  fDesign = Design;
-}*/
-
 void TargetTracker::ConstructGeometry()
 {
   InitMedium("TTmedium");
@@ -236,8 +231,6 @@ void TargetTracker::ConstructGeometry()
   AddSensitiveVolume(TT_scifimat_vert_volume);
 
   //Creating physical volumes and multiply 
-  //int n_hor_planes = 11;
-  //int n_vert_planes = 7;
   for (int i = 0; i < n_hor_planes; i++){
     TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, i, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
   }
@@ -252,7 +245,7 @@ void TargetTracker::ConstructGeometry()
   TT_volume->AddNode(TT_support_volume,          1, new TGeoTranslation(0, 0, -TTrackerZ/2 + support_z + 2*scifimat_z + honeycomb_z + support_z/2));
 
   Double_t first_tt_position = -ZDimension / 2 + TTrackerZ / 2;
-  // + TTrackerZ/10 is temporary first position. Insert here the exact value.  
+  //Insert here the exact first position  
 
   //fNTT - number of TT walls 
   for (int l = 0; l < fNTT; ++l) 

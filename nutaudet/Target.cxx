@@ -313,9 +313,7 @@ void Target::ConstructGeometry()
   TGeoMedium *Steel =gGeoManager->GetMedium("steel");
 
 
-  //Int_t NPlates = 56; //Number of doublets emulsion + Pb
-  Int_t NPlates = number_of_films; //// Number of doublets emulsion + Pb
-  //std::cout << "NPLATES" << NPlates << std::endl; ////
+  Int_t NPlates = number_of_films; // = 56, Number of doublets emulsion + Pb
 
   Int_t NRohacellGap = 2;
 
@@ -397,8 +395,7 @@ void Target::ConstructGeometry()
    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
    TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
    volEmulsionFilm->SetLineColor(kBlue);
-   //SET PASSIVE TEMPORARY. REMOVE THIS LINE
-   fPassive = 1;
+
    if(fPassive==0)
     {
       AddSensitiveVolume(volEmulsionFilm);
