@@ -37,10 +37,13 @@ public:
    void fillHitMaps(Int_t nMax=-1);
    void RPCextrap(Int_t nMax=-1);
    void trackKinematics(Float_t chi2UL,Int_t nMax=-1);
+   Double_t findTrueMomentum(TTree* sTree);
    Bool_t findSimpleEvent(Int_t nmin, Int_t nmax);
    void setNoisyChannels(std::vector<int> x){noisyChannels = x;}
    void setDeadChannels(std::vector<int> x){deadChannels = x;}
    void setCuts(std::string s,float f){cuts[s]=f;}
+   void setDTPositions(Int_t c,float tx,float ty,float tz,float bx,float by,float bz){
+       DTPositionsTop[c]=TVector3(tx,ty,tz);DTPositionsBot[c]=TVector3(bx,by,bz);}
    void setRPCPositions(Int_t c,float x,float y,float z){RPCPositions[c]=TVector3(x,y,z);}
    void sortHits(TClonesArray *t, nestedList *l, Bool_t flag=kTRUE);
    Double_t extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom);
@@ -56,6 +59,8 @@ private:
     std::vector<int> deadChannels;
     StringFloatMap cuts;
     std::map<int,TVector3> RPCPositions;
+    std::map<int,TVector3> DTPositionsTop;
+    std::map<int,TVector3> DTPositionsBot;
     TClonesArray    *MCTrack;
     TClonesArray    *FitTracks;
     TClonesArray    *TrackInfos;
