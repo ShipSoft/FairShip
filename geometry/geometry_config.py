@@ -703,7 +703,8 @@ with ConfigRegistry.register_config("basic") as c:
  #HPT
     c.tauHPT = AttrDict(z=0*u.cm)
     c.tauHPT.design = nuTauTargetDesign
-
+    c.tauHPT.n_hor_planes = 11
+    c.tauHPT.n_vert_planes = 7
     c.tauHPT.scifimat_width = c.NuTauTT.scifimat_width
     c.tauHPT.scifimat_hor = c.NuTauTT.scifimat_hor
     c.tauHPT.scifimat_vert = c.NuTauTT.scifimat_vert

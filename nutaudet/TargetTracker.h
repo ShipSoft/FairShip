@@ -118,7 +118,6 @@ protected:
     Double_t scifimat_z;
     Double_t support_z; 
     Double_t honeycomb_z;
-
     Int_t n_hor_planes;
     Int_t n_vert_planes;
 

@@ -285,6 +285,7 @@ def configure(run,ship_geo):
    tauHpt.SetZsize(ship_geo.tauMudet.Ztot)
    tauHpt.SetDesign(ship_geo.NuTauTarget.Design)
    tauHpt.SetSciFiParam(ship_geo.tauHPT.scifimat_width, ship_geo.tauHPT.scifimat_hor, ship_geo.tauHPT.scifimat_vert, ship_geo.tauHPT.scifimat_z, ship_geo.tauHPT.support_z, ship_geo.tauHPT.honeycomb_z)
+   tauHpt.SetNumberSciFi(ship_geo.tauHPT.n_hor_planes, ship_geo.tauHPT.n_vert_planes)
    tauHpt.SetHPTrackerParam(ship_geo.tauHPT.TX, ship_geo.tauHPT.TY, ship_geo.tauHPT.TZ)
    if ship_geo.nuTauTargetDesign<3:
     tauHpt.SetConcreteBaseDim(ship_geo.tauHPT.ConcreteX,ship_geo.tauHPT.ConcreteY,ship_geo.tauHPT.ConcreteZ)

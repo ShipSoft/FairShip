@@ -171,6 +171,13 @@ void Hpt::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Doubl
     support_z = support_z_; 
     honeycomb_z = honeycomb_z_;
 }
+
+void Hpt::SetNumberSciFi(Int_t n_hor_planes_, Int_t n_vert_planes_)
+{
+  n_hor_planes = n_hor_planes_;
+  n_vert_planes = n_vert_planes_;
+}
+
 void Hpt::SetHPTrackerParam(Double_t HPTX, Double_t HPTY, Double_t HPTZ)
 {   
     HPTrackerX = HPTX;
@@ -300,10 +307,6 @@ void Hpt::ConstructGeometry()
         AddSensitiveVolume(HPT_scifimat_vert_volume);
 
         // Creating physical volumes and multiply 
-        // Change to set in python
-        Int_t n_hor_planes = 11;
-        Int_t n_vert_planes = 7;
-
         for (int i = 0; i < n_hor_planes; i++){
             HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
         }
