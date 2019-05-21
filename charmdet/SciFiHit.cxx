@@ -7,7 +7,8 @@
 #include "TVector3.h"
 
 //SciFiHit::SciFiHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
-SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint32_t fineTime, uint16_t ch, uint16_t boardId, uint16_t module, bool flag): ShipHit(detID, digi), hitTime(hitTime), fineTime(fineTime), ch(ch), boardId(boardId), module(module), flag(flag){}
+//SciFiHit::SciFiHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
+SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint16_t fineTime, int ch, int boardId, int module, bool trigflag,  bool flag): ShipHit(detID, digi), hitTime(hitTime), fineTime(fineTime), ch(ch), boardId(boardId), module(module), trigflag(trigflag), flag(flag){}
 //SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint32_t fineTime, uint16_t amp, uint16_t ch, uint16_t sticId, uint16_t boardId, bool flag): ShipHit(detID, digi), hitTime(hitTime), fineTime(fineTime), amp(amp), ch(ch), sticId(sticId), boardId(boardId), flag(flag){}
 
 
