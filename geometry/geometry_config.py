@@ -3,7 +3,7 @@ import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber 9=optimised with T4 as constraint, 8=requires config file
-#                      10=with field map for hadron absorber
+#                      10=with field map for hadron absorber, 11=9 with field map for muon shield
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
@@ -328,7 +328,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = 3.0*u.m + zGap
         c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
-    elif muShieldDesign == 9 or muShieldDesign == 10:
+    elif muShieldDesign == 9 or muShieldDesign == 10 or muShieldDesign == 11:
         c.muShield.Field = 1.7  # Tesla
         c.muShield.dZ1 = 0.35 * u.m + zGap
         c.muShield.dZ2 = 2.26 * u.m + zGap
@@ -356,7 +356,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = params[6]
         c.muShield.dZ8 = params[7]
         c.muShield.dXgap = 0.*u.m
-    if muShieldDesign in range(7, 11):
+    if muShieldDesign in range(7, 12):
         c.muShield.length = 2 * (
               c.muShield.dZ1 + c.muShield.dZ2 +
               c.muShield.dZ3 + c.muShield.dZ4 +
@@ -404,7 +404,8 @@ with ConfigRegistry.register_config("basic") as c:
     if muShieldDesign > 6:  c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield 
     else:                   c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
-    if muShieldDesign > 9:  c.hadronAbsorber.WithConstField =  True
+    if muShieldDesign > 9 and muShieldDesign != 11:  c.hadronAbsorber.WithConstField =  True
+
 
     c.target               =  AttrDict(z=0*u.cm)
     c.targetOpt            =  targetOpt 
