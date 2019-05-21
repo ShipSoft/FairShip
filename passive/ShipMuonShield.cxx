@@ -417,7 +417,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
       HmainSideMagOut[i] = dYOut[i] / 2;
     }
 
-  } else if (fDesign == 9 || fDesign == 10) {
+  } else if (fDesign == 9 || fDesign == 10 ||fDesign ==11) {
      magnetName = {"MagnAbsorb1", "MagnAbsorb2", "Magn1", "Magn2", "Magn3",
        "Magn4", "Magn5", "Magn6", "Magn7"
      };
