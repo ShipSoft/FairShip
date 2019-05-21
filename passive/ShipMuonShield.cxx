@@ -657,8 +657,9 @@ void ShipMuonShield::ConstructGeometry()
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     
-    if (fDesign >= 5 && fDesign <= 11) {
+    if (fDesign >= 5 && fDesign <= 11) {     
       Double_t ironField = fField*tesla;
+      if (fDesign == 11) {ironField = 0. * tesla;}
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
       TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
       TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
@@ -687,7 +688,6 @@ void ShipMuonShield::ConstructGeometry()
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
       } else if (fDesign >= 7) {
-        float mField = (fDesign!=11)?1.6 * tesla:0. * tesla;
         if (fDesign == 10) {mField=0.;}
 	TGeoUniformMagField *fieldsAbsorber[4] = {
 	    new TGeoUniformMagField(0., mField, 0.),
