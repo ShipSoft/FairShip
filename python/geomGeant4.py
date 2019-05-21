@@ -160,10 +160,10 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
       if not withConstFieldHadronAbs:
        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z)) 
        fieldsList.append('HadronAbsorberMap')  
-      withConstMuonShieldFieldMap = True
+      withConstMuonShieldField = True
       if hasattr (shipGeo, 'muShieldDesign'): 
-        if (shipGeo.muShieldDesign==11): withMuonShieldFieldMap = True  
-      if not withConstMuonShieldFieldMap:
+        if (shipGeo.muShieldDesign==11): withMuonShieldField = False  
+      if not withConstMuonShieldField:
         fieldMaker.defineFieldMap('muonShieldField', 'files/MuonShieldField.root',
                                 ROOT.TVector3(0.0, 0.0, -4996), ROOT.TVector3(0.0, 0.0, 0.0), True)
         fieldsList.append('muonShieldField')
