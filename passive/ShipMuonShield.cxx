@@ -143,7 +143,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
   TGeoVolume *magF =
       gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
-  if (fDesign !=11 || std::abs(magField) < 0.001*tesla){magF->SetField(magField);}
+  if (fDesign !=11 || arbName.Contains("Absorb")){magF->SetField(magField);}
   tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation,
 						z_translation));
 }
