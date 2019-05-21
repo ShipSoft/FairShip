@@ -688,6 +688,7 @@ void ShipMuonShield::ConstructGeometry()
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
       } else if (fDesign >= 7) {
+      	float mField = 1.6 * tesla;
         if (fDesign == 10) {mField=0.;}
 	TGeoUniformMagField *fieldsAbsorber[4] = {
 	    new TGeoUniformMagField(0., mField, 0.),
