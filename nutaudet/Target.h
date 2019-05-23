@@ -39,7 +39,7 @@ public:
 
     void ConstructGeometry();
 
-      
+    void SetTargetWallDimension(Double_t WallXDim, Double_t WallYDim, Double_t WallZDim);
     void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
     void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t LeadTh, Double_t AllPW);
     void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ, Int_t number_of_films_);
@@ -172,6 +172,10 @@ protected:
     Double_t YDimension;
     Double_t ZDimension;
     
+    Double_t WallXDim; //dimension of the wall of bricks 
+    Double_t WallYDim;
+    Double_t WallZDim;
+
     Double_t EmulsionThickness;
     Double_t EmulsionX;
     Double_t EmulsionY;

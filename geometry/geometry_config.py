@@ -661,7 +661,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
 
-    c.NuTauTarget.Ydist = 0.0*u.cm
+    # space for the structure that holds the brick
+    c.NuTauTarget.Ydist = 0.2*u.cm
     c.NuTauTarget.SingleEmFilm = True
     c.NuTauTarget.EmTh = 0.0070 * u.cm
     c.NuTauTarget.EmX = 12.5 * u.cm
@@ -672,8 +673,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
     c.NuTauTarget.BrX = 12.9 * u.cm
     c.NuTauTarget.BrY = 10.5 * u.cm
-    c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
-    c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist
+    #c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
+    #c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
@@ -681,7 +682,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrZ = 7.6 * u.cm
     # (!) 1 case: BrZ + CES = 7.6 cm + 3.5 cm = 11.1 cm
     #     2 case: BrZ + CES = 3.8 cm + 3.0 cm = 6.8 cm
-    #               
 
  #TargetTrackers
     c.NuTauTT = AttrDict(z = 0 * u.cm)
@@ -694,11 +694,16 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTT.scifimat_z = 0.145 * u.cm   # Scintillating fiber mat
     c.NuTauTT.support_z = 0.02 * u.cm     # Support carbon composite
     c.NuTauTT.honeycomb_z = 2 * u.cm      # Airex (or Nomex)
-
     c.NuTauTT.TTX = c.NuTauTT.scifimat_hor
     c.NuTauTT.TTY = c.NuTauTT.scifimat_vert
     c.NuTauTT.TTZ = 2 * c.NuTauTT.support_z + 2 * c.NuTauTT.scifimat_z + c.NuTauTT.honeycomb_z 
     c.NuTauTT.n = c.NuTauTarget.wall
+    # should be called after TTX, TTY
+    c.NuTauTarget.xdim = c.NuTauTT.TTX 
+    c.NuTauTarget.ydim = c.NuTauTT.TTY 
+    c.NuTauTarget.WallXDim = c.NuTauTarget.col*c.NuTauTarget.BrX
+    c.NuTauTarget.WallYDim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist
+    c.NuTauTarget.WallZDim = c.NuTauTarget.BrZ
 
  #HPT
     c.tauHPT = AttrDict(z=0*u.cm)
@@ -711,7 +716,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauHPT.scifimat_z = c.NuTauTT.scifimat_z
     c.tauHPT.support_z = c.NuTauTT.support_z
     c.tauHPT.honeycomb_z = c.NuTauTT.honeycomb_z
-    
     c.tauHPT.TX = c.tauHPT.scifimat_hor
     c.tauHPT.TY = c.tauHPT.scifimat_vert
     c.tauHPT.TZ = 2 * c.tauHPT.support_z + 2 * c.tauHPT.scifimat_z + c.tauHPT.honeycomb_z 

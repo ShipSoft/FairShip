@@ -152,9 +152,18 @@ void Target::SetNumberBricks(Double_t col, Double_t row, Double_t wall)
   fNWall = wall; 
 }
 
+
+
 void Target::SetNumberTargets(Int_t target)
 {
   fNTarget = target;
+}
+
+void Target::SetTargetWallDimension(Double_t WallXDim_, Double_t WallYDim_, Double_t WallZDim_)
+{
+  WallXDim = WallXDim_;
+  WallYDim = WallYDim_;
+  WallZDim = WallZDim_;
 }
 
 void Target::SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim)
@@ -323,51 +332,46 @@ void Target::ConstructGeometry()
       
   // In both fDesign=0 & fDesign=1 the emulsion target is inserted within a magnet
   if(fDesign!=2)
+  {
+    TGeoVolume *MagnetVol;
+    //magnetic field in target
+    TGeoUniformMagField *magField2 = new TGeoUniformMagField(); 
+
+    if(fDesign==1)
+    { //TP
+  	  magField2->SetFieldValue(fField,0,0.);
+  	  MagnetVol=gGeoManager->GetVolume("Davide");
+  	}
+    if(fDesign==0)
+    { //NEW
+  	  MagnetVol=gGeoManager->GetVolume("Goliath");
+  	  magField2->SetFieldValue(0.,fField,0.);
+  	}
+    if(fDesign==3)
     {
-      TGeoVolume *MagnetVol;
+  	  magField2->SetFieldValue(fField,0,0.);
+  	  MagnetVol=gGeoManager->GetVolume("NudetMagnet");
+  	}
 
-      //magnetic field in target
-      TGeoUniformMagField *magField2 = new TGeoUniformMagField(); 
-
-      if(fDesign==1) //TP
-	{
-	  magField2->SetFieldValue(fField,0,0.);
-	  MagnetVol=gGeoManager->GetVolume("Davide");
-	}
-      if(fDesign==0) //NEW
-	{
-	  MagnetVol=gGeoManager->GetVolume("Goliath");
-	  magField2->SetFieldValue(0.,fField,0.);
-	}
-      if(fDesign==3)
-	{
-	  magField2->SetFieldValue(fField,0,0.);
-	  MagnetVol=gGeoManager->GetVolume("NudetMagnet");
-	}
-
-      //Definition of the target box containing emulsion bricks + CES + target trackers (TT) 
-      if (fDesign != 3) volTarget->SetField(magField2);
-      volTarget->SetVisibility(1);
-      volTarget->SetVisDaughters(1);
-      if(fDesign==0) //TP
-	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+fCoilH2+YDimension/2,0));
-      if(fDesign==1) //NEW
-	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
-      if(fDesign==3){        
-        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
-        Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension 
-        for (int i = 0; i < fNTarget; i++){
-         volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
-        }
-       }
+    //Definition of the target box containing emulsion bricks + CES + target trackers (TT) 
+    if (fDesign != 3) volTarget->SetField(magField2);
+    volTarget->SetVisibility(1);
+    volTarget->SetVisDaughters(1);
+    if(fDesign==0) //TP
+      MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+fCoilH2+YDimension/2,0));
+    if(fDesign==1) //NEW
+      MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
+    if(fDesign==3)
+    {        
+      TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
+      Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension 
+      for (int i = 0; i < fNTarget; i++)
+      {
+        volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
+      }
     }
+  }
 
-    
-    
-    
-    
-
-    
   //
   //Volumes definition
   //
@@ -388,215 +392,210 @@ void Target::ConstructGeometry()
   //volLead->SetField(magField2);
     
   for(Int_t n=0; n<NPlates; n++)
-    {
-      volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
-    }
+  {
+    volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
+  }
   if (fsingleemulsionfilm){  //simplified configuration, unique sensitive layer for the whole emulsion plate
-   TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
-   TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
-   volEmulsionFilm->SetLineColor(kBlue);
+    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
+    TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
+    volEmulsionFilm->SetLineColor(kBlue);
 
-   if(fPassive==0)
+    if(fPassive==0)
     {
       AddSensitiveVolume(volEmulsionFilm);
     }
-    
-   for(Int_t n=0; n<NPlates+1; n++)
+
+    for(Int_t n=0; n<NPlates+1; n++)
     {
       volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth/2 + n*AllPlateWidth));
     }
-   }
-  else { //more accurate configuration, two emulsion films divided by a plastic base
-   TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
-   TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,NEmu); //TOP
-   TGeoVolume *volEmulsionFilm2 = new TGeoVolume("Emulsion2",EmulsionFilm,NEmu); //BOTTOM
-   volEmulsionFilm->SetLineColor(kBlue);
-   volEmulsionFilm2->SetLineColor(kBlue);
+  }
+  else 
+  { //more accurate configuration, two emulsion films divided by a plastic base
+    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+    TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,NEmu); //TOP
+    TGeoVolume *volEmulsionFilm2 = new TGeoVolume("Emulsion2",EmulsionFilm,NEmu); //BOTTOM
+    volEmulsionFilm->SetLineColor(kBlue);
+    volEmulsionFilm2->SetLineColor(kBlue);
 
-   if(fPassive==0)
-     {
-       AddSensitiveVolume(volEmulsionFilm);
-       AddSensitiveVolume(volEmulsionFilm2);
-     }
-   TGeoBBox *PlBase = new TGeoBBox("PlBase", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
-   TGeoVolume *volPlBase = new TGeoVolume("PlasticBase",PlBase,PBase);
-   volPlBase->SetLineColor(kYellow-4);
-   for(Int_t n=0; n<NPlates+1; n++)
+    if(fPassive==0)
+    {
+      AddSensitiveVolume(volEmulsionFilm);
+      AddSensitiveVolume(volEmulsionFilm2);
+    }
+    TGeoBBox *PlBase = new TGeoBBox("PlBase", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
+    TGeoVolume *volPlBase = new TGeoVolume("PlasticBase",PlBase,PBase);
+    volPlBase->SetLineColor(kYellow-4);
+
+    for(Int_t n=0; n<NPlates+1; n++)
     {
       volBrick->AddNode(volEmulsionFilm2, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmulsionThickness/2 + n*AllPlateWidth)); //BOTTOM
       volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*AllPlateWidth)); //TOP
       volBrick->AddNode(volPlBase, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*AllPlateWidth)); //PLASTIC BASE
     }    
- }
+  }
     
   volBrick->SetVisibility(kTRUE);
 
   //The CES is required only in the option with magnet surrounding the emulsion target
   if(fDesign!=2)
-    {    
-      //CES
-    
-      TGeoBBox *CES = new TGeoBBox("ces", EmulsionX/2, EmulsionY/2, CESWidth/2);
-      TGeoVolume *volCES = new TGeoVolume("CES", CES, vacuum);
-      volCES->SetTransparency(5);
-      volCES->SetLineColor(kYellow-10);
-      volCES->SetVisibility(kTRUE);
-    
-      TGeoBBox *RohGap = new TGeoBBox("RohGap", EmulsionX/2, EmulsionY/2, RohacellGap/2);
-      TGeoVolume *volRohGap = new TGeoVolume("RohacellGap",RohGap,rohacell);
-      volRohGap->SetTransparency(1);
-      volRohGap->SetLineColor(kYellow);
-    
-      for(Int_t n=0; n<NRohacellGap; n++)
-	{
-	  volCES->AddNode(volRohGap, n, new TGeoTranslation(0,0,-CESWidth/2 +CESPackageZ/2+  EmPlateWidth + RohacellGap/2 + n*LayerCESWidth)); //ROHACELL
-	}
-      if(fsingleemulsionfilm){ //simplified configuration, unique sensitive layer for the whole emulsion plate
-       TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
-       TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,Emufilm); //TOP
-       volEmulsionFilmCES->SetLineColor(kBlue);
-       if(fPassive==0)
-	{
-	  AddSensitiveVolume(volEmulsionFilmCES);
-	}
-    
-       for(Int_t n=0; n<NRohacellGap+1;n++)
-	{
-	  volCES->AddNode(volEmulsionFilmCES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmPlateWidth/2+n*LayerCESWidth)); 
-	}
+  {    
+    //CES
 
+    TGeoBBox *CES = new TGeoBBox("ces", EmulsionX/2, EmulsionY/2, CESWidth/2);
+    TGeoVolume *volCES = new TGeoVolume("CES", CES, vacuum);
+    volCES->SetTransparency(5);
+    volCES->SetLineColor(kYellow-10);
+    volCES->SetVisibility(kTRUE);
+
+    TGeoBBox *RohGap = new TGeoBBox("RohGap", EmulsionX/2, EmulsionY/2, RohacellGap/2);
+    TGeoVolume *volRohGap = new TGeoVolume("RohacellGap",RohGap,rohacell);
+    volRohGap->SetTransparency(1);
+    volRohGap->SetLineColor(kYellow);
+
+    for(Int_t n=0; n<NRohacellGap; n++)
+    {
+      volCES->AddNode(volRohGap, n, new TGeoTranslation(0,0,-CESWidth/2 +CESPackageZ/2+  EmPlateWidth + RohacellGap/2 + n*LayerCESWidth)); //ROHACELL
+    }
+    if(fsingleemulsionfilm)
+    { //simplified configuration, unique sensitive layer for the whole emulsion plate
+      TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
+      TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,Emufilm); //TOP
+      volEmulsionFilmCES->SetLineColor(kBlue);
+      if(fPassive==0)
+      {
+        AddSensitiveVolume(volEmulsionFilmCES);
       }
-      else{ //more accurate configuration, two emulsion films divided by a plastic base
-    
-       TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
-       TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,NEmu); //TOP
-       TGeoVolume *volEmulsionFilm2CES = new TGeoVolume("Emulsion2CES",EmulsionFilmCES,NEmu); //BOTTOM
-       volEmulsionFilmCES->SetLineColor(kBlue);
-       volEmulsionFilm2CES->SetLineColor(kBlue);
-       if(fPassive==0)
- 	{
- 	  AddSensitiveVolume(volEmulsionFilmCES);
- 	  AddSensitiveVolume(volEmulsionFilm2CES);
- 	}
-       //CES PLASTIC BASE
-       TGeoBBox *PlBaseCES = new TGeoBBox("PlBaseCES", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
-       TGeoVolume *volPlBaseCES = new TGeoVolume("PlasticBaseCES",PlBaseCES,PBase);
-       volPlBaseCES->SetLineColor(kYellow);
-       for(Int_t n=0; n<NRohacellGap+1;n++)
- 	{
- 	  volCES->AddNode(volEmulsionFilm2CES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness/2+n*LayerCESWidth)); //BOTTOM
- 	  volCES->AddNode(volEmulsionFilmCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth)); //TOP
- 	  volCES->AddNode(volPlBaseCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*LayerCESWidth)); //PLASTIC BASE
- 	  //	if(n == 2)
- 	  // cout << "-CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth = " << -CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth << endl;
-       }
 
+      for(Int_t n=0; n<NRohacellGap+1;n++)
+      {
+        volCES->AddNode(volEmulsionFilmCES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmPlateWidth/2+n*LayerCESWidth)); 
       }
-    
-      volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
-      volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
-    
-      TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
-      TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
-      volRow->SetLineColor(20);
-    
-      Double_t d_cl_x = -XDimension/2;
-      for(int j= 0; j < fNCol; j++)
-	{
-	  volRow->AddNode(volCell,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
-	  d_cl_x += BrickX;
-	}
 
-      TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, CellWidth/2);
-      TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
-    
-      Double_t d_cl_y = -YDimension/2;
-      for(int k= 0; k< fNRow; k++)
-	{
-	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
-        
-	  // 2mm is the distance for the structure that holds the brick
-	  d_cl_y += BrickY + Ydistance;
-	}
-    
-      //Columns
-       
-      Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
-      Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
+    }
+    else
+    { //more accurate configuration, two emulsion films divided by a plastic base
+      TGeoBBox *EmulsionFilmCES = new TGeoBBox("EmulsionFilmCES", EmulsionX/2, EmulsionY/2, EmulsionThickness/2);
+      TGeoVolume *volEmulsionFilmCES = new TGeoVolume("EmulsionCES",EmulsionFilmCES,NEmu); //TOP
+      TGeoVolume *volEmulsionFilm2CES = new TGeoVolume("Emulsion2CES",EmulsionFilmCES,NEmu); //BOTTOM
+      volEmulsionFilmCES->SetLineColor(kBlue);
+      volEmulsionFilm2CES->SetLineColor(kBlue);
+      if(fPassive==0)
+      {
+        AddSensitiveVolume(volEmulsionFilmCES);
+        AddSensitiveVolume(volEmulsionFilm2CES);
+      }
+      //CES PLASTIC BASE
+      TGeoBBox *PlBaseCES = new TGeoBBox("PlBaseCES", EmulsionX/2, EmulsionY/2, PlasticBaseThickness/2);
+      TGeoVolume *volPlBaseCES = new TGeoVolume("PlasticBaseCES",PlBaseCES,PBase);
+      volPlBaseCES->SetLineColor(kYellow);
+      for(Int_t n=0; n<NRohacellGap+1;n++)
+      {
+        volCES->AddNode(volEmulsionFilm2CES,n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness/2+n*LayerCESWidth)); //BOTTOM
+        volCES->AddNode(volEmulsionFilmCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth)); //TOP
+        volCES->AddNode(volPlBaseCES, n, new TGeoTranslation(0,0,-CESWidth/2+CESPackageZ/2+EmulsionThickness+PlasticBaseThickness/2+n*LayerCESWidth)); //PLASTIC BASE
+        //	if(n == 2)
+        // cout << "-CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth = " << -CESWidth/2+3*EmulsionThickness/2+PlasticBaseThickness+n*LayerCESWidth << endl;
+      }
 
-      for(int l = 0; l < fNWall; l++)
-	{
-	  volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +CellWidth/2));
-        
-	  //6 cm is the distance between 2 columns of consecutive Target for TT placement
-	  d_cl_z += CellWidth + TTrackerZ;
-	}
+    }
+    
+    volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
+    volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
+    // XDimension/2 -> WallXDim/2
+    TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, CellWidth/2);
+    TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
+    volRow->SetLineColor(20);
+
+    Double_t d_cl_x = -WallXDim/2;
+    for(int j= 0; j < fNCol; j++)
+    {
+      volRow->AddNode(volCell,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
+      d_cl_x += BrickX;
     }
 
+    TGeoBBox *Wall = new TGeoBBox("wall",WallXDim/2, WallYDim/2, CellWidth/2);
+    TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
+
+    Double_t d_cl_y = -WallYDim/2;
+    for(int k= 0; k< fNRow; k++)
+    {
+      volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
+      // 2mm is the distance for the structure that holds the brick
+      d_cl_y += BrickY + Ydistance;
+    }
+    
+      //Columns  
+    Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
+    Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
+
+    for(int l = 0; l < fNWall; l++)
+    {
+      volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +CellWidth/2));
+      //6 cm is the distance between 2 columns of consecutive Target for TT placement
+      d_cl_z += CellWidth + TTrackerZ;
+    }
+  }
 
   //in fDesign==2 the emulsion target is not surrounded by a magnet => no magnetic field inside
   //In the no Magnetic field option, no CES is needed => only brick walls + TT
-  if(fDesign==2)
+  if(fDesign==2){
+    EmulsionMagnet emuMag;
+
+    TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
+    cout<< "Tau Nu Detector fMagnetConfig: "<< fDesign<<endl;
+
+    tTauNuDet->AddNode(volTarget,1,new TGeoTranslation(0,0,fCenterZ));
+
+    TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, CellWidth/2);
+    TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
+    volRow->SetLineColor(20);
+
+    Double_t d_cl_x = -WallXDim/2;
+    for(int j= 0; j < fNCol; j++)
     {
-      EmulsionMagnet emuMag;
-
-      TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
-      cout<< "Tau Nu Detector fMagnetConfig: "<< fDesign<<endl;
-    
-      tTauNuDet->AddNode(volTarget,1,new TGeoTranslation(0,0,fCenterZ));
-	
-   
-       TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
-      TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
-      volRow->SetLineColor(20);
-    
-      Double_t d_cl_x = -XDimension/2;
-      for(int j= 0; j < fNCol; j++)
-	{
-	  volRow->AddNode(volBrick,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
-	  d_cl_x += BrickX;
-	}
-
-      TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
-      TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
-    
-      Double_t d_cl_y = -YDimension/2;
-      for(int k= 0; k< fNRow; k++)
-	{
-	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
-        
-	  // 2mm is the distance for the structure that holds the brick
-	  d_cl_y += BrickY + Ydistance;
-	}
-       //Columns
-       
-      Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
-      Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
-
-      for(int l = 0; l < fNWall; l++)
-	{
-	  volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +BrickZ/2));
-        
-	  //6 cm is the distance between 2 columns of consecutive Target for TT placement
-	  d_cl_z += BrickZ + TTrackerZ;
-	}
-      
-      TGeoBBox *Base = new TGeoBBox("Base", fBaseX/2, fBaseY/2, fBaseZ/2);
-      TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
-      volBase->SetLineColor(kYellow-3);
-      tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-YDimension/2 - fBaseY/2,fCenterZ));
-
-      if(fDesign==2)
-	{
-	  TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
-	  TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
-	  PillarVol->SetLineColor(kGreen+3);
-	  tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
-	  tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
-	  tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
-	  tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
-	}
+      volRow->AddNode(volBrick,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
+      d_cl_x += BrickX;
     }
+
+    TGeoBBox *Wall = new TGeoBBox("wall",WallXDim/2, WallYDim/2, BrickZ/2);
+    TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
+
+    Double_t d_cl_y = -WallYDim/2;
+    for(int k= 0; k< fNRow; k++)
+    {
+      volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
+      // 2mm is the distance for the structure that holds the brick
+      d_cl_y += BrickY + Ydistance;
+    }
+
+    //Columns
+    Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
+    Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
+
+    for(int l = 0; l < fNWall; l++)
+    {
+      volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +BrickZ/2));
+      //6 cm is the distance between 2 columns of consecutive Target for TT placement
+      d_cl_z += BrickZ + TTrackerZ;
+    }
+
+    TGeoBBox *Base = new TGeoBBox("Base", fBaseX/2, fBaseY/2, fBaseZ/2);
+    TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
+    volBase->SetLineColor(kYellow-3);
+    tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-WallYDim/2 - fBaseY/2,fCenterZ));
+
+    if(fDesign==2)
+    {
+      TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
+      TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
+      PillarVol->SetLineColor(kGreen+3);
+      tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
+      tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
+    }
+  }
 }
 
 Bool_t  Target::ProcessHits(FairVolume* vol)
