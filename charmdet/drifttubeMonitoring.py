@@ -1239,7 +1239,10 @@ def plotHitMaps(onlyPlotting=False):
 def hitMapsFromFittedTracks():
  for s in range(1,5):
   for p in range(2):
-   for l in range(2): xLayers[s][p][l][view].Reset()
+   for l in range(2): 
+       xLayers[s][p][l]['_x'].Reset()
+       if s==1: xLayers[s][p][l]['_u'].Reset()
+       if s==2: xLayers[s][p][l]['_v'].Reset()
  for event in sTree:
   for trInfo in event.TrackInfos:
    for n in range(trInfo.N()):
@@ -2745,7 +2748,9 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
             rc = h['T0tmp'].Fill(hit.GetDigi()-t0)
           if not hitFound:
 # fill histogram with closest distance to a wire, find z position of present station s layer l
-           firstWire = s*10000000+2000+(l%2)*10000+(l/2)*100000+1
+           v = 0
+           if (s==1 and view==1) or (s==2 and view==0): v=1000000
+           firstWire = s*10000000+v+2000+(l%2)*10000+(l/2)*100000+1
            vbot,vtop = strawPositionsBotTop[firstWire]
            z = (vbot[2]+vtop[2])/2.
            trackLength = muflux_Reco.extrapolateToPlane(aTrack,z,pos,mom)
