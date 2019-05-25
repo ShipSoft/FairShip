@@ -40,6 +40,7 @@ class NuTauMudet:public FairDetector
     void SetReturnYokeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetSmallerYokeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetCoilParameters(Double_t CoilH, Double_t CoilW, Int_t N, Double_t CoilG);
+    void SetSupportTransverseDimensions(Double_t UpperSupportX, Double_t UpperSupportY, Double_t LowerSupportX, Double_t LowerSupportY);
     void SetPillarDimensions(Double_t X, Double_t Y, Double_t Z);
 
     void ConstructGeometry();
@@ -156,7 +157,10 @@ protected:
     Double_t fYGas;
     Double_t fZGas;
 
-    //Dimension of the pillars
+    //Dimensions of iron support structures
+    Double_t fUpSuppX, fUpSuppY;
+    Double_t fLowSuppX, fLowSuppY;
+    //Dimension of steel pillars
     Double_t fPillarX;
     Double_t fPillarY;
     Double_t fPillarZ;

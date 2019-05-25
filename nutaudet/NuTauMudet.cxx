@@ -184,6 +184,13 @@ void NuTauMudet::SetCoilParameters(Double_t CoilH, Double_t CoilW, Int_t N, Doub
   fNCoil = N;
 }
 
+void NuTauMudet::SetSupportTransverseDimensions(Double_t UpperSupportX, Double_t UpperSupportY, Double_t LowerSupportX, Double_t LowerSupportY)
+{
+  fUpSuppX = UpperSupportX;
+  fUpSuppY = UpperSupportY;
+  fLowSuppX = LowerSupportX;
+  fLowSuppY = LowerSupportY;
+}
 
 void NuTauMudet::SetPillarDimensions(Double_t X, Double_t Y, Double_t Z)
 {
@@ -534,6 +541,20 @@ void NuTauMudet::ConstructGeometry()
       tTauNuDet->AddNode(Pillar1Vol,2, new TGeoTranslation(fXtot/2-fdeltax/2-fPillarX/2,-fYtot/2+fdeltay/2-fPillarY/2,fZcenter-fZtot/2 +fPillarZ/2));
       //      tTauNuDet->AddNode(Pillar1Vol,3, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2)); //eventually two pillars at the end. Now muon det is followed by veto, so its steel pillar supports both
       //tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2));
+      //addition of iron support structures
+      //Three upper supports, above the muon detector
+      TGeoBBox *UpperSupportBox = new TGeoBBox(fUpSuppX/2., fUpSuppY/2.,fZtot/2.);
+      TGeoVolume *UpperSupportVol = new TGeoVolume("MudetUpperSupport",UpperSupportBox,Iron);
+      for (int iupsupport = 0; iupsupport<3;iupsupport++){//cambiare la z
+       tTauNuDet->AddNode(UpperSupportVol,iupsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*iupsupport/3.+fUpSuppX/2,fYtot/2+fUpSuppY/2.,fZcenter))
+      }
+      //Two lower supports, below the muon detector
+      TGeoBBox *LowerSupportBox = new TGeoBBox(fLowSuppX/2., fLowSuppY/2.,fZtot/2.);
+      TGeoVolume *LowerSupportVol = new TGeoVolume("MudetLowerSupport",LowerSupportBox,Iron);
+      for (int ilowsupport = 0; ilowsupport<2;ilowsupport++){//cambiare la z
+       tTauNuDet->AddNode(LowerSupportVol,ilowsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*ilowsupport/2.+fLowSuppX/2,-fYtot/2-fLowSuppY/2.,fZcenter))
+      }
+      
     }
 
 }
