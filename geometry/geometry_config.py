@@ -482,15 +482,15 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmuMagnet = AttrDict(z=0*u.cm)
         c.EmuMagnet.Design = nuTauTargetDesign
         c.EmuMagnet.B=1.25*u.tesla
-        c.EmuMagnet.GapDown = 25*u.cm
+        c.EmuMagnet.GapDown = 10*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
             c.EmuMagnet.WithConstField=False  #now loaded field map
             c.EmuMagnet.X = scale*2.2*u.m
-            c.EmuMagnet.Y = scale*3.6*u.m
+            c.EmuMagnet.Y = scale*4.0*u.m
             c.EmuMagnet.Z = 7.2*u.m
             c.EmuMagnet.BaseX = scale*c.EmuMagnet.X 
-            c.EmuMagnet.BaseY = scale*0.6*u.m
+            c.EmuMagnet.BaseY = scale*0.7*u.m
             c.EmuMagnet.BaseZ = scale*c.EmuMagnet.Z
             c.EmuMagnet.GapDown = 25*u.cm
             c.EmuMagnet.GapUp = 27*u.cm
@@ -499,9 +499,9 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.ColY = scale*c.EmuMagnet.Y - 2 *scale * c.EmuMagnet.BaseY #avoid overlapping between bases and columns
             c.EmuMagnet.ColZ = scale*c.EmuMagnet.Z
             c.EmuMagnet.CutLength = scale * 45*u.cm
-            c.EmuMagnet.CutHeight = scale * 100*u.cm
+            c.EmuMagnet.CutHeight = scale * 144*u.cm
             c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
-            c.EmuMagnet.CoilY = 40*u.cm
+            c.EmuMagnet.CoilY = 47.8*u.cm
             c.EmuMagnet.Height1 = c.EmuMagnet.Y-2*c.EmuMagnet.BaseY
             c.EmuMagnet.Height2 = c.EmuMagnet.Height1-2*c.EmuMagnet.CoilY
             c.EmuMagnet.Thickness = scale*50*u.cm
@@ -550,7 +550,7 @@ with ConfigRegistry.register_config("basic") as c:
         
 
    
-    #Parameters for tau magnetic Spectrometer
+    #Parameters for tau muon detector
     c.tauMudet = AttrDict(z=0*u.cm)
     if nuTauTargetDesign<=2:
 	c.tauMudet.NFe = 12
@@ -595,18 +595,18 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.B = 1.5 * u.tesla
     if nuTauTargetDesign==3:
         scaleMudet=1.
-	c.tauMudet.NFe = 22
-    	c.tauMudet.NRpc= 23
+	c.tauMudet.NFe = 15
+    	c.tauMudet.NRpc= 16
         c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
         c.tauMudet.Ytot = scaleMudet*4.9124968*u.m
         c.tauMudet.deltax = 10* u.cm
         c.tauMudet.deltay = 20* u.cm
         c.tauMudet.XFe = c.tauMudet.Xtot
         c.tauMudet.YFe = c.tauMudet.Ytot
-        c.tauMudet.ZFe = 5.*u.cm
+        c.tauMudet.ZFe = 10.*u.cm
         c.tauMudet.XRpc = c.tauMudet.Xtot
         c.tauMudet.YRpc = c.tauMudet.YFe
-        c.tauMudet.ZRpc = 2.*u.cm
+        c.tauMudet.ZRpc = 5.*u.cm
         c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFe*c.tauMudet.ZFe
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
