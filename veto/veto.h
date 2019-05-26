@@ -164,13 +164,8 @@ class veto: public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
-    TGeoVolume* GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sense);
     void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
-    TGeoVolume* GeoParalepiped(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Int_t colour,TGeoMedium *material,Bool_t sens);
-    TGeoVolume* GeoTrapezoid(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens); 
     TGeoVolume* GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,Int_t color,TGeoMedium *material,Bool_t sens);
-    TGeoVolume* GeoArbTrapezoid(TString name, Double_t wz, std::vector<double> vX, std::vector<double> vY, Int_t color,TGeoMedium *material,Bool_t sens);
-    void AddCornerRibs(TGeoVolumeAssembly * tTankVol, TString xname, double dz, double x1,double x2, double y1, double y2, double liscW1, double liscW2, double ribW, Int_t color ,TGeoMedium *material, Bool_t sens);
     void AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tOuterWall,TGeoVolumeAssembly *tLongitRib,TGeoVolumeAssembly *tVerticalRib,TGeoVolumeAssembly *ttLiSc,
                      TString blockName , int nx, int ny,
 		  double z1, double z2 , double Zshift, double dist, double distC,
@@ -178,11 +173,7 @@ class veto: public FairDetector
     TGeoVolumeAssembly* GeoCornerRib(TString xname, double ribThick, double lt1,double lt2 , double dz, double slopeX, double slopeY,Int_t color, TGeoMedium *material, Bool_t sens);
     int makeId(double z,double x, double y);
     
-    
-    TGeoVolume* GeoPolyhedron(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX1,Double_t slopeX2,Double_t slopeY1,Double_t slopeY2,Int_t colour,TGeoMedium *material,Bool_t sens);
-    TGeoVolume* GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Double_t phi1, Double_t phi2,Double_t zStart, 
-             Double_t zlength,  Int_t colour,TGeoMedium *material,Bool_t sens);
-    TGeoVolume* GeoSideObj(TString xname, double dz,
+        TGeoVolume* GeoSideObj(TString xname, double dz,
 			     double a1, double b1,double a2, double b2,double dA, double dB,
 				Int_t color, TGeoMedium *material, Bool_t sens);
     TGeoVolume* GeoCornerLiSc1(TString xname, double dz,bool isClockwise,
@@ -192,7 +183,7 @@ class veto: public FairDetector
 			     double a, double b1,double b2, double dA, double dB,
 				Int_t color, TGeoMedium *material, Bool_t sens);
 
-    TGeoVolume* GeoVesselSupport(TString name,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Double_t floorHeight);
+    TGeoVolume* GeoVesselSupport();
 
     TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
     TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
@@ -207,10 +198,6 @@ class veto: public FairDetector
 
     // Add center of volume and its dx, dy and dz (currently dummy) to a map for futher export 
     void InnerAddToMap(Int_t ncpy, Double_t x, Double_t y, Double_t z, Double_t dx=-1111, Double_t dy=-1111, Double_t dz=-1111);
-
-    // Insert inner veto into the decay volume. ix (iy) is a number of tiles at the beginning
-    // of the volume
-    void InsertInnerVeto(TString xname,Double_t th,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material, TGeoVolume* Inner, Int_t ix=2, Int_t iy=30);
 
 
     ClassDef(veto, 9)
