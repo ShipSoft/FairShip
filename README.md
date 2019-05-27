@@ -24,8 +24,8 @@ Additionally for developers:
     ```bash
     export SHIPBUILD=/cvmfs/ship.cern.ch/SHiPBuild
     ```    
-   on lxplus you should not follow steps 3 and 4, since the software is already installed in the previous folder.
-   The usage of lxplus6 is currently recommended.
+   On lxplus a full installation will most probably fail due to lack of memory.
+   The usage of lxplus6 is currently (May 2019) recommended if you want to use the event display.
 1. Install FairShip
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
