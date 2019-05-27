@@ -11,12 +11,6 @@
 #include "FairRunOnline.h"
 #include "FairLogger.h"
 
-// Structs
-
-//struct HitData {
-//   uint64_t hitword;
-//};
-
 struct HitData{
   uint64_t flags    : 2 ; // flags
   uint64_t finetime : 16; // fine time
@@ -39,7 +33,11 @@ struct ChannelId{
   uint16_t channel  : 11; // 0 - 1536
   uint16_t board    : 5 ; // 0 - 23
 };
-
+struct SciFiDataFrame {
+   DataFrameHeader header;
+   HitData hits[0];
+   int getHitCount() { return (header.size - sizeof(header)) / sizeof(HitData); }
+};
 
 // SciFiUnpack 
 SciFiUnpack::SciFiUnpack(uint16_t PartitionId) 
@@ -82,8 +80,6 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
   UInt_t time;
   UShort_t finetime;
   uint64_t hitword;
-  std::ofstream fout;
-  fout.open("new-raw-to-hex_scifiunpack.csv",  std::ofstream::out | std::ofstream::app);
 
   //  TFile f("converted_v1.root","RECREATE");
   //  TTree *tree = new TTree("scifihits","Converted hits");
@@ -95,7 +91,7 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 
   LOG(INFO) << "SciFiUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
-  auto df = reinterpret_cast<DataFrame *>(data);
+  auto df = reinterpret_cast<SciFiDataFrame *>(data);
   switch (df->header.frameTime) {
     case SoS: LOG(INFO) << "SciFiUnpack: SoS frame." << FairLogger::endl; return kTRUE;
     case EoS: LOG(INFO) << "SciFiUnpack: EoS frame." << FairLogger::endl; return kTRUE;
@@ -104,25 +100,25 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
   int i =0;
   assert(df->header.size == size);
   auto nhits = df->getHitCount();
-  std::vector<RawDataHit> hits(df->hits, df->hits + nhits);
+  LOG(INFO) << nhits << " hits." << FairLogger::endl;
+  std::vector<HitData> hits(df->hits, df->hits + nhits);
   //std::cout << df->header.size << "  " << size << "  " << nhits << std::endl;
-  for (auto &&hit : hits) {
-    auto hitData = reinterpret_cast<HitData *>(&(hit));
+  for (auto &&hitData : hits) {
     //auto channelId = reinterpret_cast<ChannelId *>(&(hit.channelId)); // I am not sure what this is doing
-    auto triggerFlag = (hitData->ch >= 16000) ? 1 : 0; 
-    auto board = (triggerFlag == 1) ? (hitData->ch-16000) : (hitData->ch/512);
+    auto triggerFlag = (hitData.ch >= 16000) ? 1 : 0;
+    auto board = (triggerFlag == 1) ? (hitData.ch-16000) : (hitData.ch/512);
     auto module = board/3;
-    auto channel = (triggerFlag==1 && module>0 ) ? hitData->ch : hitData->ch/module; 
+    auto channel = (triggerFlag==1 && module>0 ) ? hitData.ch : hitData.ch/module;
 
     //                0                                 + 0-25 * 10**5       +  0-16025; 
     auto detectorId = (fPartitionId%0x0900) * pow(10,7) +  board * pow(10,5) +  channel;
 
-    std::cout << hitData->ch << "\t" << hitData->time << "\t" << hitData->finetime << "\t" << hitData->flags << std::endl;
+    LOG(INFO) << std::hex << *reinterpret_cast<uint64_t*>(&hitData)  << std::dec << FairLogger::endl;
+    LOG(INFO) << hitData.ch << "\t" << hitData.time << "\t" << hitData.finetime << "\t" << hitData.flags << FairLogger::endl;
 
-    
     bool trigflag = triggerFlag;
 
-    new ((*fRawData)[fNHits]) SciFiHit(detectorId, 0, hitData->time, hitData->finetime, hitData->flags, trigflag);
+    new ((*fRawData)[fNHits]) SciFiHit(detectorId, 0, hitData.time, hitData.finetime, hitData.flags, trigflag);
 
     //new ((*fRawData)[fNHits]) SciFiHit(0x0900,0, hitData->time, hitData->finetime, hitData->ch, boardId, module, trigflag, hitData->flags);
     //new ((*fRawData)[fNHits]) SciFiHit(0x0900,0, hitData->time, hitData->finetime, hitData->ch, 0, 0, trigflag, hitData->flags);
@@ -134,7 +130,6 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 
   fNHitsTotal += fNHits;
   //f.Write();
-  //fout.close();
   return kTRUE;
 }
 
