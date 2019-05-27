@@ -7,10 +7,8 @@
 #include "TVector3.h"
 
 //SciFiHit::SciFiHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
-//SciFiHit::SciFiHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
-SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint16_t fineTime, int ch, int boardId, int module, bool trigflag,  bool flag): ShipHit(detID, digi), hitTime(hitTime), fineTime(fineTime), ch(ch), boardId(boardId), module(module), trigflag(trigflag), flag(flag){}
-//SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint32_t fineTime, uint16_t amp, uint16_t ch, uint16_t sticId, uint16_t boardId, bool flag): ShipHit(detID, digi), hitTime(hitTime), fineTime(fineTime), amp(amp), ch(ch), sticId(sticId), boardId(boardId), flag(flag){}
 
+SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint16_t fineTime, bool flags, bool triggerFlag): ShipHit(detID,digi), hitTime(hitTime), fineTime(fineTime), flags(flags), triggerFlag(triggerFlag){}
 
 void SciFiHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
 // method to get strip endpoints from TGeoNavigator
@@ -47,5 +45,83 @@ void SciFiHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
   vtop.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
   vbot.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);
 }
+
+ClassImp(SciFiHit)
+
+/*
+void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID) {
+
+
+    double gap_die=0.220;// cm
+    double gap_SiPM=0.400;
+    double ch_width=0.250;// cm
+    x=-10000;
+    y=-10000;
+    z=-10000;
+
+    //angle in radiants for layers U and V (5 deg)
+    double radiants=2.5/180*TMath::Pi();
+
+    //compute half layer width to be entered in the middle of the plane
+    double half_layer=1536/2*0.250+6*gap_die+5.5*gap_SiPM;
+
+    //z positions inside a station
+    double zpos[4]={0., 18.05, 39.5, 57.55};
+
+    //layer inside a station
+    int el=layer%4;
+
+    //z position defined as:
+    z=zpos[el]+int(layer/4)*160;
+
+    //how many half dies
+    int mult=int(ch_layer/64);
+
+    //shift to add to the position due to dead regions
+    double shift=int(mult/2)*gap_die+int(mult/2)*gap_SiPM+(mult%2)*gap_die;
+
+    //computation of the angle for the considered layer
+    double angle=radiants;
+
+    //first station only x defined for X and U planes
+    if(layer==0) {
+      x = - ( ch_layer*0.250 + shift - half_layer );
+      y = 0;
+    }
+    else if(layer==1){
+      x = -( ch_layer*0.250 + shift - half_layer ) - 200*sin(angle);
+      y = 0;
+    }
+
+    //first station only y defined for Y and V planes
+    else if(layer==2){
+      x = 0;
+      y = - ( ch_layer*0.250 + shift - half_layer ) + 200*sin(angle);
+    }
+    else if(layer==3) {
+      x = 0;
+      y = - ( ch_layer*0.250 + shift - half_layer );
+    }
+    //second station only y defined for Y and V planes
+    else if(layer==4) {
+      x = 0;
+      y = - ( ch_layer*0.250 + shift - half_layer );
+    }
+    else if(layer==5){
+      x = 0;
+      y = - ( ch_layer*0.250 + shift - half_layer ) - 200*sin(angle);
+    }
+    //second station only x defined for X and U planes
+    else if(layer==6){
+      x = ( ch_layer*0.250 + shift - half_layer ) + 200*sin(angle);
+      y = 0;
+    }
+    else if(layer==7) {
+      x = ( ch_layer*0.250 + shift - half_layer);
+      y = 0;
+    }
+    v.SetXYZ(x,y,z);
+}
+*/
 
 ClassImp(SciFiHit)
