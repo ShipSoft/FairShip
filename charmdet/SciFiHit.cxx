@@ -56,6 +56,10 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   double scifiboxcenter[3] = {0,0,0}; // CHANGE  
   TGeoNode *scifiboxnode = nav->GetCurrentNode();
   scifiboxnode->LocalToMaster(origin,scifiboxcenter);
+  
+  TGeoVolume *scifibox = nav->GetCurrentVolume();
+  double scifiboxdz = ((TGeoBBox*) scifibox->GetShape())->GetDZ(); //semithickness
+  
 
   const int nlayers = 8; // 0 - 1 -2 - .. - 7 => layer5 or 6 was not working
 
@@ -139,6 +143,8 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
     x = ( ch_layer*0.250 + shift - half_layer);
     y = 0;
   }
+  //translation from z = 0 to start of the box
+  z = z + scifiboxcenter[2] - scifiboxdz;
   v.SetXYZ(x,y,z);
 
 }
