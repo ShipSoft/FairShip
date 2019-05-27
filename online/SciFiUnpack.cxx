@@ -110,12 +110,14 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
     auto hitData = reinterpret_cast<HitData *>(&(hit));
     //auto channelId = reinterpret_cast<ChannelId *>(&(hit.channelId)); // I am not sure what this is doing
     auto triggerFlag = (hitData->ch >= 16000) ? 1 : 0; 
-    auto board = (triggerFlag == 1) ? (hitData->ch-16000) : (hitData->ch/512);
-    auto module = board/3;
-    auto channel = (triggerFlag==1 && module>0 ) ? hitData->ch : hitData->ch/module; 
+    auto board = (triggerFlag == 1) ? (int)(hitData->ch-16000+1) : (int)(hitData->ch/512+1);
+    auto module = (int)(board/3+1);
+    auto channel = (triggerFlag==1 && module > 0 && module < 8 ) ? (int)(hitData->ch) : ((int)hitData->ch/module); 
 
     //                0                                 + 0-25 * 10**5       +  0-16025; 
-    auto detectorId = (fPartitionId%0x0900) * pow(10,7) +  board * pow(10,5) +  channel;
+    auto detectorId = (fPartitionId%0x0900) * pow(10,6) +  board * pow(10,5) +  channel;
+    //unsigned long detectorId = board * 100000 +  channel;
+    //unsigned long detectorId = board;
 
     std::cout << hitData->ch << "\t" << hitData->time << "\t" << hitData->finetime << "\t" << hitData->flags << std::endl;
 
@@ -123,13 +125,10 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
     bool trigflag = triggerFlag;
 
     new ((*fRawData)[fNHits]) SciFiHit(detectorId, 0, hitData->time, hitData->finetime, hitData->flags, trigflag);
-
     //new ((*fRawData)[fNHits]) SciFiHit(0x0900,0, hitData->time, hitData->finetime, hitData->ch, boardId, module, trigflag, hitData->flags);
-    //new ((*fRawData)[fNHits]) SciFiHit(0x0900,0, hitData->time, hitData->finetime, hitData->ch, 0, 0, trigflag, hitData->flags);
-    //else new ((*fRawData)[fNHits]) SciFiHit(0x0900,0, hitData->time*25, hitData->finetime*32./680,0, (hitData->ch-16000), (hitData->ch - 16000)/3, hitData->flags);
-    //new ((*fRawData)[fNHits]) SciFiHit(0x0900,0, hitData->time*25, hitData->finetime*32./680, channel, boardId, module, hitData->flags);
-    //new ((*fRawData)[fNHits]) SciFiHit(detectorId,0, hitData->time * 25, hitData->finetime * 32./680, hitData->ch, boardId, 0, trigflag);
+
     fNHits++;
+
   }
 
   fNHitsTotal += fNHits;
