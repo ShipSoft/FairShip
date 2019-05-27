@@ -40,11 +40,7 @@ struct SciFiDataFrame {
 };
 
 // SciFiUnpack
-SciFiUnpack::SciFiUnpack(uint16_t PartitionId)
-   : fRawData(new TClonesArray("SciFiHit")), fNHits(0), fNHitsTotal(0), fPartitionId(PartitionId)
-{
-}
-
+SciFiUnpack::SciFiUnpack(uint16_t PartitionId) : fRawData(new TClonesArray("SciFiHit")) {}
 // SciFiUnpack::SciFiUnpack() = default;
 // SciFiUnpack: Constructor
 // SciFiUnpack::SciFiUnpack(uint16_t PartitionId){}
@@ -70,7 +66,7 @@ void SciFiUnpack::Register()
    if (!fMan) {
       return;
    }
-   fMan->Register("Digi_SciFiHits", "SciFi", fRawData, kTRUE);
+   fMan->Register("Digi_SciFiHits", "SciFi", fRawData.get(), kTRUE);
    // fMan->Register("Digi_SciFiTrigger", "SciFi", fRawTrigger, kTRUE);
 }
 
@@ -80,8 +76,8 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
    int module;
    int channel_number;
    int flag;
-   UInt_t time;
-   UShort_t finetime;
+   uint32_t time;
+   uint16_t finetime;
    uint64_t hitword;
 
    //  TFile f("converted_v1.root","RECREATE");

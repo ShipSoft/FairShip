@@ -5,7 +5,7 @@
 
 class SciFiUnpack : public ShipUnpack {
 public:
-   SciFiUnpack(uint16_t PartitionId);
+   SciFiUnpack();
 
    /** Destructor. */
    virtual ~SciFiUnpack();
@@ -26,9 +26,9 @@ protected:
    virtual void Register() override;
 
 private:
-   TClonesArray *fRawData; /**< Array of output raw items. */
-   Int_t fNHits;           /**< Number of raw items in current event. */
-   Int_t fNHitsTotal;      /**< Total number of raw items. */
+   std::unique_ptr<TClonesArray> fRawData; /**< Array of output raw items. */
+   Int_t fNHits = 0;                       /**< Number of raw items in current event. */
+   Int_t fNHitsTotal = 0;                  /**< Total number of raw items. */
    uint16_t fPartitionId = 0x0900;
 
    SciFiUnpack(const SciFiUnpack &);
