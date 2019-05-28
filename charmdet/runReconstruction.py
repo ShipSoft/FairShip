@@ -285,24 +285,20 @@ def importRecoFiles(local='.',remote='/media/truf/disk2/home/truf/ShipSoft/ship-
  fileWithTracks = checkFilesWithTracks(remote)
  for x in fileWithTracks:  os.system('cp '+remote+'/'+x+' .')
 
-def mergeHistos(local='.',case='residuals'):
- allFiles = os.listdir(local)
- if case == 'residuals':  
-     dest = 'residuals.root'
-     tag = 'histos-residuals'
- else:  
-     dest = 'momDistributions.root'
-     tag = 'histos-analysis'
- cmd = "hadd -f "+dest+' '
+def mergeHistos(local='.',command='anaResiduals'):
+ commandToHist = {"alignment":"histos-residuals-","anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-","hitmaps":"histos-HitmapsFromFittedTracks-"}
+ commandToSum  = {"anaResiduals":"momDistributions","momResolution":"momentumResolution","plotDTPoints":"DTPoints","alignment":"residuals","hitmaps":"HitmapsFromFittedTracks"}
+ cmd = 'hadd -f '+commandToSum[command]+'.root '
+ tag = commandToHist[command]
  N=0
- for x in allFiles:
+ for x in os.listdir(local):
   if not x.find(tag)<0 : 
      cmd += (local+'/'+x+' ')
      N+=1
   if N>500:
     os.system(cmd)
-    os.system('cp '+dest+' tmp.root')
-    cmd = "hadd -f "+dest+' tmp.root '
+    os.system('cp '+commandToSum[command]+' tmp.root')
+    cmd = "hadd -f "+commandToSum[command]+' tmp.root '
     N=0
  os.system(cmd)
 
@@ -385,7 +381,8 @@ def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
     for run in os.listdir('.'):
       if run.find(keyword)<0: continue
       os.chdir(run)
-      mergeHistos(local='.')
+      mergeHistos(local='.',command="alignment")
+      mergeHistos(local='.',command="hitmaps")
       os.chdir('../')
   else:
    if len(fnames)==0:

@@ -322,7 +322,7 @@ def makeMomResolutions(D='.',splitFactor=5):
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
- elif D=='1GeV' or D=='10GeV':
+ elif D.find('1GeV')==0 or D.find('10GeV')==0:
   eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
   for x in temp.split('\n'):
@@ -363,15 +363,15 @@ def checkAlignment(D='.',splitFactor=5):
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
- elif D=='1GeV':
-  eospathSim1GeV = '/eos/experiment/ship/user/truf/muflux-sim/1GeV'
-  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim1GeV,shell=True)
+ elif D.find('1GeV')==0 or D.find('10GeV')==0:
+  eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
   for x in temp.split('\n'):
    if x.find('pythia8_Geant4')<0: continue
    d = x[x.rfind('/')+1:]
    if not d in os.listdir('.'): os.system('mkdir '+d)
    os.chdir(d)
-   temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim1GeV+'/'+d,shell=True)
+   temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim+'/'+d,shell=True)
    fileList = []
    for y in temp2.split('\n'):
     f = os.environ['EOSSHIP'] + y[y.find('/eos'):]
@@ -403,8 +403,9 @@ def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",upd
       os.system(cmd)
 
 def mergeHistos(command="anaResiduals"):
- commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
- commandToSum  = {"anaResiduals":"momDistributions-","momResolution":"momentumResolution-","plotDTPoints":"DTPoints-","alignment":"residuals-"}
+ commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-",
+                  "hitmaps":"histos-HitmapsFromFittedTracks-","alignment":"histos-residuals-"}
+ commandToSum  = {"anaResiduals":"momDistributions-","momResolution":"momentumResolution-","plotDTPoints":"DTPoints-","alignment":"residuals-","hitmaps":"HitmapsFromFittedTracks-"}
  dirList=getFilesLocal()
  cmd = {}
  for z in ['charm','mbias']:

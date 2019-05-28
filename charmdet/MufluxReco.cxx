@@ -750,7 +750,9 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
    if ( !hit->isValid() && MCdata){continue;}
    if (flag && !MCdata){
     if (!hit->hasTimeOverThreshold() || !hit->hasDelay() || !hit->hasTrigger() ){ continue;} // no reliable TDC measuerement
+   }
   // remove noise hits
+   if (flag){
     auto result = std::find( noisyChannels.begin(), noisyChannels.end(), hit->GetDetectorID() );
     if ( result !=  noisyChannels.end()){ continue;}
    }
