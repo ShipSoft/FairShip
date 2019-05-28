@@ -133,6 +133,7 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
    fNHitsTotal += fNHits;
    // f.Write();
    return kTRUE;
+
 }
 
 // Reset: Public method
