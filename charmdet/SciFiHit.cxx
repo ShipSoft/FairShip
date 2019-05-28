@@ -85,13 +85,25 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   double half_layer=1536/2*0.250+6*gap_die+5.5*gap_SiPM;
 
   //z positions inside a station
-  double zpos[4]={0., 18.05, 39.5, 57.55};
+  //double zpos[4]={0., 18.05, 39.5, 57.55};
+
+  double z_midpoint_Ref[8];
+  z_midpoint_Ref[0] =  581.3250;
+  z_midpoint_Ref[1] =  584.8138;
+  z_midpoint_Ref[2] =  588.3025;
+  z_midpoint_Ref[3] =  591.7912;
+  z_midpoint_Ref[4] =  595.2800;
+  z_midpoint_Ref[5] =  598.7688;
+  z_midpoint_Ref[6] =  602.2575;
+  z_midpoint_Ref[7] =  605.7463;
+
 
   //layer inside a station (0,1,2,3)
-  int el=layer%4;
+  //int el=layer%4;
 
   //z position defined as: 
-  z=zpos[el]+int(layer/4)*160;
+  ////z=zpos[el]+int(layer/4)*160;
+  z=z_midpoint_Ref[layer];
 
   //how many half dies
   int mult=int(ch_layer/64);
