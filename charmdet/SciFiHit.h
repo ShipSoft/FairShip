@@ -7,7 +7,7 @@ class SciFiHit : public ShipHit {
 public:
    SciFiHit() : ShipHit() {}
    ~SciFiHit() = default;
-   SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint16_t fineTime, int flags, bool triggerFlag);
+   SciFiHit(Int_t detID, Float_t digi, uint16_t ch, uint8_t board, uint32_t hitTime, uint16_t fineTime, int flags, bool triggerFlag);
    void GetSciFiXYZ(TVector3 &v, int detID);
    //void EndPoints(TVector3 &top, TVector3 &bot);
    //int16_t trigFlag;
@@ -19,6 +19,8 @@ public:
 private:
     SciFiHit(const SciFiHit& other);
     SciFiHit operator=(const SciFiHit& other);
+    uint8_t board;
+    uint16_t ch;
     uint32_t hitTime;
     uint16_t fineTime;
     int  flags;

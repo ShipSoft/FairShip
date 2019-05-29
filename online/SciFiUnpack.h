@@ -5,7 +5,7 @@
 
 class SciFiUnpack : public ShipUnpack {
 public:
-   SciFiUnpack();
+   SciFiUnpack(uint16_t PartitionId);
 
    /** Destructor. */
    virtual ~SciFiUnpack();

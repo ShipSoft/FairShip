@@ -8,7 +8,7 @@
 
 //SciFiHit::SciFiHit(Int_t detID, Float_t digi) : ShipHit(detID, digi) {}
 
-SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint32_t hitTime, uint16_t fineTime, int flags, bool triggerFlag): ShipHit(detID, digi), hitTime(hitTime), fineTime(fineTime), flags(flags), triggerFlag(triggerFlag){}
+SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint16_t ch, uint8_t board, uint32_t hitTime, uint16_t fineTime, int flags, bool triggerFlag): ShipHit(detID, digi), ch(ch), board(board), hitTime(hitTime), fineTime(fineTime), flags(flags), triggerFlag(triggerFlag){}
 
 /*
 void SciFiHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
@@ -67,9 +67,8 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   unsigned int ch_layer;
   unsigned int boardId;
 
-  partitionID = fDetectorID / pow(10,6);
-  boardId = (fDetectorID - partitionID * pow(10,6)) / pow(10,5);
-  ch_layer = (fDetectorID - partitionID * pow(10,6) - boardId * pow(10,5));
+  boardId = (fDetectorID) / pow(10,5);
+  ch_layer = (fDetectorID - boardId * pow(10,5));
   
 
   // layer (0,1,..,7)
