@@ -331,6 +331,7 @@ def writeNtuples():
   for ievent in range(sTree.GetEntries()):
    loadRPCtracks(ievent, False, True)
    GetPixelPositions(ievent, False, True)
+   GetSciFiPositions(ievent, False, True)
   outputfile.Write()
 
 if writentuple:
