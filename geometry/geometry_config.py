@@ -17,7 +17,7 @@ if "muShieldGeo" not in globals():
 if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
-    nuTauTargetDesign = 3
+    nuTauTargetDesign = 0
     if muShieldDesign >= 7: 
         nuTauTargetDesign=1
 if "targetOpt" not in globals():
@@ -669,7 +669,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.EmY = 9.9 * u.cm
     c.NuTauTarget.PBTh = 0.0175 * u.cm
     c.NuTauTarget.LeadTh = 0.1 * u.cm
-    c.NuTauTarget.EPlW = 2 * c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
+    c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
     c.NuTauTarget.BrX = 12.9 * u.cm
     c.NuTauTarget.BrY = 10.5 * u.cm
