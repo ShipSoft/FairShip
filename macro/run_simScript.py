@@ -231,7 +231,6 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - muShieldDesign = 2  # 1=passive 5=active (default) 7=short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
-
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
                                                 muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile)
 else: 
