@@ -657,8 +657,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.row = 9
         c.NuTauTarget.col = 7
         c.NuTauTarget.wall = 23
-        # (!) 1 case: c.NuTauTarget.wall = 23
-        #     2 case: c.NuTauTarget.wall = 35
     c.NuTauTarget.target = 1  #number of neutrino target volumes
 
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
@@ -675,16 +673,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
     c.NuTauTarget.BrX = 12.9 * u.cm
     c.NuTauTarget.BrY = 10.5 * u.cm
-    #c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
-    #c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
-    #c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
     c.NuTauTarget.BrZ = 7.6 * u.cm
-    # (!) 1 case: BrZ + CES = 7.6 cm + 3.5 cm = 11.1 cm
-    #     2 case: BrZ + CES = 3.8 cm + 3.0 cm = 6.8 cm
-
+	
  #TargetTrackers!
     c.NuTauTT = AttrDict(z=0*u.cm)
     c.NuTauTT.design = nuTauTargetDesign
@@ -741,8 +734,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW
         c.NuTauTarget.CESPack = 0.1 * u.cm
         c.NuTauTarget.CESW = 3.5 * u.cm
-        # (!) 1 case: BrZ + CES = 7.6 cm + 3.5 cm = 11.1 cm
-        #     2 case: BrZ + CES = 3.8 cm + 3.0 cm = 6.8 cm
         c.NuTauTarget.CellW = c.NuTauTarget.BrZ + c.NuTauTarget.CESW
         if nuTauTargetDesign!=3:
             c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
