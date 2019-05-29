@@ -122,7 +122,7 @@ protected:
     Int_t n_vert_planes;
 
     Double_t CellWidth; //dimension of the cell containing brick and CES
-    Double_t ZDimension; //dimension of the TTs+bricks total volume
+    Double_t ZDimension; //Dimension of the TTs+bricks total volume
     
     Int_t fNTT; //number of TT
 
