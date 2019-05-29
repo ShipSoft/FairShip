@@ -13,6 +13,8 @@ debug = 0  # 1 print weights and field
 dryrun = False # True: just setup Pythia and exit
 
 CharmdetSetup = 0 # 1 charm cross section setup, 0 muon flux setup
+DownScaleDiMuon = False
+CharmTarget = 3 #six different configurations used in July 2018 exposure for charm
 # Default HNL parameters
 theMass = 1.0*u.GeV
 theCouplings = [0.447e-9, 7.15e-9, 1.88e-9] # ctau=53.3km  TP default for HNL
@@ -53,6 +55,7 @@ default = '2018'
 dy           = globalDesigns[default]['dy'] # max height of vacuum tank
 dv           = globalDesigns[default]['dv'] # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 ds           = globalDesigns[default]['ds'] # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
+                                            # 10=with field map for hadron absorber
 nud          = globalDesigns[default]['nud'] # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 caloDesign   = globalDesigns[default]['caloDesign'] # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL 
 strawDesign  = globalDesigns[default]['strawDesign'] # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
@@ -74,8 +77,8 @@ try:
                                    "PG","pID=","Muflux","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend=",\
-                                   "production-couplings=","decay-couplings=","dry-run"])
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","CharmTarget=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=",\
+                                   "Eend=","production-couplings=","decay-couplings=","dry-run"])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -179,6 +182,8 @@ for o, a in opts:
             charm = int(a)
         if o in ("--CharmdetSetup",):
             CharmdetSetup = int(a)
+        if o in ("--CharmTarget",):
+            CharmTarget = int(a)
         if o in ("-F",):
             deepCopy = True
         if o in ("--RpvSusy",):
@@ -234,9 +239,13 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
                                                 muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile)
 else: 
- ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup)
+ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup, cTarget = CharmTarget)
  if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
- else: print "Setup for charm cross section measurement has been set"
+ else: 
+  print "Setup for charm cross section measurement has been set"
+  if (((CharmTarget > 6) or (CharmTarget < 0)) and (CharmTarget != 16)): #check if proper option for emulsion target has been set
+   print "ERROR: unavailable option for CharmTarget. Currently implemented options: 1,2,3,4,5,6,16"
+   1/0
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
 #ship_geo.EmuMagnet.B = 0.
@@ -470,7 +479,7 @@ if simEngine == "MuonBack":
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
  MuonBackgen.Init(inputFile,firstEvent,phiRandom)
  if charm == 0: MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
- else: 
+ elif DownScaleDiMuon: 
     if inputFile[0:4] == "/eos": test = os.environ["EOSSHIP"]+inputFile
     else: test = inputFile
     testf = ROOT.TFile.Open(test)

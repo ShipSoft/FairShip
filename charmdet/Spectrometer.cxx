@@ -129,13 +129,9 @@ void Spectrometer::SetSciFiDetPositions(Double_t zSciFi1, Double_t zSciFi2)
 
 
 
-void Spectrometer::SetTransverseSizes(Double_t D1short, Double_t D1long, Double_t DSciFi1X, Double_t DSciFi1Y, Double_t DSciFi2X, Double_t DSciFi2Y){
+void Spectrometer::SetTransverseSizes(Double_t D1short, Double_t D1long){
   Dim1Short = D1short;
   Dim1Long = D1long;
-  DimSciFi1X = DSciFi1X;
-  DimSciFi1Y = DSciFi1Y;
-  DimSciFi2X = DSciFi2X;
-  DimSciFi2Y = DSciFi2Y;
 }   
 
 

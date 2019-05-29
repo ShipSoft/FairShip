@@ -9,7 +9,8 @@ ${CMAKE_SOURCE_DIR}/charmdet
 ${CMAKE_SOURCE_DIR}/online
 ${CMAKE_SOURCE_DIR}/genfit/core/include
 ${CMAKE_SOURCE_DIR}/genfit/trackReps/include
-${ROOT_INCLUDE_DIR} 
+${CMAKE_SOURCE_DIR}/millepede
+${ROOT_INCLUDE_DIR}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -21,7 +22,7 @@ ${FAIRROOT_LIBRARY_DIR}
 ${GENFIT_LIBRARY_DIR}
 
 )
- 
+
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
@@ -35,6 +36,9 @@ PixelModulesPoint.cxx
 MufluxSpectrometer.cxx
 MufluxSpectrometerHit.cxx
 MufluxSpectrometerPoint.cxx
+SciFi.cxx
+SciFiPoint.cxx
+SciFiHit.cxx
 MuonTagger.cxx
 MuonTaggerPoint.cxx
 MuonTaggerHit.cxx
@@ -45,11 +49,12 @@ ShipPixelHit.cxx
 ReProcessAbsorber.cxx
 RPCTrack.cxx
 MufluxReco.cxx
+MillepedeCaller.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF BoxLinkDef.h)
 Set(LIBRARY_NAME charmdet)
-Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit)
+Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit millepede)
 
 GENERATE_LIBRARY()
