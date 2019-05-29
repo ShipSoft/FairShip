@@ -146,6 +146,34 @@ def GetPixelPositions(n=1,draw=True,writentuple=False):
   if draw:
    DrawPoints(npixelpoints,hitx,hity,hitz)
 
+def GetSciFiPositions(n=1,draw=True,writentuple=False):
+  """ retrieves the position of the pixel hit using the pixel map """
+  if not options.withDisplay:
+   #print 'display disabled, hits will not be drawn'
+   draw = False
+
+  sTree.GetEntry(n)
+  nscifipoints = 0
+  scifihitslist = []
+  scifihitslist.append(sTree.Digi_SciFiHits)
+  pos = ROOT.TVector3(0,0,0)
+  hitx = []
+  hity = []
+  hitz = []
+  for scifihits in scifihitslist:
+   for hit in scifihits:
+    nscifipoints = nscifipoints + 1
+    detID = hit.GetDetectorID()
+    hit.GetSciFiXYZ(pos,detID)
+    #print "This is the position of our scifi hit: ", detID, pos[0], pos[1], pos[2] 
+    hitx.append(pos[0])
+    hity.append(pos[1])
+    hitz.append(pos[2])
+    if writentuple: #add scifi hit position to ntuple
+     ntuple.Fill(n,detID,pos[0], pos[1],pos[2],1)
+  if draw:
+   DrawPoints(nscifipoints,hitx,hity,hitz)
+
 
 def correctAlignmentRPC(hit,v):
   hit.EndPoints(vtop,vbot) #obtaining hit positions
