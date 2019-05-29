@@ -685,8 +685,8 @@ with ConfigRegistry.register_config("basic") as c:
     # (!) 1 case: BrZ + CES = 7.6 cm + 3.5 cm = 11.1 cm
     #     2 case: BrZ + CES = 3.8 cm + 3.0 cm = 6.8 cm
 
- #TargetTrackers
-    c.NuTauTT = AttrDict(z = 0 * u.cm)
+ #TargetTrackers!
+    c.NuTauTT = AttrDict(z=0*u.cm)
     c.NuTauTT.design = nuTauTargetDesign
     c.NuTauTT.n_hor_planes = 11
     c.NuTauTT.n_vert_planes = 7
