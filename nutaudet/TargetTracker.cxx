@@ -93,7 +93,7 @@ fTTPointCollection(new TClonesArray("TTPoint"))
 
 TargetTracker::~TargetTracker()
 {
-      if (fTTPointCollection) {
+     if (fTTPointCollection) {
         fTTPointCollection->Delete();
         delete fTTPointCollection;
     }
@@ -107,13 +107,13 @@ void TargetTracker::Initialize()
 // -----   Private method InitMedium
 Int_t TargetTracker::InitMedium(const char* name)
 {
-      static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
+    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
     static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
     static FairGeoMedia *media=geoFace->getMedia();
     static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
-
+    
     FairGeoMedium *ShipMedium=media->getMedium(name);
-
+    
     if (!ShipMedium)
     {
         Fatal("InitMedium","Material %s not defined in media file.", name);
