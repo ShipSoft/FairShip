@@ -93,7 +93,7 @@ fTTPointCollection(new TClonesArray("TTPoint"))
 
 TargetTracker::~TargetTracker()
 {
-     if (fTTPointCollection) {
+    if (fTTPointCollection) {
         fTTPointCollection->Delete();
         delete fTTPointCollection;
     }
