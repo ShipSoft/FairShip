@@ -157,6 +157,13 @@ void Target::SetNumberTargets(Int_t target)
   fNTarget = target;
 }
 
+void Target::SetTargetWallDimension(Double_t WallXDim_, Double_t WallYDim_, Double_t WallZDim_)
+{
+  WallXDim = WallXDim_;
+  WallYDim = WallYDim_;
+  WallZDim = WallZDim_;
+}
+
 void Target::SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim)
 {
   XDimension = xdim;
@@ -176,7 +183,7 @@ void Target::SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_
 }
 
 
-void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ, Int_t number_of_films_) ////
+void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ, Int_t number_of_films_)
 {
   BrickPackageX = BrPackX;
   BrickPackageY = BrPackY;
@@ -184,7 +191,7 @@ void Target::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t Br
   BrickX = BrX;
   BrickY = BrY;
   BrickZ = BrZ;
-  number_of_films = number_of_films_;	////
+  number_of_films = number_of_films_;
 }
 
 void Target::SetCESParam(Double_t RohG, Double_t LayerCESW,Double_t CESW, Double_t CESPack)
@@ -313,10 +320,7 @@ void Target::ConstructGeometry()
   TGeoMedium *Steel =gGeoManager->GetMedium("steel");
 
 
-  //Int_t NPlates = 56; //Number of doublets emulsion + Pb
-  Int_t NPlates = number_of_films; //// Number of doublets emulsion + Pb
-  //std::cout << "NPLATES" << NPlates << std::endl; ////
-
+  Int_t NPlates = number_of_films; //Number of doublets emulsion + Pb
   Int_t NRohacellGap = 2;
 
   //Definition of the target box containing emulsion bricks + (CES if fDesign = 0 o 1) + target trackers (TT) 
@@ -397,8 +401,7 @@ void Target::ConstructGeometry()
    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
    TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
    volEmulsionFilm->SetLineColor(kBlue);
-   //SET PASSIVE TEMPORARY. REMOVE THIS LINE
-   fPassive = 1;
+
    if(fPassive==0)
     {
       AddSensitiveVolume(volEmulsionFilm);
@@ -499,21 +502,21 @@ void Target::ConstructGeometry()
       volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
       volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
     
-      TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
+      TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, CellWidth/2);
       TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
       volRow->SetLineColor(20);
     
-      Double_t d_cl_x = -XDimension/2;
+      Double_t d_cl_x = -WallXDim/2;
       for(int j= 0; j < fNCol; j++)
 	{
 	  volRow->AddNode(volCell,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
 	  d_cl_x += BrickX;
 	}
 
-      TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, CellWidth/2);
+      TGeoBBox *Wall = new TGeoBBox("wall",WallXDim/2, WallYDim/2, CellWidth/2);
       TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
     
-      Double_t d_cl_y = -YDimension/2;
+      Double_t d_cl_y = -WallYDim/2;
       for(int k= 0; k< fNRow; k++)
 	{
 	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
@@ -549,21 +552,21 @@ void Target::ConstructGeometry()
       tTauNuDet->AddNode(volTarget,1,new TGeoTranslation(0,0,fCenterZ));
 	
    
-       TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
+       TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, CellWidth/2);
       TGeoVolume *volRow = new TGeoVolume("Row",Row,vacuum);
       volRow->SetLineColor(20);
     
-      Double_t d_cl_x = -XDimension/2;
+      Double_t d_cl_x = -WallXDim/2;
       for(int j= 0; j < fNCol; j++)
 	{
 	  volRow->AddNode(volBrick,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
 	  d_cl_x += BrickX;
 	}
 
-      TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
+      TGeoBBox *Wall = new TGeoBBox("wall",WallXDim/2, WallYDim/2, BrickZ/2);
       TGeoVolume *volWall = new TGeoVolume("Wall",Wall,vacuum);
     
-      Double_t d_cl_y = -YDimension/2;
+      Double_t d_cl_y = -WallYDim/2;
       for(int k= 0; k< fNRow; k++)
 	{
 	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
@@ -587,7 +590,7 @@ void Target::ConstructGeometry()
       TGeoBBox *Base = new TGeoBBox("Base", fBaseX/2, fBaseY/2, fBaseZ/2);
       TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
       volBase->SetLineColor(kYellow-3);
-      tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-YDimension/2 - fBaseY/2,fCenterZ));
+      tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-WallYDim/2 - fBaseY/2,fCenterZ));
 
       if(fDesign==2)
 	{
@@ -812,3 +815,4 @@ TargetPoint* Target::AddHit(Int_t trackID,Int_t detID,
 }
 
 ClassImp(Target)
+

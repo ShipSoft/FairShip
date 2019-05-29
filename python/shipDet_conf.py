@@ -95,7 +95,7 @@ def configure(run,ship_geo):
  else: cave.SetGeometryFileName("caveWithAir.geo")
  detectorList.append(cave)
 
- if ship_geo.muShieldDesign in [6, 7, 8, 9]:  # magnetized hadron absorber defined in ShipMuonShield 
+ if ship_geo.muShieldDesign in [6, 7, 8, 9,10]:  # magnetized hadron absorber defined in ShipMuonShield 
   TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,
                                                         ship_geo.target.z,ship_geo.targetOpt,ship_geo.target.sl)
  else:
@@ -117,7 +117,7 @@ def configure(run,ship_geo):
  elif ship_geo.muShieldDesign==2:
   MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE) 
- elif ship_geo.muShieldDesign in [3, 4, 5, 6, 7, 9]:
+ elif ship_geo.muShieldDesign in [3, 4, 5, 6, 7, 9,10]:
   if not hasattr(ship_geo.muShield,"Field"):
         MuonShield = ROOT.ShipMuonShield(
             "MuonShield", ship_geo.muShieldDesign, "ShipMuonShield",
@@ -248,6 +248,7 @@ def configure(run,ship_geo):
     NuTauTarget.SetHpTParam(ship_geo.tauHPT.nHPT, ship_geo.tauHPT.distHPT, ship_geo.tauHPT.DZ) 
    NuTauTarget.SetNumberBricks(ship_geo.NuTauTarget.col,ship_geo.NuTauTarget.row,ship_geo.NuTauTarget.wall)
    NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim)
+   NuTauTarget.SetTargetWallDimension(ship_geo.NuTauTarget.WallXDim, ship_geo.NuTauTarget.WallYDim, ship_geo.NuTauTarget.WallZDim)
    NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW)
 ##
    NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ,ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ, ship_geo.NuTauTarget.n_films)
@@ -285,6 +286,7 @@ def configure(run,ship_geo):
    tauHpt.SetZsize(ship_geo.tauMudet.Ztot)
    tauHpt.SetDesign(ship_geo.NuTauTarget.Design)
    tauHpt.SetSciFiParam(ship_geo.tauHPT.scifimat_width, ship_geo.tauHPT.scifimat_hor, ship_geo.tauHPT.scifimat_vert, ship_geo.tauHPT.scifimat_z, ship_geo.tauHPT.support_z, ship_geo.tauHPT.honeycomb_z)
+   tauHpt.SetNumberSciFi(ship_geo.tauHPT.n_hor_planes, ship_geo.tauHPT.n_vert_planes)
    tauHpt.SetHPTrackerParam(ship_geo.tauHPT.TX, ship_geo.tauHPT.TY, ship_geo.tauHPT.TZ)
    if ship_geo.nuTauTargetDesign<3:
     tauHpt.SetConcreteBaseDim(ship_geo.tauHPT.ConcreteX,ship_geo.tauHPT.ConcreteY,ship_geo.tauHPT.ConcreteZ)
@@ -404,7 +406,7 @@ def configure(run,ship_geo):
   if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
   run.SetField(fMagField)
 #
- exclusionList = ["Muon","Ecal","Hcal","Strawtubes","Veto","Magnet","MuonShield","TargetStation","TimeDet"]
+ exclusionList = []
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
  #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet"]
  for x in detectorList:

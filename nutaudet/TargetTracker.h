@@ -27,7 +27,6 @@ class TargetTracker : public FairDetector
 {
 public:
     TargetTracker(const char* name, Double_t TTX, Double_t TTY, Double_t TTZ, Bool_t Active, const char* Title = "TargetTrackers");
-    //TargetTracker(const char* name, Bool_t Active, const char* Title = "TargetTrackers");
     TargetTracker();
     virtual ~TargetTracker();
     
@@ -119,12 +118,11 @@ protected:
     Double_t scifimat_z;
     Double_t support_z; 
     Double_t honeycomb_z;
-
     Int_t n_hor_planes;
     Int_t n_vert_planes;
 
     Double_t CellWidth; //dimension of the cell containing brick and CES
-    Double_t ZDimension; //dimension of the TTs+bricks total volume
+    Double_t ZDimension; //Dimension of the TTs+bricks total volume
     
     Int_t fNTT; //number of TT
 
