@@ -370,7 +370,7 @@ if simEngine == "PG":
      myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
      primGen.SetTarget(ship_geo.target.z0,0.)
   else:  
-     myPgun.SetThetaRange(0,0.) # // Polar angle in lab system range [degree]
+     myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
