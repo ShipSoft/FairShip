@@ -546,13 +546,13 @@ void NuTauMudet::ConstructGeometry()
       TGeoBBox *UpperSupportBox = new TGeoBBox(fUpSuppX/2., fUpSuppY/2.,fZtot/2.);
       TGeoVolume *UpperSupportVol = new TGeoVolume("MudetUpperSupport",UpperSupportBox,Iron);
       for (int iupsupport = 0; iupsupport<3;iupsupport++){//cambiare la z
-       tTauNuDet->AddNode(UpperSupportVol,iupsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*iupsupport/3.+fUpSuppX/2,fYtot/2+fUpSuppY/2.,fZcenter))
+       tTauNuDet->AddNode(UpperSupportVol,iupsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*iupsupport/3.+fUpSuppX/2,fYtot/2+fUpSuppY/2.,fZcenter));
       }
       //Two lower supports, below the muon detector
       TGeoBBox *LowerSupportBox = new TGeoBBox(fLowSuppX/2., fLowSuppY/2.,fZtot/2.);
       TGeoVolume *LowerSupportVol = new TGeoVolume("MudetLowerSupport",LowerSupportBox,Iron);
       for (int ilowsupport = 0; ilowsupport<2;ilowsupport++){//cambiare la z
-       tTauNuDet->AddNode(LowerSupportVol,ilowsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*ilowsupport/2.+fLowSuppX/2,-fYtot/2-fLowSuppY/2.,fZcenter))
+       tTauNuDet->AddNode(LowerSupportVol,ilowsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*ilowsupport/2.+fLowSuppX/2,-fYtot/2-fLowSuppY/2.,fZcenter));
       }
       
     }
