@@ -474,6 +474,7 @@ void NuTauMudet::ConstructGeometry()
 
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
+      volIron->SetLineColor(kGray);
 
       TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2 -fdeltax/2, fYFe/2 -fdeltay/2, fZFe/2);
       TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
@@ -492,20 +493,19 @@ void NuTauMudet::ConstructGeometry()
       TGeoCombiTrans* combright = new TGeoCombiTrans(transright,rot);
       combright->SetName("MuDetcombright");
       combright->RegisterYourself(); 
-      TGeoCompositeShape *cutright = new TGeoCompositeShape("MUDETCUTRIGHT", "MUDETIRON-MUDETTRIANGLE:MuDetcombright");
       //cut on the left (seen from beam)
       const TGeoTranslation transleft("transleft",+fXFe/2.- fCutLength/2,0,0);
       TGeoCombiTrans* combleft = new TGeoCombiTrans(transleft,rot1);
       combleft->SetName("MuDetcombleft");
-      combleft->RegisterYourself();
-      TGeoCompositeShape *cutleft;
-      cutleft = new TGeoCompositeShape("MUDETCUTLEFT", "MUDETIRON-MUDETTRIANGLE:MuDetcombleft");    
-      TGeoVolume *mudetcutleft = new TGeoVolume("mudecutleft", cutleft, Iron);
-
-      for(Int_t i = 0; i < fNFe; i++)
+      combleft->RegisterYourself();  
+      //unique volume, we cut the triangles
+      TGeoCompositeShape *mudetcut = new TGeoCompositeShape("MUDETCUT", "(MUDETIRON-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");   
+      TGeoVolume *MudetIronLayer = new TGeoVolume("MudetIronLayer", mudetcut, Iron);
+      MudetIronLayer->SetLineColor(kGray);
+      for(Int_t i = 0; i < fNFe-2; i++)
 	{
-	  if (i >= (fNFe-2)) volMudetBox->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
-          else volMudetBox->AddNode(mudetcutleft,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
+	  //if (i >= (fNFe-2)) volMudetBox->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
+          volMudetBox->AddNode(MudetIronLayer,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
 	}
       //*****************************RPC LAYERS****************************************
       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
@@ -559,7 +559,8 @@ void NuTauMudet::ConstructGeometry()
     
       for(Int_t i = 0; i < fNRpc; i++)
 	{
-	  if (i >= (fNRpc-3)) volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, -fZtot/2+i*fZFe + i*fZRpc +fZRpc/2));
+	  //if (i >= (fNRpc-3)) volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, -fZtot/2+i*fZFe + i*fZRpc +fZRpc/2));
+          if (i >= (fNRpc-3)) volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, -fZtot/2+(fNRpc-2)*fZFe+ i*fZRpc +fZRpc/2));
           else volMudetBox->AddNode(volRpcContainer1,nr + i,new TGeoTranslation(0, 0, -fZtot/2+i*fZFe + i*fZRpc +fZRpc/2));
 	}
     
@@ -567,22 +568,24 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *Pillar1Vol = new TGeoVolume("Pillar1Vol",Pillar1Box,Steel);
       Pillar1Vol->SetLineColor(kGreen+3);
 
-      tTauNuDet->AddNode(Pillar1Vol,1, new TGeoTranslation(-fXtot/2+fdeltax/2+fPillarX/2,-fYtot/2+fdeltay/2-fPillarY/2,fZcenter-fZtot/2+fPillarZ/2));
-      tTauNuDet->AddNode(Pillar1Vol,2, new TGeoTranslation(fXtot/2-fdeltax/2-fPillarX/2,-fYtot/2+fdeltay/2-fPillarY/2,fZcenter-fZtot/2 +fPillarZ/2));
+      tTauNuDet->AddNode(Pillar1Vol,1, new TGeoTranslation(-fXtot/2+fdeltax/2+fPillarX/2,-fYtot/2+fdeltay/2-fLowSuppY-fPillarY/2,fZcenter-fZtot/2+fPillarZ/2));
+      tTauNuDet->AddNode(Pillar1Vol,2, new TGeoTranslation(fXtot/2-fdeltax/2-fPillarX/2,-fYtot/2+fdeltay/2-fLowSuppY-fPillarY/2,fZcenter-fZtot/2 +fPillarZ/2));
       //      tTauNuDet->AddNode(Pillar1Vol,3, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2)); //eventually two pillars at the end. Now muon det is followed by veto, so its steel pillar supports both
       //tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2));
       //addition of iron support structures
       //Three upper supports, above the muon detector
       TGeoBBox *UpperSupportBox = new TGeoBBox(fUpSuppX/2., fUpSuppY/2.,fZtot/2.);
       TGeoVolume *UpperSupportVol = new TGeoVolume("MudetUpperSupport",UpperSupportBox,Iron);
+      UpperSupportVol->SetLineColor(kGreen);
       for (int iupsupport = 0; iupsupport<3;iupsupport++){//cambiare la z
-       tTauNuDet->AddNode(UpperSupportVol,iupsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*iupsupport/3.+fUpSuppX/2,fYtot/2+fUpSuppY/2.,fZcenter));
+       tTauNuDet->AddNode(UpperSupportVol,iupsupport+1,new TGeoTranslation(-fXtot/2.+fUpSuppX/2.+(fXtot-fUpSuppX)*iupsupport/2.,fYtot/2+fUpSuppY/2.,fZcenter));
       }
       //Two lower supports, below the muon detector
       TGeoBBox *LowerSupportBox = new TGeoBBox(fLowSuppX/2., fLowSuppY/2.,fZtot/2.);
       TGeoVolume *LowerSupportVol = new TGeoVolume("MudetLowerSupport",LowerSupportBox,Iron);
+      LowerSupportVol->SetLineColor(kGreen);
       for (int ilowsupport = 0; ilowsupport<2;ilowsupport++){//cambiare la z
-       tTauNuDet->AddNode(LowerSupportVol,ilowsupport+1,new TGeoTranslation(-fXtot/2.+fXtot*ilowsupport/2.+fLowSuppX/2,-fYtot/2-fLowSuppY/2.,fZcenter));
+       tTauNuDet->AddNode(LowerSupportVol,ilowsupport+1,new TGeoTranslation(-fXtot/2.+fLowSuppX/2+(fXtot-fLowSuppX)*ilowsupport,-fYtot/2-fLowSuppY/2.,fZcenter));
       }
       
     }
