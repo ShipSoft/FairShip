@@ -203,6 +203,7 @@ def configure(run,ship_geo):
    taumuondetector.SetRpcPETDimensions(ship_geo.tauMudet.XPet,ship_geo.tauMudet.YPet, ship_geo.tauMudet.ZPet)
    taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFe)
    taumuondetector.SetNRpcInArm(ship_geo.tauMudet.NRpc)
+   taumuondetector.SetLateralCutSize(ship_geo.tauMudet.CutHeight, ship_geo.tauMudet.CutLength)
    taumuondetector.SetSupportTransverseDimensions(ship_geo.tauMudet.UpperSupportX,ship_geo.tauMudet.UpperSupportY, \
                                                  ship_geo.tauMudet.LowerSupportX, ship_geo.tauMudet.LowerSupportY)
    taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)

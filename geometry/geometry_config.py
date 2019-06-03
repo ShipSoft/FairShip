@@ -614,10 +614,15 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFe*c.tauMudet.ZFe
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
+        #support structure
         c.tauMudet.UpperSupportY = 50 * u.cm
         c.tauMudet.UpperSupportX = 50 * u.cm
         c.tauMudet.LowerSupportY = 40 * u.cm
         c.tauMudet.LowerSupportX = 40 * u.cm
+        #lateral cuts
+        c.tauMudet.CutHeight = 100 * u.cm
+        c.tauMudet.CutLength = 250 * u.cm
+        
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
         c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 + c.tauMudet.deltay/2  - 0.1*u.mm

@@ -12,6 +12,7 @@
 
 #include "TGeoBBox.h"
 #include "TGeoTrd1.h"
+#include "TGeoTrd2.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
@@ -190,6 +191,11 @@ void NuTauMudet::SetSupportTransverseDimensions(Double_t UpperSupportX, Double_t
   fUpSuppY = UpperSupportY;
   fLowSuppX = LowerSupportX;
   fLowSuppY = LowerSupportY;
+}
+
+void NuTauMudet::SetLateralCutSize(Double_t CutHeight , Double_t CutLength){
+  fCutHeight = CutHeight;
+  fCutLength = CutLength;
 }
 
 void NuTauMudet::SetPillarDimensions(Double_t X, Double_t Y, Double_t Z)
@@ -469,15 +475,39 @@ void NuTauMudet::ConstructGeometry()
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
 
-     TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2 -fdeltax/2, fYFe/2 -fdeltay/2, fZFe/2);
-     TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
+      TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2 -fdeltax/2, fYFe/2 -fdeltay/2, fZFe/2);
+      TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
+
+      //***********************ADDING CUTS AT MID-LATERAL IN WALLS
+      IronLayer1->SetName("MUDETIRON");
+
+      Double_t delta = 0.1; //to avoid border effects in the cuts (cut is not visualized in viewer, I do not know if it can affect simulation)
+      TGeoTrd2  * Model= new TGeoTrd2("Model",fCutHeight/2,0, (fZFe+delta)/2,(fZFe+delta)/2,(fCutLength+delta)/2); //length and height are not x and y here, because it will be rotated!
+      Model->SetName("MUDETTRIANGLE");
+
+      TGeoRotation rot("rot",90,90,0);
+      TGeoRotation rot1("rot1",-90,90,0);
+      //cut on the right (seen from beam)
+      const TGeoTranslation transright("trans",-fXFe/2.+ fCutLength/2,0,0);
+      TGeoCombiTrans* combright = new TGeoCombiTrans(transright,rot);
+      combright->SetName("MuDetcombright");
+      combright->RegisterYourself(); 
+      TGeoCompositeShape *cutright = new TGeoCompositeShape("MUDETCUTRIGHT", "MUDETIRON-MUDETTRIANGLE:MuDetcombright");
+      //cut on the left (seen from beam)
+      const TGeoTranslation transleft("transleft",+fXFe/2.- fCutLength/2,0,0);
+      TGeoCombiTrans* combleft = new TGeoCombiTrans(transleft,rot1);
+      combleft->SetName("MuDetcombleft");
+      combleft->RegisterYourself();
+      TGeoCompositeShape *cutleft;
+      cutleft = new TGeoCompositeShape("MUDETCUTLEFT", "MUDETIRON-MUDETTRIANGLE:MuDetcombleft");    
+      TGeoVolume *mudetcutleft = new TGeoVolume("mudecutleft", cutleft, Iron);
 
       for(Int_t i = 0; i < fNFe; i++)
 	{
 	  if (i >= (fNFe-2)) volMudetBox->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
-          else volMudetBox->AddNode(volIron1,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
+          else volMudetBox->AddNode(mudetcutleft,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
 	}
-
+      //*****************************RPC LAYERS****************************************
       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
       TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
   
