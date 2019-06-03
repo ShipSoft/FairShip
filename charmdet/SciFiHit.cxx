@@ -10,45 +10,6 @@
 
 SciFiHit::SciFiHit(Int_t detID, Float_t digi, uint16_t ch, uint8_t board, uint32_t hitTime, uint16_t fineTime, int flags, bool triggerFlag): ShipHit(detID, digi), ch(ch), board(board), hitTime(hitTime), fineTime(fineTime), flags(flags), triggerFlag(triggerFlag){}
 
-/*
-void SciFiHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
-// method to get strip endpoints from TGeoNavigator
-  Int_t statnb = fDetectorID/10000;
-  Int_t orientationnb = (fDetectorID-statnb*10000)/1000;  //1=vertical, 0=horizontal
-  if (orientationnb > 1) {
-     std::cout << "SciFi::StripEndPoints, not a sensitive volume "<<fDetectorID<<std::endl;
-     return;
-  }
-  TString stat="VMuonBox_1/VSensitive";stat+=+statnb;stat+="_";stat+=statnb;
-  TString striptype;
-  if (orientationnb == 0) {
-    striptype = "Hstrip_";
-    if (fDetectorID%1000==116 || fDetectorID%1000==1){striptype = "Hstrip_ext_";}
-  }
-  if (orientationnb == 1) {
-    striptype = "Vstrip_";
-    if (fDetectorID%1000 == 184){striptype = "Vstrip_L_";}
-    if (fDetectorID%1000 == 1){striptype = "Vstrip_R_";}
-  }  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-  TString path = "";path+="/";path+=stat;path+="/"+striptype;path+=fDetectorID;
-  Bool_t rc = nav->cd(path);
-  if (not rc){
-       std::cout << "SciFi::StripEndPoints, TGeoNavigator failed "<<path<<std::endl;
-       return;
-  }
-  TGeoNode* W = nav->GetCurrentNode();
-  TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
-  Double_t top[3] = {0,0,S->GetDZ()};
-  Double_t bot[3] = {0,0,-S->GetDZ()};
-  Double_t Gtop[3],Gbot[3];
-  nav->LocalToMaster(top, Gtop);
-  nav->LocalToMaster(bot, Gbot);
-  vtop.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
-  vbot.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);
-}
-*/
-
-
 void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
 {
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
@@ -69,26 +30,22 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
 
   boardId = (fDetectorID) / pow(10,5);
   ch_layer = (fDetectorID - boardId * pow(10,5));
-  
 
   // layer (0,1,..,7)
   unsigned int layer = boardId/3;
 
-  double gap_die=0.220;// cm
-  double gap_SiPM=0.400;
-  double ch_width=0.250;// cm
+  double gap_die  = 0.0220;// cm
+  double gap_SiPM = 0.0400;// cm
+  double ch_width = 0.0250;// cm
 
   // defining coordinates
   int x,y,z;
 
-  //angle in radiants for layers U and V (5 deg)
-  double radiants=2.5/180*TMath::Pi();
+  //angle in radiants for layers U and V (2.5 deg)
+  double angle = 2.5 / 180 * TMath::Pi();
 
   //compute half layer width to be entered in the middle of the plane
-  double half_layer=1536/2*0.250+6*gap_die+5.5*gap_SiPM;
-
-  //z positions inside a station
-  //double zpos[4]={0., 18.05, 39.5, 57.55};
+  double half_layer = 1536/2 * ch_width + 6 * gap_die + 5.5 * gap_SiPM;
 
   double z_midpoint_Ref[8];
   z_midpoint_Ref[0] =  581.3250;
@@ -100,58 +57,49 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   z_midpoint_Ref[6] =  602.2575;
   z_midpoint_Ref[7] =  605.7463;
 
-
-  //layer inside a station (0,1,2,3)
-  //int el=layer%4;
-
-  //z position defined as: 
-  ////z=zpos[el]+int(layer/4)*160;
   z=z_midpoint_Ref[layer];
 
   //how many half dies
-  int mult=int(ch_layer/64);
+  int mult = int(ch_layer/64);
 
   //shift to add to the position due to dead regions
-  double shift=int(mult/2)*gap_die+int(mult/2)*gap_SiPM+(mult%2)*gap_die;
-
-  //computation of the angle for the considered layer
-  double angle=radiants;
+  double shift = int(mult/2) * gap_die + int(mult/2) * gap_SiPM + (mult%2) * gap_die;
 
   //first station only x defined for X and U planes
   if(layer==0) {
-    x = - ( ch_layer*0.250 + shift - half_layer );
+    x = - ( ch_layer*ch_width + shift - half_layer );
     y = 0;
   }
   else if(layer==1){
-    x = -( ch_layer*0.250 + shift - half_layer ) - 200*sin(angle);
+    x = -( ch_layer*ch_width + shift - half_layer ) - 20*sin(angle);
     y = 0;
   }
 
   //first station only y defined for Y and V planes
   else if(layer==2){
     x = 0;
-    y = - ( ch_layer*0.250 + shift - half_layer ) + 200*sin(angle);
+    y = - ( ch_layer*ch_width + shift - half_layer ) + 20*sin(angle);
   }
   else if(layer==3) {
     x = 0;
-    y = - ( ch_layer*0.250 + shift - half_layer );
+    y = - ( ch_layer*ch_width + shift - half_layer );
   }
   //second station only y defined for Y and V planes
   else if(layer==4) {
     x = 0;
-    y = - ( ch_layer*0.250 + shift - half_layer );
+    y = - ( ch_layer*ch_width + shift - half_layer );
   }
   else if(layer==5){
     x = 0;
-    y = - ( ch_layer*0.250 + shift - half_layer ) - 200*sin(angle);
+    y = - ( ch_layer*ch_width + shift - half_layer ) - 20*sin(angle);
   }
   //second station only x defined for X and U planes
   else if(layer==6){
-    x = ( ch_layer*0.250 + shift - half_layer ) + 200*sin(angle);
+    x = ( ch_layer*ch_width + shift - half_layer ) + 20*sin(angle);
     y = 0;
   }
   else if(layer==7) {
-    x = ( ch_layer*0.250 + shift - half_layer);
+    x = ( ch_layer*ch_width + shift - half_layer);
     y = 0;
   }
   //translation from z = 0 to start of the box
