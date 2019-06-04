@@ -595,23 +595,26 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.B = 1.5 * u.tesla
     if nuTauTargetDesign==3:
         scaleMudet=1.
-	c.tauMudet.NFe = 15
-    	c.tauMudet.NRpc= 16
+	c.tauMudet.NFethick = 4 #upstream slabs, more thick
+        c.tauMudet.NFethin = 4 #downstream slabs, less thick
+    	c.tauMudet.NRpc= 7
+        c.tauMudet.NmuRpc = 3
         #c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
         #c.tauMudet.Ytot = scaleMudet*4.9124968*u.m
         c.tauMudet.Xtot = scaleMudet*1.900*u.m #same dimensions as Thomas' veto box
         c.tauMudet.Ytot = scaleMudet*3.600*u.m
         c.tauMudet.deltax = 0* u.cm
-        c.tauMudet.deltay = 0* u.cm
+        c.tauMudet.deltay = 80* u.cm
         #c.tauMudet.deltax = 10* u.cm
         #c.tauMudet.deltay = 20* u.cm
         c.tauMudet.XFe = c.tauMudet.Xtot
         c.tauMudet.YFe = c.tauMudet.Ytot
-        c.tauMudet.ZFe = 10.*u.cm
+        c.tauMudet.ZFethick = 15.*u.cm
+        c.tauMudet.ZFethin = 10.* u.cm
         c.tauMudet.XRpc = c.tauMudet.Xtot
         c.tauMudet.YRpc = c.tauMudet.YFe
-        c.tauMudet.ZRpc = 5.*u.cm
-        c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFe*c.tauMudet.ZFe
+        c.tauMudet.ZRpc = 7.*u.cm
+        c.tauMudet.Ztot = (c.tauMudet.NRpc+c.tauMudet.NmuRpc)*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
         #support structure

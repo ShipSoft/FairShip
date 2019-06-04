@@ -24,15 +24,16 @@ class NuTauMudet:public FairDetector
 
     void SetDesign(Int_t Design);
     void SetTotDimensions(Double_t X, Double_t Y, Double_t Z);
-    void SetFeDimensions(Double_t X, Double_t Y, Double_t Z);
+    void SetFeDimensions(Double_t X, Double_t Y, Double_t Z, Double_t Zthin);
     void SetRpcDimDifferences(Double_t deltax, Double_t deltay);
     void SetRpcDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetRpcStripDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetRpcGasDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetRpcElectrodeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetRpcPETDimensions(Double_t X, Double_t Y, Double_t Z);
-    void SetNFeInArm(Int_t N);
+    void SetNFeInArm(Int_t N, Int_t Nthin);
     void SetNRpcInArm(Int_t N);
+    void SetNRpcInTagger(Int_t NmuRpc); //for the veto tagger
     void SetZDimensionArm(Double_t Z);
     void SetGapDownstream(Double_t Gap);
     void SetGapMiddle(Double_t Gap);
@@ -117,13 +118,13 @@ protected:
     Double_t fXtot;
     Double_t fYtot;
     Double_t fZtot; //Dimension of the whole magnetic spectrometr (1st + 2nd arm + HPTs) alogn beam axis
-    Int_t fNFe;
-    Int_t fNRpc;
+    Int_t fNFe, fNFethin;
+    Int_t fNRpc, fNmuRpc;
     Double_t fXFe;
     Double_t fXRpc;
     Double_t fYFe;
     Double_t fYRpc;
-    Double_t fZFe; // Width of the Iron Slabs
+    Double_t fZFe, fZFethin; // Width of the Iron Slabs
     Double_t fZRpc; // Width of the Rpc planes
     Double_t fZArm; // Width of the Spectrometer Arms
     Double_t fGapDown; //distance between the end of the second arm of the spectrometer and the decay vessel
