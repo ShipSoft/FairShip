@@ -406,7 +406,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
     if muShieldDesign > 9 and muShieldDesign != 11:  c.hadronAbsorber.WithConstField =  True
 
-
     c.target               =  AttrDict(z=0*u.cm)
     c.targetOpt            =  targetOpt 
     if targetOpt < 10:

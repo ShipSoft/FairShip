@@ -659,7 +659,7 @@ void ShipMuonShield::ConstructGeometry()
     
     if (fDesign >= 5 && fDesign <= 11) {     
       Double_t ironField = fField*tesla;
-      if (fDesign == 11) {ironField = 0. * tesla;} //remove field if using fieldMap for shield design == 11.
+      if (fDesign == 11) {ironField = 0. * tesla;} //remove field if using fieldMap for shield design == 11
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
       TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
       TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
