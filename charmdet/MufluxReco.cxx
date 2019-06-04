@@ -673,13 +673,13 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      Bool_t Y = kFALSE;
      for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {
         RPCTrack *hit = (RPCTrack*)RPCTrackX->At(mu);
-        X = hit->m()*cuts["zRPC1"]+hit->b();
-        if (TMath::Abs(posRPC[0]-X)<cuts["muTrackMatchX"]){X=kTRUE;}
+        Float_t Xpos = hit->m()*cuts["zRPC1"]+hit->b();
+        if (TMath::Abs(posRPC[0]-Xpos)<cuts["muTrackMatchX"]){X=kTRUE;}
      }
      for (Int_t mu=0;mu<RPCTrackY->GetEntries();mu++) {
         RPCTrack *hit = (RPCTrack*)RPCTrackY->At(mu);
-        Y = hit->m()*cuts["zRPC1"]+hit->b();
-        if (TMath::Abs(posRPC[1]-X)<cuts["muTrackMatchY"]){Y=kTRUE;}
+        Float_t Ypos = hit->m()*cuts["zRPC1"]+hit->b();
+        if (TMath::Abs(posRPC[1]-Ypos)<cuts["muTrackMatchY"]){Y=kTRUE;}
      }
       if (X && Y) { // within ~3sigma  X,Y from mutrack
         h1D["chi2mu"]->Fill(chi2);
