@@ -50,12 +50,6 @@ class ShipMuonShield : public FairModule
 		  Double_t x_translation, Double_t y_translation,
 		  Double_t z_translation);
 
-  void CreateStepArb8(TString arbName, TGeoMedium *medium, Double_t dZ,
-      std::array<Double_t, 16> corners, Int_t color,
-      TGeoUniformMagField *magField, TGeoVolume *top,
-      Double_t x_translation, Double_t y_translation,
-      Double_t z_translation);
-
   void CreateTube(TString tubeName, TGeoMedium *medium, Double_t dX,
 		  Double_t dY, Double_t dZ, Int_t color, TGeoVolume *top,
 		  Double_t x_translation, Double_t y_translation,
