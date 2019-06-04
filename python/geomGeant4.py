@@ -169,7 +169,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
         fieldsList.append('muonShieldField')
     # Combine the fields to obtain the global field
       if len(fieldsList) > 1:
-       fieldMaker.defineComposite('TotalField', *fieldsList)
+       fieldMaker.defineComposite('TotalField', *fieldsList)  #fieldsList MUST have length <=4
        fieldMaker.defineGlobalField('TotalField')
       else:
        fieldMaker.defineGlobalField('MainSpecMap')
