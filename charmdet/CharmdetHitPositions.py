@@ -15,7 +15,6 @@ import shipunit as u
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
 
-
 rnr       = ROOT.TRandom()
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -23,12 +22,19 @@ def pyExit():
 #-----list of arguments--------------------------------------------------
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
+parser.add_argument("-nev", "--nevent", dest="nevent", help="number of event to plot", default=0)
+parser.add_argument("-w", "--write", dest="writentuple", help="option to write an ntuple",default=False, action='store_true')
+parser.add_argument("-o", "--outputfile", dest="outputfilename", help= "outputfile with the ntuples", default="positions.root")
 parser.add_argument("-l", "--fileCatalog", dest="catalog", help="list of files in file", default=False)
-parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=True)
-parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False)
-parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False)
+parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=False,action='store_true')
+parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False, action='store_true')
+parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False, action='store_true')
 #-----accessing file------------------------------------------------------
 options = parser.parse_args()
+
+writentuple = options.writentuple
+nevent = int(options.nevent)
+
 fnames = []
 if options.catalog:
  tmp = open(options.listOfFiles)
@@ -38,7 +44,7 @@ if options.catalog:
   f=ROOT.TFile.Open(fname)
   sTree = f.cbmsim
   if not sTree.GetBranch("FitTracks"): 
-   print "does not contain FitTracks",fname
+ #  print "does not contain FitTracks",fname
    f.Close()
    continue
   fnames.append(fname)
@@ -82,6 +88,12 @@ if options.withDisplay:
    #building the EVE display instead of the simple root one allows to add new objects there (instead of a separate canvas)
    ROOT.TEveManager.Create()
    gEve = ROOT.gEve
+   #TEve material for track drawing
+   tracklist = ROOT.TEveTrackList()
+   prop = tracklist.GetPropagator()
+   prop.SetMaxZ(20000)
+   tracklist.SetName("RK Propagator")
+   recotrack = ROOT.TEveRecTrackD()
    #adding all subnodes for drawing
    for node in top.GetNodes():
      evenode = ROOT.TEveGeoTopNode(sGeo,node)
@@ -104,31 +116,35 @@ RPCPositionsBotTop = {}
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
 
-#TEve material for track drawing
-tracklist = ROOT.TEveTrackList()
-prop = tracklist.GetPropagator()
-prop.SetMaxZ(20000)
-tracklist.SetName("RK Propagator")
-recotrack = ROOT.TEveRecTrackD()
-
-def GetPixelPositions(n=1):
+def GetPixelPositions(n=1,draw=True,writentuple=False):
   """ retrieves the position of the pixel hit using the pixel map """
+  if not options.withDisplay:
+   #print 'display disabled, hits will not be drawn'
+   draw = False
+
   sTree.GetEntry(n)
   npixelpoints = 0
-  pixelhits = sTree.Digi_PixelHits_1
+  pixelhitslist = []
+  pixelhitslist.append(sTree.Digi_PixelHits_1)
+  pixelhitslist.append(sTree.Digi_PixelHits_2)
+  pixelhitslist.append(sTree.Digi_PixelHits_3)
   pos = ROOT.TVector3(0,0,0)
   hitx = []
   hity = []
   hitz = []
-  for hit in pixelhits:
+  for pixelhits in pixelhitslist:
+   for hit in pixelhits:
     npixelpoints = npixelpoints + 1
     detID = hit.GetDetectorID()
     hit.GetPixelXYZ(pos,detID)
-    print "This is the position of our pixel hit: ", detID, pos[0], pos[1], pos[2] 
+    #print "This is the position of our pixel hit: ", detID, pos[0], pos[1], pos[2] 
     hitx.append(pos[0])
     hity.append(pos[1])
     hitz.append(pos[2])
-  DrawPoints(npixelpoints,hitx,hity,hitz)
+    if writentuple: #add pixel hit position to ntuple
+     ntuple.Fill(n,detID,pos[0], pos[1],pos[2],1)
+  if draw:
+   DrawPoints(npixelpoints,hitx,hity,hitz)
 
 
 def correctAlignmentRPC(hit,v):
@@ -155,27 +171,35 @@ def RPCPosition():
         x = (a[0]+b[0])/2.
         y = (a[1]+b[1])/2.
         z = (a[2]+b[2])/2.
-        print "Postion for view {} and channel {}: ({}, {},{})".format(v,c,x,y,z)
+       # print "Postion for view {} and channel {}: ({}, {},{})".format(v,c,x,y,z)
 
 def GetRPCPosition(s,v,c):
   """ Gets RPC Positions from the information of station, view and channel """
   detID = s*10000+v*1000+c
   return RPCPositionsBotTop[detID]
 
-def loadRPCtracks(n=1):
-  """ Loads MuonTaggerHits from file and get position of clusters"""
+def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
+  """ Loads MuonTaggerHits from file and get position of clusters. Fittedtracks is used when reading hits from locally reconstructed tracks by Alessandra"""
+  if not options.withDisplay:
+   #print 'display disabled, hits will not be drawn'
+   draw = False
   hitx = []
   hity = []
   hitz = []
-  for icluster in range(5):
+  npoint = 0
+  if fittedtracks:
+   npoint=5
+   for icluster in range(5):
      hitx.append(0)
      hity.append(0)
      hitz.append(0)
 
   sTree.GetEntry(n)
-  trackhits = sTree.MuonTaggerHit
+  #trackhits = sTree.MuonTaggerHit
+  trackhits = sTree.Digi_MuonTaggerHits
   clustersH = []
   clustersV = []
+
   for hit in trackhits:
     detID = hit.GetDetectorID()
     station = int (detID/10000) #automatically an int in python2, but calling the conversion avoids confusion
@@ -186,31 +210,42 @@ def loadRPCtracks(n=1):
     y = (a[1]+b[1])/2.
     z = (a[2]+b[2])/2.
 
-    #adding the point to two different lists according to the view  
-    if view == 0:
-      hity[station-1] = y
-      hitz[station-1] = z
-      clustersH.append([x,y,z])
-    elif view == 1:
-      hitx[station-1] = x
-      hitz[station-1] = z
-      clustersV.append([x,y,z])
-    print "Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view)    
+    if fittedtracks: #clusters with already fitted tracks
+     #adding the point to two different lists according to the view  
+     if view == 0:
+       hity[station-1] = y
+       hitz[station-1] = z
+       clustersH.append([x,y,z])
+     elif view == 1:
+       hitx[station-1] = x
+       hitz[station-1] = z
+       clustersV.append([x,y,z])
+    else: 
+      hitx.append(x) 
+      hity.append(y)
+      hitz.append(z)
+      npoint = npoint+1 
+    if writentuple:
+       ntuple.Fill(n,detID,x, y,z,2)
+    #print "Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view)    
   #fitting to two 2D tracks
-  mH,bH = getSlopes(clustersH,0) 
-  mV,bV = getSlopes(clustersV,1)   
-  trackH = ROOT.RPCTrack(mH,bH)
-  trackV = ROOT.RPCTrack(mV,bV)
-  print "Line equation along horizontal: {}*z + {}".format(mH,bH)
-  print "Line equation along vertical: {}*z + {}".format(mV,bV)
-  theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
-  phi = ROOT.TMath.ATan(mH/mV)
-  print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)  
-  DrawPoints(5,hitx,hity,hitz)
+  if fittedtracks:
+   mH,bH = getSlopes(clustersH,0) 
+   mV,bV = getSlopes(clustersV,1)   
+   trackH = ROOT.RPCTrack(mH,bH)
+   trackV = ROOT.RPCTrack(mV,bV)
+  #print "Line equation along horizontal: {}*z + {}".format(mH,bH)
+  #print "Line equation along vertical: {}*z + {}".format(mV,bV)
+   theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
+   phi = ROOT.TMath.ATan(mH/mV)
+  #print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)  
     
-  lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
-  print "Prova, ",hitx[4], hity[4], hitz[4]
-  DrawTrack(theta,phi,lastpoint)
+   lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
+   if draw:
+      DrawTrack(theta,phi,lastpoint)
+  if draw:
+   DrawPoints(npoint,hitx,hity,hitz)
+ 
 
 def DrawPoints(nclusters,hitx,hity,hitz, name = "FairShipHits"):
   """Draws clusters as TEvePointSet"""  
@@ -233,7 +268,7 @@ def DrawTrack(theta,phi,lastpoint):
   track.SetName("Test proton")
   track.SetLineColor(ROOT.kRed)
   tracklist.AddElement(track)
-  gEve.AddElement(tracklist)
+  #gEve.AddElement(tracklist) #track seems bugged, to be addressed
 
   track.MakeTrack()
   gEve.Redraw3D()
@@ -243,6 +278,7 @@ def DrawTrack(theta,phi,lastpoint):
 def getSlopes(clusters,view=0):
   """using Numpy polyfit to obtain the slopes from the clusters. Adapted from the similar method in driftubeMonitoring.py"""
   x,z=[],[]
+  line = []
   for hit in clusters:     
     if view==0: #horizontal strip, fitting in the zy plane
       x.append(hit[1])
@@ -250,10 +286,28 @@ def getSlopes(clusters,view=0):
     else: #vertical strip, fitting in the zx plane
       x.append(hit[0])
       z.append(hit[2])
-  line = numpy.polyfit(z,x,1)
+  if (len(x) > 0):
+    line = numpy.polyfit(z,x,1)
+  else:
+    line.append(1000.)
+    line.append(1000.)
   return line[0],line[1]
 
 # what methods are launched?
-#GetPixelPositions(2)    
+GetPixelPositions(nevent)    
 RPCPosition()
-loadRPCtracks(1)
+def writeNtuples():
+  """write positions of subdetectors into an easy to read ntuple. DetectorID go downstream to upstream, 1: Pixel, 2:SciFi, 3:DT,4:RPC"""
+  nevents = sTree.GetEntries()
+  print "Start processing", nevents, "nevents"
+  for ievent in range(sTree.GetEntries()):
+   loadRPCtracks(ievent, False, True)
+   GetPixelPositions(ievent, False, True)
+  outputfile.Write()
+
+if writentuple:
+ outputfile = ROOT.TFile(options.outputfilename,"RECREATE")
+ ntuple = ROOT.TNtuple("shippositions","Ntuple with hit positions","ievent:detID:x:y:z:subdetector")
+ writeNtuples()
+
+#loadRPCtracks(nevent,True,False,fittedtracks = True)
