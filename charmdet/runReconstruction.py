@@ -480,7 +480,8 @@ def makeDTEfficiency(merge=False):
  print "finished all the tasks."
  
 
-def importMomDistr(keyword = 'RUN_8000_2'):
+def importHistos(keyword = 'RUN_8000_2',histoname="momDistributions"):
+ # momDistributions.root    residuals.root
   pathHistos = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/'
   temp = os.listdir(pathHistos)
   for x in temp:
@@ -488,6 +489,6 @@ def importMomDistr(keyword = 'RUN_8000_2'):
    run = x
    if not run in os.listdir('.'):
      os.system('mkdir '+run)
-   os.system('cp '+pathHistos+run+'/momDistributions.root '+run)
+   os.system('cp '+pathHistos+run+'/'+histoname+'.root '+run)
 
 
