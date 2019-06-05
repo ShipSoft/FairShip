@@ -597,7 +597,7 @@ with ConfigRegistry.register_config("basic") as c:
         scaleMudet=1.
 	c.tauMudet.NFethick = 4 #upstream slabs, more thick
         c.tauMudet.NFethin = 4 #downstream slabs, less thick
-    	c.tauMudet.NRpc= 7
+    	c.tauMudet.NRpc= 8
         c.tauMudet.NmuRpc = 3
         #c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
         #c.tauMudet.Ytot = scaleMudet*4.9124968*u.m
@@ -618,10 +618,10 @@ with ConfigRegistry.register_config("basic") as c:
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
         #support structure
-        c.tauMudet.UpperSupportY = 50 * u.cm
-        c.tauMudet.UpperSupportX = 50 * u.cm
-        c.tauMudet.LowerSupportY = 40 * u.cm
-        c.tauMudet.LowerSupportX = 40 * u.cm
+        c.tauMudet.UpperSupportY = 30 * u.cm
+        c.tauMudet.UpperSupportX = 30 * u.cm
+        c.tauMudet.LowerSupportY = 34 * u.cm
+        c.tauMudet.LowerSupportX = 34 * u.cm
         #lateral cuts
         c.tauMudet.CutHeight = 100 * u.cm
         c.tauMudet.CutLength = 25 * u.cm
@@ -704,7 +704,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTT = AttrDict(z=0*u.cm)
     c.NuTauTT.design = nuTauTargetDesign
     c.NuTauTT.TTX = c.NuTauTarget.xdim
-    c.NuTauTT.TTY = c.NuTauTarget.ydim
+    c.NuTauTT.TTY = c.EmuMagnet.Height2
     c.NuTauTT.TTZ= 6.0*u.cm
     c.NuTauTT.n = c.NuTauTarget.wall+1
 
@@ -721,7 +721,7 @@ with ConfigRegistry.register_config("basic") as c:
     if nuTauTargetDesign==3:
         c.tauHPT.SRDY = 10 *u.cm  #additional detectors for improving acceptance
         c.tauHPT.DX = c.NuTauTarget.xdim
-        c.tauHPT.DY = c.EmuMagnet.Height2 - 2 *c.tauHPT.SRDY
+        c.tauHPT.DY = c.EmuMagnet.Height2
         c.tauHPT.DZ = c.NuTauTT.TTZ        
         c.tauHPT.nHPT = 3 #n.d.r. number after each neutrino target
         c.tauHPT.distHPT = 50*u.cm
