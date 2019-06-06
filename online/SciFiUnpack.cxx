@@ -65,12 +65,10 @@ void SciFiUnpack::Register()
 // DoUnpack: Public method
 Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   int module;
-   int channel_number;
-   int flag;
-   uint32_t time;
-   uint16_t finetime;
-   uint64_t hitword;
+   //int channel_number;
+   //int flag;
+   //uint32_t time;
+   //uint16_t finetime;
 
 
    LOG(INFO) << "SciFiUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
@@ -83,29 +81,37 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
    }
 
    int i = 0;
+   int layerID;
    assert(df->header.size == size);
    auto nhits = df->getHitCount();
    LOG(INFO) << nhits << " hits." << FairLogger::endl;
    std::vector<HitData> hits(df->hits, df->hits + nhits);
    // std::cout << df->header.size << "  " << size << "  " << nhits << std::endl;
    for (auto &&hitData : hits) {
-      auto triggerFlag = (hitData.ch >= 16000) ? 1 : 0;
-      auto board = (triggerFlag == 1) ? (hitData.ch - 16000) : (hitData.ch / 512 + 1);
-      auto module = board / 3 + 1;
-      auto channel = (triggerFlag == 1 && module > 0) ? hitData.ch : hitData.ch / module;
+     auto triggerFlag = (hitData.ch >= 16000) ? 1 : 0;
+     auto board = (triggerFlag == 1) ? (hitData.ch - 15999) : (hitData.ch / 512 + 1);
+     auto layer = (board-1) / 3 + 1;
+     if (layer==1) layerID=111; 
+     else if (layer==2) layerID=112; 
+     else if (layer==3) layerID=121; 
+     else if (layer==4) layerID=122; 
+     else if (layer==5) layerID=131; 
+     else if (layer==6) layerID=132; 
+     else if (layer==7) layerID=141; 
+     else layerID=142; 
 
-      //                0-25 * 10**5       +  0-16025;
-      auto detectorId = board * pow(10, 5) + channel;
+     //                0-25 * 10**5       +  0-16025;
+     auto detectorId = board * pow(10, 5) + hitData.ch;
 
-      LOG(INFO) << std::hex << *reinterpret_cast<uint64_t *>(&hitData) << std::dec << FairLogger::endl;
-      LOG(INFO) << hitData.ch << "\t" << hitData.time << "\t" << hitData.finetime << "\t" << hitData.flags
-                << FairLogger::endl;
+     //LOG(INFO) << std::hex << *reinterpret_cast<uint64_t *>(&hitData) << std::dec << FairLogger::endl;
+     //LOG(INFO) << hitData.ch << "\t" << hitData.time << "\t" << hitData.finetime << "\t" << hitData.flags
+     //  << FairLogger::endl;
 
-      bool trigflag = triggerFlag;
+     bool trigflag = triggerFlag;
 
-      new ((*fRawData)[fNHits]) SciFiHit(detectorId, 0, hitData.ch, board, hitData.time, hitData.finetime, hitData.flags, trigflag);
+     new ((*fRawData)[fNHits]) SciFiHit(detectorId, layerID, hitData.ch, board, hitData.time, hitData.finetime, hitData.flags, trigflag);
 
-      fNHits++;
+     fNHits++;
    }
 
    fNHitsTotal += fNHits;
@@ -116,8 +122,8 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 // Reset: Public method
 void SciFiUnpack::Reset()
 {
-   fRawData->Clear();
-   fNHits = 0;
+  fRawData->Clear();
+  fNHits = 0;
 }
 
 ClassImp(SciFiUnpack)
