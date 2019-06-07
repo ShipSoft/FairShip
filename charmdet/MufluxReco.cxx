@@ -14,6 +14,7 @@
 #include "RKTrackRep.h"
 #include "ShipMCTrack.h"
 #include "MufluxSpectrometerHit.h"
+#include "KalmanFitterInfo.h"
 #include "MuonTaggerHit.h"
 #include <algorithm>
 #include <vector>
@@ -460,7 +461,9 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& p
     if ( z > cuts["lastDTStation_z"]){
      Int_t nmeas = fT->getNumPointsWithMeasurement();
      Int_t M = TMath::Min(nmeas-1,30);
-     fstate = fT->getFittedState(M);
+// check against crashes
+     if ( fstate.getMom()[2]<900 ){
+         fstate = fT->getFittedState(M);}
     }
     pos = fstate.getPos();
     mom = fstate.getMom();
