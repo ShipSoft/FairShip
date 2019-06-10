@@ -28,8 +28,8 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   boardId = (fDetectorID) / pow(10,5);
   ch = (fDetectorID - boardId * pow(10,5));
 
-  // layer (0,1,..,7) while board (1,...,25)
-  unsigned int layer = (boardId-1)/3;
+  // layer (0,1,..,7) 
+  unsigned int layer = int(ch/1536);
 
   double gap_die  = 0.0220;// cm
   double gap_SiPM = 0.0400;// cm
@@ -50,20 +50,20 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   z_midpoint_Ref[7] =  605.7463;
   z=z_midpoint_Ref[layer];
 
-  //compute half layer width to be entered in the middle of the plane
-  double half_layer = 1536/2 * ch_width + 6 * gap_die + 5.5 * gap_SiPM;
-
-  // how many half dies
-  int mult = int(ch/64);
-
-  // shift to add to the position due to dead regions
-  double shift = int(mult/2) * gap_die + int(mult/2) * gap_SiPM + (mult%2) * gap_die;
-
   // how much the channels should be shifted so that channels ranges btw 0-1535
   unsigned int nshift = layer*1536;  
 
   // channel in each layer ranging from 0-1535
   unsigned int ch_layer = ch - nshift; 
+
+  //compute half layer width to be entered in the middle of the plane
+  double half_layer = 1536./2 * ch_width + 6 * gap_die + 5.5 * gap_SiPM;
+
+  // how many half dies
+  int mult = int((ch_layer)/64);
+
+  // shift to add to the position due to dead regions
+  double shift = int(mult/2) * gap_die + int(mult/2) * gap_SiPM + (mult%2) * gap_die;
 
   //first station only x defined for X and U planes
   if(layer==0) {
