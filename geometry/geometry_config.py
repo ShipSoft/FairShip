@@ -501,7 +501,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.CutLength = scale * 45*u.cm
             c.EmuMagnet.CutHeight = scale * 144*u.cm
             c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
-            c.EmuMagnet.CoilY = 47.8*u.cm
+            c.EmuMagnet.CoilY = 50 *u.cm
             c.EmuMagnet.Height1 = c.EmuMagnet.Y-2*c.EmuMagnet.BaseY
             c.EmuMagnet.Height2 = c.EmuMagnet.Height1-2*c.EmuMagnet.CoilY
             c.EmuMagnet.Thickness = scale*50*u.cm
