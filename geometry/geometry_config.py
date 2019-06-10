@@ -657,6 +657,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.row = 7
         c.NuTauTarget.col = 7
         c.NuTauTarget.wall = 19
+
     c.NuTauTarget.target = 1  #number of neutrino target volumes
 
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
@@ -676,8 +677,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
-    c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW +c.NuTauTarget.BrPackZ
-	
+    c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
+
  #TargetTrackers!
     c.NuTauTT = AttrDict(z=0*u.cm)
     c.NuTauTT.design = nuTauTargetDesign
