@@ -568,11 +568,51 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
     it2++;}
    itt++;}
   its++;}
+ Int_t maxD = 5;
+ TString fname = sTree->GetCurrentFile()->GetName();
+ TFile fntpl("ntuple-"+fname,"recreate");
+ TTree tMuFlux("tmuflux","muflux ntuple");
+ Int_t tnTr,tevtnr,tspillnrA,tspillnrB,tspillnrC;
+ Int_t tSign[maxD];
+ Double_t tChi2[maxD];
+ Double_t tnDoF[maxD];
+ Double_t tPx[maxD];
+ Double_t tPy[maxD];
+ Double_t tPz[maxD];
+ Double_t tx[maxD];
+ Double_t ty[maxD];
+ Double_t tz[maxD];
+ Double_t tDelx[maxD];
+ Double_t tDely[maxD];
+
+ tMuFlux.Branch("nTr",&tnTr,"nTr/I");
+ tMuFlux.Branch("evtnr",&tevtnr,"evtnr/I");
+ tMuFlux.Branch("spillnrA",&tspillnrA,"spillnrA/I");
+ tMuFlux.Branch("spillnrB",&tspillnrB,"spillnrB/I");
+ tMuFlux.Branch("spillnrC",&tspillnrC,"spillnrC/I");
+ tMuFlux.Branch("Sign",&tSign,"Sign[nTr]/I");
+ tMuFlux.Branch("Chi2",&tChi2,"Chi2[nTr]/D");
+ tMuFlux.Branch("nDoF",&tnDoF,"nDoF[nTr]/D");
+ tMuFlux.Branch("Px",&tPx,"Px[nTr]/D");
+ tMuFlux.Branch("Py",&tPy,"Py[nTr]/D");
+ tMuFlux.Branch("Pz",&tPz,"Pz[nTr]/D");
+ tMuFlux.Branch("x",&tx,"x[nTr]/D");
+ tMuFlux.Branch("y",&ty,"y[nTr]/D");
+ tMuFlux.Branch("z",&tz,"z[nTr]/D");
+ tMuFlux.Branch("Delx",&tDelx,"tDelx[nTr]/D");
+ tMuFlux.Branch("Dely",&tDely,"tDely[nTr]/D");
+ auto xx = fname(15,27);
+ TObjArray* tst = TString(xx.Data()).Tokenize("_");
+ tspillnrA = std::stoi(((TObjString *)(tst->At(0)))->String().Data());
+ tspillnrB = std::stoi(((TObjString *)(tst->At(1)))->String().Data());
+ tspillnrC = std::stoi(((TObjString *)(tst->At(2)))->String().Data());
 
  Int_t nx = 0;
  while (nx<nMax){
    sTree->GetEvent(nx);
    h_Trscalers->Fill(1);
+   tevtnr=nx;
+   tnTr=0;
    nx+=1;
    Int_t Ntracks = FitTracks->GetEntries();
    Int_t Ngood = 0;
@@ -635,6 +675,16 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (chi2 > chi2UL){ continue;}
      h_Trscalers->Fill(5);
      auto pos = fittedState.getPos();
+     tx[tnTr] = pos[0];
+     ty[tnTr] = pos[1];
+     tz[tnTr] = pos[2];
+     tPx[tnTr] = Px;
+     tPy[tnTr] = Py;
+     tPz[tnTr] = Pz;
+     tSign[tnTr] = fitStatus->getCharge();
+     tChi2[tnTr] = chi2;
+     tnDoF[tnTr] = fitStatus->getNdf();
+
      h2D["p/pt"]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
      h2D["p/px"]->Fill(P,Px);
      h2D["p/Abspx"]->Fill(P,TMath::Abs(Px));
@@ -674,16 +724,23 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
      Bool_t X = kFALSE;
      Bool_t Y = kFALSE;
+     tDelx[tnTr] = 9999.;
+     tDely[tnTr] = 9999.;
      for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {
         RPCTrack *hit = (RPCTrack*)RPCTrackX->At(mu);
         Float_t Xpos = hit->m()*cuts["zRPC1"]+hit->b();
-        if (TMath::Abs(posRPC[0]-Xpos)<cuts["muTrackMatchX"]){X=kTRUE;}
+        Double_t dist = TMath::Abs(posRPC[0]-Xpos);
+        if (dist<cuts["muTrackMatchX"]){X=kTRUE;}
+        if (dist<tDelx[tnTr]){tDelx[tnTr]=dist;}
      }
      for (Int_t mu=0;mu<RPCTrackY->GetEntries();mu++) {
         RPCTrack *hit = (RPCTrack*)RPCTrackY->At(mu);
         Float_t Ypos = hit->m()*cuts["zRPC1"]+hit->b();
-        if (TMath::Abs(posRPC[1]-Ypos)<cuts["muTrackMatchY"]){Y=kTRUE;}
+        Double_t dist = TMath::Abs(posRPC[1]-Ypos);
+        if (dist<cuts["muTrackMatchY"]){Y=kTRUE;}
+        if (dist<tDely[tnTr]){tDely[tnTr]=dist;}
      }
+      tnTr+=1;
       if (X && Y) { // within ~3sigma  X,Y from mutrack
         h1D["chi2mu"]->Fill(chi2);
         h1D["Nmeasurementsmu"]->Fill(fitStatus->getNdf());
@@ -740,7 +797,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
        }
      }
    }
+ tMuFlux.Fill();
  }
+ fntpl.Write();
+ fntpl.Close();
 }
 
 void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
@@ -770,9 +830,9 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
      if (MCdata){
       float rnr = gRandom->Uniform();
       TString station;
-      if (info[4]==0){station = 'x';station += info[0];}
-      if (info[4]==1){station = 'u';}
-      if (info[4]==2){station = 'v';}
+      if (info[4]==0){station = "x";station += info[0];}
+      if (info[4]==1){station = "u";}
+      if (info[4]==2){station = "v";}
       float eff = effFudgeFac[station.Data()];
       if (rnr > eff){continue;}
      }

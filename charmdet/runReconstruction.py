@@ -367,11 +367,8 @@ def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
    if not run in os.listdir('.'): os.system('mkdir '+run)
    temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco+run,shell=True)
    if temp2.find('.root')<0: continue
-   skip = False
-   for x in zeroField:
-       if not run.find(x)<0: skip = True
-   if skip: continue
    os.chdir(run)
+   print "go for",run
    makeMomDistributions(run)
    os.chdir('../')
 def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):

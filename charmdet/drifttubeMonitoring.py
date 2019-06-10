@@ -5439,8 +5439,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    for c in [ [h['I-'+proj+xx+'Ratio'],h['I-MC'+proj+xx]],[h['I-'+proj+xx+'RatioG4'],h['I-MC'+proj+xx+'G4']],
         [h['I-'+proj+xx+'RatioG4noCharm'],(h['I-MC'+proj+''+xx+'G4noCharm'])]]:
     for mx in range(1,c[0].GetNbinsX()+1):
-     test = c[1].GetBinContent(mx)
-     if test>0.:
+     if c[0].GetBinContent(mx)*POTdata>100. and c[1].GetBinContent(mx)>0:
       R =c[0].GetBinContent(mx) / c[1].GetBinContent(mx)
       c[0].SetBinContent(mx,R)
      else:
@@ -5457,9 +5456,11 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
   h['I-'+proj+xx+'Ratio'].SetMaximum(5.)
   h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(20.,400.)
   if Aproj=='p/Abspx' or Aproj=='p/pt_y': 
-   if Aproj=='p/Abspx': h['I-'+proj+xx+'Ratio'].SetMaximum(10.)
-   if Aproj=='p/pt_y': h['I-'+proj+xx+'Ratio'].SetMaximum(5.)
    h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,7.5)
+   if Aproj=='p/Abspx': 
+       h['I-'+proj+xx+'Ratio'].SetMaximum(10.)
+       h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,3.5)
+   if Aproj=='p/pt_y': h['I-'+proj+xx+'Ratio'].SetMaximum(5.)
   h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
   h['I-'+proj+xx+'Ratio'].SetTitle('Ratio MC/Data '+h['I-'+proj+xx+'Ratio'].GetTitle())
   h['I-'+proj+xx+'Ratio'].Draw()
@@ -5478,18 +5479,17 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    h[t+'2D'].cd(1)
    ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
    h[proj+x+'Ratio'] = h[proj+x].Rebin2D(5,2,proj+x+'Ratio')
-   tmp = h['MC10'+proj+x].Rebin2D(5,2,proj+x+'tmp')
-   test = hMC10GeV[proj+x].Rebin2D(5,2,'test')
+   tmp = h['MC'+proj+x].Rebin2D(5,2,'tmp')
    for mx in range(1,tmp.GetNbinsX()+1):
     for my in range(1,tmp.GetNbinsY()+1):
-     if test.GetBinContent(mx,my)>10. and h[proj+x+'Ratio'].GetBinContent(mx,my)>10.:
+     if h[proj+x+'Ratio'].GetBinContent(mx,my)>100. and tmp.GetBinContent(mx,my)>0 and tmp.GetXaxis().GetBinCenter(mx)>5.:
        R = h[proj+x+'Ratio'].GetBinContent(mx,my) / tmp.GetBinContent(mx,my)
        h[proj+x+'Ratio'].SetBinContent(mx,my,R)
      else:
        h[proj+x+'Ratio'].SetBinContent(mx,my,-1)
    h[proj+x+'Ratio'].SetMaximum(6.)
    h[proj+x+'Ratio'].SetMinimum(0.)
-   h[proj+x+'Ratio'].GetXaxis().SetRangeUser(20.,400.)
+   h[proj+x+'Ratio'].GetXaxis().SetRangeUser(5.,400.)
    h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,7.5)
    h[proj+x+'Ratio'].SetStats(0)
    h[proj+x+'Ratio'].Draw('colz')
