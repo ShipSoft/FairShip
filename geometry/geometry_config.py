@@ -674,7 +674,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
     c.NuTauTarget.BrX = 12.9 * u.cm
     c.NuTauTarget.BrY = 10.5 * u.cm
-    c.NuTauTarget.BrPackZ = 0.1 * u.cm
+    c.NuTauTarget.BrPackZ = 0.1045 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
     c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
@@ -733,7 +733,7 @@ with ConfigRegistry.register_config("basic") as c:
     if nuTauTargetDesign!=2: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm
         c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW
-        c.NuTauTarget.CESPack = 0.1 * u.cm
+        c.NuTauTarget.CESPack = 0.3055 * u.cm
         c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW + c.NuTauTarget.CESPack
         c.NuTauTarget.CellW = c.NuTauTarget.BrZ + c.NuTauTarget.CESW
         if nuTauTargetDesign!=3:
