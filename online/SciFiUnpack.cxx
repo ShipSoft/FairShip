@@ -36,20 +36,16 @@ struct SciFiDataFrame {
    int getHitCount() { return (header.size - sizeof(header)) / sizeof(HitData); }
 };
 
-// SciFiUnpack
 SciFiUnpack::SciFiUnpack(uint16_t PartitionId) : fRawData(new TClonesArray("SciFiHit")) {}
 
-// Virtual SciFiUnpack: Public method
 SciFiUnpack::~SciFiUnpack() = default;
 
-// Init: Public method
 Bool_t SciFiUnpack::Init()
 {
    Register();
    return kTRUE;
 }
 
-// Register: Protected method
 void SciFiUnpack::Register()
 {
 
@@ -62,14 +58,8 @@ void SciFiUnpack::Register()
    // fMan->Register("Digi_SciFiTrigger", "SciFi", fRawTrigger, kTRUE);
 }
 
-// DoUnpack: Public method
 Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   //int channel_number;
-   //int flag;
-   //uint32_t time;
-   //uint16_t finetime;
-
 
    LOG(INFO) << "SciFiUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
 
@@ -102,11 +92,6 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 
      //                0-25 * 10**5       +  0-16025;
      auto detectorId = board * pow(10, 5) + hitData.ch;
-
-     //LOG(INFO) << std::hex << *reinterpret_cast<uint64_t *>(&hitData) << std::dec << FairLogger::endl;
-     //LOG(INFO) << hitData.ch << "\t" << hitData.time << "\t" << hitData.finetime << "\t" << hitData.flags
-     //  << FairLogger::endl;
-
      bool trigflag = triggerFlag;
 
      new ((*fRawData)[fNHits]) SciFiHit(detectorId, layerID, hitData.ch, board, hitData.time, hitData.finetime, hitData.flags, trigflag);
@@ -119,7 +104,6 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 
 }
 
-// Reset: Public method
 void SciFiUnpack::Reset()
 {
   fRawData->Clear();
