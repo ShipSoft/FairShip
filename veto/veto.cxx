@@ -590,8 +590,12 @@ TGeoVolume* veto::MakeMagnetSegment(Int_t seg){
       TGeoVolumeAssembly *tMagVol = new TGeoVolumeAssembly(nm);
       
        double dzMagnetPart = 238.1*cm ; //from Piets Wertelaers drawings 
-	    
-	    
+       double thiknes = 12*mm;    
+       double xPos=0;
+       double yPos=0;
+       double zPos=0;
+       
+       
       //make walls inside magnet area
         double dx=5*cm;//from Piets Wertelaers drawings 
         double dy=500*cm;//from Piets Wertelaers drawings 
@@ -610,7 +614,53 @@ TGeoVolume* veto::MakeMagnetSegment(Int_t seg){
 	tMagVol->AddNode(InnerMagWall_X, 2 , new TGeoCombiTrans(0,-505*cm,0,new TGeoRotation("r",0,0,0)));
 	
 	
-      
+	
+	xPos=(-358.2*cm-250.4*cm)/2;
+	yPos=602.4*cm-(602.4-500.4)*cm/2;
+	zPos=dzMagnetPart+thiknes/2;
+	
+	dx=(358.2-250.4)*cm/2;
+	dy=604.4*cm;
+	dz=thiknes/2;
+	TGeoVolume*  VertMagCover_Y =  gGeoManager->MakeBox("VertMagCover_Y", supportMedIn, dx, dy, dz);
+	dx=250.4*cm;
+	dy=(602.4-500.4)*cm/2;
+	TGeoVolume*  VertMagCover_X =  gGeoManager->MakeBox("VertMagCover_X", supportMedIn, dx, dy, dz);
+	
+	
+	
+	VertMagCover_Y->SetLineColor(15);
+	VertMagCover_X->SetLineColor(15);
+	
+	tMagVol->AddNode(VertMagCover_Y, 1 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 2 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 3 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 4 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	
+	tMagVol->AddNode(VertMagCover_X, 1 , new TGeoCombiTrans(0,yPos,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_X, 2 , new TGeoCombiTrans(0,-yPos,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_X, 3 , new TGeoCombiTrans(0,yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_X, 4 , new TGeoCombiTrans(0,-yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	
+	
+        zPos=328.5*cm;
+	tMagVol->AddNode(VertMagCover_Y, 5 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 6 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 7 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 8 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	zPos=442.3*cm;
+	tMagVol->AddNode(VertMagCover_Y, 9 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 10 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 11 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 12 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	zPos=532.1*cm;
+	tMagVol->AddNode(VertMagCover_Y, 10 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 11 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 12 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	tMagVol->AddNode(VertMagCover_Y, 13 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	
+	
+	
       return tMagVol;
   
   
@@ -1165,6 +1215,8 @@ void veto::ConstructGeometry()
      therefore, incorporate here the previously external defined ShipChamber
      and make the walls sensitive
  */
+          floorHeightA=floorHeightA*0.5;
+ 
     fLogger = FairLogger::GetLogger();
     TGeoVolume *top=gGeoManager->GetTopVolume();
     InitMedium("Concrete");
@@ -1234,22 +1286,23 @@ void veto::ConstructGeometry()
       //After T1: not conical, size of T4, hencee slopes=0. etc..
       dx1 = slopex*(fTub6z -fTub6length - zFocusX);
       dy = slopey*(fTub6z -fTub6length - zFocusY);
-      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeightB);
-      tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
+// // // // //       TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeightB);
+// // // // //       tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
+// // // // // 
+// // // // //       TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,0.,0.,floorHeightB);
+// // // // //       tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
+// // // // // 
+// // // // //       TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeightB);
+// // // // //       tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
+// // // // // 
+// // // // //       if (fTub6length>0.2*m){
+// // // // //        TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,0.,0.,floorHeightB);
+// // // // //        tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
+// // // // //       }
 
-      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,0.,0.,floorHeightB);
-      tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
-
-      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeightB);
-      tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
-
-      if (fTub6length>0.2*m){
-       TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,0.,0.,floorHeightB);
-       tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
-      }
-
-      TGeoVolume*  magnetInnerWalls = MakeMagnetSegment(2);
+      TGeoVolume*  magnetInnerWalls = MakeMagnetSegment(3);
       tMaGVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
+      //tDecayVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
       
       
       
