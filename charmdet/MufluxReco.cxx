@@ -570,7 +570,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
   its++;}
  Int_t maxD = 5;
  TString fname = sTree->GetCurrentFile()->GetName();
- TFile fntpl("ntuple-"+fname,"recreate");
+ TFile fntpl("ntuple-"+fname(fname.Last('/')+1,fname.Length()),"recreate");
  TTree tMuFlux("tmuflux","muflux ntuple");
  Int_t tnTr,tevtnr,tspillnrA,tspillnrB,tspillnrC;
  Int_t tSign[maxD];
