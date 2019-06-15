@@ -504,7 +504,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.CoilY = 50 *u.cm
             c.EmuMagnet.Height1 = c.EmuMagnet.Y-2*c.EmuMagnet.BaseY
             c.EmuMagnet.Height2 = c.EmuMagnet.Height1-2*c.EmuMagnet.CoilY
-            c.EmuMagnet.Thickness = scale*50*u.cm
+            c.EmuMagnet.Thickness = scale*40*u.cm
             c.EmuMagnet.PillarX = 0.5*u.m
             c.EmuMagnet.PillarZ = 0.5*u.m
             c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
