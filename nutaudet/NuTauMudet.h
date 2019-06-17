@@ -158,11 +158,10 @@ protected:
     Double_t fXGas;
     Double_t fYGas;
     Double_t fZGas;
-    //Dimensions of iron support structures
-    Double_t fUpSuppX, fUpSuppY;
+    Double_t fUpSuppX, fUpSuppY;//Dimensions of iron support structures
     Double_t fLowSuppX, fLowSuppY;
-    //Cut dimensions
-    Double_t fCutHeight, fCutLength;
+
+    Double_t fCutHeight, fCutLength; //Cut dimensions
     //Dimension of steel pillars
     Double_t fPillarX;
     Double_t fPillarY;

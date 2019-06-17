@@ -539,10 +539,6 @@ void EmulsionMagnet::ConstructGeometry()
 
       TGeoRotation rottube("rottube",90,90,0);
       //transformations to combine them
- /*     const TGeoTranslation transtube("transtube",0.,-fCoilH2/2 +fCoilY,+fMagnetZ/2-OuterRadius);
-      const TGeoTranslation transtube1("transtube1",0.,fCoilH2/2 -fCoilY,+fMagnetZ/2-OuterRadius);
-      const TGeoTranslation transtube2("transtube2",0.,-fCoilH2/2 +fCoilY,-fMagnetZ/2+OuterRadius);
-      const TGeoTranslation transtube3("transtube3",0.,fCoilH2/2 -fCoilY,-fMagnetZ/2+OuterRadius);*/
       const TGeoTranslation transtube("transtube",0.,-(fCoilH2-2*fCoilThickness)/2, -fCoilThickness-fCoilY/2);
       const TGeoTranslation transtube1("transtube1",0.,(fCoilH2-2*fCoilThickness)/2, -fCoilThickness-fCoilY/2);
       const TGeoTranslation transtube2("transtube2",0.,-(fCoilH2-2*fCoilThickness)/2,+fCoilThickness+fCoilY/2);
@@ -553,23 +549,21 @@ void EmulsionMagnet::ConstructGeometry()
       TGeoCombiTrans* combination3 = new TGeoCombiTrans(transtube3,rottube);
 
       combination->SetName("combination");
-      combination->RegisterYourself();
+      combination->RegisterYourself();  
       combination1->SetName("combination1");
-      combination1->RegisterYourself();
+      combination1->RegisterYourself(); 
       combination2->SetName("combination2");
       combination2->RegisterYourself();
       combination3->SetName("combination3");
       combination3->RegisterYourself();
       //adding the shapes and making the volumes
       TGeoCompositeShape * CoilRight = new TGeoCompositeShape("CoilRight","Coillateraltuberightdown:combination+Coillateraltuberightup:combination1+Coillateralcenter");
-      TGeoVolume *CoilArcRight = new TGeoVolume("CoilArcRight",CoilRight,Cu);
-      CoilArcRight->SetLineColor(kGreen);
-      TGeoCompositeShape * CoilLeft = new TGeoCompositeShape("CoilLeft","Coillateraltubeleftdown:combination2+Coillateraltubeleftup:combination3+Coillateralcenter");
-      TGeoVolume *CoilArcLeft = new TGeoVolume("CoilArcLeft",CoilLeft,Cu);
-      CoilArcLeft->SetLineColor(kGreen);
+      TGeoVolume *CoilVolright = new TGeoVolume("CoilVolright",CoilRight,Cu);
 
-      MagnetVol->AddNode(CoilArcLeft,1, new TGeoTranslation(0,0,-fMagnetZ/2.+fCoilY/2.));
-      MagnetVol->AddNode(CoilArcRight,1, new TGeoTranslation(0,0,+fMagnetZ/2.-fCoilY/2.));
+      TGeoCompositeShape * CoilLeft = new TGeoCompositeShape("CoilLeft","Coillateraltubeleftdown:combination2+Coillateraltubeleftup:combination3+Coillateralcenter");
+      TGeoVolume *CoilVolleft = new TGeoVolume("CoilVolleft",CoilLeft,Cu);
+
+
 
       TGeoBBox *Coil = new TGeoBBox("Coil", fCoilX/2,fCoilY/2, (fMagnetZ-2*OuterRadius)/2); //two times the external radius
       TGeoVolume *CoilVol = new TGeoVolume("CoilVol",Coil, Cu);
@@ -587,7 +581,10 @@ void EmulsionMagnet::ConstructGeometry()
       MagnetVol->AddNode(volDownLateral, 2, new TGeoTranslation(fMagnetX/2-fColumnX/2, (+fCutHeight + (fColumnY - fCutHeight)/2)/2,0));
       MagnetVol->AddNode(volcuttopleft,2, new TGeoTranslation(fMagnetX/2-fColumnX/2,0,0));
      
-      //MagnetVol->AddNode(CoilVolright,1,new TGeoTranslation(0,0,0));
+      CoilVolleft->SetLineColor(kGreen);
+      MagnetVol->AddNode(CoilVolleft,1,new TGeoTranslation(0,0,-fMagnetZ/2.+fCoilY/2.));
+      CoilVolright->SetLineColor(kGreen);
+      MagnetVol->AddNode(CoilVolright,1,new TGeoTranslation(0,0,+fMagnetZ/2.-fCoilY/2.));
       CoilVol->SetLineColor(kGreen);
       MagnetVol->AddNode(CoilVol,1,new TGeoTranslation(0,(fCoilH1+fCoilH2)/4,0));
       MagnetVol->AddNode(CoilVol,2,new TGeoTranslation(0,-(fCoilH1+fCoilH2)/4,0));

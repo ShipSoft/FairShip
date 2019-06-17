@@ -464,11 +464,12 @@ void NuTauMudet::ConstructGeometry()
     }
   if(fDesign==3)
     {
+      Double_t supportasymmetry = fUpSuppY - fLowSuppY; //upper and lower support have different dimensions, so the mother box must be large enough to contain both
       Int_t nr = 1E4;
-      TGeoBBox *LargedetBox = new TGeoBBox("LargedetBox", fXtot/2, fYtot/2, (2*fZFe+3*fZRpc)/2);  
-      TGeoBBox *SmalldetBox = new TGeoBBox("SmalldetBox", fXtot/2, (fYtot-fdeltay)/2, fZtot/2); //solving overlapping with pillars->dividing box to an union of two different boxes
+      TGeoBBox *LargedetBox = new TGeoBBox("LargedetBox", (fXRpc+fdeltax)/2, (fYRpc+fdeltay)/2, fNmuRpc*fZRpc/2);  
+      TGeoBBox *SmalldetBox = new TGeoBBox("SmalldetBox", fXtot/2, (fYtot+supportasymmetry)/2, (fZtot-fNmuRpc*fZRpc)/2); //solving overlapping with pillars->dividing box to an union of two different boxes
  
-      TGeoTranslation *translationlarge = new TGeoTranslation(0,0,(fZtot-2*fZFe-3*fZRpc)/2);
+      TGeoTranslation *translationlarge = new TGeoTranslation(0,0,(fZtot-fNmuRpc*fZRpc)/2);
       translationlarge->SetName("translationlarge");
       translationlarge->RegisterYourself();
       TGeoTranslation *translationsmall = new TGeoTranslation(0,0,0);
@@ -524,10 +525,10 @@ void NuTauMudet::ConstructGeometry()
       TGeoBBox *LowerSupport1 = new TGeoBBox(fLowSuppX/2., fLowSuppY/2.,fZFethin/2.);
       LowerSupport1->SetName("MUDETLOWSUPPORT1");
       //Translations (left is considered from the beam, positive x)
-      TGeoTranslation * upright = new TGeoTranslation("MuDetupright",-fXtot/2.+fUpSuppX/2.,fYtot/2+fUpSuppY/2.,0);
-      TGeoTranslation * upleft = new TGeoTranslation("MuDetupleft",+fXtot/2.-fUpSuppX/2.,fYtot/2+fUpSuppY/2.,0); 
-      TGeoTranslation * lowright = new TGeoTranslation("MuDetlowright",-fXtot/2.+fUpSuppX/2.,-fYtot/2-fUpSuppY/2.,0); 
-      TGeoTranslation * lowleft = new TGeoTranslation("MuDetlowleft",+fXtot/2.-fUpSuppX/2.,-fYtot/2-fUpSuppY/2.,0);
+      TGeoTranslation * upright = new TGeoTranslation("MuDetupright",-fXFe/2.+fUpSuppX/2.,fYFe/2+fUpSuppY/2.,0);
+      TGeoTranslation * upleft = new TGeoTranslation("MuDetupleft",+fXFe/2.-fUpSuppX/2.,fYFe/2+fUpSuppY/2.,0); 
+      TGeoTranslation * lowright = new TGeoTranslation("MuDetlowright",-fXFe/2.+fLowSuppX/2.,-fYFe/2-fLowSuppY/2.,0); 
+      TGeoTranslation * lowleft = new TGeoTranslation("MuDetlowleft",+fXFe/2.-fLowSuppX/2.,-fYFe/2-fLowSuppY/2.,0);
       //necessary to put SetName, otherwise it will not find them
       upright->SetName("MuDetupright");
       upright->RegisterYourself();

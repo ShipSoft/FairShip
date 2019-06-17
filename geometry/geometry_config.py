@@ -599,36 +599,35 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.NFethin = 4 #downstream slabs, less thick
     	c.tauMudet.NRpc= 8
         c.tauMudet.NmuRpc = 3
-        #c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
-        #c.tauMudet.Ytot = scaleMudet*4.9124968*u.m
-        c.tauMudet.Xtot = scaleMudet*1.900*u.m #same dimensions as Thomas' veto box
-        c.tauMudet.Ytot = scaleMudet*3.600*u.m
-        c.tauMudet.deltax = 0* u.cm
-        c.tauMudet.deltay = 80* u.cm
-        #c.tauMudet.deltax = 10* u.cm
-        #c.tauMudet.deltay = 20* u.cm
-        c.tauMudet.XFe = c.tauMudet.Xtot
-        c.tauMudet.YFe = c.tauMudet.Ytot
+        
+        c.tauMudet.XFe = scaleMudet*1.900*u.m #layer dimensions, excluded supports
+        c.tauMudet.YFe = scaleMudet*3.600*u.m
         c.tauMudet.ZFethick = 15.*u.cm
         c.tauMudet.ZFethin = 10.* u.cm
-        c.tauMudet.XRpc = c.tauMudet.Xtot
+
+        c.tauMudet.XRpc = c.tauMudet.XFe
         c.tauMudet.YRpc = c.tauMudet.YFe
         c.tauMudet.ZRpc = 7.*u.cm
-        c.tauMudet.Ztot = (c.tauMudet.NRpc+c.tauMudet.NmuRpc)*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
-        #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
-        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
         #support structure
         c.tauMudet.UpperSupportY = 30 * u.cm
         c.tauMudet.UpperSupportX = 30 * u.cm
         c.tauMudet.LowerSupportY = 34 * u.cm
         c.tauMudet.LowerSupportX = 34 * u.cm
+
+        c.tauMudet.Xtot = c.tauMudet.XFe
+        c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY #now we need to include also supports.
+        c.tauMudet.deltax = 0* u.cm #size differences between MuonFilter and VetoTagger layers
+        c.tauMudet.deltay = 80* u.cm
+        c.tauMudet.Ztot = (c.tauMudet.NRpc+c.tauMudet.NmuRpc)*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
+        #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
+        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
         #lateral cuts
         c.tauMudet.CutHeight = 100 * u.cm
         c.tauMudet.CutLength = 25 * u.cm
         
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
-        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - c.tauMudet.LowerSupportY + c.tauMudet.deltay/2  - 0.1*u.mm
+        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 + c.tauMudet.deltay/2  - 0.1*u.mm
     c.tauMudet.XGas =  c.tauMudet.Xtot
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
@@ -693,7 +692,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrX = 12.9 *u.cm
     c.NuTauTarget.BrY = 10.5 *u.cm
     c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
-    c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist    
+    c.NuTauTarget.ydim = c.EmuMagnet.Height2 #need larger virtual box due to larger TT stations
+    c.NuTauTarget.brickydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist    
 
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
@@ -751,4 +751,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
-    c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
+    c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.brickydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
