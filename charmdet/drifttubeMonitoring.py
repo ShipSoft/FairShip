@@ -3043,7 +3043,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   view = 0
   for n in range(Nevents):
    rc = sTree.GetEvent(n)
-   if not findSimpleEvent(sTree): continue
+   if not findSimpleEvent(sTree,nmin=0,nmax=6): continue
    if len(sTree.RPCTrackX)>1 or len(sTree.RPCTrackY)>1 : continue
    spectrHitsSorted = ROOT.nestedList()
    candidates= {1:{0:[],1:[],2:[],3:[]}, 2:{0:[],1:[],2:[],3:[]}, 3:{0:[],1:[],2:[],3:[]},4:{0:[],1:[],2:[],3:[]}}
@@ -4375,6 +4375,42 @@ def studyDeltaRays():
      rc = h['deltaRayN'].Fill(m.GetStartZ()/100.,N)
    # if not found and N>8: sTree.MCTrack.Dump()
  ut.writeHists(h,'deltaRays.root')
+
+def studyGhostTracks(nStart = 0, nEnd=0, chi2UL=3,pxLow=5.):
+ if nEnd == 0: nEnd = sTree.GetEntries()
+ for n in range(nStart,nEnd):
+  rc = sTree.GetEvent(n)
+  N = -1
+  for aTrack in sTree.FitTracks:
+     N+=1
+     fitStatus   = aTrack.getFitStatus()
+     if not fitStatus.isFitConverged(): continue
+# track quality
+     hitsPerStation = countMeasurements(N,1)
+     if len(hitsPerStation['x1'])<2: continue
+     if len(hitsPerStation['x2'])<2: continue
+     if len(hitsPerStation['x3'])<2: continue
+     if len(hitsPerStation['x4'])<2: continue
+     chi2 = fitStatus.getChi2()/fitStatus.getNdf()
+     fittedState = aTrack.getFittedState()
+     P = fittedState.getMomMag()
+     Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
+     if chi2 > chi2UL: continue
+     if Px<pxLow: continue
+# check for muon tag
+     rc,posRPC,momRPC = extrapolateToPlane(aTrack,zRPC1)
+     if rc:
+      tagged = {'X':False,'Y':False}
+      for proj in ['X','Y']:
+       if proj=='X':
+        for mu in sTree.RPCTrackX:
+         if abs(posRPC[0]-mu.m()*zRPC1+mu.b() ) < cuts['muTrackMatch'+proj]: tagged[proj]=True
+       if proj=='Y':
+        for mu in sTree.RPCTrackY:
+         if abs(posRPC[0]-mu.m()*zRPC1+mu.b() )< cuts['muTrackMatch'+proj]: tagged[proj]=True
+      if not tagged['X'] or not tagged['Y'] : # not within ~3sigma of any mutrack
+        print n
+         
 def studyScintillator():
  ut.bookHist(h,'sc','sc',1000,-500.,2000.)
  ut.bookHist(h,'sc6','sc',1000,-500.,2000.)
@@ -5054,8 +5090,9 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
       hstore[a+x+"G4default"].Add(hstore[a+x+"Hadronic inelastic"],-1.)
      
  if pot <0: # (default, use Hans normalization)
-   pot = h['Trscalers'].GetBinContent(3) * muPerPot / MCStats
-   POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
+   pot = h['Trscalers'].GetBinContent(2) * muPerPot / MCStats
+   # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
+   POTdata = h['Trscalers'].GetBinContent(2) * muPerPot
    print "PoT data",POTdata / 1E9," billion"
  if pot == 0:
    z = h['MCp/pt'].ProjectionX()
@@ -5453,12 +5490,12 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
   proj = Aproj
   if Aproj == 'p/pt_y': proj='p/pt'
   h['I-'+proj+xx+'Ratio'].SetLineColor(ROOT.kBlue)
-  h['I-'+proj+xx+'Ratio'].SetMaximum(5.)
+  h['I-'+proj+xx+'Ratio'].SetMaximum(3.)
   h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(20.,400.)
   if Aproj=='p/Abspx' or Aproj=='p/pt_y': 
    h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,7.5)
    if Aproj=='p/Abspx': 
-       h['I-'+proj+xx+'Ratio'].SetMaximum(10.)
+       h['I-'+proj+xx+'Ratio'].SetMaximum(3.)
        h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,3.5)
    if Aproj=='p/pt_y': h['I-'+proj+xx+'Ratio'].SetMaximum(5.)
   h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
@@ -5735,8 +5772,11 @@ def compareRuns(runs=[]):
  for r in runs:
   first = False
   hname = 'p/pt_projx'
-  N = hruns[r]['Trscalers'].GetBinContent(1)
+  if not hruns[r].has_key('Trscalers'): 
+    print "!!!!!   no entry for RUN",r
+    continue
   print ">>>>>>   statistics for RUN",r
+  N = hruns[r]['Trscalers'].GetBinContent(1)
   print "number of events",hruns[r]['Trscalers'].GetBinContent(1)
   print "events with tracks %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1)*100)
   print "tracks/event                     %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1)*100)
@@ -5820,7 +5860,11 @@ def mergeGoodRuns(excludeRPC=False,path='.'):
   r = int(x[x.rfind('/')+1:].split('_')[2])
   if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
   if excludeRPC and (r in RPCbad or (r>2198 and r < 2275)) : continue
-  cmd += path+'/'+x+'/momDistributions.root '
+  test = path+'/'+x+'/momDistributions.root '
+  if not os.path.isfile(test.replace(' ','')):
+    print "no file found, skip run:",x,test
+    continue
+  cmd += test
  os.system(cmd)
 
 def fcn(npar, gin, f, par, iflag):
