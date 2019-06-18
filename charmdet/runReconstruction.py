@@ -24,7 +24,7 @@ eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run
 
 def getFilesFromEOS():
 # list of files
- temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospath,shell=True)
+ temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospath,shell=True)
  for x in temp.split('\n'):
   if x.find('.root')<0: continue
   if not x.find('START')<0: continue
@@ -201,7 +201,7 @@ def checkFilesWithTracks(D='.'):
     elif test.cbmsim.GetBranch("FitTracks"): fileList.append(x)
     else: rest.append(x)
  else:
-  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+D,shell=True)
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls  "+D,shell=True)
   for x in temp.split('\n'):
    if x.find('.root')<0: continue
    fname =  x[x.find('/eos'):]
@@ -297,13 +297,13 @@ def mergeHistos(local='.',command='anaResiduals'):
      N+=1
   if N>500:
     os.system(cmd)
-    os.system('cp '+commandToSum[command]+' tmp.root')
-    cmd = "hadd -f "+commandToSum[command]+' tmp.root '
+    os.system('cp '+commandToSum[command]+'.root '+' tmp.root')
+    cmd = "hadd -f "+commandToSum[command]+'.root '+' tmp.root '
     N=0
  os.system(cmd)
 
 def checkRecoRun(eosLocation=eospath,local='.'):
- temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eosLocation,shell=True)
+ temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eosLocation,shell=True)
  for x in temp.split('\n'):
   if x.find('.root')<0: continue
   if not x.find('START')<0: continue
@@ -329,7 +329,7 @@ def makeMomDistributions(run=0):
  else:
   eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'+run
   fileList = []
-  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
   for x in temp.split('\n'):
    if x.find('.root')<0: continue
    fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
@@ -359,13 +359,13 @@ def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
       os.chdir('../')
  else:
   if len(fnames)==0:
-   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
    fnames = temp.split('\n')
   for x in fnames:
    if x.find(keyword)<0: continue
    run = x[x.rfind('/')+1:]
    if not run in os.listdir('.'): os.system('mkdir '+run)
-   temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco+run,shell=True)
+   temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco+run,shell=True)
    if temp2.find('.root')<0: continue
    os.chdir(run)
    print "go for",run
@@ -383,7 +383,7 @@ def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
       os.chdir('../')
   else:
    if len(fnames)==0:
-    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
     fnames = temp.split('\n')
    for x in fnames:
     if x.find(keyword)<0: continue
@@ -392,7 +392,7 @@ def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
          print "directory for this run does not exist",run
          # os.system('mkdir '+run)
          continue
-    temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco+run,shell=True)
+    temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco+run,shell=True)
     if temp2.find('.root')<0: continue
     os.chdir(run)
     fileList = []
