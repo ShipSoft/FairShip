@@ -547,7 +547,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
- std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
+ std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","p/pxy","p/Abspxy","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
                                  "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4"};
  std::vector<TString> tagged  = {"","mu"};
  std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"};
@@ -741,18 +741,26 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         if (dist<tDely[tnTr]){tDely[tnTr]=dist;}
      }
       tnTr+=1;
+      if (X) { // within ~3sigma  X from mutrack
+        h2D["p/pxmu"]->Fill(P,Px);
+        h2D["p/Abspxmu"]->Fill(P,TMath::Abs(Px));
+        if (fSource){
+         h2D["p/pxmu"+source]->Fill(P,Px);
+         h2D["p/Abspxmu"+source]->Fill(P,TMath::Abs(Px));
+       }
+      }
       if (X && Y) { // within ~3sigma  X,Y from mutrack
         h1D["chi2mu"]->Fill(chi2);
         h1D["Nmeasurementsmu"]->Fill(fitStatus->getNdf());
         h2D["p/ptmu"]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-        h2D["p/pxmu"]->Fill(P,Px);
-        h2D["p/Abspxmu"]->Fill(P,TMath::Abs(Px));
+        h2D["p/pxymu"]->Fill(P,Px);
+        h2D["p/Abspxymu"]->Fill(P,TMath::Abs(Px));
         h2D["xymu"]->Fill(pos[0],pos[1]);
         h2D["pxpymu"]->Fill(Px/Pz,Py/Pz);
         if (fSource){
          h2D["p/ptmu"+source]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-         h2D["p/pxmu"+source]->Fill(P,Px);
-         h2D["p/Abspxmu"+source]->Fill(P,TMath::Abs(Px));
+         h2D["p/pxymu"+source]->Fill(P,Px);
+         h2D["p/Abspxymu"+source]->Fill(P,TMath::Abs(Px));
          h2D["xymu"+source]->Fill(pos[0],pos[1]);
          h2D["pxpymu"+source]->Fill(Px/Pz,Py/Pz);
         }
