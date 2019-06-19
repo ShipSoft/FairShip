@@ -469,7 +469,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoBBox *LargedetBox = new TGeoBBox("LargedetBox", (fXRpc+fdeltax)/2, (fYRpc+fdeltay)/2, fNmuRpc*fZRpc/2);  
       TGeoBBox *SmalldetBox = new TGeoBBox("SmalldetBox", fXtot/2, (fYtot+supportasymmetry)/2, (fZtot-fNmuRpc*fZRpc)/2); //solving overlapping with pillars->dividing box to an union of two different boxes
  
-      TGeoTranslation *translationlarge = new TGeoTranslation(0,0,(fZtot-fNmuRpc*fZRpc)/2);
+      TGeoTranslation *translationlarge = new TGeoTranslation(0,0,(fZtot)/2);
       translationlarge->SetName("translationlarge");
       translationlarge->RegisterYourself();
       TGeoTranslation *translationsmall = new TGeoTranslation(0,0,0);
@@ -549,12 +549,12 @@ void NuTauMudet::ConstructGeometry()
 
       for(Int_t i = 0; i < fNFe; i++)
 	{
-          double dz = -fZtot/2+i*fZFe+fZFe/2+i*fZRpc;
+          double dz = -fZtot/2+i*fZFe+fZFe/2+i*fZRpc+(fNmuRpc*fZRpc/2);
           volMudetBox->AddNode(MudetIronLayer,nr + 100 + i, new TGeoTranslation(0, 0, dz));
 	}
       for(Int_t i = 0; i < fNFethin; i++)
 	{	  
-          double dz = -fZtot/2+fNFe*(fZRpc+fZFe)+i*fZFethin+fZFethin/2+i*fZRpc;
+          double dz = -fZtot/2+fNFe*(fZRpc+fZFe)+i*fZFethin+fZFethin/2+i*fZRpc+(fNmuRpc*fZRpc/2);
           volMudetBox->AddNode(MudetIronLayer1,nr + 100 + fNFe + i, new TGeoTranslation(0, 0,dz));
 	}
       //*****************************RPC LAYERS****************************************
@@ -609,13 +609,13 @@ void NuTauMudet::ConstructGeometry()
     
       for(Int_t i = 0; i < fNRpc; i++)
 	{
-         double dz = -fZtot/2 + (i+1)*fZFe + i*fZRpc + fZRpc/2;
+         double dz = -fZtot/2 + (i+1)*fZFe + i*fZRpc + fZRpc/2+(fNmuRpc*fZRpc/2);
          if (i >= fNFe) dz = dz - (i + 1 - fNFe) * (fZFe - fZFethin);
          volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, dz));          
 	}
       for(Int_t i = 0; i < fNmuRpc; i++)
 	{
-         double dz = -fZtot/2 + fNFe* fZFe + fNFethin*fZFethin + fNRpc*fZRpc + i*fZRpc + fZRpc/2;
+         double dz = -fZtot/2 + fNFe* fZFe + fNFethin*fZFethin + fNRpc*fZRpc + i*fZRpc + fZRpc/2+(fNmuRpc*fZRpc/2);
          volMudetBox->AddNode(volRpcContainer1,nr + fNRpc + i,new TGeoTranslation(0, 0, dz));
 	}
     
