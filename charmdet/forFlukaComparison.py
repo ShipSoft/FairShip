@@ -5,19 +5,24 @@ from array import array
 
 def run():
  for n in range(0,20000,1000):
-  cmd = "$SHIPBUILD/FairShip/charmdet/forFlukaComparison.py -f pythia8_Geant4_1.0_c"+str(n)+"_mu"
+  cmd = "python $FAIRSHIP/charmdet/forFlukaComparison.py -f pythia8_Geant4_1.0_c"+str(n)+"_mu"
   os.system(cmd)
- cmd = "$SHIPBUILD/FairShip/charmdet/forFlukaComparison.py -f pythia8_Geant4_charm_0-19_1.0_mu"
+ cmd = "hadd ntuple-pythia8_Geant4_mbias_0-19_1.0_mu.root "
+ for n in range(0,20000,1000):
+  cmd += "ntuple-pythia8_Geant4_1.0_c"+str(n)+"_mu.root "
+ os.system(cmd)
+ cmd = "python $FAIRSHIP/charmdet/forFlukaComparison.py -f pythia8_Geant4_charm_0-19_1.0_mu"
  os.system(cmd)
 
 
-path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/simulation1GeV-withDeadChannels/"
+path = "/home/truf/ship-ubuntu-1710-64/simulation1GeV-withDeadChannels/"
 MCStats = {1:1.8E9}
 charmNorm  = {1:0.176,10:0.424}
 beautyNorm = {1:0.,   10:0.01218}
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="fname", help="name of input file", required=True)
+options = parser.parse_args()
 
 if options.fname=="run": run()
 
@@ -49,8 +54,8 @@ tMuFluxSim.Branch('x',x,'x[nTracks]/F')
 tMuFluxSim.Branch('y',y,'y[nTracks]/F')
 tMuFluxSim.Branch('z',z,'z[nTracks]/F')
 tMuFluxSim.Branch('w',w,'w[nTracks]/F')
-tMuFluxSim.Branch('mother',mother,'mother[nTracks]/F')
-tMuFluxSim.Branch('process',process,'process[nTracks]/F')
+tMuFluxSim.Branch('mother',mother,'mother[nTracks]/I')
+tMuFluxSim.Branch('process',process,'process[nTracks]/I')
 
 sTree = ROOT.TChain('cbmsim')
 for n in range(5):
@@ -73,7 +78,7 @@ for n in range(sTree.GetEntries()):
       stationPerTrack[ntrack]['X'][2] = p.GetZ()
       stationPerTrack[ntrack]['X'][0] = p.GetX()
       stationPerTrack[ntrack]['X'][1] = p.GetY()
-      stationPerTrack[ntrack]['P'][0] = p.GetPz()
+      stationPerTrack[ntrack]['P'][0] = p.GetPx()
       stationPerTrack[ntrack]['P'][1] = p.GetPy()
       stationPerTrack[ntrack]['P'][2] = p.GetPz()
       stationPerTrack[ntrack]['pid'] = p.PdgCode()
@@ -95,8 +100,8 @@ for n in range(sTree.GetEntries()):
    mother[nTracks[0] ] = 0
    if not mo < 0: mother[nTracks[0] ] =  sTree.MCTrack[mo].GetPdgCode()
    process[nTracks[0] ]  = sTree.MCTrack[ntrack].GetProcID()
-   w[nTracks[0]] = MCStats['1']
-   if not fname.find('charm')<0: w[nTracks[0]]=w[nTracks[0]]/charmNorm['1']
+   w[nTracks[0]] = MCStats[1]
+   if not options.fname.find('charm')<0: w[nTracks[0]]=w[nTracks[0]]/charmNorm[1]
    nTracks[0]+=1
 #
  tMuFluxSim.Fill()
