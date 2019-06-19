@@ -601,7 +601,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  tMuFlux.Branch("z",&tz,"z[nTr]/D");
  tMuFlux.Branch("Delx",&tDelx,"tDelx[nTr]/D");
  tMuFlux.Branch("Dely",&tDely,"tDely[nTr]/D");
- auto xx = fname(15,27);
+ auto xx = fname(104,26);
  TObjArray* tst = TString(xx.Data()).Tokenize("_");
  tspillnrA = std::stoi(((TObjString *)(tst->At(0)))->String().Data());
  tspillnrB = std::stoi(((TObjString *)(tst->At(1)))->String().Data());
