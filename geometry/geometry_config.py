@@ -482,7 +482,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmuMagnet = AttrDict(z=0*u.cm)
         c.EmuMagnet.Design = nuTauTargetDesign
         c.EmuMagnet.B=1.25*u.tesla
-        c.EmuMagnet.GapDown = 10*u.cm
+        c.EmuMagnet.GapDown = 25*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
             c.EmuMagnet.WithConstField=False  #now loaded field map
@@ -692,8 +692,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrX = 12.9 *u.cm
     c.NuTauTarget.BrY = 10.5 *u.cm
     c.NuTauTarget.xdim = c.NuTauTarget.col*c.NuTauTarget.BrX
-    c.NuTauTarget.ydim = c.EmuMagnet.Height2 #need larger virtual box due to larger TT stations
-    c.NuTauTarget.brickydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist    
+    c.NuTauTarget.ydim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist    
 
     c.NuTauTarget.BrPackZ = 0.1 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
@@ -704,7 +703,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTT = AttrDict(z=0*u.cm)
     c.NuTauTT.design = nuTauTargetDesign
     c.NuTauTT.TTX = c.NuTauTarget.xdim
-    c.NuTauTT.TTY = c.EmuMagnet.Height2
+    c.NuTauTT.TTY = c.NuTauTarget.ydim
     c.NuTauTT.TTZ= 6.0*u.cm
     c.NuTauTT.n = c.NuTauTarget.wall+1
 
@@ -721,7 +720,7 @@ with ConfigRegistry.register_config("basic") as c:
     if nuTauTargetDesign==3:
         c.tauHPT.SRDY = 10 *u.cm  #additional detectors for improving acceptance
         c.tauHPT.DX = c.NuTauTarget.xdim
-        c.tauHPT.DY = c.EmuMagnet.Height2
+        c.tauHPT.DY = c.EmuMagnet.Height2 - 2 *c.tauHPT.SRDY
         c.tauHPT.DZ = c.NuTauTT.TTZ        
         c.tauHPT.nHPT = 3 #n.d.r. number after each neutrino target
         c.tauHPT.distHPT = 50*u.cm
@@ -751,4 +750,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
-    c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.brickydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
+    c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield

@@ -223,6 +223,16 @@ void Hpt::ConstructGeometry()
     volDT->SetLineColor(kBlue-5);
     AddSensitiveVolume(volDT);
 
+    TGeoBBox *Surroundingdet = new TGeoBBox("Surroundingdet",DXMagnetizedRegion/2., fSRHeight/2, DZMagnetizedRegion/2.);
+    TGeoVolume *volSurroundingdet = new TGeoVolume("volSurroundingdet",Surroundingdet, HPTmat);
+    AddSensitiveVolume(volSurroundingdet);
+    volSurroundingdet->SetLineColor(kBlue);
+    tTauNuDet->AddNode(volSurroundingdet,100, new TGeoTranslation(0,+fmagnety/2+fSRHeight/2, fmagnetcenter));
+    volMagRegion->AddNode(volSurroundingdet, 200, new TGeoTranslation(0.,+DYMagnetizedRegion/2-fSRHeight/2,0.));
+    volMagRegion->AddNode(volSurroundingdet, 300, new TGeoTranslation(0.,-DYMagnetizedRegion/2+fSRHeight/2,0.));
+    tTauNuDet->AddNode(volSurroundingdet,400, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
+    
+
     Int_t n = 0;
     for(int i=0;i<fnHPT;i++){
 	  {
