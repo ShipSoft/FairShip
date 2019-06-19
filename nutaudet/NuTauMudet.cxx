@@ -85,7 +85,7 @@ void NuTauMudet::SetTotDimensions(Double_t X, Double_t Y, Double_t Z)
   fZtot = Z;
 }
 
-void NuTauMudet::SetFeDimensions(Double_t X, Double_t Y, Double_t Z, Double_t Zthin = 0.)
+void NuTauMudet::SetFeDimensions(Double_t X, Double_t Y, Double_t Z, Double_t Zthin)
 {  
   fXFe = X;
   fYFe = Y;
@@ -168,7 +168,7 @@ void NuTauMudet::SetZDimensionArm(Double_t Z)
   fZArm = Z;
 }
 
-void NuTauMudet::SetNFeInArm(Int_t N, Int_t Nthin = 0)
+void NuTauMudet::SetNFeInArm(Int_t N, Int_t Nthin)
 {
   fNFe = N;
   fNFethin = Nthin;
