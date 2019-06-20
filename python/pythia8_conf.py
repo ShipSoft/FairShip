@@ -1,13 +1,13 @@
-from __future__ import print_function
-import ROOT
-import os
-import yaml
-import shipunit as u
-import hnl
-import rpvsusy
+#from __future__ import print_function
+#import ROOT
+#import os
+#import yaml
+#import shipunit as u
+#import hnl
+#import rpvsusy
 from pythia8_conf_utils import *
-from method_logger import MethodLogger
-import readDecayTable
+#from method_logger import MethodLogger
+#import readDecayTable
 
 def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True):
     # configure pythia8 for Ship usage

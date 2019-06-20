@@ -2,7 +2,7 @@ import ROOT, os, sys
 import shipunit as u
 import readDecayTable
 import darkphoton
-import proton_bremsstrahlung
+#import proton_bremsstrahlung
 
 # Boundaries for production in meson decays
 # mass of the meson - mass of other decay product!!

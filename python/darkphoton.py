@@ -6,7 +6,7 @@ import ROOT as r
 #from settings import *
 #from functions import *
 from hnl import mass
-from hnl import PDGname
+#from hnl import PDGname
 
 # constants
 alphaQED = 1./137.
