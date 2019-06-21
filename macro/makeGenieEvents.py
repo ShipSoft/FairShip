@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
-import ROOT,os,sys,getopt,time
+import ROOT
+import os
 import shipunit as u
 import shipRoot_conf
 import argparse

@@ -1,5 +1,5 @@
 # simple vertex reconstruction with errors
-import ROOT,sys,os
+import ROOT
 import shipunit as u
 import rootUtils as ut
 import numpy as np
@@ -83,7 +83,7 @@ class Task:
   particles    = self.fPartArray
   PosDirCharge,CovMat,scalFac = {},{},{}
   for tr in goodTracks:
-   fitStatus = fittedTracks[tr].getFitStatus()
+   fittedTracks[tr].getFitStatus()
    xx  = fittedTracks[tr].getFittedState()
    pid   = xx.getPDG()
    if not pidProton and abs(pid) == 2212:
@@ -143,8 +143,8 @@ class Task:
 #   HNL true
      if  self.sTree.GetBranch("fitTrack2MC"):
       mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]
-      mctrack2 = self.sTree.MCTrack[self.sTree.fitTrack2MC[t2]]
-      mcHNL = self.sTree.MCTrack[mctrack.GetMotherId()]
+      self.sTree.MCTrack[self.sTree.fitTrack2MC[t2]]
+      self.sTree.MCTrack[mctrack.GetMotherId()]
       #print "true vtx: ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
       #print "reco vtx: ",HNLPos[0],HNLPos[1],HNLPos[2]
       #self.h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
@@ -157,7 +157,7 @@ class Task:
      
      #print "*********************************** vertex fit precise   ******************************************** "
      
-     detPlane = ROOT.genfit.DetPlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
+     ROOT.genfit.DetPlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
      plane = ROOT.genfit.RKTrackRep().makePlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
      st1  = fittedTracks[t1].getFittedState()
      st2  = fittedTracks[t2].getFittedState()
@@ -194,7 +194,7 @@ class Task:
      for i in range(100):	
        self.Vy[i] = covInv[i/10][i%10]
      
-     f=np.array([0.])
+     np.array([0.])
      gMinuit = ROOT.TMinuit(9)
      gMinuit.SetFCN(self.fcn)
      gMinuit.SetPrintLevel(-1)#minute quiet mode
@@ -256,9 +256,9 @@ class Task:
      yFit = values[1]
      zFit = values[2]
      HNLPosFit =  ROOT.TVector3(xFit,yFit,zFit)
-     xFitErr = errors[0]
-     yFitErr = errors[1]
-     zFitErr = errors[2]
+     errors[0]
+     errors[1]
+     errors[2]
      
      #fixme: mass from track reconstraction needed 
      m1 = self.PDG.GetParticle(PosDirCharge[t1]['pdgCode']).Mass()

@@ -78,9 +78,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     run.SetName("TGeant4")  # Transport engine
     run.SetOutputFile("dummy")  # Output file
     run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for the mag field
-    rtdb = run.GetRuntimeDb()
+    run.GetRuntimeDb()
 
-    modules = shipDet_conf.configure(run,ShipGeo)
+    shipDet_conf.configure(run,ShipGeo)
     run.Init()
 
     #run = ROOT.FairRunSim()
@@ -259,7 +259,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                 n_ghosts += 1
             
             is_reconstructed = 0
-            is_reconstructed_no_clones = 0
             
             
             if tmax_y12 in reconstructible_tracks:
@@ -319,7 +318,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                                             h['TracksPassedU'].Fill("Combined stations 1&2/3&4", 1)
                                             metrics['reco_passed_no_clones'] += 1
                                             in_combo.append(tmax_34)
-                                            is_reconstructed_no_clones = 1
                                         
             # For reconstructed tracks
             if is_reconstructed == 0:
@@ -328,9 +326,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
             metrics['reco_frac_tot'] += [frac_tot]
             
             # Momentum
-            Pz = hits['Pz']
-            Px = hits['Px']
-            Py = hits['Py']
+            hits['Pz']
+            hits['Px']
+            hits['Py']
 
             p, px, py, pz = getPtruthFirst(sTree, tmax_tot)
             pt = math.sqrt(px**2 + py**2)
@@ -530,7 +528,6 @@ def extrapolateToPlane(fT,z):
                 rc = True
             except:
                 print 'error with extrapolation'
-                pass
             if not rc:
                 # use linear extrapolation
                 px,py,pz  = mom.X(),mom.Y(),mom.Z()
@@ -641,12 +638,12 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     TStation4EndZ = Zpos + ShipGeo.strawtubes.OuterStrawDiameter / 2
 
 
-    PDG=ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
 
     #returns a list of reconstructible tracks for this event
     #call this routine once for each event before smearing
     MCTrackIDs=[]
-    rc = sTree.GetEvent(iEvent)
+    sTree.GetEvent(iEvent)
     nMCTracks = sTree.MCTrack.GetEntriesFast()
 
     

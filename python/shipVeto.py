@@ -45,8 +45,8 @@ class Task:
          if mcParticle>0 and mcParticle != mcP : found=True
          if mcParticle<0 and abs(mcParticle) == mcP : found=True
         if found: continue
-     position = aDigi.GetXYZ()
-     ELoss    = aDigi.GetEloss()
+     aDigi.GetXYZ()
+     aDigi.GetEloss()
      if aDigi.isValid(): hitSegments += 1 #threshold of 45 MeV per segment
   w = (1-self.SBTefficiency)**hitSegments  
   veto = self.random.Rndm() > w
@@ -135,7 +135,7 @@ class Task:
     nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())
     cNode = nav.FindNode().GetName()
     nav.SetCurrentDirection(xDir,yDir,0.)
-    rc = nav.FindNextBoundaryAndStep()
+    nav.FindNextBoundaryAndStep()
     x,y  = nav.GetCurrentPoint()[0],nav.GetCurrentPoint()[1]
     if cNode != nav.GetCurrentNode().GetName():
      dist = ROOT.TMath.Sqrt( (aPoint.x()-x)**2 + (aPoint.y()-y)**2)

@@ -23,21 +23,21 @@ def exMCTracks():
  sTree.SetBranchAddress("MCTrack", MCTracks)
  detPos = (3.5*u.m+70*u.m+40*u.m-100*u.m)
  for n in range(nEvents):
-  rc = sTree.GetEvent(n) 
+  sTree.GetEvent(n) 
   nMCTracks = MCTracks.GetEntriesFast() 
-  rc = h['N'].Fill( nMCTracks )
+  h['N'].Fill( nMCTracks )
   for i in range(nMCTracks):
    atrack = MCTracks.At(i)
    pdgCode = atrack.GetPdgCode()
    mom = ROOT.TLorentzVector()
    atrack.Get4Momentum(mom)
    if abs(pdgCode)==13 or abs(pdgCode)==211:  
-    rc = h['pz'].Fill( mom.Pz() )
-    rc = h['oz'].Fill( atrack.GetStartZ() )  
+    h['pz'].Fill( mom.Pz() )
+    h['oz'].Fill( atrack.GetStartZ() )  
     lam = ( detPos-atrack.GetStartZ() )/mom.Pz()
     xdet = (atrack.GetStartX()+lam*mom.Px() )/u.m
     ydet = (atrack.GetStartY()+lam*mom.Py() )/u.m
-    rc = h['ex'].Fill(xdet,ydet ) 
+    h['ex'].Fill(xdet,ydet ) 
  h['N'].Draw('box')
 
 def exMCHits(dump=False):
@@ -46,17 +46,17 @@ def exMCHits(dump=False):
  ut.bookHist(h,'txty','tracking hits y vs x',100,-2.5,2.5,100,-2.5,2.5)
  sTree.SetBranchAddress("vetoPoint", TrackingHits)
  for n in range(nEvents):
-  rc = sTree.GetEvent(n) 
+  sTree.GetEvent(n) 
   nHits = TrackingHits.GetEntriesFast() 
   for i in range(nHits):
     ahit = TrackingHits.At(i)
-    rc = h['tz'].Fill( ahit.GetZ()/u.m )
-    rc = h['txty'].Fill( ahit.GetX()/u.m,ahit.GetY()/u.m )
-    rc = h['tztx'].Fill( ahit.GetZ()/u.m,ahit.GetX()/u.m ) 
+    h['tz'].Fill( ahit.GetZ()/u.m )
+    h['txty'].Fill( ahit.GetX()/u.m,ahit.GetY()/u.m )
+    h['tztx'].Fill( ahit.GetZ()/u.m,ahit.GetX()/u.m ) 
  h['tztx'].Draw('box') 
  if dump:
   for n in range( min(10,nEvents) ):
-   rc = sTree.GetEvent(n) 
+   sTree.GetEvent(n) 
    nHits = TrackingHits.GetEntriesFast() 
    for i in range(nHits):
     ahit = TrackingHits.At(i)

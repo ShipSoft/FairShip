@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 momentum = 1
-import ROOT,os,sys,getopt,time
+import ROOT
+import os
+import time
 import shipunit as u
 import shipRoot_conf
 import ShipGeoConfig

@@ -22,7 +22,7 @@ else:
 
 def makeHadrons(run):
  for n in range(ncpus):
-  s = x.Rndm()*1000000000.
+  x.Rndm()*1000000000.
   os.system('mkdir run'+str(run))
   os.chdir('run'+str(run))
   cmd = "python $FAIRSHIP/macro/makeCascade.py -m "+msel+" -n " + str(nev) + " -t  Cascade-run"+str(run)+"-parp16-MSTP82-1-MSEL"+msel+".root"

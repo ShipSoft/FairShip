@@ -50,7 +50,6 @@ def pyExit():
         os.system('kill '+str(os.getpid()))
    if hasattr(x,'fMan'): del x.fMan
    if hasattr(x,'fRun'): del x.fRun
-   pass
 
 def configure(darkphoton=None):
    ROOT.gROOT.ProcessLine('#include "'+os.environ["FAIRSHIP"]+'/shipdata/ShipGlobals.h"')

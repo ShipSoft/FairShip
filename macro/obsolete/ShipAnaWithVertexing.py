@@ -1,5 +1,7 @@
 # example for accessing smeared hits and fitted tracks
-import ROOT,os,sys,getopt
+import ROOT
+import getopt
+import sys
 import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
@@ -156,7 +158,7 @@ def myVertex(t1,t2,PosDir):
 def myEventLoop(N):
  nEvents = min(sTree.GetEntries(),N)
  for n in range(nEvents): 
-  rc = sTree.GetEntry(n)
+  sTree.GetEntry(n)
   wg = sTree.MCTrack[0].GetWeight()
   if not wg>0.: wg=1.
 # make some straw hit analysis
@@ -232,8 +234,8 @@ def myEventLoop(N):
       mom = xx.getMom()
       state = ROOT.genfit.StateOnPlane(rep)
       rep.setPosMom(state, pos, mom)
-      origPlane = state.getPlane()
-      origState = ROOT.genfit.StateOnPlane(state)
+      state.getPlane()
+      ROOT.genfit.StateOnPlane(state)
       try:
        rep.extrapolateToPoint(state, HNLPos, False)
       except:
@@ -255,7 +257,7 @@ def myEventLoop(N):
      h['HNL'].Fill(HNL.M())
 # try to make it persistent
      vx = ROOT.TLorentzVector(HNLPos,0.)  # time not set
-     particle = ROOT.TParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
+     ROOT.TParticle(9900015,0,-1,-1,t1,t2,HNL,vx)
 
 def access2SmearedHits():
  key = 0

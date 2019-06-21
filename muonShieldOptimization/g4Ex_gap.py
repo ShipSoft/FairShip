@@ -314,7 +314,7 @@ class MyTrackingActionD(G4UserTrackingAction):
       pid          = part.GetPDGcode()
       vx           = atrack.GetVertexPosition()
       mom  = atrack.GetMomentum()
-      ekin = atrack.GetKineticEnergy()/GeV
+      atrack.GetKineticEnergy()/GeV
       pos  = atrack.GetPosition()
       w = atrack.GetWeight()
       parentid = int(w)/100000-10000
@@ -377,7 +377,7 @@ class ScoreSD(G4VSensitiveDetector):
     G4VSensitiveDetector.__init__(self, Name)
 
   def ProcessHits(self, step, rohist):
-    preStepPoint = step.GetPreStepPoint()
+    step.GetPreStepPoint()
     track        = step.GetTrack()
     part         = track.GetDynamicParticle()
     pid          = part.GetPDGcode()
@@ -387,7 +387,7 @@ class ScoreSD(G4VSensitiveDetector):
     M            = part.GetMass()
     Pvx          = ROOT.TMath.Sqrt( ekinvx*(ekinvx+2*M) )
     mom  = track.GetMomentum()
-    ekin = track.GetKineticEnergy()/GeV
+    track.GetKineticEnergy()/GeV
     pos = track.GetPosition()
 #
     # primPart = part.GetPrimaryParticle()
@@ -415,16 +415,16 @@ def ConstructGeom():
   snoopy   = G4EzVolume("Snoopy")
   snoopy.CreateTubeVolume(vac, 0.,          20*m,     world_r/2.)
   snoopyPhys = snoopy.PlaceIt(G4ThreeVector(0.,0.,0.*m))
-  snoopyLog  = snoopyPhys.GetLogicalVolume()
+  snoopyPhys.GetLogicalVolume()
   snoopy.SetVisibility(False)
   # a target box is placed
   global target,targetPhys
   iron     = G4Material.GetMaterial("G4_Fe")
-  air      = G4Material.GetMaterial("G4_AIR")
+  G4Material.GetMaterial("G4_AIR")
   water    = G4Material.GetMaterial("G4_WATER")
   tungsten = G4Material.GetMaterial("G4_W")
-  lead     = G4Material.GetMaterial("G4_Pb")
-  alum     = G4Material.GetMaterial("G4_Al")
+  G4Material.GetMaterial("G4_Pb")
+  G4Material.GetMaterial("G4_Al")
   elementMo  = G4Element("Molybdenum","Mo",42.,   95.94*g/mole)
   molybdenum = G4Material("molybdenum", 10.22*g/cm3, 1)
   molybdenum.AddElement(elementMo, 1.00)
@@ -458,7 +458,7 @@ def ConstructGeom():
   # put iron around
    moreShielding = G4EzVolume("moreShielding")
    moreShielding.CreateTubeVolume(iron, 30.*cm, 400.*cm,  targetL/2.)
-   moreShieldingPhys = moreShielding.PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL/2.),1,snoopy)
+   moreShielding.PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL/2.),1,snoopy)
 #
   else:  # new design with mixture Molybdaen and Tungsten
    slitDZ   = 0.5*cm
@@ -497,12 +497,12 @@ def ConstructGeom():
    yTot = 400.*cm
    moreShieldingTopBot = G4EzVolume("moreShieldingTopBot")
    moreShieldingTopBot.CreateBoxVolume(iron, xTot, yTot/2., targetL)
-   moreShieldingTopPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,diameter/2. +spaceTopBot+yTot/4.,z0Pos + targetL/2.),1,snoopy)
-   moreShieldingBotPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,-diameter/2.-spaceTopBot-yTot/4.,z0Pos + targetL/2.),1,snoopy)
+   moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,diameter/2. +spaceTopBot+yTot/4.,z0Pos + targetL/2.),1,snoopy)
+   moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,-diameter/2.-spaceTopBot-yTot/4.,z0Pos + targetL/2.),1,snoopy)
    moreShieldingSide = G4EzVolume("moreShieldingSide")
    moreShieldingSide.CreateBoxVolume(iron, xTot/2., diameter+1.9*spaceTopBot, targetL)
-   moreShieldingLeftPhys  = moreShieldingSide.PlaceIt(G4ThreeVector(diameter/2. +spaceSide+xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
-   moreShieldingRightPhys = moreShieldingSide.PlaceIt(G4ThreeVector(-diameter/2.-spaceSide-xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
+   moreShieldingSide.PlaceIt(G4ThreeVector(diameter/2. +spaceSide+xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
+   moreShieldingSide.PlaceIt(G4ThreeVector(-diameter/2.-spaceSide-xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
   # = 0.1m3 = 2t
   # a hadron absorber is placed
   absorberL = 2*150.*cm

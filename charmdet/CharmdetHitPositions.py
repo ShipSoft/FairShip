@@ -196,9 +196,9 @@ def RPCPosition():
         hit = ROOT.MuonTaggerHit(detID,0)
         a,b = correctAlignmentRPC(hit,v)
         RPCPositionsBotTop[detID] = [a.Clone(),b.Clone()]
-        x = (a[0]+b[0])/2.
-        y = (a[1]+b[1])/2.
-        z = (a[2]+b[2])/2.
+        (a[0]+b[0])/2.
+        (a[1]+b[1])/2.
+        (a[2]+b[2])/2.
        # print "Postion for view {} and channel {}: ({}, {},{})".format(v,c,x,y,z)
 
 def GetRPCPosition(s,v,c):
@@ -260,8 +260,8 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
   if fittedtracks:
    mH,bH = getSlopes(clustersH,0) 
    mV,bV = getSlopes(clustersV,1)   
-   trackH = ROOT.RPCTrack(mH,bH)
-   trackV = ROOT.RPCTrack(mV,bV)
+   ROOT.RPCTrack(mH,bH)
+   ROOT.RPCTrack(mV,bV)
   #print "Line equation along horizontal: {}*z + {}".format(mH,bH)
   #print "Line equation along vertical: {}*z + {}".format(mV,bV)
    theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))

@@ -1,5 +1,8 @@
 #!/usr/bin/env python 
-import ROOT,os,sys,getopt,time,shipRoot_conf
+import ROOT
+import shipRoot_conf
+import sys
+import time
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
 
@@ -59,7 +62,7 @@ def run():
  if nev==0: run.SetOutputFile("dummy.root")
  else: run.SetOutputFile(outFile)  # Output file
  run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
- rtdb = run.GetRuntimeDb() 
+ run.GetRuntimeDb() 
 # -----Materials----------------------------------------------
  run.SetMaterials("media.geo")  
 # -----Create geometry----------------------------------------------
@@ -130,15 +133,15 @@ def makePlot(f,book=True):
   ut.bookHist(h,'elossRaw','energy loss as function of momentum GeV/c',100,0,maxTheta, 10000,0.,100.)
  sTree = f.cbmsim
  for n in range(sTree.GetEntries()):
-  rc = sTree.GetEvent(n)
+  sTree.GetEvent(n)
   Ein  = sTree.MCTrack[0].GetEnergy()
-  M = sTree.MCTrack[0].GetMass()
+  sTree.MCTrack[0].GetMass()
   Eloss = 0
   for aHit in sTree.vetoPoint: 
     Eloss+=aHit.GetEnergyLoss()
     print Ein,Eloss/Ein
-  rc = h['eloss'].Fill(Ein,Eloss/Ein)
-  rc = h['elossRaw'].Fill(Ein,Eloss)
+  h['eloss'].Fill(Ein,Eloss/Ein)
+  h['elossRaw'].Fill(Ein,Eloss)
  ut.bookCanvas(h,key=s,title=s,nx=900,ny=600,cx=1,cy=1)
  tc = h[s].cd(1)
  if s=="NA62":
@@ -147,7 +150,7 @@ def makePlot(f,book=True):
   h['95'].Sumw2()
   h['0'] = h['eloss'].ProjectionX('0',1,100)
   h['0'].Sumw2()
-  rc = h['95'].Divide(h['0'] )
+  h['95'].Divide(h['0'] )
   h['95'].Draw()
   h['meanEloss'] = h['elossRaw'].ProjectionX()
   for n in range(1,h['elossRaw'].GetNbinsX()+1):
@@ -222,7 +225,7 @@ def makeSummaryPlot():
  ut.readHists(h,"/mnt/hgfs/microDisk/Data/eloss/eloss_sum.root")
  ut.readHists(h,"/mnt/hgfs/microDisk/Data/eloss/eloss_withRaw.root")
  ut.bookCanvas(h,key='summary',title=" ",nx=1200,ny=600,cx=2,cy=1)
- tc = h['summary'].cd(1)
+ h['summary'].cd(1)
  h['0'] = h['eloss'].ProjectionX('0',1,h['eloss'].GetNbinsY())
  h['0'].Sumw2()
  NA62()
@@ -231,7 +234,7 @@ def makeSummaryPlot():
   h[t].Sumw2()
   h[t].SetStats(0)
   h[t].SetMarkerStyle(24)
-  rc = h[t].Divide(h['0'] )
+  h[t].Divide(h['0'] )
   h[t].Rebin(2)
   h[t].Scale(1./2.)
   if t!=93: 
@@ -250,7 +253,7 @@ def makeSummaryPlot():
  h['lg'].AddEntry(h[95],'FairShip >95%','PL')
  h['lg'].AddEntry(h[93],'FairShip >93%','PL')
  h['lg'].Draw()
- tc = h['summary'].cd(2)
+ h['summary'].cd(2)
  h['meanEloss'] = h['elossRaw'].ProjectionX()
  for n in range(1,h['elossRaw'].GetNbinsX()+1):
     tmp = h['elossRaw'].ProjectionY('tmp',n,n)

@@ -29,7 +29,6 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
     # TaggerHits = []
 
     
-    fittedtrackids = []
     track_hits = {}
     if len(SmearedHits) > 100:
         print "Too large hits in the event!"

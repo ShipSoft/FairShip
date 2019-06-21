@@ -139,7 +139,7 @@ def someDebug():
  for x in trs: print x
 #
  gMC = ROOT.gMC # <ROOT.TVirtualMC* object ("TGeant4") at 0x2a5d3e8>
- fStack = gMC.GetStack()
+ gMC.GetStack()
  gMC.ProcessRun(1) # 1 event
 #
  gMC.GetMC() # <ROOT.TGeant4 object ("TGeant4")
@@ -149,4 +149,4 @@ def someDebug():
  gPrim = run.GetPrimaryGenerator()
  mch   = gPrim.GetEvent() # <ROOT.FairMCEventHeader object ("MCEventHeader.")
  print mch.GetEventID(),mch.GetZ()
- gPy8 = gPrim.GetListOfGenerators()[0]
+ gPrim.GetListOfGenerators()[0]

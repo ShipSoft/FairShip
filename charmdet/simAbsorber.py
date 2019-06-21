@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
-import ROOT,os,sys,getopt,time,shipRoot_conf
+import ROOT
+import shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 
 import shipunit as u
@@ -41,7 +42,7 @@ def run():
  run.SetName(mcEngine)  # Transport engine
  run.SetOutputFile(outFile)  # Output file
  run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
- rtdb = run.GetRuntimeDb() 
+ run.GetRuntimeDb() 
 # -----Materials----------------------------------------------
  run.SetMaterials("media.geo")  
 # -----Create geometry----------------------------------------------
@@ -105,12 +106,12 @@ def analyze():
  f=ROOT.TFile(outFile)
  sTree = f.cbmsim
  for n in range(sTree.GetEntries()):
-  rc = sTree.GetEvent(n)
+  sTree.GetEvent(n)
   mu = sTree.MCTrack[0]
   Pout = -0.49
   for v in sTree.vetoPoint:
    if v.GetTrackID()==0:
     if v.LastPoint()[2]>119.9:
      Pout = v.LastMom().Mag()
-  rc = h['PinPout'].Fill(mu.GetP(),Pout)
+  h['PinPout'].Fill(mu.GetP(),Pout)
  ut.writeHists(h,'PinPout.root')

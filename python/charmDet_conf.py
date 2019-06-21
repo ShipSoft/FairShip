@@ -20,7 +20,7 @@ def getParameter(x,ship_geo,latestCharmGeo):
   return getattr(a,last)
 
 def configure(run,ship_geo,Gfield=''):
- latestCharmGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
+ ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
  

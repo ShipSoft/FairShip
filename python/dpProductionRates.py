@@ -1,4 +1,5 @@
-import ROOT,os,sys,getopt,math
+import ROOT
+import math
 import shipunit as u
 import proton_bremsstrahlung
 

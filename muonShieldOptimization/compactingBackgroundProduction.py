@@ -1,4 +1,8 @@
-import os,ROOT,sys,subprocess,pickle,time,datetime
+import os
+import ROOT
+import datetime
+import pickle
+import sys
 import rootUtils as ut
 
 pdg   = ROOT.TDatabasePDG()
@@ -52,11 +56,8 @@ def GetGoodAndBadRuns(startDate,endDate):
    for x in test:
      if x.find('run_fixedTarget')>0:
       test2 = os.listdir(globalPath+str(theRun)+'/'+x)
-      bad  = True
-      tmpF = False
       f = globalPath+str(theRun)+"/"+x+"/"+fileName
       if fnames+"tmp" in test2:
-        tmpF = True 
         f = f+"tmp"
       elif fnames in test2:
         f = f
@@ -74,7 +75,6 @@ def GetGoodAndBadRuns(startDate,endDate):
            badRuns.append(theRun)
            continue
          if t.FindObjectAny('cbmsim'):
-            bad = False
             goodRuns.append(f)
             t.Close()
       except:
@@ -265,15 +265,12 @@ def makeHistos(rfile):
  h={}
  ut.bookHist(h,'pids','pid',19999,-9999.5,9999.5)
  ut.bookHist(h,'test','muon p/pt',100,0.,400.,100,0.,5.)
- diMuonDecays = [221, 223, 113, 331, 333]
- pDict = {}
- procDict = {}
  for n in range(sTree.GetEntries()):
-  rc = sTree.GetEvent(n)
+  sTree.GetEvent(n)
   for p in sTree.vetoPoint:
    t = sTree.MCTrack[p.GetTrackID()]
    pid = t.GetPdgCode()
-   rc = h['pids'].Fill(pid)
+   h['pids'].Fill(pid)
    if abs(pid)==13:
      procID = t.GetProcName().Data()
      mother = t.GetMotherId()
@@ -282,9 +279,9 @@ def makeHistos(rfile):
          name = pdg.GetParticle(moPid).GetName()
          name = procID+' '+name
          if not h.has_key(name):  h[name]=h['test'].Clone(name)
-         rc=h[name].Fill(t.GetP(),t.GetPt())
+         h[name].Fill(t.GetP(),t.GetPt())
      if not h.has_key(procID):  h[procID]=h['test'].Clone(procID)
-     rc=h[procID].Fill(t.GetP(),t.GetPt())
+     h[procID].Fill(t.GetP(),t.GetPt())
  for x in h:
   h[x].Scale(1./nTot)
  tmp = rfile.split('/')

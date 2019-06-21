@@ -73,7 +73,7 @@ def run():
  global weight 
  weight = weightMbias 
  for run in range(0,67000,1000):
-   rc = processFile(tmp.replace('XX',str(run)))
+   processFile(tmp.replace('XX',str(run)))
  ut.writeHists(h,'pythia8_Geant4_10.0_c0-67000_nu.root')
 
 def run1GeV():
@@ -81,7 +81,7 @@ def run1GeV():
  global weight 
  weight = weightMbias1GeV
  for run in range(0,19000,1000):
-   rc = processFile(tmp.replace('XX',str(run)))
+   processFile(tmp.replace('XX',str(run)))
  ut.writeHists(h,'pythia8_Geant4_1.0_c0-19000_nu.root')
 
 def run4Charm():
@@ -92,14 +92,14 @@ def run4Charm():
   for run in range(0,100,20):
    crun = run+cycle*1000
    fname = tmp.replace('XX',str(crun)).replace('YY',str(crun+19))
-   rc = processFile(fname,False)
+   processFile(fname,False)
  ut.writeHists(h,'pythia8_Geant4_charm_10.0_nu.root')
 
 def run4Charm1GeV():
  fname = "pythia8_Geant4_charm_0-19_1.0.root" # renamed pythia8_Geant4_charm_XX-YY_10.0.root
  global weight
  weight = weightCharm1GeV
- rc = processFile(fname,False)
+ processFile(fname,False)
  ut.writeHists(h,'pythia8_Geant4_charm_1.0_nu.root')
 
 def run4beauty():

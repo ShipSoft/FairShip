@@ -3,7 +3,7 @@
 #configuration, histograms etc done in shipPatRec_config
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
-import ROOT, os
+import ROOT
 import shipunit  as u
 import math
 import copy
@@ -13,7 +13,6 @@ from ROOT import gStyle
 from ROOT import TGraph
 from ROOT import TMultiGraph
 from array import array
-import operator, sys
 
 import rootUtils as ut
 
@@ -233,7 +232,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
   #returns a list of reconstructible tracks for this event
   #call this routine once for each event before smearing
   MCTrackIDs=[]
-  rc = sTree.GetEvent(iEvent) 
+  sTree.GetEvent(iEvent) 
   nMCTracks = sTree.MCTrack.GetEntriesFast()   
 
   if debug==1: print "event nbr",iEvent,"has",nMCTracks,"tracks"
@@ -412,18 +411,18 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
         if childtrack.GetMotherId() == ahit.GetTrackID():	   
 	    trackmomentum=atrack.GetP()
 	    trackweight=atrack.GetWeight()
-	    rc=h['reconstructiblemomentum'].Fill(trackmomentum,trackweight)
+	    h['reconstructiblemomentum'].Fill(trackmomentum,trackweight)
 	    motherId=atrack.GetMotherId() 
 	    if motherId==1 :
 		HNLmomentum=sTree.MCTrack.At(1).GetP()
-		rc=h['HNLmomentumvsweight'].Fill(trackweight,HNLmomentum) 
+		h['HNLmomentumvsweight'].Fill(trackweight,HNLmomentum) 
 	        if j==nMCTracks :
  		     trackmomentum=atrack.GetP()
 		     trackweight=atrack.GetWeight()
-		     rc=h['reconstructiblemomentum'].Fill(trackmomentum,trackweight)
+		     h['reconstructiblemomentum'].Fill(trackmomentum,trackweight)
 		     if atrack.GetMotherId()==1 :
 		       HNLmomentum=sTree.MCTrack.At(1).GetP()
-		       rc=h['HNLmomentumvsweight'].Fill(trackweight,HNLmomentum)
+		       h['HNLmomentumvsweight'].Fill(trackweight,HNLmomentum)
   itemstoremove=[]
   for item in MCTrackIDs:	       
     atrack = sTree.MCTrack.At(item)
@@ -468,8 +467,8 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
             if debug==1: print "No reconstructible pion and muon."  
 	    MCTrackIDs=[]     
   if len(MCTrackIDs)>0:
-     rc=h['nbrhits'].Fill(nHits)
-     rc=h['nbrtracks'].Fill(nMCTracks)
+     h['nbrhits'].Fill(nHits)
+     h['nbrtracks'].Fill(nMCTracks)
   if debug==1: print "Tracks with required HNL decay particles",MCTrackIDs 	     
   return MCTrackIDs
 
@@ -480,10 +479,10 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
   
   top=ROOT.TVector3()
   bot=ROOT.TVector3()
-  random = ROOT.TRandom()
+  ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   
-  rc = sTree.GetEvent(iEvent) 
+  sTree.GetEvent(iEvent) 
   nHits = sTree.strawtubesPoint.GetEntriesFast()
   withNoStrawSmearing=None
   hitstraws={}
@@ -548,7 +547,7 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
     if (str(ahit.GetDetectorID())[:1]=="1") :  
        if station1hits.has_key(ahit.GetTrackID()):
           station1hits[ahit.GetTrackID()]+=1
-	  rc=h['hits1xy'].Fill(ahit.GetX(),ahit.GetY())    	  
+	  h['hits1xy'].Fill(ahit.GetX(),ahit.GetY())    	  
        else:
           station1hits[ahit.GetTrackID()]=1
     if (str(ahit.GetDetectorID())[:1]=="2") :  
@@ -627,13 +626,13 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
   if len(station4hits) > 0 : 
      hits4pertrack=total4hits/len(station4hits)  
   
-  rc=h['hits1-4'].Fill(hits1pertrack+hits2pertrack+hits3pertrack+hits4pertrack)  
-  rc=h['hits1'].Fill(hits1pertrack)  
-  rc=h['hits12x'].Fill(hits12xpertrack)  
-  rc=h['hits12y'].Fill(hits12ypertrack)  
-  rc=h['hits2'].Fill(hits2pertrack)    
-  rc=h['hits3'].Fill(hits3pertrack)    
-  rc=h['hits4'].Fill(hits4pertrack)        
+  h['hits1-4'].Fill(hits1pertrack+hits2pertrack+hits3pertrack+hits4pertrack)  
+  h['hits1'].Fill(hits1pertrack)  
+  h['hits12x'].Fill(hits12xpertrack)  
+  h['hits12y'].Fill(hits12ypertrack)  
+  h['hits2'].Fill(hits2pertrack)    
+  h['hits3'].Fill(hits3pertrack)    
+  h['hits4'].Fill(hits4pertrack)        
   return SmearedHits
 
   
@@ -676,14 +675,12 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 
   hits={}
   rawhits={}
-  stereohits={}
   hitids={}
   ytan={}
   ycst={}
   horpx={}
   horpy={}
   horpz={}
-  stereomom={}
   stereotan={}
   stereocst={}
   fraction={}
@@ -846,7 +843,6 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
   if debug==1: print "***************** Start of Stereo PatRec **************************"  
 
   v2hits={}
-  v2hitsMC={}
 
   uvview={}
   j=0
@@ -920,7 +916,6 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
     px=0.
     py=0.
     pz=0.
-    m=0
     if firsttwo==True: looplist=reversed(range(len(trcandv1[t]))) 
     else: looplist=range(len(trcandv1[t])) 
     for ipl in looplist:      
@@ -928,7 +923,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
       if indx>-1: 
  	if debug==1: print '      Plane nr, z-position, y of hit:',ipl,zlayer[ipl],hits[ipl][0][indx]
         hitpoint=[zlayer[ipl],hits[ipl][0][indx]]
-	rc=h['disthittoYviewtrack'].Fill(dist2line(fitt,fitc,hitpoint))
+	h['disthittoYviewtrack'].Fill(dist2line(fitt,fitc,hitpoint))
 	#if px==0. : px=StrawRawLink[hits[ipl][2][indx]][0].GetPx()
 	#if py==0. : py=StrawRawLink[hits[ipl][2][indx]][0].GetPy()
 	#if pz==0. : pz=StrawRawLink[hits[ipl][2][indx]][0].GetPz()
@@ -940,7 +935,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 	    print "      p",ptmp,"px",px,"py",py,"pz",pz
 	if tan==0. : tan=py/pz
 	if cst==0. : cst=StrawRawLink[hits[ipl][2][indx]][0].GetY()-tan*zlayer[ipl][0]
-	rc=h['disthittoYviewMCtrack'].Fill(dist2line(tan,cst,hitpoint))
+	h['disthittoYviewMCtrack'].Fill(dist2line(tan,cst,hitpoint))
 
     if debug==1: print '   Track nr',t,'in Y view: MC tangent, MC constant=',tan,cst	
     
@@ -1060,12 +1055,12 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
         indx= trcandv2[t1][ipl]
         if indx>-1:       
           hitpointx=[zlayerv2[ipl],v2hits[ipl][0][indx]]
-          rc=h['disthittostereotrack'].Fill(dist2line(stereofitt,stereofitc,hitpointx)) 
+          h['disthittostereotrack'].Fill(dist2line(stereofitt,stereofitc,hitpointx)) 
 	  if pxMC==0. :  pxMC=StrawRawLink[v2hits[ipl][2][indx]][0].GetPx()
 	  if pzMC ==0. : pzMC=StrawRawLink[v2hits[ipl][2][indx]][0].GetPz()
 	  if stereotanMCv==0. : stereotanMCv=pxMC/pzMC
 	  if stereocstMCv==0. : stereocstMCv=StrawRawLink[v2hits[ipl][2][indx]][0].GetX()-stereotanMCv*zlayerv2[ipl][0]
-	  rc=h['disthittostereoMCtrack'].Fill(dist2line(stereotanMCv,stereocstMCv,hitpointx))
+	  h['disthittostereoMCtrack'].Fill(dist2line(stereotanMCv,stereocstMCv,hitpointx))
                  
 
       stereotrackids=[]
@@ -1290,11 +1285,11 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
    fittedy=math.degrees(math.acos(fittedtrackDir[1]))
    fittedz=math.degrees(math.acos(fittedtrackDir[2]))      
    fittedmass = fittedState.getMass()
-   rc=h['momentumfittedtracks'].Fill(fittedMom)
-   rc=h['xdirectionfittedtracks'].Fill(fittedx)
-   rc=h['ydirectionfittedtracks'].Fill(fittedy)
-   rc=h['zdirectionfittedtracks'].Fill(fittedz)
-   rc=h['massfittedtracks'].Fill(fittedmass)   
+   h['momentumfittedtracks'].Fill(fittedMom)
+   h['xdirectionfittedtracks'].Fill(fittedx)
+   h['ydirectionfittedtracks'].Fill(fittedy)
+   h['zdirectionfittedtracks'].Fill(fittedz)
+   h['massfittedtracks'].Fill(fittedmass)   
       
    return
 
@@ -1455,8 +1450,8 @@ def fitline(indices,xhits,zhits,resolution):
          sumy+=xhits[ipl][0][indx]
    fitt=(1/Dw)*term
    fitc=ymean-fitt*xmean	 
-   unweightedfitt=(sumxy-sumx*sumy/n)/(sumx2-sumx**2/n)
-   unweightedfitc=(sumy-fitt*sumx)/n
+   (sumxy-sumx*sumy/n)/(sumx2-sumx**2/n)
+   (sumy-fitt*sumx)/n
    return fitt,fitc
 	  
 def IP(s, t, b):
@@ -1518,10 +1513,10 @@ def dist2line(tan,cst,points):
   return dist
 
 def hit2wire(ahit,bot,top,no_amb=None):
-     detID = ahit.GetDetectorID()
-     ex = ahit.GetX()
-     ey = ahit.GetY()
-     ez = ahit.GetZ()
+     ahit.GetDetectorID()
+     ahit.GetX()
+     ahit.GetY()
+     ahit.GetZ()
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = dw
@@ -1605,7 +1600,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
  if debug==1: print "************* PatRect START **************"  
     
  nShits=sTree.strawtubesPoint.GetEntriesFast() 
- nMCTracks = sTree.MCTrack.GetEntriesFast() 
+ sTree.MCTrack.GetEntriesFast() 
  
  #if nMCTracks < 100:
  if nShits < 500: 
@@ -1679,7 +1674,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
             #loop until we get the particle of this track  
 	    particle12   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())
 	    try:
-	       charge12=particle12.Charge()/3.
+	       particle12.Charge()/3.
 	       break
 	    except:
 	       continue   
@@ -1691,7 +1686,6 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
          for k,v in enumerate(ReconstructibleMCTracks):
 	    if v not in tracksfound: 
 	      tracksfound.append(v)      
-         rawlinkindex=0            
          for ids in hitids34[item1]:
             if ids != 999 :  
 	       particle34   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())

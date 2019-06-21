@@ -4,8 +4,8 @@ def config(GenieGen):
  fGeo = ROOT.gGeoManager
  top = fGeo.GetTopVolume()
 # positions for nu events inside the nutau detector volume
- muDetector      = top.FindNode("volNuTauMudet_1")
- muDetectorTrans = muSpectrometer.GetMatrix().GetTranslation()
+ top.FindNode("volNuTauMudet_1")
+ muSpectrometer.GetMatrix().GetTranslation()
 # upper and lower yokes:
 # volFeYoke_1, volFeYoke_2, volFeYoke1_1  (in UpYoke) and  volFeYoke_3, volFeYoke_4, volFeYoke1_1 (in LowYoke).
  yokes = ["volUpYoke_1","volLowYoke_1","volArm2Mudet_1"]
@@ -30,8 +30,8 @@ def config(GenieGen):
  zpos   = ( dVec["volArm2Mudet_1/volIron_12"].Z()+dVec["volArm2Mudet_1/volIron_23"].Z() )/2.
  box["volArm2Mudet_1/volIron_12-23"]  = ROOT.TVector3(box["volArm2Mudet_1/volIron_12"].X(),box["volArm2Mudet_1/volIron_12"].Y(),length)
  dVec["volArm2Mudet_1/volIron_12-23"] = ROOT.TVector3(0,0,zpos)
- rc = box.pop("volArm2Mudet_1/volIron_23")
- rc = box.pop("volArm2Mudet_1/volIron_12")
+ box.pop("volArm2Mudet_1/volIron_23")
+ box.pop("volArm2Mudet_1/volIron_12")
  if GenieGen=='debug':
   for aVol in box: 
    print '%50s %6.2F %6.2F %6.2F %5.2F %7.2F %7.2F '%(aVol,box[aVol].X(),box[aVol].Y(),box[aVol].Z(),dVec[aVol].X(),dVec[aVol].Y(),dVec[aVol].Z()) 

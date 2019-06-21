@@ -17,7 +17,7 @@ startOfTarget       = -50. # value used for Geant4 production
 def fillPart(t):
  particles = {}
  for n in range(t.GetEntries()):
-    rc = t.GetEvent(n)
+    t.GetEvent(n)
     if not particles.has_key(t.parentid) : 
          particles[t.parentid] = 0
     particles[t.parentid] +=1
@@ -30,7 +30,7 @@ def fillWeights():
   t = f.FindObjectAny("pythia8-Geant4")
   weights[p]={}
   for n in range(t.GetEntries()):
-    rc = t.GetEvent(n)
+    t.GetEvent(n)
     if not weights[p].has_key(t.w) : 
          weights[p][t.w] = [t.ecut,0]
     weights[p][t.w][1] +=1
@@ -165,7 +165,7 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
   leaves = t.GetListOfLeaves()
   nL = leaves.GetEntries()
   for iev in range(nev) :
-     rc = t.GetEntry(temp.GetEntry(iev))
+     t.GetEntry(temp.GetEntry(iev))
      vlist = []
      k=-1
      for x in range(nL):
@@ -218,7 +218,6 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
 def runProduction(opts=''):
  we = fillWeights()
  pot = {}
- norm = 5.E13
  for p in we:
   pot[p]={}
   for w in we[p]:
@@ -247,9 +246,9 @@ def removeCharm(p):
   t.SetEventList(temp) 
   nev = temp.GetN()
   leaves = t.GetListOfLeaves()
-  nL = leaves.GetEntries()
+  leaves.GetEntries()
   for iev in range(nev):
-     rc = t.GetEntry(temp.GetEntry(iev))
+     t.GetEntry(temp.GetEntry(iev))
      vlist = array('f')
      for x in range(leaves.GetEntries()):
       vlist.append( leaves.At(x).GetValue() )
@@ -268,12 +267,12 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   newFile = ROOT.TFile("pythia8_Charm.root", 'RECREATE')
   nt = ROOT.TNtuple("pythia8-Geant4","mu/nu flux from charm","id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid:w:ecut")
   for n in range(t.GetEntries()):
-      rc = t.GetEntry(n)
+      t.GetEntry(n)
       ztarget = rnr.Exp(0.16) + startOfTarget
       vlist = array('f')
       x = t.id,t.px,t.py,t.pz,0.,0.,ztarget,t.px,t.py,t.pz,0.,0.,ztarget,t.id,t.mid,t.weight,0.
       for ax in x:      vlist.append(ax)
-      rc = nt.Fill(vlist)
+      nt.Fill(vlist)
   newFile.cd()
   nt.Write()
   newFile.Close()
@@ -291,7 +290,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   m=0
   allEvents = []
   for n in range(t.GetEntries()):
-   rc = t.GetEvent(n)
+   t.GetEvent(n)
    if m%1000000==0 : print 'status read',m
    m+=1
    a = event()
@@ -351,7 +350,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
     temp = ROOT.gROOT.FindObjectAny('temp')
     t.SetEventList(temp)
     for iev in range(temp.GetN()) :
-     rc = t.GetEntry(temp.GetEntry(iev))
+     t.GetEntry(temp.GetEntry(iev))
      vlist = array('f')
      for n in range(leaves.GetSize()):
       vlist.append(leaves.At(n).GetValue())
@@ -396,7 +395,7 @@ def compare():
   for z in ['p','pt']:
    t = z.upper()
    if x != '' : t='>'+t 
-   t1=h[t].cd(1)
+   h[t].cd(1)
    p = z+'mu'
    h['T'+p+x].SetTitle('musum')
    h['T'+p+x].Draw()
@@ -521,7 +520,7 @@ def compare():
  n = 1
  for z in ['p','pt']:
    h['Lratio'+z+x] = ROOT.TLegend(0.21,0.74,0.71,0.85)
-   tc = h['ratios'].cd(n)
+   h['ratios'].cd(n)
    n+=1
    h[z+'muRatio'+x].SetLineColor(2)
    h[z+'muRatio'+x].SetMaximum(max(h[z+'muRatio'+x].GetMaximum(),h[z+'numuRatio'+x].GetMaximum()))

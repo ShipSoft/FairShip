@@ -1,6 +1,7 @@
 #---Enable Tab completion-----------------------------------------
 try:
-  import rlcompleter, readline
+  import readline
+  import rlcompleter
   readline.parse_and_bind( 'tab: complete' )
   readline.parse_and_bind( 'set show-all-if-ambiguous On' )
 except:
@@ -166,7 +167,7 @@ def stripOffBranches(fout):
      for n in range(nEvents):
       sTree.GetEntry(n)
       if oldTargetClass: sTree.TargetPoint.Clear()
-      rc = newTree.Fill()
+      newTree.Fill()
       sTree.FitTracks.Delete() # stupid ROOT or whoever, otherwise huge memory leak, does not help
     sTree.Clear()
     newTree.AutoSave()

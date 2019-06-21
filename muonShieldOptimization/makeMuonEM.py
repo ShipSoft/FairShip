@@ -1,4 +1,4 @@
-import ROOT,time,os,sys
+import ROOT
 nJob   = 1
 nMult  = 1000 # 100000 # number of events / muon
 muonIn = '/media/Data/HNL/muVetoDIS/muDISVetoCounter.root'

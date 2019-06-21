@@ -1,5 +1,7 @@
 #!/usr/bin/env python 
-import ROOT,os,sys,getopt,time,shipRoot_conf
+import ROOT
+import shipRoot_conf
+import time
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
 
@@ -63,7 +65,7 @@ class Block(ROOT.pyFairModule):
     ShipMedium=media.getMedium(material)
     W = ROOT.gGeoManager.GetMedium(material)
     if not W: 
-        rc = geoBuild.createMedium(ShipMedium)
+        geoBuild.createMedium(ShipMedium)
         W = ROOT.gGeoManager.GetMedium(material)
     aBox = ROOT.gGeoManager.MakeBox("target", W, 100.*u.cm, 100.*u.cm, thickness)
     top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))

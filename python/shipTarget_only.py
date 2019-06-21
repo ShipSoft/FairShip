@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
-import ROOT,os
+import ROOT
 import shipunit as u
 
 def configure(run,ship_geo):

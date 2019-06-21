@@ -1,4 +1,7 @@
-import os,subprocess,ROOT,time
+import os
+import ROOT
+import subprocess
+import time
 ncpus = 7
 pathToMacro = '$SHIPBUILD/FairShip/charmdet/'
 def count_python_processes(macroName):
