@@ -627,7 +627,7 @@ with ConfigRegistry.register_config("basic") as c:
         
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
-        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 + c.tauMudet.deltay/2  - 0.1*u.mm
+        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - 0.1*u.mm
     c.tauMudet.XGas =  c.tauMudet.Xtot
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
