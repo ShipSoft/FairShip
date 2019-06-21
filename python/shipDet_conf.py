@@ -407,9 +407,9 @@ def configure(run,ship_geo):
   if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
   run.SetField(fMagField)
 #
- #exclusionList = []
- exclusionList = ["Muon","Ecal","Hcal","Strawtubes",\
-                  "Veto","Magnet","MuonShield","TargetStation", "TimeDet"]
+ exclusionList = []
+ #exclusionList = ["Muon","Ecal","Hcal","Strawtubes",\
+ #                 "Veto","Magnet","MuonShield","TargetStation", "TimeDet"]
  for x in detectorList:
    if x.GetName() in exclusionList: continue
    run.AddModule(x)
