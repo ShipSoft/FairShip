@@ -11,6 +11,7 @@
 #include "Track.h"
 #include "TVector3.h"
 #include "TrackInfo.h"
+#include "TH2D.h"
 
 #include <iostream>
 #include <map>
@@ -33,7 +34,7 @@ public:
 
    /** methods **/
    Bool_t checkCharm();
-   Int_t checkDiMuon();
+   Int_t checkDiMuon(TH2D* h);
    void fillHitMaps(Int_t nMax=-1);
    void RPCextrap(Int_t nMax=-1);
    void trackKinematics(Float_t chi2UL,Int_t nMax=-1);
@@ -78,7 +79,7 @@ private:
     TBranch        *b_Digi_MuonTaggerHits;   //!
     TBranch        *b_Digi_MufluxSpectrometerHits;   //!
     TBranch        *b_MufluxSpectrometerPoints;   //!
-   ClassDef(MufluxReco,5);
+   ClassDef(MufluxReco,6);
 };
 
 #endif

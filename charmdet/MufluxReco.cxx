@@ -240,12 +240,11 @@ Bool_t MufluxReco::checkCharm(){
    }
    return check;
 }
-Int_t MufluxReco::checkDiMuon(){
+Int_t MufluxReco::checkDiMuon(TH2D* h_weightVsSource){
    Int_t mode = -1;
    Int_t channel = -1;
    std::vector<int> processed;
    Double_t weight;
-   TH2D* h_weightVsSource=(TH2D*)(gDirectory->GetList()->FindObject("weightVsSource"));
    for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
       MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
       Int_t i = hit->GetTrackID();
@@ -258,7 +257,11 @@ Int_t MufluxReco::checkDiMuon(){
       Int_t moID      = TMath::Abs( mo->GetPdgCode());
       TString pName   = t->GetProcName();
       if ( strcmp("Decay",pName) == 0){ channel = 1;}
-      if ( strcmp("Primary particle emission",pName) == 0){ channel = 1;}
+      if ( strcmp("Primary particle emission",pName) == 0){ 
+        channel = 1;
+        if (moID==22 || moID==13){channel = 13;}
+// identify events which come from gamma conversion in SHiP hadron absorber
+      }
       if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 7;} // count dimuon channels separately
       if(std::find( charmExtern.begin(),charmExtern.end(), moID)!=charmExtern.end())  {channel = 5;} // this will go wrong for charm from beauty
       if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}  
@@ -568,11 +571,13 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
     it2++;}
    itt++;}
   its++;}
+ TH2D* h_weightVsSource=(TH2D*)(gDirectory->GetList()->FindObject("weightVsSource"));
+
  Int_t maxD = 5;
  TString fname = sTree->GetCurrentFile()->GetName();
  TFile fntpl("ntuple-"+fname(fname.Last('/')+1,fname.Length()),"recreate");
  TTree tMuFlux("tmuflux","muflux ntuple");
- Int_t tnTr,tevtnr,tspillnrA,tspillnrB,tspillnrC;
+ Int_t tnTr,tevtnr,tspillnrA,tspillnrB,tspillnrC,station1Occ;
  Int_t tSign[maxD];
  Double_t tChi2[maxD];
  Double_t tnDoF[maxD];
@@ -590,6 +595,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  tMuFlux.Branch("spillnrA",&tspillnrA,"spillnrA/I");
  tMuFlux.Branch("spillnrB",&tspillnrB,"spillnrB/I");
  tMuFlux.Branch("spillnrC",&tspillnrC,"spillnrC/I");
+ tMuFlux.Branch("station1Occ",&station1Occ,"station1Occ/I");
  tMuFlux.Branch("Sign",&tSign,"Sign[nTr]/I");
  tMuFlux.Branch("Chi2",&tChi2,"Chi2[nTr]/D");
  tMuFlux.Branch("nDoF",&tnDoF,"nDoF[nTr]/D");
@@ -601,16 +607,30 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  tMuFlux.Branch("z",&tz,"z[nTr]/D");
  tMuFlux.Branch("Delx",&tDelx,"tDelx[nTr]/D");
  tMuFlux.Branch("Dely",&tDely,"tDely[nTr]/D");
+ if (MCdata){
+  tspillnrA = 0;
+  tspillnrB = 0;
+  tspillnrC = 0;
+ }else{
  auto xx = fname(104,26);
  TObjArray* tst = TString(xx.Data()).Tokenize("_");
  tspillnrA = std::stoi(((TObjString *)(tst->At(0)))->String().Data());
  tspillnrB = std::stoi(((TObjString *)(tst->At(1)))->String().Data());
  tspillnrC = std::stoi(((TObjString *)(tst->At(2)))->String().Data());
-
+ }
  Int_t nx = 0;
  while (nx<nMax){
    sTree->GetEvent(nx);
    h_Trscalers->Fill(1);
+// check for multiplicity in station 1
+   nestedList spectrHitsSorted = nestedList();
+   sortHits(cDigi_MufluxSpectrometerHits,&spectrHitsSorted);
+   station1Occ=0;
+   for ( int l = 0; l<4; l++ )   {
+     station1Occ+=spectrHitsSorted[0][1][l].size();
+   }
+   if (station1Occ>6){continue;}
+   h_Trscalers->Fill(11);
    tevtnr=nx;
    tnTr=0;
    nx+=1;
@@ -620,7 +640,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    if(Ntracks>0){ h_Trscalers->Fill(2);}
    std::vector<int> muonTaggedTracks;
    TString source = "";
-   if (MCdata){ Int_t channel = checkDiMuon();
+   if (MCdata){ Int_t channel = checkDiMuon(h_weightVsSource);
          if (channel == 1){ source = "Decay";}
          if (channel == 7){ source = "Di-muon P8";}
          if (channel == 2){ source = "Hadronic inelastic";}
@@ -628,6 +648,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
          if (channel == 4){ source = "Positron annihilation";}
          if (channel == 5){ source = "charm";}
          if (channel == 6){ source = "beauty";}
+         if (channel == 13){ source = "invalid";}
    }
    Bool_t fSource= kFALSE;
    if ( strcmp("", source.Data())!=0 ){fSource=kTRUE;}

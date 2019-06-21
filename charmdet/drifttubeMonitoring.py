@@ -1652,7 +1652,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
   return rc,pos,mom
 
 for x in ['','mu']:
- for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"]:
+ for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"]:
   ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
   ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
@@ -3563,6 +3563,22 @@ def hitResolution():
     TDC = hit.GetDigi() - (vtop[0]-trueHit.GetX())/(ROOT.TMath.C() *100./1000000000.0)
     distance = RT('x',TDC)
     h['hitResol'].Fill(distance - trueHit.dist2Wire())
+def checkRPCAcceptance():
+  Ntracks,inAcc = 0,0
+  for n in range(sTree.GetEntries()):
+   rc = sTree.GetEvent(n)
+   for aTrack in sTree.FitTracks:
+       st = aTrack.getFitStatus()
+       if not st.isFitConverged(): continue
+       if not aTrack.getNumPointsWithMeasurement()>0: continue
+       sta = aTrack.getFittedState(0)
+       if sta.getMomMag() < 5.: continue
+       rc,pos,mom = extrapolateToPlane(aTrack,cuts['zRPC1'])
+       if not rc: continue
+       Ntracks+=1
+       if pos[0]>cuts['xLRPC1'] and pos[0]<cuts['xRRPC1'] and pos[1]>cuts['yBRPC1'] and pos[1]<cuts['yTRPC1']: 
+         inAcc+=1
+  print "number of tracks ",Ntracks," in acceptance ",inAcc,"=","%F5.2"%(inAcc/float(Ntracks)*100),"%"
 
 def matchedRPCHits(aTrack,maxDistance=10.):
   matchedHits={1:{0:[],1:[]},2:{0:[],1:[]},3:{0:[],1:[]},4:{0:[],1:[]},5:{0:[],1:[]}}
@@ -4348,7 +4364,22 @@ def clusterSizesPerLayer(nevents):
       h[hname+'x'].Draw()
       j+=1
 
-def studyDeltaRays():
+def studyDeltaRays(onlyPlots=False):
+ if onlyPlots:
+   interestingHistos=['station1Occ','station1OccX','deltaRay','deltaRayN','deltaRayNvsE']
+   ut.readHists(hMC,"deltaRaysMC.root",interestingHistos)
+   ut.readHists(h,"deltaRays.root",interestingHistos)
+   ut.bookCanvas(h,"s1Occ","station 1 occupancy",1200,900,1,1)
+   tc = h["s1Occ"].cd(1)
+   tc.SetLogy()
+   h['MCstation1Occ']=hMC['station1Occ'].Clone('MCstation1Occ')
+   A = h['station1Occ'].GetBinContent(4)+h['station1Occ'].GetBinContent(5)
+   B = hMC['station1Occ'].GetBinContent(4)+hMC['station1Occ'].GetBinContent(5)
+   h['MCstation1Occ'].Scale(A/B)
+   h['station1Occ'].Draw()
+   h['MCstation1Occ'].SetLineColor(ROOT.kRed)
+   h['MCstation1Occ'].Draw("same")
+   return
  #MC 
  ut.bookHist(h,'station1Occ','station1 Occupancy',50,0.0,50.)
  ut.bookHist(h,'station1OccX','station1 Occupancy deltaRay present',50,0.0,50.)
@@ -4376,7 +4407,11 @@ def studyDeltaRays():
      rc = h['deltaRay'].Fill(m.GetStartZ()/100.,m.GetP())
      rc = h['deltaRayN'].Fill(m.GetStartZ()/100.,N)
    # if not found and N>8: sTree.MCTrack.Dump()
- ut.writeHists(h,'deltaRays.root')
+ tmp = sTree.GetCurrentFile().GetName()
+ k = tmp.find('SPILLDATA')
+ if k<0: outFile = 'deltaRays-'+tmp
+ else: outFile = 'deltaRays-'+tmp[k:]
+ ut.writeHists(h,outFile)
 
 def studyGhostTracks(nStart = 0, nEnd=0, chi2UL=3,pxLow=5.):
  if nEnd == 0: nEnd = sTree.GetEntries()
@@ -5146,6 +5181,18 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
       if source == "charm" or source == "beauty": h['MC10'+xxx].Scale(sim10fact/sources[source]*norm)
       else: h['MC10'+xxx].Scale(sim10fact*norm)
      h['MC10'+a+x].Scale(sim10fact*norm)
+# now we should have all distributions of different sources with correct weigths, except pi K decays
+    h['MC10'+a+x+"Decay"]=h['MC10'+a+x].Clone('MC10'+a+x+"Decay")
+    h['MC'+a+x+"Decay"]=h['MC'+a+x].Clone('MC'+a+x+"Decay")
+    for s in sources:
+     if s=='': continue
+     h['MC10'+a+x+"Decay"].Add(h['MC10'+a+x+s],-1.)
+     if s!= "beauty": h['MC'+a+x+"Decay"].Add(h['MC'+a+x+s],-1.)
+# increase contributions from deay
+    #h['MC10'+a+x].Add(h['MC'+a+x+"Decay"],0.6)
+    #h['MC'+a+x].Add(h['MC'+a+x+"Decay"],0.6)
+    #h['MC10'+a+x].Add(h['MC'+a+x+"charm"],-0.50)
+    #h['MC'+a+x].Add(h['MC'+a+x+"charm"],-0.50)
 
 #
  optSorted = ['','MC','MC10','MCcharm','MCDi-muon P8','MCHadronic inelastic','MCLepton pair','MCPositron annihilation',
@@ -5459,7 +5506,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    if Aproj == 'p/pt':
     if x != '': print "=== muon tagged ===="
     else: print       "=== all tracks  ===="
-    for P in [5.,10.,50.,100.]:
+    for P in [5.,10.,50.,100.,150.,200.,300.]:
      nbin = h['p/pt'+x+'_x'].FindBin(P)
      print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt'+x+'_x'].GetBinContent(nbin)/h['I-MCp/pt'+x+'_x'].GetBinContent(nbin))
 # make ratio plots
@@ -5501,7 +5548,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
        h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,3.5)
    if Aproj=='p/pt_y': h['I-'+proj+xx+'Ratio'].SetMaximum(5.)
   h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
-  h['I-'+proj+xx+'Ratio'].SetTitle('Ratio MC/Data '+h['I-'+proj+xx+'Ratio'].GetTitle())
+  h['I-'+proj+xx+'Ratio'].SetTitle('Ratio Data/MC '+h['I-'+proj+xx+'Ratio'].GetTitle())
   h['I-'+proj+xx+'Ratio'].Draw()
   h['leg'+t].AddEntry(h['I-'+proj+xx+'Ratio'],'Ratio Data / MC muon tagged tracks','PL')
   h['I-'+proj+xx+'RatioG4'].SetLineColor(ROOT.kMagenta)
@@ -5526,10 +5573,10 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
        h[proj+x+'Ratio'].SetBinContent(mx,my,R)
      else:
        h[proj+x+'Ratio'].SetBinContent(mx,my,-1)
-   h[proj+x+'Ratio'].SetMaximum(6.)
+   h[proj+x+'Ratio'].SetMaximum(3.)
    h[proj+x+'Ratio'].SetMinimum(0.)
    h[proj+x+'Ratio'].GetXaxis().SetRangeUser(5.,400.)
-   h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,7.5)
+   h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,3.5)
    h[proj+x+'Ratio'].SetStats(0)
    h[proj+x+'Ratio'].Draw('colz')
    h[t+'2D'].Print('MC-ComparisonRatios2D'+proj.replace('/','')+'.png')
@@ -6221,6 +6268,9 @@ elif options.command == "DTeffWithRPCTracks":
   DTeffWithRPCTracks()
 elif options.command == "hitMapsFromFittedTracks":
  hitMapsFromFittedTracks()
+elif options.command == "studyDeltaRays":
+ if sTree.GetBranch('MCTrack'): MCdata = True
+ studyDeltaRays()
 elif options.command == "test":
  yep.start('output.prof')
  for x in sTree.GetListOfBranches(): sTree.SetBranchStatus(x.GetName(),0)
