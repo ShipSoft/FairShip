@@ -159,7 +159,7 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
      os.chdir('../')
      continue
    sTree = origin.cbmsim
-   Nentries = sTree.GetEntries()
+   sTree.GetEntries()
    N = 0
    deltaN = int(sTree.GetEntries()/float(splitFactor))
    for i in range(splitFactor):
@@ -170,8 +170,8 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
      newFile = ROOT.TFile(nf,'RECREATE')
      newTree = sTree.CloneTree(0)
      for n in range(N,N+deltaN):
-       rc = sTree.GetEntry(n)
-       rc = newTree.Fill()
+       sTree.GetEntry(n)
+       newTree.Fill()
      newFile.Write()
     N+=deltaN
    os.chdir('../')
@@ -216,7 +216,7 @@ def checkFilesWithTracks(D='.',splitFactor=5,dimuon=False):
  elif D.find('1GeV')==0 or D.find('10GeV')==0: 
    fnames = getFilesEOS(D)
    eos = os.environ['EOSSHIP']
- Nfiles = len(fnames)
+ len(fnames)
  fileList=[]
  fileListPer={}
  failedList = []

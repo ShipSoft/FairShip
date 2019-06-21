@@ -52,7 +52,7 @@ class MufluxDigi:
         self.iEvent = 0
 
         outdir=os.getcwd()
-        outfile=outdir+"/"+fout
+        outdir+"/"+fout
         self.fn = ROOT.TFile(fout,'update')
         self.sTree = self.fn.cbmsim
 
@@ -161,7 +161,6 @@ class MufluxDigi:
 
         if fake_clustering:
             # cluster size loop - plotting the cluster size distribution
-            cluster_size = list()
             DetectorID_list = list(DetectorID)  # turn set into list to allow indexing
             DetectorID_list.sort()  # sorting the list
             if len(DetectorID_list) > 1:
@@ -171,7 +170,7 @@ class MufluxDigi:
                         clusters[-1].append(x)
                     else:
                         clusters.append([x])
-                    cluster_size = [len(x) for x in clusters]
+                    [len(x) for x in clusters]
 
     def digitizeMufluxSpectrometer(self):
 

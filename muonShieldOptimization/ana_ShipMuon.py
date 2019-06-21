@@ -379,10 +379,10 @@ def origin(sTree,it):
  if im>0: origin(sTree,im)
  if im<0: 
    # print 'does not come from muon'
-   rz_inter = -1.,0.
+   pass
  if im==0: 
    #print 'origin z',at.GetStartZ()
-   rz_inter = ROOT.TMath.Sqrt(at.GetStartX()**2+at.GetStartY()**2),at.GetStartZ()
+   ROOT.TMath.Sqrt(at.GetStartX()**2+at.GetStartY()**2),at.GetStartZ()
 
 otherPhysList = False
 noField       = False
@@ -677,7 +677,7 @@ def executeOneFile(fn,output=None,pid=None):
       else: detName = logVols[detID]
       x = ahit.GetX()
       y = ahit.GetY()
-      z = ahit.GetZ()
+      ahit.GetZ()
       E = ahit.GetEnergyLoss()
      if not h.has_key(detName): bookHist(detName)
      mu=''
@@ -717,17 +717,17 @@ def executeOneFile(fn,output=None,pid=None):
        rc = h['origin'].Fill(aTrack.GetStartZ()/u.m,r,w)
        rc = h[detName+'_origin'].Fill(aTrack.GetStartZ()/u.m,r,w)
        if abs(pdgID)== 13: rc = h[detName+'_originmu'].Fill(aTrack.GetStartZ()/u.m,r,w)
-       rc = h['borigin'].Fill(aTrack.GetStartZ()/u.m,r,w)
-       rc = aTrack.GetMomentum(mom)
-       rc = h[detName+'_OP'].Fill(mom.Mag()/u.GeV,w)
+       h['borigin'].Fill(aTrack.GetStartZ()/u.m,r,w)
+       aTrack.GetMomentum(mom)
+       h[detName+'_OP'].Fill(mom.Mag()/u.GeV,w)
        if trackID > 0: 
          origin(sTree,trackID)
-         rc = h['porigin'].Fill(aTrack.GetStartZ()/u.m,ROOT.TMath.Sqrt(aTrack.GetStartX()**2+aTrack.GetStartY()**2)/u.m,w)
-       rc = h['mu-inter'].Fill(rz_inter[1]/u.m,rz_inter[0]/u.m,w) 
+         h['porigin'].Fill(aTrack.GetStartZ()/u.m,ROOT.TMath.Sqrt(aTrack.GetStartX()**2+aTrack.GetStartY()**2)/u.m,w)
+       h['mu-inter'].Fill(rz_inter[1]/u.m,rz_inter[0]/u.m,w) 
    for detName in hitmult:
-    rc = h[detName+'_evmul'].Fill(hitmult[detName][-1],w) 
+    h[detName+'_evmul'].Fill(hitmult[detName][-1],w) 
     for tr in hitmult[detName]:
-      rc = h[detName+'_mul'].Fill(hitmult[detName][tr],w) 
+      h[detName+'_mul'].Fill(hitmult[detName][tr],w) 
   if output:
    ut.writeHists(h,'tmpHists_'+str(pid)+'.root')
    output.put('ok')
@@ -807,7 +807,6 @@ def makePlots(nstations):
  persistency()
 #
 def AnaEventLoop():
- ntot = 0
  fout = open('rareEvents.txt','w')
  for fn in fchainRec:
   f = ROOT.TFile(fn)
@@ -893,7 +892,7 @@ def analyzeConcrete():
   nEvents = sTree.GetEntries()
   ROOT.gROOT.cd()
   for n in range(nEvents):
-   rc=sTree.GetEntry(n)
+   sTree.GetEntry(n)
    if sTree.MCTrack.GetEntries() > 1: 
       wg = sTree.MCTrack[1].GetWeight() 
    else: 
@@ -939,7 +938,6 @@ def analyzeConcrete():
   h['ntuple'].Write()
 
 def rareEventEmulsion(fname = 'rareEmulsion.txt'):
- ntot = 0
  fout = open(fname,'w')
  for fn in fchainRec:
   f = ROOT.TFile(fn)
@@ -956,9 +954,9 @@ def rareEventEmulsion(fname = 'rareEmulsion.txt'):
    for ahit in sTree.vetoPoint:
      detID = ahit.GetDetectorID()
      if logVols[detID] != 'Emulsion': continue
-     x = ahit.GetX()
-     y = ahit.GetY()
-     z = ahit.GetZ()
+     ahit.GetX()
+     ahit.GetY()
+     ahit.GetZ()
      if sTree.MCTrack.GetEntries() > 1: 
       wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
      else: 
@@ -1035,7 +1033,7 @@ def extractMuCloseByEvents(single = None):
      if pos.z()<zGol : continue
      n+=1
    if n > 0:
-    rc = newTree.Fill()
+    newTree.Fill()
     # print 'filled newTree',rc
    sTree.Clear()
   newTree.AutoSave()
@@ -1126,15 +1124,15 @@ def eventsWithEntryPoints(i):
     print '-----------------------'
 def depEnergy():
  for n in range(sTree.GetEntries()):
-  rc = sTree.GetEntry(n)
+  sTree.GetEntry(n)
   for ahit in sTree.strawtubesPoint:
    dE = ahit.GetEnergyLoss()/u.keV
-   rc = ahit.Momentum(mom)
+   ahit.Momentum(mom)
    pa = PDG.GetParticle(ahit.PdgCode())
    mpa = pa.Mass()
    E = ROOT.TMath.Sqrt(mom.Mag2()+mpa**2)
    ekin = E-mpa
-   rc = h['dE'].Fill(dE,ekin/u.MeV)
+   h['dE'].Fill(dE,ekin/u.MeV)
   h['dE'].SetXTitle('keV')
   h['dE'].SetYTitle('MeV')
 

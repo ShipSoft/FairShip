@@ -150,7 +150,7 @@ def makeFinalNtuples(norm=5.E13,opt=''):
     t.SetEventList(temp) 
     nev    = temp.GetN()
     for iev in range(nev) :
-     rc = t.GetEntry(temp.GetEntry(iev))
+     t.GetEntry(temp.GetEntry(iev))
      leaves = t.GetListOfLeaves()
      vlist = array('f')
      for x in range(leaves.GetEntries()):

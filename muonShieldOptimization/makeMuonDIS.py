@@ -1,4 +1,6 @@
-import ROOT,time,os,sys
+import ROOT
+import sys
+import time
 nJob   = 2
 nMult  = 10 # number of events / muon
 muonIn = '$SHIPSOFT/data/muConcrete.root'

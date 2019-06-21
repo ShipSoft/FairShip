@@ -53,7 +53,7 @@ class MufluxDigiReco:
         self.iEvent = 0
 
         outdir=os.getcwd()
-        outfile=outdir+"/"+fout
+        outdir+"/"+fout
         self.fn = ROOT.TFile(fout,'update')
         self.sTree = self.fn.cbmsim
 
@@ -78,7 +78,7 @@ class MufluxDigiReco:
             newTree = sTree.CloneTree(0)
             for n in range(sTree.GetEntries()):
                 sTree.GetEntry(n)
-                rc = newTree.Fill()
+                newTree.Fill()
             sTree.Clear()
             newTree.AutoSave()
             f.Close()
@@ -139,7 +139,7 @@ class MufluxDigiReco:
                 os.mkdir(output_dir)
 
     def reconstruct(self):
-        ntracks = self.findTracks()
+        self.findTracks()
 
     def digitize(self):
 
@@ -280,21 +280,21 @@ class MufluxDigiReco:
             ycoord = MufluxHit.GetY()
             if abs(pid)==13:
                 if (detector[0:8]=="gas_12_1"):
-                    rc=h['hits-T1'].Fill(xcoord,ycoord)
+                    h['hits-T1'].Fill(xcoord,ycoord)
                 if (detector[0:9]=="gas_12_10"):
-                    rc=h['hits-T1x'].Fill(xcoord,ycoord)
+                    h['hits-T1x'].Fill(xcoord,ycoord)
                 if (detector[0:9]=="gas_12_11"):
-                    rc=h['hits-T1u'].Fill(xcoord,ycoord)
+                    h['hits-T1u'].Fill(xcoord,ycoord)
                 if (detector[0:8]=="gas_12_2"):
-                    rc=h['hits-T2'].Fill(xcoord,ycoord)
+                    h['hits-T2'].Fill(xcoord,ycoord)
                 if (detector[0:9]=="gas_12_20"):
-                    rc=h['hits-T2v'].Fill(xcoord,ycoord)
+                    h['hits-T2v'].Fill(xcoord,ycoord)
                 if (detector[0:9]=="gas_12_21"):
-                    rc=h['hits-T2x'].Fill(xcoord,ycoord)
+                    h['hits-T2x'].Fill(xcoord,ycoord)
                 if (detector[0:5]=="gas_3"):
-                    rc=h['hits-T3'].Fill(xcoord,ycoord)
+                    h['hits-T3'].Fill(xcoord,ycoord)
                 if (detector[0:5]=="gas_4"):
-                    rc=h['hits-T4'].Fill(xcoord,ycoord)
+                    h['hits-T4'].Fill(xcoord,ycoord)
 
             if (detector[0:9]=="gas_12_10"):
                 if T1_entries_px.has_key(MufluxTrackId):
@@ -317,7 +317,7 @@ class MufluxDigiReco:
             if (T1_entries_px.get(MufluxTrackId) is None or T4_entries_px.get(MufluxTrackId) is None) :
                 continue
             else:
-                rc=h['pt-kick'].Fill(T1_entries_px.get(MufluxTrackId)[0]-T4_entries_px.get(MufluxTrackId)[0])
+                h['pt-kick'].Fill(T1_entries_px.get(MufluxTrackId)[0]-T4_entries_px.get(MufluxTrackId)[0])
 
     def withT0Estimate(self):
         # loop over all straw tdcs and make average, correct for ToF
@@ -393,7 +393,7 @@ class MufluxDigiReco:
 
     def correctAlignment(self, hit):
         # Taken from charmdet/drifttubeMonitoring.py
-        sqrt2 = ROOT.TMath.Sqrt(2.)
+        ROOT.TMath.Sqrt(2.)
         cos30 = ROOT.TMath.Cos(30./180.*ROOT.TMath.Pi())
         sin30 = ROOT.TMath.Sin(30./180.*ROOT.TMath.Pi())
         #delX=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
@@ -402,7 +402,7 @@ class MufluxDigiReco:
         delUV = [[0,0,0,0],[0,0,0,0]]
         vtop = ROOT.TVector3()
         vbot = ROOT.TVector3()
-        rc = hit.MufluxSpectrometerEndPoints(vbot,vtop)
+        hit.MufluxSpectrometerEndPoints(vbot,vtop)
         s,v,p,l,view = self.stationInfo(hit)
         if view=='_x':
             cor = delX[s-1][2*l+p]
@@ -688,7 +688,7 @@ class MufluxDigiReco:
             atrack_y12 = atrack['y12']
             atrack_stereo12 = atrack['stereo12']
             atrack_34 = atrack['34']
-            atrack_y_tagger = atrack['y_tagger']
+            atrack['y_tagger']
 
             if len(atrack_y12) > 0:
                 reco_hit_ids_y12 = []
@@ -1219,8 +1219,8 @@ class MufluxDigiReco:
                 atrack_34 = atrack['34']
                 atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_34)
                 atrack_p = np.abs(atrack['p'])
-                atrack_y_in_magnet = atrack['y_in_magnet']
-                atrack_x_in_magnet = atrack['x_in_magnet']
+                atrack['y_in_magnet']
+                atrack['x_in_magnet']
 
                 for sm in atrack_smeared_hits:
 
@@ -1333,7 +1333,7 @@ class MufluxDigiReco:
             #if len(stationCrossed[atrack]) < 4 :
             #    continue  # not enough stations crossed to make a good trackfit
 
-            charge = self.PDG.GetParticle(pdg).Charge()/(3.)
+            self.PDG.GetParticle(pdg).Charge()/(3.)
             posM = ROOT.TVector3(0, 0, 0)
             momM = ROOT.TVector3(0,0,mom_init * u.GeV)
             # approximate covariance
@@ -1386,7 +1386,7 @@ class MufluxDigiReco:
             if len(stationCrossed[atrack]) < 4 :
                 continue  # not enough stations crossed to make a good trackfit
 
-            charge = self.PDG.GetParticle(pdg).Charge()/(3.)
+            self.PDG.GetParticle(pdg).Charge()/(3.)
             posM = ROOT.TVector3(0, 0, 0)
             momM = ROOT.TVector3(0,0,mom_init * u.GeV)
             # approximate covariance
@@ -1437,7 +1437,7 @@ class MufluxDigiReco:
             if len(stationCrossed[atrack]) < 3 :
                 continue  # not enough stations crossed to make a good trackfit
 
-            charge = self.PDG.GetParticle(pdg).Charge()/(3.)
+            self.PDG.GetParticle(pdg).Charge()/(3.)
             posM = ROOT.TVector3(0, 0, 0)
             momM = ROOT.TVector3(0,0,mom_init * u.GeV)
             # approximate covariance

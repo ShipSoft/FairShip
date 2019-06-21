@@ -216,7 +216,7 @@ def dist2InnerWall(X,Y,Z):
   start = array('d',[X,Y,Z])
   nsteps = 8
   dalpha = 2*ROOT.TMath.Pi()/nsteps
-  rsq = X**2+Y**2
+  X**2+Y**2
   minDistance = 100 *u.m
   for n in range(nsteps):
     alpha = n * dalpha
@@ -324,7 +324,7 @@ def  RedoVertexing(t1,t2):
 # as we have learned, need iterative procedure
      dz = 99999.
      reps,states,newPosDir = {},{},{}
-     parallelToZ = ROOT.TVector3(0., 0., 1.)
+     ROOT.TVector3(0., 0., 1.)
      rc = True 
      step = 0
      while dz > 0.1:
@@ -481,7 +481,7 @@ def makePlots():
      h['pi0Mass'].SetXTitle('#gamma #gamma invariant mass   [GeV/c^{2}]')
      h['pi0Mass'].SetYTitle('N/'+str(int(h['pi0Mass'].GetBinWidth(1)*1000))+'MeV')
      h['pi0Mass'].Draw()
-     fitResult = h['pi0Mass'].Fit('gaus','S','',0.08,0.19)
+     h['pi0Mass'].Fit('gaus','S','',0.08,0.19)
     cv = h['fitresults2'+x].cd(2)
     h['IP0'+x].SetXTitle('impact parameter to p-target   [cm]')
     h['IP0'+x].SetYTitle('N/1cm')
@@ -663,8 +663,8 @@ def myEventLoop(n):
    mcPartKey = sTree.fitTrack2MC[key]
    mcPart    = sTree.MCTrack[mcPartKey]
    if not mcPart : continue
-   Ptruth_start     = mcPart.GetP()
-   Ptruthz_start    = mcPart.GetPz()
+   mcPart.GetP()
+   mcPart.GetPz()
    # get p truth from first strawpoint
    Ptruth,Ptruthx,Ptruthy,Ptruthz = getPtruthFirst(sTree,mcPartKey)
    delPOverP = (Ptruth - P)/Ptruth
@@ -803,7 +803,7 @@ def HNLKinematics():
  ut.bookHist(h,'HNLmom_recTracks','momentum',100,0.,300.)
  ut.bookHist(h,'HNLmomNoW_recTracks','momentum unweighted',100,0.,300.)
  for n in range(sTree.GetEntries()): 
-  rc = sTree.GetEntry(n)
+  sTree.GetEntry(n)
   for hnlkey in [1,2]: 
    if abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015: 
     theHNL = sTree.MCTrack[hnlkey]

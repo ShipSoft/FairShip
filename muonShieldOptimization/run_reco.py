@@ -43,7 +43,7 @@ def execute( ncpu = 4 ):
   for x in jobs:
       if k==ncpu: k = 0
       if cpus[k].has_key('child'):
-        rc = child.communicate()[0]
+        child.communicate()[0]
         log[k]['log'].close() 
       print "change to directory ",k,x   
       os.chdir('./'+x) 
@@ -134,7 +134,7 @@ def executeSimple(prefixes,reset=False):
      try:    os.system("rm logAna") 
      except: pass
      os.system("python "+cmdAna+" -n 9999999 -f "+inputfile.replace('.root','_rec.root')+ " >> logAna &")
-     rc = proc.pop(p) 
+     proc.pop(p) 
      time.sleep(10)
     else:
      print 'Rec job not finished yet',p
@@ -144,7 +144,6 @@ def executeSimple(prefixes,reset=False):
     os.chdir('../')
      
 def executeAna(prefixes):
- cpus = {}
  log  = {} 
  for prefix in prefixes:
   jobs = getJobs(prefix)

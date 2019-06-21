@@ -31,10 +31,10 @@ class Task:
   self.zpositions = {}
   self.parallelToZ = ROOT.TVector3(0., 0., 1.)
   hadron = top.GetNode("Hcal_1")
-  hvol = hadron.GetVolume()
+  hadron.GetVolume()
   self.zpositions['hcal'] = hadron.GetMatrix().GetTranslation()[2]
   ecal = top.GetNode("Ecal_1")
-  evol = ecal.GetVolume()   
+  ecal.GetVolume()   
   self.zpositions['ecal'] = ecal.GetMatrix().GetTranslation()[2]
   x = sys.modules['__main__']
   ShipGeo = x.ShipGeo
@@ -107,7 +107,7 @@ class Task:
 #  print 'numer of hites = ', self.sTree.muonPoint.GetEntries()
   for ahit in self.sTree.muonPoint:
    if not ahit.GetEnergyLoss()>0: continue
-   detID = ahit.GetDetectorID()
+   ahit.GetDetectorID()
    if m.fabs(ahit.GetZ()-self.zpositions['muon0'])<self.muly_acceptance:
       mul=0
       ##print 'mu0 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ()
@@ -235,7 +235,7 @@ class Task:
     if self.det == 'muon0':
       extrap_X_mu0 = self.extrapStates[self.det][0]
       extrap_Y_mu0 = self.extrapStates[self.det][1]
-      extrap_Z_mu0 = self.extrapStates[self.det][2]
+      self.extrapStates[self.det][2]
       X_pos0=extrap_X_mu0+self.dimensions_x
       Y_pos0=extrap_Y_mu0+self.dimensions_y
       self.pos_pad_x0=m.floor(X_pos0/self.pad_size_x)+1
@@ -243,7 +243,7 @@ class Task:
     if self.det == 'muon1':
       self.extrap_X_mu1 = self.extrapStates[self.det][0]
       self.extrap_Y_mu1 = self.extrapStates[self.det][1]
-      extrap_Z_mu1 = self.extrapStates[self.det][2]
+      self.extrapStates[self.det][2]
       X_pos1=self.extrap_X_mu1+self.dimensions_x
       Y_pos1=self.extrap_Y_mu1+self.dimensions_y
       self.pos_pad_x1=m.floor(X_pos1/self.pad_size_x)+1
@@ -251,7 +251,7 @@ class Task:
     if self.det == 'muon2':
       extrap_X_mu2 = self.extrapStates[self.det][0]
       extrap_Y_mu2 = self.extrapStates[self.det][1]
-      extrap_Z_mu2 = self.extrapStates[self.det][2]
+      self.extrapStates[self.det][2]
       X_pos2=extrap_X_mu2+self.dimensions_x
       Y_pos2=extrap_Y_mu2+self.dimensions_y
       self.pos_pad_x2=m.floor(X_pos2/self.pad_size_x)+1
@@ -259,7 +259,7 @@ class Task:
     if self.det == 'muon3':
       extrap_X_mu3 = self.extrapStates[self.det][0]
       extrap_Y_mu3 = self.extrapStates[self.det][1]
-      extrap_Z_mu3 = self.extrapStates[self.det][2]
+      self.extrapStates[self.det][2]
       X_pos3=extrap_X_mu3+self.dimensions_x
       Y_pos3=extrap_Y_mu3+self.dimensions_y
       self.pos_pad_x3=m.floor(X_pos3/self.pad_size_x)+1
@@ -323,7 +323,7 @@ class Task:
     if self.det == 'ecal':
      self.extrap_X_ecal = self.extrapStates[self.det][0]
      self.extrap_Y_ecal = self.extrapStates[self.det][1]
-     extrap_Z_ecal = self.extrapStates[self.det][2]
+     self.extrapStates[self.det][2]
 
  def run_elec_ID(self):
      for aClus in self.sTree.EcalReconstructed:
@@ -342,7 +342,7 @@ class Task:
     if self.det == 'hcal':
       self.extrap_X_hcal = self.extrapStates[self.det][0]
       self.extrap_Y_hcal = self.extrapStates[self.det][1]
-      extrap_Z_hcal = self.extrapStates[self.det][2]
+      self.extrapStates[self.det][2]
 
  def run_hcal_ID(self):
       N1,N2,M,E_est,E_totale=0,0,0,0.,0.

@@ -101,9 +101,9 @@ class makeHitList:
      top = ROOT.TVector3()
      bot = ROOT.TVector3()
      modules["Strawtubes"].StrawEndPoints(detID,bot,top)
-     ex = ahit.GetX()
-     ey = ahit.GetY()
-     ez = ahit.GetZ()
+     ahit.GetX()
+     ahit.GetY()
+     ahit.GetZ()
    #distance to wire, and smear it.
      dw  = ahit.dist2Wire()
      smear = 0
@@ -117,7 +117,7 @@ class makeHitList:
   
  def execute(self,n):
   if n > self.nEvents-1: return None 
-  rc    = self.sTree.GetEvent(n) 
+  self.sTree.GetEvent(n) 
   if n%1000==0: print "==> event ",n
   nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists = {}

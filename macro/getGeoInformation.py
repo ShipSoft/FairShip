@@ -3,7 +3,7 @@
 #WARNING: printing the entire geometry takes a lot of time
 #24-02-2015 comments to EvH
 
-import operator, sys
+import operator
 from argparse import ArgumentParser
 from array import array
 import os,ROOT

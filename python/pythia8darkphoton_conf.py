@@ -1,4 +1,5 @@
-import ROOT, os, sys
+import ROOT
+import os
 import shipunit as u
 import readDecayTable
 import darkphoton
@@ -81,7 +82,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
     P8gen.UseRandom3() # TRandom1 or TRandom3 ?
     P8gen.SetMom(400)  # beam momentum in GeV 
     if deepCopy: P8gen.UseDeepCopy()
-    pdg = ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
     if inclusive=="meson":
     # let strange particle decay in Geant4
         p8 = P8gen.getPythiaInstance()

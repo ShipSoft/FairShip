@@ -4,7 +4,6 @@ else: import shipPatRec
 import shipunit as u
 import rootUtils as ut
 from array import array
-import sys 
 from math import fabs
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
@@ -39,7 +38,7 @@ class ShipDigiReco:
     newTree = sTree.CloneTree(0)
     for n in range(sTree.GetEntries()):
       sTree.GetEntry(n)
-      rc = newTree.Fill()
+      newTree.Fill()
     sTree.Clear()
     newTree.AutoSave()
     f.Close() 
@@ -179,7 +178,7 @@ class ShipDigiReco:
    self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
 #
 # init geometry and mag. field
-  gMan  = ROOT.gGeoManager
+  ROOT.gGeoManager
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
 #
   self.bfield = ROOT.genfit.FairShipFields()
@@ -201,8 +200,8 @@ class ShipDigiReco:
   shipPatRec.initialize(fgeo)
 
  def reconstruct(self):
-   ntracks = self.findTracks()
-   nGoodTracks = self.findGoodTracks()
+   self.findTracks()
+   self.findGoodTracks()
    self.linkVetoOnTracks()
    for x in self.caloTasks: 
     if hasattr(x,'execute'): x.execute()
@@ -585,7 +584,7 @@ class ShipDigiReco:
    err_y_1 = hit.GetYError()
    err_z_1 = hit.GetZError()
 
-   layer_1 = hit.GetLayerNumber()
+   hit.GetLayerNumber()
 
    # allow one or more 'missing' hit in x/y: not large difference between 1 (no gap) or 2 (one 'missing' hit)
    max_gap = 2.
@@ -767,7 +766,7 @@ class ShipDigiReco:
      if station > 4 : continue
      modules["Strawtubes"].StrawEndPoints(detID,start,stop)
    #distance to wire
-     delt1 = (start[2]-z1)/u.speedOfLight
+     (start[2]-z1)/u.speedOfLight
      p=self.sTree.strawtubesPoint[key]
      # use true t0  construction: 
      #     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
@@ -784,7 +783,6 @@ class ShipDigiReco:
  def findTracks(self):
   hitPosLists    = {}
   stationCrossed = {}
-  fittedtrackids=[]
   listOfIndices  = {}
   self.fGenFitArray.Clear()
   self.fTrackletsArray.Delete()
@@ -858,7 +856,7 @@ class ShipDigiReco:
     if nM < 25 : continue                          # not enough hits to make a good trackfit 
     if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
     if debug: 
-       mctrack = self.sTree.MCTrack[atrack]
+       self.sTree.MCTrack[atrack]
     # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
     posM = ROOT.TVector3(0, 0, 0)
     momM = ROOT.TVector3(0,0,3.*u.GeV)
@@ -914,7 +912,7 @@ class ShipDigiReco:
      continue
     try:
       fittedState = theTrack.getFittedState()
-      fittedMom = fittedState.getMomMag()
+      fittedState.getMomMag()
     except:
       error = "Problem with fittedstate"
       ut.reportError(error)

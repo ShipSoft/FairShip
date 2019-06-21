@@ -383,7 +383,6 @@ class DrawTracks(ROOT.FairTask):
    mom = fMom
    pid = fstate.getPDG()
    zs = self.z_start
-   before = True
    for i in range(self.niter):
     rc,newpos,newmom = TrackExtrapolateTool.extrapolateToPlane(fT,zs)
     if rc:
@@ -465,7 +464,7 @@ class IO():
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
         for v in top.GetNodes():
          x=v.GetName()
-         cmd = 'toogle("'+x+'")' 
+         'toogle("'+x+'")' 
          a = Tkinter.IntVar()
          assemb = "Assembly" in v.GetVolume().__str__() 
          if v.IsVisible() or (assemb and v.IsVisDaughters()): a.set(1)
@@ -583,7 +582,7 @@ class EventLoop(ROOT.FairTask):
           print "ecal cluster display disabled, seems only to work with 5x10m ecal geofile"
     else:  self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
     self.ecalFiller.StoreTrackInformation()
-    rc = sTree.GetEvent(0)
+    sTree.GetEvent(0)
     self.ecalStructure = self.ecalFiller.InitPython(sTree.EcalPointLite)
     self.calos  = DrawEcalCluster()
     self.calos.InitTask(self.ecalStructure)
@@ -947,7 +946,7 @@ def mydebug():
    t.GetEntry(i)
    for gTr in t.GeoTracks: 
     gTr.Print()
-    part = gTr.GetParticle()
+    gTr.GetParticle()
     lorv = ROOT.TLorentzVector()
     print 'xyz E pxpypz',gTr.GetPoint(0)[0],gTr.GetPoint(0)[1] ,gTr.GetPoint(0)[2],lorv.E(),lorv.Px(),lorv.Py(),lorv.Pz()
 # Loop over MC tracks  

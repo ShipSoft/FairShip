@@ -19,7 +19,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
     P8gen.UseRandom3() 
     P8gen.SetMom(400)  # beam momentum in GeV 
     if deepCopy: P8gen.UseDeepCopy()
-    pdg = ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
     # let strange particle decay in Geant4
     make_particles_stable(P8gen, above_lifetime=1)
 
@@ -48,10 +48,9 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         # 12 14 16 neutrinos replace with N2
         charmhistograms = ['d_mu','ds_mu']
         # no tau decay here to consider
-        totaltauBR      = 0.0 
         maxsumBR        = getmaxsumbrrpvsusy(h,charmhistograms,mass,couplings)
         exit_if_zero_br(maxsumBR, inclusive, mass, particle='RPV neutralino')
-        totalBR         = gettotalbrrpvsusy(h,charmhistograms,mass,couplings)
+        gettotalbrrpvsusy(h,charmhistograms,mass,couplings)
 
 
         #overwrite D_s+ decays
@@ -97,7 +96,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         beautyhistograms = ['b_mu','b_tau','b0_nu_mu','b0_nu_tau']
         maxsumBR=getmaxsumbrrpvsusy(h,beautyhistograms,mass,couplings)
         exit_if_zero_br(maxsumBR, inclusive, mass, particle='RPV neutralino')
-        totalBR=gettotalbrrpvsusy(h,beautyhistograms,mass,couplings)
+        gettotalbrrpvsusy(h,beautyhistograms,mass,couplings)
 
         #overwrite B+ decays
         P8gen.SetParameters("521:new  B+               B-    1   3   0    5.27925"\
@@ -147,7 +146,7 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
     P8gen.UseRandom3() # TRandom1 or TRandom3 ?
     P8gen.SetMom(400)  # beam momentum in GeV 
     if deepCopy: P8gen.UseDeepCopy()
-    pdg = ROOT.TDatabasePDG.Instance()
+    ROOT.TDatabasePDG.Instance()
     P8gen.SetParameters("Next:numberCount    =  0")
     # let strange particle decay in Geant4
     make_particles_stable(P8gen, above_lifetime=1)

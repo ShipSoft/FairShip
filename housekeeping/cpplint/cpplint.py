@@ -968,7 +968,6 @@ class _FunctionState(object):
 
 class _IncludeError(Exception):
   """Indicates a problem with the include order in a file."""
-  pass
 
 
 class FileInfo(object):
@@ -2016,7 +2015,6 @@ class _BlockInfo(object):
       linenum: The number of the line to check.
       error: The function to call with any errors found.
     """
-    pass
 
   def CheckEnd(self, filename, clean_lines, linenum, error):
     """Run checks that applies to text after the closing brace.
@@ -2029,7 +2027,6 @@ class _BlockInfo(object):
       linenum: The number of the line to check.
       error: The function to call with any errors found.
     """
-    pass
 
   def IsBlockInfo(self):
     """Returns true if this block is a _BlockInfo.

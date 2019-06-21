@@ -1,4 +1,5 @@
-import ROOT,time,sys
+import ROOT
+import sys
 id=int(sys.argv[1])
 ROOT.gSystem.Load("libEG")
 ROOT.gSystem.Load("libpythia8")

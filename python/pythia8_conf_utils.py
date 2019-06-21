@@ -1,5 +1,4 @@
 from __future__ import print_function
-import os
 import sys
 import re
 import six
@@ -26,7 +25,7 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
     sumbrs={}
     for histoname in histograms: 
        item = histoname.split('_') 
-       lepton = item[len(item)-1]
+       item[len(item)-1]
        meson = item[0]
        coupling=couplings[1]
        try:
@@ -40,7 +39,7 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
 def gettotalbrrpvsusy(h,histograms,mass,couplings):
     totalbr=0.0 
     for histoname in histograms: 
-       item = histoname.split('_') 
+       histoname.split('_') 
        coupling=couplings[1]
        totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
     return totalbr

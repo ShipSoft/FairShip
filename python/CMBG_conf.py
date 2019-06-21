@@ -1,4 +1,4 @@
-import ROOT, os
+import ROOT
 import shipunit as u
 
 def configure(CMBG, ship_geo):

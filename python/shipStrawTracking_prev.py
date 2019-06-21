@@ -4,7 +4,9 @@
 #17-04-2015 comments to EvH
 
 import shipPatRec_prev 
-import ROOT,os,sys,getopt
+import ROOT
+import os
+import sys
 import shipDet_conf
 import shipunit  as u
 
@@ -149,7 +151,7 @@ def EventLoop(SmearedHits):
   fitTrack2MC_PR.clear()
   fPartArray_PR.Delete()
   
-  rc = sTree.GetEvent(n)    
+  sTree.GetEvent(n)    
   
   if shipPatRec_prev.monitor==True: 
      shipPatRec_prev.ReconstructibleMCTracks=shipPatRec_prev.getReconstructibleTracks(n,sTree,sGeo)

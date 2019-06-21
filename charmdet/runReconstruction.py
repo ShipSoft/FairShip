@@ -38,12 +38,12 @@ def getFilesFromEOS():
    print "problem accessing file",fname
    badFiles.append(fname)
 
- Nfiles = len(fileList)
+ len(fileList)
 
  tmp = {}
  for fname in fileList:
   newName = fname[fname.rfind('/')+1:]
-  rc = os.system("xrdcp -f $EOSSHIP"+fname+" "+newName)
+  os.system("xrdcp -f $EOSSHIP"+fname+" "+newName)
   tmp[newName]=fileList[fname]
 
  fnames = tmp.keys()
@@ -66,7 +66,7 @@ def getFilesLocal():
    print "problem accessing file",fname
    badFiles.append(fname)
 
- Nfiles = len(fileList)
+ len(fileList)
 
  fnames = fileList.keys()
  fnames.sort()
@@ -138,7 +138,7 @@ def checkMinusTwo():
   f=ROOT.TFile(fname)
   sTree = f.cbmsim
   for n in range(sTree.GetEntries()):
-   rc = sTree.GetEvent(n)
+   sTree.GetEvent(n)
    for m in sTree.Digi_MufluxSpectrometerHits:
      if m.GetDetectorID()<0: N+=1
   print sTree.GetCurrentFile(),N
@@ -227,7 +227,7 @@ def checkFilesWithTracks2(D='.'):
    elif sTree.GetBranch("FitTracks"): 
      prev = 0
      for n in range(min(20000,sTree.GetEntries())):
-        rc = sTree.GetEvent(n)
+        sTree.GetEvent(n)
         if sTree.FitTracks.GetEntries()>0:
          st = sTree.FitTracks[0].getFitStatus()
          if not st.isFitConverged(): continue
@@ -319,7 +319,7 @@ def checkRecoRun(eosLocation=eospath,local='.'):
   if not os.path.isfile(histosName): 
      print "missing histogram file",fname
 def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=run,local="."):
- temp = os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir "+eosLocation+"/"+run)
+ os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir "+eosLocation+"/"+run)
  failures = []
  for x in os.listdir(local):
   if x.find('.root')<0: continue
@@ -353,7 +353,6 @@ def makeMomDistributions(run=0):
 zeroField = ['2199','2200','2201']
 noRPC = ['2144','2154','2192','2210','2217','2218','2235','2236','2237','2240','2241','2243','2291','2345','2359']
 def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
- pathToMacro = "$FAIRSHIP/charmdet/"
  eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
  if merge:
     for run in os.listdir('.'):
@@ -379,7 +378,6 @@ def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
    makeMomDistributions(run)
    os.chdir('../')
 def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
-  pathToMacro = "$FAIRSHIP/charmdet/"
   eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
   if merge:
     for run in os.listdir('.'):

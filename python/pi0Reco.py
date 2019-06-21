@@ -1,4 +1,4 @@
-import ROOT,os
+import ROOT
 import shipunit as u
 import rootUtils as ut
 pdg = ROOT.TDatabasePDG.Instance()
