@@ -478,7 +478,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoCompositeShape *MudetBox = new TGeoCompositeShape("MudetBox", "LargedetBox:translationlarge + SmalldetBox:translationsmall");
             
       TGeoVolume *volMudetBox = new TGeoVolume("volTauNuMudet", MudetBox, vacuum);
-      tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter));
+      tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter-(fNmuRpc*fZRpc)/2.));
 
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
