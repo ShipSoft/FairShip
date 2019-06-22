@@ -1,6 +1,5 @@
 import math
 import os
-#from scipy import interpolate 
 import ROOT as r
 
 #from settings import *
@@ -55,11 +54,7 @@ class DarkPhoton:
 
     def interpolatePDGtable(self):
         """ Find the best value for R for the given center-of-mass energy """
-        #using scipy
-        #fun = interpolate.interp1d(dataEcm,dataR)
-        #using ROOT
-        fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR) #,Interpolation.kPOLYNOMIAL)
-        # print 'function type:%s'%fun.Type()
+        fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR)
         fun.SetData(self.dataEcm,self.dataR);
         return fun
 
