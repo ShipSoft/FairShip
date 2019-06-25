@@ -551,7 +551,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::map<TString,TH2D*> h2D;
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
  std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","pz/Abspx","p/pxy","p/Abspxy","pz/Abspxy","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
-                                 "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4"};
+                                 "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4","truePz/Abspx","recoPz/Abspx"};
  std::vector<TString> tagged  = {"","mu"};
  std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"};
 

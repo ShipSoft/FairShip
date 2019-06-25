@@ -275,7 +275,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals"):
    fileList = []
    for y in temp2.split('\n'):
     f = os.environ['EOSSHIP'] + y[y.find('/eos'):]
-    if not f.find('ship')==0: continue
+    if not f[f.rfind('/')+1:].find('ship')==0: continue
     if  f.find('RT')<0: continue
     histFile = commandToHist[command]+y[y.rfind('/')+1:]
     if histFile in os.listdir('.') : continue
