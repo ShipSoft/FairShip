@@ -677,11 +677,35 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    for (unsigned int k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
+     tGoodTrack[tnTr]=-1;
      h_Trscalers->Fill(3);
      if (!fitStatus->isFitConverged()){
-      tGoodTrack[tnTr]=-1;
       tnTr+=1;
       continue;}
+     TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
+     StringVecIntMap hitsPerStation = countMeasurements(info);
+     bool failed = false;
+     if (hitsPerStation["x1"].size()<2 || hitsPerStation["x2"].size()<2 || hitsPerStation["x3"].size()<2 
+        || hitsPerStation["x4"].size()<2 ){ failed = true;}
+// for MC, additional inefficiencies
+     if (MCdata){
+       std::map<TString,int> detectors = { {"u",0}, {"v",0}, {"x2",0}, {"x3",0}, {"x1",0},{"x4",0}};
+       std::map<TString, int>::iterator it;
+       for ( it = detectors.begin(); it != detectors.end(); it++ ){
+        for ( int m=0; m<hitsPerStation[it->first.Data()].size();m+=1){
+         float rnr = gRandom->Uniform();
+         float eff = effFudgeFac[it->first.Data()];
+         if (rnr < eff){detectors[it->first.Data()]+=1;}
+        }
+        if (detectors[it->first.Data()]<2){
+           failed = true;
+           break;}
+       }
+     }
+     if (failed){
+      tnTr+=1;
+      continue;}
+     h_Trscalers->Fill(4);
      auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
      h1D["chi2"]->Fill(chi2);
      h1D["Nmeasurements"]->Fill(fitStatus->getNdf());
@@ -730,30 +754,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      tnTr+=1;
 // continue finding good tracks
      if (chi2 > chi2UL){ continue;}
-     h_Trscalers->Fill(4);
-     TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
-     StringVecIntMap hitsPerStation = countMeasurements(info);
-     if (hitsPerStation["x1"].size()<2){ continue;}
-     if (hitsPerStation["x2"].size()<2){ continue;}
-     if (hitsPerStation["x3"].size()<2){ continue;}
-     if (hitsPerStation["x4"].size()<2){ continue;}
-// for MC, additional inefficiencies
-     if (MCdata){
-       std::map<TString,int> detectors = { {"u",0}, {"v",0}, {"x2",0}, {"x3",0}, {"x1",0},{"x4",0}};
-       std::map<TString, int>::iterator it;
-       bool failed = false;
-       for ( it = detectors.begin(); it != detectors.end(); it++ ){
-        for ( int m=0; m<hitsPerStation[it->first.Data()].size();m+=1){
-         float rnr = gRandom->Uniform();
-         float eff = effFudgeFac[it->first.Data()];
-         if (rnr < eff){detectors[it->first.Data()]+=1;}
-        }
-        if (detectors[it->first.Data()]<2){
-           failed = true;
-           break;}
-       }
-       if (failed){continue;}
-     }
      h_Trscalers->Fill(5);
      tGoodTrack[tnTr-1]=-1*tGoodTrack[tnTr-1];
      tmp.push_back(k);
