@@ -1656,8 +1656,10 @@ for x in ['','mu']:
   ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
   ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+  ut.bookHist(h,'pz/Abspx'+x+s,'Pz vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'p/pxy'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
-  ut.bookHist(h,'p/Abspxy'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+  ut.bookHist(h,'p/Abspxy'+x+s,'momentum vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+  ut.bookHist(h,'pz/Abspxy'+x+s,'Pz vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'TrackMult'+x+s,'track multiplicity',10,-0.5,9.5)
   ut.bookHist(h,'chi2'+x+s,'chi2/nDoF',100,0.,10.)
   ut.bookHist(h,'Nmeasurements'+x+s,'number of measurements used',25,-0.5,24.5)
@@ -5097,12 +5099,14 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
  muPerPot = 710 # 626
  charmNorm  = {1:0.176,10:0.424}
  beautyNorm = {1:0.,   10:0.01218}
- sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.}
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,
+            "charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.,"invalid":1.}
  if len(hMC)==0:
   interestingHistos = []
   for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
-   for x in ['','mu']:
+   for x in ['','mu','ymu']:
     for source in sources:  interestingHistos.append(a+x+source)
+  interestingHistos.append('chi2')
   ut.readHists(h,     'momDistributions.root',interestingHistos)
   # uncorrected MC histos
   if not effCor:
@@ -5120,12 +5124,17 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    MCStats = MCStats*2.
   for a in ['p/pt','p/Abspx','p1/p2','p1/p2s']:
     for x in ['','mu']:
-     if a.find('p1/p2')==0 and x=='mu': continue
+     if a.find('p1/p2')==0 and x!='': continue
      for hstore in [hMC,hCharm,hMC10GeV]: 
 # for new category "G4default", subtract dimuons made by SHiP modification to G4
       hstore[a+x+"G4default"]=hstore[a+x].Clone(a+x+"G4default")
       hstore[a+x+"G4default"].Add(hstore[a+x+"Hadronic inelastic"],-1.)
-     
+# subtract invalid case from main distribution
+      hstore[a+x].Add(hstore[a+x+"invalid"],-1.)
+# temporarly, until histos exist also for data
+  a='p/Abspx'
+  for s in sources:
+    hstore[a+'mu'+s]=hstore[a+'ymu'+s]
  if pot <0: # (default, use Hans normalization)
    pot = h['Trscalers'].GetBinContent(2) * muPerPot / MCStats
    # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
@@ -6226,7 +6235,7 @@ elif options.command == "anaResiduals":
    importAlignmentConstants()
    anaResiduals()
    print "finished with analysis step",options.listOfFiles
-  else: print "no events, exit"
+  else: print "no events, exit ",sTree.GetCurrentFile()
 elif options.command == "alignment":
   ROOT.gROOT.SetBatch(True)
   if sTree.GetBranch('MCTrack'):

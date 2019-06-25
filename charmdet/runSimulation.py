@@ -159,7 +159,6 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
      os.chdir('../')
      continue
    sTree = origin.cbmsim
-   Nentries = sTree.GetEntries()
    N = 0
    deltaN = int(sTree.GetEntries()/float(splitFactor))
    for i in range(splitFactor):
@@ -216,7 +215,6 @@ def checkFilesWithTracks(D='.',splitFactor=5,dimuon=False):
  elif D.find('1GeV')==0 or D.find('10GeV')==0: 
    fnames = getFilesEOS(D)
    eos = os.environ['EOSSHIP']
- Nfiles = len(fnames)
  fileList=[]
  fileListPer={}
  failedList = []
@@ -277,7 +275,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals"):
    fileList = []
    for y in temp2.split('\n'):
     f = os.environ['EOSSHIP'] + y[y.find('/eos'):]
-    if not f.find('histos')<0: continue
+    if not f.find('ship')==0: continue
     if  f.find('RT')<0: continue
     histFile = commandToHist[command]+y[y.rfind('/')+1:]
     if histFile in os.listdir('.') : continue
@@ -415,6 +413,19 @@ def mergeHistos(command="anaResiduals"):
    z='mbias'
    if d.find('charm')>0: z='charm'
    if (not x.find(commandToHist[command])<0 ):  cmd[z] += d+'/'+x+" "
+ for z in ['charm','mbias']:
+     os.system(cmd[z])
+
+def mergeNtuple():
+ dirList=getFilesLocal()
+ cmd = {}
+ for z in ['charm','mbias']:
+  cmd[z] = 'hadd -f ntuple-'+z+'.root '
+ for d in dirList:
+  for x in os.listdir(d):
+   z='mbias'
+   if d.find('charm')>0: z='charm'
+   if (not x.find('ntuple')<0 ):  cmd[z] += d+'/'+x+" "
  for z in ['charm','mbias']:
      os.system(cmd[z])
 

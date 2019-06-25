@@ -550,10 +550,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
- std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","p/pxy","p/Abspxy","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
+ std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","pz/Abspx","p/pxy","p/Abspxy","pz/Abspxy","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
                                  "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4"};
  std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"};
+ std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"};
 
  std::vector<TString>::iterator its = Tsource.begin();
  while( its!=Tsource.end()){
@@ -577,8 +577,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TString fname = sTree->GetCurrentFile()->GetName();
  TFile fntpl("ntuple-"+fname(fname.Last('/')+1,fname.Length()),"recreate");
  TTree tMuFlux("tmuflux","muflux ntuple");
- Int_t tnTr,tevtnr,tspillnrA,tspillnrB,tspillnrC,station1Occ;
+ Int_t tnTr,tevtnr,tspillnrA,tspillnrB,tspillnrC,tchannel;
+ Int_t stationOcc[7];
  Int_t tSign[maxD];
+ Int_t tGoodTrack[maxD];
  Double_t tChi2[maxD];
  Double_t tnDoF[maxD];
  Double_t tPx[maxD];
@@ -589,14 +591,18 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Double_t tz[maxD];
  Double_t tDelx[maxD];
  Double_t tDely[maxD];
+ Double_t tRPCx[maxD];
+ Double_t tRPCy[maxD];
 
  tMuFlux.Branch("nTr",&tnTr,"nTr/I");
  tMuFlux.Branch("evtnr",&tevtnr,"evtnr/I");
+ tMuFlux.Branch("channel",&tchannel,"channel/I");
  tMuFlux.Branch("spillnrA",&tspillnrA,"spillnrA/I");
  tMuFlux.Branch("spillnrB",&tspillnrB,"spillnrB/I");
  tMuFlux.Branch("spillnrC",&tspillnrC,"spillnrC/I");
- tMuFlux.Branch("station1Occ",&station1Occ,"station1Occ/I");
+ tMuFlux.Branch("stationOcc",&stationOcc,"stationOcc[7]/I");
  tMuFlux.Branch("Sign",&tSign,"Sign[nTr]/I");
+ tMuFlux.Branch("GoodTrack",&tGoodTrack,"GoodTrack[nTr]/I");
  tMuFlux.Branch("Chi2",&tChi2,"Chi2[nTr]/D");
  tMuFlux.Branch("nDoF",&tnDoF,"nDoF[nTr]/D");
  tMuFlux.Branch("Px",&tPx,"Px[nTr]/D");
@@ -607,6 +613,8 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  tMuFlux.Branch("z",&tz,"z[nTr]/D");
  tMuFlux.Branch("Delx",&tDelx,"tDelx[nTr]/D");
  tMuFlux.Branch("Dely",&tDely,"tDely[nTr]/D");
+ tMuFlux.Branch("RPCx",&tRPCx,"tRPCx[nTr]/D");
+ tMuFlux.Branch("RPCy",&tRPCy,"tRPCy[nTr]/D");
  if (MCdata){
   tspillnrA = 0;
   tspillnrB = 0;
@@ -622,45 +630,114 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  while (nx<nMax){
    sTree->GetEvent(nx);
    h_Trscalers->Fill(1);
-// check for multiplicity in station 1
+// check for multiplicity in all stations
    nestedList spectrHitsSorted = nestedList();
-   sortHits(cDigi_MufluxSpectrometerHits,&spectrHitsSorted);
-   station1Occ=0;
-   for ( int l = 0; l<4; l++ )   {
-     station1Occ+=spectrHitsSorted[0][1][l].size();
+   sortHits(cDigi_MufluxSpectrometerHits,&spectrHitsSorted,true);
+   for ( int k = 1; k<7; k++ )   {
+     stationOcc[k]=0;
+     int s = k;
+     int t = 0;
+     if (k==5){
+       s=1;
+       t=1;
+     }else if (k==6){
+       s=2;
+       t=2;
+     }
+     for ( int l = 0; l<4; l++ )   {
+      stationOcc[k]+=spectrHitsSorted[t][s][l].size();
+    }
    }
-   if (station1Occ>6){continue;}
-   h_Trscalers->Fill(11);
    tevtnr=nx;
-   tnTr=0;
-   nx+=1;
+   tnTr = 0;
+   nx  += 1;
    Int_t Ntracks = FitTracks->GetEntries();
-   Int_t Ngood = 0;
+   Int_t Ngood   = 0;
    Int_t Ngoodmu = 0;
    if(Ntracks>0){ h_Trscalers->Fill(2);}
    std::vector<int> muonTaggedTracks;
    TString source = "";
-   if (MCdata){ Int_t channel = checkDiMuon(h_weightVsSource);
-         if (channel == 1){ source = "Decay";}
-         if (channel == 7){ source = "Di-muon P8";}
-         if (channel == 2){ source = "Hadronic inelastic";}
-         if (channel == 3){ source = "Lepton pair";}
-         if (channel == 4){ source = "Positron annihilation";}
-         if (channel == 5){ source = "charm";}
-         if (channel == 6){ source = "beauty";}
-         if (channel == 13){ source = "invalid";}
+   tchannel = 0;
+   if (MCdata){ tchannel = checkDiMuon(h_weightVsSource);
+         if (tchannel == 1){  source = "Decay";}
+         if (tchannel == 7){  source = "Di-muon P8";}
+         if (tchannel == 2){  source = "Hadronic inelastic";}
+         if (tchannel == 3){  source = "Lepton pair";}
+         if (tchannel == 4){  source = "Positron annihilation";}
+         if (tchannel == 5){  source = "charm";}
+         if (tchannel == 6){  source = "beauty";}
+         if (tchannel == 13){ source = "invalid";}
    }
    Bool_t fSource= kFALSE;
    if ( strcmp("", source.Data())!=0 ){fSource=kTRUE;}
-   for (Int_t k=0;k<Ntracks;k++) {
+
+// first, fill ntuple and find list of good tracks
+   std::vector<int> tmp ;
+   std::vector<int> goodTracks ;
+   for (unsigned int k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
-// track quality
      h_Trscalers->Fill(3);
-     if (!fitStatus->isFitConverged()){continue;}
+     if (!fitStatus->isFitConverged()){
+      tGoodTrack[tnTr]=-1;
+      tnTr+=1;
+      continue;}
+     auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
+     h1D["chi2"]->Fill(chi2);
+     h1D["Nmeasurements"]->Fill(fitStatus->getNdf());
+     if (fSource){
+        h1D["chi2"+source]->Fill(chi2);
+        h1D["Nmeasurements"+source]->Fill(fitStatus->getNdf());}
+     auto fittedState = aTrack->getFittedState();
+     auto pos = fittedState.getPos();
+     auto mom = fittedState.getMom();
+     tx[tnTr]  = pos[0];
+     ty[tnTr]  = pos[1];
+     tz[tnTr]  = pos[2];
+     tPx[tnTr] = mom[0];
+     tPy[tnTr] = mom[1];
+     tPz[tnTr] = mom[2];
+     tSign[tnTr] = fitStatus->getCharge();
+     tChi2[tnTr] = chi2;
+     tnDoF[tnTr] = fitStatus->getNdf();
+// check for muon tag
+     TVector3 posRPC; TVector3 momRPC;
+     Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
+     tRPCx[tnTr] = posRPC[0];
+     tRPCy[tnTr] = posRPC[1];
+     Bool_t X = kFALSE;
+     Bool_t Y = kFALSE;
+     tDelx[tnTr] = 9999.;
+     tDely[tnTr] = 9999.;
+     for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {
+        RPCTrack *hit = (RPCTrack*)RPCTrackX->At(mu);
+        Float_t Xpos = hit->m()*cuts["zRPC1"]+hit->b();
+        Double_t dist = TMath::Abs(posRPC[0]-Xpos);
+        if (dist<cuts["muTrackMatchX"]){X=kTRUE;}
+        if (dist<tDelx[tnTr]){tDelx[tnTr]=dist;}
+     }
+     for (Int_t mu=0;mu<RPCTrackY->GetEntries();mu++) {
+        RPCTrack *hit = (RPCTrack*)RPCTrackY->At(mu);
+        Float_t Ypos = hit->m()*cuts["zRPC1"]+hit->b();
+        Double_t dist = TMath::Abs(posRPC[1]-Ypos);
+        if (dist<cuts["muTrackMatchY"]){Y=kTRUE;}
+        if (dist<tDely[tnTr]){tDely[tnTr]=dist;}
+     }
+     tGoodTrack[tnTr]=-100;
+     if (X) {tGoodTrack[tnTr]=-101;}
+     if (Y) {tGoodTrack[tnTr]=-110;}
+     if (X && Y) {tGoodTrack[tnTr]=-111;}
+     tnTr+=1;
+// continue finding good tracks
+     if (chi2 > chi2UL){ continue;}
+     h_Trscalers->Fill(4);
      TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
-// for MC
+     if (hitsPerStation["x1"].size()<2){ continue;}
+     if (hitsPerStation["x2"].size()<2){ continue;}
+     if (hitsPerStation["x3"].size()<2){ continue;}
+     if (hitsPerStation["x4"].size()<2){ continue;}
+// for MC, additional inefficiencies
      if (MCdata){
        std::map<TString,int> detectors = { {"u",0}, {"v",0}, {"x2",0}, {"x3",0}, {"x1",0},{"x4",0}};
        std::map<TString, int>::iterator it;
@@ -677,48 +754,79 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
        }
        if (failed){continue;}
      }
-     if (hitsPerStation["x1"].size()<2){ continue;}
-     if (hitsPerStation["x2"].size()<2){ continue;}
-     if (hitsPerStation["x3"].size()<2){ continue;}
-     if (hitsPerStation["x4"].size()<2){ continue;}
-     h_Trscalers->Fill(4);
-     auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
+     h_Trscalers->Fill(5);
+     tGoodTrack[tnTr-1]=-1*tGoodTrack[tnTr-1];
+     tmp.push_back(k);
+   }
+// remove clones
+   for(std::vector<int>::iterator itA = tmp.begin(); itA != tmp.end(); ++itA) {
+     Bool_t clone = kFALSE;
+     genfit::Track* aTrack = (genfit::Track*)FitTracks->At(*itA);
+     auto PA           = aTrack->getFittedState().getMom();
+     auto fitStatusA   = aTrack->getFitStatus();
+     for(std::vector<int>::iterator itB = tmp.begin(); itB != tmp.end(); ++itB) {
+       if (*itA==*itB){continue;}
+       genfit::Track* bTrack = (genfit::Track*)FitTracks->At(*itB);
+       auto PB = bTrack->getFittedState().getMom();
+       Double_t cosAB = PA.Dot(PB)/(PA.Mag()*PB.Mag());
+       if (cosAB>0.99995){
+        auto fitStatusB   = bTrack->getFitStatus();
+        Double_t chi2A = fitStatusA->getChi2()/fitStatusA->getNdf();
+        Double_t chi2B = fitStatusB->getChi2()/fitStatusB->getNdf();
+        if (chi2A>chi2B){clone=kTRUE;}
+       }
+     }
+     if (!clone){goodTracks.push_back(*itA);}
+     else {tGoodTrack[*itA]+=1000;}
+   }
+   for(std::vector<int>::iterator it = goodTracks.begin(); it != goodTracks.end(); ++it) {
+     int k = *it;
+     genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
+     auto fitStatus  = aTrack->getFitStatus();
      auto fittedState = aTrack->getFittedState();
-     Float_t P = fittedState.getMomMag();
+     auto chi2 = fitStatus->getChi2()/fitStatus->getNdf();
+     Float_t P  = fittedState.getMomMag();
      Float_t Px = fittedState.getMom().x();
      Float_t Py = fittedState.getMom().y();
      Float_t Pz = fittedState.getMom().z();
-     h1D["chi2"]->Fill(chi2);
-     h1D["Nmeasurements"]->Fill(fitStatus->getNdf());
-     if (fSource){
-        h1D["chi2"+source]->Fill(chi2);
-        h1D["Nmeasurements"+source]->Fill(fitStatus->getNdf());}
-     if (chi2 > chi2UL){ continue;}
-     h_Trscalers->Fill(5);
      auto pos = fittedState.getPos();
-     tx[tnTr] = pos[0];
-     ty[tnTr] = pos[1];
-     tz[tnTr] = pos[2];
-     tPx[tnTr] = Px;
-     tPy[tnTr] = Py;
-     tPz[tnTr] = Pz;
-     tSign[tnTr] = fitStatus->getCharge();
-     tChi2[tnTr] = chi2;
-     tnDoF[tnTr] = fitStatus->getNdf();
+// check for muon tag
+     TVector3 posRPC; TVector3 momRPC;
+     Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
+     tRPCx[tnTr] = posRPC[0];
+     tRPCy[tnTr] = posRPC[1];
+     Bool_t X = kFALSE;
+     Bool_t Y = kFALSE;
+     for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {
+        RPCTrack *hit = (RPCTrack*)RPCTrackX->At(mu);
+        Float_t Xpos = hit->m()*cuts["zRPC1"]+hit->b();
+        Double_t dist = TMath::Abs(posRPC[0]-Xpos);
+        if (dist<cuts["muTrackMatchX"]){X=kTRUE;}
+     }
+     for (Int_t mu=0;mu<RPCTrackY->GetEntries();mu++) {
+        RPCTrack *hit = (RPCTrack*)RPCTrackY->At(mu);
+        Float_t Ypos = hit->m()*cuts["zRPC1"]+hit->b();
+        Double_t dist = TMath::Abs(posRPC[1]-Ypos);
+        if (dist<cuts["muTrackMatchY"]){Y=kTRUE;}
+     }
 
      h2D["p/pt"]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
      h2D["p/px"]->Fill(P,Px);
      h2D["p/Abspx"]->Fill(P,TMath::Abs(Px));
+     h2D["pz/Abspx"]->Fill(Pz,TMath::Abs(Px));
      h2D["xy"]->Fill(pos[0],pos[1]);
      h2D["pxpy"]->Fill(Px/Pz,Py/Pz);
      if (fSource){
       h2D["p/pt"+source]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
       h2D["p/px"+source]->Fill(P,Px);
       h2D["p/Abspx"+source]->Fill(P,TMath::Abs(Px));
+      h2D["pz/Abspx"+source]->Fill(Pz,TMath::Abs(Px));
       h2D["xy"+source]->Fill(pos[0],pos[1]);
       h2D["pxpy"+source]->Fill(Px/Pz,Py/Pz);
      }
 // record fitted points / station
+    TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
+    StringVecIntMap hitsPerStation = countMeasurements(info);
     h2D["Fitpoints_u1"]->Fill(P,hitsPerStation["u"].size());
     h2D["Fitpoints_v2"]->Fill(P,hitsPerStation["v"].size());
     h2D["Fitpoints_x1"]->Fill(P,hitsPerStation["x1"].size());
@@ -739,35 +847,16 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       }
      }
     }
+
     if (P>5){Ngood+=1;}
-// check for muon tag
-     TVector3 posRPC; TVector3 momRPC;
-     Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
-     Bool_t X = kFALSE;
-     Bool_t Y = kFALSE;
-     tDelx[tnTr] = 9999.;
-     tDely[tnTr] = 9999.;
-     for (Int_t mu=0;mu<RPCTrackX->GetEntries();mu++) {
-        RPCTrack *hit = (RPCTrack*)RPCTrackX->At(mu);
-        Float_t Xpos = hit->m()*cuts["zRPC1"]+hit->b();
-        Double_t dist = TMath::Abs(posRPC[0]-Xpos);
-        if (dist<cuts["muTrackMatchX"]){X=kTRUE;}
-        if (dist<tDelx[tnTr]){tDelx[tnTr]=dist;}
-     }
-     for (Int_t mu=0;mu<RPCTrackY->GetEntries();mu++) {
-        RPCTrack *hit = (RPCTrack*)RPCTrackY->At(mu);
-        Float_t Ypos = hit->m()*cuts["zRPC1"]+hit->b();
-        Double_t dist = TMath::Abs(posRPC[1]-Ypos);
-        if (dist<cuts["muTrackMatchY"]){Y=kTRUE;}
-        if (dist<tDely[tnTr]){tDely[tnTr]=dist;}
-     }
-      tnTr+=1;
       if (X) { // within ~3sigma  X from mutrack
         h2D["p/pxmu"]->Fill(P,Px);
         h2D["p/Abspxmu"]->Fill(P,TMath::Abs(Px));
+        h2D["pz/Abspxmu"]->Fill(Pz,TMath::Abs(Px));
         if (fSource){
          h2D["p/pxmu"+source]->Fill(P,Px);
          h2D["p/Abspxmu"+source]->Fill(P,TMath::Abs(Px));
+         h2D["pz/Abspxmu"+source]->Fill(Pz,TMath::Abs(Px));
        }
       }
       if (X && Y) { // within ~3sigma  X,Y from mutrack
@@ -776,12 +865,14 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         h2D["p/ptmu"]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
         h2D["p/pxymu"]->Fill(P,Px);
         h2D["p/Abspxymu"]->Fill(P,TMath::Abs(Px));
+        h2D["pz/Abspxymu"]->Fill(Pz,TMath::Abs(Px));
         h2D["xymu"]->Fill(pos[0],pos[1]);
         h2D["pxpymu"]->Fill(Px/Pz,Py/Pz);
         if (fSource){
          h2D["p/ptmu"+source]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
          h2D["p/pxymu"+source]->Fill(P,Px);
          h2D["p/Abspxymu"+source]->Fill(P,TMath::Abs(Px));
+         h2D["pz/Abspxymu"+source]->Fill(Pz,TMath::Abs(Px));
          h2D["xymu"+source]->Fill(pos[0],pos[1]);
          h2D["pxpymu"+source]->Fill(Px/Pz,Py/Pz);
         }
