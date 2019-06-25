@@ -38,7 +38,7 @@ public:
    void fillHitMaps(Int_t nMax=-1);
    void RPCextrap(Int_t nMax=-1);
    void trackKinematics(Float_t chi2UL,Int_t nMax=-1);
-   Double_t findTrueMomentum(TTree* sTree);
+   TVector3 findTrueMomentum(TTree* sTree);
    Bool_t findSimpleEvent(Int_t nmin, Int_t nmax);
    void setNoisyChannels(std::vector<int> x){noisyChannels = x;}
    void setDeadChannels(std::vector<int> x){deadChannels = x;}

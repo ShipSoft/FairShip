@@ -508,8 +508,8 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
  }
  return mStatistics;
 }
-Double_t MufluxReco::findTrueMomentum(TTree* sTree){
-   Double_t trueP = -1.;
+TVector3 MufluxReco::findTrueMomentum(TTree* sTree){
+   TVector3 trueP(0.,0.,0.);
    if (findSimpleEvent(2,6)){
      if (FitTracks->GetEntries()==1){
       Double_t zmin = 1000.;
@@ -528,7 +528,7 @@ Double_t MufluxReco::findTrueMomentum(TTree* sTree){
        for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
         MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
         if (hit->GetDetectorID() == kMin) {
-         trueP = TMath::Sqrt(hit->GetPx()*hit->GetPx()+hit->GetPy()*hit->GetPy()+hit->GetPz()*hit->GetPz());
+         trueP = TVector3(hit->GetPx(),hit->GetPy(),hit->GetPz());
          break;}
       }
      }
@@ -835,16 +835,13 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
     h2D["Fitpoints_x4"]->Fill(P,hitsPerStation["x4"].size());
 // mom resolution, only simple events, one track
     if (MCdata){
-     Double_t trueMom = findTrueMomentum(sTree);
-     if (trueMom >0){
-      h1D["trueMom"]->Fill(trueMom);
+     TVector3 trueMom = findTrueMomentum(sTree);
+     if (trueMom[2] >0){
+      h1D["trueMom"]->Fill(trueMom.Mag());
       h1D["recoMom"]->Fill(P);
-      h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
-      if (fSource){
-       h1D["trueMom"+source]->Fill(trueMom);
-       h1D["recoMom"+source]->Fill(P);
-       h2D["momResol"+source]->Fill((P-trueMom)/trueMom,trueMom);
-      }
+      h2D["truePz/Abspx"]->Fill(trueMom[0],trueMom[2]);
+      h2D["recoPz/Abspx"]->Fill(Pz,TMath::Abs(Px));
+      h2D["momResol"]->Fill((P-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
      }
     }
 
