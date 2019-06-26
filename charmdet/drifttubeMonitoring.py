@@ -5105,7 +5105,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
             "charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.,"invalid":1.}
  if len(hMC)==0:
   interestingHistos = []
-  for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
+  for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s','Trscalers']:
    for x in ['','mu','ymu']:
     for source in sources:  interestingHistos.append(a+x+source)
   interestingHistos.append('chi2')
@@ -5124,7 +5124,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
    ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
    MCStats = MCStats*2.
-  for a in ['p/pt','p/Abspx','p1/p2','p1/p2s']:
+  for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
     for x in ['','mu']:
      if a.find('p1/p2')==0 and x!='': continue
      for hstore in [hMC,hCharm,hMC10GeV]: 
@@ -5133,10 +5133,6 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
       hstore[a+x+"G4default"].Add(hstore[a+x+"Hadronic inelastic"],-1.)
 # subtract invalid case from main distribution
       hstore[a+x].Add(hstore[a+x+"invalid"],-1.)
-# temporarly, until histos exist also for data
-  a='p/Abspx'
-  for s in sources:
-    hstore[a+'mu'+s]=hstore[a+'ymu'+s]
  if pot <0: # (default, use Hans normalization)
    pot = h['Trscalers'].GetBinContent(2) * muPerPot / MCStats
    # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
@@ -5150,7 +5146,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    norm = PG5/MCPG5
    print "use as normalization:",norm
  else: norm = pot
- for a in ['p/pt','p/Abspx','p1/p2','p1/p2s']:
+ for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
    for x in ['','mu']:
     if a.find('p1/p2')==0 and x=='mu': continue
     h['MC'+a+x]   = hMC[a+x].Clone('MC'+a+x)
@@ -5220,10 +5216,10 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
   for x in ['','mu']:
    t = d+'MC-Comparison'+x
    if not h.has_key(t): 
-     ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=3,cy=2)
-     ut.bookCanvas(h,key='simple'+t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=3,cy=2)
+     ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
+     ut.bookCanvas(h,key='simple'+t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
    if d=='':
-    for a in ['p/pt','p/Abspx','p1/p2']:
+    for a in ['p/pt','pz/Abspx','p1/p2']:
      if a=='p1/p2' and x=='mu': continue
      for source in sources:
       xxx = a+x+source
@@ -5248,9 +5244,10 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
       tmp = h[i+'10p/pt'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20)+1,h[i+'p/pt'+x+'_x'].GetNbinsX())
 # attempt to make pt/px distribution with 1 GeV and 10 GeV MC
       h[i+'p/pt'+z+'_y'].Add(tmp)
-      h[i+'p/Abspx'+z+'_y']=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+'_y',h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].FindBin(20.))
-      tmp = h[i+'10p/Abspx'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20)+1,h[i+'p/pt'+x+'_x'].GetNbinsX())
-      h[i+'p/Abspx'+z+'_y'].Add(tmp)
+# px
+      h[i+'pz/Abspx'+z+'_y']=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+'_y',h[i+'pz/Abspx'+x+'_x'].FindBin(pMin),h[i+'pz/Abspx'+x+'_x'].FindBin(20.))
+      tmp = h[i+'10pz/Abspx'+z].ProjectionY('tmp',h[i+'pz/Abspx'+x+'_x'].FindBin(20)+1,h[i+'pz/Abspx'+x+'_x'].GetNbinsX())
+      h[i+'pz/Abspx'+z+'_y'].Add(tmp)
       for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
        interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
        if pInterval[0]<20:
@@ -5258,34 +5255,99 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
          tmp = h[i+'10p/pt'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20.)+1,h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
 # attempt to make pt/px distribution with 1 GeV and 10 GeV MC
          h[i+'p/pt'+z+interval].Add(tmp)
-         h[i+'p/Abspx'+z+interval]=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+interval,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(20.))
-         tmp = h[i+'10p/Abspx'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20.)+1,h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
-         h[i+'p/Abspx'+z+interval].Add(tmp)
+         h[i+'pz/Abspx'+z+interval]=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+interval,h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[0]),h[i+'pz/Abspx'+x+'_x'].FindBin(20.))
+         tmp = h[i+'10pz/Abspx'+z].ProjectionY('tmp',h[i+'pz/Abspx'+x+'_x'].FindBin(20.)+1,h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[1]))
+         h[i+'pz/Abspx'+z+interval].Add(tmp)
        else:
          h[i+'p/pt'+z+interval]   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+interval      ,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
-         h[i+'p/Abspx'+z+interval]=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+interval,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+         h[i+'pz/Abspx'+z+interval]=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+interval,h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[0]),h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[1]))
        h[i+'p/pt'+z+interval].SetTitle('pt for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
-       h[i+'p/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
+       h[i+'pz/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
      else:
       h[i+'p/pt'+z+'_y']   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+'_y'      ,h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].GetNbinsX())
-      h[i+'p/Abspx'+z+'_y']=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+'_y',h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].GetNbinsX())
+      h[i+'pz/Abspx'+z+'_y']=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+'_y',h[i+'pz/Abspx'+x+'_x'].FindBin(pMin),h[i+'pz/Abspx'+x+'_x'].GetNbinsX())
       for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.],[20.,300.] ]:
        interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
        h[i+'p/pt'+z+interval]   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+interval      ,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
-       h[i+'p/Abspx'+z+interval]=h[i+'p/Abspx'+z].ProjectionY(i+'p/Abspx'+z+interval,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
+       h[i+'pz/Abspx'+z+interval]=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+interval,h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[0]),h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[1]))
        h[i+'p/pt'+z+interval].SetTitle('pt for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
-       h[i+'p/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
+       h[i+'pz/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
      ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_x',overFlow=True)
      h['I-'+i+'p/pt'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
      h['I-'+i+'p/pt'+x+source+'_x'].Scale(1./POTdata)
+     ut.makeIntegralDistrib(h,i+'pz/Abspx'+x+source+'_x',overFlow=True)
+     h['I-'+i+'pz/Abspx'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
+     h['I-'+i+'pz/Abspx'+x+source+'_x'].Scale(1./POTdata)
      ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_y',overFlow=True)
-     ut.makeIntegralDistrib(h,i+'p/Abspx'+x+source+'_y',overFlow=True)
-     h['I-'+i+'p/Abspx'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Px>x')
-     h['I-'+i+'p/Abspx'+x+source+'_y'].Scale(1./POTdata)
+     ut.makeIntegralDistrib(h,i+'pz/Abspx'+x+source+'_y',overFlow=True)
+     h['I-'+i+'pz/Abspx'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Px>x')
+     h['I-'+i+'pz/Abspx'+x+source+'_y'].Scale(1./POTdata)
      h['I-'+i+'p/pt'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Pt>x')
      h['I-'+i+'p/pt'+x+source+'_y'].Scale(1./POTdata)
-#
+# start with pz
    tc = 1
+   rc = h[t].cd(tc)
+   rc.SetLogy(1)
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+   mx1 = ut.findMaximumAndMinimum(h[d+'pz/Abspx'+x+'_x'])[1]
+   mx2 = ut.findMaximumAndMinimum(h[d+'MCpz/Abspx'+x+'_x'])[1]
+   hMax = max(mx1,mx2)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC10')<0: 
+        i = 'MC10'
+        source = i1.split('MC10')[1]
+    elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+    xx = x+source
+    h[d+i+'pz/Abspx'+xx+'_x'].SetTitle('momentum Pz')
+    h[d+i+'pz/Abspx'+xx+'_x'].SetMaximum(hMax*10.)
+    if d == "": h[d+i+'p/pt'+xx+'_x'].SetMinimum(1.)
+    else: h[d+i+'p/pt'+xx+'_x'].SetMinimum(1.E-10)
+    h[d+i+'pz/Abspx'+xx+'_x'].SetLineWidth(1)
+    h[d+i+'pz/Abspx'+xx+'_x'].SetMarkerSize(1)
+    h[d+i+'pz/Abspx'+xx+'_x'].SetLineColor(opt[i1][1])
+    h[d+i+'pz/Abspx'+xx+'_x'].SetStats(0)
+    if i =='':  h[d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(5.,400.)
+    if i =='MC':  h[d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(5.,30.)
+    if i =='MC10':  h[d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(20.,400.)
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i1][2],'PL')
+    h[d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i1][0])
+   h['leg'+t+str(tc)].Draw('same')
+# then px
+   tc = 2
+   rc = h[t].cd(tc)
+   rc.SetLogy(1)
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+   mx1 = ut.findMaximumAndMinimum(h[d+'pz/Abspx'+x+'_y'])[1]
+   mx2 = ut.findMaximumAndMinimum(h[d+'MCpz/Abspx'+x+'_y'])[1]
+   hMaPx = max(mx1,mx2)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC10')<0: 
+        i = 'MC10'
+        source = i1.split('MC10')[1]
+    elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+    if i=='MC10': continue
+    xx = x+source
+    h[d+i+'pz/Abspx'+xx+'_y'].SetTitle('Px, Pz>'+str(pMin))
+    h[d+i+'pz/Abspx'+xx+'_y'].SetMaximum(hMaPx*10.)
+    if d == "": h[d+i+'pz/Abspx'+xx+'_y'].SetMinimum(1.)
+    else: h[d+i+'pz/Abspx'+xx+'_y'].SetMinimum(1.E-10)
+    h[d+i+'pz/Abspx'+xx+'_y'].SetLineWidth(1)
+    h[d+i+'pz/Abspx'+xx+'_y'].SetMarkerSize(1)
+    h[d+i+'pz/Abspx'+xx+'_y'].SetLineColor(opt[i1][1])
+    h[d+i+'pz/Abspx'+xx+'_y'].SetStats(0)
+    h[d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i1][2],'PL')
+   h['leg'+t+str(tc)].Draw('same')
+# now P
+   tc = 3
    rc = h[t].cd(tc)
    rc.SetLogy(1)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
@@ -5316,7 +5378,8 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i1][2],'PL')
     h[d+i+'p/pt'+xx+'_x'].Draw(opt[i1][0])
    h['leg'+t+str(tc)].Draw('same')
-   tc = 2
+# and Pt
+   tc = 4
    rc = h[t].cd(tc)
    rc.SetLogy(1)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
@@ -5345,13 +5408,31 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     h[d+i+'p/pt'+xx+'_y'].Draw(opt[i1][0])
     if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
-   tc = 3
+# go to linear projection
+   tc = 5
    rc = h[t].cd(tc)
-   rc.SetLogy(1)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
-   mx1 = ut.findMaximumAndMinimum(h[d+'p/Abspx'+x+'_y'])[1]
-   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/Abspx'+x+'_y'])[1]
-   hMaPx = max(mx1,mx2)
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC10')<0: 
+        i = 'MC10'
+        source = i1.split('MC10')[1]
+    elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+    xx = x+source
+    h['lin'+d+i+'pz/Abspx'+xx+'_x']=h[d+i+'pz/Abspx'+xx+'_x'].Clone('lin'+d+i+'pz/Abspx'+xx+'_x')
+    if i=='': h['lin'+d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRange(5,120)
+    h['lin'+d+i+'pz/Abspx'+xx+'_x'].SetMaximum(hMax*1.1)
+    h['lin'+d+i+'pz/Abspx'+xx+'_x'].SetMinimum(0.)
+    h['lin'+d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i1][2],'PL')
+    if i =='MC10':  h['lin'+d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(20,400)
+   h['leg'+t+str(tc)].Draw('same')
+   tc = 6
+   rc = h[t].cd(tc)
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i1 in optSorted:
     i = i1
     source = ""
@@ -5363,18 +5444,15 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
         source = i1.split('MC')[1]
     if i=='MC10': continue
     xx = x+source
-    h[d+i+'p/Abspx'+xx+'_y'].SetTitle('Px, P>'+str(pMin))
-    h[d+i+'p/Abspx'+xx+'_y'].SetMaximum(hMaPx*10.)
-    if d == "": h[d+i+'p/Abspx'+xx+'_y'].SetMinimum(1.)
-    else: h[d+i+'p/Abspx'+xx+'_y'].SetMinimum(1.E-10)
-    h[d+i+'p/Abspx'+xx+'_y'].SetLineWidth(1)
-    h[d+i+'p/Abspx'+xx+'_y'].SetMarkerSize(1)
-    h[d+i+'p/Abspx'+xx+'_y'].SetLineColor(opt[i1][1])
-    h[d+i+'p/Abspx'+xx+'_y'].SetStats(0)
-    h[d+i+'p/Abspx'+xx+'_y'].Draw(opt[i1][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/Abspx'+xx+'_y'],opt[i1][2],'PL')
+    h['lin'+d+i+'pz/Abspx'+xx+'_y']=h[d+i+'pz/Abspx'+xx+'_y'].Clone('lin'+d+i+'pz/Abspx'+xx+'_y')
+    h['lin'+d+i+'pz/Abspx'+xx+'_y'].GetXaxis().SetRange(1,25)
+    h['lin'+d+i+'pz/Abspx'+xx+'_y'].SetMaximum(hMaPx*1.1)
+    h['lin'+d+i+'pz/Abspx'+xx+'_y'].SetMinimum(0.)
+    h['lin'+d+i+'pz/Abspx'+xx+'_y'].SetStats(0)
+    h['lin'+d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
-   tc = 4
+   tc = 7
    rc = h[t].cd(tc)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i1 in optSorted:
@@ -5395,7 +5473,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i1][2],'PL')
     if i =='MC10':  h['lin'+d+i+'p/pt'+xx+'_x'].GetXaxis().SetRangeUser(20,400)
    h['leg'+t+str(tc)].Draw('same')
-   tc = 5
+   tc = 8
    rc = h[t].cd(tc)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i1 in optSorted:
@@ -5417,28 +5495,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     h['lin'+d+i+'p/pt'+xx+'_y'].Draw(opt[i1][0])
     if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
-   tc = 6
-   rc = h[t].cd(tc)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
-   for i1 in optSorted:
-    i = i1
-    source = ""
-    if not i.find('MC10')<0: 
-        i = 'MC10'
-        source = i1.split('MC10')[1]
-    elif not i.find('MC')<0: 
-        i = 'MC'
-        source = i1.split('MC')[1]
-    if i=='MC10': continue
-    xx = x+source
-    h['lin'+d+i+'p/Abspx'+xx+'_y']=h[d+i+'p/Abspx'+xx+'_y'].Clone('lin'+d+i+'p/Abspx'+xx+'_y')
-    h['lin'+d+i+'p/Abspx'+xx+'_y'].GetXaxis().SetRange(1,25)
-    h['lin'+d+i+'p/Abspx'+xx+'_y'].SetMaximum(hMaPx*1.1)
-    h['lin'+d+i+'p/Abspx'+xx+'_y'].SetMinimum(0.)
-    h['lin'+d+i+'p/Abspx'+xx+'_y'].SetStats(0)
-    h['lin'+d+i+'p/Abspx'+xx+'_y'].Draw(opt[i][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/Abspx'+xx+'_y'],opt[i1][2],'PL')
-   h['leg'+t+str(tc)].Draw('same')
+
    h[t].Update()
    h[t].Print('MC-Comparison'+d+x+'.pdf')
    h[t].Print('MC-Comparison'+d+x+'.png')
@@ -5453,10 +5510,32 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    for i in ['','MC','MC10']:
     source = ""
     xx = x+source
+    if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i][2],'PL')
+    h[d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i][0])
+   h['leg'+ts+str(tc)].Draw('same')
+   tc = 2
+   rc = h[ts].cd(tc)
+   rc.SetLogy(1)
+   h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+   for i in ['','MC']:
+    source = ""
+    xx = x+source
+    h[d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i][0])
+    if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i][2],'PL')
+   h['leg'+ts+str(tc)].Draw('same')
+   tc = 3
+   ts = 'simple'+t
+   rc = h[ts].cd(tc)
+   rc.SetLogy(1)
+   h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+   hMax = max(mx1,mx2)
+   for i in ['','MC','MC10']:
+    source = ""
+    xx = x+source
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i][2],'PL')
     h[d+i+'p/pt'+xx+'_x'].Draw(opt[i][0])
    h['leg'+ts+str(tc)].Draw('same')
-   tc = 2
+   tc = 4
    rc = h[ts].cd(tc)
    rc.SetLogy(1)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
@@ -5466,17 +5545,25 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     h[d+i+'p/pt'+xx+'_y'].Draw(opt[i][0])
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i][2],'PL')
    h['leg'+ts+str(tc)].Draw('same')
-   tc = 3
+   tc = 5
    rc = h[ts].cd(tc)
-   rc.SetLogy(1)
-   h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+   h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i in ['','MC','MC10']:
+    source = ""
+    xx = x+source
+    h['lin'+d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i][0])
+    if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i][2],'PL')
+   h['leg'+ts+str(tc)].Draw('same')
+   tc = 6
+   rc = h[ts].cd(tc)
+   h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i in ['','MC']:
     source = ""
     xx = x+source
-    h[d+i+'p/Abspx'+xx+'_y'].Draw(opt[i][0])
-    if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/Abspx'+xx+'_y'],opt[i][2],'PL')
+    h['lin'+d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i][0])
+    if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i][2],'PL')
    h['leg'+ts+str(tc)].Draw('same')
-   tc = 4
+   tc = 7
    rc = h[ts].cd(tc)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i in ['','MC','MC10']:
@@ -5485,7 +5572,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     h['lin'+d+i+'p/pt'+xx+'_x'].Draw(opt[i][0])
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i][2],'PL')
    h['leg'+ts+str(tc)].Draw('same')
-   tc = 5
+   tc = 8
    rc = h[ts].cd(tc)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i in ['','MC']:
@@ -5494,104 +5581,83 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     h['lin'+d+i+'p/pt'+xx+'_y'].Draw(opt[i][0])
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h['lin'+d+i+'p/pt'+xx+'_y'],opt[i][2],'PL')
    h['leg'+ts+str(tc)].Draw('same')
-   tc = 6
-   rc = h[ts].cd(tc)
-   h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
-   for i in ['','MC']:
-    source = ""
-    xx = x+source
-    h['lin'+d+i+'p/Abspx'+xx+'_y'].Draw(opt[i][0])
-    if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/Abspx'+xx+'_y'],opt[i][2],'PL')
-   h['leg'+ts+str(tc)].Draw('same')
+
    h[ts].Update()
    h[ts].Print('MC-Comparison-simple-'+d+x+'.pdf')
    h[ts].Print('MC-Comparison-simple-'+d+x+'.png')
- for Aproj in ['p/Abspx','p/pt','p/pt_y']:
-  t = 'MC-Comparison ratios'+Aproj
-  if not h.has_key(t): 
-     ut.bookCanvas(h,key=t,title='Data / MC',nx=900,ny=600,cx=1,cy=1)
-     ut.bookCanvas(h,key=t+'2D',title='Data / MC',nx=900,ny=600,cx=1,cy=1)
-  h[t].cd(1)
+ for Aproj in ['pz/Abspx','p/pt']:
+  withAllTracks=False
   for x in ['','mu']:
 # old printout
-   if Aproj == 'p/pt':
+   if Aproj == 'pz/Abspx':
     if x != '': print "=== muon tagged ===="
     else: print       "=== all tracks  ===="
     for P in [5.,10.,50.,100.,150.,200.,300.]:
-     nbin = h['p/pt'+x+'_x'].FindBin(P)
-     print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt'+x+'_x'].GetBinContent(nbin)/h['I-MCp/pt'+x+'_x'].GetBinContent(nbin))
+     nbin = h['pz/Abspx'+x+'_x'].FindBin(P)
+     print "data/MC Pz>%5i GeV: %5.2F"%(int(P),h['I-pz/Abspx'+x+'_x'].GetBinContent(nbin)/h['I-MCpz/Abspx'+x+'_x'].GetBinContent(nbin))
 # make ratio plots
-   xx = x+'_x'
-   if Aproj == 'p/Abspx' or Aproj == 'p/pt_y': xx=x+'_y'
    proj = Aproj
-   if Aproj == 'p/pt_y': proj='p/pt'
-   h['I-'+proj+xx+'Ratio']=h['I-'+proj+xx].Clone('I-'+proj+xx+'Ratio')
-   h['I-'+proj+xx+'RatioG4']=h['I-'+proj+xx].Clone('I-'+proj+xx+'RatioG4')
-   h['I-MC'+proj+xx+'G4']=h['I-MC'+proj+xx].Clone('I-MC'+proj+xx+'G4')
-   h['I-MC'+proj+xx+'G4'].Add(h['I-MC'+proj+xx.replace('_','Hadronic inelastic_')],-1.)
-   h['I-'+proj+xx+'RatioG4noCharm']=h['I-'+proj+xx].Clone('I-'+proj+''+x+'_xRatioG4noCharm')
-   h['I-MC'+proj+xx+'G4noCharm']=h['I-MC'+proj+xx].Clone('I-MC'+proj+''+x+'_xG4noCharm')
-   h['I-MC'+proj+xx+'G4noCharm'].Add(h['I-MC'+proj+xx.replace('_','Hadronic inelastic_')],-1.)
-   h['I-MC'+proj+xx+'G4noCharm'].Add(h['I-MC'+proj+xx.replace('_','charm_')],-1.)
-   for c in [ [h['I-'+proj+xx+'Ratio'],h['I-MC'+proj+xx]],[h['I-'+proj+xx+'RatioG4'],h['I-MC'+proj+xx+'G4']],
+   for xx in [x+'_x',x+'_y']:
+    h['I-'+proj+xx+'Ratio']=h['I-'+proj+xx].Clone('I-'+proj+xx+'Ratio')
+    h['I-'+proj+xx+'RatioG4']=h['I-'+proj+xx].Clone('I-'+proj+xx+'RatioG4')
+    h['I-MC'+proj+xx+'G4']=h['I-MC'+proj+xx].Clone('I-MC'+proj+xx+'G4')
+    h['I-MC'+proj+xx+'G4'].Add(h['I-MC'+proj+xx.replace('_','Hadronic inelastic_')],-1.)
+    h['I-'+proj+xx+'RatioG4noCharm']=h['I-'+proj+xx].Clone('I-'+proj+''+x+'_xRatioG4noCharm')
+    h['I-MC'+proj+xx+'G4noCharm']=h['I-MC'+proj+xx].Clone('I-MC'+proj+''+x+'_xG4noCharm')
+    h['I-MC'+proj+xx+'G4noCharm'].Add(h['I-MC'+proj+xx.replace('_','Hadronic inelastic_')],-1.)
+    h['I-MC'+proj+xx+'G4noCharm'].Add(h['I-MC'+proj+xx.replace('_','charm_')],-1.)
+    for c in [ [h['I-'+proj+xx+'Ratio'],h['I-MC'+proj+xx]],[h['I-'+proj+xx+'RatioG4'],h['I-MC'+proj+xx+'G4']],
         [h['I-'+proj+xx+'RatioG4noCharm'],(h['I-MC'+proj+''+xx+'G4noCharm'])]]:
-    for mx in range(1,c[0].GetNbinsX()+1):
-     if c[0].GetBinContent(mx)*POTdata>100. and c[1].GetBinContent(mx)>0:
-      R =c[0].GetBinContent(mx) / c[1].GetBinContent(mx)
-      c[0].SetBinContent(mx,R)
-     else:
-      c[0].SetBinContent(mx,-1)
-   h['leg'+t]=ROOT.TLegend(0.11,0.67,0.56,0.86)
-  withAllTracks=False
-  x = 'mu'
-  if withAllTracks: x = ''
-  xx =x+'_x'
-  if Aproj == 'p/Abspx' or Aproj == 'p/pt_y': xx=x+'_y'
-  proj = Aproj
-  if Aproj == 'p/pt_y': proj='p/pt'
-  h['I-'+proj+xx+'Ratio'].SetLineColor(ROOT.kBlue)
-  h['I-'+proj+xx+'Ratio'].SetMaximum(3.)
-  h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(20.,400.)
-  if Aproj=='p/Abspx' or Aproj=='p/pt_y': 
-   h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,7.5)
-   if Aproj=='p/Abspx': 
-       h['I-'+proj+xx+'Ratio'].SetMaximum(3.)
-       h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,3.5)
-   if Aproj=='p/pt_y': h['I-'+proj+xx+'Ratio'].SetMaximum(5.)
-  h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
-  h['I-'+proj+xx+'Ratio'].SetTitle('Ratio Data/MC '+h['I-'+proj+xx+'Ratio'].GetTitle())
-  h['I-'+proj+xx+'Ratio'].Draw()
-  h['leg'+t].AddEntry(h['I-'+proj+xx+'Ratio'],'Ratio Data / MC muon tagged tracks','PL')
-  h['I-'+proj+xx+'RatioG4'].SetLineColor(ROOT.kMagenta)
-  h['I-'+proj+xx+'RatioG4'].Draw('same')
-  h['leg'+t].AddEntry(h['I-'+proj+xx+'RatioG4'],'muon tagged tracks no G4 dimuon ','PL')
-  h['I-'+proj+xx+'RatioG4noCharm'].SetLineColor(ROOT.kCyan)
-  h['I-'+proj+xx+'RatioG4noCharm'].Draw('same')
-  h['leg'+t].AddEntry(h['I-'+proj+xx+'RatioG4noCharm'],'muon tagged tracks no G4 dimuon no charm ','PL')
-  h['leg'+t].Draw('same')
-  h[t].Print('MC-ComparisonRatios'+Aproj.replace('/','')+'.pdf')
-  h[t].Print('MC-ComparisonRatios'+Aproj.replace('/','')+'.png')
+     for mx in range(1,c[0].GetNbinsX()+1):
+      if c[0].GetBinContent(mx)*POTdata>100. and c[1].GetBinContent(mx)>0:
+       R =c[0].GetBinContent(mx) / c[1].GetBinContent(mx)
+       c[0].SetBinContent(mx,R)
+      else:
+       c[0].SetBinContent(mx,-1)
+    if withAllTracks and x == '': continue
+    t = 'MC-Comparison ratios'+proj+xx
+    if not h.has_key(t): 
+     ut.bookCanvas(h,key=t,title='Data / MC',nx=900,ny=600,cx=1,cy=1)
+     ut.bookCanvas(h,key=t+'2D',title='Data / MC',nx=900,ny=600,cx=1,cy=1)
+    h[t].cd(1)
+    h['leg'+t]=ROOT.TLegend(0.11,0.67,0.56,0.86)
+    h['I-'+proj+xx+'Ratio'].SetLineColor(ROOT.kBlue)
+    h['I-'+proj+xx+'Ratio'].SetMaximum(3.)
+    if xx.find('_y')>0: h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(20.,400.)
+    else:               h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,4.0)
+    h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
+    h['I-'+proj+xx+'Ratio'].SetTitle('Ratio Data/MC '+h['I-'+proj+xx+'Ratio'].GetTitle())
+    h['I-'+proj+xx+'Ratio'].Draw()
+    h['leg'+t].AddEntry(h['I-'+proj+xx+'Ratio'],'Ratio Data / MC muon tagged tracks','PL')
+    h['I-'+proj+xx+'RatioG4'].SetLineColor(ROOT.kMagenta)
+    h['I-'+proj+xx+'RatioG4'].Draw('same')
+    h['leg'+t].AddEntry(h['I-'+proj+xx+'RatioG4'],'muon tagged tracks no G4 dimuon ','PL')
+    h['I-'+proj+xx+'RatioG4noCharm'].SetLineColor(ROOT.kCyan)
+    h['I-'+proj+xx+'RatioG4noCharm'].Draw('same')
+    h['leg'+t].AddEntry(h['I-'+proj+xx+'RatioG4noCharm'],'muon tagged tracks no G4 dimuon no charm ','PL')
+    h['leg'+t].Draw('same')
+    h[t].Print('MC-ComparisonRatios'+Aproj.replace('/','')+'.pdf')
+    h[t].Print('MC-ComparisonRatios'+Aproj.replace('/','')+'.png')
 # now in 2D
-  if Aproj != 'p/pt_y':
-   h[t+'2D'].cd(1)
-   ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
-   h[proj+x+'Ratio'] = h[proj+x].Rebin2D(5,2,proj+x+'Ratio')
-   tmp = h['MC'+proj+x].Rebin2D(5,2,'tmp')
-   for mx in range(1,tmp.GetNbinsX()+1):
-    for my in range(1,tmp.GetNbinsY()+1):
-     if h[proj+x+'Ratio'].GetBinContent(mx,my)>100. and tmp.GetBinContent(mx,my)>0 and tmp.GetXaxis().GetBinCenter(mx)>5.:
+    h[t+'2D'].cd(1)
+    ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
+    h[proj+x+'Ratio'] = h[proj+x].Rebin2D(5,2,proj+x+'Ratio')
+    tmp = h['MC'+proj+x].Rebin2D(5,2,'tmp')
+    for mx in range(1,tmp.GetNbinsX()+1):
+     for my in range(1,tmp.GetNbinsY()+1):
+      if h[proj+x+'Ratio'].GetBinContent(mx,my)>100. and tmp.GetBinContent(mx,my)>0 and tmp.GetXaxis().GetBinCenter(mx)>5.:
        R = h[proj+x+'Ratio'].GetBinContent(mx,my) / tmp.GetBinContent(mx,my)
        h[proj+x+'Ratio'].SetBinContent(mx,my,R)
-     else:
+      else:
        h[proj+x+'Ratio'].SetBinContent(mx,my,-1)
-   h[proj+x+'Ratio'].SetMaximum(3.)
-   h[proj+x+'Ratio'].SetMinimum(0.)
-   h[proj+x+'Ratio'].GetXaxis().SetRangeUser(5.,400.)
-   h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,3.5)
-   h[proj+x+'Ratio'].SetStats(0)
-   h[proj+x+'Ratio'].Draw('colz')
-   h[t+'2D'].Print('MC-ComparisonRatios2D'+proj.replace('/','')+'.png')
-   h[t+'2D'].Print('MC-ComparisonRatios2D'+proj.replace('/','')+'.pdf')
+    h[proj+x+'Ratio'].SetMaximum(3.)
+    h[proj+x+'Ratio'].SetMinimum(0.)
+    h[proj+x+'Ratio'].GetXaxis().SetRangeUser(5.,400.)
+    h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,4.0)
+    h[proj+x+'Ratio'].SetStats(0)
+    h[proj+x+'Ratio'].Draw('colz')
+    h[t+'2D'].Print('MC-ComparisonRatios2D'+proj.replace('/','')+'.png')
+    h[t+'2D'].Print('MC-ComparisonRatios2D'+proj.replace('/','')+'.pdf')
 # data
  t='pPt2d'
  if not h.has_key(t): 
@@ -5628,7 +5694,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
     if i=='MC10': continue
     xx = x+source
     proj = 'p/pt'
-    if t.find('Px')>0: proj = 'p/Abspx'
+    if t.find('Px')>0: proj = 'pz/Abspx'
     hname = i+proj+xx+interval
     mx1 = ut.findMaximumAndMinimum(h[ proj+x+interval])[1]
     mx2 = ut.findMaximumAndMinimum(h['MC'+proj+x+interval])[1]
