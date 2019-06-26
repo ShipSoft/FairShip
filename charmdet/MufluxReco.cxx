@@ -593,6 +593,9 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Double_t tDely[maxD];
  Double_t tRPCx[maxD];
  Double_t tRPCy[maxD];
+ Double_t tMCPx[maxD];
+ Double_t tMCPy[maxD];
+ Double_t tMCPz[maxD];
 
  tMuFlux.Branch("nTr",&tnTr,"nTr/I");
  tMuFlux.Branch("evtnr",&tevtnr,"evtnr/I");
@@ -616,6 +619,9 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  tMuFlux.Branch("RPCx",&tRPCx,"tRPCx[nTr]/D");
  tMuFlux.Branch("RPCy",&tRPCy,"tRPCy[nTr]/D");
  if (MCdata){
+  tMuFlux.Branch("MCPx",&tMCPx,"MCPx[nTr]/D");
+  tMuFlux.Branch("MCPy",&tMCPy,"MCPy[nTr]/D");
+  tMuFlux.Branch("MCPz",&tMCPz,"MCPz[nTr]/D");
   tspillnrA = 0;
   tspillnrB = 0;
   tspillnrC = 0;
@@ -751,6 +757,20 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (X) {tGoodTrack[tnTr]=-101;}
      if (Y) {tGoodTrack[tnTr]=-110;}
      if (X && Y) {tGoodTrack[tnTr]=-111;}
+// mom resolution, only simple events, one track
+     if (MCdata){
+      TVector3 trueMom = findTrueMomentum(sTree);
+      tMCPx[tnTr] = trueMom[0];
+      tMCPy[tnTr] = trueMom[1];
+      tMCPz[tnTr] = trueMom[2];
+      if (trueMom[2] >0){
+       h1D["trueMom"]->Fill(trueMom.Mag());
+       h1D["recoMom"]->Fill(mom.Mag());
+       h2D["truePz/Abspx"]->Fill(trueMom[0],trueMom[2]);
+       h2D["recoPz/Abspx"]->Fill(mom[2],TMath::Abs(mom[0]));
+       h2D["momResol"]->Fill((mom.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
+      }
+     }
      tnTr+=1;
 // continue finding good tracks
      if (chi2 > chi2UL){ continue;}
@@ -833,17 +853,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
     h2D["Fitpoints_x2"]->Fill(P,hitsPerStation["x2"].size());
     h2D["Fitpoints_x3"]->Fill(P,hitsPerStation["x3"].size());
     h2D["Fitpoints_x4"]->Fill(P,hitsPerStation["x4"].size());
-// mom resolution, only simple events, one track
-    if (MCdata){
-     TVector3 trueMom = findTrueMomentum(sTree);
-     if (trueMom[2] >0){
-      h1D["trueMom"]->Fill(trueMom.Mag());
-      h1D["recoMom"]->Fill(P);
-      h2D["truePz/Abspx"]->Fill(trueMom[0],trueMom[2]);
-      h2D["recoPz/Abspx"]->Fill(Pz,TMath::Abs(Px));
-      h2D["momResol"]->Fill((P-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
-     }
-    }
 
     if (P>5){Ngood+=1;}
       if (X) { // within ~3sigma  X from mutrack
@@ -925,9 +934,33 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
  //spectrHitsSorted = {'_x':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
  //                    '_u':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
  //                    '_v':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}}}
+ std::map<Int_t , Bool_t> isValid;
+ if (MCdata){
+  std::map<unsigned int, unsigned int> hitsPerDetId;
+  for (Int_t k=0;k<hits->GetEntries();k++) {
+    isValid[k] = kTRUE;
+    MufluxSpectrometerHit* hit = (MufluxSpectrometerHit*)hits->At(k);
+    Int_t detID = hit->GetDetectorID();
+    Bool_t found = kFALSE;
+    std::map<unsigned int, unsigned int>::iterator it;
+    for (it = hitsPerDetId.begin(); it != hitsPerDetId.end();it++)  {
+       if (it->first == detID) {
+       found = kTRUE;
+       MufluxSpectrometerHit* prevHit = (MufluxSpectrometerHit*)hits->At(it->second);
+       if (prevHit->tdc() > hit->tdc()){ 
+         hitsPerDetId[detID] = k;
+         isValid[it->second] = kFALSE;}
+       else{isValid[k] = kFALSE; }
+      }
+    }
+    if (!found){hitsPerDetId[detID]=k;}
+    }
+ }
  for (Int_t k=0;k<hits->GetEntries();k++) {
    MufluxSpectrometerHit* hit = (MufluxSpectrometerHit*)hits->At(k);
-   if ( !hit->isValid() && MCdata){continue;}
+   if (MCdata){
+     if ( !hit->isValid() || !isValid[k]  ){continue;}
+   }
    if (flag && !MCdata){
     if (!hit->hasTimeOverThreshold() || !hit->hasDelay() || !hit->hasTrigger() ){ continue;} // no reliable TDC measuerement
    }
