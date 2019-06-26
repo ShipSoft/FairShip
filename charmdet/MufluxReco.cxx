@@ -509,9 +509,8 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
  return mStatistics;
 }
 TVector3 MufluxReco::findTrueMomentum(TTree* sTree){
-   TVector3 trueP(0.,0.,0.);
-   if (findSimpleEvent(2,6)){
-     if (FitTracks->GetEntries()==1){
+   TVector3 trueP(0.,0.,-1);
+   if (FitTracks->GetEntries()==1){
       Double_t zmin = 1000.;
       Int_t kMin = -1;
       TrackInfo* ti = (TrackInfo*)TrackInfos->At(0);
@@ -524,16 +523,21 @@ TVector3 MufluxReco::findTrueMomentum(TTree* sTree){
          kMin = ti->detId(k);
        }
       }
-      if (!(kMin<0)){ 
+// kMin should be the detector ID of first hit in station 1
+      Bool_t found = kFALSE;
+      if (!(kMin<0)){
        for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
         MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
         if (hit->GetDetectorID() == kMin) {
-         trueP = TVector3(hit->GetPx(),hit->GetPy(),hit->GetPz());
-         break;}
+         if ( TMath::Abs( hit->PdgCode() ) ==13){
+          if (found){trueP = TVector3(0,0,-1.);}
+          else      { trueP = TVector3(hit->GetPx(),hit->GetPy(),hit->GetPz()); }
+          found = kTRUE;
+         }
+         }
       }
      }
     }
-   }
    return trueP;
 }
 
@@ -766,7 +770,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       if (trueMom[2] >0){
        h1D["trueMom"]->Fill(trueMom.Mag());
        h1D["recoMom"]->Fill(mom.Mag());
-       h2D["truePz/Abspx"]->Fill(trueMom[0],trueMom[2]);
+       h2D["truePz/Abspx"]->Fill(trueMom[2],trueMom[0]);
        h2D["recoPz/Abspx"]->Fill(mom[2],TMath::Abs(mom[0]));
        h2D["momResol"]->Fill((mom.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
       }
