@@ -658,6 +658,8 @@ class ShipDigiReco:
  # second hit with smaller tdc
         self.digiTimeDet[hitsPerDetId[detID]].setInvalid()
         hitsPerDetId[detID] = index
+       else:
+        aHit.setInvalid()
      index+=1
 
  def digitizeMuon(self):
@@ -674,6 +676,8 @@ class ShipDigiReco:
  # second hit with smaller tdc
         self.digiMuon[hitsPerDetId[detID]].setValidity(0)
         hitsPerDetId[detID] = index
+       else:
+        aHit.setValidity(0)
      index+=1
 
  def digitizeSBT(self):
@@ -722,6 +726,8 @@ class ShipDigiReco:
  # second hit with smaller tdc
         self.digiStraw[hitsPerDetId[detID]].setInvalid()
         hitsPerDetId[detID] = index
+      else:
+        aHit.setInvalid()
      index+=1
 
  def withT0Estimate(self):
