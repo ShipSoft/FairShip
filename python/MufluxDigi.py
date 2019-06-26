@@ -7,7 +7,7 @@ stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
 deadChannelsForMC = [10112001, 20112003, 30002041, 30012026, 30102025, 30112013, 30112018, 40012014]
-ineffiency = {1:0.1,2:0.1,3:0.1,4:0.1,5:0.1}
+ineffiency = {1:0.2,2:0.2,3:0.2,4:0.2,5:0.2}
 
 # defining constants for rpc properties
 STRIP_XWIDTH = 0.8625  # internal STRIP V, WIDTH, in cm
@@ -191,7 +191,7 @@ class MufluxDigi:
                     self.digiMufluxSpectrometer[hitsPerDetId[detID]].setInvalid()
                     hitsPerDetId[detID] = index
             else:
-                hitsPerDetId[detID] = index
+                aHit.setInvalid()
             if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
             station = int(aMCPoint.GetDetectorID()/10000000)
             if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
