@@ -51,7 +51,8 @@ public:
    StringVecIntMap countMeasurements(TrackInfo* trInfo);
    std::vector<std::vector<int>> GroupIntegers(std::vector<int>& input_array, size_t span);
    void setEffFudgeFactor(std::string s,float f){effFudgeFac[s]=f;}
-
+   void DTreconstructible(std::vector<int> *i,std::vector<float> *x,std::vector<float> *y,std::vector<float> *z);
+   void RPCreconstructible(std::vector<int> *i,std::vector<float> *x,std::vector<float> *y,std::vector<float> *z);
 private:
   protected:
     Bool_t MCdata;
@@ -68,6 +69,7 @@ private:
     TClonesArray    *RPCTrackY;
     TClonesArray    *RPCTrackX;
     TClonesArray    *Digi_MuonTaggerHits;
+    TClonesArray    *muonTaggerPoint;
     TClonesArray    *cDigi_MufluxSpectrometerHits;
     TClonesArray    *MufluxSpectrometerPoints;
     std::map<TString,float> effFudgeFac;
@@ -77,9 +79,10 @@ private:
     TBranch        *b_RPCTrackY;   //!
     TBranch        *b_RPCTrackX;   //!
     TBranch        *b_Digi_MuonTaggerHits;   //!
+    TBranch        *b_MuonTaggerPoint; //!
     TBranch        *b_Digi_MufluxSpectrometerHits;   //!
     TBranch        *b_MufluxSpectrometerPoints;   //!
-   ClassDef(MufluxReco,6);
+   ClassDef(MufluxReco,7);
 };
 
 #endif

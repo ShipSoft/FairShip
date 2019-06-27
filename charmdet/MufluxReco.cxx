@@ -16,6 +16,7 @@
 #include "MufluxSpectrometerHit.h"
 #include "KalmanFitterInfo.h"
 #include "MuonTaggerHit.h"
+#include "MuonTaggerPoint.h"
 #include <algorithm>
 #include <vector>
 
@@ -42,10 +43,12 @@ MufluxReco::MufluxReco(TTreeReader* t)
   Digi_MuonTaggerHits = 0;
   cDigi_MufluxSpectrometerHits = 0;
   MufluxSpectrometerPoints = 0;
+  muonTaggerPoint = 0;
   TTree* fChain = xSHiP->GetTree();
   if (MCdata){
     fChain->SetBranchAddress("MCTrack", &MCTrack, &b_MCTrack);
     fChain->SetBranchAddress("MufluxSpectrometerPoint", &MufluxSpectrometerPoints, &b_MufluxSpectrometerPoints);
+    fChain->SetBranchAddress("MuonTaggerPoint", &muonTaggerPoint, &b_MuonTaggerPoint);
   }
   fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
   fChain->SetBranchAddress("Digi_MufluxSpectrometerHits", &cDigi_MufluxSpectrometerHits, &b_Digi_MufluxSpectrometerHits);
@@ -540,6 +543,81 @@ TVector3 MufluxReco::findTrueMomentum(TTree* sTree){
     }
    return trueP;
 }
+void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,std::vector<float> *py,std::vector<float> *pz){
+ std::map<int,StringVecIntMap> trackList;
+ std::map<int,StringVecIntMap>::iterator  it;
+ std::map<int,TVector3> pTrue;
+ float minZ = 9999;
+ for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
+    MufluxSpectrometerPoint* point = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
+    Int_t trackID = point->GetTrackID();
+    if (trackID<0){continue;}
+    it = trackList.find(trackID);
+    if ( it == trackList.end()){ 
+      pTrue[trackID] = TVector3();
+      trackList[trackID]= StringVecIntMap(); }
+    Int_t detID = point->GetDetectorID();
+    MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
+    auto info = hit->StationInfo();
+    delete hit;
+    Int_t s=info[0]; Int_t v=info[4];
+    if (v != 0){
+       if (v == 1) { trackList[trackID]["u"].push_back(detID);}
+       if (v == 2) { trackList[trackID]["v"].push_back(detID);}
+    }else{
+     TString x = "x";x+=s;
+     trackList[trackID][x.Data()].push_back(detID);
+     if (point->GetZ()<minZ){
+       minZ = point->GetZ();
+       pTrue[trackID].SetXYZ(point->GetPx(),point->GetPy(),point->GetPz());
+     }
+    }
+ }
+ for ( it = trackList.begin(); it != trackList.end(); it++ )
+ {
+    StringVecIntMap stationStat = it->second;
+    Int_t test = stationStat["x1"].size()*stationStat["x2"].size()*stationStat["x3"].size()
+                 *stationStat["x4"].size()*stationStat["u"].size()*stationStat["v"].size();
+    if (test>0){
+      rec->push_back(it->first);
+      px->push_back(pTrue[it->first].X());
+      py->push_back(pTrue[it->first].Y());
+      pz->push_back(pTrue[it->first].Z());
+    }
+ }
+}
+
+void MufluxReco::RPCreconstructible(std::vector<int> *rec,std::vector<float> *px,std::vector<float> *py,std::vector<float> *pz){
+ std::map<int,std::vector<int>> trackList;
+ std::map<int,std::vector<int>>::iterator  it;
+ std::map<int,TVector3> pTrue;
+ float minZ = 9999;
+ for (Int_t n=0;n<muonTaggerPoint->GetEntries();n++) {
+    MuonTaggerPoint* point = (MuonTaggerPoint*)muonTaggerPoint->At(n);
+    Int_t trackID = point->GetTrackID();
+    if (trackID<0){continue;}
+    it = trackList.find(trackID);
+    if ( it == trackList.end()){ 
+         pTrue[trackID] = TVector3();
+         trackList[trackID]= std::vector<int>(); 
+    }
+    trackList[trackID].push_back(point->GetDetectorID());
+    if (point->GetZ()<minZ){
+       minZ = point->GetZ();
+       pTrue[trackID].SetXYZ(point->GetPx(),point->GetPy(),point->GetPz());
+    }
+ }
+ for ( it = trackList.begin(); it != trackList.end(); it++ )
+ {
+    std::vector<int> stationStat = it->second;
+    if (stationStat.size()>0){
+    rec->push_back(it->first);
+    px->push_back(pTrue[it->first].X());
+    py->push_back(pTrue[it->first].Y());
+    pz->push_back(pTrue[it->first].Z());
+  }
+ }
+}
 
 void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t N = xSHiP->GetEntries(true);
@@ -597,9 +675,14 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Double_t tDely[maxD];
  Double_t tRPCx[maxD];
  Double_t tRPCy[maxD];
- Double_t tMCPx[maxD];
- Double_t tMCPy[maxD];
- Double_t tMCPz[maxD];
+ std::vector<int> tRecoDT;
+ std::vector<float> tRecoDTpx;
+ std::vector<float> tRecoDTpy;
+ std::vector<float> tRecoDTpz;
+ std::vector<int> tRecoRPC;
+ std::vector<float> tRecoRPCpx;
+ std::vector<float> tRecoRPCpy;
+ std::vector<float> tRecoRPCpz;
 
  tMuFlux.Branch("nTr",&tnTr,"nTr/I");
  tMuFlux.Branch("evtnr",&tevtnr,"evtnr/I");
@@ -623,9 +706,14 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  tMuFlux.Branch("RPCx",&tRPCx,"tRPCx[nTr]/D");
  tMuFlux.Branch("RPCy",&tRPCy,"tRPCy[nTr]/D");
  if (MCdata){
-  tMuFlux.Branch("MCPx",&tMCPx,"MCPx[nTr]/D");
-  tMuFlux.Branch("MCPy",&tMCPy,"MCPy[nTr]/D");
-  tMuFlux.Branch("MCPz",&tMCPz,"MCPz[nTr]/D");
+  tMuFlux.Branch("MCRecoDT",&tRecoDT);
+  tMuFlux.Branch("MCRecoDTpx",&tRecoDTpx);
+  tMuFlux.Branch("MCRecoDTpy",&tRecoDTpy);
+  tMuFlux.Branch("MCRecoDTpz",&tRecoDTpz);
+  tMuFlux.Branch("MCRecoRPC",&tRecoRPC);
+  tMuFlux.Branch("MCRecoRPCpx",&tRecoRPCpx);
+  tMuFlux.Branch("MCRecoRPCpy",&tRecoRPCpy);
+  tMuFlux.Branch("MCRecoRPCpz",&tRecoRPCpz);
   tspillnrA = 0;
   tspillnrB = 0;
   tspillnrC = 0;
@@ -680,6 +768,11 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    }
    Bool_t fSource= kFALSE;
    if ( strcmp("", source.Data())!=0 ){fSource=kTRUE;}
+
+   if (MCdata){
+      DTreconstructible(&tRecoDT,&tRecoDTpx,&tRecoDTpy,&tRecoDTpz);
+      RPCreconstructible(&tRecoRPC,&tRecoRPCpx,&tRecoRPCpy,&tRecoRPCpz);
+   }
 
 // first, fill ntuple and find list of good tracks
    std::vector<int> tmp ;
@@ -764,9 +857,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
 // mom resolution, only simple events, one track
      if (MCdata){
       TVector3 trueMom = findTrueMomentum(sTree);
-      tMCPx[tnTr] = trueMom[0];
-      tMCPy[tnTr] = trueMom[1];
-      tMCPz[tnTr] = trueMom[2];
       if (trueMom[2] >0){
        h1D["trueMom"]->Fill(trueMom.Mag());
        h1D["recoMom"]->Fill(mom.Mag());
