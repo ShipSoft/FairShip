@@ -728,8 +728,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.DX = c.tauHPT.TX
         c.tauHPT.DY = c.tauHPT.TY
         c.tauHPT.DZ = c.tauHPT.TZ
-        c.tauHPT.nHPT = 5 #n.d.r. number after each neutrino target
-        c.tauHPT.distHPT = (160 - c.tauHPT.nHPT * c.tauHPT.DZ) / (c.tauHPT.nHPT - 1)
+        c.tauHPT.nHPT = 5 # number of downstream trackers after neutrino target
+
     if nuTauTargetDesign!=2: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm
         c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW
@@ -739,8 +739,10 @@ with ConfigRegistry.register_config("basic") as c:
         if nuTauTargetDesign!=3:
             c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
         if nuTauTargetDesign ==3:
-            c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
-            c.NuTauTarget.zC = c.EmuMagnet.zC - c.NuTauTarget.zdim/2.                    
+            c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall)*c.NuTauTT.TTZ
+            c.NuTauTarget.zC = c.EmuMagnet.zC - c.NuTauTarget.zdim/2.
+            c.tauHPT.TotalDZ = (c.EmuMagnet.Z - c.EmuMagnet.Height1) - c.NuTauTarget.zdim # MagRegion-Target 
+            c.tauHPT.distHPT = (c.tauHPT.TotalDZ - c.tauHPT.nHPT * c.tauHPT.DZ) / (c.tauHPT.nHPT - 1)                    
 
     if nuTauTargetDesign == 2:  #NEW with NO magnet
         c.NuTauTarget.RohG = 0 * u.cm

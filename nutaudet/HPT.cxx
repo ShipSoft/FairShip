@@ -321,7 +321,7 @@ void Hpt::ConstructGeometry()
         volDT->AddNode(HPT_support_volume,     1, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z + support_z / 2));
         //////////////////////////////////////////////////////////////
 
-        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2 + (DZMagnetizedRegion - DZTarget - DimZ*fnHPT - fDistance*(fnHPT-1));
+        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2;
         for(int i=0;i<fnHPT;i++){
             for (int j = 0; j < fntarget; j++){
                 volMagRegion->AddNode(volDT,i+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
