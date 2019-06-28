@@ -653,7 +653,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.col=9
         c.NuTauTarget.wall=20
     if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
-        c.NuTauTarget.n_films = 56 
+        c.NuTauTarget.n_plates = 56 
         c.NuTauTarget.row = 7
         c.NuTauTarget.col = 7
         c.NuTauTarget.wall = 19
@@ -677,7 +677,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrPackZ = 0.1045 * u.cm
     c.NuTauTarget.BrPackX = c.NuTauTarget.BrX - c.NuTauTarget.EmX
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
-    c.NuTauTarget.BrZ = c.NuTauTarget.n_films * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
+    c.NuTauTarget.BrZ = c.NuTauTarget.n_plates * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
 
  #TargetTrackers!
     c.NuTauTT = AttrDict(z=0*u.cm)

@@ -252,9 +252,9 @@ def configure(run,ship_geo):
     NuTauTarget.SetTargetWallDimension(ship_geo.NuTauTarget.WallXDim, ship_geo.NuTauTarget.WallYDim, ship_geo.NuTauTarget.WallZDim)
    NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW)
 ##
-   if not hasattr(ship_geo.NuTauTarget,"n_films"): #for backward compatibility
-    ship_geo.NuTauTarget.n_films = 56
-   NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ, ship_geo.NuTauTarget.n_films)
+   if not hasattr(ship_geo.NuTauTarget,"n_plates"): #for backward compatibility
+    ship_geo.NuTauTarget.n_plates = 56
+   NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ, ship_geo.NuTauTarget.n_plates)
 
    NuTauTarget.SetCESParam(ship_geo.NuTauTarget.RohG, ship_geo.NuTauTarget.LayerCESW, ship_geo.NuTauTarget.CESW, ship_geo.NuTauTarget.CESPack)
    NuTauTarget.SetCellParam(ship_geo.NuTauTarget.CellW)
