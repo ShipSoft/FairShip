@@ -200,7 +200,8 @@ def configure(run,ship_geo):
       taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFethick, ship_geo.tauMudet.NFethin)
       taumuondetector.SetLateralCutSize(ship_geo.tauMudet.CutHeight, ship_geo.tauMudet.CutLength)
       taumuondetector.SetSupportTransverseDimensions(ship_geo.tauMudet.UpperSupportX,ship_geo.tauMudet.UpperSupportY, \
-                                                 ship_geo.tauMudet.LowerSupportX, ship_geo.tauMudet.LowerSupportY)
+                                                     ship_geo.tauMudet.LowerSupportX, ship_geo.tauMudet.LowerSupportY, \
+                                                     ship_geo.tauMudet.LateralSupportX, ship_geo.tauMudet.LateralSupportY)
    else: #geometry used before new iron sampling
       taumuondetector.SetFeDimensions(ship_geo.tauMudet.XFe,ship_geo.tauMudet.YFe, ship_geo.tauMudet.ZFe)
       taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFe)

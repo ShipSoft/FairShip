@@ -609,13 +609,15 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.YRpc = c.tauMudet.YFe
         c.tauMudet.ZRpc = 7.*u.cm
         #support structure
-        c.tauMudet.UpperSupportY = 34 * u.cm
         c.tauMudet.UpperSupportX = 34 * u.cm
-        c.tauMudet.LowerSupportY = 34 * u.cm
+        c.tauMudet.UpperSupportY = 34 * u.cm
         c.tauMudet.LowerSupportX = 34 * u.cm
+        c.tauMudet.LowerSupportY = 34 * u.cm
+        c.tauMudet.LateralSupportX = 34 * u.cm
+        c.tauMudet.LateralSupportY = 34 * u.cm
 
-        c.tauMudet.Xtot = c.tauMudet.XFe
-        c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY #now we need to include also supports.
+        c.tauMudet.Xtot = c.tauMudet.XFe + 2 * c.tauMudet.LateralSupportX#now we need to include also supports.
+        c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
         c.tauMudet.deltax = 0* u.cm #size differences between MuonFilter and VetoTagger layers
         c.tauMudet.deltay = 80* u.cm
         c.tauMudet.Ztot = (c.tauMudet.NRpc+c.tauMudet.NmuRpc)*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
@@ -628,16 +630,16 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
         c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - 0.1*u.mm
-    c.tauMudet.XGas =  c.tauMudet.Xtot
+    c.tauMudet.XGas =  c.tauMudet.XRpc
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
-    c.tauMudet.XStrip =  c.tauMudet.Xtot
+    c.tauMudet.XStrip =  c.tauMudet.XRpc
     c.tauMudet.YStrip =  c.tauMudet.YRpc
     c.tauMudet.ZStrip = 0.05*u.mm
-    c.tauMudet.XPet =  c.tauMudet.Xtot
+    c.tauMudet.XPet =  c.tauMudet.XRpc
     c.tauMudet.YPet =  c.tauMudet.YRpc
     c.tauMudet.ZPet = 0.1*u.mm
-    c.tauMudet.XEle =  c.tauMudet.Xtot
+    c.tauMudet.XEle =  c.tauMudet.XRpc
     c.tauMudet.YEle =  c.tauMudet.YRpc
     c.tauMudet.ZEle = 1*u.mm
 

@@ -41,7 +41,7 @@ class NuTauMudet:public FairDetector
     void SetReturnYokeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetSmallerYokeDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetCoilParameters(Double_t CoilH, Double_t CoilW, Int_t N, Double_t CoilG);
-    void SetSupportTransverseDimensions(Double_t UpperSupportX, Double_t UpperSupportY, Double_t LowerSupportX, Double_t LowerSupportY);
+    void SetSupportTransverseDimensions(Double_t UpperSupportX, Double_t UpperSupportY, Double_t LowerSupportX, Double_t LowerSupportY, Double_t LateralSupportX, Double_t LateralSupportY);
     void SetLateralCutSize(Double_t CutHeight , Double_t CutLength); //lateral triangular cuts
     void SetPillarDimensions(Double_t X, Double_t Y, Double_t Z);
 
@@ -160,6 +160,7 @@ protected:
     Double_t fZGas;
     Double_t fUpSuppX, fUpSuppY;//Dimensions of iron support structures
     Double_t fLowSuppX, fLowSuppY;
+    Double_t fLatSuppX, fLatSuppY; //lateral supports
 
     Double_t fCutHeight, fCutLength; //Cut dimensions
     //Dimension of steel pillars
