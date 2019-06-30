@@ -452,20 +452,20 @@ void veto::AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tOuterWal
 	      double yStep1=(wy(z1+ribThick)+2*wallThick-2*distC)/(ny-1);
 	      double yStep2=(wy(z1+dist)+2*wallThick-2*distC)/(ny-1);
 	      for(int i=0;i<nx;i++){
-		double xPos1=wx(z1+ribThick)/2+wallThick-distC-ribThick/2-i*xStep1;
-		double xPos2=wx(z1+dist)/2+wallThick-distC-ribThick/2-i*xStep2;
-		double yPos1=wy(z1+ribThick)/2+wallThick;
-		double yPos2=wy(z1+dist)/2+wallThick;
-		name=""; name.Form("vLongitRibX_%s_phi%d",blockName.Data(),makeId(0,xPos1,yPos1));
-		vLongitRibX_b1.at(i) = GeoSideObj(name, dZ,ribThick, liscThick1,ribThick, liscThick2,xPos2-xPos1, yPos2-yPos1,ribColor, supportMedIn);
+		double xpos1=wx(z1+ribThick)/2+wallThick-distC-ribThick/2-i*xStep1;
+		double xpos2=wx(z1+dist)/2+wallThick-distC-ribThick/2-i*xStep2;
+		double ypos1=wy(z1+ribThick)/2+wallThick;
+		double ypos2=wy(z1+dist)/2+wallThick;
+		name=""; name.Form("vLongitRibX_%s_phi%d",blockName.Data(),makeId(0,xpos1,ypos1));
+		vLongitRibX_b1.at(i) = GeoSideObj(name, dZ,ribThick, liscThick1,ribThick, liscThick2,xpos2-xpos1, ypos2-ypos1,ribColor, supportMedIn);
 	      }
 	      for(int i=0;i<ny;i++){
-		double xPos1=wx(z1+ribThick)/2+wallThick;
-		double xPos2=wx(z1+dist)/2+wallThick;
-		double yPos1=wy(z1+ribThick)/2+wallThick-distC-ribThick/2-i*yStep1;
-		double yPos2=wy(z1+dist)/2+wallThick-distC-ribThick/2-i*yStep2;
-		name=""; name.Form("vLongitRibX_%s_phi%d",blockName,makeId(0,xPos1,yPos1));
-		vLongitRibY_b1.at(i) = GeoSideObj(name, dZ, liscThick1,ribThick, liscThick2,ribThick, xPos2-xPos1, yPos2-yPos1,ribColor, supportMedIn);
+		double xpos1=wx(z1+ribThick)/2+wallThick;
+		double xpos2=wx(z1+dist)/2+wallThick;
+		double ypos1=wy(z1+ribThick)/2+wallThick-distC-ribThick/2-i*yStep1;
+		double ypos2=wy(z1+dist)/2+wallThick-distC-ribThick/2-i*yStep2;
+		name=""; name.Form("vLongitRibX_%s_phi%d",blockName.Data(),makeId(0,xpos1,ypos1));
+		vLongitRibY_b1.at(i) = GeoSideObj(name, dZ, liscThick1,ribThick, liscThick2,ribThick, xpos2-xpos1, ypos2-ypos1,ribColor, supportMedIn);
 	      }
 	      
 	      //corners lisc
@@ -509,22 +509,22 @@ void veto::AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tOuterWal
 		      double xStepZ2=(wx(pos+dist)+2*wallThick-2*distC)/(nx-1);
 		      for(int i=0;i<nx;i++){
 			  
-			  double xPos1=wx(pos+ribThick)/2+wallThick-distC-ribThick/2-i*xStepZ1;
-			  double yPos1=wy(pos+ribThick)/2+wallThick;
-			  tLongitRib->AddNode(vLongitRibX_b1.at(i), makeId(pos,xPos1,yPos1) , new TGeoCombiTrans(xPos1,yPos1,tZ,new TGeoRotation("r",0,0,0)));
-			  tLongitRib->AddNode(vLongitRibX_b1.at(i), makeId(pos,-xPos1,-yPos1) , new TGeoCombiTrans(-xPos1,-yPos1,tZ,new TGeoRotation("r",0,0,180)));
+			  double xpos1=wx(pos+ribThick)/2+wallThick-distC-ribThick/2-i*xStepZ1;
+			  double ypos1=wy(pos+ribThick)/2+wallThick;
+			  tLongitRib->AddNode(vLongitRibX_b1.at(i), makeId(pos,xpos1,ypos1) , new TGeoCombiTrans(xpos1,ypos1,tZ,new TGeoRotation("r",0,0,0)));
+			  tLongitRib->AddNode(vLongitRibX_b1.at(i), makeId(pos,-xpos1,-ypos1) , new TGeoCombiTrans(-xpos1,-ypos1,tZ,new TGeoRotation("r",0,0,180)));
 			  //lisc
 			    if(i<nx-1){
-			      double xPos2=wx(pos+dist)/2+wallThick-distC-ribThick/2-i*xStepZ2;
-			      double yPos2=wy(pos+dist)/2+wallThick;
-			      name=""; name.Form("LiScX_%s_id%d", blockName.Data() ,makeId(idZ,xPos1-xStepZ1+ribThick,yPos1));
+			      double xpos2=wx(pos+dist)/2+wallThick-distC-ribThick/2-i*xStepZ2;
+			      double ypos2=wy(pos+dist)/2+wallThick;
+			      name=""; name.Form("LiScX_%s_id%d", blockName.Data() ,makeId(idZ,xpos1-xStepZ1+ribThick,ypos1));
 			      TGeoVolume* LiScX_b1 = GeoSideObj(name, dZ,xStepZ1-ribThick, liscThick1,xStepZ2-ribThick, liscThick2,
-							 (xPos2-xStepZ2)-(xPos1-xStepZ1), yPos2-yPos1,kMagenta-10,vetoMed,true);
+							 (xpos2-xStepZ2)-(xpos1-xStepZ1), ypos2-ypos1,kMagenta-10,vetoMed,true);
 			      
-			      idX = ((TGeoBBox*)LiScX_b1->GetShape())->GetOrigin()[0] + xPos1-xStepZ1+ribThick;
-		              idY = ((TGeoBBox*)LiScX_b1->GetShape())->GetOrigin()[1] + yPos1;
-			      ttLiSc->AddNode(LiScX_b1, makeId(idZ,idX,idY) , new TGeoCombiTrans(xPos1-xStepZ1+ribThick,yPos1,tZ,new TGeoRotation("r",0,0,0)));
-			      ttLiSc->AddNode(LiScX_b1, makeId(idZ,-idX,-idY) , new TGeoCombiTrans(-(xPos1-xStepZ1+ribThick),-yPos1,tZ,new TGeoRotation("r",0,0,180)));
+			      idX = ((TGeoBBox*)LiScX_b1->GetShape())->GetOrigin()[0] + xpos1-xStepZ1+ribThick;
+		              idY = ((TGeoBBox*)LiScX_b1->GetShape())->GetOrigin()[1] + ypos1;
+			      ttLiSc->AddNode(LiScX_b1, makeId(idZ,idX,idY) , new TGeoCombiTrans(xpos1-xStepZ1+ribThick,ypos1,tZ,new TGeoRotation("r",0,0,0)));
+			      ttLiSc->AddNode(LiScX_b1, makeId(idZ,-idX,-idY) , new TGeoCombiTrans(-(xpos1-xStepZ1+ribThick),-ypos1,tZ,new TGeoRotation("r",0,0,180)));
 			  }
 		      }
 		      
@@ -533,22 +533,22 @@ void veto::AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tOuterWal
 		      double yStepZ1=(wy(pos+ribThick)+2*wallThick-2*distC)/(ny-1);
 		      double yStepZ2=(wy(pos+dist)+2*wallThick-2*distC)/(ny-1);
 		      for(int i=0;i<ny;i++){
-			  double xPos1=wx(pos+ribThick)/2+wallThick;
-			  double yPos1=wy(pos+ribThick)/2+wallThick-distC-ribThick/2-i*yStepZ1;
-			  tLongitRib->AddNode(vLongitRibY_b1.at(i), makeId(pos,xPos1,yPos1) , new TGeoCombiTrans(xPos1,yPos1,tZ,new TGeoRotation("r",0,0,0)));
-			  tLongitRib->AddNode(vLongitRibY_b1.at(i), makeId(pos,-xPos1,-yPos1) , new TGeoCombiTrans(-xPos1,-yPos1,tZ,new TGeoRotation("r",0,0,180)));
+			  double xpos1=wx(pos+ribThick)/2+wallThick;
+			  double ypos1=wy(pos+ribThick)/2+wallThick-distC-ribThick/2-i*yStepZ1;
+			  tLongitRib->AddNode(vLongitRibY_b1.at(i), makeId(pos,xpos1,ypos1) , new TGeoCombiTrans(xpos1,ypos1,tZ,new TGeoRotation("r",0,0,0)));
+			  tLongitRib->AddNode(vLongitRibY_b1.at(i), makeId(pos,-xpos1,-ypos1) , new TGeoCombiTrans(-xpos1,-ypos1,tZ,new TGeoRotation("r",0,0,180)));
 			 //lisc 
 			  if(i<ny-1){
-			      double xPos2=wx(pos+dist)/2+wallThick;
-			      double yPos2=wy(pos+dist)/2+wallThick-distC-ribThick/2-i*yStepZ2;
-			      name=""; name.Form("LiScY_%s_id%d",blockName.Data(),makeId(idZ,xPos1,yPos1-yStepZ1+ribThick));
+			      double xpos2=wx(pos+dist)/2+wallThick;
+			      double ypos2=wy(pos+dist)/2+wallThick-distC-ribThick/2-i*yStepZ2;
+			      name=""; name.Form("LiScY_%s_id%d",blockName.Data(),makeId(idZ,xpos1,ypos1-yStepZ1+ribThick));
 			      TGeoVolume* LiScY_b1 = GeoSideObj(name, dZ,liscThick1, yStepZ1-ribThick, liscThick2, yStepZ2-ribThick, 
-							 xPos2-xPos1, (yPos2-yStepZ2)-(yPos1-yStepZ1), kMagenta-10,vetoMed,true);
+							 xpos2-xpos1, (ypos2-yStepZ2)-(ypos1-yStepZ1), kMagenta-10,vetoMed,true);
 			      
-			      idX = ((TGeoBBox*)LiScY_b1->GetShape())->GetOrigin()[0] + xPos1;
-		              idY = ((TGeoBBox*)LiScY_b1->GetShape())->GetOrigin()[1] + yPos1-yStepZ1+ribThick;
-			      ttLiSc->AddNode(LiScY_b1, makeId(idZ, idX,idY ) , new TGeoCombiTrans(  xPos1,  yPos1-yStepZ1+ribThick,tZ,new TGeoRotation("r",0,0,0)));
-			      ttLiSc->AddNode(LiScY_b1, makeId(idZ,-idX,-idY) , new TGeoCombiTrans(-xPos1,-(yPos1-yStepZ1+ribThick),tZ,new TGeoRotation("r",0,0,180)));
+			      idX = ((TGeoBBox*)LiScY_b1->GetShape())->GetOrigin()[0] + xpos1;
+		              idY = ((TGeoBBox*)LiScY_b1->GetShape())->GetOrigin()[1] + ypos1-yStepZ1+ribThick;
+			      ttLiSc->AddNode(LiScY_b1, makeId(idZ, idX,idY ) , new TGeoCombiTrans(  xpos1,  ypos1-yStepZ1+ribThick,tZ,new TGeoRotation("r",0,0,0)));
+			      ttLiSc->AddNode(LiScY_b1, makeId(idZ,-idX,-idY) , new TGeoCombiTrans(-xpos1,-(ypos1-yStepZ1+ribThick),tZ,new TGeoRotation("r",0,0,180)));
 			  }
 			  
 		      }
