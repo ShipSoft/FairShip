@@ -547,14 +547,20 @@ void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,
  std::map<int,StringVecIntMap> trackList;
  std::map<int,StringVecIntMap>::iterator  it;
  std::map<int,TVector3> pTrue;
- float minZ = 9999;
+ std::map<int,float> minZ;
+ std::map<int,TVector3>::iterator  iv;
  std::map<Int_t , Bool_t> isValid;
 
  std::map<unsigned int, unsigned int> hitsPerDetId;
  for (Int_t k=0;k<MufluxSpectrometerPoints->GetEntries();k++) {
    isValid[k] = kTRUE;
-   int itpSecond;
    MufluxSpectrometerPoint* point = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(k);
+ // remove dead channels
+   auto result = std::find( noisyChannels.begin(), noisyChannels.end(), point->GetDetectorID() );
+   if ( result !=  noisyChannels.end()){ 
+     isValid[k] = kFALSE;
+     continue;}
+   int itpSecond;
    Int_t detID = point->GetDetectorID();
    Bool_t found = kFALSE;
    std::map<unsigned int, unsigned int>::iterator itp;
@@ -588,6 +594,7 @@ void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,
     it = trackList.find(trackID);
     if ( it == trackList.end()){
       pTrue[trackID] = TVector3();
+      minZ[trackID]  = 9999;
       trackList[trackID]= StringVecIntMap(); }
     MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
@@ -600,14 +607,15 @@ void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,
      TString x = "x";x+=s;
      trackList[trackID][x.Data()].push_back(detID);
     }
-    if (point->GetZ()<minZ){
-       minZ = point->GetZ();
+    if (point->GetZ()<minZ[trackID]){
+       minZ[trackID] = point->GetZ();
        pTrue[trackID].SetXYZ(point->GetPx(),point->GetPy(),point->GetPz());
     }
  }
+
  for ( it = trackList.begin(); it != trackList.end(); it++ )
  {
-    StringVecIntMap stationStat = it->second;    
+    StringVecIntMap stationStat = it->second;
     if (stationStat["x1"].size()>1 &&
         stationStat["x2"].size()>1 &&
         stationStat["x3"].size()>1 &&
@@ -1104,7 +1112,7 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
  for (Int_t k=0;k<hits->GetEntries();k++) {
    MufluxSpectrometerHit* hit = (MufluxSpectrometerHit*)hits->At(k);
    if (MCdata){
-     if ( !hit->isValid() || !isValid[k]  ){continue;}
+     if ( !isValid[k]  ){continue;}
    }
    if (flag && !MCdata){
     if (!hit->hasTimeOverThreshold() || !hit->hasDelay() || !hit->hasTrigger() ){ continue;} // no reliable TDC measuerement
