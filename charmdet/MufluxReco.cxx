@@ -548,15 +548,47 @@ void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,
  std::map<int,StringVecIntMap>::iterator  it;
  std::map<int,TVector3> pTrue;
  float minZ = 9999;
+ std::map<Int_t , Bool_t> isValid;
+
+ std::map<unsigned int, unsigned int> hitsPerDetId;
+ for (Int_t k=0;k<MufluxSpectrometerPoints->GetEntries();k++) {
+   isValid[k] = kTRUE;
+   int itpSecond;
+   MufluxSpectrometerPoint* point = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(k);
+   Int_t detID = point->GetDetectorID();
+   Bool_t found = kFALSE;
+   std::map<unsigned int, unsigned int>::iterator itp;
+   for (itp = hitsPerDetId.begin(); itp != hitsPerDetId.end();itp++)  {
+      if (itp->first == detID) {
+       found = true;
+       itpSecond = itp->second;
+       break;
+    }
+   }
+   if (found){
+      MufluxSpectrometerHit* hit     = (MufluxSpectrometerHit*)cDigi_MufluxSpectrometerHits->At(k);
+      MufluxSpectrometerHit* prevHit = (MufluxSpectrometerHit*)cDigi_MufluxSpectrometerHits->At(itpSecond);
+      if (prevHit->GetDigi() > hit->GetDigi()){
+        hitsPerDetId[detID] = k;
+        isValid[itpSecond] = kFALSE;}
+      else{isValid[k] = kFALSE; 
+      }
+   }
+   else {hitsPerDetId[detID]=k;}
+ }
+
  for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
+    if ( !isValid[n] ){continue;}
     MufluxSpectrometerPoint* point = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
+    Int_t detID = point->GetDetectorID();
+    auto result = std::find( noisyChannels.begin(), noisyChannels.end(), detID );
+    if ( result !=  noisyChannels.end()){ continue;}
     Int_t trackID = point->GetTrackID();
     if (trackID<0){continue;}
     it = trackList.find(trackID);
-    if ( it == trackList.end()){ 
+    if ( it == trackList.end()){
       pTrue[trackID] = TVector3();
       trackList[trackID]= StringVecIntMap(); }
-    Int_t detID = point->GetDetectorID();
     MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
     delete hit;
@@ -567,18 +599,21 @@ void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,
     }else{
      TString x = "x";x+=s;
      trackList[trackID][x.Data()].push_back(detID);
-     if (point->GetZ()<minZ){
+    }
+    if (point->GetZ()<minZ){
        minZ = point->GetZ();
        pTrue[trackID].SetXYZ(point->GetPx(),point->GetPy(),point->GetPz());
-     }
     }
  }
  for ( it = trackList.begin(); it != trackList.end(); it++ )
  {
-    StringVecIntMap stationStat = it->second;
-    Int_t test = stationStat["x1"].size()*stationStat["x2"].size()*stationStat["x3"].size()
-                 *stationStat["x4"].size()*stationStat["u"].size()*stationStat["v"].size();
-    if (test>0){
+    StringVecIntMap stationStat = it->second;    
+    if (stationStat["x1"].size()>1 &&
+        stationStat["x2"].size()>1 &&
+        stationStat["x3"].size()>1 &&
+        stationStat["x4"].size()>1 &&
+        stationStat["u"].size()>1  &&
+        stationStat["v"].size()>1){
       rec->push_back(it->first);
       px->push_back(pTrue[it->first].X());
       py->push_back(pTrue[it->first].Y());
@@ -727,6 +762,17 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t nx = 0;
  while (nx<nMax){
    sTree->GetEvent(nx);
+// reset std::vectors
+   if (MCdata){
+    tRecoDT.clear();
+    tRecoDTpx.clear();
+    tRecoDTpy.clear();
+    tRecoDTpz.clear();
+    tRecoRPC.clear();
+    tRecoRPCpx.clear();
+    tRecoRPCpy.clear();
+    tRecoRPCpz.clear();
+   }
    h_Trscalers->Fill(1);
 // check for multiplicity in all stations
    nestedList spectrHitsSorted = nestedList();
@@ -1033,6 +1079,7 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
   std::map<unsigned int, unsigned int> hitsPerDetId;
   for (Int_t k=0;k<hits->GetEntries();k++) {
     isValid[k] = kTRUE;
+    int itSecond;
     MufluxSpectrometerHit* hit = (MufluxSpectrometerHit*)hits->At(k);
     Int_t detID = hit->GetDetectorID();
     Bool_t found = kFALSE;
@@ -1040,16 +1087,20 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
     for (it = hitsPerDetId.begin(); it != hitsPerDetId.end();it++)  {
        if (it->first == detID) {
        found = kTRUE;
-       MufluxSpectrometerHit* prevHit = (MufluxSpectrometerHit*)hits->At(it->second);
-       if (prevHit->tdc() > hit->tdc()){ 
+       itSecond = it->second;
+       break;
+       }
+    }
+    if (found){
+       MufluxSpectrometerHit* prevHit = (MufluxSpectrometerHit*)hits->At(itSecond);
+       if (prevHit->GetDigi() > hit->GetDigi()){
          hitsPerDetId[detID] = k;
          isValid[it->second] = kFALSE;}
        else{isValid[k] = kFALSE; }
-      }
-    }
-    if (!found){hitsPerDetId[detID]=k;}
-    }
+      } else {hitsPerDetId[detID]=k;}
+  }
  }
+
  for (Int_t k=0;k<hits->GetEntries();k++) {
    MufluxSpectrometerHit* hit = (MufluxSpectrometerHit*)hits->At(k);
    if (MCdata){

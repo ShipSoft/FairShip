@@ -1206,10 +1206,12 @@ def studyLateDTHits(nevents=1000,nStart=0):
  print "nHits",nHits
 def nicePrintout(hits):
   t0 = 0
-  if MCdata: t0 = sTree.ShipEventHeader.GetEventTime()
-  print "station layer channels tdc time-over-threshold ..."
+  if MCdata:
+   t0 = sTree.ShipEventHeader.GetEventTime()
+   print "station layer channels (tdc MCTrackID) ..."
+  else : print "station layer channels (tdc time-over-threshold) ..."
   lateText = []
-  keysToDThits=MakeKeysToDThits(100)
+  keysToDThits=MakeKeysToDThits(cuts['lateArrivalsToT'])
   for s in range(1,5):
    for v in [0,1,2]:
     if v==2 and s!=2:continue
@@ -1220,9 +1222,14 @@ def nicePrintout(hits):
      for hit in hits[v][s][l]:
       statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(hit)
       txt+=str(channelID)+' '
-      tdc+="%5.0F %5.0F "%(hit.GetDigi()-t0,hit.GetTimeOverThreshold())
+      if MCdata:
+        detID = hit.GetDetectorID()
+        MCTrackID = sTree.MufluxSpectrometerPoint[keysToDThits[detID][0]].GetTrackID()
+        tdc+="%5.0F %5i "%(hit.GetDigi()-t0,MCTrackID)
+      else:
+       tdc+="%5.0F %5.0F "%(hit.GetDigi()-t0,hit.GetTimeOverThreshold())
       lateArrivals = len(keysToDThits[hit.GetDetectorID()])
-      if lateArrivals>1: 
+      if lateArrivals>1 and not MCdata: 
        tmp = str(s) + ' '+viewC[v]+' '+str(l)+' : '+str(channelID)+' '
        for n in range(1,len(keysToDThits[hit.GetDetectorID()])):
         key = keysToDThits[hit.GetDetectorID()][n]
@@ -2002,6 +2009,14 @@ def fitTrack(hitlist,Pstart=3.):
      fittedState = theTrack.getFittedState()
      P = fittedState.getMomMag()
      print "track fitted Ndf #Meas P",fitStatus.getNdf(), theTrack.getNumPointsWithMeasurement(),P
+     for p in theTrack.getPointsWithMeasurement():
+      rawM = p.getRawMeasurement()
+      info = p.getFitterInfo()
+      if not info: continue
+      detID = rawM.getDetId()
+      test = ROOT.MufluxSpectrometerHit(detID,0.)
+      s,v,p,l,view,channelID,tdcId,nRT = stationInfo(test)
+      print s,view,2*p+l,channelID,"weights",info.getWeights()[0],info.getWeights()[1]
    if fitStatus.getNdf() < cuts['Ndf']:
       theTrack.Delete()
       return -2 
@@ -2147,11 +2162,17 @@ def plotTracklets(track_hits):
 
 def printClustersPerStation(clusters,s,view):
  k=0
+ if MCdata:
+   keysToDThits=MakeKeysToDThits(cuts['lateArrivalsToT'])
  for n in clusters[s][view]:
    print '--------'
    for x in n:
      s,v,p,l,view,channelID,tdcId,nRT = stationInfo(x[0])
-     print k,':',s,view,2*p+l,x[2],x[3]
+     if MCdata:
+        detID = x[0].GetDetectorID()
+        MCTrackID = sTree.MufluxSpectrometerPoint[keysToDThits[detID][0]].GetTrackID()
+        print    k,':',s,view,2*p+l,x[2],x[3],':',MCTrackID
+     else: print k,':',s,view,2*p+l,x[2],x[3]
    k+=1
 
 def findDTClusters(removeBigClusters=True):
@@ -2433,7 +2454,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
           h['dispTrackSeg'].append( ROOT.TGraph(2) )
           h['dispTrackSeg'][nt].SetPoint(0,0.,bA)
           h['dispTrackSeg'][nt].SetPoint(1,900.,slopeA*900+bA)
-          h['dispTrackSeg'][nt].SetLineColor(ROOT.kRed+nTrx)
+          h['dispTrackSeg'][nt].SetLineColor(ROOT.kGreen+nTrx)
           h['dispTrackSeg'][nt].SetLineWidth(2)
           h['simpleDisplay'].cd(1)
           h['dispTrackSeg'][nt].Draw('same')
@@ -4416,6 +4437,26 @@ def studyDeltaRays(onlyPlots=False):
  if k<0: outFile = 'deltaRays-'+tmp
  else: outFile = 'deltaRays-'+tmp[k:]
  ut.writeHists(h,outFile)
+
+def DTreconstructible():
+ trackList={}
+ pTrue    ={}
+ minZ = 9999
+ for point in sTree.MufluxSpectrometerPoint:
+    trackID = point.GetTrackID()
+    if trackID<0 :continue
+    if not trackList.has_key(trackID):
+      trackList[trackID]= {1:0,2:0,3:0,4:0,5:0,6:0}
+    detID = point.GetDetectorID()
+    hit = ROOT.MufluxSpectrometerHit(detID,0)
+    info = hit.StationInfo()
+    s=info[0]
+    if info[4]>0: s=4+info[4]
+    trackList[trackID][s]+=1
+    if point.GetZ()<minZ:
+       minZ = point.GetZ()
+       pTrue[trackID]=ROOT.TVector3(point.GetPx(),point.GetPy(),point.GetPz())
+ return trackList,pTrue
 
 def studyGhostTracks(nStart = 0, nEnd=0, chi2UL=3,pxLow=5.):
  if nEnd == 0: nEnd = sTree.GetEntries()
