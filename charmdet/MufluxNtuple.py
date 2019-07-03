@@ -43,7 +43,7 @@ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314820_20180723_154924_RT.root")
 
 
 sTreeMC = ROOT.TChain('tmuflux')
-path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_cXXXX_mu/"
+path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_c0_mu/pythia8_Geant4_1.0_cXXXX_mu/"
 for k in range(0,20000,1000):
  for m in range(5):
   fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
@@ -240,8 +240,7 @@ def MCRPCextrap(OnlyDraw = False):
              rc = h['delPxmu'].Fill(delPx,P.Mag())
              rc = h['delPtmu'].Fill(delPt,P.Mag())
    for x in ['P','Pt','Px']:
-    h['tagEff'+x]=h[x+'reco1'].Clone('tagEff'+x)
-    h['tagEff'+x].Divide(h[x])
+    h['tagEff'+x]=ROOT.TEfficiency(h[x+'reco1'],h[x])
 
 def makeProjectionRMS(h,hname,proj):
   pname = hname+proj
@@ -365,8 +364,61 @@ def reconstructible(OnlyDraw = False):
       if sTree.nTr <1:
         rc = h['upStreamOcc-nonReco'].Fill(upStreamOcc)
         # print "non reco",n,upStreamOcc,sTree.MCRecoDT.size(),sTree.MCRecoDTpx[0],sTree.MCRecoDTpy[0],sTree.MCRecoDTpz[0]
-   h['ineff-upStreamOcc-reconstructible']=h['upStreamOcc-nonReco'].Clone('ineff-upStreamOcc-reconstructible')
-   h['ineff-upStreamOcc-reconstructible'].Divide(h['upStreamOcc-reconstructible'])
-   h['effP']=h['reconstructedP'].Clone('effP')
-   h['effP'].Divide(h['reconstructibleP'])
+   h['ineff-upStreamOcc-reconstructible']=ROOT.TEfficiency(h['upStreamOcc-nonReco'],h['upStreamOcc-reconstructible'])
+   h['effP']=ROOT.TEfficiency(h['reconstructedP'],h['reconstructibleP'])
+
+def RecoEffFunOfOcc(OnlyDraw = False):
+ if not OnlyDraw:
+   c = 'MC'
+   sTree = case[c][0]
+   h = case[c][1]
+   ut.bookHist(h,'P', 'true momentum muReconstructible;[GeV/c];N',400,0.,400.,40,0.,200.)
+   ut.bookHist(h,'Pt','true momentum muReconstructible;[GeV/c];N',80,0.,4.,40,0.,200.)
+   ut.bookHist(h,'Pz','true momentum muReconstructible;[GeV/c];N',80,0.,4.,40,0.,200.)
+   ut.bookHist(h,'Px','true momentum muReconstructible;[GeV/c];N',80,0.,4.,40,0.,200.)
+   ut.bookHist(h,'Preco', 'true momentum reconstructed;[GeV/c];N',400,0.,400.,40,0.,200.)
+   ut.bookHist(h,'Ptreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,40,0.,200.)
+   ut.bookHist(h,'Pzreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,40,0.,200.)
+   ut.bookHist(h,'Pxreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,40,0.,200.)
+   for x in ['','_mu']:
+    ut.bookHist(h,'delP'+x,"reconstructed P - true ",1000,-50.,50.)
+    ut.bookHist(h,'delPt'+x,"reconstructed Pt - true ",1000,-1.,1.)
+    ut.bookHist(h,'delPx'+x,"reconstructed Px - true ",1000,-1.,1.)
+   for n in range(sTree.GetEntries()):
+    rc = sTree.GetEvent(n)
+    if sTree.MCRecoDT.size() != 1: continue # look at 1 Track events for the moment 
+    upStreamOcc = sTree.stationOcc[1]+sTree.stationOcc[5]+sTree.stationOcc[2]+sTree.stationOcc[6]
+    for m in sTree.MCRecoRPC:
+       i = -1
+       for d in sTree.MCRecoDT:
+         i+=1
+         if m!=d: continue  # require same MCTrack
+         P  = ROOT.TVector3(sTree.MCRecoDTpx[i],sTree.MCRecoDTpy[i],sTree.MCRecoDTpz[i])
+         rc = h['P'].Fill(P.Mag(),upStreamOcc)
+         rc = h['Px'].Fill(abs(P.X()),upStreamOcc)
+         rc = h['Pz'].Fill(P.Z(),upStreamOcc)
+         rc = h['Pt'].Fill(P.Pt(),upStreamOcc)
+         found = False  # avoid double counting
+         for t in range(sTree.nTr):
+           Preco  = ROOT.TVector3(sTree.Px[t],sTree.Py[t],sTree.Pz[t])
+           delP   = P.Mag() - Preco.Mag()
+           delPx  = P.X() -   Preco.X()
+           delPt  = P.Pt() -  Preco.Pt()
+           rc = h['delP'].Fill(delP,P.Mag())
+           rc = h['delPx'].Fill(delPx,P.Mag())
+           rc = h['delPt'].Fill(delPt,P.Mag())
+           if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
+             rc = h['delPmu'].Fill(delP,P.Mag())
+             rc = h['delPxmu'].Fill(delPx,P.Mag())
+             rc = h['delPtmu'].Fill(delPt,P.Mag())
+             rc = h['Preco'].Fill(P.Mag(),upStreamOcc)
+             rc = h['Pxreco'].Fill(abs(P.X()),upStreamOcc)
+             rc = h['Pzreco'].Fill(P.Z(),upStreamOcc)
+             rc = h['Ptreco'].Fill(P.Pt(),upStreamOcc)
+ tmp = h['P'].ProjectionY()
+ for o in range(1,tmp.GetNbinsX()+1):
+  h['Peff'+str(o)] =  ROOT.TEfficiency(h['Preco'].ProjectionX('Preco'+str(o),o,o),h['P'].ProjectionX('P'+str(o),o,o))
+  h['Pxeff'+str(o)] = ROOT.TEfficiency(h['Pxreco'].ProjectionX('Pxreco'+str(o),o,o),h['Px'].ProjectionX('Px'+str(o),o,o))
+  h['Pzeff'+str(o)] = ROOT.TEfficiency(h['Pzreco'].ProjectionX('Pzreco'+str(o),o,o),h['Pz'].ProjectionX('Pz'+str(o),o,o))
+  h['Pteff'+str(o)] = ROOT.TEfficiency(h['Ptreco'].ProjectionX('Ptreco'+str(o),o,o),h['Pt'].ProjectionX('Pt'+str(o),o,o))
 
