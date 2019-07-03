@@ -653,7 +653,7 @@ void MufluxReco::RPCreconstructible(std::vector<int> *rec,std::vector<float> *px
  for ( it = trackList.begin(); it != trackList.end(); it++ )
  {
     std::vector<int> stationStat = it->second;
-    if (stationStat.size()>0){
+    if (stationStat.size()>5){  // 3x and 3y
     rec->push_back(it->first);
     px->push_back(pTrue[it->first].X());
     py->push_back(pTrue[it->first].Y());
