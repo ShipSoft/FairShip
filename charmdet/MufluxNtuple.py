@@ -1,4 +1,4 @@
-import ROOT
+import ROOT,os
 import rootUtils as ut
 cuts = {}
 cuts['muTrackMatchX']= 5.
@@ -43,14 +43,27 @@ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314820_20180723_154924_RT.root")
 
 
 sTreeMC = ROOT.TChain('tmuflux')
-path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_c0_mu/pythia8_Geant4_1.0_cXXXX_mu/"
-for k in range(0,20000,1000):
+path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_cXXXX_mu/"
+for k in range(0,21000,1000):
+ if k==20000: path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_charm_0-19_1.0_mu/"
  for m in range(5):
   fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
   try:
    test = ROOT.TFile(fname)
    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
   except: continue
+
+path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
+for k in range(0,67000,1000):
+ for m in range(10):
+  fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+  if not os.path.isfile(fname): continue
+  try:
+   test = ROOT.TFile(fname)
+   if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
+  except: continue
+
+# small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 
 # temp hack
 #nfile = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_c3000_mu/ship.conical.MuonBack-TGeant4_dig_RT-0.root"
@@ -366,20 +379,33 @@ def reconstructible(OnlyDraw = False):
         # print "non reco",n,upStreamOcc,sTree.MCRecoDT.size(),sTree.MCRecoDTpx[0],sTree.MCRecoDTpy[0],sTree.MCRecoDTpz[0]
    h['ineff-upStreamOcc-reconstructible']=ROOT.TEfficiency(h['upStreamOcc-nonReco'],h['upStreamOcc-reconstructible'])
    h['effP']=ROOT.TEfficiency(h['reconstructedP'],h['reconstructibleP'])
-
+from array import array
 def RecoEffFunOfOcc(OnlyDraw = False):
  if not OnlyDraw:
    c = 'MC'
    sTree = case[c][0]
    h = case[c][1]
-   ut.bookHist(h,'P', 'true momentum muReconstructible;[GeV/c];N',400,0.,400.,40,0.,200.)
-   ut.bookHist(h,'Pt','true momentum muReconstructible;[GeV/c];N',80,0.,4.,40,0.,200.)
-   ut.bookHist(h,'Pz','true momentum muReconstructible;[GeV/c];N',80,0.,4.,40,0.,200.)
-   ut.bookHist(h,'Px','true momentum muReconstructible;[GeV/c];N',80,0.,4.,40,0.,200.)
-   ut.bookHist(h,'Preco', 'true momentum reconstructed;[GeV/c];N',400,0.,400.,40,0.,200.)
-   ut.bookHist(h,'Ptreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,40,0.,200.)
-   ut.bookHist(h,'Pzreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,40,0.,200.)
-   ut.bookHist(h,'Pxreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,40,0.,200.)
+# variable bin size
+   paxis = []
+   xv = 0.
+   for x in range(100): 
+      paxis.append(xv)
+      xv+=1.
+   for x in range(20): 
+      paxis.append(xv)
+      xv+=5.
+   for x in range(5): 
+      paxis.append(xv)
+      xv+=50.
+   dpaxis = array('d',paxis)
+   ut.bookHist(h,'P', 'true momentum muReconstructible;[GeV/c];N',dpaxis,50,0.,200.)
+   ut.bookHist(h,'Pz','true momentum muReconstructible;[GeV/c];N',dpaxis,50,0.,200.)
+   ut.bookHist(h,'Preco', 'true momentum reconstructed;[GeV/c];N',dpaxis,50,0.,200.)
+   ut.bookHist(h,'Pzreco','true momentum reconstructed;[GeV/c];N',dpaxis,50,0.,200.)
+   ut.bookHist(h,'Pt','true momentum muReconstructible;[GeV/c];N',80,0.,4.,50,0.,200.)
+   ut.bookHist(h,'Px','true momentum muReconstructible;[GeV/c];N',80,0.,4.,50,0.,200.)
+   ut.bookHist(h,'Ptreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,50,0.,200.)
+   ut.bookHist(h,'Pxreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,50,0.,200.)
    for x in ['','_mu']:
     ut.bookHist(h,'delP'+x,"reconstructed P - true ",1000,-50.,50.)
     ut.bookHist(h,'delPt'+x,"reconstructed Pt - true ",1000,-1.,1.)
@@ -408,17 +434,66 @@ def RecoEffFunOfOcc(OnlyDraw = False):
            rc = h['delPx'].Fill(delPx,P.Mag())
            rc = h['delPt'].Fill(delPt,P.Mag())
            if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
-             rc = h['delPmu'].Fill(delP,P.Mag())
-             rc = h['delPxmu'].Fill(delPx,P.Mag())
-             rc = h['delPtmu'].Fill(delPt,P.Mag())
+             if found: continue
+             rc = h['delP_mu'].Fill(delP,P.Mag())
+             rc = h['delPx_mu'].Fill(delPx,P.Mag())
+             rc = h['delPt_mu'].Fill(delPt,P.Mag())
              rc = h['Preco'].Fill(P.Mag(),upStreamOcc)
              rc = h['Pxreco'].Fill(abs(P.X()),upStreamOcc)
              rc = h['Pzreco'].Fill(P.Z(),upStreamOcc)
              rc = h['Ptreco'].Fill(P.Pt(),upStreamOcc)
+             found = True
  tmp = h['P'].ProjectionY()
- for o in range(1,tmp.GetNbinsX()+1):
-  h['Peff'+str(o)] =  ROOT.TEfficiency(h['Preco'].ProjectionX('Preco'+str(o),o,o),h['P'].ProjectionX('P'+str(o),o,o))
-  h['Pxeff'+str(o)] = ROOT.TEfficiency(h['Pxreco'].ProjectionX('Pxreco'+str(o),o,o),h['Px'].ProjectionX('Px'+str(o),o,o))
-  h['Pzeff'+str(o)] = ROOT.TEfficiency(h['Pzreco'].ProjectionX('Pzreco'+str(o),o,o),h['Pz'].ProjectionX('Pz'+str(o),o,o))
-  h['Pteff'+str(o)] = ROOT.TEfficiency(h['Ptreco'].ProjectionX('Ptreco'+str(o),o,o),h['Pt'].ProjectionX('Pt'+str(o),o,o))
+ T = ROOT.TLatex()
+ T.SetTextColor(ROOT.kMagenta)
+ variables = ['P','Px','Pz','Pt']
+ fun = {}
+ for var in variables:
+  xmin = tmp.GetBinLowEdge(1)
+  xmax = tmp.GetBinLowEdge(tmp.GetNbinsX())+tmp.GetBinWidth(tmp.GetNbinsX())
+  ut.bookHist(h,'effFun'+var,'eff as function of occupancy '+var,tmp.GetNbinsX(),xmin,xmax)
+  ut.bookCanvas(h,'eff'+var,'Efficiencies '+var,1200,900,5,4)
+  if var=='P' or var=='Pz': fun[var] = ROOT.TF1('pol0'+var,'[0]',12.,100.)
+  else:                     fun[var] = ROOT.TF1('pol0'+var,'[0]',0.,2.5)
+  j=1
+  for o in range(1,tmp.GetNbinsX()+1):
+   h[var+'eff'+str(o)] =  ROOT.TEfficiency(h[var+'reco'].ProjectionX(var+'reco'+str(o),o,o),h[var].ProjectionX(var+str(o),o,o))
+   if j<20:
+    tc = h['eff'+var].cd(j)
+    j+=1
+    h[var+'eff'+str(o)].Draw()
+    tc.Update()
+    if h[var+'eff'+str(o)].GetTotalHistogram().GetEntries() == 0: continue
+    g = h[var+'eff'+str(o)].GetPaintedGraph()
+    x = h[var+'eff'+str(o)].GetEfficiency(20) # just to have a decent scale
+    g.SetMinimum(x*0.8)
+    g.SetMaximum(1.02)
+    t = str(int(tmp.GetBinLowEdge(o)))+"-"+str(int(tmp.GetBinLowEdge(o)+tmp.GetBinWidth(o)))
+    rc = T.DrawLatexNDC(0.5,0.9,t)
+    rc = h[var+'eff'+str(o)].Fit(fun[var],'SRQ')
+    fitResult = rc.Get()
+    if fitResult:
+      eff = fitResult.Parameter(0)
+      rc = T.DrawLatexNDC(0.2,0.9,"eff=%5.2F%%"%(eff*100.))
+      h['effFun'+var].SetBinContent(o,eff)
+    tc.Update()
+ ut.bookCanvas(h,'eff final','Efficiencies ',1200,900,2,2)
+ j=1
+ h['occ']=tmp.Clone('occ')
+ h['occ'].Scale(1./tmp.GetMaximum())
+ h['occ'].SetLineColor(ROOT.kMagenta)
+ for var in variables:
+   h['eff final'].cd(j)
+   j+=1
+   h['effFun'+var].Draw()
+   h['occ'].Draw('same hist')
+ var = 'P'
+ finalEff  = 0
+ sumEvents = 0
+ for o in range(1,h['occ'].GetNbinsX()+1):
+   finalEff+=h['occ'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
+   sumEvents+=h['occ'].GetBinContent(o)
+ finalEff=finalEff/sumEvents
+ print "and the other is %5.2F%%"%(finalEff*100)
 
+  
