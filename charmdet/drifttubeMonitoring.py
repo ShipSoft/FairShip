@@ -1099,8 +1099,9 @@ ut.bookHist(h,'T0tmp','T0 temp',1250,-500.,2000.)
 ut.bookHist(h,'T0','T0',1250,-500.,2000.)
 
 noiseThreshold=10
-noisyChannels=[30112016, 40012005, 40012007, 40012008, 40112031, 40112032]
-
+noisyChannels=[] # [30112016, 40012005, 40012007, 40012008, 40112031, 40112032] only present in some runs
+deadChannels4MC = ROOT.std.vector('int')()
+for c in [10112001,11112012,20112003,30002042,30012026,30102021,30102025,30112013,30112018,40102014]: deadChannels4MC.push_back(c)
 gol =  sGeo.GetTopVolume().GetNode("volGoliath_1")
 zgoliath = gol.GetMatrix().GetTranslation()[2]
 
@@ -1153,27 +1154,7 @@ xSHiP = ROOT.TTreeReader(sTree)
 muflux_Reco = ROOT.MufluxReco(xSHiP)
 for x in cuts: muflux_Reco.setCuts(x,cuts[x])
 DTEfficiencyFudgefactor(method=-1)
-
-def sortHits(event,flag = True):
- spectrHitsSorted = {'_x':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
-                     '_u':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
-                     '_v':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}}}
- for hit in event.Digi_MufluxSpectrometerHits:
-   # remove noise hits
-   if not hit.isValid() and MCdata: continue
-   if flag and not MCdata:
-    if not hit.hasTimeOverThreshold() or not hit.hasDelay() or not hit.hasTrigger() : continue # no reliable TDC measuerement
-    if hit.GetDetectorID() in noisyChannels: continue
-    if hit.GetTimeOverThreshold() < cuts['tot']: continue
-    if hit.GetDigi()>3000.: continue   # probably error with TDC4
-   statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(hit)
-   if pnb > 1 or lnb >1 : 
-    print "sortHits: unphysical detctor ID",hit.GetDetectorID()
-    try: hit.Dump()
-    except: print "dump does not work"
-   else:
-    spectrHitsSorted[view][statnb][pnb*2+lnb].append(hit)
- return spectrHitsSorted
+if sTree.GetBranch('MCTrack'):  muflux_Reco.setNoisyChannels(deadChannels4MC)
 
 def MakeKeysToDThits(minToT=-999):
   keysToDThits={}
@@ -1254,7 +1235,23 @@ def nicePrintout(hits):
 def plotHitMaps(onlyPlotting=False):
  if not onlyPlotting: muflux_Reco.fillHitMaps()
  plotHitMapsOld(onlyPlotting=True)
-   
+
+def hitMapsFromFittedTracks():
+ for s in range(1,5):
+  for p in range(2):
+   for l in range(2): 
+       xLayers[s][p][l]['_x'].Reset()
+       if s==1: xLayers[s][p][l]['_u'].Reset()
+       if s==2: xLayers[s][p][l]['_v'].Reset()
+ for event in sTree:
+  for trInfo in event.TrackInfos:
+   for n in range(trInfo.N()):
+    if trInfo.wL(n) <0.1 and trInfo.wR(n) <0.1: continue
+    detID = trInfo.detId(n)
+    hit = ROOT.MufluxSpectrometerHit(detID,0)
+    s,v,p,l,view,channelID,tdcId,mdoduleId = stationInfo(hit)
+    rc = xLayers[s][p][l][view].Fill(channelID)
+ ut.writeHists(h,'histos-HitmapsFromFittedTracks-'+rname)
 def plotHitMapsOld(onlyPlotting=False):
  noisyChannels = []
  deadThreshold = 1.E-4 # ~1% typical occupancy
@@ -1639,7 +1636,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
   return rc,pos,mom
 
 for x in ['','mu']:
- for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"]:
+ for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"]:
   ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
   ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
@@ -1658,6 +1655,9 @@ for x in ['','mu']:
   ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
 ut.bookHist(h,'weightVsSource','weight vs source MC check',10,-0.5,9.5,1000,0.0,1000.)
+for view in ['_u1','_v2','_x1','_x2','_x3','_x4']:
+   ut.bookHist(h,'Fitpoints'+view,'points'+view,100,0,400,10,-0.5,9.5)
+
 
 bfield = ROOT.genfit.FairShipFields()
 Bx,By,Bz = ROOT.Double(),ROOT.Double(),ROOT.Double()
@@ -2635,16 +2635,19 @@ def printResiduals(aTrack):
 def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
  timerStats = {'fit':0,'analysis':0,'prepareTrack':0,'extrapTrack':0,'fillRes':0}
  if not onlyPlotting:
+  h['biasResDist'].Reset()
+  h['biasResDist2'].Reset()
   if not h.has_key('hitMapsX'): plotHitMaps()
   for s in xLayers:
      for p in xLayers[s]:
       for l in xLayers[s][p]:
        for view in xLayers[s][p][l]:
          h[xLayers[s][p][l][view].GetName()].Reset()
-         h['biasResDist_'+str(s)+view+str(2*p+l)].Reset()
+         hkey = str(s)+view+str(2*p+l)
+         h['biasResDist_'+hkey].Reset()
+         h['biasResDist2Wire_'+hkey] = h['biasResDist2'].Clone('biasResDist2Wire_'+hkey)
+         ut.bookHist(h,'distIfNoHit_'+hkey,'shortest distance to wire if no hit',100,0.,5.)
   for n in range(576/cuts['RTsegmentation'] ):   h['TDC'+str(n)].Reset()
-  h['biasResDist'].Reset()
-  h['biasResDist2'].Reset()
 #
   pos = ROOT.TVector3()
   mom = ROOT.TVector3()
@@ -2687,6 +2690,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
        for s in range(1,5):
         for view in viewsI[s]:
          for l in range(4):
+          hitFound = False
           for hit in spectrHitsSorted[view][s][l]:
            ss,vv,pp,ll,vw,channelID,tdcId,nRT = stationInfo(hit)
            vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
@@ -2710,7 +2714,9 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
            res = abs(d) - distance
            h['biasResDist'].Fill(distance,res)
            h['biasResDist2'].Fill(abs(d),res)
+           if abs(res) < 0.2: hitFound = True
            hkey = str(ss)+vw+str(2*pp+ll)
+           h['biasResDist2Wire_'+hkey].Fill(abs(d),res)
            h['biasResDist_'+hkey].Fill(distance,res)
            m = (vtop[0]-vbot[0])/(vtop[1]-vbot[1])
            b = vtop[0]-m*vtop[1]
@@ -2740,6 +2746,21 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
             rc = h['TDC'+str(nRT)].Fill(hit.GetDigi()-t0)
             rc = xLayers[ss][pp][ll][vw].Fill( channelID )
             rc = h['T0tmp'].Fill(hit.GetDigi()-t0)
+          if not hitFound:
+# fill histogram with closest distance to a wire, find z position of present station s layer l
+           v = 0
+           if (s==1 and view==1) or (s==2 and view==0): v=1000000
+           firstWire = s*10000000+v+2000+(l%2)*10000+(l/2)*100000+1
+           vbot,vtop = strawPositionsBotTop[firstWire]
+           z = (vbot[2]+vtop[2])/2.
+           trackLength = muflux_Reco.extrapolateToPlane(aTrack,z,pos,mom)
+           minDist = 10000.
+           for n in range(Nchannels[s]):
+            vbot,vtop = strawPositionsBotTop[firstWire+n]
+            normal = mom.Cross(vtop-vbot)
+            d = normal.Dot(pos-vbot)/normal.Mag()
+            if abs(d)<minDist: minDist=abs(d)
+           h['distIfNoHit_'+hkey].Fill(minDist)
        t0 = h['T0tmp'].GetMean()
        rc = h['T0'].Fill(t0)
        timerStats['fillRes']+=timer.RealTime()
@@ -2849,6 +2870,16 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
      j+=1
  momDisplay()
  print "timing:",timerStats
+def investigateActiveArea():
+ r = 1.815
+ h['biasResDist2_projx'].Draw()
+ h['tubeLine']=ROOT.TLine(r,0,r,2000)
+ h['tubeLine'].SetLineColor(ROOT.kRed)
+ h['tubeLine'].Draw('same')
+ h['tubeLineX']=ROOT.TLine(r-0.19,0,r-0.19,2000)
+ h['tubeLineX'].SetLineColor(ROOT.kMagenta)
+ h['tubeLineX'].Draw('same')
+
 def plotSigmaRes():
  ut.bookHist(h,'resDistr','residuals',50,0.,0.1)
  for tc in h['biasedResiduals'].GetListOfPrimitives():
@@ -2961,20 +2992,167 @@ def plot2dResiduals(minEntries=-1):
       h[hname].Draw('box')
      j+=1
 
-myGauss2 = ROOT.TF1('DoubleGauss','abs([0])/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+abs([3])+abs([4])/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[1])/[5])**2)',6)
+myGauss2 = ROOT.TF1('test','abs([0])/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+abs( [3]+[6]*x+[7]*x**2 )+abs([4])/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[1])/[5])**2)',8)
 myGauss2.SetParName(0,'Signal')
 myGauss2.SetParName(1,'Mean')
 myGauss2.SetParName(2,'Sigma')
 myGauss2.SetParName(3,'bckgr')
 myGauss2.SetParName(4,'Tail')
 myGauss2.SetParName(5,'Sigma2')
-
+myGauss2.SetParName(6,'bckgr2')
+myGauss2.SetParName(7,'bckgr3')
+myGauss2.FixParameter(6,0.)
+myGauss2.FixParameter(7,0.)
 # try to get an estimate per layer by analyzing residual plots with large statistics
 # is the second gaussian due to close left/right ambiguities? or real signal?
 def binoEff(n=4,k=2):
  totEff = 0
  for i in range(k,n+1):  totEff += ROOT.TMath.Binomial(n,i)*eff**i*(1-eff)**(n-i)
  print "global efficiency = %5.4F  %i %i"%(totEff,n,k)
+
+def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
+ align2RPC = {4:[-1.,3.2],3:[-2.,5.],2:[-6.,8.],1:[-6.,8.]}
+ if not onlyPlotting:
+  if Nevents==0: Nevents = sTree.GetEntries()
+  for tag_s in range(1,5):
+   for s in range(1,5):
+    ut.bookHist(h,'hitsIn'+str(s)+'_'+str(tag_s),'number of hits '+str(s),10,-0.5,9.5)
+    ut.bookHist(h,'hits'  +str(s)+'_'+str(tag_s),'number of hits in layer '+str(s),5,-0.5,4.5)
+    for l in range(4):
+     if tag_s==1: ut.bookHist(h,'distX' +str(s)+str(l),'distance of RPC track to hit '+str(s)+str(l),100,-10.,10.)
+     ut.bookHist(h,'distXref'+str(s)+str(l)+'_'+str(tag_s),'distance of refitted RPC track to hit '+str(s)+str(l),100,-10.,10.)
+  Ntot  = [0,0,0,0,0]
+  Ineff = 0
+  view = 0
+  for n in range(Nevents):
+   rc = sTree.GetEvent(n)
+   if not findSimpleEvent(sTree): continue
+   if len(sTree.RPCTrackX)>1 or len(sTree.RPCTrackY)>1 : continue
+   spectrHitsSorted = ROOT.nestedList()
+   candidates= {1:{0:[],1:[],2:[],3:[]}, 2:{0:[],1:[],2:[],3:[]}, 3:{0:[],1:[],2:[],3:[]},4:{0:[],1:[],2:[],3:[]}}
+   muflux_Reco.sortHits(sTree.Digi_MufluxSpectrometerHits,spectrHitsSorted,True)
+   for mu in sTree.RPCTrackX:
+  # mu.m()*z + mu.b()
+    for s in range(1,5):
+      for l in range(4):
+       for hit in spectrHitsSorted[view][s][l]:
+         vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
+         z = (vbot[2]+vtop[2])/2.
+         x = (vbot[0]+vtop[0])/2.
+         xExtr = mu.m()*z + mu.b()
+         diff = x-xExtr + align2RPC[s][0]
+         if abs(x-xExtr)<align2RPC[s][1]: candidates[s][l].append(hit)
+         rc = h['distX'+str(s)+str(l)].Fill(x-xExtr)
+     # tagging with station tag_s, require only one candidate.
+    for tag_s in range(1,5):
+     unique = True
+     for l in candidates[tag_s]:
+      if len(candidates[tag_s][l])>1: unique = False
+     if not unique: continue
+     pos={}
+     zRPC1 = 880.
+     pos[zRPC1] = mu.m()*zRPC1 + mu.b()
+     for l in candidates[tag_s]:
+      for hit in candidates[tag_s][l]:
+       vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
+       pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
+     if len(pos)<3: continue # 1 RPC point + >1 DT point
+     coefficients = numpy.polyfit(pos.keys(),pos.values(),1)
+     Ntot[tag_s] += 1
+     nhits={1:0,2:0,3:0,4:0}
+     for s in range(1,5):
+       for l in range(4):
+          first = True
+          for hit in spectrHitsSorted[view][s][l]:
+           vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
+           z = (vbot[2]+vtop[2])/2.
+           x = (vbot[0]+vtop[0])/2.
+           xExtr = coefficients[0]*z + coefficients[1]
+           rc = h['distXref'+str(s)+str(l)+'_'+str(tag_s)].Fill(x-xExtr)
+           if abs(x-xExtr)<5.:
+             if first:
+               nhits[s]+=1
+               first = False
+               h['hits'+str(s)+'_'+str(tag_s)].Fill(l)
+       h['hitsIn'+str(s)+'_'+str(tag_s)].Fill(nhits[s])
+     if nhits[4] < 2: Ineff+=1
+     for s in range(1,5): h['hits'+str(s)+'_'+str(tag_s)].SetBinContent(6,Ntot[tag_s])
+  print "rough estimate of station inefficiency:",float(Ineff)/(Ntot[tag_s]+1E-5)
+  ut.writeHists(h,'histos-DTEff'+rname)
+ else:
+# analysis part
+  if not h.has_key('hits1_1'): ut.readHists(h,'DTEff.root')
+  effPerLayer = {}
+  for tag_s in range(1,5):
+   t = 'tagstation'+str(tag_s)
+   if not h.has_key(t):
+    ut.bookCanvas(h,key=t,title='with tagging station '+str(tag_s),nx=1600,ny=1200,cx=4,cy=4)
+   print "analysis with tagging station ",tag_s
+   effPerLayer[tag_s] = {}
+   for s in range(1,5):
+    for l in range(4):
+     j = (s-1)*4+l+1
+     h[t].cd(j)
+     hname = 'distXref'+str(s)+str(l)+'_'+str(tag_s)
+     fitFunction = myGauss
+     fitFunction.SetParameter(0,h[hname].GetEntries()*h[hname].GetBinWidth(1))
+     fitFunction.SetParameter(1,0.)
+     fitFunction.SetParameter(2,1.2)
+     fitFunction.SetParameter(3,0.)
+     fitResult = h[hname].Fit(fitFunction,'SQ','',-10.,10.)
+     rc = fitResult.Get()
+     background = rc.Parameter(3) * h[hname].GetNbinsX()
+     signal = h[hname].GetSumOfWeights()-background
+     effPerLayer[tag_s][10*s+l] = signal / float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6))
+   h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.pdf')
+   h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.png')
+  print "tagging station                   :   1       2       3       4"
+  for s in range(1,5):
+   for l in range(4): 
+    text = "efficiencies for station %i layer %i:"%(s,l)
+    for tag_s in range(1,5):
+      text+=" %5.2F%% "%(effPerLayer[tag_s][10*s+l]*100)
+    print text
+  ut.bookHist(h,'DTeffPerLayer','DT hit efficiency per layer',50,0.5,50.5)
+  choice = {1:2,2:1,3:1,4:1}
+  for s in choice:
+   tag_s = choice[s]
+   for l in range(4):
+     h['DTeffPerLayer'].SetBinContent(s*10+l+1,effPerLayer[tag_s][10*s+l])
+  h['DTeffPerLayer'].SetMinimum(0.6)
+  h['DTeffPerLayer'].SetMaximum(1.0)
+  h['DTeffPerLayer'].SetStats(0)
+  t =  ROOT.gROOT.FindObject('c1')
+  t.cd()
+  h['DTeffPerLayer'].Draw()
+  t.Print('DTeffPerLayer.pdf')
+  t.Print('DTeffPerLayer.png')
+# inefficiency per station
+  first = True
+  h['leghits']=ROOT.TLegend(0.51,0.41,0.84,0.59)
+  for s in choice:
+    tag_s = choice[s]
+    ntracks = h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6)
+    xHits = h['hitsIn'+str(s)+'_'+str(tag_s)]
+    inEff = xHits.GetBinContent(1)+xHits.GetBinContent(2)
+    xx = 'tmphitsIn'+str(s)+'_'+str(tag_s)
+    h[xx]=xHits.Clone(xx)
+    h[xx].Scale(1./ntracks)
+    h[xx].SetStats(0)
+    h[xx].SetLineColor(s+1)
+    h[xx].SetLineWidth(2)
+    h[xx].SetMarkerStyle(20)
+    if first: 
+       h[xx].GetXaxis().SetRangeUser(-0.5,6.5)
+       h[xx].Draw()
+       first = False
+    else:  h[xx].Draw('same')
+    rc = h['leghits'].AddEntry(h[xx],xHits.GetName().split('_')[0],'PL')
+    print "station %i ineff=%5.2F%%"%(s,inEff/ntracks*100.)
+  h['leghits'].Draw()
+  t.Print('DTeffHitsPerStation.pdf')
+  t.Print('DTeffHitsPerStation.png')
+  
 
 def efficiencyEstimates(method=0):
  hinweis={}
@@ -3004,8 +3182,13 @@ def efficiencyEstimates(method=0):
     for l in range(0,4):
      tc = h['biasedResiduals'].cd(j+1)
      if method == 0 or method == 1: hname = 'biasResDistX_'+str(s)+view+str(l)
-     else:                          hname = 'biasRes_'+str(s)+view+str(l)
-     fitResult = h[hname].Fit('gaus','SQ','',-0.5,0.5)
+     else:                          hname = 'biasResXL_'+str(s)+view+str(l)+'_projx'
+     xmin = h[hname].GetBinCenter(1)
+     xmax = h[hname].GetBinCenter(h[hname].GetNbinsX()-1)
+     if method==0 or method==1: 
+      xmin = h[hname].GetBinCenter(h[hname].FindBin(-0.7))
+      xmax = h[hname].GetBinCenter(h[hname].FindBin(0.7))
+     fitResult = h[hname].Fit('gaus','SQ','',xmin,xmax)
      rc = fitResult.Get()
      fitFunction = h[hname].GetFunction('DoubleGauss')
      if not fitFunction : fitFunction = myGauss2
@@ -3022,12 +3205,9 @@ def efficiencyEstimates(method=0):
       fitFunction.SetParameter(1,rc.GetParams()[1])
       fitFunction.SetParameter(2,rc.GetParams()[2])
       fitFunction.SetParameter(3,0.)
-      fitFunction.SetParameter(4,0.)
-      fitFunction.SetParameter(5,1.)
-     if method == 0 or method == 1 or method == 2:
-      fitFunction.FixParameter(4,0.)
-      fitFunction.FixParameter(5,1.)
-     fitResult = h[hname].Fit(fitFunction,'SQ','',-0.5,0.5)
+      fitFunction.SetParameter(4,fitFunction.GetParameter(0)*0.1)
+      fitFunction.SetParameter(5,fitFunction.GetParameter(2)*10.)
+     fitResult = h[hname].Fit(fitFunction,'SQ','',xmin,xmax)
      h[hname].Draw()
      rc = fitResult.Get()
      if method == 0: estSignal = h[hname].Integral(375,625)
@@ -3041,7 +3221,8 @@ def efficiencyEstimates(method=0):
      j+=1
     print "station, %i %s, average efficiency: %5.3F"%(s,view,effStation/4.)
  for p in h['biasedResiduals'].GetListOfPrimitives():   p.SetLogy(1)
- ROOT.gROOT.FindObject('c1').cd()
+ tc1 = ROOT.gROOT.FindObject('c1')
+ tc1.cd()
  for n in range(1,h['effLayer'].GetNbinsX()+1): h['effLayer'].SetBinError(n,0.02)
  h['effLayer'].SetMaximum(1.)
  h['effLayer'].SetMinimum(0.)
@@ -3050,6 +3231,10 @@ def efficiencyEstimates(method=0):
  rc=fitResult.Get()
  h['Efftxt'] = ROOT.TLatex(8,0.4,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
  h['Efftxt'].Draw()
+ h['biasedResiduals'].Print('effEstimate-method'+str(method)+'.png')
+ h['biasedResiduals'].Print('effEstimate-method'+str(method)+'.pdf')
+ tc1.Print('effEstimate-method'+str(method)+'-summary.png')
+ tc1.Print('effEstimate-method'+str(method)+'-summary.pdf')
 def checkEffectOfEffCor():
  interestingHistos = []
  for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
@@ -3250,71 +3435,84 @@ def plotLinearResiduals():
   h['RPCResX_'+str(s)+'1'].ProjectionX().Draw()
   j+=1
 
+h['270'] = {'1GeV':{},'10GeV':{},'1GeVCharm':{}}
+h['500'] = {'1GeV':{},'10GeV':{},'1GeVCharm':{}}
 def mergeHistosForMomResol():
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # 10GeV MC,         65 Billion PoT 
- MCStats = 1.8E9
+ MCStats   = 1.8E9
  sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
  charmNorm  = {1:0.176,10:0.424}
  beautyNorm = {1:0.,   10:0.01218}
- interestingHistos = ['trueMom','momResol']
- ut.readHists(hMC,       'momentumResolution-mbias.root',interestingHistos)
- ut.readHists(hCharm,    'momentumResolution-charm.root',interestingHistos)
- ut.readHists(hMC10GeV,  'momentumResolution-10GeV.root',interestingHistos)
- # h['MC10'+a+x].Add(hMC10GeV[a+x+"charm"],-1.+charmNorm[10])
- for a in interestingHistos:
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+ if len(hMC)==0:
+  interestingHistos = []
+  for a in ['trueMom','recoMom','momResol','curvResol','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
+    for source in sources:  interestingHistos.append(a+source)
+  ut.readHists(h['270']['1GeV'],       'momDistributions-1GeV-mbias-0.root',interestingHistos)
+  ut.readHists(h['270']['1GeVCharm'],  'momDistributions-1GeV-charm-0.root',interestingHistos)
+  ut.readHists(h['270']['10GeV'],      'momDistributions-10GeV-mbias-0.root',interestingHistos)
+  ut.readHists(h['500']['1GeV'],       'momDistributions-1GeV-mbias.root',interestingHistos)
+  ut.readHists(h['500']['1GeVCharm'],  'momDistributions-1GeV-charm.root',interestingHistos)
+  ut.readHists(h['500']['10GeV'],      'momDistributions-10GeV.root',interestingHistos)
+  for res in ['270','500']:
+   for a in ['trueMom','recoMom','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
+    h['MC'+res+a] = h[res]['1GeV'][a].Clone('MC'+res+a)
+    h['MC'+res+a].Add(h[res]['1GeVCharm'][a],charmNorm[1])
+    h['MC10'+res+a] = h[res]['10GeV'][a].Clone('MC10'+res+a)
+# special treatment for 10GeV to get weights right
+    h['MC10'+res+a].Add(h[res]['10GeV'][a+"charm"],-1.+charmNorm[10])
+    h['MC10'+res+a].Add(h[res]['10GeV'][a+"beauty"],-1.+beautyNorm[10])
+    h['MC10'+res+a].Scale(sim10fact)
   # 2d histos, only for resolution plot, don't care about mom distribution'
-  h[a] = hMC[a].Clone()
-  h[a].Add(hCharm[a])
-  h[a].Add(hMC10GeV[a])
-# for mom distribution
-
-def momResolution(PR=1,onlyPlotting=False):
- if not onlyPlotting:
-  ut.bookHist(h,'trueMom','true MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
-  ut.bookHist(h,'recoMom','reco MC momentum;P [GeV/c];#sigma P/P',500,0.,500.)
-  ut.bookHist(h,'momResol','momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
-  ut.bookHist(h,'curvResol','momentum resolution function of momentum',200,-0.5,0.5,40,0.,400.)
-  for n in range(sTree.GetEntries()):
-   rc = sTree.GetEvent(n)
-   if not findSimpleEvent(sTree): continue
-   tracks = findTracks(PR)
-   if len(tracks)<1: continue
-   st = tracks[0].getFitStatus()
-   if not st.isFitConverged(): continue
-   zmin = 1000.
-   kMin = -1
-   ti = sTree.TrackInfos[0]
-   for k in range(ti.N()):
-    if ti.wL(k)<0.2 and ti.wR(k)<0.2: continue
-    if ti.detId(k) > 20000000: continue
-    bot,top = strawPositionsBotTop[ti.detId(k)]
-    if bot[2]<zmin:
-        zmin = bot[2]
-        kMin = ti.detId(k)
-   if kMin<0: continue
-   for mp in sTree.MufluxSpectrometerPoint:
-     if mp.GetDetectorID() == kMin: break
-   trueP = ROOT.TVector3(mp.GetPx(),mp.GetPy(),mp.GetPz())
-   st = tracks[0].getFittedState()
-   recoP = st.getMom()
-   rc = h['trueMom'].Fill(trueP.Mag())
-   rc = h['recoMom'].Fill(recoP.Mag())
-   rc = h['momResol'].Fill((recoP.Mag()-trueP.Mag())/trueP.Mag(),trueP.Mag())
-   rc = h['curvResol'].Fill((1./recoP.Mag()-1./trueP.Mag())*trueP.Mag(),trueP.Mag())
-   if not PR<10: 
-      for t in tracks: t.Delete()
-  ut.writeHists(h,'histos-momentumResolution'+rname)
+   h["momResol"+res] = h[res]['1GeV']["momResol"].Clone()
+   h["momResol"+res].Add(h[res]['1GeVCharm']["momResol"])
+   h["momResol"+res].Add(h[res]['10GeV']["momResol"])
+  # use 1 GeV below 20GeV and 10 GeV above
+   for a in ['trueMom','recoMom']:
+    h[res+a]=h["MC10"+res+a].Clone()
+    for n in range(h[a].GetNbinsX()):
+      if h[res+a].GetBinCenter(n)<20. : 
+       h[res+a].SetBinContent(n,h["MC"+res+a].GetBinContent(n))
+   h[res+'trueMom'].SetLineColor(ROOT.kGreen)
+   ut.makeIntegralDistrib(h,res+'trueMom')
+   ut.makeIntegralDistrib(h,res+'recoMom')
+   h['I-'+res+'trueMom'].SetTitle(' ;P [GeV/c]; #SigmaN with P>x')
+   h['I-'+res+'trueMom'].SetMinimum(0.5)
+   h['I-'+res+'trueMom'].SetStats(0)
+   h['I-'+res+'trueMom'].GetXaxis().SetRangeUser(5.,500.)
+# true mom, reco mom
+ t = "true Mom"
+ if not h.has_key(t): ut.bookCanvas(h,t,'true and reco momentum',900,600,1,1)
+ tc=h[t].cd(1)
+ tc.SetLogy()
+ h['I-270trueMom'].Draw()
+ h['I-270recoMom'].Draw('same')
+ h['I-500recoMom'].SetLineColor(ROOT.kMagenta)
+ h['I-500recoMom'].Draw('same')
+ h['leg'+t]=ROOT.TLegend(0.31,0.67,0.85,0.85)
+ h['leg'+t].AddEntry(h['I-270trueMom'],'true momentum ','PL')
+ h['leg'+t].AddEntry(h['I-270recoMom'],'reconstructed momentum 270#mum','PL')
+ h['leg'+t].AddEntry(h['I-500recoMom'],'reconstructed momentum 500#mum','PL')
+ h['leg'+t].Draw()
+ h[t].Print('True-Reco.png')
+ h[t].Print('True-Reco.pdf')
+#
+ fSqrt = ROOT.TF1('momResol','sqrt([0]**2+x**2*[1]**2)',2)
+ fSqrt.SetParName(0,'constant')
+ fSqrt.SetParName(1,'linear')
  t = 'momResolution'
  if not h.has_key(t): ut.bookCanvas(h,t,'momentum Resolution',900,600,1,1)
  tc=h[t].cd(1)
- for hname in ['momResol','curvResol']:
-   h[hname+'P'] = h[hname].ProjectionY(hname+'P')
-   h[hname+'P'].Reset()
-   h[hname+'Perr']=h[hname+'P'].Clone(hname+'Perr')
-   for n in range(1,h[hname+'P'].GetNbinsX()+1):
+ for res in ['270','500']:
+  hname = 'momResol'+res
+  h[hname+'P'] = h[hname].ProjectionY(hname+'P')
+  h[hname+'P'].Reset()
+  h[hname+'Perr']=h[hname+'P'].Clone(hname+'Perr')
+  for n in range(1,h[hname+'P'].GetNbinsX()+1):
     h[hname+str(n)] = h[hname].ProjectionX(hname+str(n),n,n)
+    if h[hname+str(n)].GetEntries()<50: continue
     if n>10: h[hname+str(n)].Rebin(5)
     fitFunction = h[hname+str(n)].GetFunction('gauss')
     if not fitFunction: fitFunction = myGauss 
@@ -3331,12 +3529,35 @@ def momResolution(PR=1,onlyPlotting=False):
     h[hname+'Perr'].SetBinContent(n,mean)
     h[hname+'Perr'].SetBinError(n,abs(rms))
     h[hname+'P'].SetBinContent(n,abs(rms))
-   h[hname+'P'].Fit('pol1','','',0.,150.)
- h['momResolP'].SetTitle('momentum resolution function of momentum;P [GeV/c];#sigma P/P')
- h['momResolP'].SetStats(0)
- h['momResolP'].SetMaximum(0.15)
- h['momResolP'].Draw()
- h[t].Write('momentumResolution.png')
+  h[hname+'P'].Fit('pol1','QW','',0.,300.)
+  fitFun = h[hname+'P'].GetFunction('pol1')
+  fSqrt.SetParameter(0,fitFun.GetParameter(0))
+  fSqrt.SetParameter(1,fitFun.GetParameter(1))
+  h[hname+'P'].Fit(fSqrt,'W','',0.,300.)
+ for res in ['270','500']:
+  hname = 'momResol'+res
+  h[hname+'P'].SetTitle('momentum resolution function of momentum;P [GeV/c];#sigma P/P')
+  h[hname+'P'].SetStats(0)
+  h[hname+'P'].SetMaximum(0.15)
+  fSqrt = h[hname+'P'].GetFunction('momResol')
+  p0 = "%4.3F"%(100*fSqrt.GetParameter(0))
+  p1 = "%4.3F"%(100*fSqrt.GetParameter(1))
+  if res == '500': 
+      h['text'+res] = ROOT.TLatex(50.,0.09,'#sigmaP/P = ('+p0+'+'+p1+')%')
+      h[hname+'P'].Draw('same')
+      h[hname+'P'].SetLineColor(ROOT.kMagenta)
+      h['text'+res].SetTextColor(ROOT.kMagenta)
+  else:
+      h['text'+res] = ROOT.TLatex(160.,0.02,'#sigmaP/P = ('+p0+'+'+p1+')%')
+      h['text'+res].SetTextColor(ROOT.kBlue)
+      h[hname+'P'].Draw()
+  h['text'+res].Draw('same')
+ h['leg'+t]=ROOT.TLegend(0.14,0.75,0.64,0.87)
+ h['leg'+t].AddEntry(h['momResol270'],'default  270#mum ','PL')
+ h['leg'+t].AddEntry(h['momResol500'],'adjusted 500#mum','PL')
+ h['leg'+t].Draw()
+ h[t].Print('momentumResolution.png')
+ h[t].Print('momentumResolution.pdf')
  
 def hitResolution():
  ut.bookHist(h,'hitResol','hit resolution',100,-0.5,0.5)
@@ -4533,7 +4754,157 @@ def splitOffBoostedEvents():
        print "check OK"
        os.system('mv '+newFile2+' '+curFile)
     else: print "unitarity violated",f,n1,n2,sTree.GetEntries()
-
+def plotDTPoints(onlyPlotting=False):
+ views = ['_u1','_v2','_x1','_x2','_x3','_x4']
+ if not onlyPlotting:
+  for view in views:
+   ut.bookHist(h,'points'+view,'points'+view,100,0,400,10,-0.5,9.5)
+   ut.bookHist(h,'Fitpoints'+view,'points'+view,100,0,400,10,-0.5,9.5)
+  for n in range(sTree.GetEntries()):
+   rc = sTree.GetEvent(n)
+   hitsPerTrack = {}
+   mom = {}
+   for p in sTree.MufluxSpectrometerPoint:
+    t = p.GetTrackID()
+    if not hitsPerTrack.has_key(t):
+     if abs(p.PdgCode())!=13:continue
+     P = ROOT.TVector3(p.GetPx(),p.GetPy(),p.GetPz())
+     if P.Mag() < 10: continue
+     if abs(p.GetX())>10 or abs(p.GetY())>10 : continue
+     hitsPerTrack[t] = {'_u1':0,'_v2':0,'_x1':0,'_x2':0,'_x3':0,'_x4':0}
+     mom[t] = P.Mag()
+    test = ROOT.MufluxSpectrometerHit(p.GetDetectorID(),0.)
+    statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(test)
+    key = view+str(statnb)
+    hitsPerTrack[t][key]+=1
+   for view in views:
+    for t in hitsPerTrack:
+     rc = h['points'+view].Fill(mom[t],hitsPerTrack[t][view])
+   n = 0
+   for aTrack in sTree.FitTracks:
+    fst = aTrack.getFitStatus()
+    if not fst.isFitConverged(): continue
+    fstate =  aTrack.getFittedState(0)
+    mom = fstate.getMom()
+    mStatistics = countMeasurements(n,PR=1)
+    for view in views:
+      v = view.replace('_','')
+      if v=='u1': v='u'
+      if v=='v2': v='v'
+      rc = h['Fitpoints'+view].Fill(mom.Mag(),len(mStatistics[v]))
+  ut.writeHists(h,'histos-DTPoints-'+rname)
+ cases = {'FitPoints':'Fitpoints'}
+ if MCdata: cases['MC-DTPoints']='points'
+ for t in cases:
+  if not h.has_key(t): 
+    ut.bookCanvas(h,key=t,title=t,nx=1200,ny=600,cx=3,cy=2)
+    ut.bookCanvas(h,key=t+'proj',title=t,nx=1200,ny=600,cx=3,cy=2)
+  n = 1
+  for view in views:
+   mean     = 'mean'+cases[t]+view
+   oneHit234 = 'oneHit234'+cases[t]+view
+   twoHit34 = 'twoHit34'+cases[t]+view
+   h[mean]    = h[cases[t]+view].ProjectionX().Clone(mean)
+   h[oneHit234]= h[cases[t]+view].ProjectionX().Clone(oneHit234)
+   h[twoHit34]= h[cases[t]+view].ProjectionX().Clone(twoHit34)
+   h[cases[t]+view+'proj']= h[cases[t]+view].ProjectionY().Clone(cases[t]+view+'proj')
+   h[oneHit234].SetMaximum(-1111)
+   h[oneHit234].SetMinimum(-1111)
+   h[twoHit34].SetMaximum(-1111)
+   h[twoHit34].SetMinimum(-1111)
+   for k in range(1,h[mean].GetNbinsX()):
+       test = h[cases[t]+view].ProjectionY('test',k,k) 
+       h[mean].SetBinContent(k,test.GetMean())
+       h[mean].SetBinError(k,0)
+       ratio = float(test.GetBinContent(2))/(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+       h[oneHit234].SetBinContent(k,ratio)
+       h[oneHit234].SetBinError(k,0)
+       ratio = float(test.GetBinContent(3))/(test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+       h[twoHit34].SetBinContent(k,ratio)
+       h[twoHit34].SetBinError(k,0)
+   tc = h[t].cd(n)
+   h[mean].SetMinimum(2.)
+   h[mean].SetMaximum(4.)
+   h[mean].Fit('pol1','PL','',50,300)
+   h[mean].SetStats(0)
+   h[mean].Draw('hist')
+   h[mean].GetFunction('pol1').Draw('same')
+   tc = h[t+'proj'].cd(n)
+   tc.SetLogy()
+   h[cases[t]+view+'proj'].GetXaxis().SetRangeUser(-0.5,6.5)
+   h[cases[t]+view+'proj'].Draw('hist')
+   n+=1
+   h[t].Print(t+'meanFunP.pdf')
+   h[t].Print(t+'meanFunP.png')
+   h[t+'proj'].Print(t+'distribution.png')
+   h[t+'proj'].Print(t+'distribution.pdf')
+def plotFitPoints():
+ t = 'Fitpoints'
+ views = ['_u1','_v2','_x1','_x2','_x3','_x4']
+ interestingHistos=[]
+ for view in views: interestingHistos.append(t+view)
+ ut.readHists(hMC,'../DTPoints-mbias.root',interestingHistos)
+ ut.readHists(h,'momDistributions.root',interestingHistos)
+ if not h.has_key(t): 
+   ut.bookCanvas(h,key=t,title=t,nx=1200,ny=600,cx=3,cy=2)
+   ut.bookCanvas(h,key=t+'proj',title=t,nx=1200,ny=600,cx=3,cy=2)
+ histos = {'data':h,'MC':hMC}
+ for data in ['data','MC']:
+  hx = histos[data]
+  for view in views:
+   mean      = data+'mean'+t+view
+   oneHit234 = data+'oneHit234'+t+view
+   twoHit34  = data+'twoHit34'+t+view
+   h[mean]     = hx[t+view].ProjectionX().Clone(mean)
+   h[oneHit234]= hx[t+view].ProjectionX().Clone(oneHit234)
+   h[twoHit34] = hx[t+view].ProjectionX().Clone(twoHit34)
+   h[data+t+view+'proj']= hx[t+view].ProjectionY().Clone(data+t+view+'proj')
+   h[oneHit234].SetMaximum(-1111)
+   h[oneHit234].SetMinimum(-1111)
+   h[twoHit34].SetMaximum(-1111)
+   h[twoHit34].SetMinimum(-1111)
+   for k in range(1,h[mean].GetNbinsX()):
+       test = hx[t+view].ProjectionY('test',k,k) 
+       h[mean].SetBinContent(k,test.GetMean())
+       h[mean].SetBinError(k,0)
+       ratio = float(test.GetBinContent(2))/(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+       h[oneHit234].SetBinContent(k,ratio)
+       h[oneHit234].SetBinError(k,0)
+       ratio = float(test.GetBinContent(3))/(test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+       h[twoHit34].SetBinContent(k,ratio)
+       h[twoHit34].SetBinError(k,0)
+   h[mean].SetMinimum(2.)
+   h[mean].SetMaximum(4.)
+   h[mean].Fit('pol1','PL','',50,300)
+   h[mean].SetStats(0)
+ for data in ['data','MC']:
+  hx = histos[data]
+  n = 1
+  for view in views:
+   tc = h[t].cd(n)
+   mean      = data+'mean'+t+view
+   if data == 'MC':
+       h[mean].SetLineColor(ROOT.kGreen)
+       h[mean].Draw('histsame')
+   else:
+       h[mean].SetLineColor(ROOT.kBlue)
+       h[mean].Draw('hist')
+   h[mean].GetFunction('pol1').Draw('same')
+   tc = h[t+'proj'].cd(n)
+   tc.SetLogy()
+   hname = data+t+view+'proj'
+   h[hname].GetXaxis().SetRangeUser(-0.5,6.5)
+   if data == 'MC':    
+      h[hname].SetLineColor(ROOT.kGreen)
+      h[hname].Draw('histsame')
+   else:    
+      h[hname].SetLineColor(ROOT.kBlue)
+      h[hname].Draw('hist')
+   n+=1
+ h[t].Print(t+'meanFunP.pdf')
+ h[t].Print(t+'meanFunP.png')
+ h[t+'proj'].Print(t+'distribution.png')
+ h[t+'proj'].Print(t+'distribution.pdf')
 def plotEnergyLoss():
  f=ROOT.TFile('PinPout.root')
  PinPout = f.PinPout
@@ -4544,10 +4915,86 @@ def plotEnergyLoss():
  lx.DrawClone()
  ly = ROOT.TLine(5.,0.,5.,10.)
  ly.DrawClone()
+
 hMC      = {}
 hCharm   = {}
 hMC10GeV = {}
 
+hMC0={}
+hMC2={}
+hMCrec0={}
+hCharm0={}
+hCharm2={}
+hCharmrec0={}
+hMC10GeV0={}
+hMC10GeV2={}
+hMC10GeVrec0={}
+def checkMCEffTuning():
+ charmNorm  = {1:0.176,10:0.424}
+ beautyNorm = {1:0.,   10:0.01218}
+ sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+ interestingHistos = []
+ for a in ['p/pt']:
+   for x in ['','mu']:
+    for source in sources:  interestingHistos.append(a+x+source)
+ ut.readHists(hMC,   'momDistributions-mbias.root',interestingHistos)
+ ut.readHists(hCharm,'momDistributions-charm.root',interestingHistos)
+ ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
+ ut.readHists(hMC0,   'momDistributions-1GeV-mbias-effTuned-M0.root',interestingHistos)
+ ut.readHists(hMC2,   'momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
+ ut.readHists(hMCrec0,   'momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hCharm0,'momDistributions-1GeV-charm-effTuned-M0.root',interestingHistos)
+ ut.readHists(hCharm2,'momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
+ ut.readHists(hCharmrec0,'momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hMC10GeV0,'momDistributions-10GeV-mbias-effTuned-M0.root',interestingHistos)
+ ut.readHists(hMC10GeV2,'momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
+ ut.readHists(hMC10GeVrec0,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+ a= 'p/pt_projx'
+ print "method 0 / default"
+ print "1GeV mbias:",hMC0[a].GetEntries()/hMC[a].GetEntries(),hMCrec0[a].GetEntries()/hMC[a].GetEntries()
+ print "1GeV charm:",hCharm0[a].GetEntries()/hCharm[a].GetEntries(),hCharmrec0[a].GetEntries()/hCharm[a].GetEntries()
+ print "10GeV     :",hMC10GeV0[a].GetEntries()/hMC10GeV[a].GetEntries(),hMC10GeVrec0[a].GetEntries()/hMC10GeV[a].GetEntries()
+ print "method 2 / default"
+ print "1GeV mbias:",hMC2[a].GetEntries()/hMC[a].GetEntries()
+ print "1GeV charm:",hCharm2[a].GetEntries()/hCharm[a].GetEntries()
+ print "10GeV     :",hMC10GeV2[a].GetEntries()/hMC10GeV[a].GetEntries()
+# effect on mom distribution of eff tuning
+ methods = {'default':[hMC,hCharm,hMC10GeV],'M0':[hMC0,hCharm0,hMC10GeV0],'M2':[hMC2,hCharm2,hMC10GeV2],'M0rec':[hMCrec0,hCharmrec0,hMC10GeVrec0]}
+ for m in methods:
+  h['MC'+m+a] = methods[m][0][a].Clone('MC'+m+a)
+  h['MC'+m+a].Add(methods[m][1][a],charmNorm[1])
+  h['MC10'+m+a] = methods[m][2][a].Clone('MC'+m+a)
+  h['MC10'+m+a].Add(methods[m][2][a.replace("_","charm_")],-1.+charmNorm[10])
+  h['MC10'+m+a].Add(methods[m][2][a.replace("_","beauty_")],-1.+beautyNorm[10])
+  h['MC10'+m+a].Scale(sim10fact)
+  for n in range(1,h['MC'+m+a].GetNbinsX()+1):
+    if h['MC'+m+a].GetBinCenter(n)>10:
+      h['MC'+m+a].SetBinContent(n,h['MC10'+m+a].GetBinContent(n))
+      h['MC'+m+a].SetBinError(n,h['MC10'+m+a].GetBinError(n))
+  h['MC'+m+a].Rebin(5)
+  ut.makeIntegralDistrib(h,'MC'+m+a)
+ colors = {'M0':ROOT.kRed,'M2':ROOT.kBlue,'M0rec':ROOT.kMagenta}
+ t = 'MC-Comparison eff tuning'
+ if not h.has_key(t): ut.bookCanvas(h,key=t,title='MC-Comparison eff tuning',nx=900,ny=600,cx=1,cy=1)
+ tc = h[t].cd(1)
+ h['leg'+t]=ROOT.TLegend(0.55,0.65,0.85,0.85)
+ n = 0
+ for m in methods: 
+  if m == 'default':continue
+  ihist = 'I-'+m+'OverDefault'
+  h[ihist] = h['I-MC'+m+a].Clone(ihist)
+  h[ihist].Divide(h['I-MCdefault'+a])
+  h[ihist].SetLineColor(colors[m])
+  h[ihist].GetXaxis().SetRangeUser(5,400)
+  h[ihist].SetStats(0)
+  h[ihist].SetMaximum(1.1)
+  h[ihist].SetTitle('efficiency correction as function of momentum '+m+';p [GeV/c];efficiency correction')
+  if n == 0: h[ihist].Draw()
+  else: h[ihist].Draw('same')
+  n+=1
+  h['leg'+t].AddEntry(h[ihist],'method '+m+' / default','PL')
+ h['leg'+t].Draw()
 def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
@@ -4561,28 +5008,35 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
  muPerPot = 710 # 626
  charmNorm  = {1:0.176,10:0.424}
  beautyNorm = {1:0.,   10:0.01218}
- sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.}
  if len(hMC)==0:
   interestingHistos = []
   for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
    for x in ['','mu']:
     for source in sources:  interestingHistos.append(a+x+source)
+  ut.readHists(h,     'momDistributions.root',interestingHistos)
   # uncorrected MC histos
   if not effCor:
-   ut.readHists(h,     'momDistributions.root',interestingHistos)
    ut.readHists(hMC,   'momDistributions-mbias.root',interestingHistos)
    ut.readHists(hCharm,'momDistributions-charm.root',interestingHistos)
    if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
    else:    ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
   else:
-   ut.readHists(hMC,   'momDistributions-mbias-effTuned-M0-reco.root',interestingHistos)
-   ut.readHists(hMC,   'momDistributions-mbias-effTuned-M2.root',     interestingHistos)
-   ut.readHists(hCharm,'momDistributions-charm-effTuned-M0-reco.root',interestingHistos)
-   ut.readHists(hCharm,'momDistributions-charm-effTuned-M2.root',     interestingHistos)
-   ut.readHists(hMC10GeV,'momDistributions-10GeVTR.root',interestingHistos)
-   ut.readHists(hMC10GeV,'momDistributions-10GeV-effTuned-M2.root',interestingHistos)
+   ut.readHists(hMC,   'momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hMC,   'momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hCharm,'momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hCharm,'momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
    MCStats = MCStats*2.
-  
+  for a in ['p/pt','p/Abspx','p1/p2','p1/p2s']:
+    for x in ['','mu']:
+     if a.find('p1/p2')==0 and x=='mu': continue
+     for hstore in [hMC,hCharm,hMC10GeV]: 
+# for new category "G4default", subtract dimuons made by SHiP modification to G4
+      hstore[a+x+"G4default"]=hstore[a+x].Clone(a+x+"G4default")
+      hstore[a+x+"G4default"].Add(hstore[a+x+"Hadronic inelastic"],-1.)
+     
  if pot <0: # (default, use Hans normalization)
    pot = h['Trscalers'].GetBinContent(3) * muPerPot / MCStats
    print "PoT data",h['Trscalers'].GetBinContent(3) * muPerPot / 1E9," billion"
@@ -4638,14 +5092,16 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
      h['MC10'+a+x].Scale(sim10fact*norm)
 
 #
- optSorted = ['','MC','MC10','MCcharm','MCHadronic inelastic','MCLepton pair','MCPositron annihilation',
-                         'MC10charm','MC10Hadronic inelastic','MC10Lepton pair','MC10Positron annihilation'] # decay removed, only covers part
+ optSorted = ['','MC','MC10','MCcharm','MCDi-muon P8','MCHadronic inelastic','MCLepton pair','MCPositron annihilation',
+                         'MC10charm','MC10Hadronic inelastic','MC10Di-muon P8','MC10Lepton pair','MC10Positron annihilation'] # decay removed, only covers part
  opt = {'':['',ROOT.kBlue,'data'],'MC':['same',ROOT.kRed,'MC inclusive'],'MC10':['same',ROOT.kRed,'MC 10GeV total'],
            'MCcharm':['same',ROOT.kGreen,'Charm'],'MC10charm':['same',ROOT.kGreen,'Charm'],
-           'MCHadronic inelastic':['same',ROOT.kCyan,'Dimuon from decays'],
-           'MC10Hadronic inelastic':['same',ROOT.kCyan,'Dimuon from decays'],
-           'MCLepton pair':['same',ROOT.kCyan+2,'Lepton pair'],'MCPositron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
-           'MC10Lepton pair':['same',ROOT.kCyan+2,'Lepton pair'],'MC10Positron annihilation':['same',ROOT.kRed+2,'Positron annihilation']}
+           'MCHadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
+           'MC10Hadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
+           'MCLepton pair':['same',ROOT.kGreen+1,'Lepton pair'],'MCPositron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
+           'MC10Lepton pair':['same',ROOT.kGreen+1,'Lepton pair'],'MC10Positron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
+           'MCDi-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'],
+           'MC10Di-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'] }
  for d in ['','I-']:
   for x in ['','mu']:
    t = d+'MC-Comparison'+x
@@ -4670,7 +5126,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
         source = i1.split('MC')[1]
      z = x+source
 # MC 1 GeV should agree with data above P>5GeV
-# MC 10 GeV should agree with data above P>20GeV
+# MC 10 GeV should agree with data above P>20GeV ? 10 GeV should also fit
      if i == "MC":
       h[i+'p/pt'+z+'_y']   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+'_y'      ,h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].FindBin(20.))
       tmp = h[i+'10p/pt'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20)+1,h[i+'p/pt'+x+'_x'].GetNbinsX())
@@ -4915,7 +5371,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
   if not h.has_key(t): ut.bookCanvas(h,key=t,title=' momentum of muons in 2-track events '+osign[s],nx=800,ny=1200,cx=1,cy=2)
   txt = {6:'P>5GeV/c',21:'P>20GeV/c'}
   pad = 1
-  rebin = 5
+  rebin = False #5
   for case in txt:
    tc = h[t].cd(pad)
    h['leg'+t+str(pad)+s]=ROOT.TLegend(0.42,0.54,0.88,0.86)
@@ -4925,12 +5381,14 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
    if rebin>1: h[hn].Rebin(rebin)
    norm = h['p/ptmu_x'].Integral(case,500)
    h[hn].Scale(1./norm)
-   h[hn].SetTitle('P in 2-track events '+txt[case]+'; GeV/c')
+   h[hn].SetTitle('P in 2-track events '+txt[case]+'; GeV/c;N2/Nall with P > / ')
    h[hn].SetStats(0)
-   h[hn].SetMaximum(0.05)
+   h[hn].SetMaximum(0.1)
    h[hn].SetMinimum(2E-6)
-   h[hn].Draw()
-   h[hn].GetXaxis().SetRange(case/rebin+1,500)
+   ut.makeIntegralDistrib(h,hn)
+   Ihn = 'I-'+hn
+   h[Ihn].GetXaxis().SetRangeUser(case,500)
+   h[Ihn].Draw()
    h['leg'+t+str(pad)+s].AddEntry(h[hn],opt[''][2],'PL')
    tc.SetLogy()
 # now MC
@@ -4946,8 +5404,10 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
    h[hn].SetStats(0)
    h[hn].SetTitle('P in 2-track events, one track with '+txt[case]+'; GeV/c')
    h[hn].SetLineColor(opt['MC'][1])
-   h[hn].Draw('same')
-   h[hn].GetXaxis().SetRange(case/rebin+1,500)
+   ut.makeIntegralDistrib(h,hn)
+   Ihn = 'I-'+hn
+   h[Ihn].Draw('same')
+   h[Ihn].GetXaxis().SetRangeUser(case,500)
    h['leg'+t+str(pad)+s].AddEntry(h[hn],opt['MC'][2],'PL')
    tc.SetLogy()
    for i1 in optSorted:
@@ -4968,14 +5428,30 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
     h[hn].SetLineColor(opt[i1][1])
     h[hn].SetStats(0)
     h[hn].Scale(1./norm)
-    h[hn].Draw('same')
-    h[hn].GetXaxis().SetRange(case/rebin+1,500)
+    ut.makeIntegralDistrib(h,hn)
+    Ihn = 'I-'+hn
+    h[Ihn].Draw('same')
+    h[Ihn].GetXaxis().SetRange(case,500)
     h['leg'+t+str(pad)+s].AddEntry(h[hn],opt[i1][2],'PL')
    h['leg'+t+str(pad)+s].Draw('same')
    pad +=1
   h[t].Print('MC-Comparison 2Tracks'+osign[s]+'.pdf')
   h[t].Print('MC-Comparison 2Track'+osign[s]+'.png')
-#
+def printSources():
+ charmNorm  = {1:0.176,10:0.424}
+ beautyNorm = {1:0.,   10:0.01218}
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.}
+ print "     source           P>5GeV/c          P>20GeV/c"
+ for xx in sources:
+   i='MC'
+   d='I-'
+   hname = d+i+'p/pt'+xx+'_x'
+   hname10 = d+i+'10p/pt'+xx+'_x'
+   if not h.has_key(hname):continue
+   ratio = h[hname].GetBinContent(1)/h[d+i+'p/pt_x'].GetBinContent(1)*100
+   ratio10 = h[hname10].GetBinContent(21)/h[d+i+'10p/pt_x'].GetBinContent(21)*100
+   print " %25s %4.2F%%    %4.2F%% "%(xx,ratio,ratio10)
+
 def MCchecks():
  mult={}
  mult['0']=0
@@ -5113,22 +5589,23 @@ def compareRuns(runs=[]):
  h['legruns'].Draw('same')
  return eventStats
 
-def mergeGoodRuns(excludeRPC=False):
+def mergeGoodRuns(excludeRPC=False,path='.'):
+ #path = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64'
  noField           = [2199,2200,2201]
  intermediateField = [2383,2388,2389,2390,2392,2395,2396]
  noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
  RPCbad = [2144,2154,2183,2192,2210,2211,2217,2218,2235,2236,2237,2240,2241,2243,2291,2345,2359]
  badRuns = [2142, 2143, 2144, 2149]
  keyword = 'RUN_8000_2'
- temp = os.listdir('.')
+ temp = os.listdir(path)
  cmd = 'hadd -f momDistributions.root '
  for x in temp:
   if x.find(keyword)<0: continue
-  if not os.path.isdir(x): continue
+  if not os.path.isdir(path+'/'+x): continue
   r = int(x[x.rfind('/')+1:].split('_')[2])
   if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
   if excludeRPC and (r in RPCbad or (r>2198 and r < 2275)) : continue
-  cmd += x+'/momDistributions.root '
+  cmd += path+'/'+x+'/momDistributions.root '
  os.system(cmd)
 
 def fcn(npar, gin, f, par, iflag):
@@ -5458,6 +5935,7 @@ elif options.command == "alignment":
   importAlignmentConstants()
   plotBiasedResiduals(PR=11,minP=10)
   ut.writeHists(h,'histos-residuals-'+rname)
+  hitMapsFromFittedTracks()
 elif options.command == "plotResiduals":
   print "reading histograms with residuals"
   ut.readHists(h,options.listOfFiles)
@@ -5475,6 +5953,13 @@ elif options.command == "momResolution":
   importAlignmentConstants()
   momResolution(PR=1,onlyPlotting=False)
 elif options.command == "splitOffBoostedEvents": splitOffBoostedEvents()
+elif options.command == "plotDTPoints":   plotDTPoints()
+elif options.command == "DTeffWithRPCTracks":
+  withCorrections = False
+  importAlignmentConstants()
+  DTeffWithRPCTracks()
+elif options.command == "hitMapsFromFittedTracks":
+ hitMapsFromFittedTracks()
 elif options.command == "test":
  yep.start('output.prof')
  for x in sTree.GetListOfBranches(): sTree.SetBranchStatus(x.GetName(),0)

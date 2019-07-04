@@ -258,7 +258,7 @@ Int_t MufluxReco::checkDiMuon(){
       TString pName   = t->GetProcName();
       if ( strcmp("Decay",pName) == 0){ channel = 1;}
       if ( strcmp("Primary particle emission",pName) == 0){ channel = 1;}
-      if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 2;} // count dimuon channels separately
+      if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 7;} // count dimuon channels separately
       if(std::find( charmExtern.begin(),charmExtern.end(), moID)!=charmExtern.end())  {channel = 5;} // this will go wrong for charm from beauty
       if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}  
       if ( strcmp("Hadronic inelastic",pName) == 0){ channel = 2;}
@@ -544,9 +544,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
  std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
- std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol"};
+ std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
+                                 "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4"};
  std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty"};
+ std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"};
 
  std::vector<TString>::iterator its = Tsource.begin();
  while( its!=Tsource.end()){
@@ -578,6 +579,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    TString source = "";
    if (MCdata){ Int_t channel = checkDiMuon();
          if (channel == 1){ source = "Decay";}
+         if (channel == 7){ source = "Di-muon P8";}
          if (channel == 2){ source = "Hadronic inelastic";}
          if (channel == 3){ source = "Lepton pair";}
          if (channel == 4){ source = "Positron annihilation";}
@@ -642,16 +644,25 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       h2D["xy"+source]->Fill(pos[0],pos[1]);
       h2D["pxpy"+source]->Fill(Px/Pz,Py/Pz);
      }
+// record fitted points / station
+    h2D["Fitpoints_u1"]->Fill(P,hitsPerStation["u"].size());
+    h2D["Fitpoints_v2"]->Fill(P,hitsPerStation["v"].size());
+    h2D["Fitpoints_x1"]->Fill(P,hitsPerStation["x1"].size());
+    h2D["Fitpoints_x2"]->Fill(P,hitsPerStation["x2"].size());
+    h2D["Fitpoints_x3"]->Fill(P,hitsPerStation["x3"].size());
+    h2D["Fitpoints_x4"]->Fill(P,hitsPerStation["x4"].size());
 // mom resolution, only simple events, one track
-    Double_t trueMom = findTrueMomentum(sTree);
-    if (trueMom >0){
-     h1D["trueMom"]->Fill(trueMom);
-     h1D["recoMom"]->Fill(P);
-     h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
-     if (fSource){
-      h1D["trueMom"+source]->Fill(trueMom);
-      h1D["recoMom"+source]->Fill(P);
-      h2D["momResol"+source]->Fill((P-trueMom)/trueMom,trueMom);
+    if (MCdata){
+     Double_t trueMom = findTrueMomentum(sTree);
+     if (trueMom >0){
+      h1D["trueMom"]->Fill(trueMom);
+      h1D["recoMom"]->Fill(P);
+      h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
+      if (fSource){
+       h1D["trueMom"+source]->Fill(trueMom);
+       h1D["recoMom"+source]->Fill(P);
+       h2D["momResol"+source]->Fill((P-trueMom)/trueMom,trueMom);
+      }
      }
     }
     if (P>5){Ngood+=1;}

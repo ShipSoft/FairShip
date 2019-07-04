@@ -22,12 +22,13 @@ def pyExit():
 #-----list of arguments--------------------------------------------------
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
-parser.add_argument("-nev", "--nevent", dest="nevent", help="number of event to plot", required=True)
-parser.add_argument("-w", "--write", dest="writentuple", help="option to write an ntuple",default=False)
+parser.add_argument("-nev", "--nevent", dest="nevent", help="number of event to plot", default=0)
+parser.add_argument("-w", "--write", dest="writentuple", help="option to write an ntuple",default=False, action='store_true')
+parser.add_argument("-o", "--outputfile", dest="outputfilename", help= "outputfile with the ntuples", default="positions.root")
 parser.add_argument("-l", "--fileCatalog", dest="catalog", help="list of files in file", default=False)
-parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=True)
-parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False)
-parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False)
+parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=False,action='store_true')
+parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False, action='store_true')
+parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False, action='store_true')
 #-----accessing file------------------------------------------------------
 options = parser.parse_args()
 
@@ -87,6 +88,12 @@ if options.withDisplay:
    #building the EVE display instead of the simple root one allows to add new objects there (instead of a separate canvas)
    ROOT.TEveManager.Create()
    gEve = ROOT.gEve
+   #TEve material for track drawing
+   tracklist = ROOT.TEveTrackList()
+   prop = tracklist.GetPropagator()
+   prop.SetMaxZ(20000)
+   tracklist.SetName("RK Propagator")
+   recotrack = ROOT.TEveRecTrackD()
    #adding all subnodes for drawing
    for node in top.GetNodes():
      evenode = ROOT.TEveGeoTopNode(sGeo,node)
@@ -109,15 +116,12 @@ RPCPositionsBotTop = {}
 vbot = ROOT.TVector3()
 vtop = ROOT.TVector3()
 
-#TEve material for track drawing
-tracklist = ROOT.TEveTrackList()
-prop = tracklist.GetPropagator()
-prop.SetMaxZ(20000)
-tracklist.SetName("RK Propagator")
-recotrack = ROOT.TEveRecTrackD()
-
 def GetPixelPositions(n=1,draw=True,writentuple=False):
   """ retrieves the position of the pixel hit using the pixel map """
+  if not options.withDisplay:
+   #print 'display disabled, hits will not be drawn'
+   draw = False
+
   sTree.GetEntry(n)
   npixelpoints = 0
   pixelhitslist = []
@@ -141,6 +145,34 @@ def GetPixelPositions(n=1,draw=True,writentuple=False):
      ntuple.Fill(n,detID,pos[0], pos[1],pos[2],1)
   if draw:
    DrawPoints(npixelpoints,hitx,hity,hitz)
+
+def GetSciFiPositions(n=1,draw=True,writentuple=False):
+  """ retrieves the position of the pixel hit using the pixel map """
+  if not options.withDisplay:
+   #print 'display disabled, hits will not be drawn'
+   draw = False
+
+  sTree.GetEntry(n)
+  nscifipoints = 0
+  scifihitslist = []
+  scifihitslist.append(sTree.Digi_SciFiHits)
+  pos = ROOT.TVector3(0,0,0)
+  hitx = []
+  hity = []
+  hitz = []
+  for scifihits in scifihitslist:
+   for hit in scifihits:
+    nscifipoints = nscifipoints + 1
+    detID = hit.GetDetectorID()
+    hit.GetSciFiXYZ(pos,detID)
+    #print "This is the position of our scifi hit: ", detID, pos[0], pos[1], pos[2] 
+    hitx.append(pos[0])
+    hity.append(pos[1])
+    hitz.append(pos[2])
+    if writentuple: #add scifi hit position to ntuple
+     ntuple.Fill(n,detID,pos[0], pos[1],pos[2],1)
+  if draw:
+   DrawPoints(nscifipoints,hitx,hity,hitz)
 
 
 def correctAlignmentRPC(hit,v):
@@ -176,6 +208,9 @@ def GetRPCPosition(s,v,c):
 
 def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
   """ Loads MuonTaggerHits from file and get position of clusters. Fittedtracks is used when reading hits from locally reconstructed tracks by Alessandra"""
+  if not options.withDisplay:
+   #print 'display disabled, hits will not be drawn'
+   draw = False
   hitx = []
   hity = []
   hitz = []
@@ -296,10 +331,11 @@ def writeNtuples():
   for ievent in range(sTree.GetEntries()):
    loadRPCtracks(ievent, False, True)
    GetPixelPositions(ievent, False, True)
+   GetSciFiPositions(ievent, False, True)
   outputfile.Write()
 
 if writentuple:
- outputfile = ROOT.TFile("shipcharm_hitpositions.root","RECREATE")
+ outputfile = ROOT.TFile(options.outputfilename,"RECREATE")
  ntuple = ROOT.TNtuple("shippositions","Ntuple with hit positions","ievent:detID:x:y:z:subdetector")
  writeNtuples()
 

@@ -63,6 +63,8 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
   double origin[3] = {0,0,0};
   double pixelboxcenter[3] = {0,0,0};
+  double pixelmoduleorigin[3] = {0,0,0};
+
   nav->cd("volPixelBox_1");
 
   TGeoVolume *volPixelBox = nav->GetCurrentVolume();
@@ -70,10 +72,18 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
 
   TGeoNode *pixelboxnode = nav->GetCurrentNode();
   pixelboxnode->LocalToMaster(origin,pixelboxcenter);
+  //finding position of bottom left of the module (i.e. LOCAL origin of the position map)
+  int32_t nmodule = ShipPixelHit::GetModule();
+  TGeoNode *pixelmodulenode = pixelboxnode->GetDaughter(nmodule);
+  TGeoBBox *pixelmodulebox = (TGeoBBox*)(pixelmodulenode->GetVolume()->GetShape());
+  origin[0] = origin[0] - pixelmodulebox->GetDX()/2.;
+  origin[1] = origin[1] - pixelmodulebox->GetDY()/2.;
+  pixelmodulenode->LocalToMaster(origin, pixelmoduleorigin);
+  
   TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
   //translations to pass from LOCAL coordinates system to GLOBAL FairShip coordinates
-  pixel.SetX(pixel_pos.X()+ pixelboxcenter[0]);
-  pixel.SetY(pixel_pos.Y() + pixelboxcenter[1]);
+  pixel.SetX(pixel_pos.X()+ pixelboxcenter[0] + pixelmoduleorigin[0]);
+  pixel.SetY(pixel_pos.Y() + pixelboxcenter[1] + pixelmoduleorigin[1]);
   pixel.SetZ(pixel_pos.Z()+ pixelboxcenter[2] - pixelboxDZ);
 }
 

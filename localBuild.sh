@@ -20,7 +20,7 @@ fi
 echo "Setting environment for ${architecture} for $SHIPBUILD"
 echo "SHIPBUILD=$SHIPBUILD" > config.sh
 
-"$SHIPBUILD"/alibuild/alienv -a "${architecture}" -w "$SHIPBUILD"/sw printenv FairShip/latest >> config.sh
+"$SHIPBUILD"/alibuild/alienv -a "${architecture}" -w "$SHIPBUILD"/sw printenv FairShip/latest CMake/latest >> config.sh
 
 python/tweakConfig
 
