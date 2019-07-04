@@ -10,7 +10,9 @@
 #include <iostream>
 #include <cmath>
 
-// compute PixelPositionMap onc
+// compute PixelPositionMap once
+
+
 // -----   Standard constructor   ------------------------------------------
 ShipPixelHit::ShipPixelHit(Int_t detID,  Float_t digi) : ShipHit(detID, digi) {
 }
@@ -79,14 +81,13 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
   
   TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
   //translations to pass from LOCAL coordinates system to GLOBAL FairShip coordinates
-  pixel.SetX(pixel_pos.X()+ pixelboxcenter[0] + pixelmoduleorigin[0]);
-  pixel.SetY(pixel_pos.Y() + pixelboxcenter[1] + pixelmoduleorigin[1]);
+  pixel.SetX(pixel_pos.X()+ pixelboxcenter[0]);
+  pixel.SetY(pixel_pos.Y() + pixelboxcenter[1]);
   pixel.SetZ(pixel_pos.Z()+ pixelboxcenter[2] - pixelboxDZ);
 }
 
 
 std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
-
 // map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
 // the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
 
@@ -107,16 +108,16 @@ std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
 
   const float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
 
-  const float  x0ref= (-16800. + 15396.)*mkm       +z0ref*0.0031;
-  const float  x1ref= -2310.*mkm       +z1ref*0.0031;
+  const float  x0ref= (-8400. + 15396.)*mkm       +z0ref*0.0031;
+  const float  x1ref= (8400. -2310.)*mkm       +z1ref*0.0031;
   const float  x2ref=  6960.*mkm       +z2ref*0.0031;
   const float  x3ref=  6940.*mkm       +z3ref*0.0031;
-  const float  x4ref= (-16800 + 15285.)*mkm        +z4ref*0.0031;
-  const float  x5ref= -2430.*mkm       +z5ref*0.0031;
+  const float  x4ref= (-8400 + 15285.)*mkm        +z4ref*0.0031;
+  const float  x5ref= (8400. -2430.)*mkm       +z5ref*0.0031;
   const float  x6ref=  6620.*mkm       +z6ref*0.0031;
   const float  x7ref=  6710.*mkm       +z7ref*0.0031;
-  const float  x8ref= (-16800 + 15440.)*mkm      +z8ref*0.0031;
-  const float  x9ref= -2505.*mkm       +z9ref*0.0031;
+  const float  x8ref= (-8400 + 15440.)*mkm      +z8ref*0.0031;
+  const float  x9ref= (8400. -2505.)*mkm       +z9ref*0.0031;
   const float x10ref=  6455.*mkm      +z10ref*0.0031;
   const float x11ref=  6320.*mkm      +z11ref*0.0031;
 
@@ -192,7 +193,6 @@ std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
             x = -x_local;
             y = y_local;
           }
-
           (*positionMap)[map_index] = TVector3{
             x - Xref[moduleID],
             y - Yref[moduleID],
@@ -208,6 +208,7 @@ std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
 // ShipPixelHit::~ShipPixelHit() = default;
 // -------------------------------------------------------------------------
 
+
 // -----   Public method Print   -------------------------------------------
 void ShipPixelHit::Print()
 {
@@ -218,4 +219,4 @@ void ShipPixelHit::Print()
 
 std::unordered_map<int, TVector3>* ShipPixelHit::PixelPositionMap = nullptr;
 
- ClassImp(ShipPixelHit)
+ClassImp(ShipPixelHit)
