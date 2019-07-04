@@ -27,6 +27,7 @@
 #pragma link C++ class ReProcessAbsorber+;
 #pragma link C++ class RPCTrack+;
 #pragma link C++ class MufluxReco+;
+#pragma link C++ class MillepedeCaller+;
 
 #endif
 

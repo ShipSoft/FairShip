@@ -89,7 +89,7 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
       if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
 
          if (Unpack(reinterpret_cast<Int_t *>(&buffer), size, partitionId)) {
-            return 0;
+            return (frameTime == EoS) ? 1 : 0;
          }
          LOG(WARNING) << "ShipTdcSource: Failed to Unpack." << FairLogger::endl;
          LOG(WARNING) << "ShipTdcSource: Maybe missing unpacker for PartitionId " << std::hex << partitionId << std::dec

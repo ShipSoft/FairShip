@@ -10,7 +10,7 @@ except:
 from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
 import os,sys
 
-def readHists(h,fname):
+def readHists(h,fname,wanted=[]):
   if fname[0:4] == "/eos":
     eospath = gSystem.Getenv("EOSSHIP")+fname
     f = TFile.Open(eospath)
@@ -20,6 +20,8 @@ def readHists(h,fname):
     name  =  akey.GetName()
     try:     hname = int(name)
     except:  hname = name
+    if len(wanted)>0:
+        if not hname in wanted: continue
     obj = akey.ReadObj()
     cln = obj.Class().GetName()
     if not cln.find('TCanv')<0: 
