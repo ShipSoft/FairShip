@@ -3055,8 +3055,20 @@ def binoEff(n=4,k=2):
 
 def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
  align2RPC = {4:[-1.,3.2],3:[-2.,5.],2:[-6.,8.],1:[-6.,8.]}
+ stationDetIDs = {'x1':[10002001,10002012],'u':[11002001,11002012],'x2':[21102001,21102012],
+                  'v':[20112001,20112012],'x3':[30002001,30002048],'x4':[40002001,40002048]}
+ stationZ = {}
+ for s in range(1,5):
+   vbot,vtop   = strawPositionsBotTop[stationDetIDs['x'+str(s)][0]]
+   z = (vbot[2]+vtop[2])/2.
+   xmin = (vbot[0]+vtop[0])/2.
+   vbot,vtop   = strawPositionsBotTop[stationDetIDs['x'+str(s)][1]]
+   xmax = (vbot[0]+vtop[0])/2.
+   stationZ[s] = [z,xmin,xmax]
  if not onlyPlotting:
   if Nevents==0: Nevents = sTree.GetEntries()
+  ut.bookHist(h,'upStreamOcc',"station 1&2",200,-0.5,199.5)
+  ut.bookHist(h,'upStreamOccWithTrack',"station 1&2",200,-0.5,199.5)
   for tag_s in range(1,5):
    for s in range(1,5):
     ut.bookHist(h,'hitsIn'+str(s)+'_'+str(tag_s),'number of hits '+str(s),10,-0.5,9.5)
@@ -3070,23 +3082,47 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   view = 0
   for n in range(Nevents):
    rc = sTree.GetEvent(n)
-   if not findSimpleEvent(sTree,nmin=0,nmax=6): continue
-   if len(sTree.RPCTrackX)>1 or len(sTree.RPCTrackY)>1 : continue
+   if len(sTree.RPCTrackX)!=1 or len(sTree.RPCTrackY)!=1 : continue
+   clusters = findDTClusters()
+   # require u and v clusters
+   if len(clusters[1][1])!=1 or len(clusters[2][2])!=1 : continue
+   # only take simple events with one cluster per station max
+   simpleEvent=True
+   for s in range(1,5): 
+     if len(clusters[s][0]) > 1: simpleEvent=False
+   if not simpleEvent: continue
    spectrHitsSorted = ROOT.nestedList()
    candidates= {1:{0:[],1:[],2:[],3:[]}, 2:{0:[],1:[],2:[],3:[]}, 3:{0:[],1:[],2:[],3:[]},4:{0:[],1:[],2:[],3:[]}}
-   muflux_Reco.sortHits(sTree.Digi_MufluxSpectrometerHits,spectrHitsSorted,True)
+   muflux_Reco.sortHits(sTree.Digi_MufluxSpectrometerHits,spectrHitsSorted,False)
+   stationOcc={}
+   for k in range(1,7):
+     stationOcc[k]=0;
+     s = k
+     t = 0
+     if k==5:
+       s=1
+       t=1
+     elif k==6:
+       s=2
+       t=2
+     for l in range(4):
+      stationOcc[k]+=spectrHitsSorted[t][s][l].size()
+   upStreamOcc = stationOcc[1]+stationOcc[5]+stationOcc[2]+stationOcc[6]
    for mu in sTree.RPCTrackX:
   # mu.m()*z + mu.b()
     for s in range(1,5):
-      for l in range(4):
-       for hit in spectrHitsSorted[view][s][l]:
+      for cl in clusters[s][0]:
+       for clhit in cl:
+         hit = clhit[0]
          vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
          z = (vbot[2]+vtop[2])/2.
          x = (vbot[0]+vtop[0])/2.
          xExtr = mu.m()*z + mu.b()
-         diff = x-xExtr + align2RPC[s][0]
-         if abs(x-xExtr)<align2RPC[s][1]: candidates[s][l].append(hit)
-         rc = h['distX'+str(s)+str(l)].Fill(x-xExtr)
+         diff = x-xExtr - align2RPC[s][0]
+         temp = stationInfo(hit)   # s,v,p,l,view,channelID,tdcId,nRT
+         l = 2*temp[2]+temp[3]
+         if abs(diff)<align2RPC[s][1]: candidates[s][l].append(hit)
+         rc = h['distX'+str(s)+str(l)].Fill(diff)
      # tagging with station tag_s, require only one candidate.
     for tag_s in range(1,5):
      unique = True
@@ -3102,7 +3138,16 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
        pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
      if len(pos)<3: continue # 1 RPC point + >1 DT point
      coefficients = numpy.polyfit(pos.keys(),pos.values(),1)
-     if sTree.FitTracks.GetEntries()>0: Ntrack[tag_s] += 1
+# check that track in in acceptance
+     inAcc=True
+     for s in stationZ:
+      xExtr = coefficients[0]*stationZ[s][0] + coefficients[1]
+      if xExtr<stationZ[s][1] or xExtr>stationZ[s][2]: inAcc = False
+     if not inAcc: continue
+     rc = h['upStreamOcc'].Fill(upStreamOcc)
+     if sTree.FitTracks.GetEntries()>0: 
+         rc = h['upStreamOccWithTrack'].Fill(upStreamOcc)
+         Ntrack[tag_s] += 1
      Ntot[tag_s] += 1
      nhits={1:0,2:0,3:0,4:0}
      for s in range(1,5):
@@ -3120,6 +3165,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                first = False
                h['hits'+str(s)+'_'+str(tag_s)].Fill(l)
        h['hitsIn'+str(s)+'_'+str(tag_s)].Fill(nhits[s])
+       if (tag_s==1 or tag_s==2) and nhits[s]==0:
+          print "no hits in station ",s,' event ',n
      if nhits[4] < 2: Ineff+=1
   for tag_s in range(1,5):
    for s in range(1,5):
@@ -3151,7 +3198,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
      rc = fitResult.Get()
      background = rc.Parameter(3) * h[hname].GetNbinsX()
      signal = h[hname].GetSumOfWeights()-background
-     effPerLayer[tag_s][10*s+l] = signal / float(h['hits4_'+str(tag_s)].GetBinContent(6))
+     effPerLayer[tag_s][10*s+l] = signal / float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6))
    h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.pdf')
    h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.png')
   print "tagging station                   :   1       2       3       4"
@@ -3202,8 +3249,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
     ntags   = h['hits4_'+str(tag_s)].GetBinContent(6)
     ntracks = h['hits4_'+str(tag_s)].GetBinContent(7)
     recoEff += ntracks/ntags
-    print "track ineff %i ineff=%5.2F%%"%(tag_s,ntracks/ntags*100.)
-  print "average track ineff %i ineff=%5.2F%%"%(tag_s,recoEff/4.*100.)
+    print "track  eff %i ineff=%5.2F%%"%(tag_s,ntracks/ntags*100.)
+  print "average track  eff = %5.2F%%"%(recoEff/4.*100.)
   h['leghits'].Draw()
   t.Print('DTeffHitsPerStation.pdf')
   t.Print('DTeffHitsPerStation.png')

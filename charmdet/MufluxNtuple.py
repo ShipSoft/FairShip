@@ -53,7 +53,7 @@ for k in range(0,21000,1000):
    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
   except: continue
 
-path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
+path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation10GeV-withDeadChannels/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
 for k in range(0,67000,1000):
  for m in range(10):
   fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
@@ -381,7 +381,22 @@ def reconstructible(OnlyDraw = False):
    h['effP']=ROOT.TEfficiency(h['reconstructedP'],h['reconstructibleP'])
 from array import array
 def RecoEffFunOfOcc(OnlyDraw = False):
+ pMin = 5.
  if not OnlyDraw:
+   c = 'Data'
+   sTree = case[c][0]
+   h = case[c][1]
+   ut.bookHist(h,'Occ','N',50,0.,200.)
+   for n in range(sTree.GetEntries()):
+    rc = sTree.GetEvent(n)
+    upStreamOcc = sTree.stationOcc[1]+sTree.stationOcc[5]+sTree.stationOcc[2]+sTree.stationOcc[6]
+    for t in range(sTree.nTr):
+     if sTree.GoodTrack[t]<0: continue
+     Pvec = ROOT.TVector3(sTree.Px[t],sTree.Py[t],sTree.Pz[t])
+     P = Pvec.Mag()
+     if P<pMin                 : continue
+     if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
+       rc = h['Occ'].Fill(upStreamOcc)
    c = 'MC'
    sTree = case[c][0]
    h = case[c][1]
@@ -494,6 +509,12 @@ def RecoEffFunOfOcc(OnlyDraw = False):
    finalEff+=h['occ'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
    sumEvents+=h['occ'].GetBinContent(o)
  finalEff=finalEff/sumEvents
- print "and the other is %5.2F%%"%(finalEff*100)
-
+ print "and the final answer is for MC: %5.2F%%"%(finalEff*100)
+ finalEff  = 0
+ sumEvents = 0
+ for o in range(1,hData['Occ'].GetNbinsX()+1):
+   finalEff+=hData['Occ'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
+   sumEvents+=hData['Occ'].GetBinContent(o)
+ finalEff=finalEff/sumEvents
+ print "and the final answer is for Data: %5.2F%%"%(finalEff*100)
   

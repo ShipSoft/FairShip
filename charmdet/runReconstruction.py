@@ -454,18 +454,25 @@ def pot():
  keys.sort()
  for k in keys: print k,':',scalerStat[k]
 
-def makeDTEfficiency(merge=False):
+def makeDTEfficiency(eos=False,merge=False):
+ eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
  cmd = "hadd -f DTEff.root "
- for fname in os.listdir('.'):
-  if not merge and fname.find('SPILL')==0:
+ for name in os.listdir('.'):
+  if not merge:
+   if not eos and name.find('SPILL')==0: fname = name
+   elif eos and name.find('ntuple-SPILL')==0:
+     tmp = os.path.abspath('.').split('/')
+     fname = os.environ['EOSSHIP']+eospathReco+tmp[len(tmp)-1]+'/'+name.split('-')[1]
+   else:
+     continue
    cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c DTeffWithRPCTracks -f "+fname+' &'
    os.system(cmd)
    time.sleep(10)
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(10)
-  elif merge and fname.find('histos-DTEff')==0: 
-   cmd+=fname+' '
+  elif merge and name.find('histos-DTEff')==0: 
+   cmd+=name+' '
  if merge: os.system(cmd)
  print "finished all the tasks."
  

@@ -178,7 +178,7 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
 def recoStep(splitFactor=5,fnames=[],eospath=False):
  if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
- print "fileList established ",Nfiles
+ print "fileList established #directories",Nfiles
  for fname in fnames:
     os.chdir(fname)
     mcFile = 'ship.conical.MuonBack-TGeant4_dig_RT.root'
@@ -280,7 +280,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals"):
     histFile = commandToHist[command]+y[y.rfind('/')+1:]
     if histFile in os.listdir('.') : continue
     if interactive:
-     cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+f+' &'
+     cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' &'
      print 'execute:', cmd
      os.system(cmd)
      while 1>0:
