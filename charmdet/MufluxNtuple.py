@@ -43,25 +43,37 @@ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314820_20180723_154924_RT.root")
 
 
 sTreeMC = ROOT.TChain('tmuflux')
-path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_cXXXX_mu/"
-for k in range(0,21000,1000):
- if k==20000: path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_charm_0-19_1.0_mu/"
+with1GeV=False
+if with1GeV:
+ path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_cXXXX_mu/"
+ for k in range(0,21000,1000):
+  for m in range(5):
+   fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+   try:
+    test = ROOT.TFile(fname)
+    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
+   except: continue
+withCharm=False
+if withCharm:
+ path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_charm_0-19_1.0_mu/"
  for m in range(5):
-  fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
-  try:
-   test = ROOT.TFile(fname)
-   if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-  except: continue
-
-path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation10GeV-withDeadChannels/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
-for k in range(0,67000,1000):
- for m in range(10):
-  fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
-  if not os.path.isfile(fname): continue
-  try:
-   test = ROOT.TFile(fname)
-   if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-  except: continue
+   fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+   try:
+    test = ROOT.TFile(fname)
+    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
+   except: continue
+ 
+with10GeV=True
+if with10GeV:
+ path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation10GeV-withDeadChannels/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
+ for k in range(0,67000,1000):
+  for m in range(10):
+   fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+   if not os.path.isfile(fname): continue
+   try:
+    test = ROOT.TFile(fname)
+    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
+   except: continue
 
 # small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 
@@ -397,6 +409,7 @@ def RecoEffFunOfOcc(OnlyDraw = False):
      if P<pMin                 : continue
      if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
        rc = h['Occ'].Fill(upStreamOcc)
+   ut.writeHists(h,'histos-DataOcc.root')
    c = 'MC'
    sTree = case[c][0]
    h = case[c][1]
@@ -421,6 +434,7 @@ def RecoEffFunOfOcc(OnlyDraw = False):
    ut.bookHist(h,'Px','true momentum muReconstructible;[GeV/c];N',80,0.,4.,50,0.,200.)
    ut.bookHist(h,'Ptreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,50,0.,200.)
    ut.bookHist(h,'Pxreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,50,0.,200.)
+   ut.bookHist(h,'delx/y','delx vs dely;cm;cm',100,-20.,20,100,-50.,50.)
    for x in ['','_mu']:
     ut.bookHist(h,'delP'+x,"reconstructed P - true ",1000,-50.,50.)
     ut.bookHist(h,'delPt'+x,"reconstructed Pt - true ",1000,-1.,1.)
@@ -448,6 +462,7 @@ def RecoEffFunOfOcc(OnlyDraw = False):
            rc = h['delP'].Fill(delP,P.Mag())
            rc = h['delPx'].Fill(delPx,P.Mag())
            rc = h['delPt'].Fill(delPt,P.Mag())
+           rc = h['delx/y'].Fill(sTree.Delx[t],sTree.Dely[t])
            if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
              if found: continue
              rc = h['delP_mu'].Fill(delP,P.Mag())
@@ -458,6 +473,17 @@ def RecoEffFunOfOcc(OnlyDraw = False):
              rc = h['Pzreco'].Fill(P.Z(),upStreamOcc)
              rc = h['Ptreco'].Fill(P.Pt(),upStreamOcc)
              found = True
+#         if not found:
+#           print "event nr ",n,P.Mag(),upStreamOcc
+
+   ut.writeHists(h,'histos-MCRecoEffFunOfOcc.root')
+ if not hMC.has_key('P'): 
+   ut.readHists(h,'histos-MCRecoEffFunOfOcc.root')
+ if not hData.has_key('Occ'): 
+   ut.readHists(h,'histos-DataOcc.root')
+ c = 'MC'
+ sTree = case[c][0]
+ h = case[c][1]
  tmp = h['P'].ProjectionY()
  T = ROOT.TLatex()
  T.SetTextColor(ROOT.kMagenta)
@@ -517,4 +543,17 @@ def RecoEffFunOfOcc(OnlyDraw = False):
    sumEvents+=hData['Occ'].GetBinContent(o)
  finalEff=finalEff/sumEvents
  print "and the final answer is for Data: %5.2F%%"%(finalEff*100)
+ # now take occupancy from zero field
+ hDTEff = {}
+ ut.readHists(hDTEff,'DTEff.root',['upStreamOccWithTrack','upStreamOcc'])
+ h['zeroFieldOcc']=hDTEff['upStreamOccWithTrack'].Rebin(4,'zeroFieldOcc')
+ finalEff  = 0
+ sumEvents = 0
+ for o in range(1,hData['Occ'].GetNbinsX()+1):
+   finalEff+=hData['Occ'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
+   sumEvents+=hData['Occ'].GetBinContent(o)
+ finalEff=finalEff/sumEvents
+ print "and the final answer is for zeroField Data: %5.2F%%"%(finalEff*100)
+
+
   
