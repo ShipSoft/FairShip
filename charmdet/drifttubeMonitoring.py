@@ -1677,8 +1677,8 @@ for x in ['','mu']:
   ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
   ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
   if x != '' or s != '':continue
-  ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c]',500,0.,500.)
-  ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c]',500,0.,500.)
+  ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
+  ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'recoPz/Abspx'+x+s,'reco MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
@@ -3165,8 +3165,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                first = False
                h['hits'+str(s)+'_'+str(tag_s)].Fill(l)
        h['hitsIn'+str(s)+'_'+str(tag_s)].Fill(nhits[s])
-       if (tag_s==1 or tag_s==2) and nhits[s]==0:
-          print "no hits in station ",s,' event ',n
+       # if (tag_s==1 or tag_s==2) and nhits[s]==0:    print "no hits in station ",s,' event ',n
      if nhits[4] < 2: Ineff+=1
   for tag_s in range(1,5):
    for s in range(1,5):
@@ -3209,9 +3208,9 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
       text+=" %5.2F%% "%(effPerLayer[tag_s][10*s+l]*100)
     print text
   ut.bookHist(h,'DTeffPerLayer','DT hit efficiency per layer',50,0.5,50.5)
-  choice = {1:2,2:1,3:1,4:1}
+  choice = {1:[2,ROOT.kRed],2:[1,ROOT.kGreen],3:[1,ROOT.kBlue],4:[1,ROOT.kMagenta]}
   for s in choice:
-   tag_s = choice[s]
+   tag_s = choice[s][0]
    for l in range(4):
      h['DTeffPerLayer'].SetBinContent(s*10+l+1,effPerLayer[tag_s][10*s+l])
   h['DTeffPerLayer'].SetMinimum(0.6)
@@ -3226,7 +3225,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   first = True
   h['leghits']=ROOT.TLegend(0.51,0.41,0.84,0.59)
   for s in choice:
-    tag_s = choice[s]
+    tag_s = choice[s][0]
     ntags = h['hits4_'+str(tag_s)].GetBinContent(6)
     xHits = h['hitsIn'+str(s)+'_'+str(tag_s)]
     inEff = xHits.GetBinContent(1)+xHits.GetBinContent(2)
@@ -3234,7 +3233,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
     h[xx]=xHits.Clone(xx)
     h[xx].Scale(1./ntags)
     h[xx].SetStats(0)
-    h[xx].SetLineColor(s+1)
+    h[xx].SetLineColor(choice[s][1])
     h[xx].SetLineWidth(2)
     h[xx].SetMarkerStyle(20)
     if first: 
@@ -3512,12 +3511,12 @@ def mergeHistosForMomResol(withFitPoints=False):
   interestingHistos = []
   for a in ['trueMom','recoMom','momResol','curvResol','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
     for source in sources:  interestingHistos.append(a+source)
-  ut.readHists(h['270']['1GeV'],       'momDistributions-1GeV-mbias-0.root',interestingHistos)
-  ut.readHists(h['270']['1GeVCharm'],  'momDistributions-1GeV-charm-0.root',interestingHistos)
-  ut.readHists(h['270']['10GeV'],      'momDistributions-10GeV-mbias-0.root',interestingHistos)
-  ut.readHists(h['500']['1GeV'],       'momDistributions-1GeV-mbias.root',interestingHistos)
-  ut.readHists(h['500']['1GeVCharm'],  'momDistributions-1GeV-charm.root',interestingHistos)
-  ut.readHists(h['500']['10GeV'],      'momDistributions-10GeV.root',interestingHistos)
+  ut.readHists(h['270']['1GeV'],       '../momDistributions-1GeV-mbias-0.root',interestingHistos)
+  ut.readHists(h['270']['1GeVCharm'],  '../momDistributions-1GeV-charm-0.root',interestingHistos)
+  ut.readHists(h['270']['10GeV'],      '../momDistributions-10GeV-mbias-0.root',interestingHistos)
+  ut.readHists(h['500']['1GeV'],       'momDistributions-1GeV-mbias-withDeadChannels.root',interestingHistos)
+  ut.readHists(h['500']['1GeVCharm'],  'momDistributions-1GeV-charm-withDeadChannels.root',interestingHistos)
+  ut.readHists(h['500']['10GeV'],      'momDistributions-10GeV-mbias-withDeadChannels.root',interestingHistos)
   for res in ['270','500']:
    for a in ['trueMom','recoMom','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
     if a.find('Fit')==0 and not withFitPoints: continue
@@ -3684,6 +3683,35 @@ def matchedRPCHits(aTrack,maxDistance=10.):
       for v in matchedHits[s]:
         Nmatched+= len(matchedHits[s][v])
     return inAcc,Nmatched
+
+def RPCResolution():
+ vtop = ROOT.TVector3()
+ vbot = ROOT.TVector3()
+ for s in range(1,6):
+  for v in range(2):
+   ut.bookHist(h,'RPC'+str(s)+str(v),'hit resolution',100,-10.,10.)
+ for n in range(sTree.GetEntries()):
+  rc = sTree.GetEvent(n)
+# check for MCTrack
+  track={}
+  for m in sTree.MuonTaggerPoint:
+   t = m.GetTrackID()
+   if not track.has_key(t): track[t]=[]
+   track[t].append([m.GetDetectorID(),m.GetX(),m.GetY()])
+  if len(track)!=1: continue
+  for t in track:
+   for d in track[t]:
+    plane = d[0]/10000
+    truex,truey =  d[1],d[2]
+    for hit in sTree.Digi_MuonTaggerHits:
+     channelID = hit.GetDetectorID()
+     s  = channelID/10000
+     v  = (channelID-10000*s)/1000
+     vtop,vbot = RPCPositionsBotTop[channelID]
+     if plane == s:
+       if v==0:  delpos =  (vtop[1]+vbot[1])/2. - truey
+       if v==1:  delpos =  (vtop[0]+vbot[0])/2. - truex
+       h['RPC'+str(s)+str(v)].Fill(delpos)
 
 def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
  if not onlyPlotting:
@@ -3909,8 +3937,7 @@ def debugRPCstrips():
     if c%5==0:
      h['RPCstrip'+str(v)+str(c)]=ROOT.TGraph()
      detID = s*10000+v*1000+c
-     hit = ROOT.MuonTaggerHit(detID,0)
-     hit.EndPoints(vtop,vbot)
+     vbot,vtop = RPCPositionsBotTop[detID]
      h['RPCstrip'+str(v)+str(c)].SetPoint(0,vtop[0],vtop[1])
      h['RPCstrip'+str(v)+str(c)].SetPoint(1,vbot[0],vbot[1])
      if v == 0: h['RPCstrip'+str(v)+str(c)].SetLineColor(ROOT.kRed)
@@ -3926,14 +3953,14 @@ def debugRPCYCoordinate():
     s  = channelID/10000
     v  = (channelID-10000*s)/1000
     if v==0 and s==1:
-      hit.EndPoints(vtop,vbot)
+      vbot,vtop = RPCPositionsBotTop[channelID]
       y1 = (vtop[1]+vbot[1])/2.
       for hit in sTree.Digi_MuonTaggerHits:
        channelID = hit.GetDetectorID()
        s  = channelID/10000
        v  = (channelID-10000*s)/1000
        if v==0 and s==2:
-        hit.EndPoints(vtop,vbot)
+        vbot,vtop = RPCPositionsBotTop[channelID]
         y2 = (vtop[1]+vbot[1])/2.
         rc = h['y1y2'].Fill(y1,y2)
 
@@ -4278,6 +4305,14 @@ def correctAlignmentRPC(hit,v):
   else:
    vbot[1] = vbot[1] -1.21
    vtop[1] = vtop[1] -1.21
+ else:
+  if v==1:
+   vbot[0] = vbot[0] -1.049
+   vtop[0] = vtop[0] -1.049
+  else:
+   vbot[1] = vbot[1] -0.53
+   vtop[1] = vtop[1] -0.53
+
  return vbot,vtop
 
 def grouper(iterable,grouping):
