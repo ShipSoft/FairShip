@@ -3069,6 +3069,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   if Nevents==0: Nevents = sTree.GetEntries()
   ut.bookHist(h,'upStreamOcc',"station 1&2",200,-0.5,199.5)
   ut.bookHist(h,'upStreamOccWithTrack',"station 1&2",200,-0.5,199.5)
+  ut.bookHist(h,'upStreamOccWithTrack_mu',"station 1&2",200,-0.5,199.5)
+  ut.bookHist(h,'upStreamOccWithTrack_muX',"station 1&2",200,-0.5,199.5)
   for tag_s in range(1,5):
    for s in range(1,5):
     ut.bookHist(h,'hitsIn'+str(s)+'_'+str(tag_s),'number of hits '+str(s),10,-0.5,9.5)
@@ -3138,16 +3140,33 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
        pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
      if len(pos)<3: continue # 1 RPC point + >1 DT point
      coefficients = numpy.polyfit(pos.keys(),pos.values(),1)
-# check that track in in acceptance
+# check that track is in acceptance
      inAcc=True
      for s in stationZ:
       xExtr = coefficients[0]*stationZ[s][0] + coefficients[1]
       if xExtr<stationZ[s][1] or xExtr>stationZ[s][2]: inAcc = False
      if not inAcc: continue
      rc = h['upStreamOcc'].Fill(upStreamOcc)
-     if sTree.FitTracks.GetEntries()>0: 
-         rc = h['upStreamOccWithTrack'].Fill(upStreamOcc)
-         Ntrack[tag_s] += 1
+     if sTree.FitTracks.GetEntries()>0:
+       rc = h['upStreamOccWithTrack'].Fill(upStreamOcc)
+       Ntrack[tag_s] += 1
+     for aTrack in sTree.FitTracks:
+# check that track is matched to RPC
+       posRPC=ROOT.TVector3()
+       momRPC=ROOT.TVector3()
+       rc = muflux_Reco.extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC)
+       X=ROOT.kFALSE
+       Y=ROOT.kFALSE
+       for hit in sTree.RPCTrackX:
+        Xpos = hit.m()*cuts["zRPC1"]+hit.b()
+        dist = ROOT.TMath.Abs(posRPC[0]-Xpos)
+        if dist<cuts["muTrackMatchX"]: X=ROOT.kTRUE
+       for hit in sTree.RPCTrackY:
+        Ypos = hit.m()*cuts["zRPC1"]+hit.b()
+        dist = ROOT.TMath.Abs(posRPC[1]-Ypos)
+        if dist<cuts["muTrackMatchY"]: Y=ROOT.kTRUE
+       if X and Y: rc = h['upStreamOccWithTrack_mu'].Fill(upStreamOcc)
+       if X: rc = h['upStreamOccWithTrack_muX'].Fill(upStreamOcc)
      Ntot[tag_s] += 1
      nhits={1:0,2:0,3:0,4:0}
      for s in range(1,5):
