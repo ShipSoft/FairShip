@@ -2705,7 +2705,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
    timer.Start()
    trackCandidates = findTracks(PR)
    timerStats['fit']+=timer.RealTime()
-   if len(trackCandidates)==1: 
+   if len(trackCandidates)==1:
     timer.Start()
     spectrHitsSorted = ROOT.nestedList()
     muflux_Reco.sortHits(sTree.Digi_MufluxSpectrometerHits,spectrHitsSorted,True)
@@ -2718,6 +2718,19 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
         print "problem with getting state, event",sTree.GetCurrentFile().GetName(),Nr
         continue
        if sta.getMomMag() < minP and not zeroField: continue
+# check for muon tag to remove ghost tracks
+       muonTag = False
+       RPCclusters, RPCtracks = muonTaggerClustering(PR=11)
+       if len(RPCtracks['X'])==1 and len(RPCtracks['Y'])==1:
+         posRPC = ROOT.TVector3()
+         momRPC = ROOT.TVector3()
+         rc = muflux_Reco.extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC)
+         Xpos = RPCtracks['X'][0][0]*cuts["zRPC1"]+RPCtracks['X'][0][1]
+         distX = ROOT.TMath.Abs(posRPC[0]-Xpos)
+         Ypos = RPCtracks['Y'][0][0]*cuts["zRPC1"]+RPCtracks['Y'][0][1]
+         distY = ROOT.TMath.Abs(posRPC[1]-Ypos)
+         if abs(distX)<cuts['muTrackMatchX'] and abs(distY)<cuts['muTrackMatchY']: muonTag = True
+       if not muonTag: continue
 # check for hits in each station
        stations={1:0,2:0,3:0,4:0}
        for p in aTrack.getPoints():
@@ -3067,10 +3080,11 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
    stationZ[s] = [z,xmin,xmax]
  if not onlyPlotting:
   if Nevents==0: Nevents = sTree.GetEntries()
-  ut.bookHist(h,'upStreamOcc',"station 1&2",200,-0.5,199.5)
-  ut.bookHist(h,'upStreamOccWithTrack',"station 1&2",200,-0.5,199.5)
-  ut.bookHist(h,'upStreamOccWithTrack_mu',"station 1&2",200,-0.5,199.5)
-  ut.bookHist(h,'upStreamOccWithTrack_muX',"station 1&2",200,-0.5,199.5)
+  for tag_s in range(1,5):
+   ut.bookHist(h,'upStreamOcc'+str(tag_s),"station 1&2",200,-0.5,199.5)
+   ut.bookHist(h,'upStreamOccWithTrack'+str(tag_s),"station 1&2",200,-0.5,199.5)
+   ut.bookHist(h,'upStreamOccWithTrack_mu'+str(tag_s),"station 1&2",200,-0.5,199.5)
+   ut.bookHist(h,'upStreamOccWithTrack_muX'+str(tag_s),"station 1&2",200,-0.5,199.5)
   for tag_s in range(1,5):
    for s in range(1,5):
     ut.bookHist(h,'hitsIn'+str(s)+'_'+str(tag_s),'number of hits '+str(s),10,-0.5,9.5)
@@ -3146,9 +3160,9 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
       xExtr = coefficients[0]*stationZ[s][0] + coefficients[1]
       if xExtr<stationZ[s][1] or xExtr>stationZ[s][2]: inAcc = False
      if not inAcc: continue
-     rc = h['upStreamOcc'].Fill(upStreamOcc)
+     rc = h['upStreamOcc'+str(tag_s)].Fill(upStreamOcc)
      if sTree.FitTracks.GetEntries()>0:
-       rc = h['upStreamOccWithTrack'].Fill(upStreamOcc)
+       rc = h['upStreamOccWithTrack'+str(tag_s)].Fill(upStreamOcc)
        Ntrack[tag_s] += 1
      for aTrack in sTree.FitTracks:
 # check that track is matched to RPC
@@ -3165,8 +3179,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
         Ypos = hit.m()*cuts["zRPC1"]+hit.b()
         dist = ROOT.TMath.Abs(posRPC[1]-Ypos)
         if dist<cuts["muTrackMatchY"]: Y=ROOT.kTRUE
-       if X and Y: rc = h['upStreamOccWithTrack_mu'].Fill(upStreamOcc)
-       if X: rc = h['upStreamOccWithTrack_muX'].Fill(upStreamOcc)
+       if X and Y: rc = h['upStreamOccWithTrack_mu'+str(tag_s)].Fill(upStreamOcc)
+       if X: rc = h['upStreamOccWithTrack_muX'+str(tag_s)].Fill(upStreamOcc)
      Ntot[tag_s] += 1
      nhits={1:0,2:0,3:0,4:0}
      for s in range(1,5):
@@ -3269,6 +3283,18 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
     recoEff += ntracks/ntags
     print "track  eff %i ineff=%5.2F%%"%(tag_s,ntracks/ntags*100.)
   print "average track  eff = %5.2F%%"%(recoEff/4.*100.)
+  Ntag = h['upStreamOcc'].GetEntries()
+  if h.has_key('upStreamOccWithTrack1'): 
+    for x in ['upStreamOccWithTrack','upStreamOccWithTrack_mu','upStreamOccWithTrack_muX']:
+       h[x] = h[x+str(1)].Clone(x)
+       for n in range(2,5): h[x].Add(h[x+str(n)])
+    h[x].Scale(1./4.)
+  Ntrack = h['upStreamOccWithTrack'].GetEntries()
+  Nmu = h['upStreamOccWithTrack_mu'].GetEntries()
+  NmuX = h['upStreamOccWithTrack_muX'].GetEntries()
+  print "average track  eff = %5.2F%%"%( (Ntrack*100.)/Ntag)
+  print "average track mu eff = %5.2F%%"%( (Nmu*100.)/Ntag)
+  print "average track mu Xonly eff = %5.2F%%"%( (NmuX*100.)/Ntag)
   h['leghits'].Draw()
   t.Print('DTeffHitsPerStation.pdf')
   t.Print('DTeffHitsPerStation.png')
