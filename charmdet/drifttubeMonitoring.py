@@ -1521,15 +1521,6 @@ def makeRTrelations():
 
 ut.bookHist(h,'TDC2R','RT relation; t [ns] ; r [cm]',100,0.,3000.,100,0.,2.)
 
-def plotRTrelationsFromFile():
- # random choice SPILLDATA_8000_0518197610_20180721_014522_RT.root
- tc = sTree.GetCurrentFile().Get('RTrelations')
- graph = tc.GetListOfPrimitives()[0].FindObject('rtTDC30')
- graph.SetLineColor(0)
- tc.Draw()
- tc.Print('RTRelations.png')
- tc.Print('RTRelations.pdf')
-
 def RT(hit,t):
 # rt relation, drift time to distance
   R  = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm
@@ -2065,6 +2056,8 @@ for s in range(1,5):
       ut.bookHist(h,'biasResY_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,20,-dy,dy)
       ut.bookHist(h,'biasResYL_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-2.,2.,20,-dy,dy)
       ut.bookHist(h,'biasResDist_'+str(s)+view+str(layer),'residual versus drift radius',100,0.,2.,1000,-2.0,2.0)
+      ut.bookHist(h,'biasResXLA_'+str(s)+view+str(layer),'dist biased residual for '+str(s)+view+' '+str(layer),300,-6.,6.,20,-dx,dx)
+      ut.bookHist(h,'biasResYLA_'+str(s)+view+str(layer),'dist biased residual for '+str(s)+view+' '+str(layer),300,-6.,6.,20,-dy,dy)
 
 # book residual histograms for each tube
 for detID in xpos:
@@ -2781,6 +2774,8 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
             d = -abs(d)
            resR = d - distance
            resL = d + distance
+           h['biasResXLA_'+hkey].Fill(res,pos[0])
+           h['biasResYLA_'+hkey].Fill(res,pos[1])
            h['biasResX_'+hkey].Fill(resR,pos[0])
            h['biasResY_'+hkey].Fill(resR,pos[1])
            h['biasResXL_'+hkey].Fill(resR,pos[0])
@@ -2924,6 +2919,10 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
        h[hmean].SetMinimum(-0.2)
       h[hmean].Draw()
      j+=1
+ h['biasedResiduals'].Print('biasedResiduals.png')
+ h['biasedResiduals'].Print('biasedResiduals.pdf')
+ h['biasedResidualsX'].Print('biasedResidualsX.png')
+ h['biasedResidualsX'].Print('biasedResidualsX.pdf')
  momDisplay()
  print "timing:",timerStats
 def investigateActiveArea():
@@ -3152,6 +3151,13 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
       for hit in candidates[tag_s][l]:
        vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
        pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
+# with drift time problem of LR ambiguity
+       withTDC = False
+       if withTDC: 
+        tdc = hit.GetDigi()
+        distance = RT(hit,tdc)
+        pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2. + distance
+        pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2. - distance
      if len(pos)<3: continue # 1 RPC point + >1 DT point
      coefficients = numpy.polyfit(pos.keys(),pos.values(),1)
 # check that track is in acceptance
@@ -3229,8 +3235,19 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
      fitResult = h[hname].Fit(fitFunction,'SQ','',-10.,10.)
      rc = fitResult.Get()
      background = rc.Parameter(3) * h[hname].GetNbinsX()
-     signal = h[hname].GetSumOfWeights()-background
+     signal1 = h[hname].GetSumOfWeights()-background
+     signal2 = rc.Parameter(0)
+     print "debug",tag_s,s,l,':',signal1,signal2
+     signal = (signal1+signal2)/2.
      effPerLayer[tag_s][10*s+l] = signal / float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6))
+# remove self tagging from plot
+   h[t].Update()
+   for p in h[t].GetListOfPrimitives():
+    if not p : continue
+    pname = p.GetName()
+    for l in range(4):
+     test = t+'_'+str((tag_s-1)*4+l+1)
+     if pname == test: p.Delete()
    h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.pdf')
    h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.png')
   print "tagging station                   :   1       2       3       4"
@@ -3300,7 +3317,11 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   t.Print('DTeffHitsPerStation.png')
   
 
-def efficiencyEstimates(method=0):
+def efficiencyEstimates(method=2,MCdata=False):
+ if h['biasResDist'].GetEntries()==0:
+  h.clear()
+  if not MCdata: ut.readHists(h,'residuals.root')
+  else: ut.readHists(h,'residuals-mbias.root')
  print "don't forget to set MCdata = True for MC"
  hinweis={}
  hinweis[0] = "method 0: use biasResDistX, count entries between -0.5 and 0.5"
@@ -3310,6 +3331,7 @@ def efficiencyEstimates(method=0):
  if not h.has_key('biasedResiduals'): plotBiasedResiduals(onlyPlotting=True)
  Ntracks = h['biasResTrackMom'].GetEntries()
  ut.bookHist(h,'effLayer','efficiency per Layer',24,-0.5,23.5)
+ ut.bookHist(h,'effLayerBinary','efficiency per Layer',24,-0.5,23.5)
  if not h.has_key('biasResDistX_1_x1'):
   for s in range(1,5):
    for view in ['_x','_u','_v']:
@@ -3326,15 +3348,16 @@ def efficiencyEstimates(method=0):
     if s>2 and view != '_x': continue
     if s==1 and view == '_v' or s==2 and view == '_u': continue
     effStation = 0
+    effStationBinary = 0
     for l in range(0,4):
      tc = h['biasedResiduals'].cd(j+1)
      if method == 0 or method == 1: hname = 'biasResDistX_'+str(s)+view+str(l)
      else:                          hname = 'biasResXL_'+str(s)+view+str(l)+'_projx'
-     xmin = h[hname].GetBinCenter(1)
-     xmax = h[hname].GetBinCenter(h[hname].GetNbinsX()-1)
+     xmin = -2.
+     xmax =  2.
      if method==0 or method==1: 
-      xmin = h[hname].GetBinCenter(h[hname].FindBin(-0.7))
-      xmax = h[hname].GetBinCenter(h[hname].FindBin(0.7))
+      xmin = -0.7
+      xmax =  0.7
      fitResult = h[hname].Fit('gaus','SQ','',xmin,xmax)
      rc = fitResult.Get()
      fitFunction = h[hname].GetFunction('DoubleGauss')
@@ -3354,32 +3377,65 @@ def efficiencyEstimates(method=0):
       fitFunction.SetParameter(3,0.)
       fitFunction.SetParameter(4,fitFunction.GetParameter(0)*0.1)
       fitFunction.SetParameter(5,fitFunction.GetParameter(2)*10.)
+     if method == 2 :
+       fitFunction.FixParameter(4,0.)
+       fitFunction.FixParameter(5,1.)
      fitResult = h[hname].Fit(fitFunction,'SQ','',xmin,xmax)
      h[hname].Draw()
      rc = fitResult.Get()
      if method == 0: estSignal = h[hname].Integral(375,625)
      elif method == 1 or method == 3: estSignal = ( abs(rc.GetParams()[0])+abs(rc.GetParams()[4]))/h[hname].GetBinWidth(1)
-     elif method == 2: estSignal = h[hname].GetSumOfWeights() - rc.GetParams()[3]*h[hname].GetNbinsX()
+     elif method == 2:
+          imin,imax =  h[hname].FindBin(xmin),h[hname].FindBin(xmax)
+          estSignal = h[hname].Integral(imin,imax) - abs(rc.GetParams()[3]) * (imax-imin+1)
+          estSignalBinary = h[hname].GetSumOfWeights() - h[hname].Integral(1,h[hname].FindBin(-4.)) - h[hname].Integral(h[hname].FindBin(4.),h[hname].GetNbinsX())
+          effBinary = estSignalBinary/float(2*Ntracks)
+          effBinaryError = ROOT.TMath.Sqrt(estSignalBinary)/float(2*Ntracks)
+          effStationBinary += effBinary
+          rc = h['effLayerBinary'].SetBinContent(j,effBinary)
+          rc = h['effLayerBinary'].SetBinError(j,effBinaryError)
      eff = estSignal/float(Ntracks)
-     print "eff for %s = %5.2F"%(hname,eff)
+     effError = ROOT.TMath.Sqrt(estSignal)/float(Ntracks)
+     if method==2: 
+        print "eff for %s = %5.2F binary %5.2F"%(hname,eff,effBinary)
+     else: 
+        print "eff for %s = %5.2F"%(hname,eff)
      h['effDict'][hname]=eff
      effStation += eff
-     rc = h['effLayer'].Fill(j,eff)
+     rc = h['effLayer'].SetBinContent(j,eff)
+     rc = h['effLayer'].SetBinError(j,effError)
      j+=1
+   if method==2: 
+    print "station, %i %s, average efficiency: %5.3F binary %5.2F"%(s,view,effStation/4.,effStationBinary/4.)
+   else: 
     print "station, %i %s, average efficiency: %5.3F"%(s,view,effStation/4.)
  for p in h['biasedResiduals'].GetListOfPrimitives():   p.SetLogy(1)
  tc1 = ROOT.gROOT.FindObject('c1')
  tc1.cd()
- for n in range(1,h['effLayer'].GetNbinsX()+1): h['effLayer'].SetBinError(n,0.02)
  h['effLayer'].SetMaximum(1.)
  h['effLayer'].SetMinimum(0.)
  h['effLayer'].SetStats(0)
- fitResult = h['effLayer'].Fit('pol0','SQ')
+ h['effLayerBinary'].SetStats(0)
+ fitResult = h['effLayer'].Fit('pol0','SQ','',0.,22.)
  rc=fitResult.Get()
- h['Efftxt'] = ROOT.TLatex(8,0.4,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
+ h['Efftxt'] = ROOT.TLatex(8,0.65,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
  h['Efftxt'].Draw()
  txt = 'effEstimate-method'+str(method)
  if MCdata: txt = 'MC'+txt
+ if method==2:
+    fitResult = h['effLayerBinary'].Fit('pol0','SQ','',0.,22.)
+    rc=fitResult.Get()
+    h['EfftxtBinary'] = ROOT.TLatex(8,0.58,'mean efficiency (binary) = %5.2F'%(rc.GetParams()[0]))
+    h['EfftxtBinary'].SetTextColor(ROOT.kMagenta)
+    h['effLayerBinary'].SetLineColor(ROOT.kMagenta)
+    h['effLayerBinary'].GetFunction('pol0').SetLineColor(h['effLayerBinary'].GetLineColor())
+    h['effLayer'].GetFunction('pol0').SetLineColor(h['effLayer'].GetLineColor())
+    h['effLayer'].Draw()
+    h['effLayer'].SetMinimum(0.5)
+    h['effLayerBinary'].Draw('same')
+    h['EfftxtBinary'].Draw()
+    h['Efftxt'].Draw()
+ txt = 'effEstimate-method'+str(method)
  h['biasedResiduals'].Print(txt+'.png')
  h['biasedResiduals'].Print(txt+'.pdf')
  tc1.Print(txt+'-summary.png')
@@ -6137,6 +6193,31 @@ def compareRuns(runs=[]):
  h['EventStatistics'].Print('DataQualityPlot.pdf')
  h['EventStatistics'].Print('DataQualityPlot.png')
  return eventStats
+def plotTDCExample():
+ f=ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2278/SPILLDATA_8000_0517453245_20180719_082409_RT.root')
+ h['TDCMapsX'] = f.histos.Get('TDCMapsX')
+ h['Pad1'] = h['TDCMapsX'].GetListOfPrimitives()[0].Clone('Pad1')
+ h['TDC1'] = h['Pad1'].GetListOfPrimitives()[1].Clone('TDC1')
+ ut.bookCanvas(h,'TDC1example',' ',1200,600,1,1)
+ h['TDC1'].Draw()
+ h['TDC1example'].Print('TDC1example.pdf')
+ h['TDC1example'].Print('TDC1example.png')
+ h['TDCMapsX'].Draw()
+ for x in h['TDCMapsX'].GetListOfPrimitives():
+   for n in [17 ,18, 31, 32]:
+    if x.GetTitle().find(str(n))>0: 
+      x.Delete()
+      break
+ h['TDCMapsX'].Update()
+ h['TDCMapsX'].Print('TDCMaps.pdf')
+ h['TDCMapsX'].Print('TDCMaps.png')
+ h['RTGraphs'] = f.histos.Get('RTrelations').Clone('RTGraphs')
+ h['RTGraphs'].Draw()
+ graph = h['RTGraphs'].GetListOfPrimitives()[0].FindObject('rtTDC30')
+ graph.Delete()
+ h['RTGraphs'].Update()
+ h['RTGraphs'].Print('RTRelations.png')
+ h['RTGraphs'].Print('RTRelations.pdf')
 
 def mergeGoodRuns(excludeRPC=False,path='.'):
  #path = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64'
