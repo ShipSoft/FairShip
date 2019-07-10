@@ -60,49 +60,46 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   double half_layer = 1536./2 * ch_width + 6 * gap_die + 5.5 * gap_SiPM;
 
   // how many half dies
-  double mult = int((ch_layer)/64);
-
-  // set position to the middle of the channel
-  double mid_ch_position = 0.025/2; // cm
+  int mult = int((ch_layer)/64);
 
   // shift to add to the position due to dead regions
   double shift = int(mult/2) * gap_die + int(mult/2) * gap_SiPM + (mult%2) * gap_die;
 
   //first station only x defined for X and U planes
   if(layer==0) {
-    x = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
+    x = - ( ch_layer*ch_width + shift - half_layer );
     y = 0;
   }
   else if(layer==1){
-    x = -( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
+    x = -( ch_layer*ch_width + shift - half_layer );
     y = 0;
   }
 
   //first station only y defined for Y and V planes
   else if(layer==2){
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
+    y = - ( ch_layer*ch_width + shift - half_layer );
   }
   else if(layer==3) {
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
+    y = - ( ch_layer*ch_width + shift - half_layer );
   }
   //second station only y defined for Y and V planes
   else if(layer==4) {
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
+    y = - ( ch_layer*ch_width + shift - half_layer );
   }
   else if(layer==5){
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
+    y = - ( ch_layer*ch_width + shift - half_layer );
   }
   //second station only x defined for X and U planes
   else if(layer==6){
-    x = ( ch_layer*ch_width + shift - half_layer ) + mid_ch_position;
+    x = ( ch_layer*ch_width + shift - half_layer );
     y = 0;
   }
   else if(layer==7) {
-    x = ( ch_layer*ch_width + shift - half_layer) + mid_ch_position;
+    x = ( ch_layer*ch_width + shift - half_layer);
     y = 0;
   }
 
