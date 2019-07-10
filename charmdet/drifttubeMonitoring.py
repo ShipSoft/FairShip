@@ -2051,7 +2051,7 @@ for s in range(1,5):
       if dx == 0:
         print "this should never happen",'Station_'+str(s)+view+'_plane_'+pl[layer][0]+'_layer_'+pl[layer][1]
       ut.bookHist(h,'biasResX_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,20,-dx,dx)
-      ut.bookHist(h,'biasResXL_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-2.,2.,20,-dx,dx)
+      ut.bookHist(h,'biasResXL_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),300,-6.,6.,20,-dx,dx)
       ut.bookHist(h,'linearRes'+str(s)+view+str(layer),'linear track model residual for '+str(s)+view+' '+str(layer),100,-20.,20.,10,-dx,dx)
       ut.bookHist(h,'biasResY_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-0.5,0.5,20,-dy,dy)
       ut.bookHist(h,'biasResYL_'+str(s)+view+str(layer),'biased residual for '+str(s)+view+' '+str(layer),100,-2.,2.,20,-dy,dy)
@@ -2062,9 +2062,9 @@ for s in range(1,5):
 # book residual histograms for each tube
 for detID in xpos:
       ut.bookHist(h,'biasResX_' +str(detID),'biased residual for channel '+str(detID),100,-0.5,0.5,20,-dx,dx)
-      ut.bookHist(h,'biasResXL_'+str(detID),'biased residual for channel '+str(detID),100,-2.,2.,20,-dx,dx)
-      ut.bookHist(h,'biasResY_' +str(detID),'biased residual for channel '+str(detID),100,-0.5,0.5,20,-dy,dy)      
-      ut.bookHist(h,'biasResYL_'+str(detID),'biased residual for channel '+str(detID),100,-2.,2.,20,-dy,dy)      
+      ut.bookHist(h,'biasResXL_'+str(detID),'biased residual for channel '+str(detID),300,-6.,6.,20,-dx,dx)
+      ut.bookHist(h,'biasResY_' +str(detID),'biased residual for channel '+str(detID),100,-0.5,0.5,20,-dy,dy)
+      ut.bookHist(h,'biasResYL_'+str(detID),'biased residual for channel '+str(detID),300,-6.,6.,20,-dy,dy)
 ut.bookHist(h,'biasResDist','residual versus drift radius',100,0.,2.,1000,-2.0,2.0)
 ut.bookHist(h,'biasResDist2','residual versus track distance',100,0.,2.,1000,-2.0,2.0)
 
@@ -2786,10 +2786,14 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
            h['biasResYL_'+hkey].Fill(resL,pos[1])
 # now for each tube
            detID = str(hit.GetDetectorID())
-           h['biasResX_'+detID].Fill(res,pos[0])
-           h['biasResY_'+detID].Fill(res,pos[1])
-           h['biasResXL_'+detID].Fill(res,pos[0])
-           h['biasResYL_'+detID].Fill(res,pos[1])
+           h['biasResX_'+detID].Fill(resR,pos[0])
+           h['biasResY_'+detID].Fill(resR,pos[1])
+           h['biasResXL_'+detID].Fill(resR,pos[0])
+           h['biasResYL_'+detID].Fill(resR,pos[1])
+           h['biasResX_'+detID].Fill(resL,pos[0])
+           h['biasResY_'+detID].Fill(resL,pos[1])
+           h['biasResXL_'+detID].Fill(resL,pos[0])
+           h['biasResYL_'+detID].Fill(resL,pos[1])
 # make hit and TDC plots for hits matched to tracks, within window suitable for not using TDC
            if abs(res) < 4. :
             t0 = 0
