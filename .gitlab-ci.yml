@@ -5,7 +5,7 @@ cc7:
   image: alisw/alidock:cc7
   stage: build
   before_script:
-    - pip install alibuild --upgrade
+    - pip install alibuild --upgrade --user
     - ls /cvmfs/ship.cern.ch
     - cd ..
     - git clone https://github.com/siscia/shipdist
