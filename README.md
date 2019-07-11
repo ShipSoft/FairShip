@@ -27,6 +27,9 @@ Additionally for developers:
     export SHIPBUILD=/cvmfs/ship.cern.ch/SHiPBuild
     ```    
 
+
+
+
 1. Install FairShip
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
