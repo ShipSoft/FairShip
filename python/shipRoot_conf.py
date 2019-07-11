@@ -7,6 +7,7 @@ if os.environ.get('FAIRSHIP_ROOT','') == '' and os.environ.get('Linux_Flavour_',
    print "Do first: source config.[c]sh"
    quit()
 
+print sys.platform
 # When on Darwin load all needed shared libs as DYLD_LIBRARY_PATH is not
 # passed to system Python out of security reasons...
 if sys.platform == 'darwin':
@@ -75,8 +76,8 @@ def configure(darkphoton=None):
    pdg.AddParticle('Upsilon[3S1(8)]'   ,'Upsilon[3S1(8)]' ,9.66030,False,0.0,     0, 'Meson', 9950003)
    atexit.register(pyExit)
    if darkphoton==0: return # will be added by pythia8_conf
-   if (darkphoton):
-      addDPtoROOT()
-   else:
-      addHNLtoROOT()
+   #if (darkphoton):
+   #   addDPtoROOT()
+   #else:
+   #   addHNLtoROOT()
 

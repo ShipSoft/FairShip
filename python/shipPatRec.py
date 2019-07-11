@@ -446,8 +446,11 @@ def hit_in_bin(x, y, k_bin, b_bin, k_size, b_size):
 ## Artificial Retina
 ##
 ########################################################################################################################
-
+print 'before minpack2'
+import scipy.optimize.minpack2 
+print 'after minpack2'
 from scipy.optimize import minimize
+print 'imported minimize'
 
 def artificial_retina_pattern_recognition(SmearedHits, ShipGeo):
     """
