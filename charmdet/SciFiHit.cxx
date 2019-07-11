@@ -22,11 +22,8 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   double scifiboxdz = ((TGeoBBox*) scifibox->GetShape())->GetDZ(); //semithickness
   
   int32_t partitionID;
-  int ch;
-  int boardId;
-
-  boardId = (fDetectorID) / pow(10,5);
-  ch = (fDetectorID - boardId * pow(10,5));
+  const int boardId = (fDetectorID) / pow(10,5);
+  const int ch = (fDetectorID - boardId * pow(10,5));
 
   // layer (0,1,..,7) 
   int layer = ch/1536;
