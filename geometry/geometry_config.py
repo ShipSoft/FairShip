@@ -739,7 +739,7 @@ with ConfigRegistry.register_config("basic") as c:
         if nuTauTargetDesign!=3:
             c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
         if nuTauTargetDesign ==3:
-            c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall)*c.NuTauTT.TTZ
+            c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + c.NuTauTarget.wall*c.NuTauTT.TTZ
             c.NuTauTarget.zC = c.EmuMagnet.zC - c.NuTauTarget.zdim/2.
             c.tauHPT.TotalDZ = (c.EmuMagnet.Z - c.EmuMagnet.Height1) - c.NuTauTarget.zdim # MagRegion-Target 
             c.tauHPT.distHPT = (c.tauHPT.TotalDZ - c.tauHPT.nHPT * c.tauHPT.DZ) / (c.tauHPT.nHPT - 1)                    

@@ -230,11 +230,11 @@ void TargetTracker::ConstructGeometry()
   AddSensitiveVolume(TT_scifimat_hor_volume);
   AddSensitiveVolume(TT_scifimat_vert_volume);
 
-  //Creating physical volumes and multiply 
-  for (int i = 0; i < n_hor_planes; i++){
+  //Creating physical volumes and multiply
+  for (int i = 1; i <= n_hor_planes; i++){
     TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, i, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
   }
-  for (int i = 0; i < n_vert_planes; i++){
+  for (int i = 1; i <= n_vert_planes; i++){
     TT_scifi_plane_vert_volume->AddNode(TT_scifimat_vert_volume, 100+i, new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
   }
 
@@ -248,34 +248,34 @@ void TargetTracker::ConstructGeometry()
   //Insert here the exact first position  
 
   //fNTT - number of TT walls 
-  for (int l = 0; l < fNTT; ++l) 
+  for (int l = 1; l <= fNTT; ++l) 
   {
-    volTarget->AddNode(TT_volume, 1000+l, new TGeoTranslation(0, 0, first_tt_position + l * (TTrackerZ + CellWidth)));
+    volTarget->AddNode(TT_volume, 1000*l, new TGeoTranslation(0, 0, first_tt_position + l * (TTrackerZ + CellWidth)));
   } 
 }
 
 
 Bool_t TargetTracker::ProcessHits(FairVolume* vol)
 {
-    /** This method is called from the MC stepping */
-    //Set parameters at entrance of volume. Reset ELoss.
-    if ( gMC->IsTrackEntering() ) {
-        fELoss  = 0.;
-        fTime   = gMC->TrackTime() * 1.0e09;
-        fLength = gMC->TrackLength();
-        gMC->TrackPosition(fPos);
-        gMC->TrackMomentum(fMom);
-    }
-    // Sum energy loss for all steps in the active volume
-    fELoss += gMC->Edep();
-    
-    // Create muonPoint at exit of active volume
-    if ( gMC->IsTrackExiting()    ||
-        gMC->IsTrackStop()       ||
-        gMC->IsTrackDisappeared()   ) {
-        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        //Int_t fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        gMC->CurrentVolID(fVolumeID);
+  /** This method is called from the MC stepping */
+  //Set parameters at entrance of volume. Reset ELoss.
+  if ( gMC->IsTrackEntering() ) {
+    fELoss  = 0.;
+    fTime   = gMC->TrackTime() * 1.0e09;
+    fLength = gMC->TrackLength();
+    gMC->TrackPosition(fPos);
+    gMC->TrackMomentum(fMom);
+  }
+  // Sum energy loss for all steps in the active volume
+  fELoss += gMC->Edep();
+  
+  // Create muonPoint at exit of active volume
+  if ( gMC->IsTrackExiting()    ||
+      gMC->IsTrackStop()        ||
+      gMC->IsTrackDisappeared()   ) {
+      fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+      //Int_t fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+      gMC->CurrentVolID(fVolumeID);
 	//gGeoManager->PrintOverlaps();
 	
 	//cout<< "detID = " << detID << endl;
@@ -288,27 +288,31 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
 	
 	Double_t zEnd = 0, zStart =0;
 
-	
+  Int_t detID = fVolumeID;
+  Int_t TTstationID = gGeoManager->GetMother(2)->GetNumber(); 
+  detID = TTstationID + detID;
+  fVolumeID = detID;
+
 	if (fELoss == 0. ) { return kFALSE; }
-        TParticle* p=gMC->GetStack()->GetCurrentTrack();
+  TParticle* p=gMC->GetStack()->GetCurrentTrack();
 	Int_t fMotherID =p->GetFirstMother();
 	Int_t pdgCode = p->GetPdgCode();
 
-        TLorentzVector Pos; 
-        gMC->TrackPosition(Pos); 
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+  TLorentzVector Pos; 
+  gMC->TrackPosition(Pos); 
+  Double_t xmean = (fPos.X()+Pos.X())/2. ;      
+  Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
+  Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
         
 
 	AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
                fELoss, pdgCode);
 	
-        // Increment number of muon det points in TParticle
-        ShipStack* stack = (ShipStack*) gMC->GetStack();
-        stack->AddPoint(ktauTT);
-    }
+  // Increment number of muon det points in TParticle
+  ShipStack* stack = (ShipStack*) gMC->GetStack();
+  stack->AddPoint(ktauTT);
+  }
     
     return kTRUE;
 }
