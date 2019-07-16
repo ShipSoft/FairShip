@@ -308,10 +308,10 @@ void Hpt::ConstructGeometry()
 
         // Creating physical volumes and multiply 
         for (int i = 0; i < n_hor_planes; i++){
-            HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
+            HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i+1, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
         }
         for (int i = 0; i < n_vert_planes; i++){
-            HPT_scifi_plane_vert_volume->AddNode(HPT_scifimat_vert_volume, 100+i, new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
+            HPT_scifi_plane_vert_volume->AddNode(HPT_scifimat_vert_volume, 100+i+1 , new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
         }
 
         volDT->AddNode(HPT_support_volume,     0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z / 2));
@@ -324,7 +324,7 @@ void Hpt::ConstructGeometry()
         Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2;
         for(int i=0;i<fnHPT;i++){
             for (int j = 0; j < fntarget; j++){
-                volMagRegion->AddNode(volDT,i+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
+                volMagRegion->AddNode(volDT,(i+1)*1000+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
             }
         }
     }
@@ -348,17 +348,25 @@ Bool_t  Hpt::ProcessHits(FairVolume* vol)
     if ( gMC->IsTrackExiting()    ||
         gMC->IsTrackStop()       ||
         gMC->IsTrackDisappeared()   ) {
-        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        if (fELoss == 0. ) { return kFALSE; }
-        TParticle* p=gMC->GetStack()->GetCurrentTrack();
-        Int_t pdgCode = p->GetPdgCode();
-	//Int_t fMotherID =p->GetFirstMother();
-	gMC->CurrentVolID(fVolumeID);
-        TLorentzVector Pos; 
-        gMC->TrackPosition(Pos); 
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+    if (fELoss == 0. ) { return kFALSE; }
+    TParticle* p=gMC->GetStack()->GetCurrentTrack();
+    Int_t pdgCode = p->GetPdgCode();
+    //Int_t fMotherID =p->GetFirstMother();
+    gMC->CurrentVolID(fVolumeID);
+
+    Int_t detID = fVolumeID;
+    Int_t HPTstationID = gGeoManager->GetMother(2)->GetNumber();
+    if (HPTstationID / 1000. >= 1) {
+        detID = HPTstationID + detID;
+    }
+    fVolumeID = detID;
+
+    TLorentzVector Pos; 
+    gMC->TrackPosition(Pos); 
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
 
 	AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
         
