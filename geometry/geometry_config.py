@@ -653,11 +653,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.col=9
         c.NuTauTarget.wall=20
     if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume 
-        c.NuTauTarget.n_plates = 56 
+        #c.NuTauTarget.n_plates = 56 
         c.NuTauTarget.row = 7
         c.NuTauTarget.col = 7
         c.NuTauTarget.wall = 19
-
+    c.NuTauTarget.n_plates = 56
+     
     c.NuTauTarget.target = 1  #number of neutrino target volumes
 
     c.NuTauTarget.nuTargetPassive = nuTargetPassive
