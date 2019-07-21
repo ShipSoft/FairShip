@@ -1673,6 +1673,7 @@ for x in ['','mu']:
   ut.bookHist(h,'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'recoPz/Abspx'+x+s,'reco MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
+ut.bookHist(h,'trueUpOcc','true Upstream Occupancy function of true Mom;P [GeV/c];N',400,0.,400.,100,-0.5,99.5)
 ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
 ut.bookHist(h,'weightVsSource','weight vs source MC check',10,-0.5,9.5,1000,0.0,1000.)
 for view in ['_u1','_v2','_x1','_x2','_x3','_x4']:
@@ -3218,6 +3219,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   ut.writeHists(h,'histos-DTEff'+rname)
  else:
 # analysis part
+  ut.bookHist(h,'effLayer','efficiency per Layer',24,-0.5,23.5)
   if not h.has_key('hits1_1'): ut.readHists(h,'DTEff.root')
   effPerLayer = {}
   for tag_s in range(1,5):
@@ -3239,11 +3241,21 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
      fitResult = h[hname].Fit(fitFunction,'SQ','',-10.,10.)
      rc = fitResult.Get()
      background = rc.Parameter(3) * h[hname].GetNbinsX()
+     bckInterval  = float(h[hname].GetNbinsX() - (h[hname].FindBin(4.) - h[hname].FindBin(-4.)) )
+     backgroundBinary = h[hname].Integral(1,h[hname].FindBin(-4.)) + h[hname].Integral(h[hname].FindBin(4.),h[hname].GetNbinsX())
+     estSignalBinary  = h[hname].GetSumOfWeights() - backgroundBinary/bckInterval*h[hname].GetNbinsX()
      signal1 = h[hname].GetSumOfWeights()-background
      signal2 = rc.Parameter(0)
-     print "debug",tag_s,s,l,':',signal1,signal2
-     signal = (signal1+signal2)/2.
+     err = ROOT.TMath.Sqrt(float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6))-estSignalBinary)/float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6))
+     # print "debug",tag_s,s,l,':',signal1,signal2,estSignalBinary,err
+     signal = estSignalBinary
      effPerLayer[tag_s][10*s+l] = signal / float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6))
+     if tag_s == 1 and s!=1 or tag_s == 2 and s==1:
+      L = j
+      if s>1: L+=4
+      if s>2: L+=4
+      h['effLayer'].SetBinContent(L,effPerLayer[tag_s][10*s+l])
+      h['effLayer'].SetBinError(L,err)
 # remove self tagging from plot
    h[t].Update()
    for p in h[t].GetListOfPrimitives():
@@ -3263,21 +3275,41 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
     print text
   ut.bookHist(h,'DTeffPerLayer','DT hit efficiency per layer',50,0.5,50.5)
   choice = {1:[2,ROOT.kRed],2:[1,ROOT.kGreen],3:[1,ROOT.kBlue],4:[1,ROOT.kMagenta]}
-  for s in choice:
-   tag_s = choice[s][0]
-   for l in range(4):
-     h['DTeffPerLayer'].SetBinContent(s*10+l+1,effPerLayer[tag_s][10*s+l])
+#
+  j = 0
+  for s in range(1,5):
+   for view in ['_x','_u','_v']:
+    if s>2 and view != '_x': continue
+    if s==1 and view == '_v' or s==2 and view == '_u': continue
+    if view !='_x':
+      j+=4
+      continue
+    tag_s = choice[s][0]
+    for l in range(4):
+     j+=1
+     h['DTeffPerLayer'].SetBinContent(j,effPerLayer[tag_s][10*s+l])
   h['DTeffPerLayer'].SetMinimum(0.6)
   h['DTeffPerLayer'].SetMaximum(1.0)
   h['DTeffPerLayer'].SetStats(0)
-  t =  ROOT.gROOT.FindObject('c1')
-  t.cd()
-  h['DTeffPerLayer'].Draw()
-  t.Print('DTeffPerLayer.pdf')
-  t.Print('DTeffPerLayer.png')
+  ut.bookCanvas(h,'ct','',700,500,1,1)
+  ut.bookCanvas(h,'c2','',700,500,1,1)
+  h['ct'].cd(1)
+  h['effLayer'].SetMaximum(1.)
+  h['effLayer'].SetMinimum(0.5)
+  h['effLayer'].SetStats(0)
+  h['effLayer'].SetMarkerStyle(21)
+  h['effLayer'].SetMarkerColor(h['effLayer'].GetLineColor())
+  h['effLayer'].Draw()
+  fitResult = h['effLayer'].Fit('pol0','SQ','',0.,24.)
+  rc=fitResult.Get()
+  h['Efftxt'] = ROOT.TLatex(2,0.60,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
+  h['Efftxt'].Draw()
+  h['ct'].Print('EffLayerWithRPCTracks.pdf')
+  h['ct'].Print('EffLayerWithRPCTracks.png')
 # inefficiency per station
   first = True
   h['leghits']=ROOT.TLegend(0.51,0.41,0.84,0.59)
+  h['c2'].cd(1)
   for s in choice:
     tag_s = choice[s][0]
     ntags = h['hits4_'+str(tag_s)].GetBinContent(6)
@@ -3317,15 +3349,17 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   print "average track mu eff = %5.2F%%"%( (Nmu*100.)/Ntag)
   print "average track mu Xonly eff = %5.2F%%"%( (NmuX*100.)/Ntag)
   h['leghits'].Draw()
-  t.Print('DTeffHitsPerStation.pdf')
-  t.Print('DTeffHitsPerStation.png')
+  h['c2'].Print('DTeffHitsPerStation.pdf')
+  h['c2'].Print('DTeffHitsPerStation.png')
   
 
 def efficiencyEstimates(method=2,MCdata=False):
  if h['biasResDist'].GetEntries()==0:
   h.clear()
   if not MCdata: ut.readHists(h,'residuals.root')
-  else: ut.readHists(h,'residuals-mbias.root')
+  else: 
+    ut.readHists(h,'residuals-mbias.root')
+    ut.readHists(h,'residuals-charm.root')
  print "don't forget to set MCdata = True for MC"
  hinweis={}
  hinweis[0] = "method 0: use biasResDistX, count entries between -0.5 and 0.5"
@@ -3392,14 +3426,16 @@ def efficiencyEstimates(method=2,MCdata=False):
      elif method == 2:
           imin,imax =  h[hname].FindBin(xmin),h[hname].FindBin(xmax)
           estSignal = h[hname].Integral(imin,imax) - abs(rc.GetParams()[3]) * (imax-imin+1)
-          estSignalBinary = h[hname].GetSumOfWeights() - h[hname].Integral(1,h[hname].FindBin(-4.)) - h[hname].Integral(h[hname].FindBin(4.),h[hname].GetNbinsX())
+          bckInterval      = float(h[hname].GetNbinsX() - (h[hname].FindBin(4.) - h[hname].FindBin(-4.)) )
+          backgroundBinary = h[hname].Integral(1,h[hname].FindBin(-4.)) + h[hname].Integral(h[hname].FindBin(4.),h[hname].GetNbinsX())
+          estSignalBinary = h[hname].GetSumOfWeights() - backgroundBinary/bckInterval*h[hname].GetNbinsX()
           effBinary = estSignalBinary/float(2*Ntracks)
-          effBinaryError = ROOT.TMath.Sqrt(estSignalBinary)/float(2*Ntracks)
+          effBinaryError = ROOT.TMath.Sqrt(2*Ntracks-estSignalBinary)/float(2*Ntracks)
           effStationBinary += effBinary
           rc = h['effLayerBinary'].SetBinContent(j,effBinary)
           rc = h['effLayerBinary'].SetBinError(j,effBinaryError)
      eff = estSignal/float(Ntracks)
-     effError = ROOT.TMath.Sqrt(estSignal)/float(Ntracks)
+     effError = ROOT.TMath.Sqrt(Ntracks-estSignal)/float(Ntracks)
      if method==2: 
         print "eff for %s = %5.2F binary %5.2F"%(hname,eff,effBinary)
      else: 
@@ -3419,19 +3455,23 @@ def efficiencyEstimates(method=2,MCdata=False):
  h['effLayer'].SetMaximum(1.)
  h['effLayer'].SetMinimum(0.)
  h['effLayer'].SetStats(0)
+ h['effLayer'].SetMarkerStyle(21)
+ h['effLayer'].SetMarkerColor(h['effLayer'].GetLineColor())
  h['effLayerBinary'].SetStats(0)
  fitResult = h['effLayer'].Fit('pol0','SQ','',0.,22.)
  rc=fitResult.Get()
- h['Efftxt'] = ROOT.TLatex(8,0.65,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
+ h['Efftxt'] = ROOT.TLatex(2,0.60,'mean efficiency = %5.2F'%(rc.GetParams()[0]))
  h['Efftxt'].Draw()
  txt = 'effEstimate-method'+str(method)
  if MCdata: txt = 'MC'+txt
  if method==2:
     fitResult = h['effLayerBinary'].Fit('pol0','SQ','',0.,22.)
     rc=fitResult.Get()
-    h['EfftxtBinary'] = ROOT.TLatex(8,0.58,'mean efficiency (binary) = %5.2F'%(rc.GetParams()[0]))
+    h['EfftxtBinary'] = ROOT.TLatex(2,0.56,'mean efficiency (binary) = %5.2F'%(rc.GetParams()[0]))
     h['EfftxtBinary'].SetTextColor(ROOT.kMagenta)
     h['effLayerBinary'].SetLineColor(ROOT.kMagenta)
+    h['effLayerBinary'].SetMarkerStyle(8)
+    h['effLayerBinary'].SetMarkerColor(h['effLayerBinary'].GetLineColor())
     h['effLayerBinary'].GetFunction('pol0').SetLineColor(h['effLayerBinary'].GetLineColor())
     h['effLayer'].GetFunction('pol0').SetLineColor(h['effLayer'].GetLineColor())
     h['effLayer'].Draw()
@@ -3439,7 +3479,6 @@ def efficiencyEstimates(method=2,MCdata=False):
     h['effLayerBinary'].Draw('same')
     h['EfftxtBinary'].Draw()
     h['Efftxt'].Draw()
- txt = 'effEstimate-method'+str(method)
  h['biasedResiduals'].Print(txt+'.png')
  h['biasedResiduals'].Print(txt+'.pdf')
  tc1.Print(txt+'-summary.png')
@@ -4006,6 +4045,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
  ut.bookCanvas(h,key='RPCEff',title='RPC efficiencies',nx=1600,ny=1200,cx=3,cy=4)
  const = ROOT.TF1('const','pol0',10,100)
  l=1
+ T=ROOT.TLatex()
  for s in range(1,5):
   for v in range(3):
    if v==2: 
@@ -4026,9 +4066,29 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
    fun = h['Eff'+hname].GetListOfFunctions()[0]
    eff = fun.GetParameter(0)
    err = fun.GetParError(0)
-   h['txtEff'+hname] = ROOT.TMathText(25,0.92,'eff = (%5.2F\pm%5.2F)%s'%(eff*100,err*100,'\\hbox{%}'))
-   h['txtEff'+hname].SetTextSize(0.1)
-   h['txtEff'+hname].Draw()
+   T.SetTextSize(0.1)
+   rc = T.DrawLatexNDC(0.3,0.2,'eff = (%5.2F\pm%5.2F)%s'%(eff*100,err*100,'%'))
+   txt = "station "+str(s)+" X"
+   if v==0: txt = "station "+str(s)+" Y"
+   if v==2: txt = "station "+str(s)+" X or Y"
+   T.SetTextSize(0.08)
+   rc = T.DrawLatexNDC(0.2,0.8,txt)
+ h['RPCEff'].Print("rpchiteff.png")
+ h['RPCEff'].Print("rpchiteff.pdf")
+ h['RPCResiduals'].Draw()
+ for x in h['RPCResiduals'].GetListOfPrimitives():  
+  for xx in x.GetListOfPrimitives():
+   if  xx.ClassName()=='TH1D':
+     stats = xx.GetListOfFunctions().FindObject("stats")
+     stats.SetOptStat(1000000001)
+     stats.SetOptFit(10001)
+     stats.SetX1NDC(0.70) 
+     stats.SetY1NDC(0.23) 
+     stats.SetX2NDC(0.97) 
+     stats.SetY2NDC(0.94) 
+ h['RPCResiduals'].Update()
+ h['RPCResiduals'].Print('RPCResiduals.pdf')
+ h['RPCResiduals'].Print('RPCResiduals.png')
  print "do not forget there were runs without one RPC station"
  
 def debugRPCstrips():
@@ -5241,24 +5301,24 @@ def checkMCEffTuning():
  for a in ['p/pt']:
    for x in ['','mu']:
     for source in sources:  interestingHistos.append(a+x+source)
- ut.readHists(hMC,       'momDistributions-mbias.root',interestingHistos)
- ut.readHists(hCharm,    'momDistributions-charm.root',interestingHistos)
- ut.readHists(hMC10GeV,  'momDistributions-10GeVTR.root',interestingHistos)
+ ut.readHists(hMC,       '../momDistributions-mbias.root',interestingHistos)
+ ut.readHists(hCharm,    '../momDistributions-charm.root',interestingHistos)
+ ut.readHists(hMC10GeV,  '../momDistributions-10GeVTR.root',interestingHistos)
  ut.readHists(hMCD,       'momDistributions-1GeV-mbias-withDeadChannels.root',interestingHistos)
  ut.readHists(hCharmD,    'momDistributions-1GeV-charm-withDeadChannels.root ',interestingHistos)
  ut.readHists(hMC10GeVD,  'momDistributions-10GeV-mbias-withDeadChannels.root ',interestingHistos)
- ut.readHists(hMC0,      'momDistributions-1GeV-mbias-effTuned-M0.root',interestingHistos)
- ut.readHists(hMC2,      'momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
- ut.readHists(hMCrec0,   'momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
- ut.readHists(hMCrec2,   'momDistributions-1GeV-mbias-effTuned-M2-reco.root',interestingHistos)
- ut.readHists(hCharm0,   'momDistributions-1GeV-charm-effTuned-M0.root',interestingHistos)
- ut.readHists(hCharm2,   'momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
- ut.readHists(hCharmrec0,'momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
- ut.readHists(hCharmrec2,'momDistributions-1GeV-charm-effTuned-M2-reco.root',interestingHistos)
- ut.readHists(hMC10GeV0,   'momDistributions-10GeV-mbias-effTuned-M0.root',interestingHistos)
- ut.readHists(hMC10GeV2,   'momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
- ut.readHists(hMC10GeVrec0,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
- ut.readHists(hMC10GeVrec2,'momDistributions-10GeV-mbias-effTuned-M2-reco.root',interestingHistos)
+ ut.readHists(hMC0,      '../momDistributions-1GeV-mbias-effTuned-M0.root',interestingHistos)
+ ut.readHists(hMC2,      '../momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
+ ut.readHists(hMCrec0,   '../momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hMCrec2,   '../momDistributions-1GeV-mbias-effTuned-M2-reco.root',interestingHistos)
+ ut.readHists(hCharm0,   '../momDistributions-1GeV-charm-effTuned-M0.root',interestingHistos)
+ ut.readHists(hCharm2,   '../momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
+ ut.readHists(hCharmrec0,'../momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hCharmrec2,'../momDistributions-1GeV-charm-effTuned-M2-reco.root',interestingHistos)
+ ut.readHists(hMC10GeV0,   '../momDistributions-10GeV-mbias-effTuned-M0.root',interestingHistos)
+ ut.readHists(hMC10GeV2,   '../momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
+ ut.readHists(hMC10GeVrec0,'../momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+ ut.readHists(hMC10GeVrec2,'../momDistributions-10GeV-mbias-effTuned-M2-reco.root',interestingHistos)
  a= 'p/pt_projx'
  print "with deadChannels / default"
  print "1GeV mbias:",hMCD[a].GetEntries()/hMC[a].GetEntries()
@@ -5316,7 +5376,7 @@ def checkMCEffTuning():
  h['leg'+t].Draw()
  h[t].Print('MCcomparison-Efficiency-Tuning.png')
  h[t].Print('MCcomparison-Efficiency-Tuning.pdf')
-def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
+def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False):
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # 10GeV MC,         65 Billion PoT 
@@ -5345,13 +5405,13 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
    if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
    else:    ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-withDeadChannels.root',interestingHistos)
   else:
-   ut.readHists(hMC,   'momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
-   ut.readHists(hMC,   'momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
-   ut.readHists(hCharm,'momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
-   ut.readHists(hCharm,'momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
-   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
-   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
-   MCStats = MCStats*2.
+   ut.readHists(hMC,   '../momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hMC,   '../momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hCharm,'../momDistributions-1GeV-charm-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hCharm,'../momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
+   ut.readHists(hMC10GeV,'../momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
+   ut.readHists(hMC10GeV,'../momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
+   # ???MCStats = MCStats*2.
   for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
     for x in ['','mu']:
      if a.find('p1/p2')==0 and x!='': continue
@@ -5360,7 +5420,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.03,effCor=False,eric=False):
       hstore[a+x+"G4default"]=hstore[a+x].Clone(a+x+"G4default")
       hstore[a+x+"G4default"].Add(hstore[a+x+"Hadronic inelastic"],-1.)
 # subtract invalid case from main distribution
-      hstore[a+x].Add(hstore[a+x+"invalid"],-1.)
+      # hstore[a+x].Add(hstore[a+x+"invalid"],-1.)
  if pot <0: # (default, use Hans normalization)
    pot = h['Trscalers'].GetBinContent(2) * muPerPot / MCStats
    # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
