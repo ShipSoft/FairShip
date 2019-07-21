@@ -10,11 +10,21 @@ cuts['xRRPC1'] = 97.69875
 cuts['yBRPC1'] =-41.46045
 cuts['yTRPC1'] = 80.26905
 
+Debug = False
+
+host = os.uname()[1]
+if host=="ubuntu":
+ gPath = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32/"
+elif host=='ship-ubuntu-1710-32':
+ gPath = "/home/truf/muflux/"
+else:
+ gPath = "/home/truf/ship-ubuntu-1710-32/"
 
 hData   = {}
 hMC     = {}
+h0      = {}
 sTreeData = ROOT.TChain('tmuflux')
-path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32/RUN_8000_2403/"
+path = gPath +"RUN_8000_2403/"
 sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319240_20180723_160408_RT.root")
 sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319310_20180723_160422_RT.root")
 sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319400_20180723_160440_RT.root")
@@ -43,19 +53,29 @@ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314820_20180723_154924_RT.root")
 
 
 sTreeMC = ROOT.TChain('tmuflux')
-with1GeV=False
+with1GeV  = True
+withCharm = True
+with10GeV = True
+
+if host=="ubuntu":
+ gPath = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/"
+elif host=='ship-ubuntu-1710-48':
+ gPath = "/home/truf/muflux/"
+else:
+ gPath = "/home/truf/ship-ubuntu-1710-48/"
+
+MCType =  "withDeadChannels"  # "0"
 if with1GeV:
- path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_cXXXX_mu/"
- for k in range(0,21000,1000):
+ path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_1.0_cXXXX_mu/"
+ for k in range(0,20000,1000):
   for m in range(5):
    fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
    try:
     test = ROOT.TFile(fname)
     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
    except: continue
-withCharm=False
 if withCharm:
- path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_charm_0-19_1.0_mu/"
+ path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
  for m in range(5):
    fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
    try:
@@ -63,9 +83,8 @@ if withCharm:
     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
    except: continue
  
-with10GeV=True
 if with10GeV:
- path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation10GeV-withDeadChannels/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
+ path = gPath+"simulation10GeV-"+MCType+"/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
  for k in range(0,67000,1000):
   for m in range(10):
    fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
@@ -392,16 +411,19 @@ def reconstructible(OnlyDraw = False):
    h['ineff-upStreamOcc-reconstructible']=ROOT.TEfficiency(h['upStreamOcc-nonReco'],h['upStreamOcc-reconstructible'])
    h['effP']=ROOT.TEfficiency(h['reconstructedP'],h['reconstructibleP'])
 from array import array
-def RecoEffFunOfOcc(OnlyDraw = False):
+def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
  pMin = 5.
  if not OnlyDraw:
    c = 'Data'
    sTree = case[c][0]
    h = case[c][1]
+   if Nevents<0: Nevents=sTree.GetEntries()
    ut.bookHist(h,'Occ','N',50,0.,200.)
-   for n in range(sTree.GetEntries()):
+   ut.bookHist(h,'OccAllEvents','N',50,0.,200.)
+   for n in range(Nevents):
     rc = sTree.GetEvent(n)
     upStreamOcc = sTree.stationOcc[1]+sTree.stationOcc[5]+sTree.stationOcc[2]+sTree.stationOcc[6]
+    if sTree.nTr>0: rc = h['OccAllEvents'].Fill(upStreamOcc)
     for t in range(sTree.nTr):
      if sTree.GoodTrack[t]<0: continue
      Pvec = ROOT.TVector3(sTree.Px[t],sTree.Py[t],sTree.Pz[t])
@@ -429,20 +451,23 @@ def RecoEffFunOfOcc(OnlyDraw = False):
    ut.bookHist(h,'P', 'true momentum muReconstructible;[GeV/c];N',dpaxis,50,0.,200.)
    ut.bookHist(h,'Pz','true momentum muReconstructible;[GeV/c];N',dpaxis,50,0.,200.)
    ut.bookHist(h,'Preco', 'true momentum reconstructed;[GeV/c];N',dpaxis,50,0.,200.)
+   ut.bookHist(h,'Pfailed', 'true momentum no reco;[GeV/c];N',dpaxis,50,0.,200.)
    ut.bookHist(h,'Pzreco','true momentum reconstructed;[GeV/c];N',dpaxis,50,0.,200.)
    ut.bookHist(h,'Pt','true momentum muReconstructible;[GeV/c];N',80,0.,4.,50,0.,200.)
    ut.bookHist(h,'Px','true momentum muReconstructible;[GeV/c];N',80,0.,4.,50,0.,200.)
    ut.bookHist(h,'Ptreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,50,0.,200.)
    ut.bookHist(h,'Pxreco','true momentum reconstructed;[GeV/c];N',80,0.,4.,50,0.,200.)
-   ut.bookHist(h,'delx/y','delx vs dely;cm;cm',100,-20.,20,100,-50.,50.)
+   ut.bookHist(h,'delx/y','delx vs dely;cm;cm',100,0.,20,100,0.,50.)
+   ut.bookHist(h,'OccAllEvents','N',50,0.,200.)
    for x in ['','_mu']:
     ut.bookHist(h,'delP'+x,"reconstructed P - true ",1000,-50.,50.)
     ut.bookHist(h,'delPt'+x,"reconstructed Pt - true ",1000,-1.,1.)
     ut.bookHist(h,'delPx'+x,"reconstructed Px - true ",1000,-1.,1.)
-   for n in range(sTree.GetEntries()):
+   for n in range(Nevents):
     rc = sTree.GetEvent(n)
-    if sTree.MCRecoDT.size() != 1: continue # look at 1 Track events for the moment 
     upStreamOcc = sTree.stationOcc[1]+sTree.stationOcc[5]+sTree.stationOcc[2]+sTree.stationOcc[6]
+    if sTree.nTr>0: rc = h['OccAllEvents'].Fill(upStreamOcc)
+    if sTree.MCRecoDT.size() != 1: continue # look at 1 Track events for the moment 
     for m in sTree.MCRecoRPC:
        i = -1
        for d in sTree.MCRecoDT:
@@ -454,6 +479,9 @@ def RecoEffFunOfOcc(OnlyDraw = False):
          rc = h['Pz'].Fill(P.Z(),upStreamOcc)
          rc = h['Pt'].Fill(P.Pt(),upStreamOcc)
          found = False  # avoid double counting
+         if sTree.nTr<1:
+           rc = h['Pfailed'].Fill(P.Mag(),upStreamOcc)
+           if Debug: print "no reco track  event nr ",n,sTree.GetCurrentFile().GetName(),P.Mag(),upStreamOcc
          for t in range(sTree.nTr):
            Preco  = ROOT.TVector3(sTree.Px[t],sTree.Py[t],sTree.Pz[t])
            delP   = P.Mag() - Preco.Mag()
@@ -473,20 +501,45 @@ def RecoEffFunOfOcc(OnlyDraw = False):
              rc = h['Pzreco'].Fill(P.Z(),upStreamOcc)
              rc = h['Ptreco'].Fill(P.Pt(),upStreamOcc)
              found = True
-#         if not found:
-#           print "event nr ",n,P.Mag(),upStreamOcc
+         if not found and sTree.nTr==1 and Debug:
+           dec = abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']
+           print "event nr ",n,P.Mag(),sTree.nTr,upStreamOcc,abs(sTree.Delx[t]),abs(sTree.Dely[t]),dec
 
    ut.writeHists(h,'histos-MCRecoEffFunOfOcc.root')
  if not hMC.has_key('P'): 
-   ut.readHists(h,'histos-MCRecoEffFunOfOcc.root')
+   ut.readHists(hMC,'histos-MCRecoEffFunOfOcc.root')
  if not hData.has_key('Occ'): 
-   ut.readHists(h,'histos-DataOcc.root')
+   ut.readHists(hData,'histos-DataOcc.root')
+ # now take occupancy from zero field
+ if not hMC.has_key("hDTEff"):
+  hMC["hDTEff"] = {}
+  hDTEff=hMC["hDTEff"]
+  ut.readHists(hDTEff,'DTEff.root',['upStreamOccWithTrack','upStreamOcc'])
+  hMC['zeroFieldOcc']=hDTEff['upStreamOccWithTrack'].Rebin(4,'zeroFieldOcc')
+  hMC['zeroFieldOcc'].Scale(1./hMC['zeroFieldOcc'].GetMaximum())
+  hMC['zeroFieldOcc'].SetLineColor(ROOT.kGreen)
+  hMC['zeroFieldOcc'].SetMarkerColor(ROOT.kGreen)
+  hMC['zeroFieldOcc'].SetMarkerStyle(24)
  c = 'MC'
  sTree = case[c][0]
  h = case[c][1]
  tmp = h['P'].ProjectionY()
  T = ROOT.TLatex()
  T.SetTextColor(ROOT.kMagenta)
+ ut.bookCanvas(h,'upStreamOcc','upstream occupancy',900,600,1,1)
+ tc = hMC['upStreamOcc'].cd(1)
+ tc.SetLogy(1)
+ hData['OccAllEvents'].SetTitle('upstream occupancy;N;arbitrary scale')
+ hData['OccAllEvents'].SetStats(0)
+ hData['OccAllEvents'].Draw()
+ hmax = hData['OccAllEvents'].GetMaximum()
+ hMC['OccAllEvents'].SetLineColor(ROOT.kMagenta)
+ hMC['OccAllEvents_scaled']=hMC['OccAllEvents'].Clone('OccAllEvents_scaled')
+ hMC['OccAllEvents'].Scale(hmax/hMC['OccAllEvents'].GetMaximum())
+ hMC['OccAllEvents'].SetStats(0)
+ hMC['OccAllEvents'].Draw('same hist')
+ h['upStreamOcc'].Print('upstreamOcc.pdf')
+ h['upStreamOcc'].Print('upstreamOcc.png')
  variables = ['P','Px','Pz','Pt']
  fun = {}
  for var in variables:
@@ -494,7 +547,7 @@ def RecoEffFunOfOcc(OnlyDraw = False):
   xmax = tmp.GetBinLowEdge(tmp.GetNbinsX())+tmp.GetBinWidth(tmp.GetNbinsX())
   ut.bookHist(h,'effFun'+var,'eff as function of occupancy '+var,tmp.GetNbinsX(),xmin,xmax)
   ut.bookCanvas(h,'eff'+var,'Efficiencies '+var,1200,900,5,4)
-  if var=='P' or var=='Pz': fun[var] = ROOT.TF1('pol0'+var,'[0]',12.,100.)
+  if var=='P' or var=='Pz': fun[var] = ROOT.TF1('pol0'+var,'[0]',12.,200.)
   else:                     fun[var] = ROOT.TF1('pol0'+var,'[0]',0.,2.5)
   j=1
   for o in range(1,tmp.GetNbinsX()+1):
@@ -509,6 +562,8 @@ def RecoEffFunOfOcc(OnlyDraw = False):
     x = h[var+'eff'+str(o)].GetEfficiency(20) # just to have a decent scale
     g.SetMinimum(x*0.8)
     g.SetMaximum(1.02)
+    if var=='P' or var=='Pz':
+       g.GetXaxis().SetRangeUser(0.,200.)
     t = str(int(tmp.GetBinLowEdge(o)))+"-"+str(int(tmp.GetBinLowEdge(o)+tmp.GetBinWidth(o)))
     rc = T.DrawLatexNDC(0.5,0.9,t)
     rc = h[var+'eff'+str(o)].Fit(fun[var],'SRQ')
@@ -518,6 +573,8 @@ def RecoEffFunOfOcc(OnlyDraw = False):
       rc = T.DrawLatexNDC(0.2,0.9,"eff=%5.2F%%"%(eff*100.))
       h['effFun'+var].SetBinContent(o,eff)
     tc.Update()
+  h['eff'+var].Print('MCEfficienciesOcc'+var+'.pdf')
+  h['eff'+var].Print('MCEfficienciesOcc'+var+'.png')
  ut.bookCanvas(h,'eff final','Efficiencies ',1200,900,2,2)
  j=1
  h['occ']=tmp.Clone('occ')
@@ -526,9 +583,33 @@ def RecoEffFunOfOcc(OnlyDraw = False):
  for var in variables:
    h['eff final'].cd(j)
    j+=1
-   h['effFun'+var].Draw()
+   h['effFun'+var].SetStats(0)
+   h['effFun'+var].SetMarkerStyle(20)
+   h['effFun'+var].SetMarkerColor(h['effFun'+var].GetLineColor())
+   h['effFun'+var].GetXaxis().SetRangeUser(0.,100.)
+   h['effFun'+var].Draw('P')
+   h['effFun'+var].Draw('hist same')
+   h['occ'].SetMarkerStyle(8)
+   h['occ'].SetMarkerColor(h['occ'].GetLineColor())
+   h['occ'].Draw('same P')
    h['occ'].Draw('same hist')
  var = 'P'
+ ut.bookCanvas(h,'eff final P','Efficiencies ',900,600,1,1)
+ h['eff final P'].cd(1)
+ h['effFun'+var].SetTitle('Tracking efficiency as function of occupancy; N hits in upstream stations;efficiency')
+ h['effFun'+var].Draw('P')
+ h['effFun'+var].Draw('hist same')
+ h['occ'].Draw('same P') 
+ h['occ'].Draw('same hist')
+ h['zeroFieldOcc'].Draw('P same')
+ h['zeroFieldOcc'].Draw('same hist')
+ rc = T.DrawLatexNDC(0.256,0.370,"upstream station occupancy MC")
+ T.SetTextColor(h['zeroFieldOcc'].GetLineColor())
+ rc = T.DrawLatexNDC(0.287,0.217,"upstream station occupancy Data")
+ T.SetTextColor(ROOT.kBlue)
+ rc = T.DrawLatexNDC(0.35,0.8,"tracking efficiency")
+ h['eff final P'].Print("MCTrackEffFunOcc.pdf")
+ h['eff final P'].Print("MCTrackEffFunOcc.png")
  finalEff  = 0
  sumEvents = 0
  for o in range(1,h['occ'].GetNbinsX()+1):
@@ -543,10 +624,6 @@ def RecoEffFunOfOcc(OnlyDraw = False):
    sumEvents+=hData['Occ'].GetBinContent(o)
  finalEff=finalEff/sumEvents
  print "and the final answer is for Data: %5.2F%%"%(finalEff*100)
- # now take occupancy from zero field
- hDTEff = {}
- ut.readHists(hDTEff,'DTEff.root',['upStreamOccWithTrack','upStreamOcc'])
- h['zeroFieldOcc']=hDTEff['upStreamOccWithTrack'].Rebin(4,'zeroFieldOcc')
  finalEff  = 0
  sumEvents = 0
  for o in range(1,hData['Occ'].GetNbinsX()+1):
@@ -555,5 +632,111 @@ def RecoEffFunOfOcc(OnlyDraw = False):
  finalEff=finalEff/sumEvents
  print "and the final answer is for zeroField Data: %5.2F%%"%(finalEff*100)
 
+def trueMomPlot(Nevents=-1,onlyPlotting=False):
+ h     = hMC
+ sTree = sTreeMC
+ MCStats    = 1.8E9
+ sim10fact  = MCStats/(65.E9*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+ charmNorm  = {1:0.176,10:0.424}
+ beautyNorm = {1:0.,   10:0.01218}
+ if not onlyPlotting:
+  for x in ['charm','10GeV','1GeV']:
+   for c in ['','charm','beauty']:
+    ut.bookHist(h,'trueMom-'+x+c,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,200,0.,10.)
+    ut.bookHist(h,'recoMom-'+x+c,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,200,0.,10.)
+  if Nevents<0: Nevents = sTree.GetEntries()
+  for n in range(Nevents):
+   rc = sTree.GetEvent(n)  
+   fname = sTree.GetCurrentFile().GetName()
+   x = '1GeV'
+   if not fname.find('charm')<0: x = 'charm'
+   elif not fname.find('10')<0: x = '10GeV'
+   if sTree.channel==5: x+='charm'
+   if sTree.channel==6: x+='beauty'
 
-  
+   if sTree.MCRecoDT.size() != 1: continue # look at 1 Track events for the moment
+   for d in sTree.MCRecoDT:
+    i = 0
+    P  = ROOT.TVector3(sTree.MCRecoDTpx[i],sTree.MCRecoDTpy[i],sTree.MCRecoDTpz[i])
+    found = False
+    for t in range(sTree.nTr):
+      Preco  = ROOT.TVector3(sTree.Px[t],sTree.Py[t],sTree.Pz[t])
+      if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
+       rc = h['trueMom-'+x].Fill(P.Mag(),P.Pt())
+       rc = h['recoMom-'+x].Fill(Preco.Mag(),Preco.Pt())
+       break
+  for x in ['trueMom-','recoMom-']:
+   h[x+'10GeVnorm']=h[x+'10GeV'].Clone(x+'10GeVnorm')
+   h[x+'10GeVnorm'].Add(h[x+'10GeVcharm'],charmNorm[10])
+   h[x+'10GeVnorm'].Add(h[x+'10GeVbeauty'],beautyNorm[10])
+   h[x+'10GeVnorm'].Scale(sim10fact)
+   h[x+'1GeVnorm']=h[x+'1GeV'].Clone(x+'1GeVnorm')
+   h[x+'1GeVnorm'].Add(h[x+'charm'],charmNorm[1])
+   h[x+'P1GeVnorm'] =h[x+'1GeVnorm'].ProjectionX(x+'P1GeVnorm')
+   h[x+'P10GeVnorm']=h[x+'10GeVnorm'].ProjectionX(x+'P10GeVnorm')
+   h[x+'P']=h[x+'P10GeVnorm'].Clone(x+'P')
+   for i in range(1,20): 
+     h[x+'P'].SetBinContent(i,h[x+'P1GeVnorm'].GetBinContent(i))
+     h[x+'P'].SetBinError(i,h[x+'P1GeVnorm'].GetBinError(i))
+   for i in range(20,401): 
+     h[x+'P'].SetBinContent(i,h[x+'P10GeVnorm'].GetBinContent(i))
+     h[x+'P'].SetBinError(i,h[x+'P10GeVnorm'].GetBinError(i))
+   h[x+'Pt1GeVnorm'] =h[x+'1GeVnorm'].ProjectionY(x+'Pt1GeVnorm',1,20)
+   h[x+'Pt10GeVnorm']=h[x+'10GeVnorm'].ProjectionY(x+'Pt10GeVnorm',21,400)
+   h[x+'Pt']=h[x+'Pt10GeVnorm'].Clone(x+'Pt')
+   h[x+'Pt'].Add(h[x+'Pt1GeVnorm'])
+  ut.writeHists(h,'trueMoms-'+MCType+'.root')
+ else:
+  ut.readHists(h,'trueMoms-withDeadChannels.root')
+  ut.readHists(h0,'trueMoms-0.root')
+  for k in ['P','Pt']:
+   t = "true Mom "+k
+   if not h.has_key(t): ut.bookCanvas(h,t,'true and reco momentum',900,600,1,1)
+   tc=h[t].cd(1)
+   tc.SetLogy()
+   h['trueMom-'+k].SetStats(0)
+   #h['trueMom-'+k].Draw()
+   h['rebinned-trueMom-'+k]=h['trueMom-'+k].Clone('rebinned-trueMom-'+k)
+   h['rebinned-trueMom-'+k].Rebin(5)
+   h['rebinned-trueMom-'+k].Scale(1./5.)
+   h['rebinned-trueMom-'+k].SetMarkerStyle(21)
+   h['rebinned-trueMom-'+k].SetMarkerColor(h['rebinned-trueMom-'+k].GetLineColor())
+   if k=='P': h['rebinned-trueMom-'+k].GetXaxis().SetRangeUser(5.,400.)
+   h['rebinned-trueMom-'+k].Draw()
+   h['recoMom-'+k].SetLineColor(ROOT.kMagenta)
+   h['recoMom-'+k].SetStats(0)
+   #h['recoMom-'+k].Draw('same')
+   h['rebinned-recoMom-'+k]=h['recoMom-'+k].Clone('rebinned-recoMom-'+k)
+   h['rebinned-recoMom-'+k].Rebin(5)
+   h['rebinned-recoMom-'+k].Scale(1./5.)
+   h['rebinned-recoMom-'+k].SetMarkerStyle(23)
+   h['rebinned-recoMom-'+k].SetMarkerColor(h['rebinned-recoMom-'+k].GetLineColor())
+   h['rebinned-recoMom-'+k].Draw('P same')
+   h0['recoMom-'+k].SetLineColor(ROOT.kGreen)
+   h0['recoMom-'+k].SetStats(0)
+   #h0['recoMom-'+k].Draw('same')
+   h0['0rebinned-recoMom-'+k]=h0['recoMom-'+k].Clone('0rebinned-recoMom-'+k)
+   h0['0rebinned-recoMom-'+k].Rebin(5)
+   h0['0rebinned-recoMom-'+k].Scale(1./10.)
+   h0['0rebinned-recoMom-'+k].SetMarkerStyle(22)
+   h0['0rebinned-recoMom-'+k].SetMarkerColor(h0['0rebinned-recoMom-'+k].GetLineColor())
+   h0['0rebinned-recoMom-'+k].Draw('P same')
+   h['leg'+t]=ROOT.TLegend(0.31,0.67,0.85,0.85)
+   h['leg'+t].AddEntry(h['rebinned-trueMom-'+k],'true momentum ','PL')
+   h['leg'+t].AddEntry(h0['0rebinned-recoMom-'+k],'reconstructed momentum 270#mum','PL')
+   h['leg'+t].AddEntry(h['rebinned-recoMom-'+k],'reconstructed momentum 500#mum','PL')
+   h['leg'+t].Draw()
+   h[t].Print('True-Reco'+k+'.png')
+   h[t].Print('True-Reco'+k+'.pdf')
+ 
+def debug():
+ Nstat = {}
+ for n in range(sTreeMC.GetEntries()):
+  rc = sTreeMC.GetEvent(n)  
+  fname = sTreeMC.GetCurrentFile().GetName()
+  if not Nstat.has_key(fname): Nstat[fname]=[sTreeMC.GetEntries(),0,0,0]
+  rc = sTreeMC.GetEvent(n)
+  Nstat[fname][1]+=sTreeMC.nTr
+  Nstat[fname][2]+=sTreeMC.MCRecoRPC.size()
+  Nstat[fname][3]+=sTreeMC.MCRecoDT.size()
+ return Nstat

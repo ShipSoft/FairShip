@@ -51,7 +51,7 @@ public:
    StringVecIntMap countMeasurements(TrackInfo* trInfo);
    std::vector<std::vector<int>> GroupIntegers(std::vector<int>& input_array, size_t span);
    void setEffFudgeFactor(std::string s,float f){effFudgeFac[s]=f;}
-   void DTreconstructible(std::vector<int> *i,std::vector<float> *x,std::vector<float> *y,std::vector<float> *z);
+   void DTreconstructible(std::vector<int> *i,std::vector<float> *x,std::vector<float> *y,std::vector<float> *z,TH2D* h);
    void RPCreconstructible(std::vector<int> *i,std::vector<float> *x,std::vector<float> *y,std::vector<float> *z);
 private:
   protected:
