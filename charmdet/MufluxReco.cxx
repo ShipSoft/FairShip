@@ -543,48 +543,13 @@ TVector3 MufluxReco::findTrueMomentum(TTree* sTree){
     }
    return trueP;
 }
-void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,std::vector<float> *py,std::vector<float> *pz){
+void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,std::vector<float> *py,std::vector<float> *pz,TH2D* htrueUpOcc){
  std::map<int,StringVecIntMap> trackList;
  std::map<int,StringVecIntMap>::iterator  it;
  std::map<int,TVector3> pTrue;
  std::map<int,float> minZ;
- std::map<int,TVector3>::iterator  iv;
- std::map<Int_t , Bool_t> isValid;
-
- std::map<unsigned int, unsigned int> hitsPerDetId;
- for (Int_t k=0;k<MufluxSpectrometerPoints->GetEntries();k++) {
-   isValid[k] = kTRUE;
-   MufluxSpectrometerPoint* point = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(k);
- // remove dead channels
-   auto result = std::find( noisyChannels.begin(), noisyChannels.end(), point->GetDetectorID() );
-   if ( result !=  noisyChannels.end()){ 
-     isValid[k] = kFALSE;
-     continue;}
-   int itpSecond;
-   Int_t detID = point->GetDetectorID();
-   Bool_t found = kFALSE;
-   std::map<unsigned int, unsigned int>::iterator itp;
-   for (itp = hitsPerDetId.begin(); itp != hitsPerDetId.end();itp++)  {
-      if (itp->first == detID) {
-       found = true;
-       itpSecond = itp->second;
-       break;
-    }
-   }
-   if (found){
-      MufluxSpectrometerHit* hit     = (MufluxSpectrometerHit*)cDigi_MufluxSpectrometerHits->At(k);
-      MufluxSpectrometerHit* prevHit = (MufluxSpectrometerHit*)cDigi_MufluxSpectrometerHits->At(itpSecond);
-      if (prevHit->GetDigi() > hit->GetDigi()){
-        hitsPerDetId[detID] = k;
-        isValid[itpSecond] = kFALSE;}
-      else{isValid[k] = kFALSE; 
-      }
-   }
-   else {hitsPerDetId[detID]=k;}
- }
 
  for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
-    if ( !isValid[n] ){continue;}
     MufluxSpectrometerPoint* point = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
     Int_t detID = point->GetDetectorID();
     auto result = std::find( noisyChannels.begin(), noisyChannels.end(), detID );
@@ -616,6 +581,8 @@ void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,
  for ( it = trackList.begin(); it != trackList.end(); it++ )
  {
     StringVecIntMap stationStat = it->second;
+    Int_t occ = stationStat["x1"].size()+ stationStat["x2"].size() +  stationStat["u"].size()  + stationStat["v"].size();
+    htrueUpOcc->Fill(pTrue[it->first].Mag(),occ);
     if (stationStat["x1"].size()>1 &&
         stationStat["x2"].size()>1 &&
         stationStat["x3"].size()>1 &&
@@ -674,9 +641,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
 
  std::map<TString,TH1D*> h1D;
  std::map<TString,TH2D*> h2D;
- std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
+ std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult"};
  std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","pz/Abspx","p/pxy","p/Abspxy","pz/Abspxy","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
-                                 "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4","truePz/Abspx","recoPz/Abspx"};
+                                 "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4","truePz/Abspx","recoPz/Abspx",
+                                 "trueMom","recoMom","trueUpOcc"};
  std::vector<TString> tagged  = {"","mu"};
  std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"};
 
@@ -824,7 +792,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    if ( strcmp("", source.Data())!=0 ){fSource=kTRUE;}
 
    if (MCdata){
-      DTreconstructible(&tRecoDT,&tRecoDTpx,&tRecoDTpy,&tRecoDTpz);
+      DTreconstructible(&tRecoDT,&tRecoDTpx,&tRecoDTpy,&tRecoDTpz,h2D["trueUpOcc"]);
       RPCreconstructible(&tRecoRPC,&tRecoRPCpx,&tRecoRPCpy,&tRecoRPCpz);
    }
 
@@ -912,9 +880,9 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (MCdata){
       TVector3 trueMom = findTrueMomentum(sTree);
       if (trueMom[2] >0){
-       h1D["trueMom"]->Fill(trueMom.Mag());
-       h1D["recoMom"]->Fill(mom.Mag());
-       h2D["truePz/Abspx"]->Fill(trueMom[2],trueMom[0]);
+       h2D["trueMom"]->Fill(trueMom.Mag(),trueMom.Pt());
+       h2D["recoMom"]->Fill(mom.Mag(),mom.Pt());
+       h2D["truePz/Abspx"]->Fill(trueMom[2],TMath::Abs(trueMom[0]));
        h2D["recoPz/Abspx"]->Fill(mom[2],TMath::Abs(mom[0]));
        h2D["momResol"]->Fill((mom.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
       }
