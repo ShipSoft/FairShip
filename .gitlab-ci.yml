@@ -18,7 +18,7 @@ cc7:
   tags:
     - cvmfs
   image: alisw/alidock:cc7
-  stage: test
+  stage: build
   variables:
     GIT_CLONE_PATH: '$CI_BUILDS_DIR/FairShip'
   before_script:
