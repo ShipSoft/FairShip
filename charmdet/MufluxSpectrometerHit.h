@@ -19,7 +19,7 @@ public:
    MufluxSpectrometerHit(Int_t detID, Float_t ftdc);
    MufluxSpectrometerHit(Int_t detID, Float_t ftdc, Float_t signal_width, uint16_t flag, uint16_t ch);
    MufluxSpectrometerHit(MufluxSpectrometerPoint *p, Double_t t0);
-   void MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop);
+   void MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop, bool charm); // false for muonflux configuration, true for charm one
    /** Destructor **/
    virtual ~MufluxSpectrometerHit();
 
