@@ -926,8 +926,7 @@ class ShipDigiReco:
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()
     if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
-    self.fGenFitArray[nTrack] = theTrack
-    # self.fitTrack2MC.push_back(atrack)
+    self.fGenFitArray.ConstructedAt(nTrack).swap(theTrack)
     if debug: 
      print 'save track',theTrack,chi2,nmeas,fitStatus.isFitConverged()
     # Save MC link
