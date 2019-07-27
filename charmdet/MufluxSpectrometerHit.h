@@ -51,7 +51,7 @@ private:
    uint16_t flags;
    uint16_t channel;
 
-   ClassDef(MufluxSpectrometerHit, 7);
+   ClassDef(MufluxSpectrometerHit, 8);
 };
 
 #endif
