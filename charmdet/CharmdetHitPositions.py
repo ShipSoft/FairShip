@@ -22,6 +22,7 @@ def pyExit():
 #-----list of arguments--------------------------------------------------
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
+parser.add_argument("-s", "--scififile", dest="scififilename", help="root file with scifi data", required=True)
 parser.add_argument("-nev", "--nevent", dest="nevent", help="number of event to plot", default=0)
 parser.add_argument("-w", "--write", dest="writentuple", help="option to write an ntuple",default=False, action='store_true')
 parser.add_argument("-o", "--outputfile", dest="outputfilename", help= "outputfile with the ntuples", default="positions.root")
@@ -31,6 +32,9 @@ parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=Fa
 parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False, action='store_true')
 #-----accessing file------------------------------------------------------
 options = parser.parse_args()
+
+scififile = ROOT.TFile.Open(options.scififilename)
+scifitree = scififile.Get('cbmsim')
 
 writentuple = options.writentuple
 nevent = int(options.nevent)
@@ -68,7 +72,7 @@ else:
 
 #-------------------------------geometry initialization
 from ShipGeoConfig import ConfigRegistry
-ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = 1, cTarget = 3)
+ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = 1, cTarget = 1)
 builtin.ShipGeo = ShipGeo
 import charmDet_conf
 run = ROOT.FairRunSim()
@@ -126,14 +130,12 @@ def GetPixelPositions(n=1,draw=True,writentuple=False):
   npixelpoints = 0
   pixelhitslist = []
   pixelhitslist.append(sTree.Digi_PixelHits_1)
-  pixelhitslist.append(sTree.Digi_PixelHits_2)
-  pixelhitslist.append(sTree.Digi_PixelHits_3)
-  pos = ROOT.TVector3(0,0,0)
   hitx = []
   hity = []
   hitz = []
   for pixelhits in pixelhitslist:
    for hit in pixelhits:
+    pos = ROOT.TVector3(0,0,0)
     npixelpoints = npixelpoints + 1
     detID = hit.GetDetectorID()
     hit.GetPixelXYZ(pos,detID)
@@ -142,9 +144,17 @@ def GetPixelPositions(n=1,draw=True,writentuple=False):
     hity.append(pos[1])
     hitz.append(pos[2])
     if writentuple: #add pixel hit position to ntuple
-     ntuple.Fill(n,detID,pos[0], pos[1],pos[2],1)
+     hitnumber = leafnhits[0]
+     leafdetID[hitnumber] = detID
+     leafposx[hitnumber] = pos[0]
+     leafposy[hitnumber] = pos[1]
+     leafposz[hitnumber] = pos[2]
+     leaftrackID[hitnumber] = 0
+     leafsubdetector[hitnumber] = 1
+     leafnhits[0] += 1
+     # print "Test tree saving: ", hitnumber, leafdetID[hitnumber], leafposx[hitnumber], leafposy[hitnumber], leafposz[hitnumber]  
   if draw:
-   DrawPoints(npixelpoints,hitx,hity,hitz)
+   DrawPoints(npixelpoints,hitx,hity,hitz,"PixelHits")
 
 def GetSciFiPositions(n=1,draw=True,writentuple=False):
   """ retrieves the position of the pixel hit using the pixel map """
@@ -152,15 +162,15 @@ def GetSciFiPositions(n=1,draw=True,writentuple=False):
    #print 'display disabled, hits will not be drawn'
    draw = False
 
-  sTree.GetEntry(n)
+  scifitree.GetEntry(n+1)
   nscifipoints = 0
   scifihitslist = []
-  scifihitslist.append(sTree.Digi_SciFiHits)
+  scifihitslist.append(scifitree.Digi_SciFiHits)
   pos = ROOT.TVector3(0,0,0)
   hitx = []
   hity = []
   hitz = []
-  for scifihits in scifihitslist:
+  for scifihits in scifihitslist:     
    for hit in scifihits:
     nscifipoints = nscifipoints + 1
     detID = hit.GetDetectorID()
@@ -170,7 +180,14 @@ def GetSciFiPositions(n=1,draw=True,writentuple=False):
     hity.append(pos[1])
     hitz.append(pos[2])
     if writentuple: #add scifi hit position to ntuple
-     ntuple.Fill(n,detID,pos[0], pos[1],pos[2],1)
+	 hitnumber = leafnhits[0]
+	 leafdetID[hitnumber] = detID
+	 leafposx[hitnumber] = pos[0]
+	 leafposy[hitnumber] = pos[1]
+	 leafposz[hitnumber] = pos[2]
+	 leaftrackID[hitnumber] = 0
+	 leafsubdetector[hitnumber] = 2
+         leafnhits[0] += 1
   if draw:
    DrawPoints(nscifipoints,hitx,hity,hitz)
 
@@ -186,6 +203,41 @@ def correctAlignmentRPC(hit,v):
     vtop[1] = vtop[1] -1.21
   return vbot,vtop
 
+def GetDTPositions(n=1, draw=True,writentuple=False):
+  if not options.withDisplay:
+   #print 'display disabled, hits will not be drawn'
+   draw = False
+  sTree.GetEntry(n)
+  hitlist = sTree.Digi_MufluxSpectrometerHits
+  hitx = []
+  hity = []
+  hitz = []
+  npoints = 0
+  for hit in hitlist:
+    detID = hit.GetDetectorID()
+
+    vtop = ROOT.TVector3(0,0,0)
+    vbot = ROOT.TVector3(0,0,0)
+    hit.MufluxSpectrometerEndPoints(vtop,vbot, True)
+
+    x = (vbot[0]+vtop[0])/2.
+    y = (vbot[1]+vtop[1])/2.
+    z = (vbot[2]+vtop[2])/2.
+    hitx.append(x)
+    hity.append(y)
+    hitz.append(z)
+    npoints = npoints + 1
+    if writentuple: #add pixel hit position to ntuple
+     hitnumber = leafnhits[0]
+     leafdetID[hitnumber] = detID
+     leafposx[hitnumber] = x
+     leafposy[hitnumber] = y
+     leafposz[hitnumber] = z
+     leaftrackID[hitnumber] = 0
+     leafsubdetector[hitnumber] = 3
+     leafnhits[0] += 1
+  if draw:
+   DrawPoints(npoints,hitx,hity,hitz,"DTHits")
 def RPCPosition():
   """ builds the list of positions for each detectorID. Same as driftubeMonitoring.py """
   for s in range(1,6): #RPC stations
@@ -223,10 +275,16 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
      hitz.append(0)
 
   sTree.GetEntry(n)
-  #trackhits = sTree.MuonTaggerHit
+  #trackhits = sTree.LocallyTracked_MuonTaggerHits
   trackhits = sTree.Digi_MuonTaggerHits
   clustersH = []
   clustersV = []
+
+  maxntracks = 20 
+  maxtrackID = 0
+  hitxarray = numpy.zeros((maxntracks,5))
+  hityarray = numpy.zeros((maxntracks,5))
+  hitzarray = numpy.zeros((maxntracks,5))
 
   for hit in trackhits:
     detID = hit.GetDetectorID()
@@ -237,24 +295,33 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
     x = (a[0]+b[0])/2.
     y = (a[1]+b[1])/2.
     z = (a[2]+b[2])/2.
-
     if fittedtracks: #clusters with already fitted tracks
+     trackID = int(hit.GetDigi())
+     if (trackID > maxtrackID): maxtrackID = trackID
      #adding the point to two different lists according to the view  
-     if view == 0:
-       hity[station-1] = y
-       hitz[station-1] = z
+     # for each track we have a xyz position at each station (with at most two views)
+     if view == 0: #I have yz info     
+       hityarray[trackID-1][station-1] = y
+       hitzarray[trackID-1][station-1] = z
        clustersH.append([x,y,z])
-     elif view == 1:
-       hitx[station-1] = x
-       hitz[station-1] = z
+     elif view == 1: #I have xz info
+       hitxarray[trackID-1][station-1] = x
+       hitzarray[trackID-1][station-1] = z
        clustersV.append([x,y,z])
     else: 
       hitx.append(x) 
       hity.append(y)
       hitz.append(z)
       npoint = npoint+1 
-    if writentuple:
-       ntuple.Fill(n,detID,x, y,z,2)
+      if writentuple:
+       hitnumber = leafnhits[0]
+       leafdetID[hitnumber] = detID
+       leafposx[hitnumber] = x
+       leafposy[hitnumber] = y
+       leafposz[hitnumber] = z
+       leaftrackID[hitnumber] = 0
+       leafsubdetector[hitnumber] = 4
+       leafnhits[0] += 1
     #print "Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view)    
   #fitting to two 2D tracks
   if fittedtracks:
@@ -262,6 +329,27 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
    mV,bV = getSlopes(clustersV,1)   
    trackH = ROOT.RPCTrack(mH,bH)
    trackV = ROOT.RPCTrack(mV,bV)
+   for itrk in range(maxtrackID):
+      for istation in range(5):
+        x = hitxarray[itrk,istation]
+        y = hityarray[itrk,istation]
+        z = hitzarray[itrk,istation]
+        #point added to containers for drawing
+        hitx[istation] = x
+        hity[istation] = y
+        hitz[istation] = z
+        npoint = 5      
+        if x == 0: subdetector = 40 #not paired cluster
+        if y == 0: subdetector = 40
+        if writentuple:
+         hitnumber = leafnhits[0]
+         leafdetID[hitnumber] = istation + 1
+         leafposx[hitnumber] = x
+         leafposy[hitnumber] = y
+         leafposz[hitnumber] = z
+         leaftrackID[hitnumber] = itrk + 1 
+         leafsubdetector[hitnumber] = 4
+         leafnhits[0] += 1
   #print "Line equation along horizontal: {}*z + {}".format(mH,bH)
   #print "Line equation along vertical: {}*z + {}".format(mV,bV)
    theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
@@ -272,7 +360,7 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
    if draw:
       DrawTrack(theta,phi,lastpoint)
   if draw:
-   DrawPoints(npoint,hitx,hity,hitz)
+   DrawPoints(npoint,hitx,hity,hitz,"MuonTaggerHits")
  
 
 def DrawPoints(nclusters,hitx,hity,hitz, name = "FairShipHits"):
@@ -296,7 +384,7 @@ def DrawTrack(theta,phi,lastpoint):
   track.SetName("Test proton")
   track.SetLineColor(ROOT.kRed)
   tracklist.AddElement(track)
-  #gEve.AddElement(tracklist) #track seems bugged, to be addressed
+  gEve.AddElement(tracklist)
 
   track.MakeTrack()
   gEve.Redraw3D()
@@ -323,20 +411,44 @@ def getSlopes(clusters,view=0):
 
 # what methods are launched?
 GetPixelPositions(nevent)    
+GetSciFiPositions(nevent)
+GetDTPositions(nevent)
+loadRPCtracks(nevent,True,False,fittedtracks = False)
 RPCPosition()
+
 def writeNtuples():
   """write positions of subdetectors into an easy to read ntuple. DetectorID go downstream to upstream, 1: Pixel, 2:SciFi, 3:DT,4:RPC"""
   nevents = sTree.GetEntries()
   print "Start processing", nevents, "nevents"
-  for ievent in range(sTree.GetEntries()):
-   loadRPCtracks(ievent, False, True)
+  for ievent in range(nevents):
+   leafnhits[0] = 0 #resetting counter of hits
    GetPixelPositions(ievent, False, True)
+   GetDTPositions(ievent, False, True)
    GetSciFiPositions(ievent, False, True)
+   loadRPCtracks(ievent, False, True, False)
+   outputtree.Fill()
   outputfile.Write()
 
 if writentuple:
- outputfile = ROOT.TFile(options.outputfilename,"RECREATE")
- ntuple = ROOT.TNtuple("shippositions","Ntuple with hit positions","ievent:detID:x:y:z:subdetector")
- writeNtuples()
+ from array import array
 
-#loadRPCtracks(nevent,True,False,fittedtracks = True)
+ outputfile = ROOT.TFile(options.outputfilename,"RECREATE")
+ outputtree = ROOT.TTree("shippositions","Ntuple with hit positions")
+ # tree initialization, branches must be arrays in order to pass the addresss
+ maxdim = 10000
+ leafnhits = array('i',[0])
+ leafsubdetector = array( 'i',maxdim*[0])
+ leafdetID = array( 'i',maxdim*[0])
+ leaftrackID = array( 'i',maxdim*[0])
+ leafposx = array('f',maxdim*[0.])
+ leafposy = array('f',maxdim*[0.])
+ leafposz = array('f',maxdim*[0.])
+ #creating the branches
+ outputtree.Branch("nhits",leafnhits,"nhits/I")
+ outputtree.Branch("detID",leafdetID,"detID[nhits]/I")
+ outputtree.Branch("posx",leafposx,"posx[nhits]/F")
+ outputtree.Branch("posy",leafposy,"posy[nhits]/F")
+ outputtree.Branch("posz",leafposz,"posz[nhits]/F")
+ outputtree.Branch("trackID",leaftrackID,"trackID[nhits]/I")
+ outputtree.Branch("subdetector",leafsubdetector,"subdetector[nhits]/I")
+ writeNtuples()
