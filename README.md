@@ -68,6 +68,27 @@ Additionally for developers:
     ``` 
     Line ```-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix``` forwards graphics from the image to your local system         (similar to ssh -X). Line ```-v /local_workdir:/image_workdir``` shares ```/local_workdir``` directory on the local system with ```/image_workdir``` directory on the docker image system.
 
+## Build Instructions using CVMFS
+
+1. Download the FairShip software
+    ```bash
+    git clone https://github.com/ShipSoft/FairShip.git
+    ```
+
+2. Make sure you can access the SHiP CVMFS Repository
+    ```bash
+    ls /cvmfs/ship.cern.ch
+    ```
+3. Source the setUp script
+    ```bash
+    source /cvmfs/ship.cern.ch/latest/setUp.sh
+    ```
+
+4. Build the software using aliBuild
+    ```bash
+    aliBuild build FairShip --default fairship --always-prefer-system --config-dir $SHIPDIST
+    ```
+
 ## Run Instructions
 
 Partial installation, step 1 of above :
