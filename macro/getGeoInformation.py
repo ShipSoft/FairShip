@@ -4,6 +4,7 @@
 #24-02-2015 comments to EvH
 
 from __future__ import print_function, division
+from builtins import range
 import operator, sys
 from argparse import ArgumentParser
 from array import array
@@ -59,7 +60,7 @@ def print_info(path, node, level, currentlevel, print_sub_det_info=False):
     fullInfo[name] = local2Global(path + '/' + name)
     sub_nodes[name] = fullInfo[name]['origin'][2]
 
-  for name, _ in sorted(sub_nodes.items(), key=operator.itemgetter(1)):
+  for name, _ in sorted(list(sub_nodes.items()), key=operator.itemgetter(1)):
     boundingbox = fullInfo[name]['boundingbox']
 
     format_string = "{:<28s}: z={:10.4F}cm  dZ={:10.4F}cm  [{:10.4F}   {:10.4F}]"+\

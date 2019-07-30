@@ -1,9 +1,12 @@
 from __future__ import print_function, division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 import ROOT,os
 #ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 import numpy
 from decorators import *
-import __builtin__ as builtin
+import builtins as builtin
 ROOT.gStyle.SetPalette(ROOT.kGreenPink)
 PDG = ROOT.TDatabasePDG.Instance()
 # -----Timer--------------------------------------------------------
