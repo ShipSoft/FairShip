@@ -410,8 +410,8 @@ def getSlopes(clusters,view=0):
 GetPixelPositions(nevent)    
 GetSciFiPositions(nevent)
 GetDTPositions(nevent)
-loadRPCtracks(nevent,True,False,fittedtracks = False)
 RPCPosition()
+loadRPCtracks(nevent,True,False,fittedtracks = False)
 
 def writeNtuples():
   """write positions of subdetectors into an easy to read ntuple. DetectorID go downstream to upstream, 1: Pixel, 2:SciFi, 3:DT,4:RPC"""
