@@ -235,9 +235,6 @@ void NuTauMudet::ConstructGeometry()
 
   InitMedium("RPCgas");
   TGeoMedium *RPCmat =gGeoManager->GetMedium("RPCgas");
-   
-  InitMedium("vacuum");
-  TGeoMedium *vacuum =gGeoManager->GetMedium("vacuum");
     
   InitMedium("Bakelite");
   TGeoMedium *bakelite =gGeoManager->GetMedium("Bakelite");  
@@ -261,13 +258,10 @@ void NuTauMudet::ConstructGeometry()
 
   if(fDesign!=3)
     {
-      TGeoBBox *MudetBox = new TGeoBBox("NuTauMudetBox", fXRyoke/2, fYtot/2, fZtot/2);
-      TGeoVolume *volMudetBox = new TGeoVolume("volNuTauMudet", MudetBox, vacuum);
+      TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volNuTauMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
   
-      
-      TGeoBBox *UpYokeBox = new TGeoBBox("UpYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
-      TGeoVolume *volUpYoke = new TGeoVolume("volUpYoke",UpYokeBox,vacuum);
+      TGeoVolumeAssembly *volUpYoke = new TGeoVolumeAssembly("volUpYoke");
       volMudetBox->AddNode(volUpYoke,1,new TGeoTranslation(0,fYtot/2 - fYRyoke/2,0));
       volUpYoke->SetField(retFieldU);
     
@@ -280,8 +274,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volFeYoke1 = new TGeoVolume("volFeYoke1",FeYoke1,Iron);
       volFeYoke1->SetLineColor(kGray+1);
     
-      TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer",fXtot/2, fCoilH/2, 40*cm);
-      TGeoVolume *volCoilContainer = new TGeoVolume("volCoilContainer",CoilContainer,vacuum);
+      TGeoVolumeAssembly *volCoilContainer = new TGeoVolumeAssembly("volCoilContainer");
     
       TGeoBBox *Coil = new TGeoBBox("Coil",fXtot/2, fCoilH/2, fCoilW/2);
       TGeoVolume *volCoil = new TGeoVolume("volCoil",Coil,Cu);
@@ -312,8 +305,7 @@ void NuTauMudet::ConstructGeometry()
       volUpYoke->AddNode(volCoilContainer,1,new TGeoTranslation(0,fYRyoke/2 - fCoilH/2,0)); //up
       volUpYoke->AddNode(volCoilContainer,2,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
     
-      TGeoBBox *LowYokeBox = new TGeoBBox("LowYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
-      TGeoVolume *volLowYoke = new TGeoVolume("volLowYoke",LowYokeBox,vacuum);
+      TGeoVolumeAssembly *volLowYoke = new TGeoVolumeAssembly("volLowYoke");
       volMudetBox->AddNode(volLowYoke,1,new TGeoTranslation(0,-fYtot/2 + fYRyoke/2,0));
       volLowYoke->SetField(retFieldL);
    
@@ -334,8 +326,7 @@ void NuTauMudet::ConstructGeometry()
       volLowYoke->AddNode(volCoilContainer,4,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
 
       Int_t ArmNumber = 1;
-      TGeoBBox *Arm1Box = new TGeoBBox("Arm1MudetBox", fXFe/2, fYFe/2, fZArm/2);
-      TGeoVolume *volArm1 = new TGeoVolume("volArm1Mudet", Arm1Box,vacuum);
+      TGeoVolumeAssembly *volArm1 = new TGeoVolumeAssembly("volArm1Mudet");
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field arm1
       volArm1->SetField(magField1);
       volMudetBox ->AddNode(volArm1,ArmNumber,new TGeoTranslation(0,0,-(fGapMiddle+fZArm)/2));
@@ -351,8 +342,7 @@ void NuTauMudet::ConstructGeometry()
 	  volArm1->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
 	}
     
-      TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
-      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
+      TGeoVolumeAssembly *volRpcContainer = new TGeoVolumeAssembly("volRpcContainer");
   
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
@@ -384,8 +374,7 @@ void NuTauMudet::ConstructGeometry()
       ArmNumber = 2;
       nr =  ArmNumber*1E4;
 
-      TGeoBBox *Arm2Box = new TGeoBBox("Arm2MudetBox",fXFe/2, fYFe/2, fZArm/2);
-      TGeoVolume *volArm2 = new TGeoVolume("volArm2Mudet", Arm2Box,vacuum);
+      TGeoVolumeAssembly *volArm2 = new TGeoVolumeAssembly("volArm2Mudet");
       TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field arm2
       volArm2->SetField(magField2);
       volMudetBox ->AddNode(volArm2,1,new TGeoTranslation(0,0,(fGapMiddle+fZArm)/2));
@@ -393,7 +382,7 @@ void NuTauMudet::ConstructGeometry()
 
      //different volumes for second arm
       
-      TGeoVolume *volRpcContainer2 = new TGeoVolume("volRpcContainer2",RpcContainer,vacuum);
+      TGeoVolumeAssembly *volRpcContainer2 = new TGeoVolumeAssembly("volRpcContainer2");
       TGeoVolume *volStrip2 = new TGeoVolume("volStrip2",Strip,Cu);
       
       volStrip2->SetLineColor(kRed);
@@ -445,18 +434,8 @@ void NuTauMudet::ConstructGeometry()
   if(fDesign==3)
     {
       Int_t nr = 1E4;
-      TGeoBBox *LargedetBox = new TGeoBBox("LargedetBox", fXtot/2, fYtot/2, (2*fZFe+3*fZRpc)/2);  
-      TGeoBBox *SmalldetBox = new TGeoBBox("SmalldetBox", fXtot/2, (fYtot-fdeltay)/2, fZtot/2); //solving overlapping with pillars->dividing box to an union of two different boxes
- 
-      TGeoTranslation *translationlarge = new TGeoTranslation(0,0,(fZtot-2*fZFe-3*fZRpc)/2);
-      translationlarge->SetName("translationlarge");
-      translationlarge->RegisterYourself();
-      TGeoTranslation *translationsmall = new TGeoTranslation(0,0,0);
-      translationsmall->SetName("translationsmall");
-      translationsmall->RegisterYourself();
-      TGeoCompositeShape *MudetBox = new TGeoCompositeShape("MudetBox", "LargedetBox:translationlarge + SmalldetBox:translationsmall");
             
-      TGeoVolume *volMudetBox = new TGeoVolume("volTauNuMudet", MudetBox, vacuum);
+      TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volTauNuMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter));
 
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
@@ -471,8 +450,7 @@ void NuTauMudet::ConstructGeometry()
           else volMudetBox->AddNode(volIron1,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
 	}
 
-      TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
-      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
+      TGeoVolumeAssembly *volRpcContainer = new TGeoVolumeAssembly("volRpcContainer");
   
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
@@ -494,8 +472,7 @@ void NuTauMudet::ConstructGeometry()
       volRpc->SetLineColor(kCyan);
       volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
    
-      TGeoBBox *RpcContainer1 = new TGeoBBox("RpcContainer1", fXRpc/2 -fdeltax/2, fYRpc/2-fdeltay/2, fZRpc/2);
-      TGeoVolume *volRpcContainer1 = new TGeoVolume("volRpcContainer1",RpcContainer1,vacuum);
+      TGeoVolumeAssembly *volRpcContainer1 = new TGeoVolumeAssembly("volRpcContainer1");
   
       TGeoBBox *Strip1  = new TGeoBBox("Strip1",fXStrip/2-fdeltax/2, fYStrip/2-fdeltay/2, fZStrip/2);
       TGeoVolume *volStrip1  = new TGeoVolume("volStrip1",Strip1,Cu);
