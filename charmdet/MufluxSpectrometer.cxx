@@ -352,10 +352,7 @@ void MufluxSpectrometer::SetT4(Double_t SurveyCharm_T4x, Double_t SurveyCharm_T4
 
 void MufluxSpectrometer::ConstructGeometry()
 { 
-  gGeoManager->SetVisLevel(4);
-    
-  InitMedium("vacuum");
-  TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
+  gGeoManager->SetVisLevel(4);    
 
   InitMedium("iron");
   TGeoMedium *Fe =gGeoManager->GetMedium("iron");
@@ -398,10 +395,8 @@ void MufluxSpectrometer::ConstructGeometry()
   
   const Double_t MagneticField = 0.05 * tesla; //magnetic field; return field positive but Bdl appr 1/20
   TGeoUniformMagField *magField = new TGeoUniformMagField(0., MagneticField, 0.); //The magnetic field must be only in the vacuum space between the stations
-  
-
-  TGeoBBox *ProvaBox = new TGeoBBox("ProvaBox", 0. , 0., 0.);  
-  TGeoVolume *volProva = new TGeoVolume("volProva", ProvaBox, vacuum);   
+    
+  TGeoVolumeAssembly *volProva = new TGeoVolumeAssembly("volProva");   
   
  
   if (fMuonFlux){

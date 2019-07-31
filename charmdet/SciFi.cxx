@@ -148,8 +148,6 @@ void SciFi::SetStationNumber(Int_t nSciFistations)
 //
 void SciFi::ConstructGeometry()
 {
-  InitMedium("air");
-  TGeoMedium *air = gGeoManager->GetMedium("air");
 
   InitMedium("silicon");
   TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
@@ -162,8 +160,7 @@ void SciFi::ConstructGeometry()
     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
   }
-  TGeoBBox *SciFiBox = new TGeoBBox("SciFiBox", SBoxX/2 + offsetxmax, SBoxY/2 + offsetymax, SBoxZ/2.);
-  TGeoVolume *volSciFiBox = new TGeoVolume("volSciFiBox",SciFiBox,air);
+  TGeoVolumeAssembly *volSciFiBox = new TGeoVolumeAssembly("volSciFiBox");
   //positioning the mother volume
   top->AddNode(volSciFiBox, 1, new TGeoTranslation(0,0,zBoxPosition)); 
 

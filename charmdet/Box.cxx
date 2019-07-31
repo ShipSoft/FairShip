@@ -204,10 +204,7 @@ void Box::AddEmulsionFilm(Double_t zposition, Int_t nreplica, TGeoVolume * volTa
 void Box::ConstructGeometry()
 {
     InitMedium("tantalum");
-    TGeoMedium *tantalum = gGeoManager->GetMedium("tantalum");
-       
-    InitMedium("vacuum");
-    TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
+    TGeoMedium *tantalum = gGeoManager->GetMedium("tantalum");      
    
     InitMedium("air");
     TGeoMedium *air = gGeoManager->GetMedium("air");
@@ -278,8 +275,7 @@ void Box::ConstructGeometry()
       else if (nrun > 6) TargetZ = zPasLead * NBricks; //all passive 
       else TargetZ = (NPlates[5] * AllPlateWidth + EmPlateWidth)*NBricks;          
 
-      TGeoBBox *Brick = new TGeoBBox("brick", TargetX/2, TargetY/2, TargetZ/2);
-      TGeoVolume *volTarget = new TGeoVolume("volTarget",Brick,vacuum);
+      TGeoVolumeAssembly *volTarget = new TGeoVolumeAssembly("volTarget");
       volTarget->SetLineColor(kCyan);
       volTarget->SetTransparency(1);
       
