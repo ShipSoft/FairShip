@@ -184,7 +184,6 @@ class veto: public FairDetector
 			     double a, double b1,double b2, double dA, double dB,
 				Int_t color, TGeoMedium *material, Bool_t sens);
 
-    TGeoVolume* GeoVesselSupport();
 
     TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
     TGeoVolume* MakeMagnetSegment(Int_t seg);

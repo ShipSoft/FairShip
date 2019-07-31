@@ -159,14 +159,6 @@ TGeoVolume* veto::GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,
 
 
 
-// private method make support of vessel with rounded corners
-TGeoVolume* veto::GeoVesselSupport()
-{
-
-//      T->SetLineColor(colour);
-//      return T;
-}
-
 double wx(double z){
   
   double wx1=1520*mm;
