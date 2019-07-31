@@ -580,12 +580,14 @@ TGeoVolume* veto::MakeMagnetSegment(Int_t seg){
       nm = "T"; nm += seg;
       TGeoVolumeAssembly *tMagVol = new TGeoVolumeAssembly(nm);
       
+      bool isVert = 1;
+      bool isLongOutCover = 1;
+      
        double dzMagnetPart = 238.1*cm ; //from Piets Wertelaers drawings 
        double thiknes = 12*mm;    
        double xPos=0;
        double yPos=0;
        double zPos=0;
-       
        
       //make walls inside magnet area
         double dx=5*cm;//from Piets Wertelaers drawings 
@@ -617,41 +619,166 @@ TGeoVolume* veto::MakeMagnetSegment(Int_t seg){
 	dx=250.4*cm;
 	dy=(602.4-500.4)*cm/2;
 	TGeoVolume*  VertMagCover_X =  gGeoManager->MakeBox("VertMagCover_X", supportMedIn, dx, dy, dz);
-	
-	
-	
 	VertMagCover_Y->SetLineColor(15);
 	VertMagCover_X->SetLineColor(15);
 	
-	tMagVol->AddNode(VertMagCover_Y, 1 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 2 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 3 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 4 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 1 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 2 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 3 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 4 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
 	
-	tMagVol->AddNode(VertMagCover_X, 1 , new TGeoCombiTrans(0,yPos,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_X, 2 , new TGeoCombiTrans(0,-yPos,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_X, 3 , new TGeoCombiTrans(0,yPos,-zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_X, 4 , new TGeoCombiTrans(0,-yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 1 , new TGeoCombiTrans(0,yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 2 , new TGeoCombiTrans(0,-yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 3 , new TGeoCombiTrans(0,yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 4 , new TGeoCombiTrans(0,-yPos,-zPos,new TGeoRotation("r",0,0,0)));
 	
-	
-        zPos=328.5*cm;
-	tMagVol->AddNode(VertMagCover_Y, 5 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 6 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 7 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 8 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    double dxOoutCover=thiknes/2;
+    double dyOoutCover=604.4*cm; 
+    double dzOoutCover=56.0*cm/2;
+    double xPosOutetCover = xPos-(358.2-250.4)*cm/2;
+    double yPosOutetCover = 602.4*cm;
+    double zPosOutetCover = zPos-dzOoutCover-thiknes/2;
+    
+    TGeoVolume*  LongOutCover_Y1 =  gGeoManager->MakeBox("LongOutCover_Y1", supportMedIn, dxOoutCover, dyOoutCover, dzOoutCover);
+    dxOoutCover=fabs(xPosOutetCover)-thiknes;
+    dyOoutCover=thiknes/2;
+    TGeoVolume*  LongOutCover_X1 =  gGeoManager->MakeBox("LongOutCover_X1", supportMedIn, dxOoutCover, dyOoutCover, dzOoutCover);
+    
+    LongOutCover_Y1->SetLineColor(15);
+    LongOutCover_X1->SetLineColor(15);
+    
+	if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y1, 1 , new TGeoCombiTrans(xPosOutetCover,0,zPosOutetCover,new TGeoRotation("r",0,0,0)));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y1, 2 , new TGeoCombiTrans(-xPosOutetCover,0,zPosOutetCover,new TGeoRotation("r",0,0,0)));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y1, 3 , new TGeoCombiTrans(xPosOutetCover,0,-zPosOutetCover,new TGeoRotation("r",0,0,0)));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y1, 4 , new TGeoCombiTrans(-xPosOutetCover,0,-zPosOutetCover,new TGeoRotation("r",0,0,0)));
+     
+     
+	if(isLongOutCover)tMagVol->AddNode(LongOutCover_X1, 1 , new TGeoCombiTrans(0,yPosOutetCover,zPosOutetCover,new TGeoRotation("r",0,0,0)));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_X1, 2 , new TGeoCombiTrans(0,-yPosOutetCover,zPosOutetCover,new TGeoRotation("r",0,0,0)));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_X1, 3 , new TGeoCombiTrans(0,yPosOutetCover,-zPosOutetCover,new TGeoRotation("r",0,0,0)));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_X1, 4 , new TGeoCombiTrans(0,-yPosOutetCover,-zPosOutetCover,new TGeoRotation("r",0,0,0)));
+    
+    
+    zPos=328.5*cm;
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 5 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 6 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 7 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 8 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    if(isVert)tMagVol->AddNode(VertMagCover_X, 5 , new TGeoCombiTrans(0,yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 6 , new TGeoCombiTrans(0,-yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 7 , new TGeoCombiTrans(0,yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 8 , new TGeoCombiTrans(0,-yPos,-zPos,new TGeoRotation("r",0,0,0)));
+    
 	zPos=442.3*cm;
-	tMagVol->AddNode(VertMagCover_Y, 9 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 10 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 11 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 12 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 9 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 10 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 11 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 12 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    if(isVert)tMagVol->AddNode(VertMagCover_X, 9 , new TGeoCombiTrans(0,yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 10 , new TGeoCombiTrans(0,-yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 11 , new TGeoCombiTrans(0,yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 12 , new TGeoCombiTrans(0,-yPos,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    
 	zPos=532.1*cm;
-	tMagVol->AddNode(VertMagCover_Y, 10 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 11 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 12 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
-	tMagVol->AddNode(VertMagCover_Y, 13 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 10 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 11 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 12 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_Y, 13 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    if(isVert)tMagVol->AddNode(VertMagCover_X, 10 , new TGeoCombiTrans(0,yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 11 , new TGeoCombiTrans(0,-yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 12 , new TGeoCombiTrans(0,yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 13 , new TGeoCombiTrans(0,-yPos,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    zPos=589.3*cm;
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 14 , new TGeoCombiTrans(0,yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 15 , new TGeoCombiTrans(0,-yPos,zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 16 , new TGeoCombiTrans(0,yPos,-zPos,new TGeoRotation("r",0,0,0)));
+	if(isVert)tMagVol->AddNode(VertMagCover_X, 17 , new TGeoCombiTrans(0,-yPos,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    dx=(358.2-250.4)*cm/2-37.0*cm/2;
+	dy=604.4*cm;
+	dz=thiknes/2;
+    xPos+=37.0*cm/2;
+	TGeoVolume*  VertMagCover_y =  gGeoManager->MakeBox("VertMagCover_y", supportMedIn, dx, dy, dz);
+    VertMagCover_y->SetLineColor(15);
+    if(isVert)tMagVol->AddNode(VertMagCover_y, 1 , new TGeoCombiTrans(xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+    if(isVert)tMagVol->AddNode(VertMagCover_y, 2 , new TGeoCombiTrans(-xPos,0,zPos,new TGeoRotation("r",0,0,0)));
+    if(isVert)tMagVol->AddNode(VertMagCover_y, 3 , new TGeoCombiTrans(xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+    if(isVert)tMagVol->AddNode(VertMagCover_y, 4 , new TGeoCombiTrans(-xPos,0,-zPos,new TGeoRotation("r",0,0,0)));
+    
+    
+    dx=thiknes/2;
+    dy=604.4*cm; 
+    dz=88.5*cm/2;
+    TGeoVolume*  LongOutCover_Y2 =  gGeoManager->MakeBox("LongOutCover_Y2", supportMedIn, dx, dy, dz);
+    LongOutCover_Y2->SetLineColor(15);
+
+    xPos = xPosOutetCover;
+    yPos = 0*cm;
+    zPos = 283.65*cm;
+    
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 1 , new TGeoTranslation(xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 2 , new TGeoTranslation(xPos,yPos,-zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 3 , new TGeoTranslation(-xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 4 , new TGeoTranslation(-xPos,yPos,-zPos));
+
+    xPos=-323.0*cm;
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 5 , new TGeoTranslation(xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 6 , new TGeoTranslation(xPos,yPos,-zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 7 , new TGeoTranslation(-xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 8 , new TGeoTranslation(-xPos,yPos,-zPos));
+    
+    xPos = xPosOutetCover;
+    zPos = 487.2*cm;
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 9 , new TGeoTranslation(xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 10 , new TGeoTranslation(xPos,yPos,-zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 11 , new TGeoTranslation(-xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 12 , new TGeoTranslation(-xPos,yPos,-zPos));
+
+    xPos=-323.0*cm;
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 13 , new TGeoTranslation(xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 14 , new TGeoTranslation(xPos,yPos,-zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 16 , new TGeoTranslation(-xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y2, 17 , new TGeoTranslation(-xPos,yPos,-zPos));
+    
+    
+    dz=112.6*cm/2;
+    TGeoVolume*  LongOutCover_Y3 =  gGeoManager->MakeBox("LongOutCover_Y3", supportMedIn, dx, dy, dz);
+    LongOutCover_Y3->SetLineColor(15);
+    xPos = xPosOutetCover;
+    zPos = 385.4*cm;
+    
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y3, 1 , new TGeoTranslation(xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y3, 2 , new TGeoTranslation(xPos,yPos,-zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y3, 3 , new TGeoTranslation(-xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y3, 4 , new TGeoTranslation(-xPos,yPos,-zPos));
+    
+    
+    dy-=(358.2-250.4)*cm;
+    TGeoVolume*  LongOutCover_Y4 =  gGeoManager->MakeBox("LongOutCover_Y4", supportMedIn, dx, dy, dz);
+    LongOutCover_Y4->SetLineColor(2);
+    
+    xPos=-255.0*cm;
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y4, 1 , new TGeoTranslation(xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y4, 2 , new TGeoTranslation(xPos,yPos,-zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y4, 3 , new TGeoTranslation(-xPos,yPos,zPos));
+    if(isLongOutCover)tMagVol->AddNode(LongOutCover_Y4, 4 , new TGeoTranslation(-xPos,yPos,-zPos));
+    
+    
+    /*
+    dxOoutCover=fabs(xPosOutetCover)-thiknes;
+    dyOoutCover=thiknes/2;
+    TGeoVolume*  LongOutCover_X2 =  gGeoManager->MakeBox("LongOutCover_X1", supportMedIn, dxOoutCover, dyOoutCover, dzOoutCover);
+    
+    LongOutCover_X2->SetLineColor(15);
+    */
 	
-	
-	
+	 
       return tMagVol;
   
   
