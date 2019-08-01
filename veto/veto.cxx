@@ -1183,23 +1183,6 @@ void veto::ConstructGeometry()
       floor->SetLineColor(11);
       tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length - 0.5*m));
 
-      //After T1: not conical, size of T4, hencee slopes=0. etc..
-      dx1 = slopex*(fTub6z -fTub6length - zFocusX);
-      dy = slopey*(fTub6z -fTub6length - zFocusY);
-// // // // //       TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeightB);
-// // // // //       tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
-// // // // // 
-// // // // //       TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,0.,0.,floorHeightB);
-// // // // //       tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
-// // // // // 
-// // // // //       TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeightB);
-// // // // //       tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
-// // // // // 
-// // // // //       if (fTub6length>0.2*m){
-// // // // //        TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,0.,0.,floorHeightB);
-// // // // //        tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
-// // // // //       }
-
       TGeoVolume*  magnetInnerWalls = MakeMagnetSegment(3);
       tMaGVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
       //tDecayVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
