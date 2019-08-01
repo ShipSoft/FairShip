@@ -195,14 +195,24 @@ def configure(run,ship_geo):
    taumuondetector = ROOT.NuTauMudet("NuTauMudet", ship_geo.tauMudet.zMudetC,  ROOT.kTRUE)
    taumuondetector.SetDesign(ship_geo.nuTauTargetDesign)
    taumuondetector.SetTotDimensions(ship_geo.tauMudet.Xtot,ship_geo.tauMudet.Ytot, ship_geo.tauMudet.Ztot )
-   taumuondetector.SetFeDimensions(ship_geo.tauMudet.XFe,ship_geo.tauMudet.YFe, ship_geo.tauMudet.ZFe)
+   if hasattr(ship_geo.tauMudet,'ZFethin'):
+      taumuondetector.SetFeDimensions(ship_geo.tauMudet.XFe,ship_geo.tauMudet.YFe, ship_geo.tauMudet.ZFethick,ship_geo.tauMudet.ZFethin)
+      taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFethick, ship_geo.tauMudet.NFethin)
+      taumuondetector.SetLateralCutSize(ship_geo.tauMudet.CutHeight, ship_geo.tauMudet.CutLength)
+      taumuondetector.SetSupportTransverseDimensions(ship_geo.tauMudet.UpperSupportX,ship_geo.tauMudet.UpperSupportY, \
+                                                     ship_geo.tauMudet.LowerSupportX, ship_geo.tauMudet.LowerSupportY, \
+                                                     ship_geo.tauMudet.LateralSupportX, ship_geo.tauMudet.LateralSupportY)
+   else: #geometry used before new iron sampling
+      taumuondetector.SetFeDimensions(ship_geo.tauMudet.XFe,ship_geo.tauMudet.YFe, ship_geo.tauMudet.ZFe)
+      taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFe)
    taumuondetector.SetRpcDimensions(ship_geo.tauMudet.XRpc,ship_geo.tauMudet.YRpc, ship_geo.tauMudet.ZRpc)
    taumuondetector.SetRpcGasDimensions(ship_geo.tauMudet.XGas,ship_geo.tauMudet.YGas, ship_geo.tauMudet.ZGas)
    taumuondetector.SetRpcStripDimensions(ship_geo.tauMudet.XStrip,ship_geo.tauMudet.YStrip, ship_geo.tauMudet.ZStrip)
    taumuondetector.SetRpcElectrodeDimensions(ship_geo.tauMudet.XEle,ship_geo.tauMudet.YEle, ship_geo.tauMudet.ZEle)
    taumuondetector.SetRpcPETDimensions(ship_geo.tauMudet.XPet,ship_geo.tauMudet.YPet, ship_geo.tauMudet.ZPet)
-   taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFe)
    taumuondetector.SetNRpcInArm(ship_geo.tauMudet.NRpc)
+   if hasattr(ship_geo.tauMudet,'NmuRpc'): #addition of layer as veto tagger
+      taumuondetector.SetNRpcInTagger(ship_geo.tauMudet.NmuRpc)
    taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)
    detectorList.append(taumuondetector)
    if ship_geo.nuTauTargetDesign==3: 
