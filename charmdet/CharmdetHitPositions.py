@@ -1,8 +1,12 @@
+from __future__ import print_function, division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 import ROOT,os
 #ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 import numpy
 from decorators import *
-import __builtin__ as builtin
+import builtins as builtin
 ROOT.gStyle.SetPalette(ROOT.kGreenPink)
 PDG = ROOT.TDatabasePDG.Instance()
 # -----Timer--------------------------------------------------------
@@ -48,7 +52,7 @@ if options.catalog:
   f=ROOT.TFile.Open(fname)
   sTree = f.cbmsim
   if not sTree.GetBranch("FitTracks"): 
- #  print "does not contain FitTracks",fname
+   print("does not contain FitTracks: ",fname)
    f.Close()
    continue
   fnames.append(fname)
@@ -61,12 +65,12 @@ if options.updateFile:
  f=ROOT.TFile(fname,'update')
  sTree=f.Get('cbmsim')
  if not sTree: 
-   print "Problem with updateFile",f
+   print("Problem with updateFile: ",f)
    exit(-1)
 else:
  sTree = ROOT.TChain('cbmsim')
  for f in fnames: 
-  print "add ",f
+  print("add ",f)
   if options.onEOS: sTree.Add(os.environ['EOSSHIP']+f)
   else:             sTree.Add(f)
 
@@ -122,8 +126,7 @@ vtop = ROOT.TVector3()
 
 def GetPixelPositions(n=1,draw=True,writentuple=False):
   """ retrieves the position of the pixel hit using the pixel map """
-  if not options.withDisplay:
-   #print 'display disabled, hits will not be drawn'
+  if not options.withDisplay:  
    draw = False
 
   sTree.GetEntry(n)
@@ -139,7 +142,7 @@ def GetPixelPositions(n=1,draw=True,writentuple=False):
     npixelpoints = npixelpoints + 1
     detID = hit.GetDetectorID()
     hit.GetPixelXYZ(pos,detID)
-    #print "This is the position of our pixel hit: ", detID, pos[0], pos[1], pos[2] 
+    #print ("This is the position of our pixel hit: ", detID, pos[0], pos[1], pos[2])
     hitx.append(pos[0])
     hity.append(pos[1])
     hitz.append(pos[2])
@@ -152,14 +155,13 @@ def GetPixelPositions(n=1,draw=True,writentuple=False):
      leaftrackID[hitnumber] = 0
      leafsubdetector[hitnumber] = 1
      leafnhits[0] += 1
-     # print "Test tree saving: ", hitnumber, leafdetID[hitnumber], leafposx[hitnumber], leafposy[hitnumber], leafposz[hitnumber]  
+     # print ("Test tree saving: ", hitnumber, leafdetID[hitnumber], leafposx[hitnumber], leafposy[hitnumber], leafposz[hitnumber])
   if draw:
    DrawPoints(npixelpoints,hitx,hity,hitz,"PixelHits")
 
 def GetSciFiPositions(n=1,draw=True,writentuple=False):
   """ retrieves the position of the pixel hit using the pixel map """
-  if not options.withDisplay:
-   #print 'display disabled, hits will not be drawn'
+  if not options.withDisplay:   
    draw = False
 
   scifitree.GetEntry(n+1)
@@ -175,7 +177,7 @@ def GetSciFiPositions(n=1,draw=True,writentuple=False):
     nscifipoints = nscifipoints + 1
     detID = hit.GetDetectorID()
     hit.GetSciFiXYZ(pos,detID)
-    #print "This is the position of our scifi hit: ", detID, pos[0], pos[1], pos[2] 
+    #print("This is the position of our scifi hit: ", detID, pos[0], pos[1], pos[2]) 
     hitx.append(pos[0])
     hity.append(pos[1])
     hitz.append(pos[2])
@@ -205,7 +207,6 @@ def correctAlignmentRPC(hit,v):
 
 def GetDTPositions(n=1, draw=True,writentuple=False):
   if not options.withDisplay:
-   #print 'display disabled, hits will not be drawn'
    draw = False
   sTree.GetEntry(n)
   hitlist = sTree.Digi_MufluxSpectrometerHits
@@ -251,7 +252,7 @@ def RPCPosition():
         x = (a[0]+b[0])/2.
         y = (a[1]+b[1])/2.
         z = (a[2]+b[2])/2.
-       # print "Postion for view {} and channel {}: ({}, {},{})".format(v,c,x,y,z)
+       # print("Postion for view {} and channel {}: ({}, {},{})".format(v,c,x,y,z))
 
 def GetRPCPosition(s,v,c):
   """ Gets RPC Positions from the information of station, view and channel """
@@ -261,7 +262,6 @@ def GetRPCPosition(s,v,c):
 def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
   """ Loads MuonTaggerHits from file and get position of clusters. Fittedtracks is used when reading hits from locally reconstructed tracks by Alessandra"""
   if not options.withDisplay:
-   #print 'display disabled, hits will not be drawn'
    draw = False
   hitx = []
   hity = []
@@ -288,7 +288,7 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
 
   for hit in trackhits:
     detID = hit.GetDetectorID()
-    station = int (detID/10000) #automatically an int in python2, but calling the conversion avoids confusion
+    station = int (detID/10000)
     view = int((detID-station*10000)/1000)
 
     a,b = RPCPositionsBotTop[detID]
@@ -322,7 +322,7 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
        leaftrackID[hitnumber] = 0
        leafsubdetector[hitnumber] = 4
        leafnhits[0] += 1
-    #print "Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view)    
+    #print("Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view))    
   #fitting to two 2D tracks
   if fittedtracks:
    mH,bH = getSlopes(clustersH,0) 
@@ -350,11 +350,11 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
          leaftrackID[hitnumber] = itrk + 1 
          leafsubdetector[hitnumber] = 4
          leafnhits[0] += 1
-  #print "Line equation along horizontal: {}*z + {}".format(mH,bH)
-  #print "Line equation along vertical: {}*z + {}".format(mV,bV)
+  #print("Line equation along horizontal: {}*z + {}".format(mH,bH))
+  #print("Line equation along vertical: {}*z + {}".format(mV,bV))
    theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
    phi = ROOT.TMath.ATan(mH/mV)
-  #print "Angles of 3D track: theta is {} and phi is {}".format(theta,phi)  
+  #print("Angles of 3D track: theta is {} and phi is {}".format(theta,phi))  
     
    lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
    if draw:
@@ -413,13 +413,13 @@ def getSlopes(clusters,view=0):
 GetPixelPositions(nevent)    
 GetSciFiPositions(nevent)
 GetDTPositions(nevent)
-loadRPCtracks(nevent,True,False,fittedtracks = False)
 RPCPosition()
+loadRPCtracks(nevent,True,False,fittedtracks = False)
 
 def writeNtuples():
   """write positions of subdetectors into an easy to read ntuple. DetectorID go downstream to upstream, 1: Pixel, 2:SciFi, 3:DT,4:RPC"""
   nevents = sTree.GetEntries()
-  print "Start processing", nevents, "nevents"
+  print("Start processing", nevents, "nevents")
   for ievent in range(nevents):
    leafnhits[0] = 0 #resetting counter of hits
    GetPixelPositions(ievent, False, True)
