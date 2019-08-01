@@ -125,7 +125,6 @@ class DrawVetoDigi(ROOT.FairTask):
    self.comp.OpenCompound()
    nav = ROOT.gGeoManager.GetCurrentNavigator()
    for digi in sTree.Digi_SBTHits:
-    if digi.GetDetectorID()<100000: continue
     if not digi.isValid(): continue
     node = digi.GetNode()
     shape = node.GetVolume().GetShape()  
@@ -136,10 +135,18 @@ class DrawVetoDigi(ROOT.FairTask):
     dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
     o = shape.GetOrigin()
     master = array('d',[0,0,0])
+    tr = node.GetMatrix().GetTranslation();
+    rot = node.GetMatrix().GetRotationMatrix()
     n=0
     for edge in [ [-dx,-dy,-dz],[-dx,+dy,-dz],[+dx,+dy,-dz],[+dx,-dy,-dz],[-dx,-dy, dz],[-dx,+dy, dz],[+dx,+dy, dz],[+dx,-dy, dz]]:
      origin = array('d',[edge[0]+o[0],edge[1]+o[1],edge[2]+o[2]])
-     nav.LocalToMaster(origin,master)
+     #nav.LocalToMaster(origin,master)
+     if not node.GetMatrix().IsRotation():
+       for i in range(3):
+        master[i] = tr[i] + origin[i]
+     else:
+        for i in range(3):
+         master[i] = tr[i] + origin[0]*rot[3*i] + origin[1]*rot[3*i+1] + origin[2]*rot[3*i+2]
      bx.SetVertex(n,master[0],master[1],master[2])
      n+=1
     self.comp.AddElement(bx)
