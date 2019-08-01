@@ -785,49 +785,14 @@ TGeoVolume* veto::MakeMagnetSegment(Int_t seg){
 }
 
 
-TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t floorHeight)
+TGeoVolume* veto::MakeSegments(Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t floorHeight)
 {
-      // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
-      TString nm;
-      nm = "T"; nm += seg;
-      TGeoVolumeAssembly *tTankVol = new TGeoVolumeAssembly(nm);
-      //Assume ~1 m between ribs, calculate number of ribs
+      TGeoVolumeAssembly *tTankVol = new TGeoVolumeAssembly("T2");
       Double_t dist =  0.8*m; //with Napoli design: 0.8 m
-      Int_t nribs = 2+dz*2./dist  ;
-      Double_t ribspacing = (dz*2.-nribs*f_InnerSupportThickness)/(nribs-1)+f_InnerSupportThickness;
-
-      //with rounded corners, cannot make "long" volumes, hence place all volmues
-      // i.e. : inner wall, "vacuum", ribs, LiSc, out H-beam, and outter Al wall
-      // in short sectors.
-      //Another note: make H-profiles, hence add thickness of "f_InnerSupportThickness" twice!
-      //              The inner wall is a comination of H-bar and conencting shield of same thickness
-      //              Outer wall: is (Al) layer outside the H-bar covering everything.
-      //some "new" variables
-      Double_t hwidth=15.*cm; //half-width of a H-bar
-
-      //Place vacuum in decay volume, need small steps segments in z too, otherwise
-      //rounded corners approximation does not fit.
-      Double_t dcorner = 80.*cm; // radius of inner circle at corners of vessel.
-      Double_t dx;
-      Double_t dy;
-      Double_t gap=0.1*cm;
-      nm+= "decayVol";
-      TGeoTranslation* Zero = new TGeoTranslation(0,0,0);
-      dx = dx_start - f_OuterSupportThickness - f_VetoThickness - 2*f_InnerSupportThickness-4*gap;
-      dy = dy_start - f_OuterSupportThickness - f_VetoThickness - 2*f_InnerSupportThickness-4*gap;
-      if (dcorner>0.95*dx) {dcorner=0.95*dx;}
-
-      //now place inner wall
-      dcorner+=f_InnerSupportThickness+gap;
-      nm = "T"; nm += seg;
-      nm+= "Innerwall";
-      dx += f_InnerSupportThickness+gap;
-      dy += f_InnerSupportThickness+gap;
+      
 
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>new>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	  
-	  
 	  int isOuterWall=0;
 	  int isInnerWall=1;
 	  int isVerticalRib=1;
@@ -851,9 +816,7 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
 	    TString nameLiSc = "VetoLiSc";  
 	    TGeoVolumeAssembly *ttLiSc = new TGeoVolumeAssembly(nameLiSc);
         int liScCounter=0;
-	    
-	    
-      if(seg==2){
+
 	  //********************************   Block1: ************************************************************* 
 	    double z1=0*m;
 	    double z2=14.4*m;
@@ -954,166 +917,7 @@ TGeoVolume* veto::MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t 
 	 if(isVerticalRib)tTankVol->AddNode(tVerticalRib,0, new TGeoTranslation(0, 0,0 ));
 	 if(isLongitRib)tTankVol->AddNode(tLongitRib,0, new TGeoTranslation(0, 0,0 ));
 	 if(isLiSc)tTankVol->AddNode(ttLiSc,0, new TGeoTranslation(0, 0,0 ));
-	 
-      }
-else{	
-	      
-	      
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////TO BE CLEANED .../////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-      Double_t zlength=(ribspacing -f_InnerSupportThickness)/2.;
-      //now place LiSc
-      //if (seg!=4 && seg!=6){  old, now only LiSc before T1, i.e. seg==3
-      if (seg<3){
-       //dcorner+=f_InnerSupportThickness; //already the right corner radius == as outside of ribs
-       Double_t wL = 0.5*m;//width of liqued scintilator
-       Double_t wLscale = 1.7;
-       Double_t wR = f_PhiRibsThickness;
-       int nRx = 1;
-       int nRy = 1;
-//        int liScCounter = 1 + 100000*seg;
-       int ribPhiCounter = 1;
-       int liSc_C_Counter = 1 + 100000*seg + 10000;
-       int ribPhi_C_Counter = 1;
-
-       TGeoVolume* liSc_Corner[16];
-       TGeoVolume* phiRib_Corner[12];
-
-       TString nmL = "T"; nmL += seg;
-       nmL+= "LiSc";
-       TGeoVolumeAssembly *tLiSc = new TGeoVolumeAssembly(nmL);
-
-       TString nmR = "T"; nmR += seg;
-       nmR+= "RibPhi";
-       TGeoVolumeAssembly *tRibPhi = new TGeoVolumeAssembly(nmR);
-
-       TString nmLC = "T"; nmLC += seg;
-       nmLC+= "LiScC";
-       TGeoVolumeAssembly *tLiScC = new TGeoVolumeAssembly(nmLC);
-
-       TString nmRC = "T"; nmRC += seg;
-       nmRC+= "RibPhiC";
-       TGeoVolumeAssembly *tRibPhiC = new TGeoVolumeAssembly(nmRC);
-
-
-
-
-       Double_t x_step0 = (dx_start-f_OuterSupportThickness-f_InnerSupportThickness-f_PhiRibsThickness/2-dcorner-2*gap);
-       Double_t y_step0 = (dy_start-f_OuterSupportThickness-f_InnerSupportThickness-f_PhiRibsThickness/2-dcorner-2*gap);
-
-      for (Int_t nr=1; nr<nribs; nr++) {
-	//if(nr!=1 && nr!=7 && nr!=57 && nr!=29)continue;
-	TString nmLnr = nmL;nmLnr+="_";nmLnr += nr;
-	TString nmLCnr = nmLC;nmLCnr+="_";nmLCnr += nr;
-	TString nmRnr = nmR;nmRnr+="_";nmRnr += nr;
-	TString nmRCnr = nmRC;nmRCnr+="_";nmRCnr += nr;
-	TString tmp;
-	double tmpX=0;
-	double tmpY=0;
-
-      Double_t zlisc= -dz +f_RibThickness+zlength+(nr-1)*ribspacing;
-      Double_t x = -x_step0-slopeX*(zlisc+dz-zlength);
-      Double_t y = -y_step0-slopeY*(zlisc+dz-zlength);
-      Double_t X = -dx_start+f_OuterSupportThickness+f_InnerSupportThickness+f_VetoThickness/2-slopeX*(zlisc+dz-zlength)+2*gap;
-      Double_t Y = -dy_start+f_OuterSupportThickness+f_InnerSupportThickness+f_VetoThickness/2-slopeY*(zlisc+dz-zlength)+2*gap;
-      Double_t lx=-2*x-f_PhiRibsThickness;
-      Double_t ly=-2*y-f_PhiRibsThickness;
-      
-      Double_t lx1=lx/2;
-      Double_t ly1=ly/4;
-      Double_t ly2=ly/4;
-
-
-	
-     ly1=ly2;
-     tmpY=(wL+wR)/2+ly2+wR/4;
-	
-
-
-
-	 //place scintillator in corner
-	 double zStart = -dz +(nr-1)*ribspacing+f_RibThickness;
-	 double xc = slopeX*zlisc+0.03;
-         double yc = slopeY*zlisc+0.03;
-
-
-        }
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> x4
-
-      }
-
-      //now place H-pieces of H-bars on the outside: make them 30.cm wide for the time being
-      dcorner+=gap+f_InnerSupportThickness;
-      nm = "T"; nm += seg;
-      nm+= "Hbar";
-      TGeoVolumeAssembly *tHbar = new TGeoVolumeAssembly(nm);
-      for (Int_t nr=0; nr<nribs; nr++) {
-        Double_t zrib = -dz +f_RibThickness/2. +nr*ribspacing;
-        Double_t hw=hwidth;
-        if (nr==0) {zrib=zrib+hwidth/2.; hw=hw/2.;}
-        if (nr==nribs-1) {zrib=zrib-hwidth/2.; hw=hw/2.;}
-        dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-hw)-gap;
-        dy = dy_start -f_OuterSupportThickness+slopeY*(zrib+dz-hw)-gap;
-        TString tmp = nm;
-        tmp+="-";tmp+=nr;
-
-      }
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      tTankVol->AddNode(tHbar,0, Zero);
-      dcorner+=f_OuterSupportThickness+gap;
-      if (seg<3){
-       //now close LiSc volumes with Al plates
-       nm = "T"; nm += seg;
-       nm+= "Outerwall";
-       TGeoVolumeAssembly *tOuterwall = new TGeoVolumeAssembly(nm);
-       for (Int_t nr=1; nr<nribs; nr++) {
-        Double_t zlisc= -dz +f_RibThickness+zlength+(nr-1)*ribspacing;
-        dx = dx_start + slopeX*(zlisc+dz-hwidth/2.);
-        dy = dy_start + slopeY*(zlisc+dz-hwidth/2.);
-        TString tmp = nm;
-        tmp+="-";tmp+=nr;
-
-       }
-      
-       ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-       tTankVol->AddNode(tOuterwall,0, Zero);
-      }
-
-
-      //now place support to floor, but not in the magnet
-      if (seg!=4){
-       dcorner+=-f_OuterSupportThickness;
-      nm = "T"; nm += seg;
-      nm+= "Vsup";
-      TGeoVolumeAssembly *tVsup = new TGeoVolumeAssembly(nm);
-      Int_t npp=3;
-      if (nribs==3) {npp=2;}
-      if (nribs==4) {npp=3;}
-      for (Int_t nr=0; nr<nribs; nr+=npp) {
-        Double_t zrib = -dz +f_RibThickness/2. +nr*ribspacing;
-        dx = dx_start -f_OuterSupportThickness+slopeX*(zrib+dz-f_RibThickness);
-        dy = dy_start -f_OuterSupportThickness;
-	if (fPlasticVeto==1)
-	  dy+=11.0;
-        if (slopeY>0) {dy+=slopeY*(zrib+dz-f_RibThickness);}
-        TString tmp = nm;
-        tmp+="-";tmp+=nr;
-
-
-      }
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      if (fUseSupport==1) tTankVol->AddNode(tVsup,0, Zero);
-      }
-}//if seg!=2
      return tTankVol;
 }
 
@@ -1164,24 +968,6 @@ TGeoVolume* veto::MakeLidSegments(Int_t seg,Double_t dx,Double_t dy)
       }
      return tDecayVol;
 }
-
-// private method create plate with ellips hole in the center
-void veto::GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top)
-{
-  /*make plate with elliptical hole.
-   plate has half width/height: a(b)+thick
-   a,b are ellipse radii of hole, dz is the half-thickness of the plate
-   will be put at z, with colour and material*/
-       TGeoBBox *T2  = new TGeoBBox("T2", a+thick,b+thick,dz);
-       TGeoEltu *T1  = new TGeoEltu("T1",a,b,dz+0.1);
-       TGeoSubtraction *subtraction = new TGeoSubtraction(T2,T1);
-       TGeoCompositeShape *Tc = new TGeoCompositeShape(name, subtraction);
-       TGeoVolume *T = new TGeoVolume(name, Tc, material);
-
-       T->SetLineColor(colour);
-       top->AddNode(T, 1, new TGeoTranslation(0, 0, z));
-}
-
 
 // -----   Private method InitMedium
 Int_t veto::InitMedium(const char* name)
@@ -1359,17 +1145,12 @@ void veto::ConstructGeometry()
     decayVolumeMed = gGeoManager->GetMedium(decayVolumeMed_name);  // decay volume, air/helium/vacuum
     ribMed = gGeoManager->GetMedium(ribMed_name); //! medium of support structure
     phi_ribMed=gGeoManager->GetMedium(phi_ribMed_name); //medium of the  structure separating  the LiSc segments in XY plane
-    if (fDesign<4||fDesign>6){ fLogger->Fatal(MESSAGE_ORIGIN, "Only Designs 4, 5 and 6 are supported!");}
     // put everything in an assembly
     TGeoVolume *tDecayVol = new TGeoVolumeAssembly("DecayVolume");
     TGeoVolume *tMaGVol   = new TGeoVolumeAssembly("MagVolume");
     Double_t zStartDecayVol = fTub1z-fTub1length-f_InnerSupportThickness;
     Double_t zStartMagVol = fTub3z+fTub3length-f_InnerSupportThickness; //? is this needed, -f_InnerSupportThickness
-    if (fDesign==6){
-    // Note: almost a copy of 5, but removed first segment, and closed
-    // gap of straw-veto by making segment2 longer by this gap, and the length
-    // of seg1. Hence: no change in external steering parameters, just redefine them based
-    // on seg1 and straw info here.
+    
       Double_t d = f_VetoThickness+2*f_RibThickness+f_OuterSupportThickness;
       Double_t slopex = (2.5*m + d)/(fTub6z-fTub6length - zFocusX);
       Double_t slopey = (fBtube + d) /(fTub6z-fTub6length - zFocusY);
@@ -1393,7 +1174,7 @@ void veto::ConstructGeometry()
       Double_t tgap=fTub2z-fTub1z-fTub2length-fTub1length;
       fTub2z=fTub1z+fTub2length+tgap/2.;
       fTub2length=fTub2length+fTub1length+tgap/2.;
-      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeightA);
+      TGeoVolume* seg2 = MakeSegments(fTub2length,dx1,dy,slopex,slopey,floorHeightA);
       tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z-zStartDecayVol));
 //////////////?????
       Length = fTub6length+fTub2length+3*m; // extend under ecal and muon detectors
@@ -1435,79 +1216,6 @@ void veto::ConstructGeometry()
       //finisMakeSegments assembly and position
       top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol));
       top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol));
-
-    }
-    else if (fDesign==5){
-    // designMakeSe 5: simplified trapezoidal design for optimization study
-    // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
-    // rib width = rib thickness, H bar therefore 2*
-      Double_t d = f_VetoThickness+2*f_RibThickness+f_OuterSupportThickness;
-      Double_t slopex = (2.5*m + d)/(fTub6z-fTub6length - zFocusX);
-      Double_t slopey = (fBtube + d) /(fTub6z-fTub6length - zFocusY);
-      Double_t zpos = fTub1z -fTub1length -f_LidThickness;
-   // Add veto-timing sensitive plane before vacuum tube, same size as entrance window
-      Double_t dx1 = slopex*(zpos - zFocusX);
-      Double_t dy  = slopey*(zpos - zFocusY);
-      TGeoVolume *VetoTimeDet = gGeoManager->MakeBox("VetoTimeDet",Sens,dx1,dy,10.*mm);
-      VetoTimeDet->SetLineColor(kMagenta-10);
-      top->AddNode(VetoTimeDet, 1, new TGeoTranslation(0, 0, fTub1z-fTub1length-10.*cm));
-      AddSensitiveVolume(VetoTimeDet);
-   // make the entrance window
-      // add floor:
-      Double_t Length = zStartMagVol - zStartDecayVol - 1.8*m;
-      TGeoBBox *box = new TGeoBBox("box1",  10 * m, floorHeightA/2., Length/2.);
-      TGeoVolume *floor = new TGeoVolume("floor1",box,concrete);
-      floor->SetLineColor(11);
-      tDecayVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightA/2.,Length/2.));
-      //entrance lid
-      TGeoVolume* T1Lid = MakeLidSegments(1,dx1,dy);
-      tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, zpos - zStartDecayVol+f_LidThickness/2.1));
-
-      TGeoVolume* seg1 = MakeSegments(1,fTub1length,dx1,dy,slopex,slopey,floorHeightA);
-      tDecayVol->AddNode(seg1, 1, new TGeoTranslation(0, 0, fTub1z - zStartDecayVol));
-
-      dx1 = slopex*(fTub2z -fTub2length - zFocusX);
-      dy  = slopey*(fTub2z -fTub2length - zFocusY);
-      TGeoVolume* seg2 = MakeSegments(2,fTub2length,dx1,dy,slopex,slopey,floorHeightA);
-      tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z - zStartDecayVol));
-
-      Length = fTub6z+fTub6length-fTub2z-fTub2length;
-      box = new TGeoBBox("box2",  10 * m, floorHeightB/2., Length/2.);
-      floor = new TGeoVolume("floor2",box,concrete);
-      floor->SetLineColor(11);
-      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length));
-
-      //Between T1 and T2: not conical, size of T2
-      dx1 = slopex*(fTub4z -fTub4length - zFocusX);
-      dy =  slopey*(fTub4z -fTub4length - zFocusY);
-      TGeoVolume* seg3 = MakeSegments(3,fTub3length,dx1,dy,0.,0.,floorHeightB);
-      tMaGVol->AddNode(seg3, 1, new TGeoTranslation(0, 0, fTub3z - zStartMagVol));
-
-      dx1 = slopex*(fTub4z -fTub4length - zFocusX);
-      dy  = slopey*(fTub4z -fTub4length - zFocusY);
-      TGeoVolume* seg4 = MakeSegments(4,fTub4length,dx1,dy,slopex,slopey,floorHeightB);
-      tMaGVol->AddNode(seg4, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
-
-      //Between T3 and T4: not conical, size of T4
-      dx1 = slopex*(fTub6z - fTub6length - zFocusX);
-      dy =  slopey*(fTub6z - fTub6length - zFocusY);
-      TGeoVolume* seg5 = MakeSegments(5,fTub5length,dx1,dy,0.,0.,floorHeightB);
-      tMaGVol->AddNode(seg5, 1, new TGeoTranslation(0, 0, fTub5z - zStartMagVol));
-
-      dx1 = slopex*(fTub6z -fTub6length - zFocusX);
-      dy = slopey*(fTub6z -fTub6length - zFocusY);
-      TGeoVolume* seg6 = MakeSegments(6,fTub6length,dx1,dy,slopex,slopey,floorHeightB);
-      tMaGVol->AddNode(seg6, 1, new TGeoTranslation(0, 0, fTub6z - zStartMagVol));
-
-   // make the exit window
-      Double_t dx2 = slopex*(fTub6z +fTub6length - zFocusX);
-      TGeoVolume *T6Lid = gGeoManager->MakeBox("T6Lid",supportMedOut,dx2,dy,f_LidThickness/2.);
-      T6Lid->SetLineColor(18);
-      tMaGVol->AddNode(T6Lid, 1, new TGeoTranslation(0, 0,fTub6z+fTub6length+f_LidThickness/2.+0.1*cm - zStartMagVol));
-      //finisMakeSeh assembly and position
-      top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0,zStartDecayVol));
-      top->AddNode(tMaGVol, 1, new TGeoTranslation(0, 0,zStartMagVol));
-    }
 
 
 // only for fastMuon simulation, otherwise output becomes too big

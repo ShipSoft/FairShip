@@ -164,7 +164,6 @@ class veto: public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
-    void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
     TGeoVolume* GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,Int_t color,TGeoMedium *material,Bool_t sens);
     void AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tOuterWall,TGeoVolumeAssembly *tLongitRib,TGeoVolumeAssembly *tVerticalRib,TGeoVolumeAssembly *ttLiSc,  int& liScCounter,
                      TString blockName , int nx, int ny,
@@ -185,7 +184,7 @@ class veto: public FairDetector
 				Int_t color, TGeoMedium *material, Bool_t sens);
 
 
-    TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
+    TGeoVolume* MakeSegments(Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
     TGeoVolume* MakeMagnetSegment(Int_t seg);
     TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
 
