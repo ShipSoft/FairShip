@@ -1,0 +1,16 @@
+
+cc7:
+  tags:
+    - cvmfs
+  image: alisw/alidock:cc7
+  stage: build
+  before_script:
+    - WORK_DIR=/cvmfs/ship.cern.ch/2_July2019/sw/ source /cvmfs/ship.cern.ch/2_July2019/sw/slc7_x86-64/FairShip/latest/etc/profile.d/init.sh
+    - pip install --upgrade --user alibuild
+    - ls /cvmfs/ship.cern.ch
+    - cd ..
+    - git clone https://github.com/siscia/shipdist
+    - pushd shipdist && git checkout simple_build && popd
+  script:
+    - aliBuild -c shipdist/ --default fairship build FairShip --always-prefer-system --debug
+

@@ -10,6 +10,7 @@
 #pragma link C++ class ScalerUnpack+;
 #pragma link C++ class PixelUnpack+;
 #pragma link C++ class DummyUnpack+;
+#pragma link C++ class SciFiUnpack+;
 #pragma link C++ class ShipTdcSource+;
 
 #endif

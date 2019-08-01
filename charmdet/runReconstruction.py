@@ -467,5 +467,30 @@ def pot():
  keys.sort()
  for k in keys: print k,':',scalerStat[k]
 
+def makeDTEfficiency(merge=False):
+ cmd = "hadd -f DTEff.root "
+ for fname in os.listdir('.'):
+  if not merge and fname.find('SPILL')==0:
+   cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c DTeffWithRPCTracks -f "+fname+' &'
+   os.system(cmd)
+   time.sleep(10)
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(10)
+  elif merge and fname.find('histos-DTEff')==0: 
+   cmd+=fname+' '
+ if merge: os.system(cmd)
+ print "finished all the tasks."
+ 
+
+def importMomDistr(keyword = 'RUN_8000_2'):
+  pathHistos = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/'
+  temp = os.listdir(pathHistos)
+  for x in temp:
+   if x.find(keyword)<0: continue
+   run = x
+   if not run in os.listdir('.'):
+     os.system('mkdir '+run)
+   os.system('cp '+pathHistos+run+'/momDistributions.root '+run)
 
 
