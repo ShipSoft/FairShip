@@ -159,9 +159,6 @@ void EmulsionMagnet::ConstructGeometry()
 {
   TGeoVolume *top=gGeoManager->GetTopVolume();
     
-  InitMedium("vacuum");
-  TGeoMedium *vacuum =gGeoManager->GetMedium("vacuum");
-    
   InitMedium("iron");
   TGeoMedium *Fe =gGeoManager->GetMedium("iron");
     
@@ -185,8 +182,7 @@ void EmulsionMagnet::ConstructGeometry()
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field in Magnet pillars
       TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field in target
 
-      TGeoBBox *MagnetBox = new TGeoBBox(fMagnetX/2, fMagnetY/2, fMagnetZ/2);
-      TGeoVolume *MagnetVol = new TGeoVolume("Goliath",MagnetBox,vacuum);
+      TGeoVolumeAssembly *MagnetVol = new TGeoVolumeAssembly("Goliath");
       tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
       
       //Iron basis on which the coils are placed
@@ -396,8 +392,7 @@ void EmulsionMagnet::ConstructGeometry()
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(-fField,0.,0.); //magnetic field in Magnet pillars
       TGeoUniformMagField *magField2 = new TGeoUniformMagField(fField,0.,0.); //magnetic field in target
       
-      TGeoBBox *MagnetBox = new TGeoBBox(fMagnetX/2, fMagnetY/2, fMagnetZ/2);
-      TGeoVolume *MagnetVol = new TGeoVolume("Davide",MagnetBox,vacuum);
+      TGeoVolumeAssembly *MagnetVol = new TGeoVolumeAssembly("Davide");
       tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
     
       //The -0.01*mm is only for drawing reasons
@@ -457,8 +452,7 @@ void EmulsionMagnet::ConstructGeometry()
    if(fDesign==3) //NEW with magnet
     {
       //Box for Magnet
-      TGeoBBox *MagnetBox = new TGeoBBox(fMagnetX/2, fMagnetY/2, fMagnetZ/2);
-      TGeoVolume *MagnetVol = new TGeoVolume("NudetMagnet",MagnetBox,vacuum);
+      TGeoVolumeAssembly *MagnetVol = new TGeoVolumeAssembly("NudetMagnet");
       tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
 
       TGeoBBox *BaseBox = new TGeoBBox(fBaseX/2,fBaseY/2,fBaseZ/2);
@@ -590,7 +584,7 @@ void EmulsionMagnet::ConstructGeometry()
       MagnetVol->AddNode(CoilVol,2,new TGeoTranslation(0,-(fCoilH1+fCoilH2)/4,0));
 
       //magnetized region
-      TGeoVolume *volMagRegion = new TGeoVolume("volMagRegion",IncoilBox, vacuum);
+      TGeoVolumeAssembly *volMagRegion = new TGeoVolumeAssembly("volMagRegion");
       MagnetVol->AddNode(volMagRegion, 1, new TGeoTranslation(0,0,0));
 
       //pillars for the magnet
