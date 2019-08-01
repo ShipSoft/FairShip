@@ -81,8 +81,8 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
   
   TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
   //translations to pass from LOCAL coordinates system to GLOBAL FairShip coordinates
-  pixel.SetX(pixel_pos.X()+ pixelboxcenter[0] + pixelmoduleorigin[0]);
-  pixel.SetY(pixel_pos.Y() + pixelboxcenter[1] + pixelmoduleorigin[1]);
+  pixel.SetX(pixel_pos.X()+ pixelboxcenter[0]);
+  pixel.SetY(pixel_pos.Y() + pixelboxcenter[1]);
   pixel.SetZ(pixel_pos.Z()+ pixelboxcenter[2] - pixelboxDZ);
 }
 
@@ -91,50 +91,50 @@ std::unordered_map<int, TVector3>*  ShipPixelHit::MakePositionMap() {
 // map unique detectorID to x,y,z position in LOCAL coordinate system. xy (0,0) is on the bottom left of each Front End,
 // the raw data counts columns from 1-80 from left to right and rows from 1-336 FROM TOP TO BOTTOM.
 
-  const float mkm = 0.0001;
 
-  const float  z0ref=  -1300.*mkm;
-  const float  z1ref=   5200.*mkm;
-  const float  z2ref=  24120.*mkm;
-  const float  z3ref=  30900.*mkm;
-  const float  z4ref=  51000.*mkm;
-  const float  z5ref=  57900.*mkm;
-  const float  z6ref=  77900.*mkm;
-  const float  z7ref=  84600.*mkm;
-  const float  z8ref= 104620.*mkm;
-  const float  z9ref= 111700.*mkm;
-  const float z10ref= 131620.*mkm;
-  const float z11ref= 138500.*mkm;
+  // alginment: all values in cm
+  const float  z0ref=  -0.1300;
+  const float  z1ref=   0.5200;
+  const float  z2ref=  2.4120;
+  const float  z3ref=  3.0900;
+  const float  z4ref=  5.1000;
+  const float  z5ref=  5.7900;
+  const float  z6ref=  7.7900;
+  const float  z7ref=  8.4600;
+  const float  z8ref= 10.4620;
+  const float  z9ref= 11.1700;
+  const float z10ref= 13.1620;
+  const float z11ref= 13.8500;
 
   const float Zref[12]={z0ref, z1ref, z2ref, z3ref, z4ref, z5ref, z6ref, z7ref, z8ref, z9ref, z10ref, z11ref};
 
-  const float  x0ref= (-16800. + 15396.)*mkm       +z0ref*0.0031;
-  const float  x1ref= -2310.*mkm       +z1ref*0.0031;
-  const float  x2ref=  6960.*mkm       +z2ref*0.0031;
-  const float  x3ref=  6940.*mkm       +z3ref*0.0031;
-  const float  x4ref= (-16800 + 15285.)*mkm        +z4ref*0.0031;
-  const float  x5ref= -2430.*mkm       +z5ref*0.0031;
-  const float  x6ref=  6620.*mkm       +z6ref*0.0031;
-  const float  x7ref=  6710.*mkm       +z7ref*0.0031;
-  const float  x8ref= (-16800 + 15440.)*mkm      +z8ref*0.0031;
-  const float  x9ref= -2505.*mkm       +z9ref*0.0031;
-  const float x10ref=  6455.*mkm      +z10ref*0.0031;
-  const float x11ref=  6320.*mkm      +z11ref*0.0031;
+  const float  x0ref= -0.8400 + 1.5396 + z0ref*0.0031;
+  const float  x1ref=  0.8400 - 0.2310 + z1ref*0.0031;
+  const float  x2ref=  0.6960          + z2ref*0.0031;
+  const float  x3ref=  0.6940          + z3ref*0.0031;
+  const float  x4ref= -0.8400 + 1.5285 + z4ref*0.0031;
+  const float  x5ref=  0.8400 - 0.2430 + z5ref*0.0031;
+  const float  x6ref=  0.6620          + z6ref*0.0031;
+  const float  x7ref=  0.6710          + z7ref*0.0031;
+  const float  x8ref= -0.8400 + 1.5440 + z8ref*0.0031;
+  const float  x9ref=  0.8400 - 0.2505 + z9ref*0.0031;
+  const float x10ref=  0.6455          + z10ref*0.0031;
+  const float x11ref=  0.6320          + z11ref*0.0031;
 
   const float Xref[12] { x0ref, x1ref, x2ref, x3ref, x4ref, x5ref, x6ref, x7ref, x8ref, x9ref, x10ref, x11ref};
 
-  const float  y0ref=   -15.*mkm       +z0ref*0.0068;
-  const float  y1ref=    20.*mkm       +z1ref*0.0068;
-  const float  y2ref= (-8400 + 7930.)*mkm       +z2ref*0.0068;
-  const float  y3ref= (8400 - 8990.)*mkm       +z3ref*0.0068;
-  const float  y4ref=  -370.*mkm       +z4ref*0.0068;
-  const float  y5ref=  -610.*mkm       +z5ref*0.0068;
-  const float  y6ref=  (-8400 + 7200.)*mkm       +z6ref*0.0068;
-  const float  y7ref= (8400 - 9285.)*mkm       +z7ref*0.0068;
-  const float  y8ref=  -700.*mkm       +z8ref*0.0068;
-  const float  y9ref=  -690.*mkm       +z9ref*0.0068;
-  const float y10ref=  (-8400 + 7660.)*mkm      +z10ref*0.0068;
-  const float y11ref= (8400 - 8850.)*mkm      +z11ref*0.0068;
+  const float  y0ref= -0.0015          + z0ref*0.0068;
+  const float  y1ref=  0.0020          + z1ref*0.0068;
+  const float  y2ref= -0.8400 + 0.7930 + z2ref*0.0068;
+  const float  y3ref=  0.8400 - 0.8990 + z3ref*0.0068;
+  const float  y4ref= -0.0370          + z4ref*0.0068;
+  const float  y5ref= -0.0610          + z5ref*0.0068;
+  const float  y6ref= -0.8400 + 0.7200 + z6ref*0.0068;
+  const float  y7ref=  0.8400 - 0.9285 + z7ref*0.0068;
+  const float  y8ref= -0.0700          + z8ref*0.0068;
+  const float  y9ref= -0.0690          + z9ref*0.0068;
+  const float y10ref= -0.8400 + 0.7660 + z10ref*0.0068;
+  const float y11ref=  0.8400 - 0.8850 + z11ref*0.0068;
 
   const float Yref[12] { y0ref, y1ref, y2ref, y3ref, y4ref, y5ref, y6ref, y7ref, y8ref, y9ref, y10ref, y11ref};
 
