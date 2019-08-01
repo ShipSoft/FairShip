@@ -204,10 +204,7 @@ void Box::AddEmulsionFilm(Double_t zposition, Int_t nreplica, TGeoVolume * volTa
 void Box::ConstructGeometry()
 {
     InitMedium("tantalum");
-    TGeoMedium *tantalum = gGeoManager->GetMedium("tantalum");      
-   
-    InitMedium("air");
-    TGeoMedium *air = gGeoManager->GetMedium("air");
+    TGeoMedium *tantalum = gGeoManager->GetMedium("tantalum");       
 
     InitMedium("molybdenum");
     TGeoMedium *molybdenum = gGeoManager->GetMedium("molybdenum");
@@ -390,9 +387,8 @@ void Box::ConstructGeometry()
       }
       
       int index = 0;   
-
-      TGeoBBox *Target = new TGeoBBox("Target", TargetX/2, TargetY/2, TargetZ/2); //for the moment I will use numbers instead of variables.
-      TGeoVolume *volTarget = new TGeoVolume("volTarget", Target, air);
+     
+      TGeoVolumeAssembly *volTarget = new TGeoVolumeAssembly("volTarget");
       volTarget->SetTransparency(1);
 
       top->AddNode(volTarget,1,new TGeoTranslation(0,0,zBoxPosition-TargetZ/2));
