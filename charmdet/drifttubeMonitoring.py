@@ -2168,6 +2168,28 @@ def printClustersPerStation(clusters,s,view):
         print    k,':',s,view,2*p+l,x[2],x[3],':',MCTrackID
      else: print k,':',s,view,2*p+l,x[2],x[3]
    k+=1
+def ghostFraction(hitList):
+ detIDToKey=MakeKeysToDThits()
+ trackIDs = {}
+ for digi in hitList:
+  keyList = detIDToKey[digi.GetDetectorID()]
+  theKey = keyList[0]
+  if len(keyList)>2:
+    found = False
+    tdc = digi.GetDigi()
+    for x in range(1,len(keyList)):
+     theKey = keyList[x]
+     if sTree.Digi_MufluxSpectrometerHits[theKey].GetDigi()==tdc:
+       found = True
+       break
+    if not found: print "ghostFraction: digi not found, something wrong here"
+  trackID=sTree.MufluxSpectrometerPoint[theKey].GetTrackID()
+  if not trackIDs.has_key(trackID): trackIDs[trackID]=0
+  trackIDs[trackID]+=1
+ sorted_trackIDs = sorted(trackIDs.items(), key=operator.itemgetter(1),reverse=True)
+ sz = trackIDs.values()
+ ghFrac = 1.-sorted_trackIDs[0][1]/float(sum(sz))
+ return ghFrac,sorted_trackIDs[0][0]
 
 def findDTClusters(removeBigClusters=True):
    spectrHitsSorted = ROOT.nestedList()
@@ -2486,7 +2508,13 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
             if ( (pos[1] - T3ybot)  > 1.2*cuts['yMax'] or (T3ytop - pos[1]) > 1.2*cuts['yMax'] ): reject = True
             mStatistics = countMeasurements(aTrack,PR)
             if len(mStatistics['u'])<cuts['minLayersUV'] or len(mStatistics['v'])<cuts['minLayersUV']: reject = True # require 2 measurements in each view
-            if not reject: trackCandidates.append(aTrack)
+            if not reject: 
+           # check ghostrate, only MC
+               if MCdata:
+                ghFraction,mcTrackID = ghostFraction(hitList)
+                aTrack.setMcTrackId( int(mcTrackID*1000+(ghFraction+0.5)*100) )
+                if Debug:  print "ghost fraction: ", ghFraction,mcTrackID
+               trackCandidates.append(aTrack)
             else:
              aTrack.Delete()
              if Debug: 
@@ -3646,6 +3674,7 @@ def mergeHistosForMomResol(withFitPoints=False):
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # 10GeV MC,         65 Billion PoT 
+ # 10GeV charm    153.3 Billion PoT 
  MCStats   = 1.8E9
  sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
  charmNorm  = {1:0.176,10:0.424}
@@ -3668,6 +3697,7 @@ def mergeHistosForMomResol(withFitPoints=False):
     h['MC'+res+a].Add(h[res]['1GeVCharm'][a],charmNorm[1])
     h['MC10'+res+a] = h[res]['10GeV'][a].Clone('MC10'+res+a)
 # special treatment for 10GeV to get weights right
+    print "debug",res,a
     h['MC10'+res+a].Add(h[res]['10GeV'][a+"charm"],-1.+charmNorm[10])
     h['MC10'+res+a].Add(h[res]['10GeV'][a+"beauty"],-1.+beautyNorm[10])
     h['MC10'+res+a].Scale(sim10fact)
@@ -4592,7 +4622,8 @@ def testForSameDetID(nEvent=-1,nTot=1000):
       for t in range(1,len(listOfDigits[x][1])):
        rc=h['multHits_deltaT'].Fill(abs(t-listOfDigits[x][1][0]))
        rc=h['multHits_deltaTz'].Fill(abs(t-listOfDigits[x][1][0]))
-  for detID in listOfTDCs:
+  if not MCdata:
+   for detID in listOfTDCs:
     test = ROOT.MufluxSpectrometerHit(detID,0.)
     s,v,p,l,view,channelID,tdcId,nRT = stationInfo(test)
     if tdcId not in listOfTDCs[detID].keys(): 
@@ -5376,18 +5407,21 @@ def checkMCEffTuning():
  h['leg'+t].Draw()
  h[t].Print('MCcomparison-Efficiency-Tuning.png')
  h[t].Print('MCcomparison-Efficiency-Tuning.pdf')
-def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False):
- # 1GeV mbias,      1.8 Billion PoT 
- # 1GeV charm,     10.2 Billion PoT,  10 files
- # 10GeV MC,         65 Billion PoT 
- # data RUN_2395, ~10.6 Billion PoT, 742 files
+def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels"):
+ # 1GeV mbias,      1.806 Billion PoT 
+ # 1GeV charm,     10.21 Billion PoT,  10 files
+ # 10GeV MC,       66.02 Billion PoT 
+ # 10GeV charm    153.90 Billion PoT 
  # using 626 POT/mu-event and preliminary counting of good tracks -> 12.63 -> pot factor 7.02
  # using 710 POT/mu-event, full field
- # mbias POT/ charm POT = 0.176 (1GeV), 0.424 (10GeV)
- MCStats = 1.8E9/(1.-simpleEffCor)
- sim10fact = MCStats/(65.E9*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+ # mbias POT/ charm POT = 0.177 (1GeV), 0.429 (10GeV)
+ MCStats   = 1.806E9
+ MC10Stats = 66.02E9 *290./670. # temporarly for multHits
+ sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
+ # 1.6% of 10GeV stats not processed, HOWEVER, comparing ratio of 1GeV / 10GeV around 20-30GeV, 2.6% more 10GeV stats. 
+ # equalize 1GeV and 10GeV, take 3% sys error for MC normalization.
  muPerPot = 710 # 626
- charmNorm  = {1:0.176,10:0.424}
+ charmNorm  = {1:MCStats/10.21E9,10:MC10Stats/153.90E9}
  beautyNorm = {1:0.,   10:0.01218}
  sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,
             "charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.,"invalid":1.}
@@ -5399,11 +5433,14 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
   interestingHistos.append('chi2')
   ut.readHists(h,     'momDistributions.root',interestingHistos)
   # uncorrected MC histos
+  # version = "-withDeadChannels"
+  # version = "-noDeadChannels"
+  # version = "-0"
   if not effCor:
-   ut.readHists(hMC,   'momDistributions-1GeV-mbias-withDeadChannels.root',interestingHistos)
-   ut.readHists(hCharm,'momDistributions-1GeV-charm-withDeadChannels.root',interestingHistos)
-   if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
-   else:    ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias-withDeadChannels.root',interestingHistos)
+   ut.readHists(hMC,   'momDistributions-1GeV-mbias'+version+'.root',interestingHistos)
+   ut.readHists(hCharm,'momDistributions-1GeV-charm'+version+'.root',interestingHistos)
+   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias'+version+'.root',interestingHistos)
+   # if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
   else:
    ut.readHists(hMC,   '../momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
    ut.readHists(hMC,   '../momDistributions-1GeV-mbias-effTuned-M2.root',     interestingHistos)
@@ -5411,7 +5448,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
    ut.readHists(hCharm,'../momDistributions-1GeV-charm-effTuned-M2.root',     interestingHistos)
    ut.readHists(hMC10GeV,'../momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
    ut.readHists(hMC10GeV,'../momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
-   # ???MCStats = MCStats*2.
+   MCStats = MCStats*2. # because of average of two MC samples same stats
   for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
     for x in ['','mu']:
      if a.find('p1/p2')==0 and x!='': continue
@@ -5422,9 +5459,9 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
 # subtract invalid case from main distribution
       # hstore[a+x].Add(hstore[a+x+"invalid"],-1.)
  if pot <0: # (default, use Hans normalization)
-   pot = h['Trscalers'].GetBinContent(2) * muPerPot / MCStats
-   # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
    POTdata = h['Trscalers'].GetBinContent(2) * muPerPot
+   MCscaleFactor =     POTdata / MCStats
+   # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
    print "PoT data",POTdata / 1E9," billion"
  if pot == 0:
    z = h['MCp/pt'].ProjectionX()
@@ -5433,10 +5470,12 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
    PG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
    norm = PG5/MCPG5
    print "use as normalization:",norm
- else: norm = pot
+ else: 
+   norm = MCscaleFactor * (1.-simpleEffCor)
  for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
    for x in ['','mu']:
     if a.find('p1/p2')==0 and x=='mu': continue
+# for 1GeV MC
     h['MC'+a+x]   = hMC[a+x].Clone('MC'+a+x)
     h['MC'+a+x].Add(hCharm[a+x],charmNorm[1])
     h['MC'+a+x].Scale(norm)
@@ -5447,14 +5486,9 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
       h['MC'+xxx] = hCharm[a+x].Clone('MC'+xxx)
       h['MC'+xxx].Scale(charmNorm[1])
      else:
-      if not xxx in hMC:  
-        print xxx, " need to remake histos for 1GeV "
-        h['MC'+xxx] = hMC[a+x].Clone('MC'+xxx)
-        h['MC'+xxx].Reset()
-      else:
-        h['MC'+xxx] = hMC[xxx].Clone('MC'+xxx)
+      h['MC'+xxx] = hMC[xxx].Clone('MC'+xxx)
      h['MC'+xxx].Scale(norm)
-#
+# for 10GeV MC
     h['MC10'+a+x] = hMC10GeV[a+x].Clone('MC10'+a+x)
 # special treatment for 10GeV to get weights right
     if eric: # data with boosted channels
@@ -5492,7 +5526,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
 #
  optSorted = ['','MC','MC10','MCcharm','MCDi-muon P8','MCHadronic inelastic','MCLepton pair','MCPositron annihilation',
                          'MC10charm','MC10Hadronic inelastic','MC10Di-muon P8','MC10Lepton pair','MC10Positron annihilation'] # decay removed, only covers part
- opt = {'':['',ROOT.kBlue,'data'],'MC':['same',ROOT.kRed,'MC inclusive'],'MC10':['same',ROOT.kRed,'MC 10GeV total'],
+ opt = {'':['hist',ROOT.kBlue,'data'],'MC':['same',ROOT.kRed,'MC inclusive'],'MC10':['same',ROOT.kRed,'MC 10GeV total'],
            'MCcharm':['same',ROOT.kGreen,'Charm'],'MC10charm':['same',ROOT.kGreen,'Charm'],
            'MCHadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
            'MC10Hadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
@@ -5528,6 +5562,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
 # MC 1 GeV should agree with data above P>5GeV
 # MC 10 GeV should agree with data above P>20GeV
      if i == "MC":
+# pt
       h[i+'p/pt'+z+'_y']   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+'_y'      ,h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].FindBin(20.))
       tmp = h[i+'10p/pt'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20)+1,h[i+'p/pt'+x+'_x'].GetNbinsX())
 # attempt to make pt/px distribution with 1 GeV and 10 GeV MC
@@ -5536,6 +5571,13 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
       h[i+'pz/Abspx'+z+'_y']=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+'_y',h[i+'pz/Abspx'+x+'_x'].FindBin(pMin),h[i+'pz/Abspx'+x+'_x'].FindBin(20.))
       tmp = h[i+'10pz/Abspx'+z].ProjectionY('tmp',h[i+'pz/Abspx'+x+'_x'].FindBin(20)+1,h[i+'pz/Abspx'+x+'_x'].GetNbinsX())
       h[i+'pz/Abspx'+z+'_y'].Add(tmp)
+# p,pz
+      h[i+'totp/pt'+z+'_x']=h[i+'10p/pt'+z+'_x'].Clone(i+'totp/pt'+z+'_x')
+      h[i+'totpz/Abspx'+z+'_x']=h[i+'10pz/Abspx'+z+'_x'].Clone(i+'totpz/Abspx'+z+'_x')
+      for k in range(h[i+'totp/pt'+z+'_x'].FindBin(pMin),h[i+'totp/pt'+z+'_x'].FindBin(20.)+1):
+             h[i+'totp/pt'+z+'_x'].SetBinContent(k,h[i+'p/pt'+z+'_x'].GetBinContent(k))
+             h[i+'totpz/Abspx'+z+'_x'].SetBinContent(k,h[i+'pz/Abspx'+z+'_x'].GetBinContent(k))
+# interval
       for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
        interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
        if pInterval[0]<20:
@@ -5560,14 +5602,19 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
        h[i+'pz/Abspx'+z+interval]=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+interval,h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[0]),h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[1]))
        h[i+'p/pt'+z+interval].SetTitle('pt for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
        h[i+'pz/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
-     ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_x',overFlow=True)
-     h['I-'+i+'p/pt'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
-     h['I-'+i+'p/pt'+x+source+'_x'].Scale(1./POTdata)
-     ut.makeIntegralDistrib(h,i+'pz/Abspx'+x+source+'_x',overFlow=True)
-     h['I-'+i+'pz/Abspx'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
-     h['I-'+i+'pz/Abspx'+x+source+'_x'].Scale(1./POTdata)
+# for integral distribution combine 1 and 10 GeV first.
+     for a in ['p/pt','pz/Abspx']:
+      if i == "MC":
+       ut.makeIntegralDistrib(h,i+'tot'+a+x+source+'_x',overFlow=True)
+       h['I-'+i+a+x+source+'_x']=h['I-'+i+'tot'+a+x+source+'_x'].Clone('I-'+i+a+x+source+'_x')
+      else:
+       ut.makeIntegralDistrib(h,i+a+x+source+'_x',overFlow=True)
      ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_y',overFlow=True)
      ut.makeIntegralDistrib(h,i+'pz/Abspx'+x+source+'_y',overFlow=True)
+     h['I-'+i+'p/pt'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
+     h['I-'+i+'p/pt'+x+source+'_x'].Scale(1./POTdata)
+     h['I-'+i+'pz/Abspx'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
+     h['I-'+i+'pz/Abspx'+x+source+'_x'].Scale(1./POTdata)
      h['I-'+i+'pz/Abspx'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Px>x')
      h['I-'+i+'pz/Abspx'+x+source+'_y'].Scale(1./POTdata)
      h['I-'+i+'p/pt'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Pt>x')
@@ -5886,22 +5933,20 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
 # make ratio plots
    proj = Aproj
    for xx in [x+'_x',x+'_y']:
-    h['I-'+proj+xx+'Ratio']=h['I-'+proj+xx].Clone('I-'+proj+xx+'Ratio')
-    h['I-'+proj+xx+'RatioG4']=h['I-'+proj+xx].Clone('I-'+proj+xx+'RatioG4')
-    h['I-MC'+proj+xx+'G4']=h['I-MC'+proj+xx].Clone('I-MC'+proj+xx+'G4')
-    h['I-MC'+proj+xx+'G4'].Add(h['I-MC'+proj+xx.replace('_','Hadronic inelastic_')],-1.)
+    h['I-'+proj+xx+'Ratio']         =h['I-'+proj+xx].Clone('I-'+proj+xx+'Ratio')
+    h['I-'+proj+xx+'RatioG4']       =h['I-'+proj+xx].Clone('I-'+proj+xx+'RatioG4')
     h['I-'+proj+xx+'RatioG4noCharm']=h['I-'+proj+xx].Clone('I-'+proj+''+x+'_xRatioG4noCharm')
-    h['I-MC'+proj+xx+'G4noCharm']=h['I-MC'+proj+xx].Clone('I-MC'+proj+''+x+'_xG4noCharm')
-    h['I-MC'+proj+xx+'G4noCharm'].Add(h['I-MC'+proj+xx.replace('_','Hadronic inelastic_')],-1.)
-    h['I-MC'+proj+xx+'G4noCharm'].Add(h['I-MC'+proj+xx.replace('_','charm_')],-1.)
-    for c in [ [h['I-'+proj+xx+'Ratio'],h['I-MC'+proj+xx]],[h['I-'+proj+xx+'RatioG4'],h['I-MC'+proj+xx+'G4']],
-        [h['I-'+proj+xx+'RatioG4noCharm'],(h['I-MC'+proj+''+xx+'G4noCharm'])]]:
-     for mx in range(1,c[0].GetNbinsX()+1):
-      if c[0].GetBinContent(mx)*POTdata>100. and c[1].GetBinContent(mx)>0:
-       R =c[0].GetBinContent(mx) / c[1].GetBinContent(mx)
-       c[0].SetBinContent(mx,R)
-      else:
-       c[0].SetBinContent(mx,-1)
+    for mc in ['I-MC']:
+     h[mc+proj+xx+'G4']   =h[mc+proj+xx].Clone(mc+proj+xx+'G4')
+     h[mc+proj+xx+'G4'].Add(h[mc+proj+xx.replace('_','Hadronic inelastic_')],-1.)
+     h[mc+proj+xx+'G4noCharm']=h[mc+proj+xx].Clone('I-MC'+proj+''+x+'_xG4noCharm')
+     h[mc+proj+xx+'G4noCharm'].Add(h[mc+proj+xx.replace('_','Hadronic inelastic_')],-1.)
+     h[mc+proj+xx+'G4noCharm'].Add(h[mc+proj+xx.replace('_','charm_')],-1.)
+    for c in ['','G4','G4noCharm']:
+     ratio = h['I-'+proj+xx+'Ratio'+c]
+     for mx in range(1,ratio.GetNbinsX()+1):
+      Nmc = h['I-MC'+proj+xx+c].GetBinContent(mx)
+      ratio.SetBinContent(mx,ratio.GetBinContent(mx)/Nmc)
     if withAllTracks and x == '': continue
     t = 'MC-Comparison ratios'+proj+xx
     if not h.has_key(t): 
@@ -5911,16 +5956,20 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False)
     h['leg'+t]=ROOT.TLegend(0.11,0.67,0.56,0.86)
     h['I-'+proj+xx+'Ratio'].SetLineColor(ROOT.kBlue)
     h['I-'+proj+xx+'Ratio'].SetMaximum(3.)
-    if xx.find('_y')>0: h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(20.,400.)
-    else:               h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,4.0)
+    if xx.find('_x')<0: 
+      h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,4.0)
+    else:               
+      h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(5.,400.)
     h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
     h['I-'+proj+xx+'Ratio'].SetTitle('Ratio Data/MC '+h['I-'+proj+xx+'Ratio'].GetTitle())
     h['I-'+proj+xx+'Ratio'].Draw()
     h['leg'+t].AddEntry(h['I-'+proj+xx+'Ratio'],'Ratio Data / MC muon tagged tracks','PL')
     h['I-'+proj+xx+'RatioG4'].SetLineColor(ROOT.kMagenta)
+    h['I-'+proj+xx+'RatioG4'].SetMaximum(3.)
     h['I-'+proj+xx+'RatioG4'].Draw('same')
     h['leg'+t].AddEntry(h['I-'+proj+xx+'RatioG4'],'muon tagged tracks no G4 dimuon ','PL')
     h['I-'+proj+xx+'RatioG4noCharm'].SetLineColor(ROOT.kCyan)
+    h['I-'+proj+xx+'RatioG4noCharm'].SetMaximum(3.)
     h['I-'+proj+xx+'RatioG4noCharm'].Draw('same')
     h['leg'+t].AddEntry(h['I-'+proj+xx+'RatioG4noCharm'],'muon tagged tracks no G4 dimuon no charm ','PL')
     h['leg'+t].Draw('same')
