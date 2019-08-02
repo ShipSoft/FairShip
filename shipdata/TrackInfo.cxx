@@ -25,6 +25,9 @@ TrackInfo::TrackInfo(const genfit::Track* tr)
        fWL.push_back( 0 );
        fWR.push_back( 0 );
     }
+    int tmp = tr->getMcTrackId();
+    fMcInfo.push_back(tmp/1000);
+    fMcInfo.push_back( tmp - (tmp/1000)*1000 );
     // std::cout << "weights " << ((fWL)[i])<<" "<<((fWR)[i])<<" "<<((fDetIDs)[i])<<std::endl;
   }
 }
@@ -34,7 +37,8 @@ TrackInfo::TrackInfo(const TrackInfo& ti)
   : TObject(ti),
     fDetIDs(ti.fDetIDs),
     fWL(ti.fWL),
-    fWR(ti.fWR)
+    fWR(ti.fWR),
+    fMcInfo(ti.fMcInfo)
 {
 }
 // -----   Destructor   ----------------------------------------------------
