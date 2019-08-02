@@ -1667,7 +1667,6 @@ for x in ['','mu']:
   ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
   ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
   ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
-  if x != '' or s != '':continue
   ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
   ut.bookHist(h,'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
@@ -3668,29 +3667,29 @@ def plotLinearResiduals():
   h['RPCResX_'+str(s)+'1'].ProjectionX().Draw()
   j+=1
 
-h['270'] = {'1GeV':{},'10GeV':{},'1GeVCharm':{}}
-h['500'] = {'1GeV':{},'10GeV':{},'1GeVCharm':{}}
 def mergeHistosForMomResol(withFitPoints=False):
  # 1GeV mbias,      1.8 Billion PoT 
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # 10GeV MC,         65 Billion PoT 
  # 10GeV charm    153.3 Billion PoT 
- MCStats   = 1.8E9
- sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
- charmNorm  = {1:0.176,10:0.424}
+ versions = ['-withDeadChannels',"-noDeadChannels","-0","-multHits"]
+ MCStats   = 1.806E9
+ MC10Stats = 66.02E9 *290./670. # temporarly for multHits
+ sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
+ charmNorm  = {1:MCStats/10.21E9,10:MC10Stats/153.90E9}
  beautyNorm = {1:0.,   10:0.01218}
- sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+ sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,
+            "charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.,"invalid":1.}
  if len(hMC)==0:
   interestingHistos = []
   for a in ['trueMom','recoMom','momResol','curvResol','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
     for source in sources:  interestingHistos.append(a+source)
-  ut.readHists(h['270']['1GeV'],       '../momDistributions-1GeV-mbias-0.root',interestingHistos)
-  ut.readHists(h['270']['1GeVCharm'],  '../momDistributions-1GeV-charm-0.root',interestingHistos)
-  ut.readHists(h['270']['10GeV'],      '../momDistributions-10GeV-mbias-0.root',interestingHistos)
-  ut.readHists(h['500']['1GeV'],       'momDistributions-1GeV-mbias-withDeadChannels.root',interestingHistos)
-  ut.readHists(h['500']['1GeVCharm'],  'momDistributions-1GeV-charm-withDeadChannels.root',interestingHistos)
-  ut.readHists(h['500']['10GeV'],      'momDistributions-10GeV-mbias-withDeadChannels.root',interestingHistos)
-  for res in ['270','500']:
+  for v in versions: 
+   h[v]={'1GeV':{},'1GeVCharm':{},'10GeV':{}}
+   ut.readHists(h[v]['1GeV'],       'momDistributions-1GeV-mbias'+v+'.root',interestingHistos)
+   ut.readHists(h[v]['1GeVCharm'],  'momDistributions-1GeV-charm'+v+'.root',interestingHistos)
+   ut.readHists(h[v]['10GeV'],      'momDistributions-10GeV-mbias'+v+'.root',interestingHistos)
+  for res in versions:
    for a in ['trueMom','recoMom','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
     if a.find('Fit')==0 and not withFitPoints: continue
     h['MC'+res+a] = h[res]['1GeV'][a].Clone('MC'+res+a)
@@ -3725,14 +3724,16 @@ def mergeHistosForMomResol(withFitPoints=False):
  if not h.has_key(t): ut.bookCanvas(h,t,'true and reco momentum',900,600,1,1)
  tc=h[t].cd(1)
  tc.SetLogy()
- h['I-270trueMom'].Draw()
- h['I-270recoMom'].Draw('same')
- h['I-500recoMom'].SetLineColor(ROOT.kMagenta)
- h['I-500recoMom'].Draw('same')
+ v = '-withDeadChannels'
+#
+ h['I-0trueMom'].Draw()
+ h['I-0recoMom'].Draw('same')
+ h['I-'+v+'recoMom'].SetLineColor(ROOT.kMagenta)
+ h['I-'+v+'recoMom'].Draw('same')
  h['leg'+t]=ROOT.TLegend(0.31,0.67,0.85,0.85)
- h['leg'+t].AddEntry(h['I-270trueMom'],'true momentum ','PL')
- h['leg'+t].AddEntry(h['I-270recoMom'],'reconstructed momentum 270#mum','PL')
- h['leg'+t].AddEntry(h['I-500recoMom'],'reconstructed momentum 500#mum','PL')
+ h['leg'+t].AddEntry(h['I-0trueMom'],'true momentum ','PL')
+ h['leg'+t].AddEntry(h['I-0recoMom'],'reconstructed momentum 270#mum','PL')
+ h['leg'+t].AddEntry(h['I-'+v+'recoMom'],'reconstructed momentum 500#mum','PL')
  h['leg'+t].Draw()
  h[t].Print('True-Reco.png')
  h[t].Print('True-Reco.pdf')
@@ -3743,7 +3744,7 @@ def mergeHistosForMomResol(withFitPoints=False):
  t = 'momResolution'
  if not h.has_key(t): ut.bookCanvas(h,t,'momentum Resolution',900,600,1,1)
  tc=h[t].cd(1)
- for res in ['270','500']:
+ for res in ['-0',v]:
   hname = 'momResol'+res
   h[hname+'P'] = h[hname].ProjectionY(hname+'P')
   h[hname+'P'].Reset()
@@ -3772,7 +3773,7 @@ def mergeHistosForMomResol(withFitPoints=False):
   fSqrt.SetParameter(0,fitFun.GetParameter(0))
   fSqrt.SetParameter(1,fitFun.GetParameter(1))
   h[hname+'P'].Fit(fSqrt,'W','',0.,300.)
- for res in ['270','500']:
+ for res in ['-0',v]:
   hname = 'momResol'+res
   h[hname+'P'].SetTitle('momentum resolution function of momentum;P [GeV/c];#sigma P/P')
   h[hname+'P'].SetStats(0)
@@ -3791,8 +3792,8 @@ def mergeHistosForMomResol(withFitPoints=False):
       h[hname+'P'].Draw()
   h['text'+res].Draw('same')
  h['leg'+t]=ROOT.TLegend(0.14,0.75,0.64,0.87)
- h['leg'+t].AddEntry(h['momResol270'],'default  270#mum ','PL')
- h['leg'+t].AddEntry(h['momResol500'],'adjusted 500#mum','PL')
+ h['leg'+t].AddEntry(h['momResol-0'],'default  270#mum ','PL')
+ h['leg'+t].AddEntry(h['momResol'+v],'adjusted 500#mum','PL')
  h['leg'+t].Draw()
  h[t].Print('momentumResolution.png')
  h[t].Print('momentumResolution.pdf')
@@ -5418,8 +5419,6 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
  MCStats   = 1.806E9
  MC10Stats = 66.02E9 *290./670. # temporarly for multHits
  sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
- # 1.6% of 10GeV stats not processed, HOWEVER, comparing ratio of 1GeV / 10GeV around 20-30GeV, 2.6% more 10GeV stats. 
- # equalize 1GeV and 10GeV, take 3% sys error for MC normalization.
  muPerPot = 710 # 626
  charmNorm  = {1:MCStats/10.21E9,10:MC10Stats/153.90E9}
  beautyNorm = {1:0.,   10:0.01218}

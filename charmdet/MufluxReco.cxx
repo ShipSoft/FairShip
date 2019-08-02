@@ -885,6 +885,13 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
        h2D["truePz/Abspx"]->Fill(trueMom[2],TMath::Abs(trueMom[0]));
        h2D["recoPz/Abspx"]->Fill(mom[2],TMath::Abs(mom[0]));
        h2D["momResol"]->Fill((mom.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
+       if (fSource){
+        h2D["trueMom"+source]->Fill(trueMom.Mag(),trueMom.Pt());
+        h2D["recoMom"+source]->Fill(mom.Mag(),mom.Pt());
+        h2D["truePz/Abspx"+source]->Fill(trueMom[2],TMath::Abs(trueMom[0]));
+        h2D["recoPz/Abspx"+source]->Fill(mom[2],TMath::Abs(mom[0]));
+        h2D["momResol"+source]->Fill((mom.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
+       }
       }
      }
      tnTr+=1;

@@ -1,5 +1,6 @@
 import ROOT,os
 import rootUtils as ut
+from argparse import ArgumentParser
 cuts = {}
 cuts['muTrackMatchX']= 5.
 cuts['muTrackMatchY']= 10.
@@ -23,83 +24,97 @@ else:
 hData   = {}
 hMC     = {}
 h0      = {}
-sTreeData = ROOT.TChain('tmuflux')
-path = gPath +"RUN_8000_2403/"
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319240_20180723_160408_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319310_20180723_160422_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319400_20180723_160440_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319470_20180723_160454_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319560_20180723_160512_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319635_20180723_160527_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319725_20180723_160545_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319795_20180723_160559_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319885_20180723_160617_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312030_20180723_154006_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312220_20180723_154044_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312405_20180723_154121_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312590_20180723_154158_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312775_20180723_154235_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312960_20180723_154312_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313150_20180723_154350_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313335_20180723_154427_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313520_20180723_154504_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313705_20180723_154541_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313890_20180723_154618_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314080_20180723_154656_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314265_20180723_154733_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314450_20180723_154810_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314635_20180723_154847_RT.root")
-sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314820_20180723_154924_RT.root")
+h = {}
+
+parser = ArgumentParser()
+parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", default=False)
+parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
+parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default="")
+parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="withDeadChannels") # other versions: "0", "multHits", "noDeadChannels"
+parser.add_argument("-A", "--with1GeV", dest="with1GeV", help="1GeV MC", default=True)  
+parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC", default=True)  
+parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC", default=True)  
+
+options = parser.parse_args()
+
+MCType    =  options.MCType
+with1GeV  = options.with1GeV
+withCharm = options.withCharm
+with10GeV = options.with10GeV
 
 
-sTreeMC = ROOT.TChain('tmuflux')
-with1GeV  = True
-withCharm = True
-with10GeV = True
+if not options.listOfFiles:
+ sTreeData = ROOT.TChain('tmuflux')
+ path = gPath +"RUN_8000_2403/"
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319240_20180723_160408_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319310_20180723_160422_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319400_20180723_160440_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319470_20180723_160454_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319560_20180723_160512_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319635_20180723_160527_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319725_20180723_160545_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319795_20180723_160559_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319885_20180723_160617_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312030_20180723_154006_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312220_20180723_154044_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312405_20180723_154121_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312590_20180723_154158_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312775_20180723_154235_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312960_20180723_154312_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313150_20180723_154350_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313335_20180723_154427_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313520_20180723_154504_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313705_20180723_154541_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313890_20180723_154618_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314080_20180723_154656_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314265_20180723_154733_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314450_20180723_154810_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314635_20180723_154847_RT.root")
+ sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314820_20180723_154924_RT.root")
 
-if host=="ubuntu":
- gPath = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/"
-elif host=='ship-ubuntu-1710-48':
- gPath = "/home/truf/muflux/"
-else:
- gPath = "/home/truf/ship-ubuntu-1710-48/"
+ sTreeMC = ROOT.TChain('tmuflux')
+ if host=="ubuntu":
+  gPath = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/"
+ elif host=='ship-ubuntu-1710-48':
+  gPath = "/home/truf/muflux/"
+ else:
+  gPath = "/home/truf/ship-ubuntu-1710-48/"
 
-MCType =  "withDeadChannels"  # "0"
-if with1GeV:
- path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_1.0_cXXXX_mu/"
- for k in range(0,20000,1000):
+ if with1GeV:
+  path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_1.0_cXXXX_mu/"
+  for k in range(0,20000,1000):
+   for m in range(5):
+    fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+    try:
+     test = ROOT.TFile(fname)
+     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
+    except: continue
+ if withCharm:
+  path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
   for m in range(5):
-   fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
-   try:
-    test = ROOT.TFile(fname)
-    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-   except: continue
-if withCharm:
- path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
- for m in range(5):
    fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
    try:
     test = ROOT.TFile(fname)
     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
    except: continue
  
-if with10GeV:
- path = gPath+"simulation10GeV-"+MCType+"/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
- for k in range(0,67000,1000):
-  for m in range(10):
-   fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
-   if not os.path.isfile(fname): continue
-   try:
-    test = ROOT.TFile(fname)
-    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-   except: continue
+ if with10GeV:
+  path = gPath+"simulation10GeV-"+MCType+"/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
+  for k in range(0,67000,1000):
+   for m in range(10):
+    fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+    if not os.path.isfile(fname): continue
+    try:
+     test = ROOT.TFile(fname)
+     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
+    except: continue
 
 # small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 
 # temp hack
 #nfile = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/simulation1GeV-withDeadChannels/pythia8_Geant4_1.0_c3000_mu/ship.conical.MuonBack-TGeant4_dig_RT-0.root"
 #sTreeMC.Add("ntuple-ship.conical.MuonBack-TGeant4_dig_RT-0.root")
-case = {'MC':[sTreeMC,hMC,ROOT.kRed,'hist same'],'Data':[sTreeData,hData,ROOT.kBlue,'hist']}
+ case = {'MC':[sTreeMC,hMC,ROOT.kRed,'hist same'],'Data':[sTreeData,hData,ROOT.kBlue,'hist']}
 
 def IP(OnlyDraw = False):
  if not OnlyDraw:
@@ -728,7 +743,150 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
    h['leg'+t].Draw()
    h[t].Print('True-Reco'+k+'.png')
    h[t].Print('True-Reco'+k+'.pdf')
- 
+Debug=False
+def mufluxReco(sTree):
+ ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
+ ut.bookHist(h,'RPCResX/Y','RPC residuals',200,0.,200.,200,0.,200.)
+ for x in ['','mu']:
+  for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"]:
+   ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
+   ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'pz/Abspx'+x+s,'Pz vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'p/pxy'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
+   ut.bookHist(h,'p/Abspxy'+x+s,'momentum vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'pz/Abspxy'+x+s,'Pz vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'TrackMult'+x+s,'track multiplicity',10,-0.5,9.5)
+   ut.bookHist(h,'chi2'+x+s,'chi2/nDoF',100,0.,10.)
+   ut.bookHist(h,'Nmeasurements'+x+s,'number of measurements used',25,-0.5,24.5)
+   ut.bookHist(h,'xy'+x+s,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
+   ut.bookHist(h,'pxpy'+x+s,'px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
+   ut.bookHist(h,'p1/p2'+x+s,'momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
+   ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+   ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
+   ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+   if x != '' or s != '':continue
+   ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'recoPz/Abspx'+x+s,'reco MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
+   ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
+
+ MCdata = False
+ if sTree.FindBranch("MCRecoDT"): MCdata = True
+
+ for n in range(sTree.GetEntries()):
+   rc = sTree.GetEvent(n)
+   h['Trscalers'].Fill(1)
+   if len(sTree.GoodTrack)>0: h['Trscalers'].Fill(2)
+   tchannel = sTree.channel
+   source = ''
+   if MCdata:
+         if (tchannel == 1):  source = "Decay"
+         if (tchannel == 7):  source = "Di-muon P8"
+         if (tchannel == 2):  source = "Hadronic inelastic"
+         if (tchannel == 3):  source = "Lepton pair"
+         if (tchannel == 4):  source = "Positron annihilation"
+         if (tchannel == 5):  source = "charm"
+         if (tchannel == 6):  source = "beauty"
+         if (tchannel == 13): source = "invalid"
+   muonTaggedTracks = []
+   for k in range(len(sTree.GoodTrack)):
+     h['Trscalers'].Fill(3)
+     if sTree.GoodTrack[k]<0: continue
+     h['Trscalers'].Fill(4)
+     muTagged  = False
+     muTaggedX = False
+     clone     = False
+     if sTree.GoodTrack[k]%2==1: 
+       muTaggedX = True
+       if int(sTree.GoodTrack[k]/10)%2==1: muTagged = True
+     if sTree.GoodTrack[k]>999:  clone = True
+     if clone: continue
+     p=ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
+     h["p/pt"].Fill(p.Mag(),p.Pt())
+     h["p/px"].Fill(p.Mag(),p.x())
+     h["p/Abspx"].Fill(p.Mag(),abs(p.x()))
+     h["pz/Abspx"].Fill(p.z(),abs(p.x()))
+     h["xy"].Fill(sTree.x[k],sTree.y[k])
+     h["pxpy"].Fill(p.x()/p.z(),p.y()/p.z())
+     if p.Mag()>300. and Debug: 
+        occ = sTree.stationOcc[1]+sTree.stationOcc[2]+sTree.stationOcc[5]+sTree.stationOcc[6]
+        print n, p.Mag(),occ,sTree.GoodTrack[k],sTree.Chi2[k],sTree.nDoF[k]
+     if source != '':
+      h["p/pt"+source].Fill(p.Mag(),p.Pt())
+      h["p/px"+source].Fill(p.Mag(),p.x())
+      h["p/Abspx"+source].Fill(p.Mag(),abs(p.x()))
+      h["pz/Abspx"+source].Fill(p.z(),abs(p.x()))
+      h["xy"+source].Fill(sTree.x[k],sTree.y[k])
+      h["pxpy"+source].Fill(p.x()/p.z(),p.y()/p.z())
+     h['RPCResX/Y'].Fill(sTree.Delx[k],sTree.Dely[k])
+     if (muTaggedX): # within ~3sigma  X from mutrack
+        h["p/pxmu"].Fill(p.Mag(),p.x())
+        h["p/Abspxmu"].Fill(p.Mag(),abs(p.x()))
+        h["pz/Abspxmu"].Fill(p.z(),abs(p.x()))
+        if source != '':
+         h["p/pxmu"+source].Fill(p.Mag(),p.x())
+         h["p/Abspxmu"+source].Fill(p.Mag(),abs(p.x()))
+         h["pz/Abspxmu"+source].Fill(p.z(),abs(p.x()))
+     if (muTagged): #  within ~3sigma  X,Y from mutrack
+        muonTaggedTracks.append(k)
+        h["p/ptmu"].Fill(p.Mag(),p.Pt())
+        h["p/pxymu"].Fill(p.Mag(),p.x())
+        h["p/Abspxymu"].Fill(p.Mag(),abs(p.x()))
+        h["pz/Abspxymu"].Fill(p.z(),abs(p.x()))
+        h["xymu"].Fill(sTree.x[k],sTree.y[k])
+        h["pxpymu"].Fill(p.x()/p.z(),p.y()/p.z())
+        if source != '':
+         h["p/ptmu"+source].Fill(p.Mag(),p.Pt())
+         h["p/pxymu"+source].Fill(p.Mag(),p.x())
+         h["p/Abspxymu"+source].Fill(p.Mag(),abs(p.x()))
+         h["pz/Abspxymu"+source].Fill(p.z(),abs(p.x()))
+         h["xymu"+source].Fill(sTree.x[k],sTree.y[k])
+         h["pxpymu"+source].Fill(p.x()/p.z(),p.y()/p.z())
+
+     if len(muonTaggedTracks)==2:
+      a,b=muonTaggedTracks[0],muonTaggedTracks[1]
+      pA=ROOT.TVector3(sTree.Px[a],sTree.Py[a],sTree.Pz[a])
+      pB=ROOT.TVector3(sTree.Px[b],sTree.Py[b],sTree.Pz[b])
+      prodSign = sTree.Sign[a]*sTree.Sign[b]
+      if prodSign<0:
+       h["p1/p2"].Fill(pA.Mag(),pB.Mag())
+       h["pt1/pt2"].Fill(pA.Pt(),pB.Pt())
+       if source != '':
+        h["p1/p2"+source].Fill(pA.Mag(),pB.Mag())
+        h["pt1/pt2"+source].Fill(pA.Pt(),pB.Pt())
+      else:
+       h["p1/p2s"].Fill(pA.Mag(),pB.Mag())
+       h["pt1/pt2s"].Fill(pA.Pt(),pB.Pt())
+       if source != '':
+        h["p1/p2s"+source].Fill(pA.Mag(),pB.Mag())
+        h["pt1/pt2s"+source].Fill(pA.Pt(),pB.Pt())
+# mom resolution
+     if MCdata and len(sTree.GoodTrack)==1 and len(sTree.MCRecoDTpx)==1:
+       trueMom = ROOT.TVector3(sTree.MCRecoDTpx[0],sTree.MCRecoDTpy[0],sTree.MCRecoDTpz[0])
+       h["trueMom"].Fill(trueMom.Mag(),trueMom.Pt())
+       h["recoMom"].Fill(p.Mag(),p.Pt())
+       h["truePz/Abspx"].Fill(trueMom[2],TMath::Abs(trueMom[0]))
+       h["recoPz/Abspx"].Fill(p[2],TMath::Abs(p[0]))
+       h["momResol"].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag())
+       if source != '':
+        h["trueMom"+source].Fill(trueMom.Mag(),trueMom.Pt());
+        h["recoMom"+source].Fill(p.Mag(),p.Pt());
+        h["truePz/Abspx"+source].Fill(trueMom[2],TMath::Abs(trueMom[0]));
+        h["recoPz/Abspx"+source].Fill(p[2],TMath::Abs(p[0]));
+        h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
+
+def plotOccupancy(sTree):
+   ut.bookHist(h,'upStreamOcc',"station 1&2 function of track mom",50,-0.5,199.5,100,0.,500.)
+   for n in range(sTree.GetEntries()):
+    rc = sTree.GetEvent(n)
+    for k in range(len(sTree.GoodTrack)):
+     if sTree.GoodTrack[k]<0: continue
+     p=ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
+     occ = sTree.stationOcc[1]+sTree.stationOcc[2]+sTree.stationOcc[5]+sTree.stationOcc[6]
+     rc=h['upStreamOcc'].Fill(occ,p.Mag())
+
 def debug():
  Nstat = {}
  for n in range(sTreeMC.GetEntries()):
@@ -740,3 +898,12 @@ def debug():
   Nstat[fname][2]+=sTreeMC.MCRecoRPC.size()
   Nstat[fname][3]+=sTreeMC.MCRecoDT.size()
  return Nstat
+
+if options.command=='MufluxReco':
+ sTree = ROOT.TChain('tmuflux')
+ tmp = options.listOfFiles.split(',')
+ hName = tmp[0].replace('ntuple','histos-fromNtuple').replace('/','--')
+ for f in tmp:
+  sTree.Add(options.path+f)
+ mufluxReco(sTree)
+ ut.writeHists(h,hName)
