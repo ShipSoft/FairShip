@@ -33,8 +33,8 @@ class TrackInfo : public TObject
     unsigned int detId(Int_t n){return fDetIDs[n];}
     float wL(Int_t n){return fWL[n];}
     float wR(Int_t n){return fWR[n];}
-    float McTrack(){return fMcInfo[1];}
-    float ghostFraction(){return fMcInfo[0];} // in percent
+    int McTrack(){return fMcInfo[0];}
+    float ghostFraction(){return fMcInfo[1]/100.;}
 
     /*** Output to screen */
     virtual void Print(const Option_t* opt ="") const {;}

@@ -2511,7 +2511,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            # check ghostrate, only MC
                if MCdata:
                 ghFraction,mcTrackID = ghostFraction(hitList)
-                aTrack.setMcTrackId( int(mcTrackID*1000+(ghFraction+0.5)*100) )
+                aTrack.setMcTrackId( int(mcTrackID*1000+int(ghFraction+0.5)*100) )
                 if Debug:  print "ghost fraction: ", ghFraction,mcTrackID
                trackCandidates.append(aTrack)
             else:
