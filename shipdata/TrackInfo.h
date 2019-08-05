@@ -34,7 +34,7 @@ class TrackInfo : public TObject
     float wL(Int_t n){return fWL[n];}
     float wR(Int_t n){return fWR[n];}
     int McTrack(){return fMcInfo[0];}
-    float ghostFraction(){return fMcInfo[1]/100.;}
+    float ghostFraction(){return float(fMcInfo[1])/100.;}
 
     /*** Output to screen */
     virtual void Print(const Option_t* opt ="") const {;}

@@ -2511,7 +2511,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            # check ghostrate, only MC
                if MCdata:
                 ghFraction,mcTrackID = ghostFraction(hitList)
-                aTrack.setMcTrackId( int(mcTrackID*1000+int(ghFraction+0.5)*100) )
+                aTrack.setMcTrackId( int(mcTrackID*1000+int(ghFraction*100+0.5) ) )
                 if Debug:  print "ghost fraction: ", ghFraction,mcTrackID
                trackCandidates.append(aTrack)
             else:
@@ -5417,7 +5417,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
  # using 710 POT/mu-event, full field
  # mbias POT/ charm POT = 0.177 (1GeV), 0.429 (10GeV)
  MCStats   = 1.806E9
- MC10Stats = 66.02E9 *290./670. # temporarly for multHits
+ MC10Stats = 66.02E9
  sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
  muPerPot = 710 # 626
  charmNorm  = {1:MCStats/10.21E9,10:MC10Stats/153.90E9}
