@@ -543,6 +543,24 @@ TVector3 MufluxReco::findTrueMomentum(TTree* sTree){
     }
    return trueP;
 }
+
+TVector3 MufluxReco::findMCMomentum(int mctr){
+ float minZ=9999.;
+ TVector3 trueP(0.,0.,-1);
+
+ for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
+   MufluxSpectrometerPoint* pt = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
+   if (pt->GetTrackID()== mctr) {
+     float z = pt->GetZ();
+     if (z<minZ){
+       minZ=z;
+       trueP = TVector3(pt->GetPx(),pt->GetPy(),pt->GetPz()); 
+     }
+   }
+ }
+ return trueP;
+}
+
 void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,std::vector<float> *py,std::vector<float> *pz,TH2D* htrueUpOcc){
  std::map<int,StringVecIntMap> trackList;
  std::map<int,StringVecIntMap>::iterator  it;
@@ -694,6 +712,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  std::vector<float> tRecoRPCpx;
  std::vector<float> tRecoRPCpy;
  std::vector<float> tRecoRPCpz;
+ Double_t tTruepx[maxD];
+ Double_t tTruepy[maxD];
+ Double_t tTruepz[maxD];
+ Double_t tgf[maxD];
 
  tMuFlux.Branch("nTr",&tnTr,"nTr/I");
  tMuFlux.Branch("evtnr",&tevtnr,"evtnr/I");
@@ -725,6 +747,10 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
   tMuFlux.Branch("MCRecoRPCpx",&tRecoRPCpx);
   tMuFlux.Branch("MCRecoRPCpy",&tRecoRPCpy);
   tMuFlux.Branch("MCRecoRPCpz",&tRecoRPCpz);
+  tMuFlux.Branch("MCghostfraction",&tgf,"tgf[nTr]/D");
+  tMuFlux.Branch("MCTruepx",&tTruepx,"tTruepx[nTr]/D");
+  tMuFlux.Branch("MCTruepy",&tTruepy,"tTruepy[nTr]/D");
+  tMuFlux.Branch("MCTruepz",&tTruepz,"tTruepz[nTr]/D");
   tspillnrA = 0;
   tspillnrB = 0;
   tspillnrC = 0;
@@ -849,6 +875,14 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      tSign[tnTr] = fitStatus->getCharge();
      tChi2[tnTr] = chi2;
      tnDoF[tnTr] = fitStatus->getNdf();
+     if (MCdata){
+      tgf[tnTr] = info->ghostFraction();
+      TVector3 Ptrue = findMCMomentum(info->McTrack());
+      tTruepx[tnTr] = Ptrue.X();
+      tTruepy[tnTr] = Ptrue.Y();
+      tTruepz[tnTr] = Ptrue.Z();
+     }
+
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);

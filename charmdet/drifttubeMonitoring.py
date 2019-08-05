@@ -1945,14 +1945,29 @@ def fitTrack(hitlist,Pstart=3.):
    unSortedList = {}
    tmpList = {}
    k=0
+   if MCdata: detIDToKey = MakeKeysToDThits()
+   else: keysToDThits=MakeKeysToDThits(cuts['lateArrivalsToT'])
    for nhit in hitlist:
       numHit = 0
       if type(nhit)==type(1):   
           hit = sTree.Digi_MufluxSpectrometerHits[nhit]
           numHit = nhit
-      else: hit = nhit
-      vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
+      else:    hit = nhit
       tdc = hit.GetDigi()
+      if type(nhit)!=type(1):   
+          detID = hit.GetDetectorID()
+          keyList = detIDToKey[detID]
+          numHit  = keyList[0]
+          if len(keyList)>2:
+           found = False
+           tdc = hit.GetDigi()
+           for x in range(1,len(keyList)):
+            numHit = keyList[x]
+            if sTree.Digi_MufluxSpectrometerHits[numHit].GetDigi()==tdc:
+             found = True
+             break
+           if not found: print "fittrack: digi not found, something wrong here",tdc
+      vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
       s,v,p,l,view,channelID,tdcId,nRT = stationInfo(hit)
       distance = 0
       if withTDC: distance = RT(hit,tdc)
@@ -2167,22 +2182,16 @@ def printClustersPerStation(clusters,s,view):
         print    k,':',s,view,2*p+l,x[2],x[3],':',MCTrackID
      else: print k,':',s,view,2*p+l,x[2],x[3]
    k+=1
-def ghostFraction(hitList):
- detIDToKey=MakeKeysToDThits()
+def ghostFraction(aTrack):
  trackIDs = {}
- for digi in hitList:
-  keyList = detIDToKey[digi.GetDetectorID()]
-  theKey = keyList[0]
-  if len(keyList)>2:
-    found = False
-    tdc = digi.GetDigi()
-    for x in range(1,len(keyList)):
-     theKey = keyList[x]
-     if sTree.Digi_MufluxSpectrometerHits[theKey].GetDigi()==tdc:
-       found = True
-       break
-    if not found: print "ghostFraction: digi not found, something wrong here"
-  trackID=sTree.MufluxSpectrometerPoint[theKey].GetTrackID()
+ for p in aTrack.getPointsWithMeasurement():
+  rawM = p.getRawMeasurement()
+  info = p.getFitterInfo()
+  if not info: continue
+  if info.getWeights()[0] <0.1 and info.getWeights()[1] <0.1: continue
+  detID   = rawM.getDetId()
+  theKey  = rawM.getHitId()
+  trackID = sTree.MufluxSpectrometerPoint[theKey].GetTrackID()
   if not trackIDs.has_key(trackID): trackIDs[trackID]=0
   trackIDs[trackID]+=1
  sorted_trackIDs = sorted(trackIDs.items(), key=operator.itemgetter(1),reverse=True)
@@ -2510,7 +2519,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
             if not reject: 
            # check ghostrate, only MC
                if MCdata:
-                ghFraction,mcTrackID = ghostFraction(hitList)
+                ghFraction,mcTrackID = ghostFraction(aTrack)
                 aTrack.setMcTrackId( int(mcTrackID*1000+int(ghFraction*100+0.5) ) )
                 if Debug:  print "ghost fraction: ", ghFraction,mcTrackID
                trackCandidates.append(aTrack)
@@ -3672,9 +3681,9 @@ def mergeHistosForMomResol(withFitPoints=False):
  # 1GeV charm,     10.2 Billion PoT,  10 files
  # 10GeV MC,         65 Billion PoT 
  # 10GeV charm    153.3 Billion PoT 
- versions = ['-withDeadChannels',"-noDeadChannels","-0","-multHits"]
+ versions = ['-withDeadChannels',"-0","-multHits"]  # "-noDeadChannels"
  MCStats   = 1.806E9
- MC10Stats = 66.02E9 *290./670. # temporarly for multHits
+ MC10Stats = 66.02E9
  sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
  charmNorm  = {1:MCStats/10.21E9,10:MC10Stats/153.90E9}
  beautyNorm = {1:0.,   10:0.01218}
@@ -3696,7 +3705,6 @@ def mergeHistosForMomResol(withFitPoints=False):
     h['MC'+res+a].Add(h[res]['1GeVCharm'][a],charmNorm[1])
     h['MC10'+res+a] = h[res]['10GeV'][a].Clone('MC10'+res+a)
 # special treatment for 10GeV to get weights right
-    print "debug",res,a
     h['MC10'+res+a].Add(h[res]['10GeV'][a+"charm"],-1.+charmNorm[10])
     h['MC10'+res+a].Add(h[res]['10GeV'][a+"beauty"],-1.+beautyNorm[10])
     h['MC10'+res+a].Scale(sim10fact)
@@ -3726,13 +3734,13 @@ def mergeHistosForMomResol(withFitPoints=False):
  tc.SetLogy()
  v = '-withDeadChannels'
 #
- h['I-0trueMom'].Draw()
- h['I-0recoMom'].Draw('same')
+ h['I--0trueMom'].Draw()
+ h['I--0recoMom'].Draw('same')
  h['I-'+v+'recoMom'].SetLineColor(ROOT.kMagenta)
  h['I-'+v+'recoMom'].Draw('same')
  h['leg'+t]=ROOT.TLegend(0.31,0.67,0.85,0.85)
- h['leg'+t].AddEntry(h['I-0trueMom'],'true momentum ','PL')
- h['leg'+t].AddEntry(h['I-0recoMom'],'reconstructed momentum 270#mum','PL')
+ h['leg'+t].AddEntry(h['I--0trueMom'],'true momentum ','PL')
+ h['leg'+t].AddEntry(h['I--0recoMom'],'reconstructed momentum 270#mum','PL')
  h['leg'+t].AddEntry(h['I-'+v+'recoMom'],'reconstructed momentum 500#mum','PL')
  h['leg'+t].Draw()
  h[t].Print('True-Reco.png')
@@ -5408,7 +5416,7 @@ def checkMCEffTuning():
  h['leg'+t].Draw()
  h[t].Print('MCcomparison-Efficiency-Tuning.png')
  h[t].Print('MCcomparison-Efficiency-Tuning.pdf')
-def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels"):
+def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels",withOverFlow=True):
  # 1GeV mbias,      1.806 Billion PoT 
  # 1GeV charm,     10.21 Billion PoT,  10 files
  # 10GeV MC,       66.02 Billion PoT 
@@ -5607,9 +5615,9 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
        ut.makeIntegralDistrib(h,i+'tot'+a+x+source+'_x',overFlow=True)
        h['I-'+i+a+x+source+'_x']=h['I-'+i+'tot'+a+x+source+'_x'].Clone('I-'+i+a+x+source+'_x')
       else:
-       ut.makeIntegralDistrib(h,i+a+x+source+'_x',overFlow=True)
-     ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_y',overFlow=True)
-     ut.makeIntegralDistrib(h,i+'pz/Abspx'+x+source+'_y',overFlow=True)
+       ut.makeIntegralDistrib(h,i+a+x+source+'_x',withOverFlow)
+     ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_y',withOverFlow)
+     ut.makeIntegralDistrib(h,i+'pz/Abspx'+x+source+'_y',withOverFlow)
      h['I-'+i+'p/pt'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
      h['I-'+i+'p/pt'+x+source+'_x'].Scale(1./POTdata)
      h['I-'+i+'pz/Abspx'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
@@ -6071,7 +6079,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    h[hn].SetStats(0)
    h[hn].SetMaximum(0.5)
    h[hn].SetMinimum(2E-6)
-   ut.makeIntegralDistrib(h,hn,overFlow=True)
+   ut.makeIntegralDistrib(h,hn,withOverFlow)
    Ihn = 'I-'+hn
    h[Ihn].GetXaxis().SetRangeUser(case,pLimit)
    h[Ihn].Draw()
@@ -6090,7 +6098,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    h[hn].SetStats(0)
    h[hn].SetTitle('P in 2-track events, one track with '+txt[case]+'; GeV/c')
    h[hn].SetLineColor(opt['MC'][1])
-   ut.makeIntegralDistrib(h,hn,overFlow=True)
+   ut.makeIntegralDistrib(h,hn,withOverFlow)
    Ihn = 'I-'+hn
    h[Ihn].Draw('same')
    h[Ihn].GetXaxis().SetRangeUser(case,pLimit)
@@ -6114,7 +6122,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     h[hn].SetLineColor(opt[i1][1])
     h[hn].SetStats(0)
     h[hn].Scale(1./norm)
-    ut.makeIntegralDistrib(h,hn,overFlow=True)
+    ut.makeIntegralDistrib(h,hn,withOverFlow)
     Ihn = 'I-'+hn
     h[Ihn].Draw('same')
     h[Ihn].GetXaxis().SetRange(case,500)
