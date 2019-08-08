@@ -41,6 +41,18 @@ Additionally for developers:
 
 If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
 
+To load the FairShip environement, after you build the software you can simply use:
+
+5. Load the environment
+    ```bash
+    alienv enter FairShip/latest
+    ```
+
+However, this won't work if you are using HTCondor. In such case you can do:
+    ```bash
+    eval `alienv load FairShip/latest
+    ```
+
 ## Docker Instructions
 1. Build an docker image from a Dockerfile:
     ```bash
