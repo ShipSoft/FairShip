@@ -1,0 +1,4 @@
+P8gen.SetParameters("ProcessLevel:all = off")
+P8gen.SetParameters("9900015:new = A A 3 0 0 0.5 0.0 0.0 0.0 6592.80727295  0   1   0   1   0") 
+P8gen.SetParameters("Next:numberCount    =  0")
+P8gen.SetParameters("9900015:mayDecay = on")

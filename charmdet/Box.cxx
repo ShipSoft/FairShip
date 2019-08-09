@@ -82,7 +82,6 @@ fELoss(-1),
 fBoxPointCollection(new TClonesArray("BoxPoint"))
 {
     zBoxPosition = zBox;
-    ch1r6 = false; //default configuration is with lead target
 }
 
 Box::~Box()
@@ -165,11 +164,7 @@ void Box::SetTargetDesign(Bool_t Julytarget){
 }
 
 void Box::SetRunNumber(Int_t RunNumber){		
-  nrun = RunNumber;
-  if (RunNumber==16){ //special case, CH1 run with a tungsten target
-    nrun = 1;
-    ch1r6 = true;
-  }		
+  nrun = RunNumber;		
 }
 
 
@@ -195,8 +190,7 @@ Int_t Box::InitMedium(const char* name)
 }
 
 void Box::AddEmulsionFilm(Double_t zposition, Int_t nreplica, TGeoVolume * volTarget, TGeoVolume * volEmulsionFilm, TGeoVolume   * volEmulsionFilm2, TGeoVolume * volPlBase){
-   //emulsion IDs now go from 1 to a maximum of 57 for top layers, from 10000 to a maximum of 10057 for bottom layers
-	 volTarget->AddNode(volEmulsionFilm2, nreplica+10000, new TGeoTranslation(0,0,zposition + EmulsionThickness/2)); //BOTTOM
+	 volTarget->AddNode(volEmulsionFilm2, nreplica, new TGeoTranslation(0,0,zposition + EmulsionThickness/2)); //BOTTOM
 	 volTarget->AddNode(volEmulsionFilm, nreplica, new TGeoTranslation(0,0,zposition +3 * EmulsionThickness/2 +PlasticBaseThickness)); //TOP
 	 volTarget->AddNode(volPlBase, nreplica, new TGeoTranslation(0,0, zposition + EmulsionThickness + PlasticBaseThickness/2));
 }
@@ -204,7 +198,13 @@ void Box::AddEmulsionFilm(Double_t zposition, Int_t nreplica, TGeoVolume * volTa
 void Box::ConstructGeometry()
 {
     InitMedium("tantalum");
-    TGeoMedium *tantalum = gGeoManager->GetMedium("tantalum");       
+    TGeoMedium *tantalum = gGeoManager->GetMedium("tantalum");
+       
+    InitMedium("vacuum");
+    TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
+   
+    InitMedium("air");
+    TGeoMedium *air = gGeoManager->GetMedium("air");
 
     InitMedium("molybdenum");
     TGeoMedium *molybdenum = gGeoManager->GetMedium("molybdenum");
@@ -272,7 +272,8 @@ void Box::ConstructGeometry()
       else if (nrun > 6) TargetZ = zPasLead * NBricks; //all passive 
       else TargetZ = (NPlates[5] * AllPlateWidth + EmPlateWidth)*NBricks;          
 
-      TGeoVolumeAssembly *volTarget = new TGeoVolumeAssembly("volTarget");
+      TGeoBBox *Brick = new TGeoBBox("brick", TargetX/2, TargetY/2, TargetZ/2);
+      TGeoVolume *volTarget = new TGeoVolume("volTarget",Brick,vacuum);
       volTarget->SetLineColor(kCyan);
       volTarget->SetTransparency(1);
       
@@ -286,13 +287,12 @@ void Box::ConstructGeometry()
       volPasLead->SetLineColor(kRed);
       }
     
-      TGeoBBox *Passiveslab = new TGeoBBox("Passiveslab", EmulsionX/2, EmulsionY/2, PassiveSlabThickness/2);
-      TGeoVolume *volPassiveslab = new TGeoVolume("volPassiveslab",Passiveslab,lead);
-      if (ch1r6) volPassiveslab->SetMedium(tungsten);
-      volPassiveslab->SetTransparency(1);
-      volPassiveslab->SetLineColor(kGray);
+      TGeoBBox *Leadslab = new TGeoBBox("Leadslab", EmulsionX/2, EmulsionY/2, PassiveSlabThickness/2);
+      TGeoVolume *volLeadslab = new TGeoVolume("volLeadslab",Leadslab,lead);
+      volLeadslab->SetTransparency(1);
+      volLeadslab->SetLineColor(kGray);
       
-      Int_t nfilm = 1, nlead = 1, npassiveslab = 1;
+      Int_t nfilm = 1, nlead = 1, nleadslab = 1;
       Double_t zpoint = -TargetZ/2;
 
       for (Int_t irun = 0; irun < NBricks; irun++){ //irun is the index, nrun is the number of the configuration run
@@ -300,21 +300,21 @@ void Box::ConstructGeometry()
          
          if (nrun > 2) zpoint = zpoint + distPas2ECC;	  
 	 
-         for(Int_t n=0; n<NPlates[nrun-1]+1; n++) //adding emulsions
+         for(Int_t n=0; n<NPlates[nrun]+1; n++) //adding emulsions
 	    {
 	      AddEmulsionFilm(zpoint + n*AllPlateWidth, nfilm, volTarget, volEmulsionFilm, volEmulsionFilm2, volPlBase);
 	      nfilm++;
 	    }
            
-	 for(Int_t n=0; n<NPlates[nrun-1]; n++) //adding 1 mm lead plates
+	 for(Int_t n=0; n<NPlates[nrun]; n++) //adding 1 mm lead plates
 	    {
-              volTarget->AddNode(volPassiveslab, npassiveslab, new TGeoTranslation(0,0,zpoint + EmPlateWidth + PassiveSlabThickness/2 + n*AllPlateWidth));
-              npassiveslab++;
+              volTarget->AddNode(volLeadslab, nleadslab, new TGeoTranslation(0,0,zpoint + EmPlateWidth + PassiveSlabThickness/2 + n*AllPlateWidth));
+              nleadslab++;
 	    }	
-	 zpoint = zpoint + NPlates[nrun-1] *AllPlateWidth + EmPlateWidth;
+	 zpoint = zpoint + NPlates[nrun] *AllPlateWidth + EmPlateWidth;
 	}
 
-	else if (volPasLead != NULL) { //only passive layer of lead, first is skipped
+	else if (volPasLead != NULL && ((irun > 0) || (NBricks == 2))) { //only passive layer of lead, first is skipped
 	 volTarget->AddNode(volPasLead,nlead,new TGeoTranslation(0,0,zpoint + zPasLead/2));
 	 zpoint = zpoint + zPasLead;
          nlead++;
@@ -387,8 +387,9 @@ void Box::ConstructGeometry()
       }
       
       int index = 0;   
-     
-      TGeoVolumeAssembly *volTarget = new TGeoVolumeAssembly("volTarget");
+
+      TGeoBBox *Target = new TGeoBBox("Target", TargetX/2, TargetY/2, TargetZ/2); //for the moment I will use numbers instead of variables.
+      TGeoVolume *volTarget = new TGeoVolume("volTarget", Target, air);
       volTarget->SetTransparency(1);
 
       top->AddNode(volTarget,1,new TGeoTranslation(0,0,zBoxPosition-TargetZ/2));

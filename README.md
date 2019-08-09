@@ -17,42 +17,37 @@ All needed pre-requisites are provided by the FairSoft package, see below.
 Additionally for developers:
   * clang-format (to format code according to our style guide)
   * clang-tidy (to check coding conventions -- mostly naming rules which are not covered by `cpplint`)
- 
-## Build Instructions using CVMFS
 
-1. Download the FairShip software
+## Build Instructions, following [the tutorial given at the Nov'17 collab meeting](https://indico.cern.ch/event/663423/contributions/2760156/attachments/1555373/2445724/Ship-Soft-CollaborationMeetingNov2017.pdf)
+0. For a full installation go to step 3. If you work on lxplus, or on SLC6/CC7
+   and have access to `/cvmfs/ship.cern.ch`, and you only want to install FairShip, define enviroment variables:
+    ```bash
+    export SHIPBUILD=/cvmfs/ship.cern.ch/SHiPBuild
+    ```    
+
+1. Install FairShip
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
-    ```
-
-2. Make sure you can access the SHiP CVMFS Repository
+    cd FairShip
+    ./localBuild.sh
+    ```    
+2. Setup environment
     ```bash
-    ls /cvmfs/ship.cern.ch
-    ```
-3. Source the setUp script
+    source FairShipRun/config.sh
+    ```    
+
+3. For a full installation on any linux system:
     ```bash
-    source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh
-    ```
+    mkdir SHiPBuild; cd SHiPBuild
+    git clone https://github.com/ShipSoft/FairShip.git 
+    FairShip/aliBuild.sh
+    ```    
 
-4. Build the software using aliBuild
+4. Setup environment
     ```bash
-    aliBuild build FairShip --default fairship-2018 --always-prefer-system --config-dir $SHIPDIST
-    ```
-
-If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
-
-To load the FairShip environement, after you build the software you can simply use:
-
-5. Load the environment
-    ```bash
-    alienv enter FairShip/latest
-    ```
-
-However, this won't work if you are using HTCondor. In such case you can do:
-    ```bash
-    eval `alienv load FairShip/latest
-    ```
-
+    alibuild/alienv enter (--shellrc) FairShip/latest
+    ```    
+    
 ## Docker Instructions
 1. Build an docker image from a Dockerfile:
     ```bash
@@ -75,13 +70,13 @@ However, this won't work if you are using HTCondor. In such case you can do:
 
 ## Run Instructions
 
-Set up the bulk of the environment from CVMFS.
+Partial installation, step 1 of above :
 
 ```bash
-source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh
-```
+source FairShipRun/config.sh
+```    
 
-Load your local FairShip environment.
+If you have a full installation, step 3 of above:
 
 ```bash
 alibuild/alienv enter (--shellrc) FairShip/latest

@@ -14,9 +14,6 @@
 #pragma link C++ class MufluxSpectrometer+;
 #pragma link C++ class MufluxSpectrometerHit+;
 #pragma link C++ class MufluxSpectrometerPoint+;
-#pragma link C++ class SciFi+;
-#pragma link C++ class SciFiPoint+;
-#pragma link C++ class SciFiHit+;
 #pragma link C++ class MuonTagger+;
 #pragma link C++ class MuonTaggerPoint+;
 #pragma link C++ class MuonTaggerHit+;
@@ -27,7 +24,6 @@
 #pragma link C++ class ReProcessAbsorber+;
 #pragma link C++ class RPCTrack+;
 #pragma link C++ class MufluxReco+;
-#pragma link C++ class MillepedeCaller+;
 
 #endif
 

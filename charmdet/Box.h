@@ -80,7 +80,7 @@ public:
     Box(const Box&);
     Box& operator=(const Box&);
     
-    ClassDef(Box,3)
+    ClassDef(Box,1)
     
 private:
     
@@ -107,7 +107,6 @@ protected:
     Int_t InitMedium(const char* name);
 
     Bool_t fJulytarget; //Lead ECC vs SHiP ECC
-    Bool_t ch1r6; //special case, CH1 run with a tungsten target
     //Number of the simulated run
     Int_t nrun;
     

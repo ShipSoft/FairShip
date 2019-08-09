@@ -37,11 +37,9 @@ protected:
    virtual void Register() override;
 
 private:
-   uint16_t fPartitionId = 0x8100;
-   FairRootManager *fMan = nullptr;
-   TTree *tree = nullptr;
-   int fDavid = 0;
-   int fGoliath = 0;
+   uint16_t fPartitionId;
+   FairRootManager *fMan;
+   TTree *tree;
 
    ScalerUnpack(const ScalerUnpack &);
    ScalerUnpack &operator=(const ScalerUnpack &);

@@ -1,7 +1,6 @@
 #ifndef ONLINE_SHIPTDCSOURCE_H
 #define ONLINE_SHIPTDCSOURCE_H
 
-#include <map>
 #include "FairOnlineSource.h"
 #include "TObjArray.h"
 #include "TFile.h"
@@ -21,11 +20,6 @@ public:
    virtual Int_t ReadEvent(UInt_t = 0); // Read frame by frame
    virtual void Close();
    void FillEventHeader(FairEventHeader *feh);
-   inline void AddUnpacker(uint16_t partitionId, FairUnpack *unpacker)
-   {
-      fUnpackerMap[partitionId] = unpacker;
-      fUnpackers->Add(unpacker);
-   }
 
 protected:
    Bool_t Unpack(Int_t *data, Int_t size, uint16_t partitionId);
@@ -33,7 +27,6 @@ protected:
    TFile *fIn;
    unsigned char buffer[UINT16_MAX];
    Double_t fEventTime = 0;
-   std::map<uint16_t, FairUnpack *> fUnpackerMap{};
 
    TString fFilename;
 

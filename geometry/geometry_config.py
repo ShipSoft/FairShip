@@ -2,8 +2,7 @@ import shipunit as u
 import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
-# muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber 9=optimised with T4 as constraint, 8=requires config file
-#                      10=with field map for hadron absorber
+# muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
@@ -328,7 +327,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = 3.0*u.m + zGap
         c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
-    elif muShieldDesign == 9 or muShieldDesign == 10:
+    elif muShieldDesign == 9:
         c.muShield.Field = 1.7  # Tesla
         c.muShield.dZ1 = 0.35 * u.m + zGap
         c.muShield.dZ2 = 2.26 * u.m + zGap
@@ -356,7 +355,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = params[6]
         c.muShield.dZ8 = params[7]
         c.muShield.dXgap = 0.*u.m
-    if muShieldDesign in range(7, 11):
+    if muShieldDesign in range(7, 10):
         c.muShield.length = 2 * (
               c.muShield.dZ1 + c.muShield.dZ2 +
               c.muShield.dZ3 + c.muShield.dZ4 +
@@ -404,7 +403,6 @@ with ConfigRegistry.register_config("basic") as c:
     if muShieldDesign > 6:  c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield 
     else:                   c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
-    if muShieldDesign > 9:  c.hadronAbsorber.WithConstField =  True
 
     c.target               =  AttrDict(z=0*u.cm)
     c.targetOpt            =  targetOpt 
@@ -487,10 +485,10 @@ with ConfigRegistry.register_config("basic") as c:
             scale=1.
             c.EmuMagnet.WithConstField=False  #now loaded field map
             c.EmuMagnet.X = scale*2.2*u.m
-            c.EmuMagnet.Y = scale*4.0*u.m
+            c.EmuMagnet.Y = scale*3.6*u.m
             c.EmuMagnet.Z = 7.2*u.m
             c.EmuMagnet.BaseX = scale*c.EmuMagnet.X 
-            c.EmuMagnet.BaseY = scale*0.7*u.m
+            c.EmuMagnet.BaseY = scale*0.6*u.m
             c.EmuMagnet.BaseZ = scale*c.EmuMagnet.Z
             c.EmuMagnet.GapDown = 25*u.cm
             c.EmuMagnet.GapUp = 27*u.cm
@@ -499,12 +497,12 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.ColY = scale*c.EmuMagnet.Y - 2 *scale * c.EmuMagnet.BaseY #avoid overlapping between bases and columns
             c.EmuMagnet.ColZ = scale*c.EmuMagnet.Z
             c.EmuMagnet.CutLength = scale * 45*u.cm
-            c.EmuMagnet.CutHeight = scale * 144*u.cm
+            c.EmuMagnet.CutHeight = scale * 100*u.cm
             c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
-            c.EmuMagnet.CoilY = 50 *u.cm
+            c.EmuMagnet.CoilY = 40*u.cm
             c.EmuMagnet.Height1 = c.EmuMagnet.Y-2*c.EmuMagnet.BaseY
             c.EmuMagnet.Height2 = c.EmuMagnet.Height1-2*c.EmuMagnet.CoilY
-            c.EmuMagnet.Thickness = scale*40*u.cm
+            c.EmuMagnet.Thickness = scale*50*u.cm
             c.EmuMagnet.PillarX = 0.5*u.m
             c.EmuMagnet.PillarZ = 0.5*u.m
             c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
@@ -550,7 +548,7 @@ with ConfigRegistry.register_config("basic") as c:
         
 
    
-    #Parameters for tau muon detector
+    #Parameters for tau magnetic Spectrometer
     c.tauMudet = AttrDict(z=0*u.cm)
     if nuTauTargetDesign<=2:
 	c.tauMudet.NFe = 12
@@ -595,51 +593,34 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.B = 1.5 * u.tesla
     if nuTauTargetDesign==3:
         scaleMudet=1.
-	c.tauMudet.NFethick = 4 #upstream slabs, more thick
-        c.tauMudet.NFethin = 4 #downstream slabs, less thick
-    	c.tauMudet.NRpc= 8
-        c.tauMudet.NmuRpc = 3
-        
-        c.tauMudet.XFe = scaleMudet*1.900*u.m #layer dimensions, excluded supports
-        c.tauMudet.YFe = scaleMudet*3.600*u.m
-        c.tauMudet.ZFethick = 15.*u.cm
-        c.tauMudet.ZFethin = 10.* u.cm
-
-        c.tauMudet.XRpc = c.tauMudet.XFe
+	c.tauMudet.NFe = 22
+    	c.tauMudet.NRpc= 23
+        c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
+        c.tauMudet.Ytot = scaleMudet*4.9124968*u.m
+        c.tauMudet.deltax = 10* u.cm
+        c.tauMudet.deltay = 20* u.cm
+        c.tauMudet.XFe = c.tauMudet.Xtot
+        c.tauMudet.YFe = c.tauMudet.Ytot
+        c.tauMudet.ZFe = 5.*u.cm
+        c.tauMudet.XRpc = c.tauMudet.Xtot
         c.tauMudet.YRpc = c.tauMudet.YFe
-        c.tauMudet.ZRpc = 7.*u.cm
-        #support structure
-        c.tauMudet.UpperSupportX = 34 * u.cm
-        c.tauMudet.UpperSupportY = 34 * u.cm
-        c.tauMudet.LowerSupportX = 34 * u.cm
-        c.tauMudet.LowerSupportY = 34 * u.cm
-        c.tauMudet.LateralSupportX = 34 * u.cm
-        c.tauMudet.LateralSupportY = 34 * u.cm
-
-        c.tauMudet.Xtot = c.tauMudet.XFe + 2 * c.tauMudet.LateralSupportX#now we need to include also supports.
-        c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
-        c.tauMudet.deltax = 0* u.cm #size differences between MuonFilter and VetoTagger layers
-        c.tauMudet.deltay = 80* u.cm
-        c.tauMudet.Ztot = (c.tauMudet.NRpc+c.tauMudet.NmuRpc)*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
+        c.tauMudet.ZRpc = 2.*u.cm
+        c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFe*c.tauMudet.ZFe
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
-        #lateral cuts
-        c.tauMudet.CutHeight = 100 * u.cm
-        c.tauMudet.CutLength = 25 * u.cm
-        
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
-        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - 0.1*u.mm
-    c.tauMudet.XGas =  c.tauMudet.XRpc
+        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 + c.tauMudet.deltay/2  - 0.1*u.mm
+    c.tauMudet.XGas =  c.tauMudet.Xtot
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
-    c.tauMudet.XStrip =  c.tauMudet.XRpc
+    c.tauMudet.XStrip =  c.tauMudet.Xtot
     c.tauMudet.YStrip =  c.tauMudet.YRpc
     c.tauMudet.ZStrip = 0.05*u.mm
-    c.tauMudet.XPet =  c.tauMudet.XRpc
+    c.tauMudet.XPet =  c.tauMudet.Xtot
     c.tauMudet.YPet =  c.tauMudet.YRpc
     c.tauMudet.ZPet = 0.1*u.mm
-    c.tauMudet.XEle =  c.tauMudet.XRpc
+    c.tauMudet.XEle =  c.tauMudet.Xtot
     c.tauMudet.YEle =  c.tauMudet.YRpc
     c.tauMudet.ZEle = 1*u.mm
 

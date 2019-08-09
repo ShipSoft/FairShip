@@ -1,5 +1,3 @@
-
-
 #include "MufluxReco.h"
 #include <TROOT.h>
 #include <TChain.h>
@@ -21,8 +19,6 @@
 TVector3* parallelToZ = new TVector3(0., 0., 1.);
 TVector3* NewPosition = new TVector3(0., 0., 0.);
 std::vector<int> charmExtern = {4332,4232,4132,4232,4122,431,411,421};
-std::vector<int> beautyExtern = {5332,5232,5132,5232,5122,531,511,521};
-std::vector<int> muSources   = {221,223,333,113,331};
 // -----   Standard constructor   ------------------------------------------ 
 MufluxReco::MufluxReco() {}
 // -----   Standard constructor   ------------------------------------------ 
@@ -40,12 +36,8 @@ MufluxReco::MufluxReco(TTreeReader* t)
   MCTrack = 0;
   Digi_MuonTaggerHits = 0;
   cDigi_MufluxSpectrometerHits = 0;
-  MufluxSpectrometerPoints = 0;
   TTree* fChain = xSHiP->GetTree();
-  if (MCdata){
-    fChain->SetBranchAddress("MCTrack", &MCTrack, &b_MCTrack);
-    fChain->SetBranchAddress("MufluxSpectrometerPoint", &MufluxSpectrometerPoints, &b_MufluxSpectrometerPoints);
-  }
+  if (MCdata){fChain->SetBranchAddress("MCTrack", &MCTrack, &b_MCTrack);}
   fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
   fChain->SetBranchAddress("Digi_MufluxSpectrometerHits", &cDigi_MufluxSpectrometerHits, &b_Digi_MufluxSpectrometerHits);
   fChain->SetBranchAddress("Digi_MuonTaggerHits", &Digi_MuonTaggerHits, &b_Digi_MuonTaggerHits);
@@ -238,38 +230,6 @@ Bool_t MufluxReco::checkCharm(){
       if(std::find(charmExtern.begin(),charmExtern.end(),pdg)!=charmExtern.end()) {check=true;}
    }
    return check;
-}
-Int_t MufluxReco::checkDiMuon(){
-   Int_t mode = -1;
-   Int_t channel = -1;
-   std::vector<int> processed;
-   Double_t weight;
-   TH2D* h_weightVsSource=(TH2D*)(gDirectory->GetList()->FindObject("weightVsSource"));
-   for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
-      MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
-      Int_t i = hit->GetTrackID();
-      if (i<0){ continue;}
-      if(std::find(processed.begin(),processed.end(),i)!=processed.end()) { continue;}
-      processed.push_back(i);
-      ShipMCTrack* t = (ShipMCTrack*)MCTrack->At(i);
-      if (TMath::Abs(t->GetPdgCode() )!=13) {continue;}
-      ShipMCTrack* mo = (ShipMCTrack*)MCTrack->At(t->GetMotherId());
-      Int_t moID      = TMath::Abs( mo->GetPdgCode());
-      TString pName   = t->GetProcName();
-      if ( strcmp("Decay",pName) == 0){ channel = 1;}
-      if ( strcmp("Primary particle emission",pName) == 0){ channel = 1;}
-      if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 7;} // count dimuon channels separately
-      if(std::find( charmExtern.begin(),charmExtern.end(), moID)!=charmExtern.end())  {channel = 5;} // this will go wrong for charm from beauty
-      if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}  
-      if ( strcmp("Hadronic inelastic",pName) == 0){ channel = 2;}
-      if ( strcmp("Lepton pair production",pName) == 0){ channel = 3;}
-      if ( strcmp("Positron annihilation",pName) == 0){ channel = 4;}
-      if (channel != mode and mode>1) {return -2;} // for the moment, discard events with two processes, and one boosted
-      mode = channel;
-      weight = t->GetWeight();
-   }
-   h_weightVsSource->Fill(mode,weight);
-   return mode;
 }
 
 Bool_t MufluxReco::findSimpleEvent(Int_t nmin, Int_t nmax){
@@ -483,7 +443,7 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
     MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
     delete hit;
-    Int_t s=info[0]; Int_t v=info[4]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
+    Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
     if (trInfo->wL(n) <0.1 && trInfo->wR(n) <0.1){ continue;}
     if (v != 0){ 
        mStatistics["uv"].push_back(detID);
@@ -502,34 +462,6 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
  }
  return mStatistics;
 }
-Double_t MufluxReco::findTrueMomentum(TTree* sTree){
-   Double_t trueP = -1.;
-   if (findSimpleEvent(2,6)){
-     if (FitTracks->GetEntries()==1){
-      Double_t zmin = 1000.;
-      Int_t kMin = -1;
-      TrackInfo* ti = (TrackInfo*)TrackInfos->At(0);
-      for (Int_t k=0;k<ti->N();k++) {
-       if (ti->wL(k)<0.2 && ti->wR(k)<0.2){ continue;}
-       if (ti->detId(k) > 20000000){ continue;}
-       Double_t z = DTPositionsBot[ti->detId(k)][2];
-       if (z<zmin){
-         zmin = z;
-         kMin = ti->detId(k);
-       }
-      }
-      if (!(kMin<0)){ 
-       for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
-        MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
-        if (hit->GetDetectorID() == kMin) {
-         trueP = TMath::Sqrt(hit->GetPx()*hit->GetPx()+hit->GetPy()*hit->GetPy()+hit->GetPz()*hit->GetPz());
-         break;}
-      }
-     }
-    }
-   }
-   return trueP;
-}
 
 void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Int_t N = xSHiP->GetEntries(true);
@@ -538,33 +470,32 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  xSHiP->Restart();
  gROOT->cd();
  std::cout<< "fill trackKinematics: "<< N <<std::endl;
-
+/* TTreeReader framework cannot deal with unsplit TClonesArray, too bad 
+ TTreeReaderValue <TClonesArray> FitTracks(*xSHiP, "FitTracks");
+ TTreeReaderValue <TClonesArray> RPCTrackX(*xSHiP, "RPCTrackX");
+ TTreeReaderValue <TClonesArray> RPCTrackY(*xSHiP, "RPCTrackY");
+ TTreeReaderValue <TClonesArray> TrackInfos(*xSHiP, "TrackInfos");*/
  TH1D* h_Trscalers =  (TH1D*)(gDirectory->GetList()->FindObject("Trscalers"));
+ TH1D* h_chi2 =  (TH1D*)(gDirectory->GetList()->FindObject("chi2"));
+ TH1D* h_Nmeasurements = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurements"));
+ TH2D* h_ppt = (TH2D*)(gDirectory->GetList()->FindObject("p/pt"));
+ TH2D* h_ppx = (TH2D*)(gDirectory->GetList()->FindObject("p/px"));
+ TH2D* h_Absppx = (TH2D*)(gDirectory->GetList()->FindObject("p/Abspx"));
+ TH2D* h_xy = (TH2D*)(gDirectory->GetList()->FindObject("xy"));
+ TH2D* h_pxpy = (TH2D*)(gDirectory->GetList()->FindObject("pxpy"));
+ TH1D* h_TrackMult =  (TH1D*)(gDirectory->GetList()->FindObject("TrackMult"));
+ TH1D* h_TrackMultmu =  (TH1D*)(gDirectory->GetList()->FindObject("TrackMultmu"));
 
- std::map<TString,TH1D*> h1D;
- std::map<TString,TH2D*> h2D;
- std::vector<TString> h1names = {"chi2","Nmeasurements","TrackMult","trueMom","recoMom"};
- std::vector<TString> h2names = {"p/pt","p/px","p/Abspx","xy","pxpy","p1/p2","pt1/pt2","p1/p2s","pt1/pt2s","momResol",
-                                 "Fitpoints_u1","Fitpoints_v2","Fitpoints_x1","Fitpoints_x2","Fitpoints_x3","Fitpoints_x4"};
- std::vector<TString> tagged  = {"","mu"};
- std::vector<TString> Tsource  = {"","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8"};
+ TH1D* h_chi2mu =  (TH1D*)(gDirectory->GetList()->FindObject("chi2mu"));
+ TH1D* h_Nmeasurementsmu = (TH1D*)(gDirectory->GetList()->FindObject("Nmeasurementsmu"));
+ TH2D* h_pptmu = (TH2D*)(gDirectory->GetList()->FindObject("p/ptmu"));
+ TH2D* h_ppxmu = (TH2D*)(gDirectory->GetList()->FindObject("p/pxmu"));
+ TH2D* h_Absppxmu = (TH2D*)(gDirectory->GetList()->FindObject("p/Abspxmu"));
+ TH2D* h_xymu = (TH2D*)(gDirectory->GetList()->FindObject("xymu"));
+ TH2D* h_pxpymu = (TH2D*)(gDirectory->GetList()->FindObject("pxpymu"));
 
- std::vector<TString>::iterator its = Tsource.begin();
- while( its!=Tsource.end()){
-  std::vector<TString>::iterator itt = tagged.begin();
-  while( itt!=tagged.end()){
-   std::vector<TString>::iterator it1 = h1names.begin();
-   while( it1!=h1names.end()){
-    TString hname = *it1+*itt+*its; 
-    h1D[hname] = (TH1D*)(gDirectory->GetList()->FindObject(hname));
-    it1++;}
-   std::vector<TString>::iterator it2 = h2names.begin();
-   while( it2!=h2names.end()){
-    TString hname = *it2+*itt+*its;
-    h2D[hname] = (TH2D*)(gDirectory->GetList()->FindObject(hname));
-    it2++;}
-   itt++;}
-  its++;}
+ TH2D* h_p1p2 = (TH2D*)(gDirectory->GetList()->FindObject("p1/p2"));
+ TH2D* h_pt1pt2 = (TH2D*)(gDirectory->GetList()->FindObject("pt1/pt2"));
 
  Int_t nx = 0;
  while (nx<nMax){
@@ -576,18 +507,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    Int_t Ngoodmu = 0;
    if(Ntracks>0){ h_Trscalers->Fill(2);}
    std::vector<int> muonTaggedTracks;
-   TString source = "";
-   if (MCdata){ Int_t channel = checkDiMuon();
-         if (channel == 1){ source = "Decay";}
-         if (channel == 7){ source = "Di-muon P8";}
-         if (channel == 2){ source = "Hadronic inelastic";}
-         if (channel == 3){ source = "Lepton pair";}
-         if (channel == 4){ source = "Positron annihilation";}
-         if (channel == 5){ source = "charm";}
-         if (channel == 6){ source = "beauty";}
-   }
-   Bool_t fSource= kFALSE;
-   if ( strcmp("", source.Data())!=0 ){fSource=kTRUE;}
    for (Int_t k=0;k<Ntracks;k++) {
      genfit::Track* aTrack = (genfit::Track*)FitTracks->At(k);
      auto fitStatus   = aTrack->getFitStatus();
@@ -596,23 +515,6 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      if (!fitStatus->isFitConverged()){continue;}
      TrackInfo* info = (TrackInfo*)TrackInfos->At(k);
      StringVecIntMap hitsPerStation = countMeasurements(info);
-// for MC
-     if (MCdata){
-       std::map<TString,int> detectors = { {"u",0}, {"v",0}, {"x2",0}, {"x3",0}, {"x1",0},{"x4",0}};
-       std::map<TString, int>::iterator it;
-       bool failed = false;
-       for ( it = detectors.begin(); it != detectors.end(); it++ ){
-        for ( int m=0; m<hitsPerStation[it->first.Data()].size();m+=1){
-         float rnr = gRandom->Uniform();
-         float eff = effFudgeFac[it->first.Data()];
-         if (rnr < eff){detectors[it->first.Data()]+=1;}
-        }
-        if (detectors[it->first.Data()]<2){
-           failed = true;
-           break;}
-       }
-       if (failed){continue;}
-     }
      if (hitsPerStation["x1"].size()<2){ continue;}
      if (hitsPerStation["x2"].size()<2){ continue;}
      if (hitsPerStation["x3"].size()<2){ continue;}
@@ -624,48 +526,17 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      Float_t Px = fittedState.getMom().x();
      Float_t Py = fittedState.getMom().y();
      Float_t Pz = fittedState.getMom().z();
-     h1D["chi2"]->Fill(chi2);
-     h1D["Nmeasurements"]->Fill(fitStatus->getNdf());
-     if (fSource){
-        h1D["chi2"+source]->Fill(chi2);
-        h1D["Nmeasurements"+source]->Fill(fitStatus->getNdf());}
+     h_chi2->Fill(chi2);
+     h_Nmeasurements->Fill(fitStatus->getNdf());
      if (chi2 > chi2UL){ continue;}
      h_Trscalers->Fill(5);
+     h_ppt->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
+     h_ppx->Fill(P,Px);
+     h_Absppx->Fill(P,TMath::Abs(Px));
      auto pos = fittedState.getPos();
-     h2D["p/pt"]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-     h2D["p/px"]->Fill(P,Px);
-     h2D["p/Abspx"]->Fill(P,TMath::Abs(Px));
-     h2D["xy"]->Fill(pos[0],pos[1]);
-     h2D["pxpy"]->Fill(Px/Pz,Py/Pz);
-     if (fSource){
-      h2D["p/pt"+source]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-      h2D["p/px"+source]->Fill(P,Px);
-      h2D["p/Abspx"+source]->Fill(P,TMath::Abs(Px));
-      h2D["xy"+source]->Fill(pos[0],pos[1]);
-      h2D["pxpy"+source]->Fill(Px/Pz,Py/Pz);
-     }
-// record fitted points / station
-    h2D["Fitpoints_u1"]->Fill(P,hitsPerStation["u"].size());
-    h2D["Fitpoints_v2"]->Fill(P,hitsPerStation["v"].size());
-    h2D["Fitpoints_x1"]->Fill(P,hitsPerStation["x1"].size());
-    h2D["Fitpoints_x2"]->Fill(P,hitsPerStation["x2"].size());
-    h2D["Fitpoints_x3"]->Fill(P,hitsPerStation["x3"].size());
-    h2D["Fitpoints_x4"]->Fill(P,hitsPerStation["x4"].size());
-// mom resolution, only simple events, one track
-    if (MCdata){
-     Double_t trueMom = findTrueMomentum(sTree);
-     if (trueMom >0){
-      h1D["trueMom"]->Fill(trueMom);
-      h1D["recoMom"]->Fill(P);
-      h2D["momResol"]->Fill((P-trueMom)/trueMom,trueMom);
-      if (fSource){
-       h1D["trueMom"+source]->Fill(trueMom);
-       h1D["recoMom"+source]->Fill(P);
-       h2D["momResol"+source]->Fill((P-trueMom)/trueMom,trueMom);
-      }
-     }
-    }
-    if (P>5){Ngood+=1;}
+     h_xy->Fill(pos[0],pos[1]);
+     h_pxpy->Fill(Px/Pz,Py/Pz);
+     if (P>5){Ngood+=1;}
 // check for muon tag
      TVector3 posRPC; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
@@ -682,32 +553,22 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
         if (TMath::Abs(posRPC[1]-X)<cuts["muTrackMatchY"]){Y=kTRUE;}
      }
       if (X && Y) { // within ~3sigma  X,Y from mutrack
-        h1D["chi2mu"]->Fill(chi2);
-        h1D["Nmeasurementsmu"]->Fill(fitStatus->getNdf());
-        h2D["p/ptmu"]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-        h2D["p/pxmu"]->Fill(P,Px);
-        h2D["p/Abspxmu"]->Fill(P,TMath::Abs(Px));
-        h2D["xymu"]->Fill(pos[0],pos[1]);
-        h2D["pxpymu"]->Fill(Px/Pz,Py/Pz);
-        if (fSource){
-         h2D["p/ptmu"+source]->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
-         h2D["p/pxmu"+source]->Fill(P,Px);
-         h2D["p/Abspxmu"+source]->Fill(P,TMath::Abs(Px));
-         h2D["xymu"+source]->Fill(pos[0],pos[1]);
-         h2D["pxpymu"+source]->Fill(Px/Pz,Py/Pz);
-        }
+        h_chi2mu->Fill(chi2);
+        h_Nmeasurementsmu->Fill(fitStatus->getNdf());
+        h_pptmu->Fill(P,TMath::Sqrt(Px*Px+Py*Py));
+        h_ppxmu->Fill(P,Px);
+        h_Absppxmu->Fill(P,TMath::Abs(Px));
+        h_xymu->Fill(pos[0],pos[1]);
+        h_pxpymu->Fill(Px/Pz,Py/Pz);
         if (P>5){
          Ngoodmu+=1;
          muonTaggedTracks.push_back(k);
         }
       }
      }
-     h1D["TrackMult"]->Fill(Ngood);
-     h1D["TrackMultmu"]->Fill(Ngoodmu);
-     if (fSource){
-      h1D["TrackMult"+source]->Fill(Ngood);
-      h1D["TrackMultmu"+source]->Fill(Ngoodmu);
-     }
+     h_TrackMult->Fill(Ngood);
+     h_TrackMultmu->Fill(Ngoodmu);
+
      if (muonTaggedTracks.size()==2){
       genfit::Track* aTrack = (genfit::Track*)FitTracks->At(muonTaggedTracks[0]);
       genfit::Track* bTrack = (genfit::Track*)FitTracks->At(muonTaggedTracks[1]);
@@ -721,22 +582,9 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
       Float_t Px = fittedState.getMom().x();
       Float_t Py = fittedState.getMom().y();
       Float_t Pz = fittedState.getMom().z();
-      if (fittedStateb.getCharge()*fittedState.getCharge()<0){
-       h2D["p1/p2"]->Fill(P,Pb);
-       h2D["pt1/pt2"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
-       if (fSource){
-         h2D["p1/p2"+source]->Fill(P,Pb);
-         h2D["pt1/pt2"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
-       }
-      }else{
-       h2D["p1/p2s"]->Fill(P,Pb);
-       h2D["pt1/pt2s"]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
-       if (fSource){
-         h2D["p1/p2s"+source]->Fill(P,Pb);
-         h2D["pt1/pt2s"+source]->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
-       }
+      h_p1p2->Fill(P,Pb);
+      h_pt1pt2->Fill(TMath::Sqrt(Px*Px+Py*Py),TMath::Sqrt(Pbx*Pbx+Pby*Pby));
      }
-   }
  }
 }
 
@@ -762,15 +610,6 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
     std::cout<< "sortHits: unphysical detector ID "<<hit->GetDetectorID()<<std::endl;
     hit->Dump();
    }else{
-     if (MCdata){
-      float rnr = gRandom->Uniform();
-      TString station;
-      if (info[4]==0){station = 'x';station += info[0];}
-      if (info[4]==1){station = 'u';}
-      if (info[4]==2){station = 'v';}
-      float eff = effFudgeFac[station.Data()];
-      if (rnr > eff){continue;}
-     }
     spectrHitsSorted[info[4]][info[0]][info[2]*2+info[3]].push_back(hit);
   }
  }

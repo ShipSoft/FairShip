@@ -221,7 +221,8 @@ void MuonTagger::ConstructGeometry()
   
   TGeoVolume *top= gGeoManager->GetTopVolume(); 
 
-  TGeoVolumeAssembly *VMuonBox = new TGeoVolumeAssembly("VMuonBox");
+  TGeoBBox *MuonBox = new TGeoBBox(BoxX/2,BoxY/2,BoxZ/2);
+  TGeoVolume *VMuonBox = new TGeoVolume("VMuonBox", MuonBox,air);
   VMuonBox->SetTransparency(1);
   Double_t goliathcentre_to_beam = 178.6; //mm   
   Double_t walldisalignment = 15; //mm, all walls but one were disaligned with respect to the nominal beam position

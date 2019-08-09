@@ -13,9 +13,6 @@ with ConfigRegistry.register_config("basic") as c:
     if "Setup" not in globals(): #muon flux or charm xsec measurement
       Setup = 0    
 
-    if "cTarget" not in globals():
-      cTarget = 3
-
     if Setup == 0: 
      c.MufluxSpectrometer.muflux = True
     else: 
@@ -60,10 +57,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.EmX = 12.5 * u.cm
     c.Box.EmY = 9.9 * u.cm
     c.Box.PBTh = 0.0175 * u.cm
-    if cTarget == 16:
-     c.Box.PasSlabTh = 0.09 * u.cm #passive slab in ECC (run with tungsten)
-    else:
-     c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July 2018 measurement, molybdenum/tungsten for SHiP target replica)
+    c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July measurement, molybdenum/tungsten for SHiP target replica
     c.Box.EPlW = 2* c.Box.EmTh + c.Box.PBTh
     c.Box.AllPW = c.Box.PasSlabTh + c.Box.EPlW
     c.Box.BrX = 12.9 *u.cm
@@ -105,7 +99,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.gausbeam = True
     c.Box.Julytarget = True
     c.Box.GapPostTargetTh = 0.73 * u.cm #distance between end of the emulsion target and start of pixel box (Pixel origin)     
-    c.Box.RunNumber =  cTarget #run configuration for charm
+    c.Box.RunNumber =  3 #run configuration for charm
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
     c.decayVolume            =  AttrDict(z=0*u.cm)
@@ -287,53 +281,16 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.DX = 2.*u.m
     c.MufluxSpectrometer.DY = 1.6*u.m
     c.MufluxSpectrometer.DZ = 11.72*u.cm
-
-    #Adding survey results for charm measurement (Daniel) 
-    
-    c.MufluxSpectrometer.SurveyCharm_T3ax = 876.075*u.mm 
-    c.MufluxSpectrometer.SurveyCharm_T3ay = 101.6*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3az = 15269*u.mm+70*u.mm-8896.09*u.mm #todo: check th 70mm (probably forgt bolt and alignement sphere before)
-    c.MufluxSpectrometer.SurveyCharm_T3bx = 372.1*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3by = 98.875*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3bz = 15338.475*u.mm-8896.09*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3cx = -323.425*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3cy = 97.85*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3cz = 15337.625*u.mm-8896.09*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3dx = -829.3*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3dy = 97.7*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3dz = 15337.6*u.mm-8896.09*u.mm
-
-    c.MufluxSpectrometer.SurveyCharm_T3tx = 13.8*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3ty = 649.85*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T3tz = 15606.1*u.mm-8896.09*u.mm
-
-    c.MufluxSpectrometer.SurveyCharm_T4ax = 886.15*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4ay = 105.35*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4az = 16572.225*u.mm-200*u.mm-8896.09*u.mm #-200 mm because of wrong sign in first calcualtion
-    c.MufluxSpectrometer.SurveyCharm_T4bx = 351.9*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4by = 102.45*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4bz = 16570.8*u.mm-200*u.mm-8896.09*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4cx = -341.575*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4cy = 100.225*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4cz = 16571.625*u.mm-200*u.mm-8896.09*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4dx = -845.8*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4dy = 99.05*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4dz = 16571.3*u.mm-200*u.mm-8896.09*u.mm
-
-    c.MufluxSpectrometer.SurveyCharm_T4tx = 13.6*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4ty = 675*u.mm
-    c.MufluxSpectrometer.SurveyCharm_T4tz = 16102.45*u.mm-8896.09*u.mm
     
     #These parameters are used only by the charm detector ---   
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
-    c.Spectrometer.D1Long = 4 * u.cm;
+    c.Spectrometer.D1Long = 4 * u.cm;   
+    c.PixelModules.DimZSi = 0.0200 * u.cm   
+    c.PixelModules.D1short = 3.36 * u.cm / 2.;
+    c.PixelModules.D1long = 4 * u.cm;    
     c.Spectrometer.SX = c.Spectrometer.DX
-    c.Spectrometer.SY = c.Spectrometer.DY
-    c.PixelModules.DimZSi = 0.0400 * u.cm
-    c.PixelModules.D1short = 3.36 * u.cm / 2.
-    c.PixelModules.D1long = 4.09 * u.cm
-
-
+    c.Spectrometer.SY = c.Spectrometer.DY    
+           
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     #module position naming: "axis"Si"Telescope number"
     
@@ -342,103 +299,58 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []
     #Module 0
-    c.PixelModules.xSi.append(1.5391*u.cm)
-    c.PixelModules.ySi.append(0.0011*u.cm)
-    c.PixelModules.zSi.append(-0.13*u.cm)
+    c.PixelModules.xSi.append(1.53912)
+    c.PixelModules.ySi.append(-0.002332)
+    c.PixelModules.zSi.append(-0.13)
     #Module 1
-    c.PixelModules.xSi.append(-0.2291*u.cm)
-    c.PixelModules.ySi.append(0.0036*u.cm)
-    c.PixelModules.zSi.append(0.52*u.cm)
-    #Module 2 (half with positive x values did not work)
-    c.PixelModules.xSi.append(0.7049*u.cm)
-    c.PixelModules.ySi.append(-0.7855*u.cm)
-    c.PixelModules.zSi.append(2.412*u.cm)
-    #Module 3
-    c.PixelModules.xSi.append(0.7054*u.cm)
-    c.PixelModules.ySi.append(0.9086*u.cm)
-    c.PixelModules.zSi.append(3.09*u.cm)
-    #Module 4
-    c.PixelModules.xSi.append(1.5496*u.cm)
-    c.PixelModules.ySi.append(0.0528*u.cm)
-    c.PixelModules.zSi.append(5.17*u.cm)
-    #Module 5
-    c.PixelModules.xSi.append(-0.2216*u.cm)
-    c.PixelModules.ySi.append(0.0790*u.cm)
-    c.PixelModules.zSi.append(5.79*u.cm)
-    #Module 6
-    c.PixelModules.xSi.append(0.6908*u.cm)
-    c.PixelModules.ySi.append(-0.6959*u.cm)
-    c.PixelModules.zSi.append(7.77*u.cm)
-    #Module 7
-    c.PixelModules.xSi.append(0.7023*u.cm)
-    c.PixelModules.ySi.append(0.9547*u.cm)
-    c.PixelModules.zSi.append(8.46*u.cm)
-    #Module 8
-    c.PixelModules.xSi.append(1.5827*u.cm)
-    c.PixelModules.ySi.append(0.1024*u.cm)
-    c.PixelModules.zSi.append(10.462*u.cm)
-    #Module 9
-    c.PixelModules.xSi.append(-0.2092*u.cm)
-    c.PixelModules.ySi.append(0.1036*u.cm)
-    c.PixelModules.zSi.append(11.17*u.cm)
-    #Module 10
-    c.PixelModules.xSi.append(0.6942*u.cm)
-    c.PixelModules.ySi.append(-0.7252*u.cm)
-    c.PixelModules.zSi.append(13.162*u.cm)
-    #Module 11
-    c.PixelModules.xSi.append(0.6832*u.cm)
-    c.PixelModules.ySi.append(0.9279*u.cm)
-    c.PixelModules.zSi.append(13.85*u.cm)
-
-    #SciFi Modules
-    c.SciFi = AttrDict(z = 0*u.cm)
-    #mother volume dimensions
-    c.SciFi.DX = 50*u.cm 
-    c.SciFi.DY = 50*u.cm
-    c.SciFi.DZ = 28.07 * u.cm #as difference between positions of SF_DHBR and x of SF_UHTL in the Survey document
-
-    c.SciFi.nstations = 8  #number of stations (currently sensitive volumes)
-    #dimensions of each station
-    c.SciFi.StationDimX = 40 * u.cm
-    c.SciFi.StationDimY = 40 * u.cm
-    c.SciFi.StationDimZ = 0.0200 * u.cm
-    #SciFi position values (referred to the start of SciFi mother volume)
-    c.SciFi.xSi = []
-    c.SciFi.ySi = []
-    c.SciFi.zSi = []
-    zscifigap = c.SciFi.DZ/c.SciFi.nstations - c.SciFi.StationDimZ #distance between center of two stations, for the moment equally spaced
-    #Module 0
-    c.SciFi.xSi.append(0.)
-    c.SciFi.ySi.append(0.)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2)
-    #Module 1
-    c.SciFi.xSi.append(0.0)
-    c.SciFi.ySi.append(0.0)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + zscifigap)
+    c.PixelModules.xSi.append(-0.229076)
+    c.PixelModules.ySi.append(0.005328)
+    c.PixelModules.zSi.append(0.52)
     #Module 2
-    c.SciFi.xSi.append(0.0)
-    c.SciFi.ySi.append(0.0)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 2* zscifigap)
+    c.PixelModules.xSi.append(0.704924)
+    c.PixelModules.ySi.append(0.808437)
+    c.PixelModules.zSi.append(2.412)
     #Module 3
-    c.SciFi.xSi.append(0.0)
-    c.SciFi.ySi.append(0.0)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 3*zscifigap)
-    #Module 4
-    c.SciFi.xSi.append(0.0)
-    c.SciFi.ySi.append(0.0)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 4*zscifigap)
+    c.PixelModules.xSi.append(0.705433)
+    c.PixelModules.ySi.append(-0.879224)
+    c.PixelModules.zSi.append(3.09)
+    #Module 4 (Didn't work)
+    c.PixelModules.xSi.append(1.54963)
+    c.PixelModules.ySi.append(-0.003912)
+    c.PixelModules.zSi.append(5.17)
     #Module 5
-    c.SciFi.xSi.append(0.0)
-    c.SciFi.ySi.append(0.0)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 5*zscifigap)
+    c.PixelModules.xSi.append(-0.221577)
+    c.PixelModules.ySi.append(-0.023944)
+    c.PixelModules.zSi.append(5.79)
     #Module 6
-    c.SciFi.xSi.append(0.0)
-    c.SciFi.ySi.append(0.0)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 6*zscifigap)
+    c.PixelModules.xSi.append(0.690749)
+    c.PixelModules.ySi.append(0.769728)
+    c.PixelModules.zSi.append(7.77)
     #Module 7
-    c.SciFi.xSi.append(0.0)
-    c.SciFi.ySi.append(0.0)
-    c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 7*zscifigap)
+    c.PixelModules.xSi.append(0.702302)
+    c.PixelModules.ySi.append(-0.874356)
+    c.PixelModules.zSi.append(8.46)
+    #Module 8
+    c.PixelModules.xSi.append(1.58271)
+    c.PixelModules.ySi.append(-0.0030432)
+    c.PixelModules.zSi.append(10.462)
+    #Module 9
+    c.PixelModules.xSi.append(-0.209171)
+    c.PixelModules.ySi.append(0.002488)
+    c.PixelModules.zSi.append(11.17)
+    #Module 10
+    c.PixelModules.xSi.append(0.694199)
+    c.PixelModules.ySi.append(0.850237)
+    c.PixelModules.zSi.append(13.162)
+    #Module 11
+    c.PixelModules.xSi.append(0.683245)
+    c.PixelModules.ySi.append(-0.79636)
+    c.PixelModules.zSi.append(13.85)
+    
+    c.Spectrometer.DSciFi1X = 40 * u.cm;
+    c.Spectrometer.DSciFi1Y = 40 * u.cm;
+    c.Spectrometer.DSciFi2X = 40 * u.cm;
+    c.Spectrometer.DSciFi2Y = 40 * u.cm;  
 
     c.Spectrometer.Bvalue = 1 * u.tesla;
 
@@ -455,17 +367,18 @@ with ConfigRegistry.register_config("basic") as c:
                   
     c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
-    c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi    
-
+    c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi
+    
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
-    #position of mother volumes
     c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh
     c.PixelModules.zBox = c.Spectrometer.zBox
-    PixelToSciFi = 469.05 #position of SciFi center defined with respect to distance to start of PixelBox, point PIXEL_UR-Measured in the survey document
-    c.SciFi.zBox = c.PixelModules.zBox - c.PixelModules.DimZpixelbox/2.  + 469.05
+    #position of SciFis 
+    distGoliathSciFi1 = 10*u.cm
+    c.Spectrometer.Scifidist = 5 * u.cm   
+    c.Spectrometer.zSciFi1 = c.Spectrometer.zBox + c.PixelModules.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + distGoliathSciFi1 +  c.Spectrometer.DZ/2.
+    c.Spectrometer.zSciFi2 = c.Spectrometer.zSciFi1 + c.Spectrometer.DZ/2. + c.Spectrometer.Scifidist + c.Spectrometer.DZ/2.
 
-#   Need to add SciFi
     #Muon Filter
     
     c.MuonTagger = AttrDict(z = 0*u.cm)
