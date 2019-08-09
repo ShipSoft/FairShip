@@ -735,7 +735,7 @@ class ShipDigiReco:
   z1 = stop.z()
   for aDigi in self.digiStraw:
     key+=1
-    if not aDigi.isValid(): continue
+    if not aDigi.isValid: continue
     detID = aDigi.GetDetectorID()
 # don't use hits from straw veto
     station = int(detID/10000000)
@@ -760,7 +760,7 @@ class ShipDigiReco:
   z1 = stop.z()
   for aDigi in self.digiStraw:
      key+=1
-     if not aDigi.isValid(): continue
+     if not aDigi.isValid: continue
      detID = aDigi.GetDetectorID()
 # don't use hits from straw veto
      station = int(detID/10000000)

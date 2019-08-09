@@ -1,5 +1,5 @@
 import ROOT, atexit, sys, os
-from pythia8_conf_utils import addHNLtoROOT
+from pythia8_conf import addHNLtoROOT
 from pythia8darkphoton_conf import addDPtoROOT
 
 # Try to check if config has been executed...

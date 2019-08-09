@@ -52,11 +52,14 @@ def brMesonToMesonDP(mass,epsilon,mumPdg,dauPdg,doprint=False):
     mDaughterMeson = PDG.GetParticle(dauPdg).Mass()
     if (doprint==True): print "Mass of mother %d meson is %3.3f"%(mumPdg,mMeson)
     if (doprint==True): print "Mass of daughter %d meson is %3.3f"%(dauPdg,mDaughterMeson)
-    fac1 = (mMeson**2-mass**2-mDaughterMeson**2)**2
-    fac2 = ROOT.TMath.Sqrt((mMeson**2-mass**2+mDaughterMeson**2)**2 - 4*mMeson**2*mDaughterMeson**2)
-    fac3 = pow(mMeson**2-mass**2,3)
-    massfactor = fac1*fac2/fac3
-    if (mass<(mMeson-mDaughterMeson)): br = epsilon**2*mesonBRtoPhoton(mumPdg,doprint)*massfactor
+    fac1 = pow(mMeson**2.-mDaughterMeson**2.,-3.)
+    fac2 = pow((mass**2.-(mMeson+mDaughterMeson)**2.)*(mass**2.-(mMeson-mDaughterMeson)**2.,1.5)
+    #fac1 = (mMeson**2-mass**2-mDaughterMeson**2)**2
+    #fac2 = ROOT.TMath.Sqrt((mMeson**2-mass**2+mDaughterMeson**2)**2 - 4*mMeson**2*mDaughterMeson**2)
+    #fac3 = pow(mMeson**2-mass**2,3)
+    #massfactor = fac1*fac2/fac3
+    massfactor = fac1*fac2
+    if (mass<(mMeson-mDaughterMeson)): br = (epsilon**2.)*mesonBRtoPhoton(mumPdg,doprint)*massfactor
     else: br = 0
     if (doprint==True): print "Branching ratio of %d meson to DP is %.8g"%(mumPdg,br)
     return br
@@ -78,11 +81,11 @@ def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
 def qcdprodRate(mass,epsilon,doprint=False):
     xs = 0
     if (mass > 3):
-        xs = math.exp(-5.673-0.8869*mass)
+        xs = math.exp(-5.928-0.8669*mass)
     elif (mass > 1.4):
-        xs = math.exp(-3.802-1.532*mass)
+        xs = math.exp(-4.1477-1.4745*mass)
     else:
-        xs = 0.0586-0.09037*mass + 0.0360743*mass*mass
+        xs = 0
     return xs*epsilon*epsilon
 
 def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
@@ -95,4 +98,3 @@ def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
     else:
         print "Unknown production mode! Choose among pbrem, meson or qcd."
         return 1
-

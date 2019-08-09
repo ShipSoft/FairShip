@@ -6,14 +6,10 @@ import proton_bremsstrahlung
 
 # Boundaries for production in meson decays
 # mass of the meson - mass of other decay product!!
-pi0Start = 0.
-pi0Stop = 0.13498
-etaStart = 0.13498
-etaStop = 0.54786
-omegaStart = 0.54786
-omegaStop = 0.64767 # 0.78265-0.13498
-eta1Start = 0.64767
-eta1Stop = 0.95778
+pi0mass    = 0.1349770
+etamass    = 0.547862
+omegamass  = 0.78265
+eta1mass   = 0.95778
 
 
 def addDPtoROOT(pid=9900015 ,m = 0.2, g=4.866182e-04):
@@ -42,23 +38,26 @@ def readFromAscii():
        n+=1
     return h
 
-def manipulatePhysics(mass, P8gen, cf):
-    if (pi0Start < mass < pi0Stop):
+def manipulatePhysics(motherMode, mass, P8gen, cf):
+    print motherMode
+    if motherMode=='pi0' and pi0mass-mass>0.0000001:
         # use pi0 -> gamma A'
         selectedMum = 111
         P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
         cf.write('P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")\n')
-    elif etaStart < mass < etaStop:
+    elif motherMode == 'eta' and etamass-mass>0.000001:
         # use eta -> gamma A'
+        #print "eta"
         selectedMum = 221
         P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")
         cf.write('P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")\n')
-    elif omegaStart < mass < omegaStop:
+    elif motherMode=="omega" and omegamass-mass>0.00001:
         # use omega -> pi0 A'
+        #print "omega"
         selectedMum = 223
         P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")
         cf.write('P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")\n')
-    elif eta1Start < mass < eta1Stop:
+    elif motherMode=='eta1' and eta1mass-mass>0.00001:
         # use eta' -> gamma A'
         selectedMum = 331
         P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")
@@ -67,13 +66,13 @@ def manipulatePhysics(mass, P8gen, cf):
         #P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
         cf.write('P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")\n')
     else:
-        print "ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop)
+        #print "ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop)
         return -1
     return selectedMum
 
 
 
-def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
+def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False):
     # configure pythia8 for Ship usage
     debug=True
     if debug: cf=open('pythia8_darkphotonconf.txt','w')
@@ -184,7 +183,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
     
     if inclusive=="meson":
         #change meson decay to dark photon depending on mass
-	selectedMum = manipulatePhysics(mass, P8gen, cf)
+	selectedMum = manipulatePhysics(motherMode, mass, P8gen, cf)
         print 'selected mum is : %d'%selectedMum
         if (selectedMum == -1): return 0
 
