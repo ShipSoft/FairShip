@@ -52,6 +52,7 @@ def brMesonToMesonDP(mass,epsilon,mumPdg,dauPdg,doprint=False):
     mDaughterMeson = PDG.GetParticle(dauPdg).Mass()
     if (doprint==True): print "Mass of mother %d meson is %3.3f"%(mumPdg,mMeson)
     if (doprint==True): print "Mass of daughter %d meson is %3.3f"%(dauPdg,mDaughterMeson)
+    #BR is fixed after the review
     fac1 = pow(mMeson**2.-mDaughterMeson**2.,-3.)
     fac2 = pow((mass**2.-(mMeson+mDaughterMeson)**2.)*(mass**2.-(mMeson-mDaughterMeson)**2.,1.5)
     #fac1 = (mMeson**2-mass**2-mDaughterMeson**2)**2

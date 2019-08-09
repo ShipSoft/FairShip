@@ -39,6 +39,7 @@ def readFromAscii():
     return h
 
 def manipulatePhysics(motherMode, mass, P8gen, cf):
+    #changes of the table, now it is deleted and we have each meson mother for each meson production
     print motherMode
     if motherMode=='pi0' and pi0mass-mass>0.0000001:
         # use pi0 -> gamma A'
@@ -72,7 +73,7 @@ def manipulatePhysics(motherMode, mass, P8gen, cf):
 
 
 
-def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False):
+def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False):#mothermode is added
     # configure pythia8 for Ship usage
     debug=True
     if debug: cf=open('pythia8_darkphotonconf.txt','w')

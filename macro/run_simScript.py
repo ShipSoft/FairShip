@@ -75,7 +75,7 @@ try:
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
                                    "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend=",\
-                                   "production-couplings=","decay-couplings=","dry-run","MotherMode="])
+                                   "production-couplings=","decay-couplings=","dry-run","MotherMode="])#mothermode is added here.
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -206,7 +206,7 @@ for o, a in opts:
         if o in ("--dry-run",):
             dryrun = True
         if o in ("-MM","--MotherMode",):
-            motherMode = a
+            motherMode = a#mothermode is here
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
@@ -318,7 +318,7 @@ if simEngine == "Pythia8":
 	  P8gen.SetDPId(4900023)
   else:
 	  P8gen.SetDPId(9900015)
-  import pythia8darkphoton_conf
+  import pythia8darkphoton_conf#mothermode is given here
   passDPconf = pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,motherMode,deepCopy)
   if (passDPconf!=1): sys.exit()
  if HNL or RPVSUSY or DarkPhoton: 
