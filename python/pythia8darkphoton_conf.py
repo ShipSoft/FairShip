@@ -41,24 +41,24 @@ def readFromAscii():
 def manipulatePhysics(motherMode, mass, P8gen, cf):
     #changes of the table, now it is deleted and we have each meson mother for each meson production
     print motherMode
-    if motherMode=='pi0' and pi0mass-mass>0.0000001:
+    if motherMode=='pi0' and pi0mass-mass>=0.0000001:
         # use pi0 -> gamma A'
         selectedMum = 111
         P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
         cf.write('P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")\n')
-    elif motherMode == 'eta' and etamass-mass>0.000001:
+    elif motherMode == 'eta' and etamass-mass>=0.000001:
         # use eta -> gamma A'
         #print "eta"
         selectedMum = 221
         P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")
         cf.write('P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")\n')
-    elif motherMode=="omega" and omegamass-mass>0.00001:
+    elif motherMode=="omega" and omegamass-mass>=0.00001:
         # use omega -> pi0 A'
         #print "omega"
         selectedMum = 223
         P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")
         cf.write('P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")\n')
-    elif motherMode=='eta1' and eta1mass-mass>0.00001:
+    elif motherMode=='eta1' and eta1mass-mass>=0.00001:
         # use eta' -> gamma A'
         selectedMum = 331
         P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")
