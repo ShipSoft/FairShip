@@ -1,5 +1,5 @@
 # simple vertex reconstruction with errors
-import ROOT,sys,os
+import ROOT,sys,os,math
 import shipunit as u
 import rootUtils as ut
 import numpy as np
@@ -87,7 +87,7 @@ class Task:
    xx  = fittedTracks[tr].getFittedState()
    pid   = xx.getPDG()
    if not pidProton and abs(pid) == 2212:
-     pid = int(ROOT.TMath.Sign(211,pid))
+     pid = int(math.copysign(211,pid))
    rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
    state = ROOT.genfit.StateOnPlane(rep)
    rep.setPosMom(state,xx.getPos(),xx.getMom())
