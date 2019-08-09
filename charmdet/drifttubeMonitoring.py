@@ -5416,7 +5416,7 @@ def checkMCEffTuning():
  h['leg'+t].Draw()
  h[t].Print('MCcomparison-Efficiency-Tuning.png')
  h[t].Print('MCcomparison-Efficiency-Tuning.pdf')
-def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels",withOverFlow=True):
+def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels",withOverFlow=True,withDisplay=True):
  # 1GeV mbias,      1.806 Billion PoT 
  # 1GeV charm,     10.21 Billion PoT,  10 files
  # 10GeV MC,       66.02 Billion PoT 
@@ -5627,6 +5627,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
      h['I-'+i+'p/pt'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Pt>x')
      h['I-'+i+'p/pt'+x+source+'_y'].Scale(1./POTdata)
 # start with pz
+   if not withDisplay: return
    tc = 1
    rc = h[t].cd(tc)
    rc.SetLogy(1)

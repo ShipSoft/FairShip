@@ -1,4 +1,4 @@
-import ROOT,os
+import ROOT,os,time
 import rootUtils as ut
 from argparse import ArgumentParser
 cuts = {}
@@ -31,46 +31,28 @@ parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files com
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
 parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default="")
 parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="withDeadChannels") # other versions: "0", "multHits", "noDeadChannels"
-parser.add_argument("-A", "--with1GeV", dest="with1GeV", help="1GeV MC", default=True)  
-parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC", default=True)  
-parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC", default=True)  
+parser.add_argument("-A", "--with1GeV", dest="with1GeV", help="1GeV MC", default="True")  
+parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC", default="True")  
+parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC", default="True")  
 
 options = parser.parse_args()
 
 MCType    =  options.MCType
-with1GeV  = options.with1GeV
-withCharm = options.withCharm
-with10GeV = options.with10GeV
+with1GeV  =  options.with1GeV  == "True"
+withCharm =  options.withCharm == "True"
+with10GeV =  options.with10GeV == "True"
 
-
+Nfiles = 500
 if not options.listOfFiles:
  sTreeData = ROOT.TChain('tmuflux')
  path = gPath +"RUN_8000_2403/"
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319240_20180723_160408_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319310_20180723_160422_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319400_20180723_160440_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319470_20180723_160454_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319560_20180723_160512_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319635_20180723_160527_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319725_20180723_160545_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319795_20180723_160559_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519319885_20180723_160617_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312030_20180723_154006_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312220_20180723_154044_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312405_20180723_154121_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312590_20180723_154158_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312775_20180723_154235_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519312960_20180723_154312_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313150_20180723_154350_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313335_20180723_154427_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313520_20180723_154504_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313705_20180723_154541_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519313890_20180723_154618_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314080_20180723_154656_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314265_20180723_154733_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314450_20180723_154810_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314635_20180723_154847_RT.root")
- sTreeData.Add(path+"ntuple-SPILLDATA_8000_0519314820_20180723_154924_RT.root")
+ countFiles=[]
+ for x in os.listdir(path):
+  if not x.find('ntuple-SPILL')<0: countFiles.append(x)
+ for x in countFiles:
+  sTreeData.Add(path+"/"+x)
+  Nfiles-=1
+  if Nfiles==0: break
 
  sTreeMC = ROOT.TChain('tmuflux')
  if host=="ubuntu":
@@ -744,11 +726,12 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
    h[t].Print('True-Reco'+k+'.png')
    h[t].Print('True-Reco'+k+'.pdf')
 Debug=False
-def mufluxReco(sTree):
+def mufluxReco(sTree,h):
  ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
  ut.bookHist(h,'RPCResX/Y','RPC residuals',200,0.,200.,200,0.,200.)
  for x in ['','mu']:
   for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"]:
+   ut.bookHist(h,'p/pt-0'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
    ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
    ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
    ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
@@ -765,18 +748,24 @@ def mufluxReco(sTree):
    ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
    ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
    ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+   ut.bookHist(h,'RPCMatch'+x+s,'RPC matching',100,0.,10.,100,0.,10.)
+   ut.bookHist(h,'R'+x+s,'rpc match',100,0.,10.,100,0.,500.)
+   ut.bookHist(h,'Chi2/DoF'+x+s,'Chi2/DoF',100,0.,5.,100,0.,500.)
+   ut.bookHist(h,'DoF'+x+s,     'DoF'     ,30,0.5,30.5,100,0.,500.)
    if x != '' or s != '':continue
    ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
    ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
    ut.bookHist(h,'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
    ut.bookHist(h,'recoPz/Abspx'+x+s,'reco MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
    ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
-
+#
  MCdata = False
  if sTree.FindBranch("MCRecoDT"): MCdata = True
-
+#
+ Ntotal = sTree.GetEntries()
  for n in range(sTree.GetEntries()):
    rc = sTree.GetEvent(n)
+   if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
    h['Trscalers'].Fill(1)
    if len(sTree.GoodTrack)>0: h['Trscalers'].Fill(2)
    tchannel = sTree.channel
@@ -803,13 +792,18 @@ def mufluxReco(sTree):
        if int(sTree.GoodTrack[k]/10)%2==1: muTagged = True
      if sTree.GoodTrack[k]>999:  clone = True
      if clone: continue
+     R = (sTree.Dely[k]/3.)**2+(sTree.Delx[k]/1.5)**2
      p=ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
+     rc = h['R'].Fill(R,p.Mag())
+     rc = h['RPCMatch'].Fill(sTree.Delx[k],sTree.Dely[k])
      h["p/pt"].Fill(p.Mag(),p.Pt())
      h["p/px"].Fill(p.Mag(),p.x())
      h["p/Abspx"].Fill(p.Mag(),abs(p.x()))
      h["pz/Abspx"].Fill(p.z(),abs(p.x()))
      h["xy"].Fill(sTree.x[k],sTree.y[k])
      h["pxpy"].Fill(p.x()/p.z(),p.y()/p.z())
+     h['Chi2/DoF'].Fill(sTree.Chi2[k],p.Mag())
+     h['DoF'].Fill(sTree.nDoF[k],p.Mag())
      if p.Mag()>300. and Debug: 
         occ = sTree.stationOcc[1]+sTree.stationOcc[2]+sTree.stationOcc[5]+sTree.stationOcc[6]
         print n, p.Mag(),occ,sTree.GoodTrack[k],sTree.Chi2[k],sTree.nDoF[k]
@@ -820,6 +814,9 @@ def mufluxReco(sTree):
       h["pz/Abspx"+source].Fill(p.z(),abs(p.x()))
       h["xy"+source].Fill(sTree.x[k],sTree.y[k])
       h["pxpy"+source].Fill(p.x()/p.z(),p.y()/p.z())
+      h['R'+source].Fill(R,p.Mag())
+      h['Chi2/DoF'+source].Fill(sTree.Chi2[k],p.Mag())
+      h['DoF'+source].Fill(sTree.nDoF[k],p.Mag())
      h['RPCResX/Y'].Fill(sTree.Delx[k],sTree.Dely[k])
      if (muTaggedX): # within ~3sigma  X from mutrack
         h["p/pxmu"].Fill(p.Mag(),p.x())
@@ -830,21 +827,31 @@ def mufluxReco(sTree):
          h["p/Abspxmu"+source].Fill(p.Mag(),abs(p.x()))
          h["pz/Abspxmu"+source].Fill(p.z(),abs(p.x()))
      if (muTagged): #  within ~3sigma  X,Y from mutrack
-        muonTaggedTracks.append(k)
-        h["p/ptmu"].Fill(p.Mag(),p.Pt())
-        h["p/pxymu"].Fill(p.Mag(),p.x())
-        h["p/Abspxymu"].Fill(p.Mag(),abs(p.x()))
-        h["pz/Abspxymu"].Fill(p.z(),abs(p.x()))
-        h["xymu"].Fill(sTree.x[k],sTree.y[k])
-        h["pxpymu"].Fill(p.x()/p.z(),p.y()/p.z())
-        if source != '':
-         h["p/ptmu"+source].Fill(p.Mag(),p.Pt())
-         h["p/pxymu"+source].Fill(p.Mag(),p.x())
-         h["p/Abspxymu"+source].Fill(p.Mag(),abs(p.x()))
-         h["pz/Abspxymu"+source].Fill(p.z(),abs(p.x()))
-         h["xymu"+source].Fill(sTree.x[k],sTree.y[k])
-         h["pxpymu"+source].Fill(p.x()/p.z(),p.y()/p.z())
-
+        h["p/pt-0mu"].Fill(p.Mag(),p.Pt())
+        #if R<5:   # 1 was not good, 10 reduced almost nothing
+        # if sTree.Dely[k]<3 and sTree.Delx[k]<1 and sTree.Chi2[k]<0.7: reduced event rate by 70% too much!
+        if sTree.Chi2[k]<0.7:
+         muonTaggedTracks.append(k)
+         h["p/ptmu"].Fill(p.Mag(),p.Pt())
+         h["p/pxymu"].Fill(p.Mag(),p.x())
+         h["p/Abspxymu"].Fill(p.Mag(),abs(p.x()))
+         h["pz/Abspxymu"].Fill(p.z(),abs(p.x()))
+         h["xymu"].Fill(sTree.x[k],sTree.y[k])
+         h["pxpymu"].Fill(p.x()/p.z(),p.y()/p.z())
+         h['Rmu'].Fill(R,p.Mag())
+         h['Chi2/DoFmu'].Fill(sTree.Chi2[k],p.Mag())
+         h['DoFmu'].Fill(sTree.nDoF[k],p.Mag())
+         if source != '':
+          h["p/ptmu"+source].Fill(p.Mag(),p.Pt())
+          h["p/pxymu"+source].Fill(p.Mag(),p.x())
+          h["p/Abspxymu"+source].Fill(p.Mag(),abs(p.x()))
+          h["pz/Abspxymu"+source].Fill(p.z(),abs(p.x()))
+          h["xymu"+source].Fill(sTree.x[k],sTree.y[k])
+          h["pxpymu"+source].Fill(p.x()/p.z(),p.y()/p.z())
+          h['Rmu'+source].Fill(R,p.Mag())
+          h['Chi2/DoFmu'+source].Fill(sTree.Chi2[k],p.Mag())
+          h['DoFmu'+source].Fill(sTree.nDoF[k],p.Mag())
+#
      if len(muonTaggedTracks)==2:
       a,b=muonTaggedTracks[0],muonTaggedTracks[1]
       pA=ROOT.TVector3(sTree.Px[a],sTree.Py[a],sTree.Pz[a])
@@ -867,14 +874,14 @@ def mufluxReco(sTree):
        trueMom = ROOT.TVector3(sTree.MCRecoDTpx[0],sTree.MCRecoDTpy[0],sTree.MCRecoDTpz[0])
        h["trueMom"].Fill(trueMom.Mag(),trueMom.Pt())
        h["recoMom"].Fill(p.Mag(),p.Pt())
-       h["truePz/Abspx"].Fill(trueMom[2],TMath::Abs(trueMom[0]))
-       h["recoPz/Abspx"].Fill(p[2],TMath::Abs(p[0]))
+       h["truePz/Abspx"].Fill(trueMom[2],ROOT.TMath.Abs(trueMom[0]))
+       h["recoPz/Abspx"].Fill(p[2],ROOT.TMath.Abs(p[0]))
        h["momResol"].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag())
        if source != '':
         h["trueMom"+source].Fill(trueMom.Mag(),trueMom.Pt());
         h["recoMom"+source].Fill(p.Mag(),p.Pt());
-        h["truePz/Abspx"+source].Fill(trueMom[2],TMath::Abs(trueMom[0]));
-        h["recoPz/Abspx"+source].Fill(p[2],TMath::Abs(p[0]));
+        h["truePz/Abspx"+source].Fill(trueMom[2],ROOT.TMath.Abs(trueMom[0]));
+        h["recoPz/Abspx"+source].Fill(p[2],ROOT.TMath.Abs(p[0]));
         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
 
 def plotOccupancy(sTree):
@@ -886,6 +893,85 @@ def plotOccupancy(sTree):
      p=ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
      occ = sTree.stationOcc[1]+sTree.stationOcc[2]+sTree.stationOcc[5]+sTree.stationOcc[6]
      rc=h['upStreamOcc'].Fill(occ,p.Mag())
+
+myExpo = ROOT.TF1('expo','abs([0])*exp(-abs([1]*x))+abs([2])*exp(-abs([3]*x))+[4]',5)
+myExpo.SetParName(0,'Signal1')
+myExpo.SetParName(1,'tau1')
+myExpo.SetParName(2,'Signal2')
+myExpo.SetParName(3,'tau2')
+myExpo.SetParName(4,'const')
+
+def fitExpo(h,hname):
+ myExpo.SetParameter(0,12.)
+ myExpo.SetParameter(1,-0.027)
+ myExpo.FixParameter(2,0.)
+ myExpo.FixParameter(3,-0.030)
+ myExpo.SetParameter(4,1.)
+ rc = h[hname].Fit(myExpo,'S','',250.,500.)
+ fitresult = rc.Get()
+ back = fitresult.Parameter(4)
+ hnameb=hname+'_backsubtr'
+ h[hnameb]= h[hname].Clone(hnameb)
+ for n in range(1,h[hname].GetNbinsX()+1):
+   h[hnameb].SetBinContent(n,h[hname].GetBinContent(n)-back)
+
+def studyGhosts():
+ sTree = sTreeMC
+ h = hMC
+ ut.bookHist(h,'gf',             'ghost fraction',100,0.,100.,100,0.,500.)
+ ut.bookHist(h,'gftrue',         'ghost fraction',100,0.,100.,100,0.,500.)
+ ut.bookHist(h,'gfDiff',         'ghost fraction vs reco - true mom',100,0.,100.,500,0.,500.)
+ ut.bookHist(h,'RPCMatch',       'RPC matching no ghost',100,0.,10.,100,0.,10.)
+ ut.bookHist(h,'RPCMatch_ghosts','RPC matching ghost>33',100,0.,10.,100,0.,10.)
+ ut.bookHist(h,'R','rpc match',100,0.,100.,100,0.,10.)
+ ut.bookHist(h,'Chi2/DoF','Chi2/DoF',100,0.,100.,100,0.,5.)
+ ut.bookHist(h,'DoF','DoF',100,0.,100.,30,0.5,30.5)
+ for n in range(sTree.GetEntries()):
+  if n%500000==0:
+    curFile = sTree.GetCurrentFile().GetName()
+    tmp = curFile.split('/')
+    print "now at event ",n,tmp[len(tmp)-2],'/',tmp[len(tmp)-1],time.ctime()
+  rc = sTree.GetEvent(n)
+  if not sTreeMC.FindBranch("MCghostfraction") : continue
+  for k in range(sTree.nTr):
+    muTagged  = False
+    muTaggedX = False
+    clone     = False
+    if sTree.GoodTrack[k]<0: continue
+    if sTree.GoodTrack[k]%2==1:
+       muTaggedX = True
+       if int(sTree.GoodTrack[k]/10)%2==1: muTagged = True
+    if sTree.GoodTrack[k]>999:  clone = True
+    if clone: continue
+    if not muTagged: continue
+    gf    = sTree.MCghostfraction[k]*100
+    R = (sTree.Dely[k]/3.)**2+(sTree.Delx[k]/1.5)**2
+    rc =   h['Chi2/DoF'].Fill(gf,sTree.Chi2[k])
+    rc = h['DoF'].Fill(gf,sTree.nDoF[k])
+    rc = h['R'].Fill(gf,R)
+    # if R>5: continue
+    if gf<1:  
+       rc =   h['RPCMatch'].Fill(sTree.Delx[k],sTree.Dely[k])
+    if gf>33: 
+       rc =   h['RPCMatch_ghosts'].Fill(sTree.Delx[k],sTree.Dely[k])
+    p     =ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
+    pTrue =ROOT.TVector3(sTree.MCTruepx[k],sTree.MCTruepy[k],sTree.MCTruepz[k])
+    rc    = h['gfDiff'].Fill(gf,p.Mag() - pTrue.Mag())
+    rc    = h['gftrue'].Fill(gf, pTrue.Mag())
+    rc    = h['gf'].Fill(gf,p.Mag() )
+ h['P']       =h['gf'].ProjectionY('P')
+ h['Ptrue']       =h['gftrue'].ProjectionY('Ptrue')
+ h['Ptrue'].SetLineColor(ROOT.kMagenta)
+ for x in ['gf','gftrue','Chi2/DoF','R','DoF']:
+  if x.find('true')>0: h[x].SetLineColor(ROOT.kGreen)
+  else:   h[x].SetLineColor(ROOT.kBlue)
+  h[x+'_perfect']      =h[x].ProjectionY(x+'_perfect',1,1)
+  h[x+'_ghosts']       =h[x].ProjectionY(x+'_ghosts',33,100)
+  h[x+'_ghosts'].SetLineColor(ROOT.kRed)
+ h['gf_perfect'].SetTitle('perfect;P [GeV/c];N/5GeV')
+ h['gf_perfect'].SetLineColor(ROOT.kGreen)
+ h['gf_ghosts'].SetTitle('ghost > 33;P [GeV/c];N/5GeV')
+ ut.writeHists(h,'ghostStudy.root')
 
 def debug():
  Nstat = {}
