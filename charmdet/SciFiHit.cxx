@@ -104,7 +104,7 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   }
 
   //translation from z = 0 to start of the box
-  z = z + scifiboxcenter[2] - scifiboxdz;
+  //z = z + scifiboxcenter[2] - scifiboxdz;
 
   v.SetXYZ(x,y,z);
 
