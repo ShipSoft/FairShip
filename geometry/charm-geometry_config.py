@@ -60,7 +60,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.EmX = 12.5 * u.cm
     c.Box.EmY = 9.9 * u.cm
     c.Box.PBTh = 0.0175 * u.cm
-    c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July measurement, molybdenum/tungsten for SHiP target replica
+    if cTarget == 16:
+     c.Box.PasSlabTh = 0.09 * u.cm #passive slab in ECC (run with tungsten)
+    else:
+     c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July 2018 measurement, molybdenum/tungsten for SHiP target replica)
     c.Box.EPlW = 2* c.Box.EmTh + c.Box.PBTh
     c.Box.AllPW = c.Box.PasSlabTh + c.Box.EPlW
     c.Box.BrX = 12.9 *u.cm
@@ -326,9 +329,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.D1Long = 4 * u.cm;
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY
-    c.PixelModules.DimZSi = 0.0200 * u.cm
+    c.PixelModules.DimZSi = 0.0400 * u.cm
     c.PixelModules.D1short = 3.36 * u.cm / 2.
-    c.PixelModules.D1long = 4 * u.cm
+    c.PixelModules.D1long = 4.09 * u.cm
 
 
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
@@ -339,53 +342,53 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []
     #Module 0
-    c.PixelModules.xSi.append(1.53912)
-    c.PixelModules.ySi.append(-0.002332)
-    c.PixelModules.zSi.append(-0.13)
+    c.PixelModules.xSi.append(1.5391*u.cm)
+    c.PixelModules.ySi.append(0.0011*u.cm)
+    c.PixelModules.zSi.append(-0.13*u.cm)
     #Module 1
-    c.PixelModules.xSi.append(-0.229076)
-    c.PixelModules.ySi.append(0.005328)
-    c.PixelModules.zSi.append(0.52)
-    #Module 2
-    c.PixelModules.xSi.append(0.704924)
-    c.PixelModules.ySi.append(0.808437)
-    c.PixelModules.zSi.append(2.412)
+    c.PixelModules.xSi.append(-0.2291*u.cm)
+    c.PixelModules.ySi.append(0.0036*u.cm)
+    c.PixelModules.zSi.append(0.52*u.cm)
+    #Module 2 (half with positive x values did not work)
+    c.PixelModules.xSi.append(0.7049*u.cm)
+    c.PixelModules.ySi.append(-0.7855*u.cm)
+    c.PixelModules.zSi.append(2.412*u.cm)
     #Module 3
-    c.PixelModules.xSi.append(0.705433)
-    c.PixelModules.ySi.append(-0.879224)
-    c.PixelModules.zSi.append(3.09)
-    #Module 4 (Didn't work)
-    c.PixelModules.xSi.append(1.54963)
-    c.PixelModules.ySi.append(-0.003912)
-    c.PixelModules.zSi.append(5.17)
+    c.PixelModules.xSi.append(0.7054*u.cm)
+    c.PixelModules.ySi.append(0.9086*u.cm)
+    c.PixelModules.zSi.append(3.09*u.cm)
+    #Module 4
+    c.PixelModules.xSi.append(1.5496*u.cm)
+    c.PixelModules.ySi.append(0.0528*u.cm)
+    c.PixelModules.zSi.append(5.17*u.cm)
     #Module 5
-    c.PixelModules.xSi.append(-0.221577)
-    c.PixelModules.ySi.append(-0.023944)
-    c.PixelModules.zSi.append(5.79)
+    c.PixelModules.xSi.append(-0.2216*u.cm)
+    c.PixelModules.ySi.append(0.0790*u.cm)
+    c.PixelModules.zSi.append(5.79*u.cm)
     #Module 6
-    c.PixelModules.xSi.append(0.690749)
-    c.PixelModules.ySi.append(0.769728)
-    c.PixelModules.zSi.append(7.77)
+    c.PixelModules.xSi.append(0.6908*u.cm)
+    c.PixelModules.ySi.append(-0.6959*u.cm)
+    c.PixelModules.zSi.append(7.77*u.cm)
     #Module 7
-    c.PixelModules.xSi.append(0.702302)
-    c.PixelModules.ySi.append(-0.874356)
-    c.PixelModules.zSi.append(8.46)
+    c.PixelModules.xSi.append(0.7023*u.cm)
+    c.PixelModules.ySi.append(0.9547*u.cm)
+    c.PixelModules.zSi.append(8.46*u.cm)
     #Module 8
-    c.PixelModules.xSi.append(1.58271)
-    c.PixelModules.ySi.append(-0.0030432)
-    c.PixelModules.zSi.append(10.462)
+    c.PixelModules.xSi.append(1.5827*u.cm)
+    c.PixelModules.ySi.append(0.1024*u.cm)
+    c.PixelModules.zSi.append(10.462*u.cm)
     #Module 9
-    c.PixelModules.xSi.append(-0.209171)
-    c.PixelModules.ySi.append(0.002488)
-    c.PixelModules.zSi.append(11.17)
+    c.PixelModules.xSi.append(-0.2092*u.cm)
+    c.PixelModules.ySi.append(0.1036*u.cm)
+    c.PixelModules.zSi.append(11.17*u.cm)
     #Module 10
-    c.PixelModules.xSi.append(0.694199)
-    c.PixelModules.ySi.append(0.850237)
-    c.PixelModules.zSi.append(13.162)
+    c.PixelModules.xSi.append(0.6942*u.cm)
+    c.PixelModules.ySi.append(-0.7252*u.cm)
+    c.PixelModules.zSi.append(13.162*u.cm)
     #Module 11
-    c.PixelModules.xSi.append(0.683245)
-    c.PixelModules.ySi.append(-0.79636)
-    c.PixelModules.zSi.append(13.85)
+    c.PixelModules.xSi.append(0.6832*u.cm)
+    c.PixelModules.ySi.append(0.9279*u.cm)
+    c.PixelModules.zSi.append(13.85*u.cm)
 
     #SciFi Modules
     c.SciFi = AttrDict(z = 0*u.cm)

@@ -27,6 +27,7 @@ Set(SRCS
     RPCUnpack.cxx
     ScalerUnpack.cxx
     PixelUnpack.cxx
+    SciFiUnpack.cxx
     DummyUnpack.cxx
 )
 

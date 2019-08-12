@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "ShipTdcSource.h"
 #include "FairLogger.h"
 #include "FairEventHeader.h"
@@ -104,16 +105,12 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
 
 Bool_t ShipTdcSource::Unpack(Int_t *data, Int_t size, uint16_t partitionId)
 {
-
-   for (TObject *item : *fUnpackers) {
-      auto unpacker = dynamic_cast<ShipUnpack *>(item);
-      if (unpacker->GetPartition() == partitionId) {
-         return unpacker->DoUnpack(data, size);
-      }
+   try {
+      return fUnpackerMap.at(partitionId)->DoUnpack(data, size);
+   } catch (const std::out_of_range &oor) {
+      LOG(WARNING) << "ShipTdcSource: Failed to find suitable unpacker." << FairLogger::endl;
+      return kFALSE;
    }
-
-   LOG(WARNING) << "ShipTdcSource: Failed to find suitable unpacker." << FairLogger::endl;
-   return kFALSE;
 }
 
 void ShipTdcSource::FillEventHeader(FairEventHeader *feh)
