@@ -684,7 +684,6 @@ class ShipDigiReco:
      for aMCPoint in self.sTree.vetoPoint:
        key+=1
        detID=aMCPoint.GetDetectorID()
-       if not detID>100000: continue  # not a LiSc or plastic detector
        Eloss=aMCPoint.GetEnergyLoss()
        if not ElossPerDetId.has_key(detID): 
         ElossPerDetId[detID]=0
@@ -699,8 +698,7 @@ class ShipDigiReco:
        aHit.SetTDC(min( tOfFlight[seg] ) + self.sTree.t0 )
        if self.digiSBT.GetSize() == index: 
           self.digiSBT.Expand(index+1000)
-       if seg<999999 and ElossPerDetId[seg]<0.045:    aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
-       if seg>999999 and ElossPerDetId[seg]<0.001:    aHit.setInvalid()  # precise threshold for plastic to be determined 
+       if ElossPerDetId[seg]<0.045:    aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
        self.digiSBT[index] = aHit
        v = ROOT.std.vector('int')()
        for x in listOfVetoPoints[seg]:
