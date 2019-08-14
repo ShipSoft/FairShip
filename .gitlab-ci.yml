@@ -7,7 +7,7 @@ build:
   variables:
     GIT_CLONE_PATH: '$CI_BUILDS_DIR/FairShip/'
   before_script:
-    - source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh
+    - source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
     - cd ..
   script:
     - aliBuild -c $SHIPDIST --default fairship build FairShip --always-prefer-system --debug
@@ -20,7 +20,7 @@ build&test:
   variables:
     GIT_CLONE_PATH: '$CI_BUILDS_DIR/FairShip'
   before_script:
-    - source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh
+    - source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
     - cd ..
     - aliBuild -c $SHIPDIST --default fairship build FairShip --always-prefer-system --debug
     - eval `alienv load FairShip/latest`
