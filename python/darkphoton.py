@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import division
+from builtins import object
+from past.utils import old_div
 import math
 import os
 import ROOT as r
@@ -15,9 +19,9 @@ hGeV = 6.58211928*pow(10.,-16)* pow(10.,-9) # no units or it messes up!!
 #utilities
 # sigma(e+e- -> hadrons) / sigma(e+e- -> mu+mu-)
 
-class DarkPhoton:
+class DarkPhoton(object):
     "dark photon setup"
-    
+
     def __init__(self, mass, eps):
         self.mDarkPhoton = mass
         self.epsilon = eps
@@ -64,7 +68,7 @@ class DarkPhoton:
         #ecm = math.sqrt(s)
         ecm = s
         if ecm>=10.29:
-            print 'Warning! Asking for interpolation beyond 10.29 GeV: not implemented, needs extending! Taking value at 10.29 GeV'
+            print('Warning! Asking for interpolation beyond 10.29 GeV: not implemented, needs extending! Taking value at 10.29 GeV')
             result=float(self.PdgR.Eval(10.29))
         elif ecm>=self.dataEcm[0]:
             result = float(self.PdgR.Eval(ecm))
@@ -77,21 +81,21 @@ class DarkPhoton:
         """ Dark photon decay width into leptons, in GeV (input short name of lepton family) """
         ml = mass(lepton)
         #print 'lepton %s mass %.3e'%(lepton,ml)
-        
+
         constant = (1./3.) * alphaQED * self.mDarkPhoton * pow(self.epsilon, 2.)
         if 2.*ml < self.mDarkPhoton:
-            rad = math.sqrt( 1. - (4.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton) )
+            rad = math.sqrt( 1. - old_div((4.*ml*ml),(self.mDarkPhoton*self.mDarkPhoton)) )
         else:
             rad = 0.
-            
-        par = 1. + (2.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton)
+
+        par = 1. + old_div((2.*ml*ml),(self.mDarkPhoton*self.mDarkPhoton))
         tdw=math.fabs(constant*rad*par)
         #print 'Leptonic decay width to %s is %.3e'%(lepton,tdw)
         return tdw
-    
+
     def leptonicBranchingRatio(self,lepton):
-        return self.leptonicDecayWidth(lepton) / self.totalDecayWidth()
-        
+        return old_div(self.leptonicDecayWidth(lepton), self.totalDecayWidth())
+
     def hadronicDecayWidth(self):
         """ Dark photon decay into hadrons """
         """(mumu)*R"""
@@ -99,10 +103,10 @@ class DarkPhoton:
         tdw=gmumu*self.Ree_interp(self.mDarkPhoton)
         #print 'Hadronic decay width is %.3e'%(tdw)
         return tdw;
-    
+
     def hadronicBranchingRatio(self):
-        return self.hadronicDecayWidth() / self.totalDecayWidth()
-    
+        return old_div(self.hadronicDecayWidth(), self.totalDecayWidth())
+
     def totalDecayWidth(self): # mDarkPhoton in GeV
         """ Total decay width in GeV """
         #return hGeV*c / cTau(mDarkPhoton, epsilon)
@@ -110,19 +114,19 @@ class DarkPhoton:
                + self.leptonicDecayWidth('mu-')
                + self.leptonicDecayWidth('tau-')
                + self.hadronicDecayWidth())
-        
+
         #print 'Total decay width %e'%(tdw)
-        
+
         return tdw
 
     def cTau(self): # decay length in meters, dark photon mass in GeV
         """ Dark Photon lifetime in cm"""
-        ctau=hGeV*ccm/self.totalDecayWidth()
+        ctau=old_div(hGeV*ccm,self.totalDecayWidth())
         #print "ctau dp.py %.3e"%(ctau) 
         return ctau #GeV/MeV conversion
-    
+
     def lifetime(self):
-        return cTau()/ccm
+        return old_div(cTau(),ccm)
 
     def findBranchingRatio(self,decayString):
         br = 0.
@@ -131,27 +135,27 @@ class DarkPhoton:
         elif   decayString == 'A -> tau- tau+': br = self.leptonicBranchingRatio('tau-')
         elif   decayString == 'A -> hadrons': br = self.hadronicBranchingRatio()
         else:
-            print 'findBranchingRatio ERROR: unknown decay %s'%decayString
+            print('findBranchingRatio ERROR: unknown decay %s'%decayString)
             quit()
-            
+
         return br
 
     def allowedChannels(self):
-        print "Allowed channels for dark photon mass = %3.3f"%self.mDarkPhoton
+        print("Allowed channels for dark photon mass = %3.3f"%self.mDarkPhoton)
         allowedDecays = {'A -> hadrons':'yes'}
         if self.mDarkPhoton > 2.*mass('e-'):
             allowedDecays.update({'A -> e- e+':'yes'})
-            print "allowing decay to e"
+            print("allowing decay to e")
         if self.mDarkPhoton > 2.*mass('mu-'):
             allowedDecays.update({'A -> mu- mu+':'yes'})
-            print "allowing decay to mu"
+            print("allowing decay to mu")
         if self.mDarkPhoton > 2.*mass('tau-'):
             allowedDecays.update({'A -> tau- tau+':'yes'})
-            print "allowing decay to tau"
-                        
+            print("allowing decay to tau")
+
         return allowedDecays
-                    
-                            
+
+
     def scaleNEventsIncludingHadrons(self,n):
         """ Very simple patch to take into account A' -> hadrons """
         brh = self.hadronicBranchingRatio()
@@ -161,9 +165,9 @@ class DarkPhoton:
             visible_frac = 1.
         else:
             visible_frac = 2./3.
-    
+
         increase = brh*visible_frac
         #print increase
         return n*(1. + increase)
-            
-            
+
+

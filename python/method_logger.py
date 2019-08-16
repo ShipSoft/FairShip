@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from builtins import str
+from builtins import object
 from functools import wraps
 import sys
 import six # For compatibility with both Python 2 and 3

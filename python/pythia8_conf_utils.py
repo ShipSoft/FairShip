@@ -1,4 +1,9 @@
 from __future__ import print_function
+from __future__ import division
+from builtins import next
+from builtins import str
+from builtins import range
+from past.utils import old_div
 import os
 import sys
 import re
@@ -25,24 +30,24 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
     maxsumbr=0.0
     sumbrs={}
     for histoname in histograms: 
-       item = histoname.split('_') 
-       lepton = item[len(item)-1]
-       meson = item[0]
-       coupling=couplings[1]
-       try:
-           sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
-       except:
-           sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
-    print(sumbrs.values())
+        item = histoname.split('_') 
+        lepton = item[len(item)-1]
+        meson = item[0]
+        coupling=couplings[1]
+        try:
+            sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
+        except:
+            sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
+    print(list(sumbrs.values()))
     maxsumbr=max(sumbrs.values())
     return maxsumbr
 
 def gettotalbrrpvsusy(h,histograms,mass,couplings):
     totalbr=0.0 
     for histoname in histograms: 
-       item = histoname.split('_') 
-       coupling=couplings[1]
-       totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
+        item = histoname.split('_') 
+        coupling=couplings[1]
+        totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
     return totalbr
 
 def make_particles_stable(P8gen, above_lifetime):
@@ -189,7 +194,7 @@ def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6):
     top_level_particles = get_top_level_particles(decay_chains)
     for particle in top_level_particles:
         my_total_br = compute_total_br(particle, decay_chains)
-        remainder = 1 - my_total_br / max_total_br
+        remainder = 1 - old_div(my_total_br, max_total_br)
         assert(remainder > -epsilon)
         assert(remainder < 1 + epsilon)
         if remainder > epsilon:

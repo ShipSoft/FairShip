@@ -26,7 +26,11 @@
 #
 # ==================================================================
 """
+from __future__ import print_function
+from __future__ import division
 
+from past.utils import old_div
+from builtins import object
 import math
 import ROOT, os
 import shipunit as u
@@ -59,7 +63,7 @@ def lifetime(particle):
     tPart = pdg.GetParticle(particle)
     return tPart.Lifetime()
 
-class CKMmatrix():
+class CKMmatrix(object):
     """
     CKM matrix, from http://pdg.lbl.gov/2017/reviews/rpp2016-rev-ckm-matrix.pdf
     """
@@ -74,7 +78,7 @@ class CKMmatrix():
         self.Vts = 4.0e-02
         self.Vtb = 0.999
 
-class constants():
+class constants(object):
     """
     Store some constants useful for HNL physics
     """
@@ -90,7 +94,7 @@ class constants():
                             'phi':0.229*u.GeV,
                             'D_s+':0.249*u.GeV,
                             'D*_s+':0.315*u.GeV} # decay constants f_h of pseudoscalar and vector mesons
-        self.GF = 1.166379e-05/(u.GeV*u.GeV) # Fermi's constant (GeV^-2)
+        self.GF = old_div(1.166379e-05,(u.GeV*u.GeV)) # Fermi's constant (GeV^-2)
         self.s2thetaw = 0.23126 # square sine of the Weinberg angle
         self.heV = 6.58211928*pow(10.,-16) # no units or it messes up!!
         self.hGeV = self.heV * pow(10.,-9) # no units or it messes up!!
@@ -98,7 +102,7 @@ class constants():
 # Load some useful constants
 c = constants()
 
-class HNLbranchings():
+class HNLbranchings(object):
     """
     Lifetime and total and partial decay widths of an HNL
     """
@@ -169,15 +173,15 @@ class HNLbranchings():
                         'N -> eta_c nu_tau' ]
         if self.MN>=1.:
             self.QCD_corr = self.QCD_correction()
-            
+
         if debug:
-            print "HNLbranchings instance initialized with couplings:"
-            print "\tU2e   = %s"%self.U2[0]
-            print "\tU2mu  = %s"%self.U2[1]
-            print "\tU2tau = %s"%self.U2[2]
-            print "and mass:"
-            print "\tm = %s GeV"%(self.MN)
-    
+            print("HNLbranchings instance initialized with couplings:")
+            print("\tU2e   = %s"%self.U2[0])
+            print("\tU2mu  = %s"%self.U2[1])
+            print("\tU2tau = %s"%self.U2[2])
+            print("and mass:")
+            print("\tm = %s GeV"%(self.MN))
+
     def sqrt_lambda(self,a,b,c):
         """
         Useful function for decay kinematics. Returns 0 for kinematically forbidden region
@@ -187,26 +191,26 @@ class HNLbranchings():
             return 0
         else:
             return math.sqrt(l)
-        
+
     def QCD_correction(self):
         """
         Returns 3-loops QCD correction to HNL decay width into quarks
         """
         alpha_s = ROOT.TGraph( os.path.expandvars('$FAIRSHIP/python/alpha_s.dat') )
         a_s = alpha_s.Eval(self.MN)
-        qcd_corr = a_s / math.pi
-        qcd_corr += 5.2 * (a_s / math.pi)**2.
-        qcd_corr += 26.4 * (a_s / math.pi)**3.
+        qcd_corr = old_div(a_s, math.pi)
+        qcd_corr += 5.2 * (old_div(a_s, math.pi))**2.
+        qcd_corr += 26.4 * (old_div(a_s, math.pi))**3.
         return qcd_corr
-    
+
     def Width_3nu(self):
         """
         Returns the HNL decay width into three neutrinos
         """
-        width = (c.GF**2.)*(self.MN**5.)*sum(self.U2)/(192.*(u.pi**3.))
+        width = old_div((c.GF**2.)*(self.MN**5.)*sum(self.U2),(192.*(u.pi**3.)))
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Width_nu_f_fbar(self, alpha, beta):
         """
         Returns the HNL tree level decay width into the fermion-antifermion pair and a neutrino (decay through Z boson or Z and W)
@@ -216,16 +220,16 @@ class HNLbranchings():
         - beta is a flavour of the fermions: (1, 2 or 3) for charge leptons or (4, 5, 6, 7, 8, 9) for quarks
         """
         if (alpha not in [1,2,3]) or (beta not in [1,2,3,4,5,6,7,8,9]):
-            print 'Width_nu_f_fbar ERROR: unknown channel alpha =',alpha,' beta =',beta
+            print('Width_nu_f_fbar ERROR: unknown channel alpha =',alpha,' beta =',beta)
             quit()
         l = [None,'e-','mu-','tau-','u','d','s','c','b','t']
-        x = mass(l[beta]) / self.MN
+        x = old_div(mass(l[beta]), self.MN)
         if x > 0.5: # the decay is kinematically forbidden
             return 0
-        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))
+        width = old_div((c.GF**2.)*(self.MN**5.)*self.U2[alpha-1],(192.*(math.pi**3.)))
         L = 0.
         if x>0.01:
-            logContent = (1. - 3.*x**2. - (1.-x**2.)*math.sqrt(1. - 4.*x**2.) ) / ( (x**2.)*(1 + math.sqrt(1. - 4.*x**2.)) )
+            logContent = old_div((1. - 3.*x**2. - (1.-x**2.)*math.sqrt(1. - 4.*x**2.) ), ( (x**2.)*(1 + math.sqrt(1. - 4.*x**2.)) ))
         else:
             logContent = x**4 + 4.*x**6 + 14.*x**8
         if logContent > 0:
@@ -250,7 +254,7 @@ class HNLbranchings():
                         + 4.*C2*( x**2. *(2.+10.*x**2. -12.*x**4.) * math.sqrt(1.-4.*x**2) + 6.*x**4. *(1.-2.*x**2+2.*x**4)*L ) )
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Integrand(self,xx,xi):
         """
         Function to integrate needed for numerical integration using ROOT. Needed for 3-body decays trough W boson.
@@ -268,7 +272,7 @@ class HNLbranchings():
         res *= self.sqrt_lambda(x,xl2,xd2)
         res *= self.sqrt_lambda(1.,x,xu2)
         return res
-    
+
     def I(self,x1,x2,x3):
         """
         Numerical integral needed for 3-body decays trough W boson.
@@ -284,7 +288,7 @@ class HNLbranchings():
         ig.SetRelTolerance(0.001)
         res = 12. * ig.Integral(xmin,xmax)
         return res
-    
+
     def Width_l1_l2_nu2(self, alpha, beta):
         """
         Returns the HNL decay width into two different flavour leptons and a neutrino (decay through W boson)
@@ -294,20 +298,20 @@ class HNLbranchings():
         - beta is a flavour of the second lepton and neutrino (1, 2 or 3)
         """
         if (alpha not in [1,2,3]) or (beta not in [1,2,3]):
-            print 'Width_l1_l2_nu2 ERROR: unknown channel alpha =',alpha,' beta =',beta
+            print('Width_l1_l2_nu2 ERROR: unknown channel alpha =',alpha,' beta =',beta)
             quit()
         if alpha==beta: # The interference case is handled by Width_nu_f_fbar function, workaround for a total width calculation
             return 0
         l = [None,'e-','mu-','tau-']
-        x1 = mass(l[alpha])/self.MN
-        x2 = mass(l[beta])/self.MN
+        x1 = old_div(mass(l[alpha]),self.MN)
+        x2 = old_div(mass(l[beta]),self.MN)
         if x1+x2>1: # The decay is kinematically forbidden
             return 0
-        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))
+        width = old_div((c.GF**2.)*(self.MN**5.)*self.U2[alpha-1],(192.*(math.pi**3.)))
         width = width*self.I(x1,x2,0)
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Width_l_u_d(self, alpha, beta, gamma):
         """
         Returns the HNL tree level decay width into a charged lepton, up quark and down quark (decay through W boson)
@@ -318,17 +322,17 @@ class HNLbranchings():
         - gamma is the down quark generation (1, 2, 3 for d, s, b)
         """
         if (alpha not in [1,2,3]) or (beta not in [1,2,3]) or (gamma not in [1,2,3]):
-            print 'Width_l_u_d ERROR: unknown channel alpha =',alpha,' beta =',beta,' gamma =',gamma
+            print('Width_l_u_d ERROR: unknown channel alpha =',alpha,' beta =',beta,' gamma =',gamma)
             quit()
         l = [None,'e-','mu-','tau-']
         u = [None,'u','c','t']
         d = [None,'d','s','b']
-        xl = mass(l[alpha])/self.MN
-        xu = mass(u[beta])/self.MN
-        xd = mass(d[gamma])/self.MN
+        xl = old_div(mass(l[alpha]),self.MN)
+        xu = old_div(mass(u[beta]),self.MN)
+        xd = old_div(mass(d[gamma]),self.MN)
         if xl+xu+xd>1: # The decay is kinematically forbidden
             return 0
-        width = (c.GF**2.)*(self.MN**5.)*self.U2[alpha-1]/(192.*(math.pi**3.))
+        width = old_div((c.GF**2.)*(self.MN**5.)*self.U2[alpha-1],(192.*(math.pi**3.)))
         width *= 3*self.CKMelemSq[(beta, gamma)]
         width *= self.I(xl,xu,xd)
         width = 2.*width # Majorana case (charge conjugate channels)
@@ -343,12 +347,12 @@ class HNLbranchings():
         - alpha is a flavour of the nu (1, 2 or 3), determine the mixing angle U_alpha
         """
         if (H not in ['pi0','eta','rho0','omega','eta1','phi','eta_c']) or (alpha not in [1,2,3]):
-            print 'Width_H0_nu ERROR: unknown channel H0 =',H,' alpha =',alpha
+            print('Width_H0_nu ERROR: unknown channel H0 =',H,' alpha =',alpha)
             quit()
-        x = mass(H)/self.MN
+        x = old_div(mass(H),self.MN)
         if x > 1: # The decay is kinematically forbidden
             return 0.
-        width = (c.GF**2.)*(c.decayConstant[H]**2.)*(self.MN**3.)*self.U2[alpha-1]/(32.*math.pi)
+        width = old_div((c.GF**2.)*(c.decayConstant[H]**2.)*(self.MN**3.)*self.U2[alpha-1],(32.*math.pi))
         if H in ['pi0','eta','eta1','eta_c']: # pseudoscalar mesons
             width *= (1 - x**2.)**2.
         if H in ['rho0','omega','phi']: # vector mesons
@@ -371,14 +375,14 @@ class HNLbranchings():
         - alpha is the lepton flavour (1, 2 or 3), determine the mixing angle U_alpha
         """
         if (H not in ['pi+','rho+','D_s+','D*_s+']) or (alpha not in [1,2,3]):
-            print 'Width_H_l ERROR: unknown channel H =',H,' alpha =',alpha
+            print('Width_H_l ERROR: unknown channel H =',H,' alpha =',alpha)
             quit()
         l = [None,'e-','mu-','tau-']
-        xl = mass(l[alpha])/self.MN
-        xh = mass(H)/self.MN
+        xl = old_div(mass(l[alpha]),self.MN)
+        xh = old_div(mass(H),self.MN)
         if xl+xh > 1: # The decay is kinematically forbidden
             return 0.
-        width = (c.GF**2.)*(c.decayConstant[H]**2.)*self.CKMelemSq[H]*(self.MN**3.)*self.U2[alpha-1]/(16.*math.pi)
+        width = old_div((c.GF**2.)*(c.decayConstant[H]**2.)*self.CKMelemSq[H]*(self.MN**3.)*self.U2[alpha-1],(16.*math.pi))
         width *= self.sqrt_lambda(1., xl**2, xh**2)
         if H in ['pi+','D_s+']: # pseudoscalar mesons
             width *= ( (1. - xl**2.)**2. - xh**2. *(1. + xl**2.) )
@@ -386,7 +390,7 @@ class HNLbranchings():
             width *= ( (1. - xl**2.)**2. + xh**2.*(1. + xl**2.) - 2.*xh**4. )
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Width_charged_leptons(self):
         """
         Returns the total HNL leptonic decay width with charged leptons in final state
@@ -397,7 +401,7 @@ class HNLbranchings():
                 width += self.Width_nu_f_fbar(l1,l2)
                 width += self.Width_l1_l2_nu2(l1,l2)
         return width
-    
+
     def Width_neutral_mesons(self):
         """
         Returns the total HNL decay width into a neutral meson and a neutrino
@@ -408,7 +412,7 @@ class HNLbranchings():
             for l in [1,2,3]:
                 width += self.Width_H0_nu(m,l)
         return width
-    
+
     def Width_charged_mesons(self):
         """
         Returns the total HNL decay width into a charged meson and a charged lepton
@@ -466,60 +470,60 @@ class HNLbranchings():
         """
         br = 0.
         totalWidth = self.NDecayWidth()
-        
+
         if (decayString not in self.decays) and (decayString not in ['N -> hadrons','N -> charged hadrons']):
-            print 'findBranchingRatio ERROR: unknown decay %s'%decayString
+            print('findBranchingRatio ERROR: unknown decay %s'%decayString)
             quit()
-        
-        if decayString == 'N -> nu nu nu' or decayString == 'N -> 3nu': br = self.Width_3nu() / totalWidth # inclusive
-        if decayString == 'N -> e- e+ nu_e': br = self.Width_nu_f_fbar(1,1) / totalWidth
-        if decayString == 'N -> e- e+ nu_mu': br = self.Width_nu_f_fbar(2,1) / totalWidth
-        if decayString == 'N -> e- e+ nu_tau': br = self.Width_nu_f_fbar(3,1) / totalWidth
-        if decayString == 'N -> e- mu+ nu_mu': br = self.Width_l1_l2_nu2(1,2) / totalWidth
-        if decayString == 'N -> mu- e+ nu_e': br = self.Width_l1_l2_nu2(2,1) / totalWidth
-        if decayString == 'N -> pi0 nu_e': br = self.Width_H0_nu('pi0',1) / totalWidth
-        if decayString == 'N -> pi0 nu_mu': br = self.Width_H0_nu('pi0',2) / totalWidth
-        if decayString == 'N -> pi0 nu_tau': br = self.Width_H0_nu('pi0',3) / totalWidth
-        if decayString == 'N -> pi+ e-': br = self.Width_H_l('pi+',1) / totalWidth
-        if decayString == 'N -> mu- mu+ nu_e': br = self.Width_nu_f_fbar(1,2) / totalWidth
-        if decayString == 'N -> mu- mu+ nu_mu': br = self.Width_nu_f_fbar(2,2) / totalWidth
-        if decayString == 'N -> mu- mu+ nu_tau': br = self.Width_nu_f_fbar(3,2) / totalWidth
-        if decayString == 'N -> pi+ mu-': br = self.Width_H_l('pi+',2) / totalWidth
-        if decayString == 'N -> eta nu_e': br = self.Width_H0_nu('eta',1) / totalWidth
-        if decayString == 'N -> eta nu_mu': br = self.Width_H0_nu('eta',2) / totalWidth
-        if decayString == 'N -> eta nu_tau': br = self.Width_H0_nu('eta',3) / totalWidth
-        if decayString == 'N -> rho0 nu_e': br = self.Width_H0_nu('rho0',1) / totalWidth
-        if decayString == 'N -> rho0 nu_mu': br = self.Width_H0_nu('rho0',2) / totalWidth
-        if decayString == 'N -> rho0 nu_tau': br = self.Width_H0_nu('rho0',3) / totalWidth
-        if decayString == 'N -> rho+ e-': br = self.Width_H_l('rho+',1) / totalWidth
-        if decayString == 'N -> omega nu_e': br = self.Width_H0_nu('omega',1) / totalWidth
-        if decayString == 'N -> omega nu_mu': br = self.Width_H0_nu('omega',2) / totalWidth
-        if decayString == 'N -> omega nu_tau': br = self.Width_H0_nu('omega',3) / totalWidth
-        if decayString == 'N -> rho+ mu-': br = self.Width_H_l('rho+',2) / totalWidth
-        if decayString == 'N -> eta1 nu_e': br = self.Width_H0_nu('eta1',1) / totalWidth
-        if decayString == 'N -> eta1 nu_mu': br = self.Width_H0_nu('eta1',2) / totalWidth
-        if decayString == 'N -> eta1 nu_tau': br = self.Width_H0_nu('eta1',3) / totalWidth
-        if decayString == 'N -> phi nu_e': br = self.Width_H0_nu('phi',1) / totalWidth
-        if decayString == 'N -> phi nu_mu': br = self.Width_H0_nu('phi',2) / totalWidth
-        if decayString == 'N -> phi nu_tau': br = self.Width_H0_nu('phi',3) / totalWidth
-        if decayString == 'N -> e- tau+ nu_tau': br = self.Width_l1_l2_nu2(1,3) / totalWidth
-        if decayString == 'N -> tau- e+ nu_e': br = self.Width_l1_l2_nu2(3,1) / totalWidth
-        if decayString == 'N -> mu- tau+ nu_tau': br = self.Width_l1_l2_nu2(2,3) / totalWidth
-        if decayString == 'N -> tau- mu+ nu_mu': br = self.Width_l1_l2_nu2(3,2) / totalWidth
-        if decayString == 'N -> D_s+ e-': br = self.Width_H_l('D_s+',1) / totalWidth
-        if decayString == 'N -> D_s+ mu-': br = self.Width_H_l('D_s+',2) / totalWidth
-        if decayString == 'N -> D*_s+ e-': br = self.Width_H_l('D*_s+',1) / totalWidth
-        if decayString == 'N -> D*_s+ mu-': br = self.Width_H_l('D*_s+',2) / totalWidth
-        if decayString == 'N -> eta_c nu_e': br = self.Width_H0_nu('eta_c',1) / totalWidth
-        if decayString == 'N -> eta_c nu_mu': br = self.Width_H0_nu('eta_c',2) / totalWidth
-        if decayString == 'N -> eta_c nu_tau': br = self.Width_H0_nu('eta_c',3) / totalWidth
-        
+
+        if decayString == 'N -> nu nu nu' or decayString == 'N -> 3nu': br = old_div(self.Width_3nu(), totalWidth) # inclusive
+        if decayString == 'N -> e- e+ nu_e': br = old_div(self.Width_nu_f_fbar(1,1), totalWidth)
+        if decayString == 'N -> e- e+ nu_mu': br = old_div(self.Width_nu_f_fbar(2,1), totalWidth)
+        if decayString == 'N -> e- e+ nu_tau': br = old_div(self.Width_nu_f_fbar(3,1), totalWidth)
+        if decayString == 'N -> e- mu+ nu_mu': br = old_div(self.Width_l1_l2_nu2(1,2), totalWidth)
+        if decayString == 'N -> mu- e+ nu_e': br = old_div(self.Width_l1_l2_nu2(2,1), totalWidth)
+        if decayString == 'N -> pi0 nu_e': br = old_div(self.Width_H0_nu('pi0',1), totalWidth)
+        if decayString == 'N -> pi0 nu_mu': br = old_div(self.Width_H0_nu('pi0',2), totalWidth)
+        if decayString == 'N -> pi0 nu_tau': br = old_div(self.Width_H0_nu('pi0',3), totalWidth)
+        if decayString == 'N -> pi+ e-': br = old_div(self.Width_H_l('pi+',1), totalWidth)
+        if decayString == 'N -> mu- mu+ nu_e': br = old_div(self.Width_nu_f_fbar(1,2), totalWidth)
+        if decayString == 'N -> mu- mu+ nu_mu': br = old_div(self.Width_nu_f_fbar(2,2), totalWidth)
+        if decayString == 'N -> mu- mu+ nu_tau': br = old_div(self.Width_nu_f_fbar(3,2), totalWidth)
+        if decayString == 'N -> pi+ mu-': br = old_div(self.Width_H_l('pi+',2), totalWidth)
+        if decayString == 'N -> eta nu_e': br = old_div(self.Width_H0_nu('eta',1), totalWidth)
+        if decayString == 'N -> eta nu_mu': br = old_div(self.Width_H0_nu('eta',2), totalWidth)
+        if decayString == 'N -> eta nu_tau': br = old_div(self.Width_H0_nu('eta',3), totalWidth)
+        if decayString == 'N -> rho0 nu_e': br = old_div(self.Width_H0_nu('rho0',1), totalWidth)
+        if decayString == 'N -> rho0 nu_mu': br = old_div(self.Width_H0_nu('rho0',2), totalWidth)
+        if decayString == 'N -> rho0 nu_tau': br = old_div(self.Width_H0_nu('rho0',3), totalWidth)
+        if decayString == 'N -> rho+ e-': br = old_div(self.Width_H_l('rho+',1), totalWidth)
+        if decayString == 'N -> omega nu_e': br = old_div(self.Width_H0_nu('omega',1), totalWidth)
+        if decayString == 'N -> omega nu_mu': br = old_div(self.Width_H0_nu('omega',2), totalWidth)
+        if decayString == 'N -> omega nu_tau': br = old_div(self.Width_H0_nu('omega',3), totalWidth)
+        if decayString == 'N -> rho+ mu-': br = old_div(self.Width_H_l('rho+',2), totalWidth)
+        if decayString == 'N -> eta1 nu_e': br = old_div(self.Width_H0_nu('eta1',1), totalWidth)
+        if decayString == 'N -> eta1 nu_mu': br = old_div(self.Width_H0_nu('eta1',2), totalWidth)
+        if decayString == 'N -> eta1 nu_tau': br = old_div(self.Width_H0_nu('eta1',3), totalWidth)
+        if decayString == 'N -> phi nu_e': br = old_div(self.Width_H0_nu('phi',1), totalWidth)
+        if decayString == 'N -> phi nu_mu': br = old_div(self.Width_H0_nu('phi',2), totalWidth)
+        if decayString == 'N -> phi nu_tau': br = old_div(self.Width_H0_nu('phi',3), totalWidth)
+        if decayString == 'N -> e- tau+ nu_tau': br = old_div(self.Width_l1_l2_nu2(1,3), totalWidth)
+        if decayString == 'N -> tau- e+ nu_e': br = old_div(self.Width_l1_l2_nu2(3,1), totalWidth)
+        if decayString == 'N -> mu- tau+ nu_tau': br = old_div(self.Width_l1_l2_nu2(2,3), totalWidth)
+        if decayString == 'N -> tau- mu+ nu_mu': br = old_div(self.Width_l1_l2_nu2(3,2), totalWidth)
+        if decayString == 'N -> D_s+ e-': br = old_div(self.Width_H_l('D_s+',1), totalWidth)
+        if decayString == 'N -> D_s+ mu-': br = old_div(self.Width_H_l('D_s+',2), totalWidth)
+        if decayString == 'N -> D*_s+ e-': br = old_div(self.Width_H_l('D*_s+',1), totalWidth)
+        if decayString == 'N -> D*_s+ mu-': br = old_div(self.Width_H_l('D*_s+',2), totalWidth)
+        if decayString == 'N -> eta_c nu_e': br = old_div(self.Width_H0_nu('eta_c',1), totalWidth)
+        if decayString == 'N -> eta_c nu_mu': br = old_div(self.Width_H0_nu('eta_c',2), totalWidth)
+        if decayString == 'N -> eta_c nu_tau': br = old_div(self.Width_H0_nu('eta_c',3), totalWidth)
+
         if decayString == 'N -> hadrons':
             mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()
             quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()
-            br = max([mesonWidth, quarkWidth]) / totalWidth
+            br = old_div(max([mesonWidth, quarkWidth]), totalWidth)
         if decayString == 'N -> charged hadrons':
-            br = max([self.Width_charged_mesons(), self.Width_quarks_lepton()]) / totalWidth
+            br = old_div(max([self.Width_charged_mesons(), self.Width_quarks_lepton()]), totalWidth)
         return br
 
     def allowedChannels(self):
@@ -592,7 +596,7 @@ class HNLbranchings():
             allowedDecays.update({'N -> eta_c nu_e':'yes'})
             allowedDecays.update({'N -> eta_c nu_mu':'yes'})
             allowedDecays.update({'N -> eta_c nu_tau':'yes'})
-       
+
         for decay in self.decays:
             if decay not in allowedDecays:
                 allowedDecays.update({decay:'no'})
@@ -621,7 +625,7 @@ class HNL(HNLbranchings):
         Inputs:
         - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)
         """
-        self.NLifetime = c.hGeV / self.NDecayWidth()
-	if system == "FairShip": self.NLifetime *= 1.e9
+        self.NLifetime = old_div(c.hGeV, self.NDecayWidth())
+        if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
 

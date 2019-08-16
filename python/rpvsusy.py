@@ -27,7 +27,13 @@
 #
 # ==================================================================
 """
+from __future__ import print_function
+from __future__ import division
 
+from builtins import str
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import re
 import math
 import ROOT
@@ -95,11 +101,11 @@ def lifetime(particle):
         return 1.5e-12
     elif particle=="B+" or particle=="B-":
         return 1.6e-12
-    
+
     return tPart.Lifetime()
 
 
-class constants():
+class constants(object):
     """
     Store some constants useful for HNL physics
     """
@@ -123,11 +129,11 @@ class constants():
                               'B0':0.191*u.GeV,'B_s0':0.228*u.GeV,
                               'B0_bar':0.191*u.GeV,'B_s0_bar':0.228*u.GeV} 
 
-        self.GF   = 1.166379e-05/(u.GeV*u.GeV)             # Fermi's constant (GeV^-2)
+        self.GF   = old_div(1.166379e-05,(u.GeV*u.GeV))             # Fermi's constant (GeV^-2)
         self.MW   = 80.385*u.GeV
-        self.gW2  = self.GF/math.sqrt(2)*8*self.MW*self.MW # SU(2)L gauge coupling squared
+        self.gW2  = old_div(self.GF,math.sqrt(2)*8*self.MW*self.MW) # SU(2)L gauge coupling squared
         self.s2thetaw = 0.23126                            # square sine of the Weinberg angle
-        self.t2thetaw = self.s2thetaw/(1-self.s2thetaw)    # square tan of the Weinberg angle
+        self.t2thetaw = old_div(self.s2thetaw,(1-self.s2thetaw))    # square tan of the Weinberg angle
         self.heV = 6.58211928*pow(10.,-16)                 # no units or it messes up!!
         self.hGeV = self.heV * pow(10.,-9)                 # no units or it messes up!!
         # defined in Eq (30)--(32) of [1511.07436], but without 
@@ -142,7 +148,7 @@ class constants():
 # Load some useful constants
 c = constants()
 
-class RPVSUSYbranchings():
+class RPVSUSYbranchings(object):
     """
     Lifetime and total and partial decay widths of an RPV neutralino
     """
@@ -176,15 +182,15 @@ class RPVSUSYbranchings():
 
 
         if debug:
-            print "RPVSUSYbranchings instance initialized with couplings:"
-            print "\t benchmark scenario   = %d"%self.bench
-            print "\t decay coupling       = %s"%self.U[0]
-            print "\t production coupling  = %s"%self.U[1]
-            print "\t sfermion mass        = %s"%self.sfmass
-            print "\t total prod coupling  = %s"%(self.U[0]/self.sfmass**2)
-            print "\t total decay coupling = %s"%(self.U[1]/self.sfmass**2)
-            print "and mass:"
-            print "\tm = %s GeV"%(self.MN)
+            print("RPVSUSYbranchings instance initialized with couplings:")
+            print("\t benchmark scenario   = %d"%self.bench)
+            print("\t decay coupling       = %s"%self.U[0])
+            print("\t production coupling  = %s"%self.U[1])
+            print("\t sfermion mass        = %s"%self.sfmass)
+            print("\t total prod coupling  = %s"%(old_div(self.U[0],self.sfmass**2)))
+            print("\t total decay coupling = %s"%(old_div(self.U[1],self.sfmass**2)))
+            print("and mass:")
+            print("\tm = %s GeV"%(self.MN))
 
     def Get_Prod_Modes(self):
         return self.prods[self.bench]
@@ -199,7 +205,7 @@ class RPVSUSYbranchings():
             decay_cpy = decay_cpy.replace("N -> ","")
             particles = decay_cpy.split()
             codes     = [PDGcode(p) for p in particles]
-            print decay
+            print(decay)
             bf        = self.findDecayBranchingRatio(decay)
             if any("K+" in s for s in particles) or\
                any("K-" in s for s in particles) or\
@@ -216,10 +222,10 @@ class RPVSUSYbranchings():
                 codes_str      = ' '.join([str(code) for code in codes])
                 P8Gen.SetParameters("9900015:addChannel = 1 "+str(bf)+" 0 "+codes_str)
             if verbose:
-                print "debug readdecay table",particles,codes,bf
-            
+                print("debug readdecay table",particles,codes,bf)
 
-            
+
+
     def Width_H_L(self, H, L):
         """
         Returns the RPV neutralino decay width into neutral meson and lepton
@@ -230,29 +236,29 @@ class RPVSUSYbranchings():
         """
         if self.MN < (mass(H)+mass(L)):
             return 0.
-        
+
         phsp=math.sqrt(self.MN**4+mass(H)**4+mass(L)**4-\
                        2*self.MN**2*mass(H)**2-2*self.MN**2*mass(L)**2-\
                        2*mass(H)**2*mass(L)**2)
         tmp_width=0
         if 'nu_mu' in L or 'nu_e' in L or 'nu_tau' in L:
-            tmp_width = phsp/(self.sfmass**4*128*u.pi*self.MN**3)*\
+            tmp_width = old_div(phsp,(self.sfmass**4*128*u.pi*self.MN**3)*\
                         c.GST2['sneutrino']*c.decayConstant[H]**2*\
-                        (self.MN**2+mass(L)**2-mass(H)**2)
+                        (self.MN**2+mass(L)**2-mass(H)**2))
         else:
-            tmp_width = phsp/(self.sfmass**4*128*u.pi*self.MN**3)*\
+            tmp_width = old_div(phsp,(self.sfmass**4*128*u.pi*self.MN**3)*\
                         c.GST2['slepton']*c.decayConstant[H]**2*\
-                        (self.MN**2+mass(L)**2-mass(H)**2)
-            
+                        (self.MN**2+mass(L)**2-mass(H)**2))
+
         if 'K*' in H or 'D*' in H or "phi" in H:
             if 'nu_mu' in L or 'nu_e' in L or 'nu_tau' in L:
-                tmp_width = phsp/(self.sfmass**4*2*u.pi*self.MN**3)*\
+                tmp_width = old_div(phsp,(self.sfmass**4*2*u.pi*self.MN**3)*\
                             c.GST2['tneutrino']*c.decayConstant[H]**2*\
-                            (2*(self.MN**2-mass(L)**2)**2-mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2))
+                            (2*(self.MN**2-mass(L)**2)**2-mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2)))
             else:
-                tmp_width = phsp/(self.sfmass**4*2*u.pi*self.MN**3)*\
+                tmp_width = old_div(phsp,(self.sfmass**4*2*u.pi*self.MN**3)*\
                             c.GST2['tlepton']*c.decayConstant[H]**2*\
-                            (2*(self.MN**2-mass(L)**2)**2-mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2))
+                            (2*(self.MN**2-mass(L)**2)**2-mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2)))
         width=self.U2[1]*tmp_width
         # contributions both from decay and production couplings
         if self.bench==1 and ('K_' in H or 'K*' in H):
@@ -260,7 +266,7 @@ class RPVSUSYbranchings():
         # contributions only from production coupling
         if self.bench==2 and ('eta' in H or 'phi' in H):
             width=self.U2[0]*tmp_width
-        
+
         # Majorana case (charge conjugate channels)
         width = 2.*width 
         return width
@@ -273,35 +279,35 @@ class RPVSUSYbranchings():
         - H is a string (name of the meson)
         - L is a string (name of the lepton)
         """
-        
+
         if mass(H) < (self.MN+mass(L)):
             return 0.
         phsp=math.sqrt(self.MN**4+mass(H)**4+mass(L)**4-\
                        2*self.MN**2*mass(H)**2-2*self.MN**2*mass(L)**2-\
                        2*mass(H)**2*mass(L)**2)
-        
+
         tmp_width=0
         if 'nu_mu' in L or 'nu_e' in L or 'nu_tau' in L:
-            tmp_width = phsp/(self.sfmass**4*64*u.pi*mass(H)**3)*\
+            tmp_width = old_div(phsp,(self.sfmass**4*64*u.pi*mass(H)**3)*\
                         c.GST2['sneutrino']*c.decayConstant[H]**2*\
-                        (mass(H)**2-self.MN**2-mass(L)**2)
+                        (mass(H)**2-self.MN**2-mass(L)**2))
         else:
-            tmp_width = phsp/(self.sfmass**4*64*u.pi*mass(H)**3)*\
+            tmp_width = old_div(phsp,(self.sfmass**4*64*u.pi*mass(H)**3)*\
                         c.GST2['slepton']*c.decayConstant[H]**2*\
-                        (mass(H)**2-self.MN**2-mass(L)**2)
-            
+                        (mass(H)**2-self.MN**2-mass(L)**2))
+
         if 'K*' in H or 'D*' in H or "phi" in H:
             if 'nu_mu' in L or 'nu_e' in L or 'nu_tau' in L:
-                tmp_width = phsp/(self.sfmass**4*3*u.pi*mass(H)**3)*\
+                tmp_width = old_div(phsp,(self.sfmass**4*3*u.pi*mass(H)**3)*\
                             c.GST2['tneutrino']*c.decayConstant[H]**2*\
-                            (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2))
+                            (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2)))
             else:
-                tmp_width = phsp/(self.sfmass**4*3*u.pi*mass(H)**3)*\
+                tmp_width = old_div(phsp,(self.sfmass**4*3*u.pi*mass(H)**3)*\
                             c.GST2['tlepton']*c.decayConstant[H]**2*\
-                            (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2))
-                            
+                            (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2)))
+
         width=self.U2[0]*tmp_width
-        
+
         return width
 
 
@@ -313,7 +319,7 @@ class RPVSUSYbranchings():
         declist    = self.decays[self.bench]
         hadlist    = [re.search('->\ (.+?)\ ',dec).group(1) for dec in declist]
         leplist    = [dlist[1].strip() for dlist in [re.findall(r"\ \w+",dec) for dec in declist]]
-        print leplist,hadlist
+        print(leplist,hadlist)
         totalwidth = sum([self.Width_H_L(hadlist[i],leplist[i]) for i in range(0,len(hadlist))])
         return totalwidth
 
@@ -341,32 +347,32 @@ class RPVSUSYbranchings():
             if split.find('mu')>-1 or split.find('e')>-1 or split.find('tau')>-1:
                 lep = split
         if had == 'pi+' or had == 'pi-' or had == 'pi0':
-            print "findBranchingRatio() ERROR: Pions in final "\
+            print("findBranchingRatio() ERROR: Pions in final "\
                   "state have not been implemented, please choose "\
-                  "a different decay mode of out...\n"
-            print self.decays
+                  "a different decay mode of out...\n")
+            print(self.decays)
             return -999
-        
+
         corrdecstring = 'N -> %s %s'%(had,lep)
         listdecs      = self.decays[self.bench]
         gooddec       = False
-        print "findBranchingRation() INFO: "\
+        print("findBranchingRation() INFO: "\
               "You have chosen the decay: '",\
-              corrdecstring
+              corrdecstring)
         for dec in listdecs:
             if corrdecstring in dec:
                 gooddec = True
         if gooddec is False:
-            print "findBranchingRation() ERROR: Badly "\
+            print("findBranchingRation() ERROR: Badly "\
                   "formulated decay string, please choose "\
-                  "one of the following\n"
-            print self.decays
+                  "one of the following\n")
+            print(self.decays)
             return -999
-                
+
         br = 0.
         totalwidth = self.NdecayWidth()
         if totalwidth > 0.0:
-            br = self.Width_H_L(had,lep)/totalwidth
+            br = old_div(self.Width_H_L(had,lep),totalwidth)
         return br
 
 
@@ -383,29 +389,29 @@ class RPVSUSYbranchings():
             if split.find('mu')>-1 or split.find('e')>-1 or split.find('tau')>-1:
                 lep = split
         if had == 'pi+' or had == 'pi-' or had == 'pi0':
-            print "findProdBranchingRatio() ERROR: Pions in final "\
+            print("findProdBranchingRatio() ERROR: Pions in final "\
                   "state have not been implemented, please choose "\
-                  "a different decay mode of out...\n"
-            print self.decays
+                  "a different decay mode of out...\n")
+            print(self.decays)
             return -999
-        
+
         corrdecstring = '%s -> N %s'%(had,lep)
         listdecs      = self.prods[self.bench]
         gooddec       = False
-        print "findProdBranchingRation() INFO: "\
+        print("findProdBranchingRation() INFO: "\
               "You have chosen the decay: '",\
-              corrdecstring
+              corrdecstring)
         for dec in listdecs:
             if corrdecstring in dec:
                 gooddec = True
         if gooddec is False:
-            print "findProdBranchingRation() ERROR: Badly "\
+            print("findProdBranchingRation() ERROR: Badly "\
                   "formulated decay string, please choose "\
-                  "one of the following\n"
-            print self.decays
+                  "one of the following\n")
+            print(self.decays)
             return -999
-        
-        br = self.Width_N_L(had,lep)/(self.Width_N_L(had,lep)+c.hGeV/lifetime(had))
+
+        br = old_div(self.Width_N_L(had,lep),(self.Width_N_L(had,lep)+old_div(c.hGeV,lifetime(had))))
         return br
 
 class RPVSUSY(RPVSUSYbranchings):
@@ -433,7 +439,7 @@ class RPVSUSY(RPVSUSYbranchings):
         decwidth = self.NdecayWidth()  
         if decwidth == 0.0:
             return 0.0
-        self.NLifetime = c.hGeV / decwidth
-	if system == "FairShip": self.NLifetime *= 1.e9
+        self.NLifetime = old_div(c.hGeV, decwidth)
+        if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
 

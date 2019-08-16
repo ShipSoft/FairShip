@@ -1,3 +1,9 @@
+from __future__ import print_function
+from __future__ import division
+from builtins import str
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import os
 import ROOT
 import shipunit as u
@@ -21,15 +27,15 @@ reduced_width = total_width - (EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R)
 # function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
     if x < -total_width/2. or x > total_width/2.:
-        print "WARNING: x coordinate outside sensitive volume!",x
+        print("WARNING: x coordinate outside sensitive volume!",x)
     if x <  -total_width/2.  + EXT_STRIP_XWIDTH_L + V_STRIP_OFF/2. : strip_x = 184
     elif x >  total_width/2. - EXT_STRIP_XWIDTH_R - V_STRIP_OFF/2. : strip_x = 1
     else:
-      x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
-      strip_x = -int(x_start/reduced_width*182.)+1
-      if not (0 < strip_x <= NR_VER_STRIPS-1):
-        print "WARNING: X strip outside range!",x,strip_x
-        strip_x = 0
+        x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
+        strip_x = -int(old_div(x_start,reduced_width*182.))+1
+        if not (0 < strip_x <= NR_VER_STRIPS-1):
+            print("WARNING: X strip outside range!",x,strip_x)
+            strip_x = 0
     return int(strip_x)
 
 def StripY(y):
@@ -38,14 +44,14 @@ def StripY(y):
     H_STRIP_OFF = 0.1983
     NR_HORI_STRIPS = 116
     total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
-    y_start = total_height / 2
+    y_start = old_div(total_height, 2)
     strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
     if not (0 < strip_y <= NR_HORI_STRIPS):
-        print "WARNING: Y strip outside range!"
+        print("WARNING: Y strip outside range!")
         strip_y = 0
     return int(strip_y)
 
-class MufluxDigi:
+class MufluxDigi(object):
     " convert FairSHiP MC hits / digitized hits to measurements"
     def __init__(self,fout):
 
@@ -102,7 +108,7 @@ class MufluxDigi:
         for MuonTaggerHit in self.sTree.MuonTaggerPoint:
             # getting rpc nodes, name and matrix
             detID = MuonTaggerHit.GetDetectorID()
-            s = str(detID/10000)
+            s = str(old_div(detID,10000))
             nav.cd('/VMuonBox_1/VSensitive'+s+'_'+s)
             # translation from top to MuonBox_1
             point = array('d', [
@@ -117,9 +123,9 @@ class MufluxDigi:
             ycoord = point_local[1]
 
             # identify individual rpcs
-            station = detID/10000
-            if station not in range(1, 6):  # limiting the range of rpcs
-                print "WARNING: Invalid RPC number, something's wrong with the geometry ",station
+            station = old_div(detID,10000)
+            if station not in list(range(1, 6)):  # limiting the range of rpcs
+                print("WARNING: Invalid RPC number, something's wrong with the geometry ",station)
 
             # calculate strip
             # x gives vertical direction
@@ -132,11 +138,11 @@ class MufluxDigi:
             DetectorID.add(detectorid)
             if fake_clustering:
                 s = ROOT.gRandom.Poisson(2)
-                if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(s/2)
-                else:                          strip = strip + int(s/2)
+                if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(old_div(s,2))
+                else:                          strip = strip + int(old_div(s,2))
                 for i in range(0, s):
-                        detectorid = station*10000 + direction*1000 + strip + i
-                        DetectorID.add(detectorid)
+                    detectorid = station*10000 + direction*1000 + strip + i
+                    DetectorID.add(detectorid)
 
             # y gives horizontal direction
             direction = 0
@@ -148,11 +154,11 @@ class MufluxDigi:
             DetectorID.add(detectorid)
             if fake_clustering:
                 s = ROOT.gRandom.Poisson(2)
-                if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(s/2)
-                else:                          strip = strip + int(s/2)
+                if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(old_div(s,2))
+                else:                          strip = strip + int(old_div(s,2))
                 for i in range(0, s):
-                        detectorid = station*10000 + direction*1000 + strip + i
-                        DetectorID.add(detectorid)
+                    detectorid = station*10000 + direction*1000 + strip + i
+                    DetectorID.add(detectorid)
 
         self.digiMuonTagger.Expand(len(DetectorID))
         for index, detID in enumerate(DetectorID):
@@ -185,7 +191,7 @@ class MufluxDigi:
             if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
-            if hitsPerDetId.has_key(detID):
+            if detID in hitsPerDetId:
                 if self.digiMufluxSpectrometer[hitsPerDetId[detID]].tdc() > aHit.tdc():
                     # second hit with smaller tdc
                     self.digiMufluxSpectrometer[hitsPerDetId[detID]].setInvalid()
@@ -193,10 +199,10 @@ class MufluxDigi:
             else:
                 hitsPerDetId[detID] = index
             if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
-            station = int(aMCPoint.GetDetectorID()/10000000)
+            station = int(old_div(aMCPoint.GetDetectorID(),10000000))
             if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
             index+=1
 
     def finish(self):
-        print 'finished writing tree'
+        print('finished writing tree')
         self.sTree.Write()

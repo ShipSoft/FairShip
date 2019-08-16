@@ -1,4 +1,5 @@
 #!/usr/bin/env python 
+from __future__ import print_function
 import ROOT,os,sys,getopt,time
 import shipunit as u
 import shipRoot_conf
@@ -49,10 +50,10 @@ run.Run(0,nEvents)
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
-print "Output file is ",  outFile 
-print "Parameter file is ",parFile
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ') 
+print("Macro finished succesfully.") 
+print("Output file is ",  outFile) 
+print("Parameter file is ",parFile)
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # ------------------------------------------------------------------------

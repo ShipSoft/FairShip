@@ -1,4 +1,6 @@
 #!/usr/bin/env python 
+from __future__ import print_function
+from builtins import range
 import ROOT,os,sys,getopt,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
@@ -24,7 +26,7 @@ checkOverlap = True
 outFile = "TLV.root"
 theSeed   = 0
 ecut      = 0.0
-                 
+
 # -------------------------------------------------------------------
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
@@ -51,24 +53,24 @@ run.AddModule(cave)
 
 
 class Block(ROOT.pyFairModule):
- "block of material"
- def __init__(self): ROOT.pyFairModule.__init__(self,self)
- def ConstructGeometry(self):
-    print "Construct Block"
-    top=ROOT.gGeoManager.GetTopVolume()
-    geoLoad=ROOT.FairGeoLoader.Instance()
-    geoFace=geoLoad.getGeoInterface()
-    media=geoFace.getMedia()
-    geoBuild=geoLoad.getGeoBuilder()
-    ShipMedium=media.getMedium(material)
-    W = ROOT.gGeoManager.GetMedium(material)
-    if not W: 
-        rc = geoBuild.createMedium(ShipMedium)
+    "block of material"
+    def __init__(self): ROOT.pyFairModule.__init__(self,self)
+    def ConstructGeometry(self):
+        print("Construct Block")
+        top=ROOT.gGeoManager.GetTopVolume()
+        geoLoad=ROOT.FairGeoLoader.Instance()
+        geoFace=geoLoad.getGeoInterface()
+        media=geoFace.getMedia()
+        geoBuild=geoLoad.getGeoBuilder()
+        ShipMedium=media.getMedium(material)
         W = ROOT.gGeoManager.GetMedium(material)
-    aBox = ROOT.gGeoManager.MakeBox("target", W, 100.*u.cm, 100.*u.cm, thickness)
-    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))
- def InitParContainers():
-    print "not implemented!"
+        if not W: 
+            rc = geoBuild.createMedium(ShipMedium)
+            W = ROOT.gGeoManager.GetMedium(material)
+        aBox = ROOT.gGeoManager.MakeBox("target", W, 100.*u.cm, 100.*u.cm, thickness)
+        top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))
+    def InitParContainers():
+        print("not implemented!")
 
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
@@ -109,13 +111,13 @@ sTree = f.cbmsim
 ut.bookHist(h,'Ekin','Ekin of particles in sens plane',400000,0.,400)
 ut.bookHist(h,'EkinLow','Ekin of particles in sens plane',1000,0.,0.001)
 for n in range(sTree.GetEntries()):
- rc = sTree.GetEvent(n)
- for aHit in sTree.vetoPoint:
-   oTrack = sTree.MCTrack[aHit.GetTrackID()]
-   M = pdg.GetParticle(oTrack.GetPdgCode()).Mass()
-   Ekin = ROOT.TMath.Sqrt( aHit.GetPx()**2+aHit.GetPy()**2+aHit.GetPz()**2 + M**2) - M
-   rc = h['Ekin'].Fill(Ekin)
-   rc = h['EkinLow'].Fill(Ekin)
+    rc = sTree.GetEvent(n)
+    for aHit in sTree.vetoPoint:
+        oTrack = sTree.MCTrack[aHit.GetTrackID()]
+        M = pdg.GetParticle(oTrack.GetPdgCode()).Mass()
+        Ekin = ROOT.TMath.Sqrt( aHit.GetPx()**2+aHit.GetPy()**2+aHit.GetPz()**2 + M**2) - M
+        rc = h['Ekin'].Fill(Ekin)
+        rc = h['EkinLow'].Fill(Ekin)
 ut.bookCanvas(h,key=s,title=s,nx=900,ny=600,cx=1,cy=1)
 tc = h[s].cd(1)
 tc.SetLogy(1)
@@ -128,7 +130,7 @@ h['Ekin'].Draw()
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
-print "Output file is ",  outFile 
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ') 
+print("Macro finished succesfully.") 
+print("Output file is ",  outFile) 
+print("Real time ",rtime, " s, CPU time ",ctime,"s")

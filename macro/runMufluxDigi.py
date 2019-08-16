@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
+from past.utils import old_div
 firstEvent = 0
 dy         = None
 
@@ -13,10 +20,10 @@ def mem_monitor():
     vmsize = int(_vmsize.split()[1])
     #Getting physical memory size  
     pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    print "memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3)
+    print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(old_div(vmsize,1.0E3),old_div(pmsize,1.0E3)))
 
 import ROOT,os,sys,getopt
-import __builtin__ as builtin
+import builtins as builtin
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -44,7 +51,7 @@ from rootpyPickler import Unpickler
 #load Shipgeo dictionary
 upkl    = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
- 
+
 # -----Create geometry----------------------------------------------
 import charmDet_conf
 run = ROOT.FairRunSim()
@@ -69,12 +76,12 @@ SHiP = MufluxDigi.MufluxDigi(outFile)
 nEvents   = min(SHiP.sTree.GetEntries(),int(options.nEvents))
 # main loop
 for iEvent in range(firstEvent, nEvents):
- if iEvent%50000 == 0 or debug: print 'event ',iEvent,nEvents-firstEvent
- SHiP.iEvent = iEvent
- rc    = SHiP.sTree.GetEvent(iEvent) 
- SHiP.digitize() 
- # memory monitoring
- # mem_monitor() 
- 
+    if iEvent%50000 == 0 or debug: print('event ',iEvent,nEvents-firstEvent)
+    SHiP.iEvent = iEvent
+    rc    = SHiP.sTree.GetEvent(iEvent) 
+    SHiP.digitize() 
+    # memory monitoring
+    # mem_monitor() 
+
 # end loop over events
 SHiP.finish()

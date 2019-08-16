@@ -6,6 +6,9 @@
 # by data lines x y z Bx By Bz, where the co-ordinates are assumed to
 # be in ascending z, y and x, in that order. Need distances in cm
 
+from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field info
@@ -45,7 +48,7 @@ def run(inFileName  = 'BFieldTest.txt',
 
 def createRootMap(inFileName, rootFileName):
 
-    print 'Create ROOT map {0} from {1}'.format(rootFileName, inFileName)
+    print('Create ROOT map {0} from {1}'.format(rootFileName, inFileName))
 
     # Define ROOT file and its TTree
     theFile = ROOT.TFile.Open(rootFileName, 'recreate')
@@ -113,7 +116,7 @@ def createRootMap(inFileName, rootFileName):
                 # Grid Output Min: xMin yMin zMin Max: xMax yMax zMax Grid Size: dx dy dz
                 # These co-ordinate limits are in mm, but the actual data lines use m
 
-                print 'sLine = {0}'.format(sLine)
+                print('sLine = {0}'.format(sLine))
                 # For each value, convert from mm to cm
                 rStruct.xMin = float(sLine[3])*mm2cm
                 rStruct.xMax = float(sLine[7])*mm2cm
@@ -125,19 +128,19 @@ def createRootMap(inFileName, rootFileName):
                 rStruct.zMax = float(sLine[9])*mm2cm
                 rStruct.dz = float(sLine[14])*mm2cm
 
-                Nx = int(((rStruct.xMax - rStruct.xMin)/rStruct.dx) + 1.0)
-                Ny = int(((rStruct.yMax - rStruct.yMin)/rStruct.dy) + 1.0)
-                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)
+                Nx = int((old_div((rStruct.xMax - rStruct.xMin),rStruct.dx)) + 1.0)
+                Ny = int((old_div((rStruct.yMax - rStruct.yMin),rStruct.dy)) + 1.0)
+                Nz = int((old_div((rStruct.zMax - rStruct.zMin),rStruct.dz)) + 1.0)
                 Nzy = Nz*Ny
 
-                print 'Nx = {0}, Ny = {1}, Nz = {2}'.format(Nx, Ny, Nz)
+                print('Nx = {0}, Ny = {1}, Nz = {2}'.format(Nx, Ny, Nz))
 
                 # Centre the field map on the local origin (cm)
                 x0 = 0.5*(rStruct.xMin + rStruct.xMax)
                 y0 = 0.5*(rStruct.yMin + rStruct.yMax)
                 z0 = 0.5*(rStruct.zMin + rStruct.zMax)
 
-                print 'Centering field map using co-ordinate shift {0} {1} {2} cm'.format(x0, y0, z0)
+                print('Centering field map using co-ordinate shift {0} {1} {2} cm'.format(x0, y0, z0))
 
                 # Center co-ordinate range limits (cm)
                 rStruct.xMin = rStruct.xMin - x0
@@ -151,7 +154,7 @@ def createRootMap(inFileName, rootFileName):
 
                 # Fill info into range tree
                 rangeTree.Fill()
-                
+
 
             # Field data values start from line 3
             elif iLine > 2:
@@ -169,7 +172,7 @@ def createRootMap(inFileName, rootFileName):
                 dStruct.Bz = float(sLine[5])
 
                 dataTree.Fill()
-                
+
     theFile.cd()
     rangeTree.Write()
     dataTree.Write()
