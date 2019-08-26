@@ -5416,6 +5416,26 @@ def checkMCEffTuning():
  h['leg'+t].Draw()
  h[t].Print('MCcomparison-Efficiency-Tuning.png')
  h[t].Print('MCcomparison-Efficiency-Tuning.pdf')
+
+def ghostSuppression():
+ interestingHistos = []
+ hname = "sumHistos.root"
+ cuts = {'':ROOT.kBlue,'All':ROOT.kCyan,'Chi2<':ROOT.kGreen,'Delx<':ROOT.kOrange,'Dely<':ROOT.kMagenta}
+ for c in cuts:
+  for a in ['p/pt','Chi2/DoF']:
+   for x in ['','mu']:
+    interestingHistos.append(c+a+x)
+ ut.readHists(h,hname,interestingHistos)
+ for c in cuts:
+  for a in ['p/pt','Chi2/DoF']:
+   for x in ['','mu']:
+     h[c+a+x].SetLineColor(cuts[c])
+     h[c+a+x+'_projx'].SetLineColor(cuts[c])
+     h[c+a+x+'_projy'].SetLineColor(cuts[c])
+  if c=='':  h['p/ptmu_projx'].Draw()
+  else: h[c+'p/ptmu_projx'].Draw('same')
+
+
 def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels",withOverFlow=True,withDisplay=True):
  # 1GeV mbias,      1.806 Billion PoT 
  # 1GeV charm,     10.21 Billion PoT,  10 files

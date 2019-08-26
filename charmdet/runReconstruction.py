@@ -286,9 +286,13 @@ def mergeHistos(local='.',command='anaResiduals'):
  commandToSum  = {"anaResiduals":"momDistributions","momResolution":"momentumResolution","plotDTPoints":"DTPoints","alignment":"residuals","hitmaps":"HitmapsFromFittedTracks"}
  cmd = 'hadd -f '+commandToSum[command]+'.root '
  tag = commandToHist[command]
+ badFiles = []
  N=0
  for x in os.listdir(local):
-  if not x.find(tag)<0 : 
+  if not x.find(tag)<0 :
+     if os.path.getsize(local+'/'+x)==0:
+      print "remove zero file:",local+'/'+x
+      os.system('rm '+local+'/'+x)
      cmd += (local+'/'+x+' ')
      N+=1
   if N>500:
@@ -476,16 +480,47 @@ def makeDTEfficiency(eos=False,merge=False):
  if merge: os.system(cmd)
  print "finished all the tasks."
  
+def runMufluxReco(path = '.',merge=False):
+ sumHistos=[]
+ for d in os.listdir(path):
+   if d.find('RUN_8000')==0:
+    if os.path.isfile("sumHistos--"+d+".root"):
+      sumHistos.append(d)
+    elif merge:
+      print "run ",d," not processed successfully"
+    else:
+     if os.path.isdir(d):
+      cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t withDeadChannels -d "+d+" -c MufluxReco -p "+path+" &"
+      os.system(cmd)
+      time.sleep(10)
+      while 1>0:
+        if count_python_processes('MufluxNtuple')<ncpus: break 
+        time.sleep(10)
+ if merge:
+   cmd = 'hadd -f sumHistos.root '
+   for d in sumHistos:
+    cmd += "sumHistos--"+d+".root "
+   os.system(cmd)
+
+def checkNtuples(path = '.'):
+ notOK = []
+ for d in os.listdir('.'):
+  if d.find('RUN_8000')==0 and os.path.isdir(d):
+   for n in os.listdir(path+'/'+d): 
+     if n.find('ntuple-')==0:
+      test = ROOT.TFile(path+'/'+d+'/'+n)
+      if not test: notOK.append(path+'/'+d+'/'+n)
+ return notOK
 
 def importHistos(keyword = 'RUN_8000_2',histoname="momDistributions"):
  # momDistributions.root    residuals.root
-  pathHistos = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/'
-  temp = os.listdir(pathHistos)
+ # pathHistos = ['/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/','/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32/']
+ pathHistos = ['/home/truf/ship-ubuntu-1710-64/','/home/truf/ship-ubuntu-1710-32/']
+ for p in pathHistos:
+  temp = os.listdir(p)
   for x in temp:
    if x.find(keyword)<0: continue
    run = x
    if not run in os.listdir('.'):
      os.system('mkdir '+run)
-   os.system('cp '+pathHistos+run+'/'+histoname+'.root '+run)
-
-
+   os.system('cp '+p+run+'/'+histoname+'.root '+run)

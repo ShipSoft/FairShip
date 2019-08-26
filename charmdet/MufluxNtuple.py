@@ -28,6 +28,7 @@ h = {}
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", default=False)
+parser.add_argument("-d", "--dir", dest="directory", help="directory", default=False)
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
 parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default="")
 parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="withDeadChannels") # other versions: "0", "multHits", "noDeadChannels"
@@ -41,11 +42,17 @@ MCType    =  options.MCType
 with1GeV  =  options.with1GeV  == "True"
 withCharm =  options.withCharm == "True"
 with10GeV =  options.with10GeV == "True"
+if options.path != "": gPath = options.path+'/'
+fdir = options.directory
 
-Nfiles = 500
+if not fdir: 
+  Nfiles = 2000
+  fdir   = "RUN_8000_2403"
+else: 
+  Nfiles = len( os.listdir(gPath+fdir) )
 if not options.listOfFiles:
  sTreeData = ROOT.TChain('tmuflux')
- path = gPath +"RUN_8000_2403/"
+ path = gPath + fdir
  countFiles=[]
  for x in os.listdir(path):
   if not x.find('ntuple-SPILL')<0: countFiles.append(x)
@@ -727,37 +734,38 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
    h[t].Print('True-Reco'+k+'.pdf')
 Debug=False
 def mufluxReco(sTree,h):
+ cuts = {'':0,'Chi2<':0.7,'Dely<':5,'Delx<':2,'All':1}
  ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
- ut.bookHist(h,'RPCResX/Y','RPC residuals',200,0.,200.,200,0.,200.)
- for x in ['','mu']:
-  for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"]:
-   ut.bookHist(h,'p/pt-0'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
-   ut.bookHist(h,'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'pz/Abspx'+x+s,'Pz vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'p/pxy'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
-   ut.bookHist(h,'p/Abspxy'+x+s,'momentum vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'pz/Abspxy'+x+s,'Pz vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'TrackMult'+x+s,'track multiplicity',10,-0.5,9.5)
-   ut.bookHist(h,'chi2'+x+s,'chi2/nDoF',100,0.,10.)
-   ut.bookHist(h,'Nmeasurements'+x+s,'number of measurements used',25,-0.5,24.5)
-   ut.bookHist(h,'xy'+x+s,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
-   ut.bookHist(h,'pxpy'+x+s,'px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
-   ut.bookHist(h,'p1/p2'+x+s,'momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
-   ut.bookHist(h,'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
-   ut.bookHist(h,'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
-   ut.bookHist(h,'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
-   ut.bookHist(h,'RPCMatch'+x+s,'RPC matching',100,0.,10.,100,0.,10.)
-   ut.bookHist(h,'R'+x+s,'rpc match',100,0.,10.,100,0.,500.)
-   ut.bookHist(h,'Chi2/DoF'+x+s,'Chi2/DoF',100,0.,5.,100,0.,500.)
-   ut.bookHist(h,'DoF'+x+s,     'DoF'     ,30,0.5,30.5,100,0.,500.)
-   if x != '' or s != '':continue
-   ut.bookHist(h,'trueMom'+x+s,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'recoMom'+x+s,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'recoPz/Abspx'+x+s,'reco MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
-   ut.bookHist(h,'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
+ for c in cuts:
+  for x in ['','mu']:
+   for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"]:
+    ut.bookHist(h,c+'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
+    ut.bookHist(h,c+'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'pz/Abspx'+x+s,'Pz vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'p/pxy'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
+    ut.bookHist(h,c+'p/Abspxy'+x+s,'momentum vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'pz/Abspxy'+x+s,'Pz vs Px (GeV) tagged RPC X;p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'TrackMult'+x+s,'track multiplicity',10,-0.5,9.5)
+    ut.bookHist(h,c+'chi2'+x+s,'chi2/nDoF',100,0.,10.)
+    ut.bookHist(h,c+'Nmeasurements'+x+s,'number of measurements used',25,-0.5,24.5)
+    ut.bookHist(h,c+'xy'+x+s,'xy of first state;x [cm];y [cm]',100,-30.,30.,100,-30.,30.)
+    ut.bookHist(h,c+'pxpy'+x+s,'px/pz py/pz of first state',100,-0.2,0.2,100,-0.2,0.2)
+    ut.bookHist(h,c+'p1/p2'+x+s,'momentum p1 vs p2;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
+    ut.bookHist(h,c+'pt1/pt2'+x+s,'P_{T} 1 vs P_{T} 2;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+    ut.bookHist(h,c+'p1/p2s'+x+s,'momentum p1 vs p2 same sign;p [GeV/c]; p [GeV/c]',500,0.,500.,500,0.,500.)
+    ut.bookHist(h,c+'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
+    ut.bookHist(h,c+'Chi2/DoF'+x+s,'Chi2/DoF',100,0.,5.,100,0.,500.)
+    ut.bookHist(h,c+'DoF'+x+s,     'DoF'     ,30,0.5,30.5,100,0.,500.)
+    ut.bookHist(h,c+'R'+x,'rpc match',100,0.,10.,100,0.,500.)
+    ut.bookHist(h,c+'RPCResX/Y','RPC residuals',200,0.,200.,200,0.,200.)
+    ut.bookHist(h,c+'RPCMatch','RPC matching',100,0.,10.,100,0.,10.)
+    if x != '' or s != '':continue
+    ut.bookHist(h,c+'trueMom'+x+s,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'recoMom'+x+s,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'recoPz/Abspx'+x+s,'reco MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(h,c+'momResol'+x+s,'momentum resolution function of momentum;P [GeV/c];#sigma P/P', 200,-0.5,0.5,40,0.,400.)
 #
  MCdata = False
  if sTree.FindBranch("MCRecoDT"): MCdata = True
@@ -779,7 +787,7 @@ def mufluxReco(sTree,h):
          if (tchannel == 5):  source = "charm"
          if (tchannel == 6):  source = "beauty"
          if (tchannel == 13): source = "invalid"
-   muonTaggedTracks = []
+   muonTaggedTracks = {}
    for k in range(len(sTree.GoodTrack)):
      h['Trscalers'].Fill(3)
      if sTree.GoodTrack[k]<0: continue
@@ -793,84 +801,87 @@ def mufluxReco(sTree,h):
      if sTree.GoodTrack[k]>999:  clone = True
      if clone: continue
      R = (sTree.Dely[k]/3.)**2+(sTree.Delx[k]/1.5)**2
-     p=ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
+     p = ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
      rc = h['R'].Fill(R,p.Mag())
      rc = h['RPCMatch'].Fill(sTree.Delx[k],sTree.Dely[k])
-     h["p/pt"].Fill(p.Mag(),p.Pt())
-     h["p/px"].Fill(p.Mag(),p.x())
-     h["p/Abspx"].Fill(p.Mag(),abs(p.x()))
-     h["pz/Abspx"].Fill(p.z(),abs(p.x()))
-     h["xy"].Fill(sTree.x[k],sTree.y[k])
-     h["pxpy"].Fill(p.x()/p.z(),p.y()/p.z())
-     h['Chi2/DoF'].Fill(sTree.Chi2[k],p.Mag())
-     h['DoF'].Fill(sTree.nDoF[k],p.Mag())
-     if p.Mag()>300. and Debug: 
+     okCuts = ['']
+     muonTaggedTracks['']=[]
+     if sTree.Chi2[k]<cuts['Chi2<']: okCuts.append('Chi2<')
+     if sTree.Dely[k]<cuts['Dely<']: okCuts.append('Dely<')
+     if sTree.Delx[k]<cuts['Delx<']: okCuts.append('Delx<')
+     if sTree.Chi2[k]<cuts['Chi2<'] and sTree.Dely[k]<cuts['Dely<'] and sTree.Delx[k]<cuts['Delx<']: okCuts.append('All')
+     for c in okCuts: 
+      h[c+"p/pt"].Fill(p.Mag(),p.Pt())
+      h[c+"p/px"].Fill(p.Mag(),p.x())
+      h[c+"p/Abspx"].Fill(p.Mag(),abs(p.x()))
+      h[c+"pz/Abspx"].Fill(p.z(),abs(p.x()))
+      h[c+"xy"].Fill(sTree.x[k],sTree.y[k])
+      h[c+"pxpy"].Fill(p.x()/p.z(),p.y()/p.z())
+      h[c+'Chi2/DoF'].Fill(sTree.Chi2[k],p.Mag())
+      h[c+'DoF'].Fill(sTree.nDoF[k],p.Mag())
+      if p.Mag()>300. and Debug: 
         occ = sTree.stationOcc[1]+sTree.stationOcc[2]+sTree.stationOcc[5]+sTree.stationOcc[6]
         print n, p.Mag(),occ,sTree.GoodTrack[k],sTree.Chi2[k],sTree.nDoF[k]
-     if source != '':
-      h["p/pt"+source].Fill(p.Mag(),p.Pt())
-      h["p/px"+source].Fill(p.Mag(),p.x())
-      h["p/Abspx"+source].Fill(p.Mag(),abs(p.x()))
-      h["pz/Abspx"+source].Fill(p.z(),abs(p.x()))
-      h["xy"+source].Fill(sTree.x[k],sTree.y[k])
-      h["pxpy"+source].Fill(p.x()/p.z(),p.y()/p.z())
-      h['R'+source].Fill(R,p.Mag())
-      h['Chi2/DoF'+source].Fill(sTree.Chi2[k],p.Mag())
-      h['DoF'+source].Fill(sTree.nDoF[k],p.Mag())
-     h['RPCResX/Y'].Fill(sTree.Delx[k],sTree.Dely[k])
-     if (muTaggedX): # within ~3sigma  X from mutrack
-        h["p/pxmu"].Fill(p.Mag(),p.x())
-        h["p/Abspxmu"].Fill(p.Mag(),abs(p.x()))
-        h["pz/Abspxmu"].Fill(p.z(),abs(p.x()))
+      if source != '':
+       h[c+"p/pt"+source].Fill(p.Mag(),p.Pt())
+       h[c+"p/px"+source].Fill(p.Mag(),p.x())
+       h[c+"p/Abspx"+source].Fill(p.Mag(),abs(p.x()))
+       h[c+"pz/Abspx"+source].Fill(p.z(),abs(p.x()))
+       h[c+"xy"+source].Fill(sTree.x[k],sTree.y[k])
+       h[c+"pxpy"+source].Fill(p.x()/p.z(),p.y()/p.z())
+       h[c+'R'+source].Fill(R,p.Mag())
+       h[c+'Chi2/DoF'+source].Fill(sTree.Chi2[k],p.Mag())
+       h[c+'DoF'+source].Fill(sTree.nDoF[k],p.Mag())
+      h[c+'RPCResX/Y'].Fill(sTree.Delx[k],sTree.Dely[k])
+      if (muTaggedX): # within ~3sigma  X from mutrack
+        h[c+"p/pxmu"].Fill(p.Mag(),p.x())
+        h[c+"p/Abspxmu"].Fill(p.Mag(),abs(p.x()))
+        h[c+"pz/Abspxmu"].Fill(p.z(),abs(p.x()))
         if source != '':
-         h["p/pxmu"+source].Fill(p.Mag(),p.x())
-         h["p/Abspxmu"+source].Fill(p.Mag(),abs(p.x()))
-         h["pz/Abspxmu"+source].Fill(p.z(),abs(p.x()))
-     if (muTagged): #  within ~3sigma  X,Y from mutrack
-        h["p/pt-0mu"].Fill(p.Mag(),p.Pt())
-        #if R<5:   # 1 was not good, 10 reduced almost nothing
-        # if sTree.Dely[k]<3 and sTree.Delx[k]<1 and sTree.Chi2[k]<0.7: reduced event rate by 70% too much!
-        if sTree.Chi2[k]<0.7:
-         muonTaggedTracks.append(k)
-         h["p/ptmu"].Fill(p.Mag(),p.Pt())
-         h["p/pxymu"].Fill(p.Mag(),p.x())
-         h["p/Abspxymu"].Fill(p.Mag(),abs(p.x()))
-         h["pz/Abspxymu"].Fill(p.z(),abs(p.x()))
-         h["xymu"].Fill(sTree.x[k],sTree.y[k])
-         h["pxpymu"].Fill(p.x()/p.z(),p.y()/p.z())
-         h['Rmu'].Fill(R,p.Mag())
-         h['Chi2/DoFmu'].Fill(sTree.Chi2[k],p.Mag())
-         h['DoFmu'].Fill(sTree.nDoF[k],p.Mag())
+         h[c+"p/pxmu"+source].Fill(p.Mag(),p.x())
+         h[c+"p/Abspxmu"+source].Fill(p.Mag(),abs(p.x()))
+         h[c+"pz/Abspxmu"+source].Fill(p.z(),abs(p.x()))
+      if (muTagged): #  within ~3sigma  X,Y from mutrack
+         if c=='': muonTaggedTracks[''].append(k)
+         h[c+"p/ptmu"].Fill(p.Mag(),p.Pt())
+         h[c+"p/pxymu"].Fill(p.Mag(),p.x())
+         h[c+"p/Abspxymu"].Fill(p.Mag(),abs(p.x()))
+         h[c+"pz/Abspxymu"].Fill(p.z(),abs(p.x()))
+         h[c+"xymu"].Fill(sTree.x[k],sTree.y[k])
+         h[c+"pxpymu"].Fill(p.x()/p.z(),p.y()/p.z())
+         h[c+'Rmu'].Fill(R,p.Mag())
+         h[c+'Chi2/DoFmu'].Fill(sTree.Chi2[k],p.Mag())
+         h[c+'DoFmu'].Fill(sTree.nDoF[k],p.Mag())
          if source != '':
-          h["p/ptmu"+source].Fill(p.Mag(),p.Pt())
-          h["p/pxymu"+source].Fill(p.Mag(),p.x())
-          h["p/Abspxymu"+source].Fill(p.Mag(),abs(p.x()))
-          h["pz/Abspxymu"+source].Fill(p.z(),abs(p.x()))
-          h["xymu"+source].Fill(sTree.x[k],sTree.y[k])
-          h["pxpymu"+source].Fill(p.x()/p.z(),p.y()/p.z())
-          h['Rmu'+source].Fill(R,p.Mag())
-          h['Chi2/DoFmu'+source].Fill(sTree.Chi2[k],p.Mag())
-          h['DoFmu'+source].Fill(sTree.nDoF[k],p.Mag())
+          h[c+"p/ptmu"+source].Fill(p.Mag(),p.Pt())
+          h[c+"p/pxymu"+source].Fill(p.Mag(),p.x())
+          h[c+"p/Abspxymu"+source].Fill(p.Mag(),abs(p.x()))
+          h[c+"pz/Abspxymu"+source].Fill(p.z(),abs(p.x()))
+          h[c+"xymu"+source].Fill(sTree.x[k],sTree.y[k])
+          h[c+"pxpymu"+source].Fill(p.x()/p.z(),p.y()/p.z())
+          h[c+'Rmu'+source].Fill(R,p.Mag())
+          h[c+'Chi2/DoFmu'+source].Fill(sTree.Chi2[k],p.Mag())
+          h[c+'DoFmu'+source].Fill(sTree.nDoF[k],p.Mag())
 #
-     if len(muonTaggedTracks)==2:
-      a,b=muonTaggedTracks[0],muonTaggedTracks[1]
-      pA=ROOT.TVector3(sTree.Px[a],sTree.Py[a],sTree.Pz[a])
-      pB=ROOT.TVector3(sTree.Px[b],sTree.Py[b],sTree.Pz[b])
-      prodSign = sTree.Sign[a]*sTree.Sign[b]
-      if prodSign<0:
-       h["p1/p2"].Fill(pA.Mag(),pB.Mag())
-       h["pt1/pt2"].Fill(pA.Pt(),pB.Pt())
-       if source != '':
-        h["p1/p2"+source].Fill(pA.Mag(),pB.Mag())
-        h["pt1/pt2"+source].Fill(pA.Pt(),pB.Pt())
-      else:
-       h["p1/p2s"].Fill(pA.Mag(),pB.Mag())
-       h["pt1/pt2s"].Fill(pA.Pt(),pB.Pt())
-       if source != '':
-        h["p1/p2s"+source].Fill(pA.Mag(),pB.Mag())
-        h["pt1/pt2s"+source].Fill(pA.Pt(),pB.Pt())
+      if len(muonTaggedTracks[''])==2:
+       a,b=muonTaggedTracks[''][0],muonTaggedTracks[''][1]
+       pA=ROOT.TVector3(sTree.Px[a],sTree.Py[a],sTree.Pz[a])
+       pB=ROOT.TVector3(sTree.Px[b],sTree.Py[b],sTree.Pz[b])
+       prodSign = sTree.Sign[a]*sTree.Sign[b]
+       if prodSign<0:
+        h["p1/p2"].Fill(pA.Mag(),pB.Mag())
+        h["pt1/pt2"].Fill(pA.Pt(),pB.Pt())
+        if source != '':
+         h["p1/p2"+source].Fill(pA.Mag(),pB.Mag())
+         h["pt1/pt2"+source].Fill(pA.Pt(),pB.Pt())
+       else:
+        h["p1/p2s"].Fill(pA.Mag(),pB.Mag())
+        h["pt1/pt2s"].Fill(pA.Pt(),pB.Pt())
+        if source != '':
+         h["p1/p2s"+source].Fill(pA.Mag(),pB.Mag())
+         h["pt1/pt2s"+source].Fill(pA.Pt(),pB.Pt())
 # mom resolution
-     if MCdata and len(sTree.GoodTrack)==1 and len(sTree.MCRecoDTpx)==1:
+      if MCdata and len(sTree.GoodTrack)==1 and len(sTree.MCRecoDTpx)==1:
        trueMom = ROOT.TVector3(sTree.MCRecoDTpx[0],sTree.MCRecoDTpy[0],sTree.MCRecoDTpz[0])
        h["trueMom"].Fill(trueMom.Mag(),trueMom.Pt())
        h["recoMom"].Fill(p.Mag(),p.Pt())
@@ -883,6 +894,7 @@ def mufluxReco(sTree,h):
         h["truePz/Abspx"+source].Fill(trueMom[2],ROOT.TMath.Abs(trueMom[0]));
         h["recoPz/Abspx"+source].Fill(p[2],ROOT.TMath.Abs(p[0]));
         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
+ ut.writeHists( h,'sumHistos-'+'-'+fdir+'.root')
 
 def plotOccupancy(sTree):
    ut.bookHist(h,'upStreamOcc',"station 1&2 function of track mom",50,-0.5,199.5,100,0.,500.)
@@ -918,6 +930,7 @@ def fitExpo(h,hname):
 def studyGhosts():
  sTree = sTreeMC
  h = hMC
+ ut.bookHist(h,'gfCurv',             'ghost fraction vs curvature',100,0.,100.,100,0.,0.1)
  ut.bookHist(h,'gf',             'ghost fraction',100,0.,100.,100,0.,500.)
  ut.bookHist(h,'gftrue',         'ghost fraction',100,0.,100.,100,0.,500.)
  ut.bookHist(h,'gfDiff',         'ghost fraction vs reco - true mom',100,0.,100.,500,0.,500.)
@@ -959,6 +972,7 @@ def studyGhosts():
     rc    = h['gfDiff'].Fill(gf,p.Mag() - pTrue.Mag())
     rc    = h['gftrue'].Fill(gf, pTrue.Mag())
     rc    = h['gf'].Fill(gf,p.Mag() )
+    rc = h['gfCurv'].Fill(gf,1./p.Mag() )
  h['P']       =h['gf'].ProjectionY('P')
  h['Ptrue']       =h['gftrue'].ProjectionY('Ptrue')
  h['Ptrue'].SetLineColor(ROOT.kMagenta)
@@ -986,10 +1000,4 @@ def debug():
  return Nstat
 
 if options.command=='MufluxReco':
- sTree = ROOT.TChain('tmuflux')
- tmp = options.listOfFiles.split(',')
- hName = tmp[0].replace('ntuple','histos-fromNtuple').replace('/','--')
- for f in tmp:
-  sTree.Add(options.path+f)
- mufluxReco(sTree)
- ut.writeHists(h,hName)
+ mufluxReco(sTreeData,hData)

@@ -373,7 +373,8 @@ def checkAlignment(D='.',splitFactor=5):
    fileList = []
    for y in temp2.split('\n'):
     f = os.environ['EOSSHIP'] + y[y.find('/eos'):]
-    if not f.find('histos')<0: continue
+    test = f[f.rfind('/')+1:]
+    if not test.find('ship.')==0: continue
     if  f.find('RT')<0: continue
     histFile = 'histos-residuals-'+y[y.rfind('/')+1:]
     if histFile in os.listdir('.') : continue
