@@ -42,23 +42,8 @@ TVector3 vetoHit::GetXYZ()
     TGeoBBox* shape =  (TGeoBBox*)node->GetVolume()->GetShape();
     Double_t origin[3] = {shape->GetOrigin()[0],shape->GetOrigin()[1],shape->GetOrigin()[2]};
     Double_t master[3] = {0,0,0};
-    
-    Int_t i;
-    const Double_t *tr = node->GetMatrix()->GetTranslation();
-    if (!(node->GetMatrix()->IsRotation())) {
-       for (i=0; i<3; i++) master[i] = tr[i] + origin[i];
-    }
-    else{
-        const Double_t *rot = node->GetMatrix()->GetRotationMatrix();
-        for (i=0; i<3; i++) {
-        master[i] = tr[i]
-                    + origin[0]*rot[3*i]
-                    + origin[1]*rot[3*i+1]
-                    + origin[2]*rot[3*i+2];
-        }
-    }
-    
-    //nav->LocalToMaster(origin,master);
+    nav->cd(TString("cave/DecayVolume_1/T2_1/VetoLiSc_0/")+node->GetName());
+    nav->LocalToMaster(origin,master);
     TVector3 pos = TVector3(master[0],master[1],master[2]);
     return pos;
 } 

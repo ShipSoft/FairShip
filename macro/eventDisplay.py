@@ -135,18 +135,11 @@ class DrawVetoDigi(ROOT.FairTask):
     dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
     o = shape.GetOrigin()
     master = array('d',[0,0,0])
-    tr = node.GetMatrix().GetTranslation();
-    rot = node.GetMatrix().GetRotationMatrix()
     n=0
     for edge in [ [-dx,-dy,-dz],[-dx,+dy,-dz],[+dx,+dy,-dz],[+dx,-dy,-dz],[-dx,-dy, dz],[-dx,+dy, dz],[+dx,+dy, dz],[+dx,-dy, dz]]:
      origin = array('d',[edge[0]+o[0],edge[1]+o[1],edge[2]+o[2]])
-     #nav.LocalToMaster(origin,master)
-     if not node.GetMatrix().IsRotation():
-       for i in range(3):
-        master[i] = tr[i] + origin[i]
-     else:
-        for i in range(3):
-         master[i] = tr[i] + origin[0]*rot[3*i] + origin[1]*rot[3*i+1] + origin[2]*rot[3*i+2]
+     nav.cd("cave/DecayVolume_1/T2_1/VetoLiSc_0/"+node.GetName())
+     nav.LocalToMaster(origin,master)
      bx.SetVertex(n,master[0],master[1],master[2])
      n+=1
     self.comp.AddElement(bx)
