@@ -688,7 +688,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  TString fname = sTree->GetCurrentFile()->GetName();
  TFile fntpl("ntuple-"+fname(fname.Last('/')+1,fname.Length()),"recreate");
  TTree tMuFlux("tmuflux","muflux ntuple");
- Int_t tnTr,tevtnr,tspillnrA,tspillnrB,tspillnrC,tchannel;
+ Int_t tnTr,tnRPC,tevtnr,tspillnrA,tspillnrB,tspillnrC,tchannel;
  Int_t stationOcc[7];
  Int_t tSign[maxD];
  Int_t tGoodTrack[maxD];
@@ -718,6 +718,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Double_t tgf[maxD];
 
  tMuFlux.Branch("nTr",&tnTr,"nTr/I");
+ tMuFlux.Branch("nRPC",&tnRPC,"nRPC/I");
  tMuFlux.Branch("evtnr",&tevtnr,"evtnr/I");
  tMuFlux.Branch("channel",&tchannel,"channel/I");
  tMuFlux.Branch("spillnrA",&tspillnrA,"spillnrA/I");
@@ -796,6 +797,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
    }
    tevtnr=nx;
    tnTr = 0;
+   tnRPC = RPCTrackX->GetEntries()*10+RPCTrackY->GetEntries();
    nx  += 1;
    Int_t Ntracks = FitTracks->GetEntries();
    Int_t Ngood   = 0;
