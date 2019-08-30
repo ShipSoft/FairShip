@@ -472,6 +472,7 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
     upStreamOcc = sTree.stationOcc[1]+sTree.stationOcc[5]+sTree.stationOcc[2]+sTree.stationOcc[6]
     if sTree.nTr>0: rc = h['OccAllEvents'].Fill(upStreamOcc)
     if sTree.MCRecoDT.size() != 1: continue # look at 1 Track events for the moment 
+    # starting with reconstructible RPC track, check that same MCTrack is reconstructible in DT
     for m in sTree.MCRecoRPC:
        i = -1
        for d in sTree.MCRecoDT:
@@ -495,6 +496,8 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
            rc = h['delPx'].Fill(delPx,P.Mag())
            rc = h['delPt'].Fill(delPt,P.Mag())
            rc = h['delx/y'].Fill(sTree.Delx[t],sTree.Dely[t])
+           # if there is no muon track in event, sTree.Delx[t] = 9999. and sTree.Dely[t] = 9999.
+           if sTree.Delx[t]>9998 or sTree.Dely[t] > 9998: print "no reco RPC track in RPC reconstructible event" 
            if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
              if found: continue
              rc = h['delP_mu'].Fill(delP,P.Mag())
@@ -518,15 +521,15 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
  if not hMC.has_key("hDTEff"):
   hMC["hDTEff"] = {}
   hDTEff=hMC["hDTEff"]
-  ut.readHists(hDTEff,'DTEff.root',['upStreamOccWithTrack','upStreamOcc'])
+  ut.readHists(hDTEff,'DTEff.root',['upStreamOccWithTrack1','upStreamOcc1'])
+  hDTEff['upStreamOccWithTrack']=hDTEff['upStreamOccWithTrack1'].Clone('upStreamOccWithTrack')
+  hDTEff['upStreamOcc']=hDTEff['upStreamOcc1'].Clone('upStreamOcc')
   hMC['zeroFieldOcc']=hDTEff['upStreamOccWithTrack'].Rebin(4,'zeroFieldOcc')
   hMC['zeroFieldOcc'].Scale(1./hMC['zeroFieldOcc'].GetMaximum())
   hMC['zeroFieldOcc'].SetLineColor(ROOT.kGreen)
   hMC['zeroFieldOcc'].SetMarkerColor(ROOT.kGreen)
   hMC['zeroFieldOcc'].SetMarkerStyle(24)
- c = 'MC'
- sTree = case[c][0]
- h = case[c][1]
+ h = hMC
  tmp = h['P'].ProjectionY()
  T = ROOT.TLatex()
  T.SetTextColor(ROOT.kMagenta)
@@ -627,14 +630,22 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
    finalEff+=hData['Occ'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
    sumEvents+=hData['Occ'].GetBinContent(o)
  finalEff=finalEff/sumEvents
- print "and the final answer is for Data: %5.2F%%"%(finalEff*100)
+ print "and the prediction for Data: %5.2F%%"%(finalEff*100)
+ ut.readHists(hData,'DTEff.root',['upStreamOccWithTrack1','upStreamOccWithTrack2','upStreamOccWithTrack3','upStreamOccWithTrack4'])
  finalEff  = 0
  sumEvents = 0
- for o in range(1,hData['Occ'].GetNbinsX()+1):
-   finalEff+=hData['Occ'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
-   sumEvents+=hData['Occ'].GetBinContent(o)
+ hData['upStreamOccWithTrack1'].Add(hData['upStreamOccWithTrack2'])
+ hData['upStreamOccWithTrack1'].Add(hData['upStreamOccWithTrack3'])
+ hData['upStreamOccWithTrack1'].Add(hData['upStreamOccWithTrack4'])
+ hData['upStreamOccWithTrack1'].Scale(1./4.)
+ hData['upStreamOccWithTrack1'].Rebin(4)
+ for o in range(1,hData['upStreamOccWithTrack1'].GetNbinsX()+1):
+   finalEff+=hData['upStreamOccWithTrack1'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
+   sumEvents+=hData['upStreamOccWithTrack1'].GetBinContent(o)
  finalEff=finalEff/sumEvents
- print "and the final answer is for zeroField Data: %5.2F%%"%(finalEff*100)
+ print "and the prediction for zeroField Data: %5.2F%%"%(finalEff*100)
+
+
 
 def trueMomPlot(Nevents=-1,onlyPlotting=False):
  h     = hMC
