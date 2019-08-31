@@ -222,7 +222,8 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
         # The implicit assumption here is that we will disregard the tau during the analysis.
         total_tau_br = sum(branching_ratios[1] for (_, branching_ratios) in secondary_decays)
         assert(ds_tau_br*total_tau_br <= max_total_br + 1e-12)
-        P8gen.SetParameters("431:addChannel      1  "+str(ds_tau_br*total_tau_br/max_total_br)+"    0      -15       16")
+        P8gen.SetParameters("431:addChannel      1  {:.12}    0      -15       16"\
+                            .format(ds_tau_br*total_tau_br/max_total_br))
         # Add secondary HNL production from tau
         for ch in tau_channels:
             # Rescale branching ratios only if some are non-zero. Otherwise leave them at zero.
@@ -273,7 +274,7 @@ def add_hnl(P8gen, mass, decay_couplings):
     hnl_instance = hnl.HNL(mass, decay_couplings, debug=True)
     ctau = hnl_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
     print("HNL ctau {}".format(ctau))
-    P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0")
+    P8gen.SetParameters("9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0".format(mass, ctau/u.mm))
     P8gen.SetParameters("9900015:isResonance = false")
     # Configuring decay modes...
     readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=False)
