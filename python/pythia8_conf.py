@@ -157,7 +157,7 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
 
     datafile = fairship_root + '/python/hnl_production.yaml'
     with open(datafile, 'rU') as f:
-        data = yaml.load(f)
+        data = yaml.load(f, Loader=yaml.FullLoader)
     all_channels  = data['channels']
 
     # Inclusive
