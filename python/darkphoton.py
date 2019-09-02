@@ -122,7 +122,7 @@ class DarkPhoton:
         return ctau #GeV/MeV conversion
     
     def lifetime(self):
-        return cTau()/ccm
+        return self.cTau()/ccm
 
     def findBranchingRatio(self,decayString):
         br = 0.
