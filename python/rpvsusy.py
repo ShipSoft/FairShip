@@ -27,6 +27,7 @@
 #
 # ==================================================================
 """
+from __future__ import print_function
 
 import re
 import math
@@ -176,15 +177,15 @@ class RPVSUSYbranchings():
 
 
         if debug:
-            print "RPVSUSYbranchings instance initialized with couplings:"
-            print "\t benchmark scenario   = %d"%self.bench
-            print "\t decay coupling       = %s"%self.U[0]
-            print "\t production coupling  = %s"%self.U[1]
-            print "\t sfermion mass        = %s"%self.sfmass
-            print "\t total prod coupling  = %s"%(self.U[0]/self.sfmass**2)
-            print "\t total decay coupling = %s"%(self.U[1]/self.sfmass**2)
-            print "and mass:"
-            print "\tm = %s GeV"%(self.MN)
+            print("RPVSUSYbranchings instance initialized with couplings:")
+            print("\t benchmark scenario   = %d"%self.bench)
+            print("\t decay coupling       = %s"%self.U[0])
+            print("\t production coupling  = %s"%self.U[1])
+            print("\t sfermion mass        = %s"%self.sfmass)
+            print("\t total prod coupling  = %s"%(self.U[0]/self.sfmass**2))
+            print("\t total decay coupling = %s"%(self.U[1]/self.sfmass**2))
+            print("and mass:")
+            print("\tm = %s GeV"%(self.MN))
 
     def Get_Prod_Modes(self):
         return self.prods[self.bench]
@@ -199,7 +200,7 @@ class RPVSUSYbranchings():
             decay_cpy = decay_cpy.replace("N -> ","")
             particles = decay_cpy.split()
             codes     = [PDGcode(p) for p in particles]
-            print decay
+            print(decay)
             bf        = self.findDecayBranchingRatio(decay)
             if any("K+" in s for s in particles) or\
                any("K-" in s for s in particles) or\
@@ -216,7 +217,7 @@ class RPVSUSYbranchings():
                 codes_str      = ' '.join([str(code) for code in codes])
                 P8Gen.SetParameters("9900015:addChannel = 1 "+str(bf)+" 0 "+codes_str)
             if verbose:
-                print "debug readdecay table",particles,codes,bf
+                print("debug readdecay table",particles,codes,bf)
 
 
 
@@ -313,7 +314,7 @@ class RPVSUSYbranchings():
         declist    = self.decays[self.bench]
         hadlist    = [re.search('->\ (.+?)\ ',dec).group(1) for dec in declist]
         leplist    = [dlist[1].strip() for dlist in [re.findall(r"\ \w+",dec) for dec in declist]]
-        print leplist,hadlist
+        print(leplist,hadlist)
         totalwidth = sum([self.Width_H_L(hadlist[i],leplist[i]) for i in range(0,len(hadlist))])
         return totalwidth
 
@@ -341,26 +342,26 @@ class RPVSUSYbranchings():
             if split.find('mu')>-1 or split.find('e')>-1 or split.find('tau')>-1:
                 lep = split
         if had == 'pi+' or had == 'pi-' or had == 'pi0':
-            print "findBranchingRatio() ERROR: Pions in final "\
+            print("findBranchingRatio() ERROR: Pions in final "\
                   "state have not been implemented, please choose "\
-                  "a different decay mode of out...\n"
-            print self.decays
+                  "a different decay mode of out...\n")
+            print(self.decays)
             return -999
 
         corrdecstring = 'N -> %s %s'%(had,lep)
         listdecs      = self.decays[self.bench]
         gooddec       = False
-        print "findBranchingRation() INFO: "\
+        print("findBranchingRation() INFO: "\
               "You have chosen the decay: '",\
-              corrdecstring
+              corrdecstring)
         for dec in listdecs:
             if corrdecstring in dec:
                 gooddec = True
         if gooddec is False:
-            print "findBranchingRation() ERROR: Badly "\
+            print("findBranchingRation() ERROR: Badly "\
                   "formulated decay string, please choose "\
-                  "one of the following\n"
-            print self.decays
+                  "one of the following\n")
+            print(self.decays)
             return -999
 
         br = 0.
@@ -383,26 +384,26 @@ class RPVSUSYbranchings():
             if split.find('mu')>-1 or split.find('e')>-1 or split.find('tau')>-1:
                 lep = split
         if had == 'pi+' or had == 'pi-' or had == 'pi0':
-            print "findProdBranchingRatio() ERROR: Pions in final "\
+            print("findProdBranchingRatio() ERROR: Pions in final "\
                   "state have not been implemented, please choose "\
-                  "a different decay mode of out...\n"
-            print self.decays
+                  "a different decay mode of out...\n")
+            print(self.decays)
             return -999
 
         corrdecstring = '%s -> N %s'%(had,lep)
         listdecs      = self.prods[self.bench]
         gooddec       = False
-        print "findProdBranchingRation() INFO: "\
+        print("findProdBranchingRation() INFO: "\
               "You have chosen the decay: '",\
-              corrdecstring
+              corrdecstring)
         for dec in listdecs:
             if corrdecstring in dec:
                 gooddec = True
         if gooddec is False:
-            print "findProdBranchingRation() ERROR: Badly "\
+            print("findProdBranchingRation() ERROR: Badly "\
                   "formulated decay string, please choose "\
-                  "one of the following\n"
-            print self.decays
+                  "one of the following\n")
+            print(self.decays)
             return -999
 
         br = self.Width_N_L(had,lep)/(self.Width_N_L(had,lep)+c.hGeV/lifetime(had))

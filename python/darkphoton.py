@@ -1,3 +1,4 @@
+from __future__ import print_function
 import math
 import os
 import ROOT as r
@@ -64,7 +65,7 @@ class DarkPhoton:
         #ecm = math.sqrt(s)
         ecm = s
         if ecm>=10.29:
-            print 'Warning! Asking for interpolation beyond 10.29 GeV: not implemented, needs extending! Taking value at 10.29 GeV'
+            print('Warning! Asking for interpolation beyond 10.29 GeV: not implemented, needs extending! Taking value at 10.29 GeV')
             result=float(self.PdgR.Eval(10.29))
         elif ecm>=self.dataEcm[0]:
             result = float(self.PdgR.Eval(ecm))
@@ -131,23 +132,23 @@ class DarkPhoton:
         elif   decayString == 'A -> tau- tau+': br = self.leptonicBranchingRatio('tau-')
         elif   decayString == 'A -> hadrons': br = self.hadronicBranchingRatio()
         else:
-            print 'findBranchingRatio ERROR: unknown decay %s'%decayString
+            print('findBranchingRatio ERROR: unknown decay %s'%decayString)
             quit()
 
         return br
 
     def allowedChannels(self):
-        print "Allowed channels for dark photon mass = %3.3f"%self.mDarkPhoton
+        print("Allowed channels for dark photon mass = %3.3f"%self.mDarkPhoton)
         allowedDecays = {'A -> hadrons':'yes'}
         if self.mDarkPhoton > 2.*mass('e-'):
             allowedDecays.update({'A -> e- e+':'yes'})
-            print "allowing decay to e"
+            print("allowing decay to e")
         if self.mDarkPhoton > 2.*mass('mu-'):
             allowedDecays.update({'A -> mu- mu+':'yes'})
-            print "allowing decay to mu"
+            print("allowing decay to mu")
         if self.mDarkPhoton > 2.*mass('tau-'):
             allowedDecays.update({'A -> tau- tau+':'yes'})
-            print "allowing decay to tau"
+            print("allowing decay to tau")
 
         return allowedDecays
 

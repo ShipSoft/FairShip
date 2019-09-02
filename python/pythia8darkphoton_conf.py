@@ -1,3 +1,4 @@
+from __future__ import print_function
 import ROOT, os, sys
 import shipunit as u
 import readDecayTable
@@ -67,7 +68,7 @@ def manipulatePhysics(mass, P8gen, cf):
         #P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
         cf.write('P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")\n')
     else:
-        print "ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop)
+        print("ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop))
         return -1
     return selectedMum
 
@@ -92,7 +93,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
             if p.tau0()>1: 
                 command = str(n)+":mayDecay = false"
                 p8.readString(command)
-                print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name())
+                print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name()))
 
         # Configuring production
         P8gen.SetParameters("SoftQCD:nonDiffractive = on")
@@ -103,7 +104,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
         P8gen.SetMinDPMass(0.7)
 
         if (mass<P8gen.MinDPMass()): 
-            print "WARNING! Mass is too small, minimum is set to %3.3f GeV."%P8gen.MinDPMass()
+            print("WARNING! Mass is too small, minimum is set to %3.3f GeV."%P8gen.MinDPMass())
             return 0
 
     # produce a Z' from hidden valleys model
@@ -115,7 +116,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
             if p.tau0()>1: 
                 command = str(n)+":mayDecay = false"
                 p8.readString(command)
-                print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name())
+                print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4"%(p.name()))
 
         # Configuring production
         P8gen.SetParameters("HiddenValley:ffbar2Zv = on")
@@ -137,14 +138,14 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
         P8gen.SetParameters("Next:numberShowEvent = 0")
         proton_bremsstrahlung.protonEnergy=P8gen.GetMom()
         norm=proton_bremsstrahlung.prodRate(mass, epsilon)
-        print "A' production rate per p.o.t: \t %.8g"%norm
+        print("A' production rate per p.o.t: \t %.8g"%norm)
         P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
 
     #Define dark photon
     DP_instance = darkphoton.DarkPhoton(mass,epsilon)
     ctau = DP_instance.cTau()
-    print 'ctau p8dpconf file =%3.6f cm'%ctau
-    print 'Initial particle parameters for PDGID %d :'%P8gen.GetDPId()
+    print('ctau p8dpconf file =%3.6f cm'%ctau)
+    print('Initial particle parameters for PDGID %d :'%P8gen.GetDPId())
     P8gen.List(P8gen.GetDPId())
     if inclusive=="qcd":
         P8gen.SetParameters(str(P8gen.GetDPId())+":m0 = "+str(mass))
@@ -179,13 +180,13 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False):
     #if debug: cf.write('P8gen.SetDPId(%d)\n',%P8gen.GetDPId())
         # also add to PDG
     gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
-    print 'gamma=%e'%gamma
+    print('gamma=%e'%gamma)
     addDPtoROOT(pid=P8gen.GetDPId(),m=mass,g=gamma)
 
     if inclusive=="meson":
         #change meson decay to dark photon depending on mass
         selectedMum = manipulatePhysics(mass, P8gen, cf)
-        print 'selected mum is : %d'%selectedMum
+        print('selected mum is : %d'%selectedMum)
         if (selectedMum == -1): return 0
 
     #P8gen.SetParameters("Check:particleData = on")

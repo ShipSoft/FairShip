@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os,ROOT,shipVertex,shipDet_conf
 if realPR == "Prev": import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
 else: import shipPatRec
@@ -15,7 +16,7 @@ class ShipDigiReco:
         self.fn = ROOT.TFile.Open(fout,'update')
         self.sTree     = self.fn.cbmsim
         if self.sTree.GetBranch("FitTracks"):
-            print "remove RECO branches and rerun reconstruction"
+            print("remove RECO branches and rerun reconstruction")
             self.fn.Close()    
             # make a new file without reco branches
             f = ROOT.TFile(fout)
@@ -160,7 +161,7 @@ class ShipDigiReco:
 # access ShipTree
         self.sTree.GetEvent(0)
         if len(self.caloTasks)>0:
-            print "** initialize Calo reconstruction **" 
+            print("** initialize Calo reconstruction **") 
             self.ecalStructure     = ecalFiller.InitPython(self.sTree.EcalPointLite)
             ecalDigi.InitPython(self.ecalStructure)
             ecalPrepare.InitPython(self.ecalStructure)
@@ -632,7 +633,7 @@ class ShipDigiReco:
                         #if (Dy<=(err_y_1+err_y_2) and Dz<=6*(err_z_1+err_z_2) and Dx<=(err_x_1+err_x_2) and Dz>0. ):
                             list_neighbours.append(hit2)
                 else:
-                    print "-- getNeighbours: ERROR: step not defined "
+                    print("-- getNeighbours: ERROR: step not defined ")
 
         return list_neighbours
 
@@ -648,7 +649,7 @@ class ShipDigiReco:
             self.digiTimeDet[index]=aHit
             detID = aHit.GetDetectorID()
             if aHit.isValid():
-                if hitsPerDetId.has_key(detID):
+                if detID in hitsPerDetId:
                     t = aHit.GetMeasurements()
                     ct = aHit.GetMeasurements()
 # this is not really correct, only first attempt
@@ -669,7 +670,7 @@ class ShipDigiReco:
             self.digiMuon[index]=aHit
             detID = aHit.GetDetectorID()
             if aHit.isValid():
-                if hitsPerDetId.has_key(detID):
+                if detID in hitsPerDetId:
                     if self.digiMuon[hitsPerDetId[detID]].GetDigi() > aHit.GetDigi():
     # second hit with smaller tdc
                         self.digiMuon[hitsPerDetId[detID]].setValidity(0)
@@ -685,7 +686,7 @@ class ShipDigiReco:
             key+=1
             detID=aMCPoint.GetDetectorID()
             Eloss=aMCPoint.GetEnergyLoss()
-            if not ElossPerDetId.has_key(detID): 
+            if detID not in ElossPerDetId: 
                 ElossPerDetId[detID]=0
                 listOfVetoPoints[detID]=[]
                 tOfFlight[detID]=[]
@@ -715,7 +716,7 @@ class ShipDigiReco:
             self.digiStraw[index]=aHit
             if aHit.isValid():
                 detID = aHit.GetDetectorID()
-                if hitsPerDetId.has_key(detID):
+                if detID in hitsPerDetId:
                     if self.digiStraw[hitsPerDetId[detID]].GetTDC() > aHit.GetTDC():
     # second hit with smaller tdc
                         self.digiStraw[hitsPerDetId[detID]].setInvalid()
@@ -812,14 +813,14 @@ class ShipDigiReco:
                     station = int(detID/10000000)
                     trID = i_track
                     # Collect hits for track fit
-                    if not hitPosLists.has_key(trID):
+                    if trID not in hitPosLists:
                         hitPosLists[trID] = ROOT.std.vector('TVectorD')()
                         listOfIndices[trID] = []
                         stationCrossed[trID]  = {}
                     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                     hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
                     listOfIndices[trID].append(sm['digiHit'])
-                    if not stationCrossed[trID].has_key(station):
+                    if station not in stationCrossed[trID]:
                         stationCrossed[trID][station] = 0
                     stationCrossed[trID][station] += 1
         else: # do fake pattern recognition
@@ -827,14 +828,14 @@ class ShipDigiReco:
                 detID = self.digiStraw[sm['digiHit']].GetDetectorID()
                 station = int(detID/10000000)
                 trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
-                if not hitPosLists.has_key(trID):   
+                if trID not in hitPosLists:   
                     hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
                     listOfIndices[trID] = [] 
                     stationCrossed[trID]  = {}
                 m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                 hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
                 listOfIndices[trID].append(sm['digiHit'])
-                if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
+                if station not in stationCrossed[trID]: stationCrossed[trID][station]=0
                 stationCrossed[trID][station]+=1
 #
             # for atrack in listOfIndices:
@@ -895,18 +896,18 @@ class ShipDigiReco:
             atrack = entry[1]
             theTrack = entry[0]
             if not theTrack.checkConsistency():
-                print 'Problem with track before fit, not consistent',atrack,theTrack
+                print('Problem with track before fit, not consistent',atrack,theTrack)
                 continue
 # do the fit
             try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
             except: 
-                if debug: print "genfit failed to fit track"
+                if debug: print("genfit failed to fit track")
                 error = "genfit failed to fit track"
                 ut.reportError(error)
                 continue
 #check
             if not theTrack.checkConsistency():
-                if debug: print 'Problem with track after fit, not consistent',atrack,theTrack
+                if debug: print('Problem with track after fit, not consistent',atrack,theTrack)
                 error = "Problem with track after fit, not consistent"
                 ut.reportError(error)
                 continue
@@ -927,7 +928,7 @@ class ShipDigiReco:
             self.fGenFitArray[nTrack] = theTrack
             # self.fitTrack2MC.push_back(atrack)
             if debug: 
-                print 'save track',theTrack,chi2,nmeas,fitStatus.isFitConverged()
+                print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
             # Save MC link
             track_ids = []
             for index in listOfIndices[atrack]:
@@ -947,9 +948,9 @@ class ShipDigiReco:
         self.mcLink.Fill()
 # debug 
         if debug:
-            print 'save tracklets:' 
+            print('save tracklets:') 
             for x in self.sTree.Tracklets:
-                print x.getType(),x.getList().size()
+                print(x.getType(),x.getList().size())
         return nTrack+1
 
     def findGoodTracks(self):
@@ -980,7 +981,7 @@ class ShipDigiReco:
             except:
                 error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
                 ut.reportError(error)
-                if debug: print error
+                if debug: print(error)
                 continue
             dist = (rep.getPos(state) - vetoHitPos).Mag()
             if dist < distMin:
@@ -1003,7 +1004,7 @@ class ShipDigiReco:
         track={}
         nh=len(trackids)
         for tid in trackids:
-            if track.has_key(tid):
+            if tid in track:
                 track[tid] += 1
             else:
                 track[tid] = 1
@@ -1019,7 +1020,7 @@ class ShipDigiReco:
 
     def finish(self):
         del self.fitter
-        print 'finished writing tree'
+        print('finished writing tree')
         self.sTree.Write()
         ut.errorSummary()
         ut.writeHists(h,"recohists.root")
