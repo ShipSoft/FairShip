@@ -10,7 +10,7 @@ except:
 from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
 import os,sys
 
-def readHists(h,fname,wanted=[]):
+def readHists(h,fname,wanted=[],withProjections=True):
   if fname[0:4] == "/eos":
     eospath = gSystem.Getenv("EOSSHIP")+fname
     f = TFile.Open(eospath)
@@ -34,7 +34,7 @@ def readHists(h,fname,wanted=[]):
       h[hname] =  obj.Clone()
       if h[hname].GetSumw2N()==0 : h[hname].Sumw2() 
     h[hname].SetDirectory(gROOT)
-    if cln == 'TH2D' or cln == 'TH2F':
+    if (cln == 'TH2D' or cln == 'TH2F') and withProjections:
          for p in [ '_projx','_projy']:
            if type(hname) == type('s'): projname = hname+p
            else: projname = str(hname)+p
@@ -43,12 +43,17 @@ def readHists(h,fname,wanted=[]):
            h[projname].SetName(name+p)
            h[projname].SetDirectory(gROOT)
   return
-def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=1,nbinsy=0,ymin=0,ymax=1,nbinsz=0,zmin=0,zmax=1):
+def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=0,nbinsy=0,ymin=0,ymax=0,nbinsz=0,zmin=0,zmax=0):
   if key==None : 
     print 'missing key'
     return
   rkey = str(key) # in case somebody wants to use integers, or floats as keys 
-  if h.has_key(key):    h[key].Reset()  
+  if h.has_key(key):    h[key].Reset()
+  elif hasattr(nbinsx,'itemsize'):
+   if xmin==0:
+    h[key] = TH1D(rkey,title,len(nbinsx)-1,nbinsx)
+   else:
+    h[key] = TH2D(rkey,title,len(nbinsx)-1,nbinsx,xmin,xmax,nbinsy)
   elif nbinsz >0:       h[key] = TH3D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax,nbinsz,zmin,zmax) 
   elif nbinsy >0:       h[key] = TH2D(rkey,title,nbinsx,xmin,xmax,nbinsy,ymin,ymax) 
   else:                 h[key] = TH1D(rkey,title,nbinsx,xmin,xmax)
@@ -201,10 +206,12 @@ def findMaximumAndMinimum(histo):
     amin = c
     nmin = n
  return amin,amax,nmin,nmax
-def makeIntegralDistrib(h,key):
+def makeIntegralDistrib(h,key,overFlow=False):
  name = 'I-'+key
  h[name]=h[key].Clone(name)
  h[name].SetTitle('Integral > '+h[key].GetTitle())
- for n in range(1,h[key].GetNbinsX()+1):
-   if n==1: h[name].SetBinContent(1,h[key].GetSumOfWeights())
+ totIntegral = h[key].GetSumOfWeights()+h[key].GetBinContent(0)
+ if overFlow: totIntegral+=h[key].GetBinContent(h[key].GetNbinsX()+1)
+ for n in range(0,h[key].GetNbinsX()+1):
+   if n==0: h[name].SetBinContent(0,totIntegral)
    else: h[name].SetBinContent(n,h[name].GetBinContent(n-1)-h[key].GetBinContent(n-1))
