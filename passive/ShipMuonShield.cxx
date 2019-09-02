@@ -143,7 +143,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
   TGeoVolume *magF =
       gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
-  magF->SetField(magField);
+  if (fDesign !=11 || arbName.Contains("Absorb")){magF->SetField(magField);}
   tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation,
 						z_translation));
 }
@@ -417,7 +417,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
       HmainSideMagOut[i] = dYOut[i] / 2;
     }
 
-  } else if (fDesign == 9 || fDesign == 10) {
+  } else if (fDesign == 9 || fDesign == 10 ||fDesign ==11) {
      magnetName = {"MagnAbsorb1", "MagnAbsorb2", "Magn1", "Magn2", "Magn3",
        "Magn4", "Magn5", "Magn6", "Magn7"
      };
@@ -657,8 +657,9 @@ void ShipMuonShield::ConstructGeometry()
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     
-    if (fDesign >= 5 && fDesign <= 10) {
+    if (fDesign >= 5 && fDesign <= 11) {     
       Double_t ironField = fField*tesla;
+      if (fDesign == 11) {ironField = 0. * tesla;} //remove field if using fieldMap for shield design == 11
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
       TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
       TGeoUniformMagField *ConRField    = new TGeoUniformMagField(-ironField,0.,0.);
@@ -687,7 +688,7 @@ void ShipMuonShield::ConstructGeometry()
         TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
       } else if (fDesign >= 7) {
-        float mField = 1.6 * tesla;
+      	float mField = 1.6 * tesla;
         if (fDesign == 10) {mField=0.;}
 	TGeoUniformMagField *fieldsAbsorber[4] = {
 	    new TGeoUniformMagField(0., mField, 0.),
