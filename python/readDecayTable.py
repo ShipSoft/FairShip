@@ -11,6 +11,8 @@
 # ==================================================================
 """
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 import ROOT, os, csv
 from hnl import PDGname
@@ -69,7 +71,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
             childrenCodes = [PDGcode(p) for p in children]
             BR = hnl.findBranchingRatio(dec)
             # Take care of Majorana modes
-            BR = BR/2.
+            BR = old_div(BR,2.)
             codes = ' '.join([str(code) for code in childrenCodes])
             P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
             # Charge conjugate modes

@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import next
 from builtins import str
 from builtins import range
@@ -192,7 +194,7 @@ def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6):
     top_level_particles = get_top_level_particles(decay_chains)
     for particle in top_level_particles:
         my_total_br = compute_total_br(particle, decay_chains)
-        remainder = 1 - my_total_br / max_total_br
+        remainder = 1 - old_div(my_total_br, max_total_br)
         assert(remainder > -epsilon)
         assert(remainder < 1 + epsilon)
         if remainder > epsilon:

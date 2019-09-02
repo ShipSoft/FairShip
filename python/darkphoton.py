@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import object
 import math
 import os
@@ -10,7 +12,7 @@ from hnl import mass
 from hnl import PDGname
 
 # constants
-alphaQED = 1./137.
+alphaQED = old_div(1.,137.)
 ccm = 2.99792458e+10
 hGeV = 6.58211928*pow(10.,-16)* pow(10.,-9) # no units or it messes up!!
 
@@ -80,19 +82,19 @@ class DarkPhoton(object):
         ml = mass(lepton)
         #print 'lepton %s mass %.3e'%(lepton,ml)
 
-        constant = (1./3.) * alphaQED * self.mDarkPhoton * pow(self.epsilon, 2.)
+        constant = (old_div(1.,3.)) * alphaQED * self.mDarkPhoton * pow(self.epsilon, 2.)
         if 2.*ml < self.mDarkPhoton:
-            rad = math.sqrt( 1. - (4.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton) )
+            rad = math.sqrt( 1. - old_div((4.*ml*ml),(self.mDarkPhoton*self.mDarkPhoton)) )
         else:
             rad = 0.
 
-        par = 1. + (2.*ml*ml)/(self.mDarkPhoton*self.mDarkPhoton)
+        par = 1. + old_div((2.*ml*ml),(self.mDarkPhoton*self.mDarkPhoton))
         tdw=math.fabs(constant*rad*par)
         #print 'Leptonic decay width to %s is %.3e'%(lepton,tdw)
         return tdw
 
     def leptonicBranchingRatio(self,lepton):
-        return self.leptonicDecayWidth(lepton) / self.totalDecayWidth()
+        return old_div(self.leptonicDecayWidth(lepton), self.totalDecayWidth())
 
     def hadronicDecayWidth(self):
         """ Dark photon decay into hadrons """
@@ -103,7 +105,7 @@ class DarkPhoton(object):
         return tdw;
 
     def hadronicBranchingRatio(self):
-        return self.hadronicDecayWidth() / self.totalDecayWidth()
+        return old_div(self.hadronicDecayWidth(), self.totalDecayWidth())
 
     def totalDecayWidth(self): # mDarkPhoton in GeV
         """ Total decay width in GeV """
@@ -124,7 +126,7 @@ class DarkPhoton(object):
         return ctau #GeV/MeV conversion
 
     def lifetime(self):
-        return cTau()/ccm
+        return old_div(cTau(),ccm)
 
     def findBranchingRatio(self,decayString):
         br = 0.
@@ -162,7 +164,7 @@ class DarkPhoton(object):
         if self.mDarkPhoton > 2.*mass('c'):
             visible_frac = 1.
         else:
-            visible_frac = 2./3.
+            visible_frac = old_div(2.,3.)
 
         increase = brh*visible_frac
         #print increase

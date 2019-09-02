@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root 
@@ -395,7 +397,7 @@ top  = sGeo.GetTopVolume()
 muon = top.GetNode("MuonDetector_1")
 mvol = muon.GetVolume()
 zmuon = muon.GetMatrix().GetTranslation()[2]
-totl  = (zmuon + mvol.GetShape().GetDZ() ) / u.m 
+totl  = old_div((zmuon + mvol.GetShape().GetDZ() ), u.m) 
 ztarget = -100.
 
 fchain = []
@@ -431,7 +433,7 @@ else:
 def makeProd():
     ntot = 736406
     ncpu = 4
-    n3   = int(ntot/ncpu)
+    n3   = int(old_div(ntot,ncpu))
     cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f $SHIPSOFT/data/pythia8_Geant4_onlyMuons.root " # --display"
     ns   = 0
     prefix = 'muon18'
@@ -555,7 +557,7 @@ def BigEventLoop():
             fn  = ROOT.gSystem.Getenv("EOSSHIP")+'/eos/'+rfn
         elif not os.path.isfile(fn): 
             print("Don't know what to do with",fn)
-            1/0 
+            old_div(1,0) 
         if parallel: 
 # process files parallel instead of sequential
             processes.append(mp.Process(target=executeOneFile, args=(fn,output,pid) ) )
@@ -642,7 +644,7 @@ def executeOneFile(fn,output=None,pid=None):
             w = sTree.MCTrack[0].GetWeight() # also works for neutrinos
         if w==0 : w = 1.
         rc = h['weight'].Fill(w)
-        rc = h['muonP'].Fill(theMuon.GetP()/u.GeV,w)
+        rc = h['muonP'].Fill(old_div(theMuon.GetP(),u.GeV),w)
         ntot+=1
         if ntot%10000 == 0 : print('read event',f.GetName(),n)
         hitmult   = {} 
@@ -654,7 +656,7 @@ def executeOneFile(fn,output=None,pid=None):
                     rc = h['deltaElec'].Fill(E,w)
                     esum += E
                 rc = h['secondaries'].Fill(E,w)
-        rc = h['prop_deltaElec'].Fill(esum/sTree.MCTrack[0].GetP(),w)   # until energy is really made persistent GetEnergy()
+        rc = h['prop_deltaElec'].Fill(old_div(esum,sTree.MCTrack[0].GetP()),w)   # until energy is really made persistent GetEnergy()
         for c in hitContainers:
             for ahit in c:
                 if not ahit.GetEnergyLoss()>0: continue
@@ -693,21 +695,21 @@ def executeOneFile(fn,output=None,pid=None):
                     aTrack = sTree.MCTrack[trackID]
                     pdgID  = aTrack.GetPdgCode()
                     aTrack.GetMomentum(mom) # ! this is not momentum of particle at Calorimeter place
-                    phit   = mom.Mag()/u.GeV
+                    phit   = old_div(mom.Mag(),u.GeV)
                 if abs(pdgID)==13: mu='_mu'
                 if ahit.GetName().find('ecal')<0:
                     rc = ahit.Momentum(mom)
-                    phit = mom.Mag()/u.GeV
+                    phit = old_div(mom.Mag(),u.GeV)
                 else:
                     for ahit in sTree.EcalPoint:
                         if ahit.GetTrackID() == trackID:
                             rc   = ahit.Momentum(mom)
-                            phit = mom.Mag()/u.GeV          
+                            phit = old_div(mom.Mag(),u.GeV)          
                 if phit>3 and abs(pdgID)==13: mu='_muV0'
                 detName = detName + mu
-                if detName.find('LS')<0: rc = h[detName].Fill(x/u.m,y/u.m,w)
-                else:                    rc = h[detName].Fill(ahit.GetZ()/u.m,ROOT.TMath.ATan2(y,x)/ROOT.TMath.Pi(),w)
-                rc = h[detName+'_E'].Fill(E/u.MeV,w)
+                if detName.find('LS')<0: rc = h[detName].Fill(old_div(x,u.m),old_div(y,u.m),w)
+                else:                    rc = h[detName].Fill(old_div(ahit.GetZ(),u.m),old_div(ROOT.TMath.ATan2(y,x),ROOT.TMath.Pi()),w)
+                rc = h[detName+'_E'].Fill(old_div(E,u.MeV),w)
                 if detName not in hitmult: hitmult[detName] = {-1:0}
                 if trackID not in hitmult[detName]: hitmult[detName][trackID] = 0
                 hitmult[detName][trackID] +=1
@@ -716,17 +718,17 @@ def executeOneFile(fn,output=None,pid=None):
                 rc = h[detName+'_P'].Fill(phit,w)
                 rc = h[detName+'_LP'].Fill(phit,w)
                 if not trackID < 0: 
-                    r = ROOT.TMath.Sqrt(aTrack.GetStartX()**2+aTrack.GetStartY()**2)/u.m   
-                    rc = h['origin'].Fill(aTrack.GetStartZ()/u.m,r,w)
-                    rc = h[detName+'_origin'].Fill(aTrack.GetStartZ()/u.m,r,w)
-                    if abs(pdgID)== 13: rc = h[detName+'_originmu'].Fill(aTrack.GetStartZ()/u.m,r,w)
-                    rc = h['borigin'].Fill(aTrack.GetStartZ()/u.m,r,w)
+                    r = old_div(ROOT.TMath.Sqrt(aTrack.GetStartX()**2+aTrack.GetStartY()**2),u.m)   
+                    rc = h['origin'].Fill(old_div(aTrack.GetStartZ(),u.m),r,w)
+                    rc = h[detName+'_origin'].Fill(old_div(aTrack.GetStartZ(),u.m),r,w)
+                    if abs(pdgID)== 13: rc = h[detName+'_originmu'].Fill(old_div(aTrack.GetStartZ(),u.m),r,w)
+                    rc = h['borigin'].Fill(old_div(aTrack.GetStartZ(),u.m),r,w)
                     rc = aTrack.GetMomentum(mom)
-                    rc = h[detName+'_OP'].Fill(mom.Mag()/u.GeV,w)
+                    rc = h[detName+'_OP'].Fill(old_div(mom.Mag(),u.GeV),w)
                     if trackID > 0: 
                         origin(sTree,trackID)
-                        rc = h['porigin'].Fill(aTrack.GetStartZ()/u.m,ROOT.TMath.Sqrt(aTrack.GetStartX()**2+aTrack.GetStartY()**2)/u.m,w)
-                    rc = h['mu-inter'].Fill(rz_inter[1]/u.m,rz_inter[0]/u.m,w) 
+                        rc = h['porigin'].Fill(old_div(aTrack.GetStartZ(),u.m),old_div(ROOT.TMath.Sqrt(aTrack.GetStartX()**2+aTrack.GetStartY()**2),u.m),w)
+                    rc = h['mu-inter'].Fill(old_div(rz_inter[1],u.m),old_div(rz_inter[0],u.m),w) 
         for detName in hitmult:
             rc = h[detName+'_evmul'].Fill(hitmult[detName][-1],w) 
             for tr in hitmult[detName]:
@@ -754,21 +756,21 @@ def makePlots(nstations):
         if hn not in h: continue 
         h[hn].SetStats(0)
         h[hn].Draw('colz')
-        txt[i] = '%5.2G'%(h[hn].GetSumOfWeights()/nSpills)
+        txt[i] = '%5.2G'%(old_div(h[hn].GetSumOfWeights(),nSpills))
         l[i] = ROOT.TLatex().DrawLatexNDC(0.15,0.85,txt[i])
 #
         hn = histlist[i]+'_mu' 
         tc = h['ResultsImu'].cd(i)
         h[hn].SetStats(0)
         h[hn].Draw('colz')
-        txt[i+100] = '%5.2G'%(h[hn].GetSumOfWeights()/nSpills)
+        txt[i+100] = '%5.2G'%(old_div(h[hn].GetSumOfWeights(),nSpills))
         l[i+100] = ROOT.TLatex().DrawLatexNDC(0.15,0.85,txt[i+100])
 #
         hn = histlist[i]+'_muV0' 
         tc = h['ResultsImuV0'].cd(i)
         h[hn].SetStats(0)
         h[hn].Draw('colz')
-        txt[i+200] = '%5.2G'%(h[hn].GetSumOfWeights()/nSpills)
+        txt[i+200] = '%5.2G'%(old_div(h[hn].GetSumOfWeights(),nSpills))
         l[i+200] = ROOT.TLatex().DrawLatexNDC(0.15,0.85,txt[i+200])
 #
     for i in histlist:
@@ -786,7 +788,7 @@ def makePlots(nstations):
             ncont = hid.GetBinContent(k+1)
             pid   = hid.GetBinCenter(k+1) 
             if ncont > 0:
-                temp = int(abs(pid)+0.5)*int(pid/abs(pid))
+                temp = int(abs(pid)+0.5)*int(old_div(pid,abs(pid)))
                 nm = PDG.GetParticle(temp).GetName() 
                 print('%s :%5.2g'%(nm,ncont))
         hid = h[histlist[i]+'_mu_id']
@@ -794,7 +796,7 @@ def makePlots(nstations):
             ncont = hid.GetBinContent(k+1)
             pid   = hid.GetBinCenter(k+1) 
             if ncont > 0:
-                temp = int(abs(pid)+0.5)*int(pid/abs(pid))
+                temp = int(abs(pid)+0.5)*int(old_div(pid,abs(pid)))
                 nm = PDG.GetParticle(temp).GetName() 
                 print('%s :%5.2g'%(nm,ncont))
 #
@@ -834,7 +836,7 @@ def AnaEventLoop():
                 fitStatus   = atrack.getFitStatus()
                 if not fitStatus.isFitConverged() : continue
                 nmeas = atrack.getNumPoints()
-                chi2        = fitStatus.getChi2()/nmeas
+                chi2        = old_div(fitStatus.getChi2(),nmeas)
                 fittedState = atrack.getFittedState()
                 P = fittedState.getMomMag()
                 fout.write( 'rare event with track %i, %s, %8.2F \n'%(n,f.GetName(),wg) )
@@ -844,11 +846,11 @@ def AnaEventLoop():
                 mcPart    = sTree.MCTrack[mcPartKey]
                 for ahit in sTree.strawtubesPoint:
                     if ahit.GetTrackID() == mcPartKey:
-                        fout.write( 'P when making hit %i, %8.2F \n'%(ahit.PdgCode(),ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)/u.GeV) )  
+                        fout.write( 'P when making hit %i, %8.2F \n'%(ahit.PdgCode(),old_div(ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2),u.GeV)) )  
                         break
                 if not mcPart : continue
                 Ptruth    = mcPart.GetP()
-                fout.write( 'Ptruth %i %8.2F \n'%(mcPart.GetPdgCode(),Ptruth/u.GeV) ) 
+                fout.write( 'Ptruth %i %8.2F \n'%(mcPart.GetPdgCode(),old_div(Ptruth,u.GeV)) ) 
 #
 def muDISntuple(fn):
 # take as input the rare events
@@ -869,9 +871,9 @@ def muDISntuple(fn):
             pid = ahit.PdgCode()    
             if abs(pid) != 13: continue
             P = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)
-            if P>3/u.GeV:
-                h['ntuple'].Fill(float(pid), float(ahit.GetPx()/u.GeV),float(ahit.GetPy()/u.GeV),float(ahit.GetPz()/u.GeV),\
-                            float(ahit.GetX()/u.m),float(ahit.GetY()/u.m),float(ahit.GetZ()/u.m),float(wg) )
+            if P>old_div(3,u.GeV):
+                h['ntuple'].Fill(float(pid), float(old_div(ahit.GetPx(),u.GeV)),float(old_div(ahit.GetPy(),u.GeV)),float(old_div(ahit.GetPz(),u.GeV)),\
+                            float(old_div(ahit.GetX(),u.m)),float(old_div(ahit.GetY(),u.m)),float(old_div(ahit.GetZ(),u.m)),float(wg) )
     fout.cd()
     h['ntuple'].Write()
 def analyzeConcrete():
@@ -886,7 +888,7 @@ def analyzeConcrete():
         ut.bookHist(h,'conc_hitzy'+m,'concrete hit zy '+m,100,-100.,100.,100,-15.,15.)
     top = sGeo.GetTopVolume()
     magn = top.GetNode("magyoke_1")
-    z0 = magn.GetMatrix().GetTranslation()[2]/u.m
+    z0 = old_div(magn.GetMatrix().GetTranslation()[2],u.m)
     for fn in fchain:
         f = ROOT.TFile(fn)
         if not f.FindObjectAny('cbmsim'): 
@@ -908,17 +910,17 @@ def analyzeConcrete():
                 pid = ahit.PdgCode()    
                 if abs(pid) == 13: m='mu'
                 P = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2+ahit.GetPz()**2)
-                if abs(pid) == 13 and P>3/u.GeV: 
+                if abs(pid) == 13 and P>old_div(3,u.GeV): 
                     m='V0'
-                    h['ntuple'].Fill(float(pid), float(ahit.GetPx()/u.GeV),float(ahit.GetPy()/u.GeV),float(ahit.GetPz()/u.GeV),\
-                                float(ahit.GetX()/u.m),float(ahit.GetY()/u.m),float(ahit.GetZ()/u.m),float(wg) )
-                h['conc_hitz'+m].Fill(ahit.GetZ()/u.m-z0,wg)
-                h['conc_hity'+m].Fill(ahit.GetY()/u.m,wg)
-                h['conc_p'+m].Fill(P/u.GeV,wg)
-                h['conc_hitzP'+m].Fill(ahit.GetZ()/u.m,P/u.GeV,wg)
+                    h['ntuple'].Fill(float(pid), float(old_div(ahit.GetPx(),u.GeV)),float(old_div(ahit.GetPy(),u.GeV)),float(old_div(ahit.GetPz(),u.GeV)),\
+                                float(old_div(ahit.GetX(),u.m)),float(old_div(ahit.GetY(),u.m)),float(old_div(ahit.GetZ(),u.m)),float(wg) )
+                h['conc_hitz'+m].Fill(old_div(ahit.GetZ(),u.m)-z0,wg)
+                h['conc_hity'+m].Fill(old_div(ahit.GetY(),u.m),wg)
+                h['conc_p'+m].Fill(old_div(P,u.GeV),wg)
+                h['conc_hitzP'+m].Fill(old_div(ahit.GetZ(),u.m),old_div(P,u.GeV),wg)
                 Pt = ROOT.TMath.Sqrt(ahit.GetPx()**2+ahit.GetPy()**2)
-                h['conc_pt'+m].Fill(Pt/u.GeV,wg)
-                h['conc_hitzy'+m].Fill(ahit.GetZ()/u.m-z0,ahit.GetY()/u.m,wg)
+                h['conc_pt'+m].Fill(old_div(Pt,u.GeV),wg)
+                h['conc_hitzy'+m].Fill(old_div(ahit.GetZ(),u.m)-z0,old_div(ahit.GetY(),u.m),wg)
     #
                 #start = [ahit.GetX()/u.m,ahit.GetY()/u.m,ahit.GetZ()/u.m]
                 #direc = [-ahit.GetPx()/P,-ahit.GetPy()/P,-ahit.GetPz()/P]
@@ -967,14 +969,14 @@ def rareEventEmulsion(fname = 'rareEmulsion.txt'):
                 else: 
                     wg = sTree.MCTrack[0].GetWeight() # also works for neutrinos
                 fout.write( 'rare emulsion hit %i, %s, %8.3F, %i \n'%(n,f.GetName(),wg,ahit.PdgCode() ))
-                if ahit.GetPz()/u.GeV > 1. :
+                if old_div(ahit.GetPz(),u.GeV) > 1. :
                     fout.write( 'V,P when making hit %8.3F,%8.3F,%8.3F %8.3F,%8.3F,%8.3F (GeV) \n'%(\
-                                ahit.GetX()/u.m,ahit.GetY()/u.m,ahit.GetZ()/u.m, \
-                                ahit.GetPx()/u.GeV,ahit.GetPy()/u.GeV,ahit.GetPz()/u.GeV ) ) 
+                                old_div(ahit.GetX(),u.m),old_div(ahit.GetY(),u.m),old_div(ahit.GetZ(),u.m), \
+                                old_div(ahit.GetPx(),u.GeV),old_div(ahit.GetPy(),u.GeV),old_div(ahit.GetPz(),u.GeV) ) ) 
                 else: 
                     fout.write( 'V,P when making hit %8.3F,%8.3F,%8.3F %8.3F,%8.3F,%8.3F (MeV)\n'%(\
-                                ahit.GetX()/u.m,ahit.GetY()/u.m,ahit.GetZ()/u.m, \
-                                ahit.GetPx()/u.MeV,ahit.GetPy()/u.MeV,ahit.GetPz()/u.MeV ) ) 
+                                old_div(ahit.GetX(),u.m),old_div(ahit.GetY(),u.m),old_div(ahit.GetZ(),u.m), \
+                                old_div(ahit.GetPx(),u.MeV),old_div(ahit.GetPy(),u.MeV),old_div(ahit.GetPz(),u.MeV) ) ) 
                 originOfMuon(fout,n,f.GetName(),nEvents)
 #
 def extractRareEvents(single = None):
@@ -1131,13 +1133,13 @@ def depEnergy():
     for n in range(sTree.GetEntries()):
         rc = sTree.GetEntry(n)
         for ahit in sTree.strawtubesPoint:
-            dE = ahit.GetEnergyLoss()/u.keV
+            dE = old_div(ahit.GetEnergyLoss(),u.keV)
             rc = ahit.Momentum(mom)
             pa = PDG.GetParticle(ahit.PdgCode())
             mpa = pa.Mass()
             E = ROOT.TMath.Sqrt(mom.Mag2()+mpa**2)
             ekin = E-mpa
-            rc = h['dE'].Fill(dE,ekin/u.MeV)
+            rc = h['dE'].Fill(dE,old_div(ekin,u.MeV))
         h['dE'].SetXTitle('keV')
         h['dE'].SetYTitle('MeV')
 
@@ -1153,7 +1155,7 @@ def originOfMuon(fout,n,fn,nEvents):
     fmuon = ROOT.TFile(fm)
     ntupl = fmuon.Get("pythia8-Geant4")
     ntot  = ntupl.GetEntries()
-    n3    = int(ntot/ncpu)
+    n3    = int(old_div(ntot,ncpu))
     N = n3*ni+n
     ntupl.GetEvent(N)
     P = ROOT.TMath.Sqrt(ntupl.pz*ntupl.pz+ntupl.py*ntupl.py+ntupl.px*ntupl.px)
@@ -1222,7 +1224,7 @@ def makeNicePrintout(x=['rareEvents_61-62.txt','rareEvents_71-72.txt']):
     muonrate3 = 0
     for i in range(len(tmp)):
         tr = tmp[i]
-        corw = float(tr['w'])/cor
+        corw = old_div(float(tr['w']),cor)
         if float(tr['p_hit'])>1:muonrate1+=corw
         if float(tr['p_hit'])>2:muonrate2+=corw
         if float(tr['p_hit'])>3:muonrate3+=corw

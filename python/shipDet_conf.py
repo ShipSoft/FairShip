@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import ROOT,os
@@ -87,7 +89,7 @@ def configure(run,ship_geo):
     if not hasattr(ship_geo,'NuTauTT') : ship_geo.NuTauTT= AttrDict(z=0*u.cm)
     if not hasattr(ship_geo.NuTauTT,'design') : ship_geo.NuTauTT.design = 0
     if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1      
-    latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign, muShieldGeo = ship_geo.muShieldGeo)
+    latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = old_div(ship_geo.Yheight,u.m), tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign, muShieldGeo = ship_geo.muShieldGeo)
 # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -178,7 +180,7 @@ def configure(run,ship_geo):
     Veto.SetTubZpositions(ship_geo.Chamber1.z,ship_geo.Chamber2.z,ship_geo.Chamber3.z,ship_geo.Chamber4.z,ship_geo.Chamber5.z,ship_geo.Chamber6.z)
     Veto.SetTublengths(ship_geo.chambers.Tub1length,ship_geo.chambers.Tub2length,ship_geo.chambers.Tub3length, \
                        ship_geo.chambers.Tub4length,ship_geo.chambers.Tub5length,ship_geo.chambers.Tub6length)
-    Veto.SetB(ship_geo.Yheight/2.)
+    Veto.SetB(old_div(ship_geo.Yheight,2.))
     Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA,ship_geo.cave.floorHeightTankB)
     if ship_geo.tankDesign > 4: 
         dzX = ship_geo.zFocusX+ship_geo.target.z0    
@@ -305,8 +307,8 @@ def configure(run,ship_geo):
 
     # for backward compatibility
     if not hasattr(ship_geo.strawtubes, "YPlaneOffset"):
-        ship_geo.strawtubes.YLayerOffset = ship_geo.strawtubes.StrawPitch  / 2.
-        ship_geo.strawtubes.YPlaneOffset = ship_geo.strawtubes.StrawPitch  / 4.
+        ship_geo.strawtubes.YLayerOffset = old_div(ship_geo.strawtubes.StrawPitch, 2.)
+        ship_geo.strawtubes.YPlaneOffset = old_div(ship_geo.strawtubes.StrawPitch, 4.)
     if ship_geo.strawDesign > 1 :
         # for backward compatibility
         if ship_geo.strawDesign == 10 and not hasattr(ship_geo.strawtubes, "DeltazFrame"):
@@ -345,9 +347,9 @@ def configure(run,ship_geo):
         else:
             Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLength) 
             Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength)
-            Strawtubes.SetVetoYDim(ship_geo.Yheight/2.)  
-            Strawtubes.SetTr12YDim(ship_geo.Yheight/2.)
-            Strawtubes.SetTr34YDim(ship_geo.Yheight/2.)    
+            Strawtubes.SetVetoYDim(old_div(ship_geo.Yheight,2.))  
+            Strawtubes.SetTr12YDim(old_div(ship_geo.Yheight,2.))
+            Strawtubes.SetTr34YDim(old_div(ship_geo.Yheight,2.))    
         # for the digitizing step
         Strawtubes.SetStrawResolution(getParameter("strawtubes.v_drift",ship_geo,latestShipGeo),getParameter("strawtubes.sigma_spatial",ship_geo,latestShipGeo) )
         detectorList.append(Strawtubes)

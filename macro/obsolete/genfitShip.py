@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 from builtins import object
@@ -185,7 +187,7 @@ for iEvent in range(0, SHiP.nEvents):
         meas = hitPosLists[atrack]
         nM = meas.size()
         if debug: print("start ",iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP())
-        charge = PDG.GetParticle(pdg).Charge()/(3.)
+        charge = old_div(PDG.GetParticle(pdg).Charge(),(3.))
         posM = ROOT.TVector3(0, 0, 0)
         momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance

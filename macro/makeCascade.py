@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import ROOT,time,os,sys,random,getopt,copy
@@ -152,7 +154,7 @@ def fillp1(hist):
         if hist.GetBinContent(i)>0.:
             y2=hist.GetBinContent(i)
             p2=hist.GetBinCenter(i)
-            tg=(y2-y1)/(p2-p1)
+            tg=old_div((y2-y1),(p2-p1))
             for ib in range(i1+1,i):
                 px=hist.GetBinCenter(ib)
                 yx=(px-p1)*tg+y1
@@ -224,7 +226,7 @@ for idp in range(0,len(idbeam)):
 #  now total cross-section, i.e. msel=2
                     myPythia.SetMSEL(2)       
                     myPythia.Initialize('FIXT',name,target[idpn],pbw)
-                    for iev in range(nev/10): 
+                    for iev in range(old_div(nev,10)): 
 #                  if iev%100==0: print 'generated mbias events',iev,' seconds:',time.time()-t0
                         myPythia.GenerateEvent()
 #   get cross-section
@@ -242,7 +244,7 @@ for i in range(1,id+1):
         ibh=h[str(idw)].FindBin(pbeamh)
         print('beam id, momentum,chi,chimx=',i,idw,idhist[i],pbeamh,h[str(idw)].GetBinContent(ibh),chimx)
         if h[str(idw)].GetBinContent(ibh)>chimx: chimx=h[str(idw)].GetBinContent(ibh)
-chimx=1./chimx
+chimx=old_div(1.,chimx)
 for i in range(1,id+1):
     for idpn in range(2):
         idw=i*10+idpn*4+3
@@ -337,11 +339,11 @@ for iev in range(nevgen):
                         h['4'].Fill(pt2)
                         h['5'].Fill(ROOT.TMath.Sqrt(pt2))
 #   boost to Cm frame for XF ccalculation of D^0
-                        beta=pbeamh/(myPythia.GetP(1,4)+myPythia.GetP(2,5))
+                        beta=old_div(pbeamh,(myPythia.GetP(1,4)+myPythia.GetP(2,5)))
                         gamma=(1-beta**2)**-0.5
                         pbcm=-gamma*beta*myPythia.GetP(1,4)+gamma*myPythia.GetP(1,3)
                         pDcm=-gamma*beta*myPythia.GetP(itrk,4)+gamma*myPythia.GetP(itrk,3)
-                        xf=pDcm/pbcm
+                        xf=old_div(pDcm,pbcm)
                         h['6'].Fill(xf)
             if len(charmFound)>0 and storePrimaries:
                 for itP in range(1,myPythia.GetN()+1):

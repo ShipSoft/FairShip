@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 import ROOT
 # configure the GenieGenerator
@@ -29,7 +31,7 @@ def config(GenieGen):
                     box[nm]=ROOT.TVector3(sbnode.GetDX(),sbnode.GetDY(),sbnode.GetDZ())
                     print("Debug muonSpectro ",nm,dVec[nm],box[nm])
     length = dVec["volArm2Mudet_1/volIron_23"].Z()-dVec["volArm2Mudet_1/volIron_12"].Z()
-    zpos   = ( dVec["volArm2Mudet_1/volIron_12"].Z()+dVec["volArm2Mudet_1/volIron_23"].Z() )/2.
+    zpos   = old_div(( dVec["volArm2Mudet_1/volIron_12"].Z()+dVec["volArm2Mudet_1/volIron_23"].Z() ),2.)
     box["volArm2Mudet_1/volIron_12-23"]  = ROOT.TVector3(box["volArm2Mudet_1/volIron_12"].X(),box["volArm2Mudet_1/volIron_12"].Y(),length)
     dVec["volArm2Mudet_1/volIron_12-23"] = ROOT.TVector3(0,0,zpos)
     rc = box.pop("volArm2Mudet_1/volIron_23")

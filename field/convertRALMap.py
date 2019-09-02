@@ -6,6 +6,8 @@
 # Input file distances are in m; convert them to centimetres
 
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field info
@@ -254,9 +256,9 @@ def createRootMap(inFileName, outFileName):
                 rStruct.zMax = float(sLine[8])
                 rStruct.dz = float(sLine[9])
 
-                Nx = int(((rStruct.xMax - rStruct.xMin)/rStruct.dx) + 1.0)
-                Ny = int(((rStruct.yMax - rStruct.yMin)/rStruct.dy) + 1.0)
-                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)
+                Nx = int((old_div((rStruct.xMax - rStruct.xMin),rStruct.dx)) + 1.0)
+                Ny = int((old_div((rStruct.yMax - rStruct.yMin),rStruct.dy)) + 1.0)
+                Nz = int((old_div((rStruct.zMax - rStruct.zMin),rStruct.dz)) + 1.0)
                 Nzy = Nz*Ny
 
                 print('Nx = {0}, Ny = {1}, Nz = {2}'.format(Nx, Ny, Nz))

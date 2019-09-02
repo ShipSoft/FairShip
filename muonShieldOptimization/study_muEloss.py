@@ -1,5 +1,7 @@
 #!/usr/bin/env python 
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import ROOT,os,sys,getopt,time,shipRoot_conf
@@ -122,7 +124,7 @@ def makePlot(f,book=True):
         v = sGeo.FindVolumeFast('target')
         m = v.GetMaterial()
         length = v.GetShape().GetDZ()*2
-        print("Material:",m.GetName(),'total interaction length=',length/m.GetIntLen(),'total rad length=',length/m.GetRadLen())
+        print("Material:",m.GetName(),'total interaction length=',old_div(length,m.GetIntLen()),'total rad length=',old_div(length,m.GetRadLen()))
     else:
         density= 2.413
         length= 125.0
@@ -139,8 +141,8 @@ def makePlot(f,book=True):
         Eloss = 0
         for aHit in sTree.vetoPoint: 
             Eloss+=aHit.GetEnergyLoss()
-            print(Ein,Eloss/Ein)
-        rc = h['eloss'].Fill(Ein,Eloss/Ein)
+            print(Ein,old_div(Eloss,Ein))
+        rc = h['eloss'].Fill(Ein,old_div(Eloss,Ein))
         rc = h['elossRaw'].Fill(Ein,Eloss)
     ut.bookCanvas(h,key=s,title=s,nx=900,ny=600,cx=1,cy=1)
     tc = h[s].cd(1)
@@ -166,16 +168,16 @@ def makePlot(f,book=True):
         N = float(h['>eloss'].GetEntries())
         for n in range(h['>eloss'].GetNbinsX(),0,-1):
             cum+=h['>eloss'].GetBinContent(n)
-            h['>eloss'].SetBinContent(n,cum/N)
+            h['>eloss'].SetBinContent(n,old_div(cum,N))
         print("Ethreshold   event fraction in %")
         for E in [15.,20.,30.,50.,80.]:
-            n = h['>eloss'].FindBin(E/350.)
+            n = h['>eloss'].FindBin(old_div(E,350.))
             print(" %5.0F   %5.2F "%(E,h['>eloss'].GetBinContent(n)*100))
     else:
         tc.SetLogy(1)
         h['theta_100']=h['theta'].Clone('theta_100')
         h['theta_100']=h['theta'].Rebin(5)
-        h['theta_100'].Scale(1./h['theta_100'].GetMaximum())
+        h['theta_100'].Scale(old_div(1.,h['theta_100'].GetMaximum()))
         h['theta_100'].Draw()
         h[s].Print(s+'.png')
         h[s].Print(s+'.root')
@@ -192,7 +194,7 @@ def readChain():
 def NA62():
     na62Points = open('NA62.points')
     allPoints = na62Points.readlines()
-    N = int((len(allPoints)-1)/3.)
+    N = int(old_div((len(allPoints)-1),3.))
     h['NA62']=ROOT.TGraphErrors(N)
     for l in range(N):
         tmp = allPoints[3*l].split(',')
@@ -236,7 +238,7 @@ def makeSummaryPlot():
         h[t].SetMarkerStyle(24)
         rc = h[t].Divide(h['0'] )
         h[t].Rebin(2)
-        h[t].Scale(1./2.)
+        h[t].Scale(old_div(1.,2.))
         if t!=93: 
             h[t].SetMarkerColor(ROOT.kBlue)
             h[t].Draw('same')

@@ -40,6 +40,8 @@ In particular, we can get very confused by /* and // inside strings!
 We do a small hack, which is to ignore //'s with "'s after them on the
 same line, but it is far from perfect (in either direction).
 """
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 from builtins import object
 
@@ -953,7 +955,7 @@ class _FunctionState(object):
         trigger = base_trigger * 2**_VerboseLevel()
 
         if self.lines_in_function > trigger:
-            error_level = int(math.log(self.lines_in_function / base_trigger, 2))
+            error_level = int(math.log(old_div(self.lines_in_function, base_trigger), 2))
             # 50 => 0, 100 => 1, 200 => 2, 400 => 3, 800 => 4, 1600 => 5, ...
             if error_level > 5:
                 error_level = 5

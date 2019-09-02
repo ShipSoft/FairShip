@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 # example for accessing smeared hits and fitted tracks
@@ -65,7 +67,7 @@ else:
 upkl    = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
 ecalGeoFile = ShipGeo.ecal.File
-dy = ShipGeo.Yheight/u.m
+dy = old_div(ShipGeo.Yheight,u.m)
 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
@@ -157,9 +159,9 @@ def VertexError(t1,t2,PosDir,CovMat,scalFac):
     ca  = c-a
     denom = Usq*Vsq-UV**2
     tmp2 = Vsq*u-UV*v
-    Va = ca.Dot(tmp2)/denom
+    Va = old_div(ca.Dot(tmp2),denom)
     tmp2 = UV*u-Usq*v
-    Vb = ca.Dot(tmp2)/denom
+    Vb = old_div(ca.Dot(tmp2),denom)
     X = (a+c+Va*u+Vb*v) * 0.5
     l1 = a - X + u*Va  # l2 = c - X + v*Vb
     dist = 2. * ROOT.TMath.Sqrt( l1.Dot(l1) )
@@ -306,14 +308,14 @@ def myVertex(t1,t2,PosDir):
     v = ROOT.TVector3(PosDir[t2][1](0),PosDir[t2][1](1),PosDir[t2][1](2))
     pq = a-c
     uCrossv = u.Cross(v)
-    dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
+    dist  = old_div(pq.Dot(uCrossv),(uCrossv.Mag()+1E-8))
     # u.a - u.c + s*|u|**2 - u.v*t    = 0
     # v.a - v.c + s*v.u    - t*|v|**2 = 0
     E = u.Dot(a) - u.Dot(c) 
     F = v.Dot(a) - v.Dot(c) 
     A,B = u.Mag2(), -u.Dot(v) 
     C,D = u.Dot(v), -v.Mag2()
-    t = -(C*E-A*F)/(B*C-A*D)
+    t = old_div(-(C*E-A*F),(B*C-A*D))
     X = c.x()+v.x()*t
     Y = c.y()+v.y()*t
     Z = c.z()+v.z()*t
@@ -420,7 +422,7 @@ def ecalCluster2MC(aClus):
         if mcLink[m]>eMax:
             eMax = mcLink[m]
             mMax = m
-    return mMax,eMax/aClus.Energy()
+    return mMax,old_div(eMax,aClus.Energy())
 
 def makePlots():
     ut.bookCanvas(h,key='ecalanalysis',title='cluster map',nx=800,ny=600,cx=1,cy=1)
@@ -587,7 +589,7 @@ def myEventLoop(n):
                 pName = 'ecalReconstructed_unknown' 
             if pName not in h: 
                 ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
-            rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.RecoE()/u.GeV)
+            rc = h[pName].Fill(old_div(aClus.X(),u.m),old_div(aClus.Y(),u.m),old_div(aClus.RecoE(),u.GeV))
 # look at distance to tracks 
             for fT in sTree.FitTracks:
                 rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
@@ -607,7 +609,7 @@ def myEventLoop(n):
                     rc = h[tName.replace('dist','disty')].Fill( aClus.Y()-pos.Y() )
 # compare with old method
         for aClus in sTree.EcalClusters:
-            rc = h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
+            rc = h['ecalClusters'].Fill(old_div(aClus.X(),u.m),old_div(aClus.Y(),u.m),old_div(aClus.Energy(),u.GeV))
             mMax,frac = ecalCluster2MC(aClus)
 # return MC track most contributing, and its fraction of energy
             if mMax>0:    
@@ -618,7 +620,7 @@ def myEventLoop(n):
             else:
                 pName = 'ecalClusters_unknown' 
             if pName not in h: ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
-            rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
+            rc = h[pName].Fill(old_div(aClus.X(),u.m),old_div(aClus.Y(),u.m),old_div(aClus.Energy(),u.GeV))
 
 # make some straw hit analysis
     hitlist = {}
@@ -655,7 +657,7 @@ def myEventLoop(n):
         rchi2 = fitStatus.getChi2()
         prob = ROOT.TMath.Prob(rchi2,int(nmeas))
         h['prob'].Fill(prob)
-        chi2 = rchi2/nmeas
+        chi2 = old_div(rchi2,nmeas)
         fittedState = atrack.getFittedState()
         h['chi2'].Fill(chi2,wg)
         h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
@@ -670,12 +672,12 @@ def myEventLoop(n):
         Ptruthz_start    = mcPart.GetPz()
         # get p truth from first strawpoint
         Ptruth,Ptruthx,Ptruthy,Ptruthz = getPtruthFirst(sTree,mcPartKey)
-        delPOverP = (Ptruth - P)/Ptruth
+        delPOverP = old_div((Ptruth - P),Ptruth)
         h['delPOverP'].Fill(Ptruth,delPOverP)
-        delPOverPz = (1./Ptruthz - 1./Pz) * Ptruthz
-        h['pullPOverPx'].Fill( Ptruth,(Ptruthx-Px)/ROOT.TMath.Sqrt(cov[3][3]) )   
-        h['pullPOverPy'].Fill( Ptruth,(Ptruthy-Py)/ROOT.TMath.Sqrt(cov[4][4]) )   
-        h['pullPOverPz'].Fill( Ptruth,(Ptruthz-Pz)/ROOT.TMath.Sqrt(cov[5][5]) )   
+        delPOverPz = (old_div(1.,Ptruthz) - old_div(1.,Pz)) * Ptruthz
+        h['pullPOverPx'].Fill( Ptruth,old_div((Ptruthx-Px),ROOT.TMath.Sqrt(cov[3][3])) )   
+        h['pullPOverPy'].Fill( Ptruth,old_div((Ptruthy-Py),ROOT.TMath.Sqrt(cov[4][4])) )   
+        h['pullPOverPz'].Fill( Ptruth,old_div((Ptruthz-Pz),ROOT.TMath.Sqrt(cov[5][5])) )   
         h['delPOverPz'].Fill(Ptruthz,delPOverPz)
         if chi2>chi2CutOff: continue
         h['delPOverP2'].Fill(Ptruth,delPOverP)
@@ -756,9 +758,9 @@ def myEventLoop(n):
         h['nrRPC'].Fill(vetoDets['RPC'][2])
 #   HNL true
         mctrack = sTree.MCTrack[sTree.fitTrack2MC[t1]]
-        h['Vzresol'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/u.cm )
-        h['Vxresol'].Fill( (mctrack.GetStartX()-HNLPos.X())/u.cm )
-        h['Vyresol'].Fill( (mctrack.GetStartY()-HNLPos.Y())/u.cm )
+        h['Vzresol'].Fill( old_div((mctrack.GetStartZ()-HNLPos.Z()),u.cm) )
+        h['Vxresol'].Fill( old_div((mctrack.GetStartX()-HNLPos.X()),u.cm) )
+        h['Vyresol'].Fill( old_div((mctrack.GetStartY()-HNLPos.Y()),u.cm) )
         PosDir,newPosDir,CovMat,scalFac = {},{},{},{}
 # opening angle at vertex
         newPos = ROOT.TVector3(HNLPos.X(),HNLPos.Y(),HNLPos.Z())
@@ -779,14 +781,14 @@ def myEventLoop(n):
             mom1,mom2 = st1.getMom(),st2.getMom()
         newPosDir[t1] = {'position':rep1.getPos(state1),'direction':rep1.getDir(state1),'momentum':mom1}
         newPosDir[t2] = {'position':rep2.getPos(state2),'direction':rep2.getDir(state2),'momentum':mom2}
-        oa = mom1.Dot(mom2)/(mom1.Mag()*mom2.Mag()) 
+        oa = old_div(mom1.Dot(mom2),(mom1.Mag()*mom2.Mag())) 
         h['oa'].Fill(oa)
 #
         covX = HNL.GetCovV()
         dist = HNL.GetDoca()
-        h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )
-        h['Vxpull'].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )
-        h['Vypull'].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )
+        h['Vzpull'].Fill( old_div((mctrack.GetStartZ()-HNLPos.Z()),ROOT.TMath.Sqrt(covX[2][2])) )
+        h['Vxpull'].Fill( old_div((mctrack.GetStartX()-HNLPos.X()),ROOT.TMath.Sqrt(covX[0][0])) )
+        h['Vypull'].Fill( old_div((mctrack.GetStartY()-HNLPos.Y()),ROOT.TMath.Sqrt(covX[1][1])) )
 
 # check extrapolation to TimeDet if exists
     if hasattr(ShipGeo,"TimeDet"):
@@ -830,7 +832,7 @@ def HNLKinematics():
                         h['HNLmomNoW_recTracks'].Fill(Prec)
     theSum = 0
     for x in HNLorigin: theSum+=HNLorigin[x]   
-    for x in HNLorigin: print("%4i : %5.4F relative fraction: %5.4F "%(x,HNLorigin[x],HNLorigin[x]/theSum))
+    for x in HNLorigin: print("%4i : %5.4F relative fraction: %5.4F "%(x,HNLorigin[x],old_div(HNLorigin[x],theSum)))
 #
 # initialize ecalStructure
 caloTasks = []

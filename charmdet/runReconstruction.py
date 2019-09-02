@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 
 import os,subprocess,ROOT,time,multiprocessing
@@ -250,7 +252,7 @@ def checkFilesWithTracks3(D='.'):
                 continue
             b = sTree.GetBranch("FitTracks")
             if b:
-                if b.GetZipBytes()/1.E6 < 1.: badFile[x]= b.GetZipBytes()/1.E6
+                if old_div(b.GetZipBytes(),1.E6) < 1.: badFile[x]= old_div(b.GetZipBytes(),1.E6)
     return badFile
 # for f in bf: os.system('cp ../../ship-ubuntu-1710-64/RUN_8000_2395/'+f+' .')
 

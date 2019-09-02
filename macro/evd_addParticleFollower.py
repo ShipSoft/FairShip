@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 import ROOT,evd_fillEnergy
 gEve=ROOT.gEve
 def execute():
@@ -32,7 +34,7 @@ def execute():
             co = ed.GetCameraOverlay()
             center = array('d',[0,0,0])
             if c=='topxxx': 
-                cam.Configure(1.0,0.,center,-ROOT.TMath.Pi()/2.,0.)
+                cam.Configure(1.0,0.,center,old_div(-ROOT.TMath.Pi(),2.),0.)
             else:  
                 cam.Configure(1.0,0.,center,0,0)
                 co.SetShowOrthographic(True)

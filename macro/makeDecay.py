@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import next
 from builtins import str
 from builtins import range
@@ -55,7 +57,7 @@ else:
     hc['2']=fhin.Get("2")
 
 #pot are counted double, i.e. for each signal, i.e. pot/2.
-nrcpot=hc['2'].GetBinContent(1)/2.
+nrcpot=old_div(hc['2'].GetBinContent(1),2.)
 print('Input file: ',FIN,' with ',nEvents,' entries, corresponding to nr-pot=',nrcpot)
 #nEvents=100
 print('Output ntuples written to: ',FOUT)
@@ -150,7 +152,7 @@ for n in range(nEvents):
                     h[str(idhnu+200)].Fill(l10ptot,l10pt,wspill)
 
 print('Now at Ntup.Write() for pot=',pot,nrcpot)
-if (1.-pot/nrcpot)<1.e-2:
+if (1.-old_div(pot,nrcpot))<1.e-2:
     print('write ntuple, weight/event=',nrpotspill,'x',chicc,'/',nrcpot,'=',wspill)
     Ntup.Write()
     for akey in h: h[akey].Write()

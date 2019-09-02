@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 #---Enable Tab completion-----------------------------------------
@@ -119,17 +121,17 @@ def container_sizes(sTree,perEvent=False):
     for l in sTree.GetListOfLeaves():
         b = l.GetBranch()
         nm = b.GetName()
-        print("%30s :%8.3F   %8.3F    %8.3F "%(nm,b.GetZipBytes()/1.E6,b.GetTotBytes()/1.E6,b.GetTotalSize()/1.E6))
+        print("%30s :%8.3F   %8.3F    %8.3F "%(nm,old_div(b.GetZipBytes(),1.E6),old_div(b.GetTotBytes(),1.E6),old_div(b.GetTotalSize(),1.E6)))
         bnm = nm.split('.')[0] 
         if bnm not in counter: counter[bnm]=[0,0,0]
-        counter[bnm][0]+=b.GetZipBytes()/1.E6
-        counter[bnm][1]+=b.GetTotBytes()/1.E6
-        counter[bnm][2]+=b.GetTotalSize()/1.E6
-        counter['total'][0]+=b.GetZipBytes()/1.E6
-        counter['total'][1]+=b.GetTotBytes()/1.E6
-        counter['total'][2]+=b.GetTotalSize()/1.E6
+        counter[bnm][0]+=old_div(b.GetZipBytes(),1.E6)
+        counter[bnm][1]+=old_div(b.GetTotBytes(),1.E6)
+        counter[bnm][2]+=old_div(b.GetTotalSize(),1.E6)
+        counter['total'][0]+=old_div(b.GetZipBytes(),1.E6)
+        counter['total'][1]+=old_div(b.GetTotBytes(),1.E6)
+        counter['total'][2]+=old_div(b.GetTotalSize(),1.E6)
     print("---> SUMMARY <---------------")
-    N = sTree.GetEntries()/1000.
+    N = old_div(sTree.GetEntries(),1000.)
     if perEvent:
         print("                     name     ZipBytes[kB]/ev  TotBytes[kB]/ev  TotalSize[kB]/ev") 
     else:
@@ -139,7 +141,7 @@ def container_sizes(sTree,perEvent=False):
     for i in range(len(sorted_c)):
         x = sorted_c[i][0]
         if perEvent:
-            print("%30s :%8.3F      %8.3F       %8.3F"%(x,counter[x][0]/N,counter[x][1]/N,counter[x][2]/N))
+            print("%30s :%8.3F      %8.3F       %8.3F"%(x,old_div(counter[x][0],N),old_div(counter[x][1],N),old_div(counter[x][2],N)))
         else:
             print("%30s :%8.3F   %8.3F    %8.3F"%(x,counter[x][0],counter[x][1],counter[x][2]))
 

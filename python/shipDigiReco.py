@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 from builtins import object
@@ -323,7 +325,7 @@ class ShipDigiReco(object):
             weights_from_x_splitting = {}
             for index_subcluster in list_of_subclusters_x:
                 subcluster_energy_x = self.GetClusterEnergy(list_of_subclusters_x[index_subcluster])
-                weight = subcluster_energy_x/cluster_energy_x
+                weight = old_div(subcluster_energy_x,cluster_energy_x)
                 # print "======> weight = ", weight 
                 weights_from_x_splitting[index_subcluster] = weight
 
@@ -343,7 +345,7 @@ class ShipDigiReco(object):
             weights_from_y_splitting = {}
             for index_subcluster in list_of_subclusters_y:
                 subcluster_energy_y = self.GetClusterEnergy(list_of_subclusters_y[index_subcluster])
-                weight = subcluster_energy_y/cluster_energy_y
+                weight = old_div(subcluster_energy_y,cluster_energy_y)
                 # print "======> weight = ", weight 
                 weights_from_y_splitting[index_subcluster] = weight
 
@@ -740,16 +742,16 @@ class ShipDigiReco(object):
             if not aDigi.isValid(): continue
             detID = aDigi.GetDetectorID()
 # don't use hits from straw veto
-            station = int(detID/10000000)
+            station = int(old_div(detID,10000000))
             if station > 4 : continue
             modules["Strawtubes"].StrawEndPoints(detID,start,stop)
-            delt1 = (start[2]-z1)/u.speedOfLight
+            delt1 = old_div((start[2]-z1),u.speedOfLight)
             t0+=aDigi.GetDigi()-delt1
             SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi(), 'detID':detID} )
             n+=1  
-        if n>0: t0 = t0/n - 73.2*u.ns
+        if n>0: t0 = old_div(t0,n) - 73.2*u.ns
         for s in SmearedHits:
-            delt1 = (s['z']-z1)/u.speedOfLight
+            delt1 = old_div((s['z']-z1),u.speedOfLight)
             s['dist'] = (s['dist'] -delt1 -t0)*v_drift 
         return SmearedHits
 
@@ -765,15 +767,15 @@ class ShipDigiReco(object):
             if not aDigi.isValid(): continue
             detID = aDigi.GetDetectorID()
 # don't use hits from straw veto
-            station = int(detID/10000000)
+            station = int(old_div(detID,10000000))
             if station > 4 : continue
             modules["Strawtubes"].StrawEndPoints(detID,start,stop)
         #distance to wire
-            delt1 = (start[2]-z1)/u.speedOfLight
+            delt1 = old_div((start[2]-z1),u.speedOfLight)
             p=self.sTree.strawtubesPoint[key]
             # use true t0  construction: 
             #     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
-            smear = (aDigi.GetDigi() - self.sTree.t0  - p.GetTime() - ( stop[0]-p.GetX() )/ u.speedOfLight) * v_drift
+            smear = (aDigi.GetDigi() - self.sTree.t0  - p.GetTime() - old_div(( stop[0]-p.GetX() ), u.speedOfLight)) * v_drift
             if no_amb: smear = p.dist2Wire()
             SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear, 'detID':detID} )
             # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
@@ -813,7 +815,7 @@ class ShipDigiReco(object):
                 atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
                 for sm in atrack_smeared_hits:
                     detID = sm['detID']
-                    station = int(detID/10000000)
+                    station = int(old_div(detID,10000000))
                     trID = i_track
                     # Collect hits for track fit
                     if trID not in hitPosLists:
@@ -829,7 +831,7 @@ class ShipDigiReco(object):
         else: # do fake pattern recognition
             for sm in self.SmearedHits:
                 detID = self.digiStraw[sm['digiHit']].GetDetectorID()
-                station = int(detID/10000000)
+                station = int(old_div(detID,10000000))
                 trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
                 if trID not in hitPosLists:   
                     hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
@@ -887,7 +889,7 @@ class ShipDigiReco(object):
                 tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
                 measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
                 # print measurement.getMaxDistance()
-                measurement.setMaxDistance(ShipGeo.strawtubes.InnerStrawDiameter/2.)
+                measurement.setMaxDistance(old_div(ShipGeo.strawtubes.InnerStrawDiameter,2.))
                 # measurement.setLeftRightResolution(-1)
                 tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
                 theTrack.insertPoint(tp)  # add point to Track
@@ -923,7 +925,7 @@ class ShipDigiReco(object):
                 continue
             fitStatus   = theTrack.getFitStatus()
             nmeas = fitStatus.getNdf()   
-            chi2        = fitStatus.getChi2()/nmeas   
+            chi2        = old_div(fitStatus.getChi2(),nmeas)   
             h['chi2'].Fill(chi2)
 # make track persistent
             nTrack   = self.fGenFitArray.GetEntries()
@@ -963,7 +965,7 @@ class ShipDigiReco(object):
             fitStatus = track.getFitStatus()
             if not fitStatus.isFitConverged(): continue
             nmeas = fitStatus.getNdf()
-            chi2  = fitStatus.getChi2()/nmeas
+            chi2  = old_div(fitStatus.getChi2(),nmeas)
             if chi2<50 and not chi2<0:
                 self.goodTracksVect.push_back(i)
                 nGoodTracks+=1
@@ -1018,7 +1020,7 @@ class ShipDigiReco(object):
             tmax = -999
         frac=0.0
         if nh > 0:
-            frac = float(track[tmax]) / float(nh)
+            frac = old_div(float(track[tmax]), float(nh))
         return frac, tmax
 
     def finish(self):

@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import sys,os,ROOT
@@ -117,13 +119,13 @@ def compactifyCascade(run):
     if cmd.find('root')<0:
         print('no file found, exit')
     else:
-        stat = str( int(Ntot/1E6))+'Mpot'
+        stat = str( int(old_div(Ntot,1E6)))+'Mpot'
         outFile = "Cascade-run"+str(run)+"-"+str(run+ncpus-1)+"-parp16-MSTP82-1-MSEL"+msel+"-"+stat+".root"
         rc = os.system("hadd -O "+outFile + " " +cmd)
         f = ROOT.TFile(outFile) 
         Npot = f.Get("2").GetBinContent(1)/2./chicc
         f.Close()
-        stat = str( int(Npot/1E9))+'Bpot'
+        stat = str( int(old_div(Npot,1E9)))+'Bpot'
         oldOutFile = outFile
         outFile = "Cascade-run"+str(run)+"-"+str(run+ncpus-1)+"-parp16-MSTP82-1-MSEL"+msel+"-"+stat+".root"
         os.system("mv "+oldOutFile+" "+outFile)
@@ -143,7 +145,7 @@ def statistics():
     for x in [0,20,40,60,80]:
         fn = fname.replace('AA',str(x)).replace('BB',str(x+19))
         f=ROOT.TFile.Open(path+fn)
-        nPot += f.Get("2").GetBinContent(1)/2.
+        nPot += old_div(f.Get("2").GetBinContent(1),2.)
         nhadrons += f.Get('pythia6').GetEntries()
     print("total nr of hadrons:",nhadrons,nPot/chicc/1.E9,'Billion')
 

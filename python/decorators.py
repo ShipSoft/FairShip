@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 import ROOT
 import shipunit as u
@@ -7,7 +9,7 @@ def MCPointPrintOut(x):
     n=''
     if p: n = p.GetName()
     txt = '("%s") X:%6.3Fcm Y:%6.3Fcm Z:%6.3Fcm dE/dx:%6.2FMeV %s'%(\
-      x.Class_Name(),x.GetX(),x.GetY(),x.GetZ(),x.GetEnergyLoss()/u.MeV,n)
+      x.Class_Name(),x.GetX(),x.GetY(),x.GetZ(),old_div(x.GetEnergyLoss(),u.MeV),n)
     return txt
 def MCTrackPrintOut(x):
     c = x.GetPdgCode()
@@ -15,7 +17,7 @@ def MCTrackPrintOut(x):
     n=''
     if p: n = p.GetName()
     m = x.GetMotherId()
-    txt = '("ShipMCTrack") pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s'%(c,n,x.GetStartZ()/u.m,x.GetP(),m,x.GetProcName())
+    txt = '("ShipMCTrack") pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s'%(c,n,old_div(x.GetStartZ(),u.m),x.GetP(),m,x.GetProcName())
     return txt
 def vetoHitPrintOut(x):
     txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.GetADC(),x.GetTDC())
@@ -30,7 +32,7 @@ def TimeDetHitPrintOut(x):
 def FitTrackPrintOut(x):
     st = x.getFitStatus()
     if st.isFitConverged():
-        chi2DoF = st.getChi2()/st.getNdf()
+        chi2DoF = old_div(st.getChi2(),st.getNdf())
         sta = x.getFittedState()
         P = sta.getMomMag()
         txt = '("FitTrack") chi2/dof:%3.1F  P:%5.2FGeV/c pdg:%i'%(chi2DoF,P,sta.getPDG())
@@ -38,16 +40,16 @@ def FitTrackPrintOut(x):
         txt = '("FitTrack") fit not converged'
     return txt
 def TParticlePrintOut(x):
-    txt = '("TParticle") %s  P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.P(),x.Vz()/u.m)
+    txt = '("TParticle") %s  P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.P(),old_div(x.Vz(),u.m))
     return txt
 def ShipParticlePrintOut(x):
-    txt = '("ShipParticle") %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.GetMass(),x.P(),x.Vz()/u.m)
+    txt = '("ShipParticle") %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.GetMass(),x.P(),old_div(x.Vz(),u.m))
     return txt
 def ecalReconstructedPrintOut(cl):
-    txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.RecoE(),cl.X()/u.m,cl.Y()/u.m)
+    txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.RecoE(),old_div(cl.X(),u.m),old_div(cl.Y(),u.m))
     return txt
 def ecalClusterPrintOut(cl):
-    txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.Energy(),cl.X()/u.m,cl.Y()/u.m)
+    txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.Energy(),old_div(cl.X(),u.m),old_div(cl.Y(),u.m))
     return txt
 def Dump(x):
     k=0

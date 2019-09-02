@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from future import standard_library
 standard_library.install_aliases()
 from builtins import input
@@ -277,27 +279,27 @@ survey['RPC5_R']= [ 20.2891, -1.2614, 1.1943 ]
 
 Lcorrection={}
 # length of the bolt 150mm on the top and 50mm on the bottom
-Lcorrection['T1_MA_01'] = -(20.+150.+8.65)/10.
-Lcorrection['T1_MA_02'] = -(20.+150.+8.65)/10.
-Lcorrection['T1_MA_03'] = (20.+50.+8.35)/10.
-Lcorrection['T1_MA_04'] = (20.+50.+8.35)/10.
-Lcorrection['T1_MB_01'] = -(20.+150.)/10.
-Lcorrection['T1_MB_02'] = -(20.+150.)/10.
-Lcorrection['T1_MB_03'] = (20.+50.)/10.
-Lcorrection['T1_MB_04'] = (20.+50.)/10.
-Lcorrection['T2_MC_01'] = -(20.+150.)/10.
-Lcorrection['T2_MC_02'] = -(20.+150.)/10.
-Lcorrection['T2_MC_03'] = (20.+50.)/10.
-Lcorrection['T2_MC_04'] = (20.+50.)/10.
-Lcorrection['T2_MD_01'] = -(20.+150.+7.3)/10.
-Lcorrection['T2_MD_02'] = -(20.+150.+7.3)/10.
-Lcorrection['T2_MD_03'] = (20.+50.+8.45)/10.   # 8.45 or 4.45
-Lcorrection['T2_MD_04'] = (20.+50.+8.45)/10.   # 8.45 or 4.45
+Lcorrection['T1_MA_01'] = old_div(-(20.+150.+8.65),10.)
+Lcorrection['T1_MA_02'] = old_div(-(20.+150.+8.65),10.)
+Lcorrection['T1_MA_03'] = old_div((20.+50.+8.35),10.)
+Lcorrection['T1_MA_04'] = old_div((20.+50.+8.35),10.)
+Lcorrection['T1_MB_01'] = old_div(-(20.+150.),10.)
+Lcorrection['T1_MB_02'] = old_div(-(20.+150.),10.)
+Lcorrection['T1_MB_03'] = old_div((20.+50.),10.)
+Lcorrection['T1_MB_04'] = old_div((20.+50.),10.)
+Lcorrection['T2_MC_01'] = old_div(-(20.+150.),10.)
+Lcorrection['T2_MC_02'] = old_div(-(20.+150.),10.)
+Lcorrection['T2_MC_03'] = old_div((20.+50.),10.)
+Lcorrection['T2_MC_04'] = old_div((20.+50.),10.)
+Lcorrection['T2_MD_01'] = old_div(-(20.+150.+7.3),10.)
+Lcorrection['T2_MD_02'] = old_div(-(20.+150.+7.3),10.)
+Lcorrection['T2_MD_03'] = old_div((20.+50.+8.45),10.)   # 8.45 or 4.45
+Lcorrection['T2_MD_04'] = old_div((20.+50.+8.45),10.)   # 8.45 or 4.45
 
 surveyXYZ = {}
 for s in survey: 
     surveyXYZ[s]=[survey[s][1]*100.,survey[s][2]*100.,survey[s][0]*100.]
-for s in daniel: daniel[s]=[daniel[s][0]/10.,daniel[s][1]/10.,daniel[s][2]/10.]
+for s in daniel: daniel[s]=[old_div(daniel[s][0],10.),old_div(daniel[s][1],10.),old_div(daniel[s][2],10.)]
 
 Langle={}
 for s in ['T1_MA_','T1_MB_','T2_MC_','T2_MD_']:
@@ -344,14 +346,14 @@ rn['T2_MC_03'] = rn['T1_MB_03']
 
 #overall z positioning
 #T1X:
-zpos['T1X'] = (daniel['T1_MA_01'][2]+daniel['T1_MA_02'][2]+daniel['T1_MA_03'][2]+daniel['T1_MA_04'][2])/4. + 3.03
-ypos['T1X'] = [(daniel['T1_MA_01'][1]+daniel['T1_MA_02'][1])/2.,(daniel['T1_MA_04'][1]+daniel['T1_MA_03'][1])/2.]
+zpos['T1X'] = old_div((daniel['T1_MA_01'][2]+daniel['T1_MA_02'][2]+daniel['T1_MA_03'][2]+daniel['T1_MA_04'][2]),4.) + 3.03
+ypos['T1X'] = [old_div((daniel['T1_MA_01'][1]+daniel['T1_MA_02'][1]),2.),old_div((daniel['T1_MA_04'][1]+daniel['T1_MA_03'][1]),2.)]
 test = ROOT.MufluxSpectrometerHit(10002012,0.)
 test.MufluxSpectrometerEndPoints(vbot,vtop)
-deltaZ = zpos['T1X']-(vbot[2]+vtop[2])/2. 
+deltaZ = zpos['T1X']-old_div((vbot[2]+vtop[2]),2.) 
 n = 10002012
 start = daniel['T1_MA_01'][0] # (daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0])/2. bottom survey measurements do not match nominal distance
-delta = (start - (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2.-1.1-2.1) / 10.
+delta = old_div((start - old_div((daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0]),2.)-1.1-2.1), 10.)
 delta = 4.2
 for i in range(12): 
     xpos[n-i] = start - delta * i
@@ -377,10 +379,10 @@ for i in range(12):
     zpos[n+i] = zpos['T1X']+3.64+4.06+3.64-deltaZ
 
 #T1u: take survey corrected points
-zpos['T1U'] = (daniel['T1_MB_01'][2]+daniel['T1_MB_02'][2]+daniel['T1_MB_03'][2]+daniel['T1_MB_04'][2])/4. - 3.03 -3.64 -4.06 -3.64
+zpos['T1U'] = old_div((daniel['T1_MB_01'][2]+daniel['T1_MB_02'][2]+daniel['T1_MB_03'][2]+daniel['T1_MB_04'][2]),4.) - 3.03 -3.64 -4.06 -3.64
 angleu1 = ROOT.TMath.ATan2((daniel['T1_MB_01'][0]-daniel['T1_MB_04'][0]),(daniel['T1_MB_01'][1]-daniel['T1_MB_04'][1]))
 angleu2 = ROOT.TMath.ATan2((daniel['T1_MB_02'][0]-daniel['T1_MB_03'][0]),(daniel['T1_MB_02'][1]-daniel['T1_MB_03'][1]))
-angleu = (angleu1+angleu2)/2.
+angleu = old_div((angleu1+angleu2),2.)
 
 angle = -angleu # 60.208/180.*ROOT.TMath.Pi()  ???
 tx,ty=0,0
@@ -390,43 +392,43 @@ for i in range(1,5):
     ty += daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle))
     if debug: print("%s: %5.4F, %5.4F"%(p, (daniel[p][0] - (rn[p][0]*ROOT.TMath.Cos(angle) - rn[p][1]*ROOT.TMath.Sin(angle)))*10,\
                            (daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle)))*10))
-tx=tx/4.
-ty=ty/4.
+tx=old_div(tx,4.)
+ty=old_div(ty,4.)
 
 L =  110.
-start = (rn['T1_MB_01'][0]+rn['T1_MB_04'][0])/2.
-delta = (start - ( (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.+1.1+2.1) )/ 10.
+start = old_div((rn['T1_MB_01'][0]+rn['T1_MB_04'][0]),2.)
+delta = old_div((start - ( old_div((rn['T1_MB_02'][0]+rn['T1_MB_03'][0]),2.)+1.1+2.1) ), 10.)
 delta = 4.2
 
 n = 11002012
 for i in range(12): 
     xnom = start - delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n-i] = zpos['T1U']-deltaZ
 n = 11012001
-start = (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.+1.1
+start = old_div((rn['T1_MB_02'][0]+rn['T1_MB_03'][0]),2.)+1.1
 for i in range(12): 
     xnom = start + delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n+i] = zpos['T1U']+3.64-deltaZ
 n = 11102001
-start = (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.
+start = old_div((rn['T1_MB_02'][0]+rn['T1_MB_03'][0]),2.)
 for i in range(12): 
     xnom = start + delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n+i] = zpos['T1U']+3.64+4.06 -deltaZ
@@ -434,20 +436,20 @@ n = 11112001
 start = start - 2.1
 for i in range(12): 
     xnom = start + delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n+i] = zpos['T1U']+3.64+4.06+3.64-deltaZ
 
 # T2X:
-zpos['T2X'] = (daniel['T2_MD_01'][2]+daniel['T2_MD_02'][2]+daniel['T2_MD_03'][2]+daniel['T2_MD_04'][2])/4. - 3.03 - 3.64 - 4.06 - 3.6480
-ypos['T2X'] = [(daniel['T2_MD_01'][1]+daniel['T2_MD_02'][1])/2.,(daniel['T2_MD_04'][1]+daniel['T2_MD_03'][1])/2.]
+zpos['T2X'] = old_div((daniel['T2_MD_01'][2]+daniel['T2_MD_02'][2]+daniel['T2_MD_03'][2]+daniel['T2_MD_04'][2]),4.) - 3.03 - 3.64 - 4.06 - 3.6480
+ypos['T2X'] = [old_div((daniel['T2_MD_01'][1]+daniel['T2_MD_02'][1]),2.),old_div((daniel['T2_MD_04'][1]+daniel['T2_MD_03'][1]),2.)]
 n = 21112001
 start = daniel['T2_MD_03'][0] # (daniel['T2_MD_02'][0]+daniel['T2_MD_03'][0])/2.  top x survey do not match nominal distance, makes 1.8mm difference to FairShip
-delta = ( (daniel['T2_MD_01'][0]+daniel['T2_MD_04'][0])/2. - (start+1.1-2.1)) / 11.
+delta = old_div(( old_div((daniel['T2_MD_01'][0]+daniel['T2_MD_04'][0]),2.) - (start+1.1-2.1)), 11.)
 delta = 4.2  # nominal distance, more reliable
 
 for i in range(12): 
@@ -476,9 +478,9 @@ for i in range(12):
 #T2v:take survey corrected points
 anglev1 = ROOT.TMath.ATan2((daniel['T2_MC_02'][0]-daniel['T2_MC_03'][0]),(daniel['T2_MC_02'][1]-daniel['T2_MC_03'][1]))
 anglev2 = ROOT.TMath.ATan2((daniel['T2_MC_01'][0]-daniel['T2_MC_04'][0]),(daniel['T2_MC_01'][1]-daniel['T2_MC_04'][1]))
-anglev = (anglev1+anglev2)/2.
+anglev = old_div((anglev1+anglev2),2.)
 
-zpos['T2V'] = (daniel['T2_MC_01'][2]+daniel['T2_MC_02'][2]+daniel['T2_MC_03'][2]+daniel['T2_MC_04'][2])/4. + 3.03
+zpos['T2V'] = old_div((daniel['T2_MC_01'][2]+daniel['T2_MC_02'][2]+daniel['T2_MC_03'][2]+daniel['T2_MC_04'][2]),4.) + 3.03
 L =  110.
 angle = -anglev # ???
 tx,ty=0,0
@@ -488,20 +490,20 @@ for i in range(1,5):
     ty += daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle))
     if debug: print("%s: %5.4F, %5.4F"%(p, (daniel[p][0] - (rn[p][0]*ROOT.TMath.Cos(angle) - rn[p][1]*ROOT.TMath.Sin(angle)))*10,\
                            (daniel[p][1] - (rn[p][0]*ROOT.TMath.Sin(angle) + rn[p][1]*ROOT.TMath.Cos(angle)))*10))
-tx=tx/4.
-ty=ty/4.
+tx=old_div(tx,4.)
+ty=old_div(ty,4.)
 
 n = 20112001
-start = (rn['T2_MC_02'][0]+rn['T2_MC_03'][0])/2.
-delta = ((rn['T2_MC_01'][0]+rn['T2_MC_04'][0])/2. - ( (rn['T2_MC_02'][0]+rn['T2_MC_03'][0])/2.-2.1+1.1)) / 11.
+start = old_div((rn['T2_MC_02'][0]+rn['T2_MC_03'][0]),2.)
+delta = old_div((old_div((rn['T2_MC_01'][0]+rn['T2_MC_04'][0]),2.) - ( old_div((rn['T2_MC_02'][0]+rn['T2_MC_03'][0]),2.)-2.1+1.1)), 11.)
 delta = 4.2
 
 for i in range(12): 
     xnom = start + delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n+i] = zpos['T2V']+3.64+4.06+3.64-deltaZ
@@ -509,21 +511,21 @@ n = 20102001
 start = start - 2.1
 for i in range(12): 
     xnom = start + delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n+i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n+i] = zpos['T2V']+3.64+4.06-deltaZ
 n = 20012012
-start = (rn['T2_MC_01'][0]+rn['T2_MC_04'][0])/2.
+start = old_div((rn['T2_MC_01'][0]+rn['T2_MC_04'][0]),2.)
 for i in range(12): 
     xnom = start - delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n-i] = zpos['T2V']+3.64-deltaZ
@@ -531,84 +533,84 @@ n = 20002012
 start = start + 2.1
 for i in range(12): 
     xnom = start - delta * i
-    ynom = L/2.
+    ynom = old_div(L,2.)
     xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     ypos[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
-    ynom = -L/2.
+    ynom = old_div(-L,2.)
     xposb[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
     yposb[n-i] = xnom *ROOT.TMath.Sin(angle) + ynom*ROOT.TMath.Cos(angle) + ty
     zpos[n-i] = zpos['T2V']-deltaZ
 
 #T3aX:
-zpos['T3aX'] = (( daniel['T3_T01'][2] + daniel['T3_B01'][2] + daniel['T3_T02'][2] + daniel['T3_B02'][2])/4. + 4.33)
-ypos['T3aX'] = [(daniel['T3_T01'][1]+daniel['T3_T02'][1])/2.,(daniel['T3_B01'][1]+daniel['T3_B02'][1])/2.]
+zpos['T3aX'] = (old_div(( daniel['T3_T01'][2] + daniel['T3_B01'][2] + daniel['T3_T02'][2] + daniel['T3_B02'][2]),4.) + 4.33)
+ypos['T3aX'] = [old_div((daniel['T3_T01'][1]+daniel['T3_T02'][1]),2.),old_div((daniel['T3_B01'][1]+daniel['T3_B02'][1]),2.)]
 
-delta = ( (daniel['T3_T01'][0] + daniel['T3_B01'][0])/2. - (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T3_T01'][0] + daniel['T3_B01'][0]),2.) - old_div((daniel['T3_T02'][0] + daniel['T3_B02'][0]),2.) ),8.)
 delta = 4.2
 
 n = 30002037
-start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta +2.1 -delta
+start = old_div((daniel['T3_T02'][0] + daniel['T3_B02'][0]),2.) -delta +2.1 -delta
 for i in range(12): 
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']-deltaZ
 n = 30012037
-start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta
+start = old_div((daniel['T3_T02'][0] + daniel['T3_B02'][0]),2.) -delta
 for i in range(12): 
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']+3.64-deltaZ
 n = 30102037
-start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta -1.1
+start = old_div((daniel['T3_T02'][0] + daniel['T3_B02'][0]),2.) -delta -1.1
 for i in range(12): 
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']+3.64+4.06-deltaZ
 n = 30112037
-start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta -1.1 -2.1
+start = old_div((daniel['T3_T02'][0] + daniel['T3_B02'][0]),2.) -delta -1.1 -2.1
 for i in range(12): 
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']+3.64+4.06+3.64-deltaZ
 
 #T3bX:
-zpos['T3bX'] = (( daniel['T3_T03'][2] + daniel['T3_B03'][2] + daniel['T3_T04'][2] + daniel['T3_B04'][2])/4. + 4.33)
-ypos['T3bX'] = [(daniel['T3_T03'][1]+daniel['T3_T04'][1])/2.,(daniel['T3_B03'][1]+daniel['T3_B04'][1])/2.]
+zpos['T3bX'] = (old_div(( daniel['T3_T03'][2] + daniel['T3_B03'][2] + daniel['T3_T04'][2] + daniel['T3_B04'][2]),4.) + 4.33)
+ypos['T3bX'] = [old_div((daniel['T3_T03'][1]+daniel['T3_T04'][1]),2.),old_div((daniel['T3_B03'][1]+daniel['T3_B04'][1]),2.)]
 
-delta = ( (daniel['T3_T03'][0] + daniel['T3_B03'][0])/2. - (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T3_T03'][0] + daniel['T3_B03'][0]),2.) - old_div((daniel['T3_T04'][0] + daniel['T3_B04'][0]),2.) ),8.)
 delta = 4.2
 
 n = 30002025
-start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta +2.1 -delta
+start =  old_div((daniel['T3_T04'][0] + daniel['T3_B04'][0]),2.)  -delta +2.1 -delta
 for i in range(12): 
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3bX']-deltaZ
 n = 30012025
-start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta 
+start =  old_div((daniel['T3_T04'][0] + daniel['T3_B04'][0]),2.)  -delta 
 for i in range(12): 
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3bX']+3.64-deltaZ
 n = 30102025
-start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta -1.1
+start =  old_div((daniel['T3_T04'][0] + daniel['T3_B04'][0]),2.)  -delta -1.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3bX']+3.64+4.06-deltaZ
 n = 30112025
-start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta -1.1 -2.1
+start =  old_div((daniel['T3_T04'][0] + daniel['T3_B04'][0]),2.)  -delta -1.1 -2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3bX']+3.64+4.06+3.64-deltaZ
 
 #T3cX:
-zpos['T3cX'] = (( daniel['T3_T05'][2] + daniel['T3_B05'][2] + daniel['T3_T06'][2] + daniel['T3_B06'][2])/4. + 4.33)
-ypos['T3cX'] = [(daniel['T3_T05'][1]+daniel['T3_T06'][1])/2.,(daniel['T3_B05'][1]+daniel['T3_B06'][1])/2.]
+zpos['T3cX'] = (old_div(( daniel['T3_T05'][2] + daniel['T3_B05'][2] + daniel['T3_T06'][2] + daniel['T3_B06'][2]),4.) + 4.33)
+ypos['T3cX'] = [old_div((daniel['T3_T05'][1]+daniel['T3_T06'][1]),2.),old_div((daniel['T3_B05'][1]+daniel['T3_B06'][1]),2.)]
 
-delta = ( (daniel['T3_T05'][0] + daniel['T3_B05'][0])/2. - (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T3_T05'][0] + daniel['T3_B05'][0]),2.) - old_div((daniel['T3_T06'][0] + daniel['T3_B06'][0]),2.) ),8.)
 delta = 4.2
 
 n = 30002013
-start = (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. -delta +2.1 -delta
+start = old_div((daniel['T3_T06'][0] + daniel['T3_B06'][0]),2.) -delta +2.1 -delta
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3cX']-deltaZ
 n = 30012013
-start = (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. -delta 
+start = old_div((daniel['T3_T06'][0] + daniel['T3_B06'][0]),2.) -delta 
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3cX']+3.64-deltaZ
@@ -624,142 +626,142 @@ for i in range(12):
     zpos[n+i] = zpos['T3cX']+3.64+4.06+3.64-deltaZ
 
 #T3dX:
-zpos['T3dX'] = (( daniel['T3_T07'][2] + daniel['T3_B07'][2] + daniel['T3_T08'][2] + daniel['T3_B08'][2])/4. + 4.33)
-ypos['T3dX'] = [(daniel['T3_T07'][1]+daniel['T3_T08'][1])/2.,(daniel['T3_B07'][1]+daniel['T3_B08'][1])/2.]
+zpos['T3dX'] = (old_div(( daniel['T3_T07'][2] + daniel['T3_B07'][2] + daniel['T3_T08'][2] + daniel['T3_B08'][2]),4.) + 4.33)
+ypos['T3dX'] = [old_div((daniel['T3_T07'][1]+daniel['T3_T08'][1]),2.),old_div((daniel['T3_B07'][1]+daniel['T3_B08'][1]),2.)]
 
-delta = ( (daniel['T3_T07'][0] + daniel['T3_B07'][0])/2. - (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T3_T07'][0] + daniel['T3_B07'][0]),2.) - old_div((daniel['T3_T08'][0] + daniel['T3_B08'][0]),2.) ),8.)
 delta = 4.2
 
 
 n = 30002001
-start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta +2.1 -delta
+start = old_div((daniel['T3_T08'][0] + daniel['T3_B08'][0]),2.) -delta +2.1 -delta
 for i in range(12): 
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3dX'] -deltaZ
 n = 30012001
-start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta 
+start = old_div((daniel['T3_T08'][0] + daniel['T3_B08'][0]),2.) -delta 
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3dX']+3.64-deltaZ
 n = 30102001
-start =(daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta -1.1
+start =old_div((daniel['T3_T08'][0] + daniel['T3_B08'][0]),2.) -delta -1.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3dX']+3.64+4.06-deltaZ
 n = 30112001
-start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta -1.1 -2.1
+start = old_div((daniel['T3_T08'][0] + daniel['T3_B08'][0]),2.) -delta -1.1 -2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3dX']+3.64+4.06+3.64-deltaZ
 
 #T4aX:
-zpos['T4aX'] = (( daniel['T4_T01'][2] + daniel['T4_B01'][2] + daniel['T4_T02'][2] + daniel['T4_B02'][2])/4. - 4.33 -3.64-4.06-3.64)
-ypos['T4aX'] = [(daniel['T4_T01'][1]+daniel['T4_T02'][1])/2.,(daniel['T4_B01'][1]+daniel['T4_B02'][1])/2.]
+zpos['T4aX'] = (old_div(( daniel['T4_T01'][2] + daniel['T4_B01'][2] + daniel['T4_T02'][2] + daniel['T4_B02'][2]),4.) - 4.33 -3.64-4.06-3.64)
+ypos['T4aX'] = [old_div((daniel['T4_T01'][1]+daniel['T4_T02'][1]),2.),old_div((daniel['T4_B01'][1]+daniel['T4_B02'][1]),2.)]
 
-delta = ( (daniel['T4_T01'][0] + daniel['T4_B01'][0])/2. - (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T4_T01'][0] + daniel['T4_B01'][0]),2.) - old_div((daniel['T4_T02'][0] + daniel['T4_B02'][0]),2.) ),8.)
 delta = 4.2
 
 n = 40002048
-start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta +45.2
+start = old_div((daniel['T4_T02'][0] + daniel['T4_B02'][0]),2.)  -delta +45.2
 for i in range(12):
     xpos[n-i] = start - delta * i
     zpos[n-i] = zpos['T4aX']-deltaZ
 n = 40012037
-start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta +1.1
+start = old_div((daniel['T4_T02'][0] + daniel['T4_B02'][0]),2.)  -delta +1.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4aX']+3.64-deltaZ
 n = 40102037
-start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta  
+start = old_div((daniel['T4_T02'][0] + daniel['T4_B02'][0]),2.)  -delta  
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4aX']+3.64+4.06-deltaZ
 n = 40112037
-start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta  -2.1
+start = old_div((daniel['T4_T02'][0] + daniel['T4_B02'][0]),2.)  -delta  -2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4aX']+3.64+4.06+3.64-deltaZ
 
 #T4bX:
-zpos['T4bX'] = (( daniel['T4_T03'][2] + daniel['T4_B03'][2] + daniel['T4_T04'][2] + daniel['T4_B04'][2])/4. - 4.33 -3.64-4.06-3.64)
-ypos['T4bX'] = [(daniel['T4_T03'][1]+daniel['T4_T04'][1])/2.,(daniel['T4_B03'][1]+daniel['T4_B04'][1])/2.]
+zpos['T4bX'] = (old_div(( daniel['T4_T03'][2] + daniel['T4_B03'][2] + daniel['T4_T04'][2] + daniel['T4_B04'][2]),4.) - 4.33 -3.64-4.06-3.64)
+ypos['T4bX'] = [old_div((daniel['T4_T03'][1]+daniel['T4_T04'][1]),2.),old_div((daniel['T4_B03'][1]+daniel['T4_B04'][1]),2.)]
 
-delta = ( (daniel['T4_T03'][0] + daniel['T4_B03'][0])/2. - (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T4_T03'][0] + daniel['T4_B03'][0]),2.) - old_div((daniel['T4_T04'][0] + daniel['T4_B04'][0]),2.) ),8.)
 delta = 4.2
 
 n = 40002036
-start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta +45.2
+start = old_div((daniel['T4_T04'][0] + daniel['T4_B04'][0]),2.) -delta +45.2
 for i in range(12):
     xpos[n-i] = start - delta * i
     zpos[n-i] = zpos['T4bX']-deltaZ
 n = 40012025
-start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta +45.2 -10*delta-2.1
+start = old_div((daniel['T4_T04'][0] + daniel['T4_B04'][0]),2.) -delta +45.2 -10*delta-2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4bX']+3.64-deltaZ
 n = 40102025
-start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta 
+start = old_div((daniel['T4_T04'][0] + daniel['T4_B04'][0]),2.) -delta 
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4bX']+3.64+4.06-deltaZ
 n = 40112025
-start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta  -2.1
+start = old_div((daniel['T4_T04'][0] + daniel['T4_B04'][0]),2.) -delta  -2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4bX']+3.64+4.06+3.64-deltaZ
 
 #T4cX:
-zpos['T4cX'] = (( daniel['T4_T05'][2] + daniel['T4_B05'][2] + daniel['T4_T06'][2] + daniel['T4_B06'][2])/4. - 4.33 -3.64-4.06-3.64)
-ypos['T4cX'] = [(daniel['T4_T05'][1]+daniel['T4_T06'][1])/2.,(daniel['T4_B05'][1]+daniel['T4_B06'][1])/2.]
+zpos['T4cX'] = (old_div(( daniel['T4_T05'][2] + daniel['T4_B05'][2] + daniel['T4_T06'][2] + daniel['T4_B06'][2]),4.) - 4.33 -3.64-4.06-3.64)
+ypos['T4cX'] = [old_div((daniel['T4_T05'][1]+daniel['T4_T06'][1]),2.),old_div((daniel['T4_B05'][1]+daniel['T4_B06'][1]),2.)]
 
-delta = ( (daniel['T4_T05'][0] + daniel['T4_B05'][0])/2. - (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T4_T05'][0] + daniel['T4_B05'][0]),2.) - old_div((daniel['T4_T06'][0] + daniel['T4_B06'][0]),2.) ),8.)
 delta = 4.2
 
 n = 40002024
-start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta +45.2
+start = old_div((daniel['T4_T06'][0] + daniel['T4_B06'][0]),2.)  -delta +45.2
 for i in range(12):
     xpos[n-i] = start - delta * i
     zpos[n-i] = zpos['T4cX']-deltaZ
 n = 40012013
-start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta +45.2 -10*delta-2.1
+start = old_div((daniel['T4_T06'][0] + daniel['T4_B06'][0]),2.)  -delta +45.2 -10*delta-2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4cX']+3.64-deltaZ
 n = 40102013
-start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta  
+start = old_div((daniel['T4_T06'][0] + daniel['T4_B06'][0]),2.)  -delta  
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4cX']+3.64+4.06-deltaZ
 n = 40112013
-start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta -2.1
+start = old_div((daniel['T4_T06'][0] + daniel['T4_B06'][0]),2.)  -delta -2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4cX']+3.64+4.06+3.64-deltaZ
 
 #T4dX:
-zpos['T4dX'] = (( daniel['T4_T07'][2] + daniel['T4_B07'][2] + daniel['T4_T08'][2] + daniel['T4_B08'][2])/4. - 4.33 -3.64-4.06-3.64)
-ypos['T4dX'] = [(daniel['T4_T07'][1]+daniel['T4_T08'][1])/2.,(daniel['T4_B07'][1]+daniel['T4_B08'][1])/2.]
+zpos['T4dX'] = (old_div(( daniel['T4_T07'][2] + daniel['T4_B07'][2] + daniel['T4_T08'][2] + daniel['T4_B08'][2]),4.) - 4.33 -3.64-4.06-3.64)
+ypos['T4dX'] = [old_div((daniel['T4_T07'][1]+daniel['T4_T08'][1]),2.),old_div((daniel['T4_B07'][1]+daniel['T4_B08'][1]),2.)]
 
-delta = ( (daniel['T4_T07'][0] + daniel['T4_B07'][0])/2. - (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2. )/8.
+delta = old_div(( old_div((daniel['T4_T07'][0] + daniel['T4_B07'][0]),2.) - old_div((daniel['T4_T08'][0] + daniel['T4_B08'][0]),2.) ),8.)
 delta = 4.2
 
 n = 40002012
-start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2. -delta +45.2
+start = old_div((daniel['T4_T08'][0] + daniel['T4_B08'][0]),2.) -delta +45.2
 for i in range(12):
     xpos[n-i] = start - delta * i
     zpos[n-i] = zpos['T4dX']-deltaZ
 n = 40012001
-start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2.  -delta +45.2 -10*delta-2.1
+start = old_div((daniel['T4_T08'][0] + daniel['T4_B08'][0]),2.)  -delta +45.2 -10*delta-2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4dX']+3.64-deltaZ
 n = 40102001
-start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2.  -delta
+start = old_div((daniel['T4_T08'][0] + daniel['T4_B08'][0]),2.)  -delta
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4dX']+3.64+4.06-deltaZ
 n = 40112001
-start = (daniel['T4_T08'][0] + daniel['T4_B08'][0])/2.  -delta -2.1
+start = old_div((daniel['T4_T08'][0] + daniel['T4_B08'][0]),2.)  -delta -2.1
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4dX']+3.64+4.06+3.64-deltaZ
@@ -793,23 +795,23 @@ def compareAlignment():
         statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(test)
         angle = ROOT.TMath.ATan2(-vtop[0]+vbot[0],-vtop[1]+vbot[1])/ROOT.TMath.Pi()*180
         L = ROOT.TMath.Sqrt( (vbot[0]-vtop[0])**2+(vbot[1]-vtop[1])**2)
-        if view=='_x': vbotD,vtopD = ROOT.TVector3(xpos[d],L/2.,zpos[d]),ROOT.TVector3(xpos[d],-L/2.,zpos[d])
+        if view=='_x': vbotD,vtopD = ROOT.TVector3(xpos[d],old_div(L,2.),zpos[d]),ROOT.TVector3(xpos[d],old_div(-L,2.),zpos[d])
         else: vbotD,vtopD = ROOT.TVector3(xposb[d],yposb[d],zpos[d]),ROOT.TVector3(xpos[d],ypos[d],zpos[d])
         angleD = ROOT.TMath.ATan2(vtopD[0]-vbotD[0],vtopD[1]-vbotD[1])/ROOT.TMath.Pi()*180
         if abs(vtop[0]-vbot[0])<1:
-            x0 = (vtop[0]+vbot[0])/2.
+            x0 = old_div((vtop[0]+vbot[0]),2.)
         else:
-            m = (vtop[1]-vbot[1])/(vtop[0]-vbot[0])
+            m = old_div((vtop[1]-vbot[1]),(vtop[0]-vbot[0]))
             b = vtop[1]-m*vtop[0]
-            x0 = -b/m 
+            x0 = old_div(-b,m) 
         if abs(vtopD[0]-vbotD[0])<1:
-            x0D = (vtopD[0]+vbotD[0])/2.
+            x0D = old_div((vtopD[0]+vbotD[0]),2.)
         else:   
-            mD = (vtopD[1]-vbotD[1])/(vtopD[0]-vbotD[0])
+            mD = old_div((vtopD[1]-vbotD[1]),(vtopD[0]-vbotD[0]))
             bD = vtopD[1]-mD*vtopD[0]
-            x0D = -bD/mD
+            x0D = old_div(-bD,mD)
         diff = x0-x0D
-        z = (vbot[2]+vtop[2])/2.
+        z = old_div((vbot[2]+vtop[2]),2.)
         txt = ""
         if abs(diff)>0.1 : txt = "!!! "
         if abs(z-vbotD[2])>0.1: txt+= "!!z"
@@ -818,105 +820,105 @@ def compareAlignment():
         if abs(vbot[2]-vtop[2])>0.1: print("!!! z tilt",vbot[2],vtop[2])
         rc = h['alignCompare'].Fill(x0D,x0)
         rc = h['alignCompareDiffs'].Fill(x0D-x0)
-    z0_D = zpos['T1X']/10.
+    z0_D = old_div(zpos['T1X'],10.)
     test = ROOT.MufluxSpectrometerHit(10002001,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z0_F = (vbot[2]+vtop[2])/2.
+    z0_F = old_div((vbot[2]+vtop[2]),2.)
 # distance to T1 u
     test = ROOT.MufluxSpectrometerHit(11002001,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z1_U = (vbot[2]+vtop[2])/2. - z0_F
-    print("distance T1 X to T1 U:",zpos['T1U']/10.-z0_D,z1_U)
+    z1_U = old_div((vbot[2]+vtop[2]),2.) - z0_F
+    print("distance T1 X to T1 U:",old_div(zpos['T1U'],10.)-z0_D,z1_U)
 # distance to T2 V
     test = ROOT.MufluxSpectrometerHit(20002001,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z2_V = (vbot[2]+vtop[2])/2. - z0_F
-    print("distance T1 X to T2 V:",zpos['T2V']/10.-z0_D,z2_V)
+    z2_V = old_div((vbot[2]+vtop[2]),2.) - z0_F
+    print("distance T1 X to T2 V:",old_div(zpos['T2V'],10.)-z0_D,z2_V)
 # distance to T2 X
     test = ROOT.MufluxSpectrometerHit(21002001,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z2_X = (vbot[2]+vtop[2])/2. - z0_F
-    print("distance T1 X to T2 X:",zpos['T2X']/10.-z0_D,z2_X)
+    z2_X = old_div((vbot[2]+vtop[2]),2.) - z0_F
+    print("distance T1 X to T2 X:",old_div(zpos['T2X'],10.)-z0_D,z2_X)
 # distance to T3 X
     test = ROOT.MufluxSpectrometerHit(30002001,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z3_X = (vbot[2]+vtop[2])/2. - z0_F
-    print("distance T1 X to T3 X:",(zpos['T3aX']+zpos['T3bX']+zpos['T3cX']+zpos['T3dX'])/(4*10.)-z0_D,z3_X)
+    z3_X = old_div((vbot[2]+vtop[2]),2.) - z0_F
+    print("distance T1 X to T3 X:",old_div((zpos['T3aX']+zpos['T3bX']+zpos['T3cX']+zpos['T3dX']),(4*10.))-z0_D,z3_X)
 # distance to T4 X
     test = ROOT.MufluxSpectrometerHit(40002001,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z4_X = (vbot[2]+vtop[2])/2. - z0_F
-    print("distance T1 X to T4 X:",(zpos['T4aX']+zpos['T4bX']+zpos['T4cX']+zpos['T4dX'])/(4*10.)-z0_D,z4_X)
+    z4_X = old_div((vbot[2]+vtop[2]),2.) - z0_F
+    print("distance T1 X to T4 X:",old_div((zpos['T4aX']+zpos['T4bX']+zpos['T4cX']+zpos['T4dX']),(4*10.))-z0_D,z4_X)
 #
 def surveyVSfairship():
     print("z-positions relative to station 1")
     test = ROOT.MufluxSpectrometerHit(10002012,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z1 = (surveyXYZ['T1_MA_01'][2]+surveyXYZ['T1_MA_04'][2])/2.+3.03
+    z1 = old_div((surveyXYZ['T1_MA_01'][2]+surveyXYZ['T1_MA_04'][2]),2.)+3.03
     z1F = vtop[2]
     print("                               X       topY    botY     Z")
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MA_01/04 survey corrected",(surveyXYZ['T1_MA_01'][0]+surveyXYZ['T1_MA_04'][0])/2.,surveyXYZ['T1_MA_01'][1],surveyXYZ['T1_MA_04'][1],z1-z1))
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MA_01/04 Daniel          ",(daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0])/2.,daniel['T1_MA_01'][1],daniel['T1_MA_04'][1],(daniel['T1_MA_01'][2]+daniel['T1_MA_04'][2])/2.+3.03-z1))
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MA_01/04 survey corrected",old_div((surveyXYZ['T1_MA_01'][0]+surveyXYZ['T1_MA_04'][0]),2.),surveyXYZ['T1_MA_01'][1],surveyXYZ['T1_MA_04'][1],z1-z1))
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MA_01/04 Daniel          ",old_div((daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0]),2.),daniel['T1_MA_01'][1],daniel['T1_MA_04'][1],old_div((daniel['T1_MA_01'][2]+daniel['T1_MA_04'][2]),2.)+3.03-z1))
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 10002012               ",vtop[0],vbot[1],vtop[1],vtop[2]-z1F))
 # same station
     vtop2,vbot2 = ROOT.TVector3(),ROOT.TVector3()
     test2 = ROOT.MufluxSpectrometerHit(10102001,0.)
     test2.MufluxSpectrometerEndPoints(vbot2,vtop2)
-    delx = (daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0])/2.-(daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2.
+    delx = old_div((daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0]),2.)-old_div((daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0]),2.)
     dely = [daniel['T1_MA_01'][1]-daniel['T1_MA_02'][1],daniel['T1_MA_04'][1]-daniel['T1_MA_03'][1]]
-    delz = ((daniel['T1_MA_01'][2]+daniel['T1_MA_04'][2])/2.+3.03) - ((daniel['T1_MA_02'][2]+daniel['T1_MA_03'][2])/2.+3.03+3.64+4.06)
+    delz = (old_div((daniel['T1_MA_01'][2]+daniel['T1_MA_04'][2]),2.)+3.03) - (old_div((daniel['T1_MA_02'][2]+daniel['T1_MA_03'][2]),2.)+3.03+3.64+4.06)
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MA_01/04 - T1_MA_02/03   ",delx,dely[0],dely[1],delz))
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 10002012 - 10102001    ",vtop[0]-vtop2[0],vtop[1]-vtop2[1],vbot[1]-vbot2[1],vtop[2]-vtop2[2]))
     test = ROOT.MufluxSpectrometerHit(21112001,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z2 = (surveyXYZ['T2_MD_02'][2]+surveyXYZ['T2_MD_03'][2])/2.-3.03
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MD_02/03 survey corrected",(surveyXYZ['T2_MD_02'][0]+surveyXYZ['T2_MD_03'][0])/2.,surveyXYZ['T2_MD_02'][1],surveyXYZ['T2_MD_03'][1],z2-z1))
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MD_02/03 Daniel          ",(daniel['T2_MD_02'][0]+daniel['T2_MD_03'][0])/2.,daniel['T2_MD_02'][1],daniel['T2_MD_03'][1],(daniel['T2_MD_02'][2]+daniel['T2_MD_03'][2])/2.-3.03-z1))
+    z2 = old_div((surveyXYZ['T2_MD_02'][2]+surveyXYZ['T2_MD_03'][2]),2.)-3.03
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MD_02/03 survey corrected",old_div((surveyXYZ['T2_MD_02'][0]+surveyXYZ['T2_MD_03'][0]),2.),surveyXYZ['T2_MD_02'][1],surveyXYZ['T2_MD_03'][1],z2-z1))
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MD_02/03 Daniel          ",old_div((daniel['T2_MD_02'][0]+daniel['T2_MD_03'][0]),2.),daniel['T2_MD_02'][1],daniel['T2_MD_03'][1],old_div((daniel['T2_MD_02'][2]+daniel['T2_MD_03'][2]),2.)-3.03-z1))
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 21112001               ",vtop[0],vbot[1],vtop[1],vtop[2]-z1F))
     test = ROOT.MufluxSpectrometerHit(11002012,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z1b = (surveyXYZ['T1_MB_01'][2]+surveyXYZ['T1_MB_04'][2])/2.-3.03-3.64-4.06-3.64
+    z1b = old_div((surveyXYZ['T1_MB_01'][2]+surveyXYZ['T1_MB_04'][2]),2.)-3.03-3.64-4.06-3.64
     z1bF = vtop[2]
-    m = (surveyXYZ['T1_MB_01'][1]-surveyXYZ['T1_MB_04'][1])/(surveyXYZ['T1_MB_01'][0]-surveyXYZ['T1_MB_04'][0])
+    m = old_div((surveyXYZ['T1_MB_01'][1]-surveyXYZ['T1_MB_04'][1]),(surveyXYZ['T1_MB_01'][0]-surveyXYZ['T1_MB_04'][0]))
     b = surveyXYZ['T1_MB_01'][1] - m*surveyXYZ['T1_MB_01'][0]
-    xposAty0 = -b/m
-    m = (daniel['T1_MB_01'][1]-daniel['T1_MB_04'][1])/(daniel['T1_MB_01'][0]-daniel['T1_MB_04'][0])
+    xposAty0 = old_div(-b,m)
+    m = old_div((daniel['T1_MB_01'][1]-daniel['T1_MB_04'][1]),(daniel['T1_MB_01'][0]-daniel['T1_MB_04'][0]))
     b = daniel['T1_MB_01'][1] - m*daniel['T1_MB_01'][0]
-    xposAty0D = -b/m 
-    m = (vbot[1]-vtop[1])/(vbot[0]-vtop[0])
+    xposAty0D = old_div(-b,m) 
+    m = old_div((vbot[1]-vtop[1]),(vbot[0]-vtop[0]))
     b = vbot[1] - m*vbot[0]
-    xposAty0F = -b/m 
+    xposAty0F = old_div(-b,m) 
     print("                               X@Y=0       topY    botY     Z")
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MB_01/04 survey corrected",xposAty0,surveyXYZ['T1_MB_01'][1],surveyXYZ['T1_MB_04'][1],z1b-z1))
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MB_01/04 Daniel          ",xposAty0D,daniel['T1_MB_01'][1],daniel['T1_MB_04'][1],(daniel['T1_MB_01'][2]+daniel['T1_MB_04'][2])/2.-3.03-3.64-4.06-3.64-z1))
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MB_01/04 Daniel          ",xposAty0D,daniel['T1_MB_01'][1],daniel['T1_MB_04'][1],old_div((daniel['T1_MB_01'][2]+daniel['T1_MB_04'][2]),2.)-3.03-3.64-4.06-3.64-z1))
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 11002012               ",xposAty0F,vbot[1],vtop[1],vtop[2]-z1F))
     test = ROOT.MufluxSpectrometerHit(20012012,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z2b = (surveyXYZ['T2_MC_01'][2]+surveyXYZ['T2_MC_04'][2])/2.+3.03+3.64
-    m = (surveyXYZ['T2_MC_01'][1]-surveyXYZ['T2_MC_04'][1])/(surveyXYZ['T2_MC_01'][0]-surveyXYZ['T2_MC_04'][0])
+    z2b = old_div((surveyXYZ['T2_MC_01'][2]+surveyXYZ['T2_MC_04'][2]),2.)+3.03+3.64
+    m = old_div((surveyXYZ['T2_MC_01'][1]-surveyXYZ['T2_MC_04'][1]),(surveyXYZ['T2_MC_01'][0]-surveyXYZ['T2_MC_04'][0]))
     b = surveyXYZ['T2_MC_01'][1] - m*surveyXYZ['T2_MC_01'][0]
-    xposAty0 = -b/m
-    m = (daniel['T2_MC_01'][1]-daniel['T2_MC_04'][1])/(daniel['T2_MC_01'][0]-daniel['T2_MC_04'][0])
+    xposAty0 = old_div(-b,m)
+    m = old_div((daniel['T2_MC_01'][1]-daniel['T2_MC_04'][1]),(daniel['T2_MC_01'][0]-daniel['T2_MC_04'][0]))
     b = daniel['T2_MC_01'][1] - m*daniel['T2_MC_01'][0]
-    xposAty0D = -b/m 
-    m = (vbot[1]-vtop[1])/(vbot[0]-vtop[0])
+    xposAty0D = old_div(-b,m) 
+    m = old_div((vbot[1]-vtop[1]),(vbot[0]-vtop[0]))
     b = vbot[1] - m*vbot[0]
-    xposAty0F = -b/m 
+    xposAty0F = old_div(-b,m) 
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MC_01/04 survey corrected",xposAty0,surveyXYZ['T2_MC_01'][1],surveyXYZ['T2_MC_04'][1],z2b-z1))
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MC_01/04 Daniel          ",xposAty0D,daniel['T2_MC_01'][1],daniel['T2_MC_04'][1],(daniel['T2_MC_01'][2]+daniel['T2_MC_04'][2])/2.+3.03+3.64-z1))
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MC_01/04 Daniel          ",xposAty0D,daniel['T2_MC_01'][1],daniel['T2_MC_04'][1],old_div((daniel['T2_MC_01'][2]+daniel['T2_MC_04'][2]),2.)+3.03+3.64-z1))
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 20012012               ",xposAty0F,vbot[1],vtop[1],vtop[2]-z1F))
     test = ROOT.MufluxSpectrometerHit(30012046,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
     # For T3 it is placed 7cm in front and for T4 7cm behind the endplate
-    z3 = (surveyXYZ['T3_T01'][2]+surveyXYZ['T3_B01'][2])/2.+4.33+3.64 + 7.0
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T3_T01/B01  survey corrected",(surveyXYZ['T3_T01'][0]+surveyXYZ['T3_B01'][0])/2.,surveyXYZ['T3_T01'][1],surveyXYZ['T3_B01'][1],z3-z1))
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T3_T01/B01  Daniel          ",(daniel['T3_T01'][0]+daniel['T3_B01'][0])/2.,daniel['T3_T01'][1],daniel['T3_B01'][1],(daniel['T3_T01'][2]+daniel['T3_B01'][2])/2.+4.33+3.64-z1))
+    z3 = old_div((surveyXYZ['T3_T01'][2]+surveyXYZ['T3_B01'][2]),2.)+4.33+3.64 + 7.0
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T3_T01/B01  survey corrected",old_div((surveyXYZ['T3_T01'][0]+surveyXYZ['T3_B01'][0]),2.),surveyXYZ['T3_T01'][1],surveyXYZ['T3_B01'][1],z3-z1))
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T3_T01/B01  Daniel          ",old_div((daniel['T3_T01'][0]+daniel['T3_B01'][0]),2.),daniel['T3_T01'][1],daniel['T3_B01'][1],old_div((daniel['T3_T01'][2]+daniel['T3_B01'][2]),2.)+4.33+3.64-z1))
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 30012046               ",vtop[0],vbot[1],vtop[1],vtop[2]-z1F))
     test = ROOT.MufluxSpectrometerHit(40102046,0.)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    z4 = (surveyXYZ['T4_T01'][2]+surveyXYZ['T4_B01'][2])/2.-4.33-3.64 - 7.0
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T4_T01/B01  survey corrected",(surveyXYZ['T4_T01'][0]+surveyXYZ['T4_B01'][0])/2.,surveyXYZ['T4_T01'][1],surveyXYZ['T4_B01'][1],z4-z1))
-    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T4_T01/B01  Daniel          ",(daniel['T4_T01'][0]+daniel['T4_B01'][0])/2.,daniel['T4_T01'][1],daniel['T4_B01'][1],(daniel['T4_T01'][2]+daniel['T4_B01'][2])/2.-4.33-3.64-z1))
+    z4 = old_div((surveyXYZ['T4_T01'][2]+surveyXYZ['T4_B01'][2]),2.)-4.33-3.64 - 7.0
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T4_T01/B01  survey corrected",old_div((surveyXYZ['T4_T01'][0]+surveyXYZ['T4_B01'][0]),2.),surveyXYZ['T4_T01'][1],surveyXYZ['T4_B01'][1],z4-z1))
+    print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T4_T01/B01  Daniel          ",old_div((daniel['T4_T01'][0]+daniel['T4_B01'][0]),2.),daniel['T4_T01'][1],daniel['T4_B01'][1],old_div((daniel['T4_T01'][2]+daniel['T4_B01'][2]),2.)-4.33-3.64-z1))
     print("%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 40102046               ",vtop[0],vbot[1],vtop[1],vtop[2]-z1F))
 
 def checkZtilts():
@@ -925,7 +927,7 @@ def checkZtilts():
         meanZ = 0
         for x in ['01','02','03','04']:
             meanZ += daniel[s+x][2]
-        meanZ = meanZ/4.
+        meanZ = old_div(meanZ,4.)
         rms = 0
         for x in ['01','02','03','04']:
             rms += (daniel[s+x][2]-meanZ)**2
@@ -940,7 +942,7 @@ def checkZtilts():
             for x in ['01','02','03','04','05','06','07','08']:
                 meanZ += daniel[s+y+x][2]
                 print(s+y+x,daniel[s+y+x][2])
-        meanZ = meanZ/16.
+        meanZ = old_div(meanZ,16.)
         rms = 0
         for y in ['_T','_B']:
             for x in ['01','02','03','04','05','06','07','08']:
@@ -959,7 +961,7 @@ withDefaultAlignment = True
 def dispTrack3D(theTrack):
     zstart = 0
     nPoints = 100
-    delz = 1000./nPoints
+    delz = old_div(1000.,nPoints)
     nt = len(h['dispTrack3D'])
     h['dispTrack3D'].append( ROOT.TPolyLine3D(nPoints) )
     h['dispTrack3D'][nt].SetLineWidth(3)
@@ -1034,16 +1036,16 @@ def plotEvent(n=-1):
     if sTree.GetBranch("Digi_MuonTaggerHits"):
         for hit in sTree.Digi_MuonTaggerHits:
             channelID = hit.GetDetectorID()
-            statnb = channelID/10000
-            view   = (channelID-10000*statnb)/1000
+            statnb = old_div(channelID,10000)
+            view   = old_div((channelID-10000*statnb),1000)
             channel = channelID%1000
             vbot,vtop = RPCPositionsBotTop[channelID]
             if view == 1:
-                x,z =  (vtop[0]+vbot[0])/2.,(vtop[2]+vbot[2])/2.
+                x,z =  old_div((vtop[0]+vbot[0]),2.),old_div((vtop[2]+vbot[2]),2.)
                 rc = c[1].SetPoint(c[0],z,x)
                 c[0]+=1
             if view == 0:
-                y,z =  (vtop[1]+vbot[1])/2.,(vtop[2]+vbot[2])/2.
+                y,z =  old_div((vtop[1]+vbot[1]),2.),old_div((vtop[2]+vbot[2]),2.)
                 rc = cy[1].SetPoint(cy[0],z,y)  
                 cy[0]+=1
     h['hitCollection']['downstream'][1].SetMarkerColor(ROOT.kRed)
@@ -1063,7 +1065,7 @@ def plotEvent(n=-1):
 viewDict = {0:'_x',1:'_u',2:'_v'}
 def stationInfo(hit):
     info = hit.StationInfo()
-    return info[0],info[1],info[2],info[3],viewDict[info[4]],info[5],info[6],info[7]/cuts['RTsegmentation']
+    return info[0],info[1],info[2],info[3],viewDict[info[4]],info[5],info[6],old_div(info[7],cuts['RTsegmentation'])
     #      statnb,   vnb,    pnb,    lnb,     view,         channelID,tdcId,  nRT
 
 tdcIds ={'1000_x':[0],'1001_x':[0],'1010_x':[0],'1011_x':[0],
@@ -1091,7 +1093,7 @@ for s in range(1,5):
                 if s==2 and view == "_x": v = 1
                 if s==1 and view == "_u": v = 1
                 myDetID = s * 1000 + v * 100 + p * 10 + l
-                for nRT in range(576 / cuts['RTsegmentation'] ):
+                for nRT in range(old_div(576, cuts['RTsegmentation']) ):
                     ut.bookHist(h,"TDC"   +str(nRT),         'TDC station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,1500,-500.,2500.)
                     ut.bookHist(h,"TDC"   +str(nRT)+'_noToT','TDC station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,1500,-500.,2500.)
                 xLayers[s][p][l][view]=h[str(1000*s+100*p+10*l)+view]
@@ -1298,7 +1300,7 @@ def plotHitMapsOld(onlyPlotting=False):
                     j+=1
                     rc = h['hitMapsX'].cd(j)
                     xLayers[s][p][l][view].Draw()
-                    mean = xLayers[s][p][l][view].GetEntries()/channels[s][p][l][view]
+                    mean = old_div(xLayers[s][p][l][view].GetEntries(),channels[s][p][l][view])
                     v = 0
                     if s==2 and view == "_x": v = 1
                     if s==1 and view == "_u": v = 1
@@ -1313,7 +1315,7 @@ def plotHitMapsOld(onlyPlotting=False):
                             print("dead channel:",s,p,l,view,i,xLayers[s][p][l][view].GetBinContent(i) , deadThreshold , mean)
                             deadChannels.append(channel)
 #
-    for nRT in range(1,576/cuts['RTsegmentation']+1):
+    for nRT in range(1,old_div(576,cuts['RTsegmentation'])+1):
         jt+=1
         tp = h['TDCMapsX'].cd(jt)
         tp.SetLogy(1)
@@ -1371,7 +1373,7 @@ def plotRPCHitmap():
             ut.bookHist(h,'rpcHitmap'+str(n)+str(l),'rpc Hitmaps station '+str(n)+'layer '+str(l),200,-0.5,199.5)
     for event in sTree:
         for m in event.Digi_MuonTaggerHits:
-            layer = m.GetDetectorID()/1000
+            layer = old_div(m.GetDetectorID(),1000)
             rc = h['rpcHitmap'].Fill(layer)
             channel = m.GetDetectorID()%1000
             rc = h['rpcHitmap'+str(layer)].Fill(channel)
@@ -1459,8 +1461,8 @@ def extractMinAndMax():
                 runningMean = 0
                 mean = tmp.GetBinContent(tmp.FindBin(tmp.GetMean()))
                 for m in range(tmp.GetNbinsX()-1,0,-1):
-                    runningMean=max(tmp.Integral(m,tmp.GetNbinsX()) / float(tmp.GetNbinsX()-m),2)
-                    if tmp.GetBinContent(m)>mean/5.:
+                    runningMean=max(old_div(tmp.Integral(m,tmp.GetNbinsX()), float(tmp.GetNbinsX()-m)),2)
+                    if tmp.GetBinContent(m)>old_div(mean,5.):
                         tmax = tmp.GetBinCenter(m)
                         break
                 h['tMinAndTmax'][x.GetName()]=[tmin,tmax]
@@ -1473,7 +1475,7 @@ def extractMinAndMax():
                 p.Update()
 
 def extractRTPanda(hname= 'TDC1000_x'):
-    R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm 
+    R = old_div(ShipGeo.MufluxSpectrometer.InnerTubeDiameter,2.) #  = 3.63*u.cm 
     h['rt'+hname] = ROOT.TGraph()
     h['rt'+hname].SetName('rt'+hname)
     n0 = h[hname].FindBin(h['tMinAndTmax'][hname][0])
@@ -1515,7 +1517,7 @@ ut.bookHist(h,'TDC2R','RT relation; t [ns] ; r [cm]',100,0.,3000.,100,0.,2.)
 
 def RT(hit,t):
 # rt relation, drift time to distance
-    R  = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm
+    R  = old_div(ShipGeo.MufluxSpectrometer.InnerTubeDiameter,2.) #  = 3.63*u.cm
     t0 = 0
     if MCdata:
         t0 = t-sTree.ShipEventHeader.GetEventTime()
@@ -1616,8 +1618,8 @@ def extrapolateToPlane(fT,z,cplusplus=True):
                 pos,mom = state.getPos(),state.getMom()
                 rc = True 
             except: 
-                print('error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z())
-                error =  "extrapolateToPlane: error with extrapolation: z=%7.3F m %7.3F %7.3F %7.3F %7.3F %7.3F %7.3F "%(z/u.m,pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z())
+                print('error with extrapolation: z=',old_div(z,u.m),'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z())
+                error =  "extrapolateToPlane: error with extrapolation: z=%7.3F m %7.3F %7.3F %7.3F %7.3F %7.3F %7.3F "%(old_div(z,u.m),pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z())
                 ut.reportError(error)
                 if Debug: print(error)
                 rc = False
@@ -1634,7 +1636,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
                     fstate = fT.getFittedState(0)
             pos,mom = fstate.getPos(),fstate.getMom()
 # use linear extrap
-            lam = (z-pos[2])/mom[2]
+            lam = old_div((z-pos[2]),mom[2])
             pos[2]=z
             pos[0]=pos[0]+lam*mom[0]
             pos[1]=pos[1]+lam*mom[1]
@@ -1670,7 +1672,7 @@ Bx,By,Bz = ROOT.Double(),ROOT.Double(),ROOT.Double()
 def displayTrack(theTrack,debug=False):
     zstart = 0
     nPoints = 100
-    delz = 1000./nPoints
+    delz = old_div(1000.,nPoints)
     nt = len(h['dispTrack'])
     h['dispTrack'].append( ROOT.TGraph(nPoints) )
     h['dispTrackY'].append( ROOT.TGraph(nPoints) )
@@ -1687,16 +1689,16 @@ def displayTrack(theTrack,debug=False):
             # ptkick 1.03 / dalpha
         if nP ==0:
             fitStatus = theTrack.getFitStatus()
-            print("trackinfo P/Pt/chi2/DoF/Ndf:%6.2F %6.2F %6.2F %6.2F"%(mom.Mag(),mom.Pt(),fitStatus.getChi2()/fitStatus.getNdf(),fitStatus.getNdf()))
+            print("trackinfo P/Pt/chi2/DoF/Ndf:%6.2F %6.2F %6.2F %6.2F"%(mom.Mag(),mom.Pt(),old_div(fitStatus.getChi2(),fitStatus.getNdf()),fitStatus.getNdf()))
             st = theTrack.getFittedState(0)
             # if st.getPDG()*st.getCharge()>0: print "something wrong here",st.getPDG(),st.getCharge()
             if debug:
                 N = theTrack.getNumPointsWithMeasurement()
                 momU = theTrack.getFittedState(0).getMom()
                 momD = theTrack.getFittedState(N-1).getMom()
-                dalpha = momU[0]/momU[2] - ( momD[0]/momD[2] )
-                slopeA = momU[0]/momU[2]
-                slopeB = momD[0]/momD[2]
+                dalpha = old_div(momU[0],momU[2]) - ( old_div(momD[0],momD[2]) )
+                slopeA = old_div(momU[0],momU[2])
+                slopeB = old_div(momD[0],momD[2])
                 posU = theTrack.getFittedState(0).getPos()
                 posD = theTrack.getFittedState(N-1).getPos()
                 bA = posU[0]-slopeA*posU[2]
@@ -1705,7 +1707,7 @@ def displayTrack(theTrack,debug=False):
                 x2 = zgoliath*slopeB+bB
                 delx = x2-x1
                 rc = h['delx'].Fill(delx)
-                print("mom from pt kick=",1.03/dalpha)
+                print("mom from pt kick=",old_div(1.03,dalpha))
                 for j in range(theTrack.getNumPointsWithMeasurement()):
                     st = theTrack.getFittedState(j)
                     pos,mom = st.getPos(), st.getMom()
@@ -1798,12 +1800,12 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
                 if len(hitsPerStation['x2'])<2: continue
                 if len(hitsPerStation['x3'])<2: continue
                 if len(hitsPerStation['x4'])<2: continue
-                chi2 = fitStatus.getChi2()/fitStatus.getNdf()
+                chi2 = old_div(fitStatus.getChi2(),fitStatus.getNdf())
                 fittedState = aTrack.getFittedState()
                 P = fittedState.getMomMag()
                 Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
                 if Debug:
-                    if abs(Py/Pz)>0.15: print('event with large angle track:',n)
+                    if abs(old_div(Py,Pz))>0.15: print('event with large angle track:',n)
                 rc = h['chi2'].Fill(chi2)
                 rc = h['Nmeasurements'].Fill(fitStatus.getNdf())
                 if chi2 > chi2UL: continue
@@ -1812,7 +1814,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
                 rc = h['p/Abspx'].Fill(P,abs(Px))
                 pos = fittedState.getPos()
                 rc = h['xy'].Fill(pos[0],pos[1])
-                rc = h['pxpy'].Fill(Px/Pz,Py/Pz)
+                rc = h['pxpy'].Fill(old_div(Px,Pz),old_div(Py,Pz))
 # check for muon tag
                 rc,posRPC,momRPC = extrapolateToPlane(aTrack,zRPC1)
                 if rc:
@@ -1827,13 +1829,13 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
                         rc = h['p/pxmu'].Fill(P,Px)
                         rc = h['p/ABSpxmu'].Fill(P,Abs(Px))
                         rc = h['xymu'].Fill(pos[0],pos[1])
-                        rc = h['pxpymu'].Fill(Px/Pz,Py/Pz)
+                        rc = h['pxpymu'].Fill(old_div(Px,Pz),old_div(Py,Pz))
 #
                 if len(theTracks)==2 and N==0:
                     bTrack = theTracks[1]
                     fitStatus   = bTrack.getFitStatus()
                     if not fitStatus.isFitConverged(): continue
-                    chi2 = fitStatus.getChi2()/fitStatus.getNdf()
+                    chi2 = old_div(fitStatus.getChi2(),fitStatus.getNdf())
                     fittedState = bTrack.getFittedState()
                     Pb = fittedState.getMomMag()
                     Pbx,Pby,Pbz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()
@@ -1953,7 +1955,7 @@ def fitTrack(hitlist,Pstart=3.):
         hitCov[6][6] = resolution*resolution
         # if unSortedList[k[0]][3] != '_x': hitCov[6][6] = 4*resolution*resolution
         measurement = ROOT.genfit.WireMeasurement(unSortedList[k[0]][0],hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
-        measurement.setMaxDistance(ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)
+        measurement.setMaxDistance(old_div(ShipGeo.MufluxSpectrometer.InnerTubeDiameter,2.))
         measurement.setDetId(unSortedList[k[0]][1])
         # if Debug: print "trackfit add detid",unSortedList[k[0]][1],unSortedList[k[0]][0][6]
         measurement.setHitId(unSortedList[k[0]][2])
@@ -1982,7 +1984,7 @@ def fitTrack(hitlist,Pstart=3.):
         theTrack.Delete()
         return -1
     if Debug: 
-        chi2 = fitStatus.getChi2()/fitStatus.getNdf()
+        chi2 = old_div(fitStatus.getChi2(),fitStatus.getNdf())
         fittedState = theTrack.getFittedState()
         P = fittedState.getMomMag()
         print("track fitted Ndf #Meas P",fitStatus.getNdf(), theTrack.getNumPointsWithMeasurement(),P)
@@ -2108,9 +2110,9 @@ def plotTracklets(track_hits):
         for x in [track_hits[nTrack]['y12'],track_hits[nTrack]['34']]:
             clus = {1:[],2:[]}
             for hits in x:
-                detID = hits['detID']/10000000
+                detID = old_div(hits['detID'],10000000)
                 if detID>2: detID-=2
-                clus[detID].append([0,(hits['xtop']+hits['xbot'])/2.,hits['z']])
+                clus[detID].append([0,old_div((hits['xtop']+hits['xbot']),2.),hits['z']])
             slopeA,bA = getSlopes(clus[1],clus[2])
             x1 = zgoliath*slopeA+bA
             nt = len(h['dispTrackSeg'])
@@ -2197,10 +2199,10 @@ def findDTClusters(removeBigClusters=True):
                 mean = 0
                 for hit in tmp[ncl]:
                     bot,top =  strawPositionsBotTop[hit.GetDetectorID()]
-                    x = (bot[0]+top[0])/2.
+                    x = old_div((bot[0]+top[0]),2.)
                     mean+=x
                     test.append([hit,x])
-                mean=mean/float(len(test))
+                mean=old_div(mean,float(len(test)))
 # more cleanup, outliers
                 tmpClean[ncl]=[]
                 for cl in test:
@@ -2228,11 +2230,11 @@ def findDTClusters(removeBigClusters=True):
                     mean = 0
                     for hit in tmpClean[n1]:
                         bot,top =  strawPositionsBotTop[hit.GetDetectorID()]
-                        x = (bot[0]+top[0])/2.
-                        z = (bot[2]+top[2])/2.
+                        x = old_div((bot[0]+top[0]),2.)
+                        z = old_div((bot[2]+top[2]),2.)
                         mean+=x
                         test.append([hit,x,z,hit.GetDetectorID()%1000])
-                    mean=mean/float(len(test))
+                    mean=old_div(mean,float(len(test)))
 # more cleanup, outliers
                     clusters[s][view].append([])
                     for cl in test:
@@ -2269,7 +2271,7 @@ def findDTClustersDebug1(n,tmp):
     for hit in tmp[n]:
         s,v,p,l,view,channelID,tdcId,nRT = stationInfo(hit)
         bot,top = strawPositionsBotTop[hit.GetDetectorID()]
-        print(s,v,p*2+l,channelID,(bot[0]+top[0])/2.)
+        print(s,v,p*2+l,channelID,old_div((bot[0]+top[0]),2.))
 
 def findDTClustersDebug2(L):
     for l in L:
@@ -2358,8 +2360,8 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                         n_u = 0 
                         for cl in clu:
                             botA,topA = strawPositionsBotTop[cl[0].GetDetectorID()]
-                            z = (botA[2]+topA[2])/2.
-                            sl  = (botA[1]-topA[1])/(botA[0]-topA[0])
+                            z = old_div((botA[2]+topA[2]),2.)
+                            sl  = old_div((botA[1]-topA[1]),(botA[0]-topA[0]))
                             b = topA[1]-sl*topA[0]
                             yest = sl*(t1t2[3]*topA[2]+t1t2[4])+b
                             rc = h['yest'].Fill(yest)
@@ -2368,7 +2370,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                             stereoHits[1][cl[0].GetDetectorID()]=[cl[0],sl,b,yest,z]
                             mean_u+=yest
                             n_u+=1
-                        mean_u = mean_u/float(n_u)
+                        mean_u = old_div(mean_u,float(n_u))
                         if Debug:  print("0 stereo u",len(stereoHits[1]))
                         for x in list(stereoHits[1].keys()):
                             delta = stereoHits[1][x][3]-mean_u
@@ -2382,8 +2384,8 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                             clv =  clusters[2][2][nv]
                             for cl in clv: 
                                 botA,topA = strawPositionsBotTop[cl[0].GetDetectorID()]
-                                z = (botA[2]+topA[2])/2.
-                                sl  = (botA[1]-topA[1])/(botA[0]-topA[0])
+                                z = old_div((botA[2]+topA[2]),2.)
+                                sl  = old_div((botA[1]-topA[1]),(botA[0]-topA[0]))
                                 b = topA[1]-sl*topA[0]
                                 yest = sl*(t1t2[3]*topA[2]+t1t2[4])+b
                                 rc = h['yest'].Fill(yest)
@@ -2392,7 +2394,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                                 stereoHits[2][cl[0].GetDetectorID()]=[cl[0],sl,b,yest,z]
                                 mean_v+=yest
                                 n_v+=1
-                            mean_v = mean_v/float(n_v)
+                            mean_v = old_div(mean_v,float(n_v))
                             if Debug:  print("1 stereo v",len(stereoHits[2]))
                             for x in list(stereoHits[2].keys()):
                                 delta = stereoHits[2][x][3]-mean_v
@@ -2444,7 +2446,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                                 trackCandidates = hitList
                             else:
                                 if zeroField: momFromptkick = 1000.
-                                else: momFromptkick=ROOT.TMath.Abs(1.03/(t3t4[3]-t1t2[3]+1E-20))
+                                else: momFromptkick=ROOT.TMath.Abs(old_div(1.03,(t3t4[3]-t1t2[3]+1E-20)))
                                 if Debug:  print("fit track t1t2 %i t3t4 %i stereo %i,%i, with hits %i,  delx %6.3F, pstart %6.3F"%(nt1t2,nt3t4,nu,nv,len(hitList),delx,momFromptkick))
                                 aTrack = fitTrack(hitList,momFromptkick)
                                 if Debug:  print("result of trackFit",aTrack)
@@ -2543,14 +2545,14 @@ def cloneKiller(trackCandidates):
             #  if len(detIDs['uv']
             o = overlap(detIDs[j]['xDown'],detIDs[k]['xDown'])
             tk = float(len(detIDs[k]['xDown']))
-            if max(len(o)/tj,len(o)/tk)>0.49:
+            if max(old_div(len(o),tj),old_div(len(o),tk))>0.49:
                 sk = trackCandidates[k].getFitStatus()
                 if   sj.getNdf() < sk.getNdf()-cuts['deltaNdf']: detIDs[j]['xDown']=[]
                 elif sk.getNdf() < sj.getNdf()-cuts['deltaNdf']: detIDs[k]['xDown']=[]
-                elif sj.getChi2()/sj.getNdf() < sk.getChi2()/sk.getNdf():   detIDs[k]['xDown']=[]
-                elif sk.getChi2()/sk.getNdf() < sj.getChi2()/sj.getNdf(): detIDs[j]['xDown']=[]
+                elif old_div(sj.getChi2(),sj.getNdf()) < old_div(sk.getChi2(),sk.getNdf()):   detIDs[k]['xDown']=[]
+                elif old_div(sk.getChi2(),sk.getNdf()) < old_div(sj.getChi2(),sj.getNdf()): detIDs[j]['xDown']=[]
                 else: detIDs[j]['xDown']=[]
-                if Debug: print("j,k",j,sj.getNdf(),sj.getChi2(),sj.getChi2()/sj.getNdf(),len(detIDs[j]['xDown']),len(detIDs[j]['uv']),' | ', k,sk.getNdf(),sk.getChi2(),sk.getChi2()/sk.getNdf(),len(detIDs[k]['xDown']),len(detIDs[k]['uv']))
+                if Debug: print("j,k",j,sj.getNdf(),sj.getChi2(),old_div(sj.getChi2(),sj.getNdf()),len(detIDs[j]['xDown']),len(detIDs[j]['uv']),' | ', k,sk.getNdf(),sk.getChi2(),old_div(sk.getChi2(),sk.getNdf()),len(detIDs[k]['xDown']),len(detIDs[k]['uv']))
             if len(detIDs[j]['xDown'])==0: break
     cloneKilledTracks = []
     j=-1
@@ -2572,8 +2574,8 @@ def makeLinearExtrapolations(t1t2,t3t4):
         s,v,p,l,view,channelID,tdcId,nRT = stationInfo(hit)
         if view != '_x': continue
         vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
-        z = (vbot[2]+vtop[2])/2.
-        x = (vbot[0]+vtop[0])/2.
+        z = old_div((vbot[2]+vtop[2]),2.)
+        x = old_div((vbot[0]+vtop[0]),2.)
         if s < 3: track = t3t4
         else:     track = t1t2
         delX = x - (track[3]*z+track[4])
@@ -2581,12 +2583,12 @@ def makeLinearExtrapolations(t1t2,t3t4):
     track = t3t4
     for hit in sTree.Digi_MuonTaggerHits:
         channelID = hit.GetDetectorID()
-        s  = channelID/10000
-        v  = (channelID-10000*s)/1000
+        s  = old_div(channelID,10000)
+        v  = old_div((channelID-10000*s),1000)
         if v!=1: continue # only x info
         vtop,vbot = RPCPositionsBotTop[channelID]
-        z = (vtop[2]+vbot[2])/2.
-        x = (vtop[0]+vbot[0])/2.
+        z = old_div((vtop[2]+vbot[2]),2.)
+        x = old_div((vtop[0]+vbot[0]),2.)
         delX = x - (track[3]*z+track[4])
         h['RPCResX_'+str(s)+str(v)].Fill(delX,x)
 
@@ -2615,7 +2617,7 @@ def printResiduals(aTrack):
         if hit.GetDetectorID() in noisyChannels:  continue
         s,v,p,l,view,channelID,tdcId,nRT = stationInfo(hit)
         vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
-        z = (vbot[2]+vtop[2])/2.
+        z = old_div((vbot[2]+vtop[2]),2.)
         rc,pos,mom = extrapolateToPlane(aTrack,z)
         if not rc:
             error =  "printResiduals: plotBiasedResiduals extrap failed"
@@ -2625,7 +2627,7 @@ def printResiduals(aTrack):
         if rname in RTrelations or MCdata:
             distance = RT(hit,hit.GetDigi())
         tmp = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
-        tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
+        tmp = old_div(-tmp,ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2))  # to have same sign as difference in X
         xL = tmp -distance
         xR = tmp +distance
         if abs(xL)<abs(xR):res = xL
@@ -2653,7 +2655,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
                         h['biasResDist_'+hkey].Reset()
                         h['biasResDist2Wire_'+hkey] = h['biasResDist2'].Clone('biasResDist2Wire_'+hkey)
                         ut.bookHist(h,'distIfNoHit_'+hkey,'shortest distance to wire if no hit',100,0.,5.)
-        for n in range(576/cuts['RTsegmentation'] ):   h['TDC'+str(n)].Reset()
+        for n in range(old_div(576,cuts['RTsegmentation']) ):   h['TDC'+str(n)].Reset()
 #
         pos = ROOT.TVector3()
         mom = ROOT.TVector3()
@@ -2685,7 +2687,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
                     stations={1:0,2:0,3:0,4:0}
                     for p in aTrack.getPoints():
                         rawM = p.getRawMeasurement()
-                        s = rawM.getDetId()/10000000
+                        s = old_div(rawM.getDetId(),10000000)
                         if s < 1 or s > 4: 
                             print("error with rawM", rawM.getDetId())
                         stations[s]+=1
@@ -2700,7 +2702,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
                                 for hit in spectrHitsSorted[view][s][l]:
                                     ss,vv,pp,ll,vw,channelID,tdcId,nRT = stationInfo(hit)
                                     vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
-                                    z = (vbot[2]+vtop[2])/2.
+                                    z = old_div((vbot[2]+vtop[2]),2.)
                                     timer.Start()
                                 # rc,pos,mom = extrapolateToPlane(aTrack,z)
                                     trackLength = muflux_Reco.extrapolateToPlane(aTrack,z,pos,mom)
@@ -2716,7 +2718,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
                                 #d = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
                                 #d = -d/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
                                     normal = mom.Cross(vtop-vbot)
-                                    d = normal.Dot(pos-vbot)/normal.Mag()
+                                    d = old_div(normal.Dot(pos-vbot),normal.Mag())
                                     res = abs(d) - distance
                                     h['biasResDist'].Fill(distance,res)
                                     h['biasResDist2'].Fill(abs(d),res)
@@ -2724,7 +2726,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
                                     hkey = str(ss)+vw+str(2*pp+ll)
                                     h['biasResDist2Wire_'+hkey].Fill(abs(d),res)
                                     h['biasResDist_'+hkey].Fill(distance,res)
-                                    m = (vtop[0]-vbot[0])/(vtop[1]-vbot[1])
+                                    m = old_div((vtop[0]-vbot[0]),(vtop[1]-vbot[1]))
                                     b = vtop[0]-m*vtop[1]
                                     if pos[0]<m*pos[1]+b:
                                 # left of wire
@@ -2756,15 +2758,15 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
 # fill histogram with closest distance to a wire, find z position of present station s layer l
                                     v = 0
                                     if (s==1 and view==1) or (s==2 and view==0): v=1000000
-                                    firstWire = s*10000000+v+2000+(l%2)*10000+(l/2)*100000+1
+                                    firstWire = s*10000000+v+2000+(l%2)*10000+(old_div(l,2))*100000+1
                                     vbot,vtop = strawPositionsBotTop[firstWire]
-                                    z = (vbot[2]+vtop[2])/2.
+                                    z = old_div((vbot[2]+vtop[2]),2.)
                                     trackLength = muflux_Reco.extrapolateToPlane(aTrack,z,pos,mom)
                                     minDist = 10000.
                                     for n in range(Nchannels[s]):
                                         vbot,vtop = strawPositionsBotTop[firstWire+n]
                                         normal = mom.Cross(vtop-vbot)
-                                        d = normal.Dot(pos-vbot)/normal.Mag()
+                                        d = old_div(normal.Dot(pos-vbot),normal.Mag())
                                         if abs(d)<minDist: minDist=abs(d)
                                     h['distIfNoHit_'+hkey].Fill(minDist)
                     t0 = h['T0tmp'].GetMean()
@@ -3043,8 +3045,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                     for l in range(4):
                         for hit in spectrHitsSorted[view][s][l]:
                             vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
-                            z = (vbot[2]+vtop[2])/2.
-                            x = (vbot[0]+vtop[0])/2.
+                            z = old_div((vbot[2]+vtop[2]),2.)
+                            x = old_div((vbot[0]+vtop[0]),2.)
                             xExtr = mu.m()*z + mu.b()
                             diff = x-xExtr + align2RPC[s][0]
                             if abs(x-xExtr)<align2RPC[s][1]: candidates[s][l].append(hit)
@@ -3061,7 +3063,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                     for l in candidates[tag_s]:
                         for hit in candidates[tag_s][l]:
                             vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
-                            pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
+                            pos[old_div((vbot[2]+vtop[2]),2.)]=old_div((vbot[0]+vtop[0]),2.)
                     if len(pos)<3: continue # 1 RPC point + >1 DT point
                     coefficients = numpy.polyfit(list(pos.keys()),list(pos.values()),1)
                     Ntot[tag_s] += 1
@@ -3071,8 +3073,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                             first = True
                             for hit in spectrHitsSorted[view][s][l]:
                                 vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
-                                z = (vbot[2]+vtop[2])/2.
-                                x = (vbot[0]+vtop[0])/2.
+                                z = old_div((vbot[2]+vtop[2]),2.)
+                                x = old_div((vbot[0]+vtop[0]),2.)
                                 xExtr = coefficients[0]*z + coefficients[1]
                                 rc = h['distXref'+str(s)+str(l)+'_'+str(tag_s)].Fill(x-xExtr)
                                 if abs(x-xExtr)<5.:
@@ -3083,7 +3085,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                         h['hitsIn'+str(s)+'_'+str(tag_s)].Fill(nhits[s])
                     if nhits[4] < 2: Ineff+=1
                     for s in range(1,5): h['hits'+str(s)+'_'+str(tag_s)].SetBinContent(6,Ntot[tag_s])
-        print("rough estimate of station inefficiency:",float(Ineff)/(Ntot[tag_s]+1E-5))
+        print("rough estimate of station inefficiency:",old_div(float(Ineff),(Ntot[tag_s]+1E-5)))
         ut.writeHists(h,'histos-DTEff'+rname)
     else:
 # analysis part
@@ -3109,7 +3111,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                     rc = fitResult.Get()
                     background = rc.Parameter(3) * h[hname].GetNbinsX()
                     signal = h[hname].GetSumOfWeights()-background
-                    effPerLayer[tag_s][10*s+l] = signal / float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6))
+                    effPerLayer[tag_s][10*s+l] = old_div(signal, float(h['hits'+str(s)+'_'+str(tag_s)].GetBinContent(6)))
             h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.pdf')
             h[t].Print('DTeffPerLayer-station'+str(tag_s)+'_res.png')
         print("tagging station                   :   1       2       3       4")
@@ -3143,7 +3145,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
             inEff = xHits.GetBinContent(1)+xHits.GetBinContent(2)
             xx = 'tmphitsIn'+str(s)+'_'+str(tag_s)
             h[xx]=xHits.Clone(xx)
-            h[xx].Scale(1./ntracks)
+            h[xx].Scale(old_div(1.,ntracks))
             h[xx].SetStats(0)
             h[xx].SetLineColor(s+1)
             h[xx].SetLineWidth(2)
@@ -3217,15 +3219,15 @@ def efficiencyEstimates(method=0):
                 h[hname].Draw()
                 rc = fitResult.Get()
                 if method == 0: estSignal = h[hname].Integral(375,625)
-                elif method == 1 or method == 3: estSignal = ( abs(rc.GetParams()[0])+abs(rc.GetParams()[4]))/h[hname].GetBinWidth(1)
+                elif method == 1 or method == 3: estSignal = old_div(( abs(rc.GetParams()[0])+abs(rc.GetParams()[4])),h[hname].GetBinWidth(1))
                 elif method == 2: estSignal = h[hname].GetSumOfWeights() - rc.GetParams()[3]*h[hname].GetNbinsX()
-                eff = estSignal/float(Ntracks)
+                eff = old_div(estSignal,float(Ntracks))
                 print("eff for %s = %5.2F"%(hname,eff))
                 h['effDict'][hname]=eff
                 effStation += eff
                 rc = h['effLayer'].Fill(j,eff)
                 j+=1
-            print("station, %i %s, average efficiency: %5.3F"%(s,view,effStation/4.))
+            print("station, %i %s, average efficiency: %5.3F"%(s,view,old_div(effStation,4.)))
     for p in h['biasedResiduals'].GetListOfPrimitives():   p.SetLogy(1)
     tc1 = ROOT.gROOT.FindObject('c1')
     tc1.cd()
@@ -3269,7 +3271,7 @@ def checkEffectOfEffCor():
     h['MC']['p/pt_projxB']=h['MC']['p/pt_projx'].Clone('p/pt_projxB')
     h['MC']['p/pt_projxB'].Rebin(10)
     for x in ['MCtuned0','MCtuned2','MCNotune','MCtuned0rec']:
-        print(x, h[x]['p/pt_projx'].GetEntries()/h['MC']['p/pt_projx'].GetEntries())
+        print(x, old_div(h[x]['p/pt_projx'].GetEntries(),h['MC']['p/pt_projx'].GetEntries()))
         # h[x]['p/pt_projx'].Draw('same')
         h[x+'ratio']= h[x]['p/pt_projx'].Clone(x+'ratio')
         h[x+'ratio'].Divide(h['MC']['p/pt_projx'])
@@ -3396,12 +3398,12 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=1):
                 elif s==2: x+=150
                 x+=12*(2*l+p)
             r = 1
-            if detID in fitSuccess[k]: r=fitFailures[k][detID]/float(fitSuccess[k][detID]+fitFailures[k][detID])
+            if detID in fitSuccess[k]: r=old_div(fitFailures[k][detID],float(fitSuccess[k][detID]+fitFailures[k][detID]))
             if k==0:     rc=h['fitfail_good'].SetBinContent(x,r)
             else:        rc=h['fitfail_bad'].SetBinContent(x,r)
 # only look at the pathological cases
     print("Summary: good matches: %i   bad matches: %i    failure rate %5.2F"%(
-     len(matches['good']),len(matches['bad']),len(matches['bad'])/float(len(matches['bad'])+len(matches['good']) ) ))
+     len(matches['good']),len(matches['bad']),old_div(len(matches['bad']),float(len(matches['bad'])+len(matches['good']) )) ))
     ROOT.gROOT.FindObject('c1').cd()
     h['extrapY'].Draw()
     return matches
@@ -3448,10 +3450,10 @@ def mergeHistosForMomResol():
     # 1GeV charm,     10.2 Billion PoT,  10 files
     # 10GeV MC,         65 Billion PoT 
     MCStats   = 1.8E9
-    sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+    sim10fact = old_div(1.8,(65.*(1.-0.016))) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
     charmNorm  = {1:0.176,10:0.424}
     beautyNorm = {1:0.,   10:0.01218}
-    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":old_div(1.,charmNorm[10]),"beauty":old_div(1.,beautyNorm[10])}
     if len(hMC)==0:
         interestingHistos = []
         for a in ['trueMom','recoMom','momResol','curvResol','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
@@ -3573,7 +3575,7 @@ def hitResolution():
             hit = sTree.Digi_MufluxSpectrometerHits[k]
             trueHit = sTree.MufluxSpectrometerPoint[k]
             hit.MufluxSpectrometerEndPoints(vbot,vtop)
-            TDC = hit.GetDigi() - (vtop[0]-trueHit.GetX())/(ROOT.TMath.C() *100./1000000000.0)
+            TDC = hit.GetDigi() - old_div((vtop[0]-trueHit.GetX()),(ROOT.TMath.C() *100./1000000000.0))
             distance = RT('x',TDC)
             h['hitResol'].Fill(distance - trueHit.dist2Wire())
 
@@ -3587,10 +3589,10 @@ def matchedRPCHits(aTrack,maxDistance=10.):
             inAcc = True
         for hit in sTree.Digi_MuonTaggerHits:
             channelID = hit.GetDetectorID()
-            s  = channelID/10000
-            v  = (channelID-10000*s)/1000
+            s  = old_div(channelID,10000)
+            v  = old_div((channelID-10000*s),1000)
             vtop,vbot = RPCPositionsBotTop[channelID]
-            z = (vtop[2]+vbot[2])/2.
+            z = old_div((vtop[2]+vbot[2]),2.)
             rc,pos,mom = extrapolateToPlane(aTrack,z)
             if not rc:
                 error =  "RPCextrap: plotRPCExtrap failed"
@@ -3598,10 +3600,10 @@ def matchedRPCHits(aTrack,maxDistance=10.):
                 if Debug: print(error)
                 continue
             if v==0:
-                Y = (vtop[1]+vbot[1])/2.
+                Y = old_div((vtop[1]+vbot[1]),2.)
                 res = pos[1] - Y
             else:
-                X = (vtop[0]+vbot[0])/2.
+                X = old_div((vtop[0]+vbot[0]),2.)
                 res = pos[0] - X
             if abs(res)<maxDistance:
                 matchedHits[s][v].append(hit)
@@ -3656,10 +3658,10 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                 for hit in sTree.Digi_MuonTaggerHits:
                     nHit+=1
                     channelID = hit.GetDetectorID()
-                    s  = channelID/10000
-                    v  = (channelID-10000*s)/1000
+                    s  = old_div(channelID,10000)
+                    v  = old_div((channelID-10000*s),1000)
                     vtop,vbot = RPCPositionsBotTop[channelID]
-                    z = (vtop[2]+vbot[2])/2.
+                    z = old_div((vtop[2]+vbot[2]),2.)
                     rc,pos,mom = extrapolateToPlane(aTrack,z)
                     if not rc:
                         error =  "RPCextrap: plotRPCExtrap failed"
@@ -3670,11 +3672,11 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                     # res = vbot[0]*pos[1] - vtop[0]*pos[1] - vbot[1]*pos[0]+ vtop[0]*vbot[1] + pos[0]*vtop[1]-vbot[0]*vtop[1]
                     # res = -res/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)
                     if v==0:
-                        Y = (vtop[1]+vbot[1])/2.
+                        Y = old_div((vtop[1]+vbot[1]),2.)
                         res = pos[1] - Y
                         h['RPCResY_'+str(s)+str(v)].Fill(res,Y)
                     else:
-                        X = (vtop[0]+vbot[0])/2.
+                        X = old_div((vtop[0]+vbot[0]),2.)
                         res = pos[0] - X
                         h['RPCResX_'+str(s)+str(v)].Fill(res,X)
                         if s==1: h['RPCResX1_p'].Fill(res,sta.getMomMag())
@@ -3788,9 +3790,9 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             for n in range(1,yax.GetNbins()+1):
                 Nmean += h['RPCMatchedHits'].GetBinContent(ks,n,ip)*xax.GetBinCenter(n)
                 Nentries+=h['RPCMatchedHits'].GetBinContent(ks,n,ip)
-        Nmean = Nmean / float(Nentries+1E-10)
+        Nmean = old_div(Nmean, float(Nentries+1E-10))
         rc = h['RPCMeanMatchedHits'].SetBinContent(ip,Nmean)
-        fraction = (Nentries-Ntracks1)/(Nentries+1E-10)
+        fraction = old_div((Nentries-Ntracks1),(Nentries+1E-10))
         rc = h['RPC>1'].SetBinContent(ip,fraction)
         for k in range(2,20):
             h['RPCeff_'+str(k)]=h['RPC<'+str(k)+'_p'].Clone('RPCeff_'+str(k))
@@ -3848,18 +3850,18 @@ def debugRPCYCoordinate():
         if not findSimpleEvent(sTree): continue
         for hit in sTree.Digi_MuonTaggerHits:
             channelID = hit.GetDetectorID()
-            s  = channelID/10000
-            v  = (channelID-10000*s)/1000
+            s  = old_div(channelID,10000)
+            v  = old_div((channelID-10000*s),1000)
             if v==0 and s==1:
                 hit.EndPoints(vtop,vbot)
-                y1 = (vtop[1]+vbot[1])/2.
+                y1 = old_div((vtop[1]+vbot[1]),2.)
                 for hit in sTree.Digi_MuonTaggerHits:
                     channelID = hit.GetDetectorID()
-                    s  = channelID/10000
-                    v  = (channelID-10000*s)/1000
+                    s  = old_div(channelID,10000)
+                    v  = old_div((channelID-10000*s),1000)
                     if v==0 and s==2:
                         hit.EndPoints(vtop,vbot)
-                        y2 = (vtop[1]+vbot[1])/2.
+                        y2 = old_div((vtop[1]+vbot[1]),2.)
                         rc = h['y1y2'].Fill(y1,y2)
 
 alignCorrection={}
@@ -3932,9 +3934,9 @@ def RPCPosition():
                 hit = ROOT.MuonTaggerHit(detID,0)
                 a,b = correctAlignmentRPC(hit,v)
                 RPCPositionsBotTop[detID] = [a.Clone(),b.Clone()]
-                x = (a[0]+b[0])/2.
-                y = (a[1]+b[1])/2.
-                z = (a[2]+b[2])/2.
+                x = old_div((a[0]+b[0]),2.)
+                y = old_div((a[1]+b[1]),2.)
+                z = old_div((a[2]+b[2]),2.)
                 muflux_Reco.setRPCPositions(detID,x,y,z)
 
 def correctAlignment(hit):
@@ -4001,9 +4003,9 @@ def loopTracks(r,w):
         aTrack = fitTrack(hitlist,1.)
         if type(aTrack) != type(1):
             fitStatus = aTrack.getFitStatus()
-            chisq+=fitStatus.getChi2()/fitStatus.getNdf()
+            chisq+=old_div(fitStatus.getChi2(),fitStatus.getNdf())
         else: chisq+=10
-    chisq = chisq/len(listOfTracks)
+    chisq = old_div(chisq,len(listOfTracks))
     print("chisq=",chisq)
     w.write(str(chisq))
     w.close()
@@ -4067,9 +4069,9 @@ def debugGeometrie():
     print(vtop[1],vbot[1])
     test = ROOT.MufluxSpectrometerHit(11002012,0)
     test.MufluxSpectrometerEndPoints(vbot,vtop)
-    m = (vtop[1]-vbot[1])/((vtop[0]-vbot[0]))
+    m = old_div((vtop[1]-vbot[1]),((vtop[0]-vbot[0])))
     b = vtop[1] - m*vtop[0]
-    start = -b/m
+    start = old_div(-b,m)
     print(vtop[1],vbot[1])
     statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(test)
     nav = ROOT.gGeoManager.GetCurrentNavigator()
@@ -4236,7 +4238,7 @@ def muonTaggerClustering(PR=11):
             hitsPerStation[10*s+l]=[]
             clustersPerStation[10*s+l]=[]
     for m in sTree.Digi_MuonTaggerHits:
-        layer = m.GetDetectorID()/1000
+        layer = old_div(m.GetDetectorID(),1000)
         channel = m.GetDetectorID()%1000
         hitsPerStation[layer].append(channel)
     for l in range(2):
@@ -4252,10 +4254,10 @@ def muonTaggerClustering(PR=11):
                 for hit in temp[cl]:
                     vbot,vtop = RPCPositionsBotTop[(10*s+l)*1000+hit]
                     clusCentre+=vbot[1-l]
-                    zCentre+=(vbot[2]+vtop[2])/2.
-                clusCentre = clusCentre/float(len(temp[cl]))
-                zCentre    = zCentre/float(len(temp[cl]))
-                clusCentre =  (int(clusCentre*1000) + float(s)/10.)/1000. # encode station number
+                    zCentre+=old_div((vbot[2]+vtop[2]),2.)
+                clusCentre = old_div(clusCentre,float(len(temp[cl])))
+                zCentre    = old_div(zCentre,float(len(temp[cl])))
+                clusCentre =  old_div((int(clusCentre*1000) + old_div(float(s),10.)),1000.) # encode station number
                 clustersPerStation[10*s+l][cl]=[temp[cl],clusCentre,zCentre]
         if l==0: view = 'Y'
         else: view = 'X'
@@ -4357,7 +4359,7 @@ def clusterSizesPerLayer(nevents):
                 tc.SetLogy(1)
                 hname = 'multHits_'+str(s)+viewC[view]+str(l)
                 h[hname+'x']=h[hname].Clone(hname+'x')
-                h[hname+'x'].Scale(1./float(h[hname].GetEntries()))
+                h[hname+'x'].Scale(old_div(1.,float(h[hname].GetEntries())))
                 h[hname+'x'].Draw()
                 j+=1
 
@@ -4381,13 +4383,13 @@ def studyDeltaRays():
             for m in sTree.MCTrack:
                 pName = m.GetProcName().Data()
                 if not pName.find('Delta ray')<0:
-                    if m.GetStartZ()/100. < 0.05 and m.GetStartZ()/100. > -0.3: 
+                    if old_div(m.GetStartZ(),100.) < 0.05 and old_div(m.GetStartZ(),100.) > -0.3: 
                         rc = h['deltaRayNvsE'].Fill(m.GetP(),N)
                         if m.GetP()>0.01:  
                             rc = h['station1OccX'].Fill(N)
                             found = True
-                    rc = h['deltaRay'].Fill(m.GetStartZ()/100.,m.GetP())
-                    rc = h['deltaRayN'].Fill(m.GetStartZ()/100.,N)
+                    rc = h['deltaRay'].Fill(old_div(m.GetStartZ(),100.),m.GetP())
+                    rc = h['deltaRayN'].Fill(old_div(m.GetStartZ(),100.),N)
             # if not found and N>8: sTree.MCTrack.Dump()
 
 def studyScintillator():
@@ -4418,14 +4420,14 @@ def myVertex(t1,t2,PosDir,xproj=False):
 
     pq = a-c
     uCrossv = u.Cross(v)
-    dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
+    dist  = old_div(pq.Dot(uCrossv),(uCrossv.Mag()+1E-8))
     # u.a - u.c + s*|u|**2 - u.v*t    = 0
     # v.a - v.c + s*v.u    - t*|v|**2 = 0
     E = u.Dot(a) - u.Dot(c) 
     F = v.Dot(a) - v.Dot(c) 
     A,B = u.Mag2(), -u.Dot(v) 
     C,D = u.Dot(v), -v.Mag2()
-    t = -(C*E-A*F)/(B*C-A*D)
+    t = old_div(-(C*E-A*F),(B*C-A*D))
     X = c.x()+v.x()*t
     Y = c.y()+v.y()*t
     Z = c.z()+v.z()*t
@@ -4822,10 +4824,10 @@ def plotDTPoints(onlyPlotting=False):
                 test = h[cases[t]+view].ProjectionY('test',k,k) 
                 h[mean].SetBinContent(k,test.GetMean())
                 h[mean].SetBinError(k,0)
-                ratio = float(test.GetBinContent(2))/(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+                ratio = old_div(float(test.GetBinContent(2)),(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6))
                 h[oneHit234].SetBinContent(k,ratio)
                 h[oneHit234].SetBinError(k,0)
-                ratio = float(test.GetBinContent(3))/(test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+                ratio = old_div(float(test.GetBinContent(3)),(test.GetBinContent(4)+test.GetBinContent(5)+1E-6))
                 h[twoHit34].SetBinContent(k,ratio)
                 h[twoHit34].SetBinError(k,0)
             tc = h[t].cd(n)
@@ -4873,10 +4875,10 @@ def plotFitPoints():
                 test = hx[t+view].ProjectionY('test',k,k) 
                 h[mean].SetBinContent(k,test.GetMean())
                 h[mean].SetBinError(k,0)
-                ratio = float(test.GetBinContent(2))/(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+                ratio = old_div(float(test.GetBinContent(2)),(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6))
                 h[oneHit234].SetBinContent(k,ratio)
                 h[oneHit234].SetBinError(k,0)
-                ratio = float(test.GetBinContent(3))/(test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
+                ratio = old_div(float(test.GetBinContent(3)),(test.GetBinContent(4)+test.GetBinContent(5)+1E-6))
                 h[twoHit34].SetBinContent(k,ratio)
                 h[twoHit34].SetBinError(k,0)
             h[mean].SetMinimum(2.)
@@ -4938,8 +4940,8 @@ hMC10GeVrec0={}
 def checkMCEffTuning():
     charmNorm  = {1:0.176,10:0.424}
     beautyNorm = {1:0.,   10:0.01218}
-    sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
-    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10]}
+    sim10fact = old_div(1.8,(65.*(1.-0.016))) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":old_div(1.,charmNorm[10]),"beauty":old_div(1.,beautyNorm[10])}
     interestingHistos = []
     for a in ['p/pt']:
         for x in ['','mu']:
@@ -4958,13 +4960,13 @@ def checkMCEffTuning():
     ut.readHists(hMC10GeVrec0,'momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
     a= 'p/pt_projx'
     print("method 0 / default")
-    print("1GeV mbias:",hMC0[a].GetEntries()/hMC[a].GetEntries(),hMCrec0[a].GetEntries()/hMC[a].GetEntries())
-    print("1GeV charm:",hCharm0[a].GetEntries()/hCharm[a].GetEntries(),hCharmrec0[a].GetEntries()/hCharm[a].GetEntries())
-    print("10GeV     :",hMC10GeV0[a].GetEntries()/hMC10GeV[a].GetEntries(),hMC10GeVrec0[a].GetEntries()/hMC10GeV[a].GetEntries())
+    print("1GeV mbias:",old_div(hMC0[a].GetEntries(),hMC[a].GetEntries()),old_div(hMCrec0[a].GetEntries(),hMC[a].GetEntries()))
+    print("1GeV charm:",old_div(hCharm0[a].GetEntries(),hCharm[a].GetEntries()),old_div(hCharmrec0[a].GetEntries(),hCharm[a].GetEntries()))
+    print("10GeV     :",old_div(hMC10GeV0[a].GetEntries(),hMC10GeV[a].GetEntries()),old_div(hMC10GeVrec0[a].GetEntries(),hMC10GeV[a].GetEntries()))
     print("method 2 / default")
-    print("1GeV mbias:",hMC2[a].GetEntries()/hMC[a].GetEntries())
-    print("1GeV charm:",hCharm2[a].GetEntries()/hCharm[a].GetEntries())
-    print("10GeV     :",hMC10GeV2[a].GetEntries()/hMC10GeV[a].GetEntries())
+    print("1GeV mbias:",old_div(hMC2[a].GetEntries(),hMC[a].GetEntries()))
+    print("1GeV charm:",old_div(hCharm2[a].GetEntries(),hCharm[a].GetEntries()))
+    print("10GeV     :",old_div(hMC10GeV2[a].GetEntries(),hMC10GeV[a].GetEntries()))
 # effect on mom distribution of eff tuning
     methods = {'default':[hMC,hCharm,hMC10GeV],'M0':[hMC0,hCharm0,hMC10GeV0],'M2':[hMC2,hCharm2,hMC10GeV2],'M0rec':[hMCrec0,hCharmrec0,hMC10GeVrec0]}
     for m in methods:
@@ -5010,11 +5012,11 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
     # using 710 POT/mu-event, full field
     # mbias POT/ charm POT = 0.176 (1GeV), 0.424 (10GeV)
     MCStats = 1.8E9
-    sim10fact = 1.8/(65.*(1.-0.016)) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
+    sim10fact = old_div(1.8,(65.*(1.-0.016))) # normalize 10GeV to 1GeV stats, 1.6% of 10GeV stats not processed.
     muPerPot = 710 # 626
     charmNorm  = {1:0.176,10:0.424}
     beautyNorm = {1:0.,   10:0.01218}
-    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.}
+    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":old_div(1.,charmNorm[10]),"beauty":old_div(1.,beautyNorm[10]),"Di-muon P8":100.}
     if len(hMC)==0:
         interestingHistos = []
         for a in ['p/pt','p/Abspx','p1/p2','p1/p2s','Trscalers']:
@@ -5051,7 +5053,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
         MCPG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
         z = h['p/pt'].ProjectionX()
         PG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
-        norm = PG5/MCPG5
+        norm = old_div(PG5,MCPG5)
         print("use as normalization:",norm)
     else: norm = pot
     for a in ['p/pt','p/Abspx','p1/p2','p1/p2s']:
@@ -5081,11 +5083,11 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
                 for source in sources:
                     if source == "": continue
                     xxx = a+x+source
-                    h['MC10'+a+x].Add(hMC10GeV[xxx],-1.+1./sources[source])
+                    h['MC10'+a+x].Add(hMC10GeV[xxx],-1.+old_div(1.,sources[source]))
                     h['MC10'+xxx] = hMC10GeV[xxx].Clone('MC10'+xxx)
-                    h['MC10'+xxx].Scale(1./sources[source])
-                    h['MC10'+xxx].Scale(1.8/65.) # scale it to 1GeV MC statistics
-                h['MC10'+a+x].Scale(1.8/65.)
+                    h['MC10'+xxx].Scale(old_div(1.,sources[source]))
+                    h['MC10'+xxx].Scale(old_div(1.8,65.)) # scale it to 1GeV MC statistics
+                h['MC10'+a+x].Scale(old_div(1.8,65.))
             else:
                 h['MC10'+a+x].Add(hMC10GeV[a+x+"charm"],-1.+charmNorm[10])
                 h['MC10'+a+x].Add(hMC10GeV[a+x+"beauty"],-1.+beautyNorm[10])
@@ -5328,7 +5330,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
         else: print("=== all tracks  ====")
         for P in [5.,10.,50.,100.]:
             nbin = h['p/pt'+x+'_x'].FindBin(P)
-            print("data/MC P>%5i GeV: %5.2F"%(int(P),h['I-p/pt'+x+'_x'].GetBinContent(nbin)/h['I-MCp/pt'+x+'_x'].GetBinContent(nbin)))
+            print("data/MC P>%5i GeV: %5.2F"%(int(P),old_div(h['I-p/pt'+x+'_x'].GetBinContent(nbin),h['I-MCp/pt'+x+'_x'].GetBinContent(nbin))))
 # pt in slices of P
     x = 'mu'
     for t in ['MC-Comparison Pt','MC-Comparison Px']:
@@ -5386,7 +5388,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
             h[hn].Add(h['p1/p2'+s].ProjectionY('p1p2y'+txt[case]+s,case,500))
             if rebin>1: h[hn].Rebin(rebin)
             norm = h['p/ptmu_x'].Integral(case,500)
-            h[hn].Scale(1./norm)
+            h[hn].Scale(old_div(1.,norm))
             h[hn].SetTitle('P in 2-track events '+txt[case]+'; GeV/c;N2/Nall with P > / ')
             h[hn].SetStats(0)
             h[hn].SetMaximum(0.1)
@@ -5406,7 +5408,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
             if rebin>1: h[hn].Rebin(rebin)
             if case < 20: norm = h['MCp/ptmu_x'].Integral(case,500)
             else:         norm = h['MC10p/ptmu_x'].Integral(case,500)
-            h[hn].Scale(1./norm)
+            h[hn].Scale(old_div(1.,norm))
             h[hn].SetStats(0)
             h[hn].SetTitle('P in 2-track events, one track with '+txt[case]+'; GeV/c')
             h[hn].SetLineColor(opt['MC'][1])
@@ -5433,7 +5435,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
                 if rebin>1: h[hn].Rebin(5)
                 h[hn].SetLineColor(opt[i1][1])
                 h[hn].SetStats(0)
-                h[hn].Scale(1./norm)
+                h[hn].Scale(old_div(1.,norm))
                 ut.makeIntegralDistrib(h,hn)
                 Ihn = 'I-'+hn
                 h[Ihn].Draw('same')
@@ -5446,7 +5448,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
 def printSources():
     charmNorm  = {1:0.176,10:0.424}
     beautyNorm = {1:0.,   10:0.01218}
-    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.}
+    sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,"charm":old_div(1.,charmNorm[10]),"beauty":old_div(1.,beautyNorm[10]),"Di-muon P8":100.}
     print("     source           P>5GeV/c          P>20GeV/c")
     for xx in sources:
         i='MC'
@@ -5536,14 +5538,14 @@ def compareRuns(runs=[]):
         print("number of events",hruns[r]['Trscalers'].GetBinContent(1))
         print("events with tracks %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1)*100))
         print("tracks/event                     %5.2F%%"%(hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1)*100))
-        print("ratio of muon tagged tracks / all tracks %5.2F%%"%(hruns[r]['p/ptmu'].GetEntries()/(hruns[r]['p/pt'].GetEntries()+1E-6)))
+        print("ratio of muon tagged tracks / all tracks %5.2F%%"%(old_div(hruns[r]['p/ptmu'].GetEntries(),(hruns[r]['p/pt'].GetEntries()+1E-6))))
         print("mean p %5.2F GeV/c, rms %5.2F GeV/c"%(hruns[r][hname].GetMean(),hruns[r][hname].GetRMS()))
-        eventStats[r]=[hruns[r]['Trscalers'].GetBinContent(2)/hruns[r]['Trscalers'].GetBinContent(1),
-                       hruns[r]['Trscalers'].GetBinContent(3)/hruns[r]['Trscalers'].GetBinContent(1),
+        eventStats[r]=[old_div(hruns[r]['Trscalers'].GetBinContent(2),hruns[r]['Trscalers'].GetBinContent(1)),
+                       old_div(hruns[r]['Trscalers'].GetBinContent(3),hruns[r]['Trscalers'].GetBinContent(1)),
                        hruns[r][hname].GetMean(),
                        hruns[r]['Trscalers'].GetBinContent(2),
-                       hruns[r]['p/ptmu'].GetEntries()/(hruns[r]['p/pt'].GetEntries()+1E-6)]
-        hruns[r][hname].Scale(1/N)
+                       old_div(hruns[r]['p/ptmu'].GetEntries(),(hruns[r]['p/pt'].GetEntries()+1E-6))]
+        hruns[r][hname].Scale(old_div(1,N))
         hruns[r][hname].SetLineWidth(3)
         hruns[r][hname].SetStats(0)
         hruns[r][hname].SetTitle(str(r))
@@ -5563,8 +5565,8 @@ def compareRuns(runs=[]):
     for r in eventStats:
         h['eventStats1'].SetPoint(n,r,eventStats[r][0])
         h['eventStats2'].SetPoint(n,r,eventStats[r][1])
-        h['eventStats3'].SetPoint(n,r,eventStats[r][2]/100.)
-        h['eventStats4'].SetPoint(n,r,eventStats[r][4]/5.)
+        h['eventStats3'].SetPoint(n,r,old_div(eventStats[r][2],100.))
+        h['eventStats4'].SetPoint(n,r,old_div(eventStats[r][4],5.))
         n+=1
 
     h['legruns']=ROOT.TLegend(0.29,0.18,0.76,0.36)
@@ -5626,7 +5628,7 @@ def fcn(npar, gin, f, par, iflag):
             delta = h[proj].GetBinContent(n) - dataMC*(hMC[proj].GetBinContent(n)+charmMbias*hCharm[proj].GetBinContent(n))
             errSq = h[proj].GetBinContent(n) + dataMC**2*hMC[proj].GetBinContent(n)+\
                     (dataMC*charmMbias)**2*hCharm[proj].GetBinContent(n)
-            if errSq>0: chisq += delta**2/errSq
+            if errSq>0: chisq += old_div(delta**2,errSq)
     f[0] = chisq
     if iflag !=2: print(par[0],par[1],chisq)
     return
@@ -5838,7 +5840,7 @@ def recoMuonTaggerTracks():
         sTree = ftest.cbmsim
         check = sTree.GetBranch('RPCTrackY').GetZipBytes()
         check += sTree.GetBranch('RPCTrackY').GetZipBytes()
-        if check/float(sTree.GetBranch('FitTracks').GetZipBytes())>0.003: OK = True
+        if old_div(check,float(sTree.GetBranch('FitTracks').GetZipBytes()))>0.003: OK = True
     if not OK:
         print("muon track reco failed, reinstall original file")
         os.system('mv '+fname.replace('.root','orig.root')+' '+fname)

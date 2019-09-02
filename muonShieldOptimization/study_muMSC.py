@@ -1,5 +1,7 @@
 #!/usr/bin/env python 
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import ROOT,os,sys,getopt,time,shipRoot_conf
@@ -129,7 +131,7 @@ tc = h[s].cd(1)
 tc.SetLogy(1)
 h['theta_100']=h['theta'].Clone('theta_100')
 h['theta_100']=h['theta'].Rebin(5)
-h['theta_100'].Scale(1./h['theta_100'].GetMaximum())
+h['theta_100'].Scale(old_div(1.,h['theta_100'].GetMaximum()))
 h['theta_100'].Draw()
 h[s].Print(s+'.png')
 h[s].Print(s+'.root')

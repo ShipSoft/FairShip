@@ -8,6 +8,8 @@
 #                                              Q, 2005
 # ==================================================================
 """
+from __future__ import division
+from past.utils import old_div
 #$Id: hepunit.py 66892 2013-01-17 10:57:59Z gunter $
 
 # ==================================================================
@@ -66,7 +68,7 @@ pc = parsec
 #
 radian      = 1.                  
 milliradian = 1.e-3*radian
-degree = (3.14159265358979323846/180.0)*radian
+degree = (old_div(3.14159265358979323846,180.0))*radian
 
 steradian = 1.
 
@@ -85,7 +87,7 @@ millisecond = 1.e-3 *second
 microsecond = 1.e-6 *second
 picosecond = 1.e-12*second
 
-hertz = 1./second
+hertz = old_div(1.,second)
 kilohertz = 1.e+3*hertz
 megahertz = 1.e+6*hertz
 
@@ -99,7 +101,7 @@ ms = millisecond
 #
 eplus = 1. 		# positron charge
 e_SI  = 1.60217733e-19	# positron charge in coulomb
-coulomb = eplus/e_SI	# coulomb = 6.24150 e+18 * eplus
+coulomb = old_div(eplus,e_SI)	# coulomb = 6.24150 e+18 * eplus
 
 #
 # Energy [E]
@@ -111,7 +113,7 @@ gigaelectronvolt = 1.e+3*megaelectronvolt
 teraelectronvolt = 1.e+6*megaelectronvolt
 petaelectronvolt = 1.e+9*megaelectronvolt
 
-joule = electronvolt/e_SI # joule = 6.24150 e+12 * MeV
+joule = old_div(electronvolt,e_SI) # joule = 6.24150 e+12 * MeV
 
 # symbols
 MeV = megaelectronvolt
@@ -136,24 +138,24 @@ mg = milligram
 #
 # Power [E][T^-1]
 #
-watt = joule/second	# watt = 6.24150 e+3 * MeV/ns
+watt = old_div(joule,second)	# watt = 6.24150 e+3 * MeV/ns
 
 #
 # Force [E][L^-1]
 #
-newton = joule/meter	# newton = 6.24150 e+9 * MeV/mm
+newton = old_div(joule,meter)	# newton = 6.24150 e+9 * MeV/mm
 
 #
 # Pressure [E][L^-3]
 #
-pascal     = newton/m2	   # pascal = 6.24150 e+3 * MeV/mm3
+pascal     = old_div(newton,m2)	   # pascal = 6.24150 e+3 * MeV/mm3
 bar        = 100000*pascal # bar    = 6.24150 e+8 * MeV/mm3
 atmosphere = 101325*pascal # atm    = 6.32420 e+8 * MeV/mm3
 
 #
 # Electric current [Q][T^-1]
 #
-ampere      = coulomb/second # ampere = 6.24150 e+9 * eplus/ns
+ampere      = old_div(coulomb,second) # ampere = 6.24150 e+9 * eplus/ns
 milliampere = 1.e-3*ampere
 microampere = 1.e-6*ampere
 nanoampere  = 1.e-9*ampere
@@ -161,19 +163,19 @@ nanoampere  = 1.e-9*ampere
 #
 # Electric potential [E][Q^-1]
 #
-megavolt = megaelectronvolt/eplus
+megavolt = old_div(megaelectronvolt,eplus)
 kilovolt = 1.e-3*megavolt
 volt = 1.e-6*megavolt
 
 #
 # Electric resistance [E][T][Q^-2]
 #
-ohm = volt/ampere	# ohm = 1.60217e-16*(MeV/eplus)/(eplus/ns)
+ohm = old_div(volt,ampere)	# ohm = 1.60217e-16*(MeV/eplus)/(eplus/ns)
 
 #
 # Electric capacitance [Q^2][E^-1]
 #
-farad = coulomb/volt	# farad = 6.24150e+24 * eplus/Megavolt
+farad = old_div(coulomb,volt)	# farad = 6.24150e+24 * eplus/Megavolt
 millifarad = 1.e-3*farad
 microfarad = 1.e-6*farad
 nanofarad = 1.e-9*farad
@@ -195,7 +197,7 @@ kilogauss = 1.e-1*tesla
 #
 # Inductance [T^2][E][Q^-2]
 #
-henry = weber/ampere	# henry = 1.60217e-7*MeV*(ns/eplus)**2
+henry = old_div(weber,ampere)	# henry = 1.60217e-7*MeV*(ns/eplus)**2
 
 #
 # Temperature
@@ -210,13 +212,13 @@ mole = 1.
 #
 # Activity [T^-1]
 #
-becquerel = 1./second 
+becquerel = old_div(1.,second) 
 curie = 3.7e+10 * becquerel
 
 #
 # Absorbed dose [L^2][T^-2]
 #
-gray = joule/kilogram 
+gray = old_div(joule,kilogram) 
 
 #
 # Luminous intensity [I]
@@ -231,7 +233,7 @@ lumen = candela*steradian
 #
 # Illuminance [I][L^-2]
 #
-lux = lumen/meter2
+lux = old_div(lumen,meter2)
 
 #
 # Miscellaneous
@@ -246,11 +248,11 @@ perMillion  = 0.000001
 # ==================================================================
 pi     = 3.14159265358979323846
 twopi  = 2.*pi
-halfpi = pi/2.
+halfpi = old_div(pi,2.)
 pi2    = pi*pi
 
 # 
-Avogadro = 6.0221367e+23/mole
+Avogadro = old_div(6.0221367e+23,mole)
 
 # c   = 299.792458 mm/ns
 # c^2 = 898.7404 (mm/ns)^2 
@@ -261,7 +263,7 @@ c_squared = c_light * c_light
 # hbar  = 6.58212e-13 MeV*ns
 # hbarc = 197.32705e-12 MeV*mm
 h_Planck      = 6.6260755e-34 * joule*s
-hbar_Planck   = h_Planck/twopi
+hbar_Planck   = old_div(h_Planck,twopi)
 hbarc         = hbar_Planck * c_light
 hbarc_squared = hbarc * hbarc
 
@@ -275,19 +277,19 @@ electron_mass_c2 = 0.51099906 * MeV
 proton_mass_c2 = 938.27231 * MeV
 neutron_mass_c2 = 939.56563 * MeV
 amu_c2 = 931.49432 * MeV
-amu = amu_c2/c_squared
+amu = old_div(amu_c2,c_squared)
 
 # permeability of free space mu0    = 2.01334e-16 Mev*(ns*eplus)^2/mm
 # permittivity of free space epsil0 = 5.52636e+10 eplus^2/(MeV*mm)
 mu0      = 4*pi*1.e-7 * henry/m
-epsilon0 = 1./(c_squared*mu0)
+epsilon0 = old_div(1.,(c_squared*mu0))
 
 # electromagnetic coupling = 1.43996e-12 MeV*mm/(eplus^2)
-elm_coupling           = e_squared/(4*pi*epsilon0)
-fine_structure_const   = elm_coupling/hbarc
-classic_electr_radius  = elm_coupling/electron_mass_c2
-electron_Compton_length = hbarc/electron_mass_c2
-Bohr_radius = electron_Compton_length/fine_structure_const
+elm_coupling           = old_div(e_squared,(4*pi*epsilon0))
+fine_structure_const   = old_div(elm_coupling,hbarc)
+classic_electr_radius  = old_div(elm_coupling,electron_mass_c2)
+electron_Compton_length = old_div(hbarc,electron_mass_c2)
+Bohr_radius = old_div(electron_Compton_length,fine_structure_const)
 
 alpha_rcl2 = fine_structure_const * classic_electr_radius \
                                   * classic_electr_radius

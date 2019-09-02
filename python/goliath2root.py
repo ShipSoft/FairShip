@@ -3,6 +3,8 @@
 # EvH 11/4/2018
 
 
+from __future__ import division
+from past.utils import old_div
 import ROOT,os,sys
 import rootUtils as ut
 import shipunit as u
@@ -23,9 +25,9 @@ for line in f:
     i+=1
     if i<6: continue
     x,y,z,Bx,By,Bz = line.split()
-    x=float(x)/10.
-    y=float(y)/10.
-    z=float(z)/10.
+    x=old_div(float(x),10.)
+    y=old_div(float(y),10.)
+    z=old_div(float(z),10.)
     Bx = Bx
     By = By  
     Bz = Bz  

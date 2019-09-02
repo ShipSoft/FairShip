@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import os,ROOT,sys,subprocess,pickle,time,datetime
@@ -172,7 +174,7 @@ def compactifyCascade(cycle):
     if cmd.find('root')<0:
         print('no file found, exit')
     else:
-        stat = str( int(Ntot/1E6))+'Mpot'
+        stat = str( int(old_div(Ntot,1E6)))+'Mpot'
         outFile = "Cascade-run"+str(cycle)+"-"+str(cycle+ncpus-1)+"-parp16-MSTP82-1-MSEL4-"+stat+".root"
         rc = os.system("hadd -O "+outFile + " " +cmd)
         rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
@@ -289,7 +291,7 @@ def makeHistos(rfile):
                 if procID not in h:  h[procID]=h['test'].Clone(procID)
                 rc=h[procID].Fill(t.GetP(),t.GetPt())
     for x in h:
-        h[x].Scale(1./nTot)
+        h[x].Scale(old_div(1.,nTot))
     tmp = rfile.split('/')
     hname = tmp[len(tmp)-1].replace('pythia8_Geant4','Histos')
     ut.writeHists(h,hname)
@@ -324,7 +326,7 @@ def makePrintout():
         denom = 0
         if p[0] in unbiased: denom = unbiased[p[0]]
         if denom >0:
-            fac = float(p[1])/denom
+            fac = old_div(float(p[1]),denom)
             print("%40s : %5.2G %5.1F"%(p[0],float(p[1]),fac))
         else:
             print("%40s : %5.2G "%(p[0],float(p[1])))

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import os
@@ -192,7 +194,7 @@ if local:
 # ------------------------------------------------------------------
 class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
     " My Generator Action"
-    pos    = G4ThreeVector(0*cm, 0*cm,   -world_r/2.)
+    pos    = G4ThreeVector(0*cm, 0*cm,   old_div(-world_r,2.))
 
     def GeneratePrimaries(self,anEvent):
         global debug,nevTot,particleGun,fullTungsten
@@ -254,7 +256,7 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
                     npart += 1
             # if debug: myPythia.EventListing()
         anEvent.AddPrimaryVertex( vertex )
-        if debug and not particleGun: print('new event at ',ztarget.z/m)
+        if debug and not particleGun: print('new event at ',old_div(ztarget.z,m))
         myTimer['geant4_conv']+=time.time()-t_0
 class MyRunAction(G4UserRunAction):
     "My Run Action"
@@ -279,10 +281,10 @@ class MyEventAction(G4UserEventAction):
         trackHistory={}
     def myPrintout(self, event):
         prim = event.GetPrimaryVertex()
-        print('vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m) 
+        print('vertex ',old_div(prim.GetX0(),m),old_div(prim.GetY0(),m),old_div(prim.GetZ0(),m)) 
         for k in range( prim.GetNumberOfParticle() ):
             p = prim.GetPrimary(k) 
-            print('event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV)
+            print('event',p.GetPDGcode(),old_div(p.GetPx(),GeV),old_div(p.GetPy(),GeV),old_div(p.GetPz(),GeV))
 # ------------------------------------------------------------------
 class MySteppingAction(G4UserSteppingAction):
     "My Stepping Action"
@@ -292,7 +294,7 @@ class MySteppingAction(G4UserSteppingAction):
         touch        = preStepPoint.GetTouchableHandle()
         volName      = touch.GetVolume().GetName().__format__('')
         pos    = preStepPoint.GetPosition()
-        print('stepping name, z pos  dedx (MeV): ',volName,pos.z/m,step.GetTotalEnergyDeposit()/MeV)
+        print('stepping name, z pos  dedx (MeV): ',volName,old_div(pos.z,m),old_div(step.GetTotalEnergyDeposit(),MeV))
 # ------------------------------------------------------------------
 class MyTrackingAction(G4UserTrackingAction):
     def PostUserTrackingAction(self,atrack):
@@ -303,7 +305,7 @@ class MyTrackingAction(G4UserTrackingAction):
         pid          = part.GetPDGcode()
         muCut = JpsiMainly and abs(pid)!=13
         qed          = pid in qedlist  # use cut only for photons, electrons, protons and neutrons
-        if (atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart) ) or muCut : 
+        if (old_div(atrack.GetKineticEnergy(),GeV) < ecut and (qed or allPart) ) or muCut : 
             G4TrackingManager().SetStoreTrajectory(False) 
             atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)
 
@@ -317,14 +319,14 @@ class MyTrackingActionD(G4UserTrackingAction):
                 pid          = part.GetPDGcode()
                 vx           = atrack.GetVertexPosition()
                 mom  = atrack.GetMomentum()
-                ekin = atrack.GetKineticEnergy()/GeV
+                ekin = old_div(atrack.GetKineticEnergy(),GeV)
                 pos  = atrack.GetPosition()
                 w = atrack.GetWeight()
-                parentid = int(w)/100000-10000
+                parentid = old_div(int(w),100000)-10000
                 pythiaid = int(w)%100000-10000
-                h['ntuple'].Fill(float(pid), float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
-                             float(pos.x/m),float(pos.y/m),float(pos.z/m),\
-                             float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
+                h['ntuple'].Fill(float(pid), float(old_div(mom.x,GeV)),float(old_div(mom.y,GeV)),float(old_div(mom.z,GeV)),\
+                             float(old_div(pos.x,m)),float(old_div(pos.y,m)),float(old_div(pos.z,m)),\
+                             float(old_div(vx.x,m)),float(old_div(vx.y,m)),float(old_div(vx.z,m)),pythiaid,parentid)
 
     def PreUserTrackingAction(self,atrack):
         global trackHistory
@@ -342,7 +344,7 @@ class MyTrackingActionD(G4UserTrackingAction):
         if pdg.GetParticle(pid): tid = pdg.GetParticle(pid).GetName()
         mom = atrack.GetMomentum()
         p = ROOT.TMath.Sqrt(mom.x*mom.x+mom.y*mom.y+mom.z*mom.z)
-        if debug and abs(pid)==13: print('track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV)
+        if debug and abs(pid)==13: print('track',atrack.GetTrackID(),tid,tmoid,moid,old_div(atrack.GetKineticEnergy(),MeV),old_div(p,MeV))
         if pid==12:
             if moid in trackHistory: 
                 gmoid = trackHistory[moid][1]
@@ -359,7 +361,7 @@ class MyTrackingActionD(G4UserTrackingAction):
                         print('      <--',gmoid,tgmoid)
 
         qed          = pid in qedlist  # use cut only for photons, electrons, protons and neutrons
-        if atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart): 
+        if old_div(atrack.GetKineticEnergy(),GeV) < ecut and (qed or allPart): 
             G4TrackingManager().SetStoreTrajectory(False) 
             atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)
 
@@ -369,8 +371,8 @@ class MyTrackingActionD(G4UserTrackingAction):
         vx  = atrack.GetVertexPosition()
         pos = atrack.GetPosition()
         mom = atrack.GetMomentum()
-        print('TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV) 
-        print('start tracking',atrack.GetDynamicParticle().GetPDGcode(),atrack.GetKineticEnergy()/GeV,vx.z/m,pos.z/m,mom.z/GeV)
+        print('TA',pid,old_div(atrack.GetTotalEnergy(),GeV),ecut*GeV) 
+        print('start tracking',atrack.GetDynamicParticle().GetPDGcode(),old_div(atrack.GetKineticEnergy(),GeV),old_div(vx.z,m),old_div(pos.z,m),old_div(mom.z,GeV))
 
 # ------------------------------------------------------------------
 class ScoreSD(G4VSensitiveDetector):
@@ -390,33 +392,33 @@ class ScoreSD(G4VSensitiveDetector):
         M            = part.GetMass()
         Pvx          = ROOT.TMath.Sqrt( ekinvx*(ekinvx+2*M) )
         mom  = track.GetMomentum()
-        ekin = track.GetKineticEnergy()/GeV
+        ekin = old_div(track.GetKineticEnergy(),GeV)
         pos = track.GetPosition()
 #
         # primPart = part.GetPrimaryParticle()
         w = track.GetWeight()
-        parentid = int(w)/100000-10000
+        parentid = old_div(int(w),100000)-10000
         pythiaid = int(w)%100000-10000
-        h['ntuple'].Fill(float(pid), float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
-                       float(pos.x/m),float(pos.y/m),float(pos.z/m),\
+        h['ntuple'].Fill(float(pid), float(old_div(mom.x,GeV)),float(old_div(mom.y,GeV)),float(old_div(mom.z,GeV)),\
+                       float(old_div(pos.x,m)),float(old_div(pos.y,m)),float(old_div(pos.z,m)),\
                        float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
-                       float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
+                       float(old_div(vx.x,m)),float(old_div(vx.y,m)),float(old_div(vx.z,m)),pythiaid,parentid)
         if debug: 
-            print('xxx',pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
-                       float(pos.x/m),float(pos.y/m),float(pos.z/m),\
+            print('xxx',pid, float(old_div(mom.x,GeV)),float(old_div(mom.y,GeV)),float(old_div(mom.z,GeV)),\
+                       float(old_div(pos.x,m)),float(old_div(pos.y,m)),float(old_div(pos.z,m)),\
                        float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
-                       float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
+                       float(old_div(vx.x,m)),float(old_div(vx.y,m)),float(old_div(vx.z,m)),pythiaid,parentid)
 
 def ConstructGeom():
     print("* Constructing geometry...")
     # reset world material
     vac = G4Material.GetMaterial("G4_Galactic")
     g4py.ezgeom.SetWorldMaterial(vac)
-    g4py.ezgeom.ResizeWorld(world_r/2., world_r/2., world_r)
+    g4py.ezgeom.ResizeWorld(old_div(world_r,2.), old_div(world_r,2.), world_r)
     # a snoopy world is placed
     global snoopy,snoopyPhys,scoreLog
     snoopy   = G4EzVolume("Snoopy")
-    snoopy.CreateTubeVolume(vac, 0.,          20*m,     world_r/2.)
+    snoopy.CreateTubeVolume(vac, 0.,          20*m,     old_div(world_r,2.))
     snoopyPhys = snoopy.PlaceIt(G4ThreeVector(0.,0.,0.*m))
     snoopyLog  = snoopyPhys.GetLogicalVolume()
     snoopy.SetVisibility(False)
@@ -460,8 +462,8 @@ def ConstructGeom():
         targetL+= 2*(targetDZ)
     # put iron around
         moreShielding = G4EzVolume("moreShielding")
-        moreShielding.CreateTubeVolume(iron, 30.*cm, 400.*cm,  targetL/2.)
-        moreShieldingPhys = moreShielding.PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL/2.),1,snoopy)
+        moreShielding.CreateTubeVolume(iron, 30.*cm, 400.*cm,  old_div(targetL,2.))
+        moreShieldingPhys = moreShielding.PlaceIt(G4ThreeVector(0.,0.,z0Pos + old_div(targetL,2.)),1,snoopy)
 #
     else:  # new design with mixture Molybdaen and Tungsten
         slitDZ   = 0.5*cm
@@ -490,29 +492,29 @@ def ConstructGeom():
             if layout[i][0]==tungsten:     targetVol[i-1].SetColor(G4Color(0.0,0.5,0.5,1.0))
             else:                          targetVol[i-1].SetColor(G4Color(0.3,0.2,0.5,1.0))
             targetVol[i-1].SetVisibility(True)
-            targetPhys.append(targetVol[i-1].PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL + layout[i][1]/2.),1,snoopy))
+            targetPhys.append(targetVol[i-1].PlaceIt(G4ThreeVector(0.,0.,z0Pos + targetL + old_div(layout[i][1],2.)),1,snoopy))
             if i<17:
-                slitPhys.append(slit.PlaceIt(            G4ThreeVector(0.,0.,z0Pos + targetL + layout[i][1] + slitDZ/2.),1,snoopy))
+                slitPhys.append(slit.PlaceIt(            G4ThreeVector(0.,0.,z0Pos + targetL + layout[i][1] + old_div(slitDZ,2.)),1,snoopy))
                 targetL+= slitDZ+layout[i][1]
             else: targetL+= layout[i][1]
     # put iron around
         xTot = 400.*cm
         yTot = 400.*cm
         moreShieldingTopBot = G4EzVolume("moreShieldingTopBot")
-        moreShieldingTopBot.CreateBoxVolume(iron, xTot, yTot/2., targetL)
-        moreShieldingTopPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,diameter/2. +spaceTopBot+yTot/4.,z0Pos + targetL/2.),1,snoopy)
-        moreShieldingBotPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,-diameter/2.-spaceTopBot-yTot/4.,z0Pos + targetL/2.),1,snoopy)
+        moreShieldingTopBot.CreateBoxVolume(iron, xTot, old_div(yTot,2.), targetL)
+        moreShieldingTopPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,old_div(diameter,2.) +spaceTopBot+old_div(yTot,4.),z0Pos + old_div(targetL,2.)),1,snoopy)
+        moreShieldingBotPhys = moreShieldingTopBot.PlaceIt(G4ThreeVector(0.,old_div(-diameter,2.)-spaceTopBot-old_div(yTot,4.),z0Pos + old_div(targetL,2.)),1,snoopy)
         moreShieldingSide = G4EzVolume("moreShieldingSide")
-        moreShieldingSide.CreateBoxVolume(iron, xTot/2., diameter+1.9*spaceTopBot, targetL)
-        moreShieldingLeftPhys  = moreShieldingSide.PlaceIt(G4ThreeVector(diameter/2. +spaceSide+xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
-        moreShieldingRightPhys = moreShieldingSide.PlaceIt(G4ThreeVector(-diameter/2.-spaceSide-xTot/4.,0.,z0Pos + targetL/2.),1,snoopy)
+        moreShieldingSide.CreateBoxVolume(iron, old_div(xTot,2.), diameter+1.9*spaceTopBot, targetL)
+        moreShieldingLeftPhys  = moreShieldingSide.PlaceIt(G4ThreeVector(old_div(diameter,2.) +spaceSide+old_div(xTot,4.),0.,z0Pos + old_div(targetL,2.)),1,snoopy)
+        moreShieldingRightPhys = moreShieldingSide.PlaceIt(G4ThreeVector(old_div(-diameter,2.)-spaceSide-old_div(xTot,4.),0.,z0Pos + old_div(targetL,2.)),1,snoopy)
     # = 0.1m3 = 2t
     # a hadron absorber is placed
     absorberL = 2*150.*cm
     absorber = G4EzVolume("Absorber")
     #                             inner radius outer radius length    
-    absorber.CreateTubeVolume(iron, 0.,         400.*cm,     absorberL/2.)
-    absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,z0Pos+targetL+absorberL/2.+5.*cm),1,snoopy)
+    absorber.CreateTubeVolume(iron, 0.,         400.*cm,     old_div(absorberL,2.))
+    absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,z0Pos+targetL+old_div(absorberL,2.)+5.*cm),1,snoopy)
     absorber.SetColor(G4Color(0.898,0.902,0.91,1.0))
     absorber.SetVisibility(True)
     xx = G4VisAttributes()

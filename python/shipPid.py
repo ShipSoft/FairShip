@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 from builtins import object
@@ -54,8 +56,8 @@ class Task(object):
         self.rx=250
         self.ry=500
         self.muly_acceptance = 50.0
-        self.ncells_x=m.floor((2*self.dimensions_x)/self.pad_size_x)
-        self.ncells_y=m.floor((2*self.dimensions_y)/self.pad_size_y) 
+        self.ncells_x=m.floor(old_div((2*self.dimensions_x),self.pad_size_x))
+        self.ncells_y=m.floor(old_div((2*self.dimensions_y),self.pad_size_y)) 
         self.threshold_pad_energy = 0.2
         self.Ecal_dx = 15 #cm
         self.Ecal_dy = 15 #cm
@@ -100,7 +102,7 @@ class Task(object):
             y = ctypes.c_float()
             section = ctypes.c_int()
             self.hcal.GetCellCoordInf(detID,x,y,section)
-            ELoss = chit.GetEnergyLoss()/u.MeV
+            ELoss = old_div(chit.GetEnergyLoss(),u.MeV)
             if ELoss>0: self.hcal1.append([x.value,y.value,section.value,ELoss])
 
     def muonDigitHit(self):
@@ -117,10 +119,10 @@ class Task(object):
                 ##print 'mu0 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ()
                 X_hit_pos0=ahit.GetX()+self.dimensions_x
                 Y_hit_pos0=ahit.GetY()+self.dimensions_y
-                pos_hit_x0=m.floor(X_hit_pos0/self.pad_size_x)+1
-                pos_hit_y0=m.floor(Y_hit_pos0/self.pad_size_y)+1
+                pos_hit_x0=m.floor(old_div(X_hit_pos0,self.pad_size_x))+1
+                pos_hit_y0=m.floor(old_div(Y_hit_pos0,self.pad_size_y))+1
                 if (pos_hit_x0<0 or pos_hit_x0>self.ncells_x) or (pos_hit_y0<0 or pos_hit_y0>self.ncells_y): continue
-                E = ahit.GetEnergyLoss()/u.MeV
+                E = old_div(ahit.GetEnergyLoss(),u.MeV)
 #      print "--*--->>  ", E,pos_hit_x0,pos_hit_y0, mul
                 if not E<self.threshold_pad_energy: self.list1.append([pos_hit_x0,pos_hit_y0,E,mul])
             if m.fabs(ahit.GetZ()-self.zpositions['muon1'])<self.muly_acceptance:
@@ -128,10 +130,10 @@ class Task(object):
                 ##print 'mu1 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ()
                 X_hit_pos1=ahit.GetX()+self.dimensions_x
                 Y_hit_pos1=ahit.GetY()+self.dimensions_y
-                pos_hit_x1=m.floor(X_hit_pos1/self.pad_size_x)+1
-                pos_hit_y1=m.floor(Y_hit_pos1/self.pad_size_y)+1
+                pos_hit_x1=m.floor(old_div(X_hit_pos1,self.pad_size_x))+1
+                pos_hit_y1=m.floor(old_div(Y_hit_pos1,self.pad_size_y))+1
                 if (pos_hit_x1<0 or pos_hit_x1>self.ncells_x) or (pos_hit_y1<0 or pos_hit_y1>self.ncells_y): continue
-                E1 = ahit.GetEnergyLoss()/u.MeV
+                E1 = old_div(ahit.GetEnergyLoss(),u.MeV)
 #      print "--**--->>  ", E1,pos_hit_x1,pos_hit_y1, mul1
                 if not E1<self.threshold_pad_energy: self.list1.append([pos_hit_x1,pos_hit_y1,E1,mul1])
             if m.fabs(ahit.GetZ()-self.zpositions['muon2'])<self.muly_acceptance:
@@ -139,10 +141,10 @@ class Task(object):
                 ##print 'mu2 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ()
                 X_hit_pos2=ahit.GetX()+self.dimensions_x
                 Y_hit_pos2=ahit.GetY()+self.dimensions_y
-                pos_hit_x2=m.floor(X_hit_pos2/self.pad_size_x)+1
-                pos_hit_y2=m.floor(Y_hit_pos2/self.pad_size_y)+1
+                pos_hit_x2=m.floor(old_div(X_hit_pos2,self.pad_size_x))+1
+                pos_hit_y2=m.floor(old_div(Y_hit_pos2,self.pad_size_y))+1
                 if (pos_hit_x2<0 or pos_hit_x2>self.ncells_x) or (pos_hit_y2<0 or pos_hit_y2>self.ncells_y): continue
-                E2 = ahit.GetEnergyLoss()/u.MeV
+                E2 = old_div(ahit.GetEnergyLoss(),u.MeV)
 #      print "--***--->>  ", E2,pos_hit_x2,pos_hit_y2, mul2
                 if not E2<self.threshold_pad_energy: self.list1.append([pos_hit_x2,pos_hit_y2,E2,mul2])
             if m.fabs(ahit.GetZ()-self.zpositions['muon3'])<self.muly_acceptance:
@@ -150,10 +152,10 @@ class Task(object):
                 ##print 'mu3 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ()
                 X_hit_pos3=ahit.GetX()+self.dimensions_x
                 Y_hit_pos3=ahit.GetY()+self.dimensions_y
-                pos_hit_x3=m.floor(X_hit_pos3/self.pad_size_x)+1
-                pos_hit_y3=m.floor(Y_hit_pos3/self.pad_size_y)+1
+                pos_hit_x3=m.floor(old_div(X_hit_pos3,self.pad_size_x))+1
+                pos_hit_y3=m.floor(old_div(Y_hit_pos3,self.pad_size_y))+1
                 if (pos_hit_x3<0 or pos_hit_x3>self.ncells_x) or (pos_hit_y3<0 or pos_hit_y3>self.ncells_y): continue
-                E3 = ahit.GetEnergyLoss()/u.MeV
+                E3 = old_div(ahit.GetEnergyLoss(),u.MeV)
 #      print "--****--->>  ", E3,pos_hit_x3,pos_hit_y3, mul3
                 if not E3<self.threshold_pad_energy: self.list1.append([pos_hit_x3,pos_hit_y3,E3,mul3])
         for i in range(len(self.list1)):
@@ -242,32 +244,32 @@ class Task(object):
             extrap_Z_mu0 = self.extrapStates[self.det][2]
             X_pos0=extrap_X_mu0+self.dimensions_x
             Y_pos0=extrap_Y_mu0+self.dimensions_y
-            self.pos_pad_x0=m.floor(X_pos0/self.pad_size_x)+1
-            self.pos_pad_y0=m.floor(Y_pos0/self.pad_size_y)+1
+            self.pos_pad_x0=m.floor(old_div(X_pos0,self.pad_size_x))+1
+            self.pos_pad_y0=m.floor(old_div(Y_pos0,self.pad_size_y))+1
         if self.det == 'muon1':
             self.extrap_X_mu1 = self.extrapStates[self.det][0]
             self.extrap_Y_mu1 = self.extrapStates[self.det][1]
             extrap_Z_mu1 = self.extrapStates[self.det][2]
             X_pos1=self.extrap_X_mu1+self.dimensions_x
             Y_pos1=self.extrap_Y_mu1+self.dimensions_y
-            self.pos_pad_x1=m.floor(X_pos1/self.pad_size_x)+1
-            self.pos_pad_y1=m.floor(Y_pos1/self.pad_size_y)+1
+            self.pos_pad_x1=m.floor(old_div(X_pos1,self.pad_size_x))+1
+            self.pos_pad_y1=m.floor(old_div(Y_pos1,self.pad_size_y))+1
         if self.det == 'muon2':
             extrap_X_mu2 = self.extrapStates[self.det][0]
             extrap_Y_mu2 = self.extrapStates[self.det][1]
             extrap_Z_mu2 = self.extrapStates[self.det][2]
             X_pos2=extrap_X_mu2+self.dimensions_x
             Y_pos2=extrap_Y_mu2+self.dimensions_y
-            self.pos_pad_x2=m.floor(X_pos2/self.pad_size_x)+1
-            self.pos_pad_y2=m.floor(Y_pos2/self.pad_size_y)+1
+            self.pos_pad_x2=m.floor(old_div(X_pos2,self.pad_size_x))+1
+            self.pos_pad_y2=m.floor(old_div(Y_pos2,self.pad_size_y))+1
         if self.det == 'muon3':
             extrap_X_mu3 = self.extrapStates[self.det][0]
             extrap_Y_mu3 = self.extrapStates[self.det][1]
             extrap_Z_mu3 = self.extrapStates[self.det][2]
             X_pos3=extrap_X_mu3+self.dimensions_x
             Y_pos3=extrap_Y_mu3+self.dimensions_y
-            self.pos_pad_x3=m.floor(X_pos3/self.pad_size_x)+1
-            self.pos_pad_y3=m.floor(Y_pos3/self.pad_size_y)+1
+            self.pos_pad_x3=m.floor(old_div(X_pos3,self.pad_size_x))+1
+            self.pos_pad_y3=m.floor(old_div(Y_pos3,self.pad_size_y))+1
 
     def run_muon_ID(self):
         for i in range(len(self.list2)):
@@ -315,11 +317,11 @@ class Task(object):
                     self.pid31=True
 
         if not self.P>5 and (self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False):
-            chmu1=m.fabs((22.67-self.E_tot_h1)/22.67)
-            chmu2=m.fabs((55.75-self.E_tot_h2)/55.75)
+            chmu1=m.fabs(old_div((22.67-self.E_tot_h1),22.67))
+            chmu2=m.fabs(old_div((55.75-self.E_tot_h2),55.75))
             if (chmu1<0.5 and chmu2<0.5): 
                 self.pid_mu=True
-        check_vol_mu1=(m.pow(self.extrap_X_mu1,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_mu1,2)/m.pow(self.ry,2))
+        check_vol_mu1=(old_div(m.pow(self.extrap_X_mu1,2),m.pow(self.rx,2)))+(old_div(m.pow(self.extrap_Y_mu1,2),m.pow(self.ry,2)))
         if check_vol_mu1>1: 
             self.vol_mu1=True
 
@@ -334,11 +336,11 @@ class Task(object):
             x1_Clus, y1_Clus, Ene1_Clus =  aClus.X(), aClus.Y(), aClus.RecoE()
             Ecal_delta_x=x1_Clus - self.extrap_X_ecal
             Ecal_delta_y=y1_Clus - self.extrap_Y_ecal
-            EP=Ene1_Clus/self.P
+            EP=old_div(Ene1_Clus,self.P)
             if (EP>self.Ecal_EP_threshold_min and EP<self.Ecal_EP_threshold_max)  and m.fabs(Ecal_delta_x)<self.Ecal_dx and m.fabs(Ecal_delta_y)<self.Ecal_dy:
                 self.El=True
         if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False and self.El==False and self.pid_mu==False: self.Hl=True
-        check_vol_ecal=(m.pow(self.extrap_X_ecal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_ecal,2)/m.pow(self.ry,2))
+        check_vol_ecal=(old_div(m.pow(self.extrap_X_ecal,2),m.pow(self.rx,2)))+(old_div(m.pow(self.extrap_Y_ecal,2),m.pow(self.ry,2)))
         if check_vol_ecal>1: 
             self.vol_ecal=True
 
@@ -361,6 +363,6 @@ class Task(object):
                 self.E_tot_h2+=E
             E_totale+=E
         self.E_tot = self.E_tot_h1+self.E_tot_h2
-        check_vol_hcal=(m.pow(self.extrap_X_hcal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_hcal,2)/m.pow(self.ry,2))
+        check_vol_hcal=(old_div(m.pow(self.extrap_X_hcal,2),m.pow(self.rx,2)))+(old_div(m.pow(self.extrap_Y_hcal,2),m.pow(self.ry,2)))
         if check_vol_hcal>1: 
             self.vol_hcal=True

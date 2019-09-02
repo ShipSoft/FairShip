@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from past.builtins import cmp
 from future import standard_library
 standard_library.install_aliases()
@@ -363,7 +365,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
             X = X - X[0]
             Y = Y - Y[0]
             R = numpy.sqrt(X**2 + Y**2 + Z**2)
-            Theta = numpy.arccos(Z[1:] / R[1:])
+            Theta = numpy.arccos(old_div(Z[1:], R[1:]))
             theta = numpy.mean(Theta)
 
             metrics['reco_mc_theta'] += [theta]
@@ -409,7 +411,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
             nmeas = fitStatus.getNdf()
             pval = fitStatus.getPVal()
-            chi2 = fitStatus.getChi2() / nmeas
+            chi2 = old_div(fitStatus.getChi2(), nmeas)
 
             metrics['fitted_pval'] += [pval]
             metrics['fitted_chi'] += [chi2]
@@ -430,21 +432,21 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
 
                 metrics['fitted_p'] += [p_fit]
-                perr = (p - p_fit) / p
+                perr = old_div((p - p_fit), p)
                 h['ptrue-p/ptrue'].Fill(perr)
                 h['perr'].Fill(p, perr)
                 h['perr_direction'].Fill(numpy.rad2deg(theta), perr)
 
-                pterr = (pt - pt_fit) / pt
+                pterr = old_div((pt - pt_fit), pt)
                 h['pttrue-pt/pttrue'].Fill(pterr)
 
-                pxerr = (px - px_fit) / px
+                pxerr = old_div((px - px_fit), px)
                 h['pxtrue-px/pxtrue'].Fill(pxerr)
 
-                pyerr = (py - py_fit) / py
+                pyerr = old_div((py - py_fit), py)
                 h['pytrue-py/pytrue'].Fill(pyerr)
 
-                pzerr = (pz - pz_fit) / pz
+                pzerr = old_div((pz - pz_fit), pz)
                 h['pztrue-pz/pztrue'].Fill(pzerr)
 
                 if math.fabs(p) > 0.0 :
@@ -540,7 +542,7 @@ def extrapolateToPlane(fT,z):
             if not rc:
                 # use linear extrapolation
                 px,py,pz  = mom.X(),mom.Y(),mom.Z()
-                lam = (z-pos.Z())/pz
+                lam = old_div((z-pos.Z()),pz)
                 pos = ROOT.TVector3( pos.X()+lam*px, pos.Y()+lam*py, z )
     return rc,pos,mom
 
@@ -610,7 +612,7 @@ def fracMCsame(trackids):
 
     frac=0.0
     if nh > 0: 
-        frac = float(track[tmax]) / float(nh)
+        frac = old_div(float(track[tmax]), float(nh))
 
     return frac, tmax
 
@@ -637,14 +639,14 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     """
 
     VetoStationZ = ShipGeo.vetoStation.z
-    VetoStationEndZ = VetoStationZ + (ShipGeo.strawtubes.DeltazView + ShipGeo.strawtubes.OuterStrawDiameter) / 2
+    VetoStationEndZ = VetoStationZ + old_div((ShipGeo.strawtubes.DeltazView + ShipGeo.strawtubes.OuterStrawDiameter), 2)
 
     TStationz = ShipGeo.TrackStation1.z
     Zpos = TStationz - 3. /2. * ShipGeo.strawtubes.DeltazView - 1. / 2. * ShipGeo.strawtubes.DeltazPlane - 1. / 2. * ShipGeo.strawtubes.DeltazLayer
-    TStation1StartZ = Zpos - ShipGeo.strawtubes.OuterStrawDiameter / 2
+    TStation1StartZ = Zpos - old_div(ShipGeo.strawtubes.OuterStrawDiameter, 2)
 
     Zpos = TStationz + 3. /2. * ShipGeo.strawtubes.DeltazView + 1. / 2. * ShipGeo.strawtubes.DeltazPlane + 1. / 2. * ShipGeo.strawtubes.DeltazLayer
-    TStation4EndZ = Zpos + ShipGeo.strawtubes.OuterStrawDiameter / 2
+    TStation4EndZ = Zpos + old_div(ShipGeo.strawtubes.OuterStrawDiameter, 2)
 
 
     PDG=ROOT.TDatabasePDG.Instance()
@@ -741,7 +743,7 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
         ahit = sTree.strawtubesPoint[i]
 
         # is hit inside acceptance? if not mark the track as bad
-        if (((ahit.GetX()/245.)**2 + (ahit.GetY()/495.)**2) >= 1.):
+        if (((old_div(ahit.GetX(),245.))**2 + (old_div(ahit.GetY(),495.))**2) >= 1.):
             if ahit.GetTrackID() not in trackoutsidestations:
                 trackoutsidestations.append(ahit.GetTrackID())
 

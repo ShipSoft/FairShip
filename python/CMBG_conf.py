@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import ROOT, os
 import shipunit as u
 
@@ -6,7 +8,7 @@ def configure(CMBG, ship_geo):
     Z1 = ship_geo.MuonStation3.z # 3900
     Z2 = ship_geo.vetoStation.z # -1968
     Z3 = ship_geo.chambers.Tub1length # 250
-    zmiddle = (Z1 + (Z2-2*Z3))/2 # 716
+    zmiddle = old_div((Z1 + (Z2-2*Z3)),2) # 716
 
     # CMBG production area
     CMBG.xdist = 3000 # production area size [cm]

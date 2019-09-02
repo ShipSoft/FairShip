@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import ROOT,time,os,sys
@@ -78,7 +80,7 @@ for k in range(nStart,nEnd):
     p = ROOT.TMath.Sqrt(px*px+py*py+pz*pz)
     E = ROOT.TMath.Sqrt(getMasssq(pid)+p*p)
     # px=p*sin(theta)cos(phi),py=p*sin(theta)sin(phi),pz=p*cos(theta)
-    theta = ROOT.TMath.ACos(pz/p)
+    theta = ROOT.TMath.ACos(old_div(pz,p))
     phi   = ROOT.TMath.ATan2(py,px) 
     ctheta,stheta = ROOT.TMath.Cos(theta),ROOT.TMath.Sin(theta)
     cphi,sphi     = ROOT.TMath.Cos(phi),ROOT.TMath.Sin(phi)

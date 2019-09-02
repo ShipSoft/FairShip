@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 import ROOT,sys
 import rootUtils as ut
@@ -11,7 +13,7 @@ def run():
     grid = 120,100,1500
     xmin,ymin,zmin = -4*u.m,-5*u.m,-100*u.m
     xmax,ymax,zmax = 4*u.m,5*u.m,50*u.m
-    dx,dy,dz = (xmax-xmin)/grid[0],(ymax-ymin)/grid[1],(zmax-zmin)/grid[2]
+    dx,dy,dz = old_div((xmax-xmin),grid[0]),old_div((ymax-ymin),grid[1]),old_div((zmax-zmin),grid[2])
     ut.bookHist(h,'Bx-','Bx- component ;z [cm];x [cm];y [cm]',grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)
     ut.bookHist(h,'By-','By- component ;z [cm];x [cm];y [cm]',grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)
     ut.bookHist(h,'Bz-','Bz- component ;z [cm];x [cm];y [cm]',grid[2],zmin,zmax,grid[0],xmin,xmax,grid[1],ymin,ymax)
@@ -31,17 +33,17 @@ def run():
                 n = fGeo.FindNode(x,y,z)
                 f = n.GetVolume().GetField()
                 if f: 
-                    if f.GetFieldValue()[0]<0:  rc=h['Bx-'].Fill(z,x,y,-f.GetFieldValue()[0]/u.tesla)     
-                    if f.GetFieldValue()[0]>0:  rc=h['Bx+'].Fill(z,x,y,f.GetFieldValue()[0]/u.tesla)     
-                    if f.GetFieldValue()[1]<0:  rc=h['By-'].Fill(z,x,y,-f.GetFieldValue()[1]/u.tesla)     
-                    if f.GetFieldValue()[1]>0:  rc=h['By+'].Fill(z,x,y,f.GetFieldValue()[1]/u.tesla)     
-                    if f.GetFieldValue()[2]<0:  rc=h['Bz-'].Fill(z,x,y,-f.GetFieldValue()[2]/u.tesla)   
-                    if f.GetFieldValue()[2]>0:  rc=h['Bz+'].Fill(z,x,y,f.GetFieldValue()[2]/u.tesla)   
+                    if f.GetFieldValue()[0]<0:  rc=h['Bx-'].Fill(z,x,y,old_div(-f.GetFieldValue()[0],u.tesla))     
+                    if f.GetFieldValue()[0]>0:  rc=h['Bx+'].Fill(z,x,y,old_div(f.GetFieldValue()[0],u.tesla))     
+                    if f.GetFieldValue()[1]<0:  rc=h['By-'].Fill(z,x,y,old_div(-f.GetFieldValue()[1],u.tesla))     
+                    if f.GetFieldValue()[1]>0:  rc=h['By+'].Fill(z,x,y,old_div(f.GetFieldValue()[1],u.tesla))     
+                    if f.GetFieldValue()[2]<0:  rc=h['Bz-'].Fill(z,x,y,old_div(-f.GetFieldValue()[2],u.tesla))   
+                    if f.GetFieldValue()[2]>0:  rc=h['Bz+'].Fill(z,x,y,old_div(f.GetFieldValue()[2],u.tesla))   
                 f = run.GetField()
-                if f.GetBx(x,y,z)<0: rc=h['Bx-'].Fill(z,x,y,-f.GetBx(x,y,z)/u.tesla) 
-                if f.GetBx(x,y,z)>0: rc=h['Bx+'].Fill(z,x,y,f.GetBx(x,y,z)/u.tesla) 
-                if f.GetBy(x,y,z)<0: rc=h['By-'].Fill(z,x,y,-f.GetBy(x,y,z)/u.tesla)
-                if f.GetBy(x,y,z)>0: rc=h['By+'].Fill(z,x,y,f.GetBy(x,y,z)/u.tesla) 
+                if f.GetBx(x,y,z)<0: rc=h['Bx-'].Fill(z,x,y,old_div(-f.GetBx(x,y,z),u.tesla)) 
+                if f.GetBx(x,y,z)>0: rc=h['Bx+'].Fill(z,x,y,old_div(f.GetBx(x,y,z),u.tesla)) 
+                if f.GetBy(x,y,z)<0: rc=h['By-'].Fill(z,x,y,old_div(-f.GetBy(x,y,z),u.tesla))
+                if f.GetBy(x,y,z)>0: rc=h['By+'].Fill(z,x,y,old_div(f.GetBy(x,y,z),u.tesla)) 
     hkeys = list(h.keys())
     for x in hkeys:
         hi = h[x]

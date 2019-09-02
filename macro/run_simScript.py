@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import os
@@ -248,7 +250,7 @@ else:
         print("Setup for charm cross section measurement has been set")
         if (((CharmTarget > 6) or (CharmTarget < 0)) and (CharmTarget != 16)): #check if proper option for emulsion target has been set
             print("ERROR: unavailable option for CharmTarget. Currently implemented options: 1,2,3,4,5,6,16")
-            1/0
+            old_div(1,0)
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
 #ship_geo.EmuMagnet.B = 0.
@@ -350,7 +352,7 @@ if simEngine == "Pythia8":
             P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
         else: 
             print("ERROR: charmonly option should not be used for the muonflux measurement")
-            1/0
+            old_div(1,0)
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
@@ -416,12 +418,12 @@ if simEngine == "Nuage":
     nXcells = 7
     nYcells = 3
     nZcells = ntt -1
-    startx = -ship_geo.NuTauTarget.xdim/2 + nXcells*ship_geo.NuTauTarget.BrX
-    endx = -ship_geo.NuTauTarget.xdim/2 + (nXcells+1)*ship_geo.NuTauTarget.BrX
-    starty = -ship_geo.NuTauTarget.ydim/2 + nYcells*ship_geo.NuTauTarget.BrY 
-    endy = - ship_geo.NuTauTarget.ydim/2 + (nYcells+1)*ship_geo.NuTauTarget.BrY
-    startz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
-    endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
+    startx = old_div(-ship_geo.NuTauTarget.xdim,2) + nXcells*ship_geo.NuTauTarget.BrX
+    endx = old_div(-ship_geo.NuTauTarget.xdim,2) + (nXcells+1)*ship_geo.NuTauTarget.BrX
+    starty = old_div(-ship_geo.NuTauTarget.ydim,2) + nYcells*ship_geo.NuTauTarget.BrY 
+    endy = old_div(- ship_geo.NuTauTarget.ydim,2) + (nYcells+1)*ship_geo.NuTauTarget.BrY
+    startz = ship_geo.EmuMagnet.zC - old_div(ship_geo.NuTauTarget.zdim,2) + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
+    endz = ship_geo.EmuMagnet.zC - old_div(ship_geo.NuTauTarget.zdim,2) + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
     Nuagegen.SetPositions(ship_geo.target.z0, startz, endz, startx, endx, starty, endy)
     #--------------------------------
     ut.checkFileExists(inputFile)

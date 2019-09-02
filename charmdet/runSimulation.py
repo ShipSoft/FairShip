@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import os,subprocess,ROOT,time,multiprocessing,socket
@@ -164,7 +166,7 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
         sTree = origin.cbmsim
         Nentries = sTree.GetEntries()
         N = 0
-        deltaN = int(sTree.GetEntries()/float(splitFactor))
+        deltaN = int(old_div(sTree.GetEntries(),float(splitFactor)))
         for i in range(splitFactor):
             nf = ofile.replace('.root','-'+str(i)+'.root')
             if nf in os.listdir('.'): 
@@ -238,7 +240,7 @@ def checkFilesWithTracks(D='.',splitFactor=5,dimuon=False):
                 if sTree:
                     if sTree.GetBranch("FitTracks"): 
                         fileList.append(recoFile)
-                        size = sTree.GetBranch('FitTracks').GetTotalSize()/float(sTree.GetEntries())
+                        size = old_div(sTree.GetBranch('FitTracks').GetTotalSize(),float(sTree.GetEntries()))
                         fileListPer[fname][recoFile.replace(D+'.'+fname+'/','')]=size
                         # print "check",fname,recoFile,size
                 else:
@@ -540,7 +542,7 @@ def checkStatistics(splitFactor=5):
         n = 0
         for x in reco:
             if  not x.find(dname)<0: n+=1
-        fraction = n/float(splitFactor)
+        fraction = old_div(n,float(splitFactor))
         print("fraction:",dname,fraction)
         if dname.find('charm')>0: Nreco['charm']+=fraction*allFiles[dname]
         else: Nreco['mbias'] += fraction*allFiles[dname]

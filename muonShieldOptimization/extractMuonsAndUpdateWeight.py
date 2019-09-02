@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import os,ROOT
@@ -34,14 +36,14 @@ def muonUpdateWeight(sTree,diMuboost,xSecboost,noCharm=True):
         pName = t.GetProcName().Data()
         t.SetWeight(weight)
         if not pName.find('Hadronic inelastic')<0:
-            t.MultiplyWeight(1./diMuboost)
+            t.MultiplyWeight(old_div(1.,diMuboost))
         elif not pName.find('Lepton pair')<0:
-            t.MultiplyWeight(1./xSecboost)
+            t.MultiplyWeight(old_div(1.,xSecboost))
         elif not pName.find('Positron annihilation')<0:
-            t.MultiplyWeight(1./xSecboost)
+            t.MultiplyWeight(old_div(1.,xSecboost))
         elif not pName.find('Primary particle')<0 or not pName.find('Decay')<0:
             if moID in muSourcesIDs:
-                t.MultiplyWeight(1./diMuboost)
+                t.MultiplyWeight(old_div(1.,diMuboost))
     return nMu
 
 def PoT(f):
@@ -68,8 +70,8 @@ def PoT(f):
                 xSecboost+=1.
             else:
                 xSecboost+=float(txt[i+1:].split(' ')[0])
-    diMuboost=diMuboost/float(ncycles) 
-    xSecboost=xSecboost/float(ncycles) 
+    diMuboost=old_div(diMuboost,float(ncycles)) 
+    xSecboost=old_div(xSecboost,float(ncycles)) 
     print("POT = ",nTot," number of events:",f.cbmsim.GetEntries(),' diMuboost=',diMuboost,' XsecBoost=',xSecboost)
     return nTot,diMuboost,xSecboost
 
@@ -80,7 +82,7 @@ def TotStat():
         f=ROOT.TFile(path+fn)
         nPot,diMuboost,xSecboost = PoT(f)
         ntot += nPot
-    print("Total statistics so far",ntot/1.E9," billion") 
+    print("Total statistics so far",old_div(ntot,1.E9)," billion") 
 
 def processFile(fin,noCharm=True):
     f   = ROOT.TFile.Open(os.environ['EOSSHIP']+path+fin)
@@ -191,7 +193,7 @@ def mergeMbiasAndCharm(flavour="charm"):
         Nall += nEntries[x]
     nCharm = 0
     nDone  = 0
-    frac = nEntries[flavour]/float(Nall)
+    frac = old_div(nEntries[flavour],float(Nall))
     print("debug",frac)
     os.system('xrdcp '+pp +allFiles[flavour] +' '+allFiles[flavour])
     for k in allFiles:
@@ -265,7 +267,7 @@ def testRatio(fname):
             if pdgID in charmExtern:
                 charm+=1
                 break
-    print("charm found",charm," ratio ",charm/float(Nall))
+    print("charm found",charm," ratio ",old_div(charm,float(Nall)))
 
 
 

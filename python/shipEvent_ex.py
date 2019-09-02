@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 import ROOT
 import rootUtils as ut
@@ -36,9 +38,9 @@ def exMCTracks():
             if abs(pdgCode)==13 or abs(pdgCode)==211:  
                 rc = h['pz'].Fill( mom.Pz() )
                 rc = h['oz'].Fill( atrack.GetStartZ() )  
-                lam = ( detPos-atrack.GetStartZ() )/mom.Pz()
-                xdet = (atrack.GetStartX()+lam*mom.Px() )/u.m
-                ydet = (atrack.GetStartY()+lam*mom.Py() )/u.m
+                lam = old_div(( detPos-atrack.GetStartZ() ),mom.Pz())
+                xdet = old_div((atrack.GetStartX()+lam*mom.Px() ),u.m)
+                ydet = old_div((atrack.GetStartY()+lam*mom.Py() ),u.m)
                 rc = h['ex'].Fill(xdet,ydet ) 
     h['N'].Draw('box')
 
@@ -52,9 +54,9 @@ def exMCHits(dump=False):
         nHits = TrackingHits.GetEntriesFast() 
         for i in range(nHits):
             ahit = TrackingHits.At(i)
-            rc = h['tz'].Fill( ahit.GetZ()/u.m )
-            rc = h['txty'].Fill( ahit.GetX()/u.m,ahit.GetY()/u.m )
-            rc = h['tztx'].Fill( ahit.GetZ()/u.m,ahit.GetX()/u.m ) 
+            rc = h['tz'].Fill( old_div(ahit.GetZ(),u.m) )
+            rc = h['txty'].Fill( old_div(ahit.GetX(),u.m),old_div(ahit.GetY(),u.m) )
+            rc = h['tztx'].Fill( old_div(ahit.GetZ(),u.m),old_div(ahit.GetX(),u.m) ) 
     h['tztx'].Draw('box') 
     if dump:
         for n in range( min(10,nEvents) ):
@@ -62,4 +64,4 @@ def exMCHits(dump=False):
             nHits = TrackingHits.GetEntriesFast() 
             for i in range(nHits):
                 ahit = TrackingHits.At(i)
-                print(ahit.GetZ()/u.m, ahit.GetDetectorID(),ahit.GetLength(),ahit.GetEnergyLoss()) 
+                print(old_div(ahit.GetZ(),u.m), ahit.GetDetectorID(),ahit.GetLength(),ahit.GetEnergyLoss()) 

@@ -43,6 +43,8 @@
 # Tested with SL4, SL5, SL6
 
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 import array, sys
 
@@ -97,7 +99,7 @@ try:
 
         length = array.array(intfmt)
         length.fromfile(f, 1)
-        nr = abs(length[0] / 2)
+        nr = abs(old_div(length[0], 2))
         nrec += 1
 
         if length[0] > 0:
@@ -116,7 +118,7 @@ try:
         if (nrec <= skiprec):  # must be after last fromfile
             continue
 
-        print(" === NR ", nrec, length[0] / 2)
+        print(" === NR ", nrec, old_div(length[0], 2))
 
         # no details, only header
         if (mrec < -1):

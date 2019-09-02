@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import object
 import shipunit as u
 import ROOT
@@ -39,18 +41,18 @@ muShield.LE  = 5*u.m
 if fDesign == 1:  muShield.length =  70*u.m
 # for active design, fDesign==2
 if fDesign == 2:  muShield.length =  2*(muShield.dZ1+muShield.dZ2+muShield.dZ3+muShield.dZ4+muShield.dZ5+muShield.dZ6) + muShield.LE # leave some space for nu-tau detector   
-muShield.z  =  -decayVolume.length/2.-muShield.length/2.
+muShield.z  =  old_div(-decayVolume.length,2.)-old_div(muShield.length,2.)
 
 hadronAbsorber       =  ShipGeo(0*u.cm)
 hadronAbsorber.length=  3.0*u.m
-hadronAbsorber.z     =  muShield.z - muShield.length/2. - hadronAbsorber.length/2.
+hadronAbsorber.z     =  muShield.z - old_div(muShield.length,2.) - old_div(hadronAbsorber.length,2.)
 
 target               =  ShipGeo(0*u.cm)
 target.length        =  50*u.cm
-target.z             =  hadronAbsorber.z - hadronAbsorber.length/2. - target.length/2.
+target.z             =  hadronAbsorber.z - old_div(hadronAbsorber.length,2.) - old_div(target.length,2.)
 
 # interaction point, start of target
-target.z0  =  target.z - target.length/2.
+target.z0  =  target.z - old_div(target.length,2.)
 
 # straws of tracking stations
 straw = ShipGeo(0*u.cm)

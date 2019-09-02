@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 import ROOT
 import os
@@ -34,7 +36,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
         ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
         print("RPVSUSY ctau ",ctau)
-        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(old_div(ctau,u.mm))+"  0   1   0   1   0") 
         P8gen.SetParameters("9900015:isResonance = false")
         P8gen.SetParameters("Next:numberCount    =  0")
         # Configuring decay modes...
@@ -44,7 +46,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         P8gen.SetParameters("9900015:mayDecay = on")
         P8gen.SetHNLId(9900015)
         # also add to PDG
-        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
+        gamma = old_div(u.hbarc, float(ctau)) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
         addHNLtoROOT(pid=9900015,m=mass,g=gamma)
         # 12 14 16 neutrinos replace with N2
         charmhistograms = ['d_mu','ds_mu']
@@ -60,9 +62,9 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
                             "    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0")
         sumBR=0.
         if getbr_rpvsusy(h,'ds_mu',mass,couplings[1])>0.:
-            P8gen.SetParameters("431:addChannel      1  "+str(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR)+\
+            P8gen.SetParameters("431:addChannel      1  "+str(old_div(getbr_rpvsusy(h,'ds_mu',mass,couplings[1]),maxsumBR))+\
                                 "    0      -13       9900015")
-            sumBR+=float(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR)
+            sumBR+=float(old_div(getbr_rpvsusy(h,'ds_mu',mass,couplings[1]),maxsumBR))
         if sumBR<1. and sumBR>0.:
             P8gen.SetParameters("431:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
 
@@ -71,9 +73,9 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
                             "    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0")
         sumBR=0.
         if getbr_rpvsusy(h,'d_mu',mass,couplings[1])>0.:
-            P8gen.SetParameters("411:addChannel      1  "+str(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR)+\
+            P8gen.SetParameters("411:addChannel      1  "+str(old_div(getbr_rpvsusy(h,'d_mu',mass,couplings[1]),maxsumBR))+\
                                 "    0      -13       9900015")
-            sumBR+=float(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR)
+            sumBR+=float(old_div(getbr_rpvsusy(h,'d_mu',mass,couplings[1]),maxsumBR))
         if sumBR<1. and sumBR>0.:
             P8gen.SetParameters("411:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
 
@@ -84,7 +86,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         # add RPVSUSY
         rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
         ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
-        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(old_div(ctau,u.mm))+"  0   1   0   1   0") 
         P8gen.SetParameters("9900015:isResonance = false")
         # Configuring decay modes...
         rpvsusy_instance.AddChannelsToPythia(P8gen)
@@ -92,7 +94,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         P8gen.SetParameters("9900015:mayDecay = on")
         P8gen.SetHNLId(9900015)
         # also add to PDG
-        gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
+        gamma = old_div(u.hbarc, float(ctau)) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
         addHNLtoROOT(pid=9900015,m=mass,g=gamma)
         # 12 14 16 neutrinos replace with N2
         beautyhistograms = ['b_mu','b_tau','b0_nu_mu','b0_nu_tau']
@@ -106,8 +108,8 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         sumBR=0.
         if getbr_rpvsusy(h,'b_tau',mass,couplings[1])>0.:
             P8gen.SetParameters("521:addChannel      1  "+\
-                                str(getbr_rpvsusy(h,'b_tau',mass,couplings[1])/maxsumBR)+"    0       9900015      -15")
-            sumBR+=float(getbr_rpvsusy(h,'b_tau',mass,couplings[1])/maxsumBR)
+                                str(old_div(getbr_rpvsusy(h,'b_tau',mass,couplings[1]),maxsumBR))+"    0       9900015      -15")
+            sumBR+=float(old_div(getbr_rpvsusy(h,'b_tau',mass,couplings[1]),maxsumBR))
         if sumBR<1. and sumBR>0.:
             P8gen.SetParameters("521:addChannel      1   "+\
                                 str(1.-sumBR)+"    0       22      22")
@@ -118,7 +120,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         sumBR=0.
         if getbr_rpvsusy(h,'b0_nu_tau',mass,couplings[1])>0.:
             P8gen.SetParameters("511:addChannel      1  "+\
-                                str(getbr_rpvsusy(h,'b0_nu_tau',mass,couplings[1])/maxsumBR)+\
+                                str(old_div(getbr_rpvsusy(h,'b0_nu_tau',mass,couplings[1]),maxsumBR))+\
                                 "   22       9900015      16")
         if sumBR<1. and sumBR>0.:
             P8gen.SetParameters("511:addChannel      1   "+\
@@ -211,11 +213,11 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
         # Compute maximum total branching ratio (to rescale all BRs)
         max_total_br = compute_max_total_br(all_decays)
         exit_if_zero_br(max_total_br, process_selection, mass)
-        print_scale_factor(1/max_total_br)
+        print_scale_factor(old_div(1,max_total_br))
 
         # Add charm decays
         for ch in c_channels:
-            add_channel(P8gen, ch, histograms, mass, production_couplings, 1/max_total_br)
+            add_channel(P8gen, ch, histograms, mass, production_couplings, old_div(1,max_total_br))
         # Add tau production from D_s+
         # We can freely rescale Br(Ds -> tau) and Br(tau -> N X...) as long as
         # Br(Ds -> tau -> N X...) remains the same.
@@ -227,7 +229,7 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
         # Add secondary HNL production from tau
         for ch in tau_channels:
             # Rescale branching ratios only if some are non-zero. Otherwise leave them at zero.
-            add_tau_channel(P8gen, ch, histograms, mass, production_couplings, 1/(total_tau_br or 1))
+            add_tau_channel(P8gen, ch, histograms, mass, production_couplings, old_div(1,(total_tau_br or 1)))
 
         # Add dummy channels in place of SM processes
         fill_missing_channels(P8gen, max_total_br, all_decays)
@@ -256,11 +258,11 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
         # Compute scaling factor
         max_total_br = compute_max_total_br(decays)
         exit_if_zero_br(max_total_br, process_selection, mass)
-        print_scale_factor(1/max_total_br)
+        print_scale_factor(old_div(1,max_total_br))
 
         # Add beauty decays
         for ch in channels:
-            add_channel(P8gen, ch, histograms, mass, production_couplings, 1/max_total_br)
+            add_channel(P8gen, ch, histograms, mass, production_couplings, old_div(1,max_total_br))
 
         # Add dummy channels in place of SM processes
         fill_missing_channels(P8gen, max_total_br, decays)
@@ -274,7 +276,7 @@ def add_hnl(P8gen, mass, decay_couplings):
     hnl_instance = hnl.HNL(mass, decay_couplings, debug=True)
     ctau = hnl_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
     print("HNL ctau {}".format(ctau))
-    P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0")
+    P8gen.SetParameters("9900015:new = N2 N2 2 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(old_div(ctau,u.mm))+"  0   1   0   1   0")
     P8gen.SetParameters("9900015:isResonance = false")
     # Configuring decay modes...
     readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=False)
@@ -282,7 +284,7 @@ def add_hnl(P8gen, mass, decay_couplings):
     P8gen.SetParameters("9900015:mayDecay = on")
     P8gen.SetHNLId(9900015)
     # also add to PDG
-    gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
+    gamma = old_div(u.hbarc, float(ctau)) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
     addHNLtoROOT(pid=9900015,m=mass,g=gamma)
 
 def setup_pythia_inclusive(P8gen):

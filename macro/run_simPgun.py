@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 mcEngine  = "TGeant4"
 simEngine = "Pgun"
 nEvents = 5
@@ -79,7 +81,7 @@ run.SetField(fMagField)
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-pointZero =  -decayVolumeLength/2. - targetHadronAbsorber - muShieldLength - 200.
+pointZero =  old_div(-decayVolumeLength,2.) - targetHadronAbsorber - muShieldLength - 200.
 
 mom = ROOT.TVector3(0.,0.,100.)
 pos = ROOT.TVector3(0.,0.,pointZero)

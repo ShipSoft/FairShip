@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 from builtins import object
 # simple vertex reconstruction with errors
@@ -54,7 +56,7 @@ class Task(object):
     def chi2(self,res,Vy):       
         s=0
         for i in range(100):
-            s+=Vy[i]*res[i/10]*res[i%10]
+            s+=Vy[i]*res[old_div(i,10)]*res[i%10]
         return s
     def residuals(self,y_data,a,z0):
         res = np.zeros(10)
@@ -196,7 +198,7 @@ class Task(object):
                 self.z0 = HNLPos[2]
                 self.Vy = np.zeros(100)
                 for i in range(100):	
-                    self.Vy[i] = covInv[i/10][i%10]
+                    self.Vy[i] = covInv[old_div(i,10)][i%10]
 
                 f=np.array([0.])
                 gMinuit = ROOT.TMinuit(9)
@@ -205,12 +207,12 @@ class Task(object):
                 rc = gMinuit.DefineParameter(0, 'X pos',HNLPos[0], 0.1,0,0)
                 rc = gMinuit.DefineParameter(1, 'Y pos',HNLPos[1], 0.1,0,0)
                 rc = gMinuit.DefineParameter(2, 'Z pos',HNLPos[2], 0.1,0,0)
-                rc = gMinuit.DefineParameter(3, 'tan1X',mom1[0]/mom1[2], 0.1,0,0)
-                rc = gMinuit.DefineParameter(4, 'tan1Y',mom1[1]/mom1[2], 0.1,0,0)
-                rc = gMinuit.DefineParameter(5, '1/mom1',1./mom1.Mag(), 0.1,0,0)
-                rc = gMinuit.DefineParameter(6, 'tan2X',mom2[0]/mom2[2], 0.1,0,0)
-                rc = gMinuit.DefineParameter(7, 'tan2Y',mom2[1]/mom2[2], 0.1,0,0)
-                rc = gMinuit.DefineParameter(8, '1/mom2',1./mom2.Mag(), 0.1,0,0)
+                rc = gMinuit.DefineParameter(3, 'tan1X',old_div(mom1[0],mom1[2]), 0.1,0,0)
+                rc = gMinuit.DefineParameter(4, 'tan1Y',old_div(mom1[1],mom1[2]), 0.1,0,0)
+                rc = gMinuit.DefineParameter(5, '1/mom1',old_div(1.,mom1.Mag()), 0.1,0,0)
+                rc = gMinuit.DefineParameter(6, 'tan2X',old_div(mom2[0],mom2[2]), 0.1,0,0)
+                rc = gMinuit.DefineParameter(7, 'tan2Y',old_div(mom2[1],mom2[2]), 0.1,0,0)
+                rc = gMinuit.DefineParameter(8, '1/mom2',old_div(1.,mom2.Mag()), 0.1,0,0)
                 gMinuit.Clear()
                 gMinuit.Migrad()
                 try:
@@ -282,12 +284,12 @@ class Task(object):
                     a6=fitValues[6]
                     a7=fitValues[7]
                     a8=fitValues[8]
-                    px1 = a3/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))
-                    py1 = a4/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))
-                    pz1 = 1/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))
-                    px2 = a6/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))
-                    py2 = a7/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))
-                    pz2 = 1/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))
+                    px1 = old_div(a3,(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2)))
+                    py1 = old_div(a4,(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2)))
+                    pz1 = old_div(1,(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2)))
+                    px2 = old_div(a6,(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2)))
+                    py2 = old_div(a7,(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2)))
+                    pz2 = old_div(1,(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2)))
                     Px = px1 + px2
                     Py = py1 + py2
                     Pz = pz1 + pz2
@@ -300,42 +302,42 @@ class Task(object):
                     M_AtoP = ROOT.TMatrixD(4,6)
                     MT_AtoP = ROOT.TMatrixD(6,4)
                     covA = ROOT.TMatrixD(6,6)
-                    M_AtoP[0][0] = (1.-a3*a3/A5)/(a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[0][1] = (-a3*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[0][2] = (-a3)/(a5*a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[0][3] = (1.-a6*a6/A8)/(a8*ROOT.TMath.Sqrt(A8))
-                    M_AtoP[0][4] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
-                    M_AtoP[0][5] = (-a6)/(a8*a8*ROOT.TMath.Sqrt(A8))
+                    M_AtoP[0][0] = old_div((1.-a3*a3/A5),(a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[0][1] = old_div((-a3*a4/A5),(a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[0][2] = old_div((-a3),(a5*a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[0][3] = old_div((1.-a6*a6/A8),(a8*ROOT.TMath.Sqrt(A8)))
+                    M_AtoP[0][4] = old_div((-a6*a7/A8),(a8*ROOT.TMath.Sqrt(A8)))
+                    M_AtoP[0][5] = old_div((-a6),(a8*a8*ROOT.TMath.Sqrt(A8)))
 
-                    M_AtoP[1][0] = (-a3*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[1][1] = (1.-a4*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[1][2] = (-a4)/(a5*a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[1][3] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
-                    M_AtoP[1][4] = (1.-a7*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
-                    M_AtoP[1][5] = (-a7)/(a8*a8*ROOT.TMath.Sqrt(A8))
+                    M_AtoP[1][0] = old_div((-a3*a4/A5),(a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[1][1] = old_div((1.-a4*a4/A5),(a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[1][2] = old_div((-a4),(a5*a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[1][3] = old_div((-a6*a7/A8),(a8*ROOT.TMath.Sqrt(A8)))
+                    M_AtoP[1][4] = old_div((1.-a7*a7/A8),(a8*ROOT.TMath.Sqrt(A8)))
+                    M_AtoP[1][5] = old_div((-a7),(a8*a8*ROOT.TMath.Sqrt(A8)))
 
-                    M_AtoP[2][0] = (-a3/A5)/(a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[2][1] = (-a4/A5)/(a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[2][2] = (-1.)/(a5*a5*ROOT.TMath.Sqrt(A5))
-                    M_AtoP[2][3] = (-a6/A8)/(a8*ROOT.TMath.Sqrt(A8))
-                    M_AtoP[2][4] = (-a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
-                    M_AtoP[2][5] = (-1.)/(a8*a8*ROOT.TMath.Sqrt(A8))
+                    M_AtoP[2][0] = old_div((old_div(-a3,A5)),(a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[2][1] = old_div((old_div(-a4,A5)),(a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[2][2] = old_div((-1.),(a5*a5*ROOT.TMath.Sqrt(A5)))
+                    M_AtoP[2][3] = old_div((old_div(-a6,A8)),(a8*ROOT.TMath.Sqrt(A8)))
+                    M_AtoP[2][4] = old_div((old_div(-a7,A8)),(a8*ROOT.TMath.Sqrt(A8)))
+                    M_AtoP[2][5] = old_div((-1.),(a8*a8*ROOT.TMath.Sqrt(A8)))
 
                     a5a8 = a5*a8*ROOT.TMath.Sqrt(A5)*ROOT.TMath.Sqrt(A8)
 
-                    M_AtoP[3][0] = (-2*a6/a5a8 + 2*a3*E2/(a5*a5*A5*E1))/MM
-                    M_AtoP[3][1] = (-2*a7/a5a8 + 2*a4*E2/(a5*a5*A5*E1))/MM
-                    M_AtoP[3][2] = (2*(1+a3*a6+a4*a7)/(a5*a5a8) - 2*(1.+a3*a3+a4*a4)*E2/(a5*a5*a5*A5*E1))/MM
-                    M_AtoP[3][3] = (-2*a3/a5a8 + 2*a6*E1/(a8*a8*A8*E2))/MM
-                    M_AtoP[3][4] = (-2*a4/a5a8 + 2*a7*E1/(a8*a8*A8*E2))/MM
-                    M_AtoP[3][5] = (2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2))/MM
+                    M_AtoP[3][0] = old_div((-2*a6/a5a8 + 2*a3*E2/(a5*a5*A5*E1)),MM)
+                    M_AtoP[3][1] = old_div((-2*a7/a5a8 + 2*a4*E2/(a5*a5*A5*E1)),MM)
+                    M_AtoP[3][2] = old_div((2*(1+a3*a6+a4*a7)/(a5*a5a8) - 2*(1.+a3*a3+a4*a4)*E2/(a5*a5*a5*A5*E1)),MM)
+                    M_AtoP[3][3] = old_div((-2*a3/a5a8 + 2*a6*E1/(a8*a8*A8*E2)),MM)
+                    M_AtoP[3][4] = old_div((-2*a4/a5a8 + 2*a7*E1/(a8*a8*A8*E2)),MM)
+                    M_AtoP[3][5] = old_div((2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2)),MM)
 
                     for i in range(4):
                         for j in range(6):
                             MT_AtoP[j][i] = M_AtoP[i][j]
 
                     for i in range(36):
-                        covA[i/6][i%6] = cov[i/6+3+(i%6+3)*9]
+                        covA[old_div(i,6)][i%6] = cov[old_div(i,6)+3+(i%6+3)*9]
 
                     tmp   = ROOT.TMatrixD(4,6)
                     tmp.Mult(M_AtoP,covA)
@@ -381,9 +383,9 @@ class Task(object):
         ca  = c-a
         denom = Usq*Vsq-UV**2
         tmp2 = Vsq*u-UV*v
-        Va = ca.Dot(tmp2)/denom
+        Va = old_div(ca.Dot(tmp2),denom)
         tmp2 = UV*u-Usq*v
-        Vb = ca.Dot(tmp2)/denom
+        Vb = old_div(ca.Dot(tmp2),denom)
         X = (a+c+Va*u+Vb*v) * 0.5
         l1 = a - X + u*Va  # l2 = c - X + v*Vb
         dist = 2. * ROOT.TMath.Sqrt( l1.Dot(l1) )

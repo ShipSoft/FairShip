@@ -4,6 +4,8 @@
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import ROOT, os
@@ -148,7 +150,7 @@ def initialize(fGeo):
         if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
 
         #z positions of Y view of stations   
-        Zpos = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
+        Zpos = TStationz+(vnb-old_div(3.,2.))*ShipGeo.strawtubes.DeltazView+(float(pnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazLayer 
         zlayer[i]=[Zpos]
 
     #z-positions for stereo views
@@ -168,7 +170,7 @@ def initialize(fGeo):
         if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
 
         #z positions of u,v view of stations   
-        Zpos_u = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
+        Zpos_u = TStationz+(vnb-old_div(3.,2.))*ShipGeo.strawtubes.DeltazView+(float(pnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazLayer 
         zlayerv2[i]=[Zpos_u]
 
 
@@ -187,7 +189,7 @@ def initialize(fGeo):
         if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
 
         #z positions of x1 view of stations   
-        Zpos = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
+        Zpos = TStationz+(vnb-old_div(3.,2.))*ShipGeo.strawtubes.DeltazView+(float(pnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazLayer 
         z34layer[i]=[Zpos]
 
 
@@ -207,12 +209,12 @@ def initialize(fGeo):
         if (i==3 or i==4 or i==7 or i==8 or i==11 or i==12 or i==15 or i==16) : pnb=1.
 
         #z positions of u,v view of stations   
-        Zpos_u = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
+        Zpos_u = TStationz+(vnb-old_div(3.,2.))*ShipGeo.strawtubes.DeltazView+(float(pnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazLayer 
         z34layerv2[i]=[Zpos_u]
 
     VetoStationZ = ShipGeo.vetoStation.z
     if debug==1: print("VetoStation midpoint z=",VetoStationZ)
-    VetoStationEndZ=VetoStationZ+(ShipGeo.strawtubes.DeltazView+ShipGeo.strawtubes.OuterStrawDiameter)/2
+    VetoStationEndZ=VetoStationZ+old_div((ShipGeo.strawtubes.DeltazView+ShipGeo.strawtubes.OuterStrawDiameter),2)
     for i in range(1,5):   
         if i==1: TStationz = ShipGeo.TrackStation1.z
         if i==2: TStationz = ShipGeo.TrackStation2.z  
@@ -223,11 +225,11 @@ def initialize(fGeo):
             for vnb in range(0,4):
                 for pnb in range (0,2):
                     for lnb in range (0,2):
-                        Zpos = TStationz+(vnb-3./2.)*ShipGeo.strawtubes.DeltazView+(float(pnb)-1./2.)*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-1./2.)*ShipGeo.strawtubes.DeltazLayer 
+                        Zpos = TStationz+(vnb-old_div(3.,2.))*ShipGeo.strawtubes.DeltazView+(float(pnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazPlane+(float(lnb)-old_div(1.,2.))*ShipGeo.strawtubes.DeltazLayer 
                         print("TStation=",i,"view=",vnb,"plane=",pnb,"layer=",lnb,"z=",Zpos)
 
-    TStation1StartZ=zlayer[1][0]-ShipGeo.strawtubes.OuterStrawDiameter/2
-    TStation4EndZ=z34layer[16][0]+ShipGeo.strawtubes.OuterStrawDiameter/2
+    TStation1StartZ=zlayer[1][0]-old_div(ShipGeo.strawtubes.OuterStrawDiameter,2)
+    TStation4EndZ=z34layer[16][0]+old_div(ShipGeo.strawtubes.OuterStrawDiameter,2)
 
     return 
 
@@ -337,7 +339,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
             continue  
         ahit = sTree.strawtubesPoint[i] 
         #is hit inside acceptance? if not mark the track as bad   
-        if (((ahit.GetX()/245.)**2 + (ahit.GetY()/495.)**2) >= 1.): 
+        if (((old_div(ahit.GetX(),245.))**2 + (old_div(ahit.GetY(),495.))**2) >= 1.): 
             if ahit.GetTrackID() not in trackoutsidestations:
                 trackoutsidestations.append(ahit.GetTrackID())
         if ahit.GetTrackID() not in MCTrackIDs:
@@ -527,7 +529,7 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
         #only look at hits in the strawtracking stations
         if (str(ahit.GetDetectorID())[:1]=="5") : continue
         #is hit inside acceptance?  
-        if (((ahit.GetX()/245.)**2 + (ahit.GetY()/495.)**2) >= 1.): continue
+        if (((old_div(ahit.GetX(),245.))**2 + (old_div(ahit.GetY(),495.))**2) >= 1.): continue
 
         modules["Strawtubes"].StrawEndPoints(ahit.GetDetectorID(),bot,top)    
         if cheated==False : 
@@ -600,35 +602,35 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
             if items in ReconstructibleMCTracks: total1hits=total1hits+station1hits[items]     
         else : total1hits=total1hits+station1hits[items]
     if len(station1hits) > 0 : 
-        hits1pertrack=total1hits/len(station1hits)
+        hits1pertrack=old_div(total1hits,len(station1hits))
     for items in station12xhits:
         if monitor==True:
             if items in ReconstructibleMCTracks: total12xhits=total12xhits+station12xhits[items]     
         else: total12xhits=total12xhits+station12xhits[items]
-    if len(station12xhits) > 0 : hits12xpertrack=total12xhits/len(station12xhits)
+    if len(station12xhits) > 0 : hits12xpertrack=old_div(total12xhits,len(station12xhits))
     for items in station12yhits:
         if monitor==True:
             if items in ReconstructibleMCTracks: total12yhits=total12yhits+station12yhits[items]        
         else: total12yhits=total12yhits+station12yhits[items]
-    if len(station12yhits) > 0 : hits12ypertrack=total12yhits/len(station12yhits)
+    if len(station12yhits) > 0 : hits12ypertrack=old_div(total12yhits,len(station12yhits))
     for items in station2hits:
         if monitor==True:
             if items in ReconstructibleMCTracks: total2hits=total2hits+station2hits[items]
         else: total2hits=total2hits+station2hits[items]
     if len(station2hits) > 0 : 
-        hits2pertrack=total2hits/len(station2hits)
+        hits2pertrack=old_div(total2hits,len(station2hits))
     for items in station3hits:
         if monitor==True:
             if items in ReconstructibleMCTracks: total3hits=total3hits+station3hits[items]     
         else: total3hits=total3hits+station3hits[items]
     if len(station3hits) > 0 : 
-        hits3pertrack=total3hits/len(station3hits)
+        hits3pertrack=old_div(total3hits,len(station3hits))
     for items in station4hits:
         if monitor==True:
             if items in ReconstructibleMCTracks: total4hits=total4hits+station4hits[items]  
         else:  total4hits=total4hits+station4hits[items]
     if len(station4hits) > 0 : 
-        hits4pertrack=total4hits/len(station4hits)  
+        hits4pertrack=old_div(total4hits,len(station4hits))  
 
     rc=h['hits1-4'].Fill(hits1pertrack+hits2pertrack+hits3pertrack+hits4pertrack)  
     rc=h['hits1'].Fill(hits1pertrack)  
@@ -697,7 +699,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 
     for item in StrawRaw:  
         #y hits for horizontal straws
-        rawhits[j]=copy.deepcopy(((StrawRaw[item][1]+StrawRaw[item][4])/2,(StrawRaw[item][2]+StrawRaw[item][5])/2,StrawRaw[item][6]))
+        rawhits[j]=copy.deepcopy((old_div((StrawRaw[item][1]+StrawRaw[item][4]),2),old_div((StrawRaw[item][2]+StrawRaw[item][5]),2),StrawRaw[item][6]))
         if firsttwo==True: 
             if debug==1: print("rawhits[",j,"]=",rawhits[j],"trackid",StrawRawLink[item][0].GetTrackID(),"strawname",StrawRawLink[item][0].GetDetectorID(),"true x",StrawRawLink[item][0].GetX(),"true y",StrawRawLink[item][0].GetY(),"true z",StrawRawLink[item][0].GetZ())
         j=j+1    
@@ -941,7 +943,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
                 ptmp=math.sqrt(px**2+py**2+pz**2)
                 if debug==1:
                     print("      p",ptmp,"px",px,"py",py,"pz",pz)
-                if tan==0. : tan=py/pz
+                if tan==0. : tan=old_div(py,pz)
                 if cst==0. : cst=StrawRawLink[hits[ipl][2][indx]][0].GetY()-tan*zlayer[ipl][0]
                 rc=h['disthittoYviewMCtrack'].Fill(dist2line(tan,cst,hitpoint))
 
@@ -1066,7 +1068,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
                     rc=h['disthittostereotrack'].Fill(dist2line(stereofitt,stereofitc,hitpointx)) 
                     if pxMC==0. :  pxMC=StrawRawLink[v2hits[ipl][2][indx]][0].GetPx()
                     if pzMC ==0. : pzMC=StrawRawLink[v2hits[ipl][2][indx]][0].GetPz()
-                    if stereotanMCv==0. : stereotanMCv=pxMC/pzMC
+                    if stereotanMCv==0. : stereotanMCv=old_div(pxMC,pzMC)
                     if stereocstMCv==0. : stereocstMCv=StrawRawLink[v2hits[ipl][2][indx]][0].GetX()-stereotanMCv*zlayerv2[ipl][0]
                     rc=h['disthittostereoMCtrack'].Fill(dist2line(stereotanMCv,stereocstMCv,hitpointx))
 
@@ -1277,7 +1279,7 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
     pval = fitStatus.getPVal()
 
     #pval close to 0 indicates a bad fit
-    chi2        = fitStatus.getChi2()/nmeas
+    chi2        = old_div(fitStatus.getChi2(),nmeas)
 
     rc=h['chi2fittedtracks'].Fill(chi2)
     rc=h['pvalfittedtracks'].Fill(pval) 
@@ -1287,7 +1289,7 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
     fittedMom = fittedState.getMomMag()  
     fittedMom = fittedMom*int(charge) 
 
-    if math.fabs(pinv) > 0.0 : rc=h['pvspfitted'].Fill(1./pinv,fittedMom) 
+    if math.fabs(pinv) > 0.0 : rc=h['pvspfitted'].Fill(old_div(1.,pinv),fittedMom) 
     fittedtrackDir = fittedState.getDir()
     fittedx=math.degrees(math.acos(fittedtrackDir[0]))
     fittedy=math.degrees(math.acos(fittedtrackDir[1]))
@@ -1347,7 +1349,7 @@ def ptrack(zlayer,ptrackhits,nrwant,window):
                                 if  ptrackhits[ilast][1][il]==0:	     
                                     xlast= ptrackhits[ilast][0][il]
                                     nrhitsfound=2
-                                    tancand=(xlast-xfirst)/dz
+                                    tancand=old_div((xlast-xfirst),dz)
                                     #fill temporary hit list for track-candidate with -1
                                     trcand=(i_2-i_1+2)*[-1]
                                     #loop over in between planes
@@ -1406,7 +1408,7 @@ def line2plane(fitt,fitc,uvview,zuv):
     for i in range(len(yb)):
     #f2=(term-yb[i])/(yt[i]-yb[i])
     #xint=xb[i]+f2*(xt[i]-xb[i])
-        f2=(term-yb[i])/(yb[i]-yt[i])
+        f2=old_div((term-yb[i]),(yb[i]-yt[i]))
         xint=xb[i]+f2*(xb[i]-xt[i])
         c=uvview[4][i]
         #do they cross inside sensitive volume defined by top/bottom of straw?
@@ -1435,19 +1437,19 @@ def fitline(indices,xhits,zhits,resolution):
         if indx>-1:
                 #n+=1
                 #weigh points accordint to their distance to the wire
-            weight=1/math.sqrt(xhits[ipl][3][indx]**2+resolution**2)
+            weight=old_div(1,math.sqrt(xhits[ipl][3][indx]**2+resolution**2))
             x=zhits[ipl][0]
             y=xhits[ipl][0][indx]
             sumweight+=weight
             sumweightx+=weight*x
             sumweighty+=weight*y
-    xmean=sumweightx/sumweight
-    ymean=sumweighty/sumweight	 
+    xmean=old_div(sumweightx,sumweight)
+    ymean=old_div(sumweighty,sumweight)	 
     for ipl in range(1,len(indices)):
         indx= indices[ipl]
         if indx>-1:
             n+=1
-            weight=1/math.sqrt(xhits[ipl][3][indx]**2+resolution**2)
+            weight=old_div(1,math.sqrt(xhits[ipl][3][indx]**2+resolution**2))
             x=zhits[ipl][0]
             y=xhits[ipl][0][indx]       
             Dw+=weight*(x-xmean)**2
@@ -1456,10 +1458,10 @@ def fitline(indices,xhits,zhits,resolution):
             sumx2+=zhits[ipl][0]**2
             sumxy+=xhits[ipl][0][indx]*zhits[ipl][0]
             sumy+=xhits[ipl][0][indx]
-    fitt=(1/Dw)*term
+    fitt=(old_div(1,Dw))*term
     fitc=ymean-fitt*xmean	 
-    unweightedfitt=(sumxy-sumx*sumy/n)/(sumx2-sumx**2/n)
-    unweightedfitc=(sumy-fitt*sumx)/n
+    unweightedfitt=old_div((sumxy-sumx*sumy/n),(sumx2-old_div(sumx**2,n)))
+    unweightedfitc=old_div((sumy-fitt*sumx),n)
     return fitt,fitc
 
 def IP(s, t, b):
@@ -1488,7 +1490,7 @@ def fracMCsame(trackids):
     tmax=max(track, key=track.get)
 
     frac=0.
-    if nh>0: frac=float(track[tmax])/float(nh)
+    if nh>0: frac=old_div(float(track[tmax]),float(nh))
     return frac,tmax     
 
 def match_tracks(t1,t2,zmagnet,Bdl):
@@ -1511,7 +1513,7 @@ def match_tracks(t1,t2,zmagnet,Bdl):
     dy=y1m-y2m
 
     alpha=math.atan(t1[4])-math.atan(t2[4])
-    pinv=math.sin(alpha)/(Bdl*0.3)
+    pinv=old_div(math.sin(alpha),(Bdl*0.3))
     return dx,dy,alpha,pinv
 
 def dist2line(tan,cst,points):
@@ -1682,7 +1684,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
                     #loop until we get the particle of this track  
                     particle12   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())
                     try:
-                        charge12=particle12.Charge()/3.
+                        charge12=old_div(particle12.Charge(),3.)
                         break
                     except:
                         continue   
@@ -1699,7 +1701,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
                     if ids != 999 :  
                         particle34   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())
                         try:
-                            charge34=particle34.Charge()/3.
+                            charge34=old_div(particle34.Charge(),3.)
                             break
                         except:
                             continue   
@@ -1714,7 +1716,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
                 p2x=px34[item1]
                 p2y=py34[item1]
                 p2z=pz34[item1]
-                p2true=1./math.sqrt(p2x**2+p2y**2+p2z**2)
+                p2true=old_div(1.,math.sqrt(p2x**2+p2y**2+p2z**2))
                 if debug==1: print("Matching 1&2 track",item,"with 3&4 track",item1,"dx",dx,"dy",dy,"alpha",alpha,"pinv",pinv,"1/p2true",p2true)
                 rc=h['dx-matchedtracks'].Fill(dx)
                 rc=h['dy-matchedtracks'].Fill(dy)
@@ -1722,7 +1724,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
                     #match found between track nr item in stations 12 & item1 in stations 34 
                     #get charge from deflection and check if it corresponds to the MC truth
                     #field is horizontal (x) hence deflection in y
-                    tantheta=(tgy1-tgy2)/(1+tgy1*tgy2)
+                    tantheta=old_div((tgy1-tgy2),(1+tgy1*tgy2))
                     if tantheta>0 : 
                         charge="-1" 
                         if charge34>0: 
@@ -1758,7 +1760,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
                             if v==trackid34[item1]: MatchedReconstructibleMCTracks[k]=v
                     p2true=p2true*int(charge)
                     rc=h['pinvvstruepinv'].Fill(p2true,pinv)
-                    if math.fabs(pinv) > 0.0 : rc=h['ptrue-p/ptrue'].Fill((pinv-p2true)/pinv)
+                    if math.fabs(pinv) > 0.0 : rc=h['ptrue-p/ptrue'].Fill(old_div((pinv-p2true),pinv))
 
                     if cheated==False: 
                         hitPosList=[]             
@@ -1789,7 +1791,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
                         rep = ROOT.genfit.RKTrackRep(pdg)   
                         posM = ROOT.TVector3(0, 0, 0)
                         #would be the correct way but due to uncertainties on small angles the sqrt is often negative
-                        if math.fabs(pinv) > 0.0 : momM = ROOT.TVector3(0,0,int(charge)/pinv)
+                        if math.fabs(pinv) > 0.0 : momM = ROOT.TVector3(0,0,old_div(int(charge),pinv))
                         else: momM = ROOT.TVector3(0,0,999)   
                         covM = ROOT.TMatrixDSym(6)
                         resolution = ShipGeo.strawtubes.sigma_spatial  

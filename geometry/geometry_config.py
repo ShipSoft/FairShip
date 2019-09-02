@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 import shipunit as u
 import ROOT as r
@@ -78,29 +80,29 @@ with ConfigRegistry.register_config("basic") as c:
     z4=2438.*u.cm+magnetIncrease+extraVesselLength
     if strawDesign != 4 and strawDesign != 10:
         print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
-        1/0 
+        old_div(1,0) 
     else:
         c.chambers.Length = totalLength
         c.chambers.Tub1length = 2.5*u.m
-        c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
+        c.chambers.Tub2length = 17.68*u.m+old_div(extraVesselLength,2.)
         c.chambers.Tub3length = 0.8*u.m
-        c.chambers.Tub4length = 2.*u.m+magnetIncrease/2.
+        c.chambers.Tub4length = 2.*u.m+old_div(magnetIncrease,2.)
         c.chambers.Tub5length = 0.8*u.m
-        c.chambers.Tub6length = 0.1*u.m+windowBulge/2.
+        c.chambers.Tub6length = 0.1*u.m+old_div(windowBulge,2.)
         c.chambers.Rmin = 245.*u.cm
         c.chambers.Rmax = 250.*u.cm
         # positions and lenghts of vacuum tube segments
         zset=z4-4666.*u.cm-magnetIncrease-extraVesselLength
         c.Chamber1 = AttrDict(z=zset)
-        zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
+        zset=z4-2628.*u.cm-magnetIncrease-old_div(extraVesselLength,2.)
         c.Chamber2 = AttrDict(z=zset)
         zset=z4-740.*u.cm-magnetIncrease
         c.Chamber3 = AttrDict(z=zset)  
-        zset=z4-420.*u.cm-magnetIncrease/2.  
+        zset=z4-420.*u.cm-old_div(magnetIncrease,2.)  
         c.Chamber4 = AttrDict(z=zset)
         zset=z4-100.*u.cm
         c.Chamber5 = AttrDict(z=zset)
-        zset=z4+30.*u.cm+windowBulge/2.
+        zset=z4+30.*u.cm+old_div(windowBulge,2.)
         c.Chamber6 = AttrDict(z=zset)
         c.Veto = AttrDict(z=0*u.cm)
         c.Veto.innerSupport = 3.*u.cm 
@@ -145,8 +147,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.strawtubes.StrawPitch         = 1.76*u.cm  
         c.strawtubes.DeltazLayer        = 1.1*u.cm   
         c.strawtubes.DeltazPlane        = 2.6*u.cm   
-        c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch  / 2.
-        c.strawtubes.YPlaneOffset = c.strawtubes.StrawPitch  / 4.
+        c.strawtubes.YLayerOffset = old_div(c.strawtubes.StrawPitch, 2.)
+        c.strawtubes.YPlaneOffset = old_div(c.strawtubes.StrawPitch, 4.)
         c.strawtubes.FrameMaterial      = "aluminium"
         c.strawtubes.FrameLateralWidth  = 1.*u.cm
         c.strawtubes.DeltazFrame        = 10.*u.cm
@@ -164,7 +166,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.WallThickness      = 0.0039*u.cm
     c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
 
-    c.strawtubes.StrawsPerLayer     = int(c.Yheight/c.strawtubes.StrawPitch)
+    c.strawtubes.StrawsPerLayer     = int(old_div(c.Yheight,c.strawtubes.StrawPitch))
     c.strawtubes.ViewAngle          = 5
     c.strawtubes.WireThickness      = 0.003*u.cm
     c.strawtubes.DeltazView         = 10.*u.cm
@@ -189,7 +191,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.dzBarRow = 1.2 * u.cm
     c.TimeDet.dzBarCol = 2.4 * u.cm
     c.TimeDet.zBar = 1 * u.cm
-    c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
+    c.TimeDet.DZ = old_div((c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar), 2)
     c.TimeDet.DX = 250 * u.cm
     c.TimeDet.DY = 500 * u.cm
     c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + c.TimeDet.DZ + 1*u.cm # safety margin
@@ -214,7 +216,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.preshowerOption = 0
     else:
         print("CaloDesign option wrong -> ",CaloDesign)
-        1/0
+        old_div(1,0)
 
     presShowerDeltaZ = 0.
     if c.preshowerOption >0:
@@ -272,13 +274,13 @@ with ConfigRegistry.register_config("basic") as c:
     hcalThickness = 232*u.cm
     if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
-        c.hcal =  AttrDict(z=c.ecal.z + hcalThickness/2. + 45.*u.cm  )
+        c.hcal =  AttrDict(z=c.ecal.z + old_div(hcalThickness,2.) + 45.*u.cm  )
         c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
         c.hcal.File  =  HcalGeoFile
     else:
         c.hcal  =  AttrDict(z=c.ecal.z)
     if c.EcalOption == 1: 
-        c.MuonStation0 = AttrDict(z=c.hcal.z+hcalThickness/2.+20.5*u.cm)
+        c.MuonStation0 = AttrDict(z=c.hcal.z+old_div(hcalThickness,2.)+20.5*u.cm)
     if c.EcalOption == 2: 
         c.MuonStation0 = AttrDict(z=c.SplitCal.ZStart+10*u.cm+c.SplitCal.SplitCalThickness) 
 
@@ -365,7 +367,7 @@ with ConfigRegistry.register_config("basic") as c:
               c.muShield.dZ5 + c.muShield.dZ6 +
               c.muShield.dZ7 + c.muShield.dZ8
         ) + c.muShield.LE
-        c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
+        c.muShield.z = old_div(-(c.decayVolume.length + c.muShield.length), 2.)
 
     if muShieldDesign == 3:
         c.muShield.dZ1 = 3.5*u.m
@@ -391,21 +393,21 @@ with ConfigRegistry.register_config("basic") as c:
     # for passive design, fDesign==1
     if muShieldDesign == 1:
         c.muShield.length =  70*u.m 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2. - c.muShield.LE  # leave some space for nu-tau 
+        c.muShield.z  =  old_div(-c.decayVolume.length,2.)-old_div(c.muShield.length,2.) - c.muShield.LE  # leave some space for nu-tau 
     if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5: 
         c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                             +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
+        c.muShield.z  =  old_div(-c.decayVolume.length,2.)-old_div(c.muShield.length,2.)
     if muShieldDesign == 6: 
         c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
                             +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
+        c.muShield.z  =  old_div(-c.decayVolume.length,2.)-old_div(c.muShield.length,2.)
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     if muShieldDesign > 5:  c.hadronAbsorber.length =  5.00*u.m
     if muShieldDesign > 6:  c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield 
     else:                   c.hadronAbsorber.length =  3.00*u.m
-    c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
+    c.hadronAbsorber.z     =  c.muShield.z - old_div(c.muShield.length,2.) - old_div(c.hadronAbsorber.length,2.)
     if muShieldDesign > 9:  c.hadronAbsorber.WithConstField =  True
 
     c.target               =  AttrDict(z=0*u.cm)
@@ -455,11 +457,11 @@ with ConfigRegistry.register_config("basic") as c:
         c.target.xy  = 30.*u.cm   # full length in x and y
         c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18
     # interaction point, start of target
-    c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
-    c.target.z0  =  c.target.z - c.target.length/2.
+    c.target.z   =  c.hadronAbsorber.z - old_div(c.hadronAbsorber.length,2.) - old_div(c.target.length,2.)
+    c.target.z0  =  c.target.z - old_div(c.target.length,2.)
 
 # for the digitizing step
-    c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
+    c.strawtubes.v_drift = old_div(1.,(30*u.ns/u.mm)) # for baseline NA62 5mm radius straws)
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
     c.strawtubes.StrawLength     = c.xMax
@@ -470,14 +472,14 @@ with ConfigRegistry.register_config("basic") as c:
         zF = c.target.z0+c.zFocusY
         c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
         c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-        c.strawtubes.tr34ydim           = int(c.Yheight/2.)  
+        c.strawtubes.tr34ydim           = int(old_div(c.Yheight,2.))  
     else:
         c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
         c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength
         if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5 # switch of veto strawtracker
-        c.strawtubes.vetoydim           = int(c.Yheight/2.)
-        c.strawtubes.tr12ydim           = int(c.Yheight/2.)
-        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
+        c.strawtubes.vetoydim           = int(old_div(c.Yheight,2.))
+        c.strawtubes.tr12ydim           = int(old_div(c.Yheight,2.))
+        c.strawtubes.tr34ydim           = int(old_div(c.Yheight,2.))
 
     #Parameters for tau neutrino target Magnet
     if nuTauTargetDesign!=2:
@@ -509,7 +511,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.Thickness = scale*40*u.cm
             c.EmuMagnet.PillarX = 0.5*u.m
             c.EmuMagnet.PillarZ = 0.5*u.m
-            c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
+            c.EmuMagnet.PillarY = 10*u.m - old_div(c.EmuMagnet.Y,2) - 0.1*u.mm - c.cave.floorHeightMuonShield
         if c.EmuMagnet.Design<2:
             c.EmuMagnet.WithConstField=True  #older geometries still use constant fields
             c.EmuMagnet.Z = 4.5*u.m
@@ -530,7 +532,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.EmuMagnet.BaseZ = scale*c.EmuMagnet.Z
             c.EmuMagnet.PillarX = 0.5*u.m
             c.EmuMagnet.PillarZ = 0.5*u.m
-            c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
+            c.EmuMagnet.PillarY = 10*u.m - old_div(c.EmuMagnet.Y,2) - 0.1*u.mm - c.cave.floorHeightMuonShield
         #10m is the half-height of the cave
         if c.EmuMagnet.Design == 0: #TP MagnetConfig
             c.EmuMagnet.X = 3.6*u.m
@@ -575,7 +577,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.tauMudet.YFe = c.tauMudet.Ytot - 2*c.tauMudet.YRyoke
             c.tauMudet.PillarX = 40*u.cm
             c.tauMudet.PillarZ = 50*u.cm
-            c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 -10*u.cm - 0.1*u.mm
+            c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - old_div(c.tauMudet.Ytot,2) -10*u.cm - 0.1*u.mm
         c.tauMudet.XRyoke = c.tauMudet.Xtot+20*u.cm
         c.tauMudet.XRyoke_s = c.tauMudet.Xtot
         c.tauMudet.Ztot = 4.76*u.m
@@ -593,7 +595,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.CoilW = 2*u.cm
         c.tauMudet.CoilG = 2*u.cm
         c.tauMudet.N =20
-        c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot/2
+        c.tauMudet.zMudetC = old_div(-c.decayVolume.length,2.) - c.tauMudet.GapD - old_div(c.tauMudet.Ztot,2)
         c.tauMudet.B = 1.5 * u.tesla
     if nuTauTargetDesign==3:
         scaleMudet=1.
@@ -624,14 +626,14 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.deltay = 80* u.cm
         c.tauMudet.Ztot = (c.tauMudet.NRpc+c.tauMudet.NmuRpc)*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
-        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
+        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - old_div(c.tauMudet.Ztot,2)
         #lateral cuts
         c.tauMudet.CutHeight = 100 * u.cm
         c.tauMudet.CutLength = 25 * u.cm
 
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
-        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - 0.1*u.mm
+        c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - old_div(c.tauMudet.Ytot,2) - 0.1*u.mm
     c.tauMudet.XGas =  c.tauMudet.XRpc
     c.tauMudet.YGas =  c.tauMudet.YRpc
     c.tauMudet.ZGas = 1*u.mm
@@ -646,10 +648,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauMudet.ZEle = 1*u.mm
 
     if nuTauTargetDesign==0 or nuTauTargetDesign==1:
-        c.EmuMagnet.zC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot - c.EmuMagnet.GapDown - c.EmuMagnet.Z/2
+        c.EmuMagnet.zC = old_div(-c.decayVolume.length,2.) - c.tauMudet.GapD - c.tauMudet.Ztot - c.EmuMagnet.GapDown - old_div(c.EmuMagnet.Z,2)
 
     if nuTauTargetDesign==3:
-        c.EmuMagnet.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - c.EmuMagnet.Z/2   
+        c.EmuMagnet.zC = c.tauMudet.zMudetC - old_div(c.tauMudet.Ztot,2) - c.EmuMagnet.GapDown - old_div(c.EmuMagnet.Z,2)   
 
     #tau Bricks
     c.NuTauTarget = AttrDict(z=0*u.cm)
@@ -657,7 +659,7 @@ with ConfigRegistry.register_config("basic") as c:
     if nuTauTargetDesign!=2:
         c.NuTauTarget.zC = c.EmuMagnet.zC
     if nuTauTargetDesign==2:
-        c.NuTauTarget.zC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot -2.5*u.m
+        c.NuTauTarget.zC = old_div(-c.decayVolume.length,2.) - c.tauMudet.GapD - c.tauMudet.Ztot -2.5*u.m
 
 
 
@@ -719,7 +721,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.DX = c.tauMudet.XFe
         c.tauHPT.DY = c.tauMudet.YFe
         c.tauHPT.ConcreteX = c.tauHPT.DX
-        c.tauHPT.ConcreteY = c.tauMudet.Ytot/2 - c.tauHPT.DY/2
+        c.tauHPT.ConcreteY = old_div(c.tauMudet.Ytot,2) - old_div(c.tauHPT.DY,2)
         c.tauHPT.ConcreteZ = c.tauHPT.DZ
     if nuTauTargetDesign==3:
         c.tauHPT.SRDY = 10 *u.cm  #additional detectors for improving acceptance
@@ -739,7 +741,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
         if nuTauTargetDesign ==3:
             c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
-            c.NuTauTarget.zC = c.EmuMagnet.zC - c.NuTauTarget.zdim/2.                    
+            c.NuTauTarget.zC = c.EmuMagnet.zC - old_div(c.NuTauTarget.zdim,2.)                    
 
     if nuTauTargetDesign == 2:  #NEW with NO magnet
         c.NuTauTarget.RohG = 0 * u.cm
@@ -754,4 +756,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
-    c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
+    c.NuTauTarget.PillarY = 10*u.m - old_div(c.NuTauTarget.ydim,2) -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield

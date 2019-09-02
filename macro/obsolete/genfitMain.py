@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import range
 # setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
 #-----prepare python exit-----------------------------------------------
@@ -43,7 +45,7 @@ for iEvent in range(0, 100):
     mom.SetMag(ROOT.gRandom.Uniform(0.2, 1.))
 # helix track model
     pdg = 13 # particle pdg code
-    charge = PDG.GetParticle(pdg).Charge()/(3.)
+    charge = old_div(PDG.GetParticle(pdg).Charge(),(3.))
     helix = ROOT.genfit.HelixTrackModel(pos, mom, charge)
     ROOT.SetOwnership( helix, False )
     measurementCreator.setTrackModel(helix)

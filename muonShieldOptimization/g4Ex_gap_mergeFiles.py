@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 # result_1Bn_ecut_5.root  		1E9 with Ecut > 5 GeV
@@ -51,11 +53,11 @@ if JPsi:
                     nevts = int( l[k+len(tag):].replace(')',''))
                 fl.close()
                 files[10.].append(path+'pythia8_Geant4_'+run+str(i)+'_10.0.root')
-                stats[10.].append(nevts/BR)
-                ntot += nevts/BR
+                stats[10.].append(old_div(nevts,BR))
+                ntot += old_div(nevts,BR)
                 print(run+str(i),' --> nevts = ',nevts)
     fnew  = 'pythia8_Geant4_total_Jpsi.root'
-    print('total statistics ',ntot/1.E9,' *1E9')
+    print('total statistics ',old_div(ntot,1.E9),' *1E9')
 #
 if Tau:
     BR = 0.0554
@@ -77,11 +79,11 @@ if Tau:
                     nevts = int( l[k+len(tag):].replace(')',''))
                 fl.close()
                 files[0.].append(path+'pythia8_Geant4_'+run+str(i)+'_0.0.root')
-                stats[0.].append(nevts/BR)
-                ntot += nevts/BR
+                stats[0.].append(old_div(nevts,BR))
+                ntot += old_div(nevts,BR)
                 print(run+str(i),' --> nevts = ',nevts)
     fnew  = 'pythia8_Geant4_total_tauOnly_MoTarget_E0.root'
-    print('total statistics ',ntot/1.E9,' *1E9')
+    print('total statistics ',old_div(ntot,1.E9),' *1E9')
 #
 if MoTarget:
     stats =  {}
@@ -115,7 +117,7 @@ if MoTarget:
                 ntot += nevts
                 print(run+str(i),' --> nevts = ',nevts)
     fnew  = 'pythia8_Geant4_total_MoTarget.root'
-    print('total statistics ',ntot/1.E9,' *1E9')
+    print('total statistics ',old_div(ntot,1.E9),' *1E9')
 
 ntot = {}
 for ecut in stats:
@@ -165,19 +167,19 @@ def makeFinalNtuples(norm=5.E13,opt=''):
                 else: Ekin = ROOT.TMath.Sqrt(Psq)
                 if Yandex:
                     if Ekin < ecut : continue
-                    if Ekin > 5. :     weight = norm/(ntot[5.] + ntot[0.5])
-                    else         :     weight = norm/(ntot[0.5])
+                    if Ekin > 5. :     weight = old_div(norm,(ntot[5.] + ntot[0.5]))
+                    else         :     weight = old_div(norm,(ntot[0.5]))
                 if Yandex2 or Yandex3:
                     if Ekin < ecut : continue
-                    weight = norm/(ntot[10.])
-                if JPsi       :     weight = norm/(ntot[10.])
-                if Tau        :     weight = norm/(ntot[0.])
+                    weight = old_div(norm,(ntot[10.]))
+                if JPsi       :     weight = old_div(norm,(ntot[10.]))
+                if Tau        :     weight = old_div(norm,(ntot[0.]))
                 if MoTarget:
                     if Ekin < ecut : continue
-                    if Ekin > 50.   :     weight = norm/(ntot[0.5] + ntot[10.] + ntot[20.]+ ntot[50.])
-                    elif Ekin > 20.   :   weight = norm/(ntot[0.5] + ntot[10.] + ntot[20.])
-                    elif Ekin > 10. :     weight = norm/(ntot[0.5] + ntot[10.])
-                    else            :     weight = norm/(ntot[0.5])
+                    if Ekin > 50.   :     weight = old_div(norm,(ntot[0.5] + ntot[10.] + ntot[20.]+ ntot[50.]))
+                    elif Ekin > 20.   :   weight = old_div(norm,(ntot[0.5] + ntot[10.] + ntot[20.]))
+                    elif Ekin > 10. :     weight = old_div(norm,(ntot[0.5] + ntot[10.]))
+                    else            :     weight = old_div(norm,(ntot[0.5]))
                 vlist.append(weight)
                 vlist.append( float(ecut) )
                 h['ntuple'].Fill(vlist)

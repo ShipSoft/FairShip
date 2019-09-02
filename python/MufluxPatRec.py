@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 __author__ = 'Mikhail Hushchyn'
@@ -332,7 +334,7 @@ def combine_tracks_before_and_after_the_magnet(short_tracks_12, short_tracks_34,
             i_track_12.append(i_12)
             i_track_34.append(i_34)
             deltas_y.append(abs(y_center_12 - y_center_34))
-            momentums.append(1.03 / (alpha_12 - alpha_34))
+            momentums.append(old_div(1.03, (alpha_12 - alpha_34)))
 
     max_dy = 50
     used_12 = []
@@ -484,7 +486,7 @@ def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
 
     x = k_y * z + b_y
 
-    k = (ytop - ybot) / (xtop - xbot + 10**-6)
+    k = old_div((ytop - ybot), (xtop - xbot + 10**-6))
     b = ytop - k * xtop
     y = k * x + b
 

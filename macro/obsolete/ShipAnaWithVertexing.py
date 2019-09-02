@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 # example for accessing smeared hits and fitted tracks
@@ -145,7 +147,7 @@ def myVertex(t1,t2,PosDir):
     for i in range(3):   S1 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t1][1](i)
     S2=0
     for i in range(3):   S2 += (PosDir[t1][0](i)-PosDir[t2][0](i))*PosDir[t2][1](i)
-    l = (S2-S1*V)/(1-V*V)
+    l = old_div((S2-S1*V),(1-V*V))
     x2 = PosDir[t2][0](0)+l*PosDir[t2][1](0)
     y2 = PosDir[t2][0](1)+l*PosDir[t2][1](1)
     z2 = PosDir[t2][0](2)+l*PosDir[t2][1](2)
@@ -153,7 +155,7 @@ def myVertex(t1,t2,PosDir):
     y1 = PosDir[t1][0](1)+l*PosDir[t1][1](1)
     z1 = PosDir[t1][0](2)+l*PosDir[t1][1](2)
     dist = ROOT.TMath.Sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
-    return (x1+x2)/2.,(y1+y2)/2.,(z1+z2)/2.,dist
+    return old_div((x1+x2),2.),old_div((y1+y2),2.),old_div((z1+z2),2.),dist
 
 # start event loop
 def myEventLoop(N):
@@ -188,7 +190,7 @@ def myEventLoop(N):
             if not fitStatus.isFitConverged() : continue
             fittedTracks[key] = atrack
 # needs different study why fit has not converged, continue with fitted tracks
-            chi2        = fitStatus.getChi2()/nmeas
+            chi2        = old_div(fitStatus.getChi2(),nmeas)
             fittedState = atrack.getFittedState()
             h['chi2'].Fill(chi2,wg)
             h['measVSchi2'].Fill(atrack.getNumPoints(),chi2)
@@ -197,7 +199,7 @@ def myEventLoop(N):
             mcPart    = sTree.MCTrack[mcPartKey]
             if not mcPart : continue
             Ptruth    = mcPart.GetP()
-            delPOverP = (Ptruth - P)/Ptruth
+            delPOverP = old_div((Ptruth - P),Ptruth)
             h['delPOverP'].Fill(Ptruth,delPOverP)
             if chi2>25: continue
             h['delPOverP2'].Fill(Ptruth,delPOverP)

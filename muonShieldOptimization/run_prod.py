@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import os,time,ROOT
@@ -20,7 +22,7 @@ def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
     ntot = sTree.GetEntries()
     fn.Close()
     ns   = 0
-    n3   = int(ntot/ncpu)
+    n3   = int(old_div(ntot,ncpu))
     for i in range(1,ncpu+1):
         d = prefix+str(i)
         if d not in os.listdir('.'): os.system('mkdir '+d)
@@ -220,7 +222,7 @@ def copy2EOS():
     for prod in [610,620]:
         for run in range(0,10):
             prefix = 'muon'+str(prod+run)
-            if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
+            if prod in [610,620] and run == 0: prefix = 'muon'+str(int(old_div(prod,100)))
             for i in range(1,10):
             # requires full path
                 cmd = eos+' cp -r '+os.path.abspath('.')+'/'+prefix+str(i)+'/ /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/'
@@ -232,7 +234,7 @@ def copyFromEOS():
     for prod in [610,620]:
         for run in range(0,10):
             prefix = 'muon'+str(prod+run)
-            if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
+            if prod in [610,620] and run == 0: prefix = 'muon'+str(int(old_div(prod,100)))
             for i in range(1,10):
             # requires full path
                 cmd = eos+' cp -r  /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/ ' +os.path.abspath('.')+'/'+prefix+str(i)+'/'

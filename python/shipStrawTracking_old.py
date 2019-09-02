@@ -4,6 +4,8 @@
 #17-04-2015 comments to EvH
 
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 from builtins import str
 from builtins import range
 import shipPatRec 
@@ -201,29 +203,29 @@ EventLoop(SmearedHits)
 #1/0
 shipPatRec.h['pinvvstruepinv'].Draw('box')
 scale=1.
-if shipPatRec.h['fracsame12'].Integral() !=0 : scale=1/shipPatRec.h['fracsame12'].Integral()
+if shipPatRec.h['fracsame12'].Integral() !=0 : scale=old_div(1,shipPatRec.h['fracsame12'].Integral())
 shipPatRec.h['fracsame12'].Scale(scale)
 scale=1.
-if shipPatRec.h['fracsame12-y'].Integral() !=0 : scale=1/shipPatRec.h['fracsame12-y'].Integral()
+if shipPatRec.h['fracsame12-y'].Integral() !=0 : scale=old_div(1,shipPatRec.h['fracsame12-y'].Integral())
 shipPatRec.h['fracsame12-y'].Scale(scale)
 scale=1.
-if shipPatRec.h['fracsame12-stereo'].Integral() !=0 : scale=1/shipPatRec.h['fracsame12-stereo'].Integral()
+if shipPatRec.h['fracsame12-stereo'].Integral() !=0 : scale=old_div(1,shipPatRec.h['fracsame12-stereo'].Integral())
 shipPatRec.h['fracsame12-stereo'].Scale(scale)
 scale=1.
-if shipPatRec.h['fracsame34'].Integral() !=0 : scale=1/shipPatRec.h['fracsame34'].Integral()
+if shipPatRec.h['fracsame34'].Integral() !=0 : scale=old_div(1,shipPatRec.h['fracsame34'].Integral())
 shipPatRec.h['fracsame34'].Scale(scale)
 scale=1.
-if shipPatRec.h['fracsame34-y'].Integral() !=0 : scale=1/shipPatRec.h['fracsame34-y'].Integral()
+if shipPatRec.h['fracsame34-y'].Integral() !=0 : scale=old_div(1,shipPatRec.h['fracsame34-y'].Integral())
 shipPatRec.h['fracsame34-y'].Scale(scale)
 scale=1.
-if shipPatRec.h['fracsame34-stereo'].Integral() !=0 : scale=1/shipPatRec.h['fracsame34-stereo'].Integral()
+if shipPatRec.h['fracsame34-stereo'].Integral() !=0 : scale=old_div(1,shipPatRec.h['fracsame34-stereo'].Integral())
 shipPatRec.h['fracsame34-stereo'].Scale(scale)
 
 scale=1.
 
 if shipPatRec.monitor==1: 
-    shipPatRec.totalafterpatrec=shipPatRec.totalafterpatrec/(shipPatRec.reconstructiblerequired**2)
-    shipPatRec.totalaftermatching=shipPatRec.totalaftermatching/shipPatRec.reconstructiblerequired
+    shipPatRec.totalafterpatrec=old_div(shipPatRec.totalafterpatrec,(shipPatRec.reconstructiblerequired**2))
+    shipPatRec.totalaftermatching=old_div(shipPatRec.totalaftermatching,shipPatRec.reconstructiblerequired)
 
 rc=shipPatRec.h['eventspassed'].SetBinContent(1,shipPatRec.reconstructibleevents)
 rc=shipPatRec.h['eventspassed'].SetBinContent(2,shipPatRec.reconstructiblehorizontalidsfound12)
