@@ -8,8 +8,8 @@ ROOT.basiclibs()
 
 #-----prepare python exit-----------------------------------------------
 def pyExit():
- global run
- del run
+    global run
+    del run
 import atexit
 atexit.register(pyExit)
 
@@ -122,31 +122,31 @@ print "Real time ",rtime, " s, CPU time ",ctime,"s"
 # ------------------------------------------------------------------------
 
 def someDebug():
- g = ROOT.gROOT
- lm = run.GetListOfModules()
- for x in lm: print x.GetName()
- fGeo = ROOT.gGeoManager
- cave = fGeo.GetTopVolume()
- cave.Draw('ogl')
+    g = ROOT.gROOT
+    lm = run.GetListOfModules()
+    for x in lm: print x.GetName()
+    fGeo = ROOT.gGeoManager
+    cave = fGeo.GetTopVolume()
+    cave.Draw('ogl')
 #
- tf = g.FindObjectAny('cbmroot')
- for l in tf.GetListOfFolders(): print l.GetName()
- l   = tf.FindObject('MCGeoTrack')
- trs = l.FindObject('GeoTracks')
- for x in trs: print x
- l = tf.FindObject('Stack')
- trs = l.FindObject('MCTrack')
- for x in trs: print x
+    tf = g.FindObjectAny('cbmroot')
+    for l in tf.GetListOfFolders(): print l.GetName()
+    l   = tf.FindObject('MCGeoTrack')
+    trs = l.FindObject('GeoTracks')
+    for x in trs: print x
+    l = tf.FindObject('Stack')
+    trs = l.FindObject('MCTrack')
+    for x in trs: print x
 #
- gMC = ROOT.gMC # <ROOT.TVirtualMC* object ("TGeant4") at 0x2a5d3e8>
- fStack = gMC.GetStack()
- gMC.ProcessRun(1) # 1 event
+    gMC = ROOT.gMC # <ROOT.TVirtualMC* object ("TGeant4") at 0x2a5d3e8>
+    fStack = gMC.GetStack()
+    gMC.ProcessRun(1) # 1 event
 #
- gMC.GetMC() # <ROOT.TGeant4 object ("TGeant4")
- g4.NofVolumes()
- g4.StartGeantUI()
+    gMC.GetMC() # <ROOT.TGeant4 object ("TGeant4")
+    g4.NofVolumes()
+    g4.StartGeantUI()
 #
- gPrim = run.GetPrimaryGenerator()
- mch   = gPrim.GetEvent() # <ROOT.FairMCEventHeader object ("MCEventHeader.")
- print mch.GetEventID(),mch.GetZ()
- gPy8 = gPrim.GetListOfGenerators()[0]
+    gPrim = run.GetPrimaryGenerator()
+    mch   = gPrim.GetEvent() # <ROOT.FairMCEventHeader object ("MCEventHeader.")
+    print mch.GetEventID(),mch.GetZ()
+    gPy8 = gPrim.GetListOfGenerators()[0]

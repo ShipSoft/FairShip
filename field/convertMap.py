@@ -85,7 +85,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     rStruct.zMin = rangeInfo['zMin']
     rStruct.zMax = rangeInfo['zMax']
     rStruct.dz = rangeInfo['dz']
-    
+
     # Centre the field map on the local origin (cm)
     x0 = 0.5*(rStruct.xMin + rStruct.xMax)
     y0 = 0.5*(rStruct.yMin + rStruct.yMax)
@@ -97,21 +97,21 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     #z0 = 0.0
 
     print 'Centering field map using co-ordinate shift {0} {1} {2} cm'.format(x0, y0, z0)
-    
+
     # Center co-ordinate range limits (cm)
     rStruct.xMin = rStruct.xMin - x0
     rStruct.xMax = rStruct.xMax - x0
-    
+
     rStruct.yMin = rStruct.yMin - y0
     rStruct.yMax = rStruct.yMax - y0
-    
+
     rStruct.zMin = rStruct.zMin - z0
     rStruct.zMax = rStruct.zMax - z0
 
     print 'x range = {0} to {1}'.format(rStruct.xMin, rStruct.xMax)
     print 'y range = {0} to {1}'.format(rStruct.yMin, rStruct.yMax)
     print 'z range = {0} to {1}'.format(rStruct.zMin, rStruct.zMax)
-    
+
     # Fill info into range tree
     rangeTree.Fill()
 
@@ -132,7 +132,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     dataTree.Branch('Bx', ROOT.AddressOf(dStruct, 'Bx'), 'Bx/F')
     dataTree.Branch('By', ROOT.AddressOf(dStruct, 'By'), 'By/F')
     dataTree.Branch('Bz', ROOT.AddressOf(dStruct, 'Bz'), 'Bz/F')
-                
+
     # Reopen the file and store the information in the ROOT file
     with open(inFileName, 'r') as f:
 
@@ -156,7 +156,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
                 dStruct.Bz = float(sLine[5])
 
                 dataTree.Fill()
-                
+
 
     theFile.cd()
     rangeTree.Write()
@@ -169,7 +169,7 @@ def findRanges(inFileName, cmScale):
     # First read the data file to find the binning and coordinate ranges.
     # Store the unique (ordered) x, y and z values so we can then find the 
     # bin widths, min/max limits and central offset
-    
+
     xArray = []
     yArray = []
     zArray = []

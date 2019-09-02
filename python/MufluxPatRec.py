@@ -14,7 +14,7 @@ def initialize(fgeo):
 def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
     """
     Main function of track pattern recognition.
-    
+
     Parameters:
     -----------
     SmearedHits : list
@@ -28,32 +28,32 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
     # withNTaggerHits = 0
     # TaggerHits = []
 
-    
+
     fittedtrackids = []
     track_hits = {}
     if len(SmearedHits) > 100:
         print "Too large hits in the event!"
         return track_hits
-        
+
     min_hits = 3
     max_shared_hits = 2
-    
+
     #### Separate hits
     SmearedHits_y12, SmearedHits_stereo12, SmearedHits_34 = hits_split(SmearedHits)
 
-                       
+
     #### PatRec in 12y
     short_tracks_y12 = pat_rec_y_views(SmearedHits_y12, min_hits, max_shared_hits)
-        
-    
+
+
     #### PatRec in stereo12
     short_tracks_12 = pet_rec_stereo_views(SmearedHits_stereo12, short_tracks_y12, min_hits)
-    
+
 
     #### PatRec in 34
     short_tracks_34 = pat_rec_y_views(SmearedHits_34, min_hits, max_shared_hits)
 
-    
+
     #### Combine tracks
     z_center=350.75
     track_combinations = combine_tracks_before_and_after_the_magnet(short_tracks_12, short_tracks_34, z_center)
@@ -65,22 +65,22 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
     # Prepare output of PatRec
     track_hits = {}
     for i_track in range(len(track_combinations)):
-    
+
         atrack = track_combinations[i_track]
 
         hits_y12 = atrack['hits_y12']
         hits_stereo12 = atrack['hits_stereo12']
         hits_34 = atrack['hits_y34']
         p = atrack['p']
- 
+
         [k, b] = np.polyfit(atrack['z_y12'], atrack['x_y12'], deg=1)
         x_in_magnet = k * z_center + b
-        
+
         [k, b] = np.polyfit(atrack['z_stereo12'], atrack['y_stereo12'], deg=1)
         y_in_magnet = k * z_center + b
 
         if len(hits_y12) >= min_hits and len(hits_stereo12) >= min_hits and len(hits_34) >= min_hits:
-            
+
             atrack = {'y12': sort_hits(hits_y12), 
                       'stereo12': sort_hits(hits_stereo12), 
                       '34': sort_hits(hits_34), 
@@ -90,7 +90,7 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
                       'y_in_magnet': y_in_magnet}
             track_hits[i_track] = atrack
 
-    
+
     if debug:
         print "Recognized tracks:"
         for i_track in track_hits.keys():
@@ -108,7 +108,7 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
 
 def finalize():
     pass
- 
+
 ###################################################################################################    
 
 def hits_split(SmearedHits):
@@ -130,9 +130,9 @@ def hits_split(SmearedHits):
             SmearedHits_12stereo.append(ahit)
         if is_34:
             SmearedHits_34.append(ahit)
-            
+
     return SmearedHits_12y, SmearedHits_12stereo, SmearedHits_34
-    
+
 
 def pat_rec_y_views(SmearedHits, min_hits=3, max_shared_hits=2):
 
@@ -188,17 +188,17 @@ def pat_rec_y_views(SmearedHits, min_hits=3, max_shared_hits=2):
 
             if len(atrack['hits_y']) >= min_hits:
                 long_tracks.append(atrack)
-                
+
     # Reduce number of clones
     short_tracks = reduce_clones(long_tracks, min_hits, max_shared_hits)
-                
+
     # Fit tracks y12
     for atrack in short_tracks:
         [atrack['k_y'], atrack['b_y']] = np.polyfit(atrack['z_y'], atrack['x_y'], deg=1)
-                
+
     return short_tracks
-    
-    
+
+
 def pet_rec_stereo_views(SmearedHits_stereo, short_tracks_y, min_hits=3):
 
     ### PatRec in stereo12
@@ -212,13 +212,13 @@ def pet_rec_stereo_views(SmearedHits_stereo, short_tracks_y, min_hits=3):
         atrack_y = short_tracks_y[i_track_y]
         k_y = atrack_y['k_y']
         b_y = atrack_y['b_y']
-        
+
         # Get hit zx projections
         for ahit in SmearedHits_stereo:
             y_center  = get_zy_projection(ahit['z'], ahit['xtop'], ahit['ytop'], ahit['xbot'], ahit['ybot'], k_y, b_y)
             ahit['zy_projection'] = y_center
 
-        
+
         temp_tracks_stereo = []
 
         for ahit1 in SmearedHits_stereo:
@@ -282,7 +282,7 @@ def pet_rec_stereo_views(SmearedHits_stereo, short_tracks_y, min_hits=3):
                 if len(atrack['hits_stereo']) >= min_hits:
                     temp_tracks_stereo.append(atrack)
                     long_tracks_stereo.append(atrack)
-                            
+
         # Remove clones
         max_track = None
         max_n_hits = -999
@@ -302,15 +302,15 @@ def pet_rec_stereo_views(SmearedHits_stereo, short_tracks_y, min_hits=3):
             atrack['hits_stereo'] = max_track['hits_stereo']
             atrack['z_stereo'] = max_track['z_stereo']
             atrack['y_stereo'] = max_track['y_stereo']
-            
+
             short_tracks_stereo.append(atrack)
             for ahit in max_track['hits_stereo']:
                 #used_hits.append(ahit['digiHit'])
                 pass
-                
+
     return short_tracks_stereo
-    
-    
+
+
 def combine_tracks_before_and_after_the_magnet(short_tracks_12, short_tracks_34, z_center):
 
     # Combine track y12 and 34 and momentum calculation
@@ -352,9 +352,9 @@ def combine_tracks_before_and_after_the_magnet(short_tracks_12, short_tracks_34,
                     track_combinations.append(atrack)
                     #used_12.append(i_12)
                     #used_34.append(i_34)
-                    
+
     return track_combinations
-    
+
 
 def reduce_clones(long_tracks, min_hits=3, max_shared_hits=2):
 
@@ -377,10 +377,10 @@ def reduce_clones(long_tracks, min_hits=3, max_shared_hits=2):
             short_tracks.append(atrack)
             for ahit in atrack['hits_y']:
                 used_hits.append(ahit['digiHit']) #digiHit
-                
+
     return short_tracks
-    
-    
+
+
 ###################################################################################################
 
 
@@ -478,15 +478,15 @@ def hit_in_window(x, y, k_bin, b_bin, window_width=1.):
 
 
 def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
-    
+
     x = k_y * z + b_y
-    
+
     k = (ytop - ybot) / (xtop - xbot + 10**-6)
     b = ytop - k * xtop
     y = k * x + b
-    
+
     return y
-    
+
 
 def sort_hits(hits):
 
@@ -495,7 +495,7 @@ def sort_hits(hits):
     sort_index = np.argsort(hits_z)
     for i_hit in sort_index:
         sorted_hits.append(hits[i_hit])
-        
+
     return sorted_hits
 
 
@@ -504,5 +504,5 @@ def sort_hits(hits):
 
 
 
-    
-    
+
+

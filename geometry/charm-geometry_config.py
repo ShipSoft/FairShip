@@ -6,23 +6,23 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.MufluxSpectrometer = AttrDict(z = 0*u.cm)  
     # False = charm cross-section; True = muon flux measurement 
-    
+
     if "targetOpt" not in globals():
-       targetOpt = 18 # add extra 20cm of tungsten as per 13/06/2017
+        targetOpt = 18 # add extra 20cm of tungsten as per 13/06/2017
 
     if "Setup" not in globals(): #muon flux or charm xsec measurement
-      Setup = 0    
+        Setup = 0    
 
     if "cTarget" not in globals():
-      cTarget = 3
+        cTarget = 3
 
     if Setup == 0: 
-     c.MufluxSpectrometer.muflux = True
+        c.MufluxSpectrometer.muflux = True
     else: 
-     c.MufluxSpectrometer.muflux = False
+        c.MufluxSpectrometer.muflux = False
 
     c.target = AttrDict(z0=0*u.cm)
-     
+
     c.MufluxTargetStation=AttrDict(z0=0* u.cm)
     c.MufluxTargetStation.absorber_x=120 *u.cm
     c.MufluxTargetStation.absorber_y=97.5*u.cm
@@ -52,7 +52,7 @@ with ConfigRegistry.register_config("basic") as c:
     #c.MufluxTargetStation.floorRPC_z=110.*u.cm   
     c.MufluxTargetStation.floorRPC_y=42.5*u.cm
     c.MufluxTargetStation.floorRPC_z=175.*u.cm  
-    
+
     #BOX (Brick!)
     c.Box = AttrDict(z=0*u.cm)
     c.Box.zBox = 106.66 * u.cm
@@ -61,9 +61,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.EmY = 9.9 * u.cm
     c.Box.PBTh = 0.0175 * u.cm
     if cTarget == 16:
-     c.Box.PasSlabTh = 0.09 * u.cm #passive slab in ECC (run with tungsten)
+        c.Box.PasSlabTh = 0.09 * u.cm #passive slab in ECC (run with tungsten)
     else:
-     c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July 2018 measurement, molybdenum/tungsten for SHiP target replica)
+        c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July 2018 measurement, molybdenum/tungsten for SHiP target replica)
     c.Box.EPlW = 2* c.Box.EmTh + c.Box.PBTh
     c.Box.AllPW = c.Box.PasSlabTh + c.Box.EPlW
     c.Box.BrX = 12.9 *u.cm
@@ -113,7 +113,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =  2.4*u.m    
-    
+
     c.hadronAbsorber.z     =   - c.hadronAbsorber.length/2.
 
     c.target               =  AttrDict(z=0*u.cm)
@@ -157,15 +157,15 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.L18 = 36.47*u.cm
     c.target.sl  =  0.54459*u.cm  # H20 slit *17 times; to get to the measured length by survey 
     c.target.xy  = 10.*u.cm   # new diameter of muflux target    
-    
+
     # 5.0 cm is for front and endcaps
-    
+
     c.target.length = 154.328*u.cm   #from survey 
     # interaction point, start of target
-    
+
     c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
     c.target.z0  =  c.target.z - c.target.length/2.
-    
+
     #PixelModules
 
     c.PixelModules = AttrDict(z = 0*u.cm)
@@ -188,14 +188,14 @@ with ConfigRegistry.register_config("basic") as c:
     # -----Drift tube part --------
     c.MufluxSpectrometer.v_drift = 1./(72*u.ns/u.mm) # 1300 ns max for 36.3 mm drifttubes
     c.MufluxSpectrometer.sigma_spatial = 0.027*u.cm # from Daniel 8feb2018
-    
+
     c.MufluxSpectrometer.TubeLength         = 160.*u.cm
     c.MufluxSpectrometer.TubeLength12       = 110.*u.cm    
     c.MufluxSpectrometer.tr12ydim           = 110.*u.cm
     c.MufluxSpectrometer.tr34xdim           = 200.*u.cm
     c.MufluxSpectrometer.tr12xdim           = 50.*u.cm
     c.MufluxSpectrometer.tr34ydim           = 160.*u.cm
-    
+
     # parameters for drift tubes
     c.MufluxSpectrometer.InnerTubeDiameter  = 3.63*u.cm 
     c.MufluxSpectrometer.WallThickness      = 0.085*u.cm
@@ -215,26 +215,26 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.TubePitch_T2v       = 0.001695*u.cm 
     c.MufluxSpectrometer.DeltazLayer        = 3.64*u.cm
     c.MufluxSpectrometer.DeltazPlane        = 7.7*u.cm
-    
+
     c.MufluxSpectrometer.TubesPerLayer      = 12
     c.MufluxSpectrometer.ViewAngle          = 60.2
     c.MufluxSpectrometer.ViewvAngle         = -60.
     c.MufluxSpectrometer.WireThickness      = 0.0045*u.cm
     c.MufluxSpectrometer.DeltazView         = 15.14*u.cm
-    
+
     c.MufluxSpectrometer.diststereoT1       = 16.08*u.cm  
     c.MufluxSpectrometer.diststereoT2       = 16.27*u.cm        
     c.MufluxSpectrometer.distT1T2           = 11.*u.cm   
     if c.MufluxSpectrometer.muflux == True:
-       c.MufluxSpectrometer.distT3T4           = 1.6*u.m       
+        c.MufluxSpectrometer.distT3T4           = 1.6*u.m       
     else:
-       c.MufluxSpectrometer.distT3T4 = 1.0*u.m   
-            
+        c.MufluxSpectrometer.distT3T4 = 1.0*u.m   
+
     #c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
     #from edms 1825777 + cumer email
     c.MufluxSpectrometer.goliathcentre_to_beam = 17.32*u.cm + (c.Spectrometer.UpCoilH-c.Spectrometer.LowCoilH)/2.
     c.MufluxSpectrometer.goliathcentre = 351.19*u.cm  
-      
+
     c.MufluxSpectrometer.T1x_x=4.22*u.cm
     c.MufluxSpectrometer.T1x_y=-1.995*u.cm
     c.MufluxSpectrometer.T1x_z=0.*u.cm
@@ -271,25 +271,25 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.T4x_2=0.04250*u.cm    
     c.MufluxSpectrometer.T4x_3=-0.00750*u.cm   
     c.MufluxSpectrometer.T4x_4=-0.010*u.cm               
-    
+
     if c.MufluxSpectrometer.muflux == True:    
-       c.Spectrometer.DX = 2.*u.m
-       c.Spectrometer.DY = 1.6*u.m   
-       c.Spectrometer.DZ = 16.*u.cm
+        c.Spectrometer.DX = 2.*u.m
+        c.Spectrometer.DY = 1.6*u.m   
+        c.Spectrometer.DZ = 16.*u.cm
     else:        
-       c.Spectrometer.DX = 1*u.m
-       c.Spectrometer.DY = 0.5*u.m
-       c.Spectrometer.DZ = 13.5 * u.cm
-       c.PixelModules.DX = 1*u.m
-       c.PixelModules.DY = 0.5*u.m
-       c.PixelModules.DZ = 13.5 * u.cm
-       
+        c.Spectrometer.DX = 1*u.m
+        c.Spectrometer.DY = 0.5*u.m
+        c.Spectrometer.DZ = 13.5 * u.cm
+        c.PixelModules.DX = 1*u.m
+        c.PixelModules.DY = 0.5*u.m
+        c.PixelModules.DZ = 13.5 * u.cm
+
     c.MufluxSpectrometer.DX = 2.*u.m
     c.MufluxSpectrometer.DY = 1.6*u.m
     c.MufluxSpectrometer.DZ = 11.72*u.cm
 
     #Adding survey results for charm measurement (Daniel) 
-    
+
     c.MufluxSpectrometer.SurveyCharm_T3ax = 876.075*u.mm 
     c.MufluxSpectrometer.SurveyCharm_T3ay = 101.6*u.mm
     c.MufluxSpectrometer.SurveyCharm_T3az = 15269*u.mm+70*u.mm-8896.09*u.mm #todo: check th 70mm (probably forgt bolt and alignement sphere before)
@@ -323,7 +323,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.MufluxSpectrometer.SurveyCharm_T4tx = 13.6*u.mm
     c.MufluxSpectrometer.SurveyCharm_T4ty = 675*u.mm
     c.MufluxSpectrometer.SurveyCharm_T4tz = 16102.45*u.mm-8896.09*u.mm
-    
+
     #These parameters are used only by the charm detector ---   
     c.Spectrometer.D1Short = 3.36 * u.cm / 2.;
     c.Spectrometer.D1Long = 4 * u.cm;
@@ -336,8 +336,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     #module position naming: "axis"Si"Telescope number"
-    
-		#measured values
+
+                #measured values
     c.PixelModules.xSi = []
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []
@@ -443,8 +443,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.Bvalue = 1 * u.tesla;
 
     #-------------------------------------------------------
-            
-    
+
+
     #Scintillator
     c.Scintillator = AttrDict(z = 0*u.cm)
     c.Scintillator.Scoring1X           = 55.*u.cm
@@ -452,9 +452,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.Scintillator.DistT1              = 11.5*u.cm       
     #c.Scintillator.DistT2              = 135.25*u.cm
     c.Scintillator.DistT2              = 136.26*u.cm 
-                  
+
     c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
-   
+
     c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi    
 
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
@@ -467,22 +467,22 @@ with ConfigRegistry.register_config("basic") as c:
 
 #   Need to add SciFi
     #Muon Filter
-    
+
     c.MuonTagger = AttrDict(z = 0*u.cm)
     c.MuonTagger.PTh = 80 * u.cm;
     c.MuonTagger.PTh1 = 40 * u.cm #last 3 slabs' thickness
     c.MuonTagger.STh = 15.0 * u.cm
-    
+
     #from survey relative to center of RPC system (18.569225 + 0.00326706 ad hoc, iron blocks were measured by hand in survey coords)
     #from survey to FairShip: subtract 8.89608294 m
-          
+
     #from survey 
     c.MuonTagger.RPC1z = -88.160794 * u.cm
     c.MuonTagger.RPC2z = 6.799206 * u.cm  
     c.MuonTagger.RPC3z = 62.194206 * u.cm
     c.MuonTagger.RPC4z = 117.309206 * u.cm   
     c.MuonTagger.RPC5z = 172.119206 * u.cm  
-             
+
     c.MuonTagger.RPCthickness = 8. * u.cm
     c.MuonTagger.VStripx =  0.8625 * u.cm
     c.MuonTagger.VStripx_L =  0.9625 * u.cm    
@@ -497,9 +497,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonTagger.Electrodethickness =  0.275 * u.cm  
     c.MuonTagger.NVstrips =  184
     c.MuonTagger.NHstrips =  116         
-      
-      
-                
+
+
+
     c.MuonTagger.BX = 2.0 *u.m
     c.MuonTagger.BY = 1.3 * u.m
     #c.MuonTagger.BX = 195.5 * u.cm
@@ -510,13 +510,13 @@ with ConfigRegistry.register_config("basic") as c:
     #c.MuonTagger.BZ = 347.3551 * u.cm + 9. * u.cm
     c.MuonTagger.BZ = 352.301706 * u.cm 
     #c.MuonTagger.BZ = 351.975 * u.cm 
-    
+
     if c.MufluxSpectrometer.muflux == True:
-       #for the muflux measurement the muontagger has to be moved back 791.75 measured by hand, 173.6775=347.3551/2
-       #c.MuonTagger.zBox = 791.*u.cm  + 173.67755*u.cm
-       c.MuonTagger.zBox = 791.*u.cm  + 175.9875*u.cm
+        #for the muflux measurement the muontagger has to be moved back 791.75 measured by hand, 173.6775=347.3551/2
+        #c.MuonTagger.zBox = 791.*u.cm  + 173.67755*u.cm
+        c.MuonTagger.zBox = 791.*u.cm  + 175.9875*u.cm
     else:    
-       c.MuonTagger.zBox = c.Spectrometer.zBox + c.PixelModules.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
+        c.MuonTagger.zBox = c.Spectrometer.zBox + c.PixelModules.DimZpixelbox/2. + PixeltoGoliath + c.Spectrometer.TS + 261*u.cm + c.MuonTagger.BZ/2. #real position of MuonTagger
 
     c.MuonTagger.PX = c.MuonTagger.BX
     c.MuonTagger.PY = c.MuonTagger.BY

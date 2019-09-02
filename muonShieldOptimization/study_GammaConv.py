@@ -28,7 +28,7 @@ checkOverlap = True
 outFile = "gconv"+s+".root"
 theSeed      = int(10000 * time.time() % 10000000)
 ecut      = 0.0
-                 
+
 # -------------------------------------------------------------------
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
@@ -53,29 +53,29 @@ cave.SetGeometryFileName("cave.geo")
 run.AddModule(cave)
 
 class Block(ROOT.pyFairModule):
- "block of material"
- def __init__(self): 
-   ROOT.pyFairModule.__init__(self,self)
-   self.sensPlane = None
- def ConstructGeometry(self):
-    print "Construct Block"
-    top=ROOT.gGeoManager.GetTopVolume()
-    geoLoad=ROOT.FairGeoLoader.Instance()
-    geoFace=geoLoad.getGeoInterface()
-    media=geoFace.getMedia()
-    geoBuild=geoLoad.getGeoBuilder()
-    ShipMedium=media.getMedium(material)
-    W = ROOT.gGeoManager.GetMedium(material)
-    if not W: 
-        rc = geoBuild.createMedium(ShipMedium)
+    "block of material"
+    def __init__(self): 
+        ROOT.pyFairModule.__init__(self,self)
+        self.sensPlane = None
+    def ConstructGeometry(self):
+        print "Construct Block"
+        top=ROOT.gGeoManager.GetTopVolume()
+        geoLoad=ROOT.FairGeoLoader.Instance()
+        geoFace=geoLoad.getGeoInterface()
+        media=geoFace.getMedia()
+        geoBuild=geoLoad.getGeoBuilder()
+        ShipMedium=media.getMedium(material)
         W = ROOT.gGeoManager.GetMedium(material)
-    aBox = ROOT.gGeoManager.MakeBox("target", W, 100.*u.cm, 100.*u.cm, thickness)
-    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))
-    if self.sensPlane: self.sensPlane.AddSensitiveVolume(aBox)
- def InitParContainers():
-    print "not implemented!"
- def makeSensitive(self,sensPlane):
-    self.sensPlane = sensPlane
+        if not W: 
+            rc = geoBuild.createMedium(ShipMedium)
+            W = ROOT.gGeoManager.GetMedium(material)
+        aBox = ROOT.gGeoManager.MakeBox("target", W, 100.*u.cm, 100.*u.cm, thickness)
+        top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))
+        if self.sensPlane: self.sensPlane.AddSensitiveVolume(aBox)
+    def InitParContainers():
+        print "not implemented!"
+    def makeSensitive(self,sensPlane):
+        self.sensPlane = sensPlane
 
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
@@ -105,14 +105,14 @@ fStack.SetEnergyCut(-1.)
 
 boostFactor = 100.
 if boostFactor > 1:
- ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
- ROOT.gROOT.ProcessLine('#include "Geant4/G4AnnihiToMuPair.hh"')
- ROOT.gROOT.ProcessLine('#include "Geant4/G4GammaConversionToMuons.hh"')
- gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
- procAnnihil = gProcessTable.FindProcess(ROOT.G4String('AnnihiToMuPair'),ROOT.G4String('e+'))
- procGMuPair = gProcessTable.FindProcess(ROOT.G4String('GammaToMuPair'),ROOT.G4String('gamma'))
- procGMuPair.SetCrossSecFactor(boostFactor)
- procAnnihil.SetCrossSecFactor(boostFactor)
+    ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
+    ROOT.gROOT.ProcessLine('#include "Geant4/G4AnnihiToMuPair.hh"')
+    ROOT.gROOT.ProcessLine('#include "Geant4/G4GammaConversionToMuons.hh"')
+    gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
+    procAnnihil = gProcessTable.FindProcess(ROOT.G4String('AnnihiToMuPair'),ROOT.G4String('e+'))
+    procGMuPair = gProcessTable.FindProcess(ROOT.G4String('GammaToMuPair'),ROOT.G4String('gamma'))
+    procGMuPair.SetCrossSecFactor(boostFactor)
+    procAnnihil.SetCrossSecFactor(boostFactor)
 
 # -----Start run----------------------------------------------------
 run.Run(nev)
@@ -130,14 +130,14 @@ ut.bookHist(h,'muons','muon mult',10,-0.5,9.5)
 ut.bookHist(h,'electrons','e mult',10,-0.5,9.5)
 sTree = f.cbmsim
 for n in range(sTree.GetEntries()):
- rc = sTree.GetEvent(n)
- nMu = 0
- nEl = 0
- for aHit in sTree.vetoPoint:
-   if abs(sTree.MCTrack[aHit.GetTrackID()].GetPdgCode())==13: nMu+=1
-   if abs(sTree.MCTrack[aHit.GetTrackID()].GetPdgCode())==11: nEl+=1
- rc = h['muons'].Fill(nMu)
- rc = h['electrons'].Fill(nEl)
+    rc = sTree.GetEvent(n)
+    nMu = 0
+    nEl = 0
+    for aHit in sTree.vetoPoint:
+        if abs(sTree.MCTrack[aHit.GetTrackID()].GetPdgCode())==13: nMu+=1
+        if abs(sTree.MCTrack[aHit.GetTrackID()].GetPdgCode())==11: nEl+=1
+    rc = h['muons'].Fill(nMu)
+    rc = h['electrons'].Fill(nEl)
 h['muons'].Draw()
 
 # -----Finish-------------------------------------------------------

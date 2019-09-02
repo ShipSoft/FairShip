@@ -59,9 +59,9 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
                             "    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0")
         sumBR=0.
         if getbr_rpvsusy(h,'ds_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("431:addChannel      1  "+str(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR)+\
-                               "    0      -13       9900015")
-           sumBR+=float(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR)
+            P8gen.SetParameters("431:addChannel      1  "+str(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR)+\
+                                "    0      -13       9900015")
+            sumBR+=float(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR)
         if sumBR<1. and sumBR>0.:
             P8gen.SetParameters("431:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
 
@@ -70,11 +70,11 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
                             "    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0")
         sumBR=0.
         if getbr_rpvsusy(h,'d_mu',mass,couplings[1])>0.:
-           P8gen.SetParameters("411:addChannel      1  "+str(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR)+\
-                               "    0      -13       9900015")
-           sumBR+=float(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR)
+            P8gen.SetParameters("411:addChannel      1  "+str(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR)+\
+                                "    0      -13       9900015")
+            sumBR+=float(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR)
         if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("411:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
+            P8gen.SetParameters("411:addChannel      1   "+str(1.-sumBR)+"    0       22      -11")
 
         P8gen.List(9900015)
 
@@ -104,24 +104,24 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
                             "0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0")
         sumBR=0.
         if getbr_rpvsusy(h,'b_tau',mass,couplings[1])>0.:
-           P8gen.SetParameters("521:addChannel      1  "+\
-                               str(getbr_rpvsusy(h,'b_tau',mass,couplings[1])/maxsumBR)+"    0       9900015      -15")
-           sumBR+=float(getbr_rpvsusy(h,'b_tau',mass,couplings[1])/maxsumBR)
+            P8gen.SetParameters("521:addChannel      1  "+\
+                                str(getbr_rpvsusy(h,'b_tau',mass,couplings[1])/maxsumBR)+"    0       9900015      -15")
+            sumBR+=float(getbr_rpvsusy(h,'b_tau',mass,couplings[1])/maxsumBR)
         if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("521:addChannel      1   "+\
-                               str(1.-sumBR)+"    0       22      22")
+            P8gen.SetParameters("521:addChannel      1   "+\
+                                str(1.-sumBR)+"    0       22      22")
 
         #overwrite B0 decays
         P8gen.SetParameters("511:new  B0  Bbar0    1   0   0    5.27958"\
                             "    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0")
         sumBR=0.
         if getbr_rpvsusy(h,'b0_nu_tau',mass,couplings[1])>0.:
-           P8gen.SetParameters("511:addChannel      1  "+\
-                               str(getbr_rpvsusy(h,'b0_nu_tau',mass,couplings[1])/maxsumBR)+\
-                               "   22       9900015      16")
+            P8gen.SetParameters("511:addChannel      1  "+\
+                                str(getbr_rpvsusy(h,'b0_nu_tau',mass,couplings[1])/maxsumBR)+\
+                                "   22       9900015      16")
         if sumBR<1. and sumBR>0.:
-           P8gen.SetParameters("511:addChannel      1   "+\
-                               str(1.-sumBR)+"    0       22      22")
+            P8gen.SetParameters("511:addChannel      1   "+\
+                                str(1.-sumBR)+"    0       22      22")
 
         P8gen.List(9900015)
 

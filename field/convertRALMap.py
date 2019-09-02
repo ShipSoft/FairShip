@@ -52,7 +52,7 @@ def createTextMap(inFileName, outFileName):
     print 'Creating text map {0} from {1}'.format(outFileName, inFileName)
 
     tmpFileName = 'tmpFile.txt'
-    
+
     inFile = open(inFileName, 'r')
     tmpFile = open(tmpFileName, 'w')
 
@@ -66,7 +66,7 @@ def createTextMap(inFileName, outFileName):
     zMin = 0.0
     zMax = 0.0
     dz = 0.0
-    
+
     # Offsets (in cm)
     #ox = 0.0
     #oy = 0.0
@@ -75,7 +75,7 @@ def createTextMap(inFileName, outFileName):
     iLine = 0
     # Convert metres to centimetres
     m2cm = 100.0
-    
+
     # For finding the delta bin widths
     xOld = 0.0
     yOld = 0.0
@@ -122,7 +122,7 @@ def createTextMap(inFileName, outFileName):
                 zMin = z
                 zMax = z
                 zOld = z
-        
+
             if x < xMin:
                 xMin = x
             if x > xMax:
@@ -170,7 +170,7 @@ def createTextMap(inFileName, outFileName):
 
     # Copy the tmp file data
     for tLine in tmpFile2:
-    
+
         outFile.write(tLine)
 
     outFile.close()
@@ -180,7 +180,7 @@ def formatNumber(x):
 
     # To save disk space, reduce the precision of the field value
     # as we go below various thresholds
-    
+
     # Let the general precision be 0.01 mT. Anything below this 
     # is set to zero.
     xWord = '{0:.5f}'.format(x)
@@ -280,7 +280,7 @@ def createRootMap(inFileName, outFileName):
                 #dStruct.z = rStruct.dz*(zBin + 0.5) + rStruct.zMin
 
                 dataTree.Fill()
-                
+
     theFile.cd()
     rangeTree.Write()
     dataTree.Write()

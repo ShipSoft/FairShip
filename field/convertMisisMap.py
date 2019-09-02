@@ -151,7 +151,7 @@ def createRootMap(inFileName, rootFileName):
 
                 # Fill info into range tree
                 rangeTree.Fill()
-                
+
 
             # Field data values start from line 3
             elif iLine > 2:
@@ -169,7 +169,7 @@ def createRootMap(inFileName, rootFileName):
                 dStruct.Bz = float(sLine[5])
 
                 dataTree.Fill()
-                
+
     theFile.cd()
     rangeTree.Write()
     dataTree.Write()

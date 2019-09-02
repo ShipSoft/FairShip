@@ -69,16 +69,16 @@ minval = None  # allows for NaNs
 # ## use command line arguments ?
 narg = len(sys.argv)
 if narg > 1:
-  if narg < 3:
-    print " usage: readMilleBinary.py <file name> <number of records> [<number of records to skip> <minimum value to print derivative>]"
-    sys.exit(2)
-  else:
-    fname = sys.argv[1]
-    mrec = int(sys.argv[2])
-    if narg > 3:
-      skiprec = int(sys.argv[3])
-    if narg > 4:
-      minval = float(sys.argv[4])
+    if narg < 3:
+        print " usage: readMilleBinary.py <file name> <number of records> [<number of records to skip> <minimum value to print derivative>]"
+        sys.exit(2)
+    else:
+        fname = sys.argv[1]
+        mrec = int(sys.argv[2])
+        if narg > 3:
+            skiprec = int(sys.argv[3])
+        if narg > 4:
+            minval = float(sys.argv[4])
 
 #print " input ", fname, mrec, skiprec
 

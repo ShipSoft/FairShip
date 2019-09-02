@@ -9,10 +9,10 @@ PDG = ROOT.TDatabasePDG.Instance()
 masssq = {}
 
 def getMasssq(pid):
-  apid = abs(int(pid))
-  if not apid in masssq:
-    masssq[apid] = PDG.GetParticle(apid).Mass()**2
-  return masssq[apid]
+    apid = abs(int(pid))
+    if not apid in masssq:
+        masssq[apid] = PDG.GetParticle(apid).Mass()**2
+    return masssq[apid]
 
 # prepare muon input for FairShip/Geant4 processing
 # incoming muon,      id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w
@@ -27,25 +27,25 @@ fin = ROOT.TFile(muonIn) # id:px:py:pz:x:y:z:w
 sTree = fin.muons
 
 for k in range(sTree.GetEntries()): 
-  rc = sTree.GetEvent(k)
-  # make n events / muon
-  px,py,pz = sTree.px,sTree.py,sTree.pz
-  x,y,z    = sTree.x,sTree.y,sTree.z
-  pid,w = sTree.id,sTree.w 
-  p = ROOT.TMath.Sqrt(px*px+py*py+pz*pz)
-  E = ROOT.TMath.Sqrt(getMasssq(pid)+p*p)
-  mu = array('d',[pid,px,py,pz,E,x,y,z,w])
-  muPart = ROOT.TVectorD(9,mu)
-  for n in range(nMult):
-     dPart.Clear()
-     iMuon.Clear()
-     iMuon[0] = muPart
-     m = array('d',[pid,px,py,pz,E])
-     part = ROOT.TVectorD(5,m)
+    rc = sTree.GetEvent(k)
+    # make n events / muon
+    px,py,pz = sTree.px,sTree.py,sTree.pz
+    x,y,z    = sTree.x,sTree.y,sTree.z
+    pid,w = sTree.id,sTree.w 
+    p = ROOT.TMath.Sqrt(px*px+py*py+pz*pz)
+    E = ROOT.TMath.Sqrt(getMasssq(pid)+p*p)
+    mu = array('d',[pid,px,py,pz,E,x,y,z,w])
+    muPart = ROOT.TVectorD(9,mu)
+    for n in range(nMult):
+        dPart.Clear()
+        iMuon.Clear()
+        iMuon[0] = muPart
+        m = array('d',[pid,px,py,pz,E])
+        part = ROOT.TVectorD(5,m)
 # copy to branch
-     nPart = dPart.GetEntries()
-     dPart[nPart] = part
-     dTree.Fill()
+        nPart = dPart.GetEntries()
+        dPart[nPart] = part
+        dTree.Fill()
 fout.cd()  
 dTree.Write()
 print "created",sTree.GetEntries()*nMult," events"

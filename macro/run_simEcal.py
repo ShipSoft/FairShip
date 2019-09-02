@@ -19,9 +19,9 @@ if momentum>20 : nEvents=500
 
 print "FairShip setup for",simEngine,"to produce",nEvents,"events"
 if simEngine == "Ntuple" and not inputFile :
-  print 'input file required if simEngine = Ntuple'
+    print 'input file required if simEngine = Ntuple'
 if simEngine == "Pythia6" and not inputFile :
-  print 'pythia6 requires inputfile'
+    print 'pythia6 requires inputfile'
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
@@ -74,12 +74,12 @@ fStack = ROOT.gMC.GetStack()
 # ------------------------------------------------------------------------
 if simEngine != "Genie" and simEngine != "Ntuple":  
 # -----Runtime database---------------------------------------------
- kParameterMerged = ROOT.kTRUE
- parOut = ROOT.FairParRootFileIo(kParameterMerged)
- parOut.open(parFile)
- rtdb.setOutput(parOut)
- rtdb.saveOutput()   # for the moment, it blocks when using Genie, no idea why
- rtdb.printParamContexts()
+    kParameterMerged = ROOT.kTRUE
+    parOut = ROOT.FairParRootFileIo(kParameterMerged)
+    parOut.open(parFile)
+    rtdb.setOutput(parOut)
+    rtdb.saveOutput()   # for the moment, it blocks when using Genie, no idea why
+    rtdb.printParamContexts()
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # ------------------------------------------------------------------------

@@ -25,14 +25,14 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
     maxsumbr=0.0
     sumbrs={}
     for histoname in histograms: 
-       item = histoname.split('_') 
-       lepton = item[len(item)-1]
-       meson = item[0]
-       coupling=couplings[1]
-       try:
-           sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
-       except:
-           sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
+        item = histoname.split('_') 
+        lepton = item[len(item)-1]
+        meson = item[0]
+        coupling=couplings[1]
+        try:
+            sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
+        except:
+            sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
     print(sumbrs.values())
     maxsumbr=max(sumbrs.values())
     return maxsumbr
@@ -40,9 +40,9 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
 def gettotalbrrpvsusy(h,histograms,mass,couplings):
     totalbr=0.0 
     for histoname in histograms: 
-       item = histoname.split('_') 
-       coupling=couplings[1]
-       totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
+        item = histoname.split('_') 
+        coupling=couplings[1]
+        totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
     return totalbr
 
 def make_particles_stable(P8gen, above_lifetime):

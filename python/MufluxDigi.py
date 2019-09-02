@@ -25,11 +25,11 @@ def StripX(x):
     if x <  -total_width/2.  + EXT_STRIP_XWIDTH_L + V_STRIP_OFF/2. : strip_x = 184
     elif x >  total_width/2. - EXT_STRIP_XWIDTH_R - V_STRIP_OFF/2. : strip_x = 1
     else:
-      x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
-      strip_x = -int(x_start/reduced_width*182.)+1
-      if not (0 < strip_x <= NR_VER_STRIPS-1):
-        print "WARNING: X strip outside range!",x,strip_x
-        strip_x = 0
+        x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
+        strip_x = -int(x_start/reduced_width*182.)+1
+        if not (0 < strip_x <= NR_VER_STRIPS-1):
+            print "WARNING: X strip outside range!",x,strip_x
+            strip_x = 0
     return int(strip_x)
 
 def StripY(y):
@@ -135,8 +135,8 @@ class MufluxDigi:
                 if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(s/2)
                 else:                          strip = strip + int(s/2)
                 for i in range(0, s):
-                        detectorid = station*10000 + direction*1000 + strip + i
-                        DetectorID.add(detectorid)
+                    detectorid = station*10000 + direction*1000 + strip + i
+                    DetectorID.add(detectorid)
 
             # y gives horizontal direction
             direction = 0
@@ -151,8 +151,8 @@ class MufluxDigi:
                 if ROOT.gRandom.Rndm() < 0.5:  strip = strip - int(s/2)
                 else:                          strip = strip + int(s/2)
                 for i in range(0, s):
-                        detectorid = station*10000 + direction*1000 + strip + i
-                        DetectorID.add(detectorid)
+                    detectorid = station*10000 + direction*1000 + strip + i
+                    DetectorID.add(detectorid)
 
         self.digiMuonTagger.Expand(len(DetectorID))
         for index, detID in enumerate(DetectorID):

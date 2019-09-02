@@ -19,11 +19,11 @@ def local2Global(n):
     tmp = Info['node'].GetVolume().GetShape()
     Info['material'] = Info['node'].GetVolume().GetMaterial().GetName()
     if options.moreInfo:
-     x = ROOT.gGeoManager.GetVerboseLevel()
-     ROOT.gGeoManager.SetVerboseLevel(0)
-     Info['weight']=Info['node'].GetVolume().Weight() # kg
-     Info['cubicmeter']=Info['node'].GetVolume().Capacity()/1000000. # 
-     ROOT.gGeoManager.SetVerboseLevel(x)
+        x = ROOT.gGeoManager.GetVerboseLevel()
+        ROOT.gGeoManager.SetVerboseLevel(0)
+        Info['weight']=Info['node'].GetVolume().Weight() # kg
+        Info['cubicmeter']=Info['node'].GetVolume().Capacity()/1000000. # 
+        ROOT.gGeoManager.SetVerboseLevel(x)
     o = [tmp.GetOrigin()[0],tmp.GetOrigin()[1],tmp.GetOrigin()[2]]
     Info['locorign'] = o
     local = array('d',o)
@@ -38,57 +38,57 @@ def local2Global(n):
              ]
     shifted = []
     for s in shifts:
-     local = array('d',s)
-     glob  = array('d',[0,0,0])
-     nav.LocalToMaster(local,glob)
-     shifted.append([glob[0],glob[1],glob[2]])
+        local = array('d',s)
+        glob  = array('d',[0,0,0])
+        nav.LocalToMaster(local,glob)
+        shifted.append([glob[0],glob[1],glob[2]])
     Info['boundingbox']={}
     for j in range(3):
-     jmin = 1E30
-     jmax = -1E30
-     for s in shifted:
-       if s[j]<jmin: jmin = s[j]
-       if s[j]>jmax: jmax = s[j]
-     Info['boundingbox'][j]=[jmin,jmax]
+        jmin = 1E30
+        jmax = -1E30
+        for s in shifted:
+            if s[j]<jmin: jmin = s[j]
+            if s[j]>jmax: jmax = s[j]
+        Info['boundingbox'][j]=[jmin,jmax]
     return Info
 
 def print_info(path, node, level, currentlevel, print_sub_det_info=False):
-  sub_nodes = {}
-  fullInfo = {}
-  for subnode in node.GetNodes():
-    name = subnode.GetName()
-    fullInfo[name] = local2Global(path + '/' + name)
-    sub_nodes[name] = fullInfo[name]['origin'][2]
+    sub_nodes = {}
+    fullInfo = {}
+    for subnode in node.GetNodes():
+        name = subnode.GetName()
+        fullInfo[name] = local2Global(path + '/' + name)
+        sub_nodes[name] = fullInfo[name]['origin'][2]
 
-  for name, _ in sorted(list(sub_nodes.items()), key=operator.itemgetter(1)):
-    boundingbox = fullInfo[name]['boundingbox']
+    for name, _ in sorted(list(sub_nodes.items()), key=operator.itemgetter(1)):
+        boundingbox = fullInfo[name]['boundingbox']
 
-    format_string = "{:<28s}: z={:10.4F}cm  dZ={:10.4F}cm  [{:10.4F}   {:10.4F}]"+\
-                    " dx={:10.4F}cm [{:10.4F}   {:10.4F}] dy={:10.4F}cm [{:10.4F}   {:10.4F}] {:>20s}"
+        format_string = "{:<28s}: z={:10.4F}cm  dZ={:10.4F}cm  [{:10.4F}   {:10.4F}]"+\
+                        " dx={:10.4F}cm [{:10.4F}   {:10.4F}] dy={:10.4F}cm [{:10.4F}   {:10.4F}] {:>20s}"
 
-    format_variable = ["   " * int(currentlevel) + name, fullInfo[name]['origin'][2],
-      abs(boundingbox[2][0]-boundingbox[2][1])/2., boundingbox[2][0],boundingbox[2][1],
-      abs(boundingbox[0][0]-boundingbox[0][1])/2., boundingbox[0][0],boundingbox[0][1],
-      abs(boundingbox[1][0]-boundingbox[1][1])/2., boundingbox[1][0],boundingbox[1][1],
-      fullInfo[name]['material']]
+        format_variable = ["   " * int(currentlevel) + name, fullInfo[name]['origin'][2],
+          abs(boundingbox[2][0]-boundingbox[2][1])/2., boundingbox[2][0],boundingbox[2][1],
+          abs(boundingbox[0][0]-boundingbox[0][1])/2., boundingbox[0][0],boundingbox[0][1],
+          abs(boundingbox[1][0]-boundingbox[1][1])/2., boundingbox[1][0],boundingbox[1][1],
+          fullInfo[name]['material']]
 
-    if options.moreInfo:
-      cubicmeter = fullInfo[name]['cubicmeter']
-      weight = fullInfo[name]['weight']
-      format_string += " {:10.1F}kg {:10.1F}m3"
-      format_variable.extend([weight, cubicmeter])
+        if options.moreInfo:
+            cubicmeter = fullInfo[name]['cubicmeter']
+            weight = fullInfo[name]['weight']
+            format_string += " {:10.1F}kg {:10.1F}m3"
+            format_variable.extend([weight, cubicmeter])
 
-    print (format_string.format(*format_variable))
+        print (format_string.format(*format_variable))
 
-    if options.volume in ["", name]:
-      print_sub_det_info = True
+        if options.volume in ["", name]:
+            print_sub_det_info = True
 
-    if print_sub_det_info and currentlevel < level and fullInfo[name]['node'].GetNodes():
-      print_info(fullInfo[name]['path'], fullInfo[name]['node'], level, currentlevel + 1,
-                 print_sub_det_info)
+        if print_sub_det_info and currentlevel < level and fullInfo[name]['node'].GetNodes():
+            print_info(fullInfo[name]['path'], fullInfo[name]['node'], level, currentlevel + 1,
+                       print_sub_det_info)
 
-    if currentlevel == 0:
-      print_sub_det_info = False
+        if currentlevel == 0:
+            print_sub_det_info = False
 
 
 parser = ArgumentParser()
@@ -108,11 +108,11 @@ top = fGeo.GetTopVolume()
 
 
 if options.moreInfo:
- print ("   Detector element             z(midpoint)     halflength       volume-start volume-end   dx"\
-        "                x-start       x-end       dy                y-start       y-end         material          weight  capacity")
+    print ("   Detector element             z(midpoint)     halflength       volume-start volume-end   dx"\
+           "                x-start       x-end       dy                y-start       y-end         material          weight  capacity")
 else:
- print ("   Detector element             z(midpoint)     halflength       volume-start volume-end   dx"\
-        "                x-start       x-end       dy                y-start       y-end         material")
+    print ("   Detector element             z(midpoint)     halflength       volume-start volume-end   dx"\
+           "                x-start       x-end       dy                y-start       y-end         material")
 
 currentlevel = 0
 print_info("", top, int(options.level), currentlevel)

@@ -90,19 +90,19 @@ class MufluxDigiReco:
         # prepare for output
         if simulation:
         # event header
-         self.header  = ROOT.FairEventHeader()
-         self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
-         self.fitTrack2MC  = ROOT.std.vector('int')()
-         self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
-         self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
-         self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
+            self.header  = ROOT.FairEventHeader()
+            self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+            self.fitTrack2MC  = ROOT.std.vector('int')()
+            self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
+            self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
+            self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
         #muon taggger
-         if self.sTree.GetBranch("MuonTaggerPoint"):
-            self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
-            self.digiMuonTaggerBranch = self.sTree.Branch("Digi_MuonTagger", self.digiMuonTagger, 32000, -1)
+            if self.sTree.GetBranch("MuonTaggerPoint"):
+                self.digiMuonTagger = ROOT.TClonesArray("MuonTaggerHit")
+                self.digiMuonTaggerBranch = self.sTree.Branch("Digi_MuonTagger", self.digiMuonTagger, 32000, -1)
         # setup random number generator
-         self.random = ROOT.TRandom()
-         ROOT.gRandom.SetSeed()
+            self.random = ROOT.TRandom()
+            ROOT.gRandom.SetSeed()
         # fitted tracks
         self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
         self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
@@ -131,7 +131,7 @@ class MufluxDigiReco:
 
         if debug:
 
-            # self.fitter.setDebugLvl(1) # produces lot of printout
+                # self.fitter.setDebugLvl(1) # produces lot of printout
             output_dir = 'pics/'
             if os.path.exists(output_dir):
                 print('The directory already exists. It is OK.')
@@ -204,8 +204,8 @@ class MufluxDigiReco:
                 s = np.random.poisson(3)
                 strip = strip - int(s/2)
                 for i in range(0, s):
-                        detectorid = station*10000 + direction*1000 + strip + i
-                        DetectorID.add(detectorid)
+                    detectorid = station*10000 + direction*1000 + strip + i
+                    DetectorID.add(detectorid)
             else:
                 detectorid = station*10000 + direction*1000 + strip
                 DetectorID.add(detectorid)
@@ -220,8 +220,8 @@ class MufluxDigiReco:
                 s = np.random.poisson(3)
                 strip = strip - int(s/2)
                 for i in range(0, s):
-                        detectorid = station*10000 + direction*1000 + strip + i
-                        DetectorID.add(detectorid)
+                    detectorid = station*10000 + direction*1000 + strip + i
+                    DetectorID.add(detectorid)
             else:
                 detectorid = station*10000 + direction*1000 + strip
                 DetectorID.add(detectorid)

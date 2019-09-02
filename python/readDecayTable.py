@@ -31,7 +31,7 @@ def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), 
     configuredDecays = {}
     for row in reader:
         if not row: continue # skip empty lines
-	if str(row[0]).strip().startswith('#'):
+        if str(row[0]).strip().startswith('#'):
             continue # skip comment / header lines
         channel = str(row[0]).strip()
         flag = str(row[-1]).partition('#')[0].strip() # skip line comments
@@ -78,7 +78,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
 def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
     """
     Configures the DP decay table in Pythia8
-    
+
     Inputs:
     - P8gen: an instance of ROOT.HNLPythia8Generator()
     - conffile: a file listing the channels one wishes to activate
@@ -97,9 +97,9 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
         print 'channel wanted:',dec
 
         if allowed[dec] == 'yes' and wanted[dec] == 'yes':
-            
+
             BR = DP.findBranchingRatio(dec)
-            
+
             meMode = 0
             if isResonant: meMode = 103
             if 'hadrons' in dec:

@@ -1,43 +1,43 @@
 import os,time,ROOT
 def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
-  ncpu = 9
-  shipsoft = os.environ['SHIPSOFT'].replace('/dev','')
-  if not y:       
-    f = shipsoft+'/data/pythia8_Geant4_onlyMuons.root'
-    cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
-  elif y=='Jpsi': 
-    f = shipsoft+'/data/pythia8_Geant4_Jpsi_onlyMuons.root'
-    cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
-  else:       
-    f = shipsoft+'/data/pythia8_Geant4_Yandex_onlyMuons.root'
-    cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
-  if phiRandom:  cmd = cmd +' --phiRandom'
-  fn = ROOT.TFile(f)
-  sTree = fn.FindObjectAny('pythia8-Geant4')
-  ntot = sTree.GetEntries()
-  fn.Close()
-  ns   = 0
-  n3   = int(ntot/ncpu)
-  for i in range(1,ncpu+1):
-   d = prefix+str(i)
-   if d not in os.listdir('.'): os.system('mkdir '+d)
-  os.chdir('./'+prefix+'1')
-  for i in range(1,ncpu+1):
-   if i==ncpu: n3 = ntot - (i-1)*n3
-   if X:
-    if X==i: 
-     os.system('cp $FAIRSHIP/macro/run_simScript.py .')
-     os.system(cmd+" -n "+str(n3)+" -i "+str(ns) + " > log &")
-   else:
-    os.system('cp $FAIRSHIP/macro/run_simScript.py .')
-    os.system(cmd+" -n "+str(n3)+" -i "+str(ns) + " > log &")
-    time.sleep(5)
-   #print " -n "+str(n3)+" -i "+str(ns) 
-   ns += n3
-   if i==ncpu: 
-      os.chdir('../')
-      break
-   os.chdir('../'+prefix+str(i+1))
+    ncpu = 9
+    shipsoft = os.environ['SHIPSOFT'].replace('/dev','')
+    if not y:       
+        f = shipsoft+'/data/pythia8_Geant4_onlyMuons.root'
+        cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
+    elif y=='Jpsi': 
+        f = shipsoft+'/data/pythia8_Geant4_Jpsi_onlyMuons.root'
+        cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
+    else:       
+        f = shipsoft+'/data/pythia8_Geant4_Yandex_onlyMuons.root'
+        cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
+    if phiRandom:  cmd = cmd +' --phiRandom'
+    fn = ROOT.TFile(f)
+    sTree = fn.FindObjectAny('pythia8-Geant4')
+    ntot = sTree.GetEntries()
+    fn.Close()
+    ns   = 0
+    n3   = int(ntot/ncpu)
+    for i in range(1,ncpu+1):
+        d = prefix+str(i)
+        if d not in os.listdir('.'): os.system('mkdir '+d)
+    os.chdir('./'+prefix+'1')
+    for i in range(1,ncpu+1):
+        if i==ncpu: n3 = ntot - (i-1)*n3
+        if X:
+            if X==i: 
+                os.system('cp $FAIRSHIP/macro/run_simScript.py .')
+                os.system(cmd+" -n "+str(n3)+" -i "+str(ns) + " > log &")
+        else:
+            os.system('cp $FAIRSHIP/macro/run_simScript.py .')
+            os.system(cmd+" -n "+str(n3)+" -i "+str(ns) + " > log &")
+            time.sleep(5)
+        #print " -n "+str(n3)+" -i "+str(ns) 
+        ns += n3
+        if i==ncpu: 
+            os.chdir('../')
+            break
+        os.chdir('../'+prefix+str(i+1))
 #
 # 11-19 with QGSP_BERT_EMV instead of QGSP_BERT_HP_PEN
 # 51-59 passive shielding
@@ -146,7 +146,7 @@ def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
 #makeProd("muon630",10,False,True) # test with new muonShield code, 3cm smearing
 #makeProd("muon631",10,False,True) # run with concrete wall enabled as sensitive
 #makeProd("muon632",10,False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed
-                                   # but wrong geometry
+                                        # but wrong geometry
 #makeProd("muon810",10,False,False) # start production with latest geometry
 #makeProd("muon820",10,True,False)   
 #makeProd("muon811",10,False,True) # 
@@ -212,26 +212,26 @@ def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
 #makeProd("muon1022",10,True,True)
 
 def copy2EOS():
- import os
- eos = "/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"
- for prod in [610,620]:
-  for run in range(0,10):
-   prefix = 'muon'+str(prod+run)
-   if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
-   for i in range(1,10):
-   # requires full path
-    cmd = eos+' cp -r '+os.path.abspath('.')+'/'+prefix+str(i)+'/ /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/'
-    print cmd
-    os.system(cmd)
+    import os
+    eos = "/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"
+    for prod in [610,620]:
+        for run in range(0,10):
+            prefix = 'muon'+str(prod+run)
+            if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
+            for i in range(1,10):
+            # requires full path
+                cmd = eos+' cp -r '+os.path.abspath('.')+'/'+prefix+str(i)+'/ /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/'
+                print cmd
+                os.system(cmd)
 def copyFromEOS():
- import os
- eos = "/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"
- for prod in [610,620]:
-  for run in range(0,10):
-   prefix = 'muon'+str(prod+run)
-   if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
-   for i in range(1,10):
-   # requires full path
-    cmd = eos+' cp -r  /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/ ' +os.path.abspath('.')+'/'+prefix+str(i)+'/'
-    print cmd
-    os.system(cmd)
+    import os
+    eos = "/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select"
+    for prod in [610,620]:
+        for run in range(0,10):
+            prefix = 'muon'+str(prod+run)
+            if prod in [610,620] and run == 0: prefix = 'muon'+str(int(prod/100))
+            for i in range(1,10):
+            # requires full path
+                cmd = eos+' cp -r  /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/ ' +os.path.abspath('.')+'/'+prefix+str(i)+'/'
+                print cmd
+                os.system(cmd)

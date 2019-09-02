@@ -71,7 +71,7 @@ milliradian = 1.e-3*radian
 degree = (3.14159265358979323846/180.0)*radian
 
 steradian = 1.
-	
+
 # symbols
 rad  = radian
 mrad = milliradian
