@@ -146,21 +146,30 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
 
     # Set the main spectrometer field map as a global field
     if hasattr(shipGeo, 'Bfield'):
+      fieldsList = []
       fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))      
+      fieldsList.append('MainSpecMap')   
       withConstFieldNuTauDet = False
       if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstFieldNuTauDet = shipGeo.EmuMagnet.WithConstField
       if not withConstFieldNuTauDet:
        fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))       
+       fieldsList.append('NuMap')    
       withConstFieldHadronAbs = True
       if hasattr(shipGeo.hadronAbsorber,'WithConstField'): withConstFieldHadronAbs = shipGeo.hadronAbsorber.WithConstField
       if not withConstFieldHadronAbs:
        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))       
+       fieldsList.append('HadronAbsorberMap')
+      withConstMuonShieldField = True
+       if hasattr (shipGeo, 'muShieldDesign'): 
+         if (shipGeo.muShieldDesign==11): withConstMuonShieldField = False  
+       if not withConstMuonShieldField:
+         fieldMaker.defineFieldMap('muonShieldField', 'files/MuonShieldField.root',
+                                 ROOT.TVector3(0.0, 0.0, -4996), ROOT.TVector3(0.0, 0.0, 0.0), True)
+         fieldsList.append('muonShieldField')
     # Combine the fields to obtain the global field
-      if not withConstFieldNuTauDet or not withConstFieldHadronAbs:
-       if not withConstFieldNuTauDet and withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
-       if withConstFieldNuTauDet and not withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'HadronAbsorberMap')
-       if not withConstFieldNuTauDet and not withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'HadronAbsorberMap','NuMap')
+      if len(fieldsList) > 1:
+       fieldMaker.defineComposite('TotalField', *fieldsList)  #fieldsList MUST have length <=4
        fieldMaker.defineGlobalField('TotalField')
       else:
        fieldMaker.defineGlobalField('MainSpecMap')
