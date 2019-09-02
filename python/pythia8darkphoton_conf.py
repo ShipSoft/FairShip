@@ -75,7 +75,6 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
     if debug:
         pythia_log=open('pythia8_conf.txt','w')
         P8gen = MethodLogger(P8gen, sink=pythia_log)
-    #h=readFromAscii()
     P8gen.UseRandom3() # TRandom1 or TRandom3 ?
     P8gen.SetMom(400)  # beam momentum in GeV 
     if deepCopy: P8gen.UseDeepCopy()
@@ -151,7 +150,6 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
         #P8gen.SetParameters(str(P8gen.GetDPId())+":isResonance = false")
         #P8gen.SetParameters(str(P8gen.GetDPId())+":all = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
         P8gen.SetParameters(str(P8gen.GetDPId())+":onMode = off")
-        #print 'qcd inclusive test'
     else:
         P8gen.SetParameters(str(P8gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
         #if (inclusive=="pbrem"): 
@@ -164,10 +162,10 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
 
     # Configuring decay modes...
     readDecayTable.addDarkPhotondecayChannels(P8gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
-    # Finish HNL setup...
+    # Finish DP setup...
     P8gen.SetParameters(str(P8gen.GetDPId())+":mayDecay = on")
     #P8gen.SetDPId(P8gen.GetDPId())
-       # also add to PDG
+    # also add to PDG
     gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
     print 'gamma=%e'%gamma
     addDPtoROOT(pid=P8gen.GetDPId(),m=mass,g=gamma)
