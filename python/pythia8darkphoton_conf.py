@@ -141,17 +141,19 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
     print 'Initial particle parameters for PDGID %d :'%P8gen.GetDPId()
     P8gen.List(P8gen.GetDPId())
     if inclusive=="qcd":
-        P8gen.SetParameters(str(P8gen.GetDPId())+":m0 = "+str(mass))
+        dpid = P8gen.GetDPId()
+        P8gen.SetParameters("{}:m0 = {:.12}".format(dpid, mass))
         #P8gen.SetParameters(str(P8gen.GetDPId())+":mWidth = "+str(u.mm/ctau))
-        P8gen.SetParameters(str(P8gen.GetDPId())+":mWidth = "+str(u.hbarc/ctau))
-        P8gen.SetParameters(str(P8gen.GetDPId())+":mMin = 0.001")
-        P8gen.SetParameters(str(P8gen.GetDPId())+":tau0 = "+str(ctau/u.mm))
+        P8gen.SetParameters("{}:mWidth = {:.12}".format(dpid, u.hbarc/ctau))
+        P8gen.SetParameters("{}:mMin = 0.001".format(dpid))
+        P8gen.SetParameters("{}:tau0 = {:.12}".format(dpid, ctau/u.mm))
         #P8gen.SetParameters("ParticleData:modeBreitWigner = 0")   
         #P8gen.SetParameters(str(P8gen.GetDPId())+":isResonance = false")
         #P8gen.SetParameters(str(P8gen.GetDPId())+":all = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
-        P8gen.SetParameters(str(P8gen.GetDPId())+":onMode = off")
+        P8gen.SetParameters("{}:onMode = off".format(dpid))
     else:
-        P8gen.SetParameters(str(P8gen.GetDPId())+":new = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0") 
+        P8gen.SetParameters("{}:new = A A 3 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0"\
+                            .format(P8gen.GetDPId(), mass, ctau/u.mm))
         #if (inclusive=="pbrem"): 
         ### Do not set as resonance: decays to hadron doesn't work properly below 0.7 GeV.
         #   P8gen.SetParameters(str(P8gen.GetDPId())+":isResonance = true")
@@ -163,7 +165,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
     # Configuring decay modes...
     readDecayTable.addDarkPhotondecayChannels(P8gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish DP setup...
-    P8gen.SetParameters(str(P8gen.GetDPId())+":mayDecay = on")
+    P8gen.SetParameters("{}:mayDecay = on".format(P8gen.GetDPId()))
     #P8gen.SetDPId(P8gen.GetDPId())
     # also add to PDG
     gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
