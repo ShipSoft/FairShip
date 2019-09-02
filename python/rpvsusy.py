@@ -208,13 +208,13 @@ class RPVSUSYbranchings():
                any("K*0" in s for s in particles) or\
                any("K*0_bar" in s for s in particles):
                 bf             = bf/2.
-                codes_str      = ' '.join([str(code) for code in codes])
-                P8Gen.SetParameters("9900015:addChannel = 1 "+str(bf)+" 0 "+codes_str)
-                codes_str_conj = ' '.join([str(-1*code) for code in codes])
-                P8Gen.SetParameters("9900015:addChannel = 1 "+str(bf)+" 0 "+codes_str_conj)
+                P8Gen.SetParameters("9900015:addChannel = 1 {:.12} 0 {}"\
+                                    .format(bf, ' '.join(str(code) for code in codes)))
+                P8Gen.SetParameters("9900015:addChannel = 1 {:.12} 0 {}"\
+                                    .format(bf, ' '.join(str(-code) for code in codes)))
             else:
-                codes_str      = ' '.join([str(code) for code in codes])
-                P8Gen.SetParameters("9900015:addChannel = 1 "+str(bf)+" 0 "+codes_str)
+                P8Gen.SetParameters("9900015:addChannel = 1 {:.12} 0 {}"\
+                                    .format(bf, ' '.join(str(code) for code in codes)))
             if verbose:
                 print "debug readdecay table",particles,codes,bf
             
