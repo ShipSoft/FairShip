@@ -297,6 +297,13 @@ class Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         try:
             try:
+                ## Employ very nasty hack to get around error during
+                ## unpicklying of files.
+                ## `copy_reg` and `__builtin__` comes from PY2, 
+                ## for some reason that I don't understand, they are now
+                ## in the files we try to unpickle
+                if module == 'copy_reg': module = 'copyreg'
+                if module == '__builtin__': module = 'builtins'
                 __import__(module)
                 mod = sys.modules[module]
             except ImportError:
