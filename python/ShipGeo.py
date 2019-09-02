@@ -1,8 +1,9 @@
 from __future__ import print_function
+from builtins import object
 import shipunit as u
 import ROOT
 fDesign = 2
-class ShipGeo(): 
+class ShipGeo(object): 
     def __init__(self,z=0):
         self.z = z
 

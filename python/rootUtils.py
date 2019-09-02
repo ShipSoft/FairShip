@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 #---Enable Tab completion-----------------------------------------
 try:
     import rlcompleter, readline
@@ -132,7 +134,7 @@ def container_sizes(sTree,perEvent=False):
         print("                     name     ZipBytes[kB]/ev  TotBytes[kB]/ev  TotalSize[kB]/ev") 
     else:
         print("                     name     ZipBytes[MB]  TotBytes[MB]  TotalSize[MB]") 
-    sorted_c = sorted(counter.items(), key=operator.itemgetter(1))
+    sorted_c = sorted(list(counter.items()), key=operator.itemgetter(1))
     sorted_c.reverse()
     for i in range(len(sorted_c)):
         x = sorted_c[i][0]

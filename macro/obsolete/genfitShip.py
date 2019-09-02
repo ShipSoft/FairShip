@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 # setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
 inputFile = 'ship.Pythia8-TGeant4.root'
 debug = False
@@ -68,7 +71,7 @@ modules = shipDet_conf.configure(run,ShipGeo)
 
 fout = ROOT.TFile(outFile,'update')
 
-class makeHitList:
+class makeHitList(object):
     " convert FairSHiP MC hits to measurements"
     def __init__(self,fn):
         self.sTree     = fn.cbmsim

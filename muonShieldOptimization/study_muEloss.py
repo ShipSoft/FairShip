@@ -1,5 +1,7 @@
 #!/usr/bin/env python 
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import ROOT,os,sys,getopt,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
@@ -214,7 +216,7 @@ def makeSummaryPlot():
     Gpdg = h['Gpdg']
     Gpdg.SetMarkerColor(ROOT.kRed)
     Gpdg.SetMarkerStyle(20)
-    keys = pdg.keys()
+    keys = list(pdg.keys())
     keys.sort()
     for n in range(len(keys)):
         Gpdg.SetPoint(n,keys[n],pdg[keys[n]])

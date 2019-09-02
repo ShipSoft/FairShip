@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import os, subprocess,ROOT,time,getpass,multiprocessing
 import rootUtils as ut
 ncores = min(multiprocessing.cpu_count(),4)
@@ -113,7 +115,7 @@ def executeSimple(prefixes,reset=False):
                 time.sleep(10)
     nJobs = len(proc)
     while nJobs > 0:
-        procAna = proc.keys()
+        procAna = list(proc.keys())
         nJobs = len(proc)
         procAna.sort()
         print('debug ',nJobs)

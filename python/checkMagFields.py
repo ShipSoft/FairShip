@@ -1,3 +1,4 @@
+from builtins import range
 import ROOT,sys
 import rootUtils as ut
 import shipunit as u
@@ -41,7 +42,7 @@ def run():
                 if f.GetBx(x,y,z)>0: rc=h['Bx+'].Fill(z,x,y,f.GetBx(x,y,z)/u.tesla) 
                 if f.GetBy(x,y,z)<0: rc=h['By-'].Fill(z,x,y,-f.GetBy(x,y,z)/u.tesla)
                 if f.GetBy(x,y,z)>0: rc=h['By+'].Fill(z,x,y,f.GetBy(x,y,z)/u.tesla) 
-    hkeys = h.keys()
+    hkeys = list(h.keys())
     for x in hkeys:
         hi = h[x]
         if hi.ClassName()=='TH3F':

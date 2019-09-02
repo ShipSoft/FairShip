@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import ROOT,time,os,sys
 nJob   = 2
 nMult  = 10 # number of events / muon

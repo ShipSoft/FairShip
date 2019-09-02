@@ -1,4 +1,5 @@
 from __future__ import print_function
+from builtins import range
 # setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
 #-----prepare python exit-----------------------------------------------
 def pyExit():

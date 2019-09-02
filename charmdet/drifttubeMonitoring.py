@@ -1,10 +1,15 @@
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import input
+from builtins import str
+from builtins import range
 #import yep
 import ROOT,os,time,sys,operator,atexit
 ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 
 from decorators import *
-import __builtin__ as builtin
+import builtins as builtin
 ROOT.gStyle.SetPalette(ROOT.kGreenPink)
 PDG = ROOT.TDatabasePDG.Instance()
 # -----Timer--------------------------------------------------------
@@ -56,7 +61,7 @@ viewsI = {1:[0,1],2:[0,2],3:[0],4:[0]}
 viewC = {0:"_x",1:"_u",2:"_v"}
 
 muSources = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
-muSourcesIDs = muSources.values()
+muSourcesIDs = list(muSources.values())
 rnr       = ROOT.TRandom()
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -780,7 +785,7 @@ DT={}
 def compareAlignment():
     ut.bookHist(h,'alignCompare','compare Alignments',100,-120.,120.,100,-120.,120.)
     ut.bookHist(h,'alignCompareDiffs','compare Alignments',100,-1.,1.)
-    keys = xpos.keys()
+    keys = list(xpos.keys())
     keys.sort()
     for d in keys:
         test = ROOT.MufluxSpectrometerHit(d,0.)
@@ -1092,7 +1097,7 @@ for s in range(1,5):
                 xLayers[s][p][l][view]=h[str(1000*s+100*p+10*l)+view]
                 channels[s][p][l][view]=12
                 if s>2: channels[s][p][l][view]=48
-for x in xpos.keys():
+for x in list(xpos.keys()):
     ut.bookHist(h,"TDC"   +str(x),'TDC '+str(x)  ,1500,-500.,2500.)
     ut.bookHist(h,"TDC"   +str(x),'noToT '+str(x),1500,-500.,2500.)
 
@@ -1844,7 +1849,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
                 fitStatus   = theTrack.getFitStatus()
                 if not fitStatus.isFitConverged(): continue
                 displayTrack(theTrack,debug)
-            next = raw_input("Next (Ret/Quit): ")         
+            next = input("Next (Ret/Quit): ")         
             if next!='':  break
         if len(theTracks)>0: nMax-=1
         if not hasattr(theTracks,'Class'):
@@ -1941,7 +1946,7 @@ def fitTrack(hitlist,Pstart=3.):
         unSortedList[k] = [ROOT.TVectorD(7,tmp),hit.GetDetectorID(),numHit,view]
         tmpList[k] = vtop[2]
         k+=1
-    sorted_z = sorted(tmpList.items(), key=operator.itemgetter(1))
+    sorted_z = sorted(list(tmpList.items()), key=operator.itemgetter(1))
     for k in sorted_z:
         tp = ROOT.genfit.TrackPoint() # note how the point is told which track it belongs to
         hitCov = ROOT.TMatrixDSym(7)
@@ -2151,7 +2156,7 @@ def findDTClusters(removeBigClusters=True):
             if removeBigClusters:
                 clustersPerLayer = {}
                 for l in range(4):
-                    clustersPerLayer[l] = dict(enumerate(grouper(allHits[l].keys(),1), 1))
+                    clustersPerLayer[l] = dict(enumerate(grouper(list(allHits[l].keys()),1), 1))
                     for Acl in clustersPerLayer[l]:
                         if len(clustersPerLayer[l][Acl])>cuts['maxClusterSize']: # kill cross talk brute force
                             for x in clustersPerLayer[l][Acl]:
@@ -2365,7 +2370,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                             n_u+=1
                         mean_u = mean_u/float(n_u)
                         if Debug:  print("0 stereo u",len(stereoHits[1]))
-                        for x in stereoHits[1].keys():
+                        for x in list(stereoHits[1].keys()):
                             delta = stereoHits[1][x][3]-mean_u
                             rc = h['delta_mean_uv'].Fill(delta)
                             if abs(delta)>cuts['hitDist']:  stereoHits[1].pop(x)
@@ -2389,7 +2394,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                                 n_v+=1
                             mean_v = mean_v/float(n_v)
                             if Debug:  print("1 stereo v",len(stereoHits[2]))
-                            for x in stereoHits[2].keys():
+                            for x in list(stereoHits[2].keys()):
                                 delta = stereoHits[2][x][3]-mean_v
                                 rc = h['delta_mean_uv'].Fill(delta)
                                 if abs(delta)>cuts['hitDist']:  stereoHits[2].pop(x)
@@ -2596,7 +2601,7 @@ def testClusters(nEvent=-1,nTot=1000):
         print("tracks found",len(trackCandidates))
         for aTrack in trackCandidates:
             displayTrack(aTrack)
-        next = raw_input("Next (Ret/Quit): ")
+        next = input("Next (Ret/Quit): ")
         if next!='':  break
 
 def printResiduals(aTrack):
@@ -2628,7 +2633,7 @@ def printResiduals(aTrack):
         tmpList[k]=pos[2]
         txt[k]="%i %s %i %5.3F %5.3F %5.3F %5.3F "%( s,view,2*p+l,pos[0],pos[1],pos[2],res)
         k+=1
-    sorted_z = sorted(tmpList.items(), key=operator.itemgetter(1))
+    sorted_z = sorted(list(tmpList.items()), key=operator.itemgetter(1))
     for k in sorted_z:
         print(txt[k[0]])
 
@@ -2891,7 +2896,7 @@ def plotSigmaRes():
     ROOT.gROOT.FindObject('c1').cd()
     h['resDistr'].Draw()
 def calculateRTcorrection():
-    hkeys = h.keys()
+    hkeys = list(h.keys())
     for hist in hkeys:
         if hist.find('biasResDist')!=0: continue
         if not hist.find('proj')<0: continue
@@ -2942,7 +2947,7 @@ def calculateRTcorrection():
         h[x].Draw('same')
 
 def analyzeSingleDT():
-    keys = xpos.keys()
+    keys = list(xpos.keys())
     keys.sort()
     for detID in keys:
         histo = h['biasResX_'+str(detID)+'_projx']
@@ -3058,7 +3063,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
                             vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
                             pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
                     if len(pos)<3: continue # 1 RPC point + >1 DT point
-                    coefficients = numpy.polyfit(pos.keys(),pos.values(),1)
+                    coefficients = numpy.polyfit(list(pos.keys()),list(pos.values()),1)
                     Ntot[tag_s] += 1
                     nhits={1:0,2:0,3:0,4:0}
                     for s in range(1,5):
@@ -4315,7 +4320,7 @@ def testForSameDetID(nEvent=-1,nTot=1000):
     for detID in listOfTDCs:
         test = ROOT.MufluxSpectrometerHit(detID,0.)
         s,v,p,l,view,channelID,tdcId,nRT = stationInfo(test)
-        if tdcId not in listOfTDCs[detID].keys(): 
+        if tdcId not in list(listOfTDCs[detID].keys()): 
             print("not matching TDC id",detID,tdcId,listOfTDCs[detID])
         if len(listOfTDCs[detID])>1:
             print(detID,listOfTDCs[detID])
@@ -4576,7 +4581,7 @@ def analyzeRTrel():
             rc = h[x+'Tmax'].Fill(RTrelations[fname]['tMinAndTmax'][x][1])
     ut.bookCanvas(h,'RTMins','RT Min',1200,900,7,5)
     ut.bookCanvas(h,'RTMaxs','RT Max',1200,900,7,5)
-    keys = RTrelations[fnames[0]]['tMinAndTmax'].keys()
+    keys = list(RTrelations[fnames[0]]['tMinAndTmax'].keys())
     keys.sort()
     for n in range(1,35):
         tc = h['RTMins'].cd(n)
@@ -4706,12 +4711,12 @@ def muonOrigin():
             muonO[pName]+=1
             muonO2[pName][moID]+=1
         if len(processed)>0: doubleProc[0] +=1
-    sorted_o = sorted(muonO.items(), key=operator.itemgetter(1))
+    sorted_o = sorted(list(muonO.items()), key=operator.itemgetter(1))
     for p in sorted_o:
         print("%30s %5.2F %%"%(p[0],p[1]/float(doubleProc[0])*100.))
     for p in ['Primary particle emission', 'Decay']:
         print("for process ",p)
-        sorted_p = sorted(muonO2[p].items(), key=operator.itemgetter(1))
+        sorted_p = sorted(list(muonO2[p].items()), key=operator.itemgetter(1))
         for x in sorted_p:
             part = PDG.GetParticle(x[0])
             if not part: particleName = str(x[0])

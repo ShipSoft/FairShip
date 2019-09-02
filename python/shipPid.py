@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 # pid deffiner
 import ROOT, sys
 import shipunit as u
@@ -8,7 +11,7 @@ import TrackExtrapolateTool
 import ctypes
 import shipDet_conf
 
-class Task:
+class Task(object):
     "initialize"
 
     def __init__(self,main):

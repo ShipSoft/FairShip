@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import os,ROOT
 import rootUtils as ut
 path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'
@@ -8,7 +10,7 @@ path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'
 muSources = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
 charmExtern = [4332,4232,4132,4232,4122,431,411,421]
 
-muSourcesIDs = muSources.values()
+muSourcesIDs = list(muSources.values())
 
 # for 10GeV Yandex Production 65.041 Billion PoT, weight = 768.75 for 5E13 pot
 weightMbias = 768.75

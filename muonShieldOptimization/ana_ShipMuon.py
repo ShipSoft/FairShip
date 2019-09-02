@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root 
 import os,ROOT
 import multiprocessing as mp
@@ -674,7 +676,7 @@ def executeOneFile(fn,output=None,pid=None):
                 else: 
                     if detID not in logVols:
                         detName = c.GetName().replace('Points','')
-                        if not detName in histlistAll.values(): print(detID,detName,c.GetName()) 
+                        if not detName in list(histlistAll.values()): print(detID,detName,c.GetName()) 
                     else: detName = logVols[detID]
                     x = ahit.GetX()
                     y = ahit.GetY()

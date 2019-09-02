@@ -1,3 +1,4 @@
+from builtins import range
 import ROOT
 ROOT.gROOT.ProcessLine('#include "Geant4/G4ParticleTable.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4DecayTable.hh"')

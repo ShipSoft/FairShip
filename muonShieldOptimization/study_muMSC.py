@@ -1,5 +1,7 @@
 #!/usr/bin/env python 
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import ROOT,os,sys,getopt,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)

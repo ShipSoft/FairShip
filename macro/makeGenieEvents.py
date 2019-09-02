@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
 from __future__ import print_function
+from builtins import str
 import ROOT,os,sys,getopt,time
 import shipunit as u
 import shipRoot_conf

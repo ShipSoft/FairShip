@@ -4,6 +4,8 @@
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import ROOT, os
 import shipunit  as u
 import math
@@ -239,7 +241,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
 
     if debug==1: print("event nbr",iEvent,"has",nMCTracks,"tracks")
     #1. MCTrackIDs: list of tracks decaying after the last tstation and originating before the first
-    for i in reversed(range(nMCTracks)):
+    for i in reversed(list(range(nMCTracks))):
         atrack = sTree.MCTrack.At(i) 
         #for 3 prong decays check if its a nu
         if threeprong == 1:    
@@ -366,19 +368,19 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
 
     #6. Make list of tracks with hits in in station 1,2,3 & 4	    	
     tracks_with_hits_in_all_stations=[]  
-    for key in hits1.keys():
+    for key in list(hits1.keys()):
         if (key in hits2 and key in hits3 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key) 
-    for key in hits2.keys():
+    for key in list(hits2.keys()):
         if (key in hits1 and key in hits3 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key) 
-    for key in hits3.keys():
+    for key in list(hits3.keys()):
         if ( key in hits2 and key in hits1 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key) 
-    for key in hits4.keys():
+    for key in list(hits4.keys()):
         if (key in hits2 and key in hits3) and key in hits1:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key) 
@@ -700,7 +702,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
             if debug==1: print("rawhits[",j,"]=",rawhits[j],"trackid",StrawRawLink[item][0].GetTrackID(),"strawname",StrawRawLink[item][0].GetDetectorID(),"true x",StrawRawLink[item][0].GetX(),"true y",StrawRawLink[item][0].GetY(),"true z",StrawRawLink[item][0].GetZ())
         j=j+1    
 
-    sortedrawhits=OrderedDict(sorted(rawhits.items(),key=lambda t:t[1][1])) 
+    sortedrawhits=OrderedDict(sorted(list(rawhits.items()),key=lambda t:t[1][1])) 
     if debug==1: 
         print(" ")
         print("horizontal view (y) hits ordered by plane: plane nr, zlayer, hits")
@@ -858,7 +860,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
             if debug==1: print("rawxhits[",j,"]=",rawxhits[j],"trackid",StrawRawLink[item][0].GetTrackID(),"true x",StrawRawLink[item][0].GetX(),"true y",StrawRawLink[item][0].GetY())
         j=j+1  
 
-    sortedrawxhits=OrderedDict(sorted(rawxhits.items(),key=lambda t:t[1][4])) 
+    sortedrawxhits=OrderedDict(sorted(list(rawxhits.items()),key=lambda t:t[1][4])) 
 
     if debug==1: print("stereo view hits ordered by plane:")
     for i in range(i1,i2+1):
@@ -922,8 +924,8 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
         py=0.
         pz=0.
         m=0
-        if firsttwo==True: looplist=reversed(range(len(trcandv1[t]))) 
-        else: looplist=range(len(trcandv1[t])) 
+        if firsttwo==True: looplist=reversed(list(range(len(trcandv1[t])))) 
+        else: looplist=list(range(len(trcandv1[t]))) 
         for ipl in looplist:      
             indx= trcandv1[t][ipl]
             if indx>-1: 
@@ -1055,8 +1057,8 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
             pzMC=0.
             stereotanMCv=0.
             stereocstMCv=0.
-            if firsttwo==True: looplist=reversed(range(len(trcandv2[t1]))) 
-            else: looplist=range(len(trcandv2[t1]))  
+            if firsttwo==True: looplist=reversed(list(range(len(trcandv2[t1])))) 
+            else: looplist=list(range(len(trcandv2[t1])))  
             for ipl in looplist:      
                 indx= trcandv2[t1][ipl]
                 if indx>-1:       
@@ -1310,7 +1312,7 @@ def ptrack(zlayer,ptrackhits,nrwant,window):
 
 # get first and last plane number (needs to be consecutive, and also contains empty planes
 # should be included in the list!
-    planes=zlayer.keys()
+    planes=list(zlayer.keys())
     planes.sort()
     i_1=planes[0]
     i_2=planes[len(planes)-1]
@@ -1617,7 +1619,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
         tracksfound=[]
         if monitor==True:
             for item in ReconstructibleMCTracks:
-                for value in trackid12.values():  
+                for value in list(trackid12.values()):  
                     if item == value and item not in tracksfound:
                         reconstructibles12+=1
                         tracksfound.append(item)
@@ -1632,7 +1634,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
         tracksfound=[]      
         if monitor==True:
             for item in ReconstructibleMCTracks:
-                for value in trackid34.values():  
+                for value in list(trackid34.values()):  
                     if item == value and item not in tracksfound:
                         reconstructibles34+=1 
                         tracksfound.append(item)

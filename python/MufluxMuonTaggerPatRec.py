@@ -1,4 +1,5 @@
 from __future__ import print_function
+from builtins import range
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np
@@ -67,7 +68,7 @@ def execute(TaggerHits, debug=0):
         print("track_combinations: ")
         print(len(track_combinations))
         print("Recognized tracks: ")
-        for i_track in track_hits.keys():
+        for i_track in list(track_hits.keys()):
             print("Track ", i_track)
             print("Hits_x: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_x']])
             print("Hits_y: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_y']])

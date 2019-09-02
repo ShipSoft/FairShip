@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 import os
 import ROOT
 import MufluxPatRec
@@ -47,7 +50,7 @@ def StripY(y):
         strip_y = 0
     return int(strip_y)
 
-class MufluxDigiReco:
+class MufluxDigiReco(object):
     " convert FairSHiP MC hits / digitized hits to measurements"
     def __init__(self,fout):
 
@@ -191,7 +194,7 @@ class MufluxDigiReco:
 
             # identify individual rpcs
             station = int(rpc[-1])
-            if station not in range(1, 6):  # limiting the range of rpcs
+            if station not in list(range(1, 6)):  # limiting the range of rpcs
                 print("WARNING: Invalid RPC number, something's wrong with the geometry ",station)
 
             # calculate strip
@@ -641,33 +644,33 @@ class MufluxDigiReco:
             min_hits = 3
 
         if mode == 'all' or mode == '3hits':
-            for key in n_true_track_hits_y12.keys():
+            for key in list(n_true_track_hits_y12.keys()):
                 if n_true_track_hits_y12[key] >= min_hits:
                     true_track_ids_y12.append(key)
 
-            for key in n_true_track_hits_stereo12.keys():
+            for key in list(n_true_track_hits_stereo12.keys()):
                 if n_true_track_hits_stereo12[key] >= min_hits:
                     true_track_ids_stereo12.append(key)
 
-            for key in n_true_track_hits_34.keys():
+            for key in list(n_true_track_hits_34.keys()):
                 if n_true_track_hits_34[key] >= min_hits:
                     true_track_ids_34.append(key)
 
         if mode == 'Tr4':
             min_hits = 1
-            for key in n_true_track_hits_y12.keys():
+            for key in list(n_true_track_hits_y12.keys()):
                 if key in n_true_track_hits_1 and key in n_true_track_hits_2:
                     if key in n_true_track_hits_3 and key in n_true_track_hits_4:
                         if n_true_track_hits_y12[key] >= min_hits:
                             true_track_ids_y12.append(key)
 
-            for key in n_true_track_hits_stereo12.keys():
+            for key in list(n_true_track_hits_stereo12.keys()):
                 if key in n_true_track_hits_1 and key in n_true_track_hits_2:
                     if key in n_true_track_hits_3 and key in n_true_track_hits_4:
                         if n_true_track_hits_stereo12[key] >= min_hits:
                             true_track_ids_stereo12.append(key)
 
-            for key in n_true_track_hits_34.keys():
+            for key in list(n_true_track_hits_34.keys()):
                 if key in n_true_track_hits_1 and key in n_true_track_hits_2:
                     if key in n_true_track_hits_3 and key in n_true_track_hits_4:
                         if n_true_track_hits_34[key] >= min_hits:
@@ -683,7 +686,7 @@ class MufluxDigiReco:
         found_track_ids_stereo12 = []
         found_track_ids_34 = []
 
-        for i_track in track_hit_ids.keys():
+        for i_track in list(track_hit_ids.keys()):
 
             atrack = track_hit_ids[i_track]
             atrack_y12 = atrack['y12']
@@ -796,7 +799,7 @@ class MufluxDigiReco:
                     n_true_track_hits_34[track_id] = 1
 
         min_hits = 3
-        for key in n_true_track_hits_y12.keys():
+        for key in list(n_true_track_hits_y12.keys()):
             if n_true_track_hits_y12[key] >= min_hits:
                 if key in n_true_track_hits_stereo12:
                     if n_true_track_hits_stereo12[key] >= min_hits:
@@ -808,7 +811,7 @@ class MufluxDigiReco:
 
         found_track_ids = []
 
-        for i_track in track_hit_ids.keys():
+        for i_track in list(track_hit_ids.keys()):
 
             atrack = track_hit_ids[i_track]
             atrack_y12 = atrack['y12']
@@ -880,7 +883,7 @@ class MufluxDigiReco:
         found_track_ids = []
         min_hits = 3
 
-        for i_track in track_hit_ids.keys():
+        for i_track in list(track_hit_ids.keys()):
 
             atrack = track_hit_ids[i_track]
             atrack_y12 = atrack['y12']
@@ -953,7 +956,7 @@ class MufluxDigiReco:
         found_track_ids = []
         min_hits = 3
 
-        for i_track in track_hit_ids.keys():
+        for i_track in list(track_hit_ids.keys()):
 
             atrack = track_hit_ids[i_track]
             atrack_y12 = atrack['y12']
@@ -1035,7 +1038,7 @@ class MufluxDigiReco:
         found_track_ids = []
         min_hits = 3
 
-        for i_track in track_hit_ids.keys():
+        for i_track in list(track_hit_ids.keys()):
 
             atrack = track_hit_ids[i_track]
             atrack_y12 = atrack['y12']
@@ -1115,7 +1118,7 @@ class MufluxDigiReco:
         found_track_ids = []
         min_hits = 3
 
-        for i_track in track_hit_ids.keys():
+        for i_track in list(track_hit_ids.keys()):
 
             atrack = track_hit_ids[i_track]
             atrack_y12 = atrack['y12']
@@ -1212,7 +1215,7 @@ class MufluxDigiReco:
             track_hits = MufluxPatRec.execute(self.SmearedHits, self.TaggerHits, withNTaggerHits, withDist2Wire)
 
             # Create hitPosLists for track fit
-            for i_track in track_hits.keys():
+            for i_track in list(track_hits.keys()):
 
                 atrack = track_hits[i_track]
                 atrack_y12 = atrack['y12']
@@ -1705,17 +1708,17 @@ class MufluxDigiReco:
                     else:
                         n_true_track_hits_34[track_id] = 1
 
-            for key in n_true_track_hits_y12.keys():
+            for key in list(n_true_track_hits_y12.keys()):
                 n = n_true_track_hits_y12[key]
                 h['NHits_true_y12'].Fill(n)
-            for key in n_true_track_hits_stereo12.keys():
+            for key in list(n_true_track_hits_stereo12.keys()):
                 n = n_true_track_hits_stereo12[key]
                 h['NHits_true_stereo12'].Fill(n)
-            for key in n_true_track_hits_34.keys():
+            for key in list(n_true_track_hits_34.keys()):
                 n = n_true_track_hits_34[key]
                 h['NHits_true_34'].Fill(n)
 
-        for i_track in track_hits.keys():
+        for i_track in list(track_hits.keys()):
             atrack = track_hits[i_track]
             atrack_y12 = atrack['y12']
             atrack_stereo12 = atrack['stereo12']

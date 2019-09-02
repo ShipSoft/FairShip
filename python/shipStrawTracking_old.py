@@ -4,6 +4,8 @@
 #17-04-2015 comments to EvH
 
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import shipPatRec 
 import ROOT,os,sys,getopt
 import shipDet_conf

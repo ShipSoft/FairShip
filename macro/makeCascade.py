@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import ROOT,time,os,sys,random,getopt,copy
 from array import array
 import rootUtils as ut

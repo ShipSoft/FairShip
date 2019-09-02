@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import range
+from builtins import object
 # simple vertex reconstruction with errors
 import ROOT,sys,os
 import shipunit as u
@@ -7,7 +9,7 @@ import numpy as np
 import math
 from array import array
 
-class Task:
+class Task(object):
     "initialize"
     def __init__(self,hp,sTree):
         self.sTree = sTree

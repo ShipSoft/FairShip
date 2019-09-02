@@ -1,3 +1,6 @@
+from builtins import zip
+from builtins import str
+from builtins import range
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 import ROOT,os

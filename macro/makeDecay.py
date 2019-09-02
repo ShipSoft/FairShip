@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import next
+from builtins import str
+from builtins import range
 #Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
 #Output is an ntuple with muon/neutrinos 
 import ROOT,time,os,sys,random,getopt

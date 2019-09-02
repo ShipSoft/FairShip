@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 import os,ROOT,shipVertex,shipDet_conf
 if realPR == "Prev": import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
 else: import shipPatRec
@@ -10,7 +13,7 @@ from math import fabs
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
-class ShipDigiReco:
+class ShipDigiReco(object):
     " convert FairSHiP MC hits / digitized hits to measurements"
     def __init__(self,fout,fgeo):
         self.fn = ROOT.TFile.Open(fout,'update')
@@ -801,7 +804,7 @@ class ShipDigiReco:
             # Do real PatRec
             track_hits = shipPatRec.execute(self.SmearedHits, ShipGeo, realPR)
             # Create hitPosLists for track fit
-            for i_track in track_hits.keys():
+            for i_track in list(track_hits.keys()):
                 atrack = track_hits[i_track]
                 atrack_y12 = atrack['y12']
                 atrack_stereo12 = atrack['stereo12']

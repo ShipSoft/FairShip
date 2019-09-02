@@ -1,4 +1,5 @@
 from __future__ import print_function
+from builtins import str
 import ROOT, atexit, sys, os
 from pythia8_conf_utils import addHNLtoROOT
 from pythia8darkphoton_conf import addDPtoROOT

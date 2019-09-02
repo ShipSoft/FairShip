@@ -1,4 +1,5 @@
 from __future__ import print_function
+from builtins import range
 import ROOT
 # configure the GenieGenerator
 def config(GenieGen):

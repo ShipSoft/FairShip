@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 from __future__ import print_function
+from builtins import range
 import argparse
 import numpy as np
 import ROOT as r

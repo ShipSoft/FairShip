@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import os,time,ROOT
 def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
     ncpu = 9

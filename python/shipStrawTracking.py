@@ -1,4 +1,9 @@
 from __future__ import print_function
+from past.builtins import cmp
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
 # Mikhail Hushchyn, mikhail.hushchyn@cern.ch
 
 import ROOT
@@ -13,7 +18,7 @@ from rootpyPickler import Unpickler
 
 # For modules
 import shipDet_conf
-import __builtin__ as builtin
+import builtins as builtin
 # import TrackExtrapolateTool
 
 # For track pattern recognition
@@ -212,7 +217,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                 hits['Pdg'] += [ahit.PdgCode()]
 
             # List to numpy arrays
-            for key in hits.keys():
+            for key in list(hits.keys()):
                 hits[key] = numpy.array(hits[key])
 
             # Decoding
@@ -652,7 +657,7 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
 
 
     #1. MCTrackIDs: list of tracks decaying after the last tstation and originating before the first
-    for i in reversed(range(nMCTracks)):
+    for i in reversed(list(range(nMCTracks))):
         atrack = sTree.MCTrack.At(i)
         #track endpoint after tstations?
         if atrack.GetStartZ() > TStation4EndZ :
@@ -774,22 +779,22 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     #6. Make list of tracks with hits in in station 1,2,3 & 4
     tracks_with_hits_in_all_stations = []
 
-    for key in hits1.keys():
+    for key in list(hits1.keys()):
         if (key in hits2 and key in hits3 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
 
-    for key in hits2.keys():
+    for key in list(hits2.keys()):
         if (key in hits1 and key in hits3 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
 
-    for key in hits3.keys():
+    for key in list(hits3.keys()):
         if ( key in hits2 and key in hits1 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
 
-    for key in hits4.keys():
+    for key in list(hits4.keys()):
         if (key in hits2 and key in hits3) and key in hits1:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)

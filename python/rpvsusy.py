@@ -28,6 +28,9 @@
 # ==================================================================
 """
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 
 import re
 import math
@@ -100,7 +103,7 @@ def lifetime(particle):
     return tPart.Lifetime()
 
 
-class constants():
+class constants(object):
     """
     Store some constants useful for HNL physics
     """
@@ -143,7 +146,7 @@ class constants():
 # Load some useful constants
 c = constants()
 
-class RPVSUSYbranchings():
+class RPVSUSYbranchings(object):
     """
     Lifetime and total and partial decay widths of an RPV neutralino
     """

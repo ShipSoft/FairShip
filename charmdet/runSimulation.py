@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 import os,subprocess,ROOT,time,multiprocessing,socket
 ncpus = multiprocessing.cpu_count() - 2
 interactive = not socket.gethostname().find('ubuntu')<0
@@ -531,7 +533,7 @@ def checkStatistics(splitFactor=5):
         if f.find('charm')>0: Nsim['charm']+=simFiles[f]
         else: Nsim['mbias'] += simFiles[f]
     allFiles = {}
-    for a in simFiles.keys():
+    for a in list(simFiles.keys()):
         x = a.split('/')
         allFiles[x[len(x)-1].replace('.root','')]=simFiles[a]
     for dname in allFiles:

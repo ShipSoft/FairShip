@@ -15,11 +15,11 @@ def execute(muon_tagger_track_hits, drifttubes_track_hits, debug=0):
     track_hits = {}
     i_track = 0
 
-    for i_muon_tagger_track in muon_tagger_track_hits.keys():
+    for i_muon_tagger_track in list(muon_tagger_track_hits.keys()):
 
         one_muon_tagger_track = muon_tagger_track_hits[i_muon_tagger_track]
 
-        for i_drifttubes_track in drifttubes_track_hits.keys():
+        for i_drifttubes_track in list(drifttubes_track_hits.keys()):
 
             one_drifttubes_track = drifttubes_track_hits[i_drifttubes_track]
 

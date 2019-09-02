@@ -32,7 +32,7 @@ def main(arguments):
         logger.info("paramters: %s" % arguments.params)
     ConfigRegistry.loadpy(arguments.config_file, **arguments.params)
     # ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
-    for k, v in ConfigRegistry().iteritems():
+    for k, v in ConfigRegistry().items():
         print("%s: %s" % (k, v))
 
 if __name__ == '__main__':

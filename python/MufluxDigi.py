@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 import os
 import ROOT
 import shipunit as u
@@ -46,7 +49,7 @@ def StripY(y):
         strip_y = 0
     return int(strip_y)
 
-class MufluxDigi:
+class MufluxDigi(object):
     " convert FairSHiP MC hits / digitized hits to measurements"
     def __init__(self,fout):
 
@@ -119,7 +122,7 @@ class MufluxDigi:
 
             # identify individual rpcs
             station = detID/10000
-            if station not in range(1, 6):  # limiting the range of rpcs
+            if station not in list(range(1, 6)):  # limiting the range of rpcs
                 print("WARNING: Invalid RPC number, something's wrong with the geometry ",station)
 
             # calculate strip

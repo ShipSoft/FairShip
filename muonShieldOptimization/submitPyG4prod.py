@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import range
 import os,time
 path = '../'
 if not os.uname()[1].find('Ubuntu')<0: path = os.environ['HNL']

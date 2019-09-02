@@ -1,4 +1,5 @@
 from __future__ import print_function
+from builtins import object
 import math
 import os
 import ROOT as r
@@ -16,7 +17,7 @@ hGeV = 6.58211928*pow(10.,-16)* pow(10.,-9) # no units or it messes up!!
 #utilities
 # sigma(e+e- -> hadrons) / sigma(e+e- -> mu+mu-)
 
-class DarkPhoton:
+class DarkPhoton(object):
     "dark photon setup"
 
     def __init__(self, mass, eps):

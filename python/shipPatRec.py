@@ -1,4 +1,5 @@
 from __future__ import print_function
+from builtins import range
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np

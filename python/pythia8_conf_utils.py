@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import next
+from builtins import str
+from builtins import range
 import os
 import sys
 import re
@@ -33,7 +36,7 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
             sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
         except:
             sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
-    print(sumbrs.values())
+    print(list(sumbrs.values()))
     maxsumbr=max(sumbrs.values())
     return maxsumbr
 

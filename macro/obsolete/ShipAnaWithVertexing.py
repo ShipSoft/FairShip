@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import range
 # example for accessing smeared hits and fitted tracks
 import ROOT,os,sys,getopt
 import rootUtils as ut
@@ -219,7 +221,7 @@ def myEventLoop(N):
             for tr in fittedTracks:
                 xx  = fittedTracks[tr].getFittedState()
                 PosDir[tr] = [xx.getPos(),xx.getDir()]
-            keys = fittedTracks.keys()
+            keys = list(fittedTracks.keys())
             t1,t2 = keys[0],keys[1] 
             xv,yv,zv,doca = myVertex(t1,t2,PosDir)
             h['Doca'].Fill(dist)  

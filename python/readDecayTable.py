@@ -11,6 +11,7 @@
 # ==================================================================
 """
 from __future__ import print_function
+from builtins import str
 import ROOT, os, csv
 from hnl import PDGname
 from darkphoton import *
@@ -39,7 +40,7 @@ def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), 
         configuredDecays[channel] = flag
     if verbose:
         print('Activated decay channels (plus charge conjugates): ')
-        for channel in configuredDecays.keys():
+        for channel in list(configuredDecays.keys()):
             if configuredDecays[channel] == 'yes':
                 print('\t'+channel)        
     return configuredDecays 
@@ -125,6 +126,6 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
 if __name__ == '__main__':
     configuredDecays = load()
     print('Activated decay channels: ')
-    for channel in configuredDecays.keys():
+    for channel in list(configuredDecays.keys()):
         if configuredDecays[channel] == 'yes':
             print(channel)

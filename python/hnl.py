@@ -27,6 +27,7 @@
 # ==================================================================
 """
 from __future__ import print_function
+from builtins import object
 
 import math
 import ROOT, os
@@ -60,7 +61,7 @@ def lifetime(particle):
     tPart = pdg.GetParticle(particle)
     return tPart.Lifetime()
 
-class CKMmatrix():
+class CKMmatrix(object):
     """
     CKM matrix, from http://pdg.lbl.gov/2017/reviews/rpp2016-rev-ckm-matrix.pdf
     """
@@ -75,7 +76,7 @@ class CKMmatrix():
         self.Vts = 4.0e-02
         self.Vtb = 0.999
 
-class constants():
+class constants(object):
     """
     Store some constants useful for HNL physics
     """
@@ -99,7 +100,7 @@ class constants():
 # Load some useful constants
 c = constants()
 
-class HNLbranchings():
+class HNLbranchings(object):
     """
     Lifetime and total and partial decay widths of an HNL
     """
