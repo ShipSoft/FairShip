@@ -172,7 +172,7 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
     
     if inclusive=="meson":
         #change meson decay to dark photon depending on mass
-	selectedMum = manipulatePhysics(mass, P8gen)
+        selectedMum = manipulatePhysics(mass, P8gen)
         print 'selected mum is : %d'%selectedMum
         if (selectedMum == -1): return 0
 
