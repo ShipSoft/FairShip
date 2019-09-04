@@ -570,8 +570,8 @@ void MufluxReco::DTreconstructible(std::vector<int> *rec,std::vector<float> *px,
  for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
     MufluxSpectrometerPoint* point = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
     Int_t detID = point->GetDetectorID();
-    auto result = std::find( noisyChannels.begin(), noisyChannels.end(), detID );
-    if ( result !=  noisyChannels.end()){ continue;}
+    //auto result = std::find( noisyChannels.begin(), noisyChannels.end(), detID );
+    //if ( result !=  noisyChannels.end()){ continue;}
     Int_t trackID = point->GetTrackID();
     if (trackID<0){continue;}
     it = trackList.find(trackID);
