@@ -461,36 +461,59 @@ def pot():
 def makeDTEfficiency(eos=False,merge=False):
  eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
  cmd = "hadd -f DTEff.root "
- for name in os.listdir('.'):
-  if not merge:
-   if not eos and name.find('SPILL')==0: fname = name
-   elif eos and name.find('ntuple-SPILL')==0:
-     tmp = os.path.abspath('.').split('/')
-     fname = os.environ['EOSSHIP']+eospathReco+tmp[len(tmp)-1]+'/'+name.split('-')[1]
-   else:
-     continue
+ if eos:
+  eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2199'
+  fileList = []
+  temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
+  for x in temp.split('\n'):
+   if x.find('SPILLDATA')<0: continue
+   if x.split('/')[8].find('SPILLDATA')!=0: continue
+   fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
+  for fname in fileList:
    cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c DTeffWithRPCTracks -f "+fname+' &'
    os.system(cmd)
    time.sleep(10)
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(10)
-  elif merge and name.find('histos-DTEff')==0: 
-   cmd+=name+' '
- if merge: os.system(cmd)
+ else:
+  for name in os.listdir('.'):
+   if not merge:
+    if not eos and name.find('SPILL')==0: fname = name
+    elif eos and name.find('ntuple-SPILL')==0:
+     tmp = os.path.abspath('.').split('/')
+     fname = os.environ['EOSSHIP']+eospathReco+tmp[len(tmp)-1]+'/'+name.split('-')[1]
+    else:
+     continue
+    cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c DTeffWithRPCTracks -f "+fname+' &'
+    os.system(cmd)
+    time.sleep(10)
+    while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(10)
+   elif merge and name.find('histos-DTEff')==0: 
+    cmd+=name+' '
+  if merge: os.system(cmd)
  print "finished all the tasks."
  
 def runMufluxReco(path = '.',merge=False):
+ noField           = [2199,2200,2201]
+ intermediateField = [2383,2388,2389,2390,2392,2395,2396]
+ noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
+ RPCbad = [2144,2154,2183,2192,2210,2211,2217,2218,2235,2236,2237,2240,2241,2243,2291,2345,2359]
+ badRuns = [2142, 2143, 2144, 2149]
  sumHistos=[]
  for d in os.listdir(path):
    if d.find('RUN_8000')==0:
     if os.path.isfile("sumHistos--"+d+".root"):
-      sumHistos.append(d)
+     r = int(d.split('_')[2])
+     if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
+     sumHistos.append(d)
     elif merge:
       print "run ",d," not processed successfully"
     else:
      if os.path.isdir(d):
-      cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t withDeadChannels -d "+d+" -c MufluxReco -p "+path+" &"
+      cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t '' -d "+d+" -c MufluxReco -p "+path+" &"
       os.system(cmd)
       time.sleep(10)
       while 1>0:

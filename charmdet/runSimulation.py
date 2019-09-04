@@ -401,6 +401,17 @@ def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",upd
       cmd = "xrdcp -f "+fname+" $EOSSHIP/"+destination+"/"+fname
       os.system(cmd)
 
+def exportNtupleToEos(d="simulation10GeV-withDeadChannels",update=True):
+  eospath = "/eos/experiment/ship/user/truf/muflux-sim/"
+  destination = eospath+d.replace('simulation','')
+  for D in os.listdir(d):
+    if os.path.isdir(d+'/'+D):
+      for f in os.listdir(d+'/'+D):
+       if f.find('ntuple')==0:
+        cmd = "xrdcp -f "+d+'/'+D+'/'+f+ " $EOSSHIP/"+destination+"/"+D+'/'+f
+        print cmd
+        os.system(cmd)
+
 def mergeHistos(command="anaResiduals"):
  commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-",
                   "hitmaps":"histos-HitmapsFromFittedTracks-","alignment":"histos-residuals-"}
@@ -532,6 +543,14 @@ def splitOffBoostedEvents(splitFactor=5,check=False):
         print f1,f1 in l 
    os.chdir('../')
 
+def runMufluxReco():
+ for t in ['withDeadChannels',"0", "multHits", "noDeadChannels"]:
+  cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A True -B False -C  False &"
+  os.system(cmd)
+  cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B False -C True  &"
+  os.system(cmd)
+  cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False  &"
+  os.system(cmd)
 
 def checkStatistics(splitFactor=5):
  # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 

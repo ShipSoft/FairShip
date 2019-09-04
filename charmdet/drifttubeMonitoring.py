@@ -3106,7 +3106,9 @@ def binoEff(n=4,k=2):
  for i in range(k,n+1):  totEff += ROOT.TMath.Binomial(n,i)*eff**i*(1-eff)**(n-i)
  print "global efficiency = %5.4F  %i %i"%(totEff,n,k)
 
-def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
+def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
+ # /eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2199
+ addCuts = {'':0,'Chi2<':0.7,'Dely<':5,'Delx<':2,'All':1}
  align2RPC = {4:[-1.,3.2],3:[-2.,5.],2:[-6.,8.],1:[-6.,8.]}
  stationDetIDs = {'x1':[10002001,10002012],'u':[11002001,11002012],'x2':[21102001,21102012],
                   'v':[20112001,20112012],'x3':[30002001,30002048],'x4':[40002001,40002048]}
@@ -3125,6 +3127,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
    ut.bookHist(h,'upStreamOccWithTrack'+str(tag_s),"station 1&2",200,-0.5,199.5)
    ut.bookHist(h,'upStreamOccWithTrack_mu'+str(tag_s),"station 1&2",200,-0.5,199.5)
    ut.bookHist(h,'upStreamOccWithTrack_muX'+str(tag_s),"station 1&2",200,-0.5,199.5)
+   ut.bookHist(h,'upStreamOccWithTrack_Chi2'+str(tag_s),"station 1&2",200,-0.5,199.5)
+   ut.bookHist(h,'upStreamOccWithTrack_Chi2mu'+str(tag_s),"station 1&2",200,-0.5,199.5)
   for tag_s in range(1,5):
    for s in range(1,5):
     ut.bookHist(h,'hitsIn'+str(s)+'_'+str(tag_s),'number of hits '+str(s),10,-0.5,9.5)
@@ -3138,15 +3142,13 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   view = 0
   for n in range(Nevents):
    rc = sTree.GetEvent(n)
+   anyTrack = {}
    if len(sTree.RPCTrackX)!=1 or len(sTree.RPCTrackY)!=1 : continue
    clusters = findDTClusters()
-   # require u and v clusters
-   if len(clusters[1][1])!=1 or len(clusters[2][2])!=1 : continue
-   # only take simple events with one cluster per station max
-   simpleEvent=True
-   for s in range(1,5): 
-     if len(clusters[s][0]) > 1: simpleEvent=False
-   if not simpleEvent: continue
+   # require u and v clusters, but no too many
+   if len(clusters[1][1])==0 or len(clusters[1][1])>2: continue
+   if len(clusters[2][2])==0 or len(clusters[2][2])>2: continue
+#
    spectrHitsSorted = ROOT.nestedList()
    candidates= {1:{0:[],1:[],2:[],3:[]}, 2:{0:[],1:[],2:[],3:[]}, 3:{0:[],1:[],2:[],3:[]},4:{0:[],1:[],2:[],3:[]}}
    muflux_Reco.sortHits(sTree.Digi_MufluxSpectrometerHits,spectrHitsSorted,False)
@@ -3167,6 +3169,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
    for mu in sTree.RPCTrackX:
   # mu.m()*z + mu.b()
     for s in range(1,5):
+    # only take simple events with one cluster per tagging station max
+      if len(clusters[s][0]) > 1: continue
       for cl in clusters[s][0]:
        for clhit in cl:
          hit = clhit[0]
@@ -3208,26 +3212,48 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
       if xExtr<stationZ[s][1] or xExtr>stationZ[s][2]: inAcc = False
      if not inAcc: continue
      rc = h['upStreamOcc'+str(tag_s)].Fill(upStreamOcc)
-     if sTree.FitTracks.GetEntries()>0:
-       rc = h['upStreamOccWithTrack'+str(tag_s)].Fill(upStreamOcc)
-       Ntrack[tag_s] += 1
+     anyTrack[s] = False
+# up to here, track found for given RPC + tagging station tag_s
+     goodTracks = {'':[],'Chi2<':[],'mu':[],'muX':[],'Chi2<mu':[]}
+     k=-1
      for aTrack in sTree.FitTracks:
+      k+=1
+# default cuts:
+      fitStatus   = aTrack.getFitStatus()
+      if not fitStatus.isFitConverged(): continue
+      hitsPerStation = countMeasurements(k,1)
+      if len(hitsPerStation['x1'])<2 or len(hitsPerStation['x2'])<2 or len(hitsPerStation['x3'])<2 or len(hitsPerStation['x4'])<2: continue
+      goodTracks[''].append(k)
+      chi2OK = fitStatus.getChi2()/fitStatus.getNdf() < addCuts['Chi2<']
+      if chi2OK: goodTracks['Chi2<'].append(k)
 # check that track is matched to RPC
-       posRPC=ROOT.TVector3()
-       momRPC=ROOT.TVector3()
-       rc = muflux_Reco.extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC)
-       X=ROOT.kFALSE
-       Y=ROOT.kFALSE
-       for hit in sTree.RPCTrackX:
+      posRPC=ROOT.TVector3()
+      momRPC=ROOT.TVector3()
+      rc = muflux_Reco.extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC)
+      X=ROOT.kFALSE
+      Y=ROOT.kFALSE
+      for hit in sTree.RPCTrackX:
         Xpos = hit.m()*cuts["zRPC1"]+hit.b()
         dist = ROOT.TMath.Abs(posRPC[0]-Xpos)
         if dist<cuts["muTrackMatchX"]: X=ROOT.kTRUE
-       for hit in sTree.RPCTrackY:
+      for hit in sTree.RPCTrackY:
         Ypos = hit.m()*cuts["zRPC1"]+hit.b()
         dist = ROOT.TMath.Abs(posRPC[1]-Ypos)
         if dist<cuts["muTrackMatchY"]: Y=ROOT.kTRUE
-       if X and Y: rc = h['upStreamOccWithTrack_mu'+str(tag_s)].Fill(upStreamOcc)
-       if X: rc = h['upStreamOccWithTrack_muX'+str(tag_s)].Fill(upStreamOcc)
+      if X and Y: goodTracks['mu'].append(k)
+      if X: goodTracks['muX'].append(k)
+      if X and Y and chi2OK: goodTracks['Chi2<mu'].append(k)
+     for c in goodTracks:
+       for x in goodTracks[c]:
+        if c=='':
+         rc = h['upStreamOccWithTrack'+str(tag_s)].Fill(upStreamOcc)
+         Ntrack[tag_s] += 1
+        if c=='mu':   
+          rc = h['upStreamOccWithTrack_mu'+str(tag_s)].Fill(upStreamOcc)
+          anyTrack[s] = True
+        if c=='muX':  rc = h['upStreamOccWithTrack_muX'+str(tag_s)].Fill(upStreamOcc)
+        if c=='Chi2<':  rc = h['upStreamOccWithTrack_Chi2'+str(tag_s)].Fill(upStreamOcc)
+        if c=='Chi2<mu':  rc = h['upStreamOccWithTrack_Chi2mu'+str(tag_s)].Fill(upStreamOcc)
      Ntot[tag_s] += 1
      nhits={1:0,2:0,3:0,4:0}
      for s in range(1,5):
@@ -3247,6 +3273,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
        h['hitsIn'+str(s)+'_'+str(tag_s)].Fill(nhits[s])
        # if (tag_s==1 or tag_s==2) and nhits[s]==0:    print "no hits in station ",s,' event ',n
      if nhits[4] < 2: Ineff+=1
+   for s in anyTrack:
+    if not anyTrack[s] and Debug: print "no fitted track found",n
   for tag_s in range(1,5):
    for s in range(1,5):
       h['hits'+str(s)+'_'+str(tag_s)].SetBinContent(6,Ntot[tag_s])
@@ -3256,7 +3284,9 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
  else:
 # analysis part
   ut.bookHist(h,'effLayer','efficiency per Layer',24,-0.5,23.5)
-  if not h.has_key('hits1_1'): ut.readHists(h,'DTEff.root')
+  if not h.has_key('hits1_1'): 
+    if fHisto:  ut.readHists(h,fHisto)
+    else: ut.readHists(h,'DTEff.root')
   effPerLayer = {}
   for tag_s in range(1,5):
    t = 'tagstation'+str(tag_s)
@@ -3372,22 +3402,71 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
     recoEff += ntracks/ntags
     print "track  eff %i ineff=%5.2F%%"%(tag_s,ntracks/ntags*100.)
   print "average track  eff = %5.2F%%"%(recoEff/4.*100.)
-  Ntag = h['upStreamOcc'].GetEntries()
-  if h.has_key('upStreamOccWithTrack1'): 
-    for x in ['upStreamOccWithTrack','upStreamOccWithTrack_mu','upStreamOccWithTrack_muX']:
-       h[x] = h[x+str(1)].Clone(x)
-       for n in range(2,5): h[x].Add(h[x+str(n)])
-    h[x].Scale(1./4.)
+  for x in ['upStreamOcc','upStreamOccWithTrack','upStreamOccWithTrack_mu','upStreamOccWithTrack_muX','upStreamOccWithTrack_Chi2','upStreamOccWithTrack_Chi2mu']:
+   # only take average of tags in upstream station
+     h[x] = h[x+str(1)].Clone(x)
+     h[x].Add(h[x+str(2)])
+     h[x].Scale(1./2.)
+  Ntag   = h['upStreamOcc'].GetEntries()
   Ntrack = h['upStreamOccWithTrack'].GetEntries()
-  Nmu = h['upStreamOccWithTrack_mu'].GetEntries()
-  NmuX = h['upStreamOccWithTrack_muX'].GetEntries()
-  print "average track  eff = %5.2F%%"%( (Ntrack*100.)/Ntag)
-  print "average track mu eff = %5.2F%%"%( (Nmu*100.)/Ntag)
-  print "average track mu Xonly eff = %5.2F%%"%( (NmuX*100.)/Ntag)
+  Nmu    = h['upStreamOccWithTrack_mu'].GetEntries()
+  NmuX   = h['upStreamOccWithTrack_muX'].GetEntries()
+  NChi2  = h['upStreamOccWithTrack_Chi2'].GetEntries()
+  NChi2mu = h['upStreamOccWithTrack_Chi2mu'].GetEntries()
+  print "====== Ntags=",Ntag
+  print "average track  eff            = %5.2F%%"%( (Ntrack*100.)/Ntag)
+  print "average track mu eff          = %5.2F%%"%( (Nmu*100.)/Ntag)
+  print "average track Chi2 eff        = %5.2F%%"%( (NChi2*100.)/Ntag)
+  print "average track Chi2 mu eff     = %5.2F%%"%( (NChi2mu*100.)/Ntag)
+  print "average chi2 eff on top of    = %5.2F%%"%( (NChi2*100.)/Ntrack)
+  print "average chi2 eff on top of mu = %5.2F%%"%( (NChi2mu*100.)/Nmu)
   h['leghits'].Draw()
   h['c2'].Print('DTeffHitsPerStation.pdf')
   h['c2'].Print('DTeffHitsPerStation.png')
   
+def checkTrackEfficiencyPerSpill():
+ path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/zeroField"
+ ut.bookHist(h,'Teff','efficiency',100,0.9,1.0)
+ goodFiles=[]
+ interestingHistos = []
+ for k in range(1,5):
+  interestingHistos.append('upStreamOcc'+str(k))
+  interestingHistos.append('upStreamOccWithTrack'+str(k))
+  interestingHistos.append('upStreamOccWithTrack_mu'+str(k))
+  interestingHistos.append('upStreamOccWithTrack_muX'+str(k))
+  interestingHistos.append('upStreamOccWithTrack_Chi2'+str(k))
+  interestingHistos.append('upStreamOccWithTrack_Chi2mu'+str(k))
+ for f in os.listdir(path):
+  if f.find("histos-DTEffSPILLDATA_")==0:
+   for x in interestingHistos: 
+     if h.has_key(x): h[x].Reset()
+   print " now analyzing histo",f
+   fHisto=path+"/"+f
+   ut.readHists(h,fHisto,interestingHistos)
+   try:
+    if h['upStreamOccWithTrack_Chi21'].GetEntries()<1: continue
+    Ntag   = h['upStreamOcc1'].GetEntries()
+    Ntrack = h['upStreamOccWithTrack1'].GetEntries()
+    Nmu    = h['upStreamOccWithTrack_mu1'].GetEntries()
+    NmuX   = h['upStreamOccWithTrack_muX1'].GetEntries()
+    NChi2  = h['upStreamOccWithTrack_Chi21'].GetEntries()
+    NChi2mu = h['upStreamOccWithTrack_Chi2mu1'].GetEntries()
+   except:
+    continue
+   print "====== Ntags=",Ntag
+   print "average track  eff            = %5.2F%%"%( (Ntrack*100.)/Ntag)
+   print "average track mu eff          = %5.2F%%"%( (Nmu*100.)/Ntag)
+   print "average track Chi2 eff        = %5.2F%%"%( (NChi2*100.)/Ntag)
+   print "average track Chi2 mu eff     = %5.2F%%"%( (NChi2mu*100.)/Ntag)
+   print "average chi2 eff on top of    = %5.2F%%"%( (NChi2*100.)/Ntrack)
+   print "average chi2 eff on top of mu = %5.2F%%"%( (NChi2mu*100.)/Nmu)
+   rc = h['Teff'].Fill(float(Ntrack)/Ntag)
+   goodFiles.append(fHisto)
+ h['Teff'].Draw()
+ cmd = "hadd -f DTEff.root "
+ for f in goodFiles:
+   cmd+=f+' '
+ os.system(cmd)
 
 def efficiencyEstimates(method=2,MCdata=False):
  if h['biasResDist'].GetEntries()==0:
@@ -4745,6 +4824,59 @@ def DTreconstructible():
        pTrue[trackID]=ROOT.TVector3(point.GetPx(),point.GetPy(),point.GetPz())
  return trackList,pTrue
 
+def studyGhosts():
+ ut.readHists(h,'ghostStudy.root')
+ ut.bookCanvas(h,'ghosts','ghosts',1600,700,1,1)
+ h['ghosts'].cd(1).SetLogy(1)
+ h['gf_perfect'].Draw()
+ for x in ['gf_perfect','gf_ghosts','P','Ptrue']:
+  h[x].SetLineWidth(2)
+  h[x].SetStats(0)
+  h[x].Draw('same')
+  h[x].Draw('hist same')
+  h[x].Rebin(5)
+ h['ghosts'].Print('ghostStudy.png')
+ h['ghosts'].Print('ghostStudy.pdf')
+ h['gf_perfect'].GetXaxis().SetRangeUser(250.,500.)
+ h['ghosts'].Update()
+ h['ghosts'].Print('ghostStudy_zoom.png')
+ h['ghosts'].Print('ghostStudy_zoom.pdf')
+# back ground subtraction
+ badTracks = h['P'].GetBinContent(h['P'].GetNbinsX())
+ h['P_backsubtr']= h['P'].Clone('P_backsubtr')
+ h['P_backsubtr'].SetLineColor(ROOT.kCyan)
+ for n in range(1,h['P'].GetNbinsX()):
+   h['P_backsubtr'].SetBinContent(n,h['P'].GetBinContent(n)-badTracks)
+ h['P_backsubtr'].Draw()
+ h['P'].Draw('same')
+ h['gf_perfect'].Draw('same')
+ h['ghosts'].Update()
+ h['ghosts'].Print('ghostStudy_backsubtr.png')
+ h['ghosts'].Print('ghostStudy_backsubtr.pdf')
+#
+ for x in ['gfDiff']:
+  h[x+'_perfect']      =h[x].ProjectionY(x+'_perfect',1,1)
+  h[x+'_ghosts']       =h[x].ProjectionY(x+'_ghosts',33,100)
+  h[x+'_ghosts'].SetLineColor(ROOT.kRed)
+  h[x+'_perfect'].SetLineColor(ROOT.kGreen)
+  h[x+'_perfect'].SetTitle('perfect;P [GeV/c];N/5GeV')
+  h[x+'_ghosts'].SetTitle('ghost > 33;P [GeV/c];N/5GeV')
+ for x in ['gfDiff_perfect','gfDiff_ghosts']:
+  h[x].Rebin(5)
+  ut.makeIntegralDistrib(h,x)
+  h['I-'+x].Scale(1./h['I-'+x].GetBinContent(1))
+  h['I-'+x].SetLineWidth(2)
+  h['I-'+x].SetStats(0)
+  if x.find('perfect')>0: 
+    h['I-'+x].SetMinimum(0.001)
+    h['I-'+x].Draw()
+  h['I-'+x].Draw('hist same')
+  h['I-'+x].Draw('hist same')
+ h['ghosts'].Update()
+ h['ghosts'].Print('ghostStudy_tails.png')
+ h['ghosts'].Print('ghostStudy_tails.pdf')
+
+
 def studyGhostTracks(nStart = 0, nEnd=0, chi2UL=3,pxLow=5.):
  if nEnd == 0: nEnd = sTree.GetEntries()
  for n in range(nStart,nEnd):
@@ -5417,9 +5549,8 @@ def checkMCEffTuning():
  h[t].Print('MCcomparison-Efficiency-Tuning.png')
  h[t].Print('MCcomparison-Efficiency-Tuning.pdf')
 
-def ghostSuppression():
+def ghostSuppression(hname = "sumHistos--simulation10GeV-withDeadChannels.root"):
  interestingHistos = []
- hname = "sumHistos.root"
  cuts = {'':ROOT.kBlue,'All':ROOT.kCyan,'Chi2<':ROOT.kGreen,'Delx<':ROOT.kOrange,'Dely<':ROOT.kMagenta}
  for c in cuts:
   for a in ['p/pt','Chi2/DoF']:
@@ -5431,12 +5562,41 @@ def ghostSuppression():
    for x in ['','mu']:
      h[c+a+x].SetLineColor(cuts[c])
      h[c+a+x+'_projx'].SetLineColor(cuts[c])
+     h[c+a+x+'2d'] = h[c+'p/pt'+x].Rebin2D(10,10,c+a+x+'2d')
      h[c+a+x+'_projy'].SetLineColor(cuts[c])
-  if c=='':  h['p/ptmu_projx'].Draw()
-  else: h[c+'p/ptmu_projx'].Draw('same')
+ for x in ['','mu']:
+  print "==== ",x
+  ntracks = {}
+  for c in cuts:
+   ntracks[c] = h[c+'p/pt'+x+'_projx'].Integral(5,15)
+   h[c+x] = h[c+'p/pt'+x+'_projx'].Clone(c+x)
+   if c=='':  
+        h['p/pt'+x+'_projx'].Draw()
+   else: 
+        h[c+'p/pt'+x+'_projx'].Draw('same')
+        h[c+x].Divide(h['p/pt'+x+'_projx'])
+        h[c+'p/pt'+x+'2d'].Divide(h['p/pt'+x+'2d'])
+  for c in ntracks:
+   if c=='': continue
+   print "%s efficiency=%5.3F"%(c,ntracks[c]/ntracks[''])
 
+def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels",withOverFlow=False,withDisplay=True,cuts=''):
+ ptMax = 5.
+ # possible cuts: '', 'All', 'Chi2<', 'Delx<', 'Dely<'
+ # efficiency MC larger than data, 0.105 for cuts = All, but only for muon tagged!
+ # otherwise only Chi2 cut, 0.034 
+ # covered cases: cuts = '',      simpleEffCor=0.024, simpleEffCorMu=0.024
+ # covered cases: cuts = 'Chi2<', simpleEffCor=0.058, simpleEffCorMu=0.058
+ # covered cases: cuts = 'All', simpleEffCor=0.058,   simpleEffCorMu=0.129
+ simpleEffCorMu = simpleEffCor
+ if cuts=='All': 
+   simpleEffCorMu = simpleEffCor + 0.130
+   simpleEffCor  += 0.056
+ if cuts=='Chi2<':
+   simpleEffCor  += 0.056
+   simpleEffCorMu = 0.021
 
-def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,version="-withDeadChannels",withOverFlow=True,withDisplay=True):
+ label = 'MC-Comparison'+cuts.replace('<','')
  # 1GeV mbias,      1.806 Billion PoT 
  # 1GeV charm,     10.21 Billion PoT,  10 files
  # 10GeV MC,       66.02 Billion PoT 
@@ -5453,20 +5613,32 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
  sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,
             "charm":1./charmNorm[10],"beauty":1./beautyNorm[10],"Di-muon P8":100.,"invalid":1.}
  if len(hMC)==0:
-  interestingHistos = []
-  for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s','Trscalers']:
+  interestingHistos = ['Trscalers','chi2']
+  for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
    for x in ['','mu','ymu']:
-    for source in sources:  interestingHistos.append(a+x+source)
-  interestingHistos.append('chi2')
-  ut.readHists(h,     'momDistributions.root',interestingHistos)
+    for source in sources:
+      c = cuts
+      if x=='' and ( cuts == 'Delx' or  cuts == 'Dely' or cuts == 'All' ): c=''
+      if x=='ymu' and ( cuts == 'Delx' or cuts == 'All' ): c=''
+      interestingHistos.append(c+a+x+source)
+  if cuts == '':
+   ut.readHists(h,     'momDistributions.root',interestingHistos)
+  else:
+   ut.readHists(h,     'sumHistos.root',interestingHistos)
+
   # uncorrected MC histos
   # version = "-withDeadChannels"
   # version = "-noDeadChannels"
   # version = "-0"
   if not effCor:
-   ut.readHists(hMC,   'momDistributions-1GeV-mbias'+version+'.root',interestingHistos)
-   ut.readHists(hCharm,'momDistributions-1GeV-charm'+version+'.root',interestingHistos)
-   ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias'+version+'.root',interestingHistos)
+   if cuts == '':
+    ut.readHists(hMC,   'momDistributions-1GeV-mbias'+version+'.root',interestingHistos)
+    ut.readHists(hCharm,'momDistributions-1GeV-charm'+version+'.root',interestingHistos)
+    ut.readHists(hMC10GeV,'momDistributions-10GeV-mbias'+version+'.root',interestingHistos)
+   else:
+    ut.readHists(hMC,   'sumHistos--simulation1GeV'+version+'.root',interestingHistos)
+    ut.readHists(hCharm,'sumHistos--simulation1GeV'+version+'-charm.root',interestingHistos)
+    ut.readHists(hMC10GeV,'sumHistos--simulation10GeV'+version+'.root',interestingHistos)
    # if eric: ut.readHists(hMC10GeV,'momDistributions-10GeV.root',interestingHistos)
   else:
    ut.readHists(hMC,   '../momDistributions-1GeV-mbias-effTuned-M0-reco.root',interestingHistos)
@@ -5476,6 +5648,19 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    ut.readHists(hMC10GeV,'../momDistributions-10GeV-mbias-effTuned-M0-reco.root',interestingHistos)
    ut.readHists(hMC10GeV,'../momDistributions-10GeV-mbias-effTuned-M2.root',interestingHistos)
    MCStats = MCStats*2. # because of average of two MC samples same stats
+
+  if cuts != "":
+   for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s','Trscalers','RPCResX/Y']:
+    for x in ['','mu','ymu']:
+     for source in sources:
+      theCut = cuts
+      if cuts == 'All' and x=='': theCut='Chi2<'
+      if h.has_key(theCut+a+x+source):
+       h[a+x+source]= h[theCut+a+x+source].Clone(a+x+source)
+       hMC[a+x+source]= hMC[theCut+a+x+source].Clone(a+x+source)
+       hCharm[a+x+source]= hCharm[theCut+a+x+source].Clone(a+x+source)
+       hMC10GeV[a+x+source]= hMC10GeV[theCut+a+x+source].Clone(a+x+source)
+
   for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
     for x in ['','mu']:
      if a.find('p1/p2')==0 and x!='': continue
@@ -5490,22 +5675,16 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    MCscaleFactor =     POTdata / MCStats
    # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
    print "PoT data",POTdata / 1E9," billion"
- if pot == 0:
-   z = h['MCp/pt'].ProjectionX()
-   MCPG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
-   z = h['p/pt'].ProjectionX()
-   PG5 = z.Integral(z.FindBin(pMin),z.GetNbinsX())
-   norm = PG5/MCPG5
-   print "use as normalization:",norm
- else: 
-   norm = MCscaleFactor * (1.-simpleEffCor)
+ norm={}
+ norm['']   = MCscaleFactor * (1.-simpleEffCor)
+ norm['mu'] = MCscaleFactor * (1.-simpleEffCorMu)
  for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
    for x in ['','mu']:
     if a.find('p1/p2')==0 and x=='mu': continue
 # for 1GeV MC
     h['MC'+a+x]   = hMC[a+x].Clone('MC'+a+x)
     h['MC'+a+x].Add(hCharm[a+x],charmNorm[1])
-    h['MC'+a+x].Scale(norm)
+    h['MC'+a+x].Scale(norm[x])
     for source in sources:
      if source == "" or source == "beauty": continue
      xxx = a+x+source
@@ -5514,7 +5693,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
       h['MC'+xxx].Scale(charmNorm[1])
      else:
       h['MC'+xxx] = hMC[xxx].Clone('MC'+xxx)
-     h['MC'+xxx].Scale(norm)
+     h['MC'+xxx].Scale(norm[x])
 # for 10GeV MC
     h['MC10'+a+x] = hMC10GeV[a+x].Clone('MC10'+a+x)
 # special treatment for 10GeV to get weights right
@@ -5534,9 +5713,9 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
       if source == "": continue
       xxx = a+x+source
       h['MC10'+xxx] = hMC10GeV[xxx].Clone('MC10'+xxx)
-      if source == "charm" or source == "beauty": h['MC10'+xxx].Scale(sim10fact/sources[source]*norm)
-      else: h['MC10'+xxx].Scale(sim10fact*norm)
-     h['MC10'+a+x].Scale(sim10fact*norm)
+      if source == "charm" or source == "beauty": h['MC10'+xxx].Scale(sim10fact/sources[source]*norm[x])
+      else: h['MC10'+xxx].Scale(sim10fact*norm[x])
+     h['MC10'+a+x].Scale(sim10fact*norm[x])
 # now we should have all distributions of different sources with correct weigths, except pi K decays
     h['MC10'+a+x+"Decay"]=h['MC10'+a+x].Clone('MC10'+a+x+"Decay")
     h['MC'+a+x+"Decay"]=h['MC'+a+x].Clone('MC'+a+x+"Decay")
@@ -5561,13 +5740,8 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
            'MC10Lepton pair':['same',ROOT.kGreen+1,'Lepton pair'],'MC10Positron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
            'MCDi-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'],
            'MC10Di-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'] }
- for d in ['','I-']:
-  for x in ['','mu']:
-   t = d+'MC-Comparison'+x
-   if not h.has_key(t): 
-     ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
-     ut.bookCanvas(h,key='simple'+t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
-   if d=='':
+
+ for x in ['','mu']:
     for a in ['p/pt','pz/Abspx','p1/p2']:
      if a=='p1/p2' and x=='mu': continue
      for source in sources:
@@ -5576,10 +5750,12 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
       if source == "":  h[xxx+'_x'] = h[xxx].ProjectionX()
       if source == "beauty": continue
       h['MC'+xxx+'_x']    = h['MC'+xxx].ProjectionX()
+
+ for x in ['','mu']:
     for i1 in opt:
      i = i1
      source = ""
-     if not i.find('MC10')<0: 
+     if not i.find('MC10')<0:
         i = 'MC10'
         source = i1.split('MC10')[1]
      elif not i.find('MC')<0: 
@@ -5589,14 +5765,14 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
 # MC 1 GeV should agree with data above P>5GeV
 # MC 10 GeV should agree with data above P>20GeV
      if i == "MC":
-# pt
+# pt, combine 1 GeV and 10GeV MC
       h[i+'p/pt'+z+'_y']   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+'_y'      ,h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].FindBin(20.))
-      tmp = h[i+'10p/pt'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20)+1,h[i+'p/pt'+x+'_x'].GetNbinsX())
+      tmp = h[i+'10p/pt'+z].ProjectionY('tmp',h[i+'p/pt'+x+'_x'].FindBin(20.)+1,h[i+'p/pt'+x+'_x'].FindBin(pMax))
 # attempt to make pt/px distribution with 1 GeV and 10 GeV MC
       h[i+'p/pt'+z+'_y'].Add(tmp)
 # px
       h[i+'pz/Abspx'+z+'_y']=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+'_y',h[i+'pz/Abspx'+x+'_x'].FindBin(pMin),h[i+'pz/Abspx'+x+'_x'].FindBin(20.))
-      tmp = h[i+'10pz/Abspx'+z].ProjectionY('tmp',h[i+'pz/Abspx'+x+'_x'].FindBin(20)+1,h[i+'pz/Abspx'+x+'_x'].GetNbinsX())
+      tmp = h[i+'10pz/Abspx'+z].ProjectionY('tmp',h[i+'pz/Abspx'+x+'_x'].FindBin(20)+1,h[i+'pz/Abspx'+x+'_x'].FindBin(pMax))
       h[i+'pz/Abspx'+z+'_y'].Add(tmp)
 # p,pz
       h[i+'totp/pt'+z+'_x']=h[i+'10p/pt'+z+'_x'].Clone(i+'totp/pt'+z+'_x')
@@ -5605,7 +5781,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
              h[i+'totp/pt'+z+'_x'].SetBinContent(k,h[i+'p/pt'+z+'_x'].GetBinContent(k))
              h[i+'totpz/Abspx'+z+'_x'].SetBinContent(k,h[i+'pz/Abspx'+z+'_x'].GetBinContent(k))
 # interval
-      for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
+      for pInterval in [ [pMin,10.],[10.,50.],[50.,100.],[150.,200.],[200.,250.],[250.,300.] ]:
        interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
        if pInterval[0]<20:
          h[i+'p/pt'+z+interval]   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+interval      ,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(20.))
@@ -5623,34 +5799,75 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
      else:
       h[i+'p/pt'+z+'_y']   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+'_y'      ,h[i+'p/pt'+x+'_x'].FindBin(pMin),h[i+'p/pt'+x+'_x'].GetNbinsX())
       h[i+'pz/Abspx'+z+'_y']=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+'_y',h[i+'pz/Abspx'+x+'_x'].FindBin(pMin),h[i+'pz/Abspx'+x+'_x'].GetNbinsX())
-      for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.],[20.,300.] ]:
+      for pInterval in [ [pMin,10.],[10.,50.],[50.,100.],[150.,200.],[200.,250.],[250.,300.] ]:
        interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
        h[i+'p/pt'+z+interval]   =h[i+'p/pt'+z].ProjectionY(i+'p/pt'+z+interval      ,h[i+'p/pt'+x+'_x'].FindBin(pInterval[0]),h[i+'p/pt'+x+'_x'].FindBin(pInterval[1]))
        h[i+'pz/Abspx'+z+interval]=h[i+'pz/Abspx'+z].ProjectionY(i+'pz/Abspx'+z+interval,h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[0]),h[i+'pz/Abspx'+x+'_x'].FindBin(pInterval[1]))
        h[i+'p/pt'+z+interval].SetTitle('pt for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
        h[i+'pz/Abspx'+z+interval].SetTitle('|px| for '+str(pInterval[0])+' < P < '+str(pInterval[1]))
-# for integral distribution combine 1 and 10 GeV first.
+# for integral distribution combine 1 and 10 GeV first with tot histos made above.
+ for x in ['','mu']:
+    for i1 in opt:
+     i = i1
+     source = ""
+     if not i.find('MC10')<0: 
+        i = 'MC10'
+        source = i1.split('MC10')[1]
+     elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+     z = x+source
      for a in ['p/pt','pz/Abspx']:
-      if i == "MC":
-       ut.makeIntegralDistrib(h,i+'tot'+a+x+source+'_x',overFlow=True)
-       h['I-'+i+a+x+source+'_x']=h['I-'+i+'tot'+a+x+source+'_x'].Clone('I-'+i+a+x+source+'_x')
-      else:
-       ut.makeIntegralDistrib(h,i+a+x+source+'_x',withOverFlow)
-     ut.makeIntegralDistrib(h,i+'p/pt'+x+source+'_y',withOverFlow)
-     ut.makeIntegralDistrib(h,i+'pz/Abspx'+x+source+'_y',withOverFlow)
-     h['I-'+i+'p/pt'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
-     h['I-'+i+'p/pt'+x+source+'_x'].Scale(1./POTdata)
-     h['I-'+i+'pz/Abspx'+x+source+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
-     h['I-'+i+'pz/Abspx'+x+source+'_x'].Scale(1./POTdata)
-     h['I-'+i+'pz/Abspx'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Px>x')
-     h['I-'+i+'pz/Abspx'+x+source+'_y'].Scale(1./POTdata)
-     h['I-'+i+'p/pt'+x+source+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Pt>x')
-     h['I-'+i+'p/pt'+x+source+'_y'].Scale(1./POTdata)
+      if   i == "MC":     hname = i+'tot'+a+z+'_x'
+      elif i == "MC10": continue   # taken care by adding 1 and 10 -> tot
+      else:               hname = i+a+z+'_x'
+      if not withOverFlow:
+       h[hname+'orignal']=h[hname].Clone(hname+'original')
+       for n in range(h[hname].FindBin(pMax),h[hname].GetNbinsX()+2):
+        h[hname].SetBinContent(n,0.)
+        h[hname].SetBinError(n,0.)
+      ut.makeIntegralDistrib(h,hname,withOverFlow)
+      if i == "MC":  
+        h['I-'+i+a+z+'_x']=h['I-'+hname].Clone('I-'+i+a+z+'_x')
+      ut.makeIntegralDistrib(h,i+a+z+'_y',withOverFlow)
+     if i != "MC10":
+      h['I-'+i+'p/pt'+z+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
+      h['I-'+i+'p/pt'+z+'_x'].Scale(1./POTdata)
+      h['I-'+i+'pz/Abspx'+z+'_x'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with P>x')
+      h['I-'+i+'pz/Abspx'+z+'_x'].Scale(1./POTdata)
+      h['I-'+i+'pz/Abspx'+z+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Px>x')
+      h['I-'+i+'pz/Abspx'+z+'_y'].Scale(1./POTdata)
+      h['I-'+i+'p/pt'+z+'_y'].SetTitle(' ;x [GeV/c]; #SigmaN/PoT with Pt>x')
+      h['I-'+i+'p/pt'+z+'_y'].Scale(1./POTdata)
+
+     bz = "%iGeV/c"%(h[i+'p/pt'+z+'_x'].GetBinWidth(1))
+     h[i+'p/pt'+z+'_x'].SetTitle('P ;P [GeV/c]; N/'+bz+'/PoT')
+     h[i+'p/pt'+z+'_x'].Scale(1./POTdata)
+
+     bz = "%iGeV/c"%(h[i+'pz/Abspx'+z+'_x'].GetBinWidth(1))
+     h[i+'pz/Abspx'+z+'_x'].SetTitle('Pz ;Pz [GeV/c]; N/'+bz+'/PoT')
+     h[i+'pz/Abspx'+z+'_x'].Scale(1./POTdata)
+
+     bz = "%iMeV/c"%(1000*h[i+'pz/Abspx'+z+'_y'].GetBinWidth(1))
+     h[i+'pz/Abspx'+z+'_y'].SetTitle('Px ;Px [GeV/c]; N/'+bz+'/PoT')
+     h[i+'pz/Abspx'+z+'_y'].Scale(1./POTdata)
+
+     bz = "%iMeV/c"%(1000*h[i+'p/pt'+z+'_y'].GetBinWidth(1))
+     h[i+'p/pt'+z+'_y'].SetTitle('Pt ;Pt [GeV/c]; N/'+bz+'/PoT')
+     h[i+'p/pt'+z+'_y'].Scale(1./POTdata)
+
+ for d in ['','I-']:
+  for x in ['','mu']:
+   t = d+'MC-Comparison'+x
+   if not h.has_key(t): 
+     ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
+     ut.bookCanvas(h,key='simple'+t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
 # start with pz
    if not withDisplay: return
    tc = 1
    rc = h[t].cd(tc)
    rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
    mx1 = ut.findMaximumAndMinimum(h[d+'pz/Abspx'+x+'_x'])[1]
    mx2 = ut.findMaximumAndMinimum(h[d+'MCpz/Abspx'+x+'_x'])[1]
@@ -5658,61 +5875,112 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    for i1 in optSorted:
     i = i1
     source = ""
-    if not i.find('MC10')<0: 
+    if not i.find('MC10')<0:
+        if d != "":continue
         i = 'MC10'
         source = i1.split('MC10')[1]
     elif not i.find('MC')<0: 
         i = 'MC'
         source = i1.split('MC')[1]
     xx = x+source
-    h[d+i+'pz/Abspx'+xx+'_x'].SetTitle('momentum Pz')
-    h[d+i+'pz/Abspx'+xx+'_x'].SetMaximum(hMax*10.)
-    if d == "": h[d+i+'p/pt'+xx+'_x'].SetMinimum(1.)
-    else: h[d+i+'p/pt'+xx+'_x'].SetMinimum(1.E-10)
-    h[d+i+'pz/Abspx'+xx+'_x'].SetLineWidth(1)
-    h[d+i+'pz/Abspx'+xx+'_x'].SetMarkerSize(1)
-    h[d+i+'pz/Abspx'+xx+'_x'].SetLineColor(opt[i1][1])
-    h[d+i+'pz/Abspx'+xx+'_x'].SetStats(0)
-    if i =='':  h[d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(5.,400.)
-    if i =='MC':  h[d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(5.,30.)
-    if i =='MC10':  h[d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(20.,400.)
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i1][2],'PL')
-    h[d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i1][0])
+    histo = h[d+i+'pz/Abspx'+xx+'_x']
+    histo.SetMaximum(hMax*5.)
+    histo.SetLineWidth(1)
+    histo.SetMarkerSize(1)
+    histo.SetLineColor(opt[i1][1])
+    histo.SetStats(0)
+    if i =='': 
+       histo.SetMinimum( histo.GetBinContent(histo.FindBin(pMax)-1)*0.01 )
+       histo.GetXaxis().SetRangeUser(pMin,pMax)
+    if i =='MC':    histo.GetXaxis().SetRangeUser(pMin,30.)
+    if i =='MC10':  histo.GetXaxis().SetRangeUser(20.,pMax)
+    if d != '': histo.GetXaxis().SetRangeUser(pMin,pMax)
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
+    histo.Draw(opt[i1][0])
+   h['leg'+t+str(tc)].Draw('same')
+# go to linear projection
+   tc = 5
+   rc = h[t].cd(tc)
+   rc.SetLeftMargin(0.2)
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC10')<0: 
+        if d != "":continue
+        i = 'MC10'
+        source = i1.split('MC10')[1]
+    elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+    xx = x+source
+    h['lin'+d+i+'pz/Abspx'+xx+'_x']=h[d+i+'pz/Abspx'+xx+'_x'].Clone('lin'+d+i+'pz/Abspx'+xx+'_x')
+    histo = h['lin'+d+i+'pz/Abspx'+xx+'_x']
+    if i=='':       histo.GetXaxis().SetRangeUser(pMin,120)
+    if i =='MC10':  histo.GetXaxis().SetRangeUser(20,pMax)
+    if d != '': histo.GetXaxis().SetRangeUser(pMin,pMax)
+    histo.SetMaximum(hMax*1.1)
+    histo.SetMinimum(0.)
+    histo.Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
 # then px
    tc = 2
    rc = h[t].cd(tc)
    rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
    mx1 = ut.findMaximumAndMinimum(h[d+'pz/Abspx'+x+'_y'])[1]
    mx2 = ut.findMaximumAndMinimum(h[d+'MCpz/Abspx'+x+'_y'])[1]
-   hMaPx = max(mx1,mx2)
+   hMax = max(mx1,mx2)
    for i1 in optSorted:
     i = i1
     source = ""
-    if not i.find('MC10')<0: 
-        i = 'MC10'
-        source = i1.split('MC10')[1]
+    if not i.find('MC10')<0: continue
     elif not i.find('MC')<0: 
         i = 'MC'
         source = i1.split('MC')[1]
     if i=='MC10': continue
     xx = x+source
-    h[d+i+'pz/Abspx'+xx+'_y'].SetTitle('Px, Pz>'+str(pMin))
-    h[d+i+'pz/Abspx'+xx+'_y'].SetMaximum(hMaPx*10.)
-    if d == "": h[d+i+'pz/Abspx'+xx+'_y'].SetMinimum(1.)
-    else: h[d+i+'pz/Abspx'+xx+'_y'].SetMinimum(1.E-10)
-    h[d+i+'pz/Abspx'+xx+'_y'].SetLineWidth(1)
-    h[d+i+'pz/Abspx'+xx+'_y'].SetMarkerSize(1)
-    h[d+i+'pz/Abspx'+xx+'_y'].SetLineColor(opt[i1][1])
-    h[d+i+'pz/Abspx'+xx+'_y'].SetStats(0)
-    h[d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i1][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i1][2],'PL')
+    histo = h[d+i+'pz/Abspx'+xx+'_y']
+    histo.SetMaximum(hMax*5.)
+    histo.SetLineWidth(1)
+    histo.SetMarkerSize(1)
+    histo.SetLineColor(opt[i1][1])
+    histo.SetStats(0)
+    if i =='': 
+       histo.SetMinimum( histo.GetBinContent(histo.FindBin(ptMax))*0.01 )
+       histo.GetXaxis().SetRangeUser(0.,ptMax)
+    histo.Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
+   h['leg'+t+str(tc)].Draw('same')
+# linear
+   tc = 6
+   rc = h[t].cd(tc)
+   rc.SetLeftMargin(0.2)
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC10')<0: continue
+    elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+    if i=='MC10': continue
+    xx = x+source
+    h['lin'+d+i+'pz/Abspx'+xx+'_y']=h[d+i+'pz/Abspx'+xx+'_y'].Clone('lin'+d+i+'pz/Abspx'+xx+'_y')
+    histo = h['lin'+d+i+'pz/Abspx'+xx+'_y']
+    if i=='':       histo.GetXaxis().SetRangeUser(0.,2.)
+    histo.SetMaximum(hMax*1.1)
+    histo.SetMinimum(0.)
+    histo.Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
 # now P
    tc = 3
    rc = h[t].cd(tc)
    rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
    mx1 = ut.findMaximumAndMinimum(h[d+'p/pt'+x+'_x'])[1]
    mx2 = ut.findMaximumAndMinimum(h[d+'MCp/pt'+x+'_x'])[1]
@@ -5721,107 +5989,38 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     i = i1
     source = ""
     if not i.find('MC10')<0: 
+        if d != "":continue
         i = 'MC10'
         source = i1.split('MC10')[1]
     elif not i.find('MC')<0: 
         i = 'MC'
         source = i1.split('MC')[1]
     xx = x+source
-    h[d+i+'p/pt'+xx+'_x'].SetTitle('momentum P')
-    h[d+i+'p/pt'+xx+'_x'].SetMaximum(hMax*10.)
-    if d == "": h[d+i+'p/pt'+xx+'_x'].SetMinimum(1.)
-    else: h[d+i+'p/pt'+xx+'_x'].SetMinimum(1.E-10)
-    h[d+i+'p/pt'+xx+'_x'].SetLineWidth(1)
-    h[d+i+'p/pt'+xx+'_x'].SetMarkerSize(1)
-    h[d+i+'p/pt'+xx+'_x'].SetLineColor(opt[i1][1])
-    h[d+i+'p/pt'+xx+'_x'].SetStats(0)
-    if i =='':  h[d+i+'p/pt'+xx+'_x'].GetXaxis().SetRangeUser(5.,400.)
-    if i =='MC':  h[d+i+'p/pt'+xx+'_x'].GetXaxis().SetRangeUser(5.,30.)
-    if i =='MC10':  h[d+i+'p/pt'+xx+'_x'].GetXaxis().SetRangeUser(20.,400.)
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i1][2],'PL')
-    h[d+i+'p/pt'+xx+'_x'].Draw(opt[i1][0])
+    histo = h[d+i+'p/pt'+xx+'_x']
+    histo.SetMaximum(hMax*5.)
+    histo.SetLineWidth(1)
+    histo.SetMarkerSize(1)
+    histo.SetLineColor(opt[i1][1])
+    histo.SetStats(0)
+    if i =='': 
+       histo.SetMinimum( histo.GetBinContent(histo.FindBin(pMax)-1)*0.01 )
+       histo.GetXaxis().SetRangeUser(pMin,pMax)
+    if d != '': histo.GetXaxis().SetRangeUser(pMin,pMax)
+    if i =='MC':  histo.GetXaxis().SetRangeUser(pMin,30.)
+    if i =='MC10':  histo.GetXaxis().SetRangeUser(20.,pMax)
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
+    histo.Draw(opt[i1][0])
    h['leg'+t+str(tc)].Draw('same')
-# and Pt
-   tc = 4
-   rc = h[t].cd(tc)
-   rc.SetLogy(1)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
-   mx1 = ut.findMaximumAndMinimum(h[d+'p/pt'+x+'_y'])[1]
-   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/pt'+x+'_y'])[1]
-   hMay = max(mx1,mx2)
-   for i1 in optSorted:
-    i = i1
-    source = ""
-    if not i.find('MC10')<0:
-        i = 'MC10'
-        source = i1.split('MC10')[1]
-    elif not i.find('MC')<0: 
-        i = 'MC'
-        source = i1.split('MC')[1]
-    if i=='MC10': continue # Pt/Px distributions from 1GeV and 10GeV are merged into one
-    xx = x+source
-    h[d+i+'p/pt'+xx+'_y'].SetTitle('transverse momentum Pt, P>'+str(pMin))
-    h[d+i+'p/pt'+xx+'_y'].SetMaximum(hMay*10.)
-    if d == "": h[d+i+'p/pt'+xx+'_y'].SetMinimum(1.)
-    else: h[d+i+'p/pt'+xx+'_y'].SetMinimum(1.E-10)
-    h[d+i+'p/pt'+xx+'_y'].SetLineWidth(1)
-    h[d+i+'p/pt'+xx+'_y'].SetMarkerSize(1)
-    h[d+i+'p/pt'+xx+'_y'].SetLineColor(opt[i1][1])
-    h[d+i+'p/pt'+xx+'_y'].SetStats(0)
-    h[d+i+'p/pt'+xx+'_y'].Draw(opt[i1][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i1][2],'PL')
-   h['leg'+t+str(tc)].Draw('same')
-# go to linear projection
-   tc = 5
-   rc = h[t].cd(tc)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
-   for i1 in optSorted:
-    i = i1
-    source = ""
-    if not i.find('MC10')<0: 
-        i = 'MC10'
-        source = i1.split('MC10')[1]
-    elif not i.find('MC')<0: 
-        i = 'MC'
-        source = i1.split('MC')[1]
-    xx = x+source
-    h['lin'+d+i+'pz/Abspx'+xx+'_x']=h[d+i+'pz/Abspx'+xx+'_x'].Clone('lin'+d+i+'pz/Abspx'+xx+'_x')
-    if i=='': h['lin'+d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRange(5,120)
-    h['lin'+d+i+'pz/Abspx'+xx+'_x'].SetMaximum(hMax*1.1)
-    h['lin'+d+i+'pz/Abspx'+xx+'_x'].SetMinimum(0.)
-    h['lin'+d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i1][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i1][2],'PL')
-    if i =='MC10':  h['lin'+d+i+'pz/Abspx'+xx+'_x'].GetXaxis().SetRangeUser(20,400)
-   h['leg'+t+str(tc)].Draw('same')
-   tc = 6
-   rc = h[t].cd(tc)
-   h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
-   for i1 in optSorted:
-    i = i1
-    source = ""
-    if not i.find('MC10')<0: 
-        i = 'MC10'
-        source = i1.split('MC10')[1]
-    elif not i.find('MC')<0: 
-        i = 'MC'
-        source = i1.split('MC')[1]
-    if i=='MC10': continue
-    xx = x+source
-    h['lin'+d+i+'pz/Abspx'+xx+'_y']=h[d+i+'pz/Abspx'+xx+'_y'].Clone('lin'+d+i+'pz/Abspx'+xx+'_y')
-    h['lin'+d+i+'pz/Abspx'+xx+'_y'].GetXaxis().SetRange(1,25)
-    h['lin'+d+i+'pz/Abspx'+xx+'_y'].SetMaximum(hMaPx*1.1)
-    h['lin'+d+i+'pz/Abspx'+xx+'_y'].SetMinimum(0.)
-    h['lin'+d+i+'pz/Abspx'+xx+'_y'].SetStats(0)
-    h['lin'+d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i1][2],'PL')
-   h['leg'+t+str(tc)].Draw('same')
+# linear
    tc = 7
    rc = h[t].cd(tc)
+   rc.SetLeftMargin(0.2)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i1 in optSorted:
     i = i1
     source = ""
     if not i.find('MC10')<0: 
+        if d != "":continue
         i = 'MC10'
         source = i1.split('MC10')[1]
     elif not i.find('MC')<0: 
@@ -5829,48 +6028,81 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
         source = i1.split('MC')[1]
     xx = x+source
     h['lin'+d+i+'p/pt'+xx+'_x']=h[d+i+'p/pt'+xx+'_x'].Clone('lin'+d+i+'p/pt'+xx+'_x')
-    if i=='': h['lin'+d+i+'p/pt'+xx+'_x'].GetXaxis().SetRange(5,120)
-    h['lin'+d+i+'p/pt'+xx+'_x'].SetMaximum(hMax*1.1)
-    h['lin'+d+i+'p/pt'+xx+'_x'].SetMinimum(0.)
-    h['lin'+d+i+'p/pt'+xx+'_x'].Draw(opt[i1][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i1][2],'PL')
-    if i =='MC10':  h['lin'+d+i+'p/pt'+xx+'_x'].GetXaxis().SetRangeUser(20,400)
+    histo = h['lin'+d+i+'p/pt'+xx+'_x']
+    if i=='':       histo.GetXaxis().SetRangeUser(pMin,120)
+    if i =='MC10':  histo.GetXaxis().SetRangeUser(20,pMax)
+    if d != '': histo.GetXaxis().SetRangeUser(pMin,pMax)
+    histo.SetMaximum(hMax*1.1)
+    histo.SetMinimum(0.)
+    histo.Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
+# and Pt
+   tc = 4
+   rc = h[t].cd(tc)
+   rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
+   h['leg'+t+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+   mx1 = ut.findMaximumAndMinimum(h[d+'p/pt'+x+'_y'])[1]
+   mx2 = ut.findMaximumAndMinimum(h[d+'MCp/pt'+x+'_y'])[1]
+   hMax = max(mx1,mx2)
+   for i1 in optSorted:
+    i = i1
+    source = ""
+    if not i.find('MC10')<0:continue
+    elif not i.find('MC')<0: 
+        i = 'MC'
+        source = i1.split('MC')[1]
+    if i=='MC10': continue # Pt/Px distributions from 1GeV and 10GeV are merged into one
+    xx = x+source
+    histo = h[d+i+'p/pt'+xx+'_y']
+    histo.SetMaximum(hMax*5.)
+    histo.SetLineWidth(1)
+    histo.SetMarkerSize(1)
+    histo.SetLineColor(opt[i1][1])
+    histo.SetStats(0)
+    if i =='': 
+       histo.SetMinimum( histo.GetBinContent(histo.FindBin(ptMax))*0.01 )
+       histo.GetXaxis().SetRangeUser(0.,ptMax)
+    histo.Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
+   h['leg'+t+str(tc)].Draw('same')
+# linear
    tc = 8
    rc = h[t].cd(tc)
+   rc.SetLeftMargin(0.2)
    h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i1 in optSorted:
     i = i1
     source = ""
-    if not i.find('MC10')<0: 
-        i = 'MC10'
-        source = i1.split('MC10')[1]
+    if not i.find('MC10')<0:continue
     elif not i.find('MC')<0: 
         i = 'MC'
         source = i1.split('MC')[1]
     if i=='MC10': continue
     xx = x+source
     h['lin'+d+i+'p/pt'+xx+'_y']=h[d+i+'p/pt'+xx+'_y'].Clone('lin'+d+i+'p/pt'+xx+'_y')
-    h['lin'+d+i+'p/pt'+xx+'_y'].GetXaxis().SetRange(1,25)
-    h['lin'+d+i+'p/pt'+xx+'_y'].SetMaximum(hMay*1.1)
-    h['lin'+d+i+'p/pt'+xx+'_y'].SetMinimum(0.)
-    h['lin'+d+i+'p/pt'+xx+'_y'].SetStats(0)
-    h['lin'+d+i+'p/pt'+xx+'_y'].Draw(opt[i1][0])
-    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i1][2],'PL')
+    histo = h['lin'+d+i+'p/pt'+xx+'_y']
+    if i=='':       histo.GetXaxis().SetRangeUser(0.,2.)
+    histo.SetMaximum(hMax*1.1)
+    histo.SetMinimum(0.)
+    histo.Draw(opt[i1][0])
+    if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
 
    h[t].Update()
-   h[t].Print('MC-Comparison'+d+x+'.pdf')
-   h[t].Print('MC-Comparison'+d+x+'.png')
+   h[t].Print(label+d+x+'.pdf')
+   h[t].Print(label+d+x+'.png')
 
 # simplified version
    tc = 1
    ts = 'simple'+t
    rc = h[ts].cd(tc)
    rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
-   hMax = max(mx1,mx2)
    for i in ['','MC','MC10']:
+    if i=='MC10' and d != "":continue
     source = ""
     xx = x+source
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i][2],'PL')
@@ -5879,6 +6111,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    tc = 2
    rc = h[ts].cd(tc)
    rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
    for i in ['','MC']:
     source = ""
@@ -5890,9 +6123,11 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    ts = 'simple'+t
    rc = h[ts].cd(tc)
    rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
    hMax = max(mx1,mx2)
    for i in ['','MC','MC10']:
+    if i=='MC10' and d != "":continue
     source = ""
     xx = x+source
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i][2],'PL')
@@ -5901,6 +6136,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    tc = 4
    rc = h[ts].cd(tc)
    rc.SetLogy(1)
+   rc.SetLeftMargin(0.2)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
    for i in ['','MC']:
     source = ""
@@ -5909,9 +6145,11 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i][2],'PL')
    h['leg'+ts+str(tc)].Draw('same')
    tc = 5
+   rc.SetLeftMargin(0.2)
    rc = h[ts].cd(tc)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i in ['','MC','MC10']:
+    if i=='MC10' and d != "":continue
     source = ""
     xx = x+source
     h['lin'+d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i][0])
@@ -5919,6 +6157,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    h['leg'+ts+str(tc)].Draw('same')
    tc = 6
    rc = h[ts].cd(tc)
+   rc.SetLeftMargin(0.2)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i in ['','MC']:
     source = ""
@@ -5928,14 +6167,17 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    h['leg'+ts+str(tc)].Draw('same')
    tc = 7
    rc = h[ts].cd(tc)
+   rc.SetLeftMargin(0.2)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i in ['','MC','MC10']:
+    if i=='MC10' and d != "":continue
     source = ""
     xx = x+source
     h['lin'+d+i+'p/pt'+xx+'_x'].Draw(opt[i][0])
     if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i][2],'PL')
    h['leg'+ts+str(tc)].Draw('same')
    tc = 8
+   rc.SetLeftMargin(0.2)
    rc = h[ts].cd(tc)
    h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    for i in ['','MC']:
@@ -5946,18 +6188,20 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    h['leg'+ts+str(tc)].Draw('same')
 
    h[ts].Update()
-   h[ts].Print('MC-Comparison-simple-'+d+x+'.pdf')
-   h[ts].Print('MC-Comparison-simple-'+d+x+'.png')
+   h[ts].Print(label+'-simple-'+d+x+'.pdf')
+   h[ts].Print(label+'-simple-'+d+x+'.png')
  for Aproj in ['pz/Abspx','p/pt']:
   withAllTracks=False
   for x in ['','mu']:
 # old printout
-   if Aproj == 'pz/Abspx':
+   if Aproj == 'p/pt':
     if x != '': print "=== muon tagged ===="
     else: print       "=== all tracks  ===="
     for P in [5.,10.,50.,100.,150.,200.,300.]:
-     nbin = h['pz/Abspx'+x+'_x'].FindBin(P)
-     print "data/MC Pz>%5i GeV: %5.2F"%(int(P),h['I-pz/Abspx'+x+'_x'].GetBinContent(nbin)/h['I-MCpz/Abspx'+x+'_x'].GetBinContent(nbin))
+     nbin = h[Aproj+x+'_x'].FindBin(P)
+     print "data/MC Pz>%5i GeV: %5.2F"%(int(P),h['I-'+Aproj+x+'_x'].GetBinContent(nbin)/h['I-MC'+Aproj+x+'_x'].GetBinContent(nbin))
+    nbin = h[Aproj+x+'_x'].FindBin(480.)
+    ghostRateMC = h['MC'+Aproj+x+'_x'].Integral(nbin,)
 # make ratio plots
    proj = Aproj
    for xx in [x+'_x',x+'_y']:
@@ -5987,7 +6231,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     if xx.find('_x')<0: 
       h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,4.0)
     else:               
-      h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(5.,400.)
+      h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(pMin,pMax)
     h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
     h['I-'+proj+xx+'Ratio'].SetTitle('Ratio Data/MC '+h['I-'+proj+xx+'Ratio'].GetTitle())
     h['I-'+proj+xx+'Ratio'].Draw()
@@ -6001,8 +6245,8 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     h['I-'+proj+xx+'RatioG4noCharm'].Draw('same')
     h['leg'+t].AddEntry(h['I-'+proj+xx+'RatioG4noCharm'],'muon tagged tracks no G4 dimuon no charm ','PL')
     h['leg'+t].Draw('same')
-    h[t].Print('MC-ComparisonRatios'+Aproj.replace('/','')+'.pdf')
-    h[t].Print('MC-ComparisonRatios'+Aproj.replace('/','')+'.png')
+    h[t].Print(label+'Ratios'+Aproj.replace('/','')+'.pdf')
+    h[t].Print(label+'Ratios'+Aproj.replace('/','')+'.png')
 # now in 2D
     h[t+'2D'].cd(1)
     ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
@@ -6017,12 +6261,12 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
        h[proj+x+'Ratio'].SetBinContent(mx,my,-1)
     h[proj+x+'Ratio'].SetMaximum(3.)
     h[proj+x+'Ratio'].SetMinimum(0.)
-    h[proj+x+'Ratio'].GetXaxis().SetRangeUser(5.,400.)
+    h[proj+x+'Ratio'].GetXaxis().SetRangeUser(pMin,pMax)
     h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,4.0)
     h[proj+x+'Ratio'].SetStats(0)
     h[proj+x+'Ratio'].Draw('colz')
-    h[t+'2D'].Print('MC-ComparisonRatios2D'+proj.replace('/','')+'.png')
-    h[t+'2D'].Print('MC-ComparisonRatios2D'+proj.replace('/','')+'.pdf')
+    h[t+'2D'].Print(label+'Ratios2D'+proj.replace('/','')+'.png')
+    h[t+'2D'].Print(label+'Ratios2D'+proj.replace('/','')+'.pdf')
 # data
  t='pPt2d'
  if not h.has_key(t): 
@@ -6034,15 +6278,16 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
  h['p/pt'].GetYaxis().SetRangeUser(0,7.5)
  h['p/pt'].SetStats(0)
  h['p/pt'].Draw('colz')
- h[t].Print('MC-ComparisonDatapPt.png')
- h[t].Print('MC-ComparisonDatapPt.pdf')
+ h[t].Print(label+'DatapPt.png')
+ h[t].Print(label+'DatapPt.pdf')
 
 # pt in slices of P
- x = 'mu'
  for t in ['MC-Comparison Pt','MC-Comparison Px']:
-  if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=2,cy=2)
+  if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=3,cy=2)
   y = 1
-  for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
+  for pInterval in [ [pMin,10.],[10.,50.],[50.,100.],[150.,200.],[200.,250.],[250.,300.] ]:
+   if pInterval[1]<11: x = ''
+   else: x = 'mu'
    interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
    tc = h[t].cd(y)
    y+=1
@@ -6064,7 +6309,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     mx1 = ut.findMaximumAndMinimum(h[ proj+x+interval])[1]
     mx2 = ut.findMaximumAndMinimum(h['MC'+proj+x+interval])[1]
     hMaPx = max(mx1,mx2)
-    h[hname].GetXaxis().SetRangeUser(0.,5.)
+    h[hname].GetXaxis().SetRangeUser(0.,4.)
     h[hname].SetMaximum(hMaPx*1.1)
     h[hname].SetMinimum(0.)
     h[hname].SetStats(0)
@@ -6075,8 +6320,8 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(h[hname],opt[i1][2],'PL')
    h['leg'+t+str(tc)].Draw('same')
   h[t].Update()
-  h[t].Print('MC-Comparison'+t.replace(' ','')+'.pdf')
-  h[t].Print('MC-Comparison'+t.replace(' ','')+'.png')
+  h[t].Print(label+t.replace(' ','')+'.pdf')
+  h[t].Print(label+t.replace(' ','')+'.png')
 
 # some code for 2 track events
  osign = {'':'opposite sign','s':'same sign'}
@@ -6091,10 +6336,10 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    tc = h[t].cd(pad)
    h['leg'+t+str(pad)+s]=ROOT.TLegend(0.42,0.54,0.88,0.86)
    hn = 'p1p2'+txt[case]+s
-   h[hn] = h['p1/p2'+s].ProjectionX(hn,case,500)
-   h[hn].Add(h['p1/p2'+s].ProjectionY('p1p2y'+txt[case]+s,case,500))
+   h[hn] = h['p1/p2'+s].ProjectionX(hn,case,h['p1/p2'+s].GetYaxis().FindBin(pMax))
+   h[hn].Add(h['p1/p2'+s].ProjectionY('p1p2y'+txt[case]+s,case,h['p1/p2'+s].GetXaxis().FindBin(pMax)) )
    if rebin>1: h[hn].Rebin(rebin)
-   norm = h['p/ptmu_x'].Integral(case,500)
+   norm = h['p/ptmu_x'].Integral(case,h['p/ptmu_x'].FindBin(pMax))*POTdata
    h[hn].Scale(1./norm)
    h[hn].SetTitle('P in 2-track events '+txt[case]+'; GeV/c;N2/Nall with P > / ')
    h[hn].SetStats(0)
@@ -6110,11 +6355,11 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
    if case < 20: mchist = 'MCp1/p2'+s
    else:         mchist = 'MC10p1/p2'+s
    hn='MCp1p2'+txt[case]+s
-   h[hn] = h[mchist].ProjectionX(hn,case,500)
-   h[hn].Add(h[mchist].ProjectionY('MCp1p2y'+txt[case]+s,case,500))
+   h[hn] = h[mchist].ProjectionX(hn,case,h[mchist].GetYaxis().FindBin(pMax))
+   h[hn].Add(h[mchist].ProjectionY('MCp1p2y'+txt[case]+s,case,h[mchist].GetYaxis().FindBin(pMax)) )
    if rebin>1: h[hn].Rebin(rebin)
-   if case < 20: norm = h['MCp/ptmu_x'].Integral(case,500)
-   else:         norm = h['MC10p/ptmu_x'].Integral(case,500)
+   if case < 20: norm = h['MCp/ptmu_x'].Integral(case,h['MCp/ptmu_x'].FindBin(pMax))*POTdata
+   else:         norm = h['MC10p/ptmu_x'].Integral(case,h['MC10p/ptmu_x'].FindBin(pMax))*POTdata
    h[hn].Scale(1./norm)
    h[hn].SetStats(0)
    h[hn].SetTitle('P in 2-track events, one track with '+txt[case]+'; GeV/c')
@@ -6137,8 +6382,8 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
         source = i1.split('MC')[1]
     if source == '': continue
     hn='MCp1p2'+source+txt[case]+s
-    h[hn] = h[i+'p1/p2'+s+source].ProjectionX(hn,case,500)
-    h[hn].Add(h[i+'p1/p2'+s+source].ProjectionY(i+'p1/p2y'+source+txt[case]+s,case,500))
+    h[hn] = h[i+'p1/p2'+s+source].ProjectionX(hn,case,h[i+'p1/p2'+s+source].GetYaxis().FindBin(pMax))
+    h[hn].Add(h[i+'p1/p2'+s+source].ProjectionY(i+'p1/p2y'+source+txt[case]+s,case,h[i+'p1/p2'+s+source].GetXaxis().FindBin(pMax)))
     if rebin>1: h[hn].Rebin(5)
     h[hn].SetLineColor(opt[i1][1])
     h[hn].SetStats(0)
@@ -6146,7 +6391,7 @@ def MCcomparison(pot = -1, pMin = 5.,simpleEffCor=0.024,effCor=False,eric=False,
     ut.makeIntegralDistrib(h,hn,withOverFlow)
     Ihn = 'I-'+hn
     h[Ihn].Draw('same')
-    h[Ihn].GetXaxis().SetRange(case,500)
+    h[Ihn].GetXaxis().SetRangeUser(case,pMax)
     h['leg'+t+str(pad)+s].AddEntry(h[hn],opt[i1][2],'PL')
    h['leg'+t+str(pad)+s].Draw('same')
    pad +=1
@@ -6382,6 +6627,17 @@ def mergeGoodRuns(excludeRPC=False,path='.'):
     continue
   cmd += test
  os.system(cmd)
+def findHighMomEvents():
+ for d in os.listdir('.'):
+  if os.path.isdir(d):
+   for f in os.listdir(d):
+     if f.find('ntuple-')==0:
+       s = f.replace('ntuple-','')
+       ff = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/10GeV-withDeadChannels/'+d+'/'+s)
+       sTree=ff.cbmsim
+       for event in sTree:
+         for m in sTree.MCTrack:
+           if abs(m.GetPdgCode())==13 and m.GetP()>350: sTree.MCTrack.Dump()
 
 def fcn(npar, gin, f, par, iflag):
 #calculate chisquare

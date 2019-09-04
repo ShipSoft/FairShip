@@ -452,6 +452,7 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
       paxis.append(xv)
       xv+=50.
    dpaxis = array('d',paxis)
+   ut.bookHist(h,'Ptrue', 'true momentum muReconstructible;[GeV/c];N',500,0.,500.)
    ut.bookHist(h,'P', 'true momentum muReconstructible;[GeV/c];N',dpaxis,50,0.,200.)
    ut.bookHist(h,'Pz','true momentum muReconstructible;[GeV/c];N',dpaxis,50,0.,200.)
    ut.bookHist(h,'Preco', 'true momentum reconstructed;[GeV/c];N',dpaxis,50,0.,200.)
@@ -467,11 +468,13 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
     ut.bookHist(h,'delP'+x,"reconstructed P - true ",1000,-50.,50.)
     ut.bookHist(h,'delPt'+x,"reconstructed Pt - true ",1000,-1.,1.)
     ut.bookHist(h,'delPx'+x,"reconstructed Px - true ",1000,-1.,1.)
-   for n in range(Nevents):
+   for n in range(sTree.GetEntries()):
     rc = sTree.GetEvent(n)
     upStreamOcc = sTree.stationOcc[1]+sTree.stationOcc[5]+sTree.stationOcc[2]+sTree.stationOcc[6]
     if sTree.nTr>0: rc = h['OccAllEvents'].Fill(upStreamOcc)
     if sTree.MCRecoDT.size() != 1: continue # look at 1 Track events for the moment 
+    # require reco RPC tracks, otherwise cannot compare to zero field data which starts with RPC tracks
+    if sTree.nRPC%10 == 0 or sTree.nRPC/10 == 0 : continue
     # starting with reconstructible RPC track, check that same MCTrack is reconstructible in DT
     for m in sTree.MCRecoRPC:
        i = -1
@@ -480,6 +483,7 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
          if m!=d: continue  # require same MCTrack
          P  = ROOT.TVector3(sTree.MCRecoDTpx[i],sTree.MCRecoDTpy[i],sTree.MCRecoDTpz[i])
          rc = h['P'].Fill(P.Mag(),upStreamOcc)
+         rc = h['Ptrue'].Fill(P.Mag())
          rc = h['Px'].Fill(abs(P.X()),upStreamOcc)
          rc = h['Pz'].Fill(P.Z(),upStreamOcc)
          rc = h['Pt'].Fill(P.Pt(),upStreamOcc)
@@ -497,7 +501,7 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
            rc = h['delPt'].Fill(delPt,P.Mag())
            rc = h['delx/y'].Fill(sTree.Delx[t],sTree.Dely[t])
            # if there is no muon track in event, sTree.Delx[t] = 9999. and sTree.Dely[t] = 9999.
-           if sTree.Delx[t]>9998 or sTree.Dely[t] > 9998: print "no reco RPC track in RPC reconstructible event" 
+           if Debug and (sTree.Delx[t]>9998 or sTree.Dely[t] > 9998): print "no reco RPC track in RPC reconstructible event" 
            if abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']:
              if found: continue
              rc = h['delP_mu'].Fill(delP,P.Mag())
@@ -517,13 +521,26 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
    ut.readHists(hMC,'histos-MCRecoEffFunOfOcc.root')
  if not hData.has_key('Occ'): 
    ut.readHists(hData,'histos-DataOcc.root')
+   hData['Occ'].Scale(1./hData['Occ'].GetMaximum())
  # now take occupancy from zero field
  if not hMC.has_key("hDTEff"):
   hMC["hDTEff"] = {}
   hDTEff=hMC["hDTEff"]
-  ut.readHists(hDTEff,'DTEff.root',['upStreamOccWithTrack1','upStreamOcc1'])
+  interestingHistos=[]
+  for k in range(1,5):
+      interestingHistos.append("upStreamOccWithTrack"+str(k))
+      interestingHistos.append("upStreamOcc"+str(k))
+  ut.readHists(hDTEff,'DTEff.root',interestingHistos)
   hDTEff['upStreamOccWithTrack']=hDTEff['upStreamOccWithTrack1'].Clone('upStreamOccWithTrack')
+  hDTEff['upStreamOccWithTrack'].Add(hDTEff['upStreamOccWithTrack2'])
+  hDTEff['upStreamOccWithTrack'].Add(hDTEff['upStreamOccWithTrack3'])
+  hDTEff['upStreamOccWithTrack'].Add(hDTEff['upStreamOccWithTrack4'])
+
   hDTEff['upStreamOcc']=hDTEff['upStreamOcc1'].Clone('upStreamOcc')
+  hDTEff['upStreamOcc'].Add(hDTEff['upStreamOcc2'])
+  hDTEff['upStreamOcc'].Add(hDTEff['upStreamOcc3'])
+  hDTEff['upStreamOcc'].Add(hDTEff['upStreamOcc4'])
+
   hMC['zeroFieldOcc']=hDTEff['upStreamOccWithTrack'].Rebin(4,'zeroFieldOcc')
   hMC['zeroFieldOcc'].Scale(1./hMC['zeroFieldOcc'].GetMaximum())
   hMC['zeroFieldOcc'].SetLineColor(ROOT.kGreen)
@@ -542,9 +559,9 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
  hmax = hData['OccAllEvents'].GetMaximum()
  hMC['OccAllEvents'].SetLineColor(ROOT.kMagenta)
  hMC['OccAllEvents_scaled']=hMC['OccAllEvents'].Clone('OccAllEvents_scaled')
- hMC['OccAllEvents'].Scale(hmax/hMC['OccAllEvents'].GetMaximum())
- hMC['OccAllEvents'].SetStats(0)
- hMC['OccAllEvents'].Draw('same hist')
+ hMC['OccAllEvents_scaled'].Scale(hmax/hMC['OccAllEvents'].GetMaximum())
+ hMC['OccAllEvents_scaled'].SetStats(0)
+ hMC['OccAllEvents_scaled'].Draw('same hist')
  h['upStreamOcc'].Print('upstreamOcc.pdf')
  h['upStreamOcc'].Print('upstreamOcc.png')
  variables = ['P','Px','Pz','Pt']
@@ -584,8 +601,8 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
   h['eff'+var].Print('MCEfficienciesOcc'+var+'.png')
  ut.bookCanvas(h,'eff final','Efficiencies ',1200,900,2,2)
  j=1
- h['occ']=tmp.Clone('occ')
- h['occ'].Scale(1./tmp.GetMaximum())
+ h['occ']=hMC['OccAllEvents'].Clone('occ') # want to have MC efficiency for all events, not only 1 track
+ h['occ'].Scale(1./h['occ'].GetMaximum())
  h['occ'].SetLineColor(ROOT.kMagenta)
  for var in variables:
    h['eff final'].cd(j)
@@ -604,15 +621,20 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
  ut.bookCanvas(h,'eff final P','Efficiencies ',900,600,1,1)
  h['eff final P'].cd(1)
  h['effFun'+var].SetTitle('Tracking efficiency as function of occupancy; N hits in upstream stations;efficiency')
+ h['effFun'+var].GetXaxis().SetRangeUser(0.,100.)
  h['effFun'+var].Draw('P')
  h['effFun'+var].Draw('hist same')
  h['occ'].Draw('same P') 
  h['occ'].Draw('same hist')
  h['zeroFieldOcc'].Draw('P same')
  h['zeroFieldOcc'].Draw('same hist')
- rc = T.DrawLatexNDC(0.256,0.370,"upstream station occupancy MC")
+ hData['Occ'].Draw('same hist')
+ hData['Occ'].Draw('P same')
+ rc = T.DrawLatexNDC(0.28,0.40,"upstream station occupancy MC")
  T.SetTextColor(h['zeroFieldOcc'].GetLineColor())
- rc = T.DrawLatexNDC(0.287,0.217,"upstream station occupancy Data")
+ rc = T.DrawLatexNDC(0.28,0.28,"upstream station occupancy zero field Data")
+ T.SetTextColor(hData['Occ'].GetLineColor())
+ rc = T.DrawLatexNDC(0.28,0.34,"upstream station occupancy Data")
  T.SetTextColor(ROOT.kBlue)
  rc = T.DrawLatexNDC(0.35,0.8,"tracking efficiency")
  h['eff final P'].Print("MCTrackEffFunOcc.pdf")
@@ -631,17 +653,11 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
    sumEvents+=hData['Occ'].GetBinContent(o)
  finalEff=finalEff/sumEvents
  print "and the prediction for Data: %5.2F%%"%(finalEff*100)
- ut.readHists(hData,'DTEff.root',['upStreamOccWithTrack1','upStreamOccWithTrack2','upStreamOccWithTrack3','upStreamOccWithTrack4'])
  finalEff  = 0
  sumEvents = 0
- hData['upStreamOccWithTrack1'].Add(hData['upStreamOccWithTrack2'])
- hData['upStreamOccWithTrack1'].Add(hData['upStreamOccWithTrack3'])
- hData['upStreamOccWithTrack1'].Add(hData['upStreamOccWithTrack4'])
- hData['upStreamOccWithTrack1'].Scale(1./4.)
- hData['upStreamOccWithTrack1'].Rebin(4)
- for o in range(1,hData['upStreamOccWithTrack1'].GetNbinsX()+1):
-   finalEff+=hData['upStreamOccWithTrack1'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
-   sumEvents+=hData['upStreamOccWithTrack1'].GetBinContent(o)
+ for o in range(1,h['zeroFieldOcc'].GetNbinsX()+1):
+   finalEff+=h['zeroFieldOcc'].GetBinContent(o)*h['effFun'+var].GetBinContent(o)
+   sumEvents+=h['zeroFieldOcc'].GetBinContent(o)
  finalEff=finalEff/sumEvents
  print "and the prediction for zeroField Data: %5.2F%%"%(finalEff*100)
 
