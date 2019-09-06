@@ -31,11 +31,6 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
    total_size -= sizeof(DataFrame);
    data = reinterpret_cast<Int_t *>(&(mf->hits));
    auto frameTime = mf->header.frameTime;
-   switch (frameTime) {
-   case SoS: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; return 2;
-   case EoS: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
-   default: break;
-   }
    while (total_size > 0) {
       auto df = reinterpret_cast<DataFrame *>(data);
       Int_t size = df->header.size;
@@ -60,17 +55,16 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
    if (!fIn->ReadBuffer(reinterpret_cast<char *>(df), sizeof(DataFrame))) {
       size_t size = df->header.size;
       auto frameTime = df->header.frameTime;
-      switch (frameTime) {
-      case SoS: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; break;
-      case EoS: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
-      default: break;
-      }
-      fEventTime = double(frameTime) * 25;
       uint16_t partitionId = df->header.partitionId;
-      if (partitionId == 0x8000) {
-         LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
-         assert(size - sizeof(DataFrame) > 0);
-         if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
+      if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
+         switch (frameTime) {
+            case SoS: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; return 2;
+            case EoS: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
+            default: break;
+         }
+         fEventTime = double(frameTime) * 25;
+         if (partitionId == 0x8000) {
+            LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
             if (fEventTime > 5000000000 && frameTime != EoS && frameTime != SoS) {
                LOG(WARNING) << "Late event:" << FairLogger::endl;
                for (int i = 0; i < size; i++) {
@@ -85,9 +79,7 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
             }
             return UnpackEventFrame(reinterpret_cast<Int_t *>(&buffer), size);
          }
-      }
-      LOG(DEBUG) << "ShipTdcSource: PartitionId " << std::hex << partitionId << std::dec << FairLogger::endl;
-      if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
+         LOG(DEBUG) << "ShipTdcSource: PartitionId " << std::hex << partitionId << std::dec << FairLogger::endl;
 
          if (Unpack(reinterpret_cast<Int_t *>(&buffer), size, partitionId)) {
             return (frameTime == EoS) ? 1 : 0;
