@@ -60,10 +60,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Box.EmX = 12.5 * u.cm
     c.Box.EmY = 9.9 * u.cm
     c.Box.PBTh = 0.0175 * u.cm
-    if cTarget == 16:
-     c.Box.PasSlabTh = 0.09 * u.cm #passive slab in ECC (run with tungsten)
-    else:
-     c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July 2018 measurement, molybdenum/tungsten for SHiP target replica)
+    c.Box.PasSlabTh = 0.1 * u.cm #passive slab in ECC (lead for July measurement, molybdenum/tungsten for SHiP target replica
     c.Box.EPlW = 2* c.Box.EmTh + c.Box.PBTh
     c.Box.AllPW = c.Box.PasSlabTh + c.Box.EPlW
     c.Box.BrX = 12.9 *u.cm
@@ -495,6 +492,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonTagger.VStripoffset = 0.2 * u.cm              
     c.MuonTagger.Gapthickness =  0.2 * u.cm
     c.MuonTagger.Electrodethickness =  0.275 * u.cm  
+    c.MuonTagger.AluminiumThickness = 0.1 * u.cm
+    c.MuonTagger.AluminiumGap = 2.3 * u.cm
     c.MuonTagger.NVstrips =  184
     c.MuonTagger.NHstrips =  116         
       
@@ -520,8 +519,10 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.MuonTagger.PX = c.MuonTagger.BX
     c.MuonTagger.PY = c.MuonTagger.BY
-    c.MuonTagger.SX = 195.3975 * u.cm
-    c.MuonTagger.SY = 121.7295 * u.cm
+    #c.MuonTagger.SX = 195.3975 * u.cm
+    #c.MuonTagger.SY = 121.7295 * u.cm
+    c.MuonTagger.SX = 195.5 * u.cm
+    c.MuonTagger.SY = 125. * u.cm
     c.MuonTagger.HX = 5 * u.cm #dimensions of central hole
     c.MuonTagger.HY = 5 * u.cm
 

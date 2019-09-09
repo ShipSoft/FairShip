@@ -172,6 +172,8 @@ def configure(run,ship_geo,Gfield=''):
  MuonTagger.SetRPCz(ship_geo.MuonTagger.RPC1z, ship_geo.MuonTagger.RPC2z, ship_geo.MuonTagger.RPC3z, ship_geo.MuonTagger.RPC4z, ship_geo.MuonTagger.RPC5z)
  MuonTagger.SetRPCThickness(ship_geo.MuonTagger.RPCthickness)
  MuonTagger.SetGapThickness(ship_geo.MuonTagger.Gapthickness)
+ MuonTagger.SetAluminiumThickness(ship_geo.MuonTagger.AluminiumThickness)
+ MuonTagger.SetAluminiumGap(ship_geo.MuonTagger.AluminiumGap) 
  MuonTagger.SetElectrodeThickness(ship_geo.MuonTagger.Electrodethickness)
  MuonTagger.SetStripz(ship_geo.MuonTagger.Stripz, ship_geo.MuonTagger.Stripfoamz)
  MuonTagger.SetVStrip(ship_geo.MuonTagger.VStripx,ship_geo.MuonTagger.VStripx_L,ship_geo.MuonTagger.VStripx_R,ship_geo.MuonTagger.VStripoffset) 
