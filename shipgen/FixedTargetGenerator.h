@@ -11,7 +11,6 @@
 
 class FairPrimaryGenerator;
 class EvtGenDecays;
-using namespace Pythia8;
 
 class FixedTargetGenerator : public FairGenerator
 {
@@ -53,8 +52,8 @@ class FixedTargetGenerator : public FairGenerator
   Pythia* GetPythiaN() {return fPythiaN;}
  private:
   
-  RndmEngine* fRandomEngine;  //!
-  
+ Pythia8::RndmEngine* fRandomEngine;  //!
+   
  protected:
 
   Double_t fMom;       // proton momentum
@@ -65,8 +64,8 @@ class FixedTargetGenerator : public FairGenerator
   Bool_t tauOnly,JpsiMainly,G4only,setByHand,Debug,withEvtGen;
   Bool_t fcharmtarget;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
-  Pythia* fPythiaN;            //!
-  Pythia* fPythiaP;            //!
+  Pythia8::Pythia* fPythiaN;            //!
+  Pythia8::Pythia* fPythiaP;            //!
   EvtGenDecays* evtgenN;            //!
   EvtGenDecays* evtgenP;            //!
   GenieGenerator* fMaterialInvestigator;  //!
