@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import numpy as np
 import ROOT as r
 import math
@@ -26,7 +28,7 @@ def penaltyFactor(m):
 
 def zeta(p, theta):
     """ Fraction of the proton momentum carried away by the paraphoton in the beam direction """
-    return p / (protonMomentum * math.sqrt(theta*theta + 1.))
+    return old_div(p, (protonMomentum * math.sqrt(theta*theta + 1.)))
 
 
 def pTransverse(p, theta):
@@ -53,8 +55,8 @@ def wba(p, theta, mDarkPhoton, epsilon):
     mp2 = mProton*mProton
     mA2 = mDarkPhoton*mDarkPhoton
 
-    p1 = (1. + oneMinusZSquare) / zeta(p,theta)
-    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton) 
+    p1 = old_div((1. + oneMinusZSquare), zeta(p,theta))
+    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( old_div((2.*mp2 + mA2), H(p,theta,mDarkPhoton)) 
             - pow(zeta(p,theta),2.)*2.*mp2*mp2/h2 ) )
     #p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(zeta(p,theta)+oneMinusZSquare)*mp2*mA2/h2
     p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(1+oneMinusZSquare)*mp2*mA2/h2
@@ -71,9 +73,9 @@ def sigma(s): # s in GeV^2 ---> sigma in mb
     a5 = 0.545
     a6 = 0.458
     a7 = 42.53
-    p1 = a2*pow(math.log(s/a3),2.) 
-    p2 = a4*pow((1./s),a5)
-    p3 = a7*pow((1./s),a6)
+    p1 = a2*pow(math.log(old_div(s,a3)),2.) 
+    p2 = a4*pow((old_div(1.,s)),a5)
+    p3 = a7*pow((old_div(1.,s)),a6)
     return a1 + p1 - p2 + p3
 
 
@@ -84,7 +86,7 @@ def es(p, mDarkPhoton):
 
 def sigmaRatio(p, mDarkPhoton):
     """ sigma(s') / sigma(s) """
-    return sigma(es(p,mDarkPhoton)) / sigma(2.*mProton*energy(protonMomentum,mProton))
+    return old_div(sigma(es(p,mDarkPhoton)), sigma(2.*mProton*energy(protonMomentum,mProton)))
 
 
 def dNdZdPtSquare(p, mDarkPhoton, theta, epsilon):
@@ -100,7 +102,7 @@ def dPt2dTheta(p, theta):
 
 def dZdP(p, theta):
     """ Jacobian z->p """
-    return 1./( protonMomentum* math.sqrt(theta*theta+1.) )
+    return old_div(1.,( protonMomentum* math.sqrt(theta*theta+1.) ))
 
 
 def dNdPdTheta(p, theta, mDarkPhoton, epsilon):
@@ -140,14 +142,14 @@ def prodRate(mDarkPhoton, epsilon, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi):
 
 def normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm):
     """ Probability density function for A' production in SHIP """
-    return (1. / norm) * dNdPdTheta(p, theta, mDarkPhoton, epsilon)
+    return (old_div(1., norm)) * dNdPdTheta(p, theta, mDarkPhoton, epsilon)
 
 
 def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi, suffix=""):
     """ Histogram of the PDF for A' production in SHIP """
     angles = np.linspace(tmin,tmax,binstheta).tolist()
     anglestep = 2.*(tmax - tmin)/binstheta
-    momentumStep = (pMax(mDarkPhoton)-pMin(mDarkPhoton))/(binsp-1)
+    momentumStep = old_div((pMax(mDarkPhoton)-pMin(mDarkPhoton)),(binsp-1))
     momenta = np.linspace(pMin(mDarkPhoton),pMax(mDarkPhoton),binsp,endpoint=False).tolist()
     hPDF = r.TH2F("hPDF_eps%s_m%s"%(epsilon,mDarkPhoton) ,"hPDF_eps%s_m%s"%(epsilon,mDarkPhoton),
         binsp,pMin(mDarkPhoton)-0.5*momentumStep,pMax(mDarkPhoton)-0.5*momentumStep,
