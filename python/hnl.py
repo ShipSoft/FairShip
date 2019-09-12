@@ -15,10 +15,10 @@
 #     In [1]: b = HNL(1.,[1.e-8, 2.e-8, 1.e-9],True)
 #     HNLbranchings instance initialized with couplings:
 #          U2e   = 1e-08
-#	   U2mu  = 2e-08
-#	   U2tau = 1e-09
+#          U2mu  = 2e-08
+#          U2tau = 1e-09
 #     and mass:
-#	   m = 1.0 GeV
+#          m = 1.0 GeV
 #     In [2]: b.computeNLifetime()
 #     Out[2]: 4.777721453160521e-05
 #     In [3]: b.findBranchingRatio('N -> pi mu')
@@ -622,6 +622,6 @@ class HNL(HNLbranchings):
         - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)
         """
         self.NLifetime = c.hGeV / self.NDecayWidth()
-	if system == "FairShip": self.NLifetime *= 1.e9
+        if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
 
