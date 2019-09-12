@@ -1145,7 +1145,7 @@ def originOfMuon(fout,n,fn,nEvents):
  ni = int(fn[x-1:x])-1
  if nEvents < 100000: 
    fm   = "$SHIPSOFT/data/pythia8_Geant4_onlyMuons.root"   
- else:  		 
+ else:
    fm = "$SHIPSOFT/data/pythia8_Geant4_Yandex_onlyMuons.root"   
  fmuon = ROOT.TFile(fm)
  ntupl = fmuon.Get("pythia8-Geant4")

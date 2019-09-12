@@ -13,13 +13,13 @@
 #     In [1]: b = RPVSYSY(1.,[1, 1],1e3,1,True)
 #     HNLbranchings instance initialized with couplings:
 #          \lambda_{production}       = 1GeV
-#	   \lambda_{decay}            = 1GeV
+#          \lambda_{decay}            = 1GeV
 #          universal sfermion mass    = 1e3GeV
 #
 #     benchmark scenario:
 #          1 (values between 1 and 5)
 #     and mass:
-#	   m = 1.0 GeV
+#          m = 1.0 GeV
 #     In [2]: b.computeNLifetime()
 #     Out[2]: 0.0219634078804
 #     In [3]: b.findBranchingRatio('N -> K+ mu-')
@@ -435,6 +435,6 @@ class RPVSUSY(RPVSUSYbranchings):
         if decwidth == 0.0:
             return 0.0
         self.NLifetime = c.hGeV / decwidth
-	if system == "FairShip": self.NLifetime *= 1.e9
+        if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
 

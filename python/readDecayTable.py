@@ -32,7 +32,7 @@ def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), 
     configuredDecays = {}
     for row in reader:
         if not row: continue # skip empty lines
-	if str(row[0]).strip().startswith('#'):
+        if str(row[0]).strip().startswith('#'):
             continue # skip comment / header lines
         channel = str(row[0]).strip()
         flag = str(row[-1]).partition('#')[0].strip() # skip line comments

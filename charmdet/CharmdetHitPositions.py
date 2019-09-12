@@ -182,14 +182,14 @@ def GetSciFiPositions(n=1,draw=True,writentuple=False):
     hity.append(pos[1])
     hitz.append(pos[2])
     if writentuple: #add scifi hit position to ntuple
-	 hitnumber = leafnhits[0]
-	 leafdetID[hitnumber] = detID
-	 leafposx[hitnumber] = pos[0]
-	 leafposy[hitnumber] = pos[1]
-	 leafposz[hitnumber] = pos[2]
-	 leaftrackID[hitnumber] = 0
-	 leafsubdetector[hitnumber] = 2
-         leafnhits[0] += 1
+     hitnumber = leafnhits[0]
+     leafdetID[hitnumber] = detID
+     leafposx[hitnumber] = pos[0]
+     leafposy[hitnumber] = pos[1]
+     leafposz[hitnumber] = pos[2]
+     leaftrackID[hitnumber] = 0
+     leafsubdetector[hitnumber] = 2
+     leafnhits[0] += 1
   if draw:
    DrawPoints(nscifipoints,hitx,hity,hitz)
 
