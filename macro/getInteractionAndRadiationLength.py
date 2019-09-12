@@ -1,3 +1,4 @@
+from __future__ import print_function
 from array import array
 
 # get dimensions by running getGeoInformation on the geofile 
@@ -9,6 +10,6 @@ end=array('d',[0,0,3898.700])
 mparam=array('d',[0,0,0,0,0,0,0,0,0,0,0,0])
 Geniegen.MeanMaterialBudget(start, end, mparam)
 
-print mparam[8], " equivalent interaction length fraction"
-print mparam[1], " equivalent rad length fraction"
+print(mparam[8], " equivalent interaction length fraction")
+print(mparam[1], " equivalent rad length fraction")
 

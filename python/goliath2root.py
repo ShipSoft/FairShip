@@ -20,21 +20,21 @@ f=open('ExtGoliathFieldMap.txt','r')
 
 i=0
 for line in f:
-  i+=1
-  if i<6: continue
-  x,y,z,Bx,By,Bz = line.split()
-  x=float(x)/10.
-  y=float(y)/10.
-  z=float(z)/10.
-  Bx = Bx
-  By = By  
-  Bz = Bz  
+    i+=1
+    if i<6: continue
+    x,y,z,Bx,By,Bz = line.split()
+    x=float(x)/10.
+    y=float(y)/10.
+    z=float(z)/10.
+    Bx = Bx
+    By = By  
+    Bz = Bz  
 
-  rc=h['Bx'].Fill(float(x),float(y),float(z),float(Bx))
-  rc=h['By'].Fill(float(x),float(y),float(z),float(By)) 
-  rc=h['Bz'].Fill(float(x),float(y),float(z),float(Bz)) 
-  
-  if (round(x,2)==0.14) and (round(y,2)==0.16):
-     rc=h['Byvsz'].Fill(float(z),float(By)) 
-  
+    rc=h['Bx'].Fill(float(x),float(y),float(z),float(Bx))
+    rc=h['By'].Fill(float(x),float(y),float(z),float(By)) 
+    rc=h['Bz'].Fill(float(x),float(y),float(z),float(Bz)) 
+
+    if (round(x,2)==0.14) and (round(y,2)==0.16):
+        rc=h['Byvsz'].Fill(float(z),float(By)) 
+
 ut.writeHists(h,"GoliathFieldMap.root")

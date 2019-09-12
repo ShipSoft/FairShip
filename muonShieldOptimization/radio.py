@@ -1,3 +1,4 @@
+from builtins import range
 import ROOT
 path = "./"
 fs = ['ship.10.0.nuRadiography-TGeant4.root']
@@ -6,15 +7,15 @@ myHist = ROOT.TH3F('myh','radio',500,-10000,10000,100,-300,300,100,-600,600)
 myHist2 = ROOT.TH3F('myh2','radio',500,-3000,3000,100,-300,300,100,-600,600)
 
 for x in fs:
-  fl = ROOT.TFile(path+x)
-  sTree=fl.cbmsim
-  ROOT.gROOT.cd()
-  for n in range(sTree.GetEntries()):
-    rc=sTree.GetEvent(n)
-    nu = sTree.MCTrack[0]
-    myHist.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())
-    myHist2.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())
-  fl.Close()
+    fl = ROOT.TFile(path+x)
+    sTree=fl.cbmsim
+    ROOT.gROOT.cd()
+    for n in range(sTree.GetEntries()):
+        rc=sTree.GetEvent(n)
+        nu = sTree.MCTrack[0]
+        myHist.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())
+        myHist2.Fill(nu.GetStartZ(),nu.GetStartX(),nu.GetStartY(),nu.GetWeight())
+    fl.Close()
 myHist.SetStats(0)
 myHist.SetXTitle('Z [m]')
 myHist.SetZTitle('Y [m]')

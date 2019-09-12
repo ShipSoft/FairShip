@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np
@@ -68,7 +72,7 @@ def template_matching_pattern_recognition(SmearedHits, ShipGeo):
     recognized_tracks = {}
 
     if len(SmearedHits) > 500:
-        print "Too large hits in the event!"
+        print("Too large hits in the event!")
         return recognized_tracks
 
     min_hits = 3
@@ -204,7 +208,7 @@ def fast_hough_transform_pattern_recognition(SmearedHits, ShipGeo):
     recognized_tracks = {}
 
     if len(SmearedHits) > 500:
-        print "Too large hits in the event!"
+        print("Too large hits in the event!")
         return recognized_tracks
 
     min_hits = 3
@@ -465,7 +469,7 @@ def artificial_retina_pattern_recognition(SmearedHits, ShipGeo):
     recognized_tracks = {}
 
     if len(SmearedHits) > 500:
-        print "Too large hits in the event!"
+        print("Too large hits in the event!")
         return recognized_tracks
 
     min_hits = 3
@@ -687,7 +691,7 @@ def get_best_seed(x, y, sigma, sample_weight=None):
             if x[i_1] >= x[i_2]:
                 continue
 
-            seed_k = (y[i_2] - y[i_1]) / (x[i_2] - x[i_1] + 10**-6)
+            seed_k = old_div((y[i_2] - y[i_1]), (x[i_2] - x[i_1] + 10**-6))
             seed_b = y[i_1] - seed_k * x[i_1]
 
             retina_val = retina_func([seed_k, seed_b], x, y, sigma, sample_weight)
@@ -723,9 +727,9 @@ def retina_func(track_prams, x, y, sigma, sample_weight=None):
     rs = track_prams[0] * x + track_prams[1] - y
 
     if sample_weight == None:
-        exps = np.exp(- (rs/sigma)**2)
+        exps = np.exp(- (old_div(rs,sigma))**2)
     else:
-        exps = np.exp(- (rs/sigma)**2) * sample_weight
+        exps = np.exp(- (old_div(rs,sigma))**2) * sample_weight
 
     retina = exps.sum()
 
@@ -757,12 +761,12 @@ def retina_grad(track_prams, x, y, sigma, sample_weight=None):
     rs = track_prams[0] * x + track_prams[1] - y
 
     if sample_weight == None:
-        exps = np.exp(- (rs/sigma)**2)
+        exps = np.exp(- (old_div(rs,sigma))**2)
     else:
-        exps = np.exp(- (rs/sigma)**2) * sample_weight
+        exps = np.exp(- (old_div(rs,sigma))**2) * sample_weight
 
-    dks = - 2.*rs / sigma**2 * exps * x
-    dbs = - 2.*rs / sigma**2 * exps
+    dks = old_div(- 2.*rs, sigma**2 * exps * x)
+    dbs = old_div(- 2.*rs, sigma**2 * exps)
 
     return -np.array([dks.sum(), dbs.sum()])
 
@@ -981,12 +985,12 @@ def hit_in_window(x, y, k_bin, b_bin, window_width=1.):
 
 
 def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
-    
+
     x = k_y * z + b_y
-    k = (ytop - ybot) / (xtop - xbot + 10**-6)
+    k = old_div((ytop - ybot), (xtop - xbot + 10**-6))
     b = ytop - k * xtop
     y = k * x + b
-    
+
     return y
 
 

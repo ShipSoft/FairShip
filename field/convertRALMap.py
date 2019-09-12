@@ -5,6 +5,9 @@
 # Also add to the file info about the binning, offsets etc..
 # Input file distances are in m; convert them to centimetres
 
+from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field info
@@ -49,10 +52,10 @@ def run(inFileName  = 'test07_10cm_grid.table',
 
 def createTextMap(inFileName, outFileName):
 
-    print 'Creating text map {0} from {1}'.format(outFileName, inFileName)
+    print('Creating text map {0} from {1}'.format(outFileName, inFileName))
 
     tmpFileName = 'tmpFile.txt'
-    
+
     inFile = open(inFileName, 'r')
     tmpFile = open(tmpFileName, 'w')
 
@@ -66,7 +69,7 @@ def createTextMap(inFileName, outFileName):
     zMin = 0.0
     zMax = 0.0
     dz = 0.0
-    
+
     # Offsets (in cm)
     #ox = 0.0
     #oy = 0.0
@@ -75,7 +78,7 @@ def createTextMap(inFileName, outFileName):
     iLine = 0
     # Convert metres to centimetres
     m2cm = 100.0
-    
+
     # For finding the delta bin widths
     xOld = 0.0
     yOld = 0.0
@@ -122,7 +125,7 @@ def createTextMap(inFileName, outFileName):
                 zMin = z
                 zMax = z
                 zOld = z
-        
+
             if x < xMin:
                 xMin = x
             if x > xMax:
@@ -146,8 +149,8 @@ def createTextMap(inFileName, outFileName):
                 dz = z - zOld
                 gotdz = 1
 
-    print 'dx = {0}, dy = {1}, dz = {2}'.format(dx,dy,dz)
-    print 'x = {0} to {1}, y = {2} to {3}, z = {4} to {5}'.format(xMin, xMax, yMin, yMax, zMin, zMax)
+    print('dx = {0}, dy = {1}, dz = {2}'.format(dx,dy,dz))
+    print('x = {0} to {1}, y = {2} to {3}, z = {4} to {5}'.format(xMin, xMax, yMin, yMax, zMin, zMax))
 
     tmpFile.close()
     inFile.close()
@@ -170,7 +173,7 @@ def createTextMap(inFileName, outFileName):
 
     # Copy the tmp file data
     for tLine in tmpFile2:
-    
+
         outFile.write(tLine)
 
     outFile.close()
@@ -180,7 +183,7 @@ def formatNumber(x):
 
     # To save disk space, reduce the precision of the field value
     # as we go below various thresholds
-    
+
     # Let the general precision be 0.01 mT. Anything below this 
     # is set to zero.
     xWord = '{0:.5f}'.format(x)
@@ -194,7 +197,7 @@ def formatNumber(x):
 
 def createRootMap(inFileName, outFileName):
 
-    print 'Create ROOT map {0} from {1}'.format(outFileName, inFileName)
+    print('Create ROOT map {0} from {1}'.format(outFileName, inFileName))
 
     # Define ROOT file and its TTree
     theFile = ROOT.TFile.Open(outFileName, 'recreate')
@@ -253,12 +256,12 @@ def createRootMap(inFileName, outFileName):
                 rStruct.zMax = float(sLine[8])
                 rStruct.dz = float(sLine[9])
 
-                Nx = int(((rStruct.xMax - rStruct.xMin)/rStruct.dx) + 1.0)
-                Ny = int(((rStruct.yMax - rStruct.yMin)/rStruct.dy) + 1.0)
-                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)
+                Nx = int((old_div((rStruct.xMax - rStruct.xMin),rStruct.dx)) + 1.0)
+                Ny = int((old_div((rStruct.yMax - rStruct.yMin),rStruct.dy)) + 1.0)
+                Nz = int((old_div((rStruct.zMax - rStruct.zMin),rStruct.dz)) + 1.0)
                 Nzy = Nz*Ny
 
-                print 'Nx = {0}, Ny = {1}, Nz = {2}'.format(Nx, Ny, Nz)
+                print('Nx = {0}, Ny = {1}, Nz = {2}'.format(Nx, Ny, Nz))
 
                 rangeTree.Fill()
 
@@ -280,7 +283,7 @@ def createRootMap(inFileName, outFileName):
                 #dStruct.z = rStruct.dz*(zBin + 0.5) + rStruct.zMin
 
                 dataTree.Fill()
-                
+
     theFile.cd()
     rangeTree.Write()
     dataTree.Write()

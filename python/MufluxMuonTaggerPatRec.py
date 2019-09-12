@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import range
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np
@@ -9,7 +11,7 @@ def initialize(fgeo):
 def execute(TaggerHits, debug=0):
     """
     Main function of muon tagger track pattern recognition.
-    
+
     Parameters:
     -----------
     TaggerHits : list
@@ -18,58 +20,58 @@ def execute(TaggerHits, debug=0):
                                          'xbot': xbot, 'ybot': ybot, 
                                          'detID': detID}, {...}, ...]
     """
-    
+
     track_hits = {}
-    
+
     if debug:
-        print "From MuonTaggerPatRec.py: "
-        print "Input hits: "
+        print("From MuonTaggerPatRec.py: ")
+        print("Input hits: ")
         #print TaggerHits
-        print [hit['digiHit'] for hit in TaggerHits]
-        
+        print([hit['digiHit'] for hit in TaggerHits])
+
     if len(TaggerHits) > 200:
-        print "Too many hits."
+        print("Too many hits.")
         return track_hits
-        
+
     min_hits = 3
     max_shared_hits = 0
-        
+
     # Split hits into ortogonal planes
     TaggerHits_x, TaggerHits_y = split_hits(TaggerHits)
-    
+
     # PatRec in zx plane
     tracks_zx = pat_rec_plane(TaggerHits_x, coord='x', min_hits=min_hits, max_shared_hits=max_shared_hits)
-    
+
     # PatRec in zy plane
     tracks_zy = pat_rec_plane(TaggerHits_y, coord='y', min_hits=min_hits, max_shared_hits=max_shared_hits)
-    
+
     # Combine tracks
     track_combinations = combine_tracks(tracks_zx, tracks_zy)
-    
+
     # Generate output
     for i_track in range(len(track_combinations)):
-        
+
         atrack = track_combinations[i_track]
-        
+
         if len(atrack['hits_x']) >= min_hits and len(atrack['hits_y']) >= min_hits:
             track_hits[i_track] = {}
             track_hits[i_track]['hits_x'] = sort_hits(atrack['hits_x'])
             track_hits[i_track]['hits_y'] = sort_hits(atrack['hits_y'])
-        
-        
+
+
     if debug:
-        print "From MuonTaggerPatRec.py: "
-        print "tracks_zx: "
-        print len(tracks_zx)
-        print "tracks_zy: "
-        print len(tracks_zy)
-        print "track_combinations: "
-        print len(track_combinations)
-        print "Recognized tracks: "
-        for i_track in track_hits.keys():
-            print "Track ", i_track
-            print "Hits_x: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_x']]
-            print "Hits_y: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_y']]
+        print("From MuonTaggerPatRec.py: ")
+        print("tracks_zx: ")
+        print(len(tracks_zx))
+        print("tracks_zy: ")
+        print(len(tracks_zy))
+        print("track_combinations: ")
+        print(len(track_combinations))
+        print("Recognized tracks: ")
+        for i_track in list(track_hits.keys()):
+            print("Track ", i_track)
+            print("Hits_x: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_x']])
+            print("Hits_y: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_y']])
 
     return track_hits
 
@@ -77,8 +79,8 @@ def execute(TaggerHits, debug=0):
 
 def finalize():
     pass
-    
-    
+
+
 ###################################################################################################
 
 
@@ -91,7 +93,7 @@ def split_hits(TaggerHits):
             TaggerHits_x.append(ahit)
         if abs(ahit['ytop'] - ahit['ybot']) < 10:
             TaggerHits_y.append(ahit)
-            
+
     return TaggerHits_x, TaggerHits_y
 
 
@@ -150,17 +152,17 @@ def pat_rec_plane(TaggerHits, coord='x', min_hits=3, max_shared_hits=2):
 
             if len(atrack['hits_'+coord]) >= min_hits:
                 long_tracks.append(atrack)
-                
+
     # Reduce number of clones
     short_tracks = reduce_clones(long_tracks, coord, min_hits, max_shared_hits)
-                
+
     # Fit tracks y12
     for atrack in short_tracks:
         [atrack['k_'+coord], atrack['b_'+coord]] = np.polyfit(atrack['z_'+coord], atrack[coord+'_'+coord], deg=1)
-                
+
     return short_tracks
-    
-    
+
+
 def combine_tracks(tracks_zx, tracks_zy):
 
     track_combinations = []
@@ -169,11 +171,11 @@ def combine_tracks(tracks_zx, tracks_zy):
             atrack_comb = atrack_zx.copy()
             atrack_comb.update(atrack_zy)
             track_combinations.append(atrack_comb)
-            
+
     return track_combinations
-    
-    
-    
+
+
+
 def reduce_clones(long_tracks, coord='x', min_hits=3, max_shared_hits=2):
 
     # Remove clones
@@ -195,7 +197,7 @@ def reduce_clones(long_tracks, coord='x', min_hits=3, max_shared_hits=2):
             short_tracks.append(atrack)
             for ahit in atrack['hits_'+coord]:
                 used_hits.append(ahit['digiHit']) #digiHit
-                
+
     return short_tracks
 
 
@@ -237,7 +239,7 @@ def sort_hits(hits):
     sort_index = np.argsort(hits_z)
     for i_hit in sort_index:
         sorted_hits.append(hits[i_hit])
-        
+
     return sorted_hits
 
 
