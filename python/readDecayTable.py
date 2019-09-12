@@ -69,10 +69,10 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
             # Take care of Majorana modes
             BR = BR/2.
             codes = ' '.join([str(code) for code in childrenCodes])
-            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
+            P8Gen.SetParameters('9900015:addChannel =  1 {:.12} 0 {}'.format(BR, codes))
             # Charge conjugate modes
             codes = ' '.join([(str(-1*code) if pdg.GetParticle(-code)!=None else str(code)) for code in childrenCodes])
-            P8Gen.SetParameters("9900015:addChannel =  1 "+str(BR)+" 0 "+codes)
+            P8Gen.SetParameters('9900015:addChannel =  1 {:.12} 0 {}'.format(BR, codes))
             # print "debug readdecay table",particles,children,BR
 
 def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
@@ -107,17 +107,24 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
                 print "debug readdecay table hadrons BR ",BR
                 #Taking decays from pythia8 Z->qqbar
                 BRZhadtot = 0.6992407
-                P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.1540492*BR/BRZhadtot)+" "+str(meMode)+" 1 -1")
-                P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.1194935*BR/BRZhadtot)+" "+str(meMode)+" 2 -2")
-                P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.1540386*BR/BRZhadtot)+" "+str(meMode)+" 3 -3")
-                P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.1193325*BR/BRZhadtot)+" "+str(meMode)+" 4 -4")
-                P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.1523269*BR/BRZhadtot)+" "+str(meMode)+" 5 -5")
+                dpid = P8gen.GetDPId()
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 1 -1"\
+                                    .format(dpid, 0.1540492*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 2 -2"\
+                                    .format(dpid, 0.1194935*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 3 -3"\
+                                    .format(dpid, 0.1540386*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 4 -4"\
+                                    .format(dpid, 0.1193325*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 5 -5"\
+                                    .format(dpid, 0.1523269*BR/BRZhadtot, meMode))
             else:
                 particles = [p for p in dec.replace('->',' ').split()]
                 children = particles[1:]
                 childrenCodes = [PDGcode(p) for p in children]
-                codes = ' '.join([str(code) for code in childrenCodes])
-                P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(BR)+" "+str(meMode)+" "+codes)
+                codes = ' '.join(str(code) for code in childrenCodes)
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} {}"\
+                                    .format(P8gen.GetDPId(), BR, meMode, codes))
                 print "debug readdecay table ",particles,children,BR
 
 
