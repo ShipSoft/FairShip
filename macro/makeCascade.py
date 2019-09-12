@@ -308,9 +308,9 @@ for iev in range(nevgen):
                   #signal found store in ntuple
                   vl=array('f')
                   vl.append(float(myPythia.GetK(itrk,2)))
-		  for i in range(1,6):
+                  for i in range(1,6):
                    vl.append(float(myPythia.GetP(itrk,i)))
-		  vl.append(float(myPythia.GetK(1,2)))
+                  vl.append(float(myPythia.GetK(1,2)))
                   for i in range(1,6):
                    vl.append(float(myPythia.GetP(1,i)))
                   vl.append(float(stack[nstack][4]))
@@ -320,7 +320,7 @@ for iev in range(nevgen):
                   if nsub>15: nsub=15
                   for i in range(nsub):
                     vl.append(float(stack[nstack][6][i]))
-		  vl.append(float(myPythia.GetMSTI(1)))
+                  vl.append(float(myPythia.GetMSTI(1)))
                   for i in range(nsub+1,16):
                     vl.append(float(0))                 
                   Ntup.Fill(vl)
