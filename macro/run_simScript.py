@@ -86,10 +86,10 @@ except getopt.GetoptError:
         print ' or    --Genie for reading and processing neutrino interactions '
         print ' or    --Pythia6 for muon nucleon scattering'  
         print ' or    --PG for particle gun'  
-	print '       --pID= id of particle used by the gun (default=22)'
-	print '       --Estart= start of energy range of particle gun for muflux detector (default=10 GeV)'
-	print '       --Eend= end of energy range of particle gun for muflux detector (default=10 GeV)'	
-        print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
+        print '       --pID= id of particle used by the gun (default=22)'
+        print '       --Estart= start of energy range of particle gun for muflux detector (default=10 GeV)'
+        print '       --Eend= end of energy range of particle gun for muflux detector (default=10 GeV)'
+        print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'
         print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
         print '       --DarkPhoton to generate events with dark photons (default HNL)'
         print ' for darkphoton generation, use -A meson or -A pbrem or -A qcd'
@@ -322,9 +322,9 @@ if simEngine == "Pythia8":
  if DarkPhoton:
   P8gen = ROOT.DPPythia8Generator()
   if inclusive=='qcd':
-	  P8gen.SetDPId(4900023)
+   P8gen.SetDPId(4900023)
   else:
-	  P8gen.SetDPId(9900015)
+   P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
   passDPconf = pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,deepCopy)
   if (passDPconf!=1): sys.exit()
@@ -613,10 +613,10 @@ ctime = timer.CpuTime()
 print ' ' 
 print "Macro finished succesfully." 
 if "P8gen" in globals() : 
-	if (HNL): print "number of retries, events without HNL ",P8gen.nrOfRetries()
-	elif (DarkPhoton): 
-		print "number of retries, events without Dark Photons ",P8gen.nrOfRetries()
-		print "total number of dark photons (including multiple meson decays per single collision) ",P8gen.nrOfDP()
+    if (HNL): print "number of retries, events without HNL ",P8gen.nrOfRetries()
+    elif (DarkPhoton): 
+        print "number of retries, events without Dark Photons ",P8gen.nrOfRetries()
+        print "total number of dark photons (including multiple meson decays per single collision) ",P8gen.nrOfDP()
 
 print "Output file is ",  outFile 
 print "Parameter file is ",parFile
