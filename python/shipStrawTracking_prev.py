@@ -168,10 +168,10 @@ def EventLoop(SmearedHits):
   if fittedtrackids:
      tracknbr=0
      for ids in fittedtrackids:
-	nTrack   = fGenFitArray_PR.GetEntries()
+        nTrack   = fGenFitArray_PR.GetEntries()
         fGenFitArray_PR[nTrack] = shipPatRec_prev.theTracks[tracknbr]
         fitTrack2MC_PR.push_back(ids) 
-	tracknbr+=1  
+        tracknbr+=1  
   
   Particles_PR.Fill()
   fitTracks_PR.Fill()
