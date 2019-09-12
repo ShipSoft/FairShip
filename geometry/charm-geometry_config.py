@@ -337,7 +337,7 @@ with ConfigRegistry.register_config("basic") as c:
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     #module position naming: "axis"Si"Telescope number"
     
-		#measured values
+    #measured values
     c.PixelModules.xSi = []
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []

@@ -553,8 +553,8 @@ with ConfigRegistry.register_config("basic") as c:
     #Parameters for tau muon detector
     c.tauMudet = AttrDict(z=0*u.cm)
     if nuTauTargetDesign<=2:
-	c.tauMudet.NFe = 12
-    	c.tauMudet.NRpc= 11
+        c.tauMudet.NFe = 12
+        c.tauMudet.NRpc= 11
         if nuTauTargetDesign==0: #TP
             c.tauMudet.YRyoke = 90*u.cm
             c.tauMudet.YRyoke_s = c.tauMudet.YRyoke-30*u.cm
@@ -595,9 +595,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.B = 1.5 * u.tesla
     if nuTauTargetDesign==3:
         scaleMudet=1.
-	c.tauMudet.NFethick = 4 #upstream slabs, more thick
+        c.tauMudet.NFethick = 4 #upstream slabs, more thick
         c.tauMudet.NFethin = 4 #downstream slabs, less thick
-    	c.tauMudet.NRpc= 8
+        c.tauMudet.NRpc= 8
         c.tauMudet.NmuRpc = 3
         
         c.tauMudet.XFe = scaleMudet*1.900*u.m #layer dimensions, excluded supports
