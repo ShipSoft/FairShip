@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 inputFile = 'ship.conical.Pythia8-TGeant4.root'
 geoFile   = None
 debug = False
@@ -25,7 +26,7 @@ def mem_monitor():
     vmsize = int(_vmsize.split()[1])
     #Getting physical memory size  
     pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    print "memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3)
+    print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
 import __builtin__ as builtin
@@ -40,14 +41,14 @@ try:
            ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR=","withT0"])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,'
-        print ' noStrawSmearing: no smearing of distance to wire, default on'
-        print ' outputfile will have same name with _rec added'  
-        print ' --realPR= defines track pattern recognition. Possible options: ',realPROptions, "if no option given, fake PR is used."
-        print ' Options description:'
-        print '      FH                        : Hough transform.'
-        print '      AR                        : Artificial retina.'
-        print '      TemplateMatching          : Tracks are searched for based on the template: track seed + hits within a window around the seed.'
+        print(' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,')
+        print(' noStrawSmearing: no smearing of distance to wire, default on')
+        print(' outputfile will have same name with _rec added')  
+        print(' --realPR= defines track pattern recognition. Possible options: ',realPROptions, "if no option given, fake PR is used.")
+        print(' Options description:')
+        print('      FH                        : Hough transform.')
+        print('      AR                        : Artificial retina.')
+        print('      TemplateMatching          : Tracks are searched for based on the template: track seed + hits within a window around the seed.')
         sys.exit()
 for o, a in opts:
         if o in ("noVertexing",):
@@ -71,7 +72,7 @@ for o, a in opts:
         if o in ("--realPR",):
             realPR = a
             if not realPR in realPROptions:
-              print "wrong option given for realPR,",a," should be one of ",realPROptions
+              print("wrong option given for realPR,",a," should be one of ",realPROptions)
               exit(1)
 if EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
@@ -85,8 +86,8 @@ if not dy:
     dy = None
 realPRoption = realPR
 if realPR=='':realPRoption='No' 
-print 'configured to process ',nEvents,' events from ' ,inputFile, \
-      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco ',realPRoption
+print('configured to process ',nEvents,' events from ' ,inputFile, \
+      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco ',realPRoption)
 if not inputFile.find('_rec.root') < 0: 
   outFile   = inputFile
   inputFile = outFile.replace('_rec.root','.root') 
@@ -161,7 +162,7 @@ SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
 # main loop
 for iEvent in range(firstEvent, nEvents):
- if iEvent%1000 == 0 or debug: print 'event ',iEvent
+ if iEvent%1000 == 0 or debug: print('event ',iEvent)
  rc    = SHiP.sTree.GetEvent(iEvent) 
  SHiP.digitize()
  SHiP.reconstruct()

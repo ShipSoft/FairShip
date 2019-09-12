@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np
@@ -22,13 +23,13 @@ def execute(TaggerHits, debug=0):
     track_hits = {}
     
     if debug:
-        print "From MuonTaggerPatRec.py: "
-        print "Input hits: "
+        print("From MuonTaggerPatRec.py: ")
+        print("Input hits: ")
         #print TaggerHits
-        print [hit['digiHit'] for hit in TaggerHits]
+        print([hit['digiHit'] for hit in TaggerHits])
         
     if len(TaggerHits) > 200:
-        print "Too many hits."
+        print("Too many hits.")
         return track_hits
         
     min_hits = 3
@@ -58,18 +59,18 @@ def execute(TaggerHits, debug=0):
         
         
     if debug:
-        print "From MuonTaggerPatRec.py: "
-        print "tracks_zx: "
-        print len(tracks_zx)
-        print "tracks_zy: "
-        print len(tracks_zy)
-        print "track_combinations: "
-        print len(track_combinations)
-        print "Recognized tracks: "
+        print("From MuonTaggerPatRec.py: ")
+        print("tracks_zx: ")
+        print(len(tracks_zx))
+        print("tracks_zy: ")
+        print(len(tracks_zy))
+        print("track_combinations: ")
+        print(len(track_combinations))
+        print("Recognized tracks: ")
         for i_track in track_hits.keys():
-            print "Track ", i_track
-            print "Hits_x: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_x']]
-            print "Hits_y: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_y']]
+            print("Track ", i_track)
+            print("Hits_x: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_x']])
+            print("Hits_y: ", [hit['digiHit'] for hit in track_hits[i_track]['hits_y']])
 
     return track_hits
 

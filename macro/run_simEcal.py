@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 momentum = 1
 import ROOT,os,sys,getopt,time
 import shipunit as u
@@ -17,11 +18,11 @@ theSeed      = int(10000 * time.time() % 10000000)
 if momentum>5  : nEvents=1000
 if momentum>20 : nEvents=500
 
-print "FairShip setup for",simEngine,"to produce",nEvents,"events"
+print("FairShip setup for",simEngine,"to produce",nEvents,"events")
 if simEngine == "Ntuple" and not inputFile :
-  print 'input file required if simEngine = Ntuple'
+  print('input file required if simEngine = Ntuple')
 if simEngine == "Pythia6" and not inputFile :
-  print 'pythia6 requires inputfile'
+  print('pythia6 requires inputfile')
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()
 ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py")
@@ -88,10 +89,10 @@ run.CreateGeometryFile("geofile_full.root")
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
-print "Output file is ",  outFile 
-print "Parameter file is ",parFile
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ') 
+print("Macro finished succesfully.") 
+print("Output file is ",  outFile) 
+print("Parameter file is ",parFile)
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # ------------------------------------------------------------------------

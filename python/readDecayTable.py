@@ -11,6 +11,7 @@
 # ==================================================================
 """
 from __future__ import division
+from __future__ import print_function
 import ROOT, os, csv
 from hnl import PDGname
 from darkphoton import *
@@ -38,10 +39,10 @@ def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), 
         flag = str(row[-1]).partition('#')[0].strip() # skip line comments
         configuredDecays[channel] = flag
     if verbose:
-        print 'Activated decay channels (plus charge conjugates): '
+        print('Activated decay channels (plus charge conjugates): ')
         for channel in configuredDecays.keys():
             if configuredDecays[channel] == 'yes':
-                print '\t'+channel        
+                print('\t'+channel)        
     return configuredDecays 
 
 def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
@@ -60,7 +61,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
     # Add decay channels
     for dec in allowed:
         if dec not in wanted:
-            print 'addHNLdecayChannels ERROR: channel not configured!\t', dec
+            print('addHNLdecayChannels ERROR: channel not configured!\t', dec)
             quit()
         if allowed[dec] == 'yes' and wanted[dec] == 'yes':
             particles = [p for p in dec.replace('->',' ').split()]
@@ -91,11 +92,11 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
     wanted = load(conffile=conffile, verbose=verbose)
     # Add decay channels
     for dec in allowed:
-        print 'channel allowed:',dec
+        print('channel allowed:',dec)
         if dec not in wanted:
-            print 'addDarkPhotondecayChannels WARNING: channel not configured! Please add also in conf file.\t', dec
+            print('addDarkPhotondecayChannels WARNING: channel not configured! Please add also in conf file.\t', dec)
             quit()
-        print 'channel wanted:',dec
+        print('channel wanted:',dec)
 
         if allowed[dec] == 'yes' and wanted[dec] == 'yes':
             
@@ -105,7 +106,7 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
             if isResonant: meMode = 103
             if 'hadrons' in dec:
                 #P8gen.SetDecayToHadrons()
-                print "debug readdecay table hadrons BR ",BR
+                print("debug readdecay table hadrons BR ",BR)
                 #Taking decays from pythia8 Z->qqbar
                 BRZhadtot = 0.6992407
                 dpid = P8gen.GetDPId()
@@ -126,12 +127,12 @@ def addDarkPhotondecayChannels(P8gen,DP,conffile=os.path.expandvars('$FAIRSHIP/p
                 codes = ' '.join(str(code) for code in childrenCodes)
                 P8gen.SetParameters("{}:addChannel =  1 {:.12} {} {}"\
                                     .format(P8gen.GetDPId(), BR, meMode, codes))
-                print "debug readdecay table ",particles,children,BR
+                print("debug readdecay table ",particles,children,BR)
 
 
 if __name__ == '__main__':
     configuredDecays = load()
-    print 'Activated decay channels: '
+    print('Activated decay channels: ')
     for channel in configuredDecays.keys():
         if configuredDecays[channel] == 'yes':
-            print channel
+            print(channel)

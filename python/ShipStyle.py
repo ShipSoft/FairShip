@@ -1,3 +1,4 @@
+from __future__ import print_function
 # Global scope variables
 from ROOT import *
 from ROOT import Double
@@ -174,7 +175,7 @@ def printLHCb(optLR="L", optPrelim="Final", optText=""):
                          0.95 - lhcbstyle.GetPadTopMargin(),
                                         "BRNDC")
   else :
-   print "printLHCb: option unknown" , optLR  
+   print("printLHCb: option unknown" , optLR)  
   if optPrelim=="Final":
     lhcbName.AddText("LHCb")
   elif optPrelim=="Prelim":
@@ -182,7 +183,7 @@ def printLHCb(optLR="L", optPrelim="Final", optText=""):
   elif optPrelim=="Other":
     lhcbName.AddText(optText)
   else :
-    print "printLHCb: option unknown " , optPrelim
+    print("printLHCb: option unknown " , optPrelim)
   lhcbName.SetFillColor(0)
   lhcbName.SetTextAlign(12)
   lhcbName.SetBorderSize(0)

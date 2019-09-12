@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import ROOT
 import MufluxPatRec
@@ -28,7 +29,7 @@ def StripX(x):
     # calculating strip as an integer
     strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)
     if not (0 < strip_x <= NR_VER_STRIPS):
-        print "WARNING: X strip outside range!"
+        print("WARNING: X strip outside range!")
         strip_x = 0
     return int(strip_x)
 
@@ -42,7 +43,7 @@ def StripY(y):
     y_start = total_height / 2
     strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
     if not (0 < strip_y <= NR_HORI_STRIPS):
-        print "WARNING: Y strip outside range!"
+        print("WARNING: Y strip outside range!")
         strip_y = 0
     return int(strip_y)
 
@@ -58,7 +59,7 @@ class MufluxDigiReco:
         self.sTree = self.fn.cbmsim
 
         if self.sTree.GetBranch("FitTracks"):
-            print "remove RECO branches and rerun reconstruction"
+            print("remove RECO branches and rerun reconstruction")
             self.fn.Close()
             # make a new file without reco branches
             f = ROOT.TFile(fout)
@@ -191,7 +192,7 @@ class MufluxDigiReco:
             # identify individual rpcs
             station = int(rpc[-1])
             if station not in range(1, 6):  # limiting the range of rpcs
-                print "WARNING: Invalid RPC number, something's wrong with the geometry ",station
+                print("WARNING: Invalid RPC number, something's wrong with the geometry ",station)
 
             # calculate strip
             # x gives vertical direction
@@ -342,11 +343,11 @@ class MufluxDigiReco:
             n+=1
         if n>0:
             t0 = t0/n - 73.2*u.ns
-            print "t0 ",t0
+            print("t0 ",t0)
         for s in SmearedHits:
             delt1 = (s['z']-z1)/u.speedOfLight
             s['dist'] = (s['dist'] -delt1 -t0)*v_drift
-            print "s['dist']",s['dist']
+            print("s['dist']",s['dist'])
         return SmearedHits
 
     def smearHits(self,no_amb=None):
@@ -387,7 +388,7 @@ class MufluxDigiReco:
         if vnb==0 and statnb==2: view = "_v"
         if vnb==1 and statnb==1: view = "_u"
         if pnb>1:
-            print "something wrong with detector id",detid
+            print("something wrong with detector id",detid)
             pnb = 0
         return statnb,vnb,pnb,lnb,view
 
@@ -1736,12 +1737,12 @@ class MufluxDigiReco:
             atrack = entry[1]
             theTrack = entry[0]
             if not theTrack.checkConsistency():
-                print 'Problem with track before fit, not consistent',atrack,theTrack
+                print('Problem with track before fit, not consistent',atrack,theTrack)
                 continue
             # do the fit
             try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
             except:
-                print "genfit failed to fit track"
+                print("genfit failed to fit track")
                 continue
             #check
             if not theTrack.checkConsistency():
@@ -1786,7 +1787,7 @@ class MufluxDigiReco:
                     h['pt_rel_error'].Fill(pterr)
 
                     mom_init = trackMomentums[atrack]
-                    print "P_precalc, P_truth: ", mom_init, Ptruth
+                    print("P_precalc, P_truth: ", mom_init, Ptruth)
 
                     if Pz !=0:
                         pxpzfitted = Px/Pz
@@ -1805,15 +1806,15 @@ class MufluxDigiReco:
                     invdelPOverP = (Ptruth/P)-1
                     if 1==0:
                         if invdelPOverP < -0.8:
-                            print "invdelPOverP = ",invdelPOverP
-                            print "Ptruth =",Ptruth," Pfitted =",P
+                            print("invdelPOverP = ",invdelPOverP)
+                            print("Ptruth =",Ptruth," Pfitted =",P)
                             for n in range(hitPosLists[atrack].size()):
-                                print "hit=",n," x(top) ",hitPosLists[atrack][n][0]," y(top) ",hitPosLists[atrack][n][1]," z ",hitPosLists[atrack][n][2]," x(bot) ",hitPosLists[atrack][n][3]," y(bot) ", hitPosLists[atrack][n][4], " dist ", hitPosLists[atrack][n][6]
+                                print("hit=",n," x(top) ",hitPosLists[atrack][n][0]," y(top) ",hitPosLists[atrack][n][1]," z ",hitPosLists[atrack][n][2]," x(bot) ",hitPosLists[atrack][n][3]," y(bot) ", hitPosLists[atrack][n][4], " dist ", hitPosLists[atrack][n][6])
                                 nMufluxHits = self.sTree.MufluxSpectrometerPoint.GetEntriesFast()
                                 for i in range(nMufluxHits):
                                     MufluxHit = self.sTree.MufluxSpectrometerPoint[i]
                                     if ((hitPosLists[atrack][n][0]+1.8 > MufluxHit.GetX()) or(hitPosLists[atrack][n][3]+1.8 > MufluxHit.GetX())) and ((hitPosLists[atrack][n][0]-1.8<MufluxHit.GetX()) or (hitPosLists[atrack][n][3]-1.8<MufluxHit.GetX())) and (hitPosLists[atrack][n][2]+1.>MufluxHit.GetZ()) and (hitPosLists[atrack][n][2]-1.<MufluxHit.GetZ()):
-                                        print "hit x=",MufluxHit.GetX()," y=",MufluxHit.GetY()," z=",MufluxHit.GetZ()
+                                        print("hit x=",MufluxHit.GetX()," y=",MufluxHit.GetY()," z=",MufluxHit.GetZ())
 
 
                     h['delPOverP'].Fill(Ptruth,delPOverP)
@@ -1823,7 +1824,7 @@ class MufluxDigiReco:
                     #print "end fitting with stereo"
 
             except:
-                print "problem with fittedstate"
+                print("problem with fittedstate")
                 continue
 
                 #if 1==0:
@@ -1833,16 +1834,16 @@ class MufluxDigiReco:
             atrack = entry[1]
             theTrack = entry[0]
             if not theTrack.checkConsistency():
-                print 'Problem with track before fit, not consistent',atrack,theTrack
+                print('Problem with track before fit, not consistent',atrack,theTrack)
                 continue
             # do the fit
             try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
             except:
-                print "genfit failed to fit track"
+                print("genfit failed to fit track")
                 continue
             #check
             if not theTrack.checkConsistency():
-                print 'Problem with track after fit, not consistent',atrack,theTrack
+                print('Problem with track after fit, not consistent',atrack,theTrack)
                 continue
             fitStatus   = theTrack.getFitStatus()
             nmeas = fitStatus.getNdf()
@@ -1905,7 +1906,7 @@ class MufluxDigiReco:
                     h['Pfitted-Pgun-noT4'].Fill(Pgun,P)
                     #print "end fitting without stereo hits"
             except:
-                print "noT4 track: problem with fittedstate"
+                print("noT4 track: problem with fittedstate")
                 continue
 
 
@@ -1915,16 +1916,16 @@ class MufluxDigiReco:
             atrack = entry[1]
             theTrack = entry[0]
             if not theTrack.checkConsistency():
-                print 'Problem with track before fit, not consistent',atrack,theTrack
+                print('Problem with track before fit, not consistent',atrack,theTrack)
                 continue
             # do the fit
             try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
             except:
-                print "genfit failed to fit track"
+                print("genfit failed to fit track")
                 continue
             #check
             if not theTrack.checkConsistency():
-                print 'Problem with track after fit, not consistent',atrack,theTrack
+                print('Problem with track after fit, not consistent',atrack,theTrack)
                 continue
             fitStatus   = theTrack.getFitStatus()
             nmeas = fitStatus.getNdf()
@@ -1987,7 +1988,7 @@ class MufluxDigiReco:
                     h['Pfitted-Pgun-all'].Fill(Pgun,P)
                     #print "end fitting without stereo hits"
             except:
-                print "All tracks: problem with fittedstate"
+                print("All tracks: problem with fittedstate")
                 continue
 
             # make track persistent
@@ -1997,7 +1998,7 @@ class MufluxDigiReco:
             self.fGenFitArray[nTrack] = theTrack
             self.fitTrack2MC.push_back(atrack)
             if debug:
-                print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
+                print('save track',theTrack,chi2,nM,fitStatus.isFitConverged())
 
         self.fitTracks.Fill()
         self.mcLink.Fill()
@@ -2005,7 +2006,7 @@ class MufluxDigiReco:
 
     def finish(self):
         del self.fitter
-        print 'finished writing tree'
+        print('finished writing tree')
         self.sTree.Write()
         ut.errorSummary()
         ut.writeHists(h,"recohists.root")

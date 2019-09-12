@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np
@@ -32,7 +33,7 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
     fittedtrackids = []
     track_hits = {}
     if len(SmearedHits) > 100:
-        print "Too large hits in the event!"
+        print("Too large hits in the event!")
         return track_hits
         
     min_hits = 3
@@ -92,16 +93,16 @@ def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0):
 
     
     if debug:
-        print "Recognized tracks:"
+        print("Recognized tracks:")
         for i_track in track_hits.keys():
             atrack = track_hits[i_track]
-            print "Track ", i_track
-            print "Z_y12", [str(np.around(hit['z'], 2)) for hit in atrack['y12']]
-            print "X_y12", [str(np.around(hit['xtop'], 2)) for hit in atrack['y12']]
-            print "Z_stereo12", [str(np.around(hit['z'], 2)) for hit in atrack['stereo12']]
-            print "X_stereo12", [str(np.around(hit['xtop'], 2)) for hit in atrack['stereo12']]
-            print "Z_34", [str(np.around(hit['z'], 2)) for hit in atrack['34']]
-            print "X_34", [str(np.around(hit['xtop'], 2)) for hit in atrack['34']]
+            print("Track ", i_track)
+            print("Z_y12", [str(np.around(hit['z'], 2)) for hit in atrack['y12']])
+            print("X_y12", [str(np.around(hit['xtop'], 2)) for hit in atrack['y12']])
+            print("Z_stereo12", [str(np.around(hit['z'], 2)) for hit in atrack['stereo12']])
+            print("X_stereo12", [str(np.around(hit['xtop'], 2)) for hit in atrack['stereo12']])
+            print("Z_34", [str(np.around(hit['z'], 2)) for hit in atrack['34']])
+            print("X_34", [str(np.around(hit['xtop'], 2)) for hit in atrack['34']])
 
     return track_hits
 

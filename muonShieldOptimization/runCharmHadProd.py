@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys,os,ROOT
 ncpus = 20
 msel = "4"
@@ -77,11 +78,11 @@ def merge(run,cycle=0):
  else:           outFile = fname.replace('XX', 'beauty_'+str(orun)+'-'+str(orun+ncpus-1) )
  rc = os.system("hadd -O "+outFile + " " +cmd)
  if rc != 0: 
-    print "hadd failed, stop",outFile 
+    print("hadd failed, stop",outFile) 
  else:
    rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
    if rc != 0: 
-    print "copy to EOS failed, stop",outFile 
+    print("copy to EOS failed, stop",outFile) 
    else:
     rc = os.system("rm "+outFile)
 
@@ -106,13 +107,13 @@ def compactifyCascade(run):
    for l in f.readlines():
     if not l.find('Macro finished succesfully')<0: success = True
    if not success:
-     print "job not finished properly",fName
+     print("job not finished properly",fName)
      continue  
    cmd += fName +" "
    f.close()
    Ntot+= NperJob
  if cmd.find('root')<0:
-  print 'no file found, exit'
+  print('no file found, exit')
  else:
   stat = str( int(Ntot/1E6))+'Mpot'
   outFile = "Cascade-run"+str(run)+"-"+str(run+ncpus-1)+"-parp16-MSTP82-1-MSEL"+msel+"-"+stat+".root"
@@ -126,7 +127,7 @@ def compactifyCascade(run):
   os.system("mv "+oldOutFile+" "+outFile)
   rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
   if rc != 0: 
-    print "copy to EOS failed, stop",outFile 
+    print("copy to EOS failed, stop",outFile) 
   else:
     rc = os.system("rm "+outFile)
 
@@ -142,22 +143,22 @@ def statistics():
   f=ROOT.TFile.Open(path+fn)
   nPot += f.Get("2").GetBinContent(1)/2.
   nhadrons += f.Get('pythia6').GetEntries()
- print "total nr of hadrons:",nhadrons,nPot/chicc/1.E9,'Billion'
+ print("total nr of hadrons:",nhadrons,nPot/chicc/1.E9,'Billion')
 
 def potFromFileHeader():
  pot = 0
  for x in f.GetListOfKeys():
   if x.GetName()=='FileHeader':
    pot += float(x.GetTitle().split(' ')[3])
- print "PoT = ",pot
+ print("PoT = ",pot)
 
 x=ROOT.TRandom3()
 x.SetSeed(0)
 
 run = int(sys.argv[1])
 
-print "following functions exist"
-print " - makeHadrons(run): will run makeCascade"
-print " - makeBackground(run): will run fixedTarget generator"
+print("following functions exist")
+print(" - makeHadrons(run): will run makeCascade")
+print(" - makeBackground(run): will run fixedTarget generator")
 
 

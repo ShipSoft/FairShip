@@ -1,3 +1,4 @@
+from __future__ import print_function
 # Mikhail Hushchyn, mikhail.hushchyn@cern.ch
 
 import ROOT
@@ -46,7 +47,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     try:
         fgeo = ROOT.TFile(geo_file)
     except:
-        print "An error with opening the ship geo file."
+        print("An error with opening the ship geo file.")
         raise
 
     sGeo = fgeo.FAIRGeom
@@ -94,7 +95,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     if hasattr(ShipGeo.Bfield,"fieldMap"):
       fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
     else:
-      print "no fieldmap given, geofile too old, not anymore support"
+      print("no fieldmap given, geofile too old, not anymore support")
       exit(-1)
     sGeo   = fgeo.FAIRGeom
     geoMat =  ROOT.genfit.TGeoMaterialInterface()
@@ -111,7 +112,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     try:
         fn = ROOT.TFile(input_file,'update')
     except:
-        print "An error with opening the input data file."
+        print("An error with opening the input data file.")
         raise
 
     sTree = fn.cbmsim
@@ -144,7 +145,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     for iEvent in range(nEvents):
 
         if iEvent%1000 == 0:
-            print 'Event ', iEvent
+            print('Event ', iEvent)
 
         ########################################### Select one event ###################################################
 
@@ -483,7 +484,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
 
             except:
-                print "Problem with fitted state."
+                print("Problem with fitted state.")
 
 
         h['Reco_tracks'].Fill("N total", n_tracks)
@@ -529,7 +530,7 @@ def extrapolateToPlane(fT,z):
                 pos,mom = state.getPos(),state.getMom()
                 rc = True
             except:
-                print 'error with extrapolation'
+                print('error with extrapolation')
                 pass
             if not rc:
                 # use linear extrapolation
@@ -1046,15 +1047,15 @@ try:
     opts, args = getopt.getopt(argv, "hm:f:g:o:",
                                    ["help", "method=", "input=", "geo=", "output="])
 except getopt.GetoptError:
-    print "Wrong options were used. Please, read the following help:\n"
-    print msg
+    print("Wrong options were used. Please, read the following help:\n")
+    print(msg)
     sys.exit(2)
 if len(argv) == 0:
-    print msg
+    print(msg)
     sys.exit(2)
 for opt, arg in opts:
     if opt in ('-h', "--help"):
-        print msg
+        print(msg)
         sys.exit()
     elif opt in ("-m", "--method"):
         method = arg

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import ROOT,time,os,sys
 nJob   = 2
 nMult  = 10 # number of events / muon
@@ -64,7 +65,7 @@ if muonIn.find('Concrete')<0:
 
 # stop pythia printout during loop
 myPythia.SetMSTU(11, 11)
-print "start production ",nStart,nEnd
+print("start production ",nStart,nEnd)
 nMade = 0
 for k in range(nStart,nEnd): 
   rc = sTree.GetEvent(k)
@@ -101,9 +102,9 @@ for k in range(nStart,nEnd):
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
       dPart[nPart] = part
      nMade+=1
-     if nMade%10000==0: print 'made so far ',nMade
+     if nMade%10000==0: print('made so far ',nMade)
      dTree.Fill()
 fout.cd()  
 dTree.Write()
 myPythia.SetMSTU(11, 6)
-print "created nJob ",nJob,':',nStart,' - ',nEnd," events"
+print("created nJob ",nJob,':',nStart,' - ',nEnd," events")

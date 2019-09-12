@@ -1,3 +1,4 @@
+from __future__ import print_function
 # setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -88,16 +89,16 @@ for iEvent in range(0, 100):
     measurements = measurementCreator.create(measurementTypes[i], i*5.)
     fitTrack.insertPoint(ROOT.genfit.TrackPoint(measurements,fitTrack))
   except:
-   print "Exception, next track", e.what()
+   print("Exception, next track", e.what())
 
 #check
   if not fitTrack.checkConsistency():
-   print 'Problem with track before fit, not consistent',fitTrack
+   print('Problem with track before fit, not consistent',fitTrack)
 # do the fit
   fitter.processTrack(fitTrack)
 #check
   if not fitTrack.checkConsistency():
-   print 'Problem with track after fit, not consistent',fitTrack
+   print('Problem with track after fit, not consistent',fitTrack)
   if (iEvent < 1000):
 # add track to event display
    display.addEvent(fitTrack)

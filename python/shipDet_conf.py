@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
+from __future__ import print_function
 import ROOT,os
 import shipunit as u
 from ShipGeoConfig import AttrDict,ConfigRegistry
@@ -154,7 +155,7 @@ def configure(run,ship_geo):
   ship_geo.Bfield.CoilThick = 25.*u.cm
 # sanity check, 2018 layout ship_geo.tankDesign == 6 has to be together with ship_geo.nuTauTargetDesign == 3
  if (ship_geo.tankDesign == 6 and ship_geo.nuTauTargetDesign != 3) or (ship_geo.tankDesign != 6 and ship_geo.nuTauTargetDesign == 3):
-   print "version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",ship_geo.tankDesign, ship_geo.nuTauTargetDesign 
+   print("version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",ship_geo.tankDesign, ship_geo.nuTauTargetDesign) 
    exit()
  if ship_geo.strawDesign > 1 : 
   if ship_geo.magnetDesign>3:
@@ -381,8 +382,8 @@ def configure(run,ship_geo):
  if not ship_geo.HcalOption < 0:
   hcal,HcalZSize = posHcal(ship_geo.hcal.z,ship_geo.hcal.File,ship_geo.HcalOption)
   if ship_geo.HcalOption!=2 and abs(ship_geo.hcal.hcalSpace -  HcalZSize) > 10*u.cm:
-    print 'mismatch between hcalsize in geo file and python configuration'
-    print ship_geo.hcal.hcalSpace -  HcalZSize, ship_geo.hcal.hcalSpace , HcalZSize
+    print('mismatch between hcalsize in geo file and python configuration')
+    print(ship_geo.hcal.hcalSpace -  HcalZSize, ship_geo.hcal.hcalSpace , HcalZSize)
   detectorList.append(hcal)
  Muon = ROOT.muon("Muon", ROOT.kTRUE)
  Muon.SetZStationPositions(ship_geo.MuonStation0.z, ship_geo.MuonStation1.z,ship_geo.MuonStation2.z,ship_geo.MuonStation3.z)

@@ -45,6 +45,7 @@ The following additional notes apply:
 
 """
 from __future__ import absolute_import
+from __future__ import print_function
 
 import sys
 if sys.version_info[0] < 3:
@@ -256,7 +257,7 @@ class Unpickler(pickle.Unpickler):
                     cy = 9999
                 ret = htab.get((nm, cy), None)
                 if not ret:
-                    print("warning didn't find {0} {1} {2}",nm, cy, len(htab) )
+                    print(("warning didn't find {0} {1} {2}",nm, cy, len(htab) ))
                     return oget(nm0)
                 #ctx = ROOT.TDirectory.TContext(file)
                 ret = ret.ReadObj()

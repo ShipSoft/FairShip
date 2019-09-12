@@ -1,4 +1,5 @@
 #!/usr/bin/env python -i
+from __future__ import print_function
 import ROOT,sys,getopt,os,Tkinter,atexit
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
@@ -12,7 +13,7 @@ HiddenParticleID = 9900015
 
 def evExit():
  if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'):
-  print "make suicide before framework makes seg fault" 
+  print("make suicide before framework makes seg fault") 
   os.kill(os.getpid(),9)
 # apperantly problem disappeared in more recent root versions
 if float(ROOT.gROOT.GetVersion().split('/')[0])>6.07: atexit.register(evExit)
@@ -45,7 +46,7 @@ try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:i:Y",["paramFile=","geoFile="])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter -f filename -g geofile (-p param file  not needed if geofile present) -i hidden particle ID (default 9900015)'  
+        print(' enter -f filename -g geofile (-p param file  not needed if geofile present) -i hidden particle ID (default 9900015)')  
         sys.exit()
 for o, a in opts:
         if o in ("-Y",):
@@ -61,7 +62,7 @@ for o, a in opts:
         if o in ("-i",):
             HiddenParticleID = int(a)
 
-print "FairShip setup for",simEngine
+print("FairShip setup for",simEngine)
 
 if not InputFile:
  tag = simEngine+"-"+mcEngine+'_D'
@@ -80,28 +81,28 @@ if InputFile.find('_D')>0: withGeo = True
 
 def printMCTrack(n,MCTrack):
    mcp = MCTrack[n]
-   print ' %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i '%(n,mcp.GetPdgCode(),mcp.GetPx()/u.GeV,mcp.GetPy()/u.GeV,mcp.GetPz()/u.GeV, \
-                      mcp.GetStartX()/u.m,mcp.GetStartY()/u.m,mcp.GetStartZ()/u.m,mcp.GetMotherId()   )
+   print(' %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i '%(n,mcp.GetPdgCode(),mcp.GetPx()/u.GeV,mcp.GetPy()/u.GeV,mcp.GetPz()/u.GeV, \
+                      mcp.GetStartX()/u.m,mcp.GetStartY()/u.m,mcp.GetStartZ()/u.m,mcp.GetMotherId()   ))
 def dump(pcut=0):
- print '   #         pid   px    py      pz     vx      vy       vz      mid'
+ print('   #         pid   px    py      pz     vx      vy       vz      mid')
  n=-1
  for mcp in sTree.MCTrack: 
    n+=1
    if mcp.GetP()/u.GeV < pcut :  continue
    printMCTrack(n,sTree.MCTrack)
 def printFittedTracks():
-  print '  # converged Ndf chi2/Ndf    P      Pt      MCid'
+  print('  # converged Ndf chi2/Ndf    P      Pt      MCid')
   n=-1
   for ft in sTree.FitTracks:
    n+=1
    fitStatus = ft.getFitStatus()
    fitState  = ft.getFittedState()
    mom = fitState.getMom()
-   print '%3i %6i   %4i %6.3F   %6.3F %6.3F %6i '%(n,fitStatus.isFitConverged(),\
+   print('%3i %6i   %4i %6.3F   %6.3F %6.3F %6i '%(n,fitStatus.isFitConverged(),\
             fitStatus.getNdf(),fitStatus.getChi2()/fitStatus.getNdf(),\
-            mom.Mag()/u.GeV,mom.Pt()/u.GeV,sTree.fitTrack2MC[n] )
+            mom.Mag()/u.GeV,mom.Pt()/u.GeV,sTree.fitTrack2MC[n] ))
 def printParticles():
-  print '  #    P    Pt[GeV/c]   DOCA[mm]    Rsq    Vz[m]    d1    d2'
+  print('  #    P    Pt[GeV/c]   DOCA[mm]    Rsq    Vz[m]    d1    d2')
   n=-1
   for aP in sTree.Particles:
    n+=1
@@ -109,8 +110,8 @@ def printParticles():
    if aP.GetMother(1)==99: # DOCA is set
       doca = aP.T()
    Rsq = (aP.Vx()/(2.45*u.m) )**2 + (aP.Vy()/((10./2.-0.05)*u.m) )**2
-   print '%3i %6.3F  %6.3F  %9.3F    %6.3F   %6.3F %4i  %4i '%(n,aP.P()/u.GeV,aP.Pt()/u.GeV,\
-            doca/u.mm,Rsq,aP.Vz()/u.m,aP.GetDaughter(0),aP.GetDaughter(1) )
+   print('%3i %6.3F  %6.3F  %9.3F    %6.3F   %6.3F %4i  %4i '%(n,aP.P()/u.GeV,aP.Pt()/u.GeV,\
+            doca/u.mm,Rsq,aP.Vz()/u.m,aP.GetDaughter(0),aP.GetDaughter(1) ))
 class DrawVetoDigi(ROOT.FairTask):
  " My Fair Task"
  def InitTask(self):
@@ -372,7 +373,7 @@ class DrawTracks(ROOT.FairTask):
     DTrack.SetLineWidth(3)
     self.comp.AddElement(DTrack)
     ntot+=1
-  print "draw ",ntot," MC tracks"
+  print("draw ",ntot," MC tracks")
  def DrawFittedTracks(self,option=''):
   n,ntot = -1,0
   for fT in sTree.FitTracks:
@@ -396,7 +397,7 @@ class DrawTracks(ROOT.FairTask):
     if rc:
       DTrack.SetNextPoint(newpos.X(),newpos.Y(),newpos.Z())
     else: 
-      print 'error with extrapolation: z=',zs
+      print('error with extrapolation: z=',zs)
       # use linear extrapolation
       px,py,pz  = mom.X(),mom.Y(),mom.Z() 
       lam = (zs-pos.Z())/pz
@@ -409,7 +410,7 @@ class DrawTracks(ROOT.FairTask):
    DTrack.SetLineWidth(3)
    self.comp.AddElement(DTrack)
    ntot+=1
-  print "draw ",ntot," fitted tracks"
+  print("draw ",ntot," fitted tracks")
   n=-1
   for aP in sTree.Particles:
    n+=1
@@ -557,12 +558,12 @@ class IO():
         v = top.GetNode(x)
         assemb = "Assembly" in v.GetVolume().__str__()
         if v.IsVisible()>0  or assemb and v.IsVisDaughters()>0 : 
-          print "switch off ",x
+          print("switch off ",x)
           v.SetVisibility(0)
           v.SetVisDaughters(0)
           self.lbut[x].var.set(0)
         else:
-          print "switch on ",x
+          print("switch on ",x)
           if assemb:  v.SetVisDaughters(1)
           else:       v.SetVisibility(1)
           self.lbut[x].var.set(1)
@@ -587,7 +588,7 @@ class EventLoop(ROOT.FairTask):
     self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
     if ecalGeoFile.find("5x10")<0:   
           self.ecalFiller.SetUseMCPoints(ROOT.kFALSE)
-          print "ecal cluster display disabled, seems only to work with 5x10m ecal geofile"
+          print("ecal cluster display disabled, seems only to work with 5x10m ecal geofile")
     else:  self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
     self.ecalFiller.StoreTrackInformation()
     rc = sTree.GetEvent(0)
@@ -621,7 +622,7 @@ class EventLoop(ROOT.FairTask):
      self.calos.ExecuteTask()
    if sTree.FindBranch("Digi_SBTHits"): self.veto.ExecuteTask()
    if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'): evd_fillEnergy.execute()
-   print 'Event %i ready'%(self.n)
+   print('Event %i ready'%(self.n))
 # make pointsets pickable
    for x in mcHits: 
      p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())
@@ -773,7 +774,7 @@ def switchOn(tag):
  for v in top.GetNodes():
    vname = v.GetName()
    if not vname.find(tag)<0:
-     print 'switch on ',vname
+     print('switch on ',vname)
      v.SetVisibility(1)
      v.SetVisDaughters(1)
  gEve.ElementChanged(geoscene,True,True)
@@ -832,7 +833,7 @@ def select(pattern):
  return exc
 def search(lvdict,tag):
   for x in lvdict: 
-   if not x.find(tag)<0: print x
+   if not x.find(tag)<0: print(x)
 def rename(name='ship.TGeant4.root'):
  f = ROOT.TFile(name,'UPDATE')
  t = f.Get('cbmsim')
@@ -956,17 +957,17 @@ def mydebug():
     gTr.Print()
     part = gTr.GetParticle()
     lorv = ROOT.TLorentzVector()
-    print 'xyz E pxpypz',gTr.GetPoint(0)[0],gTr.GetPoint(0)[1] ,gTr.GetPoint(0)[2],lorv.E(),lorv.Px(),lorv.Py(),lorv.Pz()
+    print('xyz E pxpypz',gTr.GetPoint(0)[0],gTr.GetPoint(0)[1] ,gTr.GetPoint(0)[2],lorv.E(),lorv.Px(),lorv.Py(),lorv.Pz())
 # Loop over MC tracks  
  for i in range( min(5,nev) ) :
    t.GetEntry(i)
    for gMCTr in t.MCTrack: 
     gMCTr.Print()
-    print  gMCTr.GetPdgCode(),gMCTr.GetMass(),gMCTr.GetP()
+    print(gMCTr.GetPdgCode(),gMCTr.GetMass(),gMCTr.GetP())
 # MC event header  
  for i in range( nev ) :
    t.GetEntry(i)
-   print t.MCEventHeader.GetEventID(),t.MCEventHeader.GetRunID(),t.MCEventHeader.GetZ()
+   print(t.MCEventHeader.GetEventID(),t.MCEventHeader.GetRunID(),t.MCEventHeader.GetZ())
 # geometrie
  sGeo = ROOT.gGeoManager
  cave = sGeo.GetTopVolume()
@@ -985,7 +986,7 @@ def debugStraw(n):
  sTree = g.FindObjectAny('cbmsim')
  sTree.GetEntry(n)
  for s in sTree.strawtubesPoint:
-  print vols[s.GetDetectorID()-1].GetName()
+  print(vols[s.GetDetectorID()-1].GetName())
 
 #----Load the default libraries------
 from basiclibs import *  
@@ -1111,8 +1112,8 @@ SHiPDisplay.InitTask()
 
 # SHiPDisplay.NextEvent(0)
 
-print 'Help on GL viewer can be found by pressing Help button followed by help on GL viewer'
-print 'With the camera button, you can switch to different views.'
+print('Help on GL viewer can be found by pressing Help button followed by help on GL viewer')
+print('With the camera button, you can switch to different views.')
 # short cuts
 # w go to wire frame
 # r smooth display
@@ -1131,7 +1132,7 @@ def DrawCharmTracks():
     if aTrack.GetMotherId()==1:
       pa = pdg.GetParticle(sTree.MCTrack[i] .GetPdgCode())
       if pa.Lifetime()>1.E-12: 
-       print  sTree.MCTrack[i]
+       print(sTree.MCTrack[i])
        SHiPDisplay.tracks.DrawMCTrack(i)
 def DrawSimpleMCTracks():
   comp = SHiPDisplay.tracks.comp
