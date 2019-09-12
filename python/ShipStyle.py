@@ -163,15 +163,15 @@ def printLHCb(optLR="L", optPrelim="Final", optText=""):
 ##################################
   if optLR=="R" :   
     lhcbName = TPaveText(0.70 - lhcbstyle.GetPadRightMargin(),
-					   0.75 - lhcbstyle.SetPadTopMargin(0.05),
-					   0.95 - lhcbstyle.GetPadRightMargin(),
-					   0.85 - lhcbstyle.SetPadTopMargin(0.05),
-					   "BRNDC")
+                         0.75 - lhcbstyle.SetPadTopMargin(0.05),
+                         0.95 - lhcbstyle.GetPadRightMargin(),
+                         0.85 - lhcbstyle.SetPadTopMargin(0.05),
+                         "BRNDC")
   elif optLR=="L":
     lhcbName = TPaveText(lhcbstyle.GetPadLeftMargin() + 0.05,
-				       0.87 - lhcbstyle.GetPadTopMargin(),
-				       lhcbstyle.GetPadLeftMargin() + 0.30,
-				       0.95 - lhcbstyle.GetPadTopMargin(),
+                         0.87 - lhcbstyle.GetPadTopMargin(),
+                         lhcbstyle.GetPadLeftMargin() + 0.30,
+                         0.95 - lhcbstyle.GetPadTopMargin(),
                                         "BRNDC")
   else :
    print "printLHCb: option unknown" , optLR  
