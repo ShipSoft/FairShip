@@ -214,7 +214,7 @@ def makeSummaryPlot():
  Gpdg = h['Gpdg']
  Gpdg.SetMarkerColor(ROOT.kRed)
  Gpdg.SetMarkerStyle(20)
- keys = pdg.keys()
+ keys = list(pdg.keys())
  keys.sort()
  for n in range(len(keys)):
   Gpdg.SetPoint(n,keys[n],pdg[keys[n]])

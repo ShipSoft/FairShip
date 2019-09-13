@@ -1310,7 +1310,7 @@ def ptrack(zlayer,ptrackhits,nrwant,window):
 
 # get first and last plane number (needs to be consecutive, and also contains empty planes
 # should be included in the list!
- planes=zlayer.keys()
+ planes=list(zlayer.keys())
  planes.sort()
  i_1=planes[0]
  i_2=planes[len(planes)-1]

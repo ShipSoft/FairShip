@@ -113,7 +113,7 @@ def executeSimple(prefixes,reset=False):
           time.sleep(10)
  nJobs = len(proc)
  while nJobs > 0:
-  procAna = proc.keys()
+  procAna = list(proc.keys())
   nJobs = len(proc)
   procAna.sort()
   print('debug ',nJobs)

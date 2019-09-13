@@ -359,7 +359,7 @@ class DrawTracks(ROOT.FairTask):
       lam = (zEx+fPos.Z())/fMom.Z()
       hitlist[zEx+fPos.Z()] = [fPos.X()+lam*fMom.X(),fPos.Y()+lam*fMom.Y()]
 # sort in z
-   lz = hitlist.keys()
+   lz = list(hitlist.keys())
    if len(lz)>1:
     lz.sort()
     for z in lz:  DTrack.SetNextPoint(hitlist[z][0],hitlist[z][1],z)
@@ -1154,7 +1154,7 @@ def DrawSimpleMCTracks():
    z = fPos.Z() + delZ
    slx,sly = fMom.X()/fMom.Z(),fMom.Y()/fMom.Z()
    hitlist[z] = [fPos.X()+slx*delZ,fPos.Y()+sly*delZ]
-   lz = hitlist.keys()
+   lz = list(hitlist.keys())
    for z in lz:  DTrack.SetNextPoint(hitlist[z][0],hitlist[z][1],z)
    p = pdg.GetParticle(fT.GetPdgCode()) 
    if p : pName = p.GetName()

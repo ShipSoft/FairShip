@@ -47,7 +47,7 @@ def getFilesFromEOS():
   rc = os.system("xrdcp -f $EOSSHIP"+fname+" "+newName)
   tmp[newName]=fileList[fname]
 
- fnames = tmp.keys()
+ fnames = list(tmp.keys())
  fnames.sort()
  return tmp,fnames
 
@@ -69,7 +69,7 @@ def getFilesLocal():
 
  Nfiles = len(fileList)
 
- fnames = fileList.keys()
+ fnames = list(fileList.keys())
  fnames.sort()
  return fileList,fnames
 
@@ -464,7 +464,7 @@ def pot():
     if name!='slices':
      if name not in scalerStat:scalerStat[name]=0
      scalerStat[name]+=s
- keys = scalerStat.keys()
+ keys = list(scalerStat.keys())
  keys.sort()
  for k in keys: print(k,':',scalerStat[k])
 
