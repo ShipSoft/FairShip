@@ -1154,8 +1154,8 @@ def DrawSimpleMCTracks():
    z = fPos.Z() + delZ
    slx,sly = fMom.X()/fMom.Z(),fMom.Y()/fMom.Z()
    hitlist[z] = [fPos.X()+slx*delZ,fPos.Y()+sly*delZ]
-   lz = list(hitlist.keys())
-   for z in lz:  DTrack.SetNextPoint(hitlist[z][0],hitlist[z][1],z)
+   for z in hitlist.keys():
+    DTrack.SetNextPoint(hitlist[z][0],hitlist[z][1],z)
    p = pdg.GetParticle(fT.GetPdgCode()) 
    if p : pName = p.GetName()
    else:  pName =  str(fT.GetPdgCode())

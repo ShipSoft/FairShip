@@ -47,9 +47,7 @@ def getFilesFromEOS():
   rc = os.system("xrdcp -f $EOSSHIP"+fname+" "+newName)
   tmp[newName]=fileList[fname]
 
- fnames = list(tmp.keys())
- fnames.sort()
- return tmp,fnames
+ return tmp,sorted(tmp.keys())
 
 def getFilesLocal():
 # list of files
@@ -69,9 +67,7 @@ def getFilesLocal():
 
  Nfiles = len(fileList)
 
- fnames = list(fileList.keys())
- fnames.sort()
- return fileList,fnames
+ return fileList,sorted(fileList.keys())
 
 def recoStep0(local=False):
  if local: tmp,fnames = getFilesLocal()
@@ -464,9 +460,8 @@ def pot():
     if name!='slices':
      if name not in scalerStat:scalerStat[name]=0
      scalerStat[name]+=s
- keys = list(scalerStat.keys())
- keys.sort()
- for k in keys: print(k,':',scalerStat[k])
+ for k in sorted(scalerStat.keys()):
+   print(k,':',scalerStat[k])
 
 def makeDTEfficiency(merge=False):
  cmd = "hadd -f DTEff.root "

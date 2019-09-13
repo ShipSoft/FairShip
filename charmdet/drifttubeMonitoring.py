@@ -56,7 +56,6 @@ viewsI = {1:[0,1],2:[0,2],3:[0],4:[0]}
 viewC = {0:"_x",1:"_u",2:"_v"}
 
 muSources = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
-muSourcesIDs = list(muSources.values())
 rnr       = ROOT.TRandom()
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -780,9 +779,7 @@ DT={}
 def compareAlignment():
  ut.bookHist(h,'alignCompare','compare Alignments',100,-120.,120.,100,-120.,120.)
  ut.bookHist(h,'alignCompareDiffs','compare Alignments',100,-1.,1.)
- keys = list(xpos.keys())
- keys.sort()
- for d in keys:
+ for d in sorted(xpos.keys()):
    test = ROOT.MufluxSpectrometerHit(d,0.)
    test.MufluxSpectrometerEndPoints(vbot,vtop)
    statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(test)
@@ -2891,8 +2888,7 @@ def plotSigmaRes():
  ROOT.gROOT.FindObject('c1').cd()
  h['resDistr'].Draw()
 def calculateRTcorrection():
-  hkeys = list(h.keys())
-  for hist in hkeys:
+  for hist in h.keys():
    if hist.find('biasResDist')!=0: continue
    if not hist.find('proj')<0: continue
    if hist == 'biasResDist2' : continue
@@ -2942,9 +2938,7 @@ def calculateRTcorrection():
    h[x].Draw('same')
 
 def analyzeSingleDT():
- keys = list(xpos.keys())
- keys.sort()
- for detID in keys:
+ for detID in sorted(xpos.keys()):
     histo = h['biasResX_'+str(detID)+'_projx']
     mean,rms = -999.,0.
     if histo.GetSumOfWeights()>25:
@@ -4666,7 +4660,7 @@ def checkForDiMuon():
   for t in sTree.MCTrack:
    if abs(t.GetPdgCode())!=13: continue
    moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())
-   if moID in muSourcesIDs: 
+   if moID in muSources.values():
      boost = True
      break
    pName = t.GetProcName().Data()

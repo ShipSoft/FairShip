@@ -214,8 +214,7 @@ def makeSummaryPlot():
  Gpdg = h['Gpdg']
  Gpdg.SetMarkerColor(ROOT.kRed)
  Gpdg.SetMarkerStyle(20)
- keys = list(pdg.keys())
- keys.sort()
+ keys = sorted(pdg.keys())
  for n in range(len(keys)):
   Gpdg.SetPoint(n,keys[n],pdg[keys[n]])
  density= 2.413
