@@ -1,3 +1,4 @@
+from __future__ import print_function
 import ROOT,evd_fillEnergy
 gEve=ROOT.gEve
 def execute():
@@ -66,6 +67,6 @@ if __name__=="__main__":
   test = ROOT.TGLVertex3(fr.GetWidth(),0.,0.)
   vtest = cam.ViewportToWorld(test)
   zmax = vtest.Z()
-  print "?",zmin,zmax
+  print("?",zmin,zmax)
   evd_fillEnergy.execute()
 

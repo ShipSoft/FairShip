@@ -1,4 +1,5 @@
 #!/usr/bin/env python 
+from __future__ import print_function
 import ROOT,os,sys,getopt,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
@@ -235,10 +236,10 @@ run.Run(nev)
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
-print "Output file is ",  outFile 
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ') 
+print("Macro finished succesfully.") 
+print("Output file is ",  outFile) 
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 if (ship_geo.MufluxSpectrometer.muflux==True):
 # ---post processing--- remove empty events --- save histograms
@@ -253,7 +254,7 @@ if (ship_geo.MufluxSpectrometer.muflux==True):
   fHeader.SetTitle("POT equivalent = %7.3G"%(poteq))
  else: 
   fHeader.SetTitle("POT = "+str(nev))
- print "Data generated ", fHeader.GetTitle()
+ print("Data generated ", fHeader.GetTitle())
  t     = fin.cbmsim
  fout  = ROOT.TFile(tmpFile,'recreate' )
  sTree = t.CloneTree(0)
@@ -277,10 +278,10 @@ if (ship_geo.MufluxSpectrometer.muflux==True):
  fout.Close()
  os.system("mv "+tmpFile+" "+outFile)
 
- print "Number of events produced with activity after hadron absorber:",nEvents 
+ print("Number of events produced with activity after hadron absorber:",nEvents) 
 
 else:
- print "No post processing done"
+ print("No post processing done")
 
 sGeo = ROOT.gGeoManager
 run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))

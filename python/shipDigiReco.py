@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os,ROOT,shipVertex,shipDet_conf
 if realPR == "Prev": import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
 else: import shipPatRec
@@ -15,7 +16,7 @@ class ShipDigiReco:
   self.fn = ROOT.TFile.Open(fout,'update')
   self.sTree     = self.fn.cbmsim
   if self.sTree.GetBranch("FitTracks"):
-    print "remove RECO branches and rerun reconstruction"
+    print("remove RECO branches and rerun reconstruction")
     self.fn.Close()    
     # make a new file without reco branches
     f = ROOT.TFile(fout)
@@ -160,7 +161,7 @@ class ShipDigiReco:
 # access ShipTree
   self.sTree.GetEvent(0)
   if len(self.caloTasks)>0:
-   print "** initialize Calo reconstruction **" 
+   print("** initialize Calo reconstruction **") 
    self.ecalStructure     = ecalFiller.InitPython(self.sTree.EcalPointLite)
    ecalDigi.InitPython(self.ecalStructure)
    ecalPrepare.InitPython(self.ecalStructure)
@@ -632,7 +633,7 @@ class ShipDigiReco:
            #if (Dy<=(err_y_1+err_y_2) and Dz<=6*(err_z_1+err_z_2) and Dx<=(err_x_1+err_x_2) and Dz>0. ):
                  list_neighbours.append(hit2)
        else:
-         print "-- getNeighbours: ERROR: step not defined "
+         print("-- getNeighbours: ERROR: step not defined ")
 
    return list_neighbours
 
@@ -895,18 +896,18 @@ class ShipDigiReco:
     atrack = entry[1]
     theTrack = entry[0]
     if not theTrack.checkConsistency():
-     print 'Problem with track before fit, not consistent',atrack,theTrack
+     print('Problem with track before fit, not consistent',atrack,theTrack)
      continue
 # do the fit
     try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
     except: 
-      if debug: print "genfit failed to fit track"
+      if debug: print("genfit failed to fit track")
       error = "genfit failed to fit track"
       ut.reportError(error)
       continue
 #check
     if not theTrack.checkConsistency():
-     if debug: print 'Problem with track after fit, not consistent',atrack,theTrack
+     if debug: print('Problem with track after fit, not consistent',atrack,theTrack)
      error = "Problem with track after fit, not consistent"
      ut.reportError(error)
      continue
@@ -927,7 +928,7 @@ class ShipDigiReco:
     self.fGenFitArray[nTrack] = theTrack
     # self.fitTrack2MC.push_back(atrack)
     if debug: 
-     print 'save track',theTrack,chi2,nmeas,fitStatus.isFitConverged()
+     print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
     # Save MC link
     track_ids = []
     for index in listOfIndices[atrack]:
@@ -947,9 +948,9 @@ class ShipDigiReco:
   self.mcLink.Fill()
 # debug 
   if debug:
-   print 'save tracklets:' 
+   print('save tracklets:') 
    for x in self.sTree.Tracklets:
-    print x.getType(),x.getList().size()
+    print(x.getType(),x.getList().size())
   return nTrack+1
 
  def findGoodTracks(self):
@@ -980,7 +981,7 @@ class ShipDigiReco:
      except:
       error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
       ut.reportError(error)
-      if debug: print error
+      if debug: print(error)
       continue
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:
@@ -1019,7 +1020,7 @@ class ShipDigiReco:
 
  def finish(self):
   del self.fitter
-  print 'finished writing tree'
+  print('finished writing tree')
   self.sTree.Write()
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")

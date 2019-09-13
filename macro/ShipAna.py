@@ -1,3 +1,4 @@
+from __future__ import print_function
 # example for accessing smeared hits and fitted tracks
 import ROOT,os,sys,getopt
 import rootUtils as ut
@@ -23,7 +24,7 @@ try:
         opts, args = getopt.getopt(sys.argv[1:], "n:f:g:A:Y:i", ["nEvents=","geoFile="])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter file name'
+        print(' enter file name')
         sys.exit()
 for o, a in opts:
         if o in ("-f",):
@@ -78,7 +79,7 @@ import geomGeant4
 if hasattr(ShipGeo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
 else:
-  print "no fieldmap given, geofile too old, not anymore support"
+  print("no fieldmap given, geofile too old, not anymore support")
   exit(-1)
 sGeo   = fgeo.FAIRGeom
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
@@ -287,11 +288,11 @@ def getPtruthFirst(sTree,mcPartKey):
 def access2SmearedHits():
  key = 0
  for ahit in ev.SmearedHits.GetObject():
-   print ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6]
+   print(ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6])
    # follow link to true MCHit
    mchit   = TrackingHits[key]
    mctrack =  MCTracks[mchit.GetTrackID()]
-   print mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode()
+   print(mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode())
    key+=1
 
 def myVertex(t1,t2,PosDir):
@@ -339,7 +340,7 @@ def  RedoVertexing(t1,t2):
        try:
         reps[tr].extrapolateToPoint(states[tr], newPos, False)
        except:
-        print 'SHiPAna: extrapolation did not worked'
+        print('SHiPAna: extrapolation did not worked')
         rc = False  
         break
        newPosDir[tr] = [reps[tr].getPos(states[tr]),reps[tr].getDir(states[tr])]
@@ -348,7 +349,7 @@ def  RedoVertexing(t1,t2):
       dz = abs(zBefore-zv)
       step+=1
       if step > 10:  
-         print 'abort iteration, too many steps, pos=',xv,yv,zv,' doca=',doca,'z before and dz',zBefore,dz
+         print('abort iteration, too many steps, pos=',xv,yv,zv,' doca=',doca,'z before and dz',zBefore,dz)
          rc = False
          break 
      if not rc: return xv,yv,zv,doca,-1 # extrapolation failed, makes no sense to continue
@@ -533,7 +534,7 @@ def makePlots():
    cv.SetLogy(1)
    h['nrRPC'].Draw()
 #
-   print 'finished making plots'
+   print('finished making plots')
 # calculate z front face of ecal, needed later
 top = ROOT.gGeoManager.GetTopVolume()
 ecal = None
@@ -817,7 +818,7 @@ def HNLKinematics():
       h['HNLmomNoW_recTracks'].Fill(Prec)
  theSum = 0
  for x in HNLorigin: theSum+=HNLorigin[x]   
- for x in HNLorigin: print "%4i : %5.4F relative fraction: %5.4F "%(x,HNLorigin[x],HNLorigin[x]/theSum)
+ for x in HNLorigin: print("%4i : %5.4F relative fraction: %5.4F "%(x,HNLorigin[x],HNLorigin[x]/theSum))
 #
 # initialize ecalStructure
 caloTasks = []
@@ -837,7 +838,7 @@ if ecal:
   ecalReconstructed = sTree.EcalReconstructed
  else:
   calReco = True
-  print "setup calo reconstruction of ecalReconstructed objects"
+  print("setup calo reconstruction of ecalReconstructed objects")
 # Calorimeter reconstruction
  #GeV -> ADC conversion
   ecalDigi=ROOT.ecalDigi("ecalDigi",0)

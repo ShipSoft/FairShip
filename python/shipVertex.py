@@ -1,3 +1,4 @@
+from __future__ import print_function
 # simple vertex reconstruction with errors
 import ROOT,sys,os
 import shipunit as u
@@ -129,7 +130,7 @@ class Task:
       if step > 10:  
          ut.reportError("shipVertex::abort iteration, too many steps")
          if debug: 
-          print 'abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz
+          print('abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz)
          rc = False
          break 
 #       

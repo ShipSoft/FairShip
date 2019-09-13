@@ -1,4 +1,5 @@
 #!/usr/bin/env python 
+from __future__ import print_function
 import ROOT,os,sys,getopt,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
@@ -54,7 +55,7 @@ class Block(ROOT.pyFairModule):
  "block of material"
  def __init__(self): ROOT.pyFairModule.__init__(self,self)
  def ConstructGeometry(self):
-    print "Construct Block"
+    print("Construct Block")
     top=ROOT.gGeoManager.GetTopVolume()
     geoLoad=ROOT.FairGeoLoader.Instance()
     geoFace=geoLoad.getGeoInterface()
@@ -68,7 +69,7 @@ class Block(ROOT.pyFairModule):
     aBox = ROOT.gGeoManager.MakeBox("target", W, 100.*u.cm, 100.*u.cm, thickness)
     top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))
  def InitParContainers():
-    print "not implemented!"
+    print("not implemented!")
 
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
@@ -128,7 +129,7 @@ h['Ekin'].Draw()
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
-print "Output file is ",  outFile 
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ') 
+print("Macro finished succesfully.") 
+print("Output file is ",  outFile) 
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
