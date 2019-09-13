@@ -15,7 +15,7 @@ inputFile  = None
 geoFile    = None
 dy         = None
 nEvents    = 9999999
-fiducialCut = True
+fiducialCut = False
 measCutFK = 25
 measCutPR = 22
 docaCut = 2.
@@ -138,7 +138,6 @@ ut.bookHist(h,'oa','cos opening angle',100,0.999,1.)
 # potential Veto detectors
 ut.bookHist(h,'nrtracks','nr of tracks in signal selected',10,-0.5,9.5)
 ut.bookHist(h,'nrSVT','nr of hits in SVT',10,-0.5,9.5)
-ut.bookHist(h,'nrUVT','nr of hits in UVT',100,-0.5,99.5)
 ut.bookHist(h,'nrSBT','nr of hits in SBT',100,-0.5,99.5)
 ut.bookHist(h,'nrRPC','nr of hits in RPC',100,-0.5,99.5)
 
@@ -229,6 +228,7 @@ def dist2InnerWall(X,Y,Z):
   return minDistance
 
 def isInFiducial(X,Y,Z):
+   if not fiducialCut: return True
    if Z > ShipGeo.TrackStation1.z : return False
    if Z < ShipGeo.vetoStation.z+100.*u.cm : return False
    # typical x,y Vx resolution for exclusive HNL decays 0.3cm,0.15cm (gaussian width)
@@ -519,7 +519,7 @@ def makePlots():
    cv = h['trpulls'].cd(3)
    h['pullPOverPz_proj']=h['pullPOverPz'].ProjectionY()
    h['pullPOverPz_proj'].Draw()
-   ut.bookCanvas(h,key='vetodecisions',title='Veto Detectors',nx=1600,ny=600,cx=5,cy=1)
+   ut.bookCanvas(h,key='vetodecisions',title='Veto Detectors',nx=1600,ny=600,cx=4,cy=1)
    cv = h['vetodecisions'].cd(1)
    cv.SetLogy(1)
    h['nrtracks'].Draw()
@@ -528,11 +528,8 @@ def makePlots():
    h['nrSVT'].Draw()
    cv = h['vetodecisions'].cd(3)
    cv.SetLogy(1)
-   h['nrUVT'].Draw()
-   cv = h['vetodecisions'].cd(4)
-   cv.SetLogy(1)
    h['nrSBT'].Draw()
-   cv = h['vetodecisions'].cd(5)
+   cv = h['vetodecisions'].cd(4)
    cv.SetLogy(1)
    h['nrRPC'].Draw()
 #
@@ -707,15 +704,10 @@ def myEventLoop(n):
     HNL.ProductionVertex(HNLPos)
     HNLMom = ROOT.TLorentzVector()
     HNL.Momentum(HNLMom)
-# check if DOCA info exist
-    if hasattr(HNL,"GetDoca"):
-      doca  =  HNL.GetDoca()
-    elif HNL.GetMother(1)==99 :
-      doca  =  HNLPos.T()
-    else:
+    doca  =  HNL.GetDoca()
 # redo doca calculation
-     xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)
-     if HNLMom == -1: continue
+     # xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)
+     # if HNLMom == -1: continue
  # check if decay inside decay volume
     if not isInFiducial(HNLPos.X(),HNLPos.Y(),HNLPos.Z()): continue  
     h['Doca'].Fill(doca) 
@@ -743,12 +735,10 @@ def myEventLoop(n):
 #
     vetoDets['SBT'] = veto.SBT_decision()
     vetoDets['SVT'] = veto.SVT_decision()
-    vetoDets['UVT'] = veto.UVT_decision()
     vetoDets['RPC'] = veto.RPC_decision()
     vetoDets['TRA'] = veto.Track_decision()
     h['nrtracks'].Fill(vetoDets['TRA'][2])
     h['nrSVT'].Fill(vetoDets['SVT'][2])
-    h['nrUVT'].Fill(vetoDets['UVT'][2])
     h['nrSBT'].Fill(vetoDets['SBT'][2])
     h['nrRPC'].Fill(vetoDets['RPC'][2])
 #   HNL true
