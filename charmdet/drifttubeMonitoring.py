@@ -1845,7 +1845,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
           if not fitStatus.isFitConverged(): continue
           displayTrack(theTrack,debug)
      next = raw_input("Next (Ret/Quit): ")         
-     if next<>'':  break
+     if next!='':  break
    if len(theTracks)>0: nMax-=1
    if not hasattr(theTracks,'Class'):
     for theTrack in theTracks:   theTrack.Delete()
@@ -2597,7 +2597,7 @@ def testClusters(nEvent=-1,nTot=1000):
    for aTrack in trackCandidates:
       displayTrack(aTrack)
    next = raw_input("Next (Ret/Quit): ")
-   if next<>'':  break
+   if next!='':  break
 
 def printResiduals(aTrack):
    if not aTrack.getNumPointsWithMeasurement()>0: return

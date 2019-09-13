@@ -199,22 +199,22 @@ EventLoop(SmearedHits)
 #1/0
 shipPatRec_prev.h['pinvvstruepinv'].Draw('box')
 scale=1.
-if shipPatRec_prev.h['fracsame12'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame12'].Integral()
+if shipPatRec_prev.h['fracsame12'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame12'].Integral()
 shipPatRec_prev.h['fracsame12'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame12-y'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame12-y'].Integral()
+if shipPatRec_prev.h['fracsame12-y'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame12-y'].Integral()
 shipPatRec_prev.h['fracsame12-y'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame12-stereo'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame12-stereo'].Integral()
+if shipPatRec_prev.h['fracsame12-stereo'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame12-stereo'].Integral()
 shipPatRec_prev.h['fracsame12-stereo'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame34'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame34'].Integral()
+if shipPatRec_prev.h['fracsame34'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame34'].Integral()
 shipPatRec_prev.h['fracsame34'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame34-y'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame34-y'].Integral()
+if shipPatRec_prev.h['fracsame34-y'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame34-y'].Integral()
 shipPatRec_prev.h['fracsame34-y'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame34-stereo'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame34-stereo'].Integral()
+if shipPatRec_prev.h['fracsame34-stereo'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame34-stereo'].Integral()
 shipPatRec_prev.h['fracsame34-stereo'].Scale(scale)
 
 scale=1.
