@@ -282,9 +282,9 @@ def makeHistos(rfile):
          moPid = sTree.MCTrack[mother].GetPdgCode()
          name = pdg.GetParticle(moPid).GetName()
          name = procID+' '+name
-         if not h.has_key(name):  h[name]=h['test'].Clone(name)
+         if name not in h:  h[name]=h['test'].Clone(name)
          rc=h[name].Fill(t.GetP(),t.GetPt())
-     if not h.has_key(procID):  h[procID]=h['test'].Clone(procID)
+     if procID not in h:  h[procID]=h['test'].Clone(procID)
      rc=h[procID].Fill(t.GetP(),t.GetPt())
  for x in h:
   h[x].Scale(1./nTot)
@@ -320,7 +320,7 @@ def makePrintout():
   if not p[0].find('Hadronic inelastic')<0:
      if len(p[0])>len( 'Hadronic inelastic' ): continue
   denom = 0
-  if unbiased.has_key(p[0]): denom = unbiased[p[0]]
+  if p[0] in unbiased: denom = unbiased[p[0]]
   if denom >0:
    fac = float(p[1])/denom
    print("%40s : %5.2G %5.1F"%(p[0],float(p[1]),fac))

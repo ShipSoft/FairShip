@@ -137,7 +137,7 @@ class makeHitList:
     if ahit.GetDetectorID() > 5*10000000 : continue
     # do not use hits in Veto station for track reco   
     trID = ahit.GetTrackID()
-    if not hitPosLists.has_key(trID):   
+    if trID not in hitPosLists:   
       hitPosLists[trID] = ROOT.std.vector('TVectorD')()
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     measurement = ROOT.TVectorD(7,m)

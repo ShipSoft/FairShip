@@ -586,7 +586,7 @@ def BigEventLoop():
       detName=hLiSc[k][j]
       tag  = detName+mu+x
       newh = detName[0:2]+'LiSc'+mu+x
-      if not h.has_key(tag): continue 
+      if tag not in h: continue 
       if first: 
          h[newh] = h[tag].Clone(newh)
          h[newh].SetTitle( h[tag].GetTitle().split('_')[0])
@@ -609,7 +609,7 @@ def BigEventLoop():
  # make list of hists with entries
  k = 1
  for x in histlistAll:
-  if h.has_key(histlistAll[x]):
+  if histlistAll[x] in h:
    histlist[k]=histlistAll[x]    
 # make cumulative histograms
    for c in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
@@ -672,7 +672,7 @@ def executeOneFile(fn,output=None,pid=None):
       y = pos.Y()
       E = ahit.GetEnergyLoss()
      else: 
-      if not logVols.has_key(detID):
+      if detID not in logVols:
          detName = c.GetName().replace('Points','')
          if not detName in histlistAll.values(): print(detID,detName,c.GetName()) 
       else: detName = logVols[detID]
@@ -680,7 +680,7 @@ def executeOneFile(fn,output=None,pid=None):
       y = ahit.GetY()
       z = ahit.GetZ()
       E = ahit.GetEnergyLoss()
-     if not h.has_key(detName): bookHist(detName)
+     if detName not in h: bookHist(detName)
      mu=''
      pdgID = -2
      if 'PdgCode' in dir(ahit):   pdgID = ahit.PdgCode()
@@ -706,8 +706,8 @@ def executeOneFile(fn,output=None,pid=None):
      if detName.find('LS')<0: rc = h[detName].Fill(x/u.m,y/u.m,w)
      else:                    rc = h[detName].Fill(ahit.GetZ()/u.m,ROOT.TMath.ATan2(y,x)/ROOT.TMath.Pi(),w)
      rc = h[detName+'_E'].Fill(E/u.MeV,w)
-     if not hitmult.has_key(detName): hitmult[detName] = {-1:0}
-     if not hitmult[detName].has_key(trackID): hitmult[detName][trackID] = 0
+     if detName not in hitmult: hitmult[detName] = {-1:0}
+     if trackID not in hitmult[detName]: hitmult[detName][trackID] = 0
      hitmult[detName][trackID] +=1
      hitmult[detName][-1]      +=1
      rc = h[detName+'_id'].Fill(pdgID,w)
@@ -749,7 +749,7 @@ def makePlots(nstations):
  for i in histlist:
   tc = h['ResultsI'].cd(i)
   hn = histlist[i] 
-  if not h.has_key(hn): continue 
+  if hn not in h: continue 
   h[hn].SetStats(0)
   h[hn].Draw('colz')
   txt[i] = '%5.2G'%(h[hn].GetSumOfWeights()/nSpills)
@@ -1060,7 +1060,7 @@ def persistency():
 
 def reDraw(fn):
   if fn.find('root')<0: fn=fn+'.root'
-  if not h.has_key('tc'): h['tc'] = ROOT.TFile(fn)
+  if 'tc' not in h: h['tc'] = ROOT.TFile(fn)
   for x in ['ResultsI','ResultsII','ResultsImu','ResultsImuV0','ResultsIII','ResultsIV','ResultsV']:
    h[x]=h['tc'].FindObjectAny(x)
    h[x].Draw() 
@@ -1241,7 +1241,7 @@ def readAndMergeHistos(prods):
 # make list of hists with entries
  k = 1
  for x in histlistAll:
-  if h.has_key(histlistAll[x]): 
+  if histlistAll[x] in h: 
    histlist[k]=histlistAll[x]
    k+=1
  nstations = len(histlist)

@@ -649,7 +649,7 @@ class ShipDigiReco:
      self.digiTimeDet[index]=aHit
      detID = aHit.GetDetectorID()
      if aHit.isValid():
-      if hitsPerDetId.has_key(detID):
+      if detID in hitsPerDetId:
        t = aHit.GetMeasurements()
        ct = aHit.GetMeasurements()
 # this is not really correct, only first attempt
@@ -670,7 +670,7 @@ class ShipDigiReco:
      self.digiMuon[index]=aHit
      detID = aHit.GetDetectorID()
      if aHit.isValid():
-      if hitsPerDetId.has_key(detID):
+      if detID in hitsPerDetId:
        if self.digiMuon[hitsPerDetId[detID]].GetDigi() > aHit.GetDigi():
  # second hit with smaller tdc
         self.digiMuon[hitsPerDetId[detID]].setValidity(0)
@@ -686,7 +686,7 @@ class ShipDigiReco:
        key+=1
        detID=aMCPoint.GetDetectorID()
        Eloss=aMCPoint.GetEnergyLoss()
-       if not ElossPerDetId.has_key(detID): 
+       if detID not in ElossPerDetId: 
         ElossPerDetId[detID]=0
         listOfVetoPoints[detID]=[]
         tOfFlight[detID]=[]
@@ -716,7 +716,7 @@ class ShipDigiReco:
      self.digiStraw[index]=aHit
      if aHit.isValid():
       detID = aHit.GetDetectorID()
-      if hitsPerDetId.has_key(detID):
+      if detID in hitsPerDetId:
        if self.digiStraw[hitsPerDetId[detID]].GetTDC() > aHit.GetTDC():
  # second hit with smaller tdc
         self.digiStraw[hitsPerDetId[detID]].setInvalid()
@@ -813,14 +813,14 @@ class ShipDigiReco:
         station = int(detID/10000000)
         trID = i_track
         # Collect hits for track fit
-        if not hitPosLists.has_key(trID):
+        if trID not in hitPosLists:
           hitPosLists[trID] = ROOT.std.vector('TVectorD')()
           listOfIndices[trID] = []
           stationCrossed[trID]  = {}
         m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
         hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
         listOfIndices[trID].append(sm['digiHit'])
-        if not stationCrossed[trID].has_key(station):
+        if station not in stationCrossed[trID]:
           stationCrossed[trID][station] = 0
         stationCrossed[trID][station] += 1
   else: # do fake pattern recognition
@@ -828,14 +828,14 @@ class ShipDigiReco:
     detID = self.digiStraw[sm['digiHit']].GetDetectorID()
     station = int(detID/10000000)
     trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
-    if not hitPosLists.has_key(trID):   
+    if trID not in hitPosLists:   
       hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
       listOfIndices[trID] = [] 
       stationCrossed[trID]  = {}
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
     listOfIndices[trID].append(sm['digiHit'])
-    if not stationCrossed[trID].has_key(station): stationCrossed[trID][station]=0
+    if station not in stationCrossed[trID]: stationCrossed[trID][station]=0
     stationCrossed[trID][station]+=1
 #
    # for atrack in listOfIndices:
@@ -1004,7 +1004,7 @@ class ShipDigiReco:
   track={}
   nh=len(trackids)
   for tid in trackids:
-    if track.has_key(tid):
+    if tid in track:
       track[tid] += 1
     else:
       track[tid] = 1

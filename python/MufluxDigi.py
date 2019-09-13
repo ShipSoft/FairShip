@@ -186,7 +186,7 @@ class MufluxDigi:
             if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
-            if hitsPerDetId.has_key(detID):
+            if detID in hitsPerDetId:
                 if self.digiMufluxSpectrometer[hitsPerDetId[detID]].tdc() > aHit.tdc():
                     # second hit with smaller tdc
                     self.digiMufluxSpectrometer[hitsPerDetId[detID]].setInvalid()

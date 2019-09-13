@@ -54,12 +54,12 @@ def setMagnetField(flag=None):
         vl0  = world.GetDaughter(da)
         vln  = vl0.GetName().__str__()
         lvl0 = vl0.GetLogicalVolume()
-        if listOfFields.has_key(vln) :  setField[lvl0]=vln
+        if vln in listOfFields :  setField[lvl0]=vln
         for dda in range(lvl0.GetNoDaughters()): 
          vl  = lvl0.GetDaughter(dda)
          vln = vl.GetName().__str__()
          lvl = vl.GetLogicalVolume()
-         if listOfFields.has_key(vln) :  setField[lvl]=vln
+         if vln in listOfFields :  setField[lvl]=vln
     modified = False 
     for lvl in setField:
        # check if field already exists
@@ -80,7 +80,7 @@ def setMagnetField(flag=None):
 def printWF(vl,alreadyPrinted,onlyWithField=True):
     magnetMass = 0
     vname = vl.GetName().data()
-    if alreadyPrinted.has_key(vname): return magnetMass
+    if vname in alreadyPrinted: return magnetMass
     vln  = vname+' '+str(vl.GetCopyNo())
     mvl  = vl.GetMotherLogical().GetName().data()
     alreadyPrinted[vname]=mvl

@@ -19,7 +19,7 @@ def fillPart(t):
  particles = {}
  for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if not particles.has_key(t.parentid) : 
+    if t.parentid not in particles : 
          particles[t.parentid] = 0
     particles[t.parentid] +=1
  return particles
@@ -32,7 +32,7 @@ def fillWeights():
   weights[p]={}
   for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if not weights[p].has_key(t.w) : 
+    if t.w not in weights[p] : 
          weights[p][t.w] = [t.ecut,0]
     weights[p][t.w][1] +=1
     if t.ecut > weights[p][t.w][0] : weights[p][t.w][0] = t.ecut

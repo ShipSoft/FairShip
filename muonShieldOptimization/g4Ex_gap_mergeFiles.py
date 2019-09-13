@@ -105,7 +105,7 @@ if MoTarget:
     for r in os.listdir(path):
       if r.find('.root')<0: continue
       ecut = float(r.split('.root')[0].split('_')[3])
-      if not stats.has_key(ecut):
+      if ecut not in stats:
        stats[ecut] = []
        files[ecut] = []      
     files[ecut].append(path+r)

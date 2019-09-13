@@ -333,7 +333,7 @@ class MyTrackingActionD(G4UserTrackingAction):
    moid = atrack.GetParentID()
    trackHistory[atrack.GetTrackID()]=[pid,moid]
    tmoid = str(moid)
-   if trackHistory.has_key(moid): 
+   if moid in trackHistory: 
          mo = pdg.GetParticle(trackHistory[moid][0])
          if mo : tmoid = mo.GetName()
    tid = str(pid)
@@ -342,15 +342,15 @@ class MyTrackingActionD(G4UserTrackingAction):
    p = ROOT.TMath.Sqrt(mom.x*mom.x+mom.y*mom.y+mom.z*mom.z)
    if debug and abs(pid)==13: print('track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV)
    if pid==12:
-      if trackHistory.has_key(moid): 
+      if moid in trackHistory: 
         gmoid = trackHistory[moid][1]
-        if trackHistory.has_key(gmoid):
+        if gmoid in trackHistory:
           tgmoid = str(gmoid)
           mo = pdg.GetParticle(trackHistory[gmoid][0])
           if mo : tgmoid = mo.GetName()
           print('   <--',gmoid,tgmoid)
           gmoid = trackHistory[gmoid][1]
-          if trackHistory.has_key(gmoid):
+          if gmoid in trackHistory:
            tgmoid = str(gmoid)
            mo = pdg.GetParticle(trackHistory[gmoid][0])
            if mo : tgmoid = mo.GetName()
