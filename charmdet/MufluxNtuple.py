@@ -79,6 +79,7 @@ if not options.listOfFiles:
      if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
     except: continue
  if withCharm:
+  fdir = fdir+'-charm'
   path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
   for m in range(5):
    fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
@@ -515,8 +516,8 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
          if not found and sTree.nTr==1 and Debug:
            dec = abs(sTree.Delx[t])<cuts['muTrackMatchX'] and abs(sTree.Dely[t])<cuts['muTrackMatchY']
            print "event nr ",n,P.Mag(),sTree.nTr,upStreamOcc,abs(sTree.Delx[t]),abs(sTree.Dely[t]),dec
-
-   ut.writeHists(h,'histos-MCRecoEffFunOfOcc.root')
+   ut.writeHists(h,'histos-MCRecoEffFunOfOcc'+'-'+fdir+'.root')
+   return
  if not hMC.has_key('P'): 
    ut.readHists(hMC,'histos-MCRecoEffFunOfOcc.root')
  if not hData.has_key('Occ'): 
@@ -553,7 +554,7 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
  ut.bookCanvas(h,'upStreamOcc','upstream occupancy',900,600,1,1)
  tc = hMC['upStreamOcc'].cd(1)
  tc.SetLogy(1)
- hData['OccAllEvents'].SetTitle('upstream occupancy;N;arbitrary scale')
+ hData['OccAllEvents'].SetTitle('upstream occupancy;Number of hits;arbitrary scale')
  hData['OccAllEvents'].SetStats(0)
  hData['OccAllEvents'].Draw()
  hmax = hData['OccAllEvents'].GetMaximum()
@@ -733,6 +734,7 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
    h['rebinned-trueMom-'+k].SetMarkerStyle(21)
    h['rebinned-trueMom-'+k].SetMarkerColor(h['rebinned-trueMom-'+k].GetLineColor())
    if k=='P': h['rebinned-trueMom-'+k].GetXaxis().SetRangeUser(5.,400.)
+   h['rebinned-trueMom-'+k].SetTitle('')
    h['rebinned-trueMom-'+k].Draw()
    h['recoMom-'+k].SetLineColor(ROOT.kMagenta)
    h['recoMom-'+k].SetStats(0)
@@ -748,7 +750,7 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
    #h0['recoMom-'+k].Draw('same')
    h0['0rebinned-recoMom-'+k]=h0['recoMom-'+k].Clone('0rebinned-recoMom-'+k)
    h0['0rebinned-recoMom-'+k].Rebin(5)
-   h0['0rebinned-recoMom-'+k].Scale(1./10.)
+   h0['0rebinned-recoMom-'+k].Scale(1./5.)
    h0['0rebinned-recoMom-'+k].SetMarkerStyle(22)
    h0['0rebinned-recoMom-'+k].SetMarkerColor(h0['0rebinned-recoMom-'+k].GetLineColor())
    h0['0rebinned-recoMom-'+k].Draw('P same')
@@ -784,10 +786,9 @@ def mufluxReco(sTree,h):
     ut.bookHist(h,c+'pt1/pt2s'+x+s,'P_{T} 1 vs P_{T} 2 same sign;p [GeV/c]; p [GeV/c]',100,0.,10.,100,0.,10.)
     ut.bookHist(h,c+'Chi2/DoF'+x+s,'Chi2/DoF',100,0.,5.,100,0.,500.)
     ut.bookHist(h,c+'DoF'+x+s,     'DoF'     ,30,0.5,30.5,100,0.,500.)
-    ut.bookHist(h,c+'R'+x,'rpc match',100,0.,10.,100,0.,500.)
-    ut.bookHist(h,c+'RPCResX/Y','RPC residuals',200,0.,200.,200,0.,200.)
-    ut.bookHist(h,c+'RPCMatch','RPC matching',100,0.,10.,100,0.,10.)
-    if x != '' or s != '':continue
+    ut.bookHist(h,c+'R'+x+s,'rpc match',100,0.,10.,100,0.,500.)
+    ut.bookHist(h,c+'RPCResX/Y'+x+s,'RPC residuals',200,0.,200.,200,0.,200.)
+    ut.bookHist(h,c+'RPCMatch'+x+s,'RPC matching',100,0.,10.,100,0.,10.)
     ut.bookHist(h,c+'trueMom'+x+s,'true MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
     ut.bookHist(h,c+'recoMom'+x+s,'reco MC momentum;P [GeV/c];Pt [GeV/c]',500,0.,500.,100,0.,10.)
     ut.bookHist(h,c+'truePz/Abspx'+x+s,'true MC momentum;P [GeV/c];Px [GeV/c]',500,0.,500.,100,0.,10.)
@@ -922,6 +923,66 @@ def mufluxReco(sTree,h):
         h["recoPz/Abspx"+source].Fill(p[2],ROOT.TMath.Abs(p[0]));
         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
  ut.writeHists( h,'sumHistos-'+'-'+fdir+'.root')
+def invMass(sTree,h):
+ ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
+ ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
+ ut.bookHist(h,'invMassJ','inv mass from Jpsi',100,0.0,10.0)
+ sTreeFullMC = None
+ Ntotal = sTree.GetEntries()
+ currentFile = ''
+ for n in range(sTree.GetEntries()):
+  rc = sTree.GetEvent(n)
+  if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
+  if sTree.GetCurrentFile().GetName()!=currentFile:
+       currentFile = sTree.GetCurrentFile().GetName()
+       nInFile = n
+  tchannel = sTree.channel
+  source = ''
+  MCdata = False
+  if sTree.FindBranch("MCRecoDT"): MCdata = True
+  if MCdata:
+         if (tchannel == 1):  source = "Decay"
+         if (tchannel == 7):  source = "Di-muon P8"
+         if (tchannel == 2):  source = "Hadronic inelastic"
+         if (tchannel == 3):  source = "Lepton pair"
+         if (tchannel == 4):  source = "Positron annihilation"
+         if (tchannel == 5):  source = "charm"
+         if (tchannel == 6):  source = "beauty"
+         if (tchannel == 13): source = "invalid"
+  ntracks = len(sTree.GoodTrack)
+  if ntracks!=2: continue
+  P = {}
+  failed = False
+  for k in range(2):
+     if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: failed=True
+     if sTree.GoodTrack[k]>999:  failed=True
+     if failed: break
+     p = ROOT.TVector3(sTree.Px[k],sTree.Py[k],sTree.Pz[k])
+     E = ROOT.TMath.Sqrt(p.Mag2()+0.105658**2)
+     P[k] = ROOT.TLorentzVector(p,E)
+  if failed: continue
+  X = P[0]+P[1]
+  if sTree.Sign[0]*sTree.Sign[1]<0:  rc = h["invMassOS"].Fill(X.M())
+  else:  rc = h["invMassSS"].Fill(X.M())
+  if X.M()>2.5 and MCdata: 
+#check truth
+    eospathSim = os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/'
+    fname = sTree.GetCurrentFile().GetName().split('simulation')[1].replace('ntuple-','')
+    if sTreeFullMC:
+     if sTreeFullMC.GetCurrentFile().GetName().find(fname)<0:
+      fMC = ROOT.TFile.Open(eospathSim+fname)
+      sTreeFullMC = fMC.cbmsim
+    else: 
+      fMC = ROOT.TFile.Open(eospathSim+fname)
+      sTreeFullMC = fMC.cbmsim
+    rc = sTreeFullMC.GetEvent(n-nInFile)
+    jpsi = 0
+    for k in sTree.MCRecoDT:
+     trueMu = sTreeFullMC.MCTrack[k]
+     mother = sTreeFullMC.MCTrack[trueMu.GetMotherId()]
+     if mother.GetPdgCode() == 443: jpsi+=1
+    if jpsi==2: rc = h["invMassJ"].Fill(X.M())
+    # print X.M(),n,n-nInFile,sTree.GetCurrentFile()
 
 def plotOccupancy(sTree):
    ut.bookHist(h,'upStreamOcc',"station 1&2 function of track mom",50,-0.5,199.5,100,0.,500.)
@@ -1027,4 +1088,12 @@ def debug():
  return Nstat
 
 if options.command=='MufluxReco':
- mufluxReco(sTreeData,hData)
+ if fdir.find('simulation')==0: mufluxReco(sTreeMC,hMC)
+ else: mufluxReco(sTreeData,hData)
+if options.command=='RecoEffFunOfOcc':
+  RecoEffFunOfOcc()
+if options.command=='invMass':
+  invMass(sTreeData,hData)
+  ut.writeHists(hData,"invMass-"+fdir.split('-')[0]+'.root')
+
+

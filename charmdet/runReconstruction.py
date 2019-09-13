@@ -495,13 +495,14 @@ def makeDTEfficiency(eos=False,merge=False):
     cmd+=name+' '
   if merge: os.system(cmd)
  print "finished all the tasks."
- 
+
+noField           = [2199,2200,2201]
+intermediateField = [2383,2388,2389,2390,2392,2395,2396]
+noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
+RPCbad = [2144,2154,2183,2192,2210,2211,2217,2218,2235,2236,2237,2240,2241,2243,2291,2345,2359]
+badRuns = [2142, 2143, 2144, 2149]
+
 def runMufluxReco(path = '.',merge=False):
- noField           = [2199,2200,2201]
- intermediateField = [2383,2388,2389,2390,2392,2395,2396]
- noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
- RPCbad = [2144,2154,2183,2192,2210,2211,2217,2218,2235,2236,2237,2240,2241,2243,2291,2345,2359]
- badRuns = [2142, 2143, 2144, 2149]
  sumHistos=[]
  for d in os.listdir(path):
    if d.find('RUN_8000')==0:
@@ -534,6 +535,24 @@ def checkNtuples(path = '.'):
       test = ROOT.TFile(path+'/'+d+'/'+n)
       if not test: notOK.append(path+'/'+d+'/'+n)
  return notOK
+
+def invMass(path = '.',merge=False):
+ if merge:
+   cmd = 'hadd -f sumInvMass.root '
+   for d in os.listdir(path):
+    if d.find('invMass')==0:
+     cmd += d+".root "
+   os.system(cmd)
+ else:
+  for d in os.listdir(path):
+   if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):
+    cmd = "python MufluxNtuple.py -c invMass -d "+d+" -p /home/truf/muflux &"
+    os.system(cmd)
+    time.sleep(10)
+    while 1>0:
+     if count_python_processes('MufluxNtuple')<ncpus: break 
+     time.sleep(10)
+
 
 def importHistos(keyword = 'RUN_8000_2',histoname="momDistributions"):
  # momDistributions.root    residuals.root
