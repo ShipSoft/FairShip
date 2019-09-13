@@ -970,7 +970,7 @@ def dispTrack3D(theTrack):
      rc = ROOT.gROOT.FindObject('c1').Update()
 def displayDTLayers():
  ut.bookHist(h,'upstream','upstream layers',12,-0.5,11.5,30,-0.5,29.5)
- if not h.has_key('layerDisplay'): ut.bookCanvas(h,key='layerDisplay',title='Upstream Layers',nx=1600,ny=1200,cx=1,cy=0)
+ if 'layerDisplay' not in h: ut.bookCanvas(h,key='layerDisplay',title='Upstream Layers',nx=1600,ny=1200,cx=1,cy=0)
  h['upstreamG'] = ROOT.TGraph()
  h['upstreamG'].Set(0)
  h['upstreamG'].SetMarkerStyle(8)
@@ -1000,7 +1000,7 @@ def plotEvent(n=-1):
    for c in h['hitCollection']: rc=h['hitCollection'][c][1].SetName(c)
    for c in h['hitCollection']: rc=h['hitCollection'][c][1].Set(0)
    ut.bookHist(h,'xz','x (y) vs z',500,0.,1200.,100,-150.,150.)
-   if not h.has_key('simpleDisplay'): ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=800,cx=1,cy=0)
+   if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=800,cx=1,cy=0)
    rc = h[ 'simpleDisplay'].cd(1)
    h['xz'].SetMarkerStyle(30)
    h['xz'].SetStats(0)
@@ -1166,7 +1166,7 @@ def MakeKeysToDThits(minToT=-999):
    if not hit.isValid() and MCdata: continue
    detID=hit.GetDetectorID()
    if detID<0: continue # feature for converted data in February'19
-   if keysToDThits.has_key(detID):
+   if detID in keysToDThits:
      prevTDC = sTree.Digi_MufluxSpectrometerHits[keysToDThits[detID][0]].GetDigi()
      prevToT = sTree.Digi_MufluxSpectrometerHits[keysToDThits[detID][0]].GetTimeOverThreshold()
      # print "MakeKeysToDThits, non unique Digi_MufluxSpectrometerHits",detID,hit.GetDigi(),hit.GetTimeOverThreshold(),hit.hasTimeOverThreshold(),prevTDC,prevToT
@@ -1179,7 +1179,7 @@ def MakeKeysToDThits(minToT=-999):
    if not hit.hasTimeOverThreshold(): continue
    if hit.GetTimeOverThreshold()<minToT : continue
    detID=hit.GetDetectorID()
-   if not keysToDThits.has_key(detID): 
+   if detID not in keysToDThits: 
      print("MakeKeysToDThits, late hit but no first one",detID)
      keysToDThits[detID]=[-1]
    keysToDThits[detID].append(key)
@@ -1276,18 +1276,18 @@ def plotHitMapsOld(onlyPlotting=False):
      if MCdata: t0 = sTree.ShipEventHeader.GetEventTime()
      rc = h['TDC'+str(nRT)+tot].Fill(hit.GetDigi()-t0)
     channel = 'TDC'+str(hit.GetDetectorID())
-    if not h.has_key(channel+tot): h[channel+tot]=h['TDC'+str(nRT)+tot].Clone(channel)
+    if channel+tot not in h: h[channel+tot]=h['TDC'+str(nRT)+tot].Clone(channel)
     rc = h[channel+tot].Fill(hit.GetDigi()-t0)
- if not h.has_key('hitMapsX'): ut.bookCanvas(h,key='hitMapsX',title='Hit Maps All Layers',nx=1600,ny=1200,cx=4,cy=6)
- if not h.has_key('TDCMapsX'): ut.bookCanvas(h,key='TDCMapsX',title='TDC Maps All Layers',nx=1600,ny=1200,cx=5,cy=10)
- if not h.has_key('TDCMapsX_noToT'): ut.bookCanvas(h,key='TDCMapsX_noToT',title='TDC Maps All Layers noToT',nx=1600,ny=1200,cx=5,cy=10)
+ if 'hitMapsX' not in h: ut.bookCanvas(h,key='hitMapsX',title='Hit Maps All Layers',nx=1600,ny=1200,cx=4,cy=6)
+ if 'TDCMapsX' not in h: ut.bookCanvas(h,key='TDCMapsX',title='TDC Maps All Layers',nx=1600,ny=1200,cx=5,cy=10)
+ if 'TDCMapsX_noToT' not in h: ut.bookCanvas(h,key='TDCMapsX_noToT',title='TDC Maps All Layers noToT',nx=1600,ny=1200,cx=5,cy=10)
  j  = 0
  jt = 0
  for s in range(1,5):
   for view in ['_x','_u','_v']:
    for p in range(2):
     for l in range(2):
-     if not xLayers[s][p][l].has_key(view):continue
+     if view not in xLayers[s][p][l]:continue
      if s>2 and view != '_x': continue
      if s==1 and view == '_v'or s==2 and view == '_u': continue
      j+=1
@@ -1327,7 +1327,7 @@ def printScalers():
    ut.bookHist(h,'integratedrate','rate integrated',100,-0.5,99.5)
    ut.bookHist(h,'rate','rate',100,-0.5,99.5)
    ut.bookHist(h,'scalers','rate',100,-0.5,99.5)
-   if not h.has_key('rates'): ut.bookCanvas(h,key='rates',title='Rates',nx=800,ny=400,cx=2,cy=1)
+   if 'rates' not in h: ut.bookCanvas(h,key='rates',title='Rates',nx=800,ny=400,cx=2,cy=1)
    rc = h['rates'].cd(1)
    scalers = sTree.GetCurrentFile().Get('scalers')
    if not scalers:
@@ -1370,7 +1370,7 @@ def plotRPCHitmap():
       rc = h['rpcHitmap'].Fill(layer)
       channel = m.GetDetectorID()%1000
       rc = h['rpcHitmap'+str(layer)].Fill(channel)
- if not h.has_key('rpcPlot'): ut.bookCanvas(h,key='rpcPlot',title='RPC Hitmaps',nx=1200,ny=600,cx=4,cy=3)
+ if 'rpcPlot' not in h: ut.bookCanvas(h,key='rpcPlot',title='RPC Hitmaps',nx=1200,ny=600,cx=4,cy=3)
  j=0
  for n in range(1,6):
   for l in range(2):
@@ -1492,7 +1492,7 @@ def extractRTPanda(hname= 'TDC1000_x'):
  h['rt'+hname].Draw('same')
  
 def makeRTrelations():
- if not h.has_key('RTrelations'): 
+ if 'RTrelations' not in h: 
   ut.bookCanvas(h,key='RTrelations',title='RT relations',nx=800,ny=500,cx=1,cy=1)
   h['RTrelations'].cd(1)
   x = h['TDC0']
@@ -1528,7 +1528,7 @@ def RT(hit,t):
    elif t< h['tMinAndTmax'][name][0]: r = 0
    else: 
       r = h['rt'+name].Eval(t)
-   if h.has_key('RTcorr'): r+=h['RTcorr'].Eval(r)
+   if 'RTcorr' in h: r+=h['RTcorr'].Eval(r)
   h['TDC2R'].Fill(t-t0,r)
   return r
 
@@ -1555,7 +1555,7 @@ def checkMCSmearing():
    vbot,vtop = strawPositionsBotTop[p.GetDetectorID()]
    rc = h['MCposX'].Fill(pmc.GetX()-vbot[0]+r)
    rc = h['MCposX'].Fill(pmc.GetX()-vbot[0]-r)
-   if not trackID.has_key(mcp): trackID[mcp]=[]
+   if mcp not in trackID: trackID[mcp]=[]
    trackID[mcp].append(n)
   for mcp in trackID:
    rc=h['nMeasMC'].Fill(len(trackID[mcp]))
@@ -1845,7 +1845,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
           if not fitStatus.isFitConverged(): continue
           displayTrack(theTrack,debug)
      next = raw_input("Next (Ret/Quit): ")         
-     if next<>'':  break
+     if next!='':  break
    if len(theTracks)>0: nMax-=1
    if not hasattr(theTracks,'Class'):
     for theTrack in theTracks:   theTrack.Delete()
@@ -1854,7 +1854,7 @@ def momDisplay():
  ROOT.gStyle.SetPalette(ROOT.kGreenPink)
  for x in ['','mu']:
   t = 'mom'+x
-  if not h.has_key(t): ut.bookCanvas(h,key=t,title='trackfit'+x,nx=1200,ny=600,cx=4,cy=2)
+  if t not in h: ut.bookCanvas(h,key=t,title='trackfit'+x,nx=1200,ny=600,cx=4,cy=2)
   rc = h[t].cd(1)
   h['p/pt'+x].SetStats(0)
   rc = h['p/pt'+x].Draw('colz')
@@ -2165,19 +2165,19 @@ def findDTClusters(removeBigClusters=True):
       for i in range(1,Nchannels[s]+1):
        perLayer = {0:0,1:0,2:0,3:0}
        for i0 in range( max(1,i-1),min(Nchannels[s]+1,i+2)):
-        if allHits[0].has_key(i0):
+        if i0 in allHits[0]:
           tmp[ncl].append(allHits[0][i0])
           perLayer[0]=i0
        for i1 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[1].has_key(i1):
+        if i1 in allHits[1]:
           tmp[ncl].append(allHits[1][i1])
           perLayer[1]=i1
        for i2 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[2].has_key(i2):  
+        if i2 in allHits[2]:  
           tmp[ncl].append(allHits[2][i2])
           perLayer[2]=i2
        for i3 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-        if allHits[3].has_key(i3): 
+        if i3 in allHits[3]: 
           tmp[ncl].append(allHits[3][i3])
           perLayer[3]=i3
        if ( (perLayer[0]>0) + (perLayer[1]>0) + (perLayer[2]>0) + (perLayer[3]>0) ) > level:
@@ -2245,7 +2245,7 @@ def findDTClusters(removeBigClusters=True):
      for cl in clusters[s][view]:
       if len(cl)>5:
        for hit in cl: 
-         if not tmp.has_key(hit[3]):
+         if hit[3] not in tmp:
            tmp[hit[3]]  =[]
            check[hit[3]]=[]
          if hit[0].GetDetectorID() in check[hit[3]]: continue
@@ -2597,7 +2597,7 @@ def testClusters(nEvent=-1,nTot=1000):
    for aTrack in trackCandidates:
       displayTrack(aTrack)
    next = raw_input("Next (Ret/Quit): ")
-   if next<>'':  break
+   if next!='':  break
 
 def printResiduals(aTrack):
    if not aTrack.getNumPointsWithMeasurement()>0: return
@@ -2617,7 +2617,7 @@ def printResiduals(aTrack):
            ut.reportError(error)
            continue
           distance = 0
-          if RTrelations.has_key(rname) or MCdata:
+          if rname in RTrelations or MCdata:
            distance = RT(hit,hit.GetDigi())
           tmp = (vbot[0] - vtop[0])*pos[1] - (vbot[1] - vtop[1])*pos[0] + vtop[0]*vbot[1] - vbot[0]*vtop[1]
           tmp = -tmp/ROOT.TMath.Sqrt( (vtop[0]-vbot[0])**2+(vtop[1]-vbot[1])**2)  # to have same sign as difference in X
@@ -2638,7 +2638,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
  if not onlyPlotting:
   h['biasResDist'].Reset()
   h['biasResDist2'].Reset()
-  if not h.has_key('hitMapsX'): plotHitMaps()
+  if 'hitMapsX' not in h: plotHitMaps()
   for s in xLayers:
      for p in xLayers[s]:
       for l in xLayers[s][p]:
@@ -2768,7 +2768,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
        timer.Start()
    timerStats['analysis']+=timer.RealTime()
    for aTrack in trackCandidates:   aTrack.Delete()
- if not h.has_key('biasedResiduals'): 
+ if 'biasedResiduals' not in h: 
       ut.bookCanvas(h,key='biasedResiduals',title='biasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResidualsY',title='biasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
@@ -2912,7 +2912,7 @@ def calculateRTcorrection():
      h['RTcorr'+v].SetPoint(N,tmpx.GetBinCenter(n),rc.GetParams()[1])
      h[hresol].SetBinContent(n,rc.GetParams()[2])
      N+=1
-  if not h.has_key('RTCorrection'): 
+  if 'RTCorrection' not in h: 
       ut.bookCanvas(h,key='RTCorrection',title='RTCorrection',nx=1200,ny=1400,cx=1,cy=2)
   tc = h['RTCorrection'].cd(1)
   h['RTcorr'].SetLineColor(ROOT.kMagenta)
@@ -2974,7 +2974,7 @@ def analyzeSingleDT():
     else: print("channel:%i : mean=%6.3Fmm,  sigma=%6.3Fmm"%(detID,mean*10,rms*10))
 
 def plot2dResiduals(minEntries=-1):
- if not h.has_key('biasedResiduals2dX'): 
+ if 'biasedResiduals2dX' not in h: 
       ut.bookCanvas(h,key='biasedResiduals2dX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='biasedResiduals2dY',title='biasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
  j=1
@@ -3082,11 +3082,11 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
   ut.writeHists(h,'histos-DTEff'+rname)
  else:
 # analysis part
-  if not h.has_key('hits1_1'): ut.readHists(h,'DTEff.root')
+  if 'hits1_1' not in h: ut.readHists(h,'DTEff.root')
   effPerLayer = {}
   for tag_s in range(1,5):
    t = 'tagstation'+str(tag_s)
-   if not h.has_key(t):
+   if t not in h:
     ut.bookCanvas(h,key=t,title='with tagging station '+str(tag_s),nx=1600,ny=1200,cx=4,cy=4)
    print("analysis with tagging station ",tag_s)
    effPerLayer[tag_s] = {}
@@ -3161,10 +3161,10 @@ def efficiencyEstimates(method=0):
  hinweis[1] = "method 1: use biasResDistX, but take signal from single gauss fit"
  hinweis[2] = "method 2: use biasRes, subtract background from fit on number of entries"
  hinweis[3] = "method 3: use biasRes, take signal from double gauss fit"
- if not h.has_key('biasedResiduals'): plotBiasedResiduals(onlyPlotting=True)
+ if 'biasedResiduals' not in h: plotBiasedResiduals(onlyPlotting=True)
  Ntracks = h['biasResTrackMom'].GetEntries()
  ut.bookHist(h,'effLayer','efficiency per Layer',24,-0.5,23.5)
- if not h.has_key('biasResDistX_1_x1'):
+ if 'biasResDistX_1_x1' not in h:
   for s in range(1,5):
    for view in ['_x','_u','_v']:
     if s>2 and view != '_x': continue
@@ -3391,7 +3391,7 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=1):
      elif s==2: x+=150
      x+=12*(2*l+p)
    r = 1
-   if fitSuccess[k].has_key(detID): r=fitFailures[k][detID]/float(fitSuccess[k][detID]+fitFailures[k][detID])
+   if detID in fitSuccess[k]: r=fitFailures[k][detID]/float(fitSuccess[k][detID]+fitFailures[k][detID])
    if k==0:     rc=h['fitfail_good'].SetBinContent(x,r)
    else:        rc=h['fitfail_bad'].SetBinContent(x,r)
 # only look at the pathological cases
@@ -3402,7 +3402,7 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=1):
  return matches
 
 def plotLinearResiduals():
- if not h.has_key('linearResiduals2dX'): 
+ if 'linearResiduals2dX' not in h: 
    plotRPCExtrap(0,-1)
    ut.bookCanvas(h,key='linearResiduals2dX',title='linear track model, residuals function of X',nx=1600,ny=1200,cx=4,cy=4)
    ut.bookCanvas(h,key='linearResidualsX',title='linear track model, residuals',nx=1600,ny=1200,cx=4,cy=4)
@@ -3485,7 +3485,7 @@ def mergeHistosForMomResol():
    h['I-'+res+'trueMom'].GetXaxis().SetRangeUser(5.,500.)
 # true mom, reco mom
  t = "true Mom"
- if not h.has_key(t): ut.bookCanvas(h,t,'true and reco momentum',900,600,1,1)
+ if t not in h: ut.bookCanvas(h,t,'true and reco momentum',900,600,1,1)
  tc=h[t].cd(1)
  tc.SetLogy()
  h['I-270trueMom'].Draw()
@@ -3504,7 +3504,7 @@ def mergeHistosForMomResol():
  fSqrt.SetParName(0,'constant')
  fSqrt.SetParName(1,'linear')
  t = 'momResolution'
- if not h.has_key(t): ut.bookCanvas(h,t,'momentum Resolution',900,600,1,1)
+ if t not in h: ut.bookCanvas(h,t,'momentum Resolution',900,600,1,1)
  tc=h[t].cd(1)
  for res in ['270','500']:
   hname = 'momResol'+res
@@ -3698,7 +3698,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
         rc = h['RPC_p'].Fill(p)
         for k in range(2,20):
          if Nmatched<k: rc = h['RPC<'+str(k)+'_p'].Fill(p)
- if not h.has_key('RPCResiduals'): 
+ if 'RPCResiduals' not in h: 
       ut.bookCanvas(h,key='RPCResiduals',title='RPCResiduals',nx=1600,ny=1200,cx=2,cy=5)
       ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=5)
       ut.bookCanvas(h,key='RPCResidualsP',title='RPCResiduals function of muon momentum',nx=900,ny=900,cx=1,cy=1)
@@ -3753,7 +3753,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
        rc = h[hmean].Fill( h[hmean].GetBinCenter(k), mean)
      h[hmean].Draw()
    j+=1
- if not h.has_key('RPCResiduals2dXY'): 
+ if 'RPCResiduals2dXY' not in h: 
       ut.bookCanvas(h,key='RPCResiduals2dXY',title='muon tagger Residuals function of X/Y',nx=1600,ny=1200,cx=2,cy=5)
  j=1
  for s in range(1,6):
@@ -4103,7 +4103,7 @@ def residualLoop(nstart=0,nend=50000):
     name = 'biasResY_'+s+str(2*p+l)
     h['un'+name] = h[name].Clone('un'+name)
   exclude_layer = None
-  if not h.has_key('unbiasedResiduals'): 
+  if 'unbiasedResiduals' not in h: 
       ut.bookCanvas(h,key='unbiasedResiduals',title='unbiasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='unbiasedResidualsX',title='unbiasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
       ut.bookCanvas(h,key='unbiasedResidualsY',title='unbiasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
@@ -4295,11 +4295,11 @@ def testForSameDetID(nEvent=-1,nTot=1000):
    for hit in sTree.Digi_MufluxSpectrometerHits:
      detID = hit.GetDetectorID()
      if detID<0: continue # feature for converted data in February'19
-     if not listOfDigits.has_key(detID): 
+     if detID not in listOfDigits: 
        listOfDigits[detID]=[0,[]]
        listOfTDCs[detID]={}
      tdcModule = hit.GetTDC()
-     if not listOfTDCs[detID].has_key(tdcModule):
+     if tdcModule not in listOfTDCs[detID]:
        listOfTDCs[detID][tdcModule] = 0
      listOfTDCs[detID][tdcModule] +=1 
      listOfDigits[detID][0]+=1
@@ -4591,7 +4591,7 @@ def init(database='muflux_RTrelations.pkl',remake=False,withReco=False):
  global withTDC,RTrelations
  if os.path.exists(database): RTrelations = pickle.load(open(database))
  N = sTree.GetEntries()
- if not RTrelations.has_key(rname) or remake:
+ if rname not in RTrelations or remake:
   withTDC = False
   sTree.SetBranchStatus("FitTracks",0)
   plotBiasedResiduals(PR=11)
@@ -4627,11 +4627,11 @@ def monitorMasterTrigger():
    tdcDict = {}
    for k in range(sTree.Digi_Triggers.GetEntries()):
     hit = sTree.Digi_Triggers[k]
-    if tdcDict.has_key(k): 
+    if k in tdcDict: 
       print("Error, double trigger TDC ID",k)
       if not hit.GetDigi()<tdcDict[k]: continue
     tdcDict[hit.GetTDC()]=hit.GetDigi()
-   if not tdcDict.has_key(4):
+   if 4 not in tdcDict:
      h['masterTrigger'].Fill(210+4)
      continue
    else: rc = h['tdc#4'].Fill(tdcDict[4])
@@ -4643,7 +4643,7 @@ def monitorMasterTrigger():
     rc = h['tdc'].Fill(hit.GetDigi())
     if not hit.hasDelay():
      tdcID = hit.GetTDC()
-     if not tdcDict.has_key(tdcID):
+     if tdcID not in tdcDict:
        h['masterTrigger'].Fill(210+tdcID*10)
        if hit.hasTrigger() : print("this should not happen, no trigger but hasTrigger",n)
        continue
@@ -4699,10 +4699,10 @@ def muonOrigin():
        doubleProc[1] +=1
    else:
       muP = pName
-   if not muonO.has_key(pName):
+   if pName not in muonO:
      muonO[pName]=0
      muonO2[pName]={}
-   if not muonO2[pName].has_key(moID): muonO2[pName][moID]=0
+   if moID not in muonO2[pName]: muonO2[pName][moID]=0
    muonO[pName]+=1
    muonO2[pName][moID]+=1
   if len(processed)>0: doubleProc[0] +=1
@@ -4767,7 +4767,7 @@ def plotDTPoints(onlyPlotting=False):
    mom = {}
    for p in sTree.MufluxSpectrometerPoint:
     t = p.GetTrackID()
-    if not hitsPerTrack.has_key(t):
+    if t not in hitsPerTrack:
      if abs(p.PdgCode())!=13:continue
      P = ROOT.TVector3(p.GetPx(),p.GetPy(),p.GetPz())
      if P.Mag() < 10: continue
@@ -4797,7 +4797,7 @@ def plotDTPoints(onlyPlotting=False):
  cases = {'FitPoints':'Fitpoints'}
  if MCdata: cases['MC-DTPoints']='points'
  for t in cases:
-  if not h.has_key(t): 
+  if t not in h: 
     ut.bookCanvas(h,key=t,title=t,nx=1200,ny=600,cx=3,cy=2)
     ut.bookCanvas(h,key=t+'proj',title=t,nx=1200,ny=600,cx=3,cy=2)
   n = 1
@@ -4846,7 +4846,7 @@ def plotFitPoints():
  for view in views: interestingHistos.append(t+view)
  ut.readHists(hMC,'../DTPoints-mbias.root',interestingHistos)
  ut.readHists(h,'momDistributions.root',interestingHistos)
- if not h.has_key(t): 
+ if t not in h: 
    ut.bookCanvas(h,key=t,title=t,nx=1200,ny=600,cx=3,cy=2)
    ut.bookCanvas(h,key=t+'proj',title=t,nx=1200,ny=600,cx=3,cy=2)
  histos = {'data':h,'MC':hMC}
@@ -4977,7 +4977,7 @@ def checkMCEffTuning():
   ut.makeIntegralDistrib(h,'MC'+m+a)
  colors = {'M0':ROOT.kRed,'M2':ROOT.kBlue,'M0rec':ROOT.kMagenta}
  t = 'MC-Comparison eff tuning'
- if not h.has_key(t): ut.bookCanvas(h,key=t,title='MC-Comparison eff tuning',nx=900,ny=600,cx=1,cy=1)
+ if t not in h: ut.bookCanvas(h,key=t,title='MC-Comparison eff tuning',nx=900,ny=600,cx=1,cy=1)
  tc = h[t].cd(1)
  h['leg'+t]=ROOT.TLegend(0.55,0.65,0.85,0.85)
  n = 0
@@ -5106,7 +5106,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
  for d in ['','I-']:
   for x in ['','mu']:
    t = d+'MC-Comparison'+x
-   if not h.has_key(t): ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1200,ny=600,cx=3,cy=2)
+   if t not in h: ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1200,ny=600,cx=3,cy=2)
    if d=='':
     for a in ['p/pt','p/Abspx','p1/p2']:
      if a=='p1/p2' and x=='mu': continue
@@ -5327,7 +5327,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
 # pt in slices of P
  x = 'mu'
  for t in ['MC-Comparison Pt','MC-Comparison Px']:
-  if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1200,ny=600,cx=2,cy=2)
+  if t not in h: ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1200,ny=600,cx=2,cy=2)
   y = 1
   for pInterval in [ [pMin,50.],[51.,100.],[101.,200.],[201.,300.] ]:
    interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
@@ -5369,7 +5369,7 @@ def MCcomparison(pot = -1, pMin = 5.,effCor=True,eric=False):
  osign = {'':'opposite sign','s':'same sign'}
  for s in osign:
   t = '2trackOverAll'+osign[s]
-  if not h.has_key(t): ut.bookCanvas(h,key=t,title=' momentum of muons in 2-track events '+osign[s],nx=800,ny=1200,cx=1,cy=2)
+  if t not in h: ut.bookCanvas(h,key=t,title=' momentum of muons in 2-track events '+osign[s],nx=800,ny=1200,cx=1,cy=2)
   txt = {6:'P>5GeV/c',21:'P>20GeV/c'}
   pad = 1
   rebin = False #5
@@ -5448,7 +5448,7 @@ def printSources():
    d='I-'
    hname = d+i+'p/pt'+xx+'_x'
    hname10 = d+i+'10p/pt'+xx+'_x'
-   if not h.has_key(hname):continue
+   if hname not in h:continue
    ratio = h[hname].GetBinContent(1)/h[d+i+'p/pt_x'].GetBinContent(1)*100
    ratio10 = h[hname10].GetBinContent(21)/h[d+i+'10p/pt_x'].GetBinContent(21)*100
    print(" %25s %4.2F%%    %4.2F%% "%(xx,ratio,ratio10))
@@ -5464,15 +5464,15 @@ def MCchecks():
    if abs(m.GetPdgCode())==13:
      mult['0']+=1
      p = m.GetProcName().Data()
-     if not muon.has_key(p): muon[p]=0
+     if p not in muon: muon[p]=0
      muon[p]+=1
   if len(muon)==0:
     print("MCchecks",sTree.GetCurrentFile().GetName())
     sTree.MCTrack.Dump()
   for p in muon:
-   if not mult.has_key(p): mult[p]={}
+   if p not in mult: mult[p]={}
    N = muon[p]
-   if not mult[p].has_key(N): mult[p][N]=0
+   if N not in mult[p]: mult[p][N]=0
    mult[p][N]+=1
  return mult
 hruns={}
@@ -5492,7 +5492,7 @@ def compareRuns(runs=[]):
    if not os.path.isdir(x): continue
    r = int(x[x.rfind('/')+1:].split('_')[2])
    if r in noField: continue
-   if not hruns.has_key(r): 
+   if r not in hruns: 
     runs.append(r)
     hruns[r]={}
     f = ROOT.TFile(x+'/momDistributions.root')
@@ -5510,13 +5510,13 @@ def compareRuns(runs=[]):
     hruns[r][hnamex].SetDirectory(ROOT.gROOT)
  else:
   for r in runs:
-   if not hruns.has_key(r): 
+   if r not in hruns: 
     hruns[r]={}
     ut.readHists(hruns[r],'momDistributions_RUN_8000_'+str(r)+'.root')
  runs.sort()
  first = True
  j=0
- if not h.has_key('RunComparison'): 
+ if 'RunComparison' not in h: 
    ut.bookCanvas(h,key='RunComparison',title='Momentum',nx=1600,ny=1200,cx=1,cy=0)
    ut.bookCanvas(h,key='EventStatistics',title='Event Statistics',nx=800,ny=600,cx=1,cy=0)
    ut.bookHist(h,'HEventStatistics','Event Statistics;run number',100,2000,3000)
@@ -5879,7 +5879,7 @@ if options.command == "":
   importRTrel()
  elif os.path.exists(database):
    RTrelations = pickle.load(open(database))
-   if not RTrelations.has_key(rname):
+   if rname not in RTrelations:
     print("You should run init() to determine the RT relations or use _RT file")
    else:
     h['tMinAndTmax'] = RTrelations[rname]['tMinAndTmax']
@@ -5941,7 +5941,7 @@ elif options.command == "plotResiduals":
   print("reading histograms with residuals")
   ut.readHists(h,options.listOfFiles)
   plotBiasedResiduals(onlyPlotting=True)
-  if h.has_key('RPCResY_10'):
+  if 'RPCResY_10' in h:
    plotRPCExtrap(onlyPlotting=True)
 elif options.command == "recoMuonTaggerTracks":
   importAlignmentConstants()

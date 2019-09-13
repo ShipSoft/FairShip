@@ -43,7 +43,7 @@ def execute( ncpu = 4 ):
   print(jobs)
   for x in jobs:
       if k==ncpu: k = 0
-      if cpus[k].has_key('child'):
+      if 'child' in cpus[k]:
         rc = child.communicate()[0]
         log[k]['log'].close() 
       print("change to directory ",k,x)   

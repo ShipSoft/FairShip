@@ -405,7 +405,7 @@ class DrawTracks(ROOT.FairTask):
     zs+=self.dz
    DTrack.SetName('FitTrack_'+str(n))
    c = ROOT.kWhite
-   if self.trackColors.has_key(abs(pid)) : c = self.trackColors[abs(pid)]
+   if abs(pid) in self.trackColors : c = self.trackColors[abs(pid)]
    DTrack.SetMainColor(c)
    DTrack.SetLineWidth(3)
    self.comp.AddElement(DTrack)

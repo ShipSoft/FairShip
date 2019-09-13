@@ -462,7 +462,7 @@ def pot():
     name = x.GetName()
     s = eval('scalers.'+name)
     if name!='slices':
-     if not scalerStat.has_key(name):scalerStat[name]=0
+     if name not in scalerStat:scalerStat[name]=0
      scalerStat[name]+=s
  keys = scalerStat.keys()
  keys.sort()

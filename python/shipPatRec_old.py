@@ -311,7 +311,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
        continue
     strawname=str(ahit.GetDetectorID())
     
-    if hitstraws.has_key(strawname):
+    if strawname in hitstraws:
        #straw was already hit
        if ahit.GetX()>hitstraws[strawname][1]:
           #this hit has higher x, discard it
@@ -344,22 +344,22 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
        continue	  
     #group hits per tracking station, key = trackid
     if str(ahit.GetDetectorID())[:1]=="1" :
-       if hits1.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in hits1:
             hits1[ahit.GetTrackID()]=[hits1[ahit.GetTrackID()][0],i]
        else:  
             hits1[ahit.GetTrackID()]=[i]    
     if str(ahit.GetDetectorID())[:1]=="2" :
-       if hits2.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in hits2:
             hits2[ahit.GetTrackID()]=[hits2[ahit.GetTrackID()][0],i]
        else:  
             hits2[ahit.GetTrackID()]=[i]   
     if str(ahit.GetDetectorID())[:1]=="3" :
-       if hits3.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in hits3:
             hits3[ahit.GetTrackID()]=[hits3[ahit.GetTrackID()][0],i]
        else:  
             hits3[ahit.GetTrackID()]=[i]           
     if str(ahit.GetDetectorID())[:1]=="4" :
-       if hits4.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in hits4:
             hits4[ahit.GetTrackID()]=[hits4[ahit.GetTrackID()][0],i]
        else:  
             hits4[ahit.GetTrackID()]=[i] 
@@ -367,19 +367,19 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
   #6. Make list of tracks with hits in in station 1,2,3 & 4	    	
   tracks_with_hits_in_all_stations=[]  
   for key in hits1.keys():
-      if (hits2.has_key(key) and hits3.has_key(key) ) and hits4.has_key(key):
+      if (key in hits2 and key in hits3 ) and key in hits4:
          if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
             tracks_with_hits_in_all_stations.append(key) 
   for key in hits2.keys():
-      if (hits1.has_key(key) and hits3.has_key(key) ) and hits4.has_key(key):
+      if (key in hits1 and key in hits3 ) and key in hits4:
          if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
             tracks_with_hits_in_all_stations.append(key) 
   for key in hits3.keys():
-      if ( hits2.has_key(key) and hits1.has_key(key) ) and hits4.has_key(key):
+      if ( key in hits2 and key in hits1 ) and key in hits4:
          if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
             tracks_with_hits_in_all_stations.append(key) 
   for key in hits4.keys():
-      if (hits2.has_key(key) and hits3.has_key(key)) and hits1.has_key(key):
+      if (key in hits2 and key in hits3) and key in hits1:
          if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
             tracks_with_hits_in_all_stations.append(key) 
  
@@ -494,7 +494,7 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
     ahit = sTree.strawtubesPoint[i]
     if (str(ahit.GetDetectorID())[:1]=="5") : continue
     strawname=str(ahit.GetDetectorID())    
-    if hitstraws.has_key(strawname):
+    if strawname in hitstraws:
        #straw was already hit
        if ahit.GetX()>hitstraws[strawname][1]:
           #this hit has higher x, discard it
@@ -547,35 +547,35 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
     if (str(ahit.GetDetectorID())[1:2]=="1"): angle=ShipGeo.strawtubes.ViewAngle
     if (str(ahit.GetDetectorID())[1:2]=="2"): angle=ShipGeo.strawtubes.ViewAngle*-1.
     if (str(ahit.GetDetectorID())[:1]=="1") :  
-       if station1hits.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in station1hits:
           station1hits[ahit.GetTrackID()]+=1
 	  rc=h['hits1xy'].Fill(ahit.GetX(),ahit.GetY())    	  
        else:
           station1hits[ahit.GetTrackID()]=1
     if (str(ahit.GetDetectorID())[:1]=="2") :  
-       if station2hits.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in station2hits:
           station2hits[ahit.GetTrackID()]+=1
        else:
           station2hits[ahit.GetTrackID()]=1
     if (str(ahit.GetDetectorID())[:1]=="3") :  
-       if station3hits.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in station3hits:
           station3hits[ahit.GetTrackID()]+=1
        else:
           station3hits[ahit.GetTrackID()]=1
     if (str(ahit.GetDetectorID())[:1]=="4") :	
-       if station4hits.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in station4hits:
           station4hits[ahit.GetTrackID()]+=1
        else:
           station4hits[ahit.GetTrackID()]=1
 	  
     if ((str(ahit.GetDetectorID())[:2]=="11" or str(ahit.GetDetectorID())[:2]=="12") or (str(ahit.GetDetectorID())[:2]=="21" or str(ahit.GetDetectorID())[:2]=="22")):
-       if station12xhits.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in station12xhits:
 	  station12xhits[ahit.GetTrackID()]+=1  	  
        else:
           station12xhits[ahit.GetTrackID()]=1
 	  
     if ((str(ahit.GetDetectorID())[:2]=="10" or str(ahit.GetDetectorID())[:2]=="13") or (str(ahit.GetDetectorID())[:2]=="20" or str(ahit.GetDetectorID())[:2]=="23")):
-       if station12yhits.has_key(ahit.GetTrackID()):
+       if ahit.GetTrackID() in station12yhits:
 	  station12yhits[ahit.GetTrackID()]+=1  	  
        else:
           station12yhits[ahit.GetTrackID()]=1  
@@ -1478,7 +1478,7 @@ def fracMCsame(trackids):
        if tid==999: 
          nh-=1
          continue
-       if track.has_key(tid):
+       if tid in track:
           track[tid]+=1
        else:
         track[tid]=1

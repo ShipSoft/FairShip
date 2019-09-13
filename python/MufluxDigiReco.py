@@ -260,7 +260,7 @@ class MufluxDigiReco:
             if self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
-            if hitsPerDetId.has_key(detID):
+            if detID in hitsPerDetId:
                 if self.digiMufluxSpectrometer[hitsPerDetId[detID]].tdc() > aHit.tdc():
                     # second hit with smaller tdc
                     self.digiMufluxSpectrometer[hitsPerDetId[detID]].setInvalid()
@@ -298,14 +298,14 @@ class MufluxDigiReco:
                     rc=h['hits-T4'].Fill(xcoord,ycoord)
 
             if (detector[0:9]=="gas_12_10"):
-                if T1_entries_px.has_key(MufluxTrackId):
+                if MufluxTrackId in T1_entries_px:
                     continue
                 else:
                     if abs(pid)==13 :
                         T1_entries_px[MufluxTrackId]=[MufluxHit.GetPx()]
 
             if (detector[0:5]=="gas_4"):
-                if T4_entries_px.has_key(MufluxTrackId):
+                if MufluxTrackId in T4_entries_px:
                     continue
                 else:
                     pid = MufluxHit.PdgCode()
@@ -431,7 +431,7 @@ class MufluxDigiReco:
         tMinAndTmax = {1:[587,1860],2:[587,1860],3:[610,2300],4:[610,2100]}
         R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm
         # parabola
-        if function == 'parabola' or not h.has_key('rtTDC'+str(s)+'000_x'):
+        if function == 'parabola' or 'rtTDC'+str(s)+'000_x' not in h:
             p1p2 = {1:[688.,7.01],2:[688.,7.01],3:[923.,4.41],4:[819.,0.995]}
             t0_corr = max(0,t-tMinAndTmax[s][0])
             tmp1 = ROOT.TMath.Sqrt(p1p2[s][0]**2+4.*p1p2[s][1]*t0_corr)
@@ -528,7 +528,7 @@ class MufluxDigiReco:
         nh = len(trackids)
 
         for tid in trackids:
-            if track.has_key(tid):
+            if tid in track:
                 track[tid] += 1
             else:
                 track[tid] = 1
@@ -593,43 +593,43 @@ class MufluxDigiReco:
             is_34 = (statnb == 3) + (statnb == 4)
 
             if statnb == 1:
-                if n_true_track_hits_1.has_key(track_id):
+                if track_id in n_true_track_hits_1:
                     n_true_track_hits_1[track_id] += 1
                 else:
                     n_true_track_hits_1[track_id] = 1
 
             if statnb == 2:
-                if n_true_track_hits_2.has_key(track_id):
+                if track_id in n_true_track_hits_2:
                     n_true_track_hits_2[track_id] += 1
                 else:
                     n_true_track_hits_2[track_id] = 1
 
             if statnb == 3:
-                if n_true_track_hits_3.has_key(track_id):
+                if track_id in n_true_track_hits_3:
                     n_true_track_hits_3[track_id] += 1
                 else:
                     n_true_track_hits_3[track_id] = 1
 
             if statnb == 4:
-                if n_true_track_hits_4.has_key(track_id):
+                if track_id in n_true_track_hits_4:
                     n_true_track_hits_4[track_id] += 1
                 else:
                     n_true_track_hits_4[track_id] = 1
 
             if is_y12:
-                if n_true_track_hits_y12.has_key(track_id):
+                if track_id in n_true_track_hits_y12:
                     n_true_track_hits_y12[track_id] += 1
                 else:
                     n_true_track_hits_y12[track_id] = 1
 
             if is_stereo12:
-                if n_true_track_hits_stereo12.has_key(track_id):
+                if track_id in n_true_track_hits_stereo12:
                     n_true_track_hits_stereo12[track_id] += 1
                 else:
                     n_true_track_hits_stereo12[track_id] = 1
 
             if is_34:
-                if n_true_track_hits_34.has_key(track_id):
+                if track_id in n_true_track_hits_34:
                     n_true_track_hits_34[track_id] += 1
                 else:
                     n_true_track_hits_34[track_id] = 1
@@ -656,20 +656,20 @@ class MufluxDigiReco:
         if mode == 'Tr4':
             min_hits = 1
             for key in n_true_track_hits_y12.keys():
-                if n_true_track_hits_1.has_key(key) and n_true_track_hits_2.has_key(key):
-                    if n_true_track_hits_3.has_key(key) and n_true_track_hits_4.has_key(key):
+                if key in n_true_track_hits_1 and key in n_true_track_hits_2:
+                    if key in n_true_track_hits_3 and key in n_true_track_hits_4:
                         if n_true_track_hits_y12[key] >= min_hits:
                             true_track_ids_y12.append(key)
 
             for key in n_true_track_hits_stereo12.keys():
-                if n_true_track_hits_1.has_key(key) and n_true_track_hits_2.has_key(key):
-                    if n_true_track_hits_3.has_key(key) and n_true_track_hits_4.has_key(key):
+                if key in n_true_track_hits_1 and key in n_true_track_hits_2:
+                    if key in n_true_track_hits_3 and key in n_true_track_hits_4:
                         if n_true_track_hits_stereo12[key] >= min_hits:
                             true_track_ids_stereo12.append(key)
 
             for key in n_true_track_hits_34.keys():
-                if n_true_track_hits_1.has_key(key) and n_true_track_hits_2.has_key(key):
-                    if n_true_track_hits_3.has_key(key) and n_true_track_hits_4.has_key(key):
+                if key in n_true_track_hits_1 and key in n_true_track_hits_2:
+                    if key in n_true_track_hits_3 and key in n_true_track_hits_4:
                         if n_true_track_hits_34[key] >= min_hits:
                             true_track_ids_34.append(key)
 
@@ -778,19 +778,19 @@ class MufluxDigiReco:
             is_34 = (statnb == 3) + (statnb == 4)
 
             if is_y12:
-                if n_true_track_hits_y12.has_key(track_id):
+                if track_id in n_true_track_hits_y12:
                     n_true_track_hits_y12[track_id] += 1
                 else:
                     n_true_track_hits_y12[track_id] = 1
 
             if is_stereo12:
-                if n_true_track_hits_stereo12.has_key(track_id):
+                if track_id in n_true_track_hits_stereo12:
                     n_true_track_hits_stereo12[track_id] += 1
                 else:
                     n_true_track_hits_stereo12[track_id] = 1
 
             if is_34:
-                if n_true_track_hits_34.has_key(track_id):
+                if track_id in n_true_track_hits_34:
                     n_true_track_hits_34[track_id] += 1
                 else:
                     n_true_track_hits_34[track_id] = 1
@@ -798,9 +798,9 @@ class MufluxDigiReco:
         min_hits = 3
         for key in n_true_track_hits_y12.keys():
             if n_true_track_hits_y12[key] >= min_hits:
-                if n_true_track_hits_stereo12.has_key(key):
+                if key in n_true_track_hits_stereo12:
                     if n_true_track_hits_stereo12[key] >= min_hits:
-                        if n_true_track_hits_34.has_key(key):
+                        if key in n_true_track_hits_34:
                             if n_true_track_hits_34[key] >= min_hits:
                                 true_track_ids.append(key)
 
@@ -1104,7 +1104,7 @@ class MufluxDigiReco:
             if track_id not in true_track_ids:
                 if abs(pdg)==13:
                     true_track_ids.append(track_id)
-            if not true_track_p.has_key(track_id):
+            if track_id not in true_track_p:
                 Ptruth,Ptruthx,Ptruthy,Ptruthz = self.getPtruthFirst(track_id)
                 true_track_p[track_id] = Ptruth
                 h['True_all_tracks_vs_p_true'].Fill(Ptruth)
@@ -1231,28 +1231,28 @@ class MufluxDigiReco:
                     trID = i_track
 
                     # T1-4 for track fit
-                    if not hitPosLists.has_key(trID):
+                    if trID not in hitPosLists:
                         hitPosLists[trID] = ROOT.std.vector('TVectorD')()
                         stationCrossed[trID] = {}
                         trackDigiHits[trID] = []
                         trackMomentums[trID] = atrack_p
                     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                     hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
-                    if not stationCrossed[trID].has_key(station):
+                    if station not in stationCrossed[trID]:
                         stationCrossed[trID][station]=0
                     stationCrossed[trID][station]+=1
                     trackDigiHits[trID].append(sm['digiHit'])
 
                     # T1-3 for track fit
                     if (int(detID/1000000)!=40):
-                        if not hitPosLists_noT4.has_key(trID):
+                        if trID not in hitPosLists_noT4:
                             hitPosLists_noT4[trID]     = ROOT.std.vector('TVectorD')()
                             stationCrossed_noT4[trID]  = {}
                             trackDigiHits_noT4[trID] = []
                             trackMomentums_noT4[trID] = atrack_p
                         m_noT4 = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                         hitPosLists_noT4[trID].push_back(ROOT.TVectorD(7,m_noT4))
-                        if not stationCrossed_noT4[trID].has_key(station):
+                        if station not in stationCrossed_noT4[trID]:
                             stationCrossed_noT4[trID][station]=0
                         stationCrossed_noT4[trID][station]+=1
                         trackDigiHits_noT4[trID].append(sm['digiHit'])
@@ -1278,7 +1278,7 @@ class MufluxDigiReco:
                 trID = self.sTree.MufluxSpectrometerPoint[sm['digiHit']].GetTrackID()
 
                 # PatRec
-                if not track_hits.has_key(trID):
+                if trID not in track_hits:
                     atrack = {'y12': [], 'stereo12': [], '34': []}
                     track_hits[trID] = atrack
                 if is_y12:
@@ -1289,28 +1289,28 @@ class MufluxDigiReco:
                     track_hits[trID]['34'].append(sm)
 
                 # T1-4 for track fit
-                if not hitPosLists.has_key(trID):
+                if trID not in hitPosLists:
                     hitPosLists[trID] = ROOT.std.vector('TVectorD')()
                     stationCrossed[trID]  = {}
                     trackDigiHits[trID] = []
                     trackMomentums[trID] = 3.
                 m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                 hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
-                if not stationCrossed[trID].has_key(station):
+                if station not in stationCrossed[trID]:
                     stationCrossed[trID][station]=0
                 stationCrossed[trID][station]+=1
                 trackDigiHits[trID].append(sm['digiHit'])
 
                 # T1-3 for track fit
                 if (int(detID/1000000)!=40):
-                    if not hitPosLists_noT4.has_key(trID):
+                    if trID not in hitPosLists_noT4:
                         hitPosLists_noT4[trID] = ROOT.std.vector('TVectorD')()
                         stationCrossed_noT4[trID]  = {}
                         trackDigiHits_noT4[trID] = []
                         trackMomentums_noT4[trID] = 3.
                     m_noT4 = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
                     hitPosLists_noT4[trID].push_back(ROOT.TVectorD(7,m_noT4))
-                    if not stationCrossed_noT4[trID].has_key(station):
+                    if station not in stationCrossed_noT4[trID]:
                         stationCrossed_noT4[trID][station]=0
                     stationCrossed_noT4[trID][station]+=1
                     trackDigiHits_noT4[trID].append(sm['digiHit'])
@@ -1690,17 +1690,17 @@ class MufluxDigiReco:
                 is_34 = (statnb == 3) + (statnb == 4)
 
                 if is_y12:
-                    if n_true_track_hits_y12.has_key(track_id):
+                    if track_id in n_true_track_hits_y12:
                         n_true_track_hits_y12[track_id] += 1
                     else:
                         n_true_track_hits_y12[track_id] = 1
                 if is_stereo12:
-                    if n_true_track_hits_stereo12.has_key(track_id):
+                    if track_id in n_true_track_hits_stereo12:
                         n_true_track_hits_stereo12[track_id] += 1
                     else:
                         n_true_track_hits_stereo12[track_id] = 1
                 if is_34:
-                    if n_true_track_hits_34.has_key(track_id):
+                    if track_id in n_true_track_hits_34:
                         n_true_track_hits_34[track_id] += 1
                     else:
                         n_true_track_hits_34[track_id] = 1
