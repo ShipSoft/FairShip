@@ -4,6 +4,7 @@
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
 from __future__ import print_function
+from builtins import range
 import ROOT, os
 import shipunit  as u
 import math
@@ -922,8 +923,8 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
     py=0.
     pz=0.
     m=0
-    if firsttwo==True: looplist=reversed(range(len(trcandv1[t]))) 
-    else: looplist=range(len(trcandv1[t])) 
+    if firsttwo==True: looplist=reversed(list(range(len(trcandv1[t]))))
+    else: looplist=list(range(len(trcandv1[t])))
     for ipl in looplist:      
       indx= trcandv1[t][ipl]
       if indx>-1: 
@@ -1055,8 +1056,8 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
       pzMC=0.
       stereotanMCv=0.
       stereocstMCv=0.
-      if firsttwo==True: looplist=reversed(range(len(trcandv2[t1]))) 
-      else: looplist=range(len(trcandv2[t1]))  
+      if firsttwo==True: looplist=reversed(list(range(len(trcandv2[t1]))))
+      else: looplist=list(range(len(trcandv2[t1])))
       for ipl in looplist:      
         indx= trcandv2[t1][ipl]
         if indx>-1:       
