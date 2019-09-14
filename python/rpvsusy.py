@@ -113,13 +113,13 @@ class constants():
                               'K*+':0.230*u.GeV,
                               'K*-':0.230*u.GeV,
                               'phi':0.230*u.GeV,
-                              'eta':-0.140*u.GeV,
-                              "eta\'":-0.038*u.GeV,
+                              'eta':-0.142*u.GeV,
+                              "eta\'":0.038*u.GeV,
                               'D+':0.205*u.GeV,'D*+':0.205*u.GeV,
                               'D-':0.205*u.GeV,'D*-':0.205*u.GeV,
                               'D_s+':0.259*u.GeV,'D*_s+':0.259*u.GeV,
                               'D_s-':0.259*u.GeV,'D*_s-':0.259*u.GeV,
-                              'B+':0.191*u.GeV,'B-':0.228*u.GeV,
+                              'B+':0.191*u.GeV,'B-':0.191*u.GeV,
                               'B0':0.191*u.GeV,'B_s0':0.228*u.GeV,
                               'B0_bar':0.191*u.GeV,'B_s0_bar':0.228*u.GeV} 
 
@@ -133,7 +133,7 @@ class constants():
         # defined in Eq (30)--(32) of [1511.07436], but without 
         # the coupling over sfermion mass, that will come later
         self.GST2 = {'slepton'   : self.gW2*self.t2thetaw*9./8.,
-                     'sneutrino' : self.gW2*self.t2thetaw*1./8.,
+                     'sneutrino' : self.gW2*self.t2thetaw*9./8.,
                      'tlepton'   : self.gW2*self.t2thetaw*1./32.,
                      'tneutrino' : self.gW2*self.t2thetaw*1./32.} 
 
@@ -300,7 +300,7 @@ class RPVSUSYbranchings():
                             c.GST2['tlepton']*c.decayConstant[H]**2*\
                             (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2))
                             
-        width=self.U2[1]*tmp_width
+        width=self.U2[0]*tmp_width
         
         return width
 
@@ -405,7 +405,7 @@ class RPVSUSYbranchings():
             print self.decays
             return -999
         
-        br = self.Width_N_L(had,lep)/(c.hGeV/lifetime(had))
+        br = self.Width_N_L(had,lep)/(self.Width_N_L(had,lep)+c.hGeV/lifetime(had))
         return br
 
 class RPVSUSY(RPVSUSYbranchings):
