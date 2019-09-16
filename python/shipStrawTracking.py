@@ -1,6 +1,7 @@
 from __future__ import print_function
 # Mikhail Hushchyn, mikhail.hushchyn@cern.ch
 
+from builtins import range
 import ROOT
 import numpy
 
