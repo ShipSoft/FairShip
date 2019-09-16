@@ -113,11 +113,9 @@ def executeSimple(prefixes,reset=False):
           time.sleep(10)
  nJobs = len(proc)
  while nJobs > 0:
-  procAna = proc.keys()
   nJobs = len(proc)
-  procAna.sort()
   print('debug ',nJobs)
-  for p in procAna: 
+  for p in sorted(proc.keys()):
     os.chdir('./'+p) 
     nproc = 100
     while nproc > ncores : 

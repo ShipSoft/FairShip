@@ -144,8 +144,7 @@ def addAllHistograms():
   ut.readHists(h,path+fname)
   if i==0:
     h[1012].Draw()
- tmp = h.keys()
- for x in tmp:
+ for x in h.keys():
    if h[x].GetName().find('proj')>0: rc = h.pop(x)
  ut.writeHists(h,"pythia8_Geant4_"+ecut+"_c"+str(Nmax)+"-histos.root")
  

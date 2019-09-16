@@ -56,7 +56,6 @@ viewsI = {1:[0,1],2:[0,2],3:[0],4:[0]}
 viewC = {0:"_x",1:"_u",2:"_v"}
 
 muSources = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
-muSourcesIDs = muSources.values()
 rnr       = ROOT.TRandom()
 #-----prepare python exit-----------------------------------------------
 def pyExit():
@@ -780,9 +779,7 @@ DT={}
 def compareAlignment():
  ut.bookHist(h,'alignCompare','compare Alignments',100,-120.,120.,100,-120.,120.)
  ut.bookHist(h,'alignCompareDiffs','compare Alignments',100,-1.,1.)
- keys = xpos.keys()
- keys.sort()
- for d in keys:
+ for d in sorted(xpos.keys()):
    test = ROOT.MufluxSpectrometerHit(d,0.)
    test.MufluxSpectrometerEndPoints(vbot,vtop)
    statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(test)
@@ -2151,7 +2148,7 @@ def findDTClusters(removeBigClusters=True):
      if removeBigClusters:
       clustersPerLayer = {}
       for l in range(4):
-       clustersPerLayer[l] = dict(enumerate(grouper(allHits[l].keys(),1), 1))
+       clustersPerLayer[l] = dict(enumerate(grouper(list(allHits[l].keys()),1), 1))
        for Acl in clustersPerLayer[l]:
         if len(clustersPerLayer[l][Acl])>cuts['maxClusterSize']: # kill cross talk brute force
            for x in clustersPerLayer[l][Acl]:
@@ -2891,8 +2888,7 @@ def plotSigmaRes():
  ROOT.gROOT.FindObject('c1').cd()
  h['resDistr'].Draw()
 def calculateRTcorrection():
-  hkeys = h.keys()
-  for hist in hkeys:
+  for hist in h.keys():
    if hist.find('biasResDist')!=0: continue
    if not hist.find('proj')<0: continue
    if hist == 'biasResDist2' : continue
@@ -2942,9 +2938,7 @@ def calculateRTcorrection():
    h[x].Draw('same')
 
 def analyzeSingleDT():
- keys = xpos.keys()
- keys.sort()
- for detID in keys:
+ for detID in sorted(xpos.keys()):
     histo = h['biasResX_'+str(detID)+'_projx']
     mean,rms = -999.,0.
     if histo.GetSumOfWeights()>25:
@@ -3058,7 +3052,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False):
        vbot,vtop = strawPositionsBotTop[hit.GetDetectorID()]
        pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
      if len(pos)<3: continue # 1 RPC point + >1 DT point
-     coefficients = numpy.polyfit(pos.keys(),pos.values(),1)
+     coefficients = numpy.polyfit(list(pos.keys()),list(pos.values()),1)
      Ntot[tag_s] += 1
      nhits={1:0,2:0,3:0,4:0}
      for s in range(1,5):
@@ -4576,7 +4570,7 @@ def analyzeRTrel():
     rc = h[x+'Tmax'].Fill(RTrelations[fname]['tMinAndTmax'][x][1])
   ut.bookCanvas(h,'RTMins','RT Min',1200,900,7,5)
   ut.bookCanvas(h,'RTMaxs','RT Max',1200,900,7,5)
-  keys = RTrelations[fnames[0]]['tMinAndTmax'].keys()
+  keys = list(RTrelations[fnames[0]]['tMinAndTmax'].keys())
   keys.sort()
   for n in range(1,35):
    tc = h['RTMins'].cd(n)
@@ -4666,7 +4660,7 @@ def checkForDiMuon():
   for t in sTree.MCTrack:
    if abs(t.GetPdgCode())!=13: continue
    moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())
-   if moID in muSourcesIDs: 
+   if moID in muSources.values():
      boost = True
      break
    pName = t.GetProcName().Data()

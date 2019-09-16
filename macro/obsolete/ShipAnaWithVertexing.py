@@ -219,7 +219,7 @@ def myEventLoop(N):
      for tr in fittedTracks:
       xx  = fittedTracks[tr].getFittedState()
       PosDir[tr] = [xx.getPos(),xx.getDir()]
-     keys = fittedTracks.keys()
+     keys = list(fittedTracks.keys())
      t1,t2 = keys[0],keys[1] 
      xv,yv,zv,doca = myVertex(t1,t2,PosDir)
      h['Doca'].Fill(dist)  
