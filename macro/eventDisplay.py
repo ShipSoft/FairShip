@@ -1,6 +1,7 @@
 #!/usr/bin/env python -i
 from __future__ import print_function
-import ROOT,sys,getopt,os,Tkinter,atexit
+import ROOT,sys,os,Tkinter,atexit
+from argparse import ArgumentParser
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 from array import array
@@ -8,8 +9,6 @@ import shipunit as u
 from decorators import *
 import shipRoot_conf,shipDet_conf
 shipRoot_conf.configure()
-
-HiddenParticleID = 9900015
 
 def evExit():
  if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'):
@@ -25,16 +24,11 @@ g    = ROOT.gROOT
 gEnv = ROOT.gEnv
 gEnv.SetValue('Eve.Viewer.HideMenus','off')
 
-ParFile    = None
-geoFile    = None
-#-----User Settings:-----------------------------------------------
-mcEngine  = "TGeant4"
-simEngine = "Pythia8"
-InputFile = None 
-OutputFile = None
-withGeo   = False
-dy = str(10.)
+mcEngine   = "TGeant4"
+simEngine  = "Pythia8"
+withGeo    = False
 withMCTracks = True
+
 #                        muon shield  strawtube                     decay vessel  
 transparentMaterials = {'iron':80,'aluminium':80,'mylar':60,'STTmix9010_2bar':95,'steel':80,'Aluminum':80,'Scintillator':80,
 #                        tau nu detector  
@@ -42,42 +36,18 @@ transparentMaterials = {'iron':80,'aluminium':80,'mylar':60,'STTmix9010_2bar':95
 #                        charm detector  
                         'CoilAluminium':70,'molybdenum':80,'PlasticBase':70,'tantalum':70}
 #
-try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:f:p:g:x:c:hqv:sl:A:i:Y",["paramFile=","geoFile="])
-except getopt.GetoptError:
-        # print help information and exit:
-        print(' enter -f filename -g geofile (-p param file  not needed if geofile present) -i hidden particle ID (default 9900015)')  
-        sys.exit()
-for o, a in opts:
-        if o in ("-Y",):
-            dy = float(a)
-        if o in ("-p", "--paramFile"):
-            ParFile = a
-        if o in ("-g", "--geoFile"):
-            geoFile = a
-        if o in ("-f",):
-            InputFile = a
-        if o in ("-o", "--outFile"):
-            OutputFile = a
-        if o in ("-i",):
-            HiddenParticleID = int(a)
 
-print("FairShip setup for",simEngine)
+parser = ArgumentParser()
 
-if not InputFile:
- tag = simEngine+"-"+mcEngine+'_D'
- if dy: tag = str(dy)+'.'+tag 
- InputFile     ="ship."+tag+".root" 
-if not dy:
- try:
- # try to extract from input file name
-   tmp = InputFile.split('.')
-   dy  = float( tmp[1]+'.'+tmp[2] )
-   tag = str(dy)+'.'+tmp[3]
- except:
-   tmp = None
+parser.add_argument("-f", "--inputFile",    dest="InputFile", help="Input file", required=True)
+parser.add_argument("-g", "--geoFile",      dest="geoFile",   help="ROOT geofile", required=True)
+parser.add_argument("-p", "--paramFile",    dest="ParFile",   help="FairRoot param file", required=False, default=None)
+parser.add_argument("--Debug",              dest="Debug", help="Switch on debugging", required=False, action="store_true")
+parser.add_argument("-o", "--outFile",      dest="OutputFile", help="Output file", required=False,default=None)
+parser.add_argument("-i",                   dest="HiddenParticleID", help="HiddenParticle ID", required=False,default=9900015)
 
-if InputFile.find('_D')>0: withGeo = True
+options = parser.parse_args()
+if options.InputFile.find('_D')>0: withGeo = True
 
 def printMCTrack(n,MCTrack):
    mcp = MCTrack[n]
@@ -320,7 +290,7 @@ class DrawTracks(ROOT.FairTask):
    hitlist = {}
    hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
   # look for HNL 
-   if abs(fT.GetPdgCode()) == HiddenParticleID:
+   if abs(fT.GetPdgCode()) == options.HiddenParticleID:
     for da in sTree.MCTrack:
      if da.GetMotherId()==n: break
   # end vertex of HNL
@@ -344,7 +314,7 @@ class DrawTracks(ROOT.FairTask):
         hitlist[p.GetZ()] = [p.GetX(),p.GetY()]
    if len(hitlist)==1:
     if fT.GetMotherId()<0: continue
-    if abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode()) == HiddenParticleID:
+    if abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode()) == options.HiddenParticleID:
      # still would like to draw track stub
      # check for end vertex
      evVx = False
@@ -368,7 +338,7 @@ class DrawTracks(ROOT.FairTask):
     else:  pName =  str(fT.GetPdgCode())
     DTrack.SetName('MCTrack_'+str(n)+'_'+pName)
     c = ROOT.kYellow
-    if abs(fT.GetPdgCode()) == HiddenParticleID:c = ROOT.kMagenta
+    if abs(fT.GetPdgCode()) == options.HiddenParticleID:c = ROOT.kMagenta
     DTrack.SetMainColor(c)
     DTrack.SetLineWidth(3)
     self.comp.AddElement(DTrack)
@@ -992,24 +962,24 @@ def debugStraw(n):
 from basiclibs import *  
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
-if geoFile: 
- if geoFile[0:4] == "/eos": geoFile=ROOT.gSystem.Getenv("EOSSHIP")+geoFile
- fRun.SetGeomFile(geoFile)
+if options.geoFile: 
+ if options.geoFile[0:4] == "/eos": options.geoFile=ROOT.gSystem.Getenv("EOSSHIP")+options.geoFile
+ fRun.SetGeomFile(options.geoFile)
 
-if InputFile[0:4] == "/eos": InputFile=ROOT.gSystem.Getenv("EOSSHIP")+InputFile
+if options.InputFile[0:4] == "/eos": options.InputFile=ROOT.gSystem.Getenv("EOSSHIP")+options.InputFile
 if hasattr(fRun,'SetSource'):
- inFile = ROOT.FairFileSource(InputFile)
+ inFile = ROOT.FairFileSource(options.InputFile)
  fRun.SetSource(inFile)
 else:
- fRun.SetInputFile(InputFile)
-if OutputFile == None:
-  OutputFile = ROOT.TMemFile('event_display_output', 'recreate')
-fRun.SetOutputFile(OutputFile)
+ fRun.SetInputFile(options.InputFile)
+if options.OutputFile == None:
+  options.OutputFile = ROOT.TMemFile('event_display_output', 'recreate')
+fRun.SetOutputFile(options.OutputFile)
 
-if ParFile:
+if options.ParFile:
  rtdb      = fRun.GetRuntimeDb()
  parInput1 = ROOT.FairParRootFileIo()
- parInput1.open(ParFile)
+ parInput1.open(options.ParFile)
  rtdb.setFirstInput(parInput1)
    
 fMan= ROOT.FairEventManager()
