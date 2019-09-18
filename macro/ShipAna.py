@@ -212,7 +212,7 @@ def dist2InnerWall(X,Y,Z):
   if ShipGeo.tankDesign < 5:
      if not 'cave' in node.GetName(): return dist  # TP 
   else:
-     if not 'decayVol' in node.GetName(): return dist
+     if not 'DecayVacuum' in node.GetName(): return dist
   start = array('d',[X,Y,Z])
   nsteps = 8
   dalpha = 2*ROOT.TMath.Pi()/nsteps

@@ -113,6 +113,30 @@ void veto::Initialize()
 //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
 }
 
+TGeoVolume* veto::GeoTrapezoid(TString xname,Double_t wz,
+				  Double_t wX_start,Double_t wX_end,
+				  Double_t wY_start,Double_t wY_end,
+				  Int_t color,TGeoMedium *material,Bool_t sens=kFALSE)
+{
+      
+      
+       Double_t dz=wz/2;
+       Double_t tdx1 = wX_start/2-1.E-6;
+       Double_t tdx2 = wX_end/2-1.E-6;
+       Double_t tdy1 = wY_start/2-1.E-6;
+       Double_t tdy2 = wY_end/2-1.E-6;
+       TGeoArb8 *T1 = new TGeoArb8("T1"+xname,dz+1.E-6);
+       T1->SetVertex(0,-tdx1,-tdy1); T1->SetVertex(1,-tdx1,tdy1); T1->SetVertex(2,tdx1,tdy1); T1->SetVertex(3,tdx1,-tdy1);
+       T1->SetVertex(4,-tdx2,-tdy2); T1->SetVertex(5,-tdx2,tdy2); T1->SetVertex(6,tdx2,tdy2); T1->SetVertex(7,tdx2,-tdy2);
+
+       
+//        TGeoCompositeShape *T321 = new TGeoCompositeShape("T3"+nm,"T2"+nm+"-T1"+nm);
+       TGeoVolume *T = new TGeoVolume(xname, T1, material);
+	   T->SetLineColor(color);
+      //and make the volunes sensitive..
+      if (sens) {AddSensitiveVolume(T);}
+      return T;
+}
 
 TGeoVolume* veto::GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,
 				  Double_t wX_start,Double_t wX_end,
@@ -442,6 +466,13 @@ void veto::AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tDecayVac
 	      TGeoVolume* TIW = GeoTrapezoidNew(nameInnerWall,wallThick,wz,wx(z1),wx(z2),wy(z1),wy(z2),ribColor,supportMedIn);
 	      tInnerWall->AddNode(TIW,0, new TGeoTranslation(0, 0,Zshift ));
 	      
+          //decay vacuum
+          TString nameDecayVacuum = (TString)tDecayVacuum->GetName()+"_"+blockName; 
+          TGeoVolume* TDV = GeoTrapezoid(nameDecayVacuum,wz,wx(z1),wx(z2),wy(z1),wy(z2),1,decayVolumeMed);
+          TDV->SetVisibility(kFALSE);
+          tDecayVacuum->AddNode(TDV,0, new TGeoTranslation(0, 0,Zshift ));
+          
+          
 	      //outer wall
 	      TString nameOuterWall = (TString)tOuterWall->GetName()+"_"+blockName; 
 	      TGeoVolume* TOW = GeoTrapezoidNew(nameOuterWall,wallThick,wz,
@@ -809,8 +840,9 @@ TGeoVolume* veto::MakeSegments(Double_t dz,Double_t dx_start,Double_t dy_start,D
 
       //>>>>>>>>>>>>>>>>>>>>>>>>>>>>new>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-	  int isOuterWall=0;
 	  int isInnerWall=1;
+      int isDecayVacuum=1;
+	  int isOuterWall=0;
 	  int isVerticalRib=1;
 	  int isLongitRib=1;
 	  int isLiSc=1;
@@ -819,6 +851,9 @@ TGeoVolume* veto::MakeSegments(Double_t dz,Double_t dx_start,Double_t dy_start,D
 	  //assembly for innerwall
 	    TString nameInnerWall = "VetoInnerWall";  
 	    TGeoVolumeAssembly *tInnerWall = new TGeoVolumeAssembly(nameInnerWall);
+      //assembly for decay volume
+        TString nameDecayVacuum = "DecayVacuum";  
+	    TGeoVolumeAssembly *tDecayVacuum = new TGeoVolumeAssembly(nameDecayVacuum);
 	  //assembly for outerwall
 	    TString nameOuterWall = "VetoOuterWall";  
 	    TGeoVolumeAssembly *tOuterWall = new TGeoVolumeAssembly(nameOuterWall);
@@ -929,6 +964,7 @@ TGeoVolume* veto::MakeSegments(Double_t dz,Double_t dx_start,Double_t dy_start,D
 	      
 
 	 if(isInnerWall)tTankVol->AddNode(tInnerWall,0, new TGeoTranslation(0, 0,0 ));
+     if(isDecayVacuum)tTankVol->AddNode(tDecayVacuum,0, new TGeoTranslation(0, 0,0 ));
 	 if(isOuterWall)tTankVol->AddNode(tOuterWall,0, new TGeoTranslation(0, 0,0 ));
 	 if(isVerticalRib)tTankVol->AddNode(tVerticalRib,0, new TGeoTranslation(0, 0,0 ));
 	 if(isLongitRib)tTankVol->AddNode(tLongitRib,0, new TGeoTranslation(0, 0,0 ));

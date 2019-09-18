@@ -164,6 +164,8 @@ class veto: public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
+    TGeoVolume* GeoTrapezoid(TString xname,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,
+				  Int_t color,TGeoMedium *material,Bool_t sens);
     TGeoVolume* GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,Int_t color,TGeoMedium *material,Bool_t sens);
     void AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tDecayVacuum, TGeoVolumeAssembly *tOuterWall,TGeoVolumeAssembly *tLongitRib,TGeoVolumeAssembly *tVerticalRib,TGeoVolumeAssembly *ttLiSc,  int& liScCounter,
                      int blockNr , int nx, int ny,
