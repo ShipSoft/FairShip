@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np
@@ -34,9 +35,9 @@ def execute(muon_tagger_track_hits, drifttubes_track_hits, debug=0):
                 i_track += 1
             
             if debug:
-                print 'rmse: ', rmse
-                print 'i_muon_tagger_track: ', i_muon_tagger_track
-                print 'i_drifttubes_track: ', i_drifttubes_track
+                print('rmse: ', rmse)
+                print('i_muon_tagger_track: ', i_muon_tagger_track)
+                print('i_drifttubes_track: ', i_drifttubes_track)
             
     
     return track_hits
@@ -66,8 +67,8 @@ def linear_fit_in_zx_plane(muon_tagger_track, drifttubes_track, debug):
         x_coords.append(ahit['xtop'])
         
     if debug:
-        print 'z_coords:', z_coords
-        print 'x_coords:', x_coords
+        print('z_coords:', z_coords)
+        print('x_coords:', x_coords)
         
     # Fit linear regression model
     reg = LinearRegression()

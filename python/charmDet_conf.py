@@ -50,7 +50,7 @@ def configure(run,ship_geo,Gfield=''):
     SciFi.SetStationNumber(ship_geo.SciFi.nstations)
     SciFi.SetStationDimensions(ship_geo.SciFi.StationDimX, ship_geo.SciFi.StationDimY, ship_geo.SciFi.StationDimZ)
     for i, (x, y, z) in enumerate(zip(ship_geo.SciFi.xSi,ship_geo.SciFi.ySi,ship_geo.SciFi.zSi)):
-    	SciFi.SetStationPositions(i, x, y, z)
+      SciFi.SetStationPositions(i, x, y, z)
 # === Pixel modules
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
     PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long)
@@ -60,7 +60,7 @@ def configure(run,ship_geo,Gfield=''):
 # === Pixel modules
     detectorList.append(PixelModules)
     for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)):
-    	PixelModules.SetSiliconStationPositions(i, x, y, z)
+      PixelModules.SetSiliconStationPositions(i, x, y, z)
 
  Spectrometer = ROOT.Spectrometer("Spectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
  Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long)

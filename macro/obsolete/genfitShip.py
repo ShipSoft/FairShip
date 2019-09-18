@@ -1,3 +1,4 @@
+from __future__ import print_function
 # setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/media/ShipSoft/genfit-build/lib
 inputFile = 'ship.Pythia8-TGeant4.root'
 debug = False
@@ -12,8 +13,8 @@ try:
         opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:c:hqv:sl:A:Y:i",["inputFile=","nEvents=","ambiguities"])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --inputFile=  --nEvents= number of events to process, ambiguities wire ambiguities default none' 
-        print ' outputfile will have same name with _rec added'   
+        print(' enter --inputFile=  --nEvents= number of events to process, ambiguities wire ambiguities default none') 
+        print(' outputfile will have same name with _rec added')   
         sys.exit()
 for o, a in opts:
         if o in ("ambiguities"):
@@ -34,7 +35,7 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
-print 'configured to process ',nEvents,' events from ' ,inputFile, ' with option Yheight = ',dy
+print('configured to process ',nEvents,' events from ' ,inputFile, ' with option Yheight = ',dy)
 outFile = inputFile.replace('.root','_rec.root') 
 os.system('cp '+inputFile+' '+outFile)
 
@@ -48,7 +49,7 @@ if withHists:
 def pyExit():
  global fitter
  del fitter
- print "finishing pyExit" 
+ print("finishing pyExit") 
 import atexit
 atexit.register(pyExit)
 
@@ -84,7 +85,7 @@ class makeHitList:
    self.fitTracks   = self.sTree.GetBranch("FitTracks")  
    self.SHbranch    = self.sTree.GetBranch("SmearedHits")
    self.mcLink      = self.sTree.GetBranch("fitTrack2MC")
-   print "branch already exists !"
+   print("branch already exists !")
   else :
    self.SHbranch    = self.sTree.Branch( "SmearedHits",self.SmearedHits,32000,-1)
    self.fitTracks   = self.sTree.Branch( "FitTracks",self.fGenFitArray,32000,-1)  
@@ -118,7 +119,7 @@ class makeHitList:
  def execute(self,n):
   if n > self.nEvents-1: return None 
   rc    = self.sTree.GetEvent(n) 
-  if n%1000==0: print "==> event ",n
+  if n%1000==0: print("==> event ",n)
   nShits = self.sTree.strawtubesPoint.GetEntriesFast() 
   hitPosLists = {}
   self.SmearedHits.Clear()
@@ -136,7 +137,7 @@ class makeHitList:
     if ahit.GetDetectorID() > 5*10000000 : continue
     # do not use hits in Veto station for track reco   
     trID = ahit.GetTrackID()
-    if not hitPosLists.has_key(trID):   
+    if trID not in hitPosLists:   
       hitPosLists[trID] = ROOT.std.vector('TVectorD')()
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     measurement = ROOT.TVectorD(7,m)
@@ -180,7 +181,7 @@ for iEvent in range(0, SHiP.nEvents):
   if not PDG.GetParticle(pdg): continue # unknown particle
   meas = hitPosLists[atrack]
   nM = meas.size()
-  if debug: print "start ",iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP()
+  if debug: print("start ",iEvent,nM,atrack,SHiP.sTree.MCTrack[atrack].GetP())
   charge = PDG.GetParticle(pdg).Charge()/(3.)
   posM = ROOT.TVector3(0, 0, 0)
   momM = ROOT.TVector3(0,0,3.*u.GeV)
@@ -209,7 +210,7 @@ for iEvent in range(0, SHiP.nEvents):
       fitTrack[atrack].insertPoint(tp)  # add point to Track
 #check
   if not fitTrack[atrack].checkConsistency():
-   print 'Problem with track before fit, not consistent',fitTrack
+   print('Problem with track before fit, not consistent',fitTrack)
   h['nmeas'].Fill(nM)
   if nM > 28 : 
 # do the fit
@@ -217,7 +218,7 @@ for iEvent in range(0, SHiP.nEvents):
    except: continue   
 #check
    if not fitTrack[atrack].checkConsistency():
-    print 'Problem with track after fit, not consistent',fitTrack
+    print('Problem with track after fit, not consistent',fitTrack)
     continue
   # monitoring
   fitStatus   = fitTrack[atrack].getFitStatus()
@@ -228,19 +229,19 @@ for iEvent in range(0, SHiP.nEvents):
   SHiP.fGenFitArray[nTrack] = theTrack
   SHiP.fitTrack2MC.push_back(atrack)
   if debug: 
-   print 'save track',theTrack,chi2,nM,fitStatus.isFitConverged()
+   print('save track',theTrack,chi2,nM,fitStatus.isFitConverged())
    if nM > 28:  
     display.addEvent(fitTrack[atrack])
 # make tracks persistent
- if debug: print 'call Fill', len(SHiP.fGenFitArray),nTrack,SHiP.fGenFitArray.GetEntries()
+ if debug: print('call Fill', len(SHiP.fGenFitArray),nTrack,SHiP.fGenFitArray.GetEntries())
  SHiP.fitTracks.Fill()
  SHiP.mcLink.Fill()
  SHiP.SHbranch.Fill()
- if debug: print 'end of event after Fill'
+ if debug: print('end of event after Fill')
  
 # end loop over events
 
-print 'finished writing tree'
+print('finished writing tree')
 SHiP.sTree.Write()
 
 if debug:

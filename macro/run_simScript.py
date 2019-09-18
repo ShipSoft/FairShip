@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+from __future__ import print_function
 import os
 import sys
 import getopt
@@ -82,24 +83,24 @@ try:
 
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default), -A bc: signal from Bc, or -A inclusive)'
-        print ' or    --Genie for reading and processing neutrino interactions '
-        print ' or    --Pythia6 for muon nucleon scattering'  
-        print ' or    --PG for particle gun'  
-	print '       --pID= id of particle used by the gun (default=22)'
-	print '       --Estart= start of energy range of particle gun for muflux detector (default=10 GeV)'
-	print '       --Eend= end of energy range of particle gun for muflux detector (default=10 GeV)'	
-        print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
-        print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
-        print '       --DarkPhoton to generate events with dark photons (default HNL)'
-        print ' for darkphoton generation, use -A meson or -A pbrem or -A qcd'
-        print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
-        print '       --mass or -m to set HNL or New Particle mass'
-        print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
-        print '       --production-couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL production only'
-        print '       --decay-couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL decay only'
-        print '       --epsilon value or -e value to set mixing parameter epsilon' 
-        print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
+        print(' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default), -A bc: signal from Bc, or -A inclusive)')
+        print(' or    --Genie for reading and processing neutrino interactions ')
+        print(' or    --Pythia6 for muon nucleon scattering')  
+        print(' or    --PG for particle gun')  
+        print('       --pID= id of particle used by the gun (default=22)')
+        print('       --Estart= start of energy range of particle gun for muflux detector (default=10 GeV)')
+        print('       --Eend= end of energy range of particle gun for muflux detector (default=10 GeV)')
+        print('       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data')
+        print('       --RpvSusy to generate events based on RPV neutralino (default HNL)')
+        print('       --DarkPhoton to generate events with dark photons (default HNL)')
+        print(' for darkphoton generation, use -A meson or -A pbrem or -A qcd')
+        print('       --SusyBench to specify which of the preset benchmarks to generate (default 2)')
+        print('       --mass or -m to set HNL or New Particle mass')
+        print('       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings')
+        print('       --production-couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL production only')
+        print('       --decay-couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL decay only')
+        print('       --epsilon value or -e value to set mixing parameter epsilon') 
+        print('                   Note that for RPVSUSY the third entry of the couplings is the stop mass')
         sys.exit(2)
 for o, a in opts:
         if o in ("-D","--display"):
@@ -213,23 +214,23 @@ for o, a in opts:
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
- print "cannot have HNL and SUSY or DP at the same time, abort"
+ print("cannot have HNL and SUSY or DP at the same time, abort")
  sys.exit(2)
 
 if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
   inputFile = "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
             # "/eos/experiment/ship/data/GenieEvents/genie-nu_mu_bar.root"
 if simEngine == "muonDIS" and defaultInputFile:
-  print 'input file required if simEngine = muonDIS'
-  print " for example -f  /eos/experiment/ship/data/muonDIS/muonDis_1.root"
+  print('input file required if simEngine = muonDIS')
+  print(" for example -f  /eos/experiment/ship/data/muonDIS/muonDis_1.root")
   sys.exit()
 if simEngine == "Nuage" and not inputFile:
  inputFile = 'Numucc.root'
 
-print "FairShip setup for",simEngine,"to produce",nEvents,"events"
+print("FairShip setup for",simEngine,"to produce",nEvents,"events")
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
-  print 'input file required if simEngine = Ntuple or MuonBack'
-  print " for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root"
+  print('input file required if simEngine = Ntuple or MuonBack')
+  print(" for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
   sys.exit()
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
@@ -240,11 +241,11 @@ if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_con
                                                 muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile)
 else: 
  ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup, cTarget = CharmTarget)
- if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
+ if CharmdetSetup == 0: print("Setup for muon flux measurement has been set")
  else: 
-  print "Setup for charm cross section measurement has been set"
+  print("Setup for charm cross section measurement has been set")
   if (((CharmTarget > 6) or (CharmTarget < 0)) and (CharmTarget != 16)): #check if proper option for emulsion target has been set
-   print "ERROR: unavailable option for CharmTarget. Currently implemented options: 1,2,3,4,5,6,16"
+   print("ERROR: unavailable option for CharmTarget. Currently implemented options: 1,2,3,4,5,6,16")
    1/0
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
@@ -298,20 +299,20 @@ if simEngine == "Pythia8":
   P8gen = ROOT.HNLPythia8Generator()
   import pythia8_conf
   if HNL:
-   print 'Generating HNL events of mass %.3f GeV'%theMass
+   print('Generating HNL events of mass %.3f GeV'%theMass)
    if theProductionCouplings is None and theDecayCouplings is None:
-    print 'and with couplings=',theCouplings
+    print('and with couplings=',theCouplings)
     theProductionCouplings = theDecayCouplings = theCouplings
    elif theProductionCouplings is not None and theDecayCouplings is not None:
-    print 'and with couplings',theProductionCouplings,'at production'
-    print 'and',theDecayCouplings,'at decay'
+    print('and with couplings',theProductionCouplings,'at production')
+    print('and',theDecayCouplings,'at decay')
    else:
     raise ValueError('Either both production and decay couplings must be specified, or neither.')
    pythia8_conf.configure(P8gen,theMass,theProductionCouplings,theDecayCouplings,inclusive,deepCopy)
   if RPVSUSY:
-   print 'Generating RPVSUSY events of mass %.3f GeV'%theMass
-   print 'and with couplings=[%.3f,%.3f]'%(theCouplings[0],theCouplings[1])
-   print 'and with stop mass=%.3f GeV\n'%theCouplings[2]
+   print('Generating RPVSUSY events of mass %.3f GeV'%theMass)
+   print('and with couplings=[%.3f,%.3f]'%(theCouplings[0],theCouplings[1]))
+   print('and with stop mass=%.3f GeV\n'%theCouplings[2])
    pythia8_conf.configurerpvsusy(P8gen,theMass,[theCouplings[0],theCouplings[1]],
                                 theCouplings[2],RPVSUSYbench,inclusive,deepCopy)
   P8gen.SetParameters("ProcessLevel:all = off")
@@ -322,9 +323,9 @@ if simEngine == "Pythia8":
  if DarkPhoton:
   P8gen = ROOT.DPPythia8Generator()
   if inclusive=='qcd':
-	  P8gen.SetDPId(4900023)
+   P8gen.SetDPId(4900023)
   else:
-	  P8gen.SetDPId(9900015)
+   P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
   passDPconf = pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,deepCopy)
   if (passDPconf!=1): sys.exit()
@@ -346,7 +347,7 @@ if simEngine == "Pythia8":
   if ship_geo.MufluxSpectrometer.muflux == False :
      P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
   else: 
-     print "ERROR: charmonly option should not be used for the muonflux measurement"
+     print("ERROR: charmonly option should not be used for the muonflux measurement")
      1/0
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
@@ -391,19 +392,19 @@ if simEngine == "muonDIS":
  #
  # in front of UVT up to tracking station 1
  mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
- print 'MuDIS position info input=',mu_start, mu_end
+ print('MuDIS position info input=',mu_start, mu_end)
  DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)
  DISgen.Init(inputFile,firstEvent) 
  primGen.AddGenerator(DISgen)
  nEvents = min(nEvents,DISgen.GetNevents())
  inactivateMuonProcesses = True # avoid unwanted hadronic events of "incoming" muon flying backward
- print 'Generate ',nEvents,' with DIS input', ' first event',firstEvent
+ print('Generate ',nEvents,' with DIS input', ' first event',firstEvent)
 # -----neutrino interactions from nuage------------------------
 if simEngine == "Nuage":
  primGen.SetTarget(0., 0.)
  Nuagegen = ROOT.NuageGenerator()
  Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
- print 'Nuage position info input=',ship_geo.EmuMagnet.zC-ship_geo.NuTauTarget.zdim, ship_geo.EmuMagnet.zC+ship_geo.NuTauTarget.zdim
+ print('Nuage position info input=',ship_geo.EmuMagnet.zC-ship_geo.NuTauTarget.zdim, ship_geo.EmuMagnet.zC+ship_geo.NuTauTarget.zdim)
  #--------------------------------
  #to Generate neutrino interactions in the whole neutrino target
 # Nuagegen.SetPositions(ship_geo.EmuMagnet.zC, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2)
@@ -426,7 +427,7 @@ if simEngine == "Nuage":
  primGen.AddGenerator(Nuagegen)
  nEvents = min(nEvents,Nuagegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
- print 'Generate ',nEvents,' with Nuage input', ' first event',firstEvent
+ print('Generate ',nEvents,' with Nuage input', ' first event',firstEvent)
 # -----Neutrino Background------------------------
 if simEngine == "Genie":
 # Genie
@@ -438,7 +439,7 @@ if simEngine == "Genie":
  primGen.AddGenerator(Geniegen)
  nEvents = min(nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
- print 'Generate ',nEvents,' with Genie input', ' first event',firstEvent
+ print('Generate ',nEvents,' with Genie input', ' first event',firstEvent)
 if simEngine == "nuRadiography":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -448,7 +449,7 @@ if simEngine == "nuRadiography":
  Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
  Geniegen.NuOnly()
  primGen.AddGenerator(Geniegen)
- print 'Generate ',nEvents,' for nuRadiography', ' first event',firstEvent
+ print('Generate ',nEvents,' for nuRadiography', ' first event',firstEvent)
 #  add tungsten to PDG
  pdg = ROOT.TDatabasePDG.Instance()
  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
@@ -465,7 +466,7 @@ if simEngine == "Ntuple":
  Ntuplegen.Init(inputFile,firstEvent)
  primGen.AddGenerator(Ntuplegen)
  nEvents = min(nEvents,Ntuplegen.GetNevents())
- print 'Process ',nEvents,' from input file'
+ print('Process ',nEvents,' from input file')
 #
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
@@ -486,13 +487,13 @@ if simEngine == "MuonBack":
     testf = ROOT.TFile.Open(test)
     if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
         MuonBackgen.SetDownScaleDiMuon()   # avoid interference with boosted channels
-        print "MuonBackgenerator: set downscale for dimuon on"
+        print("MuonBackgenerator: set downscale for dimuon on")
     testf.Close()
  if sameSeed: MuonBackgen.SetSameSeed(sameSeed)
  primGen.AddGenerator(MuonBackgen)
  nEvents = min(nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
- print 'Process ',nEvents,' from input file, with Phi random=',phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly
+ print('Process ',nEvents,' from input file, with Phi random=',phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
  if followMuon :  
     fastMuon = True
     modules['Veto'].SetFollowMuon()
@@ -507,10 +508,10 @@ if simEngine == "Cosmics":
  import CMBG_conf
  CMBG_conf.configure(Cosmicsgen, ship_geo)
  if not Cosmicsgen.Init(Opt_high): 
-      print "initialization of cosmic background generator failed ",Opt_high
+      print("initialization of cosmic background generator failed ",Opt_high)
       sys.exit(0)
  primGen.AddGenerator(Cosmicsgen)
- print 'Process ',nEvents,' Cosmic events'
+ print('Process ',nEvents,' Cosmic events')
 #
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------
@@ -610,17 +611,17 @@ if checking4overlaps:
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
+print(' ') 
+print("Macro finished succesfully.") 
 if "P8gen" in globals() : 
-	if (HNL): print "number of retries, events without HNL ",P8gen.nrOfRetries()
-	elif (DarkPhoton): 
-		print "number of retries, events without Dark Photons ",P8gen.nrOfRetries()
-		print "total number of dark photons (including multiple meson decays per single collision) ",P8gen.nrOfDP()
+    if (HNL): print("number of retries, events without HNL ",P8gen.nrOfRetries())
+    elif (DarkPhoton): 
+        print("number of retries, events without Dark Photons ",P8gen.nrOfRetries())
+        print("total number of dark photons (including multiple meson decays per single collision) ",P8gen.nrOfDP())
 
-print "Output file is ",  outFile 
-print "Parameter file is ",parFile
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print("Output file is ",  outFile) 
+print("Parameter file is ",parFile)
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # remove empty events
 if simEngine == "MuonBack":
@@ -650,7 +651,7 @@ if simEngine == "MuonBack":
         nEvents+=1
  sTree.AutoSave()
  fout.Close()
- print "removed empty events, left with:", nEvents
+ print("removed empty events, left with:", nEvents)
  rc1 = os.system("rm  "+outFile)
  rc2 = os.system("mv "+tmpFile+" "+outFile)
  fin.SetWritable(False) # bpyass flush error

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import ROOT
 import shipunit as u
 
@@ -57,7 +58,7 @@ def execute():
     N_MUONS = 2
     canvas = ROOT.gROOT.FindObject('Root Canvas EnergyLoss')
     if not canvas:
-      print "add particle flower not started!"
+      print("add particle flower not started!")
       return
     lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
     c1 = canvas.cd(1)
@@ -95,7 +96,7 @@ def execute():
           emin = min(emin, E)
 
     emin, emax = emin * 0.9, emax * 1.1
-    print "zmin/max", zmin, zmax
+    print("zmin/max", zmin, zmax)
     hist = c1.DrawFrame(zmin, emin, zmax, emax)
     hist.SetYTitle('p (GeV/c)')
     hist.SetXTitle('z cm')

@@ -1,3 +1,4 @@
+from __future__ import print_function
 # simple vertex reconstruction with errors
 import ROOT,sys,os
 import shipunit as u
@@ -129,7 +130,7 @@ class Task:
       if step > 10:  
          ut.reportError("shipVertex::abort iteration, too many steps")
          if debug: 
-          print 'abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz
+          print('abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz)
          rc = False
          break 
 #       
@@ -179,8 +180,8 @@ class Task:
      cov = ROOT.TMatrixDSym(10)
      for i in range(10):
        for j in range(10):
-	 if i<5 and j<5: cov[i][j]=cov1[i][j]
-	 if i>4 and j>4: cov[i][j]=cov2[i-5][j-5]
+         if i<5 and j<5: cov[i][j]=cov1[i][j]
+         if i>4 and j>4: cov[i][j]=cov2[i-5][j-5]
      covInv = ROOT.TMatrixDSym()
      ROOT.genfit.tools.invertMatrix(cov,covInv)
      
@@ -192,7 +193,7 @@ class Task:
       self.y_data[i+5]=stVal2[i]
      self.z0 = HNLPos[2]
      self.Vy = np.zeros(100)
-     for i in range(100):	
+     for i in range(100):
        self.Vy[i] = covInv[i/10][i%10]
      
      f=np.array([0.])
@@ -328,11 +329,11 @@ class Task:
        M_AtoP[3][5] = (2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2))/MM
        
        for i in range(4):
-	 for j in range(6):
-	   MT_AtoP[j][i] = M_AtoP[i][j]
+         for j in range(6):
+           MT_AtoP[j][i] = M_AtoP[i][j]
        
        for i in range(36):
-	 covA[i/6][i%6] = cov[i/6+3+(i%6+3)*9]
+         covA[i/6][i%6] = cov[i/6+3+(i%6+3)*9]
        
        tmp   = ROOT.TMatrixD(4,6)
        tmp.Mult(M_AtoP,covA)

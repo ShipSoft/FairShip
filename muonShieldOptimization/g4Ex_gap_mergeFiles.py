@@ -1,3 +1,4 @@
+from __future__ import print_function
 # result_1Bn_ecut_5.root  		1E9 with Ecut > 5 GeV
 # result_0.1Bn_ecut_0.5.root         	1E8 with Ecut > 0.5 GeV
 Yandex   = False  # False
@@ -50,9 +51,9 @@ if JPsi:
     files[10.].append(path+'pythia8_Geant4_'+run+str(i)+'_10.0.root')
     stats[10.].append(nevts/BR)
     ntot += nevts/BR
-    print run+str(i),' --> nevts = ',nevts
+    print(run+str(i),' --> nevts = ',nevts)
  fnew  = 'pythia8_Geant4_total_Jpsi.root'
- print'total statistics ',ntot/1.E9,' *1E9'
+ print('total statistics ',ntot/1.E9,' *1E9')
 #
 if Tau:
  BR = 0.0554
@@ -76,9 +77,9 @@ if Tau:
     files[0.].append(path+'pythia8_Geant4_'+run+str(i)+'_0.0.root')
     stats[0.].append(nevts/BR)
     ntot += nevts/BR
-    print run+str(i),' --> nevts = ',nevts
+    print(run+str(i),' --> nevts = ',nevts)
  fnew  = 'pythia8_Geant4_total_tauOnly_MoTarget_E0.root'
- print'total statistics ',ntot/1.E9,' *1E9'
+ print('total statistics ',ntot/1.E9,' *1E9')
 #
 if MoTarget:
  stats =  {}
@@ -104,21 +105,21 @@ if MoTarget:
     for r in os.listdir(path):
       if r.find('.root')<0: continue
       ecut = float(r.split('.root')[0].split('_')[3])
-      if not stats.has_key(ecut):
+      if ecut not in stats:
        stats[ecut] = []
        files[ecut] = []      
     files[ecut].append(path+r)
     stats[ecut].append(nevts)
     ntot += nevts
-    print run+str(i),' --> nevts = ',nevts
+    print(run+str(i),' --> nevts = ',nevts)
  fnew  = 'pythia8_Geant4_total_MoTarget.root'
- print'total statistics ',ntot/1.E9,' *1E9'
+ print('total statistics ',ntot/1.E9,' *1E9')
 
 ntot = {}
 for ecut in stats:
  ntot[ecut] = 0 
  for s in stats[ecut]: ntot[ecut]+=s
-print ntot
+print(ntot)
 
 h={}
 def makeFinalNtuples(norm=5.E13,opt=''):
@@ -138,7 +139,7 @@ def makeFinalNtuples(norm=5.E13,opt=''):
      fxx = fnew.replace('.root',opt+'.root')
      if opt!='': fxx = fxx.replace('_total','')
      h['N']      = ROOT.TFile(fxx, 'RECREATE')
-     print 'new file created',fxx
+     print('new file created',fxx)
      if afterHadronAbsorber:  
       h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","flux after 3m hadron absorber",tuples)
      else:  

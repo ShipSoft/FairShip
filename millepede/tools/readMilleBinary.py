@@ -42,6 +42,7 @@
 #
 # Tested with SL4, SL5, SL6
 
+from __future__ import print_function
 import array, sys
 
 # ############### read millepede binary file #################
@@ -70,7 +71,7 @@ minval = None  # allows for NaNs
 narg = len(sys.argv)
 if narg > 1:
   if narg < 3:
-    print " usage: readMilleBinary.py <file name> <number of records> [<number of records to skip> <minimum value to print derivative>]"
+    print(" usage: readMilleBinary.py <file name> <number of records> [<number of records to skip> <minimum value to print derivative>]")
     sys.exit(2)
   else:
     fname = sys.argv[1]
@@ -114,7 +115,7 @@ try:
         if (nrec <= skiprec):  # must be after last fromfile
             continue
 
-        print " === NR ", nrec, length[0] / 2
+        print(" === NR ", nrec, length[0] / 2)
 
         # no details, only header
         if (mrec < -1):
@@ -139,17 +140,17 @@ try:
                 jsp = jb
                 nsp = int(-glder[jb])
                 i += nsp - 1
-                print ' ### spec. ', nsp, inder[jsp + 1:i + 1], glder[jsp + 1:i + 1]
+                print(' ### spec. ', nsp, inder[jsp + 1:i + 1], glder[jsp + 1:i + 1])
                 continue
             while (i < nr) and (inder[i] != 0): i += 1
             i -= 1
             nh += 1
             if (jb < i):
 # measurement with global derivatives
-                print ' -g- meas. ', nh, inder[jb + 1], jb - ja - 1, i - jb, glder[ja], glder[jb]
+                print(' -g- meas. ', nh, inder[jb + 1], jb - ja - 1, i - jb, glder[ja], glder[jb])
             else:
 # measurement without global derivatives
-                print ' -l- meas. ', nh, inder[ja + 1], jb - ja - 1, i - jb, glder[ja], glder[jb]
+                print(' -l- meas. ', nh, inder[ja + 1], jb - ja - 1, i - jb, glder[ja], glder[jb])
             if (ja + 1 < jb):
                 lab = []
                 val = []
@@ -160,8 +161,8 @@ try:
                     elif abs(glder[k]) >= minval:
                         lab.append(inder[k])
                         val.append(glder[k])
-                print " local  ", lab
-                print " local  ", val
+                print(" local  ", lab)
+                print(" local  ", val)
             if (jb + 1 < i + 1):
                 lab = []
                 val = []
@@ -172,14 +173,14 @@ try:
                     elif abs(glder[k]) >= minval:
                         lab.append(inder[k])
                         val.append(glder[k])
-                print " global ", lab
-                print " global ", val
+                print(" global ", lab)
+                print(" global ", val)
 
 except EOFError:
-    print
+    print()
     if (nr > 0):
-        print " >>> error: end of file before end of record", nrec
+        print(" >>> error: end of file before end of record", nrec)
     else:
-        print " end of file after", nrec, "records"
+        print(" end of file after", nrec, "records")
 
 f.close()

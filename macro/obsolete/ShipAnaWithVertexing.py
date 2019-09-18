@@ -1,3 +1,4 @@
+from __future__ import print_function
 # example for accessing smeared hits and fitted tracks
 import ROOT,os,sys,getopt
 import rootUtils as ut
@@ -13,7 +14,7 @@ try:
         opts, args = getopt.getopt(sys.argv[1:], "n:f:A:Y:i", ["nEvents="])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter file name'
+        print(' enter file name')
         sys.exit()
 for o, a in opts:
         if o in ("-f"):
@@ -120,7 +121,7 @@ def makePlots():
    fitSingleGauss('delPOverP2_proj')
    h['fitresults'].Print('fitresults.gif')
    ut.bookCanvas(h,key='fitresults2',title='Fit Results',nx=1600,ny=1200,cx=2,cy=2)
-   print 'finished with first canvas'
+   print('finished with first canvas')
    cv = h['fitresults2'].cd(1)
    h['Doca'].Draw()
    cv = h['fitresults2'].cd(2)
@@ -131,7 +132,7 @@ def makePlots():
    cv = h['fitresults2'].cd(4)
    h['IP0/mass'].Draw('box')
    h['fitresults2'].Print('fitresults2.gif')
-   print 'finished making plots'
+   print('finished making plots')
 
 
 def myVertex(t1,t2,PosDir):
@@ -173,7 +174,7 @@ def myEventLoop(N):
 #
      trID = ahit.GetTrackID()
      if not trID < 0 :
-      if hitlist.has_key(trID):  hitlist[trID]+=1
+      if trID in hitlist:  hitlist[trID]+=1
       else:  hitlist[trID]=1
   for tr in hitlist:  h['meanhits'].Fill(hitlist[tr])
   key = 0
@@ -218,11 +219,11 @@ def myEventLoop(N):
      for tr in fittedTracks:
       xx  = fittedTracks[tr].getFittedState()
       PosDir[tr] = [xx.getPos(),xx.getDir()]
-     keys = fittedTracks.keys()
+     keys = list(fittedTracks.keys())
      t1,t2 = keys[0],keys[1] 
      xv,yv,zv,doca = myVertex(t1,t2,PosDir)
      h['Doca'].Fill(dist)  
-     print 'hnlvertex',n,xv,yv,zv,doca
+     print('hnlvertex',n,xv,yv,zv,doca)
      HNLPos = ROOT.TVector3(xv,yv,zv)
      for tr in fittedTracks:
       xx  = fittedTracks[tr].getFittedState()
@@ -237,7 +238,7 @@ def myEventLoop(N):
       try:
        rep.extrapolateToPoint(state, HNLPos, False)
       except:
-        print 'extrap did not worked'
+        print('extrap did not worked')
       LV[tr] = ROOT.TLorentzVector()
       mass = PDG.GetParticle(xx.getPDG()).Mass()
       mom = rep.getMom(state)  
@@ -260,11 +261,11 @@ def myEventLoop(N):
 def access2SmearedHits():
  key = 0
  for ahit in ev.SmearedHits.GetObject():
-   print ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6]
+   print(ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6])
    # follow link to true MCHit
    mchit   = TrackingHits[key]
    mctrack =  MCTracks[mchit.GetTrackID()]
-   print mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode()
+   print(mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode())
    key+=1
 
 myEventLoop(nEvents)

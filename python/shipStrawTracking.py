@@ -1,5 +1,7 @@
+from __future__ import print_function
 # Mikhail Hushchyn, mikhail.hushchyn@cern.ch
 
+from builtins import range
 import ROOT
 import numpy
 
@@ -46,7 +48,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     try:
         fgeo = ROOT.TFile(geo_file)
     except:
-        print "An error with opening the ship geo file."
+        print("An error with opening the ship geo file.")
         raise
 
     sGeo = fgeo.FAIRGeom
@@ -94,7 +96,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     if hasattr(ShipGeo.Bfield,"fieldMap"):
       fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
     else:
-      print "no fieldmap given, geofile too old, not anymore support"
+      print("no fieldmap given, geofile too old, not anymore support")
       exit(-1)
     sGeo   = fgeo.FAIRGeom
     geoMat =  ROOT.genfit.TGeoMaterialInterface()
@@ -111,7 +113,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     try:
         fn = ROOT.TFile(input_file,'update')
     except:
-        print "An error with opening the input data file."
+        print("An error with opening the input data file.")
         raise
 
     sTree = fn.cbmsim
@@ -144,7 +146,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     for iEvent in range(nEvents):
 
         if iEvent%1000 == 0:
-            print 'Event ', iEvent
+            print('Event ', iEvent)
 
         ########################################### Select one event ###################################################
 
@@ -483,7 +485,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
 
             except:
-                print "Problem with fitted state."
+                print("Problem with fitted state.")
 
 
         h['Reco_tracks'].Fill("N total", n_tracks)
@@ -529,7 +531,7 @@ def extrapolateToPlane(fT,z):
                 pos,mom = state.getPos(),state.getMom()
                 rc = True
             except:
-                print 'error with extrapolation'
+                print('error with extrapolation')
                 pass
             if not rc:
                 # use linear extrapolation
@@ -590,7 +592,7 @@ def fracMCsame(trackids):
     nh=len(trackids)
     
     for tid in trackids:
-        if track.has_key(tid):
+        if tid in track:
             track[tid] += 1
         else:
             track[tid] = 1
@@ -706,7 +708,7 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
             continue
         strawname = str(ahit.GetDetectorID())
 
-        if hitstraws.has_key(strawname):
+        if strawname in hitstraws:
             #straw was already hit
             if ahit.GetX() > hitstraws[strawname][1]:
                 #this hit has higher x, discard it
@@ -745,25 +747,25 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
             
         #group hits per tracking station, key = trackid
         if str(ahit.GetDetectorID())[:1]=="1" :
-            if hits1.has_key(ahit.GetTrackID()):
+            if ahit.GetTrackID() in hits1:
                 hits1[ahit.GetTrackID()] = [hits1[ahit.GetTrackID()][0], i]
             else:
                 hits1[ahit.GetTrackID()] = [i]
         
         if str(ahit.GetDetectorID())[:1]=="2" :
-            if hits2.has_key(ahit.GetTrackID()):
+            if ahit.GetTrackID() in hits2:
                 hits2[ahit.GetTrackID()] = [hits2[ahit.GetTrackID()][0], i]
             else:
                 hits2[ahit.GetTrackID()] = [i]
         
         if str(ahit.GetDetectorID())[:1]=="3" :
-            if hits3.has_key(ahit.GetTrackID()):
+            if ahit.GetTrackID() in hits3:
                 hits3[ahit.GetTrackID()] = [hits3[ahit.GetTrackID()][0], i]
             else:
                 hits3[ahit.GetTrackID()] = [i]
         
         if str(ahit.GetDetectorID())[:1]=="4" :
-            if hits4.has_key(ahit.GetTrackID()):
+            if ahit.GetTrackID() in hits4:
                 hits4[ahit.GetTrackID()] = [hits4[ahit.GetTrackID()][0], i]
             else:
                 hits4[ahit.GetTrackID()] = [i]
@@ -774,22 +776,22 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     tracks_with_hits_in_all_stations = []
     
     for key in hits1.keys():
-        if (hits2.has_key(key) and hits3.has_key(key) ) and hits4.has_key(key):
+        if (key in hits2 and key in hits3 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
     
     for key in hits2.keys():
-        if (hits1.has_key(key) and hits3.has_key(key) ) and hits4.has_key(key):
+        if (key in hits1 and key in hits3 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
     
     for key in hits3.keys():
-        if ( hits2.has_key(key) and hits1.has_key(key) ) and hits4.has_key(key):
+        if ( key in hits2 and key in hits1 ) and key in hits4:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
     
     for key in hits4.keys():
-        if (hits2.has_key(key) and hits3.has_key(key)) and hits1.has_key(key):
+        if (key in hits2 and key in hits3) and key in hits1:
             if key not in tracks_with_hits_in_all_stations and key not in trackoutsidestations:
                 tracks_with_hits_in_all_stations.append(key)
 
@@ -1046,15 +1048,15 @@ try:
     opts, args = getopt.getopt(argv, "hm:f:g:o:",
                                    ["help", "method=", "input=", "geo=", "output="])
 except getopt.GetoptError:
-    print "Wrong options were used. Please, read the following help:\n"
-    print msg
+    print("Wrong options were used. Please, read the following help:\n")
+    print(msg)
     sys.exit(2)
 if len(argv) == 0:
-    print msg
+    print(msg)
     sys.exit(2)
 for opt, arg in opts:
     if opt in ('-h', "--help"):
-        print msg
+        print(msg)
         sys.exit()
     elif opt in ("-m", "--method"):
         method = arg

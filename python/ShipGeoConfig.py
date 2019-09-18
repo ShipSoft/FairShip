@@ -77,7 +77,7 @@ class ConfigRegistry(dict):
     @staticmethod
     def keys():
         registry = ConfigRegistry()
-        return [k for k, v in registry.iteritems()] 
+        return [k for k, v in registry.items()]
 
     @staticmethod
     def get(name):
@@ -101,7 +101,7 @@ class AttrDict(dict):
 
     def clone(self):
         result = AttrDict()
-        for k, v in self.iteritems():
+        for k, v in self.items():
             if isinstance(v, AttrDict):
                 result[k] = v.clone()
             else:
@@ -121,7 +121,7 @@ class Config(AttrDict):
 
     def clone(self):
         result = Config()
-        for k, v in self.iteritems():
+        for k, v in self.items():
             if isinstance(v, AttrDict):
                 result[k] = v.clone()
             else:
