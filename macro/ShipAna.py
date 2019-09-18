@@ -7,57 +7,48 @@ from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 from decorators import *
 import shipRoot_conf
-shipRoot_conf.configure()
+from argparse import ArgumentParser
 
-debug = False
-chi2CutOff  = 4.
+shipRoot_conf.configure()
 PDG = ROOT.TDatabasePDG.Instance()
-inputFile  = None
-geoFile    = None
-dy         = None
-nEvents    = 9999999
+
+chi2CutOff  = 4.
 fiducialCut = False
 measCutFK = 25
 measCutPR = 22
 docaCut = 2.
-try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:f:g:A:Y:i", ["nEvents=","geoFile="])
-except getopt.GetoptError:
-        # print help information and exit:
-        print(' enter file name')
-        sys.exit()
-for o, a in opts:
-        if o in ("-f",):
-            inputFile = a
-        if o in ("-g", "--geoFile",):
-            geoFile = a
-        if o in ("-Y",):
-            dy = float(a)
-        if o in ("-n", "--nEvents=",):
-            nEvents = int(a)
+
+parser = ArgumentParser()
+
+parser.add_argument("-f", "--inputFile", dest="inputFile", help="Input file", required=True)
+parser.add_argument("-n", "--nEvents",   dest="nEvents",   help="Number of events to analyze", required=False,  default=999999)
+parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", required=True)
+parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
+options = parser.parse_args()
+
 eosship = ROOT.gSystem.Getenv("EOSSHIP")
-if not inputFile.find(',')<0 :  
+if not options.inputFile.find(',')<0 :  
   sTree = ROOT.TChain("cbmsim")
-  for x in inputFile.split(','):
+  for x in options.inputFile.split(','):
    if x[0:4] == "/eos":
     sTree.AddFile(eosship+x)
    else: sTree.AddFile(x)
-elif inputFile[0:4] == "/eos":
-  eospath = eosship+inputFile
+elif options.inputFile[0:4] == "/eos":
+  eospath = eosship+options.inputFile
   f = ROOT.TFile.Open(eospath)
   sTree = f.cbmsim
 else:
-  f = ROOT.TFile(inputFile)
+  f = ROOT.TFile(options.inputFile)
   sTree = f.cbmsim
 
 # try to figure out which ecal geo to load
-if not geoFile:
- geoFile = inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
-if geoFile[0:4] == "/eos":
-  eospath = eosship+geoFile
+if not options.geoFile:
+ options.geoFile = options.inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
+if options.geoFile[0:4] == "/eos":
+  eospath = eosship+options.geoFile
   fgeo = ROOT.TFile.Open(eospath)
 else:  
-  fgeo = ROOT.TFile(geoFile)
+  fgeo = ROOT.TFile(options.geoFile)
 
 # new geofile, load Shipgeo dictionary written by run_simScript.py
 upkl    = Unpickler(fgeo)
@@ -874,18 +865,18 @@ if ecal:
   ecalReconstructed = ecalReco.InitPython(sTree.EcalClusters, ecalStructure, ecalCalib)
   ecalMatch.InitPython(ecalStructure, ecalReconstructed, sTree.MCTrack)
 
-nEvents = min(sTree.GetEntries(),nEvents)
+options.nEvents = min(sTree.GetEntries(),options.nEvents)
 
 import pi0Reco
 ut.bookHist(h,'pi0Mass','gamma gamma inv mass',100,0.,0.5)
 
-for n in range(nEvents): 
+for n in range(options.nEvents): 
  myEventLoop(n)
  sTree.FitTracks.Delete()
 makePlots()
 # output histograms
-hfile = inputFile.split(',')[0].replace('_rec','_ana')
-if hfile[0:4] == "/eos" or not inputFile.find(',')<0:
+hfile = options.inputFile.split(',')[0].replace('_rec','_ana')
+if hfile[0:4] == "/eos" or not options.inputFile.find(',')<0:
 # do not write to eos, write to local directory 
   tmp = hfile.split('/')
   hfile = tmp[len(tmp)-1] 
