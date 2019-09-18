@@ -139,7 +139,6 @@ class DrawVetoDigi(ROOT.FairTask):
     n=0
     for edge in [ [-dx,-dy,-dz],[-dx,+dy,-dz],[+dx,+dy,-dz],[+dx,-dy,-dz],[-dx,-dy, dz],[-dx,+dy, dz],[+dx,+dy, dz],[+dx,-dy, dz]]:
      origin = array('d',[edge[0]+o[0],edge[1]+o[1],edge[2]+o[2]])
-     nav.cd("cave/DecayVolume_1/T2_1/VetoLiSc_0/"+node.GetName())
      nav.LocalToMaster(origin,master)
      bx.SetVertex(n,master[0],master[1],master[2])
      n+=1
