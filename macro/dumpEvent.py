@@ -1,6 +1,6 @@
 from __future__ import print_function
 # example for dumping an MC event
-import ROOT,os,sys,getopt
+import ROOT,os,sys
 import rootUtils as ut
 import shipunit as u
 import ShipGeoConfig
