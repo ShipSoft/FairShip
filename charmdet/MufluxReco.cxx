@@ -716,6 +716,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
  Double_t tTruepy[maxD];
  Double_t tTruepz[maxD];
  Double_t tgf[maxD];
+ Int_t tID[maxD];
 
  tMuFlux.Branch("nTr",&tnTr,"nTr/I");
  tMuFlux.Branch("nRPC",&tnRPC,"nRPC/I");
@@ -749,6 +750,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
   tMuFlux.Branch("MCRecoRPCpy",&tRecoRPCpy);
   tMuFlux.Branch("MCRecoRPCpz",&tRecoRPCpz);
   tMuFlux.Branch("MCghostfraction",&tgf,"tgf[nTr]/D");
+  tMuFlux.Branch("MCID",&tID,"tID[nTr]/I");
   tMuFlux.Branch("MCTruepx",&tTruepx,"tTruepx[nTr]/D");
   tMuFlux.Branch("MCTruepy",&tTruepy,"tTruepy[nTr]/D");
   tMuFlux.Branch("MCTruepz",&tTruepz,"tTruepz[nTr]/D");
@@ -879,6 +881,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      tnDoF[tnTr] = fitStatus->getNdf();
      if (MCdata){
       tgf[tnTr] = info->ghostFraction();
+      tID[tnTr] = info->McTrack();
       TVector3 Ptrue = findMCMomentum(info->McTrack());
       tTruepx[tnTr] = Ptrue.X();
       tTruepy[tnTr] = Ptrue.Y();
