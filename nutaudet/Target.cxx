@@ -273,7 +273,10 @@ void Target::ConstructGeometry()
 {
   // cout << "Design = " << fDesign << endl;
   TGeoVolume *top=gGeoManager->GetTopVolume();
-    
+
+  InitMedium("air");
+  TGeoMedium *air =gGeoManager->GetMedium("air");    
+
   InitMedium("iron");
   TGeoMedium *Fe =gGeoManager->GetMedium("iron");
     
@@ -322,7 +325,7 @@ void Target::ConstructGeometry()
 
   //Definition of the target box containing emulsion bricks + (CES if fDesign = 0 o 1) + target trackers (TT) 
   TGeoBBox *TargetBox = new TGeoBBox("TargetBox",XDimension/2, YDimension/2, ZDimension/2);
-  TGeoVolumeAssembly *volTarget = new TGeoVolumeAssembly("volTarget");
+  TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox, air);
       
   // In both fDesign=0 & fDesign=1 the emulsion target is inserted within a magnet
   if(fDesign!=2)
@@ -357,8 +360,9 @@ void Target::ConstructGeometry()
       if(fDesign==1) //NEW
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
       if(fDesign==3){        
-        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
+        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");     
         Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension 
+        cout<<"Test crash assembly "<<ZDimMagnetizedRegion<<endl;
         for (int i = 0; i < fNTarget; i++){
          volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
         }
@@ -375,10 +379,12 @@ void Target::ConstructGeometry()
   //Volumes definition
   //
    
-  TGeoVolumeAssembly *volCell = new TGeoVolumeAssembly("Cell");
+  TGeoBBox *Cell = new TGeoBBox("cell", BrickX/2, BrickY/2, CellWidth/2);
+  TGeoVolume *volCell = new TGeoVolume("Cell",Cell,air);
     
   //Brick
-  TGeoVolumeAssembly *volBrick = new TGeoVolumeAssembly("Brick");
+  TGeoBBox *Brick = new TGeoBBox("brick", BrickX/2, BrickY/2, BrickZ/2);
+  TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,air);
   volBrick->SetLineColor(kCyan);
   volBrick->SetTransparency(1);   
     
@@ -436,7 +442,9 @@ void Target::ConstructGeometry()
   if(fDesign!=2)
     {    
       //CES
-      TGeoVolumeAssembly *volCES = new TGeoVolumeAssembly("CES");
+   
+      TGeoBBox *CES = new TGeoBBox("ces", EmulsionX/2, EmulsionY/2, CESWidth/2);
+      TGeoVolume *volCES = new TGeoVolume("CES", CES, air);
       volCES->SetTransparency(5);
       volCES->SetLineColor(kYellow-10);
       volCES->SetVisibility(kTRUE);
