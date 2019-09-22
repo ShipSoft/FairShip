@@ -1053,13 +1053,11 @@ void veto::SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Floa
      fTub6z = z6;                                                 //!  z-position of tub6
 }
 
-void veto::SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l4, Float_t l5, Float_t l6)
+void veto::SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l6)
 {
      fTub1length = l1;                                                 //!  half length of tub1
      fTub2length = l2;                                                 //!  half length of tub2
      fTub3length = l3;                                                 //!  half length of tub3
-     fTub4length = l4;                                                 //!  half length of tub4
-     fTub5length = l5;                                                 //!  half length of tub5
      fTub6length = l6;                                                 //!  half length of tub6
 }
 

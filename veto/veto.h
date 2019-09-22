@@ -54,7 +54,7 @@ class veto: public FairDetector
 
     void SetZpositions(Float_t z0, Float_t z1, Float_t z2, Float_t z3, Float_t z4, Int_t c);
     void SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Float_t z5, Float_t z6);
-    void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l4, Float_t l5, Float_t l6);
+    void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l6);
     void SetB(Float_t b) {fBtube=b;}
     void SetFloorHeight(Float_t a,Float_t b) {floorHeightA=a;floorHeightB=b;}
     void SetXYstart(Float_t b, Float_t fx, Float_t c, Float_t fy) {fXstart=b; zFocusX=fx; fYstart=c; zFocusY=fy;}
@@ -126,8 +126,6 @@ class veto: public FairDetector
     Float_t fTub1length;
     Float_t fTub2length;
     Float_t fTub3length;
-    Float_t fTub4length;
-    Float_t fTub5length;
     Float_t fTub6length;
     Float_t f_InnerSupportThickness;
     Float_t f_PhiRibsThickness;
