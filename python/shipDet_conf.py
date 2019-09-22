@@ -187,7 +187,7 @@ def configure(run,ship_geo):
     Veto.SetVesselStructure(ship_geo.Veto.innerSupport,ship_geo.Veto.sensitiveThickness,ship_geo.Veto.outerSupport,\
                             ship_geo.Veto.innerSupportMed,ship_geo.Veto.lidThickness,ship_geo.Veto.sensitiveMed,\
                             ship_geo.Veto.outerSupportMed,ship_geo.Veto.decayMed,\
-                            ship_geo.Veto.rib,ship_geo.Veto.ribMed)
+                            ship_geo.Veto.rib)
 
  detectorList.append(Veto)
  if hasattr(ship_geo,'tauMudet'): # don't support old designs

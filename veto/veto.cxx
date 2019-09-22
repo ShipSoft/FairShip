@@ -88,8 +88,6 @@ veto::veto(const char* name, Bool_t active)
     vetoMed_name("Scintillator"),   // for liquid scintillator
     supportMedIn_name("steel"),        // for vacuum option
     supportMedOut_name("Aluminum"),    // for vacuum option
-    ribMed_name("steel"),             //material of the ribs(support structure)
-    phi_ribMed_name("polypropylene"),//material of the phi_ribs (structure separating  the LiSc segments in XY plane)
     f_RibThickness(3.*cm),
     decayVolumeMed_name("vacuums")    // for vacuum option
 {
@@ -1189,8 +1187,6 @@ void veto::ConstructGeometry()
     supportMedIn   = gGeoManager->GetMedium(supportMedIn_name); //! medium of support structure, iron, balloon
     supportMedOut  = gGeoManager->GetMedium(supportMedOut_name); //! medium of support structure, aluminium, balloon
     decayVolumeMed = gGeoManager->GetMedium(decayVolumeMed_name);  // decay volume, air/helium/vacuum
-    ribMed = gGeoManager->GetMedium(ribMed_name); //! medium of support structure
-    phi_ribMed=gGeoManager->GetMedium(phi_ribMed_name); //medium of the  structure separating  the LiSc segments in XY plane
     // put everything in an assembly
     TGeoVolume *tDecayVol = new TGeoVolumeAssembly("DecayVolume");
     TGeoVolume *tMaGVol   = new TGeoVolumeAssembly("MagVolume");

@@ -58,9 +58,9 @@ class veto: public FairDetector
     void SetB(Float_t b) {fBtube=b;}
     void SetFloorHeight(Float_t a,Float_t b) {floorHeightA=a;floorHeightB=b;}
     void SetXYstart(Float_t b, Float_t fx, Float_t c, Float_t fy) {fXstart=b; zFocusX=fx; fYstart=c; zFocusY=fy;}
-    void SetVesselStructure(Float_t a,Float_t b,Float_t c,TString d,Float_t l,TString e,TString f,TString v,Float_t r, TString rm) {f_InnerSupportThickness=a;
+    void SetVesselStructure(Float_t a,Float_t b,Float_t c,TString d,Float_t l,TString e,TString f,TString v,Float_t r) {f_InnerSupportThickness=a;
       f_VetoThickness=b;f_OuterSupportThickness=c;supportMedIn_name=d;f_LidThickness=l;vetoMed_name=e;supportMedOut_name=f;decayVolumeMed_name=v;
-     f_RibThickness=r;ribMed_name=rm;}
+     f_RibThickness=r;}
 
     /**      This method is an example of how to add your own point
      *       of type vetoPoint to the clones array
@@ -139,15 +139,10 @@ class veto: public FairDetector
     TString supportMedIn_name;    //! medium of support structure, iron, balloon
     TString supportMedOut_name;   //! medium of support structure, aluminium, balloon
     TString decayVolumeMed_name;  //! medium of decay volume, vacuum/air/helium
-    TString ribMed_name;          //! medium of rib support structure
-    TString phi_ribMed_name;      //! medium of phi_ribs structure separating  the LiSc segments in XY plane 
     TGeoMedium *vetoMed;    //! 
     TGeoMedium *supportMedIn; //! 
     TGeoMedium *supportMedOut; //! 
     TGeoMedium *decayVolumeMed; //! 
-    TGeoMedium *ribVolumeMed; //! 
-    TGeoMedium *ribMed; //!
-    TGeoMedium *phi_ribMed; //!
 
     Float_t fXstart,fYstart; // horizontal/vertical width at start of tank
     Float_t zFocusX,zFocusY; // focus points for conical design
