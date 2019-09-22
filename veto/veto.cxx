@@ -834,13 +834,11 @@ TGeoVolume* veto::MakeSegments(Double_t dz,Double_t dx_start,Double_t dy_start,D
 {
       TGeoVolumeAssembly *tTankVol = new TGeoVolumeAssembly("T2");
       Double_t dist =  0.8*m; //with Napoli design: 0.8 m
-      
 
-      //>>>>>>>>>>>>>>>>>>>>>>>>>>>>new>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 	  int isInnerWall=1;
       int isDecayVacuum=1;
-	  int isOuterWall=0;
+	  int isOuterWall=1;
 	  int isVerticalRib=1;
 	  int isLongitRib=1;
 	  int isLiSc=1;
@@ -1226,9 +1224,7 @@ void veto::ConstructGeometry()
       tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length - 0.5*m));
 
       TGeoVolume*  magnetInnerWalls = MakeMagnetSegment(3);
-      tMaGVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
-      //tDecayVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));
-      
+      //tMaGVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));      
       
       
    // make the exit window

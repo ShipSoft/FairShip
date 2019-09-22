@@ -169,6 +169,7 @@ class veto: public FairDetector
    int makeId(double z,double x, double y);
    int liscId(TString ShapeTypeName,int blockNr,int Zlayer,int number, int position);
     
+   
         TGeoVolume* GeoSideObj(TString xname, double dz,
 			     double a1, double b1,double a2, double b2,double dA, double dB,
 				Int_t color, TGeoMedium *material, Bool_t sens);
