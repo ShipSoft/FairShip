@@ -1,5 +1,6 @@
 #!/usr/bin/env python -i
 from __future__ import print_function
+from __future__ import division
 import ROOT,sys,os,Tkinter,atexit
 from argparse import ArgumentParser
 from ShipGeoConfig import ConfigRegistry

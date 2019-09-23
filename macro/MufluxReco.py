@@ -2,6 +2,7 @@
 #inputFile = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/pythia.root'
 #geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
 from __future__ import print_function
+from __future__ import division
 debug = False#False
 
 withNoStrawSmearing = None # True   for debugging purposes
