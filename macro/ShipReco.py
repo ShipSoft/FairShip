@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
+from __future__ import division
 from argparse import ArgumentParser
 
 withHists = True
@@ -28,20 +29,20 @@ shipRoot_conf.configure()
 parser = ArgumentParser()
 
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="Input file", required=True)
-parser.add_argument("-n", "--nEvents",   dest="nEvents",   help="Number of events to reconstruct", required=False,  default=999999)
+parser.add_argument("-n", "--nEvents",   dest="nEvents",   help="Number of events to reconstruct", required=False,  default=999999,type=int)
 parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", required=True)
 parser.add_argument("--noVertexing",     dest="noVertexing", help="switch off vertexing", required=False, action="store_true")
 parser.add_argument("--noStrawSmearing", dest="withNoStrawSmearing", help="no smearing of distance to wire, default on", required=False, action="store_true")
 parser.add_argument("--withT0",          dest="withT0", help="simulate arbitrary T0 and correct for it", required=False, action="store_true")
 parser.add_argument("--ecalDebugDraw",   dest="EcalDebugDraw", help="switch in debog for ECAL", required=False, action="store_true")
 parser.add_argument("--saveDisk",        dest="saveDisk", help="if set, will remove input file, only rec file kept", required=False, action="store_true")
-parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0)
+parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0,type=int)
 parser.add_argument("--realPR",          dest="realPR",  help="Option for pattern recognition without MC truth. \n\
            FH                        : Hough transform.\n\
            AR                        : Artificial retina.\n\
       TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed."\
                                      , required=False, choices=['FH','AR','TemplateMatching'],  default='')
-parser.add_argument("-dy",               dest="dy", help="Max height of tank", required=False, default=None)
+parser.add_argument("-dy",               dest="dy", help="Max height of tank", required=False, default=None,type=int)
 parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
 
 options = parser.parse_args()

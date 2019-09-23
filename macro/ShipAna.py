@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import division
 # example for accessing smeared hits and fitted tracks
 import ROOT,os,sys,getopt
 import rootUtils as ut
@@ -21,7 +22,7 @@ docaCut = 2.
 parser = ArgumentParser()
 
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="Input file", required=True)
-parser.add_argument("-n", "--nEvents",   dest="nEvents",   help="Number of events to analyze", required=False,  default=999999)
+parser.add_argument("-n", "--nEvents",   dest="nEvents",   help="Number of events to analyze", required=False,  default=999999,type=int)
 parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", required=True)
 parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
 options = parser.parse_args()
