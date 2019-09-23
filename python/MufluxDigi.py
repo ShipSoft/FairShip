@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import division
 from builtins import range
 import os
 import ROOT
@@ -40,7 +41,7 @@ def StripY(y):
     H_STRIP_OFF = 0.1983
     NR_HORI_STRIPS = 116
     total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
-    y_start = total_height / 2
+    y_start = total_height / 2.
     strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
     if not (0 < strip_y <= NR_HORI_STRIPS):
         print("WARNING: Y strip outside range!")
@@ -104,7 +105,7 @@ class MufluxDigi:
         for MuonTaggerHit in self.sTree.MuonTaggerPoint:
             # getting rpc nodes, name and matrix
             detID = MuonTaggerHit.GetDetectorID()
-            s = str(detID/10000)
+            s = str(detID//10000)
             nav.cd('/VMuonBox_1/VSensitive'+s+'_'+s)
             # translation from top to MuonBox_1
             point = array('d', [
@@ -119,7 +120,7 @@ class MufluxDigi:
             ycoord = point_local[1]
 
             # identify individual rpcs
-            station = detID/10000
+            station = detID//10000
             if station not in range(1, 6):  # limiting the range of rpcs
                 print("WARNING: Invalid RPC number, something's wrong with the geometry ",station)
 
@@ -195,7 +196,7 @@ class MufluxDigi:
             else:
                 hitsPerDetId[detID] = index
             if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
-            station = int(aMCPoint.GetDetectorID()/10000000)
+            station = int(aMCPoint.GetDetectorID()//10000000)
             if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
             index+=1
 

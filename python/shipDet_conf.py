@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 from __future__ import print_function
+from __future__ import division
 import ROOT,os
 import shipunit as u
 from ShipGeoConfig import AttrDict,ConfigRegistry

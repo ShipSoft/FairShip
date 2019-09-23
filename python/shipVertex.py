@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import division
 # simple vertex reconstruction with errors
 import ROOT,sys,os
 import shipunit as u
@@ -52,7 +53,7 @@ class Task:
  def chi2(self,res,Vy):       
   s=0
   for i in range(100):
-    s+=Vy[i]*res[i/10]*res[i%10]
+    s+=Vy[i]*res[i//10]*res[i%10]
   return s
  def residuals(self,y_data,a,z0):
   res = np.zeros(10)
