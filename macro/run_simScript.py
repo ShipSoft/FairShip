@@ -50,9 +50,9 @@ parser = ArgumentParser()
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
 parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
-parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=22)", required=False, default=22)
-parser.add_argument("--Estart",  dest="Estart",  help="start of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10)
-parser.add_argument("--Eend",    dest="Eend",    help="end of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10)
+parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=22)", required=False, default=22, type=int)
+parser.add_argument("--Estart",  dest="Estart",  help="start of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
+parser.add_argument("--Eend",    dest="Eend",    help="end of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
 parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", required=False, default='c')
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
@@ -67,16 +67,16 @@ parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic 
 parser.add_argument("--RpvSusy", dest="RPVSUSY",  help="Generate events based on RPV neutralino", required=False, action="store_true")
 parser.add_argument("--DarkPhoton", dest="DarkPhoton",  help="Generate dark photons", required=False, action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench",  help="Generate HP Susy", required=False, default=2)
-parser.add_argument("-m", "--mass", dest="theMass",  help="Mass of hidden particle, default "+str(theHNLMass)+"GeV for HNL, "+str(theDPmass)+"GeV for DP", required=False, default=None)
+parser.add_argument("-m", "--mass", dest="theMass",  help="Mass of hidden particle, default "+str(theHNLMass)+"GeV for HNL, "+str(theDPmass)+"GeV for DP", required=False, default=None, type=float)
 parser.add_argument("-c", "--couplings", "--coupling", dest="thecouplings",  help="couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings.\
  TP default for HNL, ctau=53.3km", required=False,default="0.447e-9,7.15e-9,1.88e-9")
 parser.add_argument("-cp", "--production-couplings", dest="theprodcouplings",  help="production couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL production only"\
                                             ,required=False,default=None)
 parser.add_argument("-cd", "--decay-couplings", dest="thedeccouplings",  help="decay couplings  \'U2e,U2mu,U2tau\' to set the couplings for HNL decay only", required=False,default=None)
-parser.add_argument("-e", "--epsilon", dest="theDPepsilon",  help="to set mixing parameter epsilon", required=False,default=0.00000008)
-parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to generate", required=False,  default=100)
-parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0)
-parser.add_argument("-s", "--seed",dest="theSeed",  help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", required=False,  default=0)
+parser.add_argument("-e", "--epsilon", dest="theDPepsilon",  help="to set mixing parameter epsilon", required=False,default=0.00000008, type=float)
+parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to generate", required=False,  default=100, type=int)
+parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0, type=int)
+parser.add_argument("-s", "--seed",dest="theSeed",  help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", required=False,  default=0, type=int)
 parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an integer for the muonBackground simulation with specific seed for each muon, only for experts!"\
                                             ,required=False,  default=False)
 parser.add_argument("-f",        dest="inputFile",       help="Input file if not default file", required=False, default=False)
@@ -84,19 +84,19 @@ parser.add_argument("-g",        dest="geofile",       help="geofile for muon sh
 parser.add_argument("-o", "--output",dest="outputDir",  help="Output directory", required=False,  default=".")
 parser.add_argument("-Y",        dest="dy",  help="max height of vacuum tank", required=False, default=globalDesigns[default]['dy'])
 parser.add_argument("--tankDesign", dest="dv",      help="4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1"\
-                                            ,required=False, default=globalDesigns[default]['dv'])
+                                            ,required=False, default=globalDesigns[default]['dv'], type=int)
 parser.add_argument("--muShieldDesign", dest="ds",  help="5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file\
-                                            ,10=with field map for hadron absorber", required=False, default=globalDesigns[default]['ds'])
+                                            ,10=with field map for hadron absorber", required=False, default=globalDesigns[default]['ds'], type=int)
 parser.add_argument("--nuTauTargetDesign", dest="nud", help="0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector"\
-                                            ,required=False, default=globalDesigns[default]['nud'])
+                                            ,required=False, default=globalDesigns[default]['nud'], type=int)
 parser.add_argument("--caloDesign", dest="caloDesign",   help="0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL"\
-                                            ,required=False, default=globalDesigns[default]['caloDesign'])
+                                            ,required=False, default=globalDesigns[default]['caloDesign'], type=int)
 parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw"
-                                            ,required=False, default=globalDesigns[default]['strawDesign'])
+                                            ,required=False, default=globalDesigns[default]['strawDesign'], type=int)
 parser.add_argument("--Muflux",  dest="muflux",  help="Muflux fixed target setup", required=False, action="store_true")
 parser.add_argument("--charm", dest="charm",  help="!=0 create charm detector instead of SHiP", required=False, default=0)
-parser.add_argument("--CharmdetSetup", dest="CharmdetSetup",  help="1 charm cross section setup, 0 muon flux setup", required=False, default=0)
-parser.add_argument("--CharmTarget",   dest="CharmTarget",  help="six different configurations used in July 2018 exposure for charm", required=False, default=3)
+parser.add_argument("--CharmdetSetup", dest="CharmdetSetup",  help="1 charm cross section setup, 0 muon flux setup", required=False, default=0, type=int)
+parser.add_argument("--CharmTarget",   dest="CharmTarget",  help="six different configurations used in July 2018 exposure for charm", required=False, default=3, type=int)
 parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy only stable particles to stack, except for HNL events", required=False, action="store_true")
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
@@ -348,12 +348,12 @@ if simEngine == "Nuage":
  nXcells = 7
  nYcells = 3
  nZcells = ntt -1
- startx = -ship_geo.NuTauTarget.xdim/2 + nXcells*ship_geo.NuTauTarget.BrX
- endx = -ship_geo.NuTauTarget.xdim/2 + (nXcells+1)*ship_geo.NuTauTarget.BrX
- starty = -ship_geo.NuTauTarget.ydim/2 + nYcells*ship_geo.NuTauTarget.BrY 
- endy = - ship_geo.NuTauTarget.ydim/2 + (nYcells+1)*ship_geo.NuTauTarget.BrY
- startz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
- endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2 + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
+ startx = -ship_geo.NuTauTarget.xdim/2. + nXcells*ship_geo.NuTauTarget.BrX
+ endx = -ship_geo.NuTauTarget.xdim/2. + (nXcells+1)*ship_geo.NuTauTarget.BrX
+ starty = -ship_geo.NuTauTarget.ydim/2. + nYcells*ship_geo.NuTauTarget.BrY 
+ endy = - ship_geo.NuTauTarget.ydim/2. + (nYcells+1)*ship_geo.NuTauTarget.BrY
+ startz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2. + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
+ endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2. + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
  Nuagegen.SetPositions(ship_geo.target.z0, startz, endz, startx, endx, starty, endy)
  #--------------------------------
  ut.checkFileExists(inputFile)
