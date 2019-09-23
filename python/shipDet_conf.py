@@ -175,7 +175,7 @@ def configure(run,ship_geo):
                     ship_geo.TrackStation3.z, ship_geo.TrackStation4.z,ship_geo.tankDesign)
  Veto.SetTubZpositions(ship_geo.Chamber1.z,ship_geo.Chamber2.z,ship_geo.Chamber3.z,ship_geo.Chamber4.z,ship_geo.Chamber5.z,ship_geo.Chamber6.z)
  Veto.SetTublengths(ship_geo.chambers.Tub1length,ship_geo.chambers.Tub2length,ship_geo.chambers.Tub3length, \
-                    ship_geo.chambers.Tub4length,ship_geo.chambers.Tub5length,ship_geo.chambers.Tub6length)
+                    ship_geo.chambers.Tub6length)
  Veto.SetB(ship_geo.Yheight/2.)
  Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA,ship_geo.cave.floorHeightTankB)
  if ship_geo.tankDesign > 4: 
@@ -187,7 +187,7 @@ def configure(run,ship_geo):
     Veto.SetVesselStructure(ship_geo.Veto.innerSupport,ship_geo.Veto.sensitiveThickness,ship_geo.Veto.outerSupport,\
                             ship_geo.Veto.innerSupportMed,ship_geo.Veto.lidThickness,ship_geo.Veto.sensitiveMed,\
                             ship_geo.Veto.outerSupportMed,ship_geo.Veto.decayMed,\
-                            ship_geo.Veto.rib,ship_geo.Veto.ribMed)
+                            ship_geo.Veto.rib)
 
  detectorList.append(Veto)
  if hasattr(ship_geo,'tauMudet'): # don't support old designs
