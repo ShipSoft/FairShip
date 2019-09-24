@@ -13,7 +13,7 @@ debug = 0  # 1 print weights and field
 dryrun = False # True: just setup Pythia and exit
 
 CharmdetSetup = 0 # 1 charm cross section setup, 0 muon flux setup
-DownScaleDiMuon = False
+DownScaleDiMuon = True
 CharmTarget = 3 #six different configurations used in July 2018 exposure for charm
 # Default HNL parameters
 theMass = 1.0*u.GeV
@@ -472,7 +472,7 @@ if simEngine == "MuonBack":
  fileType = ut.checkFileExists(inputFile)
  if fileType == 'tree':
  # 2018 background production 
-  primGen.SetTarget(ship_geo.target.z0+70.1225*u.m,0.)
+  primGen.SetTarget(ship_geo.target.z0+70.845*u.m,0.)
  else:
   primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
  #
