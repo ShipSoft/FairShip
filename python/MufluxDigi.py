@@ -7,7 +7,7 @@ stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
 deadChannelsForMC = [10112001, 20112003, 30002041, 30012026, 30102025, 30112013, 30112018, 40012014]
-ineffiency = {1:0.2,2:0.2,3:0.2,4:0.2,5:0.2}
+ineffiency = {1:0.1,2:0.1,3:0.1,4:0.1,5:0.1}
 
 # defining constants for rpc properties
 STRIP_XWIDTH = 0.8625  # internal STRIP V, WIDTH, in cm
@@ -176,26 +176,28 @@ class MufluxDigi:
     def digitizeMufluxSpectrometer(self):
 
         # digitize FairSHiP MC hits
-        index = 0
         hitsPerDetId = {}
-
         for aMCPoint in self.sTree.MufluxSpectrometerPoint:
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             aHit.setValid()
-            if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
-            self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
-            if hitsPerDetId.has_key(detID):
-                if self.digiMufluxSpectrometer[hitsPerDetId[detID]].tdc() > aHit.tdc():
-                    # second hit with smaller tdc
-                    self.digiMufluxSpectrometer[hitsPerDetId[detID]].setInvalid()
-                    hitsPerDetId[detID] = index
-            else:
-                aHit.setInvalid()
-            if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
-            station = int(aMCPoint.GetDetectorID()/10000000)
-            if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
-            index+=1
+            # station = int(aMCPoint.GetDetectorID()/10000000)
+            # if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
+            if detID in deadChannelsForMC: aHit.setInvalid()
+            if not hitsPerDetId.has_key(detID):
+               hitsPerDetId[detID]={}
+            hitsPerDetId[detID][aHit.tdc()] = aHit
+        for detID in hitsPerDetId:
+           times = hitsPerDetId[detID].keys()
+           times.sort()
+           for t in range(1,len(times)):
+             hitsPerDetId[detID][times[t]].setInvalid()
+        index = 0
+        for detID in hitsPerDetId:
+           for t in hitsPerDetId[detID]:
+             if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
+             self.digiMufluxSpectrometer[index]=hitsPerDetId[detID][t]
+             index+=1
 
     def finish(self):
         print 'finished writing tree'
