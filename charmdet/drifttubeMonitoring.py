@@ -1175,6 +1175,7 @@ def MakeKeysToDThits(minToT=-999):
     key = -1
     for hit in sTree.Digi_LateMufluxSpectrometerHits:
         key+=1
+        if not hit.isValid() and MCdata: continue
         if not hit.hasTimeOverThreshold(): continue
         if hit.GetTimeOverThreshold()<minToT : continue
         detID=hit.GetDetectorID()

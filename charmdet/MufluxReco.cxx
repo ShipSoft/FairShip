@@ -1096,37 +1096,11 @@ void MufluxReco::sortHits(TClonesArray* hits, nestedList* l, Bool_t flag){
  //spectrHitsSorted = {'_x':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
  //                    '_u':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}},\
  //                    '_v':{1:{0:[],1:[],2:[],3:[]},2: {0:[],1:[],2:[],3:[]},3: {0:[],1:[],2:[],3:[]},4: {0:[],1:[],2:[],3:[]}}}
- std::map<Int_t , Bool_t> isValid;
- if (MCdata){
-  std::map<unsigned int, unsigned int> hitsPerDetId;
-  for (Int_t k=0;k<hits->GetEntries();k++) {
-    isValid[k] = kTRUE;
-    int itSecond;
-    MufluxSpectrometerHit* hit = (MufluxSpectrometerHit*)hits->At(k);
-    Int_t detID = hit->GetDetectorID();
-    Bool_t found = kFALSE;
-    std::map<unsigned int, unsigned int>::iterator it;
-    for (it = hitsPerDetId.begin(); it != hitsPerDetId.end();it++)  {
-       if (it->first == detID) {
-       found = kTRUE;
-       itSecond = it->second;
-       break;
-       }
-    }
-    if (found){
-       MufluxSpectrometerHit* prevHit = (MufluxSpectrometerHit*)hits->At(itSecond);
-       if (prevHit->GetDigi() > hit->GetDigi()){
-         hitsPerDetId[detID] = k;
-         isValid[it->second] = kFALSE;}
-       else{isValid[k] = kFALSE; }
-      } else {hitsPerDetId[detID]=k;}
-  }
- }
-
+ 
  for (Int_t k=0;k<hits->GetEntries();k++) {
    MufluxSpectrometerHit* hit = (MufluxSpectrometerHit*)hits->At(k);
    if (MCdata){
-     if ( !isValid[k]  ){continue;}
+     if ( !hit->isValid()  ){continue;}
    }
    if (flag && !MCdata){
     if (!hit->hasTimeOverThreshold() || !hit->hasDelay() || !hit->hasTrigger() ){ continue;} // no reliable TDC measuerement
