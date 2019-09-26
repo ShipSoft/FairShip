@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import division
 # Mikhail Hushchyn, mikhail.hushchyn@cern.ch
 
+from future import standard_library
+standard_library.install_aliases()
 from builtins import range
 import ROOT
 import numpy
@@ -15,7 +17,7 @@ from rootpyPickler import Unpickler
 
 # For modules
 import shipDet_conf
-import __builtin__ as builtin
+import builtins as builtin
 # import TrackExtrapolateTool
 
 # For track pattern recognition

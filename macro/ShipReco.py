@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 from __future__ import print_function
 from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
 from argparse import ArgumentParser
 
 withHists = True
@@ -19,7 +21,7 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys
-import __builtin__ as builtin
+import builtins as builtin
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
