@@ -15,6 +15,14 @@ def isDP(pdg):
 def pbremProdRate(mass,epsilon,doprint=False):
     xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
     if doprint: print "A' production rate per p.o.t: \t %.8g"%(xswg)
+    rhoff = proton_bremsstrahlung.rhoFormFactor(mass)**2
+    if doprint: print "A' rho form factor: \t %.8g"%rhoff
+    if doprint: print "A' rescaled production rate per p.o.t:\t %.8g"%(xswg*rhoff)
+    return xswg*rhoff
+
+def pbremProdRateNoFF(mass,epsilon,doprint=False):
+    xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
+    if doprint: print "A' production rate per p.o.t: \t %.8g"%(xswg)
     penalty = proton_bremsstrahlung.penaltyFactor(mass)
     if doprint: print "A' penalty factor: \t %.8g"%penalty
     if doprint: print "A' rescaled production rate per p.o.t:\t %.8g"%(xswg*penalty)
@@ -82,6 +90,7 @@ def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0] 
         avgMeson1 = getAverageMesonRate(mumPdg)*brM2DP[1]
         return avgMeson, avgMeson1
+        #return avgMeson + avgMeson1
     if not mumPdg==331:
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP
         return avgMeson

@@ -171,7 +171,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False):#moth
     if debug: cf.write('P8gen.SetParameters("Next:numberCount    =  0")\n')
 
     # Configuring decay modes...
-    readDecayTable.addDarkPhotondecayChannels(P8gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
+    readDecayTable.addDarkPhotondecayChannels(P8gen, mass, DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish HNL setup...
     P8gen.SetParameters(str(P8gen.GetDPId())+":mayDecay = on")
     if debug: cf.write('P8gen.SetParameters("'+str(P8gen.GetDPId())+':mayDecay = on")\n')
