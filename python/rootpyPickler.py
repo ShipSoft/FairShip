@@ -47,6 +47,7 @@ The following additional notes apply:
 from __future__ import absolute_import
 from __future__ import print_function
 
+from past.builtins import basestring
 import sys
 if sys.version_info[0] < 3:
     from cStringIO import StringIO
