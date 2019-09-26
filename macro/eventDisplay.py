@@ -1,7 +1,9 @@
 #!/usr/bin/env python -i
 from __future__ import print_function
 from __future__ import division
-import ROOT,sys,os,Tkinter,atexit
+from future import standard_library
+standard_library.install_aliases()
+import ROOT,sys,os,tkinter,atexit
 from argparse import ArgumentParser
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
@@ -402,19 +404,19 @@ class DrawTracks(ROOT.FairTask):
 import evd_fillEnergy
 class IO():
     def __init__(self):
-        self.master = Tkinter.Tk()
+        self.master = tkinter.Tk()
         self.master.title('SHiP Event Display GUI')
         self.master.geometry(u'320x580+165+820')  
-        self.fram1 = Tkinter.Frame(self.master)
-        b = Tkinter.Button(self.fram1, text="Next Event",command=self.nextEvent)
-        b.pack(fill=Tkinter.BOTH, expand=1) 
-        label = Tkinter.Label(self.fram1, text='Event number:')
-        label["relief"] = Tkinter.RAISED
-        entry = Tkinter.Entry(self.fram1)
+        self.fram1 = tkinter.Frame(self.master)
+        b = tkinter.Button(self.fram1, text="Next Event",command=self.nextEvent)
+        b.pack(fill=tkinter.BOTH, expand=1) 
+        label = tkinter.Label(self.fram1, text='Event number:')
+        label["relief"] = tkinter.RAISED
+        entry = tkinter.Entry(self.fram1)
         entry["foreground"] = "blue"
-        label.pack(side=Tkinter.LEFT)
-        entry.pack(side=Tkinter.RIGHT)
-        self.contents = Tkinter.IntVar()
+        label.pack(side=tkinter.LEFT)
+        entry.pack(side=tkinter.RIGHT)
+        self.contents = tkinter.IntVar()
         # set it to some value
         self.n = 0
         self.contents.set(self.n)
@@ -426,25 +428,25 @@ class IO():
         entry.bind('<Key-Return>', self.nextEvent)
         self.lbut   = {}
         x = 'withMC'
-        a = Tkinter.IntVar()
+        a = tkinter.IntVar()
         if globals()['withMCTracks']: a.set(1)
         else: a.set(0)
-        self.lbut[x] = Tkinter.Checkbutton(self.master,text="with MC Tracks",compound=Tkinter.LEFT,variable=a)
+        self.lbut[x] = tkinter.Checkbutton(self.master,text="with MC Tracks",compound=tkinter.LEFT,variable=a)
         self.lbut[x].var = a
         self.lbut[x]['command'] = self.toogleMCTracks
-        self.lbut[x].pack(side=Tkinter.TOP)
+        self.lbut[x].pack(side=tkinter.TOP)
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
         for v in top.GetNodes():
          x=v.GetName()
          cmd = 'toogle("'+x+'")' 
-         a = Tkinter.IntVar()
+         a = tkinter.IntVar()
          assemb = "Assembly" in v.GetVolume().__str__() 
          if v.IsVisible() or (assemb and v.IsVisDaughters()): a.set(1)
          else : a.set(0)
-         self.lbut[x]  = Tkinter.Checkbutton(self.master,text=x.replace('_1',''),compound=Tkinter.LEFT,variable=a)
+         self.lbut[x]  = tkinter.Checkbutton(self.master,text=x.replace('_1',''),compound=tkinter.LEFT,variable=a)
          self.lbut[x].var = a
          self.lbut[x]['command'] = lambda j=x: self.toogle(j)
-         self.lbut[x].pack(side=Tkinter.BOTTOM)
+         self.lbut[x].pack(side=tkinter.BOTTOM)
         self.fram1.pack()
 # add ship actions to eve display
         gEve = ROOT.gEve
