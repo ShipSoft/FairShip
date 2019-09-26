@@ -60,7 +60,10 @@ import pickle
 import ROOT
 
 string_types = basestring,
-integer_types = (int, long)
+if sys.version_info[0] < 3:
+    integer_types = (int, long)
+else:
+    integer_types = (int,)
 
 __all__ = [
     'dump',
