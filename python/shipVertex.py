@@ -195,7 +195,7 @@ class Task:
      self.z0 = HNLPos[2]
      self.Vy = np.zeros(100)
      for i in range(100):
-       self.Vy[i] = covInv[i/10][i%10]
+       self.Vy[i] = covInv[i//10][i%10]
      
      f=np.array([0.])
      gMinuit = ROOT.TMinuit(9)
@@ -334,7 +334,7 @@ class Task:
            MT_AtoP[j][i] = M_AtoP[i][j]
        
        for i in range(36):
-         covA[i/6][i%6] = cov[i/6+3+(i%6+3)*9]
+         covA[i//6][i%6] = cov[i//6+3+(i%6+3)*9]
        
        tmp   = ROOT.TMatrixD(4,6)
        tmp.Mult(M_AtoP,covA)
