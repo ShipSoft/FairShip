@@ -18,7 +18,7 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
-import __builtin__ as builtin
+import globals
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -58,11 +58,11 @@ modules = charmDet_conf.configure(run,ShipGeo)
 fgeo.FAIRGeom
 
 # make global variables
-builtin.debug    = options.debug
-builtin.ShipGeo = ShipGeo
+globals.debug    = options.debug
+globals.ShipGeo = ShipGeo
 
 iEvent = 0
-builtin.iEvent  = iEvent
+globals.iEvent  = iEvent
 
 # import reco tasks
 import MufluxDigi

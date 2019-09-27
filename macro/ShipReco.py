@@ -19,7 +19,7 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys
-import __builtin__ as builtin
+import globals
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -113,21 +113,21 @@ if hasattr(ShipGeo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True,withVirtualMC = False)
 
 # make global variables
-builtin.debug    = options.Debug
-builtin.fieldMaker = fieldMaker
-builtin.pidProton = pidProton
-builtin.withT0 = options.withT0
-builtin.realPR = options.realPR
-builtin.vertexing = vertexing
-builtin.ecalGeoFile = ecalGeoFile
-builtin.ShipGeo = ShipGeo
-builtin.modules = modules
-builtin.EcalDebugDraw  = options.EcalDebugDraw
-builtin.withNoStrawSmearing = options.withNoStrawSmearing
-builtin.h    = h
-builtin.log  = log
+globals.debug    = options.Debug
+globals.fieldMaker = fieldMaker
+globals.pidProton = pidProton
+globals.withT0 = options.withT0
+globals.realPR = options.realPR
+globals.vertexing = vertexing
+globals.ecalGeoFile = ecalGeoFile
+globals.ShipGeo = ShipGeo
+globals.modules = modules
+globals.EcalDebugDraw  = options.EcalDebugDraw
+globals.withNoStrawSmearing = options.withNoStrawSmearing
+globals.h    = h
+globals.log  = log
 iEvent = 0
-builtin.iEvent  = iEvent
+globals.iEvent  = iEvent
 
 # import reco tasks
 import shipDigiReco

@@ -3,6 +3,7 @@
 #geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
 from __future__ import print_function
 from __future__ import division
+import globals
 debug = False#False
 
 withNoStrawSmearing = None # True   for debugging purposes
@@ -31,7 +32,6 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
-import __builtin__ as builtin
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -344,21 +344,21 @@ modules = charmDet_conf.configure(run,ShipGeo)
 fgeo.FAIRGeom
 
 # make global variables
-builtin.debug    = debug
-builtin.withT0 = withT0
-builtin.realPR = realPR
+globals.debug    = debug
+globals.withT0 = withT0
+globals.realPR = realPR
 
-builtin.ShipGeo = ShipGeo
-builtin.modules = modules
+globals.ShipGeo = ShipGeo
+globals.modules = modules
 
-builtin.withNoStrawSmearing = withNoStrawSmearing
-builtin.withNTaggerHits = withNTaggerHits
-builtin.withDist2Wire = withDist2Wire
-builtin.h    = h
-builtin.log  = log
-builtin.simulation = simulation
+globals.withNoStrawSmearing = withNoStrawSmearing
+globals.withNTaggerHits = withNTaggerHits
+globals.withDist2Wire = withDist2Wire
+globals.h    = h
+globals.log  = log
+globals.simulation = simulation
 iEvent = 0
-builtin.iEvent  = iEvent
+globals.iEvent  = iEvent
 
 # import reco tasks
 import MufluxDigiReco
