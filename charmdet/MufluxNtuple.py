@@ -306,7 +306,7 @@ def clones(OnlyDraw = False,noClones=False):
         for c in case:
             sTree = case[c][0]
             h = case[c][1]
-            ut.bookHist(h,'cos alpha','cosine of angle between two tracks',10000,0.95,1.01)
+            ut.bookHist(h,'cos alpha','cosine of angle between two tracks;cos[#alpha]',10000,0.95,1.01)
             for n in range(sTree.GetEntries()):
                 rc = sTree.GetEvent(n)
                 for a in range(sTree.nTr-1):
@@ -332,8 +332,15 @@ def clones(OnlyDraw = False,noClones=False):
     rc = hData['leg'].AddEntry(hData["cos alpha"],"Data",'PL')
     rc = hData['leg'].AddEntry(hData["MCcos alpha"],"MC",'PL')
     hData['leg'].Draw()
+    lmax = hData['cos alpha'].GetMaximum()
+    h['lcut'] =  ROOT.TArrow(0.99995,0.,0.99995,lmax*0.2,0.05,"<")
+    h['lcut'].SetLineColor(ROOT.kMagenta)
+    h['lcut'].SetLineWidth(2)
+    h['lcut'].Draw()
     hData['clones'].Print('MC-Comparison-Clones.pdf') 
     hData['clones'].Print('MC-Comparison-Clones.png')
+    ff = ROOT.TFile('Clones.root','recreate')
+    hData['clones'].Write('Clones.root')
 
 def tails(OnlyDraw = False):
     if not OnlyDraw:
@@ -662,7 +669,20 @@ def RecoEffFunOfOcc(OnlyDraw = False,Nevents = -1):
     finalEff=finalEff/sumEvents
     print "and the prediction for zeroField Data: %5.2F%%"%(finalEff*100)
 
-
+def plotOccExample():
+    ut.bookCanvas(h,'Occexample',' ',1200,600,1,1)
+    for n in range(3,7):
+        x = hMC['effP'].GetListOfPrimitives()[n]
+        x.GetListOfPrimitives()[1].Draw()
+        t = x.GetListOfPrimitives()[2].Clone('t2'+str(n))
+        tmp = t.GetTitle().split('-')
+        t.SetTitle(tmp[0]+'-'+str(int(tmp[1])-1))
+        t.SetTextSize(0.09)
+        t.Draw()
+        t2 = x.GetListOfPrimitives()[3].Clone('t3'+str(n))
+        t2.SetTextSize(0.09)
+        t2.Draw()
+        myPrint(h['Occexample'],x.GetName())
 
 def trueMomPlot(Nevents=-1,onlyPlotting=False):
     h     = hMC

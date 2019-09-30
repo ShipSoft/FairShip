@@ -1092,8 +1092,8 @@ for s in range(1,5):
                 channels[s][p][l][view]=12
                 if s>2: channels[s][p][l][view]=48
 for x in xpos.keys():
-    ut.bookHist(h,"TDC"   +str(x),'TDC '+str(x)  ,1500,-500.,2500.)
-    ut.bookHist(h,"TDC"   +str(x),'noToT '+str(x),1500,-500.,2500.)
+    ut.bookHist(h,"TDC"   +str(x),'TDC '+str(x)+'; TDC [ns]'  ,1500,-500.,2500.)
+    ut.bookHist(h,"TDC"   +str(x),'noToT '+str(x)+'; TDC [ns]',1500,-500.,2500.)
 
 ut.bookHist(h,'T0tmp','T0 temp',1250,-500.,2000.)
 ut.bookHist(h,'T0','T0',1250,-500.,2000.)
@@ -2077,12 +2077,12 @@ for s in range(1,5):
 
 # book residual histograms for each tube
 for detID in xpos:
-    ut.bookHist(h,'biasResX_' +str(detID),'biased residual for channel '+str(detID),100,-0.5,0.5,20,-dx,dx)
-    ut.bookHist(h,'biasResXL_'+str(detID),'biased residual for channel '+str(detID),300,-6.,6.,20,-dx,dx)
-    ut.bookHist(h,'biasResY_' +str(detID),'biased residual for channel '+str(detID),100,-0.5,0.5,20,-dy,dy)
-    ut.bookHist(h,'biasResYL_'+str(detID),'biased residual for channel '+str(detID),300,-6.,6.,20,-dy,dy)
-ut.bookHist(h,'biasResDist','residual versus drift radius',100,0.,2.,1000,-2.0,2.0)
-ut.bookHist(h,'biasResDist2','residual versus track distance',100,0.,2.,1000,-2.0,2.0)
+    ut.bookHist(h,'biasResX_' +str(detID),'biased residual for channel '+str(detID)+';[cm];[cm]',100,-0.5,0.5,20,-dx,dx)
+    ut.bookHist(h,'biasResXL_'+str(detID),'biased residual for channel '+str(detID)+';[cm];[cm]',300,-6.,6.,20,-dx,dx)
+    ut.bookHist(h,'biasResY_' +str(detID),'biased residual for channel '+str(detID)+';[cm];[cm]',100,-0.5,0.5,20,-dy,dy)
+    ut.bookHist(h,'biasResYL_'+str(detID),'biased residual for channel '+str(detID)+';[cm];[cm]',300,-6.,6.,20,-dy,dy)
+ut.bookHist(h,'biasResDist','residual versus drift radius;[cm];[cm]',100,0.,2.,1000,-2.0,2.0)
+ut.bookHist(h,'biasResDist2','residual versus track distance;[cm];[cm]',100,0.,2.,1000,-2.0,2.0)
 
 ut.bookHist(h,'clsN','cluster sizes',10,-0.5,9.5)
 ut.bookHist(h,'Ncls','number of clusters / event',10,-0.5,9.5)
@@ -2989,6 +2989,8 @@ def calculateRTcorrection():
     for hist in hkeys:
         if hist.find('biasResDist')!=0: continue
         if not hist.find('proj')<0: continue
+        if not hist.find('slice')<0: continue
+        if not hist.find('biasResDist2Wire')<0: continue
         if hist == 'biasResDist2' : continue
         v=hist.replace('biasResDist','')
         h['RTcorr'+v]=ROOT.TGraph()
@@ -2998,11 +3000,15 @@ def calculateRTcorrection():
         h[hresol]=tmpx.Clone(hresol)
         h[hresol].SetTitle('resolution as function of driftRadius')
         h[hresol].Reset()
+        print hist
         for n in range(1,h[hist].GetNbinsX()):
-            tmp = h[hist].ProjectionY('tmp',n,n+1)
-            fitResult = tmp.Fit('gaus','SQ','',-0.2,0.2)
+            if tmpx.GetBinCenter(n)>1.8: break
+            name = hist+'slice'+str(n)
+            h[name] = h[hist].ProjectionY(name,n,n+1)
+            fitResult = h[name].Fit('gaus','SQ','',-0.2,0.2)
             rc = fitResult.Get()
             if rc:
+                #print hist+'slice'+str(n),rc.GetParams()[1],rc.GetParams()[2]
                 h['RTcorr'+v].SetPoint(N,tmpx.GetBinCenter(n),rc.GetParams()[1])
                 h[hresol].SetBinContent(n,rc.GetParams()[2])
                 N+=1
@@ -3012,10 +3018,10 @@ def calculateRTcorrection():
     h['RTcorr'].SetLineColor(ROOT.kMagenta)
     h['RTcorr'].SetLineWidth(2)
     h['hRTCorrection']=h['resVsDr'].Clone('hRTCorrection')
-    h['hRTCorrection'].SetTitle('')
+    h['hRTCorrection'].SetTitle(';drift radius [cm]; residual [cm]')
     h['hRTCorrection'].SetStats(0)
-    h['hRTCorrection'].SetMaximum(0.02)
-    h['hRTCorrection'].SetMinimum(-0.02)
+    h['hRTCorrection'].SetMaximum(0.05)
+    h['hRTCorrection'].SetMinimum(-0.10)
     h['hRTCorrection'].Reset()
     h['hRTCorrection'].SetLineColor(0)
     h['hRTCorrection'].Draw()
@@ -3363,6 +3369,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
         h['effLayer'].SetStats(0)
         h['effLayer'].SetMarkerStyle(21)
         h['effLayer'].SetMarkerColor(h['effLayer'].GetLineColor())
+        h['effLayer'].GetXaxis().SetLabelSize(0.05)
+        h['effLayer'].GetYaxis().SetLabelSize(0.05)
         h['effLayer'].Draw()
         fitResult = h['effLayer'].Fit('pol0','SQ','',0.,24.)
         rc=fitResult.Get()
@@ -3387,6 +3395,8 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
             h[xx].SetMarkerStyle(20)
             if first: 
                 h[xx].GetXaxis().SetRangeUser(-0.5,6.5)
+                h[xx].GetXaxis().SetLabelSize(0.05)
+                h[xx].GetYaxis().SetLabelSize(0.05)
                 h[xx].Draw()
                 first = False
             else:  h[xx].Draw('same')
@@ -3502,8 +3512,8 @@ def efficiencyEstimates(method=2,MCdata=False):
                 tc = h['biasedResiduals'].cd(j+1)
                 if method == 0 or method == 1: hname = 'biasResDistX_'+str(s)+view+str(l)
                 else:                          hname = 'biasResXL_'+str(s)+view+str(l)+'_projx'
-                xmin = -2.
-                xmax =  2.
+                xmin = -3.5
+                xmax =  3.5
                 if method==0 or method==1: 
                     xmin = -0.7
                     xmax =  0.7
@@ -3562,6 +3572,7 @@ def efficiencyEstimates(method=2,MCdata=False):
             print "station, %i %s, average efficiency: %5.3F"%(s,view,effStation/4.)
     for p in h['biasedResiduals'].GetListOfPrimitives():   p.SetLogy(1)
     tc1 = ROOT.gROOT.FindObject('c1')
+    tc1.SetWindowSize(1200,800)
     tc1.cd()
     h['effLayer'].SetMaximum(1.)
     h['effLayer'].SetMinimum(0.)
@@ -3585,13 +3596,14 @@ def efficiencyEstimates(method=2,MCdata=False):
         h['effLayerBinary'].SetMarkerColor(h['effLayerBinary'].GetLineColor())
         h['effLayerBinary'].GetFunction('pol0').SetLineColor(h['effLayerBinary'].GetLineColor())
         h['effLayer'].GetFunction('pol0').SetLineColor(h['effLayer'].GetLineColor())
+        h['effLayer'].GetXaxis().SetLabelSize(0.05)
+        h['effLayer'].GetYaxis().SetLabelSize(0.05)
         h['effLayer'].Draw()
         h['effLayer'].SetMinimum(0.5)
         h['effLayerBinary'].Draw('same')
         h['EfftxtBinary'].Draw()
         h['Efftxt'].Draw()
-    myPrint(h['biasedResiduals'],txt)
-    myPrint(txt+'-summary')
+    myPrint(tc1,txt+'-summary')
 
 def printTrackMeasurements(atrack,PR=1):
     mult = {'_x':0,'_u':0,'_v':0}
@@ -3853,6 +3865,7 @@ def mergeHistosForMomResol(withFitPoints=False):
         fSqrt.SetParameter(0,fitFun.GetParameter(0))
         fSqrt.SetParameter(1,fitFun.GetParameter(1))
         h[hname+'P'].Fit(fSqrt,'W','',0.,300.)
+    h['leg'+t]=ROOT.TLegend(0.14,0.75,0.64,0.87)
     for res in ['-0',v]:
         hname = 'momResol'+res
         h[hname+'P'].SetTitle('momentum resolution function of momentum;P [GeV/c];#sigma P/P')
@@ -3861,19 +3874,18 @@ def mergeHistosForMomResol(withFitPoints=False):
         fSqrt = h[hname+'P'].GetFunction('momResol')
         p0 = "%4.3F"%(100*fSqrt.GetParameter(0))
         p1 = "%4.3F"%(100*fSqrt.GetParameter(1))
-        if res == '500': 
-            h['text'+res] = ROOT.TLatex(20.,0.09,'#sigmaP/P = ('+p0+' #oplus '+p1+'#times p)%')
+        if res != '-0': 
+            h['text'+res] = ROOT.TLatex(20.,0.09,'#sigmaP/P = ('+p0+' #oplus '+p1+' #times p)%')
             h[hname+'P'].Draw('same')
             h[hname+'P'].SetLineColor(ROOT.kMagenta)
             h['text'+res].SetTextColor(ROOT.kMagenta)
+            h['leg'+t].AddEntry(h[hname+'P'],'adjusted 500#mum','PL')
         else:
-            h['text'+res] = ROOT.TLatex(120.,0.01,'#sigmaP/P = ('+p0+' #oplus '+p1+'#times p)%')
+            h['text'+res] = ROOT.TLatex(120.,0.01,'#sigmaP/P = ('+p0+' #oplus '+p1+' #times p)%')
             h['text'+res].SetTextColor(ROOT.kBlue)
             h[hname+'P'].Draw()
+            h['leg'+t].AddEntry(h[hname+'P'],'default  270#mum ','PL')
         h['text'+res].Draw('same')
-    h['leg'+t]=ROOT.TLegend(0.14,0.75,0.64,0.87)
-    h['leg'+t].AddEntry(h['momResol-0'],'default  270#mum ','PL')
-    h['leg'+t].AddEntry(h['momResol'+v],'adjusted 500#mum','PL')
     h['leg'+t].Draw()
     myPrint(h[t],'momentumResolution')
 
@@ -3980,7 +3992,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                 ut.bookHist(h,'RPCextTrack_'+str(s)+str(v),'mom of tracks extr to RPC k with RPC k+1 matched',100,0.,100.)
                 ut.bookHist(h,'RPCfired_'+str(s)+str(v),'mom of tracks extr to RPC k and matched with RPC k+1 matched',100,0.,100.)
             ut.bookHist(h,'RPCfired_or_'+str(s),'mom of tracks extr to RPC k and matched with RPC k+1 or of 0 and 1',100,0.,100.)
-        ut.bookHist(h,'RPCResX1_p','RPC residual for station 1 function of track momentum',100,-dx,dx,100,0.,100.)
+            ut.bookHist(h,'RPCResX'+str(s)+'_p','RPC residual for station '+str(s)+' as function of track momentum',100,-dx,dx,100,0.,100.)
         ut.bookHist(h,'RPCMatchedHits','matched RPC hits as function of track momentum',10,0.5,10.5,20,-0.5,19.5,100,0.,100.)
         ut.bookHist(h,'RPCMeanMatchedHits','mean matched RPC hits as function of track momentum',100,0.,100.)
         ut.bookHist(h,'RPC>1','fraction of tracks with > 1 RPC hits',100,0.,100.)
@@ -4034,7 +4046,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                         X = (vtop[0]+vbot[0])/2.
                         res = pos[0] - X
                         h['RPCResX_'+str(s)+str(v)].Fill(res,X)
-                        if s==1: h['RPCResX1_p'].Fill(res,sta.getMomMag())
+                        h['RPCResX'+str(s)+'_p'].Fill(res,sta.getMomMag())
                     if abs(res)<cuts["RPCmaxDistance"]:
                         matchedHits[s][v].append(nHit)
                 # record number of hits per station and view and track momentum
@@ -4080,13 +4092,22 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             h[hnameProjX] = h[hname].ProjectionX()
             myGauss.SetParameter(0,h[hnameProjX].GetMaximum())
             myGauss.SetParameter(1,0.)
-            myGauss.SetParameter(2,10.)
+            myGauss.SetParameter(2,4.)
             myGauss.SetParameter(3,1.)
             rc = h['RPCResiduals'].cd(jk)
             if v==0: fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-40.,40.)
             else:    fitResult = h[hnameProjX].Fit(myGauss,'SQ','',-10.,10.)
             rc = fitResult.Get()
             if not rc: continue
+            myGauss2.SetParameter(0,rc.GetParams()[0])
+            myGauss2.SetParameter(1,rc.GetParams()[1])
+            myGauss2.SetParameter(2,abs(rc.GetParams()[2]))
+            myGauss2.SetParameter(3,rc.GetParams()[3])
+            myGauss2.SetParameter(4,0.)
+            myGauss2.SetParameter(5,10.)
+            if v==0: fitResult = h[hnameProjX].Fit(myGauss2,'SQ','',-40.,40.)
+            else:    fitResult = h[hnameProjX].Fit(myGauss2,'SQ','',-10.,10.)
+            rc = fitResult.Get()
             mean = rc.GetParams()[1]
             rms  = rc.GetParams()[2]
             print "%i, %i, mean=%5.2F RMS=%5.2F"%(s,v,mean,rms)
@@ -4111,8 +4132,9 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                 params = rc.GetParams()
                 if not params: continue
                 mean = rc.GetParams()[1]
-                rms  = rc.GetParams()[2]
-                rc = h[hmean].Fill( h[hmean].GetBinCenter(k), mean)
+                rms  = abs(rc.GetParams()[2])
+                rc = h[hmean].SetBinContent(k,mean)
+                rc = h[hmean].SetBinError(k,rms)
             h[hmean].Draw()
         j+=1
     if not h.has_key('RPCResiduals2dXY'): 
@@ -6615,27 +6637,126 @@ def compareRuns(runs=[]):
     myPrint(h['EventStatistics'],'DataQualityPlot')
     return eventStats
 def plotTDCExample():
-    f=ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2278/SPILLDATA_8000_0517453245_20180719_082409_RT.root')
-    h['TDCMapsX'] = f.histos.Get('TDCMapsX')
-    h['Pad1'] = h['TDCMapsX'].GetListOfPrimitives()[0].Clone('Pad1')
-    h['TDC1'] = h['Pad1'].GetListOfPrimitives()[1].Clone('TDC1')
-    ut.bookCanvas(h,'TDC1example',' ',1200,600,1,1)
-    h['TDC1'].Draw()
-    myPrint(h['TDC1example'],'TDC1example')
+    h['f']=ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2278/SPILLDATA_8000_0517453245_20180719_082409_RT.root')
+    upkl    = Unpickler(h['f'])
+    h['tMinAndTmax'] = upkl.load('tMinAndTmax')
+    ROOT.gROOT.cd()
+    h['TDCMapsX'] = h['f'].histos.Get('TDCMapsX').Clone('TDCMapsX')
     h['TDCMapsX'].Draw()
-    for x in h['TDCMapsX'].GetListOfPrimitives():
-        for n in [17 ,18, 31, 32]:
-            if x.GetTitle().find(str(n))>0: 
-                x.Delete()
-                break
     h['TDCMapsX'].Update()
-    myPrint(h['TDCMapsX'],'TDCMaps')
-    h['RTGraphs'] = f.histos.Get('RTrelations').Clone('RTGraphs')
-    h['RTGraphs'].Draw()
-    graph = h['RTGraphs'].GetListOfPrimitives()[0].FindObject('rtTDC30')
-    graph.Delete()
-    h['RTGraphs'].Update()
-    myPrint(h['RTGraphs'],'RTRelations')
+    for p in h['TDCMapsX'].GetListOfPrimitives():
+     t = p.GetTitle()
+     if t.find("TDCMapsX")<0: continue
+     h['Pad'+t] = p.Clone('Pad'+t)
+     if len(h['Pad'+t].GetListOfPrimitives())<2: continue
+     n = h['Pad'+t].GetListOfPrimitives()[1].GetName()
+     h['x'+n] = h['Pad'+t].GetListOfPrimitives()[1].Clone('x'+n)
+     h['x'+n].SetTitle("Group "+str(n)+'; TDC [ns]')
+     # h['x'+n].SetTitleSize(0.1,'x')
+    ut.bookCanvas(h,'TDC1example',' ',1200,600,1,1)
+    ut.bookCanvas(h,key='TDCMaps',title='TDC Maps All Layers',nx=3*1600,ny=3*1200,cx=5,cy=9)
+    n = 1
+    for x in range(50):
+        if x in [16 ,17, 30, 31]: continue
+        h['TDCMaps'].cd(n)
+        if not h.has_key('xTDC'+str(x)): continue
+        z = 'xTDC'+str(x)
+        h[z].Draw()
+        tmin = h['tMinAndTmax']['TDC'+str(x)][0]
+        tmax = h['tMinAndTmax']['TDC'+str(x)][1]
+        h[z+'tMin'] =  ROOT.TArrow(tmin,-5.,tmin,0.8,0.05,">")
+        h[z+'tMax'] =  ROOT.TArrow(tmax,-5.,tmax,0.8,0.05,">")
+        h[z+'tMin'].SetLineColor(ROOT.kRed)
+        h[z+'tMax'].SetLineColor(ROOT.kRed)
+        h[z+'tMin'].Draw()
+        h[z+'tMax'].Draw()
+        h['TDC1example'].cd()
+        h[z].Draw()
+        h[z+'tMin'].Draw()
+        h[z+'tMax'].Draw()
+        myPrint(h['TDC1example'],'xTDC'+str(x))
+        n+=1
+    h['TDCMaps'].Update()
+    myPrint(h['TDCMaps'],'TDCMaps')
+#
+    ut.bookCanvas(h,key='RTrelations',title='RT relations',nx=1600,ny=1200,cx=1,cy=1)
+    h['RTrelations'].cd(1)
+    x = h['TDC0']
+    h['emptyHist'] = ROOT.TH2F('empty',' ;[ns];[cm] ',100,x.GetBinCenter(1),x.GetBinCenter(x.GetNbinsX()),100,0.,2.)
+    h['emptyHist'].SetStats(0)
+    h['emptyHist'].Draw()
+    h['legRT'] = ROOT.TLegend(0.69,0.10,0.99,0.98)
+    for x in range(48):
+        if x in [16 ,17, 30, 31]: continue
+        g = 'rtTDC'+str(x)
+        h['g'+g]=h['f'].RT.Get(g).Clone('g'+g)
+        if not g.find('TDC1')<0: h['g'+g].SetLineColor(ROOT.kBlue)
+        elif not g.find('TDC2')<0: h['g'+g].SetLineColor(ROOT.kCyan)
+        elif not g.find('TDC3')<0: h['g'+g].SetLineColor(ROOT.kGreen)
+        elif not g.find('TDC4')<0: h['g'+g].SetLineColor(ROOT.kGreen+2)
+        h['g'+g].Draw()
+        h['legRT'].AddEntry(h['g'+g],h['g'+g].GetTitle(),'PL')
+    h['legRT'].Draw()
+    myPrint(h['RTrelations'],'RTRelations')
+def plotResidualExample():
+    ut.readHists(h,'residuals.root')
+    plotBiasedResiduals(onlyPlotting=True)
+    ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
+    for l in range(0,4):
+      for z in ['x','u','v']:
+        for s in range(1,5):
+          if z=='u' and s!=1: continue
+          if z=='v' and s!=2: continue
+          hname = 'biasResX_'+str(s)+'_'+z+str(l)+'_px'
+          h[hname].Draw()
+          myPrint(h['Residualsexample'],hname)
+def plotEffMethod2Example():
+    efficiencyEstimates(method=2)
+    ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
+    h['Residualsexample'].SetLogy(1)
+    for l in range(0,4):
+      for z in ['x','u','v']:
+        for s in range(1,5):
+          if z=='u' and s!=1: continue
+          if z=='v' and s!=2: continue
+          hname = 'biasResXL_'+str(s)+'_'+z+str(l)+'_projx'
+          h[hname].Draw()
+          h['Residualsexample'].Update()
+          stats = h[hname].FindObject("stats")
+          stats.SetX1NDC(0.60)
+          stats.SetY1NDC(0.60)
+          stats.SetX2NDC(0.97)
+          stats.SetY2NDC(0.93)
+          stats.SetOptFit(111)
+          h['Residualsexample'].Update()
+          myPrint(h['Residualsexample'],hname)
+def plotWithRPCTrackEffExample():
+    DTeffWithRPCTracks(Nevents=0,onlyPlotting=True)
+    t = 'tagstation'+str(1)
+    ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
+    for p in h[t].GetListOfPrimitives():
+       hist = p.GetListOfPrimitives()[1]
+       hist.Draw('hist')
+       myPrint(h['Residualsexample'],hist.GetName())
+def plotRPCResidualsExample():
+    ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
+    t='RPCResiduals'
+    for p in h[t].GetListOfPrimitives():
+         hist = p.GetListOfPrimitives()[1]
+         hist.Draw()
+         myPrint(h['Residualsexample'],hist.GetName())
+    t='RPCEff'
+    k = 1
+    for p in h[t].GetListOfPrimitives():
+         if k%3==0: continue
+         hist = p.GetListOfPrimitives()[1]
+         hist.Draw()
+         txt1 = p.GetListOfPrimitives()[2].Clone('1')
+         txt1.Draw()
+         txt2 = p.GetListOfPrimitives()[3].Clone('2')
+         txt2.Draw()
+         myPrint(h['Residualsexample'],hist.GetName())
+         k+=1
 
 def mergeGoodRuns(excludeRPC=False,path='.'):
     #path = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64'

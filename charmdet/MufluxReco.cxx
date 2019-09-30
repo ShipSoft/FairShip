@@ -345,6 +345,10 @@ void MufluxReco::RPCextrap(Int_t nMax){
  }
  TH1D* h_RPC_p =  (TH1D*)(gDirectory->GetList()->FindObject("RPC_p"));
  TH2D* h_RPCResX1_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX1_p"));
+ TH2D* h_RPCResX2_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX2_p"));
+ TH2D* h_RPCResX3_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX3_p"));
+ TH2D* h_RPCResX4_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX4_p"));
+ TH2D* h_RPCResX5_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX5_p"));
  TH2D* h_RPC_2XY =  (TH2D*)(gDirectory->GetList()->FindObject("RPC<2XY"));
  TH3D* h_RPCMatchedHits =  (TH3D*)(gDirectory->GetList()->FindObject("RPCMatchedHits"));
 
@@ -391,6 +395,10 @@ void MufluxReco::RPCextrap(Int_t nMax){
           res = posRPC[0]-RPCPositions[channelID][0];
           h_RPCResX[10*s+v]->Fill(res,RPCPositions[channelID][0]);
           if(s==1){ h_RPCResX1_p->Fill(res,pMom0);}
+          if(s==2){ h_RPCResX2_p->Fill(res,pMom0);}
+          if(s==3){ h_RPCResX3_p->Fill(res,pMom0);}
+          if(s==4){ h_RPCResX4_p->Fill(res,pMom0);}
+          if(s==5){ h_RPCResX5_p->Fill(res,pMom0);}
         }
         if (TMath::Abs(res) < cuts["RPCmaxDistance"]){
            matchedHits[s*10+v].push_back(nHit);

@@ -80,14 +80,14 @@ def getFilesEOS(D):
         fl.append(eospathSim+'/'+d)
     return fl
 
-def simulationStep(fnames=[],E="10.0_withCharmandBeauty"):
+def simulationStep(fnames=[],E="10.0_withCharmandBeauty",overwrite=False):
     if len(fnames)==0: fnames = getFilesFromEOS(E)
     Nfiles = len(fnames)
     print "fileList established ",Nfiles
     for fname in fnames:
         N = fnames[fname]-1
         odir = fname[fname.rfind('/')+1:].replace('.root','')
-        if odir in os.listdir('.'): continue
+        if not overwrite and odir in os.listdir('.'): continue
         cmd = "python $FAIRSHIP/macro/run_simScript.py -n "+str(N)+" --MuonBack --charm=1 --CharmdetSetup=0 --output "+odir+" -f "+fname+" &"
         print 'step 1:', cmd
         os.system(cmd)
@@ -176,6 +176,7 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
         os.chdir('../')
 
 def recoStep(splitFactor=5,fnames=[],eospath=False):
+    eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'
     if len(fnames)==0: fnames = getFilesLocal()
     Nfiles = len(fnames)
     print "fileList established #directories",Nfiles
@@ -196,7 +197,7 @@ def recoStep(splitFactor=5,fnames=[],eospath=False):
                 os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
             elif not recoFile in os.listdir('.'):
                 if eospath:
-                    os.system('xrdcp  $EOSSHIP'+eospath+'/'+fname+'/'+digiFile+ ' '+recoFile)
+                    os.system('xrdcp  $EOSSHIP'+eospathSim+'/'+eospath+'/'+fname+'/'+digiFile+ ' '+recoFile)
                 else:
                     print "digiFile missing",fname,digiFile
                     continue
@@ -247,7 +248,7 @@ def cleanUp():
         df = f.replace('_RT','')
         if os.path.isfile(df): os.system('rm ' +df)
 
-def makeHistos(D='.',splitFactor=5,command="anaResiduals"):
+def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
     commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
     if D=='.':
         fileList,x,y = checkFilesWithTracks(D,splitFactor)
@@ -388,18 +389,35 @@ def checkAlignment(D='.',splitFactor=5):
     print "finished all the tasks."
 
 
-def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True):
+def exportToEos(fnames=[],destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True):
     remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination,shell=True).split('\n')
     fnames = getFilesLocal()
     for D in fnames:
         if not D in remote:
             os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir  "+destination+"/"+D)
-        remoteD = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination+'/'+D,shell=True).split('\n')
+        remoteD = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination+'/'+D,shell=True)
         for f in os.listdir(D):
-            if f in remoteD and update: continue
+            if f in remoteD and not update: continue
             fname = D+'/'+f
             cmd = "xrdcp -f "+fname+" $EOSSHIP/"+destination+"/"+fname
+            print cmd
             os.system(cmd)
+def importFromEos(source="/eos/experiment/ship/user/truf/muflux-sim/1GeV",tag="ship.conical.MuonBack-TGeant4.root",update=True):
+    remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+source,shell=True).split('\n')
+    for x in remote:
+      if x.find('eos')<0:continue
+      fname = x.split(source)[1]
+      files = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+source+fname,shell=True).split('\n')
+      for y in files:
+       if y.find('eos')<0:continue
+       afile = '/eos'+y.split('/eos')[1]
+       if afile.find(tag)<0:continue
+       destination = afile.split(source)[1]
+       cmd = "xrdcp "
+       if update: cmd += " -f "
+       cmd += " $EOSSHIP/"+afile+" "+destination[1:]
+       print cmd
+       os.system(cmd)
 
 def exportNtupleToEos(d="simulation10GeV-withDeadChannels",update=True):
     eospath = "/eos/experiment/ship/user/truf/muflux-sim/"
