@@ -1,7 +1,9 @@
 from __future__ import print_function
 from __future__ import division
 import os,ROOT,shipVertex,shipDet_conf
-if realPR == "Prev": import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
+import config
+if config.realPR == "Prev":
+  import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
 else: import shipPatRec
 import shipunit as u
 import rootUtils as ut
@@ -798,9 +800,9 @@ class ShipDigiReco:
   nTrack = -1
   trackCandidates = []
   
-  if realPR:
+  if config.realPR:
     # Do real PatRec
-    track_hits = shipPatRec.execute(self.SmearedHits, ShipGeo, realPR)
+    track_hits = shipPatRec.execute(self.SmearedHits, ShipGeo, config.realPR)
     # Create hitPosLists for track fit
     for i_track in track_hits.keys():
       atrack = track_hits[i_track]
@@ -1025,4 +1027,5 @@ class ShipDigiReco:
   self.sTree.Write()
   ut.errorSummary()
   ut.writeHists(h,"recohists.root")
-  if realPR: shipPatRec.finalize()
+  if config.realPR:
+    shipPatRec.finalize()

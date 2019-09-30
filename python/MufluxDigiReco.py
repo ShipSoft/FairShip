@@ -1,5 +1,6 @@
 from __future__ import print_function
 from builtins import range
+import config
 import os
 import ROOT
 import MufluxPatRec
@@ -95,7 +96,7 @@ class MufluxDigiReco:
          self.header  = ROOT.FairEventHeader()
          self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
          self.fitTrack2MC  = ROOT.std.vector('int')()
-         self.mcLink      = self.sTree.Branch("fitTrack2MC"+realPR,self.fitTrack2MC,32000,-1)
+         self.mcLink = self.sTree.Branch("fitTrack2MC" + config.realPR, self.fitTrack2MC, 32000, -1)
          self.digiMufluxSpectrometer    = ROOT.TClonesArray("MufluxSpectrometerHit")
          self.digiMufluxSpectrometerBranch   = self.sTree.Branch("Digi_MufluxSpectrometerHits",self.digiMufluxSpectrometer,32000,-1)
         #muon taggger
@@ -108,7 +109,7 @@ class MufluxDigiReco:
         # fitted tracks
         self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
         self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
-        self.fitTracks   = self.sTree.Branch("FitTracks"+realPR,  self.fGenFitArray,32000,-1)
+        self.fitTracks = self.sTree.Branch("FitTracks" + config.realPR, self.fGenFitArray, 32000, -1)
 
         self.PDG = ROOT.TDatabasePDG.Instance()
         # for the digitizing and reconstruction step
@@ -1207,7 +1208,7 @@ class MufluxDigiReco:
             print('No branches "MufluxSpectrometer" or "Digi_MufluxSpectrometerHits".')
             return nTrack
 
-        if realPR:
+        if config.realPR:
 
             # Do real PatRec
             track_hits = MufluxPatRec.execute(self.SmearedHits, self.TaggerHits, withNTaggerHits, withDist2Wire)
@@ -2011,4 +2012,5 @@ class MufluxDigiReco:
         self.sTree.Write()
         ut.errorSummary()
         ut.writeHists(h,"recohists.root")
-        # if realPR: ut.writeHists(shipPatRec.h,"recohists_patrec.root")
+        # if config.realPR:
+        #     ut.writeHists(shipPatRec.h,"recohists_patrec.root")

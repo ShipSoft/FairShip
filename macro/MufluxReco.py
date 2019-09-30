@@ -3,7 +3,7 @@
 #geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
 from __future__ import print_function
 from __future__ import division
-import globals
+import config
 debug = False#False
 
 withNoStrawSmearing = None # True   for debugging purposes
@@ -344,21 +344,21 @@ modules = charmDet_conf.configure(run,ShipGeo)
 fgeo.FAIRGeom
 
 # make global variables
-globals.debug    = debug
-globals.withT0 = withT0
-globals.realPR = realPR
+config.debug = debug
+config.withT0 = withT0
+config.realPR = realPR
 
-globals.ShipGeo = ShipGeo
-globals.modules = modules
+config.ShipGeo = ShipGeo
+config.modules = modules
 
-globals.withNoStrawSmearing = withNoStrawSmearing
-globals.withNTaggerHits = withNTaggerHits
-globals.withDist2Wire = withDist2Wire
-globals.h    = h
-globals.log  = log
-globals.simulation = simulation
+config.withNoStrawSmearing = withNoStrawSmearing
+config.withNTaggerHits = withNTaggerHits
+config.withDist2Wire = withDist2Wire
+config.h = h
+config.log = log
+config.simulation = simulation
 iEvent = 0
-globals.iEvent  = iEvent
+config.iEvent = iEvent
 
 # import reco tasks
 import MufluxDigiReco

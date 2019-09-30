@@ -4,7 +4,7 @@ import ROOT,os,time,sys,operator,atexit
 ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 
 from decorators import *
-import globals
+import config
 ROOT.gStyle.SetPalette(ROOT.kGreenPink)
 PDG = ROOT.TDatabasePDG.Instance()
 # -----Timer--------------------------------------------------------
@@ -120,7 +120,7 @@ else:
  fgeo = ROOT.TFile.Open(options.geoFile)
  upkl    = Unpickler(options.geoFile)
  ShipGeo = upkl.load('ShipGeo')
-globals.ShipGeo = ShipGeo
+config.ShipGeo = ShipGeo
 import charmDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine

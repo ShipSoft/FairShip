@@ -19,7 +19,7 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys
-import globals
+import config
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -113,21 +113,21 @@ if hasattr(ShipGeo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True,withVirtualMC = False)
 
 # make global variables
-globals.debug    = options.Debug
-globals.fieldMaker = fieldMaker
-globals.pidProton = pidProton
-globals.withT0 = options.withT0
-globals.realPR = options.realPR
-globals.vertexing = vertexing
-globals.ecalGeoFile = ecalGeoFile
-globals.ShipGeo = ShipGeo
-globals.modules = modules
-globals.EcalDebugDraw  = options.EcalDebugDraw
-globals.withNoStrawSmearing = options.withNoStrawSmearing
-globals.h    = h
-globals.log  = log
+config.debug = options.Debug
+config.fieldMaker = fieldMaker
+config.pidProton = pidProton
+config.withT0 = options.withT0
+config.realPR = options.realPR
+config.vertexing = vertexing
+config.ecalGeoFile = ecalGeoFile
+config.ShipGeo = ShipGeo
+config.modules = modules
+config.EcalDebugDraw = options.EcalDebugDraw
+config.withNoStrawSmearing = options.withNoStrawSmearing
+config.h = h
+config.log = log
 iEvent = 0
-globals.iEvent  = iEvent
+config.iEvent = iEvent
 
 # import reco tasks
 import shipDigiReco
