@@ -126,8 +126,7 @@ config.EcalDebugDraw = options.EcalDebugDraw
 config.withNoStrawSmearing = options.withNoStrawSmearing
 config.h = h
 config.log = log
-iEvent = 0
-config.iEvent = iEvent
+config.iEvent = 0
 
 # import reco tasks
 import shipDigiReco
@@ -135,12 +134,13 @@ import shipDigiReco
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 options.nEvents   = min(SHiP.sTree.GetEntries(),options.nEvents)
 # main loop
-for iEvent in range(options.firstEvent, options.nEvents):
- if iEvent%1000 == 0 or options.Debug: print('event ',iEvent)
- rc    = SHiP.sTree.GetEvent(iEvent) 
- SHiP.digitize()
- SHiP.reconstruct()
+for config.iEvent in range(options.firstEvent, options.nEvents):
+    if config.iEvent % 1000 == 0 or config.debug:
+        print('event ', config.iEvent)
+    rc = SHiP.sTree.GetEvent(config.iEvent)
+    SHiP.digitize()
+    SHiP.reconstruct()
  # memory monitoring
- # mem_monitor() 
+ # mem_monitor()
 # end loop over events
 SHiP.finish()

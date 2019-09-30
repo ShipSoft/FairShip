@@ -61,8 +61,7 @@ fgeo.FAIRGeom
 config.debug = options.debug
 config.ShipGeo = ShipGeo
 
-iEvent = 0
-config.iEvent = iEvent
+config.iEvent = 0
 
 # import reco tasks
 import MufluxDigi
@@ -70,14 +69,14 @@ SHiP = MufluxDigi.MufluxDigi(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),int(options.nEvents))
 # main loop
-for iEvent in range(firstEvent, nEvents):
- if iEvent % 50000 == 0 or config.debug:
-     print('event ', iEvent, nEvents - firstEvent)
- SHiP.iEvent = iEvent
- rc    = SHiP.sTree.GetEvent(iEvent) 
- SHiP.digitize() 
+for config.iEvent in range(firstEvent, nEvents):
+    if config.iEvent % 50000 == 0 or config.debug:
+        print('event ', config.iEvent, nEvents - firstEvent)
+    SHiP.iEvent = config.iEvent
+    rc = SHiP.sTree.GetEvent(config.iEvent)
+    SHiP.digitize()
  # memory monitoring
- # mem_monitor() 
- 
+ # mem_monitor()
+
 # end loop over events
 SHiP.finish()

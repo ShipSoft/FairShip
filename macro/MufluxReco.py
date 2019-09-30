@@ -357,8 +357,7 @@ config.withDist2Wire = withDist2Wire
 config.h = h
 config.log = log
 config.simulation = simulation
-iEvent = 0
-config.iEvent = iEvent
+config.iEvent = 0
 
 # import reco tasks
 import MufluxDigiReco
@@ -366,11 +365,13 @@ SHiP = MufluxDigiReco.MufluxDigiReco(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
 # main loop
-for iEvent in range(firstEvent, nEvents):
- if iEvent%1000 == 0 or debug: print('event ',iEvent)
- SHiP.iEvent = iEvent
- rc    = SHiP.sTree.GetEvent(iEvent) 
- if simulation: SHiP.digitize() 
+for config.iEvent in range(firstEvent, nEvents):
+    if config.iEvent % 1000 == 0 or config.debug:
+        print('event ', config.iEvent)
+    SHiP.iEvent = config.iEvent
+    rc = SHiP.sTree.GetEvent(config.iEvent)
+    if config.simulation:
+        SHiP.digitize()
  # IS BROKEN SHiP.reconstruct()
  # memory monitoring
  # mem_monitor() 
