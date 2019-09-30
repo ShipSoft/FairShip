@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import division
 # simple vertex reconstruction with errors
 import ROOT,sys,os
+from config import debug
 import shipunit as u
 import rootUtils as ut
 import numpy as np

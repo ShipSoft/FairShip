@@ -105,8 +105,7 @@ class ShipDigiReco:
   self.caloTasks = []  
   if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
 # Creates. exports and fills calorimeter structure
-   dflag = 0
-   if debug: dflag = 10
+   dflag = 10 if config.debug else 0
    ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
    if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
    ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
@@ -197,9 +196,9 @@ class ShipDigiReco:
   #fitter          = ROOT.genfit.KalmanFitterRefTrack()
   self.fitter      = ROOT.genfit.DAF()
   self.fitter.setMaxIterations(50)
-  if debug: self.fitter.setDebugLvl(1) # produces lot of printout
+  if config.debug:
+    self.fitter.setDebugLvl(1) # produces lot of printout
   #set to True if "real" pattern recognition is required also
-  if debug == True: shipPatRec.debug = 1
 
 # for 'real' PatRec
   shipPatRec.initialize(fgeo)
@@ -859,7 +858,7 @@ class ShipDigiReco:
     nM = meas.size()
     if nM < 25 : continue                          # not enough hits to make a good trackfit 
     if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
-    if debug: 
+    if config.debug:
        mctrack = self.sTree.MCTrack[atrack]
     # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
     posM = ROOT.TVector3(0, 0, 0)
@@ -904,13 +903,15 @@ class ShipDigiReco:
 # do the fit
     try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
     except: 
-      if debug: print("genfit failed to fit track")
+      if config.debug:
+        print("genfit failed to fit track")
       error = "genfit failed to fit track"
       ut.reportError(error)
       continue
 #check
     if not theTrack.checkConsistency():
-     if debug: print('Problem with track after fit, not consistent',atrack,theTrack)
+     if config.debug:
+       print('Problem with track after fit, not consistent', atrack, theTrack)
      error = "Problem with track after fit, not consistent"
      ut.reportError(error)
      continue
@@ -927,10 +928,11 @@ class ShipDigiReco:
     h['chi2'].Fill(chi2)
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()
-    if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
+    if not config.debug:
+      theTrack.prune("CFL")  # http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
     self.fGenFitArray[nTrack] = theTrack
     # self.fitTrack2MC.push_back(atrack)
-    if debug: 
+    if config.debug:
      print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
     # Save MC link
     track_ids = []
@@ -950,7 +952,7 @@ class ShipDigiReco:
   self.fitTracks.Fill()
   self.mcLink.Fill()
 # debug 
-  if debug:
+  if config.debug:
    print('save tracklets:') 
    for x in self.sTree.Tracklets:
     print(x.getType(),x.getList().size())
@@ -984,7 +986,8 @@ class ShipDigiReco:
      except:
       error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
       ut.reportError(error)
-      if debug: print(error)
+      if config.debug:
+        print(error)
       continue
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:

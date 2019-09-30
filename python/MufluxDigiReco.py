@@ -132,7 +132,7 @@ class MufluxDigiReco:
         self.fitter      = ROOT.genfit.DAF()
         self.fitter.setMaxIterations(20)
 
-        if debug:
+        if config.debug:
 
             # self.fitter.setDebugLvl(1) # produces lot of printout
             output_dir = 'pics/'
@@ -1474,7 +1474,7 @@ class MufluxDigiReco:
                 theTrack.insertPoint(tp)  # add point to Track
             trackCandidates_noT4.append([theTrack,atrack])
 
-        if debug:
+        if config.debug:
 
             z_hits_y = []
             x_hits_y = []
@@ -1995,11 +1995,11 @@ class MufluxDigiReco:
 
             # make track persistent
             nTrack   = self.fGenFitArray.GetEntries()
-            if not debug:
+            if not config.debug:
                 theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
             self.fGenFitArray[nTrack] = theTrack
             self.fitTrack2MC.push_back(atrack)
-            if debug:
+            if config.debug:
                 print('save track',theTrack,chi2,nM,fitStatus.isFitConverged())
 
         self.fitTracks.Fill()
