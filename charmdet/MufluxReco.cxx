@@ -324,6 +324,8 @@ void MufluxReco::RPCextrap(Int_t nMax){
  std::map<int,TH1D*> h_RPCfired;
  std::map<int,TH1D*> h_RPCfired_or;
  std::map<int,TH1D*> h_RPC;
+ std::map<int,TH1D*> h_rpcHitmap;
+
  TString hname;
  for ( int s = 1; s<6; s++ )   {
   for ( int v = 0; v<2; v++ )   {
@@ -335,6 +337,8 @@ void MufluxReco::RPCextrap(Int_t nMax){
    h_RPCextTrack[s*10+v]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
    hname = "RPCfired_";
    h_RPCfired[s*10+v]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
+   hname = "rpcHitmap";
+   h_rpcHitmap[s*10+v]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
   }
   hname = "RPCfired_or_";
   h_RPCfired_or[s]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s)));
@@ -344,6 +348,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
   h_RPC[k]=(TH1D*)(gDirectory->GetList()->FindObject(hname));
  }
  TH1D* h_RPC_p =  (TH1D*)(gDirectory->GetList()->FindObject("RPC_p"));
+ TH1D* h_rpcHitmaps =  (TH1D*)(gDirectory->GetList()->FindObject("rpcHitmap"));
  TH2D* h_RPCResX1_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX1_p"));
  TH2D* h_RPCResX2_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX2_p"));
  TH2D* h_RPCResX3_p =  (TH2D*)(gDirectory->GetList()->FindObject("RPCResX3_p"));
@@ -380,9 +385,16 @@ void MufluxReco::RPCextrap(Int_t nMax){
      Bool_t inAcc = kFALSE;
      if (pos1[0]>cuts["xLRPC1"] && pos1[0]<cuts["xRRPC1"] && pos1[1]>cuts["yBRPC1"] && pos1[1]<cuts["yTRPC1"]){
        inAcc=kTRUE;}
+     Bool_t first = kTRUE;
      for (Int_t nHit=0;nHit<Nhits;nHit++) {
         MuonTaggerHit* hit = (MuonTaggerHit*)Digi_MuonTaggerHits->At(nHit);
         Int_t channelID = hit->GetDetectorID();
+        if (first){
+          Int_t layer = channelID/1000;
+          h_rpcHitmaps->Fill(layer);
+          Int_t channel = channelID%1000;
+          h_rpcHitmap[layer]->Fill(channel);
+        }
         Int_t s  = channelID/10000;
         Int_t v  = (channelID-10000*s)/1000;
         Float_t z = RPCPositions[channelID][2];
@@ -404,6 +416,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
            matchedHits[s*10+v].push_back(nHit);
         }
        }
+       first = kFALSE;
        // record number of hits per station and view and track momentum
        // but only for tracks in acceptance
        if (inAcc){
@@ -415,8 +428,9 @@ void MufluxReco::RPCextrap(Int_t nMax){
   record how often hit matched in station k 
 */
         for (Int_t k=1;k<5;k++) {
+         if( matchedHits[ (k+1)*10+0].size()==0){continue;}
+         if( matchedHits[ (k+1)*10+1].size()==0){continue;}
          for (Int_t v=0;v<2;v++) {
-           if( matchedHits[ (k+1)*10+v].size()==0){continue;}
            h_RPCextTrack[10*k+v]->Fill(p);
            if ( matchedHits[k*10+v].size()>0){h_RPCfired[10*k+v]->Fill(p);}
            if (v==0){
