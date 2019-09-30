@@ -1372,6 +1372,10 @@ ut.bookHist(h,'delx','delta x',200,-50.,50.)
 ut.bookHist(h,'delta_mean_uv','delta to mean u and v',200,-10.,10.)
 ut.bookHist(h,'magPos','XY at goliath, PR',100,-50.,50.,100,-50.,50.)
 for dets in ['34','stereo12','y12']: ut.bookHist(h,'tracklets'+dets,'hits per view',10,-0.5,9.5)
+ut.bookHist(h,'rpcHitmap','rpc Hitmaps',60,-0.5,59.5)
+for n in range(1,6):
+     for l in range(2):
+         ut.bookHist(h,'rpcHitmap'+str(n)+str(l),'rpc Hitmaps station '+str(n)+'layer '+str(l),200,-0.5,199.5)
 
 def plotRPCHitmap():
     ut.bookHist(h,'rpcHitmap','rpc Hitmaps',60,-0.5,59.5)
@@ -4009,6 +4013,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             if not sTree.Digi_MuonTaggerHits.GetEntries()>0: continue
             if not findSimpleEvent(sTree): continue
             trackCandidates = findTracks(PR)
+            first = True
             for aTrack in trackCandidates:
                 matchedHits={1:{0:[],1:[]},2:{0:[],1:[]},3:{0:[],1:[]},4:{0:[],1:[]},5:{0:[],1:[]}}
                 st = aTrack.getFitStatus()
@@ -4027,6 +4032,12 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                     channelID = hit.GetDetectorID()
                     s  = channelID/10000
                     v  = (channelID-10000*s)/1000
+                    if first:
+                        first = False
+                        layer = m.GetDetectorID()/1000
+                        rc = h['rpcHitmap'].Fill(layer)
+                        channel = m.GetDetectorID()%1000
+                        rc = h['rpcHitmap'+str(layer)].Fill(channel)
                     vtop,vbot = RPCPositionsBotTop[channelID]
                     z = (vtop[2]+vbot[2])/2.
                     rc,pos,mom = extrapolateToPlane(aTrack,z)
@@ -4058,9 +4069,9 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
 #  require matched hit in station k+1
 #  record how often hit matched in station k
                     for k in range(1,5):
+                        if len(matchedHits[k+1][0])==0 or len(matchedHits[k+1][1])==0: continue # suppress noise TR 30Sept
+                        rc = h['RPCextTrack_'+str(k)+str(v)].Fill(p)
                         for v in range(0,2):
-                            if len(matchedHits[k+1][0])==0 or len(matchedHits[k+1][1])==0: continue # suppress noise TR 30Sept
-                            rc = h['RPCextTrack_'+str(k)+str(v)].Fill(p)
                             if len(matchedHits[k][v])>0: rc = h['RPCfired_'+str(k)+str(v)].Fill(p)
                             if v==0:
                                 if len(matchedHits[k][v])>0 or len(matchedHits[k][v+1])>0: rc = h['RPCfired_or_'+str(k)].Fill(p)
