@@ -4059,7 +4059,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
 #  record how often hit matched in station k
                     for k in range(1,5):
                         for v in range(0,2):
-                            if len(matchedHits[k+1][v])==0: continue
+                            if len(matchedHits[k+1][0])==0 or len(matchedHits[k+1][1])==0: continue # suppress noise TR 30Sept
                             rc = h['RPCextTrack_'+str(k)+str(v)].Fill(p)
                             if len(matchedHits[k][v])>0: rc = h['RPCfired_'+str(k)+str(v)].Fill(p)
                             if v==0:
@@ -4165,7 +4165,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
         for ks in range(1,xax.GetNbins()+1):
             Ntracks1=h['RPCMatchedHits'].GetBinContent(ks,1,ip)+h['RPCMatchedHits'].GetBinContent(ks,2,ip)
             for n in range(1,yax.GetNbins()+1):
-                Nmean += h['RPCMatchedHits'].GetBinContent(ks,n,ip)*xax.GetBinCenter(n)
+                Nmean += h['RPCMatchedHits'].GetBinContent(ks,n,ip)*yax.GetBinCenter(n)
                 Nentries+=h['RPCMatchedHits'].GetBinContent(ks,n,ip)
         Nmean = Nmean / float(Nentries+1E-10)
         rc = h['RPCMeanMatchedHits'].SetBinContent(ip,Nmean)
