@@ -10,14 +10,6 @@ All packages are managed in Git and GitHub. Please read [the Git tutorial for
 SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
 even if you already know Git, as it explains how development is done on GitHub.
 
-## Prerequisites
-
-All needed pre-requisites are provided by the FairSoft package, see below.
-
-Additionally for developers:
-  * clang-format (to format code according to our style guide)
-  * clang-tidy (to check coding conventions -- mostly naming rules which are not covered by `cpplint`)
- 
 ## Build Instructions using CVMFS
 
 1. Download the FairShip software
@@ -41,7 +33,7 @@ Additionally for developers:
 
 If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
 
-To load the FairShip environement, after you build the software you can simply use:
+To load the FairShip environment, after you build the software you can simply use:
 
 5. Load the environment
     ```bash
@@ -49,9 +41,10 @@ To load the FairShip environement, after you build the software you can simply u
     ```
 
 However, this won't work if you are using HTCondor. In such case you can do:
-    ```bash
-    eval `alienv load FairShip/latest
-    ```
+
+```bash
+eval alienv load FairShip/latest
+```
 
 ## Docker Instructions
 1. Build an docker image from a Dockerfile:
