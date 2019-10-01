@@ -383,6 +383,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
      std::map<int,float> trackPos;
      TVector3 posRPC;TVector3 pos1; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], pos1, momRPC);
+     if (rc<0){continue;}
      Bool_t inAcc = kFALSE;
      if (pos1[0]>cuts["xLRPC1"] && pos1[0]<cuts["xRRPC1"] && pos1[1]>cuts["yBRPC1"] && pos1[1]<cuts["yTRPC1"]){
        inAcc=kTRUE;}
@@ -400,6 +401,9 @@ void MufluxReco::RPCextrap(Int_t nMax){
         Int_t v  = (channelID-10000*s)/1000;
         Float_t z = RPCPositions[channelID][2];
         rc = MufluxReco::extrapolateToPlane(aTrack, z, posRPC, momRPC);
+        if (rc<0){
+          inAcc = kFALSE; // in order not to account against the hit
+          continue;}
         Double_t res;
         if (v==0){
           res = posRPC[1]-RPCPositions[channelID][1];
