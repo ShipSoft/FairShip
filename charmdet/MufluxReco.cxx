@@ -320,7 +320,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
  std::cout<< "make RPC analysis: "<< N <<std::endl;
  std::map<int,TH2D*> h_RPCResX;
  std::map<int,TH2D*> h_RPCResY;
- std::map<int,TH1D*> h_RPCextTrack;
+ std::map<int,TH2D*> h_RPCextTrack;
  std::map<int,TH1D*> h_RPCfired;
  std::map<int,TH1D*> h_RPCfired_or;
  std::map<int,TH1D*> h_RPC;
@@ -334,7 +334,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
    hname = "RPCResX_";
    h_RPCResX[s*10+v]=(TH2D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
    hname = "RPCextTrack_";
-   h_RPCextTrack[s*10+v]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
+   h_RPCextTrack[s*10+v]=(TH2D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
    hname = "RPCfired_";
    h_RPCfired[s*10+v]=(TH1D*)(gDirectory->GetList()->FindObject(hname+=(s*10+v)));
    hname = "rpcHitmap";
@@ -380,6 +380,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
      if (pMom0 < 1.){continue;}
 
      std::map<int,std::vector<int>> matchedHits;
+     std::map<int,float> trackPos;
      TVector3 posRPC;TVector3 pos1; TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], pos1, momRPC);
      Bool_t inAcc = kFALSE;
@@ -403,9 +404,11 @@ void MufluxReco::RPCextrap(Int_t nMax){
         if (v==0){
           res = posRPC[1]-RPCPositions[channelID][1];
           h_RPCResY[10*s+v]->Fill(res,RPCPositions[channelID][1]);
+          trackPos[s*10+v]=posRPC[1];
         } else {
           res = posRPC[0]-RPCPositions[channelID][0];
           h_RPCResX[10*s+v]->Fill(res,RPCPositions[channelID][0]);
+          trackPos[s*10+v]=posRPC[0];
           if(s==1){ h_RPCResX1_p->Fill(res,pMom0);}
           if(s==2){ h_RPCResX2_p->Fill(res,pMom0);}
           if(s==3){ h_RPCResX3_p->Fill(res,pMom0);}
@@ -431,7 +434,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
          if( matchedHits[ (k+1)*10+0].size()==0){continue;}
          if( matchedHits[ (k+1)*10+1].size()==0){continue;}
          for (Int_t v=0;v<2;v++) {
-           h_RPCextTrack[10*k+v]->Fill(p);
+           h_RPCextTrack[10*k+v]->Fill(p,trackPos[10*k+v]);
            if ( matchedHits[k*10+v].size()>0){h_RPCfired[10*k+v]->Fill(p);}
            if (v==0){
              if ( matchedHits[k*10+v].size()>0 || matchedHits[k*10+v+1].size()>0){ h_RPCfired_or[k]->Fill(p);}

@@ -1378,16 +1378,6 @@ for n in range(1,6):
          ut.bookHist(h,'rpcHitmap'+str(n)+str(l),'rpc Hitmaps station '+str(n)+'layer '+str(l),200,-0.5,199.5)
 
 def plotRPCHitmap():
-    ut.bookHist(h,'rpcHitmap','rpc Hitmaps',60,-0.5,59.5)
-    for n in range(1,6):
-        for l in range(2):
-            ut.bookHist(h,'rpcHitmap'+str(n)+str(l),'rpc Hitmaps station '+str(n)+'layer '+str(l),200,-0.5,199.5)
-    for event in sTree:
-        for m in event.Digi_MuonTaggerHits:
-            layer = m.GetDetectorID()/1000
-            rc = h['rpcHitmap'].Fill(layer)
-            channel = m.GetDetectorID()%1000
-            rc = h['rpcHitmap'+str(layer)].Fill(channel)
     if not h.has_key('rpcPlot'): ut.bookCanvas(h,key='rpcPlot',title='RPC Hitmaps',nx=1200,ny=600,cx=4,cy=3)
     j=0
     for n in range(1,6):
@@ -3993,7 +3983,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                 if v==0: dx=20
                 ut.bookHist(h,'RPCResX_'+str(s)+str(v),'RPC residual for '+str(s)+' '+ str(v),100,-dx,dx,20,-140.,140.)
                 ut.bookHist(h,'RPCResY_'+str(s)+str(v),'RPC residual for '+str(s)+' '+ str(v),100,-dx,dx,20,-140.,140.)
-                ut.bookHist(h,'RPCextTrack_'+str(s)+str(v),'mom of tracks extr to RPC k with RPC k+1 matched',100,0.,100.)
+                ut.bookHist(h,'RPCextTrack_'+str(s)+str(v),'mom of tracks extr to RPC k with RPC k+1 matched',100,0.,100.,100,-140.,140.)
                 ut.bookHist(h,'RPCfired_'+str(s)+str(v),'mom of tracks extr to RPC k and matched with RPC k+1 matched',100,0.,100.)
             ut.bookHist(h,'RPCfired_or_'+str(s),'mom of tracks extr to RPC k and matched with RPC k+1 or of 0 and 1',100,0.,100.)
             ut.bookHist(h,'RPCResX'+str(s)+'_p','RPC residual for station '+str(s)+' as function of track momentum',100,-dx,dx,100,0.,100.)
@@ -4033,7 +4023,6 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                     s  = channelID/10000
                     v  = (channelID-10000*s)/1000
                     if first:
-                        first = False
                         layer = m.GetDetectorID()/1000
                         rc = h['rpcHitmap'].Fill(layer)
                         channel = m.GetDetectorID()%1000
@@ -4062,6 +4051,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                         matchedHits[s][v].append(nHit)
                 # record number of hits per station and view and track momentum
                 # but only for tracks in acceptance
+                first = True
                 if inAcc:
                     Nmatched = 0
                     p = min(99.9,sta.getMomMag())
