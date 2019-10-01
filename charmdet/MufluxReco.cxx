@@ -918,7 +918,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      }
 
 // check for muon tag
-     TVector3 posRPC; TVector3 momRPC;
+     TVector3 posRPC(5678.,8765.,-10.); TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
      tRPCx[tnTr] = posRPC[0];
      tRPCy[tnTr] = posRPC[1];
@@ -1002,7 +1002,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
      Float_t Pz = fittedState.getMom().z();
      auto pos = fittedState.getPos();
 // check for muon tag
-     TVector3 posRPC; TVector3 momRPC;
+     TVector3 posRPC(5678.,8765.,-10.); TVector3 momRPC;
      Double_t rc = MufluxReco::extrapolateToPlane(aTrack,cuts["zRPC1"], posRPC, momRPC);
      tRPCx[tnTr] = posRPC[0];
      tRPCy[tnTr] = posRPC[1];

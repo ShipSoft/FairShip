@@ -1388,6 +1388,7 @@ def plotRPCHitmap():
     j+=1
     rc = h['rpcPlot'].cd(j)
     h['rpcHitmap'].Draw()
+    myPrint(h['rpcPlot'],'RPCHitMap')
 
 def plotTimeOverThreshold(N,Debug=False):
     ut.bookHist(h,'ToverT','Time over threshold',3000,-1000.,2000.)
@@ -4006,6 +4007,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             first = True
             for aTrack in trackCandidates:
                 matchedHits={1:{0:[],1:[]},2:{0:[],1:[]},3:{0:[],1:[]},4:{0:[],1:[]},5:{0:[],1:[]}}
+                trackPos = {}
                 st = aTrack.getFitStatus()
                 if not st.isFitConverged(): continue
                 if not aTrack.getNumPointsWithMeasurement()>0: continue
@@ -4023,9 +4025,9 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                     s  = channelID/10000
                     v  = (channelID-10000*s)/1000
                     if first:
-                        layer = m.GetDetectorID()/1000
+                        layer = channelID/1000
                         rc = h['rpcHitmap'].Fill(layer)
-                        channel = m.GetDetectorID()%1000
+                        channel = channelID%1000
                         rc = h['rpcHitmap'+str(layer)].Fill(channel)
                     vtop,vbot = RPCPositionsBotTop[channelID]
                     z = (vtop[2]+vbot[2])/2.
@@ -4042,11 +4044,13 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                         Y = (vtop[1]+vbot[1])/2.
                         res = pos[1] - Y
                         h['RPCResY_'+str(s)+str(v)].Fill(res,Y)
+                        trackPos[s*10+v]=pos[1]
                     else:
                         X = (vtop[0]+vbot[0])/2.
                         res = pos[0] - X
                         h['RPCResX_'+str(s)+str(v)].Fill(res,X)
                         h['RPCResX'+str(s)+'_p'].Fill(res,sta.getMomMag())
+                        trackPos[s*10+v]=pos[0]
                     if abs(res)<cuts["RPCmaxDistance"]:
                         matchedHits[s][v].append(nHit)
                 # record number of hits per station and view and track momentum
@@ -4060,7 +4064,8 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
 #  record how often hit matched in station k
                     for k in range(1,5):
                         if len(matchedHits[k+1][0])==0 or len(matchedHits[k+1][1])==0: continue # suppress noise TR 30Sept
-                        rc = h['RPCextTrack_'+str(k)+str(v)].Fill(p)
+                        rc = h['RPCextTrack_'+str(k)+str(v)].Fill(p,trackPos[(k+1)*10+v])
+                        if p<8 and abs(trackPos[(k+1)*10+v]) <1: print Nr
                         for v in range(0,2):
                             if len(matchedHits[k][v])>0: rc = h['RPCfired_'+str(k)+str(v)].Fill(p)
                             if v==0:
@@ -4183,10 +4188,10 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
         for v in range(3):
             if v==2: 
                 hname = 'RPCfired_or_'+str(s)
-                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(0)])
+                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(0)+'_projx'])
             else: 
                 hname = 'RPCfired_'+str(s)+str(v)
-                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(v)])
+                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(v)+'_projx'])
             pad = h['RPCEff'].cd(l)
             l+=1
             rc = h['Eff'+hname].Fit(const)
@@ -6758,6 +6763,22 @@ def plotRPCResidualsExample():
          txt2.Draw()
          myPrint(h['Residualsexample'],hist.GetName())
          k+=1
+def plotRPC3Example():
+    ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
+    h['RPCextTrack_21-70-100GeV'] = h['RPCextTrack_21'].ProjectionY('RPCextTrack_21-70-100GeV',70,100)
+    h['RPCextTrack_31-70-100GeV'] = h['RPCextTrack_31'].ProjectionY('RPCextTrack_31-70-100GeV',70,100)
+    h['RPCextTrack_21-5-10GeV'] = h['RPCextTrack_21'].ProjectionY('RPCextTrack_21-5-10GeV',5,10)
+    h['RPCextTrack_31-5-10GeV'] = h['RPCextTrack_31'].ProjectionY('RPCextTrack_31-5-10GeV',5,10)
+    h['RPCextTrack_21-70-100GeV'].SetLineColor(ROOT.kRed)
+    h['RPCextTrack_21-5-10GeV'].SetLineColor(ROOT.kRed)
+    h['Residualsexample'].cd()
+    h['RPCextTrack_21-5-10GeV'].Draw()
+    h['RPCextTrack_31-5-10GeV'].Draw('same')
+    myPrint(h['Residualsexample'],"XRPClowMom")
+    h['RPCextTrack_21-70-100GeV'].Draw()
+    h['RPCextTrack_31-70-100GeV'].Draw('same')
+    myPrint(h['Residualsexample'],"XRPChighMom")
+
 
 def mergeGoodRuns(excludeRPC=False,path='.'):
     #path = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64'
