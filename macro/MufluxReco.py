@@ -67,7 +67,7 @@ for o, a in opts:
         if o in ("-Y",):
             dy = float(a)
         if o in ("--ecalDebugDraw",):
-            EcalDebugDraw = True
+            print("WARNING: EcalDebugDraw option not currently used by script.")
         if o in ("--saveDisk",):
             saveDisk = True
         if o in ("--realPR",):

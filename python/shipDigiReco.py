@@ -147,7 +147,7 @@ class ShipDigiReco:
 # Match reco to MC
    ecalMatch=ROOT.ecalMatch('ecalMatch',0)
    self.caloTasks.append(ecalMatch)
-   if EcalDebugDraw:
+   if config.EcalDebugDraw:
  # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
     ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
     self.caloTasks.append(ecalDrawer)
@@ -174,7 +174,8 @@ class ShipDigiReco:
    self.ecalReconstructed = ecalReco.InitPython(self.sTree.EcalClusters, self.ecalStructure, self.ecalCalib)
    self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed,32000,-1)
    ecalMatch.InitPython(self.ecalStructure, self.ecalReconstructed, self.sTree.MCTrack)
-   if EcalDebugDraw: ecalDrawer.InitPython(self.sTree.MCTrack, self.sTree.EcalPoint, self.ecalStructure, self.ecalClusters)
+   if config.EcalDebugDraw:
+     ecalDrawer.InitPython(self.sTree.MCTrack, self.sTree.EcalPoint, self.ecalStructure, self.ecalClusters)
   else:
    ecalClusters      = ROOT.TClonesArray("ecalCluster") 
    ecalReconstructed = ROOT.TClonesArray("ecalReconstructed") 
