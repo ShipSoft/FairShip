@@ -7,6 +7,7 @@ from __future__ import print_function
 from builtins import range
 import ROOT, os
 import config
+from config import ShipGeo
 import shipunit  as u
 import math
 import copy

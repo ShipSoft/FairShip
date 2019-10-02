@@ -1,6 +1,7 @@
 from __future__ import print_function
 from builtins import range
 import config
+from config import h
 import os
 import ROOT
 import MufluxPatRec
@@ -113,9 +114,9 @@ class MufluxDigiReco:
 
         self.PDG = ROOT.TDatabasePDG.Instance()
         # for the digitizing and reconstruction step
-        self.v_drift       = modules["MufluxSpectrometer"].TubeVdrift()
-        self.sigma_spatial = modules["MufluxSpectrometer"].TubeSigmaSpatial()
-        self.viewangle     = modules["MufluxSpectrometer"].ViewAngle()
+        self.v_drift       = config.modules["MufluxSpectrometer"].TubeVdrift()
+        self.sigma_spatial = config.modules["MufluxSpectrometer"].TubeSigmaSpatial()
+        self.viewangle     = config.modules["MufluxSpectrometer"].ViewAngle()
 
         # access ShipTree
         self.sTree.GetEvent(0)
@@ -328,7 +329,7 @@ class MufluxDigiReco:
         t0 = 0.
         key = -1
         SmearedHits = []
-        v_drift = modules["MufluxSpectrometer"].TubeVdrift()
+        v_drift = config.modules["MufluxSpectrometer"].TubeVdrift()
         z1 = stop.z()
         for aDigi in self.digiMufluxSpectrometer:
             key+=1
@@ -361,7 +362,7 @@ class MufluxDigiReco:
             detID = ahit.GetDetectorID()
             top = ROOT.TVector3()
             bot = ROOT.TVector3()
-            modules["MufluxSpectrometer"].TubeEndPoints(detID,bot,top)
+            config.modules["MufluxSpectrometer"].TubeEndPoints(detID, bot, top)
             # MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop)
             #distance to wire, and smear it.
             dw  = ahit.dist2Wire()
@@ -431,7 +432,7 @@ class MufluxDigiReco:
         # Taken from charmdet/drifttubeMonitoring.py
         # rt relation, drift time to distance, drift time?
         tMinAndTmax = {1:[587,1860],2:[587,1860],3:[610,2300],4:[610,2100]}
-        R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm
+        R = config.ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm
         # parabola
         if function == 'parabola' or 'rtTDC'+str(s)+'000_x' not in h:
             p1p2 = {1:[688.,7.01],2:[688.,7.01],3:[923.,4.41],4:[819.,0.995]}
@@ -457,7 +458,7 @@ class MufluxDigiReco:
             top = ROOT.TVector3()
             bot = ROOT.TVector3()
             bot, top = self.correctAlignment(ahit)
-            # modules["MufluxSpectrometer"].TubeEndPoints(detID,bot,top)
+            # config.modules["MufluxSpectrometer"].TubeEndPoints(detID, bot, top)
             # ahit.MufluxSpectrometerEndPoints(bot,top)
             # MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop)
             # distance to wire.

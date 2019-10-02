@@ -92,8 +92,8 @@ class ShipDigiReco:
   self.digiMuon    = ROOT.TClonesArray("muonHit")
   self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
 # for the digitizing step
-  self.v_drift = modules["Strawtubes"].StrawVdrift()
-  self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
+  self.v_drift = config.modules["Strawtubes"].StrawVdrift()
+  self.sigma_spatial = config.modules["Strawtubes"].StrawSigmaSpatial()
 # optional if present, splitcalCluster
   if self.sTree.GetBranch("splitcalPoint"):
    self.digiSplitcal = ROOT.TClonesArray("splitcalHit") 
@@ -106,8 +106,9 @@ class ShipDigiReco:
   if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
 # Creates. exports and fills calorimeter structure
    dflag = 10 if config.debug else 0
-   ecalGeo = config.ecalGeoFile + 'z' + str(ShipGeo.ecal.z) + ".geo"
-   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
+   ecalGeo = config.ecalGeoFile + 'z' + str(config.ShipGeo.ecal.z) + ".geo"
+   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"):
+     shipDet_conf.makeEcalGeoFile(config.ShipGeo.ecal.z, config.ShipGeo.ecal.File)
    ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
    ecalFiller.SetUseMCPoints(ROOT.kTRUE)
    ecalFiller.StoreTrackInformation()
@@ -155,7 +156,7 @@ class ShipDigiReco:
    import shipPid
    self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
-  self.Vertexing = shipVertex.Task(h,self.sTree)
+  self.Vertexing = shipVertex.Task(config.h, self.sTree)
 # setup random number generator 
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
@@ -187,7 +188,7 @@ class ShipDigiReco:
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
 #
   self.bfield = ROOT.genfit.FairShipFields()
-  self.bfield.setField(fieldMaker.getGlobalField())
+  self.bfield.setField(config.fieldMaker.getGlobalField())
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
   ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
@@ -732,8 +733,8 @@ class ShipDigiReco:
   t0 = 0.
   key = -1
   SmearedHits = []
-  v_drift = modules["Strawtubes"].StrawVdrift()
-  modules["Strawtubes"].StrawEndPoints(10002001,start,stop)
+  v_drift = config.modules["Strawtubes"].StrawVdrift()
+  config.modules["Strawtubes"].StrawEndPoints(10002001, start, stop)
   z1 = stop.z()
   for aDigi in self.digiStraw:
     key+=1
@@ -742,7 +743,7 @@ class ShipDigiReco:
 # don't use hits from straw veto
     station = int(detID//10000000)
     if station > 4 : continue
-    modules["Strawtubes"].StrawEndPoints(detID,start,stop)
+    config.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
     delt1 = (start[2]-z1)/u.speedOfLight
     t0+=aDigi.GetDigi()-delt1
     SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi(), 'detID':detID} )
@@ -757,8 +758,8 @@ class ShipDigiReco:
  # smear strawtube points
   SmearedHits = []
   key = -1
-  v_drift = modules["Strawtubes"].StrawVdrift()
-  modules["Strawtubes"].StrawEndPoints(10002001,start,stop)
+  v_drift = config.modules["Strawtubes"].StrawVdrift()
+  config.modules["Strawtubes"].StrawEndPoints(10002001, start, stop)
   z1 = stop.z()
   for aDigi in self.digiStraw:
      key+=1
@@ -767,7 +768,7 @@ class ShipDigiReco:
 # don't use hits from straw veto
      station = int(detID//10000000)
      if station > 4 : continue
-     modules["Strawtubes"].StrawEndPoints(detID,start,stop)
+     config.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
    #distance to wire
      delt1 = (start[2]-z1)/u.speedOfLight
      p=self.sTree.strawtubesPoint[key]
@@ -777,9 +778,12 @@ class ShipDigiReco:
      if no_amb: smear = p.dist2Wire()
      SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear, 'detID':detID} )
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
-     if abs(stop.y())==abs(start.y()): h['disty'].Fill(smear)
-     if abs(stop.y())>abs(start.y()): h['distu'].Fill(smear)
-     if abs(stop.y())<abs(start.y()): h['distv'].Fill(smear)
+     if abs(stop.y()) == abs(start.y()):
+       config.h['disty'].Fill(smear)
+     else if abs(stop.y()) > abs(start.y()):
+       config.h['distu'].Fill(smear)
+     else if abs(stop.y()) < abs(start.y()):
+       config.h['distv'].Fill(smear)
 
   return SmearedHits
   
@@ -804,7 +808,7 @@ class ShipDigiReco:
   
   if config.realPR:
     # Do real PatRec
-    track_hits = shipPatRec.execute(self.SmearedHits, ShipGeo, config.realPR)
+    track_hits = shipPatRec.execute(self.SmearedHits, config.ShipGeo, config.realPR)
     # Create hitPosLists for track fit
     for i_track in track_hits.keys():
       atrack = track_hits[i_track]
@@ -890,7 +894,7 @@ class ShipDigiReco:
       tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
-      measurement.setMaxDistance(ShipGeo.strawtubes.InnerStrawDiameter/2.)
+      measurement.setMaxDistance(config.ShipGeo.strawtubes.InnerStrawDiameter / 2.)
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
       theTrack.insertPoint(tp)  # add point to Track
@@ -929,7 +933,7 @@ class ShipDigiReco:
     fitStatus   = theTrack.getFitStatus()
     nmeas = fitStatus.getNdf()   
     chi2        = fitStatus.getChi2()/nmeas   
-    h['chi2'].Fill(chi2)
+    config.h['chi2'].Fill(chi2)
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()
     if not config.debug:
@@ -1033,6 +1037,6 @@ class ShipDigiReco:
   print('finished writing tree')
   self.sTree.Write()
   ut.errorSummary()
-  ut.writeHists(h,"recohists.root")
+  ut.writeHists(config.h,"recohists.root")
   if config.realPR:
     shipPatRec.finalize()
