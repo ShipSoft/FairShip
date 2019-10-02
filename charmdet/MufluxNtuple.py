@@ -6,6 +6,7 @@ cuts['muTrackMatchX']= 5.
 cuts['muTrackMatchY']= 10.
 zTarget = -370.       # start of target: -394.328, mean z for mu from Jpsi in MC = -375cm, for all muons: -353cm
 dEdxCorrection = +7.3    # most probably ~7.5, mean 6.9
+
 cuts['zRPC1']  = 878.826706
 cuts['xLRPC1'] =-97.69875
 cuts['xRRPC1'] = 97.69875
@@ -822,9 +823,11 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
 #
     Ntotal = sTree.GetEntries()
     if ncpus:
+      ncpus = int(ncpus)
+      nseq = int(nseq)
       deltaN = (sTree.GetEntries()+0.5)//ncpus
-      nStart = nseq*deltaN
-      Ntotal=min(sTree.GetEntries(),nStart+deltaN)
+      nStart = int(nseq*deltaN)
+      Ntotal = int(min(sTree.GetEntries(),nStart+deltaN))
     for n in range(nStart,Ntotal):
         rc = sTree.GetEvent(n)
         if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
@@ -950,9 +953,10 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
                         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
     outFile = 'sumHistos-'+'-'+fdir+'.root'
     if ncpus:
-       outFile.replace('.root','-'+str(nseq)+'.root')
+       outFile=outFile.replace('.root','-'+str(nseq)+'.root')
     ut.writeHists( h,outFile)
-def invMass(sTree,h):
+    print "I have finished. ",outFile
+def invMass(sTree,h,nseq=0,ncpus=False):
     ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassJ','inv mass from Jpsi',100,0.0,10.0)
@@ -962,15 +966,25 @@ def invMass(sTree,h):
     ut.bookHist(h,'p/ptmuJ','p/pt of mu from Jpsi',100,0.0,400.0,100,0.0,10.0)
     MCdata = False
     if sTree.FindBranch("MCRecoDT"): MCdata = True
-    if MCdata: name = "ntuple-invMass-MC.root"
+    if MCdata: 
+       name = "ntuple-invMass-MC.root"
+       if ncpus:
+          name.replace('.root','-'+str(nseq)+'.root')
     else:      name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
     h['nt']  = ROOT.TNtuple("nt","dimuon","mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2")
 #
     sTreeFullMC = None
     Ntotal = sTree.GetEntries()
+    nStart = 0
+    if ncpus:
+      ncpus = int(ncpus)
+      nseq = int(nseq)
+      deltaN = (sTree.GetEntries()+0.5)//ncpus
+      nStart = int(nseq*deltaN)
+      Ntotal = int(min(sTree.GetEntries(),nStart+deltaN))
     currentFile = ''
-    for n in range(sTree.GetEntries()):
+    for n in range(nStart,sTree.GetEntries()):
         rc = sTree.GetEvent(n)
         if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
         if sTree.GetCurrentFile().GetName()!=currentFile:
@@ -1102,6 +1116,7 @@ pTrue[j][0],pTrue[j][1],dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1]])
     h['fntuple'].cd()
     h['nt'].Write()
     ut.writeHists(h,name.replace('ntuple-',''))
+    print "I have finished. ",hname
 def diMuonAnalysis():
  hData['f']= ROOT.TFile('ntuple-InvMass.root')
  hMC['f']  = ROOT.TFile('ntuple-invMass-MC.root')
@@ -1117,6 +1132,7 @@ def diMuonAnalysis():
  ut.bookHist(hData, 'theta','cos theta mother - daughter1',100,-1,1.)
  ut.bookCanvas(hMC,'tTheta','costheta',900,600,1,1)
  ut.bookCanvas(hMC,'tMass','mass',900,600,1,1)
+ ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
  hMC['mc_theta'].SetLineColor(ROOT.kRed)
  hMC['mc_thetaJ'].SetLineColor(ROOT.kMagenta)
  theCut = theCutTemplate.replace('XYZ','0')
@@ -1152,7 +1168,37 @@ def diMuonAnalysis():
  hMC['mc_IPJ'].Draw('same')
  hData['IP'].Draw('same')
  myPrint(hMC['tIP'],'dimuon-IP')
- ut.bookHist(hMC, 'm_MC','inv mass',130,0.,13.)
+ ut.bookHist(hMC, 'm_MC','inv mass;M [GeV/c^{2}]',130,0.,13.)
+ ut.bookHist(hMC, 'm_MClow','inv mass;M [GeV/c^{2}]',100,0.,5.)
+ hMC['dummy'].cd()
+ PDG = ROOT.TDatabasePDG.Instance()
+ colors = {221:ROOT.kBlue,223:ROOT.kCyan,113:ROOT.kGreen,331:ROOT.kOrange,333:ROOT.kRed,443:ROOT.kMagenta}
+ nmax = 0
+ for j in colors:
+   pname = PDG.GetParticle(j).GetName()
+   hname = 'Mass_'+pname.replace('/','')
+   hMC[hname]=hMC['m_MClow'].Clone(hname)
+   hMC[hname].SetTitle('inv mass '+PDG.GetParticle(j).GetName()+' ;M [GeV/c^{2}]')
+   hMC[hname].SetLineColor(colors[j])
+   hMC[hname].SetStats(0)
+   sTreeMC.Draw('mcor>>'+hname,'Jpsi=='+str(j))
+   if hMC[hname].GetMaximum()>nmax: nmax = hMC[hname].GetMaximum()
+ first = True
+ hMC['lMassMC']=ROOT.TLegend(0.7,0.7,0.95,0.95)
+ for j in colors:
+   pname = PDG.GetParticle(j).GetName()
+   hname = 'Mass_'+pname.replace('/','')
+   hMC[hname].SetStats(0)
+   if first:
+       first = False
+       hMC[hname].SetMaximum(nmax*1.1)
+       hMC[hname].SetTitle(';M [GeV/c^{2}]')
+       hMC[hname].Draw()
+   else:
+       hMC[hname].Draw('same')
+   hMC['lMassMC'].AddEntry(hMC[hname],pname,'PL')
+ hMC['lMassMC'].Draw()
+ myPrint(hMC['dummy'],'MCdiMuonMass')
  bw = hMC['m_MC'].GetBinWidth(1)
  hMC['myGauss'] = ROOT.TF1('gauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
             +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[4])/[5])**2)+abs( [6]+[7]*x+[8]*x**2 )',9)
@@ -1162,12 +1208,13 @@ def diMuonAnalysis():
  for v in vText:
   for ptCut in ptCutList:
    sptCut = str(ptCut)
-   ut.bookHist(hMC, 'mc-'+v+'_'+sptCut,'inv mass MC',130,0.,13.)
-   ut.bookHist(hMC, 'mc-'+v+'_Jpsi_'+sptCut,'inv mass Jpsi MC matched',130,0.,13.)
-   ut.bookHist(hData,v+'_'+sptCut,'inv mass DATA',130,0.,13.)
+   ut.bookHist(hMC, 'mc-'+v+'_'+sptCut,'inv mass MC;M [GeV/c^{2}]',130,0.,13.)
+   ut.bookHist(hMC, 'mc-'+v+'_Jpsi_'+sptCut,'inv mass Jpsi MC matched;M [GeV/c^{2}]',130,0.,13.)
+   ut.bookHist(hData,v+'_'+sptCut,'inv mass DATA;M [GeV/c^{2}]',130,0.,13.)
 #
    theCut =  theCutTemplate.replace('XYZ',sptCut)
    ROOT.gROOT.cd()
+   hMC['dummy'].cd()
    sTreeData.Draw(v+'>>'+v+'_'+sptCut,theCut)
    sTreeMC.Draw(v+'>>mc-'+v+'_'+sptCut ,theCut)
    sTreeMC.Draw(v+'>>mc-'+v+'_Jpsi_'+sptCut ,theCut+"&&Jpsi==443")
@@ -1227,25 +1274,37 @@ def diMuonAnalysis():
   myPrint(hMC['fits'+v],v+'_dimuon_all')
 #
   param = {0:'Signal',1:'Mass',2:'Sigma'}
-  for h in [hMC,hData]:
+  txt = {0:'; pt>X GeV/c; Nsignal',1:'; pt>X GeV/c; M [GeV/c^{2}]',2:'; pt>X GeV/c; #sigma [GeV/c^{2}]'}
+  choices = {'MC':hMC,'Data':hData}
+  for c in choices:
+   h=choices[c]
    for p in range(3):
-    ut.bookHist(h,'evolution'+v+param[p],v+' evolution of '+param[p],20,0., 2.)
+    hname = 'evolution'+v+param[p]+c
+    print "what the hell",hname,v+' evolution of '+param[p]+txt[p]
+    ut.bookHist(h,hname,v+' evolution of '+param[p]+txt[p],20,0., 2.)
     for ptCut in ptCutList:
-        k = h['evolution'+v+param[p]].FindBin(ptCut)
-        h['evolution'+v+param[p]].SetBinContent(k,h['fitResult'][ptCut][p][0])
-        h['evolution'+v+param[p]].SetBinError(k,h['fitResult'][ptCut][p][1])
+        k = h[hname].FindBin(ptCut)
+        h[hname].SetBinContent(k,h['fitResult'][ptCut][p][0])
+        h[hname].SetBinError(k,h['fitResult'][ptCut][p][1])
         k+=1
   ut.bookCanvas(hMC,'evolutionC'+v,'evolution',1600,500,3,1)
   for p in range(3):
    tc = hMC['evolutionC'+v].cd(p+1)
-   resetMinMax(hMC['evolution'+v+param[p]])
-   resetMinMax(hData['evolution'+v+param[p]])
-   hMC['evolution'+v+param[p]].SetLineColor(ROOT.kRed)
-   hMC['evolution'+v+param[p]].GetXaxis().SetRangeUser(0.9,2.0)
-   hData['evolution'+v+param[p]].GetXaxis().SetRangeUser(0.9,2.0)
-   hMC['evolution'+v+param[p]].SetMaximum(1.1*max(hMC['evolution'+v+param[p]].GetMaximum(),hData['evolution'+v+param[p]].GetMaximum()))
-   hMC['evolution'+v+param[p]].Draw()
-   hData['evolution'+v+param[p]].Draw('same')
+   hname = 'evolution'+v+param[p]
+   resetMinMax(hMC[hname+'MC'])
+   resetMinMax(hData[hname+'Data'])
+   hMC[hname+'MC'].SetLineColor(ROOT.kRed)
+   hMC[hname+'MC'].GetXaxis().SetRangeUser(0.9,2.0)
+   hData[hname+'Data'].GetXaxis().SetRangeUser(0.9,2.0)
+   hMC[hname+'MC'].SetMaximum(1.1*max(hMC[hname+'MC'].GetMaximum(),hData[hname+'Data'].GetMaximum()))
+   if p==1: 
+        hMC[hname+'MC'].SetMaximum(3.5)
+        hMC[hname+'MC'].SetMinimum(2.)
+   if p==2: 
+        hMC[hname+'MC'].SetMaximum(0.8)
+        hMC[hname+'MC'].SetMinimum(0.3)
+   hMC[hname+'MC'].Draw()
+   hData[hname+'Data'].Draw('same')
   myPrint(hMC['evolutionC'+v],'EvolutionOfCuts_dimuon'+v)
 # truth momentum
  ut.bookCanvas(hMC,'kin','Jpsi kinematics',1800,1000,3,2)
@@ -1442,4 +1501,7 @@ if options.command=='MufluxReco':
 if options.command=='RecoEffFunOfOcc':
     RecoEffFunOfOcc()
 if options.command=='invMass':
-    invMass(sTreeData,hData)
+    if fdir.find('simulation')==0:
+      invMass(sTreeMC,hMC,nseq=options.nseq,ncpus=options.ncpus)
+    else:
+      invMass(sTreeData,hData)

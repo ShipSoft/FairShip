@@ -571,6 +571,11 @@ def runMufluxReco():
         for n in range(ncpus):
          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False -s "+str(n)+ "-x "+str(ncpus)+" &"
          os.system(cmd)
+def runInvMass():
+        ncpus = 15
+        for n in range(ncpus):
+         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ "-x "+str(ncpus)+" &"
+
 
 def checkStatistics(splitFactor=5):
     # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
