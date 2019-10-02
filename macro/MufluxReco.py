@@ -15,7 +15,6 @@ withHists = True
 vertexing = True
 dy  = None
 saveDisk  = False # remove input file
-pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
 withT0 = False
 
