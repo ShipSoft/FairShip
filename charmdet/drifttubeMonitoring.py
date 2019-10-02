@@ -1102,6 +1102,9 @@ noiseThreshold=10
 noisyChannels=[] # [30112016, 40012005, 40012007, 40012008, 40112031, 40112032] only present in some runs
 deadChannels4MC = ROOT.std.vector('int')()
 for c in [10112001,11112012,20112003,30002042,30012026,30102021,30102025,30112013,30112018,40012014]: deadChannels4MC.push_back(c)
+deadChannelsRPC4MC = ROOT.std.vector('int')()
+for c in [31094,31095,31096,11029,11030,51141,51142,10057,10058]: deadChannelsRPC4MC.push_back(c)
+
 gol =  sGeo.GetTopVolume().GetNode("volGoliath_1")
 zgoliath = gol.GetMatrix().GetTranslation()[2]
 
@@ -1570,11 +1573,22 @@ def checkMCSmearing():
             rc=h['nMeasMC'].Fill(len(trackID[mcp]))
 
 def originMCmuons():
-    ut.bookHist(h,'origin z/r','origin of muons, z vs r',1000,-600.,600.,100,0.,10.)
+    ut.bookHist(h,'origin z/r','origin, z vs r',1000,-600.,600.,100,0.,10.)
+    ut.bookHist(h,'origin z/r mu','origin of muons, z vs r',1000,-600.,600.,100,0.,10.)
+    ut.bookHist(h,'origin z/r muJpsi','origin of muons Jpsi, z vs r',1000,-600.,600.,100,0.,10.)
     for i in range(sTree.GetEntries()):
         rc = sTree.GetEvent(i)
-        r = ROOT.TMath.Sqrt(sTree.MCTrack[0].GetStartX()**2+sTree.MCTrack[0].GetStartY()**2)
-        rc = h['origin z/r'].Fill(sTree.MCTrack[0].GetStartZ(),r)
+        first = True
+        for m in sTree.MCTrack:
+         r = ROOT.TMath.Sqrt(m.GetStartX()**2+m.GetStartY()**2)
+         if first:
+           first = False
+           rc = h['origin z/r'].Fill(m.GetStartZ(),r)
+         if abs(m.GetPdgCode())!=13:continue
+         rc = h['origin z/r mu'].Fill(m.GetStartZ(),r)
+         if abs(sTree.MCTrack[m.GetMotherId()].GetPdgCode())!=443:continue
+         rc = h['origin z/r muJpsi'].Fill(m.GetStartZ(),r)
+
 # from TrackExtrapolateTool
 parallelToZ = ROOT.TVector3(0., 0., 1.) 
 def extrapolateToPlane(fT,z,cplusplus=True):
@@ -4616,6 +4630,15 @@ def correctAlignmentRPC(hit,v):
 
     return vbot,vtop
 
+def debugRPCposition():
+ ut.bookHist(h,'RPCXY','RPC XY True - digi',100,-5.,5.,100,-5.,5.)
+ for n in range(sTree.GetEntries()):
+    rc=sTree.GetEvent(n)
+    for hit in sTree.Digi_MuonTaggerHits:
+      hit.EndPoints(vtop,vbot)
+      for point in sTree.MuonTaggerPoint:
+         if point.GetDetectorID()//10000 != hit.GetDetectorID()//10000: continue
+         rc=h['RPCXY'].Fill(point.GetX()-(vtop[0]+vbot[0])/2.,point.GetY()-(vtop[1]+vbot[1])/2.)
 def grouper(iterable,grouping):
     prev = None
     group = []
@@ -5588,7 +5611,7 @@ def ghostSuppression(hname = "sumHistos--simulation10GeV-withDeadChannels.root")
             if c=='': continue
             print "%s efficiency=%5.3F"%(c,ntracks[c]/ntracks[''])
 
-def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,eric=False,version="-withDeadChannels",withOverFlow=False,withDisplay=True,cuts=''):
+def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,eric=False,version="-final",withOverFlow=False,withDisplay=True,cuts=''):
     ptMax = 5.
     # possible cuts: '', 'All', 'Chi2<', 'Delx<', 'Dely<'
     # efficiency MC larger than data, 0.105 for cuts = All, but only for muon tagged!
@@ -5745,8 +5768,8 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
               'MCcharm':['same',ROOT.kGreen,'Charm'],'MC10charm':['same',ROOT.kGreen,'Charm'],
               'MCHadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
               'MC10Hadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
-              'MCLepton pair':['same',ROOT.kGreen+1,'Lepton pair'],'MCPositron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
-              'MC10Lepton pair':['same',ROOT.kGreen+1,'Lepton pair'],'MC10Positron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
+              'MCLepton pair':['same',ROOT.kGreen+1,'Photon conversion'],'MCPositron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
+              'MC10Lepton pair':['same',ROOT.kGreen+1,'Photon conversion'],'MC10Positron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
               'MCDi-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'],
               'MC10Di-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'] }
     ptMaxBin = h['p/pt'].GetYaxis().FindBin(ptMax)
@@ -6704,6 +6727,38 @@ def plotTDCExample():
         h['legRT'].AddEntry(h['g'+g],h['g'+g].GetTitle(),'PL')
     h['legRT'].Draw()
     myPrint(h['RTrelations'],'RTRelations')
+def energyLossRPC():
+    ut.bookHist(h,'eloss12','energy loss between stations 1 and 2;dE [GeV]',100,0.,5.)
+    ut.bookHist(h,'eloss345','energy loss between stations 3,4 and 5;dE [GeV]',100,0.,5.)
+    for n in range(sTree.GetEntries()):
+      rc=sTree.GetEvent(n)
+      E={}
+      for p in sTree.MuonTaggerPoint:
+        if abs(p.PdgCode())!=13: continue
+        tid = p.GetTrackID()
+        if not E.has_key(tid): E[tid]={}
+        s=p.GetDetectorID()//10000
+        mom=ROOT.TVector3(p.GetPx(),p.GetPy(),p.GetPz())
+        E[tid][s]=mom.Mag()
+      for t in E:
+        for s in range(1,5):
+         if E[t].has_key(s):
+          if E[t].has_key(s+1):
+           if s==1: rc = h['eloss12'].Fill(E[t][s]-E[t][s+1])
+           else: rc = h['eloss345'].Fill(E[t][s]-E[t][s+1])
+    ut.bookCanvas(h,'cx',' ',1200,600,1,1)
+    h['cx'].cd(1)
+    h['eloss345'].SetLineColor(ROOT.kMagenta)
+    h['eloss12'].SetLineColor(ROOT.kBlue)
+    h['eloss12'].SetTitle(';dE [GeV]')
+    h['eloss12'].SetStats(0)
+    h['eloss345scaled']=h['eloss345'].Clone('eloss345scaled')
+    h['eloss345scaled'].Scale(1./3.)
+    h['eloss345scaled'].SetTitle(';dE [GeV]')
+    h['eloss345scaled'].SetStats(0)
+    h['eloss345scaled'].Draw('hist')
+    h['eloss12'].Draw('same')
+    myPrint(h['cx'],'energyLossBetweenRPCs')
 def plotResidualExample():
     ut.readHists(h,'residuals.root')
     plotBiasedResiduals(onlyPlotting=True)
@@ -6772,9 +6827,11 @@ def plotRPC3Example():
     h['RPCextTrack_21-70-100GeV'].SetLineColor(ROOT.kRed)
     h['RPCextTrack_21-5-10GeV'].SetLineColor(ROOT.kRed)
     h['Residualsexample'].cd()
+    h['RPCextTrack_21-5-10GeV'].SetTitle('track with 5<P<10GeV position X at station 3 close to hit  ; x [cm]')
     h['RPCextTrack_21-5-10GeV'].Draw()
     h['RPCextTrack_31-5-10GeV'].Draw('same')
     myPrint(h['Residualsexample'],"XRPClowMom")
+    h['RPCextTrack_21-70-100GeV'].SetTitle('track with 70<P<100GeV position X at station 3 close to hit  ; x [cm]')
     h['RPCextTrack_21-70-100GeV'].Draw()
     h['RPCextTrack_31-70-100GeV'].Draw('same')
     myPrint(h['Residualsexample'],"XRPChighMom")

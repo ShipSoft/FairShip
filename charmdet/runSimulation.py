@@ -421,7 +421,7 @@ def importFromEos(source="/eos/experiment/ship/user/truf/muflux-sim/1GeV",tag="s
 
 def exportNtupleToEos(d="simulation10GeV-withDeadChannels",update=True):
     eospath = "/eos/experiment/ship/user/truf/muflux-sim/"
-    destination = eospath+d.replace('simulation','')
+    destination = eospath+d.replace('simulation','').split('-final')[0]
     for D in os.listdir(d):
         if os.path.isdir(d+'/'+D):
             for f in os.listdir(d+'/'+D):
@@ -562,13 +562,15 @@ def splitOffBoostedEvents(splitFactor=5,check=False):
         os.chdir('../')
 
 def runMufluxReco():
-    for t in ['withDeadChannels',"0", "multHits", "noDeadChannels"]:
+        t='final'
+        ncpus = 15
         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A True -B False -C  False &"
         os.system(cmd)
         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B False -C True  &"
         os.system(cmd)
-        cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False  &"
-        os.system(cmd)
+        for n in range(ncpus):
+         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False -s "+str(n)+ "-x "+str(ncpus)+" &"
+         os.system(cmd)
 
 def checkStatistics(splitFactor=5):
     # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 

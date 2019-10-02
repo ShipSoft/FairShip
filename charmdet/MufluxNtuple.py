@@ -4,7 +4,8 @@ from argparse import ArgumentParser
 cuts = {}
 cuts['muTrackMatchX']= 5.
 cuts['muTrackMatchY']= 10.
-zTarget = -394.328
+zTarget = -370.       # start of target: -394.328, mean z for mu from Jpsi in MC = -375cm, for all muons: -353cm
+dEdxCorrection = +7.3    # most probably ~7.5, mean 6.9
 cuts['zRPC1']  = 878.826706
 cuts['xLRPC1'] =-97.69875
 cuts['xRRPC1'] = 97.69875
@@ -31,10 +32,12 @@ parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files com
 parser.add_argument("-d", "--dir", dest="directory", help="directory", default=False)
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
 parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default="")
-parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="withDeadChannels") # other versions: "0", "multHits", "noDeadChannels"
-parser.add_argument("-A", "--with1GeV", dest="with1GeV", help="1GeV MC", default="True")  
-parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC", default="True")  
-parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC", default="True")  
+parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="final") # other versions: "0", "multHits", "noDeadChannels", "withDeadChannels"
+parser.add_argument("-A", "--with1GeV", dest="with1GeV", help="1GeV MC", default="True")
+parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC", default="True")
+parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC", default="True")
+parser.add_argument("-x", dest="ncpus", help="number of parallel jobs", default=False)
+parser.add_argument("-s", dest="nseq", help="sequence of parallel job", default=0)
 
 options = parser.parse_args()
 
@@ -781,7 +784,7 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
             h['leg'+t].Draw()
             h[t].Print('True-Reco'+k+'.png')
             h[t].Print('True-Reco'+k+'.pdf')
-def mufluxReco(sTree,h):
+def mufluxReco(sTree,h,nseq=0,ncpus=False):
     cuts = {'':0,'Chi2<':0.7,'Dely<':5,'Delx<':2,'All':1}
     ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
     for c in cuts:
@@ -818,7 +821,11 @@ def mufluxReco(sTree,h):
     if sTree.FindBranch("MCRecoDT"): MCdata = True
 #
     Ntotal = sTree.GetEntries()
-    for n in range(sTree.GetEntries()):
+    if ncpus:
+      deltaN = (sTree.GetEntries()+0.5)//ncpus
+      nStart = nseq*deltaN
+      Ntotal=min(sTree.GetEntries(),nStart+deltaN)
+    for n in range(nStart,Ntotal):
         rc = sTree.GetEvent(n)
         if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
         h['Trscalers'].Fill(1)
@@ -941,7 +948,10 @@ def mufluxReco(sTree,h):
                         h["truePz/Abspx"+source].Fill(trueMom[2],ROOT.TMath.Abs(trueMom[0]));
                         h["recoPz/Abspx"+source].Fill(p[2],ROOT.TMath.Abs(p[0]));
                         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
-    ut.writeHists( h,'sumHistos-'+'-'+fdir+'.root')
+    outFile = 'sumHistos-'+'-'+fdir+'.root'
+    if ncpus:
+       outFile.replace('.root','-'+str(nseq)+'.root')
+    ut.writeHists( h,outFile)
 def invMass(sTree,h):
     ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
@@ -954,9 +964,9 @@ def invMass(sTree,h):
     if sTree.FindBranch("MCRecoDT"): MCdata = True
     if MCdata: name = "ntuple-invMass-MC.root"
     else:      name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
-    fntuple  = ROOT.TFile.Open(name, 'RECREATE')
+    h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
     h['nt']  = ROOT.TNtuple("nt","dimuon","mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2")
-
+#
     sTreeFullMC = None
     Ntotal = sTree.GetEntries()
     currentFile = ''
@@ -992,9 +1002,9 @@ def invMass(sTree,h):
             IP[k] = ROOT.TMath.Sqrt(x*x+y*y)
 # make dE correction plus direction from measured point
             dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
-            Ecor = P[k].E()+7.3
+            Ecor = P[k].E()+dEdxCorrection
             norm = dline.Mag()
-            Pcor[k] = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
+            Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
             Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,0.105658)
 # now we have list of selected tracks, P.keys()
         if len(P)<2: continue
@@ -1043,7 +1053,7 @@ def invMass(sTree,h):
           if X[j].M()>-2.5 and MCdata: 
 #check truth
             eospathSim = os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/'
-            fname = sTree.GetCurrentFile().GetName().split('simulation')[1].replace('ntuple-','')
+            fname = sTree.GetCurrentFile().GetName().split('simulation')[1].replace('ntuple-','').replace('-final','')
             if sTreeFullMC:
                 if sTreeFullMC.GetCurrentFile().GetName().find(fname)<0:
                     fMC = ROOT.TFile.Open(eospathSim+fname)
@@ -1089,7 +1099,7 @@ def invMass(sTree,h):
 IP[nComb[j][0]],IP[nComb[j][1]],chi2[j][0],chi2[j][1],costheta[j],float(jpsi[j]),PTRUE[j],PtTRUE[j],\
 pTrue[j][0],pTrue[j][1],dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1]])
           h['nt'].Fill(theTuple)
-    fntuple.cd()
+    h['fntuple'].cd()
     h['nt'].Write()
     ut.writeHists(h,name.replace('ntuple-',''))
 def diMuonAnalysis():
@@ -1148,7 +1158,8 @@ def diMuonAnalysis():
             +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[4])/[5])**2)+abs( [6]+[7]*x+[8]*x**2 )',9)
  myGauss = hMC['myGauss']
  theCutTemplate +=  '&&abs(cosTheta)<0.8'
- for v in ['m','mcor','mcor2']:
+ vText={'m':'inv mass and fits','mcor':'inv mass, dE and direction corrected, and fits','mcor2':'inv mass, direction corrected, and fits'}
+ for v in vText:
   for ptCut in ptCutList:
    sptCut = str(ptCut)
    ut.bookHist(hMC, 'mc-'+v+'_'+sptCut,'inv mass MC',130,0.,13.)
@@ -1161,7 +1172,7 @@ def diMuonAnalysis():
    sTreeMC.Draw(v+'>>mc-'+v+'_'+sptCut ,theCut)
    sTreeMC.Draw(v+'>>mc-'+v+'_Jpsi_'+sptCut ,theCut+"&&Jpsi==443")
 
-  ut.bookCanvas(hMC,'fits'+v,'inv mass and fits',1800,800,5,4)
+  ut.bookCanvas(hMC,'fits'+v,vText[v],1800,800,5,4)
   j = 1
   for ptCut in  ptCutList:
    sptCut = str(ptCut)
@@ -1283,20 +1294,16 @@ def diMuonAnalysis():
  hMC['ptTrue_y'].Draw('same')
  myPrint(hMC['kin'],'JpsiKinematics')
 # muon dEdx
- ut.bookHist(hMC, 'delpTrue' ,'p-pTrue vs pTrue',20,0.,400.,50,-25.,25.)
- sTreeMC.Draw('(p1-p1True):p1True>>delpTrue','Jpsi==443')
- sTreeMC.Draw('(p2-p2True):p2True>>+delpTrue','Jpsi==443')
+ ut.bookHist(hMC, 'delpTrue2' ,'p-pTrue vs pTrue',20,0.,400.,50,-25.,25.)
+ sTreeMC.Draw('(p1-p1True):p1True>>delpTrue2','Jpsi==443')
+ sTreeMC.Draw('(p2-p2True):p2True>>+delpTrue2','Jpsi==443')
  ROOT.gROOT.cd()
- print hMC['delpTrue']
- hMC['meanLoss']=hMC['delpTrue'].ProjectionX('meanLoss')
- for n in range(1,hMC['delpTrue'].GetXaxis().GetNbins()+1):
-   tmp = hMC['delpTrue'].ProjectionY('tmp',n,n)
+ hMC['meanLoss']=hMC['delpTrue2'].ProjectionX('meanLoss')
+ for n in range(1,hMC['delpTrue2'].GetXaxis().GetNbins()+1):
+   tmp = hMC['delpTrue2'].ProjectionY('tmp',n,n)
    hMC['meanLoss'].SetBinContent(n,tmp.GetMean())
    hMC['meanLoss'].SetBinError(n,tmp.GetRMS())
- sTreeMC.Draw('m/sqrt(p1*p2)*sqrt((p1True)*(p2True))>>m_MC','Jpsi==443')
- ut.bookHist(hMC, 'delp2' ,'p1-p1True vs p2-p2True',50,-25.,25.,50,-25.,25.)
- sTreeMC.Draw('(p1-p1True):(p2-p2True)>>delp2','Jpsi==443')
-
+ hMC['meanLoss'].Draw()
 def resetMinMax(x):
   x.SetMinimum(-1111)
   x.SetMaximum(-1111)
@@ -1430,7 +1437,7 @@ def debug():
     return Nstat
 
 if options.command=='MufluxReco':
-    if fdir.find('simulation')==0: mufluxReco(sTreeMC,hMC)
+    if fdir.find('simulation')==0: mufluxReco(sTreeMC,hMC,nseq=options.nseq,ncpus=options.ncpus)
     else: mufluxReco(sTreeData,hData)
 if options.command=='RecoEffFunOfOcc':
     RecoEffFunOfOcc()
