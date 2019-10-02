@@ -780,9 +780,9 @@ class ShipDigiReco:
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
      if abs(stop.y()) == abs(start.y()):
        config.h['disty'].Fill(smear)
-     else if abs(stop.y()) > abs(start.y()):
+     elif abs(stop.y()) > abs(start.y()):
        config.h['distu'].Fill(smear)
-     else if abs(stop.y()) < abs(start.y()):
+     elif abs(stop.y()) < abs(start.y()):
        config.h['distv'].Fill(smear)
 
   return SmearedHits
