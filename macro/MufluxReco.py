@@ -12,7 +12,6 @@ withNTaggerHits = 0
 nEvents    = 10000
 firstEvent = 0
 withHists = True
-vertexing = True
 dy  = None
 saveDisk  = False # remove input file
 realPR = ''
@@ -49,7 +48,7 @@ except getopt.GetoptError:
         sys.exit()
 for o, a in opts:
         if o in ("--noVertexing",):
-            vertexing = False
+            print("WARNING: --noVertexing option not currently used by script.")
         if o in ("--noStrawSmearing",):
             withNoStrawSmearing = True
         if o in ("--withT0",):
@@ -67,7 +66,7 @@ for o, a in opts:
         if o in ("-Y",):
             dy = float(a)
         if o in ("--ecalDebugDraw",):
-            print("WARNING: EcalDebugDraw option not currently used by script.")
+            print("WARNING: --ecalDebugDraw option not currently used by script.")
         if o in ("--saveDisk",):
             saveDisk = True
         if o in ("--realPR",):
@@ -82,8 +81,9 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
-print('configured to process ',nEvents,' events from ' ,inputFile, \
-      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco',realPR=="_PR")
+print('configured to process ', nEvents, ' events from ', inputFile,
+      ' starting with event ', firstEvent, ' with option Yheight = ', dy,
+      ' with vertexing', False,' and real pattern reco',realPR=="_PR")
 if not inputFile.find('_rec.root') < 0: 
   outFile   = inputFile
   inputFile = outFile.replace('_rec.root','.root') 

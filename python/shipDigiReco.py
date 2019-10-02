@@ -216,7 +216,7 @@ class ShipDigiReco:
    if len(self.caloTasks)>0:
     self.EcalClusters.Fill()
     self.EcalReconstructed.Fill()
-   if vertexing:
+   if config.vertexing:
 # now go for 2-track combinations
     self.Vertexing.execute()
 

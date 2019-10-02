@@ -46,8 +46,7 @@ parser.add_argument("-dy",               dest="dy", help="Max height of tank", r
 parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
 
 options = parser.parse_args()
-if options.noVertexing: vertexing = False
-else: vertexing = True
+vertexing = not options.noVertexing
  
 if options.EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
@@ -60,8 +59,9 @@ if not options.dy:
   except:
     dy = None
 
-print('configured to process ',options.nEvents,' events from ' ,options.inputFile, \
-      ' starting with event ',options.firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco ',options.realPR)
+print('configured to process ', options.nEvents, ' events from ', options.inputFile,
+      ' starting with event ', options.firstEvent, ' with option Yheight = ' ,dy,
+      ' with vertexing', vertexing, ' and real pattern reco ', options.realPR)
 if not options.inputFile.find('_rec.root') < 0: 
   outFile   = options.inputFile
   options.inputFile = outFile.replace('_rec.root','.root') 
