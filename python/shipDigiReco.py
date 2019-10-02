@@ -106,7 +106,7 @@ class ShipDigiReco:
   if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
 # Creates. exports and fills calorimeter structure
    dflag = 10 if config.debug else 0
-   ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
+   ecalGeo = config.ecalGeoFile + 'z' + str(ShipGeo.ecal.z) + ".geo"
    if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
    ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
    ecalFiller.SetUseMCPoints(ROOT.kTRUE)
