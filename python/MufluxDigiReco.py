@@ -1195,11 +1195,11 @@ class MufluxDigiReco:
 
         # hit smearing
         if self.sTree.GetBranch("MufluxSpectrometerPoint"):
-            if withT0:
+            if config.withT0:
                 self.SmearedHits = self.withT0Estimate()
                 self.TaggerHits = self.muonTaggerHits_mc()
             else:
-                self.SmearedHits = self.smearHits(withNoStrawSmearing)
+                self.SmearedHits = self.smearHits(config.withNoStrawSmearing)
                 self.TaggerHits = self.muonTaggerHits_mc()
         elif self.sTree.GetBranch("Digi_MufluxSpectrometerHits"):
             self.SmearedHits = self.smearHits_realData()
@@ -1342,7 +1342,7 @@ class MufluxDigiReco:
             # approximate covariance
             covM = ROOT.TMatrixDSym(6)
             resolution = self.sigma_spatial
-            if withT0:
+            if config.withT0:
                 resolution = resolution*1.4 # worse resolution due to t0 estimate
             for i in range(3):
                 covM[i][i] = resolution*resolution
@@ -1395,7 +1395,7 @@ class MufluxDigiReco:
             # approximate covariance
             covM = ROOT.TMatrixDSym(6)
             resolution = self.sigma_spatial
-            if withT0:
+            if config.withT0:
                 resolution = resolution*1.4 # worse resolution due to t0 estimate
             for i in range(3):
                 covM[i][i] = resolution*resolution
@@ -1446,7 +1446,7 @@ class MufluxDigiReco:
             # approximate covariance
             covM = ROOT.TMatrixDSym(6)
             resolution = self.sigma_spatial
-            if withT0:
+            if config.withT0:
                 resolution = resolution*1.4 # worse resolution due to t0 estimate
             for i in range(3):
                 covM[i][i] = resolution*resolution

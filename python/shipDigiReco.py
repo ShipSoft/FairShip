@@ -793,9 +793,11 @@ class ShipDigiReco:
   self.fitTrack2MC.clear()
 
 #   
-  if withT0:  self.SmearedHits = self.withT0Estimate()
+  if config.withT0:
+    self.SmearedHits = self.withT0Estimate()
   # old procedure, not including estimation of t0 
-  else:       self.SmearedHits = self.smearHits(withNoStrawSmearing)
+  else:
+    self.SmearedHits = self.smearHits(config.withNoStrawSmearing)
 
   nTrack = -1
   trackCandidates = []
@@ -867,7 +869,8 @@ class ShipDigiReco:
 # approximate covariance
     covM = ROOT.TMatrixDSym(6)
     resolution = self.sigma_spatial
-    if withT0: resolution = resolution*1.4 # worse resolution due to t0 estimate
+    if config.withT0:
+      resolution *= 1.4 # worse resolution due to t0 estimate
     for  i in range(3):   covM[i][i] = resolution*resolution
     covM[0][0]=resolution*resolution*100.
     for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
