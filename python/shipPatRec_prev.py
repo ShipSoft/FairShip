@@ -6,8 +6,8 @@
 from __future__ import print_function
 from builtins import range
 import ROOT, os
-import config
-from config import ShipGeo
+import global_variables
+from global_variables import ShipGeo
 import shipunit  as u
 import math
 import copy
@@ -212,7 +212,7 @@ def initialize(fGeo):
      z34layerv2[i]=[Zpos_u]
 
    VetoStationZ = ShipGeo.vetoStation.z
-   if config.debug:
+   if global_variables.debug:
      print("VetoStation midpoint z=", VetoStationZ)
    VetoStationEndZ=VetoStationZ+(ShipGeo.strawtubes.DeltazView+ShipGeo.strawtubes.OuterStrawDiameter)/2
    for i in range(1,5):   
@@ -220,7 +220,7 @@ def initialize(fGeo):
      if i==2: TStationz = ShipGeo.TrackStation2.z  
      if i==3: TStationz = ShipGeo.TrackStation3.z  
      if i==4: TStationz = ShipGeo.TrackStation4.z 
-     if config.debug:
+     if global_variables.debug:
        print("TrackStation",i," midpoint z=",TStationz) 
        for vnb in range(0,4):
          for pnb in range (0,2):
@@ -241,7 +241,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
   rc = sTree.GetEvent(iEvent) 
   nMCTracks = sTree.MCTrack.GetEntriesFast()   
 
-  if config.debug:
+  if global_variables.debug:
     print("event nbr", iEvent, "has", nMCTracks, "tracks")
   #1. MCTrackIDs: list of tracks decaying after the last tstation and originating before the first
   for i in reversed(range(nMCTracks)):
@@ -275,7 +275,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
              if mothertrackZ < TStation1StartZ and mothertrackZ > VetoStationEndZ:
 	       if motherId not in MCTrackIDs:
 	           MCTrackIDs.append(motherId)
-  if config.debug:
+  if global_variables.debug:
     print("Tracks with origin in decay volume", MCTrackIDs)	 
   if len(MCTrackIDs)==0: return MCTrackIDs
     
@@ -302,20 +302,20 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
   for item in itemstoremove:
       MCTrackIDs.remove(item)	   	  	  
 
-  if config.debug:
+  if global_variables.debug:
     print("Tracks with hits in timedet", MCTrackIDs) 
   if len(MCTrackIDs)==0: return MCTrackIDs
   #4. Find straws that have multiple hits
   nHits = sTree.strawtubesPoint.GetEntriesFast()  
   hitstraws={}
   duplicatestrawhit=[]
-  if config.debug:
+  if global_variables.debug:
     print("Nbr of Rawhits=", nHits)
 
   for i in range(nHits):
     ahit = sTree.strawtubesPoint[i]
     if (str(ahit.GetDetectorID())[:1]=="5") : 
-       if config.debug:
+       if global_variables.debug:
 	 print("Hit in straw Veto detector. Rejecting.")
        continue
     strawname=str(ahit.GetDetectorID())
@@ -340,7 +340,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
   trackoutsidestations=[]
   for i in range(nHits):
     if i in  duplicatestrawhit: 
-       if config.debug:
+       if global_variables.debug:
 	 print("Duplicate hit", i, "not reconstructible, rejecting.")
        continue  
     ahit = sTree.strawtubesPoint[i] 
@@ -350,7 +350,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
           trackoutsidestations.append(ahit.GetTrackID())
     if ahit.GetTrackID() not in MCTrackIDs:
        #hit on not reconstructible track
-       if config.debug:
+       if global_variables.debug:
 	 print("Hit not on reconstructible track. Rejecting.")
        continue	  
     #group hits per tracking station, key = trackid
@@ -407,7 +407,7 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
   for item in itemstoremove:
       MCTrackIDs.remove(item)	
 
-  if config.debug: 
+  if global_variables.debug: 
      print("tracks_with_hits_in_all_stations",tracks_with_hits_in_all_stations)
      print("Tracks with hits in all stations & inside acceptance ellipse",MCTrackIDs)   
   if len(MCTrackIDs)==0: return MCTrackIDs   
@@ -444,9 +444,9 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
         itemstoremove.append(item)
   for item in itemstoremove:
       MCTrackIDs.remove(item)	
-      if config.debug:
+      if global_variables.debug:
 	print("After removing the non HNL track, MCTrackIDs", MCTrackIDs)
-  if config.debug:
+  if global_variables.debug:
     print("Tracks with HNL mother", MCTrackIDs) 
   
   #8. check if the tracks are HNL children 
@@ -463,17 +463,17 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
 	   nu_mufound+=1  
 	   itemstoremove.append(item)
       except:
-        if config.debug:
+        if global_variables.debug:
 	  print("Unknown particle with pdg code:", sTree.MCTrack.At(item).GetPdgCode())	
     if reconstructiblerequired == 1 :
       if mufound!=1  and pifound!=1: 
-          if config.debug:
+          if global_variables.debug:
 	    print("No reconstructible pion or muon.") 
 	  MCTrackIDs=[]   
     if reconstructiblerequired == 2 : 
       if threeprong == 1 :       
           if mufound!=2 or nu_mufound!=1 : 
-            if config.debug:
+            if global_variables.debug:
 	      print("No reconstructible mu-mu-nu.")  
 	    MCTrackIDs=[]
 	  else:
@@ -482,13 +482,13 @@ def getReconstructibleTracks(iEvent,sTree,sGeo):
                MCTrackIDs.remove(item)	
       else:         
           if mufound!=1 or pifound!=1 : 
-            if config.debug:
+            if global_variables.debug:
 	      print("No reconstructible pion and muon.")  
 	    MCTrackIDs=[]     
   if len(MCTrackIDs)>0:
      rc=h['nbrhits'].Fill(nHits)
      rc=h['nbrtracks'].Fill(nMCTracks)
-  if config.debug:
+  if global_variables.debug:
     print("Tracks with required HNL decay particles", MCTrackIDs) 	     
   return MCTrackIDs
 
@@ -526,7 +526,7 @@ def SmearHits(iEvent,sTree,modules,SmearedHits,ReconstructibleMCTracks):
           
   #the following code prints some histograms related to the MC hits  
   strawname=''
-  if config.debug:
+  if global_variables.debug:
     print("nbr of hits=", nHits, "in event", iEvent)
   station1hits={}
   station12xhits={}
@@ -687,7 +687,7 @@ def Digitization(sTree,SmearedHits):
     StrawRawLink[j]=[sTree.strawtubesPoint[i]]
     j=j+1 
 
-  if config.debug:
+  if global_variables.debug:
     print("Nbr of digitized hits", j)  
   return StrawRaw,StrawRawLink
          
@@ -717,7 +717,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
      #y hits for horizontal straws
      rawhits[j]=copy.deepcopy(((StrawRaw[item][1]+StrawRaw[item][4])/2,(StrawRaw[item][2]+StrawRaw[item][5])/2,StrawRaw[item][6]))
      if firsttwo==True: 
-       if config.debug:
+       if global_variables.debug:
 	 print(
 	     "rawhits[", j, "]=", rawhits[j],
 	     "trackid", StrawRawLink[item][0].GetTrackID(),
@@ -729,7 +729,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
      j=j+1    
       
   sortedrawhits=OrderedDict(sorted(rawhits.items(),key=lambda t:t[1][1])) 
-  if config.debug: 
+  if global_variables.debug: 
      print(" ")
      print("horizontal view (y) hits ordered by plane: plane nr, zlayer, hits")
 
@@ -752,7 +752,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 	   a.append(float(sortedrawhits[item][0]))
 	else: 
 	   #This should never happen - duplicate hits are already removed at digitization
-	   if config.debug:
+	   if global_variables.debug:
 	     print(" wire hit again", sortedrawhits[item], "strawname=", StrawRawLink[item][0].GetDetectorID())
 	   a.append(float(sortedrawhits[item][0]))
 	   duplicates.append(float(zlayer[i][0]))  
@@ -770,7 +770,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
     #indicate which hit has been used    
     b=len(a)*[0]
     hits[i]=[a,b,c,d]
-    if config.debug:
+    if global_variables.debug:
       print(i, zlayer[i], hits[i]) 
     
     # split hits up by trackid for debugging 
@@ -803,20 +803,20 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
   removetrackids=[]
   for t in trcandv1:
     trackids=[]
-    if config.debug: 
+    if global_variables.debug: 
        print(' ')
        print('track found in Y view:',t,' indices of hits in planes',trcandv1[t])
     for ipl in range(len(trcandv1[t])):      
       indx= trcandv1[t][ipl]
       if indx>-1:     
- 	if config.debug:
+ 	if global_variables.debug:
 	  print(
 	      '   plane nr, z-position, y of hit, trackid:',
 	      ipl, zlayer[ipl], hits[ipl][0][indx],
 	      StrawRawLink[hits[ipl][2][indx]][0].GetTrackID()
 	  )
 	trackids.append(StrawRawLink[hits[ipl][2][indx]][0].GetTrackID())				
-    if config.debug:
+    if global_variables.debug:
       print(
 	  "   Largest fraction of hits in Y view:", fracMCsame(trackids)[0],
 	  "on MC track with id",fracMCsame(trackids)[1]
@@ -832,12 +832,12 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
              foundhorizontaltrackids.append(fracMCsame(trackids)[1])
        else:
           #this track is not reconstructible, remove it
-          if config.debug:
+          if global_variables.debug:
 	    print("Y view track with trackid", fracMCsame(trackids)[1], "is not reconstructible. Removing it.")
           removetrackids.append(t) 
 
        if (len(foundhorizontaltrackids) == 0 or len(horizontaltrackids)==0 ): 
-          if config.debug:
+          if global_variables.debug:
 	    print("No reconstructible Y view tracks found.")
           if monitor==True : return 0,[],[],[],[],[],[],{},{},{},{},{}
   
@@ -859,20 +859,20 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
         if firsttwo==True: 
           if len(foundhorizontaltrackids)>=len(ReconstructibleMCTracks) : reconstructiblehorizontalidsfound12+=1
           else : 
-             if config.debug: 
+             if global_variables.debug: 
 	       print("!!!!!!!!!!!!!!!! Difference between Y-view tracks found and reconstructible tracks (station 1&2). Quitting patrec.")
                debugevent(iEvent,False,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundhorizontaltrackids)	  
 	     return 0,[],[],[],[],[],[],{},{},{},{},{}
         else: 
           if len(foundhorizontaltrackids)>=len(ReconstructibleMCTracks) : reconstructiblehorizontalidsfound34+=1
           else : 
-             if config.debug: 
+             if global_variables.debug: 
 	       print("!!!!!!!!!!!!!!!! Difference between Y-view tracks found and reconstructible tracks (station 3&4). Quitting patrec.")
 	       debugevent(iEvent,False,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundhorizontaltrackids)
 	     return 0,[],[],[],[],[],[],{},{},{},{},{}
 
      if len(foundhorizontaltrackids) != reconstructiblerequired :
-       if config.debug:
+       if global_variables.debug:
 	 print(len(foundhorizontaltrackids), "Y view tracks found, but ", reconstructiblerequired, "required.")
        return 0,[],[],[],[],[],[],{},{},{},{},{} 
   else:
@@ -881,14 +881,14 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 
 
   if nrtrcandv1==0 : 
-    if config.debug:
+    if global_variables.debug:
       print("0 tracks found in Y view. Reconstructible:", len(ReconstructibleMCTracks))
     if monitor==True: return 0,[],[],[],[],[],[],{},{},{},{},{}
   else : 
-    if config.debug:
+    if global_variables.debug:
       print(nrtrcandv1, "tracks found in Y view. Reconstructible:", len(ReconstructibleMCTracks))
    
-  if config.debug:
+  if global_variables.debug:
     print("***************** Start of Stereo PatRec **************************")  
 
   v2hits={}
@@ -900,7 +900,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
   for item in StrawRaw:  
      rawxhits[j]=copy.deepcopy((StrawRaw[item][0],StrawRaw[item][1],StrawRaw[item][3],StrawRaw[item][4],StrawRaw[item][2],StrawRaw[item][6]))
      if firsttwo==True: 
-       if config.debug:
+       if global_variables.debug:
 	 print(
 	     "rawxhits[", j, "]=", rawxhits[j],
 	     "trackid", StrawRawLink[item][0].GetTrackID(),
@@ -911,7 +911,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
  
   sortedrawxhits=OrderedDict(sorted(rawxhits.items(),key=lambda t:t[1][4])) 
 
-  if config.debug:
+  if global_variables.debug:
     print("stereo view hits ordered by plane:")
   for i in range(i1,i2+1):
     xb=[]
@@ -932,7 +932,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 	d.append(float(sortedrawxhits[item][5]))
     uvview[i]=[xb,yb,xt,yt,c,d]
 
-    if config.debug:
+    if global_variables.debug:
       print(
 	  '   uv hits, z,xb,yb,xt,yt,dist    ',
 	  i, zlayerv2[i], uvview[i][0], uvview[i][1], uvview[i][2],
@@ -947,7 +947,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
   ntracks=0 
   trackkey=0 
   tracks={}
-  if config.debug:
+  if global_variables.debug:
     if (firsttwo==True) :  
       print('Loop over tracks found in Y view, stations 1&2')
     else :  
@@ -971,7 +971,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
     #linear "fit" to track found in this view 
 
     fitt,fitc=fitline(trcandv1[t],hits,zlayer,resolution)
-    if config.debug:
+    if global_variables.debug:
       print('   Track nr', t, 'in Y view: tangent, constant=', fitt, fitc)
 
     tan=0.
@@ -985,7 +985,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
     for ipl in looplist:      
       indx= trcandv1[t][ipl]
       if indx>-1: 
- 	if config.debug:
+ 	if global_variables.debug:
 	  print('      Plane nr, z-position, y of hit:', ipl, zlayer[ipl], hits[ipl][0][indx])
         hitpoint=[zlayer[ipl],hits[ipl][0][indx]]
 	rc=h['disthittoYviewtrack'].Fill(dist2line(fitt,fitc,hitpoint))
@@ -996,13 +996,13 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 	py=StrawRawLink[hits[ipl][2][indx]][0].GetPy()
 	pz=StrawRawLink[hits[ipl][2][indx]][0].GetPz()
 	ptmp=math.sqrt(px**2+py**2+pz**2)
-	if config.debug:
+	if global_variables.debug:
 	    print("      p",ptmp,"px",px,"py",py,"pz",pz)
 	if tan==0. : tan=py/pz
 	if cst==0. : cst=StrawRawLink[hits[ipl][2][indx]][0].GetY()-tan*zlayer[ipl][0]
 	rc=h['disthittoYviewMCtrack'].Fill(dist2line(tan,cst,hitpoint))
 
-    if config.debug:
+    if global_variables.debug:
       print('   Track nr', t, 'in Y view: MC tangent, MC constant=', tan, cst)	
     
     for ipl in range(len(trcandv1[t])):      
@@ -1070,7 +1070,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 	  e.append(distances[xcleanunsorted.index(item)]) 
       #fill hits info for ptrack, "b" records if hit has been used in ptrack
       v2hits[ipl]=[xclean,b,d,e]
-      if config.debug:
+      if global_variables.debug:
 	print('      Plane,z, projected hits:', ipl , zlayerv2[ipl], v2hits[ipl])
       
       for item in range(len(v2hits[ipl][0])): 
@@ -1097,12 +1097,12 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
     else:
        nrtrcandv2,trcandv2=ptrack(zlayerv2,v2hits,6,15.)
     if len(trcandv2)>1: 
-      if config.debug:
+      if global_variables.debug:
 	print("   len(trcandv2) in stereo", len(trcandv2))
     
     nstereotracks=0
     if nrtrcandv2==0 : 
-      if config.debug:
+      if global_variables.debug:
 	print("   0 tracks found in stereo view, for Y-view track nr", t)
     
 
@@ -1110,7 +1110,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
     #else: totalstereo34==reconstructiblestereoidsfound34
     
     for t1 in trcandv2:
-      if config.debug:
+      if global_variables.debug:
 	print('   Track belonging to Y-view view track', t, 'found in stereo view:', t1, trcandv2[t1])      
       
       stereofitt,stereofitc=fitline(trcandv2[t1],v2hits,zlayerv2,resolution)
@@ -1150,7 +1150,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
         indx= trcandv2[t1][ipl]
         if indx>-1: 
 	  stereotrackids.append(StrawRawLink[v2hits[ipl][2][indx]][0].GetTrackID())     
-	  if config.debug:
+	  if global_variables.debug:
 	    print(
 		"      plane nr, zpos, x of hit, hitid, trackid",
 		ipl, zlayerv2[ipl], v2hits[ipl][0][indx], v2hits[ipl][2][indx],
@@ -1190,14 +1190,14 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
       if firsttwo==True: h['fracsame12-stereo'].Fill(fracMCsame(stereotrackids)[0])
       else: h['fracsame34-stereo'].Fill(fracMCsame(stereotrackids)[0])
       
-      if config.debug: 
+      if global_variables.debug: 
          print("      Largest fraction of hits in stereo view:",fracMCsame(stereotrackids)[0],"on MC track with id",fracMCsame(stereotrackids)[1])    
          #check if this trackid is the same as the track from the Y-view it belongs to
          if monitor==True: print("      fracMCsame(stereotrackids)[1]", fracMCsame(stereotrackids)[1],"foundhorizontaltrackids[",t-1,"]",foundhorizontaltrackids[t-1])
       
       if monitor==True: 
          if fracMCsame(stereotrackids)[1] != horizontaltrackids[t-1] :
-            if config.debug:
+            if global_variables.debug:
 	      print(
 		  "      Stereo track with trackid",
 		  fracMCsame(stereotrackids)[1],
@@ -1211,7 +1211,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
             if fracMCsame(stereotrackids)[1] not in foundstereotrackids: 
 	       foundstereotrackids.append(fracMCsame(stereotrackids)[1])
          else:
-            if config.debug:
+            if global_variables.debug:
 	      print(
 		  "      Stereo track with trackid",
 		  fracMCsame(stereotrackids)[1], 
@@ -1226,7 +1226,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
       alltrackids=y11trackids+stereo11trackids+stereo12trackids+y12trackids+y21trackids+stereo21trackids+stereo22trackids+y22trackids 
       if firsttwo==True: h['fracsame12'].Fill(fracMCsame(alltrackids)[0])
       else: h['fracsame34'].Fill(fracMCsame(alltrackids)[0])      
-      if config.debug:
+      if global_variables.debug:
 	print(
 	    "      Largest fraction of hits in horizontal and stereo view:", fracMCsame(alltrackids)[0],
 	    "on MC track with id", fracMCsame(alltrackids)[1]
@@ -1263,7 +1263,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
                stereotan[trackkey*1000+nstereotracks]=stereotanMCv
                stereocst[trackkey*1000+nstereotracks]=stereocstMCv 
          else:
-            if config.debug:
+            if global_variables.debug:
 	      print("Track with trackid", fracMCsame(alltrackids)[1], "is not reconstructible. Removing it.")
 	    continue
       else:
@@ -1300,7 +1300,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
       if firsttwo==True: reconstructiblestereoidsfound12+=1
       else: reconstructiblestereoidsfound34+=1    
     else:     
-      if config.debug:
+      if global_variables.debug:
          debugevent(iEvent,True,v2y2,v2y3,v2ymin2,v2yother,v2z2,v2z3,v2zmin2,v2zother,foundstereotrackids)
          print("Nbr of reconstructible tracks after stereo",len(foundstereotrackids)," but ",len(ReconstructibleMCTracks)," reconstructible tracks in this event. Quitting.")
       return 0,[],[],[],[],[],[],{},{},{},{},{}
@@ -1309,7 +1309,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
       if firsttwo==True: reconstructibleidsfound12+=1
       else: reconstructibleidsfound34+=1  
     else: 
-      if config.debug: 
+      if global_variables.debug: 
          debugevent(iEvent,True,v2y2,v2y3,v2ymin2,v2yother,v2z2,v2z3,v2zmin2,v2zother,foundstereotrackids)
          print("Nbr of reconstructed tracks ",len(foundtrackids)," but",len(ReconstructibleMCTracks)," reconstructible tracks in this event. Quitting.")
       return 0,[],[],[],[],[],[],{},{},{},{},{}
@@ -1324,7 +1324,7 @@ def PatRec(firsttwo,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTrack
 
 def TrackFit(hitPosList,theTrack,charge,pinv): 
    global theTracks
-   if config.debug:
+   if global_variables.debug:
      fitter.setDebugLvl(1)
    resolution = ShipGeo.strawtubes.sigma_spatial    
    hitCov = ROOT.TMatrixDSym(7)
@@ -1338,7 +1338,7 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
      tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
      theTrack.insertPoint(tp)  # add point to Track
    theTracks.append(theTrack)
-   if not config.debug:
+   if not global_variables.debug:
      return # leave track fitting to shipDigiReco
 #check
    if not theTrack.checkConsistency():
@@ -1690,7 +1690,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
  reconstructibles34=0
  theTracks=[]
  
- if config.debug:
+ if global_variables.debug:
    print("************* PatRect START **************")  
     
  nShits=sTree.strawtubesPoint.GetEntriesFast() 
@@ -1710,14 +1710,14 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
 	        reconstructibles12+=1
 		tracksfound.append(item)
 		
-       if config.debug:
+       if global_variables.debug:
 	 print(
 	     "tracksfound", tracksfound,
 	     "reconstructibles12", reconstructibles12,
 	     "ReconstructibleMCTracks", ReconstructibleMCTracks
 	     )	
        if len(tracksfound)==0 and len(ReconstructibleMCTracks)>0: 
-         if config.debug:
+         if global_variables.debug:
 	   print("No tracks found in event after stations 1&2. Rejecting event.")
          return
     
@@ -1731,13 +1731,13 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
 	        reconstructibles34+=1 
 		tracksfound.append(item)
       if len(tracksfound)==0 and len(ReconstructibleMCTracks)>0: 
-        if config.debug:
+        if global_variables.debug:
 	  print("No tracks found in event after stations 3&4. Rejecting event.")
         return
       MatchedReconstructibleMCTracks=len(ReconstructibleMCTracks)*[0]  
 
 
-     if config.debug:
+     if global_variables.debug:
       if (nr12tracks>0) : 
        print(nr12tracks,"tracks12  ",tracks12)
        print("hitids12  ",hitids12)
@@ -1808,7 +1808,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
          p2y=py34[item1]
          p2z=pz34[item1]
          p2true=1./math.sqrt(p2x**2+p2y**2+p2z**2)
-         if config.debug:
+         if global_variables.debug:
 	   print(
 	       "Matching 1&2 track", item,
 	       "with 3&4 track", item1,
@@ -1837,7 +1837,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
 	      if (falsepositivethistrack==0 & falsenegativethistrack==0):
 	        totalaftermatching+=1
 	      else: 
-	        if config.debug:
+	        if global_variables.debug:
 		  print("Charge from track deflection doesn't match MC truth. Rejecting it.")
 	        break
 	    else:
@@ -1845,16 +1845,16 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
 	        matches==1
 	        totalaftermatching+=1
 
-	    if config.debug: 
+	    if global_variables.debug: 
 	       print("******* MATCH FOUND stations 12 track id",trackid12[item],"(fraction",fraction12[item]*100,"%) and stations 34 track id",trackid34[item1],"(fraction",fraction34[item1]*100,"%)")
 	       print("******* Reconstructible tracks ids",ReconstructibleMCTracks)
 	    
 	    rc=h['matchedtrackefficiency'].Fill(fraction12[item],fraction34[item1])
 	    for k,v in enumerate(ReconstructibleMCTracks):
-	      if config.debug:
+	      if global_variables.debug:
 		print("MatchedReconstructibleMCTracks", MatchedReconstructibleMCTracks, "k", k, "v", v)
 	      if v not in MatchedReconstructibleMCTracks:
-	        if config.debug:
+	        if global_variables.debug:
 		  print("ReconstructibleMCTracks", ReconstructibleMCTracks, "trackid34[item1]", trackid34[item1])
 	        if v==trackid34[item1]: MatchedReconstructibleMCTracks[k]=v
 	    p2true=p2true*int(charge)
@@ -1880,7 +1880,7 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
 	            hitPosList.append(m)
                nM = len(hitPosList)
                if nM<25:
-                 if config.debug:
+                 if global_variables.debug:
 		   print("Only", nM, "hits on this track. Insufficient for fitting.")
                  return
 	       #all particles are assumed to be muons
@@ -1909,14 +1909,14 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
 	       TrackFit(hitPosList,theTrack,charge,pinv)
                fittedtrackids.append(trackid34[item1])
          else :
-	    if config.debug:
+	    if global_variables.debug:
 	      print(
 		  "******* MATCH NOT FOUND stations 12 track id", trackid12[item],
 		  "(fraction", fraction12[item]*100, "%) and stations 34 track id", trackid34[item1],
 		  "(fraction", fraction34[item1]*100, "%)"
 		  )
             if trackid12[item]==trackid34[item1] : 
-	       if config.debug:
+	       if global_variables.debug:
 		 print("trackids the same, but not matched.")
        
  else: 
@@ -1931,5 +1931,5 @@ def execute(SmearedHits,sTree,ReconstructibleMCTracks):
  
  
 def finalize(): 
-   if config.debug:
+   if global_variables.debug:
      ut.writeHists(h,"recohists_patrec.root")

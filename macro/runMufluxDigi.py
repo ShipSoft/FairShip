@@ -18,7 +18,7 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
-import config
+import global_variables
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -58,10 +58,10 @@ modules = charmDet_conf.configure(run,ShipGeo)
 fgeo.FAIRGeom
 
 # make global variables
-config.debug = options.debug
-config.ShipGeo = ShipGeo
+global_variables.debug = options.debug
+global_variables.ShipGeo = ShipGeo
 
-config.iEvent = 0
+global_variables.iEvent = 0
 
 # import reco tasks
 import MufluxDigi
@@ -69,11 +69,11 @@ SHiP = MufluxDigi.MufluxDigi(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),int(options.nEvents))
 # main loop
-for config.iEvent in range(firstEvent, nEvents):
-    if config.iEvent % 50000 == 0 or config.debug:
-        print('event ', config.iEvent, nEvents - firstEvent)
-    SHiP.iEvent = config.iEvent
-    rc = SHiP.sTree.GetEvent(config.iEvent)
+for global_variables.iEvent in range(firstEvent, nEvents):
+    if global_variables.iEvent % 50000 == 0 or global_variables.debug:
+        print('event ', global_variables.iEvent, nEvents - firstEvent)
+    SHiP.iEvent = global_variables.iEvent
+    rc = SHiP.sTree.GetEvent(global_variables.iEvent)
     SHiP.digitize()
  # memory monitoring
  # mem_monitor()

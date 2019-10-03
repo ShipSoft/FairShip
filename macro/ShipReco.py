@@ -19,7 +19,7 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys
-import config
+import global_variables
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -113,20 +113,20 @@ if hasattr(ShipGeo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True,withVirtualMC = False)
 
 # make global variables
-config.debug = options.Debug
-config.fieldMaker = fieldMaker
-config.pidProton = pidProton
-config.withT0 = options.withT0
-config.realPR = options.realPR
-config.vertexing = vertexing
-config.ecalGeoFile = ecalGeoFile
-config.ShipGeo = ShipGeo
-config.modules = modules
-config.EcalDebugDraw = options.EcalDebugDraw
-config.withNoStrawSmearing = options.withNoStrawSmearing
-config.h = h
-config.log = log
-config.iEvent = 0
+global_variables.debug = options.Debug
+global_variables.fieldMaker = fieldMaker
+global_variables.pidProton = pidProton
+global_variables.withT0 = options.withT0
+global_variables.realPR = options.realPR
+global_variables.vertexing = vertexing
+global_variables.ecalGeoFile = ecalGeoFile
+global_variables.ShipGeo = ShipGeo
+global_variables.modules = modules
+global_variables.EcalDebugDraw = options.EcalDebugDraw
+global_variables.withNoStrawSmearing = options.withNoStrawSmearing
+global_variables.h = h
+global_variables.log = log
+global_variables.iEvent = 0
 
 # import reco tasks
 import shipDigiReco
@@ -134,10 +134,10 @@ import shipDigiReco
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 options.nEvents   = min(SHiP.sTree.GetEntries(),options.nEvents)
 # main loop
-for config.iEvent in range(options.firstEvent, options.nEvents):
-    if config.iEvent % 1000 == 0 or config.debug:
-        print('event ', config.iEvent)
-    rc = SHiP.sTree.GetEvent(config.iEvent)
+for global_variables.iEvent in range(options.firstEvent, options.nEvents):
+    if global_variables.iEvent % 1000 == 0 or global_variables.debug:
+        print('event ', global_variables.iEvent)
+    rc = SHiP.sTree.GetEvent(global_variables.iEvent)
     SHiP.digitize()
     SHiP.reconstruct()
  # memory monitoring

@@ -6,7 +6,7 @@ import ROOT,os
 #ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 import numpy
 from decorators import *
-import config
+import global_variables
 ROOT.gStyle.SetPalette(ROOT.kGreenPink)
 PDG = ROOT.TDatabasePDG.Instance()
 # -----Timer--------------------------------------------------------
@@ -77,7 +77,7 @@ else:
 #-------------------------------geometry initialization
 from ShipGeoConfig import ConfigRegistry
 ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = 1, cTarget = 1)
-config.ShipGeo = ShipGeo
+global_variables.ShipGeo = ShipGeo
 import charmDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine

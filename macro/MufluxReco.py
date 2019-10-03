@@ -3,7 +3,7 @@
 #geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
 from __future__ import print_function
 from __future__ import division
-import config
+import global_variables
 debug = False#False
 
 withNoStrawSmearing = None # True   for debugging purposes
@@ -343,20 +343,20 @@ modules = charmDet_conf.configure(run,ShipGeo)
 fgeo.FAIRGeom
 
 # make global variables
-config.debug = debug
-config.withT0 = withT0
-config.realPR = realPR
+global_variables.debug = debug
+global_variables.withT0 = withT0
+global_variables.realPR = realPR
 
-config.ShipGeo = ShipGeo
-config.modules = modules
+global_variables.ShipGeo = ShipGeo
+global_variables.modules = modules
 
-config.withNoStrawSmearing = withNoStrawSmearing
-config.withNTaggerHits = withNTaggerHits
-config.withDist2Wire = withDist2Wire
-config.h = h
-config.log = log
-config.simulation = simulation
-config.iEvent = 0
+global_variables.withNoStrawSmearing = withNoStrawSmearing
+global_variables.withNTaggerHits = withNTaggerHits
+global_variables.withDist2Wire = withDist2Wire
+global_variables.h = h
+global_variables.log = log
+global_variables.simulation = simulation
+global_variables.iEvent = 0
 
 # import reco tasks
 import MufluxDigiReco
@@ -364,12 +364,12 @@ SHiP = MufluxDigiReco.MufluxDigiReco(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
 # main loop
-for config.iEvent in range(firstEvent, nEvents):
-    if config.iEvent % 1000 == 0 or config.debug:
-        print('event ', config.iEvent)
-    SHiP.iEvent = config.iEvent
-    rc = SHiP.sTree.GetEvent(config.iEvent)
-    if config.simulation:
+for global_variables.iEvent in range(firstEvent, nEvents):
+    if global_variables.iEvent % 1000 == 0 or global_variables.debug:
+        print('event ', global_variables.iEvent)
+    SHiP.iEvent = global_variables.iEvent
+    rc = SHiP.sTree.GetEvent(global_variables.iEvent)
+    if global_variables.simulation:
         SHiP.digitize()
  # IS BROKEN SHiP.reconstruct()
  # memory monitoring

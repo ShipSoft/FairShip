@@ -15,7 +15,7 @@ from rootpyPickler import Unpickler
 
 # For modules
 import shipDet_conf
-import config
+import global_variables
 
 # For track pattern recognition
 
@@ -71,7 +71,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
         ShipGeo = upkl.load('ShipGeo')
     
     # Globals
-    config.ShipGeo = ShipGeo
+    global_variables.ShipGeo = ShipGeo
 
     ############################################# Load SHiP modules ####################################################
 

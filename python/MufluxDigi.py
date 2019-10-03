@@ -3,7 +3,7 @@ from __future__ import division
 from builtins import range
 import os
 import ROOT
-import config
+import global_variables
 import shipunit as u
 from array import array
 
@@ -75,9 +75,9 @@ class MufluxDigi:
         ROOT.gRandom.SetSeed()
         self.PDG = ROOT.TDatabasePDG.Instance()
         # for the digitizing and reconstruction step
-        self.v_drift       = config.ShipGeo['MufluxSpectrometer']['v_drift']
-        self.sigma_spatial = config.ShipGeo['MufluxSpectrometer']['sigma_spatial']
-        self.viewangle     = config.ShipGeo['MufluxSpectrometer']['ViewvAngle']
+        self.v_drift       = global_variables.ShipGeo['MufluxSpectrometer']['v_drift']
+        self.sigma_spatial = global_variables.ShipGeo['MufluxSpectrometer']['sigma_spatial']
+        self.viewangle     = global_variables.ShipGeo['MufluxSpectrometer']['ViewvAngle']
 
         self.gMan  = ROOT.gGeoManager
 
