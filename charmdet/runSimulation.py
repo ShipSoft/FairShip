@@ -249,7 +249,7 @@ def cleanUp():
         if os.path.isfile(df): os.system('rm ' +df)
 
 def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
-    commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
+    commandToHist = {"anaResiduals":"histos-analysis-","MCJpsiProd":"histos-Jpsi","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
     if D=='.':
         fileList,x,y = checkFilesWithTracks(D,splitFactor)
         print "fileList established ",len(fileList)

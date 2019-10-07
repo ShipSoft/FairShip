@@ -7304,7 +7304,7 @@ elif options.command == "hitMapsFromFittedTracks":
 elif options.command == "studyDeltaRays":
     if sTree.GetBranch('MCTrack'): MCdata = True
     studyDeltaRays()
-elif options.command == "MCJpsiProd"
+elif options.command == "MCJpsiProd":
     MCJpsiProd() 
 elif options.command == "test":
     yep.start('output.prof')
