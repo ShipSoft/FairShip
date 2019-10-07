@@ -352,6 +352,7 @@ def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
     if merge:
         for run in os.listdir('.'):
             if run.find(keyword)!=0: continue
+            if not os.path.isdir(run): continue
             os.chdir(run)
             mergeHistos(local='.',command='anaResiduals')
             os.chdir('../')

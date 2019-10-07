@@ -1387,10 +1387,35 @@ def plotRPCHitmap():
         for l in range(2):
             j+=1
             rc = h['rpcPlot'].cd(j)
+            h['rpcHitmap'+str(n)+str(l)].SetStats(0)
+            if l==0: 
+              h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(s)+'Y readout; channel number N')
+              h['rpcHitmap'+str(n)+str(l)].GetXaxis().SetRangeUser(0,120)
+            else: 
+              h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(s)+'X readout; channel number N')
             h['rpcHitmap'+str(n)+str(l)].Draw()
-    j+=1
     rc = h['rpcPlot'].cd(j)
+    h['rpcHitmap'].SetTitle('Number of hits per station ; station number ')
     h['rpcHitmap'].Draw()
+    myPrint(h['rpcPlot'],'RPCHitMap')
+def plotRPCExample():
+    h['X'] = ROOT.TFile('RPCHitMap.root')
+    ROOT.gROOT.cd()
+    h['rpcPlot']=h['X'].Get('rpcPlot').Clone('rpcPlot')
+    for pad in h['rpcPlot'].GetListOfPrimitives():
+       if pad.GetListOfPrimitives().GetSize()==0: continue
+       hist = pad.GetListOfPrimitives()[1]
+       hist.SetStats(0)
+       if hist.GetTitle().find('layer 1')>0:
+          hist.SetTitle('RPC hitmap station '+str(s)+'X readout; channel number N')
+       elif hist.GetTitle().find('layer 0')>0:
+          hist.SetTitle('RPC hitmap station '+str(s)+'Y readout; channel number N')
+          hist.GetXaxis().SetRangeUser(0,120)
+       else:
+          hist.SetTitle('Number of hits per station ; station number ')
+       pad.Update()
+    h['rpcPlot'].Update()
+    h['rpcPlot'].Draw()
     myPrint(h['rpcPlot'],'RPCHitMap')
 
 def plotTimeOverThreshold(N,Debug=False):
@@ -1588,6 +1613,23 @@ def originMCmuons():
          rc = h['origin z/r mu'].Fill(m.GetStartZ(),r)
          if abs(sTree.MCTrack[m.GetMotherId()].GetPdgCode())!=443:continue
          rc = h['origin z/r muJpsi'].Fill(m.GetStartZ(),r)
+def MCJpsiProd():
+    h={}
+    ut.bookHist(h,'JpsiPandPt','P and Pt of original Jpsi',100,0.,400.,100,0.,10.)
+    ut.bookHist(h,'JpsiPandPt_rec','P and Pt of original Jpsi for muons reconstructed',100,0.,400.,100,0.,10.)
+    for n in range(sTree.GetEntries()):
+         rc=sTree.GetEvent(n)
+         for m in range(sTree.MCTrack.GetEntries()):
+             p = sTree.MCTrack[m]
+             if p.GetPdgCode()==443:
+                rc=h['JpsiPandPt'].Fill(p.GetP(),p.GetPt())
+                nRec = 0
+                for k in range(sTree.FitTracks.GetEntries()):
+                  mu = sTree.TrackInfos[k].McTrack()
+                  if sTree.MCTrack[mu].GetMotherId()==m: nRec += 1
+                if nRec == 2: rc=h['JpsiPandPt_rec'].Fill(p.GetP(),p.GetPt())
+                break
+    ut.writeHists(h,'histos-Jpsi'+rname)
 
 # from TrackExtrapolateTool
 parallelToZ = ROOT.TVector3(0., 0., 1.) 
@@ -2601,6 +2643,39 @@ def countMeasurements(aTrack,PR=1):
             else:            mStatistics['xAll'].append(detID)
             if s > 2:        mStatistics['xDown'].append(detID)
     return mStatistics
+def methodD():
+    for s in range(1,5):
+      for view in ['_x','_u','_v']:
+          for l in range(4):
+             if view=='_u' and s!=1: continue
+             if view=='_v' and s!=2: continue
+             ut.bookHist(h,'used-'+str(s)+view+str(l),'channel used in fit',200,-0.5,199.5)
+    for n in range(sTree.GetEntries()):
+       rc = sTree.GetEvent(n)
+       nTrack = -1
+       for aTrack in sTree.FitTracks:
+           nTrack+=1
+           fitStatus   = aTrack.getFitStatus()
+           if not fitStatus.isFitConverged(): continue
+           pMom0 = aTrack.getFittedState(0).getMomMag()
+           if pMom0 < 1.: continue
+           trInfo = sTree.TrackInfos[nTrack]
+           h['used-1_x0'].Fill(199)
+           for n in range(trInfo.N()):
+               detID = trInfo.detId(n)
+               hit = ROOT.MufluxSpectrometerHit(detID,0)
+               s,v,p,l,view,channelID,tdcId,mdoduleId = stationInfo(hit)
+               w = trInfo.wL(n) + trInfo.wR(n)
+               h['used-'+str(s)+view+str(2*p+l)].Fill(channelID)
+    for s in range(1,5):
+      for view in ['_x','_u','_v']:
+          for l in range(4):
+             if view=='_u' and s!=1: continue
+             if view=='_v' and s!=2: continue
+             N = h['used-'+str(s)+view+str(l)].GetEntries()
+             if s==1 and view=='_x' and l==0: N = N - h['used-1_x0'].GetBinContent(200)
+             print s,view,l,N/h['used-1_x0'].GetBinContent(200)
+
 def cloneKiller(trackCandidates):
 # if all x measurements identical take the one with most u,v
 # if tracks share >50% of downstream hits, take the one with max measurements
@@ -7229,6 +7304,8 @@ elif options.command == "hitMapsFromFittedTracks":
 elif options.command == "studyDeltaRays":
     if sTree.GetBranch('MCTrack'): MCdata = True
     studyDeltaRays()
+elif options.command == "MCJpsiProd"
+    MCJpsiProd() 
 elif options.command == "test":
     yep.start('output.prof')
     for x in sTree.GetListOfBranches(): sTree.SetBranchStatus(x.GetName(),0)

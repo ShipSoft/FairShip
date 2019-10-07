@@ -1126,7 +1126,7 @@ def diMuonAnalysis():
  hData['fitResult'] = {}
  hMC['fitResult'] = {}
  sptCut = 'XYZ'
- theCutTemplate =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1<200&&p2<200&&p1>20&&p2>20&&mcor>0.5'
+ theCutTemplate =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1<200&&p2<200&&p1>10&&p2>10&&mcor>0.5'
  ut.bookHist(hMC, 'mc_theta','cos theta mother - daughter1',100,-1,1.)
  ut.bookHist(hMC, 'mc_thetaJ','cos theta mother - daughter1 Jpsi',100,-1,1.)
  ut.bookHist(hData, 'theta','cos theta mother - daughter1',100,-1,1.)
@@ -1157,9 +1157,9 @@ def diMuonAnalysis():
  sTreeMC.Draw('Ip1>>mc_IPJ',theCut+'&&Jpsi==443')
  sTreeMC.Draw('Ip1>>mc_IP',theCut)
  sTreeData.Draw('Ip1>>IP',theCut)
- sTreeMC.Draw('Ip2>>mc_IPJ',theCut+'&&Jpsi==443')
- sTreeMC.Draw('Ip2>>mc_IP',theCut)
- sTreeData.Draw('Ip2>>IP',theCut)
+ sTreeMC.Draw('Ip2>>+mc_IPJ',theCut+'&&Jpsi==443')
+ sTreeMC.Draw('Ip2>>+mc_IP',theCut)
+ sTreeData.Draw('Ip2>>+IP',theCut)
  hMC['tIP'].cd()
  hMC['mc_IP'].Scale(1./hMC['mc_IP'].GetEntries())
  hMC['mc_IPJ'].Scale(1./hMC['mc_IPJ'].GetEntries())
@@ -1201,9 +1201,10 @@ def diMuonAnalysis():
  myPrint(hMC['dummy'],'MCdiMuonMass')
  bw = hMC['m_MC'].GetBinWidth(1)
  hMC['myGauss'] = ROOT.TF1('gauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
-            +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[4])/[5])**2)+abs( [6]+[7]*x+[8]*x**2 )',9)
+            +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[4])/[5])**2)+abs( [6]+[7]*x+[8]*x**2 )\
+            +abs([9])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-(3.6871 + [1] - 3.0969))/[2])**2)',10)
  myGauss = hMC['myGauss']
- theCutTemplate +=  '&&abs(cosTheta)<0.8'
+ # doesn't help really theCutTemplate +=  '&&abs(cosTheta)<0.8' 
  vText={'m':'inv mass and fits','mcor':'inv mass, dE and direction corrected, and fits','mcor2':'inv mass, direction corrected, and fits'}
  for v in vText:
   for ptCut in ptCutList:
@@ -1236,6 +1237,16 @@ def diMuonAnalysis():
    hMC['fitResult'][ptCut] = []
    for n in range(3):
     hMC['fitResult'][ptCut].append([fitResult.Parameter(n),fitResult.ParError(n)])
+   if v=='mcor':
+    myGauss.FixParameter(1,fitResult.Parameter(1))
+    myGauss.FixParameter(2,fitResult.Parameter(2))
+    myGauss.ReleaseParameter(9)
+    rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S')
+    myGauss.ReleaseParameter(1)
+    myGauss.ReleaseParameter(2)
+    rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S')
+    fitResult = rc.Get()
+    hMC['fitResult'][ptCut].append([fitResult.Parameter(9),fitResult.ParError(9)])
    hMC['mc-'+v+'_Jpsi_'+sptCut].SetLineColor(ROOT.kMagenta)
    hMC['mc-'+v+'_Jpsi_'+sptCut].Draw('same')
    tc.Update()
@@ -1254,6 +1265,16 @@ def diMuonAnalysis():
    hData['fitResult'][ptCut] = []
    for n in range(3):
     hData['fitResult'][ptCut].append([fitResult.Parameter(n),fitResult.ParError(n)])
+   if v=='mcor':
+    myGauss.FixParameter(1,fitResult.Parameter(1))
+    myGauss.FixParameter(2,fitResult.Parameter(2))
+    myGauss.ReleaseParameter(9)
+    rc = hData[v+'_'+sptCut].Fit(myGauss,'S')
+    myGauss.ReleaseParameter(1)
+    myGauss.ReleaseParameter(2)
+    rc = hData[v+'_'+sptCut].Fit(myGauss,'S')
+    fitResult = rc.Get()
+    hData['fitResult'][ptCut].append([fitResult.Parameter(9),fitResult.ParError(9)])
    tc.Update()
    stats = tc.GetPrimitive('stats')
    stats.SetOptFit(10011)
@@ -1267,9 +1288,9 @@ def diMuonAnalysis():
    if j==6: j+=5
    hMC['tMass'].cd()
    hMC['mc-'+v+'_'+sptCut].Draw()
-   myPrint(hMC['tMass'],'mc_dimuon_'+sptCut)
+   myPrint(hMC['tMass'],'mc_dimuon_'+v+sptCut)
    hData[v+'_'+sptCut].Draw()
-   myPrint(hMC['tMass'],'m_dimuon_'+sptCut)
+   myPrint(hMC['tMass'],'m_dimuon_'+v+sptCut)
   hMC['fits'+v].Update()
   myPrint(hMC['fits'+v],v+'_dimuon_all')
 #
@@ -1280,7 +1301,6 @@ def diMuonAnalysis():
    h=choices[c]
    for p in range(3):
     hname = 'evolution'+v+param[p]+c
-    print "what the hell",hname,v+' evolution of '+param[p]+txt[p]
     ut.bookHist(h,hname,v+' evolution of '+param[p]+txt[p],20,0., 2.)
     for ptCut in ptCutList:
         k = h[hname].FindBin(ptCut)
@@ -1313,10 +1333,12 @@ def diMuonAnalysis():
  ut.bookHist(hMC, 'pTrue' ,'p vs pTrue',100,0.,400.,100,0.,400.)
  ut.bookHist(hMC, 'delpTrue' ,'pTrue - p',100,-20.,70.)
  ut.bookHist(hMC, 'delptTrue' ,'ptTrue - pt',100,-2.,2.)
+ tc = hMC['kin'].cd(1)
  sTreeMC.Draw('p:PTRUE>>pTrue','Jpsi==443')
  sTreeMC.Draw('pt:PtTRUE>>ptTrue','Jpsi==443')
  sTreeMC.Draw('PTRUE-p>>delpTrue','Jpsi==443')
  sTreeMC.Draw('PtTRUE-pt>>delptTrue','Jpsi==443')
+ ROOT.gROOT.cd()
  tc = hMC['kin'].cd(1)
  hMC['pTrue'].Draw('colz')
  tc = hMC['kin'].cd(4)
@@ -1363,6 +1385,115 @@ def diMuonAnalysis():
    hMC['meanLoss'].SetBinContent(n,tmp.GetMean())
    hMC['meanLoss'].SetBinError(n,tmp.GetRMS())
  hMC['meanLoss'].Draw()
+# try Jpsi p,pt based on ptmu > 1.4
+ v='mcor'
+ ptCut = 1.4
+ sptCut = str(ptCut)
+ theCut =  theCutTemplate.replace('XYZ',sptCut)
+ ut.bookHist(hMC, 'mc-JpsiPt','Pt Jpsi MC;Pt [GeV/c^{2}]',10,0.,5.)
+ ut.bookHist(hData, 'JpsiPt','Pt Jpsi ;Pt [GeV/c^{2}]',10,0.,5.)
+ ut.bookCanvas(hMC,'MCbinsPt','mass in bins Pt',1800,1200,3,3)
+ ut.bookCanvas(hData,'binsPt','mass in bins Pt',1800,1200,3,3)
+ ptmin = 0
+ delPt = 0.5
+ for k in range(9):
+   ptmax = ptmin+delPt
+   ut.bookHist(hMC,  'mc-pt'+str(k),'inv mass MC '+str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',130,0.,13.)
+   ut.bookHist(hData,'pt'+str(k),'inv mass DATA ' +str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',130,0.,13.)
+   hMC['dummy'].cd()
+   sTreeData.Draw(v+'>>pt'+str(k),theCut+'&&pt<'+str(ptmax)+'&&pt>'+str(ptmin))
+   sTreeMC.Draw(v+'>>mc-pt'+str(k),theCut+'&&pt<'+str(ptmax)+'&&pt>'+str(ptmin))
+   ptmin = ptmin+delPt
+   cases = {'MC':hMC['mc-pt'+str(k)],'Data':hData['pt'+str(k)]}
+   for c in cases:
+    histo = cases[c]
+    if c=='MC': tc=hMC['MCbinsPt'].cd(k+1)
+    else: tc=hData['binsPt'].cd(k+1)
+    init_Gauss(myGauss)
+    histo.Draw()
+    rc = histo.Fit(myGauss,'S','',0,6.)
+    fitResult = rc.Get()
+    N = fitResult.Parameter(0)
+    E = fitResult.ParError(0)
+    tc.Update()
+    stats = tc.GetPrimitive('stats')
+    stats.SetOptFit(10011)
+    stats.SetFitFormat('5.4g')
+    stats.SetX1NDC(0.41)
+    stats.SetY1NDC(0.41)
+    stats.SetX2NDC(0.99)
+    stats.SetY2NDC(0.84)
+    tc.Update()
+    if c=='MC': 
+        hMC['mc-JpsiPt'].SetBinContent(k+1,N)
+        hMC['mc-JpsiPt'].SetBinError(k+1,E)
+    else: 
+        hData['JpsiPt'].SetBinContent(k+1,N)
+        hData['JpsiPt'].SetBinError(k+1,E)
+ hData['binsPt'].cd(9)
+ hMC['mc-JpsiPt'].SetLineColor(ROOT.kMagenta)
+ hmax = 1.1*max(hMC['mc-JpsiPt'].GetMaximum(),hData['JpsiPt'].GetMaximum())
+ hMC['mc-JpsiPt'].SetMaximum(hmax)
+ hMC['mc-JpsiPt'].Draw()
+ hData['JpsiPt'].Draw('same')
+ myPrint(hData['binsPt'],'diMuonBinsPt')
+ myPrint(hMC['MCbinsPt'],'MC-diMuonBinsPt')
+#
+ ut.bookHist(hMC, 'mc-JpsiP','Pt Jpsi MC;P [GeV/c^{2}]',10,0.,200.)
+ ut.bookHist(hData, 'JpsiP','Pt Jpsi ;Pt [GeV/c^{2}]',10,0.,200.)
+ ut.bookCanvas(hMC,'MCbinsP','mass in bins P',1800,1200,3,3)
+ ut.bookCanvas(hData,'binsP','mass in bins P',1800,1200,3,3)
+ pmin = 0
+ delP = 20.
+ for k in range(9):
+   pmax = pmin+delP
+   ut.bookHist(hMC,  'mc-p'+str(k),'inv mass MC '+str(pmin)+'<P<'+str(pmax)+';M [GeV/c^{2}]',130,0.,13.)
+   ut.bookHist(hData,'p'+str(k),'inv mass DATA ' +str(pmin)+'<P<'+str(pmax)+';M [GeV/c^{2}]',130,0.,13.)
+   hMC['dummy'].cd()
+   sTreeData.Draw(v+'>>p'+str(k),theCut+'&&p<'+str(pmax)+'&&p>'+str(pmin))
+   sTreeMC.Draw(v+'>>mc-p'+str(k),theCut+'&&p<'+str(pmax)+'&&p>'+str(pmin))
+   pmin = pmin+delP
+   cases = {'MC':hMC['mc-p'+str(k)],'Data':hData['p'+str(k)]}
+   for c in cases:
+    histo = cases[c]
+    if c=='MC': tc=hMC['MCbinsP'].cd(k+1)
+    else: tc=hData['binsP'].cd(k+1)
+    init_Gauss(myGauss)
+    histo.Draw()
+    rc = histo.Fit(myGauss,'S','',0,6.)
+    fitResult = rc.Get()
+    if fitResult and histo.GetEntries()>10:
+     N = fitResult.Parameter(0)
+     E = fitResult.ParError(0)
+     tc.Update()
+     stats = tc.GetPrimitive('stats')
+     stats.SetOptFit(10011)
+     stats.SetFitFormat('5.4g')
+     stats.SetX1NDC(0.41)
+     stats.SetY1NDC(0.41)
+     stats.SetX2NDC(0.99)
+     stats.SetY2NDC(0.84)
+     tc.Update()
+    else:
+     N=0
+     E=0
+    if E>N:
+     N=0
+     E=0
+    if c=='MC': 
+        hMC['mc-JpsiP'].SetBinContent(k+1,N)
+        hMC['mc-JpsiP'].SetBinError(k+1,E)
+    else: 
+        hData['JpsiP'].SetBinContent(k+1,N)
+        hData['JpsiP'].SetBinError(k+1,E)
+ hData['binsP'].cd(1)
+ hMC['mc-JpsiP'].SetLineColor(ROOT.kMagenta)
+ hmax = 1.1*max(hMC['mc-JpsiP'].GetMaximum(),hData['JpsiP'].GetMaximum())
+ hMC['mc-JpsiP'].SetMaximum(hmax)
+ hMC['mc-JpsiP'].Draw()
+ hData['JpsiP'].Draw('same')
+ myPrint(hData['binsP'],'diMuonBinsP')
+ myPrint(hMC['MCbinsP'],'MC-diMuonBinsP')
 def resetMinMax(x):
   x.SetMinimum(-1111)
   x.SetMaximum(-1111)
@@ -1461,7 +1592,7 @@ def studyGhosts():
     h['gf_ghosts'].SetTitle('ghost > 33;P [GeV/c];N/5GeV')
     ut.writeHists(h,'ghostStudy.root')
 def init_Gauss(myGauss):
- myGauss.SetParName(0,'Signal')
+ myGauss.SetParName(0,'psi(1S)')
  myGauss.SetParName(1,'Mean')
  myGauss.SetParName(2,'Sigma')
  myGauss.SetParName(3,'SignalLow')
@@ -1470,6 +1601,7 @@ def init_Gauss(myGauss):
  myGauss.SetParName(6,'p0')
  myGauss.SetParName(7,'p1')
  myGauss.SetParName(8,'p2')
+ myGauss.SetParName(9,'psi(2S)')
  myGauss.SetParameter(0,1000.)
  myGauss.SetParameter(1,3.0)
  myGauss.SetParameter(2,0.1)
@@ -1479,6 +1611,7 @@ def init_Gauss(myGauss):
  myGauss.SetParameter(6,10.)
  myGauss.SetParameter(7,1.)
  myGauss.FixParameter(8,0.)
+ myGauss.FixParameter(9,0.)
 def stupidCopy():
  for x in os.listdir('.'):
   if x.find('dimuon_all.p')<0: continue

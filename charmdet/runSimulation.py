@@ -569,7 +569,7 @@ def runMufluxReco():
         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B False -C True  &"
         os.system(cmd)
         for n in range(ncpus):
-         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False -s "+str(n)+ "-x "+str(ncpus)+" &"
+         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False -s "+str(n)+ " -x "+str(ncpus)+" &"
          os.system(cmd)
 def runInvMass():
         ncpus = 15
