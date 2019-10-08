@@ -360,8 +360,7 @@ void Target::ConstructGeometry()
 	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
       if(fDesign==3){        
         TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");     
-        Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension 
-        cout<<"Test crash assembly "<<ZDimMagnetizedRegion<<endl;
+        Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension         
         for (int i = 0; i < fNTarget; i++){
          volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
         }
