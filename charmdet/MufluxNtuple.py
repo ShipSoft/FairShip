@@ -110,6 +110,52 @@ if not options.listOfFiles:
 #sTreeMC.Add("ntuple-ship.conical.MuonBack-TGeant4_dig_RT-0.root")
     case = {'MC':[sTreeMC,hMC,ROOT.kRed,'hist same'],'Data':[sTreeData,hData,ROOT.kBlue,'hist']}
 
+s_SQRT2i = 1./ROOT.TMath.Sqrt( 2.0 )
+sqrt2pi  = ROOT.TMath.Sqrt( 2*ROOT.TMath.Pi() )
+def CrystalBall(x,par):
+   bw = par[0] # should be fixed
+   m0 = par[2]
+   sigma = par[3]
+   alpha = par[4]
+   n     = par[5]
+   delta = x[0]-m0
+   if delta/(2*sigma)>-alpha:
+     f = ROOT.TMath.Exp ( -0.5 * ( delta/sigma )**2 )
+   else:
+     A = ROOT.TMath.Power(n/abs(x[0]),n)*ROOT.TMath.Exp(-alpha**2/2)
+     B = n/abs(alpha)-alpha
+     f = ROOT.TMath.Power(A*(B-delta/sigma),-n)
+   lowMass = par[6]*bw/(abs(par[8])*sqrt2pi)*ROOT.TMath.Exp(-0.5*( (x[0]-par[7])/par[8])**2)
+   cb = f*bw*par[0] + lowMass + par[9] + par[10]*x[0]
+   return cb
+def testCB():
+    myCB = ROOT.TF1('CB',CrystalBall,0,10,11)
+    myCB.SetParName(0,'binwidth')
+    myCB.SetParName(1,'psi(1S)')
+    myCB.SetParName(2,'Mass')
+    myCB.SetParName(3,'Sigma')
+    myCB.SetParName(4,'alpha')
+    myCB.SetParName(5,'n')
+    myCB.SetParName(6,'SignalLow')
+    myCB.SetParName(7,'MeanLow')
+    myCB.SetParName(8,'SigmaLow')
+    myCB.SetParName(9,'p0')
+    myCB.SetParName(10,'p1')
+    hMC['dummy'].cd()
+    bw = hMC['m_MC'].GetBinWidth(1)
+    myCB.FixParameter(0,bw)
+    myCB.SetParameter(1,1000.)
+    myCB.FixParameter(2,3.0)
+    myCB.SetParameter(3,0.3)
+    myCB.SetParameter(4,1.0)
+    myCB.SetParameter(5,0.1)
+    myCB.SetParameter(6,5000.)
+    myCB.FixParameter(7,1.1)
+    myCB.SetParameter(8,0.3)
+    myCB.SetParameter(9,0.)
+    myCB.SetParameter(10,0.)
+    rc = hData['mcor_1.4'].Fit(    myCB,'S')
+
 def IP(OnlyDraw = False):
     if not OnlyDraw:
         for c in case:

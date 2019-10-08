@@ -1613,23 +1613,50 @@ def originMCmuons():
          rc = h['origin z/r mu'].Fill(m.GetStartZ(),r)
          if abs(sTree.MCTrack[m.GetMotherId()].GetPdgCode())!=443:continue
          rc = h['origin z/r muJpsi'].Fill(m.GetStartZ(),r)
-def MCJpsiProd():
+def MCJpsiProd(onlyPlotting=False):
+   names = {}
+   for c in [221,223,113,331,333,443]
+    names[c] = PDG.GetParticle(c).GetName()
+   if not onlyPlotting:
     h={}
-    ut.bookHist(h,'JpsiPandPt','P and Pt of original Jpsi',100,0.,400.,100,0.,10.)
-    ut.bookHist(h,'JpsiPandPt_rec','P and Pt of original Jpsi for muons reconstructed',100,0.,400.,100,0.,10.)
+    for c in names:
+     name = names[c]
+     ut.bookHist(h,name+'PandPt','P and Pt of original '+name,100,0.,400.,100,0.,10.)
+     ut.bookHist(h,name+'PandPt_rec','P and Pt of original '+name+' for muons reconstructed',100,0.,400.,100,0.,10.)
     for n in range(sTree.GetEntries()):
          rc=sTree.GetEvent(n)
          for m in range(sTree.MCTrack.GetEntries()):
              p = sTree.MCTrack[m]
-             if p.GetPdgCode()==443:
-                rc=h['JpsiPandPt'].Fill(p.GetP(),p.GetPt())
+             if p.GetPdgCode() in names:
+                rc=h[names[p.GetPdgCode()]+'PandPt'].Fill(p.GetP(),p.GetPt())
                 nRec = 0
                 for k in range(sTree.FitTracks.GetEntries()):
                   mu = sTree.TrackInfos[k].McTrack()
                   if sTree.MCTrack[mu].GetMotherId()==m: nRec += 1
-                if nRec == 2: rc=h['JpsiPandPt_rec'].Fill(p.GetP(),p.GetPt())
+                if nRec == 2: rc=h[names[p.GetPdgCode()]+'PandPt_rec'].Fill(p.GetP(),p.GetPt())
                 break
     ut.writeHists(h,'histos-Jpsi'+rname)
+   else:
+    ut.readHists(h,'JpsiKinematicsmbias-1GeV.root')
+    ut.readHists(h,'JpsiKinematicsmbias-10GeV.root')
+    for c in names:
+     ut.bookCanvas(h,'acc'+names[c],names[c]+' acceptance',1200,800,1,3)
+     for x in [names[c]+'PandPt_rec',names[c]+'PandPt']:
+       h[x].GetYaxis().SetRangeUser(0.,5.)
+       h[x].SetStats(0)
+       h[x].SetTitle(h[x].GetTitle()+';P [GeV/c];P_{T} [GeV/c]')
+    h[names[c]+'recoEff']=ROOT.TEfficiency(h[names[c]+'PandPt_rec'],h[names[c]+'PandPt'])
+    ROOT.gStyle.SetPalette(ROOT.kTemperatureMap)
+    tc = h['acc'+names[c]].cd(1)
+    h[names[c]+'PandPt'].Draw('colz')
+    tc = h['acc'+names[c]].cd(2)
+    h[names[c]+'PandPt_rec'].Draw('colz')
+    tc = h['acc'+names[c]].cd(3)
+    h[names[c]+'recoEff'].Draw('colz')
+    tc.Update()
+    h[names[c]+'recoEff'].GetPaintedHistogram().GetYaxis().SetRangeUser(0.,5.)
+    tc.Update()
+    myPrint(h['acc'+names[c]],names[c]+'Acceptance')
 
 # from TrackExtrapolateTool
 parallelToZ = ROOT.TVector3(0., 0., 1.) 
@@ -2650,6 +2677,7 @@ def methodD():
              if view=='_u' and s!=1: continue
              if view=='_v' and s!=2: continue
              ut.bookHist(h,'used-'+str(s)+view+str(l),'channel used in fit',200,-0.5,199.5)
+             ut.bookHist(h,'w-'+str(s)+view+str(l),'sum of weight',100,0.,2.)
     for n in range(sTree.GetEntries()):
        rc = sTree.GetEvent(n)
        nTrack = -1
@@ -2667,6 +2695,9 @@ def methodD():
                s,v,p,l,view,channelID,tdcId,mdoduleId = stationInfo(hit)
                w = trInfo.wL(n) + trInfo.wR(n)
                h['used-'+str(s)+view+str(2*p+l)].Fill(channelID)
+               h['w-'+str(s)+view+str(2*p+l)].Fill(w)
+    h['w']=h['w-1_x1'].Clone('w')
+    h['w'].Reset()
     for s in range(1,5):
       for view in ['_x','_u','_v']:
           for l in range(4):
@@ -2674,6 +2705,7 @@ def methodD():
              if view=='_v' and s!=2: continue
              N = h['used-'+str(s)+view+str(l)].GetEntries()
              if s==1 and view=='_x' and l==0: N = N - h['used-1_x0'].GetBinContent(200)
+             rc = h['w'].Add(h['w-'+str(s)+view+str(l)])
              print s,view,l,N/h['used-1_x0'].GetBinContent(200)
 
 def cloneKiller(trackCandidates):

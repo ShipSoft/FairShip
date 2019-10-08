@@ -432,8 +432,9 @@ def exportNtupleToEos(d="simulation10GeV-withDeadChannels",update=True):
 
 def mergeHistos(command="anaResiduals"):
     commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-",
-                     "hitmaps":"histos-HitmapsFromFittedTracks-","alignment":"histos-residuals-"}
-    commandToSum  = {"anaResiduals":"momDistributions-","momResolution":"momentumResolution-","plotDTPoints":"DTPoints-","alignment":"residuals-","hitmaps":"HitmapsFromFittedTracks-"}
+                     "hitmaps":"histos-HitmapsFromFittedTracks-","alignment":"histos-residuals-","MCJpsiProd":"histos-Jpsi"}
+    commandToSum  = {"anaResiduals":"momDistributions-","momResolution":"momentumResolution-","plotDTPoints":"DTPoints-","alignment":"residuals-",
+                     "hitmaps":"HitmapsFromFittedTracks-","MCJpsiProd":"JpsiKinematics"}
     dirList=getFilesLocal()
     cmd = {}
     for z in ['charm','mbias']:
