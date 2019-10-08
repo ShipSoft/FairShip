@@ -599,7 +599,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.NFethick = 4 #upstream slabs, more thick
         c.tauMudet.NFethin = 4 #downstream slabs, less thick
         c.tauMudet.NRpc= 8
-        c.tauMudet.NmuRpc = 3
+        #c.tauMudet.NmuRpc = 3
         
         c.tauMudet.XFe = scaleMudet*1.900*u.m #layer dimensions, excluded supports
         c.tauMudet.YFe = scaleMudet*3.600*u.m
@@ -619,11 +619,11 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.tauMudet.Xtot = c.tauMudet.XFe + 2 * c.tauMudet.LateralSupportX#now we need to include also supports.
         c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
-        c.tauMudet.deltax = 0* u.cm #size differences between MuonFilter and VetoTagger layers
-        c.tauMudet.deltay = 80* u.cm
-        c.tauMudet.Ztot = (c.tauMudet.NRpc+c.tauMudet.NmuRpc)*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
+        #c.tauMudet.deltax = 0* u.cm #size differences between MuonFilter and VetoTagger layers
+        #c.tauMudet.deltay = 80* u.cm
+        c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
-        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2
+        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length-10*u.cm - c.tauMudet.Ztot/2 - 9.8012
         #lateral cuts
         c.tauMudet.CutHeight = 100 * u.cm
         c.tauMudet.CutLength = 25 * u.cm
@@ -777,3 +777,40 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
     c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
+
+     #Upstream Tagger
+    c.UpstreamTagger = AttrDict(z=0)
+    c.UpstreamTagger.Z_Glass = 0.2 * u.cm
+    c.UpstreamTagger.Y_Glass = 100 * u.cm
+    c.UpstreamTagger.X_Glass = 205 * u.cm
+    c.UpstreamTagger.Z_Glass_Border = 0.2 * u.cm
+    c.UpstreamTagger.Y_Glass_Border = 1.0 * u.cm
+    c.UpstreamTagger.X_Glass_Border = 1.0 * u.cm
+    c.UpstreamTagger.Z_PMMA = 0.8 * u.cm
+    c.UpstreamTagger.Y_PMMA = 103 * u.cm
+    c.UpstreamTagger.X_PMMA = 208 * u.cm
+    c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
+    c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
+    c.UpstreamTagger.DZ_PMMA = 0.1 * u.cm
+    c.UpstreamTagger.Z_FreonSF6 = 0.1 * u.cm
+    c.UpstreamTagger.Y_FreonSF6 = 102 * u.cm
+    c.UpstreamTagger.X_FreonSF6 = 207 * u.cm
+    c.UpstreamTagger.Z_FreonSF6_2 = 0.8 * u.cm
+    c.UpstreamTagger.Y_FreonSF6_2 = 0.5 * u.cm
+    c.UpstreamTagger.X_FreonSF6_2 = 0.5 * u.cm
+    c.UpstreamTagger.Z_FR4 = 0.15 * u.cm
+    c.UpstreamTagger.Y_FR4 = 106 * u.cm
+    c.UpstreamTagger.X_FR4 = 211 * u.cm
+    c.UpstreamTagger.Z_Aluminium = 1.1503 * u.cm
+    c.UpstreamTagger.Y_Aluminium = 106 * u.cm
+    c.UpstreamTagger.X_Aluminium = 215 * u.cm
+    c.UpstreamTagger.DZ_Aluminium = 0.1 * u.cm
+    c.UpstreamTagger.DY_Aluminium = 1 * u.cm
+    c.UpstreamTagger.DX_Aluminium = 0.2 * u.cm
+    c.UpstreamTagger.Z_Air = 1.1503 * u.cm
+    c.UpstreamTagger.Y_Air = 0 * u.cm
+    c.UpstreamTagger.X_Air = 2 * u.cm
+    c.UpstreamTagger.Z_Strip = 0.0003 * u.cm
+    c.UpstreamTagger.Y_Strip = 3.0 * u.cm
+    c.UpstreamTagger.X_Strip = 211 * u.cm
+    c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 5.9006*u.cm 
