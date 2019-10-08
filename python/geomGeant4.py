@@ -52,12 +52,12 @@ def setMagnetField(flag=None):
     setField = {}
     for da in range(world.GetNoDaughters()):
         vl0  = world.GetDaughter(da)
-        vln  = vl0.GetName().__str__()
+        vln  = vl0.GetName().c_str()
         lvl0 = vl0.GetLogicalVolume()
         if vln in listOfFields :  setField[lvl0]=vln
         for dda in range(lvl0.GetNoDaughters()): 
          vl  = lvl0.GetDaughter(dda)
-         vln = vl.GetName().__str__()
+         vln = vl.GetName().c_str()
          lvl = vl.GetLogicalVolume()
          if vln in listOfFields :  setField[lvl]=vln
     modified = False 
@@ -100,18 +100,19 @@ def printWF(vl,alreadyPrinted,onlyWithField=True):
         serv = ROOT.TG4GeometryServices.Instance()
         pos = array('d',[0,0,0])
         bf  = array('d',[0,0,0])
-        name = ROOT.G4String(lvl.GetName().__str__())
+        name = ROOT.G4String(lvl.GetName().c_str())
+        print ('debug',name,lvl.GetName(),lvl)
         serv.GetField(name,pos,bf)
         print('   Magnetic field Bx,By,Bz: %4.2F %4.2F %4.2F'%(bf[0]/G4Unit.tesla,bf[1]/G4Unit.tesla,bf[2]/G4Unit.tesla))
-    #if vl.GetName().__str__()[0:3]=='Mag': magnetMass =  M # only count volumes starting with Mag
-    name = vl.GetName().__str__()
+    #if vl.GetName().c_str()[0:3]=='Mag': magnetMass =  M # only count volumes starting with Mag
+    name = vl.GetName().c_str()
     if "_" in name and "Mag" in name.split('_')[1]: magnetMass =  M # only count volumes starting with Mag
     return magnetMass
 def nextLevel(lv,magnetMass,onlyWithField,exclude,alreadyPrinted):
     tmp = 0
     for da in range(lv.GetNoDaughters()):
      lvn   = lv.GetDaughter(da)
-     name  = lvn.GetName().__str__()
+     name  = lvn.GetName().c_str()
      if name in exclude: continue
      lvln  = lvn.GetLogicalVolume()
      if lvln.GetNoDaughters()>0:
@@ -217,7 +218,7 @@ def debug():
   vmap = {}
   for da in range(world.GetNoDaughters()):
    vl = world.GetDaughter(da)
-   vmap[vl.GetName().__str__()] = vl
+   vmap[vl.GetName().c_str()] = vl
    print(da, vl.GetName())
   lvl = vmap['MagB'].GetLogicalVolume() 
   print(lvl.GetMass()/G4Unit.kg,lvl.GetMaterial().GetName())
@@ -225,7 +226,7 @@ def debug():
 #
   for da in range(world.GetNoDaughters()):
    vl = world.GetDaughter(da)
-   vln = vl.GetName().__str__()
+   vln = vl.GetName().c_str()
    lvl = vl.GetLogicalVolume()
    fm = lvl.GetFieldManager() 
    if fm : 
