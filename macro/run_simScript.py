@@ -428,7 +428,7 @@ if simEngine == "MuonBack":
  primGen.AddGenerator(MuonBackgen)
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
- print('Process ',options.nEvents,' from input file, with Phi random=',phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
+ print('Process ',options.nEvents,' from input file, with Phi random=',options.phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
  if options.followMuon :  
     options.fastMuon = True
     modules['Veto'].SetFollowMuon()
