@@ -219,23 +219,39 @@ void PixelModules::ConstructGeometry()
     AddSensitiveVolume(volPixelxthick);
   
   ///////////////////////////////////////////////////////Passive material///////////////////////////////////////////////////////
-   
+
     TGeoBBox *WindowBox = new TGeoBBox("WindowBox",Windowx/2, Windowy/2,DimZWindow/2);
-    TGeoVolume *volWindow = new TGeoVolume("volWindow",WindowBox,Al);
+    TGeoVolume *volWindow = new TGeoVolume("volWindow",WindowBox,Kapton);
     volWindow->SetLineColor(kGray);
-    //AddSensitiveVolume(volWindow);
 
-    TGeoBBox *PixelFramesx = new TGeoBBox("PixelFramesx",Dim1Short/2,Dim1Long/2, DimZAlu/2);
-    TGeoVolume *volAluFramex = new TGeoVolume("volAluFramex",PixelFramesx,Aluminium);
-    volAluFramex->SetLineColor(kGray);
-   // AddSensitiveVolume(volAluFramex);
+    TGeoBBox *FrontEndx = new TGeoBBox("FrontEndx",Dim1Long/2, Dim1Short/2 ,FrontEndthick);
+    TGeoVolume *volFrontEndx = new TGeoVolume("volFrontEndx",FrontEndx,Silicon);
+    volFrontEndx->SetLineColor(kGray);
 
-    TGeoBBox *PixelFramesy = new TGeoBBox("PixelFramesy",Dim1Short/2,Dim1Long/2, DimZAlu/2);
-    TGeoVolume *volAluFramey = new TGeoVolume("volAluFramey",PixelFramesy,Aluminium);
-    volAluFramey->SetLineColor(kGray);
-    //AddSensitiveVolume(volAluFramey);
+    TGeoBBox *FrontEndy = new TGeoBBox("FrontEndy",Dim1Short/2, Dim1Long/2 ,FrontEndthick);
+    TGeoVolume *volFrontEndy = new TGeoVolume("volFrontEndy",FrontEndy,Silicon);
+    volFrontEndy->SetLineColor(kGray);
+
+    TGeoBBox *FlexCuy = new TGeoBBox("FlexCuy",Dim1Long/2, Dim1Short/2 ,FlexCuthick);
+    TGeoVolume *volFlexCuy = new TGeoVolume("volFlexCuy",FlexCuy,Copper);
+    volFlexCuy->SetLineColor(kGray);
+
+    TGeoBBox *FlexCuy = new TGeoBBox("FlexCuy",Dim1Short/2, Dim1Long/2 ,FlexCuthick);
+    TGeoVolume *volFlexCuy = new TGeoVolume("volFlexCuy",FlexCuy,Copper);
+    volFlexCuy->SetLineColor(kGray);
+
+    TGeoBBox *FlexKapx = new TGeoBBox("FlexKapx",Dim1Long/2, Dim1Short/2 ,FlexKapthick);
+    TGeoVolume *volFlexKapx = new TGeoVolume("volFlexKapx",FlexKapx,Kapton);
+    volFlexKapx->SetLineColor(kGray);
+
+    TGeoBBox *FlexKapy = new TGeoBBox("FlexKapy",Dim1Short/2, Dim1Long/2 ,FlexKapthick);
+    TGeoVolume *volFlexKapy = new TGeoVolume("volFlexKapy",FlexKapy,Kapton);
+    volFlexKapy->SetLineColor(kGray);
 
 ////////////////////////////////////////////////////////End passive material////////////////////////////////////////////////////////////////
+
+
+
 
     //id convention: 1{a}{b}{c}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2)
     int chi=0;
