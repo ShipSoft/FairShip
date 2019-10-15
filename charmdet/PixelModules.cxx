@@ -172,6 +172,12 @@ void PixelModules::ConstructGeometry()
     InitMedium("aluminium");
     TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
 
+    InitMedium("cooper");
+    TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
+
+    InitMedium("Kapton");
+    TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
+
     InitMedium("CoilCopper");
     TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
 
@@ -298,11 +304,17 @@ void PixelModules::ConstructGeometry()
       if (vertical[ipixel]){
 		if(PixelIDlist[ipixel]) {
 			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)) volPixelBox->AddNode(volPixelythick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
-			else volPixelBox->AddNode(volPixelythin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
+			else volPixelBox->AddNode(volPixelythin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
+//compensation for the Node offset
 			}
-		else volPixelBox->AddNode(volPixelythick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //else here used for debugging, if the number of slices isn't 10
+		else volPixelBox->AddNode(volPixelythick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
+//this else is used for debugging, if the number of slices isn't 10
 
-		if((ipixel+nSlices)%9==1) volAluFramex->AddNode(volAluFramex, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+		if((ipixel+nSlices)%9==1){
+					volFrontEndx->AddNode(volFrontEndx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexCux->AddNode(volFlexx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexKapx->AddNode(volFlexKapx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
+			}
 		}
       else{ 
 		if(PixelIDlist[ipixel]) 
@@ -312,7 +324,11 @@ void PixelModules::ConstructGeometry()
 		else volPixelBox->AddNode(volPixelxthick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //debugging else for if nSlice!=10
 
 
-		if((ipixel+nSlices)%9==1)volAluFramey->AddNode(volAluFramey, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+		if((ipixel+nSlices)%9==1){
+					volFrontEndy->AddNode(volFrontEndy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexCuy->AddNode(volFlexy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexKapy->AddNode(volFlexKapy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
+}
 		}
 	
 	}
