@@ -177,7 +177,7 @@ class MufluxDigi:
 
         # digitize FairSHiP MC hits
         hitsPerDetId = {}
-        for k in range(self.sTree.MufluxSpectrometerPoint):
+        for k in range(self.sTree.MufluxSpectrometerPoint.GetEntries()):
             aMCPoint=self.sTree.MufluxSpectrometerPoint[k]
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             aHit.setValid()
