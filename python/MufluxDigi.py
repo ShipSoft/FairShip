@@ -177,7 +177,8 @@ class MufluxDigi:
 
         # digitize FairSHiP MC hits
         hitsPerDetId = {}
-        for aMCPoint in self.sTree.MufluxSpectrometerPoint:
+        for k in range(self.sTree.MufluxSpectrometerPoint):
+            aMCPoint=self.sTree.MufluxSpectrometerPoint[k]
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             aHit.setValid()
             detID = aHit.GetDetectorID()
@@ -186,17 +187,21 @@ class MufluxDigi:
             if detID in deadChannelsForMC: aHit.setInvalid()
             if not hitsPerDetId.has_key(detID):
                hitsPerDetId[detID]={}
-            hitsPerDetId[detID][aHit.tdc()] = aHit
+            hitsPerDetId[detID][aHit.tdc()] = [aHit,k]
         for detID in hitsPerDetId:
            times = hitsPerDetId[detID].keys()
            times.sort()
            for t in range(1,len(times)):
-             hitsPerDetId[detID][times[t]].setInvalid()
+             hitsPerDetId[detID][times[t]][0].setInvalid()
         index = 0
+        resortHits={}
         for detID in hitsPerDetId:
            for t in hitsPerDetId[detID]:
+               k = hitsPerDetId[detID][t][1]
+               resortHits[k]=hitsPerDetId[detID][t][0]
+        for k in range(len(resortHits)):
              if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
-             self.digiMufluxSpectrometer[index]=hitsPerDetId[detID][t]
+             self.digiMufluxSpectrometer[index]=resortHits[k]
              index+=1
 
     def finish(self):
