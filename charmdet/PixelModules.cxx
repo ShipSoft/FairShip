@@ -300,12 +300,14 @@ void PixelModules::ConstructGeometry()
     }
   volWindow->AddNode(0,0,new TGeoTranslation(0,0,-DimZPixelBox/2.-inimodZoffset));
 
-    for (int ipixel = 0; ipixel < nSi; ipixel++){
+    for (Int_t ipixel = 0; ipixel < nSi; ipixel++){
       if (vertical[ipixel]){
 		if(PixelIDlist[ipixel]) {
-			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)) volPixelBox->AddNode(volPixelythick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
-			else volPixelBox->AddNode(volPixelythin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
-//compensation for the Node offset
+			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)){
+				volPixelBox->AddNode(volPixelythick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
+					}
+			else {volPixelBox->AddNode(volPixelythin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
+//compensation for the Node offset}
 			}
 		else volPixelBox->AddNode(volPixelythick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
 //this else is used for debugging, if the number of slices isn't 10
@@ -318,11 +320,16 @@ void PixelModules::ConstructGeometry()
 		}
       else{ 
 		if(PixelIDlist[ipixel]) 
-			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620))volPixelBox->AddNode(volPixelxthick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
-			else volPixelBox->AddNode(volPixelxthin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
+			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)){
+				volPixelBox->AddNode(volPixelxthick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
+														}
+			else{
+				volPixelBox->AddNode(volPixelxthin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
+				}
 		
-		else volPixelBox->AddNode(volPixelxthick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //debugging else for if nSlice!=10
-
+		else {
+			volPixelBox->AddNode(volPixelxthick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //debugging else for if nSlice!=10
+			}
 
 		if((ipixel+nSlices)%9==1){
 					volFrontEndy->AddNode(volFrontEndy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));

@@ -86,7 +86,7 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    Int_t nSlices; 
+    Int_t nSlices=10; 
     
     /** container for data points */
     TClonesArray*  fPixelModulesPointCollection;
@@ -111,12 +111,12 @@ protected:
     Double_t DimX =0;
     Double_t DimY =0;
     Double_t DimZ = 0;
-    Double_t zSizeMS = 0; //dimension of the Magnetic PixelModules volume
-    Double_t DimZAlu= 0.6; //thickness of the aluminium modules
-    Double_t DimZWindow=0.005;
+    Double_t DimZWindow=0.0110;
     Double_t Windowx=5;
-    Double_t Windowy=5;//estimation has to be measured
-
+    Double_t Windowy=5;
+    Double_t FrontEndthick=0.0150;
+    Double_t FlexCuthick=0.0100;
+    Double_t FlexKapthick=0.0050;
     Double_t overlap=0;
     Double_t DimZPixelBox;
 
