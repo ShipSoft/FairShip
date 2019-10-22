@@ -172,11 +172,11 @@ void PixelModules::ConstructGeometry()
     InitMedium("aluminium");
     TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
 
-    InitMedium("cooper");
-    TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
+    InitMedium("copper");
+    TGeoMedium *Copper = gGeoManager->GetMedium("copper");
 
-    InitMedium("Kapton");
-    TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
+    InitMedium("kapton");
+    TGeoMedium *Kapton = gGeoManager->GetMedium("kapton");
 
     InitMedium("CoilCopper");
     TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
@@ -238,9 +238,9 @@ void PixelModules::ConstructGeometry()
     TGeoVolume *volFrontEndy = new TGeoVolume("volFrontEndy",FrontEndy,Silicon);
     volFrontEndy->SetLineColor(kGray);
 
-    TGeoBBox *FlexCuy = new TGeoBBox("FlexCuy",Dim1Long/2, Dim1Short/2 ,FlexCuthick);
-    TGeoVolume *volFlexCuy = new TGeoVolume("volFlexCuy",FlexCuy,Copper);
-    volFlexCuy->SetLineColor(kGray);
+    TGeoBBox *FlexCux = new TGeoBBox("FlexCux",Dim1Long/2, Dim1Short/2 ,FlexCuthick);
+    TGeoVolume *volFlexCux = new TGeoVolume("volFlexCux",FlexCux,Copper);
+    volFlexCux->SetLineColor(kGray);
 
     TGeoBBox *FlexCuy = new TGeoBBox("FlexCuy",Dim1Short/2, Dim1Long/2 ,FlexCuthick);
     TGeoVolume *volFlexCuy = new TGeoVolume("volFlexCuy",FlexCuy,Copper);
@@ -309,13 +309,14 @@ void PixelModules::ConstructGeometry()
 			else {volPixelBox->AddNode(volPixelythin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
 //compensation for the Node offset}
 			}
+					}
 		else volPixelBox->AddNode(volPixelythick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
 //this else is used for debugging, if the number of slices isn't 10
 
 		if((ipixel+nSlices)%9==1){
-					volFrontEndx->AddNode(volFrontEndx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexCux->AddNode(volFlexx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexKapx->AddNode(volFlexKapx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
+					volFrontEndy->AddNode(volFrontEndy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexCuy->AddNode(volFlexCuy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexKapy->AddNode(volFlexKapy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
 			}
 		}
       else{ 
@@ -332,9 +333,9 @@ void PixelModules::ConstructGeometry()
 			}
 
 		if((ipixel+nSlices)%9==1){
-					volFrontEndy->AddNode(volFrontEndy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexCuy->AddNode(volFlexy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexKapy->AddNode(volFlexKapy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
+					volFrontEndx->AddNode(volFrontEndx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexCux->AddNode(volFlexCux, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
+					volFlexKapx->AddNode(volFlexKapx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
 }
 		}
 	
