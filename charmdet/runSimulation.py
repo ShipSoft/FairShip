@@ -68,7 +68,15 @@ def getFilesLocal(d='.'):
     temp = os.listdir(d)
     for x in temp:
         if os.path.isdir(d+'/'+x): fl.append(x)
+    return fl    eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
+    fl = []
+    for x in temp.split('\n'):
+        if x.find('pythia8_Geant4')<0: continue
+        d = x[x.rfind('/')+1:]
+        fl.append(eospathSim+'/'+d)
     return fl
+
 
 def getFilesEOS(D):
     eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
@@ -389,7 +397,7 @@ def checkAlignment(D='.',splitFactor=5):
     print "finished all the tasks."
 
 
-def exportToEos(fnames=[],destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True):
+def exportToEos(fnames=[],destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True,tag=None):
     remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination,shell=True).split('\n')
     fnames = getFilesLocal()
     for D in fnames:
@@ -397,6 +405,8 @@ def exportToEos(fnames=[],destination="/eos/experiment/ship/user/truf/muflux-sim
             os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir  "+destination+"/"+D)
         remoteD = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination+'/'+D,shell=True)
         for f in os.listdir(D):
+            if tag:
+              if f.find(tag)<0:continue
             if f in remoteD and not update: continue
             fname = D+'/'+f
             cmd = "xrdcp -f "+fname+" $EOSSHIP/"+destination+"/"+fname
@@ -572,12 +582,24 @@ def runMufluxReco():
         for n in range(ncpus):
          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False -s "+str(n)+ " -x "+str(ncpus)+" &"
          os.system(cmd)
-def runInvMass():
-        ncpus = 15
+def runInvMass(MC='1GeV',merge=False):
+    ncpus = 15
+    t='final'
+    if not merge:
         for n in range(ncpus):
-         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ "-x "+str(ncpus)+" &"
-
-
+         if MC=='1GeV': cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A True  -B False -C  False -D  False &"
+         else:          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A False -B True  -C  False -D  False &"
+         print cmd
+         os.system(cmd)
+    else:
+        cmd = 'hadd -f invMass-MC-'+MC+'.root '
+        for n in range(ncpus):
+           cmd+='invMass-MC-'+str(n)+'.root '
+        os.system(cmd)
+        cmd = 'hadd -f ntuple-invMass-MC-'+MC+'.root '
+        for n in range(ncpus):
+           cmd+='ntuple-invMass-MC-'+str(n)+'.root '
+        os.system(cmd)
 def checkStatistics(splitFactor=5):
     # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
     simFiles = getFilesFromEOS()  # input data
@@ -604,3 +626,49 @@ def checkStatistics(splitFactor=5):
     # mbias statistics = 1.8 * Nreco/Nsim, charm statistics = 10.2 * Nreco/Nsim
     # norm factor = 1/charm statistics * mbias statistics
     print "internal MC normalization, to be applied to charm", 1.8*Nreco['mbias']/Nsim['mbias'] /(10.2*Nreco['charm']/Nsim['charm'])
+def mergeOnurFiles(merge=False):
+  if not merge:
+    eospath = "/eos/experiment/ship/user/odurhan/Muflux-Digi"
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospath,shell=True)
+    fl = []
+    for x in temp.split('\n'):
+        if x.find('dig.root')<0: continue
+        d   = x[x.rfind('/')+1:]
+        fin = ROOT.TFile.Open(os.environ['EOSSHIP']+eospath+'/'+d)
+        if not fin: continue
+        t = fin.Get('cbmsim')
+        if not t: continue
+        if not t.FindBranch('FitTracks'): continue
+        fout  = ROOT.TFile(d,'recreate')
+        sTree = t.CloneTree(0)
+        nEvents = 0
+        pointContainers = []
+        for b in sTree.GetListOfBranches():
+           name = b.GetName() 
+           if not name.find('Point')<0: pointContainers.append('sTree.'+name+'.GetEntries()') # makes use of convention that all sensitive detectors fill XXXPoint containers
+        for n in range(t.GetEntries()):
+           rc = t.GetEvent(n)
+           empty = True 
+           for p in pointContainers:
+              if eval(p)>0: empty = False
+           if not empty:
+              rc = sTree.Fill()
+              nEvents+=1
+        sTree.AutoSave()
+        fout.Close()
+        print("removed empty events, left with:", nEvents)
+        fin.SetWritable(False) # bpyass flush error
+  else:
+      N=0
+      cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root '
+      for x in os.listdir('.'):
+        N+=1
+        cmd += x+' '
+        if N%500==0:
+            os.system(cmd)
+            os.system('cp ship.conical.FixedTarget-TGeant4_merged_dig.root  tmp.root')
+            cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root tmp.root '
+      os.system(cmd)
+
+
+

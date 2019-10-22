@@ -1,17 +1,20 @@
-import ROOT,os,time
+import ROOT,os,time,operator
 import rootUtils as ut
 from argparse import ArgumentParser
+PDG = ROOT.TDatabasePDG.Instance()
 cuts = {}
 cuts['muTrackMatchX']= 5.
 cuts['muTrackMatchY']= 10.
 zTarget = -370.       # start of target: -394.328, mean z for mu from Jpsi in MC = -375cm, for all muons: -353cm
-dEdxCorrection = +7.3    # most probably ~7.5, mean 6.9
+dEdxCorrection = +7.3    # most probably ~7.5, mean 6.9.
 
 cuts['zRPC1']  = 878.826706
 cuts['xLRPC1'] =-97.69875
 cuts['xRRPC1'] = 97.69875
 cuts['yBRPC1'] =-41.46045
 cuts['yTRPC1'] = 80.26905
+
+sqrt2 = ROOT.TMath.Sqrt(2.)
 
 Debug = False
 
@@ -34,9 +37,10 @@ parser.add_argument("-d", "--dir", dest="directory", help="directory", default=F
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
 parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default="")
 parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="final") # other versions: "0", "multHits", "noDeadChannels", "withDeadChannels"
-parser.add_argument("-A", "--with1GeV", dest="with1GeV", help="1GeV MC", default="True")
+parser.add_argument("-A", "--with1GeV",  dest="with1GeV", help="1GeV MC", default="True")
 parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC", default="True")
 parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC", default="True")
+parser.add_argument("-D", "--withData",  dest="withData", help="use default data set", default="True")
 parser.add_argument("-x", dest="ncpus", help="number of parallel jobs", default=False)
 parser.add_argument("-s", dest="nseq", help="sequence of parallel job", default=0)
 
@@ -46,21 +50,21 @@ MCType    =  options.MCType
 with1GeV  =  options.with1GeV  == "True"
 withCharm =  options.withCharm == "True"
 with10GeV =  options.with10GeV == "True"
+withData  =  options.withData  == "True"
 if options.path != "": gPath = options.path+'/'
 fdir = options.directory
 
 if not fdir: 
     Nfiles = 2000
     fdir   = "RUN_8000_2403"
-else: 
-    Nfiles = len( os.listdir(gPath+fdir) )
 if not options.listOfFiles:
     sTreeData = ROOT.TChain('tmuflux')
-    path = gPath + fdir
-    countFiles=[]
-    for x in os.listdir(path):
+    if withData:
+     path = gPath + fdir
+     countFiles=[]
+     for x in os.listdir(path):
         if not x.find('ntuple-SPILL')<0: countFiles.append(x)
-    for x in countFiles:
+     for x in countFiles:
         sTreeData.Add(path+"/"+x)
         Nfiles-=1
         if Nfiles==0: break
@@ -112,49 +116,26 @@ if not options.listOfFiles:
 
 s_SQRT2i = 1./ROOT.TMath.Sqrt( 2.0 )
 sqrt2pi  = ROOT.TMath.Sqrt( 2*ROOT.TMath.Pi() )
+cb=ROOT.TF1("cb","crystalball",0,6.)
+def TwoCrystalBall(x,par):
+   bw = par[0] # should be fixed
+   cb.SetParameters(par[1]*bw,par[2],par[3],par[4],par[5])
+   highMass = cb.Eval(x[0])
+   cb.SetParameters(par[6]*bw,par[7],par[8],par[9],par[10])
+   lowMass = cb.Eval(x[0])
+   Psi2s = 0
+   if abs(par[13])>0:
+     cb.SetParameters(par[13]*bw,3.6871+par[2]- 3.0969,par[3],par[4],par[5])
+     Psi2s = cb.Eval(x[0])
+   Y = highMass + lowMass + par[11] + par[12]*x[0] + Psi2s
+   return Y
 def CrystalBall(x,par):
    bw = par[0] # should be fixed
-   m0 = par[2]
-   sigma = par[3]
-   alpha = par[4]
-   n     = par[5]
-   delta = x[0]-m0
-   if delta/(2*sigma)>-alpha:
-     f = ROOT.TMath.Exp ( -0.5 * ( delta/sigma )**2 )
-   else:
-     A = ROOT.TMath.Power(n/abs(x[0]),n)*ROOT.TMath.Exp(-alpha**2/2)
-     B = n/abs(alpha)-alpha
-     f = ROOT.TMath.Power(A*(B-delta/sigma),-n)
+   cb.SetParameters(par[1]*bw,par[2],par[3],par[4],par[5])
+   highMass = cb.Eval(x[0])
    lowMass = par[6]*bw/(abs(par[8])*sqrt2pi)*ROOT.TMath.Exp(-0.5*( (x[0]-par[7])/par[8])**2)
-   cb = f*bw*par[0] + lowMass + par[9] + par[10]*x[0]
-   return cb
-def testCB():
-    myCB = ROOT.TF1('CB',CrystalBall,0,10,11)
-    myCB.SetParName(0,'binwidth')
-    myCB.SetParName(1,'psi(1S)')
-    myCB.SetParName(2,'Mass')
-    myCB.SetParName(3,'Sigma')
-    myCB.SetParName(4,'alpha')
-    myCB.SetParName(5,'n')
-    myCB.SetParName(6,'SignalLow')
-    myCB.SetParName(7,'MeanLow')
-    myCB.SetParName(8,'SigmaLow')
-    myCB.SetParName(9,'p0')
-    myCB.SetParName(10,'p1')
-    hMC['dummy'].cd()
-    bw = hMC['m_MC'].GetBinWidth(1)
-    myCB.FixParameter(0,bw)
-    myCB.SetParameter(1,1000.)
-    myCB.FixParameter(2,3.0)
-    myCB.SetParameter(3,0.3)
-    myCB.SetParameter(4,1.0)
-    myCB.SetParameter(5,0.1)
-    myCB.SetParameter(6,5000.)
-    myCB.FixParameter(7,1.1)
-    myCB.SetParameter(8,0.3)
-    myCB.SetParameter(9,0.)
-    myCB.SetParameter(10,0.)
-    rc = hData['mcor_1.4'].Fit(    myCB,'S')
+   Y = highMass + lowMass + par[9] + par[10]*x[0]
+   return Y
 
 def IP(OnlyDraw = False):
     if not OnlyDraw:
@@ -1015,10 +996,12 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     if MCdata: 
        name = "ntuple-invMass-MC.root"
        if ncpus:
-          name.replace('.root','-'+str(nseq)+'.root')
+          name = name.replace('.root','-'+str(nseq)+'.root')
     else:      name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
-    h['nt']  = ROOT.TNtuple("nt","dimuon","mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2")
+    h['nt']  = ROOT.TNtuple("nt","dimuon","mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:\
+                            cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:\
+                            cosCSraw:cosCScor")
 #
     sTreeFullMC = None
     Ntotal = sTree.GetEntries()
@@ -1030,12 +1013,13 @@ def invMass(sTree,h,nseq=0,ncpus=False):
       nStart = int(nseq*deltaN)
       Ntotal = int(min(sTree.GetEntries(),nStart+deltaN))
     currentFile = ''
-    for n in range(nStart,sTree.GetEntries()):
+    for n in range(0,Ntotal):
         rc = sTree.GetEvent(n)
-        if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
+        # if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
         if sTree.GetCurrentFile().GetName()!=currentFile:
             currentFile = sTree.GetCurrentFile().GetName()
             nInFile = n
+        if n<nStart: continue
         tchannel = sTree.channel
         source = ''
         if MCdata:
@@ -1122,6 +1106,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
                 fMC = ROOT.TFile.Open(eospathSim+fname)
                 sTreeFullMC = fMC.cbmsim
             rc = sTreeFullMC.GetEvent(n-nInFile)
+            # print rc,sTreeFullMC,n,nInFile,n1,n2
             mothers = []
             kx = 0
             for k in [n1,n2]:
@@ -1154,25 +1139,67 @@ def invMass(sTree,h,nseq=0,ncpus=False):
           j+=1
 # now we have all combinations, j
         for j in nComb:
-          theTuple = array('f',\
-[float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),X[j].P(),X[j].Pt(),P[nComb[j][0]].P(),P[nComb[j][0]].Pt(),P[nComb[j][1]].P(),P[nComb[j][1]].Pt(),\
-IP[nComb[j][0]],IP[nComb[j][1]],chi2[j][0],chi2[j][1],costheta[j],float(jpsi[j]),PTRUE[j],PtTRUE[j],\
-pTrue[j][0],pTrue[j][1],dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1]])
+          n1 = nComb[j][0]
+          n2 = nComb[j][1]
+          if chi2[n1] < 0: 
+           nlep      = n1
+           nantilep  = n2
+          else: 
+           nlep = n2
+           nantilep  = n1
+          P1pl = P[nlep].E()+P[nlep].Pz()
+          P2pl = P[nantilep].E()+P[nantilep].Pz()
+          P1mi = P[nlep].E()-P[nlep].Pz()
+          P2mi = P[nantilep].E()-P[nantilep].Pz()
+          cosCSraw = X[j].Pz()/abs(X[j].Pz()) * 1./X[j].M()/ROOT.TMath.Sqrt(X[j].M2()+X[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
+          P1pl = Pcor[nlep].E()+Pcor[nlep].Pz()
+          P2pl = Pcor[nantilep].E()+Pcor[nantilep].Pz()
+          P1mi = Pcor[nlep].E()-Pcor[nlep].Pz()
+          P2mi = Pcor[nantilep].E()-Pcor[nantilep].Pz()
+          cosCScor = Xcor[j].Pz()/abs(Xcor[j].Pz()) * 1./Xcor[j].M()/ROOT.TMath.Sqrt(Xcor[j].M2()+Xcor[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
+          theTuple = array('f',[float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),X[j].P(),X[j].Pt(),P[n1].P(),P[n1].Pt(),P[n2].P(),P[n2].Pt(),\
+                     IP[n1],IP[n2],chi2[n1],chi2[n2],costheta[j],float(jpsi[j]),PTRUE[j],PtTRUE[j],pTrue[n1],pTrue[n2],dTheta[n1],dTheta[n2],dMults[n1],dMults[n2],cosCSraw,cosCScor])
           h['nt'].Fill(theTuple)
     h['fntuple'].cd()
     h['nt'].Write()
-    ut.writeHists(h,name.replace('ntuple-',''))
+    hname = name.replace('ntuple-','')
+    ut.writeHists(h,hname)
     print "I have finished. ",hname
+def myDraw(variable,cut):
+ hMC['10GeV'].Draw(variable,cut)
+ # too complicated to combine 1GeV
+ # hMC['10GeV'].Draw(variable,str(hMC['weights']['1GeV'])+'*('+cut+')')
+ # hMC['10eV'].Draw(variable.replace(">>",">>+"),str(hMC['weights']['1GeV'])+'*('+cut+')')
+ 
 def diMuonAnalysis():
- hData['f']= ROOT.TFile('ntuple-InvMass.root')
- hMC['f']  = ROOT.TFile('ntuple-invMass-MC.root')
- sTreeData = hData['f'].nt
- sTreeMC   = hMC['f'].nt
+ hData['f'] = ROOT.TFile('ntuple-InvMass.root')
+ sTreeData  = hData['f'].nt
+ hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV.root')
+ hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV.root')
+ hMC['1GeV'] =hMC['f1'].nt
+ hMC['10GeV']=hMC['f10'].nt
+# make normalization
+    # covered cases: cuts = '',      simpleEffCor=0.024, simpleEffCorMu=0.024
+    # covered cases: cuts = 'Chi2<', simpleEffCor=0.058, simpleEffCorMu=0.058
+    # covered cases: cuts = 'All', simpleEffCor=0.058,   simpleEffCorMu=0.129
+    # 1GeV mbias,      1.806 Billion PoT 
+    # 10GeV MC,       66.02 Billion PoT 
+    # using 626 POT/mu-event and preliminary counting of good tracks -> 12.63 -> pot factor 7.02
+    # using 710 POT/mu-event, full field
+ simpleEffCor = 0.024
+ MCStats = {'1GeV': 1.806E9,'10GeV':66.02E9}
+ mcSysError = 0.03
+ daSysError = 0.021
+ dataStats  = 324.75E9
+ hMC['weights'] = {'1GeV': MCStats['1GeV']/dataStats/(1+simpleEffCor*2),'10GeV':MCStats['10GeV']/dataStats/(1+simpleEffCor*2)}
+#
+ InvMassPlots = [160,0.,8.]
+#
  ptCutList = [0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6]
  hData['fitResult'] = {}
  hMC['fitResult'] = {}
  sptCut = 'XYZ'
- theCutTemplate =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1<200&&p2<200&&p1>10&&p2>10&&mcor>0.5'
+ theCutTemplate =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1<300&&p2<300&&p1>20&&p2>20&&mcor>0.20'
  ut.bookHist(hMC, 'mc_theta','cos theta mother - daughter1',100,-1,1.)
  ut.bookHist(hMC, 'mc_thetaJ','cos theta mother - daughter1 Jpsi',100,-1,1.)
  ut.bookHist(hData, 'theta','cos theta mother - daughter1',100,-1,1.)
@@ -1183,8 +1210,8 @@ def diMuonAnalysis():
  hMC['mc_thetaJ'].SetLineColor(ROOT.kMagenta)
  theCut = theCutTemplate.replace('XYZ','0')
  ROOT.gROOT.cd()
- sTreeMC.Draw('cosTheta>>mc_thetaJ',theCut+'&&Jpsi==443')
- sTreeMC.Draw('cosTheta>>mc_theta',theCut)
+ myDraw('cosTheta>>mc_thetaJ',theCut+'&&Jpsi==443')
+ myDraw('cosTheta>>mc_theta',theCut)
  sTreeData.Draw('cosTheta>>theta',theCut)
  hMC['tTheta'].cd(1)
  hMC['mc_theta'].Scale(1./hMC['mc_theta'].GetEntries())
@@ -1200,11 +1227,11 @@ def diMuonAnalysis():
  ut.bookCanvas(hMC,'tIP','distance to target',900,600,1,1)
  hMC['mc_IP'].SetLineColor(ROOT.kRed)
  hMC['mc_IPJ'].SetLineColor(ROOT.kMagenta)
- sTreeMC.Draw('Ip1>>mc_IPJ',theCut+'&&Jpsi==443')
- sTreeMC.Draw('Ip1>>mc_IP',theCut)
+ myDraw('Ip1>>mc_IPJ',theCut+'&&Jpsi==443')
+ myDraw('Ip1>>mc_IP',theCut)
  sTreeData.Draw('Ip1>>IP',theCut)
- sTreeMC.Draw('Ip2>>+mc_IPJ',theCut+'&&Jpsi==443')
- sTreeMC.Draw('Ip2>>+mc_IP',theCut)
+ myDraw('Ip2>>+mc_IPJ',theCut+'&&Jpsi==443')
+ myDraw('Ip2>>+mc_IP',theCut)
  sTreeData.Draw('Ip2>>+IP',theCut)
  hMC['tIP'].cd()
  hMC['mc_IP'].Scale(1./hMC['mc_IP'].GetEntries())
@@ -1214,8 +1241,8 @@ def diMuonAnalysis():
  hMC['mc_IPJ'].Draw('same')
  hData['IP'].Draw('same')
  myPrint(hMC['tIP'],'dimuon-IP')
- ut.bookHist(hMC, 'm_MC','inv mass;M [GeV/c^{2}]',130,0.,13.)
- ut.bookHist(hMC, 'm_MClow','inv mass;M [GeV/c^{2}]',100,0.,5.)
+ ut.bookHist(hMC, 'm_MC','inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+ ut.bookHist(hMC, 'm_MClow','inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
  hMC['dummy'].cd()
  PDG = ROOT.TDatabasePDG.Instance()
  colors = {221:ROOT.kBlue,223:ROOT.kCyan,113:ROOT.kGreen,331:ROOT.kOrange,333:ROOT.kRed,443:ROOT.kMagenta}
@@ -1227,24 +1254,34 @@ def diMuonAnalysis():
    hMC[hname].SetTitle('inv mass '+PDG.GetParticle(j).GetName()+' ;M [GeV/c^{2}]')
    hMC[hname].SetLineColor(colors[j])
    hMC[hname].SetStats(0)
-   sTreeMC.Draw('mcor>>'+hname,'Jpsi=='+str(j))
+   myDraw('m>>'+hname,'Jpsi=='+str(j))
    if hMC[hname].GetMaximum()>nmax: nmax = hMC[hname].GetMaximum()
- first = True
- hMC['lMassMC']=ROOT.TLegend(0.7,0.7,0.95,0.95)
- for j in colors:
-   pname = PDG.GetParticle(j).GetName()
-   hname = 'Mass_'+pname.replace('/','')
+   hname = 'Masscor_'+pname.replace('/','')
+   hMC[hname]=hMC['m_MClow'].Clone(hname)
+   hMC[hname].SetTitle('inv mass '+PDG.GetParticle(j).GetName()+' ;M [GeV/c^{2}]')
+   hMC[hname].SetLineColor(colors[j])
    hMC[hname].SetStats(0)
-   if first:
+   myDraw('mcor>>'+hname,'Jpsi=='+str(j))
+   if hMC[hname].GetMaximum()>nmax: nmax = hMC[hname].GetMaximum()
+ for z in ['','cor']:
+  first = True
+  hMC['lMassMC'+z]=ROOT.TLegend(0.7,0.7,0.95,0.95)
+  for j in colors:
+    pname = PDG.GetParticle(j).GetName()
+    hname = 'Mass'+z+'_'+pname.replace('/','')
+    hMC[hname].SetStats(0)
+    if first:
        first = False
        hMC[hname].SetMaximum(nmax*1.1)
        hMC[hname].SetTitle(';M [GeV/c^{2}]')
        hMC[hname].Draw()
-   else:
+    else:
        hMC[hname].Draw('same')
-   hMC['lMassMC'].AddEntry(hMC[hname],pname,'PL')
- hMC['lMassMC'].Draw()
- myPrint(hMC['dummy'],'MCdiMuonMass')
+    hMC['lMassMC'+z].AddEntry(hMC[hname],pname,'PL')
+  hMC['lMassMC'+z].Draw()
+  myPrint(hMC['dummy'],'MCdiMuonMass'+z)
+
+
  bw = hMC['m_MC'].GetBinWidth(1)
  hMC['myGauss'] = ROOT.TF1('gauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
             +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[4])/[5])**2)+abs( [6]+[7]*x+[8]*x**2 )\
@@ -1255,16 +1292,16 @@ def diMuonAnalysis():
  for v in vText:
   for ptCut in ptCutList:
    sptCut = str(ptCut)
-   ut.bookHist(hMC, 'mc-'+v+'_'+sptCut,'inv mass MC;M [GeV/c^{2}]',130,0.,13.)
-   ut.bookHist(hMC, 'mc-'+v+'_Jpsi_'+sptCut,'inv mass Jpsi MC matched;M [GeV/c^{2}]',130,0.,13.)
-   ut.bookHist(hData,v+'_'+sptCut,'inv mass DATA;M [GeV/c^{2}]',130,0.,13.)
+   ut.bookHist(hMC, 'mc-'+v+'_'+sptCut,'inv mass MC;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hMC, 'mc-'+v+'_Jpsi_'+sptCut,'inv mass Jpsi MC matched;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hData,v+'_'+sptCut,'inv mass DATA;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
 #
    theCut =  theCutTemplate.replace('XYZ',sptCut)
    ROOT.gROOT.cd()
    hMC['dummy'].cd()
    sTreeData.Draw(v+'>>'+v+'_'+sptCut,theCut)
-   sTreeMC.Draw(v+'>>mc-'+v+'_'+sptCut ,theCut)
-   sTreeMC.Draw(v+'>>mc-'+v+'_Jpsi_'+sptCut ,theCut+"&&Jpsi==443")
+   myDraw(v+'>>mc-'+v+'_'+sptCut ,theCut)
+   myDraw(v+'>>mc-'+v+'_Jpsi_'+sptCut ,theCut+"&&Jpsi==443")
 
   ut.bookCanvas(hMC,'fits'+v,vText[v],1800,800,5,4)
   j = 1
@@ -1272,32 +1309,32 @@ def diMuonAnalysis():
    sptCut = str(ptCut)
    tc = hMC['fits'+v].cd(j)
    init_Gauss(myGauss)
-   rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S')
+   rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
    fitResult = rc.Get()
    if fitResult.Parameter(0)+fitResult.Parameter(3)>hMC['mc-'+v+'_'+sptCut].GetEntries()*1.5:
      myGauss.FixParameter(3,0)
      myGauss.FixParameter(4,1.)
      myGauss.FixParameter(5,1.)
-     rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S')
+     rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
      fitResult = rc.Get()
-   hMC['fitResult'][ptCut] = []
-   for n in range(3):
-    hMC['fitResult'][ptCut].append([fitResult.Parameter(n),fitResult.ParError(n)])
+   hMC['fitResult'][ptCut] = {}
+   for n in range(10):
+    hMC['fitResult'][ptCut][myGauss.GetParName(n)] = [fitResult.Parameter(n),fitResult.ParError(n)]
    if v=='mcor':
     myGauss.FixParameter(1,fitResult.Parameter(1))
     myGauss.FixParameter(2,fitResult.Parameter(2))
     myGauss.ReleaseParameter(9)
-    rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S')
+    rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
     myGauss.ReleaseParameter(1)
     myGauss.ReleaseParameter(2)
-    rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S')
+    rc = hMC['mc-'+v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
     fitResult = rc.Get()
-    hMC['fitResult'][ptCut].append([fitResult.Parameter(9),fitResult.ParError(9)])
+    hMC['fitResult'][ptCut][myGauss.GetParName(9)] = [fitResult.Parameter(9),fitResult.ParError(9)]
    hMC['mc-'+v+'_Jpsi_'+sptCut].SetLineColor(ROOT.kMagenta)
    hMC['mc-'+v+'_Jpsi_'+sptCut].Draw('same')
    tc.Update()
    stats = tc.GetPrimitive('stats')
-   stats.SetOptFit(10011)
+   stats.SetOptFit(10111)
    stats.SetFitFormat('5.4g')
    stats.SetX1NDC(0.41)
    stats.SetY1NDC(0.41)
@@ -1306,21 +1343,22 @@ def diMuonAnalysis():
    tc.Update()
 # data
    tc = hMC['fits'+v].cd(j+5)
-   rc = hData[v+'_'+sptCut].Fit(myGauss,'S')
+   rc = hData[v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
    fitResult = rc.Get()
-   hData['fitResult'][ptCut] = []
-   for n in range(3):
-    hData['fitResult'][ptCut].append([fitResult.Parameter(n),fitResult.ParError(n)])
+   hData['fitResult'][ptCut] = {}
+   for n in range(10):
+    hData['fitResult'][ptCut][myGauss.GetParName(n)] = [fitResult.Parameter(n),fitResult.ParError(n)]
    if v=='mcor':
+# psi(2S) 
     myGauss.FixParameter(1,fitResult.Parameter(1))
     myGauss.FixParameter(2,fitResult.Parameter(2))
     myGauss.ReleaseParameter(9)
-    rc = hData[v+'_'+sptCut].Fit(myGauss,'S')
+    rc = hData[v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
     myGauss.ReleaseParameter(1)
     myGauss.ReleaseParameter(2)
-    rc = hData[v+'_'+sptCut].Fit(myGauss,'S')
+    rc = hData[v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
     fitResult = rc.Get()
-    hData['fitResult'][ptCut].append([fitResult.Parameter(9),fitResult.ParError(9)])
+    hData['fitResult'][ptCut][myGauss.GetParName(9)] = [fitResult.Parameter(9),fitResult.ParError(9)]
    tc.Update()
    stats = tc.GetPrimitive('stats')
    stats.SetOptFit(10011)
@@ -1341,7 +1379,7 @@ def diMuonAnalysis():
   myPrint(hMC['fits'+v],v+'_dimuon_all')
 #
   param = {0:'Signal',1:'Mass',2:'Sigma'}
-  txt = {0:'; pt>X GeV/c; Nsignal',1:'; pt>X GeV/c; M [GeV/c^{2}]',2:'; pt>X GeV/c; #sigma [GeV/c^{2}]'}
+  txt   = {0:'; pt>X GeV/c; Nsignal',1:'; pt>X GeV/c; M [GeV/c^{2}]',2:'; pt>X GeV/c; #sigma [GeV/c^{2}]'}
   choices = {'MC':hMC,'Data':hData}
   for c in choices:
    h=choices[c]
@@ -1350,8 +1388,8 @@ def diMuonAnalysis():
     ut.bookHist(h,hname,v+' evolution of '+param[p]+txt[p],20,0., 2.)
     for ptCut in ptCutList:
         k = h[hname].FindBin(ptCut)
-        h[hname].SetBinContent(k,h['fitResult'][ptCut][p][0])
-        h[hname].SetBinError(k,h['fitResult'][ptCut][p][1])
+        h[hname].SetBinContent(k,h['fitResult'][ptCut][myGauss.GetParName(p)][0])
+        h[hname].SetBinError(k,h['fitResult'][ptCut][myGauss.GetParName(p)][1])
         k+=1
   ut.bookCanvas(hMC,'evolutionC'+v,'evolution',1600,500,3,1)
   for p in range(3):
@@ -1380,10 +1418,10 @@ def diMuonAnalysis():
  ut.bookHist(hMC, 'delpTrue' ,'pTrue - p',100,-20.,70.)
  ut.bookHist(hMC, 'delptTrue' ,'ptTrue - pt',100,-2.,2.)
  tc = hMC['kin'].cd(1)
- sTreeMC.Draw('p:PTRUE>>pTrue','Jpsi==443')
- sTreeMC.Draw('pt:PtTRUE>>ptTrue','Jpsi==443')
- sTreeMC.Draw('PTRUE-p>>delpTrue','Jpsi==443')
- sTreeMC.Draw('PtTRUE-pt>>delptTrue','Jpsi==443')
+ myDraw('p:PTRUE>>pTrue','Jpsi==443')
+ myDraw('pt:PtTRUE>>ptTrue','Jpsi==443')
+ myDraw('PTRUE-p>>delpTrue','Jpsi==443')
+ myDraw('PtTRUE-pt>>delptTrue','Jpsi==443')
  ROOT.gROOT.cd()
  tc = hMC['kin'].cd(1)
  hMC['pTrue'].Draw('colz')
@@ -1420,35 +1458,159 @@ def diMuonAnalysis():
  hMC['ptTrue_x'].Draw()
  hMC['ptTrue_y'].Draw('same')
  myPrint(hMC['kin'],'JpsiKinematics')
+# low mass
+ ut.bookCanvas(hMC,'lkin','low mass kinematics',1800,1000,3,2)
+ ut.bookHist(hMC, 'lpt','pt',100,0.,5.)
+ ut.bookHist(hMC, 'lptTrue','pt vs ptTrue',100,0.,5.,100,0.,5.)
+ ut.bookHist(hMC, 'lpTrue' ,'p vs pTrue',100,0.,400.,100,0.,400.)
+ ut.bookHist(hMC, 'ldelpTrue' ,'pTrue - p',100,-20.,70.)
+ ut.bookHist(hMC, 'ldelptTrue' ,'ptTrue - pt',100,-2.,2.)
+ tc = hMC['lkin'].cd(1)
+ select=""
+ for c in colors:
+  if c==443: continue
+  select+="||Jpsi=="+str(c)
+ select = select[2:]
+ myDraw('p:PTRUE>>lpTrue',select)
+ myDraw('pt:PtTRUE>>lptTrue',select)
+ myDraw('PTRUE-p>>ldelpTrue',select)
+ myDraw('PtTRUE-pt>>ldelptTrue',select)
+ tc = hMC['lkin'].cd(1)
+ hMC['lpTrue'].Draw('colz')
+ tc = hMC['lkin'].cd(4)
+ hMC['ldelpTrue'].Fit('gaus')
+ tc.Update()
+ stats = tc.GetPrimitive('stats')
+ stats.SetOptFit(10011)
+ stats.SetFitFormat('5.4g')
+ stats.SetX1NDC(0.50)
+ stats.SetY1NDC(0.41)
+ stats.SetX2NDC(0.99)
+ stats.SetY2NDC(0.84)
+ tc.Update()
+ tc = hMC['lkin'].cd(2)
+ hMC['lptTrue'].Draw('colz')
+ tc = hMC['lkin'].cd(5)
+ hMC['ldelptTrue'].Fit('gaus')
+ tc.Update()
+ stats = tc.GetPrimitive('stats')
+ stats.SetOptFit(10011)
+ stats.SetFitFormat('5.4g')
+ tc.Update()
+ tc = hMC['lkin'].cd(3)
+ hMC['lptTrue_x']=hMC['lptTrue'].ProjectionX('lptTrue_x')
+ hMC['lptTrue_y']=hMC['lptTrue'].ProjectionY('lptTrue_y')
+ hMC['lpTrue_x']=hMC['lpTrue'].ProjectionX('lpTrue_x')
+ hMC['lpTrue_y']=hMC['lpTrue'].ProjectionY('lpTrue_y')
+ hMC['lptTrue_x'].SetLineColor(ROOT.kRed)
+ hMC['lpTrue_x'].SetLineColor(ROOT.kRed)
+ hMC['lpTrue_x'].Draw()
+ hMC['lpTrue_y'].Draw('same')
+ tc = hMC['lkin'].cd(6)
+ hMC['lptTrue_x'].Draw()
+ hMC['lptTrue_y'].Draw('same')
+ myPrint(hMC['lkin'],'LowMassKinematics')
+# low mass in bins of p and pt
+ ut.bookHist(hMC, 'mc-lowMassppt','low mass pt vs p;p [GeV/c];p_{t} [GeV/c]',50,0.,400.,50,0.,5.)
+ ut.bookHist(hData, 'lowMassppt','low mass pt vs p;p [GeV/c];p_{t} [GeV/c]',50,0.,400.,50,0.,5.)
+ sptCut = '0'
+ theCut =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1>20&&p2>20'
+ ut.bookHist(hMC, 'mc-lowMassAll','low mass ;M [GeV/c^[2]]',100,0.,5.)
+ ut.bookHist(hData, 'lowMassAll', 'low mass ;M [GeV/c^[2]]',100,0.,5.)
+ myDraw('mcor>>mc-lowMassAll',theCut)
+ sTreeData.Draw('mcor>>lowMassAll',theCut)
+ hMC['mc-lowMassAll'].Scale(1./hMC['weights']['10GeV'])
+ tc=hMC['dummy'].cd()
+ hMC['mc-lowMassAll'].SetLineColor(ROOT.kMagenta)
+ hData['lowMassAll'].Draw()
+ hMC['mc-lowMassAll'].Draw('same')
+ myPrint(hMC['dummy'],'lowMassAll')
+ theCut =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1>20&&p2>20&&mcor>0.4&&mcor<2.0'
+ myDraw('pt:p>>mc-lowMassppt',theCut)
+ sTreeData.Draw('pt:p>>lowMassppt',theCut)
+ hMC['mc-lowMassppt'].Scale(1./hMC['weights']['10GeV'])
+ ut.bookCanvas(hData,'lowMass','lowMass summary',1600,1200,1,2)
+ hData['lowMass1'] = hData['lowMass'].cd(1)
+ hData['lowMass1'].Divide(2,1)
+ tc = hData['lowMass1'].cd(1)
+ tc.SetLogy(1)
+ hData['lowMassppt_projx'] = hData['lowMassppt'].ProjectionX('lowMassppt_projx')
+ hData['lowMassppt_projx'].GetXaxis().SetRangeUser(40.,400.)
+ hData['lowMassppt_projx'].SetStats(0)
+ hData['lowMassppt_projx'].SetTitle('')
+ hData['lowMassppt_projx'].Draw()
+ hMC['mc-lowMassppt_projx'] = hMC['mc-lowMassppt'].ProjectionX('mc-lowMassppt_projx')
+ hMC['mc-lowMassppt_projx'].SetLineColor(ROOT.kMagenta)
+ hMC['mc-lowMassppt_projx'].Draw('same')
+ tc = hData['lowMass1'].cd(2)
+ tc.SetLogy(1)
+ hData['lowMassppt_projy'] = hData['lowMassppt'].ProjectionY('lowMassppt_projy')
+ hData['lowMassppt_projy'].SetStats(0)
+ hData['lowMassppt_projy'].SetTitle('')
+ hData['lowMassppt_projy'].Draw()
+ hMC['mc-lowMassppt_projy'] = hMC['mc-lowMassppt'].ProjectionY('mc-lowMassppt_projy')
+ hMC['mc-lowMassppt_projy'].SetLineColor(ROOT.kMagenta)
+ hMC['mc-lowMassppt_projy'].Draw('same')
+ hMC['mc-ratioLowMass'] = hMC['mc-lowMassppt'].Clone('mc-ratioLowMass')
+ hData['ratioLowMass']  = hData['lowMassppt'].Clone('ratioLowMass')
+ hMC['mc-ratioLowMass'].Rebin2D(5,5)
+ hData['ratioLowMass'].Rebin2D(5,5)
+ for mx in range(1,hMC['mc-ratioLowMass'].GetNbinsX()+1):
+  for my in range(1,hMC['mc-ratioLowMass'].GetNbinsY()+1):
+    Nmc = hMC['mc-ratioLowMass'].GetBinContent(mx,my)
+    Nda = hData['ratioLowMass'].GetBinContent(mx,my)
+    eNmc = hMC['mc-ratioLowMass'].GetBinError(mx,my)
+    eNda = hData['ratioLowMass'].GetBinError(mx,my)
+    if Nmc>10 and Nda>10:
+         R = (Nda-Nmc)/(Nda+Nmc)
+         sig_data = ROOT.TMath.Sqrt(eNda**2+(Nda*daSysError)**2)
+         sig_MC   = ROOT.TMath.Sqrt(eNmc**2+(Nmc*mcSysError)**2)
+         e1 = 2*Nda/(Nda+Nmc)**2
+         e2 = 2*Nmc/(Nda+Nmc)**2
+         eR = ROOT.TMath.Sqrt( (e1*sig_MC)**2+(e2*sig_data)**2 )
+    else:      
+         R  = 0. # -1      # R = 0
+         eR = 0.
+    hData['ratioLowMass'].SetBinContent(mx,my,R)
+    hData['ratioLowMass'].SetBinError(mx,my,eR)
+ tc = hData['lowMass'].cd(2)
+ ROOT.gStyle.SetPaintTextFormat("5.2f")
+ hData['ratioLowMass'].GetXaxis().SetRangeUser(40.,400.)
+ hData['ratioLowMass'].SetStats(0)
+ hData['ratioLowMass'].SetTitle('data - MC / data + MC')
+ hData['ratioLowMass'].GetYaxis().SetRangeUser(0,3.)
+ hData['ratioLowMass'].SetMarkerSize(1.8)
+ hData['ratioLowMass'].Draw('texte')
+ myPrint(hData['lowMass'],'lowMassSummary')
 # muon dEdx
- ut.bookHist(hMC, 'delpTrue2' ,'p-pTrue vs pTrue',20,0.,400.,50,-25.,25.)
- sTreeMC.Draw('(p1-p1True):p1True>>delpTrue2','Jpsi==443')
- sTreeMC.Draw('(p2-p2True):p2True>>+delpTrue2','Jpsi==443')
+ ut.bookHist(hMC, 'delpTrue2' ,'p-pTrue vs pTrue',20,0.,400.,50,-50.,50.)
+ myDraw('(p1-p1True):p1>>delpTrue2','Jpsi!=443')
+ myDraw('(p2-p2True):p2>>+delpTrue2','Jpsi!=443') # applying cuts does not make a difference
  ROOT.gROOT.cd()
  hMC['meanLoss']=hMC['delpTrue2'].ProjectionX('meanLoss')
  for n in range(1,hMC['delpTrue2'].GetXaxis().GetNbins()+1):
    tmp = hMC['delpTrue2'].ProjectionY('tmp',n,n)
-   hMC['meanLoss'].SetBinContent(n,tmp.GetMean())
+   hMC['meanLoss'].SetBinContent(n, tmp.GetBinCenter(ut.findMaximumAndMinimum(tmp)[3]))
    hMC['meanLoss'].SetBinError(n,tmp.GetRMS())
- hMC['meanLoss'].Draw()
+ hMC['meanLoss'].Draw()  #-8.61544 
 # try Jpsi p,pt based on ptmu > 1.4
  v='mcor'
  ptCut = 1.4
  sptCut = str(ptCut)
  theCut =  theCutTemplate.replace('XYZ',sptCut)
- ut.bookHist(hMC, 'mc-JpsiPt','Pt Jpsi MC;Pt [GeV/c^{2}]',10,0.,5.)
- ut.bookHist(hData, 'JpsiPt','Pt Jpsi ;Pt [GeV/c^{2}]',10,0.,5.)
+ ut.bookHist(hMC, 'mc-JpsiPt','Pt J/#psi ;Pt [GeV/c^{2}]',10,0.,5.)
+ ut.bookHist(hData, 'JpsiPt','Pt J/#psi ;Pt [GeV/c^{2}]',10,0.,5.)
  ut.bookCanvas(hMC,'MCbinsPt','mass in bins Pt',1800,1200,3,3)
  ut.bookCanvas(hData,'binsPt','mass in bins Pt',1800,1200,3,3)
  ptmin = 0
  delPt = 0.5
  for k in range(9):
    ptmax = ptmin+delPt
-   ut.bookHist(hMC,  'mc-pt'+str(k),'inv mass MC '+str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',130,0.,13.)
-   ut.bookHist(hData,'pt'+str(k),'inv mass DATA ' +str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',130,0.,13.)
+   ut.bookHist(hMC,  'mc-pt'+str(k),'inv mass MC '+str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hData,'pt'+str(k),'inv mass DATA ' +str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    hMC['dummy'].cd()
    sTreeData.Draw(v+'>>pt'+str(k),theCut+'&&pt<'+str(ptmax)+'&&pt>'+str(ptmin))
-   sTreeMC.Draw(v+'>>mc-pt'+str(k),theCut+'&&pt<'+str(ptmax)+'&&pt>'+str(ptmin))
+   myDraw(v+'>>mc-pt'+str(k),theCut+'&&pt<'+str(ptmax)+'&&pt>'+str(ptmin))
    ptmin = ptmin+delPt
    cases = {'MC':hMC['mc-pt'+str(k)],'Data':hData['pt'+str(k)]}
    for c in cases:
@@ -1457,7 +1619,7 @@ def diMuonAnalysis():
     else: tc=hData['binsPt'].cd(k+1)
     init_Gauss(myGauss)
     histo.Draw()
-    rc = histo.Fit(myGauss,'S','',0,6.)
+    rc = histo.Fit(myGauss,'S','',0.5,5.)
     fitResult = rc.Get()
     N = fitResult.Parameter(0)
     E = fitResult.ParError(0)
@@ -1485,19 +1647,19 @@ def diMuonAnalysis():
  myPrint(hData['binsPt'],'diMuonBinsPt')
  myPrint(hMC['MCbinsPt'],'MC-diMuonBinsPt')
 #
- ut.bookHist(hMC, 'mc-JpsiP','Pt Jpsi MC;P [GeV/c^{2}]',10,0.,200.)
- ut.bookHist(hData, 'JpsiP','Pt Jpsi ;Pt [GeV/c^{2}]',10,0.,200.)
+ ut.bookHist(hMC, 'mc-JpsiP','J/#psi ;P [GeV/c^{2}]',10,20.,220.)
+ ut.bookHist(hData, 'JpsiP',' J/#psi ;Pt [GeV/c^{2}]',10,20.,220.)
  ut.bookCanvas(hMC,'MCbinsP','mass in bins P',1800,1200,3,3)
  ut.bookCanvas(hData,'binsP','mass in bins P',1800,1200,3,3)
- pmin = 0
+ pmin = 20.
  delP = 20.
  for k in range(9):
    pmax = pmin+delP
-   ut.bookHist(hMC,  'mc-p'+str(k),'inv mass MC '+str(pmin)+'<P<'+str(pmax)+';M [GeV/c^{2}]',130,0.,13.)
-   ut.bookHist(hData,'p'+str(k),'inv mass DATA ' +str(pmin)+'<P<'+str(pmax)+';M [GeV/c^{2}]',130,0.,13.)
+   ut.bookHist(hMC,  'mc-p'+str(k),'inv mass MC '+str(pmin)+'<P<'+str(pmax)+';M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hData,'p'+str(k),'inv mass DATA ' +str(pmin)+'<P<'+str(pmax)+';M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    hMC['dummy'].cd()
    sTreeData.Draw(v+'>>p'+str(k),theCut+'&&p<'+str(pmax)+'&&p>'+str(pmin))
-   sTreeMC.Draw(v+'>>mc-p'+str(k),theCut+'&&p<'+str(pmax)+'&&p>'+str(pmin))
+   myDraw(v+'>>mc-p'+str(k),theCut+'&&p<'+str(pmax)+'&&p>'+str(pmin))
    pmin = pmin+delP
    cases = {'MC':hMC['mc-p'+str(k)],'Data':hData['p'+str(k)]}
    for c in cases:
@@ -1506,11 +1668,298 @@ def diMuonAnalysis():
     else: tc=hData['binsP'].cd(k+1)
     init_Gauss(myGauss)
     histo.Draw()
-    rc = histo.Fit(myGauss,'S','',0,6.)
+    rc = histo.Fit(myGauss,'S','',0.5,5.)
     fitResult = rc.Get()
     if fitResult and histo.GetEntries()>10:
      N = fitResult.Parameter(0)
      E = fitResult.ParError(0)
+     tc.Update()
+     stats = tc.GetPrimitive('stats')
+     stats.SetOptFit(10011)
+     stats.SetFitFormat('5.4g')
+     stats.SetX1NDC(0.41)
+     stats.SetY1NDC(0.41)
+     stats.SetX2NDC(0.99)
+     stats.SetY2NDC(0.84)
+     tc.Update()
+    else:
+     N=0
+     E=0
+    if E>N:
+     N=0
+     E=0
+    if c=='MC': 
+        hMC['mc-JpsiP'].SetBinContent(k+1,N)
+        hMC['mc-JpsiP'].SetBinError(k+1,E)
+ hData['lowMassAll'].Draw()
+ hMC['mc-lowMassAll'].Draw('same')
+ myPrint(hMC['dummy'],'lowMassAll')
+ theCut =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1>20&&p2>20&&mcor>0.4&&mcor<2.0'
+ myDraw('pt:p>>mc-lowMassppt',theCut)
+ sTreeData.Draw('pt:p>>lowMassppt',theCut)
+ hMC['mc-lowMassppt'].Scale(1./hMC['weights']['10GeV'])
+ ut.bookCanvas(hData,'lowMass','lowMass summary',1600,1200,1,2)
+ hData['lowMass1'] = hData['lowMass'].cd(1)
+ hData['lowMass1'].Divide(2,1)
+ tc = hData['lowMass1'].cd(1)
+ tc.SetLogy(1)
+ hData['lowMassppt_projx'] = hData['lowMassppt'].ProjectionX('lowMassppt_projx')
+ hData['lowMassppt_projx'].GetXaxis().SetRangeUser(40.,400.)
+ hData['lowMassppt_projx'].SetStats(0)
+ hData['lowMassppt_projx'].SetTitle('')
+ hData['lowMassppt_projx'].Draw()
+ hMC['mc-lowMassppt_projx'] = hMC['mc-lowMassppt'].ProjectionX('mc-lowMassppt_projx')
+ hMC['mc-lowMassppt_projx'].SetLineColor(ROOT.kMagenta)
+ hMC['mc-lowMassppt_projx'].Draw('same')
+ tc = hData['lowMass1'].cd(2)
+ tc.SetLogy(1)
+ hData['lowMassppt_projy'] = hData['lowMassppt'].ProjectionY('lowMassppt_projy')
+ hData['lowMassppt_projy'].SetStats(0)
+ hData['lowMassppt_projy'].SetTitle('')
+ hData['lowMassppt_projy'].Draw()
+ hMC['mc-lowMassppt_projy'] = hMC['mc-lowMassppt'].ProjectionY('mc-lowMassppt_projy')
+ hMC['mc-lowMassppt_projy'].SetLineColor(ROOT.kMagenta)
+ hMC['mc-lowMassppt_projy'].Draw('same')
+ hMC['mc-ratioLowMass'] = hMC['mc-lowMassppt'].Clone('mc-ratioLowMass')
+ hData['ratioLowMass']  = hData['lowMassppt'].Clone('ratioLowMass')
+ hMC['mc-ratioLowMass'].Rebin2D(5,5)
+ hData['ratioLowMass'].Rebin2D(5,5)
+ for mx in range(1,hMC['mc-ratioLowMass'].GetNbinsX()+1):
+  for my in range(1,hMC['mc-ratioLowMass'].GetNbinsY()+1):
+    Nmc = hMC['mc-ratioLowMass'].GetBinContent(mx,my)
+    Nda = hData['ratioLowMass'].GetBinContent(mx,my)
+    eNmc = hMC['mc-ratioLowMass'].GetBinError(mx,my)
+    eNda = hData['ratioLowMass'].GetBinError(mx,my)
+    if Nmc>10 and Nda>10:
+         R = (Nda-Nmc)/(Nda+Nmc)
+         sig_data = ROOT.TMath.Sqrt(eNda**2+(Nda*daSysError)**2)
+         sig_MC   = ROOT.TMath.Sqrt(eNmc**2+(Nmc*mcSysError)**2)
+         e1 = 2*Nda/(Nda+Nmc)**2
+         e2 = 2*Nmc/(Nda+Nmc)**2
+         eR = ROOT.TMath.Sqrt( (e1*sig_MC)**2+(e2*sig_data)**2 )
+    else:      
+         R  = 0. # -1      # R = 0
+         eR = 0.
+    hData['ratioLowMass'].SetBinContent(mx,my,R)
+    hData['ratioLowMass'].SetBinError(mx,my,eR)
+ tc = hData['lowMass'].cd(2)
+ ROOT.gStyle.SetPaintTextFormat("5.2f")
+ hData['ratioLowMass'].GetXaxis().SetRangeUser(40.,400.)
+ hData['ratioLowMass'].SetStats(0)
+ hData['ratioLowMass'].SetTitle('data - MC / data + MC')
+ hData['ratioLowMass'].GetYaxis().SetRangeUser(0,3.)
+ hData['ratioLowMass'].SetMarkerSize(1.8)
+ hData['ratioLowMass'].Draw('texte')
+ myPrint(hData['lowMass'],'lowMassSummary')
+# muon dEdx
+ ut.bookHist(hMC, 'delpTrue2' ,'p-pTrue vs pTrue',20,0.,400.,50,-50.,50.)
+ myDraw('(p1-p1True):p1>>delpTrue2','Jpsi!=443')
+ myDraw('(p2-p2True):p2>>+delpTrue2','Jpsi!=443') # applying cuts does not make a difference
+ ROOT.gROOT.cd()
+ hMC['meanLoss']=hMC['delpTrue2'].ProjectionX('meanLoss')
+ for n in range(1,hMC['delpTrue2'].GetXaxis().GetNbins()+1):
+   tmp = hMC['delpTrue2'].ProjectionY('tmp',n,n)
+   hMC['meanLoss'].SetBinContent(n, tmp.GetBinCenter(ut.findMaximumAndMinimum(tmp)[3]))
+   hMC['meanLoss'].SetBinError(n,tmp.GetRMS())
+ hMC['meanLoss'].Draw()  #-8.61544 
+# try Jpsi p,pt based on ptmu > 1.4
+ v='mcor'
+ ptCut = 1.4
+ sptCut = str(ptCut)
+ theCut =  theCutTemplate.replace('XYZ',sptCut)
+ ut.bookHist(hMC, 'mc-JpsiPt','Pt J/#psi ;Pt [GeV/c^{2}]',10,0.,5.)
+ ut.bookHist(hData, 'JpsiPt','Pt J/#psi ;Pt [GeV/c^{2}]',10,0.,5.)
+ ut.bookCanvas(hMC,'MCbinsPt','mass in bins Pt',1800,1200,3,3)
+ ut.bookCanvas(hData,'binsPt','mass in bins Pt',1800,1200,3,3)
+ ptmin = 0
+ delPt = 0.5
+ for k in range(9):
+   ptmax = ptmin+delPt
+   ut.bookHist(hMC,  'mc-pt'+str(k),'inv mass MC '+str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hData,'pt'+str(k),'inv mass DATA ' +str(ptmin)+'<Pt<'+str(ptmax)+';M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   hMC['dummy'].cd()
+   sTreeData.Draw(v+'>>pt'+str(k),theCut+'&&pt<'+str(ptmax)+'&&pt>'+str(ptmin))
+   myDraw(v+'>>mc-pt'+str(k),theCut+'&&pt<'+str(ptmax)+'&&pt>'+str(ptmin))
+   ptmin = ptmin+delPt
+   cases = {'MC':hMC['mc-pt'+str(k)],'Data':hData['pt'+str(k)]}
+   for c in cases:
+    histo = cases[c]
+    if c=='MC': tc=hMC['MCbinsPt'].cd(k+1)
+    else: tc=hData['binsPt'].cd(k+1)
+    init_Gauss(myGauss)
+    histo.Draw()
+    rc = histo.Fit(myGauss,'S','',0.5,5.)
+    fitResult = rc.Get()
+    N = fitResult.Parameter(0)
+    E = fitResult.ParError(0)
+    tc.Update()
+    stats = tc.GetPrimitive('stats')
+    stats.SetOptFit(10011)
+    stats.SetFitFormat('5.4g')
+    stats.SetX1NDC(0.41)
+    stats.SetY1NDC(0.41)
+    stats.SetX2NDC(0.99)
+    if c=='MC': 
+        hMC['mc-JpsiPt'].SetBinContent(k+1,N)
+        hMC['mc-JpsiPt'].SetBinError(k+1,E)
+    else: 
+        hData['JpsiP'].SetBinContent(k+1,N)
+        hData['JpsiP'].SetBinError(k+1,E)
+ hData['binsP'].cd(1)
+ hMC['mc-JpsiP'].SetLineColor(ROOT.kMagenta)
+ hmax = 1.1*max(hMC['mc-JpsiP'].GetMaximum(),hData['JpsiP'].GetMaximum())
+ hMC['mc-JpsiP'].SetMaximum(hmax)
+ hMC['mc-JpsiP'].Draw()
+ hData['JpsiP'].Draw('same')
+ myPrint(hData['binsP'],'diMuonBinsP')
+ myPrint(hMC['MCbinsP'],'MC-diMuonBinsP')
+import math
+def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
+   myCB.FixParameter(0,bw)
+   myCB.SetParName(0,'binwidth')
+   myCB.SetParName(1,'psi(1S)')
+   myCB.SetParName(2,'Mass')
+   myCB.SetParName(3,'Sigma')
+   myCB.SetParName(4,'alpha')
+   myCB.SetParName(5,'n')
+   myCB.SetParName(6,'SignalLow')
+   myCB.SetParName(7,'MeanLow')
+   myCB.SetParName(8,'SigmaLow')
+   myCB.SetParName(9,'alphaLow')
+   myCB.SetParName(10,'nLow')
+   myCB.SetParName(11,'p0')
+   myCB.SetParName(12,'p1')
+   myCB.SetParName(13,'psi(2S)')
+   if not fromPrevFit:
+    myCB.SetParameter(1,h['fitResult'][ptCut]['psi(1S)'][0])
+    myCB.SetParameter(2,h['fitResult'][ptCut]['Mean'][0])
+    myCB.SetParameter(3,h['fitResult'][ptCut]['Sigma'][0])
+    myCB.SetParameter(4,0.3)
+    myCB.SetParameter(5,3.5)
+    myCB.SetParameter(6,h['fitResult'][ptCut]['SignalLow'][0])
+    myCB.SetParameter(7,h['fitResult'][ptCut]['MeanLow'][0])
+    myCB.SetParameter(8,h['fitResult'][ptCut]['SigmaLow'][0])
+    myCB.SetParameter(9,0.3)
+    myCB.SetParameter(10,3.5)
+    myCB.SetParameter(11,h['fitResult'][ptCut]['p1'][0])
+    myCB.SetParameter(12,h['fitResult'][ptCut]['p2'][0])
+    myCB.FixParameter(13,0.)
+   else:
+    myCB.SetParameter(1,h['fitResultCB'][ptCut]['psi(1S)'][0])
+    myCB.SetParameter(2,h['fitResultCB'][ptCut]['Mass'][0])
+    myCB.FixParameter(3,h['fitResultCB'][ptCut]['Sigma'][0])
+    myCB.FixParameter(4,h['fitResultCB'][ptCut]['alpha'][0])
+    myCB.FixParameter(5,h['fitResultCB'][ptCut]['n'][0])
+    myCB.SetParameter(6,h['fitResultCB'][ptCut]['SignalLow'][0])
+    myCB.SetParameter(7,h['fitResultCB'][ptCut]['MeanLow'][0])
+    myCB.FixParameter(8,h['fitResultCB'][ptCut]['SigmaLow'][0])
+    myCB.FixParameter(9,h['fitResultCB'][ptCut]['alphaLow'][0])
+    myCB.FixParameter(10,h['fitResultCB'][ptCut]['nLow'][0])
+    myCB.SetParameter(11,h['fitResultCB'][ptCut]['p0'][0])
+    myCB.SetParameter(12,h['fitResultCB'][ptCut]['p1'][0])
+    myCB.FixParameter(12,0.)
+    myCB.FixParameter(13,0.)
+    myCB.ReleaseParameter(2)
+    myCB.ReleaseParameter(7)
+
+def fitWithTwoCB():
+ hMC['dummy'].cd()
+ ptCutList = [0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6]
+ bw = hMC['m_MC'].GetBinWidth(1)
+ cases = {'':hData,'mc-':hMC}
+ v = 'mcor'
+ for c in cases:
+  h=cases[c]
+  h['fitResultCB']={}
+  for ptCut in ptCutList:
+   h['myCB2'+str(ptCut)+c] = ROOT.TF1('2CB'+str(ptCut)+c,TwoCrystalBall,0,10,14)
+   myCB = h['myCB2'+str(ptCut)+c]
+   init_twoCB(myCB,bw,ptCut,h)
+   hname = c+v+'_'+str(ptCut)
+   print "+++++ Fit",hname
+   myCB.FixParameter(9,10.) # alpha positive and large -> gauss part only
+   rc = h[hname].Fit(myCB,'S','',0.5,5.)
+   myCB.ReleaseParameter(9)
+   rc = h[hname].Fit(myCB,'SE','',0.5,5.)
+   fitResult=rc.Get()
+   if math.isnan(fitResult.ParError(1)) or math.isnan(fitResult.ParError(6)):
+      myCB.FixParameter(4,10.)
+      rc = h[hname].Fit(myCB,'S','',0.5,5.)
+      myCB.ReleaseParameter(4)
+      rc = h[hname].Fit(myCB,'SE','',0.5,5.)
+      fitResult=rc.Get()
+      if math.isnan(fitResult.ParError(1)) or math.isnan(fitResult.ParError(6)):
+        myCB.FixParameter(4,10.)
+        rc = h[hname].Fit(myCB,'SE','',0.5,5.)
+        fitResult=rc.Get()
+   h['fitResultCB'][ptCut]={}
+   for n in range(1,13):
+       h['fitResultCB'][ptCut][myCB.GetParName(n)] = [fitResult.Parameter(n),fitResult.ParError(n)]
+   myCB.ReleaseParameter(13)
+   rc = h[hname].Fit(myCB,'SE','',0.5,5.)
+   fitResult=rc.Get()
+   n=13
+   h['fitResultCB'][ptCut][myCB.GetParName(n)] = [fitResult.Parameter(n),fitResult.ParError(n)]
+   myCB.FixParameter(13,0.)
+   rc = h[hname].Fit(myCB,'SE','',0.5,5.)
+ for j in range(1,21): hMC['fits'+v].cd(j).Update()
+ hMC['fits'+v].Update()
+ myPrint(hMC['fits'+v],v+'_CBdimuon_all')
+# p/pt
+# try Jpsi p,pt based on ptmu > 1.4
+ hMC['dummy'].cd()
+ for k in range(9):
+   cases = {'MC':hMC['mc-pt'+str(k)],'Data':hData['pt'+str(k)]}
+   for c in cases:
+    histo = cases[c]
+    if c=='MC': tc=hMC['MCbinsPt'].cd(k+1)
+    else: tc=hData['binsPt'].cd(k+1)
+    init_twoCB(myCB,bw,ptCut,h,True)
+    rc = histo.Fit(myCB,'S','',0.5,5.)
+    fitResult = rc.Get()
+    if fitResult and histo.GetEntries()>10 and fitResult.Parameter(2)<4.:
+     N = fitResult.Parameter(1)
+     E = fitResult.ParError(1)
+     tc.Update()
+     stats = tc.GetPrimitive('stats')
+     stats.SetOptFit(10011)
+     stats.SetFitFormat('5.4g')
+     stats.SetX1NDC(0.41)
+     stats.SetY1NDC(0.41)
+     stats.SetX2NDC(0.99)
+     stats.SetY2NDC(0.84)
+     tc.Update()
+     if c=='MC': 
+        hMC['mc-JpsiPt'].SetBinContent(k+1,N)
+        hMC['mc-JpsiPt'].SetBinError(k+1,E)
+     else: 
+        hData['JpsiPt'].SetBinContent(k+1,N)
+        hData['JpsiPt'].SetBinError(k+1,E)
+ hData['binsPt'].cd(9)
+ hMC['mc-JpsiPt'].SetLineColor(ROOT.kMagenta)
+ hMC['mc-JpsiPt_scaled']=hMC['mc-JpsiPt'].Clone('mc-JpsiPt_scaled')
+ hMC['mc-JpsiPt_scaled'].Scale(1./hMC['mc-JpsiP'].GetSumOfWeights())
+ hData['JpsiPt_scaled']=hData['JpsiPt'].Clone('JpsiPt_scaled')
+ hData['JpsiPt_scaled'].Scale(1./hData['JpsiPt'].GetSumOfWeights())
+ hmax = 1.1*max(ut.findMaximumAndMinimum(hData['JpsiPt_scaled'])[1],ut.findMaximumAndMinimum(hMC['mc-JpsiPt_scaled'])[1])
+ hData['JpsiPt_scaled'].SetMaximum(hmax)
+ hData['JpsiPt_scaled'].Draw()
+ hMC['mc-JpsiPt_scaled'].Draw('same')
+ myPrint(hData['binsPt'],'diMuonBinsPtCB')
+ myPrint(hMC['MCbinsPt'],'MC-diMuonBinsPtCB')
+#
+ for k in range(9):
+   cases = {'MC':hMC['mc-p'+str(k)],'Data':hData['p'+str(k)]}
+   for c in cases:
+    histo = cases[c]
+    if c=='MC': tc=hMC['MCbinsP'].cd(k+1)
+    else: tc=hData['binsP'].cd(k+1)
+    init_twoCB(myCB,bw,ptCut,h,True)
+    rc = histo.Fit(myCB,'S','',0.5,5.)
+    fitResult = rc.Get()
+    if fitResult and histo.GetEntries()>10 and fitResult.Parameter(2)<4.:
+     N = fitResult.Parameter(1)
+     E = fitResult.ParError(1)
      tc.Update()
      stats = tc.GetPrimitive('stats')
      stats.SetOptFit(10011)
@@ -1534,12 +1983,170 @@ def diMuonAnalysis():
         hData['JpsiP'].SetBinError(k+1,E)
  hData['binsP'].cd(1)
  hMC['mc-JpsiP'].SetLineColor(ROOT.kMagenta)
- hmax = 1.1*max(hMC['mc-JpsiP'].GetMaximum(),hData['JpsiP'].GetMaximum())
- hMC['mc-JpsiP'].SetMaximum(hmax)
- hMC['mc-JpsiP'].Draw()
- hData['JpsiP'].Draw('same')
- myPrint(hData['binsP'],'diMuonBinsP')
- myPrint(hMC['MCbinsP'],'MC-diMuonBinsP')
+ hMC['mc-JpsiP_scaled']=hMC['mc-JpsiP'].Clone('mc-JpsiP_scaled')
+ hMC['mc-JpsiP_scaled'].Scale(1./hMC['mc-JpsiP'].GetSumOfWeights())
+ hData['JpsiP_scaled']=hData['JpsiP'].Clone('JpsiP_scaled')
+ hData['JpsiP_scaled'].Scale(1./hData['JpsiP'].GetSumOfWeights())
+ hmax = 1.1*max(ut.findMaximumAndMinimum(hData['JpsiP_scaled'])[1],ut.findMaximumAndMinimum(hMC['mc-JpsiP_scaled'])[1])
+ hData['JpsiP_scaled'].SetMaximum(hmax)
+ hData['JpsiP_scaled'].Draw()
+ hMC['mc-JpsiP_scaled'].Draw('same')
+ myPrint(hData['binsP'],'diMuonBinsPCB')
+ myPrint(hMC['MCbinsP'],'MC-diMuonBinsPCB')
+# make ratio data / mc with lumi weighted:
+ hData['ratios']={}
+ for ptCut in ptCutList:
+   hData['ratios'][ptCut]={}
+   for fit in ['','CB']:
+    hData['ratios'][ptCut][fit]={}
+    for M in ['psi(1S)','SignalLow']:
+     N = hData['fitResult'+fit][ptCut][M][0]
+     E = hData['fitResult'+fit][ptCut][M][1]
+     MCN = hMC['fitResult'+fit][ptCut][M][0]
+     MCE = hMC['fitResult'+fit][ptCut][M][1]
+# '10GeV':MCStats['10GeV']/dataStats/(1+simpleEffCor*2)
+     R = N/MCN * hMC['weights']['10GeV']
+     ER = ROOT.TMath.Sqrt( (R/N*E)**2 + (R/MCN*MCE)**2)
+     hData['ratios'][ptCut][fit][M]=[R,ER]
+ for M in ['psi(1S)','SignalLow']:
+    print "results for ",M
+    for ptCut in ptCutList:
+      r = "%5.2F +/- %5.2F"%(hData['ratios'][ptCut][''][M][0],hData['ratios'][ptCut][''][M][1])
+      rCB = "%5.2F +/- %5.2F"%(hData['ratios'][ptCut]['CB'][M][0],hData['ratios'][ptCut]['CB'][M][1])
+      print "Ratio Data/MC with pt cut %3.2F: gauss  %s  crystalball %s"%(ptCut,r,rCB)
+ print "results for mass difference Jpsi low"
+ cases = {'':hData,'mc-':hMC}
+ for c in cases:
+   h=cases[c]
+   h['delm']={}
+   for ptCut in ptCutList:
+     h['delm'][ptCut]={}
+     for fit in ['','CB']:
+       m = 'Mass'
+       if fit=='': m = "Mean"
+       Delm  = h['fitResult'+fit][ptCut][m][0] - h['fitResult'+fit][ptCut]['MeanLow'][0]
+       eDelm = ROOT.TMath.Sqrt(h['fitResult'+fit][ptCut][m][1]**2+h['fitResult'+fit][ptCut]['MeanLow'][1]**2)
+       h['delm'][ptCut][fit]=[Delm,eDelm]
+ for ptCut in ptCutList:
+    r1 = "%5.2F +/- %5.2F"%(hData['delm'][ptCut][''][0],hData['delm'][ptCut][''][1])
+    r2 = "%5.2F +/- %5.2F"%(hData['delm'][ptCut]['CB'][0],hData['delm'][ptCut]['CB'][1])
+    r3 = "%5.2F +/- %5.2F"%(hMC['delm'][ptCut][''][0],hMC['delm'][ptCut][''][1])
+    r4 = "%5.2F +/- %5.2F"%(hMC['delm'][ptCut]['CB'][0],hMC['delm'][ptCut]['CB'][1])
+    print "Dm high-low pt cut: %3.2F: gauss  %s  crystalball %s ||MC gauss  %s  crystalball %s  "%(ptCut,r1,r2,r3,r4)
+ ptCut = 1.4
+ fit = 'CB'
+ m = 'Mass'
+ for c in cases:
+   h=cases[c]
+   print "Jpsi mass measured - PDG %5s %5.3F +/-%5.3F "%(c,h['fitResult'+fit][ptCut][m][0]-3.0969,h['fitResult'+fit][ptCut][m][1])
+ v = "mcor"
+ param = {1:'Signal',2:'Mass',3:'Sigma'}
+ txt   = {1:'; pt>X GeV/c; Nsignal',2:'; pt>X GeV/c; M [GeV/c^{2}]',3:'; pt>X GeV/c; #sigma [GeV/c^{2}]'}
+ choices = {'MC':hMC,'Data':hData}
+ for c in choices:
+   h=choices[c]
+   for p in range(1,4):
+    hname = 'evolution'+v+param[p]+c
+    ut.bookHist(h,hname,v+' evolution of '+param[p]+txt[p],20,0., 2.)
+    for ptCut in ptCutList:
+        k = h[hname].FindBin(ptCut)
+        h[hname].SetBinContent(k,h['fitResultCB'][ptCut][myCB.GetParName(p)][0])
+        h[hname].SetBinError(k,h['fitResultCB'][ptCut][myCB.GetParName(p)][1])
+        k+=1
+ for p in range(1,4):
+   tc = hMC['evolutionC'+v].cd(p)
+   hname = 'evolution'+v+param[p]
+   resetMinMax(hMC[hname+'MC'])
+   resetMinMax(hData[hname+'Data'])
+   hMC[hname+'MC'].SetLineColor(ROOT.kRed)
+   hMC[hname+'MC'].GetXaxis().SetRangeUser(0.9,2.0)
+   hData[hname+'Data'].GetXaxis().SetRangeUser(0.9,2.0)
+   hMC[hname+'MC'].SetMaximum(1.1*max(hMC[hname+'MC'].GetMaximum(),hData[hname+'Data'].GetMaximum()))
+   if p==2: 
+        hMC[hname+'MC'].SetMaximum(3.5)
+        hMC[hname+'MC'].SetMinimum(2.)
+   if p==3: 
+        hMC[hname+'MC'].SetMaximum(0.6)
+        hMC[hname+'MC'].SetMinimum(0.3)
+   hMC[hname+'MC'].Draw()
+   hData[hname+'Data'].Draw('same')
+ myPrint(hMC['evolutionC'+v],'EvolutionOfCuts_dimuonCB'+v)
+
+# now in bins of pt
+# not needed, generated and reconstructed look the same
+
+
+def MCmigration():
+ sptCut = '1.4'
+ theCutTemplate =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1<200&&p2<200&&p1>20&&p2>20&&mcor>0.5'
+ Nbins = 25
+ ut.bookHist(hMC, 'pMigration' ,'p vs pTrue',Nbins,0.,400.,Nbins,0.,400.)
+ tc = hMC['kin'].cd(1)
+ myDraw('p:PTRUE>>pTrue',theCutTemplate+'&&Jpsi==443') # x axis = Ptrue, y axis Preco
+ hMC['pRec'] = hMC['pMigration'].ProjectionY('pRec')
+ hMC['pTRUE'] = hMC['pMigration'].ProjectionX('pTRUE')
+ Prec2True = {}
+ for j in range(1,Nbins+1):
+  tmp = hMC['pMigration'].ProjectionX(str(j),j,j)
+  if tmp.GetEntries()>0: tmp.Scale(1./tmp.GetEntries())
+  Prec2True[j]={}
+  for l in range(1,Nbins+1): Prec2True[j][l]=tmp.GetBinContent(l)
+# cross check
+ ut.bookHist(hMC, 'ptrueTest' ,'pTrue from pRec',Nbins,0.,400.)
+ for j in range(1,Nbins):
+    nRec = hMC['pRec'].GetBinContent(j)
+    eRec = hMC['pRec'].GetBinError(j)
+    for l in range(1,Nbins+1):
+      nTrue = nRec*Prec2True[j][l]
+      eTrue = (nRec*eRec)**2
+      N,E = hMC['ptrueTest'].GetBinContent(l),hMC['ptrueTest'].GetBinError(l)
+      rc = hMC['ptrueTest'].SetBinContent(l,N+nTrue)
+      rc = hMC['ptrueTest'].SetBinError(l,E+eTrue)
+ for l in range(1,Nbins+1):
+   eTrue = (nRec*eRec)**2
+   E = hMC['ptrueTest'].GetBinContent(l)
+   rc = hMC['ptrueTest'].SetBinError(l,ROOT.TMath.Sqrt(E))
+
+
+def fitWithCB():
+ hMC['myCB'] = ROOT.TF1('CB',CrystalBall,0,10,11)
+ myCB = hMC['myCB']
+ myCB.SetParName(0,'binwidth')
+ myCB.SetParName(1,'psi(1S)')
+ myCB.SetParName(2,'Mass')
+ myCB.SetParName(3,'Sigma')
+ myCB.SetParName(4,'alpha')
+ myCB.SetParName(5,'n')
+ myCB.SetParName(6,'SignalLow')
+ myCB.SetParName(7,'MeanLow')
+ myCB.SetParName(8,'SigmaLow')
+ myCB.SetParName(9,'p0')
+ myCB.SetParName(10,'p1')
+ hMC['dummy'].cd()
+ ptCutList = [0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6]
+ bw = hMC['m_MC'].GetBinWidth(1)
+ myCB.FixParameter(0,bw)
+ cases = {'':hData,'mc-':hMC}
+ for c in cases:
+  h=cases[c]
+  h['fitResultCB']={}
+  for ptCut in ptCutList:
+   myCB.SetParameter(1,h['fitResult'][ptCut]['psi(1S)'][0])
+   myCB.SetParameter(2,h['fitResult'][ptCut]['Mean'][0])
+   myCB.SetParameter(3,h['fitResult'][ptCut]['Sigma'][0])
+   myCB.SetParameter(4,0.3)
+   myCB.SetParameter(5,3.5)
+   myCB.SetParameter(6,h['fitResult'][ptCut]['SignalLow'][0])
+   myCB.SetParameter(7,h['fitResult'][ptCut]['MeanLow'][0])
+   myCB.SetParameter(8,h['fitResult'][ptCut]['SigmaLow'][0])
+   myCB.SetParameter(9,h['fitResult'][ptCut]['p1'][0])
+   myCB.SetParameter(10,h['fitResult'][ptCut]['p2'][0])
+   hname = c+'mcor_'+str(ptCut)
+   rc = h[hname].Fit(myCB,'S','',0.5,6.)
+   fitResult=rc.Get()
+   h['fitResultCB'][ptCut] = []
+   for n in range(1,11):
+      h['fitResultCB'][ptCut][myCB.GetParName(n)] = [fitResult.Parameter(n),fitResult.ParError(n)]
 def resetMinMax(x):
   x.SetMinimum(-1111)
   x.SetMaximum(-1111)
@@ -1627,15 +2234,15 @@ def studyGhosts():
     h['P']       =h['gf'].ProjectionY('P')
     h['Ptrue']       =h['gftrue'].ProjectionY('Ptrue')
     h['Ptrue'].SetLineColor(ROOT.kMagenta)
+    h['gf_perfect'].SetTitle(' ;P [GeV/c];N/5GeV')
+    h['gf_perfect'].SetLineColor(ROOT.kGreen)
+    h['gf_ghosts'].SetTitle('ghost > 33;P [GeV/c];N/5GeV')
     for x in ['gf','gftrue','Chi2/DoF','R','DoF']:
         if x.find('true')>0: h[x].SetLineColor(ROOT.kGreen)
         else:   h[x].SetLineColor(ROOT.kBlue)
         h[x+'_perfect']      =h[x].ProjectionY(x+'_perfect',1,1)
         h[x+'_ghosts']       =h[x].ProjectionY(x+'_ghosts',33,100)
         h[x+'_ghosts'].SetLineColor(ROOT.kRed)
-    h['gf_perfect'].SetTitle('perfect;P [GeV/c];N/5GeV')
-    h['gf_perfect'].SetLineColor(ROOT.kGreen)
-    h['gf_ghosts'].SetTitle('ghost > 33;P [GeV/c];N/5GeV')
     ut.writeHists(h,'ghostStudy.root')
 def init_Gauss(myGauss):
  myGauss.SetParName(0,'psi(1S)')
@@ -1662,6 +2269,122 @@ def stupidCopy():
  for x in os.listdir('.'):
   if x.find('dimuon_all.p')<0: continue
   os.system('cp '+x+' '+ x.replace('all','AND_all'))
+def ghostFraction(sTree,k):
+    trackIDs = {}
+    trInfo = sTree.TrackInfos[k]
+    for n in range(trInfo.N()):
+      if trInfo.wL(n) <0.1 and trInfo.wR(n) <0.1: continue
+      detID = trInfo.detId(n)
+      histToPointsDict = {}
+      for theKey in range(sTree.Digi_MufluxSpectrometerHits.GetEntries()):
+        hit = sTree.Digi_MufluxSpectrometerHits[theKey]
+        if hit.isValid() and hit.GetDetectorID()==detID: break  # there is only one valid detID
+      for l in range(sTree.Digi_MufluxSpectrometerHits.GetEntries()):
+         digi_detID = sTree.Digi_MufluxSpectrometerHits[l].GetDetectorID()
+         histToPointsDict[l]=[]
+         for k in range(sTree.MufluxSpectrometerPoint.GetEntries()):
+          if sTree.MufluxSpectrometerPoint[k].GetDetectorID()==digi_detID:
+             histToPointsDict[l].append(k)
+      for i in histToPointsDict[theKey]:
+         trackID = sTree.MufluxSpectrometerPoint[i].GetTrackID()
+         if not trackIDs.has_key(trackID): trackIDs[trackID]=0
+         trackIDs[trackID]+=1
+    sorted_trackIDs = sorted(trackIDs.items(), key=operator.itemgetter(1),reverse=True)
+    sz = trackIDs.values()
+    if len(trackIDs)!=0:
+     ghFrac = 1.-sorted_trackIDs[0][1]/float(sum(sz))
+     return ghFrac,sorted_trackIDs[0][0]
+    else:
+     print "this is strange"
+     return 1,-1
+def studyInvMassBias(sTree,h,nseq=0,ncpus=False):
+    MCdata = False
+    if sTree.FindBranch("MCRecoDT"): MCdata = True
+    if MCdata: 
+       name = "ntuple-invMassTrue-MC.root"
+       if ncpus:
+          name = name.replace('.root','-'+str(nseq)+'.root')
+    else:     1/0
+    h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
+    h['nt']  = ROOT.TNtuple("nt","dimuon","id:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:prec1x:prec1y:prec1z:prec2x:prec2y:prec2z")
+#
+    sTreeFullMC = None
+    Ntotal = sTree.GetEntries()
+    nStart = 0
+    if ncpus:
+      ncpus = int(ncpus)
+      nseq = int(nseq)
+      deltaN = (sTree.GetEntries()+0.5)//ncpus
+      nStart = int(nseq*deltaN)
+      Ntotal = int(min(sTree.GetEntries(),nStart+deltaN))
+    currentFile = ''
+    for n in range(0,Ntotal):
+        rc = sTree.GetEvent(n)
+        # if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
+        if sTree.GetCurrentFile().GetName()!=currentFile:
+            currentFile = sTree.GetCurrentFile().GetName()
+            nInFile = n
+        if n<nStart: continue
+        P    = {}
+        for k in range(len(sTree.GoodTrack)):
+            if sTree.GoodTrack[k]<0: continue
+            if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: continue
+            if sTree.GoodTrack[k]>999:  continue
+            P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
+# now we have list of selected tracks, P.keys()
+        if len(P)!=2: continue
+        n1 = P.keys()[0]
+        n2 = P.keys()[1]
+        if sTree.Sign[n1]*sTree.Sign[n2]>0:continue
+#check truth
+        eospathSim = os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/'
+        fname = sTree.GetCurrentFile().GetName().split('simulation')[1].replace('ntuple-','').replace('-final','')
+        if sTreeFullMC:
+            if sTreeFullMC.GetCurrentFile().GetName().find(fname)<0:
+                    fMC = ROOT.TFile.Open(eospathSim+fname)
+                    sTreeFullMC = fMC.cbmsim
+        else: 
+            fMC = ROOT.TFile.Open(eospathSim+fname)
+            sTreeFullMC = fMC.cbmsim
+        rc = sTreeFullMC.GetEvent(n-nInFile)
+        mothers = []
+        trueMu  = {}
+        Ptrue = {}
+        kx = 0
+        L = ROOT.TVector3()
+        for k in [n1,n2]:
+            gf,MCID = ghostFraction(sTreeFullMC,k)
+            if MCID<0: continue
+            trueMu[k] = sTreeFullMC.MCTrack[MCID]
+            mothers.append(trueMu[k].GetMotherId())
+        if len(mothers)!=2: continue
+        if mothers[0]==mothers[1]:
+          mo = sTreeFullMC.MCTrack[mothers[0]]
+          for k in [n1,n2]:
+            trueMu[k].GetMomentum(L)
+            Ptrue[k] = L.Clone()
+          theTuple = array('f',\
+          [float(mo.GetPdgCode()),Ptrue[n1].X(),Ptrue[n1].Y(),Ptrue[n1].Z(),Ptrue[n2].X(),Ptrue[n2].Y(),Ptrue[n2].Z(),mo.GetStartX(),mo.GetStartY(),mo.GetStartZ(),\
+          P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z()])
+          if abs(Ptrue[n1].Z()-Ptrue[n2].Z())<0.01: print n,fname,theTuple
+          h['nt'].Fill(theTuple)
+    h['fntuple'].cd()
+    h['nt'].Write()
+    print "I have finished. "
+def analyzeInvMassBias():
+   if not hMC.has_key('finv'): hMC['finv']=ROOT.TFile('ntuple-invMassTrue-MC.root')
+   nt = hMC['finv'].nt
+   ut.bookHist(hMC,'trueMass','true Mass',120,0.,6.)
+   ROOT.gROOT.cd()
+   for event in nt:
+      if abs(nt.p1z-nt.p2z)<0.01: continue
+      p1=ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
+      p2=ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
+      X = p1+p2
+      hname = 'trueMass'+str(nt.id)
+      if not hMC.has_key(hname): hMC[hname]=hMC['trueMass'].Clone(hname)
+      rc = hMC[hname].Fill(X.M())
+
 def debug():
     Nstat = {}
     for n in range(sTreeMC.GetEntries()):

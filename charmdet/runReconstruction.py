@@ -314,11 +314,17 @@ def checkRecoRun(eosLocation=eospath,local='.'):
             print "missing RT file",fname
         if not os.path.isfile(histosName): 
             print "missing histogram file",fname
-def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=run,local="."):
+def exportAllRuns():
+    for d in os.listdir('.'):
+       if d.find('RUN_8000')!=0: continue
+       exportRunToEos(run=d)
+def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run='.'):
     failures = []
-    for x in os.listdir(local):
+    newLocation = eosLocation+"/"+run+"/Oct1"
+    os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir  "+newLocation)
+    for x in os.listdir(run):
         if x.find('.root')<0: continue
-        cmd = "xrdcp -f "+x+" $EOSSHIP/"+eosLocation+"/"+run+"/"+x
+        cmd = "xrdcp -f "+run+"/"+x+" $EOSSHIP/"+eosLocation+"/"+run+"/"+x
         rc = os.system(cmd)
         if rc != 0: failures.append(x)
     if len(failures)!=0: print failures
