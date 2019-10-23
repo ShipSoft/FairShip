@@ -328,7 +328,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.SY = c.Spectrometer.DY
     c.PixelModules.DimZSithin = 0.0200 * u.cm
     c.PixelModules.DimZSithick = 0.0245 * u.cm
-    c.PixelModules.nSlice= 10
+    c.PixelModules.nSlice= 10 #for simple simulation, fix nSlice=1
     c.PixelModules.D1short = 3.36 * u.cm / 2.
     c.PixelModules.D1long = 4 * u.cm
     c.PixelModules.numSi=12*c.PixelModules.nSlice #is identical to nSi in the class, can't reuse nSi because no non-static arrays size
@@ -465,7 +465,7 @@ with ConfigRegistry.register_config("basic") as c:
     #c.Scintillator.DistT2              = 135.25*u.cm
     c.Scintillator.DistT2              = 136.26*u.cm 
                   
-    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
+    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[0] + c.PixelModules.DimZSithick + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
     c.PixelModules.DimZpixelbox = c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick   
 
