@@ -209,7 +209,7 @@ void PixelModules::ConstructGeometry()
     volPixelythin->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixelythin);
 
-    TGeoBBox *Pixelxthin = new TGeoBBox("Pixelx", (Dim1Long)/2, (Dim1Short)/2, DimZThinSlice/2); //long along x
+    TGeoBBox *Pixelxthin = new TGeoBBox("Pixelxthin", (Dim1Long)/2, (Dim1Short)/2, DimZThinSlice/2); //long along x
     TGeoVolume *volPixelxthin = new TGeoVolume("volPixelxthin",Pixelxthin,Silicon); 
     volPixelxthin->SetLineColor(kBlue-5);
     AddSensitiveVolume(volPixelxthin);
