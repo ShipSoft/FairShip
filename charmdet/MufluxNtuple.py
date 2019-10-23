@@ -1000,7 +1000,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     else:      name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
     h['nt']  = ROOT.TNtuple("nt","dimuon","mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:\
-cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSraw:cosCScor")
+cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSraw:cosCScor:originZ1:originZ2")
 #
     sTreeFullMC = None
     Ntotal = sTree.GetEntries()
@@ -1058,6 +1058,7 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
         pTrue  = {}
         dTheta = {}
         dMults = {}
+        originZ = {}
         PTRUE  = {}
         PtTRUE = {}
         costheta = {}
@@ -1087,6 +1088,7 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
              rc = h["p/ptmu"].Fill(P[n1].P(),P[n2].Pt())
              rc = h["p/ptmu"].Fill(P[n1].P(),P[n2].Pt())
           jpsi[j] = -1
+          originZ[j]  = [9999.,9999.]
           pTrue[j]  = [-9999.,-9999.]
           dTheta[j] = [-9999.,-9999.]
           dMults[j] = [-9999.,-9999.]
@@ -1117,6 +1119,7 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
 # check multiple scattering
                 mom = ROOT.TVector3()
                 trueMu.GetMomentum(mom)
+                originZ[j][kx] = trueMu.GetStartZ()
                 pTrue[j][kx] = mom.Mag()
                 dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
                 dTheta[j][kx]  = mom.Dot(dline)/(mom.Mag()*dline.Mag())
@@ -1158,7 +1161,7 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
           cosCScor = Xcor[j].Pz()/abs(Xcor[j].Pz()) * 1./Xcor[j].M()/ROOT.TMath.Sqrt(Xcor[j].M2()+Xcor[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
           theTuple = array('f',[float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),X[j].P(),X[j].Pt(),P[n1].P(),P[n1].Pt(),P[n2].P(),P[n2].Pt(),\
                      IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],float(jpsi[j]),PTRUE[j],PtTRUE[j],pTrue[j][0],pTrue[j][1],\
-                     dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],cosCSraw,cosCScor])
+                     dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],cosCSraw,cosCScor,originZ[j][0],originZ[j][1]])
           h['nt'].Fill(theTuple)
     h['fntuple'].cd()
     h['nt'].Write()
