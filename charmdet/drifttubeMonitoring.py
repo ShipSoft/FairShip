@@ -1575,7 +1575,7 @@ def RT(hit,t):
         elif t< h['tMinAndTmax'][name][0]: r = 0
         else: 
             r = h['rt'+name].Eval(t)
-        if h.has_key('RTcorr'): r+=h['RTcorr'].Eval(r)
+        if h.has_key('RTcorr'): r+=h['RTcorrFun_'+str(s)+view+str(2*p+l)].Eval(r)
     h['TDC2R'].Fill(t-t0,r)
     return r
 
@@ -2494,10 +2494,30 @@ def findDTClustersDebug2(L):
             print stationInfo(hit),hit.GetTimeOverThreshold() 
 
 def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
-    if PR < 3 and sTree.GetBranch('FitTracks'): return sTree.FitTracks
+    if PR < 3  and sTree.GetBranch('FitTracks'): return sTree.FitTracks
+    if PR == 3 and sTree.GetBranch('FitTracks_refitted'): return sTree.FitTracks_refitted
     if PR%2==0 : 
         trackCandidates = testPR()
         if len(trackCandidates)>1: trackCandidates=cloneKiller(trackCandidates)
+        return trackCandidates
+    if PR == 13: # refit tracks
+        trackCandidates=[]
+        keysToDThits = MakeKeysToDThits(cuts['lateArrivalsToT'])
+        for itrack in range(sTree.FitTracks.GetEntries()):
+           trInfo = sTree.TrackInfos[itrack]
+           oTrack = sTree.FitTracks[itrack]
+           P = 5.
+           fst = oTrack.getFitStatus()
+           if fst.isFitConverged(): 
+            sta = oTrack.getFittedState(0)
+            P   = sta.getMomMag()
+           hitList=[]
+           for n in range(trInfo.N()):
+              detID = trInfo.detId(n)
+              hitList.append(keysToDThits[detID][0])
+           aTrack = fitTrack(hitList,P)
+           if type(aTrack) == type(1): continue
+           trackCandidates.append(aTrack)
         return trackCandidates
 # switch of trackfit material effect in first pass
     materialEffects(False)
@@ -2899,7 +2919,7 @@ def printResiduals(aTrack):
         print txt[k[0]]
 
 # make TDC plots for hits matched to tracks)
-def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False,minP=3.):
+def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=13,onlyPlotting=False,minP=3.):
     timerStats = {'fit':0,'analysis':0,'prepareTrack':0,'extrapTrack':0,'fillRes':0}
     if not onlyPlotting:
         h['biasResDist'].Reset()
@@ -3226,10 +3246,14 @@ def calculateRTcorrection():
      h['hRTCorrection'].Reset()
      h['hRTCorrection'].SetLineColor(0)
      h['hRTCorrection'].Draw()
-     for x in h:
+     keys = h.keys()
+     for x in keys:
         if x.find('RTcorr')!=0: continue
-        if not x.find('LR')<0: continue
+        if not x.find('LR')<0 or not x.find('Par')<0: continue
         h[x].Draw()
+        rc = h[x].Fit('pol3','SQ')
+        fitresult = rc.Get()
+        h[x+'Par'+x]=[fitresult.Parameter(0),fitresult.Parameter(1),fitresult.Parameter(2),fitresult.Parameter(3)]
      if z=='dummy': myPrint(h['dummy'],'RTCorrection')
     case = {'RTCorrection':2}
     for z in case:
@@ -5342,7 +5366,6 @@ def importRTrel():
         if len(fnames)==1: f=sTree.GetCurrentFile()
         else:   f = ROOT.TFile.Open(fname)
         rname = fname[fname.rfind('/')+1:]
-        RTrelations[rname] = {}
         upkl    = Unpickler(f)
         RTrelations[rname]={}
         try:
@@ -5352,7 +5375,42 @@ def importRTrel():
             for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
         except:
             print "loading of RT failed for file",rname
-        f.Close()
+        if len(fnames)!=1: f.Close()
+    importRTCorrection()
+def importRTCorrection():
+    pars = {}
+    pars['RTcorr_3_x2'] = [ 0.00831,  -0.07374,  0.02906,  0.00208]
+    pars['RTcorr_3_x3'] = [ 0.00681,  -0.07238,  0.02892,  0.00166]
+    pars['RTcorr_3_x0'] = [ 0.01101,  -0.09078,  0.04499,  -0.00141]
+    pars['RTcorr_3_x1'] = [ 0.01742,  -0.09704,  0.05228,  -0.00443]
+    pars['RTcorr_1_x0'] = [ 0.01154,  -0.12568,  0.05343,  0.00328]
+    pars['RTcorr_1_x1'] = [ 0.01198,  -0.12964,  0.06247,  -0.00039]
+    pars['RTcorr_1_x2'] = [ 0.01161,  -0.12784,  0.06131,  -0.00023]
+    pars['RTcorr_1_x3'] = [ 0.01347,  -0.13834,  0.07343,  -0.00372]
+    pars['RTcorr_4_x3'] = [ 0.01728,  -0.10018,  0.04357,  0.00202]
+    pars['RTcorr_4_x2'] = [ 0.00721,  -0.09512,  0.04784,  0.00004]
+    pars['RTcorr_4_x1'] = [ 0.00657,  -0.09035,  0.04213,  0.00092]
+    pars['RTcorr_4_x0'] = [ 0.00574,  -0.08853,  0.03935,  0.00204]
+    pars['RTcorr_2_x1'] = [ 0.00924,  -0.12481,  0.06797,  -0.00409]
+    pars['RTcorr_2_x0'] = [ 0.02527,  -0.14195,  0.07045,  -0.00305]
+    pars['RTcorr_2_x3'] = [ 0.00816,  -0.11859,  0.06268,  -0.00366]
+    pars['RTcorr_2_x2'] = [ 0.00889,  -0.11218,  0.04914,  0.00214]
+    pars['RTcorr_2_v3'] = [ 0.00148,  -0.08058,  0.01316,  0.01340]
+    pars['RTcorr_2_v2'] = [ 0.00443,  -0.08887,  0.01707,  0.01278]
+    pars['RTcorr_2_v1'] = [ 0.01399,  -0.11404,  0.04792,  0.00191]
+    pars['RTcorr_2_v0'] = [ 0.00164,  -0.10222,  0.03695,  0.00631]
+    pars['RTcorr_1_u3'] = [ 0.01792,  -0.11791,  0.04498,  0.00483]
+    pars['RTcorr_1_u2'] = [ 0.00220,  -0.09611,  0.04685,  0.00020]
+    pars['RTcorr_1_u1'] = [ -0.00148,  -0.07691,  0.00984,  0.01453]
+    pars['RTcorr_1_u0'] = [ 0.00043,  -0.07272,  0.01027,  0.01312]
+    pars['RTcorr'] = [ 0.00863,  -0.10303,  0.04328,  0.00299]
+    h['RTcorr'] = ROOT.TGraph()
+    for s in range(1,5):
+      for view in views[s]:
+        for l in range(4):
+          fun = 'RTcorrFun_'+str(s)+view+str(l)
+          h[fun]=ROOT.TF1(fun,'[0]+[1]*x+[2]*x*x+[3]*x*x*x',4)
+          for k in range(4): h[fun].SetParameter(k,pars[fun.replace('Fun','')][k])
 def analyzeRTrel():
     global fnames
     fnames = []
@@ -7056,7 +7114,7 @@ def plotResidualExample():
     h['biasResDist_projy'].GetXaxis().SetRangeUser(-0.5,0.5)
     h['biasResDist_projy'].Draw()
     h[hname].SetTitle(';[cm]')
-    fitFunction = h['biasResX_1_x1_px'].GetFunction('gauss')
+    fitFunction = h['biasRes_1_x1'].GetFunction('gauss')
     fitFunction.FixParameter(3,0)
     fitResult = h[hname].Fit(fitFunction,'SQ','',-0.11,0.04)
     h[hname].Draw()
@@ -7369,6 +7427,47 @@ def recoStep1(PR=11):
     print "finished adding fitted tracks",options.listOfFiles
     print "make suicid"
     os.system('kill '+str(os.getpid()))
+def getParOfRTcorrectio():
+ keys = h.keys()
+ for x in keys:
+        if x.find('RTcorr')!=0: continue
+        if not x.find('LR')<0 or not x.find('Par')<0: continue
+        txt = "    pars['"+x+"'] = ["
+        for x in h[x+'Par'+x]:
+           txt+=" %7.5F, "%(x)
+        txt+=']'
+        print txt.replace(', ]',']')
+def recoStep2():
+# refit tracks with improved RT relation
+    global MCdata
+    fGenFitArray = ROOT.TClonesArray("genfit::Track") 
+    fGenFitArray.BypassStreamer(ROOT.kTRUE)
+    fitTracks   = sTree.Branch("FitTracks_refitted", fGenFitArray,32000,-1)
+    fTrackInfoArray = ROOT.TClonesArray("TrackInfo")
+    fTrackInfoArray.BypassStreamer(ROOT.kTRUE)
+    TrackInfos      = sTree.Branch("TrackInfos_refitted", fTrackInfoArray,32000,-1)
+    if sTree.GetBranch('MCTrack'): MCdata = True
+    for n in range(sTree.GetEntries()):
+        if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName(),time.ctime()
+        rc = sTree.GetEvent(n)
+        fGenFitArray.Clear()
+        fTrackInfoArray.Clear()
+        theTracks = findTracks(PR = 13)
+        for aTrack in theTracks:
+            nTrack   = fGenFitArray.GetEntries()
+            fTrackInfoArray[nTrack] = ROOT.TrackInfo(aTrack)
+            aTrack.prune("CFL") # aTrack.prune("CURM")  # FL keep first and last point only, C deleteTrackRep, W deleteRawMeasurements, I U R M
+            fGenFitArray[nTrack] = aTrack
+        fitTracks.Fill()
+        TrackInfos.Fill()
+        for aTrack in theTracks: aTrack.Delete()
+    sTree.Write()
+    ftemp=sTree.GetCurrentFile()
+    ftemp.Write("",ROOT.TFile.kOverwrite)
+    ftemp.Close()
+    print "finished adding fitted tracks",options.listOfFiles
+    print "make suicid"
+    os.system('kill '+str(os.getpid()))
 def recoMuonTaggerTracks():
     global MCdata
     global sTree
@@ -7493,6 +7592,21 @@ elif options.command == "recoStep1":
     print "add fitted tracks"
     importAlignmentConstants()
     recoStep1(PR=11)
+elif options.command == "recoStep2":
+    if sTree.GetBranch('MCTrack'):
+        MCdata = True
+        withDefaultAlignment = True
+        sigma_spatial = 0.25
+        withCorrections = False
+        # DTEfficiencyFudgefactor(method=0)
+    else:
+        importRTrel()
+        withDefaultAlignment = False
+        sigma_spatial = 0.25
+        withCorrections = True  
+    print "add refitted tracks"
+    importAlignmentConstants()
+    recoStep2()
 elif options.command == "anaResiduals":
     ROOT.gROOT.SetBatch(True)
     if sTree.GetEntries()>0:
