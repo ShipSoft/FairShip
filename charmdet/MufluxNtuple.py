@@ -1000,8 +1000,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     else:      name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
     h['nt']  = ROOT.TNtuple("nt","dimuon","mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:\
-                            cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:\
-                            cosCSraw:cosCScor")
+cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSraw:cosCScor")
 #
     sTreeFullMC = None
     Ntotal = sTree.GetEntries()
@@ -1141,7 +1140,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
         for j in nComb:
           n1 = nComb[j][0]
           n2 = nComb[j][1]
-          if chi2[n1] < 0: 
+          if chi2[j][0] < 0: 
            nlep      = n1
            nantilep  = n2
           else: 
@@ -1158,7 +1157,8 @@ def invMass(sTree,h,nseq=0,ncpus=False):
           P2mi = Pcor[nantilep].E()-Pcor[nantilep].Pz()
           cosCScor = Xcor[j].Pz()/abs(Xcor[j].Pz()) * 1./Xcor[j].M()/ROOT.TMath.Sqrt(Xcor[j].M2()+Xcor[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
           theTuple = array('f',[float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),X[j].P(),X[j].Pt(),P[n1].P(),P[n1].Pt(),P[n2].P(),P[n2].Pt(),\
-                     IP[n1],IP[n2],chi2[n1],chi2[n2],costheta[j],float(jpsi[j]),PTRUE[j],PtTRUE[j],pTrue[n1],pTrue[n2],dTheta[n1],dTheta[n2],dMults[n1],dMults[n2],cosCSraw,cosCScor])
+                     IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],float(jpsi[j]),PTRUE[j],PtTRUE[j],pTrue[j][0],pTrue[j][1],\
+                     dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],cosCSraw,cosCScor])
           h['nt'].Fill(theTuple)
     h['fntuple'].cd()
     h['nt'].Write()
@@ -2269,34 +2269,7 @@ def stupidCopy():
  for x in os.listdir('.'):
   if x.find('dimuon_all.p')<0: continue
   os.system('cp '+x+' '+ x.replace('all','AND_all'))
-def ghostFraction(sTree,k):
-    trackIDs = {}
-    trInfo = sTree.TrackInfos[k]
-    for n in range(trInfo.N()):
-      if trInfo.wL(n) <0.1 and trInfo.wR(n) <0.1: continue
-      detID = trInfo.detId(n)
-      histToPointsDict = {}
-      for theKey in range(sTree.Digi_MufluxSpectrometerHits.GetEntries()):
-        hit = sTree.Digi_MufluxSpectrometerHits[theKey]
-        if hit.isValid() and hit.GetDetectorID()==detID: break  # there is only one valid detID
-      for l in range(sTree.Digi_MufluxSpectrometerHits.GetEntries()):
-         digi_detID = sTree.Digi_MufluxSpectrometerHits[l].GetDetectorID()
-         histToPointsDict[l]=[]
-         for k in range(sTree.MufluxSpectrometerPoint.GetEntries()):
-          if sTree.MufluxSpectrometerPoint[k].GetDetectorID()==digi_detID:
-             histToPointsDict[l].append(k)
-      for i in histToPointsDict[theKey]:
-         trackID = sTree.MufluxSpectrometerPoint[i].GetTrackID()
-         if not trackIDs.has_key(trackID): trackIDs[trackID]=0
-         trackIDs[trackID]+=1
-    sorted_trackIDs = sorted(trackIDs.items(), key=operator.itemgetter(1),reverse=True)
-    sz = trackIDs.values()
-    if len(trackIDs)!=0:
-     ghFrac = 1.-sorted_trackIDs[0][1]/float(sum(sz))
-     return ghFrac,sorted_trackIDs[0][0]
-    else:
-     print "this is strange"
-     return 1,-1
+
 def studyInvMassBias(sTree,h,nseq=0,ncpus=False):
     MCdata = False
     if sTree.FindBranch("MCRecoDT"): MCdata = True
@@ -2306,8 +2279,7 @@ def studyInvMassBias(sTree,h,nseq=0,ncpus=False):
           name = name.replace('.root','-'+str(nseq)+'.root')
     else:     1/0
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
-    h['nt']  = ROOT.TNtuple("nt","dimuon","id:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:prec1x:prec1y:prec1z:prec2x:prec2y:prec2z")
-#
+    h['nt']  = ROOT.TNtuple("nt","dimuon","id:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z")
     sTreeFullMC = None
     Ntotal = sTree.GetEntries()
     nStart = 0
@@ -2353,7 +2325,7 @@ def studyInvMassBias(sTree,h,nseq=0,ncpus=False):
         kx = 0
         L = ROOT.TVector3()
         for k in [n1,n2]:
-            gf,MCID = ghostFraction(sTreeFullMC,k)
+            MCID = sTreeMC.MCID[k]
             if MCID<0: continue
             trueMu[k] = sTreeFullMC.MCTrack[MCID]
             mothers.append(trueMu[k].GetMotherId())
@@ -2364,8 +2336,9 @@ def studyInvMassBias(sTree,h,nseq=0,ncpus=False):
             trueMu[k].GetMomentum(L)
             Ptrue[k] = L.Clone()
           theTuple = array('f',\
-          [float(mo.GetPdgCode()),Ptrue[n1].X(),Ptrue[n1].Y(),Ptrue[n1].Z(),Ptrue[n2].X(),Ptrue[n2].Y(),Ptrue[n2].Z(),mo.GetStartX(),mo.GetStartY(),mo.GetStartZ(),\
-          P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z()])
+          [float(mo.GetPdgCode()),Ptrue[n1].X(),Ptrue[n1].Y(),Ptrue[n1].Z(),Ptrue[n2].X(),Ptrue[n2].Y(),Ptrue[n2].Z(),\
+          trueMu[n1].GetStartX(),trueMu[n1].GetStartY(),trueMu[n1].GetStartZ(),\
+          P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),sTree.x[n1],sTree.y[n1],sTree.z[n1],sTree.x[n2],sTree.y[n2],sTree.z[n2]])
           if abs(Ptrue[n1].Z()-Ptrue[n2].Z())<0.01: print n,fname,theTuple
           h['nt'].Fill(theTuple)
     h['fntuple'].cd()

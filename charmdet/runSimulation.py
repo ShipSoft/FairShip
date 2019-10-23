@@ -68,13 +68,6 @@ def getFilesLocal(d='.'):
     temp = os.listdir(d)
     for x in temp:
         if os.path.isdir(d+'/'+x): fl.append(x)
-    return fl    eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
-    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
-    fl = []
-    for x in temp.split('\n'):
-        if x.find('pythia8_Geant4')<0: continue
-        d = x[x.rfind('/')+1:]
-        fl.append(eospathSim+'/'+d)
     return fl
 
 
@@ -588,7 +581,7 @@ def runInvMass(MC='1GeV',merge=False):
     if not merge:
         for n in range(ncpus):
          if MC=='1GeV': cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A True  -B False -C  False -D  False &"
-         else:          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A False -B True  -C  False -D  False &"
+         else:          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A False -B True  -C  False -D  False &"
          print cmd
          os.system(cmd)
     else:
