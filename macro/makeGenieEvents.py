@@ -7,20 +7,20 @@ import shipRoot_conf
 import argparse
 shipRoot_conf.configure()
 
-os.system("export GXMLPATH=/eos/user/d/dcentann")
+os.system("export GXMLPATH=/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines")
 os.system("echo exporting executed")
 
 # 
-xsec = "nuSHiP.xml"
+xsec = "gxspl-FNAL-nuSHiP-minimal.xml"# new adapted splines from Genie site
 hfile = "pythia8_Geant4_1.0_withCharm_nu.root" #2018 background generation
 #xsec = "Nu_splines.xml"
 #hfile = "pythia8_Geant4-withCharm_onlyNeutrinos.root"
 #put the above files in folder linked by the environment variables GENIEXSECPATH and NUFLUXPATH
 
-splines   = '/eos/user/a/aiuliano/public/genie_input/DefaultPlusValenciaMEC/'+'/'+xsec #path of splines
-neutrinos = '/eos/user/a/aiuliano/public/genie_input'+'/'+hfile #path of flux
+splines   = '/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'+'/'+xsec #path of splines
+neutrinos = '/eos/experiment/ship/data/Mbias/background-prod-2018'+'/'+hfile #path of flux
 
-#Possbile evtypes: CC, CCDIS, CCQE,CharmCCDIS,RES,CCRES
+#Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES
 #See other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
 evtype = 'CCDIS'
 
