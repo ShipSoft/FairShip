@@ -6,31 +6,41 @@ import shipunit as u
 import shipRoot_conf
 import argparse
 shipRoot_conf.configure()
+
+os.system("export GXMLPATH=/eos/user/d/dcentann")
+os.system("echo exporting executed")
+
 # 
-xsec = "xsec_splines-iron-nu_e-nu_mu.xml"
+xsec = "nuSHiP.xml"
 hfile = "pythia8_Geant4_1.0_withCharm_nu.root" #2018 background generation
 #xsec = "Nu_splines.xml"
 #hfile = "pythia8_Geant4-withCharm_onlyNeutrinos.root"
 #put the above files in folder linked by the environment variables GENIEXSECPATH and NUFLUXPATH
 
-splines   = os.environ['XSECPATH']+'/'+xsec #path of splines
-neutrinos = os.environ['NUFLUXPATH']+'/'+hfile #path of flux
+splines   = '/eos/user/a/aiuliano/public/genie_input/DefaultPlusValenciaMEC/'+'/'+xsec #path of splines
+neutrinos = '/eos/user/a/aiuliano/public/genie_input'+'/'+hfile #path of flux
 
-def init(): #available options  
+#Possbile evtypes: CC, CCDIS, CCQE,CharmCCDIS,RES,CCRES
+#See other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
+evtype = 'CCDIS'
+
+def get_arguments(): #available options  
 
   ap = argparse.ArgumentParser(
       description='Run GENIE neutrino" simulation')
   ap.add_argument('-s', '--seed', type=int, dest='seed', default=65539) #default seed in $GENIE/src/Conventions/Controls.h
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   ap.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
+  ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
   args = ap.parse_args()
   return args
 
-args = init() #getting options
+args = get_arguments() #getting options
 
 work_dir = args.work_dir
 target = args.target
 seed = args.seed
+nevents = args.nevents
 
 print('Target type: ', target)
 print('Seed used in this generation: ', seed)
@@ -48,7 +58,7 @@ pdg  = ROOT.TDatabasePDG()
 pDict = {}
 sDict = {}
 nuOverNubar = {}
-f = ROOT.TFile(hfile)
+f = ROOT.TFile(neutrinos)
 
 for x in [14,12]:
  sDict[x] = pdg.GetParticle(x).GetName()
@@ -88,9 +98,9 @@ def makeEvents(nevents = 100):
   N = nevents
   if p<0: N = int(nevents / nuOverNubar[abs(p)])
   cmd = "gevgen -n "+str(N)+" -p "+str(p)+" -t "+targetcode +" -e  0.5,350  --run "+str(run)+" -f "+neutrinos+","+pDict[p]+ \
-            " --cross-sections "+splines+" --message-thresholds $GENIE/config/Messenger_laconic.xml" +" --seed "+str(seed)
+            " --cross-sections "+splines+" --message-thresholds $GENIE/config/Messenger_laconic.xml" +" --seed "+str(seed)+" --event-generator-list "+evtype
   print("start genie ",cmd)
-  os.system(cmd+" > log"+sDict[p]+" &")
+  os.system(cmd+" > log"+sDict[p])
   run +=1
   os.chdir('../')
 def makeNtuples():
@@ -112,3 +122,14 @@ def addHists():
   fp.Get(pDict[p].replace('0','2')).Write()
   fn.Close()
   os.chdir('../')
+
+
+makeEvents(nevents)
+makeNtuples()
+
+
+
+
+
+
+
