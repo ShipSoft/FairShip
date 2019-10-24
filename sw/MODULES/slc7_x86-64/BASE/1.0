@@ -1,0 +1,5 @@
+#%Module1.0
+set base_path /pool/condor/dir_55582/SHiPBuild/FairShip/sw/slc7_x86-64
+setenv BASEDIR $base_path
+set osname [uname sysname]
+set osarchitecture [uname machine]
