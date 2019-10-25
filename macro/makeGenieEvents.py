@@ -7,8 +7,10 @@ import shipRoot_conf
 import argparse
 shipRoot_conf.configure()
 
-os.system("export GXMLPATH=/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines")
-os.system("echo exporting executed")
+# IMPORTANT
+# Before runnig this script please run this command in FairShip bash:
+# export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
+
 
 # 
 xsec = "gxspl-FNAL-nuSHiP-minimal.xml"# new adapted splines from Genie site
