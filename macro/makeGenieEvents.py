@@ -10,6 +10,7 @@ shipRoot_conf.configure()
 # IMPORTANT
 # Before runnig this script please run this command in FairShip bash:
 # export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
+# this will disable Genie decays for charm particles and tau
 
 
 # 
@@ -24,6 +25,9 @@ neutrinos = '/eos/experiment/ship/data/Mbias/background-prod-2018'+'/'+hfile #pa
 
 #Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES
 #See other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
+
+# Sets the event type e.g. CCDIS, RES, etc. for further details see GENIE user manual
+# Set 'ALL' if there are no restrictions on the event type
 evtype = 'CCDIS'
 
 def get_arguments(): #available options  
@@ -100,7 +104,8 @@ def makeEvents(nevents = 100):
   N = nevents
   if p<0: N = int(nevents / nuOverNubar[abs(p)])
   cmd = "gevgen -n "+str(N)+" -p "+str(p)+" -t "+targetcode +" -e  0.5,350  --run "+str(run)+" -f "+neutrinos+","+pDict[p]+ \
-            " --cross-sections "+splines+" --message-thresholds $GENIE/config/Messenger_laconic.xml" +" --seed "+str(seed)+" --event-generator-list "+evtype
+            " --cross-sections "+splines+" --message-thresholds $GENIE/config/Messenger_laconic.xml" +" --seed "+str(seed)
+  if(evtype !='ALL') cmd +=" --event-generator-list "+evtype
   print("start genie ",cmd)
   os.system(cmd+" > log"+sDict[p])
   run +=1
