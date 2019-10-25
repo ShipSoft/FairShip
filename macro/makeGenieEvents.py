@@ -13,7 +13,7 @@ shipRoot_conf.configure()
 # this will disable Genie decays for charm particles and tau
 
 
-# 
+
 xsec = "gxspl-FNAL-nuSHiP-minimal.xml"# new adapted splines from Genie site
 hfile = "pythia8_Geant4_1.0_withCharm_nu.root" #2018 background generation
 #xsec = "Nu_splines.xml"
@@ -23,12 +23,10 @@ hfile = "pythia8_Geant4_1.0_withCharm_nu.root" #2018 background generation
 splines   = '/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'+'/'+xsec #path of splines
 neutrinos = '/eos/experiment/ship/data/Mbias/background-prod-2018'+'/'+hfile #path of flux
 
-#Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES
-#See other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
 
-# Sets the event type e.g. CCDIS, RES, etc. for further details see GENIE user manual
-# Set 'ALL' if there are no restrictions on the event type
-evtype = 'CCDIS'
+
+
+
 
 def get_arguments(): #available options  
 
@@ -38,6 +36,7 @@ def get_arguments(): #available options
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   ap.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
   ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
+  ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default='ALL') # Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
   args = ap.parse_args()
   return args
 
@@ -47,6 +46,7 @@ work_dir = args.work_dir
 target = args.target
 seed = args.seed
 nevents = args.nevents
+evtype = arg.evtype
 
 print('Target type: ', target)
 print('Seed used in this generation: ', seed)
@@ -133,10 +133,3 @@ def addHists():
 
 makeEvents(nevents)
 makeNtuples()
-
-
-
-
-
-
-
