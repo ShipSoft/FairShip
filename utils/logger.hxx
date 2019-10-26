@@ -1,5 +1,5 @@
-#include "FairLogger.h"
 #pragma once
+#include "FairLogger.h"
 
 namespace ship {
 
