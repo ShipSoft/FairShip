@@ -3,19 +3,30 @@
 
 namespace ship {
 
+namespace details {
+
 template <fair::Severity severity, class T>
-void log(T arg)
+void log(fair::Logger& logger, T arg)
 {
     if (fair::Logger::Logging(severity)) {
-        fair::Logger(severity, __FILE__, to_string(__LINE__), __FUNCTION__).Log() << arg;
+        logger << arg;
     }
 }
 
 template <fair::Severity severity, class T, class... Types>
-void log(T arg, Types... args)
+void log(fair::Logger& logger, T arg, Types... args)
 {
-    log<severity>(arg);
-    log<severity>(args...);
+    log<severity>(logger, arg);
+    log<severity>(logger, args...);
+}
+
+}
+
+template <fair::Severity severity, class... Types>
+void log(Types... args)
+{
+    fair::Logger logger(severity, __FILE__, to_string(__LINE__), __FUNCTION__);
+    details::log<severity>(logger.Log(), args...);
 }
 
 template <class... Types>
