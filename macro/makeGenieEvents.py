@@ -12,9 +12,8 @@ shipRoot_conf.configure()
 # Before runnig this script please run this command in FairShip bash:
 # export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
 # this will disable Genie decays for charm particles and tau
-if os.environ.has_key('GXMLPATH') is False:
+if 'GXMLPATH' not in os.environ:
 	logging.warn('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
-	logging.debug('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
 else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
 
 
