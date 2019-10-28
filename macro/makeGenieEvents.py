@@ -11,7 +11,8 @@ shipRoot_conf.configure()
 # Before runnig this script please run this command in FairShip bash:
 # export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
 # this will disable Genie decays for charm particles and tau
-
+if os.environ.has_key('GXMLPATH'): print('exporting GXMLPATH executed')
+else: print('WARNING: exporting GXMLPATH not executed')
 
 
 xsec = "gxspl-FNAL-nuSHiP-minimal.xml"# new adapted splines from Genie site
