@@ -1016,7 +1016,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     else:      
        name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
-    variables = "mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
+    variables = "mult:m:mcor:mcor2:y:ycor:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
 prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
     if MCdata:
       variables += ":Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz"
@@ -1177,7 +1177,9 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
           P1mi = Pcor[nlep].E()-Pcor[nlep].Pz()
           P2mi = Pcor[nantilep].E()-Pcor[nantilep].Pz()
           cosCScor = Xcor[j].Pz()/abs(Xcor[j].Pz()) * 1./Xcor[j].M()/ROOT.TMath.Sqrt(Xcor[j].M2()+Xcor[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
-          theArray = [float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),X[j].P(),X[j].Pt(),P[n1].P(),P[n1].Pt(),P[n2].P(),P[n2].Pt(),\
+          Y    = X[j].Rapidity()
+          Ycor = Xcor[j].Rapidity()
+          theArray = [float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),X[j].Pt(),P[n1].P(),P[n1].Pt(),P[n2].P(),P[n2].Pt(),\
                      IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],cosCSraw,cosCScor,\
                      P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),\
                      sTree.x[n1],sTree.y[n1] ,sTree.z[n1],sTree.x[n2],sTree.y[n2] ,sTree.z[n2] ]
