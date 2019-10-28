@@ -5898,8 +5898,8 @@ def ghostSuppression(hname = "sumHistos--simulation10GeV-withDeadChannels.root")
             if c=='': continue
             print "%s efficiency=%5.3F"%(c,ntracks[c]/ntracks[''])
 
-def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,eric=False,version="-final",withOverFlow=False,withDisplay=True,cuts=''):
-    ptMax = 5.
+def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,eric=False,version="-final",withOverFlow=False,withDisplay=True,cuts=''):
+    ptMax = 4.
     # possible cuts: '', 'All', 'Chi2<', 'Delx<', 'Dely<'
     # efficiency MC larger than data, 0.105 for cuts = All, but only for muon tagged!
     # otherwise only Chi2 cut, 0.034 
@@ -5994,7 +5994,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
         POTdata = h['Trscalers'].GetBinContent(2) * muPerPot
         MCscaleFactor =     POTdata / MCStats
         # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
-        print "PoT data",POTdata / 1E9,"+/-",POTdata*mcSysError / 1E9, " billion"
+        print "PoT data",POTdata / 1E9,"+/-",POTdata*daSysError / 1E9, " billion"
     norm={}
     norm['']   = MCscaleFactor * (1.-simpleEffCor)
     norm['mu'] = MCscaleFactor * (1.-simpleEffCorMu)
@@ -6062,7 +6062,8 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
               'MCDi-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'],
               'MC10Di-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'] }
     ptMaxBin = h['p/pt'].GetYaxis().FindBin(ptMax)
-    ptInterval = [ [pMin,10.],[10.,50.],[50.,100.],[100.,150.],[150.,200.],[200.,250.],[250.,300.] ]
+    ptInterval =        [ [pMin,10.],[10.,25.],[25.,50.],[50.,75.],[75.,100.],[100.,125.],[125.,150.],[150.,200.],[200.,250.],[250.,300.] ]
+    ptIntervalRebin =   [ 1,            1,         1,        1,        1,         1,          2,          2,          4,           4 ]
     for x in ['','mu']:
         for a in ['p/pt','pz/Abspx','p1/p2']:
             if a=='p1/p2' and x=='mu': continue
@@ -6534,7 +6535,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
             h['leg'+ts+str(tc)].Draw('same')
             h[ts].Update()
             myPrint(h[ts],label+'-simple-'+d+x)
-    for Aproj in ['pz/Abspx','p/pt']:
+    for Aproj in ['p/pt']:
         withAllTracks=False
         for x in ['','mu']:
 # old printout
@@ -6595,6 +6596,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
                 h['leg'+t].Draw('same')
                 myPrint(h[t],label+'Ratios'+Aproj.replace('/',''))
 # now in 2D
+            asymVersion = False
             t = 'MC-Comparison ratios'+proj+'2D'
             if not h.has_key(t): 
                     ut.bookCanvas(h,key=t,title='Data / MC',nx=1800,ny=900,cx=1,cy=1)
@@ -6628,12 +6630,16 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
                     eNmc = h['MC'+proj+x+'rebin'].GetBinError(mx,my)
                     eNda = h[proj+x+'Ratio'].GetBinError(mx,my)
                     if Nmc>10 and Nda>10:
-                        R = (Nda-Nmc)/(Nda+Nmc)
-                        sig_data = ROOT.TMath.Sqrt(eNda**2+(Nda*daSysError)**2)
-                        sig_MC   = ROOT.TMath.Sqrt(eNmc**2+(Nmc*mcSysError)**2)
-                        e1 = 2*Nda/(Nda+Nmc)**2
-                        e2 = 2*Nmc/(Nda+Nmc)**2
-                        eR = ROOT.TMath.Sqrt( (e1*sig_MC)**2+(e2*sig_data)**2 )
+                        if asymVersion:
+                           R = (Nda-Nmc)/(Nda+Nmc)
+                           sig_data = ROOT.TMath.Sqrt(eNda**2+(Nda*daSysError)**2)
+                           sig_MC   = ROOT.TMath.Sqrt(eNmc**2+(Nmc*mcSysError)**2)
+                           e1 = 2*Nda/(Nda+Nmc)**2
+                           e2 = 2*Nmc/(Nda+Nmc)**2
+                           eR = ROOT.TMath.Sqrt( (e1*sig_MC)**2+(e2*sig_data)**2 )
+                        else: # ratio  version
+                           R = (Nda/Nmc)
+                           eR = ROOT.TMath.Sqrt( (R/Nmc*eNmc)**2+(R/Nda*eNda)**2 )
                     else:      
                         R  = 0. # -1      # R = 0
                         eR = 0.
@@ -6652,23 +6658,24 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
     if not h.has_key(t): 
         ut.bookCanvas(h,key=t,title='Data',nx=900,ny=600,cx=1,cy=1)
     h[t].cd(1).SetLogz(1)
-    h['p/ptmu'].SetMinimum(10.)
+    h['p/ptmu'].SetMinimum(0.)
     h['p/ptmu'].SetMaximum(1.E5)
-    h['p/ptmu'].GetXaxis().SetRangeUser(0,400.)
-    h['p/ptmu'].GetYaxis().SetRangeUser(0,4.)
+    h['p/ptmu'].GetXaxis().SetRangeUser(0,pMax)
+    h['p/ptmu'].GetYaxis().SetRangeUser(0,ptMax)
     h['p/ptmu'].SetStats(0)
-    h['p/ptmu'].Draw('colz')
+    h['p/ptmu'].Draw('lego')
     myPrint(h[t],label+'DatapPt')
 
 # pt in slices of P
-    for t in ['MC-Comparison Pt','MC-Comparison Px']:
-        if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=4,cy=2)
+    for t in ['MC-Comparison Pt']:
+        if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=5,cy=2)
         y = 1
         for pInterval in ptInterval:
             if pInterval[1]<11: x = ''
             else: x = 'mu'
             interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
             tc = h[t].cd(y)
+            rebinValue = ptIntervalRebin[y-1]
             y+=1
             h['leg'+t+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
             for i1 in optSorted:
@@ -6688,6 +6695,9 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
                 mx1 = ut.findMaximumAndMinimum(h[ proj+x+interval])[1]
                 mx2 = ut.findMaximumAndMinimum(h['MC'+proj+x+interval])[1]
                 hMaPx = max(mx1,mx2)
+                if rebinValue>1: 
+                  h[hname].Rebin(rebinValue)
+                  h[hname].Scale(1./rebinValue)
                 h[hname].GetXaxis().SetRangeUser(0.,4.)
                 h[hname].SetMaximum(hMaPx*1.1)
                 h[hname].SetMinimum(0.)
@@ -6701,7 +6711,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
         h[t].Update()
         myPrint(h[t],label+t.replace('MC-Comparison ',''))
 # printout rate
-    print " interval       data           MC           charm    per 1E9 PoT / GeV/c  "
+    print "  interval           data                MC                   ratio data/MC            charm    per 1E9 PoT / GeV/c  "
     for pInterval in ptInterval:
         if pInterval[1]<11: x = ''
         else: x = 'mu'
@@ -6716,9 +6726,11 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=400.,simpleEffCor=0.023,effCor=False,e
         sig_MC  = err/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_MC = ROOT.TMath.Sqrt(sig_MC**2+(mc*mcSysError)**2)
         mcCharm = h['MC'+hname.replace('_y','charm_y')].IntegralAndError(0,h[hname].FindBin(4.),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        ratio = data/mc
+        sig_ratio = ROOT.TMath.Sqrt( (ratio/data*sig_data)**2+(ratio/mc*sig_MC)**2)
         sig_Charm=err/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_Charm=ROOT.TMath.Sqrt(sig_Charm**2+(mcCharm*mcSysError)**2)
-        print "%11s    %6.3G+/-%6.3G  %6.3G+/-%6.3G   %6.3G +/-%6.3G"%(str(pInterval[0])+'-'+str(pInterval[1]),data,sig_data,mc,sig_MC,mcCharm,sig_Charm)
+        print "%11s    %7.2E +/- %7.2E  %7.2E +/- %7.2E   %5.2F +/- %5.2F  %6.2E +/- %6.2E"%(str(pInterval[0])+'-'+str(pInterval[1]),data,sig_data,mc,sig_MC,ratio,sig_ratio,mcCharm,sig_Charm)
 # printout mean pt
     print " interval       data           MC           charm    mean PT [GeV/c]  "
     for pInterval in ptInterval:
