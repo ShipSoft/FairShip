@@ -46,7 +46,7 @@ work_dir = args.work_dir
 target = args.target
 seed = args.seed
 nevents = args.nevents
-evtype = arg.evtype
+evtype = args.evtype
 
 print('Target type: ', target)
 print('Seed used in this generation: ', seed)
@@ -105,7 +105,7 @@ def makeEvents(nevents = 100):
   if p<0: N = int(nevents / nuOverNubar[abs(p)])
   cmd = "gevgen -n "+str(N)+" -p "+str(p)+" -t "+targetcode +" -e  0.5,350  --run "+str(run)+" -f "+neutrinos+","+pDict[p]+ \
             " --cross-sections "+splines+" --message-thresholds $GENIE/config/Messenger_laconic.xml" +" --seed "+str(seed)
-  if(evtype !='ALL') cmd +=" --event-generator-list "+evtype
+  if evtype !='ALL': cmd +=" --event-generator-list "+evtype
   print("start genie ",cmd)
   os.system(cmd+" > log"+sDict[p])
   run +=1
