@@ -1,4 +1,4 @@
-import ROOT,os,time,operator
+import ROOT,os,time,operator,subprocess
 import rootUtils as ut
 from argparse import ArgumentParser
 PDG = ROOT.TDatabasePDG.Instance()
@@ -6,7 +6,6 @@ cuts = {}
 cuts['muTrackMatchX']= 5.
 cuts['muTrackMatchY']= 10.
 zTarget = -370.       # start of target: -394.328, mean z for mu from Jpsi in MC = -375cm, for all muons: -353cm
-dEdxCorrection = +7.3    # most probably ~7.5, mean 6.9.
 
 cuts['zRPC1']  = 878.826706
 cuts['xLRPC1'] =-97.69875
@@ -54,6 +53,7 @@ withData  =  options.withData  == "True"
 if options.path != "": gPath = options.path+'/'
 fdir = options.directory
 
+Nfiles = 0
 if not fdir: 
     Nfiles = 2000
     fdir   = "RUN_8000_2403"
@@ -62,10 +62,16 @@ if not options.listOfFiles:
     if withData:
      path = gPath + fdir
      countFiles=[]
-     for x in os.listdir(path):
-        if not x.find('ntuple-SPILL')<0: countFiles.append(x)
+     if path.find('eos')<0:
+        for x in os.listdir(path):
+           if not x.find('ntuple-SPILL')<0: countFiles.append(path+'/'+x)
+     else:
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+path,shell=True)
+        for x in temp.split('\n'):
+            if x.find('ntuple-SPILL')<0: continue
+            countFiles.append(os.environ["EOSSHIP"]+"/"+x)
      for x in countFiles:
-        sTreeData.Add(path+"/"+x)
+        sTreeData.Add(x)
         Nfiles-=1
         if Nfiles==0: break
 
@@ -819,6 +825,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
         for x in ['','mu']:
             for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"]:
                 ut.bookHist(h,c+'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
+                ut.bookHist(h,c+'y'+x+s,'rapidity cm; y_{CM}',500,-1.,5.,25,0.,500.,10,0.,10.)
                 ut.bookHist(h,c+'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
                 ut.bookHist(h,c+'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
                 ut.bookHist(h,c+'pz/Abspx'+x+s,'Pz vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
@@ -894,9 +901,11 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
             if sTree.Dely[k]<cuts['Dely<']: okCuts.append('Dely<')
             if sTree.Delx[k]<cuts['Delx<']: okCuts.append('Delx<')
             if sTree.Chi2[k]<cuts['Chi2<'] and sTree.Dely[k]<cuts['Dely<'] and sTree.Delx[k]<cuts['Delx<']: okCuts.append('All')
-            for c in okCuts: 
+            for c in okCuts:
+                Emuon = ROOT.TMath.Sqrt(p.Mag()*p.Mag()+0.105658**2)
+                y = 1./2.*ROOT.TMath.Log( (Emuon+p.z())/(Emuon-p.z()) )
                 h[c+"p/pt"].Fill(p.Mag(),p.Pt())
-                h[c+"p/px"].Fill(p.Mag(),p.x())
+                h[c+"y"].Fill(y,p.Mag(),p.Pt())
                 h[c+"p/Abspx"].Fill(p.Mag(),abs(p.x()))
                 h[c+"pz/Abspx"].Fill(p.z(),abs(p.x()))
                 h[c+"xy"].Fill(sTree.x[k],sTree.y[k])
@@ -908,6 +917,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
                     print n, p.Mag(),occ,sTree.GoodTrack[k],sTree.Chi2[k],sTree.nDoF[k]
                 if source != '':
                     h[c+"p/pt"+source].Fill(p.Mag(),p.Pt())
+                    h[c+"y"+source].Fill(y,p.Mag(),p.Pt())
                     h[c+"p/px"+source].Fill(p.Mag(),p.x())
                     h[c+"p/Abspx"+source].Fill(p.Mag(),abs(p.x()))
                     h[c+"pz/Abspx"+source].Fill(p.z(),abs(p.x()))
@@ -928,6 +938,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
                 if (muTagged): #  within ~3sigma  X,Y from mutrack
                     if c=='': muonTaggedTracks[''].append(k)
                     h[c+"p/ptmu"].Fill(p.Mag(),p.Pt())
+                    h[c+"ymu"].Fill(y,p.Mag(),p.Pt())
                     h[c+"p/pxymu"].Fill(p.Mag(),p.x())
                     h[c+"p/Abspxymu"].Fill(p.Mag(),abs(p.x()))
                     h[c+"pz/Abspxymu"].Fill(p.z(),abs(p.x()))
@@ -938,6 +949,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
                     h[c+'DoFmu'].Fill(sTree.nDoF[k],p.Mag())
                     if source != '':
                         h[c+"p/ptmu"+source].Fill(p.Mag(),p.Pt())
+                        h[c+"ymu"+source].Fill(y,p.Mag(),p.Pt())
                         h[c+"p/pxymu"+source].Fill(p.Mag(),p.x())
                         h[c+"p/Abspxymu"+source].Fill(p.Mag(),abs(p.x()))
                         h[c+"pz/Abspxymu"+source].Fill(p.z(),abs(p.x()))
@@ -983,6 +995,10 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
        outFile=outFile.replace('.root','-'+str(nseq)+'.root')
     ut.writeHists( h,outFile)
     print "I have finished. ",outFile
+def dEdxCorrection(pt):
+ # +7.3    # most probably ~7.5, mean 6.9.
+ dE = -7.97  -1.52 * pt + 0.93 * pt**2 
+ return -dE
 def invMass(sTree,h,nseq=0,ncpus=False):
     ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
@@ -997,10 +1013,14 @@ def invMass(sTree,h,nseq=0,ncpus=False):
        name = "ntuple-invMass-MC.root"
        if ncpus:
           name = name.replace('.root','-'+str(nseq)+'.root')
-    else:      name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
+    else:      
+       name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
-    h['nt']  = ROOT.TNtuple("nt","dimuon","mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:\
-cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSraw:cosCScor:originZ1:originZ2")
+    variables = "mult:m:mcor:mcor2:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
+prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
+    if MCdata:
+      variables += ":Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz"
+    h['nt']  = ROOT.TNtuple("nt","dimuon",variables) 
 #
     sTreeFullMC = None
     Ntotal = sTree.GetEntries()
@@ -1045,7 +1065,7 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
             IP[k] = ROOT.TMath.Sqrt(x*x+y*y)
 # make dE correction plus direction from measured point
             dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
-            Ecor = P[k].E()+dEdxCorrection
+            Ecor = P[k].E()+dEdxCorrection(P[k].Pt())
             norm = dline.Mag()
             Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
             Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,0.105658)
@@ -1088,8 +1108,8 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
              rc = h["p/ptmu"].Fill(P[n1].P(),P[n2].Pt())
              rc = h["p/ptmu"].Fill(P[n1].P(),P[n2].Pt())
           jpsi[j] = -1
-          originZ[j]  = [9999.,9999.]
-          pTrue[j]  = [-9999.,-9999.]
+          originZ[j]  = [-9999.,-9999.]
+          pTrue[j]    = [ROOT.TVector3(0,0,-9999.),ROOT.TVector3(0,0,-9999.)]
           dTheta[j] = [-9999.,-9999.]
           dMults[j] = [-9999.,-9999.]
           PTRUE[j]  = -1.
@@ -1117,14 +1137,12 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
                 PTRUE[j]  = mother.GetP()
                 PtTRUE[j] = mother.GetPt()
 # check multiple scattering
-                mom = ROOT.TVector3()
-                trueMu.GetMomentum(mom)
+                trueMu.GetMomentum(pTrue[j][kx])
                 originZ[j][kx] = trueMu.GetStartZ()
-                pTrue[j][kx] = mom.Mag()
                 dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
-                dTheta[j][kx]  = mom.Dot(dline)/(mom.Mag()*dline.Mag())
+                dTheta[j][kx]  = pTrue[j][kx].Dot(dline)/(pTrue[j][kx].Mag()*dline.Mag())
                 prec = ROOT.TVector3(P[k].Px(),P[k].Py(),P[k].Pz())
-                dMults[j][kx]  = mom.Dot(prec)/(mom.Mag()*prec.Mag())
+                dMults[j][kx]  = pTrue[j][kx].Dot(prec)/(pTrue[j][kx].Mag()*prec.Mag())
                 kx+=1
             if len(mothers)==2: 
              if mothers[0]==mothers[1]: jpsi[j] = mothers[0]
@@ -1159,9 +1177,15 @@ cosTheta:Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:cosCSra
           P1mi = Pcor[nlep].E()-Pcor[nlep].Pz()
           P2mi = Pcor[nantilep].E()-Pcor[nantilep].Pz()
           cosCScor = Xcor[j].Pz()/abs(Xcor[j].Pz()) * 1./Xcor[j].M()/ROOT.TMath.Sqrt(Xcor[j].M2()+Xcor[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
-          theTuple = array('f',[float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),X[j].P(),X[j].Pt(),P[n1].P(),P[n1].Pt(),P[n2].P(),P[n2].Pt(),\
-                     IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],float(jpsi[j]),PTRUE[j],PtTRUE[j],pTrue[j][0],pTrue[j][1],\
-                     dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],cosCSraw,cosCScor,originZ[j][0],originZ[j][1]])
+          theArray = [float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),X[j].P(),X[j].Pt(),P[n1].P(),P[n1].Pt(),P[n2].P(),P[n2].Pt(),\
+                     IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],cosCSraw,cosCScor,\
+                     P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),\
+                     sTree.x[n1],sTree.y[n1] ,sTree.z[n1],sTree.x[n2],sTree.y[n2] ,sTree.z[n2] ]
+          if MCdata:
+             theArray += [float(jpsi[j]),PTRUE[j],PtTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
+                     dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],originZ[j][0],originZ[j][1],\
+                     pTrue[j][0].X(),pTrue[j][0].Y(),pTrue[j][0].Z(),pTrue[j][1].X(),pTrue[j][1].Y(),pTrue[j][1].Z() ]
+          theTuple = array('f',theArray)
           h['nt'].Fill(theTuple)
     h['fntuple'].cd()
     h['nt'].Write()
@@ -1247,7 +1271,6 @@ def diMuonAnalysis():
  ut.bookHist(hMC, 'm_MC','inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
  ut.bookHist(hMC, 'm_MClow','inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
  hMC['dummy'].cd()
- PDG = ROOT.TDatabasePDG.Instance()
  colors = {221:ROOT.kBlue,223:ROOT.kCyan,113:ROOT.kGreen,331:ROOT.kOrange,333:ROOT.kRed,443:ROOT.kMagenta}
  nmax = 0
  for j in colors:
@@ -1586,16 +1609,36 @@ def diMuonAnalysis():
  hData['ratioLowMass'].Draw('texte')
  myPrint(hData['lowMass'],'lowMassSummary')
 # muon dEdx
- ut.bookHist(hMC, 'delpTrue2' ,'p-pTrue vs pTrue',20,0.,400.,50,-50.,50.)
- myDraw('(p1-p1True):p1>>delpTrue2','Jpsi!=443')
- myDraw('(p2-p2True):p2>>+delpTrue2','Jpsi!=443') # applying cuts does not make a difference
+ tc = hData['lowMass'].cd(1)
+ ut.bookHist(hMC, 'delpTrue2' ,'p-pTrue vs p',40,0.,400.,50,-50.,50.)
+ myDraw('(p1-p1True):p1>>delpTrue2','Jpsi==443')
+ myDraw('(p2-p2True):p2>>+delpTrue2','Jpsi==443') # applying cuts does not make a difference
  ROOT.gROOT.cd()
  hMC['meanLoss']=hMC['delpTrue2'].ProjectionX('meanLoss')
  for n in range(1,hMC['delpTrue2'].GetXaxis().GetNbins()+1):
    tmp = hMC['delpTrue2'].ProjectionY('tmp',n,n)
-   hMC['meanLoss'].SetBinContent(n, tmp.GetBinCenter(ut.findMaximumAndMinimum(tmp)[3]))
+   # hMC['meanLoss'].SetBinContent(n, tmp.GetBinCenter(ut.findMaximumAndMinimum(tmp)[3]))
+   hMC['meanLoss'].SetBinContent(n, tmp.GetMean())
    hMC['meanLoss'].SetBinError(n,tmp.GetRMS())
  hMC['meanLoss'].Draw()  #-8.61544 
+ tc = hData['lowMass'].cd(2)
+ ut.bookHist(hMC, 'delp' ,'p-pTrue',50,-50.,50.)
+ hMC['delpFunOfPtCut']=ROOT.TGraph()
+ dp = 0.1
+ ptCut = 0.0
+ for k in range(20):
+  myDraw('(p1-p1True)>>delp','Jpsi==443&&pt1>'+str(ptCut+dp/2.)+'&&pt1<'+str(ptCut-dp/2.))
+  myDraw('(p2-p2True)>>+delp','Jpsi==443&&pt2>'+str(ptCut+dp/2.)+'&&pt1<'+str(ptCut-dp/2.))
+  dE = hMC['delp'].GetMean()
+  hMC['delpFunOfPtCut'].SetPoint(k,ptCut,dE)
+  ptCut+=dp
+ ut.bookHist(hMC, 'delpt' ,'delpt',20,0.,2.)
+ hMC['delpt'].SetMaximum(0.0)
+ hMC['delpt'].SetMinimum(-10.0)
+ hMC['delpt'].Draw()
+ hMC['delpFunOfPtCut'].Draw()
+# -7.97  -1.52 * ptCut + 0.93 * ptCut**2
+
 # try Jpsi p,pt based on ptmu > 1.4
  v='mcor'
  ptCut = 1.4
@@ -2273,93 +2316,13 @@ def stupidCopy():
   if x.find('dimuon_all.p')<0: continue
   os.system('cp '+x+' '+ x.replace('all','AND_all'))
 
-def studyInvMassBias(sTree,h,nseq=0,ncpus=False):
-    MCdata = False
-    if sTree.FindBranch("MCRecoDT"): MCdata = True
-    if MCdata: 
-       name = "ntuple-invMassTrue-MC.root"
-       if ncpus:
-          name = name.replace('.root','-'+str(nseq)+'.root')
-    else:     1/0
-    h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
-    h['nt']  = ROOT.TNtuple("nt","dimuon","id:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z")
-    sTreeFullMC = None
-    Ntotal = sTree.GetEntries()
-    nStart = 0
-    if ncpus:
-      ncpus = int(ncpus)
-      nseq = int(nseq)
-      deltaN = (sTree.GetEntries()+0.5)//ncpus
-      nStart = int(nseq*deltaN)
-      Ntotal = int(min(sTree.GetEntries(),nStart+deltaN))
-    currentFile = ''
-    for n in range(0,Ntotal):
-        rc = sTree.GetEvent(n)
-        # if n%500000==0: print 'now at event ',n,'of',Ntotal,time.ctime()
-        if sTree.GetCurrentFile().GetName()!=currentFile:
-            currentFile = sTree.GetCurrentFile().GetName()
-            nInFile = n
-        if n<nStart: continue
-        P    = {}
-        for k in range(len(sTree.GoodTrack)):
-            if sTree.GoodTrack[k]<0: continue
-            if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: continue
-            if sTree.GoodTrack[k]>999:  continue
-            P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
-# now we have list of selected tracks, P.keys()
-        if len(P)!=2: continue
-        n1 = P.keys()[0]
-        n2 = P.keys()[1]
-        if sTree.Sign[n1]*sTree.Sign[n2]>0:continue
-#check truth
-        eospathSim = os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/'
-        fname = sTree.GetCurrentFile().GetName().split('simulation')[1].replace('ntuple-','').replace('-final','')
-        if sTreeFullMC:
-            if sTreeFullMC.GetCurrentFile().GetName().find(fname)<0:
-                    fMC = ROOT.TFile.Open(eospathSim+fname)
-                    sTreeFullMC = fMC.cbmsim
-        else: 
-            fMC = ROOT.TFile.Open(eospathSim+fname)
-            sTreeFullMC = fMC.cbmsim
-        rc = sTreeFullMC.GetEvent(n-nInFile)
-        mothers = []
-        trueMu  = {}
-        Ptrue = {}
-        kx = 0
-        L = ROOT.TVector3()
-        for k in [n1,n2]:
-            MCID = sTreeMC.MCID[k]
-            if MCID<0: continue
-            trueMu[k] = sTreeFullMC.MCTrack[MCID]
-            mothers.append(trueMu[k].GetMotherId())
-        if len(mothers)!=2: continue
-        if mothers[0]==mothers[1]:
-          mo = sTreeFullMC.MCTrack[mothers[0]]
-          for k in [n1,n2]:
-            trueMu[k].GetMomentum(L)
-            Ptrue[k] = L.Clone()
-          theTuple = array('f',\
-          [float(mo.GetPdgCode()),Ptrue[n1].X(),Ptrue[n1].Y(),Ptrue[n1].Z(),Ptrue[n2].X(),Ptrue[n2].Y(),Ptrue[n2].Z(),\
-          trueMu[n1].GetStartX(),trueMu[n1].GetStartY(),trueMu[n1].GetStartZ(),\
-          P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),sTree.x[n1],sTree.y[n1],sTree.z[n1],sTree.x[n2],sTree.y[n2],sTree.z[n2]])
-          if abs(Ptrue[n1].Z()-Ptrue[n2].Z())<0.01: print n,fname,theTuple
-          h['nt'].Fill(theTuple)
-    h['fntuple'].cd()
-    h['nt'].Write()
-    print "I have finished. "
 def analyzeInvMassBias():
-   if not hMC.has_key('finv'): hMC['finv']=ROOT.TFile('ntuple-invMassTrue-MC.root')
-   nt = hMC['finv'].nt
-   ut.bookHist(hMC,'trueMass','true Mass',120,0.,6.)
-   ROOT.gROOT.cd()
-   for event in nt:
-      if abs(nt.p1z-nt.p2z)<0.01: continue
-      p1=ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
-      p2=ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
-      X = p1+p2
-      hname = 'trueMass'+str(nt.id)
-      if not hMC.has_key(hname): hMC[hname]=hMC['trueMass'].Clone(hname)
-      rc = hMC[hname].Fill(X.M())
+  ut.bookHist(hMC,'deltaXY','diff xy muon1 and muon2;x [cm]; y [cm]',100,0.,20.,100,0.,20.)
+  hMC['10GeV'].Draw('abs(prec1x-prec2x):abs(prec1y-prec2y)>>deltaXY','mcor<0.25')
+# muon dEdx
+  ut.bookHist(hMC, 'delpTrue2' ,'p-pTrue vs pTrue',20,0.,400.,50,-50.,50.)
+  myDraw('(p1-p1True):p1>>delpTrue2','Jpsi==443&&pt1>1.4')
+  myDraw('(p2-p2True):p2>>+delpTrue2','Jpsi=443&&pt2>1.4') # applying cuts does not make a difference
 
 def debug():
     Nstat = {}
