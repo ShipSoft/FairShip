@@ -5,14 +5,17 @@ import ROOT,os,sys,time
 import shipunit as u
 import shipRoot_conf
 import argparse
+import logging
 shipRoot_conf.configure()
 
 # IMPORTANT
 # Before runnig this script please run this command in FairShip bash:
 # export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
 # this will disable Genie decays for charm particles and tau
-if os.environ.has_key('GXMLPATH'): print('exporting GXMLPATH executed')
-else: print('WARNING: exporting GXMLPATH not executed')
+if os.environ.has_key('GXMLPATH') is False:
+	logging.warn('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
+	logging.debug('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
+else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
 
 
 xsec = "gxspl-FNAL-nuSHiP-minimal.xml"# new adapted splines from Genie site
