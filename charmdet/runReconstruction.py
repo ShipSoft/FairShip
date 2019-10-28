@@ -556,7 +556,7 @@ def invMass(path = '.',merge=False):
     else:
         for d in os.listdir(path):
             if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):
-                cmd = "python MufluxNtuple.py -c invMass -d "+d+" -p /home/truf/muflux &"
+                cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -d "+d+" -p /eos/experiment/ship/user/truf/muflux-reco &"
                 os.system(cmd)
                 time.sleep(10)
                 while 1>0:
