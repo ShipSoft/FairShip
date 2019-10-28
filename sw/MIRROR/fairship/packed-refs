@@ -1,0 +1,13 @@
+# pack-refs with: peeled fully-peeled 
+ddf32b0b75ea2f0e91f79bee8fd32ee88a90196e refs/heads/Oct17-ship
+fa0e07d9616a4bc1a821e772e90e6c8a6912bed0 refs/heads/SHiP-2018
+e7be2aca4274bbe807c0cfded827e31cd7f7d18f refs/heads/master
+55c2cc4506c52d4a4bb84702a7a6532ea24909f5 refs/heads/muflux
+a67c31874517596a55f186e44b0e528e2d76d26a refs/heads/revert-242-master
+b3071d283e865539f75e3e5a495dba866a42f08c refs/tags/PBC-June-3
+^75624d2861cca542e11c0acd5c51b27f110c83bb
+7e0593b3d9694137663496aa67cd5a9906b5dad8 refs/tags/v1-00
+^db8579e93b89c5e7e2d18952fc5110df79d57986
+b40e3955ec8b4990ffdca4c5ddc349d9ecd1d80a refs/tags/v1-10
+a0f0a79a7aed6e92feaec185cc67001b8d55545a refs/tags/v2-00
+36832c6d331c6dba3c79f330b8bf706ea78268a1 refs/tags/v2-10

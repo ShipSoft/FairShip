@@ -25,11 +25,12 @@ class PixelModules:public FairDetector
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_t Dim1Short, Double_t Dim1Long);
-    void SetSiliconDZ(Double_t SiliconDZ);
+    void SetSiliconDZ(Double_t SiliconDZthin, Double_t SiliconDZthick);  
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
     void SetSiliconDetNumber(Int_t nSilicon);
-
+    void SetSiliconSlicesNumber(Int_t nSl);
+    void ComputeDimZSlice();
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
 
@@ -85,7 +86,9 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-
+    /*Number of Silicon pixel segments, 10 is the recommended amount*/
+    Int_t nSlices=10; 
+    
     /** container for data points */
     TClonesArray*  fPixelModulesPointCollection;
 
@@ -96,8 +99,7 @@ private:
 protected:
 
     Double_t Dim1Short, Dim1Long;
-
-
+ 
     Double_t SBoxX = 0;
     Double_t SBoxY = 0;
     Double_t SBoxZ = 0;
@@ -110,17 +112,24 @@ protected:
     Double_t DimX =0;
     Double_t DimY =0;
     Double_t DimZ = 0;
-    Double_t zSizeMS = 0; //dimension of the Magnetic PixelModules volume
-
-    Double_t overlap;
+    Double_t DimZWindow=0.0110;
+    Double_t Windowx=5;
+    Double_t Windowy=5;
+    Double_t FrontEndthick=0.0150;
+    Double_t FlexCuthick=0.0100;
+    Double_t FlexKapthick=0.0050;
+    Double_t overlap=0;
     Double_t DimZPixelBox;
 
-    Int_t nSi;
-    Double_t DimZSi;
-
-    Double_t xs[12], ys[12], zs[12];
-    Double_t xangle[12], yangle[12], zangle[12];
-
+    static const Int_t nSi=120;
+    Int_t numSi;
+    Double_t DimZSithin;
+    Double_t DimZSithick;
+    Double_t DimZThinSlice;
+    Double_t DimZThickSlice;
+    Double_t xs[nSi], ys[nSi], zs[nSi];
+    Double_t xangle[nSi], yangle[nSi], zangle[nSi];
+    
     PixelModules(const PixelModules&);
     PixelModules& operator=(const PixelModules&);
     ClassDef(PixelModules,1)

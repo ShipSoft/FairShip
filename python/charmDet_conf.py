@@ -54,7 +54,9 @@ def configure(run,ship_geo,Gfield=''):
 # === Pixel modules
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
     PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long)
-    PixelModules.SetSiliconDZ(ship_geo.PixelModules.DimZSi)
+    PixelModules.SetSiliconDZ(ship_geo.PixelModules.DimZSithin, ship_geo.PixelModules.DimZSithick)
+    PixelModules.SetSiliconSlicesNumber(ship_geo.PixelModules.nSlice)
+    PixelModules.ComputeDimZSlice()
 # === SciFi modules
     detectorList.append(SciFi)
 # === Pixel modules

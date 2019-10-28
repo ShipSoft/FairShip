@@ -1,0 +1,36 @@
+#%Module1.0
+proc ModulesHelp { } {
+  global version
+  puts stderr "ALICE Modulefile for FairShip master-1"
+}
+set version master-1
+module-whatis "ALICE Modulefile for FairShip master-1"
+# Dependencies
+module load BASE/1.0                                                            \
+                      \
+                          \
+              \
+                      \
+            	\
+            
+# Our environment
+setenv EOSSHIP root://eospublic.cern.ch/
+setenv FAIRSHIP_ROOT $::env(BASEDIR)/FairShip/$version
+setenv FAIRSHIP $::env(FAIRSHIP_ROOT)
+setenv FAIRSHIP_HASH fa0e07d9616a4bc1a821e772e90e6c8a6912bed0
+setenv VMCWORKDIR $::env(FAIRSHIP)
+setenv GEOMPATH $::env(FAIRSHIP)/geometry
+setenv CONFIG_DIR $::env(FAIRSHIP)/gconfig
+prepend-path PATH $::env(FAIRSHIP_ROOT)/bin
+prepend-path LD_LIBRARY_PATH $::env(FAIRSHIP_ROOT)/lib
+setenv FAIRLIBDIR $::env(FAIRSHIP_ROOT)/lib
+prepend-path ROOT_INCLUDE_PATH $::env(FAIRSHIP_ROOT)/include
+append-path ROOT_INCLUDE_PATH $::env(GEANT4_ROOT)/include
+append-path ROOT_INCLUDE_PATH $::env(GEANT4_ROOT)/include/Geant4
+append-path ROOT_INCLUDE_PATH $::env(PYTHIA_ROOT)/include
+append-path ROOT_INCLUDE_PATH $::env(PYTHIA_ROOT)/include/Pythia8
+append-path ROOT_INCLUDE_PATH $::env(GEANT4_VMC_ROOT)/include
+append-path ROOT_INCLUDE_PATH $::env(GEANT4_VMC_ROOT)/include/geant4vmc
+prepend-path PYTHONPATH $::env(FAIRSHIP_ROOT)/python
+append-path PYTHONPATH $::env(FAIRSHIP_ROOT)/Developments/track_pattern_recognition
+
