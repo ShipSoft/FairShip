@@ -58,8 +58,8 @@ import pickle
 
 import ROOT
 
-string_types = basestring,
-integer_types = (int, long)
+string_types = str,
+integer_types = (int)
 
 __all__ = [
     'dump',
