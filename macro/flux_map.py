@@ -1,5 +1,4 @@
 #!/usr/bin/env python2
-from __future__ import print_function
 from __future__ import division
 import argparse
 import numpy as np
@@ -8,6 +7,7 @@ import ROOT as r
 r.PyConfig.IgnoreCommandLineOptions = True
 import shipunit as u
 import rootUtils as ut
+import logger as log
 
 
 def main():
@@ -121,11 +121,11 @@ def main():
     ch = r.TChain('cbmsim')
     ch.Add(args.inputfile)
     n = ch.GetEntries()
-    print(n)
+    log.info(n)
     i = 0
     for event in ch:
         if i % 10000 == 0:
-            print('{}/{}'.format(i, n))
+            log.info('{}/{}'.format(i, n))
         i += 1
         muon = False
         for hit in event.strawtubesPoint:
@@ -360,7 +360,7 @@ def main():
                         h['mu_ppt'].Fill(P, pt, weight)
                         h['SBT_Plastic_mu'].Fill(z, phi, weight)
                     continue
-                print('Unidentified vetoPoint.')
+                log.warn('Unidentified vetoPoint.')
         if muon:
             original_muon = event.MCTrack[muonid]
             weight = original_muon.GetWeight()
@@ -370,7 +370,7 @@ def main():
                                       original_muon.GetPt(), weight)
             # NOTE: muons are counted several times if they create several hits
             #       But the original muon is only counted once.
-    print('Event loop done')
+    log.info('Event loop done')
     for key in h:
         classname = h[key].Class().GetName()
         if 'TH' in classname or 'TP' in classname:
