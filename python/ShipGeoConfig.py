@@ -37,11 +37,10 @@ class _SingletonDict(type):
         del(cls._instances[cls][key])
 
 
-class ConfigRegistry(dict):
+class ConfigRegistry(dict, metaclass=_SingletonDict):
     """
     Singleton registry of all Configurations
     """
-    __metaclass__ = _SingletonDict
     recent_config_name = None
 
     @staticmethod
