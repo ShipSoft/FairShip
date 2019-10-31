@@ -1693,17 +1693,22 @@ def MCJpsiProd(onlyPlotting=False):
      name = names[c]
      ut.bookHist(h,name+'PandPt','P and Pt of original '+name,100,0.,400.,100,0.,10.)
      ut.bookHist(h,name+'PandPt_rec','P and Pt of original '+name+' for muons reconstructed',100,0.,400.,100,0.,10.)
+     ut.bookHist(h,name+'Y','rapidity of original '+name,60,0.,6.)
+     ut.bookHist(h,name+'Y_rec','rapidity of reconstructed '+name,60,0.,6.)
     for n in range(sTree.GetEntries()):
          rc=sTree.GetEvent(n)
          for m in range(sTree.MCTrack.GetEntries()):
              p = sTree.MCTrack[m]
              if p.GetPdgCode() in names:
                 rc=h[names[p.GetPdgCode()]+'PandPt'].Fill(p.GetP(),p.GetPt())
+                rc=h[names[p.GetPdgCode()]+'Y'].Fill(p.GetRapidity()
                 nRec = 0
                 for k in range(sTree.FitTracks.GetEntries()):
                   mu = sTree.TrackInfos[k].McTrack()
                   if sTree.MCTrack[mu].GetMotherId()==m: nRec += 1
-                if nRec == 2: rc=h[names[p.GetPdgCode()]+'PandPt_rec'].Fill(p.GetP(),p.GetPt())
+                if nRec == 2: 
+                   rc=h[names[p.GetPdgCode()]+'PandPt_rec'].Fill(p.GetP(),p.GetPt())
+                   rc=h[names[p.GetPdgCode()]+'Y_rec'].Fill(p.GetRapidity()
                 break
     ut.writeHists(h,'histos-Jpsi'+rname)
    else:
