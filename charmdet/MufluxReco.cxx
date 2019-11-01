@@ -33,6 +33,8 @@ MufluxReco::MufluxReco(TTreeReader* t)
   xSHiP = t;
   MCdata = false;
   if (xSHiP->GetTree()->GetBranch("MCTrack")){MCdata=true;}
+  Bool_t refitted = false;
+  if (xSHiP->GetTree()->GetBranch("FitTracks_refitted")){refitted=true;}
   std::cout << "MufluxReco initialized for "<<xSHiP->GetEntries(true) << " events "<<std::endl;
   xSHiP->ls();
   FitTracks = 0;
@@ -50,10 +52,15 @@ MufluxReco::MufluxReco(TTreeReader* t)
     fChain->SetBranchAddress("MufluxSpectrometerPoint", &MufluxSpectrometerPoints, &b_MufluxSpectrometerPoints);
     fChain->SetBranchAddress("MuonTaggerPoint", &muonTaggerPoint, &b_MuonTaggerPoint);
   }
-  fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
+  if (refitted){
+     fChain->SetBranchAddress("FitTracks_refitted", &FitTracks, &b_FitTracks);
+     fChain->SetBranchAddress("TrackInfos_refitted", &TrackInfos, &b_TrackInfos);
+  }else{
+     fChain->SetBranchAddress("FitTracks", &FitTracks, &b_FitTracks);
+     fChain->SetBranchAddress("TrackInfos", &TrackInfos, &b_TrackInfos);
+  }
   fChain->SetBranchAddress("Digi_MufluxSpectrometerHits", &cDigi_MufluxSpectrometerHits, &b_Digi_MufluxSpectrometerHits);
   fChain->SetBranchAddress("Digi_MuonTaggerHits", &Digi_MuonTaggerHits, &b_Digi_MuonTaggerHits);
-  fChain->SetBranchAddress("TrackInfos", &TrackInfos, &b_TrackInfos);
   fChain->SetBranchAddress("RPCTrackY", &RPCTrackY, &b_RPCTrackY);
   fChain->SetBranchAddress("RPCTrackX", &RPCTrackX, &b_RPCTrackX);
 }
@@ -391,6 +398,8 @@ void MufluxReco::RPCextrap(Int_t nMax){
      for (Int_t nHit=0;nHit<Nhits;nHit++) {
         MuonTaggerHit* hit = (MuonTaggerHit*)Digi_MuonTaggerHits->At(nHit);
         Int_t channelID = hit->GetDetectorID();
+        auto result = std::find( deadChannels.begin(), deadChannels.end(), channelID );
+        if ( result !=  noisyChannels.end()){ continue;}
         if (first){
           Int_t layer = channelID/1000;
           h_rpcHitmaps->Fill(layer);

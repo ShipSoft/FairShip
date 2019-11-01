@@ -21,7 +21,8 @@ DAFfitter    = True
 withMaterial = True
 MCdata = False
 ########
-MCsmearing=0.04  #  + 0.027**2 -> 0.05
+# before RT correction: MCsmearing=0.04  #  + 0.027**2 -> 0.05  
+MCsmearing=0.022  #  + 0.027**2 -> 0.035
 ####### 
 cuts={}
 cuts['Ndf'] = 9
@@ -1113,7 +1114,7 @@ noisyChannels=[] # [30112016, 40012005, 40012007, 40012008, 40112031, 40112032] 
 deadChannels4MC = ROOT.std.vector('int')()
 for c in [10112001,11112012,20112003,30002042,30012026,30102021,30102025,30112013,30112018,40012014]: deadChannels4MC.push_back(c)
 deadChannelsRPC4MC = ROOT.std.vector('int')()
-for c in [31094,31095,31096,11029,11030,51141,51142,10057,10058]: deadChannelsRPC4MC.push_back(c)
+for c in [31093,31094,31095,31096,11029,11030,51141,51142,10057,10058]: deadChannelsRPC4MC.push_back(c)
 
 gol =  sGeo.GetTopVolume().GetNode("volGoliath_1")
 zgoliath = gol.GetMatrix().GetTranslation()[2]
@@ -1167,8 +1168,9 @@ xSHiP = ROOT.TTreeReader(sTree)
 muflux_Reco = ROOT.MufluxReco(xSHiP)
 for x in cuts: muflux_Reco.setCuts(x,cuts[x])
 DTEfficiencyFudgefactor(method=-1)
-if sTree.GetBranch('MCTrack'):  muflux_Reco.setNoisyChannels(deadChannels4MC)
-
+if sTree.GetBranch('MCTrack'):  
+      muflux_Reco.setNoisyChannels(deadChannels4MC)
+      muflux_Reco.setDeadChannels(deadChannelsRPC4MC)
 def MakeKeysToDThits(minToT=-999):
     keysToDThits={}
     key = -1
@@ -1399,10 +1401,10 @@ def plotRPCHitmap():
             rc = h['rpcPlot'].cd(j)
             h['rpcHitmap'+str(n)+str(l)].SetStats(0)
             if l==0: 
-              h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(s)+'Y readout; channel number N')
+              h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(n)+'Y readout; channel number N')
               h['rpcHitmap'+str(n)+str(l)].GetXaxis().SetRangeUser(0,120)
             else: 
-              h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(s)+'X readout; channel number N')
+              h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(n)+'X readout; channel number N')
             h['rpcHitmap'+str(n)+str(l)].Draw()
     rc = h['rpcPlot'].cd(j)
     h['rpcHitmap'].SetTitle('Number of hits per station ; station number ')
@@ -1416,10 +1418,11 @@ def plotRPCExample():
        if pad.GetListOfPrimitives().GetSize()==0: continue
        hist = pad.GetListOfPrimitives()[1]
        hist.SetStats(0)
+       s = hist.GetName()[9:10]
        if hist.GetTitle().find('layer 1')>0:
-          hist.SetTitle('RPC hitmap station '+str(s)+'X readout; channel number N')
+          hist.SetTitle('RPC hitmap station '+s+'X readout; channel number N')
        elif hist.GetTitle().find('layer 0')>0:
-          hist.SetTitle('RPC hitmap station '+str(s)+'Y readout; channel number N')
+          hist.SetTitle('RPC hitmap station '+s+'Y readout; channel number N')
           hist.GetXaxis().SetRangeUser(0,120)
        else:
           hist.SetTitle('Number of hits per station ; station number ')
@@ -1684,31 +1687,31 @@ def originMCmuons():
          if abs(sTree.MCTrack[m.GetMotherId()].GetPdgCode())!=443:continue
          rc = h['origin z/r muJpsi'].Fill(m.GetStartZ(),r)
 def MCJpsiProd(onlyPlotting=False):
+   beam = 3.342
    names = {}
    for c in [221,223,113,331,333,443]:
     names[c] = PDG.GetParticle(c).GetName()
    if not onlyPlotting:
-    h={}
     for c in names:
      name = names[c]
      ut.bookHist(h,name+'PandPt','P and Pt of original '+name,100,0.,400.,100,0.,10.)
      ut.bookHist(h,name+'PandPt_rec','P and Pt of original '+name+' for muons reconstructed',100,0.,400.,100,0.,10.)
-     ut.bookHist(h,name+'Y','rapidity of original '+name,60,0.,6.)
-     ut.bookHist(h,name+'Y_rec','rapidity of reconstructed '+name,60,0.,6.)
+     ut.bookHist(h,name+'Y','rapidity of original '+name,80,-2.,6.)
+     ut.bookHist(h,name+'Y_rec','rapidity of reconstructed '+name,80,-2.,6.)
     for n in range(sTree.GetEntries()):
          rc=sTree.GetEvent(n)
          for m in range(sTree.MCTrack.GetEntries()):
              p = sTree.MCTrack[m]
              if p.GetPdgCode() in names:
                 rc=h[names[p.GetPdgCode()]+'PandPt'].Fill(p.GetP(),p.GetPt())
-                rc=h[names[p.GetPdgCode()]+'Y'].Fill(p.GetRapidity())
+                rc=h[names[p.GetPdgCode()]+'Y'].Fill(p.GetRapidity()-beam)
                 nRec = 0
                 for k in range(sTree.FitTracks.GetEntries()):
                   mu = sTree.TrackInfos[k].McTrack()
                   if sTree.MCTrack[mu].GetMotherId()==m: nRec += 1
                 if nRec == 2: 
                    rc=h[names[p.GetPdgCode()]+'PandPt_rec'].Fill(p.GetP(),p.GetPt())
-                   rc=h[names[p.GetPdgCode()]+'Y_rec'].Fill(p.GetRapidity())
+                   rc=h[names[p.GetPdgCode()]+'Y_rec'].Fill(p.GetRapidity()-beam)
                 break
     ut.writeHists(h,'histos-Jpsi'+rname)
    else:
@@ -1739,6 +1742,21 @@ def MCJpsiProd(onlyPlotting=False):
      h[names[c]+'recoEff'].GetPaintedHistogram().GetYaxis().SetRangeUser(0.,5.)
      tc.Update()
      myPrint(h['acc'+names[c]],names[c]+'Acceptance')
+    for c in names:
+     ut.bookCanvas(h,'accRap'+names[c],names[c]+' acceptance',1200,800,1,2)
+     for x in [names[c]+'Y_rec',names[c]+'Y']:
+       h[x].SetStats(0)
+       h[x].SetTitle(h[x].GetTitle()+';rapidity Y;')
+     h[names[c]+'YrecoEff']=ROOT.TEfficiency(h[names[c]+'Y_rec'],h[names[c]+'Y'])
+     ROOT.gStyle.SetPalette(ROOT.kTemperatureMap)
+     tc = h['accRap'+names[c]].cd(1)
+     h[names[c]+'Y'].Draw()
+     h[names[c]+'Y_rec'].SetLineColor(ROOT.kMagenta)
+     h[names[c]+'Y_rec'].Draw('same')
+     tc = h['accRap'+names[c]].cd(2)
+     h[names[c]+'YrecoEff'].Draw()
+     myPrint(h['accRap'+names[c]],names[c]+'RapAcceptance')
+
 
 # from TrackExtrapolateTool
 parallelToZ = ROOT.TVector3(0., 0., 1.) 
@@ -4193,6 +4211,7 @@ def matchedRPCHits(aTrack,maxDistance=10.):
         if pos[0]>cuts['xLRPC1'] and pos[0]<cuts['xRRPC1'] and pos[1]>cuts['yBRPC1'] and pos[1]<cuts['yTRPC1']:
             inAcc = True
         for hit in sTree.Digi_MuonTaggerHits:
+            if hit.GetDetectorID() in deadChannelsRPC4MC: continue
             channelID = hit.GetDetectorID()
             s  = channelID/10000
             v  = (channelID-10000*s)/1000
@@ -4292,6 +4311,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                 if pos1[0]>cuts['xLRPC1'] and pos1[0]<cuts['xRRPC1'] and pos1[1]>cuts['yBRPC1'] and pos1[1]<cuts['yTRPC1']: 
                     inAcc=True
                 for hit in sTree.Digi_MuonTaggerHits:
+                    if hit.GetDetectorID() in deadChannelsRPC4MC: continue
                     nHit+=1
                     channelID = hit.GetDetectorID()
                     s  = channelID/10000
@@ -4928,6 +4948,7 @@ def muonTaggerClustering(PR=11):
             hitsPerStation[10*s+l]=[]
             clustersPerStation[10*s+l]=[]
     for m in sTree.Digi_MuonTaggerHits:
+        if m.GetDetectorID() in deadChannelsRPC4MC: continue
         layer = m.GetDetectorID()/1000
         channel = m.GetDetectorID()%1000
         hitsPerStation[layer].append(channel)
@@ -7547,15 +7568,19 @@ def recoMuonTaggerTracks():
     print "make suicid"
     os.system('kill '+str(os.getpid()))
 def anaResiduals():
-    if not sTree.GetBranch('FitTracks'):
-        print "this file has no tracks",sTree.GetCurrentFile().GetName()
+    if sTree.GetBranch('FitTracks_refitted'):
+       PR = 3
+    elif sTree.GetBranch('FitTracks'):
+       PR = 1
     else:
-        muflux_Reco.trackKinematics(3.)
-        if MCdata:
-            MCchecks()
-        else:
-            printScalers()
-        plotRPCExtrap(PR=1)
+        print "this file has no tracks",sTree.GetCurrentFile().GetName()
+        return
+    muflux_Reco.trackKinematics(3.)
+    if MCdata:
+        MCchecks()
+    else:
+        printScalers()
+        plotRPCExtrap(PR)
         norm = h['TrackMult'].GetEntries()
         print '*** Track Stats ***',norm
         ut.writeHists(h,'histos-analysis-'+rname)
@@ -7653,7 +7678,7 @@ elif options.command == "alignment":
         withCorrections = True   
     h['hitMapsX'] = 1
     importAlignmentConstants()
-    plotBiasedResiduals(PR=11,minP=10)
+    plotBiasedResiduals(PR=13,minP=10)
     ut.writeHists(h,'histos-residuals-'+rname)
     hitMapsFromFittedTracks()
 elif options.command == "plotResiduals":
