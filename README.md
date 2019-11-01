@@ -46,26 +46,6 @@ However, this won't work if you are using HTCondor. In such case you can do:
 eval alienv load FairShip/latest
 ```
 
-## Docker Instructions
-1. Build an docker image from a Dockerfile:
-    ```bash
-    git clone https://github.com/ShipSoft/FairShip.git
-    cd FairShip
-    docker build -t fairship .
-    ``` 
-2. Run the FairShip docker image:
-    ```bash
-    docker run -i -t --rm fairship /bin/bash
-    ``` 
-3. Advanced docker run options:
-    ```bash
-    docker run -i -t --rm \
-    -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v /local_workdir:/image_workdir \
-    fairship /bin/bash
-    ``` 
-    Line ```-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix``` forwards graphics from the image to your local system         (similar to ssh -X). Line ```-v /local_workdir:/image_workdir``` shares ```/local_workdir``` directory on the local system with ```/image_workdir``` directory on the docker image system.
-
 ## Run Instructions
 
 Set up the bulk of the environment from CVMFS.
@@ -101,6 +81,32 @@ python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.ro
 // use SHiP Event Display GUI
 Use quit() or Ctrl-D (i.e. EOF) to exit
 ```
+
+## Docker Instructions
+
+Docker is **not** the recommended way to run `FairShip` locally. It is ideal
+for reproducing reproducible, stateless environments for debugging, HTCondor
+and cluster use, or when a strict separation between `FairShip` and the host is
+desirable.
+
+1. Build an docker image from the provided `Dockerfile`:
+    ```bash
+    git clone https://github.com/ShipSoft/FairShip.git
+    cd FairShip
+    docker build -t fairship .
+    ``` 
+2. Run the `FairShip` docker image:
+    ```bash
+    docker run -i -t --rm fairship /bin/bash
+    ``` 
+3. Advanced docker run options:
+    ```bash
+    docker run -i -t --rm \
+    -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /local_workdir:/image_workdir \
+    fairship /bin/bash
+    ``` 
+    The option `-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` forwards graphics from the docker to your local system (similar to `ssh -X`). The option `-v /local_workdir:/image_workdir` mounts `/local_workdir` on the local system as `/image_workdir` within docker.
 
 ## Contributing Code
 
