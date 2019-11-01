@@ -6,6 +6,22 @@ FairShip is the software framework for the SHiP experiment which is based on
 FairRoot. The dependencies of FairShip are tracked and installed using
 [alibuild](https://alisw.github.io/alibuild/).
 
+### Branches
+
+<dl>
+  <dt><code>master</code></dt>
+  <dd>Main development branch.
+      All python code is <b>required to be compatible with python 2 and 3</b> until compatibility with python 2 can be dropped.</dd>
+  <dt><code>SHiP-2018</code></dt>
+  <dd>Frozen branch for the CDS, kept for backward compatibility. 
+      Python 2 only.
+      Requires aliBuild default <code>fairship-2018</code>.</dd>
+  <dt><code>muflux</code></dt>
+  <dd>Frozen branch for the muon flux analysis.
+      Python 2 only.
+      Requires aliBuild default <code>fairship-2018</code>.</dd>
+</dl>
+
 All packages are managed in Git and GitHub. Please read [the Git tutorial for
 SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
 even if you already know Git, as it explains how development is done on GitHub.
