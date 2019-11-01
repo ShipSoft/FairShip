@@ -1701,14 +1701,14 @@ def MCJpsiProd(onlyPlotting=False):
              p = sTree.MCTrack[m]
              if p.GetPdgCode() in names:
                 rc=h[names[p.GetPdgCode()]+'PandPt'].Fill(p.GetP(),p.GetPt())
-                rc=h[names[p.GetPdgCode()]+'Y'].Fill(p.GetRapidity()
+                rc=h[names[p.GetPdgCode()]+'Y'].Fill(p.GetRapidity())
                 nRec = 0
                 for k in range(sTree.FitTracks.GetEntries()):
                   mu = sTree.TrackInfos[k].McTrack()
                   if sTree.MCTrack[mu].GetMotherId()==m: nRec += 1
                 if nRec == 2: 
                    rc=h[names[p.GetPdgCode()]+'PandPt_rec'].Fill(p.GetP(),p.GetPt())
-                   rc=h[names[p.GetPdgCode()]+'Y_rec'].Fill(p.GetRapidity()
+                   rc=h[names[p.GetPdgCode()]+'Y_rec'].Fill(p.GetRapidity())
                 break
     ut.writeHists(h,'histos-Jpsi'+rname)
    else:
@@ -2513,9 +2513,12 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            oTrack = sTree.FitTracks[itrack]
            P = 5.
            fst = oTrack.getFitStatus()
-           if fst.isFitConverged(): 
-            sta = oTrack.getFittedState(0)
-            P   = sta.getMomMag()
+           if fst.isFitConverged() and fst.getNdf()>1:
+            try: 
+             sta = oTrack.getFittedState(0)
+             P   = sta.getMomMag()
+            except: 
+             print "cannot get fittedState(0)"
            hitList=[]
            for n in range(trInfo.N()):
               detID = trInfo.detId(n)
