@@ -5,6 +5,9 @@ import os
 import sys
 import getopt
 import ROOT
+# Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
+ROOT.PyConfig.IgnoreCommandLineOptions = True
+
 import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
