@@ -17,7 +17,7 @@ FairRoot. The dependencies of FairShip are tracked and installed using
       Python 2 only.
       Requires aliBuild default <code>fairship-2018</code>.</dd>
   <dt><code>muflux</code></dt>
-  <dd>Frozen branch for the muon flux analysis.
+  <dd>Branch for the muon flux analysis.
       Python 2 only.
       Requires aliBuild default <code>fairship-2018</code>.</dd>
 </dl>
