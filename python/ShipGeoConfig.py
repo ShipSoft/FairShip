@@ -4,6 +4,7 @@ import os
 import re
 import pickle
 from contextlib import contextmanager
+from future.utils import with_metaclass
 
 
 def expand_env(string):
@@ -37,7 +38,7 @@ class _SingletonDict(type):
         del(cls._instances[cls][key])
 
 
-class ConfigRegistry(dict, metaclass=_SingletonDict):
+class ConfigRegistry(with_metaclass(_SingletonDict, dict)):
     """
     Singleton registry of all Configurations
     """
