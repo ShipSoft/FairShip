@@ -62,6 +62,20 @@ However, this won't work if you are using HTCondor. In such case you can do:
 eval alienv load FairShip/latest
 ```
 
+## Local build, without access to CVMFS
+Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.
+1. Download the FairShip software
+    ```bash
+    git clone https://github.com/ShipSoft/FairShip.git
+    ```
+2. Build the software using aliBuild
+    ```bash
+    FairShip/aliBuild.sh
+    ```
+3. Load the environment
+    ```bash
+    alibuild/alienv enter FairShip/latest
+    ```
 ## Run Instructions
 
 Set up the bulk of the environment from CVMFS.
