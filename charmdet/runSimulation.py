@@ -422,13 +422,13 @@ def importFromEos(source="/eos/experiment/ship/user/truf/muflux-sim/1GeV",tag="s
        print cmd
        os.system(cmd)
 
-def exportNtupleToEos(d="simulation10GeV-withDeadChannels",update=True):
+def exportNtupleToEos(d="simulation10GeV-withDeadChannels",key='ntuple',update=True):
     eospath = "/eos/experiment/ship/user/truf/muflux-sim/"
     destination = eospath+d.replace('simulation','').split('-final')[0]
     for D in os.listdir(d):
         if os.path.isdir(d+'/'+D):
             for f in os.listdir(d+'/'+D):
-                if f.find('ntuple')==0:
+                if f.find(key)==0:
                     cmd = "xrdcp -f "+d+'/'+D+'/'+f+ " $EOSSHIP/"+destination+"/"+D+'/'+f
                     print cmd
                     os.system(cmd)

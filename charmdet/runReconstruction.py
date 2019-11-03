@@ -1,4 +1,3 @@
-
 import os,subprocess,ROOT,time,multiprocessing
 from rootpyPickler import Unpickler
 from rootpyPickler import Pickler
@@ -21,6 +20,9 @@ badFiles = []
 run = "RUN_8000_2395" # "RUN_8000_2396"
 
 eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run 
+eospathReco = '/eos/experiment/ship/data/muflux/DATA_Refit/'
+#eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
+
 
 def getFilesFromEOS():
 # list of files
@@ -53,7 +55,7 @@ def getFilesLocal():
     for fname in os.listdir('.'):
         if fname.find('.root')<0: continue
         if not fname.find('_RT')<0: continue
-        test = fname.replace('.root','_RT.root')
+        test = fname.replace('.root','_RT_refit.root')
         if os.path.isfile(test): continue
         nentries = 0
         try: 
@@ -308,7 +310,7 @@ def checkRecoRun(eosLocation=eospath,local='.'):
         if x.find('.root')<0: continue
         if not x.find('START')<0: continue
         fname      =  x[x.rfind('/')+1:]
-        RTname     = fname.replace('.root','_RT.root')
+        RTname     = fname.replace('.root','_RT_refit.root')
         histosName = "histos-residuals-"+RTname
         if not os.path.isfile(RTname): 
             print "missing RT file",fname
@@ -332,9 +334,9 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
 def makeMomDistributions(run=0):
     if run==0: fileList = checkFilesWithTracks(D='.')
     else:
-        eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'+run
+        eospathRecoR = eospathReco+run
         fileList = []
-        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathRecoR,shell=True)
         for x in temp.split('\n'):
             if x.find('.root')<0: continue
             fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
@@ -354,7 +356,6 @@ def makeMomDistributions(run=0):
 zeroField = ['2199','2200','2201']
 noRPC = ['2144','2154','2192','2210','2217','2218','2235','2236','2237','2240','2241','2243','2291','2345','2359']
 def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
-    eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
     if merge:
         for run in os.listdir('.'):
             if run.find(keyword)!=0: continue
@@ -377,7 +378,6 @@ def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
             makeMomDistributions(run)
             os.chdir('../')
 def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
-    eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
     if merge:
         for run in os.listdir('.'):
             if run.find(keyword)<0: continue
@@ -421,7 +421,7 @@ def redoMuonTracks():
 def reRunReco(r,fname):
     fRT = fname.replace('.root','_RT2.root')
     os.system('xrdcp -f $EOSSHIP/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+r+'/'+fname+' '+fRT)
-    f = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/'+r+'/'+fname.replace('.root','_RT.root'))
+    f = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/'+r+'/'+fname.replace('.root','_RT_refit.root'))
     ftemp = ROOT.TFile(fRT,'update')
     ftemp.cd('')
     upkl    = Unpickler(f)
@@ -466,12 +466,11 @@ def pot():
     for k in keys: print k,':',scalerStat[k]
 
 def makeDTEfficiency(eos=False,merge=False):
-    eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
     cmd = "hadd -f DTEff.root "
     if eos:
-        eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2199'
+        eospathRecoR = '/eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2199'
         fileList = []
-        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathRecoR,shell=True)
         for x in temp.split('\n'):
             if x.find('SPILLDATA')<0: continue
             if x.split('/')[8].find('SPILLDATA')!=0: continue
