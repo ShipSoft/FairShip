@@ -8,13 +8,12 @@ import argparse
 import logging
 shipRoot_conf.configure()
 
+
 # IMPORTANT
-# Before runnig this script please run this command in FairShip bash:
+# Before runnig this script please run this command in FairShip bash if you are dealing with the neutrino detector:
 # export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
 # this will disable Genie decays for charm particles and tau
-if 'GXMLPATH' not in os.environ:
-	logging.warn('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
-else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
+
 
 
 xsec = "gxspl-FNAL-nuSHiP-minimal.xml"# new adapted splines from Genie site
@@ -40,6 +39,7 @@ def get_arguments(): #available options
   ap.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
   ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
   ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default='ALL') # Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
+  ap.add_argument("--nudet", dest="nudet", help="option for neutrino detector", required=False, action="store_true")
   args = ap.parse_args()
   return args
 
@@ -50,6 +50,12 @@ target = args.target
 seed = args.seed
 nevents = args.nevents
 evtype = args.evtype
+nudet = args.nudet
+
+if nudet:
+ if 'GXMLPATH' not in os.environ:
+	logging.warn('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
+ else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
 
 print('Target type: ', target)
 print('Seed used in this generation: ', seed)
