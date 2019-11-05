@@ -11,7 +11,8 @@ FairRoot. The dependencies of FairShip are tracked and installed using
 <dl>
   <dt><code>master</code></dt>
   <dd>Main development branch.
-      All python code is <b>required to be compatible with python 2 and 3</b> until compatibility with python 2 can be dropped.</dd>
+      All python code is <b>required to be compatible with python 2 and 3</b> until compatibility with python 2 can be dropped.
+      Requires aliBuild default <code>fairship</code>.</dd>
   <dt><code>SHiP-2018</code></dt>
   <dd>Frozen branch for the CDS, kept for backward compatibility. 
       Python 2 only.
@@ -44,8 +45,9 @@ even if you already know Git, as it explains how development is done on GitHub.
 
 4. Build the software using aliBuild
     ```bash
-    aliBuild build FairShip --default fairship-2018 --always-prefer-system --config-dir $SHIPDIST
+    aliBuild build FairShip --default fairship --always-prefer-system --config-dir $SHIPDIST
     ```
+    If you are not building `master`, you will need to select the appropriate default (see [Branches](#branches)).
 
 If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
 
