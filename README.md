@@ -45,8 +45,9 @@ even if you already know Git, as it explains how development is done on GitHub.
 
 4. Build the software using aliBuild
     ```bash
-    aliBuild build FairShip --default fairship-2018 --always-prefer-system --config-dir $SHIPDIST
+    aliBuild build FairShip --default fairship --always-prefer-system --config-dir $SHIPDIST
     ```
+    If you are not building `master`, you will need to select the appropriate default (see [Branches](#branches)).
 
 If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
 
