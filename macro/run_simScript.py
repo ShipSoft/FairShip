@@ -5,6 +5,9 @@ import os
 import sys
 import getopt
 import ROOT
+# Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
+ROOT.PyConfig.IgnoreCommandLineOptions = True
+
 import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
@@ -190,7 +193,7 @@ else:
 #ship_geo.tauMudet.B = 0.
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
-if simEngine == "PG": tag = simEngine + "_"+str(pID)+"-"+mcEngine
+if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
 else: tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if options.eventDisplay: tag = tag+'_D'
@@ -312,7 +315,7 @@ if simEngine == "PG":
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
-  if charm!=0:
+  if options.charm!=0:
      myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
      primGen.SetTarget(ship_geo.target.z0,0.)
   else:  
