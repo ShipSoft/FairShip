@@ -518,7 +518,7 @@ def runMufluxReco(path = '.',merge=False,refit=True):
                 print "run ",d," not processed successfully"
             else:
                 if os.path.isdir(d):
-                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t '' -d "+d+" -c MufluxReco -p "+path+" &"
+                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t '' -A False -B False -C False -d "+d+" -c MufluxReco -p "+path+" &"
                     os.system(cmd)
                     time.sleep(10)
                     while 1>0:

@@ -860,6 +860,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
     if sTree.FindBranch("MCRecoDT"): MCdata = True
 #
     Ntotal = sTree.GetEntries()
+    nStart = 0
     if ncpus:
       ncpus = int(ncpus)
       nseq = int(nseq)
@@ -995,7 +996,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
                         h["recoPz/Abspx"+source].Fill(p[2],ROOT.TMath.Abs(p[0]));
                         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
     outFile = 'sumHistos-'+'-'+fdir+'.root'
-    if option.refit: outFile = 'sumHistos-'+'-'+fdir+'_refit.root'
+    if options.refit: outFile = 'sumHistos-'+'-'+fdir+'_refit.root'
     if ncpus:
        outFile=outFile.replace('.root','-'+str(nseq)+'.root')
     ut.writeHists( h,outFile)
