@@ -41,6 +41,7 @@ MufluxReco::MufluxReco(TTreeReader* t)
   TrackInfos = 0;
   RPCTrackY = 0;
   RPCTrackX = 0;
+  EventHeader = 0;
   MCTrack = 0;
   Digi_MuonTaggerHits = 0;
   cDigi_MufluxSpectrometerHits = 0;
@@ -63,6 +64,7 @@ MufluxReco::MufluxReco(TTreeReader* t)
   fChain->SetBranchAddress("Digi_MuonTaggerHits", &Digi_MuonTaggerHits, &b_Digi_MuonTaggerHits);
   fChain->SetBranchAddress("RPCTrackY", &RPCTrackY, &b_RPCTrackY);
   fChain->SetBranchAddress("RPCTrackX", &RPCTrackX, &b_RPCTrackX);
+  fChain->SetBranchAddress("EventHeader.", &EventHeader, &b_EventHeader);
 }
 
 /*
@@ -506,7 +508,7 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& p
      Int_t nmeas = fT->getNumPointsWithMeasurement();
      Int_t M = TMath::Min(nmeas-1,30);
 // check against crashes
-     if ( fstate.getMom()[2]<900 ){
+     if ( fstate.getMom()[2]<900. && fstate.getMom()[2]>1. ){
          fstate = fT->getFittedState(M);}
     }
     pos = fstate.getPos();

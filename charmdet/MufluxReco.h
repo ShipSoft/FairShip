@@ -68,6 +68,7 @@ private:
     TClonesArray    *MCTrack;
     TClonesArray    *FitTracks;
     TClonesArray    *TrackInfos;
+    FairEventHeader *EventHeader;
     TClonesArray    *RPCTrackY;
     TClonesArray    *RPCTrackX;
     TClonesArray    *Digi_MuonTaggerHits;
@@ -80,11 +81,12 @@ private:
     TBranch        *b_TrackInfos;   //!
     TBranch        *b_RPCTrackY;   //!
     TBranch        *b_RPCTrackX;   //!
+    TBranch        *b_EventHeader;   //!
     TBranch        *b_Digi_MuonTaggerHits;   //!
     TBranch        *b_MuonTaggerPoint; //!
     TBranch        *b_Digi_MufluxSpectrometerHits;   //!
     TBranch        *b_MufluxSpectrometerPoints;   //!
-   ClassDef(MufluxReco,7);
+   ClassDef(MufluxReco,8);
 };
 
 #endif
