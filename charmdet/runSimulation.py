@@ -306,7 +306,66 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
                 if count_python_processes('drifttubeMonitoring')<ncpus: break 
                 time.sleep(10)
     print "finished all the tasks."
-
+def makeHistosWithHTCondor(D='10GeV-repro',splitFactor=10,command="anaResiduals",fnames=[]):
+    commandToHist = {"anaResiduals":"histos-analysis-","MCJpsiProd":"histos-Jpsi","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
+    eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathSim,shell=True)
+    for d in temp.split('\n'):
+      if d.find('pythia8_Geant4')<0: continue
+      temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+d,shell=True)
+      fileList = []
+      for fname in temp2.split('\n'):
+              if not fname[fname.rfind('/')+1:].find('ship')==0: continue
+              if  fname.find('RT-')<0: continue
+              hfile = commandToHist[command]+fname[fname.rfind('/')+1:]
+              nfile = 'ntuple-'+fname[fname.rfind('/')+1:]
+              if command == "alignment": nfile = "histos-HitmapsFromFittedTracks-"+fname[fname.rfind('/')+1:]
+              if os.path.isfile(mufluxRecoDir+run+'/'+hfile): continue
+    # create condor sub
+              fc = open('condorX.sub','w')
+              fc.write('executable            = batchScript.sh\n')
+              fc.write('arguments             = '+fname+' '+command+' '+hfile+' '+os.environ['EOSSHIP']+mufluxRecoDir+run+'/'+hfile+' '+nfile+' '+os.environ['EOSSHIP']+mufluxRecoDir+run+'/'+nfile+' \n')
+              fc.write('should_transfer_files = YES\n')
+              fc.write('when_to_transfer_output = ON_EXIT\n')
+              x = fname[fname.rfind('/')+1:]
+              fc.write('output                = output/'+x+'.out\n')
+              fc.write('error                 = error/'+x+'.err\n')
+              fc.write('log                   = log/'+x+'.log\n')
+              fc.write('+JobFlavour = "microcentury"\n')
+              fc.write('queue\n')
+              fc.close()
+              os.system('condor_submit condorX.sub')
+              time.sleep(0.1)
+def HTCondorStats(D='10GeV-repro',command="anaResiduals",fnames=[]):
+    commandToHist = {"alignment":"histos-residuals-","anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-","hitmaps":"histos-HitmapsFromFittedTracks-"}
+    eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
+    stats = {}
+    if len(fnames)==0:
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathSim,shell=True)
+            fnames = temp.split('\n')
+    for x in fnames:
+            if x.find("pythia8")<0: continue
+            run = x[x.rfind('/')+1:]
+            eospathSimR = eospathSim+'/'+run
+            stats[run]={'recoFiles':[],'histoFiles':[]}
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathSimR,shell=True)
+            for z in temp.split('\n'):
+              if z.find('.root')<0: continue
+              stats[run]['recoFiles'].append( os.environ['EOSSHIP'] + z[z.find('/eos'):])
+    # all RT files with tracks
+            temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathSimR,shell=True)
+            for fname in stats[run]['recoFiles']:
+              if not fname.find('sys')<0: continue
+              hfile = commandToHist[command]+fname[fname.rfind('/')+1:]
+              if not temp2.find(hfile)<0:
+                   stats[run]['histoFiles'].append(hfile)
+    total = [0,0]
+    for x in stats:
+      print x,len(stats[x]['recoFiles']),len(stats[x]['histoFiles']),'missing:',len(stats[x]['recoFiles'])-len(stats[x]['histoFiles'])
+      total[0]+=len(stats[x]['recoFiles'])
+      total[1]+=len(stats[x]['histoFiles'])
+    print "summary total reco",total[0],' histos',total[1],' missing',total[0]-total[1]
+    return stats
 def makeMomResolutions(D='.',splitFactor=5):
     if D=='.':
         fileList,x,y = checkFilesWithTracks(D,splitFactor)

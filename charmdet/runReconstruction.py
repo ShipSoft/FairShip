@@ -4,6 +4,12 @@ from rootpyPickler import Pickler
 import pwd
 ncpus = int(multiprocessing.cpu_count()*3./4.)
 
+noField           = [2199,2200,2201]
+intermediateField = [2383,2388,2389,2390,2392,2395,2396]
+noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
+RPCbad = [2144,2154,2183,2192,2210,2211,2217,2218,2235,2236,2237,2240,2241,2243,2291,2345,2359]
+badRuns = [2142, 2143, 2144, 2149]
+
 pathToMacro = '$FAIRSHIP/charmdet/'
 def count_python_processes(macroName):
     username = pwd.getpwuid(os.getuid()).pw_name
@@ -19,9 +25,8 @@ fileList = {}
 badFiles = []
 run = "RUN_8000_2395" # "RUN_8000_2396"
 
-eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run 
-eospathReco = '/eos/experiment/ship/data/muflux/DATA_Refit/'
-#eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
+eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run
+eospathReco={True:'/eos/experiment/ship/data/muflux/DATA_Refit/',False:'/eos/experiment/ship/user/odurhan/muflux-recodata/'}
 
 
 def getFilesFromEOS():
@@ -50,12 +55,13 @@ def getFilesFromEOS():
     fnames.sort()
     return tmp,fnames
 
-def getFilesLocal():
+def getFilesLocal(refit=True):
 # list of files
     for fname in os.listdir('.'):
         if fname.find('.root')<0: continue
         if not fname.find('_RT')<0: continue
-        test = fname.replace('.root','_RT_refit.root')
+        if refit: test = fname.replace('.root','_RT_refit.root')
+        else:     test = fname.replace('.root','_RT.root')
         if os.path.isfile(test): continue
         nentries = 0
         try: 
@@ -304,13 +310,14 @@ def mergeHistos(local='.',command='anaResiduals'):
             N=0
     os.system(cmd)
 
-def checkRecoRun(eosLocation=eospath,local='.'):
+def checkRecoRun(eosLocation=eospath,local='.',refit=True):
     temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eosLocation,shell=True)
     for x in temp.split('\n'):
         if x.find('.root')<0: continue
         if not x.find('START')<0: continue
         fname      =  x[x.rfind('/')+1:]
-        RTname     = fname.replace('.root','_RT_refit.root')
+        if refit: RTname     = fname.replace('.root','_RT_refit.root')
+        else:     RTname     = fname.replace('.root','_RT.root')
         histosName = "histos-residuals-"+RTname
         if not os.path.isfile(RTname): 
             print "missing RT file",fname
@@ -330,11 +337,28 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
         rc = os.system(cmd)
         if rc != 0: failures.append(x)
     if len(failures)!=0: print failures
+def exportNtupleToEos(dlist=[],key='ntuple',eosLocation="/eos/experiment/ship/user/truf/muflux-reco",update=True):
+    copied=[]
+    if len(dlist)==0:
+        for d in os.listdir('.'):
+           if d.find('RUN_8000')==0: dlist.append(d)
+    for run in dlist:
+       eospath = eosLocation+"/"+run+"/Oct1/"
+       for f in os.listdir(run):
+          if f.find(key)==0:
+             ff = ROOT.TFile(run+"/"+f)
+             if not ff: continue
+             if not ff.Get('tmuflux'): continue
+             cmd = "xrdcp -f "+run+"/"+f+ " $EOSSHIP/"+eospath+f
+             print cmd
+             rc = os.system(cmd)
+             if rc == 0:  os.system('rm '+run+"/"+f)
 
-def makeMomDistributions(run=0):
+
+def makeMomDistributions(run=0,refit=True):
     if run==0: fileList = checkFilesWithTracks(D='.')
     else:
-        eospathRecoR = eospathReco+run
+        eospathRecoR = eospathReco[refit]+run
         fileList = []
         temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathRecoR,shell=True)
         for x in temp.split('\n'):
@@ -355,7 +379,7 @@ def makeMomDistributions(run=0):
 
 zeroField = ['2199','2200','2201']
 noRPC = ['2144','2154','2192','2210','2217','2218','2235','2236','2237','2240','2241','2243','2291','2345','2359']
-def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
+def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False,refit=True):
     if merge:
         for run in os.listdir('.'):
             if run.find(keyword)!=0: continue
@@ -365,19 +389,19 @@ def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
             os.chdir('../')
     else:
         if len(fnames)==0:
-            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco[refit],shell=True)
             fnames = temp.split('\n')
         for x in fnames:
             if x.find(keyword)<0: continue
             run = x[x.rfind('/')+1:]
             if not run in os.listdir('.'): os.system('mkdir '+run)
-            temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco+run,shell=True)
+            temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco[refit]+run,shell=True)
             if temp2.find('.root')<0: continue
             os.chdir(run)
             print "go for",run
             makeMomDistributions(run)
             os.chdir('../')
-def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
+def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False,refit=True):
     if merge:
         for run in os.listdir('.'):
             if run.find(keyword)<0: continue
@@ -387,7 +411,7 @@ def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
             os.chdir('../')
     else:
         if len(fnames)==0:
-            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco,shell=True)
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco[refit],shell=True)
             fnames = temp.split('\n')
         for x in fnames:
             if x.find(keyword)<0: continue
@@ -396,7 +420,7 @@ def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
                 print "directory for this run does not exist",run
                 # os.system('mkdir '+run)
                 continue
-            temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco+run,shell=True)
+            temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco[refit]+run,shell=True)
             if temp2.find('.root')<0: continue
             os.chdir(run)
             fileList = []
@@ -417,28 +441,6 @@ def redoMuonTracks():
             if count_python_processes('drifttubeMonitoring')<ncpus: break 
             time.sleep(10)
     print "finished all the tasks."
-
-def reRunReco(r,fname):
-    fRT = fname.replace('.root','_RT2.root')
-    os.system('xrdcp -f $EOSSHIP/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+r+'/'+fname+' '+fRT)
-    f = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/'+r+'/'+fname.replace('.root','_RT_refit.root'))
-    ftemp = ROOT.TFile(fRT,'update')
-    ftemp.cd('')
-    upkl    = Unpickler(f)
-    tMinAndTmax = upkl.load('tMinAndTmax')
-    pkl = Pickler(ftemp)
-    pkl.dump(tMinAndTmax,'tMinAndTmax')
-    ftemp.mkdir('histos')
-    ftemp.histos.cd('')
-    for tc in ['TDCMapsX','hitMapsX']:
-        tmp = f.histos.Get(tc)
-        X = tmp.Clone()
-        X.Write()
-    ftemp.Write("",ROOT.TFile.kOverwrite)
-    ftemp.Close()
-    cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c recoStep1 -u 1 -f "+fRT+' &'
-    os.system(cmd)
-    print 'step 1:', cmd
 
 def pot():
     fileList=[]
@@ -465,12 +467,12 @@ def pot():
     keys.sort()
     for k in keys: print k,':',scalerStat[k]
 
-def makeDTEfficiency(eos=False,merge=False):
+def makeDTEfficiency(eos=False,merge=False,refit=True):
     cmd = "hadd -f DTEff.root "
     if eos:
-        eospathRecoR = '/eos/experiment/ship/user/odurhan/muflux-recodata/RUN_8000_2199'
+        run = 'RUN_8000_2199'
         fileList = []
-        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathRecoR,shell=True)
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco[refit]+run,shell=True)
         for x in temp.split('\n'):
             if x.find('SPILLDATA')<0: continue
             if x.split('/')[8].find('SPILLDATA')!=0: continue
@@ -488,7 +490,7 @@ def makeDTEfficiency(eos=False,merge=False):
                 if not eos and name.find('SPILL')==0: fname = name
                 elif eos and name.find('ntuple-SPILL')==0:
                     tmp = os.path.abspath('.').split('/')
-                    fname = os.environ['EOSSHIP']+eospathReco+tmp[len(tmp)-1]+'/'+name.split('-')[1]
+                    fname = os.environ['EOSSHIP']+eospathReco[refit]+tmp[len(tmp)-1]+'/'+name.split('-')[1]
                 else:
                     continue
                 cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c DTeffWithRPCTracks -f "+fname+' &'
@@ -502,17 +504,13 @@ def makeDTEfficiency(eos=False,merge=False):
         if merge: os.system(cmd)
     print "finished all the tasks."
 
-noField           = [2199,2200,2201]
-intermediateField = [2383,2388,2389,2390,2392,2395,2396]
-noTracks          = [2334, 2335, 2336, 2337, 2345, 2389, 2390]
-RPCbad = [2144,2154,2183,2192,2210,2211,2217,2218,2235,2236,2237,2240,2241,2243,2291,2345,2359]
-badRuns = [2142, 2143, 2144, 2149]
-
-def runMufluxReco(path = '.',merge=False):
+def runMufluxReco(path = '.',merge=False,refit=True):
     sumHistos=[]
     for d in os.listdir(path):
         if d.find('RUN_8000')==0:
-            if os.path.isfile("sumHistos--"+d+".root"):
+            hname = "sumHistos--"+d+".root"
+            if refit: hname = "sumHistos--"+d+"_refit.root"
+            if os.path.isfile(hname):
                 r = int(d.split('_')[2])
                 if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
                 sumHistos.append(d)
@@ -527,9 +525,11 @@ def runMufluxReco(path = '.',merge=False):
                         if count_python_processes('MufluxNtuple')<ncpus: break 
                         time.sleep(10)
     if merge:
-        cmd = 'hadd -f sumHistos.root '
+        hname = "sumHistos.root "
+        if refit: hname = "sumHistos_refit.root "
+        cmd = 'hadd -f '+hname
         for d in sumHistos:
-            cmd += "sumHistos--"+d+".root "
+            cmd += hname+d+".root "
         os.system(cmd)
 
 def checkNtuples(path = '.'):
@@ -542,12 +542,14 @@ def checkNtuples(path = '.'):
                     if not test: notOK.append(path+'/'+d+'/'+n)
     return notOK
 
-def invMass(path = '.',merge=False):
+def invMass(path = '.',merge=False,refit=True):
+    hname = "InvMass"
+    if refit: hname = "InvMass-refitted"
     if merge:
-        cmd = 'hadd -f sumInvMass.root '
-        cmd2 = 'hadd -f ntuple-InvMass.root '
+        cmd = 'hadd -f sum'+hname+'.root '
+        cmd2 = 'hadd -f ntuple-'+hname+'.root '
         for d in os.listdir(path):
-            if d.find('invMass')==0:
+            if d.find(hname)==0:
                 cmd += d+" "
                 cmd2 += 'ntuple-'+d+" "
         os.system(cmd)
@@ -575,3 +577,155 @@ def importHistos(keyword = 'RUN_8000_2',histoname="momDistributions"):
             if not run in os.listdir('.'):
                 os.system('mkdir '+run)
             os.system('cp '+p+run+'/'+histoname+'.root '+run)
+def eosMerge(cmd,copy=True):
+   if not copy:
+      os.system(cmd)
+      return
+   tmp = cmd.split(' ')
+   fileList = []
+   newCmd = 'hadd -f -j '+str(multiprocessing.cpu_count())+' '+tmp[2]+' '
+   for x in range(3,len(tmp)-1):
+       histo = tmp[x][tmp[x].rfind('/')+1:]
+       if tmp[x].find('/eos')>0:
+          fileList.append(histo)
+          os.system('xrdcp '+tmp[x]+' '+histo)
+       newCmd += histo + ' '
+   os.system(newCmd)
+   for x in fileList: os.system('rm '+x)
+
+def mergeGoodRuns(command="anaResiduals",refit=True,excludeRPC=False):
+   commandToSum  = {"anaResiduals":"momDistributions","momResolution":"momentumResolution","plotDTPoints":"DTPoints","alignment":"residuals","hitmaps":"HitmapsFromFittedTracks"}
+   outFile = commandToSum[command]
+   if excludeRPC: outFile = outFile+'-onlyRPCGood'
+   if refit: outFile = outFile+'_refit.root '
+   else:     outFile = outFile+'.root '
+   cmd = 'hadd -f '+outFile
+   for f in os.listdir('.'):
+       if f.find('refit')<0 and refit or f.find('refit')>0 and not option.refit: continue
+       if f.find('root')<0: continue
+       k = f.find(commandToSum[command]+'-RUN_8000_')
+       if k<0:continue
+       l = len(commandToSum[command]+'-RUN_8000_')
+       r = int(f[l+k:l+k+4])
+       if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
+       if excludeRPC and (r in RPCbad or (r>2198 and r < 2275)) : continue
+       cmd += f+' '
+   os.system(cmd)
+
+mufluxRecoDir = "/eos/experiment/ship/user/truf/muflux-reco/"
+def massProductionHTCondor(keyword = 'RUN_8000_23',fnames=[],command="anaResiduals",merge=False,refit=True):
+    commandToHist = {"alignment":"histos-residuals-","anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-","hitmaps":"histos-HitmapsFromFittedTracks-"}
+    commandToSum  = {"anaResiduals":"momDistributions","momResolution":"momentumResolution","plotDTPoints":"DTPoints","alignment":"residuals","hitmaps":"HitmapsFromFittedTracks"}
+    if merge:
+        if len(fnames)==0:
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+mufluxRecoDir,shell=True)
+            fnames = temp.split('\n')
+        for x in fnames:
+            if x.find(keyword)<0: continue
+            run = x[x.rfind('/')+1:]
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+mufluxRecoDir+run,shell=True)
+            output = commandToSum[command]+'-'+run+'.root '
+            cmd = 'hadd -f '+output
+            tag = commandToHist[command]
+            badFiles = []
+            N=0
+            for x in temp.split('\n'):
+               if refit and x.find('refit')<0 or x.find('refit')>0 and not option.refit: continue
+               if not x.find(tag)<0 :
+                 size = x.split(' ')[7]
+                 hname = x.split(' ')[8]
+                 if size==0:
+                   print "remove zero file:",run,hname
+                   # os.system("xrdfs "+os.environ['EOSSHIP']+" rm "+hfile)
+                 else:
+                   cmd += (os.environ['EOSSHIP']+hname+' ')
+                   N+=1
+                 if N>500:
+                   eosMerge(cmd,copy=True)
+                   os.system('cp '+output+' tmp.root')
+                   cmd = "hadd -f "+output+' tmp.root '
+                   N=0
+            eosMerge(cmd,copy=True)
+    else:
+        if len(fnames)==0:
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco[refit],shell=True)
+            fnames = temp.split('\n')
+        for x in fnames:
+            if x.find(keyword)<0: continue
+            run = x[x.rfind('/')+1:]
+            if not run in os.listdir(mufluxRecoDir): os.system('mkdir '+mufluxRecoDir+'/'+run)
+            eospathRecoR = eospathReco[refit]+run
+            fileList = []
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathRecoR,shell=True)
+            for x in temp.split('\n'):
+              if x.find('.root')<0: continue
+              fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
+    # all RT files with tracks
+            for fname in fileList:
+              if not fname.find('sys')<0: continue
+              hfile = commandToHist[command]+fname[fname.rfind('/')+1:]
+              nfile = 'ntuple-'+fname[fname.rfind('/')+1:]
+              if command == "alignment": nfile = "histos-HitmapsFromFittedTracks-"+fname[fname.rfind('/')+1:]
+              if os.path.isfile(mufluxRecoDir+run+'/'+hfile):  continue
+    # create condor sub
+              fc = open('condorX.sub','w')
+              fc.write('executable            = batchScript.sh\n')
+              fc.write('arguments             = '+fname+' '+command+' '+hfile+' '+os.environ['EOSSHIP']+mufluxRecoDir+run+'/'+hfile+' '+nfile+' '+os.environ['EOSSHIP']+mufluxRecoDir+run+'/'+nfile+' \n')
+              fc.write('should_transfer_files = YES\n')
+              fc.write('when_to_transfer_output = ON_EXIT\n')
+              x = fname[fname.rfind('/')+1:]
+              fc.write('output                = output/'+x+'.out\n')
+              fc.write('error                 = error/'+x+'.err\n')
+              fc.write('log                   = log/'+x+'.log\n')
+              fc.write('+JobFlavour = "microcentury"\n')
+              fc.write('queue\n')
+              fc.close()
+              os.system('condor_submit condorX.sub')
+              time.sleep(0.1)
+
+def importFromEos(source="/eos/experiment/ship/user/truf/muflux-reco",tag="root",update=False):
+    remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+source,shell=True).split('\n')
+    for x in remote:
+      if x.find('eos')<0:continue
+      fname = x.split(source)[1]
+      files = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+source+fname,shell=True).split('\n')
+      for y in files:
+       if y.find('eos')<0:continue
+       afile = '/eos'+y.split('/eos')[1]
+       if afile.find(tag)<0:continue
+       destination = afile.split(source)[1]
+       cmd = "xrdcp "
+       if update: cmd += " -f "
+       cmd += " $EOSSHIP/"+afile+" "+destination[1:]
+       print cmd
+       os.system(cmd)
+def HTCondorStats(keyword = 'RUN_8000_23',fnames=[],command="anaResiduals",refit=True):
+    commandToHist = {"alignment":"histos-residuals-","anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-","hitmaps":"histos-HitmapsFromFittedTracks-"}
+    stats = {}
+    if len(fnames)==0:
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathReco[refit],shell=True)
+            fnames = temp.split('\n')
+    for x in fnames:
+            if x.find(keyword)<0: continue
+            run = x[x.rfind('/')+1:]
+            eospathRecoR = eospathReco[refit]+run
+            stats[run]={'recoFiles':[],'histoFiles':[]}
+            temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathRecoR,shell=True)
+            for z in temp.split('\n'):
+              if z.find('.root')<0: continue
+              stats[run]['recoFiles'].append( os.environ['EOSSHIP'] + z[z.find('/eos'):])
+    # all RT files with tracks
+            temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+mufluxRecoDir+run,shell=True)
+            for fname in stats[run]['recoFiles']:
+              if not fname.find('sys')<0: continue
+              hfile = commandToHist[command]+fname[fname.rfind('/')+1:]
+              if not temp2.find(hfile)<0:
+                   stats[run]['histoFiles'].append(hfile)
+    total = [0,0]
+    for x in stats:
+      print x,len(stats[x]['recoFiles']),len(stats[x]['histoFiles']),'missing:',len(stats[x]['recoFiles'])-len(stats[x]['histoFiles'])
+      total[0]+=len(stats[x]['recoFiles'])
+      total[1]+=len(stats[x]['histoFiles'])
+    print "summary total reco",total[0],' histos',total[1],' missing',total[0]-total[1]
+    return stats
+

@@ -6509,6 +6509,15 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,e
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i][2],'PL')
                 h[d+i+'p/pt'+xx+'_x'].Draw(opt[i][0])
             h['leg'+ts+str(tc)].Draw('same')
+            tx = h['dummy'].cd()
+            tx.SetLogy(1)
+            for i in ['','MC','MC10']:
+                if i=='MC10' and d != "":continue
+                source = ""
+                xx = x+source
+                h[d+i+'p/pt'+xx+'_x'].Draw(opt[i][0])
+            h['leg'+ts+str(tc)].Draw('same')
+            myPrint(h['dummy'],label+'-simple-P'+d+x)
             tc = 4
             rc = h[ts].cd(tc)
             rc.SetLogy(1)
@@ -6520,6 +6529,15 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,e
                 h[d+i+'p/pt'+xx+'_y'].Draw(opt[i][0])
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i][2],'PL')
             h['leg'+ts+str(tc)].Draw('same')
+            tx = h['dummy'].cd()
+            tx.SetLogy(1)
+            for i in ['','MC']:
+                if i=='MC10' and d != "":continue
+                source = ""
+                xx = x+source
+                h[d+i+'p/pt'+xx+'_y'].Draw(opt[i][0])
+            h['leg'+ts+str(tc)].Draw('same')
+            myPrint(h['dummy'],label+'-simple-Pt'+d+x)
             tc = 5
             rc.SetLeftMargin(0.2)
             rc = h[ts].cd(tc)
@@ -7121,8 +7139,9 @@ def energyLossRPC():
     h['eloss12'].Draw('same')
     myPrint(h['cx'],'energyLossBetweenRPCs')
 def plotResidualExample():
-    #ut.readHists(h,'residuals.root')
-    plotBiasedResiduals(onlyPlotting=True)
+    if not h.has_key('biasedResiduals'):
+       ut.readHists(h,'residuals.root')
+       plotBiasedResiduals(onlyPlotting=True)
     ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
     h['Residualsexample'].cd()
     h['theResidualPlot']=h['biasRes_1_x1'].Clone('theResidualPlot')
@@ -7142,6 +7161,7 @@ def plotResidualExample():
     fitFunction = h['biasRes_1_x1'].GetFunction('gauss')
     fitResult = h[hname].Fit(fitFunction,'S','',-0.5,0.5)
     h[hname].Draw()
+    h['Residualsexample'].Update()
     stats = h['Residualsexample'].GetPrimitive('stats')
     stats.SetOptFit(10111)
     stats.SetFitFormat('5.4g')
@@ -7156,8 +7176,8 @@ def plotResidualExample():
     h['biasResDist_projy'].Draw()
     h[hname].SetTitle(';[cm]')
     fitFunction = h['biasRes_1_x1'].GetFunction('gauss')
-    fitFunction.FixParameter(3,0)
-    fitResult = h[hname].Fit(fitFunction,'SQ','',-0.11,0.04)
+    fitFunction.ReleaseParameter(3)
+    fitResult = h[hname].Fit(fitFunction,'SQ','',-0.3,0.3)
     h[hname].Draw()
     stats = h['Residualsexample'].GetPrimitive('stats')
     stats.SetOptFit(10111)
