@@ -504,22 +504,32 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& p
     delete state;
    }else{
     genfit::StateOnPlane fstate = fT->getFittedState(0);
+    pos = fstate.getPos();
+    mom = fstate.getMom();
     if ( z > cuts["lastDTStation_z"]){
      Int_t nmeas = fT->getNumPointsWithMeasurement();
      Int_t M = TMath::Min(nmeas-1,30);
-// check against crashes
-     if ( fstate.getMom()[2]<900. && fstate.getMom()[2]>1. ){
-         fstate = fT->getFittedState(M);}
+// more stable against crashes
+     if ( fstate.getMom()[2]<900. && fstate.getMom()[2]>1. && M!=1 ){
+         fstate = fT->getFittedState(M);
+         pos = fstate.getPos();
+         mom = fstate.getMom();
+     } else {
+         auto CRep = fT->getCardinalRep();
+         auto point = fT->getPointWithMeasurementAndFitterInfo(1,CRep);
+         genfit::KalmanFitterInfo* info = dynamic_cast<genfit::KalmanFitterInfo*>(point->getFitterInfo(CRep));
+         auto xstate = info->getBackwardUpdate();
+         pos = xstate->getPos();
+         mom = xstate->getMom();
+         }
+     }
     }
-    pos = fstate.getPos();
-    mom = fstate.getMom();
 // use linear extrap 
     Float_t lam = (z-pos[2])/mom[2];
     pos[2]=z;
     pos[0]=pos[0]+lam*mom[0];
     pos[1]=pos[1]+lam*mom[1];
     rc = 0;
-  }
  }
   return rc;
 }

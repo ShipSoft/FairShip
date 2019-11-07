@@ -504,7 +504,7 @@ def makeDTEfficiency(eos=False,merge=False,refit=True):
         if merge: os.system(cmd)
     print "finished all the tasks."
 
-def runMufluxReco(path = '.',merge=False,refit=True):
+def runMufluxReco(path = "/eos/experiment/ship/user/truf/muflux-reco",merge=False,refit=True):
     sumHistos=[]
     for d in os.listdir(path):
         if d.find('RUN_8000')==0:
@@ -513,12 +513,13 @@ def runMufluxReco(path = '.',merge=False,refit=True):
             if os.path.isfile(hname):
                 r = int(d.split('_')[2])
                 if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
-                sumHistos.append(d)
+                sumHistos.append(hname)
             elif merge:
                 print "run ",d," not processed successfully"
             else:
                 if os.path.isdir(d):
-                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t '' -A False -B False -C False -d "+d+" -c MufluxReco -p "+path+" &"
+                    if refit: cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -r -t '' -A False -B False -C False -d "+d+" -c MufluxReco -p "+path+" &"
+                    else:     cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py  -t '' -A False -B False -C False -d "+d+" -c MufluxReco -p "+path+" &"
                     os.system(cmd)
                     time.sleep(10)
                     while 1>0:
@@ -529,7 +530,7 @@ def runMufluxReco(path = '.',merge=False,refit=True):
         if refit: hname = "sumHistos_refit.root "
         cmd = 'hadd -f '+hname
         for d in sumHistos:
-            cmd += hname+d+".root "
+            cmd += d+' '
         os.system(cmd)
 
 def checkNtuples(path = '.'):
@@ -550,14 +551,17 @@ def invMass(path = '.',merge=False,refit=True):
         cmd2 = 'hadd -f ntuple-'+hname+'.root '
         for d in os.listdir(path):
             if d.find(hname)==0:
+                r = int(d.split('_')[2])
+                if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
                 cmd += d+" "
                 cmd2 += 'ntuple-'+d+" "
         os.system(cmd)
         os.system(cmd2)
     else:
         for d in os.listdir(path):
-            if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):
-                cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -d "+d+" -p /eos/experiment/ship/user/truf/muflux-reco &"
+            if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):              
+                if refit: cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -r -c invMass -A False -B False -C False -d "+d+" -p /eos/experiment/ship/user/truf/muflux-reco &"
+                else:     cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -A False -B False -C False -d "+d+" -p /eos/experiment/ship/user/truf/muflux-reco &"
                 os.system(cmd)
                 time.sleep(10)
                 while 1>0:

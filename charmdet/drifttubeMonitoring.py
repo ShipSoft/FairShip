@@ -5927,8 +5927,7 @@ def ghostSuppression(hname = "sumHistos--simulation10GeV-withDeadChannels.root")
             if c=='': continue
             print "%s efficiency=%5.3F"%(c,ntracks[c]/ntracks[''])
 
-def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,eric=False,version="-final",withOverFlow=False,withDisplay=True,cuts=''):
-    ptMax = 4.
+def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,effCor=False,eric=False,version="-final",withOverFlow=False,withDisplay=True,cuts=''):
     # possible cuts: '', 'All', 'Chi2<', 'Delx<', 'Dely<'
     # efficiency MC larger than data, 0.105 for cuts = All, but only for muon tagged!
     # otherwise only Chi2 cut, 0.034 
@@ -6625,7 +6624,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,e
                 h['I-'+proj+xx+'Ratio'].SetLineColor(ROOT.kBlue)
                 h['I-'+proj+xx+'Ratio'].SetMaximum(3.)
                 if xx.find('_x')<0: 
-                    h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,4.0)
+                    h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(0.,ptMax)
                 else:               
                     h['I-'+proj+xx+'Ratio'].GetXaxis().SetRangeUser(pMin,pMax)
                 h['I-'+proj+xx+'Ratio'].SetMinimum(0.0)
@@ -6695,7 +6694,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,e
             h[proj+x+'Ratio'].SetMinimum(-1.)
             h[proj+x+'Ratio'].SetMaximum(+1.)
             h[proj+x+'Ratio'].GetXaxis().SetRangeUser(pMin,pMax)
-            h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,4.0)
+            h[proj+x+'Ratio'].GetYaxis().SetRangeUser(0.,ptMax)
             h[proj+x+'Ratio'].SetStats(0)
             h[proj+x+'Ratio'].SetMarkerSize(1.2)
             h[proj+x+'Ratio'].Draw('texte')
@@ -6745,7 +6744,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,e
                 if rebinValue>1: 
                   h[hname].Rebin(rebinValue)
                   h[hname].Scale(1./rebinValue)
-                h[hname].GetXaxis().SetRangeUser(0.,4.)
+                h[hname].GetXaxis().SetRangeUser(0.,ptMax)
                 h[hname].SetMaximum(hMaPx*1.1)
                 h[hname].SetMinimum(0.)
                 h[hname].SetStats(0)
@@ -6766,13 +6765,13 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,simpleEffCor=0.023,effCor=False,e
         proj = 'p/pt'
         hname = proj+x+interval
         err=ROOT.Double()
-        data = h[hname].IntegralAndError(0,h[hname].FindBin(4.),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        data = h[hname].IntegralAndError(0,h[hname].FindBin(ptMax),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_data=err/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_data = ROOT.TMath.Sqrt(sig_data**2+(data*daSysError)**2)
-        mc   = h['MC'+hname].IntegralAndError(0,h[hname].FindBin(4.),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        mc   = h['MC'+hname].IntegralAndError(0,h[hname].FindBin(ptMax),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_MC  = err/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_MC = ROOT.TMath.Sqrt(sig_MC**2+(mc*mcSysError)**2)
-        mcCharm = h['MC'+hname.replace('_y','charm_y')].IntegralAndError(0,h[hname].FindBin(4.),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        mcCharm = h['MC'+hname.replace('_y','charm_y')].IntegralAndError(0,h[hname].FindBin(ptMax),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
         ratio = data/mc
         sig_ratio = ROOT.TMath.Sqrt( (ratio/data*sig_data)**2+(ratio/mc*sig_MC)**2)
         sig_Charm=err/POTdata/(pInterval[1]-pInterval[0])*1E9

@@ -66,13 +66,13 @@ if not options.listOfFiles:
      if path.find('eos')<0:
         for x in os.listdir(path):
             if x.find('ntuple-SPILL')<0: continue
-            if x.find('refit')<0 and option.refit or x.find('refit')>0 and not option.refit: continue
+            if x.find('refit')<0 and options.refit or x.find('refit')>0 and not options.refit: continue
             countFiles.append(path+'/'+x)
      else:
         temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+path,shell=True)
         for x in temp.split('\n'):
             if x.find('ntuple-SPILL')<0: continue
-            if x.find('refit')<0 and option.refit or x.find('refit')>0 and not option.refit: continue
+            if x.find('refit')<0 and options.refit or x.find('refit')>0 and not options.refit: continue
             countFiles.append(os.environ["EOSSHIP"]+"/"+x)
      for x in countFiles:
         sTreeData.Add(x)
@@ -1211,6 +1211,9 @@ def myDraw(variable,cut):
  # hMC['10GeV'].Draw(variable,str(hMC['weights']['1GeV'])+'*('+cut+')')
  # hMC['10eV'].Draw(variable.replace(">>",">>+"),str(hMC['weights']['1GeV'])+'*('+cut+')')
  
+jpsiCascadeContr = 7./33.
+# The elastic proton proton cross section at ~27GeV is about 7mbar. The inelastic cross section is about 33mbar. Since we have a thick target, any proton from the elastic scattering will interact 
+# inelastic somewhere else.
 def diMuonAnalysis():
  hData['f'] = ROOT.TFile('ntuple-InvMass.root')
  sTreeData  = hData['f'].nt
@@ -1226,6 +1229,7 @@ def diMuonAnalysis():
     # 10GeV MC,       66.02 Billion PoT 
     # using 626 POT/mu-event and preliminary counting of good tracks -> 12.63 -> pot factor 7.02
     # using 710 POT/mu-event, full field
+# 
  simpleEffCor = 0.024
  MCStats = {'1GeV': 1.806E9,'10GeV':66.02E9}
  mcSysError = 0.03
@@ -1965,8 +1969,10 @@ def fitWithTwoCB():
     for M in ['psi(1S)','SignalLow']:
      N = hData['fitResult'+fit][ptCut][M][0]
      E = hData['fitResult'+fit][ptCut][M][1]
-     MCN = hMC['fitResult'+fit][ptCut][M][0]
-     MCE = hMC['fitResult'+fit][ptCut][M][1]
+     fudgeFactor = 1.
+     if M=='psi(1S)': fudgeFactor = (1.+jpsiCascadeContr)
+     MCN = hMC['fitResult'+fit][ptCut][M][0]*fudgeFactor
+     MCE = hMC['fitResult'+fit][ptCut][M][1]*fudgeFactor
 # '10GeV':MCStats['10GeV']/dataStats/(1+simpleEffCor*2)
      R = N/MCN * hMC['weights']['10GeV']
      ER = ROOT.TMath.Sqrt( (R/N*E)**2 + (R/MCN*MCE)**2)
