@@ -550,7 +550,8 @@ def invMass(path = '.',merge=False,refit=True):
         cmd = 'hadd -f sum'+hname+'.root '
         cmd2 = 'hadd -f ntuple-'+hname+'.root '
         for d in os.listdir(path):
-            if d.find(hname)==0:
+            if refit and d.find('refit')<0: continue
+            if d.find('invMass')==0:
                 r = int(d.split('_')[2])
                 if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
                 cmd += d+" "
@@ -670,7 +671,14 @@ def massProductionHTCondor(keyword = 'RUN_8000_23',fnames=[],command="anaResidua
               hfile = commandToHist[command]+fname[fname.rfind('/')+1:]
               nfile = 'ntuple-'+fname[fname.rfind('/')+1:]
               if command == "alignment": nfile = "histos-HitmapsFromFittedTracks-"+fname[fname.rfind('/')+1:]
-              if os.path.isfile(mufluxRecoDir+run+'/'+hfile):  continue
+              if os.path.isfile(mufluxRecoDir+run+'/'+hfile):
+    # check that ntuple is ok 
+                  ntupleOK = True
+                  if  command == "anaResiduals":
+                      if os.path.isfile(mufluxRecoDir+run+'/'+nfile):
+                          test = ROOT.TFile.Open(os.environ['EOSSHIP']+mufluxRecoDir+run+'/'+nfile)
+                          if not test.Get('tmuflux'): ntupleOK=False
+                  if ntupleOK :continue
     # create condor sub
               fc = open('condorX.sub','w')
               fc.write('executable            = batchScript.sh\n')

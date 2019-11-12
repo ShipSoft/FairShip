@@ -55,21 +55,21 @@ if options.path != "": gPath = options.path+'/'
 fdir = options.directory
 
 Nfiles = 0
-if not fdir: 
+if not fdir:
     Nfiles = 2000
-    fdir   = "RUN_8000_2403"
+    fdir   = "/eos/experiment/ship/user/truf/muflux-reco/RUN_8000_2403"
 if not options.listOfFiles:
     sTreeData = ROOT.TChain('tmuflux')
     if withData:
      path = gPath + fdir
      countFiles=[]
-     if path.find('eos')<0:
+     if fdir.find('eos')<0:
         for x in os.listdir(path):
             if x.find('ntuple-SPILL')<0: continue
             if x.find('refit')<0 and options.refit or x.find('refit')>0 and not options.refit: continue
             countFiles.append(path+'/'+x)
      else:
-        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+path,shell=True)
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+fdir,shell=True)
         for x in temp.split('\n'):
             if x.find('ntuple-SPILL')<0: continue
             if x.find('refit')<0 and options.refit or x.find('refit')>0 and not options.refit: continue
@@ -780,7 +780,7 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
             h[x+'Pt'].Add(h[x+'Pt1GeVnorm'])
         ut.writeHists(h,'trueMoms-'+MCType+'.root')
     else:
-        ut.readHists(h,'trueMoms-withDeadChannels.root')
+        ut.readHists(h,'trueMoms-repro.root')
         ut.readHists(h0,'trueMoms-0.root')
         for k in ['P','Pt']:
             t = "true Mom "+k
@@ -1004,7 +1004,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
 def dEdxCorrection(p):
  # +7.3    # most probably ~7.5, mean 6.9.
  dE = -7.63907  -0.0315131  * p + 0.000168569 * p*p
- return -dE
+ return -dE*(1-0.085)  # fudge factor reversed engineering
 def invMass(sTree,h,nseq=0,ncpus=False):
     ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
@@ -1015,7 +1015,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     ut.bookHist(h,'p/ptmuJ','p/pt of mu from Jpsi',100,0.0,400.0,100,0.0,10.0)
     MCdata = False
     if sTree.FindBranch("MCRecoDT"): MCdata = True
-    if MCdata: 
+    if MCdata:
        name = "ntuple-invMass-MC.root"
        if ncpus:
           name = name.replace('.root','-'+str(nseq)+'.root')
@@ -1215,9 +1215,9 @@ jpsiCascadeContr = 7./33.
 # The elastic proton proton cross section at ~27GeV is about 7mbar. The inelastic cross section is about 33mbar. Since we have a thick target, any proton from the elastic scattering will interact 
 # inelastic somewhere else.
 def diMuonAnalysis():
- hData['f'] = ROOT.TFile('ntuple-InvMass.root')
+ hData['f'] = ROOT.TFile('ntuple-InvMass-refitted.root')
  sTreeData  = hData['f'].nt
- hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV.root')
+ hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV-repro.root')
  hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV.root')
  hMC['1GeV'] =hMC['f1'].nt
  hMC['10GeV']=hMC['f10'].nt
@@ -1843,8 +1843,11 @@ def fitWithTwoCB():
    hname = c+v+'_'+str(ptCut)
    print "+++++ Fit",hname
    myCB.FixParameter(9,10.) # alpha positive and large -> gauss part only
+   myCB.FixParameter(5,10.) # alpha positive and large -> gauss part only
    rc = h[hname].Fit(myCB,'S','',0.5,5.)
    myCB.ReleaseParameter(9)
+   rc = h[hname].Fit(myCB,'SE','',0.5,5.)
+   myCB.ReleaseParameter(5)
    rc = h[hname].Fit(myCB,'SE','',0.5,5.)
    fitResult=rc.Get()
    if math.isnan(fitResult.ParError(1)) or math.isnan(fitResult.ParError(6)):
@@ -2033,9 +2036,9 @@ def fitWithTwoCB():
    hMC[hname+'MC'].SetMaximum(1.1*max(hMC[hname+'MC'].GetMaximum(),hData[hname+'Data'].GetMaximum()))
    if p==2: 
         hMC[hname+'MC'].SetMaximum(3.5)
-        hMC[hname+'MC'].SetMinimum(2.)
+        hMC[hname+'MC'].SetMinimum(3.)
    if p==3: 
-        hMC[hname+'MC'].SetMaximum(0.6)
+        hMC[hname+'MC'].SetMaximum(0.4)
         hMC[hname+'MC'].SetMinimum(0.3)
    hMC[hname+'MC'].Draw()
    hData[hname+'Data'].Draw('same')
@@ -2243,6 +2246,13 @@ def analzyeMuonScattering():
   nt = hMC['10GeV']
   ntD  = hData['f'].nt
   ut.bookHist(hMC, 'dEdx','dE;dE [GeV/c^{2}]',100,-50.,25.,20,0.,200.)
+  ut.bookHist(hMC, 'scatteringX','theta; rad ',100,-0.05,0.05,20,0.,200.)
+  ut.bookHist(hMC, 'scatteringXcor','theta; rad ',100,-0.05,0.05,20,0.,200.)
+  ut.bookHist(hMC, 'scatteringY','thetaX; rad ',100,-0.05,0.05,20,0.,200.)
+  ut.bookHist(hMC, 'scatteringYcor','thetaY; rad ',100,-0.05,0.05,20,0.,200.)
+  ut.bookCanvas(hMC,'scattering','scattering X and Y',1600,900,4,2)
+
+  ROOT.gROOT.cd()
   nt.Draw('p1:(p1-p1True)>>dEdx','')
   nt.Draw('p2:(p2-p2True)>>+dEdx','')
   hMC['dEdxMean']=hMC['dEdx'].ProjectionY('dEdxMean')
@@ -2255,16 +2265,11 @@ def analzyeMuonScattering():
 #
   ptCut1 = 'pt1>0'
   ptCut2 = 'pt2>0'
-  ut.bookCanvas(hMC,'scattering','scattering X and Y',1600,900,4,2)
-  ut.bookHist(hMC, 'scatteringX','theta; rad ',100,-0.05,0.05,20,0.,200.)
-  ut.bookHist(hMC, 'scatteringXcor','theta; rad ',100,-0.05,0.05,20,0.,200.)
   nt.Draw('p1:p1x/p1z-prec1x/prec1z>>scatteringX',ptCut1 )
   nt.Draw('p2:p1x/p1z-prec1x/prec1z>>+scatteringX',ptCut2 )
   nt.Draw('p1:p1x/p1z-rec1x/(rec1z- '+str(zTarget)+')>>scatteringXcor',ptCut1 )
   nt.Draw('p2:p2x/p2z-rec2x/(rec2z- '+str(zTarget)+')>>+scatteringXcor',ptCut2 )
 
-  ut.bookHist(hMC, 'scatteringY','thetaX; rad ',100,-0.05,0.05,20,0.,200.)
-  ut.bookHist(hMC, 'scatteringYcor','thetaY; rad ',100,-0.05,0.05,20,0.,200.)
   nt.Draw('p1:p1y/p1z-prec1y/prec1z>>scatteringY','')
   nt.Draw('p2:p1y/p1z-prec1y/prec1z>>+scatteringY','')
   nt.Draw('p1:p1y/p1z-rec1y/(rec1z- '+str(zTarget)+')>>scatteringYcor')
@@ -2287,12 +2292,47 @@ def analzyeMuonScattering():
   ut.bookHist(hData, 'XcorData','theta; rad ',100,-0.05,0.05,20,0.,200.)
   ut.bookHist(hMC, 'XcorMC','theta; rad '    ,100,-0.05,0.05,20,0.,200.)
   nt.Draw('p1:prec1x/prec1z-rec1x/(rec1z- '+str(zTarget)+')>>XcorMC',ptCut1 )
-  nt.Draw('p2:prec2x/prec2z-rec2x/(rec2z- '+str(zTarget)+')>>XcorMC',ptCut2 )
+  nt.Draw('p2:prec2x/prec2z-rec2x/(rec2z- '+str(zTarget)+')>>XcorMC',ptCut2)
   ntD.Draw('p1:prec1x/prec1z-rec1x/(rec1z- '+str(zTarget)+')>>XcorData',ptCut1 )
-  ntD.Draw('p2:prec2x/prec2z-rec2x/(rec2z- '+str(zTarget)+')>>XcorData',ptCut2 )
+  ntD.Draw('p2:prec2x/prec2z-rec2x/(rec2z- '+str(zTarget)+')>>XcorData',ptCut2)
+  
+  for x in ['RMS','Mean']:
+    hMC['scattXcor'+x+'_MC']=hMC['XcorMC'].ProjectionY('scattXcor'+x+'_MC')
+    hMC['scattXcor'+x+'_MC'].Reset()
+    hData['scattXcor'+x+'_Data']=hData['XcorData'].ProjectionY('scattXcor'+x+'_Data')
+    hData['scattXcor'+x+'_Data'].Reset()
+  for n in range(1,hMC['scattXcorRMS_MC'].GetNbinsX()+1):
+    tmp = hMC['XcorMC'].ProjectionX('tmp',n,n)
+    rc = tmp.Fit('gaus','SQ')
+    fitresult = rc.Get()
+    hMC['scattXcorRMS_MC'].SetBinContent(n,fitresult.Parameter(2))
+    hMC['scattXcorMean_MC'].SetBinContent(n,fitresult.Parameter(1))
+    tmp = hData['XcorData'].ProjectionX('tmp',n,n)
+    rc = tmp.Fit('gaus','SQ')
+    fitresult = rc.Get()
+    hData['scattXcorRMS_Data'].SetBinContent(n,fitresult.Parameter(2))
+    hData['scattXcorMean_Data'].SetBinContent(n,fitresult.Parameter(1))
+
+  ut.bookCanvas(hMC,'scatteringDataMC','scattering ',1600,900,2,1)
+  hData['scattXcorMean_Data'].SetTitle('Mean; P [GeV/c]; mean correction [rad]')
+  hData['scattXcorRMS_Data'].SetTitle('RMS; P [GeV/c]; sigma of correction [rad]')
+  j = 1
+  for x in ['RMS','Mean']:
+   hMC['scatteringDataMC'].cd(j)
+   hData['scattXcor'+x+'_Data'].SetMinimum( min(hData['scattXcor'+x+'_Data'].GetMinimum(),hMC['scattXcor'+x+'_MC'].GetMinimum()))
+   hData['scattXcor'+x+'_Data'].SetMaximum( max(hData['scattXcor'+x+'_Data'].GetMaximum(),hMC['scattXcor'+x+'_MC'].GetMaximum()))
+   hData['scattXcor'+x+'_Data'].Draw()
+   hMC['scattXcor'+x+'_MC'].SetLineColor(ROOT.kMagenta)
+   hMC['scattXcor'+x+'_MC'].Draw('same')
+   j+=1
 
 
 def analyzeInvMassBias():
+  if not hMC.has_key('f10'):
+    hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV.root')
+    hMC['10GeV']=hMC['f10'].nt
+  InvMassPlots = [160,0.,8.]
+  ptCutList = [0.0,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6]
   nt = hMC['10GeV']
   ut.bookHist(hMC,'deltaXY','diff xy muon1 and muon2;x [cm]; y [cm]',100,0.,20.,100,0.,20.)
   nt.Draw('abs(prec1x-prec2x):abs(prec1y-prec2y)>>deltaXY','mcor<0.25')
@@ -2305,13 +2345,16 @@ def analyzeInvMassBias():
   ut.bookHist(hMC, 'm_MCdEdx','inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2],10,0.,2.)
   ut.bookHist(hMC, 'm_MCmult','inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2],10,0.,2.)
   ut.bookHist(hMC, 'm_MCcor', 'inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2],10,0.,2.)
+  ut.bookHist(hMC, 'm_MCcor2', 'inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2],10,0.,2.)
   ut.bookHist(hMC, 'm_MCtrueSigma','sigma inv mass;M [GeV/c^{2}]',10,0.,2.)
   ut.bookHist(hMC, 'm_MCdEdxSigma','sigma inv mass;M [GeV/c^{2}]',10,0.,2.)
   ut.bookHist(hMC, 'm_MCmultSigma','sigma inv mass;M [GeV/c^{2}]',10,0.,2.)
   ut.bookHist(hMC, 'm_MCcorSigma', 'sigma inv mass;M [GeV/c^{2}]',10,0.,2.)
+  ut.bookHist(hMC, 'm_MCcor2Sigma', 'sigma inv mass;M [GeV/c^{2}]',10,0.,2.)
   Ptrue = {}
   Prec  = {}
   Pcor  = {}
+  Pcor2  = {}
   for event in nt:
    if event.Jpsi!=443: continue
    Ptrue[1] = ROOT.Math.PxPyPzMVector(event.p1x,event.p1y,event.p1z,0.105658)
@@ -2321,14 +2364,20 @@ def analyzeInvMassBias():
    tdir = ROOT.TVector3(event.rec1x,event.rec1y,event.rec1z-zTarget)
    cor = Prec[1].P()/tdir.Mag()
    Pcor[1]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
+   cor = Ptrue[1].P()/tdir.Mag()
+   Pcor2[1]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
    tdir = ROOT.TVector3(event.rec2x,event.rec2y,event.rec2z-zTarget)
    cor = Prec[2].P()/tdir.Mag()
    Pcor[2]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
+   cor = Ptrue[2].P()/tdir.Mag()
+   Pcor2[2]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
    PtMin = min(Prec[1].Pt(),Prec[2].Pt())
    P=Ptrue[1]+Ptrue[2]
    rc = hMC['m_MCtrue'].Fill(P.M(),PtMin)
    P=Pcor[1]+Pcor[2]
    rc = hMC['m_MCcor'].Fill(P.M(),PtMin)
+   P=Pcor2[1]+Pcor2[2]
+   rc = hMC['m_MCcor2'].Fill(P.M(),PtMin)
    PdEloss = {}
    Pmult   = {}
    for j in range(1,3): 
@@ -2339,7 +2388,7 @@ def analyzeInvMassBias():
    rc = hMC['m_MCdEdx'].Fill(P.M(),PtMin)
    P=Pmult[1]+Pmult[2]
    rc = hMC['m_MCmult'].Fill(P.M(),PtMin)
-  for x in ['m_MCdEdx','m_MCmult','m_MCtrue','m_MCcor']:
+  for x in ['m_MCdEdx','m_MCmult','m_MCtrue','m_MCcor','m_MCcor2']:
    hname = x+'Mean'
    hMC[hname] = hMC[x].ProjectionY(hname)
    hMC[hname].Reset()
@@ -2375,14 +2424,19 @@ def analyzeInvMassBias():
    hMC['m_MCcor'+t].SetLineColor(ROOT.kBlue)
    hMC['m_MCcor'+t].SetMarkerStyle(29)
    hMC['m_MCcor'+t].SetMarkerSize(1.8)
+   hMC['m_MCcor2'+t].SetLineColor(ROOT.kGreen)
+   hMC['m_MCcor2'+t].SetMarkerStyle(28)
+   hMC['m_MCcor2'+t].SetMarkerSize(1.8)
    hMC['m_MCdEdx'+t].Draw()
    hMC['m_MCmult'+t].Draw('same')
    hMC['m_MCtrue'+t].Draw('same')
    hMC['m_MCcor'+t].Draw('same')
+   hMC['m_MCcor2'+t].Draw('same')
    hMC['legInvMassBias'+t]=ROOT.TLegend(0.11,0.66,0.48,0.92)
    rc = hMC['legInvMassBias'+t].AddEntry(hMC['m_MCdEdx'+t],'effect of dEdx','PL')
    rc = hMC['legInvMassBias'+t].AddEntry(hMC['m_MCmult'+t],'effect of multiple scattering','PL')
-   rc = hMC['legInvMassBias'+t].AddEntry(hMC['m_MCcor'+t],'correction of direction','PL')
+   rc = hMC['legInvMassBias'+t].AddEntry(hMC['m_MCcor2'+t],'true momentum, correction of direction','PL')
+   rc = hMC['legInvMassBias'+t].AddEntry(hMC['m_MCcor'+t], 'reco momentum, correction of direction','PL')
    rc = hMC['legInvMassBias'+t].AddEntry(hMC['m_MCtrue'+t],'true mass','PL')
    hMC['legInvMassBias'+t].Draw()
    myPrint(hMC['TinvMassBias'+t],'invMassBias'+t)

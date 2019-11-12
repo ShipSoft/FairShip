@@ -320,11 +320,11 @@ def makeHistosWithHTCondor(D='10GeV-repro',splitFactor=10,command="anaResiduals"
               hfile = commandToHist[command]+fname[fname.rfind('/')+1:]
               nfile = 'ntuple-'+fname[fname.rfind('/')+1:]
               if command == "alignment": nfile = "histos-HitmapsFromFittedTracks-"+fname[fname.rfind('/')+1:]
-              if os.path.isfile(mufluxRecoDir+run+'/'+hfile): continue
+              if os.path.isfile(eospathSim+'/'+d+'/'+hfile): continue
     # create condor sub
               fc = open('condorX.sub','w')
               fc.write('executable            = batchScript.sh\n')
-              fc.write('arguments             = '+fname+' '+command+' '+hfile+' '+os.environ['EOSSHIP']+mufluxRecoDir+run+'/'+hfile+' '+nfile+' '+os.environ['EOSSHIP']+mufluxRecoDir+run+'/'+nfile+' \n')
+              fc.write('arguments             = '+fname+' '+command+' '+hfile+' '+os.environ['EOSSHIP']+eospathSim+'/'+d+'/'+hfile+' '+nfile+' '+os.environ['EOSSHIP']+eospathSim+'/'+d+'/'+nfile+' \n')
               fc.write('should_transfer_files = YES\n')
               fc.write('when_to_transfer_output = ON_EXIT\n')
               x = fname[fname.rfind('/')+1:]
@@ -624,8 +624,14 @@ def splitOffBoostedEvents(splitFactor=5,check=False):
                         print f1,f1 in l 
         os.chdir('../')
 
-def runMufluxReco():
-        t='final'
+def runMufluxReco(merge=False):
+    if merge:
+        cmd = "hadd sumHistos--simulation10GeV-repro.root "
+        for n in range(ncpus):
+               cmd += "sumHistos--simulation10GeV-repro-"+str(n)+".root "
+        os.system(cmd)
+    else:
+        t='repro'
         ncpus = 15
         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A True -B False -C  False &"
         os.system(cmd)
@@ -636,7 +642,7 @@ def runMufluxReco():
          os.system(cmd)
 def runInvMass(MC='1GeV',merge=False):
     ncpus = 15
-    t='final'
+    t='repro'
     if not merge:
         for n in range(ncpus):
          if MC=='1GeV': cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A True  -B False -C  False -D  False &"

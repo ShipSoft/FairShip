@@ -4051,7 +4051,7 @@ def mergeHistosForMomResol(withFitPoints=False):
     # 1GeV charm,     10.2 Billion PoT,  10 files
     # 10GeV MC,         65 Billion PoT 
     # 10GeV charm    153.3 Billion PoT 
-    versions = ['-withDeadChannels',"-0","-multHits"]  # "-noDeadChannels"
+    versions = ['-repro',"-0"]  # ","-multHits" -noDeadChannels -withDeadChannels"
     MCStats   = 1.806E9
     MC10Stats = 66.02E9
     sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
@@ -4065,9 +4065,14 @@ def mergeHistosForMomResol(withFitPoints=False):
             for source in sources:  interestingHistos.append(a+source)
         for v in versions: 
             h[v]={'1GeV':{},'1GeVCharm':{},'10GeV':{}}
-            ut.readHists(h[v]['1GeV'],       'momDistributions-1GeV-mbias'+v+'.root',interestingHistos)
-            ut.readHists(h[v]['1GeVCharm'],  'momDistributions-1GeV-charm'+v+'.root',interestingHistos)
-            ut.readHists(h[v]['10GeV'],      'momDistributions-10GeV-mbias'+v+'.root',interestingHistos)
+            if v.find('repro')<0:
+             ut.readHists(h[v]['1GeV'],       'momDistributions-1GeV-mbias'+v+'.root',interestingHistos)
+             ut.readHists(h[v]['1GeVCharm'],  'momDistributions-1GeV-charm'+v+'.root',interestingHistos)
+             ut.readHists(h[v]['10GeV'],      'momDistributions-10GeV-mbias'+v+'.root',interestingHistos)
+            else:
+             ut.readHists(h[v]['1GeV'],       'sumHistos--simulation1GeV'+v+'.root',interestingHistos)
+             ut.readHists(h[v]['1GeVCharm'],  'sumHistos--simulation1GeV'+v+'-charm.root',interestingHistos)
+             ut.readHists(h[v]['10GeV'],      'sumHistos--simulation10GeV'+v+'.root',interestingHistos)
         for res in versions:
             for a in ['trueMom','recoMom','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
                 if a.find('Fit')==0 and not withFitPoints: continue
@@ -4102,7 +4107,7 @@ def mergeHistosForMomResol(withFitPoints=False):
     if not h.has_key(t): ut.bookCanvas(h,t,'true and reco momentum',900,600,1,1)
     tc=h[t].cd(1)
     tc.SetLogy()
-    v = '-withDeadChannels'
+    v = '-repro'
 #
     h['I--0trueMom'].Draw()
     h['I--0recoMom'].Draw('same')
@@ -4111,7 +4116,7 @@ def mergeHistosForMomResol(withFitPoints=False):
     h['leg'+t]=ROOT.TLegend(0.31,0.67,0.85,0.85)
     h['leg'+t].AddEntry(h['I--0trueMom'],'true momentum ','PL')
     h['leg'+t].AddEntry(h['I--0recoMom'],'reconstructed momentum 270#mum','PL')
-    h['leg'+t].AddEntry(h['I-'+v+'recoMom'],'reconstructed momentum 500#mum','PL')
+    h['leg'+t].AddEntry(h['I-'+v+'recoMom'],'reconstructed momentum 350#mum','PL')
     h['leg'+t].Draw()
     myPrint(h[t],'True-Reco')
 #
@@ -4160,14 +4165,16 @@ def mergeHistosForMomResol(withFitPoints=False):
         p0 = "%4.3F"%(100*fSqrt.GetParameter(0))
         p1 = "%4.3F"%(100*fSqrt.GetParameter(1))
         if res != '-0': 
-            h['text'+res] = ROOT.TLatex(20.,0.09,'#sigmaP/P = ('+p0+' #oplus '+p1+' #times p)%')
+            h['text'+res] = ROOT.TLatex(21.,0.073,'#sigmaP/P = ('+p0+' #oplus '+p1+' #times p)%')
             h[hname+'P'].Draw('same')
             h[hname+'P'].SetLineColor(ROOT.kMagenta)
             h['text'+res].SetTextColor(ROOT.kMagenta)
-            h['leg'+t].AddEntry(h[hname+'P'],'adjusted 500#mum','PL')
+            h['leg'+t].AddEntry(h[hname+'P'],'adjusted 350#mum','PL')
         else:
             h['text'+res] = ROOT.TLatex(120.,0.01,'#sigmaP/P = ('+p0+' #oplus '+p1+' #times p)%')
             h['text'+res].SetTextColor(ROOT.kBlue)
+            h[hname+'P'].GetXaxis().SetRangeUser(0.,330)
+            h[hname+'P'].SetMaximum(max(h[hname+'P'].GetMaximum(),h['momResol-0P'].GetMaximum()))
             h[hname+'P'].Draw()
             h['leg'+t].AddEntry(h[hname+'P'],'default  270#mum ','PL')
         h['text'+res].Draw('same')
@@ -6090,8 +6097,8 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
               'MCDi-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'],
               'MC10Di-muon P8':['same',ROOT.kCyan,'Dimuon from decays P8'] }
     ptMaxBin = h['p/pt'].GetYaxis().FindBin(ptMax)
-    ptInterval =        [ [pMin,10.],[10.,25.],[25.,50.],[50.,75.],[75.,100.],[100.,125.],[125.,150.],[150.,200.],[200.,250.],[250.,300.] ]
-    ptIntervalRebin =   [ 1,            1,         1,        1,        1,         1,          2,          2,          4,           4 ]
+    ptInterval =        [ [pMin,10.],[10.,25.],[25.,50.],[50.,75.],[75.,100.],[100.,125.],[125.,150.],[150.,200.],[200.,250.],[250.,300.] ,[300.,400.] ]
+    ptIntervalRebin =   [ 1,            1,         1,        1,        1,         1,          2,          2,          4,           4,          4 ]
     for x in ['','mu']:
         for a in ['p/pt','pz/Abspx','p1/p2']:
             if a=='p1/p2' and x=='mu': continue
@@ -6714,7 +6721,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
 
 # pt in slices of P
     for t in ['MC-Comparison Pt']:
-        if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=5,cy=2)
+        if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=6,cy=2)
         y = 1
         for pInterval in ptInterval:
             if pInterval[1]<11: x = ''
@@ -7157,7 +7164,7 @@ def plotResidualExample():
           myPrint(h['Residualsexample'],hname)
     hname = 'theResidualPlot'
     h[hname].SetTitle(';[cm]')
-    fitFunction = h['biasRes_1_x1'].GetFunction('gauss')
+    fitFunction = h['biasRes_1_x0'].GetFunction('gauss').Clone()
     fitResult = h[hname].Fit(fitFunction,'S','',-0.5,0.5)
     h[hname].Draw()
     h['Residualsexample'].Update()
@@ -7176,8 +7183,29 @@ def plotResidualExample():
     h[hname].SetTitle(';[cm]')
     fitFunction = h['biasRes_1_x1'].GetFunction('gauss')
     fitFunction.ReleaseParameter(3)
-    fitResult = h[hname].Fit(fitFunction,'SQ','',-0.3,0.3)
+    rc = h[hname].Fit(fitFunction,'SQ','',-0.3,0.3)
+    fitResult=rc.Get()
+    for n in range(4):
+     myGauss2.SetParameter(n,fitResult.Parameter(n))
+    myGauss2.FixParameter(4,0)
+    myGauss2.FixParameter(5,0.04)
+    rc = h[hname].Fit(myGauss2,'S','',-0.3,0.3)
+    myGauss2.ReleaseParameter(4)
+    rc = h[hname].Fit(myGauss2,'S','',-0.3,0.3)
+    myGauss2.ReleaseParameter(5)
+    rc = h[hname].Fit(myGauss2,'S','',-0.3,0.3)
+    fitResult=rc.Get()
+    n1 = fitResult.Parameter(0)
+    n2 = fitResult.Parameter(4)
+    s1 = fitResult.Parameter(1)
+    s2 = fitResult.Parameter(5)
+    w = 1./n1**2+1./n2**2
+    a = s1/n1**2+s2/n2**2/w
+    txt = ROOT.TLatex(-0.45,70E6,"mean sigma = %5.2F#mum"%(a*10*1000))
+    h[hname].SetTitle('')
     h[hname].Draw()
+    txt.Draw()
+    h['Residualsexample'].Update()
     stats = h['Residualsexample'].GetPrimitive('stats')
     stats.SetOptFit(10111)
     stats.SetFitFormat('5.4g')
