@@ -4293,7 +4293,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
         ut.bookHist(h,'RPC_p', 'momentum of tracks pointing to RPC',100,0.,100.)
         for k in range(2,20):
             ut.bookHist(h, 'RPC<'+str(k)+'_p', '  < '+str(k)+' RPC hits p',100,0.,100.)
-        if PR==1:  
+        if PR==1 or PR==3:
             muflux_Reco.RPCextrap()
             return
         for Nr in range(eventRange[0],eventRange[1]):
@@ -5493,8 +5493,8 @@ def init(database='muflux_RTrelations.pkl',remake=False,withReco=False):
         for s in h['tMinAndTmax']: h['rt'+s] = RTrelations[rname]['rt'+s]
     withTDC = True
     if withReco:
-        plotBiasedResiduals(PR=11)
-        plotRPCExtrap(PR=11)
+        plotBiasedResiduals(PR=13)
+        plotRPCExtrap(PR=13)
         ut.writeHists(h,'histos-'+rname,plusCanvas=True)
 #
 def monitorMasterTrigger():
@@ -5934,7 +5934,7 @@ def ghostSuppression(hname = "sumHistos--simulation10GeV-withDeadChannels.root")
             if c=='': continue
             print "%s efficiency=%5.3F"%(c,ntracks[c]/ntracks[''])
 
-def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,effCor=False,eric=False,version="-final",withOverFlow=False,withDisplay=True,cuts=''):
+def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,effCor=False,eric=False,version="-repro",withOverFlow=False,withDisplay=True,cuts=''):
     # possible cuts: '', 'All', 'Chi2<', 'Delx<', 'Dely<'
     # efficiency MC larger than data, 0.105 for cuts = All, but only for muon tagged!
     # otherwise only Chi2 cut, 0.034 
@@ -6597,14 +6597,20 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 else: print       "=== all tracks  ===="
                 for P in [5.,10.,50.,100.,150.,200.,300.]:
                     nbin = h[Aproj+x+'_x'].FindBin(P)
-                    print "data/MC Pz>%5i GeV: %5.2F"%(int(P),h['I-'+Aproj+x+'_x'].GetBinContent(nbin)/h['I-MC'+Aproj+x+'_x'].GetBinContent(nbin))
+                    print "data/MC P>%5i GeV: %5.2F"%(int(P),h['I-'+Aproj+x+'_x'].GetBinContent(nbin-1)/h['I-MC'+Aproj+x+'_x'].GetBinContent(nbin-1))
                 n5 = h[Aproj+x+'_x'].FindBin(5.)
                 n300 = h[Aproj+x+'_x'].FindBin(300.)
+                n450 = h[Aproj+x+'_x'].FindBin(450.)
                 n480 = h[Aproj+x+'_x'].FindBin(480.)
                 n500 = h[Aproj+x+'_x'].FindBin(500.)
-                ghostRateMC = h['MCtot'+Aproj+x+'_xoriginal'].Integral(n480,n500)/20.*295./h['MCtot'+Aproj+x+'_xoriginal'].Integral(n5,n300)
-                ghostRateData = h[Aproj+x+'_xoriginal'].Integral(n480,n500)/20.*295./h[Aproj+x+'_xoriginal'].Integral(n5,n300)
-                print "ghostRate MC: %5.2F%%  ghostRate Data: %5.2F%%"%(ghostRateMC*100,ghostRateData*100)
+                ghostRateMC   = h['MCtot'+Aproj+x+'_xoriginal'].Integral(n450,n500-1)/20.*295./h['MCtot'+Aproj+x+'_xoriginal'].Integral(n5,n300)
+                ghostRateData = h[Aproj+x+'_xoriginal'].Integral(n450,n500-1)/20.*295./h[Aproj+x+'_xoriginal'].Integral(n5,n300)
+                print "ghostRate MC: %5.2FperMille  ghostRate Data: %5.2FperMille"%(ghostRateMC*1000,ghostRateData*1000)
+# as in the note, n500 includes overflow
+                ratioGhostsMC   =  h['MCtot'+Aproj+x+'_xoriginal'].Integral(n450,n500-1)/h['MCtot'+Aproj+x+'_xoriginal'].Integral(n450,n500)
+                ratioGhostsData =          h[Aproj+x+'_xoriginal'].Integral(n450,n500-1)/h[Aproj+x+'_xoriginal'].Integral(n450,n500)
+                ratioGhostsDataMC =  h[Aproj+x+'_xoriginal'].Integral(n450,n500-1)/h['MCtot'+Aproj+x+'_xoriginal'].Integral(n450,n500-1)
+                print "tracks [450-500]/[>450] = MC: %5.2F, data: %5.2F. Absolute data/MC=%5.2F"%(ratioGhostsMC,ratioGhostsData,ratioGhostsDataMC)
 # make ratio plots
             proj = Aproj
             for xx in [x+'_x',x+'_y']:
@@ -6721,9 +6727,12 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
 
 # pt in slices of P
     for t in ['MC-Comparison Pt']:
-        if not h.has_key(t): ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=6,cy=2)
+        if not h.has_key(t): 
+            if pMax > 310: ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=6,cy=2)
+            else:          ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=5,cy=2)
         y = 1
         for pInterval in ptInterval:
+            if pInterval[1] > pMax: continue
             if pInterval[1]<11: x = ''
             else: x = 'mu'
             interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
@@ -7302,7 +7311,7 @@ def plotRPC3Example():
     myPrint(h['Residualsexample'],"XRPChighMom")
 
 
-def mergeGoodRuns(excludeRPC=False,path='.'):
+def mergeGoodRuns(excludeRPC=False,path='.',fromEOS=True):
     #path = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64'
     noField           = [2199,2200,2201]
     intermediateField = [2383,2388,2389,2390,2392,2395,2396]
@@ -7314,14 +7323,18 @@ def mergeGoodRuns(excludeRPC=False,path='.'):
     cmd = 'hadd -f momDistributions.root '
     for x in temp:
         if x.find(keyword)<0: continue
-        if not os.path.isdir(path+'/'+x): continue
-        r = int(x[x.rfind('/')+1:].split('_')[2])
-        if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
-        if excludeRPC and (r in RPCbad or (r>2198 and r < 2275)) : continue
-        test = path+'/'+x+'/momDistributions.root '
-        if not os.path.isfile(test.replace(' ','')):
+        if not fromEOS:
+          if not os.path.isdir(path+'/'+x): continue
+          r = int(x[x.rfind('/')+1:].split('_')[2])
+          if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
+          if excludeRPC and (r in RPCbad or (r>2198 and r < 2275)) : continue
+          test = path+'/'+x+'/momDistributions.root '
+          if not os.path.isfile(test.replace(' ','')):
             print "no file found, skip run:",x,test
             continue
+        else:
+          if x.find("momDistributions-RUN_8000_2")!=0: continue
+          test = x+" "
         cmd += test
     os.system(cmd)
 def findHighMomEvents():

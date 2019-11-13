@@ -618,7 +618,7 @@ def mergeGoodRuns(command="anaResiduals",refit=True,excludeRPC=False):
    os.system(cmd)
 
 mufluxRecoDir = "/eos/experiment/ship/user/truf/muflux-reco/"
-def massProductionHTCondor(keyword = 'RUN_8000_23',fnames=[],command="anaResiduals",merge=False,refit=True):
+def massProductionHTCondor(keyword = 'RUN_8000_23',fnames=[],command="anaResiduals",merge=False,refit=True),overWrite=False):
     commandToHist = {"alignment":"histos-residuals-","anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-","hitmaps":"histos-HitmapsFromFittedTracks-"}
     commandToSum  = {"anaResiduals":"momDistributions","momResolution":"momentumResolution","plotDTPoints":"DTPoints","alignment":"residuals","hitmaps":"HitmapsFromFittedTracks"}
     if merge:
@@ -635,7 +635,7 @@ def massProductionHTCondor(keyword = 'RUN_8000_23',fnames=[],command="anaResidua
             badFiles = []
             N=0
             for x in temp.split('\n'):
-               if refit and x.find('refit')<0 or x.find('refit')>0 and not option.refit: continue
+               if refit and x.find('refit')<0 or x.find('refit')>0 and not refit: continue
                if not x.find(tag)<0 :
                  size = x.split(' ')[7]
                  hname = x.split(' ')[8]
@@ -671,7 +671,7 @@ def massProductionHTCondor(keyword = 'RUN_8000_23',fnames=[],command="anaResidua
               hfile = commandToHist[command]+fname[fname.rfind('/')+1:]
               nfile = 'ntuple-'+fname[fname.rfind('/')+1:]
               if command == "alignment": nfile = "histos-HitmapsFromFittedTracks-"+fname[fname.rfind('/')+1:]
-              if os.path.isfile(mufluxRecoDir+run+'/'+hfile):
+              if not overWrite and os.path.isfile(mufluxRecoDir+run+'/'+hfile):
     # check that ntuple is ok 
                   ntupleOK = True
                   if  command == "anaResiduals":
