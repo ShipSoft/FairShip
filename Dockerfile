@@ -3,13 +3,13 @@
 #
 # Prebuilt images available on Docker Hub at:
 # https://hub.docker.com/r/olantwin/fairship/
-FROM olantwin/ship-base:20181116
+FROM olantwin/ship-base:191114
 
 # Copy FairShip scripts
 COPY . /FairShip
 
 # Build FairShip
-RUN aliBuild -c shipdist/ --defaults fairship build FairShip --no-local ROOT && aliBuild clean --aggressive-cleanup
+RUN aliBuild -c shipdist/ --defaults fairship build FairShip --no-local ROOT
 
 # Setup environment. Setup the command that will be invoked when your docker
 # image is run. Note that this requires running with `docker run -t` so that
