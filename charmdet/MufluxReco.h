@@ -56,7 +56,11 @@ public:
    TVector3 findMCMomentum(int mctr);
 
 private:
-  protected:
+   //two vectors often needed, only helpers so that they don't need to be recreated everytime they are needed
+   TVector3 m_new_position;
+   const TVector3 m_parallelToZ;
+
+protected:
     Bool_t MCdata;
     TTreeReader* xSHiP;
     std::vector<int> noisyChannels;

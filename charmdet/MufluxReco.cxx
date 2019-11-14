@@ -20,15 +20,14 @@
 #include <algorithm>
 #include <vector>
 
-TVector3* parallelToZ = new TVector3(0., 0., 1.);
-TVector3* NewPosition = new TVector3(0., 0., 0.);
 std::vector<int> charmExtern = {4332,4232,4132,4232,4122,431,411,421};
 std::vector<int> beautyExtern = {5332,5232,5132,5232,5122,531,511,521};
 std::vector<int> muSources   = {221,223,333,113,331};
 // -----   Standard constructor   ------------------------------------------ 
-MufluxReco::MufluxReco() {}
+MufluxReco::MufluxReco(): m_new_position(0., 0., 0.), m_parallelToZ(0., 0., 1.) {}
 // -----   Standard constructor   ------------------------------------------ 
 MufluxReco::MufluxReco(TTreeReader* t)
+: m_new_position(0., 0., 0.), m_parallelToZ(0., 0., 1.)
 {
   xSHiP = t;
   MCdata = false;
@@ -472,66 +471,95 @@ void MufluxReco::RPCextrap(Int_t nMax){
  } // end event loop
 }
 
-Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& pos, TVector3& mom){
+Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT, Float_t z, TVector3& pos, TVector3& mom) {
 // etrapolate to a plane perpendicular to beam direction (z)
-  Double_t rc = -1;
-  auto fst = fT->getFitStatus();
-  if (fst->isFitConverged()){
-   if (z > cuts["firstDTStation_z"]-10 and z < cuts["lastDTStation_z"] + 10){
-// find closest measurement
-    Float_t mClose = 0;
-    Float_t mZmin = 999999.;
-    for (Int_t m=0;m<fT->getNumPointsWithMeasurement();m++) {
-      auto st  = fT->getFittedState(m);
-      auto Pos = st.getPos();
-      if (TMath::Abs(z-Pos.z())<mZmin){
-       mZmin = TMath::Abs(z-Pos.z());
-       mClose = m;
-      }
-    }
-    genfit::StateOnPlane fstate =  fT->getFittedState(mClose);
-    NewPosition->SetXYZ(0., 0., z);
-    Int_t pdgcode = -int(13*fstate.getCharge());
-    genfit::RKTrackRep* rep      = new genfit::RKTrackRep( pdgcode );
-    genfit::StateOnPlane* state   = new genfit::StateOnPlane(rep);
-    auto Pos = fstate.getPos();
-    auto Mom = fstate.getMom();
-    rep->setPosMom(*state,Pos,Mom);
-    rc = rep->extrapolateToPlane(*state, *NewPosition, *parallelToZ );
-    pos = (state->getPos());
-    mom = (state->getMom());
-    delete rep;
-    delete state;
-   }else{
-    genfit::StateOnPlane fstate = fT->getFittedState(0);
-    pos = fstate.getPos();
-    mom = fstate.getMom();
-    if ( z > cuts["lastDTStation_z"]){
-     Int_t nmeas = fT->getNumPointsWithMeasurement();
-     Int_t M = TMath::Min(nmeas-1,30);
-// more stable against crashes
-     if ( fstate.getMom()[2]<900. && fstate.getMom()[2]>1. && M!=1 ){
-         fstate = fT->getFittedState(M);
-         pos = fstate.getPos();
-         mom = fstate.getMom();
-     } else {
-         auto CRep = fT->getCardinalRep();
-         auto point = fT->getPointWithMeasurementAndFitterInfo(1,CRep);
-         genfit::KalmanFitterInfo* info = dynamic_cast<genfit::KalmanFitterInfo*>(point->getFitterInfo(CRep));
-         auto xstate = info->getBackwardUpdate();
-         pos = xstate->getPos();
-         mom = xstate->getMom();
-         }
-     }
-    }
-// use linear extrap 
-    Float_t lam = (z-pos[2])/mom[2];
-    pos[2]=z;
-    pos[0]=pos[0]+lam*mom[0];
-    pos[1]=pos[1]+lam*mom[1];
-    rc = 0;
- }
-  return rc;
+	Double_t rc = -1;
+	auto fst = fT->getFitStatus();
+	UInt_t n_points_with_measurement = fT->getNumPointsWithMeasurement();
+
+	if (fst->isFitConverged()) {
+		if (z > cuts["firstDTStation_z"] - 10 and z < cuts["lastDTStation_z"] + 10) {
+			// find closest measurement
+			Float_t mClose = 0;
+			Float_t mZmin = 999999.;
+			for (Int_t m = 0; m < n_points_with_measurement; ++m) {
+				try {
+					auto st = fT->getFittedState(m);
+					auto Pos = st.getPos();
+					if (TMath::Abs(z - Pos.z()) < mZmin) {
+						mZmin = TMath::Abs(z - Pos.z());
+						mClose = m;
+					}
+				} catch (const genfit::Exception& e) {
+					std::cerr
+							<< "MufluxReco::extrapolateToPlane failed to find closest hit to z = "
+							<< z << ". Aborting extrapolation." << std::endl;
+					return -1;
+				}
+
+			}
+			try {
+				genfit::StateOnPlane fstate = fT->getFittedState(mClose);
+				auto Pos = fstate.getPos();
+				auto Mom = fstate.getMom();
+				Int_t pdgcode = -int(13 * fstate.getCharge());
+				genfit::RKTrackRep* rep = new genfit::RKTrackRep(pdgcode);
+				genfit::StateOnPlane* state = new genfit::StateOnPlane(rep);
+				rep->setPosMom(*state, Pos, Mom);
+				rc = rep->extrapolateToPlane(*state, m_new_position,
+						m_parallelToZ);
+				pos = state->getPos();
+				mom = state->getMom();
+				delete rep;
+				delete state;
+			} catch (const genfit::Exception& e) {
+				std::cerr
+						<< "MufluxReco::extrapolateToPlane failed to extrapolate to hit #"
+						<< mClose << ". Aborting extrapolation." << std::endl;
+				return -1;
+			}
+
+		} //if (z > cuts["firstDTStation_z"]-10 and z < cuts["lastDTStation_z"] + 10)
+		else {
+			try {
+				genfit::StateOnPlane fstate = fT->getFittedState(0);
+				pos = fstate.getPos();
+				mom = fstate.getMom();
+			}
+			catch(const genfit::Exception& e) {
+				std::cerr
+						<< "MufluxReco::extrapolateToPlane failed to extrapolate to hit 0. Aborting extrapolation." << std::endl;
+				return -1;
+			}
+			if (z > cuts["lastDTStation_z"]) {
+				//extrapolate from hit with largest z
+				UInt_t last_hit_id = n_points_with_measurement - 1;
+				try {
+					genfit::StateOnPlane fstate = fT->getFittedState(last_hit_id);
+					pos = fstate.getPos();
+					mom = fstate.getMom();
+				} catch (const genfit::Exception& e) {
+					auto CRep = fT->getCardinalRep();
+					auto point = fT->getPointWithMeasurementAndFitterInfo(1, CRep);
+					if(!point) {
+						return -1;
+					}
+					genfit::KalmanFitterInfo* info = dynamic_cast<genfit::KalmanFitterInfo*>(point->getFitterInfo(CRep));
+					auto xstate = info->getBackwardUpdate();
+					pos = xstate->getPos();
+					mom = xstate->getMom();
+				}
+
+			}
+		}
+		// use linear extrap
+		Float_t lam = (z - pos[2]) / mom[2];
+		pos[2] = z;
+		pos[0] = pos[0] + lam * mom[0];
+		pos[1] = pos[1] + lam * mom[1];
+		rc = 0;
+	}
+	return rc;
 }
 
 
