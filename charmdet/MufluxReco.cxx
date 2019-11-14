@@ -491,6 +491,7 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT, Float_t z, TVector3& 
 						mClose = m;
 					}
 				} catch (const genfit::Exception& e) {
+					//TODO maybe instead of aborting extrapolate from any other point?
 					std::cerr
 							<< "MufluxReco::extrapolateToPlane failed to find closest hit to z = "
 							<< z << ". Aborting extrapolation." << std::endl;
@@ -506,12 +507,13 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT, Float_t z, TVector3& 
 				genfit::RKTrackRep* rep = new genfit::RKTrackRep(pdgcode);
 				genfit::StateOnPlane* state = new genfit::StateOnPlane(rep);
 				rep->setPosMom(*state, Pos, Mom);
-				rc = rep->extrapolateToPlane(*state, m_new_position,
-						m_parallelToZ);
+				rc = rep->extrapolateToPlane(*state, m_new_position, m_parallelToZ);
 				pos = state->getPos();
 				mom = state->getMom();
 				delete rep;
 				delete state;
+				//TODO check: isn't the extrapolation already done now? If so:
+				//return rc
 			} catch (const genfit::Exception& e) {
 				std::cerr
 						<< "MufluxReco::extrapolateToPlane failed to extrapolate to hit #"
