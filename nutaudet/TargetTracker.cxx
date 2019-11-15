@@ -309,7 +309,6 @@ void TargetTracker::DecodeTTID(Int_t detID, Int_t &NTT, int &nplane, Bool_t &ish
 
   if (idir == 1) ishor = kFALSE;
   else if (idir == 0) ishor = kTRUE;
-  else std::cout<<"Not working idir: "<<idir<<std::endl;
 
   nplane = (detID - NTT*1000 - idir*100);
 }
