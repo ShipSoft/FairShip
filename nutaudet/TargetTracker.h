@@ -38,7 +38,7 @@ public:
     void SetTargetTrackerParam(Double_t TTX, Double_t TTY, Double_t TTZ);
     void SetBrickParam(Double_t CellW);
     void SetTotZDimension(Double_t Zdim);
-    void DecodeTTID(Int_t detID, Int_t &NTT);
+    void DecodeTTID(Int_t detID, Int_t &NTT, int &nplane, Bool_t &ishor);
     void SetNumberTT(Int_t n);
     void SetDesign(Int_t Design);
 

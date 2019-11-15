@@ -397,9 +397,23 @@ void Hpt::Register()
 
 // -----   Public method to Decode volume info  -------------------------------------------
 // -----   returns hpt, arm, rpc numbers -----------------------------------
-void Hpt::DecodeVolumeID(Int_t detID,int &nHPT)
+void Hpt::DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor)
 {
-  nHPT = detID;
+  if (detID < 1000){ //temporary surrounding stations
+    ishor = 0;
+    nHPT = 0;
+    nplane = detID/100;
+  }
+  else{ //DT stations
+   nHPT = detID/1000;
+   int idir = (detID - nHPT*1000)/100;
+
+   if (idir == 1) ishor = kFALSE;
+   else if (idir == 0) ishor = kTRUE;
+
+   nplane = (detID - nHPT*1000 - idir*100);
+  }
+
 }
 
 TClonesArray* Hpt::GetCollection(Int_t iColl) const
