@@ -507,6 +507,7 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT, Float_t z, TVector3& 
 				genfit::RKTrackRep* rep = new genfit::RKTrackRep(pdgcode);
 				genfit::StateOnPlane* state = new genfit::StateOnPlane(rep);
 				rep->setPosMom(*state, Pos, Mom);
+				m_new_position.SetXYZ(0., 0., z);
 				rc = rep->extrapolateToPlane(*state, m_new_position, m_parallelToZ);
 				pos = state->getPos();
 				mom = state->getMom();
