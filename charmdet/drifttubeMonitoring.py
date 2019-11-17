@@ -72,8 +72,10 @@ parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=Fa
 parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False)
 parser.add_argument("-i", "--input", dest="inputFile", help="input histo file", default='residuals.root')
 parser.add_argument("-g", "--geofile", dest="geoFile", help="input geofile", default='')
+parser.add_argument("-s", "--smearing", dest="MCsmearing", help="additional MC smearing", default=MCsmearing)
 
 options = parser.parse_args()
+MCsmearing = options.MCsmearing
 fnames = []
 if options.catalog:
     tmp = open(options.listOfFiles)
@@ -6949,6 +6951,19 @@ def MCchecks():
             if not mult[p].has_key(N): mult[p][N]=0
             mult[p][N]+=1
     return mult
+def countTracks():
+    NfitTracks = [0,0]
+    NfitTracks_refitted = [0,0]
+    for event in sTree:
+        NfitTracks[0]         +=event.FitTracks.GetEntries()
+        NfitTracks_refitted[0]+=event.FitTracks_refitted.GetEntries()
+        for atrack in sTree.FitTracks:
+           fst = atrack.getFitStatus()
+           if fst.isFitConverged(): NfitTracks[1]+=1
+        for atrack in sTree.FitTracks_refitted:
+           fst = atrack.getFitStatus()
+           if fst.isFitConverged(): NfitTracks_refitted[1]+=1
+    print "run, number of original tracks",sTree.GetCurrentFile(),NfitTracks, " number of refitted tracks",NfitTracks_refitted
 hruns={}
 def compareRuns(runs=[]):
     # runs = [2307,2357,2359,2360,2361,2365,2366,2395,2396]
@@ -7758,6 +7773,7 @@ elif options.command == "momResolution":
     importAlignmentConstants()
     momResolution(PR=1,onlyPlotting=False)
 elif options.command == "splitOffBoostedEvents": splitOffBoostedEvents()
+elif options.command == "countTracks": countTracks()
 elif options.command == "plotDTPoints":   plotDTPoints()
 elif options.command == "DTeffWithRPCTracks":
     withCorrections = False
