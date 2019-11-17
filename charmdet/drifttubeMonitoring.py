@@ -7655,10 +7655,10 @@ def anaResiduals():
         MCchecks()
     else:
         printScalers()
-        plotRPCExtrap(PR)
-        norm = h['TrackMult'].GetEntries()
-        print '*** Track Stats ***',norm
-        ut.writeHists(h,'histos-analysis-'+rname)
+    plotRPCExtrap(PR)
+    norm = h['TrackMult'].GetEntries()
+    print '*** Track Stats ***',norm
+    ut.writeHists(h,'histos-analysis-'+rname)
 if options.command == "":
     print "existing methods"
     print " --- plotHitMaps(): hitmaps / layer, TDC / layer, together with list of noisy channels"
