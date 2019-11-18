@@ -543,7 +543,7 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT, Float_t z, TVector3& 
 					mom = fstate.getMom();
 				} catch (const genfit::Exception& e) {
 					auto CRep = fT->getCardinalRep();
-					auto point = fT->getPointWithMeasurementAndFitterInfo(1, CRep);
+					auto point = fT->getPointWithMeasurementAndFitterInfo(last_hit_id, CRep);
 					if(!point) {
 						return -1;
 					}
