@@ -124,6 +124,10 @@ void Hpt::SetDesign(Int_t Design)
   fDesign = Design;
 }
 
+void Hpt::SetSurroundingDetHeight(Double_t height)
+{ 
+ fSRHeight = height;
+}
 
 void Hpt::GetMagnetGeometry(Double_t EmuzC, Double_t EmuY)
 {

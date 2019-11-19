@@ -35,6 +35,7 @@ class Hpt:public FairDetector
     //methods for design 3 
     void SetDistanceHPTs(Double_t dd);       
     void SetHPTNumber(Int_t nHPT);
+    void SetSurroundingDetHeight(Double_t height);
     void GetMagnetGeometry(Double_t EmuzC, Double_t EmuY);
     void GetNumberofTargets(Int_t ntarget);
     //
@@ -111,6 +112,7 @@ protected:
     Double_t fConcreteY;
     Double_t fConcreteZ;
 
+    Double_t fSRHeight;
     Double_t fDesign;
     Double_t fDistance;
     Int_t fnHPT;
@@ -135,7 +137,7 @@ protected:
 
     Hpt(const Hpt&);
     Hpt& operator=(const Hpt&);
-    ClassDef(Hpt,6)
+    ClassDef(Hpt,5)
 
 };
 #endif 
