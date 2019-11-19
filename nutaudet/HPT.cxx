@@ -383,12 +383,6 @@ void Hpt::Register()
 // -----   returns hpt, arm, rpc numbers -----------------------------------
 void Hpt::DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor)
 {
-  if (detID < 1000){ //temporary surrounding stations
-    ishor = 0;
-    nHPT = 0;
-    nplane = detID/100;
-  }
-  else{ //DT stations
    nHPT = detID/1000;
    int idir = (detID - nHPT*1000)/100;
 
@@ -396,7 +390,7 @@ void Hpt::DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor)
    else if (idir == 0) ishor = kTRUE;
 
    nplane = (detID - nHPT*1000 - idir*100);
-  }
+  
 
 }
 
