@@ -75,47 +75,50 @@ if not options.listOfFiles:
             if x.find('refit')<0 and options.refit or x.find('refit')>0 and not options.refit: continue
             countFiles.append(os.environ["EOSSHIP"]+"/"+x)
      for x in countFiles:
+        tmp = ROOT.TFile.Open(x)
+        if not tmp.Get('tmuflux'):
+           print "Problematic file:",x
+           continue
         sTreeData.Add(x)
         Nfiles-=1
         if Nfiles==0: break
 
     sTreeMC = ROOT.TChain('tmuflux')
-    if host=="ubuntu":
-        gPath = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/"
-    elif host=='ship-ubuntu-1710-48':
-        gPath = "/home/truf/muflux/"
-    else:
-        gPath = "/home/truf/ship-ubuntu-1710-48/"
 
     if with1GeV:
-        path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_1.0_cXXXX_mu/"
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/1GeV-"+MCType+"/pythia8_Geant4_1.0_cXXXX_mu/"
         for k in range(0,20000,1000):
             for m in range(5):
                 fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
                 try:
-                    test = ROOT.TFile(fname)
+                    test = ROOT.TFile.Open(fname)
                     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-                except: continue
+                except:
+                    print "file not found",fname
+                    continue
     if withCharm:
         fdir = fdir+'-charm'
-        path = gPath+"simulation1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
         for m in range(5):
             fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
             try:
-                test = ROOT.TFile(fname)
+                test = ROOT.TFile.Open(fname)
                 if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-            except: continue
+            except:
+                print "file not found",fname
+                continue
 
     if with10GeV:
-        path = gPath+"simulation10GeV-"+MCType+"/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/10GeV-"+MCType+"/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
         for k in range(0,67000,1000):
             for m in range(10):
                 fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
-                if not os.path.isfile(fname): continue
                 try:
-                    test = ROOT.TFile(fname)
+                    test = ROOT.TFile.Open(fname)
                     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-                except: continue
+                except:
+                    print "file not found",fname
+                    continue
 
 # small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 
@@ -743,9 +746,10 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
             fname = sTree.GetCurrentFile().GetName()
             x = '1GeV'
             if not fname.find('charm')<0: x = 'charm'
-            elif not fname.find('pythia8_Geant4_10.0')<0: x = '10GeV'
-            if sTree.channel==5: x+='charm'
-            if sTree.channel==6: x+='beauty'
+            elif not fname.find('pythia8_Geant4_10.0')<0: 
+              x = '10GeV'
+              if sTree.channel==5: x+='charm'
+              if sTree.channel==6: x+='beauty'
             if sTree.MCRecoDT.size() != 1: continue # look at 1 Track events for the moment
             for d in sTree.MCRecoDT:
                 i = 0
@@ -809,6 +813,10 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
             h0['recoMom-'+k].SetStats(0)
             #h0['recoMom-'+k].Draw('same')
             h0['0rebinned-recoMom-'+k]=h0['recoMom-'+k].Clone('0rebinned-recoMom-'+k)
+            # bypass issue with different number of tracks in sim files with 270mu, -0 and 350mu -repro
+            rescale = h['recoMom-'+k].GetSumOfWeights()/h0['recoMom-'+k].GetSumOfWeights()
+            print "rescale ",'0rebinned-recoMom-'+k,rescale,h['recoMom-'+k].GetSumOfWeights(),h0['recoMom-'+k].GetSumOfWeights()
+            h0['0rebinned-recoMom-'+k].Scale( rescale )
             h0['0rebinned-recoMom-'+k].Rebin(5)
             h0['0rebinned-recoMom-'+k].Scale(1./5.)
             h0['0rebinned-recoMom-'+k].SetMarkerStyle(22)
@@ -994,8 +1002,9 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
                         h["truePz/Abspx"+source].Fill(trueMom[2],ROOT.TMath.Abs(trueMom[0]));
                         h["recoPz/Abspx"+source].Fill(p[2],ROOT.TMath.Abs(p[0]));
                         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
-    outFile = 'sumHistos-'+'-'+fdir+'.root'
-    if options.refit: outFile = 'sumHistos-'+'-'+fdir+'_refit.root'
+    tmp = 'RUN_8000'+fdir.split('RUN_8000')[1]
+    outFile = 'sumHistos-'+'-'+tmp+'.root'
+    if options.refit: outFile = 'sumHistos-'+'-'+tmp+'_refit.root'
     if ncpus:
        outFile=outFile.replace('.root','-'+str(nseq)+'.root')
     ut.writeHists( h,outFile)
@@ -1210,9 +1219,10 @@ def myDraw(variable,cut):
  # hMC['10GeV'].Draw(variable,str(hMC['weights']['1GeV'])+'*('+cut+')')
  # hMC['10eV'].Draw(variable.replace(">>",">>+"),str(hMC['weights']['1GeV'])+'*('+cut+')')
  
-jpsiCascadeContr = 7./33.
-# The elastic proton proton cross section at ~27GeV is about 7mbar. The inelastic cross section is about 33mbar. Since we have a thick target, any proton from the elastic scattering will interact 
-# inelastic somewhere else.
+jpsiCascadeContr = 7./33.  
+# The elastic proton proton cross section at ~27GeV is about 7mbar. The inelastic cross section is about 33mbar. 
+# Since we have a thick target, any proton from the elastic scattering will interact inelastic somewhere else.
+# last cascade production of Eric shows even larger contribution, but momentum distribution not clear.
 def diMuonAnalysis():
  hData['f'] = ROOT.TFile('ntuple-InvMass-refitted.root')
  sTreeData  = hData['f'].nt
@@ -2325,6 +2335,20 @@ def analzyeMuonScattering():
    hMC['scattXcor'+x+'_MC'].Draw('same')
    j+=1
 
+def JpsiAcceptance():
+    hMC['f0']=ROOT.TFile.Open(os.environ['EOSSHIP']+"/eos/experiment/ship/data/jpsicascade/cascade_MSEL61_20M.root")
+    nt=hMC['f0'].nt
+    two = f.Get('2').Clone('2')
+    primJpsi  = two.GetBinContent(1)
+    totalJpsi = two.GetSumOfWeights() # = nt.GetEntries()
+    print "primary: %5.2F%%,  cascade: %5.2F%% "%(primJpsi/totalJpsi*100.,100.-primJpsi/totalJpsi*100.)
+#
+    ut.bookHist(hMC,'Jpsi_p/pt','momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
+    ut.bookHist(hMC,'Jpsi_y',   'rapidity cm; y_{CM}',500,-1.,5.,25,0.,500.,10,0.,10.)
+    for event in nt:
+       mom = ROOT.TLorentzVector(event.px,event.py,event.pz,event.E)
+       rc = hMC['Jpsi_p/pt'].Fill(mom.P(),mom.Pt())
+       rc = hMC['Jpsi_y'].Fill(mom.Rapidity(),mom.P(),mom.Pt())
 
 def analyzeInvMassBias():
   if not hMC.has_key('f10'):
