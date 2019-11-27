@@ -292,7 +292,7 @@ void PixelModules::ConstructGeometry()
 	vertical[i*40+j]=kTRUE;
 	}
     }
-  volWindow->AddNode(0,0,new TGeoTranslation(0,0,-DimZPixelBox/2.-inimodZoffset));
+  volWindow->AddNode(0,0,new TGeoTranslation(0,0,-DimZPixelBox/2.-inimodZoffset-DimZWindow));
 
     for (Int_t ipixel = 0; ipixel < nSi; ipixel++){
       if (vertical[ipixel]){
@@ -308,9 +308,9 @@ void PixelModules::ConstructGeometry()
 //this else is used for debugging, if the number of slices isn't 10
 
 		if((ipixel+nSlices)%9==1){
-					volFrontEndy->AddNode(volFrontEndy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexCuy->AddNode(volFlexCuy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexKapy->AddNode(volFlexKapy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
+					volFrontEndy->AddNode(volFrontEndy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FrontEndthick));
+					volFlexCuy->AddNode(volFlexCuy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexCuthick));
+					volFlexKapy->AddNode(volFlexKapy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexKapthick));	
 			}
 		}
       else{ 
@@ -327,9 +327,9 @@ void PixelModules::ConstructGeometry()
 			}
 
 		if((ipixel+nSlices)%9==1){
-					volFrontEndx->AddNode(volFrontEndx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexCux->AddNode(volFlexCux, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));
-					volFlexKapx->AddNode(volFlexKapx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice));	
+					volFrontEndx->AddNode(volFrontEndx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FrontEndthick));
+					volFlexCux->AddNode(volFlexCux, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexCuThick));
+					volFlexKapx->AddNode(volFlexKapx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexKapThick));	
 }
 		}
 	
@@ -420,8 +420,7 @@ void PixelModules::Reset()
 
 PixelModulesPoint* PixelModules::AddHit(Int_t trackID, Int_t detID,
                         TVector3 pos, TVector3 mom,
-                        Double_t time, Double_t length,
-					    Double_t eLoss, Int_t pdgCode)
+                        Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)
 
 {
     TClonesArray& clref = *fPixelModulesPointCollection;
