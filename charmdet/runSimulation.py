@@ -645,8 +645,8 @@ def runInvMass(MC='1GeV',merge=False):
     t='repro'
     if not merge:
         for n in range(ncpus):
-         if MC=='1GeV': cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A True  -B False -C  False -D  False &"
-         else:          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A False -B True  -C  False -D  False &"
+         if MC=='1GeV': cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A True  -B False -C  False -D  False &"
+         else:          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A False -B True  -C  False -D  False &"
          print cmd
          os.system(cmd)
     else:
