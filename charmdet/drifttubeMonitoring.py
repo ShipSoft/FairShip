@@ -1974,11 +1974,9 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
         if withDisplay:
             print "event #",n
             plotEvent(n)
-        if PR==3: theTracks = bestTracks() 
-        else:     theTracks = findTracks(PR)
+        theTracks = findTracks(PR)
         if simpleEvents==2 and len(theTracks)<simpleEvents: continue
-        if PR==1 and len(theTracks)>1: RPCclusters, RPCtracks = muonTaggerClustering(11) # in case file was made with simple reco
-        else: RPCclusters, RPCtracks = muonTaggerClustering(PR)
+        RPCclusters, RPCtracks = muonTaggerClustering(PR)
         if withDisplay: plotMuonTaggerTrack(RPCtracks)
         N = -1
         if len(theTracks)>0:
@@ -2519,9 +2517,15 @@ def findDTClustersDebug2(L):
             print stationInfo(hit),hit.GetTimeOverThreshold() 
 
 def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
-    if PR < 3  and sTree.GetBranch('FitTracks'): return sTree.FitTracks
-    if PR == 3 and sTree.GetBranch('FitTracks_refitted'): return sTree.FitTracks_refitted
-    if PR%2==0 : 
+    if PR == 3:
+        if sTree.GetBranch('FitTracks_refitted'): return sTree.FitTracks_refitted
+        print "findTracks called with PR=3 but FitTracks_refitted does not exist. "
+        return None
+    if PR == 1:
+        if sTree.GetBranch('FitTracks'): return sTree.FitTracks
+        print "findTracks called with PR=1 but FitTracks does not exist. "
+        return None
+    if PR == 12 :
         trackCandidates = testPR()
         if len(trackCandidates)>1: trackCandidates=cloneKiller(trackCandidates)
         return trackCandidates
@@ -2763,8 +2767,9 @@ def tuneMCefficiency(tkey):
 
 def countMeasurements(aTrack,PR=1):
     mStatistics = {'x1':[],'x2':[],'x3':[],'x4':[],'xAll':[],'xDown':[],'xUp':[],'uv':[],'u':[],'v':[]}
-    if PR==1 and sTree.GetBranch("TrackInfos"):
-        trInfo = sTree.TrackInfos[aTrack]
+    if PR==1 and sTree.GetBranch("TrackInfos") or PR==3 and sTree.GetBranch("TrackInfos_refitted"):
+        if PR==1: trInfo = sTree.TrackInfos[aTrack]
+        if PR==3: trInfo = sTree.TrackInfos_refitted[aTrack]
         for n in range(trInfo.N()):
             detID = trInfo.detId(n)
             hit = ROOT.MufluxSpectrometerHit(detID,0)
@@ -2947,7 +2952,7 @@ def printResiduals(aTrack):
         print txt[k[0]]
 
 # make TDC plots for hits matched to tracks)
-def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=13,onlyPlotting=False,minP=3.):
+def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=11,onlyPlotting=False,minP=3.):
     timerStats = {'fit':0,'analysis':0,'prepareTrack':0,'extrapTrack':0,'fillRes':0}
     if not onlyPlotting:
         h['biasResDist'].Reset()
@@ -4027,7 +4032,7 @@ def plotLinearResiduals():
         sTree.GetEvent(Nr)
         if Nr%10000==0:   print "now at event",Nr,' of ',sTree.GetEntries(),sTree.GetCurrentFile().GetName()
         if not findSimpleEvent(sTree): continue
-        trackCandidates = findTracks(PR = 1,linearTrackModel = True)
+        trackCandidates = findTracks(PR = 3,linearTrackModel = True)
     j=1
     for s in range(1,5):
         for view in ['_x']:
@@ -4384,6 +4389,8 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
         ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=5)
         ut.bookCanvas(h,key='RPCResidualsP',title='RPCResiduals function of muon momentum',nx=900,ny=900,cx=1,cy=1)
     j=1
+    T = ROOT.TLatex()
+    T.SetTextSize(0.1)
     for s in range(1,6):
         for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
             if v==1:     
@@ -4397,6 +4404,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             hnameProjX = 'RPCRes_'+str(s)+str(v)
             if h[hname].GetEntries()==0: continue
             h[hnameProjX] = h[hname].ProjectionX()
+            h[hnameProjX].GetXaxis().SetTitle('#Delta [cm]')
             myGauss.SetParameter(0,h[hnameProjX].GetMaximum())
             myGauss.SetParameter(1,0.)
             myGauss.SetParameter(2,4.)
@@ -4415,9 +4423,19 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             if v==0: fitResult = h[hnameProjX].Fit(myGauss2,'SQ','',-40.,40.)
             else:    fitResult = h[hnameProjX].Fit(myGauss2,'SQ','',-10.,10.)
             rc = fitResult.Get()
+            if rc.GetParams()[3]<0: myGauss2.SetParameter(3,abs(rc.GetParams()[3]))
+            if v==0: fitResult = h[hnameProjX].Fit(myGauss2,'SQ','',-40.,40.)
+            else:    fitResult = h[hnameProjX].Fit(myGauss2,'SQ','',-10.,10.)
+            rc = fitResult.Get()
             mean = rc.GetParams()[1]
-            rms  = rc.GetParams()[2]
-            print "%i, %i, mean=%5.2F RMS=%5.2F"%(s,v,mean,rms)
+            rms1 = rc.GetParams()[2]
+            rms2 = rc.GetParams()[5]
+            N1 = rc.GetParams()[0]
+            N2 = rc.GetParams()[4]
+            avRMS = (rms1*N1+rms2*N2)/(N1+N2)
+            print "%i, %i, mean=%5.2F RMS=%5.2F"%(s,v,mean,avRMS)
+            t = "#sigma_{av}=%5.2Fcm"%(avRMS)
+            rc = T.DrawLatexNDC(0.13,0.7,t)
             # make plot of mean as function of X,Y
             rc = h['RPCResidualsXY'].cd(jk)   
             hname = 'RPCRes'+p+'_'+str(s)+str(v)
@@ -4489,10 +4507,10 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
         for v in range(3):
             if v==2: 
                 hname = 'RPCfired_or_'+str(s)
-                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(0)])
+                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(0)+'_projx'])
             else: 
                 hname = 'RPCfired_'+str(s)+str(v)
-                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(v)])
+                h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(v)+'_projx'])
             pad = h['RPCEff'].cd(l)
             l+=1
             rc = h['Eff'+hname].Fit(const)
@@ -6029,6 +6047,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                     # hstore[a+x].Add(hstore[a+x+"invalid"],-1.)
     if pot <0: # (default, use Hans normalization)
         POTdata = h['Trscalers'].GetBinContent(2) * muPerPot
+        if version=="-repro": POTdata=POTdata/0.994  # events with refitted tracks slightly less than with fitted tracks
         MCscaleFactor =     POTdata / MCStats
         # used until June 17, wrong!, number of tracks, should be number of events with tracks: POTdata = h['Trscalers'].GetBinContent(3) * muPerPot
         print "PoT data",POTdata / 1E9,"+/-",POTdata*daSysError / 1E9, " billion"
@@ -6717,12 +6736,19 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
 # data
     t='pPt2d'
     if not h.has_key(t): 
-        ut.bookCanvas(h,key=t,title='Data',nx=900,ny=600,cx=1,cy=1)
-    h[t].cd(1).SetLogz(1)
+        ut.bookCanvas(h,key=t,title='Data',nx=1200,ny=900,cx=1,cy=1)
+    tc = h[t].cd()
+    tc.SetLogz(1)
     h['p/ptmu'].SetMinimum(0.)
-    h['p/ptmu'].SetMaximum(1.E5)
+    h['p/ptmu'].SetMaximum(5.E6)
     h['p/ptmu'].GetXaxis().SetRangeUser(0,pMax)
-    h['p/ptmu'].GetYaxis().SetRangeUser(0,ptMax)
+    h['p/ptmu'].GetYaxis().SetRangeUser(0,ptMax-0.1)
+    h['p/ptmu'].GetXaxis().SetTitleOffset(1.7)
+    h['p/ptmu'].GetXaxis().SetTitle('                     p [GeV/c]')
+    h['p/ptmu'].GetYaxis().SetTitle('            p_{T} [GeV/c]             ')
+    h['p/ptmu'].GetYaxis().SetTitleOffset(1.7)
+    tc.SetTheta(26.4)
+    tc.SetPhi(-135.6)
     h['p/ptmu'].SetStats(0)
     h['p/ptmu'].Draw('lego')
     myPrint(h[t],label+'DatapPt')
@@ -6881,6 +6907,25 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             h['leg'+t+str(pad)+s].Draw('same')
             pad +=1
             myPrint(h[t],label+'2Tracks'+osign[s]+str(case))
+def singlePtSlices():
+   t='MC-Comparison Pt'
+   tx = h['dummy'].cd()
+   tx.SetLogy(0)
+   for c in h[t].GetListOfPrimitives(): 
+      histos = {}
+      k = 2
+      for p in c.GetListOfPrimitives():
+         if p.GetName().find('p/pt')==0: histos[1]=p
+         elif p.GetName().find('MCp/pt')==0: 
+             histos[k]=p
+             k+=1
+         elif p.GetTitle().find('Legend')==0:histos[0]=p
+      histos[1].Draw()
+      histos[1].Draw('histsame')
+      for i in range(k): histos[i].Draw('same')
+      histos[0].Draw()
+      myPrint(h['dummy'],c.GetName().replace(' ',''))
+
 def printSources():
     charmNorm  = {1:0.176,10:0.424}
     beautyNorm = {1:0.,   10:0.01218}
@@ -6951,19 +6996,43 @@ def MCchecks():
             if not mult[p].has_key(N): mult[p][N]=0
             mult[p][N]+=1
     return mult
-def countTracks():
+def countTracks(analyse=False):
     NfitTracks = [0,0]
     NfitTracks_refitted = [0,0]
-    for event in sTree:
-        NfitTracks[0]         +=event.FitTracks.GetEntries()
-        NfitTracks_refitted[0]+=event.FitTracks_refitted.GetEntries()
-        for atrack in sTree.FitTracks:
-           fst = atrack.getFitStatus()
-           if fst.isFitConverged(): NfitTracks[1]+=1
-        for atrack in sTree.FitTracks_refitted:
-           fst = atrack.getFitStatus()
-           if fst.isFitConverged(): NfitTracks_refitted[1]+=1
-    print "run, number of original tracks",sTree.GetCurrentFile(),NfitTracks, " number of refitted tracks",NfitTracks_refitted
+    EventsWithTracks = [0,0]
+    if not analyse:
+        for event in sTree:
+            if event.FitTracks.GetEntries()>0: EventsWithTracks[0]+=1
+            if event.FitTracks_refitted.GetEntries()>0: EventsWithTracks[1]+=1
+            NfitTracks[0]         +=event.FitTracks.GetEntries()
+            NfitTracks_refitted[0]+=event.FitTracks_refitted.GetEntries()
+            for atrack in sTree.FitTracks:
+               fst = atrack.getFitStatus()
+               if fst.isFitConverged(): NfitTracks[1]+=1
+            for atrack in sTree.FitTracks_refitted:
+               fst = atrack.getFitStatus()
+               if fst.isFitConverged(): NfitTracks_refitted[1]+=1
+        print "run, number of original tracks",sTree.GetCurrentFile(),NfitTracks, " number of refitted tracks",NfitTracks_refitted, " lumi:",EventsWithTracks
+    else:
+        for r in os.listdir('.'):
+            if not r.find('RUN_8000_')==0: continue
+            for l in os.listdir(r):
+               f = open(r+'/'+l)
+               txt = f.readlines()
+               tmp = txt[len(txt)-1].split('[')
+               if tmp[0].find('run')!=0: continue
+               fitted = tmp[1].split(']')[0]
+               NfitTracks[0] += int(fitted.split(',')[0])
+               NfitTracks[1] += int(fitted.split(',')[1])
+               refitted = tmp[2].split(']')[0]
+               NfitTracks_refitted[0] += int(refitted.split(',')[0])
+               NfitTracks_refitted[1] += int(refitted.split(',')[1])
+               refitted = tmp[3].split(']')[0]
+               EventsWithTracks[0] += int(refitted.split(',')[0])
+               EventsWithTracks[1] += int(refitted.split(',')[1])
+        print "number of original tracks",NfitTracks, " number of refitted tracks",NfitTracks_refitted," lumi counts:",EventsWithTracks
+        print "ratios",NfitTracks_refitted[0]/float(NfitTracks[0]),NfitTracks_refitted[1]/float(NfitTracks[1]),EventsWithTracks[1]/float(EventsWithTracks[0])
+
 hruns={}
 def compareRuns(runs=[]):
     # runs = [2307,2357,2359,2360,2361,2365,2366,2395,2396]
@@ -6985,7 +7054,7 @@ def compareRuns(runs=[]):
             if not hruns.has_key(r): 
                 runs.append(r)
                 hruns[r]={}
-                ut.readHists(hruns[r],x+'/momDistributions.root',interestingHistos)
+                ut.readHists(hruns[r],'momDistributions-'+r+'.root',interestingHistos)
     else:
         for r in runs:
             if not hruns.has_key(r): 
@@ -7170,7 +7239,7 @@ def energyLossRPC():
     myPrint(h['cx'],'energyLossBetweenRPCs')
 def plotResidualExample():
     if not h.has_key('biasedResiduals'):
-       ut.readHists(h,'residuals.root')
+       ut.readHists(h,'residuals_refit.root')
        plotBiasedResiduals(onlyPlotting=True)
     ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
     h['Residualsexample'].cd()
@@ -7221,11 +7290,10 @@ def plotResidualExample():
     fitResult=rc.Get()
     n1 = fitResult.Parameter(0)
     n2 = fitResult.Parameter(4)
-    s1 = fitResult.Parameter(1)
+    s1 = fitResult.Parameter(2)
     s2 = fitResult.Parameter(5)
-    w = 1./n1**2+1./n2**2
-    a = s1/n1**2+s2/n2**2/w
-    txt = ROOT.TLatex(-0.45,70E6,"mean sigma = %5.2F#mum"%(a*10*1000))
+    a = (s1*n1+s2*n2)/(n1+n2)
+    txt = ROOT.TLatex(-0.45,h[hname].GetMaximum()*0.8,"mean sigma = %5.0F#mum"%(a*10*1000))
     h[hname].SetTitle('')
     h[hname].Draw()
     txt.Draw()
@@ -7292,10 +7360,11 @@ def plotWithRPCTrackEffExample():
 def plotRPCResidualsExample():
     ut.bookCanvas(h,'Residualsexample',' ',1200,600,1,1)
     t='RPCResiduals'
+    h['Residualsexample'].cd()
     for p in h[t].GetListOfPrimitives():
          hist = p.GetListOfPrimitives()[1]
-         hist.GetXaxis().SetTitle('[cm]')
          hist.Draw()
+         p.GetListOfPrimitives()[2].Draw()
          myPrint(h['Residualsexample'],hist.GetName())
     t='RPCEff'
     for p in h[t].GetListOfPrimitives():
@@ -7516,8 +7585,7 @@ def recoStep1(PR=11):
         fGenFitArray.Clear()
         fTrackInfoArray.Clear()
         for x in ['X','Y']: fRPCTrackArray[x].Clear()
-        if PR==3: theTracks = bestTracks()
-        else: theTracks = findTracks(PR)
+        theTracks = findTracks(PR)
         for aTrack in theTracks:
             nTrack   = fGenFitArray.GetEntries()
             fTrackInfoArray[nTrack] = ROOT.TrackInfo(aTrack)
