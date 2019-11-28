@@ -831,12 +831,18 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
             h[t].Print('True-Reco'+k+'.pdf')
 def mufluxReco(sTree,h,nseq=0,ncpus=False):
     cuts = {'':0,'Chi2<':0.7,'Dely<':5,'Delx<':2,'All':1}
+    Mproton = 0.938272081
+    pbeam   = 400.
+    Ebeam   = ROOT.TMath.Sqrt(400.**2+Mproton**2)
+    beta    = 400./Ebeam # p/E 
+    sqrtS   = ROOT.TMath.Sqrt(2*Mproton**2+2*Ebeam*Mproton)
+    y_beam  = ROOT.TMath.Log(sqrtS/Mproton)   # Carlos Lourenco, private communication
     ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
     for c in cuts:
         for x in ['','mu']:
             for s in ["","Decay","Hadronic inelastic","Lepton pair","Positron annihilation","charm","beauty","Di-muon P8","invalid"]:
                 ut.bookHist(h,c+'p/pt'+x+s,'momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
-                ut.bookHist(h,c+'y'+x+s,'rapidity cm; y_{CM}',500,-1.,5.,25,0.,500.,10,0.,10.)
+                ut.bookHist(h,c+'y'+x+s,'rapidity cm; y_{CM}',500,-1.,5.,100,0.,500.,50,0.,10.)
                 ut.bookHist(h,c+'p/px'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,200,-10.,10.)
                 ut.bookHist(h,c+'p/Abspx'+x+s,'momentum vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
                 ut.bookHist(h,c+'pz/Abspx'+x+s,'Pz vs Px (GeV);p [GeV/c]; p_{X} [GeV/c]',500,0.,500.,100,0.,10.)
@@ -914,8 +920,8 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
             if sTree.Delx[k]<cuts['Delx<']: okCuts.append('Delx<')
             if sTree.Chi2[k]<cuts['Chi2<'] and sTree.Dely[k]<cuts['Dely<'] and sTree.Delx[k]<cuts['Delx<']: okCuts.append('All')
             for c in okCuts:
-                Emuon = ROOT.TMath.Sqrt(p.Mag()*p.Mag()+0.105658**2)
-                y = 1./2.*ROOT.TMath.Log( (Emuon+p.z())/(Emuon-p.z()) )
+                LV = ROOT.Math.PxPyPzMVector(p.X(),p.Y(),p.Z(),0.105658)
+                y = LV.Rapidity()
                 h[c+"p/pt"].Fill(p.Mag(),p.Pt())
                 h[c+"y"].Fill(y,p.Mag(),p.Pt())
                 h[c+"p/Abspx"].Fill(p.Mag(),abs(p.x()))
@@ -1028,7 +1034,8 @@ def invMass(sTree,h,nseq=0,ncpus=False):
        if ncpus:
           name = name.replace('.root','-'+str(nseq)+'.root')
     else:      
-       name = "ntuple-invMass-"+fdir.split('-')[0]+'.root'
+       name = "ntuple-invMass-"+fdir.split('/')[7]+'.root'
+    if options.refit: name = name.replace('.root','_refit.root')
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
     variables = "mult:m:mcor:mcor2:y:ycor:p:pt:p1:pt1:p2:pt2:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
 prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
@@ -1224,10 +1231,15 @@ jpsiCascadeContr = 7./33.
 # Since we have a thick target, any proton from the elastic scattering will interact inelastic somewhere else.
 # last cascade production of Eric shows even larger contribution, but momentum distribution not clear.
 def diMuonAnalysis():
- hData['f'] = ROOT.TFile('ntuple-InvMass-refitted.root')
+ if options.refit :
+  hData['f'] = ROOT.TFile('ntuple-InvMass-refitted.root')  # ROOT.TFile('ntuple-InvMass-refitted_intermediateField.root')
+  hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV-repro.root')
+  hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV-repro.root')
+ else:
+  hData['f'] = ROOT.TFile('ntuple-InvMass.root')
+  hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV.root')
+  hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV.root')
  sTreeData  = hData['f'].nt
- hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV-repro.root')
- hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV.root')
  hMC['1GeV'] =hMC['f1'].nt
  hMC['10GeV']=hMC['f10'].nt
 # make normalization
@@ -1347,12 +1359,18 @@ def diMuonAnalysis():
    ut.bookHist(hMC, 'mc-'+v+'_'+sptCut,'inv mass MC;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'mc-'+v+'_Jpsi_'+sptCut,'inv mass Jpsi MC matched;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hData,v+'_'+sptCut,'inv mass DATA;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hData,'SS-'+v+'_'+sptCut,'SS inv mass DATA;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hMC, 'SS-mc-'+v+'_'+sptCut,'SS inv mass MC;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   hData['SS-'+v+'_'+sptCut].SetLineColor(ROOT.kRed)
+   hMC['SS-mc-'+v+'_'+sptCut].SetLineColor(ROOT.kRed)
 #
    theCut =  theCutTemplate.replace('XYZ',sptCut)
    ROOT.gROOT.cd()
    hMC['dummy'].cd()
    sTreeData.Draw(v+'>>'+v+'_'+sptCut,theCut)
+   sTreeData.Draw(v+'>>SS-'+v+'_'+sptCut,theCut.replace('chi21*chi22<0','chi21*chi22>0'))
    myDraw(v+'>>mc-'+v+'_'+sptCut ,theCut)
+   myDraw(v+'>>SS-mc-'+v+'_'+sptCut ,theCut.replace('chi21*chi22<0','chi21*chi22>0'))
    myDraw(v+'>>mc-'+v+'_Jpsi_'+sptCut ,theCut+"&&Jpsi==443")
 
   ut.bookCanvas(hMC,'fits'+v,vText[v],1800,800,5,4)
@@ -1384,6 +1402,7 @@ def diMuonAnalysis():
     hMC['fitResult'][ptCut][myGauss.GetParName(9)] = [fitResult.Parameter(9),fitResult.ParError(9)]
    hMC['mc-'+v+'_Jpsi_'+sptCut].SetLineColor(ROOT.kMagenta)
    hMC['mc-'+v+'_Jpsi_'+sptCut].Draw('same')
+   hMC['SS-mc-'+v+'_'+sptCut].Draw('same')
    tc.Update()
    stats = tc.GetPrimitive('stats')
    stats.SetOptFit(10111)
@@ -1411,6 +1430,7 @@ def diMuonAnalysis():
     rc = hData[v+'_'+sptCut].Fit(myGauss,'S','',0.5,5.)
     fitResult = rc.Get()
     hData['fitResult'][ptCut][myGauss.GetParName(9)] = [fitResult.Parameter(9),fitResult.ParError(9)]
+   hData['SS-'+v+'_'+sptCut].Draw('same')
    tc.Update()
    stats = tc.GetPrimitive('stats')
    stats.SetOptFit(10011)
@@ -1424,8 +1444,10 @@ def diMuonAnalysis():
    if j==6: j+=5
    hMC['tMass'].cd()
    hMC['mc-'+v+'_'+sptCut].Draw()
+   hMC['SS-mc-'+v+'_'+sptCut].Draw('same')
    myPrint(hMC['tMass'],'mc_dimuon_'+v+sptCut)
    hData[v+'_'+sptCut].Draw()
+   hData['SS-'+v+'_'+sptCut].Draw('same')
    myPrint(hMC['tMass'],'m_dimuon_'+v+sptCut)
   hMC['fits'+v].Update()
   myPrint(hMC['fits'+v],v+'_dimuon_all')
@@ -1854,9 +1876,9 @@ def fitWithTwoCB():
    myCB.FixParameter(9,10.) # alpha positive and large -> gauss part only
    myCB.FixParameter(5,10.) # alpha positive and large -> gauss part only
    rc = h[hname].Fit(myCB,'S','',0.5,5.)
-   myCB.ReleaseParameter(9)
-   rc = h[hname].Fit(myCB,'SE','',0.5,5.)
    myCB.ReleaseParameter(5)
+   rc = h[hname].Fit(myCB,'SE','',0.5,5.)
+   myCB.ReleaseParameter(9)
    rc = h[hname].Fit(myCB,'SE','',0.5,5.)
    fitResult=rc.Get()
    if math.isnan(fitResult.ParError(1)) or math.isnan(fitResult.ParError(6)):
@@ -2027,7 +2049,7 @@ def fitWithTwoCB():
  for c in choices:
    h=choices[c]
    for p in range(1,4):
-    hname = 'evolution'+v+param[p]+c
+    hname = 'evolutionCB'+v+param[p]+c
     ut.bookHist(h,hname,v+' evolution of '+param[p]+txt[p],20,0., 2.)
     for ptCut in ptCutList:
         k = h[hname].FindBin(ptCut)
@@ -2036,7 +2058,7 @@ def fitWithTwoCB():
         k+=1
  for p in range(1,4):
    tc = hMC['evolutionC'+v].cd(p)
-   hname = 'evolution'+v+param[p]
+   hname = 'evolutionCB'+v+param[p]
    resetMinMax(hMC[hname+'MC'])
    resetMinMax(hData[hname+'Data'])
    hMC[hname+'MC'].SetLineColor(ROOT.kRed)
@@ -2490,6 +2512,43 @@ def debug():
         Nstat[fname][2]+=sTreeMC.MCRecoRPC.size()
         Nstat[fname][3]+=sTreeMC.MCRecoDT.size()
     return Nstat
+
+def debugInvMass(sTree,nMax=1000):
+    stats = {}
+    currentFile=""
+    N=0
+    for n in range(0,sTree.GetEntries()):
+        rc = sTree.GetEvent(n)
+        if sTree.GetCurrentFile().GetName()!=currentFile:
+          currentFile = sTree.GetCurrentFile().GetName()
+          nInFile = n
+        P    = {}
+        IP   = {}
+        Pcor = {}
+        Pcor2 = {}
+        for k in range(len(sTree.GoodTrack)):
+            if sTree.GoodTrack[k]<0: continue
+            if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: continue
+            if sTree.GoodTrack[k]>999:  continue
+            P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
+            l = (sTree.z[k] - zTarget)/(sTree.Pz[k]+ 1E-19)
+            x = sTree.x[k]+l*sTree.Px[k]
+            y = sTree.y[k]+l*sTree.Py[k]
+            IP[k] = ROOT.TMath.Sqrt(x*x+y*y)
+# make dE correction plus direction from measured point
+            dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
+            Ecor = P[k].E()+dEdxCorrection(P[k].P())
+            norm = dline.Mag()
+            Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
+            Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,0.105658)
+# now we have list of selected tracks, P.keys()
+        if len(P)<2: continue
+        shortName = currentFile.split('/')[11]
+        if not stats.has_key(shortName): stats[shortName]=[]
+        stats[shortName].append(n-nInFile)
+        N+=1
+        if N>nMax: break
+    return stats
 
 if options.command=='MufluxReco':
     if fdir.find('simulation')==0: mufluxReco(sTreeMC,hMC,nseq=options.nseq,ncpus=options.ncpus)
