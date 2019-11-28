@@ -548,26 +548,35 @@ def checkNtuples(path = '.'):
                     if not test: notOK.append(path+'/'+d+'/'+n)
     return notOK
 
-def invMass(path = '.',merge=False,refit=True):
+def invMass(path = '.',merge=False,refit=True,overWrite=False,flagImfield=False):
     hname = "InvMass"
-    if refit: hname = "InvMass-refitted"
+    if refit: hname = hname+"-refitted"
+    if flagImfield: hname = hname+'_intermediateField'
     if merge:
         cmd = 'hadd -f sum'+hname+'.root '
         cmd2 = 'hadd -f ntuple-'+hname+'.root '
         for d in os.listdir(path):
-            if refit and d.find('refit')<0: continue
-            if d.find('invMass')==0:
-                r = int(d.split('_')[2])
-                if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
-                cmd += d+" "
-                cmd2 += 'ntuple-'+d+" "
+            if not d.find('invMass')==0:        continue
+            if refit and d.find('refit')<0:     continue
+            if not refit and d.find('refit')>0: continue
+            r = int(d.split('_')[2].split('.')[0])
+            if r in badRuns or r in noTracks or r in noField : continue
+            if r in intermediateField and not flagImfield : continue
+            if not r in intermediateField and flagImfield : continue
+            cmd += d+" "
+            cmd2 += 'ntuple-'+d+" "
         os.system(cmd)
         os.system(cmd2)
     else:
         for d in os.listdir(path):
-            if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):              
-                if refit: cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -r -c invMass -A False -B False -C False -d "+d+" -p /eos/experiment/ship/user/truf/muflux-reco &"
-                else:     cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -A False -B False -C False -d "+d+" -p /eos/experiment/ship/user/truf/muflux-reco &"
+            if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):
+                if refit: 
+                    test = "ntuple-invMass-"+d+"_refit.root"
+                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -r -c invMass -A False -B False -C False -d "+mufluxRecoDir+d+" -p "+mufluxRecoDir+d+" &"
+                else:     
+                    test = "ntuple-invMass-"+d+".root"
+                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -A False -B False -C False -d "+mufluxRecoDir+d+" -p "+mufluxRecoDir+d+" &"
+                if os.path.isfile(test) and not overWrite: continue
                 os.system(cmd)
                 time.sleep(10)
                 while 1>0:
@@ -611,7 +620,6 @@ def mergeGoodRuns(command="anaResiduals",refit=True,excludeRPC=False):
    else:     outFile = outFile+'.root '
    cmd = 'hadd -f '+outFile
    for f in os.listdir('.'):
-       if f.find('refit')<0 and refit or f.find('refit')>0 and not option.refit: continue
        if f.find('root')<0: continue
        k = f.find(commandToSum[command]+'-RUN_8000_')
        if k<0:continue
@@ -869,4 +877,59 @@ def compareOldAndRefitted():
    diffs[run] = list( set(spills[run]) - set(spills_refitted[run]) )
    print run, diffs[run]
 
+def checkNtuples():
+    stats = {}
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+mufluxRecoDir,shell=True)
+    runs = temp.split('\n')
+    for run in runs:
+        if run.find('RUN_8000')<0: continue
+        stats[run]={'':{},'refit':{}}
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+run,shell=True)
+        for z in temp.split('\n'):
+            if z.find('ntuple-SPILL')>0:
+                 f = ROOT.TFile.Open(os.environ['EOSSHIP']+z)
+                 stats[run]['refit'][z]=-1
+                 if f.Get('tmuflux'):
+                    N = f.tmuflux.GetEntries()
+                    if z.find('refit')<0: stats[run][''][z]=N
+                    else: stats[run]['refit'][z]=N
+# check1
+    for run in stats:
+       if len(stats[run]['']) != len(stats[run]['refit']):
+            print "different nr of ntuples ",run,len(stats[run]['']) ,len(stats[run]['refit'])
+# check2
+    for run in stats:
+        for spill in stats[run]['']:
+          rspill = spill.replace('.root','_refit.root')
+          if not rspill in stats[run]['refit']:
+              print "spill does not exist for refit",spill
+              continue
+          if stats[run][''][spill] != stats[run]['refit'][rspill] :
+            print "different nr of events in spill",spill,stats[run][''][spill] ,stats[run]['refit'][rspill]
+def compareInvMassNtuples(path=''):
+    stats = {}
+    for d in os.listdir('.'):
+        if not d.find('RUN_8000')==0: continue
+        n,nr = 0,0
+        name = "ntuple-invMass-"+d+".root"
+        r = int(d.split('_')[2].split('.')[0])
+        f  = ROOT.TFile(path+name)
+        if f: 
+          if f.Get('nt'): n = f.nt.GetEntries()        
+        fr = ROOT.TFile( path+name.replace('.root','_refit.root'))
+        if fr: 
+          if fr.Get('nt'):nr = fr.nt.GetEntries()
+        stats[r]=[n,nr]
+    runs = stats.keys()
+    runs.sort()
+    total = [0,0]
+    gtotal = [0,0]
+    for r in runs:
+        print r,stats[r],float(stats[r][1]/(stats[r][0]+1E-10))
+        for i in range(2): total[i]+=stats[r][i]
+        if r in badRuns or r in noTracks or r in intermediateField or r in noField : continue
+        for i in range(2): gtotal[i]+=stats[r][i]
+    print "total",total,float(total[1]/(total[0]+1E-10))
+    print "total good runs",gtotal,float(gtotal[1]/(gtotal[0]+1E-10))
+    return stats
 
