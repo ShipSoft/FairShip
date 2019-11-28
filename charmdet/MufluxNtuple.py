@@ -829,14 +829,16 @@ def trueMomPlot(Nevents=-1,onlyPlotting=False):
             h['leg'+t].Draw()
             h[t].Print('True-Reco'+k+'.png')
             h[t].Print('True-Reco'+k+'.pdf')
-def mufluxReco(sTree,h,nseq=0,ncpus=False):
-    cuts = {'':0,'Chi2<':0.7,'Dely<':5,'Delx<':2,'All':1}
+def yBeam():
     Mproton = 0.938272081
     pbeam   = 400.
     Ebeam   = ROOT.TMath.Sqrt(400.**2+Mproton**2)
     beta    = 400./Ebeam # p/E 
     sqrtS   = ROOT.TMath.Sqrt(2*Mproton**2+2*Ebeam*Mproton)
     y_beam  = ROOT.TMath.Log(sqrtS/Mproton)   # Carlos Lourenco, private communication
+    return y_beam
+def mufluxReco(sTree,h,nseq=0,ncpus=False):
+    cuts = {'':0,'Chi2<':0.7,'Dely<':5,'Delx<':2,'All':1}
     ut.bookHist(h,'Trscalers','scalers for track counting',20,0.5,20.5)
     for c in cuts:
         for x in ['','mu']:
@@ -921,7 +923,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
             if sTree.Chi2[k]<cuts['Chi2<'] and sTree.Dely[k]<cuts['Dely<'] and sTree.Delx[k]<cuts['Delx<']: okCuts.append('All')
             for c in okCuts:
                 LV = ROOT.Math.PxPyPzMVector(p.X(),p.Y(),p.Z(),0.105658)
-                y = LV.Rapidity()
+                y  = LV.Rapidity()-yBeam()
                 h[c+"p/pt"].Fill(p.Mag(),p.Pt())
                 h[c+"y"].Fill(y,p.Mag(),p.Pt())
                 h[c+"p/Abspx"].Fill(p.Mag(),abs(p.x()))
@@ -2366,7 +2368,7 @@ def JpsiAcceptance():
     print "primary: %5.2F%%,  cascade: %5.2F%% "%(primJpsi/totalJpsi*100.,100.-primJpsi/totalJpsi*100.)
 #
     ut.bookHist(hMC,'Jpsi_p/pt','momentum vs Pt (GeV);p [GeV/c]; p_{T} [GeV/c]',500,0.,500.,100,0.,10.)
-    ut.bookHist(hMC,'Jpsi_y',   'rapidity cm; y_{CM}',500,-1.,5.,25,0.,500.,10,0.,10.)
+    ut.bookHist(hMC,'Jpsi_y',   'rapidity cm; y_{CM}',100,-1.,5.,25,0.,500.,10,0.,10.)
     for event in nt:
        mom = ROOT.TLorentzVector(event.px,event.py,event.pz,event.E)
        rc = hMC['Jpsi_p/pt'].Fill(mom.P(),mom.Pt())
