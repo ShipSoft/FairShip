@@ -59,7 +59,7 @@ def get_work_dir(run_number,tag=None):
 
 def init():
   global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
-         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot, nStart
+         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
   ap = argparse.ArgumentParser(
@@ -85,7 +85,7 @@ def init():
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
   ap.add_argument('-p','--pot',action='store_true',  dest='npot',  default=npot, help="number of protons on target per spill to normalize on")
-  ap.add_argument('-S','--nStart',action='store_true',  dest='nStart',  default=nStart, help="first event of input file to start")
+  ap.add_argument('-S','--nStart',  dest='nStart',  default=nStart, help="first event of input file to start")
   ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile',  default=charmInputFile, help="input file for charm/beauty decays")
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   args = ap.parse_args()
