@@ -6503,22 +6503,26 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             rc = h[ts].cd(tc)
             rc.SetLogy(1)
             rc.SetLeftMargin(0.2)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             for i in ['','MC','MC10']:
                 if i=='MC10' and d != "":continue
                 source = ""
                 xx = x+source
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i][2],'PL')
+                h[d+i+'pz/Abspx'+xx+'_x'].SetTitle('')
+                h[d+i+'pz/Abspx'+xx+'_x'].SetMinimum(1E-10)
                 h[d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i][0])
             h['leg'+ts+str(tc)].Draw('same')
             tc = 2
             rc = h[ts].cd(tc)
             rc.SetLogy(1)
             rc.SetLeftMargin(0.2)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             for i in ['','MC']:
                 source = ""
                 xx = x+source
+                h[d+i+'pz/Abspx'+xx+'_y'].SetTitle('')
+                h[d+i+'pz/Abspx'+xx+'_y'].SetMinimum(1E-10)
                 h[d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i][0])
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i][2],'PL')
             h['leg'+ts+str(tc)].Draw('same')
@@ -6527,13 +6531,15 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             rc = h[ts].cd(tc)
             rc.SetLogy(1)
             rc.SetLeftMargin(0.2)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             hMax = max(mx1,mx2)
             for i in ['','MC','MC10']:
                 if i=='MC10' and d != "":continue
                 source = ""
                 xx = x+source
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i][2],'PL')
+                h[d+i+'p/pt'+xx+'_x'].SetTitle('')
+                h[d+i+'p/pt'+xx+'_x'].SetMinimum(1E-10)
                 h[d+i+'p/pt'+xx+'_x'].Draw(opt[i][0])
             h['leg'+ts+str(tc)].Draw('same')
             tx = h['dummy'].cd()
@@ -6549,10 +6555,12 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             rc = h[ts].cd(tc)
             rc.SetLogy(1)
             rc.SetLeftMargin(0.2)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.61,0.96,0.93)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             for i in ['','MC']:
                 source = ""
                 xx = x+source
+                h[d+i+'p/pt'+xx+'_y'].SetTitle('')
+                h[d+i+'p/pt'+xx+'_y'].SetMinimum(1E-10)
                 h[d+i+'p/pt'+xx+'_y'].Draw(opt[i][0])
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_y'],opt[i][2],'PL')
             h['leg'+ts+str(tc)].Draw('same')
@@ -6568,42 +6576,46 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             tc = 5
             rc.SetLeftMargin(0.2)
             rc = h[ts].cd(tc)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             for i in ['','MC','MC10']:
                 if i=='MC10' and d != "":continue
                 source = ""
                 xx = x+source
+                h['lin'+d+i+'pz/Abspx'+xx+'_x'].SetTitle('')
                 h['lin'+d+i+'pz/Abspx'+xx+'_x'].Draw(opt[i][0])
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_x'],opt[i][2],'PL')
             h['leg'+ts+str(tc)].Draw('same')
             tc = 6
             rc = h[ts].cd(tc)
             rc.SetLeftMargin(0.2)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             for i in ['','MC']:
                 source = ""
                 xx = x+source
+                h['lin'+d+i+'pz/Abspx'+xx+'_y'].SetTitle('')
                 h['lin'+d+i+'pz/Abspx'+xx+'_y'].Draw(opt[i][0])
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'pz/Abspx'+xx+'_y'],opt[i][2],'PL')
             h['leg'+ts+str(tc)].Draw('same')
             tc = 7
             rc = h[ts].cd(tc)
             rc.SetLeftMargin(0.2)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             for i in ['','MC','MC10']:
                 if i=='MC10' and d != "":continue
                 source = ""
                 xx = x+source
+                h['lin'+d+i+'p/pt'+xx+'_x'].SetTitle('')
                 h['lin'+d+i+'p/pt'+xx+'_x'].Draw(opt[i][0])
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h[d+i+'p/pt'+xx+'_x'],opt[i][2],'PL')
             h['leg'+ts+str(tc)].Draw('same')
             tc = 8
             rc.SetLeftMargin(0.2)
             rc = h[ts].cd(tc)
-            h['leg'+ts+str(tc)]=ROOT.TLegend(0.42,0.54,0.88,0.86)
+            h['leg'+ts+str(tc)]=ROOT.TLegend(0.50,0.68,0.88,0.88)
             for i in ['','MC']:
                 source = ""
                 xx = x+source
+                h['lin'+d+i+'p/pt'+xx+'_y'].SetTitle('')
                 h['lin'+d+i+'p/pt'+xx+'_y'].Draw(opt[i][0])
                 if i.find('MC10')<0: h['leg'+ts+str(tc)].AddEntry(h['lin'+d+i+'p/pt'+xx+'_y'],opt[i][2],'PL')
             h['leg'+ts+str(tc)].Draw('same')

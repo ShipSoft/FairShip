@@ -1011,7 +1011,10 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
                         h["truePz/Abspx"+source].Fill(trueMom[2],ROOT.TMath.Abs(trueMom[0]));
                         h["recoPz/Abspx"+source].Fill(p[2],ROOT.TMath.Abs(p[0]));
                         h["momResol"+source].Fill((p.Mag()-trueMom.Mag())/trueMom.Mag(),trueMom.Mag());
-    tmp = 'RUN_8000'+fdir.split('RUN_8000')[1]
+    if not MCdata : tmp = 'RUN_8000'+fdir.split('RUN_8000')[1]
+    else : 
+      tmp = fdir
+      if withCharm : tmp+='-charm'
     outFile = 'sumHistos-'+'-'+tmp+'.root'
     if options.refit: outFile = 'sumHistos-'+'-'+tmp+'_refit.root'
     if ncpus:
@@ -1230,7 +1233,9 @@ def myDraw(variable,cut):
  # hMC['10GeV'].Draw(variable,str(hMC['weights']['1GeV'])+'*('+cut+')')
  # hMC['10eV'].Draw(variable.replace(">>",">>+"),str(hMC['weights']['1GeV'])+'*('+cut+')')
  
-jpsiCascadeContr = 7./33.  
+jpsiCascadeContr = 7./33.
+InvMassPlots = [160,0.,8.]
+
 # The elastic proton proton cross section at ~27GeV is about 7mbar. The inelastic cross section is about 33mbar. 
 # Since we have a thick target, any proton from the elastic scattering will interact inelastic somewhere else.
 # last cascade production of Eric shows even larger contribution, but momentum distribution not clear.
@@ -1262,8 +1267,6 @@ def diMuonAnalysis():
  daSysError = 0.021
  dataStats  = 324.75E9
  hMC['weights'] = {'1GeV': MCStats['1GeV']/dataStats/(1+simpleEffCor*2),'10GeV':MCStats['10GeV']/dataStats/(1+simpleEffCor*2)}
-#
- InvMassPlots = [160,0.,8.]
 #
  ptCutList = [0.0,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6]
  hData['fitResult'] = {}
@@ -1632,6 +1635,17 @@ def diMuonAnalysis():
  makeProjection('ycor',0.,2.,'y_{CMS}',theCut)
 # yield as function of p, should better be Pcor?
  makeProjection('p',20.,220.,'P [GeV/c^{2}]',theCut)
+# polarization
+ makeProjection('cosCScor',-1.,1.,'P [GeV/c^{2}]',theCut)
+ # fit for polarization
+ hData['polFun'] = ROOT.TF1('polFun','[0]*(1+x**2*[1])',2)
+ rc = hData['JpsicosCScor'].Fit(hData['polFun'],'S','',-1.,1.)
+ fitResult = rc.Get()
+ print "polarization CS #Lambda=%5.2F +/- %5.2F"%(fitResult.Parameter(1),fitResult.ParError(1))
+ makeProjection('cosTheta',-1.,1.,'P [GeV/c^{2}]',theCut)
+ rc = hData['JpsicosTheta'].Fit(hData['polFun'],'S','',-1.,1.)
+ fitResult = rc.Get()
+ print "polarization CS #Lambda=%5.2F +/- %5.2F"%(fitResult.Parameter(1),fitResult.ParError(1))
 
 # low mass in bins of p and pt
  ut.bookHist(hMC, 'mc-lowMassppt','low mass pt vs p;p [GeV/c];p_{t} [GeV/c]',50,0.,400.,50,0.,5.)
@@ -1715,6 +1729,7 @@ def diMuonAnalysis():
 def makeProjection(proj,projMin,projMax,projName,theCut,nBins=9):
    v='mcor'
    sTreeData  = hData['f'].nt
+   myGauss = hMC['myGauss']
    ut.bookHist(hMC, 'mc-Jpsi'+proj, ' N J/#psi ;'+projName, nBins,projMin,projMax)
    ut.bookHist(hData,  'Jpsi'+proj, ' N J/#psi ;'+projName, nBins,projMin,projMax)
    ut.bookCanvas(hMC,'MCbins'+proj,'mass in bins '+projName,1800,1200,3,3)
@@ -1730,9 +1745,8 @@ def makeProjection(proj,projMin,projMax,projName,theCut,nBins=9):
      hMC['dummy'].cd()
      if proj=='ycor': cutExp = "ycor-"+str(y_beam)
      else:            cutExp = proj
-     print v+'>>'+proj+str(k),theCut+'&&'+cutExp+'<'+str(pmax)+'&&'+cutExp+'>'+str(pmin)
      sTreeData.Draw(v+'>>'+proj+str(k),theCut+'&&'+cutExp+'<'+str(pmax)+'&&'+cutExp+'>'+str(pmin))
-     myDraw(v+'>>mc-y'+str(k),         theCut+'&&'+cutExp+'<'+str(pmax)+'&&'+cutExp+'>'+str(pmin))
+     myDraw(v+'>>mc-'+proj+str(k),     theCut+'&&'+cutExp+'<'+str(pmax)+'&&'+cutExp+'>'+str(pmin))
      pmin = pmin+delp
      cases = {'MC':hMC['mc-'+proj+str(k)],'Data':hData[proj+str(k)]}
      for c in cases:
@@ -1740,12 +1754,29 @@ def makeProjection(proj,projMin,projMax,projName,theCut,nBins=9):
        if c=='MC': tc=hMC['MCbins'+proj].cd(k+1)
        else: tc=hData['bins'+proj].cd(k+1)
        init_Gauss(myGauss)
+       myGauss.FixParameter(1,3.1)
+       myGauss.FixParameter(2,0.35)
+       myGauss.FixParameter(4,1.1)
+       myGauss.FixParameter(5,0.35)
        histo.Draw()
        if histo.GetEntries()>10:
         rc = histo.Fit(myGauss,'S','',0.5,5.)
+        myGauss.ReleaseParameter(1)
+        myGauss.ReleaseParameter(2)
+        myGauss.ReleaseParameter(4)
+        myGauss.ReleaseParameter(5)
+        rc = histo.Fit(myGauss,'S','',0.5,5.)
         fitResult = rc.Get()
         N = fitResult.Parameter(0)
+        if N<0: 
+          myGauss.SetParameter(0,abs(N))
+          rc = histo.Fit(myGauss,'S','',0.5,5.)
+          fitResult = rc.Get()
+        N = fitResult.Parameter(0)
         E = fitResult.ParError(0)
+        if fitResult.Parameter(1)>4: 
+          N=0
+          E=0
        else:
         N=0
         E=0
@@ -2224,8 +2255,8 @@ def init_Gauss(myGauss):
  myGauss.SetParName(8,'p2')
  myGauss.SetParName(9,'psi(2S)')
  myGauss.SetParameter(0,1000.)
- myGauss.SetParameter(1,3.0)
- myGauss.SetParameter(2,0.1)
+ myGauss.SetParameter(1,3.1)
+ myGauss.SetParameter(2,0.35)
  myGauss.SetParameter(3,1000.)
  myGauss.SetParameter(4,1.0)
  myGauss.SetParameter(5,0.1)

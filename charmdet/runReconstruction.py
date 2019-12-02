@@ -509,7 +509,7 @@ def makeDTEfficiency(eos=False,merge=False,refit=True):
         if merge: os.system(cmd)
     print "finished all the tasks."
 
-def runMufluxReco(path = "/eos/experiment/ship/user/truf/muflux-reco",merge=False,refit=True):
+def runMufluxReco(ncpus=6,path = "/eos/experiment/ship/user/truf/muflux-reco",merge=False,refit=True):
     sumHistos=[]
     for d in os.listdir('.'):
         if d.find('RUN_8000')==0:

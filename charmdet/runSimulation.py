@@ -624,7 +624,9 @@ def splitOffBoostedEvents(splitFactor=5,check=False):
                         print f1,f1 in l 
         os.chdir('../')
 
-def runMufluxReco(merge=False):
+def runMufluxReco(D='1GeV',merge=False):
+    N = 24
+    ncpus = 8
     if merge:
         cmd = "hadd sumHistos--simulation10GeV-repro.root "
         for n in range(ncpus):
@@ -632,14 +634,19 @@ def runMufluxReco(merge=False):
         os.system(cmd)
     else:
         t='repro'
-        ncpus = 15
-        cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A True -B False -C  False &"
-        os.system(cmd)
-        cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B False -C True  &"
-        os.system(cmd)
-        for n in range(ncpus):
-         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco -p ship-ubuntu-1710-48 -A False -B True -C False -s "+str(n)+ " -x "+str(ncpus)+" &"
-         os.system(cmd)
+        if D=='1GeV':
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco  -A True -B False -C  False -D False &"
+          os.system(cmd)
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco  -A False -B False -C True  -D False &"
+          os.system(cmd)
+        else:
+          for n in range(ncpus):
+            cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco  -D False -A False -B True -C False -s "+str(n)+ " -x "+str(ncpus)+" &"
+            os.system(cmd)
+            while 1>0:
+                if count_python_processes('MufluxNtuple')<ncpus: break
+                time.sleep(20)
+
 def runInvMass(MC='1GeV',merge=False):
     ncpus = 15
     t='repro'
