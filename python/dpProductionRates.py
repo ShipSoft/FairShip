@@ -105,11 +105,14 @@ def qcdprodRate(mass,epsilon,doprint=False):
         xs = math.exp(-4.1477-1.4745*mass)
     else:
         xs = 0
-    return xs*epsilon*epsilon
+    return xs*epsilon*epsilon/40.6
+    #return xs*epsilon*epsilon
 
 def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
     if ('pbrem' in prodMode):
         return pbremProdRate(mass,epsilon,doprint)
+    elif ('pbrem1' in prodMode):
+        return pbremProdRateNoFF(mass,epsilon,doprint)
     elif ('meson' in prodMode):
         return mesonProdRate(mass,epsilon,mumPdg,doprint)
     elif ('qcd' in prodMode):

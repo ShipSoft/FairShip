@@ -353,6 +353,12 @@ def myEventLoop(n):# Analysis is starting here
                 #if abs(PDG.GetParticle(sTree.MCTrack[xxx].GetPdgCode()).Charge())!=3.0: print sTree.MCTrack[xxx].GetPdgCode()
             else: print sTree.MCTrack[xxx].GetPdgCode()
     #if CHARGE>1: h['DPpurW'].Fill(mass_mc)
+    try:
+        tug = sTree.GetBranch("FitTracks")
+        tug.GetEntry()
+        tug.Close()
+    except:
+        return
 
     for F,FIT in enumerate(sTree.FitTracks):
         fitStatus = FIT.getFitStatus()
@@ -478,7 +484,7 @@ def myEventLoop(n):# Analysis is starting here
             h['DPangW_tau'].Fill(mass_mc,wg)
 
     if (e>1 or mu>1 or tau>1 or nhad>0 or had>0 or pi0>0):#at least two charged leptons decay channel and any hadronic decay channel FOR BR_TOT
-        #print "hello", n
+        print "hello", n
         h['DP'].Fill(mass_mc)
         if CHARGE>1:
             h['DPpur'].Fill(mass_mc)
@@ -538,7 +544,7 @@ k=open(o9,'w+')
 l=open(o10,'w+')
 print float(h['DP'].Integral())
 if float(h['DP'].Integral())!=0:
-    #print h['DP'].Integral(), h['DPpur'].Integral(), h['DPvesW'].Integral(), h['DPang'].Integral(), h['DPangWe'].Integral()
+    print h['DP'].Integral(), h['DPpur'].Integral(), h['DPvesW'].Integral(), h['DPang'].Integral(), h['DPangWe'].Integral()
     NomL, NomL1, DenL  = 0., 0., 0.
     Sum,ves_s,ang_s= 0., 0., 0.
     DP_instance=darkphoton.DarkPhoton(float(mass_mc),float(eps))
@@ -673,8 +679,8 @@ if float(h['DP'].Integral())!=0:
 
 #print h['DPpurW'].Integral(),h['DPpur'].Integral()
 
-if dpMom!="eta1": print mass_mc, eps, RecW
-if dpMom=="eta1": print mass_mc, eps, RecW, RecW1
+#if dpMom!="eta1": print mass_mc, eps, RecW
+#if dpMom=="eta1": print mass_mc, eps, RecW, RecW1
 a.close()
 b.close()
 c.close()

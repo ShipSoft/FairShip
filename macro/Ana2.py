@@ -28,9 +28,7 @@ for o,a in opts:
     if o in ('-f',): dest = a
 
 if dpMom: tmp1 = "/eos/experiment/ship/data/DarkPhoton/PBC-June-3/"+date+"/reco/"+pro+"_"+dpMom+"_mass"+mass_mc+"_eps"+eps
-if not dpMom: 
-    if pro=='pbrem1': tmp1 = "/eos/experiment/ship/data/DarkPhoton/PBC-June-3/"+date+"/reco/pbrem_mass"+mass_mc+"_eps"+eps
-    if pro!='pbrem1': tmp1 = "/eos/experiment/ship/data/DarkPhoton/PBC-June-3/"+date+"/reco/"+pro+"_mass"+mass_mc+"_eps"+eps
+if not dpMom: tmp1 = "/eos/experiment/ship/data/DarkPhoton/PBC-June-3/"+date+"/reco/"+pro+"_mass"+mass_mc+"_eps"+eps
 inputFile = tmp1+"_rec.root"
 #print inputFile
 mass_mc=float(mass_mc)
@@ -478,7 +476,6 @@ def myEventLoop(n):# Analysis is starting here
             h['DPangW_tau'].Fill(mass_mc,wg)
 
     if (e>1 or mu>1 or tau>1 or nhad>0 or had>0 or pi0>0):#at least two charged leptons decay channel and any hadronic decay channel FOR BR_TOT
-        #print "hello", n
         h['DP'].Fill(mass_mc)
         if CHARGE>1:
             h['DPpur'].Fill(mass_mc)
@@ -536,9 +533,9 @@ g=open(o7,'w+')
 H=open(o8,'w+')
 k=open(o9,'w+')
 l=open(o10,'w+')
-print float(h['DP'].Integral())
+
 if float(h['DP'].Integral())!=0:
-    #print h['DP'].Integral(), h['DPpur'].Integral(), h['DPvesW'].Integral(), h['DPang'].Integral(), h['DPangWe'].Integral()
+    print h['DP'].Integral(), h['DPpur'].Integral(), h['DPvesW'].Integral(), h['DPang'].Integral(), h['DPangWe'].Integral()
     NomL, NomL1, DenL  = 0., 0., 0.
     Sum,ves_s,ang_s= 0., 0., 0.
     DP_instance=darkphoton.DarkPhoton(float(mass_mc),float(eps))
