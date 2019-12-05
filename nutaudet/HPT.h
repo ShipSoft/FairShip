@@ -79,7 +79,7 @@ class Hpt:public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-    void DecodeVolumeID(Int_t detID,int &nHPT);
+    void DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor);
     
 private:
     
