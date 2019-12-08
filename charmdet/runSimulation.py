@@ -488,7 +488,8 @@ def exportNtupleToEos(d="simulation10GeV-withDeadChannels",key='ntuple',update=T
         if os.path.isdir(d+'/'+D):
             for f in os.listdir(d+'/'+D):
                 if f.find(key)==0:
-                    cmd = "xrdcp -f "+d+'/'+D+'/'+f+ " $EOSSHIP/"+destination+"/"+D+'/'+f
+                    cmd = "xrdcp  "+d+'/'+D+'/'+f+ " $EOSSHIP/"+destination+"/"+D+'/'+f
+                    if update : cmd = "xrdcp -f "+d+'/'+D+'/'+f+ " $EOSSHIP/"+destination+"/"+D+'/'+f
                     print cmd
                     os.system(cmd)
 
@@ -648,22 +649,31 @@ def runMufluxReco(D='1GeV',merge=False):
                 time.sleep(20)
 
 def runInvMass(MC='1GeV',merge=False):
-    ncpus = 15
+    N = 20
     t='repro'
     if not merge:
-        for n in range(ncpus):
-         if MC=='1GeV': cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A True  -B False -C  False -D  False &"
-         else:          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(ncpus)+" -A False -B True  -C  False -D  False &"
+      if MC=='1GeV':
+         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -A True  -B False -C  False -D  False -r &"
          print cmd
          os.system(cmd)
+      else:
+        for n in range(N):
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(N)+" -A False -B True  -C  False -D  False -r &"
+          print cmd
+          os.system(cmd)
+          while 1>0:
+            if count_python_processes('MufluxNtuple')<ncpus: break
+            time.sleep(20)
     else:
-        cmd = 'hadd -f invMass-MC-'+MC+'.root '
-        for n in range(ncpus):
-           cmd+='invMass-MC-'+str(n)+'.root '
+        x=''
+        if t=='repro': x='_refit'
+        cmd = 'hadd -f invMass-MC-'+MC+x+'.root '
+        for n in range(N):
+           cmd+='invMass-MC-'+str(n)+x+'.root '
         os.system(cmd)
-        cmd = 'hadd -f ntuple-invMass-MC-'+MC+'.root '
-        for n in range(ncpus):
-           cmd+='ntuple-invMass-MC-'+str(n)+'.root '
+        cmd = 'hadd -f ntuple-invMass-MC-'+MC+x+'.root '
+        for n in range(N):
+           cmd+='ntuple-invMass-MC-'+str(n)+x+'.root '
         os.system(cmd)
 def checkStatistics(splitFactor=5):
     # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
@@ -734,6 +744,54 @@ def mergeOnurFiles(merge=False):
             os.system('cp ship.conical.FixedTarget-TGeant4_merged_dig.root  tmp.root')
             cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root tmp.root '
       os.system(cmd)
-
-
-
+def JpsiProduction(step='simulation'):
+ # directory should be ship-ubuntu-1710-48/JpsiProduction
+ path = "ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX/"
+ ncpus = 16 
+ Ntot = 20313583 
+ Nstart = 0
+ delN = int(20313583./float(ncpus))
+ if step == 'simulation':
+  for n in range(ncpus):
+    cmd = "python $SHIPBUILD/FairShip/muonShieldOptimization/run_MufluxfixedTarget.py -C -P -I /eos/experiment/ship/data/jpsicascade/cascade_MSEL61_20M.root -J -e 10. -n "+str(delN)+" -S  "+str(Nstart)+ " -r "+str(n)+" &"
+    Nstart+=delN
+    os.system(cmd)
+ if step == 'digi':
+  for n in range(ncpus):
+     d = path.replace('XXX',str(n))
+     os.chdir(d)
+     mcFile = 'pythia8_Geant4_'+str(n)+'_10.0.root'
+     if mcFile.replace('.root','_dig.root') in os.listdir('.'):
+        print "File already exists, skip",mcFile.replace('.root','_dig.root')
+        os.chdir('../')
+        continue
+     geoFile = 'geofile_full.root'
+     cmd = "python $FAIRSHIP/macro/runMufluxDigi.py -n 9999999 -f "+mcFile+" -g "+geoFile+" &"
+     print 'step digi:', cmd,' in directory ',d
+     os.system(cmd)
+     os.chdir('../')
+     while 1>0:
+         if count_python_processes('runMufluxDigi')<ncpus/2: break 
+         time.sleep(100)
+ if step == 'reco':
+  for n in range(ncpus):
+     d = path.replace('XXX',str(n))
+     os.chdir(d)
+     recoFile = 'pythia8_Geant4_'+str(n)+'_10.0_dig.root'
+     cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
+     print 'step reco:', cmd,' in directory ',d
+     os.system(cmd)
+     os.chdir('../')
+     while 1>0:
+         if count_python_processes('drifttubeMonitoring')<ncpus/2: break 
+         time.sleep(100)
+ print "finished all the ",step," tasks"
+def JpsiCopyToEOS():
+ ncpus = 16 
+ for n in range(ncpus):
+    fileName = "pythia8_Geant4_"+str(n)+"_10.0.root"
+    dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)+"/"
+    cmd = "xrdcp  "+dirName+fileName+" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"+fileName
+    print cmd
+    rc = os.system(cmd)
+    if rc == 0: os.system('rm '+dirName+fileName)
