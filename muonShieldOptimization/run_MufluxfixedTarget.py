@@ -287,12 +287,10 @@ else:
 
 sGeo = ROOT.gGeoManager
 run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
-
+# save ShipGeo dictionary in geofile
+import saveBasicParameters
+saveBasicParameters.execute("%s/geofile_full.root" % (outputDir),ship_geo)
 if checkOverlap:
  sGeo = ROOT.gGeoManager
  sGeo.CheckOverlaps()
  sGeo.PrintOverlaps()
- run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
- import saveBasicParameters
- saveBasicParameters.execute("%s/geofile_full.root" % (outputDir),ship_geo)
-
