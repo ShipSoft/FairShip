@@ -36,10 +36,11 @@ parser.add_argument("-d", "--dir", dest="directory", help="directory", default=F
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
 parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default="")
 parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="final") # other versions: "0", "multHits", "noDeadChannels", "withDeadChannels"
-parser.add_argument("-A", "--with1GeV",  dest="with1GeV", help="1GeV MC", default="True")
-parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC", default="True")
-parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC", default="True")
-parser.add_argument("-D", "--withData",  dest="withData", help="use default data set", default="True")
+parser.add_argument("-A", "--with1GeV",  dest="with1GeV", help="1GeV MC",              default="False")
+parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC",       default="False")
+parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC",            default="False")
+parser.add_argument("-D", "--withData",  dest="withData", help="use default data set", default="False")
+parser.add_argument("-J", "--withJpsi",  dest="withJpsi", help="use Jpsi data set",    default="False")
 parser.add_argument("-x", dest="ncpus", help="number of parallel jobs", default=False)
 parser.add_argument("-s", dest="nseq", help="sequence of parallel job", default=0)
 parser.add_argument("-r", dest="refit", help="use refitted ntuples", required=False, action="store_true")
@@ -51,6 +52,7 @@ with1GeV  =  options.with1GeV  == "True"
 withCharm =  options.withCharm == "True"
 with10GeV =  options.with10GeV == "True"
 withData  =  options.withData  == "True"
+withJpsi  =  options.withJpsi  == "True"
 if options.path != "": gPath = options.path+'/'
 fdir = options.directory
 
@@ -119,6 +121,12 @@ if not options.listOfFiles:
                 except:
                     print "file not found",fname
                     continue
+
+    if withJpsi:
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
+        for k in [0, 2, 3, 5, 8]:
+            fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
+            sTreeMC.Add(fname)
 
 # small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 

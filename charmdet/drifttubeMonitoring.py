@@ -1010,7 +1010,7 @@ def plotEvent(n=-1):
     h['stereoHits'] = []
     for c in h['hitCollection']: rc=h['hitCollection'][c][1].SetName(c)
     for c in h['hitCollection']: rc=h['hitCollection'][c][1].Set(0)
-    ut.bookHist(h,'xz','x (y) vs z; Z [cm]; X(Y) [cm]',500,0.,1200.,100,-150.,150.)
+    ut.bookHist(h,'xz','x (y) vs z; Z [cm]; X(Y) [cm]',500,0.,1200.,100,-100.,100.)
     if not h.has_key('simpleDisplay'): ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=800,cx=1,cy=0)
     rc = h[ 'simpleDisplay'].cd(1)
     h['xz'].SetMarkerStyle(30)
@@ -1718,6 +1718,7 @@ def MCJpsiProd(onlyPlotting=False):
                 nRec = 0
                 for k in range(sTree.FitTracks.GetEntries()):
                   mu = sTree.TrackInfos[k].McTrack()
+                  if mu<0: continue
                   if sTree.MCTrack[mu].GetMotherId()==m: nRec += 1
                 if nRec == 2: 
                    rc=h[names[p.GetPdgCode()]+'PandPt_rec'].Fill(p.GetP(),p.GetPt())
@@ -1914,9 +1915,10 @@ def displayTrack(theTrack,debug=False):
                     pos,mom = st.getPos(), st.getMom()
                     print "%i %5.2F %5.2F %5.2F %5.2F %5.2F  %5.2F %i %i "%(j,pos[0],pos[1],pos[2],mom[0],mom[1],mom[2],st.getPDG(),st.getCharge())
     h['dispTrack'][nt].SetLineColor(ROOT.kMagenta)
-    h['dispTrack'][nt].SetLineWidth(2)
-    h['dispTrackY'][nt].SetLineColor(ROOT.kCyan)
-    h['dispTrackY'][nt].SetLineWidth(2)
+    h['dispTrack'][nt].SetLineWidth(3)
+    h['dispTrackY'][nt].SetLineColor(ROOT.kOrange)
+    h['dispTrackY'][nt].SetLineWidth(3)
+    h['dispTrackY'][nt].SetLineStyle(10)
     h['simpleDisplay'].cd(1)
     h['dispTrack'][nt].Draw('same')
     h['dispTrackY'][nt].Draw('same')
@@ -1936,8 +1938,10 @@ def plotMuonTaggerTrack(muTracks):
             x = muTrack[0]*zEnd+muTrack[1]
             h['dispTrack'][nt].SetPoint(1,zEnd,x)
             if view == 'X': h['dispTrack'][nt].SetLineColor(ROOT.kRed)
-            else:  h['dispTrack'][nt].SetLineColor(ROOT.kBlue)
-            h['dispTrack'][nt].SetLineWidth(2)
+            else:  
+               h['dispTrack'][nt].SetLineColor(ROOT.kBlue)
+               h['dispTrack'][nt].SetLineStyle(10)
+            h['dispTrack'][nt].SetLineWidth(3)
             h['dispTrack'][nt].Draw('same')
     h[ 'simpleDisplay'].Update()
 
@@ -4156,7 +4160,7 @@ def mergeHistosForMomResol(withFitPoints=False):
             fitFunction.SetParameter(1,0.)
             fitFunction.SetParameter(2,0.01)
             fitFunction.FixParameter(3,0.)
-            fitResult = h[hname+str(n)].Fit(fitFunction,'S','',-1.,1.)
+            fitResult = h[hname+str(n)].Fit(fitFunction,'SQ','',-1.,1.)
             rc = fitResult.Get()
             if not rc: continue
             mean = rc.GetParams()[1]
@@ -4169,24 +4173,24 @@ def mergeHistosForMomResol(withFitPoints=False):
         fitFun = h[hname+'P'].GetFunction('pol1')
         fSqrt.SetParameter(0,fitFun.GetParameter(0))
         fSqrt.SetParameter(1,fitFun.GetParameter(1))
-        h[hname+'P'].Fit(fSqrt,'W','',0.,300.)
+        h[hname+'P'].Fit(fSqrt,'QW','',0.,300.)
     h['leg'+t]=ROOT.TLegend(0.14,0.75,0.64,0.87)
     for res in ['-0',v]:
         hname = 'momResol'+res
-        h[hname+'P'].SetTitle('momentum resolution function of momentum;#it{p} [GeV/c];#sigma_it{p}/#it{p}')
+        h[hname+'P'].SetTitle('momentum resolution function of momentum;#it{p} [GeV/c];#sigma_{#it{p}} / #it{p}')
         h[hname+'P'].SetStats(0)
         h[hname+'P'].SetMaximum(0.15)
         fSqrt = h[hname+'P'].GetFunction('momResol')
         p0 = "%4.3F"%(100*fSqrt.GetParameter(0))
         p1 = "%4.3F"%(100*fSqrt.GetParameter(1))
-        if res != '-0': 
-            h['text'+res] = ROOT.TLatex(21.,0.073,'#sigma_#it{p}/#it{p} = ('+p0+' #oplus '+p1+' #times p)%')
+        if res != '-0':
+            h['text'+res] = ROOT.TLatex(21.,0.073,'#sigma_{#it{p}}/#it{p} = ('+p0+' #oplus '+p1+'#times#it{p})%')
             h[hname+'P'].Draw('same')
             h[hname+'P'].SetLineColor(ROOT.kMagenta)
             h['text'+res].SetTextColor(ROOT.kMagenta)
             h['leg'+t].AddEntry(h[hname+'P'],'adjusted 350#mum','PL')
         else:
-            h['text'+res] = ROOT.TLatex(120.,0.01,'#sigmaP/P = ('+p0+' #oplus '+p1+' #times p)%')
+            h['text'+res] = ROOT.TLatex(120.,0.01,'#sigma_{#it{p}}/#it{p} = ('+p0+' #oplus '+p1+'#times#it{p})%')
             h['text'+res].SetTextColor(ROOT.kBlue)
             h[hname+'P'].GetXaxis().SetRangeUser(0.,330)
             h[hname+'P'].SetMaximum(max(h[hname+'P'].GetMaximum(),h['momResol-0P'].GetMaximum()))
@@ -6119,12 +6123,12 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                             'MC10charm','MC10Hadronic inelastic','MC10Di-muon P8','MC10Lepton pair','MC10Positron annihilation'] # decay removed, only covers part
     opt = {'':['hist',ROOT.kBlue,'data'],'MC':['same',ROOT.kRed,'MC inclusive'],'MC10':['same',ROOT.kRed,'MC 10GeV total'],
               'MCcharm':['same',ROOT.kGreen,'Charm'],'MC10charm':['same',ROOT.kGreen,'Charm'],
-              'MCHadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
-              'MC10Hadronic inelastic':['same',ROOT.kCyan+1,'Dimuon from decays G4'],
+              'MCHadronic inelastic':['same',ROOT.kCyan+1,'Decays to di-muons (GEANT4)'],
+              'MC10Hadronic inelastic':['same',ROOT.kCyan+1,'Decays to di-muons (GEANT4)'],
               'MCLepton pair':['same',ROOT.kGreen+1,'Photon conversion'],'MCPositron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
               'MC10Lepton pair':['same',ROOT.kGreen+1,'Photon conversion'],'MC10Positron annihilation':['same',ROOT.kRed+2,'Positron annihilation'],
-              'MCDi-muon P8':['same',ROOT.kCyan,'Di-muon from decays in PYTHIA8'],
-              'MC10Di-muon P8':['same',ROOT.kCyan,'Di-muon from decays in GEANT4'] }
+              'MCDi-muon P8':['same',ROOT.kCyan,'Decays to di-muons (PYTHIA8)'],
+              'MC10Di-muon P8':['same',ROOT.kCyan,'Decays to di-muons (PYTHIA8)']}
     ptMaxBin = h['p/pt'].GetYaxis().FindBin(ptMax)
     ptInterval =        [ [pMin,10.],[10.,25.],[25.,50.],[50.,75.],[75.,100.],[100.,125.],[125.,150.],[150.,200.],[200.,250.],[250.,300.] ,[300.,400.] ]
     ptIntervalRebin =   [ 1,            1,         1,        1,        1,         1,          2,          2,          4,           4,          4 ]
@@ -6404,12 +6408,11 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
                 if noTitle: histo.SetTitle('')
                 histo.Draw(opt[i1][0])
-                h['output'].cd(1).SetLogy(1)
-                if noTitle: histo.SetTitle('')
+                h['output'].cd().SetLogy(1)
                 histo.Draw(opt[i1][0])
                 rc = h[t].cd(tc)
             h['leg'+t+str(tc)].Draw('same')
-            rc = h['output'].cd(1)
+            rc = h['output'].cd()
             h['leg'+t+str(tc)].Draw('same')
             myPrint(h['output'],label+d+x+'_P')
 # linear
@@ -6437,13 +6440,12 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 histo.SetMinimum(0.)
                 if noTitle: histo.SetTitle('')
                 histo.Draw(opt[i1][0])
-                h['output'].cd(1).SetLogy(0)
-                if noTitle: histo.SetTitle('')
+                h['output'].cd().SetLogy(0)
                 histo.Draw(opt[i1][0])
                 rc = h[t].cd(tc)
                 if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
             h['leg'+t+str(tc)].Draw('same')
-            rc = h['output'].cd(1)
+            rc = h['output'].cd()
             h['leg'+t+str(tc)].Draw('same')
             myPrint(h['output'],label+d+x+'_linP')
 # and Pt
@@ -6475,13 +6477,12 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                     histo.GetXaxis().SetRangeUser(0.,ptMax)
                 if noTitle: histo.SetTitle('')
                 histo.Draw(opt[i1][0])
-                h['output'].cd(1).SetLogy(1)
-                if noTitle: histo.SetTitle('')
+                h['output'].cd().SetLogy(1)
                 histo.Draw(opt[i1][0])
                 rc = h[t].cd(tc)
                 if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
             h['leg'+t+str(tc)].Draw('same')
-            rc = h['output'].cd(1)
+            rc = h['output'].cd()
             h['leg'+t+str(tc)].Draw('same')
             myPrint(h['output'],label+d+x+'_Pt')
 # linear
@@ -6506,14 +6507,13 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 if noTitle: histo.SetTitle('')
                 histo.Draw(opt[i1][0])
                 if i.find('MC10')<0: h['leg'+t+str(tc)].AddEntry(histo,opt[i1][2],'PL')
-                h['output'].cd(1).SetLogy(0)
-                if noTitle: histo.SetTitle('')
+                h['output'].cd().SetLogy(0)
                 histo.Draw(opt[i1][0])
                 rc = h[t].cd(tc)
             h['leg'+t+str(tc)].Draw('same')
             h[t].Update()
             myPrint(h[t],label+d+x)
-            rc = h['output'].cd(1)
+            rc = h['output'].cd()
             h['leg'+t+str(tc)].Draw('same')
             myPrint(rc,label+d+x+'_linPt')
 
@@ -6888,7 +6888,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
         mc   = h['MC'+hname].GetMean()
         mcCharm = h['MC'+hname.replace('_y','charm_y')].GetMean()
         print "%11s    %5.2G        %5.2G         %5.2G "%(str(pInterval[0])+'-'+str(pInterval[1]),data,mc,mcCharm)
-
+    singlePtSlices()
 # some code for 2 track events
     osign = {'':'opposite sign','s':'same sign'}
     txt = {6:'P>5GeV/c',21:'P>20GeV/c'}
@@ -7355,7 +7355,7 @@ def plotResidualExample():
     s1 = fitResult.Parameter(2)
     s2 = fitResult.Parameter(5)
     a = (s1*n1+s2*n2)/(n1+n2)
-    txt = ROOT.TLatex(-0.45,h[hname].GetMaximum()*0.8,"mean sigma = %5.0F#mum"%(a*10*1000))
+    txt = ROOT.TLatex(-0.45,h[hname].GetMaximum()*0.8,"#sigma_{mean} = %5.0F#mum"%(a*10*1000))
     h[hname].SetTitle('')
     h[hname].Draw()
     txt.Draw()
@@ -7783,7 +7783,7 @@ def anaResiduals():
         print "this file has no tracks",sTree.GetCurrentFile().GetName()
         return
     muflux_Reco.trackKinematics(3.)
-    if MCdata:
+    if MCdata and sTree.GetCurrentFile().GetName().find('Jpsi')<0:
         MCchecks()
     else:
         printScalers()

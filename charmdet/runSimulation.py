@@ -3,6 +3,12 @@ ncpus = multiprocessing.cpu_count() - 2
 interactive = not socket.gethostname().find('ubuntu')<0
 
 pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
+
+commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-",
+                     "hitmaps":"histos-HitmapsFromFittedTracks-","alignment":"histos-residuals-","MCJpsiProd":"histos-Jpsi"}
+commandToSum  = {"anaResiduals":"momDistributions-","momResolution":"momentumResolution-","plotDTPoints":"DTPoints-","alignment":"residuals-",
+                     "hitmaps":"HitmapsFromFittedTracks-","MCJpsiProd":"JpsiKinematics"}
+
 def count_python_processes(macroName):
 # only works if screen is wide enough to print full name!
     status = subprocess.check_output('ps -f -u truf',shell=True)
@@ -250,7 +256,6 @@ def cleanUp():
         if os.path.isfile(df): os.system('rm ' +df)
 
 def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
-    commandToHist = {"anaResiduals":"histos-analysis-","MCJpsiProd":"histos-Jpsi","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
     if D=='.':
         fileList,x,y = checkFilesWithTracks(D,splitFactor)
         print "fileList established ",len(fileList)
@@ -307,7 +312,6 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
                 time.sleep(10)
     print "finished all the tasks."
 def makeHistosWithHTCondor(D='10GeV-repro',splitFactor=10,command="anaResiduals",fnames=[]):
-    commandToHist = {"anaResiduals":"histos-analysis-","MCJpsiProd":"histos-Jpsi","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
     eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
     temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospathSim,shell=True)
     for d in temp.split('\n'):
@@ -337,7 +341,6 @@ def makeHistosWithHTCondor(D='10GeV-repro',splitFactor=10,command="anaResiduals"
               os.system('condor_submit condorX.sub')
               time.sleep(0.1)
 def HTCondorStats(D='10GeV-repro',command="anaResiduals",fnames=[]):
-    commandToHist = {"alignment":"histos-residuals-","anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-","hitmaps":"histos-HitmapsFromFittedTracks-"}
     eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
     stats = {}
     if len(fnames)==0:
@@ -494,10 +497,6 @@ def exportNtupleToEos(d="simulation10GeV-withDeadChannels",key='ntuple',update=T
                     os.system(cmd)
 
 def mergeHistos(command="anaResiduals"):
-    commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-",
-                     "hitmaps":"histos-HitmapsFromFittedTracks-","alignment":"histos-residuals-","MCJpsiProd":"histos-Jpsi"}
-    commandToSum  = {"anaResiduals":"momDistributions-","momResolution":"momentumResolution-","plotDTPoints":"DTPoints-","alignment":"residuals-",
-                     "hitmaps":"HitmapsFromFittedTracks-","MCJpsiProd":"JpsiKinematics"}
     dirList=getFilesLocal()
     cmd = {}
     for z in ['charm','mbias']:
@@ -636,13 +635,20 @@ def runMufluxReco(D='1GeV',merge=False):
     else:
         t='repro'
         if D=='1GeV':
-          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco  -A True -B False -C  False -D False &"
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco  -A True &"
           os.system(cmd)
-          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco  -A False -B False -C True  -D False &"
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation1GeV-"+t+"   -c MufluxReco  -C True &"
           os.system(cmd)
-        else:
+        elif D=='10GeV':
           for n in range(ncpus):
-            cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco  -D False -A False -B True -C False -s "+str(n)+ " -x "+str(ncpus)+" &"
+            cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d simulation10GeV-"+t+"   -c MufluxReco  -B True -s "+str(n)+ " -x "+str(ncpus)+" &"
+            os.system(cmd)
+            while 1>0:
+                if count_python_processes('MufluxNtuple')<ncpus: break
+                time.sleep(20)
+        elif D=='Jpsi':
+          for n in range(ncpus):
+            cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d JpsiProduction  -c MufluxReco  -J True -s "+str(n)+ " -x "+str(ncpus)+" &"
             os.system(cmd)
             while 1>0:
                 if count_python_processes('MufluxNtuple')<ncpus: break
@@ -652,13 +658,21 @@ def runInvMass(MC='1GeV',merge=False):
     N = 20
     t='repro'
     if not merge:
-      if MC=='1GeV':
-         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -A True  -B False -C  False -D  False -r &"
+      if MC=='Jpsi':
+        for n in [0, 2, 3, 5, 8]:
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d JpsiProduction -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(N)+" -J True -r &"
+          print cmd
+          os.system(cmd)
+          while 1>0:
+            if count_python_processes('MufluxNtuple')<ncpus: break
+            time.sleep(20)
+      elif MC=='1GeV':
+         cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -A True -r &"
          print cmd
          os.system(cmd)
       else:
         for n in range(N):
-          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(N)+" -A False -B True  -C  False -D  False -r &"
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(N)+" -B True -r &"
           print cmd
           os.system(cmd)
           while 1>0:
@@ -786,12 +800,32 @@ def JpsiProduction(step='simulation'):
          if count_python_processes('drifttubeMonitoring')<ncpus/2: break 
          time.sleep(100)
  print "finished all the ",step," tasks"
-def JpsiCopyToEOS():
- ncpus = 16 
- for n in range(ncpus):
+def JpsiCopyToEOS(RT=False):
+ ncpus = range(16)
+ RT=True
+ ncpus = [0,2,3,5,8]
+ for n in ncpus:
     fileName = "pythia8_Geant4_"+str(n)+"_10.0.root"
+    if RT: fileName = fileName.replace('.root','_dig_RT.root')
     dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)+"/"
     cmd = "xrdcp  "+dirName+fileName+" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"+fileName
     print cmd
     rc = os.system(cmd)
     if rc == 0: os.system('rm '+dirName+fileName)
+
+def JpsiHistos(command = "anaResiduals",merge=False):
+  # MCJpsiProd
+  D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
+  cmd = 'hadd -f '+commandToSum[command]+'.root '
+  for n in [0, 2, 3, 5, 8]:
+    dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)
+    fileName = "pythia8_Geant4_"+str(n)+"_10.0_dig_RT.root"
+    if not merge:
+       cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+D+fileName+' &'
+       os.chdir(dirName)
+       print 'execute:', cmd
+       os.system(cmd)
+       os.chdir('../')
+    else:
+       cmd += dirName+'/'+commandToHist[command]+fileName+' '
+  if merge: os.system(cmd)
