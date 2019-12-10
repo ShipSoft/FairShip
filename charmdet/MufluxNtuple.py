@@ -124,10 +124,9 @@ if not options.listOfFiles:
 
     if withJpsi:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
-        for k in [0, 2, 3, 5, 8]:
+        for k in [0, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
             fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
-            sTreeMC.Add(fname)
-
+            sTreeMC.Add(path+fname)
 # small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 
 # temp hack
@@ -1054,7 +1053,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:p1:pt1:p1cor:pt1cor:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
 prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
     if MCdata:
-      variables += ":Jpsi:PTRUE:PtTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz"
+      variables += ":Jpsi:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz"
     h['nt']  = ROOT.TNtuple("nt","dimuon",variables) 
 #
     sTreeFullMC = None
@@ -1085,10 +1084,10 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
             if (tchannel == 5):  source = "charm"
             if (tchannel == 6):  source = "beauty"
             if (tchannel == 13): source = "invalid"
-        P    = {}
-        IP   = {}
-        Pcor = {}
-        Pcor2 = {}
+        P     = {-1:ROOT.Math.PxPyPzMVector()}
+        IP    = {-1:-999.}
+        Pcor  = {-1:ROOT.Math.PxPyPzMVector()}
+        Pcor2 = {-1:ROOT.Math.PxPyPzMVector()}
         for k in range(len(sTree.GoodTrack)):
             if sTree.GoodTrack[k]<0: continue
             if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: continue
@@ -1105,22 +1104,24 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
             Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
             Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,0.105658)
 # now we have list of selected tracks, P.keys()
-        if len(P)<2: continue
-        X    = {}
-        Xcor = {}
-        Xcor2 = {}
-        jpsi = {}
-        pTrue  = {}
-        dTheta = {}
-        dMults = {}
-        originZ = {}
-        PTRUE  = {}
-        PtTRUE = {}
-        costheta = {}
-        chi2 = {}
-        nComb = {}
+        if len(P)<2 and not withJpsi: continue
+        X      =  {0:ROOT.Math.PxPyPzMVector()}
+        Xcor   =  {0:ROOT.Math.PxPyPzMVector()}
+        Xcor2  =  {0:ROOT.Math.PxPyPzMVector()}
+        jpsi   =  {0:-1}
+        pTrue  =  {0:[ROOT.TVector3(0,0,-9999.),ROOT.TVector3(0,0,-9999.)]}
+        dTheta =  {0:[-9999.,-9999.]}
+        dMults =  {0:[-9999.,-9999.]}
+        originZ = {0:[-9999.,-9999.]}
+        PTRUE  =  {0:-1}
+        PtTRUE =  {0:-1}
+        YTRUE  =  {0:-999}
+        costheta = {0:-999.}
+        chi2     = {0:[-999.,-999.]}
+        nComb    = {0:[-1,-1]}
         j = 0
         pDict = P.keys()
+        pDict.pop(-1)
         for l1 in range(len(pDict)-1):
          for l2 in range(l1+1,len(pDict)):
           n1 = pDict[l1]
@@ -1149,28 +1150,45 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
           dMults[j] = [-9999.,-9999.]
           PTRUE[j]  = -1.
           PtTRUE[j] = -1.
+          YTRUE[j]  = -999.
           nComb[j]=[n1,n2]
-          if X[j].M()>-2.5 and MCdata: 
+          j+=1
 #check truth
-            eospathSim = os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/'
-            fname = sTree.GetCurrentFile().GetName().replace('ntuple-','')
-            if sTreeFullMC:
-                if sTreeFullMC.GetCurrentFile().GetName().find(fname)<0:
-                    fMC = ROOT.TFile.Open(fname)
-                    sTreeFullMC = fMC.cbmsim
-            else: 
+        eospathSim = os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/'
+        fname = sTree.GetCurrentFile().GetName().replace('ntuple-','')
+        if sTreeFullMC:
+            if sTreeFullMC.GetCurrentFile().GetName().find(fname)<0:
                 fMC = ROOT.TFile.Open(fname)
                 sTreeFullMC = fMC.cbmsim
-            rc = sTreeFullMC.GetEvent(n-nInFile)
-            # print rc,sTreeFullMC,n,nInFile,n1,n2
+        else: 
+            fMC = ROOT.TFile.Open(fname)
+            sTreeFullMC = fMC.cbmsim
+        rc = sTreeFullMC.GetEvent(n-nInFile)
+
+        for j in nComb:
             mothers = []
+            mJpsi  =  -1
+            if withJpsi:
+               for m in sTreeFullMC.MCTrack:
+                  mJpsi += 1
+                  if m.GetPdgCode()==443:
+                     PTRUE[j]  = m.GetP()
+                     PtTRUE[j] = m.GetPt()
+                     YTRUE[j]  = m.GetRapidity()
+            if nComb[j][0]<0: continue  # no reco Jpsi
             kx = 0
-            for k in [n1,n2]:
+            for k in [nComb[j][0],nComb[j][1]]:
+                if sTreeMC.MCID[k]<0: continue
                 trueMu = sTreeFullMC.MCTrack[sTreeMC.MCID[k]]
                 mother = sTreeFullMC.MCTrack[trueMu.GetMotherId()]
                 mothers.append(mother.GetPdgCode())
-                PTRUE[j]  = mother.GetP()
-                PtTRUE[j] = mother.GetPt()
+                if withJpsi and mJpsi != mother and j==0:
+# mu mu combination does not point to correct Jpsi, don't overwrite true one
+                    PTRUE[j]=-PTRUE[j]
+                else:
+                    PTRUE[j]  = mother.GetP()
+                    PtTRUE[j] = mother.GetPt()
+                    YTRUE[j]  = mother.GetRapidity()
 # check multiple scattering
                 trueMu.GetMomentum(pTrue[j][kx])
                 originZ[j][kx] = trueMu.GetStartZ()
@@ -1191,36 +1209,49 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
                  mother = sTreeFullMC.MCTrack[trueMu.GetMotherId()]
                  print X[j].M(),n,n-nInFile,sTree.GetCurrentFile()
                  print 'origin',mother.GetStartX(),mother.GetStartY(),mother.GetStartZ()
-          j+=1
 # now we have all combinations, j
         for j in nComb:
           n1 = nComb[j][0]
           n2 = nComb[j][1]
-          if chi2[j][0] < 0: 
-           nlep      = n1
-           nantilep  = n2
-          else: 
-           nlep = n2
-           nantilep  = n1
-          P1pl = P[nlep].E()+P[nlep].Pz()
-          P2pl = P[nantilep].E()+P[nantilep].Pz()
-          P1mi = P[nlep].E()-P[nlep].Pz()
-          P2mi = P[nantilep].E()-P[nantilep].Pz()
-          cosCSraw = X[j].Pz()/abs(X[j].Pz()) * 1./X[j].M()/ROOT.TMath.Sqrt(X[j].M2()+X[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
-          P1pl = Pcor[nlep].E()+Pcor[nlep].Pz()
-          P2pl = Pcor[nantilep].E()+Pcor[nantilep].Pz()
-          P1mi = Pcor[nlep].E()-Pcor[nlep].Pz()
-          P2mi = Pcor[nantilep].E()-Pcor[nantilep].Pz()
-          cosCScor = Xcor[j].Pz()/abs(Xcor[j].Pz()) * 1./Xcor[j].M()/ROOT.TMath.Sqrt(Xcor[j].M2()+Xcor[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
-          Y    = X[j].Rapidity()
-          Ycor = Xcor[j].Rapidity()
-          theArray = [float(len(nComb)),X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),Xcor[j].P(),X[j].Pt(),Xcor[j].Pt(),\
+          if n1<0:
+            cosCSraw,cosCScor       = -999.,-999.
+            Y,Ycor                  = -999.,-999.
+            xn1,yn1,zn1,xn2,yn2,zn2 = 0,0,0,0,0,0
+          else:
+            if chi2[j][0] < 0: 
+              nlep      = n1
+              nantilep  = n2
+            else: 
+              nlep = n2
+              nantilep  = n1
+            P1pl = P[nlep].E()+P[nlep].Pz()
+            P2pl = P[nantilep].E()+P[nantilep].Pz()
+            P1mi = P[nlep].E()-P[nlep].Pz()
+            P2mi = P[nantilep].E()-P[nantilep].Pz()
+            cosCSraw = X[j].Pz()/abs(X[j].Pz()) * 1./X[j].M()/ROOT.TMath.Sqrt(X[j].M2()+X[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
+            P1pl = Pcor[nlep].E()+Pcor[nlep].Pz()
+            P2pl = Pcor[nantilep].E()+Pcor[nantilep].Pz()
+            P1mi = Pcor[nlep].E()-Pcor[nlep].Pz()
+            P2mi = Pcor[nantilep].E()-Pcor[nantilep].Pz()
+            cosCScor = Xcor[j].Pz()/abs(Xcor[j].Pz()) * 1./Xcor[j].M()/ROOT.TMath.Sqrt(Xcor[j].M2()+Xcor[j].Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
+            Y    = X[j].Rapidity()
+            Ycor = Xcor[j].Rapidity()
+            xn1 = sTree.x[n1]
+            yn1 = sTree.y[n1] 
+            zn1 = sTree.z[n1]
+            xn2 = sTree.x[n2]
+            yn2 = sTree.y[n2]
+            zn2 = sTree.z[n2] 
+          nrOfComb = float(len(nComb))
+          if nComb[j][0]<0 : nrOfComb-=1
+          theArray = [nrOfComb,X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),Xcor[j].P(),X[j].Pt(),Xcor[j].Pt(),\
                      P[n1].P(),P[n1].Pt(),Pcor[n1].P(),Pcor[n1].Pt(),P[n2].P(),P[n2].Pt(),Pcor[n2].P(),Pcor[n2].Pt(),\
                      IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],cosCSraw,cosCScor,\
                      P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),\
-                     sTree.x[n1],sTree.y[n1] ,sTree.z[n1],sTree.x[n2],sTree.y[n2] ,sTree.z[n2] ]
+                     xn1,yn1,zn1,xn2,yn2,zn2]
           if MCdata:
-             kTrueMu = sTreeMC.MCID[n1]
+             if n1<0: kTrueMu = -1
+             else:    kTrueMu = sTreeMC.MCID[n1]
              if kTrueMu>0:
               ox,oy,oz = sTreeFullMC.MCTrack[kTrueMu].GetStartX(),sTreeFullMC.MCTrack[kTrueMu].GetStartY(),sTreeFullMC.MCTrack[kTrueMu].GetStartZ()
              else:
@@ -1252,6 +1283,7 @@ def loadNtuples():
   hData['f'] = ROOT.TFile('ntuple-InvMass-refitted.root')  # ROOT.TFile('ntuple-InvMass-refitted_intermediateField.root')
   hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV-repro.root')
   hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV-repro.root')
+  hMC['fJpsi'] = ROOT.TFile('ntuple-invMass-MC-Jpsi.root')
  else:
   hData['f'] = ROOT.TFile('ntuple-InvMass.root')
   hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV.root')
@@ -2675,7 +2707,8 @@ if options.command=='MufluxReco':
 if options.command=='RecoEffFunOfOcc':
     RecoEffFunOfOcc()
 if options.command=='invMass':
-    if fdir.find('simulation')==0:
+    if sTreeMC: sTreeMC.GetEvent(0)
+    if fdir.find('simulation')==0 or sTreeMC.GetCurrentFile().GetName().find('sim')>0:
       invMass(sTreeMC,hMC,nseq=options.nseq,ncpus=options.ncpus)
     else:
       invMass(sTreeData,hData)

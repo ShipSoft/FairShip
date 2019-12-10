@@ -659,7 +659,7 @@ def runInvMass(MC='1GeV',merge=False):
     t='repro'
     if not merge:
       if MC=='Jpsi':
-        for n in [0, 2, 3, 5, 8]:
+        for n in range(N):
           cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d JpsiProduction -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(N)+" -J True -r &"
           print cmd
           os.system(cmd)
@@ -679,6 +679,15 @@ def runInvMass(MC='1GeV',merge=False):
             if count_python_processes('MufluxNtuple')<ncpus: break
             time.sleep(20)
     else:
+        if MC=='Jpsi':
+           cmd = 'hadd -f invMass-MC-Jpsi.root '
+           for n in range(N):
+               cmd+='invMass-MC-'+str(n)+'_refit.root '
+           os.system(cmd)
+           cmd = 'hadd -f ntuple-invMass-MC-Jpsi.root '
+           for n in range(N):
+              cmd+='ntuple-invMass-MC-'+str(n)+'_refit.root '
+           os.system(cmd)
         x=''
         if t=='repro': x='_refit'
         cmd = 'hadd -f invMass-MC-'+MC+x+'.root '
@@ -817,7 +826,8 @@ def JpsiHistos(command = "anaResiduals",merge=False):
   # MCJpsiProd
   D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
   cmd = 'hadd -f '+commandToSum[command]+'.root '
-  for n in [0, 2, 3, 5, 8]:
+#  for n in [0, 2, 3, 5, 8]:
+  for n in [4, 6, 7, 9, 10]:
     dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)
     fileName = "pythia8_Geant4_"+str(n)+"_10.0_dig_RT.root"
     if not merge:
