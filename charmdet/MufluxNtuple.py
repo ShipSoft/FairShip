@@ -1053,7 +1053,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:p1:pt1:p1cor:pt1cor:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
 prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
     if MCdata:
-      variables += ":Jpsi:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz"
+      variables += ":Jpsi:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:Pmother"
     h['nt']  = ROOT.TNtuple("nt","dimuon",variables) 
 #
     sTreeFullMC = None
@@ -1119,6 +1119,7 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
         costheta = {0:-999.}
         chi2     = {0:[-999.,-999.]}
         nComb    = {0:[-1,-1]}
+        Pmother  = {0:0}
         j = 0
         pDict = P.keys()
         pDict.pop(-1)
@@ -1126,6 +1127,9 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
          for l2 in range(l1+1,len(pDict)):
           n1 = pDict[l1]
           n2 = pDict[l2]
+# for jpsi MC only take truth matched combinations
+          if withJpsi:
+            if sTreeMC.MCID[n1]<0 or sTreeMC.MCID[n2]<0: continue
           X[j]    = P[n1]+P[n2]
           Xcor[j] = Pcor[n1]+Pcor[n2]
           Xcor2[j] = Pcor2[n1]+Pcor2[n2]
@@ -1175,6 +1179,7 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
                      PTRUE[j]  = m.GetP()
                      PtTRUE[j] = m.GetPt()
                      YTRUE[j]  = m.GetRapidity()
+                     Pmother[j]  = sTreeFullMC.MCTrack[m.GetMotherId()].GetP()
             if nComb[j][0]<0: continue  # no reco Jpsi
             kx = 0
             for k in [nComb[j][0],nComb[j][1]]:
@@ -1189,6 +1194,8 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
                     PTRUE[j]  = mother.GetP()
                     PtTRUE[j] = mother.GetPt()
                     YTRUE[j]  = mother.GetRapidity()
+                    if not mother.GetMotherId()<0:
+                        Pmother[j]  = sTreeFullMC.MCTrack[mother.GetMotherId()].GetP()
 # check multiple scattering
                 trueMu.GetMomentum(pTrue[j][kx])
                 originZ[j][kx] = trueMu.GetStartZ()
@@ -1256,9 +1263,9 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
               ox,oy,oz = sTreeFullMC.MCTrack[kTrueMu].GetStartX(),sTreeFullMC.MCTrack[kTrueMu].GetStartY(),sTreeFullMC.MCTrack[kTrueMu].GetStartZ()
              else:
               ox,oy,oz = -9999.,9999.,-9999.
-             theArray += [float(jpsi[j]),PTRUE[j],PtTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
+             theArray += [float(jpsi[j]),PTRUE[j],PtTRUE[j],YTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
                      dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],originZ[j][0],originZ[j][1],\
-                     pTrue[j][0].X(),pTrue[j][0].Y(),pTrue[j][0].Z(),pTrue[j][1].X(),pTrue[j][1].Y(),pTrue[j][1].Z(),ox,oy,oz]
+                     pTrue[j][0].X(),pTrue[j][0].Y(),pTrue[j][0].Z(),pTrue[j][1].X(),pTrue[j][1].Y(),pTrue[j][1].Z(),ox,oy,oz,Pmother[j]]
           theTuple = array('f',theArray)
           h['nt'].Fill(theTuple)
     h['fntuple'].cd()
@@ -1290,7 +1297,62 @@ def loadNtuples():
   hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV.root')
  hMC['1GeV'] =hMC['f1'].nt
  hMC['10GeV']=hMC['f10'].nt
+ hMC['Jpsi'] =hMC['fJpsi'].nt
  ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
+def JpsiAcceptance():
+   y_beam = yBeam()
+   loadNtuples()
+   ut.bookHist(hMC,'PandPt','P and Pt Jpsi '                  ,60,0.,300.,60,0.,6.)
+   ut.bookHist(hMC,'PandPt_rec','P and Pt Jppsi reconstructed',60,0.,300.,60,0.,6.)
+   ut.bookHist(hMC,'YandPt','rapidity of original ',           100,-2.,2., 60, 0.,6.)
+   ut.bookHist(hMC,'YandPt_rec','rapidity of reconstructed ',  100,-2.,2., 60, 0.,6.)
+#
+   v='mcor'
+   ptCut = 1.4
+   sptCut = str(ptCut)
+   theCut =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1<300&&p2<300&&p1>20&&p2>20&&mcor>0.20'
+   if v=='mcor': 
+      theCut = theCut.replace('pt1','pt1cor')
+      theCut = theCut.replace('pt2','pt2cor')
+   ROOT.gROOT.cd()
+   hMC['Jpsi'].Draw('PtTRUE:PTRUE>>PandPt')
+   hMC['Jpsi'].Draw('PtTRUE:PTRUE>>PandPt_rec',theCut)
+   hMC['Jpsi'].Draw('PtTRUE:(YTRUE-'+str(y_beam)+')>>YandPt')
+   hMC['Jpsi'].Draw('PtTRUE:(YTRUE-'+str(y_beam)+')>>YandPt_rec',theCut)
+#
+   hMC['PandPtEff']=ROOT.TEfficiency(hMC['PandPt_rec'],hMC['PandPt'])
+   hMC['YandPtEff']=ROOT.TEfficiency(hMC['YandPt_rec'],hMC['YandPt'])
+# make projections
+   hMC['PEff']=ROOT.TEfficiency(hMC['PandPt_rec'].ProjectionX(),hMC['PandPt'].ProjectionX())
+   hMC['Y']     = hMC['YandPt'].ProjectionX('Y')
+   hMC['Y_rec'] = hMC['YandPt_rec'].ProjectionX('Y_rec')
+   hMC['YEff']=ROOT.TEfficiency(hMC['Y_rec'],hMC['Y'])
+   hMC['YEff'].Draw()
+   hMC['YEff_graph']= hMC['YEff'].GetPaintedGraph()
+   hMC['YEff_graph'].GetXaxis().SetRangeUser(0.,2.)
+   hMC['YEff_graph'].GetYaxis().SetRangeUser(0.,0.4)
+   hMC['YEff'].Draw()
+# problem, how to apply to data, where there is only prec and yrec, with material?
+
+   fYield = ROOT.TFile('diMuonBinsycorSummary.root')
+   hMC['JpsiYield'] = fYield.Get('dummy').Clone('JpsiYield')
+   hMC["Jpsiycor"] = hMC['JpsiYield'].FindObject('Jpsiycor')
+   hMC["Jpsiycor_effCorrected"] =  hMC["Jpsiycor"].Clone("Jpsiycor_effCorrected")
+   for n in range(1,hMC["Jpsiycor"].GetNbinsX()+1): 
+       x = hMC["Jpsiycor"].GetBinCenter(n)
+       y = hMC["Jpsiycor"].GetBinContent(n)
+       yerr = hMC["Jpsiycor"].GetBinError(n)
+       e = hMC['YEff_graph'].Eval(x)
+       if e>0.01:
+        hMC["Jpsiycor_effCorrected"].SetBinContent(n,y/e)
+        hMC["Jpsiycor_effCorrected"].SetBinError(n,yerr/e)
+       else:
+        hMC["Jpsiycor_effCorrected"].SetBinContent(n,0.)
+        hMC["Jpsiycor_effCorrected"].SetBinError(n,0.)
+# compare with NA50
+   NA50 = hMC['Y'].Integral(hMC['Y'].FindBin(-0.425 ),hMC['Y'].FindBin(0.575))
+   SHiP = hMC['Y'].Integral(hMC['Y'].FindBin(0.5),hMC['Y'].FindBin(2.0))
+
 
 def diMuonAnalysis():
  y_beam = yBeam()
@@ -1417,8 +1479,8 @@ def diMuonAnalysis():
 #
    theCut =  theCutTemplate.replace('XYZ',sptCut)
    if v=='mcor': 
-      theCut.replace('pt1','pt1cor')
-      theCut.replace('pt2','pt2cor')
+      theCut = theCut.replace('pt1','pt1cor')
+      theCut = theCut.replace('pt2','pt2cor')
    ROOT.gROOT.cd()
    hMC['dummy'].cd()
    sTreeData.Draw(v+'>>'+v+'_'+sptCut,theCut)
@@ -1687,8 +1749,8 @@ def diMuonAnalysis():
  sptCut = str(ptCut)
  theCut =  theCutTemplate.replace('XYZ',sptCut)
  if v=='mcor': 
-      theCut.replace('pt1','pt1cor')
-      theCut.replace('pt2','pt2cor')
+      theCut = theCut.replace('pt1','pt1cor')
+      theCut = theCut.replace('pt2','pt2cor')
 # yield as function of pt
  makeProjection('ptcor',0.,2.,'#it{p}_{T} [GeV/c^{2}]',theCut)
 # yield as function of y
@@ -1713,8 +1775,8 @@ def diMuonAnalysis():
  sptCut = '0'
  theCut =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1>20&&p2>20'
  if v=='mcor': 
-      theCut.replace('pt1','pt1cor')
-      theCut.replace('pt2','pt2cor')
+      theCut = theCut.replace('pt1','pt1cor')
+      theCut = theCut.replace('pt2','pt2cor')
  ut.bookHist(hMC, 'mc-lowMassAll','low mass ;M [GeV/c^[2]]',100,0.,5.)
  ut.bookHist(hData, 'lowMassAll', 'low mass ;M [GeV/c^[2]]',100,0.,5.)
  myDraw('mcor>>mc-lowMassAll',theCut)
@@ -1727,8 +1789,8 @@ def diMuonAnalysis():
  myPrint(hMC['dummy'],'lowMassAll')
  theCut =  '('+sptCut+'<pt1||'+sptCut+'<pt2)&&chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1>20&&p2>20&&mcor>0.4&&mcor<2.0'
  if v=='mcor': 
-      theCut.replace('pt1','pt1cor')
-      theCut.replace('pt2','pt2cor')
+      theCut = theCut.replace('pt1','pt1cor')
+      theCut = theCut.replace('pt2','pt2cor')
  myDraw('ptcor:pcor>>mc-lowMassppt',theCut)
  sTreeData.Draw('pt:p>>lowMassppt',theCut)
  hMC['mc-lowMassppt'].Scale(1./hMC['weights']['10GeV'])
@@ -2423,7 +2485,7 @@ def analzyeMuonScattering():
        if proj=='T': myPrint(tc,'scatteringDataMC_'+x)
       j+=1
 
-def JpsiAcceptance():
+def JpsiAcceptance0():
     hMC['f0']=ROOT.TFile.Open(os.environ['EOSSHIP']+"/eos/experiment/ship/data/jpsicascade/cascade_MSEL61_20M.root")
     nt=hMC['f0'].nt
     two = f.Get('2').Clone('2')
