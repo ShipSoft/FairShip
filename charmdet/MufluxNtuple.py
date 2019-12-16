@@ -1302,11 +1302,7 @@ def loadNtuples():
 def JpsiAcceptance():
    y_beam = yBeam()
    loadNtuples()
-   ut.bookHist(hMC,'PandPt','P and Pt Jpsi '                  ,60,0.,300.,60,0.,6.)
-   ut.bookHist(hMC,'PandPt_rec','P and Pt Jppsi reconstructed',60,0.,300.,60,0.,6.)
-   ut.bookHist(hMC,'YandPt','rapidity of original ',           100,-2.,2., 60, 0.,6.)
-   ut.bookHist(hMC,'YandPt_rec','rapidity of reconstructed ',  100,-2.,2., 60, 0.,6.)
-#
+   category = {'':'','_prim':'&&Pmother>399'}
    v='mcor'
    ptCut = 1.4
    sptCut = str(ptCut)
@@ -1314,25 +1310,34 @@ def JpsiAcceptance():
    if v=='mcor': 
       theCut = theCut.replace('pt1','pt1cor')
       theCut = theCut.replace('pt2','pt2cor')
-   ROOT.gROOT.cd()
-   hMC['Jpsi'].Draw('PtTRUE:PTRUE>>PandPt')
-   hMC['Jpsi'].Draw('PtTRUE:PTRUE>>PandPt_rec',theCut)
-   hMC['Jpsi'].Draw('PtTRUE:(YTRUE-'+str(y_beam)+')>>YandPt')
-   hMC['Jpsi'].Draw('PtTRUE:(YTRUE-'+str(y_beam)+')>>YandPt_rec',theCut)
+   for z in category:
+     ut.bookHist(hMC,'PandPt'+z,'P and Pt Jpsi '                  ,60,0.,300.,60,0.,6.)
+     ut.bookHist(hMC,'PandPt'+z+'_rec','P and Pt Jppsi reconstructed',60,0.,300.,60,0.,6.)
+     ut.bookHist(hMC,'YandPt'+z,'rapidity of original ',           100,-2.,2., 60, 0.,6.)
+     ut.bookHist(hMC,'YandPt'+z+'_rec','rapidity of reconstructed ',  100,-2.,2., 60, 0.,6.)
 #
-   hMC['PandPtEff']=ROOT.TEfficiency(hMC['PandPt_rec'],hMC['PandPt'])
-   hMC['YandPtEff']=ROOT.TEfficiency(hMC['YandPt_rec'],hMC['YandPt'])
+   ROOT.gROOT.cd()
+   for z in category:
+     hMC['Jpsi'+z].Draw('PtTRUE:PTRUE>>PandPt'+z,category[z].replace('&&',''))
+     hMC['Jpsi'+z].Draw('PtTRUE:PTRUE>>PandPt'+z+'_rec',theCut+category[z])
+     hMC['Jpsi'+z].Draw('PtTRUE:(YTRUE-'+str(y_beam)+')>>YandPt'+z,category[z].replace('&&',''))
+     hMC['Jpsi'+z].Draw('PtTRUE:(YTRUE-'+str(y_beam)+')>>YandPt'+z+'_rec',theCut+category[z])
+#
+     hMC['PandPtEff'+z]=ROOT.TEfficiency(hMC['PandPt'+z+'_rec'],hMC['PandPt'+z])
+     hMC['YandPtEff'+z]=ROOT.TEfficiency(hMC['YandPt'+z+'_rec'],hMC['YandPt'+z])
 # make projections
-   hMC['PEff']=ROOT.TEfficiency(hMC['PandPt_rec'].ProjectionX(),hMC['PandPt'].ProjectionX())
-   hMC['Y']     = hMC['YandPt'].ProjectionX('Y')
-   hMC['Y_rec'] = hMC['YandPt_rec'].ProjectionX('Y_rec')
-   hMC['YEff']=ROOT.TEfficiency(hMC['Y_rec'],hMC['Y'])
-   hMC['YEff'].Draw()
-   hMC['YEff_graph']= hMC['YEff'].GetPaintedGraph()
-   hMC['YEff_graph'].GetXaxis().SetRangeUser(0.,2.)
-   hMC['YEff_graph'].GetYaxis().SetRangeUser(0.,0.4)
-   hMC['YEff'].Draw()
-# problem, how to apply to data, where there is only prec and yrec, with material?
+     hMC['PEff'+z]=ROOT.TEfficiency(hMC['PandPt'+z+'_rec'].ProjectionX(),hMC['PandPt'+z].ProjectionX())
+     hMC['Y'+z]     = hMC['YandPt'+z].ProjectionX('Y')
+     hMC['Y'+z+'_rec'] = hMC['YandPt'+z+'_rec'].ProjectionX('Y_rec')
+     hMC['YEff'+z]=ROOT.TEfficiency(hMC['Y'+z+'_rec'],hMC['Y'])
+     hMC['YEff'+z].Draw()
+     hMC['YEff'+z+'_graph']= hMC['YEff'+z].GetPaintedGraph()
+     hMC['YEff'+z+'_graph'].GetXaxis().SetRangeUser(0.,2.)
+     hMC['YEff'+z+'_graph'].GetYaxis().SetRangeUser(0.,0.4)
+     hMC['YEff'+z].Draw()
+
+# problem, how to apply to data, where there is prec and multiple scattering, dE/dx
+# check how much is the ycor different from ytrue, sigma y-ycor = 0.1
 
    fYield = ROOT.TFile('diMuonBinsycorSummary.root')
    hMC['JpsiYield'] = fYield.Get('dummy').Clone('JpsiYield')
@@ -1349,10 +1354,11 @@ def JpsiAcceptance():
        else:
         hMC["Jpsiycor_effCorrected"].SetBinContent(n,0.)
         hMC["Jpsiycor_effCorrected"].SetBinError(n,0.)
-# compare with NA50
+# get normalization from NA50
    NA50 = hMC['Y'].Integral(hMC['Y'].FindBin(-0.425 ),hMC['Y'].FindBin(0.575))
    SHiP = hMC['Y'].Integral(hMC['Y'].FindBin(0.5),hMC['Y'].FindBin(2.0))
-
+   R = NA50/SHiP
+   # take lumi for heavy targets and calculate yield
 
 def diMuonAnalysis():
  y_beam = yBeam()

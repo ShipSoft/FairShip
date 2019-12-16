@@ -688,16 +688,17 @@ def runInvMass(MC='1GeV',merge=False):
            for n in range(N):
               cmd+='ntuple-invMass-MC-'+str(n)+'_refit.root '
            os.system(cmd)
-        x=''
-        if t=='repro': x='_refit'
-        cmd = 'hadd -f invMass-MC-'+MC+x+'.root '
-        for n in range(N):
-           cmd+='invMass-MC-'+str(n)+x+'.root '
-        os.system(cmd)
-        cmd = 'hadd -f ntuple-invMass-MC-'+MC+x+'.root '
-        for n in range(N):
-           cmd+='ntuple-invMass-MC-'+str(n)+x+'.root '
-        os.system(cmd)
+        else:
+           x=''
+           if t=='repro': x='_refit'
+           cmd = 'hadd -f invMass-MC-'+MC+x+'.root '
+           for n in range(N):
+              cmd+='invMass-MC-'+str(n)+x+'.root '
+           os.system(cmd)
+           cmd = 'hadd -f ntuple-invMass-MC-'+MC+x+'.root '
+           for n in range(N):
+              cmd+='ntuple-invMass-MC-'+str(n)+x+'.root '
+           os.system(cmd)
 def checkStatistics(splitFactor=5):
     # 1GeV mbias 1.8 Billion PoT charm 10.2 Billion PoT 
     simFiles = getFilesFromEOS()  # input data
@@ -827,7 +828,7 @@ def JpsiHistos(command = "anaResiduals",merge=False):
   D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
   cmd = 'hadd -f '+commandToSum[command]+'.root '
 #  for n in [0, 2, 3, 5, 8]:
-  for n in [4, 6, 7, 9, 10]:
+  for n in [11,12,13,14,15]:
     dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)
     fileName = "pythia8_Geant4_"+str(n)+"_10.0_dig_RT.root"
     if not merge:
