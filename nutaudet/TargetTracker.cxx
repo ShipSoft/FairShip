@@ -302,9 +302,15 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
 }
 
 
-void TargetTracker::DecodeTTID(Int_t detID, Int_t &NTT)
+void TargetTracker::DecodeTTID(Int_t detID, Int_t &NTT, int &nplane, Bool_t &ishor)
 {
-  NTT = detID;
+  NTT = detID/1000;
+  int idir = (detID - NTT*1000)/100;
+
+  if (idir == 1) ishor = kFALSE;
+  else if (idir == 0) ishor = kTRUE;
+
+  nplane = (detID - NTT*1000 - idir*100);
 }
 
 

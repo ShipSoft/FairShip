@@ -310,7 +310,8 @@ def configure(run,ship_geo):
    if ship_geo.nuTauTargetDesign==3:
     tauHpt.SetHPTNumber(ship_geo.tauHPT.nHPT)
     tauHpt.SetDistanceHPTs(ship_geo.tauHPT.distHPT)
-    tauHpt.SetSurroundingDetHeight(ship_geo.tauHPT.SRDY)
+    if hasattr(ship_geo.tauHPT, "SRDY"):
+     tauHpt.SetSurroundingDetHeight(ship_geo.tauHPT.SRDY)
     tauHpt.GetMagnetGeometry(ship_geo.EmuMagnet.zC, ship_geo.EmuMagnet.Y)
     tauHpt.GetNumberofTargets(ship_geo.NuTauTarget.target)
    detectorList.append(tauHpt)
