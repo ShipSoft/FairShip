@@ -19,17 +19,21 @@ class TClonesArray;
 class PixelModules:public FairDetector
 {
   public:
-  PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="PixelModules");
+  PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="PixelModules", const Int_t nSl=1);
     PixelModules();
     virtual ~PixelModules();
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
+    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick,Int_t nstation,Double_t posx,Double_t posy,Double_t posz,Double_t anglex,Double_t angley,Double_t anglez,Int_t nSl=1);
+//    SetBoxParam(DX,DY,DZ, zBox, DimZpixelbox, D1short, D1long,DimZSithin, DimZSithick,nSlice)
+void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick,Int_t nstation,Double_t posx,Double_t posy,Double_t posz,Double_t anglex,Double_t angley,Double_t anglez);
+    
     void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_t Dim1Short, Double_t Dim1Long);
     void SetSiliconDZ(Double_t SiliconDZthin, Double_t SiliconDZthick);  
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
     void SetSiliconDetNumber(Int_t nSilicon);
-    void SetSiliconSlicesNumber(Int_t nSl);
+    void SetSiliconSlicesNumber(Int_t nSl=1);
     void ComputeDimZSlice();
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -86,19 +90,27 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    /*Number of Silicon pixel segments, 10 is the recommended amount*/
+    /*Number of Silicon pixel segments, 10 is the recommended amount for digitized runs, 1 for simple runs, to be set in charm geometry file*/
     Int_t nSlices=10; 
     
     /** container for data points */
     TClonesArray*  fPixelModulesPointCollection;
 
     Int_t InitMedium(const char* name);
-
-
+    Int_t *GetIDlist1(); 
+    Int_t *GetIDlist10();
+    Bool_t *vertical; 
 
 protected:
 
+    Double_t *GetPosSize1();
+    Double_t *GetPosSize10();
+    void SetPositionSize();
     Double_t Dim1Short, Dim1Long;
+    Int_t *SetIDs();   
+    void SetVertical(); 
+    Bool_t *GetVertical1();
+    Bool_t *GetVertical10();
  
     Double_t SBoxX = 0;
     Double_t SBoxY = 0;
@@ -120,15 +132,17 @@ protected:
     Double_t FlexKapthick=0.0050;
     Double_t overlap=0;
     Double_t DimZPixelBox;
+    Int_t *PixelIDlist;
 
-    static const Int_t nSi=120;
+    static const Int_t nSi1=12;
+    static const Int_t nSi10=120;
     Int_t numSi;
-    Double_t DimZSithin;
-    Double_t DimZSithick;
+    Double_t DimZSithin=0.02;
+    Double_t DimZSithick=0.0245;
     Double_t DimZThinSlice;
     Double_t DimZThickSlice;
-    Double_t xs[nSi], ys[nSi], zs[nSi];
-    Double_t xangle[nSi], yangle[nSi], zangle[nSi];
+    Double_t *xs, *ys, *zs;
+    Double_t *xangle, *yangle, *zangle;
     
     PixelModules(const PixelModules&);
     PixelModules& operator=(const PixelModules&);
