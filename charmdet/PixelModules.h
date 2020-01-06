@@ -20,7 +20,7 @@ class PixelModules:public FairDetector
 {
   public:
     PixelModules();
-    PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active,const Int_t nSl=1,const char* Title="PixelModules");
+    PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active,Int_t nSl=1,const char* Title="PixelModules");
     virtual ~PixelModules();
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);

@@ -332,7 +332,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.PixelModules.DimZSithin = 0.0200 * u.cm
     c.PixelModules.DimZSithick = 0.0245 * u.cm
-    c.PixelModules.nSlice= 1 #for simple simulation, fix nSlice=1
+    c.PixelModules.nSlice= 10 #for simple simulation, fix nSlice=1
     c.PixelModules.D1short = 3.36 * u.cm / 2.
     c.PixelModules.D1long = 4.09 * u.cm
     c.PixelModules.numSi=12*c.PixelModules.nSlice

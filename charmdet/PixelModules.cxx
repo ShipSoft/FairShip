@@ -59,7 +59,7 @@ PixelModules::PixelModules()
     fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
 {}
 
-PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,const int nSl,const char* Title)
+PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,Int_t nSl,const char* Title)
   : FairDetector(name, Active, kPixelModules),
     fTrackID(-1),
     fPdgCode(),
