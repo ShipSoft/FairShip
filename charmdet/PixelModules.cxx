@@ -49,7 +49,6 @@ using namespace ShipUnit;
 
 PixelModules::PixelModules()
   : FairDetector("HighPrecisionTrackers",kTRUE, kPixelModules),
-    numSi(nSi1),
     fTrackID(-1),
     fPdgCode(),
     fVolumeID(-1),
@@ -61,7 +60,7 @@ PixelModules::PixelModules()
     fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
 {}
 
-PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,const char* Title, const Int_t nSl)
+PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,const int nSl,const char* Title)
   : FairDetector(name, Active, kPixelModules),
     fTrackID(-1),
     fPdgCode(),
@@ -73,9 +72,6 @@ PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t D
     fELoss(-1),
     fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
 {	
-  if(nSl==10)
-	  numSi=nSi10;
-  else numSi=nSi1;
   DimX = DX;
   DimY = DY;
   DimZ = DZ;
@@ -138,7 +134,13 @@ void PixelModules::SetSiliconStationAngles(Int_t nstation, Double_t anglex, Doub
 }
 
 void PixelModules::SetSiliconSlicesNumber(Int_t nSl){
-nSlices=nSl;
+	nSlices=nSl;
+        if(nSlices==1){
+		nSi=nSi1;
+	}
+	else if(nSlices=10){
+	nSi=nSi10;
+	}
 }
 
 Double_t *PixelModules::GetPosSize1(){
@@ -174,21 +176,10 @@ void PixelModules::ComputeDimZSlice(){
 DimZThinSlice=DimZSithin/nSlices;
 DimZThickSlice=DimZSithick/nSlices;
 }
-/*
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick,Int_t nstation,Double_t posx,Double_t posy,Double_t posz,Double_t anglex,Double_t angley,Double_t anglez,Int_t nSl);
-//    SetBoxParam(DX,DY,DZ, zBox, DimZpixelbox, D1short, D1long,DimZSithin, DimZSithick,nSlice)
-void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick,Int_t nstation,Double_t posx,Double_t posy,Double_t posz,Double_t anglex,Double_t angley,Double_t anglez);
-*/
 
-/*
-    PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
-    PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long,ship_geo.PixelModules.DimZSithin, ship_geo.PixelModules.DimZSithick,ship_geo.PixelModules.nSlice)
-    PixelModules.SetSiliconDZ(ship_geo.PixelModules.DimZSithin, ship_geo.PixelModules.DimZSithick)
-    PixelModules.SetSiliconSlicesNumber(ship_geo.PixelModules.nSlice)
-    PixelModules.ComputeDimZSlice()
-*/
 
-void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin,Double_t SiliconDZthick,Int_t nslice)
+
+void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin,Double_t SiliconDZthick)
 {
   SBoxX = SX;
   SBoxY = SY;
@@ -198,11 +189,10 @@ void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t z
   Dim1Short = D1short;
   Dim1Long = D1long;
   SetSiliconDZ(SiliconDZthin, SiliconDZthick);
-  SetSiliconSlicesNumber(nslice);
   ComputeDimZSlice();
   SetVertical();
   SetIDs();
-  SetPositionSize();  
+  SetPositionSize();
 }
 
 Bool_t *PixelModules::GetVertical1(){
@@ -340,7 +330,7 @@ void PixelModules::ConstructGeometry()
     
     //computing the largest offsets in order to set PixelBox dimensions correctly
     Double_t offsetxmax = 0., offsetymax = 0.;
-    for (int istation = 0; istation < nSi10; istation++){
+   for (int istation = 0; istation < nSi; istation++){
      if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
      if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
     }
@@ -403,7 +393,7 @@ void PixelModules::ConstructGeometry()
 
   volWindow->AddNode(0,0,new TGeoTranslation(0,0,-DimZPixelBox/2.-inimodZoffset-DimZWindow));
 
-    for (Int_t ipixel = 0; ipixel < nSi10; ipixel++){
+    for (Int_t ipixel = 0; ipixel < nSi; ipixel++){
       if (vertical[ipixel]){
 		if(PixelIDlist[ipixel]) {
 			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)){

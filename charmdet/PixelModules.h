@@ -19,16 +19,14 @@ class TClonesArray;
 class PixelModules:public FairDetector
 {
   public:
-  PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="PixelModules", const Int_t nSl=1);
     PixelModules();
+    PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active,const Int_t nSl=1,const char* Title="PixelModules");
     virtual ~PixelModules();
     void ConstructGeometry();
     void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick,Int_t nstation,Int_t nSl=1);
+    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick);
 //    SetBoxParam(DX,DY,DZ, zBox, DimZpixelbox, D1short, D1long,DimZSithin, DimZSithick,nSlice)
-void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick,Int_t nstation);
     
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox,Double_t SZPixel, Double_t Dim1Short, Double_t Dim1Long);
     void SetSiliconDZ(Double_t SiliconDZthin, Double_t SiliconDZthick);  
     void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
     void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
@@ -90,7 +88,7 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    /*Number of Silicon pixel segments, 10 is the recommended amount for digitized runs, 1 for simple runs, to be set in charm geometry file*/
+    /*Number of Silicon pixel segments, 10 is the recommended amount for digitized runs, 1 for simple runs, is set in charm geometry file*/
     Int_t nSlices=10; 
     
     /** container for data points */
@@ -136,7 +134,7 @@ protected:
 
     static const Int_t nSi1=12;
     static const Int_t nSi10=120;
-    Int_t numSi;
+    Int_t nSi;
     Double_t DimZSithin=0.02;
     Double_t DimZSithick=0.0245;
     Double_t DimZThinSlice;
