@@ -2,7 +2,6 @@
 //  PixelModules, twelve pixel modules physically connected two by two.
 
 #include "PixelModules.h"
-//#include "MagneticPixelModules.h"
 #include "PixelModulesPoint.h"
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
