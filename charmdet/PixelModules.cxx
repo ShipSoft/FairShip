@@ -188,7 +188,7 @@ void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t 
     PixelModules.ComputeDimZSlice()
 */
 
-void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin,Double_t SiliconDZthick,Int_t nstation, Double_t posx,Double_t posy,Double_t posz,Double_t anglex, Double_t angley, Double_t anglez)
+void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin,Double_t SiliconDZthick,Int_t nslice)
 {
   SBoxX = SX;
   SBoxY = SY;
@@ -198,8 +198,7 @@ void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t z
   Dim1Short = D1short;
   Dim1Long = D1long;
   SetSiliconDZ(SiliconDZthin, SiliconDZthick);
-  SetSiliconStationPositions(nstation,posx,posy,posz);
-  SetSiliconStationAngles(nstation,anglex,angley,anglez); 
+  SetSiliconSlicesNumber(nslice);
   ComputeDimZSlice();
   SetVertical();
   SetIDs();
