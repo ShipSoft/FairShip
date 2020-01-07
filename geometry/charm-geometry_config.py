@@ -329,66 +329,83 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.D1Long = 4 * u.cm;
     c.Spectrometer.SX = c.Spectrometer.DX
     c.Spectrometer.SY = c.Spectrometer.DY
-    c.PixelModules.DimZSi = 0.0400 * u.cm
+
+    c.PixelModules.DimZSithin = 0.0200 * u.cm
+    c.PixelModules.DimZSithick = 0.0245 * u.cm
+    c.PixelModules.nSlice= 1 #for digitization simulation, fix nSlice=10
     c.PixelModules.D1short = 3.36 * u.cm / 2.
     c.PixelModules.D1long = 4.09 * u.cm
-
+    c.PixelModules.numSi=12*c.PixelModules.nSlice
+    
 
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
-    #module position naming: "axis"Si"Telescope number"
+    #module position naming: "axis"Si"Module number"
     
     #measured values
     c.PixelModules.xSi = []
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []
-    #Module 0
-    c.PixelModules.xSi.append(1.5391*u.cm)
-    c.PixelModules.ySi.append(0.0011*u.cm)
-    c.PixelModules.zSi.append(-0.13*u.cm)
-    #Module 1
-    c.PixelModules.xSi.append(-0.2291*u.cm)
-    c.PixelModules.ySi.append(0.0036*u.cm)
-    c.PixelModules.zSi.append(0.52*u.cm)
-    #Module 2 (half with positive x values did not work)
-    c.PixelModules.xSi.append(0.7049*u.cm)
-    c.PixelModules.ySi.append(-0.7855*u.cm)
-    c.PixelModules.zSi.append(2.412*u.cm)
-    #Module 3
-    c.PixelModules.xSi.append(0.7054*u.cm)
-    c.PixelModules.ySi.append(0.9086*u.cm)
-    c.PixelModules.zSi.append(3.09*u.cm)
-    #Module 4
-    c.PixelModules.xSi.append(1.5496*u.cm)
-    c.PixelModules.ySi.append(0.0528*u.cm)
-    c.PixelModules.zSi.append(5.17*u.cm)
-    #Module 5
-    c.PixelModules.xSi.append(-0.2216*u.cm)
-    c.PixelModules.ySi.append(0.0790*u.cm)
-    c.PixelModules.zSi.append(5.79*u.cm)
-    #Module 6
-    c.PixelModules.xSi.append(0.6908*u.cm)
-    c.PixelModules.ySi.append(-0.6959*u.cm)
-    c.PixelModules.zSi.append(7.77*u.cm)
-    #Module 7
-    c.PixelModules.xSi.append(0.7023*u.cm)
-    c.PixelModules.ySi.append(0.9547*u.cm)
-    c.PixelModules.zSi.append(8.46*u.cm)
-    #Module 8
-    c.PixelModules.xSi.append(1.5827*u.cm)
-    c.PixelModules.ySi.append(0.1024*u.cm)
-    c.PixelModules.zSi.append(10.462*u.cm)
-    #Module 9
-    c.PixelModules.xSi.append(-0.2092*u.cm)
-    c.PixelModules.ySi.append(0.1036*u.cm)
-    c.PixelModules.zSi.append(11.17*u.cm)
-    #Module 10
-    c.PixelModules.xSi.append(0.6942*u.cm)
-    c.PixelModules.ySi.append(-0.7252*u.cm)
-    c.PixelModules.zSi.append(13.162*u.cm)
-    #Module 11
-    c.PixelModules.xSi.append(0.6832*u.cm)
-    c.PixelModules.ySi.append(0.9279*u.cm)
-    c.PixelModules.zSi.append(13.85*u.cm)
+
+    	#Module 0
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(1.53912)
+    	c.PixelModules.ySi.append(-0.002332)
+    	c.PixelModules.zSi.append(-0.13+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 1
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(-0.229076)
+    	c.PixelModules.ySi.append(0.005328)
+    	c.PixelModules.zSi.append(0.52+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 2
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(0.704924)
+    	c.PixelModules.ySi.append(0.808437)
+    	c.PixelModules.zSi.append(2.412+i*c.PixelModules.DimZSithin/c.PixelModules.nSlice)
+    	#Module 3
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(0.705433)
+    	c.PixelModules.ySi.append(-0.879224)
+    	c.PixelModules.zSi.append(3.09+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 4 (Didn't take data)
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(1.54963)
+    	c.PixelModules.ySi.append(-0.003912)
+    	c.PixelModules.zSi.append(5.17+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 5
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(-0.221577)
+    	c.PixelModules.ySi.append(-0.023944)
+    	c.PixelModules.zSi.append(5.79+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 6
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(0.690749)
+    	c.PixelModules.ySi.append(0.769728)
+    	c.PixelModules.zSi.append(7.77+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 7
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(0.702302)
+    	c.PixelModules.ySi.append(-0.874356)
+    	c.PixelModules.zSi.append(8.46+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 8
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(1.58271)
+    	c.PixelModules.ySi.append(-0.0030432)
+    	c.PixelModules.zSi.append(10.462+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 9
+    for i in range(1-c.PixelModules.nSlice,1):
+	c.PixelModules.xSi.append(-0.209171)
+	c.PixelModules.ySi.append(0.002488)
+	c.PixelModules.zSi.append(11.17+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 10
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(0.694199)
+    	c.PixelModules.ySi.append(0.850237)
+    	c.PixelModules.zSi.append(13.162+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+    	#Module 11
+    for i in range(1-c.PixelModules.nSlice,1):
+    	c.PixelModules.xSi.append(0.683245)
+    	c.PixelModules.ySi.append(-0.79636)
+    	c.PixelModules.zSi.append(13.85+i*c.PixelModules.DimZSithin/c.PixelModules.nSlice)
 
     #SciFi Modules
     c.SciFi = AttrDict(z = 0*u.cm)
@@ -453,9 +470,9 @@ with ConfigRegistry.register_config("basic") as c:
     #c.Scintillator.DistT2              = 135.25*u.cm
     c.Scintillator.DistT2              = 136.26*u.cm 
                   
-    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
+    c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[0] + c.PixelModules.DimZSithick + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
-    c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi    
+    c.PixelModules.DimZpixelbox = c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick   
 
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
