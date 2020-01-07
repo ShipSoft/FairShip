@@ -40,7 +40,6 @@ charmonly    = False  # option to be set with -A to enable only charm decays, ch
 HNL          = True
 
 inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
-
 defaultInputFile = True
 
 globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDesign':4},\
