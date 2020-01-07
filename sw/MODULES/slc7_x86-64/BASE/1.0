@@ -1,5 +1,0 @@
-#%Module1.0
-set base_path /afs/cern.ch/user/m/mclimesc/public/neuesSHiPBuild/FairShip/sw/slc7_x86-64
-setenv BASEDIR $base_path
-set osname [uname sysname]
-set osarchitecture [uname machine]

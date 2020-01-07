@@ -1,9 +1,0 @@
-[ "X$DEFAULTS_RELEASE_VERSION" = X ] && source ${WORK_DIR}/slc7_x86-64/defaults-release/v1-1/etc/profile.d/init.sh
-export GENERATORS_ROOT=/pool/condor/dir_55582/SHiPBuild/FairShip/sw/INSTALLROOT/8b3b9cc4aa41af88ceb775c4c1ac8ecdfec3a437/slc7_x86-64/generators/v1.0-1
-export GENERATORS_VERSION=v1.0
-export GENERATORS_REVISION=1
-export GENERATORS_HASH=8b3b9cc4aa41af88ceb775c4c1ac8ecdfec3a437
-export GENERATORS_COMMIT=0
-export DYLD_LIBRARY_PATH=$GENERATORS_ROOT/lib:$DYLD_LIBRARY_PATH
-export PATH=$GENERATORS_ROOT/bin:$PATH
-export LD_LIBRARY_PATH=$GENERATORS_ROOT/lib:$LD_LIBRARY_PATH
