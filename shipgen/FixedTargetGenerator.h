@@ -49,6 +49,7 @@ class FixedTargetGenerator : public FairGenerator
   inline void SetDebug(Bool_t x){Debug=x;}
   Double_t GetPotForCharm(){return nrpotspill/wspill;}
   Pythia* GetPythia() {return fPythiaP;}
+  Pythia* GetPythiaN() {return fPythiaN;}
  private:
   
   RndmEngine* fRandomEngine;  //!
