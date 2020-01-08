@@ -1,6 +1,8 @@
 import ROOT
 import rootUtils as ut
 from array import array
+theSeed      = 0
+ROOT.gRandom.SetSeed(theSeed)
 
 from argparse import ArgumentParser
 parser = ArgumentParser()
