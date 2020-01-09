@@ -32,8 +32,9 @@ for n in range(int(options.NPoT)):
     for ii in range(py.event.size()):
        theEvent = py.event
        pid      = theEvent[ii].id()
-       if pid!=443:continue
-       jpsi = True
+       if pid==443:
+          jpsi = True
+          break
     if not jpsi: continue
     vl=array('f')
     vl.append(float(pid))
