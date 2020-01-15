@@ -399,27 +399,27 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream->AddNode(vol_pmma3, 155, new TGeoTranslation(((det_xPMMAPos/2.0) + (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
   Rpc_module_upstream->AddNode(vol_pmma1, 156, new TGeoTranslation(0, 0, -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + (det_dzPMMAPos/2.0) ));
       
-  Rpc_module_upstream->AddNode(vol_glass_border, 157, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border, 158, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border1, 159, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border1, 160, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border, 157, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border, 158, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border1, 159, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border1, 160, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
 
-  Rpc_module_upstream->AddNode(vol_glass_border, 161, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border, 162, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)),  ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border1, 163, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border1, 164, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border, 161, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border, 162, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)),  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border1, 163, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border1, 164, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   
-  Rpc_module_upstream->AddNode(vol_glass_border, 165, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border, 166, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border1, 167, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass_border1, 168, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border, 165, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border, 166, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border1, 167, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0 - det_zFR4Pos - det_zStripPos) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass_border1, 168, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
 
-  Rpc_module_upstream->AddNode(vol_glass, 169, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass, 170, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_glass, 171, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass, 169, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass, 170, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream->AddNode(vol_glass, 171, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
   
-  Rpc_module_upstream->AddNode(vol_FrSF6, 172, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*1.0)  -  (det_zFreonSF6Pos/2.0))));
-  Rpc_module_upstream->AddNode(vol_FrSF6, 173, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0)  - (det_zFreonSF6Pos*1.0) - (det_zFreonSF6Pos/2.0))));
+  Rpc_module_upstream->AddNode(vol_FrSF6, 172, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*1.0)  -  (det_zFreonSF6Pos/2.0))));
+  Rpc_module_upstream->AddNode(vol_FrSF6, 173, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0)  - (det_zFreonSF6Pos*1.0) - (det_zFreonSF6Pos/2.0))));
   
   Rpc_module_upstream->AddNode(vol_FrSF6_2, 174, new TGeoTranslation(0, ((-det_yGlassPos/2.0) - det_yGlassBorderPos - (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream->AddNode(vol_FrSF6_2, 175, new TGeoTranslation(0, ((det_yGlassPos/2.0) + det_yGlassBorderPos + (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
@@ -457,28 +457,28 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream1->AddNode(vol_pmma3, 223, new TGeoTranslation(((-det_xPMMAPos/2.0) - (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
   Rpc_module_upstream1->AddNode(vol_pmma3, 224, new TGeoTranslation(((det_xPMMAPos/2.0) + (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
   Rpc_module_upstream1->AddNode(vol_pmma1, 225, new TGeoTranslation(0, 0, -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + (det_dzPMMAPos/2.0) ));
-      
-  Rpc_module_upstream1->AddNode(vol_glass_border, 226, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border, 227, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border1, 228, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border1, 229, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
 
-  Rpc_module_upstream1->AddNode(vol_glass_border, 230, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border, 231, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)),  ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border1, 232, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border1, 233, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  
-  Rpc_module_upstream1->AddNode(vol_glass_border, 234, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border, 235, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border1, 236, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass_border1, 237, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border, 226, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border, 227, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border1, 228, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border1, 229, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
 
-  Rpc_module_upstream1->AddNode(vol_glass, 238, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass, 239, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_glass, 240, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border, 230, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border, 231, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)),  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border1, 232, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border1, 233, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos- det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   
-  Rpc_module_upstream1->AddNode(vol_FrSF6, 241, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*1.0)  -  (det_zFreonSF6Pos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_FrSF6, 243, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_dzPMMAPos - (det_zGlassPos*2.0)  - (det_zFreonSF6Pos*1.0) - (det_zFreonSF6Pos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border, 234, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0)  - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border, 235, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border1, 236, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass_border1, 237, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+
+  Rpc_module_upstream1->AddNode(vol_glass, 238, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass, 239, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_glass, 240, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
+  
+  Rpc_module_upstream1->AddNode(vol_FrSF6, 241, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*1.0)  -  (det_zFreonSF6Pos/2.0))));
+  Rpc_module_upstream1->AddNode(vol_FrSF6, 243, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0)  - (det_zFreonSF6Pos*1.0) - (det_zFreonSF6Pos/2.0))));
   
   Rpc_module_upstream1->AddNode(vol_FrSF6_2, 243, new TGeoTranslation(0, ((-det_yGlassPos/2.0) - det_yGlassBorderPos - (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream1->AddNode(vol_FrSF6_2, 244, new TGeoTranslation(0, ((det_yGlassPos/2.0) + det_yGlassBorderPos + (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
