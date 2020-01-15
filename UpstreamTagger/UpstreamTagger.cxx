@@ -495,7 +495,7 @@ void UpstreamTagger::ConstructGeometry()
   //Add 64 copper strips to the Rpc module
   for(int i = 250; i < 314; i++){
 
-    Rpc_module_upstream1->AddNode(vol_strip64, i, new TGeoTranslation((-det_xGlassPos/2.0) - det_xGlassBorderPos + 2.175 + (interval*det_xStripPos) + (interval*0.15) + ((det_xStripPos/2.0)), 0,  -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + det_dzPMMAPos + det_zFR4Pos + (det_zStripPos/2.0) ));
+    Rpc_module_upstream1->AddNode(vol_strip64, i, new TGeoTranslation((-det_xGlassPos/2.0) - det_xGlassBorderPos + 2.175 + (interval*det_xStripPos64) + (interval*0.15) + ((det_xStripPos64/2.0)), 0,  -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + det_dzPMMAPos + det_zFR4Pos + (det_zStripPos/2.0) ));
     interval++;
   }
   
