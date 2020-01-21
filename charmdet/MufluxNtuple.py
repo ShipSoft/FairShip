@@ -126,7 +126,7 @@ if not options.listOfFiles:
 
     if withJpsi:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
-        for k in [16]:
+        for k in range(16):
             fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
             sTreeMC.Add(path+fname)
     if withJpsiP8:
