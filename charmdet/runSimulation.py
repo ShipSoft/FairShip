@@ -21,6 +21,70 @@ fileList = {}
 badFiles = []
 eospath='/eos/experiment/ship/data/Mbias/background-prod-2018/'
 
+def JpsiProdP8(run):
+    for n in range(run,run+15):
+      os.system("python $FAIRSHIP/macro/JpsiProdWithPythia8.py -n 100000000 -r "+str(n)+" &")
+def mergeJpsiProdP8():
+    cmd = 'hadd Jpsi-Pythia8_XXXX_0-74.root'
+    N=0
+    for n in range(75):
+        fname = "Jpsi-Pythia8_100000000_"+str(n)+".root"
+        if not os.path.isfile(fname): continue
+        f = ROOT.TFile(fname)
+        if not f: continue
+        if not f.Get('pythia6'): continue
+        N+=100000000
+        cmd += " "+fname
+    cmd=cmd.replace('XXXX',str(N))
+    os.system(cmd)
+
+def JpsiProdP8_withHTCondor(run=10000,njobs=1000,NPot=1000000,merge=False):
+# microcentury = 1h ok with 1000000 NPot, 45min
+# workday      = 8h whould be ok with 5000000
+    eosLocation = os.environ['EOSSHIP']+"/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/"
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l /eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8",shell=True)
+    cmd = "hadd Jpsi-Pythia8_XXXX_"+str(run)+"-"+str(run+njobs)+".root"
+    Ntot = 0
+    for n in range(run,run+njobs):
+       output = "Jpsi-Pythia8_"+str(NPot)+"_"+str(n)+".root"
+       if not merge:
+    # create condor sub
+          fc = open('condorJ.sub','w')
+          fc.write('executable  = JpsiProd.sh\n')
+          fc.write('arguments   = '+str(NPot)+' '+str(n)+' '+output+' '+eosLocation+output +' \n')
+          fc.write('should_transfer_files = YES\n')
+          fc.write('when_to_transfer_output = ON_EXIT\n')
+          x = 'run_'+str(n)
+          fc.write('output                = output/'+x+'.out\n')
+          fc.write('error                 = error/'+x+'.err\n')
+          fc.write('log                   = log/'+x+'.log\n')
+          fc.write('+JobFlavour = "workday"\n')  #"microcentury" workday
+          fc.write('queue\n')
+          fc.close()
+          os.system('condor_submit condorJ.sub')
+       else:
+          eosfile = (eosLocation+output)
+          if output in temp:
+             f=ROOT.TFile.Open(eosfile)
+             if f.Get('pythia6'):
+               cmd += " "+eosfile
+               Ntot+=NPot
+    if merge:
+         cmd = cmd.replace('XXXX',str(Ntot))
+         tmp = cmd.split(' ')
+         outfile = tmp[1]
+         cmd = 'hadd -f '+outfile
+         N=0
+         for n in range(2,len(tmp)):
+            N+=1
+            cmd += ' ' + tmp[n]
+            if N>500:
+              os.system(cmd)
+              os.system('cp '+outfile+' tmp.root')
+              cmd = "hadd -f "+outfile+' tmp.root '
+              N=0
+         os.system(cmd)
+
 def run_FixedTarget(start):
     N = 10000
     for n in range(start,start+ncpus):
@@ -653,6 +717,13 @@ def runMufluxReco(D='1GeV',merge=False):
             while 1>0:
                 if count_python_processes('MufluxNtuple')<ncpus: break
                 time.sleep(20)
+        elif D=='JpsiP8':
+          for n in range(ncpus):
+            cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d JpsiProduction  -c MufluxReco  -8 True -s "+str(n)+ " -x "+str(ncpus)+" &"
+            os.system(cmd)
+            while 1>0:
+                if count_python_processes('MufluxNtuple')<ncpus: break
+                time.sleep(20)
 
 def runInvMass(MC='1GeV',merge=False):
     N = 20
@@ -666,11 +737,19 @@ def runInvMass(MC='1GeV',merge=False):
           while 1>0:
             if count_python_processes('MufluxNtuple')<ncpus: break
             time.sleep(20)
+      if MC=='JpsiP8':
+        for n in range(N):
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d JpsiProduction_P8 -t "+t+" -c invMass -p ship-ubuntu-1710-16 -s "+str(n)+ " -x "+str(N)+" -8 True -r &"
+          print cmd
+          os.system(cmd)
+          while 1>0:
+            if count_python_processes('MufluxNtuple')<ncpus: break
+            time.sleep(20)
       elif MC=='1GeV':
          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation1GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -A True -r &"
          print cmd
          os.system(cmd)
-      else:
+      elif MC=='10GeV':
         for n in range(N):
           cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(N)+" -B True -r &"
           print cmd
@@ -678,8 +757,11 @@ def runInvMass(MC='1GeV',merge=False):
           while 1>0:
             if count_python_processes('MufluxNtuple')<ncpus: break
             time.sleep(20)
+      else: 
+        print "case not known, stop"
+        1/0
     else:
-        if MC=='Jpsi':
+        if MC=='Jpsi' or MC=='JpsiP8':
            cmd = 'hadd -f invMass-MC-Jpsi.root '
            for n in range(N):
                cmd+='invMass-MC-'+str(n)+'_refit.root '
@@ -768,21 +850,25 @@ def mergeOnurFiles(merge=False):
             os.system('cp ship.conical.FixedTarget-TGeant4_merged_dig.root  tmp.root')
             cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root tmp.root '
       os.system(cmd)
-def JpsiProduction(step='simulation'):
+def JpsiProduction(step='simulation',prod='P8'):
  # directory should be ship-ubuntu-1710-48/JpsiProduction
- path = "ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX/"
- ncpus = 16 
- Ntot = 20313583 
+ path = {} 
+ path['Cascade']     ="ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX/"
+ path['P8']          ="ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX/"
+ ncpus = 16
+ Ntot = {'Cascade':20313583,'P8':2293179}
+ InFile = {'Cascade':"/eos/experiment/ship/data/jpsicascade/cascade_MSEL61_20M.root" ,
+                'P8':"/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/Jpsi-Pythia8_21788000000_0-3074.root"}
  Nstart = 0
- delN = int(20313583./float(ncpus))
+ delN = int(float(Ntot[prod])/float(ncpus))
  if step == 'simulation':
   for n in range(ncpus):
-    cmd = "python $SHIPBUILD/FairShip/muonShieldOptimization/run_MufluxfixedTarget.py -C -P -I /eos/experiment/ship/data/jpsicascade/cascade_MSEL61_20M.root -J -e 10. -n "+str(delN)+" -S  "+str(Nstart)+ " -r "+str(n)+" &"
+    cmd = "python $SHIPBUILD/FairShip/muonShieldOptimization/run_MufluxfixedTarget.py -C -P -I "+ InFile[prod] +" -J -e 10. -n "+str(delN)+" -S  "+str(Nstart)+ " -r "+str(n)+" &"
     Nstart+=delN
     os.system(cmd)
  if step == 'digi':
   for n in range(ncpus):
-     d = path.replace('XXX',str(n))
+     d = path[prod].replace('XXX',str(n))
      os.chdir(d)
      mcFile = 'pythia8_Geant4_'+str(n)+'_10.0.root'
      if mcFile.replace('.root','_dig.root') in os.listdir('.'):
@@ -799,7 +885,7 @@ def JpsiProduction(step='simulation'):
          time.sleep(100)
  if step == 'reco':
   for n in range(ncpus):
-     d = path.replace('XXX',str(n))
+     d = path[prod].replace('XXX',str(n))
      os.chdir(d)
      recoFile = 'pythia8_Geant4_'+str(n)+'_10.0_dig.root'
      cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
@@ -810,26 +896,35 @@ def JpsiProduction(step='simulation'):
          if count_python_processes('drifttubeMonitoring')<ncpus/2: break 
          time.sleep(100)
  print "finished all the ",step," tasks"
-def JpsiCopyToEOS(RT=False):
+def JpsiCopyToEOS(RT=False,prod='P8'):
  ncpus = range(16)
- RT=True
- ncpus = [0,2,3,5,8]
+ dirName={}
+ dirName['P8']     ="ship-ubuntu-1710-16_run_MufluxfixedTarget_XX/"
+ dirName['Cascade']="ship-ubuntu-1710-48_run_MufluxfixedTarget_XX/"
+ eosPath = {}
+ eosPath['P8']          =" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/"
+ eosPath['Cascade']     =" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
  for n in ncpus:
     fileName = "pythia8_Geant4_"+str(n)+"_10.0.root"
-    if RT: fileName = fileName.replace('.root','_dig_RT.root')
-    dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)+"/"
-    cmd = "xrdcp  "+dirName+fileName+" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"+fileName
+    if RT=='RT': fileName = fileName.replace('.root','_dig_RT.root')
+    if RT=='ntuple': fileName = 'ntuple-'+fileName.replace('.root','_dig_RT.root')
+    cmd = "xrdcp  "+dirName[prod].replace('XX',str(n))+fileName+eosPath[prod]+fileName
     print cmd
     rc = os.system(cmd)
-    if rc == 0: os.system('rm '+dirName+fileName)
+    # if rc == 0: os.system('rm '+dirName+fileName)
 
-def JpsiHistos(command = "anaResiduals",merge=False):
+def JpsiHistos(command = "anaResiduals",prod = 'P8',merge=False):
   # MCJpsiProd
-  D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
+  if prod == 'Cascade': D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
+  elif prod == 'P8':    D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/"
+  else: 
+    print prod," not supported"
+    exit()
   cmd = 'hadd -f '+commandToSum[command]+'.root '
-#  for n in [0, 2, 3, 5, 8]:
-  for n in [11,12,13,14,15]:
-    dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)
+  for n in [1]:
+#  for n in range(16):
+    if prod == 'Cascade': dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)
+    if prod == 'P8':      dirName  = "ship-ubuntu-1710-16_run_MufluxfixedTarget_"+str(n)
     fileName = "pythia8_Geant4_"+str(n)+"_10.0_dig_RT.root"
     if not merge:
        cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+D+fileName+' &'
@@ -840,3 +935,42 @@ def JpsiHistos(command = "anaResiduals",merge=False):
     else:
        cmd += dirName+'/'+commandToHist[command]+fileName+' '
   if merge: os.system(cmd)
+from array import array
+def extractJpsi(prod = '10GeV'):
+   Fntuple = 'JpsifromBackground-'+prod+'.root'
+   ftup = ROOT.TFile.Open(Fntuple, 'RECREATE')
+   Ntup = ROOT.TNtuple("pythia8","pythia8 Jpsi","id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM")
+   template={}
+   template['10GeV'] = ['/eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_10.0_cXXXX_mu.root',67]
+   template['1GeV']  = ['/eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_1.0_cXXXX_mu.root',20]
+   for n in range(0,template[prod][1]):
+      fname = template[prod][0].replace('XXXX',str(n*1000))
+      f=ROOT.TFile.Open(os.environ['EOSSHIP']+fname)
+      print "opening ",fname,f.cbmsim.GetEntries()
+      for event in f.cbmsim:
+         jpsi = False
+         for m in event.MCTrack:
+            if m.GetPdgCode()==443:
+              jpsi = True
+              break
+         if not jpsi: continue
+         vl=array('f')
+         vl.append(float(m.GetPdgCode()))
+         vl.append(m.GetPx())
+         vl.append(m.GetPy())
+         vl.append(m.GetPz())
+         vl.append(m.GetEnergy())
+         vl.append(m.GetMass())
+         vl.append(float(event.MCTrack[1].GetPdgCode()))
+         vl.append(event.MCTrack[0].GetPx())
+         vl.append(event.MCTrack[0].GetPy())
+         vl.append(event.MCTrack[0].GetPz())
+         vl.append(event.MCTrack[0].GetEnergy())
+         if m.GetMotherId() < 0:
+            vl.append(-1)
+         else:
+           vl.append(float(event.MCTrack[m.GetMotherId()].GetPdgCode()))
+         rc = Ntup.Fill(vl)
+   ftup.cd()
+   Ntup.Write()
+   ftup.Close()
