@@ -36,6 +36,8 @@ for n in range(int(options.NPoT)):
     for ii in range(theEvent.size()):
        pid      = theEvent[ii].id()
        if pid==443:
+          d1,d2 = theEvent[ii].daughter1(),theEvent[ii].daughter2()
+          if d1==d2: continue
           jpsi = True
           break
     if not jpsi: continue
@@ -56,7 +58,7 @@ for n in range(int(options.NPoT)):
     m2 = theEvent[ii].mother2()
     vl.append(float(theEvent[m2].id()))
     d1,d2 = theEvent[ii].daughter1(),theEvent[ii].daughter2()
-    if theEvent[x.daughter1()].charge() < 0:
+    if theEvent[d1].charge() < 0:
       vl.append(theEvent[d1].px())
       vl.append(theEvent[d1].py())
       vl.append(theEvent[d1].pz())
@@ -70,6 +72,7 @@ for n in range(int(options.NPoT)):
       vl.append(theEvent[d1].px())
       vl.append(theEvent[d1].py())
       vl.append(theEvent[d1].pz())
+    1/0
 # 
     Ntup.Fill(vl)
 Ntup.Write()
