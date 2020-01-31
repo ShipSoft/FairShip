@@ -1263,7 +1263,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
     const int ncoordinates = 3; //x,y,z
     
     TH2D theHist[nhistograms]; 
-    std::string titles[nhistograms] = {"Bx","By","Bz","B"};
+    std::string titles[nhistograms] = {"Bx (T)","By (T)","Bz (T)","B (T)"};
     for (int icomponent = 0; icomponent< nhistograms; icomponent++){
       theHist[icomponent] = TH2D(Form("theHist[%i]",icomponent), titles[icomponent].data(), Nx, xMin, xMax, Ny, yMin, yMax);
       theHist[icomponent].SetDirectory(0);
