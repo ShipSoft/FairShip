@@ -620,8 +620,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
         c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
-        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -34*u.cm;
-        
+        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
         #lateral cuts
         c.tauMudet.CutHeight = 100 * u.cm
         c.tauMudet.CutLength = 25 * u.cm
@@ -740,7 +739,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.ConcreteX = c.tauHPT.DX
         c.tauHPT.ConcreteY = c.tauMudet.Ytot/2 - c.tauHPT.DY/2
         c.tauHPT.ConcreteZ = c.tauHPT.DZ
-    if nuTauTargetDesign==3:        
+    if nuTauTargetDesign==3:
+        c.tauHPT.SRDY = 10 * u.cm  #additional detectors for improving acceptance
         c.tauHPT.DX = c.tauHPT.TX
         c.tauHPT.DY = c.tauHPT.TY
         c.tauHPT.DZ = c.tauHPT.TZ
@@ -774,7 +774,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
     c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
-    
+
     #Upstream Tagger
     c.UpstreamTagger = AttrDict(z=0)
     c.UpstreamTagger.Z_Glass = 0.2 * u.cm
@@ -788,7 +788,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_PMMA = 226 * u.cm
     c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
-    c.UpstreamTagger.DZ_PMMA = 0.1 * u.cm
+    c.UpstreamTagger.DZ_PMMA = 0.1 * u.cmc
     c.UpstreamTagger.Z_FreonSF6 = 0.1 * u.cm
     c.UpstreamTagger.Y_FreonSF6 = 107 * u.cm
     c.UpstreamTagger.X_FreonSF6 = 225 * u.cm
@@ -812,4 +812,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm
     c.UpstreamTagger.X_Strip64 = 3.3 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 13.4012*u.cm
+    c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 12.0*u.cm
