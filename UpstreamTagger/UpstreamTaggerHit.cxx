@@ -169,9 +169,8 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
 
    Double_t xbox_fulldet = 223;
    Double_t ybox_fulldet = 499;
-   Double_t zbox_fulldet = 32.8025;
+   Double_t zbox_fulldet = 16.2024;
    Double_t z_space_layers = 0.2;  
-   Double_t z_ironbox = 20;
    Double_t extra_y = 6.5;
    Double_t det_yStripPos = 3.1;
    Double_t det_xStripPos64 = 3.3;
@@ -179,27 +178,25 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
 
    Double_t det_zPos = -2498.5988;
    
-   //iron module
-   module[0][0] = 0; module[0][1] = 0; module[0][2] = (-(zbox_fulldet/2.0) + (z_ironbox/2.0));
 
   //First Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[1][0] = 0; module[1][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[1][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos + z_ironbox + z_space_layers);
-  module[2][0] = 0; module[2][1] = 0; module[2][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos + z_ironbox + z_space_layers ) ;
-  module[3][0] = 0; module[3][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[3][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos + z_ironbox + z_space_layers);
+  module[1][0] = 0; module[1][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[1][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
+  module[2][0] = 0; module[2][1] = 0; module[2][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
+  module[3][0] = 0; module[3][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[3][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
    
   //Second Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[4][0] = 0; module[4][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[4][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_ironbox + (z_space_layers*2.0) + (det_zAlPos/2.0)); 
-  module[5][0] = 0; module[5][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[5][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_ironbox + (z_space_layers*2.0) + (det_zAlPos/2.0));
+  module[4][0] = 0; module[4][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[4][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + (det_zAlPos/2.0)); 
+  module[5][0] = 0; module[5][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[5][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + (det_zAlPos/2.0));
 
   //Third Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[6][0] = 0; module[6][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[6][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_ironbox + (z_space_layers*3.0) + (det_zAlPos/2.0));
-  module[7][0] = 0; module[7][1] = 0; module[7][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_ironbox + (z_space_layers*3.0) + (det_zAlPos/2.0));
-  module[8][0] = 0; module[8][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[8][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_ironbox + (z_space_layers*3.0) + (det_zAlPos/2.0));
+  module[6][0] = 0; module[6][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[6][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_space_layers + (det_zAlPos/2.0));
+  module[7][0] = 0; module[7][1] = 0; module[7][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*3.0) + (det_zAlPos/2.0));
+  module[8][0] = 0; module[8][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[8][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_space_layers + (det_zAlPos/2.0));
    
   //Fourth Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[9][0] = 0; module[9][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[9][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + z_ironbox + (z_space_layers*4.0) + (det_zAlPos/2.0)); 
-  module[10][0] = 0; module[10][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[10][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + z_ironbox + (z_space_layers*4.0) + (det_zAlPos/2.0));
-
+  module[9][0] = 0; module[9][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[9][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + z_space_layers + (det_zAlPos/2.0)); 
+  module[10][0] = 0; module[10][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[10][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + z_space_layers + (det_zAlPos/2.0));
+  
   
   Double_t Ymodule = -1000;
   Double_t Zmodule = 0;
@@ -237,13 +234,13 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
        }
     }
     if(i == 10 && flag0){
-       Double_t tmp = -module[6][2]+20.2;     
-       Double_t tmp1 = -module[4][2]+20.2;     
-       Double_t tmp2 = -module[1][2]+20.2;     
+       Double_t tmp = -module[6][2];     
+       Double_t tmp1 = -module[4][2];     
+       Double_t tmp2 = -module[1][2];     
       
-       module[1][2] = -module[9][2]+20.2;
-       module[2][2] = -module[9][2]+20.2;
-       module[3][2] = -module[9][2]+20.2;
+       module[1][2] = -module[9][2];
+       module[2][2] = -module[9][2];
+       module[3][2] = -module[9][2];
        module[4][2] = tmp;
        module[5][2] = tmp;
 

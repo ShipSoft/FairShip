@@ -166,8 +166,7 @@ class UpstreamTagger: public FairDetector
     
     Double_t xbox_fulldet = 233.4; //cm 
     Double_t ybox_fulldet = 507; 
-    Double_t zbox_fulldet = 32.8025;
-    Double_t z_ironbox = 20;
+    Double_t zbox_fulldet = 17.0024;
     Double_t z_space_layers = 0.2;  
     Double_t extra_y = 6.5; 
     

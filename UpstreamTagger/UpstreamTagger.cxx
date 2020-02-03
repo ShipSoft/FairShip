@@ -501,71 +501,61 @@ void UpstreamTagger::ConstructGeometry()
   
 
   /////////////////////////////////////////////////////////////////// 
-
-  InitMedium("iron");  
-  TGeoMedium *ironbox =gGeoManager->GetMedium("iron");
-  TGeoVolume *iron_module = gGeoManager->MakeBox("IRON", ironbox, xbox_fulldet/2.0, ybox_fulldet/2.0, z_ironbox/2.0);
-  iron_module->SetLineColor(kRed);
   
   //UpstreamTagger_fulldet = new TGeoVolumeAssembly("Upstream_Tagger");
   UpstreamTagger_fulldet = gGeoManager->MakeBox("Upstream_Tagger", Vacuum_box, xbox_fulldet/2.0, ybox_fulldet/2.0, zbox_fulldet/2.0);
   UpstreamTagger_fulldet->SetLineColor(kWhite);
   
   ybox_fulldet = 499; //resize box to define the modules position from active area of the detectors (discounting the aluminium box + acrilic)
-  module[0][0] = 0; module[0][1] = 0; module[0][2] = (-(zbox_fulldet/2.0) + (z_ironbox/2.0));
 
   //First Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[1][0] = 0; module[1][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[1][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos + z_ironbox + z_space_layers);
-  module[2][0] = 0; module[2][1] = 0; module[2][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos + z_ironbox + z_space_layers) ;
-  module[3][0] = 0; module[3][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[3][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos + z_ironbox + z_space_layers);
+  module[1][0] = 0; module[1][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[1][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
+  module[2][0] = 0; module[2][1] = 0; module[2][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
+  module[3][0] = 0; module[3][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[3][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
    
   //Second Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[4][0] = 0; module[4][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[4][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_ironbox + (z_space_layers*2.0) + (det_zAlPos/2.0)); 
-  module[5][0] = 0; module[5][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[5][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_ironbox + (z_space_layers*2.0) + (det_zAlPos/2.0));
+  module[4][0] = 0; module[4][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[4][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_space_layers + (det_zAlPos/2.0)); 
+  module[5][0] = 0; module[5][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[5][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_space_layers + (det_zAlPos/2.0));
 
   //Third Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[6][0] = 0; module[6][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[6][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_ironbox + (z_space_layers*3.0) + (det_zAlPos/2.0));
-  module[7][0] = 0; module[7][1] = 0; module[7][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_ironbox + (z_space_layers*3.0) + (det_zAlPos/2.0));
-  module[8][0] = 0; module[8][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[8][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + z_ironbox + (z_space_layers*3.0) + (det_zAlPos/2.0));
+  module[6][0] = 0; module[6][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[6][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*2.0) + (det_zAlPos/2.0));
+  module[7][0] = 0; module[7][1] = 0; module[7][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*3.0) + (det_zAlPos/2.0));
+  module[8][0] = 0; module[8][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[8][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*2.0) + (det_zAlPos/2.0));
    
   //Fourth Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[9][0] = 0; module[9][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[9][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + z_ironbox + (z_space_layers*4.0) + (det_zAlPos/2.0)); 
-  module[10][0] = 0; module[10][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[10][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + z_ironbox + (z_space_layers*4.0) + (det_zAlPos/2.0));
-
+  module[9][0] = 0; module[9][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[9][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + (z_space_layers*3.0) + (det_zAlPos/2.0)); 
+  module[10][0] = 0; module[10][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[10][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + (z_space_layers*3.0) + (det_zAlPos/2.0));
   
-
-  //iron 2.23 x 4.99 x 0.1 meters
-  UpstreamTagger_fulldet->AddNode(iron_module, 1, new TGeoTranslation(module[0][0], module[0][1], module[0][2]));
   //First Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 2, new TGeoTranslation(module[1][0], module[1][1], module[1][2]));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 3, new TGeoTranslation(module[2][0], module[2][1], module[2][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 4, new TGeoTranslation(module[3][0], module[3][1], module[3][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 1, new TGeoTranslation(module[1][0], module[1][1], module[1][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 2, new TGeoTranslation(module[2][0], module[2][1], module[2][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 3, new TGeoTranslation(module[3][0], module[3][1], module[3][2]));
   //Second Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 5, new TGeoTranslation(module[4][0], module[4][1], module[4][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 6, new TGeoTranslation(module[5][0], module[5][1], module[5][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 4, new TGeoTranslation(module[4][0], module[4][1], module[4][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 5, new TGeoTranslation(module[5][0], module[5][1], module[5][2]));
   //Third Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 7, new TGeoTranslation(module[6][0], module[6][1], module[6][2]));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 8, new TGeoTranslation(module[7][0], module[7][1], module[7][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 9, new TGeoTranslation(module[8][0], module[8][1], module[8][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 6, new TGeoTranslation(module[6][0], module[6][1], module[6][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 7, new TGeoTranslation(module[7][0], module[7][1], module[7][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 8, new TGeoTranslation(module[8][0], module[8][1], module[8][2]));
   //Fourth Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 10, new TGeoTranslation(module[9][0], module[9][1], module[9][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 11, new TGeoTranslation(module[10][0], module[10][1], module[10][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 9, new TGeoTranslation(module[9][0], module[9][1], module[9][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 10, new TGeoTranslation(module[10][0], module[10][1], module[10][2]));
 
 
   //First Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 12, new TGeoTranslation(module[1][0], module[1][1], -module[9][2]+20.2));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 13, new TGeoTranslation(module[2][0], module[2][1], -module[9][2]+20.2)); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 14, new TGeoTranslation(module[3][0], module[3][1], -module[9][2]+20.2));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 11, new TGeoTranslation(module[1][0], module[1][1], -module[9][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 12, new TGeoTranslation(module[2][0], module[2][1], -module[9][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 13, new TGeoTranslation(module[3][0], module[3][1], -module[9][2]));
   //Second Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 15, new TGeoTranslation(module[4][0], module[4][1], -module[6][2]+20.2)); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 16, new TGeoTranslation(module[5][0], module[5][1], -module[6][2]+20.2));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 14, new TGeoTranslation(module[4][0], module[4][1], -module[6][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 15, new TGeoTranslation(module[5][0], module[5][1], -module[6][2]));
   //Third Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 17, new TGeoTranslation(module[6][0], module[6][1], -module[4][2]+20.2));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 18, new TGeoTranslation(module[7][0], module[7][1], -module[4][2]+20.2)); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 19, new TGeoTranslation(module[8][0], module[8][1], -module[4][2]+20.2));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 16, new TGeoTranslation(module[6][0], module[6][1], -module[4][2]));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 17, new TGeoTranslation(module[7][0], module[7][1], -module[4][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 18, new TGeoTranslation(module[8][0], module[8][1], -module[4][2]));
   //Fourth Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 20, new TGeoTranslation(module[9][0], module[9][1], -module[1][2]+20.2)); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 21, new TGeoTranslation(module[10][0], module[10][1], -module[1][2]+20.2));
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 19, new TGeoTranslation(module[9][0], module[9][1], -module[1][2])); 
+  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 20, new TGeoTranslation(module[10][0], module[10][1], -module[1][2]));
  
   top->AddNode(UpstreamTagger_fulldet, 1, new TGeoTranslation(0.0, 0.0, det_zPos));
   
