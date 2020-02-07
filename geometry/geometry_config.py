@@ -788,7 +788,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_PMMA = 226 * u.cm
     c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
-    c.UpstreamTagger.DZ_PMMA = 0.1 * u.cmc
+    c.UpstreamTagger.DZ_PMMA = 0.1 * u.cm
     c.UpstreamTagger.Z_FreonSF6 = 0.1 * u.cm
     c.UpstreamTagger.Y_FreonSF6 = 107 * u.cm
     c.UpstreamTagger.X_FreonSF6 = 225 * u.cm
