@@ -572,11 +572,14 @@ def invMass(path = '.',merge=False,refit=True,overWrite=False,flagImfield=False)
             if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):
                 if refit: 
                     test = "ntuple-invMass-"+d+"_refit.root"
-                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -r -c invMass -A False -B False -C False -d "+mufluxRecoDir+d+" -p "+mufluxRecoDir+d+" &"
+                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -r -c invMass -A False -B False -C False -D True -d "+mufluxRecoDir+d+" -p "+mufluxRecoDir+d+" &"
                 else:     
                     test = "ntuple-invMass-"+d+".root"
-                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -A False -B False -C False -d "+mufluxRecoDir+d+" -p "+mufluxRecoDir+d+" &"
-                if os.path.isfile(test) and not overWrite: continue
+                    cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -c invMass -A False -B False -C False -D True -d "+mufluxRecoDir+d+" -p "+mufluxRecoDir+d+" &"
+                if os.path.isfile(test) and not overWrite:
+                    print "skip run",d
+                    continue
+                print "execute ",cmd
                 os.system(cmd)
                 time.sleep(10)
                 while 1>0:

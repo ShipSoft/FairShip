@@ -143,6 +143,13 @@ if not options.listOfFiles:
 #sTreeMC.Add("ntuple-ship.conical.MuonBack-TGeant4_dig_RT-0.root")
     case = {'MC':[sTreeMC,hMC,ROOT.kRed,'hist same'],'Data':[sTreeData,hData,ROOT.kBlue,'hist']}
 
+def printHistoEntries(histo,formating=None):
+  for n in range(1,histo.GetNbinsX()+1):
+     if formating == None: 
+       print n,':',histo.GetBinCenter(n),histo.GetBinContent(n),histo.GetBinError(n)
+     else:
+       txt = "%i4 : %"+formating+"  %"+formating+"  %"+formating
+       print txt%(n,histo.GetBinCenter(n),histo.GetBinContent(n),histo.GetBinError(n))
 
 def rapidity(E,pz):
    return 0.5*ROOT.TMath.Log( (E+pz)/(E-pz) )
@@ -414,7 +421,162 @@ def twoBukinYieldFit(proj,projMin,projMax,projName,theCut,nBins=9,ntName='10GeV'
      hMC['mc-BJpsi'+proj].Draw()
      hData['BJpsi'+proj].Draw('same')
      myPrint(hMC['dummy'],'diMuonBinsB'+proj+ntName+'Summary')
-
+def twoCBYieldFit(proj,projMin,projMax,projName,theCut,nBins=9,ntName='10GeV',printout=True):
+   ROOT.gROOT.cd()
+   hData['FitResults-'+proj]={}
+   y_beam = yBeam()
+   v='mcor'
+   fitOption = 'SQL'  # 'SEL'
+   if printout: fitOption='SQL'
+   if hMC.has_key('MCbinsCB'+proj):
+      hMC.pop('MCbinsCB'+proj)
+      hData.pop('binsCB'+proj)
+   for z in ['mc-CB'+proj,'mcLowMass-CB'+proj,'mcHighMass-CB'+proj]:
+       if hMC.has_key(z):
+          hMC.pop(z).Delete()
+       ut.bookHist(hMC, z, ' N J/#psi ;'+projName, nBins,projMin,projMax,InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   if hData.has_key('CB'+proj): hData.pop('CB'+proj).Delete()
+   ut.bookHist(hData,'CB'+proj,    ' N J/#psi ;'+projName, nBins,projMin,projMax,InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   hData['CBJpsi'+proj]  = hData['CB'+proj].ProjectionX('CBJpsi'+proj)
+   hMC['mc-CBJpsi'+proj] = hMC['mc-CB'+proj].ProjectionX('mc-CBJpsi'+proj)
+   N1 = int(ROOT.TMath.Sqrt(nBins))
+   N2 = N1
+   while(N2*N1<nBins): N2+=1
+   ut.bookCanvas(hMC,'MCbinsCB'+proj,'mass in bins '+projName,1800,1200,N1,N2)
+   ut.bookCanvas(hData,'binsCB'+proj,'mass in bins '+projName,1800,1200,N1,N2)
+   hMC['dummy'].cd()
+   if proj=='ycor': cutExp = "ycor-"+str(y_beam)
+   elif proj=='ycor1C': cutExp = ycor1C+"-"+str(y_beam)
+   else:            cutExp = proj
+   myDraw(v+':'+cutExp+'>>mc-CB'+proj,theCut,ntName)
+   myDraw(v+':'+cutExp+'>>mcLowMass-CB'+proj,theCut+"&&Jpsi!=443",ntName)
+   myDraw(v+':'+cutExp+'>>mcHighMass-CB'+proj,theCut+"&&Jpsi==443",ntName)
+   sTreeData  = hData['f'].nt
+   sTreeData.Draw(v+':'+cutExp+'>>CB'+proj,theCut)
+   pmin = projMin
+   delp = (projMax-projMin)/float(nBins)
+   for k in range(nBins):
+      pmax = pmin+delp
+      for z in ['mc-CB'+proj,'mcLowMass-CB'+proj,'mcHighMass-CB'+proj]:
+        hMC[z+str(k)]=hMC[z].ProjectionY(z+str(k),k+1,k+1)
+        hMC[z+str(k)].SetTitle('inv mass MC '   +str(pmin)+'<'+proj+'<'+str(pmax)+';M [GeV/c^{2}]')
+      hData['CB'+proj+str(k)]=hData['CB'+proj].ProjectionY('CB'+proj+str(k),k+1,k+1)
+      hData['CB'+proj+str(k)].SetTitle('inv mass DATA ' +str(pmin)+'<'+proj+'<'+str(pmax)+';M [GeV/c^{2}]')
+      pmin=pmax
+      hData['CB'] = ROOT.TF1('CB',TwoCrystalBall,0,10,14)
+      init_twoCB0(hData['CB'],hData['CB'+proj+str(k)].GetBinWidth(1))
+   # high mass [1,2,3,4,5]  low mass [6,7,8,9,10]
+      hData['CB'].FixParameter(1,0.)
+      hData['CB'].FixParameter(2,3.1)
+      hData['CB'].FixParameter(3,0.4)
+      hData['CB'].FixParameter(4,0.3)
+      hData['CB'].FixParameter(5,3.5)
+      hData['CB'].FixParameter(12,0.)
+      hData['CB'].FixParameter(13,0.)
+      hData['CB'].ReleaseParameter(6)
+      hData['CB'].ReleaseParameter(7)
+      hData['CB'].ReleaseParameter(8)
+      if hMC['mc-CB'+proj+str(k)].GetMaximum()>4:   # if entries too low, makes no sense to fit
+         hMC['dummy'].cd()
+         x='mcLowMass-CB'+proj+str(k)
+         hData['CB'].SetParameter(6,hMC[x].GetMaximum())
+         if hMC[x].GetMaximum()>4:
+            rc = hMC[x].Fit(hData['CB'],fitOption,'',0.5,2.5)
+            hData['FitResults-'+x]=rc.Get().Clone(x)
+         else:
+            hData['FitResults-'+x]=None
+         hData['CB'].FixParameter(6,0)
+         if hData['FitResults-'+x]:
+           for n in range(7,11):   hData['CB'].FixParameter(n,hData['FitResults-'+x].Parameter(n))
+         else:
+           for n in range(7,11):   hData['CB'].FixParameter(n,0)
+         for n in range(1,6):  hData['CB'].ReleaseParameter(n)
+         x='mcHighMass-CB'+proj+str(k)
+         hData['CB'].SetParameter(1,hMC[x].GetMaximum())
+         if hMC[x].GetMaximum()>4:
+            rc = hMC[x].Fit(hData['CB'],fitOption,'',2.0,5.)
+            hData['FitResults-'+x]=rc.Get().Clone(x)
+         else:
+            hData['FitResults-'+x]=None
+         if hData['FitResults-'+x]:
+            for n in range(2,6):  hData['CB'].FixParameter(n,hData['FitResults-'+x].Parameter(n))
+         else:
+            for n in range(2,6):  hData['CB'].FixParameter(n,0)
+         if hData['FitResults-mcHighMass-CB'+proj+str(k)]: 
+            hData['CB'].ReleaseParameter(1)
+         cases = ['mc-CB'+proj+str(k),'CB'+proj+str(k)]
+         for x in cases:
+          if x.find('mc')==0: 
+             h  = hMC
+             tc = hMC['MCbinsCB'+proj].cd(k+1)
+          else: 
+             h  = hData
+             tc = hData['binsCB'+proj].cd(k+1)
+          h[x].GetXaxis().SetRange(h[x].FindBin(2.6),h[x].FindBin(3.6))
+          hData['CB'].SetParameter(1,h[x].GetMaximum())
+          h[x].GetXaxis().SetRange(h[x].FindBin(0.5),h[x].FindBin(1.5))
+          hData['CB'].SetParameter(6,h[x].GetMaximum())
+          hData['CB'].ReleaseParameter(6)
+          h[x].GetXaxis().SetRange(1,InvMassPlots[0])
+          rc = h[x].Fit(hData['CB'],fitOption,'',0.5,5.)
+          if hData['FitResults-mcLowMass-CB'+proj+str(k)]:
+             hData['CB'].ReleaseParameter(7)
+             hData['CB'].ReleaseParameter(8)
+          if hData['FitResults-mcHighMass-CB'+proj+str(k)]:
+             hData['CB'].ReleaseParameter(2)
+             hData['CB'].ReleaseParameter(3)
+          rc = h[x].Fit(hData['CB'],fitOption,'',0.5,5.)
+          #if hData['FitResults-mcLowMass-CB'+proj+str(k)]:
+          #   hData['CB'].ReleaseParameter(9)
+          #   hData['CB'].ReleaseParameter(10)
+          #   rc = h[x].Fit(hData['CB'],fitOption,'',0.5,5.)
+          if hData['FitResults-mcHighMass-CB'+proj+str(k)]:
+             hData['CB'].ReleaseParameter(4)
+             hData['CB'].ReleaseParameter(5)
+             rc = h[x].Fit(hData['CB'],fitOption,'',0.5,5.)
+          hData['FitResults-'+x]=rc.Get().Clone(x)
+          if math.isnan(hData['FitResults-'+x].ParError(1)) or math.isnan(hData['FitResults-'+x].ParError(6)):
+            hData['CB'].FixParameter(4,hData['FitResults-mcHighMass-CB'+proj+str(k)].GetParameter(4))
+            hData['CB'].FixParameter(5,hData['FitResults-mcHighMass-CB'+proj+str(k)].GetParameter(5))
+            rc = h[x].Fit(hData['CB'],fitOption,'',0.5,5.)
+            hData['FitResults-'+x]=rc.Get().Clone(x)
+          N = hData['FitResults-'+x].Parameter(1)
+          E = hData['FitResults-'+x].ParError(1)
+          if N > 1E6:  # unphysical result
+             N = 0
+             E = 0
+          if x.find('mc')==0:
+             hMC['mc-CBJpsi'+proj].SetBinContent(k+1,N)
+             hMC['mc-CBJpsi'+proj].SetBinError(k+1,E)
+          else: 
+             hData['CBJpsi'+proj].SetBinContent(k+1,N)
+             hData['CBJpsi'+proj].SetBinError(k+1,E)
+          tc.Update()
+          stats = tc.GetPrimitive('stats')
+          stats.SetOptFit(10011)
+          stats.SetFitFormat('5.4g')
+          stats.SetX1NDC(0.68)
+          stats.SetY1NDC(0.01)
+          stats.SetX2NDC(0.99)
+          stats.SetY2NDC(0.84)
+          tc.Update()
+      else:
+          N=0
+          E=0
+          hMC['mc-CBJpsi'+proj].SetBinContent(k+1,N)
+          hMC['mc-CBJpsi'+proj].SetBinError(k+1,E)
+          hData['CBJpsi'+proj].SetBinContent(k+1,N)
+          hData['CBJpsi'+proj].SetBinError(k+1,E)
+   if printout:
+     myPrint(hData['binsCB'+proj],'diMuonBinsCB'+proj)
+     myPrint(hMC['MCbinsCB'+proj],'MC-diMuonBinsCB'+proj+ntName)
+     hMC['dummy'].cd()
+     hMC['mc-CBJpsi'+proj].SetLineColor(ROOT.kMagenta)
+     hmax = 1.1*max(hMC['mc-CBJpsi'+proj].GetMaximum(),hData['CBJpsi'+proj].GetMaximum())
+     hMC['mc-CBJpsi'+proj].SetMaximum(hmax)
+     hMC['mc-CBJpsi'+proj].Draw()
+     hData['CBJpsi'+proj].Draw('same')
+     myPrint(hMC['dummy'],'diMuonBinsCB'+proj+ntName+'Summary')
 def IP(OnlyDraw = False):
     if not OnlyDraw:
         for c in case:
@@ -1576,14 +1738,15 @@ def loadNtuples(BDT='BDT-'):
   hData['f'] = ROOT.TFile('ntuple-InvMass.root')
   hMC['f1']  = ROOT.TFile('ntuple-invMass-MC-1GeV.root')
   hMC['f10'] = ROOT.TFile('ntuple-invMass-MC-10GeV.root')
- hMC['1GeV']        = hMC['f1'].nt
- hMC['10GeV']       = hMC['f10'].nt
- hMC['Jpsi']        = hMC['fJpsi'].nt
- hMC['JpsiP8']      = hMC['fJpsiP8'].nt
- hMC['JpsiCascade'] = hMC['fJpsiCascade'].pythia6
- hMC['JpsiP8_Primary'] = hMC['fJpsiP8_Primary'].pythia6
- hMC['JpsiP8_PrimaryMu'] = hMC['fJpsiP8_PrimaryMu'].pythia6
- hMC['Jpsi10GeV']   = hMC['fJpsi10GeV'].pythia8
+# ------------------------------------------------------------
+ hMC['1GeV']        = hMC['f1'].nt           # inv mass ntuple from 1GeV muon background
+ hMC['10GeV']       = hMC['f10'].nt          # inv mass ntuple from 10GeV muon background
+ hMC['Jpsi']        = hMC['fJpsi'].nt        # inv mass ntuple from Cascade, Pythia6, Eric
+ hMC['JpsiP8']      = hMC['fJpsiP8'].nt      # inv mass ntuple from primary, Pythia8, me
+ hMC['JpsiCascade'] = hMC['fJpsiCascade'].pythia6              # original input file from Eric
+ hMC['JpsiP8_Primary'] = hMC['fJpsiP8_Primary'].pythia6        # first Pythia8 production with intermediate Jpsis 
+ hMC['JpsiP8_PrimaryMu'] = hMC['fJpsiP8_PrimaryMu'].pythia6    # second Pythia8 production with above ussue fixed, I think. 
+ hMC['Jpsi10GeV']   = hMC['fJpsi10GeV'].pythia8                # JpsifromBackground ??
  hMC['Jpsi1GeV']   = hMC['fJpsi1GeV'].pythia8
  ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
 
@@ -1716,6 +1879,7 @@ def determineEfficiencies(theCut,category,colors,withCosCSCut):
      for n in range(X.GetNbinsX()):
        y=hMC['YEff'+z+'_graph'].GetY()[n]
        e=hMC['YEff'+z+'_graph'].GetErrorY(n)
+       if y==0: e=0
        X.SetBinContent(n+1,y)
        X.SetBinError(n+1,e)
      X.Draw()
@@ -1755,7 +1919,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 20., pmax = 300., BDTC
       ptCut = 0.
       pmin  = 0.
       pmax  = 1000.
-   theCutcosCS = theJpsiCut('mcor',withCosCSCut,ptCut,20.,300.,BDTCut)
+   theCutcosCS = theJpsiCut('mcor',withCosCSCut,ptCut,pmin,pmax,BDTCut)
    determineEfficiencies(theCutcosCS,category,colors,withCosCSCut)
    print "---> efficiencies determined"
 # 
@@ -1766,7 +1930,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 20., pmax = 300., BDTC
       hMC["MCJpsiP8-ycor"]=hMC["mc-Jpsi"+proj].Clone("MCJpsiP8-ycor")
       makeProjection(proj,0.,2.,'y_{CMS}',theCutcosCS,nBins=20,ntName='Jpsi',printout=False,fixSignal=False,secondGaussian=False)
       hMC["MCJpsiCascade-ycor"]=hMC["mc-Jpsi"+proj].Clone("MCJpsiCascade-ycor")
-      makeProjection(proj,0.,2.,'y_{CMS}',theCutcosCS,nBins=20,ntName='10GeV',printout=False,fixSignal=False,secondGaussian=False)
+      makeProjection(proj,0.,2.,'y_{CMS}',theCutcosCS,nBins=20,ntName='10GeV',printout=True,fixSignal=False,secondGaussian=False)
       hMC["MCJpsi10GeV-ycor"]=hMC["mc-Jpsi"+proj].Clone("MCJpsi10GeV-ycor")
       hData['Jpsi-ycor']   = hData['Jpsi'+proj].Clone('Jpsi-ycor')
    elif fitMethod=='twoBukin':
@@ -1781,6 +1945,18 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 20., pmax = 300., BDTC
       hMC['MCBJpsi10GeV-ycor']   = hMC['mc-BJpsi'+proj].Clone('MCBJpsi10GeV-ycor')
       hData['BJpsi-ycor']   = hData['BJpsi'+proj].Clone('BJpsi-ycor')
       fM = 'BJpsi'
+   elif fitMethod=='twoCB':
+# for Jpsi cascade large stat
+      twoCBYieldFit(proj,0.2,2.,'y_{CMS}',theCutcosCS,nBins=18,ntName='Jpsi',printout=True)
+      hMC['MCCBJpsiCascade-ycor'] = hMC['mc-CBJpsi'+proj].Clone('MCCBJpsiCascade-ycor')
+# for Jpsi P8prim large stat
+      twoCBYieldFit(proj,0.2,2.,'y_{CMS}',theCutcosCS,nBins=18,ntName='JpsiP8',printout=True)
+      hMC['MCCBJpsiP8-ycor']      = hMC['mc-CBJpsi'+proj].Clone('MCCBJpsiP8-ycor')
+# for data
+      twoCBYieldFit(proj,0.2,2.,'y_{CMS}',theCutcosCS,nBins=18,ntName='10GeV',printout=True)
+      hMC['MCCBJpsi10GeV-ycor']   = hMC['mc-CBJpsi'+proj].Clone('MCCBJpsi10GeV-ycor')
+      hData['CBJpsi-ycor']   = hData['CBJpsi'+proj].Clone('CBJpsi-ycor')
+      fM = 'CBJpsi'
    else:
       print "method not known, exit."
       exit()
@@ -1873,6 +2049,138 @@ def JpsiPolarization(ptCut = 1.4, BDTCut=None):
        dy+=0.08
    hMC['dummy'].Update()
    myPrint(hMC['dummy'],'cosCScorDataEffCorrected')
+def JpsiAcceptanceSys():
+   formating='5.2F'
+   name = "data_JpsiYieldsEffCorrectedWithNA50"
+   results = {}
+   cases = ['_BDT.root','_ptcut.root','_twoBukin.root']
+   for c in cases:
+       results[c]={}
+       print "yields for",c
+       f = ROOT.TFile(name+c)
+       f.dummy.Print(name+c.replace('root','png'))
+       f.dummy.Print(name+c.replace('root','pdf'))
+       for x in f.dummy.GetListOfPrimitives():
+          if x.GetName().find("effAndResolCorrected_Cascade")<0:continue
+          for n in range(1,x.GetNbinsX()+1):
+              if x.GetBinCenter(n) < 0.2: continue
+              results[c][x.GetBinCenter(n)] = [x.GetBinContent(n),x.GetBinError(n)]
+              txt = "%i4 : %"+formating+"  %"+formating+"  %"+formating
+              print txt%(n,x.GetBinCenter(n),x.GetBinContent(n),x.GetBinError(n))
+          break
+# difference between using Cascade or P8prim for eff correction
+   c = '_BDT.root'
+   results[c+'_P8prim']={}
+   f = ROOT.TFile(name+c)
+   print "yields for",c+'_P8prim'
+   for x in f.dummy.GetListOfPrimitives():
+      if x.GetName().find("effAndResolCorrected_P8prim")<0:continue
+      for n in range(1,x.GetNbinsX()+1):
+          if x.GetBinCenter(n) < 0.2: continue
+          results[c+'_P8prim'][x.GetBinCenter(n)] = [x.GetBinContent(n),x.GetBinError(n)]
+          txt = "%i4 : %"+formating+"  %"+formating+"  %"+formating
+          print txt%(n,x.GetBinCenter(n),x.GetBinContent(n),x.GetBinError(n))
+      break
+   results['sysError']={}
+   for c1 in range(2):
+      for c2 in range(c1+1,3):
+         results[cases[c1]+'_vs'+cases[c2]]={}
+         for i in results[cases[c1]]:
+            N1 = results[cases[c1]][i][0]
+            N2 = results[cases[c2]][i][0]
+            results[cases[c1]+'_vs'+cases[c2]][i]=0.5*(N1-N2)/(N1+N2+1E-10)
+            if not results['sysError'].has_key(i): results['sysError'][i]=0
+            results['sysError'][i]+=abs(results[cases[c1]+'_vs'+cases[c2]][i])
+   for  i in results['sysError']: results['sysError'][i]=results['sysError'][i]/3.
+   results[c+'_P8prim_vs'+c+'_Cascade']={}
+   for i in results[c+'_P8prim']:
+            N1 = results[c+'_P8prim'][i][0]
+            N2 = results[c][i][0]
+            results[c+'_P8prim_vs'+c+'_Cascade'][i]=0.5*(N1-N2)/(N1+N2+1E-10)
+            A = results['sysError'][i]
+            B = results[c+'_P8prim_vs'+c+'_Cascade'][i]
+            results['sysError'][i]=ROOT.TMath.Sqrt(A**2+B**2)
+   ikeys = results['sysError'].keys()
+   ikeys.sort()
+   for i in ikeys: print i,results['sysError'][i]
+# track efficiency correction, MC events are deweighted by 2%. 
+   c = '_twoBukin.root'
+   simpleEffCorMu = 0.021
+   trackEffFudgeFactor = 1+2*simpleEffCorMu
+   trackEffSysError    = 2*0.033
+   lumi    = 30.7 # pb-1
+   elumi   = 0.7
+   epsilon = 0.01
+   NA50crossSection = [3.994,0.087]
+   ybinWidth = 0.1
+   formating='5.3F'
+   for i in ikeys:
+       Nsignal = results[c][i][0]*trackEffFudgeFactor  + 1E-10
+       statErr = results[c][i][1]*trackEffFudgeFactor
+       systematicErrors  = [elumi/lumi,trackEffSysError,results['sysError'][i]]
+       sysErr  = 0
+       for x in systematicErrors: sysErr+=x**2
+       sysErr = ROOT.TMath.Sqrt(sysErr)
+       Xsec = Nsignal / lumi / 1000.
+       statErrXsec = statErr/Nsignal * Xsec
+       sysErrXsec  = Xsec * sysErr
+       binMin = i-ybinWidth/2.
+       binMax = i+ybinWidth/2.
+       frac = hMC['etaNA50'].Integral(binMin,binMax)/hMC['etaNA50'].Integral(-0.425,0.575)
+       NXsecNA50 = frac * NA50crossSection[0]
+       EXsecNA50 = frac * NA50crossSection[1]
+       txt = "%3.2F - %3.2F : %"+formating+"  %"+formating+"  %"+formating+"        %"+formating+"  %"+formating+" | %5.2F"
+       totalError=ROOT.TMath.Sqrt(statErrXsec**2+sysErrXsec**2+EXsecNA50**2)
+       sigmaPull = (Xsec-NXsecNA50)/totalError / NXsecNA50 
+       print txt%(binMin,binMax,Xsec,statErrXsec,sysErrXsec,NXsecNA50,EXsecNA50,sigmaPull)
+   f = ROOT.TFile(name+c)
+   hMC['dummy']=f.dummy.Clone('dummy')
+   hMC['dummy'].Draw()
+   hMC['dummy'].SetLogy(1)
+   for x in hMC['dummy'].GetListOfPrimitives():
+      hMC[x.GetName()] = x
+      if x.ClassName().find('TH1')==0:
+          x.GetXaxis().SetRangeUser(0.,2.)
+          x.SetStats(0)
+          x.SetMinimum(1.)
+          x.SetMaximum(25000.)
+          x.SetTitle(';y_{CMS}')
+          if x.GetName().find("_effCorrected_")>0 or x.GetName().find("effAndResolCorrected_P8prim")>0: 
+               x.SetLineColor(ROOT.kWhite)
+               x.SetMarkerColor(ROOT.kWhite)
+   hMC['Lfinal']=ROOT.TLegend(0.25,0.3,0.51,0.55)
+   hMC['Lfinal'].AddEntry( hMC["Y_P8prim_scaled"],'Pythia8 primary','PL' )
+   hMC['Lfinal'].AddEntry( hMC["Y_Cascade_scaled"],'Pythia6 cascade','PL' )
+   hMC['Lfinal'].AddEntry( hMC["BJpsi-ycor_effAndResolCorrected_Cascade"],'muflux measurement','PL' )
+   hMC['Lfinal'].AddEntry( hMC["etaNA50"],'NA50 parametrization','PL' )
+   hMC['Lfinal'].Draw()
+   hMC['dummy'].Print('FinalResultJpsi.png')
+   hMC['dummy'].Print('FinalResultJpsi.pdf')
+def lowMassAcceptance():
+ MCStats={'1GeV':1.806E9,'10GeV':66.02E9}
+ dataStats = 3.27E11
+ simpleEffCorMu = 0.021
+ trackEffFudgeFactor = 1+2*simpleEffCorMu
+ normalization = {} 
+ for x in MCStats: normalization[x] = dataStats/MCStats[x]/trackEffFudgeFactor 
+#
+ ut.bookHist(hMC,  'mc-YandPt1GeV_rec', 'rapidity of reconstructed ',  60, 0.,6., 80,0.,4. )
+ ut.bookHist(hMC,  'mc-YandPt10GeV_rec','rapidity of reconstructed ',  60, 0.,6., 80,0.,4. )
+ ut.bookHist(hData,'YandPt10GeV_rec','rapidity of reconstructed ',     60, 0.,6., 80,0.,4. )
+ y_beam = yBeam()
+ theCut = theJpsiCut('mcor',False,0.,20.,300.,None)
+ theCut = "chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&p1>10.0&&p2>10.0"
+ # ycor1C = '0.5*log( ( sqrt(0.8*0.8+pcor*pcor) + sqrt(pcor*pcor-ptcor*ptcor) )/( sqrt(0.8*0.8+pcor*pcor) - sqrt(pcor*pcor-ptcor*ptcor) ))-'+str(y_beam)
+ ycor1C = 'ycor-'+str(y_beam)
+ for x in MCStats: 
+    hMC[x].Draw(ycor1C+":ptcor>>mc-YandPt"+x+"_rec",'mcor>0.3&&mcor<2.&&'+theCut)
+    hMC["mc-YandPt"+x+"_rec_norm"]=hMC["mc-YandPt"+x+"_rec"].Clone("mc-YandPt"+x+"_rec_norm")
+    hMC["mc-YandPt"+x+"_rec_norm"].Scale(normalization[x])
+    hMC["mc-YandPt"+x+"_rec_pt"]=hMC["mc-YandPt"+x+"_rec_norm"].ProjectionX("mc-YandPt"+x+"_rec_pt")
+    hMC["mc-YandPt"+x+"_rec_y"]=hMC["mc-YandPt"+x+"_rec_norm"].ProjectionY("mc-YandPt"+x+"_rec_y")
+ hData['f'].nt.Draw(ycor1C+":ptcor>>YandPt10GeV_rec",'mcor>0.3&&mcor<2.&&'+theCut)
+ hData['YandPt10GeV_rec_pt']=hData['YandPt10GeV_rec'].ProjectionX('YandPt10GeV_rec_pt')
+ hData['YandPt10GeV_rec_y']=hData['YandPt10GeV_rec'].ProjectionY('YandPt10GeV_rec_y')
 
 def diMuonAnalysis():
  y_beam = yBeam()
@@ -2521,7 +2829,7 @@ def unconvolute(z,hjpsi):
           e = hMC['YEff'+z+'_graph'].Eval(x)
           if e>0.01:
               NyieldEffCorrected[k][0]+=xslice.GetBinContent(k)/e
-              NyieldEffCorrected[k][1]+=xslice.GetBinContent(k)/e * Erec/(Nrec+1E-9)
+              NyieldEffCorrected[k][1]+=(xslice.GetBinContent(k)/e * Erec/(Nrec+1E-9))**2
 # errors
       ymin+=bw
    xslice.Reset()
@@ -2537,7 +2845,7 @@ def unconvolute(z,hjpsi):
          hMC[hname].SetBinError(k,0.)
 
 import math
-def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
+def init_twoCB0(myCB,bw):
    myCB.FixParameter(0,bw)
    myCB.SetParName(0,'binwidth')
    myCB.SetParName(1,'psi(1S)')
@@ -2553,6 +2861,22 @@ def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
    myCB.SetParName(11,'p0')
    myCB.SetParName(12,'p1')
    myCB.SetParName(13,'psi(2S)')
+   myCB.SetParameter(1,100.)
+   myCB.SetParameter(2,3.1)
+   myCB.SetParameter(3,0.4)
+   myCB.SetParameter(4,0.3)
+   myCB.SetParameter(5,3.5)
+   myCB.SetParameter(6,100.)
+   myCB.SetParameter(7,1.)
+   myCB.SetParameter(8,0.4)
+   myCB.SetParameter(9,0.3)
+   myCB.SetParameter(10,3.5)
+   myCB.SetParameter(11,1.)
+   myCB.SetParameter(12,0)
+   myCB.FixParameter(13,0.)
+
+def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
+   init_twoCB0(myCB,bw)
    if not fromPrevFit:
     myCB.SetParameter(1,h['fitResult'][ptCut]['psi(1S)'][0])
     myCB.SetParameter(2,h['fitResult'][ptCut]['Mean'][0])
@@ -3852,11 +4176,22 @@ def plots4AnalysisNote():
 # 
 def trainBDT():
  loadNtuples(BDT='')
+ y_beam = yBeam()
  f = ROOT.TFile("signal.root","RECREATE")
- signal = ROOT.TNtuple("ntuple","ntuple","mcor:Jpsi:p1:p2:ptmin:sumPt")
+ signal = ROOT.TNtuple("ntuple","ntuple","mcor:Jpsi:p1:p2:ptmin:ptmax:sumPt")
  t = hMC['10GeV']
  for n in range(t.GetEntries()):
    rc = t.GetEvent(n)
+   # theCut =  'chi21*chi22<0&&abs(chi21)<0.9&&abs(chi22)<0.9&&mcor>0.20'
+   if not (t.chi21*t.chi22<0):continue
+   if not (abs(t.chi21)<0.9 and abs(t.chi22)<0.9): continue
+   if not t.mcor>0.2: continue
+   if not (t.cosCScor>-0.5 and t.cosCScor<0.5): continue
+   E  = ROOT.TMath.Sqrt(t.pcor*t.pcor+3.0969*3.0969)
+   Pz = ROOT.TMath.Sqrt(t.pcor*t.pcor-t.ptcor*t.ptcor)
+   ycor1C = 0.5*ROOT.TMath.Log( (E + Pz) / (E-Pz) ) - y_beam
+   if ycor1C < 1.0: continue
+#
    if t.pt1cor<t.pt2cor: 
      minPt = t.pt1cor
      maxPt = t.pt2cor
@@ -3867,7 +4202,8 @@ def trainBDT():
      maxPt = t.pt1cor
      p2    = t.p1
      p1    = t.p2
-   rc = signal.Fill(t.mcor,t.Jpsi,p1,p2,minPt,t.pt1cor+t.pt2cor)
+   rc = signal.Fill(t.mcor,t.Jpsi,p1,p2,minPt,maxPt,t.pt1cor+t.pt2cor)
+ print "events for training",signal.GetEntries()
  ROOT.TMVA.Tools.Instance()
  fout = ROOT.TFile("testTMVA.root","RECREATE")
  factory = ROOT.TMVA.Factory("TMVAClassification", fout,":".join([
@@ -3877,6 +4213,7 @@ def trainBDT():
  dataloader.AddVariable("p1","F")
  dataloader.AddVariable("p2","F")
  dataloader.AddVariable("ptmin","F")
+ dataloader.AddVariable("ptmax","F")
  dataloader.AddVariable("sumPt","F")
  dataloader.AddSignalTree(signal)
  dataloader.AddBackgroundTree(signal)
@@ -3887,8 +4224,8 @@ def trainBDT():
  dataloader.PrepareTrainingAndTestTree(sigCut,   # signal events
                                     bgCut,    # background events
                                    ":".join([
-                                        "nTrain_Signal=10000",
-                                        "nTrain_Background=10000",
+                                        "nTrain_Signal=5000",
+                                        "nTrain_Background=5000",
                                         "SplitMode=Random",
                                         "NormMode=NumEvents",
                                         "!V"
@@ -3916,19 +4253,16 @@ def useBDT():
  BDTp1 = array('f',[0])
  BDTp2 = array('f',[0])
  BDTptmin = array('f',[0])
+ BDTptmax = array('f',[0])
  BDTsumPt = array('f',[0])
  dataloader.AddVariable("p1",BDTp1)
  dataloader.AddVariable("p2",BDTp2)
  dataloader.AddVariable("ptmin",BDTptmin)
+ dataloader.AddVariable("ptmax",BDTptmin)
  dataloader.AddVariable("sumPt",BDTsumPt)
  dataloader.BookMVA("BDT","dataset/weights/TMVAClassification_BDT.weights.xml")
- ut.bookHist(hMC,  'mc-BDTresponse','BDTresponse versus mcor;M [GeV/c^{2}];BDT',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2],100,-1.,1.)
- ut.bookHist(hData,'BDTresponse','BDTresponse versus mcor;M [GeV/c^{2}];BDT',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2],100,-1.,1.)
- histos = [hMC['mc-BDTresponse'],hData['BDTresponse']]
  nts    = [hMC['10GeV'],hMC['Jpsi'],hMC['JpsiP8'],hData['f'].nt]
- # nts    = [hMC['Jpsi'],hMC['JpsiP8']]
- for l in range(2):
-    t = nts[l]
+ for t in nts:
     variables = "BDT"
     for v in t.GetListOfLeaves():
        variables+=":"+v.GetName()
@@ -3937,16 +4271,17 @@ def useBDT():
     for n in range(t.GetEntries()):
       rc = t.GetEvent(n)
       if t.pt1<t.pt2: 
-        BDTptmin[0] = t.pt1
+        BDTptmin[0] = t.pt1cor
+        BDTptmax[0] = t.pt2cor
         BDTp1[0]    = t.p1
         BDTp2[0]    = t.p2
       else: 
-        BDTptmin[0] = t.pt2
+        BDTptmin[0] = t.pt2cor
+        BDTptmax[0] = t.pt1cor
         BDTp2[0]    = t.p1
         BDTp1[0]    = t.p2
-      BDTsumPt[0]  = t.pt1+t.pt2
+      BDTsumPt[0]  = t.pt1cor+t.pt2cor
       bdtOutput = dataloader.EvaluateMVA("BDT")
-      rc = histos[l].Fill(t.mcor,bdtOutput)
       theArray = [bdtOutput]
       X = t.GetArgs()
       for k in range(t.GetListOfLeaves().GetEntries()): 
@@ -4031,6 +4366,53 @@ def studyMassConstraint():
    hMC['yresol1'].Draw('same')
    hMC['yresol0'].Draw('same')
    myPrint(hMC['dummy'],'YwithConstraints')
+   for x in hMC['dummy'].GetListOfPrimitives():
+        if x.GetName().find("yreso")==0:
+            g = x.GetFunction('gaus')
+            print x.GetName(),g.GetParameter(2)
+
+def fullSim(n,nInFile):
+    eospathSim = os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/'
+    fname = sTree.GetCurrentFile().GetName().replace('ntuple-','')
+    if hMC['fnt']:
+       if hMC['fnt'].GetCurrentFile().GetName().find(fname)<0:
+          hMC['fMC'] = ROOT.TFile.Open(fname)
+          hMC['fnt'] = hMC['fMC'].cbmsim
+    else: 
+          hMC['fMC'] = ROOT.TFile.Open(fname)
+          hMC['fnt'] = hMC['fMC'].cbmsim
+    rc = hMC['fnt'].GetEvent(n-nInFile)
+
+def studyOriginOfTracks(pidCheck=22):
+   hMC['fnt'] = None
+   sTree=sTreeMC
+   currentFile = ''
+   for n in range(sTree.GetEntries()):
+      rc = sTree.GetEvent(n)
+      if sTree.GetCurrentFile().GetName()!=currentFile:
+          currentFile = sTree.GetCurrentFile().GetName()
+          nInFile = n
+      foundTracks = []
+      for k in range(len(sTree.GoodTrack)):
+         if sTree.GoodTrack[k]<0: continue
+         if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: continue
+         if sTree.GoodTrack[k]>999:  continue
+         foundTracks.append(k)
+      if len(foundTracks)<2: continue
+      fullSim(n,nInFile)
+      mo={}
+      for t in foundTracks:
+        mo[t] = hMC['fnt'].MCTrack[sTree.MCID[t]].GetMotherId()
+      for i1 in range( len(foundTracks)-1 ):
+         for i2 in range(i1, len(foundTracks) ):
+           if mo[foundTracks[i1]]== mo[foundTracks[i2]]:
+             t1 = foundTracks[i1]
+             pid   = hMC['fnt'].MCTrack[sTree.MCID[t1]].GetPdgCode()
+             pidmo = hMC['fnt'].MCTrack[mo[t1]].GetPdgCode()
+             if abs(pidmo) == pidCheck: 
+                print n,pid,pidmo, hMC['fnt'].GetCurrentFile()
+                hMC['fnt'].MCTrack.Dump()
+
 def synchFigures():
   for x in ['meanLossTrue','scatteringX','scatteringY','scatteringT','scatteringDataMC_Mean','scatteringDataMC_RMS',
            'dimuon-evolptcut-yieldratioCB','dimuon-evolptcut-MassCB','dimuon-evolptcut-SigmaCB']: 

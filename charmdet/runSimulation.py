@@ -737,7 +737,7 @@ def runInvMass(MC='1GeV',merge=False):
           while 1>0:
             if count_python_processes('MufluxNtuple')<ncpus: break
             time.sleep(20)
-      if MC=='JpsiP8':
+      elif MC=='JpsiP8':
         for n in range(N):
           cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d JpsiProduction_P8 -t "+t+" -c invMass -p ship-ubuntu-1710-16 -s "+str(n)+ " -x "+str(N)+" -8 True -r &"
           print cmd
