@@ -145,7 +145,7 @@ void exitHadronAbsorber::PreTrack(){
 // add pi0 111 eta 221 eta' 331  omega 223 
     Int_t idabs = TMath::Abs(pdgCode);
     if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 
-                 || idabs==211  || idabs==321   || idabs==2212 ){
+                 || idabs==211 || idabs==113 || idabs==333  || idabs==321   || idabs==2212 ){
          Double_t wspill = p->GetWeight();
          Int_t idhnu=idabs+10000;
          if (pdgCode<0){ idhnu+=10000;}
