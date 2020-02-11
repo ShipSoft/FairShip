@@ -196,7 +196,7 @@ sensPlane.SetEnergyCut(ecut*u.GeV)
 if storeOnlyMuons: sensPlane.SetOnlyMuons()
 if skipNeutrinos: sensPlane.SkipNeutrinos()
 if FourDP: 
-  fNtuple = ROOT.TNtuple("4DP","4DP","id:px:py:pz:x:y:z")
+  fNtuple = ROOT.TNtuple("4DP","4DP","source:id:px:py:pz:E:x:y:z:moID")
   sensPlane.SetOpt4DP(fNtuple) # in case a ntuple should be filled with pi0,etas,omega
 # sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlane)

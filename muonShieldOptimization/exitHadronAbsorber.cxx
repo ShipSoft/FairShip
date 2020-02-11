@@ -161,7 +161,10 @@ void exitHadronAbsorber::PreTrack(){
          h2 = (TH2D*)fout->Get(key);
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
          if(withNtuple){
-          fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z());
+          Int_t mo = p->GetMother(0);
+          ShipStack* s = (ShipStack*)gMC->GetStack();
+          Int_t moID = s->GetParticle(mo)->GetPdgCode();
+          fNtuple->Fill(1,pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(), fMom.E(),fPos.X(),fPos.Y(),fPos.Z(),moID);
          }
     if (fSkipNeutrinos && (idabs==12 or idabs==14 or idabs == 16 )){gMC->StopTrack();}
    }
