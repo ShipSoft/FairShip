@@ -373,7 +373,14 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       if (ii<3){im=-1;}
      }
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,wspill,procID);
-    }    
+     if(withNtuple){
+          int idabs = TMath::Abs(id);
+          if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 
+                 || idabs==211  || idabs==321   || idabs==2212 ){
+          fNtuple->Fill(id,px,py,pz,x/cm,y/cm,z/cm);
+         }
+     }
+    }
   return kTRUE;
 }
 // -------------------------------------------------------------------------

@@ -47,6 +47,7 @@ class FixedTargetGenerator : public FairGenerator
   inline void SetHeartBeat(Int_t x){heartbeat=x;}
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
   inline void SetDebug(Bool_t x){Debug=x;}
+  inline void SetOpt4DP(TNtuple* t){withNtuple=kTRUE;  fNtuple = t ; }
   Double_t GetPotForCharm(){return nrpotspill/wspill;}
   Pythia* GetPythia() {return fPythiaP;}
   Pythia* GetPythiaN() {return fPythiaN;}
@@ -69,6 +70,8 @@ class FixedTargetGenerator : public FairGenerator
   EvtGenDecays* evtgenN;            //!
   EvtGenDecays* evtgenP;            //!
   GenieGenerator* fMaterialInvestigator;  //!
+  Bool_t withNtuple;               //! special option for Dark Photon physics studies
+  TNtuple* fNtuple;               //!  
   TString targetName,Option;
   Double_t xOff;
   Double_t yOff;
@@ -84,6 +87,6 @@ class FixedTargetGenerator : public FairGenerator
   Float_t  n_id,n_px,n_py,n_pz,n_M,n_E,n_mpx,n_mpy,n_mpz,n_mE,n_mid,ck;
   Int_t heartbeat;
 
-  ClassDef(FixedTargetGenerator,1);
+  ClassDef(FixedTargetGenerator,2);
 };
 #endif /* !FIXEDTARGETGENERATOR_H */

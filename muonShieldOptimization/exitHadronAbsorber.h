@@ -70,7 +70,7 @@ class exitHadronAbsorber: public FairDetector
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
     inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
     inline void SetOnlyMuons(){fOnlyMuons=kTRUE;}
-    inline void SetOpt4DP(){withNtuple=kTRUE;}
+    inline void SetOpt4DP(TNtuple* t){withNtuple=kTRUE;  fNtuple = t ; }
     inline void SkipNeutrinos(){fSkipNeutrinos=kTRUE;}
     inline void SetZposition(Float_t x){fzPos=x;}
 
@@ -96,7 +96,7 @@ class exitHadronAbsorber: public FairDetector
     Int_t index;
     /** container for data points */
     TClonesArray*  fexitHadronAbsorberPointCollection;
-    ClassDef(exitHadronAbsorber, 0)
+    ClassDef(exitHadronAbsorber, 1)
 };
 
 #endif //EXITHADRONABSORBER_H
