@@ -375,6 +375,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,wspill,procID);
      if(withNtuple){
           int idabs = TMath::Abs(id);
+          if (idabs<10)  {continue;}
           if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 
                  || idabs==211 || idabs==113 || idabs==333  || idabs==321   || idabs==2212 ){
           Int_t moID = fPythia->event[im+1].id();
