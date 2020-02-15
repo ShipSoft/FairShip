@@ -1,0 +1,1645 @@
+
+;; Function void* operator new(std::size_t, void*) (_ZnwmPv, funcdef_no=600, decl_uid=13872, cgraph_uid=200, symbol_order=201)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r88: preferred AREG, alternative GENERAL_REGS, allocno GENERAL_REGS
+    a0 (r88,l0) best AREG, allocno GENERAL_REGS
+    r87: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a1 (r87,l0) best GENERAL_REGS, allocno GENERAL_REGS
+
+  a0(r88,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:16 NO_REX_SSE_REGS:16 SSE_REGS:16 MMX_REGS:21 INT_SSE_REGS:17 ALL_REGS:308 MEM:4
+  a1(r87,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:12 NO_REX_SSE_REGS:12 SSE_REGS:12 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:7
+
+   Insn 15(l0): point = 0
+   Insn 14(l0): point = 2
+   Insn 10(l0): point = 4
+   Insn 7(l0): point = 6
+   Insn 3(l0): point = 8
+   Insn 2(l0): point = 10
+ a0(r88): [3..4]
+ a1(r87): [5..6]
+Compressing live ranges: from 13 to 4 - 30%
+Ranges after the compression:
+ a0(r88): [0..1]
+ a1(r87): [2..3]
+  regions=1, blocks=3, points=4
+    allocnos=2 (big 0), copies=0, conflicts=0, ranges=2
+Disposition:
+    1:r87  l0     0    0:r88  l0     0
++++Costs: overall -1, reg -1, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+void* operator new(std::size_t, void*)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 4 [si] 5 [di] 6 [bp]
+;;  ref usage 	r0={2d,2u} r1={1d} r2={1d} r4={1d,1u} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,5u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} 
+;;    total ref usage 38{22d,16u,0e} in 6{6 regular + 0 call} insns.
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 87 88
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [5 D.13870+0 S8 A64])
+        (reg:DI 5 di [ D.13870 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ D.13870 ])
+        (nil)))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [6 __p+0 S8 A64])
+        (reg:DI 4 si [ __p ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 4 si [ __p ])
+        (nil)))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 10 2 (set (reg/f:DI 87 [ _2 ])
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [6 __p+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (nil))
+(insn 10 7 14 2 (set (reg/f:DI 88 [ <retval> ])
+        (reg/f:DI 87 [ _2 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 87 [ _2 ])
+        (nil)))
+(insn 14 10 15 2 (set (reg/i:DI 0 ax)
+        (reg/f:DI 88 [ <retval> ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 88 [ <retval> ])
+        (nil)))
+(insn 15 14 0 2 (use (reg/i:DI 0 ax)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function static std::size_t std::char_traits<char>::length(const char_type*) (_ZNSt11char_traitsIcE6lengthEPKc, funcdef_no=1085, decl_uid=18554, cgraph_uid=388, symbol_order=389)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r94: preferred AREG, alternative GENERAL_REGS, allocno GENERAL_REGS
+    a5 (r94,l0) best AREG, allocno GENERAL_REGS
+    r93: preferred CREG, alternative GENERAL_REGS, allocno GENERAL_REGS
+    a6 (r93,l0) best CREG, allocno GENERAL_REGS
+    r92: preferred DIREG, alternative GENERAL_REGS, allocno GENERAL_REGS
+    a4 (r92,l0) best DIREG, allocno GENERAL_REGS
+    r91: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r91,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r90: preferred CREG, alternative GENERAL_REGS, allocno GENERAL_REGS
+    a3 (r90,l0) best CREG, allocno GENERAL_REGS
+    r89: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a7 (r89,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r88: preferred AREG, alternative GENERAL_REGS, allocno GENERAL_REGS
+    a0 (r88,l0) best AREG, allocno GENERAL_REGS
+    r87: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a1 (r87,l0) best GENERAL_REGS, allocno GENERAL_REGS
+
+  a0(r88,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:16 NO_REX_SSE_REGS:16 SSE_REGS:16 MMX_REGS:21 INT_SSE_REGS:17 ALL_REGS:308 MEM:4
+  a1(r87,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:13 NO_REX_SSE_REGS:13 SSE_REGS:13 MMX_REGS:26 INT_SSE_REGS:22 ALL_REGS:416 MEM:6
+  a2(r91,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:21 NO_REX_SSE_REGS:21 SSE_REGS:21 MMX_REGS:26 INT_SSE_REGS:22 ALL_REGS:416 MEM:6
+  a3(r90,l0) costs: AREG:2 DREG:2 CREG:2 BREG:2 SIREG:2 DIREG:2 AD_REGS:2 CLOBBERED_REGS:2 Q_REGS:2 NON_Q_REGS:2 GENERAL_REGS:2 SSE_FIRST_REG:21 NO_REX_SSE_REGS:21 SSE_REGS:21 MMX_REGS:26 INT_SSE_REGS:22 ALL_REGS:416 MEM:7
+  a4(r92,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 SSE_FIRST_REG:29 NO_REX_SSE_REGS:29 SSE_REGS:29 MMX_REGS:34 INT_SSE_REGS:30 ALL_REGS:516 MEM:9
+  a5(r94,l0) costs: AREG:2 DREG:2 CREG:2 BREG:2 SIREG:2 DIREG:2 AD_REGS:2 CLOBBERED_REGS:2 Q_REGS:2 NON_Q_REGS:2 GENERAL_REGS:2 MEM:5
+  a6(r93,l0) costs: AREG:2 DREG:2 CREG:2 BREG:2 SIREG:2 DIREG:2 AD_REGS:2 CLOBBERED_REGS:2 Q_REGS:2 NON_Q_REGS:2 GENERAL_REGS:2 SSE_FIRST_REG:16 NO_REX_SSE_REGS:16 SSE_REGS:16 MMX_REGS:21 INT_SSE_REGS:17 ALL_REGS:308 MEM:5
+  a7(r89,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:12 NO_REX_SSE_REGS:12 SSE_REGS:12 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:7
+
+   Insn 20(l0): point = 0
+   Insn 19(l0): point = 2
+   Insn 15(l0): point = 4
+   Insn 11(l0): point = 6
+   Insn 10(l0): point = 8
+   Insn 9(l0): point = 10
+   Insn 8(l0): point = 12
+   Insn 7(l0): point = 14
+   Insn 6(l0): point = 16
+   Insn 12(l0): point = 18
+   Insn 2(l0): point = 20
+ a0(r88): [3..4]
+ a1(r87): [5..6]
+ a2(r91): [7..8]
+ a3(r90): [9..10]
+ a4(r92): [10..14]
+ a5(r94): [11..12]
+ a6(r93): [11..16]
+ a7(r89): [15..18]
+Compressing live ranges: from 23 to 12 - 52%
+Ranges after the compression:
+ a0(r88): [0..1]
+ a1(r87): [2..3]
+ a2(r91): [4..5]
+ a3(r90): [6..7]
+ a4(r92): [7..9]
+ a5(r94): [8..9]
+ a6(r93): [8..11]
+ a7(r89): [10..11]
+  pref0:a5(r94)<-hr0@1
+  pref1:a6(r93)<-hr2@1
+  pref2:a4(r92)<-hr5@2
+  pref3:a3(r90)<-hr2@1
+  regions=1, blocks=3, points=12
+    allocnos=8 (big 0), copies=0, conflicts=0, ranges=8
+Disposition:
+    1:r87  l0     0    0:r88  l0     0    7:r89  l0     0    3:r90  l0     0
+    2:r91  l0     0    4:r92  l0     1    6:r93  l0     2    5:r94  l0     0
++++Costs: overall -1, reg -1, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+static std::size_t std::char_traits<char>::length(const char_type*)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 5 [di] 6 [bp] 17 [flags]
+;;  ref usage 	r0={2d,2u} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r17={2d} r20={1d,4u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} r90={1d,1u} r91={1d,1u} r92={2d,1u} r93={1d,1u} r94={1d,1u} 
+;;    total ref usage 51{31d,20u,0e} in 11{11 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 17 [flags] 87 88 89 90 91 92 93 94
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [3 __s+0 S8 A64])
+        (reg:DI 5 di [ __s ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:266 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ __s ])
+        (nil)))
+(note 3 2 12 2 NOTE_INSN_FUNCTION_BEG)
+(insn 12 3 6 2 (set (reg:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [3 __s+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (nil))
+(insn 6 12 7 2 (set (reg:DI 93)
+        (const_int -1 [0xffffffffffffffff])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (nil))
+(insn 7 6 8 2 (set (reg:DI 92)
+        (reg:DI 89)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 89)
+        (nil)))
+(insn 8 7 9 2 (set (reg:QI 94)
+        (const_int 0 [0])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 89 {*movqi_internal}
+     (nil))
+(insn 9 8 10 2 (parallel [
+            (set (reg:DI 90)
+                (unspec:DI [
+                        (mem:BLK (reg:DI 92) [0  A8])
+                        (reg:QI 94)
+                        (const_int 1 [0x1])
+                        (reg:DI 93)
+                    ] UNSPEC_SCAS))
+            (clobber (reg:DI 92))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 964 {*strlenqi_1}
+     (expr_list:REG_DEAD (reg:QI 94)
+        (expr_list:REG_DEAD (reg:DI 93)
+            (expr_list:REG_DEAD (reg:DI 92)
+                (expr_list:REG_UNUSED (reg:DI 92)
+                    (expr_list:REG_UNUSED (reg:CC 17 flags)
+                        (nil)))))))
+(insn 10 9 11 2 (set (reg:DI 91)
+        (not:DI (reg:DI 90))) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 504 {*one_cmpldi2_1}
+     (expr_list:REG_DEAD (reg:DI 90)
+        (nil)))
+(insn 11 10 15 2 (parallel [
+            (set (reg:DI 87 [ _3 ])
+                (plus:DI (reg:DI 91)
+                    (const_int -1 [0xffffffffffffffff])))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 219 {*adddi_1}
+     (expr_list:REG_DEAD (reg:DI 91)
+        (expr_list:REG_UNUSED (reg:CC 17 flags)
+            (nil))))
+(insn 15 11 19 2 (set (reg:DI 88 [ <retval> ])
+        (reg:DI 87 [ _3 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 87 [ _3 ])
+        (nil)))
+(insn 19 15 20 2 (set (reg/i:DI 0 ax)
+        (reg:DI 88 [ <retval> ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 88 [ <retval> ])
+        (nil)))
+(insn 20 19 0 2 (use (reg/i:DI 0 ax)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function Pythia8::Vec4::Vec4(double, double, double, double) (_ZN7Pythia84Vec4C2Edddd, funcdef_no=3891, decl_uid=67515, cgraph_uid=893, symbol_order=898)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r94: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a1 (r94,l0) best SSE_REGS, allocno SSE_REGS
+    r93: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a0 (r93,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r92: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a3 (r92,l0) best SSE_REGS, allocno SSE_REGS
+    r91: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r91,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r90: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a5 (r90,l0) best SSE_REGS, allocno SSE_REGS
+    r89: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a4 (r89,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r88: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a7 (r88,l0) best SSE_REGS, allocno SSE_REGS
+    r87: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a6 (r87,l0) best GENERAL_REGS, allocno GENERAL_REGS
+
+  a0(r93,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a1(r94,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a2(r91,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a3(r92,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a4(r89,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a5(r90,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a6(r87,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a7(r88,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+
+   Insn 24(l0): point = 0
+   Insn 21(l0): point = 2
+   Insn 20(l0): point = 4
+   Insn 19(l0): point = 6
+   Insn 18(l0): point = 8
+   Insn 17(l0): point = 10
+   Insn 16(l0): point = 12
+   Insn 15(l0): point = 14
+   Insn 14(l0): point = 16
+   Insn 13(l0): point = 18
+   Insn 12(l0): point = 20
+   Insn 11(l0): point = 22
+   Insn 10(l0): point = 24
+   Insn 6(l0): point = 26
+   Insn 5(l0): point = 28
+   Insn 4(l0): point = 30
+   Insn 3(l0): point = 32
+   Insn 2(l0): point = 34
+ a0(r93): [3..6]
+ a1(r94): [3..4]
+ a2(r91): [9..12]
+ a3(r92): [9..10]
+ a4(r89): [15..18]
+ a5(r90): [15..16]
+ a6(r87): [21..24]
+ a7(r88): [21..22]
+Compressing live ranges: from 37 to 8 - 21%
+Ranges after the compression:
+ a0(r93): [0..1]
+ a1(r94): [0..1]
+ a2(r91): [2..3]
+ a3(r92): [2..3]
+ a4(r89): [4..5]
+ a5(r90): [4..5]
+ a6(r87): [6..7]
+ a7(r88): [6..7]
+  regions=1, blocks=3, points=8
+    allocnos=8 (big 0), copies=0, conflicts=0, ranges=8
+Disposition:
+    6:r87  l0     0    7:r88  l0    21    4:r89  l0     0    5:r90  l0    21
+    2:r91  l0     0    3:r92  l0    21    0:r93  l0     0    1:r94  l0    21
++++Costs: overall 0, reg 0, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+Pythia8::Vec4::Vec4(double, double, double, double)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 5 [di] 6 [bp] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3]
+;;  ref usage 	r0={1d} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,15u} r21={1d,1u} r22={1d,1u} r23={1d,1u} r24={1d,1u} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} r90={1d,1u} r91={1d,1u} r92={1d,1u} r93={1d,1u} r94={1d,1u} 
+;;    total ref usage 60{27d,33u,0e} in 18{18 regular + 0 call} insns.
+(note 1 0 8 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3]
+;; lr  def 	 87 88 89 90 91 92 93 94
+(note 8 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 8 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(insn 3 2 4 2 (set (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [11 xIn+0 S8 A64])
+        (reg:DF 21 xmm0 [ xIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 21 xmm0 [ xIn ])
+        (nil)))
+(insn 4 3 5 2 (set (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -24 [0xffffffffffffffe8])) [11 yIn+0 S8 A64])
+        (reg:DF 22 xmm1 [ yIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 22 xmm1 [ yIn ])
+        (nil)))
+(insn 5 4 6 2 (set (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -32 [0xffffffffffffffe0])) [11 zIn+0 S8 A64])
+        (reg:DF 23 xmm2 [ zIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 23 xmm2 [ zIn ])
+        (nil)))
+(insn 6 5 7 2 (set (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -40 [0xffffffffffffffd8])) [11 tIn+0 S8 A64])
+        (reg:DF 24 xmm3 [ tIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 24 xmm3 [ tIn ])
+        (nil)))
+(note 7 6 10 2 NOTE_INSN_FUNCTION_BEG)
+(insn 10 7 11 2 (set (reg/f:DI 87)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 11 10 12 2 (set (reg:DF 88)
+        (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [11 xIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 12 11 13 2 (set (mem:DF (reg/f:DI 87) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 88)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 88)
+        (expr_list:REG_DEAD (reg/f:DI 87)
+            (nil))))
+(insn 13 12 14 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 2 (set (reg:DF 90)
+        (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -24 [0xffffffffffffffe8])) [11 yIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 15 14 16 2 (set (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 90)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 90)
+        (expr_list:REG_DEAD (reg/f:DI 89)
+            (nil))))
+(insn 16 15 17 2 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 17 16 18 2 (set (reg:DF 92)
+        (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -32 [0xffffffffffffffe0])) [11 zIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 18 17 19 2 (set (mem:DF (plus:DI (reg/f:DI 91)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 92)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 92)
+        (expr_list:REG_DEAD (reg/f:DI 91)
+            (nil))))
+(insn 19 18 20 2 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 94)
+        (mem/c:DF (plus:DI (reg/f:DI 20 frame)
+                (const_int -40 [0xffffffffffffffd8])) [11 tIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 21 20 24 2 (set (mem:DF (plus:DI (reg/f:DI 93)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 94)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 94)
+        (expr_list:REG_DEAD (reg/f:DI 93)
+            (nil))))
+(insn 24 21 0 2 (const_int 0 [0]) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 701 {nop}
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function Pythia8::Vec4::Vec4(const Pythia8::Vec4&) (_ZN7Pythia84Vec4C2ERKS0_, funcdef_no=3894, decl_uid=67506, cgraph_uid=896, symbol_order=901)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r98: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a0 (r98,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r97: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r97,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r96: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a3 (r96,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r95: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a5 (r95,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r94: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a6 (r94,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r93: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a8 (r93,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r92: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a9 (r92,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r91: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a11 (r91,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r90: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a1 (r90,l0) best SSE_REGS, allocno SSE_REGS
+    r89: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a4 (r89,l0) best SSE_REGS, allocno SSE_REGS
+    r88: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a7 (r88,l0) best SSE_REGS, allocno SSE_REGS
+    r87: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a10 (r87,l0) best SSE_REGS, allocno SSE_REGS
+
+  a0(r98,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a1(r90,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a2(r97,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a3(r96,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a4(r89,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a5(r95,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a6(r94,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a7(r88,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a8(r93,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a9(r92,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a10(r87,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a11(r91,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+
+   Insn 25(l0): point = 0
+   Insn 22(l0): point = 2
+   Insn 21(l0): point = 4
+   Insn 20(l0): point = 6
+   Insn 19(l0): point = 8
+   Insn 18(l0): point = 10
+   Insn 17(l0): point = 12
+   Insn 16(l0): point = 14
+   Insn 15(l0): point = 16
+   Insn 14(l0): point = 18
+   Insn 13(l0): point = 20
+   Insn 12(l0): point = 22
+   Insn 11(l0): point = 24
+   Insn 10(l0): point = 26
+   Insn 9(l0): point = 28
+   Insn 8(l0): point = 30
+   Insn 7(l0): point = 32
+   Insn 3(l0): point = 34
+   Insn 2(l0): point = 36
+ a0(r98): [3..4]
+ a1(r90): [3..6]
+ a2(r97): [7..8]
+ a3(r96): [11..12]
+ a4(r89): [11..14]
+ a5(r95): [15..16]
+ a6(r94): [19..20]
+ a7(r88): [19..22]
+ a8(r93): [23..24]
+ a9(r92): [27..28]
+ a10(r87): [27..30]
+ a11(r91): [31..32]
+Compressing live ranges: from 39 to 16 - 41%
+Ranges after the compression:
+ a0(r98): [0..1]
+ a1(r90): [0..1]
+ a2(r97): [2..3]
+ a3(r96): [4..5]
+ a4(r89): [4..5]
+ a5(r95): [6..7]
+ a6(r94): [8..9]
+ a7(r88): [8..9]
+ a8(r93): [10..11]
+ a9(r92): [12..13]
+ a10(r87): [12..13]
+ a11(r91): [14..15]
+  regions=1, blocks=3, points=16
+    allocnos=12 (big 0), copies=0, conflicts=0, ranges=12
+Disposition:
+   10:r87  l0    21    7:r88  l0    21    4:r89  l0    21    1:r90  l0    21
+   11:r91  l0     0    9:r92  l0     0    8:r93  l0     0    6:r94  l0     0
+    5:r95  l0     0    3:r96  l0     0    2:r97  l0     0    0:r98  l0     0
++++Costs: overall 0, reg 0, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+Pythia8::Vec4::Vec4(const Pythia8::Vec4&)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 4 [si] 5 [di] 6 [bp]
+;;  ref usage 	r0={1d} r1={1d} r2={1d} r4={1d,1u} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,12u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} r90={1d,1u} r91={1d,1u} r92={1d,1u} r93={1d,1u} r94={1d,1u} r95={1d,1u} r96={1d,1u} r97={1d,1u} r98={1d,1u} 
+;;    total ref usage 62{31d,31u,0e} in 19{19 regular + 0 call} insns.
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 87 88 89 90 91 92 93 94 95 96 97 98
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])
+        (reg:DI 4 si [ v ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 4 si [ v ])
+        (nil)))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 8 2 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 8 7 9 2 (set (reg:DF 87 [ _5 ])
+        (mem:DF (reg/f:DI 91) [11 v_4(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 91)
+        (nil)))
+(insn 9 8 10 2 (set (reg/f:DI 92)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 10 9 11 2 (set (mem:DF (reg/f:DI 92) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 87 [ _5 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 92)
+        (expr_list:REG_DEAD (reg:DF 87 [ _5 ])
+            (nil))))
+(insn 11 10 12 2 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 12 11 13 2 (set (reg:DF 88 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 93)
+                (const_int 8 [0x8])) [11 v_4(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 93)
+        (nil)))
+(insn 13 12 14 2 (set (reg/f:DI 94)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 2 (set (mem:DF (plus:DI (reg/f:DI 94)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 88 [ _7 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 94)
+        (expr_list:REG_DEAD (reg:DF 88 [ _7 ])
+            (nil))))
+(insn 15 14 16 2 (set (reg/f:DI 95)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 16 15 17 2 (set (reg:DF 89 [ _9 ])
+        (mem:DF (plus:DI (reg/f:DI 95)
+                (const_int 16 [0x10])) [11 v_4(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 95)
+        (nil)))
+(insn 17 16 18 2 (set (reg/f:DI 96)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 18 17 19 2 (set (mem:DF (plus:DI (reg/f:DI 96)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 89 [ _9 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 96)
+        (expr_list:REG_DEAD (reg:DF 89 [ _9 ])
+            (nil))))
+(insn 19 18 20 2 (set (reg/f:DI 97)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 90 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 97)
+                (const_int 24 [0x18])) [11 v_4(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 97)
+        (nil)))
+(insn 21 20 22 2 (set (reg/f:DI 98)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 22 21 25 2 (set (mem:DF (plus:DI (reg/f:DI 98)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 90 [ _11 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 98)
+        (expr_list:REG_DEAD (reg:DF 90 [ _11 ])
+            (nil))))
+(insn 25 22 0 2 (const_int 0 [0]) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 701 {nop}
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function Pythia8::Vec4& Pythia8::Vec4::operator=(const Pythia8::Vec4&) (_ZN7Pythia84Vec4aSERKS0_, funcdef_no=3896, decl_uid=67291, cgraph_uid=898, symbol_order=903)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 5 n_edges 5 count 5 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r101: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r101,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r100: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a4 (r100,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r99: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a5 (r99,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r98: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a7 (r98,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r97: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a8 (r97,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r96: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a10 (r96,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r95: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a11 (r95,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r94: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a13 (r94,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r93: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a14 (r93,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r92: preferred AREG, alternative GENERAL_REGS, allocno GENERAL_REGS
+    a0 (r92,l0) best AREG, allocno GENERAL_REGS
+    r91: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a1 (r91,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r90: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a3 (r90,l0) best SSE_REGS, allocno SSE_REGS
+    r89: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a6 (r89,l0) best SSE_REGS, allocno SSE_REGS
+    r88: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a9 (r88,l0) best SSE_REGS, allocno SSE_REGS
+    r87: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a12 (r87,l0) best SSE_REGS, allocno SSE_REGS
+
+  a0(r92,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:16 NO_REX_SSE_REGS:16 SSE_REGS:16 MMX_REGS:21 INT_SSE_REGS:17 ALL_REGS:308 MEM:4
+  a1(r91,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:12 NO_REX_SSE_REGS:12 SSE_REGS:12 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:7
+  a2(r101,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a3(r90,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a4(r100,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a5(r99,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a6(r89,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a7(r98,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a8(r97,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a9(r88,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a10(r96,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a11(r95,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a12(r87,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:31 FP_SECOND_REG:31 FLOAT_REGS:31 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:31 INT_SSE_REGS:24 FLOAT_INT_SSE_REGS:33 MEM:12
+  a13(r94,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a14(r93,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+
+   Insn 37(l0): point = 0
+   Insn 36(l0): point = 2
+   Insn 32(l0): point = 4
+   Insn 29(l0): point = 6
+   Insn 26(l0): point = 9
+   Insn 25(l0): point = 11
+   Insn 24(l0): point = 13
+   Insn 23(l0): point = 15
+   Insn 22(l0): point = 17
+   Insn 21(l0): point = 19
+   Insn 20(l0): point = 21
+   Insn 19(l0): point = 23
+   Insn 18(l0): point = 25
+   Insn 17(l0): point = 27
+   Insn 16(l0): point = 29
+   Insn 15(l0): point = 31
+   Insn 14(l0): point = 33
+   Insn 13(l0): point = 35
+   Insn 12(l0): point = 37
+   Insn 11(l0): point = 39
+   Insn 9(l0): point = 42
+   Insn 8(l0): point = 44
+   Insn 7(l0): point = 46
+   Insn 3(l0): point = 48
+   Insn 2(l0): point = 50
+ a0(r92): [3..4]
+ a1(r91): [5..6]
+ a2(r101): [10..11]
+ a3(r90): [10..13]
+ a4(r100): [14..15]
+ a5(r99): [18..19]
+ a6(r89): [18..21]
+ a7(r98): [22..23]
+ a8(r97): [26..27]
+ a9(r88): [26..29]
+ a10(r96): [30..31]
+ a11(r95): [34..35]
+ a12(r87): [34..37]
+ a13(r94): [38..39]
+ a14(r93): [45..46]
+Compressing live ranges: from 53 to 22 - 41%
+Ranges after the compression:
+ a0(r92): [0..1]
+ a1(r91): [2..3]
+ a2(r101): [4..5]
+ a3(r90): [4..5]
+ a4(r100): [6..7]
+ a5(r99): [8..9]
+ a6(r89): [8..9]
+ a7(r98): [10..11]
+ a8(r97): [12..13]
+ a9(r88): [12..13]
+ a10(r96): [14..15]
+ a11(r95): [16..17]
+ a12(r87): [16..17]
+ a13(r94): [18..19]
+ a14(r93): [20..21]
+  regions=1, blocks=5, points=22
+    allocnos=15 (big 0), copies=0, conflicts=0, ranges=15
+Disposition:
+   12:r87  l0    21    9:r88  l0    21    6:r89  l0    21    3:r90  l0    21
+    1:r91  l0     0    0:r92  l0     0   14:r93  l0     0   13:r94  l0     0
+   11:r95  l0     0   10:r96  l0     0    8:r97  l0     0    7:r98  l0     0
+    5:r99  l0     0    4:r100 l0     0    2:r101 l0     0
++++Costs: overall -1, reg -1, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+Pythia8::Vec4& Pythia8::Vec4::operator=(const Pythia8::Vec4&)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 4 [si] 5 [di] 6 [bp] 17 [flags]
+;;  ref usage 	r0={2d,2u} r1={1d} r2={1d} r4={1d,1u} r5={1d,1u} r6={1d,4u} r7={1d,4u} r16={1d,3u} r17={1d,1u} r20={1d,17u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} r90={1d,1u} r91={1d,1u} r92={1d,1u} r93={1d,1u} r94={1d,1u} r95={1d,1u} r96={1d,1u} r97={1d,1u} r98={1d,1u} r99={1d,1u} r100={1d,1u} r101={1d,1u} 
+;;    total ref usage 84{36d,48u,0e} in 25{25 regular + 0 call} insns.
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 3, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 17 [flags] 93
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])
+        (reg:DI 4 si [ v ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 4 si [ v ])
+        (nil)))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 8 2 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 8 7 9 2 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/f:DI 93)
+            (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                    (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 8 {*cmpdi_1}
+     (expr_list:REG_DEAD (reg/f:DI 93)
+        (nil)))
+(jump_insn 9 8 10 2 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 27)
+            (pc))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 635 {*jcc_1}
+     (expr_list:REG_DEAD (reg:CCZ 17 flags)
+        (nil))
+ -> 27)
+;;  succ:       3 (FALLTHRU)
+;;              4
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+;; basic block 3, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 2, next block 4, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       2 (FALLTHRU)
+;; bb 3 artificial_defs: { }
+;; bb 3 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 87 88 89 90 94 95 96 97 98 99 100 101
+(note 10 9 11 3 [bb 3] NOTE_INSN_BASIC_BLOCK)
+(insn 11 10 12 3 (set (reg/f:DI 94)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 12 11 13 3 (set (reg:DF 87 [ _5 ])
+        (mem:DF (reg/f:DI 94) [11 v_3(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 94)
+        (nil)))
+(insn 13 12 14 3 (set (reg/f:DI 95)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 3 (set (mem:DF (reg/f:DI 95) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 87 [ _5 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 95)
+        (expr_list:REG_DEAD (reg:DF 87 [ _5 ])
+            (nil))))
+(insn 15 14 16 3 (set (reg/f:DI 96)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 16 15 17 3 (set (reg:DF 88 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 96)
+                (const_int 8 [0x8])) [11 v_3(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 96)
+        (nil)))
+(insn 17 16 18 3 (set (reg/f:DI 97)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 18 17 19 3 (set (mem:DF (plus:DI (reg/f:DI 97)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 88 [ _7 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 97)
+        (expr_list:REG_DEAD (reg:DF 88 [ _7 ])
+            (nil))))
+(insn 19 18 20 3 (set (reg/f:DI 98)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 3 (set (reg:DF 89 [ _9 ])
+        (mem:DF (plus:DI (reg/f:DI 98)
+                (const_int 16 [0x10])) [11 v_3(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 98)
+        (nil)))
+(insn 21 20 22 3 (set (reg/f:DI 99)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 22 21 23 3 (set (mem:DF (plus:DI (reg/f:DI 99)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 89 [ _9 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 99)
+        (expr_list:REG_DEAD (reg:DF 89 [ _9 ])
+            (nil))))
+(insn 23 22 24 3 (set (reg/f:DI 100)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 24 23 25 3 (set (reg:DF 90 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 100)
+                (const_int 24 [0x18])) [11 v_3(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 100)
+        (nil)))
+(insn 25 24 26 3 (set (reg/f:DI 101)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 26 25 27 3 (set (mem:DF (plus:DI (reg/f:DI 101)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 90 [ _11 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 101)
+        (expr_list:REG_DEAD (reg:DF 90 [ _11 ])
+            (nil))))
+;;  succ:       4 (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+;; basic block 4, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 3, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       2
+;;              3 (FALLTHRU)
+;; bb 4 artificial_defs: { }
+;; bb 4 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 91 92
+(code_label 27 26 28 4 8 "" [1 uses])
+(note 28 27 29 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 29 28 32 4 (set (reg/f:DI 91 [ _13 ])
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 32 29 36 4 (set (reg/f:DI 92 [ <retval> ])
+        (reg/f:DI 91 [ _13 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 91 [ _13 ])
+        (nil)))
+(insn 36 32 37 4 (set (reg/i:DI 0 ax)
+        (reg/f:DI 92 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg/f:DI 92 [ <retval> ])
+        (nil)))
+(insn 37 36 0 4 (use (reg/i:DI 0 ax)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+
+;; Function double Pythia8::Vec4::px() const (_ZNK7Pythia84Vec42pxEv, funcdef_no=3905, decl_uid=67319, cgraph_uid=907, symbol_order=912)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r89: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r89,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r88: preferred SSE_FIRST_REG, alternative SSE_REGS, allocno SSE_REGS
+    a0 (r88,l0) best SSE_FIRST_REG, allocno SSE_REGS
+    r87: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a1 (r87,l0) best SSE_REGS, allocno SSE_REGS
+
+  a0(r88,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:18 FP_SECOND_REG:18 FLOAT_REGS:18 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:20 FP_SECOND_SSE_REGS:20 FLOAT_SSE_REGS:20 FLOAT_INT_REGS:18 INT_SSE_REGS:16 FLOAT_INT_SSE_REGS:20 MEM:2
+  a1(r87,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:24 FP_SECOND_REG:24 FLOAT_REGS:24 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:26 FP_SECOND_SSE_REGS:26 FLOAT_SSE_REGS:26 FLOAT_INT_REGS:24 INT_SSE_REGS:21 FLOAT_INT_SSE_REGS:26 MEM:7
+  a2(r89,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+
+   Insn 15(l0): point = 0
+   Insn 14(l0): point = 2
+   Insn 10(l0): point = 4
+   Insn 7(l0): point = 6
+   Insn 6(l0): point = 8
+   Insn 2(l0): point = 10
+ a0(r88): [3..4]
+ a1(r87): [5..6]
+ a2(r89): [7..8]
+Compressing live ranges: from 13 to 6 - 46%
+Ranges after the compression:
+ a0(r88): [0..1]
+ a1(r87): [2..3]
+ a2(r89): [4..5]
+  regions=1, blocks=3, points=6
+    allocnos=3 (big 0), copies=0, conflicts=0, ranges=3
+Disposition:
+    1:r87  l0    21    0:r88  l0    21    2:r89  l0     0
++++Costs: overall -1, reg -1, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+double Pythia8::Vec4::px() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={1d} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,4u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} 
+;;    total ref usage 38{23d,15u,0e} in 6{6 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 85 {*movdi_internal}
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 89) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 89)
+        (nil)))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 87 [ _3 ])
+        (nil)))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 88 [ <retval> ])
+        (nil)))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+
+;; Function double Pythia8::Vec4::py() const (_ZNK7Pythia84Vec42pyEv, funcdef_no=3906, decl_uid=67321, cgraph_uid=908, symbol_order=913)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r89: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r89,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r88: preferred SSE_FIRST_REG, alternative SSE_REGS, allocno SSE_REGS
+    a0 (r88,l0) best SSE_FIRST_REG, allocno SSE_REGS
+    r87: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a1 (r87,l0) best SSE_REGS, allocno SSE_REGS
+
+  a0(r88,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:18 FP_SECOND_REG:18 FLOAT_REGS:18 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:20 FP_SECOND_SSE_REGS:20 FLOAT_SSE_REGS:20 FLOAT_INT_REGS:18 INT_SSE_REGS:16 FLOAT_INT_SSE_REGS:20 MEM:2
+  a1(r87,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:24 FP_SECOND_REG:24 FLOAT_REGS:24 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:26 FP_SECOND_SSE_REGS:26 FLOAT_SSE_REGS:26 FLOAT_INT_REGS:24 INT_SSE_REGS:21 FLOAT_INT_SSE_REGS:26 MEM:7
+  a2(r89,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+
+   Insn 15(l0): point = 0
+   Insn 14(l0): point = 2
+   Insn 10(l0): point = 4
+   Insn 7(l0): point = 6
+   Insn 6(l0): point = 8
+   Insn 2(l0): point = 10
+ a0(r88): [3..4]
+ a1(r87): [5..6]
+ a2(r89): [7..8]
+Compressing live ranges: from 13 to 6 - 46%
+Ranges after the compression:
+ a0(r88): [0..1]
+ a1(r87): [2..3]
+ a2(r89): [4..5]
+  regions=1, blocks=3, points=6
+    allocnos=3 (big 0), copies=0, conflicts=0, ranges=3
+Disposition:
+    1:r87  l0    21    0:r88  l0    21    2:r89  l0     0
++++Costs: overall -1, reg -1, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+double Pythia8::Vec4::py() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={1d} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,4u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} 
+;;    total ref usage 38{23d,15u,0e} in 6{6 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 85 {*movdi_internal}
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 89)
+        (nil)))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 87 [ _3 ])
+        (nil)))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 88 [ <retval> ])
+        (nil)))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+
+;; Function double Pythia8::Vec4::pz() const (_ZNK7Pythia84Vec42pzEv, funcdef_no=3907, decl_uid=67323, cgraph_uid=909, symbol_order=914)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r89: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r89,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r88: preferred SSE_FIRST_REG, alternative SSE_REGS, allocno SSE_REGS
+    a0 (r88,l0) best SSE_FIRST_REG, allocno SSE_REGS
+    r87: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a1 (r87,l0) best SSE_REGS, allocno SSE_REGS
+
+  a0(r88,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:18 FP_SECOND_REG:18 FLOAT_REGS:18 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:20 FP_SECOND_SSE_REGS:20 FLOAT_SSE_REGS:20 FLOAT_INT_REGS:18 INT_SSE_REGS:16 FLOAT_INT_SSE_REGS:20 MEM:2
+  a1(r87,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:24 FP_SECOND_REG:24 FLOAT_REGS:24 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:26 FP_SECOND_SSE_REGS:26 FLOAT_SSE_REGS:26 FLOAT_INT_REGS:24 INT_SSE_REGS:21 FLOAT_INT_SSE_REGS:26 MEM:7
+  a2(r89,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+
+   Insn 15(l0): point = 0
+   Insn 14(l0): point = 2
+   Insn 10(l0): point = 4
+   Insn 7(l0): point = 6
+   Insn 6(l0): point = 8
+   Insn 2(l0): point = 10
+ a0(r88): [3..4]
+ a1(r87): [5..6]
+ a2(r89): [7..8]
+Compressing live ranges: from 13 to 6 - 46%
+Ranges after the compression:
+ a0(r88): [0..1]
+ a1(r87): [2..3]
+ a2(r89): [4..5]
+  regions=1, blocks=3, points=6
+    allocnos=3 (big 0), copies=0, conflicts=0, ranges=3
+Disposition:
+    1:r87  l0    21    0:r88  l0    21    2:r89  l0     0
++++Costs: overall -1, reg -1, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+double Pythia8::Vec4::pz() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={1d} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,4u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} 
+;;    total ref usage 38{23d,15u,0e} in 6{6 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 85 {*movdi_internal}
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 89)
+        (nil)))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 87 [ _3 ])
+        (nil)))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 88 [ <retval> ])
+        (nil)))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+
+;; Function double Pythia8::Vec4::e() const (_ZNK7Pythia84Vec41eEv, funcdef_no=3908, decl_uid=67325, cgraph_uid=910, symbol_order=915)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r89: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a2 (r89,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r88: preferred SSE_FIRST_REG, alternative SSE_REGS, allocno SSE_REGS
+    a0 (r88,l0) best SSE_FIRST_REG, allocno SSE_REGS
+    r87: preferred SSE_REGS, alternative GENERAL_REGS, allocno SSE_REGS
+    a1 (r87,l0) best SSE_REGS, allocno SSE_REGS
+
+  a0(r88,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:18 FP_SECOND_REG:18 FLOAT_REGS:18 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:20 FP_SECOND_SSE_REGS:20 FLOAT_SSE_REGS:20 FLOAT_INT_REGS:18 INT_SSE_REGS:16 FLOAT_INT_SSE_REGS:20 MEM:2
+  a1(r87,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:24 FP_SECOND_REG:24 FLOAT_REGS:24 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:26 FP_SECOND_SSE_REGS:26 FLOAT_SSE_REGS:26 FLOAT_INT_REGS:24 INT_SSE_REGS:21 FLOAT_INT_SSE_REGS:26 MEM:7
+  a2(r89,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+
+   Insn 15(l0): point = 0
+   Insn 14(l0): point = 2
+   Insn 10(l0): point = 4
+   Insn 7(l0): point = 6
+   Insn 6(l0): point = 8
+   Insn 2(l0): point = 10
+ a0(r88): [3..4]
+ a1(r87): [5..6]
+ a2(r89): [7..8]
+Compressing live ranges: from 13 to 6 - 46%
+Ranges after the compression:
+ a0(r88): [0..1]
+ a1(r87): [2..3]
+ a2(r89): [4..5]
+  regions=1, blocks=3, points=6
+    allocnos=3 (big 0), copies=0, conflicts=0, ranges=3
+Disposition:
+    1:r87  l0    21    0:r88  l0    21    2:r89  l0     0
++++Costs: overall -1, reg -1, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+double Pythia8::Vec4::e() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={1d} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,2u} r7={1d,2u} r16={1d,1u} r20={1d,4u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} 
+;;    total ref usage 38{23d,15u,0e} in 6{6 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 85 {*movdi_internal}
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 89)
+        (nil)))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 87 [ _3 ])
+        (nil)))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 88 [ <retval> ])
+        (nil)))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+
+;; Function double Pythia8::Vec4::pAbs() const (_ZNK7Pythia84Vec44pAbsEv, funcdef_no=3914, decl_uid=67338, cgraph_uid=916, symbol_order=921)
+
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+df_worklist_dataflow_doublequeue:n_basic_blocks 3 n_edges 2 count 3 (    1)
+Building IRA IR
+verify found no changes in insn with uid = 24.
+starting the processing of deferred insns
+ending the processing of deferred insns
+df_analyze called
+
+Pass 0 for finding pseudo/allocno costs
+
+    r105: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a7 (r105,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r104: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a8 (r104,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r103: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a13 (r103,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r102: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a14 (r102,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r101: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a17 (r101,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r100: preferred GENERAL_REGS, alternative NO_REGS, allocno GENERAL_REGS
+    a18 (r100,l0) best GENERAL_REGS, allocno GENERAL_REGS
+    r99: preferred SSE_FIRST_REG, alternative SSE_REGS, allocno SSE_REGS
+    a0 (r99,l0) best SSE_FIRST_REG, allocno SSE_REGS
+    r98: preferred SSE_FIRST_REG, alternative GENERAL_REGS, allocno INT_SSE_REGS
+    a1 (r98,l0) best SSE_FIRST_REG, allocno INT_SSE_REGS
+    r97: preferred SSE_FIRST_REG, alternative SSE_REGS, allocno SSE_REGS
+    a2 (r97,l0) best SSE_FIRST_REG, allocno SSE_REGS
+    r96: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a3 (r96,l0) best SSE_REGS, allocno SSE_REGS
+    r95: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a5 (r95,l0) best SSE_REGS, allocno SSE_REGS
+    r94: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a6 (r94,l0) best SSE_REGS, allocno SSE_REGS
+    r93: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a4 (r93,l0) best SSE_REGS, allocno SSE_REGS
+    r92: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a9 (r92,l0) best SSE_REGS, allocno SSE_REGS
+    r91: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a11 (r91,l0) best SSE_REGS, allocno SSE_REGS
+    r90: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a12 (r90,l0) best SSE_REGS, allocno SSE_REGS
+    r89: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a10 (r89,l0) best SSE_REGS, allocno SSE_REGS
+    r88: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a15 (r88,l0) best SSE_REGS, allocno SSE_REGS
+    r87: preferred SSE_REGS, alternative NO_REGS, allocno SSE_REGS
+    a16 (r87,l0) best SSE_REGS, allocno SSE_REGS
+
+  a0(r99,l0) costs: AREG:4 DREG:4 CREG:4 BREG:4 SIREG:4 DIREG:4 AD_REGS:4 CLOBBERED_REGS:4 Q_REGS:4 NON_Q_REGS:4 GENERAL_REGS:4 FP_TOP_REG:18 FP_SECOND_REG:18 FLOAT_REGS:18 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:20 FP_SECOND_SSE_REGS:20 FLOAT_SSE_REGS:20 FLOAT_INT_REGS:18 INT_SSE_REGS:16 FLOAT_INT_SSE_REGS:20 MEM:2
+  a1(r98,l0) costs: AREG:2 DREG:2 CREG:2 BREG:2 SIREG:2 DIREG:2 AD_REGS:2 CLOBBERED_REGS:2 Q_REGS:2 NON_Q_REGS:2 GENERAL_REGS:2 FP_TOP_REG:18 FP_SECOND_REG:18 FLOAT_REGS:18 SSE_FIRST_REG:16 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:20 FP_SECOND_SSE_REGS:20 FLOAT_SSE_REGS:20 FLOAT_INT_REGS:18 INT_SSE_REGS:16 FLOAT_INT_SSE_REGS:20 MEM:2
+  a2(r97,l0) costs: AREG:12 DREG:12 CREG:12 BREG:12 SIREG:12 DIREG:12 AD_REGS:12 CLOBBERED_REGS:12 Q_REGS:12 NON_Q_REGS:12 GENERAL_REGS:12 FP_TOP_REG:33 FP_SECOND_REG:33 FLOAT_REGS:33 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:33 FP_SECOND_SSE_REGS:33 FLOAT_SSE_REGS:33 FLOAT_INT_REGS:33 INT_SSE_REGS:21 FLOAT_INT_SSE_REGS:33 MEM:9
+  a3(r96,l0) costs: AREG:21 DREG:21 CREG:21 BREG:21 SIREG:21 DIREG:21 AD_REGS:21 CLOBBERED_REGS:21 Q_REGS:21 NON_Q_REGS:21 GENERAL_REGS:21 FP_TOP_REG:42 FP_SECOND_REG:42 FLOAT_REGS:42 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:42 FP_SECOND_SSE_REGS:42 FLOAT_SSE_REGS:42 FLOAT_INT_REGS:42 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:42 MEM:15
+  a4(r93,l0) costs: AREG:21 DREG:21 CREG:21 BREG:21 SIREG:21 DIREG:21 AD_REGS:21 CLOBBERED_REGS:21 Q_REGS:21 NON_Q_REGS:21 GENERAL_REGS:21 FP_TOP_REG:42 FP_SECOND_REG:42 FLOAT_REGS:42 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:42 FP_SECOND_SSE_REGS:42 FLOAT_SSE_REGS:42 FLOAT_INT_REGS:42 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:42 MEM:15
+  a5(r95,l0) costs: AREG:15 DREG:15 CREG:15 BREG:15 SIREG:15 DIREG:15 AD_REGS:15 CLOBBERED_REGS:15 Q_REGS:15 NON_Q_REGS:15 GENERAL_REGS:15 FP_TOP_REG:33 FP_SECOND_REG:33 FLOAT_REGS:33 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:35 FP_SECOND_SSE_REGS:35 FLOAT_SSE_REGS:35 FLOAT_INT_REGS:33 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:35 MEM:13
+  a6(r94,l0) costs: AREG:15 DREG:15 CREG:15 BREG:15 SIREG:15 DIREG:15 AD_REGS:15 CLOBBERED_REGS:15 Q_REGS:15 NON_Q_REGS:15 GENERAL_REGS:15 FP_TOP_REG:33 FP_SECOND_REG:33 FLOAT_REGS:33 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:35 FP_SECOND_SSE_REGS:35 FLOAT_SSE_REGS:35 FLOAT_INT_REGS:33 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:35 MEM:13
+  a7(r105,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a8(r104,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a9(r92,l0) costs: AREG:21 DREG:21 CREG:21 BREG:21 SIREG:21 DIREG:21 AD_REGS:21 CLOBBERED_REGS:21 Q_REGS:21 NON_Q_REGS:21 GENERAL_REGS:21 FP_TOP_REG:42 FP_SECOND_REG:42 FLOAT_REGS:42 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:42 FP_SECOND_SSE_REGS:42 FLOAT_SSE_REGS:42 FLOAT_INT_REGS:42 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:42 MEM:15
+  a10(r89,l0) costs: AREG:21 DREG:21 CREG:21 BREG:21 SIREG:21 DIREG:21 AD_REGS:21 CLOBBERED_REGS:21 Q_REGS:21 NON_Q_REGS:21 GENERAL_REGS:21 FP_TOP_REG:42 FP_SECOND_REG:42 FLOAT_REGS:42 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:42 FP_SECOND_SSE_REGS:42 FLOAT_SSE_REGS:42 FLOAT_INT_REGS:42 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:42 MEM:15
+  a11(r91,l0) costs: AREG:15 DREG:15 CREG:15 BREG:15 SIREG:15 DIREG:15 AD_REGS:15 CLOBBERED_REGS:15 Q_REGS:15 NON_Q_REGS:15 GENERAL_REGS:15 FP_TOP_REG:33 FP_SECOND_REG:33 FLOAT_REGS:33 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:35 FP_SECOND_SSE_REGS:35 FLOAT_SSE_REGS:35 FLOAT_INT_REGS:33 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:35 MEM:13
+  a12(r90,l0) costs: AREG:15 DREG:15 CREG:15 BREG:15 SIREG:15 DIREG:15 AD_REGS:15 CLOBBERED_REGS:15 Q_REGS:15 NON_Q_REGS:15 GENERAL_REGS:15 FP_TOP_REG:33 FP_SECOND_REG:33 FLOAT_REGS:33 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:35 FP_SECOND_SSE_REGS:35 FLOAT_SSE_REGS:35 FLOAT_INT_REGS:33 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:35 MEM:13
+  a13(r103,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a14(r102,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a15(r88,l0) costs: AREG:15 DREG:15 CREG:15 BREG:15 SIREG:15 DIREG:15 AD_REGS:15 CLOBBERED_REGS:15 Q_REGS:15 NON_Q_REGS:15 GENERAL_REGS:15 FP_TOP_REG:33 FP_SECOND_REG:33 FLOAT_REGS:33 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:35 FP_SECOND_SSE_REGS:35 FLOAT_SSE_REGS:35 FLOAT_INT_REGS:33 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:35 MEM:13
+  a16(r87,l0) costs: AREG:15 DREG:15 CREG:15 BREG:15 SIREG:15 DIREG:15 AD_REGS:15 CLOBBERED_REGS:15 Q_REGS:15 NON_Q_REGS:15 GENERAL_REGS:15 FP_TOP_REG:33 FP_SECOND_REG:33 FLOAT_REGS:33 SSE_FIRST_REG:0 NO_REX_SSE_REGS:0 SSE_REGS:0 FP_TOP_SSE_REGS:35 FP_SECOND_SSE_REGS:35 FLOAT_SSE_REGS:35 FLOAT_INT_REGS:33 INT_SSE_REGS:26 FLOAT_INT_SSE_REGS:35 MEM:13
+  a17(r101,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+  a18(r100,l0) costs: AREG:0 DREG:0 CREG:0 BREG:0 SIREG:0 DIREG:0 AD_REGS:0 CLOBBERED_REGS:0 Q_REGS:0 NON_Q_REGS:0 GENERAL_REGS:0 SSE_FIRST_REG:20 NO_REX_SSE_REGS:20 SSE_REGS:20 MMX_REGS:25 INT_SSE_REGS:21 ALL_REGS:312 MEM:8
+
+   Insn 33(l0): point = 0
+   Insn 32(l0): point = 2
+   Insn 28(l0): point = 4
+   Insn 25(l0): point = 6
+   Insn 24(l0): point = 8
+   Insn 23(l0): point = 10
+   Insn 22(l0): point = 12
+   Insn 21(l0): point = 14
+   Insn 20(l0): point = 16
+   Insn 19(l0): point = 18
+   Insn 18(l0): point = 20
+   Insn 17(l0): point = 22
+   Insn 16(l0): point = 24
+   Insn 15(l0): point = 26
+   Insn 14(l0): point = 28
+   Insn 13(l0): point = 30
+   Insn 12(l0): point = 32
+   Insn 11(l0): point = 34
+   Insn 10(l0): point = 36
+   Insn 9(l0): point = 38
+   Insn 8(l0): point = 40
+   Insn 7(l0): point = 42
+   Insn 6(l0): point = 44
+   Insn 2(l0): point = 46
+ a0(r99): [3..4]
+ a1(r98): [5..6]
+ a2(r97): [11..12]
+ a3(r96): [13..14]
+ a4(r93): [13..24]
+ a5(r95): [15..16]
+ a6(r94): [15..20]
+ a7(r105): [17..18]
+ a8(r104): [21..22]
+ a9(r92): [25..26]
+ a10(r89): [25..36]
+ a11(r91): [27..28]
+ a12(r90): [27..32]
+ a13(r103): [29..30]
+ a14(r102): [33..34]
+ a15(r88): [37..38]
+ a16(r87): [37..42]
+ a17(r101): [39..40]
+ a18(r100): [43..44]
+Compressing live ranges: from 49 to 28 - 57%
+Ranges after the compression:
+ a0(r99): [0..1]
+ a1(r98): [2..3]
+ a2(r97): [4..5]
+ a3(r96): [6..7]
+ a4(r93): [6..13]
+ a5(r95): [8..9]
+ a6(r94): [8..11]
+ a7(r105): [10..11]
+ a8(r104): [12..13]
+ a9(r92): [14..15]
+ a10(r89): [14..21]
+ a11(r91): [16..17]
+ a12(r90): [16..19]
+ a13(r103): [18..19]
+ a14(r102): [20..21]
+ a15(r88): [22..23]
+ a16(r87): [22..25]
+ a17(r101): [24..25]
+ a18(r100): [26..27]
+  pref0:a1(r98)<-hr21@1
+  regions=1, blocks=3, points=28
+    allocnos=19 (big 0), copies=0, conflicts=0, ranges=19
+Disposition:
+   16:r87  l0    22   15:r88  l0    21   10:r89  l0    22   12:r90  l0    23
+   11:r91  l0    21    9:r92  l0    21    4:r93  l0    22    6:r94  l0    23
+    5:r95  l0    21    3:r96  l0    21    2:r97  l0    21    1:r98  l0     0
+    0:r99  l0    21   18:r100 l0     0   17:r101 l0     0   14:r102 l0     0
+   13:r103 l0     0    8:r104 l0     0    7:r105 l0     0
++++Costs: overall -3, reg -3, mem 0, ld 0, st 0, move 0
++++       move loops 0, new jumps 0
+
+
+double Pythia8::Vec4::pAbs() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	 7 [sp] 16 [argp] 20 [frame]
+;;  regular block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 5 [di] 6 [bp] 7 [sp] 21 [xmm0]
+;;  ref usage 	r0={2d} r1={2d} r2={2d} r4={2d} r5={2d,1u} r6={1d,2u} r7={1d,3u} r8={1d} r9={1d} r10={1d} r11={1d} r12={1d} r13={1d} r14={1d} r15={1d} r16={1d,1u} r17={1d} r18={1d} r19={1d} r20={1d,9u} r21={4d,4u} r22={2d} r23={2d} r24={2d} r25={2d} r26={2d} r27={2d} r28={2d} r29={1d} r30={1d} r31={1d} r32={1d} r33={1d} r34={1d} r35={1d} r36={1d} r37={2d} r38={2d} r39={1d} r40={1d} r45={1d} r46={1d} r47={1d} r48={1d} r49={1d} r50={1d} r51={1d} r52={1d} r53={1d} r54={1d} r55={1d} r56={1d} r57={1d} r58={1d} r59={1d} r60={1d} r61={1d} r62={1d} r63={1d} r64={1d} r65={1d} r66={1d} r67={1d} r68={1d} r69={1d} r70={1d} r71={1d} r72={1d} r73={1d} r74={1d} r75={1d} r76={1d} r77={1d} r78={1d} r79={1d} r80={1d} r87={1d,1u} r88={1d,1u} r89={1d,1u} r90={1d,1u} r91={1d,1u} r92={1d,1u} r93={1d,1u} r94={1d,1u} r95={1d,1u} r96={1d,1u} r97={1d,1u} r98={1d,1u} r99={1d,1u} r100={1d,1u} r101={1d,1u} r102={1d,1u} r103={1d,1u} r104={1d,1u} r105={1d,1u} 
+;;    total ref usage 151{112d,39u,0e} in 24{23 regular + 1 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }u-1(16){ }u-1(20){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (expr_list:REG_DEAD (reg:DI 5 di [ this ])
+        (nil)))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 100)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 7 6 8 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 100) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 100)
+        (nil)))
+(insn 8 7 9 2 (set (reg/f:DI 101)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 9 8 10 2 (set (reg:DF 88 [ _4 ])
+        (mem:DF (reg/f:DI 101) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 101)
+        (nil)))
+(insn 10 9 11 2 (set (reg:DF 89 [ _5 ])
+        (mult:DF (reg:DF 87 [ _3 ])
+            (reg:DF 88 [ _4 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (expr_list:REG_DEAD (reg:DF 88 [ _4 ])
+        (expr_list:REG_DEAD (reg:DF 87 [ _3 ])
+            (nil))))
+(insn 11 10 12 2 (set (reg/f:DI 102)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 12 11 13 2 (set (reg:DF 90 [ _6 ])
+        (mem:DF (plus:DI (reg/f:DI 102)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 102)
+        (nil)))
+(insn 13 12 14 2 (set (reg/f:DI 103)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 2 (set (reg:DF 91 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 103)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 103)
+        (nil)))
+(insn 15 14 16 2 (set (reg:DF 92 [ _8 ])
+        (mult:DF (reg:DF 90 [ _6 ])
+            (reg:DF 91 [ _7 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (expr_list:REG_DEAD (reg:DF 91 [ _7 ])
+        (expr_list:REG_DEAD (reg:DF 90 [ _6 ])
+            (nil))))
+(insn 16 15 17 2 (set (reg:DF 93 [ _9 ])
+        (plus:DF (reg:DF 89 [ _5 ])
+            (reg:DF 92 [ _8 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (expr_list:REG_DEAD (reg:DF 92 [ _8 ])
+        (expr_list:REG_DEAD (reg:DF 89 [ _5 ])
+            (nil))))
+(insn 17 16 18 2 (set (reg/f:DI 104)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 18 17 19 2 (set (reg:DF 94 [ _10 ])
+        (mem:DF (plus:DI (reg/f:DI 104)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 104)
+        (nil)))
+(insn 19 18 20 2 (set (reg/f:DI 105)
+        (mem/f/c:DI (plus:DI (reg/f:DI 20 frame)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 95 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 105)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg/f:DI 105)
+        (nil)))
+(insn 21 20 22 2 (set (reg:DF 96 [ _12 ])
+        (mult:DF (reg:DF 94 [ _10 ])
+            (reg:DF 95 [ _11 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (expr_list:REG_DEAD (reg:DF 95 [ _11 ])
+        (expr_list:REG_DEAD (reg:DF 94 [ _10 ])
+            (nil))))
+(insn 22 21 23 2 (set (reg:DF 97 [ _13 ])
+        (plus:DF (reg:DF 93 [ _9 ])
+            (reg:DF 96 [ _12 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (expr_list:REG_DEAD (reg:DF 96 [ _12 ])
+        (expr_list:REG_DEAD (reg:DF 93 [ _9 ])
+            (nil))))
+(insn 23 22 24 2 (set (reg:DF 21 xmm0)
+        (reg:DF 97 [ _13 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 97 [ _13 ])
+        (nil)))
+(call_insn 24 23 25 2 (set (reg:DF 21 xmm0)
+        (call (mem:QI (symbol_ref:DI ("sqrt") [flags 0x41]  <function_decl 0x7f5320e1bc40 sqrt>) [0 __builtin_sqrt S1 A8])
+            (const_int 0 [0]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 684 {*call_value}
+     (expr_list:REG_EH_REGION (const_int 0 [0])
+        (nil))
+    (expr_list:DF (use (reg:DF 21 xmm0))
+        (nil)))
+(insn 25 24 28 2 (set (reg:DF 98 [ _15 ])
+        (reg:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 21 xmm0)
+        (nil)))
+(insn 28 25 32 2 (set (reg:DF 99 [ <retval> ])
+        (reg:DF 98 [ _15 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 98 [ _15 ])
+        (nil)))
+(insn 32 28 33 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 99 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (expr_list:REG_DEAD (reg:DF 99 [ <retval> ])
+        (nil)))
+(insn 33 32 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+

@@ -10,7 +10,7 @@ nev          = 1000
 checkOverlap = True
 G4only       = False
 storeOnlyMuons = False
-skipNeutrinos  = False
+skipNeutrinos  = True
 withEvtGen     = True
 boostDiMuon    = 1.
 boostFactor    = 1.
@@ -18,7 +18,7 @@ charm          = False
 beauty         = False
 chicc = 1.7e-3
 chibb = 1.6e-7
-npot  = 5E13
+npot  = 1E20
 nStart = 0
 
 charmInputFile = ROOT.gSystem.Getenv("EOSSHIP")+"/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root"
@@ -26,7 +26,7 @@ nStart = 0
 
 outputDir    = "."
 work_dir  = "./"
-ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
+ecut      = 10. # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
                  
 dy           = 10.
 dv           = 6 # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1

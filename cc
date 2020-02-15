@@ -1,0 +1,1 @@
+/cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/bin/gcc

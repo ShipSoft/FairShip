@@ -12,7 +12,7 @@ def isDP(pdg):
         return True
     return False
 
-def pbremProdRate(mass,epsilon,doprint=False):
+def pbremProdRate(mass,epsilon,doprint=True):
     xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
     if doprint: print "A' production rate per p.o.t: \t %.8g"%(xswg)
     rhoff = proton_bremsstrahlung.rhoFormFactor(mass)**2
@@ -20,7 +20,7 @@ def pbremProdRate(mass,epsilon,doprint=False):
     if doprint: print "A' rescaled production rate per p.o.t:\t %.8g"%(xswg*rhoff)
     return xswg*rhoff
 
-def pbremProdRateNoFF(mass,epsilon,doprint=False):
+def pbremProdRateNoFF(mass,epsilon,doprint=True):
     xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
     if doprint: print "A' production rate per p.o.t: \t %.8g"%(xswg)
     penalty = proton_bremsstrahlung.penaltyFactor(mass)
@@ -89,11 +89,11 @@ def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
     if mumPdg==331:
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0] 
         avgMeson1 = getAverageMesonRate(mumPdg)*brM2DP[1]
-        return avgMeson, avgMeson1
+        return avgMeson*0.6, avgMeson1*0.6
         #return avgMeson + avgMeson1
     if not mumPdg==331:
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP
-        return avgMeson
+        return avgMeson*0.6
     #if doprint==True: print "Average %d meson production rate per p.o.t: %.8g"%(mumPdg,avgMeson)
 
 #from interpolation of Pythia XS, normalised to epsilon^2
@@ -110,9 +110,11 @@ def qcdprodRate(mass,epsilon,doprint=False):
 
 def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
     if ('pbrem' in prodMode):
+        #print "FF"
         return pbremProdRate(mass,epsilon,doprint)
-    elif ('pbrem1' in prodMode):
-        return pbremProdRateNoFF(mass,epsilon,doprint)
+    #elif ('pbrem1' in prodMode):
+        print "noFF"
+        #return pbremProdRateNoFF(mass,epsilon,doprint)
     elif ('meson' in prodMode):
         return mesonProdRate(mass,epsilon,mumPdg,doprint)
     elif ('qcd' in prodMode):

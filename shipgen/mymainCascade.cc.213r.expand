@@ -1,0 +1,2657 @@
+
+;; Function void* operator new(std::size_t, void*) (_ZnwmPv, funcdef_no=600, decl_uid=13872, cgraph_uid=200, symbol_order=201)
+
+void* operator new(std::size_t, void*) (size_t D.13870, void * __p)
+{
+  void * D.436177;
+  void * _2;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _2 = __p_1(D);
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _2;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 1 (__p_1(D) - 1 )
+Partition 2 (_2 - 2 )
+Partition 4 (_4(D) - 4 )
+Partition 5 (_5(D) - 5 )
+
+
+Partition map 
+
+Partition 0 (__p_1(D) - 1 )
+Partition 1 (_4(D) - 4 )
+Partition 2 (_5(D) - 5 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (__p_1(D) - 1 )
+Partition 1 (_4(D) - 4 )
+Partition 2 (_5(D) - 5 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (__p_1(D) - 1 )
+Partition 1 (_2 - 2 )
+Partition 2 (_4(D) - 4 )
+Partition 3 (_5(D) - 5 )
+
+void* operator new(std::size_t, void*) (size_t D.13870, void * __p)
+{
+  void * D.436177;
+  void * _2;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _2 = __p_1(D);
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _2;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _2 = __p_1(D);
+
+(insn 7 6 0 (set (reg/f:DI 87 [ _2 ])
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [6 __p+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 8 7 9 2 "" [0 uses])
+
+(note 9 8 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _2;
+
+(insn 10 9 11 (set (reg/f:DI 88 [ <retval> ])
+        (reg/f:DI 87 [ _2 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+
+(jump_insn 11 10 12 (set (pc)
+        (label_ref 0)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+
+(barrier 12 11 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 11.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [5 D.13870+0 S8 A64])
+        (reg:DI 5 di [ D.13870 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [6 __p+0 S8 A64])
+        (reg:DI 4 si [ __p ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 10 2 (set (reg/f:DI 87 [ _2 ])
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [6 __p+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+(insn 10 7 14 2 (set (reg/f:DI 88 [ <retval> ])
+        (reg/f:DI 87 [ _2 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+(insn 14 10 15 2 (set (reg/i:DI 0 ax)
+        (reg/f:DI 88 [ <retval> ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+(insn 15 14 0 2 (use (reg/i:DI 0 ax)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function static std::size_t std::char_traits<char>::length(const char_type*) (_ZNSt11char_traitsIcE6lengthEPKc, funcdef_no=1085, decl_uid=18554, cgraph_uid=388, symbol_order=389)
+
+static std::size_t std::char_traits<char>::length(const char_type*) (const char_type * __s)
+{
+  size_t D.435931;
+  size_t _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = __builtin_strlen (__s_2(D));
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (__s_2(D) - 2 )
+Partition 3 (_3 - 3 )
+Partition 4 (_4(D) - 4 )
+
+
+Partition map 
+
+Partition 0 (__s_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (__s_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (__s_2(D) - 2 )
+Partition 1 (_3 - 3 )
+Partition 2 (_4(D) - 4 )
+
+static std::size_t std::char_traits<char>::length(const char_type*) (const char_type * __s)
+{
+  size_t D.435931;
+  size_t _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = __builtin_strlen (__s_2(D));
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _3 = __builtin_strlen (__s_2(D));
+
+(insn 12 5 6 (set (reg:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [3 __s+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(insn 6 12 7 (set (reg:DI 93)
+        (const_int -1 [0xffffffffffffffff])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(insn 7 6 8 (set (reg:DI 92)
+        (reg:DI 89)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(insn 8 7 9 (set (reg:QI 94)
+        (const_int 0 [0])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(insn 9 8 10 (parallel [
+            (set (reg:DI 90)
+                (unspec:DI [
+                        (mem:BLK (reg:DI 92) [0  A8])
+                        (reg:QI 94)
+                        (const_int 1 [0x1])
+                        (reg:DI 93)
+                    ] UNSPEC_SCAS))
+            (clobber (reg:DI 92))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(insn 10 9 11 (set (reg:DI 91)
+        (not:DI (reg:DI 90))) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(insn 11 10 0 (parallel [
+            (set (reg:DI 87 [ _3 ])
+                (plus:DI (reg:DI 91)
+                    (const_int -1 [0xffffffffffffffff])))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 13 11 14 4 "" [0 uses])
+
+(note 14 13 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _3;
+
+(insn 15 14 16 (set (reg:DI 88 [ <retval> ])
+        (reg:DI 87 [ _3 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(jump_insn 16 15 17 (set (pc)
+        (label_ref 0)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+
+(barrier 17 16 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 16.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [3 __s+0 S8 A64])
+        (reg:DI 5 di [ __s ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:266 -1
+     (nil))
+(note 3 2 12 2 NOTE_INSN_FUNCTION_BEG)
+(insn 12 3 6 2 (set (reg:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [3 __s+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 6 12 7 2 (set (reg:DI 93)
+        (const_int -1 [0xffffffffffffffff])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 7 6 8 2 (set (reg:DI 92)
+        (reg:DI 89)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 8 7 9 2 (set (reg:QI 94)
+        (const_int 0 [0])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 9 8 10 2 (parallel [
+            (set (reg:DI 90)
+                (unspec:DI [
+                        (mem:BLK (reg:DI 92) [0  A8])
+                        (reg:QI 94)
+                        (const_int 1 [0x1])
+                        (reg:DI 93)
+                    ] UNSPEC_SCAS))
+            (clobber (reg:DI 92))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 10 9 11 2 (set (reg:DI 91)
+        (not:DI (reg:DI 90))) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 11 10 15 2 (parallel [
+            (set (reg:DI 87 [ _3 ])
+                (plus:DI (reg:DI 91)
+                    (const_int -1 [0xffffffffffffffff])))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 15 11 19 2 (set (reg:DI 88 [ <retval> ])
+        (reg:DI 87 [ _3 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 19 15 20 2 (set (reg/i:DI 0 ax)
+        (reg:DI 88 [ <retval> ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+(insn 20 19 0 2 (use (reg/i:DI 0 ax)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function Pythia8::Vec4::Vec4(double, double, double, double) (_ZN7Pythia84Vec4C2Edddd, funcdef_no=3891, decl_uid=67515, cgraph_uid=893, symbol_order=898)
+
+Pythia8::Vec4::Vec4(double, double, double, double) (struct Vec4 * const this, double xIn, double yIn, double zIn, double tIn)
+{
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  MEM[(struct  &)this_2(D)] ={v} {CLOBBER};
+  this_2(D)->xx = xIn_4(D);
+  this_2(D)->yy = yIn_6(D);
+  this_2(D)->zz = zIn_8(D);
+  this_2(D)->tt = tIn_10(D);
+  return;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 4 (xIn_4(D) - 4 )
+Partition 6 (yIn_6(D) - 6 )
+Partition 8 (zIn_8(D) - 8 )
+Partition 10 (tIn_10(D) - 10 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (xIn_4(D) - 4 )
+Partition 2 (yIn_6(D) - 6 )
+Partition 3 (zIn_8(D) - 8 )
+Partition 4 (tIn_10(D) - 10 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (xIn_4(D) - 4 )
+Partition 2 (yIn_6(D) - 6 )
+Partition 3 (zIn_8(D) - 8 )
+Partition 4 (tIn_10(D) - 10 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (xIn_4(D) - 4 )
+Partition 2 (yIn_6(D) - 6 )
+Partition 3 (zIn_8(D) - 8 )
+Partition 4 (tIn_10(D) - 10 )
+
+Pythia8::Vec4::Vec4(double, double, double, double) (struct Vec4 * const this, double xIn, double yIn, double zIn, double tIn)
+{
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  MEM[(struct  &)this_2(D)] ={v} {CLOBBER};
+  this_2(D)->xx = xIn_4(D);
+  this_2(D)->yy = yIn_6(D);
+  this_2(D)->zz = zIn_8(D);
+  this_2(D)->tt = tIn_10(D);
+  return;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; MEM[(struct  &)this_2(D)] ={v} {CLOBBER};
+
+(nil)
+
+;; this_2(D)->xx = xIn_4(D);
+
+(insn 10 9 11 (set (reg/f:DI 87)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 11 10 12 (set (reg:DF 88)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [11 xIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 12 11 0 (set (mem:DF (reg/f:DI 87) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 88)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+;; this_2(D)->yy = yIn_6(D);
+
+(insn 13 12 14 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 14 13 15 (set (reg:DF 90)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -24 [0xffffffffffffffe8])) [11 yIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 15 14 0 (set (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 90)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+;; this_2(D)->zz = zIn_8(D);
+
+(insn 16 15 17 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 17 16 18 (set (reg:DF 92)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -32 [0xffffffffffffffe0])) [11 zIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 18 17 0 (set (mem:DF (plus:DI (reg/f:DI 91)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 92)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+;; this_2(D)->tt = tIn_10(D);
+
+(insn 19 18 20 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 20 19 21 (set (reg:DF 94)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -40 [0xffffffffffffffd8])) [11 tIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+(insn 21 20 0 (set (mem:DF (plus:DI (reg/f:DI 93)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 94)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 8 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 8 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 8 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 -1
+     (nil))
+(insn 3 2 4 2 (set (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [11 xIn+0 S8 A64])
+        (reg:DF 21 xmm0 [ xIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 -1
+     (nil))
+(insn 4 3 5 2 (set (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -24 [0xffffffffffffffe8])) [11 yIn+0 S8 A64])
+        (reg:DF 22 xmm1 [ yIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 -1
+     (nil))
+(insn 5 4 6 2 (set (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -32 [0xffffffffffffffe0])) [11 zIn+0 S8 A64])
+        (reg:DF 23 xmm2 [ zIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 -1
+     (nil))
+(insn 6 5 7 2 (set (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -40 [0xffffffffffffffd8])) [11 tIn+0 S8 A64])
+        (reg:DF 24 xmm3 [ tIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 -1
+     (nil))
+(note 7 6 10 2 NOTE_INSN_FUNCTION_BEG)
+(insn 10 7 11 2 (set (reg/f:DI 87)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 11 10 12 2 (set (reg:DF 88)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [11 xIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 12 11 13 2 (set (mem:DF (reg/f:DI 87) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 88)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 14 13 15 2 (set (reg:DF 90)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -24 [0xffffffffffffffe8])) [11 yIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 15 14 16 2 (set (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 90)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 16 15 17 2 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 17 16 18 2 (set (reg:DF 92)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -32 [0xffffffffffffffe0])) [11 zIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 18 17 19 2 (set (mem:DF (plus:DI (reg/f:DI 91)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 92)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 19 18 20 2 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 94)
+        (mem/c:DF (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -40 [0xffffffffffffffd8])) [11 tIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 21 20 24 2 (set (mem:DF (plus:DI (reg/f:DI 93)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 94)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+(insn 24 21 0 2 (const_int 0 [0]) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function Pythia8::Vec4::Vec4(const Pythia8::Vec4&) (_ZN7Pythia84Vec4C2ERKS0_, funcdef_no=3894, decl_uid=67506, cgraph_uid=896, symbol_order=901)
+
+Pythia8::Vec4::Vec4(const Pythia8::Vec4&) (struct Vec4 * const this, const struct Vec4 & v)
+{
+  double D.436153;
+  double D.436152;
+  double D.436151;
+  double D.436150;
+  double _5;
+  double _7;
+  double _9;
+  double _11;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  MEM[(struct  &)this_2(D)] ={v} {CLOBBER};
+  _5 = v_4(D)->xx;
+  this_2(D)->xx = _5;
+  _7 = v_4(D)->yy;
+  this_2(D)->yy = _7;
+  _9 = v_4(D)->zz;
+  this_2(D)->zz = _9;
+  _11 = v_4(D)->tt;
+  this_2(D)->tt = _11;
+  return;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 4 (v_4(D) - 4 )
+Partition 5 (_5 - 5 )
+Partition 7 (_7 - 7 )
+Partition 9 (_9 - 9 )
+Partition 11 (_11 - 11 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (v_4(D) - 4 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (v_4(D) - 4 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (v_4(D) - 4 )
+Partition 2 (_5 - 5 )
+Partition 3 (_7 - 7 )
+Partition 4 (_9 - 9 )
+Partition 5 (_11 - 11 )
+
+Pythia8::Vec4::Vec4(const Pythia8::Vec4&) (struct Vec4 * const this, const struct Vec4 & v)
+{
+  double D.436153;
+  double D.436152;
+  double D.436151;
+  double D.436150;
+  double _5;
+  double _7;
+  double _9;
+  double _11;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  MEM[(struct  &)this_2(D)] ={v} {CLOBBER};
+  _5 = v_4(D)->xx;
+  this_2(D)->xx = _5;
+  _7 = v_4(D)->yy;
+  this_2(D)->yy = _7;
+  _9 = v_4(D)->zz;
+  this_2(D)->zz = _9;
+  _11 = v_4(D)->tt;
+  this_2(D)->tt = _11;
+  return;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; MEM[(struct  &)this_2(D)] ={v} {CLOBBER};
+
+(nil)
+
+;; _5 = v_4(D)->xx;
+
+(insn 7 6 8 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 8 7 0 (set (reg:DF 87 [ _5 ])
+        (mem:DF (reg/f:DI 91) [11 v_4(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+;; this_2(D)->xx = _5;
+
+(insn 9 8 10 (set (reg/f:DI 92)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 10 9 0 (set (mem:DF (reg/f:DI 92) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 87 [ _5 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+;; _7 = v_4(D)->yy;
+
+(insn 11 10 12 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 12 11 0 (set (reg:DF 88 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 93)
+                (const_int 8 [0x8])) [11 v_4(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+;; this_2(D)->yy = _7;
+
+(insn 13 12 14 (set (reg/f:DI 94)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 14 13 0 (set (mem:DF (plus:DI (reg/f:DI 94)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 88 [ _7 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+;; _9 = v_4(D)->zz;
+
+(insn 15 14 16 (set (reg/f:DI 95)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 16 15 0 (set (reg:DF 89 [ _9 ])
+        (mem:DF (plus:DI (reg/f:DI 95)
+                (const_int 16 [0x10])) [11 v_4(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+;; this_2(D)->zz = _9;
+
+(insn 17 16 18 (set (reg/f:DI 96)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 18 17 0 (set (mem:DF (plus:DI (reg/f:DI 96)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 89 [ _9 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+;; _11 = v_4(D)->tt;
+
+(insn 19 18 20 (set (reg/f:DI 97)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 20 19 0 (set (reg:DF 90 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 97)
+                (const_int 24 [0x18])) [11 v_4(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+;; this_2(D)->tt = _11;
+
+(insn 21 20 22 (set (reg/f:DI 98)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+(insn 22 21 0 (set (mem:DF (plus:DI (reg/f:DI 98)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 90 [ _11 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])
+        (reg:DI 4 si [ v ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 8 2 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 8 7 9 2 (set (reg:DF 87 [ _5 ])
+        (mem:DF (reg/f:DI 91) [11 v_4(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 9 8 10 2 (set (reg/f:DI 92)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 10 9 11 2 (set (mem:DF (reg/f:DI 92) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 87 [ _5 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 11 10 12 2 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 12 11 13 2 (set (reg:DF 88 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 93)
+                (const_int 8 [0x8])) [11 v_4(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 94)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 14 13 15 2 (set (mem:DF (plus:DI (reg/f:DI 94)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 88 [ _7 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 15 14 16 2 (set (reg/f:DI 95)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 16 15 17 2 (set (reg:DF 89 [ _9 ])
+        (mem:DF (plus:DI (reg/f:DI 95)
+                (const_int 16 [0x10])) [11 v_4(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 17 16 18 2 (set (reg/f:DI 96)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 18 17 19 2 (set (mem:DF (plus:DI (reg/f:DI 96)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 89 [ _9 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 19 18 20 2 (set (reg/f:DI 97)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 90 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 97)
+                (const_int 24 [0x18])) [11 v_4(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 21 20 22 2 (set (reg/f:DI 98)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 22 21 25 2 (set (mem:DF (plus:DI (reg/f:DI 98)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 90 [ _11 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+(insn 25 22 0 2 (const_int 0 [0]) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function Pythia8::Vec4& Pythia8::Vec4::operator=(const Pythia8::Vec4&) (_ZN7Pythia84Vec4aSERKS0_, funcdef_no=3896, decl_uid=67291, cgraph_uid=898, symbol_order=903)
+
+Pythia8::Vec4& Pythia8::Vec4::operator=(const Pythia8::Vec4&) (struct Vec4 * const this, const struct Vec4 & v)
+{
+  struct Vec4 & D.437258;
+  double D.437256;
+  double D.437255;
+  double D.437254;
+  double D.437253;
+  double _5;
+  double _7;
+  double _9;
+  double _11;
+  struct Vec4 & _13;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  if (this_2(D) != v_3(D))
+    goto <bb 3>;
+  else
+    goto <bb 4>;
+;;    succ:       3
+;;                4
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+  _5 = v_3(D)->xx;
+  this_2(D)->xx = _5;
+  _7 = v_3(D)->yy;
+  this_2(D)->yy = _7;
+  _9 = v_3(D)->zz;
+  this_2(D)->zz = _9;
+  _11 = v_3(D)->tt;
+  this_2(D)->tt = _11;
+;;    succ:       4
+
+;;   basic block 4, loop depth 0
+;;    pred:       2
+;;                3
+  _13 = this_2(D);
+;;    succ:       5
+
+;;   basic block 5, loop depth 0
+;;    pred:       4
+<L3>:
+  return _13;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 3 (v_3(D) - 3 )
+Partition 5 (_5 - 5 )
+Partition 7 (_7 - 7 )
+Partition 9 (_9 - 9 )
+Partition 11 (_11 - 11 )
+Partition 13 (_13 - 13 )
+Partition 14 (_14(D) - 14 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (v_3(D) - 3 )
+Partition 2 (_14(D) - 14 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (v_3(D) - 3 )
+Partition 2 (_14(D) - 14 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (v_3(D) - 3 )
+Partition 2 (_5 - 5 )
+Partition 3 (_7 - 7 )
+Partition 4 (_9 - 9 )
+Partition 5 (_11 - 11 )
+Partition 6 (_13 - 13 )
+Partition 7 (_14(D) - 14 )
+
+Pythia8::Vec4& Pythia8::Vec4::operator=(const Pythia8::Vec4&) (struct Vec4 * const this, const struct Vec4 & v)
+{
+  struct Vec4 & D.437258;
+  double D.437256;
+  double D.437255;
+  double D.437254;
+  double D.437253;
+  double _5;
+  double _7;
+  double _9;
+  double _11;
+  struct Vec4 & _13;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  if (this_2(D) != v_3(D))
+    goto <bb 3>;
+  else
+    goto <bb 4>;
+;;    succ:       3
+;;                4
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+  _5 = v_3(D)->xx;
+  this_2(D)->xx = _5;
+  _7 = v_3(D)->yy;
+  this_2(D)->yy = _7;
+  _9 = v_3(D)->zz;
+  this_2(D)->zz = _9;
+  _11 = v_3(D)->tt;
+  this_2(D)->tt = _11;
+;;    succ:       4
+
+;;   basic block 4, loop depth 0
+;;    pred:       2
+;;                3
+  _13 = this_2(D);
+;;    succ:       5
+
+;;   basic block 5, loop depth 0
+;;    pred:       4
+<L3>:
+  return _13;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; if (this_2(D) != v_3(D))
+
+(insn 7 6 8 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+(insn 8 7 9 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/f:DI 93)
+            (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                    (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+(jump_insn 9 8 0 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 0)
+            (pc))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; _5 = v_3(D)->xx;
+
+(insn 11 10 12 (set (reg/f:DI 94)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+(insn 12 11 0 (set (reg:DF 87 [ _5 ])
+        (mem:DF (reg/f:DI 94) [11 v_3(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+;; this_2(D)->xx = _5;
+
+(insn 13 12 14 (set (reg/f:DI 95)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+(insn 14 13 0 (set (mem:DF (reg/f:DI 95) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 87 [ _5 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+;; _7 = v_3(D)->yy;
+
+(insn 15 14 16 (set (reg/f:DI 96)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+(insn 16 15 0 (set (reg:DF 88 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 96)
+                (const_int 8 [0x8])) [11 v_3(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+;; this_2(D)->yy = _7;
+
+(insn 17 16 18 (set (reg/f:DI 97)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+(insn 18 17 0 (set (mem:DF (plus:DI (reg/f:DI 97)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 88 [ _7 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+
+;; _9 = v_3(D)->zz;
+
+(insn 19 18 20 (set (reg/f:DI 98)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+(insn 20 19 0 (set (reg:DF 89 [ _9 ])
+        (mem:DF (plus:DI (reg/f:DI 98)
+                (const_int 16 [0x10])) [11 v_3(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+;; this_2(D)->zz = _9;
+
+(insn 21 20 22 (set (reg/f:DI 99)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+(insn 22 21 0 (set (mem:DF (plus:DI (reg/f:DI 99)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 89 [ _9 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+;; _11 = v_3(D)->tt;
+
+(insn 23 22 24 (set (reg/f:DI 100)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+(insn 24 23 0 (set (reg:DF 90 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 100)
+                (const_int 24 [0x18])) [11 v_3(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+;; this_2(D)->tt = _11;
+
+(insn 25 24 26 (set (reg/f:DI 101)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+(insn 26 25 0 (set (mem:DF (plus:DI (reg/f:DI 101)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 90 [ _11 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 4
+
+;; 
+
+(code_label 27 26 28 8 "" [0 uses])
+
+(note 28 27 0 NOTE_INSN_BASIC_BLOCK)
+
+;; _13 = this_2(D);
+
+(insn 29 28 0 (set (reg/f:DI 91 [ _13 ])
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 5
+
+;; <L3>:
+
+(code_label 30 29 31 9 "" [0 uses])
+
+(note 31 30 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _13;
+
+(insn 32 31 33 (set (reg/f:DI 92 [ <retval> ])
+        (reg/f:DI 91 [ _13 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+(jump_insn 33 32 34 (set (pc)
+        (label_ref 0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+
+(barrier 34 33 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 6 into block 5...
+Merged blocks 5 and 6.
+Merged 5 and 6 without moving.
+Removing jump 33.
+Merging block 7 into block 5...
+Merged blocks 5 and 7.
+Merged 5 and 7 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 4, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])
+        (reg:DI 4 si [ v ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 8 2 (set (reg/f:DI 93)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 8 7 9 2 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/f:DI 93)
+            (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                    (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(jump_insn 9 8 10 2 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 27)
+            (pc))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil)
+ -> 27)
+;;  succ:       4 (FALLTHRU)
+;;              5
+
+;; basic block 4, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 2, next block 5, flags: (NEW, REACHABLE, RTL)
+;;  pred:       2 (FALLTHRU)
+(note 10 9 11 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 11 10 12 4 (set (reg/f:DI 94)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 12 11 13 4 (set (reg:DF 87 [ _5 ])
+        (mem:DF (reg/f:DI 94) [11 v_3(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 13 12 14 4 (set (reg/f:DI 95)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 14 13 15 4 (set (mem:DF (reg/f:DI 95) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 87 [ _5 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 15 14 16 4 (set (reg/f:DI 96)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 16 15 17 4 (set (reg:DF 88 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 96)
+                (const_int 8 [0x8])) [11 v_3(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 17 16 18 4 (set (reg/f:DI 97)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 18 17 19 4 (set (mem:DF (plus:DI (reg/f:DI 97)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 88 [ _7 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 -1
+     (nil))
+(insn 19 18 20 4 (set (reg/f:DI 98)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 20 19 21 4 (set (reg:DF 89 [ _9 ])
+        (mem:DF (plus:DI (reg/f:DI 98)
+                (const_int 16 [0x10])) [11 v_3(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 21 20 22 4 (set (reg/f:DI 99)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 22 21 23 4 (set (mem:DF (plus:DI (reg/f:DI 99)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 89 [ _9 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 23 22 24 4 (set (reg/f:DI 100)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 24 23 25 4 (set (reg:DF 90 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 100)
+                (const_int 24 [0x18])) [11 v_3(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 25 24 26 4 (set (reg/f:DI 101)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 26 25 27 4 (set (mem:DF (plus:DI (reg/f:DI 101)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 90 [ _11 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+;;  succ:       5 (FALLTHRU)
+
+;; basic block 5, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 4, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       2
+;;              4 (FALLTHRU)
+(code_label 27 26 28 5 8 "" [1 uses])
+(note 28 27 29 5 [bb 5] NOTE_INSN_BASIC_BLOCK)
+(insn 29 28 32 5 (set (reg/f:DI 91 [ _13 ])
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 32 29 36 5 (set (reg/f:DI 92 [ <retval> ])
+        (reg/f:DI 91 [ _13 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 36 32 37 5 (set (reg/i:DI 0 ax)
+        (reg/f:DI 92 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+(insn 37 36 0 5 (use (reg/i:DI 0 ax)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function double Pythia8::Vec4::px() const (_ZNK7Pythia84Vec42pxEv, funcdef_no=3905, decl_uid=67319, cgraph_uid=907, symbol_order=912)
+
+double Pythia8::Vec4::px() const (const struct Vec4 * const this)
+{
+  double D.435914;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->xx;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 3 (_3 - 3 )
+Partition 4 (_4(D) - 4 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_3 - 3 )
+Partition 2 (_4(D) - 4 )
+
+double Pythia8::Vec4::px() const (const struct Vec4 * const this)
+{
+  double D.435914;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->xx;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _3 = this_2(D)->xx;
+
+(insn 6 5 7 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+
+(insn 7 6 0 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 89) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 8 7 9 11 "" [0 uses])
+
+(note 9 8 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _3;
+
+(insn 10 9 11 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+
+(jump_insn 11 10 12 (set (pc)
+        (label_ref 0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+
+(barrier 12 11 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 11.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 89) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function double Pythia8::Vec4::py() const (_ZNK7Pythia84Vec42pyEv, funcdef_no=3906, decl_uid=67321, cgraph_uid=908, symbol_order=913)
+
+double Pythia8::Vec4::py() const (const struct Vec4 * const this)
+{
+  double D.435916;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->yy;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 3 (_3 - 3 )
+Partition 4 (_4(D) - 4 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_3 - 3 )
+Partition 2 (_4(D) - 4 )
+
+double Pythia8::Vec4::py() const (const struct Vec4 * const this)
+{
+  double D.435916;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->yy;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _3 = this_2(D)->yy;
+
+(insn 6 5 7 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+
+(insn 7 6 0 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 8 7 9 13 "" [0 uses])
+
+(note 9 8 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _3;
+
+(insn 10 9 11 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+
+(jump_insn 11 10 12 (set (pc)
+        (label_ref 0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+
+(barrier 12 11 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 11.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function double Pythia8::Vec4::pz() const (_ZNK7Pythia84Vec42pzEv, funcdef_no=3907, decl_uid=67323, cgraph_uid=909, symbol_order=914)
+
+double Pythia8::Vec4::pz() const (const struct Vec4 * const this)
+{
+  double D.435918;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->zz;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 3 (_3 - 3 )
+Partition 4 (_4(D) - 4 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_3 - 3 )
+Partition 2 (_4(D) - 4 )
+
+double Pythia8::Vec4::pz() const (const struct Vec4 * const this)
+{
+  double D.435918;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->zz;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _3 = this_2(D)->zz;
+
+(insn 6 5 7 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+
+(insn 7 6 0 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 8 7 9 15 "" [0 uses])
+
+(note 9 8 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _3;
+
+(insn 10 9 11 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+
+(jump_insn 11 10 12 (set (pc)
+        (label_ref 0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+
+(barrier 12 11 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 11.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function double Pythia8::Vec4::e() const (_ZNK7Pythia84Vec41eEv, funcdef_no=3908, decl_uid=67325, cgraph_uid=910, symbol_order=915)
+
+double Pythia8::Vec4::e() const (const struct Vec4 * const this)
+{
+  double D.435912;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->tt;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 3 (_3 - 3 )
+Partition 4 (_4(D) - 4 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_4(D) - 4 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_3 - 3 )
+Partition 2 (_4(D) - 4 )
+
+double Pythia8::Vec4::e() const (const struct Vec4 * const this)
+{
+  double D.435912;
+  double _3;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->tt;
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _3;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _3 = this_2(D)->tt;
+
+(insn 6 5 7 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+
+(insn 7 6 0 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 8 7 9 17 "" [0 uses])
+
+(note 9 8 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _3;
+
+(insn 10 9 11 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+
+(jump_insn 11 10 12 (set (pc)
+        (label_ref 0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+
+(barrier 12 11 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 11.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 89)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+(insn 7 6 10 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (plus:DI (reg/f:DI 89)
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+(insn 10 7 14 2 (set (reg:DF 88 [ <retval> ])
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+(insn 14 10 15 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 88 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+(insn 15 14 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function double Pythia8::Vec4::pAbs() const (_ZNK7Pythia84Vec44pAbsEv, funcdef_no=3914, decl_uid=67338, cgraph_uid=916, symbol_order=921)
+
+double Pythia8::Vec4::pAbs() const (const struct Vec4 * const this)
+{
+  double D.437285;
+  double D.437284;
+  double D.437283;
+  double D.437282;
+  double D.437281;
+  double D.437280;
+  double D.437279;
+  double D.437278;
+  double D.437277;
+  double D.437276;
+  double D.437275;
+  double D.437274;
+  double _3;
+  double _4;
+  double _5;
+  double _6;
+  double _7;
+  double _8;
+  double _9;
+  double _10;
+  double _11;
+  double _12;
+  double _13;
+  double _15;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->xx;
+  _4 = this_2(D)->xx;
+  _5 = _3 * _4;
+  _6 = this_2(D)->yy;
+  _7 = this_2(D)->yy;
+  _8 = _6 * _7;
+  _9 = _5 + _8;
+  _10 = this_2(D)->zz;
+  _11 = this_2(D)->zz;
+  _12 = _10 * _11;
+  _13 = _9 + _12;
+  _15 = sqrt (_13);
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _15;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 3 (_3 - 3 )
+Partition 4 (_4 - 4 )
+Partition 5 (_5 - 5 )
+Partition 6 (_6 - 6 )
+Partition 7 (_7 - 7 )
+Partition 8 (_8 - 8 )
+Partition 9 (_9 - 9 )
+Partition 10 (_10 - 10 )
+Partition 11 (_11 - 11 )
+Partition 12 (_12 - 12 )
+Partition 13 (_13 - 13 )
+Partition 15 (_15 - 15 )
+Partition 16 (_16(D) - 16 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_16(D) - 16 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_16(D) - 16 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_3 - 3 )
+Partition 2 (_4 - 4 )
+Partition 3 (_5 - 5 )
+Partition 4 (_6 - 6 )
+Partition 5 (_7 - 7 )
+Partition 6 (_8 - 8 )
+Partition 7 (_9 - 9 )
+Partition 8 (_10 - 10 )
+Partition 9 (_11 - 11 )
+Partition 10 (_12 - 12 )
+Partition 11 (_13 - 13 )
+Partition 12 (_15 - 15 )
+Partition 13 (_16(D) - 16 )
+
+double Pythia8::Vec4::pAbs() const (const struct Vec4 * const this)
+{
+  double D.437285;
+  double D.437284;
+  double D.437283;
+  double D.437282;
+  double D.437281;
+  double D.437280;
+  double D.437279;
+  double D.437278;
+  double D.437277;
+  double D.437276;
+  double D.437275;
+  double D.437274;
+  double _3;
+  double _4;
+  double _5;
+  double _6;
+  double _7;
+  double _8;
+  double _9;
+  double _10;
+  double _11;
+  double _12;
+  double _13;
+  double _15;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->xx;
+  _4 = this_2(D)->xx;
+  _5 = _3 * _4;
+  _6 = this_2(D)->yy;
+  _7 = this_2(D)->yy;
+  _8 = _6 * _7;
+  _9 = _5 + _8;
+  _10 = this_2(D)->zz;
+  _11 = this_2(D)->zz;
+  _12 = _10 * _11;
+  _13 = _9 + _12;
+  _15 = sqrt (_13);
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _15;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _3 = this_2(D)->xx;
+
+(insn 6 5 7 (set (reg/f:DI 100)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(insn 7 6 0 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 100) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _4 = this_2(D)->xx;
+
+(insn 8 7 9 (set (reg/f:DI 101)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(insn 9 8 0 (set (reg:DF 88 [ _4 ])
+        (mem:DF (reg/f:DI 101) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _5 = _3 * _4;
+
+(insn 10 9 0 (set (reg:DF 89 [ _5 ])
+        (mult:DF (reg:DF 87 [ _3 ])
+            (reg:DF 88 [ _4 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _6 = this_2(D)->yy;
+
+(insn 11 10 12 (set (reg/f:DI 102)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(insn 12 11 0 (set (reg:DF 90 [ _6 ])
+        (mem:DF (plus:DI (reg/f:DI 102)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _7 = this_2(D)->yy;
+
+(insn 13 12 14 (set (reg/f:DI 103)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(insn 14 13 0 (set (reg:DF 91 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 103)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _8 = _6 * _7;
+
+(insn 15 14 0 (set (reg:DF 92 [ _8 ])
+        (mult:DF (reg:DF 90 [ _6 ])
+            (reg:DF 91 [ _7 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _9 = _5 + _8;
+
+(insn 16 15 0 (set (reg:DF 93 [ _9 ])
+        (plus:DF (reg:DF 89 [ _5 ])
+            (reg:DF 92 [ _8 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _10 = this_2(D)->zz;
+
+(insn 17 16 18 (set (reg/f:DI 104)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(insn 18 17 0 (set (reg:DF 94 [ _10 ])
+        (mem:DF (plus:DI (reg/f:DI 104)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _11 = this_2(D)->zz;
+
+(insn 19 18 20 (set (reg/f:DI 105)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(insn 20 19 0 (set (reg:DF 95 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 105)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _12 = _10 * _11;
+
+(insn 21 20 0 (set (reg:DF 96 [ _12 ])
+        (mult:DF (reg:DF 94 [ _10 ])
+            (reg:DF 95 [ _11 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _13 = _9 + _12;
+
+(insn 22 21 0 (set (reg:DF 97 [ _13 ])
+        (plus:DF (reg:DF 93 [ _9 ])
+            (reg:DF 96 [ _12 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; _15 = sqrt (_13);
+
+(insn 23 22 24 (set (reg:DF 21 xmm0)
+        (reg:DF 97 [ _13 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(call_insn 24 23 25 (set (reg:DF 21 xmm0)
+        (call (mem:QI (symbol_ref:DI ("sqrt") [flags 0x41]  <function_decl 0x7f5320e1bc40 sqrt>) [0 __builtin_sqrt S1 A8])
+            (const_int 0 [0]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (expr_list:REG_EH_REGION (const_int 0 [0])
+        (nil))
+    (expr_list:DF (use (reg:DF 21 xmm0))
+        (nil)))
+
+(insn 25 24 0 (set (reg:DF 98 [ _15 ])
+        (reg:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 26 25 27 19 "" [0 uses])
+
+(note 27 26 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _15;
+
+(insn 28 27 29 (set (reg:DF 99 [ <retval> ])
+        (reg:DF 98 [ _15 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(jump_insn 29 28 30 (set (pc)
+        (label_ref 0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+
+(barrier 30 29 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 29.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 100)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 7 6 8 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 100) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 8 7 9 2 (set (reg/f:DI 101)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 9 8 10 2 (set (reg:DF 88 [ _4 ])
+        (mem:DF (reg/f:DI 101) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 10 9 11 2 (set (reg:DF 89 [ _5 ])
+        (mult:DF (reg:DF 87 [ _3 ])
+            (reg:DF 88 [ _4 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 11 10 12 2 (set (reg/f:DI 102)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 12 11 13 2 (set (reg:DF 90 [ _6 ])
+        (mem:DF (plus:DI (reg/f:DI 102)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 103)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 14 13 15 2 (set (reg:DF 91 [ _7 ])
+        (mem:DF (plus:DI (reg/f:DI 103)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 15 14 16 2 (set (reg:DF 92 [ _8 ])
+        (mult:DF (reg:DF 90 [ _6 ])
+            (reg:DF 91 [ _7 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 16 15 17 2 (set (reg:DF 93 [ _9 ])
+        (plus:DF (reg:DF 89 [ _5 ])
+            (reg:DF 92 [ _8 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 17 16 18 2 (set (reg/f:DI 104)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 18 17 19 2 (set (reg:DF 94 [ _10 ])
+        (mem:DF (plus:DI (reg/f:DI 104)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 19 18 20 2 (set (reg/f:DI 105)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 95 [ _11 ])
+        (mem:DF (plus:DI (reg/f:DI 105)
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 21 20 22 2 (set (reg:DF 96 [ _12 ])
+        (mult:DF (reg:DF 94 [ _10 ])
+            (reg:DF 95 [ _11 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 22 21 23 2 (set (reg:DF 97 [ _13 ])
+        (plus:DF (reg:DF 93 [ _9 ])
+            (reg:DF 96 [ _12 ]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 23 22 24 2 (set (reg:DF 21 xmm0)
+        (reg:DF 97 [ _13 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(call_insn 24 23 25 2 (set (reg:DF 21 xmm0)
+        (call (mem:QI (symbol_ref:DI ("sqrt") [flags 0x41]  <function_decl 0x7f5320e1bc40 sqrt>) [0 __builtin_sqrt S1 A8])
+            (const_int 0 [0]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (expr_list:REG_EH_REGION (const_int 0 [0])
+        (nil))
+    (expr_list:DF (use (reg:DF 21 xmm0))
+        (nil)))
+(insn 25 24 28 2 (set (reg:DF 98 [ _15 ])
+        (reg:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 28 25 32 2 (set (reg:DF 99 [ <retval> ])
+        (reg:DF 98 [ _15 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 32 28 33 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 99 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+(insn 33 32 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+
+
+;; Function double Pythia8::Vec4::phi() const (_ZNK7Pythia84Vec43phiEv, funcdef_no=3919, decl_uid=67348, cgraph_uid=921, symbol_order=926)
+
+double Pythia8::Vec4::phi() const (const struct Vec4 * const this)
+{
+  double D.437296;
+  double D.437295;
+  double D.437294;
+  double _3;
+  double _4;
+  double _6;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->xx;
+  _4 = this_2(D)->yy;
+  _6 = atan2 (_4, _3);
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _6;
+;;    succ:       EXIT
+
+}
+
+
+
+Partition map 
+
+Partition 2 (this_2(D) - 2 )
+Partition 3 (_3 - 3 )
+Partition 4 (_4 - 4 )
+Partition 6 (_6 - 6 )
+Partition 7 (_7(D) - 7 )
+
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_7(D) - 7 )
+
+
+Conflict graph:
+
+After sorting:
+Coalesce List:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_7(D) - 7 )
+
+After Coalescing:
+
+Partition map 
+
+Partition 0 (this_2(D) - 2 )
+Partition 1 (_3 - 3 )
+Partition 2 (_4 - 4 )
+Partition 3 (_6 - 6 )
+Partition 4 (_7(D) - 7 )
+
+double Pythia8::Vec4::phi() const (const struct Vec4 * const this)
+{
+  double D.437296;
+  double D.437295;
+  double D.437294;
+  double _3;
+  double _4;
+  double _6;
+
+;;   basic block 2, loop depth 0
+;;    pred:       ENTRY
+  _3 = this_2(D)->xx;
+  _4 = this_2(D)->yy;
+  _6 = atan2 (_4, _3);
+;;    succ:       3
+
+;;   basic block 3, loop depth 0
+;;    pred:       2
+<L0>:
+  return _6;
+;;    succ:       EXIT
+
+}
+
+
+
+;; Generating RTL for gimple basic block 2
+
+;; _3 = this_2(D)->xx;
+
+(insn 6 5 7 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+(insn 7 6 0 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 91) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+;; _4 = this_2(D)->yy;
+
+(insn 8 7 9 (set (reg/f:DI 92)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+(insn 9 8 0 (set (reg:DF 88 [ _4 ])
+        (mem:DF (plus:DI (reg/f:DI 92)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+;; _6 = atan2 (_4, _3);
+
+(insn 10 9 11 (set (reg:DF 22 xmm1)
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+(insn 11 10 12 (set (reg:DF 21 xmm0)
+        (reg:DF 88 [ _4 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+(call_insn 12 11 13 (set (reg:DF 21 xmm0)
+        (call (mem:QI (symbol_ref:DI ("atan2") [flags 0x41]  <function_decl 0x7f5320dd6700 atan2>) [0 __builtin_atan2 S1 A8])
+            (const_int 0 [0]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (expr_list:REG_EH_REGION (const_int 0 [0])
+        (nil))
+    (expr_list:DF (use (reg:DF 21 xmm0))
+        (expr_list:DF (use (reg:DF 22 xmm1))
+            (nil))))
+
+(insn 13 12 0 (set (reg:DF 89 [ _6 ])
+        (reg:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+;; Generating RTL for gimple basic block 3
+
+;; <L0>:
+
+(code_label 14 13 15 21 "" [0 uses])
+
+(note 15 14 0 NOTE_INSN_BASIC_BLOCK)
+
+;; return _6;
+
+(insn 16 15 17 (set (reg:DF 90 [ <retval> ])
+        (reg:DF 89 [ _6 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+(jump_insn 17 16 18 (set (pc)
+        (label_ref 0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+
+(barrier 18 17 0)
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Merging block 4 into block 2...
+Merged blocks 2 and 4.
+Merged 2 and 4 without moving.
+Removing jump 17.
+Merging block 5 into block 2...
+Merged blocks 2 and 5.
+Merged 2 and 5 without moving.
+
+
+try_optimize_cfg iteration 2
+
+fix_loop_structure: fixing up loops for function
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL)
+;;  pred:       ENTRY (FALLTHRU)
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 91)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 7 6 8 2 (set (reg:DF 87 [ _3 ])
+        (mem:DF (reg/f:DI 91) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 8 7 9 2 (set (reg/f:DI 92)
+        (mem/f/c:DI (plus:DI (reg/f:DI 82 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 9 8 10 2 (set (reg:DF 88 [ _4 ])
+        (mem:DF (plus:DI (reg/f:DI 92)
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 10 9 11 2 (set (reg:DF 22 xmm1)
+        (reg:DF 87 [ _3 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 11 10 12 2 (set (reg:DF 21 xmm0)
+        (reg:DF 88 [ _4 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(call_insn 12 11 13 2 (set (reg:DF 21 xmm0)
+        (call (mem:QI (symbol_ref:DI ("atan2") [flags 0x41]  <function_decl 0x7f5320dd6700 atan2>) [0 __builtin_atan2 S1 A8])
+            (const_int 0 [0]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (expr_list:REG_EH_REGION (const_int 0 [0])
+        (nil))
+    (expr_list:DF (use (reg:DF 21 xmm0))
+        (expr_list:DF (use (reg:DF 22 xmm1))
+            (nil))))
+(insn 13 12 16 2 (set (reg:DF 89 [ _6 ])
+        (reg:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 16 13 20 2 (set (reg:DF 90 [ <retval> ])
+        (reg:DF 89 [ _6 ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 20 16 21 2 (set (reg/i:DF 21 xmm0)
+        (reg:DF 90 [ <retval> ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+(insn 21 20 0 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:158 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+

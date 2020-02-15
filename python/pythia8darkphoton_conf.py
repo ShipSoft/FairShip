@@ -66,6 +66,15 @@ def manipulatePhysics(motherMode, mass, P8gen, cf):
         #P8gen.SetParameters("331:oneChannel = 1 1 0 223 9900015")29%BR
         #P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
         cf.write('P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")\n')
+    elif motherMode=='eta11' and eta1mass-mass>=0.00001:
+        # use eta' -> gamma A'
+        selectedMum = 331
+        P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")
+        #should be considered also for mass < 0.188 GeV....
+        #P8gen.SetParameters("331:oneChannel = 1 1 0 223 9900015")29%BR
+        #P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
+        cf.write('P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")\n')
+
     else:
         #print "ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop)
         return -1

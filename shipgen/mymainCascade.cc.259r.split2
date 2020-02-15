@@ -1,0 +1,825 @@
+
+;; Function void* operator new(std::size_t, void*) (_ZnwmPv, funcdef_no=600, decl_uid=13872, cgraph_uid=200, symbol_order=201)
+
+deleting insn with uid = 10.
+deleting insn with uid = 14.
+
+
+void* operator new(std::size_t, void*)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 4 [si] 5 [di] 6 [bp]
+;;  ref usage 	r0={2d,2u} r1={1d} r2={1d} r4={1d,1u} r5={1d,1u} r6={1d,5u} r7={1d,2u} r20={1d,1u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 31{19d,12u,0e} in 4{4 regular + 0 call} insns.
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 87 88
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [5 D.13870+0 S8 A64])
+        (reg:DI 5 di [ D.13870 ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (nil))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [6 __p+0 S8 A64])
+        (reg:DI 4 si [ __p ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (nil))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 15 2 (set (reg/f:DI 0 ax [orig:87 _2 ] [87])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [6 __p+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 85 {*movdi_internal}
+     (nil))
+(insn 15 7 17 2 (use (reg/i:DI 0 ax)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/new:147 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+(note 17 15 0 NOTE_INSN_DELETED)
+
+;; Function static std::size_t std::char_traits<char>::length(const char_type*) (_ZNSt11char_traitsIcE6lengthEPKc, funcdef_no=1085, decl_uid=18554, cgraph_uid=388, symbol_order=389)
+
+deleting insn with uid = 15.
+deleting insn with uid = 19.
+
+
+static std::size_t std::char_traits<char>::length(const char_type*)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 1 [dx] 2 [cx] 5 [di] 6 [bp] 17 [flags]
+;;  ref usage 	r0={6d,6u} r1={2d,1u} r2={3d,2u} r4={1d} r5={3d,2u} r6={1d,4u} r7={1d,2u} r17={2d} r20={1d,1u} r21={1d} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 48{30d,18u,0e} in 11{11 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 17 [flags] 87 88 89 90 91 92 93 94
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [3 __s+0 S8 A64])
+        (reg:DI 5 di [ __s ])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:266 85 {*movdi_internal}
+     (nil))
+(note 3 2 12 2 NOTE_INSN_FUNCTION_BEG)
+(insn 12 3 6 2 (set (reg:DI 0 ax [89])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [3 __s+0 S8 A64])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (nil))
+(insn 6 12 7 2 (set (reg:DI 2 cx [93])
+        (const_int -1 [0xffffffffffffffff])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (nil))
+(insn 7 6 8 2 (set (reg:DI 1 dx [92])
+        (reg:DI 0 ax [89])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (nil))
+(insn 8 7 25 2 (set (reg:QI 0 ax [94])
+        (const_int 0 [0])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 89 {*movqi_internal}
+     (nil))
+(insn 25 8 9 2 (set (reg:DI 5 di [92])
+        (reg:DI 1 dx [92])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (nil))
+(insn 9 25 24 2 (parallel [
+            (set (reg:DI 2 cx [90])
+                (unspec:DI [
+                        (mem:BLK (reg:DI 5 di [92]) [0  A8])
+                        (reg:QI 0 ax [94])
+                        (const_int 1 [0x1])
+                        (reg:DI 2 cx [90])
+                    ] UNSPEC_SCAS))
+            (clobber (reg:DI 5 di [92]))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 964 {*strlenqi_1}
+     (nil))
+(insn 24 9 10 2 (set (reg:DI 0 ax [90])
+        (reg:DI 2 cx [90])) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 85 {*movdi_internal}
+     (nil))
+(insn 10 24 11 2 (set (reg:DI 0 ax [91])
+        (not:DI (reg:DI 0 ax [90]))) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 504 {*one_cmpldi2_1}
+     (nil))
+(insn 11 10 20 2 (parallel [
+            (set (reg:DI 0 ax [orig:87 _3 ] [87])
+                (plus:DI (reg:DI 0 ax [91])
+                    (const_int -1 [0xffffffffffffffff])))
+            (clobber (reg:CC 17 flags))
+        ]) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 219 {*adddi_1}
+     (nil))
+(insn 20 11 22 2 (use (reg/i:DI 0 ax)) /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-b9934/x86_64-slc6/include/c++/6.2.0/bits/char_traits.h:267 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+(note 22 20 0 NOTE_INSN_DELETED)
+
+;; Function Pythia8::Vec4::Vec4(double, double, double, double) (_ZN7Pythia84Vec4C2Edddd, funcdef_no=3891, decl_uid=67515, cgraph_uid=893, symbol_order=898)
+
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+
+
+Pythia8::Vec4::Vec4(double, double, double, double)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 5 [di] 6 [bp] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3]
+;;  ref usage 	r0={5d,4u} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,15u} r7={1d,2u} r20={1d,1u} r21={5d,5u} r22={1d,1u} r23={1d,1u} r24={1d,1u} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 57{26d,31u,0e} in 18{18 regular + 0 call} insns.
+(note 1 0 8 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3]
+;; lr  def 	 87 88 89 90 91 92 93 94
+(note 8 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 8 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 85 {*movdi_internal}
+     (nil))
+(insn 3 2 4 2 (set (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [11 xIn+0 S8 A64])
+        (reg:DF 21 xmm0 [ xIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (nil))
+(insn 4 3 5 2 (set (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -24 [0xffffffffffffffe8])) [11 yIn+0 S8 A64])
+        (reg:DF 22 xmm1 [ yIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (nil))
+(insn 5 4 6 2 (set (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -32 [0xffffffffffffffe0])) [11 zIn+0 S8 A64])
+        (reg:DF 23 xmm2 [ zIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (nil))
+(insn 6 5 7 2 (set (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -40 [0xffffffffffffffd8])) [11 tIn+0 S8 A64])
+        (reg:DF 24 xmm3 [ tIn ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:117 126 {*movdf_internal}
+     (nil))
+(note 7 6 10 2 NOTE_INSN_FUNCTION_BEG)
+(insn 10 7 11 2 (set (reg/f:DI 0 ax [87])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 11 10 12 2 (set (reg:DF 21 xmm0 [88])
+        (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [11 xIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 12 11 13 2 (set (mem:DF (reg/f:DI 0 ax [87]) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 21 xmm0 [88])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 0 ax [89])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 2 (set (reg:DF 21 xmm0 [90])
+        (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -24 [0xffffffffffffffe8])) [11 yIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 15 14 16 2 (set (mem:DF (plus:DI (reg/f:DI 0 ax [89])
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 21 xmm0 [90])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 16 15 17 2 (set (reg/f:DI 0 ax [91])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 17 16 18 2 (set (reg:DF 21 xmm0 [92])
+        (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -32 [0xffffffffffffffe0])) [11 zIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 18 17 19 2 (set (mem:DF (plus:DI (reg/f:DI 0 ax [91])
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 21 xmm0 [92])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 19 18 20 2 (set (reg/f:DI 0 ax [93])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 21 xmm0 [94])
+        (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -40 [0xffffffffffffffd8])) [11 tIn+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 21 20 24 2 (set (mem:DF (plus:DI (reg/f:DI 0 ax [93])
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 21 xmm0 [94])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 126 {*movdf_internal}
+     (nil))
+(insn 24 21 25 2 (const_int 0 [0]) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:118 701 {nop}
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+(note 25 24 0 NOTE_INSN_DELETED)
+
+;; Function Pythia8::Vec4::Vec4(const Pythia8::Vec4&) (_ZN7Pythia84Vec4C2ERKS0_, funcdef_no=3894, decl_uid=67506, cgraph_uid=896, symbol_order=901)
+
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+
+
+Pythia8::Vec4::Vec4(const Pythia8::Vec4&)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 4 [si] 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={9d,8u} r1={1d} r2={1d} r4={1d,1u} r5={1d,1u} r6={1d,12u} r7={1d,2u} r20={1d,1u} r21={5d,4u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 59{30d,29u,0e} in 19{19 regular + 0 call} insns.
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 87 88 89 90 91 92 93 94 95 96 97 98
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])
+        (reg:DI 4 si [ v ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 8 2 (set (reg/f:DI 0 ax [91])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 8 7 9 2 (set (reg:DF 21 xmm0 [orig:87 _5 ] [87])
+        (mem:DF (reg/f:DI 0 ax [91]) [11 v_4(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 9 8 10 2 (set (reg/f:DI 0 ax [92])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 10 9 11 2 (set (mem:DF (reg/f:DI 0 ax [92]) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:87 _5 ] [87])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 11 10 12 2 (set (reg/f:DI 0 ax [93])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 12 11 13 2 (set (reg:DF 21 xmm0 [orig:88 _7 ] [88])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [93])
+                (const_int 8 [0x8])) [11 v_4(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 0 ax [94])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 2 (set (mem:DF (plus:DI (reg/f:DI 0 ax [94])
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:88 _7 ] [88])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 15 14 16 2 (set (reg/f:DI 0 ax [95])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 16 15 17 2 (set (reg:DF 21 xmm0 [orig:89 _9 ] [89])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [95])
+                (const_int 16 [0x10])) [11 v_4(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 17 16 18 2 (set (reg/f:DI 0 ax [96])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 18 17 19 2 (set (mem:DF (plus:DI (reg/f:DI 0 ax [96])
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:89 _9 ] [89])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 19 18 20 2 (set (reg/f:DI 0 ax [97])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 21 xmm0 [orig:90 _11 ] [90])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [97])
+                (const_int 24 [0x18])) [11 v_4(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 21 20 22 2 (set (reg/f:DI 0 ax [98])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 85 {*movdi_internal}
+     (nil))
+(insn 22 21 25 2 (set (mem:DF (plus:DI (reg/f:DI 0 ax [98])
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:90 _11 ] [90])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 126 {*movdf_internal}
+     (nil))
+(insn 25 22 26 2 (const_int 0 [0]) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:119 701 {nop}
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+(note 26 25 0 NOTE_INSN_DELETED)
+
+;; Function Pythia8::Vec4& Pythia8::Vec4::operator=(const Pythia8::Vec4&) (_ZN7Pythia84Vec4aSERKS0_, funcdef_no=3896, decl_uid=67291, cgraph_uid=898, symbol_order=903)
+
+deleting insn with uid = 32.
+deleting insn with uid = 36.
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+
+
+Pythia8::Vec4& Pythia8::Vec4::operator=(const Pythia8::Vec4&)
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 0 [ax] 6 [bp] 7 [sp] 20 [frame]
+;;  regs ever live 	 0 [ax] 4 [si] 5 [di] 6 [bp] 17 [flags] 21 [xmm0]
+;;  ref usage 	r0={11d,11u} r1={1d} r2={1d} r4={1d,1u} r5={1d,1u} r6={1d,17u} r7={1d,4u} r17={1d,1u} r20={1d,1u} r21={5d,4u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 73{33d,40u,0e} in 23{23 regular + 0 call} insns.
+(note 1 0 5 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 3, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 4 [si] 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 17 [flags] 93
+(note 5 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 5 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 3 2 4 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])
+        (reg:DI 4 si [ v ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(note 4 3 7 2 NOTE_INSN_FUNCTION_BEG)
+(insn 7 4 8 2 (set (reg/f:DI 0 ax [93])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 8 7 9 2 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/f:DI 0 ax [93])
+            (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                    (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 8 {*cmpdi_1}
+     (nil))
+(jump_insn 9 8 10 2 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 27)
+            (pc))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 635 {*jcc_1}
+     (nil)
+ -> 27)
+;;  succ:       3 (FALLTHRU)
+;;              4
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+;; basic block 3, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 2, next block 4, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       2 (FALLTHRU)
+;; bb 3 artificial_defs: { }
+;; bb 3 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 87 88 89 90 94 95 96 97 98 99 100 101
+(note 10 9 11 3 [bb 3] NOTE_INSN_BASIC_BLOCK)
+(insn 11 10 12 3 (set (reg/f:DI 0 ax [94])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 12 11 13 3 (set (reg:DF 21 xmm0 [orig:87 _5 ] [87])
+        (mem:DF (reg/f:DI 0 ax [94]) [11 v_3(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (nil))
+(insn 13 12 14 3 (set (reg/f:DI 0 ax [95])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 3 (set (mem:DF (reg/f:DI 0 ax [95]) [11 this_2(D)->xx+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:87 _5 ] [87])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (nil))
+(insn 15 14 16 3 (set (reg/f:DI 0 ax [96])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 16 15 17 3 (set (reg:DF 21 xmm0 [orig:88 _7 ] [88])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [96])
+                (const_int 8 [0x8])) [11 v_3(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (nil))
+(insn 17 16 18 3 (set (reg/f:DI 0 ax [97])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 85 {*movdi_internal}
+     (nil))
+(insn 18 17 19 3 (set (mem:DF (plus:DI (reg/f:DI 0 ax [97])
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:88 _7 ] [88])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:120 126 {*movdf_internal}
+     (nil))
+(insn 19 18 20 3 (set (reg/f:DI 0 ax [98])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 3 (set (reg:DF 21 xmm0 [orig:89 _9 ] [89])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [98])
+                (const_int 16 [0x10])) [11 v_3(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (nil))
+(insn 21 20 22 3 (set (reg/f:DI 0 ax [99])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 22 21 23 3 (set (mem:DF (plus:DI (reg/f:DI 0 ax [99])
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:89 _9 ] [89])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (nil))
+(insn 23 22 24 3 (set (reg/f:DI 0 ax [100])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [13 v+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 24 23 25 3 (set (reg:DF 21 xmm0 [orig:90 _11 ] [90])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [100])
+                (const_int 24 [0x18])) [11 v_3(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (nil))
+(insn 25 24 26 3 (set (reg/f:DI 0 ax [101])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 26 25 27 3 (set (mem:DF (plus:DI (reg/f:DI 0 ax [101])
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])
+        (reg:DF 21 xmm0 [orig:90 _11 ] [90])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 126 {*movdf_internal}
+     (nil))
+;;  succ:       4 (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+;; basic block 4, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 3, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       2
+;;              3 (FALLTHRU)
+;; bb 4 artificial_defs: { }
+;; bb 4 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 91 92
+(code_label 27 26 28 4 8 "" [1 uses])
+(note 28 27 29 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 29 28 37 4 (set (reg/f:DI 0 ax [orig:91 _13 ] [91])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 85 {*movdi_internal}
+     (nil))
+(insn 37 29 39 4 (use (reg/i:DI 0 ax)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:121 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 0 [ax] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+
+(note 39 37 0 NOTE_INSN_DELETED)
+
+;; Function double Pythia8::Vec4::px() const (_ZNK7Pythia84Vec42pxEv, funcdef_no=3905, decl_uid=67319, cgraph_uid=907, symbol_order=912)
+
+Splitting with gen_split_34
+deleting insn with uid = 10.
+deleting insn with uid = 14.
+
+
+double Pythia8::Vec4::px() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 0 [ax] 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={2d,1u} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,4u} r7={1d,2u} r20={1d,1u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 31{20d,11u,0e} in 4{4 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 85 {*movdi_internal}
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 0 ax [89])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 85 {*movdi_internal}
+     (nil))
+(insn 7 6 15 2 (set (reg:DF 21 xmm0 [orig:87 _3 ] [87])
+        (mem:DF (reg/f:DI 0 ax [89]) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 126 {*movdf_internal}
+     (nil))
+(insn 15 7 17 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:136 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+(note 17 15 0 NOTE_INSN_DELETED)
+
+;; Function double Pythia8::Vec4::py() const (_ZNK7Pythia84Vec42pyEv, funcdef_no=3906, decl_uid=67321, cgraph_uid=908, symbol_order=913)
+
+Splitting with gen_split_34
+deleting insn with uid = 10.
+deleting insn with uid = 14.
+
+
+double Pythia8::Vec4::py() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 0 [ax] 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={2d,1u} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,4u} r7={1d,2u} r20={1d,1u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 31{20d,11u,0e} in 4{4 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 85 {*movdi_internal}
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 0 ax [89])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 85 {*movdi_internal}
+     (nil))
+(insn 7 6 15 2 (set (reg:DF 21 xmm0 [orig:87 _3 ] [87])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [89])
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 126 {*movdf_internal}
+     (nil))
+(insn 15 7 17 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:137 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+(note 17 15 0 NOTE_INSN_DELETED)
+
+;; Function double Pythia8::Vec4::pz() const (_ZNK7Pythia84Vec42pzEv, funcdef_no=3907, decl_uid=67323, cgraph_uid=909, symbol_order=914)
+
+Splitting with gen_split_34
+deleting insn with uid = 10.
+deleting insn with uid = 14.
+
+
+double Pythia8::Vec4::pz() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 0 [ax] 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={2d,1u} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,4u} r7={1d,2u} r20={1d,1u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 31{20d,11u,0e} in 4{4 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 85 {*movdi_internal}
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 0 ax [89])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 85 {*movdi_internal}
+     (nil))
+(insn 7 6 15 2 (set (reg:DF 21 xmm0 [orig:87 _3 ] [87])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [89])
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 126 {*movdf_internal}
+     (nil))
+(insn 15 7 17 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:138 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+(note 17 15 0 NOTE_INSN_DELETED)
+
+;; Function double Pythia8::Vec4::e() const (_ZNK7Pythia84Vec41eEv, funcdef_no=3908, decl_uid=67325, cgraph_uid=910, symbol_order=915)
+
+Splitting with gen_split_34
+deleting insn with uid = 10.
+deleting insn with uid = 14.
+
+
+double Pythia8::Vec4::e() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 0 [ax] 5 [di] 6 [bp] 21 [xmm0]
+;;  ref usage 	r0={2d,1u} r1={1d} r2={1d} r4={1d} r5={1d,1u} r6={1d,4u} r7={1d,2u} r20={1d,1u} r21={2d,2u} r22={1d} r23={1d} r24={1d} r25={1d} r26={1d} r27={1d} r28={1d} r37={1d} r38={1d} 
+;;    total ref usage 31{20d,11u,0e} in 4{4 regular + 0 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 21 [xmm0] 87 88 89
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 85 {*movdi_internal}
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 0 ax [89])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 85 {*movdi_internal}
+     (nil))
+(insn 7 6 15 2 (set (reg:DF 21 xmm0 [orig:87 _3 ] [87])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [89])
+                (const_int 24 [0x18])) [11 this_2(D)->tt+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 126 {*movdf_internal}
+     (nil))
+(insn 15 7 17 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:139 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+(note 17 15 0 NOTE_INSN_DELETED)
+
+;; Function double Pythia8::Vec4::pAbs() const (_ZNK7Pythia84Vec44pAbsEv, funcdef_no=3914, decl_uid=67338, cgraph_uid=916, symbol_order=921)
+
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+Splitting with gen_split_34
+deleting insn with uid = 23.
+Splitting with gen_split_34
+deleting insn with uid = 32.
+
+
+double Pythia8::Vec4::pAbs() const
+
+Dataflow summary:
+;;  invalidated by call 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 []
+;;  hardware regs used 	
+;;  regular block artificial uses 	 6 [bp] 7 [sp]
+;;  eh block artificial uses 	 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;;  entry block defs 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 6 [bp] 7 [sp] 20 [frame] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 37 [r8] 38 [r9]
+;;  exit block uses 	 6 [bp] 7 [sp] 20 [frame] 21 [xmm0]
+;;  regs ever live 	 0 [ax] 5 [di] 6 [bp] 7 [sp] 21 [xmm0] 22 [xmm1] 23 [xmm2]
+;;  ref usage 	r0={9d,7u} r1={2d} r2={2d} r4={2d} r5={2d,1u} r6={1d,11u} r7={1d,3u} r8={1d} r9={1d} r10={1d} r11={1d} r12={1d} r13={1d} r14={1d} r15={1d} r17={1d} r18={1d} r19={1d} r20={1d,1u} r21={9d,9u} r22={5d,3u} r23={4d,2u} r24={2d} r25={2d} r26={2d} r27={2d} r28={2d} r29={1d} r30={1d} r31={1d} r32={1d} r33={1d} r34={1d} r35={1d} r36={1d} r37={2d} r38={2d} r39={1d} r40={1d} r45={1d} r46={1d} r47={1d} r48={1d} r49={1d} r50={1d} r51={1d} r52={1d} r53={1d} r54={1d} r55={1d} r56={1d} r57={1d} r58={1d} r59={1d} r60={1d} r61={1d} r62={1d} r63={1d} r64={1d} r65={1d} r66={1d} r67={1d} r68={1d} r69={1d} r70={1d} r71={1d} r72={1d} r73={1d} r74={1d} r75={1d} r76={1d} r77={1d} r78={1d} r79={1d} r80={1d} 
+;;    total ref usage 146{109d,37u,0e} in 23{22 regular + 1 call} insns.
+(note 1 0 4 NOTE_INSN_DELETED)
+;; basic block 2, loop depth 0, count 0, freq 0, maybe hot
+;;  prev block 0, next block 1, flags: (NEW, REACHABLE, RTL, MODIFIED)
+;;  pred:       ENTRY (FALLTHRU)
+;; bb 2 artificial_defs: { }
+;; bb 2 artificial_uses: { u-1(6){ }u-1(7){ }}
+;; lr  in  	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  use 	 5 [di] 6 [bp] 7 [sp] 16 [argp] 20 [frame]
+;; lr  def 	 0 [ax] 1 [dx] 2 [cx] 4 [si] 5 [di] 8 [st] 9 [st(1)] 10 [st(2)] 11 [st(3)] 12 [st(4)] 13 [st(5)] 14 [st(6)] 15 [st(7)] 17 [flags] 18 [fpsr] 19 [fpcr] 21 [xmm0] 22 [xmm1] 23 [xmm2] 24 [xmm3] 25 [xmm4] 26 [xmm5] 27 [xmm6] 28 [xmm7] 29 [mm0] 30 [mm1] 31 [mm2] 32 [mm3] 33 [mm4] 34 [mm5] 35 [mm6] 36 [mm7] 37 [r8] 38 [r9] 39 [r10] 40 [r11] 45 [xmm8] 46 [xmm9] 47 [xmm10] 48 [xmm11] 49 [xmm12] 50 [xmm13] 51 [xmm14] 52 [xmm15] 53 [] 54 [] 55 [] 56 [] 57 [] 58 [] 59 [] 60 [] 61 [] 62 [] 63 [] 64 [] 65 [] 66 [] 67 [] 68 [] 69 [] 70 [] 71 [] 72 [] 73 [] 74 [] 75 [] 76 [] 77 [] 78 [] 79 [] 80 [] 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105
+(note 4 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 4 3 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])
+        (reg:DI 5 di [ this ])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(note 3 2 6 2 NOTE_INSN_FUNCTION_BEG)
+(insn 6 3 7 2 (set (reg/f:DI 0 ax [100])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 7 6 8 2 (set (reg:DF 22 xmm1 [orig:87 _3 ] [87])
+        (mem:DF (reg/f:DI 0 ax [100]) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 8 7 9 2 (set (reg/f:DI 0 ax [101])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 9 8 10 2 (set (reg:DF 21 xmm0 [orig:88 _4 ] [88])
+        (mem:DF (reg/f:DI 0 ax [101]) [11 this_2(D)->xx+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 10 9 11 2 (set (reg:DF 22 xmm1 [orig:89 _5 ] [89])
+        (mult:DF (reg:DF 22 xmm1 [orig:87 _3 ] [87])
+            (reg:DF 21 xmm0 [orig:88 _4 ] [88]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (nil))
+(insn 11 10 12 2 (set (reg/f:DI 0 ax [102])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 12 11 13 2 (set (reg:DF 23 xmm2 [orig:90 _6 ] [90])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [102])
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 13 12 14 2 (set (reg/f:DI 0 ax [103])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 14 13 15 2 (set (reg:DF 21 xmm0 [orig:91 _7 ] [91])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [103])
+                (const_int 8 [0x8])) [11 this_2(D)->yy+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 15 14 16 2 (set (reg:DF 21 xmm0 [orig:92 _8 ] [92])
+        (mult:DF (reg:DF 21 xmm0 [orig:91 _7 ] [91])
+            (reg:DF 23 xmm2 [orig:90 _6 ] [90]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (nil))
+(insn 16 15 17 2 (set (reg:DF 22 xmm1 [orig:93 _9 ] [93])
+        (plus:DF (reg:DF 22 xmm1 [orig:89 _5 ] [89])
+            (reg:DF 21 xmm0 [orig:92 _8 ] [92]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (nil))
+(insn 17 16 18 2 (set (reg/f:DI 0 ax [104])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 18 17 19 2 (set (reg:DF 23 xmm2 [orig:94 _10 ] [94])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [104])
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 19 18 20 2 (set (reg/f:DI 0 ax [105])
+        (mem/f/c:DI (plus:DI (reg/f:DI 6 bp)
+                (const_int -8 [0xfffffffffffffff8])) [10 this+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 85 {*movdi_internal}
+     (nil))
+(insn 20 19 21 2 (set (reg:DF 21 xmm0 [orig:95 _11 ] [95])
+        (mem:DF (plus:DI (reg/f:DI 0 ax [105])
+                (const_int 16 [0x10])) [11 this_2(D)->zz+0 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 21 20 22 2 (set (reg:DF 21 xmm0 [orig:96 _12 ] [96])
+        (mult:DF (reg:DF 21 xmm0 [orig:95 _11 ] [95])
+            (reg:DF 23 xmm2 [orig:94 _10 ] [94]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (nil))
+(insn 22 21 24 2 (set (reg:DF 21 xmm0 [orig:97 _13 ] [97])
+        (plus:DF (reg:DF 21 xmm0 [orig:96 _12 ] [96])
+            (reg:DF 22 xmm1 [orig:93 _9 ] [93]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 819 {*fop_df_comm_mixed}
+     (nil))
+(call_insn 24 22 25 2 (set (reg:DF 21 xmm0)
+        (call (mem:QI (symbol_ref:DI ("sqrt") [flags 0x41]  <function_decl 0x7f5320e1bc40 sqrt>) [0 __builtin_sqrt S1 A8])
+            (const_int 0 [0]))) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 684 {*call_value}
+     (expr_list:REG_EH_REGION (const_int 0 [0])
+        (nil))
+    (expr_list:DF (use (reg:DF 21 xmm0))
+        (nil)))
+(insn 25 24 28 2 (set (reg:DF 0 ax [orig:98 _15 ] [98])
+        (reg:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 28 25 36 2 (set (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [14 %sfp+-16 S8 A64])
+        (reg:DF 0 ax [orig:98 _15 ] [98])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 36 28 33 2 (set (reg:DF 21 xmm0 [orig:99 <retval> ] [99])
+        (mem/c:DF (plus:DI (reg/f:DI 6 bp)
+                (const_int -16 [0xfffffffffffffff0])) [14 %sfp+-16 S8 A64])) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 126 {*movdf_internal}
+     (nil))
+(insn 33 36 35 2 (use (reg/i:DF 21 xmm0)) /cvmfs/ship.cern.ch/SHiP-2018/2019/August/1/sw/slc7_x86-64/pythia/v8230-ship-1/include/Pythia8/Basics.h:151 -1
+     (nil))
+;;  succ:       EXIT [100.0%]  (FALLTHRU)
+;; lr  out 	 6 [bp] 7 [sp] 16 [argp] 20 [frame] 21 [xmm0]
+
+(note 35 33 0 NOTE_INSN_DELETED)
