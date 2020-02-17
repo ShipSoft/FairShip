@@ -74,75 +74,68 @@ public:
    void DecodeVolumeID(Int_t detID, int &nHPT);
 
 private:
+   /** Track information to be stored until the track leaves the
+    active volume.
+    */
+   Int_t fTrackID;      //!  track index
+   Int_t fPdgCode;      //!  pdg code
+   Int_t fVolumeID;     //!  volume id
+   TLorentzVector fPos; //!  position at entrance
+   TLorentzVector fMom; //!  momentum at entrance
+   Double32_t fTime;    //!  time
+   Double32_t fLength;  //!  length
+   Double32_t fELoss;   //!  energy loss
+   /*Number of Silicon pixel segments, 10 is the recommended amount for digitized runs, 1 for simple runs, is set in
+    * charm geometry file*/
+   Int_t nSlices = 1;
 
-    /** Track information to be stored until the track leaves the
-     active volume.
-     */
-    Int_t          fTrackID;           //!  track index
-    Int_t          fPdgCode;           //!  pdg code
-    Int_t          fVolumeID;          //!  volume id
-    TLorentzVector fPos;               //!  position at entrance
-    TLorentzVector fMom;               //!  momentum at entrance
-    Double32_t     fTime;              //!  time
-    Double32_t     fLength;            //!  length
-    Double32_t     fELoss;             //!  energy loss
-    /*Number of Silicon pixel segments, 10 is the recommended amount for digitized runs, 1 for simple runs, is set in charm geometry file*/
-    Int_t nSlices=10; 
-    
-    /** container for data points */
-    TClonesArray*  fPixelModulesPointCollection;
+   /** container for data points */
+   TClonesArray *fPixelModulesPointCollection;
 
-    Int_t InitMedium(const char* name);
-    Int_t *GetIDlist1(); 
-    Int_t *GetIDlist10();
-    Bool_t *vertical; 
+   Int_t InitMedium(const char *name);
+   Int_t *GetIDlist(Int_t n);
 
 protected:
+   Double_t *GetPosSize(Int_t n);
+   void SetPositionSize();
+   Double_t Dim1Short, Dim1Long;
+   Int_t *SetIDs();
 
-    Double_t *GetPosSize1();
-    Double_t *GetPosSize10();
-    void SetPositionSize();
-    Double_t Dim1Short, Dim1Long;
-    Int_t *SetIDs();   
-    void SetVertical(); 
-    Bool_t *GetVertical1();
-    Bool_t *GetVertical10();
- 
-    Double_t SBoxX = 0;
-    Double_t SBoxY = 0;
-    Double_t SBoxZ = 0;
+   Double_t SBoxX = 0;
+   Double_t SBoxY = 0;
+   Double_t SBoxZ = 0;
+   Double_t z_offset = 0;
 
-    Double_t BoxX = 0;
-    Double_t BoxY = 0;
-    Double_t BoxZ = 0;
-    Double_t zBoxPosition = 0;
+   Double_t BoxX = 0;
+   Double_t BoxY = 0;
+   Double_t BoxZ = 0;
+   Double_t zBoxPosition = 0;
 
-    Double_t DimX =0;
-    Double_t DimY =0;
-    Double_t DimZ = 0;
-    Double_t DimZWindow=0.0110;
-    Double_t Windowx=5;
-    Double_t Windowy=5;
-    Double_t FrontEndthick=0.0150;
-    Double_t FlexCuthick=0.0100;
-    Double_t FlexKapthick=0.0050;
-    Double_t overlap=0;
-    Double_t DimZPixelBox;
-    Int_t *PixelIDlist;
+   Double_t DimX = 0;
+   Double_t DimY = 0;
+   Double_t DimZ = 0;
+   Double_t DimZWindow = 0.0110;
+   Double_t Windowx = 5;
+   Double_t Windowy = 5;
+   Double_t FrontEndthick = 0.0150;
+   Double_t FlexCuthick = 0.0100;
+   Double_t FlexKapthick = 0.0050;
+   Double_t overlap = 0;
+   Double_t DimZPixelBox;
+   Int_t *PixelIDlist;
 
-    static const Int_t nSi1=12;
-    static const Int_t nSi10=120;
-    Int_t nSi;
-    Double_t DimZSithin=0.02;
-    Double_t DimZSithick=0.0245;
-    Double_t DimZThinSlice;
-    Double_t DimZThickSlice;
-    Double_t *xs, *ys, *zs;
-    Double_t *xangle, *yangle, *zangle;
-    
-    PixelModules(const PixelModules&);
-    PixelModules& operator=(const PixelModules&);
-    ClassDef(PixelModules,1)
+   static const Int_t nSi1 = 12;
+   static const Int_t nSi10 = 120;
+   Int_t nSi;
+   Double_t DimZSithin = 0.02;
+   Double_t DimZSithick = 0.0245;
+   Double_t DimZThinSlice;
+   Double_t DimZThickSlice;
+   Double_t *xs, *ys, *zs;
+   Double_t *xangle, *yangle, *zangle;
 
+   PixelModules(const PixelModules &);
+   PixelModules &operator=(const PixelModules &);
+   ClassDef(PixelModules, 1)
 };
 #endif

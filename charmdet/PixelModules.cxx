@@ -124,42 +124,25 @@ void PixelModules::SetSiliconStationAngles(Int_t nstation, Double_t anglex, Doub
  zangle[nstation] = anglez;
 }
 
-void PixelModules::SetSiliconSlicesNumber(Int_t nSl){
-	nSlices=nSl;
-        if(nSlices==1){
-		nSi=nSi1;
-	}
-	else if(nSlices=10){
-	nSi=nSi10;
-	}
+void PixelModules::SetSiliconSlicesNumber(Int_t nSl)
+{
+   nSlices = nSl;
+   nSi = nSlices * 12;
 }
 
-Double_t *PixelModules::GetPosSize1(){
-	return new Double_t[nSi1];
+Double_t *PixelModules::GetPosSize(Int_t n)
+{
+   return new Double_t[n];
 }
 
-Double_t *PixelModules::GetPosSize10(){
-	return new Double_t[nSi10];
-}
-
-void PixelModules::SetPositionSize(){
-	if(nSlices==1){
-		xs=GetPosSize1();
-		ys=GetPosSize1();
-		zs=GetPosSize1();
-		xangle=GetPosSize1();
-		yangle=GetPosSize1();
-		zangle=GetPosSize1();
-	}
-	else if(nSlices==10){
-		xs=GetPosSize10();
-		ys=GetPosSize10();
-		zs=GetPosSize10();
-		xangle=GetPosSize10();
-		yangle=GetPosSize10();
-		zangle=GetPosSize10();
-		
-	}
+void PixelModules::SetPositionSize()
+{
+   xs = GetPosSize(nSi);
+   ys = GetPosSize(nSi);
+   zs = GetPosSize(nSi);
+   xangle = GetPosSize(nSi);
+   yangle = GetPosSize(nSi);
+   zangle = GetPosSize(nSi);
 }
 
 
@@ -181,109 +164,23 @@ void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t z
    z_offset = first_plane_offset; // distance between first module and box outside
    SetSiliconDZ(SiliconDZthin, SiliconDZthick);
    ComputeDimZSlice();
-   SetVertical();
-   SetIDs();
+   PixelIDlist = SetIDs();
    SetPositionSize();
 }
 
-Bool_t *PixelModules::GetVertical1(){
-	return new Bool_t[nSi1];
+
+Int_t *PixelModules::GetIDlist(Int_t n)
+{
+   return new Int_t[n];
 }
 
-Bool_t *PixelModules::GetVertical10(){
-	return new Bool_t[nSi10];
-}
-
-void PixelModules::SetVertical(){
-	if(nSlices==10){
-		vertical=GetVertical10();
-    		for(int i=0;i<nSi10;i++){
-    		    vertical[i]=kFALSE;
-    		    }
-    		for(int i=0;i<3;i++){
-    			for(int j =0;j<20;j++){
-    		    vertical[i*40+j]=kTRUE;
-    		    }
-    		}
-		}
-	else{
-		vertical=GetVertical1();
-		vertical[0]=kTRUE;
-		vertical[1]=kTRUE;
-		vertical[2]=kFALSE;
-		vertical[3]=kFALSE;
-		vertical[4]=kTRUE;
-		vertical[5]=kTRUE;
-		vertical[6]=kFALSE;
-		vertical[7]=kFALSE;
-		vertical[8]=kTRUE;
-		vertical[9]=kTRUE;
-		vertical[10]=kFALSE;
-		vertical[11]=kFALSE;
-	}
-}
-
-Int_t *PixelModules::GetIDlist1(){
-return new Int_t[12];
-}
-
-Int_t *PixelModules::GetIDlist10(){
-return new Int_t[120];
-}
-
-Int_t* PixelModules::SetIDs(){
-	switch(nSlices){
-		
-		case 1 : {
-			PixelIDlist=GetIDlist1();
-			PixelIDlist[0]=111;
-			PixelIDlist[1]=112;
-			PixelIDlist[2]=121;
-			PixelIDlist[3]=122;
-			PixelIDlist[4]=131;
-			PixelIDlist[5]=132;
-			PixelIDlist[6]=141;
-			PixelIDlist[7]=142;
-			PixelIDlist[8]=151;
-			PixelIDlist[9]=152;
-			PixelIDlist[10]=161;
-			PixelIDlist[11]=162;
-			}
-		case 10: {
-			PixelIDlist=GetIDlist10();	
-    			//id convention: 1{a}{b}{c}, a = number of pair (from 1 to 6), b = element of the pair (1 or 2), c=slice (0 to 9)
-    			int chi=0;
-    			for(int i=1110;i<1130;i++){
-    				PixelIDlist[chi]=i;
-    				chi++;
-    			}
-    			
-    			for(int i=1210;i<1230;i++){
-    				PixelIDlist[chi]=i;
-	    			chi++;
-    			}
-
-    			for(int i=1310;i<1330;i++){
-    				PixelIDlist[chi]=i;
-    				chi++;
-    			}
-    			for(int i=1410;i<1430;i++){
-    				PixelIDlist[chi]=i;
-	    			chi++;
-    			}
-    			for(int i=1510;i<1530;i++){
-    				PixelIDlist[chi]=i;
-    				chi++;
-    			}
-    			for(int i=1610;i<1630;i++){
-	    			PixelIDlist[chi]=i;
-    				chi++;
-    			}
-    			//Alternated pixel stations optimized for y and x measurements
-}
-
-}
-return PixelIDlist;
+Int_t *PixelModules::SetIDs()
+{
+   PixelIDlist = GetIDlist(nSi);
+   for (Int_t i = 0; i < nSi; i++) {
+      PixelIDlist[i] = i;
+   }
+   return PixelIDlist;
 }
 
 void PixelModules::ConstructGeometry()
@@ -424,6 +321,7 @@ void PixelModules::ConstructGeometry()
 		}
 	
 }
+
 
 }
 
