@@ -332,9 +332,9 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.PixelModules.DimZSithin = 0.0200 * u.cm
     c.PixelModules.DimZSithick = 0.0245 * u.cm
-    c.PixelModules.nSlice= 1 #for digitization simulation, fix nSlice=10
-    c.PixelModules.D1short = 3.36 * u.cm / 2.
-    c.PixelModules.D1long = 4.09 * u.cm
+    c.PixelModules.nSlice = 5  # for digitization simulation recommended nSlice=10
+    c.PixelModules.D1short = 50. * u.um * 336 # = 1.68 u.cm
+    c.PixelModules.D1long = ((78 * 250.) + 450. + 500. )* u.um * 2 # = 4.09 * u.cm each module has 160 columns, the outer two and the centered two have different size
     c.PixelModules.numSi = 12*c.PixelModules.nSlice
     c.PixelModules.z_offset = 0.7 * u.cm
 
