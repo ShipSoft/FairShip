@@ -120,12 +120,9 @@ protected:
    Double_t FrontEndthick = 0.0150;
    Double_t FlexCuthick = 0.0100;
    Double_t FlexKapthick = 0.0050;
-   Double_t overlap = 0;
    Double_t DimZPixelBox;
    Int_t *PixelIDlist;
 
-   static const Int_t nSi1 = 12;
-   static const Int_t nSi10 = 120;
    Int_t nSi;
    Double_t DimZSithin = 0.02;
    Double_t DimZSithick = 0.0245;

@@ -218,10 +218,10 @@ void PixelModules::ConstructGeometry()
    TGeoVolumeAssembly *volPixelBox = new TGeoVolumeAssembly("volPixelBox");
    top->AddNode(volPixelBox, 1, new TGeoTranslation(0, 0, zBoxPosition ));
 
-   TGeoBBox *Pixelythin = new TGeoBBox("Pixelythin", Dim1Short / 2, Dim1Long / 2, DimZThinSlice / 2); // long along y
-   TGeoVolume *volPixelythin = new TGeoVolume("volPixelythin", Pixelythin, Silicon);
-   volPixelythin->SetLineColor(kBlue - 5);
-   AddSensitiveVolume(volPixelythin);
+   // TGeoBBox *Pixelythin = new TGeoBBox("Pixelythin", Dim1Short / 2, Dim1Long / 2, DimZThinSlice / 2); // long along y
+   // TGeoVolume *volPixelythin = new TGeoVolume("volPixelythin", Pixelythin, Silicon);
+   // volPixelythin->SetLineColor(kBlue - 5);
+   // AddSensitiveVolume(volPixelythin);
 
    TGeoBBox *Pixelxthin = new TGeoBBox("Pixelxthin", (Dim1Long) / 2, (Dim1Short) / 2, DimZThinSlice / 2); // long along
                                                                                                           // x
@@ -229,13 +229,13 @@ void PixelModules::ConstructGeometry()
    volPixelxthin->SetLineColor(kBlue - 5);
    AddSensitiveVolume(volPixelxthin);
 
-   TGeoBBox *Pixelythick = new TGeoBBox("Pixelythick", Dim1Short / 2, Dim1Long / 2, DimZThickSlice / 2); // long along y
+   TGeoBBox *Pixelythick = new TGeoBBox("Pixelythick", Dim1Short / 2, Dim1Long / 2, DimZThickSlice / 2.); // long along y
    TGeoVolume *volPixelythick = new TGeoVolume("volPixelythick", Pixelythick, Silicon);
    volPixelythick->SetLineColor(kBlue - 5);
    AddSensitiveVolume(volPixelythick);
 
    TGeoBBox *Pixelxthick =
-      new TGeoBBox("Pixelxthick", (Dim1Long) / 2, (Dim1Short) / 2, DimZThickSlice / 2); // long along x
+      new TGeoBBox("Pixelxthick", (Dim1Long) / 2, (Dim1Short) / 2, DimZThickSlice / 2.); // long along x
    TGeoVolume *volPixelxthick = new TGeoVolume("volPixelxthick", Pixelxthick, Silicon);
    volPixelxthick->SetLineColor(kBlue - 5);
    AddSensitiveVolume(volPixelxthick);
