@@ -354,31 +354,31 @@ void PixelModules::ConstructGeometry()
 
     TGeoBBox *WindowBox = new TGeoBBox("WindowBox",Windowx/2, Windowy/2,DimZWindow/2);
     TGeoVolume *volWindow = new TGeoVolume("volWindow",WindowBox,Kapton);
-    volWindow->SetLineColor(kGray);
+    volWindow->SetLineColor(kRed);
 
     TGeoBBox *FrontEndx = new TGeoBBox("FrontEndx",Dim1Long/2, Dim1Short/2 ,FrontEndthick/2);
     TGeoVolume *volFrontEndx = new TGeoVolume("volFrontEndx",FrontEndx,Silicon);
-    volFrontEndx->SetLineColor(kGray);
+    volFrontEndx->SetLineColor(kRed);
 
     TGeoBBox *FrontEndy = new TGeoBBox("FrontEndy",Dim1Short/2, Dim1Long/2 ,FrontEndthick/2);
     TGeoVolume *volFrontEndy = new TGeoVolume("volFrontEndy",FrontEndy,Silicon);
-    volFrontEndy->SetLineColor(kGray);
+    volFrontEndy->SetLineColor(kRed);
 
     TGeoBBox *FlexCux = new TGeoBBox("FlexCux",Dim1Long/2, Dim1Short/2 ,FlexCuthick/2);
     TGeoVolume *volFlexCux = new TGeoVolume("volFlexCux",FlexCux,Copper);
-    volFlexCux->SetLineColor(kGray);
+    volFlexCux->SetLineColor(kRed);
 
     TGeoBBox *FlexCuy = new TGeoBBox("FlexCuy",Dim1Short/2, Dim1Long/2 ,FlexCuthick/2);
     TGeoVolume *volFlexCuy = new TGeoVolume("volFlexCuy",FlexCuy,Copper);
-    volFlexCuy->SetLineColor(kGray);
+    volFlexCuy->SetLineColor(kRed);
 
     TGeoBBox *FlexKapx = new TGeoBBox("FlexKapx",Dim1Long/2, Dim1Short/2 ,FlexKapthick/2);
     TGeoVolume *volFlexKapx = new TGeoVolume("volFlexKapx",FlexKapx,Kapton);
-    volFlexKapx->SetLineColor(kGray);
+    volFlexKapx->SetLineColor(kRed);
 
     TGeoBBox *FlexKapy = new TGeoBBox("FlexKapy",Dim1Short/2, Dim1Long/2 ,FlexKapthick/2);
     TGeoVolume *volFlexKapy = new TGeoVolume("volFlexKapy",FlexKapy,Kapton);
-    volFlexKapy->SetLineColor(kGray);
+    volFlexKapy->SetLineColor(kRed);
 
 ////////////////////////////////////////////////////////End passive material////////////////////////////////////////////////////////////////
 
