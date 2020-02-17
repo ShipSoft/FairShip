@@ -192,134 +192,161 @@ void PixelModules::ConstructGeometry()
     InitMedium("silicon");
     TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
 
-    InitMedium("aluminium");
-    TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
+   InitMedium("aluminium");
+   TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
 
-    InitMedium("copper");
-    TGeoMedium *Copper = gGeoManager->GetMedium("copper");
+   InitMedium("copper");
+   TGeoMedium *Copper = gGeoManager->GetMedium("copper");
 
-    InitMedium("kapton");
-    TGeoMedium *Kapton = gGeoManager->GetMedium("kapton");
+   InitMedium("kapton");
+   TGeoMedium *Kapton = gGeoManager->GetMedium("kapton");
 
-    InitMedium("CoilCopper");
-    TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
+   InitMedium("CoilCopper");
+   TGeoMedium *Cu = gGeoManager->GetMedium("CoilCopper");
 
-    InitMedium("CoilAluminium");
-    TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
+   InitMedium("CoilAluminium");
+   TGeoMedium *Al = gGeoManager->GetMedium("CoilAluminium");
 
-    InitMedium("TTmedium");
-    TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
+   InitMedium("TTmedium");
+   TGeoMedium *TT = gGeoManager->GetMedium("TTmedium");
 
-    InitMedium("STTmix8020_2bar");
-    TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
+   InitMedium("STTmix8020_2bar");
+   TGeoMedium *sttmix8020_2bar = gGeoManager->GetMedium("STTmix8020_2bar");
 
-    TGeoVolume *top = gGeoManager->GetTopVolume();
+   TGeoVolume *top = gGeoManager->GetTopVolume();
 
-    
-    //computing the largest offsets in order to set PixelBox dimensions correctly
-    Double_t offsetxmax = 0., offsetymax = 0.;
-   for (int istation = 0; istation < nSi; istation++){
-     if (TMath::Abs(xs[istation]) > offsetxmax) offsetxmax = TMath::Abs(xs[istation]);
-     if (TMath::Abs(ys[istation]) > offsetymax) offsetymax = TMath::Abs(ys[istation]);
-    }
-    TGeoVolumeAssembly *volPixelBox = new TGeoVolumeAssembly("volPixelBox");
-    Double_t inimodZoffset(zs[0]-DimZSithick) ;//initial Z offset of Pixel Module 0 so as to avoid volume extrusion
-    top->AddNode(volPixelBox, 1, new TGeoTranslation(0,0,zBoxPosition+ inimodZoffset)); //volume moved in
+   TGeoVolumeAssembly *volPixelBox = new TGeoVolumeAssembly("volPixelBox");
+   top->AddNode(volPixelBox, 1, new TGeoTranslation(0, 0, zBoxPosition ));
 
+   TGeoBBox *Pixelythin = new TGeoBBox("Pixelythin", Dim1Short / 2, Dim1Long / 2, DimZThinSlice / 2); // long along y
+   TGeoVolume *volPixelythin = new TGeoVolume("volPixelythin", Pixelythin, Silicon);
+   volPixelythin->SetLineColor(kBlue - 5);
+   AddSensitiveVolume(volPixelythin);
 
-    TGeoBBox *Pixelythin = new TGeoBBox("Pixelythin", Dim1Short/2, Dim1Long/2, DimZThinSlice/2); //long along y
-    TGeoVolume *volPixelythin = new TGeoVolume("volPixelythin",Pixelythin,Silicon); 
-    volPixelythin->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixelythin);
+   TGeoBBox *Pixelxthin = new TGeoBBox("Pixelxthin", (Dim1Long) / 2, (Dim1Short) / 2, DimZThinSlice / 2); // long along
+                                                                                                          // x
+   TGeoVolume *volPixelxthin = new TGeoVolume("volPixelxthin", Pixelxthin, Silicon);
+   volPixelxthin->SetLineColor(kBlue - 5);
+   AddSensitiveVolume(volPixelxthin);
 
-    TGeoBBox *Pixelxthin = new TGeoBBox("Pixelxthin", (Dim1Long)/2, (Dim1Short)/2, DimZThinSlice/2); //long along x
-    TGeoVolume *volPixelxthin = new TGeoVolume("volPixelxthin",Pixelxthin,Silicon); 
-    volPixelxthin->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixelxthin);
+   TGeoBBox *Pixelythick = new TGeoBBox("Pixelythick", Dim1Short / 2, Dim1Long / 2, DimZThickSlice / 2); // long along y
+   TGeoVolume *volPixelythick = new TGeoVolume("volPixelythick", Pixelythick, Silicon);
+   volPixelythick->SetLineColor(kBlue - 5);
+   AddSensitiveVolume(volPixelythick);
 
-    TGeoBBox *Pixelythick = new TGeoBBox("Pixelythick", Dim1Short/2, Dim1Long/2, DimZThickSlice/2); //long along y
-    TGeoVolume *volPixelythick = new TGeoVolume("volPixelythick",Pixelythick,Silicon); 
-    volPixelythick->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixelythick);
+   TGeoBBox *Pixelxthick =
+      new TGeoBBox("Pixelxthick", (Dim1Long) / 2, (Dim1Short) / 2, DimZThickSlice / 2); // long along x
+   TGeoVolume *volPixelxthick = new TGeoVolume("volPixelxthick", Pixelxthick, Silicon);
+   volPixelxthick->SetLineColor(kBlue - 5);
+   AddSensitiveVolume(volPixelxthick);
 
-    TGeoBBox *Pixelxthick = new TGeoBBox("Pixelxthick", (Dim1Long)/2, (Dim1Short)/2, DimZThickSlice/2); //long along x
-    TGeoVolume *volPixelxthick = new TGeoVolume("volPixelxthick",Pixelxthick,Silicon); 
-    volPixelxthick->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volPixelxthick);
-  
-  ///////////////////////////////////////////////////////Passive material///////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////Passive
+   /// material///////////////////////////////////////////////////////
 
-    TGeoBBox *WindowBox = new TGeoBBox("WindowBox",Windowx/2, Windowy/2,DimZWindow/2);
-    TGeoVolume *volWindow = new TGeoVolume("volWindow",WindowBox,Kapton);
-    volWindow->SetLineColor(kRed);
+   TGeoBBox *WindowBox = new TGeoBBox("WindowBox", Windowx / 2, Windowy / 2, DimZWindow / 2);
+   TGeoVolume *volWindow = new TGeoVolume("volWindow", WindowBox, Kapton);
+   volWindow->SetLineColor(kRed);
 
-    TGeoBBox *FrontEndx = new TGeoBBox("FrontEndx",Dim1Long/2, Dim1Short/2 ,FrontEndthick/2);
-    TGeoVolume *volFrontEndx = new TGeoVolume("volFrontEndx",FrontEndx,Silicon);
-    volFrontEndx->SetLineColor(kRed);
+   TGeoBBox *FrontEndx = new TGeoBBox("FrontEndx", Dim1Long / 2, Dim1Short / 2, FrontEndthick / 2);
+   TGeoVolume *volFrontEndx = new TGeoVolume("volFrontEndx", FrontEndx, Silicon);
+   volFrontEndx->SetLineColor(kRed);
 
-    TGeoBBox *FrontEndy = new TGeoBBox("FrontEndy",Dim1Short/2, Dim1Long/2 ,FrontEndthick/2);
-    TGeoVolume *volFrontEndy = new TGeoVolume("volFrontEndy",FrontEndy,Silicon);
-    volFrontEndy->SetLineColor(kRed);
+   TGeoBBox *FrontEndy = new TGeoBBox("FrontEndy", Dim1Short / 2, Dim1Long / 2, FrontEndthick / 2);
+   TGeoVolume *volFrontEndy = new TGeoVolume("volFrontEndy", FrontEndy, Silicon);
+   volFrontEndy->SetLineColor(kRed);
 
-    TGeoBBox *FlexCux = new TGeoBBox("FlexCux",Dim1Long/2, Dim1Short/2 ,FlexCuthick/2);
-    TGeoVolume *volFlexCux = new TGeoVolume("volFlexCux",FlexCux,Copper);
-    volFlexCux->SetLineColor(kRed);
+   TGeoBBox *FlexCux = new TGeoBBox("FlexCux", Dim1Long / 2, Dim1Short / 2, FlexCuthick / 2);
+   TGeoVolume *volFlexCux = new TGeoVolume("volFlexCux", FlexCux, Copper);
+   volFlexCux->SetLineColor(kRed);
 
-    TGeoBBox *FlexCuy = new TGeoBBox("FlexCuy",Dim1Short/2, Dim1Long/2 ,FlexCuthick/2);
-    TGeoVolume *volFlexCuy = new TGeoVolume("volFlexCuy",FlexCuy,Copper);
-    volFlexCuy->SetLineColor(kRed);
+   TGeoBBox *FlexCuy = new TGeoBBox("FlexCuy", Dim1Short / 2, Dim1Long / 2, FlexCuthick / 2);
+   TGeoVolume *volFlexCuy = new TGeoVolume("volFlexCuy", FlexCuy, Copper);
+   volFlexCuy->SetLineColor(kRed);
 
-    TGeoBBox *FlexKapx = new TGeoBBox("FlexKapx",Dim1Long/2, Dim1Short/2 ,FlexKapthick/2);
-    TGeoVolume *volFlexKapx = new TGeoVolume("volFlexKapx",FlexKapx,Kapton);
-    volFlexKapx->SetLineColor(kRed);
+   TGeoBBox *FlexKapx = new TGeoBBox("FlexKapx", Dim1Long / 2, Dim1Short / 2, FlexKapthick / 2);
+   TGeoVolume *volFlexKapx = new TGeoVolume("volFlexKapx", FlexKapx, Kapton);
+   volFlexKapx->SetLineColor(kRed);
 
-    TGeoBBox *FlexKapy = new TGeoBBox("FlexKapy",Dim1Short/2, Dim1Long/2 ,FlexKapthick/2);
-    TGeoVolume *volFlexKapy = new TGeoVolume("volFlexKapy",FlexKapy,Kapton);
-    volFlexKapy->SetLineColor(kRed);
+   TGeoBBox *FlexKapy = new TGeoBBox("FlexKapy", Dim1Short / 2, Dim1Long / 2, FlexKapthick / 2);
+   TGeoVolume *volFlexKapy = new TGeoVolume("volFlexKapy", FlexKapy, Kapton);
+   volFlexKapy->SetLineColor(kRed);
 
-////////////////////////////////////////////////////////End passive material////////////////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////End passive
+   /// material////////////////////////////////////////////////////////////////
 
-  volWindow->AddNode(0,0,new TGeoTranslation(0,0,-DimZPixelBox/2.-inimodZoffset-DimZWindow));
+   volPixelBox->AddNode(volWindow, 0, new TGeoTranslation(0, 0, -DimZPixelBox / 2. + DimZWindow));
+   volPixelBox->AddNode(volWindow, 1, new TGeoTranslation(0, 0, DimZPixelBox / 2. - DimZWindow));
+   
+   // loop to create and align the active volumes ( == Sensors). Only the active material is sliced.
 
-    for (Int_t ipixel = 0; ipixel < nSi; ipixel++){
-      if (vertical[ipixel]){
-		if(PixelIDlist[ipixel]) {
-			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)){
-				volPixelBox->AddNode(volPixelythick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
-					}
-			else {volPixelBox->AddNode(volPixelythin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
-//compensation for the Node offset}
-			}
-					}
-		else volPixelBox->AddNode(volPixelythick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); 
-//this else is used for debugging, if the number of slices isn't 10
+   for (Int_t ipixel = 0; ipixel < nSi; ipixel++) {
+       // modules with large pixel pitch in y
+      if ((ipixel / nSlices) % 4 == 0 || (ipixel / nSlices) % 4 == 1) {
+         volPixelBox->AddNode(volPixelythick, PixelIDlist[ipixel],
+            new TGeoTranslation(xs[ipixel], ys[ipixel], (-DimZPixelBox / 2.) + zs[ipixel] + z_offset));
+      } else { // modules with large pixel pitch in x
+         // check for the two thinner modules
+         if (((PixelIDlist[ipixel] / nSlices) == 2) || ((PixelIDlist[ipixel] / nSlices) == 11)) { 
+            volPixelBox->AddNode(volPixelxthin, PixelIDlist[ipixel],
+               new TGeoTranslation(xs[ipixel], ys[ipixel], (-DimZPixelBox / 2.) + zs[ipixel] + z_offset));
+         } else {
+            volPixelBox->AddNode(volPixelxthick, PixelIDlist[ipixel],
+               new TGeoTranslation(xs[ipixel], ys[ipixel], (-DimZPixelBox / 2.) + zs[ipixel] + z_offset));
+         }
+      }
+   }
 
-		if((ipixel+nSlices)%9==1){
-					volFrontEndy->AddNode(volFrontEndy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FrontEndthick));
-					volFlexCuy->AddNode(volFlexCuy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexCuthick));
-					volFlexKapy->AddNode(volFlexKapy, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexKapthick));	
-			}
-		}
-      else{ 
-		if(PixelIDlist[ipixel]) 
-			if(PixelIDlist[ipixel]<1130 || (PixelIDlist[ipixel]>1219 && PixelIDlist[ipixel]<1620)){
-				volPixelBox->AddNode(volPixelxthick, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
-														}
-			else{
-				volPixelBox->AddNode(volPixelxthin, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
-				}
-		
-		else {
-			volPixelBox->AddNode(volPixelxthick, 9000, new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //debugging else for if nSlice!=10
-			}
-
-		if((ipixel+nSlices)%9==1){
-					volFrontEndx->AddNode(volFrontEndx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FrontEndthick));
-					volFlexCux->AddNode(volFlexCux, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexCuthick));
-					volFlexKapx->AddNode(volFlexKapx, 0,new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset+DimZThickSlice+FlexKapthick));	
-					}
-		}
-	
+   // put passive materials in place (flex and FE)
+   Double_t z_tmp_cu = 0. ;
+   Double_t z_tmp_fe = 0. ;
+   Double_t z_tmp_kap = 0. ;
+   for (Int_t module = 0; module < nSi; module += nSlices) {
+      if ((module) % 4 == 0 || (module) % 4 == 1) {
+         // modules with large pixel pitch in y
+         if ((module) % 4 == 0) {
+            // flex is upstream, FE is downstream of sensor
+            z_tmp_cu = (-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThickSlice / 2.) - FlexKapthick - (FlexCuthick/ 2.) ;
+            z_tmp_kap =(-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThickSlice / 2.) - FlexKapthick / 2. ;
+            z_tmp_fe = (-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThickSlice / 2.) + (FrontEndthick/ 2.) ;
+         } else {
+            // FE is upstream, flex is downstream of sensor
+            z_tmp_fe = (-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThickSlice / 2.) - (FrontEndthick/ 2.) ;
+            z_tmp_kap =(-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThickSlice / 2.) + FlexKapthick / 2. ;
+            z_tmp_cu = (-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThickSlice / 2.) + FlexKapthick / 2. + (FlexCuthick/ 2.)  ;
+         }
+         volPixelBox->AddNode(volFrontEndy, module, new TGeoTranslation(xs[module], ys[module], z_tmp_fe));
+         volPixelBox->AddNode(volFlexCuy, module, new TGeoTranslation(xs[module], ys[module], z_tmp_cu));
+         volPixelBox->AddNode(volFlexKapy, module, new TGeoTranslation(xs[module], ys[module], z_tmp_kap));
+      } else {
+         // modules with large pixel pitch in x
+         // check for thinner modules
+         if (module == 2 ){
+            z_tmp_cu = (-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThinSlice / 2.) - FlexKapthick - (FlexCuthick/ 2.) ;
+            z_tmp_kap =(-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThinSlice / 2.) - FlexKapthick / 2. ;
+            z_tmp_fe = (-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThinSlice / 2.) + (FrontEndthick/ 2.) ;
+         }
+         else if (module == 11){
+            z_tmp_fe = (-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThinSlice / 2.) - (FrontEndthick/ 2.) ;
+            z_tmp_kap =(-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThinSlice / 2.) + FlexKapthick / 2. ;
+            z_tmp_cu = (-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThinSlice / 2.) + FlexKapthick / 2. + (FlexCuthick/ 2.)  ;
+         }
+         else if ((module) % 4 == 2) {
+            // flex is upstream, FE is downstream of sensor
+            z_tmp_cu = (-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThickSlice / 2.) - FlexKapthick - (FlexCuthick/ 2.) ;
+            z_tmp_kap =(-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThickSlice / 2.) - FlexKapthick / 2. ;
+            z_tmp_fe = (-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThickSlice / 2.) + (FrontEndthick/ 2.) ;
+         } else if (module % 4 == 3){
+            // FE is upstream, flex is downstream of sensor
+            z_tmp_fe = (-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThickSlice / 2.) - (FrontEndthick/ 2.) ;
+            z_tmp_kap =(-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThickSlice / 2.) + FlexKapthick / 2. ;
+            z_tmp_cu = (-DimZPixelBox / 2.) + zs[module + nSlices - 1] + z_offset + (DimZThickSlice / 2.) + FlexKapthick / 2. + (FlexCuthick/ 2.)  ;
+         }
+         volPixelBox->AddNode(volFrontEndx, module, new TGeoTranslation(xs[module], ys[module], z_tmp_fe));
+         volPixelBox->AddNode(volFlexCux, module, new TGeoTranslation(xs[module], ys[module], z_tmp_cu));
+         volPixelBox->AddNode(volFlexKapx, module, new TGeoTranslation(xs[module], ys[module], z_tmp_kap));
+      }
+      
+   }
 }
 
 
