@@ -168,22 +168,22 @@ DimZThinSlice=DimZSithin/nSlices;
 DimZThickSlice=DimZSithick/nSlices;
 }
 
-
-
-void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin,Double_t SiliconDZthick)
+void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short,
+                               Double_t D1long, Double_t SiliconDZthin, Double_t SiliconDZthick, Double_t first_plane_offset)
 {
-  SBoxX = SX;
-  SBoxY = SY;
-  SBoxZ = SZ;
-  zBoxPosition = zBox;
-  DimZPixelBox = SZPixel;
-  Dim1Short = D1short;
-  Dim1Long = D1long;
-  SetSiliconDZ(SiliconDZthin, SiliconDZthick);
-  ComputeDimZSlice();
-  SetVertical();
-  SetIDs();
-  SetPositionSize();
+   SBoxX = SX;
+   SBoxY = SY;
+   SBoxZ = SZ;
+   zBoxPosition = zBox;
+   DimZPixelBox = SZPixel;
+   Dim1Short = D1short;
+   Dim1Long = D1long;
+   z_offset = first_plane_offset; // distance between first module and box outside
+   SetSiliconDZ(SiliconDZthin, SiliconDZthick);
+   ComputeDimZSlice();
+   SetVertical();
+   SetIDs();
+   SetPositionSize();
 }
 
 Bool_t *PixelModules::GetVertical1(){

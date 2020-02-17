@@ -16,64 +16,62 @@ class PixelModulesPoint;
 class FairVolume;
 class TClonesArray;
 
-class PixelModules:public FairDetector
-{
-  public:
-    PixelModules();
-    PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active,Int_t nSl=1,const char* Title="PixelModules");
-    virtual ~PixelModules();
-    void ConstructGeometry();
-    void SetZsize(const Double_t MSsize);
-    void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short, Double_t D1long,Double_t SiliconDZthin, Double_t SiliconDZthick);
-//    SetBoxParam(DX,DY,DZ, zBox, DimZpixelbox, D1short, D1long,DimZSithin, DimZSithick,nSlice)
-    
-    void SetSiliconDZ(Double_t SiliconDZthin, Double_t SiliconDZthick);  
-    void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
-    void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
-    void SetSiliconDetNumber(Int_t nSilicon);
-    void SetSiliconSlicesNumber(Int_t nSl=1);
-    void ComputeDimZSlice();
-    /**      Initialization of the detector is done here    */
-    virtual void Initialize();
+class PixelModules : public FairDetector {
+public:
+   PixelModules();
+   PixelModules(const char *name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active, Int_t nSl = 1,
+                const char *Title = "PixelModules");
+   virtual ~PixelModules();
+   void ConstructGeometry();
+   void SetZsize(const Double_t MSsize);
+   void SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short,
+                    Double_t D1long, Double_t SiliconDZthin, Double_t SiliconDZthick, Double_t first_plane_offset);
+   //    SetBoxParam(DX,DY,DZ, zBox, DimZpixelbox, D1short, D1long,DimZSithin, DimZSithick,nSlice)
 
-    /**       this method is called for each step during simulation
-     *       (see FairMCApplication::Stepping())
-     */
-    virtual Bool_t ProcessHits( FairVolume* v=0);
+   void SetSiliconDZ(Double_t SiliconDZthin, Double_t SiliconDZthick);
+   void SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz);
+   void SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez);
+   void SetSiliconDetNumber(Int_t nSilicon);
+   void SetSiliconSlicesNumber(Int_t nSl = 1);
+   void ComputeDimZSlice();
+   /**      Initialization of the detector is done here    */
+   virtual void Initialize();
 
-    /**       Registers the produced collections in FAIRRootManager.     */
-    virtual void   Register();
+   /**       this method is called for each step during simulation
+    *       (see FairMCApplication::Stepping())
+    */
+   virtual Bool_t ProcessHits(FairVolume *v = 0);
 
-    /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const ;
+   /**       Registers the produced collections in FAIRRootManager.     */
+   virtual void Register();
 
-    /**      has to be called after each event to reset the containers      */
-    virtual void   Reset();
+   /** Gets the produced collections */
+   virtual TClonesArray *GetCollection(Int_t iColl) const;
 
-    /**      This method is an example of how to add your own point
-     *       of type muonPoint to the clones array
-     */
-    PixelModulesPoint* AddHit(Int_t trackID, Int_t detID,
-                         TVector3 pos, TVector3 mom,
-                         Double_t time, Double_t length,
-                         Double_t eLoss, Int_t pdgCode);
+   /**      has to be called after each event to reset the containers      */
+   virtual void Reset();
 
-    /** The following methods can be implemented if you need to make
-     *  any optional action in your detector during the transport.
-     */
+   /**      This method is an example of how to add your own point
+    *       of type muonPoint to the clones array
+    */
+   PixelModulesPoint *AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length,
+                             Double_t eLoss, Int_t pdgCode);
 
-    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
-                              Int_t offset) {;}
-    virtual void   SetSpecialPhysicsCuts() {;}
-    virtual void   EndOfEvent();
-    virtual void   FinishPrimary() {;}
-    virtual void   FinishRun() {;}
-    virtual void   BeginPrimary() {;}
-    virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
-    virtual void   BeginEvent() {;}
+   /** The following methods can be implemented if you need to make
+    *  any optional action in your detector during the transport.
+    */
 
-    void DecodeVolumeID(Int_t detID,int &nHPT);
+   virtual void CopyClones(TClonesArray *cl1, TClonesArray *cl2, Int_t offset) { ; }
+   virtual void SetSpecialPhysicsCuts() { ; }
+   virtual void EndOfEvent();
+   virtual void FinishPrimary() { ; }
+   virtual void FinishRun() { ; }
+   virtual void BeginPrimary() { ; }
+   virtual void PostTrack() { ; }
+   virtual void PreTrack() { ; }
+   virtual void BeginEvent() { ; }
+
+   void DecodeVolumeID(Int_t detID, int &nHPT);
 
 private:
 

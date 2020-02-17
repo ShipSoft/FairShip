@@ -335,8 +335,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.nSlice= 1 #for digitization simulation, fix nSlice=10
     c.PixelModules.D1short = 3.36 * u.cm / 2.
     c.PixelModules.D1long = 4.09 * u.cm
-    c.PixelModules.numSi=12*c.PixelModules.nSlice
-    
+    c.PixelModules.numSi = 12*c.PixelModules.nSlice
+    c.PixelModules.z_offset = 0.7 * u.cm
+
+    # position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
+    # module position naming: "axis"Si"Module number"
 
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     #module position naming: "axis"Si"Module number"
