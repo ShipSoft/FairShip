@@ -47,34 +47,26 @@ using std::endl;
 using namespace ShipUnit;
 
 PixelModules::PixelModules()
-  : FairDetector("HighPrecisionTrackers",kTRUE, kPixelModules),
-    fTrackID(-1),
-    fPdgCode(),
-    fVolumeID(-1),
-    fPos(),
-    fMom(),
-    fTime(-1.),
-    fLength(-1.),
-    fELoss(-1),
-    fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
-{}
+   : FairDetector("HighPrecisionTrackers", kTRUE, kPixelModules), fTrackID(-1), fPdgCode(), fVolumeID(-1), fPos(),
+     fMom(), fTime(-1.), fLength(-1.), fELoss(-1), fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
+{
+}
 
-PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,Int_t nSl,const char* Title)
-  : FairDetector(name, Active, kPixelModules),
-    fTrackID(-1),
-    fPdgCode(),
-    fVolumeID(-1),
-    fPos(),
-    fMom(),
-    fTime(-1.),
-    fLength(-1.),
-    fELoss(-1),
-    fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
-{	
-  DimX = DX;
-  DimY = DY;
-  DimZ = DZ;
-  SetSiliconSlicesNumber(nSl);
+PixelModules::PixelModules(const char *name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,
+                           Int_t nSl, const char *Title)
+   : FairDetector(name, Active, kPixelModules), fTrackID(-1), fPdgCode(), fVolumeID(-1), fPos(), fMom(), fTime(-1.),
+     fLength(-1.), fELoss(-1), fPixelModulesPointCollection(new TClonesArray("PixelModulesPoint"))
+{
+   DimX = DX;
+   DimY = DY;
+   DimZ = DZ;
+   DimZWindow = 0.0110 * cm;
+   Windowx = 5 * cm;
+   Windowy = 5 * cm;
+   FrontEndthick = 0.0150 * cm;
+   FlexCuthick = 0.0100 * cm;
+   FlexKapthick = 0.0050 * cm;
+   SetSiliconSlicesNumber(nSl);
 }
 
 PixelModules::~PixelModules()
