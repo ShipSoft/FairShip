@@ -477,7 +477,10 @@ with ConfigRegistry.register_config("basic") as c:
    
     c.PixelModules.DimZpixelbox = c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick   
 
-    PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
+    # old calculation for DimZpixelbox c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick
+    c.PixelModules.DimZpixelbox = 34. * u.cm # correct physical size of surrounding box
+    
+    PixeltoGoliath = 30.45 * u.cm  # 25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
     #position of mother volumes
     c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh
