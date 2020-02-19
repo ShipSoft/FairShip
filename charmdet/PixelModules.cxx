@@ -67,7 +67,6 @@ PixelModules::PixelModules(const char *name, const Double_t DX, const Double_t D
    FlexCuthick = 0.0100 * cm;
    FlexKapthick = 0.0050 * cm;
    SetSiliconSlicesNumber(nSl);
-
 }
 
 PixelModules::~PixelModules()
@@ -111,7 +110,6 @@ void PixelModules::SetSiliconDZ(Double_t SiliconDZthin,Double_t SiliconDZthick)
   DimZSithin = SiliconDZthin;
   DimZSithick= SiliconDZthick;
 }
-
 
 void PixelModules::SetSiliconSlicesNumber(Int_t nSl)
 {
@@ -230,8 +228,7 @@ void PixelModules::ConstructGeometry()
    volPixelxthick->SetLineColor(kBlue - 5);
    AddSensitiveVolume(volPixelxthick);
 
-   ///////////////////////////////////////////////////////Passive
-   /// material///////////////////////////////////////////////////////
+   //////////////////////Passive material//////////////////////
 
    TGeoBBox *WindowBox = new TGeoBBox("WindowBox", Windowx / 2, Windowy / 2, DimZWindow / 2);
    TGeoVolume *volWindow = new TGeoVolume("volWindow", WindowBox, Kapton);
@@ -261,21 +258,20 @@ void PixelModules::ConstructGeometry()
    TGeoVolume *volFlexKapy = new TGeoVolume("volFlexKapy", FlexKapy, Kapton);
    volFlexKapy->SetLineColor(kRed);
 
-   ////////////////////////////////////////////////////////End passive
-   /// material////////////////////////////////////////////////////////////////
+   //////////////////////End Passive material//////////////////////
 
+   // place foil which covered the entry window of the pixelbox.
    volPixelBox->AddNode(volWindow, 0, new TGeoTranslation(0, 0, -DimZPixelBox / 2. + DimZWindow));
    volPixelBox->AddNode(volWindow, 1, new TGeoTranslation(0, 0, DimZPixelBox / 2. - DimZWindow));
    
    // loop to create and align the active volumes ( == Sensors). Only the active material is sliced.
-
    for (Int_t ipixel = 0; ipixel < nSi; ipixel++) {
        // modules with large pixel pitch in y
       if ((ipixel / nSlices) % 4 == 0 || (ipixel / nSlices) % 4 == 1) {
          volPixelBox->AddNode(volPixelythick, PixelIDlist[ipixel],
             new TGeoTranslation(xs[ipixel], ys[ipixel], (-DimZPixelBox / 2.) + zs[ipixel] + z_offset));
       } else { // modules with large pixel pitch in x
-         // check for the two thinner modules
+         // consider the two thinner modules
          if (((PixelIDlist[ipixel] / nSlices) == 2) || ((PixelIDlist[ipixel] / nSlices) == 11)) { 
             volPixelBox->AddNode(volPixelxthin, PixelIDlist[ipixel],
                new TGeoTranslation(xs[ipixel], ys[ipixel], (-DimZPixelBox / 2.) + zs[ipixel] + z_offset));
@@ -309,7 +305,7 @@ void PixelModules::ConstructGeometry()
          volPixelBox->AddNode(volFlexKapy, module, new TGeoTranslation(xs[module], ys[module], z_tmp_kap));
       } else {
          // modules with large pixel pitch in x
-         // check for thinner modules
+         // consider thinner modules
          if (module == 2 ){
             z_tmp_cu = (-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThinSlice / 2.) - FlexKapthick - (FlexCuthick/ 2.) ;
             z_tmp_kap =(-DimZPixelBox / 2.) + zs[module] + z_offset - (DimZThinSlice / 2.) - FlexKapthick / 2. ;
@@ -335,7 +331,6 @@ void PixelModules::ConstructGeometry()
          volPixelBox->AddNode(volFlexCux, module, new TGeoTranslation(xs[module], ys[module], z_tmp_cu));
          volPixelBox->AddNode(volFlexKapx, module, new TGeoTranslation(xs[module], ys[module], z_tmp_kap));
       }
-      
    }
 }
 
