@@ -1,12 +1,12 @@
 #ifndef PIXELMODULES_H
 #define PIXELMODULES_H
 
-#include "FairModule.h"                 // for FairModule
-#include "FairDetector.h"                  // for FairDetector
+#include "FairModule.h"   // for FairModule
+#include "FairDetector.h" // for FairDetector
 
-#include "Rtypes.h"                     // for ShipMuonShield::Class, Bool_t, etc
+#include "Rtypes.h" // for ShipMuonShield::Class, Bool_t, etc
 
-#include <string>                       // for string
+#include <string> // for string
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
@@ -119,9 +119,9 @@ protected:
    Double_t FrontEndthick = 0.0150;
    Double_t FlexCuthick = 0.0100;
    Double_t FlexKapthick = 0.0050;
-   
+
    Double_t Dim1Short, Dim1Long;
-   std::vector<Int_t> PixelIDlist ;
+   std::vector<Int_t> PixelIDlist;
 
    Int_t nSi;
    Double_t DimZSithin = 0.02;
