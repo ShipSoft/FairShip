@@ -332,11 +332,14 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.PixelModules.DimZSithin = 0.0200 * u.cm
     c.PixelModules.DimZSithick = 0.0245 * u.cm
-    c.PixelModules.nSlice= 1 #for digitization simulation, fix nSlice=10
-    c.PixelModules.D1short = 3.36 * u.cm / 2.
-    c.PixelModules.D1long = 4.09 * u.cm
-    c.PixelModules.numSi=12*c.PixelModules.nSlice
-    
+    c.PixelModules.nSlice = 5  # for digitization simulation recommended nSlice=10
+    c.PixelModules.D1short = 50. * u.um * 336 # = 1.68 u.cm. Each module has 336 rows.
+    c.PixelModules.D1long = ((78 * 250.) + 450. + 500. )* u.um * 2 # = 4.09 * u.cm. Each module has 160 columns, the outer two and the centered two have different size.
+    c.PixelModules.numSi = 12*c.PixelModules.nSlice
+    c.PixelModules.z_offset = 0.7 * u.cm
+
+    # position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
+    # module position naming: "axis"Si"Module number"
 
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     #module position naming: "axis"Si"Module number"
@@ -346,71 +349,71 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []
 
-    	#Module 0
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(1.53912)
-    	c.PixelModules.ySi.append(-0.002332)
-    	c.PixelModules.zSi.append(-0.13+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 1
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(-0.229076)
-    	c.PixelModules.ySi.append(0.005328)
-    	c.PixelModules.zSi.append(0.52+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 2
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(0.704924)
-    	c.PixelModules.ySi.append(0.808437)
-    	c.PixelModules.zSi.append(2.412+i*c.PixelModules.DimZSithin/c.PixelModules.nSlice)
-    	#Module 3
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(0.705433)
-    	c.PixelModules.ySi.append(-0.879224)
-    	c.PixelModules.zSi.append(3.09+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 4 (Didn't take data)
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(1.54963)
-    	c.PixelModules.ySi.append(-0.003912)
-    	c.PixelModules.zSi.append(5.17+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 5
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(-0.221577)
-    	c.PixelModules.ySi.append(-0.023944)
-    	c.PixelModules.zSi.append(5.79+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 6
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(0.690749)
-    	c.PixelModules.ySi.append(0.769728)
-    	c.PixelModules.zSi.append(7.77+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 7
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(0.702302)
-    	c.PixelModules.ySi.append(-0.874356)
-    	c.PixelModules.zSi.append(8.46+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 8
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(1.58271)
-    	c.PixelModules.ySi.append(-0.0030432)
-    	c.PixelModules.zSi.append(10.462+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 9
-    for i in range(1-c.PixelModules.nSlice,1):
-	c.PixelModules.xSi.append(-0.209171)
-	c.PixelModules.ySi.append(0.002488)
-	c.PixelModules.zSi.append(11.17+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 10
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(0.694199)
-    	c.PixelModules.ySi.append(0.850237)
-    	c.PixelModules.zSi.append(13.162+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
-    	#Module 11
-    for i in range(1-c.PixelModules.nSlice,1):
-    	c.PixelModules.xSi.append(0.683245)
-    	c.PixelModules.ySi.append(-0.79636)
-    	c.PixelModules.zSi.append(13.85+i*c.PixelModules.DimZSithin/c.PixelModules.nSlice)
+    # Module 0
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(1.53912)
+        c.PixelModules.ySi.append(-0.002332)
+        c.PixelModules.zSi.append(-0.13 + i * c.PixelModules.DimZSithick / c.PixelModules.nSlice)
+        # Module 1
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(-0.229076)
+        c.PixelModules.ySi.append(0.005328)
+        c.PixelModules.zSi.append(0.52 + i * c.PixelModules.DimZSithick / c.PixelModules.nSlice)
+        # Module 2
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(0.704924)
+        c.PixelModules.ySi.append(0.808437)
+        c.PixelModules.zSi.append(2.412+i*c.PixelModules.DimZSithin/c.PixelModules.nSlice)
+        # Module 3
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(0.705433)
+        c.PixelModules.ySi.append(-0.879224)
+        c.PixelModules.zSi.append(3.09+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 4 (Didn't take data)
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(1.54963)
+        c.PixelModules.ySi.append(-0.003912)
+        c.PixelModules.zSi.append(5.17+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 5
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(-0.221577)
+        c.PixelModules.ySi.append(-0.023944)
+        c.PixelModules.zSi.append(5.79+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 6
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(0.690749)
+        c.PixelModules.ySi.append(0.769728)
+        c.PixelModules.zSi.append(7.77+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 7
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(0.702302)
+        c.PixelModules.ySi.append(-0.874356)
+        c.PixelModules.zSi.append(8.46+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 8
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(1.58271)
+        c.PixelModules.ySi.append(-0.0030432)
+        c.PixelModules.zSi.append(10.462+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 9
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(-0.209171)
+        c.PixelModules.ySi.append(0.002488)
+        c.PixelModules.zSi.append(11.17+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 10
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(0.694199)
+        c.PixelModules.ySi.append(0.850237)
+        c.PixelModules.zSi.append(13.162+i*c.PixelModules.DimZSithick/c.PixelModules.nSlice)
+        # Module 11
+    for i in range(1-c.PixelModules.nSlice, 1):
+        c.PixelModules.xSi.append(0.683245)
+        c.PixelModules.ySi.append(-0.79636)
+        c.PixelModules.zSi.append(13.85+i*c.PixelModules.DimZSithin/c.PixelModules.nSlice)
 
-    #SciFi Modules
-    c.SciFi = AttrDict(z = 0*u.cm)
-    #mother volume dimensions
-    c.SciFi.DX = 50*u.cm 
+    # SciFi Modules
+    c.SciFi = AttrDict(z=0*u.cm)
+    # mother volume dimensions
+    c.SciFi.DX = 50*u.cm
     c.SciFi.DY = 50*u.cm
     c.SciFi.DZ = 28.07 * u.cm #as difference between positions of SF_DHBR and x of SF_UHTL in the Survey document
 
@@ -474,7 +477,10 @@ with ConfigRegistry.register_config("basic") as c:
    
     c.PixelModules.DimZpixelbox = c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick   
 
-    PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
+    # old calculation for DimZpixelbox c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick
+    c.PixelModules.DimZpixelbox = 34. * u.cm # correct physical size of surrounding box
+    
+    PixeltoGoliath = 30.45 * u.cm  # 25.45 + 5cm different goliath dz
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
     #position of mother volumes
     c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh

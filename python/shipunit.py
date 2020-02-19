@@ -47,6 +47,8 @@ nanobarn = 1.e-9 *barn
 picobarn = 1.e-12*barn
 
 # symbols
+um  = micrometer
+
 mm  = millimeter
 mm2 = millimeter2
 mm3 = millimeter3

@@ -52,8 +52,11 @@ def configure(run,ship_geo,Gfield=''):
     for i, (x, y, z) in enumerate(zip(ship_geo.SciFi.xSi,ship_geo.SciFi.ySi,ship_geo.SciFi.zSi)):
       SciFi.SetStationPositions(i, x, y, z)
 # === Pixel modules
-    PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE,ship_geo.PixelModules.nSlice)
-    PixelModules.SetBoxParam(ship_geo.PixelModules.DX,ship_geo.PixelModules.DY,ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long,ship_geo.PixelModules.DimZSithin, ship_geo.PixelModules.DimZSithick)
+    PixelModules = ROOT.PixelModules("PixelModules", ship_geo.PixelModules.DX, ship_geo.PixelModules.DY,
+                                         ship_geo.PixelModules.DZ, ROOT.kTRUE, ship_geo.PixelModules.nSlice)
+    PixelModules.SetBoxParam(ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, 
+                                 ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long, 
+                                 ship_geo.PixelModules.DimZSithin, ship_geo.PixelModules.DimZSithick, ship_geo.PixelModules.z_offset)
 # === SciFi modules
     detectorList.append(SciFi)
 # === Pixel modules
