@@ -1,10 +1,10 @@
+from future.utils import with_metaclass
+from contextlib import contextmanager
+import pickle
+import re
+import os
 from future import standard_library
 standard_library.install_aliases()
-import os
-import re
-import pickle
-from contextlib import contextmanager
-from future.utils import with_metaclass
 
 
 def expand_env(string):
@@ -97,6 +97,7 @@ class AttrDict(dict):
     d['key'] = 1
     assert d.key == 1
     """
+
     def __init__(self, *args, **kwargs):
         super(AttrDict, self).__init__(*args, **kwargs)
         self.__dict__ = self
