@@ -67,6 +67,7 @@ PixelModules::PixelModules(const char *name, const Double_t DX, const Double_t D
    FlexCuthick = 0.0100 * cm;
    FlexKapthick = 0.0050 * cm;
    SetSiliconSlicesNumber(nSl);
+
 }
 
 PixelModules::~PixelModules()
@@ -112,10 +113,28 @@ void PixelModules::SetSiliconDZ(Double_t SiliconDZthin,Double_t SiliconDZthick)
 }
 
 
-void PixelModules::SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz){
- xs[nstation] = posx;
- ys[nstation] = posy;
- zs[nstation] = posz;
+void PixelModules::SetSiliconSlicesNumber(Int_t nSl)
+{
+   nSlices = nSl;
+   nSi = nSlices * 12;
+}
+
+void PixelModules::SetPositionSize()
+{
+   xs = std::vector<Double_t> (nSi);
+   ys = std::vector<Double_t> (nSi);
+   zs = std::vector<Double_t> (nSi);
+
+   xangle = std::vector<Double_t> (nSi);
+   yangle = std::vector<Double_t> (nSi);
+   zangle = std::vector<Double_t> (nSi);
+}
+
+void PixelModules::SetSiliconStationPositions(Int_t nstation, Double_t posx, Double_t posy, Double_t posz)
+{
+   xs[nstation] = posx;
+   ys[nstation] = posy;
+   zs[nstation] = posz;
 }
 
 void PixelModules::SetSiliconStationAngles(Int_t nstation, Double_t anglex, Double_t angley, Double_t anglez){
@@ -124,31 +143,10 @@ void PixelModules::SetSiliconStationAngles(Int_t nstation, Double_t anglex, Doub
  zangle[nstation] = anglez;
 }
 
-void PixelModules::SetSiliconSlicesNumber(Int_t nSl)
+void PixelModules::ComputeDimZSlice()
 {
-   nSlices = nSl;
-   nSi = nSlices * 12;
-}
-
-Double_t *PixelModules::GetPosSize(Int_t n)
-{
-   return new Double_t[n];
-}
-
-void PixelModules::SetPositionSize()
-{
-   xs = GetPosSize(nSi);
-   ys = GetPosSize(nSi);
-   zs = GetPosSize(nSi);
-   xangle = GetPosSize(nSi);
-   yangle = GetPosSize(nSi);
-   zangle = GetPosSize(nSi);
-}
-
-
-void PixelModules::ComputeDimZSlice(){
-DimZThinSlice=DimZSithin/nSlices;
-DimZThickSlice=DimZSithick/nSlices;
+   DimZThinSlice = DimZSithin / nSlices;
+   DimZThickSlice = DimZSithick / nSlices;
 }
 
 void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t zBox, Double_t SZPixel, Double_t D1short,
@@ -164,23 +162,15 @@ void PixelModules::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t z
    z_offset = first_plane_offset; // distance between first module and box outside
    SetSiliconDZ(SiliconDZthin, SiliconDZthick);
    ComputeDimZSlice();
-   PixelIDlist = SetIDs();
+   SetIDs();
    SetPositionSize();
 }
 
-
-Int_t *PixelModules::GetIDlist(Int_t n)
+void PixelModules::SetIDs()
 {
-   return new Int_t[n];
-}
-
-Int_t *PixelModules::SetIDs()
-{
-   PixelIDlist = GetIDlist(nSi);
    for (Int_t i = 0; i < nSi; i++) {
-      PixelIDlist[i] = i;
+      PixelIDlist.push_back(i);
    }
-   return PixelIDlist;
 }
 
 void PixelModules::ConstructGeometry()

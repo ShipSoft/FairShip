@@ -93,13 +93,10 @@ private:
    TClonesArray *fPixelModulesPointCollection;
 
    Int_t InitMedium(const char *name);
-   Int_t *GetIDlist(Int_t n);
 
 protected:
-   Double_t *GetPosSize(Int_t n);
    void SetPositionSize();
-   Double_t Dim1Short, Dim1Long;
-   Int_t *SetIDs();
+   void SetIDs();
 
    Double_t SBoxX = 0;
    Double_t SBoxY = 0;
@@ -114,22 +111,24 @@ protected:
    Double_t DimX = 0;
    Double_t DimY = 0;
    Double_t DimZ = 0;
+   Double_t DimZPixelBox;
    Double_t DimZWindow = 0.0110;
    Double_t Windowx = 5;
    Double_t Windowy = 5;
+
    Double_t FrontEndthick = 0.0150;
    Double_t FlexCuthick = 0.0100;
    Double_t FlexKapthick = 0.0050;
-   Double_t DimZPixelBox;
-   Int_t *PixelIDlist;
+   
+   Double_t Dim1Short, Dim1Long;
+   std::vector<Int_t> PixelIDlist ;
 
    Int_t nSi;
    Double_t DimZSithin = 0.02;
    Double_t DimZSithick = 0.0245;
    Double_t DimZThinSlice;
    Double_t DimZThickSlice;
-   Double_t *xs, *ys, *zs;
-   Double_t *xangle, *yangle, *zangle;
+   std::vector<Double_t> xs, ys, zs, xangle, yangle, zangle;
 
    PixelModules(const PixelModules &);
    PixelModules &operator=(const PixelModules &);
