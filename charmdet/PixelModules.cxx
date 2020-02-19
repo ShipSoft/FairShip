@@ -334,10 +334,6 @@ void PixelModules::ConstructGeometry()
    }
 }
 
-
-}
-
-
 Bool_t  PixelModules::ProcessHits(FairVolume* vol){
     /** This method is called from the MC stepping */
     //Set parameters at entrance of volume. Reset ELoss.
