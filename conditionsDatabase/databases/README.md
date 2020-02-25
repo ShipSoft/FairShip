@@ -1,0 +1,1 @@
+This directory contains database adapter packages for (the) conditions database(s).
