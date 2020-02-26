@@ -1,0 +1,1 @@
+This directory contains unit tests (using PyTest) for the MongoDB adapter.
