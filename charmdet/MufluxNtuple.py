@@ -26,6 +26,7 @@ elif host=='ship-ubuntu-1710-32':
     gPath = "/home/truf/muflux/"
 else:
     gPath = "/home/truf/ship-ubuntu-1710-32/"
+topDir =  os.path.abspath('.')
 
 hData   = {}
 hMC     = {}
@@ -155,10 +156,11 @@ def rapidity(E,pz):
    return 0.5*ROOT.TMath.Log( (E+pz)/(E-pz) )
 s_SQRT2i = 1./ROOT.TMath.Sqrt( 2.0 )
 sqrt2pi  = ROOT.TMath.Sqrt( 2*ROOT.TMath.Pi() )
-cb=ROOT.TF1("cb","crystalball",0,6.)
-def doubleGaussian(x,par):
-   bw = par[0] # should be fixed
 
+def norm_myGauss(g):
+  return [abs(g.GetParameter(3)),g.GetParError(3)],[abs(g.GetParameter(0)),g.GetParError(0)]
+
+cb=ROOT.TF1("cb","crystalball",0,6.)
 
 def TwoCrystalBall(x,par):
    bw = par[0] # should be fixed
@@ -456,14 +458,14 @@ def myFit(histo,fun,fitOption,xmin,xmax):
    fitResult = rc.Get()
    return fitResult.Status() and fitResult.IsValid(),fitResult.Chi2()/fitResult.Ndf(),fitResult.Clone(histo.GetName())
 
-def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printout='',debug=1):
+def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printout=2):
    ROOT.gROOT.cd()
    tag = fitMethod+"_"+proj
    hData['FitResults-'+tag]={}
    y_beam = yBeam()
    v='mcor'
    fitOption = 'SQL'
-   if debug==2: fitOption='SL'
+   if printout==2: fitOption='SL'
    minX = 0.5
    mcNtuples = ['Jpsi','JpsiP8','10GeV']
 # canvases
@@ -523,7 +525,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
      params = {'signal':1,   'highMass':2,'highSigma':3,'highTails':{4:1.,5:10.},
                'signalLow':6,'lowMass':7, 'lowSigma':8, 'lowTails':{9:1.,10:10.},
                'pol':[11,12],'highTailsOff':{4:1000.,5:10.},'highTailsLimits':{4:[0.,10.],5:[0.,100.]},
-                           'lowTailsOff':{9:1000.,10:10.,14:0},'lowTailsLimits':{9:[-10.,0.],10:[0.,100.],14:[0.,10.]}}
+                           'lowTailsOff':{9:1000.,10:10.},'lowTailsLimits':{9:[-10.,0.],10:[0.,100.]}}
      funTemplate = {'F':TwoCrystalBall,'N':16,'Init':init_twoCB0}
    if fitMethod=='B':
    # high mass [1,2,3,4,5]  low mass [6,7,8,9,10]
@@ -532,6 +534,13 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
                'pol':[13,14],'highTailsOff':{10:0.008,11:-0.6,12:-0.06},'highTailsLimits':{},
                            'lowTailsOff':{4:0.008,5:-0.6,6:-0.06},'lowTailsLimits':{}}
      funTemplate = {'F':my2BukinPdf,'N':15,'Init':init_twoBukin}
+   if fitMethod=='G':
+   # high mass [1,2,3,4,5]  low mass [6,7,8,9,10]
+     params = {'signal':0,   'highMass':1,'highSigma':2,'highTails':{},
+               'signalLow':3,'lowMass':4, 'lowSigma':5, 'lowTails':{},
+               'pol':[6,7],'highTailsOff':{},'highTailsLimits':{},
+                           'lowTailsOff':{},'lowTailsLimits':{} }
+     funTemplate = {'F':hMC['myGauss'],'N':10,'Init':init_Gauss}
 
 # start with fitting MC high mass
    for m in mcNtuples:
@@ -540,8 +549,9 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
       for k in range(nBins):
          tc = hMC['MCbins'+z+tag+m].cd(k+1)
          mctag = 'mc-'+tag+z+m+str(k)
-         fname = 'mc-'+fitMethod+'Fun'+mctag
-         hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+         fname = 'mc-Fun'+tag+z+m+str(k)
+         if fitMethod=='G': hMC[fname]=funTemplate['F'].Clone(fname)
+         else: hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
          CB = hMC[fname]
          funTemplate['Init'](CB,bw)
          CB.SetParameter(params['signal'],hMC[mctag].GetEntries())
@@ -563,12 +573,18 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
          for l in params['highTailsLimits']: 
              CB.SetParLimits(l,params['highTailsLimits'][l][0],params['highTailsLimits'][l][1])
          rc = myFit(hMC[mctag],CB,fitOption,1.,5.0)
+         CB.SetParLimits(params['signalLow'],0.,1E9)
+         CB.SetParLimits(params['signal'],0.,1E9)
          if rc[0]!=0:
            print mctag
            break
          hMC['FitResults-'+mctag] = rc[2]
+         hMC[mctag].Draw()
          tc.Update()
          stats = tc.GetPrimitive('stats')
+         if not stats: 
+           print "something wrong", mctag
+           continue
          stats.SetOptFit(10111)
          stats.SetFitFormat('5.4g')
          stats.SetX1NDC(0.68)
@@ -578,6 +594,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
          tc.Update()
          if fitMethod=='CB': tmp = norm_twoCB(hMC['FitResults-'+mctag])
          if fitMethod=='B':  tmp = norm_twoBukin(CB)
+         if fitMethod=='G':  tmp = norm_myGauss(CB)
          N = tmp[1][0]
          E = tmp[1][1]
          if N > 1E6:  # unphysical result
@@ -585,15 +602,16 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
              E = 0
          hMC[Jpsi].SetBinContent(k+1,N)
          hMC[Jpsi].SetBinError(k+1,E)
-      if printout: myPrint(hMC['MCbins'+z+tag+m],'MCbins'+'_'+printout+'_'+z+tag+m)
+      if printout>0: myPrint(hMC['MCbins'+z+tag+m],'MCbins'+z+tag+m)
 # next fitting MC low mass, only possible for 10GeV
    m = "10GeV"
    z = 'LowMass-'
    for k in range(nBins):
          tc = hMC['MCbins'+z+tag+m].cd(k+1)
          mctag = 'mc-'+tag+z+m+str(k)
-         fname = 'mc-'+fitMethod+'Fun'+mctag
-         hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+         fname = 'mc-Fun'+tag+z+m+str(k)
+         if fitMethod=='G': hMC[fname]=funTemplate['F'].Clone(fname)
+         else: hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
          CB = hMC[fname]
          funTemplate['Init'](CB,bw)
    # high mass [1,2,3,4,5]  low mass [6,7,8,9,10]
@@ -628,7 +646,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
    case[m]['Canvas'] = hMC['MCbins'+z+tag+m]
    case[m]['htag']   =  'mc-'+tag+z+m
    case[m]['store']  =  hMC
-   case[m]['fun']    = 'mc-CBFun'+tag+z+m
+   case[m]['fun']    = 'mc-Fun'+tag+z+m
    case[m]['Jpsi']   = 'mc-'+tag+z+m+'-Jpsi'
 #
    m = 'Data'
@@ -636,16 +654,18 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
    case[m]['Canvas'] = hData['bins'+z+tag]
    case[m]['htag']   =  tag
    case[m]['store']  =  hData
-   case[m]['fun']    = 'CBFun'+tag+z
+   case[m]['fun']    = 'Fun'+tag+z
    case[m]['Jpsi']   =  tag+z+'-Jpsi'
    for c in case: 
       for k in range(nBins):
          tc = case[c]['Canvas'].cd(k+1)
          hk = case[c]['htag']+str(k)
          h  = case[c]['store']
-         fk = case[c]['fun']
+         fk = case[c]['fun']+str(k)
          Jpsi = case[c]['Jpsi']
          h[fk] = ROOT.TF1(fk,funTemplate['F'],0,10,funTemplate['N'])
+         if fitMethod=='G': h[fk] =funTemplate['F'].Clone(fk)
+         else: h[fk] = ROOT.TF1(fk,funTemplate['F'],0,10,funTemplate['N'])
          CB = h[fk]
          funTemplate['Init'](CB,bw)
    # get parameters from "Jpsi (Cascade)"
@@ -667,10 +687,10 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
          CB.FixParameter(params['signalLow'],0)
 # fit first signal part
          rc = myFit(h[hk],CB,fitOption,2.9,5.0)
-         if rc[2].Parameter(1)>25:
-            for n in range(2,4): CB.ReleaseParameter(n)
-         rc = myFit(h[hk],CB,fitOption,2.9,5.0)
          L = [params['signal'],params['highMass'],params['highSigma']]
+         if rc[2].Parameter(params['signal'])>25:
+            for n in L: CB.ReleaseParameter(n)
+         rc = myFit(h[hk],CB,fitOption,2.9,5.0)
          for n in L: CB.FixParameter(n,rc[2].Parameter(n))
 # then low mass with signal fixed
          CB.ReleaseParameter(params['signalLow'])
@@ -715,9 +735,13 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
                L += params['highTails'].keys()+[params['highMass'],params['highSigma']]
                for n in L:  CB.SetParameter(n,rc[2].Parameter(n))
                for n in params['highTails']:  CB.FixParameter(n,rc[2].Parameter(n))
+         CB.SetParLimits(params['signalLow'],0.,1E9)
+         CB.SetParLimits(params['signal'],0.,1E9)
+         rc = myFit(h[hk],CB,fitOption,xlow,5.0)
          h['FitResults-'+hk] = rc[2]
-         if fitMethod=='CB': tmp = norm_twoCB(hMC['FitResults-'+mctag])
+         if fitMethod=='CB': tmp = norm_twoCB(h['FitResults-'+hk])
          if fitMethod=='B':  tmp = norm_twoBukin(CB)
+         if fitMethod=='G':  tmp = norm_myGauss(CB)
          N = tmp[1][0]
          E = tmp[1][1]
          if N > 1E6:  # unphysical result
@@ -736,7 +760,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
          stats.SetX2NDC(0.99)
          stats.SetY2NDC(0.84)
          tc.Update()
-      if printout: myPrint(case[c]['Canvas'],m+'-diMuonBins'+'_'+printout+'_'+tag)
+      if printout>0: myPrint(case[c]['Canvas'],c+'-diMuonBins_'+tag)
    hMC['dummy'].cd()
    mc = hMC[case['10GeV']['Jpsi']]
    da = hData[case['Data']['Jpsi']]
@@ -749,7 +773,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
      z = 'HighMass-'
      Jpsi = 'mc-'+tag+z+m+'-Jpsi'
      hMC[Jpsi].Draw('same')
-   if printout: myPrint(hMC['dummy'],'diMuonBins'+'_'+printout+'_'+tag+'Summary')
+   if printout>0: myPrint(hMC['dummy'],'diMuonBins'+tag+'Summary')
 # run consistency test
    mc.Chi2Test(hMC['YM_10GeV'].ProjectionX())
 
@@ -1895,6 +1919,7 @@ hMC['TwoGauss'] = ROOT.TF1('TwoGauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi)
 # Since we have a thick target, any proton from the elastic scattering will interact inelastic somewhere else.
 # last cascade production of Eric shows even larger contribution, but momentum distribution not clear.
 def loadNtuples(BDT='BDT-'):
+ if hMC.has_key('dummy'): return
  if options.refit :
   hData['f']     = ROOT.TFile(BDT+'ntuple-InvMass-refitted_0.root')  # ROOT.TFile('ntuple-InvMass-refitted_intermediateField.root')
   hMC['f1']      = ROOT.TFile('ntuple-invMass-MC-1GeV-repro_0.root')
@@ -2081,21 +2106,12 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,BDTCut):
    if BDTCut: theCut += "&&BDT>0."
    return theCut.replace(' ','')
 
-def runAll(n=1):
+def runAll():
    proj = 'ycor1C'
    loadNtuples()
-   if n==1: 
-     JpsiAcceptance(withCosCSCut=True, ptCut = 0., pmin = 10., pmax = 300., BDTCut=True, fitMethod='gaus')
-     for fe in ['.root','.pdf','.png']:  os.system('cp diMuonBins'+proj+fe+ '  diMuonBins'+proj+'_BDT'+fe)
-   if n==2:
-     JpsiAcceptance(withCosCSCut=True, ptCut = 1.0, pmin = 10., pmax = 300., BDTCut=None, fitMethod='gaus')
-     for fe in ['.root','.pdf','.png']:  os.system('cp diMuonBins'+proj+fe+ '  diMuonBins'+proj+'_ptcut'+fe)
-   if n==3:
-     JpsiAcceptance(withCosCSCut=True, ptCut = 0.0, pmin = 10., pmax = 300., BDTCut=None, fitMethod='B')
-   # will already produce *BinsB*
-   if n==4:
-     JpsiAcceptance(withCosCSCut=True, ptCut = 0.0, pmin = 10., pmax = 300., BDTCut=None, fitMethod='CB')
-   # will already produce *BinsCB*
+   for ptCut in [0.0,1.0]:
+      for fitMethod in ['B','CB','G']:
+         JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = 20., pmax = 300., BDTCut=None, fitMethod=fitMethod)
 
 def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, fitMethod='gaus'):
    # with twoBukin fit usually ptCut = 0.
@@ -2115,8 +2131,9 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
       pmin  = 0.
       pmax  = 1000.
    theCutcosCS = theJpsiCut('mcor',withCosCSCut,ptCut,pmin,pmax,BDTCut)
-   tag = str(ptCut)+'_'+str(pmin)
-   if BDTCut: tag = (str(ptCut)+'_'+str(pmin)+'_BDT').replace('.','')
+   tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
+   if BDTCut: tag += '_BDT'
+   os.chdir(topDir)
    if not os.path.isdir(tag): os.system('mkdir '+tag)
    os.chdir(tag)
 
@@ -2146,9 +2163,9 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
       hMC['MCBJpsi10GeV-ycor']   = hMC['mc-BJpsi'+proj].Clone('MCBJpsi10GeV-ycor')
       hData['BJpsi-ycor']   = hData['BJpsi'+proj].Clone('BJpsi-ycor')
       fM = 'BJpsi'
-   elif fitMethod=='CB' or fitMethod=='B' :
+   elif fitMethod=='CB' or fitMethod=='B'  or fitMethod=='G' :
 # for Jpsi cascade large stat
-      twoCBYieldFit(fitMethod,proj,fR[0],fR[1],'y_{CMS}',theCutcosCS,nBins=fR[2],printout=tag,debug=1)
+      twoCBYieldFit(fitMethod,proj,fR[0],fR[1],'y_{CMS}',theCutcosCS,nBins=fR[2],printout=1)
    else:
       print "method not known, exit."
       exit()
@@ -2209,9 +2226,9 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
    hMC['etaNA50'].DrawF1(0.,2.0,'same')
    hMC["Y_Cascade_scaled"].SetMaximum(max(hMC["Y_Cascade_scaled"].GetMaximum(),hMC['etaNA50'].GetMaximum()*1.2))
    tc.Update()
-   if BDTCut: tag = 'BDT'
-   else: tag = 'ptcut'+str(ptCut)
-   myPrint(hMC['dummy'],"data_YieldsEffCorrectedWithNA50_"+tag+"_"+fitMethod)
+   myPrint(hMC['dummy'],"data_YieldsEffCorrectedWithNA50")
+   ut.writeHists(hData,'Data-histos.root')
+   ut.writeHists(hMC,'MC-histos.root')
 #
 def JpsiPolarization(ptCut = 1.4, BDTCut=None):
    theCut = theJpsiCut('mcor',False,ptCut,20.,300.,BDTCut)
@@ -2247,32 +2264,68 @@ def JpsiPolarization(ptCut = 1.4, BDTCut=None):
        dy+=0.08
    hMC['dummy'].Update()
    myPrint(hMC['dummy'],'cosCScorDataEffCorrected')
-def JpsiFitComparison(proj = 'ycor1C',ntName='10GeV'):
-   f = ["diMuonBinsB"+proj+ntName+"Summary.root","diMuonBinsCB"+proj+ntName+"Summary.root"]
-   canvas = {}
+def JpsiFitComparison(proj = 'ycor1C',ptCut=0.0,pmin=20.,BDTCut=None):
+# compare B and CB fits on data
+   fM = {'CB':{'signal':1,'mass':2,'sigma':3},'B':{'signal':7,'mass':8,'sigma':9}}
+   tag = '-'+str(ptCut)+'_'+str(pmin)
+   if BDTCut: tag += '_BDT'
+   os.chdir(topDir)
+   hData.clear()
    results = {}
-   for x in f:
-      fits = ROOT.TFile(x)
-      canvas[x] = fits.Get("dummy").Clone(x)
-      results[x] = {}
-      for histo in canvas[x].GetListOfPrimitives():
-          if histo.ClassName()=='TH1D':
-             ft  = histo.GetName()
-             results[x][ft]={}
-             for n in range(1,histo.GetNbinsX()+1):
-                results[x][ft][n]=[histo.GetBinContent(n),histo.GetBinError(n)]
-   print "for Data"
-   histo0 = results[f[0]]['BJpsi'+proj]
-   histo1 = results[f[1]]['CBJpsi'+proj]
-   for n in range(1,len(histo0)+1):
-      print "%4i %5.2F +/- %5.2F | %5.2F +/- %5.2F"%(n,histo0[n][0],histo0[n][1],histo1[n][0],histo1[n][1])
-   print "for MC"
-   histo0 = results[f[0]]['mc-BJpsi'+proj]
-   histo1 = results[f[1]]['mc-CBJpsi'+proj+'_'+ntName]
-   for n in range(1,len(histo0)+1):
-      print "%4i %5.2F +/- %5.2F | %5.2F +/- %5.2F"%(n,histo0[n][0],histo0[n][1],histo1[n][0],histo1[n][1])
+   for M in fM:
+      ut.readHists(hData,M+tag+'/Data-histos.root')
+      results[M]={}
+   for M in results:
+     print "==========   Here the results for fit method ",M
+     k=0
+     while k<100:
+        hk = M+'_'+proj+str(k)
+        if not hData.has_key(hk): break
+        hz    = hData[hk]
+        fName = 'Fun'+hk
+        hFun = hz.GetFunction(fName)
+        mass = [hFun.GetParameter(fM[M]['mass']), hFun.GetParError(fM[M]['mass'])]
+        sigm = [hFun.GetParameter(fM[M]['sigma']),hFun.GetParError(fM[M]['sigma'])]
+        prob = hFun.GetProb()
+        hS =  hData[M+'_'+proj+'-Jpsi']
+        NS   = [hS.GetBinContent(k+1), hS.GetBinError(k+1)]
+        prob = hFun.GetProb()
+        ybin = hz.GetName().split(proj)[1]
+        tmp = hz.GetTitle().split(' ')
+        yrange = tmp[len(tmp)-1]
+        print "%20s : %5.2F +/- %5.2F   %5.2F +/- %5.2F |   %10.2F +/- %5.2F "%(\
+        yrange,mass[0],mass[1],sigm[0],sigm[1],NS[0],NS[1])
+        results[M][yrange]={'signal':NS,'mass':mass,'sigma':sigm,'fitProb':prob}
+        k+=1
+   # now compare each parameter directly
+   ybins = results[M].keys()
+   ybins.sort()
+   for p in results[M][ybins[0]]:
+       print "==== compare ",p, ' B                                   CB'
+       for yrange in ybins:
+          if p=='fitProb':
+            txt =  "%20s : %5.2F   |  %5.2F  "%(yrange,results['CB'][yrange][p]*100,results['B'][yrange][p]*100)
+          elif p=='signal':
+            pull = (results['B'][yrange][p][0]-results['CB'][yrange][p][0])/(1E-9 + (results['CB'][yrange][p][1]+results['B'][yrange][p][1])/2.)
+            txt = "%20s : %8.2F +/- %8.2F |  %8.2F +/- %8.2F    %5.2F "%(yrange,results['CB'][yrange][p][0],results['CB'][yrange][p][1],
+                 results['B'][yrange][p][0],results['B'][yrange][p][1],pull)
+          else:
+            pull = (results['B'][yrange][p][0]-results['CB'][yrange][p][0])/(1E-9 + (results['CB'][yrange][p][1]+results['B'][yrange][p][1])/2.)
+            txt = "%20s : %5.2F +/- %5.2F |  %5.2F +/- %5.2F    %5.2F "%(yrange,results['CB'][yrange][p][0],results['CB'][yrange][p][1],
+                 results['B'][yrange][p][0],results['B'][yrange][p][1],pull)
+          print txt
 
-def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=True):
+def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=1.0,pmin=10.,BDTCut=None):
+   tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
+   if BDTCut: tag += '_BDT'
+   os.chdir(topDir)
+   if not os.path.isdir(tag): os.system('mkdir '+tag)
+   os.chdir(tag)
+   if not withFitResult:
+      hMC.clear()
+      hData.clear()
+      ut.readHists(hMC,'MC-histos.root')
+      ut.readHists(hData,'Data-histos.root')
 # plot mass and sigma of Jpsi as function of y for data and MC 
    results = {}
    cases   = {}
@@ -2288,24 +2341,24 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=True):
    colors['HighMass-P8']         = [ROOT.kRed,22]
    colors['10GeV']               = [ROOT.kCyan,24]
    colors['Data']                = [ROOT.kBlue,21]
-   fM = {'CB':{'signal':1,'mass':2,'sigma':3},'B':{'signal':7,'mass':8,'sigma':9}}
+   fM = {'CB':{'signal':1,'mass':2,'sigma':3},'B':{'signal':7,'mass':8,'sigma':9},'G':{'signal':0,'mass':1,'sigma':2}}
    for c in cases:
        print "high mass position and width for ",c
        results[c]={}
        k=0
        while k<100:
-         hk = 'FitResults-'+cases[c][1]+str(k)
+         hk = cases[c][1]+str(k)
          if not cases[c][0].has_key(hk): break
          hz = cases[c][0][cases[c][1]+str(k)]
          N  = hz.GetEntries()
          if withFitResult: 
-          fr = cases[c][0][hk]
+          fr = cases[c][0]['FitResults-'+hk]
           mass = [fr.Parameter(fM[fitMethod]['mass']), fr.ParError(fM[fitMethod]['mass'])]
           sigm = [fr.Parameter(fM[fitMethod]['sigma']),fr.ParError(fM[fitMethod]['sigma'])]
           prob = fr.Prob()
          else:
-          if cases[c][1].find('mc')==0: fName = 'mc-CBFun'+cases[c][1]+str(k)
-          else: fName = 'CBFun'+cases[c][1]+str(k)
+          if cases[c][1].find('mc')==0: fName = 'mc-Fun'+cases[c][1].replace('mc-','')+str(k)
+          else: fName = 'Fun'+cases[c][1]+str(k)
           hFun = hz.GetFunction(fName)
           mass = [hFun.GetParameter(fM[fitMethod]['mass']), hFun.GetParError(fM[fitMethod]['mass'])]
           sigm = [hFun.GetParameter(fM[fitMethod]['sigma']),hFun.GetParError(fM[fitMethod]['sigma'])]
@@ -2317,7 +2370,14 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=True):
          yrange = tmp[len(tmp)-1]
          print "%20s : %5.2F +/- %5.2F   %5.2F +/- %5.2F |   %10.2F +/- %5.2F  %10.2F +/- %5.2F"%(\
          yrange,mass[0],mass[1],sigm[0],sigm[1],NS[0],NS[1],N,ROOT.TMath.Sqrt(N))
-         results[c][yrange]=[mass[0],mass[1],sigm[0],sigm[1],fr.Prob()]
+         if c=='10GeV':
+           y =  cases[c][1]+str(k)
+           hz = cases[c][0][y.replace('10GeV','HighMass-10GeV')]
+           N  = hz.GetEntries()
+           pull = (NS[0]-N) / (N+1E-9)
+         else:
+           pull = (NS[0]-N) / (N+1E-9)
+         results[c][yrange]=[mass[0],mass[1],sigm[0],sigm[1],prob,pull]
          k+=1
        keys = results[c].keys()
        keys.sort()
@@ -2326,6 +2386,7 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=True):
        ut.bookHist(hMC,'massVs'+cases[c][1],'fitted mass as function of '+proj, len(keys),xmin,xmax)
        ut.bookHist(hMC,'sigVs'+cases[c][1], 'fitted sigma as function of '+proj,len(keys),xmin,xmax)
        ut.bookHist(hMC,'probVs'+cases[c][1], 'fit probability as function of '+proj,len(keys),xmin,xmax)
+       ut.bookHist(hMC,'pullSignalVs'+cases[c][1], 'fitted Signal - MC truth '+proj,len(keys),xmin,xmax)
        n=1
        for yrange in keys:
             hMC['massVs'+cases[c][1]].SetBinContent(n,results[c][yrange][0])
@@ -2333,12 +2394,16 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=True):
             hMC['sigVs' +cases[c][1]].SetBinContent(n,results[c][yrange][2])
             hMC['sigVs' +cases[c][1]].SetBinError(n,results[c][yrange][3])
             hMC['probVs'+cases[c][1]].SetBinContent(n,results[c][yrange][4])
+            hMC['pullSignalVs'+cases[c][1]].SetBinContent(n,results[c][yrange][5])
             n+=1
-   ut.bookCanvas(hMC,'Fitsystematics-'+fitMethod+'_'+proj,'Fitsystematics-'+fitMethod+'_'+proj,1200,2400,1,3)
+   ut.bookCanvas(hMC,'Fitsystematics-'+tag+'_'+proj,'Fitsystematics-'+tag+'_'+proj,1200,2400,1,4)
    l = 1
-   ptype = {'mass':'','sig':'','prob':'PL'}
+   ptype = {'mass':'','sig':'','prob':'PL','pullSignal':'P'}
+   hMC['Line1']=ROOT.TLine(0.2,0.0,2.0,0.0)
+   hMC['Line31']=ROOT.TLine(0.2,3.1,2.0,3.1)
+   canvas = hMC['Fitsystematics-'+tag+'_'+proj]
    for x in ptype:
-      tc = hMC['Fitsystematics-'+fitMethod+'_'+proj].cd(l)
+      tc = canvas.cd(l)
       l+=1
       if x=='prob':
         hMC[x+'Vs'+cases['Data'][1]].SetMinimum(0.0001)
@@ -2347,15 +2412,21 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=True):
       elif x=='sig':
         hMC[x+'Vs'+cases['Data'][1]].SetMinimum(0.08)
         hMC[x+'Vs'+cases['Data'][1]].SetMaximum(0.7)
+      elif x=='pullSignal':
+        hMC[x+'Vs'+cases['10GeV'][1]].SetMinimum(-0.1)
+        hMC[x+'Vs'+cases['10GeV'][1]].SetMaximum(0.1)
+        hMC[x+'Vs'+cases['10GeV'][1]].Draw(ptype[x])
       else:
         hMC[x+'Vs'+cases['Data'][1]].SetMinimum(2.8)
         hMC[x+'Vs'+cases['Data'][1]].SetMaximum(3.4)
-      hMC[x+'Vs'+cases['Data'][1]].Draw(ptype[x])
+      if x!='pullSignal' : hMC[x+'Vs'+cases['Data'][1]].Draw(ptype[x])
       if x=='prob': hMC['L'+x+'Vs'+proj]=ROOT.TLegend(0.71,0.19,0.88,0.47)
       else: hMC['L'+x+'Vs'+proj]=ROOT.TLegend(0.36,0.17,0.66,0.42)
-   # cases = {'Cascade':'MC-diMuonBinsB'+proj+'Jpsi','P8prim':'MC-diMuonBinsB'+proj+'JpsiP8','10GeV':'MC-diMuonBinsB'+proj+'10GeV','Data':'diMuonBinsB'+proj}
       for c in cases:
         if x=='prob' and c.find('Mass')>0: continue 
+        if x=='pullSignal' and  not c.find('Data')<0: continue
+        if x=='pullSignal':   hMC['Line1'].Draw('same')
+        if x=='mass':   hMC['Line31'].Draw('same')
         hMC[x+'Vs'+cases[c][1]].SetLineColor(colors[c][0])
         hMC[x+'Vs'+cases[c][1]].SetMarkerStyle(colors[c][1])
         hMC[x+'Vs'+cases[c][1]].SetMarkerColor(colors[c][0])
@@ -2363,62 +2434,64 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=True):
         hMC[x+'Vs'+cases[c][1]].Draw(ptype[x]+'same')
         hMC['L'+x+'Vs'+proj].AddEntry( hMC[x+'Vs'+cases[c][1]],c,'PL' )
       hMC['L'+x+'Vs'+proj].Draw()
-   myPrint(hMC['Fitsystematics-'+fitMethod+'_'+proj],'Fitsystematics-'+fitMethod+'_'+proj)
+   myPrint(canvas,'Fitsystematics-'+tag+'_'+proj)
 
-def JpsiAcceptanceSys():
+def JpsiAcceptanceSys(ptCut=1.0,pmin=10.,BDTCut=None):
    formating='5.2F'
-   name = "data_JpsiYieldsEffCorrectedWithNA50"
+   hname = "data_YieldsEffCorrectedWithNA50.root"
    results = {}
-   cases = ['_BDT.root','_ptcut.root','_twoBukin.root']
-   for c in cases:
-       results[c]={}
-       print "yields for",c, ' with _Cascade'
-       f = ROOT.TFile(name+c)
-       for x in f.dummy.GetListOfPrimitives():
-          if x.GetName().find("effAndResolCorrected_Cascade")<0:continue
-          for n in range(1,x.GetNbinsX()+1):
-              if x.GetBinCenter(n) < 0.2: continue
-              results[c][x.GetBinCenter(n)] = [x.GetBinContent(n),x.GetBinError(n)]
-              txt = "%i4 : %"+formating+"  %"+formating+"  %"+formating
-              print txt%(n,x.GetBinCenter(n),x.GetBinContent(n),x.GetBinError(n))
-          break
+   fM = ['CB', 'B', 'G']
+   for fitMethod in fM:
+      tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
+      if BDTCut: tag += '_BDT'
+      results[tag]={'Cascade':{},'P8prim':{}}
+      print "ptCut = %5.2F, yields for fit with %s"%(ptCut,fitMethod)
+      f = ROOT.TFile(tag+'/'+hname)
+      for x in f.dummy.GetListOfPrimitives():
+         if x.GetName().find("effAndResolCorrected_Cascade")>0: c='Cascade'
+         elif x.GetName().find("effAndResolCorrected_P8prim")>0: c='P8prim'
+         else: continue
+         for n in range(1,x.GetNbinsX()+1):
+             if x.GetBinCenter(n) < 0.2: continue
+             results[tag][c][x.GetBinCenter(n)] = [x.GetBinContent(n),x.GetBinError(n)]
 # difference between using Cascade or P8prim for eff correction
-   c = '_twoBukin.root'
-   results[c+'_P8prim']={}
-   f = ROOT.TFile(name+c)
-   print "yields for",c, ' with _P8prim'
-   for x in f.dummy.GetListOfPrimitives():
-      if x.GetName().find("effAndResolCorrected_P8prim")<0:continue
-      for n in range(1,x.GetNbinsX()+1):
-          if x.GetBinCenter(n) < 0.2: continue
-          results[c+'_P8prim'][x.GetBinCenter(n)] = [x.GetBinContent(n),x.GetBinError(n)]
-          txt = "%i4 : %"+formating+"  %"+formating+"  %"+formating
-          print txt%(n,x.GetBinCenter(n),x.GetBinContent(n),x.GetBinError(n))
-      break
-   results['sysError']={}
-   for c1 in range(2):
-      for c2 in range(c1+1,3):
-         results[cases[c1]+'_vs'+cases[c2]]={}
-         for i in results[cases[c1]]:
-            N1 = results[cases[c1]][i][0]
-            N2 = results[cases[c2]][i][0]
-            results[cases[c1]+'_vs'+cases[c2]][i]=2*(N1-N2)/(N1+N2+1E-10)
-            if not results['sysError'].has_key(i): results['sysError'][i]=0
-            results['sysError'][i]+=abs(results[cases[c1]+'_vs'+cases[c2]][i])
-   for  i in results['sysError']: results['sysError'][i]=results['sysError'][i]/3.
-   results[c+'_P8prim_vs'+c+'_Cascade']={}
-   for i in results[c+'_P8prim']:
-            N1 = results[c+'_P8prim'][i][0]
-            N2 = results[c][i][0]
-            results[c+'_P8prim_vs'+c+'_Cascade'][i]=2*(N1-N2)/(N1+N2+1E-10)
-            A = results['sysError'][i]
-            B = results[c+'_P8prim_vs'+c+'_Cascade'][i]
-            results['sysError'][i]=ROOT.TMath.Sqrt(A**2+B**2)
-   ikeys = results['sysError'].keys()
+# use fitMethod 'B' as default
+   fitMethod = 'B'
+   tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
+   results[tag]['sysError_effAndResolCorrection']={}
+   for n in results[tag]['Cascade']:
+      NCascade = results[tag]['Cascade'][n][0]
+      NP8prim  = results[tag]['P8prim'][n][0]
+      results[tag]['sysError_effAndResolCorrection'][n] =  ROOT.TMath.Sqrt(2.)*abs(NCascade-NP8prim)/(NCascade+NP8prim+1E-10)
+      # sys error = standard deviation
+   ikeys = results[tag]['sysError_effAndResolCorrection'].keys()
    ikeys.sort()
-   for i in ikeys: print i,results['sysError'][i]
+   for i in ikeys:
+       print "sysError MC generator  %5.3F  %5.2F  %5.2F  %5.2F%%"%(i,results[tag]['Cascade'][n][0],results[tag]['P8prim'][i][0]
+            ,results[tag]['sysError_effAndResolCorrection'][i]*100 )
+   
+# difference between fitMethods
+# use 'Cascade' as default
+   sysFM = str(ptCut)+'_'+str(pmin)
+   results[tag]['sysError_fitMethod']={}
+   fM = ['CB', 'B']
+   for i in ikeys:
+       mean = 0
+       for fitMethod in fM: mean += results[fitMethod+'-'+sysFM]['Cascade'][i][0]
+       mean = mean/len(fM)
+       rms = 0
+       for fitMethod in fM: rms += (results[fitMethod+'-'+sysFM]['Cascade'][i][0] - mean)**2
+       rms = ROOT.TMath.Sqrt(rms / (len(fM)-1.))
+       results[tag]['sysError_fitMethod'][i] = rms / (mean+1E-10)
+       print "sysError_fitMethod %5.3F  %5.2F  %5.2F  %5.2F"%(i,results['B-'+sysFM]['Cascade'][n][0],
+            results['CB-'+sysFM]['Cascade'][n][0],results['G-'+sysFM]['Cascade'][n][0])
+   for i in ikeys: print "%5.3F  %5.2F%%  %5.2F%%"%(i,results[tag]['sysError_effAndResolCorrection'][i]*100,
+                      results[tag]['sysError_fitMethod'][i]*100)
+   results[tag]['sysError']={}
+   for i in ikeys: results[tag]['sysError'][i]=ROOT.TMath.Sqrt(results[tag]['sysError_fitMethod'][i]**2+
+                                results[tag]['sysError_effAndResolCorrection'][i]**2)
 # track efficiency correction, MC events are deweighted by 2%. 
-   c = '_twoBukin.root'
+   fitMethod = 'B'
    simpleEffCorMu = 0.021
    trackEffFudgeFactor = 1+2*simpleEffCorMu
    trackEffSysError    = 2*0.033
@@ -2429,9 +2502,9 @@ def JpsiAcceptanceSys():
    ybinWidth = 0.1
    formating='5.3F'
    for i in ikeys:
-       Nsignal = results[c][i][0]*trackEffFudgeFactor  + 1E-10
-       statErr = results[c][i][1]*trackEffFudgeFactor
-       systematicErrors  = [elumi/lumi,trackEffSysError,results['sysError'][i]]
+       Nsignal = results[tag]['Cascade'][i][0]*trackEffFudgeFactor  + 1E-10
+       statErr = results[tag]['Cascade'][i][1]*trackEffFudgeFactor
+       systematicErrors  = [elumi/lumi,trackEffSysError,results[tag]['sysError'][i]]
        sysErr  = 0
        for x in systematicErrors: sysErr+=x**2
        sysErr = ROOT.TMath.Sqrt(sysErr)
@@ -2447,8 +2520,8 @@ def JpsiAcceptanceSys():
        totalError=ROOT.TMath.Sqrt(statErrXsec**2+sysErrXsec**2+EXsecNA50**2)
        sigmaPull = (Xsec-NXsecNA50)/totalError
        print txt%(binMin,binMax,Xsec,statErrXsec,sysErrXsec,NXsecNA50,EXsecNA50,sigmaPull)
-   f = ROOT.TFile(name+c)
-   hMC['dummy']=f.dummy.Clone('dummy')
+   f = ROOT.TFile(tag+'/data_YieldsEffCorrectedWithNA50.root')
+   hMC['dummy']=f.Get('dummy').Clone('dummy')
    hMC['dummy'].Draw()
    hMC['dummy'].SetLogy(1)
    for x in hMC['dummy'].GetListOfPrimitives():
@@ -2462,12 +2535,15 @@ def JpsiAcceptanceSys():
           if x.GetName().find("_effCorrected_")>0 or x.GetName().find("effAndResolCorrected_P8prim")>0: 
                x.SetLineColor(ROOT.kWhite)
                x.SetMarkerColor(ROOT.kWhite)
+          if x.GetName().find("effAndResolCorrected_Cascade")>0:
+             x.Scale(trackEffFudgeFactor)
    hMC['Lfinal']=ROOT.TLegend(0.25,0.3,0.51,0.55)
    hMC['Lfinal'].AddEntry( hMC["Y_P8prim_scaled"],'Pythia8 primary','PL' )
    hMC['Lfinal'].AddEntry( hMC["Y_Cascade_scaled"],'Pythia6 cascade','PL' )
-   hMC['Lfinal'].AddEntry( hMC["BJpsi-ycor_effAndResolCorrected_Cascade"],'muflux measurement','PL' )
+   hMC['Lfinal'].AddEntry( hMC[fitMethod+"_ycor1C-Jpsi_effAndResolCorrected_Cascade"],'muflux measurement','PL' )
    hMC['Lfinal'].AddEntry( hMC["etaNA50"],'NA50 parametrization','PL' )
    hMC['Lfinal'].Draw()
+   hMC['dummy'].Update()
    hMC['dummy'].Print('FinalResultJpsi.png')
    hMC['dummy'].Print('FinalResultJpsi.pdf')
 def lowMassAcceptance():
@@ -2600,12 +2676,6 @@ def diMuonAnalysis():
   hMC['lMassMC'+z].Draw()
   myPrint(hMC['dummy'],'MCdiMuonMass'+z)
 
-
- bw = hMC['m_MC'].GetBinWidth(1)
- hMC['myGauss'] = ROOT.TF1('gauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
-            +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[4])/[5])**2)+abs( [6]+[7]*x+[8]*x**2 )\
-            +abs([9])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-(3.6871 + [1] - 3.0969))/[2])**2)',10)
- myGauss = hMC['myGauss']
  # doesn't help really theCutTemplate +=  '&&abs(cosTheta)<0.8' 
  vText={'m':'inv mass and fits','mcor':'inv mass, dE and direction corrected, and fits','mcor2':'inv mass, direction corrected, and fits'}
  for v in vText:
@@ -3599,7 +3669,7 @@ def studyGhosts():
     h['gf_perfect'].SetLineColor(ROOT.kGreen)
     h['gf_ghosts'].SetTitle('ghost > 33;#it{p} [GeV/c];N/5GeV')
     ut.writeHists(h,'ghostStudy.root')
-def init_Gauss(myGauss):
+def init_Gauss(myGauss,bw=''):
  myGauss.SetParName(0,'psi(1S)')
  myGauss.SetParName(1,'Mean')
  myGauss.SetParName(2,'Sigma')
@@ -4289,58 +4359,179 @@ def hadronAbsorberEffect(Pmin=20.):
        rc = hMC['Y0'].Fill(y)
        if Emu>Pmin:
           rc = hMC['Yacc'].Fill(y)
-def simulateMuonMomentum():
+def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False):
+    lowMass = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
     y_beam = yBeam()
     Mmu = ROOT.TDatabasePDG.Instance().GetParticle(13).Mass()
     colors = {}
-    colors['JpsiCascade']    = [ROOT.kMagenta,23,'']
-    colors['JpsiP8_Primary'] = [ROOT.kRed,22,'same']
-    for g in colors:
+    if JpsiOnly:
+       colors['JpsiCascade']    = [ROOT.kMagenta,23,'']
+       colors['JpsiP8_Primary'] = [ROOT.kRed,22,'same']
+    else:
+       colors['Cascade']    = [ROOT.kMagenta,23,'']
+       hMC['fCascade'] = ROOT.TFile("FourDP-101-115.root")
+       hMC['Cascade'] = hMC['fCascade'].Get('4DP')
+    c = ''
+    if not JpsiOnly: c='lowMass-'
+    if plotOnly:
+     ut.readHists(hMC,c+'muonKinematics-p-pt-minpt.root')
+    else:
+     for g in colors:
        nt = hMC[g]
-       ut.bookHist(hMC,'y/pt_'+g   ,'y/pt'    ,40,-2.0,2.0,100,0.0,10.0)
-       ut.bookHist(hMC,'y/p_'+g    ,'y/p'     ,40,-2.0,2.0,100,0.0,10.0)
-       ut.bookHist(hMC,'y/minpt_'+g,'y/min pt',40,-2.0,2.0,100,0.0,10.0)
+       ut.bookHist(hMC,'y/cosCS_'+g   ,'y/cosCS'    ,40,-2.0,2.0,100,-1.0,1.0)
+       ut.bookHist(hMC,'ptmin/cosCS_'+g   ,'ptmin/cosCS'    , 100,0.0,5.0,100,-1.0,1.0)
+       ut.bookHist(hMC,'y/cosHE_'+g   ,'y/cosHE'    ,40,-2.0,2.0,100,-1.0,1.0)
+       for cosCut in ['','cosCS<0.5_']:
+         ut.bookHist(hMC,'y/pt_'+cosCut+g   ,'y/pt'    ,40,-2.0,2.0,100,0.0,5.0)
+         ut.bookHist(hMC,'y/ptJ_'+cosCut+g   ,'y/ptJ'    ,40,-2.0,2.0,100,0.0,5.0)
+         ut.bookHist(hMC,'y/p_'+cosCut+g    ,'y/p'     ,40,-2.0,2.0,400,0.0,400.0)
+         ut.bookHist(hMC,'y/maxp_'+cosCut+g    ,'y/maxp'     ,40,-2.0,2.0,400,0.0,400.0)
+         ut.bookHist(hMC,'y/minpt_'+cosCut+g,'y/min pt'      ,40,-2.0,2.0,100,0.0,5.0)
+         ut.bookHist(hMC,'y/minptJ_'+cosCut+g,'y/min pt'      ,40,-2.0,2.0,100,0.0,5.0)
        PJpsiLab = ROOT.TLorentzVector()
        PMuCMS   =  ROOT.TLorentzVector()
+       k=1
        for event in nt:
-          if event.id!=443: continue
-          PJpsiLab.SetXYZM(event.px,event.py,event.pz,event.M)
-          y = PJpsiLab.Rapidity()-y_beam
+          k+=1
+          #if k>100000: break
+          if event.id!=443 and JpsiOnly: continue
+          elif not event.id in lowMass.values() and not JpsiOnly: continue
+          if JpsiOnly:          PJpsiLab.SetXYZM(event.px,event.py,event.pz,event.M)
+          else:                 PJpsiLab.SetXYZT(event.px,event.py,event.pz,event.E)
+          PJpsi3V = ROOT.TVector3(event.px,event.py,event.pz)
           boost = PJpsiLab.BoostVector()
-          pmu   = ROOT.TMath.Sqrt( (event.M/2.)**2 - Mmu**2)
+          pmu   = ROOT.TMath.Sqrt( (PJpsiLab.M()/2.)**2 - Mmu**2)
           phi   = ROOT.gRandom.Rndm() * 2*ROOT.TMath.Pi()
           theta = ROOT.TMath.ACos(1 - 2*ROOT.gRandom.Rndm())
-          minPt = 0.
+          minPtJ = 0.
+          plepton = []
           for p in [1.,-1.]:
-             PMuCMS.SetXYZM(p*pmu*ROOT.TMath.Sin(phi),p*pmu*ROOT.TMath.Sin(theta),p*pmu*ROOT.TMath.Cos(theta),Mmu)
+             px = p*pmu*ROOT.TMath.Cos(phi)*ROOT.TMath.Sin(theta)
+             py = p*pmu*ROOT.TMath.Sin(phi)*ROOT.TMath.Sin(theta)
+             pz = p*pmu*ROOT.TMath.Cos(theta)
+             PMuCMS.SetXYZM(px,py,pz,Mmu)
              PMuCMS.Boost(-boost)
-             rc = hMC['y/pt_'+g].Fill(y,PMuCMS.Pt() )
-             rc = hMC['y/p_'+g].Fill(y,PMuCMS.P() )
-             if minPt<PMuCMS.Pt() : minPt = PMuCMS.Pt()
-             rc = hMC['y/minpt_'+g].Fill(y,minPt)
-    ut.bookCanvas(hMC,'muonKinematics','muon kinematics',1600,1200,2,2)
-    hMC['muonKinematics'].cd(1)
-    for g in colors:
-        hMC['y/pt_'+g].SetLineColor(colors[g][0])
-        hMC['y/pt_'+g].SetMarkerColor(colors[g][0])
-        hMC['y/pt_'+g].SetMarkerStyle(colors[g][1])
-        hMC['p_'+g] = hMC['y/p_'+g].ProjectionY('p_'+g)
-        hMC['p_'+g].Scale(1./hMC['p_'+g].GetSumOfWeights())
-        hMC['p_'+g].Draw(colors[g][2])
-    hMC['muonKinematics'].cd(2)
-    for g in colors:
-        hMC['pt_'+g] = hMC['y/pt_'+g].ProjectionY('pt_'+g)
-        hMC['pt_'+g].Scale(1./hMC['pt_'+g].GetSumOfWeights())
-        hMC['pt_'+g].Draw(colors[g][2])
-    hMC['muonKinematics'].cd(3)
-    for g in colors:
-        hMC['minpt_'+g]=hMC['y/minpt_'+g].ProjectionY('minpt_'+g)
-        hMC['minpt_'+g].SetLineColor(colors[g][0])
-        hMC['minpt_'+g].SetMarkerColor(colors[g][0])
-        hMC['minpt_'+g].SetMarkerStyle(colors[g][1])
-        hMC['minpt_'+g].Scale(1./hMC['minpt_'+g].GetSumOfWeights())
-        hMC['minpt_'+g].Draw(colors[g][2])
-    myPrint(hMC['muonKinematics'],'muonKinematics')
+             plepton.append(PMuCMS.Clone())
+          if 0.5>ROOT.gRandom.Rndm(): 
+             PLepton     = plepton[0]
+             PAntilepton = plepton[1]
+          else:
+             PLepton     = plepton[1]
+             PAntilepton = plepton[0]
+          P1pl = PLepton.E()+PLepton.Pz()
+          P2pl = PAntilepton.E()+PAntilepton.Pz()
+          P1mi = PLepton.E()-PLepton.Pz()
+          P2mi = PAntilepton.E()-PAntilepton.Pz()
+          PJpsi = PLepton+PAntilepton
+          cosCS = PJpsi.Pz()/(abs(PJpsi.Pz())+1E-9) * 1./PJpsi.M()/ROOT.TMath.Sqrt(PJpsi.M2()+PJpsi.Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
+          PLeptonCMS = PLepton.Clone()
+          PLeptonCMS.Boost(boost)
+          cosHE = (PLeptonCMS.Px()*PJpsiLab.Px()+PLeptonCMS.Py()*PJpsiLab.Py()+PLeptonCMS.Pz()*PJpsiLab.Pz())/(PLeptonCMS.P()*PJpsiLab.P())
+          y = PJpsiLab.Rapidity()-y_beam
+          hMC['y/cosCS_'+g].Fill(y,cosCS)
+          hMC['y/cosHE_'+g].Fill(y,cosHE)
+          cosCut = ''
+          for PMuLab in plepton:
+             ptLab = PMuLab.Pt()
+             tmp = ROOT.TVector3(PMuLab.Px(),PMuLab.Py(),PMuLab.Pz())
+             ptJ = PJpsi3V.Cross(tmp).Mag()/tmp.Mag()
+             cosCut = ''
+             rc = hMC['y/pt_'+cosCut+g].Fill(y,ptLab)
+             rc = hMC['y/ptJ_'+cosCut+g].Fill(y,ptJ)
+             rc = hMC['y/p_'+cosCut+g].Fill(y,PMuLab.P())
+             if abs(cosCS)<0.5: 
+                 cosCut = 'cosCS<0.5_'
+                 rc = hMC['y/pt_'+cosCut+g].Fill(y,ptLab)
+                 rc = hMC['y/ptJ_'+cosCut+g].Fill(y,ptJ)
+                 rc = hMC['y/p_'+cosCut+g].Fill(y,PMuLab.P())
+             if minPtJ<ptJ : minPtj = ptJ
+
+          cosCut = ''
+          rc = hMC['y/minpt_'+cosCut+g].Fill(y,min(plepton[0].Pt(),plepton[1].Pt()))
+          rc = hMC['y/minptJ_'+cosCut+g].Fill(y,minPtJ)
+          rc = hMC['y/maxp_'+cosCut+g].Fill(y,max(plepton[0].P(),plepton[1].P()))
+          rc = hMC['ptmin/cosCS_'+g].Fill(min(plepton[0].Pt(),plepton[1].Pt()),cosCS)
+          if abs(cosCS)<0.5: 
+             cosCut = 'cosCS<0.5_'
+             rc = hMC['y/minpt_'+cosCut+g].Fill(y,min(plepton[0].Pt(),plepton[1].Pt()))
+             rc = hMC['y/minptJ_'+cosCut+g].Fill(y,minPtJ)
+             rc = hMC['y/maxp_'+cosCut+g].Fill(y,max(plepton[0].P(),plepton[1].P()))
+             rc = hMC['ptmin/cosCS_'+g].Fill(min(plepton[0].Pt(),plepton[1].Pt()),cosCS)
+
+     if save: ut.writeHists(hMC,c+'muonKinematics-p-pt-minpt.root')
+#
+    for cosCut in ['','cosCS<0.5_']:
+      if not JpsiOnly:     ut.bookCanvas(hMC,c+cosCut+'muonKinematics-p-pt-minpt','muon kinematics',1600,1200,4,3)
+      else:     ut.bookCanvas(hMC,c+cosCut+'muonKinematics-p-pt-minpt','muon kinematics',1600,1400,4,4)
+      hMC['muonKinematics'] = hMC[c+cosCut+'muonKinematics-p-pt-minpt']
+      j=1
+      for g in colors:
+        gc = cosCut+g
+        hMC['muonKinematics'].cd(j)
+        hMC['y/p_'+gc].Draw('colz')
+        hMC['muonKinematics'].cd(j+1)
+        hMC['y/pt_'+gc].Draw('colz')
+        hMC['muonKinematics'].cd(j+2)
+        hMC['y/minpt_'+gc].Draw('colz')
+        hMC['muonKinematics'].cd(j+3)
+        hMC['y/maxp_'+gc].Draw('colz')
+        j+=4
+        hMC['y/p_'+gc].SetLineColor(colors[g][0])
+        hMC['y/p_'+gc].SetMarkerColor(colors[g][0])
+        hMC['y/p_'+gc].SetMarkerStyle(colors[g][1])
+        hMC['y/pt_'+gc].SetLineColor(colors[g][0])
+        hMC['y/pt_'+gc].SetMarkerColor(colors[g][0])
+        hMC['y/pt_'+gc].SetMarkerStyle(colors[g][1])
+      first = True
+      for g in colors:
+        gc = cosCut+g
+        if first: drawOption = ''
+        else: drawOption = 'same'
+        tc = hMC['muonKinematics'].cd(j)
+        tc.SetLogy(1)
+        hMC['p_'+gc] = hMC['y/p_'+gc].ProjectionY('p_'+gc)
+        hMC['p_'+gc].Scale(1./hMC['p_'+gc].GetSumOfWeights())
+        hMC['p_'+gc].Draw(drawOption+colors[g][2])
+        hMC['muonKinematics'].cd(j+1)
+        hMC['pt_'+gc] = hMC['y/pt_'+gc].ProjectionY('pt_'+gc)
+        hMC['pt_'+gc].Scale(1./hMC['pt_'+gc].GetSumOfWeights())
+        hMC['pt_'+gc].Draw(drawOption+colors[g][2])
+        hMC['muonKinematics'].cd(j+2)
+        hMC['minpt_'+gc]=hMC['y/minpt_'+gc].ProjectionY('minpt_'+gc)
+        hMC['minpt_'+gc].SetLineColor(colors[g][0])
+        hMC['minpt_'+gc].SetMarkerColor(colors[g][0])
+        hMC['minpt_'+gc].SetMarkerStyle(colors[g][1])
+        hMC['minpt_'+gc].Scale(1./hMC['minpt_'+gc].GetSumOfWeights())
+        hMC['minpt_'+gc].Draw(drawOption+colors[g][2])
+        tc = hMC['muonKinematics'].cd(j+3)
+        tc.SetLogy(1)
+        hMC['maxp_'+gc]=hMC['y/maxp_'+gc].ProjectionY('maxp_'+gc)
+        hMC['maxp_'+gc].SetLineColor(colors[g][0])
+        hMC['maxp_'+gc].SetMarkerColor(colors[g][0])
+        hMC['maxp_'+gc].SetMarkerStyle(colors[g][1])
+        hMC['maxp_'+gc].Scale(1./hMC['maxp_'+gc].GetSumOfWeights())
+        hMC['maxp_'+gc].Draw(drawOption+colors[g][2])
+        Y = hMC['y/maxp_'+gc].ProjectionX()
+        ymin,ymax = Y.FindBin(0.4),Y.FindBin(1.8)
+        hMC['vis_maxp_'+gc] = hMC['y/maxp_'+gc].ProjectionY('vis_maxp_'+g,ymin,ymax)
+        hMC['vis_minpt_'+gc] = hMC['y/minpt_'+gc].ProjectionY('vis_minpt_'+g,ymin,ymax)
+        ut.makeIntegralDistrib(hMC,'vis_maxp_'+gc,overFlow=True)
+        hMC['I-vis_maxp_'+gc].Scale(1./hMC['vis_maxp_'+gc].GetEntries())
+        hMC['I-vis_maxp_'+gc].GetXaxis().SetRangeUser(0.,50.)
+        ut.makeIntegralDistrib(hMC,'vis_minpt_'+gc,overFlow=True)
+        hMC['I-vis_minpt_'+gc].Scale(1./hMC['vis_minpt_'+gc].GetEntries())
+        hMC['I-vis_minpt_'+gc].GetXaxis().SetRangeUser(0.,2.)
+        hMC['I-vis_maxp_'+gc].SetLineColor(colors[g][0])
+        hMC['I-vis_maxp_'+gc].SetMarkerColor(colors[g][0])
+        hMC['I-vis_maxp_'+gc].SetMarkerStyle(colors[g][1])
+        hMC['I-vis_minpt_'+gc].SetLineColor(colors[g][0])
+        hMC['I-vis_minpt_'+gc].SetMarkerColor(colors[g][0])
+        hMC['I-vis_minpt_'+gc].SetMarkerStyle(colors[g][1])
+        tc = hMC['muonKinematics'].cd(j+4)
+        hMC['I-vis_minpt_'+gc].Draw(drawOption+colors[g][2])
+        tc = hMC['muonKinematics'].cd(j+5)
+        hMC['I-vis_maxp_'+gc].Draw(drawOption+colors[g][2])
+      myPrint(hMC['muonKinematics'],c+cosCut+'muonKinematics')
 
 def JpsiPtinBinsOfY(ntName='Jpsi'):
     y_beam = yBeam()
