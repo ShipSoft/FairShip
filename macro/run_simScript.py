@@ -212,7 +212,7 @@ for o, a in opts:
             nEvents = 50
         if o in ("--dry-run",):
             dryrun = True
-        if o in ("--stepMuonShield"):
+        if o in ("--stepMuonShield",):
             stepMuonShield = True
         if o in ("--coMuonShield",):
             coShieldMagnet = int(a)
@@ -245,7 +245,7 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
-                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile, stepGeo=stepMuonShield, withCobaltMagnet=coShieldMagnet)
+                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile, muShieldStepGeo=stepMuonShield, muShieldWithCobaltMagnet=coShieldMagnet)
 else: 
  ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup, cTarget = CharmTarget)
  if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
