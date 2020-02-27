@@ -64,6 +64,8 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
  fDesign = Design;
  fField  = field;
  fGeofile = "";
+ fStepGeo = StepGeo;
+ fWithCoMagnet = withCoMagnets;
  if (fDesign==1){
      fMuonShieldLength = L1;   
     }
@@ -155,9 +157,9 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
           Double_t y_translation,
           Double_t z_translation, 
           Bool_t stepGeo) {
-  if (!stepGeo):
+  if (!stepGeo)
   {
-    CreateArb8 (arbName, medium, dZ, std::array<Double_t, 16> corners, color, magField, tShield, x_translation, y_translation, z_translation);
+    CreateArb8 (arbName, medium, dZ, corners, color, magField, tShield, x_translation, y_translation, z_translation);
     return;
   }
   Double_t partLength = 0.5;
@@ -863,7 +865,7 @@ void ShipMuonShield::ConstructGeometry()
 	    +w2, +h2,
 	    -w2, +h2,
 	};
-  if (!fStepGeo):
+  if (!fStepGeo)
   {
 
 

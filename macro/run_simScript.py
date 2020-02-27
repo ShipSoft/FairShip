@@ -72,13 +72,15 @@ followMuon  = False  # make muonshield active to follow muons
 fastMuon    = False  # only transport muons for a fast muon only background estimate
 nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
 Opt_high = None # switch for cosmic generator
+stepMuonShield = False
+coShieldMagnet = 0
 try:
         opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t:g",[\
                                    "PG","pID=","Muflux","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
                                    "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","CharmTarget=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=",\
-                                   "Eend=","production-couplings=","decay-couplings=","dry-run"])
+                                   "Eend=","production-couplings=","decay-couplings=","dry-run", "stepMuonShield", "coMuonShield="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -210,6 +212,12 @@ for o, a in opts:
             nEvents = 50
         if o in ("--dry-run",):
             dryrun = True
+        if o in ("--stepMuonShield"):
+            stepMuonShield = True
+        if o in ("--coMuonShield",):
+            coShieldMagnet = int(a)
+
+
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
@@ -237,7 +245,7 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 if charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, \
-                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile)
+                                                muShieldDesign = ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, strawDesign=strawDesign, muShieldGeo=geofile, stepGeo=stepMuonShield, withCobaltMagnet=coShieldMagnet)
 else: 
  ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup, cTarget = CharmTarget)
  if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
