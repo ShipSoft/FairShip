@@ -745,9 +745,9 @@ void ShipMuonShield::ConstructGeometry()
       if (fDesign == 6){
 	Double_t dA = 3*m;
 	CreateMagnet("AbsorberStop-1",iron,tShield,fields,FieldDirection::up,
-		  dA/6.,dA/6.,dA/6.,dA/6.,dZ0/3.,0,0,dA/12.,dA/12.,0,0,zEndOfAbsorb - 5.*dZ0/3.,0, fStepGeo);
+		  dA/6.,dA/6.,dA/6.,dA/6.,dZ0/3.,0,0,dA/12.,dA/12.,0,0,zEndOfAbsorb - 5.*dZ0/3.,0, false);
 	CreateMagnet("AbsorberStop-2",iron,tShield,fields,FieldDirection::up,
-		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0, fStepGeo);
+		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0, false);
         TGeoBBox* fullAbsorber = new TGeoBBox("fullAbsorber", dA, dA, dZ0/3.);
         TGeoBBox* cutOut = new TGeoBBox("cutout", dA/3.+20*cm, dA/3.+20*cm, dZ0/3.+0.1*mm); //no idea why to add 20cm
         TGeoSubtraction *subtraction = new TGeoSubtraction("fullAbsorber","cutout");
