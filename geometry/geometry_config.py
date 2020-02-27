@@ -316,6 +316,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.dXgap = 0.2*u.m
     c.muShield.dZgap = 0.1*u.m
 
+    c.muShield.stepGeo = False
+    c.muShield.withCobaltMagnet = 0
+
     # zGap to compensate automatic shortening of magnets
     zGap = 0.5 * c.muShield.dZgap  # halflengh of gap
     if muShieldDesign == 7:
