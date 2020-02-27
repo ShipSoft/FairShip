@@ -1,4 +1,5 @@
 #!/bin/bash
+#
 # This script starts MongoDB on your local machine such
 # that it can be used for, for example, testing purposes.
 # 
