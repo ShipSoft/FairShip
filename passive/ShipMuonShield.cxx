@@ -163,7 +163,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
     return;
   }
   Double_t partLength = 0.5;
-  Int_t zParts = int(dZ/m/partLength)+1;
+  Int_t zParts = std::ceil(2.0*dZ/m/partLength);
   Double_t finalCorners[zParts][16];
   Double_t dxdy[4][2];
   Double_t dZp = dZ/Double_t(zParts);
@@ -211,7 +211,8 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
 
   for (int i = 0; i < zParts; ++i)
   {
-    tShield->AddNode(magF[i], 1, new TGeoTranslation(x_translation, y_translation, z_translation + i*2.0*dZp - dZ));
+    Double_t true_z_translation = z_translation + 2.0 * Double_t(i+1) * dZp - dZ;
+    tShield->AddNode(magF[i], 1, new TGeoTranslation(x_translation, y_translation, true_z_translation));
   }
 }
 
