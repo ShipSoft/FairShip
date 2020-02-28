@@ -239,7 +239,7 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   print 'input file required if simEngine = Ntuple or MuonBack'
   print " for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root"
   sys.exit()
-if (coShieldMagnet > 8 or coShieldMagnet < 2):
+if (coShieldMagnet > 8 or coShieldMagnet < 2 and coShieldMagnet != 0):
   print ("Wrong coMuonShield value, ignored!")
   coShieldMagnet = 0
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC

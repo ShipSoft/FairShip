@@ -828,18 +828,18 @@ void ShipMuonShield::ConstructGeometry()
          tShield->AddNode(coatWall, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*absorber_half_length + absorber_offset+7 * cm));
 
       }
-      std::array<double, 9> fieldScale = {{1., 1., 1., 1., 1., 1., 1., 1., 1.}}
-      if (fWithCoMagnet):
+      std::array<double, 9> fieldScale = {{1., 1., 1., 1., 1., 1., 1., 1., 1.}};
+      if (fWithCoMagnet > 0)
       {
-        Double_t lengthSum = 0
+        Double_t lengthSum = 0.;
         for (int i = 2; i < 9; ++i)
         {
           lengthSum += dZf[i];
         }
-        fieldScale.fill(1. - (2.2 + fField) * dZf[fWithCoMagnet]/fField/(lengthSum - dZf[fWithCoMagnet]));
-        fieldScale.at(0) = 1.;
-        fieldScale.at(1) = 1.;
-        fieldScale.at(fWithCoMagnet) = 2.2 / fField;
+        fieldScale.fill((fField * lengthSum -  2.2 * dZf[fWithCoMagnet])/fField/(lengthSum - dZf[fWithCoMagnet]));
+        fieldScale[0] = 1.;
+        fieldScale[1] = 1.;
+        fieldScale[fWithCoMagnet] = 2.2 / fField;
       }
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
   Double_t ironField_s = fField * fieldScale[nM] * tesla;
@@ -848,7 +848,7 @@ void ShipMuonShield::ConstructGeometry()
   TGeoUniformMagField *ConRField_s    = new TGeoUniformMagField(-ironField_s,0.,0.);
   TGeoUniformMagField *ConLField_s    = new TGeoUniformMagField(ironField_s,0.,0.);
   TGeoUniformMagField *fields_s[4] = {magFieldIron_s,RetField_s,ConRField_s,ConLField_s};      
-	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
+	CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
 		     dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
 		     midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
 		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8, fStepGeo);
