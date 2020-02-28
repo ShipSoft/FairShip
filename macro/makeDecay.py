@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import division
 #Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
 #Output is an ntuple with muon/neutrinos 
 import ROOT,time,os,sys,random,getopt
@@ -13,16 +15,16 @@ chicc=1.7e-3      #prob to produce primary ccbar pair/pot
 chibb=1.6e-7      #prob to produce primary bbbar pair/pot
 setByHand = False
 
-print "usage: python $FAIRSHIP/macro/makeDecay.py -f "
+print("usage: python $FAIRSHIP/macro/makeDecay.py -f ")
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "f:p:c:",[\
                                    "pot=","chicc="])
 except getopt.GetoptError:
         # print help information and exit:
-        print ' enter -f: input file with charm hadrons'
-        print ' for experts: p pot= number of protons on target per spill to normalize on'
-        print '            : c chicc= ccbar over mbias cross section'
+        print(' enter -f: input file with charm hadrons')
+        print(' for experts: p pot= number of protons on target per spill to normalize on')
+        print('            : c chicc= ccbar over mbias cross section')
         sys.exit()
 for o, a in opts:
         if o in ("-f",):
@@ -52,9 +54,9 @@ else:
 
 #pot are counted double, i.e. for each signal, i.e. pot/2.
 nrcpot=hc['2'].GetBinContent(1)/2.
-print 'Input file: ',FIN,' with ',nEvents,' entries, corresponding to nr-pot=',nrcpot
+print('Input file: ',FIN,' with ',nEvents,' entries, corresponding to nr-pot=',nrcpot)
 #nEvents=100
-print 'Output ntuples written to: ',FOUT
+print('Output ntuples written to: ',FOUT)
 
 P8gen = ROOT.TPythia8()
 P8=P8gen.Pythia8()
@@ -68,7 +70,7 @@ while n!=0:
   if p.tau0()>1: 
     command = str(n)+":mayDecay = false"
     p8.readString(command)
-    print "Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4",p.name()
+    print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4",p.name())
 P8.init()
 
 
@@ -104,13 +106,13 @@ for n in range(nEvents):
   if n == 0: 
    if not setByHand and sTree.M>5: 
      chicc = chibb
-     print "automatic detection of beauty, configured for beauty"
-     print 'bb cross section / mbias ',chicc
+     print("automatic detection of beauty, configured for beauty")
+     print('bb cross section / mbias ',chicc)
    else:
-     print 'cc cross section / mbias ',chicc
+     print('cc cross section / mbias ',chicc)
    #convert pot to weight corresponding to one spill of 5e13 pot
-   print 'weights: ',nrpotspill,' p.o.t. per spill'
-   print '    '
+   print('weights: ',nrpotspill,' p.o.t. per spill')
+   print('    ')
    wspill=nrpotspill*chicc/nrcpot
   #sanity check, count number of p.o.t. on input file.
   pt=ROOT.TMath.Sqrt(sTree.mpx**2+sTree.mpy**2)
@@ -122,7 +124,7 @@ for n in range(nEvents):
     if idabs==431: nDsprim+=1
   P8.event.reset()
   P8.event.append(int(sTree.id),1,0,0,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M,0.,9.)
-  P8.next()
+  next(P8)
   #P8.event.list()
   for n in range(P8.event.size()):
     #ask for stable particles
@@ -145,13 +147,13 @@ for n in range(nEvents):
          h[str(idhnu+100)].Fill(l10ptot,l10pt,wspill)
          h[str(idhnu+200)].Fill(l10ptot,l10pt,wspill)
        
-print 'Now at Ntup.Write() for pot=',pot,nrcpot
+print('Now at Ntup.Write() for pot=',pot,nrcpot)
 if (1.-pot/nrcpot)<1.e-2:
-  print 'write ntuple, weight/event=',nrpotspill,'x',chicc,'/',nrcpot,'=',wspill
+  print('write ntuple, weight/event=',nrpotspill,'x',chicc,'/',nrcpot,'=',wspill)
   Ntup.Write()
   for akey in h: h[akey].Write()
   ftup.Close()
-  print 'Neutrino statistics/spill of 5.e15 pot:'
+  print('Neutrino statistics/spill of 5.e15 pot:')
   for idnu in range(12,18,2):
   #nu or anti-nu
     for idadd in range(-1,3,2):
@@ -160,17 +162,17 @@ if (1.-pot/nrcpot)<1.e-2:
      if idadd==-1: 
       idhnu+=1000
       idw=-idnu
-     print idhnu,h[str(idhnu)].GetTitle(),("%8.3E "%(h[str(idhnu)].Integral()))
+     print(idhnu,h[str(idhnu)].GetTitle(),("%8.3E "%(h[str(idhnu)].Integral())))
 
   fDsP6=1.*nDsprim/ntotprim
   fDs=0.077 #Used in TP..
-  print ' '
-  print 'fDs of primary proton interactions in P6=',fDsP6, ' should be ',fDs
+  print(' ')
+  print('fDs of primary proton interactions in P6=',fDsP6, ' should be ',fDs)
 
 else:
-  print '*********** WARNING ***********'  
-  print 'number of POT does not agree between ntuple and hists, i.e.:',pot,'<>',nrcpot
-  print 'mu/neutrino ntuple has NOT been written'
+  print('*********** WARNING ***********')  
+  print('number of POT does not agree between ntuple and hists, i.e.:',pot,'<>',nrcpot)
+  print('mu/neutrino ntuple has NOT been written')
 #
 
 

@@ -1,3 +1,4 @@
+from __future__ import print_function
 debug = False
 withNtuple     = True
 muonNuclear    = True
@@ -139,16 +140,16 @@ class MyRunAction(G4UserRunAction):
 
   def EndOfRunAction(self, run):
     global debug,nevTot
-    print "*** End of Run"
-    print "- Run summary : (id= %d, #events= %d)" \
-          % (run.GetRunID(), nevTot)
+    print("*** End of Run")
+    print("- Run summary : (id= %d, #events= %d)" \
+          % (run.GetRunID(), nevTot))
     h['ntuple'].Fill(-1., float(nevTot) )
     h['ntuple'].Write()
-    print 'lepton masses used'
+    print('lepton masses used')
     for l in leptons:
           G4particle = G4PrimaryParticle( l )
           G4def      = G4particle.GetParticleDefinition()
-          print l, G4def.GetParticleName(),  G4particle.GetMass()
+          print(l, G4def.GetParticleName(),  G4particle.GetMass())
 
 # ------------------------------------------------------------------
 class MyEventAction(G4UserEventAction):
@@ -159,10 +160,10 @@ class MyEventAction(G4UserEventAction):
     # self.myPrintout(event)
   def myPrintout(self, event):
     prim = event.GetPrimaryVertex()
-    print 'vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m 
+    print('vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m) 
     for k in range( prim.GetNumberOfParticle() ):
       p = prim.GetPrimary(k) 
-      print 'event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV
+      print('event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV)
 # ------------------------------------------------------------------
 class MySteppingAction(G4UserSteppingAction):
   "My Stepping Action"
@@ -188,7 +189,7 @@ class MyTrackingAction(G4UserTrackingAction):
  def myPrintout(self, atrack):
    part         = atrack.GetDynamicParticle()
    pid          = part.GetPDGcode()
-   print 'TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV 
+   print('TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV) 
 
 # ------------------------------------------------------------------
 class ScoreSD(G4VSensitiveDetector):
@@ -216,7 +217,7 @@ class ScoreSD(G4VSensitiveDetector):
       #myPythia.EventListing()
 
 def ConstructGeom():
-  print "* Constructing geometry..."
+  print("* Constructing geometry...")
   world_r = 100.*m 
   # reset world material
   vac = G4Material.GetMaterial("G4_Galactic")
@@ -299,7 +300,7 @@ scoreLog.SetSensitiveDetector(sens)
 t0 = time.time()
 gRunManager.BeamOn(nev)
 t1 = time.time()
-print 'Time used',t1-t0, ' seconds' 
+print('Time used',t1-t0, ' seconds') 
 for x in myTimer: 
-  print x,myTimer[x]
+  print(x,myTimer[x])
 

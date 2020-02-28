@@ -1,20 +1,11 @@
 #!/usr/bin/env python
-inputFile = 'ship.conical.Pythia8-TGeant4.root'
-geoFile   = None
-debug = False
-EcalDebugDraw = False
-withNoStrawSmearing = None # True   for debugging purposes
-nEvents    = 999999
-firstEvent = 0
-withHists = True
-vertexing = True
-dy  = None
-saveDisk  = False # remove input file
-pidProton = False # if true, take truth, if False fake with pion mass
-realPR = ''
-realPROptions=["FH", "AR", "TemplateMatching"]
-withT0 = False
+from __future__ import print_function
+from __future__ import division
+from argparse import ArgumentParser
 
+withHists = True
+pidProton = False # if true, take truth, if False fake with pion mass
+ 
 import resource
 def mem_monitor():
  # Getting virtual memory size 
@@ -25,85 +16,69 @@ def mem_monitor():
     vmsize = int(_vmsize.split()[1])
     #Getting physical memory size  
     pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    print "memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3)
+    print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
-import ROOT,os,sys,getopt
-import __builtin__ as builtin
+import ROOT,os,sys
+import global_variables
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
 
 shipRoot_conf.configure()
 
-try:
-        opts, args = getopt.getopt(sys.argv[1:], "o:D:FHPu:n:f:g:c:hqv:sl:A:Y:i:",\
-           ["ecalDebugDraw","inputFile=","geoFile=","nEvents=","noStrawSmearing","noVertexing","saveDisk","realPR=","withT0"])
-except getopt.GetoptError:
-        # print help information and exit:
-        print ' enter --inputFile=  --geoFile= --nEvents=  --firstEvent=,'
-        print ' noStrawSmearing: no smearing of distance to wire, default on'
-        print ' outputfile will have same name with _rec added'  
-        print ' --realPR= defines track pattern recognition. Possible options: ',realPROptions, "if no option given, fake PR is used."
-        print ' Options description:'
-        print '      FH                        : Hough transform.'
-        print '      AR                        : Artificial retina.'
-        print '      TemplateMatching          : Tracks are searched for based on the template: track seed + hits within a window around the seed.'
-        sys.exit()
-for o, a in opts:
-        if o in ("noVertexing",):
-            vertexing = False
-        if o in ("noStrawSmearing",):
-            withNoStrawSmearing = True
-        if o in ("--withT0",):
-            withT0 = True
-        if o in ("-f", "--inputFile",):
-            inputFile = a
-        if o in ("-g", "--geoFile",):
-            geoFile = a
-        if o in ("-n", "--nEvents=",):
-            nEvents = int(a)
-        if o in ("-Y",):
-            dy = float(a)
-        if o in ("--ecalDebugDraw",):
-            EcalDebugDraw = True
-        if o in ("--saveDisk",):
-            saveDisk = True
-        if o in ("--realPR",):
-            realPR = a
-            if not realPR in realPROptions:
-              print "wrong option given for realPR,",a," should be one of ",realPROptions
-              exit(1)
-if EcalDebugDraw: ROOT.gSystem.Load("libASImage")
+parser = ArgumentParser()
 
-# need to figure out which geometry was used
-if not dy:
+parser.add_argument("-f", "--inputFile", dest="inputFile", help="Input file", required=True)
+parser.add_argument("-n", "--nEvents",   dest="nEvents",   help="Number of events to reconstruct", required=False,  default=999999,type=int)
+parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", required=True)
+parser.add_argument("--noVertexing",     dest="noVertexing", help="switch off vertexing", required=False, action="store_true")
+parser.add_argument("--noStrawSmearing", dest="withNoStrawSmearing", help="no smearing of distance to wire, default on", required=False, action="store_true")
+parser.add_argument("--withT0",          dest="withT0", help="simulate arbitrary T0 and correct for it", required=False, action="store_true")
+parser.add_argument("--ecalDebugDraw",   dest="EcalDebugDraw", help="switch in debog for ECAL", required=False, action="store_true")
+parser.add_argument("--saveDisk",        dest="saveDisk", help="if set, will remove input file, only rec file kept", required=False, action="store_true")
+parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0,type=int)
+parser.add_argument("--realPR",          dest="realPR",  help="Option for pattern recognition without MC truth. \n\
+           FH                        : Hough transform.\n\
+           AR                        : Artificial retina.\n\
+      TemplateMatching               : Tracks are searched for based on the template: track seed + hits within a window around the seed."\
+                                     , required=False, choices=['FH','AR','TemplateMatching'],  default='')
+parser.add_argument("-dy",               dest="dy", help="Max height of tank", required=False, default=None,type=int)
+parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
+
+options = parser.parse_args()
+vertexing = not options.noVertexing
+ 
+if options.EcalDebugDraw: ROOT.gSystem.Load("libASImage")
+
+# need to figure out which geometry was used, only needed if no geo file
+if not options.dy:
   # try to extract from input file name
-  tmp = inputFile.split('.')
+  tmp = options.inputFile.split('.')
   try:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
-realPRoption = realPR
-if realPR=='':realPRoption='No' 
-print 'configured to process ',nEvents,' events from ' ,inputFile, \
-      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco ',realPRoption
-if not inputFile.find('_rec.root') < 0: 
-  outFile   = inputFile
-  inputFile = outFile.replace('_rec.root','.root') 
+
+print('configured to process ', options.nEvents, ' events from ', options.inputFile,
+      ' starting with event ', options.firstEvent, ' with option Yheight = ' ,dy,
+      ' with vertexing', vertexing, ' and real pattern reco ', options.realPR)
+if not options.inputFile.find('_rec.root') < 0: 
+  outFile   = options.inputFile
+  options.inputFile = outFile.replace('_rec.root','.root') 
 else:
-  outFile = inputFile.replace('.root','_rec.root') 
+  outFile = options.inputFile.replace('.root','_rec.root') 
 # outfile should be in local directory
   tmp = outFile.split('/')
   outFile = tmp[len(tmp)-1]
-  if inputFile[:7]=="root://" : os.system('xrdcp '+inputFile+' '+outFile)
-  elif saveDisk: os.system('mv '+inputFile+' '+outFile)
-  else :       os.system('cp '+inputFile+' '+outFile)
+  if options.inputFile[:7]=="root://" : os.system('xrdcp '+options.inputFile+' '+outFile)
+  elif options.saveDisk: os.system('mv '+options.inputFile+' '+outFile)
+  else :       os.system('cp '+options.inputFile+' '+outFile)
 
-if not geoFile:
- tmp = inputFile.replace('ship.','geofile_full.')
- geoFile = tmp.replace('_rec','')
+if not options.geoFile:
+ tmp = options.inputFile.replace('ship.','geofile_full.')
+ options.geoFile = tmp.replace('_rec','')
 
-fgeo = ROOT.TFile.Open(geoFile)
+fgeo = ROOT.TFile.Open(options.geoFile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 from ShipGeoConfig import ConfigRegistry
@@ -138,34 +113,34 @@ if hasattr(ShipGeo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True,withVirtualMC = False)
 
 # make global variables
-builtin.debug    = debug
-builtin.fieldMaker = fieldMaker
-builtin.pidProton = pidProton
-builtin.withT0 = withT0
-builtin.realPR = realPR
-builtin.vertexing = vertexing
-builtin.ecalGeoFile = ecalGeoFile
-builtin.ShipGeo = ShipGeo
-builtin.modules = modules
-builtin.EcalDebugDraw  = EcalDebugDraw
-builtin.withNoStrawSmearing = withNoStrawSmearing
-builtin.h    = h
-builtin.log  = log
-iEvent = 0
-builtin.iEvent  = iEvent
+global_variables.debug = options.Debug
+global_variables.fieldMaker = fieldMaker
+global_variables.pidProton = pidProton
+global_variables.withT0 = options.withT0
+global_variables.realPR = options.realPR
+global_variables.vertexing = vertexing
+global_variables.ecalGeoFile = ecalGeoFile
+global_variables.ShipGeo = ShipGeo
+global_variables.modules = modules
+global_variables.EcalDebugDraw = options.EcalDebugDraw
+global_variables.withNoStrawSmearing = options.withNoStrawSmearing
+global_variables.h = h
+global_variables.log = log
+global_variables.iEvent = 0
 
 # import reco tasks
 import shipDigiReco
 
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
-nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
+options.nEvents   = min(SHiP.sTree.GetEntries(),options.nEvents)
 # main loop
-for iEvent in range(firstEvent, nEvents):
- if iEvent%1000 == 0 or debug: print 'event ',iEvent
- rc    = SHiP.sTree.GetEvent(iEvent) 
- SHiP.digitize()
- SHiP.reconstruct()
+for global_variables.iEvent in range(options.firstEvent, options.nEvents):
+    if global_variables.iEvent % 1000 == 0 or global_variables.debug:
+        print('event ', global_variables.iEvent)
+    rc = SHiP.sTree.GetEvent(global_variables.iEvent)
+    SHiP.digitize()
+    SHiP.reconstruct()
  # memory monitoring
- # mem_monitor() 
+ # mem_monitor()
 # end loop over events
 SHiP.finish()

@@ -1,4 +1,5 @@
 # utility to simulate response of the veto systems
+from __future__ import division
 import ROOT
 import shipunit as u
 from array import array
@@ -6,7 +7,6 @@ from array import array
 class Task:
  "initialize and give response of the veto systems"
  def __init__(self,t):
-  self.UVTefficiency = 0.999 # Upstream Veto tagger: 99.9% efficiency picked up from TP
   self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
   self.SVTefficiency = 0.995 # Straw Veto tagger: guestimate, including dead channels
   self.random = ROOT.TRandom()
@@ -52,21 +52,6 @@ class Task:
   veto = self.random.Rndm() > w
   #print 'SBT :',hitSegments
   return veto, w, hitSegments
- def UVT_decision(self,mcParticle=None):
-  nHits = 0
-  for ahit in self.sTree.vetoPoint:
-     detID   = ahit.GetDetectorID()
-     if detID>100000: continue  # this is a LiSc detector
-     if mcParticle: 
-        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
-        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-     detName = self.detList[detID]
-     if not detName == "VetoTimeDet": continue
-     nHits+=1
-  w = (1-self.UVTefficiency)**nHits
-  veto = self.random.Rndm() > w
-  #print 'UVT :',nHits
-  return veto, w,nHits
  def SVT_decision(self,mcParticle=None):
   nHits = 0
   for ahit in self.sTree.strawtubesPoint:

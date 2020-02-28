@@ -1,3 +1,4 @@
+from __future__ import print_function
 mcEngine  = "TGeant4"
 simEngine = "Pgun"
 nEvents = 5
@@ -113,30 +114,30 @@ run.CreateGeometryFile("geofile_full."+tag+".root")
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' '
-print "Macro finished succesfully."
-print "Output file is ",  outFile
-print "Parameter file is ",parFile
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ')
+print("Macro finished succesfully.")
+print("Output file is ",  outFile)
+print("Parameter file is ",parFile)
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # ------------------------------------------------------------------------
 
 def someDebug():
  g = ROOT.gROOT
  lm = run.GetListOfModules()
- for x in lm: print x.GetName()
+ for x in lm: print(x.GetName())
  fGeo = ROOT.gGeoManager
  cave = fGeo.GetTopVolume()
  cave.Draw('ogl')
 #
  tf = g.FindObjectAny('cbmroot')
- for l in tf.GetListOfFolders(): print l.GetName()
+ for l in tf.GetListOfFolders(): print(l.GetName())
  l   = tf.FindObject('MCGeoTrack')
  trs = l.FindObject('GeoTracks')
- for x in trs: print x
+ for x in trs: print(x)
  l = tf.FindObject('Stack')
  trs = l.FindObject('MCTrack')
- for x in trs: print x
+ for x in trs: print(x)
 #
  gMC = ROOT.gMC # <ROOT.TVirtualMC* object ("TGeant4") at 0x2a5d3e8>
  fStack = gMC.GetStack()
@@ -148,5 +149,5 @@ def someDebug():
 #
  gPrim = run.GetPrimaryGenerator()
  mch   = gPrim.GetEvent() # <ROOT.FairMCEventHeader object ("MCEventHeader.")
- print mch.GetEventID(),mch.GetZ()
+ print(mch.GetEventID(),mch.GetZ())
  gPy8 = gPrim.GetListOfGenerators()[0]

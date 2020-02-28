@@ -1,5 +1,9 @@
+from __future__ import print_function
+from __future__ import division
+from builtins import range
 import os
 import ROOT
+import global_variables
 import shipunit as u
 from array import array
 
@@ -21,14 +25,14 @@ reduced_width = total_width - (EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R)
 # function for calculating the strip number from a coordinate, for MuonTagger / RPC
 def StripX(x):
     if x < -total_width/2. or x > total_width/2.:
-        print "WARNING: x coordinate outside sensitive volume!",x
+        print("WARNING: x coordinate outside sensitive volume!",x)
     if x <  -total_width/2.  + EXT_STRIP_XWIDTH_L + V_STRIP_OFF/2. : strip_x = 184
     elif x >  total_width/2. - EXT_STRIP_XWIDTH_R - V_STRIP_OFF/2. : strip_x = 1
     else:
       x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R
       strip_x = -int(x_start/reduced_width*182.)+1
       if not (0 < strip_x <= NR_VER_STRIPS-1):
-        print "WARNING: X strip outside range!",x,strip_x
+        print("WARNING: X strip outside range!",x,strip_x)
         strip_x = 0
     return int(strip_x)
 
@@ -38,10 +42,10 @@ def StripY(y):
     H_STRIP_OFF = 0.1983
     NR_HORI_STRIPS = 116
     total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF
-    y_start = total_height / 2
+    y_start = total_height / 2.
     strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)
     if not (0 < strip_y <= NR_HORI_STRIPS):
-        print "WARNING: Y strip outside range!"
+        print("WARNING: Y strip outside range!")
         strip_y = 0
     return int(strip_y)
 
@@ -71,9 +75,9 @@ class MufluxDigi:
         ROOT.gRandom.SetSeed()
         self.PDG = ROOT.TDatabasePDG.Instance()
         # for the digitizing and reconstruction step
-        self.v_drift       = ShipGeo['MufluxSpectrometer']['v_drift']
-        self.sigma_spatial = ShipGeo['MufluxSpectrometer']['sigma_spatial']
-        self.viewangle     = ShipGeo['MufluxSpectrometer']['ViewvAngle']
+        self.v_drift       = global_variables.ShipGeo['MufluxSpectrometer']['v_drift']
+        self.sigma_spatial = global_variables.ShipGeo['MufluxSpectrometer']['sigma_spatial']
+        self.viewangle     = global_variables.ShipGeo['MufluxSpectrometer']['ViewvAngle']
 
         self.gMan  = ROOT.gGeoManager
 
@@ -102,7 +106,7 @@ class MufluxDigi:
         for MuonTaggerHit in self.sTree.MuonTaggerPoint:
             # getting rpc nodes, name and matrix
             detID = MuonTaggerHit.GetDetectorID()
-            s = str(detID/10000)
+            s = str(detID//10000)
             nav.cd('/VMuonBox_1/VSensitive'+s+'_'+s)
             # translation from top to MuonBox_1
             point = array('d', [
@@ -117,9 +121,9 @@ class MufluxDigi:
             ycoord = point_local[1]
 
             # identify individual rpcs
-            station = detID/10000
+            station = detID//10000
             if station not in range(1, 6):  # limiting the range of rpcs
-                print "WARNING: Invalid RPC number, something's wrong with the geometry ",station
+                print("WARNING: Invalid RPC number, something's wrong with the geometry ",station)
 
             # calculate strip
             # x gives vertical direction
@@ -185,7 +189,7 @@ class MufluxDigi:
             if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
             self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
-            if hitsPerDetId.has_key(detID):
+            if detID in hitsPerDetId:
                 if self.digiMufluxSpectrometer[hitsPerDetId[detID]].tdc() > aHit.tdc():
                     # second hit with smaller tdc
                     self.digiMufluxSpectrometer[hitsPerDetId[detID]].setInvalid()
@@ -193,10 +197,10 @@ class MufluxDigi:
             else:
                 hitsPerDetId[detID] = index
             if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
-            station = int(aMCPoint.GetDetectorID()/10000000)
+            station = int(aMCPoint.GetDetectorID()//10000000)
             if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
             index+=1
 
     def finish(self):
-        print 'finished writing tree'
+        print('finished writing tree')
         self.sTree.Write()

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import os
 import saveBasicParameters
 
@@ -251,24 +252,24 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        npart += 1
    # if debug: myPythia.EventListing()
   anEvent.AddPrimaryVertex( vertex )
-  if debug and not particleGun: print 'new event at ',ztarget.z/m
+  if debug and not particleGun: print('new event at ',ztarget.z/m)
   myTimer['geant4_conv']+=time.time()-t_0
 class MyRunAction(G4UserRunAction):
   "My Run Action"
 
   def EndOfRunAction(self, run):
     global debug,nevTot
-    print "*** End of Run"
-    print "- Run summary : (id= %d, #events= %d)" \
-          % (run.GetRunID(), nevTot)
+    print("*** End of Run")
+    print("- Run summary : (id= %d, #events= %d)" \
+          % (run.GetRunID(), nevTot))
     h['ntuple'].Write()
-    print 'ecut applied to',allPart,qedlist,' range cut for e,gamma:',rangeCut
+    print('ecut applied to',allPart,qedlist,' range cut for e,gamma:',rangeCut)
 # ------------------------------------------------------------------
 class MyEventAction(G4UserEventAction):
   "My Event Action"
   def EndOfEventAction(self, event):
     global myEventnr
-    if debug and not particleGun: print 'end of event',myEventnr
+    if debug and not particleGun: print('end of event',myEventnr)
     myEventnr += 1 
     # self.myPrintout(event)
   def StartOfEventAction(self, event):
@@ -276,10 +277,10 @@ class MyEventAction(G4UserEventAction):
     trackHistory={}
   def myPrintout(self, event):
     prim = event.GetPrimaryVertex()
-    print 'vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m 
+    print('vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m) 
     for k in range( prim.GetNumberOfParticle() ):
       p = prim.GetPrimary(k) 
-      print 'event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV
+      print('event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV)
 # ------------------------------------------------------------------
 class MySteppingAction(G4UserSteppingAction):
   "My Stepping Action"
@@ -289,7 +290,7 @@ class MySteppingAction(G4UserSteppingAction):
     touch        = preStepPoint.GetTouchableHandle()
     volName      = touch.GetVolume().GetName().__format__('')
     pos    = preStepPoint.GetPosition()
-    print 'stepping name, z pos  dedx (MeV): ',volName,pos.z/m,step.GetTotalEnergyDeposit()/MeV
+    print('stepping name, z pos  dedx (MeV): ',volName,pos.z/m,step.GetTotalEnergyDeposit()/MeV)
 # ------------------------------------------------------------------
 class MyTrackingAction(G4UserTrackingAction):
  def PostUserTrackingAction(self,atrack):
@@ -332,28 +333,28 @@ class MyTrackingActionD(G4UserTrackingAction):
    moid = atrack.GetParentID()
    trackHistory[atrack.GetTrackID()]=[pid,moid]
    tmoid = str(moid)
-   if trackHistory.has_key(moid): 
+   if moid in trackHistory: 
          mo = pdg.GetParticle(trackHistory[moid][0])
          if mo : tmoid = mo.GetName()
    tid = str(pid)
    if pdg.GetParticle(pid): tid = pdg.GetParticle(pid).GetName()
    mom = atrack.GetMomentum()
    p = ROOT.TMath.Sqrt(mom.x*mom.x+mom.y*mom.y+mom.z*mom.z)
-   if debug and abs(pid)==13: print 'track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV
+   if debug and abs(pid)==13: print('track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV)
    if pid==12:
-      if trackHistory.has_key(moid): 
+      if moid in trackHistory: 
         gmoid = trackHistory[moid][1]
-        if trackHistory.has_key(gmoid):
+        if gmoid in trackHistory:
           tgmoid = str(gmoid)
           mo = pdg.GetParticle(trackHistory[gmoid][0])
           if mo : tgmoid = mo.GetName()
-          print '   <--',gmoid,tgmoid
+          print('   <--',gmoid,tgmoid)
           gmoid = trackHistory[gmoid][1]
-          if trackHistory.has_key(gmoid):
+          if gmoid in trackHistory:
            tgmoid = str(gmoid)
            mo = pdg.GetParticle(trackHistory[gmoid][0])
            if mo : tgmoid = mo.GetName()
-           print '      <--',gmoid,tgmoid
+           print('      <--',gmoid,tgmoid)
 
    qed          = pid in qedlist  # use cut only for photons, electrons, protons and neutrons
    if atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart): 
@@ -366,8 +367,8 @@ class MyTrackingActionD(G4UserTrackingAction):
    vx  = atrack.GetVertexPosition()
    pos = atrack.GetPosition()
    mom = atrack.GetMomentum()
-   print 'TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV 
-   print 'start tracking',atrack.GetDynamicParticle().GetPDGcode(),atrack.GetKineticEnergy()/GeV,vx.z/m,pos.z/m,mom.z/GeV
+   print('TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV) 
+   print('start tracking',atrack.GetDynamicParticle().GetPDGcode(),atrack.GetKineticEnergy()/GeV,vx.z/m,pos.z/m,mom.z/GeV)
 
 # ------------------------------------------------------------------
 class ScoreSD(G4VSensitiveDetector):
@@ -399,13 +400,13 @@ class ScoreSD(G4VSensitiveDetector):
                    float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
                    float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
     if debug: 
-        print 'xxx',pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
+        print('xxx',pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
                    float(pos.x/m),float(pos.y/m),float(pos.z/m),\
                    float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
-                   float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid
+                   float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
 
 def ConstructGeom():
-  print "* Constructing geometry..."
+  print("* Constructing geometry...")
   # reset world material
   vac = G4Material.GetMaterial("G4_Galactic")
   g4py.ezgeom.SetWorldMaterial(vac)
@@ -566,9 +567,9 @@ if local and not particleGun:
 t0 = time.time()
 gRunManager.BeamOn(nev)
 t1 = time.time()
-print 'Time used',t1-t0, ' seconds' 
+print('Time used',t1-t0, ' seconds') 
 for x in myTimer: 
-  print x,myTimer[x]
+  print(x,myTimer[x])
 
 logger.info("output directory: %s" % work_dir)
 # save arguments and GIT tags

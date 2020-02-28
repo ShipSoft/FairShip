@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import division
 import ROOT
 import rootUtils as ut
 import shipunit  as u
@@ -60,4 +62,4 @@ def exMCHits(dump=False):
    nHits = TrackingHits.GetEntriesFast() 
    for i in range(nHits):
     ahit = TrackingHits.At(i)
-    print ahit.GetZ()/u.m, ahit.GetDetectorID(),ahit.GetLength(),ahit.GetEnergyLoss() 
+    print(ahit.GetZ()/u.m, ahit.GetDetectorID(),ahit.GetLength(),ahit.GetEnergyLoss()) 

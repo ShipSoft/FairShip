@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import os
 import json
 from ShipGeoConfig import ConfigRegistry
@@ -31,8 +32,8 @@ def main(arguments):
         logger.info("paramters: %s" % arguments.params)
     ConfigRegistry.loadpy(arguments.config_file, **arguments.params)
     # ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
-    for k, v in ConfigRegistry().iteritems():
-        print "%s: %s" % (k, v)
+    for k, v in ConfigRegistry().items():
+        print("%s: %s" % (k, v))
 
 if __name__ == '__main__':
     main(parse_arguments())

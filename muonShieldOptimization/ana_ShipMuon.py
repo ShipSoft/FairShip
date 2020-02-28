@@ -1,3 +1,4 @@
+from __future__ import print_function
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root 
 import os,ROOT
 import multiprocessing as mp
@@ -356,7 +357,7 @@ if not fgeo.FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
  else: ecalGeoFile = "ecal_ellipse5x10m2.geo" 
- print 'found ecal geo for ',ecalGeoFile
+ print('found ecal geo for ',ecalGeoFile)
  # re-create geometry and mag. field
  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
 else: 
@@ -551,7 +552,7 @@ def BigEventLoop():
     rfn = os.path.realpath(fn).split('eos')[1]
     fn  = ROOT.gSystem.Getenv("EOSSHIP")+'/eos/'+rfn
   elif not os.path.isfile(fn): 
-    print "Don't know what to do with",fn
+    print("Don't know what to do with",fn)
     1/0 
   if parallel: 
 # process files parallel instead of sequential
@@ -571,7 +572,7 @@ def BigEventLoop():
    for p in processes: p.join()
 # clean histos before reading in the new ones
    for x in h: h[x].Reset()
-   print "now, collect the output"
+   print("now, collect the output")
    pid = 1
    for p in processes:
     ut.readHists(h,'tmpHists_'+str(pid)+'.root')
@@ -585,7 +586,7 @@ def BigEventLoop():
       detName=hLiSc[k][j]
       tag  = detName+mu+x
       newh = detName[0:2]+'LiSc'+mu+x
-      if not h.has_key(tag): continue 
+      if tag not in h: continue 
       if first: 
          h[newh] = h[tag].Clone(newh)
          h[newh].SetTitle( h[tag].GetTitle().split('_')[0])
@@ -608,7 +609,7 @@ def BigEventLoop():
  # make list of hists with entries
  k = 1
  for x in histlistAll:
-  if h.has_key(histlistAll[x]):
+  if histlistAll[x] in h:
    histlist[k]=histlistAll[x]    
 # make cumulative histograms
    for c in ['','_E','_P','_LP','_OP','_id','_mul','_evmul','_origin','_originmu']:
@@ -635,13 +636,13 @@ def executeOneFile(fn,output=None,pid=None):
    if sTree.MCTrack.GetEntries() > 1: 
     w = sTree.MCTrack[1].GetWeight() # also works for neutrinos
    else: 
-    print 'should not happen with new files',n,fn
+    print('should not happen with new files',n,fn)
     w = sTree.MCTrack[0].GetWeight() # also works for neutrinos
    if w==0 : w = 1.
    rc = h['weight'].Fill(w)
    rc = h['muonP'].Fill(theMuon.GetP()/u.GeV,w)
    ntot+=1
-   if ntot%10000 == 0 : print 'read event',f.GetName(),n
+   if ntot%10000 == 0 : print('read event',f.GetName(),n)
    hitmult   = {} 
    esum = 0
    for mcp in sTree.MCTrack:
@@ -671,15 +672,15 @@ def executeOneFile(fn,output=None,pid=None):
       y = pos.Y()
       E = ahit.GetEnergyLoss()
      else: 
-      if not logVols.has_key(detID):
+      if detID not in logVols:
          detName = c.GetName().replace('Points','')
-         if not detName in histlistAll.values(): print detID,detName,c.GetName() 
+         if not detName in histlistAll.values(): print(detID,detName,c.GetName()) 
       else: detName = logVols[detID]
       x = ahit.GetX()
       y = ahit.GetY()
       z = ahit.GetZ()
       E = ahit.GetEnergyLoss()
-     if not h.has_key(detName): bookHist(detName)
+     if detName not in h: bookHist(detName)
      mu=''
      pdgID = -2
      if 'PdgCode' in dir(ahit):   pdgID = ahit.PdgCode()
@@ -705,8 +706,8 @@ def executeOneFile(fn,output=None,pid=None):
      if detName.find('LS')<0: rc = h[detName].Fill(x/u.m,y/u.m,w)
      else:                    rc = h[detName].Fill(ahit.GetZ()/u.m,ROOT.TMath.ATan2(y,x)/ROOT.TMath.Pi(),w)
      rc = h[detName+'_E'].Fill(E/u.MeV,w)
-     if not hitmult.has_key(detName): hitmult[detName] = {-1:0}
-     if not hitmult[detName].has_key(trackID): hitmult[detName][trackID] = 0
+     if detName not in hitmult: hitmult[detName] = {-1:0}
+     if trackID not in hitmult[detName]: hitmult[detName][trackID] = 0
      hitmult[detName][trackID] +=1
      hitmult[detName][-1]      +=1
      rc = h[detName+'_id'].Fill(pdgID,w)
@@ -748,7 +749,7 @@ def makePlots(nstations):
  for i in histlist:
   tc = h['ResultsI'].cd(i)
   hn = histlist[i] 
-  if not h.has_key(hn): continue 
+  if hn not in h: continue 
   h[hn].SetStats(0)
   h[hn].Draw('colz')
   txt[i] = '%5.2G'%(h[hn].GetSumOfWeights()/nSpills)
@@ -778,14 +779,14 @@ def makePlots(nstations):
   hn = histlist[i]
   drawBoth('_P',hn)
   hid = h[hn+'_id']
-  print 'particle statistics for '+histlist[i]
+  print('particle statistics for '+histlist[i])
   for k in range(hid.GetNbinsX()):
    ncont = hid.GetBinContent(k+1)
    pid   = hid.GetBinCenter(k+1) 
    if ncont > 0:
     temp = int(abs(pid)+0.5)*int(pid/abs(pid))
     nm = PDG.GetParticle(temp).GetName() 
-    print '%s :%5.2g'%(nm,ncont)
+    print('%s :%5.2g'%(nm,ncont))
   hid = h[histlist[i]+'_mu_id']
   for k in range(hid.GetNbinsX()):
    ncont = hid.GetBinContent(k+1)
@@ -793,7 +794,7 @@ def makePlots(nstations):
    if ncont > 0:
     temp = int(abs(pid)+0.5)*int(pid/abs(pid))
     nm = PDG.GetParticle(temp).GetName() 
-    print '%s :%5.2g'%(nm,ncont)
+    print('%s :%5.2g'%(nm,ncont))
 #
   tc = h['ResultsV'].cd(1)
   h['origin'].SetStats(0)
@@ -812,7 +813,7 @@ def AnaEventLoop():
  for fn in fchainRec:
   f = ROOT.TFile(fn)
   if not f.FindObjectAny('cbmsim'): 
-   print 'skip file ',f.GetName() 
+   print('skip file ',f.GetName()) 
    continue
   sTree = f.cbmsim
   sTree.GetEvent(0)
@@ -820,7 +821,7 @@ def AnaEventLoop():
   nEvents = sTree.GetEntries()
   for n in range(nEvents):
    sTree.GetEntry(n)
-   if n==0 : print 'now at event ',n,f.GetName()
+   if n==0 : print('now at event ',n,f.GetName())
    if sTree.MCTrack.GetEntries() > 1: 
     wg = sTree.MCTrack[1].GetWeight() # also works for neutrinos
    else: 
@@ -887,7 +888,7 @@ def analyzeConcrete():
  for fn in fchain:
   f = ROOT.TFile(fn)
   if not f.FindObjectAny('cbmsim'): 
-   print 'skip file ',f.GetName() 
+   print('skip file ',f.GetName()) 
    continue
   sTree = f.cbmsim
   nEvents = sTree.GetEntries()
@@ -944,7 +945,7 @@ def rareEventEmulsion(fname = 'rareEmulsion.txt'):
  for fn in fchainRec:
   f = ROOT.TFile(fn)
   if not f.FindObjectAny('cbmsim'): 
-   print 'skip file ',f.GetName() 
+   print('skip file ',f.GetName()) 
    continue
   sTree = f.cbmsim
   sTree.GetEvent(0)
@@ -952,7 +953,7 @@ def rareEventEmulsion(fname = 'rareEmulsion.txt'):
   nEvents = sTree.GetEntries()
   for n in range(nEvents):
    sTree.GetEntry(n)
-   if n==0 : print 'now at event ',n,f.GetName()
+   if n==0 : print('now at event ',n,f.GetName())
    for ahit in sTree.vetoPoint:
      detID = ahit.GetDetectorID()
      if logVols[detID] != 'Emulsion': continue
@@ -980,7 +981,7 @@ def extractRareEvents(single = None):
     if fn.find(str(single)) < 0 : continue
   f = ROOT.TFile(fn)
   if not f.FindObjectAny('cbmsim'): 
-   print 'skip file ',f.GetName() 
+   print('skip file ',f.GetName()) 
    continue
   sTree = f.cbmsim
   nEvents = sTree.GetEntries()
@@ -988,7 +989,7 @@ def extractRareEvents(single = None):
   newTree = sTree.CloneTree(0)
   for n in range(nEvents):
    sTree.GetEntry(n)
-   if n==0 : print 'now at event ',n,f.GetName()
+   if n==0 : print('now at event ',n,f.GetName())
 # count fitted tracks which have converged and nDF>20:
    n = 0
    for fT in sTree.FitTracks:
@@ -998,10 +999,10 @@ def extractRareEvents(single = None):
     n+=1
    if n > 0:
     rc = newTree.Fill()
-    print 'filled newTree',rc
+    print('filled newTree',rc)
    sTree.Clear()
   newTree.AutoSave()
-  print '   --> events saved:',newTree.GetEntries()
+  print('   --> events saved:',newTree.GetEntries())
   f.Close() 
   raref.Close() 
 #
@@ -1015,7 +1016,7 @@ def extractMuCloseByEvents(single = None):
     if fn.find(str(single)) < 0 : continue
   f = ROOT.TFile(fn)
   if not f.FindObjectAny('cbmsim'): 
-   print 'skip file ',f.GetName() 
+   print('skip file ',f.GetName()) 
    continue
   sTree = f.cbmsim
   nEvents = sTree.GetEntries()
@@ -1023,7 +1024,7 @@ def extractMuCloseByEvents(single = None):
   newTree = sTree.CloneTree(0)
   for n in range(nEvents):
    sTree.GetEntry(n)
-   if n==0 : print 'now at event ',n,f.GetName()
+   if n==0 : print('now at event ',n,f.GetName())
 # look for muons p>3 hitting something
    n = 0
    for c in [sTree.vetoPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:
@@ -1039,7 +1040,7 @@ def extractMuCloseByEvents(single = None):
     # print 'filled newTree',rc
    sTree.Clear()
   newTree.AutoSave()
-  print '   --> events saved:',newTree.GetEntries()
+  print('   --> events saved:',newTree.GetEntries())
   f.Close() 
   raref.Close()
 #
@@ -1059,7 +1060,7 @@ def persistency():
 
 def reDraw(fn):
   if fn.find('root')<0: fn=fn+'.root'
-  if not h.has_key('tc'): h['tc'] = ROOT.TFile(fn)
+  if 'tc' not in h: h['tc'] = ROOT.TFile(fn)
   for x in ['ResultsI','ResultsII','ResultsImu','ResultsImuV0','ResultsIII','ResultsIV','ResultsV']:
    h[x]=h['tc'].FindObjectAny(x)
    h[x].Draw() 
@@ -1094,7 +1095,7 @@ def debugGeoTracks():
    sTree.GetEntry(i)
    n = 0
    for gt in sTree.GeoTracks:
-     print i,n,gt.GetFirstPoint()[2],gt.GetLastPoint()[2],gt.GetParticle().GetPdgCode(),gt.GetParticle().P()
+     print(i,n,gt.GetFirstPoint()[2],gt.GetLastPoint()[2],gt.GetParticle().GetPdgCode(),gt.GetParticle().P())
      n+=1
 def eventsWithStrawPoints(i):
  sTree = fchain[i].cbmsim
@@ -1105,12 +1106,12 @@ def eventsWithStrawPoints(i):
    if nS>0:
      mu = sTree.MCTrack[0]
      mu.GetMomentum(mom)
-     print i,nS
+     print(i,nS)
      mom.Print()
      sp = sTree.strawtubesPoint[(max(0,nS-3))]
      sp.Momentum(mom)
      mom.Print()
-     print '-----------------------'
+     print('-----------------------')
 def eventsWithEntryPoints(i):
  sTree = fchain[i].cbmsim
  mom = ROOT.TVector3()
@@ -1121,9 +1122,9 @@ def eventsWithEntryPoints(i):
     detName = logVols[vp. GetDetectorID()]
     if detName== "VetoTimeDet": np+=0 #??
     vp.Momentum(mom)
-    print i,detName,vp.PdgCode()
+    print(i,detName,vp.PdgCode())
     mom.Print()
-    print '-----------------------'
+    print('-----------------------')
 def depEnergy():
  for n in range(sTree.GetEntries()):
   rc = sTree.GetEntry(n)
@@ -1145,7 +1146,7 @@ def originOfMuon(fout,n,fn,nEvents):
  ni = int(fn[x-1:x])-1
  if nEvents < 100000: 
    fm   = "$SHIPSOFT/data/pythia8_Geant4_onlyMuons.root"   
- else:  		 
+ else:
    fm = "$SHIPSOFT/data/pythia8_Geant4_Yandex_onlyMuons.root"   
  fmuon = ROOT.TFile(fm)
  ntupl = fmuon.Get("pythia8-Geant4")
@@ -1211,7 +1212,7 @@ def makeNicePrintout(x=['rareEvents_61-62.txt','rareEvents_71-72.txt']):
       tmp = l.split(' ')
       recTrack['id_hit'] = tmp[1].replace(' ','')
  # print a table
- print '%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s '%('nr','origin','pythiaID','ID','p_orig','p_hit','chi2','weight','file','cor w') 
+ print('%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s '%('nr','origin','pythiaID','ID','p_orig','p_hit','chi2','weight','file','cor w')) 
 # sort according to p_hit
  tmp = sorted(result, key=itemgetter('fp_hit'))
  muonrate1 = 0
@@ -1223,10 +1224,10 @@ def makeNicePrintout(x=['rareEvents_61-62.txt','rareEvents_71-72.txt']):
   if float(tr['p_hit'])>1:muonrate1+=corw
   if float(tr['p_hit'])>2:muonrate2+=corw
   if float(tr['p_hit'])>3:muonrate3+=corw
-  print '%4i %8s %8s %4s %8s %8s %8s %8s %8s  %8s '%( i,tr['origin'],tr['pytiaid'],tr['id_hit'],tr['o-mom'],tr['p_hit'],tr['chi2'],tr['w'],tr['file'],corw)
- print "guestimate for muonrate above 1GeV = ",muonrate1
- print "guestimate for muonrate above 2GeV = ",muonrate2
- print "guestimate for muonrate above 3GeV = ",muonrate3
+  print('%4i %8s %8s %4s %8s %8s %8s %8s %8s  %8s '%( i,tr['origin'],tr['pytiaid'],tr['id_hit'],tr['o-mom'],tr['p_hit'],tr['chi2'],tr['w'],tr['file'],corw))
+ print("guestimate for muonrate above 1GeV = ",muonrate1)
+ print("guestimate for muonrate above 2GeV = ",muonrate2)
+ print("guestimate for muonrate above 3GeV = ",muonrate3)
 #guestimate for muonrate above 1GeV =  56025.4793333
 #guestimate for muonrate above 2GeV =  25584.9546667
 #guestimate for muonrate above 3GeV =  14792.8113333
@@ -1240,11 +1241,11 @@ def readAndMergeHistos(prods):
 # make list of hists with entries
  k = 1
  for x in histlistAll:
-  if h.has_key(histlistAll[x]): 
+  if histlistAll[x] in h: 
    histlist[k]=histlistAll[x]
    k+=1
  nstations = len(histlist)
- print "make plots for ",nstations 
+ print("make plots for ",nstations) 
  makePlots(nstations)
  printAndCopy(prods[0].replace('.root',''))
 

@@ -3,6 +3,8 @@
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
 
+from __future__ import print_function
+import global_variables
 import shipPatRec_prev 
 import ROOT,os,sys,getopt
 import shipDet_conf
@@ -25,7 +27,7 @@ parser.add_option("-t","--threeprong", dest="tp", help="threeprong=1 mumunu deca
 (options,args)=parser.parse_args()
 
 shipPatRec_prev.cheated=bool(options.chtd)
-shipPatRec_prev.debug = int(options.dbg)
+global_variables.debug = (int(options.dbg) == 1)
 inputFile = options.input
 shipPatRec_prev.geoFile = options.geometry
 shipPatRec_prev.monitor=bool(options.mntr)
@@ -35,20 +37,20 @@ shipPatRec_prev.threeprong = int(options.tp)
 saveDisk = options.saveDisk
 
 if (shipPatRec_prev.printhelp==True or len(sys.argv)==1):
-   print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-   print "shipStrawTracking runs the straw tracker pattern recognition and fits the resulting tracks with DAF. Available options:" 
-   print "-c 1                      : uses MC true hit x,y instead of wire left&right coordinates and stereo projections. default 0"
-   print "-d 1                      : print a lot of debug messages. default 0"
-   print "-g name_of_geometry_file  : input geometry file. default='$FAIRSHIP/geofile_full.10.0.Pythia8-TGeant4.root'"
-   print "-f name_of_input_file     : input file name.default='$FAIRSHIP/ship.10.0.Pythia8-TGeant4.root'"
-   print "-m 1                      : obtain the PatRec efficiency wrt MC truth. default 0"
-   print "-o 1                      : prints this message."
-   print "-r reconstructible tracks : number of reconstructible tracks required when monitoring. default 2"
-   print "-s 1                      : to save output to disk. default 0"
-   print "-t 1                      : to be used when monitoring the threeprong mumunu decay. default 0"
-   print "runing example            : "
-   print "python python/shipStrawTracking.py -i ship.10.0.Pythia8-TGeant4-1000.root -g geofile_full.10.0.Pythia8-TGeant4-1000.root"
-   print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+   print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+   print("shipStrawTracking runs the straw tracker pattern recognition and fits the resulting tracks with DAF. Available options:") 
+   print("-c 1                      : uses MC true hit x,y instead of wire left&right coordinates and stereo projections. default 0")
+   print("-d 1                      : print a lot of debug messages. default 0")
+   print("-g name_of_geometry_file  : input geometry file. default='$FAIRSHIP/geofile_full.10.0.Pythia8-TGeant4.root'")
+   print("-f name_of_input_file     : input file name.default='$FAIRSHIP/ship.10.0.Pythia8-TGeant4.root'")
+   print("-m 1                      : obtain the PatRec efficiency wrt MC truth. default 0")
+   print("-o 1                      : prints this message.")
+   print("-r reconstructible tracks : number of reconstructible tracks required when monitoring. default 2")
+   print("-s 1                      : to save output to disk. default 0")
+   print("-t 1                      : to be used when monitoring the threeprong mumunu decay. default 0")
+   print("runing example            : ")
+   print("python python/shipStrawTracking.py -i ship.10.0.Pythia8-TGeant4-1000.root -g geofile_full.10.0.Pythia8-TGeant4-1000.root")
+   print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
    sys.exit()
 
 if not inputFile.find('_patrec.root') < 0: 
@@ -85,7 +87,7 @@ sTree     = fn.cbmsim
 fout=outFile
 
 if sTree.GetBranch("FitTracks_PR"):
-  print "remove RECO branches and rerun reconstruction"
+  print("remove RECO branches and rerun reconstruction")
   fn.Close()
   f=ROOT.TFile(fout,'update')
   sTree=f.cbsim
@@ -123,20 +125,20 @@ SHbranch       = sTree.Branch("SmearedHits",SmearedHits,32000,-1)
 fitTracks_PR      = sTree.Branch("FitTracks_PR",  fGenFitArray_PR,32000,-1) 
 mcLink_PR      = sTree.Branch("fitTrack2MC_PR",fitTrack2MC_PR,32000,-1)
  
-if shipPatRec_prev.debug==1:
-  print "Straw tracker geometry parameters (cm)"
-  print "--------------------------------------"
-  print "Strawlength            :",2*shipPatRec_prev.ship_geo.strawtubes.StrawLength
-  print "Inner straw diameter   :",shipPatRec_prev.ship_geo.strawtubes.InnerStrawDiameter
-  print "Straw wall thickness   :",shipPatRec_prev.ship_geo.strawtubes.WallThickness 
-  print "Outer straw diameter   :",shipPatRec_prev.ship_geo.strawtubes.OuterStrawDiameter
-  print "Wire thickness         :",shipPatRec_prev.ship_geo.strawtubes.WireThickness
-  print "Straw pitch            :",shipPatRec_prev.ship_geo.strawtubes.StrawPitch
-  print "z-offset between layers:",shipPatRec_prev.ship_geo.strawtubes.DeltazLayer
-  print "z-offset between planes:",shipPatRec_prev.ship_geo.strawtubes.DeltazPlane
-  print "Straws per layer       :",shipPatRec_prev.ship_geo.strawtubes.StrawsPerLayer
-  print "z-offset between planes:",shipPatRec_prev.ship_geo.strawtubes.DeltazPlane
-  print "z-offset between views :",shipPatRec_prev.ship_geo.strawtubes.DeltazView
+if global_variables.debug:
+  print("Straw tracker geometry parameters (cm)")
+  print("--------------------------------------")
+  print("Strawlength            :",2*shipPatRec_prev.ship_geo.strawtubes.StrawLength)
+  print("Inner straw diameter   :",shipPatRec_prev.ship_geo.strawtubes.InnerStrawDiameter)
+  print("Straw wall thickness   :",shipPatRec_prev.ship_geo.strawtubes.WallThickness) 
+  print("Outer straw diameter   :",shipPatRec_prev.ship_geo.strawtubes.OuterStrawDiameter)
+  print("Wire thickness         :",shipPatRec_prev.ship_geo.strawtubes.WireThickness)
+  print("Straw pitch            :",shipPatRec_prev.ship_geo.strawtubes.StrawPitch)
+  print("z-offset between layers:",shipPatRec_prev.ship_geo.strawtubes.DeltazLayer)
+  print("z-offset between planes:",shipPatRec_prev.ship_geo.strawtubes.DeltazPlane)
+  print("Straws per layer       :",shipPatRec_prev.ship_geo.strawtubes.StrawsPerLayer)
+  print("z-offset between planes:",shipPatRec_prev.ship_geo.strawtubes.DeltazPlane)
+  print("z-offset between views :",shipPatRec_prev.ship_geo.strawtubes.DeltazView)
 
 shipPatRec_prev.initialize(fgeo)
      
@@ -154,10 +156,16 @@ def EventLoop(SmearedHits):
   if shipPatRec_prev.monitor==True: 
      shipPatRec_prev.ReconstructibleMCTracks=shipPatRec_prev.getReconstructibleTracks(n,sTree,sGeo)
      if len(shipPatRec_prev.ReconstructibleMCTracks)!=shipPatRec_prev.reconstructiblerequired : 
-        if shipPatRec_prev.debug==1: print "Number of reconstructible tracks =",len(shipPatRec_prev.ReconstructibleMCTracks),"but number of reconstructible required=",shipPatRec_prev.reconstructiblerequired,". Rejecting event."
+        if global_variables.debug:
+          print(
+              "Number of reconstructible tracks =", len(shipPatRec_prev.ReconstructibleMCTracks),
+              "but number of reconstructible required=", shipPatRec_prev.reconstructiblerequired,
+              ". Rejecting event."
+              )
         continue
 
-     if shipPatRec_prev.debug==1: print "Reconstructible track ids",shipPatRec_prev.ReconstructibleMCTracks
+     if global_variables.debug:
+       print("Reconstructible track ids", shipPatRec_prev.ReconstructibleMCTracks)
      
      
   #n = current event number, False=wire endpoints, True=MC truth
@@ -168,10 +176,10 @@ def EventLoop(SmearedHits):
   if fittedtrackids:
      tracknbr=0
      for ids in fittedtrackids:
-	nTrack   = fGenFitArray_PR.GetEntries()
+        nTrack   = fGenFitArray_PR.GetEntries()
         fGenFitArray_PR[nTrack] = shipPatRec_prev.theTracks[tracknbr]
         fitTrack2MC_PR.push_back(ids) 
-	tracknbr+=1  
+        tracknbr+=1  
   
   Particles_PR.Fill()
   fitTracks_PR.Fill()
@@ -179,15 +187,15 @@ def EventLoop(SmearedHits):
   SHbranch.Fill()  
     
     
- if shipPatRec_prev.debug==1: 
-   print shipPatRec_prev.falsenegative,"matched tracks with wrong negative charge from deflection."
-   print shipPatRec_prev.falsepositive,"matched tracks with wrong positive charge from deflection."
-   print shipPatRec_prev.morethan500,"events with more than 500 hits."  
-   print shipPatRec_prev.morethan100tracks,"events with more than 100 tracks." 
+ if global_variables.debug: 
+   print(shipPatRec_prev.falsenegative,"matched tracks with wrong negative charge from deflection.")
+   print(shipPatRec_prev.falsepositive,"matched tracks with wrong positive charge from deflection.")
+   print(shipPatRec_prev.morethan500,"events with more than 500 hits.")  
+   print(shipPatRec_prev.morethan100tracks,"events with more than 100 tracks.") 
   
  return   
             
-if shipPatRec_prev.debug==1:
+if global_variables.debug:
   if shipPatRec_prev.threeprong==1:
     debugrootfile = ROOT.TFile(str(shipPatRec_prev.reconstructiblerequired)+"track-debug-mumunu-"+str(nEvents)+".root","RECREATE")   
   else:  
@@ -198,22 +206,22 @@ EventLoop(SmearedHits)
 #1/0
 shipPatRec_prev.h['pinvvstruepinv'].Draw('box')
 scale=1.
-if shipPatRec_prev.h['fracsame12'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame12'].Integral()
+if shipPatRec_prev.h['fracsame12'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame12'].Integral()
 shipPatRec_prev.h['fracsame12'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame12-y'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame12-y'].Integral()
+if shipPatRec_prev.h['fracsame12-y'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame12-y'].Integral()
 shipPatRec_prev.h['fracsame12-y'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame12-stereo'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame12-stereo'].Integral()
+if shipPatRec_prev.h['fracsame12-stereo'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame12-stereo'].Integral()
 shipPatRec_prev.h['fracsame12-stereo'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame34'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame34'].Integral()
+if shipPatRec_prev.h['fracsame34'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame34'].Integral()
 shipPatRec_prev.h['fracsame34'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame34-y'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame34-y'].Integral()
+if shipPatRec_prev.h['fracsame34-y'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame34-y'].Integral()
 shipPatRec_prev.h['fracsame34-y'].Scale(scale)
 scale=1.
-if shipPatRec_prev.h['fracsame34-stereo'].Integral() <>0 : scale=1/shipPatRec_prev.h['fracsame34-stereo'].Integral()
+if shipPatRec_prev.h['fracsame34-stereo'].Integral() !=0 : scale=1/shipPatRec_prev.h['fracsame34-stereo'].Integral()
 shipPatRec_prev.h['fracsame34-stereo'].Scale(scale)
 
 scale=1.

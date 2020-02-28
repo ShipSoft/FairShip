@@ -1,3 +1,4 @@
+from __future__ import division
 import ROOT,sys
 import rootUtils as ut
 import shipunit as u
@@ -41,8 +42,7 @@ def run():
     if f.GetBx(x,y,z)>0: rc=h['Bx+'].Fill(z,x,y,f.GetBx(x,y,z)/u.tesla) 
     if f.GetBy(x,y,z)<0: rc=h['By-'].Fill(z,x,y,-f.GetBy(x,y,z)/u.tesla)
     if f.GetBy(x,y,z)>0: rc=h['By+'].Fill(z,x,y,f.GetBy(x,y,z)/u.tesla) 
- hkeys = h.keys()
- for x in hkeys:
+ for x in h.keys():
   hi = h[x]
   if hi.ClassName()=='TH3F':
    h[x+'_xz']=h[x].Project3D('xy')

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os,ROOT,sys,subprocess,pickle,time,datetime
 import rootUtils as ut
 
@@ -35,7 +36,7 @@ def GetGoodAndBadRuns(startDate,endDate):
  for r in runs:
    tmp = r.split(' ')
    if len(tmp) != 9: 
-      print "wrong format",tmp
+      print("wrong format",tmp)
       continue
    date = tmp[5].split('-')
    time = tmp[6].split(':')
@@ -68,7 +69,7 @@ def GetGoodAndBadRuns(startDate,endDate):
          if not t: 
            badRuns.append(theRun)
            continue
-         if N%1000 == 0: print N,t.GetName()
+         if N%1000 == 0: print(N,t.GetName())
          if t.ReadKeys()==0:
            t.Close()
            badRuns.append(theRun)
@@ -91,11 +92,11 @@ def addRuns(goodRuns,Nstart=0):
   tmpFile = "pythia8_Geant4_"+ecut+"_c"+str(N+Nstart)+".root"
   rc = os.system("hadd -j 10 -O "+tmpFile + " " +cmd)
   if rc != 0: 
-    print "hadd failed, stop",N
+    print("hadd failed, stop",N)
     return
   rc = os.system("xrdcp "+tmpFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+tmpFile)
   if rc != 0: 
-    print "copy to EOS failed, stop",N,N+Nstart 
+    print("copy to EOS failed, stop",N,N+Nstart) 
   else:
     rc = os.system("rm "+tmpFile)
   N+=1000
@@ -143,8 +144,7 @@ def addAllHistograms():
   ut.readHists(h,path+fname)
   if i==0:
     h[1012].Draw()
- tmp = h.keys()
- for x in tmp:
+ for x in h.keys():
    if h[x].GetName().find('proj')>0: rc = h.pop(x)
  ut.writeHists(h,"pythia8_Geant4_"+ecut+"_c"+str(Nmax)+"-histos.root")
  
@@ -161,20 +161,20 @@ def compactifyCascade(cycle):
    for l in f.readlines():
     if not l.find('Macro finished succesfully')<0: success = True
    if not success:
-     print "job not finished properly",fName
+     print("job not finished properly",fName)
      continue  
    cmd += fName +" "
    f.close()
    Ntot+= NperJob
  if cmd.find('root')<0:
-  print 'no file found, exit'
+  print('no file found, exit')
  else:
   stat = str( int(Ntot/1E6))+'Mpot'
   outFile = "Cascade-run"+str(cycle)+"-"+str(cycle+ncpus-1)+"-parp16-MSTP82-1-MSEL4-"+stat+".root"
   rc = os.system("hadd -O "+outFile + " " +cmd)
   rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
   if rc != 0: 
-    print "copy to EOS failed, stop",outFile 
+    print("copy to EOS failed, stop",outFile) 
   else:
     rc = os.system("rm "+outFile)
 
@@ -260,7 +260,7 @@ def makeHistos(rfile):
    tmp2 = tmp.split('with')[0]
    if tmp2.find('E')<0: nTot += int(tmp2)
    else: nTot += float(tmp2)
- print "POT = ",nTot," number of events:",sTree.GetEntries()
+ print("POT = ",nTot," number of events:",sTree.GetEntries())
 # particle statistics
  h={}
  ut.bookHist(h,'pids','pid',19999,-9999.5,9999.5)
@@ -281,9 +281,9 @@ def makeHistos(rfile):
          moPid = sTree.MCTrack[mother].GetPdgCode()
          name = pdg.GetParticle(moPid).GetName()
          name = procID+' '+name
-         if not h.has_key(name):  h[name]=h['test'].Clone(name)
+         if name not in h:  h[name]=h['test'].Clone(name)
          rc=h[name].Fill(t.GetP(),t.GetPt())
-     if not h.has_key(procID):  h[procID]=h['test'].Clone(procID)
+     if procID not in h:  h[procID]=h['test'].Clone(procID)
      rc=h[procID].Fill(t.GetP(),t.GetPt())
  for x in h:
   h[x].Scale(1./nTot)
@@ -312,19 +312,19 @@ def makePrintout():
  
  sorted_p = sorted(p.items(), key=operator.itemgetter(1))
  for p in sorted_p:
-  print "%25s : %5.2G"%(pdg.GetParticle(p[0]).GetName(),float(p[1]))
+  print("%25s : %5.2G"%(pdg.GetParticle(p[0]).GetName(),float(p[1])))
  sorted_pr = sorted(biased.items(), key=operator.itemgetter(1))
- print "origin of muons"
+ print("origin of muons")
  for p in sorted_pr:
   if not p[0].find('Hadronic inelastic')<0:
      if len(p[0])>len( 'Hadronic inelastic' ): continue
   denom = 0
-  if unbiased.has_key(p[0]): denom = unbiased[p[0]]
+  if p[0] in unbiased: denom = unbiased[p[0]]
   if denom >0:
    fac = float(p[1])/denom
-   print "%40s : %5.2G %5.1F"%(p[0],float(p[1]),fac)
+   print("%40s : %5.2G %5.1F"%(p[0],float(p[1]),fac))
   else:
-   print "%40s : %5.2G "%(p[0],float(p[1]))
+   print("%40s : %5.2G "%(p[0],float(p[1])))
 
 if len(sys.argv)>1: 
  runMin=sys.argv[1]
@@ -339,7 +339,7 @@ else:
 # runMin = 2001001
 # runMax = 2001500 # more does not work, maybe limit of hadd? 2001359
 # charm run_fixedTarget_9000119/pythia8_Geant4_9000219_10.0.root
- print "methods to run: makeHistos(rfile),makePrintout()"
+ print("methods to run: makeHistos(rfile),makePrintout()")
 
 # yandex compactification, Feb 8
 #...  startDate = datetime.datetime(2018, 1, 1, 0, 0)
@@ -375,7 +375,7 @@ def check4DoubleRuns():
   fn = open(x)
   dn = pickle.load(fn)
   Nruns += len(dn['goodruns'])
- print "Total number of runs:",Nruns
+ print("Total number of runs:",Nruns)
  
  for n in range( len(allRuns)-1 ):
   fn = open(allRuns[n])
@@ -386,7 +386,7 @@ def check4DoubleRuns():
    for rn in dn['goodruns']: 
     for rm in dm['goodruns']: 
      if rn == rm : 
-       print "double entry found",rn,allRuns[n],allRuns[m]
+       print("double entry found",rn,allRuns[n],allRuns[m])
 
 
 

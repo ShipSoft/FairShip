@@ -1,4 +1,5 @@
 #!/usr/bin/env python 
+from __future__ import print_function
 import ROOT,os,sys,getopt,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
@@ -58,7 +59,7 @@ class Block(ROOT.pyFairModule):
    ROOT.pyFairModule.__init__(self,self)
    self.sensPlane = None
  def ConstructGeometry(self):
-    print "Construct Block"
+    print("Construct Block")
     top=ROOT.gGeoManager.GetTopVolume()
     geoLoad=ROOT.FairGeoLoader.Instance()
     geoFace=geoLoad.getGeoInterface()
@@ -73,7 +74,7 @@ class Block(ROOT.pyFairModule):
     top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))
     if self.sensPlane: self.sensPlane.AddSensitiveVolume(aBox)
  def InitParContainers():
-    print "not implemented!"
+    print("not implemented!")
  def makeSensitive(self,sensPlane):
     self.sensPlane = sensPlane
 
@@ -144,7 +145,7 @@ h['muons'].Draw()
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
-print "Output file is ",  outFile 
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ') 
+print("Macro finished succesfully.") 
+print("Output file is ",  outFile) 
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
