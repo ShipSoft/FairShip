@@ -21,6 +21,10 @@ gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc" \
 >> /etc/yum.repos.d/mongodb-org-4.2.repo \
 && yum install -y mongodb-org
 
+# Install Python dependencies
+RUN cd ./FairShip/conditionsDatabase \
+	&& pip install -r requirements.txt
+
 # Setup environment. Setup the command that will be invoked when your docker
 # image is run. Note that this requires running with `docker run -t` so that
 # `alienv` detects an interactive terminal.
