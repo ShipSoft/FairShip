@@ -1,6 +1,8 @@
+from future import standard_library
+standard_library.install_aliases()
 import os
 import re
-import cPickle
+import pickle
 from contextlib import contextmanager
 from future.utils import with_metaclass
 
@@ -114,7 +116,7 @@ class Config(AttrDict):
         super(Config, self).__init__(*args, **kwargs)
 
     def loads(self, buff):
-        rv = cPickle.loads(buff)
+        rv = pickle.loads(buff)
         self.clear()
         self.update(rv)
         return self
@@ -129,7 +131,7 @@ class Config(AttrDict):
         return result
 
     def dumps(self):
-        return cPickle.dumps(self)
+        return pickle.dumps(self)
 
     def load(self, filename):
         with open(expand_env(filename)) as fh:

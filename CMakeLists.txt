@@ -402,9 +402,6 @@ If(${distribution} MATCHES "ScientificCERNSLC")
  file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "rm lcg.sh\n")
  
 EndIf()
-# extend PYTHONPATH
-file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv PYTHONPATH \"\${PYTHONPATH}:${CMAKE_SOURCE_DIR}/Developments/track_pattern_recognition\"\n")
-file(APPEND ${CMAKE_BINARY_DIR}/config.sh  "export PYTHONPATH=\"\${PYTHONPATH}:${CMAKE_SOURCE_DIR}/Developments/track_pattern_recognition\"\n")
 
 # add some other useful environment variables:
 file(APPEND ${CMAKE_BINARY_DIR}/config.csh "setenv FAIRSHIPRUN \"${CMAKE_CURRENT_BINARY_DIR}\"\n")

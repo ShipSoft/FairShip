@@ -742,8 +742,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.ConcreteX = c.tauHPT.DX
         c.tauHPT.ConcreteY = c.tauMudet.Ytot/2 - c.tauHPT.DY/2
         c.tauHPT.ConcreteZ = c.tauHPT.DZ
-    if nuTauTargetDesign==3:
-        c.tauHPT.SRDY = 10 * u.cm  #additional detectors for improving acceptance
+    if nuTauTargetDesign==3:        
         c.tauHPT.DX = c.tauHPT.TX
         c.tauHPT.DY = c.tauHPT.TY
         c.tauHPT.DZ = c.tauHPT.TZ

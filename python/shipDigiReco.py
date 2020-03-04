@@ -1,7 +1,9 @@
 from __future__ import print_function
 from __future__ import division
 import os,ROOT,shipVertex,shipDet_conf
-if realPR == "Prev": import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
+import global_variables
+if global_variables.realPR == "Prev":
+  import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
 else: import shipPatRec
 import shipunit as u
 import rootUtils as ut
@@ -90,8 +92,8 @@ class ShipDigiReco:
   self.digiMuon    = ROOT.TClonesArray("muonHit")
   self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
 # for the digitizing step
-  self.v_drift = modules["Strawtubes"].StrawVdrift()
-  self.sigma_spatial = modules["Strawtubes"].StrawSigmaSpatial()
+  self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
+  self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
 # optional if present, splitcalCluster
   if self.sTree.GetBranch("splitcalPoint"):
    self.digiSplitcal = ROOT.TClonesArray("splitcalHit") 
@@ -103,10 +105,10 @@ class ShipDigiReco:
   self.caloTasks = []  
   if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
 # Creates. exports and fills calorimeter structure
-   dflag = 0
-   if debug: dflag = 10
-   ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
-   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
+   dflag = 10 if global_variables.debug else 0
+   ecalGeo = global_variables.ecalGeoFile + 'z' + str(global_variables.ShipGeo.ecal.z) + ".geo"
+   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"):
+     shipDet_conf.makeEcalGeoFile(global_variables.ShipGeo.ecal.z, global_variables.ShipGeo.ecal.File)
    ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
    ecalFiller.SetUseMCPoints(ROOT.kTRUE)
    ecalFiller.StoreTrackInformation()
@@ -146,7 +148,7 @@ class ShipDigiReco:
 # Match reco to MC
    ecalMatch=ROOT.ecalMatch('ecalMatch',0)
    self.caloTasks.append(ecalMatch)
-   if EcalDebugDraw:
+   if global_variables.EcalDebugDraw:
  # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
     ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
     self.caloTasks.append(ecalDrawer)
@@ -154,7 +156,7 @@ class ShipDigiReco:
    import shipPid
    self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
-  self.Vertexing = shipVertex.Task(h,self.sTree)
+  self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
 # setup random number generator 
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
@@ -173,7 +175,8 @@ class ShipDigiReco:
    self.ecalReconstructed = ecalReco.InitPython(self.sTree.EcalClusters, self.ecalStructure, self.ecalCalib)
    self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed,32000,-1)
    ecalMatch.InitPython(self.ecalStructure, self.ecalReconstructed, self.sTree.MCTrack)
-   if EcalDebugDraw: ecalDrawer.InitPython(self.sTree.MCTrack, self.sTree.EcalPoint, self.ecalStructure, self.ecalClusters)
+   if global_variables.EcalDebugDraw:
+     ecalDrawer.InitPython(self.sTree.MCTrack, self.sTree.EcalPoint, self.ecalStructure, self.ecalClusters)
   else:
    ecalClusters      = ROOT.TClonesArray("ecalCluster") 
    ecalReconstructed = ROOT.TClonesArray("ecalReconstructed") 
@@ -185,7 +188,7 @@ class ShipDigiReco:
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
 #
   self.bfield = ROOT.genfit.FairShipFields()
-  self.bfield.setField(fieldMaker.getGlobalField())
+  self.bfield.setField(global_variables.fieldMaker.getGlobalField())
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
   ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
@@ -195,9 +198,9 @@ class ShipDigiReco:
   #fitter          = ROOT.genfit.KalmanFitterRefTrack()
   self.fitter      = ROOT.genfit.DAF()
   self.fitter.setMaxIterations(50)
-  if debug: self.fitter.setDebugLvl(1) # produces lot of printout
+  if global_variables.debug:
+    self.fitter.setDebugLvl(1) # produces lot of printout
   #set to True if "real" pattern recognition is required also
-  if debug == True: shipPatRec.debug = 1
 
 # for 'real' PatRec
   shipPatRec.initialize(fgeo)
@@ -214,7 +217,7 @@ class ShipDigiReco:
    if len(self.caloTasks)>0:
     self.EcalClusters.Fill()
     self.EcalReconstructed.Fill()
-   if vertexing:
+   if global_variables.vertexing:
 # now go for 2-track combinations
     self.Vertexing.execute()
 
@@ -730,8 +733,8 @@ class ShipDigiReco:
   t0 = 0.
   key = -1
   SmearedHits = []
-  v_drift = modules["Strawtubes"].StrawVdrift()
-  modules["Strawtubes"].StrawEndPoints(10002001,start,stop)
+  v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
+  global_variables.modules["Strawtubes"].StrawEndPoints(10002001, start, stop)
   z1 = stop.z()
   for aDigi in self.digiStraw:
     key+=1
@@ -740,7 +743,7 @@ class ShipDigiReco:
 # don't use hits from straw veto
     station = int(detID//10000000)
     if station > 4 : continue
-    modules["Strawtubes"].StrawEndPoints(detID,start,stop)
+    global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
     delt1 = (start[2]-z1)/u.speedOfLight
     t0+=aDigi.GetDigi()-delt1
     SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi(), 'detID':detID} )
@@ -755,8 +758,8 @@ class ShipDigiReco:
  # smear strawtube points
   SmearedHits = []
   key = -1
-  v_drift = modules["Strawtubes"].StrawVdrift()
-  modules["Strawtubes"].StrawEndPoints(10002001,start,stop)
+  v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
+  global_variables.modules["Strawtubes"].StrawEndPoints(10002001, start, stop)
   z1 = stop.z()
   for aDigi in self.digiStraw:
      key+=1
@@ -765,7 +768,7 @@ class ShipDigiReco:
 # don't use hits from straw veto
      station = int(detID//10000000)
      if station > 4 : continue
-     modules["Strawtubes"].StrawEndPoints(detID,start,stop)
+     global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
    #distance to wire
      delt1 = (start[2]-z1)/u.speedOfLight
      p=self.sTree.strawtubesPoint[key]
@@ -775,9 +778,12 @@ class ShipDigiReco:
      if no_amb: smear = p.dist2Wire()
      SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear, 'detID':detID} )
      # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
-     if abs(stop.y())==abs(start.y()): h['disty'].Fill(smear)
-     if abs(stop.y())>abs(start.y()): h['distu'].Fill(smear)
-     if abs(stop.y())<abs(start.y()): h['distv'].Fill(smear)
+     if abs(stop.y()) == abs(start.y()):
+       global_variables.h['disty'].Fill(smear)
+     elif abs(stop.y()) > abs(start.y()):
+       global_variables.h['distu'].Fill(smear)
+     elif abs(stop.y()) < abs(start.y()):
+       global_variables.h['distv'].Fill(smear)
 
   return SmearedHits
   
@@ -791,16 +797,18 @@ class ShipDigiReco:
   self.fitTrack2MC.clear()
 
 #   
-  if withT0:  self.SmearedHits = self.withT0Estimate()
+  if global_variables.withT0:
+    self.SmearedHits = self.withT0Estimate()
   # old procedure, not including estimation of t0 
-  else:       self.SmearedHits = self.smearHits(withNoStrawSmearing)
+  else:
+    self.SmearedHits = self.smearHits(global_variables.withNoStrawSmearing)
 
   nTrack = -1
   trackCandidates = []
   
-  if realPR:
+  if global_variables.realPR:
     # Do real PatRec
-    track_hits = shipPatRec.execute(self.SmearedHits, ShipGeo, realPR)
+    track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.realPR)
     # Create hitPosLists for track fit
     for i_track in track_hits.keys():
       atrack = track_hits[i_track]
@@ -857,7 +865,7 @@ class ShipDigiReco:
     nM = meas.size()
     if nM < 25 : continue                          # not enough hits to make a good trackfit 
     if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit 
-    if debug: 
+    if global_variables.debug:
        mctrack = self.sTree.MCTrack[atrack]
     # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
     posM = ROOT.TVector3(0, 0, 0)
@@ -865,7 +873,8 @@ class ShipDigiReco:
 # approximate covariance
     covM = ROOT.TMatrixDSym(6)
     resolution = self.sigma_spatial
-    if withT0: resolution = resolution*1.4 # worse resolution due to t0 estimate
+    if global_variables.withT0:
+      resolution *= 1.4 # worse resolution due to t0 estimate
     for  i in range(3):   covM[i][i] = resolution*resolution
     covM[0][0]=resolution*resolution*100.
     for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)
@@ -885,7 +894,7 @@ class ShipDigiReco:
       tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to 
       measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
-      measurement.setMaxDistance(ShipGeo.strawtubes.InnerStrawDiameter/2.)
+      measurement.setMaxDistance(global_variables.ShipGeo.strawtubes.InnerStrawDiameter / 2.)
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
       theTrack.insertPoint(tp)  # add point to Track
@@ -902,13 +911,15 @@ class ShipDigiReco:
 # do the fit
     try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
     except: 
-      if debug: print("genfit failed to fit track")
+      if global_variables.debug:
+        print("genfit failed to fit track")
       error = "genfit failed to fit track"
       ut.reportError(error)
       continue
 #check
     if not theTrack.checkConsistency():
-     if debug: print('Problem with track after fit, not consistent',atrack,theTrack)
+     if global_variables.debug:
+       print('Problem with track after fit, not consistent', atrack, theTrack)
      error = "Problem with track after fit, not consistent"
      ut.reportError(error)
      continue
@@ -922,13 +933,14 @@ class ShipDigiReco:
     fitStatus   = theTrack.getFitStatus()
     nmeas = fitStatus.getNdf()   
     chi2        = fitStatus.getChi2()/nmeas   
-    h['chi2'].Fill(chi2)
+    global_variables.h['chi2'].Fill(chi2)
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()
-    if not debug: theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280 
+    if not global_variables.debug:
+      theTrack.prune("CFL")  # http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
     self.fGenFitArray[nTrack] = theTrack
     # self.fitTrack2MC.push_back(atrack)
-    if debug: 
+    if global_variables.debug:
      print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
     # Save MC link
     track_ids = []
@@ -948,7 +960,7 @@ class ShipDigiReco:
   self.fitTracks.Fill()
   self.mcLink.Fill()
 # debug 
-  if debug:
+  if global_variables.debug:
    print('save tracklets:') 
    for x in self.sTree.Tracklets:
     print(x.getType(),x.getList().size())
@@ -982,7 +994,8 @@ class ShipDigiReco:
      except:
       error =  "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
       ut.reportError(error)
-      if debug: print(error)
+      if global_variables.debug:
+        print(error)
       continue
      dist = (rep.getPos(state) - vetoHitPos).Mag()
      if dist < distMin:
@@ -1024,5 +1037,6 @@ class ShipDigiReco:
   print('finished writing tree')
   self.sTree.Write()
   ut.errorSummary()
-  ut.writeHists(h,"recohists.root")
-  if realPR: shipPatRec.finalize()
+  ut.writeHists(global_variables.h,"recohists.root")
+  if global_variables.realPR:
+    shipPatRec.finalize()

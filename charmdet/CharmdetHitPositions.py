@@ -6,7 +6,7 @@ import ROOT,os
 #ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 import numpy
 from decorators import *
-import builtins as builtin
+import global_variables
 ROOT.gStyle.SetPalette(ROOT.kGreenPink)
 PDG = ROOT.TDatabasePDG.Instance()
 # -----Timer--------------------------------------------------------
@@ -77,7 +77,7 @@ else:
 #-------------------------------geometry initialization
 from ShipGeoConfig import ConfigRegistry
 ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = 1, cTarget = 1)
-builtin.ShipGeo = ShipGeo
+global_variables.ShipGeo = ShipGeo
 import charmDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
@@ -164,7 +164,7 @@ def GetSciFiPositions(n=1,draw=True,writentuple=False):
   if not options.withDisplay:   
    draw = False
 
-  scifitree.GetEntry(n+1)
+  scifitree.GetEntry(n)
   nscifipoints = 0
   scifihitslist = []
   scifihitslist.append(scifitree.Digi_SciFiHits)
@@ -422,6 +422,10 @@ def writeNtuples():
   print("Start processing", nevents, "nevents")
   for ievent in range(nevents):
    leafnhits[0] = 0 #resetting counter of hits
+   #getting global timestamp from Event Builder
+   sTree.GetEntry(ievent)
+   eventtime[0] = sTree.EventHeader.GetEventTime()
+
    GetPixelPositions(ievent, False, True)
    GetDTPositions(ievent, False, True)
    GetSciFiPositions(ievent, False, True)
@@ -435,7 +439,7 @@ if writentuple:
  outputfile = ROOT.TFile(options.outputfilename,"RECREATE")
  outputtree = ROOT.TTree("shippositions","Ntuple with hit positions")
  # tree initialization, branches must be arrays in order to pass the addresss
- maxdim = 10000
+ maxdim = 100000
  leafnhits = array('i',[0])
  leafsubdetector = array( 'i',maxdim*[0])
  leafdetID = array( 'i',maxdim*[0])
@@ -443,7 +447,9 @@ if writentuple:
  leafposx = array('f',maxdim*[0.])
  leafposy = array('f',maxdim*[0.])
  leafposz = array('f',maxdim*[0.])
+ eventtime = array('f',[0.])
  #creating the branches
+ outputtree.Branch("eventtime", eventtime, "eventtime/F")
  outputtree.Branch("nhits",leafnhits,"nhits/I")
  outputtree.Branch("detID",leafdetID,"detID[nhits]/I")
  outputtree.Branch("posx",leafposx,"posx[nhits]/F")

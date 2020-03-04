@@ -3,6 +3,7 @@
 #geoFile   = '/eos/experiment/ship/data/muflux/run_fixedtarget/19april2018/geofile_full.root'
 from __future__ import print_function
 from __future__ import division
+import global_variables
 debug = False#False
 
 withNoStrawSmearing = None # True   for debugging purposes
@@ -11,10 +12,8 @@ withNTaggerHits = 0
 nEvents    = 10000
 firstEvent = 0
 withHists = True
-vertexing = True
 dy  = None
 saveDisk  = False # remove input file
-pidProton = False # if true, take truth, if False fake with pion mass
 realPR = ''
 withT0 = False
 
@@ -31,7 +30,6 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
-import __builtin__ as builtin
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -50,7 +48,7 @@ except getopt.GetoptError:
         sys.exit()
 for o, a in opts:
         if o in ("--noVertexing",):
-            vertexing = False
+            print("WARNING: --noVertexing option not currently used by script.")
         if o in ("--noStrawSmearing",):
             withNoStrawSmearing = True
         if o in ("--withT0",):
@@ -68,7 +66,7 @@ for o, a in opts:
         if o in ("-Y",):
             dy = float(a)
         if o in ("--ecalDebugDraw",):
-            EcalDebugDraw = True
+            print("WARNING: --ecalDebugDraw option not currently used by script.")
         if o in ("--saveDisk",):
             saveDisk = True
         if o in ("--realPR",):
@@ -83,8 +81,9 @@ if not dy:
     dy = float( tmp[1]+'.'+tmp[2] )
   except:
     dy = None
-print('configured to process ',nEvents,' events from ' ,inputFile, \
-      ' starting with event ',firstEvent, ' with option Yheight = ',dy,' with vertexing',vertexing,' and real pattern reco',realPR=="_PR")
+print('configured to process ', nEvents, ' events from ', inputFile,
+      ' starting with event ', firstEvent, ' with option Yheight = ', dy,
+      ' with vertexing', False,' and real pattern reco',realPR=="_PR")
 if not inputFile.find('_rec.root') < 0: 
   outFile   = inputFile
   inputFile = outFile.replace('_rec.root','.root') 
@@ -344,21 +343,20 @@ modules = charmDet_conf.configure(run,ShipGeo)
 fgeo.FAIRGeom
 
 # make global variables
-builtin.debug    = debug
-builtin.withT0 = withT0
-builtin.realPR = realPR
+global_variables.debug = debug
+global_variables.withT0 = withT0
+global_variables.realPR = realPR
 
-builtin.ShipGeo = ShipGeo
-builtin.modules = modules
+global_variables.ShipGeo = ShipGeo
+global_variables.modules = modules
 
-builtin.withNoStrawSmearing = withNoStrawSmearing
-builtin.withNTaggerHits = withNTaggerHits
-builtin.withDist2Wire = withDist2Wire
-builtin.h    = h
-builtin.log  = log
-builtin.simulation = simulation
-iEvent = 0
-builtin.iEvent  = iEvent
+global_variables.withNoStrawSmearing = withNoStrawSmearing
+global_variables.withNTaggerHits = withNTaggerHits
+global_variables.withDist2Wire = withDist2Wire
+global_variables.h = h
+global_variables.log = log
+global_variables.simulation = simulation
+global_variables.iEvent = 0
 
 # import reco tasks
 import MufluxDigiReco
@@ -366,11 +364,13 @@ SHiP = MufluxDigiReco.MufluxDigiReco(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),nEvents)
 # main loop
-for iEvent in range(firstEvent, nEvents):
- if iEvent%1000 == 0 or debug: print('event ',iEvent)
- SHiP.iEvent = iEvent
- rc    = SHiP.sTree.GetEvent(iEvent) 
- if simulation: SHiP.digitize() 
+for global_variables.iEvent in range(firstEvent, nEvents):
+    if global_variables.iEvent % 1000 == 0 or global_variables.debug:
+        print('event ', global_variables.iEvent)
+    SHiP.iEvent = global_variables.iEvent
+    rc = SHiP.sTree.GetEvent(global_variables.iEvent)
+    if global_variables.simulation:
+        SHiP.digitize()
  # IS BROKEN SHiP.reconstruct()
  # memory monitoring
  # mem_monitor() 
