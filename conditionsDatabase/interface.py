@@ -1,5 +1,12 @@
-"""This Module implements a API Interface"""
+""" Conditions Database interface definition """
+
 from abc import ABCMeta, abstractmethod
+
+# Package metadata
+__author__    = "Tom Vrancken"
+__copyright__ = "TU/e ST2019"
+__version__   = "0.2"
+__status__    = "Prototype"
 
 ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 AND 3
 
@@ -11,52 +18,116 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     """
 
     @abstractmethod
-    def get_position_measurements(self, detector_id):
+    def list_detectors(self):
         """
-        Returns a list with position measurements for @detector_id.
-        
-        :param detector_id: String identifying the detector to retrieve the position measurements from (i.e. 'muonflux/straw_tubes').
+        Returns a list with all the detector names in the database.
         """
 
     @abstractmethod
-    def add_position_measurements(self, detector_id, measurements):
+    def get_detector(self, detector_id):
         """
-        Adds a list with position measurements to @detector_id.
+        Returns a detector dictionary.
 
-        :param detector_id: String identifying the detector to set the position measurements for (i.e. 'muonflux/straw_tubes').
-        :param measurements: List specifying the straw positions that need to be added for this @detetector_id.
+        :param detector_id: String identifying the detector to retrieve (i.e.
+        'muonflux/straw_tubes').
         """
 
     @abstractmethod
-    def get_straw_positions(self, detector_id):
+    def add_detector(self, name, parent_id):
         """
-        Returns a list with straw positions for @detector_id.
-        
-        :param detector_id: String identifying the detector to retrieve the straw positions from (i.e. 'muonflux/straw_tubes').
+        Adds a new detector to the database.
+
+        :param name: String specifying the name for the new detector. Must
+        be unique. Must not contain a forward slash (i.e. /).
+        :param parent_id: (optional) String identifying the parent detector the
+        new detector should be added to as subdetector.
         """
-    
+
     @abstractmethod
-    def add_straw_positions(self, detector_id, positions):
+    def remove_detector(self, detector_id):
         """
-        Adds a list with straw positions to @detector_id.
-        
-        :param detector_id: String identifying the detector to set the straw positions for (i.e. 'muonflux/straw_tubes').
-        :param positions: List specifying the straw positions that need to be added for this @detetector_id.
+        Removes a detector from the database. Caution: all conditions associated
+        with this detector will be permanently removed as well!
+
+        :param detector_id: String identifying the detector to remove (i.e.
+        'muonflux/straw_tubes').
         """
-    
+
     @abstractmethod
-    def get_alignment_corrections(self, detector_id):
+    def add_condition(self, detector_id, name, values, type, tag, collected_at, valid_until):
         """
-        Returns a list with alignment corrections for @detector_id.
-        
-        :param detector_id: String identifying the detector to retrieve the alignment corrections from (i.e. 'muonflux/straw_tubes').
+        Adds a condition to a detector.
+
+        :param detector_id: String identifying the detector to which the
+        condition will be added (i.e. 'muonflux/straw_tubes').
+        :param name: String specifying the name of the condition (e.g. 'strawPositions').
+        :param values: Dictionary containing the values of the condition.
+        :param type: String specifying the type of condition (e.g. 'calibration').
+        :param tag: String specifying a tag for the condition. Must be unique
+        for the same condition name.
+        :param collected_at: Timestamp specifying the date/time the condition
+        was acquired. Must be unique w.r.t. the condition name.
+        :param valid_until: Timestamp specifying the date/time the
+        condition up until the condition is valid.
         """
-    
+
     @abstractmethod
-    def add_alignment_corrections(self, detector_id, corrections):
+    def get_conditions(self, detector_id):
         """
-        Adds a list with alignment corrections to @detector_id.
-        
-        :param detector_id: String identifying the detector to set the straw positions for (i.e. 'muonflux/straw_tubes').
-        :param corrections: List specifying the alignment corrections that need to be added for this @detetector_id.
+        Returns a list with all conditions associated with a detector.
+
+        :param detector_id: String identifying the detector for which the
+        conditions must be retrieved (i.e. 'muonflux/straw_tubes').
+        """
+
+    @abstractmethod
+    def get_conditions_by_name(self, detector_id, name):
+        """
+        Returns a list with conditions having a specific name for a given detector.
+
+        :param detector_id: String identifying the detector for which the
+        condition must be retrieved (i.e. 'muonflux/straw_tubes').
+        :param name: String specifying the name of the conditions to be retrieved (e.g.
+        'strawPositions').
+        """
+
+    @abstractmethod
+    def get_conditions_by_name_and_validity(self, detector_id, name, date):
+        """
+        Returns a list with conditions associated with a detector that are valid on the
+        specified date.
+
+        :param detector_id: String identifying the detector for which the
+        condition must be retrieved (i.e. 'muonflux/straw_tubes').
+        :param name: String specifying the name of the conditions to be retrieved (e.g.
+        'strawPositions').
+        :param date: Timestamp specifying a date/time for which conditions must be valid.
+        """
+
+    @abstractmethod
+    def get_condition_by_name_and_tag(self, detector_id, name, tag):
+        """
+        Returns the values of a specific condition belonging to a detector,
+        identified by condition name and tag.
+
+        :param detector_id: String identifying the detector for which the
+        condition must be retrieved (i.e. 'muonflux/straw_tubes').
+        :param name: String specifying the name of the condition to be retrieved (e.g.
+        'strawPositions').
+        :param tag: String specifying the tag of the condition to be retrieved.
+        """
+
+    @abstractmethod
+    def get_condition_by_name_and_collection_date(self, detector_id, name, collected_at):
+        """
+        Returns the values of a specific condition belonging to a detector, identified by
+        condition name and collection date/time.
+
+        :param detector_id: String identifying the detector for which the
+        condition must be retrieved (i.e. 'muonflux/straw_tubes').
+        :param name: String specifying the name of the condition to be retrieved (e.g.
+        'strawPositions').
+        :param collected_at: Timestamp specifying the moment on which the
+        condition was collected / measured. This timestamp must be unique w.r.t.
+        the condition name.
         """
