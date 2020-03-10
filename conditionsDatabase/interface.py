@@ -18,9 +18,12 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     """
 
     @abstractmethod
-    def list_detectors(self):
+    def list_detectors(self, parent_id):
         """
         Returns a list with all the detector names in the database.
+
+        :param detector_id: (optional) String identifying the parent detector to
+        retrieve the (sub)detector names for (i.e. 'muonflux/straw_tubes').
         """
 
     @abstractmethod
@@ -54,7 +57,7 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
         """
 
     @abstractmethod
-    def add_condition(self, detector_id, name, values, type, tag, collected_at, valid_until):
+    def add_condition(self, detector_id, name, values, type, tag, collected_at, valid_since, valid_until):
         """
         Adds a condition to a detector.
 
@@ -67,8 +70,10 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
         for the same condition name.
         :param collected_at: Timestamp specifying the date/time the condition
         was acquired. Must be unique w.r.t. the condition name.
-        :param valid_until: Timestamp specifying the date/time the
-        condition up until the condition is valid.
+        :param valid_since: Timestamp specifying the date/time as of when the
+        condition is valid.
+        :param valid_until: Timestamp specifying the date/time up until the
+        condition is valid.
         """
 
     @abstractmethod
