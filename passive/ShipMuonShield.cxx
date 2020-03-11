@@ -839,7 +839,14 @@ void ShipMuonShield::ConstructGeometry()
         fieldScale.fill((fField * lengthSum -  2.2 * dZf[fWithCoMagnet])/fField/(lengthSum - dZf[fWithCoMagnet]));
         fieldScale[0] = 1.;
         fieldScale[1] = 1.;
-        fieldScale[fWithCoMagnet] = 2.2 / fField;
+        try
+        {
+         fieldScale.at(fWithCoMagnet) = 2.2 / fField;
+        }
+        catch(const std::out_of_range& e)
+        {
+           Fatal( "ShipMuonShield", "Exception out of range for --coMuonShield occurred \n");
+        }
       }
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
   Double_t ironField_s = fField * fieldScale[nM] * tesla;
