@@ -15,3 +15,6 @@ unit-tests:
         # start command from here
         # directory is /builds/gitlab/cern-st-2019/implementation/
         - cd conditionsDatabase/tests
+    tags:
+        - jarvis
+
