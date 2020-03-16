@@ -135,13 +135,13 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     def get_condition_by_name_and_collection_date(self, detector_id, name, collected_at):
         pass
 
-    ### Updates the valid_since and valid_unitil values of a specific condition
+    ### Updates the valid_since and valid_until values of a specific condition
     ### belonging to a detector, identified by condition name and tag.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
-    #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
+    #                           condition must be updated (i.e. 'muonflux/straw_tubes').
+    #   @param  name:           String specifying the name of the conditions to be updated (e.g.
     #                           'strawPositions').
-    #   @param  tag:            String specifying the tag of the condition to be retrieved.
+    #   @param  tag:            String specifying the tag of the condition to be updated.
     #   @param  valid_since:    Timestamp specifying the date/time as of when the
     #                           condition is valid. Can be of type String or datetime.
     #   @param  valid_until:    Timestamp specifying the date/time up until the
