@@ -17,14 +17,16 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     ### Returns a list with all the detector names in the database.
     #   @param detector_id: (optional) String identifying the parent detector to
     #         retrieve the (sub)detector names for (i.e. 'muonflux/straw_tubes').
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If parent_id does not exist.
     @abstractmethod
     def list_detectors(self, parent_id):
         pass
 
     ### Returns a detector dictionary.
     #   @param  detector_id:    String identifying the detector to retrieve (i.e. 'muonflux/straw_tubes').
-    #   @raise  TypeError:      If input type is not as specified.
-    #   @raise  ValueError:     If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def get_detector(self, detector_id):
         pass
@@ -34,8 +36,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #                       be unique. Must not contain a forward slash (i.e. /).
     #   @param  parent_id:  (optional) String identifying the parent detector the
     #                       new detector should be added to as subdetector.
-    #   @raise  TypeError:  If input type is not as specified.
-    #   @raise  ValueError: If parent_id does not exist.
+    #   @throw  TypeError:  If input type is not as specified.
+    #   @throw  ValueError: If parent_id does not exist.
     @abstractmethod
     def add_detector(self, name, parent_id):
         pass
@@ -44,8 +46,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     ### with this detector will be permanently removed as well!
     #   @param  detector_id:    String identifying the detector to remove (i.e.
     #                           'muonflux/straw_tubes').
-    #   @raise  TypeError:  If input type is not as specified.
-    #   @raise  ValueError: If detector_id does not exist.
+    #   @throw  TypeError:  If input type is not as specified.
+    #   @throw  ValueError: If detector_id does not exist.
     @abstractmethod
     def remove_detector(self, detector_id):
         pass
@@ -65,8 +67,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #                           condition is valid. Can be of type String or datetime.
     #   @param  valid_until:    Timestamp specifying the date/time up until the
     #                           condition is valid. Can be of type String or datetime.
-    #   @raise  TypeError:  If input type is not as specified.
-    #   @raise  ValueError: If detector_id does not exist.
+    #   @throw  TypeError:  If input type is not as specified.
+    #   @throw  ValueError: If detector_id does not exist.
     @abstractmethod
     def add_condition(self, detector_id, name, values, type, tag, collected_at, valid_since, valid_until):
         pass
@@ -74,8 +76,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     ### Returns a list with all conditions associated with a detector.
     #   @param  detector_id:    String identifying the detector for which the
     #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
-    #   @raise  TypeError:  If input type is not as specified.
-    #   @raise  ValueError: If detector_id does not exist.
+    #   @throw  TypeError:  If input type is not as specified.
+    #   @throw  ValueError: If detector_id does not exist.
     @abstractmethod
     def get_conditions(self, detector_id):
         pass
@@ -85,8 +87,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
-    #   @raise  TypeError:  If input type is not as specified.
-    #   @raise  ValueError: If detector_id does not exist.
+    #   @throw  TypeError:  If input type is not as specified.
+    #   @throw  ValueError: If detector_id does not exist.
     @abstractmethod
     def get_conditions_by_name(self, detector_id, name):
         pass
@@ -99,8 +101,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #                           'strawPositions').
     #   @param  date:           Timestamp specifying a date/time for which conditions must be valid.
     #                           Can be of type String or datetime.
-    #   @raise  TypeError:      If input type is not as specified.
-    #   @raise  ValueError:     If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def get_conditions_by_name_and_validity(self, detector_id, name, date):
         pass
@@ -112,8 +114,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
     #   @param  tag:            String specifying the tag of the condition to be retrieved.
-    #   @raise  TypeError:      If input type is not as specified.
-    #   @raise  ValueError:     If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def get_condition_by_name_and_tag(self, detector_id, name, tag):
         pass
@@ -127,8 +129,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @param  collected_at:   Timestamp specifying the moment on which the
     #                           condition was collected / measured. This timestamp must be unique w.r.t.
     #                           the condition name. Can be of type String or datetime.
-    #   @raise  TypeError:      If input type is not as specified.
-    #   @raise  ValueError:     If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def get_condition_by_name_and_collection_date(self, detector_id, name, collected_at):
         pass
@@ -144,8 +146,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #                           condition is valid. Can be of type String or datetime.
     #   @param  valid_until:    Timestamp specifying the date/time up until the
     #                           condition is valid. Can be of type String or datetime.
-    #   @raise  TypeError:      If input type is not as specified.
-    #   @raise  ValueError:     If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def update_conditions_by_name_and_tag(self, detector_id, name, tag, valid_since, valid_until):
         pass
