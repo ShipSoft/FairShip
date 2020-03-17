@@ -120,6 +120,16 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     def get_condition_by_name_and_tag(self, detector_id, name, tag):
         pass
 
+    ### Returns a list with conditions having a specific tag for a given detector.
+    #   @param  detector_id:    String identifying the detector for which the
+    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
+    #   @param  tag:            String specifying the tag of the condition to be retrieved.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
+    @abstractmethod
+    def get_conditions_by_tag(self, detector_id, tag):
+        pass
+
     ### Returns the values of a specific condition belonging to a detector, identified by
     ### condition name and collection date/time.
     #   @param  detector_id:    String identifying the detector for which the
@@ -149,5 +159,5 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
-    def update_conditions_by_name_and_tag(self, detector_id, name, tag, valid_since, valid_until):
+    def update_condition_by_name_and_tag(self, detector_id, name, tag, valid_since, valid_until):
         pass
