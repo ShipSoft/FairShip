@@ -18,12 +18,16 @@ debug = 0  # 1 print weights and field
            # 2 make overlap check
 dryrun = False # True: just setup Pythia and exit
 
+<<<<<<< HEAD
+CharmdetSetup = 0 # 1 charm cross section setup, 0 muon flux setup
+=======
 DownScaleDiMuon = False
 
+>>>>>>> official/master
 # Default HNL parameters
 theHNLMass   = 1.0*u.GeV
 theProductionCouplings = theDecayCouplings = None
-
+motherMode = True
 # Default dark photon parameters
 theDPmass    = 0.2*u.GeV
 
@@ -37,7 +41,14 @@ MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
 MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
 
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
+<<<<<<< HEAD
+HNL          = False
+DarkPhoton   = True 
+RPVSUSY      = False
+RPVSUSYbench = 2
+=======
 HNL          = True
+>>>>>>> official/master
 
 inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 defaultInputFile = True
@@ -46,6 +57,165 @@ globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDes
                  '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}}
 default = '2018'
 
+<<<<<<< HEAD
+dy           = globalDesigns[default]['dy'] # max height of vacuum tank
+dv           = globalDesigns[default]['dv'] # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
+ds           = globalDesigns[default]['ds'] # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
+nud          = globalDesigns[default]['nud'] # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
+caloDesign   = globalDesigns[default]['caloDesign'] # 0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL 
+strawDesign  = globalDesigns[default]['strawDesign'] # simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw diameter for 2018 layout
+
+charm        = 0 # !=0 create charm detector instead of SHiP
+pID          = 22 # default for the particle gun
+geofile = None
+
+inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
+checking4overlaps = False
+if debug>1 : checking4overlaps = True
+phiRandom   = False  # only relevant for muon background generator
+followMuon  = False  # make muonshield active to follow muons
+fastMuon    = False  # only transport muons for a fast muon only background estimate
+nuRadiography = False # misuse GenieGenerator for neutrino radiography and geometry timing test
+Opt_high = None # switch for cosmic generator
+try:
+        opts, args = getopt.getopt(sys.argv[1:], "D:FHPu:n:i:f:c:hqv:s:l:A:Y:i:m:co:t:g:MM",[\
+                                   "PG","pID=","Muflux","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
+                                   "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
+                                   "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
+                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=","Eend=",\
+                                   "production-couplings=","decay-couplings=","dry-run","MotherMode="])#mothermode is added here.
+
+except getopt.GetoptError:
+        # print help information and exit:
+        print ' enter --Pythia8 to generate events with Pythia8 (-A b: signal from b, -A c: signal from c (default), -A bc: signal from Bc, or -A inclusive)'
+        print ' or    --Genie for reading and processing neutrino interactions '
+        print ' or    --Pythia6 for muon nucleon scattering'  
+        print ' or    --PG for particle gun'  
+	print '       --pID= id of particle used by the gun (default=22)'
+	print '       --Estart= start of energy range of particle gun for muflux detector (default=10 GeV)'
+	print '       --Eend= end of energy range of particle gun for muflux detector (default=10 GeV)'	
+        print '       --MuonBack to generate events from muon background file, --Cosmics=0 for cosmic generator data'  
+        print '       --RpvSusy to generate events based on RPV neutralino (default HNL)'
+        print '       --DarkPhoton to generate events with dark photons (default HNL)'
+        print ' for darkphoton generation, use -A meson or -A pbrem or -A qcd'
+        print '       --SusyBench to specify which of the preset benchmarks to generate (default 2)'
+        print '       --mass or -m to set HNL or New Particle mass'
+        print '       --couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings'
+        print '       --production-couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL production only'
+        print '       --decay-couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL decay only'
+        print '       --epsilon value or -e value to set mixing parameter epsilon' 
+        print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
+        sys.exit(2)
+for o, a in opts:
+        if o in ("-D","--display"):
+            eventDisplay = True
+        if o in ("--Pythia6",):
+            simEngine = "Pythia6"
+        if o in ("--Pythia8",):
+            simEngine = "Pythia8"
+        if o in ("--PG",):
+            simEngine = "PG"
+        if o in ("--Muflux",):
+            simEngine = "FixedTarget"
+            HNL = False
+        if o in ("--pID",):
+            if a: pID = int(a)
+        if o in ("--Estart",):
+            Estart = 10.
+            if a!=str(0): Estart = float(a)
+        if o in ("--Eend",):
+            Eend = 10.
+            if a!=str(0): Eend = float(a)   
+        if o in ("-A",):
+            inclusive = a
+            if a=='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
+            if a.lower() == 'charmonly':
+               charmonly = True
+               HNL = False 
+            if a not in ['b','c','bc','meson','pbrem','qcd']: inclusive = True
+        if o in ("--Genie",):
+            simEngine = "Genie"
+        if o in ("--NuRadio",):
+            simEngine = "nuRadiography"
+        if o in ("--Ntuple",):
+            simEngine = "Ntuple"
+        if o in ("--FollowMuon",):
+            followMuon = True
+        if o in ("--FastMuon",):
+            fastMuon = True
+        if o in ("--MuonBack",):
+            simEngine = "MuonBack"
+        if o in ("--Nuage",):
+            simEngine = "Nuage"
+        if o in ("--phiRandom",):
+            phiRandom = True
+        if o in ("--Cosmics",):
+            simEngine = "Cosmics"
+            Opt_high = 0
+            if a!=str(0): Opt_high = int(a)
+        if o in ("--MuDIS",):
+            simEngine = "muonDIS"
+        if o in ("-n", "--nEvents",):
+            nEvents = int(a)
+        if o in ("-i", "--firstEvent",):
+            firstEvent = int(a)
+        if o in ("-s", "--seed",):
+            theSeed = int(a)
+        if o in ("-s", "--sameSeed",):
+            sameSeed = int(a)
+        if o in ("-f",):
+            if a.lower() == "none": inputFile = None
+            else: inputFile = a
+            defaultInputFile = False
+        if o in ("-g",):
+            geofile = a
+        if o in ("-o", "--output",):
+            outputDir = a
+        if o in ("-Y",): 
+            dy = float(a)
+        if o in ("--tankDesign",):
+            dv = int(a)
+        if o in ("--muShieldDesign",):
+            ds = int(a)
+        if o in ("--nuTauTargetDesign",):
+            nud = int(a)
+        if o in ("--caloDesign",):
+            caloDesign = int(a)
+        if o in ("--strawDesign",):
+            strawDesign = int(a)
+        if o in ("--charm",):
+            charm = int(a)
+        if o in ("--CharmdetSetup",):
+            CharmdetSetup = int(a)
+        if o in ("-F",):
+            deepCopy = True
+        if o in ("--RpvSusy",):
+            HNL = False
+            RPVSUSY = True
+        if o in ("--DarkPhoton",):
+            HNL = False
+            DarkPhoton = True
+        if o in ("--SusyBench",):
+            RPVSUSYbench = int(a)
+        if o in ("-m", "--mass",):
+           if DarkPhoton: theDPmass = float(a)
+           else: theMass = float(a)
+        if o in ("-c", "--couplings", "--coupling",):
+           theCouplings = [float(c) for c in a.split(",")]
+        if o in ("-cp", "--production-couplings"):
+            theProductionCouplings = [float(c) for c in a.split(",")]
+        if o in ("-cd", "--decay-couplings"):
+            theDecayCouplings = [float(c) for c in a.split(",")]
+        if o in ("-e", "--epsilon",):
+           theDPepsilon = float(a)
+        if o in ("-t", "--test"):
+            inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
+            nEvents = 50
+        if o in ("--dry-run",):
+            dryrun = True
+        if o in ("-MM","--MotherMode",):
+            motherMode = a#mothermode is here
+=======
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 checking4overlaps = False
 if debug>1 : checking4overlaps = True
@@ -105,8 +275,7 @@ parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy o
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", required=False, action="store_true")
-motherMode = True
-parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
+
 
 options = parser.parse_args()
 
@@ -129,8 +298,6 @@ if options.A != 'c':
            charmonly = True
            HNL = False 
      if options.A not in ['b','c','bc','meson','pbrem','qcd']: inclusive = True
-if options.MM:
-     motherMode=options.MM
 if options.cosmics:
      simEngine = "Cosmics"
      Opt_high = int(options.cosmics)
@@ -152,6 +319,7 @@ if options.thedeccouplings:
 if options.testFlag:
   inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
 
+>>>>>>> official/master
 
 #sanity check
 if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPhoton and options.RPVSUSY): 
@@ -182,6 +350,11 @@ if options.charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geom
                                                 muShieldDesign = options.ds, nuTauTargetDesign=options.nud, CaloDesign=options.caloDesign, \
                                                 strawDesign=options.strawDesign, muShieldGeo=options.geofile)
 else: 
+<<<<<<< HEAD
+ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = CharmdetSetup)
+ if CharmdetSetup == 0: print "Setup for muon flux measurement has been set"
+ else: print "Setup for charm cross section measurement has been set"
+=======
  ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = options.CharmdetSetup, cTarget = options.CharmTarget)
  if options.CharmdetSetup == 0: print("Setup for muon flux measurement has been set")
  else: 
@@ -189,6 +362,7 @@ else:
   if (((options.CharmTarget > 6) or (options.CharmTarget < 0)) and (options.CharmTarget != 16)): #check if proper option for emulsion target has been set
    print("ERROR: unavailable option for CharmTarget. Currently implemented options: 1,2,3,4,5,6,16")
    1/0
+>>>>>>> official/master
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
 #ship_geo.EmuMagnet.B = 0.
@@ -266,9 +440,15 @@ if simEngine == "Pythia8":
   if inclusive=='qcd':
    P8gen.SetDPId(4900023)
   else:
+<<<<<<< HEAD
+	  P8gen.SetDPId(9900015)
+  import pythia8darkphoton_conf#mothermode is given here
+  passDPconf = pythia8darkphoton_conf.configure(P8gen,theDPmass,theDPepsilon,inclusive,motherMode,deepCopy)
+=======
    P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
-  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
+  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive,options.deepCopy)
+>>>>>>> official/master
   if (passDPconf!=1): sys.exit()
  if HNL or options.RPVSUSY or options.DarkPhoton: 
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
@@ -420,9 +600,15 @@ if simEngine == "MuonBack":
  #
  MuonBackgen = ROOT.MuonBackGenerator()
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
+<<<<<<< HEAD
+ MuonBackgen.Init(inputFile,firstEvent,phiRandom)
+ if charm == 0: MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
+ else: 
+=======
  MuonBackgen.Init(inputFile,options.firstEvent,options.phiRandom)
  if options.charm == 0: MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
  elif DownScaleDiMuon: 
+>>>>>>> official/master
     if inputFile[0:4] == "/eos": test = os.environ["EOSSHIP"]+inputFile
     else: test = inputFile
     testf = ROOT.TFile.Open(test)
@@ -529,10 +715,10 @@ run.Run(options.nEvents)
 kParameterMerged = ROOT.kTRUE
 parOut = ROOT.FairParRootFileIo(kParameterMerged)
 parOut.open(parFile)
-rtdb.setOutput(parOut)
-rtdb.saveOutput()
-rtdb.printParamContexts()
-getattr(rtdb,"print")()
+#rtdb.setOutput(parOut)
+#rtdb.saveOutput()
+#rtdb.printParamContexts()
+#getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("%s/geofile_full.%s.root" % (options.outputDir, tag))
 # save ShipGeo dictionary in geofile
@@ -607,3 +793,5 @@ def checkOverlapsWithGeant4():
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
+
+

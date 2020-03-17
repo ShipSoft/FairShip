@@ -83,7 +83,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   Int_t nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.; // number of primary interactions
   wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
   fLogger->Info(MESSAGE_ORIGIN,"Input file: %s   with %i entries, corresponding to nr-pot=%f",fInName.Data(),nEvents,nrcpot/chicc);
-  fLogger->Info(MESSAGE_ORIGIN,"weight %f corresponding to %f p.o.t. per spill for %i events to process",wspill,nrpotspill,nev);
+  fLogger->Info(MESSAGE_ORIGIN,"weight %f corresponding to %f p.o.t. per spill for %f events to process",wspill,nrpotspill,nev);
 
   pot=0.;
   //Determine fDs on this file for primaries
@@ -125,20 +125,20 @@ Bool_t FixedTargetGenerator::Init()
     fPythia->settings.mode("Beams:frameType",  2);
     fPythia->settings.parm("Beams:eA",fMom);
     fPythia->settings.parm("Beams:eB",0.);
-   }
-   if (JpsiMainly){
+    if (JpsiMainly){
 // use this for all onia productions
      fPythia->readString("Onia:all(3S1) = on");
      fPythia->readString("443:new  J/psi  J/psi  3   0   0    3.09692    0.00009    3.09602    3.09782  0.   1   1   0   1   0");
      fPythia->readString("443:addChannel = 1   1.    0      -13       13");
      fPythia->readString("553:new  Upsilon  Upsilon  3   0   0    9.46030    0.00005    9.45980    9.46080  0.00000e+00   0   1   0   1   0");
      fPythia->readString("553:addChannel = 1   1.    0      -13       13");
-   }else{
+    }else{
      fPythia->readString("SoftQCD:inelastic = on");
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
      fPythia->readString("PromptPhoton:all = on");
      fPythia->readString("WeakBosonExchange:all = on");
     }
+   }
    if (tauOnly){
     fPythia->readString("431:new  D_s+  D_s-  1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0");
     fPythia->readString("431:addChannel = 1   0.0640000    0      -15       16");
@@ -358,15 +358,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Double_t z  = fPythia->event[ii].zProd()+zinter;
      Double_t x  = fPythia->event[ii].xProd()+xOff;
      Double_t y  = fPythia->event[ii].yProd()+yOff;
-
      Double_t tof = fPythia->event[ii].tProd();
      Double_t px = fPythia->event[ii].px();  
      Double_t py = fPythia->event[ii].py();  
-
-     Double_t tof = fPythia->event[ii].tProd() / (10*c_light) ; // to go from mm to s
-     Double_t px = fPythia->event[ii].px();
-     Double_t py = fPythia->event[ii].py();
-
      Int_t im = fPythia->event[ii].mother1()-1;
      procID = kPPrimary;
      if (Option != "Primary"){
@@ -377,16 +371,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       if (ii<3){im=-1;}
      }
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,wspill,procID);
-     if(withNtuple){
-          int idabs = TMath::Abs(id);
-          if (idabs<10)  {continue;}
-          if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 
-                 || idabs==211 || idabs==113 || idabs==333  || idabs==321   || idabs==2212 ){
-          Int_t moID = fPythia->event[im+1].id();
-          fNtuple->Fill(0,id,px,py,pz,e,x/cm,y/cm,z/cm,moID);
-         }
-     }
-    }
+    }    
   return kTRUE;
 }
 // -------------------------------------------------------------------------

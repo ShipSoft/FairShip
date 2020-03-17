@@ -14,15 +14,15 @@ def isDP(pdg):
         return True
     return False
 
-def pbremProdRateVDM(mass,epsilon,doprint=True):
+def pbremProdRate(mass,epsilon,doprint=True):
     xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
-    if doprint: print("A' production rate per p.o.t: \t %.8g"%(xswg))
+    if doprint: print "A' production rate per p.o.t: \t %.8g"%(xswg)
     rhoff = proton_bremsstrahlung.rhoFormFactor(mass)**2
-    if doprint: print("A' rho form factor: \t %.8g"%rhoff)
-    if doprint: print("A' rescaled production rate per p.o.t:\t %.8g"%(xswg*rhoff))
+    if doprint: print "A' rho form factor: \t %.8g"%rhoff
+    if doprint: print "A' rescaled production rate per p.o.t:\t %.8g"%(xswg*rhoff)
     return xswg*rhoff
 
-def pbremProdRateDipole(mass,epsilon,doprint=False):
+def pbremProdRateNoFF(mass,epsilon,doprint=True):
     xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
     if doprint: print("A' production rate per p.o.t: \t %.8g"%(xswg))
     penalty = proton_bremsstrahlung.penaltyFactor(mass)
@@ -60,10 +60,11 @@ def brMesonToGammaDP(mass,epsilon,mumPdg,doprint=False):
 def brMesonToMesonDP(mass,epsilon,mumPdg,dauPdg,doprint=False):
     mMeson = PDG.GetParticle(mumPdg).Mass()
     mDaughterMeson = PDG.GetParticle(dauPdg).Mass()
-    if (doprint==True): print("Mass of mother %d meson is %3.3f"%(mumPdg,mMeson))
-    if (doprint==True): print("Mass of daughter %d meson is %3.3f"%(dauPdg,mDaughterMeson))
+<<<<<<< HEAD
+    if (doprint==True): print "Mass of mother %d meson is %3.3f"%(mumPdg,mMeson)
+    if (doprint==True): print "Mass of daughter %d meson is %3.3f"%(dauPdg,mDaughterMeson)
     #BR is fixed after the review
-    #print(mMeson, mDaughterMeson)
+    #print mMeson, mDaughterMeson
     #fac1 = (mMeson**2-mass**2-mDaughterMeson**2)**2
     #fac2 = ROOT.TMath.Sqrt((mMeson**2-mass**2+mDaughterMeson**2)**2 - 4*mMeson**2*mDaughterMeson**2)
     #fac3 = pow(mMeson**2-mass**2,3)
@@ -73,11 +74,20 @@ def brMesonToMesonDP(mass,epsilon,mumPdg,dauPdg,doprint=False):
         fac2 = pow((mass**2.-(mMeson+mDaughterMeson)**2.)*(mass**2.-(mMeson-mDaughterMeson)**2.),1.5)
         massfactor = fac1*fac2
         br = (epsilon**2.)*mesonBRtoPhoton(mumPdg,doprint)*massfactor
+=======
+    if (doprint==True): print("Mass of mother %d meson is %3.3f"%(mumPdg,mMeson))
+    if (doprint==True): print("Mass of daughter %d meson is %3.3f"%(dauPdg,mDaughterMeson))
+    fac1 = (mMeson**2-mass**2-mDaughterMeson**2)**2
+    fac2 = ROOT.TMath.Sqrt((mMeson**2-mass**2+mDaughterMeson**2)**2 - 4*mMeson**2*mDaughterMeson**2)
+    fac3 = pow(mMeson**2-mass**2,3)
+    massfactor = fac1*fac2/fac3
+    if (mass<(mMeson-mDaughterMeson)): br = epsilon**2*mesonBRtoPhoton(mumPdg,doprint)*massfactor
+>>>>>>> official/master
     else: br = 0
     if (doprint==True): print("Branching ratio of %d meson to DP is %.8g"%(mumPdg,br))
     return br
 
-def brMesonToDP(mass,epsilon,mumPdg,doprint=False):#other eta option will be added better..
+def brMesonToDP(mass,epsilon,mumPdg,doprint=False):
     if mumPdg==223: return brMesonToMesonDP(mass,epsilon,mumPdg,111,doprint)
     elif (mumPdg==111 or mumPdg==221): return brMesonToGammaDP(mass,epsilon,mumPdg,doprint)
     elif mumPdg==331: return brMesonToMesonDP(mass,epsilon,mumPdg,113,doprint),brMesonToGammaDP(mass,epsilon,mumPdg,doprint)
@@ -86,7 +96,8 @@ def brMesonToDP(mass,epsilon,mumPdg,doprint=False):#other eta option will be add
         return 1
 
 def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
-    #print("avgrate %.8g, brmeson %.8g"%(getAverageMesonRate(mumPdg),brMesonToDP(mass,epsilon,mumPdg,doprint)))
+    #print "avgrate %.8g, brmeson %.8g"%(getAverageMesonRate(mumPdg),brMesonToDP(mass,epsilon,mumPdg,doprint))
+<<<<<<< HEAD
     brM2DP=brMesonToDP(mass,epsilon,mumPdg,doprint)
     if mumPdg==331:
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0] 
@@ -96,7 +107,12 @@ def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
     if not mumPdg==331:
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP
         return avgMeson*0.6
-    #if doprint==True: print("Average %d meson production rate per p.o.t: %.8g"%(mumPdg,avgMeson))
+    #if doprint==True: print "Average %d meson production rate per p.o.t: %.8g"%(mumPdg,avgMeson)
+=======
+    avgMeson = getAverageMesonRate(mumPdg)*brMesonToDP(mass,epsilon,mumPdg,doprint)
+    if doprint==True: print("Average %d meson production rate per p.o.t: %.8g"%(mumPdg,avgMeson))
+    return avgMeson
+>>>>>>> official/master
 
 #from interpolation of Pythia XS, normalised to epsilon^2
 def qcdprodRate(mass,epsilon,doprint=False):
@@ -106,16 +122,17 @@ def qcdprodRate(mass,epsilon,doprint=False):
     elif (mass > 1.4):
         xs = math.exp(-4.1477-1.4745*mass)
     else:
-        xs = 0.
-    return xs*epsilon*epsilon
+        xs = 0
+    return xs*epsilon*epsilon/40.6
+    #return xs*epsilon*epsilon
 
 def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
     if ('pbrem' in prodMode):
-        print("VDM")
-        return pbremProdRateVDM(mass,epsilon,doprint)
-    elif ('pbrem1' in prodMode):
-        print("Dipole")
-        return pbremProdRateDipole(mass,epsilon,doprint)
+        #print "FF"
+        return pbremProdRate(mass,epsilon,doprint)
+    #elif ('pbrem1' in prodMode):
+        print "noFF"
+        #return pbremProdRateNoFF(mass,epsilon,doprint)
     elif ('meson' in prodMode):
         return mesonProdRate(mass,epsilon,mumPdg,doprint)
     elif ('qcd' in prodMode):

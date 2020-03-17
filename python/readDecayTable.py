@@ -48,6 +48,7 @@ def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), 
 def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
     """
     Configures the HNL decay table in Pythia8
+
     Inputs:
     - P8Gen: an instance of ROOT.HNLPythia8Generator()
     - hnl: an instance of hnl.HNL()
@@ -104,26 +105,34 @@ def addDarkPhotondecayChannels(P8gen, mDP, DP,conffile=os.path.expandvars('$FAIR
             meMode = 0
             if isResonant: meMode = 103
             if 'hadrons' in dec:
+<<<<<<< HEAD
+                print "debug readdecay table hadrons BR ",BR
+                if mDP<3.0:
+                    P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.666*BR)+" "+str(meMode)+" 2 -2")
+                    P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.167*BR)+" "+str(meMode)+" 1 -1")
+                    P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.167*BR)+" "+str(meMode)+" 3 -3")
+                if mDP>=3.0:
+                    P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.4*BR)+" "+str(meMode)+" 2 -2")
+                    P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.1*BR)+" "+str(meMode)+" 1 -1")
+                    P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.1*BR)+" "+str(meMode)+" 3 -3")
+                    P8gen.SetParameters(str(P8gen.GetDPId())+":addChannel =  1 "+str(0.4*BR)+" "+str(meMode)+" 4 -4")
+=======
                 #P8gen.SetDecayToHadrons()
                 print("debug readdecay table hadrons BR ",BR)
                 #Taking decays from pythia8 Z->qqbar
+                BRZhadtot = 0.6992407
                 dpid = P8gen.GetDPId()
-                if mDP<3.0:
-                    P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 1 -1"\
-                                        .format(dpid, 0.167*BR, meMode))
-                    P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 2 -2"\
-                                        .format(dpid, 0.666*BR, meMode))
-                    P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 3 -3"\
-                                        .format(dpid, 0.167*BR, meMode))
-                if mDP>=3.0:
-                    P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 1 -1"\
-                                        .format(dpid, 0.1*BR, meMode))
-                    P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 2 -2"\
-                                        .format(dpid, 0.4*BR, meMode))
-                    P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 3 -3"\
-                                        .format(dpid, 0.1*BR, meMode))
-                    P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 4 -4"\
-                                        .format(dpid, 0.4*BR, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 1 -1"\
+                                    .format(dpid, 0.1540492*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 2 -2"\
+                                    .format(dpid, 0.1194935*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 3 -3"\
+                                    .format(dpid, 0.1540386*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 4 -4"\
+                                    .format(dpid, 0.1193325*BR/BRZhadtot, meMode))
+                P8gen.SetParameters("{}:addChannel =  1 {:.12} {} 5 -5"\
+                                    .format(dpid, 0.1523269*BR/BRZhadtot, meMode))
+>>>>>>> official/master
             else:
                 particles = [p for p in dec.replace('->',' ').split()]
                 children = particles[1:]
@@ -132,7 +141,6 @@ def addDarkPhotondecayChannels(P8gen, mDP, DP,conffile=os.path.expandvars('$FAIR
                 P8gen.SetParameters("{}:addChannel =  1 {:.12} {} {}"\
                                     .format(P8gen.GetDPId(), BR, meMode, codes))
                 print("debug readdecay table ",particles,children,BR)
-
 
 if __name__ == '__main__':
     configuredDecays = load()

@@ -42,7 +42,7 @@ def configure(run,ship_geo):
  Box.SetRunNumber(ship_geo.Box.RunNumber)
  
 
-
+<<<<<<< HEAD
 
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
@@ -53,7 +53,7 @@ def configure(run,ship_geo):
     for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)): 
     	PixelModules.SetSiliconStationPositions(i, x, y, z)
     
-
+=======
  if (ship_geo.MufluxSpectrometer.muflux==False):
 # === Emulsion Target 
     Box = ROOT.Box("Box",ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.zBox,ROOT.kTRUE)
@@ -88,7 +88,7 @@ def configure(run,ship_geo):
     for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)):
       PixelModules.SetSiliconStationPositions(i, x, y, z)
 
-
+>>>>>>> official/master
  Spectrometer = ROOT.Spectrometer("Spectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
  Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)   
  

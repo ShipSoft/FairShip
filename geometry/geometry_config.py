@@ -594,7 +594,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.B = 1.5 * u.tesla
     if nuTauTargetDesign==3:
         scaleMudet=1.
-
+<<<<<<< HEAD
 	c.tauMudet.NFe = 22
     	c.tauMudet.NRpc= 23
         c.tauMudet.Xtot = scaleMudet*2.170627*u.m #same dimensions as Thomas' veto box
@@ -605,7 +605,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.YFe = c.tauMudet.Ytot
         c.tauMudet.ZFe = 5.*u.cm
         c.tauMudet.XRpc = c.tauMudet.Xtot
-
+=======
         c.tauMudet.NFethick = 4 #upstream slabs, more thick
         c.tauMudet.NFethin = 4 #downstream slabs, less thick
         c.tauMudet.NRpc= 8
@@ -617,7 +617,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.ZFethin = 10.* u.cm
 
         c.tauMudet.XRpc = c.tauMudet.XFe
-
+>>>>>>> official/master
         c.tauMudet.YRpc = c.tauMudet.YFe
         c.tauMudet.ZRpc = 2.*u.cm
         c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFe*c.tauMudet.ZFe

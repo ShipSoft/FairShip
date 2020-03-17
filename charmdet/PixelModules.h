@@ -15,7 +15,7 @@ class PixelModulesPoint;
 class FairVolume;
 class TClonesArray;
 
-
+<<<<<<< HEAD
 class PixelModules:public FairDetector
 {
   public:
@@ -126,7 +126,7 @@ protected:
     PixelModules& operator=(const PixelModules&);
     ClassDef(PixelModules,1)
 
-
+=======
 class PixelModules : public FairDetector {
 public:
    PixelModules();
@@ -244,6 +244,6 @@ protected:
    PixelModules(const PixelModules &);
    PixelModules &operator=(const PixelModules &);
    ClassDef(PixelModules, 1)
-
+>>>>>>> official/master
 };
 #endif 

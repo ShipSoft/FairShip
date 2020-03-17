@@ -289,10 +289,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.D1short = 3.36 * u.cm / 2.;
     c.PixelModules.D1long = 4 * u.cm;    
     c.Spectrometer.SX = c.Spectrometer.DX
-
+<<<<<<< HEAD
     c.Spectrometer.SY = c.Spectrometer.DY    
            
-
+=======
     c.Spectrometer.SY = c.Spectrometer.DY
 
     c.PixelModules.DimZSithin = 0.0200 * u.cm
@@ -306,7 +306,7 @@ with ConfigRegistry.register_config("basic") as c:
     # position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     # module position naming: "axis"Si"Module number"
 
-
+>>>>>>> official/master
     #position of module centres units are cm. Geometry is given with reference to the centre of all modules for the xy plane and the front of the pixel box for the z axis, precision is given to the micron range
     #module position naming: "axis"Si"Module number"
     
@@ -314,7 +314,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.PixelModules.xSi = []
     c.PixelModules.ySi = []
     c.PixelModules.zSi = []
-
+<<<<<<< HEAD
     #Module 0
     c.PixelModules.xSi.append(1.53912)
     c.PixelModules.ySi.append(-0.002332)
@@ -368,7 +368,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Spectrometer.DSciFi1Y = 40 * u.cm;
     c.Spectrometer.DSciFi2X = 40 * u.cm;
     c.Spectrometer.DSciFi2Y = 40 * u.cm;  
-
+=======
 
     # Module 0
     for i in range(1-c.PixelModules.nSlice, 1):
@@ -480,7 +480,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SciFi.xSi.append(0.0)
     c.SciFi.ySi.append(0.0)
     c.SciFi.zSi.append(c.SciFi.StationDimZ/2 + 7*zscifigap)
-
+>>>>>>> official/master
 
     c.Spectrometer.Bvalue = 1 * u.tesla;
 
@@ -497,18 +497,18 @@ with ConfigRegistry.register_config("basic") as c:
                   
     c.Spectrometer.SZ = c.Spectrometer.DZ*2 + c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[0] + c.PixelModules.DimZSithick + 80 *u.cm + 4.5*u.m #4.5 m is the Goliath length
    
-
+<<<<<<< HEAD
     c.PixelModules.DimZpixelbox = c.PixelModules.zSi[11] - c.PixelModules.zSi[0] + c.PixelModules.DimZSi
     
     PixeltoGoliath = 30.45 *u.cm #25.45 + 5cm different goliath dz
-
+=======
     c.PixelModules.DimZpixelbox = c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick   
 
     # old calculation for DimZpixelbox c.PixelModules.zSi[c.PixelModules.numSi-1] - c.PixelModules.zSi[c.PixelModules.nSlice-1] + c.PixelModules.DimZSithick
     c.PixelModules.DimZpixelbox = 34. * u.cm # correct physical size of surrounding box
     
     PixeltoGoliath = 30.45 * u.cm  # 25.45 + 5cm different goliath dz
-
+>>>>>>> official/master
     c.Spectrometer.zBox = 350.75 - c.Spectrometer.TS/2 - PixeltoGoliath - c.PixelModules.DimZpixelbox/2.
     c.Box.zBox = c.Spectrometer.zBox - c.PixelModules.DimZpixelbox/2. - c.Box.GapPostTargetTh
     c.PixelModules.zBox = c.Spectrometer.zBox
