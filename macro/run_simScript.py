@@ -11,7 +11,6 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
-import makeAlpacaEvents
 from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
 
@@ -62,7 +61,6 @@ parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
-parser.add_argument("--Alpaca",  dest="alpaca",  help="Use alpaca as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
@@ -107,7 +105,8 @@ parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy o
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", required=False, action="store_true")
-
+motherMode = True
+parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
 
 options = parser.parse_args()
 
@@ -117,10 +116,6 @@ if options.pg:       simEngine = "PG"
 if options.genie:    simEngine = "Genie"
 if options.nuradio:  simEngine = "nuRadiography"
 if options.ntuple:   simEngine = "Ntuple"
-if options.alpaca:
-    options.inputFile= False
-    CaloDesign = "2"
-    simEngine = "Alpaca"
 if options.muonback: simEngine = "MuonBack"
 if options.nuage:    simEngine = "Nuage"
 if options.mudis:    simEngine = "muonDIS"
@@ -134,6 +129,8 @@ if options.A != 'c':
            charmonly = True
            HNL = False 
      if options.A not in ['b','c','bc','meson','pbrem','qcd']: inclusive = True
+if options.MM:
+     motherMode=options.MM
 if options.cosmics:
      simEngine = "Cosmics"
      Opt_high = int(options.cosmics)
@@ -271,7 +268,7 @@ if simEngine == "Pythia8":
   else:
    P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
-  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive,options.deepCopy)
+  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
  if HNL or options.RPVSUSY or options.DarkPhoton: 
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
@@ -297,28 +294,6 @@ if simEngine == "Pythia8":
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
-
-if simEngine == "Alpaca":#Rmin and Rmax of Decay Volume is needed...
- #primGen.SetTarget(ship_geo.target.z0, 0.)
- target     = ship_geo.target
- z_middle   = target.z0
- DZ         = target.length/2
- startZ     =   z_middle - DZ
- endZ       =   z_middle + DZ
- SmearBeam  = 1*u.cm # finite beam size
- print(SmearBeam,"run")
- Lmin       = ((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)/100.
- Lmax       = (ship_geo.TrackStation1.z - ship_geo.target.z0)/100.
- inputFile  = makeAlpacaEvents.runEvents(options.theMass,options.theDPepsilon,options.nEvents,Lmin,Lmax,startZ,endZ,SmearBeam)
- ut.checkFileExists(inputFile)
- #run.CreateGeometryFile("%s/geofile_full.%s.root" % (options.outputDir, tag))
- # save ShipGeo dictionary in geofile
- #import saveBasicParameters
- #saveBasicParameters.execute("%s/geofile_full.%s.root" % (options.outputDir, tag),ship_geo)
- Alpacagen = ROOT.AlpacaGenerator()
- Alpacagen.Init(inputFile)
- primGen.AddGenerator(Alpacagen)
-
 if simEngine == "FixedTarget":
  P8gen = ROOT.FixedTargetGenerator()
  P8gen.SetTarget("volTarget_1",0.,0.)
