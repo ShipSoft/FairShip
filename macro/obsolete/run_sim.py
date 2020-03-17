@@ -1,3 +1,4 @@
+from __future__ import print_function
 import ROOT
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
@@ -111,11 +112,11 @@ def run_sim(nEvents = 10, mcEngine = "TGeant4"):
   timer.Stop()
   rtime = timer.RealTime()
   ctime = timer.CpuTime()
-  print ' '
-  print "Macro finished succesfully."
-  print "Output file is ",  outFile
-  print "Parameter file is ",parFile
-  print "Real time ",rtime, " s, CPU time ",ctime,"s"
+  print(' ')
+  print("Macro finished succesfully.")
+  print("Output file is ",  outFile)
+  print("Parameter file is ",parFile)
+  print("Real time ",rtime, " s, CPU time ",ctime,"s")
   f = run.GetOutputFile()
   f.Write()
   del run

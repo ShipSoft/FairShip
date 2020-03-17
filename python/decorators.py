@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import division
 import ROOT
 import shipunit as u
 def MCPointPrintOut(x):
@@ -50,7 +52,7 @@ def ecalClusterPrintOut(cl):
 def Dump(x):
   k=0
   for obj in x: 
-    print k,obj.__repr__()
+    print(k,obj.__repr__())
     k+=1 
   
 def TVector3PrintOut(x):

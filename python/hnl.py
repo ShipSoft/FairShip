@@ -15,10 +15,10 @@
 #     In [1]: b = HNL(1.,[1.e-8, 2.e-8, 1.e-9],True)
 #     HNLbranchings instance initialized with couplings:
 #          U2e   = 1e-08
-#	   U2mu  = 2e-08
-#	   U2tau = 1e-09
+#          U2mu  = 2e-08
+#          U2tau = 1e-09
 #     and mass:
-#	   m = 1.0 GeV
+#          m = 1.0 GeV
 #     In [2]: b.computeNLifetime()
 #     Out[2]: 4.777721453160521e-05
 #     In [3]: b.findBranchingRatio('N -> pi mu')
@@ -26,7 +26,8 @@
 #
 # ==================================================================
 """
-
+from __future__ import print_function
+from __future__ import division
 import math
 import ROOT, os
 import shipunit as u
@@ -171,12 +172,12 @@ class HNLbranchings():
             self.QCD_corr = self.QCD_correction()
             
         if debug:
-            print "HNLbranchings instance initialized with couplings:"
-            print "\tU2e   = %s"%self.U2[0]
-            print "\tU2mu  = %s"%self.U2[1]
-            print "\tU2tau = %s"%self.U2[2]
-            print "and mass:"
-            print "\tm = %s GeV"%(self.MN)
+            print("HNLbranchings instance initialized with couplings:")
+            print("\tU2e   = %s"%self.U2[0])
+            print("\tU2mu  = %s"%self.U2[1])
+            print("\tU2tau = %s"%self.U2[2])
+            print("and mass:")
+            print("\tm = %s GeV"%(self.MN))
     
     def sqrt_lambda(self,a,b,c):
         """
@@ -216,7 +217,7 @@ class HNLbranchings():
         - beta is a flavour of the fermions: (1, 2 or 3) for charge leptons or (4, 5, 6, 7, 8, 9) for quarks
         """
         if (alpha not in [1,2,3]) or (beta not in [1,2,3,4,5,6,7,8,9]):
-            print 'Width_nu_f_fbar ERROR: unknown channel alpha =',alpha,' beta =',beta
+            print('Width_nu_f_fbar ERROR: unknown channel alpha =',alpha,' beta =',beta)
             quit()
         l = [None,'e-','mu-','tau-','u','d','s','c','b','t']
         x = mass(l[beta]) / self.MN
@@ -294,7 +295,7 @@ class HNLbranchings():
         - beta is a flavour of the second lepton and neutrino (1, 2 or 3)
         """
         if (alpha not in [1,2,3]) or (beta not in [1,2,3]):
-            print 'Width_l1_l2_nu2 ERROR: unknown channel alpha =',alpha,' beta =',beta
+            print('Width_l1_l2_nu2 ERROR: unknown channel alpha =',alpha,' beta =',beta)
             quit()
         if alpha==beta: # The interference case is handled by Width_nu_f_fbar function, workaround for a total width calculation
             return 0
@@ -318,7 +319,7 @@ class HNLbranchings():
         - gamma is the down quark generation (1, 2, 3 for d, s, b)
         """
         if (alpha not in [1,2,3]) or (beta not in [1,2,3]) or (gamma not in [1,2,3]):
-            print 'Width_l_u_d ERROR: unknown channel alpha =',alpha,' beta =',beta,' gamma =',gamma
+            print('Width_l_u_d ERROR: unknown channel alpha =',alpha,' beta =',beta,' gamma =',gamma)
             quit()
         l = [None,'e-','mu-','tau-']
         u = [None,'u','c','t']
@@ -343,7 +344,7 @@ class HNLbranchings():
         - alpha is a flavour of the nu (1, 2 or 3), determine the mixing angle U_alpha
         """
         if (H not in ['pi0','eta','rho0','omega','eta1','phi','eta_c']) or (alpha not in [1,2,3]):
-            print 'Width_H0_nu ERROR: unknown channel H0 =',H,' alpha =',alpha
+            print('Width_H0_nu ERROR: unknown channel H0 =',H,' alpha =',alpha)
             quit()
         x = mass(H)/self.MN
         if x > 1: # The decay is kinematically forbidden
@@ -371,7 +372,7 @@ class HNLbranchings():
         - alpha is the lepton flavour (1, 2 or 3), determine the mixing angle U_alpha
         """
         if (H not in ['pi+','rho+','D_s+','D*_s+']) or (alpha not in [1,2,3]):
-            print 'Width_H_l ERROR: unknown channel H =',H,' alpha =',alpha
+            print('Width_H_l ERROR: unknown channel H =',H,' alpha =',alpha)
             quit()
         l = [None,'e-','mu-','tau-']
         xl = mass(l[alpha])/self.MN
@@ -468,7 +469,7 @@ class HNLbranchings():
         totalWidth = self.NDecayWidth()
         
         if (decayString not in self.decays) and (decayString not in ['N -> hadrons','N -> charged hadrons']):
-            print 'findBranchingRatio ERROR: unknown decay %s'%decayString
+            print('findBranchingRatio ERROR: unknown decay %s'%decayString)
             quit()
         
         if decayString == 'N -> nu nu nu' or decayString == 'N -> 3nu': br = self.Width_3nu() / totalWidth # inclusive
@@ -622,6 +623,6 @@ class HNL(HNLbranchings):
         - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)
         """
         self.NLifetime = c.hGeV / self.NDecayWidth()
-	if system == "FairShip": self.NLifetime *= 1.e9
+        if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
 

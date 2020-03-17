@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from __future__ import division
 firstEvent = 0
 dy         = None
 
@@ -13,10 +15,10 @@ def mem_monitor():
     vmsize = int(_vmsize.split()[1])
     #Getting physical memory size  
     pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    print "memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3)
+    print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
-import __builtin__ as builtin
+import global_variables
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
@@ -56,11 +58,10 @@ modules = charmDet_conf.configure(run,ShipGeo)
 fgeo.FAIRGeom
 
 # make global variables
-builtin.debug    = options.debug
-builtin.ShipGeo = ShipGeo
+global_variables.debug = options.debug
+global_variables.ShipGeo = ShipGeo
 
-iEvent = 0
-builtin.iEvent  = iEvent
+global_variables.iEvent = 0
 
 # import reco tasks
 import MufluxDigi
@@ -68,13 +69,14 @@ SHiP = MufluxDigi.MufluxDigi(outFile)
 
 nEvents   = min(SHiP.sTree.GetEntries(),int(options.nEvents))
 # main loop
-for iEvent in range(firstEvent, nEvents):
- if iEvent%50000 == 0 or debug: print 'event ',iEvent,nEvents-firstEvent
- SHiP.iEvent = iEvent
- rc    = SHiP.sTree.GetEvent(iEvent) 
- SHiP.digitize() 
+for global_variables.iEvent in range(firstEvent, nEvents):
+    if global_variables.iEvent % 50000 == 0 or global_variables.debug:
+        print('event ', global_variables.iEvent, nEvents - firstEvent)
+    SHiP.iEvent = global_variables.iEvent
+    rc = SHiP.sTree.GetEvent(global_variables.iEvent)
+    SHiP.digitize()
  # memory monitoring
- # mem_monitor() 
- 
+ # mem_monitor()
+
 # end loop over events
 SHiP.finish()

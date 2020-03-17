@@ -42,6 +42,7 @@ def configure(run,ship_geo):
  Box.SetRunNumber(ship_geo.Box.RunNumber)
  
 
+<<<<<<< HEAD
 
  if (ship_geo.MufluxSpectrometer.muflux==False): 
     PixelModules = ROOT.PixelModules("PixelModules",ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ,ROOT.kTRUE)
@@ -52,6 +53,42 @@ def configure(run,ship_geo):
     for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)): 
     	PixelModules.SetSiliconStationPositions(i, x, y, z)
     
+=======
+ if (ship_geo.MufluxSpectrometer.muflux==False):
+# === Emulsion Target 
+    Box = ROOT.Box("Box",ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.zBox,ROOT.kTRUE)
+    Box.SetEmulsionParam(ship_geo.Box.EmTh, ship_geo.Box.EmX, ship_geo.Box.EmY, ship_geo.Box.PBTh,ship_geo.Box.EPlW, ship_geo.Box.PasSlabTh, ship_geo.Box.AllPW);
+    Box.SetBrickParam(ship_geo.Box.BrX, ship_geo.Box.BrY, ship_geo.Box.BrZ, ship_geo.Box.BrPackX, ship_geo.Box.BrPackY, ship_geo.Box.BrPackZ);
+    Box.SetTargetParam(ship_geo.Box.TX, ship_geo.Box.TY, ship_geo.Box.TZ);
+    Box.SetPassiveComposition(ship_geo.Box.Molblock1Z, ship_geo.Box.Molblock2Z, ship_geo.Box.Molblock3Z, ship_geo.Box.Molblock4Z, ship_geo.Box.Wblock1Z, ship_geo.Box.Wblock2Z, ship_geo.Box.Wblock3Z, ship_geo.Box.Wblock3_5Z, ship_geo.Box.Wblock4Z)
+    Box.SetPassiveSampling(ship_geo.Box.Passive3mmZ, ship_geo.Box.Passive2mmZ, ship_geo.Box.Passive1mmZ)
+    Box.SetCoolingParam(ship_geo.Box.CoolX, ship_geo.Box.CoolY, ship_geo.Box.CoolZ)
+    Box.SetCoatingParam(ship_geo.Box.CoatX, ship_geo.Box.CoatY, ship_geo.Box.CoatZ)
+    Box.SetGapGeometry(ship_geo.Box.distancePassive2ECC)
+    Box.SetTargetDesign(ship_geo.Box.Julytarget)
+    Box.SetRunNumber(ship_geo.Box.RunNumber)
+    detectorList.append(Box)
+# === SciFi modules
+    SciFi = ROOT.SciFi("SciFi",ship_geo.SciFi.DX, ship_geo.SciFi.DY, ship_geo.SciFi.DZ,ROOT.kTRUE)
+    SciFi.SetBoxParam(ship_geo.SciFi.DX,ship_geo.SciFi.DY,ship_geo.SciFi.DZ, ship_geo.SciFi.zBox)
+    SciFi.SetStationNumber(ship_geo.SciFi.nstations)
+    SciFi.SetStationDimensions(ship_geo.SciFi.StationDimX, ship_geo.SciFi.StationDimY, ship_geo.SciFi.StationDimZ)
+    for i, (x, y, z) in enumerate(zip(ship_geo.SciFi.xSi,ship_geo.SciFi.ySi,ship_geo.SciFi.zSi)):
+      SciFi.SetStationPositions(i, x, y, z)
+# === Pixel modules
+    PixelModules = ROOT.PixelModules("PixelModules", ship_geo.PixelModules.DX, ship_geo.PixelModules.DY,
+                                         ship_geo.PixelModules.DZ, ROOT.kTRUE, ship_geo.PixelModules.nSlice)
+    PixelModules.SetBoxParam(ship_geo.PixelModules.DX, ship_geo.PixelModules.DY, ship_geo.PixelModules.DZ, ship_geo.PixelModules.zBox, 
+                                 ship_geo.PixelModules.DimZpixelbox, ship_geo.PixelModules.D1short, ship_geo.PixelModules.D1long, 
+                                 ship_geo.PixelModules.DimZSithin, ship_geo.PixelModules.DimZSithick, ship_geo.PixelModules.z_offset)
+# === SciFi modules
+    detectorList.append(SciFi)
+# === Pixel modules
+    detectorList.append(PixelModules)
+    for i, (x, y, z) in enumerate(zip(ship_geo.PixelModules.xSi,ship_geo.PixelModules.ySi,ship_geo.PixelModules.zSi)):
+      PixelModules.SetSiliconStationPositions(i, x, y, z)
+
+>>>>>>> official/master
  Spectrometer = ROOT.Spectrometer("Spectrometer",ship_geo.Spectrometer.DX, ship_geo.Spectrometer.DY, ship_geo.Spectrometer.DZ,ROOT.kTRUE)
  Spectrometer.SetTransverseSizes(ship_geo.Spectrometer.D1Short, ship_geo.Spectrometer.D1Long, ship_geo.Spectrometer.DSciFi1X, ship_geo.Spectrometer.DSciFi1Y, ship_geo.Spectrometer.DSciFi2X, ship_geo.Spectrometer.DSciFi2Y)   
  

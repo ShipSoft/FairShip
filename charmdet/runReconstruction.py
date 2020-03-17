@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+from __future__ import print_function
+
+>>>>>>> official/master
 import os,subprocess,ROOT,time,multiprocessing
 import pwd
 ncpus = int(multiprocessing.cpu_count()*3./4.)
@@ -32,7 +37,7 @@ def getFilesFromEOS():
    nentries=f.cbmsim.GetEntries()
    fileList[fname]=nentries
   except:
-   print "problem accessing file",fname
+   print("problem accessing file",fname)
    badFiles.append(fname)
 
  Nfiles = len(fileList)
@@ -43,9 +48,7 @@ def getFilesFromEOS():
   rc = os.system("xrdcp -f $EOSSHIP"+fname+" "+newName)
   tmp[newName]=fileList[fname]
 
- fnames = tmp.keys()
- fnames.sort()
- return tmp,fnames
+ return tmp,sorted(tmp.keys())
 
 def getFilesLocal():
 # list of files
@@ -60,20 +63,18 @@ def getFilesLocal():
    nentries=f.cbmsim.GetEntries()
    fileList[fname]=nentries
   except:
-   print "problem accessing file",fname
+   print("problem accessing file",fname)
    badFiles.append(fname)
 
  Nfiles = len(fileList)
 
- fnames = fileList.keys()
- fnames.sort()
- return fileList,fnames
+ return fileList,sorted(fileList.keys())
 
 def recoStep0(local=False):
  if local: tmp,fnames = getFilesLocal()
  else:     tmp,fnames = getFilesFromEOS()
  Nfiles = len(fnames)
- print "fileList established ",Nfiles
+ print("fileList established ",Nfiles)
  Ndone = 0
  while Ndone < Nfiles:
   cmd = "python  "+pathToMacro+"drifttubeMonitoring.py -c recoStep0 -f "
@@ -99,14 +100,14 @@ def recoStep0(local=False):
     Ndone += len(Nextsample)
   if len(sample)==0: break
   for s in sample: cmd+=s+','
-  print 'step 0:',cmd[:cmd.rfind(',')],Ndone,Nfiles
+  print('step 0:',cmd[:cmd.rfind(',')],Ndone,Nfiles)
   os.system(cmd[:cmd.rfind(',')]+" &")
   while 1>0:
    if count_python_processes('drifttubeMonitoring')<ncpus: break
    time.sleep(200)
   if Ndone%100==0: cleanUp()
  while count_python_processes('drifttubeMonitoring')>0: time.sleep(200)
- print "files created with RT relations "
+ print("files created with RT relations ")
  cleanUp()
 
 def checkFilesWithRT():
@@ -124,7 +125,7 @@ def checkFilesWithRT():
      fNotok.append(fname)
    elif fname.find('root')>0 and not fname.find('SPILL')<0:
     fRaw.append(fname)
- print len(fok),len(fNotok),len(fRaw)
+ print(len(fok),len(fNotok),len(fRaw))
  return fok,fNotok,fRaw
 
 def checkMinusTwo():
@@ -138,7 +139,7 @@ def checkMinusTwo():
    rc = sTree.GetEvent(n)
    for m in sTree.Digi_MufluxSpectrometerHits:
      if m.GetDetectorID()<0: N+=1
-  print sTree.GetCurrentFile(),N
+  print(sTree.GetCurrentFile(),N)
 
 
 def recoStep1():
@@ -152,13 +153,13 @@ def recoStep1():
  fileList.sort()
  for fname in fileList:
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c recoStep1 -u 1 -f "+fname+' &'
-    print 'step 1:', cmd
+    print('step 1:', cmd)
     os.system(cmd)
     time.sleep(100)
     while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
- print "finished all the tasks."
+ print("finished all the tasks.")
 
 def checkAlignment():
  fileList=[]
@@ -169,13 +170,13 @@ def checkAlignment():
  fileList.sort()
  for fname in fileList:
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c alignment -f "+fname+' &'
-    print 'make residual plots:', cmd
+    print('make residual plots:', cmd)
     os.system(cmd)
     time.sleep(10)
     while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
- print "finished all the tasks."
+ print("finished all the tasks.")
 
 def runMC():
  # fast MC
@@ -210,7 +211,7 @@ def checkFilesWithTracks(D='.'):
     else: rest.append(fname)
    except:zombie.append(fname)
  fileList.sort()
- print "n with tracks",len(fileList),' rest:',len(rest),' zombies:',zombie
+ print("n with tracks",len(fileList),' rest:',len(rest),' zombies:',zombie)
  return fileList
 
 def checkFilesWithTracks2(D='.'):
@@ -266,7 +267,7 @@ def copyMissingFiles(remote="../../ship-ubuntu-1710-64/RUN_8000_2395",exclude=[]
    if fname.find('RT')<0: continue
    if fname in exclude: continue
    if not fname in allFilesL: toCopy.append(fname)
- print "len",len(toCopy)
+ print("len",len(toCopy))
  for fname in toCopy: os.system('cp '+remote+"/"+fname+' .')
 
 def importRTFiles(local='.',remote='/home/truf/ship-ubuntu-1710-32/home/truf/muflux/Jan08'):
@@ -305,9 +306,9 @@ def checkRecoRun(eosLocation=eospath,local='.'):
   RTname     = fname.replace('.root','_RT.root')
   histosName = "histos-residuals-"+RTname
   if not os.path.isfile(RTname): 
-     print "missing RT file",fname
+     print("missing RT file",fname)
   if not os.path.isfile(histosName): 
-     print "missing histogram file",fname
+     print("missing histogram file",fname)
 def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=run,local="."):
  temp = os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir "+eosLocation+"/"+run)
  failures = []
@@ -316,7 +317,7 @@ def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=
   cmd = "xrdcp -f "+x+" $EOSSHIP/"+eosLocation+"/"+run+"/"+x
   rc = os.system(cmd)
   if rc != 0: failures.append(x)
- if len(failures)!=0: print failures
+ if len(failures)!=0: print(failures)
 
 def makeMomDistributions():
  fileList = checkFilesWithTracks(D='.')
@@ -324,26 +325,112 @@ def makeMomDistributions():
  for fname in fileList:
     if os.path.isfile('histos-analysis-'+fname): continue
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c anaResiduals -f "+fname+' &'
-    print 'momentum analysis:', cmd
+    print('momentum analysis:', cmd)
     os.system(cmd)
     time.sleep(10)
     while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(10)
- print "finished all the tasks."
+ print("finished all the tasks.")
 
+<<<<<<< HEAD
+=======
+zeroField = ['2199','2200','2201']
+noRPC = ['2144','2154','2192','2210','2217','2218','2235','2236','2237','2240','2241','2243','2291','2345','2359']
+def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
+ pathToMacro = "$FAIRSHIP/charmdet/"
+ eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
+ if merge:
+    for run in os.listdir('.'):
+      if run.find(keyword)<0: continue
+      os.chdir(run)
+      mergeHistos(local='.',case='momDistributions')
+      os.chdir('../')
+ else:
+  if len(fnames)==0:
+   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+   fnames = temp.split('\n')
+  for x in fnames:
+   if x.find(keyword)<0: continue
+   run = x[x.rfind('/')+1:]
+   if not run in os.listdir('.'): os.system('mkdir '+run)
+   temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco+run,shell=True)
+   if temp2.find('.root')<0: continue
+   skip = False
+   for x in zeroField:
+       if not run.find(x)<0: skip = True
+   if skip: continue
+   os.chdir(run)
+   makeMomDistributions(run)
+   os.chdir('../')
+def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
+  pathToMacro = "$FAIRSHIP/charmdet/"
+  eospathReco = '/eos/experiment/ship/user/odurhan/muflux-recodata/'
+  if merge:
+    for run in os.listdir('.'):
+      if run.find(keyword)<0: continue
+      os.chdir(run)
+      mergeHistos(local='.')
+      os.chdir('../')
+  else:
+   if len(fnames)==0:
+    temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco,shell=True)
+    fnames = temp.split('\n')
+   for x in fnames:
+    if x.find(keyword)<0: continue
+    run = x[x.rfind('/')+1:]
+    if not run in os.listdir('.'):
+         print("directory for this run does not exist",run)
+         # os.system('mkdir '+run)
+         continue
+    temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathReco+run,shell=True)
+    if temp2.find('.root')<0: continue
+    os.chdir(run)
+    fileList = []
+    for x in temp2.split('\n'):
+     if x.find('.root')<0: continue
+     fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
+    checkAlignment(fileList)
+    os.chdir('../')
+
+>>>>>>> official/master
 def redoMuonTracks():
  fileList = checkFilesWithTracks(D='.')
  for fname in fileList:
     cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c  recoMuonTaggerTracks -u 1 -f "+fname+' &'
-    print 'redo muonTracks:', cmd
+    print('redo muonTracks:', cmd)
     os.system(cmd)
     time.sleep(10)
     while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(10)
- print "finished all the tasks."
+ print("finished all the tasks.")
 
+<<<<<<< HEAD
+=======
+def reRunReco(r,fname):
+ fRT = fname.replace('.root','_RT2.root')
+ os.system('xrdcp -f $EOSSHIP/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+r+'/'+fname+' '+fRT)
+ f = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/odurhan/muflux-recodata/'+r+'/'+fname.replace('.root','_RT.root'))
+ ftemp = ROOT.TFile(fRT,'update')
+ ftemp.cd('')
+ upkl    = Unpickler(f)
+ tMinAndTmax = upkl.load('tMinAndTmax')
+ pkl = Pickler(ftemp)
+ pkl.dump(tMinAndTmax,'tMinAndTmax')
+ ftemp.mkdir('histos')
+ ftemp.histos.cd('')
+ for tc in ['TDCMapsX','hitMapsX']:
+    tmp = f.histos.Get(tc)
+    X = tmp.Clone()
+    X.Write()
+ ftemp.Write("",ROOT.TFile.kOverwrite)
+ ftemp.Close()
+ cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c recoStep1 -u 1 -f "+fRT+' &'
+ os.system(cmd)
+ print('step 1:', cmd)
+
+>>>>>>> official/master
 def pot():
  fileList=[]
  # all RT files
@@ -355,7 +442,7 @@ def pot():
  for fname in fileList:
    f=ROOT.TFile(fname)
    if not f.FindKey("scalers"):
-     print "no scalers in this file",fname
+     print("no scalers in this file",fname)
      continue
    scalers = f.scalers
    scalers.GetEntry(0)
@@ -363,11 +450,38 @@ def pot():
     name = x.GetName()
     s = eval('scalers.'+name)
     if name!='slices':
-     if not scalerStat.has_key(name):scalerStat[name]=0
+     if name not in scalerStat:scalerStat[name]=0
      scalerStat[name]+=s
- keys = scalerStat.keys()
- keys.sort()
- for k in keys: print k,':',scalerStat[k]
+ for k in sorted(scalerStat.keys()):
+   print(k,':',scalerStat[k])
 
+<<<<<<< HEAD
+=======
+def makeDTEfficiency(merge=False):
+ cmd = "hadd -f DTEff.root "
+ for fname in os.listdir('.'):
+  if not merge and fname.find('SPILL')==0:
+   cmd = "python "+pathToMacro+"drifttubeMonitoring.py -c DTeffWithRPCTracks -f "+fname+' &'
+   os.system(cmd)
+   time.sleep(10)
+   while 1>0:
+        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        time.sleep(10)
+  elif merge and fname.find('histos-DTEff')==0: 
+   cmd+=fname+' '
+ if merge: os.system(cmd)
+ print("finished all the tasks.")
+ 
+
+def importMomDistr(keyword = 'RUN_8000_2'):
+  pathHistos = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/'
+  temp = os.listdir(pathHistos)
+  for x in temp:
+   if x.find(keyword)<0: continue
+   run = x
+   if not run in os.listdir('.'):
+     os.system('mkdir '+run)
+   os.system('cp '+pathHistos+run+'/momDistributions.root '+run)
+>>>>>>> official/master
 
 

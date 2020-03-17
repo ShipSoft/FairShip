@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import division
 import ROOT,os,random
 import shipunit as u
 import rootUtils as ut
@@ -18,7 +20,7 @@ def fillPart(t):
  particles = {}
  for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if not particles.has_key(t.parentid) : 
+    if t.parentid not in particles : 
          particles[t.parentid] = 0
     particles[t.parentid] +=1
  return particles
@@ -31,7 +33,7 @@ def fillWeights():
   weights[p]={}
   for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if not weights[p].has_key(t.w) : 
+    if t.w not in weights[p] : 
          weights[p][t.w] = [t.ecut,0]
     weights[p][t.w][1] +=1
     if t.ecut > weights[p][t.w][0] : weights[p][t.w][0] = t.ecut
@@ -153,7 +155,7 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
     fxx = fnew.replace('.root',opt+'.root')
     if storeCharm: fxx = fnew.replace('.root','old-charm.root')
     h['N']      = ROOT.TFile(fxx, 'RECREATE')
-    print 'new file created',fxx
+    print('new file created',fxx)
     h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","min bias flux after 3m hadron absorber "+opt,tuples)
   ROOT.gROOT.cd()
   t.SetEventList(0) 
@@ -173,7 +175,7 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
       if nL > 11 and (k==7 or k==8 or k==9): continue
       vlist.append( leaves.At(x).GetValue() )
      if len(vlist) != 11 : 
-         print "this should never happen, big error",len(vlist),k,p,iev,nev
+         print("this should never happen, big error",len(vlist),k,p,iev,nev)
          1/0
      # "id:px:py:pz:x:y:z:pythiaid:parentid:w:ecut"
      # yandex productions have
@@ -204,7 +206,7 @@ def mergeMinBias(pot,norm=5.E13,opt=''):
      elif Ekin > 0.5  :  
        vlist[9] = norm/( pot["Yandex"][0.5]  )
      else   :  
-       print "this should not happen, except some rounding errors",p,Ekin,vlist[9]
+       print("this should not happen, except some rounding errors",p,Ekin,vlist[9])
 # scoring plane, g4Ex_gap:   afterHadronZ = z0Pos+targetL+absorberL+5.1*cm  
 #                                    z0Pos   = -50.*m    absorberL = 2*150.*cm
 # target length increased for Yandex2 production, ignore this, put all muons at current end of hadronabsorber
@@ -223,7 +225,7 @@ def runProduction(opts=''):
   pot[p]={}
   for w in we[p]:
     pot[p][we[p][w][0]] = 5.E13/w
- print "pots:",pot
+ print("pots:",pot)
  #
  mergeMinBias(pot,norm=5.E13,opt=opts)
 
@@ -238,7 +240,7 @@ def removeCharm(p):
       if tuples == '': tuples += l.GetName()
       else:            tuples += ":"+l.GetName()
     h['N']      = ROOT.TFile(fnew, 'RECREATE')
-    print 'new file created',fnew
+    print('new file created',fnew)
     h['ntuple'] = ROOT.TNtuple("pythia8-Geant4",t.GetTitle()+" no charm",tuples)
   ROOT.gROOT.cd()
   t.SetEventList(0) 
@@ -279,7 +281,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   newFile.Close()
   fcascade.Close()
   os.system("hadd -f pythia8_Geant4-withCharm.root pythia8_Geant4-noOpenCharm.root pythia8_Charm.root")
-  print " progress: minbias and charm merged"
+  print(" progress: minbias and charm merged")
   ramOnly = True
  if ramOnly:  
 # put all events in memory, otherwise will take years to finish
@@ -292,7 +294,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   allEvents = []
   for n in range(t.GetEntries()):
    rc = t.GetEvent(n)
-   if m%1000000==0 : print 'status read',m
+   if m%1000000==0 : print('status read',m)
    m+=1
    a = event()
    for l in range(L): a.push_back(leaves.At(l).GetValue())
@@ -311,7 +313,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   m=0
   for n in evList:
    a = allEvents[n]
-   if m%1000000==0 : print 'status write',m
+   if m%1000000==0 : print('status write',m)
    m+=1
    vlist = array('f')
    for x in a: vlist.append(x)
@@ -321,7 +323,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
   newFile.Close()
   f.Close()
   allEvents = []
-  print " progress: order of events randomized"
+  print(" progress: order of events randomized")
  if 1>0:
 # split in muons and neutrinos
   cuts = {'_onlyNeutrinos':'abs(id)==12||abs(id)==14||abs(id)==16','_onlyMuons':'abs(id)==13'}
@@ -375,7 +377,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
       cln = h[akey].Class().GetName()
       if not cln.find('TH')<0:   h[akey].Write()
      N.Close()
-    print " progress: splitted "+opt
+    print(" progress: splitted "+opt)
 def test(fname):
  h['f'] = ROOT.TFile.Open(fname)
  sTree = h['f'].FindObjectAny('pythia8-Geant4')
@@ -540,8 +542,8 @@ def compare():
  h['ratios'].Print('comparisonRatios.png')
  h['ratios'].Print('comparisonRatios.pdf')
 
-print "+ merging with charm events using existing charmless Mbias file:   mergeWithCharm()"
-print "+ removeCharm(p) from mbias file made with g4Ex_gap_mergeFiles.py"
-print "+ testing output: test('pythia8_Geant4-noOpenCharm.root')"
-print "+ not used anymore: to start the full production, including merging of Mbias files: runProduction()"
+print("+ merging with charm events using existing charmless Mbias file:   mergeWithCharm()")
+print("+ removeCharm(p) from mbias file made with g4Ex_gap_mergeFiles.py")
+print("+ testing output: test('pythia8_Geant4-noOpenCharm.root')")
+print("+ not used anymore: to start the full production, including merging of Mbias files: runProduction()")
 

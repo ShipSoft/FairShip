@@ -161,9 +161,32 @@ Int_t Hpt::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
+void Hpt::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Double_t scifimat_vert_, 
+                           Double_t scifimat_z_, Double_t support_z_, Double_t honeycomb_z_)
+{
+    scifimat_width = scifimat_width_;
+    scifimat_hor = scifimat_hor_;
+    scifimat_vert = scifimat_vert_;
+    scifimat_z = scifimat_z_;
+    support_z = support_z_; 
+    honeycomb_z = honeycomb_z_;
+}
+
+void Hpt::SetNumberSciFi(Int_t n_hor_planes_, Int_t n_vert_planes_)
+{
+  n_hor_planes = n_hor_planes_;
+  n_vert_planes = n_vert_planes_;
+}
+
+void Hpt::SetHPTrackerParam(Double_t HPTX, Double_t HPTY, Double_t HPTZ)
+{   
+    HPTrackerX = HPTX;
+    HPTrackerY = HPTY;
+    HPTrackerZ = HPTZ; 
+}
+
 void Hpt::ConstructGeometry()
-{ 
-       
+{  
     InitMedium("HPTgas");
     TGeoMedium *HPTmat =gGeoManager->GetMedium("HPTgas");
 
@@ -207,40 +230,86 @@ void Hpt::ConstructGeometry()
 
     }
     if (fDesign == 3){
-    //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
-    TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion"); 
-    TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
-    TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
+        //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
+        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion"); 
+        TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
+        TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
 
-    Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;  
-    Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;  
-    Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;      
+        Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;  
+        Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;  
+        Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;      
 
-    Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
+        Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
 
-    TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
-    TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); //downstreamtrackers
-    volDT->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volDT);
+        //HPT is DownStreamTracker
+        TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
+        TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); 
+        volDT->SetLineColor(kBlue-5);
+        
+        // Creating of SciFi modules in HPT   
+        InitMedium("CarbonComposite");
+        TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
 
-    TGeoBBox *Surroundingdet = new TGeoBBox("Surroundingdet",DXMagnetizedRegion/2., fSRHeight/2, DZMagnetizedRegion/2.);
-    TGeoVolume *volSurroundingdet = new TGeoVolume("volSurroundingdet",Surroundingdet, HPTmat);
-    AddSensitiveVolume(volSurroundingdet);
-    volSurroundingdet->SetLineColor(kBlue);
-    tTauNuDet->AddNode(volSurroundingdet,100, new TGeoTranslation(0,+fmagnety/2+fSRHeight/2, fmagnetcenter));
-    volMagRegion->AddNode(volSurroundingdet, 200, new TGeoTranslation(0.,+DYMagnetizedRegion/2-fSRHeight/2,0.));
-    volMagRegion->AddNode(volSurroundingdet, 300, new TGeoTranslation(0.,-DYMagnetizedRegion/2+fSRHeight/2,0.));
-    tTauNuDet->AddNode(volSurroundingdet,400, new TGeoTranslation(0,-fmagnety/2-fSRHeight/2, fmagnetcenter));
-    
+        InitMedium("SciFiMat");
+        TGeoMedium *SciFiMat = gGeoManager->GetMedium("SciFiMat");
 
-    Int_t n = 0;
-    for(int i=0;i<fnHPT;i++){
-	  {
-           for (int j = 0; j < fntarget; j++){
-           volMagRegion->AddNode(volDT,i+j*fnHPT,new TGeoTranslation(0,0, -DZMagnetizedRegion/2 + DZTarget + DimZ/2 + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
-           }
-	  }
-     }
+        InitMedium("Airex");
+        TGeoMedium *Airex = gGeoManager->GetMedium("Airex"); 
+
+        //Support Carbon Composite
+        TGeoBBox* HPT_support_box = new TGeoBBox("HPT_support_box", HPTrackerX / 2, HPTrackerY / 2, support_z / 2);
+        TGeoVolume* HPT_support_volume = new TGeoVolume("HPT_support", HPT_support_box, CarbonComposite);
+        HPT_support_volume->SetLineColor(kGray - 2);
+        HPT_support_volume->SetVisibility(1);
+
+        //Honeycomb Airex (or Nomex)
+        TGeoBBox* HPT_honeycomb_box = new TGeoBBox("HPT_honeycomb_box", HPTrackerX / 2, HPTrackerY / 2, honeycomb_z / 2);
+        TGeoVolume* HPT_honeycomb_volume = new TGeoVolume("HPT_honeycomb", HPT_honeycomb_box, Airex);
+        HPT_honeycomb_volume->SetLineColor(kYellow);
+        HPT_honeycomb_volume->SetVisibility(1);
+
+        //SciFi planes
+        TGeoBBox* HPT_scifi_plane_hor_box = new TGeoBBox("HPT_scifi_plane_hor_box", HPTrackerX / 2, HPTrackerY / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifi_plane_hor_volume = new TGeoVolume("HPT_scifi_plane_hor", HPT_scifi_plane_hor_box, SciFiMat);
+        HPT_scifi_plane_hor_volume->SetVisibility(1);
+
+        TGeoBBox* HPT_scifi_plane_vert_box = new TGeoBBox("HPT_scifi_plane_vert_box", HPTrackerX / 2, HPTrackerY / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifi_plane_vert_volume = new TGeoVolume("HPT_scifi_plane_vert", HPT_scifi_plane_vert_box, SciFiMat);
+        HPT_scifi_plane_vert_volume->SetVisibility(1);
+
+        //SciFi mats
+        TGeoBBox* HPT_scifimat_hor_box = new TGeoBBox("HPT_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifimat_hor_volume = new TGeoVolume("HPT_scifimat_hor", HPT_scifimat_hor_box, SciFiMat);
+        HPT_scifimat_hor_volume->SetLineColor(kCyan);
+
+        TGeoBBox* HPT_scifimat_vert_box = new TGeoBBox("HPT_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifimat_vert_volume = new TGeoVolume("HPT_scifimat_vert", HPT_scifimat_vert_box, SciFiMat);
+        HPT_scifimat_vert_volume->SetLineColor(kGreen);
+
+        AddSensitiveVolume(HPT_scifimat_hor_volume);
+        AddSensitiveVolume(HPT_scifimat_vert_volume);
+
+        // Creating physical volumes and multiply 
+        for (int i = 0; i < n_hor_planes; i++){
+            HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i+1, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
+        }
+        for (int i = 0; i < n_vert_planes; i++){
+            HPT_scifi_plane_vert_volume->AddNode(HPT_scifimat_vert_volume, 100+i+1 , new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
+        }
+
+        volDT->AddNode(HPT_support_volume,     0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z / 2));
+        volDT->AddNode(HPT_scifi_plane_hor_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z / 2));
+        volDT->AddNode(HPT_scifi_plane_vert_volume, 0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + scifimat_z + scifimat_z / 2));
+        volDT->AddNode(HPT_honeycomb_volume,   0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z / 2));
+        volDT->AddNode(HPT_support_volume,     1, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z + support_z / 2));
+        //////////////////////////////////////////////////////////////
+
+        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2;
+        for(int i=0;i<fnHPT;i++){
+            for (int j = 0; j < fntarget; j++){
+                volMagRegion->AddNode(volDT,(i+1)*1000+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
+            }
+        }
     }
 }
 
@@ -259,23 +328,30 @@ Bool_t  Hpt::ProcessHits(FairVolume* vol)
     fELoss += gMC->Edep();
     
     // Create muonPoint at exit of active volume
-    if ( gMC->IsTrackExiting()    ||
-        gMC->IsTrackStop()       ||
-        gMC->IsTrackDisappeared()   ) {
-        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+    if ( gMC->IsTrackExiting()     ||
+         gMC->IsTrackStop()        ||
+         gMC->IsTrackDisappeared() ){
         if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
-	//Int_t fMotherID =p->GetFirstMother();
-	gMC->CurrentVolID(fVolumeID);
+        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+
+        gMC->CurrentVolID(fVolumeID);
+        Int_t detID = fVolumeID;
+        Int_t TTstationID;
+        gMC->CurrentVolOffID(2, TTstationID);
+        fVolumeID = TTstationID + detID;
+
         TLorentzVector Pos; 
         gMC->TrackPosition(Pos); 
         Double_t xmean = (fPos.X()+Pos.X())/2. ;      
         Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
         Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
 
-	AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
-        
+        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), 
+               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), 
+               fTime, fLength,fELoss, pdgCode);
+            
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
         stack->AddPoint(ktauRpc);
@@ -305,9 +381,17 @@ void Hpt::Register()
 
 // -----   Public method to Decode volume info  -------------------------------------------
 // -----   returns hpt, arm, rpc numbers -----------------------------------
-void Hpt::DecodeVolumeID(Int_t detID,int &nHPT)
+void Hpt::DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor)
 {
-  nHPT = detID;
+   nHPT = detID/1000;
+   int idir = (detID - nHPT*1000)/100;
+
+   if (idir == 1) ishor = kFALSE;
+   else if (idir == 0) ishor = kTRUE;
+
+   nplane = (detID - nHPT*1000 - idir*100);
+  
+
 }
 
 TClonesArray* Hpt::GetCollection(Int_t iColl) const

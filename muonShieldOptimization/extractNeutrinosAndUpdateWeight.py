@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os,ROOT
 import rootUtils as ut
 path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'
@@ -46,7 +47,7 @@ for idnu in range(12,17,2):
 
 def processFile(fin,noCharm=True):
     f   = ROOT.TFile.Open(os.environ['EOSSHIP']+path+fin)
-    print "opened file ",fin
+    print("opened file ",fin)
     sTree = f.cbmsim
     for n in range(sTree.GetEntries()):
       sTree.GetEntry(n)
@@ -111,7 +112,7 @@ def run4beauty():
      fmu = fname.replace('.root',"_mu.root")
      rc = os.system("xrdcp "+fmu+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+fmu)
      if rc != 0: 
-      print "copy to EOS failed, stop",fmu
+      print("copy to EOS failed, stop",fmu)
      else:
       rc = os.system("rm "+fmu)
  

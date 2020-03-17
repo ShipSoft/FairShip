@@ -1,3 +1,4 @@
+from __future__ import division
 import ROOT
 ROOT.gROOT.ProcessLine('#include "Geant4/G4ParticleTable.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4DecayTable.hh"')

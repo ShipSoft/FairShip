@@ -54,13 +54,13 @@ class veto: public FairDetector
 
     void SetZpositions(Float_t z0, Float_t z1, Float_t z2, Float_t z3, Float_t z4, Int_t c);
     void SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Float_t z5, Float_t z6);
-    void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l4, Float_t l5, Float_t l6);
+    void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l6);
     void SetB(Float_t b) {fBtube=b;}
     void SetFloorHeight(Float_t a,Float_t b) {floorHeightA=a;floorHeightB=b;}
     void SetXYstart(Float_t b, Float_t fx, Float_t c, Float_t fy) {fXstart=b; zFocusX=fx; fYstart=c; zFocusY=fy;}
-    void SetVesselStructure(Float_t a,Float_t b,Float_t c,TString d,Float_t l,TString e,TString f,TString v,Float_t r, TString rm) {f_InnerSupportThickness=a;
+    void SetVesselStructure(Float_t a,Float_t b,Float_t c,TString d,Float_t l,TString e,TString f,TString v,Float_t r) {f_InnerSupportThickness=a;
       f_VetoThickness=b;f_OuterSupportThickness=c;supportMedIn_name=d;f_LidThickness=l;vetoMed_name=e;supportMedOut_name=f;decayVolumeMed_name=v;
-     f_RibThickness=r;ribMed_name=rm;}
+     f_RibThickness=r;}
 
     /**      This method is an example of how to add your own point
      *       of type vetoPoint to the clones array
@@ -126,8 +126,6 @@ class veto: public FairDetector
     Float_t fTub1length;
     Float_t fTub2length;
     Float_t fTub3length;
-    Float_t fTub4length;
-    Float_t fTub5length;
     Float_t fTub6length;
     Float_t f_InnerSupportThickness;
     Float_t f_PhiRibsThickness;
@@ -141,15 +139,10 @@ class veto: public FairDetector
     TString supportMedIn_name;    //! medium of support structure, iron, balloon
     TString supportMedOut_name;   //! medium of support structure, aluminium, balloon
     TString decayVolumeMed_name;  //! medium of decay volume, vacuum/air/helium
-    TString ribMed_name;          //! medium of rib support structure
-    TString phi_ribMed_name;      //! medium of phi_ribs structure separating  the LiSc segments in XY plane 
     TGeoMedium *vetoMed;    //! 
     TGeoMedium *supportMedIn; //! 
     TGeoMedium *supportMedOut; //! 
     TGeoMedium *decayVolumeMed; //! 
-    TGeoMedium *ribVolumeMed; //! 
-    TGeoMedium *ribMed; //!
-    TGeoMedium *phi_ribMed; //!
 
     Float_t fXstart,fYstart; // horizontal/vertical width at start of tank
     Float_t zFocusX,zFocusY; // focus points for conical design
@@ -164,17 +157,32 @@ class veto: public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
-    TGeoVolume* GeoEllipticalTube(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Int_t colour,TGeoMedium *material,Bool_t sense);
-    void GeoPlateEllipse(const char* name,Double_t thick,Double_t a,Double_t b,Double_t dz,Double_t z,Int_t colour,TGeoMedium *material,TGeoVolume *top);
-    TGeoVolume* GeoParalepiped(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Int_t colour,TGeoMedium *material,Bool_t sens);
-    TGeoVolume* GeoTrapezoid(TString name,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Bool_t sens);
-    TGeoVolume* GeoPolyhedron(const char* name,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX1,Double_t slopeX2,Double_t slopeY1,Double_t slopeY2,Int_t colour,TGeoMedium *material,Bool_t sens);
-    TGeoVolume* GeoCornerSeg(TString xname,Double_t thick,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Double_t phi1, Double_t phi2,Double_t zStart, 
-             Double_t zlength,  Int_t colour,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoTrapezoid(TString xname,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,
+				  Int_t color,TGeoMedium *material,Bool_t sens);
+    TGeoVolume* GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,Int_t color,TGeoMedium *material,Bool_t sens);
+    void AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tDecayVacuum, TGeoVolumeAssembly *tOuterWall,TGeoVolumeAssembly *tLongitRib,TGeoVolumeAssembly *tVerticalRib,TGeoVolumeAssembly *ttLiSc,  int& liScCounter,
+                     int blockNr , int nx, int ny,
+		  double z1, double z2 , double Zshift, double dist, double distC,
+		    double wallThick, double liscThick1, double liscThick2,double ribThick);
+    
+    TGeoVolumeAssembly* GeoCornerRib(TString xname, double ribThick, double lt1,double lt2 , double dz, double slopeX, double slopeY,Int_t color, TGeoMedium *material, Bool_t sens);
+   int makeId(double z,double x, double y);
+   int liscId(TString ShapeTypeName,int blockNr,int Zlayer,int number, int position);
+    
+   
+        TGeoVolume* GeoSideObj(TString xname, double dz,
+			     double a1, double b1,double a2, double b2,double dA, double dB,
+				Int_t color, TGeoMedium *material, Bool_t sens);
+    TGeoVolume* GeoCornerLiSc1(TString xname, double dz,bool isClockwise,
+			     double a, double b1,double b2, double dA, double dB,
+				Int_t color, TGeoMedium *material, Bool_t sens);
+    TGeoVolume* GeoCornerLiSc2(TString xname, double dz,bool isClockwise,
+			     double a, double b1,double b2, double dA, double dB,
+				Int_t color, TGeoMedium *material, Bool_t sens);
 
-    TGeoVolume* GeoVesselSupport(TString name,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t dcorner,Int_t colour,TGeoMedium *material,Double_t floorHeight);
 
-    TGeoVolume* MakeSegments(Int_t seg,Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
+    TGeoVolume* MakeSegments(Double_t dz,Double_t dx_start,Double_t dy,Double_t slopex,Double_t slopey,Double_t floorHeight);
+    TGeoVolume* MakeMagnetSegment(Int_t seg);
     TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
 
     
@@ -187,10 +195,6 @@ class veto: public FairDetector
 
     // Add center of volume and its dx, dy and dz (currently dummy) to a map for futher export 
     void InnerAddToMap(Int_t ncpy, Double_t x, Double_t y, Double_t z, Double_t dx=-1111, Double_t dy=-1111, Double_t dz=-1111);
-
-    // Insert inner veto into the decay volume. ix (iy) is a number of tiles at the beginning
-    // of the volume
-    void InsertInnerVeto(TString xname,Double_t th,Double_t dz,Double_t dx_start,Double_t dy_start,Double_t slopeX,Double_t slopeY,Double_t dcorner,Int_t colour,TGeoMedium *material, TGeoVolume* Inner, Int_t ix=2, Int_t iy=30);
 
 
     ClassDef(veto, 9)

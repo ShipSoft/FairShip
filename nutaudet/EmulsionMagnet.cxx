@@ -159,9 +159,15 @@ void EmulsionMagnet::ConstructGeometry()
 {
   TGeoVolume *top=gGeoManager->GetTopVolume();
     
+<<<<<<< HEAD
   InitMedium("vacuum");
   TGeoMedium *vacuum =gGeoManager->GetMedium("vacuum");
     
+=======
+  InitMedium("air");
+  TGeoMedium *air =gGeoManager->GetMedium("air");  
+
+>>>>>>> official/master
   InitMedium("iron");
   TGeoMedium *Fe =gGeoManager->GetMedium("iron");
     
@@ -173,7 +179,6 @@ void EmulsionMagnet::ConstructGeometry()
     
   InitMedium("steel");
   TGeoMedium *Steel = gGeoManager->GetMedium("steel");
-
 
   gGeoManager->SetVisLevel(10);
 
@@ -572,7 +577,12 @@ void EmulsionMagnet::ConstructGeometry()
       MagnetVol->AddNode(CoilVol,2,new TGeoTranslation(0,-(fCoilH1+fCoilH2)/4,0));
 
       //magnetized region
+<<<<<<< HEAD
       TGeoVolume *volMagRegion = new TGeoVolume("volMagRegion",IncoilBox, vacuum);
+=======
+
+      TGeoVolume *volMagRegion = new TGeoVolume("volMagRegion",IncoilBox, air);
+>>>>>>> official/master
       MagnetVol->AddNode(volMagRegion, 1, new TGeoTranslation(0,0,0));
 
       //pillars for the magnet

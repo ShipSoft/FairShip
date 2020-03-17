@@ -1,7 +1,10 @@
+from future import standard_library
+standard_library.install_aliases()
 import os
 import re
-import cPickle
+import pickle
 from contextlib import contextmanager
+from future.utils import with_metaclass
 
 
 def expand_env(string):
@@ -35,11 +38,10 @@ class _SingletonDict(type):
         del(cls._instances[cls][key])
 
 
-class ConfigRegistry(dict):
+class ConfigRegistry(with_metaclass(_SingletonDict, dict)):
     """
     Singleton registry of all Configurations
     """
-    __metaclass__ = _SingletonDict
     recent_config_name = None
 
     @staticmethod
@@ -77,7 +79,7 @@ class ConfigRegistry(dict):
     @staticmethod
     def keys():
         registry = ConfigRegistry()
-        return [k for k, v in registry.iteritems()] 
+        return [k for k, v in registry.items()]
 
     @staticmethod
     def get(name):
@@ -101,7 +103,7 @@ class AttrDict(dict):
 
     def clone(self):
         result = AttrDict()
-        for k, v in self.iteritems():
+        for k, v in self.items():
             if isinstance(v, AttrDict):
                 result[k] = v.clone()
             else:
@@ -114,14 +116,14 @@ class Config(AttrDict):
         super(Config, self).__init__(*args, **kwargs)
 
     def loads(self, buff):
-        rv = cPickle.loads(buff)
+        rv = pickle.loads(buff)
         self.clear()
         self.update(rv)
         return self
 
     def clone(self):
         result = Config()
-        for k, v in self.iteritems():
+        for k, v in self.items():
             if isinstance(v, AttrDict):
                 result[k] = v.clone()
             else:
@@ -129,7 +131,7 @@ class Config(AttrDict):
         return result
 
     def dumps(self):
-        return cPickle.dumps(self)
+        return pickle.dumps(self)
 
     def load(self, filename):
         with open(expand_env(filename)) as fh:

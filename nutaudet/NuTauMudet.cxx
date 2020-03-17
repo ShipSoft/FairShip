@@ -253,6 +253,9 @@ void NuTauMudet::ConstructGeometry()
     
   InitMedium("Concrete");
   TGeoMedium *Conc =gGeoManager->GetMedium("Concrete");
+
+  InitMedium("air");
+  TGeoMedium *air =gGeoManager->GetMedium("air");
     
   TGeoUniformMagField *retFieldU    = new TGeoUniformMagField(0.,0.,-fField); //magnetic field up return yoke
   TGeoUniformMagField *retFieldL   = new TGeoUniformMagField(0.,0.,fField); //magnetic field low return yoke
@@ -265,9 +268,14 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volMudetBox = new TGeoVolume("volNuTauMudet", MudetBox, vacuum);
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
   
+<<<<<<< HEAD
       
       TGeoBBox *UpYokeBox = new TGeoBBox("UpYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
       TGeoVolume *volUpYoke = new TGeoVolume("volUpYoke",UpYokeBox,vacuum);
+=======
+      TGeoBBox *UpYokeBox = new TGeoBBox("UpYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
+      TGeoVolume *volUpYoke = new TGeoVolume("volUpYoke",UpYokeBox,air);
+>>>>>>> official/master
       volMudetBox->AddNode(volUpYoke,1,new TGeoTranslation(0,fYtot/2 - fYRyoke/2,0));
       volUpYoke->SetField(retFieldU);
     
@@ -281,7 +289,11 @@ void NuTauMudet::ConstructGeometry()
       volFeYoke1->SetLineColor(kGray+1);
     
       TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer",fXtot/2, fCoilH/2, 40*cm);
+<<<<<<< HEAD
       TGeoVolume *volCoilContainer = new TGeoVolume("volCoilContainer",CoilContainer,vacuum);
+=======
+      TGeoVolume *volCoilContainer = new TGeoVolume("volCoilContainer",CoilContainer,air);
+>>>>>>> official/master
     
       TGeoBBox *Coil = new TGeoBBox("Coil",fXtot/2, fCoilH/2, fCoilW/2);
       TGeoVolume *volCoil = new TGeoVolume("volCoil",Coil,Cu);
@@ -313,7 +325,11 @@ void NuTauMudet::ConstructGeometry()
       volUpYoke->AddNode(volCoilContainer,2,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
     
       TGeoBBox *LowYokeBox = new TGeoBBox("LowYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
+<<<<<<< HEAD
       TGeoVolume *volLowYoke = new TGeoVolume("volLowYoke",LowYokeBox,vacuum);
+=======
+      TGeoVolume *volLowYoke = new TGeoVolume("volLowYoke",LowYokeBox,air);
+>>>>>>> official/master
       volMudetBox->AddNode(volLowYoke,1,new TGeoTranslation(0,-fYtot/2 + fYRyoke/2,0));
       volLowYoke->SetField(retFieldL);
    
@@ -335,7 +351,11 @@ void NuTauMudet::ConstructGeometry()
 
       Int_t ArmNumber = 1;
       TGeoBBox *Arm1Box = new TGeoBBox("Arm1MudetBox", fXFe/2, fYFe/2, fZArm/2);
+<<<<<<< HEAD
       TGeoVolume *volArm1 = new TGeoVolume("volArm1Mudet", Arm1Box,vacuum);
+=======
+      TGeoVolume *volArm1 = new TGeoVolume("volArm1Mudet", Arm1Box,air);
+>>>>>>> official/master
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field arm1
       volArm1->SetField(magField1);
       volMudetBox ->AddNode(volArm1,ArmNumber,new TGeoTranslation(0,0,-(fGapMiddle+fZArm)/2));
@@ -350,9 +370,16 @@ void NuTauMudet::ConstructGeometry()
 	{
 	  volArm1->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
 	}
+<<<<<<< HEAD
     
       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
       TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
+=======
+
+   
+      TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
+      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,air); 
+>>>>>>> official/master
   
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
@@ -385,15 +412,24 @@ void NuTauMudet::ConstructGeometry()
       nr =  ArmNumber*1E4;
 
       TGeoBBox *Arm2Box = new TGeoBBox("Arm2MudetBox",fXFe/2, fYFe/2, fZArm/2);
+<<<<<<< HEAD
       TGeoVolume *volArm2 = new TGeoVolume("volArm2Mudet", Arm2Box,vacuum);
+=======
+      TGeoVolume *volArm2 = new TGeoVolume("volArm2Mudet", Arm2Box,air);
+>>>>>>> official/master
       TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field arm2
       volArm2->SetField(magField2);
       volMudetBox ->AddNode(volArm2,1,new TGeoTranslation(0,0,(fGapMiddle+fZArm)/2));
       TGeoVolume *volIron2 = new TGeoVolume("volIron2",IronLayer,Iron);
 
      //different volumes for second arm
+<<<<<<< HEAD
       
       TGeoVolume *volRpcContainer2 = new TGeoVolume("volRpcContainer2",RpcContainer,vacuum);
+=======
+
+      TGeoVolume *volRpcContainer2 = new TGeoVolume("volRpcContainer2",RpcContainer,air);      
+>>>>>>> official/master
       TGeoVolume *volStrip2 = new TGeoVolume("volStrip2",Strip,Cu);
       
       volStrip2->SetLineColor(kRed);
@@ -461,18 +497,110 @@ void NuTauMudet::ConstructGeometry()
 
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
+<<<<<<< HEAD
 
      TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2 -fdeltax/2, fYFe/2 -fdeltay/2, fZFe/2);
      TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
+=======
+      volIron->SetLineColor(kGray);
+
+      TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFethin/2);
+      TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
+
+      //***********************ADDING CUTS AT MID-LATERAL IN WALLS
+      IronLayer->SetName("MUDETIRON");
+      IronLayer1->SetName("MUDETIRON1");
+
+      Double_t delta = 0.1; //to avoid border effects in the cuts (cut is not visualized in viewer, I do not know if it can affect simulation)
+      TGeoTrd2  * Model= new TGeoTrd2("Model",fCutHeight/2,0, (fZFe+delta)/2,(fZFe+delta)/2,(fCutLength+delta)/2); //length and height are not x and y here, because it will be rotated!
+      Model->SetName("MUDETTRIANGLE");
+
+      TGeoRotation rot("rot",90,90,0);
+      TGeoRotation rot1("rot1",-90,90,0);
+      //cut on the right (seen from beam)
+      const TGeoTranslation transright("trans",-fXFe/2.+ fCutLength/2,0,0);
+      TGeoCombiTrans* combright = new TGeoCombiTrans(transright,rot);
+      combright->SetName("MuDetcombright");
+      combright->RegisterYourself(); 
+      //cut on the left (seen from beam)
+      const TGeoTranslation transleft("transleft",+fXFe/2.- fCutLength/2,0,0);
+      TGeoCombiTrans* combleft = new TGeoCombiTrans(transleft,rot1);
+      combleft->SetName("MuDetcombleft");
+      combleft->RegisterYourself();  
+      //unique volume, we cut the triangles
+      TGeoCompositeShape *mudetcut = new TGeoCompositeShape("MUDETCUT", "(MUDETIRON-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");   
+      mudetcut->SetName("MUDETTRIANGCUT");
+      //same, for the thin layers
+      TGeoCompositeShape *mudetcut1 = new TGeoCompositeShape("MUDETCUT1", "(MUDETIRON1-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");   
+      mudetcut1->SetName("MUDETTRIANGCUT1");
+      //addition of iron support structures
+      //support layers, fot thick layers upstream
+      TGeoBBox *UpperSupport = new TGeoBBox(fUpSuppX/2., fUpSuppY/2.,fZFe/2.);
+      UpperSupport->SetName("MUDETUPSUPPORT");
+      TGeoBBox *LowerSupport = new TGeoBBox(fLowSuppX/2., fLowSuppY/2.,fZFe/2.);
+      LowerSupport->SetName("MUDETLOWSUPPORT");
+      TGeoBBox *LateralSupport = new TGeoBBox(fLatSuppX/2., fLatSuppY/2., fZFe/2.);
+      LateralSupport->SetName("MUDETLATERALSUPPORT");
+      //support layers, for thin layers downstream
+      TGeoBBox *UpperSupport1 = new TGeoBBox(fUpSuppX/2., fUpSuppY/2.,fZFethin/2.); //The 1 shapes have less z thickness
+      UpperSupport1->SetName("MUDETUPSUPPORT1");
+      TGeoBBox *LowerSupport1 = new TGeoBBox(fLowSuppX/2., fLowSuppY/2.,fZFethin/2.);
+      LowerSupport1->SetName("MUDETLOWSUPPORT1");
+      TGeoBBox *LateralSupport1 = new TGeoBBox(fLatSuppX/2., fLatSuppY/2.,fZFethin/2.);
+      LateralSupport1->SetName("MUDETLATERALSUPPORT1");
+      //Translations (left is considered from the beam, positive x)
+      TGeoTranslation * upright = new TGeoTranslation("MuDetupright",-fXFe/2.+fUpSuppX/2.,fYFe/2+fUpSuppY/2.,0);
+      TGeoTranslation * upleft = new TGeoTranslation("MuDetupleft",+fXFe/2.-fUpSuppX/2.,fYFe/2+fUpSuppY/2.,0); 
+      TGeoTranslation * lateralupleft = new TGeoTranslation("MuDetlateralupleft",+fXFe/2.+fLowSuppX/2.,fYFe/2-fLowSuppY/2.,0); 
+      TGeoTranslation * lateralupright = new TGeoTranslation("MuDetlateralupright",-fXFe/2.-fLowSuppX/2.,fYFe/2-fLowSuppY/2.,0); 
+      TGeoTranslation * laterallowleft = new TGeoTranslation("MuDetlaterallowleft",+fXFe/2.+fLowSuppX/2.,-fYFe/2+fLowSuppY/2.,0); 
+      TGeoTranslation * laterallowright = new TGeoTranslation("MuDetlaterallowright",-fXFe/2.-fLowSuppX/2.,-fYFe/2+fLowSuppY/2.,0); 
+      TGeoTranslation * lowright = new TGeoTranslation("MuDetlowright",-fXFe/2.+fLowSuppX/2.,-fYFe/2-fLowSuppY/2.,0); 
+      TGeoTranslation * lowleft = new TGeoTranslation("MuDetlowleft",+fXFe/2.-fLowSuppX/2.,-fYFe/2-fLowSuppY/2.,0);
+      //necessary to put SetName, otherwise it will not find them
+      upright->SetName("MuDetupright");
+      upright->RegisterYourself();
+      upleft->SetName("MuDetupleft");
+      upleft->RegisterYourself();
+      lowright->SetName("MuDetlowright");
+      lowright->RegisterYourself();
+      lowleft->SetName("MuDetlowleft");
+      lowleft->RegisterYourself();
+
+      lateralupleft->SetName("MuDetlateralupleft");
+      lateralupleft->RegisterYourself();
+      lateralupright->SetName("MuDetlateralupright");
+      lateralupright->RegisterYourself();
+      laterallowleft->SetName("MuDetlaterallowleft");
+      laterallowleft->RegisterYourself();
+      laterallowright->SetName("MuDetlaterallowright");
+      laterallowright->RegisterYourself();
+      //building composite shapes, writing compositions as TString first to improve readibility
+      TString *supportaddition = new TString("MUDETTRIANGCUT+MUDETUPSUPPORT:MuDetupright+MUDETUPSUPPORT:MuDetupleft+MUDETLOWSUPPORT:MuDetlowright+MUDETLOWSUPPORT:MuDetlowleft+MUDETLATERALSUPPORT:MuDetlateralupleft+MUDETLATERALSUPPORT:MuDetlateralupright+MUDETLATERALSUPPORT:MuDetlaterallowleft+MUDETLATERALSUPPORT:MuDetlaterallowright");
+      TString *supportaddition1 = new TString("MUDETTRIANGCUT1+MUDETUPSUPPORT1:MuDetupright+MUDETUPSUPPORT1:MuDetupleft+MUDETLOWSUPPORT1:MuDetlowright+MUDETLOWSUPPORT1:MuDetlowleft+MUDETLOWSUPPORT1:MuDetlowleft+MUDETLATERALSUPPORT1:MuDetlateralupleft+MUDETLATERALSUPPORT1:MuDetlateralupright+MUDETLATERALSUPPORT1:MuDetlaterallowleft+MUDETLATERALSUPPORT1:MuDetlaterallowright");
+      TGeoCompositeShape * SupportedIronLayer = new TGeoCompositeShape("SupportedIronLayer",supportaddition->Data());
+      TGeoCompositeShape * SupportedIronLayer1 = new TGeoCompositeShape("SupportedIronLayer1",supportaddition1->Data());
+
+      TGeoVolume *MudetIronLayer = new TGeoVolume("MudetIronLayer", SupportedIronLayer, Iron);
+      MudetIronLayer->SetLineColor(kGray);
+      TGeoVolume *MudetIronLayer1 = new TGeoVolume("MudetIronLayer1", SupportedIronLayer1, Iron);
+      MudetIronLayer1->SetLineColor(kGray);
+>>>>>>> official/master
 
       for(Int_t i = 0; i < fNFe; i++)
 	{
 	  if (i >= (fNFe-2)) volMudetBox->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
           else volMudetBox->AddNode(volIron1,nr + 100 + i, new TGeoTranslation(0, 0,-fZtot/2+i*fZFe+fZFe/2+(i+1)*fZRpc));
 	}
+<<<<<<< HEAD
 
       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
       TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
+=======
+      //*****************************RPC LAYERS****************************************
+      TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
+      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,air);
+>>>>>>> official/master
   
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
@@ -493,9 +621,15 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
       volRpc->SetLineColor(kCyan);
       volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
+<<<<<<< HEAD
    
       TGeoBBox *RpcContainer1 = new TGeoBBox("RpcContainer1", fXRpc/2 -fdeltax/2, fYRpc/2-fdeltay/2, fZRpc/2);
       TGeoVolume *volRpcContainer1 = new TGeoVolume("volRpcContainer1",RpcContainer1,vacuum);
+=======
+
+      TGeoBBox *RpcContainer1 = new TGeoBBox("RpcContainer1", fXRpc/2+fdeltax/2, fYRpc/2+fdeltay/2, fZRpc/2);
+      TGeoVolume *volRpcContainer1 = new TGeoVolume("volRpcContainer1",RpcContainer1,air);      
+>>>>>>> official/master
   
       TGeoBBox *Strip1  = new TGeoBBox("Strip1",fXStrip/2-fdeltax/2, fYStrip/2-fdeltay/2, fZStrip/2);
       TGeoVolume *volStrip1  = new TGeoVolume("volStrip1",Strip1,Cu);

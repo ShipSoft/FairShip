@@ -5,6 +5,7 @@
 # Also add to the file info about the binning, offsets etc..
 # Input file distances are in m; convert them to centimetres
 
+from __future__ import print_function
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field info
@@ -49,7 +50,7 @@ def run(inFileName  = 'test07_10cm_grid.table',
 
 def createTextMap(inFileName, outFileName):
 
-    print 'Creating text map {0} from {1}'.format(outFileName, inFileName)
+    print('Creating text map {0} from {1}'.format(outFileName, inFileName))
 
     tmpFileName = 'tmpFile.txt'
     
@@ -146,8 +147,8 @@ def createTextMap(inFileName, outFileName):
                 dz = z - zOld
                 gotdz = 1
 
-    print 'dx = {0}, dy = {1}, dz = {2}'.format(dx,dy,dz)
-    print 'x = {0} to {1}, y = {2} to {3}, z = {4} to {5}'.format(xMin, xMax, yMin, yMax, zMin, zMax)
+    print('dx = {0}, dy = {1}, dz = {2}'.format(dx,dy,dz))
+    print('x = {0} to {1}, y = {2} to {3}, z = {4} to {5}'.format(xMin, xMax, yMin, yMax, zMin, zMax))
 
     tmpFile.close()
     inFile.close()
@@ -194,7 +195,7 @@ def formatNumber(x):
 
 def createRootMap(inFileName, outFileName):
 
-    print 'Create ROOT map {0} from {1}'.format(outFileName, inFileName)
+    print('Create ROOT map {0} from {1}'.format(outFileName, inFileName))
 
     # Define ROOT file and its TTree
     theFile = ROOT.TFile.Open(outFileName, 'recreate')
@@ -258,7 +259,7 @@ def createRootMap(inFileName, outFileName):
                 Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)
                 Nzy = Nz*Ny
 
-                print 'Nx = {0}, Ny = {1}, Nz = {2}'.format(Nx, Ny, Nz)
+                print('Nx = {0}, Ny = {1}, Nz = {2}'.format(Nx, Ny, Nz))
 
                 rangeTree.Fill()
 

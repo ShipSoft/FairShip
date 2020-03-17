@@ -23,6 +23,11 @@ class Hpt:public FairDetector
     virtual ~Hpt();
       
     void ConstructGeometry();
+
+    void SetSciFiParam(Double_t scifimat_width, Double_t scifimat_hor, Double_t scifimat_vert,   
+                       Double_t scifimat_z, Double_t support_z, Double_t honeycomb_z);
+    void SetHPTrackerParam(Double_t HPTX, Double_t HPTY, Double_t HPTZ);
+    void SetNumberSciFi(Int_t n_hor_planes_, Int_t n_vert_planes_);
     void SetZsize(const Double_t Mudetsize);
     void SetConcreteBaseDim(Double_t X, Double_t Y, Double_t Z);
     
@@ -74,7 +79,7 @@ class Hpt:public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-    void DecodeVolumeID(Int_t detID,int &nHPT);
+    void DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor);
     
 private:
     
@@ -111,6 +116,19 @@ protected:
     Double_t fDesign;
     Double_t fDistance;
     Int_t fnHPT;
+
+    Double_t HPTrackerX; // parameters for Downstream SciFi Tracker
+    Double_t HPTrackerY;
+    Double_t HPTrackerZ;
+
+    Double_t scifimat_width;     
+    Double_t scifimat_hor;
+    Double_t scifimat_vert; 
+    Double_t scifimat_z; 
+    Double_t support_z; 
+    Double_t honeycomb_z;
+    Int_t n_hor_planes;
+    Int_t n_vert_planes;
 
     Double_t fmagnety; //parameters from EmuMagnet
     Double_t fmagnetcenter;
