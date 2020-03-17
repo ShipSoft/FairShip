@@ -1,9 +1,9 @@
-<<<<<<< HEAD
+
 import os,subprocess,ROOT,time,multiprocessing
-=======
+
 from __future__ import print_function
 import os,subprocess,ROOT,time,multiprocessing,socket
->>>>>>> official/master
+
 ncpus = multiprocessing.cpu_count() - 2
 
 pathToMacro = '' # $SHIPBUILD/FairShip/charmdet/
@@ -94,9 +94,9 @@ def digiStep(fnames=[]):
         time.sleep(100)
  print("finished all the tasks.")
 
-<<<<<<< HEAD
+
 def splitDigiFiles(splitFactor=10,fnames=[]):
-=======
+
 def findDirWithSim():
  fnames = getFilesLocal()
  stats = {'simOnly':[],'tmp':[],'failed':[],'digi':[],'digireco':{}}
@@ -129,7 +129,7 @@ def findDirWithSim():
  return stats
 
 def splitDigiFiles(splitFactor=5,fnames=[]):
->>>>>>> official/master
+
  if len(fnames)==0: fnames = getFilesLocal()
  Nfiles = len(fnames)
  print("fileList established ",Nfiles)
@@ -137,27 +137,27 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
    os.chdir(fname)
    ofile = 'ship.conical.MuonBack-TGeant4_dig.root'
    origin = ROOT.TFile(ofile)
-<<<<<<< HEAD
-=======
+
+
    if not origin.GetKey('cbmsim'):
      print("corrupted file",fname)
      os.chdir('../')
      continue
->>>>>>> official/master
+
    sTree = origin.cbmsim
    Nentries = sTree.GetEntries()
    N = 0
    deltaN = int(sTree.GetEntries()/float(splitFactor))
    for i in range(splitFactor):
-<<<<<<< HEAD
+
      newFile = ROOT.TFile(ofile.replace('.root','-'+str(i)+'.root'),'RECREATE')
-=======
+
     nf = ofile.replace('.root','-'+str(i)+'.root')
     if nf in os.listdir('.'): 
        print("file exists",fname,nf)
     else:
      newFile = ROOT.TFile(nf,'RECREATE')
->>>>>>> official/master
+
      newTree = sTree.CloneTree(0)
      for n in range(N,N+deltaN):
        rc = sTree.GetEntry(n)
@@ -188,16 +188,16 @@ def recoStep(splitFactor=10,fnames=[],dimuon=False):
      if digiFile in os.listdir('.'): 
         os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
      elif not recoFile in os.listdir('.'):
-<<<<<<< HEAD
+
        print "digiFile missing",fname,digiFile
        continue
-=======
+
        if eospath:
         os.system('xrdcp  $EOSSHIP'+eospath+'/'+fname+'/'+digiFile+ ' '+recoFile)
        else:
         print("digiFile missing",fname,digiFile)
         continue
->>>>>>> official/master
+
      cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
      print('step 2:', cmd,' in directory ',fname)
      os.system(cmd)
@@ -205,11 +205,11 @@ def recoStep(splitFactor=10,fnames=[],dimuon=False):
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
     os.chdir('../')
-<<<<<<< HEAD
+
  print "finished all the tasks."
 def checkFilesWithTracks(D='.',splitFactor=10,dimuon=False):
  fnames = getFilesLocal()
-=======
+
  print("finished all the tasks.")
 
 def checkFilesWithTracks(D='.',splitFactor=5,dimuon=False):
@@ -218,7 +218,7 @@ def checkFilesWithTracks(D='.',splitFactor=5,dimuon=False):
  elif D.find('1GeV')==0 or D.find('10GeV')==0: 
    fnames = getFilesEOS(D)
    eos = os.environ['EOSSHIP']
->>>>>>> official/master
+
  Nfiles = len(fnames)
  fileList=[]
  fileListPer={}
@@ -252,7 +252,7 @@ def cleanUp():
   df = f.replace('_RT','')
   if os.path.isfile(df): os.system('rm ' +df)
 
-<<<<<<< HEAD
+
 def makeMomDistributions(D='.',splitFactor=10):
  fileList,x,y = checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
@@ -262,7 +262,7 @@ def makeMomDistributions(D='.',splitFactor=10):
    if not "histos-analysis-"+tmp[1] in os.listdir('.'):
     cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c anaResiduals -f "+tmp[1]+' &'
     print 'execute:', cmd
-=======
+
 def makeHistos(D='.',splitFactor=5,command="anaResiduals"):
  commandToHist = {"anaResiduals":"histos-analysis-","momResolution":"histos-momentumResolution-","plotDTPoints":"histos-DTPoints-"}
  if D=='.':
@@ -274,20 +274,20 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals"):
    if not commandToHist[command]+tmp[1] in os.listdir('.'):
     cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+tmp[1]+' &'
     print('execute:', cmd)
->>>>>>> official/master
+
     os.system(cmd)
    if len(tmp)>1: os.chdir('../')
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
-<<<<<<< HEAD
+
  print "finished all the tasks."
 
 def makeMomResolutions(D='.',splitFactor=10):
  fileList,x,y = checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
  for df in fileList:
-=======
+
  elif D.find('1GeV')==0 or D.find('10GeV')==0:
   eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
@@ -335,7 +335,7 @@ def makeMomResolutions(D='.',splitFactor=5):
   fileList,x,y = checkFilesWithTracks(D,splitFactor)
   print("fileList established ",len(fileList))
   for df in fileList:
->>>>>>> official/master
+
    tmp = df.split('/')
    if len(tmp)>1: os.chdir(tmp[0])
    if not "histos-momentumResolution-"+tmp[1] in os.listdir('.'):
@@ -346,7 +346,7 @@ def makeMomResolutions(D='.',splitFactor=5):
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
-<<<<<<< HEAD
+
  print "finished all the tasks."
 
 
@@ -354,7 +354,7 @@ def checkAlignment(D='.',splitFactor=10):
  fileList,x,y = checkFilesWithTracks(D,splitFactor)
  print "fileList established ",len(fileList)
  for df in fileList:
-=======
+
  elif D=='1GeV' or D=='10GeV':
   eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
@@ -386,7 +386,7 @@ def checkAlignment(D='.',splitFactor=5):
   fileList,x,y = checkFilesWithTracks(D,splitFactor)
   print("fileList established ",len(fileList))
   for df in fileList:
->>>>>>> official/master
+
    tmp = df.split('/')
    if len(tmp)>1: os.chdir(tmp[0])
    if not "histos-residuals-"+tmp[1] in os.listdir('.'):
@@ -397,9 +397,9 @@ def checkAlignment(D='.',splitFactor=5):
    while 1>0:
         if count_python_processes('drifttubeMonitoring')<ncpus: break 
         time.sleep(100)
-<<<<<<< HEAD
+
  print "finished all the tasks."
-=======
+
  elif D=='1GeV':
   eospathSim1GeV = '/eos/experiment/ship/user/truf/muflux-sim/1GeV'
   temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim1GeV,shell=True)
@@ -424,7 +424,7 @@ def checkAlignment(D='.',splitFactor=5):
         time.sleep(100)
    os.chdir('../')
  print("finished all the tasks.")
->>>>>>> official/master
+
 
 
 def exportToEos(destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True):
@@ -458,8 +458,8 @@ def mergeHistos(case='residuals'):
      if z=='charm' and case == 'momResolution': continue
      os.system(cmd[z])
 
-<<<<<<< HEAD
-=======
+
+
 import rootUtils as ut
 def checkHistos():
  dirList=getFilesLocal()
@@ -519,7 +519,7 @@ def mergeHistos10(case='residuals'):
  for n in range(1,N+1):
     cmd += histname.replace('.','-'+str(N)+'.')
  os.system(cmd)
->>>>>>> official/master
+
 def redoMuonTracks():
  fileList,x,y = checkFilesWithTracks(D='.')
  for df in fileList:

@@ -58,7 +58,7 @@ def execute():
     traj.SetLineWidth(2)
     lsOfGlobals.Add(traj) 
   traj.Set(0)
-<<<<<<< HEAD
+
   SHiPDisplay = lsOfGlobals.FindObject('SHiP Displayer')
 # get zmin, zmax from graphic
   v = ROOT.gEve.GetViewers().FindChild('Bar Embedded Viewer side')
@@ -96,7 +96,7 @@ def execute():
   c1.Update()
 if __name__=="__main__":
   execute()
-=======
+
   return traj
 
 def execute():
@@ -156,4 +156,4 @@ def execute():
 
 if __name__ == "__main__":
     execute()
->>>>>>> official/master
+

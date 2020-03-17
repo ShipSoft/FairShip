@@ -2,10 +2,10 @@
 //  PixelModules, twelve pixel modules physically connected two by two.
 
 #include "PixelModules.h"
-<<<<<<< HEAD
+
 //#include "MagneticPixelModules.h" 
-=======
->>>>>>> official/master
+
+
 #include "PixelModulesPoint.h"
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
@@ -56,7 +56,7 @@ PixelModules::PixelModules()
 {
 }
 
-<<<<<<< HEAD
+
 PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,const char* Title)
   : FairDetector(name, Active, kPixelModules),
     fTrackID(-1),
@@ -72,7 +72,7 @@ PixelModules::PixelModules(const char* name, const Double_t DX, const Double_t D
   DimX = DX;
   DimY = DY;
   DimZ = DZ;
-=======
+
 PixelModules::PixelModules(const char *name, const Double_t DX, const Double_t DY, const Double_t DZ, Bool_t Active,
                            Int_t nSl, const char *Title)
    : FairDetector(name, Active, kPixelModules), fTrackID(-1), fPdgCode(), fVolumeID(-1), fPos(), fMom(), fTime(-1.),
@@ -88,7 +88,7 @@ PixelModules::PixelModules(const char *name, const Double_t DX, const Double_t D
    FlexCuthick = 0.0100 * cm;
    FlexKapthick = 0.0050 * cm;
    SetSiliconSlicesNumber(nSl);
->>>>>>> official/master
+
 }
 
 PixelModules::~PixelModules()
@@ -210,7 +210,7 @@ void PixelModules::ConstructGeometry()
     InitMedium("silicon");
     TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
 
-<<<<<<< HEAD
+
     InitMedium("CoilCopper");
     TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
 
@@ -257,7 +257,7 @@ void PixelModules::ConstructGeometry()
       if (vertical[ipixel]) volPixelBox->AddNode(volPixely, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset)); //compensation for the Node offset
       else volPixelBox->AddNode(volPixelx, PixelIDlist[ipixel], new TGeoTranslation(xs[ipixel],ys[ipixel],-DimZPixelBox/2.+ zs[ipixel]-inimodZoffset));
     }
-=======
+
    InitMedium("aluminium");
    TGeoMedium *Aluminium = gGeoManager->GetMedium("aluminium");
 
@@ -359,7 +359,7 @@ void PixelModules::ConstructGeometry()
          }
       }
    }
->>>>>>> official/master
+
 
    // put passive materials in place (flex and FE)
    Double_t z_tmp_cu = 0. ;

@@ -1,8 +1,8 @@
-<<<<<<< HEAD
-=======
+
+
 from __future__ import print_function
 
->>>>>>> official/master
+
 import os,subprocess,ROOT,time,multiprocessing
 import pwd
 ncpus = int(multiprocessing.cpu_count()*3./4.)
@@ -333,8 +333,8 @@ def makeMomDistributions():
         time.sleep(10)
  print("finished all the tasks.")
 
-<<<<<<< HEAD
-=======
+
+
 zeroField = ['2199','2200','2201']
 noRPC = ['2144','2154','2192','2210','2217','2218','2235','2236','2237','2240','2241','2243','2291','2345','2359']
 def massProduction(keyword = 'RUN_8000_23',fnames=[],merge=False):
@@ -393,7 +393,7 @@ def massProductionAlignment(keyword = 'RUN_8000_2395',fnames=[],merge=False):
     checkAlignment(fileList)
     os.chdir('../')
 
->>>>>>> official/master
+
 def redoMuonTracks():
  fileList = checkFilesWithTracks(D='.')
  for fname in fileList:
@@ -406,8 +406,8 @@ def redoMuonTracks():
         time.sleep(10)
  print("finished all the tasks.")
 
-<<<<<<< HEAD
-=======
+
+
 def reRunReco(r,fname):
  fRT = fname.replace('.root','_RT2.root')
  os.system('xrdcp -f $EOSSHIP/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+r+'/'+fname+' '+fRT)
@@ -430,7 +430,7 @@ def reRunReco(r,fname):
  os.system(cmd)
  print('step 1:', cmd)
 
->>>>>>> official/master
+
 def pot():
  fileList=[]
  # all RT files
@@ -455,8 +455,8 @@ def pot():
  for k in sorted(scalerStat.keys()):
    print(k,':',scalerStat[k])
 
-<<<<<<< HEAD
-=======
+
+
 def makeDTEfficiency(merge=False):
  cmd = "hadd -f DTEff.root "
  for fname in os.listdir('.'):
@@ -482,6 +482,6 @@ def importMomDistr(keyword = 'RUN_8000_2'):
    if not run in os.listdir('.'):
      os.system('mkdir '+run)
    os.system('cp '+pathHistos+run+'/momDistributions.root '+run)
->>>>>>> official/master
+
 
 

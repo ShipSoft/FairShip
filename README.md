@@ -27,7 +27,7 @@ All packages are managed in Git and GitHub. Please read [the Git tutorial for
 SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
 even if you already know Git, as it explains how development is done on GitHub.
 
-<<<<<<< HEAD
+
 ## Prerequisites
 
 All needed pre-requisites are provided by the FairSoft package, see below.
@@ -35,9 +35,9 @@ All needed pre-requisites are provided by the FairSoft package, see below.
 Additionally for developers:
   * clang-format (to format code according to our style guide)
   * clang-tidy (to check coding conventions -- mostly naming rules which are not covered by `cpplint`)
-=======
+
 ## Build Instructions using CVMFS
->>>>>>> official/master
+
 
 ## Build Instructions, following [the tutorial given at the Nov'17 collab meeting](https://indico.cern.ch/event/663423/contributions/2760156/attachments/1555373/2445724/Ship-Soft-CollaborationMeetingNov2017.pdf)
 0. For a full installation go to step 3. If you work on lxplus, or on SLC6/CC7
@@ -54,12 +54,12 @@ Additionally for developers:
     ```    
 2. Setup environment
     ```bash
-<<<<<<< HEAD
+
     source FairShipRun/config.sh
     ```    
 
 3. For a full installation on any linux system:
-=======
+
     aliBuild build FairShip --default fairship --always-prefer-system --config-dir $SHIPDIST
     ```
     If you are not building `master`, you will need to select the appropriate default (see [Branches](#branches)).
@@ -69,14 +69,14 @@ If you exit your shell session and you want to go back working on it, make sure 
 To load the FairShip environment, after you build the software you can simply use:
 
 5. Load the environment
->>>>>>> official/master
+
     ```bash
     mkdir SHiPBuild; cd SHiPBuild
     git clone https://github.com/ShipSoft/FairShip.git 
     FairShip/aliBuild.sh
     ```    
 
-<<<<<<< HEAD
+
 4. Setup environment
     ```bash
     alibuild/alienv enter (--shellrc) FairShip/latest
@@ -84,7 +84,7 @@ To load the FairShip environment, after you build the software you can simply us
     
 ## Docker Instructions
 1. Build an docker image from a Dockerfile:
-=======
+
 However, this won't work if you are using HTCondor. In such case you can do:
 
 ```bash
@@ -94,7 +94,7 @@ eval alienv load FairShip/latest
 ## Local build, without access to CVMFS
 Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.
 1. Download the FairShip software
->>>>>>> official/master
+
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     ```
