@@ -33,6 +33,8 @@ class TrackInfo : public TObject
     unsigned int detId(Int_t n){return fDetIDs[n];}
     float wL(Int_t n){return fWL[n];}
     float wR(Int_t n){return fWR[n];}
+    int McTrack(){return fMcInfo[0];}
+    float ghostFraction(){return float(fMcInfo[1])/100.;}
 
     /*** Output to screen */
     virtual void Print(const Option_t* opt ="") const {;}
@@ -44,6 +46,7 @@ class TrackInfo : public TObject
         ar& fDetIDs;
         ar& fWL;
         ar& fWR;
+        ar& fMcInfo;
     }
 
   protected:
@@ -54,7 +57,8 @@ class TrackInfo : public TObject
     std::vector<unsigned int> fDetIDs;   ///< array of measurements
     std::vector<float> fWL;
     std::vector<float> fWR;
-    ClassDef(TrackInfo,1);
+    std::vector<int> fMcInfo;
+    ClassDef(TrackInfo,2);
 };
 
 #endif

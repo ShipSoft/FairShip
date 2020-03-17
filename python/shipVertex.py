@@ -1,8 +1,12 @@
 from __future__ import print_function
 from __future__ import division
 # simple vertex reconstruction with errors
+
 import ROOT,sys,os
 import global_variables
+
+import ROOT,sys,os,math
+
 import shipunit as u
 import rootUtils as ut
 import numpy as np
@@ -90,7 +94,11 @@ class Task:
    fitStatus = fittedTracks[tr].getFitStatus()
    xx  = fittedTracks[tr].getFittedState()
    pid   = xx.getPDG()
+
    if not global_variables.pidProton and abs(pid) == 2212:
+
+   if not pidProton and abs(pid) == 2212:
+
      pid = int(math.copysign(211,pid))
    rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
    state = ROOT.genfit.StateOnPlane(rep)

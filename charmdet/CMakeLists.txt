@@ -8,6 +8,7 @@ ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/charmdet
 ${CMAKE_SOURCE_DIR}/online
 ${CMAKE_SOURCE_DIR}/genfit/core/include
+${CMAKE_SOURCE_DIR}/genfit/fitters/include
 ${CMAKE_SOURCE_DIR}/genfit/trackReps/include
 ${ROOT_INCLUDE_DIR} 
 )

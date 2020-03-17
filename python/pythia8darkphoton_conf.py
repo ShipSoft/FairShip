@@ -8,7 +8,7 @@ import proton_bremsstrahlung
 from method_logger import MethodLogger
 
 # Boundaries for production in meson decays
-# mass of the meson - mass of other decay product!!
+# mass of the mesons
 pi0mass    = 0.1349770
 etamass    = 0.547862
 omegamass  = 0.78265
@@ -41,52 +41,34 @@ def readFromAscii():
        n+=1
     return h
 
-<<<<<<< HEAD
-def manipulatePhysics(motherMode, mass, P8gen, cf):
+def manipulatePhysics(motherMode, mass, P8gen):
     #changes of the table, now it is deleted and we have each meson mother for each meson production
-    print motherMode
+    #print motherMode
     if motherMode=='pi0' and pi0mass-mass>=0.0000001:
         # use pi0 -> gamma A'
         selectedMum = 111
         P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
-        cf.write('P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")\n')
+        
     elif motherMode == 'eta' and etamass-mass>=0.000001:
-=======
-def manipulatePhysics(mass, P8gen):
-    if (pi0Start < mass < pi0Stop):
-        # use pi0 -> gamma A'
-        selectedMum = 111
-        P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
-    elif etaStart < mass < etaStop:
->>>>>>> official/master
         # use eta -> gamma A'
         #print "eta"
         selectedMum = 221
         P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")
-<<<<<<< HEAD
-        cf.write('P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")\n')
+        
     elif motherMode=="omega" and omegamass-mass>=0.00001:
-=======
-    elif omegaStart < mass < omegaStop:
->>>>>>> official/master
         # use omega -> pi0 A'
         #print "omega"
         selectedMum = 223
         P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")
-<<<<<<< HEAD
-        cf.write('P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")\n')
+        
     elif motherMode=='eta1' and eta1mass-mass>=0.00001:
-=======
-    elif eta1Start < mass < eta1Stop:
->>>>>>> official/master
         # use eta' -> gamma A'
         selectedMum = 331
         P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")
         #should be considered also for mass < 0.188 GeV....
         #P8gen.SetParameters("331:oneChannel = 1 1 0 223 9900015")29%BR
         #P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
-<<<<<<< HEAD
-        cf.write('P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")\n')
+        
     elif motherMode=='eta11' and eta1mass-mass>=0.00001:
         # use eta' -> gamma A'
         selectedMum = 331
@@ -94,24 +76,13 @@ def manipulatePhysics(mass, P8gen):
         #should be considered also for mass < 0.188 GeV....
         #P8gen.SetParameters("331:oneChannel = 1 1 0 223 9900015")29%BR
         #P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")2.75%BR
-        cf.write('P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")\n')
-
+        
     else:
         #print "ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop)
-=======
-    else:
-        print("ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop))
->>>>>>> official/master
         return -1
     return selectedMum
 
-
-
-<<<<<<< HEAD
-def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False):#mothermode is added
-=======
-def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
->>>>>>> official/master
+def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug=True):
     # configure pythia8 for Ship usage
     if debug:
         pythia_log=open('pythia8_conf.txt','w')
@@ -204,16 +175,9 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
     P8gen.SetParameters("Next:numberCount    =  0")
 
     # Configuring decay modes...
-<<<<<<< HEAD
     readDecayTable.addDarkPhotondecayChannels(P8gen, mass, DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
-    # Finish HNL setup...
-    P8gen.SetParameters(str(P8gen.GetDPId())+":mayDecay = on")
-    if debug: cf.write('P8gen.SetParameters("'+str(P8gen.GetDPId())+':mayDecay = on")\n')
-=======
-    readDecayTable.addDarkPhotondecayChannels(P8gen,DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish DP setup...
     P8gen.SetParameters("{}:mayDecay = on".format(P8gen.GetDPId()))
->>>>>>> official/master
     #P8gen.SetDPId(P8gen.GetDPId())
     # also add to PDG
     gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
@@ -222,13 +186,8 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
     
     if inclusive=="meson":
         #change meson decay to dark photon depending on mass
-<<<<<<< HEAD
-	selectedMum = manipulatePhysics(motherMode, mass, P8gen, cf)
-        print 'selected mum is : %d'%selectedMum
-=======
-        selectedMum = manipulatePhysics(mass, P8gen)
+        selectedMum = manipulatePhysics(motherMode, mass, P8gen)
         print('selected mum is : %d'%selectedMum)
->>>>>>> official/master
         if (selectedMum == -1): return 0
 
     #P8gen.SetParameters("Check:particleData = on")
@@ -236,4 +195,3 @@ def configure(P8gen, mass, epsilon, inclusive, deepCopy=False, debug=True):
     if debug: pythia_log.close()
 
     return 1
-
