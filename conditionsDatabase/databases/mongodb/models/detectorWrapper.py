@@ -17,5 +17,5 @@ class DetectorWrapper(Document):
     :param: name - the same as the first detector name; should not be empty and should be unique
     :param: detector - there is always only 1 detector inside a wrapper
     """
-    name = StringField(max_length=1000, primary_key=True, unique=True, required=True)
+    name = StringField(max_length=1000, primary_key=True, required=True)
     detector = EmbeddedDocumentField(Detector)
