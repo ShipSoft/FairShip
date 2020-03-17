@@ -15,12 +15,12 @@ ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 A
 class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
 
     ### Returns a list with all the detector names in the database.
-    #   @param detector_id: (optional) String identifying the parent detector to
+    #   @param detector_id:     (optional) String identifying the parent detector to
     #         retrieve the (sub)detector names for (i.e. 'muonflux/straw_tubes').
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If parent_id does not exist.
     @abstractmethod
-    def list_detectors(self, parent_id):
+    def list_detectors(self, parent_id=None):
         pass
 
     ### Returns a detector dictionary.
@@ -39,15 +39,15 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @throw  TypeError:  If input type is not as specified.
     #   @throw  ValueError: If parent_id does not exist.
     @abstractmethod
-    def add_detector(self, name, parent_id):
+    def add_detector(self, name, parent_id=None):
         pass
 
     ### Removes a detector from the database. Caution: all conditions associated
     ### with this detector will be permanently removed as well!
     #   @param  detector_id:    String identifying the detector to remove (i.e.
     #                           'muonflux/straw_tubes').
-    #   @throw  TypeError:  If input type is not as specified.
-    #   @throw  ValueError: If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def remove_detector(self, detector_id):
         pass
@@ -56,28 +56,27 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @param  detector_id:    String identifying the detector to which the
     #                           condition will be added (i.e. 'muonflux/straw_tubes').
     #   @param  name:           String specifying the name of the condition (e.g. 'strawPositions').
-    #   @param  values:         Dictionary containing the values of the condition.
-    #   @param  type:           String specifying the type of condition (e.g. 'calibration').
     #   @param  tag:            String specifying a tag for the condition. Must be unique
     #                           for the same condition name.
-    #   @param  collected_at:   Timestamp specifying the date/time the condition
-    #                           was acquired. Must be unique w.r.t. the condition name.
-    #                           Can be of type String or datetime.
-    #   @param  valid_since:    Timestamp specifying the date/time as of when the
+    #   @param  collected_at:   Timestamp specifying the date/time the condition was
+    #                           acquired. Must be unique w.r.t. the condition name. Can be of type String or datetime.
+    #   @param  values:         (optional) Dictionary containing the values of the condition.
+    #   @param  type:           (optional) String specifying the type of condition (e.g. 'calibration').
+    #   @param  valid_since:    (optional) Timestamp specifying the date/time as of when the
     #                           condition is valid. Can be of type String or datetime.
-    #   @param  valid_until:    Timestamp specifying the date/time up until the
-    #                           condition is valid. Can be of type String or datetime.
-    #   @throw  TypeError:  If input type is not as specified.
-    #   @throw  ValueError: If detector_id does not exist.
+    #   @param valid_until:     (optional) Timestamp specifying the date/time up
+    #                           until the condition is valid. Can be of type String or datetime.
+    #   @throw TypeError:       If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
-    def add_condition(self, detector_id, name, values, type, tag, collected_at, valid_since, valid_until):
+    def add_condition(self, detector_id, name, tag, collected_at, values=None, type=None, valid_since=None, valid_until=None):
         pass
 
     ### Returns a list with all conditions associated with a detector.
     #   @param  detector_id:    String identifying the detector for which the
     #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
-    #   @throw  TypeError:  If input type is not as specified.
-    #   @throw  ValueError: If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def get_conditions(self, detector_id):
         pass
@@ -87,8 +86,8 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
-    #   @throw  TypeError:  If input type is not as specified.
-    #   @throw  ValueError: If detector_id does not exist.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def get_conditions_by_name(self, detector_id, name):
         pass
@@ -152,12 +151,12 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @param  name:           String specifying the name of the conditions to be updated (e.g.
     #                           'strawPositions').
     #   @param  tag:            String specifying the tag of the condition to be updated.
-    #   @param  valid_since:    Timestamp specifying the date/time as of when the
+    #   @param  valid_since:    (optional) Timestamp specifying the date/time as of when the
     #                           condition is valid. Can be of type String or datetime.
-    #   @param  valid_until:    Timestamp specifying the date/time up until the
+    #   @param  valid_until:    (optional) Timestamp specifying the date/time up until the
     #                           condition is valid. Can be of type String or datetime.
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
-    def update_condition_by_name_and_tag(self, detector_id, name, tag, valid_since, valid_until):
+    def update_condition_by_name_and_tag(self, detector_id, name, tag, valid_since=None, valid_until=None):
         pass
