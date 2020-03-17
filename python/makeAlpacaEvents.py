@@ -13,34 +13,35 @@ def AlpacaFormatting(s):
     if s.find('d')==-1:
         s = numpy.format_float_scientific(float(s))
         s= s.replace('e','d')
+        s= s.replace('+','')
     return s
 
 #determine the path for online usage it can be /eos/../ship/data/.. BUT don't know what we shall do in local usage??
  
 def Ctau(mres,gax):
-    return c_light*hGeV*64.*math.pi/((float(gax)*float(gax))*(float(mres)*float(mres)*float(mres)))
+    return c_light*hGeV*65.*math.pi/((float(gax)*float(gax))*(float(mres)*float(mres)*float(mres)))
 
 def Decaylength(e,p,ctau):
     beta=p/e
     gamma=e/math.sqrt(e*e-p*p)
     return beta*gamma*ctau
 
-def Decayweight(Lmin,Lmax,Decaylength,z_dau):
-    return math.exp(-z_dau/Decaylength)*((Lmax-Lmin)/Decaylength)
+def Decayweight(Lmin,Lmax,Decaylength,LS):
+    return math.exp(-LS/Decaylength)*((Lmax-Lmin)/Decaylength)
 
 def inputWrite(mres,gax,nev,Lmin,Lmax):#need to apply Rmin & Rmax as well..
     mres    = AlpacaFormatting(mres)
     gax     = AlpacaFormatting(gax)
-    L = AlpacaFormatting(Lmax-Lmin)
+    L   = AlpacaFormatting(float(Lmax)-float(Lmin))
     Lmin    = AlpacaFormatting(Lmin)
-    Lmax    = AlpacaFormatting(Lmax) 
+    print Lmin,Lmax,L
     f=open("input.DAT","w")
     f.write("****************************************************************************************\n")
     f.write("***********  RE-RUN ./init IF FIRST FIVE PARAMETERS ARE CHANGED:  **********************\n")
     f.write("****************************************************************************************\n")
     f.write("*************************  Experimental parameters *************************************\n")
     f.write("****************************************************************************************\n")
-    f.write("400d0        ! [ebeam] : Beam kinetic energy (GeV)\n")
+    f.write("4d2          ! [ebeam] : Beam kinetic energy (GeV)\n")
     f.write("'prot'       ! [btype] : Beam type ('prot' = proton, 'elec' = electron)\n")
     f.write("95.95d0      ! [aa] : Target mass number\n")
     f.write("42d0         ! [az] : Target atomic number\n")
@@ -96,20 +97,28 @@ def ntupleWrite(ctau,fn,Lmin,Lmax,startZ,endZ,SmearBeam):
     f=ROOT.TFile(inputFile,"recreate")
     ntup=ROOT.TNtuple("MCTrack","Track Informations","event:track:pdg:px:py:pz:x:y:z:parent:decay:e:tof:w")
     for i,j in enumerate(range(5,len(fn),9)):
+        LS = ROOT.gRandom.Uniform(Lmin*100.,Lmax*100.)
         zinter = ROOT.gRandom.Uniform(startZ,endZ)
         dx, dy = ROOT.gRandom.Uniform(-1,+1)*SmearBeam, ROOT.gRandom.Uniform(-1,+1)*SmearBeam
         tr=fn[j].split()
         dau1=fn[j+1].split()
         dau2=fn[j+2].split()
-        p = math.sqrt(float(tr[7])**2.+float(tr[8])**2.+float(tr[9])**2.)
+        px,py,pz=float(tr[7]),float(tr[8]),float(tr[9])
+        p = math.sqrt(px**2.+py**2.+pz**2.)
+        lam = LS/p
+        daux,dauy,dauz= dx+lam*px,dy+lam*py,zinter+lam*pz
         #print float(tr[10]),p
         dl=Decaylength(float(tr[10]),p,ctau)
-        print SmearBeam,zinter,dx,dy
-        w = Decayweight(Lmin*100.,Lmax*100.,dl,float(dau1[14])/10.+zinter)
-        print dl,w
-        ntup.Fill(int(i),int(0),int(9900015),float(tr[7]),float(tr[8]),float(tr[9]),float(tr[12])+dx,float(tr[13])/10.+dy,float(tr[14])/10.+zinter,int(-1),float(0),float(tr[10]),float(0),w)
-        ntup.Fill(int(i),int(1),int(dau1[1]),float(dau1[7]),float(dau1[8]),float(dau1[9]),float(dau1[12])/10.+dx,float(dau1[13])/10.+dy,float(dau1[14])/10.+zinter,int(0),float(1),float(dau1[10]),float(dau1[15])/10./c_light,w)
-        ntup.Fill(int(i),int(2),int(dau2[1]),float(dau2[7]),float(dau2[8]),float(dau2[9]),float(dau2[12])/10.+dx,float(dau2[13])/10.+dy,float(dau2[14])/10.+zinter,int(0),float(1),float(dau2[10]),float(dau2[15])/10./c_light,w)
+        #print SmearBeam,zinter,dx,dy
+        w = Decayweight(Lmin*100.,Lmax*100.,dl,LS)
+        #print dl,w
+        print "pos: ",daux,dauy,dauz
+        print "mom: ",px,py,pz,p
+        ntup.Fill(int(i),int(0),int(9900015),px,py,pz,dx,dy,zinter,int(-1),float(0),float(tr[10]),float(0),w)
+        #ntup.Fill(int(i),int(1),int(dau1[1]),float(dau1[7]),float(dau1[8]),float(dau1[9]),float(dau1[12])/10.+dx,float(dau1[13])/10.+dy,float(dau1[14])/10.+zinter,int(0),float(1),float(dau1[10]),float(dau1[15])/10./c_light,w)
+        #ntup.Fill(int(i),int(2),int(dau2[1]),float(dau2[7]),float(dau2[8]),float(dau2[9]),float(dau2[12])/10.+dx,float(dau2[13])/10.+dy,float(dau2[14])/10.+zinter,int(0),float(1),float(dau2[10]),float(dau2[15])/10./c_light,w)
+        ntup.Fill(int(i),int(1),int(dau1[1]),float(dau1[7]),float(dau1[8]),float(dau1[9]),daux,dauy,dauz,int(0),float(1),float(dau1[10]),float(dau1[15])/10./c_light,w)
+        ntup.Fill(int(i),int(2),int(dau2[1]),float(dau2[7]),float(dau2[8]),float(dau2[9]),daux,dauy,dauz,int(0),float(1),float(dau2[10]),float(dau2[15])/10./c_light,w)
     ntup.Write()
     f.Close()
     return inputFile
@@ -118,17 +127,20 @@ def runEvents(mres,gax,nev,Lmin,Lmax,startZ,endZ,SmearBeam):
     pid=9900015
     m = mres
     g= gax
+    print m, g
     pdg = ROOT.TDatabasePDG.Instance()
     pdg.AddParticle('a','ALP', m, False, g, 0., 'a', pid)
     wdir = os.environ['ALPACABIN']
     #wdir="/home/atakan/ShipSoft/sw/ubuntu1804_x86-64/alpaca/v1.1-2/bin"
+    old=os.getcwd()
     os.chdir(wdir)
     inputWrite(mres,gax,nev,Lmin,Lmax)
     rn="./alpaca < input.DAT"
     os.system(rn)
     fn=open("./evrecs/evrectest.dat","r")
     ctau=Ctau(mres,gax)
-    print ctau
+    #print ctau
     inputFile = ntupleWrite(ctau,fn,Lmin,Lmax,startZ,endZ,SmearBeam)
+    os.chdir(old)
     return wdir+"/"+inputFile
 #runEvents()
