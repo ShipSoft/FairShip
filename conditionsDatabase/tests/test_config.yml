@@ -1,0 +1,13 @@
+db_type: oracle
+mongo:
+  db_name: conditionsDB
+  host: localhost
+  password: None
+  port: 27017
+  user: None
+oracle:
+  db_name: conditionsDB
+  host: localhost
+  password: None
+  port: 27017
+  user: None
