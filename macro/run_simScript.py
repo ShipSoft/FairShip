@@ -5,7 +5,7 @@ import os
 import sys
 import getopt
 import ROOT
-import makeAlpacaEvents
+import makeALPACAEvents
 # Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
@@ -52,6 +52,7 @@ checking4overlaps = False
 if debug>1 : checking4overlaps = True
 
 parser = ArgumentParser()
+group = parser.add_mutually_exclusive_group()
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
 parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
@@ -62,7 +63,7 @@ parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
-parser.add_argument("--Alpaca",  dest="alpaca",  help="Use alpaca as input", required=False, action="store_true")
+group.add_argument("--ALPACA",  dest="ALPACA",  help="Use ALPACA as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
@@ -85,7 +86,7 @@ parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event o
 parser.add_argument("-s", "--seed",dest="theSeed",  help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", required=False,  default=0, type=int)
 parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an integer for the muonBackground simulation with specific seed for each muon, only for experts!"\
                                             ,required=False,  default=False, type=int)
-parser.add_argument("-f",        dest="inputFile",       help="Input file if not default file", required=False, default=False)
+group.add_argument("-f",        dest="inputFile",       help="Input file if not default file", required=False, default=False)
 parser.add_argument("-g",        dest="geofile",       help="geofile for muon shield geometry, for experts only", required=False, default=None)
 parser.add_argument("-o", "--output",dest="outputDir",  help="Output directory", required=False,  default=".")
 parser.add_argument("-Y",        dest="dy",  help="max height of vacuum tank", required=False, default=globalDesigns[default]['dy'])
@@ -118,10 +119,7 @@ if options.pg:       simEngine = "PG"
 if options.genie:    simEngine = "Genie"
 if options.nuradio:  simEngine = "nuRadiography"
 if options.ntuple:   simEngine = "Ntuple"
-if options.alpaca:
-    options.inputFile= False
-    CaloDesign = "2"
-    simEngine = "Alpaca"
+if options.ALPACA:   simEngine = "ALPACA"
 if options.muonback: simEngine = "MuonBack"
 if options.nuage:    simEngine = "Nuage"
 if options.mudis:    simEngine = "muonDIS"
@@ -301,26 +299,23 @@ if simEngine == "Pythia8":
 # P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
  
-if simEngine == "Alpaca":#Rmin and Rmax of Decay Volume is needed...
-  #primGen.SetTarget(ship_geo.target.z0, 0.)
+if simEngine == "ALPACA":
+  print('Generating ALP events of mass {} GeV with the photon coupling coefficient {} GeV^-1'.format(options.theMass, options.theDPepsilon))
   target     = ship_geo.target
-  z_middle   = target.z0
-  DZ         = target.length/2
-  startZ     =   z_middle - DZ
-  endZ       =   z_middle + DZ
+  startZ     = target.z0
+  lengthZ    = target.length
+  endZ       = startZ + lengthZ
   SmearBeam  = 1*u.cm # finite beam size
-  print(SmearBeam,"run")
   Lmin       = ((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)/100.
   Lmax       = (ship_geo.TrackStation1.z - ship_geo.target.z0)/100.
-  inputFile  = makeAlpacaEvents.runEvents(options.theMass,options.theDPepsilon,options.nEvents,Lmin,Lmax,startZ,endZ,SmearBeam)
+  print('ALPACA is initializing.')
+  inputFile  = makeALPACAEvents.runEvents(options.theMass,options.theDPepsilon,options.nEvents,Lmin,Lmax,startZ,endZ,SmearBeam)
+  if inputFile: print('ALPACA is done.')
   ut.checkFileExists(inputFile)
-  #run.CreateGeometryFile("%s/geofile_full.%s.root" % (options.outputDir, tag))
-  # save ShipGeo dictionary in geofile
-  #import saveBasicParameters
-  #saveBasicParameters.execute("%s/geofile_full.%s.root" % (options.outputDir, tag),ship_geo)
-  Alpacagen = ROOT.AlpacaGenerator()
-  Alpacagen.Init(inputFile)
-  primGen.AddGenerator(Alpacagen)
+  ALPACAgen = ROOT.ALPACAGenerator()
+  ALPACAgen.Init(inputFile)
+  print('ALPACAGenerator is reading the ALPACA events')
+  primGen.AddGenerator(ALPACAgen)
  
 if simEngine == "FixedTarget":
  P8gen = ROOT.FixedTargetGenerator()

@@ -45,7 +45,7 @@ MuonBackGenerator.cxx
 CosmicsGenerator.cxx
 MuDISGenerator.cxx
 FixedTargetGenerator.cxx
-AlpacaGenerator.cxx
+ALPACAGenerator.cxx
 )
 
 set(LINKDEF GenLinkDef.h)

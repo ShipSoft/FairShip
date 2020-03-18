@@ -8,15 +8,15 @@
 
 class FairPrimaryGenerator;
 
-class AlpacaGenerator : public FairGenerator
+class ALPACAGenerator : public FairGenerator
 {
  public:
   
   /** default constructor **/
-  AlpacaGenerator();
+  ALPACAGenerator();
   
   /** destructor **/
-  virtual ~AlpacaGenerator();
+  virtual ~ALPACAGenerator();
   
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);  
@@ -34,7 +34,7 @@ class AlpacaGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   int fNevents;
   int fn;
-  ClassDef(AlpacaGenerator,1);
+  ClassDef(ALPACAGenerator,1);
 };
 
 #endif /* !ALPACAGENERATOR_H */
