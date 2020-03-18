@@ -15,5 +15,5 @@
 #pragma link C++ class  MuDISGenerator+;
 #pragma link C++ class  NuageGenerator+;
 #pragma link C++ class  FixedTargetGenerator+;
-#pragma link C++ class  AlpacaGenerator+;
+#pragma link C++ class  ALPACAGenerator+;
 #endif
