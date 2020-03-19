@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 from __future__ import print_function
 from __future__ import division
 import os
@@ -82,7 +82,7 @@ parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to
 parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0, type=int)
 parser.add_argument("-s", "--seed",dest="theSeed",  help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", required=False,  default=0, type=int)
 parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an integer for the muonBackground simulation with specific seed for each muon, only for experts!"\
-                                            ,required=False,  default=False)
+                                            ,required=False,  default=False, type=int)
 parser.add_argument("-f",        dest="inputFile",       help="Input file if not default file", required=False, default=False)
 parser.add_argument("-g",        dest="geofile",       help="geofile for muon shield geometry, for experts only", required=False, default=None)
 parser.add_argument("-o", "--output",dest="outputDir",  help="Output directory", required=False,  default=".")
