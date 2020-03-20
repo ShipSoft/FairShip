@@ -5,25 +5,21 @@ import sys
 import yaml
 from databases.mongodb.mongodb import MongoToCDBAPIAdapter
 
+### This class creates an instance of the specified database API.
 class APIFactory:
-    """
-    This class creates an instance of the specified database API.
-    """
 
     def __init__(self):
         # supported_db_types is the list of different databases which are supported
         self.__supported_db_types = ["mongo", "oracle"]
         pass
 
-    def construct_DB_API(self, path):
-        """
-        Returns an instance of the specified database API based on a configuration file
-        or raise an exception
-        :param path the path to the configuration file. It could be "", then the default path will be considered.
 
-        Default path is $FAIRHOME/conditionsDatabase/config.yml.
-        """
-        
+    ### Returns an instance of the specified database API based on a configuration file
+    #   @param  path:                     the path to the configuration file. It could be "", then the default path will be considered.
+    #                                     The default path is $FAIRHOME/conditionsDatabase/config.yml.
+    #   @throw  NotImplementedError:      If the specified database is not supported
+    #   @return                           Instance of the specified database API
+    def construct_DB_API(self, path):
         supported_db_names = ["mongo", "mysql"]
         config = self.__read_config_file(path)
 
@@ -43,13 +39,12 @@ class APIFactory:
             raise NotImplementedError(db_type + " database is not supported")
 
 
+    ### Loads the configuration from the config file, including the database type and also the connection information.
+    #   @param  path:           the path to the configuration file. It could be "", then the default path will be considered.
+    #                           The default path is $FAIRHOME/conditionsDatabase/config.yml.
+    #   @throw  KeyError:       If the configuration file is incomplete
+    #   @return                 The connection dictionary
     def __read_config_file(self, path):
-        """
-        Loads the configuration from the config file,
-        including the database type and also the connection information
-        :param path the path to the configuration file. It could be "", then the default path will be considered.
-        """
-
         ret = {}
         if len(path) == 0:
             home_dir = str(os.getenv('FAIRHOME'))
