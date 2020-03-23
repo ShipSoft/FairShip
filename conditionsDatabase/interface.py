@@ -8,11 +8,11 @@ __copyright__ = "TU/e ST2019"
 __version__   = "0.3"
 __status__    = "Prototype"
 
-ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 AND 3
+_ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 AND 3
 
 ### Interface for attaching a database API, this class defines all functions
 ### that must be available in a concrete implementation of a database API.
-class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
+class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
 
     ### Returns a list with all the detector names in the database.
     #   @param detector_id:     (optional) String identifying the parent detector to
@@ -69,7 +69,7 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @throw TypeError:       If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
-    def add_condition(self, detector_id, name, tag, collected_at, values=None, type=None, valid_since=None, valid_until=None):
+    def add_condition(self, detector_id, name, tag, collected_at, values, type=None, valid_since=None, valid_until=None):
         pass
 
     ### Returns a list with all conditions associated with a detector.
@@ -81,7 +81,7 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     def get_conditions(self, detector_id):
         pass
 
-    ### Returns a list with conditions having a specific name for a given detector.
+    ### Returns a list with condition dictionaries having a specific name for a given detector.
     #   @param  detector_id:    String identifying the detector for which the
     #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
@@ -92,7 +92,17 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     def get_conditions_by_name(self, detector_id, name):
         pass
 
-    ### Returns a list with conditions associated with a detector that are valid on the
+    ### Returns a list with condition dictionaries having a specific tag for a given detector.
+    #   @param  detector_id:    String identifying the detector for which the
+    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
+    #   @param  tag:            String specifying the tag of the condition to be retrieved.
+    #   @throw  TypeError:      If input type is not as specified.
+    #   @throw  ValueError:     If detector_id does not exist.
+    @abstractmethod
+    def get_conditions_by_tag(self, detector_id, tag):
+        pass
+
+    ### Returns a list with condition dictionaries associated with a detector that are valid on the
     ### specified date.
     #   @param  detector_id:    String identifying the detector for which the
     #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
@@ -106,7 +116,7 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     def get_conditions_by_name_and_validity(self, detector_id, name, date):
         pass
 
-    ### Returns the values of a specific condition belonging to a detector,
+    ### Returns a condition dictionary of a specific condition belonging to a detector,
     ### identified by condition name and tag.
     #   @param  detector_id:    String identifying the detector for which the
     #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
@@ -119,17 +129,7 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     def get_condition_by_name_and_tag(self, detector_id, name, tag):
         pass
 
-    ### Returns a list with conditions having a specific tag for a given detector.
-    #   @param  detector_id:    String identifying the detector for which the
-    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
-    #   @param  tag:            String specifying the tag of the condition to be retrieved.
-    #   @throw  TypeError:      If input type is not as specified.
-    #   @throw  ValueError:     If detector_id does not exist.
-    @abstractmethod
-    def get_conditions_by_tag(self, detector_id, tag):
-        pass
-
-    ### Returns the values of a specific condition belonging to a detector, identified by
+    ### Returns a condition dictionary of a specific condition belonging to a detector, identified by
     ### condition name and collection date/time.
     #   @param  detector_id:    String identifying the detector for which the
     #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
@@ -144,7 +144,7 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     def get_condition_by_name_and_collection_date(self, detector_id, name, collected_at):
         pass
 
-    ### Updates the valid_since and valid_until values of a specific condition
+    ### Updates the type, valid_since and valid_until values of a specific condition
     ### belonging to a detector, identified by condition name and tag.
     #   @param  detector_id:    String identifying the detector for which the
     #                           condition must be updated (i.e. 'muonflux/straw_tubes').
@@ -158,5 +158,5 @@ class APIInterface(ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
-    def update_condition_by_name_and_tag(self, detector_id, name, tag, valid_since=None, valid_until=None):
+    def update_condition_by_name_and_tag(self, detector_id, name, tag, type=None, valid_since=None, valid_until=None):
         pass
