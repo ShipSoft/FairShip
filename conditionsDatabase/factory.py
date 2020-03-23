@@ -16,10 +16,10 @@ class APIFactory:
 
     ### Returns an instance of the specified database API based on a configuration file
     #   @param  path:                     the path to the configuration file. It could be "", then the default path will be considered.
-    #                                     The default path is $FAIRHOME/conditionsDatabase/config.yml.
+    #                                     The default path is $FAIRSHIP/conditionsDatabase/config.yml.
     #   @throw  NotImplementedError:      If the specified database is not supported
     #   @return                           Instance of the specified database API
-    def construct_DB_API(self, path):
+    def construct_DB_API(self, path = None):
         supported_db_names = ["mongo", "mysql"]
         config = self.__read_config_file(path)
 
@@ -41,13 +41,13 @@ class APIFactory:
 
     ### Loads the configuration from the config file, including the database type and also the connection information.
     #   @param  path:           the path to the configuration file. It could be "", then the default path will be considered.
-    #                           The default path is $FAIRHOME/conditionsDatabase/config.yml.
+    #                           The default path is $FAIRSHIP/conditionsDatabase/config.yml.
     #   @throw  KeyError:       If the configuration file is incomplete
     #   @return                 The connection dictionary
     def __read_config_file(self, path):
         ret = {}
-        if len(path) == 0:
-            home_dir = str(os.getenv('FAIRHOME'))
+        if path is None or len(path) == 0:
+            home_dir = str(os.getenv('FAIRSHIP'))
             path = home_dir + "/conditionsDatabase/config.yml"
         else:
             path_details = path.split(".")

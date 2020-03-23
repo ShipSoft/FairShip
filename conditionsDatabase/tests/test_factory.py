@@ -19,16 +19,16 @@ def supply_dbAPI():
     db_api = factory.construct_DB_API()
     return db_api
 
-@pytest.mark.set1
+@pytest.mark.smoke_test
 def test_create_mongo_api():
     """
     This method checks if the factory can create a proper instance of the API.
     """
     factory = APIFactory()
-    db_api = factory.construct_DB_API("")
+    db_api = factory.construct_DB_API()
     assert isinstance(db_api, MongoToCDBAPIAdapter)
 
-@pytest.mark.set2
+@pytest.mark.smoke_test
 def test_create_unknown_api():
     """
     This method checks if the factory can raise a proper exception
