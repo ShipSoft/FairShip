@@ -151,6 +151,7 @@ class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @param  name:           String specifying the name of the conditions to be updated (e.g.
     #                           'strawPositions').
     #   @param  tag:            String specifying the tag of the condition to be updated.
+    #   @param  type:           (optional) String specifying the type of condition (e.g. 'calibration').
     #   @param  valid_since:    (optional) Timestamp specifying the date/time as of when the
     #                           condition is valid. Can be of type String or datetime.
     #   @param  valid_until:    (optional) Timestamp specifying the date/time up until the
