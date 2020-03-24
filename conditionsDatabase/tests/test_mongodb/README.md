@@ -4,29 +4,17 @@ Every time you want to execute the unit test, you have to run `generate_test_db.
 and insert dummy data inside. 
 
 #### How to generate test database
+Go to the FairSHiP root folder and execute:
 ```
-python generate_test_db.py
+python -m conditionsDatabase.tests.test_mongodb.generate_test_db
 ```
 
 #### How to execute PyTest
+Go to `/conditionsDatabase/tests/test_mongodb/` and execute:
 ```
 py.test
 ```
-
-#### Check the status of every test unit
+You can also check the status of every unit by executing:
 ```
 py.test --verbose
-```
-
-#### (Optional)
-In some environments, relative-import module does not work. A work around would be to use `sys.path.append()` instead. 
-For example, in relative-import:
-```
-from ...factory import APIFactory
-```
-You can change it into:
-```
-import sys
-sys.path.append("../..")
-from factory import APIFactory
 ```
