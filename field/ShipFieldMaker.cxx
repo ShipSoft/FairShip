@@ -31,6 +31,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <cstdlib>
 
 ShipFieldMaker::ShipFieldMaker(Bool_t verbose) :
@@ -1258,22 +1259,30 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
     if (dy > 0.0) {Ny = static_cast<Int_t>(((yMax - yMin)/dy) + 0.5);}
 
     // Create a 2d histogram
-    TH2D theHist("theHist", "", Nx, xMin, xMax, Ny, yMin, yMax);
-    theHist.SetDirectory(0);
-    if (type == 0) {
+    const int nhistograms = 4; //x,y,z,and magnitude
+    const int ncoordinates = 3; //x,y,z
+    
+    TH2D theHist[nhistograms]; 
+    std::string titles[nhistograms] = {"Bx (T)","By (T)","Bz (T)","B (T)"};
+    for (int icomponent = 0; icomponent< nhistograms; icomponent++){
+      theHist[icomponent] = TH2D(Form("theHist[%i]",icomponent), titles[icomponent].data(), Nx, xMin, xMax, Ny, yMin, yMax);
+      theHist[icomponent].SetDirectory(0);
+      if (type == 0) {
 	// x-y
-	theHist.SetXTitle("x (cm)"); 
-	theHist.SetYTitle("y (cm)");
-    } else if (type == 1) {
+	theHist[icomponent].SetXTitle("x (cm)"); 
+	theHist[icomponent].SetYTitle("y (cm)");
+     } 
+      else if (type == 1) {
 	// z-x
-	theHist.SetXTitle("z (cm)"); 
-	theHist.SetYTitle("x (cm)");
-    } else if (type == 2) {
+	theHist[icomponent].SetXTitle("z (cm)"); 
+	theHist[icomponent].SetYTitle("x (cm)");
+      } 
+      else if (type == 2) {
 	// z-y
-	theHist.SetXTitle("z (cm)"); 
-	theHist.SetYTitle("y (cm)");
+	theHist[icomponent].SetXTitle("z (cm)"); 
+	theHist[icomponent].SetYTitle("y (cm)");
+      }
     }
-
     // Get list of volumes (to check for local fields)
     TObjArray* theVolumes = gGeoManager->GetListOfVolumes();
     Int_t nVol(0);
@@ -1290,13 +1299,13 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 	    Double_t y = dy*iy + yMin;
 
 	    // Initialise the B field array to zero
-	    Double_t B[3] = {0.0, 0.0, 0.0};
+	    Double_t B[ncoordinates] = {0.0, 0.0, 0.0};
 
 	    // Initialise the position array to zero
-	    Double_t position[3] = {0.0, 0.0, 0.0};
+	    Double_t position[ncoordinates] = {0.0, 0.0, 0.0};
 	    if (type == 0) {
 		// x-y
-		position[0] = x, position[1] = y;
+  	        position[0] = x, position[1] = y;
 	    } else if (type == 1) {
 		// z-x
 		position[0] = y, position[2] = x;
@@ -1339,8 +1348,11 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 	    }
 		    
 	    // Divide by the Tesla_ factor, since we want to plot Tesla_ not kGauss (VMC/FairRoot units)
+	    for (int icomponent = 0; icomponent<ncoordinates; icomponent++){
+	      theHist[icomponent].Fill(x,y, B[icomponent]/Tesla_);
+	    }
 	    Double_t BMag = sqrt(B[0]*B[0] + B[1]*B[1] + B[2]*B[2])/Tesla_;
-	    theHist.Fill(x, y, BMag);
+	    theHist[3].Fill(x, y, BMag);
 
 	} // "y" axis
 
@@ -1356,8 +1368,11 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
     gStyle->SetPalette(kBird);
     theCanvas.UseCurrentStyle();
 
-    theCanvas.cd();
-    theHist.Draw("colz");
+    theCanvas.Divide(2,2);
+	for (int icomponent = 0; icomponent < nhistograms; icomponent++){
+		theCanvas.cd(icomponent+1);
+		theHist[icomponent].Draw("colz");
+	}
     theCanvas.Print(plotFile.c_str());
 
     // Reset the batch boolean
