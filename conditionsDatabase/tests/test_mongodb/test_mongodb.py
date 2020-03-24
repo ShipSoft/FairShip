@@ -89,50 +89,51 @@ def test_get_detector(cdb_api, detector_id):
 
         # check if the result has the correct name
         if type(result) == dict:
-            assert result["name"] == detector_id, "the result has different detector name"
+            # check if the returned detector still has the same detector_id.
+            assert result["name"] == detector_id.split('/')[-1], "the result has different detector name"
 
-        # check if the detector has the correct value
-        if result["name"] == "detector_id_exist":
-            assert result["conditions"][0]["name"] == "condition_exist", "condition name has wrong value"
-            assert result["conditions"][0]["tag"] == "1", "condition tag has wrong value"
-            assert result["conditions"][0]["type"] == "type1", "condition tag has wrong value"
-            assert result["conditions"][0]["collected_at"] == "2020,03,20,21,39,19,575138", \
-                "condition collected_at has wrong value"
-            assert result["conditions"][0]["valid_since"] == "2020,03,20,21,39,19,575149", \
-                "condition valid_since has wrong value"
-            assert result["conditions"][0]["valid_until"] == "2020,04,20,21,39,19,575151", \
-                "condition valid_until has wrong value"
-            assert result["conditions"][0]["values"] == {"name": "name detector", "value": "value detector"}, \
-                "condition values has wrong value"
+            # check if the detector has the correct value
+            if result["name"] == "detector_id_exist":
+                assert result["conditions"][0]["name"] == "condition_exist", "condition name has wrong value"
+                assert result["conditions"][0]["tag"] == "1", "condition tag has wrong value"
+                assert result["conditions"][0]["type"] == "type1", "condition tag has wrong value"
+                assert result["conditions"][0]["collected_at"] == "2020,03,12,11,05,27,767563", \
+                    "condition collected_at has wrong value"
+                assert result["conditions"][0]["valid_since"] == "2020,03,12,11,05,27,767563", \
+                    "condition valid_since has wrong value"
+                assert result["conditions"][0]["valid_until"] == "2020,04,10,11,05,27,767563", \
+                    "condition valid_until has wrong value"
+                assert result["conditions"][0]["values"] == {"name": "name detector", "value": "value detector"}, \
+                    "condition values has wrong value"
 
-        # check if the sub detector has the correct value
-        if result["name"] == "sub_detector_id_exist":
-            assert result["conditions"][0]["name"] == "sub_detector_id_exist", "condition name has wrong value"
-            assert result["conditions"][0]["tag"] == "sub1", "condition tag has wrong value"
-            assert result["conditions"][0]["type"] == "subtype1", "condition tag has wrong value"
-            assert result["conditions"][0]["collected_at"] == "2020,04,20,21,39,19,575138", \
-                "condition collected_at has wrong value"
-            assert result["conditions"][0]["valid_since"] == "2020,04,20,21,39,19,575149", \
-                "condition valid_since has wrong value"
-            assert result["conditions"][0]["valid_until"] == "2020,05,20,21,39,19,575151", \
-                "condition valid_until has wrong value"
-            assert result["conditions"][0]["values"] == {"name": "name sub detector", "value": "value sub detector"}, \
-                "condition values has wrong value"
+            # check if the sub detector has the correct value
+            if result["name"] == "sub_detector_id_exist":
+                assert result["conditions"][0]["name"] == "sub_detector_id_exist", "condition name has wrong value"
+                assert result["conditions"][0]["tag"] == "sub1", "condition tag has wrong value"
+                assert result["conditions"][0]["type"] == "subtype1", "condition tag has wrong value"
+                assert result["conditions"][0]["collected_at"] == "2020,04,12,11,05,27,767563", \
+                    "condition collected_at has wrong value"
+                assert result["conditions"][0]["valid_since"] == "2020,04,12,11,05,27,767563", \
+                    "condition valid_since has wrong value"
+                assert result["conditions"][0]["valid_until"] == "2020,05,12,11,05,27,767563", \
+                    "condition valid_until has wrong value"
+                assert result["conditions"][0]["values"] == {"name": "name sub detector", "value": "value sub detector"}, \
+                    "condition values has wrong value"
 
-        # check if the sub sub detector has the correct value
-        if result["name"] == "sub_sub_detector_id_exist":
-            assert result["conditions"][0]["name"] == "condition_exist", "condition name has wrong value"
-            assert result["conditions"][0]["tag"] == "1", "condition tag has wrong value"
-            assert result["conditions"][0]["type"] == "type1", "condition tag has wrong value"
-            assert result["conditions"][0]["collected_at"] == "2020,05,20,21,39,19,575138", \
-                "condition collected_at has wrong value"
-            assert result["conditions"][0]["valid_since"] == "2020,05,20,21,39,19,575149", \
-                "condition valid_since has wrong value"
-            assert result["conditions"][0]["valid_until"] == "2020,06,20,21,39,19,575151", \
-                "condition valid_until has wrong value"
-            assert result["conditions"][0]["values"] == \
-                {"name": "name sub sub detector", "value": "value sub sub detector"}, \
-                "condition values has wrong value"
+            # check if the sub sub detector has the correct value
+            if result["name"] == "sub_sub_detector_id_exist":
+                assert result["conditions"][0]["name"] == "condition_exist", "condition name has wrong value"
+                assert result["conditions"][0]["tag"] == "1", "condition tag has wrong value"
+                assert result["conditions"][0]["type"] == "type1", "condition tag has wrong value"
+                assert result["conditions"][0]["collected_at"] == "2020,05,12,11,05,27,767563", \
+                    "condition collected_at has wrong value"
+                assert result["conditions"][0]["valid_since"] == "2020,05,12,11,05,27,767563", \
+                    "condition valid_since has wrong value"
+                assert result["conditions"][0]["valid_until"] == "2020,06,12,11,05,27,767563", \
+                    "condition valid_until has wrong value"
+                assert result["conditions"][0]["values"] == \
+                    {"name": "name sub sub detector", "value": "value sub sub detector"}, \
+                    "condition values has wrong value"
 
 
 @pytest.mark.parametrize("name, parent_id", [
@@ -177,9 +178,9 @@ def test_add_detector(cdb_api, name, parent_id):
         with pytest.raises(TypeError):
             assert cdb_api.add_detector(name, parent_id)
 
-    if type(parent_id) != str:
+    if type(parent_id) != str and parent_id is not None:
         has_correct_parameter_type = False
-        # raise TypeError when parent_id is not a str.
+        # raise TypeError when parent_id is not a str and not None.
         with pytest.raises(TypeError):
             assert cdb_api.add_detector(name, parent_id)
 
@@ -296,8 +297,8 @@ def test_add_condition(cdb_api, detector_id, name, values, test_type, tag, colle
     """
 
     has_correct_parameter_type = True
-    if type(detector_id) != str or type(name) != str or type(values) != dict or type(test_type) != str or \
-            type(tag) != str:
+    if type(detector_id) != str or type(name) != str or type(values) != dict or \
+            (type(test_type) != str and type(test_type) is not None) or type(tag) != str:
         has_correct_parameter_type = False
         # raise TypeError when detector_id /name /values /type /tag is not an str.
         with pytest.raises(TypeError):
@@ -305,7 +306,8 @@ def test_add_condition(cdb_api, detector_id, name, values, test_type, tag, colle
                                          valid_until)
 
     if (type(collected_at) != str and type(collected_at) != datetime.datetime) or \
-            (type(valid_until) != str and type(valid_until) != datetime.datetime):
+            (type(valid_since) != str and type(valid_since) != datetime.datetime and valid_since is not None) or \
+            (type(valid_until) != str and type(valid_until) != datetime.datetime and valid_until is not None):
         has_correct_parameter_type = False
         # raise TypeError when collected_at or valid_until has a wrong type.
         with pytest.raises(TypeError):
@@ -416,9 +418,9 @@ def test_get_conditions(cdb_api, detector_id):
     # Test with exist detector and exist condition
     ("detector_id_exist", "condition_exist"),
     # Test with exist detector, but not exist condition
-    ("detector_id_exist", "condition_not_exist")
+    ("detector_id_exist", "condition_not_exist"),
     # Test with not exist detector
-    ("detector_id_not_exist", "condition_not_exist"),
+    ("detector_id_not_exist", "condition_not_exist")
 ])
 def test_get_conditions_by_name(cdb_api, detector_id, name):
     """
@@ -464,7 +466,7 @@ def test_get_conditions_by_name(cdb_api, detector_id, name):
     # Test with string obj for date parameter
     ("detector_id_exist", "condition_exist", "2020,03,16,12,07,30"),
     # Test with datetime obj for date parameter
-    ("detector_id_exist", "condition_exist", datetime.datetime(2020, 3, 16, 12, 7, 30))
+    ("detector_id_exist", "condition_exist", datetime.datetime(2020, 3, 16, 12, 7, 30)),
     # Test with string obj for date parameter with precise millisecond
     ("detector_id_exist", "condition_exist", "2020,03,16,12,07,30,129920"),
     # Test with datetime obj for date parameter with precise millisecond
@@ -703,34 +705,34 @@ def test_get_condition_by_name_and_collection_date(cdb_api, detector_id, name, c
                 "condition values value is wrong"
 
 
-@pytest.mark.parametrize("detector_id, name, tag, valid_since, valid_until", [
+@pytest.mark.parametrize("detector_id, name, tag, test_type, valid_since, valid_until", [
     # Test with None input for each parameter
-    (None, None, None, None, None),
+    (None, None, None, None, None, None),
     # Test with int input for each parameter
-    (999, 999, 999, 999, 999),
+    (999, 999, 999, 999, 999, 999),
     # Test with empty string input for each parameter
-    ("", "", "", "", ""),
+    ("", "", "", "", "", ""),
     # Test with str format for valid_since and valid_until
-    ("detector_id_exist", "condition_exist", "1", "2020-04-16 12:07:30", "2020-04-17 12:07:30"),
+    ("detector_id_exist", "condition_exist", "1", "type1", "2020-04-16 12:07:30", "2020-04-17 12:07:30"),
     # Test with str format for valid_since and valid_until, and with millisecond
-    ("detector_id_exist", "condition_exist", "1", "2020-04-16 12:07:30:129910", "2020-04-17 12:07:30:129910"),
+    ("detector_id_exist", "condition_exist", "1", "type1", "2020-04-16 12:07:30:129910", "2020-04-17 12:07:30:129910"),
     # Test with datetime format for valid_since and valid_until
-    ("detector_id_exist", "condition_exist", "1", datetime.datetime(2020, 4, 16, 12, 7, 30),
+    ("detector_id_exist", "condition_exist", "1", "type1", datetime.datetime(2020, 4, 16, 12, 7, 30),
      datetime.datetime(2020, 4, 17, 12, 7, 30)),
     # Test with datetime format for valid_since and valid_until, and with millisecond
-    ("detector_id_exist", "condition_exist", "1", datetime.datetime(2020, 4, 16, 12, 7, 30, 129910),
+    ("detector_id_exist", "condition_exist", "1", "type1", datetime.datetime(2020, 4, 16, 12, 7, 30, 129910),
      datetime.datetime(2020, 4, 17, 12, 7, 30, 129910)),
     # Test with str valid_since and datetime valid_until
-    ("detector_id_exist", "condition_exist", "1", "2020-04-16 12:07:30", datetime.datetime(2020, 4, 17, 12, 7, 30)),
+    ("detector_id_exist", "condition_exist", "1", "type1", "2020-04-16 12:07:30", datetime.datetime(2020, 4, 17, 12, 7, 30)),
     # Test with datetime valid_since and str valid_until
-    ("detector_id_exist", "condition_exist", "1", datetime.datetime(2020, 4, 13), "2020-04-16 12:07:30"),
+    ("detector_id_exist", "condition_exist", "1", "type1", datetime.datetime(2020, 4, 13), "2020-04-16 12:07:30"),
     # Test if it has invalid month or date
-    ("detector_id_exist", "condition_exist", "1", "2020-24-16 12:07:30", datetime.datetime(2020, 4, 17, 12, 7, 30)),
+    ("detector_id_exist", "condition_exist", "1", "type1", "2020-24-16 12:07:30", datetime.datetime(2020, 4, 17, 12, 7, 30)),
     # Test if valid_Since > valid_until
-    ("detector_id_exist", "condition_exist", "1", datetime.datetime(2020, 4, 20, 12, 7, 30),
+    ("detector_id_exist", "condition_exist", "1", "type1", datetime.datetime(2020, 4, 20, 12, 7, 30),
      datetime.datetime(2020, 4, 17, 12, 7, 30)),
 ])
-def test_update_condition_by_name_and_tag(cdb_api, detector_id, name, tag, valid_since, valid_until):
+def test_update_condition_by_name_and_tag(cdb_api, detector_id, name, tag, test_type, valid_since, valid_until):
     """
     test update_condition_by_name_and_tag()
 
@@ -740,34 +742,36 @@ def test_update_condition_by_name_and_tag(cdb_api, detector_id, name, tag, valid
     :param name: String specifying the name of the condition to be retrieved (e.g.
     'strawPositions').
     :param tag: String specifying the tag of the condition to be updated.
+    :param tag: (optional) String specifying the type of condition (e.g. 'calibration').
     :param  valid_since: Timestamp specifying the date/time as of when the
     condition is valid. Can be of type String or datetime.
     :param  valid_until: Timestamp specifying the date/time up until the
     condition is valid. Can be of type String or datetime.
     """
     has_correct_parameter_type = True
-    if type(detector_id) != str or type(name) != str or type(tag) != str:
+    if type(detector_id) != str or type(name) != str or type(tag) != str or \
+            (type(test_type) != str and test_type is not None):
         has_correct_parameter_type = False
         # raise TypeError when detector/name/tag_id is not an str.
         with pytest.raises(TypeError):
-            assert valid_since.update_condition_by_name_and_tag(detector_id, name, tag, valid_since, valid_until)
+            assert valid_since.update_condition_by_name_and_tag(detector_id, name, tag, test_type, valid_since, valid_until)
 
     if (type(valid_since) != str and type(valid_since) != datetime.datetime and valid_since is not None) or \
             (type(valid_until) != str and type(valid_until) != datetime.datetime and valid_until is not None):
         has_correct_parameter_type = False
         # raise TypeError when date is not correct format.
         with pytest.raises(TypeError):
-            assert cdb_api.update_condition_by_name_and_tag(detector_id, name, tag, valid_since, valid_until)
+            assert cdb_api.update_condition_by_name_and_tag(detector_id, name, tag, test_type, valid_since, valid_until)
 
     if type(valid_since) == str or type(valid_until) == str:
         if not has_correct_format(valid_since) or not has_correct_format(valid_until):
             has_correct_parameter_type = False
             # if the format is wrong, the function has to raise ValueError
             with pytest.raises(ValueError):
-                assert cdb_api.update_condition_by_name_and_tag(detector_id, name, tag, valid_since, valid_until)
+                assert cdb_api.update_condition_by_name_and_tag(detector_id, name, tag, test_type, valid_since, valid_until)
 
     if has_correct_parameter_type:
-        cdb_api.update_condition_by_name_and_tag(detector_id, name, tag, valid_since, valid_until)
+        cdb_api.update_condition_by_name_and_tag(detector_id, name, tag, test_type, valid_since, valid_until)
         # check if the result is correct.
         result_con = cdb_api.get_condition_by_name_and_tag(detector_id, name, tag)
         assert result_con[valid_since] == datetime.datetime(2020, 4, 16, 12, 7, 30, 129910) and \
