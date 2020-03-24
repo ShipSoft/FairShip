@@ -14,6 +14,8 @@ unit-tests:
         # start command from here
         # directory is /builds/gitlab/cern-st-2019/implementation/
         - export FAIRHOME="/builds/gitlab/cern-st-2019/implementation/"
+        - cd conditionsDatabase
+        - ls
         # generate the test database
         - python -m conditionsDatabase.tests.test_mongodb.generate_test_db
         # run test cases
