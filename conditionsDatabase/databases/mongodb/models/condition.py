@@ -2,7 +2,7 @@
 @package conditionsDatabase
 Contains a Mongo Engine model definition for a Condition
 """
-from mongoengine import EmbeddedDocument, DictField, StringField, ComplexDateTimeField
+from mongoengine import EmbeddedDocument, DynamicField, StringField, ComplexDateTimeField
 
 class Condition(EmbeddedDocument):
     """
@@ -24,4 +24,4 @@ class Condition(EmbeddedDocument):
     type = StringField(max_length=1000)
     valid_since = ComplexDateTimeField()
     valid_until = ComplexDateTimeField()
-    values = DictField()
+    values = DynamicField()
