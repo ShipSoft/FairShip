@@ -61,9 +61,9 @@ dw = DetectorWrapper(name="detector_id_exist")
 
 detector_id_exist = Detector(name="detector_id_exist")
 condition = Condition(name="condition_exist", tag="1", type="type1",
-                      collected_at=datetime.datetime(2020, 3, 12, 11, 5, 27, 767563),
-                      valid_since=datetime.datetime(2020, 3, 12, 11, 5, 27, 767563),
-                      valid_until=datetime.datetime(2020, 4, 10, 11, 5, 27, 767563),
+                      collected_at=datetime.datetime(2020, 3, 12, 11, 5, 27),
+                      valid_since=datetime.datetime(2020, 3, 12, 11, 5, 27),
+                      valid_until=datetime.datetime(2020, 4, 10, 11, 5, 27),
                       values={
                           "name": "name detector",
                           "value": "value detector"
@@ -73,9 +73,9 @@ detector_id_exist.conditions.append(condition)
 # define detector_id_exist/sub_detector_id_exist
 subdetector1 = Detector(name="sub_detector_id_exist")
 subCondition1 = Condition(name="sub_detector_id_exist", tag="sub1", type="subtype1",
-                          collected_at=datetime.datetime(2020, 4, 12, 11, 5, 27, 767563),
-                          valid_since=datetime.datetime(2020, 4, 12, 11, 5, 27, 767563),
-                          valid_until=datetime.datetime(2020, 5, 12, 11, 5, 27, 767563),
+                          collected_at=datetime.datetime(2020, 4, 12, 11, 5, 27),
+                          valid_since=datetime.datetime(2020, 4, 12, 11, 5, 27),
+                          valid_until=datetime.datetime(2020, 5, 12, 11, 5, 27),
                           values={
                               "name": "name sub detector",
                               "value": "value sub detector"
@@ -86,9 +86,9 @@ detector_id_exist.subdetectors.append(subdetector1)
 # define detector_id_exist/sub_detector_id_exist/sub_sub_detector_id_exist
 subsubdetector1 = Detector(name="sub_sub_detector_id_exist")
 subsubCondition1 = Condition(name="sub_sub_detector_id_exist", tag="subsub1", type="subsubtype1",
-                             collected_at=datetime.datetime(2020, 5, 12, 11, 5, 27, 767563),
-                             valid_since=datetime.datetime(2020, 5, 12, 11, 5, 27, 767563),
-                             valid_until=datetime.datetime(2020, 6, 12, 11, 5, 27, 767563),
+                             collected_at=datetime.datetime(2020, 5, 12, 11, 5, 27),
+                             valid_since=datetime.datetime(2020, 5, 12, 11, 5, 27),
+                             valid_until=datetime.datetime(2020, 6, 12, 11, 5, 27),
                              values={
                                  "name": "name sub sub detector",
                                  "value": "value sub sub detector"
