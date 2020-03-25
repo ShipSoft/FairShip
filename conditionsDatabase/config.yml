@@ -2,12 +2,12 @@ db_type: mongo
 mongo:
   db_name: conditionsDB
   host: localhost
-  password: None
+  password: ""
   port: 27017
-  user: None
+  user: ""
 oracle:
   db_name: conditionsDB
   host: localhost
-  password: None
+  password: ""
   port: 27017
-  user: None
+  user: ""
