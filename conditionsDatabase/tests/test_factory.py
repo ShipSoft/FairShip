@@ -35,7 +35,7 @@ def test_create_unknown_api():
     if unsupported databse type is specified in the configuration file
     """
     factory = APIFactory()
-    home_dir = os.getenv('FAIRHOME')
+    home_dir = os.getenv('FAIRSHIP')
 
     with pytest.raises(NotImplementedError):
         assert factory.construct_DB_API(home_dir + "/conditionsDatabase/tests/test_config.yml")

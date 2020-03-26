@@ -24,7 +24,7 @@ def cdb_api():
     :return: api
     """
 
-    home_dir = os.getenv('FAIRHOME')
+    home_dir = os.getenv('FAIRSHIP')
     factory = APIFactory()
     db_api = factory.construct_DB_API(home_dir + "/conditionsDatabase/tests/test_mongodb/test_mongodb_config.yml")
 
