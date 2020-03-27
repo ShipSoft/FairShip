@@ -42,6 +42,10 @@ if "HcalGeoFile" not in globals():
         HcalGeoFile = "hcal_rect.geo"
     else:
         HcalGeoFile = "hcal.geo"
+if "muShieldStepGeo" not in globals():
+    muShieldStepGeo = False
+if "muShieldWithCobaltMagnet" not in globals():
+    muShieldWithCobaltMagnet = 0
 
 with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign, Yheight
@@ -316,6 +320,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.dZ8 = 3.*u.m
     c.muShield.dXgap = 0.2*u.m
     c.muShield.dZgap = 0.1*u.m
+
+    c.muShieldStepGeo = muShieldStepGeo
+    c.muShieldWithCobaltMagnet = muShieldWithCobaltMagnet
 
     # zGap to compensate automatic shortening of magnets
     zGap = 0.5 * c.muShield.dZgap  # halflengh of gap
