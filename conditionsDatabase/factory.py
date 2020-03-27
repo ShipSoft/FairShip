@@ -15,7 +15,7 @@ class APIFactory:
 
 
     ### Returns an instance of the specified database API based on a configuration file
-    #   @param  path:                     the path to the configuration file. It could be "", then the default path will be considered.
+    #   @param  path:                     The path to the configuration file. This field can be left empty/None, then the default path will be considered.
     #                                     The default path is $FAIRSHIP/conditionsDatabase/config.yml.
     #   @throw  NotImplementedError:      If the specified database is not supported
     #   @return                           Instance of the specified database API

@@ -136,7 +136,7 @@ class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
     #   @param  collected_at:   Timestamp specifying the moment on which the
-    #                           condition was collected / measured. This timestamp must be unique w.r.t.
+    #                           condition was collected/measured. This timestamp must be unique w.r.t.
     #                           the condition name. Can be of type String or datetime.
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
