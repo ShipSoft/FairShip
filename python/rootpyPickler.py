@@ -47,6 +47,7 @@ The following additional notes apply:
 from __future__ import absolute_import
 from __future__ import print_function
 
+from past.builtins import basestring
 import sys
 if sys.version_info[0] < 3:
     from cStringIO import StringIO
@@ -58,8 +59,11 @@ import pickle
 
 import ROOT
 
-string_types = str,
-integer_types = (int)
+string_types = basestring,
+if sys.version_info[0] < 3:
+    integer_types = (int, long)
+else:
+    integer_types = (int,)
 
 __all__ = [
     'dump',

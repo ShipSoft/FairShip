@@ -1,10 +1,11 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 from __future__ import print_function
 from __future__ import division
 import os
 import sys
 import getopt
 import ROOT
+import makeALPACAEvents
 # Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
@@ -26,6 +27,9 @@ theProductionCouplings = theDecayCouplings = None
 
 # Default dark photon parameters
 theDPmass    = 0.2*u.GeV
+
+# Alpaca
+motherMode = True
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
@@ -51,6 +55,7 @@ checking4overlaps = False
 if debug>1 : checking4overlaps = True
 
 parser = ArgumentParser()
+group = parser.add_mutually_exclusive_group()
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
 parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
@@ -61,6 +66,7 @@ parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
+group.add_argument("--ALPACA",  dest="ALPACA",  help="Use ALPACA as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
@@ -82,8 +88,8 @@ parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to
 parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0, type=int)
 parser.add_argument("-s", "--seed",dest="theSeed",  help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", required=False,  default=0, type=int)
 parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an integer for the muonBackground simulation with specific seed for each muon, only for experts!"\
-                                            ,required=False,  default=False)
-parser.add_argument("-f",        dest="inputFile",       help="Input file if not default file", required=False, default=False)
+                                            ,required=False,  default=False, type=int)
+group.add_argument("-f",        dest="inputFile",       help="Input file if not default file", required=False, default=False)
 parser.add_argument("-g",        dest="geofile",       help="geofile for muon shield geometry, for experts only", required=False, default=None)
 parser.add_argument("-o", "--output",dest="outputDir",  help="Output directory", required=False,  default=".")
 parser.add_argument("-Y",        dest="dy",  help="max height of vacuum tank", required=False, default=globalDesigns[default]['dy'])
@@ -107,7 +113,7 @@ parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", r
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", required=False, action="store_true")
 parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate steps geometry for the muon shield", required=False, action="store_true", default=False)
 parser.add_argument("--coMuonShield", dest="muShieldWithCobaltMagnet", help="replace one of the magnets in the shield with 2.2T cobalt one, downscales other fields, works only for muShieldDesign >2", required=False, type=int, default=0)
-
+parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
 
 options = parser.parse_args()
 
@@ -117,6 +123,7 @@ if options.pg:       simEngine = "PG"
 if options.genie:    simEngine = "Genie"
 if options.nuradio:  simEngine = "nuRadiography"
 if options.ntuple:   simEngine = "Ntuple"
+if options.ALPACA:   simEngine = "ALPACA"
 if options.muonback: simEngine = "MuonBack"
 if options.nuage:    simEngine = "Nuage"
 if options.mudis:    simEngine = "muonDIS"
@@ -130,6 +137,8 @@ if options.A != 'c':
            charmonly = True
            HNL = False 
      if options.A not in ['b','c','bc','meson','pbrem','qcd']: inclusive = True
+if options.MM:
+     motherMode=options.MM
 if options.cosmics:
      simEngine = "Cosmics"
      Opt_high = int(options.cosmics)
@@ -271,7 +280,7 @@ if simEngine == "Pythia8":
   else:
    P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
-  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive,options.deepCopy)
+  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
  if HNL or options.RPVSUSY or options.DarkPhoton: 
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
@@ -297,6 +306,25 @@ if simEngine == "Pythia8":
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
+ 
+if simEngine == "ALPACA":
+  print('Generating ALP events of mass {} GeV with the photon coupling coefficient {} GeV^-1'.format(options.theMass, options.theDPepsilon))
+  target     = ship_geo.target
+  startZ     = target.z0
+  lengthZ    = target.length
+  endZ       = startZ + lengthZ
+  SmearBeam  = 1*u.cm # finite beam size
+  Lmin       = ((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)/100.
+  Lmax       = (ship_geo.TrackStation1.z - ship_geo.target.z0)/100.
+  print('ALPACA is initializing.')
+  inputFile  = makeALPACAEvents.runEvents(options.theMass,options.theDPepsilon,options.nEvents,Lmin,Lmax,startZ,endZ,SmearBeam)
+  if inputFile: print('ALPACA is done.')
+  ut.checkFileExists(inputFile)
+  ALPACAgen = ROOT.ALPACAGenerator()
+  ALPACAgen.Init(inputFile)
+  print('ALPACAGenerator is reading the ALPACA events')
+  primGen.AddGenerator(ALPACAgen)
+ 
 if simEngine == "FixedTarget":
  P8gen = ROOT.FixedTargetGenerator()
  P8gen.SetTarget("volTarget_1",0.,0.)
@@ -610,5 +638,3 @@ def checkOverlapsWithGeant4():
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
-
-
