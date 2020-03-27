@@ -15,7 +15,11 @@ import shipunit as u
 import rootUtils as ut
 from array import array
 
+import sys
+sys.path.append("..")
 from conditionsDatabase.factory import APIFactory
+from bson.json_util import loads, dumps
+import json, ast
 
 ########
 zeroField    = False
@@ -169,10 +173,8 @@ daniel = {}
 
 api_factory = APIFactory()
 conditionsDB = api_factory.construct_DB_API()
-danielConditions = conditionsDB.get_conditions_by_name("muflux/driftTubes", "daniel")
-daniel = danielConditions[0].values
-surveyConditions = conditionsDB.get_conditions_by_name("muflux/driftTubes", "survey")
-survey = surveyConditions[0].values
+daniel = (conditionsDB.get_condition_by_name_and_tag("muflux/driftTubes", "strawPositions", "muflux/driftTubes_daniel_2020-03-23 18:14"))["values"]
+survey = (conditionsDB.get_condition_by_name_and_tag("muflux/driftTubes", "strawPositions", "muflux/driftTubes_survey_2020-03-23 18:14"))["values"]
 
 Lcorrection={}
 # length of the bolt 150mm on the top and 50mm on the bottom
@@ -4508,8 +4510,9 @@ slopeY = {2:[0,0,0,0]}
 withCorrections=True
 if MCdata: withCorrections=False
 if withCorrections:
-    alignCorrectionCondition = conditionsDB.get_conditions_by_name("muflux/driftTubes", "alignCorrection")
-    alignCorrection = alignCorrectionCondition[0].values
+    alignCorrectionTMP = (conditionsDB.get_condition_by_name_and_tag("muflux/driftTubes", "alignCorrection", "muflux/driftTubes_align_2020-03-23"))["values"]
+    for i in range (0, len(alignCorrectionTMP)):
+    	alignCorrection[i] = alignCorrectionTMP[str(i)]
     slopeX = {2:[-0.001,-0.001,-0.001,-0.001],
               3:[-0.0048,-0.0048,-0.0048,-0.0048]} # 7Feb
     slopeY = {2:[0.0065,0.0065,0.0065,0.0065]}
@@ -4520,7 +4523,7 @@ def strawPosition():
         b = alignConstants['strawPositions'][detID]['bot']
         t = alignConstants['strawPositions'][detID]['top']
         strawPositionsBotTop[detID]=[ROOT.TVector3(b[0],b[1],b[2]),ROOT.TVector3(t[0],t[1],t[2])]
-        muflux_Reco.setDTPositions(detID,t[0],t[1],t[2],b[0],b[1],b[2])
+        muflux_Reco.setDTPositions(int(detID),t[0],t[1],t[2],b[0],b[1],b[2])
 
 RPCPositionsBotTop = {}
 def RPCPosition():
@@ -5275,7 +5278,7 @@ def makeAlignmentConstantsPersistent():
         vbot,vtop = strawPositionsBotTop[straw]
         strawPositionsP[straw]={'top':[vtop[0],vtop[1],vtop[2]],'bot':[vbot[0],vbot[1],vbot[2]]}
     alignConstants={'strawPositions':strawPositionsP,'alignCorrection':alignCorrection}
-    conditionsDB.add_condition("muflux/driftTubes", "alignConstants", "TUE2019", "2020-03-24", alignConstants);
+    conditionsDB.add_condition("muflux/driftTubes", "alignConstants", "TUE2019", "2020-03-24", loads(dumps(alignConstants)))
 
 def importAlignmentConstants():
     global alignConstants
@@ -5288,7 +5291,7 @@ def importAlignmentConstants():
         print "importing alignment constants from code"
         return
     try:
-        alignConstants = conditionsDB.get_condition_by_name_and_tag("muflux/driftTubes", "alignConstants", "TUE2019").values
+        alignConstants = ast.literal_eval(json.dumps((conditionsDB.get_condition_by_name_and_tag("muflux/driftTubes", "alignConstants", "TUE2019"))["values"]))
         print "importing alignment constants from file",sTree.GetCurrentFile().GetName()
         strawPosition()
     except:
