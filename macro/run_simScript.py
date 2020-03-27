@@ -28,6 +28,9 @@ theProductionCouplings = theDecayCouplings = None
 # Default dark photon parameters
 theDPmass    = 0.2*u.GeV
 
+# Alpaca
+motherMode = True
+
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 
@@ -108,7 +111,6 @@ parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy o
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", required=False, action="store_true")
-motherMode = True
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
 
 options = parser.parse_args()
