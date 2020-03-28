@@ -101,15 +101,13 @@ def qcdprodRate(mass,epsilon,doprint=False):
     return xs*epsilon*epsilon
 
 def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
-    if ('pbrem' in prodMode):
-        print("VDM")
+    if (prodMode=='pbrem'):
         return pbremProdRateVDM(mass,epsilon,doprint)
-    elif ('pbrem1' in prodMode):
-        print("Dipole")
+    elif (prodMode=='pbrem1'):
         return pbremProdRateDipole(mass,epsilon,doprint)
-    elif ('meson' in prodMode):
+    elif (prodMode=='meson'):
         return mesonProdRate(mass,epsilon,mumPdg,doprint)
-    elif ('qcd' in prodMode):
+    elif (prodMode=='qcd'):
         return qcdprodRate(mass,epsilon,doprint)
     else:
         print("Unknown production mode! Choose among pbrem, meson or qcd.")
