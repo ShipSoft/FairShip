@@ -1,12 +1,16 @@
+#!/usr/bin/env python
+from __future__ import print_function
+from __future__ import division
 import os,sys,getopt
 import numpy,math
 import ROOT
+import shipunit as u
 
-hGeV = 6.58211928*pow(10.,-16)* pow(10.,-9) # no units or it messes up!!
-c_light = 2.99792458e+10
-mres="1.0d0"
-gax="1d-7"
-nev="100"
+#natural units were used!
+hGeV      = u.hbar_Planck/u.s
+c_light   = u.c_light*u.s/u.cm
+
+naming     = "_"+str(mres)+"_"+str(gax)
 
 def ALPACAFormatting(s):
     s=str(s)
@@ -15,7 +19,6 @@ def ALPACAFormatting(s):
         s= s.replace('e','d')
         s= s.replace('+','')
     return s
-
  
 def Ctau(mres,gax):
     return c_light*hGeV*65.*math.pi/((float(gax)*float(gax))*(float(mres)*float(mres)*float(mres)))
@@ -28,61 +31,72 @@ def Decaylength(e,p,ctau):
 def Decayweight(Lmin,Lmax,Decaylength,LS):
     return math.exp(-LS/Decaylength)*((Lmax-Lmin)/Decaylength)
 
+def addALPtoPDG(mres,gax):
+    pdg = ROOT.TDatabasePDG.Instance()
+    pdg.AddParticle('a','ALP', mres, False, gax, 0., 'a', 9900015)
+
 def inputWrite(mres,gax,nev,Lmin,Lmax):#need to apply Rmin & Rmax as well..
     Mres    = ALPACAFormatting(mres)
     Gax     = ALPACAFormatting(gax)
     L   = ALPACAFormatting(float(Lmax)-float(Lmin))
     Lmin    = ALPACAFormatting(Lmin)
     Lmax    = ALPACAFormatting(Lmax)
-    with open("input.DAT","w") as f:
-        f.write("****************************************************************************************\n")
-        f.write("***********  RE-RUN ./init IF FIRST FIVE PARAMETERS ARE CHANGED:  **********************\n")
-        f.write("****************************************************************************************\n")
-        f.write("*************************  Experimental parameters *************************************\n")
-        f.write("****************************************************************************************\n")
-        f.write("4d2          ! [ebeam] : Beam kinetic energy (GeV)\n")
-        f.write("'prot'       ! [btype] : Beam type ('prot' = proton, 'elec' = electron)\n")
-        f.write("95.95d0      ! [aa] : Target mass number\n")
-        f.write("42d0         ! [az] : Target atomic number\n")
-        f.write("%s       ! [lsh] : Shielding length (m)\n"%(Lmin))
-        f.write("%s       ! [dvol] : Decay volume (m)\n"%(L))
-        f.write("1.5d-1       ! [rmin] : Inner radius (m)\n")
-        f.write("2.5d0        ! [rmax] : Outer radius (m)\n")
-        f.write("0.1d0        ! [dmin] : Minimum photon separation (m)\n")
-        f.write("1d0          ! [emin] : Minimum photon energy (GeV)\n")
-        f.write("1d-2         ! [athetamax] : Maximum ALP theta (when adecay is false)\n")
-        f.write("****************************************************************************************\n")
-        f.write("********************************** ALP parameters **************************************\n")
-        f.write("****************************************************************************************\n")
-        f.write("%s           ! [mres] : ALP mass (GeV)\n"%(Mres))
-        f.write("%s           ! [gax] : ALP photon coupling (GeV^-1)\n"%(Gax))
-        f.write("****************************************************************************************\n")
-        f.write("******************************  Output parameters **************************************\n")
-        f.write("****************************************************************************************\n")
-        f.write("'_%s_%s'       !  [outtag] : For output file\n"%(mres,gax))
-        f.write("****************************************************************************************\n")
-        f.write("************************* Integration parameters ***************************************\n")
-        f.write("****************************************************************************************\n")
-        f.write("100000       ! [ncall] : Number of calls for preconditioning\n")
-        f.write("10           ! [itmx] : Number of iterations for preconditioning\n")
-        f.write("1d0          ! [prec] :  Relative accuracy (in %) in main run\n")
-        f.write("100000       ! [ncall1] : Number of calls in first iteration\n")
-        f.write("100000       ! [inccall] : Number of increase calls per iteration\n")
-        f.write("50           ! [itend] : Maximum number of iterations\n")
-        f.write("6            ! [iseed] : Random number seed (integer > 0)\n")
-        f.write("****************************************************************************************\n")
-        f.write("******************************* Unweighted events **************************************\n")
-        f.write("****************************************************************************************\n")
-        f.write(".true.       ! [genunw] : Generate unweighted events\n")
-        f.write("%s           ! [nev] : Number of events ( < 1000000 recommended)\n"%(nev))
-        f.write("'hepevt'     ! [erec] : Event record format ('lhe' = Les Houches, 'hepevt' = HEPEVT)\n")
-        f.write("****************************************************************************************\n")
-        f.write("*******************************  Cuts   ************************************************\n")
-        f.write(".true.       ! [gencuts] : Generate cuts - [rmin], [rmax], [dmin], [emin]\n")
-        f.write(".true.       ! [adecay] : Include ALP decay\n")
-        f.write("****************************************************************************************\n")
-        f.write("****************************************************************************************\n")
-        f.write("****************************************************************************************\n")
+    with open("input"+naming+".DAT","w") as f:
+        f.write("****************************************************************************************")
+        f.write("***********  RE-RUN ./init IF FIRST FIVE PARAMETERS ARE CHANGED:  **********************")
+        f.write("****************************************************************************************")
+        f.write("*************************  Experimental parameters *************************************")
+        f.write("****************************************************************************************")
+        f.write("4d2          ! [ebeam] : Beam kinetic energy (GeV)")
+        f.write("'prot'       ! [btype] : Beam type ('prot' = proton, 'elec' = electron)")
+        f.write("95.95d0      ! [aa] : Target mass number")
+        f.write("42d0         ! [az] : Target atomic number")
+        f.write("%s       ! [lsh] : Shielding length (m)"%(Lmin))
+        f.write("%s       ! [dvol] : Decay volume (m)"%(L))
+        f.write("1.5d-1       ! [rmin] : Inner radius (m)")
+        f.write("2.5d0        ! [rmax] : Outer radius (m)")
+        f.write("0.1d0        ! [dmin] : Minimum photon separation (m)")
+        f.write("1d0          ! [emin] : Minimum photon energy (GeV)")
+        f.write("1d-2         ! [athetamax] : Maximum ALP theta (when adecay is false)")
+        f.write("****************************************************************************************")
+        f.write("********************************** ALP parameters **************************************")
+        f.write("****************************************************************************************")
+        f.write("%s           ! [mres] : ALP mass (GeV)"%(Mres))
+        f.write("%s           ! [gax] : ALP photon coupling (GeV^-1)"%(Gax))
+        f.write("****************************************************************************************")
+        f.write("******************************  Output parameters **************************************")
+        f.write("****************************************************************************************")
+        f.write("'_%s_%s'       !  [outtag] : For output file"%(mres,gax))
+        f.write("****************************************************************************************")
+        f.write("************************* Integration parameters ***************************************")
+        f.write("****************************************************************************************")
+        f.write("100000       ! [ncall] : Number of calls for preconditioning")
+        f.write("10           ! [itmx] : Number of iterations for preconditioning")
+        f.write("1d0          ! [prec] :  Relative accuracy (in %) in main run")
+        f.write("100000       ! [ncall1] : Number of calls in first iteration")
+        f.write("100000       ! [inccall] : Number of increase calls per iteration")
+        f.write("50           ! [itend] : Maximum number of iterations")
+        f.write("6            ! [iseed] : Random number seed (integer > 0)")
+        f.write("****************************************************************************************")
+        f.write("******************************* Unweighted events **************************************")
+        f.write("****************************************************************************************")
+        f.write(".true.       ! [genunw] : Generate unweighted events")
+        f.write("%s           ! [nev] : Number of events ( < 1000000 recommended)"%(nev))
+        f.write("'hepevt'     ! [erec] : Event record format ('lhe' = Les Houches, 'hepevt' = HEPEVT)")
+        f.write("****************************************************************************************")
+        f.write("*******************************  Cuts   ************************************************")
+        f.write(".true.       ! [gencuts] : Generate cuts - [rmin], [rmax], [dmin], [emin]")
+        f.write(".true.       ! [adecay] : Include ALP decay")
+        f.write("****************************************************************************************")
+        f.write("****************************************************************************************")
+        f.write("****************************************************************************************")
+
+def getXS(wdir,mres,gax):
+    with open(wdir+"/outputs/output"+naming+".dat","r") as fp:
+        for line in fp:
+            if "Cross section" in line:
+                line=line.split()
+                return line[3]
 
 def ntupleWrite(ctau,fn,Lmin,Lmax,startZ,endZ,SmearBeam,mres,gax,old):
     Lmin        = float(Lmin)
@@ -91,12 +105,8 @@ def ntupleWrite(ctau,fn,Lmin,Lmax,startZ,endZ,SmearBeam,mres,gax,old):
     endZ        = float(endZ)
     SmearBeam   = float(SmearBeam)
     wdir = os.environ['ALPACABIN']
-    with open(wdir+"/outputs/output_"+str(mres)+"_"+str(gax)+".dat","r") as fp:
-        for line in fp:
-            if "Cross section" in line:
-                line=line.split()
-                xs=line[3]+"_"+line[5]
     fn=fn.readlines()
+    xs=getXS(wdir,mres,gax)
     inputFile=old+"/"+"alp_m"+str(mres)+"_g"+str(gax)+"_xs"+str(xs)+".root"
     f=ROOT.TFile(inputFile,"recreate")
     ntup=ROOT.TNtuple("MCTrack","Track Informations","event:track:pdg:px:py:pz:x:y:z:parent:decay:e:tof:w")
@@ -120,25 +130,82 @@ def ntupleWrite(ctau,fn,Lmin,Lmax,startZ,endZ,SmearBeam,mres,gax,old):
         ntup.Fill(int(i),int(2),int(dau2[1]),float(dau2[7]),float(dau2[8]),float(dau2[9]),daux,dauy,dauz,int(0),float(1),float(dau2[10]),float(dau2[15])/10./c_light,w)
     ntup.Write()
     f.Close()
+    print("ALP -> Gamma + Gamma events are produced with cross-section of {} pb at mass of {} GeV and photon coupling of {} GeV^-1".format(xs,mres,gax))
     return inputFile
 
 def runEvents(mres,gax,nev,Lmin,Lmax,startZ,endZ,SmearBeam):
+    mres = float(mres)
+    gax  = float(gax)
     print('ALPACA is starting for mass of {} GeV with photon coupling coeffiecient {} GeV^-1.'.format(mres,gax))
-    pdg = ROOT.TDatabasePDG.Instance()
-    pdg.AddParticle('a','ALP', mres, False, gax, 0., 'a', 9900015)
+    addALPtoPDG(float(mres),float(gax))
     wdir = os.environ['ALPACABIN']
     old=os.getcwd()
     os.chdir(wdir)
     inputWrite(mres,gax,nev,Lmin,Lmax)
-    rn="./alpaca < input.DAT"
+    rn="./alpaca < "+"input"+naming+".DAT"
     os.system(rn)
     print('ALPACA generated the events.')
-    pa="./evrecs/evrec_"+str(mres)+"_"+str(gax)+".dat"
+    pa="./evrecs/evrec"+naming+".dat"
     fn=open(pa,"r")
     ctau=Ctau(mres,gax)
     print('Events are recording into a ntuple.')
     inputFile = ntupleWrite(ctau,fn,Lmin,Lmax,startZ,endZ,SmearBeam,mres,gax,old)
     os.chdir(old)
+    os.remove(wdir+"/input"+naming+".DAT")
+    os.remove(wdir+"/evrecs/evrec"+naming+".dat")
+    os.remove(wdir+"/outputs/output"+naming+".dat")
     print('Ntuple is ready for the reading.')
     return inputFile
-#runEvents()
+ 
+def main():
+    from argparse import ArgumentParser
+    mres      = 1.0e-1
+    gax       = 1.0e-5
+    nev       = 100
+    Lmin      = 4.7505e0
+    Lmax      = 9.826511e0
+    startZ    = -7228.5000
+    endZ      = -7084.0000
+    SmearBeam = 1.0
+    print("ALPACA is running standalone")
+    parser = ArgumentParser()
+    parser.add_argument("-m", "--mres", dest="mres",  help="to set mass in GeV for ALP", required=False, default=None, type=float)
+    parser.add_argument("-g", "--gax", dest="gax",  help="to set photon coupling coefficient", required=False,default=None, type=float)
+    parser.add_argument("-Ls", "--Lmin", dest="Lmin",  help="to set starting length(m) of Decay Volume", required=False,default=None, type=float)
+    parser.add_argument("-Le", "--Lmax", dest="Lmax",  help="to set ending length(m) of Decay Volume", required=False,default=None, type=float)
+    parser.add_argument("-sZ", "--startZ", dest="startZ",  help="to set starting coordinate(cm) of Target", required=False,default=None, type=float)
+    parser.add_argument("-eZ", "--endZ", dest="endZ",  help="to set ending coordinate(cm) of Target", required=False,default=None, type=float)
+    parser.add_argument("-n", "--nev",dest="nev",  help="Number of events to generate", required=False,  default=None, type=int)
+    options = parser.parse_args()
+    if options.mres: 
+        mres=options.mres
+        print("mas is set to {} GeV".format(mres))
+    else: print("default mass is {} GeV".format(mres))
+    if options.gax:
+        gax=options.gax
+        print("photon coupling is set to {} GeV^-1".format(gax))
+    else: print("default photon coupling is {} GeV^-1".format(gax))
+    if options.Lmin:
+        Lmin=options.Lmin 
+        print("Lmin is set to {} m".format(Lmin))
+    else: print("default Lmin is {} m".format(Lmin))
+    if options.Lmax:
+        Lmax=options.Lmax 
+        print("Lmax is set to {} m".format(Lmax))
+    else: print("default Lmax is {} m".format(Lmax))
+    if options.startZ:
+        startZ=options.startZ 
+        print("startZ is set to {} cm".format(startZ))
+    else: print("default startZ is {} cm".format(startZ)r_Planck/u.s)
+    if options.endZ:
+        endZ=options.endZ
+        print("endZ is set to {} cm".format(endZ))
+    else: print("default endZ is {} cm".format(endZ))
+    if options.nev:
+        nev=options.nev  
+        print("nEvents is set to {}".format(nev))
+    else: print("default nEvents is {}".format(nev))
+    runEvents(mres,gax,nev,Lmin,Lmax,startZ,endZ,SmearBeam)   
+ 
+if __name__='__main__':
+    main()

@@ -78,7 +78,9 @@ Bool_t ALPACAGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       return kFALSE;
   }
   fn=fn+3; // Goes to next event, more specifically next ALP,
-  cout << "Event Number:"<<fn/3 <<endl; // this division is due to the fact that ntuple is recorded in track based and every event has three tracks.
+  if ((fn/3)%10==0){
+      cout << fn/3 <<" events are produced" <<endl; // this division is due to the fact that ntuple is recorded in track based and every event has three tracks.
+  }
   return kTRUE;
   }
   else {

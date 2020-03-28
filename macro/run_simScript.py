@@ -5,7 +5,6 @@ import os
 import sys
 import getopt
 import ROOT
-import makeALPACAEvents
 # Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
@@ -27,10 +26,7 @@ theProductionCouplings = theDecayCouplings = None
 
 # Default dark photon parameters
 theDPmass    = 0.2*u.GeV
-
-# Alpaca
-motherMode = True
-
+theALPmass   = 0.1*u.GeV
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 
@@ -77,13 +73,14 @@ parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic 
 parser.add_argument("--RpvSusy", dest="RPVSUSY",  help="Generate events based on RPV neutralino", required=False, action="store_true")
 parser.add_argument("--DarkPhoton", dest="DarkPhoton",  help="Generate dark photons", required=False, action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench",  help="Generate HP Susy", required=False, default=2)
-parser.add_argument("-m", "--mass", dest="theMass",  help="Mass of hidden particle, default "+str(theHNLMass)+"GeV for HNL, "+str(theDPmass)+"GeV for DP", required=False, default=None, type=float)
+parser.add_argument("-m", "--mass", dest="theMass",  help="Mass of hidden particle, default "+str(theHNLMass)+"GeV for HNL, "+str(theDPmass)+"GeV for DP, "+str(theALPmass)+"GeV for ALP", required=False, default=None, type=float)
 parser.add_argument("-c", "--couplings", "--coupling", dest="thecouplings",  help="couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings.\
  TP default for HNL, ctau=53.3km", required=False,default="0.447e-9,7.15e-9,1.88e-9")
 parser.add_argument("-cp", "--production-couplings", dest="theprodcouplings",  help="production couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL production only"\
                                             ,required=False,default=None)
 parser.add_argument("-cd", "--decay-couplings", dest="thedeccouplings",  help="decay couplings  \'U2e,U2mu,U2tau\' to set the couplings for HNL decay only", required=False,default=None)
 parser.add_argument("-e", "--epsilon", dest="theDPepsilon",  help="to set mixing parameter epsilon", required=False,default=0.00000008, type=float)
+parser.add_argument("--gax", dest="gax",  help="to set photon coupling coefficient", required=False,default=1.0e-5, type=float)
 parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to generate", required=False,  default=100, type=int)
 parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0, type=int)
 parser.add_argument("-s", "--seed",dest="theSeed",  help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", required=False,  default=0, type=int)
@@ -113,7 +110,7 @@ parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", r
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", required=False, action="store_true")
 parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate steps geometry for the muon shield", required=False, action="store_true", default=False)
 parser.add_argument("--coMuonShield", dest="muShieldWithCobaltMagnet", help="replace one of the magnets in the shield with 2.2T cobalt one, downscales other fields, works only for muShieldDesign >2", required=False, type=int, default=0)
-parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
+parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source(pi0,eta,omega,eta1,eta11)", required=False,  default=True)
 
 options = parser.parse_args()
 
@@ -137,8 +134,6 @@ if options.A != 'c':
            charmonly = True
            HNL = False 
      if options.A not in ['b','c','bc','meson','pbrem','qcd']: inclusive = True
-if options.MM:
-     motherMode=options.MM
 if options.cosmics:
      simEngine = "Cosmics"
      Opt_high = int(options.cosmics)
@@ -150,6 +145,7 @@ if options.RPVSUSY: HNL = False
 if options.DarkPhoton: HNL = False
 if not options.theMass:
   if options.DarkPhoton: options.theMass  = theDPmass
+  if options.ALPACA:     options.theMass  = theALPmass
   else:                  options.theMass  = theHNLMass
 if options.thecouplings:
   theCouplings = [float(c) for c in options.thecouplings.split(",")]
@@ -165,7 +161,9 @@ if options.testFlag:
 if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPhoton and options.RPVSUSY): 
  print("cannot have HNL and SUSY or DP at the same time, abort")
  sys.exit(2)
-
+if inclusive=='meson' and options.MM not in ['pi0','eta','omega','eta1','eta11']:
+ print("Please choose a DP sources from one of these (pi0, eta, omega, eta1, eta11) for the Meson Production")
+ sys.exit()
 if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
   inputFile = "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
             # "/eos/experiment/ship/data/GenieEvents/genie-nu_mu_bar.root"
@@ -280,7 +278,7 @@ if simEngine == "Pythia8":
   else:
    P8gen.SetDPId(9900015)
   import pythia8darkphoton_conf
-  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
+  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, options.MM, options.deepCopy)
   if (passDPconf!=1): sys.exit()
  if HNL or options.RPVSUSY or options.DarkPhoton: 
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
@@ -308,7 +306,8 @@ if simEngine == "Pythia8":
  primGen.AddGenerator(P8gen)
  
 if simEngine == "ALPACA":
-  print('Generating ALP events of mass {} GeV with the photon coupling coefficient {} GeV^-1'.format(options.theMass, options.theDPepsilon))
+  import makeALPACAEvents
+  print('Generating ALP events of mass {} GeV with the photon coupling coefficient {} GeV^-1'.format(options.theMass, options.gax))
   target     = ship_geo.target
   startZ     = target.z0
   lengthZ    = target.length
@@ -317,7 +316,7 @@ if simEngine == "ALPACA":
   Lmin       = ((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0)/100.
   Lmax       = (ship_geo.TrackStation1.z - ship_geo.target.z0)/100.
   print('ALPACA is initializing.')
-  inputFile  = makeALPACAEvents.runEvents(options.theMass,options.theDPepsilon,options.nEvents,Lmin,Lmax,startZ,endZ,SmearBeam)
+  inputFile  = makeALPACAEvents.runEvents(options.theMass,options.gax,options.nEvents,Lmin,Lmax,startZ,endZ,SmearBeam)
   if inputFile: print('ALPACA is done.')
   ut.checkFileExists(inputFile)
   ALPACAgen = ROOT.ALPACAGenerator()
@@ -557,13 +556,14 @@ if inactivateMuonProcesses :
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
-kParameterMerged = ROOT.kTRUE
-parOut = ROOT.FairParRootFileIo(kParameterMerged)
-parOut.open(parFile)
-rtdb.setOutput(parOut)
-rtdb.saveOutput()
-rtdb.printParamContexts()
-getattr(rtdb,"print")()
+if not options.DarkPhoton:
+  kParameterMerged = ROOT.kTRUE
+  parOut = ROOT.FairParRootFileIo(kParameterMerged)
+  parOut.open(parFile)
+  rtdb.setOutput(parOut)
+  rtdb.saveOutput()
+  rtdb.printParamContexts()
+  getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile("%s/geofile_full.%s.root" % (options.outputDir, tag))
 # save ShipGeo dictionary in geofile
