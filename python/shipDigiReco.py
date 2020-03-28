@@ -36,6 +36,7 @@ class ShipDigiReco:
     if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
     if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
     if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
+    if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
     if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
 
     rawFile = fout.replace("_rec.root","_raw.root")
@@ -55,7 +56,7 @@ class ShipDigiReco:
   self.dummyContainers={}
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
                   "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint",\
-                  "TimeDetPoint":"TimeDetPoint","muonPoint":"muonPoint"}
+                  "TimeDetPoint":"TimeDetPoint","muonPoint":"muonPoint","UpstreamTaggerPoint":"UpstreamTaggerPoint"}
   for x in branch_class:
     if not self.sTree.GetBranch(x):
      self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
@@ -89,6 +90,8 @@ class ShipDigiReco:
   self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
   self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
   self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
+  self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
+  self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
   self.digiMuon    = ROOT.TClonesArray("muonHit")
   self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
 # for the digitizing step
@@ -238,6 +241,9 @@ class ShipDigiReco:
    self.digiTimeDet.Delete()
    self.digitizeTimeDet()
    self.digiTimeDetBranch.Fill()
+   self.digiUpstreamTagger.Delete()
+   self.digitizeUpstreamTagger()
+   self.digiUpstreamTaggerBranch.Fill()
    self.digiMuon.Delete()
    self.digitizeMuon()
    self.digiMuonBranch.Fill()
@@ -664,6 +670,28 @@ class ShipDigiReco:
         self.digiTimeDet[hitsPerDetId[detID]].setInvalid()
         hitsPerDetId[detID] = index
      index+=1
+
+ def digitizeUpstreamTagger(self):
+   index = 0
+   hitsPerDetId = {}
+   for aMCPoint in self.sTree.UpstreamTaggerPoint:
+     aHit = ROOT.UpstreamTaggerHit(aMCPoint,self.sTree.t0)
+     if self.digiUpstreamTagger.GetSize() == index: self.digiUpstreamTagger.Expand(index+1000)
+     self.digiUpstreamTagger[index]=aHit
+     detID = aHit.GetDetectorID()
+     if aHit.isValid():
+      if hitsPerDetId.has_key(detID):
+       t = aHit.GetMeasurements()
+       ct = aHit.GetMeasurements()
+# this is not really correct, only first attempt
+# case that one measurement only is earlier not taken into account
+# SetTDC(Float_t val1, Float_t val2)
+       if  t[0]>ct[0] or t[1]>ct[1]:
+ # second hit with smaller tdc
+        self.digiUpstreamTagger[hitsPerDetId[detID]].setInvalid()
+        hitsPerDetId[detID] = index
+     index+=1    
+
 
  def digitizeMuon(self):
    index = 0
