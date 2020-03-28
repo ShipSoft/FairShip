@@ -60,19 +60,21 @@ class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #                           for the same condition name.
     #   @param  collected_at:   Timestamp specifying the date/time the condition was
     #                           acquired. Must be unique w.r.t. the condition name. Can be of type String or datetime.
-    #   @param  values:         (optional) Dictionary containing the values of the condition.
+    #   @param  values:         The values of the condition. Can be any data type.
     #   @param  type:           (optional) String specifying the type of condition (e.g. 'calibration').
     #   @param  valid_since:    (optional) Timestamp specifying the date/time as of when the
     #                           condition is valid. Can be of type String or datetime.
+    #                           If unspecified, this value will be set to 'datetime.now'.
     #   @param valid_until:     (optional) Timestamp specifying the date/time up
     #                           until the condition is valid. Can be of type String or datetime.
+    #                           If unspecified, this value will be set to 'datetime.max'.
     #   @throw TypeError:       If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
     def add_condition(self, detector_id, name, tag, collected_at, values, type=None, valid_since=None, valid_until=None):
         pass
 
-    ### Returns a list with all conditions associated with a detector.
+    ### Returns a list with all condition dictionaries associated with a detector.
     #   @param  detector_id:    String identifying the detector for which the
     #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
     #   @throw  TypeError:      If input type is not as specified.
