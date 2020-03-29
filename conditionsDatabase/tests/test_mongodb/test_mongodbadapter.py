@@ -249,6 +249,7 @@ def test_get_conditions_by_name(cdb_api, detector_id, name):
 
     not_exist_detectors = ["", "detector_id_not_exist",
                            "detector_id_exist/sub_detector_not_exist"]
+
     if detector_id in not_exist_detectors:
         has_correct_parameter_type = False
         # raise ValueError when detector_id does not exist.
@@ -411,7 +412,6 @@ def test_get_conditions_by_name_and_validity(cdb_api, detector_id, name, start_d
             start_date == "2020-03-16 12",
             detector_id == "detector_id_exist" and name == "condition_exist" and
             start_date == "2020-03-16"
-
         ]
         invalid_cases = [
             detector_id == "detector_id_exist" and name == "condition_exist" and
@@ -1011,8 +1011,7 @@ def test_add_condition(cdb_api, detector_id, name, values, test_type, tag,
                 "collected_at is not correct"
         elif type(collected_at) == str:
             assert __convert_str_to_datetime(new_condition["collected_at"]) == \
-                   __convert_str_to_datetime(collected_at).replace(microsecond=0), \
-                "collected_at is not correct"
+                   __convert_str_to_datetime(collected_at).replace(microsecond=0), "collected_at is not correct"
 
         # Check if the valid_until exists
         if type(valid_until) == datetime.datetime:
@@ -1021,8 +1020,7 @@ def test_add_condition(cdb_api, detector_id, name, values, test_type, tag,
                 "valid_until is not correct"
         elif type(valid_until) == str:
             assert __convert_str_to_datetime(new_condition["valid_until"]) == \
-                   __convert_str_to_datetime(valid_until).replace(microsecond=0), \
-                "valid_until is not correct"
+                   __convert_str_to_datetime(valid_until).replace(microsecond=0), "valid_until is not correct"
 
 
 @pytest.mark.parametrize("detector_id, name, tag, test_type, valid_since, valid_until", [
@@ -1072,6 +1070,17 @@ def test_add_condition(cdb_api, detector_id, name, values, test_type, tag,
     # Test with exist detector_id and condition name does not exist
     ("detector_id_exist", "condition_not_exist", "tag", "type",
      datetime.datetime(2020, 4, 16, 12, 7, 30),
+     datetime.datetime(2020, 4, 17, 12, 7, 30)),
+    # Test with valid detector_id, but not valid other parameters
+    ("detector_id_exist", 999, 999, 999, 999, 999),
+    # Test with not exist detector_id
+    ("detector_id_not_exist", "condition_exist", "1", "type1", datetime.datetime(2020, 4, 16, 12, 7, 30),
+     datetime.datetime(2020, 4, 17, 12, 7, 30)),
+    # Test with exist detector_id, but not exist sub detector
+    ("detector_id_exist/sub_detector_id_not_exist", "condition_exist", "1", "type1",
+     datetime.datetime(2020, 4, 16, 12, 7, 30), datetime.datetime(2020, 4, 17, 12, 7, 30)),
+    # Test with exist detector_id and condition name does not exist
+    ("detector_id_exist", "condition_not_exist", "1", "type1", datetime.datetime(2020, 4, 16, 12, 7, 30),
      datetime.datetime(2020, 4, 17, 12, 7, 30)),
 ])
 def test_update_condition_by_name_and_tag(cdb_api, detector_id, name, tag,
@@ -1156,16 +1165,16 @@ def test_update_condition_by_name_and_tag(cdb_api, detector_id, name, tag,
             if type(valid_since) == str:
                 assert __convert_str_to_datetime(result_con["valid_since"]) == \
                        __convert_str_to_datetime(valid_since).replace(microsecond=0), \
-                    "valid_since is not updated successfully"
+                       "valid_since is not updated successfully"
             elif type(valid_since) == datetime.datetime:
                 assert __convert_str_to_datetime(result_con["valid_since"]) == \
                        valid_since.replace(microsecond=0), \
-                    "valid_since is not updated successfully"
+                       "valid_since is not updated successfully"
 
             if type(valid_until) == str:
                 assert __convert_str_to_datetime(result_con["valid_until"]) == \
                        __convert_str_to_datetime(valid_until).replace(microsecond=0), \
-                    "valid_until is not updated successfully"
+                       "valid_until is not updated successfully"
             elif type(valid_until) == datetime.datetime:
                 assert __convert_str_to_datetime(result_con["valid_until"]) == \
                        valid_until.replace(microsecond=0), \
