@@ -3,24 +3,24 @@
 import os
 import sys
 import yaml
-from databases.mongodb.mongodb import MongoToCDBAPIAdapter
+from databases.mongodb.mongodbadapter import MongoToCDBAPIAdapter
 
 ### This class creates an instance of the specified database API.
 class APIFactory:
 
     def __init__(self):
         # supported_db_types is the list of different databases which are supported
-        self.__supported_db_types = ["mongo", "oracle"]
-        pass
+        self.__supported_db_types = ["mongo"]
 
 
     ### Returns an instance of the specified database API based on a configuration file
-    #   @param  path:                     The path to the configuration file. This field can be left empty/None, then the default path will be considered.
-    #                                     The default path is $FAIRSHIP/conditionsDatabase/config.yml.
-    #   @throw  NotImplementedError:      If the specified database is not supported
-    #   @return                           Instance of the specified database API
-    def construct_DB_API(self, path = None):
-        supported_db_names = ["mongo", "mysql"]
+    #   @param  path:                   The path to the configuration file. This field can be
+    #                                   left empty/None, then the default path will be considered
+    #                                   The default path is $FAIRSHIP/conditionsDatabase/config.yml
+    #   @throw  NotImplementedError:    If the specified database is not supported
+    #   @return                         Instance of the specified database API
+    def construct_DB_API(self, path=None):
+        self.supported_db_gnames = ["mongo"]
         config = self.__read_config_file(path)
 
         if config is None or len(config) <= 0:
@@ -39,14 +39,16 @@ class APIFactory:
             raise NotImplementedError(db_type + " database is not supported")
 
 
-    ### Loads the configuration from the config file, including the database type and also the connection information.
-    #   @param  path:           the path to the configuration file. It could be "", then the default path will be considered.
-    #                           The default path is $FAIRSHIP/conditionsDatabase/config.yml.
+    ### Loads the configuration from the config file, including the database type and also
+    # the connection information.
+    #   @param  path:           the path to the configuration file. It could be "", then
+    #                           the default path will be considered
+    #                           The default path is $FAIRSHIP/conditionsDatabase/config.yml
     #   @throw  KeyError:       If the configuration file is incomplete
     #   @return                 The connection dictionary
     def __read_config_file(self, path):
         ret = {}
-        if path is None or len(path) == 0:
+        if not path:
             home_dir = str(os.getenv('FAIRSHIP'))
             path = home_dir + "/conditionsDatabase/config.yml"
         else:
@@ -60,7 +62,8 @@ class APIFactory:
             with open(path, 'r') as ymlfile:
                 cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
         except IOError:
-            print("The configuration file does not exit or Invalid path to the file:", str(sys.exc_info()[0]))
+            print("The configuration file does not exit or Invalid path to "
+                  "the file:", str(sys.exc_info()[0]))
             return None
 
         connection_dict = {'db_name': '', 'user': None, 'password': None, 'host': "", 'port': 0}
@@ -84,5 +87,6 @@ class APIFactory:
             ret[db_type.lower()] = connection_dict
             return ret
         except KeyError:
-            print("Incorrect configuration file, missing some parameters. it should contain: db_type, db_name, user, password, host, and port.")
+            print("Incorrect configuration file, missing some parameters. it should contain: "
+                  "db_type, db_name, user, password, host, and port.")
             return None

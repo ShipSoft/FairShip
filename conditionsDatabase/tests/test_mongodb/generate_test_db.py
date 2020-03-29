@@ -57,10 +57,10 @@ connect(
 delete_db(connection_dict)
 
 # define detector_id_exist
-dw = DetectorWrapper(name="detector_id_exist")
+detector_wrapper = DetectorWrapper(name="detector_id_exist")
 
 detector_id_exist = Detector(name="detector_id_exist")
-condition = Condition(name="condition_exist", tag="1", type="type1",
+condition = Condition(name="condition_exist", tag="tag", type="type",
                       collected_at=datetime.datetime(2020, 3, 12, 11, 5, 27),
                       valid_since=datetime.datetime(2020, 3, 12, 11, 5, 27),
                       valid_until=datetime.datetime(2020, 4, 10, 11, 5, 27),
@@ -71,8 +71,8 @@ condition = Condition(name="condition_exist", tag="1", type="type1",
 detector_id_exist.conditions.append(condition)
 
 # define detector_id_exist/sub_detector_id_exist
-subdetector1 = Detector(name="sub_detector_id_exist")
-subCondition1 = Condition(name="sub_detector_id_exist", tag="sub1", type="subtype1",
+sub_detector = Detector(name="sub_detector_id_exist")
+sub_condition = Condition(name="sub_detector_id_exist", tag="sub_tag", type="sub_type",
                           collected_at=datetime.datetime(2020, 4, 12, 11, 5, 27),
                           valid_since=datetime.datetime(2020, 4, 12, 11, 5, 27),
                           valid_until=datetime.datetime(2020, 5, 12, 11, 5, 27),
@@ -80,39 +80,40 @@ subCondition1 = Condition(name="sub_detector_id_exist", tag="sub1", type="subtyp
                               "name": "name sub detector",
                               "value": "value sub detector"
                           })
-subdetector1.conditions.append(subCondition1)
-detector_id_exist.subdetectors.append(subdetector1)
+sub_detector.conditions.append(sub_condition)
+detector_id_exist.subdetectors.append(sub_detector)
 
 # define detector_id_exist/sub_detector_id_exist/sub_sub_detector_id_exist
-subsubdetector1 = Detector(name="sub_sub_detector_id_exist")
-subsubCondition1 = Condition(name="sub_sub_detector_id_exist", tag="subsub1", type="subsubtype1",
-                             collected_at=datetime.datetime(2020, 5, 12, 11, 5, 27),
-                             valid_since=datetime.datetime(2020, 5, 12, 11, 5, 27),
-                             valid_until=datetime.datetime(2020, 6, 12, 11, 5, 27),
-                             values={
-                                 "name": "name sub sub detector",
-                                 "value": "value sub sub detector"
-                             })
-subsubdetector1.conditions.append(subsubCondition1)
-subdetector1.subdetectors.append(subsubdetector1)
+sub_sub_detector = Detector(name="sub_sub_detector_id_exist")
+sub_sub_condition = Condition(name="sub_sub_detector_id_exist", tag="sub_sub_tag", type="sub_sub_type",
+                              collected_at=datetime.datetime(2020, 5, 12, 11, 5, 27),
+                              valid_since=datetime.datetime(2020, 5, 12, 11, 5, 27),
+                              valid_until=datetime.datetime(2020, 6, 12, 11, 5, 27),
+                              values={
+                                  "name": "name sub sub detector",
+                                  "value": "value sub sub detector"
+                              })
+sub_sub_detector.conditions.append(sub_sub_condition)
+sub_detector.subdetectors.append(sub_sub_detector)
 
-dw.detector = detector_id_exist
+detector_wrapper.detector = detector_id_exist
 
-dw.save()
+detector_wrapper.save()
 
 # another detector without condition
-dw2 = DetectorWrapper(name="detector_without_condition")
+detector_wrapper = DetectorWrapper(name="detector_without_condition")
 
-detector2 = Detector(name="detector_without_condition")
+detector_2 = Detector(name="detector_without_condition")
 
-subdetector2 = Detector(name="subdetector2")
+sub_detector_2 = Detector(name="sub_detector_2")
 
-subCondition2 = Condition(name="subcondition2", tag="sub2", type="subtype2",
-                          collected_at=datetime.datetime.now(), valid_since=datetime.datetime.now(),
-                          valid_until=datetime.datetime.now())
+sub_condition_2 = Condition(name="sub_condition_2", tag="sub_2", type="sub_type_2",
+                            collected_at=datetime.datetime.now(),
+                            valid_since=datetime.datetime.now(),
+                            valid_until=datetime.datetime.now())
 
-subdetector2.conditions.append(subCondition2)
-detector2.subdetectors.append(subdetector2)
+sub_detector_2.conditions.append(sub_condition_2)
+detector_2.subdetectors.append(sub_detector_2)
 
-dw2.detector = detector2
-dw2.save()
+detector_wrapper.detector = detector_2
+detector_wrapper.save()

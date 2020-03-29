@@ -6,7 +6,7 @@ import pytest
 import yaml
 
 from ..factory import APIFactory
-from ..databases.mongodb.mongodb import MongoToCDBAPIAdapter
+from ..databases.mongodb.mongodbadapter import MongoToCDBAPIAdapter
 
 
 @pytest.fixture
