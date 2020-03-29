@@ -724,6 +724,7 @@ class MongoToCDBAPIAdapter(APIInterface):
         # Input sanitization
         name = self.__sanitize_str(name)
         tag = self.__sanitize_str(tag)
+
         if self.__validate_str(type):
             type = self.__sanitize_str(type)
 
