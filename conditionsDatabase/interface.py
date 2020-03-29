@@ -10,8 +10,8 @@ __status__    = "Prototype"
 
 _ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 AND 3
 
-### Interface for attaching a database API, this class defines all functions
-### that must be available in a concrete implementation of a database API.
+### Conditions Database Interface definition. This class defines the interface that all
+### storage back-end adapters must implement.
 class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
 
     ### Returns a list with all the detector names in the database.
@@ -72,7 +72,7 @@ class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @throw TypeError:       If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
-    def add_condition(self, detector_id, name, tag, values, type=None, collected_at=None, valid_since=None, valid_until=None):
+    def add_condition(self, detector_id, name, tag, values, type=None, collected_at=datetime.now(), valid_since=datetime.now(), valid_until=datetime.max):
         pass
 
     ### Returns a list with all condition dictionaries associated with a detector.
