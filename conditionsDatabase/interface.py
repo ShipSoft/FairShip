@@ -1,6 +1,7 @@
 """ Conditions Database interface definition """
 
 from abc import ABCMeta, abstractmethod
+from datetime import datetime
 
 # Package metadata
 __author__    = "Tom Vrancken"
