@@ -24,9 +24,12 @@ DownScaleDiMuon = False
 theHNLMass   = 1.0*u.GeV
 theProductionCouplings = theDecayCouplings = None
 
-# Default dark photon parameters
+# Default dark photon parameter
 theDPmass    = 0.2*u.GeV
+
+#Default ALP parameter
 theALPmass   = 0.1*u.GeV
+
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
 

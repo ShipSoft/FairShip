@@ -6,7 +6,7 @@ import numpy,math
 import ROOT
 import shipunit as u
 
-#natural units were used!
+# Using natural units
 hGeV      = u.hbar_Planck/u.s
 c_light   = u.c_light*u.s/u.cm
 
