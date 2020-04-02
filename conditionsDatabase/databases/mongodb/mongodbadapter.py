@@ -10,6 +10,11 @@ from models.detector import Detector
 from models.detectorWrapper import DetectorWrapper
 from models.condition import Condition
 
+## As of Python 3.8 we can do more with typing. It is recommended to make
+## the adapter class final. Use the following import and provided
+## decorator for the class.
+#from typing import final
+
 # Package metadata
 __author__ = "Nathan DPenha, Juan van der Heijden, " \
              "Vladimir Romashov, Raha Sadeghi"
@@ -18,6 +23,7 @@ __version__ = "0.1"
 __status__ = "Prototype"
 
 
+#TODO uncomment for python >= 3.8: @final
 class MongoToCDBAPIAdapter(APIInterface):
     """
     Class that implements the conditions db interface

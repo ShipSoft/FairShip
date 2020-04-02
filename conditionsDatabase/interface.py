@@ -2,6 +2,10 @@
 
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
+## As of Python 3.8 we can do more with typing. It is recommended to make
+## the API interface class final. Use the following import and provided
+## decorator for the class.
+#from typing import final
 
 # Package metadata
 __author__    = "Tom Vrancken"
@@ -13,7 +17,8 @@ _ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 
 
 ### Conditions Database Interface definition. This class defines the interface that all
 ### storage back-end adapters must implement.
-class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
+#TODO uncomment for python >= 3.8: @final
+class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
 
     ### Returns a list with all the detector names in the database.
     #   @param detector_id:     (optional) String identifying the parent detector to
@@ -164,7 +169,7 @@ class APIInterface(_ABC): # For Python 3 we could use 'metaclass=ABCMeta'
     #   @param  name:           String specifying the name of the conditions to be updated (e.g.
     #                           'strawPositions').
     #   @param  tag:            String specifying the tag of the condition to be updated.
-    #   @param  type:           (optional) String specifying the type of condition 
+    #   @param  type:           (optional) String specifying the type of condition
     #                           (e.g. 'calibration').
     #   @param  valid_since:    (optional) Timestamp specifying the date/time as of when the
     #                           condition is valid. Can be of type String or datetime.

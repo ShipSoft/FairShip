@@ -4,8 +4,13 @@ import os
 import sys
 import yaml
 from databases.mongodb.mongodbadapter import MongoToCDBAPIAdapter
+## As of Python 3.8 we can do more with typing. It is recommended to make
+## the factory class final. Use the following import and provided
+## decorator for the class.
+#from typing import final
 
 ### This class creates an instance of the specified database API.
+#TODO uncomment for python >= 3.8: @final
 class APIFactory:
 
     def __init__(self):
