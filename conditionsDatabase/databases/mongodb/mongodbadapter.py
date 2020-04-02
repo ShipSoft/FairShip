@@ -209,6 +209,7 @@ class MongoToCDBAPIAdapter(APIInterface):
             wrapper.save()
             return wrapper
 
+    # Method signature description can be found in the toplevel interface.py file
     def add_detector(self, name, parent_id=None):
         # if we add detector
         if not self.__validate_str(name):
@@ -263,6 +264,7 @@ class MongoToCDBAPIAdapter(APIInterface):
                 return
             raise ValueError("Detector " + name + " already exist")
 
+    # Method signature description can be found in the toplevel interface.py file
     def list_detectors(self, parent_id=None):
         detector_list = []
         if not parent_id:
@@ -288,6 +290,7 @@ class MongoToCDBAPIAdapter(APIInterface):
                 detector_list.append(str(path + "/" + subdetector.name))
         return detector_list
 
+    # Method signature description can be found in the toplevel interface.py file
     def get_detector(self, detector_id):
         if detector_id == "":
             return None
@@ -311,6 +314,7 @@ class MongoToCDBAPIAdapter(APIInterface):
         # Convert the internal Detector object to a generic Python dict type
         return loads(detector.to_json())
 
+    # Method signature description can be found in the toplevel interface.py file
     def add_condition(self, detector_id, name, tag, values, type=None,
                       collected_at=datetime.now(), valid_since=datetime.now(), valid_until=datetime.max):
         if detector_id == "" or name == "" or tag == "" or collected_at == "":
@@ -392,6 +396,7 @@ class MongoToCDBAPIAdapter(APIInterface):
         detector.conditions.append(condition)
         detector_wrapper.save()
 
+    # Method signature description can be found in the toplevel interface.py file
     def get_conditions(self, detector_id):
         # Get the detector of the specified detector_id
         if not self.__validate_str(detector_id):
@@ -436,6 +441,7 @@ class MongoToCDBAPIAdapter(APIInterface):
                              " does not exist in the database")
         wrapper.delete()
 
+    # Method signature description can be found in the toplevel interface.py file
     def remove_detector(self, detector_id):
         if not self.__validate_str(detector_id):
             raise TypeError("Please pass the correct type of input: detector_id")
@@ -472,6 +478,7 @@ class MongoToCDBAPIAdapter(APIInterface):
 
         wrapper.save()
 
+    # Method signature description can be found in the toplevel interface.py file
     def get_conditions_by_tag(self, detector_id, tag):
         # Input validation
         if not self.__validate_str(tag):
@@ -511,6 +518,7 @@ class MongoToCDBAPIAdapter(APIInterface):
             condition_dicts.append(loads(condition.to_json()))
         return condition_dicts
 
+    # Method signature description can be found in the toplevel interface.py file
     def get_conditions_by_name(self, detector_id, name):
         # input validation
         if not self.__validate_str(name):
@@ -549,6 +557,7 @@ class MongoToCDBAPIAdapter(APIInterface):
             condition_dicts.append(loads(condition.to_json()))
         return condition_dicts
 
+    # Method signature description can be found in the toplevel interface.py file
     def get_condition_by_name_and_tag(self, detector_id, name, tag):
         # Input validation
         if not self.__validate_str(detector_id):
@@ -584,6 +593,7 @@ class MongoToCDBAPIAdapter(APIInterface):
         # Convert the internal Condition object to a generic Python dict type
         return loads(condition.to_json())
 
+    # Method signature description can be found in the toplevel interface.py file
     def get_conditions_by_name_and_validity(self, detector_id, name, start_date, end_date=None):
         # Input validation
         if not self.__validate_str(detector_id):
@@ -645,6 +655,7 @@ class MongoToCDBAPIAdapter(APIInterface):
             condition_dicts.append(loads(condition.to_json()))
         return condition_dicts
 
+    # Method signature description can be found in the toplevel interface.py file
     def get_condition_by_name_and_collection_date(self, detector_id, name, collected_at):
         # Input validation
         if not self.__validate_str(detector_id):
@@ -688,6 +699,7 @@ class MongoToCDBAPIAdapter(APIInterface):
         except DoesNotExist:
             return None
 
+    # Method signature description can be found in the toplevel interface.py file
     def update_condition_by_name_and_tag(self, detector_id, name, tag,
                                          type=None, valid_since=None, valid_until=None):
         # Input validation
@@ -741,7 +753,7 @@ class MongoToCDBAPIAdapter(APIInterface):
             detector = self.__get_detector(detector_wrapper, detector_id)
         except Exception:
             raise ValueError("The requested detector " + detector_id + " does not exist.")
-    
+
         condition = None
         try:
             condition = detector.conditions.get(name=name, tag=tag)
