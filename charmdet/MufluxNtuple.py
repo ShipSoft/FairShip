@@ -182,7 +182,7 @@ def getNxNy(C):
          ny+=1
          Y = p.GetYlowNDC()
   return nx,ny
-def printPads(c1):
+def printPads(c1,ytitle=None):
    for n in range(len(c1.GetListOfPrimitives())):
        c0 = ROOT.TCanvas("c0","c0",900,600)
        c0.Divide(1,1)
@@ -199,6 +199,11 @@ def printPads(c1):
        newpad.SetLogy(pad.GetLogy())
        newpad.SetLogx(pad.GetLogx())
        newpad.Modified()
+       newpad.Update()
+       if ytitle:
+           for x in newpad.GetListOfPrimitives():
+             if x.ClassName().find('TH1')<0: continue
+             x.GetYaxis().SetTitle(ytitle)
        newpad.Update()
        c0.Print(c1.GetName()+'_'+str(n)+'.pdf')
        c0.Print(c1.GetName()+'_'+str(n)+'.png')
@@ -533,7 +538,7 @@ def getFitDictionary(fitMethod):
    return params,funTemplate
 def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printout=2):
    ROOT.gROOT.cd()
-   tag = fitMethod+"_"+proj
+   tag = (fitMethod+"_"+proj).replace(',','').replace(')','').replace('(','')
    hData['FitResults-'+tag]={}
    y_beam = yBeam()
    v='mcor'
@@ -577,7 +582,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,nBins=9,printou
       myDraw(v+':'+cutExp+'>>mc-'+tag+m,theCut,m)
       myDraw(v+':'+cutExp+'>>mc-'+tag+'LowMass-'+m, theCut+"&&Jpsi%100000!=443",m)
       myDraw(v+':'+cutExp+'>>mc-'+tag+'HighMass-'+m,theCut+"&&Jpsi==443",m)
-   hData['f'].nt.Draw(v+':'+cutExp+'>>'+tag,theCut)
+   rc = hData['f'].nt.Draw(v+':'+cutExp+'>>'+tag,theCut)
 #
    pmin = projMin
    delp = (projMax-projMin)/float(nBins)
@@ -1727,7 +1732,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
        name = "ntuple-invMass-"+fdir.split('/')[7]+'.root'
     if options.refit: name = name.replace('.root','_refit.root')
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
-    variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:p1:pt1:p1cor:pt1cor:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
+    variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:muIDs:p1:pt1:p1cor:pt1cor:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
 prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
     if MCdata:
       variables += ":Jpsi:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:Pmother"
@@ -1765,10 +1770,12 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
         IP    = {-1:-999.}
         Pcor  = {-1:ROOT.Math.PxPyPzMVector()}
         Pcor2 = {-1:ROOT.Math.PxPyPzMVector()}
+        muID  = {-1:0}
         for k in range(len(sTree.GoodTrack)):
             if sTree.GoodTrack[k]<0: continue
-            if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: continue
             if sTree.GoodTrack[k]>999:  continue
+            if sTree.GoodTrack[k]%2!=1 AND  int(sTree.GoodTrack[k]/10)%2!=1: continue
+            muID[k] = sTree.GoodTrack[k]
             P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
             l = (sTree.z[k] - zTarget)/(sTree.Pz[k]+ 1E-19)
             x = sTree.x[k]+l*sTree.Px[k]
@@ -1785,6 +1792,7 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
         X      =  {0:ROOT.Math.PxPyPzMVector()}
         Xcor   =  {0:ROOT.Math.PxPyPzMVector()}
         Xcor2  =  {0:ROOT.Math.PxPyPzMVector()}
+        muIDs  =  {0:0.0}
         jpsi   =  {0:-1}
         pTrue  =  {0:[ROOT.TVector3(0,0,-9999.),ROOT.TVector3(0,0,-9999.)]}
         dTheta =  {0:[-9999.,-9999.]}
@@ -1810,6 +1818,7 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
           X[j]    = P[n1]+P[n2]
           Xcor[j] = Pcor[n1]+Pcor[n2]
           Xcor2[j] = Pcor2[n1]+Pcor2[n2]
+          muIDs[j] = muID[n1] + muID[n2]/100.
 # angle between two tracks in Jpsi rest frame
           b = X[j].BoostToCM()
           moth_boost = ROOT.Math.Boost(b.x(),b.y(),b.z())
@@ -1929,7 +1938,7 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
             zn2 = sTree.z[n2] 
           nrOfComb = float(len(nComb))
           if nComb[j][0]<0 : nrOfComb-=1
-          theArray = [nrOfComb,X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),Xcor[j].P(),X[j].Pt(),Xcor[j].Pt(),\
+          theArray = [nrOfComb,X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),Xcor[j].P(),X[j].Pt(),Xcor[j].Pt(),muIDs[j],\
                      P[n1].P(),P[n1].Pt(),Pcor[n1].P(),Pcor[n1].Pt(),P[n2].P(),P[n2].Pt(),Pcor[n2].P(),Pcor[n2].Pt(),\
                      IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],cosCSraw,cosCScor,\
                      P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),\
@@ -2116,6 +2125,10 @@ def determineEfficiencies(theCut,category,colors,withCosCSCut):
      hMC['P'+z+'_rec'] = hMC['PandPt'+z+'_rec'].ProjectionX('P'+z+'_rec')
      print "make eff ",'PEff'+z
      hMC['PEff'+z]=ROOT.TEfficiency(hMC['P'+z+'_rec'],hMC['P'+z])
+     hMC['Pt'+z]        = hMC['YandPt'+z].ProjectionY('Pt'+z,115,200)
+     hMC['Pt'+z+'_rec'] = hMC['YandPt'+z+'_rec'].ProjectionY('Pt'+z+'_rec',115,200)
+     print "make eff ",'PtEff'+z
+     hMC['PtEff'+z]=ROOT.TEfficiency(hMC['Pt'+z+'_rec'],hMC['Pt'+z])
      hMC['Y'+z]     = hMC['YandPt'+z].ProjectionX('Y'+z)
      hMC['Y'+z+'_rec'] = hMC['YandPt'+z+'_rec'].ProjectionX('Y'+z+'_rec')
      print "make eff ",'YEff'+z
@@ -2264,7 +2277,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
    frac = hMC['etaNA50'].Integral(ylimits[0],ylimits[1])/hMC['etaNA50'].Integral(-0.425,0.575)
    crossSection = 3.994
    NA50fraction  = frac * crossSection
-   eNA50fraction = frac * 0.087
+   eNA50fraction = frac * 0.148 # 2.1% sys + 3% lumi + 0.022 stat
    mix = 0
    for m in [hfitted+"_effCorrected",hfitted+"_effAndResolCorrected"]:
      print "with method --->",m.split('_eff')[1]+'eff',' fit:',fitMethod
@@ -2288,6 +2301,15 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
    ut.writeHists(hData,'Data-histos.root')
    ut.writeHists(hMC,'MC-histos.root')
 #
+def detectorAcceptance(ptCut = 1.0, pmin = 20.,pmax  = 300.,BDTCut=None):
+   ut.bookHist(hMC,'mc-XY','first measured point',100,-30.,30.,100,-30.,30.)
+   ut.bookHist(hData,'XY','first measured point',100,-30.,30.,100,-30.,30.)
+   ROOT.gROOT.cd()
+   theCut = theJpsiCut('mcor','True',ptCut,pmin,pmax,False) + "&&2.5<mcor&&3.5>mcor"
+   hMC['JpsiP8'].Draw('rec1x:rec1y>>mc-XY',theCut)
+   hMC['JpsiP8'].Draw('rec2x:rec2y>>mc-XY',theCut)
+   hData['f'].nt.Draw('rec1x:rec1y>>XY',theCut)
+   hData['f'].nt.Draw('rec2x:rec2y>>XY',theCut)
 def JpsiPolarization(ptCut = 1.0, pmin = 20.,BDTCut=None):
    theCut = theJpsiCut('mcor',False,ptCut,pmin,300.,BDTCut)
    fitMethod = 'B'
@@ -2296,7 +2318,7 @@ def JpsiPolarization(ptCut = 1.0, pmin = 20.,BDTCut=None):
      ntname = 'Jpsi'
      if z=='_P8prim': ntname = 'JpsiP8'
      ROOT.gROOT.cd()
-     twoCBYieldFit(fitMethod,proj,-1.,1.,'cosCS',theCut,nBins=20],printout=1)
+     twoCBYieldFit(fitMethod,proj,-1.,1.,'cosCS',theCut,nBins=20,printout=1)
 #   not finished
      hMC['mc-JpsicosCScor'+z]=hMC['mc-JpsicosCScor'].Clone('mc-JpsicosCScor'+z)
    hMC['dummy'].cd()
@@ -2554,6 +2576,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None):
    formating='5.2F'
    hname = "data_YieldsEffCorrectedWithNA50.root"
    results = {}
+   results["xSec"] = {}
    fM = ['CB', 'B', 'G']
    for fitMethod in fM:
       tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
@@ -2617,7 +2640,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None):
    lumi    = 30.7 # pb-1
    elumi   = 0.7
    epsilon = 0.01
-   NA50crossSection = [3.994,0.087]
+   NA50crossSection = [3.994,0.148]
    ybinWidth = 0.1
    formating='5.3F'
    Nsignal = {}
@@ -2651,6 +2674,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None):
        print txt%(binMin,binMax,Xsec,statErrXsec,sysErrXsec,NXsecNA50,EXsecNA50,sigmaPull)
        crossSection[fitMethod][MC][i]=[binMin,binMax,Xsec,statErrXsec,sysErrXsec,NXsecNA50,EXsecNA50]
      print "average between P8prim and Cascade"
+     results["xSec"]['av'+fitMethod]={}
      for i in ikeys:
        txt = "%3.2F - %3.2F : %"+formating+"  %"+formating+"  %"+formating+"        %"+formating+"  %"+formating+" | %5.2F"
        binMin,binMax = crossSection[fitMethod]['Cascade'][i][0],crossSection[fitMethod]['Cascade'][i][1]
@@ -2662,6 +2686,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None):
        totalError  = ROOT.TMath.Sqrt(statErrXsec**2+sysErrXsec**2+EXsecNA50**2)
        sigmaPull   = (Xsec-NXsecNA50)/totalError
        print txt%(binMin,binMax,Xsec,statErrXsec,sysErrXsec,NXsecNA50,EXsecNA50,sigmaPull)
+       results["xSec"]['av'+fitMethod][int(binMin*10)]=[binMin,binMax,Xsec,statErrXsec,sysErrXsec,NXsecNA50,EXsecNA50,sigmaPull]
 #
    print " cross check, sys error from MC"
    for i in ikeys:
@@ -2678,8 +2703,8 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None):
    tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
    f = ROOT.TFile(tag+'/data_YieldsEffCorrectedWithNA50.root')
    ut.bookCanvas(hMC,'Final',' ',1200,900,1,1)
-   hMC['Final'].SetLogy(1)
    hMC['dummy']=f.Get('dummy').Clone('dummy')
+   ROOT.gROOT.cd()
    for x in hMC['dummy'].GetListOfPrimitives():
       if x.ClassName().find('TH1')<0: continue
       hMC[x.GetName()] = hMC['dummy'].FindObject(x.GetName()).Clone(x.GetName())
@@ -2687,7 +2712,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None):
    hMC['B_ycor1C-Jpsi_effCorrected_average'].Reset()
    j=1
    av = hMC['B_ycor1C-Jpsi_effCorrected_average']
-   av.SetTitle(';y_{CMS};nbarn/%4.2F'%(av.GetBinWidth(1)))
+   av.SetTitle(';y_{CMS};#sigma nb/%4.2F'%(av.GetBinWidth(1)))
    for i in ikeys:
        binMin,binMax = crossSection[fitMethod]['Cascade'][i][0],crossSection[fitMethod]['Cascade'][i][1]
        c = av.GetBinCenter(j)
@@ -2713,6 +2738,8 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None):
    av.SetLineColor(ROOT.kBlue)
    av.SetMarkerColor(ROOT.kBlue)
    av.SetStats(0)
+   tc = hMC['Final'].cd()
+   tc.SetLogy(1)
    av.Draw()
    hMC['Y_Cascade_scaled'].Draw('same')
    hMC['Y_P8prim_scaled'].Draw('same')
@@ -3393,7 +3420,8 @@ def unconvolute(z,hjpsi,effMin):
           e = hMC['YEff'+z+'_graph'].Eval(x)
           if e>effMin:
               NyieldEffCorrected[k][0]+=xslice.GetBinContent(k)/e
-              NyieldEffCorrected[k][1]+=(xslice.GetBinContent(k)/e * Erec/(Nrec+1E-9))**2
+              # 25.3. 2020: NyieldEffCorrected[k][1]+=(xslice.GetBinContent(k)/e * Erec/(Nrec+1E-9))**2
+              NyieldEffCorrected[k][1]+=(xslice.GetBinContent(k)/e * Erec/(Nrec+1E-9))
 # errors
       ymin+=bw
    xslice.Reset()
@@ -3403,7 +3431,8 @@ def unconvolute(z,hjpsi,effMin):
    for k in range(1,xaxis.GetNbins()+1):
       if NyieldEffCorrected[k][0]<1E10:
          hMC[hname].SetBinContent(k,NyieldEffCorrected[k][0])
-         hMC[hname].SetBinError(k,ROOT.TMath.Sqrt(NyieldEffCorrected[k][1]))
+         #  hMC[hname].SetBinError(k,ROOT.TMath.Sqrt(NyieldEffCorrected[k][1]))
+         hMC[hname].SetBinError(k,NyieldEffCorrected[k][1])
       else:   
          hMC[hname].SetBinContent(k,0.)
          hMC[hname].SetBinError(k,0.)
@@ -3768,7 +3797,9 @@ myExpo.SetParName(3,'tau2')
 myExpo.SetParName(4,'const')
 
 def myCopy(template):
-   os.system('cp '+template+' /mnt/hgfs/Images/VMgate/Jpsi/AnalysisNote/figs')
+   if template.find('.pdf')>0:
+      os.system('cp '+template+' /mnt/hgfs/Images/VMgate/Jpsi/AnalysisNote/figs')
+   else: os.system('cp '+template+' /mnt/hgfs/Images/VMgate/Jpsi/AnalysisNote/png')
 def updateFigures(debug=False):
    temp = subprocess.check_output('grep ".pdf" /mnt/hgfs/Images/VMgate/Jpsi/AnalysisNote/introduction.tex',shell=True)
    for x in temp.split('\n'):
@@ -3781,6 +3812,19 @@ def updateFigures(debug=False):
           if os.path.isfile(plot):
              if debug: print "update ",plot,time.ctime(os.path.getmtime(plot))
              myCopy(plot)
+          else: print "plot not found",plot
+def updateFiguresForPowerPoint(debug=False):
+   temp = subprocess.check_output('grep ".pdf" /mnt/hgfs/Images/VMgate/Jpsi/AnalysisNote/introduction.tex',shell=True)
+   for x in temp.split('\n'):
+       for z in x.split('includegraphics'):
+          tmp=z.split('figs/')
+          if len(tmp)<2: continue
+          ump = tmp[1].split('.pdf')
+          if len(ump)<2: continue
+          plot = ump[0]+'.png'
+          if os.path.isfile(plot):
+             if debug: print "update ",plot,time.ctime(os.path.getmtime(plot))
+             os.system('cp '+plot+' /mnt/hgfs/Images/VMgate/Jpsi/AnalysisNote/png/')
           else: print "plot not found",plot
 def myPrint(obj,aname):
     name = aname.replace('/','')
@@ -4546,7 +4590,12 @@ def hadronAbsorberEffect(Pmin=20.):
        rc = hMC['Y0'].Fill(y)
        if Emu>Pmin:
           rc = hMC['Yacc'].Fill(y)
-def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
+def rapidityVSpt():
+    ut.bookHist(hMC,'ypt','y/pt'    ,100,-2.0,2.0,100,0.0,5.0)
+    ybeam = yBeam()
+    hMC['JpsiP8_Primary'].Draw('sqrt(px*px+py*py):0.5*log((E+pz)/(E-pz))-'+str(ybeam)+'>>ypt')
+
+def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=True,fakeJpsi=True):
     lowMass = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
     y_beam = yBeam()
     Mmu = ROOT.TDatabasePDG.Instance().GetParticle(13).Mass()
@@ -4569,6 +4618,7 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
        ut.bookHist(hMC,'y/cosCS_'+g   ,'y/cosCS'    ,40,-2.0,2.0,100,-1.0,1.0)
        ut.bookHist(hMC,'ptmin/cosCS_'+g   ,'ptmin/cosCS'    , 100,0.0,5.0,100,-1.0,1.0)
        ut.bookHist(hMC,'cosThetaMax/cosCS_'+g   ,'cosThetaMax/cosCS'    , 100,0.0,0.5,100,-1.0,1.0)
+       ut.bookHist(hMC,'cosThetaMax/cosCS_ycut_'+g   ,'cosThetaMax/cosCS'    , 100,0.0,0.5,100,-1.0,1.0)
        ut.bookHist(hMC,'y/cosHE_'+g   ,'y/cosHE'    ,40,-2.0,2.0,100,-1.0,1.0)
        for cosCut in ['','cosCS<0.5_']:
          ut.bookHist(hMC,'y/pt_'+cosCut+g   ,'y/pt'    ,40,-2.0,2.0,100,0.0,5.0)
@@ -4576,7 +4626,9 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
          ut.bookHist(hMC,'y/p_'+cosCut+g    ,'y/p'     ,40,-2.0,2.0,400,0.0,400.0)
          ut.bookHist(hMC,'y/maxp_'+cosCut+g    ,'y/maxp'     ,40,-2.0,2.0,400,0.0,400.0)
          ut.bookHist(hMC,'y/minpt_'+cosCut+g,'y/min pt'      ,40,-2.0,2.0,100,0.0,5.0)
+         ut.bookHist(hMC,'y/maxpt_'+cosCut+g,'y/max pt'      ,40,-2.0,2.0,100,0.0,5.0)
          ut.bookHist(hMC,'y/minptJ_'+cosCut+g,'y/min pt'      ,40,-2.0,2.0,100,0.0,5.0)
+         ut.bookHist(hMC,'y/maxptJ_'+cosCut+g,'y/max pt'      ,40,-2.0,2.0,100,0.0,5.0)
        PJpsiLab = ROOT.TLorentzVector()
        PMuCMS   =  ROOT.TLorentzVector()
        k=1
@@ -4592,7 +4644,6 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
           pmu   = ROOT.TMath.Sqrt( (PJpsiLab.M()/2.)**2 - Mmu**2)
           phi   = ROOT.gRandom.Rndm() * 2*ROOT.TMath.Pi()
           theta = ROOT.TMath.ACos(1 - 2*ROOT.gRandom.Rndm())
-          minPtJ = 0.
           plepton = []
           for p in [1.,-1.]:
              px = p*pmu*ROOT.TMath.Cos(phi)*ROOT.TMath.Sin(theta)
@@ -4624,7 +4675,10 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
           hMC['y/cosCS_'+g].Fill(y,cosCS)
           hMC['y/cosHE_'+g].Fill(y,cosHE)
           hMC['cosThetaMax/cosCS_'+g].Fill(max(plepton[0].Pt()/plepton[0].P(),plepton[1].Pt()/plepton[1].P()),cosCS)
+          if y > 0.8: hMC['cosThetaMax/cosCS_ycut_'+g].Fill(max(plepton[0].Pt()/plepton[0].P(),plepton[1].Pt()/plepton[1].P()),cosCS)
           cosCut = ''
+          minPtJ = 9999.
+          maxPtJ = 0.
           for PMuLab in plepton:
              ptLab = PMuLab.Pt()
              tmp = ROOT.TVector3(PMuLab.Px(),PMuLab.Py(),PMuLab.Pz())
@@ -4638,21 +4692,28 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
                  rc = hMC['y/pt_'+cosCut+g].Fill(y,ptLab)
                  rc = hMC['y/ptJ_'+cosCut+g].Fill(y,ptJ)
                  rc = hMC['y/p_'+cosCut+g].Fill(y,PMuLab.P())
-             if minPtJ<ptJ : minPtj = ptJ
+             if ptJ<minPtJ : minPtJ = ptJ
+             if ptJ>maxPtJ : maxPtJ = ptJ
 
           cosCut = ''
           rc = hMC['y/minpt_'+cosCut+g].Fill(y,max(plepton[0].Pt(),plepton[1].Pt()))
           rc = hMC['y/minptJ_'+cosCut+g].Fill(y,minPtJ)
+          rc = hMC['y/maxpt_'+cosCut+g].Fill(y,min(plepton[0].Pt(),plepton[1].Pt()))
+          rc = hMC['y/maxptJ_'+cosCut+g].Fill(y,maxPtJ)
           rc = hMC['y/maxp_'+cosCut+g].Fill(y,min(plepton[0].P(),plepton[1].P()))
           rc = hMC['ptmin/cosCS_'+g].Fill(max(plepton[0].Pt(),plepton[1].Pt()),cosCS)
           if abs(cosCS)<0.5: 
              cosCut = 'cosCS<0.5_'
              rc = hMC['y/minpt_'+cosCut+g].Fill(y,max(plepton[0].Pt(),plepton[1].Pt()))
              rc = hMC['y/minptJ_'+cosCut+g].Fill(y,minPtJ)
+             rc = hMC['y/maxpt_'+cosCut+g].Fill(y,min(plepton[0].Pt(),plepton[1].Pt()))
+             rc = hMC['y/maxptJ_'+cosCut+g].Fill(y,maxPtJ)
              rc = hMC['y/maxp_'+cosCut+g].Fill(y,min(plepton[0].P(),plepton[1].P()))
      if save: ut.writeHists(hMC,c+'muonKinematics-p-pt-minpt.root')
 #
     for x in hMC:
+       if type(hMC[x])==type({}): continue
+       if type(hMC[x])==type([]): continue
        if hMC[x].ClassName().find('TH')==0: 
           hMC[x].SetStats(0)
     for cosCut in ['','cosCS<0.5_']:
@@ -4681,7 +4742,7 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
         hMC['y/pt_'+gc].SetLineColor(colors[g][0])
         hMC['y/pt_'+gc].SetMarkerColor(colors[g][0])
         hMC['y/pt_'+gc].SetMarkerStyle(colors[g][1])
-      maximas = {'p_':[],'pt_':[],'minpt_':[],'maxp_':[],'I-vis_maxp_':[],'I-vis_minpt_':[]}
+      maximas = {'p_':[],'pt_':[],'minpt_':[],'maxp_':[],'I-vis_maxp_':[],'I-vis_minpt_':[],'I-vis_maxpt_':[]}
       first = True
       for g in colors:
         gc = cosCut+g
@@ -4725,25 +4786,37 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
         ymin,ymax = Y.FindBin(0.4),Y.FindBin(1.8)
         hMC['vis_maxp_'+gc] = hMC['y/maxp_'+gc].ProjectionY('vis_maxp_'+g,ymin,ymax)
         hMC['vis_maxp_'+gc].SetStats(0)
-        hMC['vis_minpt_'+gc] = hMC['y/minpt_'+gc].ProjectionY('vis_minpt_'+g,ymin,ymax)
         ut.makeIntegralDistrib(hMC,'vis_maxp_'+gc,overFlow=True)
         hMC['I-vis_maxp_'+gc].Scale(1./hMC['vis_maxp_'+gc].GetEntries())
         hMC['I-vis_maxp_'+gc].GetXaxis().SetRangeUser(0.,100.)
+        hMC['vis_minpt_'+gc] = hMC['y/minpt_'+gc].ProjectionY('vis_minpt_'+g,ymin,ymax)
+        hMC['vis_minpt_'+gc].SetStats(0)
         ut.makeIntegralDistrib(hMC,'vis_minpt_'+gc,overFlow=True)
         hMC['I-vis_minpt_'+gc].Scale(1./hMC['vis_minpt_'+gc].GetEntries())
+        hMC['vis_maxpt_'+gc] = hMC['y/maxpt_'+gc].ProjectionY('vis_maxpt_'+g,ymin,ymax)
+        hMC['vis_maxpt_'+gc].SetStats(0)
+        ut.makeIntegralDistrib(hMC,'vis_maxpt_'+gc,overFlow=True)
+        hMC['I-vis_maxpt_'+gc].Scale(1./hMC['vis_maxpt_'+gc].GetEntries())
         hMC['I-vis_minpt_'+gc].GetXaxis().SetRangeUser(0.,2.)
+        hMC['I-vis_maxpt_'+gc].GetXaxis().SetRangeUser(0.,2.)
         hMC['I-vis_maxp_'+gc].SetLineColor(colors[g][0])
         hMC['I-vis_maxp_'+gc].SetMarkerColor(colors[g][0])
         hMC['I-vis_maxp_'+gc].SetMarkerStyle(colors[g][1])
         hMC['I-vis_minpt_'+gc].SetLineColor(colors[g][0])
         hMC['I-vis_minpt_'+gc].SetMarkerColor(colors[g][0])
         hMC['I-vis_minpt_'+gc].SetMarkerStyle(colors[g][1])
+        hMC['I-vis_maxpt_'+gc].SetLineColor(colors[g][0])
+        hMC['I-vis_maxpt_'+gc].SetMarkerColor(colors[g][0])
+        hMC['I-vis_maxpt_'+gc].SetMarkerStyle(colors[g][1])
         tc = hMC['muonKinematics'].cd(j+4)
         maximas['I-vis_minpt_'].append(hMC['I-vis_minpt_'+gc].GetMaximum())
         hMC['I-vis_minpt_'+gc].Draw(drawOption+colors[g][2])
         tc = hMC['muonKinematics'].cd(j+5)
         maximas['I-vis_maxp_'].append(hMC['I-vis_maxp_'+gc].GetMaximum())
         hMC['I-vis_maxp_'+gc].Draw(drawOption+colors[g][2])
+        tc = hMC['muonKinematics'].cd(j+6)
+        maximas['I-vis_maxpt_'].append(hMC['I-vis_maxpt_'+gc].GetMaximum())
+        hMC['I-vis_maxpt_'+gc].Draw(drawOption+colors[g][2])
       for x in maximas: 
           maximas[x].sort(reverse=True)
           for g in colors:
@@ -4752,32 +4825,44 @@ def simulateMuonMomentum(plotOnly=False,JpsiOnly=True,save=False,fakeJpsi=True):
       for x in hMC['muonKinematics'].GetListOfPrimitives(): x.Update()
       myPrint(hMC['muonKinematics'],c+cosCut+'muonKinematics')
     ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
+    tc = hMC['dummy'].cd()
     for g in colors:
         hMC['ptmin/cosCS_'+g].SetTitle(';min P_{T} [GeV/c];cos #Theta')
         hMC['ptmin/cosCS_'+g].Draw('colz')
         myPrint(hMC['dummy'],g+'muonKinematicsCosCSandPtmin')
 # is the following needed? 20/3/2020
     for g in colors:
-      if hMC.has_key('cosThetaMax/cosCS_'+g):
-        hMC['cosThetaMax/cosCS_'+g].SetTitle(';max(sin #Theta);cos #Theta_{CS}')
-        hMC['cosThetaMax/cosCS_'+g].Draw('colz')
+      hist = 'cosThetaMax/cosCS_ycut_'
+      if hMC.has_key(hist+g):
+        hMC[hist+g].SetTitle(';max(sin #Theta);cos #Theta_{CS}')
+        hMC[hist+g].Draw('colz')
         myPrint(hMC['dummy'],g+'muonKinematicsCosCSandTheta')
-        test = hMC['cosThetaMax/cosCS_'+g].ProjectionX()
-        hMC['cosCSInAcceptance'+g] = hMC['cosThetaMax/cosCS_'+g].ProjectionY('cosCSInAcceptance'+g,1,test.FindBin(0.054))
+        test = hMC[hist+g].ProjectionX()
+        hMC['cosCSProj'+g] = hMC[hist+g].ProjectionY('cosCSProj'+g)
+        hMC['cosCSInAcceptance'+g] = hMC[hist+g].ProjectionY('cosCSInAcceptance'+g,1,test.FindBin(0.054))
         hMC['cosCSInAcceptance'+g].SetLineColor(colors[g][0])
         hMC['cosCSInAcceptance'+g].SetMarkerColor(colors[g][0])
         hMC['cosCSInAcceptance'+g].SetMarkerStyle(colors[g][1])
+        hMC['cosCSProj'+g].SetLineColor(colors[g][0])
+        hMC['cosCSProj'+g].SetMarkerColor(colors[g][0])
+        hMC['cosCSProj'+g].SetMarkerStyle(colors[g][1])
     gs = colors.keys()
-    if hMC.has_key('cosThetaMax/cosCS_'+gs[0]):
-      hMC['cosCSInAcceptance'+gs[0]].Scale(1./hMC['cosCSInAcceptance'+gs[0]].GetSumOfWeights())
-      hMC['cosCSInAcceptance'+gs[0]].SetStats(0)
-      hMC['cosCSInAcceptance'+gs[0]].Draw('p')
-      hMC['cosCSInAcceptance'+gs[0]].Draw('histsame')
-      for n in range(1,len(colors)):
-        hMC['cosCSInAcceptance'+gs[n]].Scale(1./hMC['cosCSInAcceptance'+gs[n]].GetSumOfWeights())
-        hMC['cosCSInAcceptance'+gs[n]].Draw('histsame')
-        hMC['cosCSInAcceptance'+gs[n]].Draw('psame')
-        hMC['cosCSInAcceptance'+gs[n]].SetStats(0)
+    if hMC.has_key(hist+gs[0]):
+      for g in colors:
+         weight = hMC['cosCSProj'+g].GetSumOfWeights()
+         hMC['cosCSProj'+g].Scale(1./weight)
+         hMC['cosCSInAcceptance'+g].Scale(1./weight)
+         hMC['cosCSProj'+g].SetStats(0)
+         hMC['cosCSInAcceptance'+g].SetStats(0)
+      hist = 'cosCSProj'+gs[0]
+      hMC[hist].GetYaxis().SetTitle('arbitrary units')
+      hMC[hist].SetMinimum(0)
+      hMC[hist].Draw('p')
+      hMC[hist].Draw('histsame')
+      for n in range(0,len(colors)):
+         for hist in ['cosCSInAcceptance'+gs[n],'cosCSProj'+gs[n]]:
+           hMC[hist].Draw('histsame')
+           hMC[hist].Draw('psame')
       myPrint(hMC['dummy'],'muonKinematicsCosCSInAcceptance')
 
 def JpsiPtinBinsOfY(ntName='Jpsi'):
@@ -4872,9 +4957,17 @@ def trueCosCS1():
     ut.bookHist(hMC,'diffCosCScor','true Cos CStheta - reco',100,-1.,1.)
     ut.bookHist(hMC,'diffCosCS','true Cos CStheta - reco',100,-1.,1.)
     nt = hMC['JpsiP8']
+    ptCut = 1.0
+    pmin = 20.0
+    pmax = 300.
     for n in range(nt.GetEntries()):
           rc=nt.GetEvent(n)
           if nt.Jpsi!=443: continue
+          if max(nt.pt1cor,nt.pt2cor)<ptCut: continue
+          if min(nt.p1,nt.p2)<pmin: continue
+          if max(nt.p1,nt.p2)>pmax: continue
+          if nt.mcor<0.2: continue
+          if nt.p1x==nt.p2x: continue
           if nt.chi21 < 0: 
             PLepton     = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
             PAntilepton = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
@@ -4887,6 +4980,8 @@ def trueCosCS1():
           P2mi = PAntilepton.E()-PAntilepton.Pz()
           PJpsi = PLepton+PAntilepton
           cosCSraw = PJpsi.z()/abs(PJpsi.z()) * 1./PJpsi.M()/ROOT.TMath.Sqrt(PJpsi.M2()+PJpsi.Pt()**2)*(P1pl*P2mi-P2pl*P1mi)
+          if cosCSraw==0:
+              print  PJpsi.z(),PJpsi.M(),PJpsi.Pt(),P1pl,P2mi,P2pl,P1mi
           rc = hMC['trueCosCSvsReco'].Fill(nt.cosCScor,cosCSraw)
           rc = hMC['diffCosCScor'].Fill(cosCSraw - nt.cosCScor)
           rc = hMC['diffCosCS'].Fill(cosCSraw - nt.cosCSraw)
@@ -4914,6 +5009,60 @@ def trueCosCS1():
     hMC['diffCosCS'].Draw('same')
     tc.Update()
     myPrint(hMC['dummy'],'cosCScorResolution')
+
+    hMC['mean'] = hMC['trueCosCSvsReco'].ProjectionY('mean')
+    hMC['mean'].Reset()
+    hMC['RMS']  = hMC['trueCosCSvsReco'].ProjectionY('RMS')
+    hMC['RMS'].Reset()
+    for n in range(1,hMC['trueCosCSvsReco'].GetNbinsX()+1):
+       hMC['CosCS_mig'+str(n)] = hMC['trueCosCSvsReco'].ProjectionY('CosCS_mig'+str(n),n,n) # true distribution for given reco
+       rc = hMC['CosCS_mig'+str(n)].Fit('gaus','SQ')
+       fitResult = rc.Get()
+       hMC['mean'].SetBinContent(n,fitResult.Parameter(1))
+       hMC['RMS'].SetBinContent(n,fitResult.Parameter(2))
+# efficiency as function of true cosCS, arbitrary units, assuming original distribution was flat.
+    hMC['CosCS_eff']=hMC['trueCosCSvsReco'].ProjectionY('CosCS_eff')
+    hMC['CosCS_rec']=hMC['trueCosCSvsReco'].ProjectionX('CosCS_rec')
+# first, determine migration, from reco to true, then correct as function of true
+    f = ROOT.TFile("JpsiKinematicsRec_cosCScorB-1.0_20.0.root")
+    hData['B_cosCScor-Jpsi'] = f.xxx.FindObject('B_cosCScor-Jpsi').Clone('B_cosCScor-Jpsi')
+    c = 'Data'
+    c = 'JpsiP8'
+    if c=='JpsiP8': hjpsi = hMC['CosCS_rec'] # should be later the data distribution
+    else:         hjpsi = hData['B_cosCScor-Jpsi']
+    yranges=[-0.8,0.8]
+    ymin   = yranges[0]
+    NyieldEffCorrected = {}
+    for k in range(1,hjpsi.GetNbinsX()+1):
+      NyieldEffCorrected[k]=[0,0]
+# for a given cosCScor, find distribution of cosCStrue
+    bw    = hjpsi.GetBinWidth(1)
+    while ymin < yranges[1]:
+      i = hMC['CosCS_rec'].FindBin(ymin)
+      j = hMC['CosCS_rec'].FindBin(ymin+bw)
+      xslice = hMC['trueCosCSvsReco'].ProjectionY('CosCS_mig'+str(i),i,j)
+      norm   = xslice.GetSumOfWeights()
+      n      = hjpsi.FindBin(ymin)
+      Nrec = hjpsi.GetBinContent(n)
+      Erec = hjpsi.GetBinError(n)
+      xslice.Scale(Nrec/norm)
+      for k in range(1,xslice.GetNbinsX()+1):
+          x = xslice.GetBinCenter(k)
+          e = hMC['CosCS_eff'].GetBinContent(k)+1E-10
+          NyieldEffCorrected[n][0]+=xslice.GetBinContent(k)/e
+          NyieldEffCorrected[n][1]+=(xslice.GetBinContent(k)/e * Erec/(Nrec+1E-9))
+      ymin+=bw
+    hMC['CosCS_effCor'] = hjpsi.Clone('CosCS_effCor')
+    hMC['CosCS_effCor'].Reset()
+    hname = 'CosCS_effCor'
+    for k in range(1,hjpsi.GetNbinsX()+1):
+      if NyieldEffCorrected[k][0]<1E10:
+         hMC[hname].SetBinContent(k,NyieldEffCorrected[k][0])
+         hMC[hname].SetBinError(k,NyieldEffCorrected[k][1])
+      else:   
+         hMC[hname].SetBinContent(k,0.)
+         hMC[hname].SetBinError(k,0.)
+
 def trueCosCS2():
 # try to mimick distribution using jpsi directly
     ut.bookHist(hMC,'trueCosCS','true Cos CStheta',100,-1.,1.)
@@ -5405,7 +5554,6 @@ def AnalysisNote_OppositeSign():
    sorted_list = sorted(MCorigin['ss'].items(), key=operator.itemgetter(1),reverse=True)
    for s in sorted_list:
       print "%25s  %5.3G"%(s[0],1.E6*s[1]/MCStats['10GeV'])
-
    ut.bookCanvas(hMC,'TM','',1600,900,1,1)
    colors = {}
    colors['Momega primary'] = [20,ROOT.kGreen]
@@ -5458,11 +5606,10 @@ def AnalysisNote_OppositeSign():
    rc = hMC['LOSSS'].AddEntry(hMC['MSS'],'same sign','PL')
    hMC['LOSSS'].Draw('same')
    myPrint(hMC['TM'],'Fig-OppAndSameSignMC')
-
    hMC['MOS'].Draw('p')
    hMC['MOS'].Draw('hsame')
    hMC['LSOU']=ROOT.TLegend(0.67,0.43,0.85,0.85)
-   rc = hMC['LSOU'].AddEntry(hMC['MOS'],'All same sign','PL')
+   rc = hMC['LSOU'].AddEntry(hMC['MOS'],'All opposite sign','PL')
    for x in colors:
        if x in ['MSS','MOS']: continue
        hMC[x].Draw('hsame')
@@ -5470,6 +5617,40 @@ def AnalysisNote_OppositeSign():
        rc = hMC['LSOU'].AddEntry(hMC[x],x[1:],'PL')
    hMC['LSOU'].Draw('same')
    myPrint(hMC['TM'],'Fig-SameSignSources')
+def AnalysisNote_JpsiMassResolution():
+   prods       = {'P8':hMC['JpsiP8'],'P6':hMC['Jpsi']}
+   theCutcosCS = theJpsiCut('mcor',True,1.0,20.0,300.,False)
+   ut.bookCanvas(hMC,'xxx','xxx',900,600,1,1)
+   tc = hMC['xxx'].cd()
+   ROOT.gROOT.cd()
+   ut.bookHist(hMC,'M',   ' ;M_{\mu^{+}\mu^{-}} [GeV/c^{2}]'       ,100,0.,5.)
+   ut.bookHist(hMC,'Mcor',' ;M_{\mu^{+}\mu^{-}} [GeV/c^{2}]'       ,100,0.,5.)
+   prods['P8'].Draw('m>>M',theCutcosCS      +'&&Jpsi==443&&originZ1<-100&&p1x!=p2x')
+   prods['P8'].Draw('mcor>>Mcor',theCutcosCS+'&&Jpsi==443&&originZ1<-100&&p1x!=p2x')
+   rcM = hMC['M'].Fit('gaus','S')
+   rcMcor = hMC['Mcor'].Fit('gaus','S')
+   hMC['M'].Draw()
+   tc.Update()
+   stats = tc.GetPrimitive('stats')
+   stats.SetOptStat(1000000001)
+   stats.SetOptFit(11)
+   stats.SetFitFormat('5.4g')
+   stats.SetX1NDC(0.70)
+   stats.SetY1NDC(0.68)
+   stats.SetX2NDC(0.99)
+   stats.SetY2NDC(0.85)
+   hMC['Mcor'].Draw()
+   tc.Update()
+   stats = tc.GetPrimitive('stats')
+   stats.SetOptStat(1000000001)
+   stats.SetOptFit(11)
+   stats.SetFitFormat('5.4g')
+   stats.SetX1NDC(0.70)
+   stats.SetY1NDC(0.49)
+   stats.SetX2NDC(0.99)
+   stats.SetY2NDC(0.66)
+   hMC['M'].Draw('same')
+   myPrint(hMC['xxx'],'Fig-JpsiInvMassResolution')
 def AnalysisNote_JpsiKinematics():
   y_beam = yBeam()
   ROOT.gROOT.cd()
@@ -5531,7 +5712,7 @@ def AnalysisNote_muonKinematics(JpsiOnly=True,fakeJpsi=True):
        X = f.Get(c+cosCut+'muonKinematics-p-pt-minpt')
        X.Draw()
        if cosCut!='': X.SetName(c+'cosCS0.5_muonKinematics-p-pt-minpt')
-       printPads(X)
+       printPads(X,ytitle='arbitrary unit')
        myCopy(c+'*.pdf')
 
 def AnalysisNote_invMassBinsY(ptmax,pmin,fM):
@@ -5747,12 +5928,12 @@ def AnalysisNote_JpsiKinematicsReco(ptmax=1.0,pmin=20.,fM='B'):
      myPrint(hMC['xxx'],'JpsiKinematicsRec_'+proj['par']+D)
    myCopy('JpsiKinematicsRec_*.pdf')
 
-def AnalysisNote_LowMassKinematicsReco(ptmax=0.0,pmin=20.,mMax=1.5):
+def AnalysisNote_LowMassKinematicsReco(ptmax=0.0,pmin=20.,mMax=2.0):
    trackEffFudgeFactor = 1+2*simpleEffCorMu
    MCnorm = dataStats/MCStats['10GeV'] / trackEffFudgeFactor
    category = {}
-   category['_10GeV']    = {'nt':hMC['10GeV'],   'ntOriginal':None,   'cut':'id!=443&&id!=100443',  'cutrec':'&&mcor<'+str(mMax)}
-   category['Data']      = {'nt':hData['f'].nt,  'ntOriginal':None,   'cut':'id!=443&&id!=100443',  'cutrec':'&&mcor<'+str(mMax)}
+   category['_10GeV']    = {'nt':hMC['10GeV'],   'ntOriginal':None,   'cut':'id!=443&&id!=100443',  'cutrec':'&&0.25<mcor&&mcor<'+str(mMax)}
+   category['Data']      = {'nt':hData['f'].nt,  'ntOriginal':None,   'cut':'id!=443&&id!=100443',  'cutrec':'&&0.25<mcor&&mcor<'+str(mMax)}
    colors = {}
    colors['_10GeV']    = [ROOT.kRed,23,'Pythia8/Geant4']
    colors['Data']      = [ROOT.kBlue,21,'Data']
@@ -5868,29 +6049,36 @@ def AnalysisNote_InvMassAndFitFunction(ptCut=1.0,pmin=20.,copyToFigs=True):
      print "Ratio normalized Data / MC  %s  %5.3F +/- %5.3F"%(fitMethod,ratio,err)
 def AnalysisNote_JpsiPolarization(fitMethod='B',ptCut=1.0,pmin=20.):
      hData['polFun'] = ROOT.TF1('polFun','[0]*(1+x**2*[1])',2)
-     f=ROOT.TFile('JpsiKinematicsRec_cosCScor'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)+'.root')
+     f = ROOT.TFile('JpsiKinematicsRec_cosCScor'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)+'.root')
+     ROOT.gROOT.cd()
      for hname in [fitMethod+'_cosCScor-Jpsi','reccosCS_P8prim','reccosCS_Cascade']:
         hMC[hname] = f.xxx.FindObject(hname).Clone(hname)
      # make simple eff correction
      hMC['cosCSEff']=hMC['reccosCS_P8prim'].Clone('cosCSEff')
      hMC['cosCSEff'].Add(hMC['reccosCS_Cascade'])
      hMC[fitMethod+'_cosCScor-Jpsi_effCorrected'] =  hMC[fitMethod+'_cosCScor-Jpsi'].Clone(fitMethod+'_cosCScor-Jpsi_effCorrected')
-     hMC[fitMethod+'_cosCScor-Jpsi_effCorrected'].Reset()
-# mmh this is the true distribution, can there be a resolution effect?
+     hx = hMC[fitMethod+'_cosCScor-Jpsi_effCorrected']
+     hx.Reset()
+     ut.bookCanvas(hMC,'pol','  ',1200,900,1,1)
+     hMC['pol'].cd()
+# mmh this is the true distribution, can there be a resolution effect? No, see trueCosCS1()
      for j in range(1,hMC[fitMethod+'_cosCScor-Jpsi'].GetNbinsX()+1):
         binL = hMC[fitMethod+'_cosCScor-Jpsi'].GetBinLowEdge(j)
         binH = binL +hMC[fitMethod+'_cosCScor-Jpsi'].GetBinWidth(j)
         eff = hMC['cosCSEff'].Integral(hMC['cosCSEff'].FindBin(binL),hMC['cosCSEff'].FindBin(binH))
         signal = hMC[fitMethod+'_cosCScor-Jpsi'].GetBinContent(j)/eff
-        hMC[fitMethod+'_cosCScor-Jpsi_effCorrected'].SetBinContent(j,signal)
+        hx.SetBinContent(j,signal)
         err = hMC[fitMethod+'_cosCScor-Jpsi'].GetBinError(j)/eff
-        hMC[fitMethod+'_cosCScor-Jpsi_effCorrected'].SetBinError(j,err)
-     hMC[fitMethod+'_cosCScor-Jpsi_effCorrected'].SetMaximum(0.1)
-     rc = hMC[fitMethod+'_cosCScor-Jpsi_effCorrected'].Fit(hData['polFun'],'S','',-0.5,0.5)
+        hx.SetBinError(j,err)
+     hx.SetMaximum(0.1)
+     hx.Draw()
+     rc = hx.Fit(hData['polFun'],'S','',-0.5,0.5) # N*(1+L*x**2)
      fitResult = rc.Get()
-     txt  = "%s: polarization CS #Lambda=%5.2F +/- %5.2F"%(z,fitResult.Parameter(1),fitResult.ParError(1))
-     T.SetTextColor(colors[z])
-     T.DrawLatexNDC(0.2,dy,txt)
+     txt  = "polarization CS #Lambda=%5.2F +/- %5.2F"%(fitResult.Parameter(1),fitResult.ParError(1))
+     T=ROOT.TLatex()
+     T.SetTextColor(ROOT.kBlue)
+     T.DrawLatexNDC(0.2,hx.GetMaximum()*0.4,txt)
+     print "sigma =",  fitResult.Parameter(1)/fitResult.ParError(1)
 
 def compWithEric():
    hMC['pythia82']={}
