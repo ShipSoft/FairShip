@@ -4511,8 +4511,11 @@ withCorrections=True
 if MCdata: withCorrections=False
 if withCorrections:
     alignCorrectionTMP = (conditionsDB.get_condition_by_name_and_tag("muflux/driftTubes", "alignCorrection", "muflux/driftTubes_align_2020-03-23"))["values"]
+
+    # Convert the alignCorrection dict with str keys to a version with int keys
     for i in range (0, len(alignCorrectionTMP)):
     	alignCorrection[i] = alignCorrectionTMP[str(i)]
+
     slopeX = {2:[-0.001,-0.001,-0.001,-0.001],
               3:[-0.0048,-0.0048,-0.0048,-0.0048]} # 7Feb
     slopeY = {2:[0.0065,0.0065,0.0065,0.0065]}
