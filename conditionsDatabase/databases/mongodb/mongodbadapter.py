@@ -828,7 +828,7 @@ class MongoToCDBAPIAdapter(APIInterface):
             raise ValueError("No condition with this name and tag can be found")
 
         # Only update fields that are not None
-        if self.__validate_str(type):
+        if type is not None:
             condition.type = type
         if valid_since is not None:
             condition.valid_since = valid_since
