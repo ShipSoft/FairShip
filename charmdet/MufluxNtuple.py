@@ -1732,7 +1732,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
        name = "ntuple-invMass-"+fdir.split('/')[7]+'.root'
     if options.refit: name = name.replace('.root','_refit.root')
     h['fntuple']  = ROOT.TFile.Open(name, 'RECREATE')
-    variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:muIDs:p1:pt1:p1cor:pt1cor:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
+    variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:muID1:p1:pt1:p1cor:pt1cor:muID2:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
 prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
     if MCdata:
       variables += ":Jpsi:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:Pmother"
@@ -1772,9 +1772,8 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
         Pcor2 = {-1:ROOT.Math.PxPyPzMVector()}
         muID  = {-1:0}
         for k in range(len(sTree.GoodTrack)):
-            if sTree.GoodTrack[k]<0: continue
+            if sTree.GoodTrack[k]<0:    continue
             if sTree.GoodTrack[k]>999:  continue
-            if sTree.GoodTrack[k]%2!=1 AND  int(sTree.GoodTrack[k]/10)%2!=1: continue
             muID[k] = sTree.GoodTrack[k]
             P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
             l = (sTree.z[k] - zTarget)/(sTree.Pz[k]+ 1E-19)
@@ -1792,7 +1791,6 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
         X      =  {0:ROOT.Math.PxPyPzMVector()}
         Xcor   =  {0:ROOT.Math.PxPyPzMVector()}
         Xcor2  =  {0:ROOT.Math.PxPyPzMVector()}
-        muIDs  =  {0:0.0}
         jpsi   =  {0:-1}
         pTrue  =  {0:[ROOT.TVector3(0,0,-9999.),ROOT.TVector3(0,0,-9999.)]}
         dTheta =  {0:[-9999.,-9999.]}
@@ -1818,7 +1816,6 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
           X[j]    = P[n1]+P[n2]
           Xcor[j] = Pcor[n1]+Pcor[n2]
           Xcor2[j] = Pcor2[n1]+Pcor2[n2]
-          muIDs[j] = muID[n1] + muID[n2]/100.
 # angle between two tracks in Jpsi rest frame
           b = X[j].BoostToCM()
           moth_boost = ROOT.Math.Boost(b.x(),b.y(),b.z())
@@ -1871,6 +1868,10 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
             kx = 0
             for k in [nComb[j][0],nComb[j][1]]:
                 if sTreeMC.MCID[k]<0: continue
+                if sTreeMC.MCID[k] > sTreeFullMC.MCTrack.GetEntries()-1:
+                   print "ERROR: wrong MC track index",sTreeFullMC.GetCurrentFile().GetName(),k,sTreeMC.MCID[k],n-nInFile
+                   print "                           ",sTreeMC.GetCurrentFile().GetName(),n
+                   continue
                 trueMu = sTreeFullMC.MCTrack[sTreeMC.MCID[k]]
                 mother = sTreeFullMC.MCTrack[trueMu.GetMotherId()]
                 mothers.append(mother.GetPdgCode())
@@ -1938,15 +1939,15 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
             zn2 = sTree.z[n2] 
           nrOfComb = float(len(nComb))
           if nComb[j][0]<0 : nrOfComb-=1
-          theArray = [nrOfComb,X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),Xcor[j].P(),X[j].Pt(),Xcor[j].Pt(),muIDs[j],\
-                     P[n1].P(),P[n1].Pt(),Pcor[n1].P(),Pcor[n1].Pt(),P[n2].P(),P[n2].Pt(),Pcor[n2].P(),Pcor[n2].Pt(),\
+          theArray = [nrOfComb,X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),Xcor[j].P(),X[j].Pt(),Xcor[j].Pt(),muID[n1],\
+                     P[n1].P(),P[n1].Pt(),Pcor[n1].P(),Pcor[n1].Pt(),muID[n2],P[n2].P(),P[n2].Pt(),Pcor[n2].P(),Pcor[n2].Pt(),\
                      IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],cosCSraw,cosCScor,\
                      P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),\
                      xn1,yn1,zn1,xn2,yn2,zn2]
           if MCdata:
              if n1<0: kTrueMu = -1
              else:    kTrueMu = sTreeMC.MCID[n1]
-             if kTrueMu>0:
+             if kTrueMu>0 and kTrueMu<sTreeFullMC.MCTrack.GetEntries():
               ox,oy,oz = sTreeFullMC.MCTrack[kTrueMu].GetStartX(),sTreeFullMC.MCTrack[kTrueMu].GetStartY(),sTreeFullMC.MCTrack[kTrueMu].GetStartZ()
              else:
               ox,oy,oz = -9999.,9999.,-9999.
@@ -1982,7 +1983,7 @@ hMC['TwoGauss'] = ROOT.TF1('TwoGauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi)
 def loadNtuples(BDT='BDT-'):
  if hMC.has_key('dummy'): return
  if options.refit :
-  hData['f']     = ROOT.TFile(BDT+'ntuple-InvMass-refitted_0.root')  # ROOT.TFile('ntuple-InvMass-refitted_intermediateField.root')
+  hData['f']     = ROOT.TFile('ntuple-InvMass-refitted.root')  # changed 4.4.2020, before ntuple-InvMass-refitted_0.root ROOT.TFile('ntuple-InvMass-refitted_intermediateField.root')
   hMC['f1']      = ROOT.TFile('ntuple-invMass-MC-1GeV-repro_0.root')
   hMC['f10']     = ROOT.TFile(BDT+'ntuple-invMass-MC-10GeV-repro_0.root')
   hMC['fJpsi']   = ROOT.TFile(BDT+'ntuple-invMass-MC-Jpsi_0.root')
@@ -2184,8 +2185,10 @@ def runOne(fitMethod='CB'):
    for ptCut in [0,1.0]:
      for pmin in [0,10.0,20.0]:
         JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, fitMethod=fitMethod)
-def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, fitMethod='gaus'):
+def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus'):
    # with twoBukin fit usually ptCut = 0.
+   # muID = 0: one muon confirmed
+   # muID = 2: both muons confirmed, previous default
    ycor = 'ycor1C'
    category = {}
    category['_Cascade']     = {'nt':hMC['Jpsi'],  'ntOriginal':hMC['JpsiCascade'],   'cut':'id==443',            'cutrec':'&&Jpsi==443&&originZ1<-100&&p1x!=p2x'}
@@ -2202,7 +2205,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
       pmin  = 0.
       pmax  = 1000.
    theCutcosCS = theJpsiCut('mcor',withCosCSCut,ptCut,pmin,pmax,BDTCut)
-   tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
+   tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)
    if BDTCut: tag += '_BDT'
    os.chdir(topDir)
    if not os.path.isdir(tag): os.system('mkdir '+tag)
@@ -2306,10 +2309,10 @@ def detectorAcceptance(ptCut = 1.0, pmin = 20.,pmax  = 300.,BDTCut=None):
    ut.bookHist(hData,'XY','first measured point',100,-30.,30.,100,-30.,30.)
    ROOT.gROOT.cd()
    theCut = theJpsiCut('mcor','True',ptCut,pmin,pmax,False) + "&&2.5<mcor&&3.5>mcor"
-   hMC['JpsiP8'].Draw('rec1x:rec1y>>mc-XY',theCut)
-   hMC['JpsiP8'].Draw('rec2x:rec2y>>mc-XY',theCut)
-   hData['f'].nt.Draw('rec1x:rec1y>>XY',theCut)
-   hData['f'].nt.Draw('rec2x:rec2y>>XY',theCut)
+   hMC['JpsiP8'].Draw('rec1y:rec1x>>mc-XY',theCut)
+   hMC['JpsiP8'].Draw('rec2y:rec2x>>+mc-XY',theCut)
+   hData['f'].nt.Draw('rec1y:rec1x>>XY',theCut)
+   hData['f'].nt.Draw('rec2y:rec2x>>+XY',theCut)
 def JpsiPolarization(ptCut = 1.0, pmin = 20.,BDTCut=None):
    theCut = theJpsiCut('mcor',False,ptCut,pmin,300.,BDTCut)
    fitMethod = 'B'
