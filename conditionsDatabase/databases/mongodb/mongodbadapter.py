@@ -638,6 +638,11 @@ class MongoToCDBAPIAdapter(APIInterface):
         elif self.__validate_datetime(end_date):
             end_date = end_date.replace(microsecond=0)  # Strip off the microseconds
 
+        # Check for a valid interval
+        if end_date is not None and start_date is not None:
+            if start_date > end_date:
+                raise ValueError("Invalid validity interval")
+
         # Get the detector of the specified detector_id
         try:
             detector_wrapper = self.__get_wrapper(detector_id)
