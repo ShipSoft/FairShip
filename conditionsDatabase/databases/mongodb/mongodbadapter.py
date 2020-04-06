@@ -63,7 +63,7 @@ class MongoToCDBAPIAdapter(APIInterface):
     def __validate_str(self, input_string):
         """
         This method validates if input_string is of string type.
-        If it is not of String type it returns False
+        If it is not of String type it returns False.
 
         :param input_string: value that needs to be tested.
         """
@@ -74,7 +74,7 @@ class MongoToCDBAPIAdapter(APIInterface):
     def __validate_datetime(self, input_datetime):
         """
         This method validates if input_datetime is of datetime type.
-        If it is not of datetime type it returns False
+        If it is not of datetime type it returns False.
 
         :param input_datetime: value that needs to be tested.
         """
@@ -85,7 +85,7 @@ class MongoToCDBAPIAdapter(APIInterface):
     def __validate_path(self, input_path):
         """
         This method validates if input_path is a valid path.
-        If it is not of String type it returns False
+        If it is not of String type it returns False.
 
         :param input_path: value that needs to be tested.
         """
@@ -116,7 +116,7 @@ class MongoToCDBAPIAdapter(APIInterface):
     def __sanitize_path(self, input_path):
         """
         This method removes slashes and spaces at the beginning and
-        at the end of the parameter input_path
+        at the end of the parameter input_path.
 
         :param input_path: string that will be sanitized.
         """
@@ -156,7 +156,7 @@ class MongoToCDBAPIAdapter(APIInterface):
         Splits the detector_id string using '/' and returns a list of detector names.
         Otherwise raises an exception if detector_id is not a valid path / id.
 
-        :param detector_id: path to a detector (e.g. detect_name/subdetector_name/...)
+        :param detector_id: path to a detector (e.g. detect_name/subdetector_name/...).
         """
         if self.__validate_path(detector_id):
             detector_id = self.__sanitize_path(detector_id)
@@ -289,7 +289,7 @@ class MongoToCDBAPIAdapter(APIInterface):
     # Method signature description can be found in the toplevel interface.py file
     def get_detector(self, detector_id):
         if detector_id == "":
-            return None
+            raise ValueError("Please specify a valid detector id. A detector id cannot be empty.")
 
         if not self.__validate_str(detector_id):
             raise TypeError("Please pass the correct type of input: detector_id "

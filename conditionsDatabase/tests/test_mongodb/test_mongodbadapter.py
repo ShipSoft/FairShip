@@ -77,10 +77,10 @@ def test_get_detector(cdb_api, detector_id):
         with pytest.raises(TypeError):
             assert cdb_api.get_detector(detector_id)
 
-    value_error_parameters = ["//detector/subdetector//", "detector///subdetector"]
+    value_error_parameters = ["", "//detector/subdetector//", "detector///subdetector"]
     if detector_id in value_error_parameters:
         has_correct_parameter = False
-        # raise TypeError when detector_id is not valid.
+        # raise ValueError when detector_id is not valid.
         with pytest.raises(ValueError):
             assert cdb_api.get_detector(detector_id)
 
