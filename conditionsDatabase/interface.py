@@ -7,6 +7,7 @@ from datetime import datetime
 ## decorator for the class.
 #from typing import final
 
+
 # Package metadata
 __author__    = "Tom Vrancken"
 __copyright__ = "TU/e ST2019"
@@ -22,7 +23,8 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
 
     ### Returns a list with all the detector names in the database.
     #   @param detector_id:     (optional) String identifying the parent detector to
-    #         retrieve the (sub)detector names for (i.e. 'muonflux/straw_tubes').
+    #                           retrieve the (sub)detector names for
+    #                           (i.e. 'muonflux/driftTubes').
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If parent_id does not exist.
     @abstractmethod
@@ -31,7 +33,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
 
     ### Returns a detector dictionary.
     #   @param  detector_id:    String identifying the detector to retrieve
-    #                           (i.e. 'muonflux/straw_tubes').
+    #                           (i.e. 'muonflux/driftTubes').
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
@@ -52,7 +54,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     ### Removes a detector from the database. Caution: all conditions associated
     ### with this detector will be permanently removed as well!
     #   @param  detector_id:    String identifying the detector to remove (i.e.
-    #                           'muonflux/straw_tubes').
+    #                           'muonflux/driftTubes').
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
@@ -61,7 +63,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
 
     ### Adds a condition to a detector.
     #   @param  detector_id:    String identifying the detector to which the
-    #                           condition will be added (i.e. 'muonflux/straw_tubes').
+    #                           condition will be added (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the condition (e.g. 'strawPositions').
     #   @param  tag:            String specifying a tag for the condition. Must be unique
     #                           for the same condition name.
@@ -69,16 +71,19 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #   @param  type:           (optional) String specifying the type of condition (e.g. 'calibration').
     #   @param  collected_at:   (optional) Timestamp specifying the date/time the condition was
     #                           acquired. Must be unique w.r.t. the condition name.
-    #                           Can be of type String or datetime.
+    #                           Can be of type String or datetime. This timestamp will be stored
+    #                           with an accuracy up to seconds.
     #                           If unspecified, this value will be set to 'datetime.now'.
     #   @param  valid_since:    (optional) Timestamp specifying the date/time as of when the
-    #                           condition is valid. Can be of type String or datetime.
+    #                           condition is valid. Can be of type String or datetime. This
+    #                           timestamp will be stored with an accuracy up to seconds.
     #                           If unspecified, this value will be set to 'datetime.now'.
     #   @param valid_until:     (optional) Timestamp specifying the date/time up
     #                           until the condition is valid. Can be of type String or datetime.
-    #                           If unspecified, this value will be set to 'datetime.max'.
+    #                           If unspecified, this value will be set to 'datetime.max'. This
+    #                           timestamp will be stored with an accuracy up to seconds.
     #   @throw TypeError:       If input type is not as specified.
-    #   @throw  ValueError:     If detector_id does not exist.
+    #   @throw ValueError:      If detector_id does not exist.
     @abstractmethod
     def add_condition(self, detector_id, name, tag, values, type=None,
                       collected_at=datetime.now(), valid_since=datetime.now(),
@@ -87,7 +92,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
 
     ### Returns a list with all condition dictionaries associated with a detector.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
+    #                           conditions must be retrieved (i.e. 'muonflux/driftTubes').
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
@@ -96,7 +101,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
 
     ### Returns a list with condition dictionaries having a specific name for a given detector.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           conditions must be retrieved (i.e. 'muonflux/straw_tubes').
+    #                           conditions must be retrieved (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
     #   @throw  TypeError:      If input type is not as specified.
@@ -107,7 +112,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
 
     ### Returns a list with condition dictionaries having a specific tag for a given detector.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
+    #                           condition must be retrieved (i.e. 'muonflux/driftTubes').
     #   @param  tag:            String specifying the tag of the condition to be retrieved.
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
@@ -118,7 +123,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     ### Returns a list with condition dictionaries associated with a detector that are valid on the
     ### specified date.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
+    #                           condition must be retrieved (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
     #   @param  start_date:     Timestamp specifying a start of a date/time range for which
@@ -137,7 +142,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     ### Returns a condition dictionary of a specific condition belonging to a detector,
     ### identified by condition name and tag.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
+    #                           condition must be retrieved (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
     #   @param  tag:            String specifying the tag of the condition to be retrieved.
@@ -150,12 +155,13 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     ### Returns a condition dictionary of a specific condition belonging to a detector, identified
     ### by condition name and collection date/time.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           condition must be retrieved (i.e. 'muonflux/straw_tubes').
+    #                           condition must be retrieved (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
     #                           'strawPositions').
-    #   @param  collected_at:   Timestamp specifying the moment on which the
-    #                           condition was collected/measured. This timestamp must be unique
-    #                           w.r.t. the condition name. Can be of type String or datetime.
+    #   @param  collected_at:   Timestamp specifying the moment on which the condition was
+    #                           collected/measured. Can be of type String or datetime.
+    #                           Collection dates are stored with accuracy up to seconds.
+    #
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
@@ -165,7 +171,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     ### Updates the type, valid_since and valid_until values of a specific condition
     ### belonging to a detector, identified by condition name and tag.
     #   @param  detector_id:    String identifying the detector for which the
-    #                           condition must be updated (i.e. 'muonflux/straw_tubes').
+    #                           condition must be updated (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the conditions to be updated (e.g.
     #                           'strawPositions').
     #   @param  tag:            String specifying the tag of the condition to be updated.
