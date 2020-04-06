@@ -1939,6 +1939,7 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
             zn2 = sTree.z[n2] 
           nrOfComb = float(len(nComb))
           if nComb[j][0]<0 : nrOfComb-=1
+          if nrOfComb==0: continue
           theArray = [nrOfComb,X[j].M(),Xcor[j].M(),Xcor2[j].M(),Y,Ycor,X[j].P(),Xcor[j].P(),X[j].Pt(),Xcor[j].Pt(),muID[n1],\
                      P[n1].P(),P[n1].Pt(),Pcor[n1].P(),Pcor[n1].Pt(),muID[n2],P[n2].P(),P[n2].Pt(),Pcor[n2].P(),Pcor[n2].Pt(),\
                      IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],cosCSraw,cosCScor,\
@@ -1951,6 +1952,7 @@ prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z"
               ox,oy,oz = sTreeFullMC.MCTrack[kTrueMu].GetStartX(),sTreeFullMC.MCTrack[kTrueMu].GetStartY(),sTreeFullMC.MCTrack[kTrueMu].GetStartZ()
              else:
               ox,oy,oz = -9999.,9999.,-9999.
+              Pmother[j] = -111.
              theArray += [float(jpsi[j]),PTRUE[j],PtTRUE[j],YTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
                      dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],originZ[j][0],originZ[j][1],\
                      pTrue[j][0].X(),pTrue[j][0].Y(),pTrue[j][0].Z(),pTrue[j][1].X(),pTrue[j][1].Y(),pTrue[j][1].Z(),ox,oy,oz,Pmother[j]]
@@ -1987,7 +1989,7 @@ def loadNtuples(BDT='BDT-'):
   hMC['f1']      = ROOT.TFile('ntuple-invMass-MC-1GeV-repro_0.root')
   hMC['f10']     = ROOT.TFile(BDT+'ntuple-invMass-MC-10GeV-repro_0.root')
   hMC['fJpsi']   = ROOT.TFile(BDT+'ntuple-invMass-MC-Jpsi_0.root')
-  hMC['fJpsiP8'] = ROOT.TFile(BDT+'ntuple-invMass-MC-JpsiP8_0.root')
+  hMC['fJpsiP8'] = ROOT.TFile('ntuple-invMass-MC-JpsiP8.root')  # changed 6.4.2020, before  ntuple-invMass-MC-JpsiP8_0.root
   #hMC['fJpsiP8_Primary'] = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/Jpsi-Pythia8_21788000000_0-3074.root')
   hMC['fJpsiP8_Primary'] = ROOT.TFile.Open('Jpsi-Pythia8_21788000000_0-3074.root')
   #hMC['fJpsiP8_PrimaryMu'] = ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/Jpsi-Pythia8_385000000_10000-11000.root')
@@ -2161,7 +2163,7 @@ def determineEfficiencies(theCut,category,colors,withCosCSCut):
         hMC['YEff'+z].Draw('same')
         hMC['lYEff'].AddEntry(hMC['YEff'+z],z,'PL')
    myPrint(hMC['dummy'],'JpsiEfficiencies')
-def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,BDTCut):
+def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut):
    sptCut = str(ptCut)
    theCut =  'max(pt1,pt2)>'+sptCut+'&&chi21*chi22<0&&max(abs(chi21),abs(chi22))<0.9&&\
                 max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.20'
@@ -2169,6 +2171,8 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,BDTCut):
       theCut = theCut.replace('pt1','pt1cor')
       theCut = theCut.replace('pt2','pt2cor')
    if withCosCSCut: theCut+='&&abs(cosCScor)<0.5'
+   if muID == 1: theCut+='&&(muID1%100==11||muID2%100==11)'
+   if muID == 2: theCut+='&&(muID1%100==11&&muID2%100==11)'
 #### BDT
    if BDTCut: theCut += "&&BDT>0."
    return theCut.replace(' ','')
@@ -2187,7 +2191,8 @@ def runOne(fitMethod='CB'):
         JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, fitMethod=fitMethod)
 def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus'):
    # with twoBukin fit usually ptCut = 0.
-   # muID = 0: one muon confirmed
+   # muID = 0: no muon confirmed
+   # muID = 1: at least one muon confirmed
    # muID = 2: both muons confirmed, previous default
    ycor = 'ycor1C'
    category = {}
@@ -2204,7 +2209,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
       ptCut = 0.
       pmin  = 0.
       pmax  = 1000.
-   theCutcosCS = theJpsiCut('mcor',withCosCSCut,ptCut,pmin,pmax,BDTCut)
+   theCutcosCS = theJpsiCut('mcor',withCosCSCut,ptCut,pmin,pmax,muID,BDTCut)
    tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)
    if BDTCut: tag += '_BDT'
    os.chdir(topDir)
