@@ -421,9 +421,9 @@ class MongoToCDBAPIAdapter(APIInterface):
     def add_condition(self, detector_id, name, tag, values, type=None,
                       collected_at=datetime.now(), valid_since=datetime.now(),
                       valid_until=datetime.max):
-        if detector_id == "" or name == "" or tag == "" or collected_at == "":
+        if detector_id == "" or name == "" or tag == "" or values == "":
             raise TypeError("Please pass the correct parameters: parameters detector_id, name, "
-                            "tag, collected_at should not be empty strings")
+                            "tag, values should not be empty strings")
 
         if not (
                 self.__validate_path(detector_id)
@@ -434,7 +434,7 @@ class MongoToCDBAPIAdapter(APIInterface):
                             "tag, and name should be String")
 
         if not (
-                (self.__validate_interval_parameters(valid_since) or valid_until is None)
+                (self.__validate_interval_parameters(valid_since) or valid_since is None)
                 and (self.__validate_interval_parameters(valid_until) or valid_until is None)
                 and (self.__validate_interval_parameters(collected_at) or collected_at is None)
         ):
