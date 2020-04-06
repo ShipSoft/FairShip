@@ -11,10 +11,10 @@ from detector import Detector
 #  to create an extra layer, which inherits from Document, and wraps the
 #  Detector. Users have no knowledge of this extra layer.
 #
-#  @param name:        (string) The same name as the name of the dectector it
-#                      contains; must not be empty and must be unique.
-#  @param detector:    The actual detector model that is being wrapped. There is
-#                      always exactly one detector inside a wrapper.
+#  @property name:        (string) The same name as the name of the dectector it
+#                         contains; must not be empty and must be unique.
+#  @property detector:    The actual detector model that is being wrapped. There is
+#                         always exactly one detector inside a wrapper.
 class DetectorWrapper(Document):
     name = StringField(max_length=1000, primary_key=True, required=True)
     detector = EmbeddedDocumentField(Detector)

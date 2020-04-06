@@ -8,11 +8,10 @@ from condition import Condition
 #  which are then called subdetectors. A detector is associated with zero
 #  or more Conditions.
 #
-#  @param name:            (string) Name of the detector, must not be empty
-#                          and must be unique with respect to the parent's
-#                          namespace.
-#  @param conditions:      List of associated Condition models.
-#  @param subdetectors:    List of associated Detector models.
+#  @property name:            (string) Name of the detector, must not be empty
+#                             and must be unique with respect to the parent's namespace.
+#  @property conditions:      List of associated Condition models.
+#  @property subdetectors:    List of associated Detector models.
 class Detector(EmbeddedDocument):
     name = StringField(max_length=1000, required=True)
     conditions = EmbeddedDocumentListField(Condition)
