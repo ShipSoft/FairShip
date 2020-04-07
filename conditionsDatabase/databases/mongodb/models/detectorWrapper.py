@@ -1,4 +1,4 @@
-"""Contains a Mongo Engine model definition for a Detector Wrapper."""
+""" Contains a Mongo Engine model definition for a Detector Wrapper. """
 from mongoengine import Document, EmbeddedDocumentField, StringField
 from detector import Detector
 

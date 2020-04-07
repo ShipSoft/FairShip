@@ -1,5 +1,4 @@
-""" This module implements the factory pattern for getting a database API instance """
-
+""" This module implements the factory pattern for getting a database API instance. """
 import os
 import sys
 import yaml

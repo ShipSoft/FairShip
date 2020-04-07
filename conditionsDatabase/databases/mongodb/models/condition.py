@@ -1,9 +1,9 @@
-"""Contains a Mongo Engine model definition for a Condition."""
+""" Contains a Mongo Engine model definition for a Condition. """
 from mongoengine import EmbeddedDocument, DynamicField, StringField, ComplexDateTimeField
 
 
 ## This model represents meta-data about an experiment describing a specific (set of)
-#  value(s) (i.e. a condition under which an experiment took place) at a date/time
+#  value(s) (i.e a condition under which an experiment took place) at a date/time
 #  when the condition was measured/collected. Conditions are associated with a Detector.
 #
 #  @property collected_at:    (datetime) The date/time that the condition was collected;

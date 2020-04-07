@@ -1,4 +1,4 @@
-"""Contains a Mongo Engine model definition for a Detector."""
+""" Contains a Mongo Engine model definition for a Detector. """
 from mongoengine import EmbeddedDocument, EmbeddedDocumentListField, StringField
 from condition import Condition
 

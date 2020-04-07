@@ -1,4 +1,4 @@
-"""This module implements a MongoDB storage back-end adapter."""
+""" This module implements a MongoDB storage back-end adapter. """
 import sys
 
 from json import loads
