@@ -21,6 +21,6 @@ unit-tests:
         # go to test folder
         - cd test_mongodb/
         # run test cases for api
-        - pytest --verbose
+        - pytest --maxfail=1 --verbose
     tags:
         - jarvis

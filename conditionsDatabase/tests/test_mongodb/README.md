@@ -1,7 +1,10 @@
 # Unit Test
 This directory contains unit tests for the MongoDB adapter. We use PyTest for our unit test. 
 Every time you want to execute the unit test, you have to run `generate_test_db.py` first to generate a test database 
-and insert dummy data inside. For checking the test coverage, we use PyTest-Cov.
+and insert dummy data inside. For checking the test coverage, we use PyTest-Cov. 
+
+In this unit test, we rely heavily on `get_detector()` function. 
+Therefore, the unit test execution must be stopped whenever `test_get_detector()` has any fails.
 
 #### How to generate test database
 Go to the FairSHiP root folder and execute:
@@ -10,13 +13,17 @@ python -m conditionsDatabase.tests.test_mongodb.generate_test_db
 ```
 
 #### How to execute PyTest
-Go to `/conditionsDatabase/tests/test_mongodb/` and execute:
+We order the test case functions based on their priority. 
+We set `test_get_detector()` as the first function to make sure `get_detector()` works fine before executing the 
+other test functions. We also use `--maxfail=1` to shun any false information when there is a fail in `test_get_detector()`
+
+To execute our Unit Test, go to `/conditionsDatabase/tests/test_mongodb/` and execute:
 ```
-py.test
+py.test --maxfail=1
 ```
 You can also check the status of every unit by executing:
 ```
-py.test --verbose
+py.test --maxfail=1 --verbose
 ```
 
 #### How to see test coverage
