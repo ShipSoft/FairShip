@@ -1,5 +1,4 @@
 """ Conditions Database interface definition """
-
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 ## As of Python 3.8 we can do more with typing. It is recommended to make

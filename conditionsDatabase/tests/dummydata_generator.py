@@ -1,6 +1,4 @@
-"""
-This Module is dummy data generator
-"""
+""" This module implements a dummy data generator """
 import numpy as np
 
 
@@ -8,7 +6,7 @@ def create_big_daniel(detector_number=1000):
     """
     function generate big daniel data
 
-    :param detector_number: daniel data number - default number is 1000
+    :param detector_number: number of entries that will be generated - default number is 1000
     :return data: dict as {'T756_MA_756': [655, 97, 564], 'T772_MA_772': [436, 744, 614],
      'T254_MA_254': [608, 74, 8]...}
     """
@@ -27,12 +25,12 @@ def create_big_detectors(detector_number=10, parent_id=None,
     function create big data i.e. detector_name, detector_parent_id relating to
     the detector name, and parent as API add_detector(self, name, parent_id) required
 
-    :param detector_number: detector number - default number is 10
+    :param detector_number: number of detectors that well be generated - default number is 10
     :param parent_id: parent path of detector - default None
-    :param detector_root_name: detector number - default value is "Detector"
+    :param detector_root_name: base name for a detector - default value is "Detector"
     :param start_index_for_detector_root_name:
            start index of increase progressively with detector root name - default is 0
-    :return list
+    :return list with tuples that can be input for pytests.
     :return example [('Detector0', None), ('Detector1', None)...]
     """
     group_detectors = []
@@ -51,25 +49,25 @@ def create_multilevel_detectors(level=5,
                                 detector_root_name="detector",
                                 parent_path=None,
                                 group_detector_parent=[]):
-    ''''
+    """
     function create multilevel of detectors , which is like n-tree
     (each detector has many layers of subdetectors)
 
     :param level: define layers of detectors tree, default is 5
     :param number_subdetectors_of_each_detector: define number of
            subdetectors for each parent detector, default is 4
-    :param detector_root_name: define the root name of detector,
+    :param detector_root_name: define the base name of detector,
            default value is "detector"
     :param parent_path: specify parent_path of subdetector,
            if there is no basic detector can be used,
            it should be None as create first level detectors,default is None
-    :param group_detectorName_parentId: a list stores
+    :param[inout] group_detector_parent: a list stores
            the data structure of multilevel detector, default is []
-    return null
+    return null. the result will be stored in the group_detector_parent param.
 
-    usage example: create_multilevel_detectors(5, 4, "detector", None, group_detectorName_parentId)
+    usage example: create_multilevel_detectors(5, 4, "detector", None, group_detector_parent)
     example explanation: it create a five levels detectors tree each detector has 4 subdetector,
-    '''
+    """
 
     # level is also used to as a count to achieve recursion;
     # assume [detect, None] is counted as a layer as well

@@ -1,10 +1,13 @@
+""" This module benchmarks some of the CDB API functions """
 import datetime
-from ..factory import APIFactory
-import dummydata_generator
 import logging
 import time
 
-# ---------------------Benchmarking for stress testing-----------------
+import dummydata_generator
+from ..factory import APIFactory
+
+
+# ---------------------Set up logger for testing-----------------
 log_file = logging.FileHandler(filename='benchmarking_dummydata.log', mode='a', encoding='utf-8')
 fmt = logging.Formatter()
 log_file.setFormatter(fmt)
@@ -54,8 +57,8 @@ if __name__ == "__main__":
         wall_time_end - wall_time_start, cpu_time_end - cpu_time_start))
 
 
-    # Benchmarking adding high hierarchy of detectors, subdetctors and each has
-    # one condition to the condition database
+    # Benchmarking adding high hierarchy of detectors, subdetectors and each has
+    # one condition, to the condition database
     group_detector_parent = []
     dummydata_generator.create_multilevel_detectors(5, 5, "detector", None, group_detector_parent)
 
@@ -93,27 +96,27 @@ if __name__ == "__main__":
     logger.info(msg='add One massive Condition to the deepest level%15.6f%13.6f' % (
         wall_time_end - wall_time_start, cpu_time_end - cpu_time_start))
 
-    # Benchmarking retrieveing a condition which is located in the deepest level of the hierarchy
+    # Benchmarking retrieving a condition which is located in the deepest level of the hierarchy
     wall_time_start = time.time()
     cpu_time_start = time.clock()
     cdb_api.get_condition_by_name_and_tag(
         "detector1/subdetector1/subsubdetector1/subsubsubdetector1/subsubsubsubdetector1", "daniel", "tag2")
     wall_time_end = time.time()
     cpu_time_end = time.clock()
-    logger.info(msg='get a massive Condition from the deepest level%15.6f%13.6f' % (
+    logger.info(msg='get a massive Condition by name from the deepest level%15.6f%13.6f' % (
         wall_time_end - wall_time_start, cpu_time_end - cpu_time_start))
 
-    # Benchmarking: retrieveing a condition which is located in the deepest level of the hierarchy
+    # Benchmarking: retrieving a condition which is located in the deepest level of the hierarchy
     wall_time_start = time.time()
     cpu_time_start = time.clock()
     cdb_api.get_conditions_by_tag(
         "detector1/subdetector1/subsubdetector1/subsubsubdetector1/subsubsubsubdetector1", "tag1")
     wall_time_end = time.time()
     cpu_time_end = time.clock()
-    logger.info(msg='get Conditions by tag to the deepest level%15.6f%13.6f' % (
+    logger.info(msg='get Conditions by tag from the deepest level%15.6f%13.6f' % (
         wall_time_end - wall_time_start, cpu_time_end - cpu_time_start))
 
-    # Benchmarking: updating a condition which is located in the deepest level of the hierarchy
+    # Benchmarking: updating a condition which is located at the deepest level of the hierarchy
     wall_time_start = time.time()
     cpu_time_start = time.clock()
     cdb_api.update_condition_by_name_and_tag(

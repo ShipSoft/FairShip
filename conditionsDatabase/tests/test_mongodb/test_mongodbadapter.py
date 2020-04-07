@@ -1,18 +1,16 @@
-####################################################################################################
-# This test_mongodb file is used to generate and assess test cases for the implementation of API.
-# This file defines test input parameters for test_conditionsDB database.
-####################################################################################################
-
+""" This module contains regression tests for the MongoDB CDB adapter. """
 import os
 import pytest
 import datetime
+
 from ...factory import APIFactory
 
+
 # Package metadata
-__author__ = "Yusril Maulidan Raji and Yitian Kong"
-__copyright__ = "TU/e ST2019"
-__version__ = "0.2"
-__status__ = "Prototype"
+__author__      = "Yusril Maulidan Raji and Yitian Kong"
+__copyright__   = "TU/e ST2019"
+__version__     = "0.2"
+__status__      = "Prototype"
 __description__ = "This file contains the test cases for mongo db API"
 
 

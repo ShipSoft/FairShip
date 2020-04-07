@@ -17,7 +17,7 @@ Currently, the following storage back-ends are supported:
 * [**demo/**] Contains a documented demo script that demonstrates how to use the conditionsDB API.
 * [**tests/**] Contains unit tests, regression tests and benchmarking scripts for this package and all supported storage adapters. More information about these tests and scripts can be found in the readme inside this directory.
 * [**config.yml**] Default configuration file that will be used by the package's API factory to produce a CDB API instance.
-* [**Doxyfile**] Configuration file for Doxygen. See (documentation-generation) for more info.
+* [**Doxyfile**] Configuration file for Doxygen. See Documentation generation for more info.
 * [**factory.py**] Module that implements the CDB API factory.
 * [**interface.py**] Module that defines the CDB API.
 * [**requirements.txt**] Package's Python dependencies list. Can be used by PIP to install the required package dependencies on the target machine.

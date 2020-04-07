@@ -1,7 +1,4 @@
-############################################################################
-# This file is used to generate test database and fill initial data in.
-############################################################################
-
+""" This module generates a test database for MongoDB tests. """
 import datetime
 import yaml
 
@@ -10,15 +7,16 @@ from ...databases.mongodb.models.detectorWrapper import DetectorWrapper
 from ...databases.mongodb.models.condition import Condition
 from mongoengine import connect
 
-# Package metadata
-__author__ = "Yitian Kong"
-__copyright__ = "TU/e ST2019"
-__version__ = "0.2"
-__status__ = "Prototype"
+
+# Module metadata
+__author__      = "Yitian Kong"
+__copyright__   = "TU/e ST2019"
+__version__     = "0.2"
+__status__      = "Prototype"
 __description__ = "Delete test database > Create test database > Insert test data"
 
 
-# delete database
+# Delete database
 def delete_db(connection_dict):
     """
     Delete the database of which name is provided.
@@ -26,8 +24,8 @@ def delete_db(connection_dict):
     """
     db_connect = connect(
         db=connection_dict['db_name'],
-        #             user=user,
-        #             password=password,
+        user=connection_dict['user'],
+        password=connection_dict['password'],
         host=connection_dict['host'],
         port=connection_dict['port']
     )
@@ -44,19 +42,19 @@ with open(r'conditionsDatabase/tests/test_mongodb/test_mongodb_config.yml') as f
 
 connection_dict = con_dic['mongo']
 
-# DbConnect.delete_db(connection_dict)
+# Everytime empty database before filling data
+delete_db(connection_dict)
+
+# Create a DB connection
 connect(
     db=connection_dict['db_name'],
-    #             user=user,
-    #             password=password,
+    user=connection_dict['user'],
+    password=connection_dict['password'],
     host=connection_dict['host'],
     port=connection_dict['port']
 )
 
-# Everytime empty database before filling data
-delete_db(connection_dict)
-
-# define detector_id_exist
+# Create detector detector_id_exist
 detector_wrapper = DetectorWrapper(name="detector_id_exist")
 
 detector_id_exist = Detector(name="detector_id_exist")
@@ -70,7 +68,7 @@ condition = Condition(name="condition_exist", tag="tag", type="type",
                       })
 detector_id_exist.conditions.append(condition)
 
-# define detector_id_exist/sub_detector_id_exist
+# Create detector detector_id_exist/sub_detector_id_exist
 sub_detector = Detector(name="sub_detector_id_exist")
 sub_condition = Condition(name="sub_detector_id_exist", tag="sub_tag", type="sub_type",
                           collected_at=datetime.datetime(2020, 4, 12, 11, 5, 27),
@@ -83,7 +81,7 @@ sub_condition = Condition(name="sub_detector_id_exist", tag="sub_tag", type="sub
 sub_detector.conditions.append(sub_condition)
 detector_id_exist.subdetectors.append(sub_detector)
 
-# define detector_id_exist/sub_detector_id_exist/sub_sub_detector_id_exist
+# Create detector detector_id_exist/sub_detector_id_exist/sub_sub_detector_id_exist
 sub_sub_detector = Detector(name="sub_sub_detector_id_exist")
 sub_sub_condition = Condition(name="sub_sub_detector_id_exist", tag="sub_sub_tag", type="sub_sub_type",
                               collected_at=datetime.datetime(2020, 5, 12, 11, 5, 27),
@@ -100,7 +98,7 @@ detector_wrapper.detector = detector_id_exist
 
 detector_wrapper.save()
 
-# another detector without condition
+# Create another detector without condition
 detector_wrapper = DetectorWrapper(name="detector_without_condition")
 
 detector_2 = Detector(name="detector_without_condition")

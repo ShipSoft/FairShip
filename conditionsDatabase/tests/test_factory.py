@@ -1,6 +1,4 @@
-"""
-This module tests the factory
-"""
+""" This module tests the factory """
 import os
 import pytest
 import yaml
@@ -12,7 +10,7 @@ from ..databases.mongodb.mongodbadapter import MongoToCDBAPIAdapter
 @pytest.fixture
 def supply_dbAPI():
     """
-    This method creates an instance of database implementation of the API.
+    This function creates an instance of the CDB API.
     This can be used by other functions.
     """
     factory = APIFactory()
@@ -22,7 +20,7 @@ def supply_dbAPI():
 @pytest.mark.smoke_test
 def test_create_mongo_api():
     """
-    This method checks if the factory can create a proper instance of the API.
+    This test checks if the factory can create an instance of the API for MongoDB.
     """
     factory = APIFactory()
     db_api = factory.construct_DB_API()
@@ -31,8 +29,8 @@ def test_create_mongo_api():
 @pytest.mark.smoke_test
 def test_create_unknown_api():
     """
-    This method checks if the factory can raise a proper exception
-    if unsupported databse type is specified in the configuration file
+    This function checks if the factory can raise a proper exception
+    if an unsupported database type is specified in the configuration file.
     """
     factory = APIFactory()
     home_dir = os.getenv('FAIRSHIP')
