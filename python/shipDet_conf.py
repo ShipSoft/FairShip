@@ -143,7 +143,9 @@ def configure(run,ship_geo):
             ship_geo.cave.floorHeightMuonShield,ship_geo.muShield.Field,
             ship_geo.muShieldWithCobaltMagnet, ship_geo.muShieldStepGeo) 
  elif ship_geo.muShieldDesign == 8:
-  MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo)
+  MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo,
+                                   ship_geo.muShieldWithCobaltMagnet,
+                                   ship_geo.muShieldStepGeo)
  
  detectorList.append(MuonShield)
 
