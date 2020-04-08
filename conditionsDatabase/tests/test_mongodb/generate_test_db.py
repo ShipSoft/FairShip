@@ -24,7 +24,7 @@ def delete_db(connection_dict):
     """
     db_connect = connect(
         db=connection_dict['db_name'],
-        user=connection_dict['user'],
+        username=connection_dict['user'],
         password=connection_dict['password'],
         host=connection_dict['host'],
         port=connection_dict['port']
@@ -48,7 +48,7 @@ delete_db(connection_dict)
 # Create a DB connection
 connect(
     db=connection_dict['db_name'],
-    user=connection_dict['user'],
+    username=connection_dict['user'],
     password=connection_dict['password'],
     host=connection_dict['host'],
     port=connection_dict['port']
