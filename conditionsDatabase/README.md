@@ -40,8 +40,11 @@ Most of the users of the current system rely on the automatic building tool aliB
 ## Documentation generation
 For the production of a reference manual, we decided to use the documentation generator Doxygen, which is primary used for C++. Since the majority of the project is not documented according to Doxygen standards, we had to specify which of the files are. This can be done via Doxyfile, which is the configuration file of Doxygen. The specific folder of the project was specified as a starting point. The recursive mechanism for sub-folders was activated and rules for the exclusion of specific sub-folders were introduced.
 In order to reproduce the documentation, you should first install doxygen. Then inside the folder conditionsDatabase you will be able to find Doxyfile, which is currently configured for the project. The commands that you should run are the following:
+
 doxygen Doxyfile ---> produces the latex and html files for the reference manual.
+
 cd docs/latex 	 ---> Inside this folder there is a makefile, which will produce the pdf.
+
 make pdf	 ---> Produces the pdf. The name of the file will be refman.pdf
 
 ## Supported Python version
