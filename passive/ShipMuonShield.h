@@ -24,7 +24,7 @@ class ShipMuonShield : public FairModule
                                Double_t L7=0, Double_t L8=0,Double_t gap=0,Double_t LE=0,Double_t y=400, Double_t floor=500, Double_t field=1.7, 
                                const Int_t withCoMagnet=0, const Bool_t StepGeo=false);
 
-   explicit ShipMuonShield(TString geofile);
+   ShipMuonShield(TString geofile, const Int_t withCoMagnet=0, const Bool_t StepGeo=false);
    ShipMuonShield();
    virtual ~ShipMuonShield();
    void ConstructGeometry();
