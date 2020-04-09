@@ -885,7 +885,13 @@ def test_add_detector(cdb_api, name, parent_id):
      "calibration", "tag-1", "2020-03-10 11:05:27", "2020-03-10 11:05:27", "2020-04-12 11:05:27"),
     # Test with invalid collected_at, valid_since, and valid_until
     ("detector_id_with_invalid_date_parameters", "strawPositions1", {"dictPar1": "dictVal1"},
-     "calibration", "tag-1", 999, 999, 999)
+     "calibration", "tag-1", 999, 999, 999),
+    # Test with None values
+    ("detector_id_not_exist_with_values_none", "strawPositions7", None, "calibration", "tag-6",
+     "2020-03-12 11:05:27", "2020-03-12 11:05:27", "2020-04-10 11:05:27"),
+    # Test with empty string values
+    ("detector_id_not_exist_with_values_empty", "strawPositions8", "", "calibration", "tag-6",
+     "2020-03-12 11:05:27", "2020-03-12 11:05:27", "2020-04-10 11:05:27"),
 ])
 def test_add_condition(cdb_api, detector_id, name, values, test_type, tag,
                        collected_at, valid_since, valid_until):
@@ -911,9 +917,10 @@ def test_add_condition(cdb_api, detector_id, name, values, test_type, tag,
     has_correct_parameter_type = True
     if type(detector_id) != str or detector_id == "" or type(name) != str or name == "" or \
             (type(test_type) != str and type(test_type) is not None) or \
-            type(tag) != str or tag == "" or values == "":
+            type(tag) != str or tag == "" or values == "" or values is None:
         has_correct_parameter_type = False
-        # raise TypeError when detector_id /name /values /type /tag is not an str.
+        # raise TypeError when detector_id /name /type /tag is not an str.
+        # raise TypeError when /values is empty or None.
         with pytest.raises(TypeError):
             assert cdb_api.add_condition(detector_id, name, tag, values, test_type,
                                          collected_at, valid_since, valid_until)
