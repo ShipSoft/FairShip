@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import division
 # example for accessing smeared hits and fitted tracks
 import ROOT,os,sys,getopt
+import ctypes
 import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
@@ -393,15 +394,15 @@ def match2HNL(p):
     return matched
 def ecalCluster2MC(aClus):
  # return MC track most contributing, and its fraction of energy
-  trackid    = ROOT.Long()
+  trackid    = ctypes.c_int()
   energy_dep = ROOT.Double()
   mcLink = {}
   for i in range( aClus.Size() ):
     mccell = ecalStructure.GetHitCell(aClus.CellNum(i))  # Get i'th cell of the cluster.
     for n in range( mccell.TrackEnergySize()):
       mccell.GetTrackEnergySlow(n, trackid, energy_dep)
-      if not abs(trackid)<sTree.MCTrack.GetEntries(): tid = -1
-      else: tid = int(trackid)
+      if not abs(trackid.value)<sTree.MCTrack.GetEntries(): tid = -1
+      else: tid = trackid.value
       if tid not in mcLink: mcLink[tid]=0
       mcLink[tid]+=energy_dep
 # find trackid most contributing

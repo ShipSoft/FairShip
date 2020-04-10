@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import division
 # Mikhail Hushchyn, mikhail.hushchyn@cern.ch
 
+from past.builtins import cmp
 from builtins import range
 import ROOT
 import numpy
