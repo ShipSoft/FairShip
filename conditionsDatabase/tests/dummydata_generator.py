@@ -60,10 +60,10 @@ def create_multilevel_detectors(level=5,
            default value is "detector"
     :param parent_path: specify parent_path of subdetector,
            if there is no basic detector can be used,
-           it should be None as create first level detectors,default is None
+           it should be None as create first level detectors, default is None
     :param[inout] group_detector_parent: a list stores
            the data structure of multilevel detector, default is []
-    return null. the result will be stored in the group_detector_parent param.
+    return null. The result will be stored in the group_detector_parent param.
 
     usage example: create_multilevel_detectors(5, 4, "detector", None, group_detector_parent)
     example explanation: it create a five levels detectors tree each detector has 4 subdetector,
