@@ -473,13 +473,9 @@ def configure(run,ship_geo):
   run.SetField(fMagField)
 #
  exclusionList = []
-<<<<<<< HEAD
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
  #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
-=======
-# exclusionList = ["Muon","Ecal","Hcal","Strawtubes",\
-#                  "Veto","Magnet","MuonShield","TargetStation", "TimeDet"]
->>>>>>> 0fa9a94... Added Rpc new geometry components
+
  for x in detectorList:
    if x.GetName() in exclusionList: continue
    run.AddModule(x)
