@@ -9,9 +9,12 @@ from datetime import datetime
 
 # Package metadata
 __author__    = "Tom Vrancken"
+__email__     = "dev@tomvrancken.nl"
 __copyright__ = "TU/e ST2019"
-__version__   = "0.3"
+__credits__   = ["Juan van der Heijden", "Georgios Azis"]
+__version__   = "1.0"
 __status__    = "Prototype"
+
 
 _ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 AND 3
 

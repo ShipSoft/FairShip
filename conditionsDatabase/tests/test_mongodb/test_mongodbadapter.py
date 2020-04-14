@@ -7,11 +7,11 @@ from ...factory import APIFactory
 
 
 # Package metadata
-__author__      = "Yusril Maulidan Raji and Yitian Kong"
+__authors__     = ["Yusril Maulidan Raji", "Yitian Kong"]
 __copyright__   = "TU/e ST2019"
-__version__     = "0.2"
+__version__     = "1.0"
 __status__      = "Prototype"
-__description__ = "This file contains the test cases for mongo db API"
+__description__ = "This file contains the test cases for Mongo DB API."
 
 
 @pytest.fixture

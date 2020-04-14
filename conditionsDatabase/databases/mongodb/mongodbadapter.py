@@ -16,10 +16,10 @@ from ...interface import APIInterface
 
 
 # Package metadata
-__authors__    = "Nathan DPenha, Juan van der Heijden, " \
-                 "Vladimir Romashov, Raha Sadeghi"
+__authors__    = ["Nathan DPenha", "Juan van der Heijden",
+                  "Vladimir Romashov", "Raha Sadeghi"]
 __copyright__  = "TU/e ST2019"
-__version__    = "0.1"
+__version__    = "1.0"
 __status__     = "Prototype"
 
 
