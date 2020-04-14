@@ -606,22 +606,23 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.NFethick = 4 #upstream slabs, more thick
         c.tauMudet.NFethin = 4 #downstream slabs, less thick
         c.tauMudet.NRpc= 8
-                
-        c.tauMudet.XFe = scaleMudet*1.900*u.m #layer dimensions, excluded supports
-        c.tauMudet.YFe = scaleMudet*3.600*u.m
+        
+        c.tauMudet.XFe = scaleMudet*1.950*u.m #layer dimensions, excluded supports
+        c.tauMudet.YFe = scaleMudet*3.850*u.m
+
         c.tauMudet.ZFethick = 15.*u.cm
         c.tauMudet.ZFethin = 10.* u.cm
 
         c.tauMudet.XRpc = c.tauMudet.XFe
         c.tauMudet.YRpc = c.tauMudet.YFe
-        c.tauMudet.ZRpc = 7.*u.cm
+        c.tauMudet.ZRpc = 8.*u.cm
         #support structure
-        c.tauMudet.UpperSupportX = 34 * u.cm
-        c.tauMudet.UpperSupportY = 34 * u.cm
-        c.tauMudet.LowerSupportX = 34 * u.cm
-        c.tauMudet.LowerSupportY = 34 * u.cm
-        c.tauMudet.LateralSupportX = 34 * u.cm
-        c.tauMudet.LateralSupportY = 34 * u.cm
+        c.tauMudet.UpperSupportX = 30 * u.cm
+        c.tauMudet.UpperSupportY = 32 * u.cm
+        c.tauMudet.LowerSupportX = 30 * u.cm
+        c.tauMudet.LowerSupportY = 40 * u.cm
+        c.tauMudet.LateralSupportX = 30.5 * u.cm
+        c.tauMudet.LateralSupportY = 32 * u.cm
 
         c.tauMudet.Xtot = c.tauMudet.XFe + 2 * c.tauMudet.LateralSupportX#now we need to include also supports.
         c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
@@ -629,8 +630,34 @@ with ConfigRegistry.register_config("basic") as c:
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
         #lateral cuts
-        c.tauMudet.CutHeight = 100 * u.cm
-        c.tauMudet.CutLength = 25 * u.cm
+        c.tauMudet.CutHeight = 78.548 * u.cm
+        c.tauMudet.CutLength = (c.tauMudet.CutHeight / 2) / (r.TMath.Tan(r.TMath.DegToRad() * 55))
+        #upper cover
+        c.tauMudet.XCov = c.tauMudet.XFe
+        c.tauMudet.YCov = 6*u.cm
+        c.tauMudet.ZCov = c.tauMudet.NFethick*c.tauMudet.ZFethick+c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFethin*c.tauMudet.ZFethin
+        
+        c.tauMudet.YSpacing = 28.5*u.cm
+        #lateral cover
+        c.tauMudet.XLateral = 7*u.cm
+        c.tauMudet.YLateral = c.tauMudet.LateralSupportY
+        c.tauMudet.ZLateral = c.tauMudet.ZCov
+        #lateral cross
+        c.tauMudet.XCross = 2*u.cm
+        c.tauMudet.YCross = c.tauMudet.YFe-2*c.tauMudet.YLateral-2*c.tauMudet.YSpacing - 8*u.cm
+        c.tauMudet.ZCross = c.tauMudet.ZCov
+        c.tauMudet.WidthArm = 2* u.cm
+        #RPC frame
+        c.tauMudet.XRpc_outer = 284.5*u.cm
+        c.tauMudet.YRpc_outer = 428.2*u.cm
+        c.tauMudet.ZRpc_outer = 2.2*u.cm
+        c.tauMudet.XRpc_inner = 190*u.cm
+        c.tauMudet.YRpc_inner = 372*u.cm
+        c.tauMudet.ZRpc_inner = 1.7*u.cm
+        #RPC Gap
+        c.tauMudet.XRpcGap = c.tauMudet.XRpc_inner
+        c.tauMudet.YRpcGap = 120*u.cm
+        c.tauMudet.ZRpcGap = 0.2*u.cm
         
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
@@ -640,7 +667,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauMudet.ZGas = 1*u.mm
     c.tauMudet.XStrip =  c.tauMudet.XRpc
     c.tauMudet.YStrip =  c.tauMudet.YRpc
-    c.tauMudet.ZStrip = 0.05*u.mm
+    c.tauMudet.ZStrip = 0.02*u.mm
     c.tauMudet.XPet =  c.tauMudet.XRpc
     c.tauMudet.YPet =  c.tauMudet.YRpc
     c.tauMudet.ZPet = 0.1*u.mm

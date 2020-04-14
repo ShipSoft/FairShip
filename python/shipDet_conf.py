@@ -207,7 +207,7 @@ def configure(run,ship_geo):
       taumuondetector.SetLateralCutSize(ship_geo.tauMudet.CutHeight, ship_geo.tauMudet.CutLength)
       taumuondetector.SetSupportTransverseDimensions(ship_geo.tauMudet.UpperSupportX,ship_geo.tauMudet.UpperSupportY, \
                                                      ship_geo.tauMudet.LowerSupportX, ship_geo.tauMudet.LowerSupportY, \
-                                                     ship_geo.tauMudet.LateralSupportX, ship_geo.tauMudet.LateralSupportY)
+                                                     ship_geo.tauMudet.LateralSupportX, ship_geo.tauMudet.LateralSupportY, ship_geo.tauMudet.YSpacing)
    else: #geometry used before new iron sampling
       taumuondetector.SetFeDimensions(ship_geo.tauMudet.XFe,ship_geo.tauMudet.YFe, ship_geo.tauMudet.ZFe)
       taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFe)
@@ -217,6 +217,12 @@ def configure(run,ship_geo):
    taumuondetector.SetRpcElectrodeDimensions(ship_geo.tauMudet.XEle,ship_geo.tauMudet.YEle, ship_geo.tauMudet.ZEle)
    taumuondetector.SetRpcPETDimensions(ship_geo.tauMudet.XPet,ship_geo.tauMudet.YPet, ship_geo.tauMudet.ZPet)
    taumuondetector.SetNRpcInArm(ship_geo.tauMudet.NRpc)
+   taumuondetector.SetUpperCoverDimensions(ship_geo.tauMudet.XCov, ship_geo.tauMudet.YCov, ship_geo.tauMudet.ZCov)
+   taumuondetector.SetLateralCoverDimensions(ship_geo.tauMudet.XLateral, ship_geo.tauMudet.YLateral, ship_geo.tauMudet.ZLateral)
+   taumuondetector.SetCrossDimensions(ship_geo.tauMudet.XCross, ship_geo.tauMudet.YCross, ship_geo.tauMudet.ZCross, ship_geo.tauMudet.WidthArm)
+   taumuondetector.SetRpcOuterDimensions(ship_geo.tauMudet.XRpc_outer, ship_geo.tauMudet.YRpc_outer, ship_geo.tauMudet.ZRpc_outer)
+   taumuondetector.SetRpcInnerDimensions(ship_geo.tauMudet.XRpc_inner, ship_geo.tauMudet.YRpc_inner, ship_geo.tauMudet.ZRpc_inner)
+   taumuondetector.SetRpcGapDimensions(ship_geo.tauMudet.XRpcGap, ship_geo.tauMudet.YRpcGap, ship_geo.tauMudet.ZRpcGap)
    taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)
    detectorList.append(taumuondetector)
    if ship_geo.nuTauTargetDesign==3:
@@ -469,6 +475,7 @@ def configure(run,ship_geo):
  exclusionList = []
  #exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
  #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
+
  for x in detectorList:
    if x.GetName() in exclusionList: continue
    run.AddModule(x)
