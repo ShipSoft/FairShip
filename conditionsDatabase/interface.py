@@ -40,7 +40,8 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     #   @retval Dict:           A dictionary adhering to the following specification:
-    #                           { 'name': String, 'subdetectors': List, 'conditions': List }
+    #                           Detector = { 'name': String, 'subdetectors': List of Detector,
+    #                                        'conditions': List of Condition }
     @abstractmethod
     def get_detector(self, detector_id):
         pass
@@ -100,10 +101,11 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #                           conditions must be retrieved (i.e. 'muonflux/driftTubes').
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
-    #   @retval Dict:           A dictionary adhering to the following specification:
-    #                           { 'name': String, 'tag': String, 'type': String,
-    #                             'collected_at': datetime, 'valid_since': datetime,
-    #                             'valid_until': datetime, 'values': mixed }
+    #   @retval List:           A list with condition dictionaries adhering to the following
+    #                           specification:
+    #                           Condition = { 'name': String, 'tag': String, 'type': String,
+    #                                         'collected_at': datetime, 'valid_since': datetime,
+    #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
     def get_conditions(self, detector_id):
         pass
@@ -115,10 +117,11 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #                           'strawPositions').
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
-    #   @retval Dict:           A dictionary adhering to the following specification:
-    #                           { 'name': String, 'tag': String, 'type': String,
-    #                             'collected_at': datetime, 'valid_since': datetime,
-    #                             'valid_until': datetime, 'values': mixed }
+    #   @retval List:           A list with condition dictionaries adhering to the following
+    #                           specification:
+    #                           Condition = { 'name': String, 'tag': String, 'type': String,
+    #                                         'collected_at': datetime, 'valid_since': datetime,
+    #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
     def get_conditions_by_name(self, detector_id, name):
         pass
@@ -129,10 +132,11 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #   @param  tag:            String specifying the tag of the condition to be retrieved.
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
-    #   @retval Dict:           A dictionary adhering to the following specification:
-    #                           { 'name': String, 'tag': String, 'type': String,
-    #                             'collected_at': datetime, 'valid_since': datetime,
-    #                             'valid_until': datetime, 'values': mixed }
+    #   @retval List:           A list with condition dictionaries adhering to the following
+    #                           specification:
+    #                           Condition = { 'name': String, 'tag': String, 'type': String,
+    #                                         'collected_at': datetime, 'valid_since': datetime,
+    #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
     def get_conditions_by_tag(self, detector_id, tag):
         pass
@@ -152,16 +156,17 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #                           Can be of type String or datetime
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
-    #   @retval Dict:           A dictionary adhering to the following specification:
-    #                           { 'name': String, 'tag': String, 'type': String,
-    #                             'collected_at': datetime, 'valid_since': datetime,
-    #                             'valid_until': datetime, 'values': mixed }
+    #   @retval List:           A list with condition dictionaries adhering to the following
+    #                           specification:
+    #                           Condition = { 'name': String, 'tag': String, 'type': String,
+    #                                         'collected_at': datetime, 'valid_since': datetime,
+    #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
     def get_conditions_by_name_and_validity(self, detector_id, name, start_date, end_date=None):
         pass
 
     ### Returns a condition dictionary of a specific condition belonging to a detector,
-    ### identified by condition name and tag.
+    ### identified by condition name and tag. This combination must be unique.
     #   @param  detector_id:    String identifying the detector for which the
     #                           condition must be retrieved (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
@@ -170,15 +175,15 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     #   @retval Dict:           A dictionary adhering to the following specification:
-    #                           { 'name': String, 'tag': String, 'type': String,
-    #                             'collected_at': datetime, 'valid_since': datetime,
-    #                             'valid_until': datetime, 'values': mixed }
+    #                           Condition = { 'name': String, 'tag': String, 'type': String,
+    #                                         'collected_at': datetime, 'valid_since': datetime,
+    #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
     def get_condition_by_name_and_tag(self, detector_id, name, tag):
         pass
 
     ### Returns a condition dictionary of a specific condition belonging to a detector, identified
-    ### by condition name and collection date/time.
+    ### by condition name and collection date/time. This combination must be unique.
     #   @param  detector_id:    String identifying the detector for which the
     #                           condition must be retrieved (i.e. 'muonflux/driftTubes').
     #   @param  name:           String specifying the name of the conditions to be retrieved (e.g.
@@ -189,6 +194,10 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
+    #   @retval Dict:           A dictionary adhering to the following specification:
+    #                           Condition = { 'name': String, 'tag': String, 'type': String,
+    #                                         'collected_at': datetime, 'valid_since': datetime,
+    #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
     def get_condition_by_name_and_collection_date(self, detector_id, name, collected_at):
         pass
