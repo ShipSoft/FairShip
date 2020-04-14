@@ -1,4 +1,4 @@
-""" This module tests the factory """
+""" This module tests the factory. """
 import os
 import pytest
 import yaml

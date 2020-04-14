@@ -1,4 +1,4 @@
-""" This module benchmarks some of the CDB API functions """
+""" This module benchmarks some of the CDB API functions. """
 import datetime
 import logging
 import time

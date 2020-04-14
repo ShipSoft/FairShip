@@ -1,4 +1,4 @@
-""" This module implements a dummy data generator """
+""" This module implements a dummy data generator. """
 import numpy as np
 
 
@@ -37,10 +37,12 @@ def create_big_detectors(detector_number=10, parent_id=None,
     root = detector_root_name
     area = range(start_index_for_detector_root_name,
                  start_index_for_detector_root_name + detector_number)
+
     for start in area:
         detector_name_root_with_number = root + str(start)
         item = (detector_name_root_with_number, parent_id)
         group_detectors.append(item)
+
     return group_detectors
 
 
@@ -73,11 +75,14 @@ def create_multilevel_detectors(level=5,
     # assume [detect, None] is counted as a layer as well
     if level == 0:
         return
+
     first_level_detector = create_big_detectors(
         number_subdetectors_of_each_detector, parent_path, detector_root_name)
+
     for first_level_item in first_level_detector:
         group_detector_parent.append(first_level_item)
         detector_name = first_level_item[0]
+
         if parent_path is None:
             path = detector_name
         else:

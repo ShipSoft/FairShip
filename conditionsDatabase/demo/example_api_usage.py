@@ -6,6 +6,7 @@
 from ..factory import APIFactory
 import datetime
 
+
 # Instantiate an API factory
 api_factory = APIFactory()
 # Call construct_DB_API to get an CDB API instance, the path must lead to a valid config.yml file containing the database configuration
