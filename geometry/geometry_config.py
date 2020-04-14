@@ -1,7 +1,6 @@
 from __future__ import print_function
 import shipunit as u
 import ROOT as r
-import math
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber 9=optimised with T4 as constraint, 8=requires config file
