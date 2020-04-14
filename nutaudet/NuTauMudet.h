@@ -32,7 +32,6 @@ class NuTauMudet:public FairDetector
     void SetRpcPETDimensions(Double_t X, Double_t Y, Double_t Z);
     void SetNFeInArm(Int_t N, Int_t Nthin= 0);
     void SetNRpcInArm(Int_t N);
-    void SetNRpcInTagger(Int_t NmuRpc); //for the veto tagger
     void SetZDimensionArm(Double_t Z);
     void SetGapDownstream(Double_t Gap);
     void SetGapMiddle(Double_t Gap);
@@ -124,7 +123,7 @@ protected:
     Double_t fYtot;
     Double_t fZtot; //Dimension of the whole magnetic spectrometr (1st + 2nd arm + HPTs) alogn beam axis
     Int_t fNFe, fNFethin;
-    Int_t fNRpc, fNmuRpc;
+    Int_t fNRpc;
     Double_t fXFe;
     Double_t fXRpc;
     Double_t fYFe;
@@ -202,7 +201,7 @@ protected:
 
     NuTauMudet(const NuTauMudet&);
     NuTauMudet& operator=(const NuTauMudet&);
-    ClassDef(NuTauMudet,7)
+    ClassDef(NuTauMudet,8)
 
 };
 

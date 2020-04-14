@@ -182,11 +182,6 @@ void NuTauMudet::SetCoilParameters(Double_t CoilH, Double_t CoilW, Int_t N, Doub
   fNCoil = N;
 }
 
-void NuTauMudet::SetNRpcInTagger(Int_t NmuRpc)
-{
-  fNmuRpc = NmuRpc;
-}
-
 void NuTauMudet::SetSupportTransverseDimensions(Double_t UpperSupportX, Double_t UpperSupportY, Double_t LowerSupportX, Double_t LowerSupportY, Double_t LateralSupportX, Double_t LateralSupportY, Double_t YSpacing)
 {
   fUpSuppX = UpperSupportX;
@@ -510,7 +505,7 @@ void NuTauMudet::ConstructGeometry()
       Int_t nr = 1E4;
             
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volTauNuMudet");
-      tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter-(fNmuRpc*fZRpc)/2.));
+      tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter));
 
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
@@ -525,17 +520,17 @@ void NuTauMudet::ConstructGeometry()
       TGeoBBox *UpperCover = new TGeoBBox("UpperCover",fXCov/2, fYCov/2, fZCov/2);
       TGeoVolume *volUpperCover = new TGeoVolume("volUpperCover",UpperCover, Al);
       volUpperCover->SetLineColor(kYellow-7);
-      volMudetBox->AddNode(volUpperCover, 1, new TGeoTranslation(0, fYFe/2+fYCov/2+fUpSuppY, -fZtot/2 + fZCov/2 + (fNmuRpc*fZRpc/2)));
+      volMudetBox->AddNode(volUpperCover, 1, new TGeoTranslation(0, fYFe/2+fYCov/2+fUpSuppY, -fZtot/2 + fZCov/2));
       
       //**********LATERAL COVER**********
 
       TGeoBBox *LateralCover = new TGeoBBox("LateralCover",fXLateral/2, fYLateral/2, fZLateral/2);
       TGeoVolume *volLateralCover = new TGeoVolume("volLateralCover",LateralCover, Al);
       volLateralCover->SetLineColor(kYellow-7);
-      volMudetBox->AddNode(volLateralCover, 1, new TGeoTranslation(-fXFe/2.-fLatSuppX-fXLateral/2., -fYFe/2.+fYLateral/2.+fYSpacing+ 4.*cm, -fZtot/2 + fZLateral/2 + (fNmuRpc*fZRpc/2))); //low right
-      volMudetBox->AddNode(volLateralCover, 2, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral/2., -fYFe/2.+fYLateral/2.+fYSpacing+ 4.*cm, -fZtot/2 + fZLateral/2 + (fNmuRpc*fZRpc/2))); //low left
-      volMudetBox->AddNode(volLateralCover, 3, new TGeoTranslation(-fXFe/2.-fLatSuppX-fXLateral/2., +fYFe/2.-fYLateral/2.-fYSpacing- 4.*cm, -fZtot/2 + fZLateral/2 + (fNmuRpc*fZRpc/2))); //up right
-      volMudetBox->AddNode(volLateralCover, 4, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral/2., +fYFe/2.-fYLateral/2.-fYSpacing- 4.*cm, -fZtot/2 + fZLateral/2 + (fNmuRpc*fZRpc/2))); //up left
+      volMudetBox->AddNode(volLateralCover, 1, new TGeoTranslation(-fXFe/2.-fLatSuppX-fXLateral/2., -fYFe/2.+fYLateral/2.+fYSpacing+ 4.*cm, -fZtot/2 + fZLateral/2)); //low right
+      volMudetBox->AddNode(volLateralCover, 2, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral/2., -fYFe/2.+fYLateral/2.+fYSpacing+ 4.*cm, -fZtot/2 + fZLateral/2)); //low left
+      volMudetBox->AddNode(volLateralCover, 3, new TGeoTranslation(-fXFe/2.-fLatSuppX-fXLateral/2., +fYFe/2.-fYLateral/2.-fYSpacing- 4.*cm, -fZtot/2 + fZLateral/2)); //up right
+      volMudetBox->AddNode(volLateralCover, 4, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral/2., +fYFe/2.-fYLateral/2.-fYSpacing- 4.*cm, -fZtot/2 + fZLateral/2)); //up left
 
       //*********** LATERAL CROSSES************
 
@@ -552,8 +547,8 @@ void NuTauMudet::ConstructGeometry()
       TGeoCompositeShape *MuCross = new TGeoCompositeShape("MUFILTERCROSS", "ARMCROSS1:NegativeRot+ARMCROSS2:PositiveRot");
       TGeoVolume *volMuDetCross = new TGeoVolume("volMuDetCross",MuCross, Al);
       volMuDetCross->SetLineColor(kYellow-7);
-      volMudetBox->AddNode(volMuDetCross, 1, new TGeoTranslation(-fXFe/2.-fLatSuppX-fXLateral+fXCross/2., 0., -fZtot/2 + fZCross/2 + (fNmuRpc*fZRpc/2))); // right
-      volMudetBox->AddNode(volMuDetCross, 2, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral-fXCross/2., 0., -fZtot/2 + fZCross/2 + (fNmuRpc*fZRpc/2))); // left
+      volMudetBox->AddNode(volMuDetCross, 1, new TGeoTranslation(-fXFe/2.-fLatSuppX-fXLateral+fXCross/2., 0., -fZtot/2 + fZCross/2)); // right
+      volMudetBox->AddNode(volMuDetCross, 2, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral-fXCross/2., 0., -fZtot/2 + fZCross/2)); // left
 
       //***********************ADDING CUTS AT MID-LATERAL IN WALLS
       IronLayer->SetName("MUDETIRON");
@@ -637,12 +632,12 @@ void NuTauMudet::ConstructGeometry()
 
       for(Int_t i = 0; i < fNFe; i++)
 	{
-          double dz = -fZtot/2+i*fZFe+fZFe/2+i*fZRpc+(fNmuRpc*fZRpc/2);
+          double dz = -fZtot/2+i*fZFe+fZFe/2+i*fZRpc;
           volMudetBox->AddNode(MudetIronLayer,nr + 100 + i, new TGeoTranslation(0, 0, dz));
 	}
       for(Int_t i = 0; i < fNFethin; i++)
 	{	  
-          double dz = -fZtot/2+fNFe*(fZRpc+fZFe)+i*fZFethin+fZFethin/2+i*fZRpc+(fNmuRpc*fZRpc/2);
+          double dz = -fZtot/2+fNFe*(fZRpc+fZFe)+i*fZFethin+fZFethin/2+i*fZRpc;
           volMudetBox->AddNode(MudetIronLayer1,nr + 100 + fNFe + i, new TGeoTranslation(0, 0,dz));
 	}
       //*****************************RPC LAYERS****************************************
@@ -743,7 +738,7 @@ void NuTauMudet::ConstructGeometry()
       for(Int_t i = 0; i < fNRpc; i++)
 	{
          double dy = 5.*cm;
-         double dz = -fZtot/2 + (i+1)*fZFe + i*fZRpc + fZRpc/2+(fNmuRpc*fZRpc/2);
+         double dz = -fZtot/2 + (i+1)*fZFe + i*fZRpc + fZRpc/2;
          if (i >= fNFe) dz = dz - (i + 1 - fNFe) * (fZFe - fZFethin);
          if(i%2)volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, -dy, dz)); //staggering
          else{volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, dy, dz));}          
