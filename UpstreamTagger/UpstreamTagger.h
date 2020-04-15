@@ -19,7 +19,7 @@ class UpstreamTagger: public FairDetector
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
     */
-    UpstreamTagger(const char* Name, Bool_t Active);
+    UpstreamTagger(const char* Name, Bool_t Active, Double_t BX, Double_t BY, Double_t BZ);
 
     /** default constructor */
     UpstreamTagger();
@@ -46,6 +46,10 @@ class UpstreamTagger: public FairDetector
 
     /** Sets detector position and sizes */
     void SetZposition(Double_t z) {det_zPos = z;}
+
+    void SetZSpace_Layers(Double_t spacelayers) {z_space_layers = spacelayers;}
+    void SetExtraY(Double_t extray) {extra_y = extray;}
+
     void SetSizeX_Glass(Double_t xg) {det_xGlassPos = xg;}
     void SetSizeY_Glass(Double_t yg) {det_yGlassPos = yg;}
     void SetSizeZ_Glass(Double_t zg) {det_zGlassPos = zg;}
@@ -164,11 +168,11 @@ class UpstreamTagger: public FairDetector
     Double_t     det_yStripPos;     //!  y-size of Strip for modules with 32 strips
     Double_t     det_zStripPos;     //!  z-size of Strip
     
-    Double_t xbox_fulldet = 233.4; //cm 
-    Double_t ybox_fulldet = 507; 
-    Double_t zbox_fulldet = 17.0024;
-    Double_t z_space_layers = 0.2;  
-    Double_t extra_y = 6.5; 
+    Double_t xbox_fulldet; //cm 
+    Double_t ybox_fulldet; 
+    Double_t zbox_fulldet;
+    Double_t z_space_layers;  
+    Double_t extra_y; 
     
     TGeoVolume* UpstreamTagger_fulldet; // Timing_detector_1 object
    

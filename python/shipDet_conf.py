@@ -418,8 +418,10 @@ def configure(run,ship_geo):
  Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
  detectorList.append(Muon)
 
- upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
+ upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE,ship_geo.UpstreamTagger.BX,ship_geo.UpstreamTagger.BY,ship_geo.UpstreamTagger.BZ)
  upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
+ upstreamTagger.SetZSpace_Layers(ship_geo.UpstreamTagger.Z_Space_Layers)
+ upstreamTagger.SetExtraY(ship_geo.UpstreamTagger.Extra_Y)
  upstreamTagger.SetSizeX_Glass(ship_geo.UpstreamTagger.X_Glass)
  upstreamTagger.SetSizeY_Glass(ship_geo.UpstreamTagger.Y_Glass)
  upstreamTagger.SetSizeZ_Glass(ship_geo.UpstreamTagger.Z_Glass)
