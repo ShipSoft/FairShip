@@ -1961,6 +1961,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
             cosCSraw,cosCScor       = -999.,-999.
             Y,Ycor                  = -999.,-999.
             xn1,yn1,zn1,xn2,yn2,zn2 = 0,0,0,0,0,0
+            RPCx1,RPCy1,Delx1,Dely1,RPCx2,RPCy2,Delx2,Dely2 = -999.,-999.,-999.,-999.,-999.,-999.,-999.,-999.
           else:
             if chi2[j][0] < 0: 
               nlep      = n1
@@ -1981,11 +1982,19 @@ def invMass(sTree,h,nseq=0,ncpus=False):
             Y    = X[j].Rapidity()
             Ycor = Xcor[j].Rapidity()
             xn1 = sTree.x[n1]
-            yn1 = sTree.y[n1] 
+            yn1 = sTree.y[n1]
             zn1 = sTree.z[n1]
             xn2 = sTree.x[n2]
             yn2 = sTree.y[n2]
-            zn2 = sTree.z[n2] 
+            zn2 = sTree.z[n2]
+            RPCx1 = sTree.RPCx[n1]
+            RPCx2 = sTree.RPCx[n2]
+            RPCy1 = sTree.RPCy[n1]
+            RPCy2 = sTree.RPCy[n2]
+            Delx1 = sTree.Delx[n1]
+            Delx2 = sTree.Delx[n2]
+            Dely1 = sTree.Dely[n1]
+            Dely2 = sTree.Dely[n2]
           nrOfComb = float(len(nComb))
           if nComb[j][0]<0 : nrOfComb-=1
           if nrOfComb==0: continue
@@ -1993,7 +2002,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
                      P[n1].P(),P[n1].Pt(),Pcor[n1].P(),Pcor[n1].Pt(),muID[n2],P[n2].P(),P[n2].Pt(),Pcor[n2].P(),Pcor[n2].Pt(),\
                      IP[n1],IP[n2],chi2[j][0],chi2[j][1],costheta[j],cosCSraw,cosCScor,\
                      P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),\
-                     xn1,yn1,zn1,xn2,yn2,zn2]
+                     xn1,yn1,zn1,xn2,yn2,zn2,RPCx1,RPCy1,Delx1,Dely1,RPCx2,RPCy2,Delx2,Dely2]
           if MCdata:
              if n1<0: kTrueMu = -1
              else:    kTrueMu = sTreeMC.MCID[n1]
@@ -2364,23 +2373,41 @@ def detectorAcceptance(ptCut = 1.0, pmin = 20.,pmax  = 300.,BDTCut=None,muID=0):
    ut.bookHist(hData,'XY','first measured point',100,-30.,30.,100,-30.,30.)
    ut.bookHist(hMC,'mc-Z','first measured point',100,0.,50.)
    ut.bookHist(hData,'Z','first measured point',100,0.,50.)
+   ut.bookHist(hMC,'mc-LXY','last state',100,-100.,100.,100,-100.,100.)
+   ut.bookHist(hData,'LXY','last state', 100,-100.,100.,100,-100.,100.)
+   ut.bookHist(hMC,'mc-DXY','dist to muon track',100,-50.,50.,100,-50.,50.)
+   ut.bookHist(hData,'DXY','dist to muon track',100,-50.,50.,100,-50.,50.)
    ROOT.gROOT.cd()
    theCut = theJpsiCut('mcor','True',ptCut,pmin,pmax,muID,False) + "&&2.5<mcor&&3.5>mcor"
-   hMC['JpsiP8'].Draw('rec1y:rec1x>>mc-XY',theCut)
-   hMC['JpsiP8'].Draw('rec2y:rec2x>>+mc-XY',theCut)
-   hMC['JpsiP8'].Draw('rec1z>>mc-Z',theCut)
-   hMC['JpsiP8'].Draw('rec2z>>+mc-Z',theCut)
+   hMC['Jpsi'].Draw('rec1y:rec1x>>mc-XY',theCut)
+   hMC['Jpsi'].Draw('rec2y:rec2x>>+mc-XY',theCut)
+   hMC['Jpsi'].Draw('rec1z>>mc-Z',theCut)
+   hMC['Jpsi'].Draw('rec2z>>+mc-Z',theCut)
+   hMC['Jpsi'].Draw('RPCy1:RPCx1>>mc-LXY',theCut)
+   hMC['Jpsi'].Draw('RPCy2:RPCx2>>+mc-LXY',theCut)
+   hMC['Jpsi'].Draw('Dely1:Delx1>>mc-DXY',theCut)
+   hMC['Jpsi'].Draw('Dely2:Delx2>>+mc-DXY',theCut)
+#
    hData['f'].nt.Draw('rec1y:rec1x>>XY',theCut)
    hData['f'].nt.Draw('rec2y:rec2x>>+XY',theCut)
    hData['f'].nt.Draw('rec1z>>Z',theCut)
    hData['f'].nt.Draw('rec2z>>+Z',theCut)
-   hMC['mc-X'] = hMC['mc-XY'].ProjectionX('mc-X')
-   hMC['mc-Y'] = hMC['mc-XY'].ProjectionY('mc-Y')
-   hMC['mc-X'].SetLineColor(ROOT.kMagenta)
-   hMC['mc-Y'].SetLineColor(ROOT.kMagenta)
+   hData['f'].nt.Draw('RPCy1:RPCx1>>LXY',theCut)
+   hData['f'].nt.Draw('RPCy2:RPCx2>>+LXY',theCut)
+   hData['f'].nt.Draw('Dely1:Delx1>>DXY',theCut)
+   hData['f'].nt.Draw('Dely2:Delx2>>+DXY',theCut)
+#
+   for X in ['mc-','mc-L','mc-D']:
+     for p in ['X','Y']:
+      hn = X+p
+      hMC[hn] = hMC[X+'XY'].ProjectionX(hn)
+      hMC[hn].SetLineColor(ROOT.kMagenta)
+      hMC[hn].Scale(1./hMC[hn].GetEntries())
+      hn = hn.replace('mc-','')
+      hData[hn] = hData[X.replace('mc-','')+'XY'].ProjectionX(hn)
+      hData[hn].Scale(1./hData[hn].GetEntries())
+
    hMC['mc-Z'].SetLineColor(ROOT.kMagenta)
-   hMC['mc-X'].Scale(1./hMC['mc-X'].GetEntries())
-   hMC['mc-Y'].Scale(1./hMC['mc-X'].GetEntries())
    hMC['mc-Z'].Scale(1./hMC['mc-Z'].GetEntries())
    hData['X'] = hData['XY'].ProjectionX('X')
    hData['Y'] = hData['XY'].ProjectionY('Y')
