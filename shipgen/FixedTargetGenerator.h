@@ -48,8 +48,8 @@ class FixedTargetGenerator : public FairGenerator
   inline void SetDebug(Bool_t x){Debug=x;}
   inline void SetOpt4DP(TNtuple* t){withNtuple=kTRUE;  fNtuple = t ; }
   Double_t GetPotForCharm(){return nrpotspill/wspill;}
-  Pythia* GetPythia() {return fPythiaP;}
-  Pythia* GetPythiaN() {return fPythiaN;}
+  Pythia8::Pythia* GetPythia() {return fPythiaP;}
+  Pythia8::Pythia* GetPythiaN() {return fPythiaN;}
  private:
   
  Pythia8::RndmEngine* fRandomEngine;  //!
