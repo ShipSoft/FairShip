@@ -347,7 +347,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
             for y in temp2.split('\n'):
                 f = os.environ['EOSSHIP'] + y[y.find('/eos'):]
                 if not f[f.rfind('/')+1:].find('ship')==0: continue
-                if  f.find('RT')<0: continue
+                if  f.find('RT_mu')<0: continue
                 histFile = commandToHist[command]+y[y.rfind('/')+1:]
                 if histFile in os.listdir('.') : continue
                 if interactive:
@@ -645,7 +645,7 @@ def mergeHistos10(case='residuals'):
     for n in range(1,N+1):
         cmd += histname.replace('.','-'+str(N)+'.')
     os.system(cmd)
-def redoMuonTracks(D='.'):
+def redoMuonTracks(D='.',copyToEos=False):
   if D=='.':
     fileList,x,y = checkFilesWithTracks(D='.')
     for df in fileList:
@@ -676,14 +676,40 @@ def redoMuonTracks(D='.'):
                 curFile = tmp[len(tmp)-1]
                 if not curFile.find('ship.conical.MuonBack-TGeant4_dig_RT')==0: continue
                 newFile = curFile.replace("dig_RT","dig_RT_mu")
-                os.system('xrdcp '+f+' '+newFile)
-                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -f "+newFile+' &'
-                print 'execute:', cmd
-                os.system(cmd)
-                while 1>0:
+                if not copyToEos:
+                  os.system('xrdcp '+f+' '+newFile)
+                  cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
+                  print 'execute:', cmd
+                  os.system(cmd)
+                  while 1>0:
+                    if count_python_processes('drifttubeMonitoring')<ncpus: break 
+                    time.sleep(100)
+                else:
+                  os.system('xrdcp '+newFile+' $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/'+D+'/'+d+'/'+newFile)
+            os.chdir('../')
+  elif D.find('JpsiProduction')==0:
+        eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
+        if not D in os.listdir('.'): os.system('mkdir '+D)
+        os.chdir(D)
+        for y in temp.split('\n'):
+            f = os.environ['EOSSHIP'] + y[y.find('/eos'):]
+            if f.find(D+'/pythia8_Geant4')<0: continue
+            if f.find('dig_RT')<0: continue
+            tmp = f.split('/')
+            curFile = tmp[len(tmp)-1]
+            newFile = curFile.replace("dig_RT","dig_RT_mu")
+            if not copyToEos:
+               os.system('xrdcp '+f+' '+newFile)
+               cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
+               print 'execute:', cmd
+               os.system(cmd)
+               while 1>0:
                    if count_python_processes('drifttubeMonitoring')<ncpus: break 
                    time.sleep(100)
-            os.chdir('../')
+            else:
+                  os.system('xrdcp '+newFile+' $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/'+D+'/'+newFile)
+        os.chdir('../')
   print "finished all the tasks."
 
 def splitOffBoostedEvents(splitFactor=5,check=False):
