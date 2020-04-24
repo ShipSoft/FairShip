@@ -67,14 +67,15 @@ parser = ArgumentParser()
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", required=True)
 parser.add_argument("-l", "--fileCatalog", dest="catalog", help="list of files in file", default=False)
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
-parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display", default=True)
+parser.add_argument("-d", "--Display", dest="withDisplay", help="detector display",type=eval,default=True,choices=[True, False])
 parser.add_argument("-e", "--eos", dest="onEOS", help="files on EOS", default=False)
 parser.add_argument("-u", "--update", dest="updateFile", help="update file", default=False)
 parser.add_argument("-i", "--input", dest="inputFile", help="input histo file", default='residuals.root')
 parser.add_argument("-g", "--geofile", dest="geoFile", help="input geofile", default='')
 parser.add_argument("-s", "--smearing", dest="MCsmearing", help="additional MC smearing", default=MCsmearing)
-
 options = parser.parse_args()
+if not options.withDisplay: ROOT.gROOT.SetBatch(True)
+
 MCsmearing = options.MCsmearing
 fnames = []
 if options.catalog:
@@ -1116,7 +1117,19 @@ noisyChannels=[] # [30112016, 40012005, 40012007, 40012008, 40112031, 40112032] 
 deadChannels4MC = ROOT.std.vector('int')()
 for c in [10112001,11112012,20112003,30002042,30012026,30102021,30102025,30112013,30112018,40012014]: deadChannels4MC.push_back(c)
 deadChannelsRPC4MC = ROOT.std.vector('int')()
-for c in [31093,31094,31095,31096,11029,11030,51141,51142,10057,10058]: deadChannelsRPC4MC.push_back(c)
+# inactive channels are not properly simulated, need to fix before reconstruction starts. TR, 24/04/2020
+for s in range(1,6):
+   for y in range(107,117):
+     c = s*10000+y
+     deadChannelsRPC4MC.push_back(c)
+   c = s*10000+1
+   deadChannelsRPC4MC.push_back(c)
+   for x in range(1,12):
+     c = s*11000+x
+     deadChannelsRPC4MC.push_back(c)
+c = 1*11000+184
+deadChannelsRPC4MC.push_back(c)
+for c in [31093,31094,31095,31096,11029,11030,51141,51142,20057,20058]: deadChannelsRPC4MC.push_back(c)
 
 gol =  sGeo.GetTopVolume().GetNode("volGoliath_1")
 zgoliath = gol.GetMatrix().GetTranslation()[2]
@@ -7860,7 +7873,6 @@ elif options.command == "recoStep2":
     importAlignmentConstants()
     recoStep2()
 elif options.command == "anaResiduals":
-    ROOT.gROOT.SetBatch(True)
     if sTree.GetEntries()>0:
         if sTree.GetBranch('MCTrack'):
             MCdata = True
@@ -7872,7 +7884,6 @@ elif options.command == "anaResiduals":
         print "finished with analysis step",options.listOfFiles
     else: print "no events, exit ",sTree.GetCurrentFile()
 elif options.command == "alignment":
-    ROOT.gROOT.SetBatch(True)
     if sTree.GetBranch('MCTrack'):
         MCdata = True
         withDefaultAlignment = True

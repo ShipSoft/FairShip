@@ -645,7 +645,8 @@ def mergeHistos10(case='residuals'):
     for n in range(1,N+1):
         cmd += histname.replace('.','-'+str(N)+'.')
     os.system(cmd)
-def redoMuonTracks():
+def redoMuonTracks(D='.'):
+  if D=='.':
     fileList,x,y = checkFilesWithTracks(D='.')
     for df in fileList:
         tmp = df.split('/')
@@ -659,6 +660,31 @@ def redoMuonTracks():
             if count_python_processes('drifttubeMonitoring')<ncpus: break 
             time.sleep(100)
     print "finished all the tasks."
+  elif D.find('1GeV-repro')==0 or D.find('10GeV-repro')==0:
+        eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim,shell=True)
+        for x in temp.split('\n'):
+            if x.find('pythia8_Geant4')<0: continue
+            d = x[x.rfind('/')+1:]
+            if not d in os.listdir('.'): os.system('mkdir '+d)
+            os.chdir(d)
+            temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim+'/'+d,shell=True)
+            fileList = []
+            for y in temp2.split('\n'):
+                f = os.environ['EOSSHIP'] + y[y.find('/eos'):]
+                tmp = f.split('/')
+                curFile = tmp[len(tmp)-1]
+                if not curFile.find('ship.conical.MuonBack-TGeant4_dig_RT')==0: continue
+                newFile = curFile.replace("dig_RT","dig_RT_mu")
+                os.system('xrdcp '+f+' '+newFile)
+                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -f "+newFile+' &'
+                print 'execute:', cmd
+                os.system(cmd)
+                while 1>0:
+                   if count_python_processes('drifttubeMonitoring')<ncpus: break 
+                   time.sleep(100)
+            os.chdir('../')
+  print "finished all the tasks."
 
 def splitOffBoostedEvents(splitFactor=5,check=False):
     remote = "/home/truf/ship-ubuntu-1710-32/muflux/simulation/"
