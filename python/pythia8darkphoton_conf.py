@@ -41,33 +41,36 @@ def readFromAscii():
     return h
 
 def manipulatePhysics(motherMode, mass, P8gen):
-    Epsilon=0.00001
-    if motherMode=='pi0' and pi0mass>=Epsilon+mass:
-        # use pi0 -> gamma A'
+    if motherMode=='pi0':
         Epsilon=0.0000001
-        selectedMum = 111
-        P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
-    elif motherMode == 'eta' and etamass>=Epsilon+mass:
-        # use eta -> gamma A'
+        if pi0mass>=Epsilon+mass:
+            # use pi0 -> gamma A'
+            selectedMum = 111
+            P8gen.SetParameters("111:oneChannel = 1 1 0 22 9900015")
+    elif motherMode == 'eta':
         Epsilon=0.000001
-        selectedMum = 221
-        P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")
-    elif motherMode=="omega" and omegamass>=Epsilon+pi0mass+mass:
-        # use omega -> pi0 A'
-        #print "omega"
-        selectedMum = 223
-        P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")
-        
-    elif motherMode=='eta1' and eta1mass>=Epsilon+mass:
-        # use eta' -> gamma A'
-        selectedMum = 331
-        P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")
-       
-    elif motherMode=='eta11' and eta1mass>=Epsilon+rhomass+mass:
-        # use eta' -> rho A'
-        selectedMum = 331
-        P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")
-       
+        if etamass>=Epsilon+mass:
+            # use eta -> gamma A'
+            selectedMum = 221
+            P8gen.SetParameters("221:oneChannel = 1 1 0 22 9900015")
+    elif motherMode=="omega":
+        Epsilon=0.00001
+        if omegamass>=Epsilon+pi0mass+mass:
+            # use omega -> pi0 A'
+            selectedMum = 223
+            P8gen.SetParameters("223:oneChannel = 1 1 0 111 9900015")
+    elif motherMode=='eta1':
+        Epsilon=0.00001
+        if eta1mass>=Epsilon+mass:
+            # use eta' -> gamma A'
+            selectedMum = 331
+            P8gen.SetParameters("331:oneChannel = 1 1 0 22 9900015")
+    elif motherMode=='eta11':
+        Epsilon=0.00001
+        if eta1mass>=Epsilon+rhomass+mass:
+            # use eta' -> rho A'
+            selectedMum = 331
+            P8gen.SetParameters("331:oneChannel = 1 1 0 113 9900015")
     else:
         #print "ERROR: please enter a nicer mass, for meson production it needs to be between %3.3f and %3.3f."%(pi0Start,eta1Stop)
         return -1
@@ -96,6 +99,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
     
         # Configuring production
         P8gen.SetParameters("SoftQCD:nonDiffractive = on")
+        #P8gen.SetParameters("SoftQCD:all = on")
 
     elif inclusive=="qcd":
         P8gen.SetDY()

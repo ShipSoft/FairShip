@@ -133,10 +133,11 @@ Bool_t FixedTargetGenerator::Init()
      fPythia->readString("553:new  Upsilon  Upsilon  3   0   0    9.46030    0.00005    9.45980    9.46080  0.00000e+00   0   1   0   1   0");
      fPythia->readString("553:addChannel = 1   1.    0      -13       13");
     }else{
-     fPythia->readString("SoftQCD:inelastic = on");
-     fPythia->readString("PhotonCollision:gmgm2mumu = on");
-     fPythia->readString("PromptPhoton:all = on");
-     fPythia->readString("WeakBosonExchange:all = on");
+     fPythia->readString("SoftQCD:nonDiffractive = on");
+     //fPythia->readString("SoftQCD:inelastic = on");
+     //fPythia->readString("PhotonCollision:gmgm2mumu = on");
+     //fPythia->readString("PromptPhoton:all = on");
+     //fPythia->readString("WeakBosonExchange:all = on");
     }
    }
    if (tauOnly){
