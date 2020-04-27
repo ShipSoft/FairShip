@@ -1125,9 +1125,9 @@ for s in range(1,6):
    c = s*10000+1
    deadChannelsRPC4MC.push_back(c)
    for x in range(1,12):
-     c = s*11000+x
+     c = s*10000+1000+x
      deadChannelsRPC4MC.push_back(c)
-c = 1*11000+184
+c = 1*10000+1000+184
 deadChannelsRPC4MC.push_back(c)
 for c in [31093,31094,31095,31096,11029,11030,51141,51142,20057,20058]: deadChannelsRPC4MC.push_back(c)
 
@@ -1421,7 +1421,7 @@ def plotRPCHitmap():
             else: 
               h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(n)+'X readout; channel number N')
             h['rpcHitmap'+str(n)+str(l)].Draw()
-    rc = h['rpcPlot'].cd(j)
+    rc = h['rpcPlot'].cd(j+1)
     h['rpcHitmap'].SetTitle('Number of hits per station ; station number ')
     h['rpcHitmap'].Draw()
     myPrint(h['rpcPlot'],'RPCHitMap')
