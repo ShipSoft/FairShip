@@ -113,7 +113,7 @@ if not options.listOfFiles:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/1GeV-"+MCType+"/pythia8_Geant4_1.0_cXXXX_mu/"
         for k in range(0,20000,1000):
             for m in range(5):
-                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+"_mu.root"
+                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT_mu-"+str(m)+".root"
                 try:
                     test = ROOT.TFile.Open(fname)
                     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
@@ -124,7 +124,7 @@ if not options.listOfFiles:
         fdir = fdir+'-charm'
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
         for m in range(5):
-            fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+"_mu.root"
+            fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT_mu-"+str(m)+".root"
             try:
                 test = ROOT.TFile.Open(fname)
                 if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
@@ -136,7 +136,7 @@ if not options.listOfFiles:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/10GeV-"+MCType+"/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
         for k in range(0,67000,1000):
             for m in range(10):
-                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+"_mu.root"
+                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT_mu-"+str(m)+".root"
                 try:
                     test = ROOT.TFile.Open(fname)
                     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
