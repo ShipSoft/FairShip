@@ -351,7 +351,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
                 histFile = commandToHist[command]+y[y.rfind('/')+1:]
                 if histFile in os.listdir('.') : continue
                 if interactive:
-                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' &'
+                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py --d False c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' &'
                     print 'execute:', cmd
                     os.system(cmd)
                     while 1>0:
@@ -368,7 +368,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
             fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
         for fname in fileList:
             if os.path.isfile(commandToHist[command]+fname[fname.rfind('/')+1:]): continue
-            cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+fname+' &'
+            cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+fname+' &'
             print 'command:', cmd
             os.system(cmd)
             while 1>0:
@@ -667,6 +667,11 @@ def redoMuonTracks(D='.',copyToEos=False):
             if x.find('pythia8_Geant4')<0: continue
             d = x[x.rfind('/')+1:]
             if not d in os.listdir('.'): os.system('mkdir '+d)
+            if not d in ['pythia8_Geant4_10.0_withCharmandBeauty56000_mu','pythia8_Geant4_10.0_withCharmandBeauty57000_mu','pythia8_Geant4_10.0_withCharmandBeauty58000_mu',
+            'pythia8_Geant4_10.0_withCharmandBeauty59000_mu','pythia8_Geant4_10.0_withCharmandBeauty60000_mu','pythia8_Geant4_10.0_withCharmandBeauty61000_mu',
+            'pythia8_Geant4_10.0_withCharmandBeauty62000_mu','pythia8_Geant4_10.0_withCharmandBeauty63000_mu','pythia8_Geant4_10.0_withCharmandBeauty64000_mu',
+            'pythia8_Geant4_10.0_withCharmandBeauty65000_mu','pythia8_Geant4_10.0_withCharmandBeauty66000_mu','pythia8_Geant4_10.0_withCharmandBeauty7000_mu',
+            'pythia8_Geant4_10.0_withCharmandBeauty6000_mu','pythia8_Geant4_10.0_withCharmandBeauty8000_mu','pythia8_Geant4_10.0_withCharmandBeauty9000_mu']: continue
             os.chdir(d)
             temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim+'/'+d,shell=True)
             fileList = []
@@ -675,6 +680,7 @@ def redoMuonTracks(D='.',copyToEos=False):
                 tmp = f.split('/')
                 curFile = tmp[len(tmp)-1]
                 if not curFile.find('ship.conical.MuonBack-TGeant4_dig_RT')==0: continue
+                if curFile.find('ship.conical.MuonBack-TGeant4_dig_RT_mu')==0: continue
                 newFile = curFile.replace("dig_RT","dig_RT_mu")
                 if not copyToEos:
                   os.system('xrdcp '+f+' '+newFile)
@@ -685,7 +691,15 @@ def redoMuonTracks(D='.',copyToEos=False):
                     if count_python_processes('drifttubeMonitoring')<ncpus: break 
                     time.sleep(100)
                 else:
-                  os.system('xrdcp '+newFile+' $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/'+D+'/'+d+'/'+newFile)
+                  if not os.path.isfile(newFile):
+                     print "file missing ",os.path.abspath('.'),newFile
+                  else:
+                   f = ROOT.TFile(newFile)
+                   if not f:
+                     print "f corrupted ",os.path.abspath('.'),newFile
+                   elif not f.Get('cbmsim'): print "f corrupted 2",os.path.abspath('.'),newFile
+                   else:
+                     os.system('xrdcp '+newFile+' $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/'+D+'/'+d+'/'+newFile)
             os.chdir('../')
   elif D.find('JpsiProduction')==0:
         eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'+D
@@ -700,6 +714,11 @@ def redoMuonTracks(D='.',copyToEos=False):
             curFile = tmp[len(tmp)-1]
             newFile = curFile.replace("dig_RT","dig_RT_mu")
             if not copyToEos:
+               if not newFile in ['pythia8_Geant4_2_10.0_dig_RT_mu.root','pythia8_Geant4_3_10.0_dig_RT_mu.root',
+                                  'pythia8_Geant4_3_10.0_dig_RT_mu.root','pythia8_Geant4_4_10.0_dig_RT_mu.root',
+                                  'pythia8_Geant4_5_10.0_dig_RT_mu.root','pythia8_Geant4_6_10.0_dig_RT_mu.root',
+                                  'pythia8_Geant4_7_10.0_dig_RT_mu.root','pythia8_Geant4_8_10.0_dig_RT_mu.root',
+                                  'pythia8_Geant4_9_10.0_dig_RT_mu.root']: continue
                os.system('xrdcp '+f+' '+newFile)
                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
                print 'execute:', cmd
@@ -967,25 +986,24 @@ def JpsiCopyToEOS(RT=False,prod='P8'):
 
 def JpsiHistos(command = "anaResiduals",prod = 'P8',merge=False):
   # MCJpsiProd
-  if prod == 'Cascade': D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
-  elif prod == 'P8':    D = "$EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/"
-  else: 
-    print prod," not supported"
-    exit()
+  dirName={}
+  dirName['P8']     ="JpsiProduction_P8/"
+  dirName['Cascade']="JpsiProduction/"
+  eosPath = {}
+  eosPath['P8']          =" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/"
+  eosPath['Cascade']     =" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
   cmd = 'hadd -f '+commandToSum[command]+'.root '
-  for n in [1]:
-#  for n in range(16):
-    if prod == 'Cascade': dirName  = "ship-ubuntu-1710-48_run_MufluxfixedTarget_"+str(n)
-    if prod == 'P8':      dirName  = "ship-ubuntu-1710-16_run_MufluxfixedTarget_"+str(n)
-    fileName = "pythia8_Geant4_"+str(n)+"_10.0_dig_RT.root"
+  D=''
+  for n in range(16):
+    fileName = "pythia8_Geant4_"+str(n)+"_10.0_dig_RT_mu.root"
     if not merge:
-       cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+D+fileName+' &'
-       os.chdir(dirName)
+       cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+D+fileName+' &'
+       os.chdir(dirName[prod])
        print 'execute:', cmd
        os.system(cmd)
        os.chdir('../')
     else:
-       cmd += dirName+'/'+commandToHist[command]+fileName+' '
+       cmd +=dirName[prod]+'/'+commandToHist[command]+fileName+' '
   if merge: os.system(cmd)
 from array import array
 def extractJpsi(prod = '10GeV'):
