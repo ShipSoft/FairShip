@@ -351,7 +351,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
                 histFile = commandToHist[command]+y[y.rfind('/')+1:]
                 if histFile in os.listdir('.') : continue
                 if interactive:
-                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py --d False c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' &'
+                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' &'
                     print 'execute:', cmd
                     os.system(cmd)
                     while 1>0:
@@ -667,11 +667,6 @@ def redoMuonTracks(D='.',copyToEos=False):
             if x.find('pythia8_Geant4')<0: continue
             d = x[x.rfind('/')+1:]
             if not d in os.listdir('.'): os.system('mkdir '+d)
-            if not d in ['pythia8_Geant4_10.0_withCharmandBeauty56000_mu','pythia8_Geant4_10.0_withCharmandBeauty57000_mu','pythia8_Geant4_10.0_withCharmandBeauty58000_mu',
-            'pythia8_Geant4_10.0_withCharmandBeauty59000_mu','pythia8_Geant4_10.0_withCharmandBeauty60000_mu','pythia8_Geant4_10.0_withCharmandBeauty61000_mu',
-            'pythia8_Geant4_10.0_withCharmandBeauty62000_mu','pythia8_Geant4_10.0_withCharmandBeauty63000_mu','pythia8_Geant4_10.0_withCharmandBeauty64000_mu',
-            'pythia8_Geant4_10.0_withCharmandBeauty65000_mu','pythia8_Geant4_10.0_withCharmandBeauty66000_mu','pythia8_Geant4_10.0_withCharmandBeauty7000_mu',
-            'pythia8_Geant4_10.0_withCharmandBeauty6000_mu','pythia8_Geant4_10.0_withCharmandBeauty8000_mu','pythia8_Geant4_10.0_withCharmandBeauty9000_mu']: continue
             os.chdir(d)
             temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim+'/'+d,shell=True)
             fileList = []
@@ -970,15 +965,15 @@ def JpsiProduction(step='simulation',prod='P8'):
 def JpsiCopyToEOS(RT=False,prod='P8'):
  ncpus = range(16)
  dirName={}
- dirName['P8']     ="ship-ubuntu-1710-16_run_MufluxfixedTarget_XX/"
- dirName['Cascade']="ship-ubuntu-1710-48_run_MufluxfixedTarget_XX/"
+ dirName['P8']     ="JpsiProduction_P8/"
+ dirName['Cascade']="JpsiProduction/"
  eosPath = {}
  eosPath['P8']          =" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/"
  eosPath['Cascade']     =" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
  for n in ncpus:
     fileName = "pythia8_Geant4_"+str(n)+"_10.0.root"
-    if RT=='RT': fileName = fileName.replace('.root','_dig_RT.root')
-    if RT=='ntuple': fileName = 'ntuple-'+fileName.replace('.root','_dig_RT.root')
+    if RT=='RT': fileName = fileName.replace('.root','_dig_RT_mu.root')
+    if RT=='ntuple': fileName = 'ntuple-'+fileName.replace('.root','_dig_RT_mu.root')
     cmd = "xrdcp  "+dirName[prod].replace('XX',str(n))+fileName+eosPath[prod]+fileName
     print cmd
     rc = os.system(cmd)

@@ -113,7 +113,7 @@ if not options.listOfFiles:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/1GeV-"+MCType+"/pythia8_Geant4_1.0_cXXXX_mu/"
         for k in range(0,20000,1000):
             for m in range(5):
-                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+"_mu.root"
                 try:
                     test = ROOT.TFile.Open(fname)
                     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
@@ -124,7 +124,7 @@ if not options.listOfFiles:
         fdir = fdir+'-charm'
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/1GeV-"+MCType+"/pythia8_Geant4_charm_0-19_1.0_mu/"
         for m in range(5):
-            fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+            fname = path+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+"_mu.root"
             try:
                 test = ROOT.TFile.Open(fname)
                 if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
@@ -136,7 +136,7 @@ if not options.listOfFiles:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/10GeV-"+MCType+"/pythia8_Geant4_10.0_withCharmandBeautyXXXX_mu/"
         for k in range(0,67000,1000):
             for m in range(10):
-                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+".root"
+                fname = path.replace('XXXX',str(k))+"ntuple-ship.conical.MuonBack-TGeant4_dig_RT-"+str(m)+"_mu.root"
                 try:
                     test = ROOT.TFile.Open(fname)
                     if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
@@ -147,12 +147,12 @@ if not options.listOfFiles:
     if withJpsi:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
         for k in range(16):
-            fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
+            fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
             sTreeMC.Add(path+fname)
     if withJpsiP8:
         path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction_P8/"
         for k in range(16):
-            fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
+            fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
             sTreeMC.Add(path+fname)
 # small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 
@@ -765,7 +765,6 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          h  = case[c]['store']
          fk = case[c]['fun']+str(k)
          Jpsi = case[c]['Jpsi']
-         h[fk] = ROOT.TF1(fk,funTemplate['F'],0,10,funTemplate['N'])
          if fitMethod=='G': h[fk] =funTemplate['F'].Clone(fk)
          else: h[fk] = ROOT.TF1(fk,funTemplate['F'],0,10,funTemplate['N'])
          CB = h[fk]
@@ -2369,60 +2368,83 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
    ut.writeHists(hMC,'MC-histos.root')
 #
 def detectorAcceptance(ptCut = 1.0, pmin = 20.,pmax  = 300.,BDTCut=None,muID=0):
-   ut.bookHist(hMC,'mc-XY','first measured point',100,-30.,30.,100,-30.,30.)
-   ut.bookHist(hData,'XY','first measured point',100,-30.,30.,100,-30.,30.)
-   ut.bookHist(hMC,'mc-Z','first measured point',100,0.,50.)
-   ut.bookHist(hData,'Z','first measured point',100,0.,50.)
-   ut.bookHist(hMC,'mc-LXY','last state',100,-100.,100.,100,-100.,100.)
-   ut.bookHist(hData,'LXY','last state', 100,-100.,100.,100,-100.,100.)
-   ut.bookHist(hMC,'mc-DXY','dist to muon track',100,-50.,50.,100,-50.,50.)
-   ut.bookHist(hData,'DXY','dist to muon track',100,-50.,50.,100,-50.,50.)
+   tag = '_mID'+str(muID)
+   print "tag = '"+tag+"'"
+   ut.bookHist(hMC,'mc-XY'+tag,'first measured point',100,-30.,30.,100,-30.,30.)
+   ut.bookHist(hData,'XY'+tag,'first measured point',100,-30.,30.,100,-30.,30.)
+   ut.bookHist(hMC,'mc-Z'+tag,'first measured point',100,0.,50.)
+   ut.bookHist(hData,'Z'+tag,'first measured point',100,0.,50.)
+   ut.bookHist(hMC,'mc-LXY'+tag,'last state',100,-100.,100.,100,-100.,100.)
+   ut.bookHist(hData,'LXY'+tag,'last state', 100,-100.,100.,100,-100.,100.)
+   ut.bookHist(hMC,'mc-DXY'+tag,'dist to muon track',100,0.,20.,100,0.,20.)
+   ut.bookHist(hData,'DXY'+tag,'dist to muon track',100,0.,20.,100,0.,20.)
    ROOT.gROOT.cd()
    theCut = theJpsiCut('mcor','True',ptCut,pmin,pmax,muID,False) + "&&2.5<mcor&&3.5>mcor"
-   hMC['Jpsi'].Draw('rec1y:rec1x>>mc-XY',theCut)
-   hMC['Jpsi'].Draw('rec2y:rec2x>>+mc-XY',theCut)
-   hMC['Jpsi'].Draw('rec1z>>mc-Z',theCut)
-   hMC['Jpsi'].Draw('rec2z>>+mc-Z',theCut)
-   hMC['Jpsi'].Draw('RPCy1:RPCx1>>mc-LXY',theCut)
-   hMC['Jpsi'].Draw('RPCy2:RPCx2>>+mc-LXY',theCut)
-   hMC['Jpsi'].Draw('Dely1:Delx1>>mc-DXY',theCut)
-   hMC['Jpsi'].Draw('Dely2:Delx2>>+mc-DXY',theCut)
+   hMC['Jpsi'].Draw('rec1y:rec1x>>mc-XY'+tag,theCut)
+   hMC['Jpsi'].Draw('rec2y:rec2x>>+mc-XY'+tag,theCut)
+   hMC['Jpsi'].Draw('rec1z>>mc-Z'+tag,theCut)
+   hMC['Jpsi'].Draw('rec2z>>+mc-Z'+tag,theCut)
+   hMC['Jpsi'].Draw('RPCy1:RPCx1>>mc-LXY'+tag,theCut)
+   hMC['Jpsi'].Draw('RPCy2:RPCx2>>+mc-LXY'+tag,theCut)
+   hMC['Jpsi'].Draw('Dely1:Delx1>>mc-DXY'+tag,theCut)
+   hMC['Jpsi'].Draw('Dely2:Delx2>>+mc-DXY'+tag,theCut)
 #
-   hData['f'].nt.Draw('rec1y:rec1x>>XY',theCut)
-   hData['f'].nt.Draw('rec2y:rec2x>>+XY',theCut)
-   hData['f'].nt.Draw('rec1z>>Z',theCut)
-   hData['f'].nt.Draw('rec2z>>+Z',theCut)
-   hData['f'].nt.Draw('RPCy1:RPCx1>>LXY',theCut)
-   hData['f'].nt.Draw('RPCy2:RPCx2>>+LXY',theCut)
-   hData['f'].nt.Draw('Dely1:Delx1>>DXY',theCut)
-   hData['f'].nt.Draw('Dely2:Delx2>>+DXY',theCut)
+   hData['f'].nt.Draw('rec1y:rec1x>>XY'+tag,theCut)
+   hData['f'].nt.Draw('rec2y:rec2x>>+XY'+tag,theCut)
+   hData['f'].nt.Draw('rec1z>>Z'+tag,theCut)
+   hData['f'].nt.Draw('rec2z>>+Z'+tag,theCut)
+   hData['f'].nt.Draw('RPCy1:RPCx1>>LXY'+tag,theCut)
+   hData['f'].nt.Draw('RPCy2:RPCx2>>+LXY'+tag,theCut)
+   hData['f'].nt.Draw('Dely1:Delx1>>DXY'+tag,theCut)
+   hData['f'].nt.Draw('Dely2:Delx2>>+DXY'+tag,theCut)
 #
    for X in ['mc-','mc-L','mc-D']:
      for p in ['X','Y']:
-      hn = X+p
-      hMC[hn] = hMC[X+'XY'].ProjectionX(hn)
+      hn = X+p+tag
+      hMC[hn] = eval('hMC["'+X+'XY'+tag+'"].Projection'+p+'(hn)')
       hMC[hn].SetLineColor(ROOT.kMagenta)
       hMC[hn].Scale(1./hMC[hn].GetEntries())
+      mcmax = hMC[hn].GetMaximum()
       hn = hn.replace('mc-','')
-      hData[hn] = hData[X.replace('mc-','')+'XY'].ProjectionX(hn)
+      hData[hn] = eval('hData["'+X.replace('mc-','')+'XY'+tag+'"].Projection'+p+'(hn)')
       hData[hn].Scale(1./hData[hn].GetEntries())
-
-   hMC['mc-Z'].SetLineColor(ROOT.kMagenta)
-   hMC['mc-Z'].Scale(1./hMC['mc-Z'].GetEntries())
-   hData['X'] = hData['XY'].ProjectionX('X')
-   hData['Y'] = hData['XY'].ProjectionY('Y')
-   hData['X'].Scale(1./hData['X'].GetEntries())
-   hData['Y'].Scale(1./hData['Y'].GetEntries())
-   hData['Z'].Scale(1./hData['Z'].GetEntries())
-   hMC['mc-Y'].Draw()
-   hData['Y'].Draw('same')
-   eosPrint(hMC['dummy'],'Y-1point')
-   hMC['mc-X'].Draw()
-   hData['X'].Draw('same')
-   eosPrint(hMC['dummy'],'X-1point')
-   hMC['mc-Z'].Draw()
-   hData['Z'].Draw('same')
-   eosPrint(hMC['dummy'],'Z-1point')
+      if mcmax > hData[hn].GetMaximum(): hData[hn].SetMaximum(1.1*mcmax)
+   hMC['mc-Z'+tag].SetLineColor(ROOT.kMagenta)
+   hMC['mc-Z'+tag].Scale(1./hMC['mc-Z'+tag].GetEntries())
+   hData['Z'+tag].Scale(1./hData['Z'+tag].GetEntries())
+   ut.bookCanvas(hMC,'detAcc','detector acceptance',1800,2400,2,5)
+   hMC['detAcc'].cd(1)
+   hData['X'+tag].Draw()
+   hMC['mc-X'+tag].Draw('same')
+   hMC['detAcc'].cd(2)
+   hData['Y'+tag].Draw()
+   hMC['mc-Y'+tag].Draw('same')
+   hMC['detAcc'].cd(3)
+   hData['LX'+tag].Draw( )
+   hMC['mc-LX'+tag].Draw('same')
+   hMC['detAcc'].cd(4)
+   hData['LY'+tag].Draw()
+   hMC['mc-LY'+tag].Draw('same')
+   tc = hMC['detAcc'].cd(5)
+   tc.SetLogy(1)
+   hData['DX'+tag].Draw()
+   hMC['mc-DX'+tag].Draw('same')
+   tc = hMC['detAcc'].cd(6)
+   tc.SetLogy(1)
+   hData['DY'+tag].Draw()
+   hMC['mc-DY'+tag].Draw('same')
+   tc = hMC['detAcc'].cd(7)
+   hMC['mc-XY'+tag].Draw('colz')
+   tc = hMC['detAcc'].cd(8)
+   hMC['mc-LXY'+tag].Draw('colz')
+   tc = hMC['detAcc'].cd(9)
+   hData['XY'+tag].Draw('colz')
+   tc = hMC['detAcc'].cd(10)
+   hData['LXY'+tag].Draw('colz')
+   hMC['dummy'].cd()
+   hData['Z'+tag].Draw()
+   hMC['mc-Z'+tag].Draw('same')
+   myPrint(hMC['detAcc'],'detAcc'+tag)
 
 
 def JpsiPolarization(ptCut = 1.0, pmin = 20., pmax = 300., BDTCut=None, muID=1, fitMethod='B'):
