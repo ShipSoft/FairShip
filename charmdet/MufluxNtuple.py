@@ -2051,10 +2051,10 @@ def loadNtuples(BDT='BDT-',eos=False):
     recopath = os.environ['EOSSHIP']+"/eos/experiment/ship/user/truf/muflux-reco/"
  if options.refit :
   hData['f']     = ROOT.TFile.Open(recopath+'ntuple-InvMass-refitted.root')       # changed 4.4.2020, before ntuple-InvMass-refitted_0.root ROOT.TFile('ntuple-InvMass-refitted_intermediateField.root')
-  hMC['f1']      = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-1GeV-repro.root')  # changed 7.4.2020, before ntuple-invMass-MC-1GeV-repro_0.root
-  hMC['f10']     = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-10GeV-repro.root') # changed 7.4.2020, before BDT+'ntuple-invMass-MC-10GeV-repro_0.root'
-  hMC['fJpsi']   = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-Jpsi.root')        # changed 6.4.2020, before  ntuple-invMass-MC-JpsiP8_0.root
-  hMC['fJpsiP8'] = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-JpsiP8.root')      # changed 6.4.2020, before  ntuple-invMass-MC-JpsiP8_0.root
+  hMC['f1']      = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-1GeV-repro_mu.root')  # changed 7.4.2020, before ntuple-invMass-MC-1GeV-repro_0.root
+  hMC['f10']     = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-10GeV-repro_mu.root') # changed 7.4.2020, before BDT+'ntuple-invMass-MC-10GeV-repro_0.root'
+  hMC['fJpsi']   = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-Jpsi_mu.root')        # changed 6.4.2020, before  ntuple-invMass-MC-JpsiP8_0.root
+  hMC['fJpsiP8'] = ROOT.TFile.Open(simpath+'ntuple-invMass-MC-JpsiP8_mu.root')      # changed 6.4.2020, before  ntuple-invMass-MC-JpsiP8_0.root
   hMC['fJpsiP8_Primary']   = ROOT.TFile.Open(simpath+'Jpsi-Pythia8_21788000000_0-3074.root')
   hMC['fJpsiP8_PrimaryMu'] = ROOT.TFile.Open(simpath+'Jpsi-Pythia8_385000000_10000-11000.root')
   hMC['fJpsiCascade']      = ROOT.TFile.Open(simpath+'cascade_MSEL61_20M.root')
