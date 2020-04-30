@@ -724,7 +724,7 @@ def redoMuonTracks(D='.',copyToEos=False):
             if not copyToEos:
                os.system('xrdcp '+f+' '+newFile)
                removeBranches(newFile)
-               cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
+               cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -u 1 -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
                print 'execute:', cmd
                os.system(cmd)
                while 1>0:
