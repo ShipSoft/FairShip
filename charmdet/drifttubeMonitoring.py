@@ -7735,6 +7735,8 @@ def recoMuonTaggerTracks():
     if sTree.GetBranch('MCTrack'): MCdata = True
     fname = sTree.GetCurrentFile().GetName()
     if sTree.GetBranch("RPCTrackX"):
+        sTree.GetCurrentFile().Close()
+        f = ROOT.TFile(fname,'update')
         print "remove RECO branch and rerun muonTagger reconstruction"
         os.system('cp '+fname+' '+fname.replace('.root','orig.root')) # make backup
         for br in ['RPCTrackX','RPCTrackY']:
@@ -7742,10 +7744,11 @@ def recoMuonTaggerTracks():
             sTree.GetListOfBranches().Remove(b)
             l = sTree.GetLeaf(br)
             sTree.GetListOfLeaves().Remove(l)
-            sTree.Write()
-        fn = sTree.GetCurrentFile().GetName()
-        f  = ROOT.TFile(fn,'update')
+        sTree.Write()
+        f.Close()
+        f = ROOT.TFile(fname,'update')
         sTree = f.cbmsim
+    if sTree.GetBranch(br): print "something wrong here, RPCTrack still present"
     fRPCTrackArray = {'X':ROOT.TClonesArray("RPCTrack"),'Y':ROOT.TClonesArray("RPCTrack")}
     RPCTrackbranch = {}
     for x in fRPCTrackArray: 

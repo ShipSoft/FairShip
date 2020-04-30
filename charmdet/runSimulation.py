@@ -341,6 +341,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
             if x.find('pythia8_Geant4')<0: continue
             d = x[x.rfind('/')+1:]
             if not d in os.listdir('.'): os.system('mkdir '+d)
+            if not d=="pythia8_Geant4_10.0_withCharmandBeauty6000_mu": continue
             os.chdir(d)
             temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim+'/'+d,shell=True)
             fileList = []
@@ -645,6 +646,16 @@ def mergeHistos10(case='residuals'):
     for n in range(1,N+1):
         cmd += histname.replace('.','-'+str(N)+'.')
     os.system(cmd)
+def removeBranches(fname,branches=['RPCTrackX','RPCTrackY']):
+ f=ROOT.TFile(fname,'update')
+ sTree=f.cbmsim
+ for br in branches:
+            b = sTree.GetBranch(br)
+            sTree.GetListOfBranches().Remove(b)
+            l = sTree.GetLeaf(br)
+            sTree.GetListOfLeaves().Remove(l)
+ sTree.Write()
+ f.Close()
 def redoMuonTracks(D='.',copyToEos=False):
   if D=='.':
     fileList,x,y = checkFilesWithTracks(D='.')
@@ -679,7 +690,8 @@ def redoMuonTracks(D='.',copyToEos=False):
                 newFile = curFile.replace("dig_RT","dig_RT_mu")
                 if not copyToEos:
                   os.system('xrdcp '+f+' '+newFile)
-                  cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
+                  removeBranches(newFile)
+                  cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -u 1 -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
                   print 'execute:', cmd
                   os.system(cmd)
                   while 1>0:
@@ -707,13 +719,9 @@ def redoMuonTracks(D='.',copyToEos=False):
             if f.find('dig_RT')<0: continue
             tmp = f.split('/')
             curFile = tmp[len(tmp)-1]
+            if curFile.find('mu')>0: continue
             newFile = curFile.replace("dig_RT","dig_RT_mu")
             if not copyToEos:
-               if not newFile in ['pythia8_Geant4_2_10.0_dig_RT_mu.root','pythia8_Geant4_3_10.0_dig_RT_mu.root',
-                                  'pythia8_Geant4_3_10.0_dig_RT_mu.root','pythia8_Geant4_4_10.0_dig_RT_mu.root',
-                                  'pythia8_Geant4_5_10.0_dig_RT_mu.root','pythia8_Geant4_6_10.0_dig_RT_mu.root',
-                                  'pythia8_Geant4_7_10.0_dig_RT_mu.root','pythia8_Geant4_8_10.0_dig_RT_mu.root',
-                                  'pythia8_Geant4_9_10.0_dig_RT_mu.root']: continue
                os.system('xrdcp '+f+' '+newFile)
                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
                print 'execute:', cmd
@@ -989,6 +997,7 @@ def JpsiHistos(command = "anaResiduals",prod = 'P8',merge=False):
   eosPath['Cascade']     =" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/JpsiProduction/"
   cmd = 'hadd -f '+commandToSum[command]+'.root '
   D=''
+  D = eosPath[prod]
   for n in range(16):
     fileName = "pythia8_Geant4_"+str(n)+"_10.0_dig_RT_mu.root"
     if not merge:
