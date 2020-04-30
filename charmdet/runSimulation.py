@@ -341,7 +341,6 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
             if x.find('pythia8_Geant4')<0: continue
             d = x[x.rfind('/')+1:]
             if not d in os.listdir('.'): os.system('mkdir '+d)
-            if not d=="pythia8_Geant4_10.0_withCharmandBeauty6000_mu": continue
             os.chdir(d)
             temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim+'/'+d,shell=True)
             fileList = []
