@@ -723,6 +723,7 @@ def redoMuonTracks(D='.',copyToEos=False):
             newFile = curFile.replace("dig_RT","dig_RT_mu")
             if not copyToEos:
                os.system('xrdcp '+f+' '+newFile)
+               removeBranches(newFile)
                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c  recoMuonTaggerTracks -d False -f "+newFile+' &'
                print 'execute:', cmd
                os.system(cmd)

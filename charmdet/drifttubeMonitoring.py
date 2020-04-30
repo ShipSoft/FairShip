@@ -7748,7 +7748,7 @@ def recoMuonTaggerTracks():
         f.Close()
         f = ROOT.TFile(fname,'update')
         sTree = f.cbmsim
-    if sTree.GetBranch(br): print "something wrong here, RPCTrack still present"
+    if sTree.GetBranch('RPCTrackX'): print "something wrong here, RPCTrack still present"
     fRPCTrackArray = {'X':ROOT.TClonesArray("RPCTrack"),'Y':ROOT.TClonesArray("RPCTrack")}
     RPCTrackbranch = {}
     for x in fRPCTrackArray: 
