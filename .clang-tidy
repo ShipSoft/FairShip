@@ -1,1 +1,15 @@
-WarningsAsErrors: '*'
+---
+# WarningsAsErrors: '*'
+Checks: -clang-analyzer-core.UndefinedBinaryOperatorResult,
+    -clang-analyzer-core.CallAndMessage,
+    -clang-analyzer-deadcode.DeadStores,
+    -clang-analyzer-security.FloatLoopCounter,
+    -clang-diagnostic-deprecated-declarations,
+    -clang-analyzer-optin.cplusplus.VirtualCall,
+    -clang-analyzer-cplusplus.NewDeleteLeaks,
+    -clang-analyzer-core.DivideZero,
+    -clang-diagnostic-logical-op-parentheses,
+    -clang-diagnostic-literal-conversion,
+    -clang-diagnostic-shadow,
+    -clang-diagnostic-string-compare,
+    -clang-diagnostic-return-type,
