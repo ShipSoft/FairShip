@@ -7734,11 +7734,13 @@ def recoMuonTaggerTracks():
     global sTree
     if sTree.GetBranch('MCTrack'): MCdata = True
     fname = sTree.GetCurrentFile().GetName()
+    backup = False
     if sTree.GetBranch("RPCTrackX"):
         sTree.GetCurrentFile().Close()
         f = ROOT.TFile(fname,'update')
         print "remove RECO branch and rerun muonTagger reconstruction"
         os.system('cp '+fname+' '+fname.replace('.root','orig.root')) # make backup
+        backup = True
         for br in ['RPCTrackX','RPCTrackY']:
             b = sTree.GetBranch(br)
             sTree.GetListOfBranches().Remove(b)
@@ -7786,7 +7788,7 @@ def recoMuonTaggerTracks():
         print "muon track reco failed, reinstall original file"
         os.system('mv '+fname.replace('.root','orig.root')+' '+fname)
     else:
-        os.system('rm '+fname.replace('.root','orig.root'))
+        if backup: os.system('rm '+fname.replace('.root','orig.root'))
         print "finished adding muonTagger tracks",options.listOfFiles
     print "make suicid"
     os.system('kill '+str(os.getpid()))
