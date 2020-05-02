@@ -233,7 +233,12 @@ def TwoCrystalBall(x,par):
    if abs(par[13])>0:
      cb.SetParameters(par[13]*bw,3.6871+par[2]- 3.0969,par[3],abs(par[4]),par[5])
      Psi2s = cb.Eval(x[0])
-   Y = highMass + lowMass + par[11] + par[12]*x[0] + Psi2s
+   background = par[11] + par[12]*x[0]
+   if par[16] == 1: return highMass
+   if par[16] == 2: return lowMass
+   if par[16] == 3: return background
+   if par[16] == 4: return Psi2s
+   Y = highMass + lowMass + background + Psi2s
    return Y
 def CrystalBall(x,par):
    bw = par[0] # should be fixed
@@ -301,6 +306,9 @@ def my2BukinPdf(x,par):
   Nlow  = RooBukinPdf(x,par,0)
   Nhigh = RooBukinPdf(x,par,6)
   Nback = par[13]+par[14]*x[0]
+  if par[15]==1: return Nhigh
+  if par[15]==2: return Nlow
+  if par[15]==3: return Nback
   return (Nlow+Nhigh+Nback)*par[0]
 def init_twoBukin(B,bw):
   B.FixParameter(0,bw)
@@ -318,6 +326,7 @@ def init_twoBukin(B,bw):
   B.SetParameter(12,-0.06)
   B.SetParameter(13,1.)
   B.FixParameter(14,0.)
+  B.FixParameter(15,0.)
   B.SetParName(7,'psi(1S)')
   B.SetParName(8,'Mass')
   B.SetParName(9,'Sigma')
@@ -538,7 +547,7 @@ def getFitDictionary(fitMethod):
                'pol':[11,12],'highTailsOff':{4:1000.,5:10.},'highTailsLimits':{4:[0.,10.],5:[0.,100.]},
                            'lowTailsOff':{9:1000.,10:10.},'lowTailsLimits':{9:[-10.,0.],10:[0.,100.]},
                'fixParams':{}}
-     funTemplate = {'F':TwoCrystalBall,'N':16,'Init':init_twoCB0}
+     funTemplate = {'F':TwoCrystalBall,'N':17,'Init':init_twoCB0}
    if fitMethod=='B':
    # high mass [1,2,3,4,5]  low mass [6,7,8,9,10]
      params = {'signal':7,   'highMass':8,'highSigma':9,'highTails':{10:0.008,11:-0.01},
@@ -546,7 +555,7 @@ def getFitDictionary(fitMethod):
                'pol':[13,14],'highTailsOff':{10:0.008,11:-0.01},'highTailsLimits':{},
                               'lowTailsOff':{4:0.008,5:-0.01,12:0.01},  'lowTailsLimits':{},
                'fixParams':{12:0.0}}
-     funTemplate = {'F':my2BukinPdf,'N':15,'Init':init_twoBukin}
+     funTemplate = {'F':my2BukinPdf,'N':16,'Init':init_twoBukin}
    if fitMethod=='G':
    # high mass [1,2,3,4,5]  low mass [6,7,8,9,10]
      params = {'signal':0,   'highMass':1,'highSigma':2,'highTails':{},
@@ -847,6 +856,29 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
              for n in range(CB.GetNpar()):
                  CB.SetParameter(n,rc[2].Parameter(n))
          h['FitResults-'+hk] = rc[2]
+         h[fk+'highMass'] = CB.Clone(fk+'highMass')
+         if fitMethod=='G':
+             h[fk+'highMass'].FixParameter(params['lowMass'],0)
+             for p in params['pol']:  h[fk+'highMass'].FixParameter(p,0)
+         else: 
+             h[fk+'highMass'].FixParameter(funTemplate['N']-1,1)
+         h[fk+'highMass'].SetLineColor(ROOT.kMagenta)
+         h[fk+'highMass'].Draw('same')
+         h[fk+'lowMass'] = CB.Clone(fk+'lowMass')
+         if fitMethod=='G':
+             h[fk+'lowMass'].FixParameter(params['highMass'],0)
+             for p in params['pol']:  h[fk+'lowMass'].FixParameter(p,0)
+         else:
+             h[fk+'lowMass'].FixParameter(funTemplate['N']-1,2)
+         h[fk+'lowMass'].SetLineColor(ROOT.kCyan)
+         h[fk+'lowhMass'].Draw('same')
+         h[fk+'back'] = CB.Clone(fk+'back')
+         if fitMethod=='G':
+             h[fk+'back'].FixParameter(params['highMass'],0)
+             h[fk+'lowMass'].FixParameter(params['highMass'],0)
+         h[fk+'back'].FixParameter(funTemplate['N']-1,3)
+         h[fk+'back'].SetLineColor(ROOT.kOrange)
+         h[fk+'back'].Draw('same')
          if fitMethod=='CB': tmp = norm_twoCB(h['FitResults-'+hk])
          if fitMethod=='B':  tmp = norm_twoBukin(CB)
          if fitMethod=='G':  tmp = norm_myGauss(CB)
@@ -3616,6 +3648,7 @@ def init_twoCB0(myCB,bw):
    myCB.FixParameter(13,0.)
    myCB.FixParameter(14,0.0)     # alphaRight
    myCB.FixParameter(15,10.)     # nRight
+   myCB.FixParameter(16,0.)     # switch for sum, high/low mass, background, Jpsi
 
 def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
    init_twoCB0(myCB,bw)
@@ -4098,6 +4131,7 @@ def init_Gauss(myGauss,bw=''):
  myGauss.SetParameter(7,1.)
  myGauss.FixParameter(8,0.)
  myGauss.FixParameter(9,0.)
+ myGauss.FixParameter(10,0.)
 def stupidCopy():
  for x in os.listdir('.'):
   if x.find('dimuon_all.p')<0: continue
