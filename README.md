@@ -40,7 +40,7 @@ even if you already know Git, as it explains how development is done on GitHub.
     ```
 3. Source the setUp script
     ```bash
-    source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh
+    source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
     ```
 
 4. Build the software using aliBuild
