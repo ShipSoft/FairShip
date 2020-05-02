@@ -138,6 +138,16 @@ void MuonTagger::SetElectrodeThickness(Double_t ElectrodeThickness)
   fElectrodeThickness = ElectrodeThickness;
 }
 
+void MuonTagger::SetAluminiumThickness(Double_t AluminiumThickness)
+{
+  fAluminiumThickness = AluminiumThickness;
+}
+
+void MuonTagger::SetAluminiumGap(Double_t AluminiumGap)
+{
+  fAluminiumGap = AluminiumGap;
+}
+
 void MuonTagger::SetGapThickness(Double_t GapThickness)
 {
   fGapThickness = GapThickness;
@@ -219,9 +229,14 @@ void MuonTagger::ConstructGeometry()
   InitMedium("Bakelite");
   TGeoMedium *bakelite = gGeoManager->GetMedium("Bakelite");
   
+       
+  InitMedium("aluminium");
+  TGeoMedium *aluminium = gGeoManager->GetMedium("aluminium");
+  
   TGeoVolume *top= gGeoManager->GetTopVolume(); 
 
-  TGeoVolumeAssembly *VMuonBox = new TGeoVolumeAssembly("VMuonBox");
+  TGeoBBox *MuonBox = new TGeoBBox(BoxX/2,BoxY/2,BoxZ/2);
+  TGeoVolume *VMuonBox = new TGeoVolume("VMuonBox", MuonBox,air);
   VMuonBox->SetTransparency(1);
   Double_t goliathcentre_to_beam = 178.6; //mm   
   Double_t walldisalignment = 15; //mm, all walls but one were disaligned with respect to the nominal beam position
@@ -239,6 +254,11 @@ void MuonTagger::ConstructGeometry()
   TGeoBBox *ElectrodeBox = new TGeoBBox(SensX/2,SensY/2,fElectrodeThickness/2-eps);  
   TGeoVolume *Electrode = new TGeoVolume("Electrode", ElectrodeBox,bakelite);   
   Electrode->SetLineColor(kBlue);
+  
+    
+  TGeoBBox *AluminiumBox = new TGeoBBox(SensX/2,SensY/2,fAluminiumThickness/2-eps);  
+  TGeoVolume *Aluminium = new TGeoVolume("Aluminium", AluminiumBox,aluminium);   
+  Electrode->SetLineColor(kGray);
   
   TGeoBBox *VStripBox = new TGeoBBox(fVstripx/2,SensY/2,fStripz/2-eps);  
   TGeoVolume *Vstrip = new TGeoVolume("Vstrip", VStripBox,Copper); 
@@ -339,45 +359,53 @@ void MuonTagger::ConstructGeometry()
          VMuonBox->AddNode(VPassive1, n+1, new TGeoTranslation(0,0,fRPCz[n]-PasThicknessz[n]/2.-(fRPCz[n]-fRPCz[n-1]-PasThicknessz[n])/2.)); }  
     }
   }
+  //NB x=0 in center of detector, in between strips 92 & 93; in y direction the center of the detector is higher, y=0 is in strip 77
+  Double_t x_shift = SensX - fVstrip_R - fVstrip_L - (fNVstrips-1)*fVstripoffset - (fNVstrips-2)* fVstripx;
+  Double_t y_shift = SensY - fHstrip_ext*2. - (fNHstrips-1)*fHstripoffset - (fNHstrips-2)* fHstripy;
 
+  
   for (int n = 1; n < nsensitive+1; n++){
     TGeoTranslation trans; 
     trans.SetTranslation(0,0,0);
     VMuonBox->AddNode(VSensitive[n-1], n, new TGeoTranslation(0,0,fRPCz[n-1]));
-    VSensitive[n-1]->AddNode(Ground,10000*n+2000,new TGeoTranslation(0,0,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz-fStripz/2));
-    VSensitive[n-1]->AddNode(Electrode,10000*n+3000,new TGeoTranslation(0,0,-fGapThickness/2-0.025-fElectrodeThickness/2));
-    VSensitive[n-1]->AddNode(Gap,10000*n+4000,new TGeoTranslation(0,0,0));	
-    VSensitive[n-1]->AddNode(Electrode,10000*n+5000,new TGeoTranslation(0,0,fGapThickness/2+0.025+fElectrodeThickness/2));	
-    VSensitive[n-1]->AddNode(Ground,10000*n+6000,new TGeoTranslation(0,0,+fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz+fStripz/2));	    
+    VSensitive[n-1]->AddNode(Aluminium,10000*n+2000,new TGeoTranslation(0,0,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz-fStripz-fAluminiumThickness-fAluminiumGap/2-fAluminiumThickness/2));
+    VSensitive[n-1]->AddNode(Aluminium,10000*n+3000,new TGeoTranslation(0,0,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz-fStripz-fAluminiumThickness/2));
+    VSensitive[n-1]->AddNode(Ground,10000*n+4000,new TGeoTranslation(0,0,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz-fStripz/2));
+    VSensitive[n-1]->AddNode(Electrode,10000*n+5000,new TGeoTranslation(0,0,-fGapThickness/2-0.025-fElectrodeThickness/2));
+    VSensitive[n-1]->AddNode(Gap,10000*n+6000,new TGeoTranslation(0,0,0));	
+    VSensitive[n-1]->AddNode(Electrode,10000*n+6500,new TGeoTranslation(0,0,fGapThickness/2+0.025+fElectrodeThickness/2));	
+    VSensitive[n-1]->AddNode(Ground,10000*n+5500,new TGeoTranslation(0,0,+fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz+fStripz/2));
+    VSensitive[n-1]->AddNode(Aluminium,10000*n+4500,new TGeoTranslation(0,0,+fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz+fStripz+fAluminiumThickness/2));   	    
+    VSensitive[n-1]->AddNode(Aluminium,10000*n+3500,new TGeoTranslation(0,0,+fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz+fStripz+fAluminiumThickness+fAluminiumGap/2+fAluminiumThickness/2));   
     for (int m = 1; m < fNHstrips+1; m++) {
 	if (m == 1){
-	       VSensitive[n-1]->AddNode(HFoam_ext,10000*n+7000+m,new TGeoTranslation(0,SensY/2-fHstrip_ext/2,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz/2));	    
-	       VSensitive[n-1]->AddNode(Hstrip_ext,10000*n+m,new TGeoTranslation(0,SensY/2-fHstrip_ext/2,-fGapThickness/2-fElectrodeThickness-0.025-fStripz/2));
+	       VSensitive[n-1]->AddNode(HFoam_ext,10000*n+7000+m,new TGeoTranslation(0,SensY/2-fHstrip_ext/2-y_shift/2.,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz/2));	    
+	       VSensitive[n-1]->AddNode(Hstrip_ext,10000*n+m,new TGeoTranslation(0,SensY/2-fHstrip_ext/2-y_shift/2.,-fGapThickness/2-fElectrodeThickness-0.025-fStripz/2));
 	}
         else {
 	   if (m==fNHstrips) {
-	       VSensitive[n-1]->AddNode(HFoam_ext,10000*n+7000+m,new TGeoTranslation(0,SensY/2-fHstripoffset*(m-1)-fHstripy*(m-2)-3*fHstrip_ext/2,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz/2));	    
-	       VSensitive[n-1]->AddNode(Hstrip_ext,10000*n+m,new TGeoTranslation(0,SensY/2-fHstripoffset*(m-1)-fHstripy*(m-2)-3*fHstrip_ext/2,-fGapThickness/2-fElectrodeThickness-0.025-fStripz/2));	   	   
+	       VSensitive[n-1]->AddNode(HFoam_ext,10000*n+7000+m,new TGeoTranslation(0,SensY/2-fHstripoffset*(m-1)-fHstripy*(m-2)-3*fHstrip_ext/2-y_shift/2.,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz/2));	    
+	       VSensitive[n-1]->AddNode(Hstrip_ext,10000*n+m,new TGeoTranslation(0,SensY/2-fHstripoffset*(m-1)-fHstripy*(m-2)-3*fHstrip_ext/2-y_shift/2.,-fGapThickness/2-fElectrodeThickness-0.025-fStripz/2));	   	   
 	   }
 	   else {	   
-	       VSensitive[n-1]->AddNode(HFoam,10000*n+7000+m,new TGeoTranslation(0,SensY/2-fHstrip_ext-fHstripoffset*(m-1)-fHstripy*(m-2)-fHstripy/2,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz/2));	    
-	       VSensitive[n-1]->AddNode(Hstrip,10000*n+m,new TGeoTranslation(0,SensY/2-fHstrip_ext-fHstripoffset*(m-1)-fHstripy*(m-2)-fHstripy/2,-fGapThickness/2-fElectrodeThickness-0.025-fStripz/2));
+	       VSensitive[n-1]->AddNode(HFoam,10000*n+7000+m,new TGeoTranslation(0,SensY/2-fHstrip_ext-fHstripoffset*(m-1)-fHstripy*(m-2)-fHstripy/2-y_shift/2.,-fGapThickness/2-fElectrodeThickness-0.025-fStripz-fStripfoamz/2));	    
+	       VSensitive[n-1]->AddNode(Hstrip,10000*n+m,new TGeoTranslation(0,SensY/2-fHstrip_ext-fHstripoffset*(m-1)-fHstripy*(m-2)-fHstripy/2-y_shift/2.,-fGapThickness/2-fElectrodeThickness-0.025-fStripz/2));
 	   }   
         }
     }
     for (int m = 1; m < fNVstrips+1; m++) {	
 	if (m == 1) {	    
-	       VSensitive[n-1]->AddNode(Vstrip_R,10000*n+1000+m,new TGeoTranslation(SensX/2-fVstrip_R/2,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz/2));
-	       VSensitive[n-1]->AddNode(VFoam_R,10000*n+8000+m,new TGeoTranslation(SensX/2-fVstrip_R/2,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz/2));
+	       VSensitive[n-1]->AddNode(Vstrip_R,10000*n+1000+m,new TGeoTranslation(SensX/2-fVstrip_R/2-x_shift,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz/2));
+	       VSensitive[n-1]->AddNode(VFoam_R,10000*n+8000+m,new TGeoTranslation(SensX/2-fVstrip_R/2-x_shift,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz/2));
 	}
 	else {
 	   if (m == fNVstrips ) {
-	          VSensitive[n-1]->AddNode(Vstrip_L,10000*n+1000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstrip_R-fVstrip_L/2,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz/2));
-	          VSensitive[n-1]->AddNode(VFoam_L,10000*n+8000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstrip_R-fVstrip_L/2,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz/2));	
+	          VSensitive[n-1]->AddNode(Vstrip_L,10000*n+1000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstrip_R-fVstrip_L/2-x_shift,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz/2));
+	          VSensitive[n-1]->AddNode(VFoam_L,10000*n+8000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstrip_R-fVstrip_L/2-x_shift,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz/2));	
 	   }
 	   else {	
-	          VSensitive[n-1]->AddNode(Vstrip,10000*n+1000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstripx/2-fVstrip_R,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz/2));
-	          VSensitive[n-1]->AddNode(VFoam,10000*n+8000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstripx/2-fVstrip_R,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz/2));	
+	          VSensitive[n-1]->AddNode(Vstrip,10000*n+1000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstripx/2-fVstrip_R-x_shift,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz/2));
+	          VSensitive[n-1]->AddNode(VFoam,10000*n+8000+m,new TGeoTranslation(SensX/2-fVstripoffset*(m-1)-fVstripx*(m-2)-fVstripx/2-fVstrip_R-x_shift,0,fGapThickness/2+fElectrodeThickness+0.025+fStripz+fStripfoamz/2));	
 	   }
 	}   
      }    

@@ -31,6 +31,8 @@ public:
     void SetRPCThickness(Double_t RPCThickness);
     void SetGapThickness(Double_t GapThickness);
     void SetElectrodeThickness(Double_t ElectrodeThickness);
+    void SetAluminiumThickness(Double_t AluminiumThickness);
+    void SetAluminiumGap(Double_t AluminiumGap);
     void SetStripz(Double_t Stripz, Double_t Stripfoamz);  
     void SetNStrips(Int_t NVstrips, Int_t NHstrips);   
     void SetVStrip(Double_t Vstripx, Double_t Vstrip_L, Double_t Vstrip_R, Double_t Vstripoffset);
@@ -116,6 +118,8 @@ protected:
     Double_t fRPCThickness;
     Double_t fGapThickness;
     Double_t fElectrodeThickness;
+    Double_t fAluminiumThickness;
+    Double_t fAluminiumGap;
     Double_t fStripz; 
     Double_t fStripfoamz;    
     Double_t fVstripx;
