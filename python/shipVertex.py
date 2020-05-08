@@ -7,6 +7,7 @@ import shipunit as u
 import rootUtils as ut
 import numpy as np
 import math
+import ctypes
 from array import array
 
 class Task:
@@ -226,35 +227,35 @@ class Task:
      gMinuit.mnemat(emat,9)
      values = array('d',[0,]*9)
      errors = array('d',[0,]*9)
-     dValue = ROOT.Double()
-     dError = ROOT.Double()
+     dValue = ctypes.c_double()
+     dError = ctypes.c_double()
      rc = gMinuit.GetParameter(0, dValue, dError)
-     values[0]=dValue
-     errors[0]=dError
+     values[0]=dValue.value
+     errors[0]=dError.value
      rc = gMinuit.GetParameter(1, dValue, dError)
-     values[1]=dValue
-     errors[1]=dError
+     values[1]=dValue.value
+     errors[1]=dError.value
      rc = gMinuit.GetParameter(2, dValue, dError)
-     values[2]=dValue
-     errors[2]=dError
+     values[2]=dValue.value
+     errors[2]=dError.value
      rc = gMinuit.GetParameter(3, dValue, dError)
-     values[3]=dValue
-     errors[3]=dError
+     values[3]=dValue.value
+     errors[3]=dError.value
      rc = gMinuit.GetParameter(4, dValue, dError)
-     values[4]=dValue
-     errors[4]=dError
+     values[4]=dValue.value
+     errors[4]=dError.value
      rc = gMinuit.GetParameter(5, dValue, dError)
-     values[5]=dValue
-     errors[5]=dError
+     values[5]=dValue.value
+     errors[5]=dError.value
      rc = gMinuit.GetParameter(6, dValue, dError)
-     values[6]=dValue
-     errors[6]=dError
+     values[6]=dValue.value
+     errors[6]=dError.value
      rc = gMinuit.GetParameter(7, dValue, dError)
-     values[7]=dValue
-     errors[7]=dError
+     values[7]=dValue.value
+     errors[7]=dError.value
      rc = gMinuit.GetParameter(8, dValue, dError)
-     values[8]=dValue
-     errors[8]=dError
+     values[8]=dValue.value
+     errors[8]=dError.value
 
      xFit = values[0]
      yFit = values[1]

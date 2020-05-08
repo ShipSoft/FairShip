@@ -395,7 +395,7 @@ def match2HNL(p):
 def ecalCluster2MC(aClus):
  # return MC track most contributing, and its fraction of energy
   trackid    = ctypes.c_int()
-  energy_dep = ROOT.Double()
+  energy_dep = ctypes.c_double()
   mcLink = {}
   for i in range( aClus.Size() ):
     mccell = ecalStructure.GetHitCell(aClus.CellNum(i))  # Get i'th cell of the cluster.
@@ -404,7 +404,7 @@ def ecalCluster2MC(aClus):
       if not abs(trackid.value)<sTree.MCTrack.GetEntries(): tid = -1
       else: tid = trackid.value
       if tid not in mcLink: mcLink[tid]=0
-      mcLink[tid]+=energy_dep
+      mcLink[tid]+=energy_dep.value
 # find trackid most contributing
   eMax,mMax = 0,-1
   for m in mcLink:
