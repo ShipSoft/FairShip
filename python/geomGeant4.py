@@ -143,7 +143,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
 
     # Read the input control file. If this is empty then the only fields that are 
     # defined (so far) are those within the C++ geometry classes
-    if controlFile is not '':
+    if controlFile != '':
       fieldMaker.readInputFile(controlFile)
 
     # Set the main spectrometer field map as a global field
