@@ -6842,5 +6842,6 @@ elif options.command=='JpsiYield' or options.command=='JpsiKinematicsReco':
    print "execute command ",options.command,ptCut,pmin,muID,fitMethod
    if options.command=='JpsiYield': JpsiAcceptance(        withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod)
    if options.command=='JpsiKinematicsReco': AnalysisNote_JpsiKinematicsReco( ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod)
+   if options.command=='JpsiPolarization': JpsiPolarization(ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod,nBins=20, pTJpsiMin=tmp[4], pTJpsiMax=tmp[5])
 else:
    ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
