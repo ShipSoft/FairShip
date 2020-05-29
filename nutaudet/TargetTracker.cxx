@@ -207,6 +207,15 @@ void TargetTracker::ConstructGeometry()
   TGeoVolume* TT_honeycomb_volume = new TGeoVolume("TT_honeycomb", TT_honeycomb_box, Airex);
   TT_honeycomb_volume->SetLineColor(kYellow);
   TT_honeycomb_volume->SetVisibility(1);
+
+    //SciFi planes
+  TGeoBBox* TT_scifi_plane_hor_box = new TGeoBBox("TT_scifi_plane_hor_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
+  TGeoVolume* TT_scifi_plane_hor_volume = new TGeoVolume("TT_scifi_plane_hor", TT_scifi_plane_hor_box, SciFiMat);
+  TT_scifi_plane_hor_volume->SetVisibility(1);
+
+  TGeoBBox* TT_scifi_plane_vert_box = new TGeoBBox("TT_scifi_plane_vert_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
+  TGeoVolume* TT_scifi_plane_vert_volume = new TGeoVolume("TT_scifi_plane_vert", TT_scifi_plane_vert_box, SciFiMat);
+  TT_scifi_plane_vert_volume->SetVisibility(1);
   
   //SciFi mats for X and Y 
   TGeoBBox* TT_scifimat_hor_box = new TGeoBBox("TT_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
@@ -216,26 +225,17 @@ void TargetTracker::ConstructGeometry()
   TGeoBBox* TT_scifimat_vert_box = new TGeoBBox("TT_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
   TGeoVolume* TT_scifimat_vert_volume = new TGeoVolume("TT_scifimat_vert", TT_scifimat_vert_box, SciFiMat);
   TT_scifimat_vert_volume->SetLineColor(kGreen-7);
-  
-  //SciFi planes
-  TGeoBBox* TT_scifi_plane_hor_box = new TGeoBBox("TT_scifi_plane_hor_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
-  TGeoVolume* TT_scifi_plane_hor_volume = new TGeoVolume("TT_scifi_plane_hor", TT_scifi_plane_hor_box, SciFiMat);
-  TT_scifi_plane_hor_volume->SetVisibility(1);
-
-  TGeoBBox* TT_scifi_plane_vert_box = new TGeoBBox("TT_scifi_plane_vert_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
-  TGeoVolume* TT_scifi_plane_vert_volume = new TGeoVolume("TT_scifi_plane_vert", TT_scifi_plane_vert_box, SciFiMat);
-  TT_scifi_plane_vert_volume->SetVisibility(1);
 
   //Add SciFi mat as sensitive unit
   AddSensitiveVolume(TT_scifimat_hor_volume);
   AddSensitiveVolume(TT_scifimat_vert_volume);
 
-  //Creating physical volumes and multiply 
+  //Creating physical volumes and multiply
   for (int i = 0; i < n_hor_planes; i++){
-    TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, i, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
+    TT_scifi_plane_hor_volume->AddNode(TT_scifimat_hor_volume, i+1, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
   }
   for (int i = 0; i < n_vert_planes; i++){
-    TT_scifi_plane_vert_volume->AddNode(TT_scifimat_vert_volume, 100+i, new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
+    TT_scifi_plane_vert_volume->AddNode(TT_scifimat_vert_volume, 100+i+1, new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
   }
 
   TT_volume->AddNode(TT_support_volume,          0, new TGeoTranslation(0, 0, -TTrackerZ/2 + support_z/2));
@@ -245,72 +245,60 @@ void TargetTracker::ConstructGeometry()
   TT_volume->AddNode(TT_support_volume,          1, new TGeoTranslation(0, 0, -TTrackerZ/2 + support_z + 2*scifimat_z + honeycomb_z + support_z/2));
 
   Double_t first_tt_position = -ZDimension / 2 + TTrackerZ / 2;
-  //Insert here the exact first position  
 
   //fNTT - number of TT walls 
-  for (int l = 0; l < fNTT; ++l) 
-  {
-    volTarget->AddNode(TT_volume, 1000+l, new TGeoTranslation(0, 0, first_tt_position + l * (TTrackerZ + CellWidth)));
+  for (int l = 0; l < fNTT; ++l){
+    volTarget->AddNode(TT_volume, 1000*(l+1), new TGeoTranslation(0, 0, first_tt_position + l * (TTrackerZ + CellWidth)));
   } 
+
 }
 
 
 Bool_t TargetTracker::ProcessHits(FairVolume* vol)
 {
-    /** This method is called from the MC stepping */
-    //Set parameters at entrance of volume. Reset ELoss.
-    if ( gMC->IsTrackEntering() ) {
-        fELoss  = 0.;
-        fTime   = gMC->TrackTime() * 1.0e09;
-        fLength = gMC->TrackLength();
-        gMC->TrackPosition(fPos);
-        gMC->TrackMomentum(fMom);
-    }
-    // Sum energy loss for all steps in the active volume
-    fELoss += gMC->Edep();
-    
-    // Create muonPoint at exit of active volume
-    if ( gMC->IsTrackExiting()    ||
-        gMC->IsTrackStop()       ||
-        gMC->IsTrackDisappeared()   ) {
-        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        //Int_t fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-        gMC->CurrentVolID(fVolumeID);
-	//gGeoManager->PrintOverlaps();
-	
-	//cout<< "detID = " << detID << endl;
-	Int_t MaxLevel = gGeoManager->GetLevel();
-	const Int_t MaxL = MaxLevel;
-       	//cout << gMC->CurrentVolPath()<< endl;
-	
+  /** This method is called from the MC stepping */
+  //Set parameters at entrance of volume. Reset ELoss.
+  if ( gMC->IsTrackEntering() ) {
+    fELoss  = 0.;
+    fTime   = gMC->TrackTime() * 1.0e09;
+    fLength = gMC->TrackLength();
+    gMC->TrackPosition(fPos);
+    gMC->TrackMomentum(fMom);
+  }
+  // Sum energy loss for all steps in the active volume
+  fELoss += gMC->Edep();
+  
+  // Create muonPoint at exit of active volume
+  if (gMC->IsTrackExiting()     ||
+      gMC->IsTrackStop()        ||
+      gMC->IsTrackDisappeared() ){
+    if (fELoss == 0. ) { return kFALSE; }
+    TParticle* p=gMC->GetStack()->GetCurrentTrack();
+    Int_t pdgCode = p->GetPdgCode();
+    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 
-	const char *name;
-	
-	Double_t zEnd = 0, zStart =0;
+    gMC->CurrentVolID(fVolumeID); 
+    Int_t detID = fVolumeID;
+    Int_t TTstationID; 
+    gMC->CurrentVolOffID(2, TTstationID); 
+    fVolumeID = TTstationID + detID;
 
-	
-	if (fELoss == 0. ) { return kFALSE; }
-        TParticle* p=gMC->GetStack()->GetCurrentTrack();
-	Int_t fMotherID =p->GetFirstMother();
-	Int_t pdgCode = p->GetPdgCode();
+    TLorentzVector Pos; 
+    gMC->TrackPosition(Pos); 
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ; 
 
-        TLorentzVector Pos; 
-        gMC->TrackPosition(Pos); 
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
-        
+    AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), 
+           fTime, fLength, fELoss, pdgCode);
 
-	AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
-               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-               fELoss, pdgCode);
-	
-        // Increment number of muon det points in TParticle
-        ShipStack* stack = (ShipStack*) gMC->GetStack();
-        stack->AddPoint(ktauTT);
-    }
-    
-    return kTRUE;
+    // Increment number of muon det points in TParticle
+    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    stack->AddPoint(ktauTT);
+  }
+
+  return kTRUE;
 }
 
 

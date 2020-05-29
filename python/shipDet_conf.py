@@ -248,10 +248,13 @@ def configure(run,ship_geo):
     NuTauTarget.SetHpTParam(ship_geo.tauHPT.nHPT, ship_geo.tauHPT.distHPT, ship_geo.tauHPT.DZ) 
    NuTauTarget.SetNumberBricks(ship_geo.NuTauTarget.col,ship_geo.NuTauTarget.row,ship_geo.NuTauTarget.wall)
    NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim)
-   NuTauTarget.SetTargetWallDimension(ship_geo.NuTauTarget.WallXDim, ship_geo.NuTauTarget.WallYDim, ship_geo.NuTauTarget.WallZDim)
+   if hasattr(ship_geo.NuTauTarget,"WallXDim") and hasattr(ship_geo.NuTauTarget,"WallYDim") and hasattr(ship_geo.NuTauTarget,"WallZDim"):
+    NuTauTarget.SetTargetWallDimension(ship_geo.NuTauTarget.WallXDim, ship_geo.NuTauTarget.WallYDim, ship_geo.NuTauTarget.WallZDim)
    NuTauTarget.SetEmulsionParam(ship_geo.NuTauTarget.EmTh, ship_geo.NuTauTarget.EmX, ship_geo.NuTauTarget.EmY, ship_geo.NuTauTarget.PBTh,ship_geo.NuTauTarget.EPlW, ship_geo.NuTauTarget.LeadTh, ship_geo.NuTauTarget.AllPW)
 ##
-   NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ,ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ, ship_geo.NuTauTarget.n_films)
+   if not hasattr(ship_geo.NuTauTarget,"n_plates"): #for backward compatibility
+    ship_geo.NuTauTarget.n_plates = 56
+   NuTauTarget.SetBrickParam(ship_geo.NuTauTarget.BrX, ship_geo.NuTauTarget.BrY, ship_geo.NuTauTarget.BrZ, ship_geo.NuTauTarget.BrPackX, ship_geo.NuTauTarget.BrPackY, ship_geo.NuTauTarget.BrPackZ, ship_geo.NuTauTarget.n_plates)
 
    NuTauTarget.SetCESParam(ship_geo.NuTauTarget.RohG, ship_geo.NuTauTarget.LayerCESW, ship_geo.NuTauTarget.CESW, ship_geo.NuTauTarget.CESPack)
    NuTauTarget.SetCellParam(ship_geo.NuTauTarget.CellW)
@@ -270,8 +273,9 @@ def configure(run,ship_geo):
 # Target Tracker 
    NuTauTT = ROOT.TargetTracker("TargetTrackers", ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ, ROOT.kTRUE)
    NuTauTT.SetDesign(ship_geo.NuTauTT.design)
-   NuTauTT.SetSciFiParam(ship_geo.NuTauTT.scifimat_width, ship_geo.NuTauTT.scifimat_hor, ship_geo.NuTauTT.scifimat_vert, ship_geo.NuTauTT.scifimat_z, ship_geo.NuTauTT.support_z, ship_geo.NuTauTT.honeycomb_z)
-   NuTauTT.SetNumberSciFi(ship_geo.NuTauTT.n_hor_planes, ship_geo.NuTauTT.n_vert_planes)
+   if hasattr(ship_geo.NuTauTT, "scifimat_width"):#for backward compatibility
+    NuTauTT.SetSciFiParam(ship_geo.NuTauTT.scifimat_width, ship_geo.NuTauTT.scifimat_hor, ship_geo.NuTauTT.scifimat_vert, ship_geo.NuTauTT.scifimat_z, ship_geo.NuTauTT.support_z, ship_geo.NuTauTT.honeycomb_z)
+    NuTauTT.SetNumberSciFi(ship_geo.NuTauTT.n_hor_planes, ship_geo.NuTauTT.n_vert_planes)
    NuTauTT.SetTargetTrackerParam(ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ)
    NuTauTT.SetBrickParam(ship_geo.NuTauTarget.CellW)
    NuTauTT.SetTotZDimension(ship_geo.NuTauTarget.zdim)
@@ -285,9 +289,10 @@ def configure(run,ship_geo):
    tauHpt = ROOT.Hpt("HighPrecisionTrackers",ship_geo.tauHPT.DX, ship_geo.tauHPT.DY, ship_geo.tauHPT.DZ, ROOT.kTRUE)
    tauHpt.SetZsize(ship_geo.tauMudet.Ztot)
    tauHpt.SetDesign(ship_geo.NuTauTarget.Design)
-   tauHpt.SetSciFiParam(ship_geo.tauHPT.scifimat_width, ship_geo.tauHPT.scifimat_hor, ship_geo.tauHPT.scifimat_vert, ship_geo.tauHPT.scifimat_z, ship_geo.tauHPT.support_z, ship_geo.tauHPT.honeycomb_z)
-   tauHpt.SetNumberSciFi(ship_geo.tauHPT.n_hor_planes, ship_geo.tauHPT.n_vert_planes)
-   tauHpt.SetHPTrackerParam(ship_geo.tauHPT.TX, ship_geo.tauHPT.TY, ship_geo.tauHPT.TZ)
+   if hasattr(ship_geo.tauHPT, "scifimat_width"):#for backward compatibility
+    tauHpt.SetSciFiParam(ship_geo.tauHPT.scifimat_width, ship_geo.tauHPT.scifimat_hor, ship_geo.tauHPT.scifimat_vert, ship_geo.tauHPT.scifimat_z, ship_geo.tauHPT.support_z, ship_geo.tauHPT.honeycomb_z)
+    tauHpt.SetNumberSciFi(ship_geo.tauHPT.n_hor_planes, ship_geo.tauHPT.n_vert_planes)
+    tauHpt.SetHPTrackerParam(ship_geo.tauHPT.TX, ship_geo.tauHPT.TY, ship_geo.tauHPT.TZ)
    if ship_geo.nuTauTargetDesign<3:
     tauHpt.SetConcreteBaseDim(ship_geo.tauHPT.ConcreteX,ship_geo.tauHPT.ConcreteY,ship_geo.tauHPT.ConcreteZ)
    if ship_geo.nuTauTargetDesign==3:

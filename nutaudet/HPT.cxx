@@ -241,12 +241,12 @@ void Hpt::ConstructGeometry()
 
         Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
 
+        //HPT is DownStreamTracker
         TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
-        TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); //downstreamtrackers = HPT
+        TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); 
         volDT->SetLineColor(kBlue-5);
-        //AddSensitiveVolume(volDT);
 
-        //(!) The internal size is smaller, so the surrounding detector is divided into two parts  
+        //The internal size is smaller, so the surrounding detector is divided into two parts  
         TGeoBBox *SurroundingdetOuter = new TGeoBBox("SurroundingdetOuter",DXMagnetizedRegion/2., fSRHeight/2, DZMagnetizedRegion/2.);
         TGeoVolume *volSurroundingdetOuter = new TGeoVolume("volSurroundingdetOuter",SurroundingdetOuter, HPTmat);
         AddSensitiveVolume(volSurroundingdetOuter);
@@ -262,8 +262,7 @@ void Hpt::ConstructGeometry()
         volMagRegion->AddNode(volSurroundingdetInner, 200, new TGeoTranslation(0.,+DYMagnetizedRegion/2-SRInnerHeight/2,0.));
         volMagRegion->AddNode(volSurroundingdetInner, 300, new TGeoTranslation(0.,-DYMagnetizedRegion/2+SRInnerHeight/2,0.));
 
-        //////////////////////////////////////////
-        //// Creating of SciFi modules in HPT ////   
+        // Creating of SciFi modules in HPT   
         InitMedium("CarbonComposite");
         TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
 
@@ -285,15 +284,6 @@ void Hpt::ConstructGeometry()
         HPT_honeycomb_volume->SetLineColor(kYellow);
         HPT_honeycomb_volume->SetVisibility(1);
 
-        //SciFi mats
-        TGeoBBox* HPT_scifimat_hor_box = new TGeoBBox("HPT_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
-        TGeoVolume* HPT_scifimat_hor_volume = new TGeoVolume("HPT_scifimat_hor", HPT_scifimat_hor_box, SciFiMat);
-        HPT_scifimat_hor_volume->SetLineColor(kCyan);
-
-        TGeoBBox* HPT_scifimat_vert_box = new TGeoBBox("HPT_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
-        TGeoVolume* HPT_scifimat_vert_volume = new TGeoVolume("HPT_scifimat_vert", HPT_scifimat_vert_box, SciFiMat);
-        HPT_scifimat_vert_volume->SetLineColor(kGreen);
-
         //SciFi planes
         TGeoBBox* HPT_scifi_plane_hor_box = new TGeoBBox("HPT_scifi_plane_hor_box", HPTrackerX / 2, HPTrackerY / 2, scifimat_z / 2);
         TGeoVolume* HPT_scifi_plane_hor_volume = new TGeoVolume("HPT_scifi_plane_hor", HPT_scifi_plane_hor_box, SciFiMat);
@@ -303,15 +293,24 @@ void Hpt::ConstructGeometry()
         TGeoVolume* HPT_scifi_plane_vert_volume = new TGeoVolume("HPT_scifi_plane_vert", HPT_scifi_plane_vert_box, SciFiMat);
         HPT_scifi_plane_vert_volume->SetVisibility(1);
 
+        //SciFi mats
+        TGeoBBox* HPT_scifimat_hor_box = new TGeoBBox("HPT_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifimat_hor_volume = new TGeoVolume("HPT_scifimat_hor", HPT_scifimat_hor_box, SciFiMat);
+        HPT_scifimat_hor_volume->SetLineColor(kCyan);
+
+        TGeoBBox* HPT_scifimat_vert_box = new TGeoBBox("HPT_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
+        TGeoVolume* HPT_scifimat_vert_volume = new TGeoVolume("HPT_scifimat_vert", HPT_scifimat_vert_box, SciFiMat);
+        HPT_scifimat_vert_volume->SetLineColor(kGreen);
+
         AddSensitiveVolume(HPT_scifimat_hor_volume);
         AddSensitiveVolume(HPT_scifimat_vert_volume);
 
         // Creating physical volumes and multiply 
         for (int i = 0; i < n_hor_planes; i++){
-            HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
+            HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i+1, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
         }
         for (int i = 0; i < n_vert_planes; i++){
-            HPT_scifi_plane_vert_volume->AddNode(HPT_scifimat_vert_volume, 100+i, new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
+            HPT_scifi_plane_vert_volume->AddNode(HPT_scifimat_vert_volume, 100+i+1 , new TGeoTranslation((-(n_vert_planes-1)/2.0 + i)*scifimat_width, 0, 0));
         }
 
         volDT->AddNode(HPT_support_volume,     0, new TGeoTranslation(0, 0, - DimZ / 2 + support_z / 2));
@@ -321,10 +320,10 @@ void Hpt::ConstructGeometry()
         volDT->AddNode(HPT_support_volume,     1, new TGeoTranslation(0, 0, - DimZ / 2 + support_z + 2 * scifimat_z + honeycomb_z + support_z / 2));
         //////////////////////////////////////////////////////////////
 
-        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2 + (DZMagnetizedRegion - DZTarget - DimZ*fnHPT - fDistance*(fnHPT-1));
+        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2;
         for(int i=0;i<fnHPT;i++){
             for (int j = 0; j < fntarget; j++){
-                volMagRegion->AddNode(volDT,i+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
+                volMagRegion->AddNode(volDT,(i+1)*1000+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
             }
         }
     }
@@ -345,23 +344,30 @@ Bool_t  Hpt::ProcessHits(FairVolume* vol)
     fELoss += gMC->Edep();
     
     // Create muonPoint at exit of active volume
-    if ( gMC->IsTrackExiting()    ||
-        gMC->IsTrackStop()       ||
-        gMC->IsTrackDisappeared()   ) {
-        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+    if ( gMC->IsTrackExiting()     ||
+         gMC->IsTrackStop()        ||
+         gMC->IsTrackDisappeared() ){
         if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
-	//Int_t fMotherID =p->GetFirstMother();
-	gMC->CurrentVolID(fVolumeID);
+        fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+
+        gMC->CurrentVolID(fVolumeID);
+        Int_t detID = fVolumeID;
+        Int_t TTstationID;
+        gMC->CurrentVolOffID(2, TTstationID);
+        fVolumeID = TTstationID + detID;
+
         TLorentzVector Pos; 
         gMC->TrackPosition(Pos); 
         Double_t xmean = (fPos.X()+Pos.X())/2. ;      
         Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
         Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
 
-	AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
-        
+        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), 
+               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), 
+               fTime, fLength,fELoss, pdgCode);
+            
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
         stack->AddPoint(ktauRpc);
