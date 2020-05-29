@@ -11,7 +11,6 @@
 
 class FairPrimaryGenerator;
 class EvtGenDecays;
-using namespace Pythia8;
 
 class FixedTargetGenerator : public FairGenerator
 {
@@ -48,11 +47,11 @@ class FixedTargetGenerator : public FairGenerator
   inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
   inline void SetDebug(Bool_t x){Debug=x;}
   Double_t GetPotForCharm(){return nrpotspill/wspill;}
-  Pythia* GetPythia() {return fPythiaP;}
+  Pythia8::Pythia* GetPythia() {return fPythiaP;}
  private:
   
-  RndmEngine* fRandomEngine;  //!
-  
+ Pythia8::RndmEngine* fRandomEngine;  //!
+   
  protected:
 
   Double_t fMom;       // proton momentum
@@ -63,8 +62,8 @@ class FixedTargetGenerator : public FairGenerator
   Bool_t tauOnly,JpsiMainly,G4only,setByHand,Debug,withEvtGen;
   Bool_t fcharmtarget;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
-  Pythia* fPythiaN;            //!
-  Pythia* fPythiaP;            //!
+  Pythia8::Pythia* fPythiaN;            //!
+  Pythia8::Pythia* fPythiaP;            //!
   EvtGenDecays* evtgenN;            //!
   EvtGenDecays* evtgenP;            //!
   GenieGenerator* fMaterialInvestigator;  //!
@@ -83,6 +82,6 @@ class FixedTargetGenerator : public FairGenerator
   Float_t  n_id,n_px,n_py,n_pz,n_M,n_E,n_mpx,n_mpy,n_mpz,n_mE,n_mid,ck;
   Int_t heartbeat;
 
-  ClassDef(FixedTargetGenerator,1);
+  ClassDef(FixedTargetGenerator,2);
 };
 #endif /* !FIXEDTARGETGENERATOR_H */

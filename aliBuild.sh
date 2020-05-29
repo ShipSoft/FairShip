@@ -18,7 +18,7 @@ if [ ! -d alibuild ];
 then
   git clone https://github.com/alisw/alibuild
   cd alibuild
-  git checkout v1.5.4.rc3
+  git checkout v1.5.5
   cd ..
 fi
 

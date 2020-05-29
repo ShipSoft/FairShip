@@ -1,8 +1,13 @@
+from __future__ import print_function
+from __future__ import division
 # simple vertex reconstruction with errors
 import ROOT,sys,os
+import global_variables
 import shipunit as u
 import rootUtils as ut
 import numpy as np
+import math
+import ctypes
 from array import array
 
 class Task:
@@ -50,7 +55,7 @@ class Task:
  def chi2(self,res,Vy):       
   s=0
   for i in range(100):
-    s+=Vy[i]*res[i/10]*res[i%10]
+    s+=Vy[i]*res[i//10]*res[i%10]
   return s
  def residuals(self,y_data,a,z0):
   res = np.zeros(10)
@@ -86,8 +91,8 @@ class Task:
    fitStatus = fittedTracks[tr].getFitStatus()
    xx  = fittedTracks[tr].getFittedState()
    pid   = xx.getPDG()
-   if not pidProton and abs(pid) == 2212:
-     pid = int(ROOT.TMath.Sign(211,pid))
+   if not global_variables.pidProton and abs(pid) == 2212:
+     pid = int(math.copysign(211,pid))
    rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
    state = ROOT.genfit.StateOnPlane(rep)
    rep.setPosMom(state,xx.getPos(),xx.getMom())
@@ -127,8 +132,8 @@ class Task:
       step+=1
       if step > 10:  
          ut.reportError("shipVertex::abort iteration, too many steps")
-         if debug: 
-          print 'abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz
+         if global_variables.debug:
+          print('abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz)
          rc = False
          break 
 #       
@@ -178,8 +183,8 @@ class Task:
      cov = ROOT.TMatrixDSym(10)
      for i in range(10):
        for j in range(10):
-	 if i<5 and j<5: cov[i][j]=cov1[i][j]
-	 if i>4 and j>4: cov[i][j]=cov2[i-5][j-5]
+         if i<5 and j<5: cov[i][j]=cov1[i][j]
+         if i>4 and j>4: cov[i][j]=cov2[i-5][j-5]
      covInv = ROOT.TMatrixDSym()
      ROOT.genfit.tools.invertMatrix(cov,covInv)
      
@@ -191,8 +196,8 @@ class Task:
       self.y_data[i+5]=stVal2[i]
      self.z0 = HNLPos[2]
      self.Vy = np.zeros(100)
-     for i in range(100):	
-       self.Vy[i] = covInv[i/10][i%10]
+     for i in range(100):
+       self.Vy[i] = covInv[i//10][i%10]
      
      f=np.array([0.])
      gMinuit = ROOT.TMinuit(9)
@@ -222,35 +227,35 @@ class Task:
      gMinuit.mnemat(emat,9)
      values = array('d',[0,]*9)
      errors = array('d',[0,]*9)
-     dValue = ROOT.Double()
-     dError = ROOT.Double()
+     dValue = ctypes.c_double()
+     dError = ctypes.c_double()
      rc = gMinuit.GetParameter(0, dValue, dError)
-     values[0]=dValue
-     errors[0]=dError
+     values[0]=dValue.value
+     errors[0]=dError.value
      rc = gMinuit.GetParameter(1, dValue, dError)
-     values[1]=dValue
-     errors[1]=dError
+     values[1]=dValue.value
+     errors[1]=dError.value
      rc = gMinuit.GetParameter(2, dValue, dError)
-     values[2]=dValue
-     errors[2]=dError
+     values[2]=dValue.value
+     errors[2]=dError.value
      rc = gMinuit.GetParameter(3, dValue, dError)
-     values[3]=dValue
-     errors[3]=dError
+     values[3]=dValue.value
+     errors[3]=dError.value
      rc = gMinuit.GetParameter(4, dValue, dError)
-     values[4]=dValue
-     errors[4]=dError
+     values[4]=dValue.value
+     errors[4]=dError.value
      rc = gMinuit.GetParameter(5, dValue, dError)
-     values[5]=dValue
-     errors[5]=dError
+     values[5]=dValue.value
+     errors[5]=dError.value
      rc = gMinuit.GetParameter(6, dValue, dError)
-     values[6]=dValue
-     errors[6]=dError
+     values[6]=dValue.value
+     errors[6]=dError.value
      rc = gMinuit.GetParameter(7, dValue, dError)
-     values[7]=dValue
-     errors[7]=dError
+     values[7]=dValue.value
+     errors[7]=dError.value
      rc = gMinuit.GetParameter(8, dValue, dError)
-     values[8]=dValue
-     errors[8]=dError
+     values[8]=dValue.value
+     errors[8]=dError.value
 
      xFit = values[0]
      yFit = values[1]
@@ -327,11 +332,11 @@ class Task:
        M_AtoP[3][5] = (2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2))/MM
        
        for i in range(4):
-	 for j in range(6):
-	   MT_AtoP[j][i] = M_AtoP[i][j]
+         for j in range(6):
+           MT_AtoP[j][i] = M_AtoP[i][j]
        
        for i in range(36):
-	 covA[i/6][i%6] = cov[i/6+3+(i%6+3)*9]
+         covA[i//6][i%6] = cov[i//6+3+(i%6+3)*9]
        
        tmp   = ROOT.TMatrixD(4,6)
        tmp.Mult(M_AtoP,covA)

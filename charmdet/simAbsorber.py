@@ -1,4 +1,5 @@
 #!/usr/bin/env python 
+from __future__ import print_function
 import ROOT,os,sys,getopt,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 
@@ -80,17 +81,17 @@ def run():
 
  run.CreateGeometryFile("geofile.root")
 # -----Start run----------------------------------------------------
- print "run for ",nev,"events"
+ print("run for ",nev,"events")
  run.Run(nev)
 
 # -----Finish-------------------------------------------------------
  timer.Stop()
  rtime = timer.RealTime()
  ctime = timer.CpuTime()
- print ' ' 
- print "Macro finished succesfully." 
- print "Output file is ",  outFile 
- print "Real time ",rtime, " s, CPU time ",ctime,"s"
+ print(' ') 
+ print("Macro finished succesfully.") 
+ print("Output file is ",  outFile) 
+ print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 storeOnlyMuons = True
 nev = int(options.nevents)

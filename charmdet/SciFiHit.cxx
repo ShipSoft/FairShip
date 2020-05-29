@@ -22,21 +22,18 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   double scifiboxdz = ((TGeoBBox*) scifibox->GetShape())->GetDZ(); //semithickness
   
   int32_t partitionID;
-  unsigned int ch;
-  unsigned int boardId;
-
-  boardId = (fDetectorID) / pow(10,5);
-  ch = (fDetectorID - boardId * pow(10,5));
+  const int boardId = (fDetectorID) / pow(10,5);
+  const int ch = (fDetectorID - boardId * pow(10,5));
 
   // layer (0,1,..,7) 
-  unsigned int layer = int(ch/1536);
+  int layer = ch/1536;
 
   double gap_die  = 0.0220;// cm
   double gap_SiPM = 0.0400;// cm
   double ch_width = 0.0250;// cm
 
   // defining coordinates
-  int x,y,z;
+  double x,y,z;
 
   // defining z reference positions
   double z_midpoint_Ref[8];
@@ -51,60 +48,63 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   z=z_midpoint_Ref[layer];
 
   // how much the channels should be shifted so that channels ranges btw 0-1535
-  unsigned int nshift = layer*1536;  
+  int nshift = layer*1536;  
 
   // channel in each layer ranging from 0-1535
-  unsigned int ch_layer = ch - nshift; 
+  int ch_layer = ch - nshift; 
 
   //compute half layer width to be entered in the middle of the plane
   double half_layer = 1536./2 * ch_width + 6 * gap_die + 5.5 * gap_SiPM;
 
-  // how many half dies
-  int mult = int((ch_layer)/64);
+  // how many half dies 0-23
+  int mult = ch_layer/64;
+
+  // set position to the middle of the channel
+  double mid_ch_position = 0.025/2; // cm
 
   // shift to add to the position due to dead regions
-  double shift = int(mult/2) * gap_die + int(mult/2) * gap_SiPM + (mult%2) * gap_die;
+  double shift = int(mult/2) * (gap_die +  gap_SiPM) + (mult%2) * gap_die;
 
   //first station only x defined for X and U planes
   if(layer==0) {
-    x = - ( ch_layer*ch_width + shift - half_layer );
+    x = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
     y = 0;
   }
   else if(layer==1){
-    x = -( ch_layer*ch_width + shift - half_layer );
+    x = -( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
     y = 0;
   }
 
   //first station only y defined for Y and V planes
   else if(layer==2){
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer );
+    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
   }
   else if(layer==3) {
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer );
+    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
   }
   //second station only y defined for Y and V planes
   else if(layer==4) {
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer );
+    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
   }
   else if(layer==5){
     x = 0;
-    y = - ( ch_layer*ch_width + shift - half_layer );
+    y = - ( ch_layer*ch_width + shift - half_layer ) - mid_ch_position;
   }
   //second station only x defined for X and U planes
   else if(layer==6){
-    x = ( ch_layer*ch_width + shift - half_layer );
+    x = ( ch_layer*ch_width + shift - half_layer ) + mid_ch_position;
     y = 0;
   }
   else if(layer==7) {
-    x = ( ch_layer*ch_width + shift - half_layer);
+    x = ( ch_layer*ch_width + shift - half_layer) + mid_ch_position;
     y = 0;
   }
 
   //translation from z = 0 to start of the box
-  z = z + scifiboxcenter[2] - scifiboxdz;
+  //z = z + scifiboxcenter[2] - scifiboxdz;
 
   v.SetXYZ(x,y,z);
 

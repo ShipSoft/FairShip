@@ -12,6 +12,8 @@
 """
 #$Id: hepunit.py 66892 2013-01-17 10:57:59Z gunter $
 
+from __future__ import division
+
 # ==================================================================
 # imported from "SystemOfUnits.h"
 # ==================================================================
@@ -45,6 +47,8 @@ nanobarn = 1.e-9 *barn
 picobarn = 1.e-12*barn
 
 # symbols
+um  = micrometer
+
 mm  = millimeter
 mm2 = millimeter2
 mm3 = millimeter3
@@ -71,7 +75,7 @@ milliradian = 1.e-3*radian
 degree = (3.14159265358979323846/180.0)*radian
 
 steradian = 1.
-	
+
 # symbols
 rad  = radian
 mrad = milliradian
@@ -99,9 +103,9 @@ ms = millisecond
 #
 # Electric charge [Q]
 #
-eplus = 1. 		# positron charge
-e_SI  = 1.60217733e-19	# positron charge in coulomb
-coulomb = eplus/e_SI	# coulomb = 6.24150 e+18 * eplus
+eplus = 1.             # positron charge
+e_SI  = 1.60217733e-19 # positron charge in coulomb
+coulomb = eplus/e_SI   # coulomb = 6.24150 e+18 * eplus
 
 #
 # Energy [E]
@@ -138,17 +142,17 @@ mg = milligram
 #
 # Power [E][T^-1]
 #
-watt = joule/second	# watt = 6.24150 e+3 * MeV/ns
+watt = joule/second # watt = 6.24150 e+3 * MeV/ns
 
 #
 # Force [E][L^-1]
 #
-newton = joule/meter	# newton = 6.24150 e+9 * MeV/mm
+newton = joule/meter # newton = 6.24150 e+9 * MeV/mm
 
 #
 # Pressure [E][L^-3]
 #
-pascal     = newton/m2	   # pascal = 6.24150 e+3 * MeV/mm3
+pascal     = newton/m2     # pascal = 6.24150 e+3 * MeV/mm3
 bar        = 100000*pascal # bar    = 6.24150 e+8 * MeV/mm3
 atmosphere = 101325*pascal # atm    = 6.32420 e+8 * MeV/mm3
 
@@ -170,12 +174,12 @@ volt = 1.e-6*megavolt
 #
 # Electric resistance [E][T][Q^-2]
 #
-ohm = volt/ampere	# ohm = 1.60217e-16*(MeV/eplus)/(eplus/ns)
+ohm = volt/ampere # ohm = 1.60217e-16*(MeV/eplus)/(eplus/ns)
 
 #
 # Electric capacitance [Q^2][E^-1]
 #
-farad = coulomb/volt	# farad = 6.24150e+24 * eplus/Megavolt
+farad = coulomb/volt # farad = 6.24150e+24 * eplus/Megavolt
 millifarad = 1.e-3*farad
 microfarad = 1.e-6*farad
 nanofarad = 1.e-9*farad
@@ -184,13 +188,13 @@ picofarad = 1.e-12*farad
 #
 # Magnetic Flux [T][E][Q^-1]
 #
-weber = volt*second	# weber = 1000*megavolt*ns
+weber = volt*second # weber = 1000*megavolt*ns
 
 #
 # Magnetic Field [T][E][Q^-1][L^-2]
 #
 
-#tesla     = volt*second/meter2	# tesla =0.001*megavolt*ns/mm2
+#tesla     = volt*second/meter2 # tesla =0.001*megavolt*ns/mm2
 #gauss     = 1.e-4*tesla
 #kilogauss = 1.e-1*tesla
 
@@ -201,7 +205,7 @@ gauss     = 1.e-4*tesla
 #
 # Inductance [T^2][E][Q^-2]
 #
-henry = weber/ampere	# henry = 1.60217e-7*MeV*(ns/eplus)**2
+henry = weber/ampere # henry = 1.60217e-7*MeV*(ns/eplus)**2
 
 #
 # Temperature

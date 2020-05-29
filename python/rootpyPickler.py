@@ -45,7 +45,9 @@ The following additional notes apply:
 
 """
 from __future__ import absolute_import
+from __future__ import print_function
 
+from past.builtins import basestring
 import sys
 if sys.version_info[0] < 3:
     from cStringIO import StringIO
@@ -58,7 +60,10 @@ import pickle
 import ROOT
 
 string_types = basestring,
-integer_types = (int, long)
+if sys.version_info[0] < 3:
+    integer_types = (int, long)
+else:
+    integer_types = (int,)
 
 __all__ = [
     'dump',
@@ -256,7 +261,7 @@ class Unpickler(pickle.Unpickler):
                     cy = 9999
                 ret = htab.get((nm, cy), None)
                 if not ret:
-                    print("warning didn't find {0} {1} {2}",nm, cy, len(htab) )
+                    print(("warning didn't find {0} {1} {2}",nm, cy, len(htab) ))
                     return oget(nm0)
                 #ctx = ROOT.TDirectory.TContext(file)
                 ret = ret.ReadObj()
@@ -297,6 +302,14 @@ class Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         try:
             try:
+                ## Employ very nasty hack to get around error during
+                ## unpicklying of files.
+                ## `copy_reg` and `__builtin__` comes from PY2, 
+                ## for some reason that I don't understand, they are now
+                ## in the files we try to unpickle
+                if sys.version_info[0] >2:
+                    if module == 'copy_reg': module = 'copyreg'
+                    if module == '__builtin__': module = 'builtins'
                 __import__(module)
                 mod = sys.modules[module]
             except ImportError:

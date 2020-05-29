@@ -19,7 +19,6 @@
 #include "HNLPythia8Generator.h"
 
 class FairPrimaryGenerator;
-using namespace Pythia8;
 
 class DPPythia8Generator : public FairGenerator
 {
@@ -73,13 +72,13 @@ class DPPythia8Generator : public FairGenerator
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
   Int_t nrOfRetries(){ return fnRetries; };
   Int_t nrOfDP(){ return fnDPtot; };
-  Pythia* getPythiaInstance(){return fPythia;};
-  Pythia* fPythia;             //!
-  //Pythia* fPythiaHadDecay;             //!
+  Pythia8::Pythia* getPythiaInstance(){return fPythia;};
+  Pythia8::Pythia* fPythia;             //!
+  //Pythia8::Pythia* fPythiaHadDecay;             //!
  private:
   
-  RndmEngine* fRandomEngine;  //!
-  
+ Pythia8::RndmEngine* fRandomEngine;  //!
+   
  protected:
 
   //Bool_t fHadDecay;    //select hadronic decay
@@ -107,7 +106,7 @@ class DPPythia8Generator : public FairGenerator
   Bool_t fDeepCopy;    // not used
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
 
-  ClassDef(DPPythia8Generator,1);
+  ClassDef(DPPythia8Generator,2);
 };
 
 #endif /* !PNDH8GENERATOR_H */

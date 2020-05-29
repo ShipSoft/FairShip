@@ -26,9 +26,11 @@ Double_t tesla = 10 * kilogauss;
 ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
-ShipMuonShield::ShipMuonShield(TString geofile)
+ShipMuonShield::ShipMuonShield(TString geofile, const Int_t withCoMagnet, const Bool_t StepGeo)
   : FairModule("MuonShield", "ShipMuonShield")
 {
+  fStepGeo = StepGeo;
+  fWithCoMagnet = withCoMagnet;
   fGeofile = geofile;
   auto f = TFile::Open(geofile, "read");
   TVectorT<Double_t> params;
@@ -58,12 +60,14 @@ ShipMuonShield::ShipMuonShield(TString geofile)
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
-                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t, Double_t floor, Double_t field)
+                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t, Double_t floor, Double_t field, const Int_t withCoMagnet, const Bool_t StepGeo)
   : FairModule(name ,Title)
 {
  fDesign = Design;
  fField  = field;
  fGeofile = "";
+ fStepGeo = StepGeo;
+ fWithCoMagnet = withCoMagnet;
  if (fDesign==1){
      fMuonShieldLength = L1;   
     }
@@ -148,11 +152,76 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
 						z_translation));
 }
 
+void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
+          Double_t dZ, std::array<Double_t, 16> corners,
+          Int_t color, TGeoUniformMagField *magField,
+          TGeoVolume *tShield, Double_t x_translation,
+          Double_t y_translation,
+          Double_t z_translation, 
+          Bool_t stepGeo) {
+  if (!stepGeo)
+  {
+    CreateArb8 (arbName, medium, dZ, corners, color, magField, tShield, x_translation, y_translation, z_translation);
+    return;
+  }
+  Double_t partLength = 0.5;
+  Int_t zParts = std::ceil(2.0*dZ/m/partLength);
+  Double_t finalCorners[zParts][16];
+  Double_t dxdy[4][2];
+  Double_t dZp = dZ/Double_t(zParts);
+
+  for (int i = 0; i < 4; ++i)
+  {
+    dxdy[i][0] = (corners[8+2*i] - corners[0+2*i])/Double_t(zParts);
+    dxdy[i][1] = (corners[9+2*i] - corners[1+2*i])/Double_t(zParts);
+  }
+
+  std::copy(corners.data() + 0,  corners.data() + 8, finalCorners[0]);
+
+  for (int i = 0; i < zParts; ++i)
+  {
+    for (int k = 0; k < 4; ++k)
+    {
+      finalCorners[i][8+2*k] = finalCorners[i][0+2*k] + dxdy[k][0];
+      finalCorners[i][9+2*k] = finalCorners[i][1+2*k] + dxdy[k][1];
+    }
+    if (i != zParts-1)
+    {
+      std::copy(finalCorners[i] + 8, finalCorners[i] + 16, finalCorners[i+1]);
+    }
+  }
+  
+  for (int i = 0; i < zParts; ++i)
+  {
+    for (int k = 0; k < 4; ++k)
+    {
+      finalCorners[i][8+2*k] = finalCorners[i][0+2*k]  = (finalCorners[i][0+2*k] + finalCorners[i][8+2*k]) / 2.0;
+      finalCorners[i][9+2*k] = finalCorners[i][1+2*k]  = (finalCorners[i][9+2*k] + finalCorners[i][1+2*k]) / 2.0;
+    }
+  }
+
+  std::vector<TGeoVolume*> magF;
+  
+  for (int i = 0; i < zParts; ++i)
+  {
+    magF.push_back(gGeoManager->MakeArb8(arbName + '_' + std::to_string(i), medium, dZp - 0.00001*m, finalCorners[i]));
+    magF[i]->SetLineColor(color);
+    magF[i]->SetField(magField);
+  }
+
+  for (int i = 0; i < zParts; ++i)
+  {
+    Double_t true_z_translation = z_translation + 2.0 * Double_t(i) * dZp - dZ + dZp;
+    tShield->AddNode(magF[i], 1, new TGeoTranslation(x_translation, y_translation, true_z_translation));
+  }
+}
+
 void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],FieldDirection fieldDirection,
 				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, Double_t dZ,
 				  Double_t middleGap,Double_t middleGap2,
 				  Double_t HmainSideMag, Double_t HmainSideMag2,
-				  Double_t gap,Double_t gap2, Double_t Z, Bool_t NotMagnet)
+				  Double_t gap,Double_t gap2, Double_t Z, Bool_t NotMagnet,
+          Bool_t stepGeo)
   {
     Double_t coil_gap,coil_gap2;
     Int_t color[4] = {45,31,30,38};
@@ -285,40 +354,40 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
     TString str9 = "_MagTopRight";
     TString str10 = "_MagBotLeft";
     TString str11 = "_MagBotRight";
-
+    
     switch (fieldDirection){
 
     case FieldDirection::up: 
-      CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[0], fields[0], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[0], fields[0], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[1], fields[1], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[0], fields[0], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[0], fields[0], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[1], fields[1], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[1], fields[1], tShield,  0, 0, Z, stepGeo);
       if (fDesign <= 7) {
-         CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[1], fields[1], tShield, 0, 0, Z);
-         CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[1], fields[1], tShield, 0, 0, Z);
-         CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[1], fields[1], tShield, 0, 0, Z);
-         CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[1], fields[1], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[1], fields[1], tShield, 0, 0, Z, stepGeo);
+         CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[1], fields[1], tShield, 0, 0, Z, stepGeo);
+         CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[1], fields[1], tShield, 0, 0, Z, stepGeo);
+         CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[1], fields[1], tShield, 0, 0, Z, stepGeo);
       }
-      CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[3], fields[3], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[2], fields[2], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[2], fields[2], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str11, medium, dZ, cornersBR, color[3], fields[3], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[3], fields[3], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[2], fields[2], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[2], fields[2], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str11, medium, dZ, cornersBR, color[3], fields[3], tShield,  0, 0, Z, stepGeo);
       break;
     case FieldDirection::down:
-      CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[1], fields[1], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[0], fields[0], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[0], fields[0], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[1], fields[1], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[0], fields[0], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[0], fields[0], tShield,  0, 0, Z, stepGeo);
       if (fDesign <= 7) {
-         CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[0], fields[0], tShield, 0, 0, Z);
-         CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[0], fields[0], tShield, 0, 0, Z);
-         CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[0], fields[0], tShield, 0, 0, Z);
-         CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[0], fields[0], tShield, 0, 0, Z);
+         CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[0], fields[0], tShield, 0, 0, Z, stepGeo);
+         CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[0], fields[0], tShield, 0, 0, Z, stepGeo);
+         CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[0], fields[0], tShield, 0, 0, Z, stepGeo);
+         CreateArb8(magnetName + str7, medium, dZ, cornersCRBA, color[0], fields[0], tShield, 0, 0, Z, stepGeo);
       }
-      CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[2], fields[2], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[3], fields[3], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[3], fields[3], tShield,  0, 0, Z);
-      CreateArb8(magnetName + str11, medium, dZ, cornersBR, color[2], fields[2], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[2], fields[2], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str9, medium, dZ, cornersTR, color[3], fields[3], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str10, medium, dZ, cornersBL, color[3], fields[3], tShield,  0, 0, Z, stepGeo);
+      CreateArb8(magnetName + str11, medium, dZ, cornersBR, color[2], fields[2], tShield,  0, 0, Z, stepGeo);
       break;
     }
   }
@@ -677,9 +746,9 @@ void ShipMuonShield::ConstructGeometry()
       if (fDesign == 6){
 	Double_t dA = 3*m;
 	CreateMagnet("AbsorberStop-1",iron,tShield,fields,FieldDirection::up,
-		  dA/6.,dA/6.,dA/6.,dA/6.,dZ0/3.,0,0,dA/12.,dA/12.,0,0,zEndOfAbsorb - 5.*dZ0/3.,0);
+		  dA/6.,dA/6.,dA/6.,dA/6.,dZ0/3.,0,0,dA/12.,dA/12.,0,0,zEndOfAbsorb - 5.*dZ0/3.,0, false);
 	CreateMagnet("AbsorberStop-2",iron,tShield,fields,FieldDirection::up,
-		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0);
+		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0, false);
         TGeoBBox* fullAbsorber = new TGeoBBox("fullAbsorber", dA, dA, dZ0/3.);
         TGeoBBox* cutOut = new TGeoBBox("cutout", dA/3.+20*cm, dA/3.+20*cm, dZ0/3.+0.1*mm); //no idea why to add 20cm
         TGeoSubtraction *subtraction = new TGeoSubtraction("fullAbsorber","cutout");
@@ -701,7 +770,7 @@ void ShipMuonShield::ConstructGeometry()
 		       fieldDirection[nM], dXIn[nM], dYIn[nM], dXOut[nM],
 		       dYOut[nM], dZf[nM], midGapIn[nM], midGapOut[nM],
 		       HmainSideMagIn[nM], HmainSideMagOut[nM], gapIn[nM],
-		       gapOut[nM], Z[nM], true);
+		       gapOut[nM], Z[nM], true, false);
 	}
 
       std::vector<TGeoTranslation*> mag_trans;
@@ -759,12 +828,37 @@ void ShipMuonShield::ConstructGeometry()
          tShield->AddNode(coatWall, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*absorber_half_length + absorber_offset+7 * cm));
 
       }
-
+      std::array<double, 9> fieldScale = {{1., 1., 1., 1., 1., 1., 1., 1., 1.}};
+      if (fWithCoMagnet > 0)
+      {
+        Double_t lengthSum = 0.;
+        for (int i = 2; i < 9; ++i)
+        {
+          lengthSum += dZf[i];
+        }
+        fieldScale.fill((fField * lengthSum -  2.2 * dZf[fWithCoMagnet])/fField/(lengthSum - dZf[fWithCoMagnet]));
+        fieldScale[0] = 1.;
+        fieldScale[1] = 1.;
+        try
+        {
+         fieldScale.at(fWithCoMagnet) = 2.2 / fField;
+        }
+        catch(const std::out_of_range& e)
+        {
+           Fatal( "ShipMuonShield", "Exception out of range for --coMuonShield occurred \n");
+        }
+      }
       for (Int_t nM = 2; nM <= (nMagnets - 1); nM++) {
-	CreateMagnet(magnetName[nM], iron, tShield, fields, fieldDirection[nM],
+  Double_t ironField_s = fField * fieldScale[nM] * tesla;
+  TGeoUniformMagField *magFieldIron_s = new TGeoUniformMagField(0.,ironField_s,0.);
+  TGeoUniformMagField *RetField_s     = new TGeoUniformMagField(0.,-ironField_s,0.);
+  TGeoUniformMagField *ConRField_s    = new TGeoUniformMagField(-ironField_s,0.,0.);
+  TGeoUniformMagField *ConLField_s    = new TGeoUniformMagField(ironField_s,0.,0.);
+  TGeoUniformMagField *fields_s[4] = {magFieldIron_s,RetField_s,ConRField_s,ConLField_s};      
+	CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
 		     dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
 		     midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
-		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8);
+		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8, fStepGeo);
 
 	if (nM==8 || !fSupport) continue;
 	Double_t dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
@@ -797,20 +891,25 @@ void ShipMuonShield::ConstructGeometry()
 	    +w2, +h2,
 	    -w2, +h2,
 	};
-	TGeoVolume *pillar1 =
-	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM - 1),
-				  steel, length, verticesIn.data());
-	TGeoVolume *pillar2 =
-	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), steel,
-				  length, verticesOut.data());
-	pillar1->SetLineColor(kGreen-5);
-	pillar2->SetLineColor(kGreen-5);
-	tShield->AddNode(pillar1, 1, new TGeoTranslation(
-				     0, -0.5 * (dYIn[nM] + dXIn[nM] + 10 * m - fFloor),
-				     Z[nM] - dZf[nM] + length));
-	tShield->AddNode(pillar2, 1, new TGeoTranslation(
-				     0, -0.5 * (dYOut[nM] + dXOut[nM] + 10 * m - fFloor),
-				     Z[nM] + dZf[nM] - length));
+  if (!fStepGeo)
+  {
+
+
+  	TGeoVolume *pillar1 =
+  	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM - 1),
+  				  steel, length, verticesIn.data());
+  	TGeoVolume *pillar2 =
+  	    gGeoManager->MakeArb8(TString::Format("pillar_%d", 2 * nM), steel,
+  				  length, verticesOut.data());
+  	pillar1->SetLineColor(kGreen-5);
+  	pillar2->SetLineColor(kGreen-5);
+  	tShield->AddNode(pillar1, 1, new TGeoTranslation(
+  				     0, -0.5 * (dYIn[nM] + dXIn[nM] + 10 * m - fFloor),
+  				     Z[nM] - dZf[nM] + length));
+  	tShield->AddNode(pillar2, 1, new TGeoTranslation(
+  				     0, -0.5 * (dYOut[nM] + dXOut[nM] + 10 * m - fFloor),
+  				     Z[nM] + dZf[nM] - length));
+  }
       }
           
       } else {
@@ -821,7 +920,7 @@ void ShipMuonShield::ConstructGeometry()
 	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
 		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
 		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
-		   gapIn[nM],gapOut[nM],Z[nM],0);
+		   gapIn[nM],gapOut[nM],Z[nM],0, fStepGeo);
 	}
       }
       Double_t dX1 = dXIn[0];

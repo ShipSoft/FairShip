@@ -1,0 +1,37 @@
+
+build:
+  tags:
+    - cvmfs
+  image: alisw/alidock:cc7
+  stage: build
+  variables:
+    GIT_CLONE_PATH: '$CI_BUILDS_DIR/FairShip/'
+  before_script:
+    - source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
+    - cd ..
+  script:
+    - aliBuild -c $SHIPDIST --default fairship build FairShip --always-prefer-system --debug
+
+build&test:
+  tags:
+    - cvmfs
+  image: alisw/alidock:cc7
+  stage: build
+  variables:
+    GIT_CLONE_PATH: '$CI_BUILDS_DIR/FairShip'
+  before_script:
+    - source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
+    - cd ..
+    - aliBuild -c $SHIPDIST --default fairship build FairShip --always-prefer-system --debug
+    - eval `alienv load FairShip/latest`
+  script:
+    # it seems like the python script behave different if run inside the CI or if run from the classical command line. 
+    # I believe the difference is the interactivity of the shell, in the CI is not iteractive, in the shell it is iteractive.
+    # The use of `script -c` seems to fix the problem.
+    # We pipe the result of the script into tee that print to screen and to the input file at the same time.
+    # Then we grep the file created by tee for the successful signs.
+    # We don't grep directly the result of the script that, again, produce something a little different.
+    - script -c 'python $FAIRSHIP/macro/run_simScript.py --test' | tee simulation; grep 'Macro finished succesfully.' simulation
+    - script -c 'python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root' | tee recostruction; grep 'finished writing tree' recostruction
+    - script -c 'python $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root' | tee analysis; grep 'finished making plots' analysis
+

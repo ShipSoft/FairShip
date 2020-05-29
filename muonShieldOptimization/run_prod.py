@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os,time,ROOT
 def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
   ncpu = 9
@@ -221,7 +222,7 @@ def copy2EOS():
    for i in range(1,10):
    # requires full path
     cmd = eos+' cp -r '+os.path.abspath('.')+'/'+prefix+str(i)+'/ /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/'
-    print cmd
+    print(cmd)
     os.system(cmd)
 def copyFromEOS():
  import os
@@ -233,5 +234,5 @@ def copyFromEOS():
    for i in range(1,10):
    # requires full path
     cmd = eos+' cp -r  /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/ ' +os.path.abspath('.')+'/'+prefix+str(i)+'/'
-    print cmd
+    print(cmd)
     os.system(cmd)

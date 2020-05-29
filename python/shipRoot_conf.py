@@ -1,10 +1,14 @@
-import ROOT, atexit, sys, os
-from pythia8_conf import addHNLtoROOT
+from __future__ import print_function
+import ROOT
+import atexit
+import sys
+import os
+from pythia8_conf_utils import addHNLtoROOT
 from pythia8darkphoton_conf import addDPtoROOT
 
 # Try to check if config has been executed...
-if os.environ.get('FAIRSHIP_ROOT','') == '' and os.environ.get('Linux_Flavour_','') == '' :
-   print "Do first: source config.[c]sh"
+if os.environ.get('FAIRSHIP_ROOT', '') == '' and os.environ.get('Linux_Flavour_', '') == '':
+   print("Do first: source config.[c]sh")
    quit()
 
 # When on Darwin load all needed shared libs as DYLD_LIBRARY_PATH is not
@@ -39,18 +43,24 @@ else:
     ROOT.gSystem.Load("libG4clhep")
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 
-#-----prepare python exit-----------------------------------------------
+# -----prepare python exit-----------------------------------------------
+
+
 def pyExit():
-   x = sys.modules['__main__']
-   if hasattr(x,'run'): 
-        del x.run
-        print "make suicid, until better solution found to ROOT/genfit interference"
-        for f in ROOT.gROOT.GetListOfFiles(): 
-         if f.IsWritable() and f.IsOpen(): f.Close()
-        os.system('kill '+str(os.getpid()))
-   if hasattr(x,'fMan'): del x.fMan
-   if hasattr(x,'fRun'): del x.fRun
-   pass
+    for module in sys.modules:
+        if "ROOT.genfit" in module:
+            x = sys.modules['__main__']
+            if hasattr(x, 'run'):
+                del x.run
+                print(
+                    "make suicid, until better solution found to ROOT/genfit interference")
+                for f in ROOT.gROOT.GetListOfFiles():
+                    if f.IsWritable() and f.IsOpen(): f.Close()
+                os.system('kill '+str(os.getpid()))
+            if hasattr(x,'fMan'): del x.fMan
+            if hasattr(x,'fRun'): del x.fRun
+            return
+    print("Genfit is not used. Exit normally")
 
 def configure(darkphoton=None):
    ROOT.gROOT.ProcessLine('#include "'+os.environ["FAIRSHIP"]+'/shipdata/ShipGlobals.h"')

@@ -14,8 +14,6 @@ const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   
 Int_t counter = 0;
 const Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
 
-using namespace Pythia8;
-
 // -----   Default constructor   -------------------------------------------
 Pythia8Generator::Pythia8Generator() 
 {
@@ -89,9 +87,9 @@ Bool_t Pythia8Generator::Init()
      Int_t n = 1;
      while(n!=0){
       n = fPythia->particleData.nextId(n);
-      ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+      Pythia8::ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
       if (p->tau0()>1){
-      string particle = std::to_string(n)+":mayDecay = false";
+      std::string particle = std::to_string(n)+":mayDecay = false";
       fPythia->readString(particle);
       fLogger->Info(MESSAGE_ORIGIN,"Made %s stable for Pythia, should decay in Geant4",p->name().c_str());
       }

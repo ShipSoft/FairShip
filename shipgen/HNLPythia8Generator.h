@@ -12,9 +12,9 @@
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
 class FairPrimaryGenerator;
-using namespace Pythia8;
+//using namespace Pythia8;
 
-class PyTr1Rng : public RndmEngine
+class PyTr1Rng : public Pythia8::RndmEngine
 {
  public:
   PyTr1Rng() {  rng = new TRandom1(gRandom->GetSeed()); };
@@ -26,7 +26,7 @@ class PyTr1Rng : public RndmEngine
   TRandom1 *rng; //!
 };
 
-class PyTr3Rng : public RndmEngine
+class PyTr3Rng : public Pythia8::RndmEngine
 {
  public:
   PyTr3Rng() {  rng = new TRandom3(gRandom->GetSeed()); };
@@ -70,11 +70,11 @@ class HNLPythia8Generator : public FairGenerator
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
   Int_t nrOfRetries(){ return fnRetries; };
-  Pythia* getPythiaInstance(){return fPythia;};
-  Pythia* fPythia;             //!
+  Pythia8::Pythia* getPythiaInstance(){return fPythia;};
+  Pythia8::Pythia* fPythia;             //!
  private:
   
-  RndmEngine* fRandomEngine;  //!
+  Pythia8::RndmEngine* fRandomEngine;  //!
   
  protected:
 
@@ -97,7 +97,7 @@ class HNLPythia8Generator : public FairGenerator
   Bool_t fDeepCopy;    // not used
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
 
-  ClassDef(HNLPythia8Generator,5);
+  ClassDef(HNLPythia8Generator,6);
 };
 
 #endif /* !PNDH8GENERATOR_H */

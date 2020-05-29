@@ -39,7 +39,7 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_
      time_over_threshold = 167.2;
 } 
 
-void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop)
+void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop, bool charm = false)
 { 
      Int_t statnb = fDetectorID/10000000; 
      Int_t vnb =  (fDetectorID - statnb*10000000)/1000000; 
@@ -70,6 +70,54 @@ void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3
      if (statnb<3){wire = "gas_12_";wire+=(fDetectorID);} 
      //TString path = "/volProva_1";path+="/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire; 
      TString path = "";path+="/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire; 
+
+     if (charm){
+      Int_t snb =   fDetectorID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 2000;  
+      Int_t modulenumber = (snb-1)/12; //as told me by Daniel
+      TString module; 
+      //level 1: mother volume, same for everyone
+      TString mother ="volDriftTubeCharm_1/";
+      //level 2: station, plane and module information:
+      //example: x_station_3_plane_0_module_1_130000000
+      prefix = "x_station_"; 
+      stat = prefix + statnb;
+
+      plane = "_plane_";
+      plane += pnb;
+      module = "_module_";
+      module += modulenumber;
+
+      wire = "_";
+      if (modulenumber > 0) wire += modulenumber;
+      wire += statnb;
+      wire += "0";
+      wire += pnb;
+      wire += "00000";
+
+      path = "/"+mother+stat+plane+module+wire;
+      //level 3: now added layer information
+      //example name x_station_3_plane_0_module_4_layer_1_430010000
+      layer = "_layer_";
+      layer += lnb;
+
+      wire = "_";
+      if (modulenumber > 0) wire += modulenumber;
+      wire += statnb;
+      wire += "0";
+      wire += pnb;
+      wire += lnb;
+      wire += "0000";
+
+      path += "/"+stat+plane+module+layer+wire;
+
+      //level 4: gas tube
+      //examples: gas_30002016 
+      if (modulenumber==4) wire ="short_gas_";
+      else wire = "gas_";
+      wire += fDetectorID;
+      path += "/"+wire;
+     }
+
      Bool_t rc = nav->cd(path); 
      if (not rc){ 
         std::cout << "MufluxSpectrometer::TubeDecode, TGeoNavigator failed "<<path<< std::endl;

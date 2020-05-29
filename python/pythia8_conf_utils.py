@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import division
 import os
 import sys
 import re
@@ -33,7 +34,7 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
            sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
        except:
            sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
-    print(sumbrs.values())
+    print(list(sumbrs.values()))
     maxsumbr=max(sumbrs.values())
     return maxsumbr
 
@@ -57,7 +58,7 @@ def make_particles_stable(P8gen, above_lifetime):
         n = p8.particleData.nextId(n)
         p = p8.particleData.particleDataEntryPtr(n)
         if p.tau0() > above_lifetime:
-            command = str(n)+":mayDecay = false"
+            command = "{}:mayDecay = false".format(n)
             p8.readString(command)
             print("Pythia8 configuration: Made {} stable for Pythia, should decay in Geant4".format(p.name()))
 
@@ -157,9 +158,9 @@ def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         if br <= 0: # Ignore kinematically closed channels
             return
         if 'idhadron' in ch: # Semileptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"   22      "+str(ch['idlepton'])+"       9900015   "+str(ch['idhadron']))
+            P8gen.SetParameters('{}:addChannel      1  {:.17}   22      {}       9900015   {}'.format(ch['id'], br*scale_factor, ch['idlepton'], ch['idhadron']))
         else: # Leptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"    0       9900015      "+str(ch['idlepton']))
+            P8gen.SetParameters('{}:addChannel      1  {:.17}    0       9900015      {}'.format(ch['id'], br*scale_factor, ch['idlepton']))
     else: # Wrong decay
         raise ValueError("Missing key 'idlepton' in channel {0}".format(ch))
 
@@ -170,9 +171,9 @@ def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         if br <= 0: # Ignore kinematically closed channels
             return
         if 'idlepton' in ch: # 3-body leptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"    1531       9900015      "+str(ch['idlepton'])+" "+str(ch['idhadron']))
+            P8gen.SetParameters('{}:addChannel      1  {:.16}    1531       9900015      {} {}'.format(ch['id'], br*scale_factor, ch['idlepton'], ch['idhadron']))
         else: # 2-body semileptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"    1521       9900015      "+str(ch['idhadron']))
+            P8gen.SetParameters('{}:addChannel      1  {:.16}    1521       9900015      {}'.format(ch['id'], br*scale_factor, ch['idhadron']))
     else:
         raise ValueError("Missing key 'idhadron' in channel {0}".format(ch))
 
@@ -215,11 +216,11 @@ def add_dummy_channel(P8gen, particle, remainder):
     pdg = P8gen.getPythiaInstance().particleData
     charge = pdg.charge(particle)
     if charge > 0:
-        P8gen.SetParameters(str(particle)+":addChannel      1   "+str(remainder)+"    0       22      -11")
+        P8gen.SetParameters('{}:addChannel      1   {:.16}    0       22      -11'.format(particle, remainder))
     elif charge < 0:
-        P8gen.SetParameters(str(particle)+":addChannel      1   "+str(remainder)+"    0       22       11")
+        P8gen.SetParameters('{}:addChannel      1   {:.16}    0       22       11'.format(particle, remainder))
     else:
-        P8gen.SetParameters(str(particle)+":addChannel      1   "+str(remainder)+"    0       22      22")
+        P8gen.SetParameters('{}:addChannel      1   {:.16}    0       22      22'.format(particle, remainder))
 
 def compute_max_total_br(decay_chains):
     """

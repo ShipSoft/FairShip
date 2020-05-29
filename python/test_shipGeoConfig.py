@@ -13,7 +13,7 @@ class TestSingleConfig(unittest.TestCase):
             c.width = 20
 
     def test_len(self):
-        assert len(ConfigRegistry.keys()) == 1, ConfigRegistry.keys()
+        assert len(ConfigRegistry.keys()) == 1, list(ConfigRegistry.keys())
 
     def test_key(self):
         assert self.key in ConfigRegistry.keys()
@@ -92,7 +92,7 @@ with ConfigRegistry.register_config("basic") as c:
         ConfigRegistry.loadpys(config)
 
     def test_len(self):
-        assert len(ConfigRegistry.keys()) == 1, ConfigRegistry.keys()
+        assert len(ConfigRegistry.keys()) == 1, list(ConfigRegistry.keys())
 
     def test_key(self):
         assert self.key in ConfigRegistry.keys()
@@ -141,15 +141,15 @@ with ConfigRegistry.register_config("basic") as c:
     def test_true(self):
         c = ConfigRegistry.loadpys(self.config, MU_SHIELD_ENABLED=True)
         self.assertTrue("muShield" in c)
-        assert len(ConfigRegistry.keys()) == 1, ConfigRegistry.keys()
         assert self.key in ConfigRegistry.keys()
+        assert len(ConfigRegistry.keys()) == 1, list(ConfigRegistry.keys())
         assert ConfigRegistry[self.key].Bfield.max  == 1.5*u.kilogauss
         assert ConfigRegistry[self.key].muShield.dZ1 == 2.5*u.m
 
     def test_false(self):
         ConfigRegistry.loadpys(self.config, MU_SHIELD_ENABLED=False)
-        assert len(ConfigRegistry.keys()) == 1, ConfigRegistry.keys()
         assert self.key in ConfigRegistry.keys()
+        assert len(ConfigRegistry.keys()) == 1, list(ConfigRegistry.keys())
         assert ConfigRegistry[self.key].Bfield.max  == 1.5*u.kilogauss
         self.assertTrue("muShield" not in ConfigRegistry[self.key])
 

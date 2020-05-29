@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import division
 # pid deffiner
 import ROOT, sys
 import shipunit as u
@@ -11,9 +13,9 @@ class Task:
  "initialize"
 
  def __init__(self,main):
-  print "****************************************"
-  print "*** You are using PID version 18.1.0 ***"
-  print "****************************************"
+  print("****************************************")
+  print("*** You are using PID version 18.1.0 ***")
+  print("****************************************")
   self.sTree = main.sTree
   self.fpidArray  = ROOT.TClonesArray("pid")
   if not self.sTree.GetBranch("pid"):

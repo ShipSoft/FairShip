@@ -10,6 +10,7 @@
 # cmScale (default = 1.0) to convert the text file distances into cm. 
 # For example, if the input data uses mm for lengths, cmScale = 0.1.
 
+from __future__ import print_function
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field binning
@@ -51,10 +52,10 @@ def run(inFileName = 'FieldTest.txt', rootFileName = 'BFieldTest.root',
 
 def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
 
-    print 'Create map {0} from {1} using cmScale = {2}'.format(rootFileName, 
-                                                                 inFileName, cmScale)
+    print('Create map {0} from {1} using cmScale = {2}'.format(rootFileName, 
+                                                                 inFileName, cmScale))
     if storeCoords is True:
-        print 'We will also store the x,y,z field coordinates in {0}'.format(rootFileName)
+        print('We will also store the x,y,z field coordinates in {0}'.format(rootFileName))
 
     rangeInfo = findRanges(inFileName, cmScale)
 
@@ -96,7 +97,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     #y0 = 0.0
     #z0 = 0.0
 
-    print 'Centering field map using co-ordinate shift {0} {1} {2} cm'.format(x0, y0, z0)
+    print('Centering field map using co-ordinate shift {0} {1} {2} cm'.format(x0, y0, z0))
     
     # Center co-ordinate range limits (cm)
     rStruct.xMin = rStruct.xMin - x0
@@ -108,9 +109,9 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     rStruct.zMin = rStruct.zMin - z0
     rStruct.zMax = rStruct.zMax - z0
 
-    print 'x range = {0} to {1}'.format(rStruct.xMin, rStruct.xMax)
-    print 'y range = {0} to {1}'.format(rStruct.yMin, rStruct.yMax)
-    print 'z range = {0} to {1}'.format(rStruct.zMin, rStruct.zMax)
+    print('x range = {0} to {1}'.format(rStruct.xMin, rStruct.xMax))
+    print('y range = {0} to {1}'.format(rStruct.yMin, rStruct.yMax))
+    print('z range = {0} to {1}'.format(rStruct.zMin, rStruct.zMax))
     
     # Fill info into range tree
     rangeTree.Fill()
