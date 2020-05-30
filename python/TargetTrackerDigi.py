@@ -352,8 +352,6 @@ for index, event in enumerate(tree):
 		recovery_globalpos = mat_to_global(hit.GetDetectorID(), recovery_localpos)
 		delta = first_coord - recovery_globalpos
 
-		print way, first_coord, '; ', second_coord, '; ', matlen, '; ', distance
-
 		if abs(delta) > 1: continue
 		if wmp_of_cluster is False: continue
 
@@ -413,8 +411,6 @@ for index, event in enumerate(tree):
 		recovery_localpos = chan_to_cm (wmp_of_cluster)
 		recovery_globalpos = mat_to_global(hit.GetDetectorID(), recovery_localpos)
 		delta = first_coord - recovery_globalpos
-
-		print way, first_coord, '; ', second_coord, '; ', matlen, '; ', distance
 
 		if abs(delta) > 1: continue
 		if wmp_of_cluster is False: continue
