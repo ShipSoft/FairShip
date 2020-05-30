@@ -307,8 +307,10 @@ geofile = None
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight=dy, 
 	tankDesign=dv, muShieldDesign=ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, 
 	strawDesign=strawDesign, muShieldGeo=geofile)
-muonfile = ROOT.TFile("$PWD/ship.conical.PG_13-TGeant4.root")
-tree = muonfile.Get("cbmsim")
+
+input_file = ROOT.TFile("$PWD/ship.conical.PG_13-TGeant4.root")
+# input_file = ROOT.TFile("$PWD/ship.conical.Pythia8-TGeant4.root") 
+tree = input_file.Get("cbmsim")
 
 tt_points = []
 tt_raw = []
@@ -327,6 +329,9 @@ n_tt_stations = ship_geo.NuTauTT.n # 19
 # TT
 for index, event in enumerate(tree):
 	for hit in event.TTPoint:
+
+		if get_mat_info(hit.GetDetectorID()) is False: continue
+
 		way, tt_num_plane, matnum, n_mats, matlen = get_mat_info(hit.GetDetectorID())
 		if way == 'vertical':
 			first_coord = hit.GetX()
@@ -337,7 +342,7 @@ for index, event in enumerate(tree):
 			second_coord = hit.GetX()
 			way_bin = 1
 		localpos = global_to_mat(hit.GetDetectorID(), first_coord)
-		distance = matlen / 2. - second_coord
+		distance = matlen + (-1, +1)[way_bin] * second_coord
 		channelpos = cm_to_chan(localpos)
 		ly_amplitude = int(round(ly_loss_random(distance)))
 		cluster_width = int(round(cluster_width_random(distance, ly=ly_amplitude)))
@@ -347,12 +352,10 @@ for index, event in enumerate(tree):
 		recovery_globalpos = mat_to_global(hit.GetDetectorID(), recovery_localpos)
 		delta = first_coord - recovery_globalpos
 
-		if abs(delta) > 1:
-			# print 'Warning: incorrect coordinate recovering'
-			continue
+		print way, first_coord, '; ', second_coord, '; ', matlen, '; ', distance
 
-		if wmp_of_cluster is False:
-			continue
+		if abs(delta) > 1: continue
+		if wmp_of_cluster is False: continue
 
 		tt_points.append([
 			hit.GetTime(), # 0; ns
@@ -388,6 +391,9 @@ tt_points = np.array(tt_points)
 # HPT 
 for index, event in enumerate(tree):
 	for hit in event.HptPoint:
+
+		if get_mat_info(hit.GetDetectorID()) is False: continue
+
 		way, hpt_num_plane, matnum, n_mats, matlen = get_mat_info(hit.GetDetectorID())
 		if way == 'vertical':
 			first_coord = hit.GetX()
@@ -398,7 +404,7 @@ for index, event in enumerate(tree):
 			second_coord = hit.GetX()
 			way_bin = 1
 		localpos = global_to_mat(hit.GetDetectorID(), first_coord)
-		distance = matlen / 2. - second_coord
+		distance = matlen + (-1, +1)[way_bin] * second_coord
 		channelpos = cm_to_chan(localpos)
 		ly_amplitude = int(round(ly_loss_random(distance)))
 		cluster_width = int(round(cluster_width_random(distance, ly=ly_amplitude)))
@@ -408,12 +414,10 @@ for index, event in enumerate(tree):
 		recovery_globalpos = mat_to_global(hit.GetDetectorID(), recovery_localpos)
 		delta = first_coord - recovery_globalpos
 
-		if abs(delta) > 1:
-			# print 'Warning: incorrect coordinate recovering'
-			continue
+		print way, first_coord, '; ', second_coord, '; ', matlen, '; ', distance
 
-		if wmp_of_cluster is False:
-			continue
+		if abs(delta) > 1: continue
+		if wmp_of_cluster is False: continue
 
 		hpt_points.append([
 			hit.GetTime(), # 0; ns
@@ -453,75 +457,80 @@ tt_points = np.vstack((tt_points, hpt_points))
 
 
 # ---- 2. WRITE THE DATA --------------------------
-with open("TToutput.txt","w") as ttout:
-	ttout.write("TT station; Detector ID; Position [channel];" 
-					"Amplitude [ph.e.]; Cluster Width; Coordinate [cm]; X or Y \n")
-	for index, event in enumerate(tt_points):
-		ttout.write('{:2.0f}; '.format(tt_points[index,1]))
-		ttout.write("{:2.0f}; ".format(tt_points[index,2]))
-		ttout.write("{}; ".format(tt_points[index,3]))
-		ttout.write("{}; ".format(tt_points[index,4]))
-		ttout.write("{:2.0f}; ".format(tt_points[index,5]))
-		ttout.write("{}; ".format(tt_points[index,6]))
-		if tt_points[index,7] == 0: # vertical scifi plane gives X coordinate
-			ttout.write("X")
-		elif tt_points[index,7] == 1: # horizontal scifi plane gives Y coordinate
-			ttout.write("Y")
-		ttout.write("\n")
+if not tt_points.any():
+	print 'WARNING: TTPoint is empty!'
+
+if tt_points.any():
+	with open("TToutput.txt","w") as ttout:
+		ttout.write("TT station; Detector ID; Position [channel];" 
+						"Amplitude [ph.e.]; Cluster Width; Coordinate [cm]; X or Y \n")
+		for index, event in enumerate(tt_points):
+			ttout.write('{:2.0f}; '.format(tt_points[index,1]))
+			ttout.write("{:2.0f}; ".format(tt_points[index,2]))
+			ttout.write("{}; ".format(tt_points[index,3]))
+			ttout.write("{}; ".format(tt_points[index,4]))
+			ttout.write("{:2.0f}; ".format(tt_points[index,5]))
+			ttout.write("{}; ".format(tt_points[index,6]))
+			if tt_points[index,7] == 0: # vertical scifi mat gives X coordinate
+				ttout.write("X")
+			elif tt_points[index,7] == 1: # horizontal scifi mat gives Y coordinate
+				ttout.write("Y")
+			ttout.write("\n")
 # ----------------------------------------------
 
 
 # ---- 3. SHOW THE DATA --------------------------
-fig, axs = plt.subplots(2,2)
-plt.subplot(2, 2, 1) 
-axs = plt.gca()
-ly_bins = np.linspace(4.5,100,200)
-plt.hist(tt_points[:,4], bins=ly_bins, label="Light yield")
-axs.set_xlabel("LY, [ph.e.]")
-axs.set_ylabel("Events")
-plt.legend(loc="upper right")
+if tt_points.any():
+	fig, axs = plt.subplots(2,2)
+	plt.subplot(2, 2, 1) 
+	axs = plt.gca()
+	ly_bins = np.linspace(4.5,100,200)
+	plt.hist(tt_points[:,4], bins=ly_bins, label="Light yield")
+	axs.set_xlabel("LY, [ph.e.]")
+	axs.set_ylabel("Events")
+	plt.legend(loc="upper right")
 
-plt.subplot(2, 2, 2) 
-axs = plt.gca()
-nbins = 24
-plt.hist(tt_points[:,1], bins=nbins, label="TT station")
-axs.set_xlabel("Station number")
-axs.set_ylabel("Events")
-plt.legend(loc="upper right")
+	plt.subplot(2, 2, 2) 
+	axs = plt.gca()
+	nbins = 24
+	plt.hist(tt_points[:,1], bins=nbins, label="TT station")
+	axs.set_xlabel("Station number")
+	axs.set_ylabel("Events")
+	plt.legend(loc="upper right")
 
-# Print 'X-Z' and 'Y-Z' as output data.
-# 'X-Y-Z' graphics need additional analysis (linking by time).
-xz_points = []
-yz_points = []
-for index, event in enumerate(tt_points):
-	if tt_points[index, 7] == 0: # vertical
-		xz_points.append([
-			tt_raw[index, 7], # Z
-			tt_points[index, 6]
-		])
-	elif tt_points[index, 7] == 1: # horizontal
-		yz_points.append([
-			tt_raw[index, 7], # Z
-			tt_points[index, 6]
-		])
-xz_points = np.array(xz_points)
-yz_points = np.array(yz_points)
+	# Print 'X-Z' and 'Y-Z' as output data.
+	# 'X-Y-Z' graphics need additional analysis (linking by time).
+	xz_points = []
+	yz_points = []
+	for index, event in enumerate(tt_points):
+		if tt_points[index, 7] == 0: # vertical
+			xz_points.append([
+				tt_raw[index, 7], # Z
+				tt_points[index, 6]
+			])
+		elif tt_points[index, 7] == 1: # horizontal
+			yz_points.append([
+				tt_raw[index, 7], # Z
+				tt_points[index, 6]
+			])
+	xz_points = np.array(xz_points)
+	yz_points = np.array(yz_points)
 
-plt.subplot(2, 2, 3) 
-axs = plt.gca()
-axs.scatter(xz_points[:,0], xz_points[:, 1])
-axs.set_xlabel("Z, [cm]")
-axs.set_ylabel("X, [cm]")
-axs.set_ylim(-50, +50) # +-73.2475
+	plt.subplot(2, 2, 3) 
+	axs = plt.gca()
+	axs.scatter(xz_points[:,0], xz_points[:, 1])
+	axs.set_xlabel("Z, [cm]")
+	axs.set_ylabel("X, [cm]")
+	axs.set_ylim(-50, +50) # +-47.1575 
 
-plt.subplot(2, 2, 4)
-axs = plt.gca()
-axs.scatter(yz_points[:,0], yz_points[:, 1])
-axs.set_xlabel("Z, [cm]")
-axs.set_ylabel("Y, [cm]")
-axs.set_ylim(-80, +80) # +-47.1575
+	plt.subplot(2, 2, 4)
+	axs = plt.gca()
+	axs.scatter(yz_points[:,0], yz_points[:, 1])
+	axs.set_xlabel("Z, [cm]")
+	axs.set_ylabel("Y, [cm]")
+	axs.set_ylim(-80, +80) # +-73.2475
 
-plt.show()
+	plt.show()
 # ----------------------------------------------
 
 
