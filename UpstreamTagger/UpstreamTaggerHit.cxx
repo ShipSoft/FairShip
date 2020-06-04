@@ -148,71 +148,69 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    mod = 0;
 
-   Double_t XHit = point_final[0];
-   Double_t YHit = point_final[1];
-   Double_t ZHit = point_final[2];
+   Double_t XHit1 = point_final[0];
+   Double_t YHit1 = point_final[1];
+   Double_t ZHit1 = point_final[2];
 
-   const Double_t PxHit = *mom[0];
-   const Double_t PyHit = *mom[1];
-   const Double_t PzHit = *mom[2];
+   const Double_t PxHit1 = *mom[0];
+   const Double_t PyHit1 = *mom[1];
+   const Double_t PzHit1 = *mom[2];
 
    
-   Double_t module[11][3];
-   Double_t det_zGlassPos = 0.2;
-   Double_t det_yGlassPos = 105;
-   Double_t det_xGlassPos = 223;
-   Double_t det_zGlassBorderPos = 0.2;
-   Double_t det_yGlassBorderPos = 1.0;
-   Double_t det_xGlassBorderPos = 1.0;
-   Double_t det_zAlPos = 1.1503;
-   Double_t det_dzAlPos = 0.1;
+   Double_t module1[11][3];
+   Double_t det_zGlassPos1 = 0.2;
+   Double_t det_yGlassPos1 = 105;
+   Double_t det_xGlassPos1 = 223;
+   Double_t det_zGlassBorderPos1 = 0.2;
+   Double_t det_yGlassBorderPos1 = 1.0;
+   Double_t det_xGlassBorderPos1 = 1.0;
+   Double_t det_zAlPos1 = 1.1503;
+   Double_t det_dzAlPos1 = 0.1;
 
-   Double_t ybox_fulldet = 499;
-   Double_t xbox_fulldet = 233.4; //cm 
-   Double_t zbox_fulldet = 17.0024;
-   Double_t z_space_layers = 0.2;  
-   Double_t extra_y = 6.5;
-   Double_t det_yStripPos = 3.1;
-   Double_t det_xStripPos64 = 3.3;
-   Double_t det_zStripPos = 0.0003;
+   Double_t ybox_fulldet1 = 499;
+   Double_t xbox_fulldet1 = 233.4; //cm 
+   Double_t zbox_fulldet1 = 17.0024;
+   Double_t z_space_layers1 = 0.2;  
+   Double_t extra_y1 = 6.5;
+   Double_t det_yStripPos1 = 3.1;
+   Double_t det_xStripPos64_1 = 3.3;
+   Double_t det_zStripPos1 = 0.0003;
 
-   Double_t det_zPos =  -2497.0000;
-   cout << " aaaa " << det_zPos << endl;
+   Double_t det_zPos1 = -2497.0000;
    
-
  //First Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[1][0] = 0; module[1][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[1][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
-  module[2][0] = 0; module[2][1] = 0; module[2][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
-  module[3][0] = 0; module[3][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[3][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
+  module1[1][0] = 0; module1[1][1] = ((ybox_fulldet1/2.0) - ((det_yGlassPos1)/2.0));  module1[1][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1/2.0) + det_dzAlPos1);
+  module1[2][0] = 0; module1[2][1] = 0; module1[2][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1/2.0) + det_dzAlPos1);
+  module1[3][0] = 0; module1[3][1] = -((ybox_fulldet1/2.0) - ((det_yGlassPos1)/2.0)); module1[3][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1/2.0) + det_dzAlPos1);
    
   //Second Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[4][0] = 0; module[4][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[4][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_space_layers + (det_zAlPos/2.0)); 
-  module[5][0] = 0; module[5][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[5][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_space_layers + (det_zAlPos/2.0));
+  module1[4][0] = 0; module1[4][1] = ((ybox_fulldet1/2.0) - ((det_yGlassPos1)) - ((det_yGlassPos1)/2.0) + extra_y1); module1[4][2] = (-(zbox_fulldet1/2.0) + det_zAlPos1 + det_dzAlPos1*3.0 + z_space_layers1 + (det_zAlPos1/2.0)); 
+  module1[5][0] = 0; module1[5][1] = -((ybox_fulldet1/2.0) - ((det_yGlassPos1)) - ((det_yGlassPos1)/2.0) + extra_y1);  module1[5][2] = (-(zbox_fulldet1/2.0) + det_zAlPos1 + det_dzAlPos1*3.0 + z_space_layers1 + (det_zAlPos1/2.0));
 
   //Third Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[6][0] = 0; module[6][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[6][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*2.0) + (det_zAlPos/2.0));
-  module[7][0] = 0; module[7][1] = 0; module[7][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*3.0) + (det_zAlPos/2.0));
-  module[8][0] = 0; module[8][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[8][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*2.0) + (det_zAlPos/2.0));
+  module1[6][0] = 0; module1[6][1] = ((ybox_fulldet1/2.0) - ((det_yGlassPos1)/2.0));  module1[6][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1*2.0) + det_dzAlPos1*5.0 + (z_space_layers1*2.0) + (det_zAlPos1/2.0));
+  module1[7][0] = 0; module1[7][1] = 0; module1[7][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1*2.0) + det_dzAlPos1*5.0 + (z_space_layers1*3.0) + (det_zAlPos1/2.0));
+  module1[8][0] = 0; module1[8][1] = -((ybox_fulldet1/2.0) - ((det_yGlassPos1)/2.0)); module1[8][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1*2.0) + det_dzAlPos1*5.0 + (z_space_layers1*2.0) + (det_zAlPos1/2.0));
    
   //Fourth Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[9][0] = 0; module[9][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[9][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + (z_space_layers*3.0) + (det_zAlPos/2.0)); 
-  module[10][0] = 0; module[10][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[10][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + (z_space_layers*3.0) + (det_zAlPos/2.0));
+  module1[9][0] = 0; module1[9][1] = ((ybox_fulldet1/2.0) - ((det_yGlassPos1)) - ((det_yGlassPos1)/2.0) + extra_y1); module1[9][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1*3.0) + det_dzAlPos1*7.0 + (z_space_layers1*3.0) + (det_zAlPos1/2.0)); 
+  module1[10][0] = 0; module1[10][1] = -((ybox_fulldet1/2.0) - ((det_yGlassPos1)) - ((det_yGlassPos1)/2.0) + extra_y1);  module1[10][2] = (-(zbox_fulldet1/2.0) + (det_zAlPos1*3.0) + det_dzAlPos1*7.0 + (z_space_layers1*3.0) + (det_zAlPos1/2.0));
   
   
-  Double_t Ymodule = -1000;
-  Double_t Zmodule = 0;
-  Double_t Xmodule1 = -1000;
+  Double_t Ymodule1 = -1000;
   Double_t Zmodule1 = 0;
-  Double_t dist = 1000;
+  Double_t Xmodule11 = -1000;
+  Double_t Zmodule11 = 0;
+  Double_t dist1 = 1000;
 
   Int_t flag0 = 1;
   
   for(int i = 1; i<= 10; i++){
 
-    if(XHit >= module[i][0] - (det_xGlassPos)/2.0 && XHit <= module[i][0] + (det_xGlassPos)/2.0 && YHit >= module[i][1] - (det_yGlassPos)/2.0 && YHit <= module[i][1] + (det_yGlassPos)/2.0 && ZHit >= det_zPos + (module[i][2] - (det_zAlPos+2*det_dzAlPos)/2.0) && ZHit <= det_zPos + (module[i][2] + (det_zAlPos+2*det_dzAlPos)/2.0)){
+    if(XHit1 >= module1[i][0] - (det_xGlassPos1)/2.0 && XHit1 <= module1[i][0] + (det_xGlassPos1)/2.0 && YHit1 >= module1[i][1] - (det_yGlassPos1)/2.0 && YHit1 <= module1[i][1] + (det_yGlassPos1)/2.0 && ZHit1 >= det_zPos1 + (module1[i][2] - (det_zAlPos1+2*det_dzAlPos1)/2.0) && ZHit1 <= det_zPos1 + (module1[i][2] + (det_zAlPos1+2*det_dzAlPos1)/2.0)){
 
       
-       if(fabs(det_zPos + module[i][2] - ZHit) < dist){
+       if(fabs(det_zPos1 + module1[i][2] - ZHit1) < dist1){
 
 	 if (flag0){
 	   RpcDetector = 1;
@@ -224,32 +222,32 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
 	 }
 
 	 if(i < 6){
-	   Zmodule = det_zPos + module[i][2] + det_zAlPos - det_zStripPos;
-	   Ymodule = module[i][1] - (det_yGlassPos + 2*det_yGlassBorderPos)/2.0 + 1.5; 
+	   Zmodule1 = det_zPos1 + module1[i][2] + det_zAlPos1 - det_zStripPos1;
+	   Ymodule1 = module1[i][1] - (det_yGlassPos1 + 2*det_yGlassBorderPos1)/2.0 + 1.5; 
 	 }
 	 else{
-	   Zmodule1 = det_zPos + module[i][2] + det_zAlPos - det_zStripPos;
-	   Xmodule1 = module[i][0] - (det_xGlassPos + 2*det_xGlassBorderPos)/2.0 + 2.175;
+	   Zmodule11 = det_zPos1 + module1[i][2] + det_zAlPos1 - det_zStripPos1;
+	   Xmodule11 = module1[i][0] - (det_xGlassPos1 + 2*det_xGlassBorderPos1)/2.0 + 2.175;
 	 } 
-	 dist = fabs(det_zPos + module[i][2] - ZHit);
+	 dist1 = fabs(det_zPos1 + module1[i][2] - ZHit1);
        }
     }
     if(i == 10 && flag0){
-       Double_t tmp = -module[6][2];     
-       Double_t tmp1 = -module[4][2];     
-       Double_t tmp2 = -module[1][2];     
+       Double_t tmp = -module1[6][2];     
+       Double_t tmp1 = -module1[4][2];     
+       Double_t tmp2 = -module1[1][2];     
       
-       module[1][2] = -module[9][2];
-       module[2][2] = -module[9][2];
-       module[3][2] = -module[9][2];
-       module[4][2] = tmp;
-       module[5][2] = tmp;
+       module1[1][2] = -module1[9][2];
+       module1[2][2] = -module1[9][2];
+       module1[3][2] = -module1[9][2];
+       module1[4][2] = tmp;
+       module1[5][2] = tmp;
 
-       module[6][2] = tmp1;
-       module[7][2] = tmp1;
-       module[8][2] = tmp1;
-       module[9][2] = tmp2;
-       module[10][2] = tmp2;
+       module1[6][2] = tmp1;
+       module1[7][2] = tmp1;
+       module1[8][2] = tmp1;
+       module1[9][2] = tmp2;
+       module1[10][2] = tmp2;
        
        i = 0;
        flag0 = 0;
@@ -275,18 +273,18 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
    Double_t X = -1;
    Double_t Y = -1;
  
-   if(Zmodule != 0){
+   if(Zmodule1 != 0){
 
-     Double_t Z = Zmodule - ZHit;
-     X = XHit + (Z*(PxHit/TMath::Sqrt(PxHit*PxHit + PyHit*PyHit + PzHit*PzHit))); 
-     Y = YHit + (Z*(PyHit/TMath::Sqrt(PxHit*PxHit + PyHit*PyHit + PzHit*PzHit))); 
+     Double_t Z = Zmodule1 - ZHit1;
+     X = XHit1 + (Z*(PxHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1))); 
+     Y = YHit1 + (Z*(PyHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1))); 
    
      Double_t count_strips = -1;
      Int_t counter = 0;
 
      for(int i = 1; i <= 32; i++){
 
-       count_strips = Ymodule + i*(det_yStripPos+0.15);
+       count_strips = Ymodule1 + i*(det_yStripPos1+0.15);
        counter++;
 	 
        if(Y >= (count_strips - 3.25) && Y < count_strips){
@@ -306,18 +304,18 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
      }
    }
    
-   if(Zmodule1 != 0){
+   if(Zmodule11 != 0){
 
-     Double_t Z = Zmodule1 - ZHit;
-     X = XHit + (Z*(PxHit/TMath::Sqrt(PxHit*PxHit + PyHit*PyHit + PzHit*PzHit))); 
-     Y = YHit + (Z*(PyHit/TMath::Sqrt(PxHit*PxHit + PyHit*PyHit + PzHit*PzHit))); 
+     Double_t Z = Zmodule11 - ZHit1;
+     X = XHit1 + (Z*(PxHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1))); 
+     Y = YHit1 + (Z*(PyHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1))); 
    
      Double_t count_strips = -1;
      Int_t counter = 0;
 
      for(int i = 1; i <= 64; i++){
 
-       count_strips = Xmodule1 + i*(det_xStripPos64+0.15);
+       count_strips = Xmodule11 + i*(det_xStripPos64_1+0.15);
        counter++;
 	 
        if(X >= (count_strips - 3.45) && X < count_strips){
@@ -337,14 +335,14 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
      }
    }
    
-   RpcModule = mod;
+   RpcModule1 = mod;
    RpcGlass = glass;
    RpcStrip = Strip;
    Rpc_NeighbourStrip = str;
 
-   if(Zmodule != 0)
-     hit_final = X;
    if(Zmodule1 != 0)
+     hit_final = X;
+   if(Zmodule11 != 0)
      hit_final = Y;
 
    TString path, path1;
