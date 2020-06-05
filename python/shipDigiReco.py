@@ -675,12 +675,12 @@ class ShipDigiReco:
    index = 0
    hitsPerDetId = {}
    for aMCPoint in self.sTree.UpstreamTaggerPoint:
-     aHit = ROOT.UpstreamTaggerHit(aMCPoint,self.sTree.t0)
+     aHit = ROOT.UpstreamTaggerHit(aMCPoint, global_variables.modules["UpstreamTagger"], self.sTree.t0)
      if self.digiUpstreamTagger.GetSize() == index: self.digiUpstreamTagger.Expand(index+1000)
      self.digiUpstreamTagger[index]=aHit
      detID = aHit.GetDetectorID()
      if aHit.isValid():
-      if detID in hitsPerDetId:
+      if hitsPerDetId.has_key(detID):
        t = aHit.GetMeasurements()
        ct = aHit.GetMeasurements()
 # this is not really correct, only first attempt
