@@ -947,12 +947,12 @@ void ShipMuonShield::ConstructGeometry()
       if (fDesign >= 7 && fFloor > 0) {
 	// Only add floor for new shield
 	TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2.,
-				      fMuonShieldLength / 2. - dZ - 1 * mm);
+				      fMuonShieldLength / 2. - dZ - 14.2 * cm); // substract CoatWall
 	TGeoVolume *floor = new TGeoVolume("floorM", box5, concrete);
 	floor->SetLineColor(11); // grey
 	top->AddNode(floor, 1, new TGeoTranslation(0, -10 * m + fFloor / 2.,
 						   zEndOfAbsorb +
-						       fMuonShieldLength / 2. + 2 * dZ));
+						       fMuonShieldLength / 2. +dZ + 14.2 * cm)); // avoiding overlap with CoatWall
       }
       TGeoCompositeShape *compRockD =
 	  new TGeoCompositeShape("compRockD", "(box3-box4)");
