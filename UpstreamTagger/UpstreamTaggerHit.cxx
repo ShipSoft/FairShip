@@ -177,7 +177,7 @@ TGeoNode* UpstreamTaggerHit::GetNode(Double_t &hit_final, Int_t &mod)
    Double_t det_zStripPos = 0.0003;
 
    Double_t det_zPos =  -2497.0000;
-   cout << " aaaa " << det_zPos << endl;
+   //cout << " aaaa " << det_zPos << endl;
    
 
  //First Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
