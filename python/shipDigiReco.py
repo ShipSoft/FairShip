@@ -680,7 +680,7 @@ class ShipDigiReco:
      self.digiUpstreamTagger[index]=aHit
      detID = aHit.GetDetectorID()
      if aHit.isValid():
-      if hitsPerDetId.has_key(detID):
+      if detID in hitsPerDetId:
        t = aHit.GetMeasurements()
        ct = aHit.GetMeasurements()
 # this is not really correct, only first attempt
