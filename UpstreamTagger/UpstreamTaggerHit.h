@@ -55,11 +55,11 @@ class UpstreamTaggerHit : public ShipHit
     Double_t v_drift = 17.7;//!    cm/ns
     Double_t T_resol = 0.283; //!  Rpc time resolution in ns
 
-    Double_t point_final[3]; //! 
+    Double_t point_final[3]; //[3]
     const Double_t * mom[3]; //!
 
-    Float_t flag;     //! < flag
-    Float_t t_1,t_2;  //! < TDC on both sides
+    Float_t flag;     // < flag
+    Float_t t_1,t_2;  // < TDC on both sides
     Int_t RpcModule; //! Rpc module
     Int_t RpcGlass;  //! Rpc glass
     Int_t RpcStrip;  //! Rpc Strip
