@@ -9,14 +9,14 @@
 #include "TGeoPhysicalNode.h"
 
 
-class UpstreamTaggerHit : public ShipHit
+class UpstreamTaggerHit : public ShipHit, UpstreamTagger
 {
   public:
   
     /** Default constructor **/
     UpstreamTaggerHit();
 
-    UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0);
+    UpstreamTaggerHit(UpstreamTaggerPoint* p, UpstreamTagger* c, Double_t t0);
 
     /** Destructor **/
     virtual ~UpstreamTaggerHit();
@@ -52,19 +52,20 @@ class UpstreamTaggerHit : public ShipHit
   private:
     UpstreamTaggerHit(const UpstreamTaggerHit& point);
     UpstreamTaggerHit operator=(const UpstreamTaggerHit& point);
-    Double_t v_drift = 17.7;//!    cm/ns
-    Double_t T_resol = 0.283; //!  Rpc time resolution in ns
+    Double_t v_drift = 17.7;// cm/ns
+    Double_t T_resol = 0.283; // Rpc time resolution in ns
 
-    Double_t point_final[3]; //[3]
-    const Double_t * mom[3]; //!
+    UpstreamTagger* c0;
+    Double_t point_final[3];
+    const Double_t * mom[3];
 
-    Float_t flag;     // < flag
-    Float_t t_1,t_2;  // < TDC on both sides
-    Int_t RpcModule; //! Rpc module
-    Int_t RpcGlass;  //! Rpc glass
-    Int_t RpcStrip;  //! Rpc Strip
-    Int_t RpcDetector;  //! Rpc detector 1 or 2
-    Int_t Rpc_NeighbourStrip; //! Neighbour strip likely to be activated
+    Float_t flag;     ///< flag
+    Float_t t_1,t_2;  ///< TDC on both sides
+    Int_t RpcModule; //Rpc module
+    Int_t RpcGlass;  //Rpc glass
+    Int_t RpcStrip;  //Rpc Strip
+    Int_t RpcDetector;  //Rpc detector 1 or 2
+    Int_t Rpc_NeighbourStrip; //Neighbour strip likely to be activated
     Double_t det_zdet1;     //!  z-position of veto station
     
     ClassDef(UpstreamTaggerHit,1);

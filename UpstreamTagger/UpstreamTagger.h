@@ -82,7 +82,6 @@ class UpstreamTagger: public FairDetector
     void SetSizeY_Strip64(Double_t ystrip64) {det_yStripPos64 = ystrip64;}
     void SetSizeZ_Strip(Double_t zstrip) {det_zStripPos = zstrip;}
     
-
     /**  Create the detector geometry */
     void ConstructGeometry();
 
@@ -103,9 +102,7 @@ class UpstreamTagger: public FairDetector
     virtual void   BeginEvent() {;}
    
     Double_t module[11][3];
-    
-  private:
-
+  
     /** Track information to be stored until the track leaves the active volume.*/
     Int_t          fTrackID;            //!  track index
     Int_t          fVolumeID;           //!  volume id
@@ -170,6 +167,8 @@ class UpstreamTagger: public FairDetector
     Double_t z_space_layers = 0.2;  
     Double_t extra_y = 6.5; 
     
+  private:
+
     TGeoVolume* UpstreamTagger_fulldet; // Timing_detector_1 object
    
     /** container for data points */
