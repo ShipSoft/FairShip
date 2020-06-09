@@ -119,7 +119,7 @@ def configure(run,ship_geo):
  elif ship_geo.muShieldDesign==2:
   MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE) 
- elif ship_geo.muShieldDesign in [3, 4, 5, 6, 7, 9,10]:
+ elif ship_geo.muShieldDesign in [3, 4, 5, 6, 7, 9, 10, 11]:
   if not hasattr(ship_geo.muShield,"Field"):
         MuonShield = ROOT.ShipMuonShield(
             "MuonShield", ship_geo.muShieldDesign, "ShipMuonShield",
