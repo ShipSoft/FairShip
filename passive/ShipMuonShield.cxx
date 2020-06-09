@@ -147,7 +147,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
   TGeoVolume *magF =
       gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
-  if (fDesign !=11 || arbName.Contains("Absorb")){magF->SetField(magField);}
+  if (fDesign != 11 || arbName.Contains("Absorb")){magF->SetField(magField);}
   tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation,
 						z_translation));
 }
@@ -486,7 +486,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
       HmainSideMagOut[i] = dYOut[i] / 2;
     }
 
-  } else if (fDesign == 9 || fDesign == 10 ||fDesign ==11) {
+  } else if (fDesign == 9 || fDesign == 10 ||fDesign == 11) {
      magnetName = {"MagnAbsorb1", "MagnAbsorb2", "Magn1", "Magn2", "Magn3",
        "Magn4", "Magn5", "Magn6", "Magn7"
      };
