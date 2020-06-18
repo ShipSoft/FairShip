@@ -127,8 +127,9 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     // 4. x < 0, y < 0: Bx = Bx
 
     Float_t BxSign(1.0);
+    
     if (isSymmetric_) {
-
+	
       // The field map co-ordinates only contain x > 0 and y > 0, i.e. we
       // are using x-y quadrant symmetry. If the local x or y coordinates 
       // are negative we need to change their sign and keep track of the 

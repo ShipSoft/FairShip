@@ -148,21 +148,62 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
 
     # Set the main spectrometer field map as a global field
     if hasattr(shipGeo, 'Bfield'):
+      fieldsList = []
       fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))      
+      fieldsList.append('MainSpecMap')   
       withConstFieldNuTauDet = False
       if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstFieldNuTauDet = shipGeo.EmuMagnet.WithConstField
       if not withConstFieldNuTauDet:
        fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))       
+       fieldsList.append('NuMap')    
       withConstFieldHadronAbs = True
       if hasattr(shipGeo.hadronAbsorber,'WithConstField'): withConstFieldHadronAbs = shipGeo.hadronAbsorber.WithConstField
       if not withConstFieldHadronAbs:
        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))       
+       fieldsList.append('HadronAbsorberMap')
+      withConstMuonShieldField = True
+      if hasattr (shipGeo, 'muShieldDesign'): 
+       if (shipGeo.muShieldDesign==11): withConstMuonShieldField = False  
+      if not withConstMuonShieldField:
+       zEndOfAbsorb = shipGeo.muShield.z  - shipGeo.muShield.length/2;
+       dZ = [None]*9
+       Z = [None]*9
+       zgap = 10.
+       dZ[0] = shipGeo.muShield.dZ1 - zgap / 2;
+       Z[0] = zEndOfAbsorb + dZ[0] + zgap;
+
+       dZ[1] = shipGeo.muShield.dZ2 - zgap / 2;
+       Z[1] = Z[0] + dZ[0] + dZ[1] + zgap;
+
+       dZ[2] = shipGeo.muShield.dZ3 - zgap / 2;
+       Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * zgap;
+
+       dZ[3] = shipGeo.muShield.dZ4 - zgap / 2;
+       Z[3] = Z[2] + dZ[2] + dZ[3] + zgap;
+
+       dZ[4] = shipGeo.muShield.dZ5 - zgap / 2;
+       Z[4] = Z[3] + dZ[3] + dZ[4] + zgap;
+
+       dZ[5] = shipGeo.muShield.dZ6 - zgap / 2;
+       Z[5] = Z[4] + dZ[4] + dZ[5] + zgap;
+
+       dZ[6] = shipGeo.muShield.dZ7 - zgap / 2;
+       Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;
+
+       dZ[7] = shipGeo.muShield.dZ8 - zgap / 2;
+       Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;
+
+       dZ[8] = 10.;
+       Z[8] = Z[7] + dZ[7] + dZ[8];
+
+       field_center = (Z[2]+Z[8]+dZ[8]-dZ[2])/2
+       fieldMaker.defineFieldMap('muonShieldField', 'files/MuonShieldField.root',
+                                 ROOT.TVector3(0.0, 0.0, field_center), ROOT.TVector3(0.0, 0.0, 0.0), True)
+       fieldsList.append('muonShieldField')
     # Combine the fields to obtain the global field
-      if not withConstFieldNuTauDet or not withConstFieldHadronAbs:
-       if not withConstFieldNuTauDet and withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'NuMap')
-       if withConstFieldNuTauDet and not withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'HadronAbsorberMap')
-       if not withConstFieldNuTauDet and not withConstFieldHadronAbs: fieldMaker.defineComposite('TotalField', 'MainSpecMap', 'HadronAbsorberMap','NuMap')
+      if len(fieldsList) > 1:
+       fieldMaker.defineComposite('TotalField', *fieldsList)  #fieldsList MUST have length <=4
        fieldMaker.defineGlobalField('TotalField')
       else:
        fieldMaker.defineGlobalField('MainSpecMap')
