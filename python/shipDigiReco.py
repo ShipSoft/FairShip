@@ -241,9 +241,9 @@ class ShipDigiReco:
    self.digiTimeDet.Delete()
    self.digitizeTimeDet()
    self.digiTimeDetBranch.Fill()
-   self.digiUpstreamTagger.Delete()
-   self.digitizeUpstreamTagger()
-   self.digiUpstreamTaggerBranch.Fill()
+   # self.digiUpstreamTagger.Delete()
+   # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
+   # self.digiUpstreamTaggerBranch.Fill()
    self.digiMuon.Delete()
    self.digitizeMuon()
    self.digiMuonBranch.Fill()
