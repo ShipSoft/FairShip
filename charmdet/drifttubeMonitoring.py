@@ -1,5 +1,5 @@
 #import yep
-import ROOT,os,time,sys,operator,atexit
+import ROOT,os,time,sys,operator,atexit,ctypes
 ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 
 from decorators import *
@@ -73,6 +73,8 @@ parser.add_argument("-u", "--update", dest="updateFile", help="update file", def
 parser.add_argument("-i", "--input", dest="inputFile", help="input histo file", default='residuals.root')
 parser.add_argument("-g", "--geofile", dest="geoFile", help="input geofile", default='')
 parser.add_argument("-s", "--smearing", dest="MCsmearing", help="additional MC smearing", default=MCsmearing)
+parser.add_argument("-F", "--fieldMap", dest="GoliathFieldMap", help="Goliath field map, '', inter or noDavid ", default="")
+
 options = parser.parse_args()
 if not options.withDisplay: ROOT.gROOT.SetBatch(True)
 
@@ -131,7 +133,7 @@ run.SetName("TGeant4")  # Transport engine
 run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
 run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
 rtdb = run.GetRuntimeDb()
-modules = charmDet_conf.configure(run,ShipGeo)
+modules = charmDet_conf.configure(run,ShipGeo,Gfield=options.GoliathFieldMap)
 # -----Create geometry----------------------------------------------
 run.Init()
 sGeo = ROOT.gGeoManager
@@ -782,7 +784,9 @@ DT={}
 
 def compareAlignment():
     ut.bookHist(h,'alignCompare','compare Alignments',100,-120.,120.,100,-120.,120.)
+    ut.bookHist(h,'alignCompareY','compare Alignments',100,-120.,120.,100,-120.,120.)
     ut.bookHist(h,'alignCompareDiffs','compare Alignments',100,-1.,1.)
+    ut.bookHist(h,'alignCompareDiffsY','compare Alignments',100,-1.,1.)
     keys = xpos.keys()
     keys.sort()
     for d in keys:
@@ -796,12 +800,14 @@ def compareAlignment():
         angleD = ROOT.TMath.ATan2(vtopD[0]-vbotD[0],vtopD[1]-vbotD[1])/ROOT.TMath.Pi()*180
         if abs(vtop[0]-vbot[0])<1:
             x0 = (vtop[0]+vbot[0])/2.
+            y0 = (vtop[1]+vbot[1])/2.
         else:
             m = (vtop[1]-vbot[1])/(vtop[0]-vbot[0])
             b = vtop[1]-m*vtop[0]
             x0 = -b/m 
         if abs(vtopD[0]-vbotD[0])<1:
             x0D = (vtopD[0]+vbotD[0])/2.
+            y0D = (vtopD[1]+vbotD[1])/2.
         else:   
             mD = (vtopD[1]-vbotD[1])/(vtopD[0]-vbotD[0])
             bD = vtopD[1]-mD*vtopD[0]
@@ -814,6 +820,8 @@ def compareAlignment():
         print "%s %i x/y pos from Daniel %7.4F %7.4F %7.4F %7.4F %7.4F  from FairShip  %7.4F %7.4F %7.4F %7.4F %7.4F diff %5.4F zdiff %5.4F"\
                      %(txt,d,x0D,angleD,vbotD[1],vtopD[1],vbotD[2],x0,angle,vtop[1],vbot[1],vbot[2],(x0D-x0)*10.,(z-vbotD[2])*10)
         if abs(vbot[2]-vtop[2])>0.1: print "!!! z tilt",vbot[2],vtop[2]
+        rc = h['alignCompareY'].Fill(y0D,y0)
+        rc = h['alignCompareDiffsY'].Fill(y0D-y0)
         rc = h['alignCompare'].Fill(x0D,x0)
         rc = h['alignCompareDiffs'].Fill(x0D-x0)
     z0_D = zpos['T1X']/10.
@@ -1883,7 +1891,7 @@ for view in ['_u1','_v2','_x1','_x2','_x3','_x4']:
 
 
 bfield = ROOT.genfit.FairShipFields()
-Bx,By,Bz = ROOT.Double(),ROOT.Double(),ROOT.Double()
+Bx,By,Bz = ctypes.c_double(),ctypes.c_double(),ctypes.c_double()
 def displayTrack(theTrack,debug=False):
     zstart = 0
     nPoints = 100
@@ -1900,7 +1908,7 @@ def displayTrack(theTrack,debug=False):
             h['dispTrackY'][nt].SetPoint(nP,zstart,pos[1])
             if debug:
                 bfield.get(pos[0],pos[1],pos[2],Bx,By,Bz)
-                print "%5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F "%(pos[0],pos[1],pos[2],Bx,By,Bz,mom[0],mom[1],mom[2])
+                print "%5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F %5.2F "%(pos[0],pos[1],pos[2],Bx.value,By.value,Bz.value,mom[0],mom[1],mom[2])
             # ptkick 1.03 / dalpha
         if nP ==0:
             fitStatus = theTrack.getFitStatus()
@@ -6758,6 +6766,11 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                     if tmpx.GetBinCenter(mx)<5.:
                         h['Data'+proj+x].SetBinContent(mx,my,0.)
                         h['Data'+proj+x].SetBinError(mx,my,0.)
+                    elif tmpx.GetBinCenter(mx)<10.:     # don't use muID for p<10GeV'
+                        h[hname].SetBinContent(mx,my,h['MC'+proj].GetBinContent(mx,my))
+                        h[hname].SetBinError(mx,my,h['MC'+proj].GetBinError(mx,my))
+                        h['Data'+proj+x].SetBinContent(mx,my,h['Data'+proj].GetBinContent(mx,my))
+                        h['Data'+proj+x].SetBinError(mx,my,h['Data'+proj].GetBinError(mx,my))
                     elif tmpx.GetBinCenter(mx)<20.:
                         h[hname].SetBinContent(mx,my,h['MC'+proj+x].GetBinContent(mx,my))
                         h[hname].SetBinError(mx,my,h['MC'+proj+x].GetBinError(mx,my))
@@ -6876,14 +6889,17 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
         interval = '_y'+str(pInterval[0])+'-'+str(pInterval[1])
         proj = 'p/pt'
         hname = proj+x+interval
-        err=ROOT.Double()
-        data = h[hname].IntegralAndError(0,h[hname].FindBin(ptMax),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        errc = ctypes.c_double()
+        data = h[hname].IntegralAndError(0,h[hname].FindBin(ptMax),errc)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        err = errc.value
         sig_data=err/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_data = ROOT.TMath.Sqrt(sig_data**2+(data*daSysError)**2)
-        mc   = h['MC'+hname].IntegralAndError(0,h[hname].FindBin(ptMax),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        err = errc.value
+        mc   = h['MC'+hname].IntegralAndError(0,h[hname].FindBin(ptMax),errc)/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_MC  = err/POTdata/(pInterval[1]-pInterval[0])*1E9
         sig_MC = ROOT.TMath.Sqrt(sig_MC**2+(mc*mcSysError)**2)
-        mcCharm = h['MC'+hname.replace('_y','charm_y')].IntegralAndError(0,h[hname].FindBin(ptMax),err)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        mcCharm = h['MC'+hname.replace('_y','charm_y')].IntegralAndError(0,h[hname].FindBin(ptMax),errc)/POTdata/(pInterval[1]-pInterval[0])*1E9
+        err = errc.value
         ratio = data/mc
         sig_ratio = ROOT.TMath.Sqrt( (ratio/data*sig_data)**2+(ratio/mc*sig_MC)**2)
         sig_Charm=err/POTdata/(pInterval[1]-pInterval[0])*1E9
@@ -6980,7 +6996,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             myPrint(h[t],label+'2Tracks'+osign[s]+str(case))
 def synchFigures():
    for x in ['MC-ComparisonChi2mu_*P*.pdf','MC-ComparisonPt_*.pdf','True-RecoP*.pdf','MC-ComparisonChi2Ratios2Dppt.pdf','MC-ComparisonChi2DatapPt.pdf']:
-     os.system('cp '+x+'  /mnt/hgfs/Images/VMgate/muflux/ ')
+     os.system('cp '+x+'  /mnt/hgfs/Images/muflux/')
 
 def singlePtSlices():
    t='MC-Comparison Pt'
@@ -7400,6 +7416,63 @@ def residualsExamples():
  h['example2'] = h['biasResDistLR_4_x2'].ProjectionY('example',40,60)
  fitResult = h['example'].Fit(fitFunction,'S','',-0.2,0.2)
 
+def strawGeometryIssue():
+# only for MC
+   ut.bookHist(h,'P','P',400,0.,400)
+   ut.bookHist(h,'Pfailed','P',400,0.,400)
+   for s in [1,2,3,4]:
+     ut.bookHist(h,'T'+str(s),'xy',100,-100,100,100,-100,100)
+     ut.bookHist(h,'H'+str(s),'xy',100,-100,100,100,-100,100)
+   for n in range(sTree.GetEntries()):
+        rc = sTree.GetEvent(n)
+        for hit in sTree.MufluxSpectrometerPoint:
+            s  = hit.GetDetectorID()/10000000
+            rc = h['H'+str(s)].Fill(hit.GetX(),hit.GetY())
+        keysToDThits = MakeKeysToDThits(cuts['lateArrivalsToT'])
+        for itrack in range(sTree.FitTracks.GetEntries()):
+           trInfo = sTree.TrackInfos[itrack]
+           oTrack = sTree.FitTracks[itrack]
+           P = 5.
+           fst = oTrack.getFitStatus()
+           if fst.isFitConverged() and fst.getNdf()>1:
+            try: 
+             sta = oTrack.getFittedState(0)
+             P   = sta.getMomMag()
+            except: 
+             print "cannot get fittedState(0)"
+           passed = True
+           for n in range(trInfo.N()):
+              detID = trInfo.detId(n)
+              s = detID/10000000
+              if s < 3: continue
+# find corresponding MC hit
+              key = keysToDThits[detID][0]
+              hit = sTree.MufluxSpectrometerPoint[key]
+              rc = h['T'+str(s)].Fill(hit.GetX(),hit.GetY())
+# covered by MC: T3y  = 24.82 -7.3405, L = = 159.4
+# T3top     = 97.1795   T3bot = -62.2205
+# survey:   = 90.6      T3bot = -69.4        
+# 4_top   FairShip 97.5   Survey 90.2     delta 7.3
+# 4_bot   FairShip -61.9  Survey -69.7    delta 7.8
+              if s==3 and hit.GetY()>90.6: passed = False
+              if s==4 and hit.GetY()>90.2: passed = False
+           rc = h['P'].Fill(P)
+           if not passed: rc =  h['Pfailed'].Fill(P)
+   h['H3Y']= h['H3'].ProjectionY()
+   h['H3Y'].Draw()
+   h['fbotT3'] = ROOT.TLine(-62.2205,0,-62.2205,h['H3Y'].GetMaximum())
+   h['ftopT3'] = ROOT.TLine(97.18,0,97.18,h['H3Y'].GetMaximum())
+   h['fbotT3'].SetLineColor(ROOT.kGreen)
+   h['ftopT3'].SetLineColor(ROOT.kGreen)
+   h['fbotT3'].Draw('same')
+   h['ftopT3'].Draw('same')
+#
+   h['botT3'] = ROOT.TLine(-69.4,0,-69.4,h['H3Y'].GetMaximum())
+   h['topT3'] = ROOT.TLine(90.6,0,90.6,h['H3Y'].GetMaximum())
+   h['botT3'].SetLineColor(ROOT.kRed)
+   h['topT3'].SetLineColor(ROOT.kRed)
+   h['botT3'].Draw('same')
+   h['topT3'].Draw('same')
 
 def plotEffMethod2Example():
     efficiencyEstimates(method=2)
@@ -7546,13 +7619,13 @@ def doFit(p0=5.7,p1=0.17):
     #gMinuit.FixParameter(0)
     gMinuit.mnexcm("SIMPLEX",vstart,npar,ierflg)
     gMinuit.mnexcm("MIGRAD",vstart,npar,ierflg)
-    pot = ROOT.Double()
-    charmNorm = ROOT.Double()
-    e = ROOT.Double()
+    pot       = ctypes.c_double()
+    charmNorm = ctypes.c_double()
+    e         = ctypes.c_double()
     gMinuit.GetParameter(0,pot,e)
     gMinuit.GetParameter(1,charmNorm,e)
-    print "RESULT:",abs(pot), abs(charmNorm)
-    MCcomparison(abs(pot), pMin,1.0,abs(charmNorm))
+    print "RESULT:",abs(pot.value), abs(charmNorm.value)
+    MCcomparison(abs(pot.value), pMin,1.0,abs(charmNorm.value))
 def doFitByHand():
     p0min = 1.
     p0max = 10.
