@@ -7133,6 +7133,9 @@ def muonEfficiency(E='1GeV',pMin = 5.,pMax=300.,ptMax = 4.,cuts='Chi2<0.7'):
     hMC['ntGen'].Draw('sqrt(px*px+py*py):sqrt(px*px+py*py+pz*pz)>>Pgen')
     hMC['ntGen'].Draw('sqrt(px*px+py*py):0.5*log((sqrt(px*px+py*py+pz*pz)+pz)/(sqrt(px*px+py*py+pz*pz)-pz))>>Ygen')
 #
+    f     = ROOT.TFile("recDecays_"+E+".root","RECREATE")
+    muons = ROOT.TNtuple("muons","muons","px:py:pz:ox:oy:oz:moID:procID:w:chi2:goodTrack")")
+
     hMC['counter'] = {}
     currentFile = ''
     sTreeFullMC = None
@@ -7183,10 +7186,29 @@ def muonEfficiency(E='1GeV',pMin = 5.,pMax=300.,ptMax = 4.,cuts='Chi2<0.7'):
            if muTagged:
               rc = hMC['PrecMu'].Fill(trueP.Mag(),trueP.Pt())
               rc = hMC['YrecMu'].Fill(trueP.Eta(),trueP.Pt())
-    ut.writeHists(hMC,'muonEfficiency.root')
+          mu = trueMu
+          mo = event.MCTrack[mu.GetMotherId()]
+          rc = muons.Fill(mu.GetPx(),mu.GetPy(),mu.GetPz(),mu.GetStartX(),mu.GetStartY(),mu.GetStartZ(),mo.GetPdgCode(),
+                          mu.GetProcID(),mu.GetWeight(),sTreeMC.Chi2[j],sTreeMC.GoodTrack[j])
+    f.cd()
+    muons.Write()
+    ut.writeHists(hMC,'muonEfficiency_'+E+'.root')
+    h['Pgen'].Rebin2D(5,5)
+    h['Ygen'].Rebin2D(5,5)
     for u in ['','Chi2','Mu']:
+       h['Prec'+u].Rebin2D(5,5)
+       h['Yrec'+u].Rebin2D(5,5)
        h['PEff'+u]=ROOT.TEfficiency(hMC['Prec'+u].ProjectionX(),hMC['Pgen'].ProjectionX())
        h['YEff'+u]=ROOT.TEfficiency(hMC['Yrec'+u].ProjectionX(),hMC['Ygen'].ProjectionX())
+#
+       h['Peff'+u]=hMC['Prec'+u].ProjectionX('Peff'+u)
+       h['Peff'+u].Divide(hMC['Pgen'].ProjectionX())
+       h['Yeff'+u]=hMC['Yrec'+u].ProjectionX('Yeff'+u)
+       h['Yeff'+u].Divide(hMC['Ygen'].ProjectionX())
+       h['P/Pteff'+u]=hMC['Prec'+u].Clone('P/Pteff'+u)
+       h['P/Pteff'+u].Divide(hMC['Pgen'])
+       h['Y/Pteff'+u]=hMC['Yrec'+u].Clone('Y/Pteff'+u)
+       h['Y/Pteff'+u].Divide(hMC['Ygen'])
     ut.bookHist(hMC,'stat','stat',10,0.5,10.5)
     for f in hMC['counter']:
        for n in hMC['counter'][f]: rc = hMC['stat'].Fill(hMC['counter'][f][n])
