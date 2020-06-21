@@ -7115,6 +7115,37 @@ def extractDecays(E):
     muons.Write()
     ut.writeHists(h,'extractDecays.root')
 
+def extractRecMuons():
+    f     = ROOT.TFile("recMuons_"+E+".root","RECREATE")
+    muons = ROOT.TNtuple("muons","muons","px:py:pz:ox:oy:oz:moID:muID:procID:w:chi2:goodTrack:recpx:recpy:recpz")
+    currentFile = ''
+    sTreeFullMC = None
+    for n in range(0,sTreeMC.GetEntries()):
+      rc = sTreeMC.GetEvent(n)
+      if sTreeMC.GetCurrentFile().GetName()!=currentFile:
+            currentFile = sTreeMC.GetCurrentFile().GetName()
+            nInFile = n
+      for j in range(sTreeMC.nTr):
+        if sTreeMC.GoodTrack[j]<0 or sTreeMC.GoodTrack[j]>999: continue
+        fname = sTreeMC.GetCurrentFile().GetName().replace('ntuple-','')
+        if sTreeFullMC:
+           if sTreeFullMC.GetCurrentFile().GetName().find(fname)<0:
+                fMC = ROOT.TFile.Open(fname)
+                sTreeFullMC = fMC.cbmsim
+        else: 
+            fMC = ROOT.TFile.Open(fname)
+            sTreeFullMC = fMC.cbmsim
+        rc = sTreeFullMC.GetEvent(n-nInFile)
+        if not sTreeMC.MCID[j] < sTreeFullMC.MCTrack.GetEntries():
+            print "A",n,nInFile,currentFile
+            continue
+        trueMu = sTreeFullMC.MCTrack[sTreeMC.MCID[j]]
+        mu = trueMu
+        mo = sTreeFullMC.MCTrack[mu.GetMotherId()]
+        rc = muons.Fill(mu.GetPx(),mu.GetPy(),mu.GetPz(),mu.GetStartX(),mu.GetStartY(),mu.GetStartZ(),mo.GetPdgCode(),trueMu.GetPdgCode(),
+                          mu.GetProcID(),mu.GetWeight(),sTreeMC.Chi2[j],sTreeMC.GoodTrack[j],sTreeMC.Px[j],sTreeMC.Py[j],sTreeMC.Pz[j])
+    f.cd()
+    muons.Write()
 def muonEfficiency(E='1GeV',pMin = 5.,pMax=300.,ptMax = 4.,cuts='Chi2<0.7'):
     # python -i $SHIPBUILD/FairShip/charmdet/MufluxNtuple.py -A True -r -t repro
     # possible cuts: '', 'All', 'Chi2<', 'Delx<', 'Dely<'
@@ -7133,7 +7164,7 @@ def muonEfficiency(E='1GeV',pMin = 5.,pMax=300.,ptMax = 4.,cuts='Chi2<0.7'):
     hMC['ntGen'].Draw('sqrt(px*px+py*py):sqrt(px*px+py*py+pz*pz)>>Pgen')
     hMC['ntGen'].Draw('sqrt(px*px+py*py):0.5*log((sqrt(px*px+py*py+pz*pz)+pz)/(sqrt(px*px+py*py+pz*pz)-pz))>>Ygen')
 #
-    f     = ROOT.TFile("recDecays_"+E+".root","RECREATE")
+    f     = ROOT.TFile("recMuons_"+E+".root","RECREATE")
     muons = ROOT.TNtuple("muons","muons","px:py:pz:ox:oy:oz:moID:muID:procID:w:chi2:goodTrack:recpx:recpy:recpz")
 
     hMC['counter'] = {}
@@ -7173,6 +7204,10 @@ def muonEfficiency(E='1GeV',pMin = 5.,pMax=300.,ptMax = 4.,cuts='Chi2<0.7'):
             print "A",n,nInFile,currentFile
             continue
         trueMu = sTreeFullMC.MCTrack[sTreeMC.MCID[j]]
+        mu = trueMu
+        mo = sTreeFullMC.MCTrack[mu.GetMotherId()]
+        rc = muons.Fill(mu.GetPx(),mu.GetPy(),mu.GetPz(),mu.GetStartX(),mu.GetStartY(),mu.GetStartZ(),mo.GetPdgCode(),trueMu.GetPdgCode(),
+                          mu.GetProcID(),mu.GetWeight(),sTreeMC.Chi2[j],sTreeMC.GoodTrack[j],sTreeMC.Px[j],sTreeMC.Py[j],sTreeMC.Pz[j])
         if not abs(trueMu.GetPdgCode())==13:
             print "B",n,nInFile,currentFile,trueMu.GetPdgCode()
             continue
@@ -7186,10 +7221,6 @@ def muonEfficiency(E='1GeV',pMin = 5.,pMax=300.,ptMax = 4.,cuts='Chi2<0.7'):
            if muTagged:
               rc = hMC['PrecMu'].Fill(trueP.Mag(),trueP.Pt())
               rc = hMC['YrecMu'].Fill(trueP.Eta(),trueP.Pt())
-        mu = trueMu
-        mo = event.MCTrack[mu.GetMotherId()]
-        rc = muons.Fill(mu.GetPx(),mu.GetPy(),mu.GetPz(),mu.GetStartX(),mu.GetStartY(),mu.GetStartZ(),mo.GetPdgCode(),trueMu.GetPdgCode(),
-                          mu.GetProcID(),mu.GetWeight(),sTreeMC.Chi2[j],sTreeMC.GoodTrack[j],sTreeMC.Px[j],sTreeMC.Py[j],sTreeMC.Pz[j])
     f.cd()
     muons.Write()
     ut.writeHists(hMC,'muonEfficiency_'+E+'.root')
