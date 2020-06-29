@@ -229,7 +229,7 @@ with ConfigRegistry.register_config("basic") as c:
             
     #c.MufluxSpectrometer.goliathcentre_to_beam = 178.6*u.mm
     #from edms 1825777 + cumer email
-    c.MufluxSpectrometer.goliathcentre_to_beam = 17.32*u.cm + (c.Spectrometer.UpCoilH-c.Spectrometer.LowCoilH)/2.
+    c.MufluxSpectrometer.goliathcentre_to_beam = 17.32*u.cm
     c.MufluxSpectrometer.goliathcentre = 351.19*u.cm  
       
     c.MufluxSpectrometer.T1x_x=4.22*u.cm
