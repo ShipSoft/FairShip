@@ -13,6 +13,7 @@ debug = 0  # 1 print weights and field
 dryrun = False # True: just setup Pythia and exit
 
 CharmdetSetup = 0 # 1 charm cross section setup, 0 muon flux setup
+Gfield = ''
 DownScaleDiMuon = True
 CharmTarget = 3 #six different configurations used in July 2018 exposure for charm
 # Default HNL parameters
@@ -77,8 +78,8 @@ try:
                                    "PG","pID=","Muflux","Pythia6","Pythia8","Genie","MuDIS","Ntuple","Nuage","MuonBack","FollowMuon","FastMuon",\
                                    "Cosmics=","nEvents=", "display", "seed=", "firstEvent=", "phiRandom", "mass=", "couplings=", "coupling=", "epsilon=",\
                                    "output=","tankDesign=","muShieldDesign=","NuRadio","test",\
-                                   "DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","CharmTarget=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=",\
-                                   "Eend=","production-couplings=","decay-couplings=","dry-run"])
+"DarkPhoton","RpvSusy","SusyBench=","sameSeed=","charm=","CharmdetSetup=","CharmTarget=","nuTauTargetDesign=","caloDesign=","strawDesign=","Estart=",\
+                                   "Eend=","production-couplings=","decay-couplings=","dry-run","fieldMap="])
 
 except getopt.GetoptError:
         # print help information and exit:
@@ -100,6 +101,7 @@ except getopt.GetoptError:
         print '       --decay-couplings \'U2e,U2mu,U2tau\' to set the couplings for HNL decay only'
         print '       --epsilon value or -e value to set mixing parameter epsilon' 
         print '                   Note that for RPVSUSY the third entry of the couplings is the stop mass'
+        print '       --fieldMap, for muflux setup: Goliath field map, "", inter or noDavid, default=""'
         sys.exit(2)
 for o, a in opts:
         if o in ("-D","--display"):
@@ -210,6 +212,8 @@ for o, a in opts:
             nEvents = 50
         if o in ("--dry-run",):
             dryrun = True
+        if o in ("--fieldMap",):
+           Gfield = a
 
 #sanity check
 if (HNL and RPVSUSY) or (HNL and DarkPhoton) or (DarkPhoton and RPVSUSY): 
@@ -288,7 +292,8 @@ rtdb = run.GetRuntimeDb()
 if charm!=0: import charmDet_conf as shipDet_conf 
 else:        import shipDet_conf
 
-modules = shipDet_conf.configure(run,ship_geo)
+if charm!=0:  modules = shipDet_conf.configure(run,ship_geo,Gfield=Gfield)
+else:         modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if simEngine == "Pythia8":

@@ -151,7 +151,7 @@ def getFilesEOS(D):
         fl.append(eospathSim+'/'+d)
     return fl
 
-def simulationStep(fnames=[],E="10.0_withCharmandBeauty",overwrite=False):
+def simulationStep(fnames=[],E="10.0_withCharmandBeauty",overwrite=False,Gfield=''):
     if len(fnames)==0: fnames = getFilesFromEOS(E)
     Nfiles = len(fnames)
     print "fileList established ",Nfiles
@@ -159,7 +159,7 @@ def simulationStep(fnames=[],E="10.0_withCharmandBeauty",overwrite=False):
         N = fnames[fname]-1
         odir = fname[fname.rfind('/')+1:].replace('.root','')
         if not overwrite and odir in os.listdir('.'): continue
-        cmd = "python $FAIRSHIP/macro/run_simScript.py -n "+str(N)+" --MuonBack --charm=1 --CharmdetSetup=0 --output "+odir+" -f "+fname+" &"
+        cmd = "python $FAIRSHIP/macro/run_simScript.py -n "+str(N)+" --MuonBack --charm=1 --CharmdetSetup=0 --fieldMap="+Gfield+" --output "+odir+" -f "+fname+" &"
         print 'step 1:', cmd
         os.system(cmd)
         while 1>0:
@@ -517,7 +517,10 @@ def checkAlignment(D='.',splitFactor=5):
 
 
 def exportToEos(fnames=[],destination="/eos/experiment/ship/user/truf/muflux-sim/1GeV",update=True,tag=None):
-    remote = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination,shell=True).split('\n')
+    remote = []
+    for r in subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+destination,shell=True).split('\n'):
+           if r.find('eos')<0: continue
+           remote.append('pythia'+r.split('pythia')[1])
     fnames = getFilesLocal()
     for D in fnames:
         if not D in remote:
@@ -677,6 +680,12 @@ def redoMuonTracks(D='.',copyToEos=False):
             if x.find('pythia8_Geant4')<0: continue
             d = x[x.rfind('/')+1:]
             if not d in os.listdir('.'): os.system('mkdir '+d)
+            if not d in ['pythia8_Geant4_10.0_withCharmandBeauty9000_mu','pythia8_Geant4_10.0_withCharmandBeauty8000_mu',
+                         'pythia8_Geant4_10.0_withCharmandBeauty7000_mu','pythia8_Geant4_10.0_withCharmandBeauty6000_mu',
+                         'pythia8_Geant4_10.0_withCharmandBeauty60000_mu','pythia8_Geant4_10.0_withCharmandBeauty61000_mu',
+                         'pythia8_Geant4_10.0_withCharmandBeauty62000_mu','pythia8_Geant4_10.0_withCharmandBeauty63000_mu',
+                         'pythia8_Geant4_10.0_withCharmandBeauty64000_mu','pythia8_Geant4_10.0_withCharmandBeauty65000_mu',
+                         'pythia8_Geant4_10.0_withCharmandBeauty66000_mu']: continue
             os.chdir(d)
             temp2 = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls -l "+eospathSim+'/'+d,shell=True)
             fileList = []
