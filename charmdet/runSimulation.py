@@ -246,7 +246,7 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
             N+=deltaN
         os.chdir('../')
 
-def recoStep(splitFactor=5,fnames=[],eospath=False):
+def recoStep(splitFactor=5,fnames=[],eospath=False,Gfield=''):
     eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'
     if len(fnames)==0: fnames = getFilesLocal()
     Nfiles = len(fnames)
@@ -268,11 +268,14 @@ def recoStep(splitFactor=5,fnames=[],eospath=False):
                 os.system('cp '+ofile.replace('.root','-'+str(i)+'.root')+' '+recoFile)
             elif not recoFile in os.listdir('.'):
                 if eospath:
+                    print "copy from EOS",recoFile
                     os.system('xrdcp  $EOSSHIP'+eospathSim+'/'+eospath+'/'+fname+'/'+digiFile+ ' '+recoFile)
                 else:
                     print "digiFile missing",fname,digiFile
                     continue
-            cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 -u 1 -f "+recoFile+' &'
+            addOption = ""
+            if Gfield == 'inter': addOption = " -F inter "
+            cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 --Display False -u 1 -f "+recoFile+addOption+' &'
             print 'step 2:', cmd,' in directory ',fname
             os.system(cmd)
             while 1>0:
@@ -327,7 +330,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
             tmp = df.split('/')
             if len(tmp)>1: os.chdir(tmp[0])
             if not commandToHist[command]+tmp[1] in os.listdir('.'):
-                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+tmp[1]+' &'
+                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+tmp[1]+' --Display False  &'
                 print 'execute:', cmd
                 os.system(cmd)
             if len(tmp)>1: os.chdir('../')
@@ -351,7 +354,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
                 histFile = commandToHist[command]+y[y.rfind('/')+1:]
                 if histFile in os.listdir('.') : continue
                 if interactive:
-                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' &'
+                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' --Display False  &'
                     print 'execute:', cmd
                     os.system(cmd)
                     while 1>0:

@@ -7,10 +7,15 @@ except:
   pass
 
 
-from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
+from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem,gDirectory
 import os,sys
 
-def readHists(h,fname,wanted=[],withProjections=True):
+def readHists(h,fname,wanted=[],withProjections=True,d=None):
+  if not d: directory = gROOT
+  else:
+     directory = gROOT.FindObjectAny(d)
+     if not directory:
+         directory = gDirectory.mkdir(d)
   if fname[0:4] == "/eos":
     eospath = gSystem.Getenv("EOSSHIP")+fname
     f = TFile.Open(eospath)
@@ -24,7 +29,7 @@ def readHists(h,fname,wanted=[],withProjections=True):
         if not hname in wanted: continue
     obj = akey.ReadObj()
     cln = obj.Class().GetName()
-    if not cln.find('TCanv')<0: 
+    if not cln.find('TCanv')<0 or not cln.find('TF1')<0: 
        h[hname] =  obj.Clone()
     if cln.find('TH')<0: continue
     if h.has_key(hname): 
@@ -33,7 +38,7 @@ def readHists(h,fname,wanted=[],withProjections=True):
     else: 
       h[hname] =  obj.Clone()
       if h[hname].GetSumw2N()==0 : h[hname].Sumw2() 
-    h[hname].SetDirectory(gROOT)
+    h[hname].SetDirectory(directory)
     if (cln == 'TH2D' or cln == 'TH2F') and withProjections:
          for p in [ '_projx','_projy']:
            if type(hname) == type('s'): projname = hname+p
@@ -41,7 +46,7 @@ def readHists(h,fname,wanted=[],withProjections=True):
            if p.find('x')>-1: h[projname] = h[hname].ProjectionX()  
            else             : h[projname] = h[hname].ProjectionY()  
            h[projname].SetName(name+p)
-           h[projname].SetDirectory(gROOT)
+           h[projname].SetDirectory(directory)
   return
 def bookHist(h,key=None,title='',nbinsx=100,xmin=0,xmax=0,nbinsy=0,ymin=0,ymax=0,nbinsz=0,zmin=0,zmax=0):
   if key==None : 
@@ -72,7 +77,7 @@ def writeHists(h,fname,plusCanvas=False):
   for akey in h:
     if not hasattr(h[akey],'Class'): continue
     cln = h[akey].Class().GetName()
-    if not cln.find('TH')<0 or not cln.find('TP')<0:   h[akey].Write()
+    if not cln.find('TH')<0 or not cln.find('TP')<0 or not cln.find('TF1')<0:   h[akey].Write()
     if plusCanvas and not cln.find('TC')<0:   h[akey].Write()
   f.Close()  
 def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):
@@ -215,3 +220,22 @@ def makeIntegralDistrib(h,key,overFlow=False):
  for n in range(0,h[key].GetNbinsX()+1):
    if n==0: h[name].SetBinContent(0,totIntegral)
    else: h[name].SetBinContent(n,h[name].GetBinContent(n-1)-h[key].GetBinContent(n-1))
+def rmsProfile(h,proj):
+  if proj=='X': yproj='Y'
+  else: yproj='X'
+  tmp = eval('h.Projection'+yproj+'("'+h.GetName()+'_RMS")')
+  tmp.Reset()
+  for n in range(1,tmp.GetNbinsX()+1):
+      tmpProj = eval('h.Projection'+proj+'("'+str(n)+'",'+str(n)+','+str(n)+')')
+      tmp.SetBinContent(n,tmpProj.GetRMS())
+  return tmp
+def readHistsFromCanvas(h,c):
+  for x in c.GetListOfPrimitives():
+       if x.ClassName().find('TH')==0:
+         h[x.GetName()] = x.Clone()
+       elif x.ClassName().find('TP')==0:
+         for y in x.GetListOfPrimitives():
+           if y.ClassName().find('TH')==0:
+             h[y.GetName()] = y.Clone()
+
+
