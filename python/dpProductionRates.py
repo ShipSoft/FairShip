@@ -7,24 +7,38 @@ import proton_bremsstrahlung
 
 PDG = ROOT.TDatabasePDG.Instance()
 protonFlux = 2e20
-
+ 
+def getCascadeRate(mumPdg,th,pz):
+    p8=ROOT.TFile(os.environ["EOSSHIP"]+"/eos/experiment/ship/data/DarkPhoton/PBC-June-3/Cascade/Cascade_Geant4-Pythia8_Theta-Pz.root")
+    pr      = p8.Get("tdpr").Interpolate(th,pz)
+    pi0     = p8.Get("tdpi").Interpolate(th,pz)
+    eta     = p8.Get("tdet").Interpolate(th,pz)
+    omega   = p8.Get("tdom").Interpolate(th,pz)
+    eta1    = p8.Get("tdep").Interpolate(th,pz)
+    if (abs(mumPdg)==2212 and pr!=0.): return pr
+    if (mumPdg==111 and pi0!=0.): return pi0
+    if (mumPdg==221 and eta!=0.): return eta
+    if (mumPdg==223 and omega!=0.): return omega
+    if (mumPdg==331 and eta!=0.): return eta1
+    print(" -- ERROR, unknown mother pdgId %d"%mumPdg)
+    return 1
 
 def isDP(pdg):
     if (pdg==9900015 or pdg==4900023): 
         return True
     return False
 
-def pbremProdRateVDM(mass,epsilon,doprint=True):
-    xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
-    if doprint: print("A' production rate per p.o.t: \t %.8g"%(xswg))
+def pbremProdRateVDM(mass,epsilon,doprint=False,E=400.):
+    xswg = proton_bremsstrahlung.prodRate(E, mass, epsilon)
+    if doprint: print("Ep= %.8g, A' production rate per p.o.t: \t %.8g"%(E,xswg))
     rhoff = proton_bremsstrahlung.rhoFormFactor(mass)**2
     if doprint: print("A' rho form factor: \t %.8g"%rhoff)
     if doprint: print("A' rescaled production rate per p.o.t:\t %.8g"%(xswg*rhoff))
     return xswg*rhoff
 
-def pbremProdRateDipole(mass,epsilon,doprint=False):
-    xswg = proton_bremsstrahlung.prodRate(mass, epsilon)
-    if doprint: print("A' production rate per p.o.t: \t %.8g"%(xswg))
+def pbremProdRateDipole(mass,epsilon,doprint=False,E=400.):
+    xswg = proton_bremsstrahlung.prodRate(E, mass, epsilon)
+    if doprint: print("Ep= %.8g, A' production rate per p.o.t: \t %.8g"%(E,xswg))
     penalty = proton_bremsstrahlung.penaltyFactor(mass)
     if doprint: print("A' penalty factor: \t %.8g"%penalty)
     if doprint: print("A' rescaled production rate per p.o.t:\t %.8g"%(xswg*penalty))
@@ -84,27 +98,27 @@ def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
     if mumPdg==331:
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0] 
         avgMeson1 = getAverageMesonRate(mumPdg)*brM2DP[1]
-        return avgMeson*0.6, avgMeson1*0.6
+        return avgMeson, avgMeson1
         #return avgMeson + avgMeson1
     if not mumPdg==331:
         avgMeson = getAverageMesonRate(mumPdg)*brM2DP
-        return avgMeson*0.6
+        return avgMeson
 
 #from interpolation of Pythia XS, normalised to epsilon^2
 def qcdprodRate(mass,epsilon,doprint=False):
     if (mass > 3.):
-        xs = math.exp(-5.928-0.8669*mass)
+        xs = math.exp(-5.51532-0.830917*mass)
     elif (mass > 1.4):
-        xs = math.exp(-4.1477-1.4745*mass)
+        xs = math.exp(-2.05488-1.96804*mass)
     else:
         xs = 0.
-    return xs*epsilon*epsilon
+    return xs*epsilon*epsilon/10.7
 
-def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):
+def getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False,E=400.):
     if (prodMode=='pbrem'):
-        return pbremProdRateVDM(mass,epsilon,doprint)
+        return pbremProdRateVDM(mass,epsilon,doprint,E)
     elif (prodMode=='pbrem1'):
-        return pbremProdRateDipole(mass,epsilon,doprint)
+        return pbremProdRateDipole(mass,epsilon,doprint,E)
     elif (prodMode=='meson'):
         return mesonProdRate(mass,epsilon,mumPdg,doprint)
     elif (prodMode=='qcd'):

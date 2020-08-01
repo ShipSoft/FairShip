@@ -2,6 +2,7 @@ from __future__ import division
 import numpy as np
 import ROOT as r
 import math
+import cmath
 import os,sys
 from scipy.integrate import quad, dblquad
 
@@ -10,7 +11,8 @@ from darkphoton import *
 # proton mass
 mProton = 0.938272081 # GeV/c - PDG2016
 protonEnergy = 400. # GeV/c
-protonMomentum = math.sqrt(protonEnergy*protonEnergy - mProton*mProton)
+def protonMomentum(E=400.):
+    return math.sqrt(E*E-mProton*mProton)
 
 #VDM FORM FACTOR
 def rhoFormFactor(m):
@@ -43,41 +45,40 @@ def penaltyFactor(m):
     else:
         return 1
 
-def zeta(p, theta):
+def zeta(E, p, theta):
     """ Fraction of the proton momentum carried away by the paraphoton in the beam direction """
-    return p / (protonMomentum * math.sqrt(theta*theta + 1.))
+    return p / (protonMomentum(E) * math.sqrt(theta*theta + 1.))
 
-
-def pTransverse(p, theta):
+def pTransverse(E, p, theta):
     """ Paraphoton transverse momentum in the lab frame """
-    return protonMomentum*theta*zeta(p,theta)
+    return protonMomentum(E)*theta*zeta(E,p,theta)
 
 
-def ptSquare(p, theta):
+def ptSquare(E, p, theta):
     """ Square paraphoton transverse momentum in the lab frame """
-    return pow(pTransverse(p,theta), 2.)
+    return pow(pTransverse(E, p,theta), 2.)
 
 
-def H(p, theta, mDarkPhoton):
+def H(E, p, theta, mDarkPhoton):
     """ A kinematic term """
-    return ptSquare(p,theta) + (1.-zeta(p,theta))*mDarkPhoton*mDarkPhoton + pow(zeta(p,theta),2.)*mProton*mProton
+    return ptSquare(E, p,theta) + (1.-zeta(E,p,theta))*mDarkPhoton*mDarkPhoton + pow(zeta(E,p,theta),2.)*mProton*mProton
 
 
-def wba(p, theta, mDarkPhoton, epsilon):
+def wba(E, p, theta, mDarkPhoton, epsilon):
     """ Cross section weighting function in the Fermi-Weizsaeker-Williams approximation """
-    const = epsilon*epsilon*alphaQED / (2.*math.pi*H(p,theta,mDarkPhoton))
+    const = epsilon*epsilon*alphaQED / (2.*math.pi*H(E, p,theta,mDarkPhoton))
 
-    h2 = pow(H(p,theta,mDarkPhoton),2.)
-    oneMinusZSquare = pow(1.-zeta(p,theta),2.)
+    h2 = pow(H(E, p,theta,mDarkPhoton),2.)
+    oneMinusZSquare = pow(1.-zeta(E, p,theta),2.)
     mp2 = mProton*mProton
     mA2 = mDarkPhoton*mDarkPhoton
 
-    p1 = (1. + oneMinusZSquare) / zeta(p,theta)
-    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton) 
-            - pow(zeta(p,theta),2.)*2.*mp2*mp2/h2 ) )
+    p1 = (1. + oneMinusZSquare) / zeta(E, p,theta)
+    p2 = ( 2. * zeta(E, p,theta) * (1.-zeta(E, p,theta)) * ( (2.*mp2 + mA2)/ H(E,p,theta,mDarkPhoton) 
+            - pow(zeta(E, p,theta),2.)*2.*mp2*mp2/h2 ) )
     #p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(zeta(p,theta)+oneMinusZSquare)*mp2*mA2/h2
-    p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(1+oneMinusZSquare)*mp2*mA2/h2
-    p4 = 2.*zeta(p,theta)*oneMinusZSquare*mA2*mA2/h2
+    p3 = 2.*zeta(E,p,theta)*(1.-zeta(E,p,theta))*(1+oneMinusZSquare)*mp2*mA2/h2
+    p4 = 2.*zeta(E,p,theta)*oneMinusZSquare*mA2*mA2/h2
     return const*(p1-p2+p3+p4)
 
 
@@ -96,53 +97,62 @@ def sigma(s): # s in GeV^2 ---> sigma in mb
     return a1 + p1 - p2 + p3
 
 
-def es(p, mDarkPhoton):
+def es(E, p, mDarkPhoton):
     """ s(p,mA) """
-    return 2.*mProton*(energy(protonMomentum,mProton)-energy(p,mDarkPhoton))
+    return 2.*mProton*(energy(protonMomentum(E),mProton)-energy(p,mDarkPhoton))
 
 
-def sigmaRatio(p, mDarkPhoton):
+def sigmaRatio(E, p, mDarkPhoton):
     """ sigma(s') / sigma(s) """
-    return sigma(es(p,mDarkPhoton)) / sigma(2.*mProton*energy(protonMomentum,mProton))
+    return sigma(es(E,p,mDarkPhoton)) / sigma(2.*mProton*energy(protonMomentum(E),mProton))
 
 
-def dNdZdPtSquare(p, mDarkPhoton, theta, epsilon):
+def dNdZdPtSquare(E,p, mDarkPhoton, theta, epsilon):
     """ Differential A' rate per p.o.t. as a function of Z and Pt^2 """
-    return sigmaRatio(p,mDarkPhoton)*wba(p,theta,mDarkPhoton,epsilon)
+    return sigmaRatio(E,p,mDarkPhoton)*wba(E,p,theta,mDarkPhoton,epsilon)
 
 
-def dPt2dTheta(p, theta):
+def dPt2dTheta(E, p, theta):
     """ Jacobian Pt^2->theta """
-    z2 = pow(zeta(p,theta),2.)
-    return 2.*theta*z2*protonMomentum*protonMomentum
+    z2 = pow(zeta(E,p,theta),2.)
+    return 2.*theta*z2*protonMomentum(E)*protonMomentum(E)
 
 
-def dZdP(p, theta):
+def dZdP(E,p, theta):
     """ Jacobian z->p """
-    return 1./( protonMomentum* math.sqrt(theta*theta+1.) )
+    return 1./( protonMomentum(E)* math.sqrt(theta*theta+1.) )
 
 
-def dNdPdTheta(p, theta, mDarkPhoton, epsilon):
+def dNdPdTheta(p, theta, E, mDarkPhoton, epsilon):
     """ Differential A' rate per p.o.t. as a function of P and theta """
-    diffRate = dNdZdPtSquare(p,mDarkPhoton,theta,epsilon) * dPt2dTheta(p,theta) * dZdP(p,theta)
+    diffRate = dNdZdPtSquare(E,p,mDarkPhoton,theta,epsilon) * dPt2dTheta(E,p,theta) * dZdP(E,p,theta)
     return math.fabs(diffRate) # integrating in (-pi, pi)...
 
 
-def pMin(mDarkPhoton):
-    return max(0.14*protonMomentum, mDarkPhoton)
+def pMin(E,mDarkPhoton):
+    #return max(0.14*protonMomentum(E), mDarkPhoton)
+    return max(0.1*protonMomentum(E), mDarkPhoton)
 
 
-def pMax(mDarkPhoton):
+def pMax(E,mDarkPhoton):
     #return min(0.86*protonMomentum, math.sqrt( (energy(protonMomentum,mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.))
-    return math.sqrt( (energy(protonMomentum,mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.)
+    return math.sqrt( (energy(protonMomentum(E),mProton)**2. - mDarkPhoton**2.) - mDarkPhoton**2.)
 
-
-def prodRate(mDarkPhoton, epsilon, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi):
+def prodRate(E, mDarkPhoton, epsilon, ptmax = 4.0, pmin = -1, pmax = -1):
+    if pmin==-1: pmin = pMin(E,mDarkPhoton)
+    if pmax==-1: pmax = pMax(E,mDarkPhoton)
+    if ptmax==-1:
+        tmin = -0.5 * math.pi
+        tmax = 0.5 * math.pi
+    else:
+        tmin = -math.atan(ptmax/pmin)
+        tmax = math.atan(ptmax/pmin)
+    print "Boundary conditions: pTmax = %.3f, theta [%.3f,%.3f], p [%.3f,%.3f]"%(ptmax,tmin,tmax,pmin,pmax)
     """ dNdPdTheta integrated over p and theta """
     integral = dblquad( dNdPdTheta, # integrand
                         tmin, tmax, # theta boundaries (2nd argument of integrand)
-                        lambda x: pMin(mDarkPhoton), lambda x: pMax(mDarkPhoton), # p boundaries (1st argument of integrand)
-                        args=(mDarkPhoton, epsilon) ) # extra parameters to pass to integrand
+                        lambda x: pmin, lambda x: pmax, # p boundaries (1st argument of integrand)
+                        args=(E, mDarkPhoton, epsilon) ) # extra parameters to pass to integrand
     return integral[0]
 
 # total production rate of A'
@@ -157,21 +167,28 @@ def prodRate(mDarkPhoton, epsilon, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi):
 # print "Number of A' produced in SHiP: \t %.8g"%numDarkPhotons
 
 
-def normalisedProductionPDF(p, theta, mDarkPhoton, epsilon, norm):
+def normalisedProductionPDF(E, p, theta, mDarkPhoton, epsilon, norm):
     """ Probability density function for A' production in SHIP """
-    return (1. / norm) * dNdPdTheta(p, theta, mDarkPhoton, epsilon)
+    return (1. / norm) * dNdPdTheta(p, theta, E, mDarkPhoton, epsilon)
 
-
-def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi, tmax = 0.5 * math.pi, suffix=""):
+def hProdPDF(E,mDarkPhoton, epsilon, norm, binsp, binstheta, ptmax = 4.0, pmin = -1, pmax = -1, suffix=""):
+    if pmin==-1: pmin = pMin(E,mDarkPhoton)
+    if pmax==-1: pmax = pMax(E,mDarkPhoton)
+    if ptmax==-1:
+        tmin = -0.5 * math.pi
+        tmax = 0.5 * math.pi
+    else:
+        tmin = -math.atan(ptmax/pmin)
+        tmax = math.atan(ptmax/pmin)
     """ Histogram of the PDF for A' production in SHIP """
     angles = np.linspace(tmin,tmax,binstheta).tolist()
     anglestep = 2.*(tmax - tmin)/binstheta
-    momentumStep = (pMax(mDarkPhoton)-pMin(mDarkPhoton))/(binsp-1)
-    momenta = np.linspace(pMin(mDarkPhoton),pMax(mDarkPhoton),binsp,endpoint=False).tolist()
-    hPDF = r.TH2F("hPDF_eps%s_m%s"%(epsilon,mDarkPhoton) ,"hPDF_eps%s_m%s"%(epsilon,mDarkPhoton),
-        binsp,pMin(mDarkPhoton)-0.5*momentumStep,pMax(mDarkPhoton)-0.5*momentumStep,
+    momentumStep = (pmax-pmin)/(binsp-1)
+    momenta = np.linspace(pmin,pmax,binsp,endpoint=False).tolist()
+    hPDF = r.TH2F("hPDF_p%s_eps%s_m%s"%(E,epsilon,mDarkPhoton) ,"hPDF_p%s_eps%s_m%s"%(E,epsilon,mDarkPhoton),
+        binsp,pmin-0.5*momentumStep,pmax-0.5*momentumStep,
         binstheta,tmin-0.5*anglestep,tmax-0.5*anglestep)
-    hPDF.SetTitle("PDF for A' production (m_{A'}=%s GeV, #epsilon =%s)"%(mDarkPhoton,epsilon))
+    hPDF.SetTitle("PDF for A' production (Ep=%s GeV, m_{A'}=%s GeV, #epsilon =%s)"%(E,mDarkPhoton,epsilon))
     hPDF.GetXaxis().SetTitle("P_{A'} [GeV]")
     hPDF.GetYaxis().SetTitle("#theta_{A'} [rad]")
     hPDFtheta = r.TH1F("hPDFtheta_eps%s_m%s"%(epsilon,mDarkPhoton),
@@ -179,12 +196,12 @@ def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi
         binstheta,tmin-0.5*anglestep,tmax-0.5*anglestep)
     hPDFp = r.TH1F("hPDFp_eps%s_m%s"%(epsilon,mDarkPhoton),
         "hPDFp_eps%s_m%s"%(epsilon,mDarkPhoton),
-        binsp,pMin(mDarkPhoton)-0.5*momentumStep,pMax(mDarkPhoton)-0.5*momentumStep)
+        binsp,pmin-0.5*momentumStep,pmax-0.5*momentumStep)
     hPDFp.GetXaxis().SetTitle("P_{A'} [GeV]")
     hPDFtheta.GetXaxis().SetTitle("#theta_{A'} [rad]")
     for theta in angles:
         for p in momenta:
-            w = normalisedProductionPDF(p,theta,mDarkPhoton,epsilon,norm)
+            w = normalisedProductionPDF(E,p,theta,mDarkPhoton,epsilon,norm)
             hPDF.Fill(p,theta,w)
             hPDFtheta.Fill(theta,w)
             hPDFp.Fill(p,w)
