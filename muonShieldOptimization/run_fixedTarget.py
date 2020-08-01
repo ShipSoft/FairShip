@@ -64,7 +64,6 @@ def init():
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
   ap = argparse.ArgumentParser(
       description='Run SHiP "pot" simulation')
-  ap.add_argument('-pl', type=str, dest='pl',default='')
   ap.add_argument('-d', '--debug', action='store_true', dest='debug')
   ap.add_argument('-f', '--force', action='store_true', help="force overwriting output directory")
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
@@ -81,7 +80,7 @@ def init():
   ap.add_argument('-B', '--beauty',     action='store_true',  dest='beauty', default=beauty, help="generate beauty decays")
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
   ap.add_argument('-N', '--skipNeutrinos',  action='store_true',  dest='skipNeutrinos',  default=False, help="skip neutrinos")
-  ap.add_argument('-D', '--4darkPhoton',  action='store_true',  dest='FourDP',  default=True, help="enable ntuple production")
+  ap.add_argument('-D', '--4darkPhoton',  action='store_true',  dest='FourDP',  default=False, help="enable ntuple production")
 # for charm production       
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
@@ -128,8 +127,7 @@ def init():
   if args.work_dir is None:
     if charm: args.work_dir = get_work_dir(runnr,"charm")
     if beauty: args.work_dir = get_work_dir(runnr,"beauty")
-    #else: args.work_dir = get_work_dir(runnr)
-    else: args.work_dir = "./" 
+    else: args.work_dir = get_work_dir(runnr)
   work_dir = args.work_dir
   logger.debug("work_dir: %s" % work_dir)
   logger.debug("command line arguments: %s", args)
@@ -169,7 +167,7 @@ run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetOutputFile(outFile)  # Output file
 #run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
-run.SetUserConfig("g4Config"+args.pl+".C")
+run.SetUserConfig("g4Config.C")
 rtdb = run.GetRuntimeDb() 
 
 # -----Materials----------------------------------------------

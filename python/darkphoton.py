@@ -12,7 +12,7 @@ from hnl import PDGname
 # constants
 alphaQED = 1./137.
 ccm = 2.99792458e+10
-hGeV = 6.58211928*pow(10.,-16)* pow(10.,-9) # no units or it messes up!!
+hGeV = 6.58211928*pow(10.,-16)*pow(10.,-9) # no units or it messes up!!
 
 #utilities
 # sigma(e+e- -> hadrons) / sigma(e+e- -> mu+mu-)

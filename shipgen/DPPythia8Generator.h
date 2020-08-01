@@ -59,6 +59,9 @@ class DPPythia8Generator : public FairGenerator
     fpbrem = kTRUE;
     fpbremPDF = pdf;
   };
+ 
+  void SetMiniShield() {fMiniShield = kTRUE;};
+ 
   Bool_t IsPbrem() { return fpbrem; };
   void SetDY(){
     fdy = kTRUE;
@@ -88,6 +91,7 @@ class DPPythia8Generator : public FairGenerator
   Bool_t fUseRandom1;  // flag to use TRandom1
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Bool_t fpbrem;       //flag to do proton bremstrahlung production (default is false)
+  Bool_t fMiniShield;       //flag to do proton bremstrahlung production (default is false)
   TH2F *fpbremPDF;     // pointer to TH2 containing PDF(p,theta) to have a dark photon with momentum p and angle theta to be produced by pbrem.
   Bool_t fdy;          // flag to do Drell-Yan QCD production
   Double_t fDPminM;    //Minimum mass, in GeV, for the DP produced in ffbar to DP QCD production.
