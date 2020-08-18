@@ -167,15 +167,16 @@ def simulationStep(fnames=[],E="10.0_withCharmandBeauty",overwrite=False,Gfield=
             time.sleep(100)
     print "finished all the tasks."
 def digiStep(fnames=[]):
+    mcFile = 'ship.conical.MuonBack-TGeant4.root'
+    geoFile = 'geofile_full.conical.MuonBack-TGeant4.root'
     if len(fnames)==0: fnames = getFilesLocal()
     Nfiles = len(fnames)
     print "fileList established ",Nfiles
     for fname in fnames:
+        if not mcFile in os.listdir(fname):continue
         os.chdir(fname)
-        mcFile = 'ship.conical.MuonBack-TGeant4.root'
-        geoFile = 'geofile_full.conical.MuonBack-TGeant4.root'
         cmd = "python $FAIRSHIP/macro/runMufluxDigi.py -n 9999999 -f "+mcFile+" -g "+geoFile+" &"
-        print 'step 2:', cmd
+        print 'step 2:', fname,cmd
         os.system(cmd)
         os.chdir('../')
         while 1>0:
@@ -214,17 +215,19 @@ def findDirWithSim():
             print 'tmp file not ok',x
     return stats
 
-def splitDigiFiles(splitFactor=5,fnames=[]):
+def splitDigiFiles(splitFactor=10,fnames=[],eosdir='10GeV'):
+    eospath = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/"+eosdir
     if len(fnames)==0: fnames = getFilesLocal()
     Nfiles = len(fnames)
     print "fileList established ",Nfiles
     for fname in fnames:
         os.chdir(fname)
         ofile = 'ship.conical.MuonBack-TGeant4_dig.root'
-        if not ofile in os.listdir('.'): 
+        origin = ROOT.TFile.Open(eospath+"/"+fname+"/"+ofile)
+        if not origin:
+            print "File not found",fname
             os.chdir('../')
             continue
-        origin = ROOT.TFile(ofile)
         if not origin.GetKey('cbmsim'):
             print "corrupted file",fname
             os.chdir('../')
@@ -237,6 +240,7 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
             if nf in os.listdir('.'): 
                 print "file exists",fname,nf
             else:
+                print "creating ",fname,nf
                 newFile = ROOT.TFile(nf,'RECREATE')
                 newTree = sTree.CloneTree(0)
                 for n in range(N,N+deltaN):
@@ -247,6 +251,7 @@ def splitDigiFiles(splitFactor=5,fnames=[]):
         os.chdir('../')
 
 def recoStep(splitFactor=5,fnames=[],eospath=False,Gfield=''):
+    if Gfield == 'inter': addOption = " -F inter "
     eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'
     if len(fnames)==0: fnames = getFilesLocal()
     Nfiles = len(fnames)
@@ -274,7 +279,6 @@ def recoStep(splitFactor=5,fnames=[],eospath=False,Gfield=''):
                     print "digiFile missing",fname,digiFile
                     continue
             addOption = ""
-            if Gfield == 'inter': addOption = " -F inter "
             cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 --Display False -u 1 -f "+recoFile+addOption+' &'
             print 'step 2:', cmd,' in directory ',fname
             os.system(cmd)
@@ -322,7 +326,9 @@ def cleanUp():
         df = f.replace('_RT','')
         if os.path.isfile(df): os.system('rm ' +df)
 
-def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
+def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[],Gfield=''):
+    addOption = ""
+    if Gfield == 'inter': addOption = " -F inter "
     if D=='.':
         fileList,x,y = checkFilesWithTracks(D,splitFactor)
         print "fileList established ",len(fileList)
@@ -330,7 +336,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
             tmp = df.split('/')
             if len(tmp)>1: os.chdir(tmp[0])
             if not commandToHist[command]+tmp[1] in os.listdir('.'):
-                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+tmp[1]+' --Display False  &'
+                cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c "+command+" -f "+tmp[1]+addOption+' --Display False  &'
                 print 'execute:', cmd
                 os.system(cmd)
             if len(tmp)>1: os.chdir('../')
@@ -354,7 +360,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
                 histFile = commandToHist[command]+y[y.rfind('/')+1:]
                 if histFile in os.listdir('.') : continue
                 if interactive:
-                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+f+' >'+histFile.replace('histo','log')+' --Display False  &'
+                    cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+f+addOption+' >'+histFile.replace('histo','log')+' --Display False  &'
                     print 'execute:', cmd
                     os.system(cmd)
                     while 1>0:
@@ -371,7 +377,7 @@ def makeHistos(D='.',splitFactor=5,command="anaResiduals",fnames=[]):
             fileList.append( os.environ['EOSSHIP'] + x[x.find('/eos'):])
         for fname in fileList:
             if os.path.isfile(commandToHist[command]+fname[fname.rfind('/')+1:]): continue
-            cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+fname+' &'
+            cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False -c "+command+" -f "+fname+addOption+' &'
             print 'command:', cmd
             os.system(cmd)
             while 1>0:
