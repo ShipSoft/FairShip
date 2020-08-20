@@ -585,8 +585,33 @@ def invMass(path = '.',merge=False,refit=True,overWrite=False,flagImfield=False)
                 while 1>0:
                     if count_python_processes('MufluxNtuple')<ncpus: break 
                     time.sleep(10)
-
-
+def MS(path = '.',merge=False,refit=True,overWrite=False,flagImfield=False):
+    hname = "MSangleStudy"
+    if merge:
+        cmd = 'hadd -f sum'+hname+'.root '
+        for d in os.listdir(path):
+            if not d.find(hnme)==0:        continue
+            r = int(d.split('_')[2].split('.')[0])
+            if r in badRuns or r in noTracks or r in noField : continue
+            if r in intermediateField and not flagImfield : continue
+            if not r in intermediateField and flagImfield : continue
+            cmd += d+" "
+        os.system(cmd)
+    else:
+        for d in os.listdir(path):
+            if d.find('RUN_8000')==0 and os.path.isdir(path+'/'+d):
+               run = d.split('_')[2]
+               cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -r -c MS -t '' -A False -B False -C False -D True -d /eos/experiment/ship/user/truf/muflux-reco -f "+run
+               test = hname+"_"+run+'.root'
+                if os.path.isfile(test) and not overWrite:
+                    print "skip run",d
+                    continue
+                print "execute ",cmd
+                os.system(cmd)
+                time.sleep(10)
+                while 1>0:
+                    if count_python_processes('MufluxNtuple')<ncpus: break 
+                    time.sleep(10)
 def importHistos(keyword = 'RUN_8000_2',histoname="momDistributions"):
     # momDistributions.root    residuals.root
     # pathHistos = ['/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/','/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-32/']

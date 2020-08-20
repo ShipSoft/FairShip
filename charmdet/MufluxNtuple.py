@@ -6410,6 +6410,39 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
        hData['DalphaJpsi']   = hMC['DalphaJpsi']
        hData['targetXYJpsi'] = hMC['targetXYJpsi']
   elif command.find("MS")==0:
+    if command.find("data")>0:
+       for p in ['_x','_y']:
+          ut.bookHist(hData, 'Dalpha'+p, 'cor angle;P [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
+       ut.bookHist(hData, 'targetXY',"extrap to target",100,0.,400.,100,-10.,10.,100,-10.,10.)
+       ut.bookHist(hData, 'targetZ',"extrap to target",100,0.,400.,200,-700.,300.)
+       ut.bookHist(hData, 'targetIP',"extrap to target",100,0.,400.,100,0.,10.)
+     theCut = "GoodTrack%100==11&&abs(chi2)<0.9"
+     if xTarget<0:
+        splus_xTarget="-"+str(abs(xTarget))
+        sminus_xTarget="+"+str(abs(xTarget))
+     else: 
+        splus_xTarget="+"+str(xTarget)
+        sminus_xTarget="-"+str(xTarget)
+     if yTarget<0:
+        splus_yTarget="-"+str(abs(yTarget))
+        sminus_yTarget="+"+str(abs(yTarget))
+     else: 
+        splus_yTarget="+"+str(yTarget)
+        sminus_yTarget="-"+str(yTarget)
+     P = "sqrt(Px*Px+Py*Py+Pz*Pz)"
+     sTreeData.Draw("Px/Pz-(x"+sminus_xTarget+")/(z+"+str(abs(zTarget))+"):"+r+">>Dalpha_x",theCut)
+     sTreeData.Draw("Py/Pz-(y"+sminus_yTarget+")/(z+"+str(abs(zTarget))+"):"+r+">>+Dalpha_y",theCut)
+     Y = "y-((z + "+str(abs(zTarget))+")/Pz)*Py"
+     X = "x-((z + "+str(abs(zTarget))+")/Pz)*Px"
+     sTreeData.Draw(Y+":"+X+":"+P+">>targetXY",theCut)
+     rho = "-((x"+sminus_xTarget+")+(y"+sminus_yTarget+"))*Pz/(Px+Py)"
+     Z   = "z"+rho
+     sTreeData.Draw(Z+":"+P+">>targetZ",theCut)
+     IP = "sqrt(("+rho+"*Px/Pz+x"+sminus_xTarget+")**2+("+rho+"*Py/Pz+y"+sminus_yTarget+")**2)"
+     sTreeData.Draw(IP+":"+P+">>targetIP",theCut)
+     ut.writeHists(hData,'MSangleStudy_'+options.listOfFiles.replace(',','_')+'.root')
+     return
+    else:
      loadNtuples()
      hMC['ntmuons'] = ROOT.TChain('muons')
      if command=="MS10":
@@ -6591,7 +6624,8 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
         Y = "(-("+splus_xTarget+"-"+m+"x)*p"+m+"x-("+splus_yTarget+"-"+m+"y)*p"+m+"y-("+str(zTarget)+"-"+m+"z)*p"+m+"z)/("+PcorRec2+"*"+r+")"
         if threeD: nt.Draw("acos("+Y+"):"+r+">>+Jpsi_"+pf[x]+"Dalpha",theCut)
         else:
-          for p in ['px','py']:  nt.Draw("p"+m+p[1]+"/p"+m+"z-("+m+p[1]+"-"+sminus_xTarget+")/("+m+"z+"+str(abs(zTarget))+"):"+r+">>+Jpsi_"+pf[x]+"Dalpha_"+p[1],theCut)
+          nt.Draw("p"+m+"x/p"+m+"z-("+m+"x"+sminus_xTarget+")/("+m+"z+"+str(abs(zTarget))+"):"+r+">>+Jpsi_"+pf[x]+"Dalpha_x",theCut)
+          nt.Draw("p"+m+"y/p"+m+"z-("+m+"y"+sminus_yTarget+")/("+m+"z+"+str(abs(zTarget))+"):"+r+">>+Jpsi_"+pf[x]+"Dalpha_y",theCut)
         if x!='Data':
            P = "sqrt(p"+n+"x*p"+n+"x+p"+n+"y*p"+n+"y+p"+n+"z*p"+n+"z)"
            Y = "((p"+n+"x*p"+m+"x+p"+n+"y*p"+m+"y+p"+n+"z*p"+m+"z)/("+P+"*"+r+"))"
@@ -6607,7 +6641,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
         X = m+"x-(("+m+"z + "+str(abs(zTarget))+")/p"+m+"z)*p"+m+"x"
         P = "sqrt(p"+m+"x*p"+m+"x+p"+m+"y*p"+m+"y+p"+m+"z*p"+m+"z)"
         nt.Draw(Y+":"+X+":"+P+">>+Jpsi_"+pf[x]+"targetXY",theCut)
-        rho = "-(("+m+"x "+sminus_xTarget+")+("+m+"y "+sminus_yTarget+"))*p"+m+"z/(p"+m+"x+p"+m+"y)"
+        rho = "-(("+m+"x"+sminus_xTarget+")+("+m+"y"+sminus_yTarget+"))*p"+m+"z/(p"+m+"x+p"+m+"y)"
         Z = m+"z"+rho
         nt.Draw(Z+":"+P+">>+Jpsi_"+pf[x]+"targetZ",theCut)
         IP = "sqrt(("+rho+"*p"+m+"x/p"+m+"z+"+m+"x"+sminus_xTarget+")**2+("+rho+"*p"+m+"y/p"+m+"z+"+m+"y"+sminus_yTarget+")**2)"
@@ -8545,5 +8579,7 @@ elif options.command=='JpsiYield' or options.command=='JpsiKinematicsReco':
           AnalysisNote_JpsiKinematicsReco( ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fM)
    if options.command=='JpsiPolarization': 
           JpsiPolarization(ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fM,nBins=20, pTJpsiMin=tmp[4], pTJpsiMax=tmp[5])
+   if options.command=='MS'
+          studyInvMassResolution(command='MSdata')
 else:
    ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
