@@ -86,7 +86,7 @@ elif withData and options.listOfFiles:
     sTreeData = ROOT.TChain('tmuflux')
     countFiles=[]
     for aRun in options.listOfFiles.split(','):
-       temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+fdir+'/'+aRun,shell=True)
+       temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+fdir+'/RUN_8000_'+aRun,shell=True)
        for x in temp.split('\n'):
             if x.find('ntuple-SPILL')<0: continue
             if x.find('refit')<0 and options.refit or x.find('refit')>0 and not options.refit: continue
@@ -2453,6 +2453,7 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut):
    if v=='mcor':
       theCut = theCut.replace('pt1','pt1cor')
       theCut = theCut.replace('pt2','pt2cor')
+      theCut+="&&abs(m/mcor-1)<1"
    if withCosCSCut: theCut+='&&abs(cosCScor)<0.5'
    if muID == 1: theCut+='&&(muID1%100==11||muID2%100==11)'
    if muID == 2: theCut+='&&(muID1%100==11&&muID2%100==11)'
@@ -3031,7 +3032,7 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=
       tc = canvas.cd(l)
       l+=1
       if x=='prob':
-        hMC[x+'Vs'+cases['Data'][1]].SetMinimum(0.0001)
+        hMC[x+'Vs'+cases['Data'][1]].SetMinimum(0.01)
         hMC[x+'Vs'+cases['Data'][1]].SetMaximum(1.5)
         tc.SetLogy(1)
       elif x=='sig':
@@ -3858,6 +3859,77 @@ def diMuonAnalysis(fm='B'):
  myPrint(hData['lowMass'],'lowMassSummary')
  ut.writeHists(hMC,fm+'-diMuonAnalysis-MC.root')
  ut.writeHists(hData,fm+'-diMuonAnalysis-Data.root')
+def energyLoss(step='determine'):
+# muon dEdx
+ tc = hMC['dummy'].cd(1)
+ if step == 'determine':
+   hMC['incl'] = ROOT.TChain('muons')
+   hMC['incl'].AddFile("recMuons_1GeV.root")
+   hMC['incl'].AddFile("recMuons_10GeV.root")
+   hMC['fP8']=ROOT.TFile('recMuons_P8.root')
+   hMC['fP6']=ROOT.TFile('recMuons_Cascade.root')
+   hMC['P8']=hMC['fP8'].muons
+   hMC['P6']=hMC['fP6'].muons
+   V = ['incl','P8','P6']
+   ROOT.gROOT.cd()
+   theCut = "DTz<3332&&abs(muID)==13&&oz<-100&&goodTrack==111&&chi2<0.9"
+   for v in V: 
+       ut.bookHist(hMC, 'eloss_'+v ,'pDT-pTrue vs pDT',40,0.,400.,50,-50.,50.)
+       hMC[v].Draw('sqrt(DTpx*DTpx+DTpy*DTpy+DTpz*DTpz)-sqrt(px*px+py*py+pz*pz):sqrt(DTpx*DTpx+DTpy*DTpy+DTpz*DTpz)>>eloss_'+v,theCut)
+   V = ['incl','P8','P6','all']
+   hMC['eloss_all']=hMC['eloss_incl'].Clone('eloss_all')
+   hMC['eloss_all'].Add(hMC['eloss_P6'])
+   hMC['eloss_all'].Add(hMC['eloss_P8'])
+   for v in V: 
+       hMC['eloss_p_'+v]=hMC['eloss_'+v].ProjectionX('eloss_p_'+v)
+       hMC['eloss_p_'+v].Reset()
+       for n in range(1,hMC['eloss_'+v].GetNbinsX()+1):
+             tmp = hMC['eloss_'+v].ProjectionY('tmp',n,n)
+             mean = tmp.GetMean()
+             errmean = tmp.GetMeanError()
+             hMC['eloss_p_'+v].SetBinContent(n,mean)
+             hMC['eloss_p_'+v].SetBinError(n,errmean)
+   hMC['eloss_p_g']=ROOT.TGraph()
+   for n in range(1,hMC['eloss_p_all'].GetNbinsX()+1):
+     hMC['eloss_p_g'].SetPoint(n-1,hMC['eloss_p_all'].GetBinCenter(n),hMC['eloss_p_all'].GetBinContent(n))
+   hMC['eloss_p_all'].Draw()
+   myPrint()
+ elif step=='apply':
+   theCut = theJpsiCut('mcor',True,1.0,20.,300.,2,False)
+   if MC:
+     xTarget=0
+     yTarget=0
+     zTarget = -377.
+   else:
+     xTarget=0.53
+     yTarget=-0.2
+     zTarget = -377.
+   nt = hMC['Jpsi']
+   nt = hData['f'].nt
+   if nt.GetLeaf("    prec1x"): nt.GetLeaf("    prec1x").SetName("prec1x")
+   ut.bookHist(hMC, 'mcor', 'inv mass;M [GeV/c^{2}];N',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hMC, 'mcorNew', 'inv mass;M [GeV/c^{2}];N',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   nt.Draw('mcor>>mcor',theCut)
+   nt.Draw('>>eventList',theCut)
+   eventList = ROOT.gROOT.FindObject('eventList')
+   Pcor={}
+   P={}
+   X={}
+   for n in range(eventList.GetN()):
+      rc = nt.GetEvent(eventList.GetEntry(n))
+      P[1] = ROOT.Math.PxPyPzMVector(nt.prec1x,nt.prec1y,nt.prec1z,0.105658)
+      P[2] = ROOT.Math.PxPyPzMVector(nt.prec2x,nt.prec2y,nt.prec2z,0.105658)
+      X[1] = ROOT.TVector3(nt.rec1x,nt.rec1y,nt.rec1z)
+      X[2] = ROOT.TVector3(nt.rec2x,nt.rec2y,nt.rec2z)
+# make dE correction plus direction from measured point
+      O = ROOT.TVector3(xTarget,yTarget,zTarget)
+      for k in range(1,3):
+        dline = X[k]-O
+        norm  = dline.Mag()
+        Ecor  = P[k].E()-hMC['eloss_p_g'].Eval(P[k].E())
+        Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
+      J = Pcor[1]+Pcor[2]
+      rc = hMC['mcorNew'].Fill(J.M())
 
 def makeProjection(proj,projMin,projMax,projName,theCut,nBins=9,ntName='10GeV',printout=2,fixSignal=False,secondGaussian=True):
    y_beam = yBeam()
@@ -6373,6 +6445,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
        for p in ['_x','_y']:
          ut.bookHist(hMC, 'theta(pcor-ptrue)'+p, 'angle;P [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
          ut.bookHist(hMC, 'alpha_p0pDT'+p, 'angle;P [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
+         ut.bookHist(hMC, 'alpha_p0pDT2'+p, 'angle;PDT [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
          ut.bookHist(hMC, 'alpha_p0pcor'+p, 'angle;P [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
          ut.bookHist(hMC, 'alpha_p0pRec'+p, 'angle;P [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
          ut.bookHist(hMC, 'Jpsi_alpha_p0pRec'+p, 'angle;P [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
@@ -6398,6 +6471,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      ut.bookHist(hMC, 'Jpsi_originXYZ',"origin of track",400,-400.,0.,100,-10.,10.,100,-10.,10.)
      ut.bookHist(hMC, 'Jpsi_originXY_Zfix',"origin of track",100,-10.,10.,100,-10.,10.)
      ut.bookHist(hMC, 'dEdx','dEdx',100,0.,400.,200,-100.,100.)
+     ut.bookHist(hMC, 'dEdx_rec','dEdx',100,0.,400.,200,-100.,100.)
      ut.bookHist(hMC, 'Jpsi_targetXY',"extrap to target",100,0.,400.,100,-10.,10.,100,-10.,10.)
      ut.bookHist(hMC, 'Jpsi_targetZ',"extrap to target",100,0.,400.,200,-700.,300.)
      ut.bookHist(hMC, 'Jpsi_targetIP',"extrap to target",100,0.,400.,100,0.,10.)
@@ -6428,6 +6502,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      if threeD: hMC['ntmuons'].Draw("acos("+Y+"):"+P+">>alpha_p0pDT",theCutJpsi)
      else:
         for p in ['px','py']:   hMC['ntmuons'].Draw(p+"/pz-DT"+p+"/DTpz:"+P+">>alpha_p0pDT_"+p[1],theCutJpsi)
+        for p in ['px','py']:   hMC['ntmuons'].Draw(p+"/pz-DT"+p+"/DTpz:"+DT+">>alpha_p0pDT2_"+p[1],theCutJpsi)
      Pcor = "sqrt((DTx-ox)**2+(DTy-oy)**2++(DTz-oz)**2)"
      Y = "((DTx-ox)*px+(DTy-oy)*py+(DTz-oz)*pz)/("+Pcor+"*"+P+")"
      if threeD: hMC['ntmuons'].Draw("acos("+Y+"):"+P+">>alpha_p0pcor",theCutJpsi)
@@ -6452,16 +6527,18 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      Y = "(-("+str(0)+"-recx)*recpx-("+str(0)+"-recy)*recpy-("+str(zTarget)+"-recz)*recpz)/("+PcorRec2+"*"+r+")"
      if threeD: hMC['ntmuons'].Draw("acos("+Y+"):"+r+">>mcDalpha",theCutJpsi)
      else:
-        for p in ['px','py']:   hMC['ntmuons'].Draw("rec"+p+"/recpz-(rec"+p[1]+")/(recz-"+str(zTarget)+"):"+P+">>mcDalpha_"+p[1],theCutJpsi)
+        for p in ['px','py']:   
+             hMC['ntmuons'].Draw("rec"+p+"/recpz-(rec"+p[1]+")/(recz-"+str(zTarget)+"):"+E+">>mcDalpha_"+p[1],theCutJpsi)
      Y = "(-("+str(0)+"-recx)*DTpx-("+str(0)+"-recy)*DTpy-("+str(zTarget)+"-recz)*DTpz)/("+PcorRec2+"*"+DT+")"
      if threeD: hMC['ntmuons'].Draw("acos("+Y+"):"+r+">>mcDalphaDT",theCutJpsi)
      else:
-        for p in ['px','py']:   hMC['ntmuons'].Draw("DT"+p+"/DTpz-(rec"+p[1]+")/(recz-"+str(zTarget)+"):"+P+">>mcDalphaDT_"+p[1],theCutJpsi)
+        for p in ['px','py']:   hMC['ntmuons'].Draw("DT"+p+"/DTpz-(rec"+p[1]+")/(recz-"+str(zTarget)+"):"+DT+">>mcDalphaDT_"+p[1],theCutJpsi)
      Y = "((recpx*DTpx+recpy*DTpy+recpz*DTpz)/("+r+"*"+DT+"))"
      if threeD: hMC['ntmuons'].Draw("acos("+Y+"):"+DT+">>alpha_pDTpRec",theCutJpsi)
      else:
        for p in ['px','py']:   hMC['ntmuons'].Draw("DT"+p+"/DTpz-rec"+p+"/recpz:"+P+">>alpha_pDTpRec_"+p[1],theCutJpsi)
-     hMC['ntmuons'].Draw(P+'-'+E+':'+E+'>>dEdx',theCut)
+     hMC['ntmuons'].Draw(P+'-'+DT+':'+P+'>>dEdx',theCut)
+     hMC['ntmuons'].Draw(P+'-'+E+':'+E+'>>dEdx_rec',theCut)
 #
      Xdel="(recx-(DTx-(recz-DTz)*DTpx/DTpz))"
      Ydel="(recy-(DTy-(recz-DTz)*DTpy/DTpz))"
@@ -6475,9 +6552,9 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
            hMC['ntmuons'].Draw(tmp[p]+":"+DT+">>hitResol_"+p,theCut)
            hMC['ntmuons'].Draw(tmp[p]+":"+DT+">>Jpsi_hitResol_"+p,theCutJpsi)
 # data
-     theCut = theJpsiCut('mcor',True,1.0, 0.,300.,2,False)+"&&abs(3.1-mcor)<0.4"
+     theCut = theJpsiCut('mcor',True,1.0, 0.,300.,2,False)+"&&abs(3.1-mcor)<0.5"
 # targetXY
-     V = {'1':'p1cor','2':'p2cor'}
+     V = {'1':'p1','2':'p2'}
      pf = {'MC':'mc','Data':''}
      if command=="MSP6":
         ntuples = {'MC':hMC['fJpsi'].nt,'Data':hData['f'].nt}
@@ -6488,6 +6565,8 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      for x in ntuples:
        s_xTarget=str(0)
        s_yTarget=str(0)
+       splus_xTarget="+"+str(0)
+       sminus_xTarget="-"+str(0)
        if x=='Data':
           if xTarget<0:
             splus_xTarget="-"+str(abs(xTarget))
@@ -7207,7 +7286,7 @@ def AnalysisNote_InvMassFitParameters(muID=1,ptmax=1.0,pmin=20.,fM='B',BDTCut=Fa
    if BDTCut: tag += '_BDT'
    if withWeight: tag += '_wp6'
    name = 'Fitsystematics-'+tag+'_ycor1C'
-   tmp = ROOT.TFile(tag+'/'+name+'.root')
+   tmp = ROOT.TFile(name+'.root')
    X = tmp.Get(name)
    X.Draw()
    printPads(X)
@@ -7423,6 +7502,63 @@ def AnalysisNote_JpsiKinematicsReco(ptCut=1.0,pmin=20.,pmax = 300.,BDTCut=None, 
      hMC['xxx'].Update()
      myPrint(hMC['xxx'],'JpsiKinematicsRec_'+proj['par'])
 
+def AnalysisNote_PrimVertex(case='pos'):
+ ut.bookCanvas(hMC,'PV','PV',500,800,1,1)
+ hMC['PV'].SetLeftMargin(0.13)
+ hMC['PV'].cd()
+ if case==pos:
+   F = ROOT.TFile('primaryVertex.root')
+   tc = F.Get('primV').Clone()
+   proj = {1:'X',2:'Y',3:'Z'}
+   i=0
+   for pad in tc.GetListOfPrimitives():
+      i+=1
+      obj={}
+      for o in pad.GetListOfPrimitives():
+         cl = o.ClassName()
+         if not obj.has_key(cl):obj[cl]=[]
+         obj[cl].append(o.Clone())
+      nmax = 0
+      hmax = 0
+      for n in range(len(obj['TH1D'])):
+        tmp = ut.findMaximumAndMinimum(obj['TH1D'][n])
+        obj['TH1D'][n].SetMaximum(tmp[1]*1.1)
+        txt = obj['TH1D'][n].GetTitle()
+        obj['TH1D'][n].SetTitle(';'+proj[i]+' [cm]; arbitrary units')
+        if tmp[1]>nmax:
+            nmax = tmp[1]
+            hmax = n
+      opt=''
+      if obj['TH1D'][hmax].GetLineColor()==ROOT.kMagenta: opt='hist'
+      obj['TH1D'][hmax].Draw(opt)
+      for x in obj['TLatex']: 
+          if i==3: x.SetX(0.32+x.GetX())
+          else: x.SetX(0.03+x.GetX())
+      for c in obj:
+         for x in obj[c]:
+           opt=''
+           if c=='TH1D' and x.GetLineColor()==ROOT.kMagenta: opt='hist'
+           x.Draw(opt+'same')
+      myPrint(hMC['PV'],'primvx_'+proj[i])
+ else:
+   F = ROOT.TFile('ResStudy_origin.root')
+   target = F.Get('target').Clone()
+   pad = target.GetListOfPrimitives()[0]
+   P6Jpsi = pad.FindObject("P6Jpsi_originXYZ_projx").Clone()
+   P8Jpsi = pad.FindObject("P8Jpsi_originXYZ_projx").Clone()
+   MC10Jpsi = pad.FindObject("MC10Jpsi_originXYZ_projx").Clone()
+   tc = hMC['PV'].cd()
+   P6Jpsi.SetTitle('; Z [cm];arbitrary units')
+   P6Jpsi.GetXaxis().SetRangeUser(-400,-200)
+   P6Jpsi.Draw('hist')
+   P8Jpsi.Draw('histsame')
+   MC10Jpsi.Draw('histsame')
+   L = ROOT.TLegend(0.22,0.28,0.52,0.48)
+   rc = L.AddEntry(P6Jpsi,"Pythia6 J/#psi",'PL')
+   rc = L.AddEntry(P8Jpsi,"Pythia8 J/#psi",'PL')
+   rc = L.AddEntry(MC10Jpsi,"Pythia8 incl",'PL')
+   L.Draw()
+   myPrint(hMC['PV'],'truez')
 def debugCosCSfit(ptCut=1.0,pmin=20.,pmax = 300.,BDTCut=None, muID=1,im='s',sLow=2.0,sHigh=5.0,bLow=2.0,bHigh=5.0):
    os.chdir(topDir)
    fitMethods = ['B','CB']
@@ -8181,7 +8317,7 @@ def extractDecays(E):
     muons.Write()
     ut.writeHists(h,'extractDecays.root')
 
-def extractRecMuons(E='1GeV'):
+def extractRecMuons(E='1GeV',debug=False):
     f     = ROOT.TFile("recMuons_"+E+".root","RECREATE")
     variables = "px:py:pz:ox:oy:oz:moID:muID:procID:w:chi2:goodTrack:recpx:recpy:recpz:recx:recy:recz:DTpx:DTpy:DTpz:DTx:DTy:DTz:mcor"
     muons = ROOT.TNtuple("muons","muons",variables)
@@ -8196,6 +8332,8 @@ def extractRecMuons(E='1GeV'):
       if len(sTreeMC.GoodTrack)>2:continue
       mcor = -999.
       if len(sTreeMC.GoodTrack)==2:
+        sTree = sTreeMC
+        Pcor={}
         P={}
         if sTree.GoodTrack[0]<0   or sTree.GoodTrack[1]<0:    continue
         if sTree.GoodTrack[0]>999 or sTree.GoodTrack[1]>999:  continue
@@ -8206,8 +8344,10 @@ def extractRecMuons(E='1GeV'):
           Ecor = P[k].E()+dEdxCorrection(P[k].P())
           norm = dline.Mag()
           Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
-        X = Pcor[0]+Pcor[1]
-        mcor = X.Mag()
+#    theCut =  'mult<3&&max(pt1,pt2)>'+sptCut+'&&chi21*chi22<0&&max(abs(chi21),abs(chi22))<0.9&&\max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.20'
+        if max(Pcor[0].Pt(),Pcor[1].Pt())>1.0 and min(P[0].P(),P[1].P())>20.0:
+           X = Pcor[0]+Pcor[1]
+           mcor = X.M()
       for j in range(sTreeMC.nTr):
         if sTreeMC.GoodTrack[j]<0 or sTreeMC.GoodTrack[j]>999: continue
         fname = sTreeMC.GetCurrentFile().GetName().replace('ntuple-','')
@@ -8242,7 +8382,7 @@ def extractRecMuons(E='1GeV'):
               MCRecoDTpx=hit.GetPx()
               MCRecoDTpy=hit.GetPy()
               MCRecoDTpz=hit.GetPz()
-        if mu.GetStartZ()>-0.5 and abs(trueMu.GetPdgCode())==13 and MCRecoDTz < 3000.:
+        if mu.GetStartZ()>-0.5 and abs(trueMu.GetPdgCode())==13 and MCRecoDTz < 3000. and debug:
             print "strange event",n,nInFile,currentFile,j,sTreeMC.MCID[j]
         theArray = [mu.GetPx(),mu.GetPy(),mu.GetPz(),mu.GetStartX(),mu.GetStartY(),mu.GetStartZ(),mo.GetPdgCode(),trueMu.GetPdgCode(),
                           mu.GetProcID(),mu.GetWeight(),sTreeMC.Chi2[j],sTreeMC.GoodTrack[j],sTreeMC.Px[j],sTreeMC.Py[j],sTreeMC.Pz[j],
