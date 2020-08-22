@@ -6,7 +6,30 @@ hP8V={}
 hMC={}
 hP8={}
 hP6={}
+hData={}
 results = {}
+
+def rho(fitresult):
+    cov = fitresult.GetCovarianceMatrix()
+    r = cov.Clone()
+    for i in range(cov.GetNcols()):
+       for j in range(cov.GetNrows()):
+           if cov[i][i]*cov[j][j] !=0:
+               r[i][j]=cov[i][j]/(ROOT.TMath.Sqrt(cov[i][i]*cov[j][j]))
+           else: r[i][j]=0
+    r.Print()
+def residual(hx,hf):
+   hr = hx.Clone(hx.GetName()+'_res')
+   hr.Reset()
+   hr.SetMinimum(-5.)
+   hr.SetMaximum(5.)
+   for n in range(1,hx.GetNbinsX()+1):
+       xc = hx.GetBinCenter(n)
+       bw = hx.GetBinWidth(n)
+       F = hf.Integral(xc-bw/2.,xc+bw/2.)/bw
+       chi = (F-hx.GetBinContent(n))/hx.GetBinError(n)
+       hr.SetBinContent(n,chi)
+   return hr
 
 ut.readHists(hP8V,'myVertex-P8.root')
 for x in hP8V:
@@ -40,6 +63,13 @@ for x in hP6:
    if obj.Class().GetName().find('TH')==0:
        obj.SetLineColor(ROOT.kRed)
        obj.SetName('P6'+x)
+ut.readHists(hData,'sumMSangleStudy.root')
+for x in hData:
+   obj = hData[x]
+   if obj.Class().GetName().find('TH')==0:
+       obj.SetLineColor(ROOT.kBlue)
+       obj.SetName('Data'+x)
+
 h ={'P8':hP8,'incl':hMC,'P6':hP6}
 h['data'] = hMC
 hMC['DG'] = ROOT.TF1("DG", "abs(gaus(0)) + abs(gaus(3)) + abs(pol0(6))", -700, 300)
@@ -55,9 +85,13 @@ function = "sqrt((13.6/1000.*sqrt([0])/x*(1.+0.038*log([0])))**2+[1]**2)"
 hMC['MSfun'] = ROOT.TF1('MSfun',function,0,400)
 hMC['MSfun'].SetLineColor(ROOT.kCyan)
 
-dEdx = "(7.63907+0.0315131*x-0.000168569*x*x)*(1-0.085)"
+dEdx_rec = "(7.63907+0.0315131*x-0.000168569*x*x)*(1-0.085)"
+dEdx = "5.54+0.07*x-0.000167*x*x"
 function = "sqrt((13.6/1000.*sqrt([0])/(x+[2])*(1.+0.038*log([0])))**2+[1]**2)"
 hMC['MSfunR'] = ROOT.TF1('MSfunR',function,0,400)
+
+function = "sqrt((13.6/1000.*sqrt([0])/(x+[2]*(5.54+0.07*x-0.000167*x*x))*(1.+0.038*log([0])))**2+[1]**2)"
+hMC['MSfunE'] = ROOT.TF1('MSfunE',function,0,400)
 
 sqrt2pi = ROOT.TMath.Sqrt(2*ROOT.TMath.Pi())
 def foldedGaus(x,par):
@@ -68,8 +102,8 @@ hMC['absGaus'].SetParName(0,'N')
 hMC['absGaus'].SetParName(1,'mean')
 hMC['absGaus'].SetParName(2,'sig')
 
-ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
 ut.bookCanvas(hMC,'2d',' ',900,1200,1,2)
+ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
 
 import os
 def myPrint(obj,aname):
@@ -98,7 +132,7 @@ def truncatedMean(histo,C=0.9):
     histo.GetXaxis().SetRange(1,n)
     return histo.GetMean(),histo.GetMeanError()
 
-def makeMomSlice(h,x,cat='',CL=1.0,exampleBin=-1,method='gaus'):
+def makeMomSlice(h,x,cat='',CL=1.0,exampleBin=-1,method='gaus',rebin=100):
      h[x+'_p']=h[x].ProjectionX(cat+x+'_p')
      h[x+'_m']=h[x].ProjectionX(cat+x+'_m')
      G = hMC['DG'].Clone('G')
@@ -106,13 +140,14 @@ def makeMomSlice(h,x,cat='',CL=1.0,exampleBin=-1,method='gaus'):
      G.FixParameter(4,0)
      G.FixParameter(5,1)
      for n in range(1,h[x+'_p'].GetNbinsX()+1):
-        tmp=h[x].ProjectionY('tmp',n,n)
+        h[x+'_p'+str(n)]=h[x].ProjectionY(x+'_p'+str(n),n,n)
+        tmp=h[x+'_p'+str(n)]
         if method=='mean':
             mean,err = truncatedMean(tmp,CL)
         if method=='RMS':
             mean,err = tmp.GetRMS(),tmp.GetRMSError()
         if method=='gaus':
-            tmp.Rebin(1000)
+            tmp.Rebin(rebin)
             G.SetParameter(0,tmp.GetMaximum())
             G.SetParameter(1,0.)
             G.SetParameter(2,0.001)
@@ -136,11 +171,11 @@ def makeMomSlice(h,x,cat='',CL=1.0,exampleBin=-1,method='gaus'):
            tmp.Draw()
            myPrint(hMC['dummy'],x+'_distrib_'+str(exampleBin))
 def dEdxCorrection():
-  hname = 'dEdx'
-  for X in h:
-      makeMomSlice(h[X],'dEdx',cat=X)
+  for hname in ['dEdx','dEdx_rec']:
+    for X in h:
+      makeMomSlice(h[X],hname,cat=X,method='mean')
       hnamep =  hname+'_p'
-      rc = h[x][hnamep].Fit('pol3','S','',5.,250.)
+      rc = h[X][hnamep].Fit('pol3','S','',5.,250.)
 def origin():
   ut.bookCanvas(hMC,'target','target',1800,1200,3,2)
   tc = hMC['target'].cd(1)
@@ -223,7 +258,7 @@ def primVertexResol():
           for i in range(3,6): fun.ReleaseParameter(i)
           fun.FixParameter(4,fun.GetParameter(1))
           rc = hv[X][hist+p].Fit(fun,'SQL','',-700.,0.)
-        else: "bJpsi_Dalpha"+p+"_p"
+        else:
           rc = hv[X][hist+p].Fit(fun,'SQL','',-10.,10.)
           for i in range(3,6): fun.ReleaseParameter(i)
           fun.FixParameter(4,fun.GetParameter(1))
@@ -279,6 +314,24 @@ def primVertexResol():
     hv[X]['F'+hname].Draw('same')
     X='P8'
     hv[X][hname+'_w'].Draw('histsame')
+    T=ROOT.TLatex()
+    T.SetTextSize(0.03)
+    T.SetTextColor(hist.GetLineColor())
+    T.DrawLatexNDC(0.12,0.85,'Data:')
+    txt = "mean =(%5.2F #pm%5.2F)cm"%(\
+                      results['data'][p]['mean'][0],results['data'][p]['mean'][1])
+    T.DrawLatexNDC(0.15,0.83,txt)
+    txt = "#sigma =(%5.2F #pm%5.2F)"%(\
+                      results['data'][p]['sigma'][0],results['data'][p]['sigma'][1])
+    T.DrawLatexNDC(0.15,0.81,txt)
+    T.SetTextColor(hv[X][hname+'_w'].GetLineColor())
+    T.DrawLatexNDC(0.12,0.75,'MC:')
+    txt = "mean =(%5.2F #pm%5.2F)cm"%(\
+                      results['P8'][p]['mean'][0],results['P8'][p]['mean'][1])
+    T.DrawLatexNDC(0.15,0.73,txt)
+    txt = "#sigma =(%5.2F #pm%5.2F)cm"%(\
+                      results['P8'][p]['sigma'][0],results['P8'][p]['sigma'][1])
+    T.DrawLatexNDC(0.15,0.71,txt)
   myPrint(hMC['primV'],'primaryVertex')
 def targetResol(pmin=29,pmax=75):
  # projx = momentum, projz = X, projy = y
@@ -529,7 +582,8 @@ def momDirResol(CL=1.0):
       h[X][hnamep].SetTitle(' ;P_{true}  [GeV/c]; #Delta#Theta reco-true mom [rad]')
       h[X][hnamep].Draw(MC[X])
   myPrint(hMC['2d'],'dirResolution')
-def MS(CL=1.0):
+def MS(hlist = ['alpha_p0pDT'], CL=1.0):
+  # second histo 'alpha_p0pDT2'
   MC = {'P6':'same', 'P8':'same', 'incl':''}
   P  = {'_x':0.15,'_y':0.15}
   PS = P.keys()
@@ -539,7 +593,7 @@ def MS(CL=1.0):
      tc=hMC['2d'].cd(k)
      k+=1
      tc.SetLogy(1)
-     for hname in ['alpha_p0pDT']:
+     for hname in hlist:
         hMC['L'+hname+p] = ROOT.TLegend(0.21,0.79,0.83,0.97)
         for X in MC:
           makeMomSlice(h[X],hname+p,cat=X,CL=CL,exampleBin=-1)
@@ -549,12 +603,23 @@ def MS(CL=1.0):
           h[X][hnamep].SetMinimum(0.001)
           h[X][hnamep].SetTitle(' ;P_{true}  [GeV/c]; angle true-reco mom [rad]')
           h[X][hnamep].GetXaxis().SetRangeUser(0.,200.)
-          fun = hMC['MSfun'].Clone()
+          if hname == "alpha_p0pDT2": 
+            fun = hMC['MSfunR'].Clone()
+            fun.SetParameter(0,300.)
+            fun.FixParameter(1,0.)
+            fun.SetParameter(2,10.)
+          else: 
+            fun = hMC['MSfun'].Clone()
+            fun.FixParameter(1,0.)
           fun.SetLineColor(h[X][hnamep].GetLineColor())
-          fun.FixParameter(1,0.)
           rc = h[X][hnamep].Fit(fun,'SQ','',10,200.)
           fitResult = rc.Get()
-          rc = hMC['L'+hname+p].AddEntry(h[X][hnamep],"%s: equivalent rad. length %5.1F +/-%5.1F X0"%(X,fitResult.Parameter(0),fitResult.ParError(0)),'PL')
+          txt1="%s: equivalent rad. length %5.1F +/-%5.1F X0"%(X,fitResult.Parameter(0),fitResult.ParError(0))
+          if hname == "alpha_p0pDT2": 
+             txt2 = "dE %3.1F +/-%3.1F X0"%(fitResult.Parameter(2),fitResult.ParError(2))
+             rc = hMC['L'+hname+p].AddEntry(h[X][hnamep],txt1+txt2,'PL')
+          else:
+             rc = hMC['L'+hname+p].AddEntry(h[X][hnamep],txt1,'PL')
         h[X][hnamep].Draw()
         for X in MC:
           hnamep = hname+p+'_p'
@@ -606,14 +671,17 @@ def MSCor(CL=1.0):
   P  = {'_x':0.15,'_y':0.15}
   PS = P.keys()
   PS.sort()
+  tc = hMC['dummy'].cd()
+  tc.SetLogy(0)
+  for p in PS:
+     for hname in hnames:
+        for X in MC:
+          makeMomSlice(h[X],hname+p,cat=X,CL=CL,exampleBin=-1,rebin=10)
   k=1
   for p in PS:
      tc=hMC['2d'].cd(k)
      k+=1
      tc.SetLogy(1)
-     for hname in hnames:
-        for X in MC:
-          makeMomSlice(h[X],hname+p,cat=X,CL=CL,exampleBin=-1)
      hMC['LMScor'+p] = ROOT.TLegend(0.14,0.69,0.88,0.86)
      X='P6'
      for hname in ['alpha_p0pcor',"alpha_p0pcorRec","alpha_zTarget_pcorRec"]:
@@ -626,24 +694,24 @@ def MSCor(CL=1.0):
        h[X][hnamep].GetXaxis().SetRangeUser(0.,200.)
        funR = hMC['MSfunR'].Clone()
        funR.SetParameter(0,100.)
-       funR.SetParameter(1,0)
-       funR.SetParLimits(1,0.,9999.)
-       funR.SetParameter(2,3.)
+       funR.SetParameter(1,0.)
+       funR.FixParameter(2,0.)
        funR.SetLineColor(h[X][hnamep].GetLineColor())
+       rc = h[X][hnamep].Fit(funR,'SQ','',10,200.)
        rc = h[X][hnamep].Fit(funR,'SQ','',10,200.)
        fitResult = rc.Get()
        txt1 = "%s: eq.rad. length %5.1F +/-%5.1F X0  "%(hname,fitResult.Parameter(0),fitResult.ParError(0))
        txt2 = " const: %5.1F +/-%5.1F mrad"%(fitResult.Parameter(1)*1000,fitResult.ParError(1)*1000)
-       txt3 = " dE %5.1F +/-%5.1F GeV"%(fitResult.Parameter(2),fitResult.ParError(2))
-       rc = hMC['LMScor'+p].AddEntry(h[X][hnamep],txt1+txt2+txt3,'PL')
+       #txt3 = " dE %5.1F +/-%5.1F GeV"%(fitResult.Parameter(2),fitResult.ParError(2))
+       rc = hMC['LMScor'+p].AddEntry(h[X][hnamep],txt1+txt2,'PL')
      for hname in ['alpha_p0pcor',"alpha_p0pcorRec","alpha_zTarget_pcorRec"]:
         hnamep = hname+p+'_p'
         h[X][hnamep].Draw(hnames[hname][1])
      hMC['LMScor'+p].Draw()
   myPrint(hMC['2d'],'MSCor_'+str(CL))
 
-def MSCor2(CL=1.0,rebin=2):
-  P  = {'_x':0.05,'_y':0.1}
+def MSCor2(CL=1.0,rebin=2,jpsi=False):
+  P  = {'_x':[0.02,0.0005],'_y':[0.02,0.0005]}
   PS = P.keys()
   PS.sort()
   k=1
@@ -651,44 +719,62 @@ def MSCor2(CL=1.0,rebin=2):
      tc=hMC['2d'].cd(k)
      k+=1
      tc.SetLogy(1)
-     hname = "Jpsi_mcDalpha"+p
+     if jpsi:
+         hname = "Jpsi_mcDalpha"+p
+         h['data'] = hMC
+     else:
+         hname = "mcDalpha"+p
+         h['data'] = hData
      hMC['LMScor2'+p] = ROOT.TLegend(0.21,0.80,0.95,0.97)
-     h['data'] = hMC
      for X in h:
          if X=='data': hn = hname.replace('mc','')
          else:         hn = hname
          if X!='data':
              makeMomSlice(h[X],'mcDalpha'+p,cat=X,CL=CL,exampleBin=-1)
              makeMomSlice(h[X],'mcDalphaDT'+p,cat=X,CL=CL,exampleBin=-1)
-         h[X]['b'+hn] = h[X][hn].Clone('b'+hn)
-         hn = 'b'+hn
+         else:
+             makeMomSlice(hData,'Dalpha'+p,cat=X,CL=CL,exampleBin=-1)
+         if not hname.find('Jpsi')<0:
+             h[X]['b'+hn] = h[X][hn].Clone('b'+hn)
+             hn = 'b'+hn
+             hnamep = hn+'_p'
+             if rebin >1: h[X][hn].Rebin(rebin)
+             makeMomSlice(h[X],hn,cat=X,CL=CL,exampleBin=-1,rebin=1000)
+             if X=='data': h[X][hnamep].SetLineColor(ROOT.kBlue)
          hnamep = hn+'_p'
-         h[X][hn].Rebin(rebin)
-         makeMomSlice(h[X],hn,cat=X,CL=CL,exampleBin=-1)
-         if X=='data': h[X][hnamep].SetLineColor(ROOT.kBlue)
          h[X][hnamep].SetStats(0)
-         h[X][hnamep].SetMaximum(P[p])
-         h[X][hnamep].SetMinimum(0.001)
+         h[X][hnamep].SetMaximum(P[p][0])
+         h[X][hnamep].SetMinimum(P[p][1])
          h[X][hnamep].SetTitle(' ;P_{rec}  [GeV/c]; angle reco-cor mom [rad]')
          h[X][hnamep].GetXaxis().SetRangeUser(0.,200.)
-         funR = hMC['MSfunR'].Clone()
-         funR.SetParameter(0,100.)
-         funR.SetParameter(1,2E-3)
-         funR.SetParameter(2,3.)
-         funR.SetLineColor(h[X][hnamep].GetLineColor())
-         rc = h[X][hnamep].Fit(funR,'SQ','',13,200.)
+         funE = hMC['MSfunE'].Clone()
+         funE.SetParameter(0,100.)
+         funE.SetParameter(1,1E-3)
+         funE.SetParameter(2,0.5)
+         funE.SetLineColor(h[X][hnamep].GetLineColor())
+         rc = h[X][hnamep].Fit(funE,'SQ','',10,200.)
+         rc = h[X][hnamep].Fit(funE,'SQ','',10,200.)
          fitResult = rc.Get()
          txt1 = "%s: eq.rad. length %5.1F +/-%5.1F X0  "%(X,fitResult.Parameter(0),fitResult.ParError(0))
          txt2 = " const: %5.1F +/-%5.1F mrad"%(fitResult.Parameter(1)*1000,fitResult.ParError(1)*1000)
-         txt3 = " dE %5.1F +/-%5.1F GeV"%(fitResult.Parameter(2),fitResult.ParError(2))
+         txt3 = " dE fac %5.1F +/-%5.1F"%(fitResult.Parameter(2),fitResult.ParError(2))
          rc = hMC['LMScor2'+p].AddEntry(h[X][hnamep],txt1+txt2+txt3,'PL')
-     h['data']["bJpsi_Dalpha"+p+"_p"].SetMaximum(0.02)
-     h['data']["bJpsi_Dalpha"+p+"_p"].Draw()
-     for X in h:
-         if X=='data': continue
-         h[X]["bJpsi_mcDalpha"+p+"_p"].Draw('same')
-     hMC['LMScor2'+p].Draw()
-  myPrint(hMC['2d'],'MSCor2_'+str(CL))
+     if not hname.find('Jpsi')<0:
+        h['data']["bJpsi_Dalpha"+p+"_p"].SetMaximum(0.02)
+        h['data']["bJpsi_Dalpha"+p+"_p"].Draw()
+        for X in h:
+           if X=='data': continue
+           h[X]["bJpsi_mcDalpha"+p+"_p"].Draw('same')
+        hMC['LMScor2'+p].Draw()
+     else:
+        h['data']["Dalpha"+p+"_p"].SetMaximum(0.02)
+        h['data']["Dalpha"+p+"_p"].Draw()
+        for X in h:
+           if X=='data': continue
+           h[X]["mcDalpha"+p+"_p"].Draw('same')
+        hMC['LMScor2'+p].Draw()
+  if not hname.find('Jpsi')<0: myPrint(hMC['2d'],'MSCor2_Jpsi_'+str(CL))
+  else: myPrint(hMC['2d'],'MSCor2_'+str(CL))
 def compareWithJpsi(CL=0.9):
   tc = hMC['dummy'].cd()
   tc.SetLogy(1)
@@ -778,7 +864,8 @@ def Gaus3D(N=100000,mean=0,sigma=1):
      ut.bookHist(h,'X','X',100,-10.,10.)
      ut.bookHist(h,'Y','Y',100,-10.,10.)
      ut.bookHist(h,'R','R',100,0.,10.)
-     ut.bookCanvas(h,'gaus',1200,900,3,1)
+     ut.bookCanvas(h,'gaus','gaus',1200,900,3,1)
+     tc=h['gaus'].cd(1)
      rnr = ROOT.TRandom()
      funR = ROOT.TF1('funR','x*[0]/[2]**2*[1]*exp(-x*x/(2*[2]**2))')
      for n in range(N):
@@ -788,14 +875,32 @@ def Gaus3D(N=100000,mean=0,sigma=1):
         rc = h['X'].Fill(X)
         rc = h['Y'].Fill(Y)
         rc = h['R'].Fill(Z)
+     funR.SetParameter(0,h['R'].GetMaximum())
+     funR.SetParameter(1,1)
+     funR.SetParameter(2,1)
      rc = h['R'].Fit(funR,'S','',0.,10.)
-     tc=h['gaus'].cd(1)
      h['X'].Draw()
      tc=h['gaus'].cd(2)
      h['Y'].Draw()
      tc=h['gaus'].cd(3)
      h['R'].Draw()
-     print h['R'].GetMean(),h['gaus3d'].GetRMS()
+     print h['R'].GetMean(),h['R'].GetRMS()
 
-def newInvMass():
-   M = 3.1
+def variableBinSizes(hx):
+   # original  0,4,8,...,200.  h['data']["Jpsi_mcDalpha_x"]
+   Xbins = []
+   for n in range(21):    Xbins.append(n*4)
+   for n in range(1,6):   Xbins.append(80+n*8)
+   for n in range(1,6):   Xbins.append(120+n*16)
+   binsx = array('d',Xbins)
+   xax = hx.GetXaxis()
+   yax = hx.GetYaxis()
+   ny = yax.GetNbins()
+   hv = ROOT.TH2D('v'+hx.GetName(),hx.GetTitle(),len(binsx)-1,binsx,
+        ny,yax.GetBinLowEdge(1),yax.GetBinLowEdge(ny)+yax.GetBinWidth(1))
+   for nx in range(1,hx.GetNbinsX()+1):
+      X = xax.GetBinCenter(nx)
+      for ny in range(1,hx.GetNbinsY()+1):
+          Y = yax.GetBinCenter(ny)
+          rc = hv.Fill(X,Y,hx.GetBinContent(nx,ny))
+   return hv

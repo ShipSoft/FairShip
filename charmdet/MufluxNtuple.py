@@ -6411,12 +6411,13 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
        hData['targetXYJpsi'] = hMC['targetXYJpsi']
   elif command.find("MS")==0:
     if command.find("data")>0:
-       for p in ['_x','_y']:
+     ROOT.gROOT.cd()
+     for p in ['_x','_y']:
           ut.bookHist(hData, 'Dalpha'+p, 'cor angle;P [GeV/c];theta [rad]',50,0,200.,100000,-0.1,0.1)
-       ut.bookHist(hData, 'targetXY',"extrap to target",100,0.,400.,100,-10.,10.,100,-10.,10.)
-       ut.bookHist(hData, 'targetZ',"extrap to target",100,0.,400.,200,-700.,300.)
-       ut.bookHist(hData, 'targetIP',"extrap to target",100,0.,400.,100,0.,10.)
-     theCut = "GoodTrack%100==11&&abs(chi2)<0.9"
+     ut.bookHist(hData, 'targetXY',"extrap to target",100,0.,400.,100,-10.,10.,100,-10.,10.)
+     ut.bookHist(hData, 'targetZ',"extrap to target",100,0.,400.,200,-700.,300.)
+     ut.bookHist(hData, 'targetIP',"extrap to target",100,0.,400.,100,0.,10.)
+     theCut = "GoodTrack%100==11&&abs(Chi2)<0.9"
      if xTarget<0:
         splus_xTarget="-"+str(abs(xTarget))
         sminus_xTarget="+"+str(abs(xTarget))
@@ -6430,8 +6431,8 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
         splus_yTarget="+"+str(yTarget)
         sminus_yTarget="-"+str(yTarget)
      P = "sqrt(Px*Px+Py*Py+Pz*Pz)"
-     sTreeData.Draw("Px/Pz-(x"+sminus_xTarget+")/(z+"+str(abs(zTarget))+"):"+r+">>Dalpha_x",theCut)
-     sTreeData.Draw("Py/Pz-(y"+sminus_yTarget+")/(z+"+str(abs(zTarget))+"):"+r+">>+Dalpha_y",theCut)
+     sTreeData.Draw("Px/Pz-(x"+sminus_xTarget+")/(z+"+str(abs(zTarget))+"):"+P+">>Dalpha_x",theCut)
+     sTreeData.Draw("Py/Pz-(y"+sminus_yTarget+")/(z+"+str(abs(zTarget))+"):"+P+">>+Dalpha_y",theCut)
      Y = "y-((z + "+str(abs(zTarget))+")/Pz)*Py"
      X = "x-((z + "+str(abs(zTarget))+")/Pz)*Px"
      sTreeData.Draw(Y+":"+X+":"+P+">>targetXY",theCut)
@@ -8563,7 +8564,7 @@ elif options.command=='invMass':
       invMass(sTreeMC,hMC,nseq=options.nseq,ncpus=options.ncpus)
     else:
       invMass(sTreeData,hData)
-elif options.command=='JpsiYield' or options.command=='JpsiKinematicsReco':
+elif options.command=='JpsiYield' or options.command=='JpsiKinematicsReco' or options.command=='JpsiPolarization':
    ROOT.gROOT.SetBatch(True)
    loadNtuples(ext='')
    tmp = options.JpsiCuts.split(',')
@@ -8579,7 +8580,7 @@ elif options.command=='JpsiYield' or options.command=='JpsiKinematicsReco':
           AnalysisNote_JpsiKinematicsReco( ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fM)
    if options.command=='JpsiPolarization': 
           JpsiPolarization(ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fM,nBins=20, pTJpsiMin=tmp[4], pTJpsiMax=tmp[5])
-   if options.command=='MS'
+elif options.command=='MS':
           studyInvMassResolution(command='MSdata')
 else:
    ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)

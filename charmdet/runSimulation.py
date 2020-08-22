@@ -251,6 +251,7 @@ def splitDigiFiles(splitFactor=10,fnames=[],eosdir='10GeV'):
         os.chdir('../')
 
 def recoStep(splitFactor=5,fnames=[],eospath=False,Gfield=''):
+    addOption = ""
     if Gfield == 'inter': addOption = " -F inter "
     eospathSim = '/eos/experiment/ship/user/truf/muflux-sim/'
     if len(fnames)==0: fnames = getFilesLocal()
@@ -278,7 +279,6 @@ def recoStep(splitFactor=5,fnames=[],eospath=False,Gfield=''):
                 else:
                     print "digiFile missing",fname,digiFile
                     continue
-            addOption = ""
             cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 --Display False -u 1 -f "+recoFile+addOption+' &'
             print 'step 2:', cmd,' in directory ',fname
             os.system(cmd)

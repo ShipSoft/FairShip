@@ -1,5 +1,6 @@
 #import yep
 import ROOT,os,time,sys,operator,atexit,ctypes
+import subprocess
 ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')
 
 from decorators import *
@@ -7125,9 +7126,10 @@ def countTracks(analyse=False):
         print "ratios",NfitTracks_refitted[0]/float(NfitTracks[0]),NfitTracks_refitted[1]/float(NfitTracks[1]),EventsWithTracks[1]/float(EventsWithTracks[0])
 
 hruns={}
-def compareRuns(runs=[]):
+def compareRuns(runs=[],keyword = 'RUN_8000_2'):
     # runs = [2307,2357,2359,2360,2361,2365,2366,2395,2396]
     # runs = [2200,2201,2202,2203,2205,2206,2207,2208,2276]
+    eospath = "/eos/experiment/ship/user/truf/muflux-reco/"
     eventStats = {}
     noField = [2199,2200,2201]
     intermediateField = [2383,2388,2389,2390,2392,2395,2396]
@@ -7135,17 +7137,15 @@ def compareRuns(runs=[]):
     ROOT.gStyle.SetPalette(ROOT.kGreenPink)
     interestingHistos=['Trscalers','p/pt','p/ptmu']
     if len(runs)==0:
-        keyword = 'RUN_8000_2'
-        temp = os.listdir('.')
+        temp = subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+eospath,shell=True).split('\n')
         for x in temp:
             if x.find(keyword)<0: continue
-            if not os.path.isdir(x): continue
             r = int(x[x.rfind('/')+1:].split('_')[2])
             if r in noField: continue
             if not hruns.has_key(r): 
                 runs.append(r)
                 hruns[r]={}
-                ut.readHists(hruns[r],'momDistributions-'+r+'.root',interestingHistos)
+                ut.readHists(hruns[r],x+'/momDistributions.root',interestingHistos)
     else:
         for r in runs:
             if not hruns.has_key(r): 
@@ -7189,6 +7189,9 @@ def compareRuns(runs=[]):
         else:  hruns[r][hname].Draw('same PLC PMC')
         h['legRunComparison'].AddEntry(hruns[r][hname],str(r),'PL')
         j+=1
+    sorted  = sorted(eventStats.items(),key=lambda x: x[1][3])
+    for i in sorted:
+       print i[0],i[1][3]
     tc.BuildLegend()
     tc = h['EventStatistics'].cd(1)
     h['eventStats1']=ROOT.TGraph(len(eventStats))
@@ -7202,7 +7205,6 @@ def compareRuns(runs=[]):
         h['eventStats3'].SetPoint(n,r,eventStats[r][2]/100.)
         h['eventStats4'].SetPoint(n,r,eventStats[r][4]/5.)
         n+=1
-
     h['legruns']=ROOT.TLegend(0.35,0.12,0.86,0.42)
     h['eventStats1'].SetMarkerColor(ROOT.kBlue)
     h['eventStats1'].SetMarkerSize(1.5)
@@ -7643,6 +7645,87 @@ def doFitByHand():
                 pChi2Min = [p0,p1]
                 chi2Max=chi2[0]
     print chi2Max,pChi2Min
+def startEndVolume(A):
+   nav.cd(A)
+   vol = nav.GetCurrentNode().GetVolume()
+   dz = vol.GetShape().GetDZ()
+   local = array('d',[0,0,0])
+   globOrigin = array('d',[0,0,0])
+   nav.LocalToMaster(local,globOrigin)
+   start = [0,0,globOrigin[2]-dz]
+   end = [0,0,globOrigin[2]+dz]
+   return start,end
+def radiationLength():
+   import MaterialEstimator
+   start=[0,0,-377.]
+   end=[0,0,0]
+   antwort = MaterialEstimator.MeanMaterialBudget(start, end)
+   print "rad length from %5.1F to %5.1F = %7.2F"%(start[2],end[2],antwort[1])
+# now in pieces 
+   path = "/cave/TargetArea_1/"
+   pieces = ['Absorber_1','TargetTube_13']
+   for p in pieces:
+     start,end = startEndVolume(path+p)
+     antwort = MaterialEstimator.MeanMaterialBudget(start,end)
+     if type(antwort)==type(1.1):
+        print "%s: rad length from %5.1F to %5.1F = %7.2F"%(p,start[2],end[2],antwort[1])
+   start,end = startEndVolume(path+'TargetTube_13')
+   prevNode = ''
+   stats = {}
+   X = end[2]-start[2]
+   N = int(X*10)
+   dz = 0.1
+   z = start[2]-dz
+   for i in range(N):
+      z+=dz
+      n = nav.FindNode(0.,0.,z)
+      #print z,n.GetName(),prevNode
+      if n.GetName()==prevNode: continue
+      prevNode = n.GetName()
+      stats[prevNode]={}
+      s,e = startEndVolume(path+n.GetName())
+      stats[prevNode]['Z'] = [s[2],e[2]]
+      mat = n.GetVolume().GetMaterial()
+      stats[prevNode]['material'] = mat.GetName()
+      L = e[2]-s[2]
+      stats[prevNode]['IntRadLen'] = L/mat.GetRadLen()
+   sorted_list = {}
+   for s in stats: 
+      sorted_list[stats[s]['Z'][0]]=stats[s]
+      sorted_list[stats[s]['Z'][0]]['name']=s
+   keys = sorted_list.keys()
+   keys.sort()
+   total = 0
+   for k in keys:
+      S = sorted_list[k]
+      print S['name'],S['material'],S['IntRadLen'],S['Z']
+      total+=S['IntRadLen']
+   print "total",total
+def ptKick():
+   ut.bookHist(h,'ptkick','ptkick',100,0.,100.,100,-0.5,0.5)
+   for event in sTree: 
+     P = {}
+     for p in event.MufluxSpectrometerPoint:
+       if abs(p.PdgCode())!=13: continue
+       t = p.GetTrackID()
+       if not P.has_key(t): P[t]={}
+       mom = ROOT.TVector3(p.GetPx(),p.GetPy(),p.GetPz())
+       P[t][p.GetZ()]=[mom.x()/mom.z(),mom.z()]
+     for t in P:
+       z=P[t].keys()
+       z.sort()
+       delPt = P[t][z[0]][0]-P[t][z[len(z)-1]][0]
+       rc=h['ptkick'].Fill(P[t][z[0]][1],delPt)
+def momResolution():
+   ut.bookHist(h,'momResol','momentum resolution function of momentum;#it{p} [GeV/c];#sigma P/P', 200,-0.5,0.5,25,0.,100.)
+   ut.bookHist(h,'ratio','ratio;#it{p} [GeV/c];#sigma P/P', 100,1.,1.5)
+   for nt in tmuflux:
+          if len(nt.GoodTrack)==1 and len(nt.MCRecoDTpx)==1:
+             k=0
+             trueMom=ROOT.TVector3(nt.MCRecoDTpx[k],nt.MCRecoDTpy[k],nt.MCRecoDTpz[k])
+             recMom =ROOT.TVector3(nt.Px[k],nt.Py[k],nt.Pz[k])
+             rc = h['momResol'].Fill(1./1.292*recMom.Mag()-trueMom.Mag(),trueMom.Mag())
+             rc = h['ratio'].Fill(recMom.Mag()/trueMom.Mag())
 def additionalMomSmearing():
     hname = 'MCp/pt_x'
     folname = 'S'+hname
