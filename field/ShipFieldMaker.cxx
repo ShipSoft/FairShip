@@ -1380,6 +1380,46 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 
 }
 
+void ShipFieldMaker::generateFieldMap(TString fileName, const float step, const float xRange, const float yRange, const float zRange, const float zShift){
+        std::ofstream myfile;
+        myfile.open (fileName);
+        int xSteps = ceil(xRange/step) + 1;   //field map has X range from 0 to xMax
+        int ySteps = ceil(yRange/step) + 1;   //from 0 up to yMax
+        int zSteps = ceil(zRange*2./step) + 1;//from -zMax up to zMax
+        Double_t position[3] = {0.0, 0.0, 0.0};
+        myfile<<xSteps<<"    "<<ySteps<<"    "<<zSteps<<"    "<<step<<"    "<<xRange<<"    "<<yRange<<"    "<<zRange<<std::endl;
+        for (int i =0 ; i < xSteps; i++){
+                for (int k=0;  k<ySteps;k++){
+                        for (int m=0; m<zSteps; m++){
+                                Double_t B[3] = {0.0, 0.0, 0.0};
+                                Double_t x = step*i;
+                                Double_t y = step * k;
+                                Double_t z = m * step - zRange + zShift;
+                                position[0] = x;
+                                position[1] = y;
+                                position[2] = z;
+                                Bool_t inside(kFALSE);
+                                TGeoNode* theNode = gGeoManager->FindNode(position[0], position[1], position[2]);
+                                if (theNode) {
+                                        TGeoVolume* theVol = theNode->GetVolume();
+                                        if (theVol) {
+                                                TVirtualMagField* theField = dynamic_cast<TVirtualMagField*>(theVol->GetField());
+                                                if (theField) {  
+                                                    theField->Field(position, B);
+                                                    inside = kTRUE;  
+                                                }
+                                        }
+                                }
+                                if (inside == kFALSE && globalField_) {
+                                        globalField_->Field(position, B);
+                                }
+                                myfile<<x<<"    "<<y<<"    "<<z<<"    "<<B[0]/Tesla_<<"    "<<B[1]/Tesla_<<"    "<<B[2]/Tesla_<<std::endl;
+                        }
+                }
+        }
+        myfile.close();
+}
+
 ShipFieldMaker::stringVect ShipFieldMaker::splitString(std::string& theString, 
 						       std::string& splitter) const {
 
