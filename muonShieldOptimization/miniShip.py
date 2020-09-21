@@ -51,10 +51,11 @@ def init():
   ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
-  ap.add_argument('-T', '--target',   type=float, help="target length", dest='targetLength', default=None)
-  ap.add_argument('-W', '--targetMaterial', help="target material", dest='targetMaterial', default=None)
-  ap.add_argument('-A', '--absorber', type=float, help="absorber length", dest='muShieldLength', default=None)
-  ap.add_argument('-I', '--absorberMaterial', help="absorber material", dest='absorberMaterial', default=None)
+  ap.add_argument('-T', '--target',   type=float, help="target length", dest='targetLength', default=100.)
+  ap.add_argument('-W', '--targetMaterial', help="target material", dest='targetMaterial', default="tungsten")
+  ap.add_argument('-A', '--absorber', type=float, help="absorber length", dest='muShieldLength', default=150)
+  ap.add_argument('-I', '--absorberMaterialI', help="inner absorber material", dest='absorberMaterialI', default="tungsten")
+  ap.add_argument('-J', '--absorberMaterialO', help="outer absorber material", dest='absorberMaterialO', default="iron")
   ap.add_argument('-B', '--bfield',type=float, help="magnetic field", dest='field', default=0)
   ap.add_argument('-G', '--G4only', action='store_true', dest='G4only',     default=False, help="use Geant4 directly, no Pythia8")
   ap.add_argument('-P', '--PythiaDecay', action='store_true', dest='pythiaDecay', default=False,  help="use Pythia8 for decays")
@@ -78,8 +79,8 @@ def init():
   skipNeutrinos  = args.skipNeutrinos
   FourDP         = args.FourDP
   field          = args.field
-  setup = {'target':{'length':args.targetLength/2.,'material':args.targetMaterial},
-           'absorber':{'length':args.muShieldLength/2.,'material':args.absorberMaterial}}
+  setup = {'target':{'length':args.targetLength,'material':args.targetMaterial},
+           'absorber':{'length':args.muShieldLength,'materialI':args.absorberMaterialI,'materialO':args.absorberMaterialO}}
 
   if G4only:
     args.pythiaDecay = False
@@ -115,7 +116,7 @@ shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
 txt = 'pythia8_Geant4_'
 outFile = outputDir+'/'+txt+str(runnr)+'_'+str(ecut)+'_'+\
           setup['target']['material']+str(int(setup['target']['length']))+'_'+\
-          setup['absorber']['material']+str(int(setup['absorber']['length']))+'_B'+str(field)+'.root'
+          setup['absorber']['materialI']+setup['absorber']['materialO']+str(int(setup['absorber']['length']))+'_B'+str(field)+'.root'
 parFile = outputDir+'/ship.params.'+txt+str(runnr)+'_'+str(ecut)+'.root'
 
 # -----Timer--------------------------------------------------------
@@ -136,52 +137,15 @@ cave= ROOT.ShipCave("CAVE")
 cave.SetGeometryFileName("caveWithAir.geo")
 run.AddModule(cave)
 
-class target(ROOT.pyFairModule):
- "block of material"
- def __init__(self):
-   print "init called"
-   ROOT.pyFairModule.__init__(self,self)
-   print "init finished"
- def ConstructGeometry(self):
-    print "Construct Target and Absorber"
-    top=ROOT.gGeoManager.GetTopVolume()
-    geoLoad=ROOT.FairGeoLoader.Instance()
-    geoFace=geoLoad.getGeoInterface()
-    media=geoFace.getMedia()
-    geoBuild=geoLoad.getGeoBuilder()
-    for X in setup:
-       m = setup[X]['material']
-       setup[X]['medium'] = ROOT.gGeoManager.GetMedium(m)
-       if not setup[X]['medium']: 
-        ShipMedium  = media.getMedium(m)
-        rc = geoBuild.createMedium(ShipMedium)
-        setup[X]['medium'] = ROOT.gGeoManager.GetMedium(m)
-    target   = ROOT.gGeoManager.MakeBox("TargetArea",setup['target']['medium'],10.*u.cm,10.*u.cm,setup['target']['length'])
-    muShield = ROOT.TGeoVolumeAssembly("MuonShieldArea")
-    absorber = ROOT.gGeoManager.MakeBox("Absorber",setup['absorber']['medium'],100.*u.cm,100.*u.cm,setup['absorber']['length'])
-    if field > 0:
-      ironField = field*u.tesla
-      magField = ROOT.TGeoUniformMagField(0.,ironField,0.)
-      absorber.SetField(magField)
-    top.AddNode(target, 1, ROOT.TGeoTranslation(0, 0, 0))
-    muShield.AddNode(absorber, 1, ROOT.TGeoTranslation(0, 0, setup['target']['length']+setup['absorber']['length']+0.1*u.cm))
-    top.AddNode(muShield, 1)
- def InitParContainers():
-    print "not implemented!"
-
-targetAndAbsorber = target()
-print "target and absorber created"
+targetAndAbsorber = ROOT.miniShip()
+targetAndAbsorber.SetTarget(setup['target']['material'],setup['target']['length'])
+targetAndAbsorber.SetAbsorber(setup['absorber']['materialI'],setup['absorber']['materialO'],setup['target']['length'],field)
+targetAndAbsorber.SetEnergyCut(ecut*u.GeV)
+if storeOnlyMuons: targetAndAbsorber.SetOnlyMuons()
+if skipNeutrinos:  targetAndAbsorber.SkipNeutrinos()
 run.AddModule(targetAndAbsorber)
-sensPlane = ROOT.exitHadronAbsorber()
-sensPlane.SetZposition(setup['target']['length']+2*setup['absorber']['length']+1*u.cm)
-sensPlane.SetEnergyCut(ecut*u.GeV)
-if storeOnlyMuons: sensPlane.SetOnlyMuons()
-if skipNeutrinos: sensPlane.SkipNeutrinos()
-if FourDP: 
-  fNtuple = ROOT.TNtuple("4DP","4DP","source:id:px:py:pz:E:x:y:z:moID")
-  sensPlane.SetOpt4DP(fNtuple) # in case a ntuple should be filled with pi0,etas,omega
-# sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
-run.AddModule(sensPlane)
+print "target and absorber created"
+
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
@@ -191,7 +155,6 @@ P8gen.SetMom(20.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
 P8gen.SetHeartBeat(100000)
-if FourDP: P8gen.SetOpt4DP(fNtuple)
 if G4only: P8gen.SetG4only()
 if boostDiMuon > 1:
  P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
