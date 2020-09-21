@@ -1956,6 +1956,24 @@ def dEdxCorrection(p):
  # -8.1 - 0.045 *p + 0.00017 *p*p fit without cut
  dE = -7.63907  -0.0315131  * p + 0.000168569 * p*p
  return -dE*(1-0.085)  # fudge factor reversed engineering
+def DrellYan():
+   ut.bookHist(hMC,'DY_M','Drell Yan',100,0.0,5.0,100,0.,10.)
+   for n in range(sTreeMC.GetEntries()):
+     sTreeMC.GetEvent(n)
+     muons = []
+     for m in sTreeMC.MCTrack:
+       if m.GetProcID()!=0: continue
+       if abs(m.GetPdgCode()!=13): continue
+       mo = m.GetMotherId()
+       if abs(sTreeMC.MCTrack[mo].GetPdgCode()!=22): continue
+       muons.append(m)
+     if len(muons)!=2: continue
+     m0 = ROOT.Math.PxPyPzMVector(muons[0].GetPx(),muons[0].GetPy(),muons[0].GetPz(),0.105658)
+     m1 = ROOT.Math.PxPyPzMVector(muons[1].GetPx(),muons[1].GetPy(),muons[1].GetPz(),0.105658)
+     M = m1+m2
+     rc = hMC['DY_M'].Fill(M.M(),M.Pt())
+     #cmd = "python -i $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t repro-B True -r "
+
 def invMass(sTree,h,nseq=0,ncpus=False):
     ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
@@ -2135,7 +2153,9 @@ def invMass(sTree,h,nseq=0,ncpus=False):
                 dMults[j][kx]  = pTrue[j][kx].Dot(prec)/(pTrue[j][kx].Mag()*prec.Mag())
                 kx+=1
             if len(mothers)==2: 
-             if mothers[0]==mothers[1]: jpsi[j] = mothers[0]
+             if mothers[0]==mothers[1]: 
+                 jpsi[j] = mothers[0]
+                 if mothers[0]==22 and (tchannel==1 or tchannel==13): jpsi[j] = -22
             if jpsi[j] == 443:
                 rc = h["invMassJ"].Fill(X[j].M())
                 rc = h["p/ptJ"].Fill(X[j].P(),X[j].Pt())
@@ -5915,7 +5935,19 @@ def plots4AnalysisNotePsi2S(ptCut=1.0):
     funB2S.SetParameter(16,0.)
     rc = myFit(hData['mcor_1.0'],funB2S,fitOption,minX,maxX)
 
-
+def plots4Paper(ptmax=1.0,pmin=20.0,fM='B',mu='muID2'):
+   D = mu+'_'+fM+'-'+str(ptmax)+'_'+str(pmin)
+   sample = "Data"
+   tmp = ROOT.TFile(D+'/'+sample+'-diMuonBins_'+fM+'_ycor1C.root')
+   X = tmp.Get('bins'+fM+'_ycor1C').Clone('bins'+fM+'_ycor1C')
+   k=1
+   for p in X.GetListOfPrimitives():
+       if k==1: histo = p.FindObject('B_ycor1C'+str(k)).Clone('B_ycor1C')
+       else:
+           htmp = p.FindObject('B_ycor1C'+str(k)).Clone()
+           histo.Add(htmp)
+       k+=1
+   
 def plots4AnalysisNoteEvol(ptCut=1.0):
  # yield as function of pt cut
  if not hMC.has_key('meanLossTrue'):
@@ -6404,7 +6436,7 @@ def makeMomSlice(x,exampleBin=-1):
            tmp.SetTitle(x+'_distrib_'+str(exampleBin))
            tmp.Draw()
            myPrint(hMC['dummy'],x+'_distrib_'+str(exampleBin))
-def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,threeD=False):
+def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,threeD=False,debug=False):
   if plotOnly:
        ut.readHists(hMC,'MSangleStudy.root')
        hData['DalphaJpsi']   = hMC['DalphaJpsi']
@@ -6445,6 +6477,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      return
     else:
      loadNtuples()
+     rnr       = ROOT.TRandom()
      hMC['ntmuons'] = ROOT.TChain('muons')
      if command=="MS10":
         hMC['ntmuons'].AddFile("recMuons_1GeV.root")
@@ -6459,6 +6492,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      ut.bookHist(hMC, 'invMass_cor', 'inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
      ut.bookHist(hMC, 'invMass_cor_trueP',     'inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
      ut.bookHist(hMC, 'invMass_cor_trueTheta', 'inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+     ut.bookHist(hMC, 'invMass_cor_scaled', 'inv mass;M [GeV/c^{2}]',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
      if threeD:
        ut.bookHist(hMC, 'theta(pcor-ptrue)', 'angle;P [GeV/c];theta [rad]',50,0,200.,200000,0,0.2)
        ut.bookHist(hMC, 'alpha_p0pDT', 'angle;P [GeV/c];theta [rad]',50,0,200.,200000,0,0.2)
@@ -6504,7 +6538,8 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      ut.bookHist(hMC, 'originXY_Zfix',"origin of track",100,-10.,10.,100,-10.,10.)
      ut.bookHist(hMC, 'Jpsi_originXYZ',"origin of track",400,-400.,0.,100,-10.,10.,100,-10.,10.)
      ut.bookHist(hMC, 'Jpsi_originXY_Zfix',"origin of track",100,-10.,10.,100,-10.,10.)
-     ut.bookHist(hMC, 'dEdx','dEdx',100,0.,400.,200,-100.,100.)
+     ut.bookHist(hMC, 'dEdx','dEdx',100,0.,400.,1000,0.,100.)
+     ut.bookHist(hMC, 'dEdx_DT','dEdx',100,0.,400.,1000,0.,100.)
      ut.bookHist(hMC, 'dEdx_rec','dEdx',100,0.,400.,200,-100.,100.)
      ut.bookHist(hMC, 'Jpsi_targetXY',"extrap to target",100,0.,400.,100,-10.,10.,100,-10.,10.)
      ut.bookHist(hMC, 'Jpsi_targetZ',"extrap to target",100,0.,400.,200,-700.,300.)
@@ -6547,7 +6582,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      Y = "((px*recpx+py*recpy+pz*recpz)/("+P+"*"+r+"))"
      if threeD: hMC['ntmuons'].Draw("acos("+Y+"):"+P+">>alpha_p0pRec",theCutJpsi)
      else:
-        for p in ['px','py']:   hMC['ntmuons'].Draw(p+"/pz-rec"+p+"/pz:"+P+">>alpha_p0pRec_"+p[1],theCutJpsi)
+        for p in ['px','py']:   hMC['ntmuons'].Draw(p+"/pz-rec"+p+"/recpz:"+P+">>alpha_p0pRec_"+p[1],theCutJpsi)
      PcorRec1 = "sqrt((recx-ox)**2+(recy-oy)**2++(recz-oz)**2)"
      Y = "((recx-ox)*px+(recy-oy)*py+(recz-oz)*pz)/("+PcorRec1+"*"+P+")"
      if threeD: hMC['ntmuons'].Draw("acos("+Y+"):"+P+">>alpha_p0pcorRec",theCutJpsi)
@@ -6572,6 +6607,7 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
      else:
        for p in ['px','py']:   hMC['ntmuons'].Draw("DT"+p+"/DTpz-rec"+p+"/recpz:"+P+">>alpha_pDTpRec_"+p[1],theCutJpsi)
      hMC['ntmuons'].Draw(P+'-'+DT+':'+P+'>>dEdx',theCut)
+     hMC['ntmuons'].Draw(P+'-'+DT+':'+DT+'>>dEdx_DT',theCut)
      hMC['ntmuons'].Draw(P+'-'+E+':'+E+'>>dEdx_rec',theCut)
 #
      Xdel="(recx-(DTx-(recz-DTz)*DTpx/DTpz))"
@@ -6647,9 +6683,80 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
         nt.Draw(Z+":"+P+">>+Jpsi_"+pf[x]+"targetZ",theCut)
         IP = "sqrt(("+rho+"*p"+m+"x/p"+m+"z+"+m+"x"+sminus_xTarget+")**2+("+rho+"*p"+m+"y/p"+m+"z+"+m+"y"+sminus_yTarget+")**2)"
         nt.Draw(IP+":"+P+">>+Jpsi_"+pf[x]+"targetIP",theCut)
+# 
+        if x!='Data' and debug:
+           Ptrue={}
+           Prec={}
+           Pcor={}
+           PcorScaled={}
+           Pcor_trueP={}
+           Pcor_trueTheta={}
+           ptCut = 1.0
+           pmin = 20.0
+           pmax = 300.
+           for event in nt:
+              if event.p1x==nt.p2x: continue
+              if event.Jpsi!=443: continue
+              if max(event.pt1cor,event.pt2cor)<ptCut: continue
+              if event.mcor<0.2: continue
+              if event.chi21*event.chi22>0: continue
+              if max(abs(event.chi21),abs(event.chi22))>0.9: continue
+              if min(event.p1,event.p2)<pmin or max(event.p1,event.p2)>pmax: continue
+              Ptrue[1] = ROOT.Math.PxPyPzMVector(event.p1x,event.p1y,event.p1z,0.105658)
+              Ptrue[2] = ROOT.Math.PxPyPzMVector(event.p2x,event.p2y,event.p2z,0.105658)
+              Prec[1]  = ROOT.Math.PxPyPzMVector(event.prec1x,event.prec1y,event.prec1z,0.105658)
+              Prec[2]  = ROOT.Math.PxPyPzMVector(event.prec2x,event.prec2y,event.prec2z,0.105658)
+# make dE correction plus direction from measured point
+              scale = 0. # 25.
+              sigX = 0.02*scale
+              sigY = 0.06*scale
+              sigPVz = 20.
+              xOff = 0. # 1.
+              yOff = 0. # -0.5
+              dline         = ROOT.TVector3(event.rec1x,event.rec1y,event.rec1z-zTarget)
+              norm = dline.Mag()
+              dlineScaled   = ROOT.TVector3(event.rec1x+sigX*rnr.Gaus()+xOff,event.rec1y+sigY*rnr.Gaus()+yOff,event.rec1z-zTarget+sigPVz*rnr.Gaus())
+              normScaled = dlineScaled.Mag()
+              Ecor = Prec[1].E()+dEdxCorrection(Prec[1].P())
+              Pcor[1]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
+              PcorScaled[1]  = ROOT.Math.PxPyPzMVector(Ecor*dlineScaled.X()/normScaled,Ecor*dlineScaled.Y()/normScaled,Ecor*dlineScaled.Z()/normScaled,0.105658)
+              Pcor_trueP[1] = ROOT.Math.PxPyPzMVector(Ptrue[1].P()*dline.X()/norm,Ptrue[1].P()*dline.Y()/norm,Ptrue[1].P()*dline.Z()/norm,0.105658)
+              Pcor_trueTheta[1] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[1].x()/Ptrue[1].P(),Ecor*Ptrue[1].y()/Ptrue[1].P(),Ecor*Ptrue[1].z()/Ptrue[1].P(),0.105658)
+              dline         = ROOT.TVector3(event.rec2x,event.rec2y,event.rec2z-zTarget)
+              dlineScaled   = ROOT.TVector3(event.rec2x+sigX*rnr.Gaus()+xOff,event.rec2y+sigY*rnr.Gaus()+yOff,event.rec2z-zTarget+sigPVz*rnr.Gaus())
+              Ecor = Prec[2].E()+dEdxCorrection(Prec[2].P())
+              norm = dline.Mag()
+              normScaled = dlineScaled.Mag()
+              Pcor[2]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
+              PcorScaled[2]  = ROOT.Math.PxPyPzMVector(Ecor*dlineScaled.X()/normScaled,Ecor*dlineScaled.Y()/normScaled,Ecor*dlineScaled.Z()/normScaled,0.105658)
+              Pcor_trueP[2] = ROOT.Math.PxPyPzMVector(Ptrue[2].P()*dline.X()/norm,Ptrue[2].P()*dline.Y()/norm,Ptrue[2].P()*dline.Z()/norm,0.105658)
+              Pcor_trueTheta[2] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[2].x()/Ptrue[2].P(),Ecor*Ptrue[2].y()/Ptrue[2].P(),Ecor*Ptrue[2].z()/Ptrue[2].P(),0.105658)
+              Ltrue = Ptrue[1]+Ptrue[2]
+              Lrec  = Prec[1]+Prec[2]
+              Lcor  = Pcor[1]+Pcor[2]
+              LcorScaled  = PcorScaled[1]+PcorScaled[2]
+              Lcor_trueP  = Pcor_trueP[1]+Pcor_trueP[2]
+              Lcor_trueTheta  = Pcor_trueTheta[1]+Pcor_trueTheta[2]
+              rc = hMC['invMass_true'].Fill(Ltrue.M())
+              rc = hMC['invMass_rec'].Fill(Lrec.M())
+              rc = hMC['invMass_cor'].Fill(Lcor.M())
+              rc = hMC['invMass_cor_trueP'].Fill(Lcor_trueP.M())
+              rc = hMC['invMass_cor_trueTheta'].Fill(Lcor_trueTheta.M())
+              rc = hMC['invMass_cor_scaled'].Fill(LcorScaled.M())
+# from Bukin fit, data sigma about 30% worse than MC, M**2 = 2*p1*p2*(1-cos theta)
+# try 15% more error on angle.
+    #ROOT.gRandom.Gaus()*0.15
+              if 0>1:
+                for j in [1,2]:
+                  a = ROOT.TVector3(Ptrue[j].X(),Ptrue[j].Y(),Ptrue[j].Z())
+                  b = ROOT.TVector3(Pcor[j].X(),Pcor[j].Y(),Pcor[j].Z())
+                  theta = a.Dot(b)/(a.Mag()*b.Mag())
+                  delP  = Pcor[j].P() - Ptrue[j].P()
+                  rc = hMC['theta(pcor-ptrue)'].Fill(Ptrue[j].P(),ROOT.TMath.ACos(theta))
+                  rc = hMC['delP'].Fill(Ptrue[j].P(),delP/Ptrue[j].P())
      ut.writeHists(hMC,'MSangleStudy_'+command+'.root')
      return
-
+##############################################################################################################################################
   for x in ['alpha_p0pDT','alpha_p0-pcor','alpha_zTargetpcorRec','alpha_pDTpRec',#'mc-Dalpha','Dalpha',
             'alpha_p0pRec','alpha_p0pcorRec','mc-DalphaJpsi','DalphaJpsi','hitResol']:
       makeMomSlice(x,exampleBin=-1)
@@ -6844,60 +6951,6 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
   hMC['LRecalpha'].Draw('same')
   myPrint(hMC['dummy'],'MS_angle_rec')
   if command.find('MS')==0: return
-  Ptrue={}
-  Prec={}
-  Pcor={}
-  Pcor_trueP={}
-  Pcor_trueTheta={}
-  prec1x = nt.GetLeaf('    prec1x')
-  ptCut = 1.0
-  pmin = 20.0
-  pmax = 300.
-  for event in nt:
-    if event.p1x==nt.p2x: continue
-    if event.Jpsi!=443: continue
-    if max(event.pt1cor,event.pt2cor)<ptCut: continue
-    if event.mcor<0.2: continue
-    if event.chi21*event.chi22>0: continue
-    if max(abs(event.chi21),abs(event.chi22))>0.9: continue
-    Ptrue[1] = ROOT.Math.PxPyPzMVector(event.p1x,event.p1y,event.p1z,0.105658)
-    Ptrue[2] = ROOT.Math.PxPyPzMVector(event.p2x,event.p2y,event.p2z,0.105658)
-    Prec[1]  = ROOT.Math.PxPyPzMVector(prec1x.GetValue(),event.prec1y,event.prec1z,0.105658)
-    Prec[2]  = ROOT.Math.PxPyPzMVector(event.prec2x,event.prec2y,event.prec2z,0.105658)
-# make dE correction plus direction from measured point
-    dline   = ROOT.TVector3(event.rec1x,event.rec1y,event.rec1z-zTarget)
-    Ecor = Prec[1].E()+dEdxCorrection(Prec[1].P())
-    norm = dline.Mag()
-    Pcor[1]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
-    Pcor_trueP[1] = ROOT.Math.PxPyPzMVector(Ptrue[1].P()*dline.X()/norm,Ptrue[1].P()*dline.Y()/norm,Ptrue[1].P()*dline.Z()/norm,0.105658)
-    Pcor_trueTheta[1] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[1].x()/Ptrue[1].P(),Ecor*Ptrue[1].y()/Ptrue[1].P(),Ecor*Ptrue[1].z()/Ptrue[1].P(),0.105658)
-    dline   = ROOT.TVector3(event.rec2x,event.rec2y,event.rec2z-zTarget)
-    Ecor = Prec[2].E()+dEdxCorrection(Prec[2].P())
-    norm = dline.Mag()
-    Pcor[2]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
-    Pcor_trueP[2] = ROOT.Math.PxPyPzMVector(Ptrue[2].P()*dline.X()/norm,Ptrue[2].P()*dline.Y()/norm,Ptrue[2].P()*dline.Z()/norm,0.105658)
-    Pcor_trueTheta[2] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[2].x()/Ptrue[2].P(),Ecor*Ptrue[2].y()/Ptrue[2].P(),Ecor*Ptrue[2].z()/Ptrue[2].P(),0.105658)
-    Ltrue = Ptrue[1]+Ptrue[2]
-    Lrec  = Prec[1]+Prec[2]
-    Lcor  = Pcor[1]+Pcor[2]
-    Lcor_trueP  = Pcor_trueP[1]+Pcor_trueP[2]
-    Lcor_trueTheta  = Pcor_trueTheta[1]+Pcor_trueTheta[2]
-    if min(event.p1,event.p2)>pmin and max(event.p1,event.p2)<pmax:
-       rc = hMC['invMass_true'].Fill(Ltrue.M())
-       rc = hMC['invMass_rec'].Fill(Lrec.M())
-       rc = hMC['invMass_cor'].Fill(Lcor.M())
-       rc = hMC['invMass_cor_trueP'].Fill(Lcor_trueP.M())
-       rc = hMC['invMass_cor_trueTheta'].Fill(Lcor_trueTheta.M())
-# from Bukin fit, data sigma about 30% worse than MC, M**2 = 2*p1*p2*(1-cos theta)
-# try 15% more error on angle.
-    #ROOT.gRandom.Gaus()*0.15
-    for j in [1,2]:
-        a = ROOT.TVector3(Ptrue[j].X(),Ptrue[j].Y(),Ptrue[j].Z())
-        b = ROOT.TVector3(Pcor[j].X(),Pcor[j].Y(),Pcor[j].Z())
-        theta = a.Dot(b)/(a.Mag()*b.Mag())
-        delP  = Pcor[j].P() - Ptrue[j].P()
-        rc = hMC['theta(pcor-ptrue)'].Fill(Ptrue[j].P(),ROOT.TMath.ACos(theta))
-        rc = hMC['delP'].Fill(Ptrue[j].P(),delP/Ptrue[j].P())
   for x in ['theta(pcor-ptrue)','delP']:
     hMC[x+'_P']=hMC[x].ProjectionX(x+'_P')
     hMC[x+'_P'].SetStats(0)
@@ -7754,12 +7807,10 @@ def AnalysisNote_LowMassKinematicsReco(ptmax=0.0,pmin=20.,mMax=2.0,muID=1,BDTCut
      myPrint(hMC['t'+x],'LowMassKinematicsRec_'+proj['par'])
    myCopy('LowMassKinematicsRec_*.pdf')
 
-def AnalysisNote_InvMassAndFitFunction(ptCut=1.0,pmin=20.,BDTCut = False,muID=1,copyToFigs=True):
+def AnalysisNote_InvMassAndFitFunction(ptCut=1.0,pmin=20.,BDTCut = False,muID=1,copyToFigs=True,yrange=[0.3,1.8]):
    ROOT.gROOT.cd()
    trackEffFudgeFactor = 1+2*simpleEffCorMu
    MCnorm = dataStats/MCStats['10GeV'] / trackEffFudgeFactor
-   # sum over 0.5 < y < 1.8
-   ymin,ymax = 0.5,1.8
    pmax      = 300.
    if BDTCut:    ptCut,pmin,pmax = 0.,0.,1000.
    theCutcosCS = theJpsiCut('mcor','True',ptCut,pmin,pmax,muID,BDTCut)
@@ -7770,7 +7821,7 @@ def AnalysisNote_InvMassAndFitFunction(ptCut=1.0,pmin=20.,BDTCut = False,muID=1,
      os.chdir(topDir)
      if not os.path.isdir(tag): os.system('mkdir '+tag)
      os.chdir(tag)
-     twoCBYieldFit(fitMethod,'ycor1C',0.5,1.8,'ycm',theCutcosCS,nBins=1,printout=2)
+     twoCBYieldFit(fitMethod,'ycor1C',yrange[0],yrange[1],'ycm',theCutcosCS,nBins=1,printout=2)
      tc = hMC['dummy'].cd()
      samples = {'Data':hData[fitMethod+'_ycor1C0'],'10GeV':hMC['mc-'+fitMethod+'_ycor1C10GeV0'],'HighMass':hMC['mc-'+fitMethod+'_ycor1CHighMass-Jpsi0'],
                 'LowMass':hMC['mc-'+fitMethod+'_ycor1CLowMass-10GeV0']}
