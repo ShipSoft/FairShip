@@ -139,7 +139,7 @@ run.AddModule(cave)
 
 targetAndAbsorber = ROOT.miniShip()
 targetAndAbsorber.SetTarget(setup['target']['material'],setup['target']['length'])
-targetAndAbsorber.SetAbsorber(setup['absorber']['materialI'],setup['absorber']['materialO'],setup['target']['length'],field)
+targetAndAbsorber.SetAbsorber(setup['absorber']['materialI'],setup['absorber']['materialO'],setup['absorber']['length'],field)
 targetAndAbsorber.SetEnergyCut(ecut*u.GeV)
 if storeOnlyMuons: targetAndAbsorber.SetOnlyMuons()
 if skipNeutrinos:  targetAndAbsorber.SkipNeutrinos()
