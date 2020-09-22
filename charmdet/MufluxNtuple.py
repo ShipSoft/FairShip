@@ -379,9 +379,13 @@ def RooBukinPdf(x,par,c=0):
 def my2BukinPdf(x,par):
   Nlow  = RooBukinPdf(x,par,0)
   Nhigh = RooBukinPdf(x,par,6)
-  par2S = [par[0],par[16]]
-  N2S = 0
-  if par2S[1] > -999:
+  if par[16] > -999:
+    par2S = [par[0],par[16]]
+    for n in range(1,6):
+      par2S.append(par[n+7])
+    N2S = RooBukinPdf(x,par2S,0)
+  else: # take 1.6% of 1S  NA50 Ag
+    par2S = [par[0],0.016*par[1]]
     for n in range(1,6):
       par2S.append(par[n+7])
     N2S = RooBukinPdf(x,par2S,0)
@@ -2153,9 +2157,10 @@ def invMass(sTree,h,nseq=0,ncpus=False):
                 dMults[j][kx]  = pTrue[j][kx].Dot(prec)/(pTrue[j][kx].Mag()*prec.Mag())
                 kx+=1
             if len(mothers)==2: 
-             if mothers[0]==mothers[1]: 
+             if mothers[0]==mothers[1]:
                  jpsi[j] = mothers[0]
-                 if mothers[0]==22 and (tchannel==1 or tchannel==13): jpsi[j] = -22
+             if abs(mothers[0]) == abs(mothers[1]) and abs(mothers[0])==13:
+                 jpsi[j] = -22
             if jpsi[j] == 443:
                 rc = h["invMassJ"].Fill(X[j].M())
                 rc = h["p/ptJ"].Fill(X[j].P(),X[j].Pt())
@@ -2483,10 +2488,12 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut):
    if BDTCut: theCut += "&&BDT>0."
    return theCut.replace(' ','')
 
-def runAll(ptCut,pmin,muID,wW):
+def runAll(ptCut,pmin,muID,wW,fM=None):
    proj = 'ycor1C'
    loadNtuples()
    for fitMethod in ['B','CB','G']:
+         if fM:
+             if fitMethod!=fM: continue
          JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod,withWeight=wW)
 
 def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus',withWeight=False):
@@ -5923,6 +5930,7 @@ def mergeMassandPullPlots(fitMethod='B',ptCut=1.0,pmin=20.,BDTCut=None,muID=2,wi
     myCopy(tag+"_MassAndPullPlot_bins"+fitMethod+"_ycor1C_*.pdf")
 
 def plots4AnalysisNotePsi2S(ptCut=1.0):
+    # ut.readHists(hData,'muID2_B-1.0_20.0_wp6/Data-histos.root')
     fitOption = 'SL'
     minX = 0.5
     maxX = 8.0
