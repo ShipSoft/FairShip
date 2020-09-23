@@ -32,6 +32,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   xOff=0; yOff=0;
   tauOnly = false;
   JpsiMainly = false;
+  DrellYan = false;
   G4only = false;
   maxCrossSection = 0.;
   EMax = 0;
@@ -134,6 +135,11 @@ Bool_t FixedTargetGenerator::Init()
      fPythia->readString("443:addChannel = 1   1.    0      -13       13");
      fPythia->readString("553:new  Upsilon  Upsilon  3   0   0    9.46030    0.00005    9.45980    9.46080  0.00000e+00   0   1   0   1   0");
      fPythia->readString("553:addChannel = 1   1.    0      -13       13");
+   }else if (DrellYan){
+     fPythia->readString("WeakSingleBoson:ffbar2gmZ = on");
+//   Z0/gamma  -> mu+ mu-
+     fPythia->readString("23:onMode = off");
+     fPythia->readString("23:onIfAll = 13 13");
    }else{
      fPythia->readString("SoftQCD:inelastic = on");
      fPythia->readString("PhotonCollision:gmgm2mumu = on");

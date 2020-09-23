@@ -82,11 +82,12 @@ def PoorE791_tune(P6):
   print ' '
 #choose the Pythia tune:
 E791tuning = True
+LHCbtuning = False
 for p in target: 
  myPythia[p].SetMSEL(msel)
- if E791tuning:
-  PoorE791_tune(myPythia[p])
-  # LHCb_tune(myPythia[p])
+ if E791tuning:   PoorE791_tune(myPythia[p])
+ elif LHCbtuning: LHCb_tune(myPythia[p])
+
  myPythia[p].SetMSUB(1,1) # qq->ll & qq->Z
  mumu=True
  if mumu:
