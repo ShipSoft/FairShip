@@ -58,7 +58,7 @@ def get_work_dir(run_number,tag=None):
 
 
 def init():
-  global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
+  global runnr, nev, ecut, G4only, tauOnly,DrellYan,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
          boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
@@ -76,6 +76,7 @@ def init():
   ap.add_argument('-V', '--EvtGen',      action='store_true', dest='withEvtGen',  default=withEvtGen,   help="use EvtGen for decays")
   ap.add_argument('-t', '--tau-only',     action='store_true', dest='tauOnly',     default=False)
   ap.add_argument('-J', '--Jpsi-mainly',  action='store_true', dest='JpsiMainly',  default=False)
+  ap.add_argument('-Y', '--DrellYan',  action='store_true', dest='DrellYan',  default=False)
   ap.add_argument('-b', '--boostDiMuon', type=float,   dest='boostDiMuon',  default=boostDiMuon, help="boost Di-muon branching ratios")
   ap.add_argument('-X', '--boostFactor', type=float,   dest='boostFactor',  default=boostFactor, help="boost Di-muon prod cross sections")
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
@@ -96,6 +97,7 @@ def init():
   ecut         = args.ecut
   tauOnly      = args.tauOnly
   JpsiMainly   = args.JpsiMainly
+  DrellYan     = args.DrellYan
   G4only       = args.G4only
   boostFactor  = args.boostFactor
   boostDiMuon  = args.boostDiMuon
@@ -191,7 +193,8 @@ P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
 if G4only: P8gen.SetG4only()
-if JpsiMainly: P8gen.SetJpsiMainly() 
+if JpsiMainly: P8gen.SetJpsiMainly()
+if DrellYan: P8gen.SetDrellYan()
 if withEvtGen: P8gen.WithEvtGen()
 
 if boostDiMuon > 1:
