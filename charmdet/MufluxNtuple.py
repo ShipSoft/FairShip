@@ -2003,7 +2003,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:muID1:p1:pt1:p1cor:pt1cor:muID2:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
     prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z:RPCx1:RPCy1:Delx1:Dely1:RPCx2:RPCy2:Delx2:Dely2"
     if MCdata:
-      variables += ":Jpsi:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:Pmother"
+      variables += ":Jpsi:procID:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:Pmother"
     h['nt']  = ROOT.TNtuple("nt","dimuon",variables) 
 #
     sTreeFullMC = None
@@ -2240,7 +2240,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
              else:
               ox,oy,oz = -9999.,9999.,-9999.
               Pmother[j] = -111.
-             theArray += [float(jpsi[j]),PTRUE[j],PtTRUE[j],YTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
+             theArray += [float(jpsi[j]),float(tchannel),PTRUE[j],PtTRUE[j],YTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
                      dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],originZ[j][0],originZ[j][1],\
                      pTrue[j][0].X(),pTrue[j][0].Y(),pTrue[j][0].Z(),pTrue[j][1].X(),pTrue[j][1].Y(),pTrue[j][1].Z(),ox,oy,oz,Pmother[j]]
              if Debug:
