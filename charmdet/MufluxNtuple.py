@@ -61,6 +61,7 @@ parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC",     
 parser.add_argument("-D", "--withData",  dest="withData", help="use default data set", default="False")
 parser.add_argument("-J", "--withJpsi",  dest="withJpsi", help="use Jpsi data set",    default="False")
 parser.add_argument("-8", "--withJpsiP8",  dest="withJpsiP8", help="use Jpsi pythia8 data set",    default="False")
+parser.add_argument("-Y", "--withDrellYan",  dest="withDrellYan", help="use Drell Yan data set",   default="False")
 parser.add_argument("-x", dest="ncpus", help="number of parallel jobs", default=False)
 parser.add_argument("-s", dest="nseq", help="sequence of parallel job", default=0)
 parser.add_argument("-r", dest="refit", help="use refitted ntuples", required=False, action="store_true")
@@ -75,6 +76,7 @@ with10GeV =  options.with10GeV == "True"
 withData  =  options.withData  == "True"
 withJpsi  =  options.withJpsi  == "True"
 withJpsiP8  =  options.withJpsiP8  == "True"
+withDrellYan  =  options.withDrellYan  == "True"
 if options.path != "": gPath = options.path+'/'
 fdir = options.directory
 
@@ -169,6 +171,17 @@ if not options.listOfFiles:
         for k in range(16):
             fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
             sTreeMC.Add(path+fname)
+    if withDrellYan:
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/"
+        for k in range(105,150):
+            fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
+            try:
+                test = ROOT.TFile.Open(fname)
+                if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
+            except:
+                print "file not found",fname
+                continue
+
 # small problem here when merging 1GeV and 10GeV, due to different p cutoff, px and pt cannot be used directly. 
 
 # temp hack
@@ -1960,24 +1973,14 @@ def dEdxCorrection(p):
  # -8.1 - 0.045 *p + 0.00017 *p*p fit without cut
  dE = -7.63907  -0.0315131  * p + 0.000168569 * p*p
  return -dE*(1-0.085)  # fudge factor reversed engineering
-def DrellYan():
+#
+def DrellYan(ptCut = 1.0, pmin = 20.,pmax  = 300.,BDTCut=None,muID=2):
+   tag  = 'muID'+str(muID)+'_'+'DrellYan-'+str(ptCut)+'_'+str(pmin)
+   if BDTCut: tag += '_BDT'
+   theCut = theJpsiCut('mcor',True,ptCut,pmin,pmax,muID,False)
    ut.bookHist(hMC,'DY_M','Drell Yan',100,0.0,5.0,100,0.,10.)
-   for n in range(sTreeMC.GetEntries()):
-     sTreeMC.GetEvent(n)
-     muons = []
-     for m in sTreeMC.MCTrack:
-       if m.GetProcID()!=0: continue
-       if abs(m.GetPdgCode()!=13): continue
-       mo = m.GetMotherId()
-       if abs(sTreeMC.MCTrack[mo].GetPdgCode()!=22): continue
-       muons.append(m)
-     if len(muons)!=2: continue
-     m0 = ROOT.Math.PxPyPzMVector(muons[0].GetPx(),muons[0].GetPy(),muons[0].GetPz(),0.105658)
-     m1 = ROOT.Math.PxPyPzMVector(muons[1].GetPx(),muons[1].GetPy(),muons[1].GetPz(),0.105658)
-     M = m1+m2
-     rc = hMC['DY_M'].Fill(M.M(),M.Pt())
-     #cmd = "python -i $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t repro-B True -r "
-
+   ROOT.gROOT.cd()
+   hMC['10GeV'].Draw('mcor:ptcor>>DY_M',theCut+"&&Jpsi<-21&&Jpsi>-23")
 def invMass(sTree,h,nseq=0,ncpus=False):
     ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
@@ -2471,9 +2474,12 @@ def determineEfficiencies(theCut,category,colors,withCosCSCut,withWeight):
         hMC['YEff'+z].Draw('same')
         hMC['lYEff'].AddEntry(hMC['YEff'+z],z,'PL')
    myPrint(hMC['dummy'],'JpsiEfficiencies')
-def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut):
+def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut,sameSign=False):
    sptCut = str(ptCut)
    theCut =  'mult<3&&max(pt1,pt2)>'+sptCut+'&&chi21*chi22<0&&max(abs(chi21),abs(chi22))<0.9&&\
+                max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.20'
+   if sameSign:
+      theCut =  'mult<3&&max(pt1,pt2)>'+sptCut+'&&chi21*chi22>0&&max(abs(chi21),abs(chi22))<0.9&&\
                 max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.20'
    if v=='mcor':
       theCut = theCut.replace('pt1','pt1cor')
@@ -7073,7 +7079,7 @@ def myVertex(t1,t2,PosDir,xproj=False):
     Z = c.z()+v.z()*t
     return X,Y,Z,abs(dist)
 
-def AnalysisNote_OppositeSign():
+def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
    ut.bookHist(hMC, 'M',   ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MSS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MOS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
@@ -7081,19 +7087,23 @@ def AnalysisNote_OppositeSign():
    Ndata = hData['f'].nt.Draw('mcor>>M','chi21*chi22<0')
    mu = Ndata/(324.75E9/710.)
    print "max pile up <", mu/2.
-   pMin = 20.
-   pMax = 300.
-   NsameSign = hData['f'].nt.Draw('mcor>>M','chi21*chi22>0&&max(p1,p2)<300&&min(p1,p2)>'+str(pMin))
+   muID = 2
+   theCutOS = theJpsiCut('mcor',False,ptCut,pMin,pMax,muID,BDTCut,sameSign=False)
+   theCutSS = theJpsiCut('mcor',False,ptCut,pMin,pMax,muID,BDTCut,sameSign=True)
+   NsameSign = hData['f'].nt.Draw('mcor>>M',theCutSS)
    hData['MsameSign']=hMC['M'].Clone('MsameSign')
-   NoppSign  = hData['f'].nt.Draw('mcor>>M','chi21*chi22<0&&max(p1,p2)<300&&min(p1,p2)>'+str(pMin))
+   NoppSign  = hData['f'].nt.Draw('mcor>>M',theCutOS)
    hData['MoppoSign']=hMC['M'].Clone('MoppoSign')
-   NsameSignMC = hMC['10GeV'].Draw('mcor>>M','chi21*chi22>0&&max(p1,p2)<300&&min(p1,p2)>'+str(pMin))
-   NoppSignMC =  hMC['10GeV'].Draw('mcor>>M','chi21*chi22<0&&max(p1,p2)<300&&min(p1,p2)>'+str(pMin))
+   NsameSignMC = hMC['10GeV'].Draw('mcor>>M',theCutSS)
+   NoppSignMC =  hMC['10GeV'].Draw('mcor>>M',theCutOS)
    print "same sign rate, Data:",NsameSign/float(NsameSign+NoppSign)," MC:",NsameSignMC/float(NsameSignMC+NoppSignMC)
    MCorigin = {'ss':{},'os':{}}
    for nt in hMC['10GeV']:
-       if min(nt.p1,nt.p2)<pMin: continue
-       if max(nt.p1,nt.p2)>pMax: continue
+       if min(nt.p1cor,nt.p2cor)<pMin: continue
+       if max(nt.p1cor,nt.p2cor)>pMax: continue
+       if max(nt.pt1cor,nt.pt2cor)<ptCut: continue
+       if abs(nt.chi21)>0.9 or abs(nt.chi22)>0.9: continue
+       if nt.muID1!=111 or nt.muID2!=111 : continue
        c='os'
        if nt.chi21*nt.chi22>0: c = 'ss'
        if c=='ss': rc = hMC['MSS'].Fill(nt.mcor)
@@ -7126,8 +7136,12 @@ def AnalysisNote_OppositeSign():
            summary[pname+' primary']=1.E6*s[1]/MCStats['10GeV']
            hMC['M'+pname+' primary'] = hMC['M'+str(s[0])].Clone('M'+pname+' primary')
        elif pname in ['gamma']:
-           summary['gamma conversion'] = 1.E6*s[1]/MCStats['10GeV']
-           hMC['Mgamma conversion'] = hMC['M'+str(s[0])].Clone('Mgamma conversion')
+           if s[0]>0:
+              summary['gamma conversion'] = 1.E6*s[1]/MCStats['10GeV']
+              hMC['Mgamma conversion'] = hMC['M'+str(s[0])].Clone('Mgamma conversion')
+           else:
+              summary['DrellYan'] = 1.E6*s[1]/MCStats['10GeV']
+              hMC['MDrellYan'] = hMC['M'+str(s[0])].Clone('MDrellYan')
        elif pname in ['e-']:
            summary['positron annihilation'] = 1.E6*s[1]/MCStats['10GeV']
            hMC['Mpositron annihilation'] = hMC['M'+str(s[0])].Clone('Mpositron annihilation')
@@ -7160,6 +7174,7 @@ def AnalysisNote_OppositeSign():
    colors["Meta' primary"] = [24,ROOT.kBlue+2]
    colors["Meta primary"] = [25,ROOT.kBlue-2]
    colors['Mgamma conversion'] = [26,1]
+   colors['MDrellYan'] = [26,ROOT.kCyan]
    colors['Mpositron annihilation'] = [27,1]
    colors['Mcharm'] = [28,1]
    colors['Mbeauty'] = [29,1]
@@ -7167,6 +7182,7 @@ def AnalysisNote_OppositeSign():
    colors['MSS'] = [20,ROOT.kRed]
    colors['MOS'] = [24,ROOT.kBlue]
    for x in colors:
+       if not hMC.has_key(x): continue
        hMC[x].SetStats(0)
        hMC[x].SetTitle(';GeV/c^{2};N/'+str(int(hMC['MOS'].GetBinWidth(1)*1000))+'MeV/c^{2} ' )
        hMC[x].SetMarkerStyle(colors[x][0])
@@ -7211,6 +7227,7 @@ def AnalysisNote_OppositeSign():
    hMC['LSOU']=ROOT.TLegend(0.67,0.43,0.85,0.85)
    rc = hMC['LSOU'].AddEntry(hMC['MOS'],'All opposite sign','PL')
    for x in colors:
+       if not hMC.has_key(x): continue
        if x in ['MSS','MOS']: continue
        hMC[x].Draw('hsame')
        hMC[x].Draw('psame')

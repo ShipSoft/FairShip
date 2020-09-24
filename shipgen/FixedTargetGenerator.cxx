@@ -145,6 +145,7 @@ Bool_t FixedTargetGenerator::Init()
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
      fPythia->readString("PromptPhoton:all = on");
      fPythia->readString("WeakBosonExchange:all = on");
+     fPythia->readString("WeakSingleBoson:all = on");
     }
    if (tauOnly){
     fPythia->readString("431:new  D_s+  D_s-  1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0");
