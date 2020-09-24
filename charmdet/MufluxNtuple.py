@@ -1,6 +1,7 @@
 import ROOT,os,time,operator,subprocess
 import rootUtils as ut
 from argparse import ArgumentParser
+from decorators import *
 PDG = ROOT.TDatabasePDG.Instance()
 cuts = {}
 cuts['muTrackMatchX']= 5.
@@ -172,9 +173,9 @@ if not options.listOfFiles:
             fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
             sTreeMC.Add(path+fname)
     if withDrellYan:
-        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/"
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX"
         for k in range(105,150):
-            fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
+            fname = path.replace('XXX',str(k))+"/ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
             try:
                 test = ROOT.TFile.Open(fname)
                 if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
@@ -2163,7 +2164,14 @@ def invMass(sTree,h,nseq=0,ncpus=False):
              if mothers[0]==mothers[1]:
                  jpsi[j] = mothers[0]
              if abs(mothers[0]) == abs(mothers[1]) and abs(mothers[0])==13:
-                 jpsi[j] = -22
+                 mu0  = sTreeMC.MCID[nComb[j][0]]
+                 while abs(sTreeFullMC.MCTrack[mu0].GetPdgCode()) == 13:
+                    mu0=sTreeFullMC.MCTrack[mu0].GetMotherId()
+                 mu1  = sTreeMC.MCID[nComb[j][1]]
+                 while abs(sTreeFullMC.MCTrack[mu1].GetPdgCode()) == 13:
+                    mu1=sTreeFullMC.MCTrack[mu1].GetMotherId()
+                 if mu1==mu0:
+                    jpsi[j] = -sTreeFullMC.MCTrack[mu0].GetPdgCode()
             if jpsi[j] == 443:
                 rc = h["invMassJ"].Fill(X[j].M())
                 rc = h["p/ptJ"].Fill(X[j].P(),X[j].Pt())
