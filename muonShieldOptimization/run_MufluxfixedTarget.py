@@ -58,7 +58,7 @@ def get_work_dir(run_number,tag=None):
 
 
 def init():
-  global runnr, nev, ecut, G4only, tauOnly,DrellYan,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
+  global runnr, nev, ecut, G4only, tauOnly,JpsiMainly,DrellYan,PhotonCollision,psiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
          boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
@@ -77,6 +77,7 @@ def init():
   ap.add_argument('-t', '--tau-only',     action='store_true', dest='tauOnly',     default=False)
   ap.add_argument('-J', '--Jpsi-mainly',  action='store_true', dest='JpsiMainly',  default=False)
   ap.add_argument('-Y', '--DrellYan',  action='store_true', dest='DrellYan',  default=False)
+  ap.add_argument('-Ph','--PhotonCollision',  action='store_true', dest='PhotonCollision',  default=False)
   ap.add_argument('-b', '--boostDiMuon', type=float,   dest='boostDiMuon',  default=boostDiMuon, help="boost Di-muon branching ratios")
   ap.add_argument('-X', '--boostFactor', type=float,   dest='boostFactor',  default=boostFactor, help="boost Di-muon prod cross sections")
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
@@ -98,6 +99,7 @@ def init():
   tauOnly      = args.tauOnly
   JpsiMainly   = args.JpsiMainly
   DrellYan     = args.DrellYan
+  PhotonCollision     = args.PhotonCollision
   G4only       = args.G4only
   boostFactor  = args.boostFactor
   boostDiMuon  = args.boostDiMuon
@@ -195,6 +197,7 @@ P8gen.SetDebug(Debug)
 if G4only: P8gen.SetG4only()
 if JpsiMainly: P8gen.SetJpsiMainly()
 if DrellYan: P8gen.SetDrellYan()
+if PhotonCollision: P8gen.SetPhotonCollision()
 if withEvtGen: P8gen.WithEvtGen()
 
 if boostDiMuon > 1:
@@ -241,6 +244,13 @@ run.Run(nev)
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
+if not charm and not beauty:
+  P = P8gen.GetPythia()
+  N = P8gen.GetPythiaN()
+  print ">>>> proton statistics"
+  P.stat()
+  print ">>>> neutron statistics"
+  N.stat()
 print ' ' 
 print "Macro finished succesfully." 
 print "Output file is ",  outFile 
@@ -249,8 +259,7 @@ print "Real time ",rtime, " s, CPU time ",ctime,"s"
 if (ship_geo.MufluxSpectrometer.muflux==True and storeOnlyMuons):
 # ---post processing--- remove empty events --- save histograms
  tmpFile = outFile+"tmp"
- fin   = ROOT.gROOT.GetListOfFiles()[0]
-
+ fin   = ROOT.TFile(outFile)
  fHeader = fin.FileHeader
  fHeader.SetRunId(runnr)
  if charm or beauty:

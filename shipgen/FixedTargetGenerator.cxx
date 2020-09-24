@@ -33,6 +33,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   tauOnly = false;
   JpsiMainly = false;
   DrellYan = false;
+  PhotonCollision = false;
   G4only = false;
   maxCrossSection = 0.;
   EMax = 0;
@@ -140,6 +141,8 @@ Bool_t FixedTargetGenerator::Init()
 //   Z0/gamma  -> mu+ mu-
      fPythia->readString("23:onMode = off");
      fPythia->readString("23:onIfAll = 13 13");
+   }else if (PhotonCollision){
+     fPythia->readString("PhotonCollision:gmgm2mumu = on");
    }else{
      fPythia->readString("SoftQCD:inelastic = on");
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
