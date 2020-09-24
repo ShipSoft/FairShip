@@ -151,16 +151,31 @@ void miniShip::ConstructGeometry()
    TGeoMedium *OuterAbsMaterial  = gGeoManager->GetMedium(fOuterAbsMaterial);
    InitMedium("vacuums");
    TGeoMedium *vac  = gGeoManager->GetMedium("vacuums");
+   InitMedium("Concrete");
+   TGeoMedium *concrete  = gGeoManager->GetMedium("concrete");
 
    TGeoVolume* target        = gGeoManager->MakeBox("TargetArea",   TargetMaterial,  10.*cm,10.*cm,fTargetL/2*cm);
    target->SetLineColor(kRed);
+   TGeoBBox* fullConcreteTarget  = new TGeoBBox("fullConcreteTarget",200.*cm,200.*cm,(fTargetL/2-0.01)*cm);
+   TGeoSubtraction *subtractionT = new TGeoSubtraction("fullConcreteTarget","TargetArea");
+   TGeoCompositeShape *csT       = new TGeoCompositeShape("outerTargetSubtr", subtractionT);
+   TGeoVolume* outerTarget    = new TGeoVolume("outerTarget",csT, concrete);
+   outerTarget->SetLineColor(kGray);
+
    TGeoVolume* innerAbsorber = gGeoManager->MakeBox("innerAbsorber",InnerAbsMaterial,10.*cm,10.*cm,fAbsL/2*cm);
    innerAbsorber->SetLineColor(kBlack);
    TGeoBBox* fullAbsorber  = new TGeoBBox("fullAbsorber",100.*cm,100.*cm,(fAbsL/2-0.01)*cm);
    TGeoSubtraction *subtraction = new TGeoSubtraction("fullAbsorber","innerAbsorber");
    TGeoCompositeShape *cs       = new TGeoCompositeShape("outerAbsorberSubtr", subtraction);
    TGeoVolume* outerAbsorber    = new TGeoVolume("outerAbsorber",cs, OuterAbsMaterial);
+   outerAbsorber->SetLineColor(kGreen);
+
+   TGeoBBox* fullConcreteAbsorber  = new TGeoBBox("fullConcreteAbsorber",400.*cm,400.*cm,(fAbsL/2-0.01)*cm);
+   TGeoSubtraction *subtractionA = new TGeoSubtraction("fullConcreteAbsorber","fullAbsorber");
+   TGeoCompositeShape *csA       = new TGeoCompositeShape("outerAbsorberSubtr", subtractionA);
+   TGeoVolume* outerAbsorberConcrete    = new TGeoVolume("outerAbsorberConcrete",cs, concrete);
    outerAbsorber->SetLineColor(kGray);
+
    if (fField > 0){
       TGeoUniformMagField *magField  = new TGeoUniformMagField(0.,fField*tesla,0.);
       outerAbsorber->SetField(magField);
