@@ -141,7 +141,8 @@ Bool_t FixedTargetGenerator::Init()
 //   Z0/gamma  -> mu+ mu-
      fPythia->readString("23:onMode = off");
      fPythia->readString("23:onIfAll = 13 13");
-     fPythia->readString("23:mMin = 0.5");
+     fPythia->readString("23:mMin = 1.0");
+     fPythia->readString("PhaseSpace:mHatMin = 1.");
      fPythia->readString("PartonLevel:FSR = on");
    }else if (PhotonCollision){
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
