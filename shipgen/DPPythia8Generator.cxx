@@ -123,8 +123,11 @@ Bool_t DPPythia8Generator::Init()
   fctau = fPythia->particleData.tau0(fDP); //* 3.3333e-12
   if ( debug ){std::cout<<"ctau pythia "<<fctau<<"[mm]"<<std::endl;}
   int initPass = fPythia->init();
+  //std::cout<<"beginning of settings!"<<std::endl;
+  //fPythia->settings.listAll();
+  //std::cout<<"end of settings!"<<std::endl;
+  //return 1;
   if ( debug ){std::cout<<"Pythia initialisation bool: " << initPass << std::endl;}
-
   if (!initPass) {
     fLogger->Fatal(MESSAGE_ORIGIN, "Pythia initialisation failed");
     return kFALSE;
