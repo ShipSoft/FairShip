@@ -220,6 +220,8 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        //int r =  int( gRandom->Uniform(0,iDP) );
        int r =  iDP-1;
        // std::cout << " ----> debug 2 " << r  <<  std::endl;
+       //for (r=0;r<iDP;r++)
+       //{
        int i =  dpvec[r];
        // production vertex
        zp =fPythia->event[i].zProd();
@@ -290,7 +292,8 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        dec_chain.push_back(  i );
        if (debug>1) std::cout << std::endl << " insert mother id " << im << " pdg=" <<fPythia->event[im].id() << " pmz = " << pmz << " [GeV],  zm = " << zm << " [mm] tm = " << tm << " [mm/c]" << std::endl;
        if (debug>1) std::cout << " ----> insert DP id " << i << " pdg=" << fDP << " pz = " << pz << " [GeV] zp = " << zp << " [mm] tp = " << tp << " [mm/c]" << std::endl;
-       iDP = i; 
+       iDP = i; //comment it for r for loop 
+     //} //for loop of r
      }
    } while ( iDP == 0 ); // ----------- avoid rare empty events w/o any DP's produced
    

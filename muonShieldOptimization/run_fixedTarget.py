@@ -62,7 +62,6 @@ def init():
   global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
          boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos,FourDP
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
-
   ap = argparse.ArgumentParser(
       description='Run SHiP "pot" simulation')
   ap.add_argument('-d', '--debug', action='store_true', dest='debug')
@@ -167,7 +166,8 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetOutputFile(outFile)  # Output file
-run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+#run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+run.SetUserConfig("g4Config.C")
 rtdb = run.GetRuntimeDb() 
 
 # -----Materials----------------------------------------------

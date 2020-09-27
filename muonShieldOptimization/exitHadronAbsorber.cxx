@@ -125,13 +125,12 @@ void exitHadronAbsorber::Initialize()
      }
    }
   if(withNtuple) {
-         fNtuple = new TNtuple("4DP","4DP","id:px:py:pz:x:y:z");
+         fNtuple = new TNtuple("4DP","4DP","id:px:py:pz:x:y:z:prim");
   }
 }
 
 void exitHadronAbsorber::EndOfEvent()
 {
-
   fexitHadronAbsorberPointCollection->Clear();
 
 }
@@ -164,7 +163,8 @@ void exitHadronAbsorber::PreTrack(){
          h2 = (TH2D*)fout->Get(key);
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
          if(withNtuple){
-          fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z());
+             if (gMC->GetStack()->GetCurrentParentTrackNumber()<1) {fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z(),1);}
+             else {fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z(),0);}
          }
     if (fSkipNeutrinos && (idabs==12 or idabs==14 or idabs == 16 )){gMC->StopTrack();}
    }

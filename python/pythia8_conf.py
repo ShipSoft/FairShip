@@ -286,7 +286,8 @@ def add_hnl(P8gen, mass, decay_couplings):
     addHNLtoROOT(pid=9900015,m=mass,g=gamma)
 
 def setup_pythia_inclusive(P8gen):
-    P8gen.SetParameters("SoftQCD:inelastic = on")
-    P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
-    P8gen.SetParameters("PromptPhoton:all = on")
-    P8gen.SetParameters("WeakBosonExchange:all = on")
+    P8gen.SetParameters("SoftQCD:nonDiffractive = on")
+    #P8gen.SetParameters("SoftQCD:inelastic = on")
+    #P8gen.SetParameters("PhotonCollision:gmgm2mumu = on")
+    #P8gen.SetParameters("PromptPhoton:all = on")
+    #P8gen.SetParameters("WeakBosonExchange:all = on")
