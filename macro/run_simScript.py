@@ -75,6 +75,7 @@ parser.add_argument("--Cosmics",   dest="cosmics",  help="Use cosmic generator, 
 parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic scattering generator", required=False, action="store_true")
 parser.add_argument("--RpvSusy", dest="RPVSUSY",  help="Generate events based on RPV neutralino", required=False, action="store_true")
 parser.add_argument("--DarkPhoton", dest="DarkPhoton",  help="Generate dark photons", required=False, action="store_true")
+parser.add_argument("--MiniShield",dest="MiniShield", help="Generates dark photons without a vessel boost", required=False, action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench",  help="Generate HP Susy", required=False, default=2)
 parser.add_argument("-m", "--mass", dest="theMass",  help="Mass of hidden particle, default "+str(theHNLMass)+"GeV for HNL, "+str(theDPmass)+"GeV for DP, "+str(theALPmass)+"GeV for ALP", required=False, default=None, type=float)
 parser.add_argument("-c", "--couplings", "--coupling", dest="thecouplings",  help="couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings.\
@@ -284,6 +285,7 @@ if simEngine == "Pythia8":
    P8gen.SetDPId(4900023)
   else:
    P8gen.SetDPId(9900015)
+  if options.MiniShield: P8gen.SetMiniShield()
   import pythia8darkphoton_conf
   passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, options.MM, options.deepCopy)
   if (passDPconf!=1): sys.exit()
