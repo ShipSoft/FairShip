@@ -7,9 +7,9 @@ timer = ROOT.TStopwatch()
 timer.Start()
 #
 R = 0   # run number
-msel   = 0 
+msel   = 0
 pbeamh = 400.
-nevgen = 100000
+nevgen = 1000
 #
 target=['p+','n0']
 #  Assume Molybdum target, fracp is the fraction of protons in nucleus, i.e. 42/98.
@@ -63,32 +63,25 @@ def LHCb_tune(P6):
                              # together with quark masses, used to define the remaining energy below which the fragmentation of a parton system is stopped and two final hadrons formed. 
   print '********** LHCb_tune **********'
   print ' '
-def PoorE791_tune(P6):
+def DY_tune(P6):
 # settings with default Pythia6 pdf, based on getting <pt> at 500 GeV pi-
-# same as that of E791: http://arxiv.org/pdf/hep-ex/9906034.pdf
   print ' '
-  print '********** PoorE791_tune **********'
+  print '********** DY_tune **********'
   #change pt of D's to mimic E791 data.
-  P6.SetPARP(91,1.6)  # 1.6  # default 2.0
+  P6.SetPARP(91,0.8)  # 1.6  # default 2.0   primordial kt distribution in hadron
   P6.SetPARP(92,P6.GetPARP(91)/ROOT.TMath.Sqrt(6.))
-  print  'PARP(91)=',P6.GetPARP(91),P6.GetPARP(92)
-  #what PDFs etc.. are being used:
-  print 'MSTP PDF info, i.e. (51) and (52)=',P6.GetMSTP(51),P6.GetMSTP(52)
-  #set multiple interactions equal to Fortran version, i.e.=1, default=4, and adapt parp(89) accordingly
-  P6.SetMSTP(82,1)
-  P6.SetPARP(89,1000.)
-  print 'And corresponding multiple parton stuff, i.e. MSTP(82),PARP(81,89,90)=',P6.GetMSTP(82),P6.GetPARP(81),P6.GetPARP(89),P6.GetPARP(90)
-  print '********** PoorE791_tune **********'
+  print '********** DY_tune **********'
   print ' '
 #choose the Pythia tune:
-E791tuning = True
+DYtuning = True
 LHCbtuning = False
 for p in target: 
  myPythia[p].SetMSEL(msel)
- if E791tuning:   PoorE791_tune(myPythia[p])
+ if DYtuning:   DY_tune(myPythia[p])
  elif LHCbtuning: LHCb_tune(myPythia[p])
 
- myPythia[p].SetMSUB(1,1) # qq->ll & qq->Z
+ myPythia[p].SetMSUB(1,1) # y*/Z0
+ myPythia[p].SetCKIN(1,0.5) # allowed sqrt s range
  mumu=True
  if mumu:
    myPythia[p].SetMDME(174,1,0) # d      + dbar,        off
@@ -111,12 +104,17 @@ for p in target:
  if R == '': R = int(time.time()*100000000%900000000)
  print 'Setting random number seed =',R
  myPythia[p].SetMRPY(1,R)
+ P6 = myPythia[p]
+ print  'PARP(91)=',P6.GetPARP(91),P6.GetPARP(92)
+  #what PDFs etc.. are being used:
+ print 'MSTP PDF info, i.e. (51) and (52)=',P6.GetMSTP(51),P6.GetMSTP(52)
+  # 7 = CTEQ 5L (leading order)   internal pythia one
+ print 'And corresponding multiple parton stuff, i.e. MSTP(82),PARP(81,89,90)=',P6.GetMSTP(82),P6.GetPARP(81),P6.GetPARP(89),P6.GetPARP(90)
+ print 'beam remnant info, i.e. MSTP(91) and (52), PARP(91) (100)=',P6.GetMSTP(91),P6.GetMSTP(52),P6.GetPARP(91),P6.GetPARP(100)
+
  myPythia[p].Initialize("FIXT",'p+',p,pbeamh)
 
-if E791tuning:
- Fntuple='DrellYan-parp'+str(int(myPythia['p+'].GetPARP(91)*10))+'-MSTP82-'+str(myPythia['p+'].GetMSTP(1))+'-MSEL'+str(msel)+'-ntuple.root'
-else:
- Fntuple='DrellYan-ntuple.root'
+Fntuple='DrellYan-parp'+str(int(myPythia['p+'].GetPARP(91)*10))+'-MSTP82-'+str(myPythia['p+'].GetMSTP(1))+'-MSEL'+str(msel)+'-ntuple.root'
 
 ftup = ROOT.TFile.Open(Fntuple, 'RECREATE')
 Ntup = ROOT.TNtuple("pythia6","pythia6 DrellYan",\

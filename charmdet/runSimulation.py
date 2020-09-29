@@ -943,7 +943,7 @@ def mergeOnurFiles(merge=False):
             cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root tmp.root '
       os.system(cmd)
 
-def DrellYanProduction(step='simulation',runs=[101,120],path = "ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",Gfield=''):
+def DrellYanProduction(step='simulation',runs=[101,150],path = "ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",Gfield=''):
  addOption = ""
  if Gfield == 'inter': addOption = " -F inter "
  if step == 'simulation':
@@ -1024,7 +1024,7 @@ def DrellYanProduction(step='simulation',runs=[101,120],path = "ship-ubuntu-1710
      d = path.replace('XXX',str(run))
      if not "ntuple-pythia8_Geant4_"+str(run)+"_10.0_dig_RT.root" in os.listdir(d): continue
      for f in os.listdir(d):
-        cmd = "xrdcp "+d+"/"+f+" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/DrellYan/"+d+"/"+f
+        cmd = "xrdcp -f "+d+"/"+f+" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/DrellYan/"+d+"/"+f
         os.system(cmd)
 
 def JpsiProduction(step='simulation',prod='P8'):

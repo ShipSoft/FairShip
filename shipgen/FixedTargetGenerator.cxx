@@ -141,8 +141,8 @@ Bool_t FixedTargetGenerator::Init()
 //   Z0/gamma  -> mu+ mu-
      fPythia->readString("23:onMode = off");
      fPythia->readString("23:onIfAll = 13 13");
-     fPythia->readString("23:mMin = 1.0");
-     fPythia->readString("PhaseSpace:mHatMin = 1.");
+     fPythia->readString("23:mMin = 0.5");
+     fPythia->readString("PhaseSpace:mHatMin = 0.5");
      fPythia->readString("PartonLevel:FSR = on");
    }else if (PhotonCollision){
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
@@ -369,6 +369,10 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Int_t id = fPythia->event[ii].id(); 
      Bool_t wanttracking=kTRUE;
      if (e-m<EMax || !fPythia->event[ii].isFinal() || pz<0) {wanttracking=kFALSE;}
+     if (DrellYan || PhotonCollision ){
+// don't track underlying event
+      if (fabs(id)!=13){wanttracking=kFALSE;}
+     }
      Double_t z  = fPythia->event[ii].zProd()+zinter;
      Double_t x  = fPythia->event[ii].xProd()+xOff;
      Double_t y  = fPythia->event[ii].yProd()+yOff;
