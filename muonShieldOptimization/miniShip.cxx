@@ -152,7 +152,7 @@ void miniShip::ConstructGeometry()
    InitMedium("vacuums");
    TGeoMedium *vac  = gGeoManager->GetMedium("vacuums");
    InitMedium("Concrete");
-   TGeoMedium *concrete  = gGeoManager->GetMedium("concrete");
+   TGeoMedium *concrete  = gGeoManager->GetMedium("Concrete");
 
    TGeoVolume* target        = gGeoManager->MakeBox("TargetArea",   TargetMaterial,  10.*cm,10.*cm,fTargetL/2*cm);
    target->SetLineColor(kRed);
@@ -173,7 +173,7 @@ void miniShip::ConstructGeometry()
    TGeoBBox* fullConcreteAbsorber  = new TGeoBBox("fullConcreteAbsorber",400.*cm,400.*cm,(fAbsL/2-0.01)*cm);
    TGeoSubtraction *subtractionA = new TGeoSubtraction("fullConcreteAbsorber","fullAbsorber");
    TGeoCompositeShape *csA       = new TGeoCompositeShape("outerAbsorberSubtr", subtractionA);
-   TGeoVolume* outerAbsorberConcrete    = new TGeoVolume("outerAbsorberConcrete",cs, concrete);
+   TGeoVolume* outerAbsorberConcrete    = new TGeoVolume("outerAbsorberConcrete",csA, concrete);
    outerAbsorberConcrete->SetLineColor(kGray);
 
    if (fField > 0){
