@@ -1,5 +1,6 @@
 import ROOT,operator,sys
 import rootUtils as ut
+import shipunit as u
 from argparse import ArgumentParser
 PDG = ROOT.TDatabasePDG.Instance()
 
@@ -44,15 +45,15 @@ if options.inputFile.find('histo')<0:
                for l in ['1','2']:
                  ut.bookHist(h,'inAcc'+l+hpid,pname+';[GeV/c]',1000,0.,10.)
                  ut.bookHist(h,'binAcc'+l+hpid,pname+';[GeV/c]',1000,0.,10.)
-                 ut.bookHist(h,'inAccPz'+l+hpid,pname+';[GeV/c]',1000,-3.,3.)
+                 ut.bookHist(h,'inAcc'+l+'Pz'+hpid,pname+';[GeV/c]',1000,-3.,3.)
                  ut.bookHist(h,'xy'+l+hpid,pname+';X  [cm];Y  [cm]',100,-1*acc[0],acc[0],100,-1*acc[1],acc[1])
+                 ut.bookHist(h,'vrz'+l+hpid,pname+';R  [cm];Z  [cm]',100,0,1.5*acc[0],3000,-100.,200.)
                ut.bookHist(h,'bxy'+hpid,'backsplash '+pname+';X  [cm];Y  [cm]',100,-1*acc[0],acc[0],100,-1*acc[1],acc[1])
-               ut.bookHist(h,'vrz'+hpid,pname+';R  [cm];Z  [cm]',100,0,1.5*acc[0],3000,-100.,200.)
                ut.bookHist(h,'orz'+hpid,pname+';R  [cm];Z  [cm]',100,0,1.5*acc[0],3000,-100.,200.)
                ut.bookHist(h,'oorz'+hpid,pname+';R  [cm];Z  [cm]',100,0,1.5*acc[0],3000,-100.,200.)
                ut.bookHist(h,'a'+hpid,pname,100,0.9,1.)
           v.Momentum(mom)
-          v.Momentum(pos)
+          v.Position(pos)
           m = sTree.MCTrack[v.GetTrackID()]
           backsplash = False
           if m.GetStartZ()>v.GetZ(): backsplash = True
@@ -61,7 +62,7 @@ if options.inputFile.find('histo')<0:
                 rc = h['xy1'+hpid].Fill(v.GetX(),v.GetY())
           else: 
                 rc = h['b'+hpid].Fill(mom.Mag())
-                rc = h['bxy1'+hpid].Fill(v.GetX(),v.GetY())
+                rc = h['bxy'+hpid].Fill(v.GetX(),v.GetY())
           if ( abs(v.GetX())<acc[0] and abs(v.GetY())<acc[1] ):
              if backsplash:   rc = h['binAcc1'+hpid].Fill(mom.Mag())
              else:            rc = h['inAcc1'+hpid].Fill(mom.Mag())
@@ -70,16 +71,19 @@ if options.inputFile.find('histo')<0:
              ms = mom.Dot(omom)/(mom.Mag()*omom.Mag())
              rc = h['a'+hpid].Fill(ms)
              rc = h['orz'+hpid].Fill(ROOT.TMath.Sqrt(m.GetStartX()**2+m.GetStartY()**2),m.GetStartZ() )
-             rc = h['vrz'+hpid].Fill(ROOT.TMath.Sqrt(v.GetX()**2+v.GetY()**2),v.GetZ())
+             rc = h['vrz1'+hpid].Fill(ROOT.TMath.Sqrt(v.GetX()**2+v.GetY()**2),v.GetZ())
              gm = sTree.MCTrack[m.GetMotherId()]
              rc = h['oorz'+hpid].Fill(ROOT.TMath.Sqrt(gm.GetStartX()**2+gm.GetStartY()**2),gm.GetStartZ() )
           # extrapolate to end of decay volume +5m
-          lam = 5.*um/mom.Z()
-          posB = pos+lam*mom
-          rc = h['xy2'+hpid].Fill(posB.X(),posB.Y())
-          if ( abs(posB.X())<acc[0] and abs(posB.Y())<acc[1] ):
-             rc = h['inAcc2'+hpid].Fill(mom.Mag())
-             rc = h['inAcc2Pz'+hpid].Fill(mom.Z())
+          if mom.Z()>0:
+            lam = 5.*u.m/mom.Z()
+            posB = pos+lam*mom
+            rc = h['xy2'+hpid].Fill(posB.X(),posB.Y())
+            if ( abs(posB.X())<acc[0] and abs(posB.Y())<acc[1] ):
+               rc = h['inAcc2'+hpid].Fill(mom.Mag())
+               rc = h['inAcc2Pz'+hpid].Fill(mom.Z())
+               rc = h['vrz2'+hpid].Fill(ROOT.TMath.Sqrt(v.GetX()**2+v.GetY()**2),v.GetZ())
+               # print "debug",hpid,pos.X(),pos.Y(),pos.Z(),posB.X(),posB.Y(),posB.Z(),mom.X(),mom.Y(),mom.Z()
    ut.writeHists(h,options.inputFile.replace('pythia8','histo-pythia8'))
    print "finished with "+options.inputFile
    sys.exit()
