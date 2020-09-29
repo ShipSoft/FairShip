@@ -174,7 +174,7 @@ void miniShip::ConstructGeometry()
    TGeoSubtraction *subtractionA = new TGeoSubtraction("fullConcreteAbsorber","fullAbsorber");
    TGeoCompositeShape *csA       = new TGeoCompositeShape("outerAbsorberSubtr", subtractionA);
    TGeoVolume* outerAbsorberConcrete    = new TGeoVolume("outerAbsorberConcrete",cs, concrete);
-   outerAbsorber->SetLineColor(kGray);
+   outerAbsorberConcrete->SetLineColor(kGray);
 
    if (fField > 0){
       TGeoUniformMagField *magField  = new TGeoUniformMagField(0.,fField*tesla,0.);
@@ -182,9 +182,12 @@ void miniShip::ConstructGeometry()
       innerAbsorber->SetField(magField);
    }
    top->AddNode(target, 1, new TGeoTranslation(0, 0, 0));
+   top->AddNode(outerTarget, 1, new TGeoTranslation(0, 0, 0));
    TGeoVolumeAssembly *muShield = new TGeoVolumeAssembly("MuonShieldArea");
    muShield->AddNode(innerAbsorber, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
    muShield->AddNode(outerAbsorber, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
+   muShield->AddNode(outerAbsorberConcrete, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
+
    top->AddNode(muShield, 1, new TGeoTranslation(0, 0, 0));
    TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,1000.*cm,1000.*cm,1.*mm);
    sensPlane->SetLineColor(kGreen);
