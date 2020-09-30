@@ -26,9 +26,13 @@ Double_t tesla = 10 * kilogauss;
 ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
-ShipMuonShield::ShipMuonShield(TString geofile, const Int_t withCoMagnet, const Bool_t StepGeo)
+ShipMuonShield::ShipMuonShield(TString geofile,
+                               const Int_t withCoMagnet, const Bool_t StepGeo,
+                               const Bool_t WithConstAbsorberField, const Bool_t WithConstShieldField)
   : FairModule("MuonShield", "ShipMuonShield")
 {
+  fWithConstAbsorberField = WithConstAbsorberField;
+  fWithConstShieldField = WithConstShieldField;
   fStepGeo = StepGeo;
   fWithCoMagnet = withCoMagnet;
   fGeofile = geofile;
@@ -60,12 +64,16 @@ ShipMuonShield::ShipMuonShield(TString geofile, const Int_t withCoMagnet, const 
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
                                Double_t Z, Double_t L0, Double_t L1, Double_t L2, Double_t L3, Double_t L4, Double_t L5, Double_t L6,
-                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t, Double_t floor, Double_t field, const Int_t withCoMagnet, const Bool_t StepGeo)
+                               Double_t L7, Double_t L8, Double_t gap, Double_t LE, Double_t, Double_t floor, Double_t field,
+                               const Int_t withCoMagnet, const Bool_t StepGeo,
+                               const Bool_t WithConstAbsorberField, const Bool_t WithConstShieldField)
   : FairModule(name ,Title)
 {
  fDesign = Design;
  fField  = field;
  fGeofile = "";
+ fWithConstAbsorberField = WithConstAbsorberField;
+ fWithConstShieldField = WithConstShieldField;
  fStepGeo = StepGeo;
  fWithCoMagnet = withCoMagnet;
  if (fDesign==1){
@@ -147,7 +155,13 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
   TGeoVolume *magF =
       gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
   magF->SetLineColor(color);
-  if (fDesign != 11 || arbName.Contains("Absorb")){magF->SetField(magField);}
+  if (arbName.Contains("Absorb")) {
+      if (fWithConstAbsorberField) {
+          magF->SetField(magField);
+      }
+  } else if (fWithConstShieldField) {
+      magF->SetField(magField);
+  }
   tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation,
 						z_translation));
 }
@@ -206,7 +220,9 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
   {
     magF.push_back(gGeoManager->MakeArb8(arbName + '_' + std::to_string(i), medium, dZp - 0.00001*m, finalCorners[i]));
     magF[i]->SetLineColor(color);
-    magF[i]->SetField(magField);
+    if (fWithConstShieldField) {
+      magF[i]->SetField(magField);
+    }
   }
 
   for (int i = 0; i < zParts; ++i)
@@ -486,7 +502,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
       HmainSideMagOut[i] = dYOut[i] / 2;
     }
 
-  } else if (fDesign == 9 || fDesign == 10 ||fDesign == 11) {
+  } else if (fDesign == 9) {
      magnetName = {"MagnAbsorb1", "MagnAbsorb2", "Magn1", "Magn2", "Magn3",
        "Magn4", "Magn5", "Magn6", "Magn7"
      };
@@ -726,7 +742,7 @@ void ShipMuonShield::ConstructGeometry()
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     
-    if (fDesign >= 5 && fDesign <= 11) {
+    if (fDesign >= 5 && fDesign <= 9) {
       Double_t ironField = fField*tesla;
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
       TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
@@ -757,7 +773,6 @@ void ShipMuonShield::ConstructGeometry()
         tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
       } else if (fDesign >= 7) {
         float mField = 1.6 * tesla;
-        if (fDesign == 10) {mField=0.;}
 	TGeoUniformMagField *fieldsAbsorber[4] = {
 	    new TGeoUniformMagField(0., mField, 0.),
 	    new TGeoUniformMagField(0., -mField, 0.),

@@ -336,7 +336,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = 3.0*u.m + zGap
         c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
-    elif muShieldDesign == 9 or muShieldDesign == 10 or muShieldDesign == 11:
+    elif muShieldDesign == 9:
         c.muShield.Field = 1.7  # Tesla
         c.muShield.dZ1 = 0.35 * u.m + zGap
         c.muShield.dZ2 = 2.26 * u.m + zGap
@@ -347,6 +347,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = 3.05 * u.m + zGap
         c.muShield.dZ8 = 2.42 * u.m + zGap
         c.muShield.dXgap = 0. * u.m
+        c.muShield.half_X_max = 179 * u.cm
+        c.muShield.half_Y_max = 317 * u.cm
     elif muShieldDesign == 8:
         assert muShieldGeo
         c.muShieldGeo = muShieldGeo
@@ -364,7 +366,23 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ7 = params[6]
         c.muShield.dZ8 = params[7]
         c.muShield.dXgap = 0.*u.m
-    if muShieldDesign in range(7, 12):
+
+        offset = 7
+        c.muShield.half_X_max = 0
+        c.muShield.half_Y_max = 0
+        for index in range(2, 8):
+            f_l = params[offset + index * 6 + 1]
+            f_r = params[offset + index * 6 + 2]
+            h_l = params[offset + index * 6 + 3]
+            h_r = params[offset + index * 6 + 4]
+            g_l = params[offset + index * 6 + 5]
+            g_r = params[offset + index * 6 + 6]
+            c.muShield.half_X_max = max(c.muShield.half_X_max, 2 * f_l + g_l, 2 * f_r + g_r)
+            c.muShield.half_Y_max = max(c.muShield.half_Y_max, h_l + f_l, h_r + f_r)
+        c.muShield.half_X_max += 15 * u.cm
+        c.muShield.half_Y_max += 15 * u.cm
+
+    if muShieldDesign in range(7, 10):
         c.muShield.length = 2 * (
               c.muShield.dZ1 + c.muShield.dZ2 +
               c.muShield.dZ3 + c.muShield.dZ4 +
@@ -412,7 +430,9 @@ with ConfigRegistry.register_config("basic") as c:
     if muShieldDesign > 6:  c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield 
     else:                   c.hadronAbsorber.length =  3.00*u.m
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
-    if muShieldDesign > 9 and muShieldDesign != 11:  c.hadronAbsorber.WithConstField =  True
+
+    c.hadronAbsorber.WithConstField = True
+    c.muShield.WithConstField = True
 
     c.target               =  AttrDict(z=0*u.cm)
     c.targetOpt            =  targetOpt 

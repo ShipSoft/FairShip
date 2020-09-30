@@ -119,33 +119,24 @@ def configure(run,ship_geo):
  elif ship_geo.muShieldDesign==2:
   MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE) 
- elif ship_geo.muShieldDesign in [3, 4, 5, 6, 7, 9, 10, 11]:
-  if not hasattr(ship_geo.muShield,"Field"):
-        MuonShield = ROOT.ShipMuonShield(
-            "MuonShield", ship_geo.muShieldDesign, "ShipMuonShield",
-            ship_geo.muShield.z, ship_geo.muShield.dZ0, ship_geo.muShield.dZ1,
-            ship_geo.muShield.dZ2, ship_geo.muShield.dZ3,
-            ship_geo.muShield.dZ4, ship_geo.muShield.dZ5,
-            ship_geo.muShield.dZ6, ship_geo.muShield.dZ7,
-            ship_geo.muShield.dZ8, ship_geo.muShield.dXgap,
-            ship_geo.muShield.LE, ship_geo.Yheight * 4. / 10.,
-            ship_geo.cave.floorHeightMuonShield,
-            ship_geo.muShieldWithCobaltMagnet, ship_geo.muShieldStepGeo)
-  else:
-        MuonShield = ROOT.ShipMuonShield(
-            "MuonShield", ship_geo.muShieldDesign, "ShipMuonShield",
-            ship_geo.muShield.z, ship_geo.muShield.dZ0, ship_geo.muShield.dZ1,
-            ship_geo.muShield.dZ2, ship_geo.muShield.dZ3,
-            ship_geo.muShield.dZ4, ship_geo.muShield.dZ5,
-            ship_geo.muShield.dZ6, ship_geo.muShield.dZ7,
-            ship_geo.muShield.dZ8, ship_geo.muShield.dXgap,
-            ship_geo.muShield.LE, ship_geo.Yheight * 4. / 10.,
-            ship_geo.cave.floorHeightMuonShield,ship_geo.muShield.Field,
-            ship_geo.muShieldWithCobaltMagnet, ship_geo.muShieldStepGeo) 
+ elif ship_geo.muShieldDesign in [3, 4, 5, 6, 7, 9]:
+  MuonShield = ROOT.ShipMuonShield(
+      "MuonShield", ship_geo.muShieldDesign, "ShipMuonShield",
+      ship_geo.muShield.z, ship_geo.muShield.dZ0, ship_geo.muShield.dZ1,
+      ship_geo.muShield.dZ2, ship_geo.muShield.dZ3,
+      ship_geo.muShield.dZ4, ship_geo.muShield.dZ5,
+      ship_geo.muShield.dZ6, ship_geo.muShield.dZ7,
+      ship_geo.muShield.dZ8, ship_geo.muShield.dXgap,
+      ship_geo.muShield.LE, ship_geo.Yheight * 4. / 10.,
+      ship_geo.cave.floorHeightMuonShield,ship_geo.muShield.Field,
+      ship_geo.muShieldWithCobaltMagnet, ship_geo.muShieldStepGeo,
+      ship_geo.hadronAbsorber.WithConstField, ship_geo.muShield.WithConstField)
  elif ship_geo.muShieldDesign == 8:
   MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo,
                                    ship_geo.muShieldWithCobaltMagnet,
-                                   ship_geo.muShieldStepGeo)
+                                   ship_geo.muShieldStepGeo,
+                                   ship_geo.hadronAbsorber.WithConstField,
+                                   ship_geo.muShield.WithConstField)
  
  detectorList.append(MuonShield)
 
