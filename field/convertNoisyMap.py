@@ -12,6 +12,7 @@
 
 import ROOT
 import pandas as pd
+import os
 
 # Struct for the ROOT file TTree data: coord range and field binning
 
@@ -137,18 +138,25 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     inData = pd.read_csv(inFileName, delim_whitespace=True, header=None)
     inData.columns=["x", "y", "z", "bx", "by", "bz"]
     inData = inData.sort_values(by=["x","y","z"])
-    for line in inData.index:
+    inData = inData.astype(float)
+
+    count = 0.
+    data_shape = float(inData.shape[0])
+    for row in inData.itertuples():
+        if row.Index / data_shape >= count:
+            print("Processed: {} %".format(count * 100))
+            count += 0.1
 
         # Bin centre coordinates with origin shift (all in cm)
         if storeCoords is True:
-            dStruct.x = float(inData.loc[line, "x"]) * cmScale - x0
-            dStruct.y = float(inData.loc[line, "y"]) * cmScale - y0
-            dStruct.z = float(inData.loc[line, "z"]) * cmScale - z0
+            dStruct.x = row.x * cmScale - x0
+            dStruct.y = row.y * cmScale - y0
+            dStruct.z = row.z * cmScale - z0
 
         # B field components (Tesla)
-        dStruct.Bx = float(inData.loc[line, "bx"])
-        dStruct.By = float(inData.loc[line, "by"])
-        dStruct.Bz = float(inData.loc[line, "bz"])
+        dStruct.Bx = row.bx
+        dStruct.By = row.by
+        dStruct.Bz = row.bz
 
         dataTree.Fill()
 
@@ -166,6 +174,9 @@ def findRanges(inFileName, cmScale):
     xArray = []
     yArray = []
     zArray = []
+    x_set = set()
+    y_set = set()
+    z_set = set()
 
     with open(inFileName, 'r') as f:
 
@@ -181,14 +192,17 @@ def findRanges(inFileName, cmScale):
                 y = float(sLine[1]) * cmScale
                 z = float(sLine[2]) * cmScale
 
-                if x not in xArray:
+                if x not in x_set:
                     xArray.append(x)
+                    x_set.add(x)
 
-                if y not in yArray:
+                if y not in y_set:
                     yArray.append(y)
+                    y_set.add(y)
 
-                if z not in zArray:
+                if z not in z_set:
                     zArray.append(z)
+                    z_set.add(z)
 
     Nx = len(xArray)
     Ny = len(yArray)
@@ -226,5 +240,5 @@ def findRanges(inFileName, cmScale):
 
 
 if __name__ == "__main__":
-    run('noisy_fieldMap.csv', 'field.root', 1, False)
-    # run('BFieldTest.txt', 'BFieldTest.root', 1.0)
+    run(os.path.expandvars("$FAIRSHIP/files/noisy_fieldMap.csv"),
+        os.path.expandvars("$FAIRSHIP/files/MuonShieldField.root"), 1, False)
