@@ -173,8 +173,8 @@ if not options.listOfFiles:
             fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
             sTreeMC.Add(path+fname)
     if withDrellYan:
-        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX"
-        for k in range(105,150):
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX"
+        for k in range(101,150):
             fname = path.replace('XXX',str(k))+"/ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
             try:
                 test = ROOT.TFile.Open(fname)
@@ -1982,6 +1982,29 @@ def DrellYan(ptCut = 1.0, pmin = 20.,pmax  = 300.,BDTCut=None,muID=2):
    ut.bookHist(hMC,'DY_M','Drell Yan',100,0.0,5.0,100,0.,10.)
    ROOT.gROOT.cd()
    hMC['10GeV'].Draw('mcor:ptcor>>DY_M',theCut+"&&Jpsi<-21&&Jpsi>-23")
+
+def trueMass():
+   ut.bookHist(h,'M','M',100,-2.,3.,1000,0.,100.)
+   ut.bookHist(h,'zM','M',100,-2.,3.,1000,0.,5.)
+   for x in h:
+     if x.find('M')<0: continue
+     h[x].Reset()
+   for nt in hMC['10GeV']:
+     #if nt.Jpsi!=223: continue
+     #if nt.Jpsi!=113: continue
+     #if abs(nt.Jpsi)<10: continue
+     if abs(nt.p1x-nt.p2x)<0.001: continue 
+     if not h.has_key('M_'+str(nt.procID)):
+           h['M_'+str(nt.procID)]=h['M'].Clone('M_'+str(nt.procID))
+           h['zM_'+str(nt.procID)]=h['zM'].Clone('zM_'+str(nt.procID))
+     m0 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
+     m1 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
+     G = m0+m1
+     rc=h['M_'+str(nt.procID)].Fill(G.Rapidity()-3.3741642051118204,G.M())
+     rc=h['zM_'+str(nt.procID)].Fill(G.Rapidity()-3.3741642051118204,G.M())
+     rc=h['M'].Fill(G.Rapidity()-3.3741642051118204,G.M())
+     rc=h['zM'].Fill(G.Rapidity()-3.3741642051118204,G.M())
+
 def invMass(sTree,h,nseq=0,ncpus=False):
     ut.bookHist(h,'invMassSS','inv mass ',100,0.0,10.0)
     ut.bookHist(h,'invMassOS','inv mass ',100,0.0,10.0)
@@ -2003,7 +2026,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     variables = "mult:m:mcor:mcor2:y:ycor:p:pcor:pt:ptcor:muID1:p1:pt1:p1cor:pt1cor:muID2:p2:pt2:p2cor:pt2cor:Ip1:Ip2:chi21:chi22:cosTheta:cosCSraw:cosCScor:\
     prec1x:prec1y:prec1z:prec2x:prec2y:prec2z:rec1x:rec1y:rec1z:rec2x:rec2y:rec2z:RPCx1:RPCy1:Delx1:Dely1:RPCx2:RPCy2:Delx2:Dely2"
     if MCdata:
-      variables += ":Jpsi:procID:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:Pmother"
+      variables += ":Jpsi:procID:procID2:PTRUE:PtTRUE:YTRUE:p1True:p2True:dTheta1:dTheta2:dMults1:dMults2:originZ1:originZ2:p1x:p1y:p1z:p2x:p2y:p2z:ox:oy:oz:Pmother"
     h['nt']  = ROOT.TNtuple("nt","dimuon",variables) 
 #
     sTreeFullMC = None
@@ -2233,6 +2256,27 @@ def invMass(sTree,h,nseq=0,ncpus=False):
                      P[n1].X(),P[n1].Y(),P[n1].Z(),P[n2].X(),P[n2].Y(),P[n2].Z(),\
                      xn1,yn1,zn1,xn2,yn2,zn2,RPCx1,RPCy1,Delx1,Dely1,RPCx2,RPCy2,Delx2,Dely2]
           if MCdata:
+             if n1<0: procID2 = 99
+             else:
+               m1 = mcTrackID2(sTreeFullMC,n1)
+               m2 = mcTrackID2(sTreeFullMC,n2)
+               procID2 = muonEventCategory(sTreeFullMC,[sTreeFullMC.MCTrack[m1],sTreeFullMC.MCTrack[m2]])
+             if 0>1:
+              tchannel = {1:"Decay",
+                          2:"Hadronic inelastic",
+                          3:"Lepton pair",
+                          4:"Positron annihilation",
+                          5:"charm",
+                          6:"beauty",
+                          7:"Di-muon P8",
+                          8:"Photo nuclear interaction",
+                          9:"Decay mixed",
+                         10:"clone",
+                         11:"Drell Yan",
+                         12:"prompt photon",
+                         13:"prompt quark",
+                         98:"no muon",
+                         99:"invalid"}
              if n1<0: kTrueMu = -1
              else:    kTrueMu = sTreeMC.MCID[n1]
              if kTrueMu>0 and kTrueMu<sTreeFullMC.MCTrack.GetEntries():
@@ -2240,7 +2284,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
              else:
               ox,oy,oz = -9999.,9999.,-9999.
               Pmother[j] = -111.
-             theArray += [float(jpsi[j]),float(tchannel),PTRUE[j],PtTRUE[j],YTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
+             theArray += [float(jpsi[j]),float(tchannel),float(procID2),PTRUE[j],PtTRUE[j],YTRUE[j],pTrue[j][0].Mag(),pTrue[j][1].Mag(),\
                      dTheta[j][0],dTheta[j][1],dMults[j][0],dMults[j][1],originZ[j][0],originZ[j][1],\
                      pTrue[j][0].X(),pTrue[j][0].Y(),pTrue[j][0].Z(),pTrue[j][1].X(),pTrue[j][1].Y(),pTrue[j][1].Z(),ox,oy,oz,Pmother[j]]
              if Debug:
@@ -2287,6 +2331,7 @@ def loadNtuples(BDT='BDT-',ext='_mu',eos=False):
   hMC['fJpsiP8_Primary']   = ROOT.TFile.Open(simpath+'Jpsi-Pythia8_21788000000_0-3074.root')
   hMC['fJpsiP8_PrimaryMu'] = ROOT.TFile.Open(simpath+'Jpsi-Pythia8_385000000_10000-11000.root')
   hMC['fJpsiCascade']      = ROOT.TFile.Open(simpath+'cascade_MSEL61_20M.root')
+  hMC['fDY']               = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_DrellYan_refit.root')
   # hMC['fJpsiCascade'] needs to be scaled by 0.9375, since 1 file not being used in simulation, fixed in reprocessing
   hMC['scalingFactor']={}
   hMC['scalingFactor']['fJpsiCascade']=1.0
@@ -2301,6 +2346,7 @@ def loadNtuples(BDT='BDT-',ext='_mu',eos=False):
  hMC['10GeV']       = hMC['f10'].nt          # inv mass ntuple from 10GeV muon background
  hMC['Jpsi']        = hMC['fJpsi'].nt        # inv mass ntuple from Cascade, Pythia6, Eric
  hMC['JpsiP8']      = hMC['fJpsiP8'].nt      # inv mass ntuple from primary, Pythia8, me
+ hMC['DY']          = hMC['fDY'].nt      # inv mass ntuple from Drell Yan, Pythia8, me
  hMC['JpsiCascade'] = hMC['fJpsiCascade'].pythia6              # original input file from Eric
  hMC['JpsiP8_Primary'] = hMC['fJpsiP8_Primary'].pythia6        # first Pythia8 production with intermediate Jpsis 
  hMC['JpsiP8_PrimaryMu'] = hMC['fJpsiP8_PrimaryMu'].pythia6    # second Pythia8 production with above ussue fixed, I think. 
@@ -7087,7 +7133,7 @@ def myVertex(t1,t2,PosDir,xproj=False):
     Z = c.z()+v.z()*t
     return X,Y,Z,abs(dist)
 
-def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
+def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False):
    ut.bookHist(hMC, 'M',   ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MSS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MOS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
@@ -7095,7 +7141,6 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
    Ndata = hData['f'].nt.Draw('mcor>>M','chi21*chi22<0')
    mu = Ndata/(324.75E9/710.)
    print "max pile up <", mu/2.
-   muID = 2
    theCutOS = theJpsiCut('mcor',False,ptCut,pMin,pMax,muID,BDTCut,sameSign=False)
    theCutSS = theJpsiCut('mcor',False,ptCut,pMin,pMax,muID,BDTCut,sameSign=True)
    NsameSign = hData['f'].nt.Draw('mcor>>M',theCutSS)
@@ -7104,6 +7149,8 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
    hData['MoppoSign']=hMC['M'].Clone('MoppoSign')
    NsameSignMC = hMC['10GeV'].Draw('mcor>>M',theCutSS)
    NoppSignMC =  hMC['10GeV'].Draw('mcor>>M',theCutOS)
+   hMC['MDrellYan']=hMC['M'].Clone('MDrellYan')
+   NDY = hMC['DY'].Draw('mcor>>MDrellYan',theCutOS)
    print "same sign rate, Data:",NsameSign/float(NsameSign+NoppSign)," MC:",NsameSignMC/float(NsameSignMC+NoppSignMC)
    MCorigin = {'ss':{},'os':{}}
    for nt in hMC['10GeV']:
@@ -7123,6 +7170,13 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
               hMC['M'+str(nt.Jpsi)].Reset()
        MCorigin[c][nt.Jpsi]+=1
        if c=='os': rc = hMC['M'+str(nt.Jpsi)].Fill(nt.mcor)
+   # drell yan, 49*1000 events simulated. Cross section total = 171.7nb, mu+mu-=38%
+   # Mo inelastic cross section 10.5mb
+   # 10GeV MC = 66.02E9 pot
+   # scale factor for 10GeV stats = 66.02E9/49.0E3 * 171.7E-6/10.5*0.38
+   DYfactor = 66.02E9/49.0E3 * 171.7E-6/10.5*0.38
+   MCorigin['os'][999] = NDY * DYfactor
+   hMC['MDrellYan'].Scale(DYfactor)
    hMC['sorted_list'] = sorted(MCorigin['os'].items(), key=operator.itemgetter(1),reverse=True)
    sorted_list = hMC['sorted_list']
    summary = {}
@@ -7139,7 +7193,8 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
      pid = int(abs(s[0]))
      pname = 'unknown'
      if abs(pid)>1:
-       pname = PDG.GetParticle(int(abs(pid))).GetName()
+       if pid == 999: pname = 'Drell Yan'
+       else: pname = PDG.GetParticle(int(abs(pid))).GetName()
        if pname in ['omega','rho0','J/psi','phi',"eta'","eta","psi'"]:
            summary[pname+' primary']=1.E6*s[1]/MCStats['10GeV']
            hMC['M'+pname+' primary'] = hMC['M'+str(s[0])].Clone('M'+pname+' primary')
@@ -7148,8 +7203,8 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
               summary['gamma conversion'] = 1.E6*s[1]/MCStats['10GeV']
               hMC['Mgamma conversion'] = hMC['M'+str(s[0])].Clone('Mgamma conversion')
            else:
-              summary['DrellYan'] = 1.E6*s[1]/MCStats['10GeV']
-              hMC['MDrellYan'] = hMC['M'+str(s[0])].Clone('MDrellYan')
+              summary['photon collision'] = 1.E6*s[1]/MCStats['10GeV']
+              hMC['Mphoton collision'] = hMC['M'+str(s[0])].Clone('Mphoton collision')
        elif pname in ['e-']:
            summary['positron annihilation'] = 1.E6*s[1]/MCStats['10GeV']
            hMC['Mpositron annihilation'] = hMC['M'+str(s[0])].Clone('Mpositron annihilation')
@@ -7159,11 +7214,14 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
        elif pname in ['B0','B+']:
            summary['beauty'] += 1.E6*s[1]/MCStats['10GeV']
            hMC['Mbeauty'].Add(hMC['M'+str(s[0])])
+       elif pname in ['Drell Yan']:
+           summary['DrellYan'] = 1.E6*s[1]/MCStats['10GeV']
        else: 
            summary['lowMass secondary'] += 1.E6*s[1]/MCStats['10GeV']
            hMC['MlowMass secondary'].Add(hMC['M'+str(s[0])])
      else:
            summary[pname] = 1.E6*s[1]/MCStats['10GeV']
+   
    xsorted_list = sorted(summary.items(), key=operator.itemgetter(1),reverse=True)
    for s in xsorted_list:
       print "%25s  %5.3G"%(s[0],s[1])
@@ -7178,10 +7236,10 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
    colors['Mrho0 primary'] = [21,ROOT.kGreen+2]
    colors['MJ/psi primary'] = [22,ROOT.kRed]
    colors["Mpsi' primary"] = [23,ROOT.kMagenta]
-   colors["Mpsi' primary"] = [23,ROOT.kMagenta]
    colors["Meta' primary"] = [24,ROOT.kBlue+2]
    colors["Meta primary"] = [25,ROOT.kBlue-2]
    colors['Mgamma conversion'] = [26,1]
+   colors['Mphoton collision'] = [27,ROOT.kOrange]
    colors['MDrellYan'] = [26,ROOT.kCyan]
    colors['Mpositron annihilation'] = [27,1]
    colors['Mcharm'] = [28,1]
@@ -7234,7 +7292,8 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,BDTCut=False):
    hMC['MOS'].Draw('hsame')
    hMC['LSOU']=ROOT.TLegend(0.67,0.43,0.85,0.85)
    rc = hMC['LSOU'].AddEntry(hMC['MOS'],'All opposite sign','PL')
-   for x in colors:
+   for y in xsorted_list:
+       x='M'+y[0]
        if not hMC.has_key(x): continue
        if x in ['MSS','MOS']: continue
        hMC[x].Draw('hsame')
@@ -8299,6 +8358,85 @@ def compWithEric():
         rc.SetTextColor(hMC[z][pdict[x]].GetLineColor())
       hMC['L'+str(j)].Draw()
       j+=1
+def MakeKeysToDThits(event,minToT=-999):
+    keysToDThits={}
+    key = -1
+    for hit in event.Digi_MufluxSpectrometerHits:
+        key+=1
+        #if not hit.hasTimeOverThreshold(): continue
+        if not hit.isValid(): continue
+        detID=hit.GetDetectorID()
+        if detID<0: continue # feature for converted data in February'19
+        if keysToDThits.has_key(detID):
+            prevTDC = event.Digi_MufluxSpectrometerHits[keysToDThits[detID][0]].GetDigi()
+            prevToT = event.Digi_MufluxSpectrometerHits[keysToDThits[detID][0]].GetTimeOverThreshold()
+            # print "MakeKeysToDThits, non unique Digi_MufluxSpectrometerHits",detID,hit.GetDigi(),hit.GetTimeOverThreshold(),hit.hasTimeOverThreshold(),prevTDC,prevToT
+            if hit.hasTimeOverThreshold(): keysToDThits[detID]=[key]
+        else:
+            keysToDThits[detID]=[key]
+    key = -1
+    for hit in event.Digi_LateMufluxSpectrometerHits:
+        key+=1
+        if not hit.isValid(): continue
+        if not hit.hasTimeOverThreshold(): continue
+        if hit.GetTimeOverThreshold()<minToT : continue
+        detID=hit.GetDetectorID()
+        if not keysToDThits.has_key(detID): 
+            print "MakeKeysToDThits, late hit but no first one",detID
+            keysToDThits[detID]=[-1]
+        keysToDThits[detID].append(key)
+    return keysToDThits
+def mcTrackID2(event,m):
+    detIDToKey = MakeKeysToDThits(event,9999.)
+    info = event.TrackInfos[m]
+    trackIDs = {}
+    for d in range(info.N()):
+        detID = info.detId(d)
+        if detID//10000000<3: continue
+        MCTrackID = event.MufluxSpectrometerPoint[detIDToKey[detID][0]].GetTrackID()
+        if not trackIDs.has_key(MCTrackID): trackIDs[MCTrackID]=0
+        trackIDs[MCTrackID]+=1
+    sorted_trackIDs = sorted(trackIDs.items(), key=operator.itemgetter(1),reverse=True)
+    return sorted_trackIDs[0][0]
+def muonEventCategory(event,mu):
+   check = False
+   procList = {"Decay":1,"Hadronic inelastic":2,"Lepton pair production":3,"Photo nuclear interaction":8,"Positron annihilation":4,"Primary particle emission":7}
+   G4procList = procList.keys()
+   if mu[0]==mu[1]:
+      return 10
+# easy cases
+   if abs(mu[0].GetPdgCode())!=13 or abs(mu[1].GetPdgCode())!=13: 
+       return 98
+# heavy flavour event ?
+   for m in event.MCTrack:
+        if abs(m.GetPdgCode()) in [5332,5232,5132,5232,5122,531,511,521]:
+           return 5
+        if abs(m.GetPdgCode()) in [4332,4232,4132,4232,4122,431,411,421]:
+           return 6
+# same mother
+   if mu[0].GetMotherId() == mu[1].GetMotherId():
+     if mu[0].GetProcName().Data() == mu[1].GetProcName().Data():
+        if mu[0].GetProcName().Data() in G4procList:
+           return procList[mu[0].GetProcName().Data()]
+   if mu[0].GetMotherId() != mu[1].GetMotherId():
+# different mother
+     if abs(mu[0].GetPdgCode())==13 and abs(mu[1].GetPdgCode())==13:
+       gM = {}
+       for m in range(2):
+          mo = mu[m].GetMotherId()
+          while abs(event.MCTrack[mo].GetPdgCode()) == 13:
+             mo=event.MCTrack[mo].GetMotherId()
+          gM[m]=mo
+       if gM[0]==gM[1]:
+          if event.MCTrack[gM[0]].GetPdgCode()==23:
+             return 11
+          if event.MCTrack[gM[0]].GetPdgCode()==22:
+             return 12
+          if event.MCTrack[gM[0]].GetPdgCode() in [1,2,3,-1,-2,-3]:
+             return 13
+     if mu[0].GetProcName().Data()=="Decay" or mu[1].GetProcName().Data()=="Decay":
+         return 9
+   return 99
 def checkDiMuon(event,mu):
    check = False
    pName = mu.GetProcName()
