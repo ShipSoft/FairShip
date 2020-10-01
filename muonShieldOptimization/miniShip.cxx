@@ -47,6 +47,7 @@ miniShip::miniShip()
     fTargetMaterial("tungsten"),
     fInnerAbsMaterial("iron"),
     fOuterAbsMaterial("iron"),
+    fConcreteShielding(kFALSE),
     fTargetL(1.),
     fAbsL(1.5),
     fField(1.0),
@@ -182,11 +183,11 @@ void miniShip::ConstructGeometry()
       innerAbsorber->SetField(magField);
    }
    top->AddNode(target, 1, new TGeoTranslation(0, 0, 0));
-   top->AddNode(outerTarget, 1, new TGeoTranslation(0, 0, 0));
+   if (fConcreteShielding){top->AddNode(outerTarget, 1, new TGeoTranslation(0, 0, 0));}
    TGeoVolumeAssembly *muShield = new TGeoVolumeAssembly("MuonShieldArea");
    muShield->AddNode(innerAbsorber, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
    muShield->AddNode(outerAbsorber, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
-   muShield->AddNode(outerAbsorberConcrete, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
+   if (fConcreteShielding){muShield->AddNode(outerAbsorberConcrete, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));}
 
    top->AddNode(muShield, 1, new TGeoTranslation(0, 0, 0));
    TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,1000.*cm,1000.*cm,1.*mm);

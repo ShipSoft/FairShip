@@ -70,6 +70,7 @@ class miniShip: public FairDetector
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
     inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
     inline void SetOnlyMuons(){fOnlyMuons=kTRUE;}
+    inline void WithConcreteShielding(){fConcreteShielding=kTRUE;}
     inline void SkipNeutrinos(){fSkipNeutrinos=kTRUE;}
     inline void SetTarget(TString material, Float_t L ){fTargetMaterial = material; fTargetL=L;}
     inline void SetAbsorber(TString material1,TString material2, Float_t L, Float_t B ){fInnerAbsMaterial = material1; fOuterAbsMaterial = material2; fAbsL=L; fField=B;}
@@ -90,6 +91,7 @@ class miniShip: public FairDetector
     Float_t  fTargetL;                 //! target length
     Float_t  fAbsL;                 //! absorberlength
     Float_t  fField;                 //! magnetic field
+    Bool_t  fConcreteShielding;     //! with concrete shielding
     Float_t EMax;  //! max energy to transport
     Bool_t fOnlyMuons;  //! flag if only muons should be stored
     Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
