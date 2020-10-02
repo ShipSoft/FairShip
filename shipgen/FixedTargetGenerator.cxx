@@ -136,7 +136,8 @@ Bool_t FixedTargetGenerator::Init()
      fPythia->readString("443:addChannel = 1   1.    0      -13       13");
      fPythia->readString("553:new  Upsilon  Upsilon  3   0   0    9.46030    0.00005    9.45980    9.46080  0.00000e+00   0   1   0   1   0");
      fPythia->readString("553:addChannel = 1   1.    0      -13       13");
-   }else if (DrellYan){
+   }
+   if (DrellYan){
      fPythia->readString("WeakSingleBoson:ffbar2gmZ = on");
 //   Z0/gamma  -> mu+ mu-
      fPythia->readString("23:onMode = off");
@@ -144,9 +145,11 @@ Bool_t FixedTargetGenerator::Init()
      fPythia->readString("23:mMin = 0.5");
      fPythia->readString("PhaseSpace:mHatMin = 0.5");
      fPythia->readString("PartonLevel:FSR = on");
-   }else if (PhotonCollision){
+   }
+   if (PhotonCollision){
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
-   }else{
+   }
+   if (!DrellYan && !PhotonCollision){
      fPythia->readString("SoftQCD:inelastic = on");
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
      fPythia->readString("PromptPhoton:all = on");
@@ -355,6 +358,10 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     TMCProcess procID  = kPTransportation;
     if (n_mid==2212 && (n_mpx*n_mpx+n_mpy*n_mpy)<1E-5) {procID = kPPrimary;} // probably primary and not from cascade
     cpg->AddTrack(int(n_mid),n_mpx,n_mpy,n_mpz, xOff/cm,yOff/cm,zinter/cm,-1,kFALSE,n_mE,0.,wspill,procID);
+// second charm hadron in the event
+    nTree->GetEvent(nEntry);
+    nEntry+=1;
+    fPythiaP->event.append(int(n_id),1,0,0,n_px,n_py,n_pz,n_E,n_M,0.,9.);
     fPythiaP->next();
     fPythia = fPythiaP;
   }
