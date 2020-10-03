@@ -41,7 +41,7 @@ def get_work_dir(run_number,tag=None):
 
 def init():
   global runnr, nev, ecut, G4only, tauOnly, work_dir,Debug,boostDiMuon,\
-         boostFactor,storeOnlyMuons,npot,skipNeutrinos,FourDP,setup,field
+         boostFactor,storeOnlyMuons,npot,skipNeutrinos,FourDP,setup,field,withConcreteShielding
   logger.info("miniSHiP proton-on-taget simulator (C) Thomas Ruf, 2020")
 
   ap = argparse.ArgumentParser(
@@ -52,6 +52,7 @@ def init():
   ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
   ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
   ap.add_argument('-T', '--target',   type=float, help="target length", dest='targetLength', default=100.)
+  ap.add_argument('-C', '--withConcreteShielding',action='store_true', help="additional shielding", dest='withConcreteShielding', default=False)
   ap.add_argument('-W', '--targetMaterial', help="target material", dest='targetMaterial', default="tungsten")
   ap.add_argument('-A', '--absorber', type=float, help="absorber length", dest='muShieldLength', default=150)
   ap.add_argument('-I', '--absorberMaterialI', help="inner absorber material", dest='absorberMaterialI', default="tungsten")
@@ -79,6 +80,7 @@ def init():
   skipNeutrinos  = args.skipNeutrinos
   FourDP         = args.FourDP
   field          = args.field
+  withConcreteShielding = args.withConcreteShielding
   setup = {'target':{'length':args.targetLength,'material':args.targetMaterial},
            'absorber':{'length':args.muShieldLength,'materialI':args.absorberMaterialI,'materialO':args.absorberMaterialO}}
 
@@ -143,6 +145,7 @@ targetAndAbsorber.SetAbsorber(setup['absorber']['materialI'],setup['absorber']['
 targetAndAbsorber.SetEnergyCut(ecut*u.GeV)
 if storeOnlyMuons: targetAndAbsorber.SetOnlyMuons()
 if skipNeutrinos:  targetAndAbsorber.SkipNeutrinos()
+if withConcreteShielding: targetAndAbsorber.WithConcreteShielding()
 run.AddModule(targetAndAbsorber)
 print "target and absorber created"
 
