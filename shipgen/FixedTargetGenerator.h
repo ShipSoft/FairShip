@@ -39,6 +39,7 @@ class FixedTargetGenerator : public FairGenerator
   void SetG4only() { G4only  = true; }  // only run Geant4, no pythia primary interaction
   void SetTauOnly() { tauOnly  = true; }  // only have Ds decay to tau 
   void SetJpsiMainly() { JpsiMainly  = true; }  // let all Jpsi decay to mumu
+  void SetOnlyMuons() { OnlyMuons = true; }  // only transport muons
   void SetDrellYan() { DrellYan  = true; }  // only generate prompt Z0* processes
   void SetPhotonCollision() { PhotonCollision   = true; }  // only generate prompt photon processes
   void WithEvtGen() { withEvtGen = true;} // use EvtGen as external decayer to Pythia, experimental phase, only works for one Pythia instance
@@ -63,7 +64,7 @@ class FixedTargetGenerator : public FairGenerator
   Bool_t fUseRandom3;  // flag to use TRandom3 (default)
   Double_t fSeed,EMax,fBoost,chicc,chibb,wspill,nrpotspill;
   Int_t nEvents,nEntry,pot,nDsprim,ntotprim;      
-  Bool_t tauOnly,JpsiMainly,DrellYan,PhotonCollision,G4only,setByHand,Debug,withEvtGen;
+  Bool_t tauOnly,JpsiMainly,DrellYan,PhotonCollision,G4only,setByHand,Debug,withEvtGen,OnlyMuons;
   Bool_t fcharmtarget;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia8::Pythia* fPythiaN;            //!

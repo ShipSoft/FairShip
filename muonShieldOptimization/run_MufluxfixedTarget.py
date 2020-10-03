@@ -199,7 +199,7 @@ if JpsiMainly: P8gen.SetJpsiMainly()
 if DrellYan: P8gen.SetDrellYan()
 if PhotonCollision: P8gen.SetPhotonCollision()
 if withEvtGen: P8gen.WithEvtGen()
-
+if storeOnlyMuons: P8gen.SetOnlyMuons()
 if boostDiMuon > 1:
  P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
                             # and later copied to Geant4
@@ -208,7 +208,8 @@ P8gen.SetSeed(theSeed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if charm or beauty:
- P8gen.InitForCharmOrBeauty(os.environ['EOSSHIP']+charmInputFile,nev,npot,nStart)
+ if charmInputFile.find('eos')==0: charmInputFile = os.environ['EOSSHIP']+charmInputFile
+ P8gen.InitForCharmOrBeauty(charmInputFile,nev,npot,nStart)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)

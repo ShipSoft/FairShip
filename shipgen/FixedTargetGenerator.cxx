@@ -35,6 +35,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   DrellYan = false;
   PhotonCollision = false;
   G4only = false;
+  OnlyMuons = false;
   maxCrossSection = 0.;
   EMax = 0;
   fBoost = 1.;
@@ -376,7 +377,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Int_t id = fPythia->event[ii].id(); 
      Bool_t wanttracking=kTRUE;
      if (e-m<EMax || !fPythia->event[ii].isFinal() || pz<0) {wanttracking=kFALSE;}
-     if (DrellYan || PhotonCollision ){
+     if (DrellYan || PhotonCollision || OnlyMuons){
 // don't track underlying event
       if (fabs(id)!=13){wanttracking=kFALSE;}
      }
