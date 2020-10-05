@@ -1,5 +1,5 @@
 #!/usr/bin/env python 
-import ROOT,os,shipRoot_conf,geomGeant4
+import ROOT,os,shipRoot_conf
 import shipunit as u
 
 mcEngine     = "TGeant4"
@@ -119,6 +119,7 @@ txt = 'pythia8_Geant4_'
 outFile = outputDir+'/'+txt+str(runnr)+'_'+str(ecut)+'_'+\
           setup['target']['material']+str(int(setup['target']['length']))+'_'+\
           setup['absorber']['materialI']+setup['absorber']['materialO']+str(int(setup['absorber']['length']))+'_B'+str(field)+'.root'
+if withConcreteShielding: outFile = outFile.replace('.root','_C.root')
 parFile = outputDir+'/ship.params.'+txt+str(runnr)+'_'+str(ecut)+'.root'
 
 # -----Timer--------------------------------------------------------
@@ -169,7 +170,6 @@ run.SetGenerator(primGen)
 # -----Initialize simulation run------------------------------------
 run.Init()
 
-geomGeant4.setMagnetField(flag='dump')
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
