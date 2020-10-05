@@ -942,13 +942,145 @@ def mergeOnurFiles(merge=False):
             os.system('cp ship.conical.FixedTarget-TGeant4_merged_dig.root  tmp.root')
             cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root tmp.root '
       os.system(cmd)
-
-def DrellYanProduction(step='simulation',runs=[101,150],path = "ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",Gfield=''):
+def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",overWrite=False,Gfield=''):
+# to run on ship-ubuntu-1710-32
+ addOption = ""
+ if Gfield == 'inter': addOption = " -F inter "
+ if step == 'simulation':
+  for run in range(runs[0],runs[1]):
+    orun = run+cycle*1000
+    os.chdir('run'+str(run))
+    inputFile = path+"run"+str(run)+"/Cascade-run"+str(run)+"-parp16-MSTP82-1-MSEL"+msel+".root"
+    f=ROOT.TFile(inputFile)
+    nt = f.pythia6
+    N = nt.GetEntries() / 2
+    f.Close()
+    ni = N/10
+    for k in range(10):
+       nstart = ni*k
+       xrun = orun + k*100
+       if msel == "4":
+           cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M  --force --charm -V -e "+ecut+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
+       else:
+           cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M --force --beauty -V -e "+ecut+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
+       os.system(cmd+ " >logMufluxFT"+str(xrun)+" &")
+       while 1>0:
+          nrunning = count_python_processes('run_MufluxfixedTarget')
+          if nrunning < ncpus:   break
+          else: time.sleep(300) # wait 5 minutes
+    os.chdir('../')
+ if step == 'digi':
+   for run in range(runs[0],runs[1]):
+     topDir = os.path.abspath('.')
+     for k in range(10):
+       xrun = run+cycle*1000 + k*100
+       d = path.replace('XXX',str(xrun))
+       os.chdir('run'+str(run)+'/'+d)
+       mcFile = 'pythia8_Geant4_'+str(xrun)+'_10.0.root'
+       geoFile = 'geofile_full.root'
+       if not geoFile in os.listdir('.'):
+         print "no geofile found ",d
+         os.chdir(topDir)
+         continue
+       digiFile = 'pythia8_Geant4_'+str(xrun)+'_10.0_dig.root'
+       if digiFile in os.listdir('.') and not overWrite:
+         os.chdir(topDir)
+         continue
+       cmd = "python $FAIRSHIP/macro/runMufluxDigi.py -n 9999999 -f "+mcFile+" -g "+geoFile+" &"
+       print 'step digi:', cmd,' in directory ',d
+       os.system(cmd)
+       while 1>0:
+          if count_python_processes('runMufluxDigi')<ncpus: break 
+          time.sleep(30)
+       os.chdir(topDir)
+ if step == 'reco':
+   for run in range(runs[0],runs[1]):
+    topDir = os.path.abspath('.')
+    for k in range(10):
+       xrun = run+cycle*1000 + k*100
+       d = path.replace('XXX',str(xrun))
+       os.chdir('run'+str(run)+'/'+d)
+       recoFile  = 'pythia8_Geant4_'+str(xrun)+'_10.0_dig_RT.root'
+       digiFile  = 'pythia8_Geant4_'+str(xrun)+'_10.0_dig.root'
+       if recoFile in os.listdir('.'):
+         test = ROOT.TFile(recoFile)
+         sTree = test.Get('cbmsim')
+         if sTree:
+            if sTree.GetBranch("FitTracks"): 
+              print "fitted tracks exist",d,recoFile
+              os.chdir(topDir)
+              continue
+            test.Close()
+       if digiFile in os.listdir('.'): 
+            os.system('cp '+digiFile+' '+recoFile)
+       else: 
+            print "digiFile missing",d,digiFile
+            os.chdir(topDir)
+            continue
+       cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 --Display False -u 1 -f "+recoFile+addOption+' &'
+       print 'step reco:', cmd,' in directory ',d
+       os.system(cmd)
+       os.chdir(topDir)
+       while 1>0:
+         if count_python_processes('drifttubeMonitoring')<ncpus: break 
+         time.sleep(30)
+ if step == 'analysis':
+   for run in range(runs[0],runs[1]):
+    topDir = os.path.abspath('.')
+    for k in range(10):
+       xrun = run+cycle*1000 + k*100
+       d = path.replace('XXX',str(xrun))
+       os.chdir('run'+str(run)+'/'+d)
+       recoFile  = 'pythia8_Geant4_'+str(xrun)+'_10.0_dig_RT.root'
+       ntplFile  = 'ntuple-pythia8_Geant4_'+str(xrun)+'_10.0_dig_RT.root'
+       OK = False
+       if recoFile in os.listdir('.'):
+         test = ROOT.TFile(recoFile)
+         sTree = test.Get('cbmsim')
+         if sTree:
+            if sTree.GetBranch("FitTracks"): OK = True
+       if not OK: 
+          print "reco file corrupted or missing",recoFile
+          os.chdir(topDir)
+          continue
+       if ntplFile in os.listdir('.'):
+         try: 
+           test = ROOT.TFile(ntplFile)
+           sTree = test.Get('tmuflux')
+           if sTree:
+             if sTree.GetEntries()>0 and not overWrite:
+                print "ntuple exists",ntplFile
+                os.chdir(topDir)
+                continue
+         except:
+           OK = True
+       cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -d False --Display False -c anaResiduals -f "+recoFile+' &'
+       print 'step ntuple:', cmd,' in directory ',d
+       os.system(cmd)
+       os.chdir(topDir)
+       while 1>0:
+         if count_python_processes('drifttubeMonitoring')<ncpus: break 
+         time.sleep(30)
+ if step == 'invMass':
+     cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d CharmProduction -t repro -c invMass -Y True -r &"
+     print 'step invMass:', cmd
+     os.system(cmd)
+ if step == 'copyToEos':
+   for run in range(runs[0],runs[1]):
+    for k in range(10):
+       xrun = run+cycle*1000 + k*100
+       d = path.replace('XXX',str(xrun))
+       D = 'run'+str(run)+'/'+d
+       if not 'ntuple-pythia8_Geant4_'+str(xrun)+'_10.0_dig_RT.root' in os.listdir(D): continue
+       for f in os.listdir(D):
+         cmd = "xrdcp -f "+D+"/"+f+" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/"+D+"/"+f
+         os.system(cmd)
+def DrellYanProduction(step='simulation',runs=[301,350],path = "ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",overWrite=False,Gfield=''):
  addOption = ""
  if Gfield == 'inter': addOption = " -F inter "
  if step == 'simulation':
    for run in range(runs[0],runs[1]):
-       os.system("python  $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -r "+str(run)+" -n 1000 -P -Y -e 10 &")
+       os.system("python  $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -r "+str(run)+" -n 20000 -P -Y -e 10 &")
        while 1>0:
          if count_python_processes('run_MufluxfixedTarget')<ncpus: break 
          time.sleep(100)
@@ -958,13 +1090,21 @@ def DrellYanProduction(step='simulation',runs=[101,150],path = "ship-ubuntu-1710
      os.chdir(d)
      mcFile = 'pythia8_Geant4_'+str(run)+'_10.0.root'
      geoFile = 'geofile_full.root'
+     if not geoFile in os.listdir('.'):
+        print "no geofile found ",d
+        os.chdir('../')
+        continue
+     digiFile = 'pythia8_Geant4_'+str(run)+'_10.0_dig.root'
+     if digiFile in os.listdir('.') and not overWrite:
+        os.chdir('../')
+        continue
      cmd = "python $FAIRSHIP/macro/runMufluxDigi.py -n 9999999 -f "+mcFile+" -g "+geoFile+" &"
      print 'step digi:', cmd,' in directory ',d
      os.system(cmd)
-     os.chdir('../')
      while 1>0:
          if count_python_processes('runMufluxDigi')<ncpus/2: break 
          time.sleep(100)
+     os.chdir('../')
  if step == 'reco':
    for run in range(runs[0],runs[1]):
      d = path.replace('XXX',str(run))
@@ -976,14 +1116,14 @@ def DrellYanProduction(step='simulation',runs=[101,150],path = "ship-ubuntu-1710
         sTree = test.Get('cbmsim')
         if sTree:
            if sTree.GetBranch("FitTracks"): 
-              print "fitted tracks exist",fname,recoFile
+              print "fitted tracks exist",d,recoFile
               os.chdir('../')
               continue
            test.Close()
      if digiFile in os.listdir('.'): 
             os.system('cp '+digiFile+' '+recoFile)
      else: 
-            print "digiFile missing",fname,digiFile
+            print "digiFile missing",d,digiFile
             os.chdir('../')
             continue
      cmd = "python $FAIRSHIP/charmdet/drifttubeMonitoring.py -c recoStep1 --Display False -u 1 -f "+recoFile+addOption+' &'
