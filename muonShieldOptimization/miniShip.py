@@ -263,5 +263,4 @@ if checkOverlap:
  sGeo = ROOT.gGeoManager
  sGeo.CheckOverlaps()
  sGeo.PrintOverlaps()
- run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
-
+ run.CreateGeometryFile(outFile.replace('pythia8_Geant4','geofile_full')
