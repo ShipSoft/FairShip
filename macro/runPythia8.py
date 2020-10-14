@@ -15,6 +15,7 @@ parser.add_argument('-E', '--Beam', dest='fMom', type=float,help="beam momentum"
 parser.add_argument('-J', '--Jpsi-mainly',  action='store_true', dest='JpsiMainly',  default=False)
 parser.add_argument('-Y', '--DrellYan',     action='store_true', dest='DrellYan',  default=False)
 parser.add_argument('-P', '--PhotonCollision',     action='store_true', dest='PhotonCollision',  default=False)
+parser.add_argument('-C', '--charm',               action='store_true', dest='charm',  default=False)
 parser.add_argument('-u', '--uOnly',        action='store_true', dest='uOnly',  default=False)
 
 options = parser.parse_args()
@@ -33,7 +34,9 @@ generators['p'].settings.mode("Beams:idB",  2212)
 generators['n'].settings.mode("Beams:idB",  2112)
 
 for g in generators:
-   ut.bookHist(h, 'M_'+g,   ' N mu+mu-;M [GeV/c^{2}];y_{CM}',500,0.,10.,120,-3.,3.)
+   ut.bookHist(h, 'M_'+g,   ' N mu+mu-;M [GeV/c^{2}];y_{CM}',500,0.,10.,120,-3.,3.,100,0.,5.)
+   ut.bookHist(h, 'cosCS_'+g,   ' N cosCS;cosCS;y_{CM}',100,-1.,1.,120,-3.,3.,100,0.,5.)
+   ut.bookHist(h, 'cosCSJpsi_'+g,   ' N cosCS 2.9<M<4.5;cosCS;y_{CM}',100,-1.,1.,120,-3.,3.,100,0.,5.)
    generators[g].settings.mode("Beams:idA",  2212)
    generators[g].settings.mode("Beams:frameType",  2)
    generators[g].settings.parm("Beams:eA",options.fMom)
@@ -56,9 +59,13 @@ for g in generators:
           generators[g].readString("553:onMode = off")
           generators[g].readString("553:onIfAll = 13 13")
    elif options.PhotonCollision:
+     generators[g].readString("PDF:pSet = 13")
      generators[g].readString("PhotonCollision:gmgm2mumu = on")
+     generators[g].readString("PhaseSpace:mHatMin = "+str(options.Emin))
+   elif options.charm:
+     generators[g].readString("HardQCD:hardccbar = on")
    else:
-     generators[g].readString("SoftQCD:inelastic = on");
+     generators[g].readString("SoftQCD:inelastic = on")
    generators[g].init()
 
 timer = ROOT.TStopwatch()
@@ -80,7 +87,26 @@ for n in range(int(options.NPoT)):
        ntagged[g]+=1
        ks = nmu.keys()
        if options.DrellYan:
-          rc=h['M_'+g].Fill(py.event[nmu[ks[0]]].m(),py.event[nmu[ks[0]]].y()-ybeam)
+          Zstar = py.event[nmu[ks[0]]]
+          rc=h['M_'+g].Fill(Zstar.m(),py.event[nmu[ks[0]]].y()-ybeam,py.event[nmu[ks[0]]].pT())
+# what about polarization?
+          ii = nmu[ks[0]]
+          d0 = py.event.daughterList(ii)[0]
+          d1 = py.event.daughterList(ii)[1]
+          if py.event[d0].id() < 0:
+              nlep      = py.event[d0]
+              nantilep  = py.event[d1]
+          else: 
+              nlep      = py.event[d1]
+              nantilep  = py.event[d0]
+          P1pl = nlep.e()+nlep.pz()
+          P2pl = nantilep.e()+nantilep.pz()
+          P1mi = nlep.e()-nlep.pz()
+          P2mi = nantilep.e()-nantilep.pz()
+          A = P1pl*P2mi-P2pl*P1mi
+          cosCS = Zstar.pz()/abs(Zstar.pz()) * 1./Zstar.m()/ROOT.TMath.Sqrt(Zstar.m2()+Zstar.pT()**2)*A
+          rc=h['cosCS_'+g].Fill(cosCS,py.event[nmu[ks[0]]].y()-ybeam,py.event[nmu[ks[0]]].pT())
+          if Zstar.m()>2.9 and Zstar.m()<4.5: rc=h['cosCSJpsi_'+g].Fill(cosCS,py.event[nmu[ks[0]]].y()-ybeam,py.event[nmu[ks[0]]].pT())
        if options.PhotonCollision:
           M={}
           k=0
@@ -88,7 +114,7 @@ for n in range(int(options.NPoT)):
              M[k]=ROOT.TLorentzVector(py.event[m].px(),py.event[m].py(),py.event[m].pz(),py.event[m].e())
              k+=1
           G = M[0]+M[1]
-          rc=h['M_'+g].Fill(G.M(),G.Rapidity()-ybeam)
+          rc=h['M_'+g].Fill(G.M(),G.Rapidity()-ybeam,G.Pt())
 
 
 print ">>>> proton statistics,  ntagged=",ntagged['p']
@@ -120,6 +146,7 @@ def na50():
       print g,name,sigma,float(h['MA'].GetEntries())/options.NPoT,h['MA'].Integral(Mmin,Mmax)/float(h['MA'].GetEntries()),h['M'].GetEntries()/float(h['MA'].GetEntries())
       fraction[g] = h['M'].Integral(Mmin,Mmax)/options.NPoT
    meanFraction = (fraction['p']*P_silver+fraction['n']*(Z_silver-P_silver))/Z_silver * sigma
+   # multiply with 0.5 assuming no polarization -0.5 < cosCS < 0.5
    print "cross section a la NA50: %5.2F pb"%(0.5*meanFraction*1E9)
 
 def muflux():
@@ -142,3 +169,6 @@ def muflux():
       fraction[g] = h['M'].Integral(Mmin,Mmax)/options.NPoT
    meanFraction = (fraction['p']*P_Mo+fraction['n']*(Z_Mo-P_Mo))/Z_Mo * sigma
    print "cross section a la muflux: %5.2F pb"%(0.5*meanFraction*1E9)
+
+def debugging(g):
+   generators[g].settings.listAll()
