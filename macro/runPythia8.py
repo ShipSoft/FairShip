@@ -143,14 +143,18 @@ signal.Write()
 processes = generators['p'].info.codesHard()
 for g in generators:
    sigma = generators[g].info.sigmaGen(processes[0])
-   h[]'xsec_'+g].SetBinContent(1,sigma)
+   h['xsec_'+g].SetBinContent(1,sigma)
 ut.writeHists(h,hname+'.root')
 
-def na50():
+def na50(online=True):
    for g in generators:
-      processes = generators[g].info.codesHard()
-      name  = generators[g].info.nameProc(processes[0])
-      sigma = generators[g].info.sigmaGen(processes[0])
+      if online:
+        processes = generators[g].info.codesHard()
+        name  = generators[g].info.nameProc(processes[0])
+        sigma = generators[g].info.sigmaGen(processes[0])
+      else:
+        name = ''
+        sigma = h['xsec_'+g].GetBinContent(1)
       yax = h['M_'+g].GetYaxis()
       xax = h['M_'+g].GetXaxis()
       Mmin = xax.FindBin(2.9)
@@ -169,9 +173,13 @@ def na50():
       print "cross section a la NA50 for : %s %5.2F pb"%(g,0.5*fraction*sigma*1E9)
    # via cosCS
    for g in generators:
-      processes = generators[g].info.codesHard()
-      name  = generators[g].info.nameProc(processes[0])
-      sigma = generators[g].info.sigmaGen(processes[0])
+      if online:
+        processes = generators[g].info.codesHard()
+        name  = generators[g].info.nameProc(processes[0])
+        sigma = generators[g].info.sigmaGen(processes[0])
+      else:
+        name = ''
+        sigma = h['xsec_'+g].GetBinContent(1)
       yax = h['cosCSJpsi_'+g].GetYaxis()
       xax = h['cosCSJpsi_'+g].GetXaxis()
       Mmin = xax.FindBin(-0.5)
