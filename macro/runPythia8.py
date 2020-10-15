@@ -35,14 +35,6 @@ generators = {'p':ROOT.Pythia8.Pythia(),'n':ROOT.Pythia8.Pythia()}
 generators['p'].settings.mode("Beams:idB",  2212)
 generators['n'].settings.mode("Beams:idB",  2112)
 
-hname = 'pythia8_PDFpset'+str(options.PDFpSet)+'_Emin'+str(options.Emin)+'_'+generators['p'].info.nameProc(processes[0])
-hname = hname.replace('*','star')
-hname = hname.replace('->','to')
-hname = hname.replace('/','')
-
-f = ROOT.TFile("ntuple-"+hname+".root","RECREATE")
-signal = ROOT.TNtuple("ntuple","ntuple","M:P:Pt:y:p1x:p1y:p1z:p2x:p2y:p2z:cosCS")
-
 for g in generators:
    ut.bookHist(h, 'xsec_'+g,   ' total cross section',1,0.,1.)
    ut.bookHist(h, 'M_'+g,   ' N mu+mu-;M [GeV/c^{2}];y_{CM}',500,0.,10.,120,-3.,3.,100,0.,5.)
@@ -79,6 +71,15 @@ for g in generators:
    else:
      generators[g].readString("SoftQCD:inelastic = on")
    generators[g].init()
+
+processes = generators['p'].info.codesHard()
+hname = 'pythia8_PDFpset'+str(options.PDFpSet)+'_Emin'+str(options.Emin)+'_'+generators['p'].info.nameProc(processes[0])
+hname = hname.replace('*','star')
+hname = hname.replace('->','to')
+hname = hname.replace('/','')
+
+f = ROOT.TFile("ntuple-"+hname+".root","RECREATE")
+signal = ROOT.TNtuple("ntuple","ntuple","M:P:Pt:y:p1x:p1y:p1z:p2x:p2y:p2z:cosCS")
 
 timer = ROOT.TStopwatch()
 timer.Start()
@@ -140,7 +141,6 @@ rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print "run ",options.run," PoT ",options.NPoT," Real time ",rtime, " s, CPU time ",ctime,"s"
 signal.Write()
-processes = generators['p'].info.codesHard()
 for g in generators:
    sigma = generators[g].info.sigmaGen(processes[0])
    h['xsec_'+g].SetBinContent(1,sigma)
