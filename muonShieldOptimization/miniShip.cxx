@@ -79,7 +79,7 @@ Bool_t  miniShip::ProcessHits(FairVolume* vol)
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            0,pdgCode,TVector3(p->Vx(), p->Vy(), p->Vz()),TVector3(p->Px(), p->Py(), p->Pz()) );
       ShipStack* stack = (ShipStack*) gMC->GetStack();
-      stack->AddPoint(kVETO);
+      if (fPos.Z()>fTargetL/2+fAbsL){stack->AddPoint(kVETO);}
       }
     }
   }
@@ -162,6 +162,8 @@ void miniShip::ConstructGeometry()
    TGeoCompositeShape *csT       = new TGeoCompositeShape("outerTargetSubtr", subtractionT);
    TGeoVolume* outerTarget    = new TGeoVolume("outerTarget",csT, concrete);
    outerTarget->SetLineColor(kGray);
+   AddSensitiveVolume(target);
+   AddSensitiveVolume(outerTarget);
 
    TGeoVolume* innerAbsorber = gGeoManager->MakeBox("innerAbsorber",InnerAbsMaterial,10.*cm,10.*cm,fAbsL/2*cm);
    innerAbsorber->SetLineColor(kBlack);
@@ -170,12 +172,15 @@ void miniShip::ConstructGeometry()
    TGeoCompositeShape *cs       = new TGeoCompositeShape("outerAbsorberSubtr", subtraction);
    TGeoVolume* outerAbsorber    = new TGeoVolume("outerAbsorber",cs, OuterAbsMaterial);
    outerAbsorber->SetLineColor(kGreen);
+   AddSensitiveVolume(innerAbsorber);
+   AddSensitiveVolume(outerAbsorber);
 
    TGeoBBox* fullConcreteAbsorber  = new TGeoBBox("fullConcreteAbsorber",400.*cm,400.*cm,(fAbsL/2-0.01)*cm);
    TGeoSubtraction *subtractionA = new TGeoSubtraction("fullConcreteAbsorber","fullAbsorber");
    TGeoCompositeShape *csA       = new TGeoCompositeShape("outerAbsorberSubtr", subtractionA);
    TGeoVolume* outerAbsorberConcrete    = new TGeoVolume("outerAbsorberConcrete",csA, concrete);
    outerAbsorberConcrete->SetLineColor(kGray);
+   AddSensitiveVolume(outerAbsorberConcrete);
 
    if (fField > 0){
       TGeoUniformMagField *magField  = new TGeoUniformMagField(0.,fField*tesla,0.);
