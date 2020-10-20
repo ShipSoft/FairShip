@@ -66,24 +66,36 @@ Bool_t  miniShip::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
   if ( gMC->IsTrackEntering() ) {
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    TParticle* p  = gMC->GetStack()->GetCurrentTrack();
-    Int_t pdgCode = p->GetPdgCode();
+    fTime   = gMC->TrackTime() * 1.0e09;
+    fLength = gMC->TrackLength();
+    gMC->TrackPosition(fPos);
     gMC->TrackMomentum(fMom);
-    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){ 
-     fTime   = gMC->TrackTime() * 1.0e09;
-     fLength = gMC->TrackLength();
-     gMC->TrackPosition(fPos);
-     if ( (fMom.E()-fMom.M() )>EMax) {
-      AddHit(fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
-           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-           0,pdgCode,TVector3(p->Vx(), p->Vy(), p->Vz()),TVector3(p->Px(), p->Py(), p->Pz()) );
-      ShipStack* stack = (ShipStack*) gMC->GetStack();
-      if (fPos.Z()>fTargetL/2+fAbsL){stack->AddPoint(kVETO);}
-      }
-    }
   }
-  gMC->StopTrack();
+  // Sum energy loss for all steps in the active volume
+  if ( gMC->IsTrackExiting()    ||
+       gMC->IsTrackStop()       ||
+       gMC->IsTrackDisappeared()   ) {
+   
+    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+    Int_t veto_uniqueId;
+    gMC->CurrentVolID(veto_uniqueId);
+
+    TParticle* p=gMC->GetStack()->GetCurrentTrack();
+    Int_t pdgCode = p->GetPdgCode();
+    TLorentzVector Pos;
+    gMC->TrackPosition(Pos);
+    TLorentzVector Mom;
+    gMC->TrackMomentum(Mom);
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
+    AddHit(fTrackID, veto_uniqueId, TVector3(xmean, ymean,  zmean),
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+           0.,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
+    // Increment number of veto det points in TParticle
+    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    if (veto_uniqueId==13){stack->AddPoint(kVETO);}
+  }
   return kTRUE;
 }
 
@@ -130,6 +142,18 @@ void miniShip::PreTrack(){
 // add pi0 111 eta 221 eta' 331  omega 223 
     Int_t idabs = TMath::Abs(pdgCode);
     if (fSkipNeutrinos && (idabs==12 or idabs==14 or idabs == 16 )){gMC->StopTrack();}
+    if (fOnlyMuons && idabs!=13 )                                  {gMC->StopTrack();}
+}
+
+void miniShip::PostTrack(){
+// check if track reached sensitive plane, if not remove its points from collection
+   Bool_t found = kFALSE;
+   for (Int_t n=0;n<fminiShipPointCollection->GetEntries();n++) {
+      vetoPoint* hit = (vetoPoint*)fminiShipPointCollection->At(n);
+      Int_t detID = hit->GetDetectorID();
+      if (detID==13 && hit->GetTrackID()==fTrackID){ found = kTRUE;}
+   }
+   if (!found){fminiShipPointCollection->Clear();}
 }
 
 void miniShip::FinishRun(){
@@ -188,16 +212,16 @@ void miniShip::ConstructGeometry()
       innerAbsorber->SetField(magField);
    }
    top->AddNode(target, 1, new TGeoTranslation(0, 0, 0));
-   if (fConcreteShielding){top->AddNode(outerTarget, 1, new TGeoTranslation(0, 0, 0));}
+   if (fConcreteShielding){top->AddNode(outerTarget, 11, new TGeoTranslation(0, 0, 0));}
    TGeoVolumeAssembly *muShield = new TGeoVolumeAssembly("MuonShieldArea");
-   muShield->AddNode(innerAbsorber, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
-   muShield->AddNode(outerAbsorber, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
-   if (fConcreteShielding){muShield->AddNode(outerAbsorberConcrete, 1,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));}
+   muShield->AddNode(innerAbsorber, 21,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
+   muShield->AddNode(outerAbsorber, 22,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));
+   if (fConcreteShielding){muShield->AddNode(outerAbsorberConcrete, 23,new TGeoTranslation(0, 0, (fTargetL/2+fAbsL/2+0.1)*cm));}
 
    top->AddNode(muShield, 1, new TGeoTranslation(0, 0, 0));
    TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,1000.*cm,1000.*cm,1.*mm);
    sensPlane->SetLineColor(kGreen);
-   top->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, (fTargetL/2+fAbsL+1)*cm));
+   top->AddNode(sensPlane, 13, new TGeoTranslation(0, 0, (fTargetL/2+fAbsL+1)*cm));
    AddSensitiveVolume(sensPlane);
 }
 

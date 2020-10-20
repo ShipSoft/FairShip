@@ -60,7 +60,7 @@ class miniShip: public FairDetector
     virtual void   FinishPrimary() {;}
     virtual void   FinishRun();
     virtual void   BeginPrimary() {;}
-    virtual void   PostTrack() {;}
+    virtual void   PostTrack();
     virtual void   PreTrack();
     virtual void   BeginEvent() {;}
 
