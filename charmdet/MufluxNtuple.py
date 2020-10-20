@@ -1,4 +1,5 @@
 import ROOT,os,time,operator,subprocess
+import ctypes
 import rootUtils as ut
 from argparse import ArgumentParser
 from decorators import *
@@ -20,6 +21,11 @@ MCStats = {'1GeV': 1.806E9,'10GeV':66.02E9}
 dataStats      = 324.75E9
 simpleEffCorMu = 0.021
 simpleEffCor   = 0.024
+
+DYfactor = MCStats['10GeV']/1940000 * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4, rescaled mass distribution
+#DYfactor = MCStats['10GeV']/1940000 * (42*73.0+(96-42)*66.2)/96.*1E-6/10.5 # adjusted for PDF set 13
+# mumu factor missing?
+DYfactor4NA50 = 1.55
 
 mcSysError = 0.03
 daSysError = 0.021
@@ -202,15 +208,17 @@ if not options.listOfFiles:
                 print "file not found",fname
                 continue
     if withCharm2:
-        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX"
-        for run in range(0,20):
-            for k in range(10):
-               xrun = run+cycle*1000 + k*100
-               fname = path.replace('YYY',str(run)).replace('XXX',str(xrun))+"/ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
-               try:
+        path ={0:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX"}
+        path ={1:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX"}
+        for cycle in path:
+          for run in range(0,20):
+             for k in range(10):
+                xrun = run+cycle*1000 + k*100
+                fname = path[cycle].replace('YYY',str(run)).replace('XXX',str(xrun))+"/ntuple-pythia8_Geant4_"+str(xrun)+"_10.0_dig_RT.root"
+                try:
                    test = ROOT.TFile.Open(fname)
                    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-               except:
+                except:
                    print "file not found",fname
                    continue
 
@@ -285,7 +293,7 @@ def TwoCrystalBall(x,par):
    bw = par[0] # should be fixed
    cb.SetParameters(abs(par[1])*bw,par[2],abs(par[3]),par[4],par[5])
    highMass = cb.Eval(x[0])
-   if x>par[7] and par[14]>0:
+   if x[0]>par[7] and par[14]>0:
     cb.SetParameters(abs(par[6])*bw,par[7],abs(par[8]),-par[14],par[15])
     lowMass = cb.Eval(x[0])
    else:
@@ -297,11 +305,17 @@ def TwoCrystalBall(x,par):
      Psi2s = cb.Eval(x[0])
    background = abs(par[11] + par[12]*x[0])
    #background = abs(par[11])*ROOT.TMath.Exp(par[12])*x[0]
+   Ndy = 0
+   if not hMC.has_key("GDYmctagk") and  par[17]!=0:
+      print "missing Drell Yan model",par[17]
+   elif hMC.has_key("GDYmctagk"):
+      if hMC["GDYmctagk"]:
+          Ndy = abs(par[17])*hMC["GDYmctagk"].Eval(x[0])
    if par[16] == 1: return highMass
-   if par[16] == 2: return lowMass
+   if par[16] == 2: return lowMass+Ndy
    if par[16] == 3: return background
    if par[16] == 4: return Psi2s
-   Y = highMass + lowMass + background + Psi2s
+   Y = highMass + lowMass + Ndy + background + Psi2s
    return Y
 def CrystalBall(x,par):
    bw = par[0] # should be fixed
@@ -435,12 +449,21 @@ def my2BukinPdf(x,par):
       par2S.append(par[n+7])
     N2S = RooBukinPdf(x,par2S,0)
   Nback = abs(par[13]+par[14]*x[0])
-  #Nback = abs(par[13])*ROOT.TMath.Exp(par[14])*x[0]
+  # Nback = abs(par[13])*ROOT.TMath.Exp(par[14])*x[0]
+  Ndy = 0
+  if not hMC.has_key("GDYmctagk") and  par[17]!=0:
+      print "missing Drell Yan model",par[17]
+  elif hMC.has_key("GDYmctagk"):
+      if hMC["GDYmctagk"]:
+         parDY = [hMC["GDYmctagk"].GetParameters()[0],par[17]]
+         for n in range(2,7):    parDY.append(par[n])
+         Ndy = RooBukinPdf(x,parDY,0)
   if par[15]==1: return Nhigh*par[0]
   if par[15]==2: return Nlow*par[0]
   if par[15]==3: return Nback*par[0]
   if par[15]==4: return N2S*par[0]
-  return (Nlow+Nhigh+Nback+N2S)*par[0]
+  if par[15]==5: return Ndy
+  return (Nlow+Nhigh+Nback+N2S)*par[0]+Ndy
 def init_twoBukin(B,bw):
   B.FixParameter(0,bw)
   B.SetParameter(1,3.000)
@@ -470,6 +493,7 @@ def init_twoBukin(B,bw):
   B.SetParName(13,'pol0')
   B.SetParName(14,'pol1')
   B.SetParName(16,'psi(2S)')
+  B.SetParName(17,'DY')
   B.SetParName(1,'SignalLow')
   B.SetParName(2,'MeanLow')
   B.SetParName(3,'SigmaLow')
@@ -491,9 +515,11 @@ def norm_twoBukin(B,im='',sLow=2.0,sHigh=5.0,bLow=0.3,bHigh=3.0):
   pol0 = B.GetParameter(13)
   pol1 = B.GetParameter(14)
   bw   = B.GetParameter(0)
+  dy   = B.GetParameter(17)
   B.SetParameter(13,0.)
   B.SetParameter(14,0.)
   B.SetParameter(1,0.)
+  B.SetParameter(17,0.)
   if im=='s': integral = simpleIntegral(B,sLow,sHigh)
   else:       integral = B.Integral(sLow,sHigh)
   signalNormalized = integral / bw
@@ -506,6 +532,7 @@ def norm_twoBukin(B,im='',sLow=2.0,sHigh=5.0,bLow=0.3,bHigh=3.0):
   B.SetParameter(7,N2)
   B.SetParameter(13,pol0)
   B.SetParameter(14,pol1)
+  B.SetParameter(17,dy)
   err_lowMassNormalized = 0
   if N1>0: err_lowMassNormalized = lowMassNormalized/N1*B.GetParError(1)
   err_signalNormalized  = 0
@@ -707,17 +734,17 @@ def getFitDictionary(fitMethod):
      params = {'signal':1,   'highMass':2,'highSigma':3,'highTails':{4:1.,5:10.},
                'signalLow':6,'lowMass':7, 'lowSigma':8, 'lowTails':{9:1.,10:10.},
                'pol':[11,12],'highTailsOff':{4:1000.,5:10.},'highTailsLimits':{4:[0.,10.],5:[0.,100.]},
-                           'lowTailsOff':{9:1000.,10:10.},'lowTailsLimits':{9:[-10.,0.],10:[0.,100.]},
-               'fixParams':{}}
-     funTemplate = {'F':TwoCrystalBall,'N':17,'Init':init_twoCB0}
+                           'lowTailsOff':{9:1000.,10:10.},'lowTailsLimits':{9:[-1.5,-0.5],10:[1.,50.]},  # alphaLow 9 with -0.5, -1.5, nLow 10  3. - 50.
+               'switch':16,'psi(2s)':13,'DY':17,'fixParams':{}}
+     funTemplate = {'F':TwoCrystalBall,'N':18,'Init':init_twoCB0}
    if fitMethod=='B':
    # high mass [7,8,9,10,11,12]  low mass [1,2,3,4,5,6]
      params = {'signal':7,   'highMass':8,'highSigma':9,'highTails':{10:0.008,11:-0.01,12:0.01},
                'signalLow':1,'lowMass':2, 'lowSigma':3, 'lowTails':{4:0.008,   5:-0.01, 6:0.01},
                'pol':[13,14],'highTailsOff':{10:0.008,11:-0.01},'highTailsLimits':{},
-                              'lowTailsOff':{4:0.008,5:-0.01,12:0.01},  'lowTailsLimits':{},
-               'fixParams':{12:0.0}}
-     funTemplate = {'F':my2BukinPdf,'N':17,'Init':init_twoBukin}
+                              'lowTailsOff':{4:0.008,5:-0.01,6:0.01},  'lowTailsLimits':{4:[0.,0.2],5:[-1.,0.],6:[0.,50.]},
+               'switch':15,'psi(2s)':16, 'DY':17, 'fixParams':{12:0.0}}
+     funTemplate = {'F':my2BukinPdf,'N':18,'Init':init_twoBukin}
    if fitMethod=='GE':
    # high mass [6,7,8,9,10]  low mass [1,2,3,4,5]
      params = {'signal':6,   'highMass':7,'highSigma':8,'highTails':{9:1.0,10:1.0},
@@ -731,10 +758,10 @@ def getFitDictionary(fitMethod):
      params = {'signal':0,   'highMass':1,'highSigma':2,'highTails':{},
                'signalLow':3,'lowMass':4, 'lowSigma':5, 'lowTails':{},
                'pol':[6,7],'highTailsOff':{},'highTailsLimits':{},
-                           'lowTailsOff':{},'lowTailsLimits':{},'fixParams':{}}
-     funTemplate = {'F':hMC['myGauss'],'N':10,'Init':init_Gauss}
+                'DY':10,'psi(2s)':11,'lowTailsOff':{},'lowTailsLimits':{},'fixParams':{10:0.0,11:0.0}}
+     funTemplate = {'F':hMC['myGauss'],'N':12,'Init':init_Gauss}
    return params,funTemplate
-def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=False,nBins=9,withWeight=False,printout=2,v='mcor'):
+def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=False,nBins=9,withWeight=False,printout=2,v='mcor',withDY=False,DYxsec=2.,withPsi2s=False):
    ROOT.gROOT.cd()
    tag = (fitMethod+"_"+proj).replace(',','').replace(')','').replace('(','')
    hData['FitResults-'+tag]={}
@@ -802,23 +829,48 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
       myDraw(v+':'+cutExp+'>>mc-'+tag+'HighMass-'+m,w+'*('+theCut+"&&Jpsi==443"+')',m)
      else:
       if m=='10GeV':  
-        myDraw(v+':'+cutExp+'>>mc-'+tag+m,theCut,m)
-        myDraw(v+':'+cutExp+'>>mc-'+tag+'LowMass-'+m, theCut+"&&Jpsi%100000!=443",m)
+        myDraw(v+':'+cutExp+'>>mc-'+tag+m,theCut,m,DYxsec)
+        myDraw(v+':'+cutExp+'>>mc-'+tag+'LowMass-'+m, theCut+"&&Jpsi%100000!=443",m,DYxsec)
       myDraw(v+':'+cutExp+'>>mc-'+tag+'HighMass-'+m,theCut+"&&Jpsi==443",m)
    rc = hData['f'].nt.Draw(v+':'+cutExp+'>>'+tag,theCut)
 #
    pmin = projMin
    delp = (projMax-projMin)/float(nBins)
 # make slices
-   for k in range(nBins):
-      pmax = pmin+delp
-      hData[tag+str(k)] = hData[tag].ProjectionY(tag+str(k),k+1,k+1)
+   for k in range(nBins+1):
+      if k==nBins:
+        pmin = projMin
+        pmax = projMax
+        hData[tag+str(k)] = hData[tag].ProjectionY(tag+str(k))
+      else:
+        pmax = pmin+delp
+        hData[tag+str(k)] = hData[tag].ProjectionY(tag+str(k),k+1,k+1)
       hData[tag+str(k)].SetTitle('inv mass DATA ' +str(pmin)+'<'+proj+'<'+str(pmax)+';M [GeV/c^{2}]')
       for m in mcNtuples:
          for z in ['','LowMass-','HighMass-']:
              mctag = 'mc-'+tag+z+m
-             hMC[mctag+str(k)]=hMC[mctag].ProjectionY(mctag+str(k),k+1,k+1)
-             hMC[mctag+str(k)].SetTitle('inv mass MC '   +str(pmin)+'<'+proj+'<'+str(pmax)+';M [GeV/c^{2}]')
+             mctagk = mctag+str(k)
+             if k==nBins:  hMC[mctagk]=hMC[mctag].ProjectionY(mctagk)
+             else:         hMC[mctagk]=hMC[mctag].ProjectionY(mctagk,k+1,k+1)
+             hMC[mctagk].SetTitle('inv mass MC '   +str(pmin)+'<'+proj+'<'+str(pmax)+';M [GeV/c^{2}]')
+             if m == "10GeV":
+                if k==nBins:  hMC["DY"+mctagk]=hMC["DY"+mctag].ProjectionY("DY"+mctagk) # with full statistics
+                else:         hMC["DY"+mctagk]=hMC["DY"+mctag].ProjectionY("DY"+mctagk,k+1,k+1) # with full statistics
+                hMC["GDYmctagk"]=None
+                histo = hMC["DY"+mctagk]
+                bw = histo.GetBinWidth(1)
+                params,funTemplate = getFitDictionary('B')   # always use bukin with two tails
+                F = ROOT.TF1('DY',funTemplate['F'],0,10,funTemplate['N'])
+                funTemplate['Init'](F,bw)
+                for l in params['fixParams']: F.FixParameter(l,params['fixParams'][l])
+                F.SetParameter(params['signalLow'],histo.GetEntries())
+                F.FixParameter(params['signal'],0.)
+                F.FixParameter(params['highMass'],3.1)
+                F.FixParameter(params['highSigma'],0.3)
+                for l in params['highTails']: F.FixParameter(l,params['highTails'][l])
+                for l in params['pol']:       F.FixParameter(l,0.)
+                F.FixParameter(params['DY'],0.)
+                rc = myFit(histo,F,'SQL',0.5,6.)
       pmin=pmax
    bw = hData[tag+str(0)].GetBinWidth(1)
    params,funTemplate = getFitDictionary(fitMethod)
@@ -826,7 +878,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
    for m in mcNtuples:
       z = 'HighMass-'
       Jpsi = 'mc-'+tag+z+m+'-Jpsi'
-      for k in range(nBins):
+      for k in range(nBins+1):
          tc = hMC['MCbins'+z+tag+m].cd(k+1)
          mctag = 'mc-'+tag+z+m+str(k)
          fname = 'mc-Fun'+tag+z+m+str(k)
@@ -842,6 +894,9 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          CB.FixParameter(params['lowSigma'],0.3)
          for l in params['lowTails']: CB.FixParameter(l,params['lowTails'][l])
          for l in params['pol']:      CB.FixParameter(l,0.)
+   # no Drell Yan
+         CB.FixParameter(params['DY'],0.)
+         hMC["GDYmctagk"]=None
    # start with alpha large, no power law
          for l in params['highTailsOff']: CB.FixParameter(l,params['highTailsOff'][l])
          rc = myFit(hMC[mctag],CB,fitOption,1.,maxX)
@@ -888,7 +943,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
 # next fitting MC low mass, only possible for 10GeV
    m = "10GeV"
    z = 'LowMass-'
-   for k in range(nBins):
+   for k in range(nBins+1):
          tc = hMC['MCbins'+z+tag+m].cd(k+1)
          mctag = 'mc-'+tag+z+m+str(k)
          fname = 'mc-Fun'+tag+z+m+str(k)
@@ -905,6 +960,14 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          CB.FixParameter(params['highSigma'],0.3)
          for l in params['highTails']: CB.FixParameter(l,params['highTails'][l])
          for l in params['pol']:       CB.FixParameter(l,0.)
+         if withDY:
+            CB.ReleaseParameter(params['DY'])
+            CB.SetParameter(params['DY'],0.5)
+            hMC["GDYmctagk"]=hMC["DY"+mctag].GetFunction('DY')
+         else:
+   # no Drell Yan
+            CB.FixParameter(params['DY'],0.)
+            hMC["GDYmctagk"]=None
          for l in params['lowTailsOff']: CB.FixParameter(l,params['lowTailsOff'][l])
          rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
          if rc[0]!=0:
@@ -915,6 +978,8 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
              CB.SetParameter(l,params['lowTails'][l])
          for l in params['lowTailsLimits']: 
              CB.SetParLimits(l,params['lowTailsLimits'][l][0],params['lowTailsLimits'][l][1])
+         for l in params['pol']:       CB.ReleaseParameter(l)
+         rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
          rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
          if rc[0]!=0:
            print mctag
@@ -964,7 +1029,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
    case[m]['fun']    = 'Fun'+tag+z
    case[m]['Jpsi']   =  tag+z+'-Jpsi'
    for c in case: 
-      for k in range(nBins):
+      for k in range(nBins+1):
          tc = case[c]['Canvas'].cd(k+1)
          hk = case[c]['htag']+str(k)
          h  = case[c]['store']
@@ -991,6 +1056,9 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          L = params['lowTails'].keys()+[params['lowMass'],params['lowSigma']]
          for n in L: CB.FixParameter(n,lowMass.Parameter(n))
          CB.FixParameter(params['pol'][1],0)
+   # no Drell Yan
+         hMC["GDYmctagk"]=None
+         CB.FixParameter(params['DY'],0)
          CB.FixParameter(params['signalLow'],0)
 # fit first signal part
          rc = myFit(h[hk],CB,fitOption,2.9,maxX)
@@ -1013,11 +1081,19 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          CB.ReleaseParameter(params['signalLow'])
          CB.SetParLimits(params['signalLow'],0.,1E6)
          CB.SetParameter(params['signalLow'],Nguess)
+         if withDY:
+            CB.ReleaseParameter(params['DY'])
+            CB.SetParameter(params['DY'],0.5)
+            hMC["GDYmctagk"] = hMC["DYmc-"+tag+z+'10GeV'+str(k)].GetFunction('DY')
+         else:
+   # no Drell Yan
+            CB.FixParameter(params['DY'],0.)
+            hMC["GDYmctagk"]=None
          rc = myFit(h[hk],CB,fitOption,xlow,2.0)
          if rc[2].Parameter(params['signalLow'])>25:
             CB.ReleaseParameter(params['lowMass'])
             CB.ReleaseParameter(params['lowSigma'])
-            CB.FixParameter(params['pol'][0],0)
+            CB.FixParameter(params['pol'][1],0)
             rc = myFit(h[hk],CB,fitOption,xlow,maxX)
             if withFreeTails:
               for l in params['lowTails']: 
@@ -1063,7 +1139,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          else:
              h[fk+'highMass'] = ROOT.TF1(fk+'highMass',funTemplate['F'],xlow,maxX,funTemplate['N'])
              for n in range(funTemplate['N']): h[fk+'highMass'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'highMass'].FixParameter(funTemplate['N']-1,1)
+             h[fk+'highMass'].FixParameter(params['switch'],1)
          h[fk+'highMass'].SetLineColor(ROOT.kMagenta)
          h[fk+'highMass'].Draw('same')
          if fitMethod=='G':
@@ -1074,7 +1150,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          else:
              h[fk+'lowMass'] = ROOT.TF1(fk+'lowMass',funTemplate['F'],xlow,maxX,funTemplate['N'])
              for n in range(funTemplate['N']): h[fk+'lowMass'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'lowMass'].FixParameter(funTemplate['N']-1,2)
+             h[fk+'lowMass'].FixParameter(params['switch'],2)
          h[fk+'lowMass'].SetLineColor(ROOT.kCyan)
          h[fk+'lowMass'].Draw('same')
          if fitMethod=='G':
@@ -1085,9 +1161,17 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          else:
              h[fk+'back'] = ROOT.TF1(fk+'back',funTemplate['F'],xlow,maxX,funTemplate['N'])
              for n in range(funTemplate['N']): h[fk+'back'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'back'].FixParameter(funTemplate['N']-1,3)
-         h[fk+'back'].SetLineColor(ROOT.kOrange)
+             h[fk+'back'].FixParameter(params['switch'],3)
+         h[fk+'back'].SetLineColor(ROOT.kGray)
          h[fk+'back'].Draw('same')
+         if not fitMethod=='G' and withDY:
+             DYparams,DYfunTemplate = getFitDictionary('B')   # always use bukin with two tails
+             h[fk+'DY'] = ROOT.TF1('DY',funTemplate['F'],0,10,DYfunTemplate['N'])
+             DYfunTemplate['Init'](h[fk+'DY'],bw)
+             for n in range(DYfunTemplate['N']): h[fk+'DY'].FixParameter(n,CB.GetParameter(n))
+             h[fk+'DY'].FixParameter(params['switch'],5)
+             h[fk+'DY'].SetLineColor(ROOT.kOrange)
+             h[fk+'DY'].Draw('same')
          h[hk].Draw('same')
          if fitMethod=='CB': tmp = norm_twoCB(h['FitResults-'+hk])
          if fitMethod=='GE':  tmp = norm_twoGDE(CB)
@@ -1100,7 +1184,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
              E = 0
          h[Jpsi].SetBinContent(k+1,N)
          h[Jpsi].SetBinError(k+1,E)
-         if tmp[1][0]<5*tmp[0][0]: tc.SetLogy(1)
+         if tmp[1][0]<500*tmp[0][0]: tc.SetLogy(1)
          else: tc.SetLogy(0)
          tc.Update()
          stats = tc.GetPrimitive('stats')
@@ -2329,10 +2413,27 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     hname = name.replace('ntuple-','')
     ut.writeHists(h,hname)
     print "I have finished. ",hname
-def myDraw(variable,cut,ntName='10GeV'):
- hMC[ntName].Draw(variable,cut)
- DYfactor = 66.02E9/1940000 * 69E-6/10.5
- hMC['DY'].Draw(variable.replace(">>",">>+"),str(DYfactor)+'*('+cut+')')
+def myDraw(variable,cut,ntName='10GeV',DYxsec=2.):
+ if ntName!='10GeV':
+    hMC[ntName].Draw(variable,cut)
+    return
+ hMC[ntName].Draw(variable,cut+"&&(procID2<4||procID2>5)")   # exclude charm
+# Drell Yan
+ # better limit number of events, scale to 2x Pythia8 cross section.
+ # could vary this to get idea about systematic error
+ nmax = int(hMC['DY'].GetEntries() * DYfactor * DYxsec)
+ var   = variable.split('>>')[0]
+ histo = variable.split('>>')[1]
+ if not hMC.has_key('DY'+histo): hMC['DY'+histo]=hMC[histo].Clone('DY'+histo)
+ hMC['DY'].Draw(variable.replace(">>",">>+"),cut,"",nmax)
+ hMC['DY'].Draw(var+">>DY"+histo,cut)
+# charm
+ Charmfactor = MCStats['10GeV']/(3 * 80002560/2 / 1.7E-3)
+ # better limit number of events, scale to 2x Pythia8 cross section.
+ nmax = int(hMC['Charm2'].GetEntries() * Charmfactor)
+ if not hMC.has_key('Charm'+histo): hMC['Charm'+histo]=hMC[histo].Clone('Charm'+histo)
+ hMC['Charm2'].Draw(variable.replace(">>",">>+"),cut,"",nmax)
+ hMC['Charm2'].Draw(var+">>Charm"+histo,cut)
  # too complicated to combine 1GeV
  # hMC['10GeV'].Draw(variable,str(hMC['weights']['1GeV'])+'*('+cut+')')
  # hMC['10eV'].Draw(variable.replace(">>",">>+"),str(hMC['weights']['1GeV'])+'*('+cut+')')
@@ -2366,6 +2467,7 @@ def loadNtuples(BDT='BDT-',ext='_mu',eos=False):
   hMC['fJpsiP8_PrimaryMu'] = ROOT.TFile.Open(simpath+'Jpsi-Pythia8_385000000_10000-11000.root')
   hMC['fJpsiCascade']      = ROOT.TFile.Open(simpath+'cascade_MSEL61_20M.root')
   hMC['fDY']               = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_DrellYan_refit.root')
+  hMC['fCharm2']           = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_10GeVCharm2_refit.root')
   # hMC['fJpsiCascade'] needs to be scaled by 0.9375, since 1 file not being used in simulation, fixed in reprocessing
   hMC['scalingFactor']={}
   hMC['scalingFactor']['fJpsiCascade']=1.0
@@ -2381,6 +2483,7 @@ def loadNtuples(BDT='BDT-',ext='_mu',eos=False):
  hMC['Jpsi']        = hMC['fJpsi'].nt        # inv mass ntuple from Cascade, Pythia6, Eric
  hMC['JpsiP8']      = hMC['fJpsiP8'].nt      # inv mass ntuple from primary, Pythia8, me
  hMC['DY']          = hMC['fDY'].nt      # inv mass ntuple from Drell Yan, Pythia8, me
+ hMC['Charm2']      = hMC['fCharm2'].nt      # inv mass ntuple from CharmProduction, Pythia6 Cascade, Pythia8, me
  hMC['JpsiCascade'] = hMC['fJpsiCascade'].pythia6              # original input file from Eric
  hMC['JpsiP8_Primary'] = hMC['fJpsiP8_Primary'].pythia6        # first Pythia8 production with intermediate Jpsis 
  hMC['JpsiP8_PrimaryMu'] = hMC['fJpsiP8_PrimaryMu'].pythia6    # second Pythia8 production with above ussue fixed, I think. 
@@ -2565,14 +2668,14 @@ def determineEfficiencies(theCut,category,colors,withCosCSCut,withWeight):
 def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut,sameSign=False):
    sptCut = str(ptCut)
    theCut =  'mult<3&&max(pt1,pt2)>'+sptCut+'&&chi21*chi22<0&&max(abs(chi21),abs(chi22))<0.9&&\
-                max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.20'
+                max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.00'
    if sameSign:
       theCut =  'mult<3&&max(pt1,pt2)>'+sptCut+'&&chi21*chi22>0&&max(abs(chi21),abs(chi22))<0.9&&\
-                max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.20'
+                max(p1,p2)<'+str(pmax)+'&&min(p1,p2)>'+str(pmin)+'&&mcor>0.00'
    if v=='mcor':
       theCut = theCut.replace('pt1','pt1cor')
       theCut = theCut.replace('pt2','pt2cor')
-      theCut+="&&abs(m/mcor-1)<1"
+      # theCut+="&&abs(m/mcor-1)<1"
    if withCosCSCut: theCut+='&&abs(cosCScor)<0.5'
    if muID == 1: theCut+='&&(muID1%100==11||muID2%100==11)'
    if muID == 2: theCut+='&&(muID1%100==11&&muID2%100==11)'
@@ -2582,15 +2685,15 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut,sameSign=False):
    if BDTCut: theCut += "&&BDT>0."
    return theCut.replace(' ','')
 
-def runAll(ptCut,pmin,muID,wW,fM=None):
+def runAll(ptCut=1.0,pmin=20.,muID=2,wW=True,fM=None,withDY=False,DYxsec=2.,withPsi2s=False):
    proj = 'ycor1C'
    loadNtuples()
    for fitMethod in ['B','CB','G']:
          if fM:
              if fitMethod!=fM: continue
-         JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod,withWeight=wW)
+         JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod,withWeight=wW,withDY=withDY,DYxsec=DYxsec,withPsi2s=withPsi2s)
 
-def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus',withWeight=False):
+def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus',withWeight=False,withDY=False,DYxsec=2.,withPsi2s=False):
    # with twoBukin fit usually ptCut = 0.
    # muID = 0: no muon confirmed
    # muID = 1: at least one muon confirmed
@@ -2611,7 +2714,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
       pmin  = 0.
       pmax  = 1000.
    theCutcosCS = theJpsiCut('mcor',withCosCSCut,ptCut,pmin,pmax,muID,BDTCut)
-   tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)
+   tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)+'_DY'+str(DYxsec)
    if BDTCut: tag += '_BDT'
    if withWeight: tag += '_wp6'
    os.chdir(topDir)
@@ -2646,7 +2749,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
       fM = 'BJpsi'
    elif fitMethod=='CB' or fitMethod=='B'  or fitMethod=='G'   or fitMethod=='GE' :
 # for Jpsi cascade large stat
-      twoCBYieldFit(fitMethod,proj,fR[0],fR[1],'y_{CMS}',theCutcosCS,nBins=fR[2],printout=1)
+      twoCBYieldFit(fitMethod,proj,fR[0],fR[1],'y_{CMS}',theCutcosCS,nBins=fR[2],printout=1,withDY=withDY,DYxsec=DYxsec,withPsi2s=withPsi2s)
    else:
       print "method not known, exit."
       exit()
@@ -2996,10 +3099,11 @@ def JpsiFitComparison(proj = 'ycor1C',ptCut=0.0,pmin=20.,BDTCut=None):
                  results['B'][yrange][p][0],results['B'][yrange][p][1],pull)
           print txt
 
-def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=1.0,pmin=20.,BDTCut=None,muID=1,withWeight=True):
+def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=1.0,pmin=20.,BDTCut=None,muID=1,withWeight=True,DYxsec=None):
    unit={'ycor1C':'y_{cm}'}
    if muID < 0: tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
    else:        tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)
+   if DYxsec:   tag+='_DY'+str(DYxsec)
    if BDTCut: tag += '_BDT'
    if withWeight: tag += '_wp6'
    print tag
@@ -4236,6 +4340,9 @@ def init_twoCB0(myCB,bw):
    myCB.SetParName(11,'p0')
    myCB.SetParName(12,'p1')
    myCB.SetParName(13,'psi(2S)')
+   myCB.SetParName(14,'alphaLeft')
+   myCB.SetParName(15,'nLeft')
+   myCB.SetParName(17,'Drell Yan')
    myCB.SetParameter(1,100.)
    myCB.SetParLimits(1,0.0,1E6)
    myCB.SetParameter(2,3.1)
@@ -4248,16 +4355,17 @@ def init_twoCB0(myCB,bw):
    myCB.SetParLimits(6,0.0,1E6)
    myCB.SetParameter(7,1.)
    myCB.SetParameter(8,0.4)
-   myCB.SetParameter(9,1.0)   # alphaRight
-   myCB.SetParLimits(9,-10.,0.)
+   myCB.SetParameter(9,-1.0)   # alphaRight
+   myCB.SetParLimits(9,-0.5,-1.5)
    myCB.SetParameter(10,10.)  # nRight
-   myCB.SetParLimits(10,0.0,100.)
+   myCB.SetParLimits(10,0.0,50.)
    myCB.SetParameter(11,1.)
    myCB.SetParameter(12,0)
    myCB.FixParameter(13,0.)
-   myCB.FixParameter(14,0.0)     # alphaRight
-   myCB.FixParameter(15,10.)     # nRight
+   myCB.FixParameter(14,0.0)    # alphaLeft
+   myCB.FixParameter(15,10.)    # nLeft
    myCB.FixParameter(16,0.)     # switch for sum, high/low mass, background, Jpsi
+   myCB.FixParameter(17,0.)     # Drell Yan
 
 def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
    init_twoCB0(myCB,bw)
@@ -4275,6 +4383,7 @@ def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
     myCB.SetParameter(11,h['fitResult'][ptCut]['p1'][0])
     myCB.SetParameter(12,h['fitResult'][ptCut]['p2'][0])
     myCB.FixParameter(13,0.)
+    myCB.SetParameter(17,h['fitResult'][ptCut]['DY'][0])
    else:
     myCB.SetParameter(1,h['fitResultCB'][ptCut]['psi(1S)'][0])
     myCB.SetParameter(2,h['fitResultCB'][ptCut]['Mass'][0])
@@ -4290,6 +4399,7 @@ def init_twoCB(myCB,bw,ptCut,h,fromPrevFit=False):
     myCB.SetParameter(12,h['fitResultCB'][ptCut]['p1'][0])
     myCB.FixParameter(12,0.)
     myCB.FixParameter(13,0.)
+    myCB.SetParameter(17,h['fitResultCB'][ptCut]['DY'][0])
     myCB.ReleaseParameter(2)
     myCB.ReleaseParameter(7)
 def norm_twoCB(B,im='',sLow=2.0,sHigh=5.0,bLow=0.3,bHigh=3.0):
@@ -5959,6 +6069,17 @@ def plots4AnalysisNote(fm='B'):
   tc.Update()
   myPrint(tc,fm+'-dimuon-MC-'+ptcut+'GeVptlog')
 #
+def plotDrellYanAndLowMass():
+  ut.bookCanvas(hMC,'DYcanvas','mass in bins ycor1C',1800,1200,4,5)
+  for i in range(20):
+     hMC['DYcanvas'].cd(i+1)
+     hMC['mc-B_ycor1CLowMass-10GeV'+str(i)].Draw()
+     hMC['sDYmc-B_ycor1C10GeV'+str(i)] = hMC['DYmc-B_ycor1C10GeV'+str(i)].Clone('sDYmc-B_ycor1C10GeV'+str(i))
+     hMC['sDYmc-B_ycor1C10GeV'+str(i)].Scale(DYfactor)
+     hMC['sDYmc-B_ycor1C10GeV'+str(i)].SetLineColor(ROOT.kOrange)
+     fun=hMC['sDYmc-B_ycor1C10GeV'+str(i)].GetFunction('DY')
+     if fun: fun.SetBit(ROOT.TF1.kNotDraw)
+     hMC['sDYmc-B_ycor1C10GeV'+str(i)].Draw('same')
 def mergeMassandPullPlots(fitMethod='B',ptCut=1.0,pmin=20.,BDTCut=None,muID=2,withWeight=True):
     tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)
     if BDTCut: tag += '_BDT'
@@ -6008,6 +6129,7 @@ def mergeMassandPullPlots(fitMethod='B',ptCut=1.0,pmin=20.,BDTCut=None,muID=2,wi
         cpad[n]['res_'+fitMethod+'_ycor1C'+str(n)].SetTitle('')
         cpad[n]['res_'+fitMethod+'_ycor1C'+str(n)].SetMaximum(4.9)
         cpad[n]['res_'+fitMethod+'_ycor1C'+str(n)].SetMinimum(-4.9)
+        cpad[n]['res_'+fitMethod+'_ycor1C'+str(n)].GetXaxis().SetRangeUser(0.3,8.0)
         yax = cpad[n]['res_'+fitMethod+'_ycor1C'+str(n)].GetYaxis()
         M = yax.GetLabelSize()*(1-aspect)/aspect
         yax.SetLabelSize(M)
@@ -7166,8 +7288,405 @@ def myVertex(t1,t2,PosDir,xproj=False):
     Y = c.y()+v.y()*t
     Z = c.z()+v.z()*t
     return X,Y,Z,abs(dist)
+def studyDrellYan(fitMethod='B',weighted=True,withDY=False):
+   X = {'0':ROOT.kBlack,'2':ROOT.kBlue,'4':ROOT.kRed}
+   hData['FitYield']={}
+   hMC['dummy'].cd()
+   for x in X:
+     hMC['DY'+x]={}
+     hData['DY'+x]={}
+     ut.readHists(hMC['DY'+x],'muID2_B-1.0_20.0_DY'+x+'.0_wp6/MC-histos.root')
+     ut.readHists(hData['DY'+x],'muID2_B-1.0_20.0_DY'+x+'.0_wp6/Data-histos.root')
+# fit result from twoCBYieldfit
+     NJpsi  = hData['DY'+x]['B_ycor1C-Jpsi'].GetBinContent(19)
+     eNJpsi = hData['DY'+x]['B_ycor1C-Jpsi'].GetBinError(19)
+     hData['FitYield'][x]=[NJpsi,eNJpsi]
+     hMC['lowMass'+x]=hMC['DY'+x]['mc-B_ycor1CLowMass-10GeV'].ProjectionY('lowMass'+x)
+     hMC['lowMass'+x].SetLineColor(X[x])
+     mctag =  'lowMass'+x
+     hMC['highMass'+x]=hMC['DY'+x]['mc-B_ycor1CHighMass-Jpsi'].ProjectionY('highMass'+x)
+     hMC['Charm'+x]=hMC['DY'+x]['Charmmc-B_ycor1CLowMass-10GeV'].ProjectionY('Charm'+x)
+# make fit
+     fitOption='SL'
+     minX = 0.5
+     maxX = 8.0
+     bw = hMC[mctag].GetBinWidth(1)
+     params,funTemplate = getFitDictionary(fitMethod)
+     hMC["hDY"+x] = hMC['DY'+x]['DYmc-B_ycor1CLowMass-10GeV'].ProjectionY("hDY"+x)
+     if withDY:
+        hMC["GDYmctagk"]=None
+        histo = hMC["hDY"+x]
+        bw = histo.GetBinWidth(1)
+        params,funTemplate = getFitDictionary('B')   # always use bukin with two tails
+        F = ROOT.TF1('DY',funTemplate['F'],0,10,funTemplate['N'])
+        funTemplate['Init'](F,bw)
+        for l in params['fixParams']: F.FixParameter(l,params['fixParams'][l])
+        F.SetParameter(params['signalLow'],histo.GetEntries())
+        F.FixParameter(params['signal'],0.)
+        F.FixParameter(params['highMass'],3.1)
+        F.FixParameter(params['highSigma'],0.3)
+        F.FixParameter(params['psi(2s)'],0.0)
+        for l in params['highTails']: F.FixParameter(l,params['highTails'][l])
+        for l in params['pol']:       F.FixParameter(l,0.)
+        F.FixParameter(params['DY'],0.)
+        rc = myFit(histo,F,'SQL',0.5,6.)
+     fname = 'fun-lowMass'+x
+     hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+     CB = hMC[fname]
+     funTemplate['Init'](CB,bw)
+     for l in params['fixParams']: CB.FixParameter(l,params['fixParams'][l])
+     CB.SetParameter(params['signalLow'],hMC[mctag].GetEntries())
+   # fix high mass to 0
+     CB.FixParameter(params['signal'],0.)
+     CB.FixParameter(params['highMass'],3.1)
+     CB.FixParameter(params['highSigma'],0.3)
+     CB.FixParameter(params['psi(2s)'],0.0)
+     for l in params['highTails']: CB.FixParameter(l,params['highTails'][l])
+     for l in params['pol']:       CB.FixParameter(l,0.)
+     if withDY:
+        CB.ReleaseParameter(params['DY'])
+        CB.SetParameter(params['DY'],0.5)
+        hMC["GDYmctagk"] = hMC["hDY"+x].GetFunction('DY')
+     else:
+   # no Drell Yan
+        CB.FixParameter(params['DY'],0.)
+        hMC["GDYmctagk"]=None
+     for l in params['lowTailsOff']: CB.FixParameter(l,params['lowTailsOff'][l])
+     rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
+     if rc[0]!=0:
+        print "FIT  ERROR: ",mctag
+        break
+     for l in params['lowTails']: 
+        CB.ReleaseParameter(l)
+        CB.SetParameter(l,params['lowTails'][l])
+     for l in params['lowTailsLimits']: 
+        CB.SetParLimits(l,params['lowTailsLimits'][l][0],params['lowTailsLimits'][l][1])
+     for l in params['pol']:       CB.ReleaseParameter(l)
+     rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
+     rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
+     hMC[mctag].GetFunction(fname).SetLineColor(X[x])
+     if rc[0]!=0:
+        print "FIT  ERROR: ",mctag
+        break
+   ROOT.gStyle.SetOptStat(0)
+   hMC['lowMass4'].SetTitle('; GeV/c{2};N')
+   hMC['lowMass4'].Draw()
+   hMC['lowMass2'].Draw('same')
+   hMC['lowMass0'].Draw('same')
+   myPrint(hMC['dummy'],'DrellYan-lowmass-'+fitMethod)
+# fix signal shape from MC
+   params,funTemplate = getFitDictionary(fitMethod)
+   histo = hMC['highMass0']
+   bw = histo.GetBinWidth(1)
+   fname = 'fun-MC'
+   hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+   CB = hMC[fname]
+   funTemplate['Init'](CB,bw)
+   for l in params['fixParams']: CB.FixParameter(l,params['fixParams'][l])
+   Nguess = histo.Integral(histo.FindBin(2.6),histo.FindBin(3.5))
+   CB.SetParameter(params['signal'],Nguess)
+   for l in params['lowTailsOff']: 
+      CB.FixParameter(l,params['lowTailsOff'][l])
+   for l in params['highTailsLimits']: 
+      CB.SetParLimits(l,params['highTailsLimits'][l][0],params['highTailsLimits'][l][1])
+   CB.FixParameter(params['signalLow'],0)
+   CB.FixParameter(params['lowMass'],0)
+   CB.FixParameter(params['lowSigma'],0)
+   CB.FixParameter(params['psi(2s)'],0.0)
+   rc = myFit(histo,CB,fitOption,minX,maxX)
+   hMC["fitResult"] = rc[2]
+# now data:
+   hData['M'] = hData['DY0']['B_ycor1C'].ProjectionY('DY0_M')
+   histo = hData['M']
+   bw = histo.GetBinWidth(1)
+   fname = 'fun-Data'
+   hData[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+   CB = hData[fname]
+   funTemplate['Init'](CB,bw)
+   for l in params['fixParams']: CB.FixParameter(l,params['fixParams'][l])
+   Nguess = histo.Integral(histo.FindBin(2.6),histo.FindBin(3.5))
+   CB.SetParameter(params['signal'],Nguess)
+   Nguess = histo.Integral(histo.FindBin(0.5),histo.FindBin(2.0))
+   for l in params['lowTails']: 
+      CB.ReleaseParameter(l)
+      CB.SetParameter(l,params['lowTails'][l])
+   for l in params['lowTailsLimits']: 
+      CB.SetParLimits(l,params['lowTailsLimits'][l][0],params['lowTailsLimits'][l][1])
+   for l in params['highTailsLimits']: 
+      CB.SetParLimits(l,params['highTailsLimits'][l][0],params['highTailsLimits'][l][1])
+   if fitMethod=='CB':
+     for l in params['highTails']:CB.FixParameter(l,hMC["fitResult"].Parameter(l))
+   CB.SetParameter(params['signalLow'],Nguess)
+   CB.FixParameter(params['psi(2s)'],0.0)
+   rc = myFit(histo,CB,fitOption,minX,maxX)
+   CB.ReleaseParameter(params['psi(2s)'])
+   rc = myFit(histo,CB,fitOption,minX,maxX)
+   hData["fitResult"] = rc[2]
 
-def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False):
+   histo.SetTitle('; GeV/c{2};N')
+   histo.Draw()
+   myPrint(hMC['dummy'],'DrellYan-data-'+fitMethod)
+# add MC normalized to same npot, take MC low mass and add signal from fit.
+   fun = histo.GetFunction(fname)
+   hMC['signal'] = ROOT.TF1('signal',funTemplate['F'],0,10,funTemplate['N'])
+   for i in range(funTemplate['N']): hMC['signal'].FixParameter(i,fun.GetParameter(i))
+   hMC['signal'].SetParameter(params['switch'],1)
+   hMC['lowMass'] = ROOT.TF1('lowMass',funTemplate['F'],0,10,funTemplate['N'])
+   for n in range(funTemplate['N']): hMC['lowMass'].FixParameter(n,fun.GetParameter(n))
+   hMC['lowMass'].FixParameter(params['switch'],2)
+   hMC['lowMass'].SetLineColor(ROOT.kGreen)
+
+   ut.bookCanvas(hMC,'dataAndMC1',' ',1200,900,1,1)
+   hMC['dataAndMC1'].cd(1)
+   nMax = ut.findMaximumAndMinimum(histo)[1]
+   fac = dataStats/MCStats['10GeV']
+   for x in X:
+     hMC['normlowMass'+x]=hMC['lowMass'+x].Clone('normlowMass'+x)
+     hMC['normlowMass'+x].Scale(fac)
+     bw = hMC['normlowMass'+x].GetBinWidth(1)
+     for n in range(1,hMC['normlowMass'+x].GetNbinsX()+1):
+        x1 = hMC['normlowMass'+x].GetBinLowEdge(n)
+        x2 = x1+bw
+        S = hMC['signal'].Integral(x1,x2)/bw
+        hMC['normlowMass'+x].SetBinContent(n,hMC['normlowMass'+x].GetBinContent(n)+S)
+     minMax = ut.findMaximumAndMinimum(hMC['normlowMass'+x])
+     if minMax[1]>nMax:  nMax = minMax[1]
+   histo.SetMarkerStyle(33)
+   histo.SetMarkerColor(ROOT.kMagenta)
+   histo.SetLineColor(ROOT.kMagenta)
+   histo.SetMaximum(nMax*1.1)
+   histo.DrawCopy()
+   hData['LDY']=ROOT.TLegend(0.5,0.6,0.9,0.8)
+   rc = hData['LDY'].AddEntry(histo,'Data','PL')
+   txt = {'0':'no DY','2':'nominal DY','4':'2xnominal DY'}
+   for x in X: 
+      hMC['normlowMass'+x].Draw('samehist')
+      rc = hData['LDY'].AddEntry(hMC['normlowMass'+x],'MC '+txt[x],'PL')
+   hData['LDY'].Draw('same')
+   myPrint(hMC['dataAndMC1'],'DrellYan-data-And-MC-'+fitMethod)
+# add MC normalized to same integral 0.8 - 1.8
+   ut.bookCanvas(hMC,'dataAndMC2',' ',1200,900,1,1)
+   hMC['dataAndMC2'].cd(1)
+   nMax = ut.findMaximumAndMinimum(histo)[1]
+   iData = float(histo.Integral(histo.FindBin(0.8),histo.FindBin(1.8)))
+   fac = {}
+   for x in X:
+     hMC['normIlowMass'+x]=hMC['lowMass'+x].Clone('normIlowMass'+x)
+     fac[x] = iData / hMC['normIlowMass'+x].Integral(histo.FindBin(0.8),histo.FindBin(1.8))
+     hMC['normIlowMass'+x].Scale(fac[x])
+     bw = hMC['normIlowMass'+x].GetBinWidth(1)
+     for n in range(1,hMC['normlowMass'+x].GetNbinsX()+1):
+        x1 = hMC['normIlowMass'+x].GetBinLowEdge(n)
+        x2 = x1+bw
+        S = hMC['signal'].Integral(x1,x2)/bw
+        hMC['normIlowMass'+x].SetBinContent(n,hMC['normIlowMass'+x].GetBinContent(n)+S)
+     minMax = ut.findMaximumAndMinimum(hMC['normIlowMass'+x])
+     if minMax[1]>nMax:  nMax = minMax[1]
+   histo.SetMaximum(nMax*1.1)
+   hData['L2DY']=ROOT.TLegend(0.5,0.6,0.9,0.8)
+   rc = hData['L2DY'].AddEntry(histo,'Data','PL')
+   txt = {'0':'no DY','2':'nominal DY','4':'2xnominal DY'}
+   histo.DrawCopy()
+   for x in X: 
+      hMC['normIlowMass'+x].Draw('samehist')
+      rc = hData['L2DY'].AddEntry(hMC['normIlowMass'+x],'MC %s norm=%5.2F'%(txt[x],fac[x]/(dataStats/MCStats['10GeV'])),'PL')
+   hData['L2DY'].Draw('same')
+   myPrint(hMC['dataAndMC2'],'DrellYan-data-And-MC-2'+fitMethod)
+#  a*hMC['lowMass0'] + b*DYfactor*hMC["hDY0"] + signal
+#  replace hDY0 with scaled distribution
+   if weighted:
+     if not hMC.has_key('DY'): loadNtuples()
+     PDFs()
+     hMC["hDY0"] = hMC['MDYscaled'].ProjectionX("DYscaled")
+   hMC['dataAndMC2'].cd(1)
+   npar = 2
+   gMinuit = ROOT.TMinuit(npar)
+   gMinuit.SetMaxIterations(100000)
+   gMinuit.SetFCN(fcn)
+   vstart  = array('d',[0.8,4.])
+   step    = array('d',[0.1,0.1])
+   ierflg  = ctypes.c_int()
+   name = [ROOT.TString("mbias"),ROOT.TString("DY")]
+   for i in range(npar): gMinuit.mnparm(i, name[i], vstart[i], step[i], 0.,0.,ierflg)
+   gMinuit.mnexcm("SIMPLEX",vstart,npar,ierflg)
+   gMinuit.mnexcm("MIGRAD",vstart,npar,ierflg)
+   a = ctypes.c_double()
+   b = ctypes.c_double()
+   ae = ctypes.c_double()
+   be = ctypes.c_double()
+   gMinuit.GetParameter(0,a,ae)
+   gMinuit.GetParameter(1,b,be)
+   print "RESULT:",abs(a.value), abs(b.value)
+   norm = dataStats/MCStats['10GeV']
+   hMC['test'] = hMC['lowMass0'].Clone('test')
+   hMC['test'].Reset()
+   hMC['test'].Add(hMC['lowMass0'],norm*a.value)
+   hMC['test'].Add(hMC["hDY0"],    norm*DYfactor*b.value)
+   hMC['test'].SetLineColor(ROOT.kGray+1)
+   hMC['test'].SetMarkerStyle(23)
+   hMC['test'].SetMarkerColor(ROOT.kGray+1)
+   hMC['test'].SetMinimum(0)
+   hMC['test'].Draw()
+   hMC['testDY'] = hMC["hDY0"].Clone('testDY')
+   hMC['testDY'].Scale(norm*DYfactor*b.value)
+   hMC['testDY'].SetLineColor(ROOT.kOrange-7)
+   hMC['testDY'].SetMarkerColor(ROOT.kOrange-7)
+   hMC['testDY'].SetMarkerStyle(4)
+   hMC['testDY'].Draw('same')
+   hData['M'].Draw('same')
+   hMC['lowMass'].Draw('same')  # low mass part of signal fit
+   hMC['signal'].Draw('same')   # signal part of signal fit
+   T = ROOT.TLatex() 
+   if fitMethod=='B':  tmp = norm_twoBukin(CB)
+   if fitMethod=='CB': tmp = norm_twoCB(hData["fitResult"])
+   T.DrawLatex(2.5,1700.,"mbias scaled by     %5.2F #pm %5.2F "%(a.value,ae.value))
+   T.DrawLatex(2.5,1400.,"Drell-Yan scaled by %5.2F #pm %5.2F "%(b.value/DYfactor4NA50,be.value/DYfactor4NA50)) # relative to nominal, adjusted to NA50
+   T.DrawLatex(1.73,2242.,"N_{low\, mass}:%5.1F\pm%5.1F"%(tmp[0][0],tmp[0][1])) 
+   T.DrawLatex(2.5,2500.,"N_{J/\Psi}:  %5.1F\pm%5.1F"%(tmp[1][0],tmp[1][1]))
+   oname = 'DrellYan-data-And-MC-adjusted'+fitMethod
+   if weighted: oname=oname+'_w'
+   myPrint(hMC['dataAndMC2'],oname)
+   for x in hData['FitYield']: print hData['FitYield'][x]
+
+def fcn(npar, gin, f, par, iflag):
+#calculate chisquare
+    bw = hMC['lowMass0'].GetBinWidth(1)
+    chisq  = 0
+    #print "fcn called",par[0],par[1]
+    norm = dataStats/MCStats['10GeV']
+    for n in range(12,50):
+       if hData['M'].GetBinContent(n)<500. : continue
+       x1 = hMC['lowMass0'].GetBinLowEdge(n)
+       x2 = x1+bw
+       S = hMC['signal'].Integral(x1,x2)/bw
+       N = S + norm*(par[0]*hMC['lowMass0'].GetBinContent(n) + par[1]*DYfactor*hMC["hDY0"].GetBinContent(n))
+       dN = hData['M'].GetBinContent(n)-N
+       errSq = hData['M'].GetBinError(n)**2+norm**2*((par[0]*hMC['lowMass0'].GetBinError(n))**2+(par[1]*DYfactor*hMC["hDY0"].GetBinError(n))**2)
+       chisq += (dN)**2/errSq
+    f[0] = chisq
+    #print "return",f[0]
+    return
+
+def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
+   ROOT.gStyle.SetOptStat(0)
+   X = {'1':ROOT.kBlack,'3':ROOT.kAzure+2,'4':ROOT.kMagenta+2,'13':ROOT.kRed+1,'17':ROOT.kGreen-2}
+   S = {'1':33,'3':23,'4':22,'13':29,'17':34}
+   for x in X:
+       p='pdf'+x
+       hMC[p]={}
+       ut.readHists(hMC[p],'/eos/experiment/ship/user/truf/muflux-sim/pythia8/pythia8_PDFpset'+x+'_Emin0.5.root')
+       for n in ['p','n']:
+          h['y'+x+'_'+n] = hMC[p]['M_'+n].ProjectionY('y'+x+'_'+n)
+          h['y'+x+'_'+n].Scale(1./h['y'+x+'_'+n].GetSumOfWeights())
+          h['y'+x+'_'+n].SetLineColor(X[x])
+          h['y'+x+'_'+n].SetMinimum(0)
+          h['y'+x+'_'+n].SetMarkerStyle(S[x])
+          h['y'+x+'_'+n].SetMarkerColor(X[x])
+          yaxis = h['y'+x+'_'+n].GetXaxis()
+          if inYrange:
+            ymin = yaxis.FindBin(0.3)
+            ymax = yaxis.FindBin(2.0)
+          else:
+            ymin = 1
+            ymax = yaxis.GetNbins()
+          h['M'+x+'_'+n] = hMC[p]['M_'+n].ProjectionX('M'+x+'_'+n,ymin,ymax)
+          h['M'+x+'_'+n].Scale(1./h['M'+x+'_'+n].GetSumOfWeights())
+          h['M'+x+'_'+n].SetLineColor(X[x])
+          h['M'+x+'_'+n].SetMarkerStyle(S[x])
+          h['M'+x+'_'+n].SetMarkerColor(X[x])
+          h['M'+x+'_'+n].GetXaxis().SetRangeUser(0.,5.)
+# xsec
+          Nuu = hMC[p]['M_'+n].GetEntries()
+          if hMC[p]['xsec_'+n].GetBinContent(2)<1:
+                Npot = 10**(int(ROOT.TMath.Log10(Nuu)))*10 # npot not stored
+          else: Npot = hMC[p]['xsec_'+n].GetBinContent(2) 
+          fudgefac = Nuu/Npot 
+# NA50 range
+          xax = hMC[p]['cosCSJpsi_'+n].GetXaxis()
+          yax = hMC[p]['cosCSJpsi_'+n].GetYaxis()
+          Mmin = xax.FindBin(-0.5)
+          Mmax = xax.FindBin(0.5)
+          Ymin = yax.FindBin(-0.425)
+          Ymax = yax.FindBin(0.575)
+          tmp  = hMC[p]['cosCSJpsi_'+n].ProjectionX('M',Ymin,Ymax)
+          xNA50 = tmp.Integral(Mmin,Mmax)/Npot
+          totalX = hMC[p]['xsec_'+n].GetBinContent(1)
+          print "%s %s %5.2F nb   %5.2F pb "%(x,n,totalX*1E6*fudgefac,totalX*xNA50*1E9)
+
+   ut.bookCanvas(h,'yPDF','yPDF',1800,1200,2,2)
+   j=1
+   for c in ['M','y']:
+    for n in ['p','n']:
+      tc = h['yPDF'].cd(j)
+      if c=='M': tc.SetLogy(1)
+      h[c+'1_'+n].Draw()
+      h['L'+c+n]=ROOT.TLegend(0.14,0.17,0.42,0.32)
+      for x in X: 
+        h[c+x+'_'+n].Draw('same')
+        rc = h['L'+c+n].AddEntry(h[c+x+'_'+n],n+' PDF set '+x,'PL')
+      h['L'+c+n].Draw('same')
+      j+=1
+   yaxis = hMC['pdf4']['M_p'].GetYaxis()
+   ymin = yaxis.FindBin(0.2)
+   ymax = yaxis.FindBin(2.0)
+   myPrint(h['yPDF'],'PDFcomparison')
+   A = hMC['pdf4']['M_p'].ProjectionX('4M',ymin,ymax)
+   A.Add(hMC['pdf4']['M_n'].ProjectionX('4Mn',ymin,ymax))
+   A.Scale(1./A.GetSumOfWeights())
+   B = hMC['pdf13']['M_p'].ProjectionX('13M',ymin,ymax)
+   B.Add(hMC['pdf13']['M_n'].ProjectionX('13Mn',ymin,ymax))
+   B.Scale(1./B.GetSumOfWeights())
+   h['scalePDFM']=A.Clone('scalePDFM')
+   h['scalePDFM'].Divide(B)
+   A = hMC['pdf4']['M_p'].Project3D('xy')
+   A.Add(hMC['pdf4']['M_n'].Project3D('xy'))
+   A.Scale(1./A.GetSumOfWeights())
+   A.SetName('4xy')
+   B = hMC['pdf13']['M_p'].Project3D('xy')
+   B.Add(hMC['pdf13']['M_n'].Project3D('xy'))
+   B.Scale(1./B.GetSumOfWeights())
+   B.SetName('13xy')
+   h['scalePDFMY']=A.Clone('scalePDFMY')
+   h['scalePDFMY'].Divide(B)
+#
+   ut.bookHist(hMC, 'MDY',       ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hMC, 'trueMDY',   ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+   ut.bookHist(hMC, 'MDYscaled', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2],100,0.,5.)
+   y_beam = yBeam()
+   for nt in hMC['DY']:
+       if not nt.mult<3: continue
+       if not max(nt.pt1cor,nt.pt2cor)>ptCut: continue
+       if not nt.chi21*nt.chi22<0: continue
+       if not max(abs(nt.chi21),abs(nt.chi22))<0.9: continue
+       if not min(nt.p1,nt.p2)>pMin: continue
+       if not max(nt.p1,nt.p2)<pMax: continue
+       if not abs(nt.cosCScor)<0.5: continue
+       nenner = ROOT.TMath.Sqrt(nt.pcor*nt.pcor+3.0969*3.0969)+ROOT.TMath.Sqrt(nt.pcor*nt.pcor-nt.ptcor*nt.ptcor)
+       zahler = ROOT.TMath.Sqrt(nt.pcor*nt.pcor+3.0969*3.0969)-ROOT.TMath.Sqrt(nt.pcor*nt.pcor-nt.ptcor*nt.ptcor)
+       y = 0.5*ROOT.TMath.Log(nenner/zahler)-y_beam
+       if y<0.2 or y>2.0: continue
+       if muID==2:
+          if nt.muID1!=111 or nt.muID2!=111 : continue
+       elif muID==1:
+          if nt.muID1!=111 and nt.muID2!=111 : continue
+       else:
+          print "this muonID is not supported",muID
+          1/0
+       rc = hMC['MDY'].Fill(nt.mcor)
+       P1 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
+       P2 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
+       L = P1+P2
+       m = L.M()
+       if m<0.49: continue
+       ycm = L.Rapidity()-y_beam
+       rc = hMC['trueMDY'].Fill(m)
+       mbin = h['scalePDFMY'].GetXaxis().FindBin(m)
+       ybin = h['scalePDFMY'].GetYaxis().FindBin(ycm)
+       w    = h['scalePDFMY'].GetBinContent(ybin,mbin)
+       if w<1E-6: w=1
+       rc   = hMC['MDYscaled'].Fill(nt.mcor,w,w)
+
+def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,DYxsec=1.,weighted=True):
    ut.bookHist(hMC, 'M',   ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MSS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MOS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
@@ -7185,6 +7704,8 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False):
    NoppSignMC =  hMC['10GeV'].Draw('mcor>>M',theCutOS)
    hMC['MDrell Yan']=hMC['M'].Clone('MDrell Yan')
    NDY = hMC['DY'].Draw('mcor>>MDrell Yan',theCutOS)
+   hMC['Mcharm']=hMC['M'].Clone('Mcharm')
+   NCharm2 = hMC['Charm2'].Draw('mcor>>Mcharm',theCutOS)
    print "same sign rate, Data:",NsameSign/float(NsameSign+NoppSign)," MC:",NsameSignMC/float(NsameSignMC+NoppSignMC)
    MCorigin = {'ss':{},'os':{}}
    tchannel =            {1:"Decay",
@@ -7208,6 +7729,7 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False):
        if max(nt.pt1cor,nt.pt2cor)<ptCut: continue
        if abs(nt.chi21)>0.9 or abs(nt.chi22)>0.9: continue
        if nt.muID1!=111 or nt.muID2!=111 : continue
+       if nt.procID2 in [5,6] or nt.procID in [5,6]: continue #handled separately
        c='os'
        if nt.chi21*nt.chi22>0: c = 'ss'
        if c=='ss': rc = hMC['MSS'].Fill(nt.mcor)
@@ -7234,14 +7756,22 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False):
               hMC[hname].Reset()
        MCorigin[c][key]+=1
        if c=='os': rc = hMC[hname].Fill(nt.mcor)
-   # drell yan, 49*10000 events simulated. Cross section total = 69nb
+   # drell yan, 49*10000 events simulated. Cross section total = 69nb into mumum
    # Mo inelastic cross section 10.5mb
    # 10GeV MC = 66.02E9 pot
-   # scale factor for 10GeV stats = 66.02E9/(49*20E3+2*49*10E3-20E3) * 69E-6/10.5 
-   DYfactor = 66.02E9/1940000  * 69E-6/10.5  
-   MCorigin['os']['Drell Yan'] = NDY * DYfactor
+   # scale factor for 10GeV stats = 66.02E9/(49*20E3+2*49*10E3-20E3) * 69E-6/10.5
+   if weighted:
+     if not hMC.has_key('DY'): loadNtuples()
+     PDFs(pMin,pMax,ptCut,muID,BDTCut)
+     hMC["MDrell Yan"] = hMC['MDYscaled'].ProjectionX('MDrell Yan')
+     NDY = hMC['MDrell Yan'].GetSumOfWeights()
+   MCorigin['os']['Drell Yan'] = NDY * DYfactor * DYxsec
    hMC['MDrell Yan'].Scale(DYfactor)
    hMC['MOS'].Add(hMC['MDrell Yan'])
+   Charmfactor = MCStats['10GeV']/(3 * 80002560/2 / 1.7E-3)
+   MCorigin['os']['charm'] = NCharm2 * Charmfactor
+   hMC['Mcharm'].Scale(Charmfactor)
+   hMC['MOS'].Add(hMC['Mcharm'])
    hMC['sorted_list'] = sorted(MCorigin['os'].items(), key=operator.itemgetter(1),reverse=True)
    sorted_list = hMC['sorted_list']
    for s in sorted_list:
@@ -7327,7 +7857,8 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False):
        hMC[x].Draw('psame')
        rc = hMC['LSOU'].AddEntry(hMC[x],x[1:],'PL')
    hMC['LSOU'].Draw('same')
-   myPrint(hMC['TM'],'Fig-SameSignSources')
+   tag = 'muID'+str(muID)+str(ptCut)+'_'+str(pMin)
+   myPrint(hMC['TM'],'Fig-OppSignSources_'+tag)
    return MCorigin
 def AnalysisNote_JpsiMassResolution(ptCut=1.0,pmin=20.0,muID=1,BDTCut=False):
    prods       = {'P8':hMC['JpsiP8'],'P6':hMC['Jpsi']}
@@ -8784,7 +9315,8 @@ def repeatFit(X):
    maxX = 8.0
    params,funTemplate = getFitDictionary(fitMethod)
    CB = ROOT.TF1(fitMethod,funTemplate['F'],0,10,funTemplate['N'])
-   hFun = X.GetFunction("Fun"+hname)
+   hFun = X.GetFunction(hname.replace(fitMethod,"Fun"+fitMethod))
+   funTemplate['Init'](CB,hFun.GetParameter(0))
    for j in range(funTemplate['N']): 
      CB.SetParameter(j,hFun.GetParameter(j))
      CB.SetParError(j,hFun.GetParError(j))
@@ -8793,7 +9325,7 @@ def repeatFit(X):
    rc = X.Fit(CB,fitOption,'',minX,maxX)
    fitResult = rc.Get()
    fitResult.MinFcnValue()
-   return fitResult
+   return fitResult,CB
 
 ###########################################################
 if options.command=='MufluxReco':
