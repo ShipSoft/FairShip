@@ -22,10 +22,16 @@ dataStats      = 324.75E9
 simpleEffCorMu = 0.021
 simpleEffCor   = 0.024
 
-DYfactor = MCStats['10GeV']/1940000 * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4, rescaled mass distribution
+DYfactor = MCStats['10GeV']/(20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4, rescaled mass distribution
 #DYfactor = MCStats['10GeV']/1940000 * (42*73.0+(96-42)*66.2)/96.*1E-6/10.5 # adjusted for PDF set 13
-# mumu factor missing?
-DYfactor4NA50 = 1.55
+DYfactor4NA50 = 1.51
+
+# counting primary interactions
+Charmfactor = MCStats['10GeV']/(6 * 17366229. / 1.7E-3)
+
+NA50crossSection = [3.994,0.148]
+lumi    = 30.7 # pb-1
+elumi   = 0.7
 
 mcSysError = 0.03
 daSysError = 0.021
@@ -64,7 +70,7 @@ parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default=
 parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="final") # other versions: "0", "multHits", "noDeadChannels", "withDeadChannels"
 parser.add_argument("-A", "--with1GeV",  dest="with1GeV", help="1GeV MC",              default="False")
 parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC",       default="False")
-parser.add_argument("-X", "--withcharm2", dest="withCharm2", help="coherent charm",       default="False")
+parser.add_argument("-X", "--withcharm2", dest="withCharm2", help="coherent charm",    default="False")
 parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC",            default="False")
 parser.add_argument("-D", "--withData",  dest="withData", help="use default data set", default="False")
 parser.add_argument("-J", "--withJpsi",  dest="withJpsi", help="use Jpsi data set",    default="False")
@@ -181,25 +187,9 @@ if not options.listOfFiles:
             fname = "ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT_mu.root"
             sTreeMC.Add(path+fname)
     if withDrellYan:
-        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX"
-        for k in range(101,150):
-            fname = path.replace('XXX',str(k))+"/ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
-            try:
-                test = ROOT.TFile.Open(fname)
-                if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-            except:
-                print "file not found",fname
-                continue
-        for k in range(301,350):
-            fname = path.replace('XXX',str(k))+"/ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
-            try:
-                test = ROOT.TFile.Open(fname)
-                if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
-            except:
-                print "file not found",fname
-                continue
-        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX"
-        for k in range(151,200):
+        path = os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/DrellYan/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX"
+        for k in range(401,600):
+            if k==500: continue
             fname = path.replace('XXX',str(k))+"/ntuple-pythia8_Geant4_"+str(k)+"_10.0_dig_RT.root"
             try:
                 test = ROOT.TFile.Open(fname)
@@ -208,9 +198,12 @@ if not options.listOfFiles:
                 print "file not found",fname
                 continue
     if withCharm2:
-        path ={0:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX"}
-        path ={1:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX"}
-        path ={2:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX"}
+        path ={0:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+               1:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               2:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               3:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               4:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               5:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX"}
         for cycle in path:
           for run in range(0,20):
              for k in range(10):
@@ -275,6 +268,7 @@ def printPads(c1,ytitle=None,nr=False):
           if name in B: continue
           else: B.append(name)
           clone = p.Clone()
+          opt = p.GetDrawOption()
           if p.ClassName().find('TH')==0: opt = drawOption
           newpad.GetListOfPrimitives().Add(clone,opt)
           if p.ClassName().find('TH')==0 and drawOption=='':drawOption='same'
@@ -2428,44 +2422,23 @@ def myDraw(variable,cut,ntName='10GeV',DYxsec=1.):
  if ntName!='10GeV':
     hMC[ntName].Draw(variable,cut)
     return
- hMC[ntName].Draw(variable,cut+"&&(procID2<4||procID2>5)")   # exclude charm
-# charm
- Charmfactor = MCStats['10GeV']/(3 * 80002560./2. / 1.7E-3)
- # better limit number of events, scale to 2x Pythia8 cross section.
- nmax = int(hMC['Charm2'].GetEntries() * Charmfactor)
- if not hMC.has_key('Charm'+histo): hMC['Charm'+histo]=hMC[histo].Clone('Charm'+histo)
- hMC['Charm2'].Draw(variable.replace(">>",">>+"),cut,"",nmax)
- hMC['Charm2'].Draw(var+">>Charm"+histo,cut)
-
-# Drell Yan
- y_beam = yBeam()
+ hMC[ntName].Draw(variable,cut+"&&(procID2<4||procID2>6)")   # exclude charm
  var   = variable.split('>>')[0]
  histo = variable.split('>>')[1]
- if not hMC.has_key('rawDY'+histo): 
-        hMC['DY'+histo]=hMC[histo].Clone('rawDY'+histo)
-        hMC['DY'+histo]=hMC[histo].Clone('DY'+histo)
-# make eventlist
- eL = ROOT.TEventList("DYEventList")
- hMC['DY'].Draw(">>DYEventList",cut+"&&abs(nt.p1x-nt.p2x)>0.00001") # remove clones, bad for reweighting
- hMC['DY'].SetEventList(eL)
- hMC['DY'].Draw(var+">>rawDY"+histo)
-# requires reweighting
- nt = hMC['DY']
- if not hMC.has_key('scalePDFMY'): PDFs()
- for n in range(eL.GetN()):
-   nt.GetEvent(eL.GetEntry(n))
-   P1 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
-   P2 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
-   L = P1+P2
-   m = L.M()
-   ycm = L.Rapidity()-y_beam
-   mbin = hMC['scalePDFMY'].GetXaxis().FindBin(m)
-   ybin = hMC['scalePDFMY'].GetYaxis().FindBin(ycm)
-   w    = hMC['scalePDFMY'].GetBinContent(ybin,mbin)
-   if w<1E-6: w=1
-   rc   = hMC['DY'+histo].Fill(nt.mcor,w)
+# charm
+ if not hMC.has_key('Charm'+histo): hMC['Charm'+histo]=hMC[histo].Clone('Charm'+histo)
+ charmCut = cut+""
+ hMC['Charm2'].Draw(var+">>Charm"+histo,charmCut)
+ if DYxsec>0.0:
 # now add distribution to lowMass with correct normalization
- hMC[histo].Add(hMC['DY'+histo],DYfactor * DYxsec)
+    hMC[histo].Add(hMC['Charm'+histo],Charmfactor)
+# Drell Yan
+ if not hMC.has_key('DY'+histo): hMC['DY'+histo]    = hMC[histo].Clone('DY'+histo)
+ DYCut = cut+""
+ hMC['DY'].Draw(var+">>DY"+histo,DYCut)
+ if DYxsec>0.0: 
+# now add distribution to lowMass with correct normalization
+    hMC[histo].Add(hMC['DY'+histo],DYfactor * DYxsec)
  # too complicated to combine 1GeV
  # hMC['10GeV'].Draw(variable,str(hMC['weights']['1GeV'])+'*('+cut+')')
  # hMC['10eV'].Draw(variable.replace(">>",">>+"),str(hMC['weights']['1GeV'])+'*('+cut+')')
@@ -2498,7 +2471,7 @@ def loadNtuples(BDT='BDT-',ext='_mu',eos=False):
   hMC['fJpsiP8_Primary']   = ROOT.TFile.Open(simpath+'Jpsi-Pythia8_21788000000_0-3074.root')
   hMC['fJpsiP8_PrimaryMu'] = ROOT.TFile.Open(simpath+'Jpsi-Pythia8_385000000_10000-11000.root')
   hMC['fJpsiCascade']      = ROOT.TFile.Open(simpath+'cascade_MSEL61_20M.root')
-  hMC['fDY']               = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_DrellYan_refit.root')
+  hMC['fDY']               = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_DrellYanPDF4_refit.root')
   hMC['fCharm2']           = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_10GeVCharm2_refit.root')
   # hMC['fJpsiCascade'] needs to be scaled by 0.9375, since 1 file not being used in simulation, fixed in reprocessing
   hMC['scalingFactor']={}
@@ -2750,6 +2723,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
    if BDTCut: tag += '_BDT'
    if withWeight: tag += '_wp6'
    os.chdir(topDir)
+   print "debug ---",tag,os.path.isdir(tag)
    if not os.path.isdir(tag): os.system('mkdir '+tag)
    os.chdir(tag)
 
@@ -3131,11 +3105,11 @@ def JpsiFitComparison(proj = 'ycor1C',ptCut=0.0,pmin=20.,BDTCut=None):
                  results['B'][yrange][p][0],results['B'][yrange][p][1],pull)
           print txt
 
-def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=1.0,pmin=20.,BDTCut=None,muID=1,withWeight=True,DYxsec=None):
+def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=1.0,pmin=20.,BDTCut=None,muID=1,withWeight=True,DYxsec=1.0):
    unit={'ycor1C':'y_{cm}'}
    if muID < 0: tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
    else:        tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)
-   if DYxsec:   tag+='_DY'+str(DYxsec)
+   tag+='_DY'+str(DYxsec)
    if BDTCut: tag += '_BDT'
    if withWeight: tag += '_wp6'
    print tag
@@ -3342,14 +3316,114 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=
       hMC['norm-'+hd].Draw()
       hMC['norm-'+hp].Draw('same')
    myPrint(hMC['norm-'+lName],'DataWithLowMassMC-'+tag+'_'+proj)
-def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=1,withWeight=True):
+
+def JpsiSysIncludingDY(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,dyMean=2.0):
+   formating='5.3F'
+   tmplate = 'muID'+str(muID)+'_'+'XXX-'+str(ptCut)+'_'+str(pmin)+'_DY'+str(dyMean)
+   if BDTCut: tmplate += '_BDT'
+   if withWeight: tmplate += '_wp6'
+
+   hData['results'] = {}
+   dyRange = [0.0,1.0,2.0,4.0]
+   for dy in dyRange:
+      hData['results'][dy] =  JpsiAcceptanceSys(ptCut,pmin,BDTCut,muID,withWeight,DYxsec=dy)
+   fitMethod = 'B'
+   keys = hData['results'][0.0]["xSec"]['av'+fitMethod].keys()
+   keys.sort()
+   print "    bin        xsec   stat   sys   newsys      xsec0  xsec1  xsec4 "
+   newSys={}
+   for k in keys:
+     xsec={}
+     for dy in dyRange:
+         R = hData['results'][dy]["xSec"]['av'+fitMethod][k]
+         xsec[dy] = [R[2],R[3],R[4]]
+     txt = "%3.2F - %3.2F : %"+formating+"  %"+formating+"  %"+formating+"  %"+formating+"       %"+formating+"  %"+formating+"  %"+formating
+     newSys[k] = abs(xsec[1.0][0]-xsec[4.0][0])/4.
+     print txt%(R[0],R[1],xsec[dyMean][0],xsec[dyMean][1],xsec[dyMean][2],newSys[k],xsec[0.0][0],xsec[1.0][0],xsec[4.0][0])
+#
+   tag = tmplate.replace('XXX',fitMethod)
+   f = ROOT.TFile(tag+'/data_YieldsEffCorrectedWithNA50.root')
+   ut.bookCanvas(hMC,'Final',' ',1200,900,1,1)
+   hMC['dummy']=f.Get('dummy').Clone('dummy')
+   ROOT.gROOT.cd()
+   for x in hMC['dummy'].GetListOfPrimitives():
+      if x.ClassName().find('TH1')<0: continue
+      hMC[x.GetName()] = hMC['dummy'].FindObject(x.GetName()).Clone(x.GetName())
+   hMC['B_ycor1C-Jpsi_effCorrected_average']=hMC['B_ycor1C-Jpsi_effCorrected_P8prim'].Clone('B_ycor1C-Jpsi_effCorrected_average')
+   hMC['B_ycor1C-Jpsi_effCorrected_average'].Reset()
+   av = hMC['B_ycor1C-Jpsi_effCorrected_average']
+   av.SetTitle(';y_{CMS};#sigma nb/%4.2F'%(av.GetBinWidth(1)))
+   print 'Cross section results'
+   integratedNumber = [0,0,0]
+   Ilow = 0.35
+   Imax = 0.65
+   j=1
+   for k in keys:
+       R = hData['results'][2.0]["xSec"]['av'+fitMethod][k]
+       binMin,binMax = R[0],R[1]
+       Xsec = R[2]
+       statErrXsec = R[3]
+       sysErrXsec  = ROOT.TMath.Sqrt(R[4]**2+newSys[k]**2)
+       totalError  = ROOT.TMath.Sqrt(statErrXsec**2+sysErrXsec**2)
+       av.SetBinContent(j,Xsec)
+       av.SetBinError(j,totalError)
+       NXsecNA50   = R[5]
+       EXsecNA50   = R[6]
+       ratio       = (Xsec/NXsecNA50)
+       ratioError  = ROOT.TMath.Sqrt(  (statErrXsec**2+sysErrXsec**2)/NXsecNA50**2  + ratio**2*EXsecNA50**2/NXsecNA50**2   )
+       print '%5.2F - %5.2F | %5.2F +/- %5.2F +/-%5.2F | %5.2F +/-%5.2F'%(av.GetBinLowEdge(j),av.GetBinLowEdge(j)+av.GetBinWidth(j),Xsec*1000,statErrXsec*1000,sysErrXsec*1000,ratio,ratioError)
+       if  binMax>Ilow and binMax<Imax :
+            integratedNumber[0]+=Xsec
+            integratedNumber[1]+=statErrXsec**2
+            integratedNumber[2]+=sysErrXsec**2
+       j+=1
+   frac = hMC['etaNA50'].Integral(0.3,0.6)/hMC['etaNA50'].Integral(-0.425,0.575)
+   NXsecNA50 = frac * NA50crossSection[0]
+   EXsecNA50 = frac * NA50crossSection[1]
+   print "integrated result %5.2F - %5.2F | %5.2F +/- %5.2F +/-%5.2F | NA50 %5.2F +/-%5.2F"%(Ilow,Imax,integratedNumber[0],
+         ROOT.TMath.Sqrt(integratedNumber[1]),ROOT.TMath.Sqrt(integratedNumber[2]),NXsecNA50,EXsecNA50)
+   for x in ['Y_Cascade_scaled','Y_P8prim_scaled']:
+     hMC[x].SetStats(0)
+     hMC[x].Scale(1./(lumi*1000.))
+   crossSection = 3.994
+   hMC['etaNA50'].SetParameter(0,1.)
+   norm = hMC['etaNA50'].Integral(-0.425,0.575)
+   hMC['etaNA50'].SetParameter(0,crossSection/norm*av.GetBinWidth(1))
+   av.SetMaximum(0.9)
+   av.SetMinimum(0.001)
+   av.SetLineWidth(2)
+   av.SetMarkerStyle(20)
+   av.SetLineColor(ROOT.kBlue)
+   av.SetMarkerColor(ROOT.kBlue)
+   av.SetStats(0)
+   tc = hMC['Final'].cd()
+   tc.SetLogy(1)
+   av.Draw()
+   hMC['Y_Cascade_scaled'].Draw('same')
+   hMC['Y_P8prim_scaled'].Draw('same')
+   hMC['etaNA50'].DrawF1(0.,2.0,'same')
+   hMC['Lfinal']=ROOT.TLegend(0.25,0.3,0.51,0.55)
+   hMC['Lfinal'].AddEntry( hMC["Y_P8prim_scaled"],'Pythia8 primary scaled','PL' )
+   hMC['Lfinal'].AddEntry( hMC["Y_Cascade_scaled"],'Pythia6 cascade scaled','PL' )
+   hMC['Lfinal'].AddEntry( av,'muflux measurement','PL' )
+   hMC['Lfinal'].AddEntry( hMC["etaNA50"],'NA50 parametrization','PL' )
+   hMC['Lfinal'].Draw()
+   hMC['Final'].Update()
+   myPrint(hMC['Final'],'FinalResultJpsi_'+tmplate)
+   myCopy('FinalResultJpsi_'+tmplate+'.png')
+   myCopy('FinalResultJpsi_'+tmplate+'.pdf')
+# max y for J/psi:
+   pz = 400.
+   E = ROOT.TMath.Sqrt(PDG.GetParticle(443).Mass()**2+pz**2)
+   print "max ycm for Jpsi =", rapidity(E,pz)-yBeam()
+
+def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,DYxsec=2.):
    formating='5.2F'
    hname = "data_YieldsEffCorrectedWithNA50.root"
    results = {}
    results["xSec"] = {}
    fM = ['CB', 'B', 'G'] #,'GE']
-   if muID < 0: tmplate = 'XXX-'+str(ptCut)+'_'+str(pmin)
-   else:        tmplate = 'muID'+str(muID)+'_'+'XXX-'+str(ptCut)+'_'+str(pmin)
+   tmplate = 'muID'+str(muID)+'_'+'XXX-'+str(ptCut)+'_'+str(pmin)+'_DY'+str(DYxsec)
    if BDTCut: tmplate += '_BDT'
    if withWeight: tmplate += '_wp6'
    for fitMethod in fM:
@@ -3409,10 +3483,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=1,withWeight=True):
    simpleEffCorMu = 0.021
    trackEffFudgeFactor = 1+2*simpleEffCorMu
    trackEffSysError    = 2*0.033
-   lumi    = 30.7 # pb-1
-   elumi   = 0.7
    epsilon = 0.01
-   NA50crossSection = [3.994,0.148]
    ybinWidth = 0.1
    formating='5.3F'
    Nsignal = {}
@@ -3471,6 +3542,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=1,withWeight=True):
           S.SetPoint(n,Nsignal[fitMethod][MC][i][0],1.)
           n+=1
      print "%3.2F - %3.2F :    MC: %5.2F  Data: %5.2F "%(binMin,binMax, results[tagB]['sysError'][i],S.GetRMS()/S.GetMean())
+   if 1>0:    return results
    fitMethod = 'B'
    tag = tmplate.replace('XXX',fitMethod)
    f = ROOT.TFile(tag+'/data_YieldsEffCorrectedWithNA50.root')
@@ -7320,9 +7392,9 @@ def myVertex(t1,t2,PosDir,xproj=False):
     Y = c.y()+v.y()*t
     Z = c.z()+v.z()*t
     return X,Y,Z,abs(dist)
-def studyDrellYan(fitMethod='B',weighted=True,withDY=False):
-   X =   {'0.0':ROOT.kBlack,'0.5':ROOT.kGreen,'1.0':ROOT.kBlue,'1.5':ROOT.kRed}
-   txt = {'0.0':'no DY',    '0.5':'0.5x DY','1.0':'nominal DY','1.5':'1.5x DY'}
+def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
+   X =   {'0.0':ROOT.kBlack,'1.0':ROOT.kGreen, '2.0':ROOT.kBlue,'4.0':ROOT.kRed}
+   txt = {'0.0':'no DY',    '1.0':'nominal DY','2.0':'2x DY','4.0':'4x DY'}
    hData['FitYield']={}
    hMC['dummy'].cd()
    for x in X:
@@ -7334,18 +7406,18 @@ def studyDrellYan(fitMethod='B',weighted=True,withDY=False):
      NJpsi  = hData['DY'+x]['B_ycor1C-Jpsi'].GetBinContent(19)
      eNJpsi = hData['DY'+x]['B_ycor1C-Jpsi'].GetBinError(19)
      hData['FitYield'][x]=[NJpsi,eNJpsi]
-     hMC['lowMass'+x]=hMC['DY'+x]['mc-B_ycor1CLowMass-10GeV'].ProjectionY('lowMass'+x)
+     hMC['lowMass'+x]  = hMC['DY'+x]['mc-B_ycor1CLowMass-10GeV'].ProjectionY('lowMass'+x)
+     hMC['highMass'+x] = hMC['DY'+x]['mc-B_ycor1CHighMass-Jpsi'].ProjectionY('highMass'+x)
+     hMC['Charm'+x]    = hMC['DY'+x]['Charmmc-B_ycor1CLowMass-10GeV'].ProjectionY('Charm'+x)
+     hMC["hDY"+x]      = hMC['DY'+x]['DYmc-B_ycor1CLowMass-10GeV'].ProjectionY("hDY"+x)
      hMC['lowMass'+x].SetLineColor(X[x])
      mctag =  'lowMass'+x
-     hMC['highMass'+x]=hMC['DY'+x]['mc-B_ycor1CHighMass-Jpsi'].ProjectionY('highMass'+x)
-     hMC['Charm'+x]=hMC['DY'+x]['Charmmc-B_ycor1CLowMass-10GeV'].ProjectionY('Charm'+x)
 # make fit
      fitOption='SL'
      minX = 0.5
      maxX = 8.0
      bw = hMC[mctag].GetBinWidth(1)
      params,funTemplate = getFitDictionary(fitMethod)
-     hMC["hDY"+x] = hMC['DY'+x]['DYmc-B_ycor1CLowMass-10GeV'].ProjectionY("hDY"+x)
      if withDY:
         hMC["GDYmctagk"]=None
         histo = hMC["hDY"+x]
@@ -7404,9 +7476,11 @@ def studyDrellYan(fitMethod='B',weighted=True,withDY=False):
         print "FIT  ERROR: ",mctag
         break
    ROOT.gStyle.SetOptStat(0)
-   hMC['lowMass1.5'].SetTitle('; GeV/c{2};N')
-   hMC['lowMass1.5'].Draw()
-   hMC['lowMass0.5'].Draw('same')
+   hMC['lowMass4.0'].SetTitle('; GeV/c{2};N')
+   hMC['lowMass4.0'].SetMinimum(0.)
+   hMC['lowMass4.0'].Draw()
+   hMC['lowMass1.0'].Draw('same')
+   hMC['lowMass2.0'].Draw('same')
    hMC['lowMass0.0'].Draw('same')
    myPrint(hMC['dummy'],'DrellYan-lowmass-'+fitMethod)
 # fix signal shape from MC
@@ -7500,77 +7574,70 @@ def studyDrellYan(fitMethod='B',weighted=True,withDY=False):
       rc = hData['LDY'].AddEntry(hMC['normlowMass'+x],'MC '+txt[x],'PL')
    hData['LDY'].Draw('same')
    myPrint(hMC['dataAndMC1'],'DrellYan-data-And-MC-'+fitMethod)
-# add MC normalized to same integral 0.8 - 1.8
+
+#  a*hMC['lowMass0'] + b*DYfactor*hMC["hDY0.0"] + c*Charmfactor*hMC["hCharm0.0"] + signal
+   hMC['dummy'].cd()
+   hMC["Ndy"] = hMC["hDY0.0"].Clone('Ndy')
+   hMC["Ndy"].Scale(1./hMC["hDY0.0"].GetSumOfWeights())
+   hMC["Ncharm"] = hMC["Charm0.0"].Clone('Ncharm')
+   hMC["Ncharm"].Scale(1./hMC["Charm0.0"].GetSumOfWeights())
+   colors = {}
+   colors['MDrell Yan']      =     [24,ROOT.kCyan]
+   colors['Mcharm'] =              [27,ROOT.kRed+3]
+   hMC["Ndy"].SetLineColor(colors['MDrell Yan'][1])
+   hMC["Ndy"].SetMarkerColor(colors['MDrell Yan'][1])
+   hMC["Ndy"].SetMarkerStyle(colors['MDrell Yan'][0])
+   hMC["Ncharm"].SetLineColor(colors['Mcharm'][1])
+   hMC["Ncharm"].SetMarkerColor(colors['Mcharm'][1])
+   hMC["Ncharm"].SetMarkerStyle(colors['Mcharm'][0])
+   hMC["Ndy"].Draw()
+   hMC["Ncharm"].Draw('same')
+   myPrint(hMC['dummy'],'DrellYanAndCharm_shape')
+
    ut.bookCanvas(hMC,'dataAndMC2',' ',1200,900,1,1)
    hMC['dataAndMC2'].cd(1)
-   nMax = ut.findMaximumAndMinimum(histo)[1]
-   iData = float(histo.Integral(histo.FindBin(0.8),histo.FindBin(1.8)))
-   fac = {}
-   for x in X:
-     hMC['normIlowMass'+x]=hMC['lowMass'+x].Clone('normIlowMass'+x)
-     fac[x] = iData / hMC['normIlowMass'+x].Integral(histo.FindBin(0.8),histo.FindBin(1.8))
-     hMC['normIlowMass'+x].Scale(fac[x])
-     bw = hMC['normIlowMass'+x].GetBinWidth(1)
-     for n in range(1,hMC['normlowMass'+x].GetNbinsX()+1):
-        x1 = hMC['normIlowMass'+x].GetBinLowEdge(n)
-        x2 = x1+bw
-        S = hMC['signal'].Integral(x1,x2)/bw
-        hMC['normIlowMass'+x].SetBinContent(n,hMC['normIlowMass'+x].GetBinContent(n)+S)
-     minMax = ut.findMaximumAndMinimum(hMC['normIlowMass'+x])
-     if minMax[1]>nMax:  nMax = minMax[1]
-   histo.SetMaximum(nMax*1.1)
-   hData['L2DY']=ROOT.TLegend(0.5,0.6,0.9,0.8)
-   rc = hData['L2DY'].AddEntry(histo,'Data','PL')
-   histo.DrawCopy()
-   for x in X: 
-      hMC['normIlowMass'+x].Draw('samehist')
-      rc = hData['L2DY'].AddEntry(hMC['normIlowMass'+x],'MC %s norm=%5.2F'%(txt[x],fac[x]/(dataStats/MCStats['10GeV'])),'PL')
-   hData['L2DY'].Draw('same')
-   myPrint(hMC['dataAndMC2'],'DrellYan-data-And-MC-2'+fitMethod)
-#  a*hMC['lowMass0'] + b*DYfactor*hMC["hDY0"] + signal
-#  replace hDY0 with scaled distribution
-   if weighted:
-     if not hMC.has_key('DY'): loadNtuples()
-     if not hMC['DY1.5'].has_key('MDYscaled'): 
-        PDFs()
-        hMC["hDY0"] = hMC['MDYscaled'].ProjectionX("DYscaled")
-     else:
-        hMC["hDY0"] = hMC["DY1.5"]['MDYscaled'].ProjectionX("DYscaled")
-   hMC['dataAndMC2'].cd(1)
-   npar = 2
+   npar = 3
    gMinuit = ROOT.TMinuit(npar)
    gMinuit.SetMaxIterations(100000)
    gMinuit.SetFCN(fcn)
-   vstart  = array('d',[0.8,4.])
-   step    = array('d',[0.1,0.1])
+   vstart  = array('d',[1.0,2.0,0.0])
+   step    = array('d',[0.1,0.1,0.1])
    ierflg  = ctypes.c_int()
-   name = [ROOT.TString("mbias"),ROOT.TString("DY")]
-   for i in range(npar): gMinuit.mnparm(i, name[i], vstart[i], step[i], 0.,0.,ierflg)
+   name = [ROOT.TString("mbias"),ROOT.TString("DY"),ROOT.TString("Charm")]
+   for i in range(npar): gMinuit.DefineParameter(i, name[i].Data(), vstart[i], step[i], 0.,10000.)
+   #gMinuit.FixParameter(0)
+   #gMinuit.FixParameter(1)
+   gMinuit.FixParameter(2)
    gMinuit.mnexcm("SIMPLEX",vstart,npar,ierflg)
-   gMinuit.mnexcm("MIGRAD",vstart,npar,ierflg)
-   a = ctypes.c_double()
-   b = ctypes.c_double()
-   ae = ctypes.c_double()
-   be = ctypes.c_double()
-   gMinuit.GetParameter(0,a,ae)
-   gMinuit.GetParameter(1,b,be)
-   print "RESULT:",abs(a.value), abs(b.value)
+   gMinuit.Migrad()
+   pars = {}
+   for i in range(3):
+     pars[i]=[ctypes.c_double(),ctypes.c_double()]
+     gMinuit.GetParameter(i,pars[i][0],pars[i][1])
+   print "RESULT:",pars[0][0].value, pars[1][0].value, pars[2][0].value
    norm = dataStats/MCStats['10GeV']
    hMC['test'] = hMC['lowMass0.0'].Clone('test')
    hMC['test'].Reset()
-   hMC['test'].Add(hMC['lowMass0.0'],norm*a.value)
-   hMC['test'].Add(hMC["hDY0"],    norm*DYfactor*b.value)
+   hMC['test'].Add(hMC['lowMass0.0'],norm*pars[0][0].value)
+   hMC['test'].Add(hMC["hDY0.0"],    norm*DYfactor*pars[1][0].value)
+   hMC['test'].Add(hMC["Charm0.0"],  norm*Charmfactor*pars[2][0].value)
    hMC['test'].SetLineColor(ROOT.kGray+1)
    hMC['test'].SetMarkerStyle(23)
    hMC['test'].SetMarkerColor(ROOT.kGray+1)
    hMC['test'].SetMinimum(0)
-   hMC['test'].Draw()
-   hMC['testDY'] = hMC["hDY0"].Clone('testDY')
-   hMC['testDY'].Scale(norm*DYfactor*b.value)
+   hMC['testDY'] = hMC["hDY0.0"].Clone('testDY')
+   hMC['testDY'].Scale(norm*DYfactor*pars[1][0].value)
    hMC['testDY'].SetLineColor(ROOT.kOrange-7)
    hMC['testDY'].SetMarkerColor(ROOT.kOrange-7)
    hMC['testDY'].SetMarkerStyle(4)
+   hMC['testCharm'] = hMC["Charm0.0"].Clone('testCharm')
+   hMC['testCharm'].Scale(norm*Charmfactor*pars[2][0].value)
+   hMC['testCharm'].SetLineColor(ROOT.kGreen-7)
+   hMC['testCharm'].SetMarkerColor(ROOT.kGreen-7)
+   hMC['testCharm'].SetMarkerStyle(27)
+   hMC['test'].Draw()
    hMC['testDY'].Draw('same')
+   hMC['testCharm'].Draw('same')
    hData['M'].Draw('same')
    hMC['lowMass'].Draw('same')  # low mass part of signal fit
    hMC['signal'].Draw('same')   # signal part of signal fit
@@ -7579,12 +7646,18 @@ def studyDrellYan(fitMethod='B',weighted=True,withDY=False):
    mHigh = 5.0 
    if fitMethod=='B':  tmp = norm_twoBukin(CB,im='',sLow=2.0,sHigh=mHigh,bLow=mLow,bHigh=mHigh)
    if fitMethod=='CB': tmp = norm_twoCB(hData["fitResult"],im='',sLow=2.0,sHigh=mHigh,bLow=mLow,bHigh=mHigh)
-   T.DrawLatex(2.5,1700.,"mbias scaled by     %5.2F #pm %5.2F "%(a.value,ae.value))
-   T.DrawLatex(2.5,1400.,"Drell-Yan scaled by %5.2F #pm %5.2F "%(b.value/DYfactor4NA50,be.value/DYfactor4NA50)) # relative to nominal, adjusted to NA50
+   T.SetTextSize(0.04)
+   T.DrawLatex(2.5,1700.,"mbias scaled by     %5.2F #pm %5.2F "%(pars[0][0].value,pars[0][1].value))
+   if pars[2][0].value != 0: 
+        T.DrawLatex(2.5,1200.,"Charm scaled by %5.2F #pm %5.2F "%(pars[2][0].value,pars[2][0].value))
+        T.DrawLatex(2.5,1450.,"Drell-Yan scaled by %5.2F #pm %5.2F "%(pars[1][0].value,pars[1][1].value))
+   else:
+        rCharm = 0.35
+        T.DrawLatex(2.5,1450.,"Charm + Drell-Yan scaled by %5.2F #pm %5.2F "%(pars[1][0].value-rCharm,pars[1][1].value))
+   T.SetTextSize(0.05)
    T.DrawLatex(1.73,2242.,"N_{low\, mass}:%5.1F\pm%5.1F"%(tmp[0][0],tmp[0][1])) 
    T.DrawLatex(2.5,2500.,"N_{J/\Psi}:  %5.1F\pm%5.1F"%(tmp[1][0],tmp[1][1]))
    oname = 'DrellYan-data-And-MC-adjusted'+fitMethod
-   if weighted: oname=oname+'_w'
    myPrint(hMC['dataAndMC2'],oname)
    for x in hData['FitYield']: print hData['FitYield'][x]
    sumData = hData['M'].Integral(hData['M'].FindBin(mLow),hData['M'].FindBin(mHigh))
@@ -7595,24 +7668,31 @@ def fcn(npar, gin, f, par, iflag):
 #calculate chisquare
     bw = hMC['lowMass0.0'].GetBinWidth(1)
     chisq  = 0
-    #print "fcn called",par[0],par[1]
+    # print "fcn called",par[0],par[1],par[2]
     norm = dataStats/MCStats['10GeV']
-    for n in range(12,50):
-       if hData['M'].GetBinContent(n)<500. : continue
+    for n in range(12,100):
+       if hData['M'].GetBinContent(n)<250. : continue
        x1 = hMC['lowMass0.0'].GetBinLowEdge(n)
        x2 = x1+bw
-       S = hMC['signal'].Integral(x1,x2)/bw
-       N = S + norm*(par[0]*hMC['lowMass0.0'].GetBinContent(n) + par[1]*DYfactor*hMC["hDY0"].GetBinContent(n))
+       S     = hMC['signal'].Integral(x1,x2)/bw
+       LM    = par[0]*hMC['lowMass0.0'].GetBinContent(n)
+       DY    = par[1]*DYfactor*hMC["hDY0.0"].GetBinContent(n)
+       Charm = par[2]*Charmfactor*hMC["Charm0.0"].GetBinContent(n)
+       # print "?",n,S,norm*abs(LM), norm*abs(DY),norm*abs(Charm)
+       N = S + norm*(abs(LM) + abs(DY) + abs(Charm))
        dN = hData['M'].GetBinContent(n)-N
-       errSq = hData['M'].GetBinError(n)**2+norm**2*((par[0]*hMC['lowMass0.0'].GetBinError(n))**2+(par[1]*DYfactor*hMC["hDY0"].GetBinError(n))**2)
+       errSq = hData['M'].GetBinError(n)**2+norm**2*(\
+           (par[0]*hMC['lowMass0.0'].GetBinError(n))**2+\
+           (par[1]*DYfactor*hMC["hDY0.0"].GetBinError(n))**2+\
+           (par[2]*Charmfactor*hMC["Charm0.0"].GetBinError(n))**2)
        chisq += (dN)**2/errSq
     f[0] = chisq
-    #print "return",f[0]
+    # print "return",f[0],par[0],par[1],par[2]
     return
 
 def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
-   X = {'1':ROOT.kBlack,'3':ROOT.kAzure+2,'4':ROOT.kMagenta+2,'13':ROOT.kRed+1,'17':ROOT.kGreen-2}
-   S = {'1':33,'3':23,'4':22,'13':29,'17':34}
+   X = {'1':ROOT.kBlack,'2':ROOT.kBlue+2,'3':ROOT.kAzure+2,'4':ROOT.kMagenta+2,'8':ROOT.kPink+8,'13':ROOT.kRed+1,'17':ROOT.kGreen-2}
+   S = {'1':33,         '2':43,          '3':23,           '4':22,             '8':39,          '13':29,         '17':34}
    mMax=0
    for n in ['p','n']:
       ut.bookHist(hMC,'xsecNA50_'+n,'xsec',100,0.0,100.)
@@ -7684,8 +7764,12 @@ def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
           tc.SetLogy(1)
           h[c+'1_'+n].SetMaximum(mMax*1.2)
       h[c+'1_'+n].Draw()
-      h['L'+c+n]=ROOT.TLegend(0.14,0.17,0.42,0.32)
-      for x in X: 
+      h['L'+c+n]=ROOT.TLegend(0.14,0.17,0.46,0.41)
+      xKeys = []
+      for x in X: xKeys.append(int(x)) 
+      xKeys.sort()
+      for y in xKeys:
+        x=str(y)
         h[c+x+'_'+n].Draw('same')
         rc = h['L'+c+n].AddEntry(h[c+x+'_'+n],n+' PDF set '+x,'PL')
       h['L'+c+n].Draw('same')
@@ -7753,7 +7837,7 @@ def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
        if w<1E-6: w=1
        rc   = hMC['MDYscaled'].Fill(nt.mcor,w,w)
 
-def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,DYxsec=1.,weighted=True):
+def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,DYxsec=1.,weighted=False):
    ut.bookHist(hMC, 'M',   ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MSS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MOS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
@@ -7835,7 +7919,6 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,D
    MCorigin['os']['Drell Yan'] = NDY * DYfactor * DYxsec
    hMC['MDrell Yan'].Scale(DYfactor)
    hMC['MOS'].Add(hMC['MDrell Yan'])
-   Charmfactor = MCStats['10GeV']/(3 * 80002560/2 / 1.7E-3)
    MCorigin['os']['charm'] = NCharm2 * Charmfactor
    hMC['Mcharm'].Scale(Charmfactor)
    hMC['MOS'].Add(hMC['Mcharm'])
@@ -7856,7 +7939,7 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,D
    colors['Mrho0 primary'] =       [23,ROOT.kGreen+2]
    colors['Mlow mass secondary'] = [25,ROOT.kBlue]
    colors["Mphi primary"] =        [21,ROOT.kGreen-2]
-   colors['MGamma conversion'] =   [26,ROOT.kRed-7]
+   colors['MGamma conversion'] =   [26,ROOT.kTeal-5]
    colors["Meta' primary"]      =  [29,ROOT.kGreen-10]
    colors["Meta primary"] =        [33,ROOT.kGreen-3]
    colors['MPhoton collision'] =   [30,ROOT.kOrange]
@@ -7926,6 +8009,32 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,D
    hMC['LSOU'].Draw('same')
    tag = 'muID'+str(muID)+str(ptCut)+'_'+str(pMin)
    myPrint(hMC['TM'],'Fig-OppSignSources_'+tag)
+# simplified version, group categories
+   ut.bookCanvas(hMC,'TM2','',1600,900,1,1)
+   tc = hMC['TM2'].cd()
+   tc.SetLogy(1)
+   simpleList = ['Mlow mass resonances','MDrell Yan','MJ/psi primary','Mcharm',"Mpsi' primary","Mnuclear","Mmixed sources"]
+   hMC['Mlow mass resonances'] = hMC['Momega primary'].Clone('Mlow mass resonances')
+   hMC['Mlow mass resonances'].Add(hMC['Mrho0 primary'])
+   hMC['Mlow mass resonances'].Add(hMC['Mlow mass secondary'])
+   hMC['Mlow mass resonances'].Add(hMC['Mphi primary'])
+   hMC['Mlow mass resonances'].Add(hMC["Meta' primary"])
+   hMC['Mlow mass resonances'].Add(hMC['Meta primary'])
+   hMC['Mnuclear'] = hMC['MGamma conversion'].Clone('Mnuclear')
+   hMC['Mnuclear'].Add(hMC['MPhoton collision'])
+   hMC['Mnuclear'].Add(hMC['MPositron annihilation'])
+   hMC['Mnuclear'].Add(hMC['MPhoto nuclear interaction'])
+   hMC['LSOU2']=ROOT.TLegend(0.67,0.43,0.85,0.85)
+   rc = hMC['LSOU2'].AddEntry(hMC['MOS'],'All opposite sign','PL')
+   hMC['MOS'].Draw('p')
+   hMC['MOS'].Draw('hsame')
+   for x in simpleList:
+       hMC[x].Draw('hsame')
+       hMC[x].Draw('psame')
+       rc = hMC['LSOU2'].AddEntry(hMC[x],x[1:],'PL')
+   hMC['LSOU2'].Draw('same')
+   tag = 'muID'+str(muID)+str(ptCut)+'_'+str(pMin)
+   myPrint(hMC['TM2'],'Fig-OppSignSources_simple_'+tag)
    return MCorigin
 def AnalysisNote_JpsiMassResolution(ptCut=1.0,pmin=20.0,muID=1,BDTCut=False):
    prods       = {'P8':hMC['JpsiP8'],'P6':hMC['Jpsi']}

@@ -816,6 +816,13 @@ def runMufluxReco(D='1GeV',merge=False):
             while 1>0:
                 if count_python_processes('MufluxNtuple')<ncpus: break
                 time.sleep(20)
+        elif D=='DrellYan':
+          for n in range(ncpus):
+            cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -t "+t+" -d DrellYanProduction  -c MufluxReco  -Y True -s "+str(n)+ " -x "+str(ncpus)+" &"
+            os.system(cmd)
+            while 1>0:
+                if count_python_processes('MufluxNtuple')<ncpus: break
+                time.sleep(20)
 
 def runInvMass(MC='1GeV',merge=False):
     N = 20
@@ -942,24 +949,27 @@ def mergeOnurFiles(merge=False):
             os.system('cp ship.conical.FixedTarget-TGeant4_merged_dig.root  tmp.root')
             cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root tmp.root '
       os.system(cmd)
-def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",overWrite=False,Gfield=''):
+def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",overWrite=False,Gfield='',msel=4):
 # to run on ship-ubuntu-1710-32
  addOption = ""
  if Gfield == 'inter': addOption = " -F inter "
  if step == 'simulation':
+  # path = "/home/truf/ship-ubuntu-1710-32/charm/"
   for run in range(runs[0],runs[1]):
     orun = run+cycle*1000
+    if not 'run'+str(run) in os.listdir('.'): os.mkdir('run'+str(run))
     os.chdir('run'+str(run))
-    inputFile = path+"run"+str(run)+"/Cascade-run"+str(run)+"-parp16-MSTP82-1-MSEL"+msel+".root"
+    inputFile = path+"run"+str(run)+"/Cascade-run"+str(run)+"-parp16-MSTP82-1-MSEL"+str(msel)+".root"
     f=ROOT.TFile(inputFile)
     nt = f.pythia6
     N = nt.GetEntries() / 2
     f.Close()
     ni = N/10
+    ecut = str(10.0)
     for k in range(10):
        nstart = ni*k
        xrun = orun + k*100
-       if msel == "4":
+       if msel == 4:
            cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M  --force --charm -V -e "+ecut+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
        else:
            cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M --force --beauty -V -e "+ecut+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
@@ -1062,7 +1072,7 @@ def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-17
          if count_python_processes('drifttubeMonitoring')<ncpus: break 
          time.sleep(30)
  if step == 'invMass':
-     cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d CharmProduction -t repro -c invMass -Y True -r &"
+     cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d CharmProduction -t repro -c invMass -X True -r &"
      print 'step invMass:', cmd
      os.system(cmd)
  if step == 'copyToEos':
@@ -1071,6 +1081,7 @@ def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-17
        xrun = run+cycle*1000 + k*100
        d = path.replace('XXX',str(xrun))
        D = 'run'+str(run)+'/'+d
+       print D
        if not 'ntuple-pythia8_Geant4_'+str(xrun)+'_10.0_dig_RT.root' in os.listdir(D): continue
        for f in os.listdir(D):
          cmd = "xrdcp -f "+D+"/"+f+" $EOSSHIP/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/"+D+"/"+f
@@ -1158,6 +1169,10 @@ def DrellYanProduction(step='simulation',runs=[301,350],path = "ship-ubuntu-1710
  if step == 'invMass':
      cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d DrellYanProduction -t repro -c invMass -Y True -r &"
      print 'step invMass:', cmd
+     os.system(cmd)
+ if step == 'MufluxReco':
+     cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d DrellYanProduction -t repro -c MufluxReco -Y True -r &"
+     print 'step MufluxReco:', cmd
      os.system(cmd)
  if step == 'copyToEos':
    for run in range(runs[0],runs[1]):
