@@ -784,10 +784,15 @@ def runMufluxReco(D='1GeV',merge=False):
     N = 24
     ncpus = 8
     if merge:
-        cmd = "hadd sumHistos--simulation10GeV-repro.root "
-        for n in range(ncpus):
+       if D=='10GeV':
+         cmd = "hadd sumHistos--simulation10GeV-repro.root "
+         for n in range(ncpus):
                cmd += "sumHistos--simulation10GeV-repro-"+str(n)+".root "
-        os.system(cmd)
+       if D=='DrellYan':
+         cmd = "hadd sumHistos--DrellYan.root "
+         for n in range(ncpus):
+               cmd += "sumHistos--DrellYanProduction-"+str(n)+".root "
+       os.system(cmd)
     else:
         t='repro'
         if D=='1GeV':
@@ -851,6 +856,22 @@ def runInvMass(MC='1GeV',merge=False):
       elif MC=='10GeV':
         for n in range(N):
           cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d simulation10GeV-"+t+" -t "+t+" -c invMass -p ship-ubuntu-1710-48 -s "+str(n)+ " -x "+str(N)+" -B True -r &"
+          print cmd
+          os.system(cmd)
+          while 1>0:
+            if count_python_processes('MufluxNtuple')<ncpus: break
+            time.sleep(20)
+      elif MC=='DrellYan':
+        for n in range(N):
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d DrellYanProduction -t repro -c invMass -s "+str(n)+ " -x "+str(N)+" -Y True -r &"
+          print cmd
+          os.system(cmd)
+          while 1>0:
+            if count_python_processes('MufluxNtuple')<ncpus: break
+            time.sleep(20)
+      elif MC=='Charm2':
+        for n in range(N):
+          cmd = "python $FAIRSHIP/charmdet/MufluxNtuple.py -d CharmProduction -t repro -c invMass -s "+str(n)+ " -x "+str(N)+" -X True -r &"
           print cmd
           os.system(cmd)
           while 1>0:

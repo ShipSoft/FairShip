@@ -22,7 +22,7 @@ dataStats      = 324.75E9
 simpleEffCorMu = 0.021
 simpleEffCor   = 0.024
 
-DYfactor = MCStats['10GeV']/(20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4, rescaled mass distribution
+DYfactor = MCStats['10GeV']/(2*20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4, rescaled mass distribution
 #DYfactor = MCStats['10GeV']/1940000 * (42*73.0+(96-42)*66.2)/96.*1E-6/10.5 # adjusted for PDF set 13
 DYfactor4NA50 = 1.51
 
@@ -63,6 +63,7 @@ h0      = {}
 h = {}
 
 parser = ArgumentParser()
+parser.add_argument("-b", "--batch", dest="batch", help="run in batch mode",action="store_true", default=False)
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", default=False)
 parser.add_argument("-d", "--dir", dest="directory", help="directory", default=False)
 parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
@@ -7838,6 +7839,7 @@ def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
        rc   = hMC['MDYscaled'].Fill(nt.mcor,w,w)
 
 def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,DYxsec=1.,weighted=False):
+   if not hMC.has_key('DY'):loadNtuples()
    ut.bookHist(hMC, 'M',   ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MSS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MOS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
@@ -7933,26 +7935,30 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,D
       print "%25s  %5.3G"%(s[0],1.E6*s[1]/MCStats['10GeV'])
    ut.bookCanvas(hMC,'TM','',1600,900,1,1)
    colors = {}
-   colors['MDrell Yan']      =     [24,ROOT.kCyan]
-   colors['MJ/psi primary'] =      [33,ROOT.kRed]
-   colors['Momega primary'] =      [22,ROOT.kGreen]
-   colors['Mrho0 primary'] =       [23,ROOT.kGreen+2]
-   colors['Mlow mass secondary'] = [25,ROOT.kBlue]
-   colors["Mphi primary"] =        [21,ROOT.kGreen-2]
-   colors['MGamma conversion'] =   [26,ROOT.kTeal-5]
-   colors["Meta' primary"]      =  [29,ROOT.kGreen-10]
-   colors["Meta primary"] =        [33,ROOT.kGreen-3]
-   colors['MPhoton collision'] =   [30,ROOT.kOrange]
-   colors['MPrompt quark']     =   [30,ROOT.kOrange+2]
-   colors["Mpsi' primary"] =       [20,ROOT.kMagenta]
-   colors['Mcharm'] =              [27,ROOT.kRed+3]
-   colors['Mbeauty'] =             [28,ROOT.kRed-7]
-   colors['MPositron annihilation'] = [31,ROOT.kCyan-2]
-   colors['MPhoto nuclear interaction'] = [31,ROOT.kCyan-2]
-   colors['Mothers'] =             [49,ROOT.kGray+1]
-   colors['Munknown'] =             [49,ROOT.kGray+1]
-   colors['MSS'] = [20,ROOT.kRed]
-   colors['MOS'] = [24,ROOT.kBlue]
+   colors['MDrell Yan']      =         [24,ROOT.kCyan,'Drell Yan']
+   colors['MJ/psi primary'] =          [33,ROOT.kRed,'J/#{Psi} primary']
+   colors['Momega primary'] =          [22,ROOT.kGreen,'#{omega} primary']
+   colors['Mrho0 primary'] =           [23,ROOT.kGreen+2,'#{rho^0} primary']
+   colors['Mlow mass secondary'] =     [25,ROOT.kBlue,'low mass secondary']
+   colors['Mlow mass resonances'] =    [25,ROOT.kBlue,'low mass resonances']
+   colors["Mphi primary"] =            [21,ROOT.kGreen-2,'#{phi} primary']
+   colors['MGamma conversion'] =       [26,ROOT.kTeal-5,'#{gamma} conversion']
+   colors["Meta' primary"]      =      [29,ROOT.kGreen-10,"#{eta'} primary"]
+   colors["Meta primary"] =            [33,ROOT.kGreen-3,'#{eta} primary']
+   colors['MPhoton collision'] =       [30,ROOT.kOrange,'Photon collision']
+   colors['MPrompt quark']     =       [30,ROOT.kOrange+2,'Prompt quark']
+   colors["Mpsi' primary"] =           [20,ROOT.kMagenta,"#{psi'} primary"]
+   colors['Mcharm'] =                  [27,ROOT.kRed+3,'charm']
+   colors['Mbeauty'] =                 [28,ROOT.kRed-7,'beauty']
+   colors['MPositron annihilation'] =  [31,ROOT.kCyan-2,'Positron annihilation']
+   colors['MPhoto nuclear interaction'] = [31,ROOT.kCyan-2,'Photo nuclear interaction']
+   colors['Mnuclear'] =                [31,ROOT.kCyan-2,'nuclear interaction']
+   colors['Mothers'] =                 [49,ROOT.kGray+1,'others']
+   colors['Munknown'] =                [49,ROOT.kGray+2,'unknown']
+   colors['Mclone'] =                  [49,ROOT.kBlue-8,'clone']
+   colors['Mmixed sources'] =          [49,ROOT.kCyan-5,'mixed sources']
+   colors['MSS'] =                     [20,ROOT.kRed,'MSS']
+   colors['MOS'] =                     [24,ROOT.kBlue,'MOS']
    for x in colors:
        if not hMC.has_key(x): continue
        hMC[x].SetStats(0)
@@ -8005,7 +8011,7 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,D
        if x in ['MSS','MOS']: continue
        hMC[x].Draw('hsame')
        hMC[x].Draw('psame')
-       rc = hMC['LSOU'].AddEntry(hMC[x],x[1:],'PL')
+       rc = hMC['LSOU'].AddEntry(hMC[x],colors[x][2],'PL')
    hMC['LSOU'].Draw('same')
    tag = 'muID'+str(muID)+str(ptCut)+'_'+str(pMin)
    myPrint(hMC['TM'],'Fig-OppSignSources_'+tag)
@@ -8031,7 +8037,7 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,D
    for x in simpleList:
        hMC[x].Draw('hsame')
        hMC[x].Draw('psame')
-       rc = hMC['LSOU2'].AddEntry(hMC[x],x[1:],'PL')
+       rc = hMC['LSOU2'].AddEntry(hMC[x],colors[x][2],'PL')
    hMC['LSOU2'].Draw('same')
    tag = 'muID'+str(muID)+str(ptCut)+'_'+str(pMin)
    myPrint(hMC['TM2'],'Fig-OppSignSources_simple_'+tag)
@@ -9540,5 +9546,7 @@ elif options.command=='JpsiYield' or options.command=='JpsiKinematicsReco' or op
           JpsiPolarization(ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fM,nBins=20, pTJpsiMin=tmp[4], pTJpsiMax=tmp[5])
 elif options.command=='MS':
           studyInvMassResolution(command='MSdata')
+elif options.batch:
+    ROOT.gROOT.SetBatch(True)
 else:
    ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
