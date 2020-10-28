@@ -39,10 +39,11 @@ daSysError = 0.021
 hData   = {}
 hMC     = {}
 
-hMC['etaNA50'] = ROOT.TF1('etaNA50','abs([0])*exp(-0.5*((x-[1])/[2])**2)',-2.,2.)
-hMC['etaNA50'].SetParameter(0,1.)
-hMC['etaNA50'].SetParameter(1,-0.2)
-hMC['etaNA50'].SetParameter(2,0.85)
+fGlobal = {}
+fGlobal['etaNA50'] = ROOT.TF1('etaNA50','abs([0])*exp(-0.5*((x-[1])/[2])**2)',-2.,2.)
+fGlobal['etaNA50'].SetParameter(0,1.)
+fGlobal['etaNA50'].SetParameter(1,-0.2)
+fGlobal['etaNA50'].SetParameter(2,0.85)
 
 
 sqrt2 = ROOT.TMath.Sqrt(2.)
@@ -59,8 +60,8 @@ else:
 topDir =  os.path.abspath('.')
 
 
-h0      = {}
-h = {}
+h0 = {}
+h  = {}
 
 parser = ArgumentParser()
 parser.add_argument("-b", "--batch", dest="batch", help="run in batch mode",action="store_true", default=False)
@@ -290,25 +291,23 @@ def rapidity(E,pz):
 s_SQRT2i = 1./ROOT.TMath.Sqrt( 2.0 )
 sqrt2pi  = ROOT.TMath.Sqrt( 2*ROOT.TMath.Pi() )
 
-def norm_myGauss(g):
-  return [abs(g.GetParameter(3)),g.GetParError(3)],[abs(g.GetParameter(0)),g.GetParError(0)]
-
-cb=ROOT.TF1("cb","crystalball",0,6.)
-
 def TwoCrystalBall(x,par):
    bw = par[0] # should be fixed
-   cb.SetParameters(abs(par[1])*bw,par[2],abs(par[3]),par[4],par[5])
-   highMass = cb.Eval(x[0])
+   fGlobal['cb'].SetParameters(abs(par[1])*bw,par[2],abs(par[3]),par[4],par[5])
+   highMass = fGlobal['cb'].Eval(x[0])
    if x[0]>par[7] and par[14]>0:
-    cb.SetParameters(abs(par[6])*bw,par[7],abs(par[8]),-par[14],par[15])
-    lowMass = cb.Eval(x[0])
+    fGlobal['cb'].SetParameters(abs(par[6])*bw,par[7],abs(par[8]),-par[14],par[15])
+    lowMass = fGlobal['cb'].Eval(x[0])
    else:
-    cb.SetParameters(abs(par[6])*bw,par[7],abs(par[8]),par[9],par[10])
-    lowMass = cb.Eval(x[0])
+    fGlobal['cb'].SetParameters(abs(par[6])*bw,par[7],abs(par[8]),par[9],par[10])
+    lowMass = fGlobal['cb'].Eval(x[0])
    Psi2s = 0
    if abs(par[13])>0:
-     cb.SetParameters(par[13]*bw,3.6871+par[2]- 3.0969,par[3],abs(par[4]),par[5])
-     Psi2s = cb.Eval(x[0])
+     fGlobal['cb'].SetParameters(par[13]*bw,3.6871+par[2]- 3.0969,par[3],abs(par[4]),par[5])
+     Psi2s = fGlobal['cb'].Eval(x[0])
+   elif par[13] < -999:
+     # fix psi2s to NA50 Ag, 1.6% of 1S
+     fGlobal['cb'].SetParameters(0.016*par[6]*bw,3.6871+par[2]- 3.0969,par[3],abs(par[4]),par[5])
    background = abs(par[11] + par[12]*x[0])
    #background = abs(par[11])*ROOT.TMath.Exp(par[12])*x[0]
    Ndy = 0
@@ -323,13 +322,87 @@ def TwoCrystalBall(x,par):
    if par[16] == 4: return Psi2s
    Y = highMass + lowMass + Ndy + background + Psi2s
    return Y
-def CrystalBall(x,par):
-   bw = par[0] # should be fixed
-   cb.SetParameters(par[1]*bw,par[2],par[3],par[4],par[5])
-   highMass = cb.Eval(x[0])
-   lowMass = par[6]*bw/(abs(par[8])*sqrt2pi)*ROOT.TMath.Exp(-0.5*( (x[0]-par[7])/par[8])**2)
-   Y = highMass + lowMass + par[9] + par[10]*x[0]
-   return Y
+
+def norm_myGauss(B,im='',sLow=2.0,sHigh=5.0,bLow=0.3,bHigh=3.0):
+  N1   = B.GetParameter(1)
+  N2   = B.GetParameter(7)
+  pol0 = B.GetParameter(10)
+  pol1 = B.GetParameter(11)
+  bw   = B.GetParameter(0)
+  dy   = B.GetParameter(14)
+  signalNormalized      = B.GetParameter(7)
+  err_signalNormalized  = B.GetParError(7)
+  B.SetParameter(10,0.)
+  B.SetParameter(11,0.)
+  B.SetParameter(7,0.)
+  B.SetParameter(14,0.)
+  if im=='s': integral = simpleIntegral(B,bLow,bHigh)
+  else:       integral = B.Integral(bLow,bHigh)
+  lowMassNormalized = integral / bw
+  B.SetParameter(7,N2)
+  B.SetParameter(10,pol0)
+  B.SetParameter(11,pol1)
+  B.SetParameter(14,dy)
+  err_lowMassNormalized = 0
+  if N1>0: err_lowMassNormalized = lowMassNormalized/N1*B.GetParError(1)
+  return [lowMassNormalized,err_lowMassNormalized],[signalNormalized,err_signalNormalized]
+
+def gausAndBukinPdf(x,par):
+# bukin for low mass and gaus for signal
+  Nlow  = RooBukinPdf(x,par,0) # 6 parameters
+  fGlobal['gausN'].SetParameter(0,par[7]*par[0])
+  fGlobal['gausN'].SetParameter(1,par[8])
+  fGlobal['gausN'].SetParameter(2,par[9]) # +3  parameters
+  Nhigh = fGlobal['gausN'].Eval(x[0])
+  Nback = abs(par[10]+par[11]*x[0])   # +2  parameters
+  N2S = 0
+  fGlobal['gausN'].SetParameter(1,par[8]+3.6871 - 3.0969)
+  if par[12] > 0:
+     fGlobal['gausN'].SetParameter(0,par[12]*par[0])
+     N2S = abs(fGlobal['gausN'].Eval(x[0]))
+  elif par[12] < -999:
+     # fix psi2s to NA50 Ag, 1.6% of 1S
+     fGlobal['gausN'].SetParameter(0,0.016*par[7]*par[0])
+     N2S = abs(fGlobal['gausN'].Eval(x[0]))
+  Ndy = 0 # not implemented
+  if par[13]==1: return Nhigh
+  if par[13]==2: return Nlow*par[0]
+  if par[13]==3: return Nback*par[0]
+  if par[13]==4: return N2S*par[0]
+  if par[13]==5: return Ndy
+  return (Nlow+Nback)*par[0]+N2S+Nhigh+Ndy
+
+def init_gausAndBukinPdf(B,bw):
+  B.FixParameter(0,bw)
+  B.SetParameter(1,3.0)
+  B.SetParLimits(1,0.0,1E6)
+  B.SetParameter(2,1.0)
+  B.SetParameter(3,0.27)
+  B.SetParameter(4,0.008)
+  B.SetParameter(5,-0.06)
+  B.SetParameter(6,+0.06)
+  B.SetParameter(7,500.)
+  B.SetParLimits(7,0.0,1E6)
+  B.SetParameter(8,3.1)
+  B.SetParameter(9,0.35)
+  B.SetParameter(10,0.008)
+  B.SetParameter(11,0.0)
+  B.SetParameter(12,-1.0)
+  B.FixParameter(13,0)
+  B.FixParameter(14,0.)
+  B.SetParName(1,'SignalLow')
+  B.SetParName(2,'MeanLow')
+  B.SetParName(3,'SigmaLow')
+  B.SetParName(4,'pAsymLow')
+  B.SetParName(5,'r1Low')
+  B.SetParName(6,'r2Low')
+  B.SetParName(7,'psi(1S)')
+  B.SetParName(8,'Mass')
+  B.SetParName(9,'Sigma')
+  B.SetParName(10,'pol0')
+  B.SetParName(11,'pol1')
+  B.SetParName(12,'psi(2S)')
+
 def GaussDoubleSidedExp(x,par,c):
    t = (x[0] - par[2+c])/par[3+c]
    if t<-par[4+c]:
@@ -444,14 +517,15 @@ def RooBukinPdf(x,par,c=0):
 def my2BukinPdf(x,par):
   Nlow  = RooBukinPdf(x,par,0)
   Nhigh = RooBukinPdf(x,par,6)
-  if par[16] > -999:
-    par2S = [par[0],par[16]]
-    for n in range(1,6):
+  N2S = 0
+  if par[16] > 0:
+    par2S = [par[0],par[16],par[2] + 3.6871 - 3.0969]
+    for n in range(2,6):
       par2S.append(par[n+7])
     N2S = RooBukinPdf(x,par2S,0)
-  else: # take 1.6% of 1S  NA50 Ag
-    par2S = [par[0],0.016*par[1]]
-    for n in range(1,6):
+  elif par[16]<-999: # take 1.6% of 1S  NA50 Ag
+    par2S = [par[0],0.016*par[1],par[2] + 3.6871 - 3.0969]
+    for n in range(2,6):
       par2S.append(par[n+7])
     N2S = RooBukinPdf(x,par2S,0)
   Nback = abs(par[13]+par[14]*x[0])
@@ -490,6 +564,12 @@ def init_twoBukin(B,bw):
   B.FixParameter(14,0.)
   B.FixParameter(15,0.)
   B.FixParameter(16,-1000.)
+  B.SetParName(1,'SignalLow')
+  B.SetParName(2,'MeanLow')
+  B.SetParName(3,'SigmaLow')
+  B.SetParName(4,'pAsymLow')
+  B.SetParName(5,'r1Low')
+  B.SetParName(6,'r2Low')
   B.SetParName(7,'psi(1S)')
   B.SetParName(8,'Mass')
   B.SetParName(9,'Sigma')
@@ -500,12 +580,6 @@ def init_twoBukin(B,bw):
   B.SetParName(14,'pol1')
   B.SetParName(16,'psi(2S)')
   B.SetParName(17,'DY')
-  B.SetParName(1,'SignalLow')
-  B.SetParName(2,'MeanLow')
-  B.SetParName(3,'SigmaLow')
-  B.SetParName(4,'pAsymLow')
-  B.SetParName(5,'r1Low')
-  B.SetParName(6,'r2Low')
 def simpleIntegral(B,x0,x1,N=10000):
   dx = (x1-x0)/float(N)
   x = x0
@@ -760,13 +834,17 @@ def getFitDictionary(fitMethod):
                'fixParams':{11:0.0}}
      funTemplate = {'F':twoGDEPdf,'N':15,'Init':init_twoGDE}
    if fitMethod=='G':
-   # high mass [1,2,3,4,5]  low mass [6,7,8,9,10]
-     params = {'signal':0,   'highMass':1,'highSigma':2,'highTails':{},
-               'signalLow':3,'lowMass':4, 'lowSigma':5, 'lowTails':{},
-               'pol':[6,7],'highTailsOff':{},'highTailsLimits':{},
-                'DY':10,'psi(2s)':11,'lowTailsOff':{},'lowTailsLimits':{},'fixParams':{10:0.0,11:0.0}}
-     funTemplate = {'F':hMC['myGauss'],'N':12,'Init':init_Gauss}
+   # logic for psi2s, par[11] > 0: free N, par[11] < -999: fixed to 1.6% of Jpsi else 0
+   # high mass [6,7,8]  low mass [1,2,3,4,5]
+     params = {'signal':7,   'highMass':8,'highSigma':9,'highTails':{},
+               'signalLow':1,'lowMass':2, 'lowSigma':3, 'lowTails':{4:0.008,   5:-0.01, 6:0.01},
+               'pol':[10,11],'highTailsOff':{},'highTailsLimits':{},
+               'lowTailsOff':{4:0.008,5:-0.01,6:0.01},  'lowTailsLimits':{4:[0.,0.2],5:[-1.,0.],6:[0.,50.]},
+               'switch':13,'DY':14,'psi(2s)':12,'fixParams':{12:-1000,14:0}}
+     funTemplate = {'F':gausAndBukinPdf,'N':15,'Init':init_gausAndBukinPdf}
    return params,funTemplate
+
+
 def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=False,nBins=9,withWeight=False,printout=2,v='mcor',withDY=False,DYxsec=2.,withPsi2s=False):
    ROOT.gROOT.cd()
    tag = (fitMethod+"_"+proj).replace(',','').replace(')','').replace('(','')
@@ -888,8 +966,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          tc = hMC['MCbins'+z+tag+m].cd(k+1)
          mctag = 'mc-'+tag+z+m+str(k)
          fname = 'mc-Fun'+tag+z+m+str(k)
-         if fitMethod=='G': hMC[fname]=funTemplate['F'].Clone(fname)
-         else: hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+         hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
          CB = hMC[fname]
          funTemplate['Init'](CB,bw)
          for l in params['fixParams']: CB.FixParameter(l,params['fixParams'][l])
@@ -953,8 +1030,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          tc = hMC['MCbins'+z+tag+m].cd(k+1)
          mctag = 'mc-'+tag+z+m+str(k)
          fname = 'mc-Fun'+tag+z+m+str(k)
-         if fitMethod=='G': hMC[fname]=funTemplate['F'].Clone(fname)
-         else: hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+         hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
          CB = hMC[fname]
          funTemplate['Init'](CB,bw)
          for l in params['fixParams']: CB.FixParameter(l,params['fixParams'][l])
@@ -1041,8 +1117,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
          h  = case[c]['store']
          fk = case[c]['fun']+str(k)
          Jpsi = case[c]['Jpsi']
-         if fitMethod=='G': h[fk] =funTemplate['F'].Clone(fk)
-         else: h[fk] = ROOT.TF1(fk,funTemplate['F'],0,10,funTemplate['N'])
+         h[fk] = ROOT.TF1(fk,funTemplate['F'],0,10,funTemplate['N'])
          CB = h[fk]
          funTemplate['Init'](CB,bw)
          for l in params['fixParams']: CB.FixParameter(l,params['fixParams'][l])
@@ -1137,37 +1212,19 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
              for n in range(CB.GetNpar()):
                  CB.SetParameter(n,rc[2].Parameter(n))
          h['FitResults-'+hk] = rc[2]
-         if fitMethod=='G':
-             h[fk+'highMass'] = funTemplate['F'].Clone(fk+'highMass')
-             for n in range(funTemplate['N']): h[fk+'highMass'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'highMass'].FixParameter(params['lowMass'],0)
-             for p in params['pol']:  h[fk+'highMass'].FixParameter(p,0)
-         else:
-             h[fk+'highMass'] = ROOT.TF1(fk+'highMass',funTemplate['F'],xlow,maxX,funTemplate['N'])
-             for n in range(funTemplate['N']): h[fk+'highMass'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'highMass'].FixParameter(params['switch'],1)
+         h[fk+'highMass'] = ROOT.TF1(fk+'highMass',funTemplate['F'],xlow,maxX,funTemplate['N'])
+         for n in range(funTemplate['N']): h[fk+'highMass'].FixParameter(n,CB.GetParameter(n))
+         h[fk+'highMass'].FixParameter(params['switch'],1)
          h[fk+'highMass'].SetLineColor(ROOT.kMagenta)
          h[fk+'highMass'].Draw('same')
-         if fitMethod=='G':
-             h[fk+'lowMass'] = funTemplate['F'].Clone(fk+'lowMass')
-             for n in range(funTemplate['N']): h[fk+'lowMass'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'lowMass'].FixParameter(params['highMass'],0)
-             for p in params['pol']:  h[fk+'lowMass'].FixParameter(p,0)
-         else:
-             h[fk+'lowMass'] = ROOT.TF1(fk+'lowMass',funTemplate['F'],xlow,maxX,funTemplate['N'])
-             for n in range(funTemplate['N']): h[fk+'lowMass'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'lowMass'].FixParameter(params['switch'],2)
+         h[fk+'lowMass'] = ROOT.TF1(fk+'lowMass',funTemplate['F'],xlow,maxX,funTemplate['N'])
+         for n in range(funTemplate['N']): h[fk+'lowMass'].FixParameter(n,CB.GetParameter(n))
+         h[fk+'lowMass'].FixParameter(params['switch'],2)
          h[fk+'lowMass'].SetLineColor(ROOT.kCyan)
          h[fk+'lowMass'].Draw('same')
-         if fitMethod=='G':
-             h[fk+'back'] = funTemplate['F'].Clone(fk+'back')
-             for n in range(funTemplate['N']): h[fk+'back'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'back'].FixParameter(params['highMass'],0)
-             h[fk+'back'].FixParameter(params['lowMass'],0)
-         else:
-             h[fk+'back'] = ROOT.TF1(fk+'back',funTemplate['F'],xlow,maxX,funTemplate['N'])
-             for n in range(funTemplate['N']): h[fk+'back'].FixParameter(n,CB.GetParameter(n))
-             h[fk+'back'].FixParameter(params['switch'],3)
+         h[fk+'back'] = ROOT.TF1(fk+'back',funTemplate['F'],xlow,maxX,funTemplate['N'])
+         for n in range(funTemplate['N']): h[fk+'back'].FixParameter(n,CB.GetParameter(n))
+         h[fk+'back'].FixParameter(params['switch'],3)
          h[fk+'back'].SetLineColor(ROOT.kGray)
          h[fk+'back'].Draw('same')
          if not fitMethod=='G' and withDY:
@@ -1180,7 +1237,7 @@ def twoCBYieldFit(fitMethod,proj,projMin,projMax,projName,theCut,withFreeTails=F
              h[fk+'DY'].Draw('same')
          h[hk].Draw('same')
          if fitMethod=='CB': tmp = norm_twoCB(h['FitResults-'+hk])
-         if fitMethod=='GE':  tmp = norm_twoGDE(CB)
+         if fitMethod=='GE': tmp = norm_twoGDE(CB)
          if fitMethod=='B':  tmp = norm_twoBukin(CB)
          if fitMethod=='G':  tmp = norm_myGauss(CB)
          N = tmp[1][0]
@@ -2447,12 +2504,13 @@ def myDraw(variable,cut,ntName='10GeV',DYxsec=1.):
 jpsiCascadeContr = 7./33.
 InvMassPlots = [160,0.,8.]
 bw = (InvMassPlots[2]-InvMassPlots[1])/InvMassPlots[0]
-hMC['myGauss'] = ROOT.TF1('gauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
+fGlobal['myGauss'] = ROOT.TF1('gauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
             +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[4])/[5])**2)+abs( [6]+[7]*x+[8]*x**2 )\
             +abs([9])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-(3.6871 + [1] - 3.0969))/[2])**2)',10)
-hMC['TwoGauss'] = ROOT.TF1('TwoGauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
+fGlobal['TwoGauss'] = ROOT.TF1('TwoGauss','abs([0])*'+str(bw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)\
             +abs([3])*'+str(bw)+'/(abs([5])*sqrt(2*pi))*exp(-0.5*((x-[1])/[5])**2)',6)
-
+fGlobal['gausN'] = ROOT.TFormula('gausN','gausn')
+fGlobal['cb']    = ROOT.TF1("cb","crystalball",0,6.)
 
 # The elastic proton proton cross section at ~27GeV is about 7mbar. The inelastic cross section is about 33mbar. 
 # Since we have a thick target, any proton from the elastic scattering will interact inelastic somewhere else.
@@ -2691,12 +2749,15 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut,sameSign=False):
    if BDTCut: theCut += "&&BDT>0."
    return theCut.replace(' ','')
 
-def runAll(ptCut=1.0,pmin=20.,muID=2,wW=True,fM=None,withDY=False,DYxsec=1.,withPsi2s=False):
+def runAll(ptCut=1.0,pmin=20.,muID=2,wW=True,fM=None,withDY=False,DY=None,withPsi2s=False):
    proj = 'ycor1C'
    loadNtuples()
-   for fitMethod in ['B','CB','G']:
+   for DYxsec in [0.,1.,2.,4.]:
+     if DY:
+         if DYxsec != DY: continue
+     for fitMethod in ['B','CB','G']:
          if fM:
-             if fitMethod!=fM: continue
+             if fitMethod != fM: continue
          JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod,withWeight=wW,withDY=withDY,DYxsec=DYxsec,withPsi2s=withPsi2s)
 
 def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus',withWeight=False,withDY=False,DYxsec=2.,withPsi2s=False):
@@ -2794,7 +2855,7 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
    elumi = 0.7
    ylimits = [0.4,0.6]
    epsilon = 0.01
-   frac = hMC['etaNA50'].Integral(ylimits[0],ylimits[1])/hMC['etaNA50'].Integral(-0.425,0.575)
+   frac = fGlobal['etaNA50'].Integral(ylimits[0],ylimits[1])/fGlobal['etaNA50'].Integral(-0.425,0.575)
    crossSection = 3.994
    NA50fraction  = frac * crossSection
    eNA50fraction = frac * 0.148 # 2.1% sys + 3% lumi + 0.022 stat
@@ -2812,10 +2873,10 @@ def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTC
         print "N in "+str(ylimits[0])+"<y<0.6: %5.1F   Xsection=%5.2Fnb  Muflux/NA50=%5.2F"%(
         NsignalNA50,NsignalNA50/lumi/1000.,NsignalNA50/lumi/1000./NA50fraction)
    N = lumi * 1000. * crossSection
-   hMC['etaNA50'].SetParameter(0,1.)
-   hMC['etaNA50'].SetParameter(0,N/hMC['etaNA50'].Integral(-0.425,0.575)*hjpsi.GetBinWidth(1))
-   hMC['etaNA50'].DrawF1(0.,2.0,'same')
-   hMC["Y_Cascade_scaled"].SetMaximum(max(hMC["Y_Cascade_scaled"].GetMaximum(),hMC['etaNA50'].GetMaximum()*1.2))
+   fGlobal['etaNA50'].SetParameter(0,1.)
+   fGlobal['etaNA50'].SetParameter(0,N/fGlobal['etaNA50'].Integral(-0.425,0.575)*hjpsi.GetBinWidth(1))
+   fGlobal['etaNA50'].DrawF1(0.,2.0,'same')
+   hMC["Y_Cascade_scaled"].SetMaximum(max(hMC["Y_Cascade_scaled"].GetMaximum(),fGlobal['etaNA50'].GetMaximum()*1.2))
    tc.Update()
    myPrint(hMC['dummy'],"data_YieldsEffCorrectedWithNA50")
    ut.writeHists(hData,'Data-histos.root')
@@ -3136,7 +3197,7 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=
    colors['HighMass-P8']         = [ROOT.kRed,22]
    colors['10GeV']               = [ROOT.kCyan,24]
    colors['Data']                = [ROOT.kBlue,21]
-   fM = {'CB':{'signal':1,'mass':2,'sigma':3},'B':{'signal':7,'mass':8,'sigma':9},'G':{'signal':0,'mass':1,'sigma':2}}
+   fM = {'CB':{'signal':1,'mass':2,'sigma':3},'B':{'signal':7,'mass':8,'sigma':9},'G':{'signal':7,'mass':8,'sigma':9}}
    params,funTemplate = getFitDictionary(fitMethod)
    for c in cases:
        print "high mass position and width for ",c
@@ -3193,9 +3254,11 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=
           hFun = hz.GetFunction(fName)
           mass = [hFun.GetParameter(fM[fitMethod]['mass']), hFun.GetParError(fM[fitMethod]['mass'])]
           sigm = [hFun.GetParameter(fM[fitMethod]['sigma']),hFun.GetParError(fM[fitMethod]['sigma'])]
+          print "i am here 1"
           prob = hFun.GetProb()
           hMC[fName] = ROOT.TF1(fitMethod,funTemplate['F'],0,10,funTemplate['N'])
-          for j in range(funTemplate['N']): 
+          for j in range(funTemplate['N']):
+            print j
             hMC[fName].SetParameter(j,hFun.GetParameter(j))
             hMC[fName].SetParError(j,hFun.GetParError(j))
 # make pull plot
@@ -3208,6 +3271,8 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=
           hMC[hr].SetMarkerStyle(29)
           hMC[hr].SetMarkerSize(1.3)
           bw = hz.GetBinWidth(1)
+          print fName
+          1/0
           for n in range(1,hMC[hr].GetNbinsX()+1):
              N = hz.GetBinContent(n)
              mu = hMC[fName].Integral(hz.GetBinCenter(n)-bw/2.,hz.GetBinCenter(n)+bw/2.)/bw
@@ -3378,7 +3443,7 @@ def JpsiSysIncludingDY(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,dy
             integratedNumber[1]+=statErrXsec**2
             integratedNumber[2]+=sysErrXsec**2
        j+=1
-   frac = hMC['etaNA50'].Integral(0.3,0.6)/hMC['etaNA50'].Integral(-0.425,0.575)
+   frac = fGlobal['etaNA50'].Integral(0.3,0.6)/fGlobal['etaNA50'].Integral(-0.425,0.575)
    NXsecNA50 = frac * NA50crossSection[0]
    EXsecNA50 = frac * NA50crossSection[1]
    print "integrated result %5.2F - %5.2F | %5.2F +/- %5.2F +/-%5.2F | NA50 %5.2F +/-%5.2F"%(Ilow,Imax,integratedNumber[0],
@@ -3387,9 +3452,9 @@ def JpsiSysIncludingDY(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,dy
      hMC[x].SetStats(0)
      hMC[x].Scale(1./(lumi*1000.))
    crossSection = 3.994
-   hMC['etaNA50'].SetParameter(0,1.)
-   norm = hMC['etaNA50'].Integral(-0.425,0.575)
-   hMC['etaNA50'].SetParameter(0,crossSection/norm*av.GetBinWidth(1))
+   fGlobal['etaNA50'].SetParameter(0,1.)
+   norm = fGlobal['etaNA50'].Integral(-0.425,0.575)
+   fGlobal['etaNA50'].SetParameter(0,crossSection/norm*av.GetBinWidth(1))
    av.SetMaximum(0.9)
    av.SetMinimum(0.001)
    av.SetLineWidth(2)
@@ -3402,7 +3467,7 @@ def JpsiSysIncludingDY(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,dy
    av.Draw()
    hMC['Y_Cascade_scaled'].Draw('same')
    hMC['Y_P8prim_scaled'].Draw('same')
-   hMC['etaNA50'].DrawF1(0.,2.0,'same')
+   fGlobal['etaNA50'].DrawF1(0.,2.0,'same')
    hMC['Lfinal']=ROOT.TLegend(0.25,0.3,0.51,0.55)
    hMC['Lfinal'].AddEntry( hMC["Y_P8prim_scaled"],'Pythia8 primary scaled','PL' )
    hMC['Lfinal'].AddEntry( hMC["Y_Cascade_scaled"],'Pythia6 cascade scaled','PL' )
@@ -3509,7 +3574,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,DYx
        sysErrXsec  = Xsec * sysErr
        binMin = i-ybinWidth/2.
        binMax = i+ybinWidth/2.
-       frac = hMC['etaNA50'].Integral(binMin,binMax)/hMC['etaNA50'].Integral(-0.425,0.575)
+       frac = fGlobal['etaNA50'].Integral(binMin,binMax)/fGlobal['etaNA50'].Integral(-0.425,0.575)
        NXsecNA50 = frac * NA50crossSection[0]
        EXsecNA50 = frac * NA50crossSection[1]
        txt = "%3.2F - %3.2F : %"+formating+"  %"+formating+"  %"+formating+"        %"+formating+"  %"+formating+" | %5.2F"
@@ -3582,7 +3647,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,DYx
             integratedNumber[1]+=statErrXsec**2
             integratedNumber[2]+=sysErrXsec**2
        j+=1
-   frac = hMC['etaNA50'].Integral(0.3,0.6)/hMC['etaNA50'].Integral(-0.425,0.575)
+   frac = fGlobal['etaNA50'].Integral(0.3,0.6)/fGlobal['etaNA50'].Integral(-0.425,0.575)
    NXsecNA50 = frac * NA50crossSection[0]
    EXsecNA50 = frac * NA50crossSection[1]
    print "integrated result %5.2F - %5.2F | %5.2F +/- %5.2F +/-%5.2F | NA50 %5.2F +/-%5.2F"%(Ilow,Imax,integratedNumber[0],
@@ -3591,9 +3656,9 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,DYx
      hMC[x].SetStats(0)
      hMC[x].Scale(1./(lumi*1000.))
    crossSection = 3.994
-   hMC['etaNA50'].SetParameter(0,1.)
-   norm = hMC['etaNA50'].Integral(-0.425,0.575)
-   hMC['etaNA50'].SetParameter(0,crossSection/norm*av.GetBinWidth(1))
+   fGlobal['etaNA50'].SetParameter(0,1.)
+   norm = fGlobal['etaNA50'].Integral(-0.425,0.575)
+   fGlobal['etaNA50'].SetParameter(0,crossSection/norm*av.GetBinWidth(1))
    av.SetMaximum(0.9)
    av.SetMinimum(0.001)
    av.SetLineWidth(2)
@@ -3606,7 +3671,7 @@ def JpsiAcceptanceSys(ptCut=1.0,pmin=20.,BDTCut=None, muID=2,withWeight=True,DYx
    av.Draw()
    hMC['Y_Cascade_scaled'].Draw('same')
    hMC['Y_P8prim_scaled'].Draw('same')
-   hMC['etaNA50'].DrawF1(0.,2.0,'same')
+   fGlobal['etaNA50'].DrawF1(0.,2.0,'same')
    hMC['Lfinal']=ROOT.TLegend(0.25,0.3,0.51,0.55)
    hMC['Lfinal'].AddEntry( hMC["Y_P8prim_scaled"],'Pythia8 primary scaled','PL' )
    hMC['Lfinal'].AddEntry( hMC["Y_Cascade_scaled"],'Pythia6 cascade scaled','PL' )
@@ -4298,7 +4363,7 @@ def makeProjection(proj,projMin,projMax,projName,theCut,nBins=9,ntName='10GeV',p
            sTreeData.Draw(v+':'+cutExp+'>>'+proj,theCut)
            histo = hData[proj].ProjectionY('mass')
 # find initial fit parameters
-       myGauss = hMC['myGauss'].Clone(m+proj)
+       myGauss = fGlobal['myGauss'].Clone(m+proj)
        init_Gauss(myGauss)
        myGauss.FixParameter(1,3.1)
        myGauss.FixParameter(2,0.35)
@@ -4330,7 +4395,7 @@ def makeProjection(proj,projMin,projMax,projName,theCut,nBins=9,ntName='10GeV',p
        histo = cases[c]
        if c=='MC': tc=hMC['MCbins'+proj].cd(k+1)
        else: tc=hData['bins'+proj].cd(k+1)
-       myGauss = hMC['myGauss'].Clone(c+proj+str(k))
+       myGauss = fGlobal['myGauss'].Clone(c+proj+str(k))
        init_Gauss(myGauss)
        for n in [1,2,4,5]:  myGauss.FixParameter(n,par[c][n])
        if not secondGaussian and c=='MC': myGauss.FixParameter(3,0.)
@@ -4512,12 +4577,12 @@ def norm_twoCB(B,im='',sLow=2.0,sHigh=5.0,bLow=0.3,bHigh=3.0):
     N2 = B.GetParameter(1)
     N1 = B.GetParameter(6)
     bw = B.GetParameter(0)
-    cb.SetParameters(B.GetParameter(1),B.GetParameter(2),B.GetParameter(3),B.GetParameter(4),B.GetParameter(5))
-    if im=='s': signalNormalized = simpleIntegral(cb,sLow,sHigh)
-    else:       signalNormalized = cb.Integral(sLow,sHigh)
-    cb.SetParameters(B.GetParameter(6),B.GetParameter(7),B.GetParameter(8),B.GetParameter(9),B.GetParameter(10))
-    if im=='s': lowMassNormalized = simpleIntegral(cb,bLow,bHigh)
-    else:       lowMassNormalized = cb.Integral(bLow,bHigh)
+    fGlobal['cb'].SetParameters(B.GetParameter(1),B.GetParameter(2),B.GetParameter(3),B.GetParameter(4),B.GetParameter(5))
+    if im=='s': signalNormalized = simpleIntegral(fGlobal['cb'],sLow,sHigh)
+    else:       signalNormalized = fGlobal['cb'].Integral(sLow,sHigh)
+    fGlobal['cb'].SetParameters(B.GetParameter(6),B.GetParameter(7),B.GetParameter(8),B.GetParameter(9),B.GetParameter(10))
+    if im=='s': lowMassNormalized = simpleIntegral(fGlobal['cb'],bLow,bHigh)
+    else:       lowMassNormalized = fGlobal['cb'].Integral(bLow,bHigh)
     err_lowMassNormalized = 0
     if N1>0: err_lowMassNormalized = lowMassNormalized/N1*B.GetParError(6)
     err_signalNormalized  = 0
@@ -4526,12 +4591,12 @@ def norm_twoCB(B,im='',sLow=2.0,sHigh=5.0,bLow=0.3,bHigh=3.0):
     N2 = B.Parameter(1)
     N1 = B.Parameter(6)
     bw = B.Parameter(0)
-    cb.SetParameters(B.Parameter(1),B.Parameter(2),B.Parameter(3),B.Parameter(4),B.Parameter(5))
-    if im=='s': signalNormalized = simpleIntegral(cb,sLow,sHigh)
-    else:       signalNormalized = cb.Integral(sLow,sHigh)
-    cb.SetParameters(B.Parameter(6),B.Parameter(7),B.Parameter(8),B.Parameter(9),B.Parameter(10))
-    if im=='s': lowMassNormalized = simpleIntegral(cb,bLow,bHigh)
-    else:       lowMassNormalized = cb.Integral(bLow,bHigh)
+    fGlobal['cb'].SetParameters(B.Parameter(1),B.Parameter(2),B.Parameter(3),B.Parameter(4),B.Parameter(5))
+    if im=='s': signalNormalized = simpleIntegral(fGlobal['cb'],sLow,sHigh)
+    else:       signalNormalized = fGlobal['cb'].Integral(sLow,sHigh)
+    fGlobal['cb'].SetParameters(B.Parameter(6),B.Parameter(7),B.Parameter(8),B.Parameter(9),B.Parameter(10))
+    if im=='s': lowMassNormalized = simpleIntegral(fGlobal['cb'],bLow,bHigh)
+    else:       lowMassNormalized = fGlobal['cb'].Integral(bLow,bHigh)
     err_lowMassNormalized = 0
     if N1>0: err_lowMassNormalized = lowMassNormalized/N1*B.ParError(6)
     err_signalNormalized  = 0
@@ -4753,46 +4818,6 @@ def MCmigration():
    E = hMC['ptrueTest'].GetBinContent(l)
    rc = hMC['ptrueTest'].SetBinError(l,ROOT.TMath.Sqrt(E))
 
-
-def fitWithCB():
- hMC['myCB'] = ROOT.TF1('CB',CrystalBall,0,10,11)
- myCB = hMC['myCB']
- myCB.SetParName(0,'binwidth')
- myCB.SetParName(1,'psi(1S)')
- myCB.SetParName(2,'Mass')
- myCB.SetParName(3,'Sigma')
- myCB.SetParName(4,'alpha')
- myCB.SetParName(5,'n')
- myCB.SetParName(6,'SignalLow')
- myCB.SetParName(7,'MeanLow')
- myCB.SetParName(8,'SigmaLow')
- myCB.SetParName(9,'p0')
- myCB.SetParName(10,'p1')
- hMC['dummy'].cd()
- ptCutList = [0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6]
- bw = hMC['m_MC'].GetBinWidth(1)
- myCB.FixParameter(0,bw)
- cases = {'':hData,'mc-':hMC}
- for c in cases:
-  h=cases[c]
-  h['fitResultCB']={}
-  for ptCut in ptCutList:
-   myCB.SetParameter(1,h['fitResult'][ptCut]['psi(1S)'][0])
-   myCB.SetParameter(2,h['fitResult'][ptCut]['Mean'][0])
-   myCB.SetParameter(3,h['fitResult'][ptCut]['Sigma'][0])
-   myCB.SetParameter(4,0.3)
-   myCB.SetParameter(5,3.5)
-   myCB.SetParameter(6,h['fitResult'][ptCut]['SignalLow'][0])
-   myCB.SetParameter(7,h['fitResult'][ptCut]['MeanLow'][0])
-   myCB.SetParameter(8,h['fitResult'][ptCut]['SigmaLow'][0])
-   myCB.SetParameter(9,h['fitResult'][ptCut]['p1'][0])
-   myCB.SetParameter(10,h['fitResult'][ptCut]['p2'][0])
-   hname = c+'mcor_'+str(ptCut)
-   rc = h[hname].Fit(myCB,'S','',0.5,6.)
-   fitResult=rc.Get()
-   h['fitResultCB'][ptCut] = []
-   for n in range(1,11):
-      h['fitResultCB'][ptCut][myCB.GetParName(n)] = [fitResult.Parameter(n),fitResult.ParError(n)]
 def resetMinMax(x):
   x.SetMinimum(-1111)
   x.SetMaximum(-1111)
@@ -4813,6 +4838,10 @@ myExpo.SetParName(2,'Signal2')
 myExpo.SetParName(3,'tau2')
 myExpo.SetParName(4,'const')
 
+def synchFrom48():
+    path = "/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-48/refit-mu/"
+    for d in os.listdir(path):
+        if os.path.isdir(path+'/'+d): os.system('cp -r '+path+'/'+d+'  .')
 def myCopy(x):
    if x.find('/')>0:
       template=x.replace('/','_')
