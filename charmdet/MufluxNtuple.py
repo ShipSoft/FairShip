@@ -66,22 +66,24 @@ h  = {}
 parser = ArgumentParser()
 parser.add_argument("-b", "--batch", dest="batch", help="run in batch mode",action="store_true", default=False)
 parser.add_argument("-f", "--files", dest="listOfFiles", help="list of files comma separated", default=False)
-parser.add_argument("-d", "--dir", dest="directory", help="directory", default=False)
-parser.add_argument("-c", "--cmd", dest="command", help="command to execute", default="")
-parser.add_argument("-p", "--path", dest="path", help="path to ntuple", default="")
-parser.add_argument("-t", "--type", dest="MCType", help="version of MC", default="final") # other versions: "0", "multHits", "noDeadChannels", "withDeadChannels"
-parser.add_argument("-A", "--with1GeV",  dest="with1GeV", help="1GeV MC",              default="False")
-parser.add_argument("-C", "--withcharm", dest="withCharm", help="charm 1GeV MC",       default="False")
-parser.add_argument("-X", "--withcharm2", dest="withCharm2", help="coherent charm",    default="False")
-parser.add_argument("-B", "--with10GeV", dest="with10GeV", help="10GeV MC",            default="False")
-parser.add_argument("-D", "--withData",  dest="withData", help="use default data set", default="False")
-parser.add_argument("-J", "--withJpsi",  dest="withJpsi", help="use Jpsi data set",    default="False")
+parser.add_argument("-d", "--dir",   dest="directory", help="directory", default=False)
+parser.add_argument("-c", "--cmd",   dest="command", help="command to execute", default="")
+parser.add_argument("-p", "--path",  dest="path", help="path to ntuple", default="")
+parser.add_argument("-t", "--type",  dest="MCType", help="version of MC", default="final") # other versions: "0", "multHits", "noDeadChannels", "withDeadChannels"
+parser.add_argument("-A", "--with1GeV",    dest="with1GeV", help="1GeV MC",              default="False")
+parser.add_argument("-C", "--withcharm",   dest="withCharm", help="charm 1GeV MC",       default="False")
+parser.add_argument("-X", "--withcharm2",  dest="withCharm2", help="coherent charm",    default="False")
+parser.add_argument("-B", "--with10GeV",   dest="with10GeV", help="10GeV MC",            default="False")
+parser.add_argument("-D", "--withData",    dest="withData", help="use default data set", default="False")
+parser.add_argument("-J", "--withJpsi",    dest="withJpsi", help="use Jpsi data set",    default="False")
 parser.add_argument("-8", "--withJpsiP8",  dest="withJpsiP8", help="use Jpsi pythia8 data set",    default="False")
 parser.add_argument("-Y", "--withDrellYan",  dest="withDrellYan", help="use Drell Yan data set",   default="False")
 parser.add_argument("-x", dest="ncpus", help="number of parallel jobs", default=False)
 parser.add_argument("-s", dest="nseq", help="sequence of parallel job", default=0)
 parser.add_argument("-r", dest="refit", help="use refitted ntuples", required=False, action="store_true")
 parser.add_argument("--JpsiCuts", dest="JpsiCuts", help="ptCut,pmin,muID,fitMethod",    default="False")
+parser.add_argument("-F", dest="fitMethod", help="which fitmethod, CB, B or G", default="B")
+parser.add_argument("-S", dest="DYxsec",   type=float, help="scaling of DYxsec", default=2.0)
 
 options = parser.parse_args()
 
@@ -9575,6 +9577,9 @@ elif options.command=='JpsiYield' or options.command=='JpsiKinematicsReco' or op
           JpsiPolarization(ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fM,nBins=20, pTJpsiMin=tmp[4], pTJpsiMax=tmp[5])
 elif options.command=='MS':
           studyInvMassResolution(command='MSdata')
+elif options.command=='runAll':
+   ROOT.gROOT.SetBatch(True)
+   runAll(fM=options.fitMethod,DY=options.DYxsec)
 elif options.batch:
     ROOT.gROOT.SetBatch(True)
 else:
