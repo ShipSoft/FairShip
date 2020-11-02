@@ -970,7 +970,17 @@ def mergeOnurFiles(merge=False):
             os.system('cp ship.conical.FixedTarget-TGeant4_merged_dig.root  tmp.root')
             cmd = 'hadd -f ship.conical.FixedTarget-TGeant4_merged_dig.root tmp.root '
       os.system(cmd)
-def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",overWrite=False,Gfield='',msel=4):
+def makeHadrons(run,ncpus=10,msel=4):
+ for n in range(ncpus):
+  os.system('mkdir run'+str(run))
+  os.chdir('run'+str(run))
+  cmd = "python $FAIRSHIP/macro/makeCascade.py -m "+msel+" -n " + str(nev) + " -t  Cascade-run"+str(run)+"-parp16-MSTP82-1-MSEL"+msel+".root"
+  # if not run in runList: 
+  os.system(cmd+ " >log"+str(run)+" &")
+  os.chdir('../')
+  run+=1
+
+def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",overWrite=False,Gfield='',msel=4,ecut=10.0):
 # to run on ship-ubuntu-1710-32
  addOption = ""
  if Gfield == 'inter': addOption = " -F inter "
@@ -986,15 +996,17 @@ def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-17
     N = nt.GetEntries() / 2
     f.Close()
     ni = N/10
-    ecut = str(10.0)
+  # will read 2 entries from ntuple, needs to stay synchronized, always start with even number
+    ni-=(N/10)%2
+    nstart = 0
     for k in range(10):
-       nstart = ni*k
        xrun = orun + k*100
        if msel == 4:
-           cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M  --force --charm -V -e "+ecut+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
+           cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M  --force --charm -V -e "+str(ecut)+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
        else:
-           cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M --force --beauty -V -e "+ecut+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
+           cmd = "python $FAIRSHIP/muonShieldOptimization/run_MufluxfixedTarget.py -M --force --beauty -V -e "+str(ecut)+" -P -S "+str(nstart)+" -n "+str(ni)+" -r "+str(xrun)+" -I "+inputFile
        os.system(cmd+ " >logMufluxFT"+str(xrun)+" &")
+       nstart +=ni
        while 1>0:
           nrunning = count_python_processes('run_MufluxfixedTarget')
           if nrunning < ncpus:   break

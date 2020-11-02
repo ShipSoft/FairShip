@@ -356,12 +356,14 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Int_t idabs=int(TMath::Abs(n_id));
     if (idabs==431){ nDsprim+=1;}
     fPythiaP->event.reset();
+    Int_t nID1 = n_id;
     fPythiaP->event.append(int(n_id),1,0,0,n_px,n_py,n_pz,n_E,n_M,0.,9.);
     TMCProcess procID  = kPTransportation;
     if (n_mid==2212 && (n_mpx*n_mpx+n_mpy*n_mpy)<1E-5) {procID = kPPrimary;} // probably primary and not from cascade
     cpg->AddTrack(int(n_mid),n_mpx,n_mpy,n_mpz, xOff/cm,yOff/cm,zinter/cm,-1,kFALSE,n_mE,0.,wspill,procID);
 // second charm hadron in the event
     nTree->GetEvent(nEntry);
+    if (nID1 * n_id > 0){fLogger->Info(MESSAGE_ORIGIN,"same sign charm: %i, %i, %i",nEntry,nID1,n_id);}
     nEntry+=1;
     fPythiaP->event.append(int(n_id),1,0,0,n_px,n_py,n_pz,n_E,n_M,0.,9.);
     fPythiaP->next();
