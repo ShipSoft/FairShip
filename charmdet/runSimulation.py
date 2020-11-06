@@ -1012,6 +1012,36 @@ def CharmProduction(step='simulation',runs=[0,20],cycle=0,path = "ship-ubuntu-17
           if nrunning < ncpus:   break
           else: time.sleep(300) # wait 5 minutes
     os.chdir('../')
+ if step == 'POT':
+    npot = 0
+    path ={0:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+               1:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX",
+               2:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               3:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX",
+               4:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+               5:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               6:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX",
+               7:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+               8:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               9:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX",
+              10:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX",
+              11:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+              12:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+              13:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX"}
+    for cycle in path:
+       for run in range(0,20):
+          for k in range(10):
+              xrun = run+cycle*1000 + k*100
+              fname = path[cycle].replace('YYY',str(run)).replace('XXX',str(xrun))+"/pythia8_Geant4_"+str(xrun)+"_10.0.root"
+              try:
+                 test = ROOT.TFile.Open(fname)
+                 if test.cbmsim.GetEntries()>0:
+                    fh = test.FileHeader
+                    npot += float(fh.GetTitle().split('=')[1])
+              except:
+                 print "file not found",fname
+                 continue
+    print "#POT =",npot
  if step == 'digi':
    for run in range(runs[0],runs[1]):
      topDir = os.path.abspath('.')

@@ -22,12 +22,14 @@ dataStats      = 324.75E9
 simpleEffCorMu = 0.021
 simpleEffCor   = 0.024
 
+muonMass = 0.105658
+
 DYfactor = MCStats['10GeV']/(2*20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4, rescaled mass distribution
 #DYfactor = MCStats['10GeV']/1940000 * (42*73.0+(96-42)*66.2)/96.*1E-6/10.5 # adjusted for PDF set 13
 DYfactor4NA50 = 1.51
 
 # counting primary interactions
-Charmfactor = MCStats['10GeV']/(6 * 17366229. / 1.7E-3)
+Charmfactor = MCStats['10GeV']/(285.3828E9)  # for 14 cycles
 
 NA50crossSection = [3.994,0.148]
 lumi    = 30.7 # pb-1
@@ -203,11 +205,19 @@ if not options.listOfFiles:
                 continue
     if withCharm2:
         path ={0:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
-               1:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               1:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX",
                2:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
-               3:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
-               4:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
-               5:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX"}
+               3:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX",
+               4:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+               5:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               6:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX",
+               7:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+               8:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+               9:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX",
+              10:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX",
+              11:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
+              12:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
+              13:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-16_run_MufluxfixedTarget_XXX"}
         for cycle in path:
           for run in range(0,20):
              for k in range(10):
@@ -370,7 +380,7 @@ def gausAndBukinPdf(x,par):
   if par[13]==1: return Nhigh
   if par[13]==2: return Nlow*par[0]
   if par[13]==3: return Nback*par[0]
-  if par[13]==4: return N2S*par[0]
+  if par[13]==4: return N2S
   if par[13]==5: return Ndy
   return (Nlow+Nback)*par[0]+N2S+Nhigh+Ndy
 
@@ -540,6 +550,7 @@ def my2BukinPdf(x,par):
          parDY = [hMC["GDYmctagk"].GetParameters()[0],par[17]]
          for n in range(2,7):    parDY.append(par[n])
          Ndy = RooBukinPdf(x,parDY,0)
+  N2S = abs(N2S)
   if par[15]==1: return Nhigh*par[0]
   if par[15]==2: return Nlow*par[0]
   if par[15]==3: return Nback*par[0]
@@ -825,7 +836,7 @@ def getFitDictionary(fitMethod):
                'signalLow':1,'lowMass':2, 'lowSigma':3, 'lowTails':{4:0.008,   5:-0.01, 6:0.01},
                'pol':[13,14],'highTailsOff':{10:0.008,11:-0.01},'highTailsLimits':{},
                               'lowTailsOff':{4:0.008,5:-0.01,6:0.01},  'lowTailsLimits':{4:[0.,0.2],5:[-1.,0.],6:[0.,50.]},
-               'switch':15,'psi(2s)':16, 'DY':17, 'fixParams':{12:0.0}}
+               'switch':15,'psi(2s)':16, 'DY':17, 'fixParams':{12:0.0,15:0.0}}
      funTemplate = {'F':my2BukinPdf,'N':18,'Init':init_twoBukin}
    if fitMethod=='GE':
    # high mass [6,7,8,9,10]  low mass [1,2,3,4,5]
@@ -2051,7 +2062,7 @@ def mufluxReco(sTree,h,nseq=0,ncpus=False):
             if sTree.Delx[k]<cuts['Delx<']: okCuts.append('Delx<')
             if sTree.Chi2[k]<cuts['Chi2<'] and sTree.Dely[k]<cuts['Dely<'] and sTree.Delx[k]<cuts['Delx<']: okCuts.append('All')
             for c in okCuts:
-                LV = ROOT.Math.PxPyPzMVector(p.X(),p.Y(),p.Z(),0.105658)
+                LV = ROOT.Math.PxPyPzMVector(p.X(),p.Y(),p.Z(),muonMass)
                 y  = LV.Rapidity()-y_beam
                 h[c+"p/pt"].Fill(p.Mag(),p.Pt())
                 h[c+"y"].Fill(y,p.Mag(),p.Pt())
@@ -2177,8 +2188,8 @@ def trueMass():
      if not h.has_key('M_'+str(nt.procID)):
            h['M_'+str(nt.procID)]=h['M'].Clone('M_'+str(nt.procID))
            h['zM_'+str(nt.procID)]=h['zM'].Clone('zM_'+str(nt.procID))
-     m0 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
-     m1 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
+     m0 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,muonMass)
+     m1 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,muonMass)
      G = m0+m1
      rc=h['M_'+str(nt.procID)].Fill(G.Rapidity()-3.3741642051118204,G.M())
      rc=h['zM_'+str(nt.procID)].Fill(G.Rapidity()-3.3741642051118204,G.M())
@@ -2246,7 +2257,7 @@ def invMass(sTree,h,nseq=0,ncpus=False):
             if sTree.GoodTrack[k]<0:    continue
             if sTree.GoodTrack[k]>999:  continue
             muID[k] = sTree.GoodTrack[k]
-            P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
+            P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],muonMass)
             l = (sTree.z[k] - zTarget)/(sTree.Pz[k]+ 1E-19)
             x = sTree.x[k]+l*sTree.Px[k]
             y = sTree.y[k]+l*sTree.Py[k]
@@ -2255,8 +2266,8 @@ def invMass(sTree,h,nseq=0,ncpus=False):
             dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
             Ecor = P[k].E()+dEdxCorrection(P[k].P())
             norm = dline.Mag()
-            Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
-            Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,0.105658)
+            Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,muonMass)
+            Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,muonMass)
 # now we have list of selected tracks, P.keys()
         if len(P)<2 and not withJpsi: continue
         X      =  {0:ROOT.Math.PxPyPzMVector()}
@@ -2485,6 +2496,12 @@ def myDraw(variable,cut,ntName='10GeV',DYxsec=1.):
  hMC[ntName].Draw(variable,cut+"&&(procID2<4||procID2>6)")   # exclude charm
  var   = variable.split('>>')[0]
  histo = variable.split('>>')[1]
+# dirty trick:
+ lowMassFudgeFactor = DYxsec%1000/100.
+ dyFudgeFactor      = (DYxsec-DYxsec%1000)%1000000/100000.
+ charmFudgeFactor   = int(DYxsec/1000000.)/100.
+#
+ hMC[histo].Scale(lowMassFudgeFactor)
 # charm
  if not hMC.has_key('Charm'+histo): hMC['Charm'+histo]=hMC[histo].Clone('Charm'+histo)
  charmCut = cut+""
@@ -2751,12 +2768,11 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut,sameSign=False):
    if BDTCut: theCut += "&&BDT>0."
    return theCut.replace(' ','')
 
-def runAll(ptCut=1.0,pmin=20.,muID=2,wW=True,fM=None,withDY=False,DY=None,withPsi2s=False):
+def runAll(ptCut=1.0,pmin=20.,muID=2,wW=True,fM=None,withDY=False,DY=[0.,1.,2.,4.],withPsi2s=False):
    proj = 'ycor1C'
    loadNtuples()
-   for DYxsec in [0.,1.,2.,4.]:
-     if DY:
-         if DYxsec != DY: continue
+   if not type(DY)==type([]): DY = [DY]
+   for DYxsec in DY:
      for fitMethod in ['B','CB','G']:
          if fM:
              if fitMethod != fM: continue
@@ -3169,7 +3185,7 @@ def JpsiFitComparison(proj = 'ycor1C',ptCut=0.0,pmin=20.,BDTCut=None):
                  results['B'][yrange][p][0],results['B'][yrange][p][1],pull)
           print txt
 
-def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=1.0,pmin=20.,BDTCut=None,muID=1,withWeight=True,DYxsec=1.0):
+def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=1.0,pmin=20.,BDTCut=None,muID=2,withWeight=True,DYxsec=1.0):
    unit={'ycor1C':'y_{cm}'}
    if muID < 0: tag = fitMethod+'-'+str(ptCut)+'_'+str(pmin)
    else:        tag = 'muID'+str(muID)+'_'+fitMethod+'-'+str(ptCut)+'_'+str(pmin)
@@ -3256,11 +3272,9 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=
           hFun = hz.GetFunction(fName)
           mass = [hFun.GetParameter(fM[fitMethod]['mass']), hFun.GetParError(fM[fitMethod]['mass'])]
           sigm = [hFun.GetParameter(fM[fitMethod]['sigma']),hFun.GetParError(fM[fitMethod]['sigma'])]
-          print "i am here 1"
           prob = hFun.GetProb()
           hMC[fName] = ROOT.TF1(fitMethod,funTemplate['F'],0,10,funTemplate['N'])
           for j in range(funTemplate['N']):
-            print j
             hMC[fName].SetParameter(j,hFun.GetParameter(j))
             hMC[fName].SetParError(j,hFun.GetParError(j))
 # make pull plot
@@ -3273,8 +3287,6 @@ def JpsiFitSystematics(fitMethod='CB',proj = 'ycor1C',withFitResult=False,ptCut=
           hMC[hr].SetMarkerStyle(29)
           hMC[hr].SetMarkerSize(1.3)
           bw = hz.GetBinWidth(1)
-          print fName
-          1/0
           for n in range(1,hMC[hr].GetNbinsX()+1):
              N = hz.GetBinContent(n)
              mu = hMC[fName].Integral(hz.GetBinCenter(n)-bw/2.,hz.GetBinCenter(n)+bw/2.)/bw
@@ -4314,8 +4326,8 @@ def energyLoss(step='determine'):
    X={}
    for n in range(eventList.GetN()):
       rc = nt.GetEvent(eventList.GetEntry(n))
-      P[1] = ROOT.Math.PxPyPzMVector(nt.prec1x,nt.prec1y,nt.prec1z,0.105658)
-      P[2] = ROOT.Math.PxPyPzMVector(nt.prec2x,nt.prec2y,nt.prec2z,0.105658)
+      P[1] = ROOT.Math.PxPyPzMVector(nt.prec1x,nt.prec1y,nt.prec1z,muonMass)
+      P[2] = ROOT.Math.PxPyPzMVector(nt.prec2x,nt.prec2y,nt.prec2z,muonMass)
       X[1] = ROOT.TVector3(nt.rec1x,nt.rec1y,nt.rec1z)
       X[2] = ROOT.TVector3(nt.rec2x,nt.rec2y,nt.rec2z)
 # make dE correction plus direction from measured point
@@ -4324,7 +4336,7 @@ def energyLoss(step='determine'):
         dline = X[k]-O
         norm  = dline.Mag()
         Ecor  = P[k].E()-hMC['eloss_p_g'].Eval(P[k].E())
-        Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
+        Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,muonMass)
       J = Pcor[1]+Pcor[2]
       rc = hMC['mcorNew'].Fill(J.M())
 
@@ -5173,20 +5185,20 @@ def analyzeInvMassBias():
   x = '_truePt'
   for event in nt:
    if event.Jpsi!=443: continue
-   Ptrue[1] = ROOT.Math.PxPyPzMVector(event.p1x,event.p1y,event.p1z,0.105658)
-   Ptrue[2] = ROOT.Math.PxPyPzMVector(event.p2x,event.p2y,event.p2z,0.105658)
-   Prec[1]  = ROOT.Math.PxPyPzMVector(event.prec1x,event.prec1y,event.prec1z,0.105658)
-   Prec[2]  = ROOT.Math.PxPyPzMVector(event.prec2x,event.prec2y,event.prec2z,0.105658)
+   Ptrue[1] = ROOT.Math.PxPyPzMVector(event.p1x,event.p1y,event.p1z,muonMass)
+   Ptrue[2] = ROOT.Math.PxPyPzMVector(event.p2x,event.p2y,event.p2z,muonMass)
+   Prec[1]  = ROOT.Math.PxPyPzMVector(event.prec1x,event.prec1y,event.prec1z,muonMass)
+   Prec[2]  = ROOT.Math.PxPyPzMVector(event.prec2x,event.prec2y,event.prec2z,muonMass)
    tdir = ROOT.TVector3(event.rec1x,event.rec1y,event.rec1z-zTarget)
    cor = Prec[1].P()/tdir.Mag()
-   Pcor[1]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
+   Pcor[1]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,muonMass)
    cor = Ptrue[1].P()/tdir.Mag()
-   Pcor2[1]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
+   Pcor2[1]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,muonMass)
    tdir = ROOT.TVector3(event.rec2x,event.rec2y,event.rec2z-zTarget)
    cor = Prec[2].P()/tdir.Mag()
-   Pcor[2]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
+   Pcor[2]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,muonMass)
    cor = Ptrue[2].P()/tdir.Mag()
-   Pcor2[2]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,0.105658)
+   Pcor2[2]  = ROOT.Math.PxPyPzMVector(tdir.X()*cor,tdir.Y()*cor,tdir.Z()*cor,muonMass)
    P=Ptrue[1]+Ptrue[2]
    PtMinTrue = min(Ptrue[1].Pt(),Ptrue[2].Pt())
    PtMin = min(Prec[1].Pt(),Prec[2].Pt())
@@ -5204,8 +5216,8 @@ def analyzeInvMassBias():
    Pmult   = {}
    for j in range(1,3): 
        dEloss=Prec[j].P()/Ptrue[j].P()
-       PdEloss[j]= ROOT.Math.PxPyPzMVector(Ptrue[j].X()*dEloss,Ptrue[j].Y()*dEloss,Ptrue[j].Z()*dEloss,0.105658)
-       Pmult[j]= ROOT.Math.PxPyPzMVector(Prec[j].X()/dEloss,Prec[j].Y()/dEloss,Prec[j].Z()/dEloss,0.105658)
+       PdEloss[j]= ROOT.Math.PxPyPzMVector(Ptrue[j].X()*dEloss,Ptrue[j].Y()*dEloss,Ptrue[j].Z()*dEloss,muonMass)
+       Pmult[j]= ROOT.Math.PxPyPzMVector(Prec[j].X()/dEloss,Prec[j].Y()/dEloss,Prec[j].Z()/dEloss,muonMass)
    P=PdEloss[1]+PdEloss[2]
    PtMin = min(PdEloss[1].Pt(),PdEloss[2].Pt())
    rc = hMC['m_MCdEdx'].Fill(P.M(),PtMin)
@@ -5298,7 +5310,7 @@ def debugInvMass(sTree,nMax=1000):
             if sTree.GoodTrack[k]<0: continue
             if sTree.GoodTrack[k]%2!=1 or  int(sTree.GoodTrack[k]/10)%2!=1: continue
             if sTree.GoodTrack[k]>999:  continue
-            P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
+            P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],muonMass)
             l = (sTree.z[k] - zTarget)/(sTree.Pz[k]+ 1E-19)
             x = sTree.x[k]+l*sTree.Px[k]
             y = sTree.y[k]+l*sTree.Py[k]
@@ -5307,8 +5319,8 @@ def debugInvMass(sTree,nMax=1000):
             dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
             Ecor = P[k].E()+dEdxCorrection(P[k].P())
             norm = dline.Mag()
-            Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
-            Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,0.105658)
+            Pcor[k]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,muonMass)
+            Pcor2[k] = ROOT.Math.PxPyPzMVector(P[k].P()*dline.X()/norm,P[k].P()*dline.Y()/norm,P[k].P()*dline.Z()/norm,muonMass)
 # now we have list of selected tracks, P.keys()
         if len(P)<2: continue
         shortName = currentFile.split('/')[11]
@@ -6041,11 +6053,11 @@ def trueCosCS1():
           if nt.mcor<0.2: continue
           if nt.p1x==nt.p2x: continue
           if nt.chi21 < 0: 
-            PLepton     = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
-            PAntilepton = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
+            PLepton     = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,muonMass)
+            PAntilepton = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,muonMass)
           else: 
-            PLepton     = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
-            PAntilepton = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
+            PLepton     = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,muonMass)
+            PAntilepton = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,muonMass)
           P1pl = PLepton.E()+PLepton.Pz()
           P2pl = PAntilepton.E()+PAntilepton.Pz()
           P1mi = PLepton.E()-PLepton.Pz()
@@ -6147,8 +6159,8 @@ def trueCosCS2():
           rc = hMC['JpsiIPtvsY'].Fill(PJpsi.Rapidity()-y_beam,PJpsi.Pt())
           continue
        rc = hMC['JpsiPtvsY'].Fill(PJpsi.Rapidity()-y_beam,PJpsi.Pt())
-       PLepton     = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
-       PAntilepton = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
+       PLepton     = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,muonMass)
+       PAntilepton = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,muonMass)
        P1pl = PLepton.E()+PLepton.Pz()
        P2pl = PAntilepton.E()+PAntilepton.Pz()
        P1mi = PLepton.E()-PLepton.Pz()
@@ -6593,12 +6605,12 @@ def studyMassConstraint():
       P = {}
       Pcor = {}
       for i in range(1,3):
-        P[i] = ROOT.Math.PxPyPzMVector(eval('nt.prec'+str(i)+'x'),eval('nt.prec'+str(i)+'y'),eval('nt.prec'+str(i)+'z'),0.105658)
+        P[i] = ROOT.Math.PxPyPzMVector(eval('nt.prec'+str(i)+'x'),eval('nt.prec'+str(i)+'y'),eval('nt.prec'+str(i)+'z'),muonMass)
 # make dE correction plus direction from measured point
         dline = ROOT.TVector3(eval('nt.rec'+str(i)+'x'),eval('nt.rec'+str(i)+'y'),eval('nt.rec'+str(i)+'z')-zTarget)
         Ecor  = P[i].E()+dEdxCorrection(P[i].P())
         norm = dline.Mag()
-        Pcor[i]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
+        Pcor[i]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,muonMass)
       M = Pcor[1] + Pcor[2]
       M0 = P[1] + P[2]
       rc = hMC['yresol0'].Fill(M0.Rapidity() - nt.YTRUE)
@@ -7062,10 +7074,10 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
               if event.chi21*event.chi22>0: continue
               if max(abs(event.chi21),abs(event.chi22))>0.9: continue
               if min(event.p1,event.p2)<pmin or max(event.p1,event.p2)>pmax: continue
-              Ptrue[1] = ROOT.Math.PxPyPzMVector(event.p1x,event.p1y,event.p1z,0.105658)
-              Ptrue[2] = ROOT.Math.PxPyPzMVector(event.p2x,event.p2y,event.p2z,0.105658)
-              Prec[1]  = ROOT.Math.PxPyPzMVector(event.prec1x,event.prec1y,event.prec1z,0.105658)
-              Prec[2]  = ROOT.Math.PxPyPzMVector(event.prec2x,event.prec2y,event.prec2z,0.105658)
+              Ptrue[1] = ROOT.Math.PxPyPzMVector(event.p1x,event.p1y,event.p1z,muonMass)
+              Ptrue[2] = ROOT.Math.PxPyPzMVector(event.p2x,event.p2y,event.p2z,muonMass)
+              Prec[1]  = ROOT.Math.PxPyPzMVector(event.prec1x,event.prec1y,event.prec1z,muonMass)
+              Prec[2]  = ROOT.Math.PxPyPzMVector(event.prec2x,event.prec2y,event.prec2z,muonMass)
 # make dE correction plus direction from measured point
               scale = 0. # 25.
               sigX = 0.02*scale
@@ -7078,19 +7090,19 @@ def studyInvMassResolution(command='',xTarget=0.53,yTarget=-0.2,plotOnly=False,t
               dlineScaled   = ROOT.TVector3(event.rec1x+sigX*rnr.Gaus()+xOff,event.rec1y+sigY*rnr.Gaus()+yOff,event.rec1z-zTarget+sigPVz*rnr.Gaus())
               normScaled = dlineScaled.Mag()
               Ecor = Prec[1].E()+dEdxCorrection(Prec[1].P())
-              Pcor[1]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
-              PcorScaled[1]  = ROOT.Math.PxPyPzMVector(Ecor*dlineScaled.X()/normScaled,Ecor*dlineScaled.Y()/normScaled,Ecor*dlineScaled.Z()/normScaled,0.105658)
-              Pcor_trueP[1] = ROOT.Math.PxPyPzMVector(Ptrue[1].P()*dline.X()/norm,Ptrue[1].P()*dline.Y()/norm,Ptrue[1].P()*dline.Z()/norm,0.105658)
-              Pcor_trueTheta[1] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[1].x()/Ptrue[1].P(),Ecor*Ptrue[1].y()/Ptrue[1].P(),Ecor*Ptrue[1].z()/Ptrue[1].P(),0.105658)
+              Pcor[1]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,muonMass)
+              PcorScaled[1]  = ROOT.Math.PxPyPzMVector(Ecor*dlineScaled.X()/normScaled,Ecor*dlineScaled.Y()/normScaled,Ecor*dlineScaled.Z()/normScaled,muonMass)
+              Pcor_trueP[1] = ROOT.Math.PxPyPzMVector(Ptrue[1].P()*dline.X()/norm,Ptrue[1].P()*dline.Y()/norm,Ptrue[1].P()*dline.Z()/norm,muonMass)
+              Pcor_trueTheta[1] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[1].x()/Ptrue[1].P(),Ecor*Ptrue[1].y()/Ptrue[1].P(),Ecor*Ptrue[1].z()/Ptrue[1].P(),muonMass)
               dline         = ROOT.TVector3(event.rec2x,event.rec2y,event.rec2z-zTarget)
               dlineScaled   = ROOT.TVector3(event.rec2x+sigX*rnr.Gaus()+xOff,event.rec2y+sigY*rnr.Gaus()+yOff,event.rec2z-zTarget+sigPVz*rnr.Gaus())
               Ecor = Prec[2].E()+dEdxCorrection(Prec[2].P())
               norm = dline.Mag()
               normScaled = dlineScaled.Mag()
-              Pcor[2]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,0.105658)
-              PcorScaled[2]  = ROOT.Math.PxPyPzMVector(Ecor*dlineScaled.X()/normScaled,Ecor*dlineScaled.Y()/normScaled,Ecor*dlineScaled.Z()/normScaled,0.105658)
-              Pcor_trueP[2] = ROOT.Math.PxPyPzMVector(Ptrue[2].P()*dline.X()/norm,Ptrue[2].P()*dline.Y()/norm,Ptrue[2].P()*dline.Z()/norm,0.105658)
-              Pcor_trueTheta[2] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[2].x()/Ptrue[2].P(),Ecor*Ptrue[2].y()/Ptrue[2].P(),Ecor*Ptrue[2].z()/Ptrue[2].P(),0.105658)
+              Pcor[2]  = ROOT.Math.PxPyPzMVector(Ecor*dline.X()/norm,Ecor*dline.Y()/norm,Ecor*dline.Z()/norm,muonMass)
+              PcorScaled[2]  = ROOT.Math.PxPyPzMVector(Ecor*dlineScaled.X()/normScaled,Ecor*dlineScaled.Y()/normScaled,Ecor*dlineScaled.Z()/normScaled,muonMass)
+              Pcor_trueP[2] = ROOT.Math.PxPyPzMVector(Ptrue[2].P()*dline.X()/norm,Ptrue[2].P()*dline.Y()/norm,Ptrue[2].P()*dline.Z()/norm,muonMass)
+              Pcor_trueTheta[2] = ROOT.Math.PxPyPzMVector(Ecor*Ptrue[2].x()/Ptrue[2].P(),Ecor*Ptrue[2].y()/Ptrue[2].P(),Ecor*Ptrue[2].z()/Ptrue[2].P(),muonMass)
               Ltrue = Ptrue[1]+Ptrue[2]
               Lrec  = Prec[1]+Prec[2]
               Lcor  = Pcor[1]+Pcor[2]
@@ -7424,25 +7436,76 @@ def myVertex(t1,t2,PosDir,xproj=False):
     Y = c.y()+v.y()*t
     Z = c.z()+v.z()*t
     return X,Y,Z,abs(dist)
-def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
+def studyDrellYanAndCharm(DYxsec=1.5):
+     ut.bookCanvas(hMC,'DYandCharm','Drell Yan and charm',2400,1200,3,1)
+     MCs = {'Charm2':[Charmfactor,ROOT.kBlue],'DY':[DYfactor*DYxsec,ROOT.kRed]}
+     for mc in MCs:
+        ut.bookHist(hMC,'muMom'+mc,'muon momentum;GeV/c',100,0.,400.,50,0.,5.)
+        ut.bookHist(hMC,'trueMass'+mc,'dimuon mass;GeV/c^{2}',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+        ut.bookHist(hMC,'trueMassWithSel'+mc,'dimuon mass;GeV/c^{2}',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
+        for nt in hMC[mc]:
+           if abs(nt.p1x-nt.p2x)<1E-5: continue # clones
+           mu1 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,muonMass)
+           mu2 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,muonMass)
+           R = mu1+mu2
+           rc = hMC['trueMass'+mc].Fill(R.M())
+           if min(mu1.P(),mu2.P())>20. and max(mu1.Pt(),mu2.Pt())>1.0: rc = hMC['trueMassWithSel'+mc].Fill(R.M())
+        hMC['trueMass'+mc].Scale(MCs[mc][0])
+        hMC['trueMassWithSel'+mc].Scale(MCs[mc][0])
+        hMC['trueMass'+mc].SetLineColor(MCs[mc][1])
+        hMC['trueMass'+mc].GetXaxis().SetRangeUser(0.,5.)
+        hMC['trueMassWithSel'+mc].SetLineColor(MCs[mc][1])
+        hMC['trueMassWithSel'+mc].GetXaxis().SetRangeUser(0.,5.)
+     hMC['DYandCharm'].cd(1)
+     hMC['trueMassDY'].Draw()
+     hMC['trueMassCharm2'].Draw('same')
+     hMC['DYandCharm'].cd(2)
+     hMC['trueMassWithSelDY'].Draw()
+     hMC['trueMassWithSelCharm2'].Draw('same')
+     hMC['DYandCharm'].cd(3)
+     rc = hMC['Charm2'].Draw('sqrt(p1x*p1x+p1y*p1y):sqrt(p1x*p1x+p1y*p1y+p1z*p1z)>>muMomCharm2')
+     rc = hMC['DY'].Draw('sqrt(p1x*p1x+p1y*p1y):sqrt(p1x*p1x+p1y*p1y+p1z*p1z)>>muMomDY')
+     hMC['muMomCharm2_p'] = hMC['muMomCharm2'].ProjectionX('muMomCharm2_p')
+     hMC['muMomDY_p']     = hMC['muMomDY'].ProjectionX('muMomDY_p')
+     hMC['muMomCharm2_p'].Scale(MCs['Charm2'][0])
+     hMC['muMomDY_p'].Scale(MCs['DY'][0])
+     hMC['muMomCharm2_p'].SetLineColor(MCs['Charm2'][1])
+     hMC['muMomDY_p'].SetLineColor(MCs['DY'][1])
+     hMC['muMomCharm2_p'].Draw()
+     hMC['muMomDY_p'].Draw('same')
+def studyDrellYan(fitMethod='B',weighted=False,withDY=False,fillMom=False):
    X =   {'0.0':ROOT.kBlack,'1.0':ROOT.kGreen, '2.0':ROOT.kBlue,'4.0':ROOT.kRed}
    txt = {'0.0':'no DY',    '1.0':'nominal DY','2.0':'2x DY','4.0':'4x DY'}
-   hData['FitYield']={}
+   S   = {'lowMass':ROOT.kBlue,'highMass':ROOT.kMagenta,'Charm':ROOT.kGreen,'DY':ROOT.kCyan}
+# muon momentum true
    hMC['dummy'].cd()
-   for x in X:
+   if fillMom: studyDrellYanAndCharm()
+   hData['FitYield']={}
+   for z in X:
+     x = z+fitMethod
      hMC['DY'+x]={}
      hData['DY'+x]={}
-     ut.readHists(hMC['DY'+x],'muID2_'+fitMethod+'-1.0_20.0_DY'+x+'_wp6/MC-histos.root')
-     ut.readHists(hData['DY'+x],'muID2_'+fitMethod+'-1.0_20.0_DY'+x+'_wp6/Data-histos.root')
+     ut.readHists(hMC['DY'+x],'muID2_'+fitMethod+'-1.0_20.0_DY'+z+'_wp6/MC-histos.root')
+     ut.readHists(hData['DY'+x],'muID2_'+fitMethod+'-1.0_20.0_DY'+z+'_wp6/Data-histos.root')
 # fit result from twoCBYieldfit
-     NJpsi  = hData['DY'+x]['B_ycor1C-Jpsi'].GetBinContent(19)
-     eNJpsi = hData['DY'+x]['B_ycor1C-Jpsi'].GetBinError(19)
+     NJpsi  = hData['DY'+x][fitMethod+'_ycor1C-Jpsi'].GetBinContent(19)
+     eNJpsi = hData['DY'+x][fitMethod+'_ycor1C-Jpsi'].GetBinError(19)
      hData['FitYield'][x]=[NJpsi,eNJpsi]
-     hMC['lowMass'+x]  = hMC['DY'+x]['mc-B_ycor1CLowMass-10GeV'].ProjectionY('lowMass'+x)
-     hMC['highMass'+x] = hMC['DY'+x]['mc-B_ycor1CHighMass-Jpsi'].ProjectionY('highMass'+x)
-     hMC['Charm'+x]    = hMC['DY'+x]['Charmmc-B_ycor1CLowMass-10GeV'].ProjectionY('Charm'+x)
-     hMC["hDY"+x]      = hMC['DY'+x]['DYmc-B_ycor1CLowMass-10GeV'].ProjectionY("hDY"+x)
-     hMC['lowMass'+x].SetLineColor(X[x])
+     hMC['lowMass'+x]  = hMC['DY'+x]['mc-'+fitMethod+'_ycor1CLowMass-10GeV'].ProjectionY('lowMass'+x)
+     hMC['highMass'+x] = hMC['DY'+x]['mc-'+fitMethod+'_ycor1CHighMass-Jpsi'].ProjectionY('highMass'+x)
+     hMC['Charm'+x]    = hMC['DY'+x]['Charmmc-'+fitMethod+'_ycor1CLowMass-10GeV'].ProjectionY('Charm'+x)
+     hMC["hDY"+x]      = hMC['DY'+x]['DYmc-'+fitMethod+'_ycor1CLowMass-10GeV'].ProjectionY("hDY"+x)
+     hMC['lowMass'+x].SetLineColor(X[z])
+# rapidity
+     hMC['Y_lowMass'+x]  = hMC['DY'+x]['mc-'+fitMethod+'_ycor1CLowMass-10GeV'].ProjectionX('Y_lowMass'+x)
+     hMC['Y_highMass'+x] = hMC['DY'+x]['mc-'+fitMethod+'_ycor1CHighMass-Jpsi'].ProjectionX('Y_highMass'+x)
+     hMC['Y_Charm'+x]    = hMC['DY'+x]['Charmmc-'+fitMethod+'_ycor1CLowMass-10GeV'].ProjectionX('Y_Charm'+x)
+     hMC["Y_DY"+x]      = hMC['DY'+x]['DYmc-'+fitMethod+'_ycor1CLowMass-10GeV'].ProjectionX("Y_DY"+x)
+     for s in S:
+       hMC['sY_'+s+x]  = hMC['Y_'+s+x].Clone('sY_'+s+x)
+       hMC['sY_'+s+x].Scale(1./hMC['Y_'+s+x].GetSumOfWeights())
+       hMC['sY_'+s+x].SetLineColor(S[s])
+       hMC['Y_'+s+x].SetLineColor(S[s])
      mctag =  'lowMass'+x
 # make fit
      fitOption='SL'
@@ -7500,24 +7563,35 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
         CB.SetParameter(l,params['lowTails'][l])
      for l in params['lowTailsLimits']: 
         CB.SetParLimits(l,params['lowTailsLimits'][l][0],params['lowTailsLimits'][l][1])
-     for l in params['pol']:       CB.ReleaseParameter(l)
+     # for l in params['pol']:       CB.ReleaseParameter(l)
      rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
      rc = myFit(hMC[mctag],CB,fitOption,minX,maxX)
-     hMC[mctag].GetFunction(fname).SetLineColor(X[x])
+     hMC[mctag].GetFunction(fname).SetLineColor(X[z])
      if rc[0]!=0:
         print "FIT  ERROR: ",mctag
         break
    ROOT.gStyle.SetOptStat(0)
-   hMC['lowMass4.0'].SetTitle('; GeV/c{2};N')
-   hMC['lowMass4.0'].SetMinimum(0.)
-   hMC['lowMass4.0'].Draw()
-   hMC['lowMass1.0'].Draw('same')
-   hMC['lowMass2.0'].Draw('same')
-   hMC['lowMass0.0'].Draw('same')
+   hMC['lowMass4.0'+fitMethod].SetTitle('; GeV/c{2};N')
+   hMC['lowMass4.0'+fitMethod].SetMinimum(0.)
+   hMC['lowMass4.0'+fitMethod].Draw()
+   hMC['lowMass1.0'+fitMethod].Draw('same')
+   hMC['lowMass2.0'+fitMethod].Draw('same')
+   hMC['lowMass0.0'+fitMethod].Draw('same')
    myPrint(hMC['dummy'],'DrellYan-lowmass-'+fitMethod)
+# rapidity
+   hMC['dummy'].cd()
+   x='0.0'+fitMethod
+   hMC['sY_Charm'+x].Draw()
+   hMC['LY']=ROOT.TLegend(0.5,0.6,0.9,0.8)
+   for s in S:
+       hMC['sY_'+s+x].Draw('same')
+       rc = hMC['LY'].AddEntry(hMC['sY_'+s+x],s,'PL')
+   hMC['LY'].Draw('same')
+   myPrint(hMC['dummy'],'Y-distrDiffSources-'+fitMethod)
+
 # fix signal shape from MC
    params,funTemplate = getFitDictionary(fitMethod)
-   histo = hMC['highMass0.0']
+   histo = hMC['highMass0.0'+fitMethod]
    bw = histo.GetBinWidth(1)
    fname = 'fun-MC'
    hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
@@ -7538,7 +7612,7 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
    rc = myFit(histo,CB,fitOption,minX,maxX)
    hMC["fitResult"] = rc[2]
 # now data:
-   hData['M'] = hData['DY0.0']['B_ycor1C'].ProjectionY('DY0_M')
+   hData['M'] = hData['DY0.0'+fitMethod][fitMethod+'_ycor1C'].ProjectionY('DY0_M')
    histo = hData['M']
    bw = histo.GetBinWidth(1)
    fname = 'fun-Data'
@@ -7556,14 +7630,19 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
       CB.SetParLimits(l,params['lowTailsLimits'][l][0],params['lowTailsLimits'][l][1])
    for l in params['highTailsLimits']: 
       CB.SetParLimits(l,params['highTailsLimits'][l][0],params['highTailsLimits'][l][1])
-   if fitMethod=='CB':
-     for l in params['highTails']:CB.FixParameter(l,hMC["fitResult"].Parameter(l))
+   for l in params['highTails']:CB.FixParameter(l,hMC["fitResult"].Parameter(l))
    CB.SetParameter(params['signalLow'],Nguess)
    CB.FixParameter(params['psi(2s)'],0.0)
    CB.FixParameter(params['DY'],0.0)
+   for l in params['pol']:       CB.FixParameter(l,0)
+   rc = myFit(histo,CB,fitOption,minX,maxX)
+   # for l in params['pol']:       CB.ReleaseParameter(l)
    rc = myFit(histo,CB,fitOption,minX,maxX)
    CB.ReleaseParameter(params['psi(2s)'])
    rc = myFit(histo,CB,fitOption,minX,maxX)
+   for l in params['highTails']:CB.ReleaseParameter(l)
+   rc = myFit(histo,CB,fitOption,minX,maxX)
+
    hData["fitResult"] = rc[2]
 
    histo.SetTitle('; GeV/c{2};N')
@@ -7571,26 +7650,33 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
    myPrint(hMC['dummy'],'DrellYan-data-'+fitMethod)
 # add MC normalized to same npot, take MC low mass and add signal from fit.
    fun = histo.GetFunction(fname)
-   hMC['signal'] = ROOT.TF1('signal',funTemplate['F'],0,10,funTemplate['N'])
-   for i in range(funTemplate['N']): hMC['signal'].FixParameter(i,fun.GetParameter(i))
-   hMC['signal'].SetParameter(params['switch'],1)
+   Fsignal = 'signal'+fitMethod
+   hMC[Fsignal]   = ROOT.TF1(Fsignal,funTemplate['F'],0,10,funTemplate['N'])
+   hMC['signal']  = hMC[Fsignal]
    hMC['lowMass'] = ROOT.TF1('lowMass',funTemplate['F'],0,10,funTemplate['N'])
-   for n in range(funTemplate['N']): hMC['lowMass'].FixParameter(n,fun.GetParameter(n))
+   hMC['back']    = ROOT.TF1('back',funTemplate['F'],0,10,funTemplate['N'])
+   for fx in [Fsignal,'lowMass','back']:
+     for i in range(funTemplate['N']): 
+        hMC[fx].FixParameter(i,fun.GetParameter(i))
+   hMC[Fsignal].SetParameter(params['switch'],1)
    hMC['lowMass'].FixParameter(params['switch'],2)
+   hMC['back'].FixParameter(params['switch'],3)
    hMC['lowMass'].SetLineColor(ROOT.kGreen)
+   hMC['back'].SetLineColor(ROOT.kGreen)
 
    ut.bookCanvas(hMC,'dataAndMC1',' ',1200,900,1,1)
    hMC['dataAndMC1'].cd(1)
    nMax = ut.findMaximumAndMinimum(histo)[1]
    fac = dataStats/MCStats['10GeV']
-   for x in X:
+   for z in X:
+     x=z+fitMethod
      hMC['normlowMass'+x]=hMC['lowMass'+x].Clone('normlowMass'+x)
      hMC['normlowMass'+x].Scale(fac)
      bw = hMC['normlowMass'+x].GetBinWidth(1)
      for n in range(1,hMC['normlowMass'+x].GetNbinsX()+1):
         x1 = hMC['normlowMass'+x].GetBinLowEdge(n)
         x2 = x1+bw
-        S = hMC['signal'].Integral(x1,x2)/bw
+        S = hMC[Fsignal].Integral(x1,x2)/bw
         hMC['normlowMass'+x].SetBinContent(n,hMC['normlowMass'+x].GetBinContent(n)+S)
      minMax = ut.findMaximumAndMinimum(hMC['normlowMass'+x])
      if minMax[1]>nMax:  nMax = minMax[1]
@@ -7601,18 +7687,19 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
    histo.DrawCopy()
    hData['LDY']=ROOT.TLegend(0.5,0.6,0.9,0.8)
    rc = hData['LDY'].AddEntry(histo,'Data','PL')
-   for x in X: 
+   for z in X: 
+      x=z+fitMethod
       hMC['normlowMass'+x].Draw('samehist')
-      rc = hData['LDY'].AddEntry(hMC['normlowMass'+x],'MC '+txt[x],'PL')
+      rc = hData['LDY'].AddEntry(hMC['normlowMass'+x],'MC '+txt[z],'PL')
    hData['LDY'].Draw('same')
    myPrint(hMC['dataAndMC1'],'DrellYan-data-And-MC-'+fitMethod)
 
 #  a*hMC['lowMass0'] + b*DYfactor*hMC["hDY0.0"] + c*Charmfactor*hMC["hCharm0.0"] + signal
    hMC['dummy'].cd()
-   hMC["Ndy"] = hMC["hDY0.0"].Clone('Ndy')
-   hMC["Ndy"].Scale(1./hMC["hDY0.0"].GetSumOfWeights())
-   hMC["Ncharm"] = hMC["Charm0.0"].Clone('Ncharm')
-   hMC["Ncharm"].Scale(1./hMC["Charm0.0"].GetSumOfWeights())
+   hMC["Ndy"] = hMC["hDY0.0"+fitMethod].Clone('Ndy')
+   hMC["Ndy"].Scale(1./hMC["hDY0.0"+fitMethod].GetSumOfWeights())
+   hMC["Ncharm"] = hMC["Charm0.0"+fitMethod].Clone('Ncharm')
+   hMC["Ncharm"].Scale(1./hMC["Charm0.0"+fitMethod].GetSumOfWeights())
    colors = {}
    colors['MDrell Yan']      =     [24,ROOT.kCyan]
    colors['Mcharm'] =              [27,ROOT.kRed+3]
@@ -7626,6 +7713,9 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
    hMC["Ncharm"].Draw('same')
    myPrint(hMC['dummy'],'DrellYanAndCharm_shape')
 
+   hMC['lowMass0.0']= hMC['lowMass0.0'+fitMethod]
+   hMC["hDY0.0"]    = hMC['hDY0.0'+fitMethod]
+   hMC["Charm0.0"]  = hMC['Charm0.0'+fitMethod]
    ut.bookCanvas(hMC,'dataAndMC2',' ',1200,900,1,1)
    hMC['dataAndMC2'].cd(1)
    npar = 3
@@ -7648,34 +7738,36 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
      gMinuit.GetParameter(i,pars[i][0],pars[i][1])
    print "RESULT:",pars[0][0].value, pars[1][0].value, pars[2][0].value
    norm = dataStats/MCStats['10GeV']
-   hMC['test'] = hMC['lowMass0.0'].Clone('test')
+   hMC['test'] = hMC['lowMass0.0'+fitMethod].Clone('test')
    hMC['test'].Reset()
-   hMC['test'].Add(hMC['lowMass0.0'],norm*pars[0][0].value)
-   hMC['test'].Add(hMC["hDY0.0"],    norm*DYfactor*pars[1][0].value)
-   hMC['test'].Add(hMC["Charm0.0"],  norm*Charmfactor*pars[2][0].value)
+   hMC['test'].Add(hMC['lowMass0.0'+fitMethod],norm*pars[0][0].value)
    hMC['test'].SetLineColor(ROOT.kGray+1)
    hMC['test'].SetMarkerStyle(23)
    hMC['test'].SetMarkerColor(ROOT.kGray+1)
    hMC['test'].SetMinimum(0)
-   hMC['testDY'] = hMC["hDY0.0"].Clone('testDY')
+   hMC['testDY'] = hMC["hDY0.0"+fitMethod].Clone('testDY')
    hMC['testDY'].Scale(norm*DYfactor*pars[1][0].value)
    hMC['testDY'].SetLineColor(ROOT.kOrange-7)
    hMC['testDY'].SetMarkerColor(ROOT.kOrange-7)
    hMC['testDY'].SetMarkerStyle(4)
-   hMC['testCharm'] = hMC["Charm0.0"].Clone('testCharm')
+   hMC['testCharm'] = hMC["Charm0.0"+fitMethod].Clone('testCharm')
    hMC['testCharm'].Scale(norm*Charmfactor*pars[2][0].value)
    hMC['testCharm'].SetLineColor(ROOT.kGreen-7)
    hMC['testCharm'].SetMarkerColor(ROOT.kGreen-7)
    hMC['testCharm'].SetMarkerStyle(27)
+   hMC['test'].Add(hMC["testDY"])
+   hMC['test'].Add(hMC["testCharm"])
+
    hMC['test'].Draw()
    hMC['testDY'].Draw('same')
    hMC['testCharm'].Draw('same')
    hData['M'].Draw('same')
-   hMC['lowMass'].Draw('same')  # low mass part of signal fit
-   hMC['signal'].Draw('same')   # signal part of signal fit
+   hMC['lowMass'].DrawF1(0.5,8.,'same')  # low mass part of signal fit
+   hMC[Fsignal].DrawF1(0.5,8.,'same')   # signal part of signal fit
    T = ROOT.TLatex()
    mLow  = 0.5
    mHigh = 5.0 
+   if fitMethod=='G':  tmp = norm_myGauss(CB,im='',sLow=2.0,sHigh=mHigh,bLow=mLow,bHigh=mHigh)
    if fitMethod=='B':  tmp = norm_twoBukin(CB,im='',sLow=2.0,sHigh=mHigh,bLow=mLow,bHigh=mHigh)
    if fitMethod=='CB': tmp = norm_twoCB(hData["fitResult"],im='',sLow=2.0,sHigh=mHigh,bLow=mLow,bHigh=mHigh)
    T.SetTextSize(0.04)
@@ -7685,7 +7777,7 @@ def studyDrellYan(fitMethod='B',weighted=False,withDY=False):
         T.DrawLatex(2.5,1450.,"Drell-Yan scaled by %5.2F #pm %5.2F "%(pars[1][0].value,pars[1][1].value))
    else:
         rCharm = 0.35
-        T.DrawLatex(2.5,1450.,"Charm + Drell-Yan scaled by %5.2F #pm %5.2F "%(pars[1][0].value-rCharm,pars[1][1].value))
+        T.DrawLatex(2.5,1450.,"Charm + Drell-Yan scaled by %5.2F #pm %5.2F "%(pars[1][0].value,pars[1][1].value))
    T.SetTextSize(0.05)
    T.DrawLatex(1.73,2242.,"N_{low\, mass}:%5.1F\pm%5.1F"%(tmp[0][0],tmp[0][1])) 
    T.DrawLatex(2.5,2500.,"N_{J/\Psi}:  %5.1F\pm%5.1F"%(tmp[1][0],tmp[1][1]))
@@ -7721,6 +7813,109 @@ def fcn(npar, gin, f, par, iflag):
     f[0] = chisq
     # print "return",f[0],par[0],par[1],par[2]
     return
+def gausAnd3Bukins(x,par):
+# 3 bukin for low mass, charm, DY and gaus for signal
+  par1 = hMC['originalfun-LM'].GetParameter(1)*par[1]
+  hMC['fun-LM'].SetParameter(1,par1)
+  Nlow = hMC['fun-LM'].Eval(x[0])
+  par2 = hMC['originalfun-DY'].GetParameter(1)*par[2]
+  hMC['fun-DY'].SetParameter(1,par2)
+  NDY  = hMC['fun-DY'].Eval(x[0])
+  par3 = hMC['originalfun-Charm'].GetParameter(1)*par[3]
+  hMC['fun-Charm'].SetParameter(1,par3)
+  NCharm = hMC['fun-Charm'].Eval(x[0])
+  fGlobal['gausN'].SetParameter(0,par[4]*par[0])
+  fGlobal['gausN'].SetParameter(1,par[5])
+  fGlobal['gausN'].SetParameter(2,par[6])
+  Nhigh = fGlobal['gausN'].Eval(x[0])
+  Nback = abs(par[7]+par[8]*x[0])
+  N2S = 0
+  fGlobal['gausN'].SetParameter(1,par[5]+3.6871 - 3.0969)
+  if par[9] > 0:
+     fGlobal['gausN'].SetParameter(0,par[9]*par[0])
+     N2S = abs(fGlobal['gausN'].Eval(x[0]))
+  elif par[9] < -999:
+     # fix psi2s to NA50 Ag, 1.6% of 1S
+     fGlobal['gausN'].SetParameter(0,0.016*par[4]*par[0])
+     N2S = abs(fGlobal['gausN'].Eval(x[0]))
+  if par[10]==1: return Nhigh
+  if par[10]==2: return Nlow
+  if par[10]==3: return Nback
+  if par[10]==4: return N2S
+  if par[10]==5: return NDY
+  if par[10]==6: return NCharm
+  return Nlow+Nback+N2S+Nhigh+NDY+NCharm
+def test3Bukins(fitMethod='G'):
+# to run after study Drell Yan
+   params,funTemplate = getFitDictionary(fitMethod)
+   norm = dataStats/MCStats['10GeV']
+   hMC['dummy'].cd()
+   hMC['fit-test'] = hMC['test'].Clone('fit-test')
+   fun = hMC['lowMass2.0'].GetListOfFunctions()[0]
+   fun.FixParameter(10,0)
+   fun.FixParameter(11,0)
+   hMC['testCharm'] = hMC["Charm0.0"].Clone('testCharm')
+   hMC['testCharm'].Scale(norm*Charmfactor)
+   rc = hMC['testCharm'].Fit(fun,'SL','',0.5,8.)
+   fitResult = rc.Get()
+   fname = 'fun-Charm'
+   hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+   for j in range(funTemplate['N']):
+       hMC[fname].FixParameter(j,fitResult.Parameter(j))
+       hMC[fname].SetParName(j,fitResult.ParName(j))
+   hMC['original'+fname]=hMC[fname].Clone('original'+fname)
+   hMC[fname].ReleaseParameter(params['signalLow'])
+   hMC['testDY'] = hMC["hDY0.0"].Clone('testDY')
+   hMC['testDY'].Scale(norm*DYfactor)
+   rc = hMC['testDY'].Fit(fun,'SL','',0.5,8.)
+   fitResult = rc.Get()
+   fname = 'fun-DY'
+   hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+   for j in range(funTemplate['N']):
+       hMC[fname].FixParameter(j,fitResult.Parameter(j))
+       hMC[fname].SetParName(j,fitResult.ParName(j))
+   hMC['original'+fname]=hMC[fname].Clone('original'+fname)
+   hMC[fname].ReleaseParameter(params['signalLow'])
+   hMC['testLM'] = hMC['lowMass0.0'].Clone('testLM')
+   hMC['testLM'].Scale(norm)
+   fun.ReleaseParameter(10)
+   fun.SetParLimits(10,0,1000)
+   rc = hMC['testLM'].Fit(fun,'SL','',0.5,8.)
+   fitResult = rc.Get()
+   fname = 'fun-LM'
+   hMC[fname] = ROOT.TF1(fname,funTemplate['F'],0,10,funTemplate['N'])
+   for j in range(funTemplate['N']):
+       hMC[fname].FixParameter(j,fitResult.Parameter(j))
+       hMC[fname].SetParName(j,fitResult.ParName(j))
+   hMC['original'+fname]=hMC[fname].Clone('original'+fname)
+   hMC[fname].ReleaseParameter(params['signalLow'])
+
+   F = ROOT.TF1('3B1G',gausAnd3Bukins,0,10,11)
+   F.FixParameter(0,bw)
+   F.SetParName(0,'binwidth')
+   F.SetParName(1,'low mass')
+   F.SetParLimits(1,0.,1E9)
+   F.SetParName(2,'Drell Yan')
+   F.SetParLimits(2,0.,1E9)
+   F.SetParName(3,'charm')
+   F.SetParLimits(3,0.,1E9)
+   F.SetParName(4,'J/psi')
+   F.SetParName(5,'mass')
+   F.SetParName(6,'sigma')
+   F.SetParName(7,'p0')
+   F.SetParName(8,'p1')
+   F.SetParName(9,'psi(2S)')
+   F.FixParameter(9,-1.)
+   F.SetParName(10,'switch')
+   F.FixParameter(10,0)
+   F.SetParameter(1,1.)
+   F.SetParameter(2,1.)
+   F.SetParameter(3,1.)
+   F.SetParameter(4,hMC['signal'].GetParameter(7))
+   F.SetParameter(5,hMC['signal'].GetParameter(8))
+   F.SetParameter(6,hMC['signal'].GetParameter(9))
+   F.FixParameter(6,hMC['signal'].GetParameter(9))
+   rc = hData['M'].Fit(F,'SL','',0.5,8.)
 
 def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
    X = {'1':ROOT.kBlack,'2':ROOT.kBlue+2,'3':ROOT.kAzure+2,'4':ROOT.kMagenta+2,'8':ROOT.kPink+8,'13':ROOT.kRed+1,'17':ROOT.kGreen-2}
@@ -7855,8 +8050,8 @@ def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
           print "this muonID is not supported",muID
           1/0
        rc = hMC['MDY'].Fill(nt.mcor)
-       P1 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,0.105658)
-       P2 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,0.105658)
+       P1 = ROOT.Math.PxPyPzMVector(nt.p1x,nt.p1y,nt.p1z,muonMass)
+       P2 = ROOT.Math.PxPyPzMVector(nt.p2x,nt.p2y,nt.p2z,muonMass)
        L = P1+P2
        m = L.M()
        if m<0.49: continue
@@ -9276,7 +9471,6 @@ def extractMuons(E='1GeV'):
     muons.Write()
 
 def extractDecays(E):
-    mMuon = 0.105658
     ut.bookHist(h,'MP','mass/P',500,0.,5.,100,0.,400.)
     ut.bookHist(h,'Pmu','muon momentum',400,0.,400.)
 #
@@ -9326,8 +9520,8 @@ def extractDecays(E):
       for j in range(len(mus)-1):
         for k in range(j+1,len(mus)):
           if not mus[k].GetPdgCode()*mus[j].GetPdgCode()<0: continue
-          mu1 = ROOT.Math.PxPyPzMVector(mus[j].GetPx(),mus[j].GetPy(),mus[j].GetPz(),mMuon)
-          mu2 = ROOT.Math.PxPyPzMVector(mus[k].GetPx(),mus[k].GetPy(),mus[k].GetPz(),mMuon)
+          mu1 = ROOT.Math.PxPyPzMVector(mus[j].GetPx(),mus[j].GetPy(),mus[j].GetPz(),muonMass)
+          mu2 = ROOT.Math.PxPyPzMVector(mus[k].GetPx(),mus[k].GetPy(),mus[k].GetPz(),muonMass)
           R = mu1+mu2
           rc = h['MP'].Fill( R.M(),R.P() )
           rc = h['Pmu'].Fill(mu1.P())
@@ -9367,7 +9561,7 @@ def extractRecMuons(E='1GeV',debug=False):
         if sTree.GoodTrack[0]<0   or sTree.GoodTrack[1]<0:    continue
         if sTree.GoodTrack[0]>999 or sTree.GoodTrack[1]>999:  continue
         for k in range(2):
-          P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],0.105658)
+          P[k] = ROOT.Math.PxPyPzMVector(sTree.Px[k],sTree.Py[k],sTree.Pz[k],muonMass)
 # make dE correction plus direction from measured point
           dline   = ROOT.TVector3(sTree.x[k],sTree.y[k],sTree.z[k]-zTarget)
           Ecor = P[k].E()+dEdxCorrection(P[k].P())
