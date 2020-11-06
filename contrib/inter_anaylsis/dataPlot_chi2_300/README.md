@@ -1,4 +1,4 @@
-This folder contains all the relevant files for plotting the momentum distribution.
+#This folder contains all the relevant files for plotting the momentum distribution.
 
 Settings:
 
@@ -31,5 +31,5 @@ For checking potential errors in HTCondor:
 
 After creating all the relevant histogram files: 
 
-- addHisto.py [arg:run/TOTAL/LOOP]
+- addHisto.py [run/TOTAL/LOOP]
   - adds all histograms together in a run/ all runs/ for each run.
