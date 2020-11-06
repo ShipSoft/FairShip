@@ -23,10 +23,8 @@ For creating histogram files:
 
 For checking potential errors in HTCondor:
 
-- checkErrorInLog.py output/$(ClusterId).log
-  - checks that all jobs in a cluster are terminated with exit code 0.
-
-- checkMissingFiles.py
+- checkError.py
+  - checks that all jobs in each log are terminated with exit code 0.
   - checks that all files are transferred back from HTCondor.
 
 After creating all the relevant histogram files: 
