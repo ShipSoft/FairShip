@@ -3,8 +3,9 @@ This folder contains all the relevant files for plotting the momentum distributi
 Settings:
 
 - chi2 < 0.9
-
+- goodTrack == 111
 - momentum range: 0 - 300 GeV
+- transverse mometum range: 0 - 40 GeV
 
 For creating histogram files: 
 
