@@ -9,5 +9,5 @@
   - loop over plotHisto.py with default options.
 
 - `printBinnedTable.py`
-  - print count and error in each bin, normalised to 10<sup>9</sup> POT.
+  - print count and error in each bin, normalised to per 10<sup>9</sup> POT.
 
