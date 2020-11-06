@@ -1,5 +1,11 @@
 This folder contains all the relevant files for plotting the momentum distribution.
 
+Settings:
+
+- chi2 < 0.9
+
+- momentum range: 0 - 300 GeV
+
 For creating histogram files: 
 
 - makeHisto.py [inFile] [run]
@@ -13,7 +19,7 @@ For creating histogram files:
 - HTCondorPlotHistos.sub
   created from setRun.py.
   to submit jobs, do
-  >>> condor_submit HTCondorPlotHistos.sub
+  > condor_submit HTCondorPlotHistos.sub
 
 For checking potential errors in HTCondor:
 
