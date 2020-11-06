@@ -2,6 +2,7 @@
 
 Settings:
 
+- runs: 2383,2388,2389,2390,2392,2395,2396
 - chi2 < 0.9
 - goodTrack == 111
 - momentum range: 0 - 300 GeV
@@ -31,3 +32,8 @@ After creating all the relevant histogram files:
 
 - addHisto.py [run/TOTAL/LOOP]
   - adds all histograms together in a run/ all runs/ for each run.
+  
+For counting event:
+
+- trackEventCount.py
+  - counts nTr in all runs without veto
