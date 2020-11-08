@@ -2,6 +2,7 @@
 
 // ROOT headers
 #include "TTree.h"
+#include "TFile.h"
 #include "ROOT/TSeq.hxx"
 
 // Fair headers

@@ -60,7 +60,7 @@ def pyExit():
             if hasattr(x,'fMan'): del x.fMan
             if hasattr(x,'fRun'): del x.fRun
             return
-    print("Genfit is not used. Exit normally")
+    print("Exit normally")
 
 def configure(darkphoton=None):
    ROOT.gROOT.ProcessLine('#include "'+os.environ["FAIRSHIP"]+'/shipdata/ShipGlobals.h"')

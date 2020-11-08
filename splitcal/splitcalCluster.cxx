@@ -4,7 +4,8 @@
 #include <iostream>
 #include <math.h>
 #include <functional>   
-#include <numeric>     
+#include <numeric>
+#include <map>
 
 
 // -----   constructor from list/vector of splitcalHit   ------------------------------------------
