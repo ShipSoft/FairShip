@@ -5,6 +5,7 @@ import os
 import sys
 import getopt
 import ROOT
+ROOT.gSystem.Load('libEGPythia8') 
 import makeALPACAEvents
 # Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
 ROOT.PyConfig.IgnoreCommandLineOptions = True
