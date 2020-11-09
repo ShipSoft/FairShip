@@ -49,7 +49,7 @@ Bool_t SciFiUnpack::Init()
 void SciFiUnpack::Register()
 {
 
-   LOG(INFO) << "SciFiUnpack : Registering..." << FairLogger::endl;
+   LOG(INFO) << "SciFiUnpack : Registering..." ;
    auto *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
@@ -61,12 +61,12 @@ void SciFiUnpack::Register()
 Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 {
 
-   LOG(INFO) << "SciFiUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
+   LOG(INFO) << "SciFiUnpack : Unpacking frame... size/bytes = " << size ;
 
    auto df = reinterpret_cast<SciFiDataFrame *>(data);
    switch (df->header.frameTime) {
-   case SoS: LOG(INFO) << "SciFiUnpack: SoS frame." << FairLogger::endl; return kTRUE;
-   case EoS: LOG(INFO) << "SciFiUnpack: EoS frame." << FairLogger::endl; return kTRUE;
+   case SoS: LOG(INFO) << "SciFiUnpack: SoS frame." ; return kTRUE;
+   case EoS: LOG(INFO) << "SciFiUnpack: EoS frame." ; return kTRUE;
    default: break;
    }
 
@@ -74,7 +74,7 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
    int layerID;
    assert(df->header.size == size);
    auto nhits = df->getHitCount();
-   LOG(INFO) << nhits << " hits." << FairLogger::endl;
+   LOG(INFO) << nhits << " hits." ;
    std::vector<HitData> hits(df->hits, df->hits + nhits);
    // std::cout << df->header.size << "  " << size << "  " << nhits << std::endl;
    for (auto &&hitData : hits) {

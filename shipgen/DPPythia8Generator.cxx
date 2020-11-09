@@ -37,7 +37,6 @@ DPPythia8Generator::DPPythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t DPPythia8Generator::Init() 
 {
-  fLogger = FairLogger::GetLogger();
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   fPythia->setRndmEnginePtr(fRandomEngine);

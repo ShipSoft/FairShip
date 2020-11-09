@@ -33,7 +33,7 @@ PixelUnpack::PixelUnpack(uint16_t PartitionId)
 // Virtual PixelUnpack: Public method
 PixelUnpack::~PixelUnpack()
 {
-   LOG(INFO) << "PixelUnpack: Delete instance" << FairLogger::endl;
+   LOG(INFO) << "PixelUnpack: Delete instance";
    delete fRawData;
 }
 
@@ -47,7 +47,7 @@ Bool_t PixelUnpack::Init()
 // Register: Protected method
 void PixelUnpack::Register()
 {
-   LOG(INFO) << "PixelUnpack : Registering..." << FairLogger::endl;
+   LOG(INFO) << "PixelUnpack : Registering...";
    auto *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
@@ -58,12 +58,12 @@ void PixelUnpack::Register()
 // DoUnpack: Public method
 Bool_t PixelUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(INFO) << "PixelUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
+   LOG(INFO) << "PixelUnpack : Unpacking frame... size/bytes = " << size;
 
    auto df = reinterpret_cast<DataFrame *>(data);
    switch (df->header.frameTime) {
-   case SoS: LOG(INFO) << "PixelUnpacker: SoS frame." << FairLogger::endl; return kTRUE;
-   case EoS: LOG(INFO) << "PixelUnpacker: EoS frame." << FairLogger::endl; return kTRUE;
+   case SoS: LOG(INFO) << "PixelUnpacker: SoS frame."; return kTRUE;
+   case EoS: LOG(INFO) << "PixelUnpacker: EoS frame."; return kTRUE;
    default: break;
    }
    assert(df->header.size == size);
@@ -85,7 +85,7 @@ Bool_t PixelUnpack::DoUnpack(Int_t *data, Int_t size)
 // Reset: Public method
 void PixelUnpack::Reset()
 {
-   LOG(DEBUG) << "PixelUnpack : Clearing Data Structure" << FairLogger::endl;
+   LOG(DEBUG) << "PixelUnpack : Clearing Data Structure" ;
    fRawData->Clear();
    fNHits = 0;
 }

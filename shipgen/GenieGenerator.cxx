@@ -30,7 +30,6 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
-  fLogger = FairLogger::GetLogger();
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;

@@ -7,7 +7,7 @@ class SciFiHit : public ShipHit {
 public:
    SciFiHit() : ShipHit() {}
    ~SciFiHit() = default;
-   SciFiHit(Int_t detID, Int_t layerID, uint16_t ch, uint8_t board, uint32_t hitTime, uint16_t fineTime, int flags, bool triggerFlag);
+   SciFiHit(Int_t detID, Int_t layerID, uint16_t ch, uint8_t board, uint32_t hitTime, uint16_t fineTime, int flags_0, bool triggerFlag_0);
    void GetSciFiXYZ(TVector3 &v, int detID);
 
 private:
@@ -20,7 +20,7 @@ private:
     int  flags;
     bool triggerFlag;
 
-   ClassDef(SciFiHit, 1)
+   ClassDef(SciFiHit, 2)
 };
 
 #endif

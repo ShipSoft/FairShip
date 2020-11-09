@@ -23,11 +23,11 @@ void DummyUnpack::Register() {}
 Bool_t DummyUnpack::DoUnpack(Int_t *data, Int_t size)
 {
    LOG(INFO) << "DummyUnpack for PartitionId " << std::hex << fPartitionId << std::dec
-             << ": Unpacking frame... size/bytes = " << size << FairLogger::endl;
+             << ": Unpacking frame... size/bytes = " << size;
    auto df = reinterpret_cast<DataFrame *>(data);
    switch (df->header.frameTime) {
-   case SoS: LOG(INFO) << "DummyUnpack: SoS frame." << FairLogger::endl; return kTRUE;
-   case EoS: LOG(INFO) << "DummyUnpack: EoS frame." << FairLogger::endl; return kTRUE;
+   case SoS: LOG(INFO) << "DummyUnpack: SoS frame."; return kTRUE;
+   case EoS: LOG(INFO) << "DummyUnpack: EoS frame."; return kTRUE;
    default: break;
    }
 

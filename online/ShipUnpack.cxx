@@ -37,7 +37,7 @@ void ShipUnpack::Reset() {}
 
 void ShipUnpack::Register()
 {
-   LOG(INFO) << "ShipUnpack : Registering..." << FairLogger::endl;
+   LOG(INFO) << "ShipUnpack : Registering..." ;
    auto *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;

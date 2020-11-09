@@ -24,7 +24,6 @@ Pythia8Generator::Pythia8Generator()
   fFDs        = 7.7/10.4;    // correction for Pythia6 to match measured Ds production
   fextFile    = "";
   fInputFile  = NULL;
-  fLogger = FairLogger::GetLogger();
   targetName = ""; 
   xOff=0; yOff=0;
   fPythia =  new Pythia8::Pythia();
@@ -41,19 +40,19 @@ Bool_t Pythia8Generator::Init()
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fextFile;
      fInputFile  = TFile::Open(tmp); 
-     fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",tmp.Data());
+     LOG(INFO) << "Open external file with charm or beauty hadrons on eos: %s",tmp.Data();
      if (!fInputFile) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch");
+      LOG(FATAL) << "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch";
       return kFALSE; }
     }else{
-      fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons: %s",fextFile);
+      LOG(INFO) << "Open external file with charm or beauty hadrons: %s",fextFile;
       fInputFile  = new TFile(fextFile);
       if (!fInputFile) {
-       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+       LOG(FATAL) << "Error opening input file";
      return kFALSE; }
     }
     if (fInputFile->IsZombie()) {
-     fLogger->Fatal(MESSAGE_ORIGIN, "File is corrupted");
+     LOG(FATAL) << "File is corrupted";
      return kFALSE; }
      fTree = (TTree *)fInputFile->Get("pythia6");
      fNevents = fTree->GetEntries();
@@ -91,7 +90,7 @@ Bool_t Pythia8Generator::Init()
       if (p->tau0()>1){
       std::string particle = std::to_string(n)+":mayDecay = false";
       fPythia->readString(particle);
-      fLogger->Info(MESSAGE_ORIGIN,"Made %s stable for Pythia, should decay in Geant4",p->name().c_str());
+      LOG(INFO) << "Made %s stable for Pythia, should decay in Geant4",p->name().c_str();
       }
      }
   } else {  
@@ -108,7 +107,7 @@ Bool_t Pythia8Generator::Init()
    TGeoVolume* top = gGeoManager->GetTopVolume();
    TGeoNode* target = top->FindNode(targetName);
    if (!target){
-       fLogger->Error(MESSAGE_ORIGIN,"target not found, %s, program will crash",targetName.Data());
+       LOG(ERROR) << "target not found, %s, program will crash",targetName.Data();
    }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
    TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
@@ -146,7 +145,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
   key=0; 
   bool l = true; 
   while(l){ 
-     if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+     if (fn==fNevents) {LOG(WARNING) <<  "End of input file. Rewind.";}
      fTree->GetEntry((fn+1)%fNevents);
 // check that this and next entry is charm, otherwise continue reading
      l = false;

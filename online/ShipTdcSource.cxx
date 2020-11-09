@@ -21,7 +21,7 @@ Bool_t ShipTdcSource::Init()
 
 void ShipTdcSource::Close()
 {
-   LOG(DEBUG) << "Closing file " << fFilename << FairLogger::endl;
+   LOG(DEBUG) << "Closing file " << fFilename;
    fIn->Close();
 }
 
@@ -35,11 +35,10 @@ Int_t ShipTdcSource::UnpackEventFrame(Int_t *data, Int_t total_size)
       auto df = reinterpret_cast<DataFrame *>(data);
       Int_t size = df->header.size;
       uint16_t partitionId = df->header.partitionId;
-      LOG(DEBUG) << "ShipTdcSource: PartitionId " << std::hex << partitionId << std::dec << FairLogger::endl;
+      LOG(DEBUG) << "ShipTdcSource: PartitionId " << std::hex << partitionId << std::dec;
       if (!Unpack(data, size, partitionId)) {
-         LOG(WARNING) << "ShipTdcSource: Failed to Unpack." << FairLogger::endl;
-         LOG(WARNING) << "ShipTdcSource: Maybe missing unpacker for PartitionId " << std::hex << partitionId << std::dec
-                      << FairLogger::endl;
+         LOG(WARNING) << "ShipTdcSource: Failed to Unpack.";
+         LOG(WARNING) << "ShipTdcSource: Maybe missing unpacker for PartitionId " << std::hex << partitionId << std::dec;
          return 3;
       }
       data += size / sizeof(Int_t);
@@ -58,15 +57,15 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
       uint16_t partitionId = df->header.partitionId;
       if (!fIn->ReadBuffer(reinterpret_cast<char *>(df->hits), size - sizeof(DataFrame))) {
          switch (frameTime) {
-            case SoS: LOG(INFO) << "ShipTdcSource: SoS frame." << FairLogger::endl; return 2;
-            case EoS: LOG(INFO) << "ShipTdcSource: EoS frame." << FairLogger::endl; break;
+            case SoS: LOG(INFO) << "ShipTdcSource: SoS frame."; return 2;
+            case EoS: LOG(INFO) << "ShipTdcSource: EoS frame."; break;
             default: break;
          }
          fEventTime = double(frameTime) * 25;
          if (partitionId == 0x8000) {
-            LOG(DEBUG) << "ShipTdcSource: Event builder meta frame." << FairLogger::endl;
+            LOG(DEBUG) << "ShipTdcSource: Event builder meta frame.";
             if (fEventTime > 5000000000 && frameTime != EoS && frameTime != SoS) {
-               LOG(WARNING) << "Late event:" << FairLogger::endl;
+               LOG(WARNING) << "Late event:";
                for (int i = 0; i < size; i++) {
                   if (i % 4 == 0) {
                      std::cout << ' ';
@@ -79,17 +78,16 @@ Int_t ShipTdcSource::ReadEvent(UInt_t)
             }
             return UnpackEventFrame(reinterpret_cast<Int_t *>(&buffer), size);
          }
-         LOG(DEBUG) << "ShipTdcSource: PartitionId " << std::hex << partitionId << std::dec << FairLogger::endl;
+         LOG(DEBUG) << "ShipTdcSource: PartitionId " << std::hex << partitionId << std::dec;
 
          if (Unpack(reinterpret_cast<Int_t *>(&buffer), size, partitionId)) {
             return (frameTime == EoS) ? 1 : 0;
          }
-         LOG(WARNING) << "ShipTdcSource: Failed to Unpack." << FairLogger::endl;
-         LOG(WARNING) << "ShipTdcSource: Maybe missing unpacker for PartitionId " << std::hex << partitionId << std::dec
-                      << FairLogger::endl;
+         LOG(WARNING) << "ShipTdcSource: Failed to Unpack.";
+         LOG(WARNING) << "ShipTdcSource: Maybe missing unpacker for PartitionId " << std::hex << partitionId << std::dec;
          return 3;
       }
-      LOG(WARNING) << "ShipTdcSource: Failed to read hits." << FairLogger::endl;
+      LOG(WARNING) << "ShipTdcSource: Failed to read hits.";
       return 2;
    }
    return 1;
@@ -100,7 +98,7 @@ Bool_t ShipTdcSource::Unpack(Int_t *data, Int_t size, uint16_t partitionId)
    try {
       return fUnpackerMap.at(partitionId)->DoUnpack(data, size);
    } catch (const std::out_of_range &oor) {
-      LOG(WARNING) << "ShipTdcSource: Failed to find suitable unpacker." << FairLogger::endl;
+      LOG(WARNING) << "ShipTdcSource: Failed to find suitable unpacker.";
       return kFALSE;
    }
 }
