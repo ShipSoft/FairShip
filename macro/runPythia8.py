@@ -17,13 +17,15 @@ parser.add_argument('-J', '--Jpsi-mainly',  action='store_true', dest='JpsiMainl
 parser.add_argument('-Y', '--DrellYan',     action='store_true', dest='DrellYan',  default=False)
 parser.add_argument('-P', '--PhotonCollision',     action='store_true', dest='PhotonCollision',  default=False)
 parser.add_argument('-C', '--charm',               action='store_true', dest='charm',  default=False)
-parser.add_argument('-X', '--PDFpSet',dest="PDFpSet",  type=int,  help="PDF pSet to use", default=13)
+parser.add_argument('-X', '--PDFpSet',dest="PDFpSet",  type=str,  help="PDF pSet to use", default="13")
 parser.add_argument('-u', '--uOnly',        action='store_true', dest='uOnly',  default=False)
 
+# for lhapdf, -X LHAPDF6:cteq6
+
 options = parser.parse_args()
-print "start IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE"
+print("start IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE")
 X=ROOT.FixedTargetGenerator()
-print "end IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE"
+print("end IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE")
 
 def yBeam(Mproton = 0.938272081, pbeam = 400.):
     Ebeam   = ROOT.TMath.Sqrt(pbeam**2+Mproton**2)
@@ -45,7 +47,7 @@ for g in generators:
    generators[g].settings.mode("Beams:frameType",  2)
    generators[g].settings.parm("Beams:eA",options.fMom)
    generators[g].settings.parm("Beams:eB",0.)
-   generators[g].readString("PDF:pSet = "+str(options.PDFpSet))
+   generators[g].readString("PDF:pSet = "+options.PDFpSet)
    if options.DrellYan:
      generators[g].readString("WeakSingleBoson:ffbar2gmZ = on")
      if options.uOnly:
@@ -72,8 +74,9 @@ for g in generators:
      generators[g].readString("SoftQCD:inelastic = on")
    generators[g].init()
 
+rc = generators['p'].next()
 processes = generators['p'].info.codesHard()
-hname = 'pythia8_PDFpset'+str(options.PDFpSet)+'_Emin'+str(options.Emin)+'_'+generators['p'].info.nameProc(processes[0])
+hname = 'pythia8_PDFpset'+options.PDFpSet+'_Emin'+str(options.Emin)+'_'+generators['p'].info.nameProc(processes[0])
 hname = hname.replace('*','star')
 hname = hname.replace('->','to')
 hname = hname.replace('/','')
@@ -98,7 +101,7 @@ for n in range(int(options.NPoT)):
          if abs(py.event[m].id())==13: nmu[m]=ii
     if len(nmu) == 2:
        ntagged[g]+=1
-       ks = nmu.keys()
+       ks = list(nmu)
        if options.DrellYan:
           Zstar = py.event[nmu[ks[0]]]
           rc=h['M_'+g].Fill(Zstar.m(),py.event[nmu[ks[0]]].y()-ybeam,py.event[nmu[ks[0]]].pT())
@@ -131,15 +134,15 @@ for n in range(int(options.NPoT)):
           rc=h['M_'+g].Fill(G.M(),G.Rapidity()-ybeam,G.Pt())
 
 
-print ">>>> proton statistics,  ntagged=",ntagged['p']
+print(">>>> proton statistics,  ntagged=",ntagged['p'])
 generators['p'].stat()
-print ">>>> neutron statistics,  ntagged=",ntagged['n']
+print( ">>>> neutron statistics,  ntagged=",ntagged['n'])
 generators['n'].stat()
 
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print "run ",options.run," PoT ",options.NPoT," Real time ",rtime, " s, CPU time ",ctime,"s"
+print("run ",options.run," PoT ",options.NPoT," Real time ",rtime, " s, CPU time ",ctime,"s")
 signal.Write()
 for g in generators:
    sigma = generators[g].info.sigmaGen(processes[0])
@@ -163,14 +166,14 @@ def na50(online=True):
       Ymax = yax.FindBin(0.575)
       h['MA'] = h['M_'+g].ProjectionX('MA')
       h['M'] = h['M_'+g].ProjectionX('M',Ymin,Ymax)
-      print "generator     sigma   mumu-ratio  in-mass-range  in-y-range"  
-      print "%s %s %6.2F nbarn, %5.2F, %5.2G, %5.2F    "%(g,name,sigma*1E6,\
+      print("generator     sigma   mumu-ratio  in-mass-range  in-y-range")
+      print("%s %s %6.2F nbarn, %5.2F, %5.2G, %5.2F    "%(g,name,sigma*1E6,\
             float(h['MA'].GetEntries())/options.NPoT,\
             h['MA'].Integral(Mmin,Mmax)/float(h['MA'].GetEntries()),\
-            h['M'].GetEntries()/float(h['MA'].GetEntries()))
+            h['M'].GetEntries()/float(h['MA'].GetEntries())))
       fraction = h['M'].Integral(Mmin,Mmax)/options.NPoT
    # multiply with 0.5 assuming no polarization -0.5 < cosCS < 0.5
-      print "cross section a la NA50 for : %s %5.2F pb"%(g,0.5*fraction*sigma*1E9)
+      print("cross section a la NA50 for : %s %5.2F pb"%(g,0.5*fraction*sigma*1E9))
    # via cosCS
    for g in generators:
       if online:
@@ -188,14 +191,14 @@ def na50(online=True):
       Ymax = yax.FindBin(0.575)
       h['MA'] = h['cosCSJpsi_'+g].ProjectionX('MA')
       h['M']  = h['cosCSJpsi_'+g].ProjectionX('M',Ymin,Ymax)
-      print "generator     sigma   mumu-in-mass-range% cosCS in-y-range"  
-      print "%s %s %6.2F nbarn, %5.2F, %5.2F, %5.2F   "%(g,name,sigma*1E6,\
+      print("generator     sigma   mumu-in-mass-range% cosCS in-y-range")
+      print("%s %s %6.2F nbarn, %5.2F, %5.2F, %5.2F   "%(g,name,sigma*1E6,\
             float(h['MA'].GetEntries())/options.NPoT*100.,\
             h['MA'].Integral(Mmin,Mmax)/float(h['MA'].GetEntries()),\
-            h['M'].GetEntries()/float(h['MA'].GetEntries()))
+            h['M'].GetEntries()/float(h['MA'].GetEntries())))
       fraction = h['M'].Integral(Mmin,Mmax)/options.NPoT
    # taking polarization into account.
-      print "cross section a la NA50, -0.5<cosCS<0.5: %5.2F pb"%(fraction*sigma*1E9)
+      print("cross section a la NA50, -0.5<cosCS<0.5: %5.2F pb"%(fraction*sigma*1E9))
    
 def muflux():
    Z_Mo = 96.
@@ -213,10 +216,10 @@ def muflux():
       Ymax = yax.FindBin(3.)
       h['MA'] = h['M_'+g].ProjectionX('MA')
       h['M'] = h['M_'+g].ProjectionX('M',Ymin,Ymax)
-      print g,name,sigma,float(h['MA'].GetEntries())/options.NPoT,h['MA'].Integral(Mmin,Mmax)/float(h['MA'].GetEntries()),h['M'].GetEntries()/float(h['MA'].GetEntries())
+      print(g,name,sigma,float(h['MA'].GetEntries())/options.NPoT,h['MA'].Integral(Mmin,Mmax)/float(h['MA'].GetEntries()),h['M'].GetEntries()/float(h['MA'].GetEntries()))
       fraction[g] = h['M'].Integral(Mmin,Mmax)/options.NPoT
    meanFraction = (fraction['p']*P_Mo+fraction['n']*(Z_Mo-P_Mo))/Z_Mo * sigma
-   print "cross section a la muflux: %5.2F pb"%(0.5*meanFraction*1E9)
+   print("cross section a la muflux: %5.2F pb"%(0.5*meanFraction*1E9))
 
 def debugging(g):
    generators[g].settings.listAll()
