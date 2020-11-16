@@ -130,8 +130,8 @@ find_package2(PUBLIC GEANT4)
 find_package2(PUBLIC GEANT4DATA)
 find_package2(PUBLIC GEANT4VMC)
 find_package2(PUBLIC HEPMC)
-find_package2(PUBLIC FAIRROOT)
-find_package2(PUBLIC FairLogger)
+find_package2(PUBLIC FairRoot REQUIRED)
+find_package2(PUBLIC FairLogger REQUIRED)
 
 IF(DEFINED ${BOOST_ROOT})
   Set(Boost_NO_SYSTEM_PATHS TRUE)
@@ -174,6 +174,7 @@ SetBasicVariables()
 Set(SYSTEM_INCLUDE_DIRECTORIES 
   ${SYSTEM_INCLUDE_DIRECTORIES}
   ${BASE_INCLUDE_DIRECTORIES}
+  ${FAIRLOGGER_INCLUDE_DIR}
 )
 
 # Set the library version in the main CMakeLists.txt
@@ -210,25 +211,9 @@ install(DIRECTORY geometry DESTINATION pnd_install
           PATTERN ".svn" EXCLUDE
           )
 
-# Check if the compiler support specific C++11 features
-# Up to now this is only a check since the code does not use
-# any of the features of the new standard
-
-IF(FAIRROOT_FOUND)
- Message("-- Set check directory to FairRoot...")
- Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-ELSE(FAIRROOT_FOUND)
- Message("-- Set check directory to cmake ...")
- Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-ENDIF(FAIRROOT_FOUND)
-
-Message("-- include CXX11 Features ...")
-# include(CheckCXX11Features)
-
-IF(HAS_CXX11_SHAREDPOINTER)
-  Message("-- add shared pointers ...")
-  Add_Definitions(-DHAS_SHAREDPOINTER)
-ENDIF(HAS_CXX11_SHAREDPOINTER)
+Message("-- Set check directory to FairRoot...")
+Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
+# Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 
 # --------------- add targets for code style and submission checks -------------
 find_package(Git)
@@ -245,9 +230,9 @@ include(CppStyleGuideChecks)
 # cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
 
-IF(NOT FAIRROOT_FOUND)
+IF(NOT FairRoot_FOUND)
 Message("--- FairRoot not found ...")
-ENDIF (NOT FAIRROOT_FOUND)
+ENDIF (NOT FairRoot_FOUND)
 
 add_subdirectory (shipdata)
 add_subdirectory (passive)
