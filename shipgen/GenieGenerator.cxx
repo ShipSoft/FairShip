@@ -30,18 +30,17 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
-  fLogger = FairLogger::GetLogger();
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;
    fInputFile  = TFile::Open(tmp); 
-   fLogger->Info(MESSAGE_ORIGIN,"Opening input file on eos %s",tmp.Data());
+   LOG(INFO) << "Opening input file on eos %s",tmp.Data();
   }else{
    fInputFile  = new TFile(fileName);
-   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
+   LOG(INFO) << "Opening input file %s",fileName;
   }
   if (fInputFile->IsZombie() or !fInputFile) {
-     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+     LOG(FATAL) << "Error opening input file";
      return kFALSE; }
   fTree = (TTree *)fInputFile->Get("gst");
   fNevents = fTree->GetEntries();
@@ -315,7 +314,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      }
      fFirst = kFALSE;
     }
-    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%1000==0) {
@@ -453,7 +452,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       fFirst = kFALSE;
     }
 
-    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {

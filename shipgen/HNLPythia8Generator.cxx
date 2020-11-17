@@ -31,7 +31,6 @@ HNLPythia8Generator::HNLPythia8Generator()
 Bool_t HNLPythia8Generator::Init()
 {
   if ( debug ){List(9900015);}
-  fLogger = FairLogger::GetLogger();
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   fPythia->setRndmEnginePtr(fRandomEngine);
@@ -41,19 +40,19 @@ Bool_t HNLPythia8Generator::Init()
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fextFile;
      fInputFile  = TFile::Open(tmp); 
-     fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons on eos: %s",tmp.Data());
+     LOG(INFO) << "Open external file with charm or beauty hadrons on eos: %s",tmp.Data();
      if (!fInputFile) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch");
+      LOG(FATAL) << "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch";
       return kFALSE; }
     }else{
-      fLogger->Info(MESSAGE_ORIGIN,"Open external file with charm or beauty hadrons: %s",fextFile);
+      LOG(INFO) << "Open external file with charm or beauty hadrons: %s",fextFile;
       fInputFile  = new TFile(fextFile);
       if (!fInputFile) {
-       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
+       LOG(FATAL) << "Error opening input file";
      return kFALSE; }
     }
     if (fInputFile->IsZombie()) {
-     fLogger->Fatal(MESSAGE_ORIGIN, "File is corrupted");
+     LOG(FATAL) << "File is corrupted";
      return kFALSE; }
      fTree = (TTree *)fInputFile->Get("pythia6");
      fNevents = fTree->GetEntries();
@@ -79,10 +78,12 @@ Bool_t HNLPythia8Generator::Init()
   }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fHNL)->Lifetime();
-  if ( debug ){std::cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<std::endl;}
-  fctau = fPythia->particleData.tau0(fHNL); //* 3.3333e-12
-  if ( debug ){std::cout<<"ctau pythia "<<fctau<<"[mm]"<<std::endl;}
-  if ( debug ){List(9900015);}
+  if ( debug ){
+      std::cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<std::endl;
+      fctau = fPythia->particleData.tau0(fHNL); //* 3.3333e-12
+      std::cout<<"ctau pythia "<<fctau<<"[mm]"<<std::endl;
+      List(9900015);
+  }
   fPythia->init();
   return kTRUE;
 }
@@ -115,7 +116,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 // correct for too much Ds produced by pythia6
     bool x = true;
     while(x){
-     if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+     if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
      fTree->GetEntry(fn%fNevents);
      fn++;
      if ( int(fabs(hid[0]) ) != 431){ x = false; }
@@ -212,7 +213,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    } while ( iHNL == 0 ); // ----------- avoid rare empty events w/o any HNL's produced
 
    if (fShipEventNr%100==0) {
-      fLogger->Info(MESSAGE_ORIGIN,"ship event %i / pythia event-nr %i",fShipEventNr,fn);
+      LOG(INFO) << "ship event %i / pythia event-nr %i",fShipEventNr,fn;
     }
    fShipEventNr += 1;
    // fill a container with pythia indices of the HNL decay chain

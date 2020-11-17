@@ -45,7 +45,7 @@ int GetId(int ncrate, int nboard, int channel)
                                    : (channel < 32) ? 42 - channel : (channel < 48) ? 74 - channel : 106 - channel;
    strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
    LOG(DEBUG) << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
-              << (direction == vertical ? 'V' : 'H') << FairLogger::endl;
+              << (direction == vertical ? 'V' : 'H');
    return 10000 * station + 1000 * direction + strip;
 }
 
@@ -65,7 +65,7 @@ Bool_t RPCUnpack::Init()
 // Register: Protected method
 void RPCUnpack::Register()
 {
-   LOG(INFO) << "RPCUnpack : Registering..." << FairLogger::endl;
+   LOG(INFO) << "RPCUnpack : Registering...";
    FairRootManager *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
@@ -76,12 +76,12 @@ void RPCUnpack::Register()
 // DoUnpack: Public method
 Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(DEBUG) << "RPCUnpack : Unpacking frame... size/bytes = " << size << FairLogger::endl;
+   LOG(DEBUG) << "RPCUnpack : Unpacking frame... size/bytes = " << size;
 
    auto df = reinterpret_cast<DataFrame *>(data);
    switch (df->header.frameTime) {
-   case SoS: LOG(INFO) << "RPCUnpack: SoS frame." << FairLogger::endl; return kTRUE;
-   case EoS: LOG(INFO) << "RPCUnpack: EoS frame." << FairLogger::endl; return kTRUE;
+   case SoS: LOG(INFO) << "RPCUnpack: SoS frame."; return kTRUE;
+   case EoS: LOG(INFO) << "RPCUnpack: EoS frame."; return kTRUE;
    default: break;
    }
    assert(df->header.size == size);
@@ -123,7 +123,7 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
    }
 
    if (skipped) {
-      LOG(WARNING) << "Skipped " << skipped << " hits on unconnected channels (probably noise)." << FairLogger::endl;
+      LOG(WARNING) << "Skipped " << skipped << " hits on unconnected channels (probably noise).";
    }
    fNHitsTotal += fNHits;
    return kTRUE;
@@ -132,7 +132,7 @@ Bool_t RPCUnpack::DoUnpack(Int_t *data, Int_t size)
 // Reset: Public method
 void RPCUnpack::Reset()
 {
-   LOG(DEBUG) << "RPCUnpack : Clearing Data Structure" << FairLogger::endl;
+   LOG(DEBUG) << "RPCUnpack : Clearing Data Structure";
    fRawData->Clear();
    fNHits = 0;
 }

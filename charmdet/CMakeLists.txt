@@ -13,7 +13,8 @@ ${CMAKE_SOURCE_DIR}/millepede
 ${ROOT_INCLUDE_DIR}
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
+include_directories( ${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR}
+)
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES

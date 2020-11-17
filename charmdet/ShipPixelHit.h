@@ -20,12 +20,12 @@ public:
    ShipPixelHit() = default;
    ~ShipPixelHit() = default;
 
-   ShipPixelHit(Int_t detID, Float_t fdigi);
+   ShipPixelHit(int32_t detID, Float_t fdigi);
    HitID GetPixel();
    int32_t GetDetectorID();
    static std::unordered_map<int, TVector3>* MakePositionMap();
    int32_t GetModule();
-   void GetPixelXYZ(TVector3 &pixel, int detID);
+   void GetPixelXYZ(TVector3 &pixel, int32_t detID);
    void Print();
    int32_t GetTimeOverThreshold() const {return fdigi*25 ; }
 private:
@@ -37,7 +37,7 @@ private:
    int32_t detID;
    uint16_t tot;
 
-   ClassDef(ShipPixelHit, 2);
+   ClassDef(ShipPixelHit, 3);
 };
 
 #endif

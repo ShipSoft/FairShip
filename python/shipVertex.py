@@ -70,14 +70,9 @@ class Task:
   res[8] = y_data[8] - a[0] - a[6]*(a[2] - z0)
   res[9] = y_data[9] - a[1] - a[7]*(a[2] - z0)
   return res
- def f_chi2_0(self,*a):
-  v = self.chi2(self.residuals(self.y_data,a,self.z0),self.Vy)
-  return v
- def f_chi2(self,a):
-  v = self.chi2(self.residuals(self.y_data,a,self.z0),self.Vy)
-  return v
  def fcn(self,npar, gin, f, par, iflag):
-  f[0] = self.f_chi2(par)
+  res = self.residuals(self.y_data,par,self.z0)
+  f = self.chi2(res,self.Vy)
   return
  
  def TwoTrackVertex(self):
@@ -201,7 +196,8 @@ class Task:
      
      f=np.array([0.])
      gMinuit = ROOT.TMinuit(9)
-     gMinuit.SetFCN(self.fcn)
+     tempFcn = self.fcn
+     gMinuit.SetFCN(tempFcn)
      gMinuit.SetPrintLevel(-1)#minute quiet mode
      rc = gMinuit.DefineParameter(0, 'X pos',HNLPos[0], 0.1,0,0)
      rc = gMinuit.DefineParameter(1, 'Y pos',HNLPos[1], 0.1,0,0)

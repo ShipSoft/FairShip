@@ -37,7 +37,6 @@ DPPythia8Generator::DPPythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t DPPythia8Generator::Init() 
 {
-  fLogger = FairLogger::GetLogger();
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   fPythia->setRndmEnginePtr(fRandomEngine);
@@ -93,7 +92,7 @@ Bool_t DPPythia8Generator::Init()
   else {
     if (!fpbremPDF) {
       //std::cout << " Failed in retrieving dark photon PDF for production by proton bremstrahlung! Exiting..." << std::endl;
-      fLogger->Fatal(MESSAGE_ORIGIN, "Failed in retrieving dark photon PDF for production by proton bremstrahlung!");
+      LOG(FATAL) << "Failed in retrieving dark photon PDF for production by proton bremstrahlung!";
       return kFALSE;
     }
   }
@@ -126,7 +125,7 @@ Bool_t DPPythia8Generator::Init()
   if ( debug ){std::cout<<"Pythia initialisation bool: " << initPass << std::endl;}
 
   if (!initPass) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Pythia initialisation failed");
+    LOG(FATAL) << "Pythia initialisation failed";
     return kFALSE;
   }
 
@@ -197,7 +196,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        fPythia->event.append( fDP, 1, 0, 0, dpmom * sin(thetain) * cos(phiin), dpmom * sin(thetain) * sin(phiin), dpmom * cos(thetain), dpe, dpm); 
      }
 
-     if (!fPythia->next()) fLogger->Fatal(MESSAGE_ORIGIN, "fPythia->next() failed");
+     if (!fPythia->next()) LOG(FATAL) << "fPythia->next() failed";
 
      //fPythia->event.list();
      for(int i=0; i<fPythia->event.size(); i++){
@@ -292,7 +291,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    } while ( iDP == 0 ); // ----------- avoid rare empty events w/o any DP's produced
    
    if (fShipEventNr%100==0) {
-     fLogger->Info(MESSAGE_ORIGIN,"ship event %i / pythia event-nr %i",fShipEventNr,fn);
+     LOG(INFO) << "ship event %i / pythia event-nr %i",fShipEventNr,fn;
    }
    fShipEventNr += 1;
    // fill a container with pythia indices of the DP decay chain

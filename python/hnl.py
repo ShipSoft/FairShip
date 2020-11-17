@@ -274,8 +274,9 @@ class HNLbranchings():
         """
         Numerical integral needed for 3-body decays trough W boson.
         xi = mi/MN
-        """
-        func = ROOT.TF1('func',self.Integrand,0,1,3) # Setting function
+        """ 
+        theFunction = self.Integrand
+        func = ROOT.TF1('func',theFunction,0,1,3) # Setting function
         func.SetParameters(x1,x2,x3)
         xmin = (x1 + x3)**2
         xmax = (1. - x2)**2
