@@ -411,7 +411,7 @@ Int_t ShipStack::GetCurrentParentTrackNumber() const
 TParticle* ShipStack::GetParticle(Int_t trackID) const
 {
   if (trackID < 0 || trackID >= fNParticles) {
-    LOG(INFO) << "ShipStack: Particle index %i out of range. Max=%i",trackID,fNParticles;
+    LOG(FATAL) << "ShipStack: Particle index %i out of range. Max=%i",trackID,fNParticles;
   }
   return (TParticle*)fParticles->At(trackID);
 }
