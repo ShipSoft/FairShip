@@ -44,8 +44,7 @@ ShipStack::ShipStack(Int_t size)
     fStoreSecondaries(kTRUE),
     fMinPoints(1),
     fEnergyCut(0.),
-    fStoreMothers(kTRUE),
-    fLogger(FairLogger::GetLogger())
+    fStoreMothers(kTRUE)
 {
 }
 
@@ -176,8 +175,7 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Test for index
   if (iPrim < 0 || iPrim >= fNPrimaries) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Primary index out of range! %i ", iPrim );
-    Fatal("ShipStack::PopPrimaryForTracking", "Index out of range");
+    LOG(FATAL) << "ShipStack: Primary index out of range! %i ", iPrim;
   }
 
   // Return the iPrim-th TParticle from the fParticle array. This should be
@@ -201,8 +199,7 @@ TParticle* ShipStack::GetCurrentTrack() const
 {
   TParticle* currentPart = GetParticle(fCurrentTrack);
   if ( ! currentPart) {
-    fLogger->Warning(MESSAGE_ORIGIN,"ShipStack: Current track not found in stack!");
-    Warning("ShipStack::GetCurrentTrack", "Track not found in stack");
+    LOG(WARNING) << "ShipStack: Current track not found in stack!";
   }
   return currentPart;
 }
@@ -227,7 +224,7 @@ void ShipStack::AddParticle(TParticle* oldPart)
 void ShipStack::FillTrackArray()
 {
 
-  fLogger->Debug(MESSAGE_ORIGIN, "ShipStack: Filling MCTrack array...");
+  LOG(DEBUG) << "ShipStack: Filling MCTrack array...";
 
   // --> Reset index map and number of output tracks
   fIndexMap.clear();
@@ -241,9 +238,7 @@ void ShipStack::FillTrackArray()
 
     fStoreIter = fStoreMap.find(iPart);
     if (fStoreIter == fStoreMap.end() ) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Particle %i not found in storage map! ", iPart);
-      Fatal("ShipStack::FillTrackArray",
-            "Particle not found in storage map.");
+      LOG(FATAL) << "ShipStack: Particle %i not found in storage map! ", iPart;
     }
     Bool_t store = (*fStoreIter).second;
 
@@ -276,7 +271,7 @@ void ShipStack::FillTrackArray()
 void ShipStack::UpdateTrackIndex(TRefArray* detList)
 {
 
-  fLogger->Debug(MESSAGE_ORIGIN, "ShipStack: Updating track indizes...");
+  LOG(DEBUG) << "ShipStack: Updating track indizes...";
   Int_t nColl = 0;
 
   // First update mother ID in MCTracks
@@ -285,8 +280,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
     Int_t iMotherOld = track->GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Particle index %i not found in dex map! ", iMotherOld);
-      Fatal("ShipStack::UpdateTrackIndex", "Particle index not found in map");
+      LOG(FATAL) << "ShipStack: Particle index %i not found in dex map! ", iMotherOld;
     }
     track->SetMotherId( (*fIndexIter).second );
   }
@@ -318,8 +312,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
-          fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Particle index %i not found in index map! ", iTrack);
-          Fatal("ShipStack::UpdateTrackIndex", "Particle index not found in map");
+          LOG(FATAL) <<  "ShipStack: Particle index %i not found in index map! ", iTrack;
         }
         point->SetTrackID((*fIndexIter).second);
         point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
@@ -327,7 +320,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
     }   // Collections of this detector
   }     // List of active detectors
-  fLogger->Debug(MESSAGE_ORIGIN, "...stack and  %i collections updated.", nColl);
+  LOG(DEBUG) << "...stack and  %i collections updated.", nColl;
 }
 // -------------------------------------------------------------------------
 
@@ -418,8 +411,7 @@ Int_t ShipStack::GetCurrentParentTrackNumber() const
 TParticle* ShipStack::GetParticle(Int_t trackID) const
 {
   if (trackID < 0 || trackID >= fNParticles) {
-    fLogger->Info(MESSAGE_ORIGIN, "ShipStack: Particle index %i out of range. Max=%i",trackID,fNParticles);
-    Fatal("ShipStack::GetParticle", "Index out of range ");
+    LOG(INFO) << "ShipStack: Particle index %i out of range. Max=%i",trackID,fNParticles;
   }
   return (TParticle*)fParticles->At(trackID);
 }

@@ -27,8 +27,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName) {
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const Bool_t fl = false ) {
-  fLogger = FairLogger::GetLogger();
-  fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
+  LOG(INFO) << "Opening input file %s",fileName;
   if (0 == strncmp("/eos",fileName,4) ) {
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fileName;
@@ -37,7 +36,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fInputFile  = new TFile(fileName);
   }
   if (fInputFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file:",fInputFile);
+     LOG(FATAL) << "Error opening the Signal file:%s",fInputFile;
   }
   fn = firstEvent;
   fPhiRandomize = fl;
@@ -113,7 +112,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    muList.clear(); 
    moList.clear(); 
    fn++;
-   if (fn%100000==0)  {fLogger->Info(MESSAGE_ORIGIN,"reading event %i",fn);}
+   if (fn%100000==0)  {LOG(INFO) << "reading event %i",fn;}
 // test if we have a muon, don't look at neutrinos:
    if (TMath::Abs(int(id))==13) {
         mass = pdgBase->GetParticle(id)->Mass();
@@ -153,17 +152,17 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         }
        it++;
       }
-     if (!found) {fLogger->Warning(MESSAGE_ORIGIN, "no muon found %i",fn-1);}
+     if (!found) {LOG(WARNING) <<  "no muon found %i",fn-1;}
      if (found) {break;}
    }
   }
   if (fn>fNevents-1){ 
-     fLogger->Info(MESSAGE_ORIGIN,"End of file reached %i",fNevents);
+     LOG(INFO) << "End of file reached %i",fNevents;
      return kFALSE;
   } 
   if (fSameSeed) {
     Int_t theSeed = fn + fSameSeed * fNevents;
-    fLogger->Debug(MESSAGE_ORIGIN, TString::Format("Seed: %d", theSeed));
+    LOG(DEBUG) << TString::Format("Seed: %d", theSeed);
     gRandom->SetSeed(theSeed);
   }
   if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}

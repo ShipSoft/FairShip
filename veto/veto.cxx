@@ -1164,7 +1164,6 @@ void veto::ConstructGeometry()
  */
           floorHeightA=floorHeightA*0.5;
  
-    fLogger = FairLogger::GetLogger();
     TGeoVolume *top=gGeoManager->GetTopVolume();
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");

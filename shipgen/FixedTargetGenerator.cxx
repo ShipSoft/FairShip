@@ -32,11 +32,15 @@ FixedTargetGenerator::FixedTargetGenerator()
   xOff=0; yOff=0;
   tauOnly = false;
   JpsiMainly = false;
+  DrellYan = false;
+  PhotonCollision = false;
   G4only = false;
+  OnlyMuons = false;
   maxCrossSection = 0.;
   EMax = 0;
   fBoost = 1.;
   withEvtGen = kFALSE;
+  withNtuple = kFALSE;
   chicc=1.7e-3;     //prob to produce primary ccbar pair/pot
   chibb=1.6e-7;     //prob to produce primary bbbar pair/pot
   nrpotspill = 5.E13; // nr of protons / spill
@@ -83,7 +87,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   Int_t nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.; // number of primary interactions
   wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
   fLogger->Info(MESSAGE_ORIGIN,"Input file: %s   with %i entries, corresponding to nr-pot=%f",fInName.Data(),nEvents,nrcpot/chicc);
-  fLogger->Info(MESSAGE_ORIGIN,"weight %f corresponding to %f p.o.t. per spill for %f events to process",wspill,nrpotspill,nev);
+  fLogger->Info(MESSAGE_ORIGIN,"weight %f corresponding to %f p.o.t. per spill for %i events to process",wspill,nrpotspill,nev);
 
   pot=0.;
   //Determine fDs on this file for primaries
@@ -125,20 +129,35 @@ Bool_t FixedTargetGenerator::Init()
     fPythia->settings.mode("Beams:frameType",  2);
     fPythia->settings.parm("Beams:eA",fMom);
     fPythia->settings.parm("Beams:eB",0.);
-    if (JpsiMainly){
+   }
+   if (JpsiMainly){
 // use this for all onia productions
      fPythia->readString("Onia:all(3S1) = on");
      fPythia->readString("443:new  J/psi  J/psi  3   0   0    3.09692    0.00009    3.09602    3.09782  0.   1   1   0   1   0");
      fPythia->readString("443:addChannel = 1   1.    0      -13       13");
      fPythia->readString("553:new  Upsilon  Upsilon  3   0   0    9.46030    0.00005    9.45980    9.46080  0.00000e+00   0   1   0   1   0");
      fPythia->readString("553:addChannel = 1   1.    0      -13       13");
-    }else{
+   }
+   if (DrellYan){
+     fPythia->readString("WeakSingleBoson:ffbar2gmZ = on");
+//   Z0/gamma  -> mu+ mu-
+     fPythia->readString("23:onMode = off");
+     fPythia->readString("23:onIfAll = 13 13");
+     fPythia->readString("23:mMin = 0.5");
+     fPythia->readString("PhaseSpace:mHatMin = 0.5");
+     fPythia->readString("PartonLevel:FSR = on");
+     fPythia->readString("PDF:pSet = 4");
+   }
+   if (PhotonCollision){
+     fPythia->readString("PhotonCollision:gmgm2mumu = on");
+   }
+   if (!DrellYan && !PhotonCollision){
      fPythia->readString("SoftQCD:inelastic = on");
      fPythia->readString("PhotonCollision:gmgm2mumu = on");
      fPythia->readString("PromptPhoton:all = on");
      fPythia->readString("WeakBosonExchange:all = on");
+     fPythia->readString("WeakSingleBoson:all = on");
     }
-   }
    if (tauOnly){
     fPythia->readString("431:new  D_s+  D_s-  1   3   0    1.96849    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0");
     fPythia->readString("431:addChannel = 1   0.0640000    0      -15       16");
@@ -337,10 +356,16 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Int_t idabs=int(TMath::Abs(n_id));
     if (idabs==431){ nDsprim+=1;}
     fPythiaP->event.reset();
+    Int_t nID1 = n_id;
     fPythiaP->event.append(int(n_id),1,0,0,n_px,n_py,n_pz,n_E,n_M,0.,9.);
     TMCProcess procID  = kPTransportation;
     if (n_mid==2212 && (n_mpx*n_mpx+n_mpy*n_mpy)<1E-5) {procID = kPPrimary;} // probably primary and not from cascade
     cpg->AddTrack(int(n_mid),n_mpx,n_mpy,n_mpz, xOff/cm,yOff/cm,zinter/cm,-1,kFALSE,n_mE,0.,wspill,procID);
+// second charm hadron in the event
+    nTree->GetEvent(nEntry);
+    if (nID1 * n_id > 0){fLogger->Info(MESSAGE_ORIGIN,"same sign charm: %i, %i, %i",nEntry,nID1,n_id);}
+    nEntry+=1;
+    fPythiaP->event.append(int(n_id),1,0,0,n_px,n_py,n_pz,n_E,n_M,0.,9.);
     fPythiaP->next();
     fPythia = fPythiaP;
   }
@@ -355,12 +380,16 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      Int_t id = fPythia->event[ii].id(); 
      Bool_t wanttracking=kTRUE;
      if (e-m<EMax || !fPythia->event[ii].isFinal() || pz<0) {wanttracking=kFALSE;}
+     if (DrellYan || PhotonCollision || OnlyMuons){
+// don't track underlying event
+      if (fabs(id)!=13){wanttracking=kFALSE;}
+     }
      Double_t z  = fPythia->event[ii].zProd()+zinter;
      Double_t x  = fPythia->event[ii].xProd()+xOff;
      Double_t y  = fPythia->event[ii].yProd()+yOff;
      Double_t tof = fPythia->event[ii].tProd() / (10*c_light) ; // to go from mm to s
-     Double_t px = fPythia->event[ii].px();  
-     Double_t py = fPythia->event[ii].py();  
+     Double_t px = fPythia->event[ii].px();
+     Double_t py = fPythia->event[ii].py();
      Int_t im = fPythia->event[ii].mother1()-1;
      procID = kPPrimary;
      if (Option != "Primary"){
@@ -371,7 +400,16 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       if (ii<3){im=-1;}
      }
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,wspill,procID);
-    }    
+     if(withNtuple){
+          int idabs = TMath::Abs(id);
+          if (idabs<10)  {continue;}
+          if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 
+                 || idabs==211 || idabs==113 || idabs==333  || idabs==321   || idabs==2212 ){
+          Int_t moID = fPythia->event[im+1].id();
+          fNtuple->Fill(0,id,px,py,pz,e,x/cm,y/cm,z/cm,moID);
+         }
+     }
+    }
   return kTRUE;
 }
 // -------------------------------------------------------------------------
