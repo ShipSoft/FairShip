@@ -24,7 +24,7 @@ simpleEffCor   = 0.024
 
 muonMass = 0.105658
 
-DYfactor = MCStats['10GeV']/(2*20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4, rescaled mass distribution
+DYfactor = MCStats['10GeV']/(2*20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4
 #DYfactor = MCStats['10GeV']/1940000 * (42*73.0+(96-42)*66.2)/96.*1E-6/10.5 # adjusted for PDF set 13
 DYfactor4NA50 = 1.51
 
@@ -204,6 +204,8 @@ if not options.listOfFiles:
                 print "file not found",fname
                 continue
     if withCharm2:
+        known_missing_files = ["ntuple-pythia8_Geant4_5202_10.0_dig_RT.root","ntuple-pythia8_Geant4_5302_10.0_dig_RT.root","ntuple-pythia8_Geant4_7515_10.0_dig_RT.root","ntuple-pythia8_Geant4_8900_10.0_dig_RT.root",
+                               "ntuple-pythia8_Geant4_10904_10.0_dig_RT.root","ntuple-pythia8_Geant4_13519_10.0_dig_RT.root"]
         path ={0:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-32_run_MufluxfixedTarget_XXX",
                1:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX",
                2:os.environ["EOSSHIP"]+"/eos/experiment/ship/user/truf/muflux-sim/CharmProduction/runYYY/ship-ubuntu-1710-64_run_MufluxfixedTarget_XXX",
@@ -222,7 +224,9 @@ if not options.listOfFiles:
           for run in range(0,20):
              for k in range(10):
                 xrun = run+cycle*1000 + k*100
-                fname = path[cycle].replace('YYY',str(run)).replace('XXX',str(xrun))+"/ntuple-pythia8_Geant4_"+str(xrun)+"_10.0_dig_RT.root"
+                ntpl = "ntuple-pythia8_Geant4_"+str(xrun)+"_10.0_dig_RT.root"
+                if ntpl in known_missing_files: continue
+                fname = path[cycle].replace('YYY',str(run)).replace('XXX',str(xrun))+"/"+ntpl
                 try:
                    test = ROOT.TFile.Open(fname)
                    if test.tmuflux.GetEntries()>0:   sTreeMC.Add(fname)
@@ -2551,6 +2555,8 @@ def loadNtuples(BDT='BDT-',ext='_mu',eos=False):
   hMC['fJpsiCascade']      = ROOT.TFile.Open(simpath+'cascade_MSEL61_20M.root')
   hMC['fDY']               = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_DrellYanPDF4_refit.root')
   hMC['fCharm2']           = ROOT.TFile.Open(simpath+'ntuple-invMass-MC_10GeVCharm2_refit.root')
+  hMC['fNTcharm']          = ROOT.TFile("muonsFromCharm.root")
+  hMC['fNTDrellYan']      = ROOT.TFile("ntuple-pythia8_PDFpset4_Emin0.5.root")
   # hMC['fJpsiCascade'] needs to be scaled by 0.9375, since 1 file not being used in simulation, fixed in reprocessing
   hMC['scalingFactor']={}
   hMC['scalingFactor']['fJpsiCascade']=1.0
@@ -2567,11 +2573,13 @@ def loadNtuples(BDT='BDT-',ext='_mu',eos=False):
  hMC['JpsiP8']      = hMC['fJpsiP8'].nt      # inv mass ntuple from primary, Pythia8, me
  hMC['DY']          = hMC['fDY'].nt      # inv mass ntuple from Drell Yan, Pythia8, me
  hMC['Charm2']      = hMC['fCharm2'].nt      # inv mass ntuple from CharmProduction, Pythia6 Cascade, Pythia8, me
+ hMC['ntCharm']     = hMC['fNTcharm'].muons
+ hMC['ntDY']        = hMC['fNTDrellYan'].ntuple
  hMC['JpsiCascade'] = hMC['fJpsiCascade'].pythia6              # original input file from Eric
  hMC['JpsiP8_Primary'] = hMC['fJpsiP8_Primary'].pythia6        # first Pythia8 production with intermediate Jpsis 
  hMC['JpsiP8_PrimaryMu'] = hMC['fJpsiP8_PrimaryMu'].pythia6    # second Pythia8 production with above ussue fixed, I think. 
  hMC['Jpsi10GeV']   = hMC['fJpsi10GeV'].pythia8                # JpsifromBackground ??
- hMC['Jpsi1GeV']   = hMC['fJpsi1GeV'].pythia8
+ hMC['Jpsi1GeV']    = hMC['fJpsi1GeV'].pythia8
  ROOT.gROOT.cd()
  ut.bookCanvas(hMC,'dummy',' ',900,600,1,1)
 
@@ -7436,7 +7444,7 @@ def myVertex(t1,t2,PosDir,xproj=False):
     Y = c.y()+v.y()*t
     Z = c.z()+v.z()*t
     return X,Y,Z,abs(dist)
-def studyDrellYanAndCharm(DYxsec=1.5):
+def studyDrellYanAndCharm(DYxsec=2.2):
      ut.bookCanvas(hMC,'DYandCharm','Drell Yan and charm',2400,1200,3,1)
      MCs = {'Charm2':[Charmfactor,ROOT.kBlue],'DY':[DYfactor*DYxsec,ROOT.kRed]}
      for mc in MCs:
@@ -7980,8 +7988,8 @@ def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
           rc = hMC['xsecNA50_'+n].Fill(xx)
           print "%s %s %5.2F nb   %5.2F pb "%(x,n,totalX*1E6*fudgefac,totalX*xNA50*1E9)
    for n in ['p','n']:
-       print "average xsec in NA50 range for p on %s: (%5.2F +/- %5.2F)pb"%(n,hMC['xsecNA50_'+n].GetMean(),hMC['xsecNA50_'+n].GetRMS())
-       print "average xsec in NA50 mass range for p on %s: (%5.2F +/- %5.2F)pb"%(n,hMC['xsecM_'+n].GetMean(),hMC['xsecM_'+n].GetRMS())
+       print "average xsec in NA50 range for p on %s: (%5.2F +/- %5.2F)pb"%(     n,hMC['xsecNA50_'+n].GetMean(),hMC['xsecNA50_'+n].GetRMS())
+       print "average xsec in NA50 mass range for p on %s: (%5.2F +/- %5.2F)pb"%(n,hMC['xsecM_'+n].GetMean(),   hMC['xsecM_'+n].GetRMS())
    ut.bookCanvas(h,'yPDF','yPDF',1800,1200,2,2)
    j=1
    for c in ['M','y']:
@@ -8063,6 +8071,48 @@ def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
        w    = hMC['scalePDFMY'].GetBinContent(ybin,mbin)
        if w<1E-6: w=1
        rc   = hMC['MDYscaled'].Fill(nt.mcor,w,w)
+def PDFsAndCharm(cosCS=True,ymin=-0.425,ymax=0.575,ptMax=0,pMin=0,DYxsec=1.51):
+   mbias = 10.5 # mb
+   xsecCharm = mbias*1.7E-3 # mb    1 cycle = 285.3828E9/14.
+   npotCharm = 285.3828E9/14.
+   ybeam = str(yBeam())
+   ut.readHists(hMC,'pythia8_PDFpset4_Emin0.5.root')
+   xsecDY = hMC['xsec_p'].GetBinContent(1)*DYxsec
+   npotDY = hMC['xsec_p'].GetBinContent(2)/hMC['xsec_p'].GetBinContent(1)*mbias
+
+   hMC['dummy'].cd()
+   yCut  = "("+str(ymin)+'<y-'+ybeam+'&&y-'+ybeam+'<'+str(ymax)+")"
+   cosCScut = ''
+   if cosCS: cosCScut = "&&abs(cosCS)<0.5"
+   ptCut = ''
+   if ptMax>0: ptCut = "&&max(sqrt(px1*px1+py1*py1),sqrt(px2*px2+py2*py2))>"+str(ptMax)
+   pMinCut = ''
+   if pMin>0: pMinCut = "&&min(sqrt(px1*px1+py1*py1+pz1*pz1),sqrt(px2*px2+py2*py2+pz2*pz2))>"+str(pMin)
+   theCut = yCut+cosCScut+ptCut+pMinCut
+   h['M_charm'] = hMC['M_p_projx'].Clone('M_charm')
+   h['M_charm'].SetLineColor(ROOT.kCyan)
+   hMC['ntCharm'].Draw('M>>M_charm',theCut)
+   h['M_charm'].Scale(1./npotCharm)
+   
+   if ptMax>0: ptCut = "&&max(sqrt(p1x*p1x+p1y*p1y),sqrt(p2x*p2x+p2y*p2y))>"+str(ptMax)
+   if pMin>0: pMinCut = "&&min(sqrt(p1x*p1x+p1y*p1y+p1z*p1z),sqrt(p2x*p2x+p2y*p2y+p2z*p2z))>"+str(pMin)
+   theCut = yCut+cosCScut+ptCut+pMinCut
+   h['M_DY'] = hMC['M_p_projx'].Clone('M_DY')
+   h['M_DY'].SetLineColor(ROOT.kMagenta)
+   hMC['ntDY'].Draw('M>>M_DY',"O==2212&&"+theCut)
+   h['M_DY'].Scale(1./npotDY)
+   h['M_charm'].SetStats(0)
+   h['M_DY'].SetStats(0)
+   h['M_charm'].GetXaxis().SetRangeUser(0.0,5.0)
+   h['M_charm'].Draw()
+   h['M_DY'].Draw('same')
+   h['L']=ROOT.TLegend(0.64,0.67,0.88,0.78)
+   rc = h['L'].AddEntry(h['M_charm'],'Charm','PL')
+   rc = h['L'].AddEntry(h['M_DY'],'Drell Yan','PL')
+   h['L'].Draw('same')
+   tag = str(ymin)+"<y<"+str(ymax)+"ptMax="+str(ptMax)+"pMin="+str(pMin)
+   myPrint(hMC['dummy'],'DYAndCharm_'+tag)
+
 
 def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,DYxsec=1.,weighted=False):
    if not hMC.has_key('DY'):loadNtuples()
@@ -8162,18 +8212,18 @@ def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,D
    ut.bookCanvas(hMC,'TM','',1600,900,1,1)
    colors = {}
    colors['MDrell Yan']      =         [24,ROOT.kCyan,'Drell Yan']
-   colors['MJ/psi primary'] =          [33,ROOT.kRed,'J/#{Psi} primary']
-   colors['Momega primary'] =          [22,ROOT.kGreen,'#{omega} primary']
-   colors['Mrho0 primary'] =           [23,ROOT.kGreen+2,'#{rho^0} primary']
+   colors['MJ/psi primary'] =          [33,ROOT.kRed,'J/#Psi primary']
+   colors['Momega primary'] =          [22,ROOT.kGreen,'#omega primary']
+   colors['Mrho0 primary'] =           [23,ROOT.kGreen+2,'#rho^0 primary']
    colors['Mlow mass secondary'] =     [25,ROOT.kBlue,'low mass secondary']
    colors['Mlow mass resonances'] =    [25,ROOT.kBlue,'low mass resonances']
-   colors["Mphi primary"] =            [21,ROOT.kGreen-2,'#{phi} primary']
-   colors['MGamma conversion'] =       [26,ROOT.kTeal-5,'#{gamma} conversion']
-   colors["Meta' primary"]      =      [29,ROOT.kGreen-10,"#{eta'} primary"]
-   colors["Meta primary"] =            [33,ROOT.kGreen-3,'#{eta} primary']
+   colors["Mphi primary"] =            [21,ROOT.kGreen-2,'#phi primary']
+   colors['MGamma conversion'] =       [26,ROOT.kTeal-5,'#gamma conversion']
+   colors["Meta' primary"]      =      [29,ROOT.kGreen-10,"#eta' primary"]
+   colors["Meta primary"] =            [33,ROOT.kGreen-3,'#eta primary']
    colors['MPhoton collision'] =       [30,ROOT.kOrange,'Photon collision']
    colors['MPrompt quark']     =       [30,ROOT.kOrange+2,'Prompt quark']
-   colors["Mpsi' primary"] =           [20,ROOT.kMagenta,"#{psi'} primary"]
+   colors["Mpsi' primary"] =           [20,ROOT.kMagenta,"#psi(2S) primary"]
    colors['Mcharm'] =                  [27,ROOT.kRed+3,'charm']
    colors['Mbeauty'] =                 [28,ROOT.kRed-7,'beauty']
    colors['MPositron annihilation'] =  [31,ROOT.kCyan-2,'Positron annihilation']
@@ -9469,6 +9519,42 @@ def extractMuons(E='1GeV'):
                           mu.GetProcID(),mu.GetWeight())
     f.cd()
     muons.Write()
+
+def muonsFromCharm():
+   fNt = ROOT.TFile("muonsFromCharm.root","RECREATE")
+   muons = ROOT.TNtuple("muons","muons","M:pt:P:y:p1x:p1y:p1z:p2x:p2y:p2z:moID:py:py:pz:cosCS")
+   ut.bookHist(hMC,'mult','multiplicities',10,-0.5,9.5)
+   path ={9:"/home/truf/ship-ubuntu-1710-48/muflux/charm/runYYY/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX"}
+   for cycle in path:
+     for run in range(0,20):
+        for k in range(10):
+           xrun = run+cycle*1000 + k*100
+           F = "pythia8_Geant4_"+str(xrun)+"_0.0.root"
+           fname = path[cycle].replace('YYY',str(run)).replace('XXX',str(xrun))+"/"+F
+           f = ROOT.TFile.Open(fname)
+           for sTree in f.cbmsim:
+              mus = {}
+              for m in sTree.MCTrack:
+                if abs(m.GetPdgCode())!=13: continue
+                mus[m.GetPdgCode()] = ROOT.Math.PxPyPzMVector(m.GetPx(),m.GetPy(),m.GetPz(),m.GetMass()))
+              rc=hMC['mult'].Fill(len(mus))
+              if len(mus)!=2: continue
+              keys = mus.keys()
+              if keys[0]*keys[1]>0: continue
+              R = mus[13]+mus[-13]
+# what about polarization?
+              nlep      = mus[-13]
+              nantilep  = mus[13]
+              P1pl = nlep.E()     + nlep.Pz()
+              P2pl = nantilep.E() + nantilep.Pz()
+              P1mi = nlep.E()     - nlep.Pz()
+              P2mi = nantilep.E() - nantilep.Pz()
+              A = P1pl*P2mi-P2pl*P1mi
+              cosCS = R.Pz()/abs(R.Pz()) * 1./R.M()/ROOT.TMath.Sqrt(R.M2()+R.Pt()**2)*A
+              rc = muons.Fill(R.M(),R.P(),R.Pt(),R.Rapidity(),mus[0].X(),mus[0].Y(),mus[0].Z(),mus[1].X(),mus[1].Y(),mus[1].Z(),cosCS)
+   fNt.cd()
+   muons.Write()
+   print "mult",hMC['mult'].GetBinContent(1),hMC['mult'].GetBinContent(2),hMC['mult'].GetBinContent(3),hMC['mult'].GetBinContent(4)
 
 def extractDecays(E):
     ut.bookHist(h,'MP','mass/P',500,0.,5.,100,0.,400.)
