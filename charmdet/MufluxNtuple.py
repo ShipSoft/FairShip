@@ -24,9 +24,9 @@ simpleEffCor   = 0.024
 
 muonMass = 0.105658
 
-DYfactor = MCStats['10GeV']/(2*20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 # adjusted for PDF set 4
-#DYfactor = MCStats['10GeV']/1940000 * (42*73.0+(96-42)*66.2)/96.*1E-6/10.5 # adjusted for PDF set 13
 DYfactor4NA50 = 1.51
+DYfactor = MCStats['10GeV']/(2*20000*99.) * (42*26.1+(96-42)*23.5)/96.*1E-6/10.5 * DYfactor4NA50 # adjusted for PDF set 4, calibrated with NA50
+#DYfactor = MCStats['10GeV']/1940000 * (42*73.0+(96-42)*66.2)/96.*1E-6/10.5 # adjusted for PDF set 13
 
 # counting primary interactions
 Charmfactor = MCStats['10GeV']/(285.3828E9)  # for 14 cycles
@@ -2493,26 +2493,22 @@ def invMass(sTree,h,nseq=0,ncpus=False):
     hname = name.replace('ntuple-','')
     ut.writeHists(h,hname)
     print "I have finished. ",hname
-def myDraw(variable,cut,ntName='10GeV',DYxsec=1.):
+def myDraw(variable,cut,ntName='10GeV',lowMass=1.0,DYxsec=1.0,Charmxsec=1.0):
  if ntName!='10GeV':
     hMC[ntName].Draw(variable,cut)
     return
  hMC[ntName].Draw(variable,cut+"&&(procID2<4||procID2>6)")   # exclude charm
  var   = variable.split('>>')[0]
  histo = variable.split('>>')[1]
-# dirty trick:
- lowMassFudgeFactor = DYxsec%1000/100.
- dyFudgeFactor      = (DYxsec-DYxsec%1000)%1000000/100000.
- charmFudgeFactor   = int(DYxsec/1000000.)/100.
 #
- hMC[histo].Scale(lowMassFudgeFactor)
+ if lowMass != 1.0: hMC[histo].Scale(lowMass)
 # charm
  if not hMC.has_key('Charm'+histo): hMC['Charm'+histo]=hMC[histo].Clone('Charm'+histo)
  charmCut = cut+""
  hMC['Charm2'].Draw(var+">>Charm"+histo,charmCut)
- if DYxsec>0.0:
+ if Charmxsec>0.0:
 # now add distribution to lowMass with correct normalization
-    hMC[histo].Add(hMC['Charm'+histo],Charmfactor)
+    hMC[histo].Add(hMC['Charm'+histo],Charmfactor*Charmxsec)
 # Drell Yan
  if not hMC.has_key('DY'+histo): hMC['DY'+histo]    = hMC[histo].Clone('DY'+histo)
  DYCut = cut+""
@@ -2776,17 +2772,18 @@ def theJpsiCut(v,withCosCSCut,ptCut,pmin,pmax,muID,BDTCut,sameSign=False):
    if BDTCut: theCut += "&&BDT>0."
    return theCut.replace(' ','')
 
-def runAll(ptCut=1.0,pmin=20.,muID=2,wW=True,fM=None,withDY=False,DY=[0.,1.,2.,4.],withPsi2s=False):
+def runAll(ptCut=1.0,pmin=20.,muID=2,wW=True,fM=None,withDY=False,scaleFactors=[0.,1.,2.,4.],withPsi2s=False):
+   # scale both DY and charm in synch
    proj = 'ycor1C'
    loadNtuples()
-   if not type(DY)==type([]): DY = [DY]
-   for DYxsec in DY:
+   if not type(scaleFactors)==type([]): scaleFactors = [scaleFactors]
+   for sf in scaleFactors:
      for fitMethod in ['B','CB','G']:
          if fM:
              if fitMethod != fM: continue
-         JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod,withWeight=wW,withDY=withDY,DYxsec=DYxsec,withPsi2s=withPsi2s)
+         JpsiAcceptance(withCosCSCut=True, ptCut = ptCut, pmin = pmin, pmax = 300., BDTCut=None, muID=muID, fitMethod=fitMethod,withWeight=wW,withDY=withDY,DYxsec=sf,Charmxsec=sf,withPsi2s=withPsi2s)
 
-def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus',withWeight=False,withDY=False,DYxsec=2.,withPsi2s=False):
+def JpsiAcceptance(withCosCSCut=True, ptCut = 1.4, pmin = 10., pmax = 300., BDTCut=None, muID=0, fitMethod='gaus',withWeight=False,withDY=False,DYxsec=1.,Charmxsec=1.,withPsi2s=False):
    # with twoBukin fit usually ptCut = 0.
    # muID = 0: no muon confirmed
    # muID = 1: at least one muon confirmed
@@ -4865,15 +4862,15 @@ def synchFrom48():
     for d in os.listdir(path):
         if os.path.isdir(path+'/'+d): os.system('cp -r '+path+'/'+d+'  .')
 def myCopy(x):
-   if x.find('/')>0:
-      template=x.replace('/','_')
+   if x.find('/')>0 or x.find('>')>0:
+      template=x.replace('/','_').replace('<','-').replace('>','-')
       os.system('cp '+x+' '+template)
    else:
       template = x
    if template.find('.pdf')>0:
       os.system('cp '+template+' /mnt/hgfs/VMgate/Jpsi/AnalysisNote/figs/')
    else: os.system('cp '+template+' /mnt/hgfs/VMgate/Jpsi/AnalysisNote/png/')
-   if x.find('/')>0: os.system('rm '+template)
+   if x.find('/')>0 or x.find('>')>0: os.system('rm '+template)
 def updateFigures(debug=False):
    temp = subprocess.check_output('grep ".pdf" /mnt/hgfs/Images/Jpsi/AnalysisNote/introduction.tex',shell=True)
    for x in temp.split('\n'):
@@ -8071,7 +8068,7 @@ def PDFs(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,inYrange=True):
        w    = hMC['scalePDFMY'].GetBinContent(ybin,mbin)
        if w<1E-6: w=1
        rc   = hMC['MDYscaled'].Fill(nt.mcor,w,w)
-def PDFsAndCharm(cosCS=True,ymin=-0.425,ymax=0.575,ptMax=0,pMin=0,DYxsec=1.51):
+def PDFsAndCharm(cosCS=True,ymin=-0.425,ymax=0.575,ptMax=0,pMin=0,DYxsec=1.0):
    mbias = 10.5 # mb
    xsecCharm = mbias*1.7E-3 # mb    1 cycle = 285.3828E9/14.
    npotCharm = 285.3828E9/14.
@@ -8084,28 +8081,29 @@ def PDFsAndCharm(cosCS=True,ymin=-0.425,ymax=0.575,ptMax=0,pMin=0,DYxsec=1.51):
    yCut  = "("+str(ymin)+'<y-'+ybeam+'&&y-'+ybeam+'<'+str(ymax)+")"
    cosCScut = ''
    if cosCS: cosCScut = "&&abs(cosCS)<0.5"
-   ptCut = ''
-   if ptMax>0: ptCut = "&&max(sqrt(px1*px1+py1*py1),sqrt(px2*px2+py2*py2))>"+str(ptMax)
+   ptCut   = ''
    pMinCut = ''
-   if pMin>0: pMinCut = "&&min(sqrt(px1*px1+py1*py1+pz1*pz1),sqrt(px2*px2+py2*py2+pz2*pz2))>"+str(pMin)
+   if ptMax>0: ptCut   = "&&max(sqrt(p1x*p1x+p1y*p1y),sqrt(p2x*p2x+p2y*p2y))>"+str(ptMax)
+   if pMin>0:  pMinCut = "&&min(sqrt(p1x*p1x+p1y*p1y+p1z*p1z),sqrt(p2x*p2x+p2y*p2y+p2z*p2z))>"+str(pMin)
    theCut = yCut+cosCScut+ptCut+pMinCut
    h['M_charm'] = hMC['M_p_projx'].Clone('M_charm')
    h['M_charm'].SetLineColor(ROOT.kCyan)
    hMC['ntCharm'].Draw('M>>M_charm',theCut)
    h['M_charm'].Scale(1./npotCharm)
    
-   if ptMax>0: ptCut = "&&max(sqrt(p1x*p1x+p1y*p1y),sqrt(p2x*p2x+p2y*p2y))>"+str(ptMax)
-   if pMin>0: pMinCut = "&&min(sqrt(p1x*p1x+p1y*p1y+p1z*p1z),sqrt(p2x*p2x+p2y*p2y+p2z*p2z))>"+str(pMin)
-   theCut = yCut+cosCScut+ptCut+pMinCut
    h['M_DY'] = hMC['M_p_projx'].Clone('M_DY')
    h['M_DY'].SetLineColor(ROOT.kMagenta)
    hMC['ntDY'].Draw('M>>M_DY',"O==2212&&"+theCut)
    h['M_DY'].Scale(1./npotDY)
    h['M_charm'].SetStats(0)
    h['M_DY'].SetStats(0)
-   h['M_charm'].GetXaxis().SetRangeUser(0.0,5.0)
-   h['M_charm'].Draw()
-   h['M_DY'].Draw('same')
+   h['M_charm4'] = h['M_charm'].Rebin(4,'M_charm4')
+   h['M_DY4']    = h['M_DY'].Rebin(4,'M_DY4')
+   nmax = max(h['M_charm4'].GetMaximum(),h['M_DY4'].GetMaximum())
+   h['M_charm4'].SetMaximum(nmax*1.1)
+   h['M_charm4'].GetXaxis().SetRangeUser(0.0,6.0)
+   h['M_charm4'].Draw()
+   h['M_DY4'].Draw('same')
    h['L']=ROOT.TLegend(0.64,0.67,0.88,0.78)
    rc = h['L'].AddEntry(h['M_charm'],'Charm','PL')
    rc = h['L'].AddEntry(h['M_DY'],'Drell Yan','PL')
@@ -8114,7 +8112,7 @@ def PDFsAndCharm(cosCS=True,ymin=-0.425,ymax=0.575,ptMax=0,pMin=0,DYxsec=1.51):
    myPrint(hMC['dummy'],'DYAndCharm_'+tag)
 
 
-def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,DYxsec=1.,weighted=False):
+def AnalysisNote_OppositeSign(pMin=20.,pMax=300.,ptCut=1.0,muID=2,BDTCut=False,DYxsec=1.0,weighted=False):
    if not hMC.has_key('DY'):loadNtuples()
    ut.bookHist(hMC, 'M',   ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
    ut.bookHist(hMC, 'MSS', ' N J/#psi ;',InvMassPlots[0],InvMassPlots[1],InvMassPlots[2])
@@ -9522,7 +9520,7 @@ def extractMuons(E='1GeV'):
 
 def muonsFromCharm():
    fNt = ROOT.TFile("muonsFromCharm.root","RECREATE")
-   muons = ROOT.TNtuple("muons","muons","M:pt:P:y:p1x:p1y:p1z:p2x:p2y:p2z:moID:py:py:pz:cosCS")
+   muons = ROOT.TNtuple("muons","muons","M:pt:P:y:p1x:p1y:p1z:p2x:p2y:p2z:cosCS:moID1:moID2")
    ut.bookHist(hMC,'mult','multiplicities',10,-0.5,9.5)
    path ={9:"/home/truf/ship-ubuntu-1710-48/muflux/charm/runYYY/ship-ubuntu-1710-48_run_MufluxfixedTarget_XXX"}
    for cycle in path:
@@ -9533,10 +9531,12 @@ def muonsFromCharm():
            fname = path[cycle].replace('YYY',str(run)).replace('XXX',str(xrun))+"/"+F
            f = ROOT.TFile.Open(fname)
            for sTree in f.cbmsim:
-              mus = {}
+              mus     = {}
+              addInfo = {}
               for m in sTree.MCTrack:
                 if abs(m.GetPdgCode())!=13: continue
-                mus[m.GetPdgCode()] = ROOT.Math.PxPyPzMVector(m.GetPx(),m.GetPy(),m.GetPz(),m.GetMass()))
+                mus[m.GetPdgCode()] = ROOT.Math.PxPyPzMVector(m.GetPx(),m.GetPy(),m.GetPz(),m.GetMass())
+                addInfo[m.GetPdgCode()] = [sTree.MCTrack[m.GetMotherId()].GetPdgCode()]
               rc=hMC['mult'].Fill(len(mus))
               if len(mus)!=2: continue
               keys = mus.keys()
@@ -9551,7 +9551,7 @@ def muonsFromCharm():
               P2mi = nantilep.E() - nantilep.Pz()
               A = P1pl*P2mi-P2pl*P1mi
               cosCS = R.Pz()/abs(R.Pz()) * 1./R.M()/ROOT.TMath.Sqrt(R.M2()+R.Pt()**2)*A
-              rc = muons.Fill(R.M(),R.P(),R.Pt(),R.Rapidity(),mus[0].X(),mus[0].Y(),mus[0].Z(),mus[1].X(),mus[1].Y(),mus[1].Z(),cosCS)
+              rc = muons.Fill(R.M(),R.P(),R.Pt(),R.Rapidity(),mus[-13].X(),mus[-13].Y(),mus[-13].Z(),mus[13].X(),mus[13].Y(),mus[13].Z(),cosCS,addInfo[-13][0],addInfo[13][0])
    fNt.cd()
    muons.Write()
    print "mult",hMC['mult'].GetBinContent(1),hMC['mult'].GetBinContent(2),hMC['mult'].GetBinContent(3),hMC['mult'].GetBinContent(4)
