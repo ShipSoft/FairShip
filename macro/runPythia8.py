@@ -40,6 +40,7 @@ for g in generators:
    ut.bookHist(h, 'M_'+g,   ' N mu+mu-;M [GeV/c^{2}];y_{CM};pT [GeV/c]',500,0.,10.,120,-3.,3.,100,0.,5.)
    ut.bookHist(h, 'cosCS_'+g,   ' N cosCS;cosCS;y_{CM}',100,-1.,1.,120,-3.,3.,100,0.,5.)
    ut.bookHist(h, 'cosCSJpsi_'+g,   ' N cosCS 2.9<M<4.5;cosCS;y_{CM}',100,-1.,1.,120,-3.,3.,100,0.,5.)
+   ut.bookHist(h, 'heavy partStat',  'particle statistics',10000,0.5,9999.5)
    generators[g].settings.mode("Next:numberCount",options.heartbeat)
    generators[g].settings.mode("Beams:idA",  2212)
    generators[g].settings.mode("Beams:frameType",  2)
@@ -88,14 +89,19 @@ for n in range(int(options.NPoT)):
     rc = py.next()
     nmu = {}
     for ii in range(1,py.event.size()):
+       if py.event[ii].isFinal():
+          x = py.event[ii].particleDataEntry()
+          hq = abs(x.heaviestQuark())
+          if hq>3:  rc = h['heavy partStat'].Fill(hq)
        if options.DrellYan and py.event[ii].id()!=23: continue
        if options.PhotonCollision and py.event[ii].id()!=22: continue
+       if options.JpsiMainly and py.event[ii].id()!=443: continue
        for m in py.event.daughterList(ii):
          if abs(py.event[m].id())==13: nmu[m]=ii
     if len(nmu) == 2:
        ntagged[g]+=1
        ks = nmu.keys()
-       if options.DrellYan:
+       if options.DrellYan or options.JpsiMainly:
           Zstar = py.event[nmu[ks[0]]]
           rc=h['M_'+g].Fill(Zstar.m(),py.event[nmu[ks[0]]].y()-ybeam,py.event[nmu[ks[0]]].pT())
 # what about polarization?
@@ -148,10 +154,11 @@ ut.writeHists(h,hname+'.root')
 
 def na50(online=True):
    for g in generators:
+      sigma = 0
       if online:
         processes = generators[g].info.codesHard()
-        name  = generators[g].info.nameProc(processes[0])
-        sigma = generators[g].info.sigmaGen(processes[0])
+        name      = generators[g].info.nameProc(processes[0])
+        for p in processes: sigma += generators[g].info.sigmaGen(p)
       else:
         name = ''
         sigma = h['xsec_'+g].GetBinContent(1)
@@ -163,8 +170,10 @@ def na50(online=True):
       Ymax = yax.FindBin(0.575)
       h['MA'] = h['M_'+g].ProjectionX('MA')
       h['M'] = h['M_'+g].ProjectionX('M',Ymin,Ymax)
-      print "generator     sigma   mumu-ratio  in-mass-range  in-y-range"  
-      print "%s %s %6.2F nbarn, %5.2F, %5.2G, %5.2F    "%(g,name,sigma*1E6,\
+      blnks = ""
+      for s in range(len(name)-len("generator")): blnks+=" "
+      print "generator",blnks,"    sigma   mumu-ratio  in-mass-range  in-y-range"  
+      print "%s %s %6.2F nbarn, %5.2F,   %5.2G,        %5.2F    "%(g,name,sigma*1E6,\
             float(h['MA'].GetEntries())/options.NPoT,\
             h['MA'].Integral(Mmin,Mmax)/float(h['MA'].GetEntries()),\
             h['M'].GetEntries()/float(h['MA'].GetEntries()))
@@ -172,11 +181,13 @@ def na50(online=True):
    # multiply with 0.5 assuming no polarization -0.5 < cosCS < 0.5
       print "cross section a la NA50 for : %s %5.2F pb"%(g,0.5*fraction*sigma*1E9)
    # via cosCS
+   print "--- via cosCS ---"
    for g in generators:
       if online:
+        sigma = 0
         processes = generators[g].info.codesHard()
         name  = generators[g].info.nameProc(processes[0])
-        sigma = generators[g].info.sigmaGen(processes[0])
+        for p in processes: sigma += generators[g].info.sigmaGen(p)
       else:
         name = ''
         sigma = h['xsec_'+g].GetBinContent(1)
@@ -188,8 +199,8 @@ def na50(online=True):
       Ymax = yax.FindBin(0.575)
       h['MA'] = h['cosCSJpsi_'+g].ProjectionX('MA')
       h['M']  = h['cosCSJpsi_'+g].ProjectionX('M',Ymin,Ymax)
-      print "generator     sigma   mumu-in-mass-range% cosCS in-y-range"  
-      print "%s %s %6.2F nbarn, %5.2F, %5.2F, %5.2F   "%(g,name,sigma*1E6,\
+      print "generator",blnks,"    sigma   mumu-in-mass-range% cosCS in-y-range"  
+      print "%s %s %6.2F nbarn, %5.2F,       %5.2F,      %5.2F   "%(g,name,sigma*1E6,\
             float(h['MA'].GetEntries())/options.NPoT*100.,\
             h['MA'].Integral(Mmin,Mmax)/float(h['MA'].GetEntries()),\
             h['M'].GetEntries()/float(h['MA'].GetEntries()))
