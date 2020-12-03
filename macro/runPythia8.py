@@ -37,7 +37,7 @@ generators['n'].settings.mode("Beams:idB",  2112)
 
 for g in generators:
    ut.bookHist(h, 'xsec_'+g,   ' total cross section',1,0.,1.)
-   ut.bookHist(h, 'M_'+g,   ' N mu+mu-;M [GeV/c^{2}];y_{CM}',500,0.,10.,120,-3.,3.,100,0.,5.)
+   ut.bookHist(h, 'M_'+g,   ' N mu+mu-;M [GeV/c^{2}];y_{CM};pT [GeV/c]',500,0.,10.,120,-3.,3.,100,0.,5.)
    ut.bookHist(h, 'cosCS_'+g,   ' N cosCS;cosCS;y_{CM}',100,-1.,1.,120,-3.,3.,100,0.,5.)
    ut.bookHist(h, 'cosCSJpsi_'+g,   ' N cosCS 2.9<M<4.5;cosCS;y_{CM}',100,-1.,1.,120,-3.,3.,100,0.,5.)
    generators[g].settings.mode("Next:numberCount",options.heartbeat)
@@ -72,14 +72,10 @@ for g in generators:
      generators[g].readString("SoftQCD:inelastic = on")
    generators[g].init()
 
-processes = generators['p'].info.codesHard()
-hname = 'pythia8_PDFpset'+str(options.PDFpSet)+'_Emin'+str(options.Emin)+'_'+generators['p'].info.nameProc(processes[0])
-hname = hname.replace('*','star')
-hname = hname.replace('->','to')
-hname = hname.replace('/','')
+hname = 'pythia8_PDFpset'+str(options.PDFpSet)+'_Emin'+str(options.Emin)
 
 f = ROOT.TFile("ntuple-"+hname+".root","RECREATE")
-signal = ROOT.TNtuple("ntuple","ntuple","M:P:Pt:y:p1x:p1y:p1z:p2x:p2y:p2z:cosCS")
+signal = ROOT.TNtuple("ntuple","ntuple","O:M:P:Pt:y:p1x:p1y:p1z:p2x:p2y:p2z:cosCS")
 
 timer = ROOT.TStopwatch()
 timer.Start()
@@ -120,7 +116,8 @@ for n in range(int(options.NPoT)):
           cosCS = Zstar.pz()/abs(Zstar.pz()) * 1./Zstar.m()/ROOT.TMath.Sqrt(Zstar.m2()+Zstar.pT()**2)*A
           rc=h['cosCS_'+g].Fill(cosCS,Zstar.y()-ybeam,py.event[nmu[ks[0]]].pT())
           if Zstar.m()>2.9 and Zstar.m()<4.5: rc=h['cosCSJpsi_'+g].Fill(cosCS,py.event[nmu[ks[0]]].y()-ybeam,py.event[nmu[ks[0]]].pT())
-          rc = signal.Fill(Zstar.m(),Zstar.pAbs(),Zstar.pT(),Zstar.y(),nlep.px(),nlep.py(),nlep.pz(),nantilep.px(),nantilep.py(),nantilep.pz(),cosCS)
+          O =  py.event[2].id()
+          rc = signal.Fill(O,Zstar.m(),Zstar.pAbs(),Zstar.pT(),Zstar.y(),nlep.px(),nlep.py(),nlep.pz(),nantilep.px(),nantilep.py(),nantilep.pz(),cosCS)
        if options.PhotonCollision:
           M={}
           k=0
@@ -141,9 +138,12 @@ rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print "run ",options.run," PoT ",options.NPoT," Real time ",rtime, " s, CPU time ",ctime,"s"
 signal.Write()
+
 for g in generators:
+   processes = generators['p'].info.codesHard()
    sigma = generators[g].info.sigmaGen(processes[0])
    h['xsec_'+g].SetBinContent(1,sigma)
+   h['xsec_'+g].SetBinContent(2,options.NPoT)
 ut.writeHists(h,hname+'.root')
 
 def na50(online=True):
