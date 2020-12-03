@@ -114,6 +114,7 @@ parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajecto
 parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate steps geometry for the muon shield", required=False, action="store_true", default=False)
 parser.add_argument("--coMuonShield", dest="muShieldWithCobaltMagnet", help="replace one of the magnets in the shield with 2.2T cobalt one, downscales other fields, works only for muShieldDesign >2", required=False, type=int, default=0)
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
+parser.add_argument("--shiplhc", dest="shipLHC",  help="ship @ LHC setup", required=False, action='store_true')
 
 options = parser.parse_args()
 
@@ -206,6 +207,12 @@ else:
 #ship_geo.EmuMagnet.B = 0.
 #ship_geo.tauMudet.B = 0.
 
+#-------> MODIFIED
+if options.shipLHC: 
+ print("Setup for ship LHC measurement has been set")
+ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
+#<------- MODIFIED
+
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
 else: tag = simEngine+"-"+mcEngine
@@ -241,12 +248,14 @@ rtdb = run.GetRuntimeDb()
 # import shipTarget_only as shipDet_conf
 if options.charm!=0: import charmDet_conf as shipDet_conf 
 else:        import shipDet_conf
+if options.shipLHC: import shipLHC_conf as shipDet_conf #<----- MODIFIED
 
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if simEngine == "Pythia8":
- primGen.SetTarget(ship_geo.target.z0, 0.) 
+ if options.shipLHC: primGen.SetTarget(-100*u.m, 0.) #<----- MODIFIED
+ else: primGen.SetTarget(ship_geo.target.z0, 0.) #<----- Added else:
 # -----Pythia8--------------------------------------
  if HNL or options.RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
@@ -282,10 +291,13 @@ if simEngine == "Pythia8":
   import pythia8darkphoton_conf
   passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
- if HNL or options.RPVSUSY or options.DarkPhoton: 
-  P8gen.SetSmearBeam(1*u.cm) # finite beam size
-  P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
-  P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
+ if HNL or options.RPVSUSY or options.DarkPhoton:
+  if not options.shipLHC:#<------- MODIFIED
+   #------> Added indentation
+   P8gen.SetSmearBeam(1*u.cm) # finite beam size
+   P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
+   P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
+   #<------- Added indentation
  if charmonly:
   primGen.SetTarget(0., 0.) #vertex is setted in pythia8Generator
   ut.checkFileExists(inputFile)
@@ -293,7 +305,8 @@ if simEngine == "Pythia8":
    primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors    
    primGen.SmearGausVertexXY(True) #sigma = x
   else:
-   primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
+   if not options.shipLHC: #<----- MODIFIED
+    primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
    primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, options.firstEvent)
@@ -302,6 +315,14 @@ if simEngine == "Pythia8":
   else: 
      print("ERROR: charmonly option should not be used for the muonflux measurement")
      1/0
+ #------> MODIFIED
+ if options.shipLHC: 
+  P8gen = ROOT.Pythia8Generator()
+  P8gen.UseExternalFile(inputFile, options.firstEvent)
+  primGen.SetBeam(0.,0.,ship_geo.EmulsionDet.xdim,ship_geo.EmulsionDet.ydim)
+  primGen.SmearVertexXY(True)
+  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+   #<----- MODIFIED
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
@@ -372,7 +393,7 @@ if simEngine == "muonDIS":
  inactivateMuonProcesses = True # avoid unwanted hadronic events of "incoming" muon flying backward
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
 # -----neutrino interactions from nuage------------------------
-if simEngine == "Nuage":
+if simEngine == "Nuage" and not options.shipLHC:
  primGen.SetTarget(0., 0.)
  Nuagegen = ROOT.NuageGenerator()
  Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
@@ -400,8 +421,25 @@ if simEngine == "Nuage":
  options.nEvents = min(options.nEvents,Nuagegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
  print('Generate ',options.nEvents,' with Nuage input', ' first event',options.firstEvent)
+ #--------------------> MODIFIED
+if simEngine == "Nuage" and options.shipLHC:
+ primGen.SetTarget(0., 0.)
+ Nuagegen = ROOT.NuageGenerator()
+ Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
+ Nuagegen.SetPositions(0., -ship_geo.EmulsionDet.zdim/2, ship_geo.EmulsionDet.zdim/2, -ship_geo.EmulsionDet.xdim/2, ship_geo.EmulsionDet.xdim/2, -ship_geo.EmulsionDet.ydim/2, ship_geo.EmulsionDet.ydim/2)
+ ut.checkFileExists(inputFile)
+ Nuagegen.Init(inputFile,options.firstEvent)
+ primGen.AddGenerator(Nuagegen)
+ options.nEvents = min(options.nEvents,Nuagegen.GetNevents())
+ run.SetPythiaDecayer("DecayConfigNuAge.C")
+ print('Generate ',options.nEvents,' with Nuage input', ' first event',options.firstEvent)
+
+
+	
+ 
+ #<--------------------- MODIFIED
 # -----Neutrino Background------------------------
-if simEngine == "Genie":
+if simEngine == "Genie" and not options.shipLHC: #<--------------------- MODIFIED
 # Genie
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -412,6 +450,21 @@ if simEngine == "Genie":
  options.nEvents = min(options.nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
  print('Generate ',options.nEvents,' with Genie input', ' first event',options.firstEvent)
+
+#--------------------> MODIFIED
+if simEngine=="Genie" and options.shipLHC:
+ ut.checkFileExists(inputFile)
+ primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
+ Geniegen = ROOT.GenieGenerator()
+ Geniegen.Init(inputFile,options.firstEvent)
+ Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.zdim/2)
+ #Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.TTz+12*(ship_geo.EmulsionDet.TTz+ship_geo.EmulsionDet.BrZ))
+ primGen.AddGenerator(Geniegen)
+ options.nEvents = min(options.nEvents,Geniegen.GetNevents())
+ run.SetPythiaDecayer('DecayConfigPy8.C')
+ print('Generate ',options.nEvents,' with Genie input for Ship@LHC', ' first event',options.firstEvent)
+#<--------------------- MODIFIED
+
 if simEngine == "nuRadiography":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -465,7 +518,7 @@ if simEngine == "MuonBack":
  primGen.AddGenerator(MuonBackgen)
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
- print('Process ',options.nEvents,' from input file, with Phi random=',options.phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
+ print('Process ',options.nEvents,' from input file, with Phi random=',phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
  if options.followMuon :  
     options.fastMuon = True
     modules['Veto'].SetFollowMuon()
@@ -529,7 +582,7 @@ import geomGeant4
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
-if options.charm == 0:   # charm and muflux testbeam not yet updated for using the new bfield interface
+if options.charm == 0 and not options.shipLHC:   # charm and muflux testbeam not yet updated for using the new bfield interface  <-------- MODIFIED
  if hasattr(ship_geo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
 

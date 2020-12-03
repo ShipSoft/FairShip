@@ -271,6 +271,7 @@ add_subdirectory (geane)
 add_subdirectory (generators)
 ENDIF (NOT FAIRROOT_FOUND)
 
+add_subdirectory (shipLHC)  #<--- new
 add_subdirectory (shipdata)
 add_subdirectory (passive)
 add_subdirectory (nutaudet)
