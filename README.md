@@ -1,164 +1,172 @@
-# FairShip
+# sndsw
+
+<details>
+  <summary>Table of contents</summary>
+  
+- [sndsw](#sndsw)
+* [Introduction](#introduction)
+    + [Branches](#branches)
+* [Build Instructions using CVMFS](#build-instructions-using-cvmfs)
+* [Local build, without access to CVMFS](#local-build--without-access-to-cvmfs)
+* [Run Instructions](#run-instructions)
+* [Docker Instructions](#docker-instructions)
+* [Contributing Code](#contributing-code)
+
+</details>
 
 ## Introduction
 
-FairShip is the software framework for the SHiP experiment which is based on
-FairRoot. The dependencies of FairShip are tracked and installed using
-[alibuild](https://alisw.github.io/alibuild/).
+If you have questions or problems, please feel free to contact @olantwin or the 
+@SND-LHC/core-developers. For troubleshooting and development, we plan to discuss on [Mattermost](https://mattermost.web.cern.ch/sndlhc/channels/software).
 
 ### Branches
 
 <dl>
   <dt><code>master</code></dt>
   <dd>Main development branch.
-      All python code is <b>required to be compatible with python 2 and 3</b> until compatibility with python 2 can be dropped.
-      Requires aliBuild default <code>fairship</code>.</dd>
-  <dt><code>SHiP-2018</code></dt>
-  <dd>Frozen branch for the CDS, kept for backward compatibility. 
-      Python 2 only.
-      Requires aliBuild default <code>fairship-2018</code>.</dd>
-  <dt><code>muflux</code></dt>
-  <dd>Branch for the muon flux analysis.
-      Python 2 only.
-      Requires aliBuild default <code>fairship-2018</code>.</dd>
+      All python code is <b>required to be compatible with 3</b>
+      Requires aliBuild default <code>release</code>.</dd>
 </dl>
-
-All packages are managed in Git and GitHub. Please read [the Git tutorial for
-SHiP](https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP) first,
-even if you already know Git, as it explains how development is done on GitHub.
 
 ## Build Instructions using CVMFS
 
-1. Download the FairShip software
+On `lxplus` or any CC7 machine with access to CVMFS, you can do the following:
+
+``` bash
+source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
+$ALIBUILD/aliBuild build sndsw -c snddist --always-prefer-system
+```
+
+1. Clone the [snddist](https://github.com/SND-LHC/snddist), which containts the recipes to build `sndsw` and it's dependencies:
     ```bash
-    git clone https://github.com/ShipSoft/FairShip.git
+    git clone https://github.com/SND-LHC/snddist
     ```
 
 2. Make sure you can access the SHiP CVMFS Repository
     ```bash
     ls /cvmfs/ship.cern.ch
     ```
-3. Source the setUp script
+3. Source the `setUp.sh` script
     ```bash
-    source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
+    source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
     ```
 
 4. Build the software using aliBuild
     ```bash
-    aliBuild build FairShip --default fairship --always-prefer-system --config-dir $SHIPDIST
+    $ALIBUILD/aliBuild build sndsw -c snddist --always-prefer-system
     ```
-    If you are not building `master`, you will need to select the appropriate default (see [Branches](#branches)).
+5. If you need to modify `sndsw`, create a development copy
+    ``` bash
+    $ALIBUILD/aliBuild init -c snddist sndsw
+    ```
+    
+For more information on using `aliBuild`, see its [documentation](https://alisw.github.io/alibuild/) (note, some things are ALICE specific and will not apply to SND@LHC software).
 
 If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
 
-To load the FairShip environment, after you build the software you can simply use:
+To load the `sndsw` environment, after you build the software, you can simply use:
 
-5. Load the environment
+6. Load the environment
     ```bash
-    alienv enter FairShip/latest
+    $ALIBUILD/alienv enter sndsw/latest
     ```
 
 However, this won't work if you are using HTCondor. In such case you can do:
 
 ```bash
-eval alienv load FairShip/latest
+eval $ALIBUILD/alienv load sndsw/latest
 ```
+
+If you modify `sndsw`, simply repeat step 4 from `sndsw`'s parent directory.
 
 ## Local build, without access to CVMFS
-Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.
-1. Download the FairShip software
+Commands are similar to the previous case, but without access to CVMFS you need to build the required packages from source.
+
+1. Clone the [snddist](https://github.com/SND-LHC/snddist), which containts the recipes to build `sndsw` and it's dependencies:
     ```bash
-    git clone https://github.com/ShipSoft/FairShip.git
+    git clone https://github.com/SND-LHC/snddist.git
     ```
+    
+2. Install [aliBuild](https://github.com/alisw/alibuild)
+    ``` bash
+    pip3 install --user alibuild
+    ```
+    and make sure that it is in your $PATH
+
 2. Build the software using aliBuild
     ```bash
-    FairShip/aliBuild.sh
+    aliBuild build sndsw -c snddist
     ```
+    If you run into any problems, `aliDoctor` can help determine what the problem is.
 3. Load the environment
     ```bash
-    alibuild/alienv enter FairShip/latest
+    alienv enter sndsw/latest
     ```
+
 ## Run Instructions
 
-Set up the bulk of the environment from CVMFS.
+**To be updated**
 
-```bash
-source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh
-```
+<!-- Set up the bulk of the environment from CVMFS. -->
 
-Load your local FairShip environment.
+<!-- ```bash -->
+<!-- source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh -->
+<!-- ``` -->
 
-```bash
-alibuild/alienv enter (--shellrc) FairShip/latest
-```    
+<!-- Load your local FairShip environment. -->
 
-Now you can for example simulate some events, run reconstruction and analysis:
+<!-- ```bash -->
+<!-- alibuild/alienv enter (--shellrc) FairShip/latest -->
+<!-- ```     -->
 
-```bash
-python $FAIRSHIP/macro/run_simScript.py
->> Macro finished succesfully.
->> Output file is  ship.conical.Pythia8-TGeant4.root
+<!-- Now you can for example simulate some events, run reconstruction and analysis: -->
 
-python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
->> finishing pyExit
+<!-- ```bash -->
+<!-- python $FAIRSHIP/macro/run_simScript.py -->
+<!-- >> Macro finished succesfully. -->
+<!-- >> Output file is  ship.conical.Pythia8-TGeant4.root -->
 
-python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
->> finished making plots
-```
+<!-- python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root -->
+<!-- >> finishing pyExit -->
 
-Run the event display:
+<!-- python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root -->
+<!-- >> finished making plots -->
+<!-- ``` -->
 
-```bash
-python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
-// use SHiP Event Display GUI
-Use quit() or Ctrl-D (i.e. EOF) to exit
-```
+<!-- Run the event display: -->
+
+<!-- ```bash -->
+<!-- python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root -->
+<!-- // use SHiP Event Display GUI -->
+<!-- Use quit() or Ctrl-D (i.e. EOF) to exit -->
+<!-- ``` -->
 
 ## Docker Instructions
 
-Docker is **not** the recommended way to run `FairShip` locally. It is ideal
+Docker is **not** the recommended way to run `sndsw` locally. It is ideal
 for reproducing reproducible, stateless environments for debugging, HTCondor
-and cluster use, or when a strict separation between `FairShip` and the host is
+and cluster use, or when a strict separation between `sndsw` and the host is
 desirable.
 
 1. Build an docker image from the provided `Dockerfile`:
     ```bash
-    git clone https://github.com/ShipSoft/FairShip.git
-    cd FairShip
-    docker build -t fairship .
+    git clone https://github.com/SND-LHC/sndsw.git
+    cd sndsw
+    docker build -t sndsw .
     ``` 
-2. Run the `FairShip` docker image:
+2. Run the `sndsw` docker image:
     ```bash
-    docker run -i -t --rm fairship /bin/bash
+    docker run -i -t --rm sndsw /bin/bash
     ``` 
 3. Advanced docker run options:
     ```bash
     docker run -i -t --rm \
     -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v /local_workdir:/image_workdir \
-    fairship /bin/bash
+    sndsw /bin/bash
     ``` 
     The option `-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` forwards graphics from the docker to your local system (similar to `ssh -X`). The option `-v /local_workdir:/image_workdir` mounts `/local_workdir` on the local system as `/image_workdir` within docker.
 
 ## Contributing Code
 
-### Build Targets Related to C++ Code Style-Guide
-
-The following targets are only available if `clang-format`, `clang-tidy` and `git` are installed.
-
-Build targets indicated with `*` always come in three different flavors.
-  * `no-suffix`: executes the target on source files that changed compared to origin/master -- e.g. `make check-format`
-  * `-staged`: executes the target on source files that have been staged -- e.g. `make check-format-staged`
-  * `-all`: executes the target on all source files in the project -- e.g. `make check-format-all`
-
-| Target          | Description  |
-| --------------- | ------------ |
-| `check-format*` | run clang-format on selected files. Fails if any file needs to be reformatted |
-| `show-format*` | run clang-format on selected files and display differences |
-| `format*` | run clang-format on selected files and update them in-place |
-| `check-tidy*` | run clang-tidy on selected files. Fails if errors are found |
-| `show-tidy*` | run clang-tidy on selected files and display errors. |
-| `tidy*` | run clang-tidy on selected files and attempt to fix any warning automatically |
-| `check-cpplint*` | run cpplint on selected files. Fails if errors are found and displays them. |
-| `check-submission` | will build, run all tests, check formatting, code style, and generate documentation and coverage report |
-| `fix-submission` | will attempt to fix the reported issues using `clang-format` and `clang-tidy`. Failing build, tests, compiler warnings, issues from cpplint and warnings from doxygen must be fixed manually. Also some `clang-tidy` issues cannot be resolved automatically |
+All packages are managed in Git and GitHub. Please either use the web interface to create pull requests or issues, or [send patches via email](https://git-send-email.io/).
