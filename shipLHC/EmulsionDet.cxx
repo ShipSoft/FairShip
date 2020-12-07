@@ -215,8 +215,8 @@ void EmulsionDet::ConstructGeometry()
 
 	TGeoMedium *Emufilm = new TGeoMedium("EmulsionFilm",100,emufilmmixture);
 
-	InitMedium("WNi");
-	TGeoMedium *tungsten = gGeoManager->GetMedium("WNi");
+	InitMedium("tungstenalloySND");
+	TGeoMedium *tungsten = gGeoManager->GetMedium("tungstenalloySND");
 
 
 	Int_t NPlates = number_of_plates; //Number of doublets emulsion + Pb
@@ -261,7 +261,7 @@ void EmulsionDet::ConstructGeometry()
 
 	volBrick->SetVisibility(kTRUE);
 
-	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX+XDimension/2,ShiftY+YDimension/2,fCenterZ));
+	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX-XDimension/2,ShiftY+YDimension/2,fCenterZ));
 	cout<<ShiftX<<"  "<<ShiftY+YDimension/2<<"  "<<fCenterZ<<endl; 
 	
 	TGeoVolumeAssembly *volWall = new TGeoVolumeAssembly("Wall");

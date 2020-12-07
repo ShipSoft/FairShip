@@ -11,7 +11,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.zC = 0*u.m
         c.EmulsionDet.wall= 5
         c.EmulsionDet.target = 1  #number of neutrino target volumes
-        c.EmulsionDet.n_plates = 56
+        c.EmulsionDet.n_plates = 59
         c.EmulsionDet.EmTh = 0.0070 * u.cm
         c.EmulsionDet.EmX = 41.0 * u.cm
         c.EmulsionDet.EmY = 41.0 * u.cm
@@ -32,7 +32,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
         c.EmulsionDet.TTz = 3.0*u.cm
         c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + (c.EmulsionDet.wall+1)*c.EmulsionDet.TTz
-        c.EmulsionDet.ShiftX = 8.0*u.cm
+        c.EmulsionDet.ShiftX = -8.0*u.cm
         c.EmulsionDet.ShiftY = 15.5*u.cm
 
         c.Scifi = AttrDict(z=0*u.cm)
@@ -83,5 +83,5 @@ with ConfigRegistry.register_config("basic") as c:
         #total z thickness and position
         c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + c.MuFilter.NDownstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) 
         c.MuFilter.Zcenter = c.EmulsionDet.zC+c.EmulsionDet.zdim/2+c.MuFilter.Z/2
-        c.MuFilter.ShiftX = c.EmulsionDet.ShiftX+c.EmulsionDet.xdim/2
+        c.MuFilter.ShiftX = c.EmulsionDet.ShiftX-c.EmulsionDet.xdim/2
         c.MuFilter.ShiftY = 3.55*u.cm #since y size increased of 0.5, we need to increase this shift from 3.3 to 3.55
