@@ -37,7 +37,7 @@ def configure(run,ship_geo,Gfield=''):
  EmulsionDet = ROOT.EmulsionDet("EmulsionDet",ROOT.kTRUE)
  EmulsionDet.SetCenterZ(ship_geo.EmulsionDet.zC)
  EmulsionDet.SetNumberTargets(ship_geo.EmulsionDet.target)
- EmulsionDet.SetNumberWalls(ship_geo.EmulsionDet.wall)
+ EmulsionDet.SetNumberBricks(ship_geo.EmulsionDet.col,ship_geo.EmulsionDet.row,ship_geo.EmulsionDet.wall)
  EmulsionDet.SetDetectorDimension(ship_geo.EmulsionDet.xdim, ship_geo.EmulsionDet.ydim, ship_geo.EmulsionDet.zdim)
  EmulsionDet.SetTargetWallDimension(ship_geo.EmulsionDet.WallXDim, ship_geo.EmulsionDet.WallYDim, ship_geo.EmulsionDet.WallZDim)
  EmulsionDet.SetEmulsionParam(ship_geo.EmulsionDet.EmTh, ship_geo.EmulsionDet.EmX, ship_geo.EmulsionDet.EmY, ship_geo.EmulsionDet.PBTh,ship_geo.EmulsionDet.EPlW, ship_geo.EmulsionDet.PassiveTh, ship_geo.EmulsionDet.AllPW)

@@ -9,26 +9,31 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.EmulsionDet = AttrDict(z=0*u.cm)
         c.EmulsionDet.zC = 0*u.m
+        c.EmulsionDet.row = 2
+        c.EmulsionDet.col = 2
         c.EmulsionDet.wall= 5
         c.EmulsionDet.target = 1  #number of neutrino target volumes
         c.EmulsionDet.n_plates = 59
         c.EmulsionDet.EmTh = 0.0070 * u.cm
-        c.EmulsionDet.EmX = 41.0 * u.cm
-        c.EmulsionDet.EmY = 41.0 * u.cm
+        c.EmulsionDet.EmX = 19.2 * u.cm
+        c.EmulsionDet.EmY = 19.2 * u.cm
         c.EmulsionDet.PBTh = 0.0175 * u.cm
         c.EmulsionDet.PassiveTh = 0.1 * u.cm
         c.EmulsionDet.EPlW = 2* c.EmulsionDet.EmTh + c.EmulsionDet.PBTh
         c.EmulsionDet.AllPW = c.EmulsionDet.PassiveTh + c.EmulsionDet.EPlW
-        c.EmulsionDet.BrX = c.EmulsionDet.EmX
-        c.EmulsionDet.BrY = c.EmulsionDet.EmY
+
         c.EmulsionDet.BrPackZ = 0.*u.cm
-        c.EmulsionDet.BrPackX = 0.*u.cm
-        c.EmulsionDet.BrPackY = 0.*u.cm
+        c.EmulsionDet.BrPackX = 2*0.3*u.cm
+        c.EmulsionDet.BrPackY = 2*0.3*u.cm
+        
+        c.EmulsionDet.BrX = c.EmulsionDet.EmX + c.EmulsionDet.BrPackX
+        c.EmulsionDet.BrY = c.EmulsionDet.EmY + c.EmulsionDet.BrPackY
         c.EmulsionDet.BrZ = c.EmulsionDet.n_plates * c.EmulsionDet.AllPW + c.EmulsionDet.EPlW + c.EmulsionDet.BrPackZ
-        c.EmulsionDet.xdim = c.EmulsionDet.EmX
-        c.EmulsionDet.ydim = c.EmulsionDet.EmY
-        c.EmulsionDet.WallXDim = c.EmulsionDet.EmX
-        c.EmulsionDet.WallYDim = c.EmulsionDet.EmY
+
+        c.EmulsionDet.xdim = c.EmulsionDet.BrX * c.EmulsionDet.col
+        c.EmulsionDet.ydim = c.EmulsionDet.BrY * c.EmulsionDet.row
+        c.EmulsionDet.WallXDim = c.EmulsionDet.xdim
+        c.EmulsionDet.WallYDim = c.EmulsionDet.ydim
         c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
         c.EmulsionDet.TTz = 3.0*u.cm
         c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + (c.EmulsionDet.wall+1)*c.EmulsionDet.TTz

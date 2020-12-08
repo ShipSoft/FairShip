@@ -35,8 +35,7 @@ void SetTargetWallDimension(Double_t WallXDim, Double_t WallYDim, Double_t WallZ
     void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
 void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t PassiveTh, Double_t AllPW);
     void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ, Int_t number_of_plates_);
-//void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
- void SetNumberWalls(Double_t wall);
+    void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
     void SetTTzdimension(Double_t TTZ);
     void SetNumberTargets(Int_t target);
  void SetCenterZ(Double_t z);
@@ -77,7 +76,7 @@ void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,D
     EmulsionDet(const EmulsionDet&);
     EmulsionDet& operator=(const EmulsionDet&);
     
-    ClassDef(EmulsionDet,1)
+    ClassDef(EmulsionDet,2)
     
 private:
     
@@ -101,7 +100,7 @@ protected:
 
     Double_t fCenterZ;
 
-    Int_t fNWall;
+    Int_t fNWall, fNRow, fNCol;
     Int_t fNTarget;
     Int_t number_of_plates; ////
 

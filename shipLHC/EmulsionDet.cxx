@@ -127,9 +127,11 @@ void EmulsionDet::SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zd
   ZDimension = zdim;
 }
 
-void EmulsionDet::SetNumberWalls(Double_t wall)
+void EmulsionDet::SetNumberBricks(Double_t col, Double_t row, Double_t wall)
 {
-  fNWall = wall;
+  fNCol = col;
+  fNRow = row;
+  fNWall = wall; 
 }
 
 void EmulsionDet::SetNumberTargets(Int_t target)
@@ -234,7 +236,16 @@ void EmulsionDet::ConstructGeometry()
 	//  //Volumes definition
 	//    //
 
-	//Brick
+	//Walls
+
+	TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
+        TGeoVolume *volWall = new TGeoVolume("Wall",Wall,air);
+	
+	//Rows
+	TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, BrickZ/2);
+        TGeoVolume *volRow = new TGeoVolume("Row",Row,air);
+
+	//Bricks
 	TGeoBBox *Brick = new TGeoBBox("brick", BrickX/2, BrickY/2, BrickZ/2);
 	TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,air);
 	volBrick->SetLineColor(kCyan);
@@ -263,18 +274,36 @@ void EmulsionDet::ConstructGeometry()
 
 	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX-XDimension/2,ShiftY+YDimension/2,fCenterZ));
 	cout<<ShiftX<<"  "<<ShiftY+YDimension/2<<"  "<<fCenterZ<<endl; 
-	
-	TGeoVolumeAssembly *volWall = new TGeoVolumeAssembly("Wall");
 
-	//Walls
-	Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
+	//adding walls
+
+        Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
 	Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
 
 	for(int l = 0; l < fNWall; l++)
-	{
-		volTarget->AddNode(volBrick,l,new TGeoTranslation(0, 0, d_cl_z +BrickZ/2));
+	  {
+		volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +BrickZ/2));
 		d_cl_z += BrickZ + TTrackerZ;
-	}
+	  }
+
+	//adding rows
+	Double_t d_cl_y = -WallYDim/2;
+       
+        for(int k= 0; k< fNRow; k++)
+	  {
+	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
+        
+	  // 2mm is the distance for the structure that holds the brick
+	  d_cl_y += BrickY;
+	  }
+
+	//adding columns of bricks
+	Double_t d_cl_x = -WallXDim/2;
+	for(int j= 0; j < fNCol; j++)
+	  {
+	    volRow->AddNode(volBrick,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
+	    d_cl_x += BrickX;
+	  }
 }
 
 
