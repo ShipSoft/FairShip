@@ -19,6 +19,12 @@
 If you have questions or problems, please feel free to contact @olantwin or the 
 @SND-LHC/core-developers. For troubleshooting and development, we plan to discuss on [Mattermost](https://mattermost.web.cern.ch/sndlhc/channels/software).
 
+The [snd-software](mailto:snd-software@cern.ch) mailing list can be used to discuss the software and report issues. Important annoucements will be made there.
+
+The [snd-software-notifications](mailto:snd-software-notifications@cern.ch) mailing list will be used for automated notifications from Github and CI/CD etc..
+
+Both mailing lists are self-subscribe CERN e-groups.
+
 ### Branches
 
 <dl>
@@ -170,3 +176,5 @@ desirable.
 ## Contributing Code
 
 All packages are managed in Git and GitHub. Please either use the web interface to create pull requests or issues, or [send patches via email](https://git-send-email.io/).
+
+If your changes would also benefit [FairShip](https://github.com/ShipSoft/FairShip), please consider making a pull-request for your changes there. We can then pick up the changes from FairShip automatically.
