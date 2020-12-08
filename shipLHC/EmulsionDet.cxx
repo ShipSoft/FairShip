@@ -41,6 +41,8 @@
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
 
+#include "FairLogger.h"
+
 #include "ShipDetectorList.h"
 #include "ShipUnit.h"
 #include "ShipStack.h"
@@ -158,6 +160,10 @@ void EmulsionDet::SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Do
   AllPlateWidth = AllPW;
 }
 
+void EmulsionDet::SetEmulsionPassiveOption(Int_t PassiveOption)
+{
+  fPassiveOption=PassiveOption;
+}
 
 void EmulsionDet::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ, Int_t number_of_plates_)
 {
@@ -177,13 +183,12 @@ void EmulsionDet::SetTTzdimension(Double_t TTZ)
 
 void EmulsionDet::ConstructGeometry()
 {   
-	TGeoVolume *top=gGeoManager->GetTopVolume();
-	if(top) cout<<" top volume found! "<<endl;
-	 gGeoManager->SetVisLevel(10);
+	TGeoVolume *top=gGeoManager->GetTopVolume();       
+	gGeoManager->SetVisLevel(10);
 
-  cout<< "fCenterZ:   "<<fCenterZ <<endl;
-  cout<< "    X: "<< XDimension<< "  "<< YDimension<<"   Z: "<<ZDimension<<endl;
-	cout<<"  BrickX: "<< BrickX<<"  Y: "<< BrickY<< "  Z: "<< BrickZ<<endl;
+	LOG(INFO) << "fCenterZ:   "<<fCenterZ;
+        LOG(INFO) << "    X: "<< XDimension<< "  "<< YDimension<<"   Z: "<<ZDimension;
+	LOG(INFO) <<"  BrickX: "<< BrickX<<"  Y: "<< BrickY<< "  Z: "<< BrickZ;
 	//Materials 
 	InitMedium("vacuum");
 	TGeoMedium *vacuum =gGeoManager->GetMedium("vacuum");
@@ -221,8 +226,7 @@ void EmulsionDet::ConstructGeometry()
 	TGeoMedium *tungsten = gGeoManager->GetMedium("tungstenalloySND");
 
 
-	Int_t NPlates = number_of_plates; //Number of doublets emulsion + Pb
-	cout<< " Number of plates: "<<number_of_plates<<endl;
+	Int_t NPlates = number_of_plates; //Number of doublets emulsion + Pb	
 
 
 	//TGeoVolume *top = gGeoManager->MakeBox("Top",vacuum,10.,10.,10.);
@@ -264,7 +268,8 @@ void EmulsionDet::ConstructGeometry()
 	TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
 	TGeoVolume *volEmulsionFilm = new TGeoVolume("Emulsion",EmulsionFilm,Emufilm); //TOP
 	volEmulsionFilm->SetLineColor(kBlue);
-	//      AddSensitiveVolume(volEmulsionFilm);
+	LOG(INFO) << "EmulsionDet : Passive option (0: all active, 1: all passive) set to " << fPassiveOption ;
+	if (fPassiveOption == 0) AddSensitiveVolume(volEmulsionFilm);
 	for(Int_t n=0; n<NPlates+1; n++)
 	{
 		volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+ EmPlateWidth/2 + n*AllPlateWidth));
@@ -272,8 +277,7 @@ void EmulsionDet::ConstructGeometry()
 
 	volBrick->SetVisibility(kTRUE);
 
-	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX-XDimension/2,ShiftY+YDimension/2,fCenterZ));
-	cout<<ShiftX<<"  "<<ShiftY+YDimension/2<<"  "<<fCenterZ<<endl; 
+	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX-XDimension/2,ShiftY+YDimension/2,fCenterZ));	 
 
 	//adding walls
 

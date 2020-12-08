@@ -44,6 +44,7 @@ def configure(run,ship_geo,Gfield=''):
  EmulsionDet.SetBrickParam(ship_geo.EmulsionDet.BrX, ship_geo.EmulsionDet.BrY, ship_geo.EmulsionDet.BrZ, ship_geo.EmulsionDet.BrPackX, ship_geo.EmulsionDet.BrPackY, ship_geo.EmulsionDet.BrPackZ, ship_geo.EmulsionDet.n_plates)
  EmulsionDet.SetTTzdimension(ship_geo.EmulsionDet.TTz)
  EmulsionDet.SetDisplacement(ship_geo.EmulsionDet.ShiftX, ship_geo.EmulsionDet.ShiftY)
+ EmulsionDet.SetEmulsionPassiveOption(ship_geo.EmulsionDet.PassiveOption)
  detectorList.append(EmulsionDet)
 
  Scifi = ROOT.Scifi("Scifi",ship_geo.Scifi.xdim,ship_geo.Scifi.ydim,ship_geo.Scifi.zdim,ROOT.kTRUE)

@@ -132,8 +132,7 @@ void Scifi::ConstructGeometry()
 	Double_t zpos = 0;
 	Int_t n = 0;
 	for(int i=0;i<fNplanes;i++)
-	{
-		cout<<"   Adding Node "<<n<<endl;
+	{		
 		volTarget->AddNode(volScifi,n,new TGeoTranslation(0,0, d_tt+i*(ZDimension+DeltaZ)));
 		n++;
 	}   

@@ -40,7 +40,7 @@ void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,D
     void SetNumberTargets(Int_t target);
  void SetCenterZ(Double_t z);
    void SetDisplacement(Double_t x, Double_t y) {ShiftX=x; ShiftY=y;}
-    
+  void SetEmulsionPassiveOption(Int_t PassiveOption);
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -125,6 +125,8 @@ protected:
     Double_t BrickZ; //dimension of the brick + package along the Z axis
     Double_t BrickY;
     Double_t BrickX;
+
+    Int_t fPassiveOption; //passive option 1 passive all emulsions, 0 active all emulsions
 
 
     //TargetTrackers
