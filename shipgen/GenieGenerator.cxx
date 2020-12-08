@@ -34,10 +34,10 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;
    fInputFile  = TFile::Open(tmp); 
-   LOG(INFO) << "Opening input file on eos %s",tmp.Data();
+   LOGF(info, "Opening input file on eos %s", tmp.Data());
   }else{
    fInputFile  = new TFile(fileName);
-   LOG(INFO) << "Opening input file %s",fileName;
+   LOGF(info, "Opening input file %s", fileName);
   }
   if (fInputFile->IsZombie() or !fInputFile) {
      LOG(FATAL) << "Error opening input file";

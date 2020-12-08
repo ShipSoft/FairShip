@@ -27,7 +27,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName) {
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const Bool_t fl = false ) {
-  LOG(INFO) << "Opening input file %s",fileName;
+  LOGF(info, "Opening input file %s", fileName);
   if (0 == strncmp("/eos",fileName,4) ) {
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fileName;
@@ -36,7 +36,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   fInputFile  = new TFile(fileName);
   }
   if (fInputFile->IsZombie()) {
-     LOG(FATAL) << "Error opening the Signal file:%s",fInputFile;
+     LOGF(fatal, "Error opening the Signal file:%s", fileName);
   }
   fn = firstEvent;
   fPhiRandomize = fl;
@@ -112,7 +112,9 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    muList.clear(); 
    moList.clear(); 
    fn++;
-   if (fn%100000==0)  {LOG(INFO) << "reading event %i",fn;}
+   if (fn%100000==0) {
+       LOGF(info, "Reading event %i", fn);
+   }
 // test if we have a muon, don't look at neutrinos:
    if (TMath::Abs(int(id))==13) {
         mass = pdgBase->GetParticle(id)->Mass();
@@ -152,17 +154,19 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         }
        it++;
       }
-     if (!found) {LOG(WARNING) <<  "no muon found %i",fn-1;}
+      if (!found) {
+          LOGF(warn, "No muon found %i", fn-1);
+      }
      if (found) {break;}
    }
   }
   if (fn>fNevents-1){ 
-     LOG(INFO) << "End of file reached %i",fNevents;
+     LOGF(info, "End of file reached %i", fNevents);
      return kFALSE;
   } 
   if (fSameSeed) {
     Int_t theSeed = fn + fSameSeed * fNevents;
-    LOG(DEBUG) << TString::Format("Seed: %d", theSeed);
+    LOGF(debug, "Seed: %d", theSeed);
     gRandom->SetSeed(theSeed);
   }
   if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}

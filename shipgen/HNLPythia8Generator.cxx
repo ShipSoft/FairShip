@@ -40,12 +40,12 @@ Bool_t HNLPythia8Generator::Init()
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fextFile;
      fInputFile  = TFile::Open(tmp); 
-     LOG(INFO) << "Open external file with charm or beauty hadrons on eos: %s",tmp.Data();
+     LOGF(info, "Open external file with charm or beauty hadrons on eos: %s", tmp.Data());
      if (!fInputFile) {
       LOG(FATAL) << "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch";
       return kFALSE; }
     }else{
-      LOG(INFO) << "Open external file with charm or beauty hadrons: %s",fextFile;
+      LOGF(info, "Open external file with charm or beauty hadrons: %s", fextFile);
       fInputFile  = new TFile(fextFile);
       if (!fInputFile) {
        LOG(FATAL) << "Error opening input file";
@@ -213,7 +213,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    } while ( iHNL == 0 ); // ----------- avoid rare empty events w/o any HNL's produced
 
    if (fShipEventNr%100==0) {
-      LOG(INFO) << "ship event %i / pythia event-nr %i",fShipEventNr,fn;
+      LOGF(info, "ship event %i / pythia event-nr %i", fShipEventNr, fn);
     }
    fShipEventNr += 1;
    // fill a container with pythia indices of the HNL decay chain

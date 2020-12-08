@@ -291,7 +291,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    } while ( iDP == 0 ); // ----------- avoid rare empty events w/o any DP's produced
    
    if (fShipEventNr%100==0) {
-     LOG(INFO) << "ship event %i / pythia event-nr %i",fShipEventNr,fn;
+     LOGF(info, "ship event %i / pythia event-nr %i", fShipEventNr, fn);
    }
    fShipEventNr += 1;
    // fill a container with pythia indices of the DP decay chain

@@ -40,12 +40,12 @@ Bool_t Pythia8Generator::Init()
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fextFile;
      fInputFile  = TFile::Open(tmp); 
-     LOG(INFO) << "Open external file with charm or beauty hadrons on eos: %s",tmp.Data();
+     LOGF(info, "Open external file with charm or beauty hadrons on eos: %s", tmp.Data());
      if (!fInputFile) {
       LOG(FATAL) << "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch";
       return kFALSE; }
     }else{
-      LOG(INFO) << "Open external file with charm or beauty hadrons: %s",fextFile;
+      LOGF(info, "Open external file with charm or beauty hadrons: %s", fextFile);
       fInputFile  = new TFile(fextFile);
       if (!fInputFile) {
        LOG(FATAL) << "Error opening input file";
@@ -90,7 +90,7 @@ Bool_t Pythia8Generator::Init()
       if (p->tau0()>1){
       std::string particle = std::to_string(n)+":mayDecay = false";
       fPythia->readString(particle);
-      LOG(INFO) << "Made %s stable for Pythia, should decay in Geant4",p->name().c_str();
+      LOGF(info, "Made %s stable for Pythia, should decay in Geant4", p->name().c_str());
       }
      }
   } else {  
@@ -107,7 +107,7 @@ Bool_t Pythia8Generator::Init()
    TGeoVolume* top = gGeoManager->GetTopVolume();
    TGeoNode* target = top->FindNode(targetName);
    if (!target){
-       LOG(ERROR) << "target not found, %s, program will crash",targetName.Data();
+       LOGF(error, "target not found, %s, program will crash", targetName.Data());
    }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
    TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
