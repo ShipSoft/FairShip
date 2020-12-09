@@ -28,7 +28,7 @@ def configure(run,ship_geo,Gfield=''):
  
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
- cave.SetGeometryFileName("cave.geo")
+ cave.SetGeometryFileName("caveWithAir.geo")
  detectorList.append(cave)
 
  floor = ROOT.Floor("FLOOR")
