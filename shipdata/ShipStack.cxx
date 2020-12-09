@@ -199,7 +199,7 @@ TParticle* ShipStack::GetCurrentTrack() const
 {
   TParticle* currentPart = GetParticle(fCurrentTrack);
   if ( ! currentPart) {
-    LOG(WARNING << "ShipStack: Current track not found in stack!";
+    LOG(warn) << "ShipStack: Current track not found in stack!";
   }
   return currentPart;
 }
