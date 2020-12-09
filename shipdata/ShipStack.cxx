@@ -175,7 +175,7 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Test for index
   if (iPrim < 0 || iPrim >= fNPrimaries) {
-    LOG(FATAL) << "ShipStack: Primary index out of range! %i ", iPrim;
+    LOGF(fatal, "ShipStack: Primary index out of range! %i ", iPrim);
   }
 
   // Return the iPrim-th TParticle from the fParticle array. This should be
@@ -199,7 +199,7 @@ TParticle* ShipStack::GetCurrentTrack() const
 {
   TParticle* currentPart = GetParticle(fCurrentTrack);
   if ( ! currentPart) {
-    LOG(WARNING) << "ShipStack: Current track not found in stack!";
+    LOG(WARNING << "ShipStack: Current track not found in stack!";
   }
   return currentPart;
 }
@@ -238,7 +238,7 @@ void ShipStack::FillTrackArray()
 
     fStoreIter = fStoreMap.find(iPart);
     if (fStoreIter == fStoreMap.end() ) {
-      LOG(FATAL) << "ShipStack: Particle %i not found in storage map! ", iPart;
+      LOGF(fatal, "ShipStack: Particle %i not found in storage map! ", iPart);
     }
     Bool_t store = (*fStoreIter).second;
 
@@ -280,7 +280,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
     Int_t iMotherOld = track->GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
-      LOG(FATAL) << "ShipStack: Particle index %i not found in dex map! ", iMotherOld;
+      LOGF(fatal, "ShipStack: Particle index %i not found in dex map! ", iMotherOld);
     }
     track->SetMotherId( (*fIndexIter).second );
   }
@@ -312,7 +312,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
-          LOG(FATAL) <<  "ShipStack: Particle index %i not found in index map! ", iTrack;
+          LOGF(fatal, "ShipStack: Particle index %i not found in index map! ", iTrack);
         }
         point->SetTrackID((*fIndexIter).second);
         point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
@@ -320,7 +320,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
     }   // Collections of this detector
   }     // List of active detectors
-  LOG(DEBUG) << "...stack and  %i collections updated.", nColl;
+  LOGF(debug, "...stack and  %i collections updated.", nColl);
 }
 // -------------------------------------------------------------------------
 
@@ -411,7 +411,7 @@ Int_t ShipStack::GetCurrentParentTrackNumber() const
 TParticle* ShipStack::GetParticle(Int_t trackID) const
 {
   if (trackID < 0 || trackID >= fNParticles) {
-    LOG(FATAL) << "ShipStack: Particle index %i out of range. Max=%i",trackID,fNParticles;
+    LOGF(fatal, "ShipStack: Particle index %i out of range. Max=%i", trackID, fNParticles);
   }
   return (TParticle*)fParticles->At(trackID);
 }

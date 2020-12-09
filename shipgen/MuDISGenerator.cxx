@@ -30,7 +30,7 @@ Bool_t MuDISGenerator::Init(const char* fileName) {
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
-  LOG(INFO) << "Opening input file %s",fileName;
+  LOGF(info, "Opening input file %s", fileName);
 
   iMuon = 0;
   dPart = 0; 
@@ -38,7 +38,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
     TString tmp = gSystem->Getenv("EOSSHIP");
     tmp+=fileName;
     fInputFile  = TFile::Open(tmp); 
-    LOG(INFO) << "Open external file on eos: %s",tmp.Data();
+    LOGF(info, "Open external file on eos: %s", tmp.Data());
   }else{
     fInputFile  = new TFile(fileName);
   }

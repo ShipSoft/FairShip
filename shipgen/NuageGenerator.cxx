@@ -51,7 +51,7 @@ Bool_t NuageGenerator::Init(const char* fileName, const int firstEvent) {
   cout<<"**************************************"<<endl;
   cout<<endl;
   fNuOnly = false;
-  LOG(INFO) << "Opening input file %s",fileName;
+  LOGF(info, "Opening input file %s", fileName);
   fInputFile  = new TFile(fileName);
   if (fInputFile->IsZombie()) {
     LOG(FATAL) << "Error opening the Signal file";
