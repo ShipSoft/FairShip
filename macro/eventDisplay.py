@@ -185,6 +185,7 @@ class DrawTracks(ROOT.FairTask):
   gEve.AddElement(self.comp)
   self.trackColors = {13:ROOT.kGreen,211:ROOT.kRed,11:ROOT.kOrange,321:ROOT.kMagenta}
   dv = top.GetNode('DecayVolume_1')
+  self.z_end = 500.
   if dv:
    ns = dv.GetNodes()
    T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
@@ -198,7 +199,8 @@ class DrawTracks(ROOT.FairTask):
      self.z_end = xx.GetMatrix().GetTranslation()[2]+xx.GetVolume().GetShape().GetDZ()
   magNode = top.GetNode('MCoil_1')
   if magNode: self.z_mag = magNode.GetMatrix().GetTranslation()[2]
-  else:       self.z_mag = ShipGeo['Bfield'].z
+  elif   hasattr(ShipGeo,'Bfield'):   self.z_mag = ShipGeo['Bfield'].z
+  else:  self.z_mag=0
   ecalDet = top.GetNode('Ecal_1')
   self.z_ecal = self.z_end
   if ecalDet: self.z_ecal = ecalDet.GetMatrix().GetTranslation()[2]
@@ -1017,13 +1019,13 @@ else:
  if hasattr(ShipGeo,"EcalOption"): 
   if ShipGeo.EcalOption==2:
    mcHits['SplitCalPoints']  = ROOT.FairMCPointDraw("splitcalPoint", ROOT.kRed, ROOT.kFullSquare)
- if not hasattr(mcHits,'SplitCalPoints'):
+ if not hasattr(mcHits,'SplitCalPoints') and hasattr(ShipGeo,"HcalOption"):
   mcHits['EcalPoints']  = ROOT.FairMCPointDraw("EcalPoint", ROOT.kRed, ROOT.kFullSquare)
   if ShipGeo.HcalOption!=2: mcHits['HcalPoints']  = ROOT.FairMCPointDraw("HcalPoint", ROOT.kMagenta, ROOT.kFullSquare)
  mcHits['MuonPoints']  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
  mcHits['RpcPoints']   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
  mcHits['TargetPoints']   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
- ecalGeoFile = ShipGeo.ecal.File
+ if  hasattr(ShipGeo,"ecal.File") : ecalGeoFile = ShipGeo.ecal.File
 
  if hasattr(ShipGeo,'preshowerOption'): 
   if ShipGeo.preshowerOption >0: 
@@ -1048,19 +1050,20 @@ top   = sGeo.GetTopVolume()
 speedUp()
 gEve  = ROOT.gEve
 
-if hasattr(ShipGeo.Bfield,"fieldMap"):
-  ROOT.gSystem.Load('libG4clhep.so')
-  ROOT.gSystem.Load('libgeant4vmc.so')
-  import geomGeant4
-  fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
-  bfield = ROOT.genfit.FairShipFields()
-  bfield.setField(fieldMaker.getGlobalField())
-else:
-  bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Bfield.y/2.*u.m)
-geoMat =  ROOT.genfit.TGeoMaterialInterface()
-ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
-fM = ROOT.genfit.FieldManager.getInstance()
-fM.init(bfield)
+if hasattr(ShipGeo,"Bfield"):
+  if hasattr(ShipGeo.Bfield,"fieldMap"):
+    ROOT.gSystem.Load('libG4clhep.so')
+    ROOT.gSystem.Load('libgeant4vmc.so')
+    import geomGeant4
+    fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
+    bfield = ROOT.genfit.FairShipFields()
+    bfield.setField(fieldMaker.getGlobalField())
+  else:
+    bfield = ROOT.genfit.BellField(ShipGeo.Bfield.max ,ShipGeo.Bfield.z,2, ShipGeo.Bfield.y/2.*u.m)
+  geoMat =  ROOT.genfit.TGeoMaterialInterface()
+  ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+  fM = ROOT.genfit.FieldManager.getInstance()
+  fM.init(bfield)
 
 import TrackExtrapolateTool
 br = gEve.GetBrowser()
