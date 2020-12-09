@@ -277,7 +277,7 @@ void EmulsionDet::ConstructGeometry()
 
 	volBrick->SetVisibility(kTRUE);
 
-	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX-XDimension/2,ShiftY+YDimension/2,fCenterZ));	 
+	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX,ShiftY,fCenterZ));
 
 	//adding walls
 

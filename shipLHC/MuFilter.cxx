@@ -233,7 +233,7 @@ void MuFilter::ConstructGeometry()
 	TGeoVolume *volFeBlock = new TGeoVolume("volFeBlock",FeBlockBox,Fe);
 	volFeBlock->SetLineColor(19);
 
-	top->AddNode(volMuFilter,1,new TGeoTranslation(fShiftX,fShiftY+fMuFilterY/2,fCenterZ));       
+	top->AddNode(volMuFilter,1,new TGeoTranslation(fShiftX,fShiftY,fCenterZ));
 
 	Double_t dy = 0;
 	Double_t dz = 0;
