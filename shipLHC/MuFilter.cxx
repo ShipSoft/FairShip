@@ -225,8 +225,7 @@ void MuFilter::ConstructGeometry()
 	TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
 
 	//Definition of the box containing Fe Blocks + Timing Detector planes 
-	TGeoBBox *MuFilterBox = new TGeoBBox("MuFilterBox",fMuFilterX/2,fMuFilterY/2,fMuFilterZ/2);
-	TGeoVolume *volMuFilter = new TGeoVolume("volMuFilter",MuFilterBox,air);
+	TGeoVolumeAssembly *volMuFilter = new TGeoVolumeAssembly("volMuFilter");
 
 	//Iron blocks volume definition
 	TGeoBBox *FeBlockBox = new TGeoBBox("FeBlockBox",fFeBlockX/2, fFeBlockY/2, fFeBlockZ/2);
