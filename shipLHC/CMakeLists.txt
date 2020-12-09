@@ -25,8 +25,6 @@ ${FAIRROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
-ShipCave.cxx            
-ShipGeoCave.cxx   
 Floor.cxx
 EmulsionDet.cxx
 EmulsionDetPoint.cxx
