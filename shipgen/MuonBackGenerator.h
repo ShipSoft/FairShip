@@ -29,7 +29,7 @@ class MuonBackGenerator : public FairGenerator
   void FollowAllParticles() { followMuons = false; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetSameSeed(Int_t s) {
-    LOG(INFO)<<TString::Format("Seed: %d", s);
+    LOGF(info, "Seed: %d", s);
     fSameSeed = s;
   };
   Bool_t checkDiMuon(Int_t muIndex);
