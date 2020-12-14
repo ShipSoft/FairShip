@@ -1,20 +1,27 @@
-# sndsw
+sndsw
+=====
 
 <details>
   <summary>Table of contents</summary>
-  
-- [sndsw](#sndsw)
-* [Introduction](#introduction)
-    + [Branches](#branches)
-* [Build Instructions using CVMFS](#build-instructions-using-cvmfs)
-* [Local build, without access to CVMFS](#local-build--without-access-to-cvmfs)
-* [Run Instructions](#run-instructions)
-* [Docker Instructions](#docker-instructions)
-* [Contributing Code](#contributing-code)
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [Introduction](#introduction)
+    - [Branches](#branches)
+- [Build instructions](#build-instructions)
+    - [On lxplus or systems with CVMFS](#on-lxplus-or-systems-with-cvmfs)
+    - [On systems without access to CVMFS](#on-systems-without-access-to-cvmfs)
+- [Run Instructions](#run-instructions)
+- [Docker Instructions](#docker-instructions)
+- [Contributing Code](#contributing-code)
+
+<!-- markdown-toc end -->
+
+  
 </details>
 
-## Introduction
+# Introduction
 
 If you have questions or problems, please feel free to contact @olantwin or the 
 @SND-LHC/core-developers. For troubleshooting and development, we plan to discuss on [Mattermost](https://mattermost.web.cern.ch/sndlhc/channels/software).
@@ -25,7 +32,7 @@ The [snd-software-notifications](mailto:snd-software-notifications@cern.ch) mail
 
 Both mailing lists are self-subscribe CERN e-groups.
 
-### Branches
+## Branches
 
 <dl>
   <dt><code>master</code></dt>
@@ -34,9 +41,9 @@ Both mailing lists are self-subscribe CERN e-groups.
       Requires aliBuild default <code>release</code>.</dd>
 </dl>
 
-## Build Instructions using CVMFS
+# Build instructions
 
-On `lxplus` or any CC7 machine with access to CVMFS, you can do the following:
+## On lxplus or systems with CVMFS
 
 ``` bash
 source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
@@ -85,7 +92,8 @@ eval $ALIBUILD/alienv load sndsw/latest
 
 If you modify `sndsw`, simply repeat step 4 from `sndsw`'s parent directory.
 
-## Local build, without access to CVMFS
+## On systems without access to CVMFS
+
 Commands are similar to the previous case, but without access to CVMFS you need to build the required packages from source.
 
 1. Clone the [snddist](https://github.com/SND-LHC/snddist), which containts the recipes to build `sndsw` and it's dependencies:
@@ -109,7 +117,7 @@ Commands are similar to the previous case, but without access to CVMFS you need 
     alienv enter sndsw/latest
     ```
 
-## Run Instructions
+# Run Instructions
 
 **To be updated**
 
@@ -147,7 +155,7 @@ Commands are similar to the previous case, but without access to CVMFS you need 
 <!-- Use quit() or Ctrl-D (i.e. EOF) to exit -->
 <!-- ``` -->
 
-## Docker Instructions
+# Docker Instructions
 
 Docker is **not** the recommended way to run `sndsw` locally. It is ideal
 for reproducing reproducible, stateless environments for debugging, HTCondor
@@ -173,7 +181,7 @@ desirable.
     ``` 
     The option `-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` forwards graphics from the docker to your local system (similar to `ssh -X`). The option `-v /local_workdir:/image_workdir` mounts `/local_workdir` on the local system as `/image_workdir` within docker.
 
-## Contributing Code
+# Contributing Code
 
 All packages are managed in Git and GitHub. Please either use the web interface to create pull requests or issues, or [send patches via email](https://git-send-email.io/).
 
