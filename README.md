@@ -43,12 +43,33 @@ Both mailing lists are self-subscribe CERN e-groups.
 
 # Build instructions
 
+The `aliBuild` family of tools developed by ALICE is used to set up `sndsw` and
+its dependencies.
+
+<details>
+  <summary>Introduction to <code>aliBuild</code></summary>
+
+The basic commands are the same regardless of whether CVMFS is used:
+
+<dl>
+  <dt><code>aliBuild build <package-name> -c snddist</code></dt>
+  <dd>Build the package <code><package-name></code> (e.g. <code>sndsw</code>) and its dependencies using the recipes and configuration provided by snddist.
+  On CVMFS, it is recommended to add <code>--always-prefer-system</code> to ensure packages are used from CVMFS instead of being rebuilt.</dd>
+  <dt><code>aliDoctor <package-name> -c snddist</code></dt>
+  <dd>Provide troubleshooting information and hints on which packages can be used from the system for <code><package-name></code> and its dependencies.</dd>
+  <dt><code>alienv <package-name>/latest -c snddist</code></dt>
+  <dd>Enter an environment with <code><package-name></code> and its dependencies.</dd>
+</dl>
+
+For more information on using `aliBuild`, see its
+[documentation](https://alisw.github.io/alibuild/) (note: some things are ALICE
+specific and will not apply to SND@LHC software).
+
+</details>
+
 ## On lxplus or systems with CVMFS
 
-``` bash
-source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
-$ALIBUILD/aliBuild build sndsw -c snddist --always-prefer-system
-```
+On `lxplus` or any CC7 machine with access to CVMFS, you can do the following:
 
 1. Clone the [snddist](https://github.com/SND-LHC/snddist), which containts the recipes to build `sndsw` and it's dependencies:
     ```bash
@@ -64,16 +85,14 @@ $ALIBUILD/aliBuild build sndsw -c snddist --always-prefer-system
     source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
     ```
 
-4. Build the software using aliBuild
+4. Build the software using `aliBuild`
     ```bash
-    $ALIBUILD/aliBuild build sndsw -c snddist --always-prefer-system
+    aliBuild build sndsw -c snddist --always-prefer-system
     ```
 5. If you need to modify `sndsw`, create a development copy
     ``` bash
-    $ALIBUILD/aliBuild init -c snddist sndsw
+    aliBuild init -c snddist sndsw
     ```
-    
-For more information on using `aliBuild`, see its [documentation](https://alisw.github.io/alibuild/) (note, some things are ALICE specific and will not apply to SND@LHC software).
 
 If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
 
@@ -81,13 +100,13 @@ To load the `sndsw` environment, after you build the software, you can simply us
 
 6. Load the environment
     ```bash
-    $ALIBUILD/alienv enter sndsw/latest
+    alienv enter sndsw/latest
     ```
 
 However, this won't work if you are using HTCondor. In such case you can do:
 
 ```bash
-eval $ALIBUILD/alienv load sndsw/latest
+eval alienv load sndsw/latest
 ```
 
 If you modify `sndsw`, simply repeat step 4 from `sndsw`'s parent directory.
