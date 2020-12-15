@@ -1,13 +1,11 @@
 sndsw
 =====
 
-<details>
-  <summary>Table of contents</summary>
-
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
 - [Introduction](#introduction)
+    - [Contact and communication](#contact-and-communication)
     - [Branches](#branches)
 - [Build instructions](#build-instructions)
     - [On lxplus or systems with CVMFS](#on-lxplus-or-systems-with-cvmfs)
@@ -18,10 +16,14 @@ sndsw
 
 <!-- markdown-toc end -->
 
-  
-</details>
-
 # Introduction
+
+`sndsw` is the software framework of the SND@LHC collaboration. It is based on
+the [FairShip](https://github.com/ShipSoft/FairShip) framework developed by the SHiP collaboration which in turn is
+based on [FairRoot](https://github.com/FairRootGroup/FairRoot/), making use of the automatic python bindings provided by
+PyROOT.
+
+## Contact and communication
 
 If you have questions or problems, please feel free to contact @olantwin or the 
 @SND-LHC/core-developers. For troubleshooting and development, we plan to discuss on [Mattermost](https://mattermost.web.cern.ch/sndlhc/channels/software).
@@ -46,8 +48,7 @@ Both mailing lists are self-subscribe CERN e-groups.
 The `aliBuild` family of tools developed by ALICE is used to set up `sndsw` and
 its dependencies.
 
-<details>
-  <summary>Introduction to <code>aliBuild</code></summary>
+### Introduction to `aliBuild`
 
 The basic commands are the same regardless of whether CVMFS is used:
 
@@ -64,8 +65,6 @@ The basic commands are the same regardless of whether CVMFS is used:
 For more information on using `aliBuild`, see its
 [documentation](https://alisw.github.io/alibuild/) (note: some things are ALICE
 specific and will not apply to SND@LHC software).
-
-</details>
 
 ## On lxplus or systems with CVMFS
 
