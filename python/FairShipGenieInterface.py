@@ -38,21 +38,28 @@ def makeSplines(nupdglist,targetcode, emax, outputfile):
     cmd = "gmkspl -p "+inputnupdg+" -t "+targetcode+" -n 100 -e "+str(emax)+" -o "+outputfile
     os.system(cmd) 
 
-def GenerateGenieEvents(nevents, nupdg, emin, emax, targetcode, inputflux , spline, process = None):
+def GenerateGenieEvents(nevents, nupdg, emin, emax, targetcode, inputflux , spline, process = None, seed = None, irun = None):
     '''make Genie simulation, parameters:
     events = number of events to generate
     nupdg = neutrino pdg
     targetcode = string with target material in GENIE code
     emin, emax = min and max neutrino energy to generate
-    process = simulate a specific neutrino process (CCDIS, CCQE, CC, NC, CCRES, NCRES, etc.), otherwise all processes included
+    process = simulate a specific neutrino process (CCDIS, CCQE, CC, NC, CCRES, NCRES, etc.), 
+              if not set, GENIE's comprehensive collection of event generators will be used.
     inputflux = input neutrino flux
     spline = input neutrino spline
     '''
     #prepare command functions
-    cmd = "gevgen -n "+str(nevents)+" -p "+ nupdg +" -t "+targetcode+" -e "+str(emin)+","+str(emax)
-    cmd = cmd + " -f "+inputflux+","+pDict1[nupdg]+"  --cross-sections "+ spline 
-    if (process):
+    cmd = "gevgen -n "+str(nevents)+" -p "+ str(nupdg) +" -t "+targetcode+" -e "+str(emin)+","+str(emax)
+    cmd = cmd + " -f "+inputflux+","+Get1DFluxName(nupdg)+"  --cross-sections "+ spline 
+    #optional additional arguments
+    if (process is not None):
         cmd = cmd + " --event-generator-list "+process #add a specific process
+    if (seed is not None):
+        cmd = cmd + " --seed "+ str(seed) #set a seed for the generator
+    if (irun is not None):
+        cmd = cmd + " --run "+ str(irun)
+
     print('Starting GENIE with the following command: ')
     print(cmd)
     os.system(cmd)
@@ -63,8 +70,8 @@ def makeNtuples(inputfile, outputfile):
        outputfile = path of gst outputfile
     '''
 
-    cmd = "gntpc -i "inputfile" -f gst -o "+outfile
-     print('Starting GENIE conversion with the following command: ')
+    cmd = "gntpc -i "+inputfile+" -f gst -o "+outputfile
+    print('Starting GENIE conversion with the following command: ')
     os.system(cmd)
 
 def addHists(inputflux, simfile, nupdg):
