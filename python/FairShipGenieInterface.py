@@ -30,12 +30,13 @@ def makeSplines(nupdglist,targetcode, emax, outputfile):
     outputfile = path of outputfile
     '''
     inputnupdg = ""
-    for nupdg in nupdglist:
+    for ipdg,nupdg in enumerate(nupdglist):
       if (ipdg > 0):
         inputnupdg = inputnupdg + ","
       inputnupdg = inputnupdg + str(nupdg)
-    print('Starting GENIE with the following command: ')
     cmd = "gmkspl -p "+inputnupdg+" -t "+targetcode+" -n 100 -e "+str(emax)+" -o "+outputfile
+    print('Starting GENIE with the following command: ')
+    print(cmd)
     os.system(cmd) 
 
 def GenerateGenieEvents(nevents, nupdg, emin, emax, targetcode, inputflux , spline, process = None, seed = None, irun = None):
