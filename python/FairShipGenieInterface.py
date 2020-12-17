@@ -73,6 +73,7 @@ def makeNtuples(inputfile, outputfile):
 
     cmd = "gntpc -i "+inputfile+" -f gst -o "+outputfile
     print('Starting GENIE conversion with the following command: ')
+    print(cmd)
     os.system(cmd)
 
 def addHists(inputflux, simfile, nupdg):
