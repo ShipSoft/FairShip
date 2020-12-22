@@ -1,6 +1,7 @@
 from __future__ import print_function
 from __future__ import division
 import ROOT,os,sys,time
+from subprocess import call
 
 def get_1D_flux_name(nupdg):
     '''returns name of TH1D p spectrum as stored in input files:
@@ -37,7 +38,7 @@ def make_splines(nupdglist,targetcode, emax, nknots, outputfile):
     cmd = "gmkspl -p "+inputnupdg+" -t "+targetcode+" -n "+str(nknots)+ " -e "+str(emax)+" -o "+outputfile
     print('Starting GENIE with the following command: ')
     print(cmd)
-    os.system(cmd) 
+    call(cmd, shell = True)
 
 def generate_genie_events(nevents, nupdg, emin, emax, targetcode, inputflux , spline, process = None, seed = None, irun = None):
     '''make Genie simulation, parameters:
@@ -63,7 +64,7 @@ def generate_genie_events(nevents, nupdg, emin, emax, targetcode, inputflux , sp
 
     print('Starting GENIE with the following command: ')
     print(cmd)
-    os.system(cmd)
+    call(cmd, shell = True)
 
 def make_ntuples(inputfile, outputfile):
     '''convert gntp GENIE file to gst general ROOT file
@@ -74,7 +75,7 @@ def make_ntuples(inputfile, outputfile):
     cmd = "gntpc -i "+inputfile+" -f gst -o "+outputfile
     print('Starting GENIE conversion with the following command: ')
     print(cmd)
-    os.system(cmd)
+    call(cmd, shell = True)
 
 def add_hists(inputflux, simfile, nupdg):
     '''add histogram with p-pt flux to simulation file
