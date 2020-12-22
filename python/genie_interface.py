@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import division
 import ROOT,os,sys,time
 
-def Get1DFluxName(nupdg):
+def get_1D_flux_name(nupdg):
     '''returns name of TH1D p spectrum as stored in input files:
        example: nue: 12 -> 1012, anue: -12 -> 2012 
     '''
@@ -12,7 +12,7 @@ def Get1DFluxName(nupdg):
     else:
        return "20"+str(x)
 
-def Get2DFluxName(nupdg):
+def get_2D_flux_name(nupdg):
     '''returns name of TH2D p-pt flux as stored in input files:
        ie for nue: 12 -> 1212, anue: -12 -> 2212 
        nupdg: neutrino pdg
@@ -23,7 +23,7 @@ def Get2DFluxName(nupdg):
     else:
        return "22"+str(x)
 
-def makeSplines(nupdglist,targetcode, emax, nknots, outputfile):
+def make_splines(nupdglist,targetcode, emax, nknots, outputfile):
     '''prepare splines with neutrino interaction cross sections
     nupdg = list of input neutrino pdgs
     targetcode = string with target material in GENIE code
@@ -39,7 +39,7 @@ def makeSplines(nupdglist,targetcode, emax, nknots, outputfile):
     print(cmd)
     os.system(cmd) 
 
-def GenerateGenieEvents(nevents, nupdg, emin, emax, targetcode, inputflux , spline, process = None, seed = None, irun = None):
+def generate_genie_events(nevents, nupdg, emin, emax, targetcode, inputflux , spline, process = None, seed = None, irun = None):
     '''make Genie simulation, parameters:
     events = number of events to generate
     nupdg = neutrino pdg
@@ -52,7 +52,7 @@ def GenerateGenieEvents(nevents, nupdg, emin, emax, targetcode, inputflux , spli
     '''
     #prepare command functions
     cmd = "gevgen -n "+str(nevents)+" -p "+ str(nupdg) +" -t "+targetcode+" -e "+str(emin)+","+str(emax)
-    cmd = cmd + " -f "+inputflux+","+Get1DFluxName(nupdg)+"  --cross-sections "+ spline 
+    cmd = cmd + " -f "+inputflux+","+get_1D_flux_name(nupdg)+"  --cross-sections "+ spline 
     #optional additional arguments
     if (process is not None):
         cmd = cmd + " --event-generator-list "+process #add a specific process
@@ -65,7 +65,7 @@ def GenerateGenieEvents(nevents, nupdg, emin, emax, targetcode, inputflux , spli
     print(cmd)
     os.system(cmd)
 
-def makeNtuples(inputfile, outputfile):
+def make_ntuples(inputfile, outputfile):
     '''convert gntp GENIE file to gst general ROOT file
        inputfile = path of gntp inputfile (gntp.0.ghep.root)
        outputfile = path of gst outputfile
@@ -76,7 +76,7 @@ def makeNtuples(inputfile, outputfile):
     print(cmd)
     os.system(cmd)
 
-def addHists(inputflux, simfile, nupdg):
+def add_hists(inputflux, simfile, nupdg):
     '''add histogram with p-pt flux to simulation file
        inputflux = path of neutrino inputflux
        simfile = path of simulation file to UPDATE
@@ -85,7 +85,7 @@ def addHists(inputflux, simfile, nupdg):
     inputfile = ROOT.TFile(inputflux,'read')
     simfile = ROOT.TFile(simfile,'update')
     #adding 2D histogram
-    inputfile.Get(Get2DFluxName(nupdg)).Write()
+    inputfile.Get(get_2D_flux_name(nupdg)).Write()
     #closinsg files
     inputfile.Close()
     simfile.Close()

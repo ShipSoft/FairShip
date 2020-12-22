@@ -6,7 +6,7 @@ import shipunit as u
 import shipRoot_conf
 import argparse
 import logging
-import FairShipGenieInterface as genieinterface
+import genie_interface
 shipRoot_conf.configure()
 
 
@@ -100,7 +100,7 @@ os.chdir(work_dir)
 def makeSplines():
  '''first step, make cross section splines if not exist'''
  nupdglist = [14,-14,12,-12]
- genieinterface.makeSplines(nupdglist, targetcode, 400, nknots = 500, outputfile = ".")
+ genie_interface.make_splines(nupdglist, targetcode, 400, nknots = 500, outputfile = ".")
 
 def makeEvents(nevents = 100):
  run = 11
@@ -112,21 +112,21 @@ def makeEvents(nevents = 100):
   # interacting than those at higher energy. pmaxLow(E=386.715)=2.157e-13 and  pmaxHigh(E=388.044)=2.15623e-13"
   N = nevents
   if p<0: N = int(nevents / nuOverNubar[abs(p)])
-  genieinterface.GenerateGenieEvents(nevents = N, nupdg = p, targetcode = targetcode, emin = 0.5, emax = 350,\
+  genie_interface.generate_genie_events(nevents = N, nupdg = p, targetcode = targetcode, emin = 0.5, emax = 350,\
                       inputflux = neutrinos, spline = splines, seed = seed, process = evtype, irun = run)
   run +=1
   os.chdir('../')
 def makeNtuples():
  for p in pDict:
   os.chdir('./'+sDict[p])
-  genieinterface.makeNtuples("gntp.0.gst.root","genie-"+sDict[p]+".root")
-  genieinterface.addHists(neutrinos, "genie-"+sDict[p]+".root", p)
+  genie_interface.make_ntuples("gntp.0.gst.root","genie-"+sDict[p]+".root")
+  genie_interface.add_hists(neutrinos, "genie-"+sDict[p]+".root", p)
   os.chdir('../')
 
 def addHists():
  for p in pDict:
   os.chdir('./'+sDict[p])
-  genieinterface.addHists(neutrinos, "genie-"+sDict[p]+".root", p)
+  genie_interface.add_hists(neutrinos, "genie-"+sDict[p]+".root", p)
   os.chdir('../')
 
 
