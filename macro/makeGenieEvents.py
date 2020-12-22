@@ -100,7 +100,7 @@ os.chdir(work_dir)
 def makeSplines():
  '''first step, make cross section splines if not exist'''
  nupdglist = [14,-14,12,-12]
- genieinterface.makeSplines(nupdglist, targetcode, ".")
+ genieinterface.makeSplines(nupdglist, targetcode, 400, nknots = 500, outputfile = ".")
 
 def makeEvents(nevents = 100):
  run = 11
