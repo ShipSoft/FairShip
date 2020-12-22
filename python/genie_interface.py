@@ -34,7 +34,7 @@ def make_splines(nupdglist,targetcode, emax, nknots, outputfile):
       if (ipdg > 0):
         inputnupdg = inputnupdg + ","
       inputnupdg = inputnupdg + str(nupdg)
-    cmd = "gmkspl -p "+inputnupdg+" -t "+targetcode+" -n "+str(nknots) " -e "+str(emax)+" -o "+outputfile
+    cmd = "gmkspl -p "+inputnupdg+" -t "+targetcode+" -n "+str(nknots)+ " -e "+str(emax)+" -o "+outputfile
     print('Starting GENIE with the following command: ')
     print(cmd)
     os.system(cmd) 
