@@ -119,7 +119,7 @@ def makeEvents(nevents = 100):
 def makeNtuples():
  for p in pDict:
   os.chdir('./'+sDict[p])
-  genieinterface.makeNtuples("gntp.0.gst.root","genie-"+sDict[p]+".root")
+  genieinterface.makeNtuples("gntp.0.ghep.root","genie-"+sDict[p]+".root")
   genieinterface.addHists(neutrinos, "genie-"+sDict[p]+".root", p)
   os.chdir('../')
 
