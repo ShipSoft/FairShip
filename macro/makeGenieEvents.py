@@ -44,6 +44,7 @@ def get_arguments(): #available options
   ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
   ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default=None) # Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
   ap.add_argument("--nudet", dest="nudet", help="option for neutrino detector", required=False, action="store_true")
+  ap.add_argument('--MS', help="make a new spline file", dest='MakeSpline', action="store_true")
   args = ap.parse_args()
   return args
 
@@ -57,6 +58,7 @@ evtype = args.evtype
 nudet = args.nudet
 splines = args.splinedir+'/'+xsec #path of splines
 neutrinos = args.filedir+'/'+hfile #path of flux
+MakeSpline = args.MakeSpline
 
 if nudet:
  if 'GXMLPATH' not in os.environ:
@@ -71,8 +73,10 @@ if target == 'iron':
  targetcode = '1000260560'
 elif target == 'lead':
  targetcode = '1000822040[0.014],1000822060[0.241],1000822070[0.221],1000822080[0.524]'
+elif target == 'tungsten':
+ targetcode = '1000741840'
 else:
- print('only iron and lead target available')
+ print('only iron, lead and tunsgten target options available')
  1/0
 
 pdg  = ROOT.TDatabasePDG()
@@ -81,7 +85,7 @@ sDict = {}
 nuOverNubar = {}
 f = ROOT.TFile(neutrinos)
 
-for x in [14,12]:
+for x in [16, 14,12]:
  sDict[x] = pdg.GetParticle(x).GetName()
  sDict[-x] = pdg.GetParticle(-x).GetName()
  pDict[x]  = "10"+str(x)
@@ -100,7 +104,7 @@ os.chdir(work_dir)
 
 def makeSplines():
  '''first step, make cross section splines if not exist'''
- nupdglist = [14,-14,12,-12]
+ nupdglist = [16,16,14,-14,12,-12]
  genie_interface.make_splines(nupdglist, targetcode, 400, nknots = 500, outputfile = ".")
 
 def makeEvents(nevents = 100):
@@ -130,6 +134,9 @@ def addHists():
   genie_interface.add_hists(neutrinos, "genie-"+sDict[p]+".root", p)
   os.chdir('../')
 
+if (MakeSpline):
+ makeSplines()
 
-makeEvents(nevents)
-makeNtuples()
+else:
+ makeEvents(nevents)
+ makeNtuples()
