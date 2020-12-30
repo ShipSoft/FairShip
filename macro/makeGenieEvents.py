@@ -44,7 +44,7 @@ def get_arguments(): #available options
   ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
   ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default=None) # Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
   ap.add_argument("--nudet", dest="nudet", help="option for neutrino detector", required=False, action="store_true")
-  ap.add_argument('--make_spline','--ms', help="make a new spline file", dest='MakeSpline', action="store_true")
+  ap.add_argument('-ms','--make_spline', help="make a new spline file", dest='MakeSpline', action="store_true")
   args = ap.parse_args()
   return args
 
@@ -105,7 +105,7 @@ os.chdir(work_dir)
 def makeSplines():
  '''first step, make cross section splines if not exist'''
  nupdglist = [16,-16,14,-14,12,-12]
- genie_interface.make_splines(nupdglist, targetcode, 400, nknots = 500, outputfile = workdir + "/xsec_splines.xml")
+ genie_interface.make_splines(nupdglist, targetcode, 400, nknots = 500, outputfile = work_dir + "/xsec_splines.xml")
 
 def makeEvents(nevents = 100):
  run = 11
