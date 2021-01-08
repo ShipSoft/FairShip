@@ -162,16 +162,9 @@ Bool_t  Scifi::ProcessHits(FairVolume* vol)
         if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
+	gMC->CurrentVolID(fVolumeID);
 
-	Int_t detID=0;
-	gMC->CurrentVolID(detID);
-
-
-if (fVolumeID == detID) {
-	  return kTRUE; }
-	fVolumeID = detID;
-
-  TLorentzVector Pos; 
+	TLorentzVector Pos; 
         gMC->TrackPosition(Pos); 
         Double_t xmean = (fPos.X()+Pos.X())/2. ;      
         Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
