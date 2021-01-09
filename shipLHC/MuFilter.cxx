@@ -307,7 +307,7 @@ void MuFilter::ConstructGeometry()
 	  volDownstreamDet->AddNode(volMuDownstreamBar_hor,ibar+1E+3,yztrans);
 	  //adding vertical bars for x
 
-	  Double_t dx_bar = -fDownstreamDetX/2 + fDownstreamBarX_ver/2. + fDownstreamBarX_ver*ibar; 
+	  Double_t dx_bar = -fDownstreamDetY/2 + fDownstreamBarX_ver/2. + fDownstreamBarX_ver*ibar; //they do not cover all the x region, but only 60 x 60.
           Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
 
 	  TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);

@@ -78,7 +78,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DownstreamBarY = c.MuFilter.DownstreamDetY/c.MuFilter.NDownstreamBars #computed for staggering
         c.MuFilter.DownstreamBarZ = 1*u.cm
 
-        c.MuFilter.DownstreamBarX_ver = c.MuFilter.DownstreamDetX/c.MuFilter.NDownstreamBars
+        c.MuFilter.DownstreamBarX_ver = c.MuFilter.DownstreamDetY/c.MuFilter.NDownstreamBars #the vertical bars cover a region only 60 x 60 cm2
         c.MuFilter.DownstreamBarY_ver = c.MuFilter.DownstreamDetY
         c.MuFilter.DownstreamBarZ_ver = 1*u.cm
 
