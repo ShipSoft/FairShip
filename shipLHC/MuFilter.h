@@ -34,21 +34,20 @@ class MuFilter : public FairDetector
 		void SetIronBlockDimensions(Double_t , Double_t, Double_t);	       
 		void SetMuFilterDimensions(Double_t, Double_t, Double_t);
 		void SetCenterZ(Double_t);
-		void SetXYDisplacement(Double_t , Double_t );
-		void SetYPlanesDisplacement(Double_t);
+                void SetXYDisplacement(Double_t , Double_t ); //global xy position
+                void SetYPlanesDisplacement(Double_t); //displacement for downstream plates
+                void SetSlope(Double_t);
 
 		void SetUpstreamPlanesDimensions(Double_t, Double_t, Double_t);
 		void SetNUpstreamPlanes(Int_t);
 		void SetUpstreamBarsDimensions(Double_t, Double_t, Double_t);
 		void SetNUpstreamBars(Int_t);
-		void SetOverlapUpstreamBars(Double_t);
 
 		void SetDownstreamPlanesDimensions(Double_t, Double_t, Double_t);
 		void SetNDownstreamPlanes(Int_t);
 		void SetDownstreamBarsDimensions(Double_t, Double_t, Double_t);
                 void SetDownstreamVerticalBarsDimensions(Double_t, Double_t, Double_t);
 		void SetNDownstreamBars(Int_t);
-		void SetOverlapDownstreamBars(Double_t);
 
 		
 
@@ -87,7 +86,7 @@ class MuFilter : public FairDetector
 		MuFilter(const MuFilter&);
 		MuFilter& operator=(const MuFilter&);
 
-		ClassDef(MuFilter,2)
+		ClassDef(MuFilter,3)
 
 	private:
 
@@ -114,8 +113,7 @@ class MuFilter : public FairDetector
 
 			Double_t fUpstreamDetX;	//|Upstream muon detector planes dimensions
 			Double_t fUpstreamDetY;	//|
-			Double_t fUpstreamDetZ;	//|
-			Double_t fUpstreamBarOverlap; //|Size of overlap (staggering)
+			Double_t fUpstreamDetZ;	//|			
 
 			Int_t fNUpstreamPlanes;	//|Number of planes
 
@@ -133,8 +131,7 @@ class MuFilter : public FairDetector
 
 			Double_t fDownstreamBarX; //|Staggered bars of upstream section
 			Double_t fDownstreamBarY;
-			Double_t fDownstreamBarZ;
-			Double_t fDownstreamBarOverlap; //|Size of overlap (staggering)
+			Double_t fDownstreamBarZ;			
 
 		        Int_t fNDownstreamBars;   //|Number of staggered bars
 
@@ -145,7 +142,8 @@ class MuFilter : public FairDetector
 			Double_t fCenterZ;	//|Zposition of the muon filter
 			Double_t fShiftX;	//|Shift in x-y wrt beam line
 			Double_t fShiftY;	//|
-			Double_t fShiftDY;	//|Shift in DY of the first 6 planes (2 cm)
+                        Double_t fShiftYEnd;    //|Shift for Downstream station
+                        Double_t fSlope; //Slope for floor
 
 			Int_t InitMedium(const char* name);
 };

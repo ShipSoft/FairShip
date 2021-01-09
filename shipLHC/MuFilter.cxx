@@ -120,11 +120,6 @@ void MuFilter::SetUpstreamBarsDimensions(Double_t x, Double_t y, Double_t z)
 	fUpstreamBarZ = z;
 }
 
-void MuFilter::SetOverlapUpstreamBars(Double_t overlap)
-{
-  	fUpstreamBarOverlap = overlap;
-}
-
 void MuFilter::SetNUpstreamBars(Int_t n)
 {
 	fNUpstreamBars = n;
@@ -156,11 +151,6 @@ void MuFilter::SetDownstreamVerticalBarsDimensions(Double_t x, Double_t y, Doubl
 	fDownstreamBarZ_ver = z;
 }
 
-void MuFilter::SetOverlapDownstreamBars(Double_t overlap)
-{
-  	fDownstreamBarOverlap = overlap;
-}
-
 void MuFilter::SetNDownstreamBars(Int_t n)
 {
 	fNDownstreamBars = n;
@@ -179,7 +169,12 @@ void MuFilter::SetXYDisplacement(Double_t x, Double_t y)
 
 void MuFilter::SetYPlanesDisplacement(Double_t y)
 {
-	fShiftDY = y;
+        fShiftYEnd = y;
+}
+
+void MuFilter::SetSlope(Double_t Slope)
+{
+        fSlope = Slope;
 }
 
 void MuFilter::Initialize()
@@ -246,14 +241,11 @@ void MuFilter::ConstructGeometry()
 	//first loop, adding detector main boxes
 	
 	for(Int_t l=0; l<fNUpstreamPlanes; l++)
-	{
-		if(l==1||l==4)
-			dy+=fShiftDY;
-		if(l==2||l==3)
-			dy+= fShiftDY/2;       
-		volMuFilter->AddNode(volFeBlock,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2-dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
-		volMuFilter->AddNode(volUpstreamDet,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2-dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
+	{      
+		volMuFilter->AddNode(volFeBlock,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
+		volMuFilter->AddNode(volUpstreamDet,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
 		dz+=fFeBlockZ+fUpstreamDetZ;
+		dy = dz * TMath::Tan(TMath::DegToRad() * fSlope);
 	}
 
 	//adding staggered bars, first part, only 11 bars, (single stations, readout on both ends)
@@ -267,10 +259,9 @@ void MuFilter::ConstructGeometry()
 	
 	for (Int_t ibar = 0; ibar < fNUpstreamBars; ibar++){
 	  
-	  Double_t dy_bar = -fUpstreamDetY/2 + fUpstreamBarY/2. + (fUpstreamBarY - fUpstreamBarOverlap)*ibar; 
-	  Double_t dz_bar = -fUpstreamDetZ/2. + fUpstreamBarZ/2. * (2 *(ibar%2) + 1.); //on the left or right side of the volume
-
-	  TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,dz_bar);
+	  Double_t dy_bar = -fUpstreamDetY/2 + fUpstreamBarY/2. + fUpstreamBarY*ibar; 
+	  
+	  TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,0);
 	  
 	  volUpstreamDet->AddNode(volMuUpstreamBar,ibar+1E+3,yztrans);
 			   }
@@ -284,9 +275,10 @@ void MuFilter::ConstructGeometry()
 
 	for(Int_t l=0; l<fNDownstreamPlanes; l++)
 	{
-		volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2-dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
-		volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2-dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
-		dz+=fFeBlockZ+fDownstreamDetZ;
+	  dy = fShiftYEnd - fShiftY;
+	  volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
+	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
+	  dz+=fFeBlockZ+fDownstreamDetZ;
 	}
 
 	//adding staggered bars, second part, 77 bars, each for x and y coordinates
@@ -307,16 +299,16 @@ void MuFilter::ConstructGeometry()
 	for (Int_t ibar = 0; ibar < fNDownstreamBars; ibar++){
 	  //adding verizontal bars for y
 
-	  Double_t dy_bar = -fDownstreamDetY/2 + fDownstreamBarY/2. + (fDownstreamBarY - fDownstreamBarOverlap)*ibar; 
-          Double_t dz_bar_hor = -fDownstreamDetZ/2. + fDownstreamBarZ/2. * (2 *(ibar%2) + 1.); //on the left or right side of the volume
+	  Double_t dy_bar = -fDownstreamDetY/2 + fDownstreamBarY/2. + fDownstreamBarY*ibar; 
+          Double_t dz_bar_hor = -fDownstreamDetZ/2. + fDownstreamBarZ/2.;
 
 	  TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,dz_bar_hor);
 	  
 	  volDownstreamDet->AddNode(volMuDownstreamBar_hor,ibar+1E+3,yztrans);
 	  //adding vertical bars for x
 
-	  Double_t dx_bar = -fDownstreamDetX/2 + fDownstreamBarX_ver/2. + (fDownstreamBarX_ver - fDownstreamBarOverlap)*ibar; 
-          Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2. * (2 *(ibar%2) + 1.); //after the two staggered horizontal ones	  
+	  Double_t dx_bar = -fDownstreamDetX/2 + fDownstreamBarX_ver/2. + fDownstreamBarX_ver*ibar; 
+          Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
 
 	  TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);
 	  

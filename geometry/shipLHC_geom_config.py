@@ -49,45 +49,44 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.nplanes = c.EmulsionDet.wall+1
 
         c.MuFilter = AttrDict(z=0*u.cm)
-        c.MuFilter.ShiftDY = 2.0*u.cm
-        c.MuFilter.ShiftDYTot = 6.0*u.cm
         #c.MuFilter.X = c.EmulsionDet.xdim + 20*u.cm
-        c.MuFilter.X = 62.0*u.cm
+        c.MuFilter.X = 80.0*u.cm
         #c.MuFilter.Y = c.EmulsionDet.ydim + 20*u.cm+10.0*u.cm
-        c.MuFilter.Y = 60.5*u.cm+c.MuFilter.ShiftDYTot
+        c.MuFilter.Y = 60.0*u.cm
         c.MuFilter.FeX = c.MuFilter.X
         #c.MuFilter.FeY = c.EmulsionDet.ydim + 20*u.cm
-        c.MuFilter.FeY = c.MuFilter.Y - c.MuFilter.ShiftDYTot
+        c.MuFilter.FeY = c.MuFilter.Y
         c.MuFilter.FeZ = 20*u.cm
         c.MuFilter.UpstreamDetX = c.MuFilter.X
         c.MuFilter.UpstreamDetY = c.MuFilter.FeY
-        c.MuFilter.UpstreamDetZ = 2*u.cm
+        c.MuFilter.UpstreamDetZ = 2.6*u.cm
         c.MuFilter.NUpstreamPlanes = 5
         c.MuFilter.DownstreamDetX = c.MuFilter.X
         c.MuFilter.DownstreamDetY = c.MuFilter.FeY
-        c.MuFilter.DownstreamDetZ = 4*u.cm
+        c.MuFilter.DownstreamDetZ = 3.9*u.cm
         c.MuFilter.NDownstreamPlanes=3
 
         #upstream bars configuration
-        c.MuFilter.NUpstreamBars = 11
-        c.MuFilter.OverlapUpstreamBars = 0.5*u.cm
+        c.MuFilter.NUpstreamBars = 10
         c.MuFilter.UpstreamBarX = c.MuFilter.UpstreamDetX
-        c.MuFilter.UpstreamBarY = (c.MuFilter.UpstreamDetY + c.MuFilter.OverlapUpstreamBars * (c.MuFilter.NUpstreamBars - 1))/c.MuFilter.NUpstreamBars #computed for staggering
+        c.MuFilter.UpstreamBarY = c.MuFilter.UpstreamDetY/c.MuFilter.NUpstreamBars #computed for staggering
         c.MuFilter.UpstreamBarZ = 1*u.cm
 
         #downstream bars configuration
-        c.MuFilter.NDownstreamBars = 77 #n.d.r. both for x and y in this case
-        c.MuFilter.OverlapDownstreamBars = 0.2*u.cm
+        c.MuFilter.NDownstreamBars = 60 #n.d.r. both for x and y in this case
         c.MuFilter.DownstreamBarX = c.MuFilter.DownstreamDetX
-        c.MuFilter.DownstreamBarY = (c.MuFilter.DownstreamDetY + c.MuFilter.OverlapDownstreamBars * (c.MuFilter.NDownstreamBars - 1))/c.MuFilter.NDownstreamBars #computed for staggering
+        c.MuFilter.DownstreamBarY = c.MuFilter.DownstreamDetY/c.MuFilter.NDownstreamBars #computed for staggering
         c.MuFilter.DownstreamBarZ = 1*u.cm
 
-        c.MuFilter.DownstreamBarX_ver = (c.MuFilter.DownstreamDetX + c.MuFilter.OverlapDownstreamBars * (c.MuFilter.NDownstreamBars - 1))/c.MuFilter.NDownstreamBars
+        c.MuFilter.DownstreamBarX_ver = c.MuFilter.DownstreamDetX/c.MuFilter.NDownstreamBars
         c.MuFilter.DownstreamBarY_ver = c.MuFilter.DownstreamDetY
         c.MuFilter.DownstreamBarZ_ver = 1*u.cm
 
         #total z thickness and position
         c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + c.MuFilter.NDownstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) 
         c.MuFilter.Zcenter = c.EmulsionDet.zC+c.EmulsionDet.zdim/2+c.MuFilter.Z/2
-        c.MuFilter.ShiftX = c.EmulsionDet.ShiftX
-        c.MuFilter.ShiftY = 3.55*u.cm+c.MuFilter.Y/2. #since y size increased of 0.5, we need to increase this shift from 3.3 to 3.55
+        c.MuFilter.ShiftX = -2.8 * u.cm - c.MuFilter.X/2.
+        
+        c.MuFilter.Slope = -3.2 #in degrees
+        c.MuFilter.ShiftY = 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
+        c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section

@@ -61,19 +61,18 @@ def configure(run,ship_geo,Gfield=''):
  MuFilter.SetUpstreamPlanesDimensions(ship_geo.MuFilter.UpstreamDetX, ship_geo.MuFilter.UpstreamDetY, ship_geo.MuFilter.UpstreamDetZ)
  MuFilter.SetNUpstreamPlanes(ship_geo.MuFilter.NUpstreamPlanes)
  MuFilter.SetUpstreamBarsDimensions(ship_geo.MuFilter.UpstreamBarX, ship_geo.MuFilter.UpstreamBarY, ship_geo.MuFilter.UpstreamBarZ)
- MuFilter.SetOverlapUpstreamBars(ship_geo.MuFilter.OverlapUpstreamBars)
  MuFilter.SetNUpstreamBars(ship_geo.MuFilter.NUpstreamBars)
  #downstream section
  MuFilter.SetDownstreamPlanesDimensions(ship_geo.MuFilter.DownstreamDetX, ship_geo.MuFilter.DownstreamDetY, ship_geo.MuFilter.DownstreamDetZ)
  MuFilter.SetNDownstreamPlanes(ship_geo.MuFilter.NDownstreamPlanes)
  MuFilter.SetDownstreamBarsDimensions(ship_geo.MuFilter.DownstreamBarX, ship_geo.MuFilter.DownstreamBarY, ship_geo.MuFilter.DownstreamBarZ)
  MuFilter.SetDownstreamVerticalBarsDimensions(ship_geo.MuFilter.DownstreamBarX_ver, ship_geo.MuFilter.DownstreamBarY_ver, ship_geo.MuFilter.DownstreamBarZ_ver)
- MuFilter.SetOverlapDownstreamBars(ship_geo.MuFilter.OverlapDownstreamBars)
  MuFilter.SetNDownstreamBars(ship_geo.MuFilter.NDownstreamBars)
 
  MuFilter.SetCenterZ(ship_geo.MuFilter.Zcenter)
  MuFilter.SetXYDisplacement(ship_geo.MuFilter.ShiftX, ship_geo.MuFilter.ShiftY)
- MuFilter.SetYPlanesDisplacement(ship_geo.MuFilter.ShiftDY)
+ MuFilter.SetSlope(ship_geo.MuFilter.Slope)
+ MuFilter.SetYPlanesDisplacement(ship_geo.MuFilter.ShiftYEnd)
  detectorList.append(MuFilter)
 
  for x in detectorList:
