@@ -96,6 +96,17 @@ ShipSens           1  26.98 13. 0.027
 Concrete           6 1.00794  15.999 26.9812 40.078 28.085 55.845 1. 8. 13. 20. 14. 26. 2.3 0.09972 0.60541 0.014245 0.04986 0.227915 0.00285 
                    0	1	20.	.001
                    0
+// rock  copied from Fluka EARTHBOH
+//                                   HYDROGEN   CARBON  OXYGEN   SODIUM   MAGNESIU    ALUMINUM  SILICON   POTASSIU     CALCIUM   IRON                                  
+Rock        10    1.00794  12.011  15.9994  22.99  24.3  26.98  28.09  39.1  40.08  55.84  1.0  6.0  8.0  11.0  12.0  13.0  14.0  19.0  20.0  26.0 2.0  0.006  0.03  0.5  0.01  0.005  0.03  0.2  0.01  0.195  0.014
+                   0	1	20.	.001
+                   0
+// for SND thermal neutron shield
+//                                           HYDROGEN CARBON OXYGEN  BORON 10 BORON 11
+// BoronCarbide                5  1.00794  12.011  15.9994                                                        1.0  6.0  8.0   5.0 5.0
+//                                                     HYDROGEN CARBON OXYGEN   BORON 10 BORON 11
+// Boratedpolyethylene  5  1.00794  12.011  15.9994                                                        1.0  6.0  8.0  5.0 5.0
+
 HYPaluminium       1  26.98 13. 2.7
                    1  1  20.  .001
                    0
