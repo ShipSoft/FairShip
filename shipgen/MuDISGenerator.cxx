@@ -11,6 +11,7 @@
 #include "TGeoManager.h"
 #include "TGeoEltu.h"
 #include "TVectorD.h"
+#include "TParticle.h"
 #include "TGeoCompositeShape.h"
 
 using std::cout;
@@ -30,7 +31,7 @@ Bool_t MuDISGenerator::Init(const char* fileName) {
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
-  LOGF(info, "Opening input file %s", fileName);
+  LOG(INFO) << "Opening input file"<< fileName;
 
   iMuon = 0;
   dPart = 0; 
@@ -38,7 +39,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
     TString tmp = gSystem->Getenv("EOSSHIP");
     tmp+=fileName;
     fInputFile  = TFile::Open(tmp); 
-    LOGF(info, "Open external file on eos: %s", tmp.Data());
+    LOG(INFO) << "Open external file on eos:"<<tmp.Data();
   }else{
     fInputFile  = new TFile(fileName);
   }
@@ -50,7 +51,6 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
   fn = firstEvent;
   fTree->SetBranchAddress("InMuon",&iMuon);    // incoming muon
   fTree->SetBranchAddress("Particles",&dPart);
-  // cout << "muon DIS Generator number of events "<< fNevents << endl; 
   return kTRUE;
 }
 Double_t MuDISGenerator::MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam)
@@ -216,36 +216,36 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
-    if (fn%100==0) {
-      cout << "Info MuDISGenerator: MuDIS event-nr "<< fn << endl;
+    if (fn%10000==0) {
+      LOG(INFO)  << " heartbeat event-nr "<< fn;
     }
     int nf = dPart->GetEntries();
-    //cout << "*********************************************************" << endl;
-    //cout << "muon DIS Generator debug " << iMuon->GetEntries()<< " "<< iMuon->AddrAt(0) << " nf "<< nf << " fn=" << fn <<endl; 
+    LOG(DEBUG) << "*********************************************************";
+    LOG(DEBUG) << " " << iMuon->GetEntries()<< " "<< iMuon->AddrAt(0) << " nf "<< nf << " fn=" << fn ; 
 
     //some start/end positions in z (f.i. emulsion to Tracker 1)
     Double_t start[3]={0.,0.,startZ};
     Double_t end[3]={0.,0.,endZ};
 
 // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w])
-    TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
-    //cout << "muon DIS Generator in muon " << int(mu[0][0])<< endl; 
-    Double_t x = mu[0][5]*100.; // come in m -> cm
-    Double_t y = mu[0][6]*100.; // come in m -> cm
-    Double_t z = mu[0][7]*100.; // come in m -> cm
-    Double_t w = mu[0][8];
+    TParticle* mu = dynamic_cast<TParticle*>(iMuon->AddrAt(0));
+    LOG(DEBUG) <<  " in muon " << mu->GetPdgCode()<< endl; 
+    Double_t x = mu->Vx();
+    Double_t y = mu->Vy();
+    Double_t z = mu->Vz();
+    Double_t w = mu->GetWeight();
 // calculate start/end positions along this muon, and amout of material in between
-    Double_t txmu=mu[0][1]/mu[0][3];
-    Double_t tymu=mu[0][2]/mu[0][3];
+    Double_t txmu=mu->Px()/mu->Pz();
+    Double_t tymu=mu->Py()/mu->Pz();
     start[0]=x-(z-start[2])*txmu;
     start[1]=y-(z-start[2])*tymu;
-    end[0]=x-(z-end[2])*txmu;
-    end[1]=y-(z-end[2])*tymu;
-    //cout << "MuDIS: mu xyz position " << x << ", " << y << ", " << z << endl;
-    //cout << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2] << ", " << mu[0][3] << endl;
-    //cout << "MuDIS: mu weight " << w << endl;
-    //cout << "MuDIS: start position " << start[0] << ", " << start[1] << ", " << start[2] << endl;
-    //cout << "MuDIS: end position " << end[0] << ", " << end[1] << ", " << end[2] << endl;
+    end[0] =x-(z-end[2])*txmu;
+    end[1] =y-(z-end[2])*tymu;
+    LOG(DEBUG) <<  " mu xyz position " << x << ", " << y << ", " << z << endl;
+    LOG(DEBUG) <<  " mu pxyz   " << mu->Px() << ", " << mu->Py() << ", " << mu->Pz() ;
+    LOG(DEBUG) <<  " mu weight " << w ;
+    LOG(DEBUG) <<  "  start position " << start[0] << ", " << start[1] << ", " << start[2] ;
+    LOG(DEBUG) <<  " end position " << end[0] << ", " << end[1] << ", " << end[2] ;
     Double_t bparam;
     Double_t mparam[8];
     bparam=MeanMaterialBudget(start, end, mparam);
@@ -255,8 +255,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t ymu;
     Double_t zmu;
     Int_t count=0;
-    //cout << "Info MuDISGenerator Start prob2int while loop, bparam= " << bparam << ", " << bparam*1.e8 <<endl;
-    //cout << "Info MuDISGenerator What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7]*1.e8 <<endl;
+    LOG(DEBUG)  << " Start prob2int while loop, bparam= "              << bparam << ", " << bparam*1.e8 ;
+    LOG(DEBUG)  << " What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7]*1.e8 ;
     while (prob2int<gRandom->Uniform(0.,1.)) {
       zmu=gRandom->Uniform(start[2],end[2]);
       xmu=x-(z-zmu)*txmu;
@@ -265,32 +265,27 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       TGeoNode *node = gGeoManager->FindNode(xmu,ymu,zmu);
       TGeoMaterial *mat = 0;
       if (node && !gGeoManager->IsOutside()) mat = node->GetVolume()->GetMaterial();
-      //cout << "Info MuDISGenerator: mat " <<  count << ", " << mat->GetName() << ", " << mat->GetDensity() << endl;
+      LOG(DEBUG) << "mat " <<  count << ", " << mat->GetName() << ", " << mat->GetDensity();
       //density relative to Prob largest density along this trajectory, i.e. use rho(Pt)
       prob2int= mat->GetDensity()/mparam[7];
-      if (prob2int>1.) cout << "***WARNING*** MuDISGenerator: prob2int > Maximum density????" << prob2int << " maxrho:" << mparam[7] << " material: " <<  mat->GetName() << endl;
+      if (prob2int>1.) LOG(WARNING) << "***WARNING*** MuDISGenerator: prob2int > Maximum density????" << prob2int << " maxrho:" << mparam[7] << " material: " <<  mat->GetName();
       count+=1;
     }
-    //cout << "Info MuDISGenerator: prob2int " << prob2int << ", " << count << endl;
+    LOG(DEBUG) << "prob2int " << prob2int << ", " << count ;
 
-    //cout << "MuDIS: put position " << xmu << ", " << ymu << ", " << zmu << endl;
+    LOG(DEBUG)   << "put position " << xmu << ", " << ymu << ", " << zmu;
     //modify weight, by multiplying with average densiy along track??
-    cpg->AddTrack(int(mu[0][0]),mu[0][1],mu[0][2],mu[0][3],xmu,ymu,zmu,-1,false,mu[0][4],0.,w);
+    cpg->AddTrack(mu->GetPdgCode(),mu->Px(),mu->Py(),mu->Pz(),xmu,ymu,zmu,-1,false,mu->Energy(),mu->T(),w);
     // in order to have a simulation of possible veto detector hits, let Geant4 follow the muon backward
     // due to dE/dx, as soon as the muon travers thick material, this approximation will become bad. 
     // a proper implementation however would be to have this better integrated in Geant4, follow the muon, call DIS event, continue
-    cpg->AddTrack(int(mu[0][0]),-mu[0][1],-mu[0][2],-mu[0][3],xmu,ymu,zmu,0,true,mu[0][4],0.,w);
+    cpg->AddTrack(mu->GetPdgCode(),-(mu->Px()),-(mu->Py()),-(mu->Pz()),xmu,ymu,zmu,0,true,mu->Energy(),mu->T(),w);
 // outgoing particles, [did,dpx,dpy,dpz,E], put density along trajectory as weight, g/cm^2
     w=mparam[0]*mparam[4];
     for(int i=0; i<nf; i++)
     	{
-         TVectorD* Part = dynamic_cast<TVectorD*>(dPart->AddrAt(i));
-         //cout << "muon DIS Generator out part " << int(Part[0][0]) << endl; 
-         //cout << "muon DIS Generator out part mom " << Part[0][1]<<" " << Part[0][2] <<" " << Part[0][3] << " " << Part[0][4] << endl; 
-         //cout << "muon DIS Generator out part pos " << mu[0][5]<<" " << mu[0][6] <<" " << mu[0][7] << endl; 
-         //cout << "muon DIS Generator out part w " << mu[0][8] << endl; 
-         cpg->AddTrack(int(Part[0][0]),Part[0][1],Part[0][2],Part[0][3],xmu,ymu,zmu,0,true,Part[0][4],0.,w);
-         //cout << "muon DIS part added "<<endl;
+         TParticle* Part = dynamic_cast<TParticle*>(dPart->AddrAt(i));
+         cpg->AddTrack(Part->GetPdgCode(),Part->Px(),Part->Py(),Part->Pz(),xmu,ymu,zmu,0,true,Part->Energy(),mu->T(),w);
        }
   return kTRUE;
 }

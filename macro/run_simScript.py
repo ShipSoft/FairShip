@@ -63,6 +63,9 @@ parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", requir
 parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=22)", required=False, default=22, type=int)
 parser.add_argument("--Estart",  dest="Estart",  help="start of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
 parser.add_argument("--Eend",    dest="Eend",    help="end of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
+parser.add_argument("--EVx",    dest="EVx",    help="particle gun xpos", required=False, default=0, type=float)
+parser.add_argument("--EVy",    dest="EVy",    help="particle gun ypos", required=False, default=0, type=float)
+parser.add_argument("--EVz",    dest="EVz",    help="particle gun zpos", required=False, default=0, type=float)
 parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", required=False, default='c')
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
@@ -369,25 +372,31 @@ if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
+  myPgun.SetXYZ(options.EVx*u.cm, options.EVy*u.cm, options.EVz*u.cm) 
   if options.charm!=0:
      myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
      primGen.SetTarget(ship_geo.target.z0,0.)
   else:  
      myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
+  ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) 
  DISgen = ROOT.MuDISGenerator()
+ if options.shipLHC:
+       mu_start, mu_end = (-3.7-2.0)*u.m , -0.3*u.m # tunnel wall -30cm in front of SND
+       DISgen.SetPositions(0, mu_start, mu_end)
+ else:
  # from nu_tau detector to tracking station 2
  # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
  #
  # in front of UVT up to tracking station 1
- mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
+  mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
+  DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)
+
  print('MuDIS position info input=',mu_start, mu_end)
- DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)
  DISgen.Init(inputFile,options.firstEvent) 
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
@@ -485,14 +494,22 @@ if simEngine == "nuRadiography":
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
+  if options.shipLHC:
+   ut.checkFileExists(inputFile)
+   Ntuplegen = ROOT.NtupleGenerator_FLUKA()
+   Ntuplegen.SetZ(483262./10.)
+   Ntuplegen.Init(inputFile,options.firstEvent)
+   primGen.AddGenerator(Ntuplegen)
+   options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
+  else:
 # reading previously processed muon events, [-50m - 50m]
- ut.checkFileExists(inputFile)
- primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
- Ntuplegen = ROOT.NtupleGenerator()
- Ntuplegen.Init(inputFile,options.firstEvent)
- primGen.AddGenerator(Ntuplegen)
- options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
- print('Process ',options.nEvents,' from input file')
+   ut.checkFileExists(inputFile)
+   primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
+   Ntuplegen = ROOT.NtupleGenerator()
+   Ntuplegen.Init(inputFile,options.firstEvent)
+   primGen.AddGenerator(Ntuplegen)
+   options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
+  print('Process ',options.nEvents,' from input file')
 #
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
@@ -523,8 +540,9 @@ if simEngine == "MuonBack":
  if options.followMuon :  
     options.fastMuon = True
     modules['Veto'].SetFollowMuon()
- if options.fastMuon :    modules['Veto'].SetFastMuon()
-
+ if options.fastMuon :    
+     if 'Veto' in modules:       modules['Veto'].SetFastMuon()
+     elif 'EmulsionDet' in modules: modules['EmulsionDet'].SetFastMuon()
  # optional, boost gamma2muon conversion
  # ROOT.kShipMuonsCrossSectionFactor = 100. 
 #

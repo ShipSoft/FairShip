@@ -59,6 +59,7 @@ using namespace ShipUnit;
 
 EmulsionDet::EmulsionDet()
 : FairDetector("EmulsionDet", "",kTRUE),
+  fFastMuon(kFALSE),
   fTrackID(-1),
 fVolumeID(-1),
 fPos(),
@@ -72,6 +73,7 @@ fEmulsionDetPointCollection(new TClonesArray("EmulsionDetPoint"))
 
 EmulsionDet::EmulsionDet(const char* name, Bool_t Active,const char* Title)
 : FairDetector(name, true, kEmulsionDet),
+  fFastMuon(kFALSE),
   fTrackID(-1),
 fVolumeID(-1),
 fPos(),
@@ -233,8 +235,7 @@ void EmulsionDet::ConstructGeometry()
 	//gGeoManager->SetTopVolume(top);
 
 	//Definition of the target box containing emulsion bricks + target trackers (TT) 
-	TGeoBBox *TargetBox = new TGeoBBox("TargetBox",XDimension/2, YDimension/2, ZDimension/2);
-	TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox, air);
+         TGeoVolumeAssembly *volTarget  = new TGeoVolumeAssembly("volTarget");
 
 	//
 	//  //Volumes definition
@@ -334,7 +335,6 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 	gMC->CurrentVolID(fVolumeID);
-
 	gGeoManager->PrintOverlaps();		
 	
 	if (fELoss == 0. ) { return kFALSE; }
@@ -385,6 +385,19 @@ TClonesArray* EmulsionDet::GetCollection(Int_t iColl) const
 {
     if (iColl == 0) { return fEmulsionDetPointCollection; }
     else { return NULL; }
+}
+
+void EmulsionDet::PreTrack(){
+    if (TMath::Abs(gMC->TrackPid())==22 || 
+          TMath::Abs(gMC->TrackPid())==11 ||
+          TMath::Abs(gMC->TrackPid())==12 ||
+          TMath::Abs(gMC->TrackPid())==14
+    ){
+        gMC->StopTrack();
+    }
+    if (fFastMuon && TMath::Abs(gMC->TrackPid())!=13){
+        gMC->StopTrack();
+    }
 }
 
 void EmulsionDet::Reset()
