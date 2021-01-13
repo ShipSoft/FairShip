@@ -241,7 +241,8 @@ void MuFilter::ConstructGeometry()
 	//first loop, adding detector main boxes
 	
 	for(Int_t l=0; l<fNUpstreamPlanes; l++)
-	{      
+	{
+      	        if (l == fNUpstreamPlanes - 1) dy = fShiftYEnd -fShiftY; //last upstream station does not follow slope, support starts
 		volMuFilter->AddNode(volFeBlock,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
 		volMuFilter->AddNode(volUpstreamDet,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
 		dz+=fFeBlockZ+fUpstreamDetZ;
