@@ -242,11 +242,14 @@ void MuFilter::ConstructGeometry()
 	
 	for(Int_t l=0; l<fNUpstreamPlanes; l++)
 	{
-      	        if (l == fNUpstreamPlanes - 1) dy = fShiftYEnd -fShiftY; //last upstream station does not follow slope, support starts
-		volMuFilter->AddNode(volFeBlock,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
-		volMuFilter->AddNode(volUpstreamDet,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
-		dz+=fFeBlockZ+fUpstreamDetZ;
-		dy = dz * TMath::Tan(TMath::DegToRad() * fSlope);
+	  dz = (fFeBlockZ + fUpstreamDetZ)*l;
+	  dy = dz * TMath::Tan(TMath::DegToRad() * fSlope);
+	  //last upstream station does not follow slope, start of support. Same dy is used for downstream planes
+	  if (l == fNUpstreamPlanes - 1) dy = fShiftYEnd - fShiftY;
+
+	  volMuFilter->AddNode(volFeBlock,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
+	  volMuFilter->AddNode(volUpstreamDet,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
+	  dz+=fFeBlockZ+fUpstreamDetZ;
 	}
 
 	//adding staggered bars, first part, only 11 bars, (single stations, readout on both ends)
@@ -275,8 +278,7 @@ void MuFilter::ConstructGeometry()
         //first loop, adding detector main boxes
 
 	for(Int_t l=0; l<fNDownstreamPlanes; l++)
-	{
-	  dy = fShiftYEnd - fShiftY;
+	{	  
 	  volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
 	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
 	  dz+=fFeBlockZ+fDownstreamDetZ;
