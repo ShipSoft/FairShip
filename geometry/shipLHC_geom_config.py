@@ -37,7 +37,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.WallYDim = c.EmulsionDet.ydim
         c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
         c.EmulsionDet.TTz = 3.0*u.cm
-        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + (c.EmulsionDet.wall+1)*c.EmulsionDet.TTz
+        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
