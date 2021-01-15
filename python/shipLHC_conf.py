@@ -56,6 +56,14 @@ def configure(run,ship_geo,Gfield=''):
  detectorList.append(Scifi)
 
  MuFilter = ROOT.MuFilter("MuFilter",ROOT.kTRUE)
+ #upstream veto section
+ MuFilter.SetVetoCenterPosition(ship_geo.MuFilter.VetozC)
+ MuFilter.SetVetoShift(ship_geo.MuFilter.VetoShiftX, ship_geo.MuFilter.VetoShiftY)
+ MuFilter.SetVetoPlaneShiftY(ship_geo.MuFilter.VetoPlaneShiftY)
+ MuFilter.SetNVetoPlanes(ship_geo.MuFilter.NVetoPlanes)
+ MuFilter.SetNVetoBars(ship_geo.MuFilter.NVetoBars)
+ MuFilter.SetVetoPlanesDimensions(ship_geo.MuFilter.VetoPlaneX, ship_geo.MuFilter.VetoPlaneY, ship_geo.MuFilter.VetoPlaneZ)
+ MuFilter.SetVetoBarsDimensions(ship_geo.MuFilter.VetoBarX, ship_geo.MuFilter.VetoBarY, ship_geo.MuFilter.VetoBarZ)
  MuFilter.SetMuFilterDimensions(ship_geo.MuFilter.X, ship_geo.MuFilter.Y, ship_geo.MuFilter.Z)
  MuFilter.SetIronBlockDimensions(ship_geo.MuFilter.FeX, ship_geo.MuFilter.FeY, ship_geo.MuFilter.FeZ)
  #upstream section

@@ -87,6 +87,46 @@ MuFilter::~MuFilter()
     }
 }
 
+void MuFilter::SetVetoShift(Double_t x, Double_t y)
+{
+  fVetoShiftX = x;
+  fVetoShiftY = y;
+}
+
+void MuFilter::SetVetoPlanesDimensions(Double_t x, Double_t y, Double_t z)
+{
+  fVetoPlaneX = x;
+  fVetoPlaneY = y;
+  fVetoPlaneZ = z;
+}
+
+void MuFilter::SetVetoBarsDimensions(Double_t x, Double_t y, Double_t z)
+{
+  fVetoBarX = x;
+  fVetoBarY = y;
+  fVetoBarZ = z;
+}
+
+void MuFilter::SetVetoCenterPosition(Double_t z)
+{
+  fVetoCenterZ = z;
+}
+
+void MuFilter::SetNVetoPlanes(Int_t n)
+{
+  fNVetoPlanes = n;
+}
+
+void MuFilter::SetNVetoBars(Int_t n)
+{
+  fNVetoBars = n;
+}
+
+void MuFilter::SetVetoPlaneShiftY(Double_t y)
+{
+  fVetoPlaneShiftY = y;
+}
+
 void MuFilter::SetIronBlockDimensions(Double_t x, Double_t y, Double_t z)
 {
 	fFeBlockX = x;
@@ -218,6 +258,41 @@ void MuFilter::ConstructGeometry()
 
 	InitMedium("polyvinyltoluene");
 	TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
+
+	//Definition of the box containing veto planes
+	TGeoVolumeAssembly *volVeto = new TGeoVolumeAssembly("volVeto");
+	
+	//Veto Planes
+	TGeoBBox *VetoPlane = new TGeoBBox("VetoPlane",fVetoPlaneX/2., fVetoPlaneY/2., fVetoPlaneZ/2.);
+	TGeoVolume *volVetoPlane = new TGeoVolume("volVetoPlane",VetoPlane,air);
+
+	volVetoPlane->SetLineColor(kGray);
+
+	//Veto bars
+	TGeoBBox *VetoBar = new TGeoBBox("VetoBar",fVetoBarX/2., fVetoBarY/2., fVetoBarZ/2.);
+	TGeoVolume *volVetoBar = new TGeoVolume("volVetoBar",VetoBar,Scint);
+
+	volVetoBar->SetLineColor(kBlue+2);
+	AddSensitiveVolume(volVetoBar);
+
+	//adding mother volume
+	top->AddNode(volVeto, 1, new TGeoTranslation(fVetoShiftX, fVetoShiftY,fVetoCenterZ));
+
+	//adding veto planes
+	Double_t startZ = -(fNVetoPlanes * fVetoPlaneZ)/2.;
+	for (int iplane; iplane < fNVetoPlanes; iplane++){
+
+	  volVeto->AddNode(volVetoPlane,iplane, new TGeoTranslation(0,-fVetoPlaneShiftY/2. + iplane * fVetoPlaneShiftY, startZ + fVetoPlaneZ/2. + iplane * fVetoPlaneZ));
+
+	}
+	
+	//adding veto bars
+
+	for (int ibar; ibar < fNVetoBars; ibar++){
+	  
+	  volVetoPlane->AddNode(volVetoBar, ibar, new TGeoTranslation(0,-fVetoPlaneY/2. + fVetoBarY/2 + ibar * fVetoBarY, 0));
+								 
+	}
 
 	//Definition of the box containing Fe Blocks + Timing Detector planes 
 	TGeoVolumeAssembly *volMuFilter = new TGeoVolumeAssembly("volMuFilter");

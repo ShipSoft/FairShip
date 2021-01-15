@@ -31,6 +31,14 @@ class MuFilter : public FairDetector
 		void ConstructGeometry();
 
 		/** Other functions **/
+		void SetVetoCenterPosition(Double_t); //veto position
+		void SetNVetoPlanes(Int_t); //number of veto planes
+		void SetNVetoBars(Int_t);
+		void SetVetoShift(Double_t , Double_t);
+		void SetVetoPlaneShiftY(Double_t);		
+		void SetVetoPlanesDimensions(Double_t, Double_t, Double_t);	
+		void SetVetoBarsDimensions(Double_t, Double_t, Double_t);
+		
 		void SetIronBlockDimensions(Double_t , Double_t, Double_t);	       
 		void SetMuFilterDimensions(Double_t, Double_t, Double_t);
 		void SetCenterZ(Double_t);
@@ -86,7 +94,7 @@ class MuFilter : public FairDetector
 		MuFilter(const MuFilter&);
 		MuFilter& operator=(const MuFilter&);
 
-		ClassDef(MuFilter,3)
+		ClassDef(MuFilter,4)
 
 	private:
 
@@ -103,6 +111,22 @@ class MuFilter : public FairDetector
 			TClonesArray*  fMuFilterPointCollection;
 
 	protected:
+			Double_t fVetoShiftX;  //|Shift of Veto with respect to beam line
+			Double_t fVetoShiftY;  //|
+			
+			Double_t fVetoPlaneX;  //|Veto Plane dimensions
+			Double_t fVetoPlaneY;  //|
+			Double_t fVetoPlaneZ;  //|
+			
+			Double_t fVetoBarX;    //!Veto Bar dimensions
+			Double_t fVetoBarY;
+			Double_t fVetoBarZ;
+			
+			Double_t fVetoCenterZ;
+			Int_t fNVetoPlanes;
+			Int_t fNVetoBars;
+			Double_t fVetoPlaneShiftY;			
+			
 			Double_t fMuFilterX;	//|MuonFilterBox dimensions
 			Double_t fMuFilterY;	//|
 			Double_t fMuFilterZ;	//|

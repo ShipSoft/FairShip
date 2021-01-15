@@ -133,8 +133,8 @@ void Scifi::ConstructGeometry()
 	Int_t n = 0;
 	for(int i=0;i<fNplanes;i++)
 	{		
-		volTarget->AddNode(volScifi,n,new TGeoTranslation(0,0, d_tt+i*(ZDimension+DeltaZ)));
-		n++;
+	  volTarget->AddNode(volScifi,n,new TGeoTranslation(0,0, DeltaZ + d_tt+i*(ZDimension+DeltaZ))); //target starts with first wall
+	  n++;
 	}   
 }
 

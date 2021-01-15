@@ -282,8 +282,7 @@ void EmulsionDet::ConstructGeometry()
 
 	//adding walls
 
-        Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
-	Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
+        Double_t d_cl_z = - ZDimension/2;
 
 	for(int l = 0; l < fNWall; l++)
 	  {

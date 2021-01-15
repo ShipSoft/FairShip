@@ -46,9 +46,28 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.ydim = c.EmulsionDet.ydim
         c.Scifi.zdim = c.EmulsionDet.TTz
         c.Scifi.DZ = c.EmulsionDet.BrZ
-        c.Scifi.nplanes = c.EmulsionDet.wall+1
+        c.Scifi.nplanes = c.EmulsionDet.wall
 
         c.MuFilter = AttrDict(z=0*u.cm)
+        #Veto station parameters
+        c.MuFilter.NVetoPlanes = 2
+        c.MuFilter.VetoShiftX = c.EmulsionDet.ShiftX
+        c.MuFilter.VetoShiftY = c.EmulsionDet.ShiftY
+        c.MuFilter.VetoPlaneShiftY = 1*u.cm
+        
+        c.MuFilter.VetoPlaneX = 42 *u.cm
+        c.MuFilter.VetoPlaneY = 42 *u.cm
+        c.MuFilter.VetoPlaneZ = 4 * u.cm
+
+        c.MuFilter.NVetoBars = 7
+
+        c.MuFilter.VetoBarX = c.MuFilter.VetoPlaneX
+        c.MuFilter.VetoBarY = c.MuFilter.VetoPlaneY / c.MuFilter.NVetoBars
+        c.MuFilter.VetoBarZ = 1 * u.cm
+
+        #veto should end at the start of first ECC target
+        c.MuFilter.VetozC = c.EmulsionDet.zC - c.EmulsionDet.zdim/2. - (c.MuFilter.NVetoPlanes * c.MuFilter.VetoPlaneZ)/2.
+
         #c.MuFilter.X = c.EmulsionDet.xdim + 20*u.cm
         c.MuFilter.X = 80.0*u.cm
         #c.MuFilter.Y = c.EmulsionDet.ydim + 20*u.cm+10.0*u.cm
