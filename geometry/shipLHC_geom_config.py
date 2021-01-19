@@ -9,7 +9,6 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.EmulsionDet = AttrDict(z=0*u.cm)
         c.EmulsionDet.PassiveOption = 1 #0 makes emulsion volumes active, 1 makes all emulsion volumes passive
-        c.EmulsionDet.zC = 0*u.m
         c.EmulsionDet.row = 2
         c.EmulsionDet.col = 2
         c.EmulsionDet.wall= 5
@@ -40,6 +39,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
+
+        c.EmulsionDet.startpos =  -25.4750 * u.cm
+        c.EmulsionDet.zC = c.EmulsionDet.startpos + c.EmulsionDet.zdim/2.
 
         c.Scifi = AttrDict(z=0*u.cm)
         c.Scifi.xdim = c.EmulsionDet.xdim
