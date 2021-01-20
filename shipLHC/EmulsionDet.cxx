@@ -59,8 +59,7 @@ using namespace ShipUnit;
 
 EmulsionDet::EmulsionDet()
 : FairDetector("EmulsionDet", "",kTRUE),
-  fFastMuon(kFALSE),
-  fTrackID(-1),
+fTrackID(-1),
 fVolumeID(-1),
 fPos(),
 fMom(),
@@ -73,8 +72,7 @@ fEmulsionDetPointCollection(new TClonesArray("EmulsionDetPoint"))
 
 EmulsionDet::EmulsionDet(const char* name, Bool_t Active,const char* Title)
 : FairDetector(name, true, kEmulsionDet),
-  fFastMuon(kFALSE),
-  fTrackID(-1),
+fTrackID(-1),
 fVolumeID(-1),
 fPos(),
 fMom(),
@@ -384,19 +382,6 @@ TClonesArray* EmulsionDet::GetCollection(Int_t iColl) const
 {
     if (iColl == 0) { return fEmulsionDetPointCollection; }
     else { return NULL; }
-}
-
-void EmulsionDet::PreTrack(){
-    if (TMath::Abs(gMC->TrackPid())==22 || 
-          TMath::Abs(gMC->TrackPid())==11 ||
-          TMath::Abs(gMC->TrackPid())==12 ||
-          TMath::Abs(gMC->TrackPid())==14
-    ){
-        gMC->StopTrack();
-    }
-    if (fFastMuon && TMath::Abs(gMC->TrackPid())!=13){
-        gMC->StopTrack();
-    }
 }
 
 void EmulsionDet::Reset()

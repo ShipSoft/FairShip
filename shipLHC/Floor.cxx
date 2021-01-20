@@ -1,10 +1,10 @@
 #include "Floor.h"
+#include "vetoPoint.h"
 
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "TVirtualMC.h"          // for gMC
-#include <iosfwd>                    // for ostream
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
@@ -18,21 +18,101 @@
 #include "TMatrixD.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
+#include "ShipDetectorList.h"
+#include "ShipStack.h"
+#include "TParticle.h"
+
+#include "TClonesArray.h"
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
+Floor::Floor()
+  : FairDetector("Floor", kTRUE, kVETO),
+    fFastMuon(kFALSE),
+    fMakeSensitive(kFALSE),
+    fEmin(0),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fThick(-1.),
+    fzPos(3E8),
+    fTotalEloss(0),
+    fFloorPointCollection(new TClonesArray("vetoPoint"))
+{}
 
 Floor::~Floor()
 {
-}
-Floor::Floor()
-  : FairModule("Floor", "")
-{
+  if (fFloorPointCollection) {
+    fFloorPointCollection->Delete();
+    delete fFloorPointCollection;
+  }
 }
 
-Floor::Floor(const char* name, const char* Title)
-  : FairModule(name ,Title)
+Bool_t  Floor::ProcessHits(FairVolume* vol)
 {
+  /** This method is called from the MC stepping */
+  //Set parameters at entrance of volume. Reset ELoss.
+  if ( gMC->IsTrackEntering() ) {
+    fELoss  = 0.;
+    fTime   = gMC->TrackTime() * 1.0e09;
+    fLength = gMC->TrackLength();
+    gMC->TrackPosition(fPos);
+    gMC->TrackMomentum(fMom);
+  }
+  // Sum energy loss for all steps in the active volume
+  fELoss += gMC->Edep();
+
+  // Create vetoPoint at exit of active volume
+  if ( gMC->IsTrackExiting()    ||
+       gMC->IsTrackStop()       ||
+       gMC->IsTrackDisappeared()   ) {
+    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+
+    Int_t veto_uniqueId = 47.;
+
+    TParticle* p=gMC->GetStack()->GetCurrentTrack();
+    Int_t pdgCode = p->GetPdgCode();
+    TLorentzVector Pos;
+    gMC->TrackPosition(Pos);
+    TLorentzVector Mom;
+    gMC->TrackMomentum(Mom);
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
+    LOG(DEBUG)<< veto_uniqueId << " :(" << xmean << ", " << ymean << ", " << zmean << "): " << fELoss;
+    AddHit(fTrackID, veto_uniqueId, TVector3(xmean, ymean,  zmean),
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+           fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
+  }
+
+  return kTRUE;
+}
+
+void Floor::EndOfEvent()
+{
+  fFloorPointCollection->Clear();
+  fTotalEloss=0;
+}
+
+void Floor::PreTrack(){
+    TLorentzVector  mom;
+    gMC->TrackMomentum(mom);
+    if  ( (mom.E()-mom.M() )<fEmin){
+      gMC->StopTrack();
+      return;
+    }
+    if (!fFastMuon){return;}
+    if (TMath::Abs(gMC->TrackPid())!=13){
+        gMC->StopTrack();
+    }
+}
+
+void Floor::Initialize()
+{
+  FairDetector::Initialize();
 }
 
 Int_t Floor::InitMedium(const char* name) 
@@ -249,6 +329,8 @@ void Floor::ConstructGeometry()
   auto volT = new TGeoVolume("VTI18",total,concrete);
   volT->SetTransparency(0);
   volT->SetLineColor(kGray);
+// make tunnel sensitive for debugging
+  if (fMakeSensitive) {AddSensitiveVolume(volT);}
   tunnel->AddNode(volT, 1);
 
   std::vector<TString> loop2 = {"UJ18_","tu010_","tu011_","tu012_"};
@@ -302,6 +384,34 @@ void Floor::ConstructGeometry()
   tunnel->AddNode(fluka,1, new TGeoTranslation(-350.,0,dz+zs- SND_Z-50.));  // move 50cm upstream to avoid overlap
 
   top->AddNode(tunnel , 1);
+}
+
+vetoPoint* Floor::AddHit(Int_t trackID, Int_t detID,
+                                      TVector3 pos, TVector3 mom,
+                                      Double_t time, Double_t length,
+                                      Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom)
+{
+  TClonesArray& clref = *fFloorPointCollection;
+  Int_t size = clref.GetEntriesFast();
+  return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
+         time, length, eLoss, pdgCode,Lpos,Lmom);
+}
+
+void Floor::Register()
+{
+
+  FairRootManager::Instance()->Register("vetoPoint", "veto",
+                                        fFloorPointCollection, kTRUE);
+}
+
+TClonesArray* Floor::GetCollection(Int_t iColl) const
+{
+  if (iColl == 0) { return fFloorPointCollection; }
+  else { return NULL; }
+}
+void Floor::Reset()
+{
+  fFloorPointCollection->Clear();
 }
 
 ClassImp(Floor)

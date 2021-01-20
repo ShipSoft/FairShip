@@ -69,14 +69,13 @@ void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,D
     virtual void   FinishRun() {;}
     virtual void   BeginPrimary() {;}
     virtual void   PostTrack() {;}
-    virtual void   PreTrack();
+    virtual void   PreTrack(){;}
     virtual void   BeginEvent() {;}
-    void SetFastMuon() {fFastMuon=true;}  // kill all tracks except of muons
 
     EmulsionDet(const EmulsionDet&);
     EmulsionDet& operator=(const EmulsionDet&);
     
-    ClassDef(EmulsionDet,2)
+    ClassDef(EmulsionDet,4)
     
 private:
     
@@ -88,7 +87,6 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-     Bool_t     fFastMuon;
     
     /** container for data points */
     TClonesArray*  fEmulsionDetPointCollection;

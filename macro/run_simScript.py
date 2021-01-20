@@ -74,6 +74,7 @@ group.add_argument("--ALPACA",  dest="ALPACA",  help="Use ALPACA as input", requ
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
+parser.add_argument('--eMin', type=float, help="energy cut", dest='ecut', default=-1.)
 parser.add_argument("--Nuage",     dest="nuage",  help="Use Nuage, neutrino generator of OPERA", required=False, action="store_true")
 parser.add_argument("--phiRandom", dest="phiRandom",  help="only relevant for muon background generator, random phi", required=False, action="store_true")
 parser.add_argument("--Cosmics",   dest="cosmics",  help="Use cosmic generator, argument switch for cosmic generator 0 or 1", required=False,  default=None)
@@ -388,6 +389,7 @@ if simEngine == "muonDIS":
  if options.shipLHC:
        mu_start, mu_end = (-3.7-2.0)*u.m , -0.3*u.m # tunnel wall -30cm in front of SND
        DISgen.SetPositions(0, mu_start, mu_end)
+       if options.ecut > 0:  modules['Floor'].SetEmin(options.ecut)
  else:
  # from nu_tau detector to tracking station 2
  # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
@@ -542,7 +544,7 @@ if simEngine == "MuonBack":
     modules['Veto'].SetFollowMuon()
  if options.fastMuon :    
      if 'Veto' in modules:       modules['Veto'].SetFastMuon()
-     elif 'EmulsionDet' in modules: modules['EmulsionDet'].SetFastMuon()
+     elif 'Floor' in modules: modules['Floor'].SetFastMuon()
  # optional, boost gamma2muon conversion
  # ROOT.kShipMuonsCrossSectionFactor = 100. 
 #
