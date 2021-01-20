@@ -34,8 +34,11 @@ defaultfiledir  = '/eos/experiment/ship/data/Mbias/background-prod-2018' #path o
 
 def get_arguments(): #available options  
 
-  ap = argparse.ArgumentParser(
+  parser = argparse.ArgumentParser(
       description='Run GENIE neutrino" simulation')
+  subparsers = parser.add_subparsers()
+  ap = subparsers.add_parser('sim',help="make genie simulation file")
+
   ap.add_argument('-s', '--seed', type=int, dest='seed', default=65539) #default seed in $GENIE/src/Conventions/Controls.h
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   ap.add_argument('-f','--filedir', type=str, help="directory with neutrino fluxes", dest='filedir', default=defaultfiledir)
@@ -44,63 +47,33 @@ def get_arguments(): #available options
   ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
   ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default=None) # Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
   ap.add_argument("--nudet", dest="nudet", help="option for neutrino detector", required=False, action="store_true")
-  ap.add_argument('-ms','--make_spline', help="make a new spline file", dest='MakeSpline', action="store_true")
-  args = ap.parse_args()
+
+  ap1 = subparsers.add_parser('spline',help="make a new cross section spline file")
+  ap1.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
+  ap1.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
+  args = parser.parse_args()
   return args
 
 args = get_arguments() #getting options
 
-work_dir = args.work_dir
-target = args.target
-seed = args.seed
-nevents = args.nevents
-evtype = args.evtype
-nudet = args.nudet
-splines = args.splinedir+'/'+xsec #path of splines
-neutrinos = args.filedir+'/'+hfile #path of flux
-MakeSpline = args.MakeSpline
+print('Target type: ', args.target)
 
-if nudet:
- if 'GXMLPATH' not in os.environ:
-   logging.warn('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
- else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
-
-print('Target type: ', target)
-print('Seed used in this generation: ', seed)
-print('Splines file used', xsec) 
-
-if target == 'iron':
+if args.target == 'iron':
  targetcode = '1000260560'
-elif target == 'lead':
+elif args.target == 'lead':
  targetcode = '1000822040[0.014],1000822060[0.241],1000822070[0.221],1000822080[0.524]'
-elif target == 'tungsten':
+elif args.target == 'tungsten':
  targetcode = '1000741840'
 else:
  print('only iron, lead and tunsgten target options available')
  1/0
 
-pdg  = ROOT.TDatabasePDG()
-pDict = {}
-sDict = {}
-nuOverNubar = {}
-f = ROOT.TFile(neutrinos)
-
-for x in [16, 14,12]:
- sDict[x] = pdg.GetParticle(x).GetName()
- sDict[-x] = pdg.GetParticle(-x).GetName()
- pDict[x]  = "10"+str(x)
- pDict[-x] = "20"+str(x)
- nuOverNubar[x] = f.Get(pDict[x]).GetSumOfWeights()/f.Get(pDict[-x]).GetSumOfWeights()
-f.Close()
-
-work_dir = args.work_dir
-
-if os.path.exists(work_dir): #if the directory is already there, leave a warning, otherwise create it
+if os.path.exists(args.work_dir): #if the directory is already there, leave a warning, otherwise create it
     print('output directory already exists.')
 else:
-    os.makedirs(work_dir)
+    os.makedirs(args.work_dir)
 
-os.chdir(work_dir)
+os.chdir(args.work_dir)
 
 def makeSplines():
  '''first step, make cross section splines if not exist'''
@@ -118,7 +91,7 @@ def makeEvents(nevents = 100):
   N = nevents
   if p<0: N = int(nevents / nuOverNubar[abs(p)])
   genie_interface.generate_genie_events(nevents = N, nupdg = p, targetcode = targetcode, emin = 0.5, emax = 350,\
-                      inputflux = neutrinos, spline = splines, seed = seed, process = evtype, irun = run)
+                      inputflux = neutrinos, spline = splines, seed = args.seed, process = args.evtype, irun = run)
   run +=1
   os.chdir('../')
 def makeNtuples():
@@ -134,9 +107,35 @@ def addHists():
   genie_interface.add_hists(neutrinos, "genie-"+sDict[p]+".root", p)
   os.chdir('../')
 
-if (MakeSpline):
+if ("splinedir" not in args):
  makeSplines()
 
 else:
- makeEvents(nevents)
+
+ if args.nudet:
+  if 'GXMLPATH' not in os.environ:
+   logging.warn('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
+  else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
+
+ splines = args.splinedir+'/'+xsec #path of splines
+ neutrinos = args.filedir+'/'+hfile #path of flux
+
+ print('Seed used in this generation: ', args.seed)
+ print('Splines file used', xsec) 
+ 
+ pdg  = ROOT.TDatabasePDG()
+ pDict = {}
+ sDict = {}
+ nuOverNubar = {}
+ f = ROOT.TFile(neutrinos)
+
+ for x in [16, 14,12]:
+  sDict[x] = pdg.GetParticle(x).GetName()
+  sDict[-x] = pdg.GetParticle(-x).GetName()
+  pDict[x]  = "10"+str(x)
+  pDict[-x] = "20"+str(x)
+  nuOverNubar[x] = f.Get(pDict[x]).GetSumOfWeights()/f.Get(pDict[-x]).GetSumOfWeights()
+ f.Close()
+
+ makeEvents(args.nevents)
  makeNtuples()
