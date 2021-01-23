@@ -63,6 +63,9 @@ parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", requir
 parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=22)", required=False, default=22, type=int)
 parser.add_argument("--Estart",  dest="Estart",  help="start of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
 parser.add_argument("--Eend",    dest="Eend",    help="end of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
+parser.add_argument("--EVx",    dest="EVx",    help="particle gun xpos", required=False, default=0, type=float)
+parser.add_argument("--EVy",    dest="EVy",    help="particle gun ypos", required=False, default=0, type=float)
+parser.add_argument("--EVz",    dest="EVz",    help="particle gun zpos", required=False, default=0, type=float)
 parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", required=False, default='c')
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
@@ -348,13 +351,14 @@ if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
+  myPgun.SetXYZ(options.EVx*u.cm, options.EVy*u.cm, options.EVz*u.cm) 
   if options.charm!=0:
      myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
      primGen.SetTarget(ship_geo.target.z0,0.)
   else:  
      myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
+  ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
@@ -598,7 +602,7 @@ print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # remove empty events
-if simEngine == "MuonBack":
+if simEngine == "MuonBack" and not options.followMuon:
  tmpFile = outFile+"tmp"
  xxx = outFile.split('/')
  check = xxx[len(xxx)-1]
