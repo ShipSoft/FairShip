@@ -4,6 +4,9 @@ from __future__ import division
 from future import standard_library
 standard_library.install_aliases()
 import ROOT,sys,os,tkinter,atexit
+ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
+# only helps if class version in FairEventHeader.h is increased
+
 from argparse import ArgumentParser
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
@@ -1003,6 +1006,10 @@ else:
  # new geofile, load Shipgeo dictionary written by run_simScript.py
   upkl    = Unpickler( fRun.GetGeoFile() )
   ShipGeo = upkl.load('ShipGeo')
+  if  hasattr(ShipGeo,"ecal") : 
+      if  hasattr(ShipGeo.ecal,"File") : 
+        ecalGeoFile = ShipGeo.ecal.File
+
 
 mcHits = {}
 if hasattr(ShipGeo,"MuonTagger"): 
@@ -1025,8 +1032,7 @@ else:
  mcHits['MuonPoints']  = ROOT.FairMCPointDraw("muonPoint", ROOT.kYellow, ROOT.kFullSquare)
  mcHits['RpcPoints']   = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
  mcHits['TargetPoints']   = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
- if  hasattr(ShipGeo,"ecal.File") : ecalGeoFile = ShipGeo.ecal.File
-
+ 
  if hasattr(ShipGeo,'preshowerOption'): 
   if ShipGeo.preshowerOption >0: 
    mcHits['preshowerPoints']  = ROOT.FairMCPointDraw("preshowerPoint", ROOT.kYellow, ROOT.kFullCircle)
@@ -1074,6 +1080,8 @@ br.SetWindowName('SHiP Eve Window')
 if sGeo.FindVolumeFast('T2LiSc'): hidePlasticScintillator()
 rulers = Rulers()
 SHiPDisplay = EventLoop()
+import eveGlobal
+eveGlobal.SHiPDisplay = SHiPDisplay
 SHiPDisplay.SetName('SHiP Displayer')
 lsOfGlobals.Add(SHiPDisplay) 
 SHiPDisplay.InitTask()

@@ -1,8 +1,8 @@
 import ROOT#,evd_fillEnergy
-
+import  eveGlobal
 def execute():
   lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
-  SHiPDisplay = lsOfGlobals.FindObject('SHiP Displayer')
+  SHiPDisplay = eveGlobal.SHiPDisplay
   SHiPDisplay.NextEvent()
   if ROOT.gROOT.FindObject('Root Canvas'): evd_fillEnergy.execute()
   pass
