@@ -87,7 +87,7 @@ private:
     Double_t SND_Z; // Position of SND with respect to FLUKA coordinate system origin at IP1
      Bool_t      fFastMuon;              //!
      Float_t     fEmin;                            //!
-     Bool_t      fMakeSensitive;
+     Bool_t      fMakeSensitive;      //!
   ClassDef(Floor,2)
 };
 

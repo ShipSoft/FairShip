@@ -538,13 +538,8 @@ if simEngine == "MuonBack":
  primGen.AddGenerator(MuonBackgen)
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
- print('Process ',options.nEvents,' from input file, with Phi random=',phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
- if options.followMuon :  
-    options.fastMuon = True
-    modules['Veto'].SetFollowMuon()
- if options.fastMuon :    
-     if 'Veto' in modules:       modules['Veto'].SetFastMuon()
-     elif 'Floor' in modules: modules['Floor'].SetFastMuon()
+ print('Process ',options.nEvents,' from input file, with Phi random=',options.phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
+ 
  # optional, boost gamma2muon conversion
  # ROOT.kShipMuonsCrossSectionFactor = 100. 
 #
@@ -562,7 +557,17 @@ if simEngine == "Cosmics":
 #
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------
-
+if options.followMuon :  
+    options.fastMuon = True
+    if 'Veto' in modules:       modules['Veto'].SetFollowMuon()
+    if 'Floor' in modules:
+        modules['Floor'].MakeSensitive()
+        print('follow muons and make floor sensitive')
+if options.fastMuon :
+     if 'Veto' in modules:       modules['Veto'].SetFastMuon()
+     elif 'Floor' in modules: 
+           modules['Floor'].SetFastMuon()
+# ------------------------------------------------------------------------
 #---Store the visualiztion info of the tracks, this make the output file very large!!
 #--- Use it only to display but not for production!
 if options.eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
@@ -671,7 +676,7 @@ print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # remove empty events
-if simEngine == "MuonBack":
+if simEngine == "MuonBack" and not options.followMuon:
  tmpFile = outFile+"tmp"
  xxx = outFile.split('/')
  check = xxx[len(xxx)-1]

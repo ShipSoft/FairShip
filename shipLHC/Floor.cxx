@@ -98,15 +98,14 @@ void Floor::EndOfEvent()
 }
 
 void Floor::PreTrack(){
+    if (fFastMuon && TMath::Abs(gMC->TrackPid())!=13){
+        gMC->StopTrack();
+    }
     TLorentzVector  mom;
     gMC->TrackMomentum(mom);
     if  ( (mom.E()-mom.M() )<fEmin){
       gMC->StopTrack();
       return;
-    }
-    if (!fFastMuon){return;}
-    if (TMath::Abs(gMC->TrackPid())!=13){
-        gMC->StopTrack();
     }
 }
 
@@ -185,13 +184,13 @@ void Floor::ConstructGeometry()
   std::vector<double> tu010_i = {   -451.24339295,      30., 4.4607412772E+04, -89.817671994, 0.0,1955.4422017, 220.0};
   std::vector<double> tu010_o = {   -451.24339295,     30., 4.4607412772E+04, -89.817671994, 0.0,1955.4422017, 250.0,750.,1100.};
 // PLA   TI18_01 and TI18_02
-  std::vector<double> TI18_1_bot = {   0.67644808637366, -74.85571453913, -4.530940169849, -221.4171473578, -18.33127539943-2.5,48818.967816717,  // subtract for the moment 3cm to avid overlap with SND
+  std::vector<double> TI18_1_bot = {   0.67644808637366, -74.85571453913, -4.530940169849, -221.4171473578, -18.33127539943-3.5,48818.967816717,  // subtract 3.5cm to agree with Antonio measurements
                                                                                  0.63027909276104 ,-74.86684394728, -4.35010639392,   -221.4171473578, -93.32587539943,48818.036016717};
 // side PLA TI18_08 and PLA TI18_09 
   std::vector<double> TI18_1_sid = {   -95.08832719702, 21.886725033285, -21.89021009926, -39.11837578468,3.7557255037298,48858.930618475,
                                                                                -94.65075310463, -21.38126814052,  -24.16767074894,-402.3825398293,  5.6093808446198,48770.79950338};
 // PLA TI18_04 and PLA TI18_03 
-  std::vector<double> TI18_2_bot = {   1.590393176461, -74.48871190132, -8.55964069504,     -92.6293750264,     13.94692460057-2.5, 48287.934643717,    // subtract for the moment 3cm to avid overlap with SND
+  std::vector<double> TI18_2_bot = {   1.590393176461, -74.48871190132, -8.55964069504,     -92.6293750264,     13.94692460057-3.5, 48287.934643717,    // subtract 3.5cm to agree with Antonio measurements
                                                                                  1.12692975448,   -74.65145228529, -7.089125547405,    -92.57914735775, -61.04827539943, 48286.672816717};
 // side PLA TI18_81 and PLA TI18_91 
   std::vector<double> TI18_2_sid = {   9.5229226656561, -2.052234306283, 2.2588218587662, 119.6722824853, -43.26523379053, 48132.959403311,
@@ -315,6 +314,7 @@ void Floor::ConstructGeometry()
    auto CombiTransF = new TGeoCombiTrans("T_floor_"+name,Tf[0],Tf[1],Tf[2],RF);
    CombiTransF->RegisterYourself();
    auto tube   =  gGeoManager->MakeTube(name+"_tube", concrete, geoParameters[name_i.Data()][6], geoParameters[name_o.Data()][6],H.Mag()/2.);
+   auto Fulltube   =  gGeoManager->MakeTube(name+"_fulltube", concrete, 0., geoParameters[name_o.Data()][6],H.Mag()/2.);
    LOG(DEBUG)<<name<<" "<<Tf[0]<<" "<<Tf[1]<<" "<<Tf[2];
    auto CombiTransF1 = new TGeoCombiTrans("T_floorS1_"+name,Tf[0],Tf[1]-2*dZ,Tf[2],RF);
    auto CombiTransF2 = new TGeoCombiTrans("T_floorS2_"+name,Tf[0],Tf[1]-2*dZ,Tf[2]-20,RF);
@@ -323,6 +323,10 @@ void Floor::ConstructGeometry()
    auto sunion = new TGeoCompositeShape(name+"_union","("+name+"_tube:T_"+name+"+"+name+"_arb8:T_floor_"+name+"-"+
                                                                                             name+"_arb8:T_floorS1_"+name+"-"+name+"_arb8:T_floorS2_"+name+")");
    shapes.push_back(sunion);
+   auto Fsunion = new TGeoCompositeShape(name+"_Funion","("+name+"_fulltube:T_"+name+"+"+name+"_arb8:T_floor_"+name+"-"+
+                                                                                            name+"_arb8:T_floorS1_"+name+"-"+name+"_arb8:T_floorS2_"+name+")");
+   shapes.push_back(Fsunion);
+
   }
   LOG(DEBUG) << "shapes "<<shapes[0]->GetName()<<" "<<shapes[1]->GetName()<<" "<<shapes[2]->GetName();
   auto total = new TGeoCompositeShape("Stotal","TI18_1_union+TI18_2_union+TI18_3_union");
@@ -337,9 +341,11 @@ void Floor::ConstructGeometry()
   for(auto it = std::begin(loop2); it != std::end(loop2); ++it) {
     TString name_i = TString(*it).ReplaceAll("_","_i");
     TString name_o= TString(*it).ReplaceAll("_","_o");
+    TString name_F = "F"+TString(*it);
     TVector3 P  = TVector3(geoParameters[name_i.Data()][0],geoParameters[name_i.Data()][1],geoParameters[name_i.Data()][2] - SND_Z);
     TVector3 H = TVector3(geoParameters[name_i.Data()][3],geoParameters[name_i.Data()][4],geoParameters[name_i.Data()][5]);
     auto vol = gGeoManager->MakeTube(*it, concrete, geoParameters[name_i.Data()][6], geoParameters[name_o.Data()][6],H.Mag()/2.-5.);  // subtract 5cm to avoid overlap
+    auto Fvol = gGeoManager->MakeTube(name_F, concrete, 0., geoParameters[name_o.Data()][6],H.Mag()/2.-5.);
     vol->SetTransparency(0);
     vol->SetLineColor(kGray);
     auto T  =  P + 0.5*H;
@@ -353,10 +359,13 @@ void Floor::ConstructGeometry()
     trans.push_back(CombiTrans);
   }
     auto total2 = new TGeoCompositeShape("Stotal2","tu010_:TS_tu010_+tu011_:TS_tu011_");
+    auto Ftotal2 = new TGeoCompositeShape("Ftotal2","Ftu010_:TS_tu010_+Ftu011_:TS_tu011_");
     auto volT2 = new TGeoVolume("VUJ",total2,concrete);
     volT2->SetTransparency(0);
     volT2->SetLineColor(kGray);
     tunnel->AddNode(volT2, 1);
+
+/*
   std::vector<TString> loopr = {"tu010_","tu011_"};
   for(auto it = std::begin(loopr); it != std::end(loopr); ++it) {
     TString name_o= TString(*it).ReplaceAll("_","_o");
@@ -382,6 +391,19 @@ void Floor::ConstructGeometry()
   auto fluka = gGeoManager->MakeBox("FlukaScoringPlane",rock, geoParameters["tu010_o"][8],geoParameters["tu010_o"][8],dz);
   fluka->SetLineColor(kRed);
   tunnel->AddNode(fluka,1, new TGeoTranslation(-350.,0,dz+zs- SND_Z-50.));  // move 50cm upstream to avoid overlap
+*/
+
+ double zs = 40900.;  // scoring plane
+ double dz =  (geoParameters["TI18_o1"][2] - zs)/2.;
+
+ auto bigBox   = new TGeoBBox("BigBox", 1000.,1000. , dz);
+ auto TR_1       = new TGeoTranslation("TR_1",0.,0.,-dz+geoParameters["TI18_o1"][2]-SND_Z - 50.); // move a bit more upstream to have free view from the back
+ TR_1->RegisterYourself();
+ auto cutOut   = new TGeoCompositeShape("cutOut", "BigBox:TR_1-Ftotal2-(TI18_1_Funion+TI18_2_Funion+TI18_3_Funion)");
+ auto volT3      = new TGeoVolume("Vrock",cutOut,rock);
+ volT3->SetTransparency(75);
+ volT3->SetLineColor(kRed);
+ tunnel->AddNode(volT3, 1);
 
   top->AddNode(tunnel , 1);
 }
@@ -393,6 +415,7 @@ vetoPoint* Floor::AddHit(Int_t trackID, Int_t detID,
 {
   TClonesArray& clref = *fFloorPointCollection;
   Int_t size = clref.GetEntriesFast();
+  LOG(DEBUG) << "add veto point "<<size<<" "<<trackID<<" "<<detID;
   return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode,Lpos,Lmom);
 }
