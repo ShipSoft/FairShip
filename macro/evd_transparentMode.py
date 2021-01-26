@@ -1,5 +1,5 @@
 import ROOT
-lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
-SHiPDisplay = lsOfGlobals.FindObject('SHiP Displayer')
+import  eveGlobal
+SHiPDisplay = eveGlobal.SHiPDisplay
 if SHiPDisplay.TransparentMode == 0 : SHiPDisplay.transparentMode()
 else: SHiPDisplay.transparentMode('off')
