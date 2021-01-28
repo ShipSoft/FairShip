@@ -1071,6 +1071,8 @@ br.SetWindowName('SHiP Eve Window')
 if sGeo.FindVolumeFast('T2LiSc'): hidePlasticScintillator()
 rulers = Rulers()
 SHiPDisplay = EventLoop()
+import eveGlobal
+eveGlobal.SHiPDisplay = SHiPDisplay
 SHiPDisplay.SetName('SHiP Displayer')
 lsOfGlobals.Add(SHiPDisplay) 
 SHiPDisplay.InitTask()

@@ -1,6 +1,7 @@
 from __future__ import print_function
 import ROOT
 import shipunit as u
+import  eveGlobal
 
 
 def collect_hits(lsOfGlobals, checked_muons):
@@ -65,7 +66,7 @@ def execute():
     c1.Clear()
 
 # get zmin, zmax from graphic
-    SHiPDisplay = lsOfGlobals.FindObject('SHiP Displayer')
+    SHiPDisplay = eveGlobal.SHiPDisplay
     v = ROOT.gEve.GetViewers().FindChild('Bar Embedded Viewer side')
     vw = v.GetGLViewer()
     cam = vw.CurrentCamera()
