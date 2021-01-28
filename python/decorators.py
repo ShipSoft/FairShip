@@ -1,7 +1,9 @@
 from __future__ import print_function
 from __future__ import division
+from ctypes import c_double
 import ROOT
 import shipunit as u
+
 def MCPointPrintOut(x):
   p = ROOT.TDatabasePDG.Instance().GetParticle(x.PdgCode())
   n=''
@@ -64,12 +66,12 @@ def TLorentzVectorPrintOut(x):
   return txt
 
 def TEvePointSetPrintOut(P):
- x,y,z = ROOT.Double(),ROOT.Double(),ROOT.Double()
+ x, y, z = c_double(), c_double(), c_double()
  txt = ''
  if P.GetN()==0: txt = '<ROOT.TEvePointSet object>'
  for n in range(P.GetN()):
   rc = P.GetPoint(n,x,y,z)
-  txt += '%6i %7.1F,%7.1F,%9.1F x,y,z cm\n'%(n,x,y,z)
+  txt += '%6i %7.1F,%7.1F,%9.1F x,y,z cm\n'%(n,x.value,y.value,z.value)
  return txt
 
 
