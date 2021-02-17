@@ -102,11 +102,17 @@ Rock        10    1.00794  12.011  15.9994  22.99  24.3  26.98  28.09  39.1  40.
                    0	1	20.	.001
                    0
 // for SND thermal neutron shield
-//                                           HYDROGEN CARBON OXYGEN  BORON 10 BORON 11
-// BoronCarbide                5  1.00794  12.011  15.9994                                                        1.0  6.0  8.0   5.0 5.0
-//                                                     HYDROGEN CARBON OXYGEN   BORON 10 BORON 11
-// Boratedpolyethylene  5  1.00794  12.011  15.9994                                                        1.0  6.0  8.0  5.0 5.0
-
+//   # components : atomic weights : atomic numbers : density : weights
+//                                                     HYDROGEN CARBON OXYGEN  BORON 10/11
+BoronCarbide                5        1.00794  12.011  15.9994   10.0 11.0  1.0  6.0  8.0   5.0  5.0 1.36  0.01  0.314  0.05  0.125  0.501
+                   0  1  20.  .001
+                   0
+Boratedpolyethylene  5       1.00794  12.011  15.9994    10.0 11.0   1.0  6.0  8.0  5.0  5.0  0.94  0.116  0.612  0.222  0.01  0.04
+                   0  1  20.  .001
+                   0
+EmulsionAg109 -11  109. 79.9 12.01 16. 14.01 1.01 126.9 32.06  28.08 22.99 87.62 47.  35.  6.  8.  7.  1.  53.  16.  14.  11.  38.  2.90  0.447 0.33 0.223 0.0858 0.0820 0.0317 0.0158 0.0053 0.0009 0.0005 0.0001
+                0  1  20.  .001
+                0
 HYPaluminium       1  26.98 13. 2.7
                    1  1  20.  .001
                    0
