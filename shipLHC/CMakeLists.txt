@@ -27,6 +27,7 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 Floor.cxx
+boxTarget.cxx
 EmulsionDet.cxx
 EmulsionDetPoint.cxx
 EmulsionDetContFact.cxx
