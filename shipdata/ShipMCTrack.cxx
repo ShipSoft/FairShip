@@ -84,7 +84,7 @@ ShipMCTrack::ShipMCTrack(TParticle* part)
     fPx(part->Px()),
     fPy(part->Py()),
     fPz(part->Pz()),
-    fM(TMath::Sqrt( part->Energy()*part->Energy()-part->P()*part->P() )),
+    fM(TMath::Sqrt( fabs(part->Energy()*part->Energy()-part->P()*part->P()) )),
     fStartX(part->Vx()),
     fStartY(part->Vy()),
     fStartZ(part->Vz()),
