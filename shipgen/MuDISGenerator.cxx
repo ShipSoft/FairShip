@@ -227,7 +227,6 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t start[3]={0.,0.,startZ};
     Double_t end[3]={0.,0.,endZ};
 
-// incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w])
     TParticle* mu = dynamic_cast<TParticle*>(iMuon->AddrAt(0));
     LOG(DEBUG) <<  " in muon " << mu->GetPdgCode()<< endl; 
     Double_t x = mu->Vx();

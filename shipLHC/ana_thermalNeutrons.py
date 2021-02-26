@@ -129,24 +129,24 @@ def absorptionLength(plotOnly=True):
          for p in [1,2,5,10]:
              h[X+str(p)+'Percent_'+material] = h[X+'_'+material].ProjectionX(X+str(p)+'Percent_'+material,1,p)
              h[X+str(p)+'Percent_'+material].Divide(norm)
-    ut.bookCanvas(h,'Telectrons','',1200,800,1,1)
-    h['Telectrons'].cd()
-    material  = 'EmulsionAg109'
-    h[X+'1Percent_'+material].SetLineColor(ROOT.kRed)
-    h[X+'2Percent_'+material].SetLineColor(ROOT.kOrange)
-    h[X+'5Percent_'+material].SetLineColor(ROOT.kBlue)
-    h[X+'10Percent_'+material].SetLineColor(ROOT.kGreen)
-    h[X+'1Percent_'+material].SetTitle('')
-    h[X+'1Percent_'+material].GetYaxis().SetTitle('fraction of events with < N_{electrons}')
-    h[X+'1Percent_'+material].GetXaxis().SetRangeUser(-12.,1)
-    h[X+'1Percent_'+material].SetStats(0)
-    h[X+'1Percent_'+material].Draw('hist')
-    h['legelec']=ROOT.TLegend(0.63,0.25,0.88,0.40)
-    for p in [1,2,5,10]:
-      h[X+str(p)+'Percent_'+material].Draw('histsame')
-      rc = h['legelec'].AddEntry(h[X+str(p)+'Percent_'+material],'N_{electrons}<'+str(p),'PL')
-    h['legelec'].Draw('same')
-    myPrint(h['Telectrons'],'fracEveWithElectrons')
+     ut.bookCanvas(h,'T'+X,'',1200,800,1,1)
+     h['T'+X].cd()
+     material  = 'EmulsionAg109'
+     h[X+'1Percent_'+material].SetLineColor(ROOT.kRed)
+     h[X+'2Percent_'+material].SetLineColor(ROOT.kOrange)
+     h[X+'5Percent_'+material].SetLineColor(ROOT.kBlue)
+     h[X+'10Percent_'+material].SetLineColor(ROOT.kGreen)
+     h[X+'1Percent_'+material].SetTitle('')
+     h[X+'1Percent_'+material].GetYaxis().SetTitle('fraction of events with < N_{'+X+'}')
+     h[X+'1Percent_'+material].GetXaxis().SetRangeUser(-12.,1)
+     h[X+'1Percent_'+material].SetStats(0)
+     h[X+'1Percent_'+material].Draw('hist')
+     h['leg'+X]=ROOT.TLegend(0.63,0.25,0.88,0.40)
+     for p in [1,2,5,10]:
+       h[X+str(p)+'Percent_'+material].Draw('histsame')
+       rc = h['leg'+X].AddEntry(h[X+str(p)+'Percent_'+material],'N_{'+X+'}<'+str(p),'PL')
+     h['leg'+X].Draw('same')
+     myPrint(h['T'+X],'fracEveWith'+X)
 #
     fntuple = ROOT.TFile.Open('neutronsTI18.root')
     nt=fntuple.nt
