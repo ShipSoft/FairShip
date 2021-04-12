@@ -490,7 +490,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 //hist was filled with: log10(pt+0.01)
       Double_t pt=pow(10.,ptlog10)-0.01;
       //rotate pt in phi:
-      Double_t phi=gRandom->Uniform(0.,2*TMath::Pi());
+      Double_t phi=gRandom->Uniform(0.,TMath::Pi());
       pout[0] = cos(phi)*pt;
       pout[1] = sin(phi)*pt;
       pout[2] = pzv*pzv-pt*pt;
@@ -498,8 +498,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
       if (pout[2]>=0.) {
         pout[2]=TMath::Sqrt(pout[2]);
-        if (gRandom->Uniform(-1.,1.)<0.) pout[0]=-pout[0];
-        if (gRandom->Uniform(-1.,1.)<0.) pout[1]=-pout[1];
+        //if (gRandom->Uniform(-1.,1.)<0.) pout[0]=-pout[0];
+        //if (gRandom->Uniform(-1.,1.)<0.) pout[1]=-pout[1];
         //cout << "Info GenieGenerator: neutrino pxyz " << pout[0] << ", " << pout[1] << ", " << pout[2] << endl;
         // xyz at start and end
         start[0]=(pout[0]/pout[2])*(start[2]-ztarget);
