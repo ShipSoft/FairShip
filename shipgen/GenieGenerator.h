@@ -39,10 +39,11 @@ class GenieGenerator : public FairGenerator
   Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
-
+  Int_t ExtractEvent_Ekin(Double_t Ekin, Double_t DeltaE);
  private:
   
  protected:
+  Double_t FLUKA_x_cos, FLUKA_y_cos, FLUKA_x, FLUKA_y;
   Double_t Yvessel,Xvessel,Lvessel,ztarget,startZ,endZ;
   Double_t Ev,pxv,pyv,pzv, El,pxl, pyl, pzl,vtxx,vtxy,vtxz,vtxt;
   Double_t Ef[500], pxf[500], pyf[500], pzf[500];
@@ -54,6 +55,8 @@ class GenieGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
+  TFile* fFLUKANuFile;
+  TTree* fFLUKANuTree;
   int fNevents;
   int fn;
   bool fFirst,fNuOnly;

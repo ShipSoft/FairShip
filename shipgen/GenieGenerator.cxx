@@ -4,6 +4,8 @@
 #include "TMath.h"
 #include "TFile.h"
 #include "TRandom.h"
+#include "TCut.h"
+#include "TEventList.h"
 #include "FairPrimaryGenerator.h"
 #include "GenieGenerator.h"
 #include "TGeoVolume.h"
@@ -30,6 +32,17 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
+   
+  fFLUKANuFile = new TFile("/home/utente/Simulations/NeutMuon.root");
+  fFLUKANuTree = (TTree*) fFLUKANuFile->Get("t");
+  //setting branches for input neutrino tree. 
+  //Nota Bene: I get only the angles and positions, 
+  //for the energy I keep the GENIE one, otherwise I lose energy conservation
+  fFLUKANuTree->SetBranchAddress("x_cos",&FLUKA_x_cos);
+  fFLUKANuTree->SetBranchAddress("y_cos",&FLUKA_y_cos);
+  fFLUKANuTree->SetBranchAddress("x",&FLUKA_x);
+  fFLUKANuTree->SetBranchAddress("y",&FLUKA_y);
+
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;
@@ -259,6 +272,19 @@ std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z, D
   return pout;
 }
 
+Int_t GenieGenerator::ExtractEvent_Ekin(Double_t Ekin, Double_t DeltaE){
+
+  TCut nucut(Form("Ekin >= (%f - %f) && Ekin < (%f + %f)",Ekin,DeltaE/2., Ekin, DeltaE/2.));
+  fFLUKANuTree->Draw(">>nulist", nucut );
+  TEventList *nulist = (TEventList*)gDirectory->GetList()->FindObject("nulist");
+  Int_t nselectedevents = nulist->GetN();
+  //integer function returns randomly integer between 0 e nselectedevents;
+  Int_t myevent = nulist->GetEntry(gRandom->Integer(nselectedevents+1));
+ 
+  nulist->Reset(); //resetting list for next call of the function.
+  return myevent;
+}
+
 
 // -----   Destructor   ----------------------------------------------------
 GenieGenerator::~GenieGenerator()
@@ -476,25 +502,15 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       //pout[0] = gRandom->Exp(0.2);
       //pout[1] = gRandom->Exp(0.2);
       //pout[2] = pzv*pzv-pout[0]*pout[0]-pout[1]*pout[1];
-
+      int nuevent = ExtractEvent_Ekin(pzv, 10.);
+      fFLUKANuTree->GetEntry(nuevent);
+      //getting tri-momentum
+      pout[0] = FLUKA_x_cos * pzv;
+      pout[1] = FLUKA_y_cos * pzv;
+      double pt = sqrt(pout[0]*pout[0] + pout[1]*pout[1]);
+      pout[2] = pzv*pzv-pt*pt;
       //**NEW** get pt of this neutrino from 2D hists.
       Int_t idhnu=TMath::Abs(neu)+idbase;
-      if (neu<0) idhnu+=1000;
-      Int_t nbinmx=pxhist[idhnu]->GetNbinsX();
-      Double_t pl10=log10(pzv);
-      Int_t nbx=pxhist[idhnu]->FindBin(pl10);
-      //printf("idhnu %d, p %f log10(p) %f bin,binmx %d %d \n",idhnu,pzv,pl10,nbx,nbinmx);
-      if (nbx<1) nbx=1;
-      if (nbx>nbinmx) nbx=nbinmx;
-      Double_t ptlog10=pyslice[idhnu][nbx]->GetRandom();
-//hist was filled with: log10(pt+0.01)
-      Double_t pt=pow(10.,ptlog10)-0.01;
-      //rotate pt in phi:
-      Double_t phi=gRandom->Uniform(0.,TMath::Pi());
-      pout[0] = cos(phi)*pt;
-      pout[1] = sin(phi)*pt;
-      pout[2] = pzv*pzv-pt*pt;
-      //printf("p= %f pt=%f px,py,pz**2=%f,%f,%f\n",pzv,pt,pout[0],pout[1],pout[2]);
 
       if (pout[2]>=0.) {
         pout[2]=TMath::Sqrt(pout[2]);
@@ -502,13 +518,13 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         //if (gRandom->Uniform(-1.,1.)<0.) pout[1]=-pout[1];
         //cout << "Info GenieGenerator: neutrino pxyz " << pout[0] << ", " << pout[1] << ", " << pout[2] << endl;
         // xyz at start and end
-        start[0]=(pout[0]/pout[2])*(start[2]-ztarget);
-        start[1]=(pout[1]/pout[2])*(start[2]-ztarget);
+        start[0]=(pout[0]/pout[2])*(start[2]-ztarget)+FLUKA_x;
+        start[1]=(pout[1]/pout[2])*(start[2]-ztarget)+FLUKA_y;
         //cout << "Info GenieGenerator: neutrino xyz-start " << start[0] << "-" << start[1] << "-" << start[2] << endl;
         txnu=pout[0]/pout[2];
         tynu=pout[1]/pout[2];
-        end[0]=txnu*(end[2]-ztarget);
-        end[1]=tynu*(end[2]-ztarget);
+        end[0]=txnu*(end[2]-ztarget)+FLUKA_x;
+        end[1]=tynu*(end[2]-ztarget)+FLUKA_y;
         //cout << "Info GenieGenerator: neutrino xyz-end " << end[0] << "-" << end[1] << "-" << end[2] << endl;
         //get material density between these two points
         bparam=MeanMaterialBudget(start, end, mparam);
@@ -524,8 +540,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     while (prob2int<gRandom->Uniform(0.,1.)) {
       //place x,y,z uniform along path
       z=gRandom->Uniform(start[2],end[2]);
-      x=txnu*(z-ztarget);
-      y=tynu*(z-ztarget);
+      x=txnu*(z-ztarget)+FLUKA_x;
+      y=tynu*(z-ztarget)+FLUKA_y;
       if (mparam[6]<0.5){
         //mparam is number of boundaries along path. mparam[6]=0.: uniform material budget along path, use present x,y,z
         prob2int=2.;
