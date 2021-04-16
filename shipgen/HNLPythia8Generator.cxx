@@ -78,9 +78,9 @@ Bool_t HNLPythia8Generator::Init()
   }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fHNL)->Lifetime();
+  fctau = fPythia->particleData.tau0(fHNL); //* 3.3333e-12
   if ( debug ){
       std::cout<<"tau root "<<root_ctau<< "[s] ctau root = " << root_ctau*3e10 << "[cm]"<<std::endl;
-      fctau = fPythia->particleData.tau0(fHNL); //* 3.3333e-12
       std::cout<<"ctau pythia "<<fctau<<"[mm]"<<std::endl;
       List(9900015);
   }
