@@ -33,7 +33,7 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
    
-  fFLUKANuFile = new TFile("/home/utente/Simulations/NeutMuon.root");
+  fFLUKANuFile = new TFile("/eos/user/a/aiuliano/public/sims_FairShip/sim_snd/Generate_GENIEinput_AnnaritaSND/NeutrinoFiles_500bins/NeutMuon.root");
   fFLUKANuTree = (TTree*) fFLUKANuFile->Get("t");
   //setting branches for input neutrino tree. 
   //Nota Bene: I get only the angles and positions, 
