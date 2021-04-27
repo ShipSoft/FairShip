@@ -68,7 +68,7 @@ class boxTarget: public FairDetector
                              TVector3 pos, TVector3 mom,
                              Double_t time, Double_t length,
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
-    inline void SetTarget(TString material, Float_t L ){fTargetMaterial = material; fTargetL=L;}
+    inline void SetTarget(TString material, Float_t L,Bool_t choice ){fTargetMaterial = material; fTargetL=L; fBox=choice;}
   private:
     Int_t InitMedium(TString name);
     /** Track information to be stored until the track leaves the
@@ -83,6 +83,7 @@ class boxTarget: public FairDetector
     TString  fTargetMaterial;        //! target material
     Float_t  fTargetL;                 //! target length
     Int_t index;
+    Bool_t fBox;
     /** container for data points */
     TClonesArray*  fboxTargetPointCollection;
     ClassDef(boxTarget, 1)
