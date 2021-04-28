@@ -164,6 +164,8 @@ void Floor::ConstructGeometry()
 	TGeoMedium *concrete = gGeoManager->GetMedium("Concrete");
 	InitMedium("Rock");
 	TGeoMedium *rock = gGeoManager->GetMedium("Rock");
+         InitMedium("vacuum");
+	TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
 
         TGeoVolume *tunnel= new TGeoVolumeAssembly("Tunnel");
 
@@ -404,6 +406,11 @@ void Floor::ConstructGeometry()
  volT3->SetTransparency(75);
  volT3->SetLineColor(kRed);
  tunnel->AddNode(volT3, 1);
+
+auto exitPlane =  gGeoManager->MakeBox("exitScoringPlane",vacuum,1000.,1000. , 1.);
+exitPlane->SetLineColor(kGreen);
+if (fMakeSensitive) {AddSensitiveVolume(exitPlane);}
+tunnel->AddNode(exitPlane,1, new TGeoTranslation(0,0,1000.));
 
   top->AddNode(tunnel , 1);
 }

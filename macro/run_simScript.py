@@ -5,6 +5,8 @@ import os
 import sys
 import getopt
 import ROOT
+ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
+ROOT.gROOT.ProcessLine('#include "FairMCPoint.h"')
 ROOT.gSystem.Load('libEGPythia8') 
 import makeALPACAEvents
 # Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
@@ -513,6 +515,7 @@ if simEngine == "Ntuple":
    options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
   print('Process ',options.nEvents,' from input file')
 #
+
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
  fileType = ut.checkFileExists(inputFile)
@@ -558,15 +561,17 @@ if simEngine == "Cosmics":
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------
 if options.followMuon :  
-    options.fastMuon = True
-    if 'Veto' in modules:       modules['Veto'].SetFollowMuon()
+    if 'Veto' in modules:
+        options.fastMuon = True
+        modules['Veto'].SetFollowMuon()
     if 'Floor' in modules:
         modules['Floor'].MakeSensitive()
-        print('follow muons and make floor sensitive')
+        print('make floor sensitive')
 if options.fastMuon :
      if 'Veto' in modules:       modules['Veto'].SetFastMuon()
      elif 'Floor' in modules: 
            modules['Floor'].SetFastMuon()
+           print('only transport muons')
 # ------------------------------------------------------------------------
 #---Store the visualiztion info of the tracks, this make the output file very large!!
 #--- Use it only to display but not for production!

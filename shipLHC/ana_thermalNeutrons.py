@@ -11,6 +11,8 @@ parser.add_argument("-r", "--run",                dest="run",       type=int,  h
 parser.add_argument('--material',                dest='targetMaterial',      type=str,help="target material BoronCarbide or  Boratedpolyethylene",                     default="BoronCarbide")
 parser.add_argument('--thick',                       dest='targetLength',      type=float,help="target thickness",                     default=0.1)
 parser.add_argument('-c', '--command',    dest='command',              help="command")
+parser.add_argument("-f",        dest="inputFile",       help="Input file", required=False, default=False)
+
 options = parser.parse_args()
 
 h={}
@@ -129,24 +131,24 @@ def absorptionLength(plotOnly=True):
          for p in [1,2,5,10]:
              h[X+str(p)+'Percent_'+material] = h[X+'_'+material].ProjectionX(X+str(p)+'Percent_'+material,1,p)
              h[X+str(p)+'Percent_'+material].Divide(norm)
-    ut.bookCanvas(h,'Telectrons','',1200,800,1,1)
-    h['Telectrons'].cd()
-    material  = 'EmulsionAg109'
-    h[X+'1Percent_'+material].SetLineColor(ROOT.kRed)
-    h[X+'2Percent_'+material].SetLineColor(ROOT.kOrange)
-    h[X+'5Percent_'+material].SetLineColor(ROOT.kBlue)
-    h[X+'10Percent_'+material].SetLineColor(ROOT.kGreen)
-    h[X+'1Percent_'+material].SetTitle('')
-    h[X+'1Percent_'+material].GetYaxis().SetTitle('fraction of events with < N_{electrons}')
-    h[X+'1Percent_'+material].GetXaxis().SetRangeUser(-12.,1)
-    h[X+'1Percent_'+material].SetStats(0)
-    h[X+'1Percent_'+material].Draw('hist')
-    h['legelec']=ROOT.TLegend(0.63,0.25,0.88,0.40)
-    for p in [1,2,5,10]:
-      h[X+str(p)+'Percent_'+material].Draw('histsame')
-      rc = h['legelec'].AddEntry(h[X+str(p)+'Percent_'+material],'N_{electrons}<'+str(p),'PL')
-    h['legelec'].Draw('same')
-    myPrint(h['Telectrons'],'fracEveWithElectrons')
+     ut.bookCanvas(h,'T'+X,'',1200,800,1,1)
+     h['T'+X].cd()
+     material  = 'EmulsionAg109'
+     h[X+'1Percent_'+material].SetLineColor(ROOT.kRed)
+     h[X+'2Percent_'+material].SetLineColor(ROOT.kOrange)
+     h[X+'5Percent_'+material].SetLineColor(ROOT.kBlue)
+     h[X+'10Percent_'+material].SetLineColor(ROOT.kGreen)
+     h[X+'1Percent_'+material].SetTitle('')
+     h[X+'1Percent_'+material].GetYaxis().SetTitle('fraction of events with < N_{'+X+'}')
+     h[X+'1Percent_'+material].GetXaxis().SetRangeUser(-12.,1)
+     h[X+'1Percent_'+material].SetStats(0)
+     h[X+'1Percent_'+material].Draw('hist')
+     h['leg'+X]=ROOT.TLegend(0.63,0.25,0.88,0.40)
+     for p in [1,2,5,10]:
+       h[X+str(p)+'Percent_'+material].Draw('histsame')
+       rc = h['leg'+X].AddEntry(h[X+str(p)+'Percent_'+material],'N_{'+X+'}<'+str(p),'PL')
+     h['leg'+X].Draw('same')
+     myPrint(h['T'+X],'fracEveWith'+X)
 #
     fntuple = ROOT.TFile.Open('neutronsTI18.root')
     nt=fntuple.nt
@@ -387,3 +389,126 @@ def absorptionLengthOLD():
             h['L_'+str(L)].Draw('same')
             h['L_'+str(0.1)].Fit(Lfun)
     myPrint(h['absorb'+material],'absorbLength'+material)
+
+def flukaRateIntegrated():
+   fntuple = ROOT.TFile.Open('neutronsTI18.root')
+   h['Fig12'] = ROOT.TGraph()
+   h['neutronRate'] = ROOT.TGraph()
+   h['N'] = ROOT.TGraph()
+   n = 0
+   for nt in fntuple.nt:
+           E    = (nt.Eleft+nt.Eright)/2.
+           dE = nt.Eright - nt.Eleft
+           h['Fig12'].SetPoint(n,ROOT.TMath.Log10(E),E*nt.N)
+           h['neutronRate'].SetPoint(n,E,dE*nt.N)
+           h['N'].SetPoint(n,E,nt.N)
+           n+=1
+   S= 0
+   h['neutronRate<E'] = h['neutronRate'].Clone('S')
+   for n in range(h['neutronRate'].GetN()-1,-1,-1):
+      S+=h['neutronRate'].GetY()[n]
+      h['neutronRate<E'].SetPoint(n,ROOT.TMath.Log10(h['neutronRate'].GetX()[n]),S)
+   h['neutronRate<E%']= h['neutronRate'].Clone('S%')
+   for n in range(h['neutronRate<E'].GetN()):
+      h['neutronRate<E%'].SetPoint(n,h['neutronRate<E'].GetX()[n],h['neutronRate<E'].GetY()[n]/h['neutronRate<E'].GetY()[0])
+   ut.bookHist(h,'Nr',';E [MeV];dn/dlogE [cm^{-2}y^{-1}] ',100,-12.,1.)
+   h['Nr'].SetMaximum(1.1)
+   h['Nr'].SetMinimum(0.)
+   h['Nr'].SetStats(0)
+   h['Nr'].SetTitle('; log10(E [MeV]();N(E>x)/total')
+   h['neutronRate<E%'].SetLineWidth(2)
+   h['Nr'].Draw()
+   h['neutronRate<E%'].Draw('same')
+   ut.writeHists(h,'flukaNeutronRates')
+
+neutronMass = 939.565379/1000.
+def coldBox(plotOnly=True):
+ if not plotOnly:
+   f = ROOT.TFile(options.inputFile)
+   g = ROOT.TFile('geofile-'+options.inputFile)
+   sGeo = g.FAIRGeom
+   ROOT.gROOT.cd()
+   ut.bookHist(h,'start','start neutron;x [cm] ;y [cm] ;z [cm]',100,-200,200,100,-200,200,100,-200,200)
+   ut.bookHist(h,'startR','start neutron;R',100,0,200)
+   for T in ['','cold','hot']:
+      ut.bookHist(h,'entry'+T,'entry neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
+      ut.bookHist(h,'exit'+T,'enter coldbox neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
+   ut.bookHist(h,'EkinG','log10(Ekin)',100,-13.,0.)
+   ut.bookHist(h,'EkinW','log10(Ekin)',100,-13.,0.)
+   ut.bookHist(h,'Ekin','log10(Ekin)',100,-13.,0,100,0.,100.)
+   ut.bookHist(h,'EkinF','log10(Ekin) vs distance',100,-13.,0,100,0.,100.)
+   flukaRateIntegrated()
+   ut.readHists(h,'flukaNeutronRates')
+   Nsim = f.cbmsim.GetEntries()
+   for sTree in f.cbmsim:
+       neutron = sTree.MCTrack[0]
+       P       = ROOT.TVector3(neutron.GetPx(),neutron.GetPy(),neutron.GetPz())
+       Ekin = ROOT.TMath.Sqrt(P.Mag2()+neutronMass**2) - neutronMass
+       start = ROOT.TVector3(neutron.GetStartX(),neutron.GetStartY(),neutron.GetStartZ())
+       W = h['Fig12'].Eval(ROOT.TMath.Log10(Ekin*1000)) / Nsim
+       rc = h['start'].Fill(start.Z(),start.X(),start.Y(),W)
+       rc = h['EkinW'].Fill(ROOT.TMath.Log10(Ekin),W)
+       rc = h['EkinG'].Fill(ROOT.TMath.Log10(Ekin))
+       rc = h['startR'].Fill(start.Mag(),W)
+       for p in sTree.vetoPoint:
+              if p.PdgCode()!=2112: continue
+              Ekin = ROOT.TMath.Sqrt(p.LastMom().Mag2()+neutronMass**2) - neutronMass
+              lastPoint = p.LastPoint()
+              mPoint = ROOT.TVector3(p.GetX(),p.GetY(),p.GetZ())  
+              firstPoint = 2*mPoint-lastPoint
+# check that first point is further out.
+              if firstPoint.Mag()<lastPoint.Mag(): continue
+              D = lastPoint-firstPoint
+              if p.GetDetectorID()==13: # inside coldbox
+                    rc = h['exit'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+                    if Ekin*1E9< 10:    rc = h['exitcold'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
+                    else:                            rc = h['exithot'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+                    rc = h['EkinF'].Fill(ROOT.TMath.Log10(Ekin),D.Mag(),W)
+              if p.GetDetectorID()==1: # inside shielding
+                    rc = h['Ekin'].Fill(ROOT.TMath.Log10(Ekin),D.Mag(),W)
+                    rc = h['entry'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+                    if Ekin*1E9< 10:    rc = h['entrycold'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
+                    else:                            rc = h['entryhot'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+ if 1>0:
+   ROOT.gROOT.cd()
+   ytop       =  {'axis':'Y','proj':'xz','entry':60,'exit':51}
+   ybot       =  {'axis':'Y','proj':'xz','entry':-51,'exit':-51}
+   xLeft      =  {'axis':'X','proj':'yz','entry':-87,'exit':-77}
+   xRight   =  {'axis':'X','proj':'yz','entry':87,'exit':77}
+   zMin       = {'axis':'Z','proj':'yx','entry':-83,'exit':-73}
+   zMax      = {'axis':'Z','proj':'yx','entry':83,'exit':+73}
+   # make projections
+   projections = {'Top':ytop,'Bot':ybot,'Right':xRight,'Left':xLeft,'Front':zMax,'Back':zMin}
+   for T in ['','cold','hot']:
+    for c in ['entry','exit']:
+     case = c+T
+     ut.bookCanvas(h,'t'+case,'',1200,1800,2,3)
+     k=1
+     for p in projections:
+      h['t'+case].cd(k)
+      tmp = h[case]
+      axis = eval('tmp.Get'+projections[p]['axis']+'axis()')
+      axis.SetRangeUser(projections[p][c],projections[p][c]+1)
+      h[case+p] = h[case].Project3D(projections[p]['proj'])
+      h[case+p].SetName(case+p)
+      axis.SetRange(0,0)
+      h[case+p].SetStats(0)
+      h[case+p].SetMinimum(0)
+      h[case+p].SetTitle(p+'; ')
+      h[case+p].Draw('colz')
+      k+=1
+# calculate rate / cm2
+      tmp = {'x':h[case+p].ProjectionX(),'y':h[case+p].ProjectionY()}
+      dist = {}
+      for t in tmp:
+         for imin in range(1,tmp[t].GetNbinsX()):
+             if tmp[t].GetBinContent(imin)>0: break
+         for imax in range(tmp[t].GetNbinsX(),0,-1):
+             if tmp[t].GetBinContent(imax)>0: break
+         dist[t+'dist']=tmp[t].GetBinCenter(imax)-tmp[t].GetBinCenter(imin)
+      sqcm    = dist['xdist']*dist['ydist']
+      entries = h[case+p].GetSumOfWeights()
+      txt = "%5.2G/cm^{2}"%(entries/sqcm)
+      L = ROOT.TLatex()
+      rc = L.DrawLatexNDC(0.2,0.85,txt)
+

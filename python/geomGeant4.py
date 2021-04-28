@@ -216,7 +216,7 @@ def printVMCFields():
                                                                 B[1]/u.tesla, B[2]/u.tesla))
 
 def getRunManager():
- return G4RunManager.GetRunManager()
+ return ROOT.G4RunManager.GetRunManager()
 def startUI():
  session = ROOT.G4UIterminal()
  session.SessionStart()
