@@ -122,6 +122,7 @@ parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate s
 parser.add_argument("--coMuonShield", dest="muShieldWithCobaltMagnet", help="replace one of the magnets in the shield with 2.2T cobalt one, downscales other fields, works only for muShieldDesign >2", required=False, type=int, default=0)
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
 parser.add_argument("--shiplhc", dest="shipLHC",  help="ship @ LHC setup", required=False, action='store_true')
+parser.add_argument("--boostFactor", dest="boostFactor",  help="boost mu brems", required=False, type=float,default=0)
 
 options = parser.parse_args()
 
@@ -229,6 +230,8 @@ if options.dv > 4 : tag = 'conical.'+tag
 elif dy: tag = str(options.dy)+'.'+tag 
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
+if options.boostFactor>1:
+   tag+='_boost'+str(options.boostFactor)
 outFile = "%s/ship.%s.root" % (options.outputDir, tag)
 
 # rm older files !!! 
@@ -501,7 +504,7 @@ if simEngine == "Ntuple":
   if options.shipLHC:
    ut.checkFileExists(inputFile)
    Ntuplegen = ROOT.NtupleGenerator_FLUKA()
-   Ntuplegen.SetZ(483262./10.)
+   Ntuplegen.SetZ(ship_geo.Floor.z)
    Ntuplegen.Init(inputFile,options.firstEvent)
    primGen.AddGenerator(Ntuplegen)
    options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
@@ -596,6 +599,15 @@ elif options.deepCopy:
  fStack.SetMinPoints(0)
  fStack.SetEnergyCut(0.*u.MeV)
 
+#
+if options.boostFactor > 1:
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4MuBremsstrahlung.hh"')
+ gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
+ procBrems        = gProcessTable.FindProcess(ROOT.G4String('muBrems'),ROOT.G4String('mu+'))
+ procBrems.SetCrossSectionBiasingFactor(options.boostFactor)
+#
+
 if options.eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
   trajFilter = ROOT.FairTrajFilter.Instance()
@@ -638,6 +650,8 @@ if inactivateMuonProcesses :
  gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess(ROOT.G4String('muIoni'),ROOT.G4String('mu+'))
  procmu.SetVerboseLevel(2)
+
+if debug:  ROOT.fair.Logger.SetConsoleSeverity("debug")
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
