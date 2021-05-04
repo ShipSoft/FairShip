@@ -33,7 +33,7 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
    
-  fFLUKANuFile = new TFile("/eos/user/a/aiuliano/public/sims_FairShip/sim_snd/Generate_GENIEinput_AnnaritaSND/NeutrinoFiles_500bins/NeutMuon.root");
+  fFLUKANuFile = new TFile("NeutMuon_interacted.root");
   fFLUKANuTree = (TTree*) fFLUKANuFile->Get("t");
   //setting branches for input neutrino tree. 
   //Nota Bene: I get only the angles and positions, 
@@ -274,8 +274,11 @@ std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z, D
 
 Int_t GenieGenerator::ExtractEvent_Ekin(Double_t Ekin, Double_t DeltaE){
 
-  TCut nucut(Form("Ekin >= (%f - %f) && Ekin < (%f + %f)",Ekin,DeltaE/2., Ekin, DeltaE/2.));
-  fFLUKANuTree->Draw(">>nulist", nucut );
+  //TCut nucut(Form("Ekin >= (%f - %f) && Ekin < (%f + %f)",Ekin,DeltaE/2., Ekin, DeltaE/2.));
+  //fFLUKANuTree->Draw(">>nulist", nucut );
+  TCut nucut(Form("pzv >= (%f - %f) && pzv < (%f + %f)",Ekin,DeltaE/2., Ekin, DeltaE/2.));
+  fTree->Draw(">>nulist",nucut);
+
   TEventList *nulist = (TEventList*)gDirectory->GetList()->FindObject("nulist");
   Int_t nselectedevents = nulist->GetN();
   //integer function returns randomly integer between 0 e nselectedevents;
@@ -479,7 +482,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     }
 
     if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
-    fTree->GetEntry(fn%fNevents);
+    fFLUKANuTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {
       cout << "Info GenieGenerator: neutrino event-nr "<< fn << endl;
@@ -503,7 +506,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       //pout[1] = gRandom->Exp(0.2);
       //pout[2] = pzv*pzv-pout[0]*pout[0]-pout[1]*pout[1];
       int nuevent = ExtractEvent_Ekin(pzv, 10.);
-      fFLUKANuTree->GetEntry(nuevent);
+      fTree->GetEntry(nuevent);
       //getting tri-momentum
       pout[0] = FLUKA_x_cos * pzv;
       pout[1] = FLUKA_y_cos * pzv;
