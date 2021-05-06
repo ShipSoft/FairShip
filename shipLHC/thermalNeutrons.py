@@ -20,6 +20,8 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4GenericPhysicsList.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4RunManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 
+ROOT.gRandom.SetSeed()
+
 parser = ArgumentParser()
 parser.add_argument("-b", "--heartbeat",  dest="heartbeat", type=int,  help="progress report",            default=10000)
 parser.add_argument("-n", "--nEvents",      dest="nEvents",     type=int,  help="number of events",        default=100)
@@ -63,8 +65,7 @@ else:
    myPgun.SetThetaRange(0,0)
    myPgun.SetXYZ(0.,0.,-1.)
    primGen.AddGenerator(myPgun)
-
-ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
+   ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
 
 # -----Materials----------------------------------------------
 run.SetMaterials("media.geo")
