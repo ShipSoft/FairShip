@@ -33,7 +33,7 @@ Bool_t NeutronGenerator_FLUKA::ReadEvent(FairPrimaryGenerator* cpg)
    Double_t px = P*TMath::Sin(theta)*TMath::Cos(phi);
    Double_t py = P*TMath::Sin(theta)*TMath::Sin(phi);
    Double_t pz = P*TMath::Cos(theta);
-   LOG(INFO) << "NeutronGenerator_FLUKA: " << Ekin << " " << P << " " << px<<" "<<py<<" "<<pz;
+   LOG(DEBUG) << "NeutronGenerator_FLUKA: " << Ekin << " " << P << " " << px<<" "<<py<<" "<<pz;
    // place neutrons on sphere covering maximum distance,  ~ 2m
    Double_t R       = 200;
    phi      = gRandom->Uniform(0,2*TMath::Pi());
