@@ -11,7 +11,8 @@
 // read events from ntuples produced by FLUKA
 Double_t neutronMass = 939.565379/1000.;
 // -----   Default constructor   -------------------------------------------
-NeutronGenerator_FLUKA::NeutronGenerator_FLUKA() {}
+NeutronGenerator_FLUKA::NeutronGenerator_FLUKA() {
+  fn=0;}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
