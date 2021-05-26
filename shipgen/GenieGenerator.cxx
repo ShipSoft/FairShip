@@ -32,16 +32,6 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
-   
-  fFLUKANuFile = new TFile("NeutMuon_interacted.root");
-  fFLUKANuTree = (TTree*) fFLUKANuFile->Get("t");
-  //setting branches for input neutrino tree. 
-  //Nota Bene: I get only the angles and positions, 
-  //for the energy I keep the GENIE one, otherwise I lose energy conservation
-  fFLUKANuTree->SetBranchAddress("x_cos",&FLUKA_x_cos);
-  fFLUKANuTree->SetBranchAddress("y_cos",&FLUKA_y_cos);
-  fFLUKANuTree->SetBranchAddress("x",&FLUKA_x);
-  fFLUKANuTree->SetBranchAddress("y",&FLUKA_y);
 
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
@@ -79,6 +69,15 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pzf",&pzf);
   fTree->SetBranchAddress("nf",&nf);     // nr of outgoing hadrons
   fTree->SetBranchAddress("pdgf",&pdgf);     // pdg code of hadron
+
+  fFLUKANuTree = (TTree *)fInputFile->Get("fluka_neutrinos_selected");
+  //setting branches for input neutrino tree. 
+  //Nota Bene: I get only the angles and positions, 
+  //for the energy I keep the GENIE one, otherwise I lose energy conservation
+  fFLUKANuTree->SetBranchAddress("x_cos",&FLUKA_x_cos);
+  fFLUKANuTree->SetBranchAddress("y_cos",&FLUKA_y_cos);
+  fFLUKANuTree->SetBranchAddress("x",&FLUKA_x);
+  fFLUKANuTree->SetBranchAddress("y",&FLUKA_y);
   fFirst=kTRUE;
   return kTRUE;
 }

@@ -55,7 +55,6 @@ class GenieGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
-  TFile* fFLUKANuFile;
   TTree* fFLUKANuTree;
   int fNevents;
   int fn;
