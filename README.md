@@ -151,12 +151,10 @@ updated  1 June 2021
  alibuild/alienv enter (--shellrc) sndsw/latest 
  ```     
 
- Now you can for example simulate some events, run event display: 
-
- ```bash 
- python $SNDSW_ROOT/shipLHC/run_simSND.py  -n 100 -f   /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0   
+  ```bash 
+ python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n 100 -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0
  >> Macro finished succesfully. 
- ```     
+ ```
  >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile_full.Ntuple-TGeant4.root  (setup) 
 
  Run the event display: 
@@ -168,9 +166,23 @@ updated  1 June 2021
  ``` 
  a) Use the GUI to display  events: SHiP actions / next event
 
- b) Hoovering over trajectory will display additional information
+ b) Hoovering over trajectory will display additional information : 
  
  c) At python prompt: sTree.MCTrack.Dump() will display info about all MC particles 
+
+## Use cases covered by run_simSND.py:
+
+1. Transport muons, output of FLUKA simulation, to TI18 and the detector. Positive and negative muons, up and down crossing angles, exist.
+Possible options are setting minimum energy for transporting particles, transport only muons, increase EM cross sections of muons.
+
+ ```bash 
+ python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n nEvents  -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin ecut
+ ```
+
+2. Muon deep inelastic scattering events, produced with pythia6, and then positioned in T18 and transported by Geant4:
+ ```bash 
+ python  $SNDSW_ROOT/shipLHC/run_simSND.py  -F --MuDIS -n nEvents -f  /eos/experiment/sndlhc/MonteCarlo/Pythia6/MuonDIS/muonDis_1001.root  --eMin ecut
+ ```
 
 
 # Docker Instructions
