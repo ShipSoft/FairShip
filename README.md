@@ -68,20 +68,20 @@ specific and will not apply to SND@LHC software).
 
 ## On lxplus or systems with CVMFS
 
-On `lxplus` or any CC7 machine with access to CVMFS, you can do the following:
+On `lxplus` or any CC7/CC8 machine with access to CVMFS, you can do the following:
 
 1. Clone the [snddist](https://github.com/SND-LHC/snddist), which containts the recipes to build `sndsw` and it's dependencies:
     ```bash
     git clone https://github.com/SND-LHC/snddist
     ```
 
-2. Make sure you can access the SHiP CVMFS Repository
+2. Make sure you can access the SNDLHC CVMFS Repository
     ```bash
-    ls /cvmfs/ship.cern.ch
+    ls /cvmfs/sndlhc.cern.ch
     ```
 3. Source the `setUp.sh` script
     ```bash
-    source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
+    source /cvmfs/sndsw.cern.ch/latest/setUp.sh
     ```
 
 4. Build the software using `aliBuild`
@@ -137,41 +137,39 @@ Commands are similar to the previous case, but without access to CVMFS you need 
 
 # Run Instructions
 
-**To be updated**
+**updated  1 June 2021**
 
 <!-- Set up the bulk of the environment from CVMFS. -->
 
 <!-- ```bash -->
-<!-- source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh -->
+<!-- source /cvmfs/sndsw.cern.ch/latest/setUp.sh -->
 <!-- ``` -->
 
-<!-- Load your local FairShip environment. -->
+<!-- Load your local sndsw environment. -->
 
 <!-- ```bash -->
-<!-- alibuild/alienv enter (--shellrc) FairShip/latest -->
+<!-- alibuild/alienv enter (--shellrc) sndsw/latest -->
 <!-- ```     -->
 
-<!-- Now you can for example simulate some events, run reconstruction and analysis: -->
+<!-- Now you can for example simulate some events, run event display: -->
 
 <!-- ```bash -->
-<!-- python $FAIRSHIP/macro/run_simScript.py -->
+<!-- python $SNDSW_ROOT/shipLHC/run_simSND.py  -n 100 -f   /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0   -->
 <!-- >> Macro finished succesfully. -->
-<!-- >> Output file is  ship.conical.Pythia8-TGeant4.root -->
-
-<!-- python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root -->
-<!-- >> finishing pyExit -->
-
-<!-- python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root -->
-<!-- >> finished making plots -->
-<!-- ``` -->
+<!-- ```     -->
+<!-- >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile_full.Ntuple-TGeant4.root  (setup) -->
 
 <!-- Run the event display: -->
 
 <!-- ```bash -->
-<!-- python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root -->
+<!-- python -i $SNDSW_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile_full.Ntuple-TGeant4.root -->
 <!-- // use SHiP Event Display GUI -->
 <!-- Use quit() or Ctrl-D (i.e. EOF) to exit -->
 <!-- ``` -->
+<!-- Use the GUI to display  events: SHiP actions / next event : -->
+<!-- hoovering over trajectory will display additional information : -->
+<!-- at python prompt: sTree.MCTrack.Dump() will display info about all MC particles -->
+
 
 # Docker Instructions
 
