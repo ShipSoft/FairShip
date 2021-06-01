@@ -6,13 +6,13 @@
 #include "FairLogger.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TMath.h"                      // for Sqrt
-#include "TRandom1.h"
-#include "TRandom3.h"
+#include "TRandom.h"
 
 // read events from ntuples produced by FLUKA
 Double_t neutronMass = 939.565379/1000.;
 // -----   Default constructor   -------------------------------------------
-NeutronGenerator_FLUKA::NeutronGenerator_FLUKA() {}
+NeutronGenerator_FLUKA::NeutronGenerator_FLUKA() {
+  fn=0;}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
@@ -34,8 +34,7 @@ Bool_t NeutronGenerator_FLUKA::ReadEvent(FairPrimaryGenerator* cpg)
    Double_t px = P*TMath::Sin(theta)*TMath::Cos(phi);
    Double_t py = P*TMath::Sin(theta)*TMath::Sin(phi);
    Double_t pz = P*TMath::Cos(theta);
-   //LOG(INFO) << "NeutronGenerator_FLUKA: " << Ekin," ",P," ",px," ",py," ",pz;
-   //std::cout << px << std::endl;
+   LOG(DEBUG) << "NeutronGenerator_FLUKA: " << Ekin << " " << P << " " << px<<" "<<py<<" "<<pz;
    // place neutrons on sphere covering maximum distance,  ~ 2m
    Double_t R       = 200;
    phi      = gRandom->Uniform(0,2*TMath::Pi());

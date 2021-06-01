@@ -20,6 +20,8 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4GenericPhysicsList.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4RunManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 
+ROOT.gRandom.SetSeed()
+
 parser = ArgumentParser()
 parser.add_argument("-b", "--heartbeat",  dest="heartbeat", type=int,  help="progress report",            default=10000)
 parser.add_argument("-n", "--nEvents",      dest="nEvents",     type=int,  help="number of events",        default=100)
@@ -37,7 +39,7 @@ options = parser.parse_args()
 logEstart = int(ROOT.TMath.Log10(options.Estart))
 logEend  = int(ROOT.TMath.Log10(options.Eend))
 outFile = 'thermNeutron_'+options.targetMaterial+'_'+str(options.targetLength)+'_'+str(logEstart)+'_'+str(logEend)+'_'+str(options.run)+'.root'
-if options.neutron:  outFile = 'thermNeutron_%s_coldbox_%s-%iM.root'%(options.targetMaterial,str(options.run),options.nEvents/1000000.)
+if options.neutron:  outFile = 'thermNeutron_%s_%s_coldbox_%s-%iM.root'%(options.targetMaterial,str(options.targetLength),str(options.run),options.nEvents/1000000.)
 parFile = outFile.replace('thermNeutron','params-thermNeutron')
 
 # -----Timer--------------------------------------------------------
@@ -63,8 +65,7 @@ else:
    myPgun.SetThetaRange(0,0)
    myPgun.SetXYZ(0.,0.,-1.)
    primGen.AddGenerator(myPgun)
-
-ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
+   ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
 
 # -----Materials----------------------------------------------
 run.SetMaterials("media.geo")

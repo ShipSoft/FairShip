@@ -1,11 +1,10 @@
 #include <math.h>
 #include "TROOT.h"
+#include "TSystem.h"
 #include "TFile.h"
 #include "FairPrimaryGenerator.h"
 #include "NtupleGenerator_FLUKA.h"
 #include "FairLogger.h"
-#include "TDatabasePDG.h"               // for TDatabasePDG
-#include "TMath.h"                      // for Sqrt
 
 // read events from ntuples produced by FLUKA
 
@@ -18,14 +17,19 @@ Bool_t NtupleGenerator_FLUKA::Init(const char* fileName) {
 }
 // -----   Default constructor   -------------------------------------------
 Bool_t NtupleGenerator_FLUKA::Init(const char* fileName, const int firstEvent) {
-  LOG(INFO) << "NtupleGenerator_FLUKA: Opening input file " << fileName;
-  fInputFile  = new TFile(fileName);
+  TString fN = "";
+   if (0 == strncmp("/eos",fileName,4) ) {
+      fN = gSystem->Getenv("EOSSHIP");
+   }
+  fN+=fileName;
+  fInputFile  = TFile::Open(fN);
   if (fInputFile->IsZombie()) {
-    LOG(ERROR) << "NtupleGenerator_FLUKA: Error opening the Signal file" << fileName;
+    LOG(FATAL) << "NtupleGenerator_FLUKA: Error opening the Signal file" << fN;
+    return kFALSE;
   }
-  fTree = (TTree *)fInputFile->Get("nt");
+  LOG(INFO) << "NtupleGenerator_FLUKA: Opening input file " << fN;
 
- // variables = "run:event:id:generation:E:w:x:y:px:py:t:z:pz"
+  fTree = (TTree *)fInputFile->Get("nt");
 
   fNevents = fTree->GetEntries();
   fn = firstEvent;
