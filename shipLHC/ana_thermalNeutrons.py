@@ -423,71 +423,210 @@ def flukaRateIntegrated(save=False):
    h['neutronRate<E%'].Draw('same')
    if save: ut.writeHists(h,'flukaNeutronRates')
 
+from array import array
 neutronMass = 939.565379/1000.
-def coldBox(plotOnly=True):
+hnorm = {}
+def coldBox(plotOnly=True,pas=''):
+
+ if 1>0:
+   tmp = options.inputFile.split('/')
+   gFile = "geofile-"+(tmp[len(tmp)-1].split('_coldbox')[0]+'_coldbox.root').replace('histos-','')
+   g = ROOT.TFile(gFile)
+   sGeo = g.FAIRGeom
+   ROOT.gROOT.cd()
+   vbox = sGeo.FindVolumeFast('vbox')
+   sbox = sGeo.FindVolumeFast('sensBox')
+   dX,dY,dZ = vbox.GetShape().GetDX(),vbox.GetShape().GetDY(),vbox.GetShape().GetDZ()
+   nav = sGeo.GetCurrentNavigator()
+   boundaries = {}
+   # find y boundaries
+   start          = array('d',[0,200,0])
+   direction = array('d',[0,-1,0])
+   startnode = sGeo.InitTrack(start, direction)
+   length = c_double(200.)
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['topIn']        = nav.GetCurrentPoint()[1]
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['topSens']   = nav.GetCurrentPoint()[1]
+   start          = array('d',[0,-200,0])
+   direction = array('d',[0,1,0])
+   startnode = sGeo.InitTrack(start, direction)
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['botSens']   = nav.GetCurrentPoint()[1]
+   # find x boundaries
+   start          = array('d',[-200,0,0])
+   direction = array('d',[1,0,0])
+   startnode = sGeo.InitTrack(start, direction)
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['leftIn']        = nav.GetCurrentPoint()[0]
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['leftSens']   = nav.GetCurrentPoint()[0]
+   start          = array('d',[200,0,0])
+   direction = array('d',[-1,0,0])
+   startnode = sGeo.InitTrack(start, direction)
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['rightIn']        = nav.GetCurrentPoint()[0]
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['rightSens']   = nav.GetCurrentPoint()[0]
+   # find z boundaries
+   start          = array('d',[0,0,-200])
+   direction = array('d',[0,0,1])
+   startnode = sGeo.InitTrack(start, direction)
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['backIn']        = nav.GetCurrentPoint()[2]
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['backSens']   = nav.GetCurrentPoint()[2]
+   start          = array('d',[0,0,200])
+   direction = array('d',[0,0,-1])
+   startnode = sGeo.InitTrack(start, direction)
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['frontIn']        = nav.GetCurrentPoint()[2]
+   node    = sGeo.FindNextBoundaryAndStep(length, ROOT.kFALSE)
+   boundaries['frontSens']   = nav.GetCurrentPoint()[2]
+   Rin      = {'':'','topIn':'Y','leftIn':'X','rightIn':'X','frontIn':'Z','backIn':'Z'}
+   Rsens = {'':'','topSens':'Y','botSens':'Y','leftSens':'X','rightSens':'X','frontSens':'Z','backSens':'Z'}
+   epsi     = 0.1
+#     side with holes is the front 
+#
  if not plotOnly:
-   f = ROOT.TFile(options.inputFile)
+  # example file "root://eospublic.cern.ch:1094//eos/experiment/sndlhc/MonteCarlo/ThermalNeutrons//thermNeutron_Borated30polyethylene_10.0_coldbox_0-20M.root"
+   f = ROOT.TFile.Open(options.inputFile)
    ROOT.gROOT.cd()
    ut.bookHist(h,'start','start neutron;x [cm] ;y [cm] ;z [cm]',100,-200,200,100,-200,200,100,-200,200)
    ut.bookHist(h,'startR','start neutron;R',100,0,200)
-   for T in ['','cold','hot']:
-      ut.bookHist(h,'entry'+T,'entry neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
-      ut.bookHist(h,'exit'+T+'-original','enter coldbox neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
-      ut.bookHist(h,'exit'+T,'enter coldbox neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
+   for o in ['_seco','_prim']:
+     for T in ['','cold','hot']:
+        ut.bookHist(h,'entry'+T+o,'entry neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
+        ut.bookHist(h,'exit'+T+'-original'+o,'enter coldbox neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
+        ut.bookHist(h,'exit'+T+o,'enter coldbox neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
+     for r in Rin:
+        ut.bookHist(h,'EkinE'+r+o,'log10(Ekin)',100,-13.,0,100,-200.,200.)
+        ut.bookHist(h,'Ekin'+r+o,'log10(Ekin)',100,-13.,0,100,-200.,200.)
+     for r in Rsens:
+        ut.bookHist(h,'DF'+r+o,'travel  distance',100,0.,200.)
+        ut.bookHist(h,'EkinF'+r+o,'log10(Ekin) vs distance',100,-13.,0,100,-200.,200.)
+        ut.bookHist(h,'EkinF-original'+r+o,'log10(Ekin) vs distance',100,-13.,0,100,-200.,200.)
+        ut.bookHist(h,'checkBox'+r+o,'enter coldbox neutron;x [cm] ;y [cm] ;z [cm]',100,-100,100,100,-100,100,100,-100,100)
    ut.bookHist(h,'EkinG','log10(Ekin)',100,-13.,0.)
    ut.bookHist(h,'EkinW','log10(Ekin)',100,-13.,0.)
    ut.bookHist(h,'EkinWlin','Ekin',100,1E-9,100*1E-9)
-   ut.bookHist(h,'Ekin','log10(Ekin)',100,-13.,0,100,0.,100.)
-   ut.bookHist(h,'EkinF','log10(Ekin) vs distance',100,-13.,0,100,0.,100.)
-   ut.bookHist(h,'EkinF-original','log10(Ekin) vs distance',100,-13.,0,100,0.,100.)
+   ut.bookHist(h,'multS','mult veto points shielding',100,-0.5,99.5)
+   ut.bookHist(h,'multC','mult veto points inside',100,-0.5,99.5)
+   ut.bookHist(h,'multN','mult neutrons',100,-0.5,99.5)
+
    flukaRateIntegrated()
    Nsim = f.cbmsim.GetEntries()
    for sTree in f.cbmsim:
+       rc=h['multN'].Fill(sTree.MCTrack.GetEntries())
        neutron = sTree.MCTrack[0]
+       start = ROOT.TVector3(neutron.GetStartX(),neutron.GetStartY(),neutron.GetStartZ())
+       if start.y() < boundaries['botSens']: continue
+
        P       = ROOT.TVector3(neutron.GetPx(),neutron.GetPy(),neutron.GetPz())
        Ekin = ROOT.TMath.Sqrt(P.Mag2()+neutronMass**2) - neutronMass
-       start = ROOT.TVector3(neutron.GetStartX(),neutron.GetStartY(),neutron.GetStartZ())
        W = h['Fig12'].Eval(ROOT.TMath.Log10(Ekin*1000)) / Nsim
        rc = h['start'].Fill(start.Z(),start.X(),start.Y(),W)
        rc = h['EkinW'].Fill(ROOT.TMath.Log10(Ekin),W)
        rc = h['EkinWlin'].Fill(Ekin,W)
        rc = h['EkinG'].Fill(ROOT.TMath.Log10(Ekin))
        rc = h['startR'].Fill(start.Mag(),W)
+       nC,nS=0,0
        for p in sTree.vetoPoint:
               if p.PdgCode()!=2112: continue
+              if p.GetDetectorID()==13: nC+=1
+              else:                                             nS+=1
+       rc = h['multC'].Fill(nC)
+       rc = h['multS'].Fill(nS)
+       trajectory = {}
+       for p in sTree.vetoPoint:
+              if p.PdgCode()!=2112: continue
+              trackID  = p.GetTrackID()
+              if not trackID in trajectory: trajectory[trackID]=[]
+              trajectory[trackID].append(p)
+       for trackID in trajectory:
+          firstSens = True
+          for p in trajectory[trackID]:
+              origin = '_seco'
+              if trackID==0: origin = '_prim'
               lastPoint = p.LastPoint()
               mPoint = ROOT.TVector3(p.GetX(),p.GetY(),p.GetZ())  
               firstPoint = 2*mPoint-lastPoint
-# check that first point is further out.
-              if firstPoint.Mag()<lastPoint.Mag(): continue
               D = lastPoint-firstPoint
+              TD = firstPoint - start
               firstMom    =  ROOT.TVector3(p.GetPx(),p.GetPy(),p.GetPz())  
               Ekin_entry  = ROOT.TMath.Sqrt(firstMom.Mag2()+neutronMass**2) - neutronMass
-              if p.GetDetectorID()==13: # inside coldbox
-                    rc = h['exit'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+              if p.GetDetectorID()==13 and firstSens:   # first point inside coldbox
+                    firstSens = False
+                    rc = h['exit'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
 
-                    if Ekin*1E9< 10:    rc = h['exitcold-original'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
-                    else:                            rc = h['exithot-original'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+                    if Ekin*1E9< 10:    rc = h['exitcold-original'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
+                    else:                            rc = h['exithot-original'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
 
-                    if Ekin_entry*1E9< 10:    rc = h['exitcold'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
-                    else:                            rc = h['exithot'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
-                    rc = h['EkinF'].Fill(ROOT.TMath.Log10(Ekin_entry),D.Mag(),W)
-                    rc = h['EkinF-original'].Fill(ROOT.TMath.Log10(Ekin),D.Mag(),W)
+                    if Ekin_entry*1E9< 10:    rc = h['exitcold'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
+                    else:                            rc = h['exithot'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+                    rc = h['DF'+origin].Fill(TD.Mag(),W)
+                    rc = h['EkinF'+origin].Fill(ROOT.TMath.Log10(Ekin_entry),D.Mag(),W)
+                    rc = h['EkinF-original'+origin].Fill(ROOT.TMath.Log10(Ekin),D.Mag(),W)
+                    # find location     Rsens = ['','topSens','botSens','leftSens','rightSens','frontSens','backSens']
+                    found = False
+                    for r in  Rsens:
+                        if r=='': continue
+                        X = eval('firstPoint.'+Rsens[r]+'()') 
+                        if    abs(X-boundaries[r]) < epsi:
+                           #           if r=='botSens' and p!=trajectory[trackID][0]: continue    # to enter from bottom is without crossing shield. It is more complicated!
+                           found = True
+                           break
+                    if not found:
+                      txt = ''
+                      for r in  Rsens:
+                          if r=='': continue
+                          X = eval('firstPoint.'+Rsens[r]+'()')
+                          txt+= " "+r+" "+str(X)
+                          print("this should no happen", txt, boundaries)
+                          for P in trajectory[trackID]:          print(P.GetDetectorID(),P.LastPoint().X(),P.LastPoint().Y(),P.LastPoint().Z())
+                    rc = h['DF'+r+origin].Fill(TD.Mag(),W)
+                    rc = h['EkinF'+r+origin].Fill(ROOT.TMath.Log10(Ekin_entry),D.Mag(),W)
+                    rc = h['EkinF-original'+r+origin].Fill(ROOT.TMath.Log10(Ekin),D.Mag(),W)
+                    rc = h['checkBox'+r+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+
               if p.GetDetectorID()==1: # inside shielding
-                    rc = h['Ekin'].Fill(ROOT.TMath.Log10(Ekin),D.Mag(),W)
-                    rc = h['entry'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
-                    if Ekin*1E9< 10:    rc = h['entrycold'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
-                    else:                            rc = h['entryhot'].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
-   ut.writeHists(h,'histos-'+options.inputFile)
-   print('finished making histograms ','histos-'+options.inputFile)
- else:
-   ut.readHists(h,'histos-'+options.inputFile)
-   g = ROOT.TFile(options.geoFile)
-   sGeo = g.FAIRGeom
-   vbox = sGeo.FindVolumeFast('vbox')
-   dX,dY,dZ = vbox.GetShape().GetDX(),vbox.GetShape().GetDY(),vbox.GetShape().GetDZ()
+# check that first point is further out.
+                    if firstPoint.Mag()<lastPoint.Mag(): continue
+                    rc = h['Ekin'+origin].Fill(ROOT.TMath.Log10(Ekin),D.Mag(),W)
+                    rc = h['EkinE'+origin].Fill(ROOT.TMath.Log10(Ekin_entry),D.Mag(),W)
+                    rc = h['entry'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+                    if Ekin*1E9< 10:    rc = h['entrycold'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)     # 10eV
+                    else:                            rc = h['entryhot'+origin].Fill(firstPoint.X(),firstPoint.Y(),firstPoint.Z(),W)
+                    # find location
+                    for r in  Rin:
+                        if r=='': continue
+                        X = eval('firstPoint.'+Rin[r]+'()') 
+                        if    abs(X-boundaries[r]) < epsi:  break
+                    rc = h['Ekin'+r+origin].Fill(ROOT.TMath.Log10(Ekin),X,W)
+                    rc = h['EkinE'+r+origin].Fill(ROOT.TMath.Log10(Ekin_entry),X,W)
+
+   tmp = options.inputFile.split('/')
+   outFile = 'histos-'+ tmp[len(tmp)-1]
+# make sum of seco and prim
+   hkeys = list(h.keys())
+   for x in hkeys:
+      if x.find( '_seco')>0:
+             hname = x.replace('_seco','')
+             h[hname]=h[x].Clone(hname)
+             h[hname].Add(h[x.replace('_seco','_prim')])
 #
-   ROOT.gROOT.cd()
+   ut.writeHists(h,outFile)
+   print('finished making histograms ','histos-noConc-'+options.inputFile)
+
+ else:
+   ut.readHists(h,options.inputFile)
+   if pas!='':            ut.readHists(hnorm,'histos-thermNeutron_vacuums_0.0001_coldbox_pass1.root')
+   else:                     ut.readHists(hnorm,options.inputFile)
+   tmp =  options.inputFile.split('_')
+   material   = tmp[1]+"_coldbox/"
+   thickness = "_"+tmp[2]
+
    binning = {}
    for c in ['entry','exit']:
      binning[c]={}
@@ -498,53 +637,65 @@ def coldBox(plotOnly=True):
        for imax in range(tmp.GetNbinsX(),0,-1): 
              if tmp.GetBinContent(imax)>0: break
        binning[c][p]={'min':imin,'max':imax}
+
 #
-   ytop       =  {'axis':'Y','proj':'xz','entry':binning['entry']['y']['max'],'exit':binning['exit']['y']['max'],'xdist':dZ,'ydist':dX}
-   ybot       =  {'axis':'Y','proj':'xz','entry':binning['entry']['y']['min'],'exit':binning['exit']['y']['min'],'xdist':dZ,'ydist':dX}
-   xLeft      =  {'axis':'X','proj':'yz','entry':binning['entry']['x']['min'],'exit':binning['exit']['x']['min'],'xdist':dZ,'ydist':dY}
-   xRight   =  {'axis':'X','proj':'yz','entry':binning['entry']['x']['max'],'exit':binning['exit']['x']['max'],'xdist':dZ,'ydist':dY}
-   zMin       = {'axis':'Z','proj':'yx','entry':binning['entry']['z']['min'],'exit':binning['exit']['z']['min'],'xdist':dX,'ydist':dY}
-   zMax      = {'axis':'Z','proj':'yx','entry':binning['entry']['z']['min'],'exit':binning['exit']['z']['max'],'xdist':dX,'ydist':dY}
+   ytop       =  {'axis':'Y','proj':'xz','entry':binning['entry']['y']['max'],'exit':h['exit'].GetYaxis().FindBin(boundaries['topSens']),'xdist':dZ,'ydist':dX}
+   ybot       =  {'axis':'Y','proj':'xz','entry':binning['entry']['y']['min'],'exit':h['exit'].GetYaxis().FindBin(boundaries['botSens']),'xdist':dZ,'ydist':dX}
+   xLeft      =  {'axis':'X','proj':'yz','entry':binning['entry']['x']['min'],'exit':h['exit'].GetXaxis().FindBin(boundaries['leftSens']),'xdist':dZ,'ydist':dY}
+   xRight   =  {'axis':'X','proj':'yz','entry':binning['entry']['x']['max'],'exit':h['exit'].GetXaxis().FindBin(boundaries['rightSens']),'xdist':dZ,'ydist':dY}
+   zMin       = {'axis':'Z','proj':'yx','entry':binning['entry']['z']['min'],'exit':h['exit'].GetZaxis().FindBin(boundaries['backSens']),'xdist':dX,'ydist':dY}
+   zMax      = {'axis':'Z','proj':'yx','entry':binning['entry']['z']['max'],'exit':h['exit'].GetXaxis().FindBin(boundaries['frontSens']),'xdist':dX,'ydist':dY}
+   print('boundaries',boundaries)
 
    # make projections
    projections = {'Top':ytop,'Bot':ybot,'Right':xRight,'Left':xLeft,'Front':zMax,'Back':zMin}
    h['fluences'] = {}
-   for T in ['','cold','hot']:
-    for Z in ['entry','exit','exit-original']:
-     tmp = Z.split('-')
-     c = tmp[0]
-     x=''
-     if len(tmp)>1: x='-'+tmp[1]
-     case = c+T+x
-     ut.bookCanvas(h,'t'+case,'',1200,1800,2,3)
-     k=1
-     for p in projections:
-      h['t'+case].cd(k)
-      tmp = h[case]
-      axis = eval('tmp.Get'+projections[p]['axis']+'axis()')
-      axis.SetRange(projections[p][c]-1,projections[p][c]+1)
-      h[case+p] = h[case].Project3D(projections[p]['proj'])
-      h[case+p].SetName(case+p)
-      axis.SetRange(0,0)
-      h[case+p].SetStats(0)
-      h[case+p].SetMinimum(0)
-      h[case+p].SetTitle(p)
-      h[case+p].Draw('colz')
+   for o in ['','_prim']:
+    for T in ['','cold','hot']:
+     for Z in ['entry','exit','exit-original']:
+      tmp = Z.split('-')
+      c = tmp[0]
+      x=''
+      if len(tmp)>1: x='-'+tmp[1]
+      case = c+T+x+o
+      ut.bookCanvas(h,'t'+case,case,1200,1800,2,3)
+      k=1
+      for p in projections:
+       h['t'+case].cd(k)
+       tmp = h[case]
+       axis = eval('tmp.Get'+projections[p]['axis']+'axis()')
+       if Z=='entry': axis.SetRange(projections[p][c]-1,projections[p][c]+1)
+       else:                  
+                 axis.SetRange(projections[p][c],projections[p][c])
+                 if p=='xBot':
+                       xax = tmp.GetXaxis()
+                       xax.SetRange(xax.FindBin(boundaries['leftSens'])+1,xax.FindBin(boundaries['rightSens'])-1)
+                       zax = tmp.GetZaxis()
+                       zax.SetRange(zax.FindBin(boundaries['backSens'])+1,zax.FindBin(boundaries['frontSens'])-1)
+       h[case+p] = tmp.Project3D(projections[p]['proj'])
+       h[case+p].SetName(case+p)
+       tmp.GetXaxis().SetRange(0,0)
+       tmp.GetYaxis().SetRange(0,0)
+       tmp.GetZaxis().SetRange(0,0)
+       h[case+p].SetStats(0)
+       h[case+p].SetMinimum(0)
+       h[case+p].SetTitle(p)
+       h[case+p].Draw('colz')
 # check uniformity:
-      h['X-'+case+p]=h[case+p].ProjectionX('X-'+case+p)
-      h['Y-'+case+p]=h[case+p].ProjectionY('Y-'+case+p)
-      k+=1
-      sqcm    = projections[p]['xdist']* projections[p]['ydist']
-      entries = h[case+p].GetSumOfWeights()
-      X = entries/sqcm
-      if X > 100: txt = "%5.1F/cm^{2}"%(X)
-      else: txt = "%5.2F/cm^{2}"%(X)
-      h['fluences'][case+p] =X
-      L = ROOT.TLatex()
-      rc = L.DrawLatexNDC(0.2,0.85,txt)
-      h['X-'+case+p].Scale(1./ projections[p]['ydist'])
-      h['Y-'+case+p].Scale(1./ projections[p]['xdist'])
-     myPrint(h['t'+case],'t'+case)
+       h['X-'+case+p]=h[case+p].ProjectionX('X-'+case+p)
+       h['Y-'+case+p]=h[case+p].ProjectionY('Y-'+case+p)
+       k+=1
+       sqcm    = projections[p]['xdist']* projections[p]['ydist']
+       entries = h[case+p].GetSumOfWeights()
+       X = entries/sqcm
+       if X > 100: txt = "%5.1F/cm^{2}"%(X)
+       else: txt = "%5.2F/cm^{2}"%(X)
+       h['fluences'][case+p] =X
+       L = ROOT.TLatex()
+       rc = L.DrawLatexNDC(0.2,0.85,txt)
+       h['X-'+case+p].Scale(1./ projections[p]['ydist'])
+       h['Y-'+case+p].Scale(1./ projections[p]['xdist'])
+      myPrint(h['t'+case],material+'t'+case+thickness)
 
 # make cross checks
    ut.bookCanvas(h,'crosschecks','cross checks',900,600,1,1)
@@ -559,7 +710,7 @@ def coldBox(plotOnly=True):
    h['EkinW'].SetMaximum(1E8)
    h['EkinW'].SetMinimum(1E2)
    h['EkinW'].Draw()
-   myPrint(h['crosschecks'],'kinEnergy')
+   myPrint(h['crosschecks'],material+'kinEnergy'+thickness )
    tc.SetLogy(0)
    k=-10
    for p in projections:
@@ -574,30 +725,94 @@ def coldBox(plotOnly=True):
             h[case].Draw()
         else: h[case].Draw('same')
         k+=1
-   myPrint(h['crosschecks'],'irradiationXYZ')
+   myPrint(h['crosschecks'],material+'irradiationXYZ'+thickness )
 #
    tc.SetLogy(1)
-   h['rej'] = h['EkinF'].ProjectionX('rej')
-   h['rej'].Divide(h['Ekin'].ProjectionX('Ekinxxx'))
-   h['rejo'] = h['EkinF-original'].ProjectionX('rejo')
-   h['rejo'].Divide(h['Ekin'].ProjectionX('Ekinxxx'))
-   h['rej'].SetStats(0)
-   h['rejo'].SetStats(0)
-   h['rej'].SetTitle(';log10(Ekin) GeV; rejection')
-   h['rej'].SetLineColor(ROOT.kBlue)
-   h['rej'].SetLineWidth(2)
-   h['rejo'].SetLineWidth(2)
-   h['rejo'].SetLineColor(ROOT.kGreen)
-   h['rej'].GetXaxis().SetRangeUser(-13.,-1.)
-   h['rej'].SetMaximum(1.2)
-   h['rej'].SetMinimum(1.E-4)
-   h['rej'].Draw('hist')
-   h['rejo'].Draw('histsame')
-   h['legR']=ROOT.TLegend(0.15,0.88,0.72,0.97)
-   rc = h['legR'].AddEntry(h['rejo'],'reduction as function of original E_{kin} when entering shield','PL')
-   rc = h['legR'].AddEntry(h['rej'],'reduction as function of E_{kin} when leaving shield','PL')
-   h['legR'].Draw('same')
-   myPrint(h['crosschecks'],'rejections')
+#  Ekin     Rin      = {'':'','topIn':'Y','leftIn':'X','rightIn':'X','frontIn':'Z','backIn':'Z'}
+#  EkinF   Rsens = {'':'','topSens':'Y','botSens':'Y','leftSens':'X','rightSens':'X','frontSens':'Z','backSens':'Z'}
+   ut.bookCanvas(h,'trej','rejections',1200,1800,2,3)
+   k=0
+   for r in ['','top','bot','right','left','front','back']:
+     rej = 'rej'+r
+     rejo = 'rejo'+r
+     if r=='':
+          norm = hnorm['Ekin'].ProjectionX('norm')
+          h[rej] = h['EkinF'].ProjectionX(rej)
+          h[rejo] = h['EkinF-original'].ProjectionX(rejo)
+     else:
+          k+=1
+          if r=='bot':     norm = hnorm['EkintopIn'].ProjectionX('norm')
+          else:                 norm = hnorm['Ekin'+r+'In'].ProjectionX('norm')
+          h[rej]   = h['EkinF'+r+'Sens'].ProjectionX(rej)
+          h[rejo] = h['EkinF-original'+r+'Sens'].ProjectionX(rejo)
+     h[rej].Divide(norm)
+     h[rejo].Divide(norm)
+     h[rej].SetStats(0)
+     h[rejo].SetStats(0)
+     h[rej].SetTitle(';log10(Ekin) GeV; rejection')
+     h[rej].SetLineColor(ROOT.kBlue)
+     h[rej].SetLineWidth(2)
+     h[rejo].SetLineWidth(2)
+     h[rejo].SetLineColor(ROOT.kGreen)
+     h[rej].GetXaxis().SetRangeUser(-13.,-1.)
+     h[rej].SetMaximum(1.2)
+     h[rej].SetMinimum(1.E-4)
+     if k==0:   tc = h['crosschecks'].cd()
+     else:        
+              tc = h['trej'].cd(k) 
+              tc.SetGridx()
+              tc.SetGridy()
+              h[rej].SetMinimum(1.E-6)
+              h[rej].SetTitle(r[0].upper()+r[1:])
+     tc.SetLogy()
+     h[rej].Draw('hist')
+     h[rejo].Draw('histsame')
+     h['legR'+r]=ROOT.TLegend(0.11,0.74,0.72,0.82)
+     rc = h['legR'+r].AddEntry(h[rejo],'reduction as function of original E_{kin} when entering shield','PL')
+     rc = h['legR'+r].AddEntry(h[rej],'reduction as function of E_{kin} when leaving shield','PL')
+     h['legR'+r].Draw('same')
+     if k==0:   myPrint(h['crosschecks'],material+'rejections'+thickness)
+   myPrint(h['trej'],material+'Listrejections'+thickness+pas)
+#
+   h['dangerZone']=ROOT.TGraph()
+   h['dangerZone'].SetPoint(0,-8.6,0.)
+   h['dangerZone'].SetPoint(1,-8.6,1.)
+   h['dangerZone'].SetPoint(2,-8.1,1.)
+   h['dangerZone'].SetPoint(3,-8.1,0.)
+   h['dangerZone'].SetFillStyle(1001)
+   h['dangerZone'].SetFillColor(ROOT.kYellow)
+   for r in ['rej','rejo']:
+     ut.bookCanvas(h,r+'ection2','rejectionRate',900,600,1,1)
+     h[r+'TopLeftRightBack'] =  h[r+'top'].Clone(r+'TopLeftRightBack')
+     h[r+'TopLeftRightBack'].Add(h[r+'left'])
+     h[r+'TopLeftRightBack'].Add(h[r+'right'])
+     h[r+'TopLeftRightBack'].Add(h[r+'back'])
+     h[r+'TopLeftRightBack'].Scale(1./4.)
+     h[r+'TopLeftRightBack'].SetTitle('')
+     if r=='rej':   h[r+'TopLeftRightBack'].GetXaxis().SetTitle('outgoing   '+h[r+'TopLeftRightBack'].GetXaxis().GetTitle())
+     if r=='rejo': h[r+'TopLeftRightBack'].GetXaxis().SetTitle('incoming   '+h[r+'TopLeftRightBack'].GetXaxis().GetTitle())
+     h[r+'TopLeftRightBack'].SetLineColor(ROOT.kGreen)
+     h[r+'bot'].SetLineColor(ROOT.kGray)
+     h[r+'front'].SetLineColor(ROOT.kRed)
+     h[r+'TopLeftRightBack'].SetMaximum(1.2)
+     h[r+'TopLeftRightBack'].SetMinimum(1.E-6)
+     tc = h[r+'ection2'].cd() 
+     tc.SetGridx()
+     tc.SetGridy()
+     tc.SetLogy()
+     h[r+'TopLeftRightBack'].Draw()
+     h['dangerZone'].Draw('sameF')
+     h[r+'TopLeftRightBack'].Draw('same')
+     h[r+'bot'].Draw('same')
+     h[r+'front'].Draw('same')
+     h[r+'legR2']=ROOT.TLegend(0.55,0.30,0.86,0.45)
+     rc = h[r+'legR2'].AddEntry(h[r+'TopLeftRightBack'],'av. rejection top/left/right/back','PL')
+     rc = h[r+'legR2'].AddEntry(h[r+'bot'],'rejction bottom, only concrete','PL')
+     rc = h[r+'legR2'].AddEntry(h[r+'front'],'rejction front, with holes','PL')
+     h[r+'legR2'].Draw('same')
+     myPrint(h[r+'ection2'],material+'Sum '+r+'ections'+thickness+pas)
+
+   if pas=='': ut.writeHists(h,options.inputFile.replace('.root','_pass1.root'))
 
 # statistics:
    for o in ['','-original']:
@@ -618,6 +833,8 @@ def coldBox(plotOnly=True):
 # incoming = 6 * average ! 
        print('%s  %s region:  %5.2F  concrete: %5.2F    holes:   %5.2F x permille     total:   %5.2F x permille'%(o,T,exit/norm*1000,concrete/norm*1000,holes/norm*1000,(4*exit+concrete+holes)/(6*norm)*1000))
 
+
+
 def drawNeutronGen(hname='start'):
     ROOT.gStyle.SetPalette(ROOT.kRainBow)
     pal = ROOT.TColor.GetPalette()
@@ -632,7 +849,6 @@ def drawNeutronGen(hname='start'):
     box = geoManager.FindVolumeFast('vbox')
     box.SetLineColor(ROOT.kBlue-9)
     top.Draw('ogl')
-#
     nx,ny,nz = h[hname].GetXaxis().GetNbins(),h[hname].GetYaxis().GetNbins(),h[hname].GetZaxis().GetNbins()
     hmax = pal.GetSize()/h[hname].GetMaximum()
     h['x'] = geoManager.MakeBox('x',h['medium'] ,0.5,0.5,0.5)
@@ -647,7 +863,8 @@ def drawNeutronGen(hname='start'):
                 C = h[hname].GetBinContent(ix,iy,iz)
                 if not C>0: continue
                 n+=1
-                x,y,z  = h[hname].GetXaxis().GetBinCenter(ix),h[hname].GetYaxis().GetBinCenter(iy),h[hname].GetZaxis().GetBinCenter(iz)
+#   h['start'].Fill(start.Z(),start.X(),start.Y(),W)
+                z,x,y  = h[hname].GetXaxis().GetBinCenter(ix),h[hname].GetYaxis().GetBinCenter(iy),h[hname].GetZaxis().GetBinCenter(iz)
                 # kc = int(pal.GetAt(int(C*hmax)))
                 # print("color",int(C*hmax),kc)
                 h['T'].append(ROOT.TGeoTranslation(x,y, z))
@@ -658,3 +875,8 @@ def drawNeutronGen(hname='start'):
 
 if options.command=='coldBox':
     coldBox(plotOnly=False)
+if options.command=='coldBoxPlots':
+    coldBox()
+if options.command=='coldBoxPass1':
+    coldBox(pas='_pass1')
+
