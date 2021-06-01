@@ -166,9 +166,11 @@ updated  1 June 2021
  // use SHiP Event Display GUI 
  Use quit() or Ctrl-D (i.e. EOF) to exit 
  ``` 
- Use the GUI to display  events: SHiP actions / next event : 
- hoovering over trajectory will display additional information : 
- at python prompt: sTree.MCTrack.Dump() will display info about all MC particles 
+ a) Use the GUI to display  events: SHiP actions / next event
+
+ b) Hoovering over trajectory will display additional information
+ 
+ c) At python prompt: sTree.MCTrack.Dump() will display info about all MC particles 
 
 
 # Docker Instructions
