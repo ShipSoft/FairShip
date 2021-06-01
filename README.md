@@ -137,38 +137,38 @@ Commands are similar to the previous case, but without access to CVMFS you need 
 
 # Run Instructions
 
-**updated  1 June 2021**
+updated  1 June 2021
 
-<!-- Set up the bulk of the environment from CVMFS. -->
+ Set up the bulk of the environment from CVMFS. 
 
-<!-- ```bash -->
-<!-- source /cvmfs/sndsw.cern.ch/latest/setUp.sh -->
-<!-- ``` -->
+ ```bash 
+ source /cvmfs/sndsw.cern.ch/latest/setUp.sh 
+ ``` 
 
-<!-- Load your local sndsw environment. -->
+ Load your local sndsw environment. 
 
-<!-- ```bash -->
-<!-- alibuild/alienv enter (--shellrc) sndsw/latest -->
-<!-- ```     -->
+ ```bash 
+ alibuild/alienv enter (--shellrc) sndsw/latest 
+ ```     
 
-<!-- Now you can for example simulate some events, run event display: -->
+ Now you can for example simulate some events, run event display: 
 
-<!-- ```bash -->
-<!-- python $SNDSW_ROOT/shipLHC/run_simSND.py  -n 100 -f   /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0   -->
-<!-- >> Macro finished succesfully. -->
-<!-- ```     -->
-<!-- >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile_full.Ntuple-TGeant4.root  (setup) -->
+ ```bash 
+ python $SNDSW_ROOT/shipLHC/run_simSND.py  -n 100 -f   /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0   
+ >> Macro finished succesfully. 
+ ```     
+ >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile_full.Ntuple-TGeant4.root  (setup) 
 
-<!-- Run the event display: -->
+ Run the event display: 
 
-<!-- ```bash -->
-<!-- python -i $SNDSW_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile_full.Ntuple-TGeant4.root -->
-<!-- // use SHiP Event Display GUI -->
-<!-- Use quit() or Ctrl-D (i.e. EOF) to exit -->
-<!-- ``` -->
-<!-- Use the GUI to display  events: SHiP actions / next event : -->
-<!-- hoovering over trajectory will display additional information : -->
-<!-- at python prompt: sTree.MCTrack.Dump() will display info about all MC particles -->
+ ```bash 
+ python -i $SNDSW_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile_full.Ntuple-TGeant4.root 
+ // use SHiP Event Display GUI 
+ Use quit() or Ctrl-D (i.e. EOF) to exit 
+ ``` 
+ Use the GUI to display  events: SHiP actions / next event : 
+ hoovering over trajectory will display additional information : 
+ at python prompt: sTree.MCTrack.Dump() will display info about all MC particles 
 
 
 # Docker Instructions
