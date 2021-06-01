@@ -183,8 +183,10 @@ Possible options are setting minimum energy for transporting particles, transpor
  ```bash 
  python  $SNDSW_ROOT/shipLHC/run_simSND.py  -F --MuDIS -n nEvents -f  /eos/experiment/sndlhc/MonteCarlo/Pythia6/MuonDIS/muonDis_1001.root  --eMin ecut
  ```
-
-
+3. WORK ONGOING: Neutrino events, produced by GENIE, sndsw/macro/makeSNDGenieEvents.py, and then positioned in T18 and transported by Geant4:
+ ```bash 
+ python  $SNDSW_ROOT/shipLHC/run_simSND.py  --Genie -n nEvents -f ...
+ ```
 # Docker Instructions
 
 Docker is **not** the recommended way to run `sndsw` locally. It is ideal
