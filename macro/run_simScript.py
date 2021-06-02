@@ -5,6 +5,8 @@ import os
 import sys
 import getopt
 import ROOT
+ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
+ROOT.gROOT.ProcessLine('#include "FairMCPoint.h"')
 ROOT.gSystem.Load('libEGPythia8') 
 import makeALPACAEvents
 # Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
@@ -63,6 +65,9 @@ parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", requir
 parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=22)", required=False, default=22, type=int)
 parser.add_argument("--Estart",  dest="Estart",  help="start of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
 parser.add_argument("--Eend",    dest="Eend",    help="end of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
+parser.add_argument("--EVx",    dest="EVx",    help="particle gun xpos", required=False, default=0, type=float)
+parser.add_argument("--EVy",    dest="EVy",    help="particle gun ypos", required=False, default=0, type=float)
+parser.add_argument("--EVz",    dest="EVz",    help="particle gun zpos", required=False, default=0, type=float)
 parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", required=False, default='c')
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
@@ -71,6 +76,7 @@ group.add_argument("--ALPACA",  dest="ALPACA",  help="Use ALPACA as input", requ
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
+parser.add_argument('--eMin', type=float, help="energy cut", dest='ecut', default=-1.)
 parser.add_argument("--Nuage",     dest="nuage",  help="Use Nuage, neutrino generator of OPERA", required=False, action="store_true")
 parser.add_argument("--phiRandom", dest="phiRandom",  help="only relevant for muon background generator, random phi", required=False, action="store_true")
 parser.add_argument("--Cosmics",   dest="cosmics",  help="Use cosmic generator, argument switch for cosmic generator 0 or 1", required=False,  default=None)
@@ -115,6 +121,8 @@ parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajecto
 parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate steps geometry for the muon shield", required=False, action="store_true", default=False)
 parser.add_argument("--coMuonShield", dest="muShieldWithCobaltMagnet", help="replace one of the magnets in the shield with 2.2T cobalt one, downscales other fields, works only for muShieldDesign >2", required=False, type=int, default=0)
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
+parser.add_argument("--shiplhc", dest="shipLHC",  help="ship @ LHC setup", required=False, action='store_true')
+parser.add_argument("--boostFactor", dest="boostFactor",  help="boost mu brems", required=False, type=float,default=0)
 
 options = parser.parse_args()
 
@@ -207,6 +215,12 @@ else:
 #ship_geo.EmuMagnet.B = 0.
 #ship_geo.tauMudet.B = 0.
 
+#-------> MODIFIED
+if options.shipLHC: 
+ print("Setup for ship LHC measurement has been set")
+ ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
+#<------- MODIFIED
+
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
 else: tag = simEngine+"-"+mcEngine
@@ -216,6 +230,8 @@ if options.dv > 4 : tag = 'conical.'+tag
 elif dy: tag = str(options.dy)+'.'+tag 
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
+if options.boostFactor>1:
+   tag+='_boost'+str(options.boostFactor)
 outFile = "%s/ship.%s.root" % (options.outputDir, tag)
 
 # rm older files !!! 
@@ -242,12 +258,14 @@ rtdb = run.GetRuntimeDb()
 # import shipTarget_only as shipDet_conf
 if options.charm!=0: import charmDet_conf as shipDet_conf 
 else:        import shipDet_conf
+if options.shipLHC: import shipLHC_conf as shipDet_conf #<----- MODIFIED
 
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if simEngine == "Pythia8":
- primGen.SetTarget(ship_geo.target.z0, 0.) 
+ if options.shipLHC: primGen.SetTarget(-100*u.m, 0.) #<----- MODIFIED
+ else: primGen.SetTarget(ship_geo.target.z0, 0.) #<----- Added else:
 # -----Pythia8--------------------------------------
  if HNL or options.RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
@@ -283,10 +301,13 @@ if simEngine == "Pythia8":
   import pythia8darkphoton_conf
   passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
- if HNL or options.RPVSUSY or options.DarkPhoton: 
-  P8gen.SetSmearBeam(1*u.cm) # finite beam size
-  P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
-  P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
+ if HNL or options.RPVSUSY or options.DarkPhoton:
+  if not options.shipLHC:#<------- MODIFIED
+   #------> Added indentation
+   P8gen.SetSmearBeam(1*u.cm) # finite beam size
+   P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
+   P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
+   #<------- Added indentation
  if charmonly:
   primGen.SetTarget(0., 0.) #vertex is setted in pythia8Generator
   ut.checkFileExists(inputFile)
@@ -294,7 +315,8 @@ if simEngine == "Pythia8":
    primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors    
    primGen.SmearGausVertexXY(True) #sigma = x
   else:
-   primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
+   if not options.shipLHC: #<----- MODIFIED
+    primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
    primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, options.firstEvent)
@@ -303,6 +325,14 @@ if simEngine == "Pythia8":
   else: 
      print("ERROR: charmonly option should not be used for the muonflux measurement")
      1/0
+ #------> MODIFIED
+ if options.shipLHC: 
+  P8gen = ROOT.Pythia8Generator()
+  P8gen.UseExternalFile(inputFile, options.firstEvent)
+  primGen.SetBeam(0.,0.,ship_geo.EmulsionDet.xdim,ship_geo.EmulsionDet.ydim)
+  primGen.SmearVertexXY(True)
+  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+   #<----- MODIFIED
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
@@ -348,32 +378,39 @@ if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm) 
+  myPgun.SetXYZ(options.EVx*u.cm, options.EVy*u.cm, options.EVz*u.cm) 
   if options.charm!=0:
      myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
      primGen.SetTarget(ship_geo.target.z0,0.)
   else:  
      myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
+  ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) 
  DISgen = ROOT.MuDISGenerator()
+ if options.shipLHC:
+       mu_start, mu_end = (-3.7-2.0)*u.m , -0.3*u.m # tunnel wall -30cm in front of SND
+       DISgen.SetPositions(0, mu_start, mu_end)
+       if options.ecut > 0:  modules['Floor'].SetEmin(options.ecut)
+ else:
  # from nu_tau detector to tracking station 2
  # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
  #
  # in front of UVT up to tracking station 1
- mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
+  mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
+  DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)
+
  print('MuDIS position info input=',mu_start, mu_end)
- DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)
  DISgen.Init(inputFile,options.firstEvent) 
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
  inactivateMuonProcesses = True # avoid unwanted hadronic events of "incoming" muon flying backward
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
 # -----neutrino interactions from nuage------------------------
-if simEngine == "Nuage":
+if simEngine == "Nuage" and not options.shipLHC:
  primGen.SetTarget(0., 0.)
  Nuagegen = ROOT.NuageGenerator()
  Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
@@ -401,8 +438,25 @@ if simEngine == "Nuage":
  options.nEvents = min(options.nEvents,Nuagegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
  print('Generate ',options.nEvents,' with Nuage input', ' first event',options.firstEvent)
+ #--------------------> MODIFIED
+if simEngine == "Nuage" and options.shipLHC:
+ primGen.SetTarget(0., 0.)
+ Nuagegen = ROOT.NuageGenerator()
+ Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
+ Nuagegen.SetPositions(0., -ship_geo.EmulsionDet.zdim/2, ship_geo.EmulsionDet.zdim/2, -ship_geo.EmulsionDet.xdim/2, ship_geo.EmulsionDet.xdim/2, -ship_geo.EmulsionDet.ydim/2, ship_geo.EmulsionDet.ydim/2)
+ ut.checkFileExists(inputFile)
+ Nuagegen.Init(inputFile,options.firstEvent)
+ primGen.AddGenerator(Nuagegen)
+ options.nEvents = min(options.nEvents,Nuagegen.GetNevents())
+ run.SetPythiaDecayer("DecayConfigNuAge.C")
+ print('Generate ',options.nEvents,' with Nuage input', ' first event',options.firstEvent)
+
+
+	
+ 
+ #<--------------------- MODIFIED
 # -----Neutrino Background------------------------
-if simEngine == "Genie":
+if simEngine == "Genie" and not options.shipLHC: #<--------------------- MODIFIED
 # Genie
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -413,6 +467,21 @@ if simEngine == "Genie":
  options.nEvents = min(options.nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
  print('Generate ',options.nEvents,' with Genie input', ' first event',options.firstEvent)
+
+#--------------------> MODIFIED
+if simEngine=="Genie" and options.shipLHC:
+ ut.checkFileExists(inputFile)
+ primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
+ Geniegen = ROOT.GenieGenerator()
+ Geniegen.Init(inputFile,options.firstEvent)
+ Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.zdim/2)
+ #Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.TTz+12*(ship_geo.EmulsionDet.TTz+ship_geo.EmulsionDet.BrZ))
+ primGen.AddGenerator(Geniegen)
+ options.nEvents = min(options.nEvents,Geniegen.GetNevents())
+ run.SetPythiaDecayer('DecayConfigPy8.C')
+ print('Generate ',options.nEvents,' with Genie input for Ship@LHC', ' first event',options.firstEvent)
+#<--------------------- MODIFIED
+
 if simEngine == "nuRadiography":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
@@ -432,15 +501,24 @@ if simEngine == "nuRadiography":
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
+  if options.shipLHC:
+   ut.checkFileExists(inputFile)
+   Ntuplegen = ROOT.NtupleGenerator_FLUKA()
+   Ntuplegen.SetZ(ship_geo.Floor.z)
+   Ntuplegen.Init(inputFile,options.firstEvent)
+   primGen.AddGenerator(Ntuplegen)
+   options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
+  else:
 # reading previously processed muon events, [-50m - 50m]
- ut.checkFileExists(inputFile)
- primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
- Ntuplegen = ROOT.NtupleGenerator()
- Ntuplegen.Init(inputFile,options.firstEvent)
- primGen.AddGenerator(Ntuplegen)
- options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
- print('Process ',options.nEvents,' from input file')
+   ut.checkFileExists(inputFile)
+   primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
+   Ntuplegen = ROOT.NtupleGenerator()
+   Ntuplegen.Init(inputFile,options.firstEvent)
+   primGen.AddGenerator(Ntuplegen)
+   options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
+  print('Process ',options.nEvents,' from input file')
 #
+
 if simEngine == "MuonBack":
 # reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
  fileType = ut.checkFileExists(inputFile)
@@ -467,11 +545,7 @@ if simEngine == "MuonBack":
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
  print('Process ',options.nEvents,' from input file, with Phi random=',options.phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
- if options.followMuon :  
-    options.fastMuon = True
-    modules['Veto'].SetFollowMuon()
- if options.fastMuon :    modules['Veto'].SetFastMuon()
-
+ 
  # optional, boost gamma2muon conversion
  # ROOT.kShipMuonsCrossSectionFactor = 100. 
 #
@@ -489,7 +563,19 @@ if simEngine == "Cosmics":
 #
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------
-
+if options.followMuon :  
+    if 'Veto' in modules:
+        options.fastMuon = True
+        modules['Veto'].SetFollowMuon()
+    if 'Floor' in modules:
+        modules['Floor'].MakeSensitive()
+        print('make floor sensitive')
+if options.fastMuon :
+     if 'Veto' in modules:       modules['Veto'].SetFastMuon()
+     elif 'Floor' in modules: 
+           modules['Floor'].SetFastMuon()
+           print('only transport muons')
+# ------------------------------------------------------------------------
 #---Store the visualiztion info of the tracks, this make the output file very large!!
 #--- Use it only to display but not for production!
 if options.eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
@@ -513,6 +599,15 @@ elif options.deepCopy:
  fStack.SetMinPoints(0)
  fStack.SetEnergyCut(0.*u.MeV)
 
+#
+if options.boostFactor > 1:
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
+ ROOT.gROOT.ProcessLine('#include "Geant4/G4MuBremsstrahlung.hh"')
+ gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
+ procBrems        = gProcessTable.FindProcess(ROOT.G4String('muBrems'),ROOT.G4String('mu+'))
+ procBrems.SetCrossSectionBiasingFactor(options.boostFactor)
+#
+
 if options.eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
   trajFilter = ROOT.FairTrajFilter.Instance()
@@ -530,7 +625,7 @@ import geomGeant4
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
-if options.charm == 0:   # charm and muflux testbeam not yet updated for using the new bfield interface
+if options.charm == 0 and not options.shipLHC:   # charm and muflux testbeam not yet updated for using the new bfield interface  <-------- MODIFIED
  if hasattr(ship_geo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
 
@@ -555,6 +650,8 @@ if inactivateMuonProcesses :
  gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess(ROOT.G4String('muIoni'),ROOT.G4String('mu+'))
  procmu.SetVerboseLevel(2)
+
+if debug:  ROOT.fair.Logger.SetConsoleSeverity("debug")
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
@@ -598,7 +695,7 @@ print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # remove empty events
-if simEngine == "MuonBack":
+if simEngine == "MuonBack" and not options.followMuon:
  tmpFile = outFile+"tmp"
  xxx = outFile.split('/')
  check = xxx[len(xxx)-1]

@@ -28,13 +28,14 @@ def readHists(h,fname,wanted=[]):
     cln = obj.Class().GetName()
     if not cln.find('TCanv')<0: 
        h[hname] =  obj.Clone()
-    if cln.find('TH')<0: continue
+    if cln.find('TH')<0 and cln.find('TP')<0 and cln.find('TE')<0: continue
     if hname in h: 
-       rc = h[hname].Add(obj)
+       if hasattr(h[hname],"Add"): rc = h[hname].Add(obj)
        if not rc: print("Error when adding histogram ",hname) 
     else: 
       h[hname] =  obj.Clone()
-      if h[hname].GetSumw2N()==0 : h[hname].Sumw2() 
+      if hasattr(h[hname],"GetSumw2N"):
+              if h[hname].GetSumw2N()==0 : h[hname].Sumw2() 
     h[hname].SetDirectory(gROOT)
     if cln == 'TH2D' or cln == 'TH2F':
          for p in [ '_projx','_projy']:
@@ -69,7 +70,8 @@ def writeHists(h,fname,plusCanvas=False):
   for akey in h:
     if not hasattr(h[akey],'Class'): continue
     cln = h[akey].Class().GetName()
-    if not cln.find('TH')<0 or not cln.find('TP')<0:   h[akey].Write()
+    if not cln.find('TH')<0 or not cln.find('TP')<0 or not cln.find('TE')<0:  
+       h[akey].Write()
     if plusCanvas and not cln.find('TC')<0:   h[akey].Write()
   f.Close()  
 def bookCanvas(h,key=None,title='',nx=900,ny=600,cx=1,cy=1):

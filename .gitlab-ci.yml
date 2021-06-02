@@ -5,12 +5,13 @@ build:
   image: alisw/alidock:cc7
   stage: build
   variables:
-    GIT_CLONE_PATH: '$CI_BUILDS_DIR/FairShip/'
+    GIT_CLONE_PATH: '$CI_BUILDS_DIR/sndsw/'
   before_script:
-    - source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
+    - source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
     - cd ..
+    - git clone https://github.com/SND-LHC/snddist
   script:
-    - aliBuild -c $SHIPDIST --default fairship build FairShip --always-prefer-system --debug
+    - aliBuild -c snddist build sndsw --always-prefer-system --debug
 
 build&test:
   tags:
@@ -18,12 +19,13 @@ build&test:
   image: alisw/alidock:cc7
   stage: build
   variables:
-    GIT_CLONE_PATH: '$CI_BUILDS_DIR/FairShip'
+    GIT_CLONE_PATH: '$CI_BUILDS_DIR/sndsw'
   before_script:
-    - source /cvmfs/ship.cern.ch/SHiP-2020/latest/setUp.sh
+    - source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
     - cd ..
-    - aliBuild -c $SHIPDIST --default fairship build FairShip --always-prefer-system --debug
-    - eval `alienv load FairShip/latest`
+    - git clone https://github.com/SND-LHC/snddist
+    - aliBuild -c snddist build sndsw --always-prefer-system --debug
+    - eval `alienv load sndsw/latest`
   script:
     # it seems like the python script behave different if run inside the CI or if run from the classical command line. 
     # I believe the difference is the interactivity of the shell, in the CI is not iteractive, in the shell it is iteractive.

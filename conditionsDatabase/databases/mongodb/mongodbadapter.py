@@ -9,11 +9,12 @@ from mongoengine import *
 ## decorator for the class.
 #from typing import final
 
-from models.detector import Detector
-from models.detectorWrapper import DetectorWrapper
-from models.condition import Condition
-from ...interface import APIInterface
-
+#evh add  databases.mongodb.
+from databases.mongodb.models.detector import Detector
+from databases.mongodb.models.detectorWrapper import DetectorWrapper
+from databases.mongodb.models.condition import Condition
+#from ...interface import APIInterface
+from interface import APIInterface
 
 # Package metadata
 __authors__    = ["Nathan DPenha", "Juan van der Heijden",
@@ -44,6 +45,10 @@ class MongoToCDBAPIAdapter(APIInterface):
         """
         Create a connection to a MongoDB server and return the connection handle.
         """
+        #evh added printout
+        #print ('***********')
+        #print ("db=",connection_dict['db_name']," username=",connection_dict['user']," host=",connection_dict['host'])
+        #print ('***********')       
         return connect(
             db=connection_dict['db_name'],
             username=connection_dict['user'],
@@ -184,9 +189,14 @@ class MongoToCDBAPIAdapter(APIInterface):
             detector_wrapper = DetectorWrapper.objects().get(name=detector_names[0])
             return detector_wrapper
         except:
-            raise ValueError("The detector wrapper ",
+	    #evh
+            print ("The detector wrapper ",
                              detector_names[0],
-                             " does not exist in the database")
+                           " does not exist in the database")
+            pass	     
+	    #raise ValueError("The detector wrapper ",
+            #                 detector_names[0],
+            #                 " does not exist in the database")
 
     def __get_subdetector(self, detector, sub_name):
         """
@@ -221,9 +231,14 @@ class MongoToCDBAPIAdapter(APIInterface):
 
             if detector is None:
                 path = self.__sanitize_path(path)
-                raise ValueError("The detector " +
+                #evh
+                print ("The detector " +
                                  path +
                                  " does not exist in the database")
+                pass
+                #raise ValueError("The detector " +
+                #                 path +
+                #                 " does not exist in the database")
 
         return detector
 
@@ -250,9 +265,14 @@ class MongoToCDBAPIAdapter(APIInterface):
         try:
             wrapper = self.__get_wrapper(wrapper_id)
         except Exception:
-            raise ValueError("The detector '",
+            #evh
+            print ("The detector '",
                              wrapper_id,
                              "' does not exist in the database")
+            pass
+            #raise ValueError("The detector '",
+            #                 wrapper_id,
+            #                 "' does not exist in the database")
         wrapper.delete()
 
     # Method signature description can be found in the toplevel interface.py file
@@ -274,9 +294,14 @@ class MongoToCDBAPIAdapter(APIInterface):
             try:
                 wrapper = self.__get_wrapper(parent_id)
             except Exception:
-                raise ValueError("The detector '",
+                #evh
+                print ("The detector '",
                                  parent_id,
                                  "' does not exist in the database")
+                pass
+                #raise ValueError("The detector '",
+                #                 parent_id,
+                #                 "' does not exist in the database")
 
             detector = self.__get_detector(wrapper, parent_id)
             path = self.__sanitize_path(parent_id)
@@ -337,7 +362,10 @@ class MongoToCDBAPIAdapter(APIInterface):
                 wrapper.save()
             # If the wrapper already exist throw an error
             else:
-                raise ValueError("The detector '" + name + "' already exists")
+	        # evh. should not crash when detector already exists
+                print ("The detector '",name,"' already exists. Nothing done.")
+                pass
+                #raise ValueError("The detector '" + name + "' already exists")
 
         # If we add a subdetector
         else:
@@ -364,11 +392,14 @@ class MongoToCDBAPIAdapter(APIInterface):
 
             try:
                 detector.subdetectors.get(name=name)
+		#evh added this. should not crash if detector already exists.
+                print ("Detector '",parent_id,"/",name,"' already exists. Nothing done.")
+                pass
             except:
                 detector.subdetectors.append(added_detector)
                 detector_wrapper.save()
                 return
-            raise ValueError("Detector '" + parent_id + "/" + name + "' already exist")
+            #raise ValueError("Detector '" + parent_id + "/" + name + "' already exist")
 
     # Method signature description can be found in the toplevel interface.py file
     def remove_detector(self, detector_id):
@@ -384,9 +415,14 @@ class MongoToCDBAPIAdapter(APIInterface):
         try:
             wrapper = self.__get_wrapper(detector_id)
         except Exception:
-            raise ValueError("The detector '",
+            #evh
+            print ("The detector '",
                              detector_id,
                              "' does not exist in the database")
+            pass
+            #raise ValueError("The detector '",
+            #                 detector_id,
+            #                 "' does not exist in the database")
 
         detector_names = self.__split_name(detector_id)
         # If we want to remove a root detector
@@ -394,9 +430,14 @@ class MongoToCDBAPIAdapter(APIInterface):
             try:
                 self.__remove_wrapper(detector_names[0])
             except Exception:
-                raise ValueError("The detector '",
+                #evh
+                print ("The detector '",
                                  detector_names[0],
                                  "' does not exist in the database")
+                pass
+                #raise ValueError("The detector '",
+                #                 detector_names[0],
+                #                 "' does not exist in the database")
             return
 
         # Otherwise, when we remove a subdetector
@@ -518,7 +559,10 @@ class MongoToCDBAPIAdapter(APIInterface):
         try:
             detector = self.__get_detector(detector_wrapper, detector_id)
         except Exception:
-            raise ValueError("The requested detector '" + detector_id + "' does not exist.")
+            #evh
+            print ("The requested detector '" + detector_id + "' does not exist.")   
+            return None	     
+            #raise ValueError("The requested detector '" + detector_id + "' does not exist.")
 
         conditions_list = []
 

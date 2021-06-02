@@ -40,6 +40,8 @@ DPPythia8Generator.cxx
 GenieGenerator.cxx
 NuageGenerator.cxx
 NtupleGenerator.cxx
+NtupleGenerator_FLUKA.cxx
+NeutronGenerator_FLUKA.cxx
 MuonBackGenerator.cxx
 CosmicsGenerator.cxx
 MuDISGenerator.cxx
