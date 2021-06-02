@@ -53,13 +53,13 @@ its dependencies.
 The basic commands are the same regardless of whether CVMFS is used:
 
 <dl>
-  <dt><code>aliBuild build <package-name> -c snddist</code></dt>
-  <dd>Build the package <code><package-name></code> (e.g. <code>sndsw</code>) and its dependencies using the recipes and configuration provided by snddist.
+  <dt><code>aliBuild build &lt;package-name&gt; -c snddist</code></dt>
+  <dd>Build the package <code>&lt;package-name&gt;</code> (e.g. <code>sndsw</code>) and its dependencies using the recipes and configuration provided by snddist.
   On CVMFS, it is recommended to add <code>--always-prefer-system</code> to ensure packages are used from CVMFS instead of being rebuilt.</dd>
-  <dt><code>aliDoctor <package-name> -c snddist</code></dt>
-  <dd>Provide troubleshooting information and hints on which packages can be used from the system for <code><package-name></code> and its dependencies.</dd>
-  <dt><code>alienv <package-name>/latest -c snddist</code></dt>
-  <dd>Enter an environment with <code><package-name></code> and its dependencies.</dd>
+  <dt><code>aliDoctor &lt;package-name&gt;  -c snddist</code></dt>
+  <dd>Provide troubleshooting information and hints on which packages can be used from the system for <code>&lt;package-name&gt;</code> and its dependencies.</dd>
+  <dt><code>alienv &lt;package-name&gt; /latest -c snddist</code></dt>
+  <dd>Enter an environment with <code>&lt;package-name&gt;</code> and its dependencies.</dd>
 </dl>
 
 For more information on using `aliBuild`, see its
@@ -70,34 +70,33 @@ specific and will not apply to SND@LHC software).
 
 On `lxplus` or any CC7/CC8 machine with access to CVMFS, you can do the following:
 
-1. Clone the [snddist](https://github.com/SND-LHC/snddist), which containts the recipes to build `sndsw` and it's dependencies:
-    ```bash
-    git clone https://github.com/SND-LHC/snddist
-    ```
-
-2. Make sure you can access the SNDLHC CVMFS Repository
+1. Make sure you can access the SNDLHC CVMFS Repository
     ```bash
     ls /cvmfs/sndlhc.cern.ch
     ```
-3. Source the `setUp.sh` script
+2. Source the `setUp.sh` script
     ```bash
-    source /cvmfs/sndsw.cern.ch/latest/setUp.sh
+    source /cvmfs/sndlhc.cern.ch/latest/setUp.sh
     ```
-
+3. If you don't want to modify the sndsw package, skip step 3:
+    ```bash
+    git clone https://github.com/SND-LHC/sndsw
+    ```
+   This gives you by default the master branch of the software. In case, you want to use a specific branch:
+    ```bash
+    cd sndsw
+    git checkout <branch>
+    cd ..
+    ```
 4. Build the software using `aliBuild`
     ```bash
-    aliBuild build sndsw -c snddist --always-prefer-system
+    aliBuild build sndsw -c $SNDDIST --always-prefer-system
     ```
-5. If you need to modify `sndsw`, create a development copy
-    ``` bash
-    aliBuild init -c snddist sndsw
-    ```
-
-If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
+If you exit your shell session and you want to go back working on it, make sure to re-execute the second step.
 
 To load the `sndsw` environment, after you build the software, you can simply use:
 
-6. Load the environment
+5. Load the environment
     ```bash
     alienv enter sndsw/latest
     ```
@@ -118,19 +117,32 @@ Commands are similar to the previous case, but without access to CVMFS you need 
     ```bash
     git clone https://github.com/SND-LHC/snddist.git
     ```
+2.  If you don't want to modify the sndsw package, skip step 2:
+    ```bash
+    git clone https://github.com/SND-LHC/sndsw
+    ```
+    This gives you by default the master branch of the software. In case, you want to use a specific branch:
+    ```bash
+    cd sndsw
+    git checkout <branch>
+    cd ..
+    ```
     
-2. Install [aliBuild](https://github.com/alisw/alibuild)
+3. Install [aliBuild](https://github.com/alisw/alibuild)
     ``` bash
     pip3 install --user alibuild
     ```
-    and make sure that it is in your $PATH
+    and make sure that it is in your $PATH, or if you are administrator:
+    ``` bash
+    sudo pip3 install alibuild
+    ```
 
-2. Build the software using aliBuild
+4. Build the software using aliBuild
     ```bash
     aliBuild build sndsw -c snddist
     ```
     If you run into any problems, `aliDoctor` can help determine what the problem is.
-3. Load the environment
+5. Load the environment
     ```bash
     alienv enter sndsw/latest
     ```
@@ -142,13 +154,13 @@ updated  1 June 2021
  Set up the bulk of the environment from CVMFS. 
 
  ```bash 
- source /cvmfs/sndsw.cern.ch/latest/setUp.sh 
+ source /cvmfs/sndlhc.cern.ch/latest/setUp.sh 
  ``` 
 
  Load your local sndsw environment. 
 
  ```bash 
- alibuild/alienv enter (--shellrc) sndsw/latest 
+ alienv enter (--shellrc) sndsw/latest 
  ```     
 
   ```bash 
