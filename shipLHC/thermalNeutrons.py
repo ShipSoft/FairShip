@@ -20,6 +20,8 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4GenericPhysicsList.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4RunManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 
+ROOT.gRandom.SetSeed()
+
 parser = ArgumentParser()
 parser.add_argument("-b", "--heartbeat",  dest="heartbeat", type=int,  help="progress report",            default=10000)
 parser.add_argument("-n", "--nEvents",      dest="nEvents",     type=int,  help="number of events",        default=100)
@@ -27,15 +29,17 @@ parser.add_argument("-r", "--run",                 dest="run",       type=int,  
 parser.add_argument('--material',               dest='targetMaterial',      type=str,help="target material BoronCarbide or  Boratedpolyethylene",                     default="BoronCarbide")
 parser.add_argument('--thick',                      dest='targetLength',      type=float,help="target thickness",                     default=0.1)
 parser.add_argument('-c', '--command',    dest='command',              help="command")
-parser.add_argument("--Estart",  dest="Estart",   help="start of energy range of particle gun (default= 0 MeV)", required=False, default=0, type=float)
+parser.add_argument("--Estart",  dest="Estart",   help="start of energy range of particle gun (default= 0 MeV)", required=False, default=1E-20, type=float)
 parser.add_argument("--Eend",    dest="Eend",    help="end of energy range of particle gun  (default=10 MeV)", required=False, default=0.01, type=float)
 parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=2112)", required=False, default=2112, type=int)
+parser.add_argument("--setup",     dest="neutron",     help="setup for absorptionLength or neutron in cold box)", required=False, action='store_true')
 options = parser.parse_args()
 
 # -------------------------------------------------------------------
 logEstart = int(ROOT.TMath.Log10(options.Estart))
 logEend  = int(ROOT.TMath.Log10(options.Eend))
 outFile = 'thermNeutron_'+options.targetMaterial+'_'+str(options.targetLength)+'_'+str(logEstart)+'_'+str(logEend)+'_'+str(options.run)+'.root'
+if options.neutron:  outFile = 'thermNeutron_%s_%s_coldbox_%s-%iM.root'%(options.targetMaterial,str(options.targetLength),str(options.run),options.nEvents/1000000.)
 parFile = outFile.replace('thermNeutron','params-thermNeutron')
 
 # -----Timer--------------------------------------------------------
@@ -48,16 +52,20 @@ run.SetName('TGeant4')  # Transport engine
 run.SetOutputFile(outFile)  # Output file
 run.SetUserConfig("g4ConfigNeutron.C") # user configuration file default g4Config.C
 
-myPgun = ROOT.FairBoxGenerator(options.pID,1)
-myPgun.SetEkinRange(options.Estart,options.Eend)
-myPgun.SetPhiRange(0, 0) # // Azimuth angle range [degree]
-myPgun.SetThetaRange(0,0)
-myPgun.SetXYZ(0.,0.,-1.)
-
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-primGen.AddGenerator(myPgun)
-ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
+
+if options.neutron:
+   Neutrongen = ROOT.NeutronGenerator_FLUKA()
+   primGen.AddGenerator(Neutrongen)
+else:
+   myPgun = ROOT.FairBoxGenerator(options.pID,1)
+   myPgun.SetEkinRange(options.Estart,options.Eend)
+   myPgun.SetPhiRange(0, 0) # // Azimuth angle range [degree]
+   myPgun.SetThetaRange(0,0)
+   myPgun.SetXYZ(0.,0.,-1.)
+   primGen.AddGenerator(myPgun)
+   ROOT.FairLogger.GetLogger().SetLogScreenLevel("WARNING") # otherwise stupid printout for each event
 
 # -----Materials----------------------------------------------
 run.SetMaterials("media.geo")
@@ -67,7 +75,7 @@ cave.SetGeometryFileName("caveXS.geo")
 run.AddModule(cave)
 
 target = ROOT.boxTarget()
-target.SetTarget(options.targetMaterial,options.targetLength*u.cm)
+target.SetTarget(options.targetMaterial,options.targetLength*u.cm,not options.neutron)
 run.AddModule(target)
 
 #
@@ -112,6 +120,13 @@ print(' ')
 print("Macro finished succesfully.") 
 print("Output file is ",  outFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
+
+run.CreateGeometryFile("geofile-"+outFile)
+sGeo = ROOT.gGeoManager
+sGeo.SetNmeshPoints(10000)
+sGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
+sGeo.PrintOverlaps()
+
 
 h={}
 import rootUtils as ut

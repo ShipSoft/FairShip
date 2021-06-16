@@ -53,13 +53,13 @@ its dependencies.
 The basic commands are the same regardless of whether CVMFS is used:
 
 <dl>
-  <dt><code>aliBuild build <package-name> -c snddist</code></dt>
-  <dd>Build the package <code><package-name></code> (e.g. <code>sndsw</code>) and its dependencies using the recipes and configuration provided by snddist.
+  <dt><code>aliBuild build &lt;package-name&gt; -c snddist</code></dt>
+  <dd>Build the package <code>&lt;package-name&gt;</code> (e.g. <code>sndsw</code>) and its dependencies using the recipes and configuration provided by snddist.
   On CVMFS, it is recommended to add <code>--always-prefer-system</code> to ensure packages are used from CVMFS instead of being rebuilt.</dd>
-  <dt><code>aliDoctor <package-name> -c snddist</code></dt>
-  <dd>Provide troubleshooting information and hints on which packages can be used from the system for <code><package-name></code> and its dependencies.</dd>
-  <dt><code>alienv <package-name>/latest -c snddist</code></dt>
-  <dd>Enter an environment with <code><package-name></code> and its dependencies.</dd>
+  <dt><code>aliDoctor &lt;package-name&gt;  -c snddist</code></dt>
+  <dd>Provide troubleshooting information and hints on which packages can be used from the system for <code>&lt;package-name&gt;</code> and its dependencies.</dd>
+  <dt><code>alienv &lt;package-name&gt; /latest -c snddist</code></dt>
+  <dd>Enter an environment with <code>&lt;package-name&gt;</code> and its dependencies.</dd>
 </dl>
 
 For more information on using `aliBuild`, see its
@@ -68,36 +68,35 @@ specific and will not apply to SND@LHC software).
 
 ## On lxplus or systems with CVMFS
 
-On `lxplus` or any CC7 machine with access to CVMFS, you can do the following:
+On `lxplus` or any CC7/CC8 machine with access to CVMFS, you can do the following:
 
-1. Clone the [snddist](https://github.com/SND-LHC/snddist), which containts the recipes to build `sndsw` and it's dependencies:
+1. Make sure you can access the SNDLHC CVMFS Repository
     ```bash
-    git clone https://github.com/SND-LHC/snddist
+    ls /cvmfs/sndlhc.cern.ch
     ```
-
-2. Make sure you can access the SHiP CVMFS Repository
+2. Source the `setUp.sh` script
     ```bash
-    ls /cvmfs/ship.cern.ch
+    source /cvmfs/sndlhc.cern.ch/latest/setUp.sh
     ```
-3. Source the `setUp.sh` script
+3. If you don't want to modify the sndsw package, skip step 3:
     ```bash
-    source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
+    git clone https://github.com/SND-LHC/sndsw
     ```
-
+   This gives you by default the master branch of the software. In case, you want to use a specific branch:
+    ```bash
+    cd sndsw
+    git checkout <branch>
+    cd ..
+    ```
 4. Build the software using `aliBuild`
     ```bash
-    aliBuild build sndsw -c snddist --always-prefer-system
+    aliBuild build sndsw -c $SNDDIST --always-prefer-system
     ```
-5. If you need to modify `sndsw`, create a development copy
-    ``` bash
-    aliBuild init -c snddist sndsw
-    ```
-
-If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.
+If you exit your shell session and you want to go back working on it, make sure to re-execute the second step.
 
 To load the `sndsw` environment, after you build the software, you can simply use:
 
-6. Load the environment
+5. Load the environment
     ```bash
     alienv enter sndsw/latest
     ```
@@ -118,61 +117,88 @@ Commands are similar to the previous case, but without access to CVMFS you need 
     ```bash
     git clone https://github.com/SND-LHC/snddist.git
     ```
+2.  If you don't want to modify the sndsw package, skip step 2:
+    ```bash
+    git clone https://github.com/SND-LHC/sndsw
+    ```
+    This gives you by default the master branch of the software. In case, you want to use a specific branch:
+    ```bash
+    cd sndsw
+    git checkout <branch>
+    cd ..
+    ```
     
-2. Install [aliBuild](https://github.com/alisw/alibuild)
+3. Install [aliBuild](https://github.com/alisw/alibuild)
     ``` bash
     pip3 install --user alibuild
     ```
-    and make sure that it is in your $PATH
+    and make sure that it is in your $PATH, or if you are administrator:
+    ``` bash
+    sudo pip3 install alibuild
+    ```
 
-2. Build the software using aliBuild
+4. Build the software using aliBuild
     ```bash
     aliBuild build sndsw -c snddist
     ```
     If you run into any problems, `aliDoctor` can help determine what the problem is.
-3. Load the environment
+5. Load the environment
     ```bash
     alienv enter sndsw/latest
     ```
 
 # Run Instructions
 
-**To be updated**
+updated  1 June 2021
 
-<!-- Set up the bulk of the environment from CVMFS. -->
+ Set up the bulk of the environment from CVMFS. 
 
-<!-- ```bash -->
-<!-- source /cvmfs/ship.cern.ch/SHiP-2018/latest/setUp.sh -->
-<!-- ``` -->
+ ```bash 
+ source /cvmfs/sndlhc.cern.ch/latest/setUp.sh 
+ ``` 
 
-<!-- Load your local FairShip environment. -->
+ Load your local sndsw environment. 
 
-<!-- ```bash -->
-<!-- alibuild/alienv enter (--shellrc) FairShip/latest -->
-<!-- ```     -->
+ ```bash 
+ alienv enter (--shellrc) sndsw/latest 
+ ```     
 
-<!-- Now you can for example simulate some events, run reconstruction and analysis: -->
+  ```bash 
+ python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n 100 -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0
+ >> Macro finished succesfully. 
+ ```
+ >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile_full.Ntuple-TGeant4.root  (setup) 
 
-<!-- ```bash -->
-<!-- python $FAIRSHIP/macro/run_simScript.py -->
-<!-- >> Macro finished succesfully. -->
-<!-- >> Output file is  ship.conical.Pythia8-TGeant4.root -->
+ Run the event display: 
 
-<!-- python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root -->
-<!-- >> finishing pyExit -->
+ ```bash 
+ python -i $SNDSW_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile_full.Ntuple-TGeant4.root 
+ // use SHiP Event Display GUI 
+ Use quit() or Ctrl-D (i.e. EOF) to exit 
+ ``` 
+ a) Use the GUI to display  events: SHiP actions / next event
 
-<!-- python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root -->
-<!-- >> finished making plots -->
-<!-- ``` -->
+ b) Hoovering over trajectory will display additional information : 
+ 
+ c) At python prompt: sTree.MCTrack.Dump() will display info about all MC particles 
 
-<!-- Run the event display: -->
+## Use cases covered by run_simSND.py:
 
-<!-- ```bash -->
-<!-- python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root -->
-<!-- // use SHiP Event Display GUI -->
-<!-- Use quit() or Ctrl-D (i.e. EOF) to exit -->
-<!-- ``` -->
+1. Transport muons, output of FLUKA simulation, to TI18 and the detector. Positive and negative muons, up and down crossing angles, exist.
+Possible options are setting minimum energy for transporting particles, transport only muons, increase EM cross sections of muons.
 
+ ```bash 
+ python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n nEvents  -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin ecut
+ ```
+
+2. Muon deep inelastic scattering events, produced with pythia6, and then positioned in T18 and transported by Geant4:
+ ```bash 
+ python  $SNDSW_ROOT/shipLHC/run_simSND.py  -F --MuDIS -n nEvents -f  /eos/experiment/sndlhc/MonteCarlo/Pythia6/MuonDIS/muonDis_1001.root  --eMin ecut
+ ```
+3. WORK ONGOING: Neutrino events, produced by GENIE, sndsw/macro/makeSNDGenieEvents.py, and then positioned in T18 and transported by Geant4:
+ ```bash 
+ python  $SNDSW_ROOT/shipLHC/run_simSND.py  --Genie -n nEvents -f ...
+ ```
 # Docker Instructions
 
 Docker is **not** the recommended way to run `sndsw` locally. It is ideal

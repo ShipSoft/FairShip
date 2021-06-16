@@ -71,7 +71,7 @@ def TEvePointSetPrintOut(P):
  if P.GetN()==0: txt = '<ROOT.TEvePointSet object>'
  for n in range(P.GetN()):
   rc = P.GetPoint(n,x,y,z)
-  txt += '%6i %7.1F,%7.1F,%9.1F x,y,z cm\n'%(n,x,y,z)
+  txt += '%6i %7.1F,%7.1F,%9.1F x,y,z cm\n'%(n,x.value,y.value,z.value)
  return txt
 
 

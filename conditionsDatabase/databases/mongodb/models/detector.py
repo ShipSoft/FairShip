@@ -1,6 +1,7 @@
 """ Contains a Mongo Engine model definition for a Detector. """
 from mongoengine import EmbeddedDocument, EmbeddedDocumentListField, StringField
-from condition import Condition
+#evh
+from databases.mongodb.models.condition import Condition
 
 
 ## This model represents a physical device measuring or detecting a certain

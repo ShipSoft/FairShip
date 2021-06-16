@@ -125,6 +125,7 @@ Double_t ShipMCTrack::GetEnergy() const
    Double_t mass = GetMass();
    return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
   }else{
+   if (fPdgCode==22){return TMath::Sqrt(fPx*fPx + fPy*fPy + fPz*fPz );}
    return TMath::Sqrt(fM*fM + fPx*fPx + fPy*fPy + fPz*fPz );
   }
 }

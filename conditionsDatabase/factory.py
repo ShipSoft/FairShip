@@ -25,14 +25,17 @@ class APIFactory:
     #   @throw  NotImplementedError:    If the specified database is not supported
     #   @return                         Instance of the specified database API
     def construct_DB_API(self, path=None):
+
         config = self.__read_config_file(path)
 
         if config is None or len(config) <= 0:
             raise ValueError("Error in reading or accessing the configuration file")
-
-        db_type = config.keys()[0]
+	#evh
+        #db_type = config.keys()[0]
+        db_type = "mongo"
         connection_dict = config[db_type]
 
+	
         if db_type not in self.__supported_db_types:
             raise NotImplementedError(db_type + " database is not supported")
 
@@ -89,6 +92,8 @@ class APIFactory:
             connection_dict["password"] = cfg[db_type]["password"]
             connection_dict["port"] = cfg[db_type]["port"]
             ret[db_type.lower()] = connection_dict
+            #evh print
+            #print (" connection_dict=",connection_dict)
             return ret
         except KeyError:
             print("Incorrect configuration file, missing some parameters. it should contain: "

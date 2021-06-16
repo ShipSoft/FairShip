@@ -20,7 +20,7 @@
 #include "TVirtualMC.h"
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
-#include "TGeoBBox.h"
+#include "TGeoTube.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoBoolNode.h"
 #include "TGeoMaterial.h"
@@ -140,15 +140,65 @@ void boxTarget::ConstructGeometry()
    TGeoMedium *TargetMaterial = gGeoManager->GetMedium(fTargetMaterial);
    InitMedium("vacuums");
    TGeoMedium *vac  = gGeoManager->GetMedium("vacuums");
+   InitMedium("Concrete");
+   TGeoMedium *concrete = gGeoManager->GetMedium("Concrete");
+    if (fBox){
+    // for studying absorption length
+      TGeoVolume* target  = gGeoManager->MakeBox("Target",TargetMaterial,199.*cm,199.*cm,(fTargetL/2)*cm);
+      top->AddNode(target, 1, new TGeoTranslation(0, 0, (fTargetL/2)*cm));
 
-   TGeoVolume* target  = gGeoManager->MakeBox("Target",TargetMaterial,199.*cm,199.*cm,(fTargetL/2)*cm);
-   top->AddNode(target, 1, new TGeoTranslation(0, 0, (fTargetL/2)*cm));
+      TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,199.*cm,199.*cm,1.*mm);
+      sensPlane->SetLineColor(kGreen);
+      top->AddNode(sensPlane, 13, new TGeoTranslation(0, 0, (fTargetL+ 0.11)*cm));
+      AddSensitiveVolume(sensPlane);
+      AddSensitiveVolume(target);
+    }else{
+    // more realistic setup of coldBox
+    //  x1=-1140 mm, x2= 400 mm
+    //  y1=100 mm, y2=1114 mm
+    //  z1=50 mm, z2=1500mm
+    // 20cm x 2cm hole for SciFi cables 
+    // 20cm x 20cm hole for cooling pipes
+      float x1=-1140;
+      float x2= 400;
+      float y1=100;
+      float y2=1114;
+      float z1=50;
+      float z2=1500;
+      float dx = (x2-x1)/10./2.;
+      float dy = (y2-y1)/10./2.;
+      float dz = (z2-z1)/10./2.;
+      float d = fTargetL;
+      float rAir  = 10.;
+      float cablesDx = 10;
+      float cablesDy = 1;
 
-   TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,199.*cm,199.*cm,1.*mm);
-   sensPlane->SetLineColor(kGreen);
-   top->AddNode(sensPlane, 13, new TGeoTranslation(0, 0, (fTargetL+ 0.11)*cm));
-   AddSensitiveVolume(sensPlane);
-   AddSensitiveVolume(target);
+      TGeoBBox* box_I   = new TGeoBBox("box_I",dx,dy,dz);
+      double origin[3] = {0,d/2,0};
+      TGeoBBox* box_O = new TGeoBBox("box_O",dx+d,dy+d/2.,dz+d,origin);
+      TGeoTube* hole_air = new TGeoTube("hole_air",0.,rAir,dx);
+      TGeoRotation* RF = new TGeoRotation("R_airTube");
+      RF->SetAngles(0.,0.,90.);
+      TGeoCombiTrans* CombiTrans1 = new TGeoCombiTrans("T_AirTube",-dx/2,0,10.,RF);
+      CombiTrans1->RegisterYourself();
+      TGeoCombiTrans* CombiTrans2 = new TGeoCombiTrans("T_CablesDuct",dx/2,0,10.,RF);
+      CombiTrans2->RegisterYourself();
+      TGeoBBox* hole_cables = new TGeoBBox("hole_cables",cablesDx,cablesDy,dx);
+      double floor_thickness  = 25.;
+      double originF[3] = {0,-dy-floor_thickness,0};
+      TGeoBBox* floor   = new TGeoBBox("floor",1.5*dx,floor_thickness,1.5*dz,originF);
+      TGeoCompositeShape* box = new TGeoCompositeShape("box","box_O-box_I-hole_air:T_AirTube-hole_cables:T_CablesDuct");
+      TGeoVolume *volBox = new TGeoVolume("vbox",box,TargetMaterial);
+      TGeoVolume *volFloor = new TGeoVolume("vfloor",floor,concrete);
+      TGeoVolume *sensBox = new TGeoVolume("sensBox",box_I,vac);
+      sensBox->SetLineColor(kGreen);
+      top->AddNode(sensBox, 13);
+      AddSensitiveVolume(sensBox);
+      top->AddNode(volBox, 1);
+      AddSensitiveVolume(volBox);
+      top->AddNode(volFloor, 2);
+    }
+
 }
 
 vetoPoint* boxTarget::AddHit(Int_t trackID, Int_t detID,

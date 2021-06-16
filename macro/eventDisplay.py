@@ -226,7 +226,9 @@ class DrawTracks(ROOT.FairTask):
    if sTree.FitTracks.GetEntries() > 0: 
      self.DrawFittedTracks()
   if not sTree.FindBranch("GeoTracks") and sTree.MCTrack.GetEntries() > 0: 
-    if globals()['withMCTracks']: self.DrawMCTracks()
+    if globals()['withMCTracks']: 
+          if  top.GetNode("Tunnel_1"): DrawSimpleMCTracks()   # for sndlhc, until more details are simulated 
+          else:                                                  self.DrawMCTracks()
   self.comp.CloseCompound()
   gEve.ElementChanged(self.evscene,True,True)
  def DrawParticle(self,n):
@@ -1009,8 +1011,6 @@ else:
   if  hasattr(ShipGeo,"ecal") : 
       if  hasattr(ShipGeo.ecal,"File") : 
         ecalGeoFile = ShipGeo.ecal.File
-
-
 mcHits = {}
 if hasattr(ShipGeo,"MuonTagger"): 
   mcHits['MufluxSpectrometerPoints']  = ROOT.FairMCPointDraw("MufluxSpectrometerPoint", ROOT.kRed, ROOT.kFullSquare)
@@ -1019,6 +1019,10 @@ if hasattr(ShipGeo,"MuonTagger"):
     mcHits['BoxPoints']  = ROOT.FairMCPointDraw("BoxPoint", ROOT.kBlue, ROOT.kFullDiamond)
     mcHits['PixelModulesPoints'] = ROOT.FairMCPointDraw("PixelModulesPoint",ROOT.kRed,ROOT.kFullCircle)
     mcHits['SciFiPoints'] = ROOT.FairMCPointDraw("SciFiPoint",ROOT.kGreen,ROOT.kFullSquare)
+elif hasattr(ShipGeo,"MuFilter"): 
+  mcHits['ScifiPoints']  = ROOT.FairMCPointDraw("ScifiPoint", ROOT.kRed, ROOT.kFullDiamond)
+  mcHits['MuFilterPoints']  = ROOT.FairMCPointDraw("MuFilterPoint", ROOT.kGreen, ROOT.kFullCircle)
+  mcHits['EmulsionDetPoints']  = ROOT.FairMCPointDraw("EmulsionDetPoint", ROOT.kMagenta, ROOT.kCircle)
 else:
  mcHits['VetoPoints']  = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
  mcHits['TimeDetPoints']  = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)

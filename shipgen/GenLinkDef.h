@@ -11,6 +11,7 @@
 #pragma link C++ class  GenieGenerator+;
 #pragma link C++ class  NtupleGenerator+;
 #pragma link C++ class  NtupleGenerator_FLUKA+;
+#pragma link C++ class  NeutronGenerator_FLUKA+;
 #pragma link C++ class  MuonBackGenerator+;
 #pragma link C++ class  CosmicsGenerator+;
 #pragma link C++ class  MuDISGenerator+;
