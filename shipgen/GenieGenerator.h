@@ -37,6 +37,9 @@ class GenieGenerator : public FairGenerator
   }
   void AddBox(TVector3 dVec, TVector3 box);
   Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
+  Double_t SetDeltaE_Matching_FLUKAGenie(const Double_t DeltaE){
+    fDeltaE_GenieFLUKA_nu = DeltaE;
+  }
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
   Int_t ExtractEvent_Ekin(Double_t Ekin, Double_t DeltaE);
@@ -44,6 +47,7 @@ class GenieGenerator : public FairGenerator
   
  protected:
   Double_t FLUKA_x_cos, FLUKA_y_cos, FLUKA_x, FLUKA_y;
+  Double_t fDeltaE_GenieFLUKA_nu;
   Double_t Yvessel,Xvessel,Lvessel,ztarget,startZ,endZ;
   Double_t Ev,pxv,pyv,pzv, El,pxl, pyl, pzl,vtxx,vtxy,vtxz,vtxt;
   Double_t Ef[500], pxf[500], pyf[500], pzf[500];
@@ -64,7 +68,7 @@ class GenieGenerator : public FairGenerator
   TH1D* pxhist[3000];//!
   TH1D* pyslice[3000][100];//!
 
-  ClassDef(GenieGenerator,1);
+  ClassDef(GenieGenerator,2);
 };
 
 #endif /* !PNDGeGENERATOR_H */

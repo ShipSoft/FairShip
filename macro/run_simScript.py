@@ -476,6 +476,7 @@ if simEngine=="Genie" and options.shipLHC:
  Geniegen.Init(inputFile,options.firstEvent)
  Geniegen.SetPositions(ship_geo.EmulsionDet.zC+60*u.cm, ship_geo.EmulsionDet.zC-ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.zC+ship_geo.EmulsionDet.zdim/2)
  #Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.TTz+12*(ship_geo.EmulsionDet.TTz+ship_geo.EmulsionDet.BrZ))
+ Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino
  primGen.AddGenerator(Geniegen)
  options.nEvents = min(options.nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer('DecayConfigPy8.C')

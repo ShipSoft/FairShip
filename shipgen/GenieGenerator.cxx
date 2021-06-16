@@ -79,6 +79,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fFLUKANuTree->SetBranchAddress("x",&FLUKA_x);
   fFLUKANuTree->SetBranchAddress("y",&FLUKA_y);
   fFirst=kTRUE;
+  fDeltaE_GenieFLUKA_nu = 10.; //Default value for energy range of FLUKA->Genie matching, 10 GeV.
   return kTRUE;
 }
 // -------------------------------------------------------------------------
