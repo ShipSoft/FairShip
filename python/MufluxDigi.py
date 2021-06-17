@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import division
-from builtins import range
 import os
 import ROOT
 import global_variables
@@ -180,26 +177,33 @@ class MufluxDigi:
     def digitizeMufluxSpectrometer(self):
 
         # digitize FairSHiP MC hits
-        index = 0
         hitsPerDetId = {}
-
-        for aMCPoint in self.sTree.MufluxSpectrometerPoint:
+        for k in range(self.sTree.MufluxSpectrometerPoint.GetEntries()):
+            aMCPoint=self.sTree.MufluxSpectrometerPoint[k]
             aHit = ROOT.MufluxSpectrometerHit(aMCPoint,self.sTree.t0)
             aHit.setValid()
-            if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
-            self.digiMufluxSpectrometer[index]=aHit
             detID = aHit.GetDetectorID()
-            if detID in hitsPerDetId:
-                if self.digiMufluxSpectrometer[hitsPerDetId[detID]].tdc() > aHit.tdc():
-                    # second hit with smaller tdc
-                    self.digiMufluxSpectrometer[hitsPerDetId[detID]].setInvalid()
-                    hitsPerDetId[detID] = index
-            else:
-                hitsPerDetId[detID] = index
-            if aMCPoint.GetDetectorID() in deadChannelsForMC: aHit.setInvalid()
-            station = int(aMCPoint.GetDetectorID()//10000000)
-            if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
-            index+=1
+            # station = int(aMCPoint.GetDetectorID()//10000000)
+            # if ROOT.gRandom.Rndm() < ineffiency[station]: aHit.setInvalid()
+            if detID in deadChannelsForMC: aHit.setInvalid()
+            if not detID in hitsPerDetId:
+               hitsPerDetId[detID]={}
+            hitsPerDetId[detID][aHit.tdc()] = [aHit,k]
+        for detID in hitsPerDetId:
+           times = hitsPerDetId[detID].keys()
+           times.sort()
+           for t in range(1,len(times)):
+             hitsPerDetId[detID][times[t]][0].setInvalid()
+        index = 0
+        resortHits={}
+        for detID in hitsPerDetId:
+           for t in hitsPerDetId[detID]:
+               k = hitsPerDetId[detID][t][1]
+               resortHits[k]=hitsPerDetId[detID][t][0]
+        for k in range(len(resortHits)):
+             if index>0 and self.digiMufluxSpectrometer.GetSize() == index: self.digiMufluxSpectrometer.Expand(index+1000)
+             self.digiMufluxSpectrometer[index]=resortHits[k]
+             index+=1
 
     def finish(self):
         print('finished writing tree')

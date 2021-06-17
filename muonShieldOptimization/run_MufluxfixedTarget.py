@@ -1,5 +1,4 @@
 #!/usr/bin/env python 
-from __future__ import print_function
 import ROOT,os,sys,getopt,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
@@ -59,8 +58,8 @@ def get_work_dir(run_number,tag=None):
 
 
 def init():
-  global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
-         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot, nStart
+  global runnr, nev, ecut, G4only, tauOnly,JpsiMainly,DrellYan,PhotonCollision,psiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
+         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
   ap = argparse.ArgumentParser(
@@ -77,6 +76,8 @@ def init():
   ap.add_argument('-V', '--EvtGen',      action='store_true', dest='withEvtGen',  default=withEvtGen,   help="use EvtGen for decays")
   ap.add_argument('-t', '--tau-only',     action='store_true', dest='tauOnly',     default=False)
   ap.add_argument('-J', '--Jpsi-mainly',  action='store_true', dest='JpsiMainly',  default=False)
+  ap.add_argument('-Y', '--DrellYan',  action='store_true', dest='DrellYan',  default=False)
+  ap.add_argument('-Ph','--PhotonCollision',  action='store_true', dest='PhotonCollision',  default=False)
   ap.add_argument('-b', '--boostDiMuon', type=float,   dest='boostDiMuon',  default=boostDiMuon, help="boost Di-muon branching ratios")
   ap.add_argument('-X', '--boostFactor', type=float,   dest='boostFactor',  default=boostFactor, help="boost Di-muon prod cross sections")
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
@@ -86,7 +87,7 @@ def init():
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
   ap.add_argument('-p','--pot',action='store_true',  dest='npot',  default=npot, help="number of protons on target per spill to normalize on")
-  ap.add_argument('-S','--nStart',action='store_true',  dest='nStart',  default=nStart, help="first event of input file to start")
+  ap.add_argument('-S','--nStart',  dest='nStart',  default=nStart, help="first event of input file to start")
   ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile',  default=charmInputFile, help="input file for charm/beauty decays")
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   args = ap.parse_args()
@@ -97,6 +98,8 @@ def init():
   ecut         = args.ecut
   tauOnly      = args.tauOnly
   JpsiMainly   = args.JpsiMainly
+  DrellYan     = args.DrellYan
+  PhotonCollision     = args.PhotonCollision
   G4only       = args.G4only
   boostFactor  = args.boostFactor
   boostDiMuon  = args.boostDiMuon
@@ -192,7 +195,11 @@ P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
 if G4only: P8gen.SetG4only()
+if JpsiMainly: P8gen.SetJpsiMainly()
+if DrellYan: P8gen.SetDrellYan()
+if PhotonCollision: P8gen.SetPhotonCollision()
 if withEvtGen: P8gen.WithEvtGen()
+if storeOnlyMuons: P8gen.SetOnlyMuons()
 if boostDiMuon > 1:
  P8gen.SetBoost(boostDiMuon) # will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8
                             # and later copied to Geant4
@@ -201,7 +208,8 @@ P8gen.SetSeed(theSeed)
 #        print ' for experts: p pot= number of protons on target per spill to normalize on'
 #        print '            : c chicc= ccbar over mbias cross section'
 if charm or beauty:
- P8gen.InitForCharmOrBeauty("root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root",nev,npot,nStart)
+ if charmInputFile.find('eos')==0: charmInputFile = os.environ['EOSSHIP']+charmInputFile
+ P8gen.InitForCharmOrBeauty(charmInputFile,nev,npot,nStart)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
@@ -211,8 +219,9 @@ run.Init()
 
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-fStack.SetMinPoints(1)
-fStack.SetEnergyCut(-1.)
+if storeOnlyMuons: 
+   fStack.SetMinPoints(1)
+fStack.SetEnergyCut(ecut*u.GeV)
 #
 import AddDiMuonDecayChannelsToG4
 AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
@@ -236,16 +245,22 @@ run.Run(nev)
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print(' ') 
-print("Macro finished succesfully.") 
-print("Output file is ",  outFile) 
-print("Real time ",rtime, " s, CPU time ",ctime,"s")
+if not charm and not beauty:
+  P = P8gen.GetPythia()
+  N = P8gen.GetPythiaN()
+  print(">>>> proton statistics")
+  P.stat()
+  print(">>>> neutron statistics")
+  N.stat()
+print ' ' 
+print "Macro finished succesfully." 
+print "Output file is ",  outFile 
+print "Real time ",rtime, " s, CPU time ",ctime,"s"
 
-if (ship_geo.MufluxSpectrometer.muflux==True):
+if (ship_geo.MufluxSpectrometer.muflux==True and storeOnlyMuons):
 # ---post processing--- remove empty events --- save histograms
  tmpFile = outFile+"tmp"
- fin   = ROOT.gROOT.GetListOfFiles()[0]
-
+ fin   = ROOT.TFile(outFile)
  fHeader = fin.FileHeader
  fHeader.SetRunId(runnr)
  if charm or beauty:
@@ -285,12 +300,10 @@ else:
 
 sGeo = ROOT.gGeoManager
 run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
-
+# save ShipGeo dictionary in geofile
+import saveBasicParameters
+saveBasicParameters.execute("%s/geofile_full.root" % (outputDir),ship_geo)
 if checkOverlap:
  sGeo = ROOT.gGeoManager
  sGeo.CheckOverlaps()
  sGeo.PrintOverlaps()
- run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
- import saveBasicParameters
- saveBasicParameters.execute("%s/geofile_full.root" % (outputDir),ship_geo)
-

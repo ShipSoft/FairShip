@@ -7,7 +7,6 @@
 #include "TGeoVolume.h"
 #include "vetoPoint.h"
 #include "TNtuple.h"
-#include "TFile.h"
 #include <map>
 
 class FairVolume;
@@ -97,7 +96,7 @@ class exitHadronAbsorber: public FairDetector
     Int_t index;
     /** container for data points */
     TClonesArray*  fexitHadronAbsorberPointCollection;
-    ClassDef(exitHadronAbsorber, 0)
+    ClassDef(exitHadronAbsorber, 1)
 };
 
 #endif //EXITHADRONABSORBER_H

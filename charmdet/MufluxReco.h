@@ -11,6 +11,7 @@
 #include "Track.h"
 #include "TVector3.h"
 #include "TrackInfo.h"
+#include "TH2D.h"
 
 #include <iostream>
 #include <map>
@@ -33,11 +34,11 @@ public:
 
    /** methods **/
    Bool_t checkCharm();
-   Int_t checkDiMuon();
+   Int_t checkDiMuon(TH2D* h);
    void fillHitMaps(Int_t nMax=-1);
    void RPCextrap(Int_t nMax=-1);
    void trackKinematics(Float_t chi2UL,Int_t nMax=-1);
-   Double_t findTrueMomentum(TTree* sTree);
+   TVector3 findTrueMomentum(TTree* sTree);
    Bool_t findSimpleEvent(Int_t nmin, Int_t nmax);
    void setNoisyChannels(std::vector<int> x){noisyChannels = x;}
    void setDeadChannels(std::vector<int> x){deadChannels = x;}
@@ -50,9 +51,16 @@ public:
    StringVecIntMap countMeasurements(TrackInfo* trInfo);
    std::vector<std::vector<int>> GroupIntegers(std::vector<int>& input_array, size_t span);
    void setEffFudgeFactor(std::string s,float f){effFudgeFac[s]=f;}
+   void DTreconstructible(std::vector<int> *i,std::vector<float> *x,std::vector<float> *y,std::vector<float> *z,TH2D* h);
+   void RPCreconstructible(std::vector<int> *i,std::vector<float> *x,std::vector<float> *y,std::vector<float> *z);
+   TVector3 findMCMomentum(int mctr);
 
 private:
-  protected:
+   //two vectors often needed, only helpers so that they don't need to be recreated everytime they are needed
+   TVector3 m_new_position;
+   const TVector3 m_parallelToZ;
+
+protected:
     Bool_t MCdata;
     TTreeReader* xSHiP;
     std::vector<int> noisyChannels;
@@ -64,9 +72,11 @@ private:
     TClonesArray    *MCTrack;
     TClonesArray    *FitTracks;
     TClonesArray    *TrackInfos;
+    FairEventHeader *EventHeader;
     TClonesArray    *RPCTrackY;
     TClonesArray    *RPCTrackX;
     TClonesArray    *Digi_MuonTaggerHits;
+    TClonesArray    *muonTaggerPoint;
     TClonesArray    *cDigi_MufluxSpectrometerHits;
     TClonesArray    *MufluxSpectrometerPoints;
     std::map<TString,float> effFudgeFac;
@@ -75,10 +85,12 @@ private:
     TBranch        *b_TrackInfos;   //!
     TBranch        *b_RPCTrackY;   //!
     TBranch        *b_RPCTrackX;   //!
+    TBranch        *b_EventHeader;   //!
     TBranch        *b_Digi_MuonTaggerHits;   //!
+    TBranch        *b_MuonTaggerPoint; //!
     TBranch        *b_Digi_MufluxSpectrometerHits;   //!
     TBranch        *b_MufluxSpectrometerPoints;   //!
-   ClassDef(MufluxReco,5);
+   ClassDef(MufluxReco,8);
 };
 
 #endif

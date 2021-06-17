@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os,sys,subprocess,ROOT
 listRuns='xrdfs root://eospublic.cern.ch/ ls /eos/experiment/ship/data/muflux/rawdata'
 Npot=0

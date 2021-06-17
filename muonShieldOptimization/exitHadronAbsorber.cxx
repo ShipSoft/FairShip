@@ -124,9 +124,6 @@ void exitHadronAbsorber::Initialize()
     TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
      }
    }
-  if(withNtuple) {
-         fNtuple = new TNtuple("4DP","4DP","id:px:py:pz:x:y:z");
-  }
 }
 
 void exitHadronAbsorber::EndOfEvent()
@@ -148,7 +145,7 @@ void exitHadronAbsorber::PreTrack(){
 // add pi0 111 eta 221 eta' 331  omega 223 
     Int_t idabs = TMath::Abs(pdgCode);
     if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 
-                 || idabs==211  || idabs==321   || idabs==2212 ){
+                 || idabs==211 || idabs==113 || idabs==333  || idabs==321   || idabs==2212 ){
          Double_t wspill = p->GetWeight();
          Int_t idhnu=idabs+10000;
          if (pdgCode<0){ idhnu+=10000;}
@@ -164,7 +161,10 @@ void exitHadronAbsorber::PreTrack(){
          h2 = (TH2D*)fout->Get(key);
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
          if(withNtuple){
-          fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z());
+          Int_t mo = p->GetMother(0);
+          ShipStack* s = (ShipStack*)gMC->GetStack();
+          Int_t moID = s->GetParticle(mo)->GetPdgCode();
+          fNtuple->Fill(1,pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(), fMom.E(),fPos.X(),fPos.Y(),fPos.Z(),moID);
          }
     if (fSkipNeutrinos && (idabs==12 or idabs==14 or idabs == 16 )){gMC->StopTrack();}
    }

@@ -1,5 +1,4 @@
 #!/usr/bin/env python 
-from __future__ import print_function
 import ROOT,os,sys,getopt,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
@@ -196,7 +195,9 @@ sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV) 
 if storeOnlyMuons: sensPlane.SetOnlyMuons()
 if skipNeutrinos: sensPlane.SkipNeutrinos()
-if FourDP: sensPlane.SetOpt4DP() # in case a ntuple should be filled with pi0,etas,omega
+if FourDP: 
+  fNtuple = ROOT.TNtuple("4DP","4DP","source:id:px:py:pz:E:x:y:z:moID")
+  sensPlane.SetOpt4DP(fNtuple) # in case a ntuple should be filled with pi0,etas,omega
 # sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlane)
 
@@ -208,6 +209,7 @@ P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(ecut*u.GeV)
 P8gen.SetDebug(Debug)
 P8gen.SetHeartBeat(100000)
+if FourDP: P8gen.SetOpt4DP(fNtuple)
 if G4only: P8gen.SetG4only()
 if JpsiMainly: P8gen.SetJpsiMainly()
 if tauOnly:    P8gen.SetTauOnly()

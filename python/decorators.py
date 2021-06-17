@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 from ctypes import c_double
 import ROOT
 import shipunit as u

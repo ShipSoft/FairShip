@@ -39,7 +39,7 @@ MufluxSpectrometerHit::MufluxSpectrometerHit(MufluxSpectrometerPoint* p, Double_
      time_over_threshold = 167.2;
 } 
 
-void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop, bool charm = false)
+void MufluxSpectrometerHit::MufluxSpectrometerEndPoints(TVector3 &vbot, TVector3 &vtop)
 { 
      Int_t statnb = fDetectorID/10000000; 
      Int_t vnb =  (fDetectorID - statnb*10000000)/1000000; 
