@@ -51,7 +51,7 @@ options = parser.parse_args()
 
 # user hook
 userTask = False
-"""" does not work on slc7 and slc8, works fine on ubuntu
+""" does not work on slc7 and slc8, works fine on ubuntu
 class MyTask(ROOT.FairTask):
     "user task"
 
@@ -61,7 +61,7 @@ class MyTask(ROOT.FairTask):
         print('Hello',opt,MCTracks.GetEntries())
         fMC = ROOT.TVirtualMC.GetMC()
         if MCTracks.GetEntries()>100:  fMC.StopRun()
-""""
+"""
 checking4overlaps = False
 if options.debug: checking4overlaps = True
 
