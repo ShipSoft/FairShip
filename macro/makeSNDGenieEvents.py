@@ -6,7 +6,7 @@ import genie_interface
 # NOTE: before running this script export GALGCONF env variable to extend energy to SND range. Example:
 # export GALGCONF=/eos/experiment/ship/user/aiuliano/GENIE_input_SND/config
 
-defaultfiledir = "/eos/user/a/aiuliano/public/sims_FairShip/sim_snd/Generate_GENIEinput_AnnaritaSND/NeutrinoFiles/"
+defaultfiledir = "/eos/experiment/ship/user/aiuliano/GENIE_input_SND/NeutrinoFiles/"
 defaultsplinedir = (
     "/eos/experiment/ship/user/aiuliano/GENIE_input_SND/SplinesTungstenTP/"
 )
