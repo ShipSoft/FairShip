@@ -25,7 +25,7 @@ PyROOT.
 
 ## Contact and communication
 
-If you have questions or problems, please feel free to contact @olantwin or the 
+If you have questions or problems, please feel free to contact the 
 @SND-LHC/core-developers. For troubleshooting and development, we plan to discuss on [Mattermost](https://mattermost.web.cern.ch/sndlhc/channels/software).
 
 The [snd-software](mailto:snd-software@cern.ch) mailing list can be used to discuss the software and report issues. Important annoucements will be made there.
