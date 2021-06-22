@@ -37,7 +37,7 @@ class GenieGenerator : public FairGenerator
   }
   void AddBox(TVector3 dVec, TVector3 box);
   Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
-  Double_t SetDeltaE_Matching_FLUKAGenie(const Double_t DeltaE){
+  void SetDeltaE_Matching_FLUKAGenie(Double_t DeltaE){
     fDeltaE_GenieFLUKA_nu = DeltaE;
   }
  private:

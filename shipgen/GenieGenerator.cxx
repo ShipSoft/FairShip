@@ -71,6 +71,11 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pdgf",&pdgf);     // pdg code of hadron
 
   fFLUKANuTree = (TTree *)fInputFile->Get("fluka_neutrinos_selected");
+  //check if TTree is actually present
+  if (!fFLUKANuTree){
+    LOG(FATAL) <<"No TTree of interacting neutrinos present. Did you run extract_interacting_neutrinos.py from the macro folder?";
+    return kFALSE;
+  }
   //setting branches for input neutrino tree. 
   //Nota Bene: I get only the angles and positions, 
   //for the energy I keep the GENIE one, otherwise I lose energy conservation
