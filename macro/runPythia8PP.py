@@ -38,10 +38,10 @@ generator.readString("PDF:pSet = "+options.PDFpSet)
 tag = 'nobias'
 if options.charm:
      generator.readString("HardQCD:hardccbar = on")
-     tag = 'bbbar'
+     tag = 'ccbar'
 elif options.beauty:
      generator.readString("HardQCD:hardbbbar = on")
-     tag = 'ccbar'
+     tag = 'bbbar'
 elif options.hard:
      generator.readString("HardQCD:all = on")
      tag = 'hard'
