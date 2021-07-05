@@ -98,7 +98,7 @@ UpstreamTagger::UpstreamTagger()
 {
 }
 
-UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
+UpstreamTagger::UpstreamTagger(const char* name, Bool_t active, Double_t BX, Double_t BY, Double_t BZ)
   : FairDetector(name, active, kUpstreamTagger),
     fTrackID(-1),
     fVolumeID(-1),
@@ -108,7 +108,11 @@ UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
     fLength(-1.),
     fELoss(-1),
     //
-    det_zPos(0),     
+    det_zPos(0), 
+
+    xbox_fulldet(BX),
+    ybox_fulldet(BY),
+    zbox_fulldet(BZ),    
 
     det_xGlassPos(0),    
     det_yGlassPos(0),    
