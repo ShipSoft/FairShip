@@ -26,7 +26,7 @@ class MuFilterHit : public SndlhcHit
     void Print() const;
     /** Getposition **/
     void GetPosition(TVector3 vLeft, TVector3 vRight); // or top and bottom
-    Float_t GetEnergy() const;
+    Float_t GetEnergy();
 
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}

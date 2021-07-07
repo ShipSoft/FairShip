@@ -164,7 +164,7 @@ MuFilterHit::~MuFilterHit() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method GetEnergy   -------------------------------------------
-Float_t MuFilterHit::GetEnergy() const
+Float_t MuFilterHit::GetEnergy()
 {
   // to be calculated from digis and calibration constants
   Float_t E = 333;

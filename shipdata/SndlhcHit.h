@@ -46,7 +46,7 @@ class SndlhcHit : public TObject
     /*** Get position */
     virtual void GetPosition(TVector3 L,TVector3 R) const {;}
     /*** Get energy */
-    virtual Float_t GetEnergy() const;
+    // virtual Float_t GetEnergy();  // causes problems, don't know why: cling::DynamicLibraryManager::loadLibrary(): lib/libShipData.so.0.0.0: undefined symbol: _ZN9SndlhcHit9GetEnergyEv
 
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
