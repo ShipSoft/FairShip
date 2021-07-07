@@ -4,6 +4,7 @@
 #include "TObject.h"              //  
 
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
+#include "TVector3.h"                
 #include <unordered_map>
 
 #ifndef __CINT__
@@ -38,8 +39,14 @@ class SndlhcHit : public TObject
     void SetDigi(Float_t dLL,Float_t dLR,Float_t dHL,Float_t dHR) { fdigiLowLeft=dLL;fdigiLowRight=dLR;fdigiHighLeft=dHL;fdigiHighRight=dHR; }
     void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
+// to be implemented by the subdetector
+
     /*** Output to screen */
     virtual void Print(const Option_t* opt ="") const {;}
+    /*** Get position */
+    virtual void GetPosition(TVector3 L,TVector3 R) const {;}
+    /*** Get energy */
+    virtual Float_t GetEnergy() const;
 
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)

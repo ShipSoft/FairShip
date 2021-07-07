@@ -23,6 +23,7 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 ShipHit.cxx 
+SndlhcHit.cxx 
 ShipStack.cxx 
 ShipMCTrack.cxx
 ShipParticle.cxx

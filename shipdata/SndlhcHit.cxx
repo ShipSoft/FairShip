@@ -29,10 +29,10 @@ SndlhcHit::SndlhcHit(Int_t detID, Float_t dLL,Float_t dLR,Float_t dHL,Float_t dH
 std::unordered_map<std::string, float> SndlhcHit::GetDigis()
 {
  std::unordered_map<std::string, float> digits;
- digits["lowLeft"]   =   fdigiLowLeft;
- digits["lowRight"]=   fdigiLowRight;
- digits["highLeft"]=   fdigiHighLeft;
- digits["highRight"]=   fdigiHighRight;
+ digits["lowLeft"]      =   fdigiLowLeft;
+ digits["lowRight"]   =   fdigiLowRight;
+ digits["highLeft"]    =   fdigiHighLeft;
+ digits["highRight"] =   fdigiHighRight;
  return digits;
 }
 // -------------------------------------------------------------------------
