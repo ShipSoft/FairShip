@@ -1,8 +1,4 @@
 #!/usr/bin/env python -i
-from __future__ import print_function
-from __future__ import division
-from future import standard_library
-standard_library.install_aliases()
 import ROOT,sys,os,tkinter,atexit
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
@@ -1157,15 +1153,19 @@ def SNDLHC():
     for x in sGeo.GetListOfVolumes():
             if x.GetName() in SND:
                  x.SetTransparency(60)
+    br = gEve.GetBrowser()
+    br.SetWindowName('SND@LHC Eve Window')
+    br.SetWidth(1600)
     sc    = gEve.GetScenes()
     geoscene = sc.FindChild('Geometry scene')
     gEve.ElementChanged(geoscene,True,True)
+
     v = gEve.GetDefaultGLViewer()
     camera = v.CurrentCamera()
     for i in range(2):  # don't know why this needs to be executed twice to update the screen
       camera.Reset()
       center = array('d',[-9.,46.,28.])
-      camera.Configure(0.8, 0, center, -1.57, 0)
+      camera.Configure(1.6, 0, center, -1.57, 0)
       v.DoDraw()
 
 
