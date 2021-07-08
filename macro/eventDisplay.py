@@ -1157,13 +1157,17 @@ def SNDLHC():
     for x in sGeo.GetListOfVolumes():
             if x.GetName() in SND:
                  x.SetTransparency(60)
+    sc    = gEve.GetScenes()
+    geoscene = sc.FindChild('Geometry scene')
+    gEve.ElementChanged(geoscene,True,True)
     v = gEve.GetDefaultGLViewer()
     camera = v.CurrentCamera()
-    camera.Reset()
-    center = array('d',[-9.,46.,28.])
-    camera.Configure(0.8, 0, center, -1.57, 0)
-    v.DoDraw()
-# don't know why this only works when executed in the main menu'
+    for i in range(2):  # don't know why this needs to be executed twice to update the screen
+      camera.Reset()
+      center = array('d',[-9.,46.,28.])
+      camera.Configure(0.8, 0, center, -1.57, 0)
+      v.DoDraw()
+
 
 def positionText(r,x,y,z,angle,txt,size=200,color=ROOT.kBlue,mode=ROOT.TGLFont.kExtrude,light=ROOT.kTRUE):
  tt = ROOT.TEveText(txt)
