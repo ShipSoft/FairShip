@@ -6,7 +6,10 @@
 #include "TGeoBBox.h"
 #include <iomanip> 
 
-Double_t attenuationlength = 1.00; // Change this 
+Double_t attenuationlength = 30.00; // Change this 
+Double_t maxLowDyn = 0.01; // Change this 
+Double_t maxHigDyn = 1.0; // Change this 
+
 Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
 // -----   Default constructor   -------------------------------------------
 MuFilterHit::MuFilterHit()
@@ -21,12 +24,10 @@ MuFilterHit::MuFilterHit(Int_t detID, Float_t dLL,Float_t dLR,Float_t dHL,Float_
  flag = true;
 }
 // -----   constructor from MuFilterPoint   ------------------------------------------
-MuFilterHit::MuFilterHit(MuFilterPoint* p)
+// SHOULD BE CHANGED TO CONSTRUCTOR FROM ARRAY OF MUFILTERPOINTS !
+MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
   : SndlhcHit()
 {
-     fDetectorID = p->GetDetectorID();
-     Double_t signal = p->GetEnergyLoss();
-     
      MuFilter* module = dynamic_cast<MuFilter*> (FairRunSim::Instance()->GetListOfModules()->FindObject("MuFilter") );
      // get parameters from the MuFilter detector for simulating the digitized information
      // for example:
@@ -34,19 +35,28 @@ MuFilterHit::MuFilterHit(MuFilterPoint* p)
     //   dynRangeLow = module->dynamicRangeLow();
     //   dynRangeHigh = module->dynamicRangeHigh();
     // not yet implemented !
-
-      // Find distances from MCPoint centre to top of bar 
-      TVector3 vLeft,vRight;
-      GetPosition(vLeft, vRight);
-      Double_t distance_to_posXend =  pow(pow(p->GetX() - vLeft.X(), 2) + pow(p->GetY() - vRight.Y(), 2) + pow(p->GetZ() - vLeft.Z(), 2), 0.5);      
-      Double_t distance_to_negXend =  pow(pow(p->GetX() - vLeft.X(), 2) + pow(p->GetY() - vRight.Y(), 2) + pow(p->GetZ() - vRight.Z(), 2), 0.5);     
-            
+     fDetectorID  = detID;
+     Double_t signalLeft    = 0;
+     Double_t signalRight = 0;
+     for(auto p = std::begin(V); p!= std::end(V); ++p) {
+        
+        Double_t signal = (*p)->GetEnergyLoss();
+     
+      // Find distances from MCPoint centre to ends of bar 
+        TVector3 vLeft,vRight;
+        TVector3 impact((*p)->GetX(),(*p)->GetY() ,(*p)->GetZ() );
+        GetPosition(vLeft, vRight);
+        Double_t distance_Left    =  (vLeft-impact).Mag();
+        Double_t distance_Right =  (vRight-impact).Mag();
+        signalLeft+=signal*TMath::Exp(-distance_Left/attenuationlength);
+        signalRight+=signal*TMath::Exp(-distance_Right/attenuationlength);
+     }
      // template, to be replaced by proper code
      
-     fdigiLowLeft =  1;        //SiPM low dynamic range, left or top.
-     fdigiLowRight =  2;      //SiPM low dynamic range, right or bottom.
-     fdigiHighLeft = 11;       //SiPM high dynamic range, left or top.
-     fdigiHighRight = 12;   //SiPM high dynamic range, right or bottom.
+     fdigiLowLeft     =  std::min(signalLeft,maxLowDyn) ;        //SiPM low dynamic range, left or top.
+     fdigiLowRight  =  std::min(signalRight,maxLowDyn) ;       //SiPM low dynamic range, right or bottom.
+     fdigiHighLeft    = std::min(signalLeft,maxHigDyn) ;        //SiPM high dynamic range, left or top.
+     fdigiHighRight = std::min(signalRight,maxHigDyn) ;   //SiPM high dynamic range, right or bottom.
 
      flag = true;
 }
@@ -148,7 +158,7 @@ void MuFilterHit::GetPosition(TVector3 vLeft, TVector3 vRight)
     }
     else {
       Double_t posXend[3] = {S->GetDX(),0,0};
-      Double_t negXend[3] = {-S->GetDZ(),0,0};
+      Double_t negXend[3] = {-S->GetDX(),0,0};
       Double_t GposXend[3],GnegXend[3];
       nav->LocalToMaster(posXend, GposXend);   nav->LocalToMaster(negXend, GnegXend);
       vLeft.SetXYZ(GposXend[0],GposXend[1],GposXend[2]);

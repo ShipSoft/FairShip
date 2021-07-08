@@ -1,7 +1,6 @@
 #ifndef MUFILTERHIT_H
 #define MUFILTERHIT_H 1
 
-
 #include "SndlhcHit.h"
 #include "MuFilterPoint.h"
 #include "TObject.h"
@@ -17,7 +16,7 @@ class MuFilterHit : public SndlhcHit
     MuFilterHit(Int_t detID, Float_t digiLowLeft,Float_t digiLowRight,Float_t digiHighLeft,Float_t digiHighRight);
 
     // Constructor from MuFilterPoint
-    MuFilterHit(MuFilterPoint* p);
+    MuFilterHit(int detID,std::vector<MuFilterPoint*>);
 
  /** Destructor **/
     virtual ~MuFilterHit();

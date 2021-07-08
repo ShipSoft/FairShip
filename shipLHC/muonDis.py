@@ -920,6 +920,10 @@ def muondEdX(version=2,njobs=100,path='',withFaser=False, plotOnly=True):
    ut.bookHist(h,'z','last z ',1000,-1000.,1000.)
    ut.bookHist(h,'SNDmuP', 'SND entry points',200,-100.,100.,200,-100.,100.)
    ut.bookHist(h,'SNDmuM','SND entry points',200,-100.,100.,200,-100.,100.)
+   ut.bookHist(h,'SNDmuP_E', 'SND muon enery',200,0.,5000.)
+   ut.bookHist(h,'SNDmuM_E','SND muon energy',200,0.,5000.)
+   ut.bookHist(h,'allmuE_13', 'all muon enery',200,0.,5000.)
+   ut.bookHist(h,'allmuE_-13','all muon energy',200,0.,5000.)
    ut.bookHist(h,'SNDMuFiltermuP', 'SND entry points',200,-100.,100.,200,-100.,100.)
    ut.bookHist(h,'SNDMuFiltermuM','SND entry points',200,-100.,100.,200,-100.,100.)
    ut.bookHist(h,'xy_13',   'x/y;x [cm];y [cm];N/sec/cm^{2}  '  ,    200,-100.,100.,200,-100.,100.)
@@ -990,10 +994,14 @@ def muondEdX(version=2,njobs=100,path='',withFaser=False, plotOnly=True):
                       T[1].Print()
                       print(nEv,fname,track,traj,zPos)
                  rc = h['xy_'+str(muID)].Fill(xex,yex,w)
+                 first = True
                  for z in zPos:
                     if not traj[z][3]: continue
                     oEnergy = muon.GetEnergy()
                     P = traj[z][2]
+                    if first:
+                        h['allmuE_'+str(muID)].Fill(P.E())
+                        first = False
                     eloss = muon.GetEnergy() - P.E()
                     rc = h['eloss'].Fill(oEnergy,eloss,w)
                     start = ROOT.TVector3(sTree.MCTrack[0].GetStartX(),sTree.MCTrack[0].GetStartY(),sTree.MCTrack[0].GetStartZ())
@@ -1014,6 +1022,8 @@ def muondEdX(version=2,njobs=100,path='',withFaser=False, plotOnly=True):
                  hname = 'SNDmuM'
                  if p.PdgCode()<0: hname = 'SNDmuP'
                  rc = h[hname].Fill(p.GetX(),p.GetY(),w)
+                 mom = ROOT.TVector3(p.GetPx(),p.GetPy(),p.GetPz())
+                 rc = h[hname+'_E'].Fill(mom.Mag(),w)
                  hitScifi=True
                  break
              hitMuFilter = False
@@ -1035,6 +1045,7 @@ def muondEdX(version=2,njobs=100,path='',withFaser=False, plotOnly=True):
                           break
              if noHit: continue
 #
+   ut.writeHists(h,'muondEdX_'+str(version)+'.root')
  else:
    ut.readHists(h,'muondEdX_'+str(version)+'.root')
 
@@ -1177,7 +1188,35 @@ def muondEdX(version=2,njobs=100,path='',withFaser=False, plotOnly=True):
        stats[mu][z].append(sqcm)
        print('%s, %s:  total = %5.2F  Hz     %5.2F  Hz/cm2 '%(mu,z,stats[mu][z][0],stats[mu][z][0]/stats[mu][z][1]))
 
-   ut.writeHists(h,'muondEdX_'+str(version)+'.root')
+# interaction rate in target:
+   ut.bookCanvas(h,'Tmuons','muons',1600,900,2,1)
+   fin = ROOT.TFile('muDIScrossSec.root')
+   ROOT.gROOT.cd()
+   L = {'13':'SNDmuM','-13':'SNDmuP'}
+   for pid in L: 
+          h['g_'+pid] = fin.Get('g_'+pid).Clone('g_'+pid)
+          hname = L[pid]+'_inter'
+          if pid=='13': h[L[pid]+'_E'].SetLineColor(ROOT.kRed)
+          else:              h[L[pid]+'_E'].SetLineColor(ROOT.kBlue)
+          h[L[pid]+'_E'].SetTitle(';E  [GeV]; N/s')
+          h[L[pid]+'_E'].SetStats(0)
+          h[hname]=h[L[pid]+'_E'].Clone(hname)
+          for k in range(1,h[hname].GetNbinsX()+1):
+                muonEnergy = h[L[pid]+'_E'].GetBinCenter(k)
+                wDis    = 5.9*19.3 / 1.67E-24 * h['g_'+str(pid)].Eval(muonEnergy)  * 1E-27
+                h[hname].SetBinContent(k,wDis*h[L[pid]+'_E'].GetBinContent(k))
+          ut.makeIntegralDistrib(h,L[pid]+'_E')
+          ut.makeIntegralDistrib(h,hname)
+   tc = h['Tmuons'].cd(1)
+   tc.SetLogy(1)
+   h['I-SNDmuM_E'].Draw('hist')
+   h['I-SNDmuP_E'].Draw('histsame')
+   tc = h['Tmuons'].cd(2)
+   tc.SetLogy(1)
+   h['I-SNDmuM_inter'].Draw('hist')
+   h['I-SNDmuP_inter'].Draw('histsame')
+# 1fb-1 requires 1E5 sec, 25fb-1 = 2.5E6 seconds, -> 0.25 million mu interactions with E>200GeV.
+   myPrint(h['Tmuons'],'Geant4MuonE_v'+str(version))
 
 # drawMuon3D(fname='muonDISfull.root',hname='3d')
 def drawMuon3D(fname='muondEdX.root',hname='3d',gDir='muMinusGeant4_0'):
