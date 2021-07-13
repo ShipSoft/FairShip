@@ -61,10 +61,12 @@ class SndlhcDigi:
                  norm+= p.GetEnergyLoss()
                  mcPoints[detID][k]=p.GetEnergyLoss()
             aHit = ROOT.MuFilterHit(detID,allPoints)
+            print('made a hit',detID,len(hitContainer))
             if index>0 and self.digiMuFilter.GetSize() == index: self.digiMuFilter.Expand(index+1000)
             self.digiMuFilter[index]=aHit
-
+            index+=1
             for k in mcPoints[detID]: mcLinks.Add(detID,k, mcPoints[detID][k]/norm)
+        print('index',index,'self.digiMuFilter ',self.digiMuFilter.GetEntries())
         self.digiMuFilter2MCPoints[0]=mcLinks
             
     def finish(self):

@@ -64,108 +64,55 @@ MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
 void MuFilterHit::GetPosition(TVector3 vLeft, TVector3 vRight) 
 {
 
-  int subsystem     = floor(fDetectorID/1e+4);
-  int plane                = floor(fDetectorID/1e+3) - 10*subsystem;
-  int bar_number = fDetectorID - subsystem*1e+4 - plane*1e+3;
+  int subsystem     = floor(fDetectorID/10000);
+  int plane                = floor(fDetectorID/1000) - 10*subsystem;
+  int bar_number = fDetectorID%1000;
 
-  TString path = "FAIRGeom/cave_1/";
-  std::stringstream sstream;
-  sstream << std::setfill('0') << std::setw(3) << bar_number;
-  TString sbar_number =  sstream.str();
+  TString path = "/cave_1/";
+  TString barName;
 
-  switch(subsystem) {    
+  switch(subsystem) {
   
   case 1: 
-      path+"volVeto_1/";
-      //int digit_2 = floor(fDetectorID/1e+3) - 10;
-      if (plane == 0) {
-        path+="volVetoPlane_0_0/volVetoBar_10";
-        //int bar_number = fDetectorID- digit_1*1e+4 - digit_2*1e+3;
-        path+=sbar_number;
-        }
-      else if (plane == 1) {
-        path+="volVetoPlane_1_1/volVetoBar_11";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-       path+=sbar_number;
-        }
+      path+="volVeto_1/volVetoPlane_"+std::to_string(plane)+"_"+std::to_string(plane);
+      barName = "/volVetoBar_";
       break;
-    
-    case 2: 
-      path+="volMuFilter_1/";
-      if (plane == 0) {
-        path+="volMuUpstreamDet_0_2/volMuUpstreamBar_20";
-        path+=sbar_number;
-        }
-      else if (plane == 1) {
-        path+="volVetoPlane_1_3/volVetoBar_21";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-        path+=sbar_number;
-        }
-      else if (plane == 2) {
-        path+="volVetoPlane_2_4/volVetoBar_22";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-        path+=sbar_number;
-        }
-      else if (plane == 3) {
-        path+="volVetoPlane_3_5/volVetoBar_23";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-       path+=sbar_number;
-        }
-      else if (plane == 4) {
-        path+="volVetoPlane_4_6/volVetoBar_24";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-       path+=bar_number;
-        }                                     
+  case 2: 
+      path+="volMuFilter_1/volMuUpstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+2);
+      barName = "/volMuUpstreamBar_";
       break;
-
-    case 3: 
-      path+="volMuFilter_1/";
-      if (plane == 0) {
-        path+="volMuDownstreamDet_0_5/volMuDownstreamBar_";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-        if ( bar_number < 60 ) {  path+="hor_"+sbar_number;}
-        else {   path+="ver_"+sbar_number;}
-      break;
-      if (plane == 1) {
-        path+="volMuDownstreamDet_1_6/volMuDownstreamBar_";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-        if ( bar_number < 60 ) { path+="hor_"+sbar_number;}
-        else {path+="ver_"+sbar_number;}
-        }
-      break;
-      if (plane == 2) {
-        path+="volMuDownstreamDet_2_7/volMuDownstreamBar_";
-        //int bar_number = fDetectorID - digit_1*1e+4 - digit_2*1e+3;
-        if ( bar_number < 60 ) { path+="hor_"+sbar_number; }
-        else { path+="ver_"+sbar_number; }
-        }
+  case 3: 
+      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+5);
+      barName = "/volMuDownstreamBar_";
+      if (bar_number<60){barName+="hor_";}
+      else{barName+="ver_";}
       break;
   }
 
-    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-    nav->cd(path);
-    TGeoNode* W = nav->GetCurrentNode();
-    TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
+  path += barName+std::to_string(fDetectorID);
 
-    if (subsystem == 3 and bar_number >59){
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+  nav->cd(path);
+  LOG(DEBUG) <<path<<" "<<fDetectorID<<" "<<subsystem<<" "<<bar_number;
+  TGeoNode* W = nav->GetCurrentNode();
+  TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
 
-      Double_t top[3] = {0,S->GetDY(), 0}; // Why z? Surely the straws go in x or y?
+  if (subsystem == 3 and bar_number >59){  // vertical bars
+      Double_t top[3] = {0,S->GetDY(), 0};
       Double_t bot[3] = {0,-S->GetDY(),0};
       Double_t Gtop[3],Gbot[3];
       nav->LocalToMaster(top, Gtop);   nav->LocalToMaster(bot, Gbot);
       vLeft.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);
       vRight.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
     }
-    else {
+    else {     // horizontal bars
       Double_t posXend[3] = {S->GetDX(),0,0};
       Double_t negXend[3] = {-S->GetDX(),0,0};
       Double_t GposXend[3],GnegXend[3];
       nav->LocalToMaster(posXend, GposXend);   nav->LocalToMaster(negXend, GnegXend);
       vLeft.SetXYZ(GposXend[0],GposXend[1],GposXend[2]);
       vRight.SetXYZ(GnegXend[0],GnegXend[1],GnegXend[2]);
-
     }
-  }
 }
 // -------------------------------------------------------------------------
 
@@ -181,11 +128,20 @@ Float_t MuFilterHit::GetEnergy()
   return E;
 }
 
+bool MuFilterHit::isVertical(){
+  if  (floor(fDetectorID/10000)==3&&fDetectorID%1000>59) {return kTRUE;}
+  else{return kFALSE;}
+}
+
 // -----   Public method Print   -------------------------------------------
 void MuFilterHit::Print() const
 {
   std::cout << "-I- MuFilterHit: MuFilter hit " << " in detector " << fDetectorID << std::endl;
-  std::cout << "digis:   LowLeft:"<<fdigiLowLeft <<" LowRight:"<< fdigiLowRight <<" HighLeft:"<<fdigiHighLeft <<" HighRight:" << fdigiHighRight<<std::endl;
+  if ( floor(fDetectorID/10000)==3&&fDetectorID%1000>59) {
+  std::cout << "digis:   LowTop:"<<fdigiLowLeft <<" LowBottom:"<< fdigiLowRight <<" HighTop:"<<fdigiHighLeft <<"    HighBottom:" << fdigiHighRight<<std::endl;
+  }else{
+  std::cout << "digis:   LowLeft:"<<fdigiLowLeft <<" LowRight:"<< fdigiLowRight <<" HighLeft:"<<fdigiHighLeft <<"    HighRight:" << fdigiHighRight<<std::endl;
+ }
 }
 // -------------------------------------------------------------------------
 

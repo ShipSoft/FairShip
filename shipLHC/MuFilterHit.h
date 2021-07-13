@@ -29,7 +29,7 @@ class MuFilterHit : public SndlhcHit
 
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
-
+    bool isVertical();
   private:
     /** Copy constructor **/
     MuFilterHit(const MuFilterHit& point);

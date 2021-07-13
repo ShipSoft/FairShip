@@ -50,6 +50,7 @@ run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
 run.SetUserConfig("g4Config_basic.C") # geant4 transport not used
 rtdb = run.GetRuntimeDb()
 modules = sndDet_conf.configure(run,snd_geo)
+fgeo.FAIRGeom
 
 # make global variables
 global_variables.debug = options.debug
