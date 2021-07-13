@@ -44,29 +44,29 @@ class SndlhcDigi:
         hitContainer = {}
         mcLinks = ROOT.Hit2MCPoints()
         mcPoints = {}
+        norm = {}
+        k=-1
         for p in self.sTree.MuFilterPoint:
+            k+=1
             # collect all hits in same detector element
             detID = p.GetDetectorID()
-            if not detID in hitContainer: hitContainer[detID]=[]
+            if not detID in hitContainer: 
+                  hitContainer[detID]=[]
+                  mcPoints[detID] = {}
+                  norm[detID] = 0
             hitContainer[detID].append(p)
+            mcPoints[detID][k]=p.GetEnergyLoss()
+            norm[detID]+= p.GetEnergyLoss()
         index = 0
         for detID in hitContainer:
             allPoints = ROOT.std.vector('MuFilterPoint*')()
-            norm = 0
-            mcPoints[detID]={}
-            k=-1
             for p in hitContainer[detID]:
-                 k+=1
                  allPoints.push_back(p)
-                 norm+= p.GetEnergyLoss()
-                 mcPoints[detID][k]=p.GetEnergyLoss()
             aHit = ROOT.MuFilterHit(detID,allPoints)
-            print('made a hit',detID,len(hitContainer))
             if index>0 and self.digiMuFilter.GetSize() == index: self.digiMuFilter.Expand(index+1000)
             self.digiMuFilter[index]=aHit
             index+=1
-            for k in mcPoints[detID]: mcLinks.Add(detID,k, mcPoints[detID][k]/norm)
-        print('index',index,'self.digiMuFilter ',self.digiMuFilter.GetEntries())
+            for k in mcPoints[detID]: mcLinks.Add(detID,k, mcPoints[detID][k]/norm[detID])
         self.digiMuFilter2MCPoints[0]=mcLinks
             
     def finish(self):
