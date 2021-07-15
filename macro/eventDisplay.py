@@ -1,8 +1,4 @@
 #!/usr/bin/env python -i
-from __future__ import print_function
-from __future__ import division
-from future import standard_library
-standard_library.install_aliases()
 import ROOT,sys,os,tkinter,atexit
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
@@ -33,8 +29,8 @@ gEnv.SetValue('Eve.Viewer.HideMenus','off')
 mcEngine   = "TGeant4"
 simEngine  = "Pythia8"
 withGeo    = False
-withMCTracks = True
-
+withMCTracks      = True
+withAllMCTracks = False
 #                        muon shield  strawtube                     decay vessel  
 transparentMaterials = {'iron':80,'aluminium':80,'mylar':60,'STTmix9010_2bar':95,'steel':80,'Aluminum':80,'Scintillator':80,
 #                        tau nu detector  
@@ -226,9 +222,8 @@ class DrawTracks(ROOT.FairTask):
    if sTree.FitTracks.GetEntries() > 0: 
      self.DrawFittedTracks()
   if not sTree.FindBranch("GeoTracks") and sTree.MCTrack.GetEntries() > 0: 
-    if globals()['withMCTracks']: 
-          if  top.GetNode("Tunnel_1"): DrawSimpleMCTracks()   # for sndlhc, until more details are simulated 
-          else:                                                  self.DrawMCTracks()
+    if globals()['withAllMCTracks']:  DrawSimpleMCTracks()   # for sndlhc, until more details are simulated 
+    elif globals()['withMCTracks']:      self.DrawMCTracks()
   self.comp.CloseCompound()
   gEve.ElementChanged(self.evscene,True,True)
  def DrawParticle(self,n):
@@ -299,7 +294,8 @@ class DrawTracks(ROOT.FairTask):
     da.GetStartVertex(fPos)
     hitlist[fPos.Z()] = [fPos.X(),fPos.Y()]
   # loop over all sensitive volumes to find hits
-   for P in ["vetoPoint","muonPoint","EcalPoint","HcalPoint","preshowerPoint","strawtubesPoint","ShipRpcPoint","TargetPoint","TimeDetPoint"]:
+   for P in ["vetoPoint","muonPoint","EcalPoint","HcalPoint","preshowerPoint","strawtubesPoint","ShipRpcPoint","TargetPoint","TimeDetPoint",
+                     "MuFilterPoint","ScifiPoint"]:
     if not sTree.GetBranch(P): continue
     c=eval("sTree."+P)
     for p in c:
@@ -1147,6 +1143,31 @@ def DrawSimpleMCTracks():
    ntot+=1
   comp.CloseCompound()
   gEve.ElementChanged(SHiPDisplay.tracks.evscene,True,True)
+
+def SNDLHC():
+# some default setup
+    SND = ['SciFi','Wall','volVetoBar ','volFeBlock',' volMuUpstreamBar ','volMuDownstreamBar_hor ','volMuDownstreamBar_ver ']
+    tunnel = sGeo.GetVolume('Tunnel')
+    tunnel.SetVisibility(0)
+    tunnel.SetVisDaughters(0)
+    for x in sGeo.GetListOfVolumes():
+            if x.GetName() in SND:
+                 x.SetTransparency(60)
+    br = gEve.GetBrowser()
+    br.SetWindowName('SND@LHC Eve Window')
+    br.SetWidth(1600)
+    sc    = gEve.GetScenes()
+    geoscene = sc.FindChild('Geometry scene')
+    gEve.ElementChanged(geoscene,True,True)
+
+    v = gEve.GetDefaultGLViewer()
+    camera = v.CurrentCamera()
+    for i in range(2):  # don't know why this needs to be executed twice to update the screen
+      camera.Reset()
+      center = array('d',[-9.,46.,28.])
+      camera.Configure(1.6, 0, center, -1.57, 0)
+      v.DoDraw()
+
 
 def positionText(r,x,y,z,angle,txt,size=200,color=ROOT.kBlue,mode=ROOT.TGLFont.kExtrude,light=ROOT.kTRUE):
  tt = ROOT.TEveText(txt)
