@@ -189,6 +189,7 @@ if simEngine=="Genie":
    Geniegen.Init(inputFile,options.firstEvent)
    Geniegen.SetPositions(snd_geo.EmulsionDet.zC+60*u.cm, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2)
    Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino
+   Geniegen.SetGenerationOption(1)
    primGen.AddGenerator(Geniegen)
    options.nEvents = min(options.nEvents,Geniegen.GetNevents())
    run.SetPythiaDecayer('DecayConfigPy8.C')

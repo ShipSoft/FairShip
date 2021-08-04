@@ -40,6 +40,9 @@ class GenieGenerator : public FairGenerator
   void SetDeltaE_Matching_FLUKAGenie(Double_t DeltaE){
     fDeltaE_GenieFLUKA_nu = DeltaE;
   }
+  Int_t SetGenerationOption(Int_t GenOption){
+    fGenOption = GenOption
+  }
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
   Int_t ExtractEvent_Ekin(Double_t Ekin, Double_t DeltaE);
@@ -56,6 +59,7 @@ class GenieGenerator : public FairGenerator
   std::vector<TVector3> boxs;
   Bool_t cc, nuel;
   Int_t nf,neu;
+  Int_t fGenOption;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
