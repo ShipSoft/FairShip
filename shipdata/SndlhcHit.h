@@ -36,9 +36,10 @@ class SndlhcHit : public TObject
     Int_t    GetDetectorID()    const { return fDetectorID;  };
     Float_t GetSignal(Int_t nChannel);
     Float_t GetTime(Int_t nChannel);
+    Float_t GetnSiPMs() const { return nSiPMs;  };
+    Float_t GetnSides() const { return nSides;  };
     /** Modifiers **/
-    //void SetDigi(Int_t i, Float_t s, Float_t t) { signals[i]=s;times[i]=t; }
-    void SetDigi(Int_t i, Float_t s, Float_t t) { signals[i]=s; }
+    void SetDigi(Int_t i, Float_t s, Float_t t) { signals[i]=s;times[i]=t; }
     void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
 // to be implemented by the subdetector
