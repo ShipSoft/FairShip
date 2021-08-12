@@ -52,6 +52,8 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.MuFilter = AttrDict(z=0*u.cm)
         #Veto station parameters
+        c.MuFilter.VetonSiPMs = 8
+        c.MuFilter.VetonSides = 2
         c.MuFilter.NVetoPlanes = 2
         c.MuFilter.VetoShiftX = c.EmulsionDet.ShiftX
         c.MuFilter.VetoShiftY = c.EmulsionDet.ShiftY
@@ -81,10 +83,14 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.UpstreamDetX = c.MuFilter.X
         c.MuFilter.UpstreamDetY = c.MuFilter.FeY
         c.MuFilter.UpstreamDetZ = 2.6*u.cm
+        c.MuFilter.UpstreamnSiPMs = 8
+        c.MuFilter.UpstreamnSides = 2
         c.MuFilter.NUpstreamPlanes = 5
         c.MuFilter.DownstreamDetX = c.MuFilter.X
         c.MuFilter.DownstreamDetY = c.MuFilter.FeY
         c.MuFilter.DownstreamDetZ = 3.9*u.cm
+        c.MuFilter.DownstreamnSiPMs = 4
+        c.MuFilter.DownstreamnSides = 2
         c.MuFilter.NDownstreamPlanes=3
 
         #upstream bars configuration
@@ -111,5 +117,11 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Slope = -3.2 #in degrees
         c.MuFilter.ShiftY = 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
         c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
+
+        #digitization parameters
+        c.MuFilter.AttenuationLength = 28 * u.cm # Bologna prototype of DS bar
+        c.MuFilter.SiPMcalibration         = 0.208        # Volt/Mev Bologna prototype, this for Amplitude, 200 V/MeV for QDC
+        c.MuFilter.DynRangeLow           = 0.01       # just for test, don't know realistic value
+        c.MuFilter.DynRangeHigh          = 1.0         # just for test, don't know realistic value
 
         c.Floor = AttrDict(z=483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)

@@ -63,10 +63,11 @@ class SndlhcDigi:
             for p in hitContainer[detID]:
                  allPoints.push_back(p)
             aHit = ROOT.MuFilterHit(detID,allPoints)
-            if index>0 and self.digiMuFilter.GetSize() == index: self.digiMuFilter.Expand(index+1000)
+            if self.digiMuFilter.GetSize() == index: self.digiMuFilter.Expand(index+100)
             self.digiMuFilter[index]=aHit
             index+=1
-            for k in mcPoints[detID]: mcLinks.Add(detID,k, mcPoints[detID][k]/norm[detID])
+            for k in mcPoints[detID]:
+                mcLinks.Add(detID,k, mcPoints[detID][k]/norm[detID])
         self.digiMuFilter2MCPoints[0]=mcLinks
             
     def finish(self):

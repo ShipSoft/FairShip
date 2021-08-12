@@ -56,9 +56,20 @@ class MuFilter : public FairDetector
 		void SetDownstreamBarsDimensions(Double_t, Double_t, Double_t);
                 void SetDownstreamVerticalBarsDimensions(Double_t, Double_t, Double_t);
 		void SetNDownstreamBars(Int_t);
-
-		
-
+    /** Getposition **/
+                 void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
+    /** Set Digi parameters **/
+                 void SetDigiParameters(Float_t a, Float_t c, Float_t l, Float_t h ){attLength=a; siPMcalibration=c;  dynRangeLow=l; dynRangeHigh=h;}
+   /** Get Digi parameters **/
+                 Float_t AttenuationLength(){return attLength;}
+                 Float_t GetDynRangeLow(){return  dynRangeLow;}
+                 Float_t GetDynRangeHigh(){return  dynRangeHigh;}
+                 Float_t GetSiPMcalibration(){return  siPMcalibration;}
+   /** set readout parameters **/
+                 void SetReadout(Int_t nV,Int_t nU,Int_t nD,Int_t sV,Int_t sU,Int_t sD){
+                                          nSiPMs[0]=nV;nSiPMs[1]=nU;nSiPMs[2]=nD;nSides[0]=sV;nSides[1]=sU;nSides[2]=sD;}
+                 Int_t GetnSiPMs(Int_t detID);
+                 Int_t GetnSides(Int_t detID);
 
 		/**      Initialization of the detector is done here    */
 		virtual void Initialize();
@@ -106,7 +117,6 @@ class MuFilter : public FairDetector
 			Double32_t     fTime;              //!  time
 			Double32_t     fLength;            //!  length
 			Double32_t     fELoss;             //!  energy loss
-
 			/** container for data points */
 			TClonesArray*  fMuFilterPointCollection;
 
@@ -168,6 +178,13 @@ class MuFilter : public FairDetector
 			Double_t fShiftY;	//|
                         Double_t fShiftYEnd;    //|Shift for Downstream station
                         Double_t fSlope; //Slope for floor
+
+                        Float_t attLength;   //| attenuation length 
+                        Float_t dynRangeLow;   //max value for low dynamic range
+                        Float_t dynRangeHigh; //max value for high dynamic range
+                        Float_t siPMcalibration; // Volt/MeV
+                        Float_t nSiPMs[3];             //  number of SiPMs per side
+                        Float_t nSides[3];             //  number of sides readout
 
 			Int_t InitMedium(const char* name);
 };

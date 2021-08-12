@@ -4,10 +4,6 @@
 // -----   Default constructor   -------------------------------------------
 SndlhcHit::SndlhcHit()
   : TObject(),
-   fdigiLowLeft(0),
-   fdigiLowRight(0),
-   fdigiHighLeft(0),
-   fdigiHighRight(0),
     fDetectorID(-1)
 {
 }
@@ -16,24 +12,19 @@ SndlhcHit::SndlhcHit()
 
 
 // -----   Standard constructor   ------------------------------------------
-SndlhcHit::SndlhcHit(Int_t detID, Float_t dLL,Float_t dLR,Float_t dHL,Float_t dHR)
+SndlhcHit::SndlhcHit(Int_t detID)
   :TObject(),
-   fdigiLowLeft(dLL),
-   fdigiLowRight(dLR),
-   fdigiHighLeft(dHL),
-   fdigiHighRight(dHR),
-   fDetectorID  (detID)
+   fDetectorID(detID)
 {
 }
 
-std::unordered_map<std::string, float> SndlhcHit::GetDigis()
+Float_t SndlhcHit::GetSignal(Int_t nChannel)
 {
- std::unordered_map<std::string, float> digits;
- digits["lowLeft"]      =   fdigiLowLeft;
- digits["lowRight"]   =   fdigiLowRight;
- digits["highLeft"]    =   fdigiHighLeft;
- digits["highRight"] =   fdigiHighRight;
- return digits;
+ return signals[nChannel];
+}
+Float_t SndlhcHit::GetTime(Int_t nChannel)
+{
+ return times[nChannel];
 }
 // -------------------------------------------------------------------------
 

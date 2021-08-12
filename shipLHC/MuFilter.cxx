@@ -493,4 +493,69 @@ MuFilterPoint* MuFilter::AddHit(Int_t trackID,Int_t detID,
     return new(clref[size]) MuFilterPoint(trackID,detID, pos, mom,
                                         time, length, eLoss, pdgCode);
 }
+
+void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight) 
+{
+
+  int subsystem     = floor(fDetectorID/10000);
+  int plane                = floor(fDetectorID/1000) - 10*subsystem;
+  int bar_number = fDetectorID%1000;
+
+  TString path = "/cave_1/";
+  TString barName;
+
+  switch(subsystem) {
+  
+  case 1: 
+      path+="volVeto_1/volVetoPlane_"+std::to_string(plane)+"_"+std::to_string(plane);
+      barName = "/volVetoBar_";
+      break;
+  case 2: 
+      path+="volMuFilter_1/volMuUpstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+2);
+      barName = "/volMuUpstreamBar_";
+      break;
+  case 3: 
+      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+5);
+      barName = "/volMuDownstreamBar_";
+      if (bar_number<60){barName+="hor_";}
+      else{barName+="ver_";}
+      break;
+  }
+
+  path += barName+std::to_string(fDetectorID);
+
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+  nav->cd(path);
+  LOG(DEBUG) <<path<<" "<<fDetectorID<<" "<<subsystem<<" "<<bar_number;
+  TGeoNode* W = nav->GetCurrentNode();
+  TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
+
+  if (subsystem == 3 and bar_number >59){  // vertical bars
+      Double_t top[3] = {0,S->GetDY(), 0};
+      Double_t bot[3] = {0,-S->GetDY(),0};
+      Double_t Gtop[3],Gbot[3];
+      nav->LocalToMaster(top, Gtop);   nav->LocalToMaster(bot, Gbot);
+      vLeft.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);
+      vRight.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
+    }
+    else {     // horizontal bars
+      Double_t posXend[3] = {S->GetDX(),0,0};
+      Double_t negXend[3] = {-S->GetDX(),0,0};
+      Double_t GposXend[3],GnegXend[3];
+      nav->LocalToMaster(posXend, GposXend);   nav->LocalToMaster(negXend, GnegXend);
+      vLeft.SetXYZ(GposXend[0],GposXend[1],GposXend[2]);
+      vRight.SetXYZ(GnegXend[0],GnegXend[1],GnegXend[2]);
+    }
+}
+
+   Int_t MuFilter::GetnSiPMs(Int_t detID){
+       int subsystem     = floor(detID/10000);
+       return nSiPMs[subsystem-1];
+   }
+   Int_t MuFilter::GetnSides(Int_t detID){
+       int subsystem     = floor(detID/10000);
+       return nSides[subsystem-1];
+  }
+
+
 ClassImp(MuFilter)

@@ -12,9 +12,7 @@ class MuFilterHit : public SndlhcHit
 
     /** Default constructor **/
     MuFilterHit();
-    /** Constructor with hit parameters **/
-    MuFilterHit(Int_t detID, Float_t digiLowLeft,Float_t digiLowRight,Float_t digiHighLeft,Float_t digiHighRight);
-
+    MuFilterHit(Int_t detID);
     // Constructor from MuFilterPoint
     MuFilterHit(int detID,std::vector<MuFilterPoint*>);
 
@@ -23,8 +21,6 @@ class MuFilterHit : public SndlhcHit
 
     /** Output to screen **/
     void Print() const;
-    /** Getposition **/
-    void GetPosition(TVector3 vLeft, TVector3 vRight); // or top and bottom
     Float_t GetEnergy();
 
     void setInvalid() {flag = false;}
@@ -32,8 +28,8 @@ class MuFilterHit : public SndlhcHit
     bool isVertical();
   private:
     /** Copy constructor **/
-    MuFilterHit(const MuFilterHit& point);
-    MuFilterHit operator=(const MuFilterHit& point);
+    MuFilterHit(const MuFilterHit& hit);
+    MuFilterHit operator=(const MuFilterHit& hit);
 
     Float_t flag;   ///< flag
 

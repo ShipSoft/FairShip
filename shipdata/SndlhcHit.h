@@ -4,7 +4,8 @@
 #include "TObject.h"              //  
 
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
-#include "TVector3.h"                
+#include "TVector3.h"
+#include "TArrayF.h"
 #include <unordered_map>
 
 #ifndef __CINT__
@@ -24,19 +25,20 @@ class SndlhcHit : public TObject
     SndlhcHit();
 
 
-    /** Constructor with hit parameters **/
-    SndlhcHit(Int_t detID, Float_t digiLowLeft,Float_t digiLowRight,Float_t digiHighLeft,Float_t digiHighRight);
+    /** Constructor with detector id, number of SiPMs per side, number of sides **/
+    SndlhcHit(Int_t detID);
 
     /** Destructor **/
     virtual ~SndlhcHit();
 
 
     /** Accessors **/
-    std::unordered_map<std::string, float> GetDigis();
     Int_t    GetDetectorID()    const { return fDetectorID;  };
- 
+    Float_t GetSignal(Int_t nChannel);
+    Float_t GetTime(Int_t nChannel);
     /** Modifiers **/
-    void SetDigi(Float_t dLL,Float_t dLR,Float_t dHL,Float_t dHR) { fdigiLowLeft=dLL;fdigiLowRight=dLR;fdigiHighLeft=dHL;fdigiHighRight=dHR; }
+    //void SetDigi(Int_t i, Float_t s, Float_t t) { signals[i]=s;times[i]=t; }
+    void SetDigi(Int_t i, Float_t s, Float_t t) { signals[i]=s; }
     void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
 // to be implemented by the subdetector
@@ -53,23 +55,19 @@ class SndlhcHit : public TObject
     {
         ar& boost::serialization::base_object<TObject>(*this);
         ar& fDetectorID;
-        ar& fdigiLowLeft;
-        ar& fdigiHighLeft;
-        ar& fdigiLowRight;
-        ar& fdigiHighRight;
+        ar& nSiPMs;
+        ar& nSides;
     }
 
   protected:
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
 #endif // for BOOST serialization
-
-    Float_t fdigiLowLeft;       ///< digitized detector hit, SiPM low dynamic range, left or top.
-    Float_t fdigiLowRight;    ///< digitized detector hit, SiPM low dynamic range, right or bottom.
-    Float_t fdigiHighLeft;      ///< digitized detector hit, SiPM high dynamic range, left or top.
-    Float_t fdigiHighRight;   ///< digitized detector hit, SiPM high dynamic range, right or bottom.
     Int_t   fDetectorID;     ///< Detector unique identifier
-
+    Int_t   nSiPMs;   /// number of SiPMs per side
+    Int_t   nSides;   /// number of sides
+    Float_t signals[16];  /// SiPM signal
+    Float_t times[16];     /// SiPM time
     ClassDef(SndlhcHit,1);
 };
 
