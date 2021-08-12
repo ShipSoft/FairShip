@@ -78,6 +78,7 @@ Float_t MuFilterHit::GetEnergy()
   for (unsigned int j=0; j<nSiPMs; ++j){
         E+=signals[j];
         if (nSides>1){ E+=signals[j+nSiPMs];}
+  }
   return E;
 }
 
