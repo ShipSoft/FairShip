@@ -78,6 +78,7 @@ def configure(run,ship_geo,Gfield=''):
  MuFilter.SetDownstreamBarsDimensions(mu.DownstreamBarX, mu.DownstreamBarY, mu.DownstreamBarZ)
  MuFilter.SetDownstreamVerticalBarsDimensions(mu.DownstreamBarX_ver, mu.DownstreamBarY_ver, mu.DownstreamBarZ_ver)
  MuFilter.SetNDownstreamBars(mu.NDownstreamBars)
+ MuFilter.SetDS4ZGap(mu.DS4ZGap)
 
  MuFilter.SetCenterZ(mu.Zcenter)
  MuFilter.SetXYDisplacement(mu.ShiftX, mu.ShiftY)

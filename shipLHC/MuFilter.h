@@ -54,8 +54,9 @@ class MuFilter : public FairDetector
 		void SetDownstreamPlanesDimensions(Double_t, Double_t, Double_t);
 		void SetNDownstreamPlanes(Int_t);
 		void SetDownstreamBarsDimensions(Double_t, Double_t, Double_t);
-                void SetDownstreamVerticalBarsDimensions(Double_t, Double_t, Double_t);
+        	void SetDownstreamVerticalBarsDimensions(Double_t, Double_t, Double_t);
 		void SetNDownstreamBars(Int_t);
+               void SetDS4ZGap(Double_t);
     /** Getposition **/
                  void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
     /** Set Digi parameters **/
@@ -117,6 +118,7 @@ class MuFilter : public FairDetector
 			Double32_t     fTime;              //!  time
 			Double32_t     fLength;            //!  length
 			Double32_t     fELoss;             //!  energy loss
+
 			/** container for data points */
 			TClonesArray*  fMuFilterPointCollection;
 
@@ -168,6 +170,7 @@ class MuFilter : public FairDetector
 			Double_t fDownstreamBarZ;			
 
 		        Int_t fNDownstreamBars;   //|Number of staggered bars
+		        Double_t fDS4ZGap;
 
   			Double_t fDownstreamBarX_ver; //|Staggered bars of upstream section, vertical bars for x measurement
 			Double_t fDownstreamBarY_ver;
