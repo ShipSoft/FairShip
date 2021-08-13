@@ -89,6 +89,11 @@ MuFilter::~MuFilter()
     }
 }
 
+void MuFilter::SetXYZ(TString plane,Float_t Dx,Float_t Dy,Float_t Dz){
+   geoParameters[plane]=TVector3(Dx,Dz,Dy);    // flip y with z axis
+   std::cout<<"geoParameters "<<plane<<" "<<Dx<<" "<<Dz<<" "<<Dy<<std::endl;
+}
+
 void MuFilter::SetVetoShift(Double_t x, Double_t y)
 {
   fVetoShiftX = x;
@@ -281,6 +286,7 @@ void MuFilter::ConstructGeometry()
 	AddSensitiveVolume(volVetoBar);
 
 	//adding mother volume
+        std::cout << "test geoparameters"<<geoParameters["Veto1"][0]<<" "<<geoParameters["Veto1"][1]<<" "<<geoParameters["Veto1"][2]<<std::endl;
 	top->AddNode(volVeto, 1, new TGeoTranslation(fVetoShiftX, fVetoShiftY,fVetoCenterZ));
 
 	//adding veto planes

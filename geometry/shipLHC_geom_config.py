@@ -51,6 +51,21 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.nplanes = c.EmulsionDet.wall
 
         c.MuFilter = AttrDict(z=0*u.cm)
+        #coordinates in local gravity based system, not complete, for testing interface
+        c.MuFilter.Veto1 = AttrDict(Dz=-151.312*u.mm)
+        c.MuFilter.Veto1.Dx = -44.108*u.mm
+        c.MuFilter.Veto1.Dy = 2800.662*u.mm
+        c.MuFilter.Veto2 = AttrDict(Dz=-130.804*u.mm)
+        c.MuFilter.Veto2.Dx = -44.108*u.mm
+        c.MuFilter.Veto2.Dy = 2841.41*u.mm
+        c.MuFilter.Iron1 = AttrDict(Dz=-102.137*u.mm)
+        c.MuFilter.Iron1.Dx = 27.958*u.mm
+        c.MuFilter.Iron1.Dy = 3581.523*u.mm
+        c.MuFilter.Muon1 = AttrDict(Dz=-99.894*u.mm)
+        c.MuFilter.Muon1.Dx = 51.07*u.mm
+        c.MuFilter.Muon1.Dy = 3762.027*u.mm
+
+
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
         c.MuFilter.VetonSides = 2

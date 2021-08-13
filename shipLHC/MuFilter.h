@@ -71,6 +71,8 @@ class MuFilter : public FairDetector
                                           nSiPMs[0]=nV;nSiPMs[1]=nU;nSiPMs[2]=nD;nSides[0]=sV;nSides[1]=sU;nSides[2]=sD;}
                  Int_t GetnSiPMs(Int_t detID);
                  Int_t GetnSides(Int_t detID);
+   /** set geometry parameters **/
+                 void SetXYZ(TString name,Float_t Dx,Float_t Dy,Float_t Dz);
 
 		/**      Initialization of the detector is done here    */
 		virtual void Initialize();
@@ -188,6 +190,7 @@ class MuFilter : public FairDetector
                         Float_t siPMcalibration; // Volt/MeV
                         Float_t nSiPMs[3];             //  number of SiPMs per side
                         Float_t nSides[3];             //  number of sides readout
+                        std::map<TString,TVector3> geoParameters ; // coordinates of the planes in the gravity based coordinate system
 
 			Int_t InitMedium(const char* name);
 };

@@ -88,6 +88,9 @@ def configure(run,ship_geo,Gfield=''):
  MuFilter.SetReadout(mu.VetonSiPMs,mu.UpstreamnSiPMs,mu.DownstreamnSiPMs,mu.VetonSides,mu.UpstreamnSides,mu.DownstreamnSides )
  MuFilter.SetDigiParameters(mu.AttenuationLength,mu.SiPMcalibration,mu.DynRangeLow,mu.DynRangeHigh)
 
+ for plane in ['Veto1','Veto2','Iron1','Muon1']:
+        MuFilter.SetXYZ(plane,eval('mu.'+plane+'.Dx'),eval('mu.'+plane+'.Dy'),eval('mu.'+plane+'.Dz') )
+        print( plane,eval('mu.'+plane+'.Dx'),eval('mu.'+plane+'.Dy'),eval('mu.'+plane+'.Dz')  )
  detectorList.append(MuFilter)
 
  for x in detectorList:
