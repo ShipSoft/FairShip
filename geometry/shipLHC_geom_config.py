@@ -91,8 +91,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DownstreamDetZ = 3.9*u.cm
         c.MuFilter.DownstreamnSiPMs = 4
         c.MuFilter.DownstreamnSides = 2
-        c.MuFilter.NDownstreamPlanes=3
-
+        c.MuFilter.NDownstreamPlanes=4
+        c.MuFilter.DS4ZGap=8.82*u.cm  
         #upstream bars configuration
         c.MuFilter.NUpstreamBars = 10
         c.MuFilter.UpstreamBarX = c.MuFilter.UpstreamDetX
@@ -106,11 +106,11 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DownstreamBarZ = 1*u.cm
 
         c.MuFilter.DownstreamBarX_ver = c.MuFilter.DownstreamDetY/c.MuFilter.NDownstreamBars #the vertical bars cover a region only 60 x 60 cm2
-        c.MuFilter.DownstreamBarY_ver = c.MuFilter.DownstreamDetY
+        c.MuFilter.DownstreamBarY_ver = 63.5*u.cm 
         c.MuFilter.DownstreamBarZ_ver = 1*u.cm
 
         #total z thickness and position
-        c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + c.MuFilter.NDownstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) 
+        c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + (c.MuFilter.NDownstreamPlanes - 1)*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) + c.MuFilter.DS4ZGap + c.MuFilter.DownstreamDetZ/2 #doesn't include veto
         c.MuFilter.Zcenter = c.EmulsionDet.zC+c.EmulsionDet.zdim/2+c.MuFilter.Z/2
         c.MuFilter.ShiftX = -2.8 * u.cm - c.MuFilter.X/2.
         
