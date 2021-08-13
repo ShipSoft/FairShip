@@ -92,7 +92,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DownstreamnSiPMs = 4
         c.MuFilter.DownstreamnSides = 2
         c.MuFilter.NDownstreamPlanes=4
-        c.MuFilter.DS4ZGap=8.82*u.cm  
+        c.MuFilter.DS4ZGap=8.82*u.cm
         #upstream bars configuration
         c.MuFilter.NUpstreamBars = 10
         c.MuFilter.UpstreamBarX = c.MuFilter.UpstreamDetX

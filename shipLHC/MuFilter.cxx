@@ -376,10 +376,11 @@ void MuFilter::ConstructGeometry()
 	  string name = "volMuDownstreamDet_"+std::to_string(l);
 	  volDownstreamDet = new TGeoVolumeAssembly(name.c_str());
 	  volDownstreamDet->SetLineColor(kRed+2);
-	  volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
 	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
-	  if (l<fNDownstreamPlanes-1){dz+=fFeBlockZ+fDownstreamDetZ;}
-	  else{dz+=fDownstreamDetZ/2 + fDS4ZGap;}
+	  if (l<fNDownstreamPlanes-1){
+		volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));}
+	  if (l<fNDownstreamPlanes-2){dz+=fFeBlockZ+fDownstreamDetZ;}
+	  else{dz+= fDS4ZGap+fDownstreamDetZ/2;}
 
 	//second loop, adding bars within each detector box
 	  if (l!=fNDownstreamPlanes-1) {
@@ -393,10 +394,10 @@ void MuFilter::ConstructGeometry()
 	  }
 	    //adding vertical bars for x
 	  for (Int_t i_vbar = 0; i_vbar<fNDownstreamBars; i_vbar++) {
-			Double_t dx_bar = -fDownstreamDetX/2 + fDownstreamBarX_ver/2. + fDownstreamBarX_ver*i_vbar; //they do not cover all the x region, but only 60 x 60.
-			Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
-			TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);
-			volDownstreamDet->AddNode(volMuDownstreamBar_ver,3e+4+l*1e+3+i_vbar+60,xztrans);   // I added a 60 here to make each horizontal + vetical
+		Double_t dx_bar =  fDownstreamDetX/2 - fDownstreamBarX_ver/2. - fDownstreamBarX_ver*i_vbar; //they do not cover all the x region, but only 60 x 60.
+		Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
+		TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);
+		volDownstreamDet->AddNode(volMuDownstreamBar_ver,3e+4+l*1e+3+i_vbar+60,xztrans);   // I added a 60 here to make each horizontal + vetical
 			// sub-plane contain bars given detIDs as one plane. So the first bar in the vert. sub plane is the 60th etc. 		  
 		}
 	}
