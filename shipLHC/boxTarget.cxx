@@ -135,7 +135,9 @@ void boxTarget::ConstructGeometry()
    Double_t m   = 100*cm;  //  m
    Double_t mm  = 0.1*cm;  //  mm
 
-   TGeoVolume *top = gGeoManager->GetTopVolume();
+   TGeoVolume *top=gGeoManager->FindVolumeFast("Detector");
+    if(!top)  LOG(ERROR) << "no Detector volume found " ;
+
    InitMedium(fTargetMaterial);
    TGeoMedium *TargetMaterial = gGeoManager->GetMedium(fTargetMaterial);
    InitMedium("vacuums");

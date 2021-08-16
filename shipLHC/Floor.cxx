@@ -169,6 +169,22 @@ void Floor::ConstructGeometry()
 
         TGeoVolume *tunnel= new TGeoVolumeAssembly("Tunnel");
 
+        TGeoVolume *detector = new TGeoVolumeAssembly("Detector");  // assembly to place detetector elements in local coordinates
+         /** from geometer, with z pointing upwards, via localSND2CCS and then CCS2SNDPhysics
+                 Double_t M[9] = {0.999978, 0.0000821516, -0.006606, 
+                                                    -0.00660651, -0.0124347, 0.999901,
+                                                   -4.69368*10^-15, 0.999923, 0.0124349}
+         **/
+         // with y-axis upwards
+         Double_t M[9] = {0.999978,       -0.006606,   0.0000821516,
+                                             -0.00660651,  0.999901,  -0.0124347,
+                                               0.0,                     0.0124349,0.999923};
+         auto localSND_physCS_rot      = new TGeoRotation("localSND_physCS_rot");
+         localSND_physCS_rot ->SetMatrix(M);
+         auto localSND_physCS_comb = new TGeoCombiTrans("localSND_physCS",0.,0.,0.,localSND_physCS_rot);    // origin is 480m downstream of IP1
+         localSND_physCS_comb->RegisterYourself();
+         top->AddNode(detector, 0,localSND_physCS_comb);
+
 // from Fluka, geo4SND.inp, 25.12.2020
   std::vector<double> TI18_o1  = {-221.4191473578 , 76.66172460057,   48820.152816717, 131.72892289383,   33.003800302801, -543.2846767937, 200.28612174928};
   std::vector<double> TI18_i1   = {-221.4191473578 , 76.66172460057,   48820.152816717, 131.72892289383,   33.003800302801, -543.2846767937, 175.0}; 
@@ -409,6 +425,7 @@ void Floor::ConstructGeometry()
 
 auto exitPlane =  gGeoManager->MakeBox("exitScoringPlane",vacuum,1000.,1000. , 1.);
 exitPlane->SetLineColor(kGreen);
+exitPlane->SetVisibility(kFALSE);
 if (fMakeSensitive) {AddSensitiveVolume(exitPlane);}
 tunnel->AddNode(exitPlane,1, new TGeoTranslation(0,0,1000.));
 

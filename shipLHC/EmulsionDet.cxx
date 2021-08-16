@@ -183,7 +183,8 @@ void EmulsionDet::SetTTzdimension(Double_t TTZ)
 
 void EmulsionDet::ConstructGeometry()
 {   
-	TGeoVolume *top=gGeoManager->GetTopVolume();       
+	TGeoVolume *top=gGeoManager->FindVolumeFast("Detector");
+	if(!top)  LOG(ERROR) << "no Detector volume found " ;
 	gGeoManager->SetVisLevel(10);
 
 	LOG(INFO) << "fCenterZ:   "<<fCenterZ;
@@ -332,7 +333,6 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 	gMC->CurrentVolID(fVolumeID);
-	gGeoManager->PrintOverlaps();		
 	
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();

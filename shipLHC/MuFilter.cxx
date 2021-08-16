@@ -257,8 +257,8 @@ Int_t MuFilter::InitMedium(const char* name)
 
 void MuFilter::ConstructGeometry()
 {
-	TGeoVolume *top=gGeoManager->GetTopVolume();
-	if(top) cout<<" top volume found! "<<endl;
+	TGeoVolume *top=gGeoManager->FindVolumeFast("Detector");
+	if(!top)  LOG(ERROR) << "no Detector volume found " ;
 	gGeoManager->SetVisLevel(10);
 
 	//Materials 
@@ -429,10 +429,7 @@ Bool_t  MuFilter::ProcessHits(FairVolume* vol)
 			gMC->IsTrackStop()       || 
 			gMC->IsTrackDisappeared()   ) {
 		fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-		fVolumeID = vol->getMCid();
 		gMC->CurrentVolID(fVolumeID);
-
-		gGeoManager->PrintOverlaps();
 
 		if (fELoss == 0. ) { return kFALSE; }
 		TParticle* p=gMC->GetStack()->GetCurrentTrack();

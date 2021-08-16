@@ -7,7 +7,9 @@ with ConfigRegistry.register_config("basic") as c:
 # cave parameters
         c.cave = AttrDict(z=0*u.cm)
 
-        c.EmulsionDet = AttrDict(z=0*u.cm)
+        # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion),z=483262./10.*u.cm
+        # centre emulsion now 326.2cm downstream from origin.
+        c.EmulsionDet = AttrDict(z=326.2*u.cm)
         c.EmulsionDet.PassiveOption = 1 #0 makes emulsion volumes active, 1 makes all emulsion volumes passive
         c.EmulsionDet.row = 2
         c.EmulsionDet.col = 2
@@ -40,7 +42,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
-        c.EmulsionDet.startpos =  -25.4750 * u.cm
+        c.EmulsionDet.startpos =  -25.4750 * u.cm + c.EmulsionDet.z
         c.EmulsionDet.zC = c.EmulsionDet.startpos + c.EmulsionDet.zdim/2.
 
         c.Scifi = AttrDict(z=0*u.cm)
@@ -139,4 +141,4 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DynRangeLow           = 0.01       # just for test, don't know realistic value
         c.MuFilter.DynRangeHigh          = 1.0         # just for test, don't know realistic value
 
-        c.Floor = AttrDict(z=483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)
+        c.Floor = AttrDict(z=48000.*u.cm) # to place tunnel in SND_@LHC coordinate system
