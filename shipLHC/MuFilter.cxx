@@ -423,10 +423,7 @@ Bool_t  MuFilter::ProcessHits(FairVolume* vol)
 			gMC->IsTrackStop()       || 
 			gMC->IsTrackDisappeared()   ) {
 		fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-		fVolumeID = vol->getMCid();
 		gMC->CurrentVolID(fVolumeID);
-
-		gGeoManager->PrintOverlaps();
 
 		if (fELoss == 0. ) { return kFALSE; }
 		TParticle* p=gMC->GetStack()->GetCurrentTrack();
