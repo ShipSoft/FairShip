@@ -262,8 +262,6 @@ void MuFilter::ConstructGeometry()
 	gGeoManager->SetVisLevel(10);
 
 	//Materials 
-	InitMedium("air");
-	TGeoMedium *air =gGeoManager->GetMedium("air");
 
 	InitMedium("iron");
 	TGeoMedium *Fe =gGeoManager->GetMedium("iron");
@@ -274,13 +272,8 @@ void MuFilter::ConstructGeometry()
 	//Definition of the box containing veto planes
 	TGeoVolumeAssembly *volVeto = new TGeoVolumeAssembly("volVeto");
 	
-	//Veto Planes
-	TGeoBBox *VetoPlane = new TGeoBBox("VetoPlane",fVetoPlaneX/2., fVetoPlaneY/2., fVetoPlaneZ/2.);
-	// TGeoVolume *volVetoPlane = new TGeoVolume("volVetoPlane",VetoPlane,air);
-
 	//Veto bars
-	TGeoBBox *VetoBar = new TGeoBBox("VetoBar",fVetoBarX/2., fVetoBarY/2., fVetoBarZ/2.);
-	TGeoVolume *volVetoBar = new TGeoVolume("volVetoBar",VetoBar,Scint);
+	TGeoVolume *volVetoBar = gGeoManager->MakeBox("volVetoBar",Scint,fVetoBarX/2., fVetoBarY/2., fVetoBarZ/2.);
 
 	volVetoBar->SetLineColor(kBlue+2);
 	AddSensitiveVolume(volVetoBar);
@@ -295,7 +288,7 @@ void MuFilter::ConstructGeometry()
 	for (int iplane; iplane < fNVetoPlanes; iplane++){
 	  
       string name = "volVetoPlane_"+to_string(iplane);
-	  volVetoPlane = new TGeoVolume(name.c_str(), VetoPlane, air);
+	  volVetoPlane = new TGeoVolumeAssembly(name.c_str());
 	  volVetoPlane->SetLineColor(kGray);
 	  volVeto->AddNode(volVetoPlane,iplane, new TGeoTranslation(0,-fVetoPlaneShiftY/2. + iplane * fVetoPlaneShiftY, startZ + fVetoPlaneZ/2. + iplane * fVetoPlaneZ));
 
@@ -314,8 +307,7 @@ void MuFilter::ConstructGeometry()
 	TGeoVolumeAssembly *volMuFilter = new TGeoVolumeAssembly("volMuFilter");
 
 	//Iron blocks volume definition
-	TGeoBBox *FeBlockBox = new TGeoBBox("FeBlockBox",fFeBlockX/2, fFeBlockY/2, fFeBlockZ/2);
-	TGeoVolume *volFeBlock = new TGeoVolume("volFeBlock",FeBlockBox,Fe);
+	TGeoVolume *volFeBlock = gGeoManager->MakeBox("volFeBlock",Fe,fFeBlockX/2, fFeBlockY/2, fFeBlockZ/2);
 	volFeBlock->SetLineColor(19);
 
 	top->AddNode(volMuFilter,1,new TGeoTranslation(fShiftX,fShiftY,fCenterZ));
@@ -323,22 +315,19 @@ void MuFilter::ConstructGeometry()
 	Double_t dy = 0;
 	Double_t dz = 0;
 	//Upstream Detector planes definition
-	TGeoBBox *UpstreamDetBox = new TGeoBBox("UpstreamDetBox",fUpstreamDetX/2,fUpstreamDetY/2,fUpstreamDetZ/2);
-//	TGeoVolume *volUpstreamDet = new TGeoVolume("volUpstreamDet",UpstreamDetBox,air);
 
 	// create pointer for upstream plane to be re-used
 	TGeoVolume* volUpstreamDet;
 
 	//adding staggered bars, first part, only 11 bars, (single stations, readout on both ends)
-	TGeoBBox *MuUpstreamBar = new TGeoBBox("MuUpstreamBar",fUpstreamBarX/2, fUpstreamBarY/2, fUpstreamBarZ/2);
-	TGeoVolume *volMuUpstreamBar = new TGeoVolume("volMuUpstreamBar",MuUpstreamBar,Scint);
+	TGeoVolume *volMuUpstreamBar = gGeoManager->MakeBox("volMuUpstreamBar",Scint,fUpstreamBarX/2, fUpstreamBarY/2, fUpstreamBarZ/2);
 	volMuUpstreamBar->SetLineColor(kBlue+2);
 	AddSensitiveVolume(volMuUpstreamBar);
 
 	for(Int_t l=0; l<fNUpstreamPlanes; l++)
 	{
 	  string name = "volMuUpstreamDet_"+std::to_string(l);
-	  volUpstreamDet = new TGeoVolume(name.c_str(), UpstreamDetBox, air);
+	  volUpstreamDet = new TGeoVolumeAssembly(name.c_str());
 	  volUpstreamDet->SetLineColor(kRed+2);
 	  dz = (fFeBlockZ + fUpstreamDetZ)*l;
 	  dy = dz * TMath::Tan(TMath::DegToRad() * fSlope);
@@ -366,14 +355,12 @@ void MuFilter::ConstructGeometry()
 	TGeoVolume* volDownstreamDet;
 
 	//adding staggered bars, second part, 77 bars, each for x and y coordinates
-	TGeoBBox *MuDownstreamBar_hor = new TGeoBBox("MuDownstreamBar_hor",fDownstreamBarX/2, fDownstreamBarY/2, fDownstreamBarZ/2);
-	TGeoVolume *volMuDownstreamBar_hor = new TGeoVolume("volMuDownstreamBar_hor",MuDownstreamBar_hor,Scint);
+	TGeoVolume *volMuDownstreamBar_hor = gGeoManager->MakeBox("volMuDownstreamBar_hor",Scint,fDownstreamBarX/2, fDownstreamBarY/2, fDownstreamBarZ/2);
 	volMuDownstreamBar_hor->SetLineColor(kBlue+2);
 	AddSensitiveVolume(volMuDownstreamBar_hor);
 
 	//vertical bars, for x measurement
-	TGeoBBox *MuDownstreamBar_ver = new TGeoBBox("MuDownstreamBar_ver",fDownstreamBarX_ver/2, fDownstreamBarY_ver/2, fDownstreamBarZ/2);
-	TGeoVolume *volMuDownstreamBar_ver = new TGeoVolume("volMuDownstreamBar_ver",MuDownstreamBar_ver,Scint);
+	TGeoVolume *volMuDownstreamBar_ver = gGeoManager->MakeBox("volMuDownstreamBar_ver",Scint,fDownstreamBarX_ver/2, fDownstreamBarY_ver/2, fDownstreamBarZ/2);
 	volMuDownstreamBar_ver->SetLineColor(kGreen+2);
 	AddSensitiveVolume(volMuDownstreamBar_ver);
 
