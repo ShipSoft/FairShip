@@ -40,8 +40,8 @@ class GenieGenerator : public FairGenerator
   void SetDeltaE_Matching_FLUKAGenie(Double_t DeltaE){
     fDeltaE_GenieFLUKA_nu = DeltaE;
   }
-  Int_t SetGenerationOption(Int_t GenOption){
-    fGenOption = GenOption
+  void SetGenerationOption(Int_t GenOption){
+    fGenOption = GenOption;
   }
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
@@ -71,6 +71,8 @@ class GenieGenerator : public FairGenerator
   Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
   TH1D* pxhist[3000];//!
   TH1D* pyslice[3000][100];//!
+
+  TClonesArray *ancstr;
 
   ClassDef(GenieGenerator,2);
 };

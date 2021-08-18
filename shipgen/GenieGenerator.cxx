@@ -13,6 +13,8 @@
 #include "TGeoManager.h"
 #include "TGeoEltu.h"
 #include "TGeoCompositeShape.h"
+#include "TParticle.h"
+#include "TClonesArray.h"
 
 using std::cout;
 using std::endl;
@@ -77,6 +79,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
      LOG(FATAL) <<"No TTree of interacting neutrinos present. Did you run extract_interacting_neutrinos.py from the macro folder?";
      return kFALSE;
    }
+   fNevents = fFLUKANuTree->GetEntries();
    //setting branches for input neutrino tree. 
    //Nota Bene: I get only the angles and positions, 
    //for the energy I keep the GENIE one, otherwise I lose energy conservation
@@ -85,6 +88,13 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
    fFLUKANuTree->SetBranchAddress("x",&FLUKA_x);
    fFLUKANuTree->SetBranchAddress("y",&FLUKA_y);
    fDeltaE_GenieFLUKA_nu = 10.; //Default value for energy range of FLUKA->Genie matching, 10 GeV.
+  }
+  if (fGenOption == 2){ //pythia tree
+   ancstr = new TClonesArray("TParticle");
+   fFLUKANuTree = (TTree*)fInputFile->Get("NuTauTree");
+   fNevents = fFLUKANuTree->GetEntries();
+   fFLUKANuTree->SetBranchAddress("Ancstr",&ancstr);
+   cout<<"I am here"<<endl;
   }
   fFirst=kTRUE;
   return kTRUE;
@@ -487,9 +497,8 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       }
       fFirst = kFALSE;
     }
-
     if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
-    if (fGenOption==1) fFLUKANuTree->GetEntry(fn%fNevents);
+    if (fGenOption>0) fFLUKANuTree->GetEntry(fn%fNevents); //1 or 2
     else if (fGenOption == 0) fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {
@@ -521,6 +530,22 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        pout[1] = FLUKA_y_cos * pzv;
        double pt = sqrt(pout[0]*pout[0] + pout[1]*pout[1]);
        pout[2] = pzv*pzv-pt*pt;
+      }
+      else if(fGenOption == 2){
+       //getting neutrino information
+       TParticle *nuparticle = (TParticle*) ancstr->At(0);
+       TVector3 * nup = new TVector3(nuparticle->Px(), nuparticle->Py(), nuparticle->Pz());
+       //rotating of xsec
+       nup->RotateX(150e-6);
+       //getting associated interaction
+       int nuevent = ExtractEvent_Ekin(nup->Mag(), 10.); 
+       fTree->GetEntry(nuevent);
+       //getting GENIE tri-momentum in this reference
+       pout[0] = nup->Px()/nup->Pz() * pzv;
+       pout[1] = nup->Py()/nup->Pz() * pzv;
+       double pt = sqrt(pout[0]*pout[0] + pout[1]*pout[1]);
+       pout[2] = pzv*pzv-pt*pt;
+       cout<<"TESTING YET AGAIN"<<endl;
       }
       
       else if( fGenOption == 0 ){
@@ -567,7 +592,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         //adding offset from neutrino production point (only for SND@LHC phys
         if (fGenOption == 1){
           end[0] += FLUKA_x;
-          end[1] += FLUKA_y:
+          end[1] += FLUKA_y;
         }
         //cout << "Info GenieGenerator: neutrino xyz-end " << end[0] << "-" << end[1] << "-" << end[2] << endl;
         //get material density between these two points
