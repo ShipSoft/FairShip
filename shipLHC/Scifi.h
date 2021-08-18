@@ -19,17 +19,22 @@ class TClonesArray;
 class Scifi : public FairDetector
 {
 public:
-    Scifi(const char* name, const Double_t DX, Double_t DY, const Double_t DZ, Bool_t Active, const char* Title = "Brick");
+    Scifi(const char* name, const Double_t xdim, Double_t ydim, const Double_t zdim, Bool_t Active, const char* Title = "Scifi");
     Scifi();
     virtual ~Scifi();
  
     
     /**      Create the detector geometry        */
     void ConstructGeometry();
-    void SetTotZDimension(Double_t Zdim){FullDetZdim = Zdim;}
-    void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
-    void SetScifiNplanes(Int_t n) {fNplanes = n;}
-    void SetGapBrick(Double_t d) {DeltaZ = d;}
+    void SetScifiParam(Double_t xdim, Double_t ydim, Double_t zdim);
+    void SetMatParam (Double_t scifimat_width, Double_t scifimat_length, Double_t scifimat_z, Double_t scifimat_gap);
+    void SetPlaneParam(Double_t carbonfiber_z, Double_t honeycomb_z);
+    void SetPlastBarParam(Double_t plastbar_x, Double_t plastbar_y, Double_t plastbar_z);
+    void SetScifiSep(Double_t scifi_separation);
+    void SetZOffset(Double_t offset_z);
+    void SetNMats(Int_t nmats);
+    void SetNScifi(Int_t nscifi);
+    void SetNSiPMs(Int_t sipms);
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -95,12 +100,28 @@ private:
     
 protected:
     
-    Double_t XDimension; // Dimension of Scifi planes
-    Double_t YDimension; //
-    Double_t ZDimension; //
-    Double_t FullDetZdim; //Z Dimension whole detector 
-    Double_t DeltaZ; //Distance between each target tracker plane (= Brick)
-    Int_t fNplanes;
+    Double_t fXDimension; //Dimension of Scifi planes
+    Double_t fYDimension; //
+    Double_t fZDimension; //
+    
+    Double_t fWidthScifiMat;  
+    Double_t fLengthScifiMat;
+    Double_t fZScifiMat; 
+    Double_t fGapScifiMat; //Gap between mats
+
+    Double_t fZCarbonFiber; 
+    Double_t fZHoneycomb;
+
+    Double_t fXPlastBar; //Dimension of plastic bar
+    Double_t fYPlastBar; //
+    Double_t fZPlastBar; //
+
+    Double_t fSeparationBrick; //Separation between successive SciFi volumes
+    Double_t fZOffset;
+    
+    Int_t fNMats;  //Number of mats in one SciFi plane
+    Int_t fNScifi; //Number of Scifi walls
+    Int_t fNSiPMs; //Number of SiPMs per SciFi plane
         
     Int_t InitMedium(const char* name);
     

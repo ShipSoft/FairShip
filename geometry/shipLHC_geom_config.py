@@ -35,20 +35,37 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.WallXDim = c.EmulsionDet.xdim
         c.EmulsionDet.WallYDim = c.EmulsionDet.ydim
         c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
-        c.EmulsionDet.TTz = 3.0*u.cm
+        c.EmulsionDet.TTz = 1.74 *u.cm 
         c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
         c.EmulsionDet.startpos =  -25.4750 * u.cm
         c.EmulsionDet.zC = c.EmulsionDet.startpos + c.EmulsionDet.zdim/2.
-
+        
+        #SciFi parameters
         c.Scifi = AttrDict(z=0*u.cm)
-        c.Scifi.xdim = c.EmulsionDet.xdim
-        c.Scifi.ydim = c.EmulsionDet.ydim
-        c.Scifi.zdim = c.EmulsionDet.TTz
-        c.Scifi.DZ = c.EmulsionDet.BrZ
-        c.Scifi.nplanes = c.EmulsionDet.wall
+        c.Scifi.xdim = 40 *u.cm 
+        c.Scifi.ydim = 40 *u.cm 
+        c.Scifi.zdim = 1.74 *u.cm
+        
+        c.Scifi.scifimat_width = 13.3 *u.cm
+        c.Scifi.scifimat_length = 40 *u.cm
+        c.Scifi.scifimat_z = 0.135 *u.cm
+        c.Scifi.scifimat_gap = 0.05 *u.cm
+        
+        c.Scifi.carbonfiber_z = 0.02 *u.cm
+        c.Scifi.honeycomb_z = 0.5 *u.cm
+        
+        c.Scifi.plastbar_x = 1.5 *u.cm
+        c.Scifi.plastbar_y = 40 *u.cm
+        c.Scifi.plastbar_z = 0.195 *u.cm
+        
+        c.Scifi.scifi_separation = c.Scifi.zdim + c.EmulsionDet.BrZ  
+        c.Scifi.offset_z = - c.EmulsionDet.zdim/2 + c.EmulsionDet.BrZ  #SciFi starts at the end of the first ECC
+        c.Scifi.nmats = 3
+        c.Scifi.nscifi = 5
+        c.Scifi.nsipms = 12 #per SciFi plane
 
         c.MuFilter = AttrDict(z=0*u.cm)
         #Veto station parameters
