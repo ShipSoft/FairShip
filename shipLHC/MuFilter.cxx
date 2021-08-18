@@ -397,7 +397,7 @@ void MuFilter::ConstructGeometry()
 		Double_t dx_bar =  fDownstreamDetX/2 - fDownstreamBarX_ver/2. - fDownstreamBarX_ver*i_vbar; //they do not cover all the x region, but only 60 x 60.
 		Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
 		TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);
-		Int_i i_vbar_rev = fNDownstreamBars-1-i_vbar;
+		Int_t i_vbar_rev = fNDownstreamBars-1-i_vbar;
 		volDownstreamDet->AddNode(volMuDownstreamBar_ver,3e+4+l*1e+3+i_vbar_rev+60,xztrans);   // I added a 60 here to make each horizontal + vertical
 			// sub-plane contain bars given detIDs as one plane. So the first bar in the vert. sub plane is the 60th etc. 		  
 		}
