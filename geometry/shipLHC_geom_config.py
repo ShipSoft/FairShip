@@ -123,5 +123,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.SiPMcalibration         = 0.208        # Volt/Mev Bologna prototype, this for Amplitude, 200 V/MeV for QDC
         c.MuFilter.DynRangeLow           = 0.01       # just for test, don't know realistic value
         c.MuFilter.DynRangeHigh          = 1.0         # just for test, don't know realistic value
+        c.MuFilter.VandUpAttenuationLength = 75 * u.cm # to be defined
 
         c.Floor = AttrDict(z=483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)

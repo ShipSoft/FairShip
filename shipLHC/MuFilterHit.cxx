@@ -25,7 +25,9 @@ MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
 {
      MuFilter* MuFilterDet = dynamic_cast<MuFilter*> (FairRunSim::Instance()->GetListOfModules()->FindObject("MuFilter") );
      // get parameters from the MuFilter detector for simulating the digitized information
-     Float_t attLength            = MuFilterDet->AttenuationLength();
+     Float_t attLength;
+     if (floor(detID/10000==3)) { attLength = MuFilterDet->AttenuationLengthVandUp();}
+     else { attLength = MuFilterDet->AttenuationLength();}
      Float_t siPMcalibration = MuFilterDet->GetSiPMcalibration();
      nSiPMs  = MuFilterDet->GetnSiPMs(detID);
      nSides   = MuFilterDet->GetnSides(detID);

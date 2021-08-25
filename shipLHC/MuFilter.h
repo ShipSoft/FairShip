@@ -60,9 +60,10 @@ class MuFilter : public FairDetector
     /** Getposition **/
                  void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
     /** Set Digi parameters **/
-                 void SetDigiParameters(Float_t a, Float_t c, Float_t l, Float_t h ){attLength=a; siPMcalibration=c;  dynRangeLow=l; dynRangeHigh=h;}
+                 void SetDigiParameters(Float_t a, Float_t b, Float_t c, Float_t l, Float_t h ){attLength=a; attLengthVandUp=b; siPMcalibration=c;  dynRangeLow=l; dynRangeHigh=h;}
    /** Get Digi parameters **/
                  Float_t AttenuationLength(){return attLength;}
+                 Float_t AttenuationLengthVandUp(){return attLengthVandUp;}
                  Float_t GetDynRangeLow(){return  dynRangeLow;}
                  Float_t GetDynRangeHigh(){return  dynRangeHigh;}
                  Float_t GetSiPMcalibration(){return  siPMcalibration;}
@@ -182,7 +183,8 @@ class MuFilter : public FairDetector
                         Double_t fShiftYEnd;    //|Shift for Downstream station
                         Double_t fSlope; //Slope for floor
 
-                        Float_t attLength;   //| attenuation length 
+                        Float_t attLength;   //| attenuation length for Downstream bars
+                        Float_t attLengthVandUp; //| attenuation length for Veto and Upstream bars
                         Float_t dynRangeLow;   //max value for low dynamic range
                         Float_t dynRangeHigh; //max value for high dynamic range
                         Float_t siPMcalibration; // Volt/MeV
