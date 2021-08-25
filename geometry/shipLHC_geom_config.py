@@ -56,8 +56,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.scifimat_gap = 0.05 *u.cm
         
         c.Scifi.fiber_length = c.Scifi.scifimat_length
-        c.Scifi.scintcore_rmax = 0.011 *u.cm  #to be checked
-        c.Scifi.clad1_rmax = 0.01175 *u.cm    #to be checked
+        c.Scifi.scintcore_rmax = 0.011 *u.cm  
+        c.Scifi.clad1_rmax = 0.01175 *u.cm    
         c.Scifi.clad2_rmax = 0.0125 *u.cm
 
         c.Scifi.horizontal_pitch = 0.027 *u.cm
