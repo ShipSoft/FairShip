@@ -26,15 +26,20 @@ public:
     
     /**      Create the detector geometry        */
     void ConstructGeometry();
+    void SiPMOverlap();
     void SetScifiParam(Double_t xdim, Double_t ydim, Double_t zdim);
-    void SetMatParam (Double_t scifimat_width, Double_t scifimat_length, Double_t scifimat_z, Double_t scifimat_gap);
+    void SetMatParam (Double_t scifimat_width, Double_t scifimat_length, Double_t scifimat_z, Double_t epoxymat_z, Double_t scifimat_gap);
+    void SetFiberParam(Double_t fiber_length, Double_t scintcore_rmax, Double_t clad1_rmax, Double_t clad2_rmax);
+    void SetFiberPosParam(Double_t horizontal_pitch, Double_t vertical_pitch, Double_t rowlong_offset, Double_t rowshort_offset);
     void SetPlaneParam(Double_t carbonfiber_z, Double_t honeycomb_z);
     void SetPlastBarParam(Double_t plastbar_x, Double_t plastbar_y, Double_t plastbar_z);
+    void SetNFibers(Int_t nfibers_shortrow, Int_t nfibers_longrow, Int_t nfibers_z);
     void SetScifiSep(Double_t scifi_separation);
     void SetZOffset(Double_t offset_z);
     void SetNMats(Int_t nmats);
     void SetNScifi(Int_t nscifi);
     void SetNSiPMs(Int_t sipms);
+    void SiPMParams(Double_t half_width, Double_t channel_width, Double_t charr_width, Double_t sipm_edge, Double_t charr_gap, Double_t simparr_width, Double_t sipm_diegap, Double_t nsipm_channels);
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -106,8 +111,21 @@ protected:
     
     Double_t fWidthScifiMat;  
     Double_t fLengthScifiMat;
-    Double_t fZScifiMat; 
+    Double_t fZScifiMat;
+    Double_t fZEpoxyMat; 
     Double_t fGapScifiMat; //Gap between mats
+
+    Double_t fFiberLength;   //Fiber Dimensions
+    Double_t fScintCore_rmax;  
+    Double_t fClad1_rmin;    
+    Double_t fClad1_rmax;    
+    Double_t fClad2_rmin;    
+    Double_t fClad2_rmax;    
+
+    Double_t fHorPitch;   //Fiber position params
+    Double_t fVertPitch;  //
+    Double_t fOffsetRowS; //
+    Double_t fOffsetRowL; //
 
     Double_t fZCarbonFiber; 
     Double_t fZHoneycomb;
@@ -116,12 +134,25 @@ protected:
     Double_t fYPlastBar; //
     Double_t fZPlastBar; //
 
+    Double_t fNFibers_Srow;   
+    Double_t fNFibers_Lrow;     
+    Double_t fNFibers_z;                 
+
     Double_t fSeparationBrick; //Separation between successive SciFi volumes
     Double_t fZOffset;
     
     Int_t fNMats;  //Number of mats in one SciFi plane
     Int_t fNScifi; //Number of Scifi walls
     Int_t fNSiPMs; //Number of SiPMs per SciFi plane
+
+    Double_t fHalfWidth;    //Half width of the SiPM plane
+    Double_t fWidthChannel; //One channel width 
+    Double_t fCharr;        //Width of an array of 64 channels without gaps            
+    Double_t fEdge;         //Edge at the left and right sides of the SiPM           
+    Double_t fCharrGap;     //Gap between two charr
+    Double_t fSipmArray;    //Width of 128 channels array with the gap
+    Double_t fBigGap;       //Gap between two arrays                          
+    Double_t fNSiPMChan;    //Number of channels in each SiPM
         
     Int_t InitMedium(const char* name);
     

@@ -35,7 +35,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.WallXDim = c.EmulsionDet.xdim
         c.EmulsionDet.WallYDim = c.EmulsionDet.ydim
         c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
-        c.EmulsionDet.TTz = 1.74 *u.cm 
+        c.EmulsionDet.TTz = 1.81 *u.cm   
         c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
@@ -47,25 +47,50 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi = AttrDict(z=0*u.cm)
         c.Scifi.xdim = 40 *u.cm 
         c.Scifi.ydim = 40 *u.cm 
-        c.Scifi.zdim = 1.74 *u.cm
+        c.Scifi.zdim = 1.81 *u.cm   
         
         c.Scifi.scifimat_width = 13.3 *u.cm
         c.Scifi.scifimat_length = 40 *u.cm
         c.Scifi.scifimat_z = 0.135 *u.cm
+        c.Scifi.epoxymat_z = 0.17 *u.cm
         c.Scifi.scifimat_gap = 0.05 *u.cm
         
+        c.Scifi.fiber_length = c.Scifi.scifimat_length
+        c.Scifi.scintcore_rmax = 0.011 *u.cm  #to be checked
+        c.Scifi.clad1_rmax = 0.01175 *u.cm    #to be checked
+        c.Scifi.clad2_rmax = 0.0125 *u.cm
+
+        c.Scifi.horizontal_pitch = 0.027 *u.cm
+        c.Scifi.vertical_pitch = 0.021 *u.cm
+        c.Scifi.rowlong_offset = 0.035 *u.cm 
+        c.Scifi.rowshort_offset = 0.0215 *u.cm 
+
         c.Scifi.carbonfiber_z = 0.02 *u.cm
         c.Scifi.honeycomb_z = 0.5 *u.cm
         
         c.Scifi.plastbar_x = 1.5 *u.cm
         c.Scifi.plastbar_y = 40 *u.cm
         c.Scifi.plastbar_z = 0.195 *u.cm
+
+        c.Scifi.nfibers_shortrow = 491
+        c.Scifi.nfibers_longrow = 492
+        c.Scifi.nfibers_z = 6
         
         c.Scifi.scifi_separation = c.Scifi.zdim + c.EmulsionDet.BrZ  
         c.Scifi.offset_z = - c.EmulsionDet.zdim/2 + c.EmulsionDet.BrZ  #SciFi starts at the end of the first ECC
         c.Scifi.nmats = 3
         c.Scifi.nscifi = 5
         c.Scifi.nsipms = 12 #per SciFi plane
+        
+        #SiPM parameters
+        c.Scifi.half_width = 19.528 *u.cm				
+        c.Scifi.channel_width = 0.025 *u.cm	
+        c.Scifi.charr_width = 1.6 *u.cm
+        c.Scifi.sipm_edge = 0.016 *u.cm
+        c.Scifi.charr_gap = 0.022 *u.cm				
+        c.Scifi.simparr_width  = c.Scifi.charr_gap + 2.*c.Scifi.charr_width
+        c.Scifi.sipm_diegap = 0.038 *u.cm				
+        c.Scifi.nsipm_channels = 128
 
         c.MuFilter = AttrDict(z=0*u.cm)
         #Veto station parameters
