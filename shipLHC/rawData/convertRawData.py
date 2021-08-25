@@ -109,7 +109,7 @@ ROOT.gDirectory.pwd()
 header  = ROOT.FairEventHeader()
 eventSND  = sTree.Branch("EventHeader",header,32000,-1)
         # SciFi   using MuFilterHit hit class while waiting for SciFi hit class
-digiSciFi   = ROOT.TClonesArray("MuFilterHit")
+digiSciFi   = ROOT.TClonesArray("SndlhcHit")
 digiSciFiBranch   = sTree.Branch("Digi_SciFiHits",digiSciFi,32000,1)
 
 def run(nEvent):
@@ -141,10 +141,12 @@ def run(nEvent):
 # in addition for   MuFilter Veto and Up, which SiPM channel. Problem, creating and filling unsorted. Easier for SciFi and downstream
 # first check which detector it is Veto/Up/Down -> make MuFilterHit
 #                                                                  SciFi                       -> make ScifiHit
+#         for the moment, only have SciFi data. For MuFilterHit, need to know nSiPM per side and number of sides
+#         ROOT.SndlhcHit(detID,nSiPMs,nSides)
+
              detID = 100000*nStation + chan
-             nSiPM = 0  # which SiPM channel
-             if not detID in digiSciFiStore: digiSciFiStore[detID] =  ROOT.MuFilterHit(detID)
-             digiSciFiStore[detID].SetDigi(nSiPM,QDC,TDC)
+             if not detID in digiSciFiStore: digiSciFiStore[detID] =  ROOT.SndlhcHit(detID)
+             digiSciFiStore[detID].SetDigi(QDC,TDC)
              if options.debug:
                   print('create hit: tdc = ',detID)
    for detID in digiSciFiStore:

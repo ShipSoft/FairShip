@@ -12,9 +12,11 @@ SndlhcHit::SndlhcHit()
 
 
 // -----   Standard constructor   ------------------------------------------
-SndlhcHit::SndlhcHit(Int_t detID)
+SndlhcHit::SndlhcHit(Int_t detID,Int_t nP,Int_t nS)
   :TObject(),
-   fDetectorID(detID)
+   fDetectorID(detID),
+   nSiPMs(nP),
+   nSides(nS)
 {
 }
 
