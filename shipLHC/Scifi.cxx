@@ -270,6 +270,7 @@ void Scifi::ConstructGeometry()
   // second digit - type of the plane: 0-horizontal fiber, 1-vertical fiber
   // third digit - mat number
   // fourth digit - row number (in Z direction)
+  // last three digits - fiber number
   // e.g. DetID = 1021074 -> station 1, horizontal fiber plane, mat 2, row 1, fiber 74
   for (int istation = 0; istation < fNScifi; istation++){
     
