@@ -3,6 +3,7 @@ import ROOT,os,sys,getopt
 import global_variables
 import shipRoot_conf
 
+# raw data from Ettore: https://cernbox.cern.ch/index.php/s/Ten7ilKuD3qdnM2 
 shipRoot_conf.configure()
 
 from argparse import ArgumentParser
@@ -11,6 +12,7 @@ parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", ty
 parser.add_argument("-p", "--path", dest="path", help="path to raw data", default='/mnt/hgfs/VMgate/')
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", type=int,default=-1)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
+parser.add_argument("-s",dest="stop", help="do not start running", default=False)
 
 options = parser.parse_args()
 runNr   = str(options.runNumber).zfill(6)
@@ -166,5 +168,5 @@ def run(nEvent):
 # v_coarse: 0-1023, QDC mode: it represents the number of clock cycles the charge integration lasted.
 # v_fine = 0-1023, QDC mode: represents the charge measured. Requires calibration.
 
-run(nEvent)
+if not options.stop: run(nEvent)
 
