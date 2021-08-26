@@ -70,7 +70,7 @@ class GenieGenerator : public FairGenerator
   Double_t fznu0,fznu11,fXnu11,fYnu11;
   Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
   TH1D* pxhist[3000];//!
-  TH1D* pyslice[3000][100];//!
+  TH1D* pyslice[3000][500];//!
 
   TClonesArray *ancstr;
 

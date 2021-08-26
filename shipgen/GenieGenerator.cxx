@@ -25,7 +25,9 @@ using std::endl;
 // important to read back number of events to give to FairRoot
 
 // -----   Default constructor   -------------------------------------------
-GenieGenerator::GenieGenerator() {}
+GenieGenerator::GenieGenerator() {
+ fGenOption = 0; //default value, standard Genie Generator used in SHiP
+}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) {
@@ -34,7 +36,6 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
-  fGenOption = 0; //default option is the "standard" one used in SHiP
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;
@@ -94,7 +95,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
    fFLUKANuTree = (TTree*)fInputFile->Get("NuTauTree");
    fNevents = fFLUKANuTree->GetEntries();
    fFLUKANuTree->SetBranchAddress("Ancstr",&ancstr);
-   cout<<"I am here"<<endl;
+   fDeltaE_GenieFLUKA_nu = 10.; //Default value for energy range of FLUKA->Genie matching, 10 GeV.
   }
   fFirst=kTRUE;
   return kTRUE;
@@ -545,7 +546,6 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        pout[1] = nup->Py()/nup->Pz() * pzv;
        double pt = sqrt(pout[0]*pout[0] + pout[1]*pout[1]);
        pout[2] = pzv*pzv-pt*pt;
-       cout<<"TESTING YET AGAIN"<<endl;
       }
       
       else if( fGenOption == 0 ){
