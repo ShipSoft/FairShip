@@ -475,7 +475,7 @@ if simEngine=="Genie" and options.shipLHC:
  Geniegen = ROOT.GenieGenerator()
  Geniegen.SetGenerationOption(2)
  Geniegen.Init(inputFile,options.firstEvent)
- Geniegen.SetXsecAngle(150e-6) #used only in option 2
+ Geniegen.SetCrossingAngle(150e-6) #used only in option 2
  Geniegen.SetPositions(ship_geo.EmulsionDet.zC+60*u.cm, ship_geo.EmulsionDet.zC-ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.zC+ship_geo.EmulsionDet.zdim/2)
  #Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.TTz+12*(ship_geo.EmulsionDet.TTz+ship_geo.EmulsionDet.BrZ))
  Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino

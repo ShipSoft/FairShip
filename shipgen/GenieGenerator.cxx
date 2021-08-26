@@ -36,7 +36,7 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
-  fxsecangle = 0.; //default value, no xsec angle
+  fcrossingangle = 0.; //default value, no xsec angle
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;
@@ -538,7 +538,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        TParticle *nuparticle = (TParticle*) ancstr->At(0);
        TVector3 * nup = new TVector3(nuparticle->Px(), nuparticle->Py(), nuparticle->Pz());
        //rotating of xsec
-       nup->RotateX(fxsecangle);
+       nup->RotateX(fcrossingangle);
        //getting associated interaction
        int nuevent = ExtractEvent_Ekin(nup->Mag(), 10.); 
        fTree->GetEntry(nuevent);

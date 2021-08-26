@@ -43,8 +43,8 @@ class GenieGenerator : public FairGenerator
   void SetGenerationOption(Int_t GenOption){
     fGenOption = GenOption;
   }
-  void SetXsecAngle(Double_t xsecangle){
-    fxsecangle = xsecangle;
+  void SetCrossingAngle(Double_t crossingangle){
+    fcrossingangle = crossingangle;
   }
  private:
   std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
@@ -74,7 +74,7 @@ class GenieGenerator : public FairGenerator
   Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
   TH1D* pxhist[3000];//!
   TH1D* pyslice[3000][500];//!
-  Double_t fxsecangle; //cross section angle of the beam protons in LHC
+  Double_t fcrossingangle; //crossing angle of the beam protons in LHC
   TClonesArray *ancstr;
 
   ClassDef(GenieGenerator,2);
