@@ -188,6 +188,7 @@ if simEngine=="Genie":
    Geniegen = ROOT.GenieGenerator()
    Geniegen.SetGenerationOption(2) # 0 standard, 1 FLUKA,2 Pythia
    Geniegen.Init(inputFile,options.firstEvent)
+   Geniegen.SetXsecAngle(150e-6) #used only in option 2
    Geniegen.SetPositions(snd_geo.EmulsionDet.zC+60*u.cm, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2)
    Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino
    primGen.AddGenerator(Geniegen)
