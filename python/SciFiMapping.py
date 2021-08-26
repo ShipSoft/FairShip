@@ -48,8 +48,8 @@ def area(a,R,xL,xR):
     if not leftC and not rightC: 
           # print('no solution')
           return -1
-    if rightC: fracR = fraction(R,xR-a,rightC)
-    if leftC:    fracL = fraction(R,a-xL,leftC)
+    if rightC: fracR = fraction(R,abs(xR-a),rightC)
+    if leftC:    fracL = fraction(R,abs(xL-a),leftC)
     theAnswer = 0
     if leftC: 
           if xL<a: theAnswer += 1-fracL
@@ -113,6 +113,13 @@ def position():
      nav.LocalToMaster(loc,glo)
      print(fibre.GetName(),trans[0],trans[1],trans[2],' : ',glo)
 
+h={}
+import rootUtils as ut
+def overlap():
+   ut.bookHist(h,'W','overlap',200,0.,1.)
+   for n in F['VertMatVolume']:
+     for fid in F['VertMatVolume'][n]:
+          rc = h['W'].Fill(F['VertMatVolume'][n][fid])
 
 
 
