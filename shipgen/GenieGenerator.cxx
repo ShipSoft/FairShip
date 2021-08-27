@@ -74,6 +74,10 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("nf",&nf);     // nr of outgoing hadrons
   fTree->SetBranchAddress("pdgf",&pdgf);     // pdg code of hadron
 
+  if (fGenOption < 0 || fGenOption > 2){ 
+     LOG(FATAL) <<"Invalid GenieGen Option: "<<fGenOption<<" Please check the option provided with --Genie "<<endl;
+     return kFALSE;
+   }
   if (fGenOption == 1){
    fFLUKANuTree = (TTree *)fInputFile->Get("fluka_neutrinos_selected");
    //check if TTree is actually present
