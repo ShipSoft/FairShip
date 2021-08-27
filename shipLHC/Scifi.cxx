@@ -100,12 +100,9 @@ void Scifi::SetFiberParam(Double_t fiber_length, Double_t scintcore_rmax, Double
 {
 
     fFiberLength = fiber_length;
-
     fScintCore_rmax = scintcore_rmax;   
-
     fClad1_rmin = fScintCore_rmax;
     fClad1_rmax = clad1_rmax;
-    
     fClad2_rmin = clad1_rmax;
     fClad2_rmax = clad2_rmax;
 }
@@ -206,9 +203,6 @@ void Scifi::ConstructGeometry()
   InitMedium("CarbonComposite");
   TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
 
-  InitMedium("SciFiMat");
-  TGeoMedium *SciFiMat = gGeoManager->GetMedium("SciFiMat");
-
   InitMedium("rohacell");
   TGeoMedium *rohacell = gGeoManager->GetMedium("rohacell");
 
@@ -218,6 +212,18 @@ void Scifi::ConstructGeometry()
   InitMedium("Polycarbonate");
   TGeoMedium *PlasticBase = gGeoManager->GetMedium("Polycarbonate");
   
+  InitMedium("Polystyrene");
+  TGeoMedium *Polystyrene = gGeoManager->GetMedium("Polystyrene");
+
+  InitMedium("PMMA");
+  TGeoMedium *PMMA = gGeoManager->GetMedium("PMMA");
+
+  InitMedium("PMMA2");
+  TGeoMedium *PMMA2 = gGeoManager->GetMedium("PMMA2");
+  
+  InitMedium("Epoxy");
+  TGeoMedium *Epoxy = gGeoManager->GetMedium("Epoxy");
+
   TGeoVolume *volTarget = gGeoManager->GetVolume("volTarget");
 
   //Carbon Fiber Film
@@ -248,9 +254,9 @@ void Scifi::ConstructGeometry()
   //Fiber volume that contains the scintillating core and double cladding
   TGeoVolumeAssembly *FiberVolume = new TGeoVolumeAssembly("FiberVolume");
 
-  TGeoVolume *ScintCoreVol = gGeoManager->MakeTube("ScintCoreVol", SciFiMat, 0, fScintCore_rmax, fFiberLength/2); //should be ScintCoreMaterial
-  TGeoVolume *Clad1Vol = gGeoManager->MakeTube("Clad1Vol", SciFiMat, fClad1_rmin, fClad1_rmax, fFiberLength/2); //should be InnerCladMaterial
-  TGeoVolume *Clad2Vol = gGeoManager->MakeTube("Clad2Vol", SciFiMat, fClad2_rmin, fClad2_rmax, fFiberLength/2); //should be OuterCladMaterial
+  TGeoVolume *ScintCoreVol = gGeoManager->MakeTube("ScintCoreVol", Polystyrene, 0, fScintCore_rmax, fFiberLength/2); 
+  TGeoVolume *Clad1Vol = gGeoManager->MakeTube("Clad1Vol", PMMA, fClad1_rmin, fClad1_rmax, fFiberLength/2); 
+  TGeoVolume *Clad2Vol = gGeoManager->MakeTube("Clad2Vol", PMMA2, fClad2_rmin, fClad2_rmax, fFiberLength/2); 
   
   FiberVolume->AddNode(ScintCoreVol, 0);
   FiberVolume->AddNode(Clad1Vol, 0);
@@ -258,7 +264,7 @@ void Scifi::ConstructGeometry()
   FiberVolume->SetVisDaughters(kFALSE);
 
   //Add SciFi fiber as sensitive unit
-  AddSensitiveVolume(FiberVolume);
+  AddSensitiveVolume(ScintCoreVol);
 
   //Fiber and plane rotations
   TGeoRotation *rothorfiber = new TGeoRotation("rothorfiber", 90, 90, 0);
@@ -298,9 +304,10 @@ void Scifi::ConstructGeometry()
     for (int imat = 0; imat < fNMats; imat++){
         
         //SciFi mats for X and Y fiber planes
-        TGeoVolume *HorMatVolume = gGeoManager->MakeBox("HorMatVolume", air, fLengthScifiMat/2, fWidthScifiMat/2, fZEpoxyMat/2);  //should be Epoxy
-        TGeoVolume *VertMatVolume = gGeoManager->MakeBox("VertMatVolume", air, fWidthScifiMat/2, fLengthScifiMat/2, fZEpoxyMat/2); //should be Epoxy
+        TGeoVolume *HorMatVolume = gGeoManager->MakeBox("HorMatVolume", Epoxy, fLengthScifiMat/2, fWidthScifiMat/2, fZEpoxyMat/2); 
+        TGeoVolume *VertMatVolume = gGeoManager->MakeBox("VertMatVolume", Epoxy, fWidthScifiMat/2, fLengthScifiMat/2, fZEpoxyMat/2); 
 
+        //Placing mats along Y 
         ScifiHorPlaneVol->AddNode(HorMatVolume, 1e6*(istation+1) + 1e4*(imat + 1), new TGeoTranslation(0, (imat-1)*(fWidthScifiMat+fGapScifiMat), 0));
         
         //Adding horizontal fibers
@@ -319,7 +326,7 @@ void Scifi::ConstructGeometry()
                 }
             }
         }
-        
+        //Placing mats along X
         ScifiVertPlaneVol->AddNode(VertMatVolume, 1e6*(istation+1) + 1e5 + 1e4*(imat + 1), new TGeoTranslation((imat-1)*(fWidthScifiMat+fGapScifiMat), 0, 0));
         
         //Adding vertical fibers
@@ -339,9 +346,10 @@ void Scifi::ConstructGeometry()
         }
 }}}
 
-void Scifi::SiPMOverlap()
+TGeoVolume* Scifi::SiPMOverlap()
 {   
     //Contains all plane SiPMs, defined for horizontal fiber plane
+    //To obtain SiPM map for vertical fiber plane rotate by 90 degrees around Z
     TGeoVolumeAssembly *SiPMmapVol = new TGeoVolumeAssembly("SiPMmapVol");
 
     TGeoVolume*ChannelVol = gGeoManager->MakeBox("ChannelVol", 0, fLengthScifiMat/2, fWidthChannel/2, fZEpoxyMat/2);
@@ -370,6 +378,7 @@ void Scifi::SiPMOverlap()
         }
         SiPMArrayVol->AddNode(SiPMCharrVol1, 1, new TGeoTranslation(0, -fSipmArray/2 + fCharr + fCharrGap + fCharr/2, 0));
     }
+    return SiPMmapVol;
 }   
 
 

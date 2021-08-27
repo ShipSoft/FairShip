@@ -1,3 +1,8 @@
+//
+//Scifi.h
+//
+//by K.Zatkova
+
 #ifndef Scifi_H
 #define Scifi_H
 
@@ -26,7 +31,6 @@ public:
     
     /**      Create the detector geometry        */
     void ConstructGeometry();
-    void SiPMOverlap();
     void SetScifiParam(Double_t xdim, Double_t ydim, Double_t zdim);
     void SetMatParam (Double_t scifimat_width, Double_t scifimat_length, Double_t scifimat_z, Double_t epoxymat_z, Double_t scifimat_gap);
     void SetFiberParam(Double_t fiber_length, Double_t scintcore_rmax, Double_t clad1_rmax, Double_t clad2_rmax);
@@ -41,6 +45,8 @@ public:
     void SetNSiPMs(Int_t sipms);
     void SiPMParams(Double_t half_width, Double_t channel_width, Double_t charr_width, Double_t sipm_edge, Double_t charr_gap, Double_t simparr_width, Double_t sipm_diegap, Double_t nsipm_channels);
 
+    virtual TGeoVolume *SiPMOverlap();
+    
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
