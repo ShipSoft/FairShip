@@ -1,8 +1,3 @@
-//
-//Scifi.h
-//
-//by K.Zatkova
-
 #ifndef Scifi_H
 #define Scifi_H
 
