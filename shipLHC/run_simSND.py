@@ -21,7 +21,7 @@ MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase c
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
-parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
+parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions (1 standard, 2 FLUKA, 3 Pythia)", required=False, default = 0, type = int)
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
@@ -186,8 +186,12 @@ if simEngine=="Genie":
    ut.checkFileExists(inputFile)
    primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
    Geniegen = ROOT.GenieGenerator()
+   Geniegen.SetGenerationOption(options.genie - 1) # 0 standard, 1 FLUKA,2 Pythia
    Geniegen.Init(inputFile,options.firstEvent)
-   Geniegen.SetPositions(snd_geo.EmulsionDet.zC-480*u.m, -snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zdim/2)
+   Geniegen.SetCrossingAngle(150e-6) #used only in option 2
+   Geniegen.SetPositions(snd_geo.EmulsionDet.zC-480*u.m, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2)
+   #Geniegen.SetPositions(snd_geo.EmulsionDet.zC+60*u.cm, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2) #FLUKA scoring position
+   Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino
    primGen.AddGenerator(Geniegen)
    options.nEvents = min(options.nEvents,Geniegen.GetNevents())
    run.SetPythiaDecayer('DecayConfigPy8.C')

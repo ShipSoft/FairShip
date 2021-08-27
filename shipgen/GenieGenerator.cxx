@@ -4,6 +4,8 @@
 #include "TMath.h"
 #include "TFile.h"
 #include "TRandom.h"
+#include "TCut.h"
+#include "TEventList.h"
 #include "FairPrimaryGenerator.h"
 #include "GenieGenerator.h"
 #include "TGeoVolume.h"
@@ -11,6 +13,8 @@
 #include "TGeoManager.h"
 #include "TGeoEltu.h"
 #include "TGeoCompositeShape.h"
+#include "TParticle.h"
+#include "TClonesArray.h"
 
 using std::cout;
 using std::endl;
@@ -21,7 +25,9 @@ using std::endl;
 // important to read back number of events to give to FairRoot
 
 // -----   Default constructor   -------------------------------------------
-GenieGenerator::GenieGenerator() {}
+GenieGenerator::GenieGenerator() {
+ fGenOption = 0; //default value, standard Genie Generator used in SHiP
+}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName) {
@@ -30,6 +36,7 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
+  fcrossingangle = 0.; //default value, no xsec angle
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;
@@ -66,6 +73,35 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pzf",&pzf);
   fTree->SetBranchAddress("nf",&nf);     // nr of outgoing hadrons
   fTree->SetBranchAddress("pdgf",&pdgf);     // pdg code of hadron
+
+  if (fGenOption < 0 || fGenOption > 2){ 
+     LOG(FATAL) <<"Invalid GenieGen Option: "<<fGenOption<<" Please check the option provided with --Genie "<<endl;
+     return kFALSE;
+   }
+  if (fGenOption == 1){
+   fFLUKANuTree = (TTree *)fInputFile->Get("fluka_neutrinos_selected");
+   //check if TTree is actually present
+   if (!fFLUKANuTree){
+     LOG(FATAL) <<"No TTree of interacting neutrinos present. Did you run extract_interacting_neutrinos.py from the macro folder?";
+     return kFALSE;
+   }
+   fNevents = fFLUKANuTree->GetEntries();
+   //setting branches for input neutrino tree. 
+   //Nota Bene: I get only the angles and positions, 
+   //for the energy I keep the GENIE one, otherwise I lose energy conservation
+   fFLUKANuTree->SetBranchAddress("x_cos",&FLUKA_x_cos);
+   fFLUKANuTree->SetBranchAddress("y_cos",&FLUKA_y_cos);
+   fFLUKANuTree->SetBranchAddress("x",&FLUKA_x);
+   fFLUKANuTree->SetBranchAddress("y",&FLUKA_y);
+   fDeltaE_GenieFLUKA_nu = 10.; //Default value for energy range of FLUKA->Genie matching, 10 GeV.
+  }
+  if (fGenOption == 2){ //pythia tree
+   ancstr = new TClonesArray("TParticle");
+   fFLUKANuTree = (TTree*)fInputFile->Get("NuTauTree");
+   fNevents = fFLUKANuTree->GetEntries();
+   fFLUKANuTree->SetBranchAddress("Ancstr",&ancstr);
+   fDeltaE_GenieFLUKA_nu = 10.; //Default value for energy range of FLUKA->Genie matching, 10 GeV.
+  }
   fFirst=kTRUE;
   return kTRUE;
 }
@@ -257,6 +293,22 @@ std::vector<double> GenieGenerator::Rotate(Double_t x, Double_t y, Double_t z, D
   pout.push_back(pzr);
   //cout << "Info GenieGenerator: rotated" << pout[0] << " " << pout[1] << " " << pout[2] << " " << x << " " << y << " " << z <<endl;
   return pout;
+}
+
+Int_t GenieGenerator::ExtractEvent_Ekin(Double_t Ekin, Double_t DeltaE){
+
+  //TCut nucut(Form("Ekin >= (%f - %f) && Ekin < (%f + %f)",Ekin,DeltaE/2., Ekin, DeltaE/2.));
+  //fFLUKANuTree->Draw(">>nulist", nucut );
+  TCut nucut(Form("pzv >= (%f - %f) && pzv < (%f + %f)",Ekin,DeltaE/2., Ekin, DeltaE/2.));
+  fTree->Draw(">>nulist",nucut);
+
+  TEventList *nulist = (TEventList*)gDirectory->GetList()->FindObject("nulist");
+  Int_t nselectedevents = nulist->GetN();
+  //integer function returns randomly integer between 0 e nselectedevents;
+  Int_t myevent = nulist->GetEntry(gRandom->Integer(nselectedevents+1));
+ 
+  nulist->Reset(); //resetting list for next call of the function.
+  return myevent;
 }
 
 
@@ -451,9 +503,9 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       }
       fFirst = kFALSE;
     }
-
     if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
-    fTree->GetEntry(fn%fNevents);
+    if (fGenOption>0) fFLUKANuTree->GetEntry(fn%fNevents); //1 or 2
+    else if (fGenOption == 0) fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {
       cout << "Info GenieGenerator: neutrino event-nr "<< fn << endl;
@@ -476,39 +528,77 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       //pout[0] = gRandom->Exp(0.2);
       //pout[1] = gRandom->Exp(0.2);
       //pout[2] = pzv*pzv-pout[0]*pout[0]-pout[1]*pout[1];
-
-      //**NEW** get pt of this neutrino from 2D hists.
-      Int_t idhnu=TMath::Abs(neu)+idbase;
-      if (neu<0) idhnu+=1000;
-      Int_t nbinmx=pxhist[idhnu]->GetNbinsX();
-      Double_t pl10=log10(pzv);
-      Int_t nbx=pxhist[idhnu]->FindBin(pl10);
-      //printf("idhnu %d, p %f log10(p) %f bin,binmx %d %d \n",idhnu,pzv,pl10,nbx,nbinmx);
-      if (nbx<1) nbx=1;
-      if (nbx>nbinmx) nbx=nbinmx;
-      Double_t ptlog10=pyslice[idhnu][nbx]->GetRandom();
-//hist was filled with: log10(pt+0.01)
-      Double_t pt=pow(10.,ptlog10)-0.01;
-      //rotate pt in phi:
-      Double_t phi=gRandom->Uniform(0.,2*TMath::Pi());
-      pout[0] = cos(phi)*pt;
-      pout[1] = sin(phi)*pt;
-      pout[2] = pzv*pzv-pt*pt;
-      //printf("p= %f pt=%f px,py,pz**2=%f,%f,%f\n",pzv,pt,pout[0],pout[1],pout[2]);
-
+      if(fGenOption == 1){
+       int nuevent = ExtractEvent_Ekin(pzv, 10.);
+       fTree->GetEntry(nuevent);
+       //getting tri-momentum
+       pout[0] = FLUKA_x_cos * pzv;
+       pout[1] = FLUKA_y_cos * pzv;
+       double pt = sqrt(pout[0]*pout[0] + pout[1]*pout[1]);
+       pout[2] = pzv*pzv-pt*pt;
+      }
+      else if(fGenOption == 2){
+       //getting neutrino information
+       TParticle *nuparticle = (TParticle*) ancstr->At(0);
+       TVector3 * nup = new TVector3(nuparticle->Px(), nuparticle->Py(), nuparticle->Pz());
+       //rotating of xsec
+       nup->RotateX(fcrossingangle);
+       //getting associated interaction
+       int nuevent = ExtractEvent_Ekin(nup->Mag(), 10.); 
+       fTree->GetEntry(nuevent);
+       //getting GENIE tri-momentum in this reference
+       pout[0] = nup->Px()/nup->Pz() * pzv;
+       pout[1] = nup->Py()/nup->Pz() * pzv;
+       double pt = sqrt(pout[0]*pout[0] + pout[1]*pout[1]);
+       pout[2] = pzv*pzv-pt*pt;
+      }
+      
+      else if( fGenOption == 0 ){
+       //**NEW** get pt of this neutrino from 2D hists.
+       Int_t idhnu=TMath::Abs(neu)+idbase;
+       if (neu<0) idhnu+=1000;
+       Int_t nbinmx=pxhist[idhnu]->GetNbinsX();
+       Double_t pl10=log10(pzv);
+       Int_t nbx=pxhist[idhnu]->FindBin(pl10);
+       //printf("idhnu %d, p %f log10(p) %f bin,binmx %d %d \n",idhnu,pzv,pl10,nbx,nbinmx);
+       if (nbx<1) nbx=1;
+       if (nbx>nbinmx) nbx=nbinmx;
+       Double_t ptlog10=pyslice[idhnu][nbx]->GetRandom();
+ //hist was filled with: log10(pt+0.01)
+       Double_t pt=pow(10.,ptlog10)-0.01;
+       //rotate pt in phi:
+       Double_t phi=gRandom->Uniform(0.,2*TMath::Pi());
+       pout[0] = cos(phi)*pt;
+       pout[1] = sin(phi)*pt;
+       pout[2] = pzv*pzv-pt*pt;
+       //printf("p= %f pt=%f px,py,pz**2=%f,%f,%f\n",pzv,pt,pout[0],pout[1],pout[2]);
+      }
       if (pout[2]>=0.) {
         pout[2]=TMath::Sqrt(pout[2]);
-        if (gRandom->Uniform(-1.,1.)<0.) pout[0]=-pout[0];
-        if (gRandom->Uniform(-1.,1.)<0.) pout[1]=-pout[1];
+        //random chance of reflecting momentum, we do not modify momentum components in SND@LHC physics case
+        if (fGenOption == 0){
+         if (gRandom->Uniform(-1.,1.)<0.) pout[0]=-pout[0];
+         if (gRandom->Uniform(-1.,1.)<0.) pout[1]=-pout[1];
+        }
         //cout << "Info GenieGenerator: neutrino pxyz " << pout[0] << ", " << pout[1] << ", " << pout[2] << endl;
         // xyz at start and end
         start[0]=(pout[0]/pout[2])*(start[2]-ztarget);
         start[1]=(pout[1]/pout[2])*(start[2]-ztarget);
+        //adding offset from neutrino production point (only for SND@LHC physics case)
+        if (fGenOption == 1){
+          start[0] += FLUKA_x;
+          start[1] += FLUKA_y;
+        }
         //cout << "Info GenieGenerator: neutrino xyz-start " << start[0] << "-" << start[1] << "-" << start[2] << endl;
         txnu=pout[0]/pout[2];
         tynu=pout[1]/pout[2];
         end[0]=txnu*(end[2]-ztarget);
         end[1]=tynu*(end[2]-ztarget);
+        //adding offset from neutrino production point (only for SND@LHC phys
+        if (fGenOption == 1){
+          end[0] += FLUKA_x;
+          end[1] += FLUKA_y;
+        }
         //cout << "Info GenieGenerator: neutrino xyz-end " << end[0] << "-" << end[1] << "-" << end[2] << endl;
         //get material density between these two points
         bparam=MeanMaterialBudget(start, end, mparam);
@@ -526,6 +616,11 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       z=gRandom->Uniform(start[2],end[2]);
       x=txnu*(z-ztarget);
       y=tynu*(z-ztarget);
+      //adding offset from neutrino production point (only for SND@LHC physics case)
+      if (fGenOption == 1){
+        x += FLUKA_x;
+        y += FLUKA_y;
+      }
       if (mparam[6]<0.5){
         //mparam is number of boundaries along path. mparam[6]=0.: uniform material budget along path, use present x,y,z
         prob2int=2.;

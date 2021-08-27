@@ -69,7 +69,7 @@ parser.add_argument("--EVx",    dest="EVx",    help="particle gun xpos", require
 parser.add_argument("--EVy",    dest="EVy",    help="particle gun ypos", required=False, default=0, type=float)
 parser.add_argument("--EVz",    dest="EVz",    help="particle gun zpos", required=False, default=0, type=float)
 parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", required=False, default='c')
-parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
+parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions (1 standard, 2 FLUKA, 3 Pythia)", required=False, default = 0, type = int)
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
 group.add_argument("--ALPACA",  dest="ALPACA",  help="Use ALPACA as input", required=False, action="store_true")
@@ -473,9 +473,12 @@ if simEngine=="Genie" and options.shipLHC:
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
+ Geniegen.SetGenerationOption(options.genie - 1) #0 default GenieGen, 1 FLUKA, 2 Pythia
  Geniegen.Init(inputFile,options.firstEvent)
- Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.zdim/2)
- #Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, -ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.TTz+12*(ship_geo.EmulsionDet.TTz+ship_geo.EmulsionDet.BrZ))
+ Geniegen.SetCrossingAngle(150e-6) #used only in option 2
+ Geniegen.SetPositions(ship_geo.EmulsionDet.zC-480*u.m, ship_geo.EmulsionDet.zC-ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.zC+ship_geo.EmulsionDet.zdim/2)
+ #Geniegen.SetPositions(ship_geo.EmulsionDet.zC+60*u.cm, ship_geo.EmulsionDet.zC-ship_geo.EmulsionDet.zdim/2,ship_geo.EmulsionDet.zC+ship_geo.EmulsionDet.zdim/2) #FLUKA scoring position
+ Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino
  primGen.AddGenerator(Geniegen)
  options.nEvents = min(options.nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer('DecayConfigPy8.C')
