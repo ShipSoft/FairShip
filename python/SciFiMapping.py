@@ -116,10 +116,17 @@ def position():
 h={}
 import rootUtils as ut
 def overlap():
-   ut.bookHist(h,'W','overlap',200,0.,1.)
+   ut.bookHist(h,'W','overlap/fibre',100,0.,1.)
+   ut.bookHist(h,'C','coverage',50,0.,5.)
    for n in F['VertMatVolume']:
+     C=0
      for fid in F['VertMatVolume'][n]:
           rc = h['W'].Fill(F['VertMatVolume'][n][fid])
+          C+=F['VertMatVolume'][n][fid]
+     rc = h['C'].Fill(C)
+def test(chan):
+    for x in F['VertMatVolume'][chan]:
+            print('%6i:%5.2F'%(x,F['VertMatVolume'][chan][x])) 
 
 
 
