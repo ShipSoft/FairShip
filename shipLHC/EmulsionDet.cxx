@@ -332,7 +332,6 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 	gMC->CurrentVolID(fVolumeID);
-	gGeoManager->PrintOverlaps();		
 	
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();

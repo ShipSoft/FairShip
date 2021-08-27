@@ -13,7 +13,7 @@
 #pragma link C++ class ScifiPoint+;
 #pragma link C++ class MuFilter+;
 #pragma link C++ class MuFilterPoint+;
-
+#pragma link C++ class MuFilterHit+;
 #endif
 
 

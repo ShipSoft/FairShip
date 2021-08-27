@@ -47,10 +47,12 @@
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream,etc
 #include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::endl;
-
+using std::to_string;
+using std::string;
 using namespace ShipUnit;
 
 MuFilter::MuFilter()
@@ -196,6 +198,11 @@ void MuFilter::SetNDownstreamBars(Int_t n)
 	fNDownstreamBars = n;
 }
 
+void MuFilter::SetDS4ZGap(Double_t z)
+{
+	fDS4ZGap = z;
+}
+
 void MuFilter::SetCenterZ(Double_t z)
 {
 	fCenterZ = z;
@@ -264,9 +271,7 @@ void MuFilter::ConstructGeometry()
 	
 	//Veto Planes
 	TGeoBBox *VetoPlane = new TGeoBBox("VetoPlane",fVetoPlaneX/2., fVetoPlaneY/2., fVetoPlaneZ/2.);
-	TGeoVolume *volVetoPlane = new TGeoVolume("volVetoPlane",VetoPlane,air);
-
-	volVetoPlane->SetLineColor(kGray);
+	// TGeoVolume *volVetoPlane = new TGeoVolume("volVetoPlane",VetoPlane,air);
 
 	//Veto bars
 	TGeoBBox *VetoBar = new TGeoBBox("VetoBar",fVetoBarX/2., fVetoBarY/2., fVetoBarZ/2.);
@@ -279,22 +284,27 @@ void MuFilter::ConstructGeometry()
 	top->AddNode(volVeto, 1, new TGeoTranslation(fVetoShiftX, fVetoShiftY,fVetoCenterZ));
 
 	//adding veto planes
+	TGeoVolume* volVetoPlane;
 	Double_t startZ = -(fNVetoPlanes * fVetoPlaneZ)/2.;
 	for (int iplane; iplane < fNVetoPlanes; iplane++){
-
+	  
+      string name = "volVetoPlane_"+to_string(iplane);
+	  volVetoPlane = new TGeoVolume(name.c_str(), VetoPlane, air);
+	  volVetoPlane->SetLineColor(kGray);
 	  volVeto->AddNode(volVetoPlane,iplane, new TGeoTranslation(0,-fVetoPlaneShiftY/2. + iplane * fVetoPlaneShiftY, startZ + fVetoPlaneZ/2. + iplane * fVetoPlaneZ));
 
+	  	//adding veto bars
+	  for (int ibar=0; ibar < fNVetoBars; ibar++){
+
+	  	Double_t dy_vetobar = -fVetoPlaneY/2. + fVetoBarY/2 + ibar * fVetoBarY;
+	  	TGeoTranslation* vetobar_trans = new TGeoTranslation(0, dy_vetobar, 0);
+	    volVetoPlane->AddNode(volVetoBar, 1e+4+iplane*1e+3+ibar, vetobar_trans);							 
+		}
 	}
 	
-	//adding veto bars
+	//*****************************************UPSTREAM SECTION*********************************//
 
-	for (int ibar; ibar < fNVetoBars; ibar++){
-	  
-	  volVetoPlane->AddNode(volVetoBar, ibar, new TGeoTranslation(0,-fVetoPlaneY/2. + fVetoBarY/2 + ibar * fVetoBarY, 0));
-								 
-	}
-
-	//Definition of the box containing Fe Blocks + Timing Detector planes 
+		//Definition of the box containing Fe Blocks + Timing Detector planes 
 	TGeoVolumeAssembly *volMuFilter = new TGeoVolumeAssembly("volMuFilter");
 
 	//Iron blocks volume definition
@@ -306,61 +316,50 @@ void MuFilter::ConstructGeometry()
 
 	Double_t dy = 0;
 	Double_t dz = 0;
-	
-	//*****************************************UPSTREAM SECTION*********************************//
 	//Upstream Detector planes definition
 	TGeoBBox *UpstreamDetBox = new TGeoBBox("UpstreamDetBox",fUpstreamDetX/2,fUpstreamDetY/2,fUpstreamDetZ/2);
-	TGeoVolume *volUpstreamDet = new TGeoVolume("volUpstreamDet",UpstreamDetBox,air);
-	volUpstreamDet->SetLineColor(kRed+2);
+//	TGeoVolume *volUpstreamDet = new TGeoVolume("volUpstreamDet",UpstreamDetBox,air);
 
-	//first loop, adding detector main boxes
-	
+	// create pointer for upstream plane to be re-used
+	TGeoVolume* volUpstreamDet;
+
+	//adding staggered bars, first part, only 11 bars, (single stations, readout on both ends)
+	TGeoBBox *MuUpstreamBar = new TGeoBBox("MuUpstreamBar",fUpstreamBarX/2, fUpstreamBarY/2, fUpstreamBarZ/2);
+	TGeoVolume *volMuUpstreamBar = new TGeoVolume("volMuUpstreamBar",MuUpstreamBar,Scint);
+	volMuUpstreamBar->SetLineColor(kBlue+2);
+	AddSensitiveVolume(volMuUpstreamBar);
+
 	for(Int_t l=0; l<fNUpstreamPlanes; l++)
 	{
+	  string name = "volMuUpstreamDet_"+std::to_string(l);
+	  volUpstreamDet = new TGeoVolume(name.c_str(), UpstreamDetBox, air);
+	  volUpstreamDet->SetLineColor(kRed+2);
 	  dz = (fFeBlockZ + fUpstreamDetZ)*l;
 	  dy = dz * TMath::Tan(TMath::DegToRad() * fSlope);
 	  //last upstream station does not follow slope, start of support. Same dy is used for downstream planes
 	  if (l == fNUpstreamPlanes - 1) dy = fShiftYEnd - fShiftY;
 
+	  // Double check all these distances
 	  volMuFilter->AddNode(volFeBlock,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
-	  volMuFilter->AddNode(volUpstreamDet,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
+	  volMuFilter->AddNode(volUpstreamDet,fNVetoPlanes+l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
 	  dz+=fFeBlockZ+fUpstreamDetZ;
-	}
 
-	//adding staggered bars, first part, only 11 bars, (single stations, readout on both ends)
-	
-	TGeoBBox *MuUpstreamBar = new TGeoBBox("MuUpstreamBar",fUpstreamBarX/2, fUpstreamBarY/2, fUpstreamBarZ/2);
-	TGeoVolume *volMuUpstreamBar = new TGeoVolume("volMuUpstreamBar",MuUpstreamBar,Scint);
-	volMuUpstreamBar->SetLineColor(kBlue+2);
-	AddSensitiveVolume(volMuUpstreamBar);
-            
-       //second loop, adding bars within each detector box
-	
-	for (Int_t ibar = 0; ibar < fNUpstreamBars; ibar++){
+	  for (Int_t ibar = 0; ibar < fNUpstreamBars; ibar++){
 	  
-	  Double_t dy_bar = -fUpstreamDetY/2 + fUpstreamBarY/2. + fUpstreamBarY*ibar; 
-	  
-	  TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,0);
-	  
-	  volUpstreamDet->AddNode(volMuUpstreamBar,ibar+1E+3,yztrans);
+	    Double_t dy_bar = -fUpstreamDetY/2 + fUpstreamBarY/2. + fUpstreamBarY*ibar; 
+	    TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,0);
+	    volUpstreamDet->AddNode(volMuUpstreamBar,2e+4+l*1e+3+ibar,yztrans);
 			   }
-	//*************************************DOWNSTREAM (high granularity) SECTION*****************//
-	//Downstream Detector planes definition
-	TGeoBBox *DownstreamDetBox = new TGeoBBox("DownstreamDetBox",fDownstreamDetX/2,fDownstreamDetY/2,fDownstreamDetZ/2);
-	TGeoVolume *volDownstreamDet = new TGeoVolume("volDownstreamDet",DownstreamDetBox,air);
-	volDownstreamDet->SetLineColor(kRed+2);
 
-        //first loop, adding detector main boxes
-
-	for(Int_t l=0; l<fNDownstreamPlanes; l++)
-	{	  
-	  volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
-	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
-	  dz+=fFeBlockZ+fDownstreamDetZ;
 	}
+	           
+
+	//*************************************DOWNSTREAM (high granularity) SECTION*****************//
+
+    // first loop, adding detector main boxes
+	TGeoVolume* volDownstreamDet;
 
 	//adding staggered bars, second part, 77 bars, each for x and y coordinates
-	
 	TGeoBBox *MuDownstreamBar_hor = new TGeoBBox("MuDownstreamBar_hor",fDownstreamBarX/2, fDownstreamBarY/2, fDownstreamBarZ/2);
 	TGeoVolume *volMuDownstreamBar_hor = new TGeoVolume("volMuDownstreamBar_hor",MuDownstreamBar_hor,Scint);
 	volMuDownstreamBar_hor->SetLineColor(kBlue+2);
@@ -372,27 +371,37 @@ void MuFilter::ConstructGeometry()
 	volMuDownstreamBar_ver->SetLineColor(kGreen+2);
 	AddSensitiveVolume(volMuDownstreamBar_ver);
 
+	for(Int_t l=0; l<fNDownstreamPlanes; l++)
+	{
+	  string name = "volMuDownstreamDet_"+std::to_string(l);
+	  volDownstreamDet = new TGeoVolumeAssembly(name.c_str());
+	  volDownstreamDet->SetLineColor(kRed+2);
+	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
+	  if (l<fNDownstreamPlanes-1){
+		volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));}
+	  if (l<fNDownstreamPlanes-2){dz+=fFeBlockZ+fDownstreamDetZ;}
+	  else{dz+= fDS4ZGap+fDownstreamDetZ/2;}
+
 	//second loop, adding bars within each detector box
-	
-	for (Int_t ibar = 0; ibar < fNDownstreamBars; ibar++){
-	  //adding verizontal bars for y
-
-	  Double_t dy_bar = -fDownstreamDetY/2 + fDownstreamBarY/2. + fDownstreamBarY*ibar; 
-          Double_t dz_bar_hor = -fDownstreamDetZ/2. + fDownstreamBarZ/2.;
-
-	  TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,dz_bar_hor);
-	  
-	  volDownstreamDet->AddNode(volMuDownstreamBar_hor,ibar+1E+3,yztrans);
-	  //adding vertical bars for x
-
-	  Double_t dx_bar = -fDownstreamDetY/2 + fDownstreamBarX_ver/2. + fDownstreamBarX_ver*ibar; //they do not cover all the x region, but only 60 x 60.
-          Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
-
-	  TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);
-	  
-	  volDownstreamDet->AddNode(volMuDownstreamBar_ver,ibar+1E+5,xztrans);  
-       
-			   }    
+	  if (l!=fNDownstreamPlanes-1) {
+		for (Int_t ibar = 0; ibar < fNDownstreamBars; ibar++){
+	                 //adding horizontal bars for y
+			Double_t dy_bar = -fDownstreamDetY/2 + fDownstreamBarY/2. + fDownstreamBarY*ibar; // so just fDownstreamBarY*ibar?
+		    	Double_t dz_bar_hor = -fDownstreamDetZ/2. + fDownstreamBarZ/2.;
+		    	TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,dz_bar_hor);
+		    	volDownstreamDet->AddNode(volMuDownstreamBar_hor,3e+4+l*1e+3+ibar,yztrans);
+		}
+	  }
+	    //adding vertical bars for x
+	  for (Int_t i_vbar = 0; i_vbar<fNDownstreamBars; i_vbar++) {
+		Double_t dx_bar =  fDownstreamDetX/2 - fDownstreamBarX_ver/2. - fDownstreamBarX_ver*i_vbar; //they do not cover all the x region, but only 60 x 60.
+		Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
+		TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);
+		Int_t i_vbar_rev = fNDownstreamBars-1-i_vbar;
+		volDownstreamDet->AddNode(volMuDownstreamBar_ver,3e+4+l*1e+3+i_vbar_rev+60,xztrans);   // I added a 60 here to make each horizontal + vertical
+			// sub-plane contain bars given detIDs as one plane. So the first bar in the vert. sub plane is the 60th etc. 		  
+		}
+	}
 }
 
 Bool_t  MuFilter::ProcessHits(FairVolume* vol)
@@ -415,10 +424,7 @@ Bool_t  MuFilter::ProcessHits(FairVolume* vol)
 			gMC->IsTrackStop()       || 
 			gMC->IsTrackDisappeared()   ) {
 		fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-		fVolumeID = vol->getMCid();
 		gMC->CurrentVolID(fVolumeID);
-
-		gGeoManager->PrintOverlaps();
 
 		if (fELoss == 0. ) { return kFALSE; }
 		TParticle* p=gMC->GetStack()->GetCurrentTrack();
@@ -484,4 +490,69 @@ MuFilterPoint* MuFilter::AddHit(Int_t trackID,Int_t detID,
     return new(clref[size]) MuFilterPoint(trackID,detID, pos, mom,
                                         time, length, eLoss, pdgCode);
 }
+
+void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight) 
+{
+
+  int subsystem     = floor(fDetectorID/10000);
+  int plane                = floor(fDetectorID/1000) - 10*subsystem;
+  int bar_number = fDetectorID%1000;
+
+  TString path = "/cave_1/";
+  TString barName;
+
+  switch(subsystem) {
+  
+  case 1: 
+      path+="volVeto_1/volVetoPlane_"+std::to_string(plane)+"_"+std::to_string(plane);
+      barName = "/volVetoBar_";
+      break;
+  case 2: 
+      path+="volMuFilter_1/volMuUpstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+2);
+      barName = "/volMuUpstreamBar_";
+      break;
+  case 3: 
+      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+5);
+      barName = "/volMuDownstreamBar_";
+      if (bar_number<60){barName+="hor_";}
+      else{barName+="ver_";}
+      break;
+  }
+
+  path += barName+std::to_string(fDetectorID);
+
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+  nav->cd(path);
+  LOG(DEBUG) <<path<<" "<<fDetectorID<<" "<<subsystem<<" "<<bar_number;
+  TGeoNode* W = nav->GetCurrentNode();
+  TGeoBBox* S = dynamic_cast<TGeoBBox*>(W->GetVolume()->GetShape());
+
+  if (subsystem == 3 and bar_number >59){  // vertical bars
+      Double_t top[3] = {0,S->GetDY(), 0};
+      Double_t bot[3] = {0,-S->GetDY(),0};
+      Double_t Gtop[3],Gbot[3];
+      nav->LocalToMaster(top, Gtop);   nav->LocalToMaster(bot, Gbot);
+      vLeft.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);
+      vRight.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
+    }
+    else {     // horizontal bars
+      Double_t posXend[3] = {S->GetDX(),0,0};
+      Double_t negXend[3] = {-S->GetDX(),0,0};
+      Double_t GposXend[3],GnegXend[3];
+      nav->LocalToMaster(posXend, GposXend);   nav->LocalToMaster(negXend, GnegXend);
+      vLeft.SetXYZ(GposXend[0],GposXend[1],GposXend[2]);
+      vRight.SetXYZ(GnegXend[0],GnegXend[1],GnegXend[2]);
+    }
+}
+
+   Int_t MuFilter::GetnSiPMs(Int_t detID){
+       int subsystem     = floor(detID/10000);
+       return nSiPMs[subsystem-1];
+   }
+   Int_t MuFilter::GetnSides(Int_t detID){
+       int subsystem     = floor(detID/10000);
+       return nSides[subsystem-1];
+  }
+
+
 ClassImp(MuFilter)

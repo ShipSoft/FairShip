@@ -52,6 +52,8 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.MuFilter = AttrDict(z=0*u.cm)
         #Veto station parameters
+        c.MuFilter.VetonSiPMs = 8
+        c.MuFilter.VetonSides = 2
         c.MuFilter.NVetoPlanes = 2
         c.MuFilter.VetoShiftX = c.EmulsionDet.ShiftX
         c.MuFilter.VetoShiftY = c.EmulsionDet.ShiftY
@@ -81,12 +83,16 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.UpstreamDetX = c.MuFilter.X
         c.MuFilter.UpstreamDetY = c.MuFilter.FeY
         c.MuFilter.UpstreamDetZ = 2.6*u.cm
+        c.MuFilter.UpstreamnSiPMs = 8
+        c.MuFilter.UpstreamnSides = 2
         c.MuFilter.NUpstreamPlanes = 5
         c.MuFilter.DownstreamDetX = c.MuFilter.X
         c.MuFilter.DownstreamDetY = c.MuFilter.FeY
         c.MuFilter.DownstreamDetZ = 3.9*u.cm
-        c.MuFilter.NDownstreamPlanes=3
-
+        c.MuFilter.DownstreamnSiPMs = 1
+        c.MuFilter.DownstreamnSides = 2   # only for horizontal, vertical only one side
+        c.MuFilter.NDownstreamPlanes = 4
+        c.MuFilter.DS4ZGap = 8.82*u.cm
         #upstream bars configuration
         c.MuFilter.NUpstreamBars = 10
         c.MuFilter.UpstreamBarX = c.MuFilter.UpstreamDetX
@@ -100,16 +106,23 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DownstreamBarZ = 1*u.cm
 
         c.MuFilter.DownstreamBarX_ver = c.MuFilter.DownstreamDetY/c.MuFilter.NDownstreamBars #the vertical bars cover a region only 60 x 60 cm2
-        c.MuFilter.DownstreamBarY_ver = c.MuFilter.DownstreamDetY
+        c.MuFilter.DownstreamBarY_ver = 63.5*u.cm 
         c.MuFilter.DownstreamBarZ_ver = 1*u.cm
 
         #total z thickness and position
-        c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + c.MuFilter.NDownstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) 
+        c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + (c.MuFilter.NDownstreamPlanes - 1)*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) + c.MuFilter.DS4ZGap + c.MuFilter.DownstreamDetZ/2 #doesn't include veto
         c.MuFilter.Zcenter = c.EmulsionDet.zC+c.EmulsionDet.zdim/2+c.MuFilter.Z/2
         c.MuFilter.ShiftX = -2.8 * u.cm - c.MuFilter.X/2.
         
         c.MuFilter.Slope = -3.2 #in degrees
         c.MuFilter.ShiftY = 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
         c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
+
+        #digitization parameters
+        c.MuFilter.AttenuationLength = 28 * u.cm # Bologna prototype of DS bar
+        c.MuFilter.SiPMcalibration         = 0.208        # Volt/Mev Bologna prototype, this for Amplitude, 200 V/MeV for QDC
+        c.MuFilter.DynRangeLow           = 0.01       # just for test, don't know realistic value
+        c.MuFilter.DynRangeHigh          = 1.0         # just for test, don't know realistic value
+        c.MuFilter.VandUpAttenuationLength = 75 * u.cm # to be defined
 
         c.Floor = AttrDict(z=483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)
