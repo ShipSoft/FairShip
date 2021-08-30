@@ -24,18 +24,31 @@ top = sGeo.GetTopVolume()
 
 ut.bookHist(h,'S','stations',7,-0.5,6.5)
 ut.bookHist(h,'O','orientation',7,-0.5,6.5)
-ut.bookHist(h,'M','orientation',7,-0.5,6.5)
+ut.bookHist(h,'M','mat',7,-0.5,6.5)
 ut.bookHist(h,'R','row',7,-0.5,6.5)
 ut.bookHist(h,'N','fibre',1000,-0.5,999.5)
+
+for s in range(1,6):
+    ut.bookHist(h,'Sxy'+str(s),'XY',50,-50.,0.,50,10.,60.)
+    for o in range(2):
+      for m in range(1,4):
+          for r in range(1,7):
+               ut.bookHist(h,'N'+str(s)+str(o)+str(m)+str(r),'fibre',1000,-0.5,999.5)
 ut.bookHist(h,'E','dE',100,0.0,1000.)
+ut.bookHist(h,'nhits','hits per event',100,0.0,1000.)
 
 f = ROOT.TFile.Open("sndLHC.Ntuple-TGeant4.root")
+for x in h: h[x].Reset()
 for sTree in f.cbmsim:
+   rc = h['nhits'].Fill(sTree.ScifiPoint.GetEntries())
+   w = sTree.MCTrack[0].GetWeight() # assume these are muon background events.
    for p in sTree.ScifiPoint:
-      print(p.GetDetectorID(),':',p.station(),p.orientation())
-      rc = h['S'].Fill(p.station())
-      rc = h['O'].Fill(p.orientation())
-      rc = h['M'].Fill(p.mat())
-      rc = h['R'].Fill(p.row())
-      rc = h['N'].Fill(p.fibreN())
-      rc = h['E'].Fill(p.GetEnergyLoss()*1E6)
+      if p.GetDetectorID()==0: continue
+      rc = h['S'].Fill(p.station(),w)
+      rc = h['O'].Fill(p.orientation(),w)
+      rc = h['M'].Fill(p.mat(),w)
+      rc = h['R'].Fill(p.row(),w)
+      rc = h['N'].Fill(p.fibreN(),w)
+      rc = h['Sxy'+str(p.station())].Fill(p.GetX(),p.GetY(),w)
+      rc = h['N'+str(p.GetDetectorID()//1000)].Fill(p.fibreN(),w)
+      rc = h['E'].Fill(p.GetEnergyLoss()*1E6,w)
