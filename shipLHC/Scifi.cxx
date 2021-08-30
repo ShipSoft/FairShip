@@ -401,13 +401,19 @@ Bool_t  Scifi::ProcessHits(FairVolume* vol)
 	if ( gMC->IsTrackExiting()    ||
 			gMC->IsTrackStop()       || 
 			gMC->IsTrackDisappeared()   ) {
-		fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-		fVolumeID = vol->getMCid();
-		gMC->CurrentVolID(fVolumeID);
-
-		gGeoManager->PrintOverlaps();
-
 		if (fELoss == 0. ) { return kFALSE; }
+		fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+		TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+		TString  S    = TString(nav->GetPath());
+		int k = 12 + S.Index("FiberVolume_");
+		fVolumeID =  TString(S(k,7)).Atoi();
+/* STMRFFF
+First digit S: station # within the sub-detector
+Second digit T: type of the plane: 0-horizontal fiber plane, 1-vertical fiber plane
+Third digit M: determines the mat number
+Fourth digit R: row number (in Z direction)
+Last three digits F: fiber number
+*/
 		TParticle* p=gMC->GetStack()->GetCurrentTrack();
 		Int_t pdgCode = p->GetPdgCode();
 
