@@ -40,6 +40,16 @@ public:
     void SetNSiPMs(Int_t sipms);
     void SiPMParams(Double_t half_width, Double_t channel_width, Double_t charr_width, Double_t sipm_edge, Double_t charr_gap, Double_t simparr_width, Double_t sipm_diegap, Double_t nsipm_channels);
 
+    /** Getposition of single fibre**/
+    void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
+
+    Double_t ycross(Double_t a,Double_t R,Double_t x);
+    Double_t integralSqrt(Double_t ynorm);
+    Double_t fraction(Double_t R,Double_t x,Double_t y);
+    Double_t area(Double_t a,Double_t R,Double_t xL,Double_t xR);
+    void SiPMmapping();
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> GetSiPMmap(){return fibresSiPM;}
+    std::map<Int_t,float> GetSiPMPos(){return SiPMPos;}
     virtual TGeoVolume *SiPMOverlap();
     
     /**      Initialization of the detector is done here    */
@@ -100,7 +110,8 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> fibresSiPM;  //! mapping of fibres to SiPM channels
+    std::map<Int_t,float> SiPMPos;  //! local SiPM channel position
     /** container for data points */
     TClonesArray*  fScifiPointCollection;
     

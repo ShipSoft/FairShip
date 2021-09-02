@@ -3,25 +3,27 @@ import ROOT
 # python -i $SNDBUILD/sndsw/shipLHC/run_simSND.py -n 10 --Ntuple -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root --eMin 1.0
 # import SciFiMapping
 
-geoFile = "geofile_full.Ntuple-TGeant4.root"
-fgeo = ROOT.TFile.Open(geoFile)
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
+if __name__ == "__main__":
+	print("open geofile")
+	geoFile = "geofile_full.Ntuple-TGeant4.root"
+	fgeo = ROOT.TFile.Open(geoFile)
+	from ShipGeoConfig import ConfigRegistry
+	from rootpyPickler import Unpickler
 #load geo dictionary
-upkl    = Unpickler(fgeo)
-snd_geo = upkl.load('ShipGeo')
+	upkl    = Unpickler(fgeo)
+	snd_geo = upkl.load('ShipGeo')
  
 # -----Create geometry----------------------------------------------
-import shipLHC_conf as sndDet_conf
+	import shipLHC_conf as sndDet_conf
 
-run = ROOT.FairRunSim()
-run.SetName("TGeant4")  # Transport engine
-run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
-run.SetUserConfig("g4Config_basic.C") # geant4 transport not used
-rtdb = run.GetRuntimeDb()
-modules = sndDet_conf.configure(run,snd_geo)
-sGeo = fgeo.FAIRGeom
-top = sGeo.GetTopVolume()
+	run = ROOT.FairRunSim()
+	run.SetName("TGeant4")  # Transport engine
+	run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
+	run.SetUserConfig("g4Config_basic.C") # geant4 transport not used
+	rtdb = run.GetRuntimeDb()
+	modules = sndDet_conf.configure(run,snd_geo)
+	sGeo = fgeo.FAIRGeom
+	top = sGeo.GetTopVolume()
 # hierarchy:  top<-volTarget<-ScifiVolume<- ScifiHorPlaneVol<-HorMatVolume<-FibreVolume
 #                                                                                     <- ScifiVertPlaneVol<-VertMatVolume<-FibreVolume
 
@@ -60,70 +62,97 @@ def area(a,R,xL,xR):
           else:      theAnswer +=  fracR
     return theAnswer
 
-def getFibre2SiPM():
+def getFibre2SiPM(modules):
    scifi   = modules['Scifi']
-   sipm = scifi.SiPMOverlap()           # 12 SiPMs per mat, made for horizontal mats
+   sipm = scifi.SiPMOverlap()           # 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
    sGeo = ROOT.gGeoManager
-   HorMat  = sGeo.FindVolumeFast('HorMatVolume')
-   VertMat = sGeo.FindVolumeFast('VertMatVolume')
+   nav = sGeo.GetCurrentNavigator()
+   nav.cd("/cave_1/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0/HorMatVolume_1010000")
+   matNode = nav.GetCurrentNode()   # example mat
+   mat = matNode.GetVolume()   # example mat
    fibresSiPM = {}
-   for mat in [VertMat,HorMat]:
-       fibresRadius = False
-       orient = 0
-       if mat.GetName().find('Hor')==0: orient = 1
-       M = mat.GetName()
-       fibresSiPM[M]={}
-       for fibre in mat.GetNodes():
-          if not fibresRadius:
-              fibresRadius=fibre.GetVolume().GetShape().GetDX()
-          fID = fibre.GetNumber()     # this should be reduced to local libre number
-          a = fibre.GetMatrix().GetTranslation()[orient]
+   fibresRadius = False
+   offSet = matNode.GetMatrix().GetTranslation()[1]
+   for fibre in mat.GetNodes():
+          if not fibresRadius:  fibresRadius=fibre.GetVolume().GetShape().GetDX()
+          fID = fibre.GetNumber()%10000     # local fibre number, global fibre number = SOM+fID
+                                                                                    # S=station, O=orientation, M=mat
+          a = offSet + fibre.GetMatrix().GetTranslation()[1]
       # check for overlap with any of the SiPM channels
-          for vol in sipm.GetNodes():    # 12 SiPMs
+          for nSiPM in range(0,4):         # 12 SiPMs total and 4 SiPMs per mat
+                 vol = sipm.GetNodes()[nSiPM]
                  trans0 = vol.GetMatrix().GetTranslation()[1]
                  # print("0   ",vol.GetName(),trans0[0],trans0[1],trans0[2])
                  for iSiPM in vol.GetVolume().GetNodes():  # 2 volumes with gap
                      trans1 = iSiPM.GetMatrix().GetTranslation()[1]
                      # print("1        ",iSiPM.GetName(),trans1[0],trans1[1],trans1[2])
                      for x in iSiPM.GetVolume().GetNodes():    # 64 channels
-                        transx = x.GetMatrix().GetTranslation()[1]
-                        # print("2                    ",x.GetName(),transx+trans1+trans0)
-                        dSiPM = x.GetVolume().GetShape().GetDY()
+                        transx    = x.GetMatrix().GetTranslation()[1]
                         xcentre = transx+trans1+trans0
+                        # print('debug',iSiPM.GetName(),xcentre,x.GetNumber(),x.GetName(),x.GetMatrix().GetTranslation()[0],x.GetMatrix().GetTranslation()[1],x.GetMatrix().GetTranslation()[2])
+                        # print("2                    ",trans0,trans1,transx)
+                        dSiPM = x.GetVolume().GetShape().GetDY()
                         if abs(xcentre-a)>4*fibresRadius: continue # no need to check further
                         W = area(a,fibresRadius,xcentre-dSiPM/2.,xcentre+dSiPM/2.)
                         if W<0: continue
                         N = x.GetNumber()
-                        # print('debug',N,fID,a,xcentre-dSiPM/2.,xcentre+dSiPM/2.,W)
-                        if not N in fibresSiPM[M]:     fibresSiPM[M][N] = {}
-                        fibresSiPM[M][N][fID] = W
+                        # print('debug',N,fID,a,x.GetName(),xcentre-dSiPM/2.,xcentre+dSiPM/2.,W)
+                        if not N in fibresSiPM:     fibresSiPM[N] = {}
+                        fibresSiPM[N][fID] = {'weight':W,'xpos':a}
    return fibresSiPM
 
+def SiPMfibres(F):
+	Finv = {}
+	for sipm in F:
+		for fibre in F[sipm]:
+			print(sipm,fibre,F[sipm][fibre])
+			if not fibre in Finv: Finv[fibre]={}
+			Finv[fibre][sipm]=F[sipm][fibre]
+	return Finv
+
+# get mapping from C++
+def getFibre2SiPMCPP(modules):
+	scifi   = modules['Scifi']
+	F=scifi.GetSiPMmap()
+	fibresSiPM = {}
+	for x in F:
+		fibresSiPM[x.first]={}
+		for z in x.second:
+			fibresSiPM[x.first][z.first]={'weight':z.second[0],'xpos':z.second[1]}
+	return fibresSiPM
+
 from array import array
-def position():
-   nav = sGeo.GetCurrentNavigator()
-   path = "/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0/HorMatVolume_1010000"
-   nav.cd(path)
-   mat = nav.GetCurrentNode()
-   loc = array('d',[0,0,0])
-   glo = array('d',[0,0,0])
-   for fibre in mat.GetNodes():
-     trans = fibre.GetMatrix().GetTranslation()
-     nav.cd(path+"/"+fibre.GetName())
-     nav.LocalToMaster(loc,glo)
-     print(fibre.GetName(),trans[0],trans[1],trans[2],' : ',glo)
+def localPosition(fibresSiPM):
+   meanPos = {}
+   for N in fibresSiPM:
+        m = 0
+        w = 0
+        for fID in fibresSiPM[N]:
+            m+=fibresSiPM[N][fID]['weight']*fibresSiPM[N][fID]['xpos']
+            w+=fibresSiPM[N][fID]['weight']
+        meanPos[N] = m/w
+   return meanPos
 
 h={}
 import rootUtils as ut
 def overlap():
    ut.bookHist(h,'W','overlap/fibre',100,0.,1.)
    ut.bookHist(h,'C','coverage',50,0.,5.)
+   ut.bookHist(h,'S','fibres/sipm',-0.5,0.,4.5)
+   ut.bookHist(h,'Eff','efficiency',100,0.,1.)
    for n in F['VertMatVolume']:
      C=0
      for fid in F['VertMatVolume'][n]:
           rc = h['W'].Fill(F['VertMatVolume'][n][fid])
           C+=F['VertMatVolume'][n][fid]
      rc = h['C'].Fill(C)
+   for n in Finv['VertMatVolume']:
+     E=0
+     for sipm in Finv['VertMatVolume'][n]:
+          E+=Finv['VertMatVolume'][n][sipm]
+     rc = h['Eff'].Fill(E)
+     rc = h['S'].Fill(len(Finv['VertMatVolume'][n]))
+
 def test(chan):
     for x in F['VertMatVolume'][chan]:
             print('%6i:%5.2F'%(x,F['VertMatVolume'][chan][x])) 

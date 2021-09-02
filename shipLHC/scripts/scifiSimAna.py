@@ -21,6 +21,7 @@ rtdb = run.GetRuntimeDb()
 modules = sndDet_conf.configure(run,snd_geo)
 sGeo = fgeo.FAIRGeom
 top = sGeo.GetTopVolume()
+scifi = modules['Scifi']
 
 ut.bookHist(h,'S','stations',7,-0.5,6.5)
 ut.bookHist(h,'O','orientation',7,-0.5,6.5)
@@ -52,3 +53,15 @@ for sTree in f.cbmsim:
       rc = h['Sxy'+str(p.station())].Fill(p.GetX(),p.GetY(),w)
       rc = h['N'+str(p.GetDetectorID()//1000)].Fill(p.fibreN(),w)
       rc = h['E'].Fill(p.GetEnergyLoss()*1E6,w)
+
+# test position
+A,B=ROOT.TVector3(),ROOT.TVector3()
+scifi.GetPosition(1011001,A,B)
+print("horizontal mat")
+A.Print()
+B.Print()
+print("vertical mat")
+scifi.GetPosition(1111001,A,B)
+A.Print()
+B.Print()
+
