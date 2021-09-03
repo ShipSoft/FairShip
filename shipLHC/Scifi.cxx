@@ -346,8 +346,9 @@ void Scifi::ConstructGeometry()
         }
 }}}
 
-TGeoVolume* Scifi::SiPMOverlap()
+void Scifi::SiPMOverlap()
 {   
+    if (gGeoManager->FindVolumeFast("SiPMmapVol")){return;}
     //Contains all plane SiPMs, defined for horizontal fiber plane
     //To obtain SiPM map for vertical fiber plane rotate by 90 degrees around Z
     TGeoVolumeAssembly *SiPMmapVol = new TGeoVolumeAssembly("SiPMmapVol");
@@ -378,7 +379,6 @@ TGeoVolume* Scifi::SiPMOverlap()
         }
         SiPMArrayVol->AddNode(SiPMCharrVol1, 1, new TGeoTranslation(0, -fSipmArray/2 + fCharr + fCharrGap + fCharr/2, 0));
     }
-    return SiPMmapVol;
 }   
 
 
@@ -516,7 +516,8 @@ Double_t Scifi::area(Double_t a,Double_t R,Double_t xL,Double_t xR)
 }
 
 void Scifi::SiPMmapping(){
-	auto sipm = SiPMOverlap();           // 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
+	SiPMOverlap();           // 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
+	auto sipm = gGeoManager->FindVolumeFast("SiPMmapVol");
 	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
 	nav->cd("/cave_1/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0/HorMatVolume_1010000");
 	TGeoNode* matNode = nav->GetCurrentNode();   // example mat
@@ -556,7 +557,7 @@ void Scifi::SiPMmapping(){
 					TGeoBBox* B = dynamic_cast<TGeoBBox*>(vol2->GetVolume()->GetShape());
 					Float_t dSiPM = B->GetDY();
 					if (TMath::Abs(xcentre-a)>4*fibresRadius){ continue;} // no need to check further
-					Float_t W = area(a,fibresRadius,xcentre-dSiPM/2.,xcentre+dSiPM/2.);
+					Float_t W = area(a,fibresRadius,xcentre-dSiPM,xcentre+dSiPM);
 					if (W<0){ continue;}
 					Int_t N = vol2->GetNumber();
 					std::array<float, 2> Wa;
@@ -582,8 +583,16 @@ void Scifi::SiPMmapping(){
 		}
 		SiPMPos[N]=m/w;
 	}
-
-
+// make inverse mapping, which fibre is associated to which SiPMs
+	for (it = fibresSiPM.begin(); it != fibresSiPM.end(); it++)
+	{
+		Int_t N = it->first;
+		for (itx = it->second.begin(); itx != it->second.end(); itx++)
+		{
+			Int_t nfibre = itx->first;
+			siPMFibres[nfibre][N]=itx->second;
+		}
+	}
 }
 void Scifi::EndOfEvent()
 {

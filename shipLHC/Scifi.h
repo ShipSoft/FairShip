@@ -49,8 +49,9 @@ public:
     Double_t area(Double_t a,Double_t R,Double_t xL,Double_t xR);
     void SiPMmapping();
     std::map<Int_t,std::map<Int_t,std::array<float, 2>>> GetSiPMmap(){return fibresSiPM;}
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> GetFibresMap(){return siPMFibres;}
     std::map<Int_t,float> GetSiPMPos(){return SiPMPos;}
-    virtual TGeoVolume *SiPMOverlap();
+    virtual void SiPMOverlap();
     
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -111,6 +112,7 @@ private:
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
     std::map<Int_t,std::map<Int_t,std::array<float, 2>>> fibresSiPM;  //! mapping of fibres to SiPM channels
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> siPMFibres;  //! inverse mapping
     std::map<Int_t,float> SiPMPos;  //! local SiPM channel position
     /** container for data points */
     TClonesArray*  fScifiPointCollection;

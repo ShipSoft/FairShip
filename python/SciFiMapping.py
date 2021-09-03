@@ -63,10 +63,11 @@ def area(a,R,xL,xR):
     return theAnswer
 
 def getFibre2SiPM(modules):
-   scifi   = modules['Scifi']
-   sipm = scifi.SiPMOverlap()           # 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
    sGeo = ROOT.gGeoManager
    nav = sGeo.GetCurrentNavigator()
+   scifi   = modules['Scifi']
+   scifi.SiPMOverlap()           # 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
+   sipm = sGeo.FindVolumeFast("SiPMmapVol")
    nav.cd("/cave_1/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0/HorMatVolume_1010000")
    matNode = nav.GetCurrentNode()   # example mat
    mat = matNode.GetVolume()   # example mat
@@ -93,10 +94,10 @@ def getFibre2SiPM(modules):
                         # print("2                    ",trans0,trans1,transx)
                         dSiPM = x.GetVolume().GetShape().GetDY()
                         if abs(xcentre-a)>4*fibresRadius: continue # no need to check further
-                        W = area(a,fibresRadius,xcentre-dSiPM/2.,xcentre+dSiPM/2.)
+                        W = area(a,fibresRadius,xcentre-dSiPM,xcentre+dSiPM)
                         if W<0: continue
                         N = x.GetNumber()
-                        # print('debug',N,fID,a,x.GetName(),xcentre-dSiPM/2.,xcentre+dSiPM/2.,W)
+                        # print('debug',N,fID,a,x.GetName(),xcentre-dSiPM,xcentre+dSiPM,W)
                         if not N in fibresSiPM:     fibresSiPM[N] = {}
                         fibresSiPM[N][fID] = {'weight':W,'xpos':a}
    return fibresSiPM
@@ -105,7 +106,6 @@ def SiPMfibres(F):
 	Finv = {}
 	for sipm in F:
 		for fibre in F[sipm]:
-			print(sipm,fibre,F[sipm][fibre])
 			if not fibre in Finv: Finv[fibre]={}
 			Finv[fibre][sipm]=F[sipm][fibre]
 	return Finv
@@ -113,6 +113,7 @@ def SiPMfibres(F):
 # get mapping from C++
 def getFibre2SiPMCPP(modules):
 	scifi   = modules['Scifi']
+	scifi.SiPMmapping()
 	F=scifi.GetSiPMmap()
 	fibresSiPM = {}
 	for x in F:
@@ -120,6 +121,16 @@ def getFibre2SiPMCPP(modules):
 		for z in x.second:
 			fibresSiPM[x.first][z.first]={'weight':z.second[0],'xpos':z.second[1]}
 	return fibresSiPM
+
+def getSiPM2FibreCPP(modules):
+	scifi   = modules['Scifi']
+	X=scifi.GetFibresMap()
+	siPMFibres = {}
+	for x in X:
+		siPMFibres[x.first]={}
+		for z in x.second:
+			siPMFibres[x.first][z.first]={'weight':z.second[0],'xpos':z.second[1]}
+	return siPMFibres
 
 from array import array
 def localPosition(fibresSiPM):
@@ -135,27 +146,40 @@ def localPosition(fibresSiPM):
 
 h={}
 import rootUtils as ut
-def overlap():
-   ut.bookHist(h,'W','overlap/fibre',100,0.,1.)
-   ut.bookHist(h,'C','coverage',50,0.,5.)
-   ut.bookHist(h,'S','fibres/sipm',-0.5,0.,4.5)
+def overlap(F,Finv):
+   ut.bookHist(h,'W','overlap/fibre',110,0.,1.1)
+   ut.bookHist(h,'C','coverage',50,0.,10.)
+   ut.bookHist(h,'S','fibres/sipm',5,-0.5,4.5)
    ut.bookHist(h,'Eff','efficiency',100,0.,1.)
-   for n in F['VertMatVolume']:
+   for n in F:
      C=0
-     for fid in F['VertMatVolume'][n]:
-          rc = h['W'].Fill(F['VertMatVolume'][n][fid])
-          C+=F['VertMatVolume'][n][fid]
+     for fid in F[n]:
+          rc = h['W'].Fill(F[n][fid]['weight'])
+          C+=F[n][fid]['weight']
      rc = h['C'].Fill(C)
-   for n in Finv['VertMatVolume']:
+   for n in Finv:
      E=0
-     for sipm in Finv['VertMatVolume'][n]:
-          E+=Finv['VertMatVolume'][n][sipm]
+     for sipm in Finv[n]:
+          E+=Finv[n][sipm]['weight']
      rc = h['Eff'].Fill(E)
-     rc = h['S'].Fill(len(Finv['VertMatVolume'][n]))
+     rc = h['S'].Fill(len(Finv[n]))
 
 def test(chan):
     for x in F['VertMatVolume'][chan]:
             print('%6i:%5.2F'%(x,F['VertMatVolume'][chan][x])) 
+
+def inspectSiPM():
+	SiPMmapVol = sGeo.FindVolumeFast("SiPMmapVol")
+	for l1 in  SiPMmapVol.GetNodes():
+		t1 = l1.GetMatrix().GetTranslation()[1]
+		print(l1.GetName(),t1)
+		for l2 in  l1.GetVolume().GetNodes():
+			t2 = l2.GetMatrix().GetTranslation()[1]
+			print("       ",l2.GetName(),t2)
+			for l3 in  l2.GetVolume().GetNodes():
+				t3 = l3.GetMatrix().GetTranslation()[1]
+				dy = l3.GetVolume().GetShape().GetDY()
+				print("                     ", l3.GetName(),t3,t1+t2+t3,dy)
 
 
 
