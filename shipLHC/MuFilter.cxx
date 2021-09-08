@@ -512,7 +512,7 @@ void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight)
       barName = "/volMuUpstreamBar_";
       break;
   case 3: 
-      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+5);
+      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+7);
       barName = "/volMuDownstreamBar_";
       if (bar_number<60){barName+="hor_";}
       else{barName+="ver_";}
