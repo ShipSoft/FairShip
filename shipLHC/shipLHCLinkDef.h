@@ -14,6 +14,7 @@
 #pragma link C++ class MuFilter+;
 #pragma link C++ class MuFilterPoint+;
 #pragma link C++ class MuFilterHit+;
+#pragma link C++ class sndScifiHit+;
 #endif
 
 

@@ -55,6 +55,7 @@ sGeo = fgeo.FAIRGeom
 # make global variables
 global_variables.debug = options.debug
 global_variables.snd_geo = snd_geo
+global_variables.modules = modules
 
 global_variables.iEvent = 0
 

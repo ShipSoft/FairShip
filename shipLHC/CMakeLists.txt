@@ -36,6 +36,7 @@ ScifiPoint.cxx
 MuFilter.cxx
 MuFilterPoint.cxx
 MuFilterHit.cxx
+sndScifiHit.cxx
 )
 
 Set(HEADERS )
