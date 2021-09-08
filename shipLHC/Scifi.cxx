@@ -155,21 +155,17 @@ void Scifi::SetNScifi(Int_t nscifi)
     fNScifi = nscifi;
 }
 
-void Scifi::SetNSiPMs(Int_t nsipms)
-{
-    fNSiPMs = nsipms;
-}
-
-void Scifi::SiPMParams(Double_t half_width, Double_t channel_width, Double_t charr_width, Double_t sipm_edge, Double_t charr_gap, Double_t simparr_width, Double_t sipm_diegap, Double_t nsipm_channels)
+void Scifi::SiPMParams(Double_t channel_width, Double_t charr_width, Double_t sipm_edge, 
+                                                  Double_t charr_gap, Double_t sipm_diegap, Int_t nsipm_channels, Int_t nsipm_mat,Double_t X)
 {  
-    fHalfWidth =  half_width;                
-    fWidthChannel = channel_width;           
-    fCharr = charr_width;                    
-    fEdge = sipm_edge;                      
-    fCharrGap = charr_gap;                  			
-    fSipmArray = simparr_width;            
-    fBigGap = sipm_diegap;                 				
-    fNSiPMChan = nsipm_channels;          
+    fWidthChannel = channel_width;
+    fCharr = charr_width;
+    fEdge = sipm_edge;
+    fCharrGap = charr_gap;
+    fBigGap = sipm_diegap;
+    fNSiPMChan = nsipm_channels;
+    fNSiPMs  = nsipm_mat;
+    firstChannelX = X;
 }
 
 void Scifi::Initialize()
@@ -356,31 +352,25 @@ void Scifi::SiPMOverlap()
     TGeoVolume*ChannelVol = gGeoManager->MakeBox("ChannelVol", 0, fLengthScifiMat/2, fWidthChannel/2, fZEpoxyMat/2);
 
     //DetID for each channel:
-    //first digit: SiPM number
-    //last three digits: channel number (1-128)
-    for (int isipms = 0; isipms < fNSiPMs; isipms++){
+    //first digit: mat number (0-2)
+    //second digit: SiPM number (0-3)
+    //last three digits: channel number (0-127)
 
-        TGeoVolumeAssembly *SiPMArrayVol = new TGeoVolumeAssembly("SiPMArrayVol");
-        
-        //Positioning SiPMs
-        SiPMmapVol->AddNode(SiPMArrayVol, (isipms + 1)*1000, new TGeoTranslation(0, -fHalfWidth + fEdge + fSipmArray/2 + isipms*(fBigGap  + fSipmArray), 0));
-
-        //Adding channels 1-64
-        TGeoVolumeAssembly *SiPMCharrVol0 = new TGeoVolumeAssembly("SiPMCharrVol0");
-        for (int ichannel = 0; ichannel < fNSiPMChan/2; ichannel++){
-            SiPMCharrVol0->AddNode(ChannelVol, (isipms + 1)*1000 + ichannel + 1, new TGeoTranslation(0, - fCharr/2 + fWidthChannel/2 + ichannel*fWidthChannel, 0));
+    Double_t SiPMArray_fullwidth = fEdge+fCharr+fCharrGap+fCharr+fEdge;
+    TGeoVolumeAssembly *SiPMArrayVol;
+    Double_t pos = -fEdge+firstChannelX;
+    for (int imat = 0; imat < fNMats; imat++){
+      for (int isipms = 0; isipms < fNSiPMs; isipms++){
+        pos+= fEdge;
+        for (int ichannel = 0; ichannel < fNSiPMChan; ichannel++){
+            SiPMmapVol->AddNode(ChannelVol, imat*10000+isipms *1000 + ichannel, new TGeoTranslation(0, pos, 0));
+            pos += fWidthChannel;
+            if (ichannel==(fNSiPMChan/2-1)){pos += fCharrGap;}
         }
-        SiPMArrayVol->AddNode(SiPMCharrVol0, 0, new TGeoTranslation(0, -fSipmArray/2 + fCharr/2, 0));
-        
-        //Adding channels 65-128 (channels after die gap)
-        TGeoVolumeAssembly *SiPMCharrVol1 = new TGeoVolumeAssembly("SiPMCharrVol1");
-        for (int ichannel = 0; ichannel < fNSiPMChan/2; ichannel++){
-            SiPMCharrVol1->AddNode(ChannelVol, (isipms + 1)*1000 + fNSiPMChan/2 + ichannel + 1, new TGeoTranslation(0, - fCharr/2 + fWidthChannel/2 + ichannel*fWidthChannel, 0));
-        }
-        SiPMArrayVol->AddNode(SiPMCharrVol1, 1, new TGeoTranslation(0, -fSipmArray/2 + fCharr + fCharrGap + fCharr/2, 0));
+        pos+=fEdge+fBigGap;
     }
-}   
-
+   }
+}
 
 Bool_t  Scifi::ProcessHits(FairVolume* vol)
 {
@@ -473,6 +463,55 @@ void Scifi::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 	B.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
 
 }
+void Scifi::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B) 
+{
+/* STMRFFF
+ First digit S: 		station # within the sub-detector
+ Second digit T: 		type of the plane: 0-horizontal fiber plane, 1-vertical fiber plane
+ Third digit M: 		determines the mat number 0-2
+ Fourth digit S: 		SiPM number  0-3
+ Last three digits F: 	local SiPM channel number in one mat  0-127
+*/
+	Float_t locPosition = SiPMPos[SiPMChan%100000]; // local position in plane of reference plane.
+	// find mat
+	TString sID;
+	sID.Form("%i",SiPMChan);
+	TString path = "/cave_1/volTarget_1/ScifiVolume_"+TString(sID(0,1))+"000000/";
+	if (sID(1,1)=="0"){
+		path+="ScifiHorPlaneVol_0/";
+		path+="HorMatVolume_"+TString(sID(0,4))+"000/";
+	}else{
+		path+="ScifiVertPlaneVol_0/";
+		path+="VertMatVolume_"+TString(sID(0,4))+"000/";
+	}
+	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+	nav->cd(path);
+	TGeoNode* W = nav->GetCurrentNode();
+	Double_t locMat[3] = {0,0,0};
+	Double_t globMat[3] = {0,0,0};
+	nav->LocalToMaster(locMat, globMat);
+// reference plane
+	nav->cd("/cave_1/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0");
+	TGeoNode* R = nav->GetCurrentNode();
+	Double_t locRef[3] = {0,0,0};
+	Double_t globRef[3] = {0,0,0};
+	nav->LocalToMaster(locRef, globRef);
+	Double_t loc[3]    = {0,0,0};
+	Double_t glob[3] = {0,0,0};
+	if (sID(1,1)=="0"){loc[1]=locPosition;}
+	else{loc[0]=locPosition;}
+	nav->LocalToMaster(loc, glob);
+	A.SetXYZ(glob[0]+globMat[0]-globRef[0],
+		glob[1]+globMat[1]-globRef[1],
+		glob[2]+globMat[2]-globRef[2]);
+	if (sID(1,1)=="0"){loc[1]=-locPosition;}
+	else{loc[0]=-locPosition;}
+	nav->LocalToMaster(loc, glob);
+	B.SetXYZ(glob[0]+globMat[0]-globRef[0],
+		glob[1]+globMat[1]-globRef[1],
+		glob[2]+globMat[2]-globRef[2]);
+}
+
 Double_t Scifi::ycross(Double_t a,Double_t R,Double_t x)
 {
 	Double_t y = -1;
@@ -516,55 +555,45 @@ Double_t Scifi::area(Double_t a,Double_t R,Double_t xL,Double_t xR)
 }
 
 void Scifi::SiPMmapping(){
-	SiPMOverlap();           // 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
-	auto sipm = gGeoManager->FindVolumeFast("SiPMmapVol");
-	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-	nav->cd("/cave_1/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0/HorMatVolume_1010000");
-	TGeoNode* matNode = nav->GetCurrentNode();   // example mat
-	auto mat = matNode->GetVolume();  // example mat
 	Float_t fibresRadius = -1;
-	Float_t offSet = matNode->GetMatrix()->GetTranslation()[1];
-	TObjArray* NodeChildList = mat->GetNodes();
-	TGeoNode* fibre;
+	Float_t dSiPM = -1;
 	TGeoNode* vol;
-	TGeoNode* vol1;
-	TGeoNode* vol2;
-
-	for (Int_t j = 0; j < NodeChildList->GetEntriesFast(); j++) {
-		fibre = static_cast<TGeoNode*>(NodeChildList->At(j));
-		if  (fibresRadius<0){
-			auto tmp = fibre->GetVolume()->GetShape();
-			auto S = dynamic_cast<TGeoBBox*>(tmp);
-			fibresRadius = S->GetDX();
-		}
-		Int_t fID = fibre->GetNumber()%10000;     // local fibre number, global fibre number = SOM+fID
-                                                                                   // S=station, O=orientation, M=mat
-		Float_t a = offSet + fibre->GetMatrix()->GetTranslation()[1];
-	//  check for overlap with any of the SiPM channels
-		TObjArray* Nodes = sipm->GetNodes();
-		for(Int_t nSiPM = 0; nSiPM<4;nSiPM++){        // 12 SiPMs total and 4 SiPMs per mat
-			vol = static_cast<TGeoNode*>(Nodes->At(nSiPM));
-			Float_t trans0 = vol->GetMatrix()->GetTranslation()[1];
-			TObjArray* Nodes1 = vol->GetVolume()->GetNodes();
-			for(Int_t iSiPM  = 0; iSiPM<Nodes1->GetEntriesFast();iSiPM++){// 2 volumes with gap
-				vol1 = static_cast<TGeoNode*>(Nodes1->At(iSiPM));
-				Float_t trans1 = vol1->GetMatrix()->GetTranslation()[1];
-				TObjArray* Nodes2 = vol1->GetVolume()->GetNodes();
-				for(Int_t ix  = 0; ix<Nodes2->GetEntriesFast();ix++){
-					vol2 = static_cast<TGeoNode*>(Nodes2->At(ix));  // 64 channels
-					Float_t transx    = vol2->GetMatrix()->GetTranslation()[1];
-					Float_t xcentre = transx+trans1+trans0;
-					TGeoBBox* B = dynamic_cast<TGeoBBox*>(vol2->GetVolume()->GetShape());
-					Float_t dSiPM = B->GetDY();
-					if (TMath::Abs(xcentre-a)>4*fibresRadius){ continue;} // no need to check further
-					Float_t W = area(a,fibresRadius,xcentre-dSiPM,xcentre+dSiPM);
-					if (W<0){ continue;}
-					Int_t N = vol2->GetNumber();
-					std::array<float, 2> Wa;
-					Wa[0] = W;
-					Wa[1] = a;
-					fibresSiPM[N][fID] = Wa;
+	TGeoNode* fibre;
+	SiPMOverlap();           // 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
+	auto sipm    = gGeoManager->FindVolumeFast("SiPMmapVol");
+	TObjArray* Nodes = sipm->GetNodes();
+	auto plane  = gGeoManager->FindVolumeFast("ScifiHorPlaneVol");
+	for (int imat = 0; imat < plane->GetNodes()->GetEntriesFast(); imat++){
+		auto mat =  static_cast<TGeoNode*>(plane->GetNodes()->At(imat));
+		Float_t t1 = mat->GetMatrix()->GetTranslation()[1];
+		auto vmat = mat->GetVolume();
+		for (int ifibre = 0; ifibre < vmat->GetNodes()->GetEntriesFast(); ifibre++){
+			fibre = static_cast<TGeoNode*>(vmat->GetNodes()->At(ifibre));
+			if  (fibresRadius<0){
+				auto tmp = fibre->GetVolume()->GetShape();
+				auto S = dynamic_cast<TGeoBBox*>(tmp);
+				fibresRadius = S->GetDX();
+			}
+			Float_t t2 = fibre->GetMatrix()->GetTranslation()[1];
+			Int_t fID = fibre->GetNumber()%100000;     // local fibre number, global fibre number = SO+fID
+			Float_t a = t1+t2;
+	//  check for overlap with any of the SiPM channels in the same mat
+			for(Int_t nChan = 0; nChan<Nodes->GetEntriesFast();nChan++){        // 12 SiPMs total and 4 SiPMs per mat times 128 channels
+				vol = static_cast<TGeoNode*>(Nodes->At(nChan));
+				Int_t N = vol->GetNumber()%100000;
+				if (imat!=int(N/10000)){continue;}
+				Float_t xcentre = vol->GetMatrix()->GetTranslation()[1];
+				if  (dSiPM<0){
+					TGeoBBox* B = dynamic_cast<TGeoBBox*>(vol->GetVolume()->GetShape());
+					dSiPM = B->GetDY();
 				}
+				if (TMath::Abs(xcentre-a)>4*fibresRadius){ continue;} // no need to check further
+				Float_t W = area(a,fibresRadius,xcentre-dSiPM,xcentre+dSiPM);
+				if (W<0){ continue;}
+				std::array<float, 2> Wa;
+				Wa[0] = W;
+				Wa[1] = a;
+				fibresSiPM[N][fID] = Wa;
 			}
 		}
 	}

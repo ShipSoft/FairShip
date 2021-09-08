@@ -38,11 +38,13 @@ public:
     void SetNMats(Int_t nmats);
     void SetNScifi(Int_t nscifi);
     void SetNSiPMs(Int_t sipms);
-    void SiPMParams(Double_t half_width, Double_t channel_width, Double_t charr_width, Double_t sipm_edge, Double_t charr_gap, Double_t simparr_width, Double_t sipm_diegap, Double_t nsipm_channels);
+    void SiPMParams(Double_t channel_width, Double_t charr_width, Double_t sipm_edge, 
+                                          Double_t charr_gap, Double_t sipm_diegap, Int_t nsipm_channels, Int_t nsipm_mat,Double_t firstChannelX);
 
     /** Getposition of single fibre**/
     void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
-
+    /** mean position of fibre2 associated with SiPM channel **/
+    void GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B) ;
     Double_t ycross(Double_t a,Double_t R,Double_t x);
     Double_t integralSqrt(Double_t ynorm);
     Double_t fraction(Double_t R,Double_t x,Double_t y);
@@ -157,17 +159,15 @@ protected:
     
     Int_t fNMats;  //Number of mats in one SciFi plane
     Int_t fNScifi; //Number of Scifi walls
-    Int_t fNSiPMs; //Number of SiPMs per SciFi plane
+    Int_t fNSiPMs; //Number of SiPMs per SciFi mat
 
-    Double_t fHalfWidth;    //Half width of the SiPM plane
     Double_t fWidthChannel; //One channel width 
-    Double_t fCharr;        //Width of an array of 64 channels without gaps            
-    Double_t fEdge;         //Edge at the left and right sides of the SiPM           
+    Double_t fCharr;        //Width of an array of 64 channels without gaps
+    Double_t fEdge;         //Edge at the left and right sides of the SiPM
     Double_t fCharrGap;     //Gap between two charr
-    Double_t fSipmArray;    //Width of 128 channels array with the gap
-    Double_t fBigGap;       //Gap between two arrays                          
+    Double_t fBigGap;       //Gap between two arrays
     Double_t fNSiPMChan;    //Number of channels in each SiPM
-        
+    Double_t firstChannelX; // local X Position of first channel in plane
     Int_t InitMedium(const char* name);
     
 };

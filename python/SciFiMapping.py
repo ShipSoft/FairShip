@@ -113,6 +113,7 @@ def SiPMfibres(F):
 # get mapping from C++
 def getFibre2SiPMCPP(modules):
 	scifi   = modules['Scifi']
+	scifi.SiPMOverlap()
 	scifi.SiPMmapping()
 	F=scifi.GetSiPMmap()
 	fibresSiPM = {}
@@ -149,8 +150,8 @@ import rootUtils as ut
 def overlap(F,Finv):
    ut.bookHist(h,'W','overlap/fibre',110,0.,1.1)
    ut.bookHist(h,'C','coverage',50,0.,10.)
-   ut.bookHist(h,'S','fibres/sipm',5,-0.5,4.5)
-   ut.bookHist(h,'Eff','efficiency',100,0.,1.)
+   ut.bookHist(h,'S','fibres/sipm',15,-0.5,14.5)
+   ut.bookHist(h,'Eff','efficiency',110,0.,1.1)
    for n in F:
      C=0
      for fid in F[n]:
@@ -169,17 +170,28 @@ def test(chan):
             print('%6i:%5.2F'%(x,F['VertMatVolume'][chan][x])) 
 
 def inspectSiPM():
+	sGeo = ROOT.gGeoManager
 	SiPMmapVol = sGeo.FindVolumeFast("SiPMmapVol")
-	for l1 in  SiPMmapVol.GetNodes():
+	for l1 in  SiPMmapVol.GetNodes():   # 3 mats with 4 SiPMs each and 128 channels
+		t1 = l1.GetMatrix().GetTranslation()[1]
+		if l1.GetNumber()%1000==0: print( "%s  %5.2F"%(l1.GetName(),(t1)*10.))
+
+def inspectMats():
+	sGeo = ROOT.gGeoManager
+	ScifiHorPlaneVol = sGeo.FindVolumeFast("ScifiHorPlaneVol")
+	for l1 in  ScifiHorPlaneVol.GetNodes():    # 3 mats
 		t1 = l1.GetMatrix().GetTranslation()[1]
 		print(l1.GetName(),t1)
 		for l2 in  l1.GetVolume().GetNodes():
 			t2 = l2.GetMatrix().GetTranslation()[1]
-			print("       ",l2.GetName(),t2)
-			for l3 in  l2.GetVolume().GetNodes():
-				t3 = l3.GetMatrix().GetTranslation()[1]
-				dy = l3.GetVolume().GetShape().GetDY()
-				print("                     ", l3.GetName(),t3,t1+t2+t3,dy)
+			print("       ",l2.GetName(),t2,t1+t2)
+def checkFibreCoverage(Finv):
+	for mat in range(1,4):
+		for row in range(1,7):
+			for channel in range(1,473):
+				fID = mat*10000+row*1000+channel
+				if not fID in Finv: print('missing fibre:',fID)
+
 
 
 

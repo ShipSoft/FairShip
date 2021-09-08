@@ -45,11 +45,31 @@ with ConfigRegistry.register_config("basic") as c:
         
         #SciFi parameters
         c.Scifi = AttrDict(z=0*u.cm)
-        c.Scifi.xdim = 40 *u.cm 
-        c.Scifi.ydim = 40 *u.cm 
-        c.Scifi.zdim = 1.81 *u.cm   
+        c.Scifi.xdim    = 40 *u.cm
+        c.Scifi.ydim    = 40 *u.cm
+        c.Scifi.zdim    = 1.81 *u.cm
+        c.Scifi.nmats = 3
+        c.Scifi.nscifi   = 5
+
+        #SiPM parameters
+        c.Scifi.channel_width     = 0.25 *u.mm
+        c.Scifi.sipm_edge = 0.17*u.mm    # on both ends
+        c.Scifi.charr_gap = 0.2 *u.mm
+        c.Scifi.charr_width = 64 * c.Scifi.channel_width
+        c.Scifi.sipm_diegap     = 0.06*u.mm
+        c.Scifi.SiPMarray_width = c.Scifi.sipm_edge+c.Scifi.charr_width+c.Scifi.charr_gap+c.Scifi.charr_width+c.Scifi.sipm_edge
+        c.Scifi.nsipm_channels  = 128
+        c.Scifi.nsipm_mat             = 4
+        c.Scifi.nsipms = c.Scifi.nsipm_mat *  c.Scifi.nmats  # 12 per SciFi plane
+        c.Scifi.sipmarr_width  = c.Scifi.charr_gap + 2.*c.Scifi.charr_width
+        c.Scifi.firstChannelX = -19.528*u.cm  # to agree with SiPM positions of engineering design
+
+        c.Scifi.nfibers_shortrow = 471
+        c.Scifi.nfibers_longrow  = 472
+        c.Scifi.nfibers_z = 6
         
-        c.Scifi.scifimat_width = 13.3 *u.cm
+# Guido: Fibre mat total width 500um less wide than 4 SiPM arrays mounted on a single bar, therefore 32.6mm x 4 -0.5=129.9mm 
+        c.Scifi.scifimat_width = (c.Scifi.SiPMarray_width+c.Scifi.sipm_diegap)*c.Scifi.nsipm_mat -0.5*u.mm
         c.Scifi.scifimat_length = 40 *u.cm
         c.Scifi.scifimat_z = 0.135 *u.cm
         c.Scifi.epoxymat_z = 0.17 *u.cm
@@ -60,7 +80,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.clad1_rmax = 0.01175 *u.cm    
         c.Scifi.clad2_rmax = 0.0125 *u.cm
 
-        c.Scifi.horizontal_pitch = 0.027 *u.cm
+        c.Scifi.horizontal_pitch = 0.0275 *u.cm
         c.Scifi.vertical_pitch = 0.021 *u.cm
         c.Scifi.rowlong_offset = 0.035 *u.cm 
         c.Scifi.rowshort_offset = 0.0215 *u.cm 
@@ -72,26 +92,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.plastbar_y = 40 *u.cm
         c.Scifi.plastbar_z = 0.195 *u.cm
 
-        c.Scifi.nfibers_shortrow = 491
-        c.Scifi.nfibers_longrow = 492
-        c.Scifi.nfibers_z = 6
-        
         c.Scifi.scifi_separation = c.Scifi.zdim + c.EmulsionDet.BrZ  
         c.Scifi.offset_z = - c.EmulsionDet.zdim/2 + c.EmulsionDet.BrZ  #SciFi starts at the end of the first ECC
-        c.Scifi.nmats = 3
-        c.Scifi.nscifi = 5
-        c.Scifi.nsipms = 12 #per SciFi plane
         
-        #SiPM parameters
-        c.Scifi.half_width = 19.528 *u.cm				
-        c.Scifi.channel_width = 0.025 *u.cm	
-        c.Scifi.charr_width = 1.6 *u.cm
-        c.Scifi.sipm_edge = 0.016 *u.cm
-        c.Scifi.charr_gap = 0.022 *u.cm				
-        c.Scifi.simparr_width  = c.Scifi.charr_gap + 2.*c.Scifi.charr_width
-        c.Scifi.sipm_diegap = 0.038 *u.cm				
-        c.Scifi.nsipm_channels = 128
-
         c.MuFilter = AttrDict(z=0*u.cm)
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8

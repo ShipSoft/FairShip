@@ -40,9 +40,9 @@ class ScifiPoint : public FairMCPoint
 
 
 /* STMRFFF
- First digit S: 			station # within the sub-detector
+ First digit S: 		station # within the sub-detector
  Second digit T: 		type of the plane: 0-horizontal fiber plane, 1-vertical fiber plane
- Third digit M: 			determines the mat number
+ Third digit M: 		determines the mat number
  Fourth digit R: 		row number (in Z direction)
  Last three digits F: 	fiber number
 */

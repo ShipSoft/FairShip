@@ -60,8 +60,8 @@ def configure(run,ship_geo,Gfield=''):
  Scifi.SetZOffset(ship_geo.Scifi.offset_z)
  Scifi.SetNMats(ship_geo.Scifi.nmats)
  Scifi.SetNScifi(ship_geo.Scifi.nscifi)
- Scifi.SetNSiPMs(ship_geo.Scifi.nsipms)
- Scifi.SiPMParams(ship_geo.Scifi.half_width, ship_geo.Scifi.channel_width, ship_geo.Scifi.charr_width, ship_geo.Scifi.sipm_edge, ship_geo.Scifi.charr_gap, ship_geo.Scifi.simparr_width, ship_geo.Scifi.sipm_diegap, ship_geo.Scifi.nsipm_channels)
+ Scifi.SiPMParams(ship_geo.Scifi.channel_width, ship_geo.Scifi.charr_width, ship_geo.Scifi.sipm_edge,
+                                      ship_geo.Scifi.charr_gap, ship_geo.Scifi.sipm_diegap, ship_geo.Scifi.nsipm_channels, ship_geo.Scifi.nsipm_mat,ship_geo.Scifi.firstChannelX )
  detectorList.append(Scifi)
 
  MuFilter = ROOT.MuFilter("MuFilter",ROOT.kTRUE)
