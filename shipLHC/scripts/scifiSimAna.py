@@ -42,7 +42,7 @@ ut.bookHist(h,'clusterSize','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'clusterSize_muon','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'doca','closest distance',100,0.0,0.2)
 ut.bookHist(h,'doca_muon','closest distance',100,0.0,0.05)
-ut.bookHist(h,'dx_muon','closest distance',100,-0.2,0.2)
+ut.bookHist(h,'dx_muon','closest distance;[mu]',100,-250.,250.)
 ut.bookHist(h,'pangle','angle of particle entering;mrad',100,-10.,10.)
 ut.bookHist(h,'pangle_muon','angle of particle entering;mrad',100,-10.,10.)
 
@@ -156,21 +156,21 @@ for sTree in f.cbmsim:
         if isMuon: rc = h['clusterSize_muon'].Fill(cl_size)
         D = docaLinePoint(cl[1][0],cl[1][1],meanImpact)
         aHit =   cl[0][0]
+        meanPosA = cl[1][0]
+        meanPosB = cl[1][1]
         if hitMap[aHit].isVertical(): dx = meanPosA[0]-meanImpact[0]
         else: dx =  meanPosA[1]-meanImpact[1]
         rc = h['doca'].Fill(D)
         if isMuon:
             rc = h['doca_muon'].Fill(D)
-            rc = h['dx_muon'].Fill(dx)
+            rc = h['dx_muon'].Fill(dx*10000.)
             if  len(cl[0])<3:
                  print(cl[0],D,dx,scifiPoint.GetDetectorID(),hitMap[aHit].isVertical())
-                 meanImpact.Print()
+                 meanImpact.Print(),scifi.GetPosition(scifiPoint.GetDetectorID(),A,B)
                  meanPosA.Print()
                  meanPosB.Print()
-                 scifi.GetPosition(scifiPoint.GetDetectorID(),A,B)
                  A.Print()
                  B.Print()
-                 if abs(dx)>10: 1/0
 
 # test position
 import SciFiMapping
