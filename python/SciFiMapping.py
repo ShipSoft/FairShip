@@ -118,3 +118,34 @@ def checkLocalPosition(fibresSiPM):
 		ty = l.GetMatrix().GetTranslation()[1]
 		delta = ty-L[n]
 		rc = h['delta'].Fill(delta*10*1000.)
+def moreChecks(modules):
+	ut.bookHist(h,'dx','dx',100,-0.1,0.1)
+	ut.bookHist(h,'dy','dy',100,-1.,1.)
+	ut.bookHist(h,'dz','dz',100,-0.2,0.2)
+	AS=ROOT.TVector3()
+	BS=ROOT.TVector3()
+	AF=ROOT.TVector3()
+	BF=ROOT.TVector3()
+	scifi   = modules['Scifi']
+	F=getFibre2SiPMCPP(modules)
+	for station in range(1,6):
+		for orientation in range(0,2):
+			for channel in F:
+				globChannel = station* 1000000+ orientation*100000 +channel
+				scifi.GetSiPMPosition(globChannel,AS,BS)
+				for fibre in F[channel]:
+					globFibre = station* 1000000+ orientation*100000+fibre
+					scifi.GetPosition(globFibre,AF,BF)
+					if orientation==0: 
+						dx = AS[1]-AF[1]
+						dy = AS[0]-AF[0]
+					else: 
+						dx = AS[0]-AF[0]
+						dy = AS[1]-AF[1]
+					dz = AS[2]-AF[2]
+					rc = h['dx'].Fill(dx)
+					rc = h['dy'].Fill(dy)
+					rc = h['dz'].Fill(dz)
+
+
+

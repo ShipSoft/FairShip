@@ -41,10 +41,13 @@ ut.bookHist(h,'Edigi','digitized signal',100,0.0,1.E-2)
 ut.bookHist(h,'clusterSize','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'clusterSize_muon','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'doca','closest distance',100,0.0,0.2)
-ut.bookHist(h,'doca_muon','closest distance',100,0.0,0.2)
+ut.bookHist(h,'doca_muon','closest distance',100,0.0,0.05)
 ut.bookHist(h,'dx_muon','closest distance',100,-0.2,0.2)
 ut.bookHist(h,'pangle','angle of particle entering;mrad',100,-10.,10.)
 ut.bookHist(h,'pangle_muon','angle of particle entering;mrad',100,-10.,10.)
+
+ut.bookHist(h,'pdoca_muon','closest distance',100,0.0,0.02)
+ut.bookHist(h,'pdx_muon','closest distance',100,-0.02,0.02)
 
 ut.bookHist(h,'nhits','hits per event',100,0.0,1000.)
 
@@ -80,6 +83,16 @@ for sTree in f.cbmsim:
       rc = h['Sxy'+str(p.station())].Fill(p.GetX(),p.GetY(),w)
       rc = h['N'+str(p.GetDetectorID()//1000)].Fill(p.fibreN(),w)
       rc = h['E'].Fill(p.GetEnergyLoss()*1E6,w)
+      if p.GetTrackID()==0:  # incoming muon
+          scifi.GetPosition(p.GetDetectorID(),A,B)
+          impactPoint = ROOT.TVector3(p.GetX(),p.GetY(),p.GetZ())
+          D = docaLinePoint(A,B,impactPoint)
+          rc = h['pdoca_muon'].Fill(D)
+          if p.orientation()==1:
+              rc = h['pdx_muon'].Fill(A[0]-impactPoint[0])
+          else:
+              rc = h['pdx_muon'].Fill(A[1]-impactPoint[1])
+
    hitMap = {}
    for d in sTree.Digi_ScifiHits:
       rc = h['Edigi'].Fill(d.GetEnergy())
@@ -142,6 +155,7 @@ for sTree in f.cbmsim:
         rc = h['clusterSize'].Fill(cl_size)
         if isMuon: rc = h['clusterSize_muon'].Fill(cl_size)
         D = docaLinePoint(cl[1][0],cl[1][1],meanImpact)
+        aHit =   cl[0][0]
         if hitMap[aHit].isVertical(): dx = meanPosA[0]-meanImpact[0]
         else: dx =  meanPosA[1]-meanImpact[1]
         rc = h['doca'].Fill(D)
@@ -150,11 +164,13 @@ for sTree in f.cbmsim:
             rc = h['dx_muon'].Fill(dx)
             if  len(cl[0])<3:
                  print(cl[0],D,dx,scifiPoint.GetDetectorID(),hitMap[aHit].isVertical())
-                 meanImpact.Print(),scifi.GetPosition(scifiPoint.GetDetectorID(),A,B)
+                 meanImpact.Print()
                  meanPosA.Print()
                  meanPosB.Print()
+                 scifi.GetPosition(scifiPoint.GetDetectorID(),A,B)
                  A.Print()
                  B.Print()
+                 if abs(dx)>10: 1/0
 
 # test position
 import SciFiMapping

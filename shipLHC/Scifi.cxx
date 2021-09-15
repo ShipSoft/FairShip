@@ -494,7 +494,8 @@ void Scifi::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
 	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
 	nav->cd(path);
 	TGeoNode* W = nav->GetCurrentNode();
-	Double_t loc[3]    = {xpos-locPosition,fZScifiMat/2,fFiberLength/2};
+	Double_t d = W->GetMatrix()->GetTranslation()[2];
+	Double_t loc[3]    = {locPosition-xpos,-d,fFiberLength/2};
 	Double_t glob[3] = {0,0,0};
 	nav->LocalToMaster(loc, glob);
 	A.SetXYZ( glob[0], glob[1],glob[2] );
