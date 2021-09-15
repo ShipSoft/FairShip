@@ -277,7 +277,8 @@ void Scifi::ConstructGeometry()
   for (int istation = 0; istation < fNScifi; istation++){
     
     TGeoVolumeAssembly *ScifiVolume = new TGeoVolumeAssembly("ScifiVolume");
-    volTarget->AddNode(ScifiVolume, 1e6*(istation+1), new TGeoTranslation(0, 0, fZOffset + istation*fSeparationBrick));
+     Int_t node = 1e6*(istation+1);
+    volTarget->AddNode(ScifiVolume, node, new TGeoTranslation(0, 0, fZOffset + istation*fSeparationBrick));
     
     TGeoVolumeAssembly *ScifiHorPlaneVol = new TGeoVolumeAssembly("ScifiHorPlaneVol");
     TGeoVolumeAssembly *ScifiVertPlaneVol = new TGeoVolumeAssembly("ScifiVertPlaneVol");
@@ -286,12 +287,12 @@ void Scifi::ConstructGeometry()
     ScifiVolume->AddNode(CarbonFiberVolume, 0, new TGeoTranslation(0, 0, fZCarbonFiber/2));
     ScifiVolume->AddNode(HoneycombVolume, 0, new TGeoTranslation(0, 0, fZCarbonFiber + fZHoneycomb/2));
     ScifiVolume->AddNode(CarbonFiberVolume, 1, new TGeoTranslation(0, 0, fZCarbonFiber + fZHoneycomb + fZCarbonFiber/2));
-    ScifiVolume->AddNode(ScifiHorPlaneVol, 0, new TGeoTranslation(0, 0, 2*fZCarbonFiber + fZHoneycomb + fZEpoxyMat/2));
+    ScifiVolume->AddNode(ScifiHorPlaneVol, node, new TGeoTranslation(0, 0, 2*fZCarbonFiber + fZHoneycomb + fZEpoxyMat/2));
     ScifiVolume->AddNode(PlasticAirVolume, 0, new TGeoTranslation(0, 0, 2*fZCarbonFiber + fZHoneycomb + fZEpoxyMat+ fZPlastBar/2));
   
     //Adding the second half of the SciFi module that contains vertical fibres
     ScifiVolume->AddNode(PlasticAirVolume, 1, new TGeoCombiTrans("rottrans0", 0, 0, 2*fZCarbonFiber + fZHoneycomb + fZEpoxyMat + 3*fZPlastBar/2, rot));
-    ScifiVolume->AddNode(ScifiVertPlaneVol, 0, new TGeoTranslation(0, 0, 2*fZCarbonFiber + fZHoneycomb + fZEpoxyMat + 2*fZPlastBar + fZEpoxyMat/2)); 
+    ScifiVolume->AddNode(ScifiVertPlaneVol, node, new TGeoTranslation(0, 0, 2*fZCarbonFiber + fZHoneycomb + fZEpoxyMat + 2*fZPlastBar + fZEpoxyMat/2)); 
     ScifiVolume->AddNode(CarbonFiberVolume, 2, new TGeoTranslation(0, 0, 2*fZCarbonFiber + fZHoneycomb + fZEpoxyMat + 2*fZPlastBar + fZEpoxyMat +fZCarbonFiber/2));
     ScifiVolume->AddNode(HoneycombVolume, 1, new TGeoTranslation(0, 0, 3*fZCarbonFiber + fZHoneycomb + fZEpoxyMat + 2*fZPlastBar + fZEpoxyMat + fZHoneycomb/2));
     ScifiVolume->AddNode(CarbonFiberVolume, 3, new TGeoTranslation(0, 0, 3*fZCarbonFiber + 2*fZHoneycomb + fZEpoxyMat + 2*fZPlastBar + fZEpoxyMat + fZCarbonFiber/2));
@@ -394,9 +395,8 @@ Bool_t  Scifi::ProcessHits(FairVolume* vol)
 		if (fELoss == 0. ) { return kFALSE; }
 		fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 		TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-		TString  S    = TString(nav->GetPath());
-		int k = 12 + S.Index("FiberVolume_");
-		fVolumeID =  TString(S(k,7)).Atoi();
+		fVolumeID    = nav->GetMother()->GetNumber();
+		if (fVolumeID==0){std::cout<<"fiber vol id "<<nav->GetMother()->GetName()<<std::endl;}
 /* STMRFFF
 First digit S: station # within the sub-detector
 Second digit T: type of the plane: 0-horizontal fiber plane, 1-vertical fiber plane
@@ -442,10 +442,10 @@ void Scifi::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 	sID.Form("%i",fDetectorID);
 	TString path = "/cave_1/volTarget_1/ScifiVolume_"+TString(sID(0,1))+"000000/";
 	if (sID(1,1)=="0"){
-		path+="ScifiHorPlaneVol_0/";
+		path+="ScifiHorPlaneVol_"+TString(sID(0,1))+"000000/";
 		path+="HorMatVolume_"+TString(sID(0,3))+"0000/";
 	}else{
-		path+="ScifiVertPlaneVol_0/";
+		path+="ScifiVertPlaneVol_"+TString(sID(0,1))+"000000/";
 		path+="VertMatVolume_"+TString(sID(0,3))+"0000/";
 	}
 	path+="FiberVolume_"+sID;
@@ -472,44 +472,35 @@ void Scifi::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
  Fourth digit S: 		SiPM number  0-3
  Last three digits F: 	local SiPM channel number in one mat  0-127
 */
-	Float_t locPosition = SiPMPos[SiPMChan%100000]; // local position in plane of reference plane.
-	// find mat
+	Int_t locNumber            = SiPMChan%100000;
+	Int_t globNumber         = int(SiPMChan/100000)*100000;
+	Float_t locPosition        = SiPMPos[locNumber]; // local position in plane of reference plane.
+	// find first fibre for this SiPM
+	auto tmp = *fibresSiPM[locNumber].begin();
+	Int_t fid          = tmp.first;
+	Int_t fidglobal = globNumber + fid;
+	Float_t xpos = tmp.second[1];
 	TString sID;
-	sID.Form("%i",SiPMChan);
+	sID.Form("%i",fidglobal);
 	TString path = "/cave_1/volTarget_1/ScifiVolume_"+TString(sID(0,1))+"000000/";
 	if (sID(1,1)=="0"){
-		path+="ScifiHorPlaneVol_0/";
-		path+="HorMatVolume_"+TString(sID(0,4))+"000/";
+		path+="ScifiHorPlaneVol_"+TString(sID(0,1))+"000000/HorMatVolume_";
 	}else{
-		path+="ScifiVertPlaneVol_0/";
-		path+="VertMatVolume_"+TString(sID(0,4))+"000/";
+		path+="ScifiVertPlaneVol_"+TString(sID(0,1))+"000000/VertMatVolume_";
 	}
+	path+=TString(sID(0,3))+"0000/FiberVolume_";
+	path+=fidglobal;
+
 	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
 	nav->cd(path);
 	TGeoNode* W = nav->GetCurrentNode();
-	Double_t locMat[3] = {0,0,0};
-	Double_t globMat[3] = {0,0,0};
-	nav->LocalToMaster(locMat, globMat);
-// reference plane
-	nav->cd("/cave_1/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0");
-	TGeoNode* R = nav->GetCurrentNode();
-	Double_t locRef[3] = {0,0,0};
-	Double_t globRef[3] = {0,0,0};
-	nav->LocalToMaster(locRef, globRef);
-	Double_t loc[3]    = {0,0,0};
+	Double_t loc[3]    = {xpos-locPosition,fZScifiMat/2,fFiberLength/2};
 	Double_t glob[3] = {0,0,0};
-	if (sID(1,1)=="0"){loc[1]=locPosition;}
-	else{loc[0]=locPosition;}
 	nav->LocalToMaster(loc, glob);
-	A.SetXYZ(glob[0]+globMat[0]-globRef[0],
-		glob[1]+globMat[1]-globRef[1],
-		glob[2]+globMat[2]-globRef[2]);
-	if (sID(1,1)=="0"){loc[1]=-locPosition;}
-	else{loc[0]=-locPosition;}
+	A.SetXYZ( glob[0], glob[1],glob[2] );
+	loc[2]=-loc[2];
 	nav->LocalToMaster(loc, glob);
-	B.SetXYZ(glob[0]+globMat[0]-globRef[0],
-		glob[1]+globMat[1]-globRef[1],
-		glob[2]+globMat[2]-globRef[2]);
+	B.SetXYZ( glob[0], glob[1],glob[2] );
 }
 
 Double_t Scifi::ycross(Double_t a,Double_t R,Double_t x)
@@ -598,6 +589,7 @@ void Scifi::SiPMmapping(){
 		}
 	}
   // calculate also local SiPM positions based on fibre positions and their fraction
+  // probably an overkill, maximum difference between weighted average and central position < 6 micron.
 	std::map<Int_t,std::map<Int_t,std::array<float, 2>>>::iterator it;
 	std::map<Int_t,std::array<float, 2>>::iterator itx;
 	for (it = fibresSiPM.begin(); it != fibresSiPM.end(); it++)

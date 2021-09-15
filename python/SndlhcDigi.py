@@ -69,12 +69,11 @@ class SndlhcDigi:
             locFibreID = detID%100000
             if not locFibreID in self.siPMFibres: continue # fibres in dead areas
             for sipmChan in self.siPMFibres[locFibreID]:
-                  globsipmChan = int(detID/10000)*100000+sipmChan
+                  globsipmChan = int(detID/100000)*100000+sipmChan
                   if not globsipmChan in hitContainer: 
                        hitContainer[globsipmChan]=[]
                        mcPoints[globsipmChan] = {}
                        norm[globsipmChan] = 0
-                  print(detID,sipmChan,locFibreID)
                   w = self.siPMFibres[locFibreID][sipmChan]['weight']
                   hitContainer[globsipmChan].append([p,w])
                   dE = p.GetEnergyLoss()*w
@@ -87,7 +86,6 @@ class SndlhcDigi:
                for p in hitContainer[detID]:
                     allPoints.push_back(p[0])
                     allWeights.push_back(p[1])
-               print("make hit",detID)
                aHit = ROOT.sndScifiHit(detID,allPoints,allWeights)
                if self.digiScifi.GetSize() == index: self.digiScifi.Expand(index+100)
                self.digiScifi[index]=aHit

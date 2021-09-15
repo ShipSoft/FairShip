@@ -22,6 +22,7 @@ modules = sndDet_conf.configure(run,snd_geo)
 sGeo = fgeo.FAIRGeom
 top = sGeo.GetTopVolume()
 scifi = modules['Scifi']
+scifi.SiPMmapping()
 
 ut.bookHist(h,'S','stations',7,-0.5,6.5)
 ut.bookHist(h,'O','orientation',7,-0.5,6.5)
@@ -36,15 +37,41 @@ for s in range(1,6):
           for r in range(1,7):
                ut.bookHist(h,'N'+str(s)+str(o)+str(m)+str(r),'fibre',1000,-0.5,999.5)
 ut.bookHist(h,'E','dE',100,0.0,1000.)
+ut.bookHist(h,'Edigi','digitized signal',100,0.0,1.E-2)
+ut.bookHist(h,'clusterSize','cluster size',20,-0.5,19.5)
+ut.bookHist(h,'clusterSize_muon','cluster size',20,-0.5,19.5)
+ut.bookHist(h,'doca','closest distance',100,0.0,0.2)
+ut.bookHist(h,'doca_muon','closest distance',100,0.0,0.2)
+ut.bookHist(h,'dx_muon','closest distance',100,-0.2,0.2)
+ut.bookHist(h,'pangle','angle of particle entering;mrad',100,-10.,10.)
+ut.bookHist(h,'pangle_muon','angle of particle entering;mrad',100,-10.,10.)
+
 ut.bookHist(h,'nhits','hits per event',100,0.0,1000.)
 
-f = ROOT.TFile.Open("sndLHC.Ntuple-TGeant4.root")
+def siPMPosCPP(scifi):
+    P=scifi.GetSiPMPos()
+    Pos = {}
+    for x in P:
+         Pos[x.first]=x.second
+    return Pos
+
+def docaLinePoint(A,B,p):
+   n = B-A
+   tmp = (A-p).Cross(n)
+   return tmp.Mag()/n.Mag()
+
+A=ROOT.TVector3()
+B=ROOT.TVector3()
+
+f = ROOT.TFile.Open("sndLHC.Ntuple-TGeant4_dig.root")
 for x in h: h[x].Reset()
 for sTree in f.cbmsim:
    rc = h['nhits'].Fill(sTree.ScifiPoint.GetEntries())
    w = sTree.MCTrack[0].GetWeight() # assume these are muon background events.
    for p in sTree.ScifiPoint:
-      if p.GetDetectorID()==0: continue
+      if p.GetDetectorID()==0: 
+            print('?')
+            continue
       rc = h['S'].Fill(p.station(),w)
       rc = h['O'].Fill(p.orientation(),w)
       rc = h['M'].Fill(p.mat(),w)
@@ -53,9 +80,91 @@ for sTree in f.cbmsim:
       rc = h['Sxy'+str(p.station())].Fill(p.GetX(),p.GetY(),w)
       rc = h['N'+str(p.GetDetectorID()//1000)].Fill(p.fibreN(),w)
       rc = h['E'].Fill(p.GetEnergyLoss()*1E6,w)
+   hitMap = {}
+   for d in sTree.Digi_ScifiHits:
+      rc = h['Edigi'].Fill(d.GetEnergy())
+      hitMap[d.GetDetectorID()]=d
+   hitList = list(hitMap.keys())
+   if len(hitList)<1: continue
+   hitList.sort()
+   L = sTree.Digi_ScifiHits2MCPoints[0]
+   clusters = {0:[ [hitList[0]],[] ]}
+   cprev = hitList[0]
+   ncl = 0
+   last = len(hitList)-1
+   for i in range(1,len(hitList)):
+        c=hitList[i]
+        if (c-cprev)==1: 
+             clusters[ncl][0].append(c)
+        if (c-cprev)!=1 or c==hitList[last]:
+# make clusterCentre:
+            weight = 0
+            meanPosA=ROOT.TVector3(0,0,0)
+            meanPosB=ROOT.TVector3(0,0,0)
+            for aHit in clusters[ncl][0]:
+                 scifi.GetSiPMPosition(aHit, A, B)
+                 w = hitMap[aHit].GetEnergy()
+                 weight+=w
+                 meanPosA+=w*ROOT.TVector3(A)
+                 meanPosB+=w*ROOT.TVector3(B)
+            winv = 1./weight
+            meanPosA=meanPosA*winv
+            meanPosB=meanPosB*winv
+            clusters[ncl][1].append(ROOT.TVector3(meanPosA))
+            clusters[ncl][1].append(ROOT.TVector3(meanPosB))
+            if c!=hitList[last]:
+                ncl+=1
+                clusters[ncl]=[[c],[]]
+        cprev = c
+   # if len(hitList)>50: 1/0
+   for x in clusters:
+        cl = clusters[x]
+       # cl[0]: list of hits, cl[1]:A,B
+        isMuon = True
+        meanImpact = ROOT.TVector3(0,0,0)
+        nPoints = 0
+        for c in cl[0]:
+        # origin of digis:
+            points = L.wList(c)
+            for p in points:
+                scifiPoint = sTree.ScifiPoint[p[0]]
+                trackKey = scifiPoint.GetTrackID()
+                pid = -1
+                if not trackKey<0: pid = sTree.MCTrack[trackKey].GetPdgCode()
+                rc = h['pangle'].Fill(ROOT.TMath.ATan2(scifiPoint.GetPx(),scifiPoint.GetPz())*1000)
+                if abs(pid)==13:  rc = h['pangle_muon'].Fill(ROOT.TMath.ATan2(scifiPoint.GetPx(),scifiPoint.GetPz())*1000)
+                if abs(pid)!=13: isMuon = False
+                meanImpact+=ROOT.TVector3(scifiPoint.GetX(),scifiPoint.GetY(),scifiPoint.GetZ())
+                nPoints+=1
+        w = 1./nPoints
+        meanImpact=meanImpact*w
+        cl_size = len(cl[0])
+        rc = h['clusterSize'].Fill(cl_size)
+        if isMuon: rc = h['clusterSize_muon'].Fill(cl_size)
+        D = docaLinePoint(cl[1][0],cl[1][1],meanImpact)
+        if hitMap[aHit].isVertical(): dx = meanPosA[0]-meanImpact[0]
+        else: dx =  meanPosA[1]-meanImpact[1]
+        rc = h['doca'].Fill(D)
+        if isMuon:
+            rc = h['doca_muon'].Fill(D)
+            rc = h['dx_muon'].Fill(dx)
+            if  len(cl[0])<3:
+                 print(cl[0],D,dx,scifiPoint.GetDetectorID(),hitMap[aHit].isVertical())
+                 meanImpact.Print(),scifi.GetPosition(scifiPoint.GetDetectorID(),A,B)
+                 meanPosA.Print()
+                 meanPosB.Print()
+                 A.Print()
+                 B.Print()
 
 # test position
-A,B=ROOT.TVector3(),ROOT.TVector3()
+import SciFiMapping
+from array import array
+loc = array('d',[0,0,0])
+glob = array('d',[0,0,0])
+nav = sGeo.GetCurrentNavigator()
+F = SciFiMapping.getFibre2SiPMCPP(modules)
+Finv = SciFiMapping.getSiPM2FibreCPP(modules)
+print("================================================")
 scifi.GetPosition(1011001,A,B)
 print("horizontal mat")
 A.Print()

@@ -27,89 +27,6 @@ if __name__ == "__main__":
 # hierarchy:  top<-volTarget<-ScifiVolume<- ScifiHorPlaneVol<-HorMatVolume<-FibreVolume
 #                                                                                     <- ScifiVertPlaneVol<-VertMatVolume<-FibreVolume
 
-def ycross(a,R,x):
-    A = R*R - (x-a)**2
-    if A<0: return False
-    y = ROOT.TMath.Sqrt(A)
-    return y
-def integralSqrt(ynorm):
-     return 1./2.*(ynorm*ROOT.TMath.Sqrt(1-ynorm*ynorm)+ROOT.TMath.ASin(ynorm))
-def fraction(R,x,y):
-       F= 2*R*R*(integralSqrt(y/R) )
-       F-=(2*x*y)
-       return  F/(R*R*ROOT.TMath.Pi())
-def area(a,R,xL,xR):
-    if xL>xR: 
-          print("wrong overlap, xL>xR")
-          return -1
-    fracL = -1
-    fracR = -1
-    if xL<=a-R and xR>=a+R: return 1
-    leftC    = ycross(a,R,xL)
-    rightC = ycross(a,R,xR)
-    if not leftC and not rightC: 
-          # print('no solution')
-          return -1
-    if rightC: fracR = fraction(R,abs(xR-a),rightC)
-    if leftC:    fracL = fraction(R,abs(xL-a),leftC)
-    theAnswer = 0
-    if leftC: 
-          if xL<a: theAnswer += 1-fracL
-          else:      theAnswer += fracL
-          if rightC:   theAnswer -=1
-    if rightC: 
-          if xR>a: theAnswer += 1-fracR
-          else:      theAnswer +=  fracR
-    return theAnswer
-
-def getFibre2SiPM(modules):
-   sGeo = ROOT.gGeoManager
-   nav = sGeo.GetCurrentNavigator()
-   scifi   = modules['Scifi']
-   scifi.SiPMOverlap()           # 12 SiPMs per mat, made for horizontal mats, fibres staggered along y-axis.
-   sipm = sGeo.FindVolumeFast("SiPMmapVol")
-   nav.cd("/cave_1/volTarget_1/ScifiVolume_1000000/ScifiHorPlaneVol_0/HorMatVolume_1010000")
-   matNode = nav.GetCurrentNode()   # example mat
-   mat = matNode.GetVolume()   # example mat
-   fibresSiPM = {}
-   fibresRadius = False
-   offSet = matNode.GetMatrix().GetTranslation()[1]
-   for fibre in mat.GetNodes():
-          if not fibresRadius:  fibresRadius=fibre.GetVolume().GetShape().GetDX()
-          fID = fibre.GetNumber()%10000     # local fibre number, global fibre number = SOM+fID
-                                                                                    # S=station, O=orientation, M=mat
-          a = offSet + fibre.GetMatrix().GetTranslation()[1]
-      # check for overlap with any of the SiPM channels
-          for nSiPM in range(0,4):         # 12 SiPMs total and 4 SiPMs per mat
-                 vol = sipm.GetNodes()[nSiPM]
-                 trans0 = vol.GetMatrix().GetTranslation()[1]
-                 # print("0   ",vol.GetName(),trans0[0],trans0[1],trans0[2])
-                 for iSiPM in vol.GetVolume().GetNodes():  # 2 volumes with gap
-                     trans1 = iSiPM.GetMatrix().GetTranslation()[1]
-                     # print("1        ",iSiPM.GetName(),trans1[0],trans1[1],trans1[2])
-                     for x in iSiPM.GetVolume().GetNodes():    # 64 channels
-                        transx    = x.GetMatrix().GetTranslation()[1]
-                        xcentre = transx+trans1+trans0
-                        # print('debug',iSiPM.GetName(),xcentre,x.GetNumber(),x.GetName(),x.GetMatrix().GetTranslation()[0],x.GetMatrix().GetTranslation()[1],x.GetMatrix().GetTranslation()[2])
-                        # print("2                    ",trans0,trans1,transx)
-                        dSiPM = x.GetVolume().GetShape().GetDY()
-                        if abs(xcentre-a)>4*fibresRadius: continue # no need to check further
-                        W = area(a,fibresRadius,xcentre-dSiPM,xcentre+dSiPM)
-                        if W<0: continue
-                        N = x.GetNumber()
-                        # print('debug',N,fID,a,x.GetName(),xcentre-dSiPM,xcentre+dSiPM,W)
-                        if not N in fibresSiPM:     fibresSiPM[N] = {}
-                        fibresSiPM[N][fID] = {'weight':W,'xpos':a}
-   return fibresSiPM
-
-def SiPMfibres(F):
-	Finv = {}
-	for sipm in F:
-		for fibre in F[sipm]:
-			if not fibre in Finv: Finv[fibre]={}
-			Finv[fibre][sipm]=F[sipm][fibre]
-	return Finv
-
 # get mapping from C++
 def getFibre2SiPMCPP(modules):
 	scifi   = modules['Scifi']
@@ -191,7 +108,13 @@ def checkFibreCoverage(Finv):
 			for channel in range(1,473):
 				fID = mat*10000+row*1000+channel
 				if not fID in Finv: print('missing fibre:',fID)
-
-
-
-
+def checkLocalPosition(fibresSiPM):
+	ut.bookHist(h,'delta','central - weighted',100,-20.,20.)
+	L = localPosition(fibresSiPM)
+	sGeo = ROOT.gGeoManager
+	SiPMmapVol = sGeo.FindVolumeFast("SiPMmapVol")
+	for l in  SiPMmapVol.GetNodes():
+		n  = l.GetNumber()
+		ty = l.GetMatrix().GetTranslation()[1]
+		delta = ty-L[n]
+		rc = h['delta'].Fill(delta*10*1000.)
