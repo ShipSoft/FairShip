@@ -65,7 +65,7 @@ def loopEvents(start=0,save=False):
 def hitMaps():
  for mat in range(30):
     ut.bookHist(h,'mat_'+str(mat),'hit map / mat',512,-0.5,511.5)
-    ut.bookHist(h,'sig_'+str(mat),'signal / mat',100,0.0,10.)
+    ut.bookHist(h,'sig_'+str(mat),'signal / mat',150,0.0,150.)
  N=-1
  for sTree in f.rawConv:
     N+=1

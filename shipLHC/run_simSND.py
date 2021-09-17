@@ -217,16 +217,6 @@ if simEngine == "MuonBack":
  MuonBackgen = ROOT.MuonBackGenerator()
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
  MuonBackgen.Init(inputFile,options.firstEvent,options.phiRandom)
- if options.charm == 0: MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
- elif DownScaleDiMuon: 
-    if inputFile[0:4] == "/eos": test = os.environ["EOSSHIP"]+inputFile
-    else: test = inputFile
-    testf = ROOT.TFile.Open(test)
-    if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
-        MuonBackgen.SetDownScaleDiMuon()   # avoid interference with boosted channels
-        print("MuonBackgenerator: set downscale for dimuon on")
-    testf.Close()
- if options.sameSeed: MuonBackgen.SetSameSeed(options.sameSeed)
  primGen.AddGenerator(MuonBackgen)
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big

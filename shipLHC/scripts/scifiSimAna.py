@@ -1,5 +1,8 @@
 import ROOT
 import rootUtils as ut
+import shipunit as u
+from array import array
+debug = False
 h={}
 
 geoFile = "geofile_full.Ntuple-TGeant4.root"
@@ -9,7 +12,7 @@ from rootpyPickler import Unpickler
 #load geo dictionary
 upkl    = Unpickler(fgeo)
 snd_geo = upkl.load('ShipGeo')
- 
+
 # -----Create geometry----------------------------------------------
 import shipLHC_conf as sndDet_conf
 
@@ -20,6 +23,7 @@ run.SetUserConfig("g4Config_basic.C") # geant4 transport not used
 rtdb = run.GetRuntimeDb()
 modules = sndDet_conf.configure(run,snd_geo)
 sGeo = fgeo.FAIRGeom
+nav = sGeo.GetCurrentNavigator()
 top = sGeo.GetTopVolume()
 scifi = modules['Scifi']
 scifi.SiPMmapping()
@@ -37,12 +41,13 @@ for s in range(1,6):
           for r in range(1,7):
                ut.bookHist(h,'N'+str(s)+str(o)+str(m)+str(r),'fibre',1000,-0.5,999.5)
 ut.bookHist(h,'E','dE',100,0.0,1000.)
-ut.bookHist(h,'Edigi','digitized signal',100,0.0,1.E-2)
+ut.bookHist(h,'Edigi','digitized signal',100,0.0,150.)
 ut.bookHist(h,'clusterSize','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'clusterSize_muon','cluster size',20,-0.5,19.5)
-ut.bookHist(h,'doca','closest distance',100,0.0,0.2)
-ut.bookHist(h,'doca_muon','closest distance',100,0.0,0.05)
-ut.bookHist(h,'dx_muon','closest distance;[mu]',100,-250.,250.)
+ut.bookHist(h,'doca','closest distance;[micron]',100,-500.,500.)
+ut.bookHist(h,'doca_muon','closest distance; [micron] ',100,-200.,200.)
+ut.bookHist(h,'docaCl','closest distance;[micron]',100,-500.,500.)
+ut.bookHist(h,'docaCl_muon','closest distance; [micron] ',100,-200.,200.)
 ut.bookHist(h,'pangle','angle of particle entering;mrad',100,-10.,10.)
 ut.bookHist(h,'pangle_muon','angle of particle entering;mrad',100,-10.,10.)
 
@@ -62,6 +67,17 @@ def docaLinePoint(A,B,p):
    n = B-A
    tmp = (A-p).Cross(n)
    return tmp.Mag()/n.Mag()
+def docaLine(a,b,c,d):
+   u = b-a
+   v = d-c
+   n = u.Cross(v)
+   ac = a-c
+   if n.Mag()==0:
+       dist = ROOT.TMath.Sqrt(ac.Mag2()+3*(ac.Dot(u))**2/u.Mag2())
+   else:
+       dist = n.Dot(ac)/n.Mag()
+   return dist
+   
 
 A=ROOT.TVector3()
 B=ROOT.TVector3()
@@ -95,6 +111,7 @@ for sTree in f.cbmsim:
 
    hitMap = {}
    for d in sTree.Digi_ScifiHits:
+      if not d.isValid(): continue 
       rc = h['Edigi'].Fill(d.GetEnergy())
       hitMap[d.GetDetectorID()]=d
    hitList = list(hitMap.keys())
@@ -105,7 +122,8 @@ for sTree in f.cbmsim:
    cprev = hitList[0]
    ncl = 0
    last = len(hitList)-1
-   for i in range(1,len(hitList)):
+   for i in range(len(hitList)):
+        if i==0 and len(hitList)>1: continue
         c=hitList[i]
         if (c-cprev)==1: 
              clusters[ncl][0].append(c)
@@ -154,30 +172,45 @@ for sTree in f.cbmsim:
         cl_size = len(cl[0])
         rc = h['clusterSize'].Fill(cl_size)
         if isMuon: rc = h['clusterSize_muon'].Fill(cl_size)
-        D = docaLinePoint(cl[1][0],cl[1][1],meanImpact)
+        # goto local coordinates in detector plane
         aHit =   cl[0][0]
-        meanPosA = cl[1][0]
-        meanPosB = cl[1][1]
-        if hitMap[aHit].isVertical(): dx = meanPosA[0]-meanImpact[0]
-        else: dx =  meanPosA[1]-meanImpact[1]
-        rc = h['doca'].Fill(D)
+        # scifi.cdPlane(aHit)
+        s =  int(aHit/1000000)
+        path = "/cave_1/volTarget_1/ScifiVolume_"+str(s)+"000000/"
+        vertical = int(aHit/100000)%10 == 1
+        if vertical: path+= "ScifiVertPlaneVol_"+str(s)+"000000"
+        else:                        path+= "ScifiHorPlaneVol_"+str(s)+"000000"
+        nav.cd(path)
+        A = cl[1][0]
+        globCluster = array('d',[A[0],A[1],A[2]])
+        locCluster = array('d',[0,0,0])
+        nav.MasterToLocal(globCluster,locCluster)
+        globPart = array('d',[meanImpact[0],meanImpact[1],meanImpact[2]])
+        locPart = array('d',[0,0,0])
+        nav.MasterToLocal(globPart,locPart)
+        if vertical: delta = locCluster[0]-locPart[0]
+        else: delta = locCluster[1]-locPart[1]
+        rc = h['docaCl'].Fill(delta/u.um)
         if isMuon:
-            rc = h['doca_muon'].Fill(D)
-            rc = h['dx_muon'].Fill(dx*10000.)
-            if  len(cl[0])<3:
-                 print(cl[0],D,dx,scifiPoint.GetDetectorID(),hitMap[aHit].isVertical())
-                 meanImpact.Print(),scifi.GetPosition(scifiPoint.GetDetectorID(),A,B)
-                 meanPosA.Print()
-                 meanPosB.Print()
-                 A.Print()
-                 B.Print()
+            rc = h['docaCl_muon'].Fill(delta/u.um)
+        for aHit in cl[0]:
+                scifi.GetSiPMPosition(aHit, A, B)
+                glob = array('d',[A[0],A[1],A[2]])
+                loc    = array('d',[0,0,0])
+                nav.MasterToLocal(glob,loc)
+                if vertical: delta = loc[0]-locPart[0]
+                else: delta = loc[1]-locPart[1]
+                rc = h['doca'].Fill(delta/u.um)
+                if isMuon:
+                     rc = h['doca_muon'].Fill(delta/u.um)
+
 
 # test position
 import SciFiMapping
 from array import array
 loc = array('d',[0,0,0])
 glob = array('d',[0,0,0])
-nav = sGeo.GetCurrentNavigator()
+
 F = SciFiMapping.getFibre2SiPMCPP(modules)
 Finv = SciFiMapping.getSiPM2FibreCPP(modules)
 print("================================================")

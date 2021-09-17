@@ -384,6 +384,10 @@ Bool_t  Scifi::ProcessHits(FairVolume* vol)
 		fLength = gMC->TrackLength();
 		gMC->TrackPosition(fPos);
 		gMC->TrackMomentum(fMom);
+		TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+		fVolumeID    = nav->GetMother()->GetNumber();
+		if (fVolumeID==0){std::cout<<"fiber vol id "<<nav->GetMother()->GetName()<<std::endl;}
+
 	}
 	// Sum energy loss for all steps in the active volume
 	fELoss += gMC->Edep();
@@ -394,9 +398,6 @@ Bool_t  Scifi::ProcessHits(FairVolume* vol)
 			gMC->IsTrackDisappeared()   ) {
 		if (fELoss == 0. ) { return kFALSE; }
 		fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-		TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-		fVolumeID    = nav->GetMother()->GetNumber();
-		if (fVolumeID==0){std::cout<<"fiber vol id "<<nav->GetMother()->GetName()<<std::endl;}
 /* STMRFFF
 First digit S: station # within the sub-detector
 Second digit T: type of the plane: 0-horizontal fiber plane, 1-vertical fiber plane
@@ -412,7 +413,6 @@ Last three digits F: fiber number
 		Double_t xmean = (fPos.X()+Pos.X())/2. ;
 		Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
 		Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
-
 
 		AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
 				TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
