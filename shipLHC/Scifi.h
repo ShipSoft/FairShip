@@ -41,8 +41,10 @@ public:
     void SiPMParams(Double_t channel_width, Double_t charr_width, Double_t sipm_edge, 
                                           Double_t charr_gap, Double_t sipm_diegap, Int_t nsipm_channels, Int_t nsipm_mat,Double_t firstChannelX);
 
-    /** Getposition of single fibre**/
+    /** Get position of single fibre in global coordinate system**/
     void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
+    /** Transform global position to local position in plane **/
+    TVector3 GetLocalPos(Int_t id, TVector3* glob);
     /** mean position of fibre2 associated with SiPM channel **/
     void GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B) ;
     Double_t ycross(Double_t a,Double_t R,Double_t x);

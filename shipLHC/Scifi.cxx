@@ -463,6 +463,24 @@ void Scifi::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 	B.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
 
 }
+TVector3 Scifi::GetLocalPos(Int_t id, TVector3* glob){
+	TString sID;
+	sID.Form("%i",id);
+	TString path = "/cave_1/volTarget_1/ScifiVolume_"+TString(sID(0,1))+"000000/";
+	if (sID(1,1)=="0"){
+		path+="ScifiHorPlaneVol_"+TString(sID(0,1))+"000000";
+	}else{
+		path+="ScifiVertPlaneVol_"+TString(sID(0,1))+"000000";
+	}
+	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+	nav->cd(path);
+	Double_t aglob[3];
+	Double_t aloc[3];
+	glob->GetXYZ(aglob);
+	nav->MasterToLocal(aglob,aloc);
+	return TVector3(aloc[0],aloc[1],aloc[2]);
+}
+
 void Scifi::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B) 
 {
 /* STMRFFF
