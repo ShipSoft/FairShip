@@ -37,6 +37,7 @@ MuFilter.cxx
 MuFilterPoint.cxx
 MuFilterHit.cxx
 sndScifiHit.cxx
+sndCluster.cxx
 )
 
 Set(HEADERS )
